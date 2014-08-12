@@ -1,0 +1,10 @@
+#!/usr/bin/ruby
+
+while line = STDIN.gets
+	case line.chomp!
+	when /^System Benchmarks Index Score .* ([0-9\.]+)$/
+		score = $1
+	end
+end
+
+puts 'score: ' + score

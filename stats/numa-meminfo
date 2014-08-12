@@ -1,0 +1,10 @@
+#!/usr/bin/awk -f
+
+/^time:/ {
+	print $0
+}
+
+NF >= 4 {
+	key = tolower($1) $2"."$3
+	print key" "$4
+}

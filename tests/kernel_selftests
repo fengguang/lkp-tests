@@ -1,0 +1,13 @@
+#!/bin/bash
+#
+
+cd $BENCHMARK_ROOT/kernel_selftests || exit
+
+testcases=(breakpoints ipc kcmp mqueue net ptrace timers)
+for i in ${testcases[@]}; do
+	cmd make run_tests -C $i 2> >(tee $RESULT_ROOT/kernel_selftests.info |
+		grep -v -e "^info:" \
+			-e "^ERROR:" \
+			-e "^test:" \
+			-e "^make:" >&2)
+done

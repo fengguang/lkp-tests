@@ -1,0 +1,33 @@
+#!/usr/bin/ruby
+
+require ENV['LKP_SRC'] + "/lib/statistics.rb"
+
+$scalability = []
+$per_process = []
+$per_thread = []
+
+while line = STDIN.gets
+	case line.chomp!
+	when /^[a-z_,]+$/
+		names = line.split ','
+		names.shift
+	when /^[0-9.,]+$/
+		values = line.split ','
+		nr_task = values.shift
+		next if nr_task == '0'
+		$scalability << values[0].to_f / values[-1].to_i
+		$per_process << values[0].to_f / nr_task.to_i
+		$per_thread << values[2].to_f / nr_task.to_i
+		names.each_with_index do |name, i|
+			puts nr_task + '.' + name + ': ' + values[i]
+		end
+	when /(Assertion .* failed)/
+		puts $1.sub(/.*: /, '').tr('^a-zA-Z0-9<>!=', '_').gsub(/__+/, '_') + ': 1'
+	end
+end
+
+exit if $scalability.empty?
+
+printf "scalability: %.3g\n", $scalability[-1]
+printf "per_process_ops: %d\n", $per_process.average
+printf "per_thread_ops: %d\n", $per_thread.average

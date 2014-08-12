@@ -1,0 +1,17 @@
+testcase: fio-jbod
+
+disk:
+- 12HDD
+fs:
+- ext4
+
+fio:
+  rw:
+  - randwrite
+  - randrw
+  ioengine:
+  - sync
+  - mmap
+  bs:
+  - 4k
+  - 64k

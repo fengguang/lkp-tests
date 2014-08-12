@@ -1,0 +1,9 @@
+#!/usr/bin/awk -f
+
+/^# - [a-zA-Z_.]+$/ {
+	print $3
+}
+
+/^$/ {
+	exit
+}

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+download()
+{
+	git clone git://oss.sgi.com/xfs/cmds/xfstests.git
+	source_dir=$BM_NAME
+}
+
+install()
+{
+	make install
+	cp -af $LKP_SRC/pack/${BM_NAME}-addon/* $BM_ROOT/
+}

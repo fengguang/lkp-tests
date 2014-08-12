@@ -1,0 +1,23 @@
+#!/bin/bash
+
+[ -f /sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state ] || exit 0
+
+shopt -s nullglob
+
+while :
+do
+	echo time: $(date +%s.%N)
+
+	for cpu in $(cd /sys/devices/system/cpu && echo cpu[0-9]*)
+	do
+		while read state time_in_state
+		do
+			echo $cpu.time_in_state.$state: $time_in_state
+		done < /sys/devices/system/cpu/$cpu/cpufreq/stats/time_in_state
+
+		echo $cpu.total_trans: \
+			$(</sys/devices/system/cpu/$cpu/cpufreq/stats/total_trans)
+	done
+
+	sleep ${interval:-1}
+done

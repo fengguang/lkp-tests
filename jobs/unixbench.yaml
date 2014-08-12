@@ -1,0 +1,16 @@
+testcase: unixbench
+
+unixbench:
+  test:
+  - whetstone-double
+  - shell1
+  - shell8
+  - execl
+  - pipe
+  - context1
+  - spawn
+  - syscall
+  - dhry2reg
+  - fstime
+  - fsbuffer
+  - fsdisk

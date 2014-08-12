@@ -1,0 +1,21 @@
+#!/bin/bash
+
+period=$1
+
+case $period in
+	*s)
+		unit=1
+		;;
+	*m)
+		unit=60
+		;;
+	*h)
+		unit=3600
+		;;
+esac
+
+(( unit )) && (( period = ${period%?} * unit ))
+
+cat >> $TMP/env.yaml <<EOF
+period: $period
+EOF

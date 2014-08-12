@@ -1,0 +1,11 @@
+#!/bin/bash
+
+VERSION="6.1.2"
+WEB_URL="http://lcp.nrl.navy.mil/${BM_NAME}/${BM_NAME}-${VERSION}.tar.bz2"
+
+install()
+{
+	cp -af $source_dir $BM_ROOT
+	cd ${BM_ROOT}
+	ln -s $source_dir $BM_NAME
+}

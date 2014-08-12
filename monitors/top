@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec top -b -d ${interval:-1}

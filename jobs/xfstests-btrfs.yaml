@@ -1,0 +1,12 @@
+testcase: xfstests
+
+default_monitors:
+
+disk: 6HDD
+
+fs:
+- btrfs
+
+xfstests:
+  test:
+  - btrfs

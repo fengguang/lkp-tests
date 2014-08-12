@@ -1,0 +1,8 @@
+testcase: iperf
+
+runtime: 300s
+
+iperf:
+  protocol:
+  - tcp
+  - udp

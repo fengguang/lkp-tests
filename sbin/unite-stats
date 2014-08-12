@@ -1,0 +1,28 @@
+#!/usr/bin/ruby
+
+LKP_USER = ENV['LKP_USER'] || ENV['USER'] || `whoami`.chomp
+LKP_HOME = ENV["LKP_HOME"] || '/lkp/' + LKP_USER
+LKP_SRC = ENV["LKP_SRC"] || LKP_HOME + '/src'
+
+require "#{LKP_SRC}/lib/matrix.rb"
+require "#{LKP_SRC}/lib/statistics.rb"
+require "#{LKP_SRC}/lib/stats.rb"
+require "#{LKP_SRC}/lib/yaml.rb"
+require "#{LKP_SRC}/lib/git.rb"
+require "#{LKP_SRC}/lib/job.rb"
+
+File.umask 0002
+
+result_root = ARGV[0] || ENV["RESULT_ROOT"]
+if not File.directory? result_root
+	STDERR.puts "#{result_root} is not a directory"
+	exit 1
+end
+
+result_root = File.realpath result_root
+_result_root = File.dirname result_root
+
+stats = create_stats_matrix(result_root)
+stats['stats_source'] = result_root + '/stats.json'
+
+unite_to(stats, _result_root, true)

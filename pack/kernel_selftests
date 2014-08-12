@@ -1,0 +1,31 @@
+#!/bin/bash
+
+download()
+{
+	git clone --depth 1 http://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+	source_dir="linux"
+}
+
+build()
+{
+	cd $source_dir
+	make allyesconfig
+	make &
+	pid=$!
+	sleep 5
+	kill $pid
+	cd tools/testing/selftests
+	white_list=($(cat $LKP_SRC/pack/${BM_NAME}-white-list))
+	for i in ${white_list[@]}; do
+		[[ -d $i ]] && make -C $i
+	done
+}
+
+install()
+{
+	for i in ${white_list[@]}; do
+		[[ -d $i ]] && cp -af $i $BM_ROOT
+	done
+	find $BM_ROOT -name "*.c" -exec rm -f {} \;
+	find $BM_ROOT -name "Makefile" -exec sed -i 's/\(run_tests:\) all/\1/' {} \;
+}

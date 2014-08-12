@@ -1,0 +1,15 @@
+#!/bin/bash
+
+support_rapl()
+{
+	[[ $model =~ (Sandy Bridge|Ivy Bridge|Haswell|Broadwell|Skylake|Cannonlake) ]]
+}
+
+[[ "$nr_threads" =~ %$ ]] || exit 0
+nr_threads=${nr_threads%%%}
+nr_threads=${nr_threads%%.} # bash cannot handle float numbers
+
+(( nr_threads < 100 )) && ! support_rapl && {
+	echo "rm $job_file to skip power testing on non-RAPL capable machine"
+	rm $job_file
+}

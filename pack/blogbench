@@ -1,0 +1,9 @@
+#!/bin/bash
+
+VERSION=1.1
+WEB_URL="http://download.pureftpd.org/pub/blogbench/blogbench-${VERSION}.tar.gz"
+
+install()
+{
+	cp -af src/blogbench ${BM_ROOT}
+}

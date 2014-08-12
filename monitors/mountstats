@@ -1,0 +1,8 @@
+#!/bin/bash
+
+while :
+do
+	echo time: $(date +%s.%N)
+	cat /proc/self/mountstats
+	sleep ${interval:-1}
+done

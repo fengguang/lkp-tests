@@ -1,0 +1,5 @@
+model: Nehalem-EP
+memory: 5G
+nr_hdd_partitions: 12
+hdd_partitions: /dev/disk/by-id/scsi-35000c5000*part1
+swap_partitions: /dev/disk/by-id/scsi-SATA_ST3500320NS_9QM6YWTY-part2

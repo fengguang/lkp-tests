@@ -1,0 +1,22 @@
+EXT4-fs warning (device .*): .*
+EXT4-fs error (device .*): .*
+pa .*: logic .*, phys. .*, len .*
+Remounting filesystem read-only
+inode #.*: block .*: comm .*: .*
+inode #.*: comm .*: .*
+block .*: comm .*: path .*: .*
+comm .*: path .*: .*
+EXT4-fs: error .* creating inode table 
+initialization thread
+Total free blocks count .*
+Free/Dirty block details
+free_blocks=.*
+dirty_blocks=.*
+Block reservation details
+i_reserved_data_blocks=.*
+i_reserved_meta_blocks=.*
+delayed block allocation failed for inode .* 
+at logical offset .* with max blocks .* 
+This should not happen!! Data will be lost
+.*: jbd2_start: 
+.* pages, ino .*; err .*

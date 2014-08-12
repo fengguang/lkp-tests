@@ -1,0 +1,16 @@
+testcase: tcrypt
+
+boot_params: nowatchdog rcupdate.rcu_cpu_stall_suppress=1
+
+period: 2s
+
+perf-profile:
+
+tcrypt:
+  modes:
+  - 200-204
+  - 205-210
+  - 301-319
+  - 401-417
+  - 500-504
+  - 505-509

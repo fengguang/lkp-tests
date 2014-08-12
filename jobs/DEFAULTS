@@ -1,0 +1,27 @@
+testcase: DEFAULTS
+
+default_monitors:
+  wait: pre-test
+  uptime:
+  iostat:
+  vmstat:
+  numa-numastat:
+  numa-vmstat:
+  numa-meminfo:
+  proc-vmstat:
+  proc-stat:
+  meminfo:
+  slabinfo:
+  interrupts:
+  lock_stat:
+  latency_stats:
+  softirqs:
+  bdi_dev_mapping:
+  diskstats:
+  energy:
+  cpuidle:
+  turbostat:
+
+# default setups
+cpufreq_governor:
+

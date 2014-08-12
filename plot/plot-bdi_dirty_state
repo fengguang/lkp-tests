@@ -1,0 +1,98 @@
+#!/bin/bash
+
+#	dd-3853  [004]   159.775867: bdi_dirty_state: bdi 8:64: reclaimable=27052 writeback=4100 thresh=74 dirtied=31200 written=80 
+
+plot() {
+data=$1
+suffix=$2
+ls=points
+[[ $suffix =~ '300'$ ]] && ls=linespoints
+gnuplot <<EOF
+set xlabel "time (s)"
+
+set size 1
+set terminal pngcairo size ${width:-1280}, 800
+set terminal pngcairo size ${width:-1000}, 600
+set terminal pngcairo size ${width:-1280}, ${height:-800}
+
+set output "bdi_dirty_state$suffix.png"
+set ylabel "memory (MB)"
+plot \
+     "$data" using 1:(\$4/256) with linespoints pt 3 ps 0.6 lc rgbcolor "grey" title "thresh", \
+     "$data" using 1:((\$2+\$3)/256) with $ls pt 5 ps 0.9 lc rgbcolor "gold" title "dirty+unstable+writeback", \
+     "$data" using 1:(\$2/256) with $ls pt 4 ps 0.6 lc rgbcolor "red" title "dirty+unstable", \
+     "$data" using 1:(\$3/256) with $ls pt 7 ps 0.4 lc rgbcolor "green" title "writeback"
+EOF
+}
+
+gnuplot_dirtied_written() {
+	prefix=$1
+	comma=""
+	for bdi in $bdis
+	do
+		# bdi=${file#$prefix-}
+		file=$prefix-$bdi
+		test -s $file || break
+		echo $comma '\'
+		comma=","
+		echo \"$file\" 'using 1:($5/256) with linespoints pt 7 ps 0.8 lc rgbcolor "red"  title "dirtied '$bdi'", \'
+		echo \"$file\" 'using 1:($6/256) with      points pt 5 ps 0.6 lc rgbcolor "green" title "written '$bdi'" \'
+	done
+	echo
+}
+
+plot_all() {
+data=$1
+gnuplot <<EOF
+set xlabel "time (s)"
+
+set size 1
+set terminal pngcairo size ${width:-1280}, 800
+set terminal pngcairo size ${width:-1000}, 600
+set terminal pngcairo size ${width:-1280}, ${height:-800}
+
+set grid
+set output "bdi_dirtied_written.png"
+set ylabel "memory (MB)"
+plot $(gnuplot_dirtied_written $data)
+EOF
+}
+
+[[ -f trace || -f ftrace.gz ]] || exit
+
+trace_tab() {
+	grep -o "[0-9.]\+: $1: .*" |\
+	sed -e 's/bdi [^ ]\+//' \
+	    -e 's/[^0-9.-]\+/ /g'
+}
+
+trace=trace-bdi_dirty_state
+
+bdis=$({ cat trace || zcat ftrace.gz; } |\
+		grep -F "bdi_dirty_state: bdi " |\
+		head -n 1000 |\
+		sed 's/.* bdi_dirty_state: bdi \([^ ]\+\): .*/\1/' |\
+		sort -u)
+
+# bdis=$(cut -d' ' -f3 mountinfo)
+
+[[ $bdis ]] || exit
+
+n=0
+for bdi in $bdis
+do
+	{ cat trace || zcat ftrace.gz; } |\
+		grep -F "bdi_dirty_state: bdi $bdi: " |\
+		trace_tab bdi_dirty_state > $trace-$bdi
+	test -s $trace-$bdi || { rm $trace-$bdi; exit; }
+	tail -n300 $trace-$bdi > $trace-$bdi-300
+
+	plot $trace-$bdi -$bdi
+	plot $trace-$bdi-300 -$bdi-300
+	let n=n+1
+	[[ $n -ge 3 ]] && break
+done
+
+plot_all $trace
+
+rm $trace*

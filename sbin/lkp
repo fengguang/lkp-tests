@@ -1,0 +1,66 @@
+#!/usr/bin/ruby
+
+LKP_SRC = ENV["LKP_SRC"] || "/lkp/#{ENV['USER']}/src"
+RESULT_ROOT = ENV["RESULT_ROOT"] || "/tmp"
+
+ENV.update({
+	"LKP_SRC" => LKP_SRC,
+	"LKP_HOME"    => "/lkp/#{ENV['USER']}",
+})
+
+require "#{LKP_SRC}/lib/job.rb"
+
+def usage
+	print <<HERE
+lkp:	an git-like interface for lkp+ system
+
+sub commands:
+	rt|_rt|__rt	list result_root dirs
+	rm		remove result_root dirs
+	irb		run irb with lib/*.rb loaded
+	stat		list stats
+
+	... and more at #{LKP_SRC}/{sbin,bin}/
+
+HERE
+
+	exit
+end
+
+def expand_jobfile
+	ARGV.each_with_index { |argv, index|
+		if argv =~ /.*.yaml$/
+			return if File.exist? argv
+			jobs = Dir[LKP_SRC + "/jobs/**/" + argv]
+			if jobs.size == 0
+				STDERR.puts argv + ": no such jobfile found"
+				exit 1
+			elsif jobs.size > 1
+				STDERR.puts "ambiguous jobfile: " + argv
+				STDERR.puts "\t#{jobs}"
+				exit 1
+			end
+			ARGV[index] = jobs[0]
+		end
+	}
+end
+
+usage unless ARGV[0]
+expand_jobfile unless ARGV[0] =~ /[_]*rt$/
+
+args = ARGV[1..-1] || []
+if File.executable? "#{LKP_SRC}/lkp-exec/#{ARGV[0]}"
+	system "#{LKP_SRC}/lkp-exec/#{ARGV[0]}", *args
+else
+	bins = Dir[LKP_SRC + "/{bin,sbin}/" + ARGV[0]]
+	if bins.size == 0
+		STDERR.puts "#{ARGV[0]}: no such commond for lkp"
+		exit 1
+	elsif bins.size > 1
+		STDERR.puts "ambiguous bin: " + ARGV[0]
+		STDERR.puts "\t#{bins}"
+		exit 1
+	end
+
+	system bins[0], *args
+end

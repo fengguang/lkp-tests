@@ -1,0 +1,23 @@
+#!/bin/bash
+
+cd $BENCHMARK_ROOT/qperf || exit
+
+modprobe sctp 2>/dev/null
+
+tests=(
+tcp_bw
+tcp_lat
+udp_bw
+udp_lat
+sctp_bw
+sctp_lat
+# rds_bw
+# rds_lat
+)
+
+[[ $runtime ]] || runtime=600
+time=$((runtime / ${#tests[@]}))
+
+cmd ./qperf &
+pid=$!
+cmd ./qperf 127.0.0.1 --unify_units --time $time "${tests[@]}" quit || kill $pid

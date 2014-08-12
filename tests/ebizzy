@@ -1,0 +1,13 @@
+#!/bin/bash
+# - duration
+
+cd $BENCHMARK_ROOT/ebizzy || exit
+
+duration=${duration%%s}
+
+for i in $(seq 1 $iterations)
+do
+	echo Iteration: $i
+	cmd ./ebizzy -t $nr_threads \
+		     -S $duration
+done

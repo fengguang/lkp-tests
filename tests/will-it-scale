@@ -1,0 +1,19 @@
+#!/bin/bash
+# - test
+
+cd $BENCHMARK_ROOT/will-it-scale || exit
+
+source $LKP_SRC/lib/sysinfo.sh
+
+setup_params()
+{
+	[[ $runtime ]] || runtime=300
+	WARMUP_ITERATIONS=5 # defined in will-it-scale/main.c
+	iterations=$((3 + nr_node))
+	duration=$(( runtime / iterations / 2 - WARMUP_ITERATIONS ))
+	(( duration < 5 )) && duration=5
+}
+
+setup_threads_to_iterate
+setup_params
+cmd ./runtest.py $test $duration $threads_to_iterate

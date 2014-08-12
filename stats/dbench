@@ -1,0 +1,13 @@
+#!/usr/bin/awk -f
+# Throughput 51.9127 MB/sec  16 clients  16 procs  max_latency=969.602 ms
+
+
+BEGIN { FS="[ =]" }
+
+/Throughput.*MB\/.*/ {
+	printf("throughput-%s: %s \n", $3, $2)
+	printf("clients: %s \n", $5)
+	printf("procs: %s \n", 	$8)
+	printf("max_latency: %s \n", $12)
+}
+

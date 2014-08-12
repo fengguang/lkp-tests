@@ -1,0 +1,25 @@
+#!/bin/bash
+# - events
+# - freq
+# - delay
+# - duration
+
+: ${events:='cpu-cycles'}
+: ${duration:=10}
+: ${delay:=100}
+
+[[ $freq ]] &&
+opt_freq="--freq=$freq"
+opt_events="-e ${events// / -e }"
+
+# perf may consume lots of fd
+ulimit -n 102400
+
+sleep $delay
+
+source $LKP_SRC/lib/wait.sh
+
+perf record -q -ag --realtime=1 -m 256 $opt_freq $opt_events \
+	-o $TMP/perf.data -- \
+	timeout $duration \
+	$WAIT_POST_TEST_CMD

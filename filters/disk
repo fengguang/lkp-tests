@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# check if testbox has enough disks to run the job
+
+[[ $nr_hdd_partitions ]] || nr_hdd_partitions=$(echo $hdd_partitions | wc -w)
+
+if (( disk_nr_hdd > nr_hdd_partitions )); then
+	echo "rm $job_file due to no enough HDD disks"
+	echo "need: $disk_nr_hdd, has: $nr_hdd_partitions"
+	rm $job_file
+	exit
+fi
+
+[[ $nr_ssd_partitions ]] || nr_ssd_partitions=$(echo $ssd_partitions | wc -w)
+
+if (( disk_nr_ssd > nr_ssd_partitions )); then
+	echo "rm $job_file due to no enough SSD disks"
+	echo "need: $disk_nr_ssd, has: $nr_ssd_partitions"
+	rm $job_file
+fi

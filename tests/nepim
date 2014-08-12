@@ -1,0 +1,18 @@
+#!/bin/bash
+# - protocol
+
+[[ $nr_threads ]] && opt_streams="-n $nr_threads"
+[[ $protocol =~ ^udp ]]	&& opt_udp=-u
+[[ $protocol =~ 6$ ]]	&& opt_addr='::1' || opt_addr='127.0.0.1'
+[[ $runtime ]] || runtime=300
+
+cd $BENCHMARK_ROOT/nepim || exit
+
+cmd ./nepim &>/dev/null &
+pid=$!
+
+sleep 1
+
+cmd ./nepim -c $opt_addr -d $opt_udp -a $runtime $opt_streams 2>&1
+
+kill $pid

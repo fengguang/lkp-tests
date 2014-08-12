@@ -1,0 +1,44 @@
+#!/usr/bin/ruby
+
+HOSTNAME = ENV["HOSTNAME"] || `hostname`.chomp
+LKP_USER = ENV['LKP_USER'] || ENV['USER'] || `whoami`.chomp
+LKP_HOME = ENV["LKP_HOME"] || '/lkp/' + LKP_USER
+LKP_SRC = ENV["LKP_SRC"] || LKP_HOME + '/src'
+
+require "#{LKP_SRC}/lib/job.rb"
+require "#{LKP_SRC}/lib/misc.rb"
+require "#{LKP_SRC}/lib/yaml.rb"
+
+jobfile = ARGV[0]
+$key = ARGV[1]
+$val = ARGV[2]
+
+job = load_yaml(jobfile) or exit 1
+$programs = { $key => $key }
+
+def replace_key_val(ah)
+	case ah
+	when Array
+		if $val == nil and ah.include? $key
+			ah.delete $key
+		end
+		ah.each {|v| replace_key_val(v)}
+	when Hash
+		if ah.include? $key
+			if $val == nil
+				ah.delete $key
+			else
+				ah[$key] = $val
+			end
+		end
+		ah.each { |k, v| replace_key_val(v) }
+	end
+end
+
+replace_key_val job
+
+if ENV['LKP_DRYRUN']
+	puts YAML.dump job
+else
+	File.open(jobfile, mode='w').write YAML.dump(job)
+end

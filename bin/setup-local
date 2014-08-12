@@ -1,0 +1,133 @@
+#!/usr/bin/ruby
+
+require 'optparse'
+require 'ostruct'
+require 'fileutils'
+
+HOSTNAME = ENV['HOSTNAME'] || `hostname`.chomp
+ENV["LKP_SRC"] ||= File.dirname File.dirname File.realpath $PROGRAM_NAME
+LKP_SRC = ENV["LKP_SRC"]
+
+require "#{LKP_SRC}/lib/yaml.rb"
+require "#{LKP_SRC}/lib/job.rb"
+
+TMP = LKP_SRC + '/tmp'
+
+if `whoami`.chomp != 'root'
+	puts "Please run as root to install packages"
+	exit 1
+end
+
+$opt_hdd = []
+$opt_ssd = []
+
+opts = OptionParser.new do |opts|
+        opts.banner = 'Usage: setup-local [options] <script>/<jobfile>'
+
+        opts.separator ''
+        opts.separator 'options:'
+
+        opts.on('--hdd partition', 'HDD partition for IO tests') do |hdd|
+		$opt_hdd << hdd
+        end
+
+        opts.on('--ssd partition', 'SSD partition for IO tests') do |ssd|
+		$opt_ssd << ssd
+        end
+
+        opts.on_tail('-h', '--help', 'Show this message') do
+                puts opts
+                exit
+        end
+end
+
+if ARGV == []
+        argv = ['-h']
+else
+        argv = ARGV
+end
+opts.parse!(argv)
+
+scripts = []
+create_programs_hash "{tests,setup,monitors}/**/*"
+ARGV.each { |arg|
+	if arg =~ /.yaml/
+		job = load_yaml(arg)
+		for_each_program(job) { |k, v|
+			scripts << k
+		}
+	elsif File.executable? arg
+		scripts << arg.split('/')[-1]
+	end
+}
+
+if scripts.empty?
+	puts "No valid script or jobfile specified"
+	exit 1
+end
+scripts.uniq!
+
+def create_lkp_dirs
+	FileUtils.mkdir_p TMP
+	FileUtils.mkdir_p '/lkp/paths'
+	FileUtils.mkdir_p '/lkp/benchmarks'
+end
+
+def create_host_config
+	host_config = LKP_SRC + "/hosts/#{HOSTNAME}"
+	if File.exist? host_config
+		puts "reusing " + host_config
+	else
+		mem_kb = File.open('/proc/meminfo').gets.split[1].to_i
+		mem_gb = mem_kb >> 20
+		mem_gb = (mem_gb + 3) & 0xfffffffc
+		File.open(host_config, mode='w') { |file|
+			file.puts "memory: #{mem_gb}G"
+			file.puts "hdd_partitions: #{$opt_hdd.join ' '}"
+			file.puts "ssd_partitions: #{$opt_ssd.join ' '}"
+		}
+	end
+end
+
+def install_debian_packages(script)
+	if File.exist? "#{LKP_SRC}/debian/#{script}"
+		packages = File.read("#{LKP_SRC}/debian/#{script}").split
+		unless system 'apt-get', 'install', *packages
+			puts "Cannot install some packages in #{LKP_SRC}/debian/#{script}"
+			exit 1
+		end
+	end
+end
+
+def install_packages(script, distro)
+	send("install_#{distro}_packages", script)
+	send("install_#{distro}_packages", script + '-dev')
+end
+
+def install_benchmarks(script)
+	if File.file? "#{LKP_SRC}/pack/#{script}"
+		puts "Making #{script}-LKP.deb..."
+		if system "#{LKP_SRC}/sbin/pack #{script} --deb --cleanup"
+			puts "Installing #{script}-LKP.deb..."
+			system "dpkg -i /tmp/#{script}-LKP.deb"
+		else
+			puts "Making #{script}-LKP.deb failed"
+		end
+	end
+end
+
+if File.executable? '/usr/bin/apt-get' and File.exist? '/etc/apt/sources.list'
+	distro = "debian"
+else
+	puts "Not a Debian system, cannot install packages under #{LKP_SRC}/debian"
+	exit 1
+end
+
+create_lkp_dirs
+create_host_config
+install_packages("lkp", distro)
+
+scripts.each { |script|
+	install_packages(script, distro)
+	install_benchmarks(script)
+}

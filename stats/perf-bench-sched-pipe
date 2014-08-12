@@ -1,0 +1,7 @@
+#!/usr/bin/ruby
+
+while line = STDIN.gets
+	if line =~ /(\d+) ops\/sec/
+		puts "ops_per_sec: #{$1}"
+	end
+end

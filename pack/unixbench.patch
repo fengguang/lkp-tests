@@ -1,0 +1,22 @@
+diff --git a/Run.orig b/Run
+index d615935..9b0dc68 100755
+--- a/Run.orig
++++ b/Run
+@@ -750,7 +750,7 @@ sub getSystemInfo {
+     }
+ 
+     # Get graphics hardware info.
+-    $info->{'graphics'} = getCmdOutput("3dinfo | cut -f1 -d\'(\'");
++    #$info->{'graphics'} = getCmdOutput("3dinfo | cut -f1 -d\'(\'");
+ 
+     # Get system run state, load and usage info.
+     $info->{'runlevel'} = getCmdOutput("runlevel | cut -f2 -d\" \"");
+@@ -1764,7 +1764,7 @@ sub main {
+         $tests = $index;
+     }
+ 
+-    preChecks();
++    #preChecks();
+     my $systemInfo = getSystemInfo();
+ 
+     # If the number of copies to run was not set, set it to 1

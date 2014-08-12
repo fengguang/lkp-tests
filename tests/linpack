@@ -1,0 +1,24 @@
+#!/bin/bash
+
+cd $BENCHMARK_ROOT/linpack || exit
+
+memory=${memory/M/*1024*1024}
+memory=${memory/G/*1024*1024*1024}
+memory=${memory/T/*1024*1024*1024*1024}
+
+max_mem=$((32<<30))
+(( memory > max_mem )) && memory=$max_mem
+
+dimension=$(echo "sqrt ($memory * 0.9 / 8)" | bc)
+
+cat > lininput_xeon64 <<EOF
+Sample Intel(R) Optimized LINPACK Benchmark data file (lininput_xeon64)
+Intel(R) Optimized LINPACK Benchmark data
+1		# number of tests
+$dimension	# problem sizes
+$dimension	# leading dimensions
+1		# times to run a test
+4		# alignment values (in KBytes)"
+EOF
+
+cmd ./runme_xeon64

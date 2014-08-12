@@ -1,0 +1,54 @@
+#!/usr/bin/ruby
+
+LKP_USER = ENV['LKP_USER'] || ENV['USER'] || `whoami`.chomp
+LKP_HOME = ENV["LKP_HOME"] || '/lkp/' + LKP_USER
+LKP_SRC = ENV["LKP_SRC"] || LKP_HOME + '/src'
+
+require "#{LKP_SRC}/lib/job.rb"
+
+def run_program(program)
+	printf "run: %s\n", $programs[program]
+	if not ENV["LKP_DRYRUN"]
+		system $job_vars, [ $programs[program], program ]
+	end
+end
+
+def get_yaml_vars(file, job_vars)
+	env_yaml = `#{LKP_SRC}/bin/job-env #{file}`
+	begin
+		env = YAML.load env_yaml
+	rescue Psych::SyntaxError => e
+		STDERR.puts e.message
+		STDERR.puts env_yaml
+	end
+	env.each { |key, val| job_vars[key.gsub(/[^a-zA-Z0-9_]/, '_')] = val.to_s }
+end
+
+def get_job_vars(job, jobfile)
+	testbox = job['testbox'] || ENV["HOSTNAME"] || `hostname`.chomp
+	hostcfg = "#{LKP_SRC}/hosts/#{tbox_group(testbox)}"
+
+	job_vars = { 'testbox' => testbox }
+	get_yaml_vars hostcfg, job_vars
+	get_yaml_vars jobfile, job_vars
+	job_vars['job_file'] = jobfile
+	job_vars['path_params'] = `#{LKP_SRC}/bin/job-path #{jobfile}`.chomp
+
+	YAML.dump job_vars if ENV['LKP_VERBOSE']
+	return job_vars
+end
+
+jobfile = ARGV[0]
+job	= YAML.load_file jobfile
+$job_vars = get_job_vars job, jobfile
+
+if $PROGRAM_NAME =~ /job-vars/
+	$job_vars.each { |k, v| puts "#{k}=#{v.inspect}" }
+	exit
+end
+
+create_programs_hash "{filters}/**/*"
+for_each_program(job) { |program|
+	run_program program
+	break unless File.exist? jobfile
+}

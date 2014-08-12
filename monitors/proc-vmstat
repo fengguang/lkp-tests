@@ -1,0 +1,16 @@
+#!/bin/bash
+# - interval
+
+file=$(basename $0)
+file=${file#proc-}
+
+[ -f /proc/$file ] || exit
+
+source $LKP_SRC/lib/builtin.sh
+
+while :
+do
+	echo time: $(date +%s.%N)
+	cat /proc/$file
+	sleep ${interval:-1}
+done

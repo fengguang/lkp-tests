@@ -1,0 +1,13 @@
+#!/usr/bin/ruby
+
+RESULT_ROOT = ENV['RESULT_ROOT']
+
+exit unless File.exist?("#{RESULT_ROOT}/memmap.json")
+exit unless File.exist?("#{RESULT_ROOT}/boot-meminfo.json")
+
+require 'json'
+
+memmap = JSON.load File.read "#{RESULT_ROOT}/memmap.json"
+meminfo = JSON.load File.read "#{RESULT_ROOT}/boot-meminfo.json"
+
+printf "KB: %d\n", memmap['memmap.System_RAM'][0] - meminfo['boot-meminfo.MemTotal'][0]

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+file=$(basename $0)
+file=${file#numa-}
+
+[ -f /sys/devices/system/node/node1/$file ] || exit 0
+
+source $LKP_SRC/lib/builtin.sh
+
+NODES=`grep ^Node /proc/zoneinfo | awk '{print $2}' | sed -e 's/,//' | sort | uniq`
+while :
+do
+	echo time: $(date +%s.%N)
+	for NODE in $NODES
+	do
+		echo node: $NODE
+		cat /sys/devices/system/node/node$NODE/$file
+	done
+	sleep ${interval:-1}
+done

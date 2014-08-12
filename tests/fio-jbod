@@ -1,0 +1,44 @@
+#!/bin/bash
+
+: ${runtime:=600}
+: ${sub_group_number:=8}
+: ${group_file_number:=8}
+
+jobfile=fio_jbod_${disk_description}_${rw}_${ioengine}_${fallocate}_${blocksize}
+[[ $jobfile =~ '__' ]] && {
+	echo "error composing $jobfile: missing options" >&2
+	exit 1
+}
+
+cat > $jobfile <<EOF
+[global]
+runtime=$runtime
+rw=$rw
+direct=0
+ioengine=$ioengine
+size=8G
+blocksize=$blocksize
+numjobs=1
+fallocate=$fallocate
+overwrite=0
+# create_sparse=1 # not supported in upstream fio
+invalidate=0
+file_service_type=random:36
+
+EOF
+
+for mnt in $mount_points
+do
+	sdx=$(basename $mnt)
+	for ((sgx=0; sgx < $sub_group_number; sgx++))
+	do
+		echo "[job_${sdx}_sub$sgx]"
+		echo "startdelay=0"
+		line="filename="
+		for ((fn=0; fn < $group_file_number; fn++))
+		do
+			line+=$mnt/$fn:
+		done
+		echo $line
+	done >> $jobfile
+done

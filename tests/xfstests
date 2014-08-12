@@ -1,0 +1,55 @@
+#!/bin/bash
+# - test
+
+(( nr_partitions < 2)) && exit 1
+cd $BENCHMARK_ROOT/xfstests || exit
+
+function set_env()
+{
+	umount $mount_points
+
+	note export TEST_DIR=${mount_points%% *}
+	note export TEST_DEV=${partitions%% *}
+	export TEST_DIR=${mount_points%% *}
+	export TEST_DEV=${partitions%% *}
+
+	note export SCRATCH_MNT=/fs/scratch
+	export SCRATCH_MNT=/fs/scratch
+	cmd mkdir $SCRATCH_MNT -p
+
+	if [[ $fs = btrfs && $nr_partitions -ge 4 ]]; then
+		note export SCRATCH_DEV_POOL=\"${partitions#* }\"
+		export SCRATCH_DEV_POOL="${partitions#* }"
+	else
+		note export SCRATCH_DEV=${partitions##* }
+		export SCRATCH_DEV=${partitions##* }
+	fi
+
+	if [[ $fs = xfs && $nr_partitions -ge 3 ]]; then
+		SCRATCH_LOGDEV=${partitions#* }
+		SCRATCH_LOGDEV=${SCRATCH_LOGDEV%% *}
+		note export SCRATCH_LOGDEV=$SCRATCH_LOGDEV
+		export SCRATCH_LOGDEV
+	fi
+}
+
+function run_test()
+{
+	if [[ $test =~ [a-z]-[0-9][0-9][0-9]$ ]]; then
+		all_tests=${test/-/\/}
+	elif [[ $test =~ '-' ]]; then
+		all_tests=$(sed "s:^:${test%-*}/:" tests/$test | grep -v -F -f tests/broken)
+	else
+		all_tests=$(cd tests && ls $test/[0-9][0-9][0-9] | grep -v -F -f broken)
+	fi
+
+	cmd ./check $all_tests
+}
+
+export LC_ALL=C
+export LANG=C
+set_env
+run_test
+
+sudo -u lkp cp -d -R --preserve=timestamps $BENCHMARK_ROOT/xfstests/results $RESULT_ROOT/
+ls -l $RESULT_ROOT/results

@@ -1,0 +1,84 @@
+#!/usr/bin/ruby
+
+LKP_USER = ENV['LKP_USER'] || ENV['USER'] || `whoami`.chomp
+LKP_HOME = ENV['LKP_HOME'] || "/lkp/#{LKP_USER}"
+LKP_SRC = ENV["LKP_SRC"] || "/lkp/#{LKP_USER}/src"
+
+require 'yaml'
+require 'optparse'
+require "#{LKP_SRC}/lib/statistics.rb"
+require "#{LKP_SRC}/lib/stats.rb"
+require "#{LKP_SRC}/lib/yaml.rb"
+require "#{LKP_SRC}/lib/plot.rb"
+
+$options = {}
+
+opts = OptionParser.new do |opts|
+	opts.banner = "Usage: mmplot matrix1.json matrix2.json [stat_fields...] [OPTION...]"
+	opts.separator ""
+	opts.separator "Example:"
+	opts.separator ""
+	opts.separator 'mmplot	/result/fat/dd-write/1HDD-JBOD-cfq-btrfs-100dd/x86_64-rhel/v3.10/matrix.json	\
+	/result/fat/dd-write/1HDD-JBOD-cfq-btrfs-100dd/x86_64-rhel/matrix.json		\
+	vmstat.system.in vmstat.cpu.sy perf-stat.node-stores interrupts.CPU0.LOC'
+
+	opts.separator ""
+	opts.separator "options:"
+
+	opts.on("-d N", "--distance N", "threshold of changes") { |n|
+		$options['distance'] = n.to_i
+	}
+
+	opts.on("-p", "--perf", "show performance changes only") {
+		$options['perf'] = true
+	}
+
+	opts.on("-r N", "--resize N", "resize first matrix") { |n|
+		$options['resize'] = n.to_i
+	}
+
+	opts.on("-v N", "--variance N", "show variance changes larger than N times") { |n|
+		$options['variance'] = n.to_i
+	}
+
+	opts.on("-o DIR", "--output DIR", "output dir") do |dir|
+		Dir.mkdir dir unless File.directory? dir
+		$opt_output_path = dir
+	end
+
+	opts.on_tail("-h", "--help", "show help message") do
+		puts opts
+		exit
+	end
+end
+
+opts.parse!(ARGV)
+
+if ARGV.size  < 1
+	puts opts
+	exit
+end
+
+path1 = ARGV[0]
+ARGV.shift
+
+if ARGV[0] and File.exist? ARGV[0]
+	path2 = ARGV[0]
+	ARGV.shift
+else
+	path2 = nil
+end
+
+matrix1, matrix2 = load_matrices_to_compare path1, path2
+exit if matrix1 == nil
+exit if matrix2 == nil
+
+if ARGV[0]
+	changed_fields = ARGV
+else
+	changed_stats = get_changed_stats path1, path2, $options
+	exit unless changed_stats and changed_stats.size > 0
+	changed_fields = changed_stats.keys
+end
+
+mmplot(matrix1, matrix2, changed_fields)

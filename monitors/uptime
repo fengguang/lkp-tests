@@ -1,0 +1,15 @@
+#!/bin/bash
+
+source $LKP_SRC/lib/wait.sh
+
+snapshot()
+{
+	echo time: $(date +%s.%N)
+	read boot idle < /proc/uptime
+	echo boot: $boot
+	echo idle: $idle
+}
+
+wait_post_test
+
+snapshot

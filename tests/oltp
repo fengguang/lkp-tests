@@ -1,0 +1,49 @@
+#!/bin/bash
+# - table_size
+
+[[ $runtime ]] || runtime=600
+[[ $table_size ]] && arg_table_size="--oltp-table-size=$table_size"
+
+args=(
+	--mysql-user=root
+	--mysql-db=mysql
+	--oltp-read-only=on
+	--max-requests=0
+	--num-threads=$nr_threads
+	--max-time=$runtime
+	$arg_table_size
+)
+
+setup_mysql()
+{
+	# datadir in rootfs too small to meet mysql requriments
+	sed -i "s /var/lib/mysql $TMP/mysql g" /etc/mysql/my.cnf
+
+	# /etc/init.d/mysql: ERROR: The partition with /lkp/lkp/src/tmp/mysql is too full! ... failed!
+	mkdir -p $TMP/mysql
+	mount -t tmpfs mysql $TMP/mysql
+
+	cp -a     /var/lib/mysql $TMP/
+
+	/etc/init.d/mysql start
+}
+
+stop_mysql()
+{
+	/etc/init.d/mysql stop
+}
+
+prepare()
+{
+	cmd sysbench --test=oltp ${args[@]} prepare
+}
+
+run()
+{
+	cmd sysbench --test=oltp ${args[@]} run
+}
+
+setup_mysql
+prepare
+run
+stop_mysql

@@ -1,0 +1,38 @@
+testcase: netperf
+
+runtime: 300s
+nr_threads:
+- 200%
+- 25%
+
+perf-profile:
+    freq: 800
+
+netperf:
+  test:
+  - TCP_SENDFILE
+  - TCP_RR
+  - TCP_CRR
+  # netperf: send_omni: send_data failed: Connection refused
+  #  - UDP_STREAM
+  - UDP_RR
+  - SCTP_RR
+  # send_sctp_rr_1toMany: data send error: Invalid argument
+  #  - SCTP_RR_MANY
+  - SCTP_STREAM
+
+---
+runtime: 900s
+
+netperf:
+  test:
+  - TCP_STREAM
+  - TCP_MAERTS
+
+---
+runtime: 300s
+
+netperf:
+  send_size: 10K
+  test:
+  - SCTP_STREAM_MANY

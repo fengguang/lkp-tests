@@ -1,0 +1,17 @@
+#!/bin/bash
+#
+
+run_tbench()
+{
+	note "tbench_srv &"
+	tbench_srv &
+	pid=$!
+	sleep 1
+
+	cmd tbench $nr_threads 127.0.0.1
+
+	note "killall tbench_srv"
+	kill $pid
+}
+
+run_tbench

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+nr_threads=${1%%[a-z]*}
+
+if [[ "$nr_threads" =~ %$ ]]; then
+	nr_threads=${nr_threads%%%}
+	nr_threads=$(echo "$nr_threads * $nr_cpu / 100" | bc)
+fi
+
+cat >> $TMP/env.yaml <<EOF
+nr_threads: $nr_threads
+EOF

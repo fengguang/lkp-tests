@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# These events are based on https://lwn.net/Articles/569674/
+events=$($LKP_SRC/bin/perf-events 'power/energy-*')
+[[ "$events" ]] || exit
+
+opt_events="-e $(echo $events | sed 's/ / -e /g')"
+
+take_snapshot()
+{
+	perf stat -a -x' ' $opt_events 2>&1 -- $1
+}
+
+source $LKP_SRC/lib/wait.sh
+
+echo time: $(date +%s.%N)
+take_snapshot "$WAIT_POST_TEST_CMD"
+echo time: $(date +%s.%N)

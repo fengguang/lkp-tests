@@ -1,0 +1,18 @@
+#!/bin/bash
+# - test
+# - send_size
+
+export PATH=$BENCHMARK_ROOT/netperf/bin:$PATH
+
+# start netserver
+cmd netserver
+
+[[ $test =~ 'SCTP' ]] && modprobe sctp 2>/dev/null
+sleep 1
+
+[[ "$send_size" ]] && test_options="-- -m $send_size"
+
+for i in $(seq $nr_threads)
+do
+	cmd netperf -t $test -c -C -l $runtime $test_options &
+done

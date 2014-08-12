@@ -1,0 +1,39 @@
+#!/bin/bash
+
+set -o pipefail
+
+program=$1
+program_dir=$(dirname $0)
+log=$RESULT_ROOT/$program
+
+[ -f $log.gz ] && zcat $log.gz > $log
+
+[[ -s $log ]] ||
+[[ $program = 'tcrypt' ]] ||
+[[ $program = 'kernel-size' ]] ||
+[[ $program = 'perf-profile' ]] ||
+[[ $program = 'dmesg' && -s $RESULT_ROOT/.dmesg ]] || {
+	rm -f $log $log.gz
+	exit 0
+}
+
+tmpfile=$(mktemp --tmpdir=/dev/shm lkp-stats.XXXXXXXX)
+if [[ -f $log ]]; then
+	$program_dir/$program $log < $log > $tmpfile || { echo "$program_dir/$program $log < $log  exit code $?, check $tmpfile" >&2; exit 1; }
+else
+	$program_dir/$program < /dev/null > $tmpfile || { echo "$program_dir/$program < /dev/null  exit code $?, check $tmpfile" >&2; exit 1; }
+fi
+
+[[ $testbox =~ ^vm- ]] ||
+[[ $program = 'dmesg' ]] ||
+[[ -s $tmpfile ]] ||
+{ [[ $program = 'turbostat' ]] && grep -q -e 'No invariant TSC' $log; } ||
+grep -q "^$program\." $LKP_SRC/etc/failure ||
+echo "WARN: empty stats for $log" >&2
+
+$LKP_SRC/sbin/dump-stat $program	< $tmpfile || { echo "$LKP_SRC/sbin/dump-stat $program  exit code $?, check $tmpfile" >&2; exit 1; }
+rm $tmpfile
+
+[ -f $log.gz ] && rm $log
+
+exit 0

@@ -1,0 +1,27 @@
+#!/bin/bash
+
+runtime=$1
+
+case $runtime in
+	*s)
+		unit=1
+		;;
+	*m)
+		unit=60
+		;;
+	*h)
+		unit=3600
+		;;
+	*d)
+		unit=$((24*3600))
+		;;
+	*w)
+		unit=$((7*34*3600))
+		;;
+esac
+
+(( unit )) && (( runtime = ${runtime%?} * unit ))
+
+cat >> $TMP/env.yaml <<EOF
+runtime: $runtime
+EOF

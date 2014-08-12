@@ -1,0 +1,7 @@
+#!/bin/bash
+
+source $LKP_SRC/lib/wait.sh
+
+wait_post_test
+
+grep . /sys/devices/system/cpu/cpu*/cpuidle/*/*

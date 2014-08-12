@@ -1,0 +1,48 @@
+#!/bin/bash
+# - nr_ssd
+# - nr_hdd
+
+# the hosts config may either
+# - hard code    xxx_partitions; leave nr_xxx_partitions empty
+# - hard code nr_xxx_partitions; make     xxx_partitions a shell glob to be expanded in test box
+
+max_ssd=$(echo $ssd_partitions | wc -w)
+max_hdd=$(echo $hdd_partitions | wc -w)
+
+check_nr_partitions()
+{
+	[[ $nr_ssd_partitions && $nr_ssd_partitions != $max_ssd ]] && {
+		echo "disk number $nr_ssd_partitions mismatch with $max_ssd real disks: $ssd_partitions" >&2
+		exit 1
+	}
+
+	[[ $nr_hdd_partitions && $nr_hdd_partitions != $max_hdd ]] && {
+		echo "disk number $nr_hdd_partitions mismatch with $max_hdd real disks: $hdd_partitions" >&2
+		exit 1
+	}
+}
+check_nr_partitions
+
+((nr_ssd > max_ssd)) && nr_ssd=$max_ssd
+((nr_hdd > max_hdd)) && nr_hdd=$max_hdd
+
+if (( nr_hdd )); then
+	nr_partitions=$nr_hdd
+	partitions="$hdd_partitions"
+	disk_description=${nr_hdd}hdd
+else
+	nr_partitions=$nr_ssd
+	partitions="$ssd_partitions"
+	disk_description=${nr_ssd}ssd
+fi
+
+partitions=$(echo $partitions | cut -f1-$nr_partitions -d' ')
+
+cat >> $TMP/env.yaml <<EOF
+
+# setup/disk
+nr_partitions: $nr_partitions
+partitions: $partitions
+disk_description: $disk_description
+disks: $(echo $partitions | grep -o '[/a-z]\+' | sort -u | tr '\n' ' ')
+EOF

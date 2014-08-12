@@ -1,0 +1,45 @@
+#!/usr/bin/awk -f
+
+BEGIN {
+	init_key = 0
+}
+
+/^time:/ {
+	print $0
+	next
+}
+
+/:$/ {
+	if ($NF == "stats:") {
+		NF--
+		prefix = $NF
+	} else
+		prefix = substr($NF, 1, length($NF)-1)
+	for (i = NF-1; i >= 1; i--)
+		prefix = $i"."prefix
+	next
+}
+
+function resolve_value(val) {
+	if (match(val, /%$/) > 0)
+		return ".percent: "substr(val, 1, length(val)-1)
+	else
+		return ": "val
+}
+
+NF > 0 {
+	if (init_key == 0) {
+		init_key = 1
+		nr_key = NF
+		for (i = 1; i <= NF; i++)
+			key_list[i] = $i
+	} else if (nr_key != 0) {
+		init_key = 0
+		is_dbl = NF/nr_key-1
+		for (i = 1; i <= NF; i++) {
+			key_idx = int((i+is_dbl)/(1+is_dbl))
+			print prefix"."key_list[key_idx]""resolve_value($i)
+		}
+	}
+}
+

@@ -1,0 +1,11 @@
+model: Sandy bridge
+memory: 6G
+hdd_partitions:
+  /dev/disk/by-id/ata-ST3750528AS_6VP2W0PA-part5
+  /dev/disk/by-id/ata-ST3750528AS_6VP2W0PA-part6
+  /dev/disk/by-id/ata-ST3750528AS_6VP2W0PA-part7
+  /dev/disk/by-id/ata-ST3750528AS_6VP2W0PA-part8
+  /dev/disk/by-id/ata-ST3750528AS_6VP2W0PA-part9
+  /dev/disk/by-id/ata-ST3750528AS_6VP2W0PA-part10
+swap_partitions:
+rootfs_partition: /dev/disk/by-id/ata-ST3750528AS_6VP2W0PA-part2

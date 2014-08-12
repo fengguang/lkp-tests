@@ -1,0 +1,18 @@
+testcase: xfstests
+
+default_monitors:
+
+disk: 4HDD
+
+fs:
+- xfs
+
+xfstests:
+  test:
+  - xfs-042
+  - xfs-167
+  - xfs-227
+  - xfs-slow
+  - xfs-mid1
+  - xfs-mid2
+  - xfs-quick

@@ -1,0 +1,6 @@
+testcase: perf-bench-numa-mem
+
+nr_threads: 20t
+
+perf-bench-numa-mem:
+  mem_proc: 1G

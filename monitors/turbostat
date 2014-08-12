@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# skip unreliable machines
+[[ $HOSTNAME =~ (lkp-a0[1-9]|snb-drag) ]] && exit 0
+
+if [ ! -c /dev/cpu/0/msr ]; then
+	modprobe msr
+
+	if [ ! -c /dev/cpu/0/msr ]; then
+		echo "/dev/cpu/0/msr not available"
+		exit
+	fi
+fi
+
+source $LKP_SRC/lib/wait.sh
+
+exec turbostat -v $WAIT_POST_TEST_CMD 2>&1

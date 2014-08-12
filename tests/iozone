@@ -1,0 +1,11 @@
+#!/bin/bash
+
+for mnt in $mount_points
+do
+	cmd iozone -a -f $mnt/iozonetest > $TMP/iozone-$i &
+	((i++))
+done
+
+wait
+
+cat $TMP/iozone-*

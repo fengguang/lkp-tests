@@ -1,0 +1,38 @@
+diff --git a/runtest.py.orig b/runtest.py
+index b4c2730..8d4a2cf 100755
+--- a/runtest.py.orig
++++ b/runtest.py
+@@ -48,12 +48,12 @@ class linux_stat():
+ 		return 1.0 * idle / (idle + busy)
+ 
+ 
+-duration=5
+-
+-if len(sys.argv) != 2:
+-	print >> sys.stderr, 'Usage: runtest.py <testcase>'
++if len(sys.argv) < 4:
++	print >> sys.stderr, 'Usage: runtest.py <testcase> <duration> <threads...>'
+ 	sys.exit(1)
+ cmd = sys.argv[1]
++duration = int(sys.argv[2])
++threads  = sys.argv[3:]
+ 
+ nr_cores=0
+ r = re.compile('^processor')
+@@ -87,14 +87,8 @@ if arch == 'ppc64':
+ print 'tasks,processes,processes_idle,threads,threads_idle,linear'
+ print '0,0,100,0,100,0'
+ 
+-step = 1
+-# if step=5, this is: [5, 10, 15, ... nr_cores]
+-data_points = range(step, nr_cores+step, step)
+-# this makes it [ 1, 5, 10, ... ]
+-if step > 1:
+-	data_points.insert(0, 1)
+-
+-for i in data_points:
++for i in threads:
++	i = int(i)
+ 	c = './%s_processes -t %d -s %d' % (cmd, i, duration)
+ 	before = linux_stat()
+ 	pipe = subprocess.Popen(setarch + ' ' + c, shell=True, stdout=subprocess.PIPE).stdout

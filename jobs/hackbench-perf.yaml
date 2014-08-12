@@ -1,0 +1,18 @@
+testcase: hackbench
+
+monitors:
+  perf-profile:
+    freq: 800
+    events:
+    - cycles
+    - LLC-loads
+
+nr_threads: 1600%
+
+hackbench:
+  mode:
+  - process
+  - threads
+  ipc:
+  - pipe
+  - socket

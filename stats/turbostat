@@ -1,0 +1,12 @@
+#!/usr/bin/ruby
+
+while line = STDIN.gets
+	if line =~ /^pk|^cor|^CPU.*%c0/
+		titles = line.split
+		values = STDIN.gets.split
+		titles[titles.size - values.size..-1].each_with_index { |title, i|
+			puts title + ': ' + values[i]
+		}
+		exit 0
+	end
+end

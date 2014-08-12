@@ -1,0 +1,10 @@
+testcase: oltp
+
+runtime: 600s
+nr_threads: 100%
+
+perf-profile:
+  delay: 500
+
+oltp:
+  table_size: 1000000

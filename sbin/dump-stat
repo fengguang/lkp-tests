@@ -1,0 +1,89 @@
+#!/usr/bin/ruby
+
+LKP_USER = ENV['LKP_USER'] || ENV['USER'] || `whoami`.chomp
+LKP_SRC = ENV["LKP_SRC"] || "/lkp/#{LKP_USER}/src"
+RESULT_ROOT = ENV['RESULT_ROOT']
+
+require "#{LKP_SRC}/lib/statistics.rb"
+require "#{LKP_SRC}/lib/bounds.rb"
+require "#{LKP_SRC}/lib/yaml.rb"
+require "#{LKP_SRC}/lib/job.rb"
+
+$monitor = ARGV[0]
+
+$result = {}
+$invalid_lines = []
+$line_no = {}
+while line = STDIN.gets
+	next if line[0] == '#'
+	k, v = line.split(': ')
+	next if v == nil
+
+	full_key = $monitor + '.' + k
+	$line_no[full_key] ||= 0
+	if k =~ /[ \t]/
+		$invalid_lines.push $line_no[full_key]
+		STDERR.puts "whitespace in stats name: #{k}"
+	end
+	if v.chomp!.strip! =~ /[^0-9a-fx.-]/
+		$invalid_lines.push $line_no[full_key]
+		STDERR.puts "invalid stats value: #{v}"
+	end
+
+	k = full_key
+	v = v.index('.') ? v.to_f : v.to_i
+	if not is_valid_stats_range k, v
+		$invalid_lines.push $line_no[full_key]
+		puts "outside valid range: #{v} in #{full_key} #{RESULT_ROOT}"
+	end
+
+	$result[k] ||= []
+	$result[k].push v
+
+	$line_no[full_key] += 1
+end
+
+exit if $result.empty?
+
+max_cols = 0
+min_cols = Float::INFINITY
+min_cols_stat = ''
+zero_stats = []
+$result.each { |k, v|
+	max_cols = v.size if max_cols < v.size
+	if min_cols > v.size
+		min_cols = v.size
+		min_cols_stat = k
+	end
+	next if v[0] != 0
+	next if v[-1] != 0
+	next if v.sum != 0
+	zero_stats << k
+}
+zero_stats.each { |k| $result.delete k }
+
+if $monitor != 'ftrace'
+	# delete invalid number in reverse order
+	$invalid_lines.reverse.each { |line_no|
+		$result.each { |k, v|
+			v.delete_at line_no
+		}
+	}
+end
+
+if min_cols < max_cols and $monitor != 'ftrace'
+	if min_cols == max_cols - 1
+		$result.each { |k, v| v.pop if v.size == max_cols }
+		puts "Last record seems incomplete. Truncated #{RESULT_ROOT}/#{$monitor}.json"
+	elsif $monitor =~ /slabinfo|diskstats/ and $invalid_lines.empty? and max_cols - min_cols < 5
+		puts "Leading #{max_cols - min_cols} records incomplete. Fixup #{RESULT_ROOT}/#{$monitor}.json"
+		$result.each { |k, v| v.shift(v.size - min_cols) if v.size > min_cols }
+	else
+		STDERR.puts "Not a matrix: #{min_cols_stat}: #{min_cols} != #{max_cols}: #{RESULT_ROOT}/#{$monitor}.json"
+	end
+end
+
+exit if $result.empty?
+exit if $result.values[0].size == 0
+exit if $result.values[-1].size == 0
+save_json($result, "#{RESULT_ROOT}/#{$monitor}.json", compress=($result.size * min_cols > 1000))

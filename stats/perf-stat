@@ -1,0 +1,7 @@
+#!/usr/bin/ruby
+
+STDIN.each_line do |line|
+	value, key = line.split
+	next unless value =~ /^\d+$/
+	puts "#{key}: #{value}"
+end

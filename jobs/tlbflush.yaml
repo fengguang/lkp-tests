@@ -1,0 +1,7 @@
+testcase: tlbflush
+
+nr_threads: 200%
+iterations: 32x
+
+tlbflush:
+  entries: 512

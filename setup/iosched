@@ -1,0 +1,7 @@
+#!/bin/bash
+# - scheduler
+
+for i in /sys/block/*/queue/scheduler
+do
+	echo $scheduler > $i
+done

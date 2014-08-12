@@ -1,0 +1,32 @@
+#!/usr/bin/ruby
+
+$throughput=0
+$line=0
+$index=0
+while line = STDIN.gets
+	case line.chomp!
+	when /^bytes.*secs.*10\^6bits/
+		unit='Mbps'
+	when /^bytes.*secs.\s+per sec/
+		unit='tps'
+	when /^Send\s+Recv\s+/
+		lines=line.split()
+		lines.each_with_index { |word, index|
+			$index = index if word == 'Rate'
+		}
+	when /^Size\s+Size\s+/
+		lines=line.split()
+		lines.each_with_index { |word, index|
+			$index = index if word == 'Throughput'
+		}
+	when /\d+\s+\d+\s+\d+\s+\d.*$/
+		data = line.split()
+		$throughput += data[$index].to_f
+		$line += 1
+	end
+end
+
+exit if $line == 0
+
+avg_throughput = $throughput/$line;
+puts 'Throughput_' + unit + ': ' + "#{avg_throughput}"

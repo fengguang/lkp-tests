@@ -1,0 +1,12 @@
+dd.startup_time
+dd.kill_time
+fileio.request_latency_max_ms
+fileio.request_latency_95%_ms
+oltp.request_latency_max_ms
+oltp.request_latency_95%_ms
+oltp.request_latency_min_ms
+tbench.max_latency
+dbench.max_latency
+iostat\..*\.(await|r_await|w_await|svctm|avgqu-sz)\.max
+ebizzy.throughput.per_thread.stddev_percent
+vm-scalability.stddev

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+monitor=$1
+monitor_dir=$(dirname $0)
+shift
+
+$monitor_dir/$monitor "$@" &
+
+echo $! >> $TMP/pid-monitors

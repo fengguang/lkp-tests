@@ -1,0 +1,12 @@
+#!/usr/bin/ruby
+
+LKP_USER = ENV['LKP_USER'] || ENV['USER'] || `whoami`.chomp
+LKP_HOME = ENV["LKP_HOME"] || '/lkp/' + LKP_USER
+LKP_SRC = ENV["LKP_SRC"] || LKP_HOME + '/src'
+
+require "#{LKP_SRC}/lib/job.rb"
+
+job = Job.new
+job.load(ARGV[0]) or exit
+
+puts job['testcase'] + '/' + job.path_params

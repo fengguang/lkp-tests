@@ -1,0 +1,12 @@
+#!/bin/bash
+
+WEB_URL="https://byte-unixbench.googlecode.com/files/UnixBench5.1.3.tgz"
+source_dir="UnixBench"
+
+install()
+{
+	cp -af Run $BM_ROOT
+	cp -avf pgms $BM_ROOT
+	cp -avf testdir $BM_ROOT
+	mkdir $BM_ROOT/results
+}

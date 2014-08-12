@@ -1,0 +1,13 @@
+testcase: nepim
+
+runtime: 300s
+nr_threads:
+- 100%
+- 25%
+
+nepim:
+  protocol:
+  - tcp
+  - tcp6
+  - udp
+  - udp6

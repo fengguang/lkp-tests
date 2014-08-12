@@ -1,0 +1,14 @@
+testcase: kbuild
+
+perf-profile:
+   delay: 50
+
+nr_threads:
+- 200%
+- 50%
+
+kbuild:
+
+---
+disk: 1HDD
+fs: ext4

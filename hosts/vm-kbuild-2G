@@ -1,0 +1,7 @@
+model: qemu-system-x86_64 -enable-kvm -cpu Haswell,+smep,+smap
+nr_vm: 16
+nr_cpu: 2
+memory: 2G
+rootfs: clearlinux-x86_64.cgz
+hdd_partitions: /dev/vdb /dev/vdc /dev/vdd /dev/vde
+swap_partitions: /dev/vda

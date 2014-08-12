@@ -1,0 +1,27 @@
+#!/bin/bash
+# - runtime
+# - rw
+# - bs
+# - ioengine
+# - fallocate
+# - sub_group_number
+# - group_file_number
+
+echo runtime=$runtime
+echo rw=$rw
+echo bs=$bs
+echo ioengine=$ioengine
+echo fallocate=$fallocate
+
+: ${bs:=4k}
+: ${fallocate:=posix}
+
+export blocksize=$bs
+
+if [[ ! $jobfile ]]; then
+	source $(dirname $0)/$testcase
+fi
+
+cp $jobfile $RESULT_ROOT
+
+cmd fio $jobfile

@@ -1,0 +1,14 @@
+testcase: hackbench
+
+nr_threads: 800%
+
+perf-profile:
+    freq: 800
+
+hackbench:
+  mode:
+  - process
+  - threads
+  ipc:
+  - pipe
+  - socket

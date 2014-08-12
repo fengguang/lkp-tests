@@ -1,0 +1,10 @@
+#!/bin/bash
+# - test
+
+cd $BENCHMARK_ROOT/ltp || exit
+
+cmd ./runltp -f $test
+
+chmod g+w	$BENCHMARK_ROOT/ltp/{results,output}/*
+chown lkp.lkp	$BENCHMARK_ROOT/ltp/{results,output}/*
+cp -a		$BENCHMARK_ROOT/ltp/{results,output}/* $RESULT_ROOT/

@@ -1,0 +1,96 @@
+#!/bin/bash
+# - fs
+# - mkfs
+# - mount
+
+[[ $fs ]] || fs=ext4
+
+def_mount=
+def_mkfs=
+fs_options() {
+	case $fs in
+	xfs)
+		def_mount="-o nobarrier,inode64"
+		[[ $raid_level =~ raid ]] && (( $nr_partitions > 1 )) && {
+			def_mount+=",logbsize=262144"
+			def_mkfs="-f -d agcount=$nr_partitions"
+		}
+		;;
+	ext*)
+		ensure_mkfs='-q'
+		;;
+	btrfs)
+		;;
+	nfsv3)
+		def_mount="-o vers=3"
+		fs="nfs"
+		;;
+	nfsv4)
+		def_mount="-o vers=4"
+		fs="nfs"
+		;;
+	esac
+}
+
+is_btrfs_raid_levels() {
+	[[ $fs = 'btrfs' && $raid_level =~ ^braid(0|1|10)$ ]]
+}
+
+destroy_devices() {
+	[[ $fs =~ "nfs" ]] && return
+
+	for dev in $partitions
+	do
+		dd if=/dev/zero of=$dev bs=4k count=100 status=noxfer \
+		2> >(grep -v -e "records in$" -e "records out$" >&2)
+	done
+}
+
+make_fs() {
+	[[ $fs =~ "nfs" ]] && return
+
+	is_btrfs_raid_levels && {
+		cmd mkfs.btrfs --data ${raid_level#b} $mkfs $ensure_mkfs $partitions || exit
+		return
+	}
+
+	local pids=
+	for dev in $bdevs
+	do
+		cmd mkfs -t $fs ${mkfs:-$def_mkfs} $ensure_mkfs $dev &
+		pids+="$! "
+	done
+
+	local pid
+	for pid in $pids; do
+		wait $pid || exit
+	done
+}
+
+mount_fs() {
+	for dev in $bdevs
+	do
+		mnt=/fs/$(basename $dev)
+		mkdir -p $mnt
+		cmd mount -t $fs ${mount:-$def_mount} $dev $mnt || exit
+		mount_points+="$mnt "
+	done
+}
+
+if is_btrfs_raid_levels; then
+	bdevs=$(echo $partitions | cut -f1 -d' ')
+else
+	bdevs="$partitions"
+fi
+
+fs_options
+destroy_devices
+make_fs
+mount_fs
+
+cat >> $TMP/env.yaml <<EOF
+
+# setup/fs
+fs: $fs
+mount_points: $mount_points
+EOF

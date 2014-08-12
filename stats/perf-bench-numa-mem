@@ -1,0 +1,20 @@
+#!/usr/bin/ruby
+
+keys = { 'secs_latency' => 'secs latency to NUMA-converge',
+	 'secs_slowest' => 'secs slowest \(max\) thread-runtime',
+	 'secs_fastest' => 'secs fastest \(min\) thread-runtime',
+	 'secs_avg' => 'secs average thread-runtime',
+	 'max_avg_diff' => '% difference between max/avg runtime',
+	 'GB_per_thread' => 'GB data processed, per thread',
+	 'GB_total' =>  'GB data processed, total',
+	 'nsecs_byte_thread' => 'nsecs/byte/thread runtime',
+	 'GB_sec_thread' => 'GB/sec/thread speed',
+	 'GB_sec_total' => 'GB/sec total speed' }
+
+while line = STDIN.gets
+	keys.each { |k, v|
+		if line =~ /([\d.]+) #{v}/
+			puts "#{k}: #{$1}"
+		end
+	}
+end

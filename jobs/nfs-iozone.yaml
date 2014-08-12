@@ -1,0 +1,14 @@
+testcase: nfsiozone
+
+disk: 1HDD
+
+fs:
+- nfsv3
+- nfsv4
+iosched:
+- cfq
+
+monitors:
+  nfsstat:
+
+iozone:

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Examples:
+#	perf-events hardware
+#	perf-events cache
+#	perf-events software
+#	perf-events tracepoint
+#	perf-events xfs:*
+#	perf-events hardware xfs:*
+#	perf-events # list all events
+
+all_events=$(perf list "$@" | awk '/event]$/ { print $1 }')
+[[ $all_events ]] || exit 0
+version=$(perf --version | awk '{print $3}' | awk -F'.' '{print $1 * 100 + $2}')
+[ $version -ge 312 ] && echo $all_events && exit 0
+opt_all_events="-e $(echo $all_events | sed 's/ / -e /g')"
+supported_events=$(perf stat $opt_all_events --log-fd 1 true |
+		awk '/ seconds time elapsed/ { exit } /^[ ]*<not counted> \w+ */ { print $3 } /^[ ]*[0-9,.]+ \w+ */ { print $2 }' )
+echo "$supported_events"

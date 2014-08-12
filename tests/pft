@@ -1,0 +1,23 @@
+#!/bin/bash
+
+cd $BENCHMARK_ROOT/pft || exit
+
+source $LKP_SRC/lib/sysinfo.sh
+
+memory=${memory/M/*1024*1024}
+memory=${memory/G/*1024*1024*1024}
+memory=${memory/T/*1024*1024*1024*1024}
+
+pft_mapping_size=$((memory / 5))
+
+setup_threads_to_iterate
+
+for clients in $threads_to_iterate
+do
+	echo Clients: $clients
+	for iteration in $(seq 1 $iterations)
+	do
+		echo Iteration: $iteration
+		cmd ./pft -m $pft_mapping_size -n $clients 2> >(grep -v -e "^\!\!\! test" -e "    user time" >&2)
+	done
+done

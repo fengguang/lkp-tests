@@ -1,0 +1,74 @@
+#!/bin/bash
+# - test
+# - load
+#
+
+[[ $test ]] || exit
+[[ $load ]] || exit
+
+aim7_setup()
+{
+	# raise semaphore limit
+	echo "500 32000 128 512" > /proc/sys/kernel/sem
+
+	# setup workfile
+	if [ -f "workfiles/workfile.$test" ]; then
+		cp workfiles/workfile.$test workfile
+	else
+		# create workfile onlive
+		cat > workfile <<EOF
+FILESIZE: 1M
+POOLSIZE: 10M
+10 $test
+EOF
+	fi
+
+	# setup config file
+	if [[ "$mount_points" ]]; then
+		echo "$mount_points" > config
+	else
+		mkdir -p /fs/shm
+		umount /fs/shm &> /dev/null
+		mount -t tmpfs /dev/shm /fs/shm
+		echo "/fs/shm" > config
+	fi
+}
+
+run_aim()
+{
+	export PATH=`pwd`:$PATH
+
+	aim7_setup
+
+	(
+		echo $HOSTNAME
+		echo $test
+
+		echo 1
+		echo $load
+		echo 2
+		echo $load
+		echo 1
+	) | ./multitask -t &
+
+	# Run multitask in background and wait for it to avoid the below error
+	# triggered by the kill(0, SIGINT) call in multitask.c
+	#
+	# root /lkp/wfg# src/bin/run-local -o rt aim.yaml
+	# ...
+	# nanosleep({10, 0}, 0x7fff559ced20)      = 0
+	# kill(0, SIGINT <unfinished ...>
+	# aim7 pid 55756 exit 130
+	# /lkp/wfg/src/bin/run-job: Interrupt
+	#
+	# AIM Multiuser Benchmark - Suite VII Testing over....
+	#
+	wait
+}
+
+cd $BENCHMARK_ROOT/aim7 || {
+	echo "ERROR: aim7 benchmark is not installed yet!"
+	exit 1
+}
+
+run_aim

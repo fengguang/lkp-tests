@@ -1,0 +1,53 @@
+#!/bin/bash
+# - test
+# - fs
+
+cd $BENCHMARK_ROOT/vm-scalability || exit
+
+[[ $runtime ]] || runtime=300
+
+echo 1		> /proc/sys/vm/overcommit_memory
+echo $((1<<30)) > /proc/sys/vm/max_map_count
+echo $((1<<20)) > /proc/sys/kernel/threads-max
+
+export CMD=cmd
+source ./hw_vars
+mount_tmpfs
+create_sparse_root
+
+set_repeat_count()
+{
+	(( size = size * nr_node ))
+	if [[ $test =~ 'shm' ]]; then
+		if [[ $test =~ 'lru' ]]; then
+			(( unit_size = shm_size / 2 ))
+		else
+			(( unit_size = shm_size * nr_cpu / 2 ))
+		fi
+	else
+		(( unit_size = mem / 2 ))
+	fi
+	(( unit_size > size )) && (( unit_size = size ))
+	(( repeat = size / unit_size ))
+	echo "repeat count: $repeat"
+}
+
+if [[ $size ]]; then
+	set_repeat_count
+	for ((i = 0; i < repeat; i++))
+	do
+		cmd "./case-$test"
+		(( i < repeat )) && {
+			read uptime idletime < /proc/uptime
+			(( ${uptime%.*} > runtime * 3 )) && {
+				echo "runtime exceeded, consider adjust size configuration"
+				break
+			}
+		}
+	done
+else
+	cmd "./case-$test"
+fi
+
+remove_tmpfs
+remove_sparse_root

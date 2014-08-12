@@ -1,0 +1,59 @@
+#!/bin/bash
+# - cpu.cfs_period_us
+# - cpu.cfs_quota_us
+# - cpu.rt_period_us
+# - cpu.rt_runtime_us
+# - cpuset.cpu_exclusive
+# - cpuset.cpus
+# - cpuset.mem_exclusive
+# - cpuset.mem_hardwall
+# - cpuset.memory_migrate
+# - cpuset.memory_pressure
+# - cpuset.memory_pressure_enabled
+# - cpuset.memory_spread_page
+# - cpuset.memory_spread_slab
+# - cpuset.mems
+# - cpuset.sched_load_balance
+# - cpuset.sched_relax_domain_level
+# - memory.kmem.limit_in_bytes
+# - memory.kmem.tcp.limit_in_bytes
+# - memory.limit_in_bytes
+# - memory.memsw.limit_in_bytes
+# - memory.move_charge_at_immigrate
+# - memory.oom_control
+# - memory.soft_limit_in_bytes
+# - memory.swappiness
+# - memory.use_hierarchy
+# - blkio.weight
+# - blkio.weight_device
+# - blkio.throttle.read_bps_device
+# - blkio.throttle.write_bps_device
+# - blkio.throttle.read_iops_device
+# - blkio.throttle.write_iops_device
+
+CGROUP_MNT=/cgroup
+dir=$CGROUP_MNT/$(basename $testcase)$job_pwd
+
+# This is the fail safe mount.
+# mount_cgroup() in run-lkp will normally do a better job for us
+[[ -f $CGROUP_MNT/tasks ]] || {
+	subsys=$(awk 'NR > 1 {printf $1 ","}' /proc/cgroups)
+	subsys=${subsys%,}
+	cmd mkdir $CGROUP_MNT 2>/dev/null &&
+	cmd mount -t cgroup -o $subsys none $CGROUP_MNT
+}
+cmd mkdir -p $dir
+
+while read key val
+do
+	[[ "$val" ]] || continue
+	key=${key%:}
+	[[ -f $dir/"$key" ]] || continue
+
+	note "echo $val > $dir/$key"
+	echo "$val" > $dir/"$key"
+
+done <<<"$all_program_env"
+
+note "echo $PPID > $dir/tasks"
+echo $PPID > $dir/tasks

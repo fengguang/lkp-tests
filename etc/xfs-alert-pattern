@@ -1,0 +1,77 @@
+0x.* expected, found id 0x.*
+Access to block zero in inode .* 
+.*: agbno (0x.*) >= mp->m_sb.sb_agblocks (0x.*)
+.* agf read failed agno .* error .*
+.* agi read failed agno .* error .*
+.*: agno (.*) >= mp->m_sb.sb_agcount (.*)
+.*: attempting to delete a log item that is not in the AIL
+.*: Bad directory inode .*, ptr 0x.*
+.*: Bad dir inode log record, rec ptr 0x.*, 
+Bad inode buffer log record (ptr = 0x.*, bp = 0x.*). 
+.*: bad inode .*, forkoff 0x.*, ptr 0x.*
+.*: Bad inode log record length .*, rec ptr 0x.*
+.*: Bad inode log record, rec ptr 0x.*, dino ptr 0x.*, 
+.*: Bad inode log record, rec ptr 0x.*, ino .*
+.*: Bad inode .* magic number 0x.*, ptr 0x.*
+.*: Bad inode magic number, dip = 0x.*, dino bp = 0x.*, ino = .*
+.*: Bad inode .*, ptr 0x.*, magic number 0x.*
+.*: Bad regular inode log record, rec ptr 0x.*, 
+.*: Bad regular inode .*, ptr 0x.*
+blkcnt: .* extent-state: .*
+blkcnt: .* extent-state: .* lastx: .*
+.*: Block out of range: block 0x.*, EOFS 0x.* 
+.*: bno .* dir: inode .*
+.* br_startoff .* br_startblock .* br_blockcount .* br_state .*
+Corruption detected. Unmount and run xfs_repair
+.*: cycle - 1 != tail_cycle
+  data block .*, got .* ifbno .* lastfbno .*
+Detected bogus zero next_unlinked field in incore inode buffer 0x.*.
+.*: detected corrupt incore inode .*, 
+dino bp 0x.*, ino .*, forkoff 0x.*
+dino bp 0x.*, ino .*, total extents = .*, nblocks = .*
+.*: dip->di_magic (0x.*) != XFS_DINODE_MAGIC (0x.*)
+.*: dir ino .* needed freesp block .* for
+.* : Dquot ID 0x.* (0x.*) BLK TIMER NOT STARTED
+.* : Dquot ID 0x.* (0x.*) INODE TIMER NOT STARTED
+.* : Dquot ID 0x.* (0x.*) RTBLK TIMER NOT STARTED
+dquot too small (.*) in .*.
+Failed delalloc mapping lookup ino .* fsb .*.
+.* failed (error .*)!
+Failed to recover EFIs
+ fblk 0x.* blkno .* index .* magic 0x.*
+ ... fblk is NULL
+  GH   cycle = .*, GH   bytes = .*
+.*: (im_blkno (0x.*) + im_len (0x.*)) > sb_dblocks (0x.*)
+.*: ino (0x.*) != XFS_AGINO_TO_INO() (0x.*)
+.*: inode (.*) bad symlink length (.*)
+ino ptr = 0x.*, ino bp = 0x.*, ino .*
+Internal error .* at line .* of file .*.  Caller 0x.*
+log record CRC mismatch: found 0x.*, expected 0x.*.
+metadata I/O error: block 0x.* .* error .* numblks .*
+NULL dquot in .*.
+.* : ondisk-dquot 0x.*, ID mismatch: 
+page discard on page .*, inode 0x.*, offset .*.
+page discard unable to remove delalloc mapping.
+.*: picked the wrong leaf? reverting original leaf: blk1->index .*
+Please umount the filesystem and rectify the problem(s)
+.*: space > BBTOB(tail_blocks)
+start_block: .* start_off: .* 
+.* Shutting down filesystem
+.*: Superblock update failed!
+  tail_cycle = .*, tail_bytes = .*
+total extents = .*, nblocks = .*, ptr 0x.*
+Transforming an alert into a BUG.
+Trying to replay bad (0) inode di_next_unlinked field.
+.*: unmount record failed
+XFS.*: Assertion failed: .*, file: .*, line: 
+xfs_dir2_node_addname_int
+.* : XFS dquot ID 0x.*, magic 0x.* != 0x.*
+.* : XFS dquot ID 0x.*, unknown flags 0x.*
+.* : XFS dquot ID 0x.*, version 0x.* != 0x.*
+XFS: dquot too small (.*) in .*.
+.*: xfs_ialloc_read_agi() returned error .*, agno .*
+.*: xfs_iformat() returned error .*
+XFS: NULL dquot in .*.
+xfs_vm_write_failed: unable to clean up ino .*
+xlog_space_left: head behind tail
+xlog_write: reservation ran out. Need to up reservation

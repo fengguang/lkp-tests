@@ -1,0 +1,12 @@
+#!/bin/bash
+
+cd /sys/kernel/debug/kvm || exit 0
+
+while :
+do
+	echo time: $(date +%s.%N)
+
+	grep . * | sed 's/:/: /'
+
+	sleep ${interval:-1}
+done

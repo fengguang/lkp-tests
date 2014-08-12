@@ -1,0 +1,17 @@
+#!/usr/bin/ruby
+
+# skip the first line "Command being timed: ..."
+STDIN.gets
+
+while line = STDIN.gets
+	key, val = line.split ': '
+	key = key.gsub(/^\s+/, '').gsub(/ \([^)]+\)/, '').gsub(/\s+/, '_').downcase
+	case key
+	when 'elapsed_time'
+		times = val.split ':'
+		val = times.inject(0) {|tt, t| tt * 60 + t.to_f}
+	when 'percent_of_cpu_this_job_got'
+		val.chomp!("%\n")
+	end
+	puts "#{key}: #{val}"
+end

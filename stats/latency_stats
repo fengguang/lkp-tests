@@ -1,0 +1,15 @@
+#!/usr/bin/ruby
+
+STDIN.each_line do |line|
+	case line
+	when /Latency Top version/
+		next
+	when /^time:/
+		puts line
+	else
+		values = line.split
+		puts values[3] + ".hits: " + values[0]
+		puts values[3] + ".sum: " + values[1]
+		puts values[3] + ".max: " + values[2]
+	end
+end

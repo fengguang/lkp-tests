@@ -1,0 +1,11 @@
+#!/bin/bash
+
+export PATH=$BENCHMARK_ROOT/thrulay/sbin:$BENCHMARK_ROOT/thrulay/bin:$PATH
+
+[[ $runtime ]] || runtime=300
+
+cmd thrulayd
+
+sleep 1
+
+cmd thrulay -t $runtime 127.0.0.1

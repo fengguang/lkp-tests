@@ -1,0 +1,18 @@
+testcase: dd-write
+
+disk: 1HDD
+fs: ext4
+
+monitors:
+  ftrace:
+  - events:
+      balance_dirty_pages
+      bdi_dirty_ratelimit
+      global_dirty_state
+      writeback_single_inode
+
+nr_threads:
+- 2dd
+
+dd:
+  bs: 4k

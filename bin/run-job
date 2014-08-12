@@ -1,0 +1,199 @@
+#!/usr/bin/ruby
+
+# The job file is essentially grouped lists of commands to be executed with
+# optional environment parameters.
+#
+# The commands are executed in order, thanks to ruby 1.9's ordered hash
+# feature:
+#   "the order that elements are yielded by each, each_key, each_value...
+#   is defined to be the temporal order of insertion into the hash."
+
+LKP_USER = ENV['LKP_USER'] || ENV['USER'] || `whoami`.chomp
+LKP_HOME = ENV["LKP_HOME"] || '/lkp/' + LKP_USER
+LKP_SRC = ENV["LKP_SRC"] || LKP_HOME + '/src'
+TMP = ENV['TMP'] || '/tmp'
+
+require 'yaml'
+require 'pp'
+require "#{LKP_SRC}/lib/job.rb"
+require 'optparse'
+require 'ostruct'
+
+opts = OptionParser.new do |opts|
+        opts.banner = "Usage: #{$PROGRAM_NAME} [options] job.yaml"
+
+        opts.separator ''
+        opts.separator 'options:'
+
+        opts.on('--pid-file FILE', 'Save PID to FILE') do |file|
+                File.open(file, 'w') { |f| f.write "#{$$}\n" }
+        end
+
+        opts.on_tail('-h', '--help', 'Show this message') do
+                puts opts
+                exit
+        end
+
+end
+
+if ARGV == []
+        argv = ['-h']
+else
+        argv = ARGV
+end
+opts.parse!(argv)
+
+$testcase = YAML.load_file(ARGV[0])
+$top_env = expand_toplevel_vars Hash.new, $testcase
+
+$child_pids = []
+
+case $PROGRAM_NAME
+when /run-job/
+	$pre_test_executed = false
+	create_programs_hash "{setup,monitors,tests}/**/*"
+	ENV['job_pwd'] ||= '/'
+
+	$testcase.delete_if { |key, val|
+		next if $programs.include? key
+		next if val.class != Hash
+
+		val['testcase']  = $testcase['testcase']
+
+		temp_yaml = "#{TMP}/lkp-run-job--#{key}--#{$$}.yaml"
+		File.open(temp_yaml, mode='w') { |file|
+			file.write(YAML.dump(val))
+		}
+		child_job_pwd = ENV['job_pwd']
+		child_job_pwd += '/' unless child_job_pwd[-1] == '/'
+		child_job_pwd += key
+		$child_pids << Process.spawn($top_env.merge({'job_pwd' => child_job_pwd}),
+					     "#{LKP_SRC}/bin/run-job #{temp_yaml}")
+
+		# remove key and val to avoid re-run them in the end
+		true
+	}
+when /job-env/
+	create_programs_hash "{setup,monitors,tests}/**/*"
+when /extract-stats/
+	ARGV[1..-1].each { |f| $testcase.merge!(YAML.load_file(f)) }
+	if $testcase['job_state'] == 'kernel_oops'
+		create_programs_hash "stats/dmesg"
+	elsif $testcase['job_state'] =~ /booting|running|soft_timeout|failed|error_mount|error_umount/
+		create_programs_hash "stats/{dmesg,last_state}"
+	else
+		create_programs_hash "stats/**/*"
+	end
+else
+	STDERR.puts "Unknown program name."
+	exit 1
+end
+
+def add_one_env(program_env, k, v)
+	if v.class == Array and v[0].class != Array and v[0].class != Hash
+		v = v.join ' '
+	end
+	if v.class != Hash and v.class != Array
+		program_env[k] = expand_shell_var $top_env, v
+		return true
+	end
+	return false
+end
+
+def run_pre_test(program)
+	return unless $pre_test_executed == false
+	return unless $programs[program].index("#{LKP_SRC}/tests/") == 0
+	$pre_test_executed = true
+
+	puts "run: pre-test"
+	return if ENV["LKP_DRYRUN"]
+
+	system "#{LKP_SRC}/monitors/event/wakeup", 'pre-test'
+	sleep 1
+	%x[ date '+%s' > #{TMP}/start_time ]
+end
+
+def run_program(program, env)
+	program_env = {}
+
+	env = strip_trivial_array(env)
+
+	# expand predefined parameter set name
+	if env.class != Hash and env.class != Array
+		param_yaml = LKP_SRC + '/params/' + program + '.yaml'
+		if File.exists?(param_yaml)
+			params = YAML.load_file(param_yaml)
+			env = params[env] if params[env]
+		end
+	end
+
+	args = []
+	if env.class == String
+		return if env == 'disable'
+		args = env.split if env != ''
+	elsif env.class == Fixnum or env.class == Float
+		args = env.to_s
+	else
+		for_each(env) { |k, v|
+			add_one_env program_env, k, v and next
+			for_each(v) { |kk, vv|
+				add_one_env program_env, kk, vv
+			}
+		}
+	end
+
+	if $PROGRAM_NAME =~ /job-env/
+		puts program + ': 1'
+		program_env.each { |key, val| puts "#{program}.#{key}: #{val}" }
+		return
+	end
+
+	run_pre_test program
+
+	wrapper = File.dirname($programs[program]) + '/wrapper'
+	if File.executable?(wrapper)
+		cmd = [ wrapper, program, *args ]
+	else
+		cmd = [ $programs[program], *args ]
+	end
+
+	if $programs[program] =~ %r{/tests/}
+		cmd = [ "/usr/bin/time", "-v", "-o", "#{TMP}/time", *cmd ]
+	end
+
+	puts "run: " + cmd.join(" ") + "\t" + program_env.to_s
+	return if ENV["LKP_DRYRUN"]
+
+	program_env['all_program_env'] = YAML.dump(program_env)
+	ret = system $top_env.merge(program_env), *cmd
+	case ret
+	when false
+		STDERR.puts program + ' ' + $?.to_s
+		exit 1
+	when nil
+		STDERR.puts 'Cannot run ' + program
+		exit 1
+	end
+end
+
+def update_global_env
+	return unless File.exists? "#{TMP}/env.yaml"
+	env = YAML.load_file "#{TMP}/env.yaml"
+	env.each { |k, v|
+		env[k] = expand_shell_var $top_env, v
+	}
+	$top_env.update(env)
+end
+
+for_each_program($testcase) { |k, v|
+	update_global_env
+	run_program k, v
+}
+
+$child_pids.each { |pid|
+	Process.waitpid(pid, Process::WNOHANG)
+}
+
+if $PROGRAM_NAME =~ /job-env/
+	$top_env.each { |key, val| puts "#{key}: #{val}" }
+end

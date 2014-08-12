@@ -1,0 +1,15 @@
+#!/bin/bash
+
+VERSION="0.53"
+WEB_URL="http://download.savannah.gnu.org/releases/${BM_NAME}/${BM_NAME}-${VERSION}.tar.gz"
+
+build()
+{
+	cd $source_dir/src
+	make
+}
+
+install()
+{
+	cp -af ${BM_NAME} ${BM_ROOT}
+}

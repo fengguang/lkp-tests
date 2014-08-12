@@ -1,0 +1,31 @@
+#!/usr/bin/ruby
+
+require 'fileutils'
+require ENV['LKP_SRC'] + "/lib/statistics.rb"
+
+RESULT_ROOT = ENV['RESULT_ROOT']
+$test = ''
+$vals = []
+
+exit unless File.exist?("#{RESULT_ROOT}/dmesg")
+
+def show_one(new_test)
+	printf "%s: %d\n", $test, $vals.average unless $test.empty? or $vals.empty?
+	$test = new_test
+	$vals = []
+end
+
+File.foreach("#{RESULT_ROOT}/dmesg") do |line|
+	case line
+	when /testing speed of (.*)$/
+		show_one $1.tr(' ', '.')
+	when /\d+ operations in (\d+) seconds \((\d+) bytes\)/
+		bps = $2.to_i / $1.to_i
+		$vals << bps
+	when /\d+ opers\/sec, +(\d+) bytes\/sec/
+		bps = $1.to_i
+		$vals << bps
+	end
+end
+
+show_one ''

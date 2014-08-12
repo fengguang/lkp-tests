@@ -1,0 +1,25 @@
+#!/usr/bin/ruby
+
+require ENV['LKP_SRC'] + "/lib/statistics.rb"
+
+failed_cases = {}
+mqueue_speed = {}
+
+while line = STDIN.gets
+	case line
+	when /make: Entering directory \`.*\/(.*)\'/
+		testname = $1
+	when /Failed/, /FAIL/
+		failed_cases[testname] = 1
+	when /Test #([1-9].*):/
+		mqueue_test = $1
+	when /(Send|Recv) msg:/
+		io = $1
+	when /(\d+) nsec\/msg/
+		mqueue_speed[mqueue_test + '.' + io] = $1.to_i
+	end
+end
+
+puts "mqueue.nsec_per_msg: #{mqueue_speed.values.average.to_i}" if mqueue_speed.size > 0
+
+failed_cases.each { |k, v| puts "#{k}.fail: 1" }

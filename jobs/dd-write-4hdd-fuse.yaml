@@ -1,0 +1,35 @@
+testcase: dd-write
+
+disk: 4HDD
+md:
+- JBOD
+iosched:
+- cfq
+fs:
+- xfs
+
+fuse:
+  mount_max: 2fuse
+  thread_model:
+  - serialized
+  - multi_threaded
+  writeback_cache: wc
+  write_ratelimit:
+  - 1Mbps
+  - 100Mbps
+
+monitors:
+  perf-stat:
+  ftrace:
+  - events:
+      balance_dirty_pages
+      bdi_dirty_ratelimit
+      global_dirty_state
+      writeback_single_inode
+
+nr_threads:
+- 1dd
+- 10dd
+- 100dd
+
+dd:

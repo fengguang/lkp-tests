@@ -1,0 +1,8 @@
+testcase: vm-scalability
+perf-profile:
+
+runtime: 300s
+
+vm-scalability:
+  test:
+  - migrate

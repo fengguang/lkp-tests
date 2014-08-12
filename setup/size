@@ -1,0 +1,24 @@
+#!/bin/bash
+
+size=$1
+
+case $size in
+	*K)
+		bits=10
+		;;
+	*M)
+		bits=20
+		;;
+	*G)
+		bits=30
+		;;
+	*T)
+		bits=40
+		;;
+esac
+
+(( bits )) && (( size = ${size%?} << bits ))
+
+cat >> $TMP/env.yaml <<EOF
+size: $size
+EOF

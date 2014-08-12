@@ -1,0 +1,6 @@
+model: Nehalem
+memory: 4G
+nr_ssd_partitions: 1
+ssd_partitions: /dev/disk/by-id/ata-INTEL_SSDSC2CW240A3_CVCV204303XB240CGN-part1
+swap_partitions:
+rootfs_partition: /dev/disk/by-id/ata-INTEL_SSDSC2CW240A3_CVCV204303XB240CGN-part2

@@ -1,0 +1,11 @@
+#!/usr/bin/ruby
+
+while line = STDIN.gets
+	case line.chomp!
+	when /^(.*): +(\d+) kB$/,
+	     /^(.*): +(\d+)$/
+		puts $1 + ': ' + $2
+	else
+		STDERR.puts "malformed meminfo line: " + line
+	end
+end

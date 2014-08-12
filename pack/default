@@ -1,0 +1,76 @@
+#!/bin/bash
+
+pre_download()
+{
+	:
+}
+
+download()
+{
+	pre_download
+	[[ $WEB_URL ]] && wget --no-clobber $WEB_URL
+	[[ $source_package ]] || source_package=$(basename $WEB_URL)
+	[[ $source_dir     ]] || source_dir=${source_package%%.tar.*}
+	[[ -d $source_dir ]] ||
+	tar xf "$source_package"
+}
+
+patch_source()
+{
+	PATCH=$LKP_SRC/pack/${BM_NAME}.patch
+	[[ -f $PATCH ]] || return 0
+	patch -p1 < $PATCH
+}
+
+build()
+{
+	cd $source_dir
+	patch_source
+	[[ -x "./configure" ]] && ./configure $CONFIGURE_FLAGS
+	make
+}
+
+install()
+{
+	make install-exec
+}
+
+pack_deb()
+{
+	rm -fr "/tmp/${BM_NAME}-LKP"
+	mkdir -p /tmp/${BM_NAME}-LKP/$BM_ROOT
+	cp -af $BM_ROOT /tmp/${BM_NAME}-LKP/lkp/benchmarks
+	mkdir -p /tmp/${BM_NAME}-LKP/DEBIAN
+	cat > /tmp/${BM_NAME}-LKP/DEBIAN/control <<-EOF
+	Package: ${BM_NAME}-LKP
+	Version: $(date +%F)
+	Architecture: all
+	Maintainer: LKP
+	Description: LKP dependent packages
+	EOF
+
+	cd /tmp
+	dpkg-deb --build ${BM_NAME}-LKP
+}
+
+pack()
+{
+	{
+		echo /lkp
+		echo /lkp/benchmarks
+		find /lkp/benchmarks/$BM_NAME
+	} |
+	cpio -o -H newc | gzip -n -9 > /tmp/${BM_NAME}.cgz
+}
+
+post_cleanup()
+{
+	:
+}
+
+cleanup()
+{
+	[[ $source_package ]] && rm -f  "/tmp/${source_package}"
+	[[ $source_dir     ]] && rm -fr "/tmp/${source_dir}"
+	post_cleanup
+}

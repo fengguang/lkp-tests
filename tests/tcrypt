@@ -1,0 +1,8 @@
+#!/bin/bash
+# - modes
+
+for i in $(seq ${modes/-/ })
+do
+	# tcrypt do testing by modules inserting, then exit from kernel
+	cmd /sbin/modprobe tcrypt sec=$period mode=$i 2>/dev/null
+done

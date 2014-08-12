@@ -1,0 +1,9 @@
+#!/bin/bash
+
+cd $BENCHMARK_ROOT/packetdrill || exit
+
+for f in $(find . -name "*.pkt" ! -name "*diag-ipv6*" | sort); do
+	echo "Running $f ..."
+	ip tcp_metrics flush all > /dev/null 2>&1
+	cmd ./packetdrill $f || echo "$f failed"
+done

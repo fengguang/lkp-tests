@@ -1,0 +1,15 @@
+#!/bin/bash
+
+[ -f /proc/lock_stat ] || exit 0
+
+take_snapshot()
+{
+	cat /proc/lock_stat
+}
+
+echo 0 > /proc/lock_stat
+
+source $LKP_SRC/lib/wait.sh
+
+wait_post_test
+take_snapshot

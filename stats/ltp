@@ -1,0 +1,11 @@
+#!/usr/bin/ruby
+
+result = {}
+while line = STDIN.gets
+	case line
+	when /^([^ ]+) +(\d+)  (TFAIL|TBROK)  :  /
+		result[$1 + '.' + $2 + '.' + $3] = 1
+	end
+end
+
+result.each { |k, v|	puts "#{k}: 1" }

@@ -1,0 +1,18 @@
+testcase: hackbench
+
+cgroup:
+  cpuset.mems: 0-$((nr_node-1))
+  cpuset.cpus: 0-$((nr_cpu-1))
+
+nr_threads: 1600%
+
+perf-profile:
+    freq: 800
+
+hackbench:
+  mode:
+  - process
+  - threads
+  ipc:
+  - pipe
+  - socket

@@ -1,0 +1,46 @@
+#!/bin/bash
+# - mode
+# - ipc
+
+[[ $ipc = 'pipe' ]] && ipc_option='--pipe'
+
+[[ $runtime ]] || runtime=600
+
+set_env()
+{
+	# default 40 fds/group
+	fds=40
+	tasks=$((nr_threads * fds))
+
+	# increase permitted open file number
+	ulimit -n $((tasks + 2048))
+
+	def_pid_max=32768
+	(( tasks > def_pid_max / 2 )) && {
+		sysctl -w kernel.pid_max=$((tasks * 2))
+		sysctl -w kernel.threads-max=$((tasks * 2))
+		sysctl -w vm.max_map_count=$((tasks * 100))
+	}
+}
+
+set_loops()
+{
+	loops=$(( 30000 * nr_cpu / nr_threads ))
+}
+
+run_hackbench()
+{
+	# args: groups number, mode [process/thread], times
+	cmd /usr/bin/hackbench -g $nr_threads --$mode $ipc_option -l $loops
+}
+
+set_env
+set_loops
+
+start_time=$(date +%s)
+while :
+do
+	run_hackbench
+	now=$(date +%s)
+	(( now - start_time > runtime )) && break
+done

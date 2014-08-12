@@ -1,0 +1,9 @@
+#!/bin/bash
+
+VERSION="2.5.241"
+WEB_URL="http://sockperf.googlecode.com/files/${BM_NAME}-${VERSION}.tar.gz"
+
+install()
+{
+	cp -af src/$BM_NAME $BM_ROOT
+}

@@ -1,0 +1,28 @@
+#!/usr/bin/ruby
+
+STDIN.each_line do |line|
+	case line
+	when /slabinfo - version:/
+		exit 1 unless line =~ /2.1/
+	when /^time:/
+		puts line
+	when /^# name/
+		$sub_names = line.split
+		$sub_names.shift
+		$sub_names.shift
+	else
+		values = line.split
+		name = values.shift
+		next if values.size != $sub_names.size
+		values.each_with_index { |value, i|
+			next unless $sub_names[i][0] == '<'
+			case $sub_names[i]
+			when	'<active_objs>',
+				'<num_objs>',
+				'<active_slabs>',
+				'<num_slabs>'
+				puts name + '.' + $sub_names[i][1..-2] + ': ' + value
+			end
+		}
+	end
+end

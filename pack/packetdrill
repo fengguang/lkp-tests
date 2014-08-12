@@ -1,0 +1,26 @@
+#!/bin/bash
+
+download()
+{
+	head_commit="03bfca429c99"
+	source_package="${head_commit}.zip"
+	wget --no-clobber "http://packetdrill.googlecode.com/archive/${source_package}"
+	source_dir="${BM_NAME}-${head_commit}"
+	[[ -d $source_dir ]] ||
+	unzip "$source_package"
+}
+
+build()
+{
+	cd $source_dir/gtests/net/packetdrill
+	bash ./configure
+	make
+}
+
+install()
+{
+	cp -af $BM_NAME $BM_ROOT
+	for d in $(find tests/linux/* -maxdepth 0 -type d); do
+		cp -arvf $d $BM_ROOT
+	done
+}

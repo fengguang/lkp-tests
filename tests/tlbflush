@@ -1,0 +1,31 @@
+#!/bin/bash
+# - entries
+
+# main code from Mel Gorman
+# https://lkml.org/lkml/2013/12/17/112
+
+cd $BENCHMARK_ROOT/tlbflush || exit
+
+TLBFLUSH_MAX_ENTRIES=$entries
+TLBFLUSH_ITERATIONS=$iterations
+
+NR_ENTRIES=$((RANDOM%TLBFLUSH_MAX_ENTRIES))
+
+for ITERATION in $(seq 1 $TLBFLUSH_ITERATIONS); do
+
+	THIS_MAX_ENTRIES=$TLBFLUSH_MAX_ENTRIES
+
+	# Select a range of entries to randomly select from. This is to ensure
+	# an evenish spread of entries to be tested
+	NR_SECTION=$((ITERATION%8))
+	RANGE=$((TLBFLUSH_MAX_ENTRIES/8))
+	THIS_MIN_ENTRIES=$((RANGE*NR_SECTION+1))
+	THIS_MAX_ENTRIES=$((THIS_MIN_ENTRIES+RANGE))
+
+	NR_ENTRIES=$((THIS_MIN_ENTRIES+(RANDOM%RANGE)))
+	if [ $NR_ENTRIES -gt $THIS_MAX_ENTRIES ]; then
+		NR_ENTRIES=$THIS_MAX_ENTRIES
+	fi
+
+	cmd ./tlbflush -n $NR_ENTRIES -t $nr_threads
+done

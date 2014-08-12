@@ -1,0 +1,18 @@
+#!/usr/bin/ruby
+
+while line = STDIN.gets
+	case line
+	when /read\/write requests:\s+ (\d+)/
+		puts "rw_requets: " + $1
+	when /transactions:\s+ (\d+)/
+		puts "transactions: " + $1
+	when /(.*) Requests\/sec executed/
+		puts "requests_per_sec: " + $1
+	when /max:\s+(.*)ms/
+		puts "request_latency_max_ms: " + $1
+	when /min:\s+(.*)ms/
+		puts "request_latency_min_ms: " + $1
+	when /approx.  95 percentile:\s+(.*)ms/
+		puts "request_latency_95%_ms: " + $1
+	end
+end

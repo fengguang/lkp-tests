@@ -1,0 +1,11 @@
+#!/bin/bash
+
+tbox_group=${HOSTNAME%-[0-9]*}
+
+cat - $LKP_SRC/hosts/${tbox_group} > $TMP/env.yaml <<EOF
+# setup/env
+nr_cpu: $(getconf _NPROCESSORS_CONF)
+nr_node: $(echo /sys/devices/system/node/node[0-9]* | wc -w)
+
+# hosts/${tbox_group}
+EOF

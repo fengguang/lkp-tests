@@ -1,0 +1,12 @@
+testcase: xfstests
+
+default_monitors:
+
+disk: 4HDD
+
+fs:
+- ext4
+
+xfstests:
+  test:
+  - ext4

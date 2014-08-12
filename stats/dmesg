@@ -1,0 +1,131 @@
+#!/usr/bin/ruby
+
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($0)))
+require "#{LKP_SRC}/lib/dmesg.rb"
+require "fileutils"
+require "tempfile"
+
+if ENV['RESULT_ROOT']
+	dmesg = "#{ENV['RESULT_ROOT']}/.dmesg"
+	dmesg = "#{ENV['RESULT_ROOT']}/dmesg" if not File.exist? dmesg
+elsif ARGV[0]
+	dmesg = ARGV[0]
+else
+	exit
+end
+
+if not File.exist?(dmesg) or File.size(dmesg) == 0
+	puts "early-boot-hang: 1"
+	exit
+end
+
+tmpfile = Tempfile.new 'fixup-dmesg-', ENV['RESULT_ROOT']
+File.open(dmesg, 'rb') do |f|
+	f.each_line { |line| tmpfile.puts fixup_dmesg(line) }
+end
+tmpfile.chmod 0664
+tmpfile.close
+FileUtils.mv tmpfile.path, dmesg, :force => true
+
+=begin
+# <4>[  256.557393] [ INFO: possible circular locking dependency detected ]
+ INFO_possible_circular_locking_dependency_detected: 1
+=end
+
+def oops_to_bisect_pattern(line)
+		words = line.split
+		return '' if words.empty?
+		patterns = []
+		words.each { |w|
+			case w
+			when /([a-zA-Z0-9_]+\+0x)/, /([a-zA-Z0-9_]+=)/
+				patterns << $1
+				break
+			when /[^a-zA-Z\/:._-]/
+				patterns << '.*' if patterns[-1] != '.*'
+			else
+				patterns << w
+			end
+		}
+		patterns.shift while patterns[0] == '.*'
+		patterns.pop   if patterns[-1] == '.*'
+		patterns.join(' ')
+end
+
+error_ids = {}
+output = grep_crash_head dmesg, '-o'
+exit if output.empty?
+exit if output =~ /trinity.*: page allocation failure|Out of memory: .*trinity/ # trinity is known to trigger OOM
+
+output.each_line { |line|
+	line.chomp!
+	# next if line =~ /INFO: task .* blocked for more than \d+ seconds/
+	next if line =~ /INFO: Stall ended before state dump start/
+	next if line =~ /INFO: NMI handler .* took too long to run:/
+
+	case line
+	when /(INFO: rcu.* self-detected stall on CPU)/,
+	     /(INFO: rcu.* detected stalls on CPUs\/tasks:)/
+		line = $1
+		bug_to_bisect = $1
+	when /BUG: unable to handle kernel $/
+		next
+	when /(BUG: unable to handle kernel NULL pointer dereference)/,
+	     /(BUG: unable to handle kernel paging request)/
+		line = $1
+		bug_to_bisect = $1
+	when /(BUG: scheduling while atomic:)/,
+	     /(BUG: Bad page map in process)/,
+	     /(BUG: Bad page state in process)/,
+	     /(BUG: soft lockup - CPU#\d+ stuck for \d+s!)/,
+	     /(BUG: spinlock .* on CPU#\d+)/
+		line = $1
+		bug_to_bisect = $1
+	when /(BUG: ).* (still has locks held)/,
+	     /(INFO: task ).* (blocked for more than \d+ seconds)/
+		line = $1 + $2
+		bug_to_bisect = $2
+	when /WARNING:.* at .* ([a-zA-Z.0-9_]+\+0x)/
+		bug_to_bisect = 'WARNING:.* at .* ' + $1.sub(/\.(isra|constprop|part)\.[0-9]+\+0x/, '')
+	when /(Kernel panic - not syncing: No working init found.)  Try passing init= option to kernel. /,
+	     /(Kernel panic - not syncing: No init found.)  Try passing init= option to kernel. /
+		line = $1
+		bug_to_bisect = line
+	when /([a-zA-Z]+[ a-zA-Z]*: [a-f0-9]{4}) \[#[0-9]+\] [A-Z_ ]*$/
+		line = $1
+		bug_to_bisect = $1
+	when /^backtrace:([a-zA-Z0-9_]+)/
+		bug_to_bisect = $1 + '+0x'
+	else
+		bug_to_bisect = oops_to_bisect_pattern line
+	end
+
+	error_id = line.sub(/^[^a-zA-Z]+/, "").
+			gsub(/\/c\/kernel-tests\/src\/[^\/]+\//, '').
+			gsub(/\/c\/(wfg|yliu)\/[^\/]+\//, '').
+			gsub(/\/lkp\/[^\/]+\/linux[0-9]*\//, '').
+			gsub(/\/kernel-tests\/linux[0-9]*\//, '').
+			gsub(/\.(isra|constprop|part)\.[0-9]+/, '').
+			gsub(/\b[0-9a-f]{8}\b/, "").
+			gsub(/\b[0-9a-f]{16}\b/, "").
+			gsub(/[+-\/]?0x[0-9a-f]+\b/, "").
+			gsub(/[+-\/][0-9]+\b/, "").
+			gsub(/\b[0-9]+[:]?/, "").
+			gsub(/[^a-zA-Z0-9.:_\/(), =-]+/, "").
+			gsub(/([a-zA-Z0-9]) +([a-zA-Z])/, '\1_\2').
+			gsub(/ /, '').
+			sub(/[_.:]*$/, ": 1")
+
+	error_ids[error_id] ||= bug_to_bisect
+}
+
+exit if error_ids.empty?
+
+puts "boot_failures: 1"
+
+# This shows each error id only once
+error_ids.each { |error_id, line|
+	puts
+	puts '# ' + line
+	puts error_id
+}

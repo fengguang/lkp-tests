@@ -1,0 +1,50 @@
+testcase: will-it-scale
+
+perf-profile:
+    freq: 800
+
+will-it-scale:
+  test:
+  - brk1
+  - context_switch1
+  - eventfd1
+  - futex1
+  - futex2
+  - futex3
+  - futex4
+  - getppid1
+  - lock1
+  - lseek1
+  - lseek2
+  - malloc1
+  - malloc2
+  - mmap1
+  - mmap2
+  - open1
+  - open2
+  #  - open3
+  - page_fault1
+  - page_fault2
+  - page_fault3
+  - pipe1
+  - poll1
+  - poll2
+  - posix_semaphore1
+  - pread1
+  - pread2
+  - pthread_mutex1
+  - pthread_mutex2
+  - pwrite1
+  - pwrite2
+  - read1
+  - read2
+  #  - read3
+  #  - read4
+  - readseek
+  - sched_yield
+  - signal1
+  - unix1
+  - unlink1
+  - unlink2
+  - write1
+  - writeseek

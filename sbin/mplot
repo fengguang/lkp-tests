@@ -1,0 +1,77 @@
+#!/usr/bin/ruby
+
+LKP_USER = ENV['LKP_USER'] || ENV['USER'] || `whoami`.chomp
+LKP_HOME = ENV['LKP_HOME'] || "/lkp/#{LKP_USER}"
+LKP_SRC = ENV["LKP_SRC"] || "/lkp/#{LKP_USER}/src"
+
+require "gnuplot"
+require 'optparse'
+require "#{LKP_SRC}/lib/statistics.rb"
+require "#{LKP_SRC}/lib/stats.rb"
+require "#{LKP_SRC}/lib/yaml.rb"
+require "#{LKP_SRC}/lib/plot.rb"
+
+opts = OptionParser.new do |opts|
+	opts.banner = "Usage: mplot matrix.json [stat_fields...] [OPTION...]"
+	opts.separator ""
+	opts.separator "Example:"
+	opts.separator ""
+
+	opts.separator "mplot /result/fat/dd-write/1HDD-JBOD-cfq-btrfs-100dd/x86_64-rhel/matrix.json"
+	opts.separator "mplot /result/fat/dd-write/1HDD-JBOD-cfq-btrfs-100dd/x86_64-rhel/matrix.json vmstat.system.in"
+	opts.separator ""
+	opts.separator "options:"
+
+	opts.on("-o DIR", "--output DIR", "output dir") do |dir|
+		Dir.mkdir dir unless File.directory? dir
+		$opt_output_path = dir
+	end
+
+	opts.on_tail("-h", "--help", "show help message") do
+		puts opts
+		exit
+	end
+
+end
+
+opts.parse!(ARGV)
+
+if ARGV.size == 0
+	puts opts
+	exit
+end
+
+# variation measured by values' (range : mean)
+def stats_with_most_variation(matrix)
+	stats = {}
+	matrix.each do |field, values|
+		next if String === values[-1]
+		next if field =~ /\.time$/
+		next unless is_perf_metric field
+
+		mean, sorted = values.mean_sorted
+		next if mean == 0
+		size = sorted.size
+		margin = size >> MARGIN_SHIFT
+		min = sorted[margin]
+		max = sorted[-margin - 1]
+		next unless is_valid_perf_metric(field, max, max)
+		next if min == max
+		next if sorted[0] == values[0] and
+			sorted[-1] == values[-1] and
+			sorted[size/2] == values[size/2]
+		stats[field] = (max - min) / mean
+	end
+	Hash[stats.sort{ |a, b| b[1] <=> a[1] }]
+end
+
+$matrix = load_json ARGV[0]
+
+if ARGV[1]
+	$stats = {}
+	ARGV[1..-1].each { |stat| $stats[stat] = nil }
+else
+	$stats = stats_with_most_variation $matrix
+end
+
+mplot $matrix, $stats

@@ -1,0 +1,39 @@
+#!/bin/bash
+
+[[ "$events" ]] || exit 0
+
+test_save_time_delta()
+{
+	[[ $HOSTNAME = avoton2 ]] &&
+	grep -q -F uptime /sys/kernel/debug/tracing/trace_clock && {
+		echo uptime > /sys/kernel/debug/tracing/trace_clock
+		echo 0 > $TMP/time_delta
+		return
+	}
+
+	echo 0 > /sys/kernel/debug/tracing/trace
+	local date_ts=$(date '+%s.%N')
+	echo a long long timestamp detect string > /sys/kernel/debug/tracing/trace_marker
+	local trace_ts=$(grep -m1 -o '[0-9.]\+: tracing_mark_write: a long long timestamp detect string' /sys/kernel/debug/tracing/trace) || {
+		echo "Failed to detect ftrace time delta."
+		exit 0
+	}
+	echo "$date_ts - ${trace_ts%%:*}" | bc > $TMP/time_delta
+	echo 0 > /sys/kernel/debug/tracing/trace
+}
+test_save_time_delta
+
+mkdir $RESULT_ROOT/trace_event
+
+for event in $events
+do
+	knob=(/sys/kernel/debug/tracing/events/*/$event/enable)
+	echo "echo 1 > $knob" >> $RESULT_ROOT/reproduce.sh
+	echo 1 > $knob
+
+	cp /sys/kernel/debug/tracing/events/*/$event/format $RESULT_ROOT/trace_event/$event.fmt
+done
+
+echo 1 > /sys/kernel/debug/tracing/tracing_on
+
+exec awk '!x[$5 substr($4, 0, length($4)-4)]++' /sys/kernel/debug/tracing/trace_pipe

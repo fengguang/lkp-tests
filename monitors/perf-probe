@@ -1,0 +1,17 @@
+#!/bin/bash
+
+[[ $events ]] || exit 0
+
+TRACING_ROOT=/sys/kernel/debug/tracing
+
+echo sym-offset	> $TRACING_ROOT/trace_options
+echo sym-addr	> $TRACING_ROOT/trace_options
+echo stacktrace	> $TRACING_ROOT/trace_options
+
+for event in $events
+do
+	perf probe $event
+	echo 1 > $TRACING_ROOT/events/probe/$event/enable
+done
+
+cat $TRACING_ROOT/trace_pipe

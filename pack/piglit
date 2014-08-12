@@ -1,0 +1,55 @@
+#!/bin/bash
+
+pre_download()
+{
+	[[ -d waffle		]] || git clone git://github.com/waffle-gl/waffle
+	[[ -d piglit		]] || git clone git://anongit.freedesktop.org/piglit
+	[[ -d intel-gpu-tools	]] || git clone git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+}
+
+build()
+{
+	# apt-get build-dep intel-gpu-tools
+	# apt-get install libglu1-mesa-dev python3-dev
+
+	cd /tmp/waffle
+	cmake	-Dwaffle_has_glx=1	\
+		-Dwaffle_has_x11_egl=1	\
+		-Dwaffle_has_wayland=1	\
+		-Dwaffle_has_gbm=1	\
+		-DCMAKE_INSTALL_PREFIX=/usr
+	make
+	make install
+
+	cd ../$BM_NAME
+	cmake -DCMAKE_INSTALL_PREFIX=$BM_ROOT
+	make
+	make install
+
+	cd ../intel-gpu-tools
+	./autogen.sh
+	make
+}
+
+install()
+{
+	mv -T /tmp/intel-gpu-tools $BM_ROOT/lib/$BM_NAME/bin/igt
+}
+
+pack()
+{
+	{
+		echo /lkp
+		echo /lkp/benchmarks
+		find /lkp/benchmarks/$BM_NAME
+		echo /usr/lib/x86_64-linux-gnu/libwaffle-1.so
+		echo /usr/lib/x86_64-linux-gnu/libwaffle-1.so.0
+		echo /usr/lib/x86_64-linux-gnu/libwaffle-1.so.0.3.0
+	} |
+	cpio -o -H newc | gzip -n -9 > /tmp/${BM_NAME}.cgz
+}
+
+post_cleanup()
+{
+	rm -fr "/tmp/$BM_NAME"
+}

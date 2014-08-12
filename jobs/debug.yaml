@@ -1,0 +1,13 @@
+testcase: debug
+a:
+  debug-setup:
+    param_a: 1
+    param_b: string
+    param.d: only accessible in bash by iterating all_program_env
+  b:
+    debug-setup:
+      param_a: 2
+      param_b: hello world!
+      param_c: /dev/disk/by-id/ata-*
+  c:
+    debug-setup: --option and args

@@ -1,0 +1,9 @@
+#!/bin/bash
+#
+
+run_dbench()
+{
+	cmd dbench $nr_threads -c /usr/share/dbench/client.txt
+}
+
+run_dbench

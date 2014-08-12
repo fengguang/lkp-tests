@@ -1,0 +1,58 @@
+#!/bin/bash
+
+monitor=$1
+monitor_dir=$(dirname $0)
+shift
+
+# Always use a FIFO, whose 64k buffer helps prevent write stalls on NFS dir.
+fifo_dir=$TMP/monitor_fifo
+fifo=$fifo_dir/$monitor
+mkdir -p $fifo_dir
+
+# The same monitor already running. This could happen if the expanded default
+# monitors happen to duplicate what's specified additionally by the user.
+[ -p $fifo ] && exit 0
+mkfifo $fifo || exit 0
+
+if grep -q -x -F "$monitor" $monitor_dir/need_timestamp; then
+	stdbuf -o0 -e0 $monitor_dir/$monitor "$@" | ruby -n -e 'printf "%s %s", Time.now.strftime("%s.%N"), $_' > $fifo &
+else
+	stdbuf -o0 -e0 $monitor_dir/$monitor "$@"            > $fifo &
+fi
+
+# Save pid to be killed when the tests complete. gzip/cat will auto
+# quit when the FIFO writer is killed.
+echo $! >> $TMP/pid-monitors
+
+[[ -L $LKP_SRC/bin/cat-$monitor ]] || ln -s -T /bin/cat $LKP_SRC/bin/cat-$monitor
+
+if grep -q -x -F $monitor $monitor_dir/need_gzip; then
+	#
+	# FILE          SIZE     COMPRESS TIME
+	# ====================================================================
+	# trace         90M
+	# trace.lzo     10M      0.10s user 0.03s system 97% cpu  0.132 total
+	# trace.gz      5.0M     1.17s user 0.04s system 99% cpu  1.223 total
+	# trace.bz2     4.1M    18.80s user 0.10s system 99% cpu 18.919 total
+	# trace.lzma    3.1M    86.63s user 0.14s system 99% cpu 1:26.91 total
+	#
+	# gzip is pretty balanced.
+	#
+	[[ -L $LKP_SRC/bin/gzip-$monitor ]] || ln -s -T /bin/gzip $LKP_SRC/bin/gzip-$monitor
+
+	if [[ $monitor = 'ftrace' ]]; then
+		# ftrace output may be too large for tmpfs
+		gzip-$monitor -c < $fifo | cat-$monitor > $RESULT_ROOT/$monitor.gz &
+	else
+		gzip-$monitor -c < $fifo		> $TMP_RESULT_ROOT/$monitor.gz &
+	fi
+else
+	# The small continuous output of vmstat is a convenient alive indicator
+	if [[ $monitor = vmstat ]]; then
+		cat-$monitor	   $fifo		> $RESULT_ROOT/$monitor &
+	else
+		cat-$monitor	   $fifo		> $TMP_RESULT_ROOT/$monitor &
+	fi
+fi
+
+echo $! >> $TMP/.pid-pipes

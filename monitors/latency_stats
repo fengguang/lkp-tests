@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# reference code: linux/kernel/latencytop.c
+
+[[ -d /proc/latency_stats ]] || exit 0
+
+snapshot()
+{
+	echo time: $(date +%s.%N)
+	cat /proc/latency_stats
+}
+
+echo 0 > /proc/latency_stats
+echo 1 > /proc/sys/kernel/latencytop
+
+source $LKP_SRC/lib/wait.sh
+
+wait_post_test
+snapshot
+echo 0 > /proc/sys/kernel/latencytop

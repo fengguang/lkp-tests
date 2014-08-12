@@ -1,0 +1,8 @@
+#!/usr/bin/ruby
+
+while line = STDIN.gets
+	case line
+	when /^startup_time: /, /^kill_time: /
+		puts line
+	end
+end

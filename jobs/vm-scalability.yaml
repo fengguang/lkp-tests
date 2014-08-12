@@ -1,0 +1,75 @@
+testcase: vm-scalability
+perf-profile:
+
+runtime: 300s
+size:
+
+vm-scalability:
+  test:
+  - anon-r-rand
+  - anon-r-rand-mt
+  - anon-r-seq
+  - anon-r-seq-mt
+  - anon-rx-rand-mt
+  - anon-rx-seq-mt
+  - lru-file-mmap-read
+  - lru-file-mmap-read-rand
+  - lru-file-readonce
+  - lru-file-readtwice
+  - mmap-pread-rand
+  - mmap-pread-rand-mt
+  - mmap-pread-seq
+  - mmap-pread-seq-mt
+  - mmap-xread-rand-mt
+  - mmap-xread-seq-mt
+  - mremap-xread-rand-mt
+  - small-allocs
+  - small-allocs-mt
+
+---
+size: 16G
+
+vm-scalability:
+  test:
+  - shm-pread-rand
+  - shm-pread-rand-mt
+  - shm-xread-rand
+  - shm-xread-rand-mt
+  - truncate
+  - msync
+
+---
+size: 64G
+
+vm-scalability:
+  test:
+  - anon-cow-rand
+  - anon-cow-rand-mt
+  - anon-w-seq-mt
+  - anon-w-rand
+  - anon-w-rand-mt
+  - anon-wx-rand-mt
+  - msync-mt
+  - lru-shm-rand
+
+---
+size: 128G
+
+vm-scalability:
+  test:
+  - lru-shm
+  - remap
+
+---
+size: 1T
+
+vm-scalability:
+  test:
+  - anon-cow-seq
+  - anon-cow-seq-mt
+  - anon-w-seq
+  - anon-wx-seq-mt
+  - shm-pread-seq
+  - shm-pread-seq-mt
+  - shm-xread-seq
+  - shm-xread-seq-mt

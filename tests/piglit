@@ -1,0 +1,42 @@
+#!/bin/bash
+# - test
+
+export PATH=$BENCHMARK_ROOT/piglit/bin:$PATH
+export DISPLAY=:0
+
+dri_exist()
+{
+	[[ -d /sys/kernel/debug/dri ]]
+}
+
+check_wait_dri()
+{
+	dri_exist && return
+
+	mountpoint /sys/kernel/debug ||
+	mount -t debugfs debugfs /sys/kernel/debug || exit
+
+	dri_exist && return
+
+	modprobe drm
+
+	for i in {1..9}
+	do
+		sleep $i
+		dri_exist && return
+	done
+
+	dri_exist && return
+
+	echo "No /sys/kernel/debug/dri" >&2
+}
+
+check_wait_dri
+
+cat > piglit.conf <<EOF
+[igt]
+path=$BENCHMARK_ROOT/piglit/lib/piglit/bin/igt
+EOF
+
+cmd piglit run $test $RESULT_ROOT/$test
+cmd piglit summary console $RESULT_ROOT/$test

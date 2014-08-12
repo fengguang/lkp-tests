@@ -1,0 +1,20 @@
+#!/bin/bash
+# - param_a
+# - param_b
+# - param_c
+# - param.d
+
+echo "arg#=$#"
+echo "arg0=$0"
+echo "arg1=$1"
+echo "arg2=$2"
+echo "arg3=$3"
+echo "argv=$@"
+
+echo "param_a=$param_a"
+echo "param_b=$param_b"
+echo "param_c=$param_c"
+echo "param_d=$param_d"
+
+echo "job_pwd=$job_pwd"
+echo "all_program_env=$all_program_env"

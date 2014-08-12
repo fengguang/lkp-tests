@@ -1,0 +1,18 @@
+#!/bin/bash
+
+scaling_governor=$1
+[[ $scaling_governor ]] || scaling_governor=performance
+
+[[ $scaling_governor = "performance" ]] || [[ $scaling_governor = "ondemand" ]] || exit 0
+[[ -d /sys/devices/system/cpu/intel_pstate ]] || [[ -f /sys/devices/system/cpu/cpu0/cpufreq/scaling_driver && $(</sys/devices/system/cpu/cpu0/cpufreq/scaling_driver) = "acpi-cpufreq" ]] || exit 0
+
+if [ -d /sys/devices/system/cpu/intel_pstate ] && [ $scaling_governor = "ondemand" ]
+then
+	scaling_governor="powersave"
+fi
+
+for file in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+do
+	note "echo $scaling_governor > $file"
+	echo $scaling_governor > $file
+done

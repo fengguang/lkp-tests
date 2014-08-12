@@ -1,0 +1,24 @@
+#!/bin/bash
+# - events
+# - time
+# - command
+
+# perf may consume lots of fd
+ulimit -n 102400
+
+[[ "$events" ]] || events='hardware cache software'
+events=$(perf-events $events)
+[[ "$events" ]] || exit
+
+opt_events="-e $(echo $events | sed 's/ / -e /g')"
+
+[[ "$command" ]] || {
+	if [[ $time ]]; then
+		command="sleep $time"
+	else
+		source $LKP_SRC/lib/wait.sh
+		command="$WAIT_POST_TEST_CMD"
+	fi
+}
+
+exec perf stat -a -x' ' $opt_events -o $RESULT_ROOT/$(basename $0) -- $command

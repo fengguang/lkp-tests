@@ -1,0 +1,7 @@
+#!/bin/bash
+
+program=$1
+program_dir=$(dirname $0)
+
+shift
+exec $program_dir/$program "$@" | tee > $RESULT_ROOT/$program

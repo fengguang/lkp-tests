@@ -1,0 +1,21 @@
+#!/bin/bash
+# - nr_threads
+
+repeat=3
+
+run_kbuild()
+{
+	for i in $(seq $repeat)
+	do
+		cmd make mrproper
+		cmd make defconfig
+		cmd make -j $nr_threads vmlinux 2> /dev/null
+	done
+}
+
+cd $BENCHMARK_ROOT/kbuild/linux || {
+	echo "ERROR: no kernel source code in $BENCHMARK_ROOT/kbuild/linux" 1>&2
+	exit 1
+}
+
+run_kbuild

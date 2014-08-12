@@ -1,0 +1,13 @@
+testcase: boot
+
+boot-meminfo:
+boot-slabinfo:
+boot-memory:
+memmap:
+bootmem: # depends on memmap and boot-meminfo stats
+
+default_monitors:
+  boottime:
+  kernel-size:
+
+sleep: 1

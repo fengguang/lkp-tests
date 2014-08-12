@@ -1,0 +1,12 @@
+testcase: idle
+
+default_monitors:
+  latency_stats:
+  interrupts:
+  softirqs:
+  cpuidle:
+  turbostat:
+
+stop_daemons:
+
+sleep: 10m

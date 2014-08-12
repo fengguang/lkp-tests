@@ -1,0 +1,39 @@
+#!/bin/bash
+# - interval
+
+[ -f /sys/devices/system/cpu/cpu0/cpuidle/state0/name ] || exit 0
+
+shopt -s nullglob
+
+take_snapshot()
+{
+	echo time: $(date +%s.%N)
+
+	for cpu in $(cd /sys/devices/system/cpu && echo cpu[0-9]*)
+	do
+		for state in $(cd /sys/devices/system/cpu/$cpu && echo cpuidle/state*)
+		do
+			state_name=$(</sys/devices/system/cpu/$cpu/$state/name)
+			state_time=$(</sys/devices/system/cpu/$cpu/$state/time)
+			state_usage=$(</sys/devices/system/cpu/$cpu/$state/usage)
+			echo $cpu.${state_name}.time: ${state_time}
+			echo $cpu.${state_name}.usage: ${state_usage}
+		done
+	done
+}
+
+file=$(basename $0)
+
+if [[ ! $interval ]]; then
+	source $LKP_SRC/lib/wait.sh
+	take_snapshot
+	wait_post_test
+	take_snapshot
+	exit
+fi
+
+while :
+do
+	take_snapshot
+	sleep $interval
+done

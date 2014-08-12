@@ -1,0 +1,9 @@
+#!/usr/bin/awk -f
+
+/Final score for writes/ {
+	print "write_score:", $NF
+}
+
+/Final score for reads/ {
+	print "read_score:", $NF
+}

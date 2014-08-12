@@ -1,0 +1,53 @@
+#!/bin/bash
+# - rwmode
+# - iomode
+# - filenum
+
+[[ $period   ]] || period=600
+[[ $rwmode   ]] || rwmode=rndrw
+[[ $iomode   ]] || iomode=sync
+[[ $size     ]] || size=$((128<<30))
+[[ $filenum  ]] || filenum=128
+
+filenum=${filenum%f}
+
+args=(
+	--max-requests=0
+	--num-threads=$nr_threads
+	--max-time=$period
+	--file-test-mode=$rwmode
+	--file-total-size=$size
+	--file-io-mode=$iomode
+	--file-num=$filenum
+)
+
+prepare()
+{
+	cmd sysbench --test=fileio "${args[@]}" prepare
+}
+
+prepare_fallocate()
+{
+	local filesize=$((size / filenum))
+	for ((i = 0; i < filenum; i++))
+	do
+		cmd fallocate -l $filesize test_file.$i
+	done
+}
+
+run()
+{
+	# permit more files open in system
+	ulimit -n $(($filenum + 2048))
+	cmd sysbench --test=fileio "${args[@]}" run
+}
+
+note cd "$mount_points"
+cd "$mount_points" || exit
+
+if [[ $rwmode =~ 'wr' ]]; then
+	prepare_fallocate
+else
+	prepare
+fi
+run

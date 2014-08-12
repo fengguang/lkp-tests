@@ -1,0 +1,35 @@
+#!/bin/bash -e
+
+[[ $LKP_SRC ]] || export LKP_SRC="$(dirname $(dirname $(realpath $0)))"
+
+BM_NAME=$1
+BM_ROOT=/lkp/benchmarks/$BM_NAME
+
+while [ $# -gt 1 ]
+do
+	case "$2" in
+	(--cleanup) clean_flag=true;;
+	(--deb) deb_flag=true;;
+	(*) break;;
+	esac
+	shift
+done
+
+source $LKP_SRC/pack/default
+source $LKP_SRC/pack/$BM_NAME
+
+rm -fr "$BM_ROOT"
+mkdir -p $BM_ROOT
+
+cd /tmp
+
+download
+build
+install
+if [[ $deb_flag ]]; then
+	pack_deb
+else
+	pack
+fi
+
+[[ $clean_flag ]] && cleanup

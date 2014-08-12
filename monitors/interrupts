@@ -1,0 +1,29 @@
+#!/bin/bash
+# - interval
+
+file=$(basename $0)
+file=${file#proc-}
+
+[ -f /proc/$file ] || exit
+
+take_snapshot()
+{
+	echo time: $(date +%s.%N)
+	cat /proc/$file
+}
+
+if [[ $interval ]]; then
+	source $LKP_SRC/lib/builtin.sh
+
+	while :
+	do
+		take_snapshot
+		sleep $interval
+	done
+else
+	source $LKP_SRC/lib/wait.sh
+
+	take_snapshot
+	wait_post_test
+	take_snapshot
+fi

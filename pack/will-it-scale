@@ -1,0 +1,13 @@
+#!/bin/bash
+
+download()
+{
+	git clone https://github.com/antonblanchard/will-it-scale.git
+	source_dir="will-it-scale"
+}
+
+install()
+{
+	find . -maxdepth 1 -type f -executable ! -name ".*" \
+		-exec cp -af {} $BM_ROOT \;
+}

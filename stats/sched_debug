@@ -1,0 +1,28 @@
+#!/usr/bin/ruby
+
+while line = STDIN.gets
+	case line
+	when /^time:/
+		puts line
+		$prefix = ""
+	when /^Sched Debug Version:/
+		next
+	when /^\s*(\S+)\s*:\s+([0-9.-]+)/
+		next if $prefix.index ':/autogroup-'
+		puts "#{$prefix}#{$1}: #{$2}"
+	when /^runnable tasks:/
+		sub_names = STDIN.gets.split
+		line = STDIN.gets
+		while line = STDIN.gets
+			break unless line =~ /^R?\s*([^\s].+)$/
+			values = $1.split
+			for i in 1..sub_names.size-1
+				# puts "#{values[0]}.#{sub_names[i]}: #{values[i]}"
+			end
+		end
+	else
+		values = line.split
+		next unless values.size > 0
+		$prefix = values[0].tr(',', '')
+	end
+end

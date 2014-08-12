@@ -1,0 +1,16 @@
+---
+testcase: fio-jbod
+
+disk:
+- 12HDD
+fs:
+- ext4
+
+fio:
+  rw:
+  - randwrite
+  ioengine:
+  - sync
+  bs: 4k
+  group_file_number: 8
+  sub_group_number: 8

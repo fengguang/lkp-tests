@@ -1,0 +1,28 @@
+#!/usr/bin/awk -f 
+#example input:
+#time: 1361881488
+#Node 0, zone      DMA      0      0      0      1      2      1      1      0      1      1      3   
+#Node 0, zone    DMA32      8      4      6      7      4      3      5      8      7      3    738 
+#Node 0, zone   Normal    172    118     51     41     11      3      1      7      1      1      4   
+#Node 1, zone   Normal     61     66     24      4      0      1      1      9     11      5    922
+
+BEGIN {
+	nr_col = 4
+}
+
+/^time:/ {
+	print $0
+}
+
+NF > 4 {
+	idx = ""
+	if(match($2, /[0-9]+,/) > 0) {
+		idx = substr($2, RSTART, RLENGTH-1)
+		idx = idx"."
+	}
+	sub_prefix = $1"."idx""$3"."$4"."
+	for(i = 1; i <= NF-nr_col; i++) {
+		print sub_prefix""(i-1)": "$(i+nr_col)
+	}
+}
+

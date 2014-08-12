@@ -1,0 +1,15 @@
+testcase: iozone
+
+disk: 2HDD
+
+fs:
+- xfs
+- ext4
+- btrfs
+iosched:
+- cfq
+
+monitors:
+  perf-profile:
+
+iozone:

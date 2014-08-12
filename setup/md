@@ -1,0 +1,62 @@
+#!/bin/bash
+# - raid_level
+# - raid_chunk
+
+: ${raid_level:=JBOD}
+: ${raid_chunk:=256}
+
+check_raid_level()
+{
+	[[ $raid_level =~ 'raid' ]] || exit 0
+	[[ $raid_level =~ 'braid' ]] && exit 0
+}
+check_raid_level
+
+check_partition_size() {
+	for dev do
+		[[ $dev =~ :/ ]] && continue
+
+		local part=$(basename $dev)
+		local size=$(grep $part /proc/partitions | awk '{ print $3 }')
+		[[ $size ]] || {
+			echo "failed to get partition size for $dev" >&2
+			exit 1
+		}
+		if [[ $prev_size ]]; then
+			[[ $size != $prev_size ]] || {
+				echo "non-equal partition size: $dev $size" >&2
+				cat /proc/partitions >&2
+				exit 1
+			}
+		else
+			local prev_size=size
+		fi
+	done
+}
+check_partition_size $partitions
+
+destroy_devices() {
+	for dev in $partitions
+	do
+		dd if=/dev/zero of=$dev bs=4k count=100 status=noxfer \
+		2> >(grep -v -e "records in$" -e "records out$" >&2)
+	done
+}
+
+make_md() {
+	grep -q '^md0 : active' /proc/mdstat && cmd mdadm --stop /dev/md0
+	echo y | cmd mdadm -q --create /dev/md0 --chunk=$raid_chunk --level=$raid_level --raid-devices=$nr_partitions --force --assume-clean $partitions
+}
+
+destroy_devices
+make_md
+
+cat >> $TMP/env.yaml <<EOF
+
+# setup/md
+nr_partitions: 1
+partitions: /dev/md0
+raid_device: /dev/md0
+raid_level: $raid_level
+raid_chunk: $raid_chunk
+EOF

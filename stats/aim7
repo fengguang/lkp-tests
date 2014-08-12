@@ -1,0 +1,10 @@
+#!/usr/bin/awk -f
+
+/Tasks.*jobs\/min.*jti/ {
+	getline
+	printf("jobs-per-min: %s\n", 	      $2)
+	printf("jti: %s\n", 		      $3)
+	printf("jobs-per-min-per-task: %s\n", $4)
+	printf("real: %s\n", 		      $5)
+	printf("cpu: %s\n", 		      $6)
+}

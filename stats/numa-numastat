@@ -1,0 +1,15 @@
+#!/usr/bin/ruby
+
+nr = 0
+
+STDIN.each_line do |line|
+	case line
+	when /^time:/
+		puts line
+	when /^node:/
+		node, nr = line.split
+	else
+		key, value = line.split
+		puts "node#{nr}.#{key}: #{value}"
+	end
+end

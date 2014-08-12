@@ -1,0 +1,103 @@
+#!/usr/bin/ruby
+
+require 'optparse'
+require 'ostruct'
+require 'fileutils'
+
+ENV["LKP_SRC"] ||= File.dirname File.dirname File.realpath $PROGRAM_NAME
+LKP_SRC = ENV["LKP_SRC"]
+
+require "#{LKP_SRC}/lib/yaml.rb"
+require "#{LKP_SRC}/lib/stats.rb"
+require "#{LKP_SRC}/lib/matrix.rb"
+require "#{LKP_SRC}/lib/job.rb"
+
+TMP = LKP_SRC + '/tmp'
+ENV['TMP'] = TMP
+
+ENV['PATH'] = ENV['PATH'] + ":#{LKP_SRC}/bin"
+ENV['BENCHMARK_ROOT'] = '/lkp/benchmarks'
+ENV['LKP_HOME'] = File.dirname LKP_SRC
+ENV['LKP_USER'] = File.basename ENV['LKP_HOME']
+
+$opt_result_root = nil
+
+opts = OptionParser.new do |opts|
+        opts.banner = 'Usage: run-local [--dry-run] [-o RESULT_ROOT] JOBFILE'
+
+        opts.separator ''
+        opts.separator 'options:'
+
+        opts.on('-o RESULT_ROOT', '--output RESULT_ROOT', 'dir for storing all results') do |dir|
+		FileUtils.rm_rf dir
+		Dir.mkdir dir unless Dir.exist? dir
+                ENV['RESULT_ROOT'] = $opt_result_root = File.realpath dir
+        end
+
+        opts.on('-n', '--dry-run', 'dry run only') do
+                ENV["LKP_DRYRUN"] = '1'
+        end
+
+        opts.on_tail('-h', '--help', 'Show this message') do
+                puts opts
+                exit
+        end
+end
+
+if ARGV == []
+        argv = ['-h']
+else
+        argv = ARGV
+end
+opts.parse!(argv)
+
+jobfile = ARGV[0]
+unless jobfile
+	puts "No jobfile specified"
+	exit 1
+end
+
+def create_result_root(_result_root)
+	1.upto(100) do |i|
+		result_root = "#{_result_root}/#{i}"
+		next if Dir.exists? result_root
+		FileUtils.mkdir_p result_root, :mode => 02775
+		return result_root
+	end
+	STDERR.puts "cannot create more result_roots under #{_result_root}"
+	return nil
+end
+
+if $opt_result_root == nil
+	HOSTNAME = ENV["HOSTNAME"] || `hostname`.chomp
+	job = Job.new
+	job.load(jobfile) or (
+		STDERR.puts "#{jobfile} is not a valid jobfile"
+		exit 1
+	)
+	job['testbox'] = HOSTNAME
+	job['kconfig'] ||= 'defconfig'
+	job['commit'] ||= `uname -r`.chomp!
+	_result_root = job._result_root
+	result_root = create_result_root(_result_root) or exit
+	ENV['RESULT_ROOT'] = result_root
+end
+
+ENV['TMP_RESULT_ROOT'] = ENV['RESULT_ROOT']
+
+FileUtils.rm_rf TMP
+Dir.mkdir TMP
+
+system LKP_SRC + '/setup/env'
+system LKP_SRC + '/bin/run-job', jobfile
+system LKP_SRC + '/bin/post-run'
+system LKP_SRC + '/sbin/extract-stats', jobfile, LKP_SRC + '/etc/default_stats.yaml'
+
+exit if ENV["LKP_DRYRUN"]
+
+stats = create_stats_matrix ENV['RESULT_ROOT']
+if $opt_result_root == nil
+	stats['stats_source'] = result_root + '/stats.json'
+	unite_to(stats, _result_root, true)
+	system(LKP_SRC + '/sbin/unite-params', result_root)
+end

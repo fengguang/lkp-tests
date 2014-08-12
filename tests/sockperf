@@ -1,0 +1,24 @@
+#!/bin/bash
+# - msg_size
+
+cd $BENCHMARK_ROOT/sockperf || exit
+
+cmd ./sockperf server &
+pid=$!
+
+cmd ./sockperf server --tcp &
+pid_tcp=$!
+
+[[ $runtime ]] || runtime=600
+time=$((runtime / 6))
+msg_size=${msg_size%%[bB]}
+
+for subcmd in under-load ping-pong throughput
+do
+	echo "sockperf: subcommand $subcmd UDP"
+	cmd ./sockperf $subcmd --time $time --msg-size $msg_size
+	echo "sockperf: subcommand $subcmd TCP"
+	cmd ./sockperf $subcmd --time $time --msg-size $msg_size --tcp
+done
+
+kill $pid $pid_tcp

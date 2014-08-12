@@ -1,0 +1,26 @@
+testcase: aim7
+
+aim7:
+  load: 4000
+  test:
+  - exec_test
+  - creat-clo
+  - trig_rtns
+
+---
+aim7:
+  load: 6000
+  test:
+  - disk_src
+  - disk_rr
+  - disk_rw
+  - link_test
+  - page_test
+  - signal_test
+
+---
+aim7:
+  load: 10000
+  test:
+  - sync_disk_rw
+  - udp_test
