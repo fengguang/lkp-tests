@@ -6,7 +6,7 @@ GIT_TREE ||= ENV['GIT_WORK_TREE'] || '/c/lkp/linux'
 GIT	 ||= "git --work-tree=#{GIT_TREE} --git-dir=#{GIT_TREE}/.git"
 
 def commit_tag(commit)
-	`#{GIT} tag --points-at #{commit} | grep -v '/' | grep -E '^(v[0-9]|next)'`.chomp
+	`#{GIT} describe --tags --exact-match #{commit} 2>/dev/null | sed 's#linux-devel/##'`.chomp
 end
 
 def is_commit(commit)
