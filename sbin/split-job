@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 
-LKP_SRC = ENV["LKP_SRC"] || "/lkp/#{ENV['USER']}/src"
+LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
 
 require "#{LKP_SRC}/lib/job.rb"
 require 'optparse'

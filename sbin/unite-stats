@@ -1,8 +1,6 @@
 #!/usr/bin/ruby
 
-LKP_USER = ENV['LKP_USER'] || ENV['USER'] || `whoami`.chomp
-LKP_HOME = ENV["LKP_HOME"] || '/lkp/' + LKP_USER
-LKP_SRC = ENV["LKP_SRC"] || LKP_HOME + '/src'
+LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
 
 require "#{LKP_SRC}/lib/matrix.rb"
 require "#{LKP_SRC}/lib/statistics.rb"

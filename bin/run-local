@@ -17,8 +17,6 @@ ENV['TMP'] = TMP
 
 ENV['PATH'] = ENV['PATH'] + ":#{LKP_SRC}/bin"
 ENV['BENCHMARK_ROOT'] = '/lkp/benchmarks'
-ENV['LKP_HOME'] = File.dirname LKP_SRC
-ENV['LKP_USER'] = File.basename ENV['LKP_HOME']
 
 $opt_result_root = nil
 

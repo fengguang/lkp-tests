@@ -1,12 +1,13 @@
 #!/usr/bin/ruby
 
-LKP_SRC = ENV["LKP_SRC"] || "/lkp/#{ENV['USER']}/src"
 RESULT_ROOT = ENV["RESULT_ROOT"] || "/tmp"
 
-ENV.update({
-	"LKP_SRC" => LKP_SRC,
-	"LKP_HOME"    => "/lkp/#{ENV['USER']}",
-})
+if ENV["LKP_SRC"]
+	LKP_SRC = ENV["LKP_SRC"]
+else
+	LKP_SRC = File.dirname File.dirname File.realpath $PROGRAM_NAME
+	ENV["LKP_SRC"] = LKP_SRC
+end
 
 require "#{LKP_SRC}/lib/job.rb"
 

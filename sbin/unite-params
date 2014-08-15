@@ -2,8 +2,7 @@
 
 MAX_COLS = 100
 
-LKP_USER = ENV['LKP_USER'] || ENV['USER'] || `whoami`.chomp
-LKP_SRC = ENV["LKP_SRC"] || "/lkp/#{LKP_USER}/src"
+LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
 
 require "#{LKP_SRC}/lib/job.rb"
 

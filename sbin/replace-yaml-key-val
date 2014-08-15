@@ -1,9 +1,6 @@
 #!/usr/bin/ruby
 
-HOSTNAME = ENV["HOSTNAME"] || `hostname`.chomp
-LKP_USER = ENV['LKP_USER'] || ENV['USER'] || `whoami`.chomp
-LKP_HOME = ENV["LKP_HOME"] || '/lkp/' + LKP_USER
-LKP_SRC = ENV["LKP_SRC"] || LKP_HOME + '/src'
+LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
 
 require "#{LKP_SRC}/lib/job.rb"
 require "#{LKP_SRC}/lib/misc.rb"

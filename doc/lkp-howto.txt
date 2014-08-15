@@ -70,10 +70,6 @@ Use split-job command to split the predefined job file.
 	    -k, --kernel COMMIT              test kernel commit
 	    -h, --help                       show this message
 
-Before using this command to split job file, we should set the environment
-variable LKP_SRC, which indicates the path to lkp-tests source directory.
-Otherwise, the command will not be able to find some dependent libraries.
-
 Here use the '-c' option to specify the kconfig of the testing kernel, if
 omitted, it will be set to "defconfig" in the following setup-local step.
 And the '-k' option can specify the commit number or the version of the
@@ -128,8 +124,6 @@ command we described in 5.1. If the result root is not specified using
 
 Here, we give an example how to run a specific testcase ebizzy following
 above steps.
-
-	# export LKP_SRC=$PWD
 
 Firstly, split the job file:
 
