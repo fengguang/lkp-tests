@@ -1,4 +1,5 @@
 testcase: debug
+ENV_VAR: top level hash key:val is accessible from the test script
 a:
   debug-setup:
     param_a: 1

@@ -4,6 +4,8 @@
 # - param_c
 # - param.d
 
+echo ENV_VAR="$ENV_VAR"
+
 echo "arg#=$#"
 echo "arg0=$0"
 echo "arg1=$1"
