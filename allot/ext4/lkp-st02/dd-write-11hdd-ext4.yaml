@@ -1,0 +1,27 @@
+testcase: dd-write
+
+runtime: 5m
+
+disk: 11HDD
+md:
+- JBOD
+- RAID5
+iosched:
+- cfq
+fs:
+- ext4
+
+monitors:
+  perf-stat:
+  perf-profile:
+  ftrace:
+  - events:
+      balance_dirty_pages
+      bdi_dirty_ratelimit
+      global_dirty_state
+      writeback_single_inode
+
+nr_threads:
+- 100dd
+
+dd:
