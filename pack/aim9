@@ -1,0 +1,26 @@
+#!/bin/bash
+
+WEB_URL="http://nchc.dl.sourceforge.net/project/aimbench/aim-suite9/Initial%20release/s9110.tar.Z"
+source_dir="aim9"
+
+build()
+{
+	cd $source_dir
+	make <<-END
+
+
+gcc
+-O
+
+
+END
+	make
+}
+
+install()
+{
+	find . -maxdepth 1 -type f -executable ! -name ".*" \
+		-exec cp -af {} $BM_ROOT \;
+	cp fakeh.tar $BM_ROOT
+	cp -af s9workfile $BM_ROOT/s9workfile.all
+}
