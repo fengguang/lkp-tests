@@ -1,0 +1,5 @@
+#!/usr/bin/awk -f
+
+/^[ ]+[0-9]+.*/ {
+	printf("%s.ops_per_sec: %s\n", $2, $6)
+}
