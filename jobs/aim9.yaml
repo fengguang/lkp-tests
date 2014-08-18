@@ -1,0 +1,71 @@
+testcase: aim9
+
+aim9:
+  testtime: 5s
+  test:
+  - all
+
+---
+aim9:
+  testtime: 300s
+  test:
+  - add_double
+  - add_float
+  - add_int
+  - add_long
+  - add_short
+  - array_rtns
+  - brk_test
+  - creat-clo
+  - dgram_pipe
+  - dir_rtns_1
+  - disk_cp
+  - disk_rd
+  - disk_rr
+  - disk_rw
+  - disk_src
+  - disk_wrt
+  - div_double
+  - div_float
+  - div_int
+  - div_long
+  - div_short
+  - exec_test
+  - fifo_test
+  - fork_test
+  - fun_cal
+  - fun_cal1
+  - fun_cal15
+  - fun_cal2
+  - jmp_test
+  - link_test
+  - matrix_rtns
+  - mem_rtns_1
+  - mem_rtns_2
+  - misc_rtns_1
+  - mul_double
+  - mul_float
+  - mul_int
+  - mul_long
+  - mul_short
+  - new_raph
+  - num_rtns_1
+  - page_test
+  - pipe_cpy
+  - ram_copy
+  - series_1
+  - shared_memory
+  - shell_rtns_1
+  - shell_rtns_2
+  - shell_rtns_3
+  - sieve
+  - signal_test
+  - sort_rtns_1
+  - stream_pipe
+  - string_rtns
+  - sync_disk_cp
+  - sync_disk_rw
+  - sync_disk_wrt
+  - tcp_test
+  - trig_rtns
+  - udp_test
