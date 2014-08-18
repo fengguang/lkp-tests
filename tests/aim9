@@ -39,7 +39,7 @@ run_aim()
 }
 
 cd $BENCHMARK_ROOT/aim9 || {
-	echo "ERROR: aim9 benchmark is not installed yet!"
+	echo "ERROR: aim9 benchmark is not installed yet!" >&2
 	exit 1
 }
 
