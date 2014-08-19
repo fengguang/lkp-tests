@@ -1,0 +1,13 @@
+diff --git a/creat-clo.c b/creat-clo.c
+index 9d46dff..6da7340 100644
+--- a/creat-clo.c
++++ b/creat-clo.c
+@@ -94,7 +94,7 @@ creat_clo_c()
+  * SIGUSR2, a message is printed and 'error' is set to 1 which
+  * will terminate the test.
+  */
+-static int sigcount;			/* count of signals */
++static volatile int sigcount;			/* count of signals */
+ static int error;			/* no errors now */
+ static void
+ sighandler(int sig)

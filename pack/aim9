@@ -6,6 +6,7 @@ source_dir="aim9"
 build()
 {
 	cd $source_dir
+	patch_source
 	make <<-END
 
 
