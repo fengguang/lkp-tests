@@ -1,0 +1,21 @@
+#!/bin/bash
+# - all
+# - localalloc
+# - interleave
+# - membind
+# - cpunodebind
+# - preferred
+
+opts=
+[[ -v $all        ]] && opts+=" --all"
+[[ -v $localalloc ]] && opts+=" --localalloc"
+[[ $interleave    ]] && opts+=" --interleave=$interleave"
+[[ $membind       ]] && opts+=" --membind=$membind"
+[[ $cpunodebind   ]] && opts+=" --cpunodebind=$cpunodebind"
+[[ $preferred     ]] && opts+=" --preferred=$preferred"
+
+cat >> $TMP/env.yaml <<EOF
+
+# setup/numactl
+exec_prefix="numactl $opts --"
+EOF

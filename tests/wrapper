@@ -4,4 +4,4 @@ program=$1
 program_dir=$(dirname $0)
 
 shift
-exec $program_dir/$program "$@" | tee > $RESULT_ROOT/$program
+exec $exec_prefix $program_dir/$program "$@" | tee > $RESULT_ROOT/$program
