@@ -66,9 +66,10 @@ def commit_exists(commit)
 	return false
 end
 
-# v2.6.32	=> 263200
-# v3.11-rc6	=> 301006
-# v3.11		=> 301100
+# v2.6.32	        => 263200
+# v3.11-rc6	        => 301006
+# v3.11-rc6_081811	=> 301006.081811
+# v3.11		        => 301100
 def tag_order(tag)
 	case tag
 	when /^v2\.(\d+)\.(\d+)/
@@ -80,9 +81,13 @@ def tag_order(tag)
 		return 0
 	end
 
-	if tag =~ /-rc(\d+)$/
+	if tag =~ /-rc(\d+)/
 		sort_key += $1.to_i
 		sort_key -= 100
+	end
+
+	if tag =~ /_(\d+)$/
+		sort_key += ('.' + $1).to_f
 	end
 
 	return sort_key
