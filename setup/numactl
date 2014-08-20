@@ -1,10 +1,10 @@
 #!/bin/bash
-# - all
-# - localalloc
-# - interleave
-# - membind
-# - cpunodebind
-# - preferred
+# = all
+# = localalloc
+# = interleave
+# = membind
+# = cpunodebind
+# = preferred
 
 opts=
 [[ -v $all        ]] && opts+=" --all"

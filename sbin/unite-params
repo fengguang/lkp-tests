@@ -26,7 +26,7 @@ params = YAML.load_file($params_file) if File.exists? $params_file
 job = Job.new
 job.load($result_root + '/job.yaml') or exit
 
-job.each_param { |k, v|
+job.each_param { |k, v, option_type|
 	if params[k]
 		if not params[k].include? v
 			params[k] << v

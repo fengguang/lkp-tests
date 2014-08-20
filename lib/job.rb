@@ -102,10 +102,12 @@ def for_each_program_or_param(ah)
 		# puts k
 		if $programs.include? k
 			if (v.class == Array and v.size > 1) or (v.class == Hash and v.size >= 1)
-				if $programs[k] == ''
-					options = []
-				else
-					options = `#{LKP_SRC}/bin/program-options #{$programs[k]}`.split
+				options = {}
+				if $programs[k].size > 0
+					`#{LKP_SRC}/bin/program-options #{$programs[k]}`.each_line { |line|
+						type, name = line.split
+						options[name] = type
+					}
 				end
 				if options.include? string_or_hash_key(strip_trivial_array(v)) 
 					if v.class == Hash
@@ -215,21 +217,23 @@ class Job
 	def each_param
 		create_programs_hash "{setup,tests}/**/*"
 		for_each_program(@job) { |k, v|
-			if $programs[k] == ''
-				options = []
-			else
-				options = `#{LKP_SRC}/bin/program-options #{$programs[k]}`.split
+			options = {}
+			if $programs[k].size > 0
+				`#{LKP_SRC}/bin/program-options #{$programs[k]}`.each_line { |line|
+					type, name = line.split
+					options[name] = type
+				}
 			end
 			if v.class == Hash
-				v.each { |kk, vv| yield kk, options.include?(kk) ? strip_trivial_array(vv) : kk }
+				v.each { |kk, vv| yield kk, options.include?(kk) ? strip_trivial_array(vv) : kk, options[kk] }
 			elsif v.class == Array
 				if v[0].class == Hash
-					v[0].each { |kk, vv| yield kk, options.include?(kk) ? strip_trivial_array(vv) : kk }
+					v[0].each { |kk, vv| yield kk, options.include?(kk) ? strip_trivial_array(vv) : kk, options[kk] }
 				else
-					yield k, v[0]
+					yield k, v[0], options[k]
 				end
 			else
-				yield k, v
+				yield k, v, options[k]
 			end
 		}
 	end
@@ -243,7 +247,16 @@ class Job
 
 	def path_params
 		path = ''
-		each_param { |k, v|
+		each_param { |k, v, option_type|
+			if option_type == '='
+				if v and v != ''
+					path += "#{k}=#{v}".tr('/$()', '_')
+				else
+					path += "#{k}".tr('/$()', '_')
+				end
+				path += '-'
+				next
+			end
 			next unless v
 			path += v.to_s.tr('/$()', '_')
 			path += '-'
