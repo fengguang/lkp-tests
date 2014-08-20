@@ -67,6 +67,10 @@ opts = OptionParser.new do |opts|
                 $opt_all = true
         end
 
+        opts.on('-t', '--group-by-test', 'test-grouped output format') do
+                $test_group = true
+        end
+
         opts.on('-i', '--index', 'performance/power index') do
 		$opt_index	= true
 		$size_index	= load_yaml LKP_SRC + '/etc/index-size.yaml'
@@ -119,6 +123,7 @@ $_result_root_saved = Set.new
 
 $dims = Hash.new
 $cases = Hash.new
+$tests = Hash.new
 $sum = Hash.new { |hash, key| hash[key] = 0 }
 $stddev = Hash.new { |hash, key| hash[key] = 0 }
 
@@ -237,11 +242,22 @@ def add_result_root(result_root)
 	}
 end
 
+def setup_test_group(result_root)
+	dirs = File.dirname(File.dirname(File.dirname(result_root))).sub(RESULT_ROOT, '').split('/')
+	dirs.shift if dirs[0] == ''
+	testbox, testcase, path_params = dirs
+	test = "#{testbox}/#{testcase}/#{path_params}"
+	if not $tests.has_key?(test)
+		$tests[test] = test
+	end
+end
+
 def setup_result_root_hash()
 	ENV['LC_ALL'] = 'C'
 	$opt_dims.each do |dim|
 		`grep -h -r -F -e #{dim} #{RESULT_ROOT_PATHS}`.each_line do |result_root|
 			add_result_root result_root
+			setup_test_group result_root
 		end
 	end
 	$_result_root_tuple.delete_if { |k, v| v.size <= 1 }
@@ -380,7 +396,25 @@ def show_one_diff(dim, v0, v, v_stddev, is_float, is_exp)
 	printf '%s  ', buf
 end
 
-def show_delta(stat)
+def show_test_group(key)
+	printf "testbox/testcase/testparams: "
+	puts key
+	puts
+
+	$dims.each { |dim, name|
+		width = (dim == $first_dim ? ABS_WIDTH + ERR_WIDTH : REL_WIDTH + ABS_WIDTH + ERR_WIDTH)
+		printf "%#{width}s  ", name[0..(width-1)]
+	}
+
+	puts
+	$dims.keys.each { |dim|
+		width = (dim == $first_dim ? ABS_WIDTH + ERR_WIDTH : REL_WIDTH + ABS_WIDTH + ERR_WIDTH)
+		printf '-' * width + '  '
+	}
+	puts
+end
+
+def show_delta(stat, key_g)
 	$cases.delete_if { |key, value|
 		next true if value.size < 2
 		next false if is_failure stat
@@ -399,30 +433,32 @@ def show_delta(stat)
 	return if $cases.empty?
 	$cases = Hash[$cases.sort]
 
-	$dims.each { |dim, name|
-		width = (dim == $first_dim ? ABS_WIDTH + ERR_WIDTH : REL_WIDTH + ABS_WIDTH + ERR_WIDTH)
-		printf "%#{width}s  ", name[0..(width-1)]
-	}
-
-	if $header_shown
-		puts
-	else
-		puts 'testbox/testcase/testparams'
-	end
-
-	$dims.keys.each { |dim|
-		width = (dim == $first_dim ? ABS_WIDTH + ERR_WIDTH : REL_WIDTH + ABS_WIDTH + ERR_WIDTH)
-		printf '-' * width + '  '
-	}
-
-	if $header_shown
-		puts
-	else
-		puts '---------------------------'
-		puts '     %stddev        %change               %stddev'
-		puts '            \          |                 /'
-
-		$header_shown = true
+	if ! $test_group
+		$dims.each { |dim, name|
+			width = (dim == $first_dim ? ABS_WIDTH + ERR_WIDTH : REL_WIDTH + ABS_WIDTH + ERR_WIDTH)
+			printf "%#{width}s  ", name[0..(width-1)]
+		}
+	
+		if $header_shown
+			puts
+		else
+			puts 'testbox/testcase/testparams'
+		end
+	
+		$dims.keys.each { |dim|
+			width = (dim == $first_dim ? ABS_WIDTH + ERR_WIDTH : REL_WIDTH + ABS_WIDTH + ERR_WIDTH)
+			printf '-' * width + '  '
+		}
+	
+		if $header_shown
+			puts
+		else
+			puts '---------------------------'
+			puts '     %stddev        %change               %stddev'
+			puts '            \          |                 /'
+	
+			$header_shown = true
+		end
 	end
 
 	is_float = false
@@ -441,6 +477,10 @@ def show_delta(stat)
 	}
 
 	$cases.each { |key, value|
+		if $test_group
+			sub_key = File.dirname(File.dirname(key))
+			next unless sub_key == key_g
+		end
 		v0 = value[$first_dim]
 		v0 = v0.average if Array === v0
 		$dims.each { |dim, v|
@@ -460,14 +500,20 @@ def show_delta(stat)
 				$stddev[dim] = nil
 			end
 		}
-		puts File.dirname File.dirname key
+		if $test_group
+			puts "#{$opt_field}"
+		else
+			puts File.dirname File.dirname key
+		end
 	}
 
-	v0 = $sum[$first_dim]
-	$sum.each { |dim, v|
-		show_one_diff dim, v0, v, $stddev[dim], is_float, is_exp
-	}
-	puts "TOTAL #{$opt_field}"
+	if ! $test_group
+		v0 = $sum[$first_dim]
+		$sum.each { |dim, v|
+			show_one_diff dim, v0, v, $stddev[dim], is_float, is_exp
+		}
+		puts "TOTAL #{$opt_field}"
+	end
 end
 
 def call_mmplot
@@ -504,17 +550,32 @@ if $opt_all or $opt_index
 		stats = sort_stats($stat_records)
 	end
 
-	stats.each { |stat|
-		show_one_stat stat
-		show_delta stat
-		call_mmplot if $opt_plot
-		puts unless $cases.empty?
-		$cases.clear
-		$sum.clear
-		$stddev.clear
-	}
+	if $test_group
+		$tests.each { |key, value|
+			show_test_group key
+			stats.each { |stat|
+				show_one_stat stat
+				show_delta stat, key
+				call_mmplot if $opt_plot
+				$cases.clear
+				$sum.clear
+				$stddev.clear
+			}
+			puts unless $tests.empty?
+		}
+	else
+		stats.each { |stat|
+			show_one_stat stat
+			show_delta stat, nil
+			call_mmplot if $opt_plot
+			puts unless $cases.empty?
+			$cases.clear
+			$sum.clear
+			$stddev.clear
+		}
+	end
 else
 	ARGV.each { |path| add_stats path }
-	show_delta $opt_field
+	show_delta $opt_field, nil
 	plot_bar $dims, $cases if $opt_plot
 end
