@@ -17,5 +17,5 @@ opts=
 cat >> $TMP/env.yaml <<EOF
 
 # setup/numactl
-exec_prefix="numactl $opts --"
+exec_prefix: "numactl $opts --"
 EOF
