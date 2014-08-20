@@ -13,6 +13,7 @@ require 'ostruct'
 require 'yaml'
 require 'pp'
 require 'gnuplot'
+require 'set'
 
 OLD_RESULT_ROOT		= '/lkp/result'
 RESULT_ROOT		= '/result'
@@ -114,7 +115,7 @@ $dim_not_a_param = $opt_dimension =~ /^(testbox|kconfig|commit|run)$/
 $changed_stats 	    = Hash.new { |hash, key| hash[key] = {} }
 $stat_records 	    = Hash.new { |hash, key| hash[key] = [] }
 $_result_root_tuple = Hash.new { |hash, key| hash[key] = [] }
-$_result_root_saved = {}
+$_result_root_saved = Set.new
 
 $dims = Hash.new
 $cases = Hash.new
@@ -225,8 +226,7 @@ def add_result_root(result_root)
 
 	_result_root = File.dirname result_root
 	_result_root = _result_root.sub(OLD_RESULT_ROOT, RESULT_ROOT)
-	return if $_result_root_saved[_result_root]
-	$_result_root_saved[_result_root] = 1
+	return unless $_result_root_saved.add? _result_root
 
 	$longest_dims.each { |dim|
 		if _result_root.index(dim)
