@@ -1,11 +1,13 @@
 #!/usr/bin/ruby
 
-result = {}
+require 'set'
+
+result = Set.new
 while line = STDIN.gets
 	case line
 	when /^([^ ]+) +(\d+)  (TFAIL|TBROK)  :  /
-		result[$1 + '.' + $2 + '.' + $3] = 1
+		result.add $1 + '.' + $2 + '.' + $3
 	end
 end
 
-result.each { |k, v|	puts "#{k}: 1" }
+result.each { |k| puts "#{k}: 1" }
