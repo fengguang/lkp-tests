@@ -1,8 +1,9 @@
 #!/usr/bin/ruby
 
 require ENV['LKP_SRC'] + "/lib/statistics.rb"
+require 'set'
 
-failed_cases = {}
+failed_cases = Set.new
 mqueue_speed = {}
 
 while line = STDIN.gets
@@ -10,7 +11,7 @@ while line = STDIN.gets
 	when /make: Entering directory \`.*\/(.*)\'/
 		testname = $1
 	when /Failed/, /FAIL/
-		failed_cases[testname] = 1
+		failed_cases.add testname
 	when /Test #([1-9].*):/
 		mqueue_test = $1
 	when /(Send|Recv) msg:/
@@ -22,4 +23,4 @@ end
 
 puts "mqueue.nsec_per_msg: #{mqueue_speed.values.average.to_i}" if mqueue_speed.size > 0
 
-failed_cases.each { |k, v| puts "#{k}.fail: 1" }
+failed_cases.each { |k| puts "#{k}.fail: 1" }
