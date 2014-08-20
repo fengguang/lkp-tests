@@ -221,10 +221,10 @@ class Job
 				options = `#{LKP_SRC}/bin/program-options #{$programs[k]}`.split
 			end
 			if v.class == Hash
-				v.each { |kk, vv| yield k, options.include?(kk) ? strip_trivial_array(vv) : kk }
+				v.each { |kk, vv| yield kk, options.include?(kk) ? strip_trivial_array(vv) : kk }
 			elsif v.class == Array
 				if v[0].class == Hash
-					v[0].each { |kk, vv| yield k, options.include?(kk) ? strip_trivial_array(vv) : kk }
+					v[0].each { |kk, vv| yield kk, options.include?(kk) ? strip_trivial_array(vv) : kk }
 				else
 					yield k, v[0]
 				end
