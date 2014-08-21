@@ -24,16 +24,12 @@ $metrics_blacklist_re = Regexp.new metrics_blacklist.join('|')
 
 # => ["tcrypt.", "hackbench.", "dd.", "xfstests.", "aim7.", ..., "oltp.", "fileio.", "dmesg."]
 def test_prefixes()
-	stats = {}
-	tests = {}
-	Dir["#{LKP_SRC}/stats/**/*"].each { |path| stats[File.basename path] = 1 }
-	Dir["#{LKP_SRC}/tests/**/*"].each { |path|
-		test = File.basename path
-		tests[test + '.'] = 1 if stats[test]
-	}
-	tests.delete 'wrapper.'
-	tests['dmesg.'] = 1 # this will set higher score_perf_change for kernel oops
-	return tests.keys
+	stats = Dir["#{LKP_SRC}/stats/**/*"].map { |path| File.basename path }
+	tests = Dir["#{LKP_SRC}/tests/**/*"].map { |path| File.basename path }
+	tests = stats & tests
+	tests.delete 'wrapper'
+	tests.push 'dmesg' # this will set higher score_perf_change for kernel oops
+	return tests.map { |test| test + '.' }
 end
 $test_prefixes = test_prefixes
 $perf_metrics_prefixes.concat $test_prefixes
