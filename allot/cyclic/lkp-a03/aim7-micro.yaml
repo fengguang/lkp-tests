@@ -1,0 +1,28 @@
+testcase: aim7
+
+aim7:
+  load: 20
+  test:
+  - sieve
+
+---
+aim7:
+  load: 100
+  test:
+  - fork_test
+
+---
+aim7:
+  load: 200
+  test:
+  - array_rtns
+  - dir_rtns_1
+
+---
+aim7:
+  load: 600
+  test:
+  - add_float
+  - creat-clo
+  - disk_cp
+  - mem_rtns_1

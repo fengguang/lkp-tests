@@ -1,0 +1,27 @@
+testcase: aim7
+
+aim7:
+  load: 1000
+  test:
+  - disk_wrt
+  - signal_test
+  - sync_disk_cp
+  - sync_disk_rw
+
+---
+aim7:
+  load: 2000
+  test:
+  - disk_src
+  - disk_rd
+  - link_test
+  - sync_disk_wrt
+
+---
+aim7:
+  load: 10000
+  test:
+  - jmp_test
+  - matrix_rtns
+  - mem_rtns_2
+
