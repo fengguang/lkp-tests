@@ -67,6 +67,11 @@ if scripts.empty?
 end
 scripts.uniq!
 
+def make_wakeup
+	return if File.executable? LKP_SRC + '/monitors/event/wakeup'
+	system "cd #{LKP_SRC}/monitors/event && make wakeup"
+end
+
 def create_lkp_dirs
 	FileUtils.mkdir_p TMP
 	FileUtils.mkdir_p '/lkp/paths'
@@ -123,6 +128,7 @@ else
 	exit 1
 end
 
+make_wakeup
 create_lkp_dirs
 create_host_config
 install_packages("lkp", distro)
