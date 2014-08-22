@@ -1,0 +1,22 @@
+#!/bin/bash
+
+cd /sys/kernel/debug/tracing || exit
+
+[[ $iterations ]] || iterations=1000
+
+count=0
+while test $count -lt $iterations
+do
+	for tracer in $(cat available_tracers)
+	do
+		note "echo $tracer > current_tracer"
+		      echo $tracer > current_tracer
+
+		note "echo 1 > tracing_on"
+		      echo 1 > tracing_on
+
+		note "echo 0 > tracing_on"
+		      echo 0 > tracing_on
+	done
+	(( count++ ))
+done
