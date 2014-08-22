@@ -1,6 +1,9 @@
 testcase: blogbench
 
-disk: 1HDD
+disk:
+- 1HDD
+- 1SSD
+
 fs:
 - ext4
 - xfs

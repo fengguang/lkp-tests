@@ -3,7 +3,10 @@ testcase: fsmark
 iterations: 1x
 nr_threads: 32t
 
-disk: 1HDD
+disk:
+- 1HDD
+- 1SSD
+
 fs:
 - xfs
 - ext4
