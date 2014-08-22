@@ -268,7 +268,7 @@ def setup_changed_stats()
 			matrix2 = load_json matrix_file2
 			$all_index.each { |stat, weight|
 				if stat == 'time.elapsed_time'
-					next unless k =~ /\/(kbuild|ftrace_onoff)\//
+					next unless k =~ /\/(kbuild)\//
 				end
 				if stat.index 'iostat.'
 					next unless k =~ /\/(dd-write)\//

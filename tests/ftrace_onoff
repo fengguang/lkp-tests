@@ -2,12 +2,11 @@
 
 cd /sys/kernel/debug/tracing || exit
 
-[[ $iterations ]] || iterations=1000
+: ${runtime:=300}
 
-count=0
-while test $count -lt $iterations
-do
-	for tracer in $(cat available_tracers)
+do_test()
+{
+	for tracer in $(<available_tracers)
 	do
 		note "echo $tracer > current_tracer"
 		      echo $tracer > current_tracer
@@ -18,5 +17,6 @@ do
 		note "echo 0 > tracing_on"
 		      echo 0 > tracing_on
 	done
-	(( count++ ))
-done
+}
+
+source $LKP_SRC/lib/runtime_loop.sh
