@@ -3,7 +3,7 @@
 report_ops()
 {
 	stop_time=$(date +%s)
-	echo ops: $(( operations / (stop_time - start_time) ))
+	echo ops: $(echo "x = $operations / ($stop_time - $start_time); if (x < 1) print 0; x" | bc -l)
 	exit
 }
 
