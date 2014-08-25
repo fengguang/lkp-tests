@@ -2,7 +2,7 @@
 
 require 'set'
 
-GIT_TREE ||= ENV['GIT_WORK_TREE'] || '/c/lkp/linux'
+GIT_TREE ||= ENV['GIT_WORK_TREE'] || ENV['LINUX_GIT'] || '/c/lkp/linux'
 GIT	 ||= "git --work-tree=#{GIT_TREE} --git-dir=#{GIT_TREE}/.git"
 
 def commit_tag(commit)
