@@ -68,7 +68,7 @@ opts = OptionParser.new do |opts|
         end
 
         opts.on('-t', '--group-by-test', 'test-grouped output format') do
-                $test_group = true
+                $group_by_test = true
         end
 
         opts.on('-i', '--index', 'performance/power index') do
@@ -433,30 +433,30 @@ def show_delta(stat, key_g)
 	return if $cases.empty?
 	$cases = Hash[$cases.sort]
 
-	if ! $test_group
+	if ! $group_by_test
 		$dims.each { |dim, name|
 			width = (dim == $first_dim ? ABS_WIDTH + ERR_WIDTH : REL_WIDTH + ABS_WIDTH + ERR_WIDTH)
 			printf "%#{width}s  ", name[0..(width-1)]
 		}
-	
+
 		if $header_shown
 			puts
 		else
 			puts 'testbox/testcase/testparams'
 		end
-	
+
 		$dims.keys.each { |dim|
 			width = (dim == $first_dim ? ABS_WIDTH + ERR_WIDTH : REL_WIDTH + ABS_WIDTH + ERR_WIDTH)
 			printf '-' * width + '  '
 		}
-	
+
 		if $header_shown
 			puts
 		else
 			puts '---------------------------'
 			puts '     %stddev        %change               %stddev'
 			puts '            \          |                 /'
-	
+
 			$header_shown = true
 		end
 	end
@@ -477,7 +477,7 @@ def show_delta(stat, key_g)
 	}
 
 	$cases.each { |key, value|
-		if $test_group
+		if $group_by_test
 			sub_key = File.dirname(File.dirname(key))
 			next unless sub_key == key_g
 		end
@@ -500,14 +500,14 @@ def show_delta(stat, key_g)
 				$stddev[dim] = nil
 			end
 		}
-		if $test_group
+		if $group_by_test
 			puts "#{$opt_field}"
 		else
 			puts File.dirname File.dirname key
 		end
 	}
 
-	if ! $test_group
+	if ! $group_by_test
 		v0 = $sum[$first_dim]
 		$sum.each { |dim, v|
 			show_one_diff dim, v0, v, $stddev[dim], is_float, is_exp
@@ -550,7 +550,7 @@ if $opt_all or $opt_index
 		stats = sort_stats($stat_records)
 	end
 
-	if $test_group
+	if $group_by_test
 		$tests.each { |key, value|
 			show_test_group key
 			stats.each { |stat|
