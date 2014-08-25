@@ -56,6 +56,9 @@ Better to use a Debian system to run the tests in order to get more
 accurate results and reduce strange errors since it was developed
 based on a Debian system.
 
+Preinstall necessary packages:
+
+	# apt-get install ruby ruby-oj
 
 5.1 Split job file
 
