@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd $BENCHMARK_ROOT/kvm-unit-tests || exit
+
+cmd ./run_tests.sh
+cp test.log $RESULT_ROOT
