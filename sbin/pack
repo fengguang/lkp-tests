@@ -10,6 +10,7 @@ do
 	case "$2" in
 	(--cleanup) clean_flag=true;;
 	(--deb) deb_flag=true;;
+	(--arch=*) arch=${2#*=};;
 	(*) break;;
 	esac
 	shift
