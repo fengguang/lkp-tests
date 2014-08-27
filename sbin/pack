@@ -2,19 +2,21 @@
 
 [[ $LKP_SRC ]] || export LKP_SRC="$(dirname $(dirname $(realpath $0)))"
 
-BM_NAME=$1
-BM_ROOT=/lkp/benchmarks/$BM_NAME
+usage() { echo "Usage: $0 [-a <arch>] [-c] [-d] -n <BM_NAME>"; exit 1; }
 
-while [ $# -gt 1 ]
+while getopts "a:cdn:" opt
 do
-	case "$2" in
-	(--cleanup) clean_flag=true;;
-	(--deb) deb_flag=true;;
-	(--arch=*) arch=${2#*=};;
-	(*) break;;
+	case $opt in
+	a ) arch="$OPTARG" ;;
+	c ) opt_clean=true ;;
+	d ) opt_deb=true ;;
+	n ) BM_NAME="$OPTARG" ;;
+	? ) usage ;;
 	esac
-	shift
 done
+
+[[ $BM_NAME ]] || usage
+BM_ROOT=/lkp/benchmarks/$BM_NAME
 
 source $LKP_SRC/pack/default
 source $LKP_SRC/pack/$BM_NAME
@@ -27,10 +29,10 @@ cd /tmp
 download
 build
 install
-if [[ $deb_flag ]]; then
+if [[ $opt_deb ]]; then
 	pack_deb
 else
 	pack
 fi
 
-[[ $clean_flag ]] && cleanup
+[[ $opt_clean ]] && cleanup

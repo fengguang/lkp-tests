@@ -112,7 +112,7 @@ end
 def install_benchmarks(script)
 	if File.file? "#{LKP_SRC}/pack/#{script}"
 		puts "Making #{script}-LKP.deb..."
-		if system "#{LKP_SRC}/sbin/pack #{script} --deb --cleanup"
+		if system "#{LKP_SRC}/sbin/pack -n #{script} -d -c"
 			puts "Installing #{script}-LKP.deb..."
 			system "dpkg -i /tmp/#{script}-LKP.deb"
 		else

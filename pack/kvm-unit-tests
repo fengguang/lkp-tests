@@ -2,8 +2,8 @@
 
 if [[ $arch ]]; then
 	CONFIGURE_FLAGS="--arch=$arch"
-elif [[ ! $deb_flag ]]; then
-	echo "must specify --arch=<ARCH> argument"
+elif [[ ! $opt_deb ]]; then
+	echo "must specify '-a <arch>' argument"
 	exit
 fi
 
