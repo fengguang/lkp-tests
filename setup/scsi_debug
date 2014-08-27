@@ -1,0 +1,28 @@
+#!/bin/bash
+# - add_host
+# - num_tgts
+# - max_luns
+
+[[ $size ]] || size=$(( 1024 * 1024 * 1024 ))
+nr_srd=$(( add_host * num_tgts * max_luns ))
+
+M_size=$(( size >> 20 ))
+modprobe -r scsi_debug
+modprobe scsi_debug add_host=$add_host num_tgts=$num_tgts max_luns=$max_luns dev_size_mb=$M_size
+
+partitions=$(lsscsi | grep scsi_debug | awk '{print $6}')
+nr_partitions=$(echo $partitions | wc -w)
+[[ $nr_srd != $nr_partitions ]] && {
+	echo "simulated scsi disk number $nr_srd mismatch with $nr_partitions real simulated disks: $partitions" >&2
+	exit 1
+}
+
+cat >> $TMP/env.yaml <<EOF
+
+# setup/ramdisk
+nr_partitions: $nr_srd
+partitions: $partitions
+disk_description: ${nr_srd}srd
+disks: $partitions
+size: $size
+EOF
