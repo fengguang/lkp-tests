@@ -39,6 +39,8 @@ install()
 pack()
 {
 	{
+		/lkp/pack/update-piglit
+
 		echo /lkp
 		echo /lkp/benchmarks
 		find /lkp/benchmarks/$BM_NAME

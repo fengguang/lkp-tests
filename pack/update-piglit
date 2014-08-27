@@ -1,0 +1,10 @@
+#/bin/env bash
+cd /lkp/benchmarks/piglit/bin/
+
+./piglit run igt d -d -v|grep 'running ::' | sed 's/running :: //' > all-tests
+
+[[ $(ls piglittest??) == "" ]] && split -d -l30 all-tests piglittest
+
+cat piglittest?? > all-known-tests
+
+grep -v -x -F -f all-known-tests all-tests > piglittestdiff
