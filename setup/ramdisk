@@ -1,0 +1,20 @@
+#!/bin/bash
+# - nr_rd
+
+[[ $size ]] || size=$(( 1024 * 1024 * 1024 ))
+[[ $nr_rd ]] || nr_rd=1
+
+K_size=$(( size >> 10 ))
+modprobe -r brd
+modprobe brd rd_nr=$nr_rd rd_size=$K_size
+partitions=$(ls /dev/ram*)
+
+cat >> $TMP/env.yaml <<EOF
+
+# setup/ramdisk
+nr_partitions: $nr_rd
+partitions: $partitions
+disk_description: ${nr_rd}rd
+disks: $partitions
+size: $size
+EOF
