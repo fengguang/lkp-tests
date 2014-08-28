@@ -1,0 +1,100 @@
+spec/glsl-1.40/compiler/gl_FrontMaterial.frag
+spec/glsl-1.30/execution/textureSize/vs-textureSize-usampler2D
+spec/glsl-1.30/execution/clipping/vs-clip-distance-enables
+spec/glsl-1.50/compiler/gs-redeclares-pervertex-out-with-instance-name.geom
+spec/ARB_geometry_shader4/linker/input-overrun-points
+spec/glsl-1.10/execution/built-in-functions/vs-op-eq-mat3-mat3
+spec/glsl-1.40/compiler/gl_BackMaterial.frag
+spec/ARB_gpu_shader5/textureGatherOffsets/vs-r-0-uint-2DRect
+spec/ARB_texture_gather/textureGatherOffset/fs-rgb-one-unorm-2D
+spec/ARB_gpu_shader5/textureGatherOffset/vs-rgb-2-uint-2DRect
+spec/!OpenGL 1.0/gl-1.0-dlist-beginend
+spec/glsl-1.50/compiler/built-in-functions/mod-vec2-float.geom
+asmparsertest/ARBvp1.0/clipdistance-04.txt
+spec/glsl-1.30/compiler/built-in-functions/op-lshift-ivec4-uint.vert
+spec/EXT_transform_feedback/structs array-struct get
+spec/glsl-1.50/compiler/ext_texture_array.geom
+spec/ARB_geometry_shader4/execution/clip-distance-in-bulk-read
+spec/ARB_gpu_shader5/textureGatherOffset/fs-rgba-2-int-2DArray
+spec/ARB_texture_float/fbo-generatemipmap-formats
+spec/ARB_gpu_shader5/textureGatherOffset/vs-rgb-2-int-2D
+spec/glsl-1.10/execution/built-in-functions/vs-op-eq-bvec4-bvec4-using-if
+glslparsertest/glsl2/attribute-04.vert
+spec/glsl-1.50/compiler/built-in-functions/min-uvec4-uint.geom
+spec/glsl-1.30/linker/interpolation-qualifiers/flat-gl_BackColor-unused-gl_Color
+spec/glsl-1.50/execution/built-in-functions/gs-op-add-int-ivec4
+spec/glsl-1.50/execution/built-in-functions/fs-determinant-mat4
+spec/glsl-1.30/execution/built-in-functions/fs-op-lshift-uvec4-uvec4
+spec/glsl-1.50/execution/built-in-functions/fs-determinant-mat2
+spec/glsl-1.20/compiler/structure-and-array-operations/array-size-bvec4.vert
+spec/EXT_framebuffer_multisample/no-color 8 stencil combined
+asmparsertest/ARBvp1.0/txd-01.txt
+glslparsertest/glsl2/uniform-02.vert
+spec/ARB_draw_indirect/arb_draw_indirect-draw-elements-prim-restart
+glslparsertest/dataType13.frag
+spec/glsl-1.20/compiler/built-in-functions/radians-vec4.frag
+spec/ARB_texture_gather/textureGatherOffset/vs-rg-one-int-2D
+spec/glsl-1.50/execution/built-in-functions/gs-op-bitxor-abs-not-int-int
+spec/glsl-1.50/execution/built-in-functions/gs-op-bitor-uint-uvec2
+spec/glsl-1.50/execution/built-in-functions/gs-op-bitor-uint-uvec3
+spec/glsl-1.30/execution/texelFetch fs sampler1D 1-513
+spec/glsl-1.30/compiler/built-in-functions/op-sub-uvec4-uint.frag
+fast_color_clear/fcc-blit-between-clears
+shaders/glsl-fs-sqrt-branch
+spec/glsl-1.20/execution/built-in-functions/fs-op-eq-mat4x2-mat4x2
+spec/glsl-1.50/execution/built-in-functions/gs-clamp-vec2-float-float
+spec/glsl-1.50/execution/built-in-functions/gs-op-eq-int-int-using-if
+spec/EXT_texture_compression_s3tc/compressedteximage GL_COMPRESSED_RGBA_S3TC_DXT5_EXT
+glslparsertest/glsl2/bit-logic-assign-11.frag
+asmparsertest/ARBvp1.0/sfl-02.txt
+spec/EXT_framebuffer_multisample/blit-flipped 16 y
+spec/EXT_framebuffer_multisample/blit-flipped 16 x
+spec/glsl-1.50/compiler/built-in-functions/op-or-bool-bool.geom
+spec/glsl-1.30/execution/interpolation/interpolation-flat-gl_BackColor-flat-distance
+asmparsertest/ARBvp1.0/matrix-01.txt
+spec/ARB_tessellation_shader/compiler/output-size-mismatch.tesc
+spec/glsl-1.30/linker/interpolation-qualifiers/unused-noperspective-gl_BackSecondaryColor-unused-smooth-gl_SecondaryColor
+spec/glsl-1.20/execution/built-in-functions/vs-op-mult-mat2-mat4x2
+spec/EXT_transform_feedback/output-type mat2x4[2]
+shaders/glsl-const-builtin-smoothstep
+spec/glsl-1.50/compiler/gs-input-sizing-consistent-with-prev-length-blocks.geom
+spec/glsl-1.10/execution/built-in-functions/fs-op-div-mat3-float
+spec/ARB_gpu_shader5/textureGatherOffset/vs-rgba-1-unorm-2DArray
+spec/ARB_shading_language_420pack/execution/aggregate-initializer-struct
+spec/glsl-1.30/compiler/built-in-functions/op-bitxor-ivec4-ivec4.vert
+spec/glsl-1.50/compiler/built-in-functions/min-uvec3-uint.geom
+asmparsertest/ARBvp1.0/attrib-02.txt
+spec/glsl-1.30/execution/built-in-functions/fs-op-assign-lshift-uvec2-uvec2
+asmparsertest/ARBvp1.0/txl-10.txt
+spec/EXT_packed_depth_stencil/depthstencil-render-miplevels 273 s=z24_s8_d=z24_s8
+shaders/glsl-fs-neg
+spec/glsl-1.30/compiler/precision-qualifiers/precision-int-03.frag
+spec/ARB_transform_feedback2/cannot bind when another object is active
+spec/ARB_arrays_of_arrays/compiler/uniform-unsized-array-var-array.vert
+spec/ARB_arrays_of_arrays/compiler/initializer-three-dimensions.vert
+spec/ARB_texture_gather/textureGatherOffset/fs-rgba-one-int-2DArray
+spec/ARB_arrays_of_arrays/compiler/interface.vert
+spec/glsl-1.30/compiler/built-in-functions/min-uint-uint.frag
+spec/glsl-1.30/execution/built-in-functions/vs-op-bitxor-not-uvec3-uint
+spec/ARB_gpu_shader5/textureGatherOffsets/vs-rgb-1-unorm-2D
+spec/EXT_framebuffer_multisample/accuracy 2 stencil_draw small
+spec/glsl-1.30/execution/built-in-functions/vs-op-bitxor-neg-abs-ivec4-ivec4
+spec/ARB_texture_gather/textureGather/fs-r-red-uint-2DArray
+spec/ARB_texture_gather/textureGather/fs-rgb-red-int-2D
+spec/glsl-1.30/execution/built-in-functions/fs-op-rshift-ivec4-uint
+spec/ARB_gpu_shader5/textureGatherOffset/vs-rgb-1-float-2D-const
+spec/ARB_gpu_shader5/textureGatherOffset/vs-rgba-2-uint-2D-const
+spec/glsl-1.30/execution/built-in-functions/fs-op-bitxor-not-uvec3-uint
+asmparsertest/ARBvp1.0/param-05.txt
+spec/glsl-1.20/compiler/structure-and-array-operations/array-variable-index-implicit-size-global.vert
+spec/glsl-1.30/execution/switch/fs-perpixel
+spec/glsl-1.50/execution/built-in-functions/gs-op-assign-sub-mat2-mat2
+spec/glsl-1.50/execution/built-in-functions/gs-op-div-mat3x4-mat3x4
+spec/glsl-1.20/execution/variable-indexing/vs-temp-array-mat3-rd
+spec/glsl-1.10/execution/built-in-functions/fs-op-assign-div-ivec2-int
+spec/glsl-1.20/compiler/built-in-functions/acos-vec3.vert
+spec/glsl-1.30/execution/built-in-functions/vs-op-add-uint-uint
+spec/glsl-1.30/execution/interpolation/interpolation-smooth-other-flat-fixed
+spec/ARB_gpu_shader5/textureGatherOffset/fs-rg-1-unorm-2D
+spec/!OpenGL 1.1/getteximage-targets 1D
+spec/glsl-1.30/compiler/switch-statement/switch-nested-loop.vert

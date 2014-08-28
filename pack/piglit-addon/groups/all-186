@@ -1,0 +1,100 @@
+spec/!OpenGL 1.4/draw-batch
+spec/ARB_explicit_attrib_location/glsl-explicit-location-05
+spec/ARB_explicit_attrib_location/glsl-explicit-location-01
+spec/ARB_explicit_attrib_location/glsl-explicit-location-03
+spec/!OpenGL 1.1/depthstencil-default_fb-readpixels-32F_24_8_REV samples=16
+glean/glsl1-GL state variable reference (gl_LightSource[0].diffuse)
+spec/!OpenGL 1.1/scissor-offscreen
+glean/orthoPosRandTris
+spec/ARB_texture_rg/depth-tex-modes-rg
+glean/glsl1-syntax error check (1)
+spec/3DFX_texture_compression_FXT1/fxt1-teximage
+spec/ARB_transform_feedback2/Change objects while paused
+glean/fragProg1-SLT test
+glx/glx-query-drawable-GLX_FBCONFIG_ID-GLXWINDOW
+spec/!OpenGL 1.1/draw-pixels samples=8
+spec/!OpenGL 1.1/draw-pixels samples=6
+spec/!OpenGL 1.1/draw-pixels samples=4
+spec/!OpenGL 1.1/draw-pixels samples=2
+glean/glsl1-Preprocessor test 3 (#if ==)
+spec/!OpenGL 1.0/gl-1.0-swapbuffers-behavior
+spec/!OpenGL 1.1/windowoverlap
+glean/fragProg1-ADD with saturation
+glean/fragProg1-DST test
+glean/glsl1-continue with no loop
+spec/ARB_fragment_program/fp-abs-01
+spec/ARB_transform_feedback3/arb_transform_feedback3-set_varyings_with_invalid_args
+spec/!OpenGL 1.1/depthstencil-default_fb-readpixels-32F_24_8_REV samples=32
+spec/!OpenGL 1.2/lodclamp-between-max
+spec/ARB_sample_shading/builtin-gl-sample-id 16
+spec/!OpenGL 1.1/max-texture-size
+glx/glx-destroycontext-1
+glean/fragProg1-masked MUL test
+glean/glsl1-syntax error check (3)
+spec/ARB_instanced_arrays/arb_instanced_arrays-vertex-attrib-divisor-index-error
+spec/ARB_vertex_program/vp-address-04
+spec/ARB_vertex_program/vp-address-01
+spec/ARB_vertex_program/vp-address-02
+spec/EXT_framebuffer_blit/fbo-readdrawpix
+spec/!OpenGL 1.1/dlist-clear
+glean/fragProg1-SIN test 2
+glean/vertProg1-RSQ test 2 (reciprocal square root of negative value)
+spec/EGL_KHR_create_context/default minor version GL
+spec/EXT_image_dma_buf_import/ext_image_dma_buf_import-intel_unsupported_format
+spec/APPLE_object_purgeable/object_purgeable-api-texture
+spec/!OpenGL 1.1/fdo23670-depth_test
+spec/ARB_draw_elements_base_vertex/arb_draw_elements_base_vertex-negative-index-user_varrays
+glx/glx-visuals-stencil
+glean/fragProg1-LIT test 2 (degenerate case: 0 ^ 0 -> 1)
+glean/glsl1-struct (1)
+glean/glsl1-Swizzled expression
+spec/ARB_fragment_program/fp-fog
+spec/!OpenGL 1.4/copy-pixels samples=32
+glx/glx-dont-care-mask
+spec/ARB_texture_rectangle/copyteximage RECT
+glean/texEnv
+spec/glsl-1.30/execution/isinf-and-isnan vs_fbo
+glean/fragProg1-FRC test
+spec/!OpenGL 1.1/texredefine
+spec/ARB_blend_func_extended/arb_blend_func_extended-getfragdataindex
+spec/!OpenGL 1.1/depthstencil-default_fb-drawpixels-24_8
+spec/!OpenGL 1.4/tex1d-2dborder
+spec/NV_vertex_program2_option/vp-clipdistance-02
+spec/!OpenGL 1.1/read-front samples=4
+spec/!OpenGL 1.2/copyteximage 3D samples=4
+spec/!OpenGL 1.2/copyteximage 3D samples=2
+glean/vertProg1-FLR test
+spec/!OpenGL 1.1/streaming-texture-leak
+spec/!OpenGL 2.0/fragment-and-vertex-texturing
+spec/!OpenGL 1.4/copy-pixels samples=2
+spec/!OpenGL 1.4/copy-pixels samples=4
+spec/!OpenGL 1.4/copy-pixels samples=6
+spec/EGL 1.4/eglCreateSurface
+glean/glsl1-nested function calls (1)
+spec/!OpenGL 1.2/mipmap-setup
+spec/AMD_performance_monitor/api
+glean/glsl1-varying var mismatch
+hiz/hiz-depth-stencil-test-fbo-d0-s8
+spec/!OpenGL 1.1/copypixels-sync
+spec/EXT_draw_buffers2/fbo-drawbuffers2-blend
+glean/glsl1-GL state variable reference (gl_FrontMaterial.ambient)
+spec/!OpenGL 1.1/line-aa-width
+glean/glsl1-struct (3)
+spec/EGL_KHR_create_context/default minor version GLES
+spec/!OpenGL 1.4/copy-pixels samples=16
+spec/ARB_sample_shading/builtin-gl-num-samples 6
+spec/ARB_sample_shading/builtin-gl-sample-mask 32
+spec/ARB_sample_shading/builtin-gl-num-samples 2
+spec/ARB_sample_shading/builtin-gl-num-samples 8
+glean/pbo
+spec/ARB_texture_rectangle/copyteximage RECT samples=32
+spec/ARB_vertex_program/getlocal4d-with-error
+spec/ATI_envmap_bumpmap/ati_envmap_bumpmap-bump
+spec/ARB_robustness/arb_robustness_client-mem-bounds
+hiz/hiz-stencil-read-fbo-d24s8
+glean/glsl1-GLSL 1.20 invariant, centroid qualifiers
+spec/ARB_texture_cube_map/cubemap-shader lod
+spec/NV_primitive_restart/primitive-restart-draw-mode-line_loop
+spec/!OpenGL 1.1/depthstencil-default_fb-drawpixels-FLOAT-and-USHORT
+spec/ARB_provoking_vertex/arb-provoking-vertex-control
+glean/fragProg1-COS test 2

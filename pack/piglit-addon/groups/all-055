@@ -1,0 +1,100 @@
+spec/glsl-1.10/execution/built-in-functions/fs-op-mult-ivec4-int
+spec/glsl-1.50/compiler/built-in-functions/op-eq-mat2x3-mat2x3.geom
+spec/ARB_texture_cube_map_array/textureSize/fs-textureSize-isamplerCubeArray
+spec/glsl-1.30/linker/interpolation-qualifiers/unused-smooth-gl_BackColor-unused-default-gl_Color
+spec/glsl-1.10/execution/variable-indexing/vs-uniform-array-mat3-col-row-rd
+spec/glsl-1.50/compiler/built-in-functions/op-div-vec4-vec4.geom
+spec/glsl-1.10/execution/built-in-functions/fs-op-sub-ivec4-ivec4
+spec/ARB_shader_texture_lod/execution/glsl-fs-shadow2DGradARB-05
+glslparsertest/hvec3.frag
+spec/glsl-4.00/compiler/built-in-functions/textureQueryLod-sampler1DArrayShadow.frag
+spec/glsl-1.20/compiler/built-in-functions/greaterThanEqual-ivec2-ivec2.vert
+spec/glsl-1.30/compiler/built-in-functions/op-bitxor-not-abs-ivec3-ivec3.frag
+spec/ARB_gpu_shader5/textureGatherOffset/fs-r-0-int-2DRect-const
+spec/ARB_uniform_buffer_object/compiler/layout-std140-non-uniform.frag
+spec/glsl-1.30/compiler/built-in-functions/op-bitxor-abs-not-int-ivec3.frag
+spec/ARB_explicit_uniform_location/linker/overlap-array-loc
+spec/glsl-1.50/compiler/built-in-functions/op-div-mat4x2-mat4x2.geom
+spec/amd_shader_trinary_minmax/compiler/built-in-functions/mid3-vec2-vec2-vec2.geom
+spec/glsl-1.40/uniform_buffer/fs-array-copy
+shaders/glsl-vs-vectorize-between-basic-blocks
+spec/glsl-1.30/execution/built-in-functions/fs-op-bitor-not-abs-int-int
+glslparsertest/CorrectFuncOverload.frag
+spec/ARB_texture_gather/textureGatherOffset/fs-rgba-green-int-2DArray
+spec/glsl-1.40/compiler/gl_ClipDistance-vs.vert
+spec/glsl-1.10/execution/built-in-functions/fs-op-mult-int-ivec4
+spec/ARB_gpu_shader5/textureGather/fs-rgb-0-int-CubeArray
+spec/ARB_gpu_shader5/textureGatherOffset/fs-r-0-int-2D
+spec/glsl-1.30/execution/built-in-functions/vs-op-assign-mod-uvec3-uint
+spec/glsl-1.10/execution/built-in-functions/vs-pow-vec2-vec2
+spec/ARB_ES2_compatibility/fbo-blending-formats
+spec/EXT_framebuffer_multisample/accuracy 2 depth_draw
+spec/arb_texture_query_lod/compiler/built-in-functions/textureQueryLOD-sampler1DArray.vert
+spec/glsl-1.20/execution/variable-indexing/vs-temp-array-mat2-index-wr
+spec/glsl-1.50/compiler/built-in-functions/op-rshift-ivec2-uint.geom
+spec/glsl-1.30/compiler/built-in-functions/op-bitor-not-int-ivec4.frag
+spec/glsl-1.20/execution/variable-indexing/vs-temp-array-mat2-index-col-row-wr
+spec/glsl-1.30/execution/built-in-functions/fs-op-bitand-int-ivec4
+spec/glsl-1.30/execution/built-in-functions/fs-op-bitand-int-ivec2
+spec/glsl-1.30/compiler/built-in-functions/op-bitxor-abs-not-ivec4-ivec4.frag
+spec/ARB_texture_multisample/texelFetch/16-vs-usampler2DMSArray
+spec/glsl-1.10/execution/built-in-functions/vs-exp-vec2
+spec/glsl-1.20/execution/variable-indexing/vs-temp-array-mat4-col-rd
+spec/EXT_framebuffer_multisample/accuracy 6 depth_draw small depthstencil
+spec/glsl-1.50/compiler/built-in-functions/op-bitand-neg-abs-ivec3-int.geom
+spec/glsl-1.40/execution/texelFetchOffset/fs-usampler2DRect
+spec/EXT_framebuffer_multisample/multisample-blit 16 depth
+spec/ARB_framebuffer_sRGB/blit renderbuffer linear msaa disabled
+spec/ARB_geometry_shader4/execution/clip-distance-in-explicitly-sized
+spec/glsl-1.40/compiler/gl_TextureMatrix.frag
+spec/glsl-1.10/execution/built-in-functions/fs-lessThanEqual-ivec4-ivec4
+spec/glsl-1.20/compiler/built-in-functions/op-sub-vec4-vec4.vert
+spec/glsl-1.50/execution/built-in-functions/gs-clamp-uvec3-uint-uint
+spec/ARB_gpu_shader5/compiler/sample-qualifier/fs-sample-uniform-disallowed.frag
+spec/glsl-1.20/execution/built-in-functions/fs-op-sub-float-mat2x3
+spec/!OpenGL 3.3/minmax
+spec/glsl-1.30/compiler/qualifiers/in-bvec3-prohibited.frag
+spec/!OpenGL 1.0/gl-1.0-rendermode-feedback
+spec/EXT_packed_depth_stencil/fbo-depth-GL_DEPTH24_STENCIL8-tex1d
+spec/EXT_framebuffer_multisample/upsample 4 stencil
+spec/glsl-1.10/execution/variable-indexing/fs-temp-array-mat2-index-col-rd
+spec/glsl-1.30/linker/interpolation-qualifiers/flat-gl_BackSecondaryColor-smooth-gl_SecondaryColor
+spec/glsl-1.20/compiler/built-in-functions/op-sub-float-mat4x3.vert
+spec/glsl-1.30/preprocessor/if/if-arg-must-be-defined-01.frag
+glslparsertest/glsl2/gst-gl-twirl.frag
+spec/glsl-1.50/uniform_buffer/gs-floats
+spec/glsl-1.30/compiler/built-in-functions/op-rshift-uvec4-ivec4.frag
+spec/glsl-1.50/execution/built-in-functions/gs-op-assign-sub-vec4-float
+spec/ARB_gpu_shader5/textureGatherOffset/vs-rg-1-uint-2DArray
+spec/glsl-1.30/execution/built-in-functions/vs-op-bitor-uint-uint
+spec/ARB_uniform_buffer_object/dlist
+spec/glsl-1.20/compiler/built-in-functions/op-mult-float-mat3.frag
+spec/glsl-1.20/execution/built-in-functions/vs-op-add-mat4x2-mat4x2
+spec/glsl-1.20/execution/variable-indexing/fs-varying-array-mat3-index-rd
+shaders/glsl-fs-pointcoord
+spec/glsl-1.20/execution/variable-indexing/vs-varying-array-mat2-index-col-wr
+spec/glsl-1.30/linker/interpolation-qualifiers/flat-gl_BackColor-noperspective-gl_Color
+spec/glsl-1.30/execution/interpolation/interpolation-noperspective-gl_BackColor-flat-fixed
+glslparsertest/glsl2/bit-logic-09.frag
+spec/glsl-1.10/compiler/expressions/postincrement-vec2-non-lvalue-for-out-parameter.frag
+spec/arb_shader_texture_lod/compiler/tex_grad-texture1DProj-1D-vec4.frag
+spec/glsl-1.30/compiler/built-in-functions/op-sub-uvec2-uvec2.frag
+spec/ARB_arrays_of_arrays/compiler/initializer-struct-field-var-array-array.vert
+spec/EXT_shader_integer_mix/execution/fs-mix-ivec4
+spec/glsl-1.20/compiler/structure-and-array-operations/array-of-array-structure-field.frag
+spec/glsl-1.20/compiler/built-in-functions/op-ne-mat4x2-mat4x2.frag
+spec/glsl-1.30/compiler/basic-types/assign-implicit-conversion-ivec3-uvec3.vert
+spec/arb_shading_language_packing/execution/built-in-functions/const-packHalf2x16
+shaders/glsl-fs-if-nested-loop
+spec/glsl-es-1.00/compiler/precision-qualifiers/precision-vs-highp-01.vert
+spec/EXT_framebuffer_multisample/accuracy 6 depth_resolve
+spec/glsl-1.30/execution/built-in-functions/vs-op-rshift-uvec3-uint
+spec/glsl-1.20/compiler/built-in-functions/op-neg-mat3x2.frag
+spec/ARB_color_buffer_float/GL_RGBA8_SNORM-probepixel
+spec/ARB_shader_objects/delete-repeat
+asmparsertest/ARBfp1.0/size_specifier-24.txt
+spec/ARB_explicit_attrib_location/1.10/compiler/layout-11.frag
+spec/glsl-1.40/execution/glsl-fs-shadow2DRect
+spec/glsl-1.50/compiler/built-in-functions/op-div-uvec4-uint.geom
+spec/glsl-1.10/execution/built-in-functions/vs-op-assign-mult-vec2-vec2
+spec/ARB_texture_multisample/texelFetch fs sampler2DMSArray 4 98x1x9-98x129x9

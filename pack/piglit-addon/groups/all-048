@@ -1,0 +1,100 @@
+spec/glsl-1.20/compiler/qualifiers/in-01.vert
+spec/glsl-1.30/linker/interpolation-qualifiers/unused-noperspective-gl_FrontColor-unused-flat-gl_Color
+spec/glsl-1.30/compiler/basic-types/ctor-ivec3-uvec3.vert
+spec/glsl-1.50/execution/geometry/primitive-id-in
+spec/ARB_texture_gather/textureGatherOffset/vs-rg-zero-int-2D
+spec/glsl-1.30/execution/built-in-functions/fs-op-bitxor-neg-uint-uvec3
+spec/glsl-1.10/execution/variable-indexing/fs-temp-array-mat2-index-col-wr
+spec/glsl-1.50/execution/fragcoord-layout-qualifiers-missing
+spec/glsl-1.20/execution/variable-indexing/vs-temp-array-mat4-index-col-row-rd
+spec/ARB_shader_atomic_counters/compiler/declaration-output.frag
+glslparsertest/glsl2/condition-05.vert
+spec/glsl-1.20/execution/variable-indexing/fs-varying-array-mat2-col-row-rd
+spec/glsl-1.30/compiler/texture/texelFetch.frag
+spec/glsl-1.10/execution/built-in-functions/fs-clamp-vec3-float-float
+asmparsertest/ARBfp1.0/ddx-01.txt
+spec/glsl-1.10/execution/built-in-functions/vs-op-eq-vec3-vec3-using-if
+spec/glsl-1.20/execution/variable-indexing/vs-uniform-array-mat2-index-row-rd
+spec/glsl-1.10/execution/variable-indexing/fs-uniform-array-mat3-index-rd
+spec/glsl-1.30/execution/interpolation/interpolation-flat-gl_FrontColor-flat-vertex
+spec/glsl-1.30/execution/texelFetch/vs-texelFetch-usampler1DArray
+spec/glsl-es-3.00/compiler/uniform_block/interface-name-field-clashes-with-function.vert
+spec/glsl-1.20/compiler/built-in-functions/sqrt-float.frag
+spec/glsl-1.50/compiler/built-in-functions/op-neg-ivec3.geom
+spec/glsl-1.30/compiler/built-in-functions/op-bitand-not-uvec2-uvec2.frag
+spec/EXT_framebuffer_multisample/interpolation 16 centroid-edges
+spec/glsl-1.50/compiler/built-in-functions/op-rshift-ivec3-uvec3.geom
+spec/glsl-1.30/compiler/built-in-functions/op-bitxor-neg-uvec2-uvec2.vert
+glslparsertest/glsl2/gst-gl-multiply.frag
+spec/glsl-1.20/execution/variable-indexing/fs-varying-array-mat2-col-rd
+spec/glsl-1.50/compiler/built-in-functions/sign-ivec2.geom
+spec/glsl-1.30/compiler/keywords/uint.frag
+spec/glsl-1.10/compiler/expressions/predecrement-vec4-non-lvalue-for-out-parameter.frag
+spec/glsl-1.50/execution/built-in-functions/gs-op-add-vec2-vec2
+spec/glsl-1.20/execution/variable-indexing/vs-varying-array-mat3-index-wr
+spec/glsl-1.30/execution/texelFetchOffset/fs-texelFetch-isampler1D
+spec/glsl-1.30/compiler/built-in-functions/op-bitor-abs-neg-int-ivec4.vert
+spec/glsl-1.30/execution/built-in-functions/fs-op-bitxor-uvec2-uvec2
+spec/glsl-1.50/execution/built-in-functions/gs-op-ne-ivec2-ivec2
+spec/glsl-1.50/execution/built-in-functions/gs-sin-float
+spec/glsl-1.50/execution/built-in-functions/gs-op-div-float-mat2x3
+spec/EXT_packed_depth_stencil/fbo-clear-formats stencil
+spec/glsl-1.30/execution/built-in-functions/fs-op-bitxor-not-uvec4-uint
+glslparsertest/glsl2/constructor-27.vert
+spec/ARB_gpu_shader5/textureGatherOffsets/fs-rgb-2-uint-2DArray
+spec/EXT_framebuffer_multisample/no-color 2 stencil combined
+spec/glsl-1.10/execution/variable-indexing/vs-varying-mat4-col-wr
+spec/ARB_gpu_shader5/compiler/builtin-functions/vs-gatherOffset-int-samplers.vert
+spec/glsl-1.30/execution/built-in-functions/fs-op-bitand-neg-abs-ivec3-int
+spec/glsl-1.30/compiler/keywords/uvec4.frag
+spec/glsl-1.20/compiler/built-in-functions/not-bvec3.frag
+spec/glsl-1.20/execution/built-in-functions/vs-op-mult-mat3-mat4x3
+spec/glsl-1.30/linker/interpolation-qualifiers/smooth-gl_BackColor-noperspective-gl_FrontColor
+spec/glsl-1.50/execution/built-in-functions/gs-op-assign-add-mat4x2-float
+spec/EXT_framebuffer_multisample/accuracy 32 depth_draw small depthstencil
+spec/ARB_gpu_shader5/textureGather/fs-rg-1-unorm-2DRect
+spec/glsl-1.50/execution/built-in-functions/gs-op-assign-mod-int-int
+spec/ARB_depth_buffer_float/fbo-depthstencil-GL_DEPTH32F_STENCIL8-readpixels-32F_24_8_REV
+shaders/glsl-fs-loop-const-decr
+spec/EXT_packed_depth_stencil/fbo-clear-formats
+spec/glsl-1.50/execution/built-in-functions/gs-op-ne-ivec3-ivec3-using-if
+spec/ARB_gpu_shader5/textureGatherOffset/fs-r-0-int-2DArray-const
+spec/ARB_texture_gather/textureGather/fs-rg-green-unorm-2DArray
+spec/glsl-1.20/compiler/built-in-functions/exp-float.frag
+spec/glsl-1.50/execution/built-in-functions/gs-op-assign-mult-vec4-mat4
+spec/glsl-1.50/compiler/built-in-functions/op-lshift-uint-int.geom
+spec/glsl-1.20/execution/variable-indexing/fs-uniform-mat3-rd
+spec/glsl-1.50/execution/built-in-functions/gs-op-add-mat4x3-mat4x3
+spec/glsl-1.10/execution/built-in-functions/fs-op-assign-add-mat2-mat2
+glslparsertest/glsl2/condition-08.vert
+spec/glsl-1.30/compiler/built-in-functions/op-rshift-ivec2-uvec2.vert
+spec/glsl-1.30/compiler/built-in-functions/op-bitand-neg-uint-uvec3.vert
+spec/ARB_framebuffer_sRGB/blit texture linear downsample enabled
+spec/ARB_texture_gather/textureGather/fs-rg-red-float-2D
+spec/glsl-1.50/execution/built-in-functions/gs-lessThan-vec3-vec3
+spec/glsl-1.20/compiler/built-in-functions/outerProduct-mat2x2.vert
+spec/glsl-es-1.00/compiler/precision-qualifiers/default-precision-nested-scope-01.frag
+spec/glsl-1.20/execution/uniform-initializer/vs-float-from-const
+spec/EXT_transform_feedback/output-type uvec2[2]
+shaders/glsl-vs-arrays
+spec/glsl-1.30/execution/built-in-functions/fs-op-assign-rshift-uvec2-uvec2
+spec/glsl-1.30/execution/built-in-functions/vs-op-bitand-neg-abs-ivec3-ivec3
+spec/glsl-1.20/compiler/structure-and-array-operations/array-postdecrement.vert
+spec/EXT_framebuffer_multisample/no-color 2 depth-computed separate
+spec/glsl-1.10/execution/built-in-functions/vs-op-assign-add-ivec2-ivec2
+spec/glsl-1.30/execution/built-in-functions/vs-op-rshift-uvec4-uvec4
+spec/glsl-1.10/execution/variable-indexing/fs-varying-mat4-col-row-rd
+spec/glsl-1.10/execution/built-in-functions/vs-clamp-vec4-float-float
+spec/EXT_framebuffer_multisample/accuracy 16 color small
+spec/glsl-1.30/compiler/built-in-functions/op-bitand-ivec3-ivec3.vert
+spec/EXT_framebuffer_multisample/no-color 4 depth separate
+spec/glsl-1.10/execution/variable-indexing/vs-temp-array-mat4-index-row-rd
+asmparsertest/ARBvp1.0/txb-16.txt
+spec/ARB_texture_gather/textureGatherOffset/fs-rg-none-uint-2DArray
+spec/glsl-1.30/execution/built-in-functions/fs-op-rshift-ivec3-int
+spec/ARB_texture_gather/textureGather/fs-rgba-green-float-2DArray
+spec/ARB_texture_gather/textureGatherOffset/fs-rg-none-int-2DArray
+spec/glsl-1.20/execution/built-in-functions/fs-op-mult-mat3x4-vec3
+spec/glsl-1.20/execution/variable-indexing/vs-temp-array-mat3-index-row-wr
+spec/glsl-1.10/execution/built-in-functions/vs-op-eq-bvec3-bvec3
+spec/ARB_ES3_compatibility/oes_compressed_etc2_texture-miptree rg11 core
