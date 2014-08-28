@@ -1,10 +1,17 @@
-#/bin/env bash
-cd /lkp/benchmarks/piglit/bin/
+#!/bin/bash
 
-./piglit run igt d -d -v|grep 'running ::' | sed 's/running :: //' > all-tests
+cd /lkp/benchmarks/piglit
+mkdir -p groups
 
-[[ $(ls piglittest??) == "" ]] && split -d -l30 all-tests piglittest
+for tset in all igt sanity quick
+do
+	bin/piglit run $tset /tmp/piglit-output -d -v | grep 'running ::' | sed 's/running :: //' > groups/$tset-all
 
-cat piglittest?? > all-known-tests
-
-grep -v -x -F -f all-known-tests all-tests > piglittestdiff
+	cd groups
+	[[ -f $tset-000 ]] || split -d -a3 -l100 $tset-all $tset-
+	cat ${tset}-[0-9]* > $tset-all-known
+	grep -v -x -F -f $tset-all-known $tset-all > $tset-new
+	cat $tset-new >> $tset-000
+	rm $tset-all $tset-all-known $tset-new
+	cd ..
+done
