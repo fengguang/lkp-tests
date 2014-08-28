@@ -41,6 +41,8 @@ def linus_release_tag(commit)
 end
 
 def git_commit(commit)
+	return commit if commit.size == 40 and commit =~ /^[0-9a-f]+$/
+
 	`#{GIT} rev-list -n1 #{commit}`.chomp
 end
 
