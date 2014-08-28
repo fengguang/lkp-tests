@@ -1,5 +1,5 @@
 #!/bin/bash
-# - test
+# - group
 
 export PATH=$BENCHMARK_ROOT/piglit/bin:$PATH
 export DISPLAY=:0
@@ -38,5 +38,19 @@ cat > piglit.conf <<EOF
 path=$BENCHMARK_ROOT/piglit/lib/piglit/bin/igt
 EOF
 
-cmd piglit run $test $RESULT_ROOT/$test
-cmd piglit summary console $RESULT_ROOT/$test
+tset=${group%%-*}
+testcases=()
+while read testcase
+do
+	testcases+=( "$testcase" )
+done < "$BENCHMARK_ROOT/piglit/groups/$group"
+
+for testcase in "${testcases[@]}"
+do
+	start_time=$(date +%s)
+	cmd piglit run $tset -t "$testcase" $RESULT_ROOT/$tset
+	end_time=$(date +%s)
+	echo test time "$testcase": $(( end_time - start_time ))
+
+	cmd piglit summary console $RESULT_ROOT/$tset
+done
