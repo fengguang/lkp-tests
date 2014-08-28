@@ -87,6 +87,8 @@ output.each_line { |line|
 		bug_to_bisect = $2
 	when /WARNING:.* at .* ([a-zA-Z.0-9_]+\+0x)/
 		bug_to_bisect = 'WARNING:.* at .* ' + $1.sub(/\.(isra|constprop|part)\.[0-9]+\+0x/, '')
+		line =~ /(at .*)/
+		line = "WARNING: " + $1
 	when /(Kernel panic - not syncing: No working init found.)  Try passing init= option to kernel. /,
 	     /(Kernel panic - not syncing: No init found.)  Try passing init= option to kernel. /
 		line = $1
