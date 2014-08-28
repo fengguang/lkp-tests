@@ -1,0 +1,13 @@
+#!/bin/bash
+
+download()
+{
+	[[ -d "$BM_NAME" ]] || git clone git://git.linaro.org/power/pm-qa.git
+	source_dir=$BM_NAME
+}
+
+install()
+{
+	cd /tmp
+	cp -af $BM_NAME/* $BM_ROOT
+}
