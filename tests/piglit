@@ -38,7 +38,7 @@ testcases=()
 while read testcase
 do
 	testcases+=( "$testcase" )
-done < "$BENCHMARK_ROOT/piglit/groups/$group"
+done <<< "$(grep -F -x -f $BENCHMARK_ROOT/piglit/groups/$tset-all $BENCHMARK_ROOT/piglit/groups/$group)"
 
 for testcase in "${testcases[@]}"
 do
