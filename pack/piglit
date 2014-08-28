@@ -70,6 +70,14 @@ update_test_groups()
 		[[ -s $tset-new ]] &&
 		cat $tset-new >> $tset-000
 
+		# delete missing cases
+		local group
+		for group in ${tset}-[0-9][0-9][0-9]
+		do
+			grep -x -F -f $tset-all $group > tmp
+			mv tmp $group
+		done
+
 		rm $tset-known $tset-new
 		cd ..
 	done
