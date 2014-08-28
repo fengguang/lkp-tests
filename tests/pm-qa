@@ -1,0 +1,13 @@
+#!/bin/bash
+# - test
+
+cd $BENCHMARK_ROOT/pm-qa/$test || exit
+
+[[ $test == cpuhotplug ]] &&
+ext_opt="hotplug_allow_cpu0=0"
+
+cmd make $ext_opt check
+
+chmod g+w	$BENCHMARK_ROOT/pm-qa/$test/*.log
+chown lkp.lkp	$BENCHMARK_ROOT/pm-qa/$test/*.log
+cp -a		$BENCHMARK_ROOT/pm-qa/$test/*.log $RESULT_ROOT/

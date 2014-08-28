@@ -1,0 +1,13 @@
+testcase: pm-qa
+
+default_monitors:
+
+pm-qa:
+  test:
+  - cpufreq
+  - cpuhotplug
+  - cpuidle
+  - cputopology
+  - thermal
+  # - suspend
+  # - powertop
