@@ -31,10 +31,22 @@ build()
 	make
 }
 
+create_config()
+{
+	cat > piglit.conf <<-EOF
+	[igt]
+	path=$BM_ROOT/lib/piglit/bin/igt
+	EOF
+}
+
 install()
 {
 	mv -T /tmp/intel-gpu-tools $BM_ROOT/lib/$BM_NAME/bin/igt
+
 	cp -af $LKP_SRC/pack/${BM_NAME}-addon/* $BM_ROOT/
+
+	create_config
+	update_test_groups
 }
 
 update_test_groups()
@@ -65,7 +77,6 @@ update_test_groups()
 
 pack()
 {
-	update_test_groups
 	{
 
 		echo /lkp

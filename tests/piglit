@@ -33,11 +33,6 @@ check_wait_dri()
 
 check_wait_dri
 
-cat > piglit.conf <<EOF
-[igt]
-path=$BENCHMARK_ROOT/piglit/lib/piglit/bin/igt
-EOF
-
 tset=${group%%-*}
 testcases=()
 while read testcase
