@@ -3,4 +3,7 @@
 cd $BENCHMARK_ROOT/kvm-unit-tests || exit
 
 cmd ./run_tests.sh
-cp test.log $RESULT_ROOT
+
+chmod g+w	$BENCHMARK_ROOT/kvm-unit-tests/test.log
+chown lkp.lkp	$BENCHMARK_ROOT/kvm-unit-tests/test.log
+cp -a		$BENCHMARK_ROOT/kvm-unit-tests/test.log $RESULT_ROOT/
