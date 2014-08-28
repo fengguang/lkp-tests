@@ -2,6 +2,7 @@
 # - nr_ssd
 # - nr_hdd
 # - nr_brd
+# - nr_srd
 
 # the hosts config may either
 # - hard code    xxx_partitions; leave nr_xxx_partitions empty
@@ -39,6 +40,15 @@ elif (( nr_brd )); then
 	partitions=$(ls /dev/ram*)
 	nr_partitions=$nr_brd
 	disk_description=${nr_brd}brd
+	disks=$partitions
+elif (( nr_srd )); then
+	[[ $ramdisk_size ]] || ramdisk_size=$(( 1024 * 1024 * 1024 ))
+	M_size=$(( ramdisk_size >> 20 ))
+	modprobe -r scsi_debug
+	modprobe scsi_debug add_host=1 num_tgts=$nr_srd max_luns=1 dev_size_mb=$M_size
+	partitions=$(lsscsi | grep scsi_debug | awk '{print $6}')
+	nr_partitions=$nr_srd
+	disk_description=${nr_srd}srd
 	disks=$partitions
 else
 	nr_partitions=$nr_ssd
