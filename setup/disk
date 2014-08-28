@@ -1,6 +1,7 @@
 #!/bin/bash
 # - nr_ssd
 # - nr_hdd
+# - nr_brd
 
 # the hosts config may either
 # - hard code    xxx_partitions; leave nr_xxx_partitions empty
@@ -30,6 +31,15 @@ if (( nr_hdd )); then
 	nr_partitions=$nr_hdd
 	partitions="$hdd_partitions"
 	disk_description=${nr_hdd}hdd
+elif (( nr_brd )); then
+	[[ $ramdisk_size ]] || ramdisk_size=$(( 1024 * 1024 * 1024 ))
+	K_size=$(( ramdisk_size >> 10 ))
+	modprobe -r brd
+	modprobe brd rd_nr=$nr_brd rd_size=$K_size
+	partitions=$(ls /dev/ram*)
+	nr_partitions=$nr_brd
+	disk_description=${nr_brd}brd
+	disks=$partitions
 else
 	nr_partitions=$nr_ssd
 	partitions="$ssd_partitions"
@@ -37,6 +47,7 @@ else
 fi
 
 partitions=$(echo $partitions | cut -f1-$nr_partitions -d' ')
+[[ $disks ]] || disks=$(echo $partitions | grep -o '[/a-z]\+' | sort -u | tr '\n' ' ')
 
 cat >> $TMP/env.yaml <<EOF
 
@@ -44,5 +55,5 @@ cat >> $TMP/env.yaml <<EOF
 nr_partitions: $nr_partitions
 partitions: $partitions
 disk_description: $disk_description
-disks: $(echo $partitions | grep -o '[/a-z]\+' | sort -u | tr '\n' ' ')
+disks: $disks
 EOF
