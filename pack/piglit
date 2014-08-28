@@ -34,12 +34,39 @@ build()
 install()
 {
 	mv -T /tmp/intel-gpu-tools $BM_ROOT/lib/$BM_NAME/bin/igt
+	cp -af $LKP_SRC/pack/${BM_NAME}-addon/* $BM_ROOT/
+}
+
+update_test_groups()
+{
+	(
+	cd /lkp/benchmarks/piglit
+	mkdir -p groups
+
+	local tset
+	for tset in sanity igt all quick
+	do
+		bin/piglit run $tset /tmp/piglit-output -d -v | grep 'running ::' | sed 's/running :: //' > groups/$tset-all
+
+		cd groups
+		[[ -f $tset-000 ]] || split -d -a3 -l100 $tset-all $tset-
+
+		# add new tests to group 000
+		cat ${tset}-[0-9]* > $tset-known
+		grep -v -x -F -f $tset-known $tset-all > $tset-new
+		[[ -s $tset-new ]] &&
+		cat $tset-new >> $tset-000
+
+		rm $tset-all $tset-known $tset-new
+		cd ..
+	done
+	)
 }
 
 pack()
 {
+	update_test_groups
 	{
-		/lkp/pack/update-piglit
 
 		echo /lkp
 		echo /lkp/benchmarks
