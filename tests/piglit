@@ -34,11 +34,15 @@ check_wait_dri()
 check_wait_dri
 
 tset=${group%%-*}
+groups_dir=$BENCHMARK_ROOT/piglit/groups
+[[ -d $groups_dir ]] || groups_dir=$LKP_SRC/pack/piglit-addon/groups
+[[ -f $groups_dir/$tset-all ]] || cat $groups_dir/$tset-[0-9][0-9][0-9] > $groups_dir/$tset-all
+
 testcases=()
 while read testcase
 do
 	testcases+=( "$testcase" )
-done <<< "$(grep -F -x -f $BENCHMARK_ROOT/piglit/groups/$tset-all $BENCHMARK_ROOT/piglit/groups/$group)"
+done <<< "$(grep -F -x -f $groups_dir/$tset-all $groups_dir/$group)"
 
 for testcase in "${testcases[@]}"
 do
