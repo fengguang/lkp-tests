@@ -28,6 +28,10 @@ prepare()
 
 prepare_fallocate()
 {
+	# in seqwr mode, fileio will remove all exist files, hence
+	# it's worthless to create them here.
+	[[ "$rwmode" = "seqwr" ]] && return
+
 	local filesize=$((size / filenum))
 	for ((i = 0; i < filenum; i++))
 	do
