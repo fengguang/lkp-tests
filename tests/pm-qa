@@ -6,7 +6,7 @@ cd $BENCHMARK_ROOT/pm-qa/$test || exit
 [[ $test == cpuhotplug ]] &&
 ext_opt="hotplug_allow_cpu0=0"
 
-cmd make $ext_opt check
+cmd make $ext_opt run_tests
 
 chmod g+w	$BENCHMARK_ROOT/pm-qa/$test/*.log
 chown lkp.lkp	$BENCHMARK_ROOT/pm-qa/$test/*.log
