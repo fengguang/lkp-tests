@@ -33,6 +33,11 @@ check_wait_dri()
 
 check_wait_dri
 
+cat > piglit.conf <<EOF
+[igt]
+path=$BENCHMARK_ROOT/piglit/lib/piglit/bin/igt
+EOF
+
 tset=${group%%-*}
 groups_dir=$BENCHMARK_ROOT/piglit/groups
 [[ -d $groups_dir ]] || groups_dir=$LKP_SRC/pack/piglit-addon/groups
