@@ -31,7 +31,10 @@ def expand_shell_var(env, o)
 		s.split.each { |f|
 			Dir.glob(f).each { |d| files[File.realpath d] = d }
 		}
-		s = files.keys.sort.join ' '
+		s = files.keys.sort_by { |dev|
+			dev =~ /(\d+)$/
+			$1.to_i
+		}.join ' '
 	end
 	return s
 end
