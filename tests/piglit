@@ -54,7 +54,7 @@ do
 	start_time=$(date +%s)
 	cmd piglit run $tset -t "$testcase" $RESULT_ROOT/$tset
 	end_time=$(date +%s)
-	echo test time "$testcase": $(( end_time - start_time ))
+	echo "${testcase// /_}".seconds: $(( end_time - start_time ))
 
 	cmd piglit summary console $RESULT_ROOT/$tset
 done

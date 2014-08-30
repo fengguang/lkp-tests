@@ -4,7 +4,7 @@ while line = STDIN.gets
 	case line
 	when /^(.*): fail/
 		puts $1.gsub(' ', '_') + '.fail: 1'
-	when /^test time (.*: [0-9]+)$/
-		puts $1
+	when /\.seconds: [0-9]+$/
+		puts line
 	end
 end
