@@ -1,5 +1,7 @@
 testcase: kvm-unit-tests
 
 default_monitors:
+  wait: pre-test
+  vmstat:
 
 kvm-unit-tests:

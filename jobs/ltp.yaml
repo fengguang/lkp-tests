@@ -1,6 +1,8 @@
 testcase: ltp
 
 default_monitors:
+  wait: pre-test
+  vmstat:
 
 ltp:
   test:

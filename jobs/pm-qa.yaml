@@ -1,6 +1,8 @@
 testcase: pm-qa
 
 default_monitors:
+  wait: pre-test
+  vmstat:
 
 pm-qa:
   test:

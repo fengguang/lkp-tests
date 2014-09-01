@@ -1,6 +1,8 @@
 testcase: xfstests
 
 default_monitors:
+  wait: pre-test
+  vmstat:
 
 disk: 6HDD
 

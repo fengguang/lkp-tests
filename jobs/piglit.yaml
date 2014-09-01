@@ -1,6 +1,8 @@
 testcase: piglit
 
 default_monitors:
+  wait: pre-test
+  vmstat:
 
 piglit:
   group:
