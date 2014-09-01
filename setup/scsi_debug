@@ -10,7 +10,7 @@ M_size=$(( size >> 20 ))
 modprobe -r scsi_debug
 modprobe scsi_debug add_host=$add_host num_tgts=$num_tgts max_luns=$max_luns dev_size_mb=$M_size
 
-partitions=$(lsscsi | grep scsi_debug | awk '{print $6}')
+partitions=$(grep -l -e scsi_debug /sys/block/*/device/model | awk -F'/' '{print "/dev/"$4}')
 nr_partitions=$(echo $partitions | wc -w)
 [[ $nr_srd != $nr_partitions ]] && {
 	echo "simulated scsi disk number $nr_srd mismatch with $nr_partitions real simulated disks: $partitions" >&2
