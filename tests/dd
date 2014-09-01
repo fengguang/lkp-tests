@@ -1,4 +1,5 @@
 #!/bin/bash
+# - runtime
 # - bs
 
 [[ $mount_points ]] || { echo "empty mount_points, disk failed?" >&2; exit; }

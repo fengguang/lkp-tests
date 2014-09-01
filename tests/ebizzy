@@ -1,5 +1,7 @@
 #!/bin/bash
+# - nr_threads
 # - duration
+# - iterations
 
 cd $BENCHMARK_ROOT/ebizzy || exit
 

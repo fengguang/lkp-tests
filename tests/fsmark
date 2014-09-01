@@ -1,9 +1,11 @@
 #!/bin/bash
+# - nr_threads
 # - test_size
 # - filesize
 # - nr_directories
 # - nr_files_per_directory
 # - sync_method
+# - iterations
 
 cd $BENCHMARK_ROOT/fsmark || exit
 
