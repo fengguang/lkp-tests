@@ -1,15 +1,31 @@
 #!/bin/bash
 # - test
 
-cd $BENCHMARK_ROOT/pm-qa/$test || exit
+cd $BENCHMARK_ROOT/pm-qa || exit
 
-[[ $test == cpuhotplug ]] &&
-ext_opt="hotplug_allow_cpu0=0"
+run_one()
+{
+	local testcase=$1
+	if [[ $testcase == "cpuhotplug" ]]; then
+		ext_opt="hotplug_allow_cpu0=0"
+	else
+		ext_opt=
+	fi
 
-cmd make $ext_opt run_tests
+	cmd make -C $testcase $ext_opt run_tests
 
-ls $BENCHMARK_ROOT/pm-qa/$test/*.log &>/dev/null && {
-	chmod g+w	$BENCHMARK_ROOT/pm-qa/$test/*.log
-	chown lkp.lkp	$BENCHMARK_ROOT/pm-qa/$test/*.log
-	cp -a		$BENCHMARK_ROOT/pm-qa/$test/*.log $RESULT_ROOT/
+	ls $BENCHMARK_ROOT/pm-qa/$testcase/*.log &>/dev/null && {
+		chmod g+w	$BENCHMARK_ROOT/pm-qa/$testcase/*.log
+		chown lkp.lkp	$BENCHMARK_ROOT/pm-qa/$testcase/*.log
+		cp -a		$BENCHMARK_ROOT/pm-qa/$testcase/*.log $RESULT_ROOT/
+	}
 }
+
+if [[ $test == "all" ]]; then
+	for i in cpufreq cpuhotplug cputopology cpuidle thermal
+	do
+		run_one $i
+	done
+else
+	run_one $test
+fi

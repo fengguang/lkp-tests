@@ -6,10 +6,11 @@ default_monitors:
 
 pm-qa:
   test:
-  - cpufreq
-  - cpuhotplug
-  - cpuidle
-  - cputopology
-  - thermal
+  - all
+  # - cpufreq
+  # - cpuhotplug
+  # - cpuidle
+  # - cputopology
+  # - thermal
   # - suspend
   # - powertop
