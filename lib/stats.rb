@@ -176,6 +176,10 @@ def load_release_matrix(matrix_file)
 	return matrix
 end
 
+def install_path(kconfig, commit)
+	"/kernel/#{kconfig}/#{commit}"
+end
+
 def load_base_matrix(matrix_path)
 	matrix_path = File.realpath matrix_path
 	matrix_path = File.dirname matrix_path if File.file? matrix_path
@@ -186,7 +190,22 @@ def load_base_matrix(matrix_path)
 	matrix = {}
 	tags_merged = []
 
-	version, is_exact_match = last_linus_release_tag commit
+	if not commit_exists(commit)
+		kconfig = File.basename __result_root
+		context_file = install_path(kconfig, commit) + "/context.yaml"
+		version = nil
+		if File.exist? context_file
+			context = YAML.load_file context_file
+			version = context['rc_tag']
+			is_exact_match = false
+		end
+		unless version
+			STDERR.puts "Cannot get base RC commit for #{commit}"
+			return nil
+		end
+	else
+		version, is_exact_match = last_linus_release_tag commit
+	end
 	order = tag_order(version)
 
 	cols = 0
