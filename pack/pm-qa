@@ -8,6 +8,7 @@ download()
 
 install()
 {
+	make -C cpuidle cpuidle_killer
 	cd /tmp
 	cp -af $BM_NAME/* $BM_ROOT
 }
