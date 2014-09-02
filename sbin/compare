@@ -15,7 +15,6 @@ require 'pp'
 require 'gnuplot'
 require 'set'
 
-OLD_RESULT_ROOT		= '/lkp/result'
 RESULT_ROOT		= '/result'
 RESULT_ROOT_PATHS	= '/lkp/paths'
 
@@ -192,10 +191,6 @@ def add_stats(path)
 	dirs = File.realpath(path).sub(RESULT_ROOT, '').split('/')
 	dirs.shift if dirs[0] == ''
 	testbox, testcase, path_params, kconfig, commit, run = dirs
-	# compatibility code for old style path, one more testclass in path
-	if commit =~ /x86_64-lkp|x86_64-rhel/ or (run != nil and run !~ /[0-9]+/)
-		testbox, testclass, testcase, path_params, kconfig, commit, run = dirs
-	end
 
 	dim = ''
 	if $dim_not_a_param
@@ -230,7 +225,6 @@ def add_result_root(result_root)
 	$opt_vgrep.each { |re| return if result_root =~ re }
 
 	_result_root = File.dirname result_root
-	_result_root = _result_root.sub(OLD_RESULT_ROOT, RESULT_ROOT)
 	return unless $_result_root_saved.add? _result_root
 
 	$longest_dims.each { |dim|
