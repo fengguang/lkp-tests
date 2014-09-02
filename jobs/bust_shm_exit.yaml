@@ -1,0 +1,7 @@
+testcase: bust_shm_exit
+
+nr_threads: 200%
+runtime: 600s
+
+bust_shm_exit:
+  segments: 1024s

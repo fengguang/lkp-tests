@@ -1,0 +1,14 @@
+#!/bin/bash
+# - runtime
+# - segments
+# - nr_threads
+
+[[ $segments ]] || segments=1024
+[[ $nr_threads ]] || nr_threads=16
+[[ $runtime ]] || runtime=600
+
+segments=${segments%s}
+
+cd $BENCHMARK_ROOT/bust_shm_exit || exit
+
+cmd timeout $runtime ./bust_shm_exit $segments $nr_threads
