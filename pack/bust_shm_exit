@@ -1,0 +1,16 @@
+#!/bin/bash
+
+download()
+{
+	git clone https://github.com/gaowanlong/bust_shm_exit.git
+}
+
+build()
+{
+	gcc -O2 -o ${BM_ROOT}/bust_shm_exit ${BM_NAME}/bust_shm_exit.c -lpthread
+}
+
+install()
+{
+	:
+}
