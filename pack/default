@@ -37,12 +37,13 @@ install()
 
 pack_deb()
 {
-	rm -fr "/tmp/${BM_NAME}-LKP"
-	mkdir -p /tmp/${BM_NAME}-LKP/$BM_ROOT
-	cp -af $BM_ROOT /tmp/${BM_NAME}-LKP/lkp/benchmarks
-	mkdir -p /tmp/${BM_NAME}-LKP/DEBIAN
-	cat > /tmp/${BM_NAME}-LKP/DEBIAN/control <<-EOF
-	Package: ${BM_NAME}-LKP
+	local deb_name="${BM_NAME//_/-}-LKP"
+	rm -fr "/tmp/$deb_name"
+	mkdir -p /tmp/$deb_name/$BM_ROOT
+	cp -af $BM_ROOT /tmp/$deb_name/lkp/benchmarks
+	mkdir -p /tmp/$deb_name/DEBIAN
+	cat > /tmp/$deb_name/DEBIAN/control <<-EOF
+	Package: $deb_name
 	Version: $(date +%F)
 	Architecture: all
 	Maintainer: LKP
@@ -50,7 +51,7 @@ pack_deb()
 	EOF
 
 	cd /tmp
-	dpkg-deb --build ${BM_NAME}-LKP
+	dpkg-deb --build $deb_name
 }
 
 pack()

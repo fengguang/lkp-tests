@@ -111,12 +111,13 @@ end
 
 def install_benchmarks(script)
 	if File.file? "#{LKP_SRC}/pack/#{script}"
-		puts "Making #{script}-LKP.deb..."
+		deb_name = script.gsub(/_/, '-') + '-LKP.deb'
+		puts "Making #{deb_name}..."
 		if system "#{LKP_SRC}/sbin/pack -n #{script} -d -c"
-			puts "Installing #{script}-LKP.deb..."
-			system "dpkg -i /tmp/#{script}-LKP.deb"
+			puts "Installing #{deb_name}..."
+			system "dpkg -i /tmp/#{deb_name}"
 		else
-			puts "Making #{script}-LKP.deb failed"
+			puts "Making #{deb_name} failed"
 		end
 	end
 end
