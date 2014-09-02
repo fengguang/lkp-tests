@@ -8,15 +8,13 @@ require "#{LKP_SRC}/lib/git.rb"
 require "#{LKP_SRC}/lib/yaml.rb"
 require "#{LKP_SRC}/lib/plot.rb"
 require "#{LKP_SRC}/lib/stats.rb"
+require "#{LKP_SRC}/lib/result.rb"
 require 'optparse'
 require 'ostruct'
 require 'yaml'
 require 'pp'
 require 'gnuplot'
 require 'set'
-
-RESULT_ROOT		= '/result'
-RESULT_ROOT_PATHS	= '/lkp/paths'
 
 ABS_WIDTH = 10
 REL_WIDTH = 10
@@ -42,7 +40,7 @@ opts = OptionParser.new do |opts|
         opts.separator ''
         opts.separator 'options:'
 
-        opts.on('-d DIMENSION', '--dimension DIMENSION', 'DIMENSION to compare: commit, fs, kconfig, etc.') do |dimension|
+        opts.on('-d DIMENSION', '--dimension DIMENSION', 'DIMENSION to compare: commit, kconfig, fs, etc.') do |dimension|
 		$opt_dimension = dimension
         end
 
@@ -188,17 +186,15 @@ def add_stats(path)
 		field_value = 0
 	end
 
-	dirs = File.realpath(path).sub(RESULT_ROOT, '').split('/')
-	dirs.shift if dirs[0] == ''
-	testbox, testcase, path_params, kconfig, commit, run = dirs
+	result_path = Result_path.new
+	result_path.parse_result_root(File.realpath(path))
 
-	dim = ''
 	if $dim_not_a_param
-		eval "dim = #{$opt_dimension};"
+		dim = result_path[$opt_dimension]
 	else
-		$params ||= YAML.load_file "#{RESULT_ROOT}/#{testbox}/#{testcase}/params.yaml"
+		$params ||= YAML.load_file result_path.params_file
 		return unless $params.has_key? $opt_dimension
-		path_params = path_params.partition Regexp.new '\b(' + $params[$opt_dimension].join('|') + ')\b'
+		path_params = result_path['path_params'].partition Regexp.new '\b(' + $params[$opt_dimension].join('|') + ')\b'
 		dim = path_params[1]
 		return unless dim
 	end
@@ -208,11 +204,11 @@ def add_stats(path)
 		$first_dim ||= dim
 	end
 	if $dim_not_a_param
-		eval "#{$opt_dimension} = $first_dim"
+		result_path[$opt_dimension] = $first_dim
 	else
-		path_params = path_params[0] + $first_dim + path_params[2]
+		result_path['path_params'] = path_params[0] + $first_dim + path_params[2]
 	end
-	key = "#{testbox}/#{testcase}/#{path_params}/#{kconfig}/#{commit}/#{run}"
+	key = result_path.key
 	if !$cases.has_key?(key)
 		$cases[key] = { dim => field_value }
 	else
@@ -237,10 +233,9 @@ def add_result_root(result_root)
 end
 
 def setup_test_group(result_root)
-	dirs = File.dirname(File.dirname(File.dirname(result_root))).sub(RESULT_ROOT, '').split('/')
-	dirs.shift if dirs[0] == ''
-	testbox, testcase, path_params = dirs
-	test = "#{testbox}/#{testcase}/#{path_params}"
+	result_path = Result_path.new
+	result_path.parse_result_root result_root
+	test = result_path.test_desc
 	if not $tests.has_key?(test)
 		$tests[test] = test
 	end
@@ -249,7 +244,7 @@ end
 def setup_result_root_hash()
 	ENV['LC_ALL'] = 'C'
 	$opt_dims.each do |dim|
-		`grep -h -r -F -e #{dim} #{RESULT_ROOT_PATHS}`.each_line do |result_root|
+		`grep -h -r -F -e #{dim} #{RESULT_PATHS}`.each_line do |result_root|
 			add_result_root result_root
 			setup_test_group result_root
 		end

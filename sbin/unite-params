@@ -12,8 +12,11 @@ if not File.directory? $result_root
 	exit 1
 end
 
-$params_root  = File.dirname File.dirname File.dirname File.dirname $result_root
-$params_file  = $params_root + '/params.yaml'
+result_path = Result_path.new
+result_path.parse_result_root $result_root
+
+$params_file  = result_path.params_file
+$params_root  = File.dirname $params_file
 
 if File.exist? $params_file and Time.now - File.ctime($params_root) > 3600
 	# no need to update params

@@ -3,6 +3,7 @@
 LKP_SRC ||= ENV['LKP_SRC']
 LKP_SERVER ||= 'inn'
 
+require "#{LKP_SRC}/lib/result.rb"
 require 'fileutils'
 require 'yaml'
 require 'pp'
@@ -156,10 +157,6 @@ def atomic_save_yaml(object, file)
 	FileUtils.mv temp_file, file, :force => true
 end
 
-def tbox_group(hostname)
-	hostname.sub /-[0-9]+$/, ''
-end
-
 class Job
 
 	def load(jobfile)
@@ -272,8 +269,10 @@ class Job
 	end
 
 	def _result_root
-		commit = @job['commit']
-		"/result/#{tbox_group(@job['testbox'])}/#{@job['testcase']}/#{self.path_params}/#{@job['kconfig']}/#{commit}"
+		result_path = Result_path.new
+		result_path.update @job
+		result_path['path_params'] = self.path_params
+		result_path._result_root
 	end
 
 	def [](k)

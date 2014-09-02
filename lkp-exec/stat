@@ -7,6 +7,7 @@ require 'ostruct'
 require "#{LKP_SRC}/lib/git.rb"
 require "#{LKP_SRC}/lib/yaml.rb"
 require "#{LKP_SRC}/lib/stats.rb"
+require "#{LKP_SRC}/lib/result.rb"
 
 $opt_group = '_rt'
 $opt_kernel = 'v3.13'
@@ -67,11 +68,11 @@ result_roots.sort.each { |result_root|
 		next if matrix['dmesg.boot_failures']
 	end
 
-	root, result, testbox, testcase, params, kconfig, commit, run = result_root.split '/'
-	tbox = testbox
-	test = testbox + '/' + testcase + '/' + params
+	result_path = Result_path.new
+	result_path.parse_result_root(result_root)
+	result_path['test'] = result_path.test_desc
 
-	group = eval $opt_group
+	group = result_path[$opt_group]
 	groups[group] ||= []
 	if $opt_group =~ /__rt|_rt|test/
 		groups[group].concat samples_fill_missing_zeros(matrix, $opt_field)
