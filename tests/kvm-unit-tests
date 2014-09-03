@@ -2,6 +2,8 @@
 
 cd $BENCHMARK_ROOT/kvm-unit-tests || exit
 
+ldd /usr/bin/qemu-system-x86_64
+
 cmd ./run_tests.sh
 
 chmod g+w	$BENCHMARK_ROOT/kvm-unit-tests/test.log
