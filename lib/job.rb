@@ -271,6 +271,8 @@ class Job
 	def _result_root
 		result_path = Result_path.new
 		result_path.update @job
+		result_path['rootfs'] ||= 'debian-x86_64.cgz'
+		result_path['rootfs'] = result_path['rootfs'].split(/[^a-zA-Z0-9._-]/)[-1]
 		result_path['path_params'] = self.path_params
 		result_path._result_root
 	end

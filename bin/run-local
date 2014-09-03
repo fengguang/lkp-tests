@@ -76,6 +76,7 @@ if $opt_result_root == nil
 	job['testbox'] = HOSTNAME
 	job['kconfig'] ||= 'defconfig'
 	job['commit'] ||= `uname -r`.chomp!
+	job['rootfs'] ||= `grep -m1 ^ID= /etc/os-release`.split('=')[1].chomp
 	_result_root = job._result_root
 	result_root = create_result_root(_result_root) or exit
 	ENV['RESULT_ROOT'] = result_root

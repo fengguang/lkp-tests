@@ -16,6 +16,7 @@ class Result_path < Hash
 		self['testbox'],
 		self['testcase'],
 		self['path_params'],
+		self['rootfs'],
 		self['kconfig'],
 		self['commit'],
 		self['run'] = dirs
@@ -27,6 +28,7 @@ class Result_path < Hash
 			tbox_group(self['testbox']),
 			self['testcase'],
 			self['path_params'],
+			self['rootfs'],
 			self['kconfig'],
 			self['commit']
 		].join '/'
@@ -38,6 +40,7 @@ class Result_path < Hash
 			tbox_group(self['testbox']),
 			self['testcase'],
 			self['path_params'],
+			self['rootfs'],
 			self['kconfig'],
 			self['commit'],
 			self['run']
@@ -49,6 +52,7 @@ class Result_path < Hash
 			tbox_group(self['testbox']),
 			self['testcase'],
 			self['path_params'],
+			self['rootfs'],
 			self['kconfig'],
 			self['commit'],
 			self['run']
