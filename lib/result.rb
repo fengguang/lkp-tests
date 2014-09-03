@@ -47,18 +47,6 @@ class Result_path < Hash
 		].join '/'
 	end
 
-	def key
-		[
-			tbox_group(self['testbox']),
-			self['testcase'],
-			self['path_params'],
-			self['rootfs'],
-			self['kconfig'],
-			self['commit'],
-			self['run']
-		].join '/'
-	end
-
 	def test_desc
 		[
 			self['testbox'],

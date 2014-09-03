@@ -208,11 +208,11 @@ def add_stats(path)
 	else
 		result_path['path_params'] = path_params[0] + $first_dim + path_params[2]
 	end
-	key = result_path.key
-	if !$cases.has_key?(key)
-		$cases[key] = { dim => field_value }
+	_rt = result_path._result_root
+	if !$cases.has_key?(_rt)
+		$cases[_rt] = { dim => field_value }
 	else
-		$cases[key][dim] = field_value
+		$cases[_rt][dim] = field_value
 	end
 end
 
@@ -404,7 +404,7 @@ def show_test_group(key)
 end
 
 def show_delta(stat, key_g)
-	$cases.delete_if { |key, value|
+	$cases.delete_if { |_rt, value|
 		next true if value.size < 2
 		next false if is_failure stat
 		next false if is_latency stat
@@ -452,7 +452,7 @@ def show_delta(stat, key_g)
 
 	is_float = false
 	is_exp   = false
-	$cases.each { |key, value|
+	$cases.each { |_rt, value|
 		value.each { |k, v|
 			case v
 			when Array
@@ -465,10 +465,14 @@ def show_delta(stat, key_g)
 		}
 	}
 
-	$cases.each { |key, value|
+	$cases.each { |_rt, value|
+
+		result_path = Result_path.new
+		result_path.parse_result_root(_rt)
+		test = result_path.test_desc
+
 		if $group_by_test
-			sub_key = File.dirname(File.dirname(key))
-			next unless sub_key == key_g
+			next unless test == key_g
 		end
 		v0 = value[$first_dim]
 		v0 = v0.average if Array === v0
@@ -492,7 +496,7 @@ def show_delta(stat, key_g)
 		if $group_by_test
 			puts "#{$opt_field}"
 		else
-			puts File.dirname File.dirname key
+			puts test
 		end
 	}
 
@@ -506,11 +510,11 @@ def show_delta(stat, key_g)
 end
 
 def call_mmplot
-	$cases.each { |key, value|
-		file = '/result/' + key + 'matrix.json'
+	$cases.each { |_rt, value|
+		file = _rt + '/matrix.json'
 		matrix1 = load_json file
 		matrix2 = load_json file.sub($opt_dims[0], $opt_dims[1])
-		mmplot(matrix2, matrix1, [$opt_field], File.dirname(File.dirname(key)))
+		mmplot(matrix2, matrix1, [$opt_field], File.dirname(File.dirname(_rt)))
 	}
 end
 
