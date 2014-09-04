@@ -1,0 +1,11 @@
+#!/bin/bash
+
+cd $BENCHMARK_ROOT/hwsim/tests/hwsim || exit
+
+nm_conf="/etc/NetworkManager/NetworkManager.conf"
+[[ -f "$nm_conf" ]] && cat >> $nm_conf <<EOF
+[keyfile]
+unmanaged-devices=mac:02:00:00:00:00:00;mac:02:00:00:00:01:00;mac:02:00:00:00:02:00;mac:02:00:00:00:03:00;mac:02:00:00:00:04:00
+EOF
+
+cmd ./run-all.sh
