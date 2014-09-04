@@ -1,0 +1,18 @@
+#!/bin/bash
+
+download()
+{
+	[[ -d hostap ]] || git clone git://w1.fi/srv/git/hostap.git
+	source_dir=hostap
+}
+
+build()
+{
+	cd $source_dir
+	./tests/hwsim/build.sh
+}
+
+install()
+{
+	cp -af /tmp/$source_dir/* $BM_ROOT
+}
