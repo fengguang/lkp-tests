@@ -6,6 +6,7 @@ LKP_SERVER ||= 'inn'
 require "#{LKP_SRC}/lib/result.rb"
 require 'fileutils'
 require 'yaml'
+require 'json'
 require 'pp'
 
 def deepcopy(o)
@@ -161,10 +162,14 @@ def create_programs_hash(glob)
 	$programs_cache[glob] = $programs
 end
 
-def atomic_save_yaml(object, file)
+def atomic_save_yaml_json(object, file)
 	temp_file = file + "-#{$$}"
 	File.open(temp_file, mode='w') { |file|
-		file.write(YAML.dump(object))
+		if temp_file.index('.json')
+			file.write(JSON.pretty_generate(object, :allow_nan => true))
+		else
+			file.write(YAML.dump(object))
+		end
 	}
 	FileUtils.mv temp_file, file, :force => true
 end
@@ -193,7 +198,7 @@ class Job
 	end
 
 	def save(jobfile)
-		atomic_save_yaml @job, jobfile
+		atomic_save_yaml_json @job, jobfile
 	end
 
 	def each_job
