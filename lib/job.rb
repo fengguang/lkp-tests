@@ -134,7 +134,7 @@ def for_each_program_or_param(ah)
 end
 
 # programs[script] = full/path/to/script
-def create_programs_hash(glob)
+def __create_programs_hash(glob)
 	$programs = {}
 	Dir.glob("#{LKP_SRC}/#{glob}").each { |path|
 		next if File.directory?(path)
@@ -147,6 +147,18 @@ def create_programs_hash(glob)
 		end
 		$programs[file] = path
 	}
+end
+
+def create_programs_hash(glob)
+	$programs_cache ||= {}
+	if $programs_cache[glob]
+		$programs = $programs_cache[glob]
+		return
+	end
+
+	__create_programs_hash(glob)
+
+	$programs_cache[glob] = $programs
 end
 
 def atomic_save_yaml(object, file)
