@@ -39,4 +39,4 @@ job.each_param { |k, v, option_type|
 	end
 }
 
-atomic_save_yaml params, $params_file
+atomic_save_yaml_json params, $params_file
