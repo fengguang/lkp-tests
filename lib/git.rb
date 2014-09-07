@@ -9,6 +9,12 @@ def commit_tag(commit)
 	`#{GIT} describe --tags --exact-match #{commit} 2>/dev/null | sed 's#linux-devel/##'`.chomp
 end
 
+def commit_name(commit)
+	tag = commit_tag(commit)
+	return tag if not tag.empty?
+	return commit
+end
+
 def is_commit(commit)
 	commit =~ /^[0-9a-f~^]{7,}$/ or
 	commit =~ /^v[234]\.\d+/
