@@ -47,8 +47,8 @@ class Result_path < Hash
 		].join '/'
 	end
 
-	def test_desc(dim)
-		self.delete(dim) if dim != 'params'
+	def test_desc(dim, dim_not_a_param)
+		self.delete(dim) if dim_not_a_param
 		self.delete('rootfs') if dim != 'rootfs'
 		self.delete('kconfig') if dim != 'kconfig'
 		[

@@ -111,7 +111,7 @@ else
 end
 opts.parse!(argv)
 
-$dim_not_a_param = $opt_dimension =~ /^(testbox|kconfig|commit|run)$/
+$dim_not_a_param = $opt_dimension =~ /^(testbox|rootfs|kconfig|commit|run)$/
 
 $changed_stats 	    = Hash.new { |hash, key| hash[key] = {} }
 $stat_records 	    = Hash.new { |hash, key| hash[key] = [] }
@@ -235,7 +235,7 @@ end
 def setup_test_group(result_root)
 	result_path = Result_path.new
 	result_path.parse_result_root result_root
-	test = result_path.test_desc $opt_dimension
+	test = result_path.test_desc $opt_dimension, $dim_not_a_param
 	if not $tests.has_key?(test)
 		$tests[test] = test
 	end
@@ -469,7 +469,7 @@ def show_delta(stat, key_g)
 
 		result_path = Result_path.new
 		result_path.parse_result_root(_rt)
-		test = result_path.test_desc $opt_dimension
+		test = result_path.test_desc $opt_dimension, $dim_not_a_param
 
 		if $group_by_test
 			next unless test == key_g
@@ -497,7 +497,7 @@ def show_delta(stat, key_g)
 			puts "#{$opt_field}"
 		else
 			result_path['commit'] = commit_name(result_path['commit']) if $opt_dimension != 'commit'
-			test = result_path.test_desc $opt_dimension
+			test = result_path.test_desc $opt_dimension, $dim_not_a_param
 			puts test
 		end
 	}
