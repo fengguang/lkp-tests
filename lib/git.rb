@@ -5,8 +5,14 @@ require 'set'
 GIT_TREE ||= ENV['GIT_WORK_TREE'] || ENV['LINUX_GIT'] || '/c/lkp/linux'
 GIT	 ||= "git --work-tree=#{GIT_TREE} --git-dir=#{GIT_TREE}/.git"
 
-def commit_tag(commit)
+def __commit_tag(commit)
 	`#{GIT} describe --tags --exact-match #{commit} 2>/dev/null | sed 's#linux-devel/##'`.chomp
+end
+
+def commit_tag(commit)
+	$__commit_tag_cache ||= {}
+	return $__commit_tag_cache[commit] if $__commit_tag_cache.include?(commit)
+	return $__commit_tag_cache[commit] = __commit_tag(commit)
 end
 
 def commit_name(commit)
