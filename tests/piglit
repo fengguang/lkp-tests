@@ -49,12 +49,15 @@ do
 	testcases+=( "$testcase" )
 done <<< "$(grep -F -x -f $groups_dir/$tset-all $groups_dir/$group)"
 
+mkdir $RESULT_ROOT/results
+i=0
 for testcase in "${testcases[@]}"
 do
 	start_time=$(date +%s)
-	cmd piglit run $tset -t "$testcase" $RESULT_ROOT/$tset
+	cmd piglit run $tset -t "$testcase" $TMP/piglit-results-$i
 	end_time=$(date +%s)
 	echo "${testcase// /_}".seconds: $(( end_time - start_time ))
-
-	cmd piglit summary console $RESULT_ROOT/$tset
+	cmd piglit summary console $TMP/piglit-results-$i
+	cp $TMP/piglit-results-$i/results.json $RESULT_ROOT/results/${i}.json
+	(( i++ ))
 done
