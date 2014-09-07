@@ -47,12 +47,18 @@ class Result_path < Hash
 		].join '/'
 	end
 
-	def test_desc
+	def test_desc(dim)
+		self.delete(dim) if dim != 'params'
+		self.delete('rootfs') if dim != 'rootfs'
+		self.delete('kconfig') if dim != 'kconfig'
 		[
 			self['testbox'],
 			self['testcase'],
-			self['path_params']
-		].join '/'
+			self['path_params'],
+			self['rootfs'],
+			self['kconfig'],
+			self['commit']
+		].compact.join '/'
 	end
 
 	def params_file

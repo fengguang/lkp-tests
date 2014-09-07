@@ -235,7 +235,7 @@ end
 def setup_test_group(result_root)
 	result_path = Result_path.new
 	result_path.parse_result_root result_root
-	test = result_path.test_desc
+	test = result_path.test_desc $opt_dimension
 	if not $tests.has_key?(test)
 		$tests[test] = test
 	end
@@ -469,7 +469,7 @@ def show_delta(stat, key_g)
 
 		result_path = Result_path.new
 		result_path.parse_result_root(_rt)
-		test = result_path.test_desc
+		test = result_path.test_desc $opt_dimension
 
 		if $group_by_test
 			next unless test == key_g
