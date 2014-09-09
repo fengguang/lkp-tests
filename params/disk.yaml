@@ -40,6 +40,10 @@
 12BRD:  { nr_brd: 12 }
 24BRD:  { nr_brd: 24 }
 
+1BRD_32G:    { nr_brd: 1, ramdisk_size: 32G   }
+1BRD_64G:    { nr_brd: 1, ramdisk_size: 64G   }
+1BRD_128G:   { nr_brd: 1, ramdisk_size: 128G  }
+
 1SRD:   { nr_srd: 1  }
 2SRD:   { nr_srd: 2  }
 3SRD:   { nr_srd: 3  }
@@ -53,3 +57,7 @@
 11SRD:  { nr_srd: 11 }
 12SRD:  { nr_srd: 12 }
 24SRD:  { nr_srd: 24 }
+
+1SRD_32G:    { nr_brd: 1, ramdisk_size: 32G   }
+1SRD_64G:    { nr_brd: 1, ramdisk_size: 64G   }
+1SRD_128G:   { nr_brd: 1, ramdisk_size: 128G  }
