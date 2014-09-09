@@ -1,0 +1,10 @@
+testcase: blogbench
+
+disk: 1HDD
+
+fs:
+- ext4
+- xfs
+- btrfs
+
+blogbench:
