@@ -22,6 +22,8 @@ default_monitors:
   cpuidle:
   cpufreq:
   turbostat:
+  sched_debug:
+    interval: 10
 
 # default setups
 cpufreq_governor:
