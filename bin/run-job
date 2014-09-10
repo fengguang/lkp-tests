@@ -263,7 +263,7 @@ def run_program(program, env)
 	program_env, args = program_env(program, env)
 
 	if $PROGRAM_NAME =~ /job-env/
-		puts program + ': 1'
+		puts program + ': '
 		program_env.each { |key, val| puts "#{program}.#{key}: #{val}" }
 		return
 	end

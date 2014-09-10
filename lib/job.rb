@@ -47,10 +47,12 @@ def expand_toplevel_vars(env, hash)
 		case val
 		when Hash
 			next
+		when nil
+			vars[key] = nil
 		when Array
-			vars[key] = expand_shell_var(env, val[0] || 1) if val.size == 1
+			vars[key] = expand_shell_var(env, val[0]) if val.size == 1
 		else
-			vars[key] = expand_shell_var(env, val || 1)
+			vars[key] = expand_shell_var(env, val)
 		end
 	}
 	return vars
