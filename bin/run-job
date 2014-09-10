@@ -89,6 +89,20 @@ def program_env(program, env)
 	return program_env, args
 end
 
+def run_child(key, val)
+	val['testcase']  = $testcase['testcase']
+
+	temp_yaml = "#{TMP}/lkp-run-job--#{key}--#{$$}.yaml"
+	File.open(temp_yaml, mode='w') { |file|
+		file.write(YAML.dump(val))
+	}
+	child_job_pwd = ENV['job_pwd']
+	child_job_pwd += '/' unless child_job_pwd[-1] == '/'
+	child_job_pwd += key
+	$child_pids << Process.spawn($top_env.merge({'job_pwd' => child_job_pwd}),
+				     "#{LKP_SRC}/bin/run-job #{temp_yaml}")
+end
+
 case $PROGRAM_NAME
 when /run-job/
 	$pre_test_executed = false
@@ -99,17 +113,7 @@ when /run-job/
 		next if $programs.include? key
 		next if val.class != Hash
 
-		val['testcase']  = $testcase['testcase']
-
-		temp_yaml = "#{TMP}/lkp-run-job--#{key}--#{$$}.yaml"
-		File.open(temp_yaml, mode='w') { |file|
-			file.write(YAML.dump(val))
-		}
-		child_job_pwd = ENV['job_pwd']
-		child_job_pwd += '/' unless child_job_pwd[-1] == '/'
-		child_job_pwd += key
-		$child_pids << Process.spawn($top_env.merge({'job_pwd' => child_job_pwd}),
-					     "#{LKP_SRC}/bin/run-job #{temp_yaml}")
+		run_child(key, val)
 
 		# remove key and val to avoid re-run them in the end
 		true
