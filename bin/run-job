@@ -46,6 +46,49 @@ $top_env = expand_toplevel_vars Hash.new, $testcase
 
 $child_pids = []
 
+def add_one_env(program_env, k, v)
+	if v.class == Array and v[0].class != Array and v[0].class != Hash
+		v = v.join ' '
+	end
+	if v.class != Hash and v.class != Array
+		program_env[k] = expand_shell_var $top_env, v
+		return true
+	end
+	return false
+end
+
+def program_env(program, env)
+	program_env = {}
+
+	env = strip_trivial_array(env)
+
+	# expand predefined parameter set name
+	if env.class != Hash and env.class != Array
+		param_yaml = LKP_SRC + '/params/' + program + '.yaml'
+		if File.exists?(param_yaml)
+			params = YAML.load_file(param_yaml)
+			env = params[env] if params[env]
+		end
+	end
+
+	args = []
+	if env.class == String
+		return if env == 'disable'
+		args = env.split if env != ''
+	elsif env.class == Fixnum or env.class == Float
+		args = env.to_s
+	else
+		for_each(env) { |k, v|
+			add_one_env program_env, k, v and next
+			for_each(v) { |kk, vv|
+				add_one_env program_env, kk, vv
+			}
+		}
+	end
+
+	return program_env, args
+end
+
 case $PROGRAM_NAME
 when /run-job/
 	$pre_test_executed = false
@@ -87,17 +130,6 @@ else
 	exit 1
 end
 
-def add_one_env(program_env, k, v)
-	if v.class == Array and v[0].class != Array and v[0].class != Hash
-		v = v.join ' '
-	end
-	if v.class != Hash and v.class != Array
-		program_env[k] = expand_shell_var $top_env, v
-		return true
-	end
-	return false
-end
-
 def run_pre_test(program)
 	return unless $pre_test_executed == false
 	return unless $programs[program].index("#{LKP_SRC}/tests/") == 0
@@ -112,33 +144,7 @@ def run_pre_test(program)
 end
 
 def run_program(program, env)
-	program_env = {}
-
-	env = strip_trivial_array(env)
-
-	# expand predefined parameter set name
-	if env.class != Hash and env.class != Array
-		param_yaml = LKP_SRC + '/params/' + program + '.yaml'
-		if File.exists?(param_yaml)
-			params = YAML.load_file(param_yaml)
-			env = params[env] if params[env]
-		end
-	end
-
-	args = []
-	if env.class == String
-		return if env == 'disable'
-		args = env.split if env != ''
-	elsif env.class == Fixnum or env.class == Float
-		args = env.to_s
-	else
-		for_each(env) { |k, v|
-			add_one_env program_env, k, v and next
-			for_each(v) { |kk, vv|
-				add_one_env program_env, kk, vv
-			}
-		}
-	end
+	program_env, args = program_env(program, env)
 
 	if $PROGRAM_NAME =~ /job-env/
 		puts program + ': 1'
