@@ -4,7 +4,7 @@ for dev in $partitions; do
 	# skip nfs dev
 	[[ $dev =~ :/ ]] && continue
 
-	[[ "$dev" =~ /dev/md ]] || dev=${dev//[0-9]/}
+	[[ "$dev" =~ /dev/(md|ram) ]] || dev=${dev//[0-9]/}
 	bdi=$(ls -l $dev | sed 's/,[[:space:]]*/:/' | awk '{print $5}')
 	echo "'$bdi': ${dev#/dev/}"
 done
