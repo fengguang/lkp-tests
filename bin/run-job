@@ -89,6 +89,21 @@ def program_env(program, env)
 	return program_env, args
 end
 
+def create_cmd(program, args)
+	wrapper = File.dirname($programs[program]) + '/wrapper'
+	if File.executable?(wrapper)
+		cmd = [ wrapper, program, *args ]
+	else
+		cmd = [ $programs[program], *args ]
+	end
+
+	if $programs[program] =~ %r{/tests/}
+		cmd = [ "/usr/bin/time", "-v", "-o", "#{TMP}/time", *cmd ]
+	end
+
+	return cmd
+end
+
 def run_child(key, val)
 	val['testcase']  = $testcase['testcase']
 
@@ -158,16 +173,7 @@ def run_program(program, env)
 
 	run_pre_test program
 
-	wrapper = File.dirname($programs[program]) + '/wrapper'
-	if File.executable?(wrapper)
-		cmd = [ wrapper, program, *args ]
-	else
-		cmd = [ $programs[program], *args ]
-	end
-
-	if $programs[program] =~ %r{/tests/}
-		cmd = [ "/usr/bin/time", "-v", "-o", "#{TMP}/time", *cmd ]
-	end
+	cmd = create_cmd(program, args)
 
 	puts "run: " + cmd.join(" ") + "\t" + program_env.to_s
 	return if ENV["LKP_DRYRUN"]
