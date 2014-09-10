@@ -27,9 +27,8 @@ opts = OptionParser.new do |opts|
                 File.open(file, 'w') { |f| f.write "#{$$}\n" }
         end
 
-        opts.on('-s', '--shell', 'Create shell run script') do
-		$opt_shell = true
-		$shell_run = "#{TMP}/run-job.sh"
+        opts.on('-s FILE', '--shell FILE', 'Create shell run script') do |file|
+		$opt_shell = File.open(file, mode='w')
         end
 
         opts.on_tail('-h', '--help', 'Show this message') do
@@ -52,27 +51,21 @@ $top_env = expand_toplevel_vars Hash.new, $testcase
 $child_pids = []
 
 def shell_run_head
-	File.open($shell_run, mode='w') { |file|
-		file.puts "#!/bin/bash\n\n"
-	}
+	$opt_shell.puts "#!/bin/bash\n\n"
 end
 
 def shell_export_env
-	File.open($shell_run, mode='a') { |file|
-		$top_env.each { |k, v|
-			file.puts "export #{k}=\"#{v}\""
-		}
-		file.puts "\n\n"
+	$top_env.each { |k, v|
+		$opt_shell.puts "export #{k}=\"#{v}\""
 	}
+	$opt_shell.puts "\n\n"
 end
 
 def shell_read_env_vars
-	File.open($shell_run, mode='a') { |file|
-		file.puts "\nread_env_vars()\n{"
-		file.puts "\teval $(sed -e '/^ *$/d;/^#/d;s/: */=\"/g;s/$/\"/g;s/ *=/=/g' #{TMP}/env.yaml)"
-		file.puts '}'
-		file.puts "read_env_vars\n\n"
-	}
+	$opt_shell.puts "\nread_env_vars()\n{"
+	$opt_shell.puts "\teval $(sed -e '/^ *$/d;/^#/d;s/: */=\"/g;s/$/\"/g;s/ *=/=/g' #{TMP}/env.yaml)"
+	$opt_shell.puts '}'
+	$opt_shell.puts "read_env_vars\n\n"
 end
 
 def shell_run_pre_test(program)
@@ -80,11 +73,9 @@ def shell_run_pre_test(program)
 	return unless $programs[program].index("#{LKP_SRC}/tests/") == 0
 	$pre_test_executed = true
 	shell_read_env_vars
-	File.open($shell_run, mode='a') { |file|
-		file.puts "#{LKP_SRC}/monitors/event/wakeup pre-test"
-		file.puts "sleep 1"
-		file.puts "date '+%s' > #{TMP}/start_time\n\n"
-	}
+	$opt_shell.puts "#{LKP_SRC}/monitors/event/wakeup pre-test"
+	$opt_shell.puts "sleep 1"
+	$opt_shell.puts "date '+%s' > #{TMP}/start_time\n\n"
 end
 
 def add_one_env(program_env, k, v)
@@ -151,35 +142,27 @@ def shell_run_program(program, env)
 	shell_run_pre_test(program)
 
 	cmd = create_cmd(program, args)
-	File.open($shell_run, mode='a') { |file|
-		program_env.each { |k, v|
-			file.print "\t" if $shell_run_program_indent
-			file.puts "#{k}=#{v} \\"
-		}
-		file.print "\t" if $shell_run_program_indent
-		file.puts cmd.join' '
+	program_env.each { |k, v|
+		$opt_shell.print "\t" if $shell_run_program_indent
+		$opt_shell.puts "#{k}=#{v} \\"
 	}
+	$opt_shell.print "\t" if $shell_run_program_indent
+	$opt_shell.puts cmd.join' '
 end
 
 def shell_run_child(key, val)
-	File.open($shell_run, mode='a') { |file|
-		file.puts "#{key}()\n{"
-	}
+	$opt_shell.puts "#{key}()\n{"
 	$shell_run_program_indent = true
 	for_each_program(val) { |k, v|
 		shell_run_program(k, v)
 	}
 	$shell_run_program_indent = false
-	File.open($shell_run, mode='a') { |file|
-		file.puts "}\n\n"
-		file.puts "#{key}&\n\n"
-	}
+	$opt_shell.puts "}\n\n"
+	$opt_shell.puts "#{key} &\n\n"
 end
 
 def shell_wait_child()
-	File.open($shell_run, mode='a') { |file|
-		file.puts "\nwait"
-	}
+	$opt_shell.puts "\nwait"
 end
 
 def run_child(key, val)
@@ -292,6 +275,8 @@ if $opt_shell
 	}
 
 	shell_wait_child
+
+	$opt_shell.close
 	exit
 end
 
