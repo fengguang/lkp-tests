@@ -70,18 +70,20 @@ def shell_export_env
 	$opt_shell.puts "\n\n"
 end
 
-def shell_read_env_vars
+def shell_define_read_env_vars
 	$opt_shell.puts "\nread_env_vars()\n{"
 	$opt_shell.puts "\teval $(sed -e '/^ *$/d;/^#/d;s/: */=\"/g;s/$/\"/g;s/ *=/=/g' #{TMP}/env.yaml)"
-	$opt_shell.puts '}'
-	$opt_shell.puts "read_env_vars\n\n"
+	$opt_shell.puts "}\n\n"
+end
+
+def shell_call_read_env_vars
+	$opt_shell.puts "\nread_env_vars\n"
 end
 
 def shell_run_pre_test(program)
 	return if $pre_test_executed
 	return unless $programs[program].index("#{LKP_SRC}/tests/") == 0
 	$pre_test_executed = true
-	shell_read_env_vars
 	$opt_shell.puts "#{LKP_SRC}/monitors/event/wakeup pre-test"
 	$opt_shell.puts "sleep 1"
 	$opt_shell.puts "date '+%s' > #{TMP}/start_time\n\n"
@@ -283,7 +285,9 @@ def run_program(program, env)
 end
 
 if $opt_shell
+	shell_define_read_env_vars
 	for_each_program($testcase) { |k, v|
+		shell_call_read_env_vars
 		shell_run_program k, v
 	}
 
