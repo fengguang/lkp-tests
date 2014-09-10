@@ -159,8 +159,17 @@ def shell_run_program(program, env)
 	$opt_shell.puts cmd.join' '
 end
 
+def shell_run_one_shot
+	$testcase.delete_if { |key, val|
+		next unless $programs[key]
+		next unless $programs[key].index("#{LKP_SRC}/monitors/one-shot/") == 0
+		shell_run_program(key, val)
+		true
+	}
+end
+
 def shell_run_child(key, val)
-	$opt_shell.puts "#{key}()\n{"
+	$opt_shell.puts "\n#{key}()\n{"
 	$shell_run_program_indent = true
 	for_each_program(val) { |k, v|
 		shell_run_program(k, v)
@@ -190,9 +199,11 @@ end
 
 
 if $opt_shell
+	create_programs_hash "{setup,monitors,tests}/**/*"
 	shell_run_head
 	update_global_env
 	shell_export_env
+	shell_run_one_shot
 end
 
 case $PROGRAM_NAME
