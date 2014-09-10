@@ -72,7 +72,7 @@ end
 
 def shell_define_read_env_vars
 	$opt_shell.puts "\nread_env_vars()\n{"
-	$opt_shell.puts "\teval $(sed -e '/^ *$/d;/^#/d;s/: */=\"/g;s/$/\"/g;s/ *=/=/g' #{TMP}/env.yaml)"
+	$opt_shell.puts "\teval $(sed -e '/^ *$/d;/^#/d;s/: */=\"/g;s/$/\"/g;s/ *=/=/g' $TMP/env.yaml)"
 	$opt_shell.puts "}\n\n"
 end
 
@@ -84,9 +84,9 @@ def shell_run_pre_test(program)
 	return if $pre_test_executed
 	return unless $programs[program].index("#{LKP_SRC}/tests/") == 0
 	$pre_test_executed = true
-	$opt_shell.puts "#{LKP_SRC}/monitors/event/wakeup pre-test"
+	$opt_shell.puts "$LKP_SRC/monitors/event/wakeup pre-test"
 	$opt_shell.puts "sleep 1"
-	$opt_shell.puts "date '+%s' > #{TMP}/start_time\n\n"
+	$opt_shell.puts "date '+%s' > $TMP/start_time\n\n"
 end
 
 def add_one_env(program_env, k, v)
@@ -158,7 +158,10 @@ def shell_run_program(program, env)
 		$opt_shell.puts "#{k}=#{v} \\"
 	}
 	$opt_shell.print "\t" if $shell_run_program_indent
-	$opt_shell.puts cmd.join' '
+	cmd_str = cmd.join' '
+	cmd_str.gsub!(%r"#{LKP_SRC}", '$LKP_SRC')
+	cmd_str.gsub!(%r"#{TMP}", '$TMP')
+	$opt_shell.puts cmd_str
 end
 
 def shell_run_one_shot
