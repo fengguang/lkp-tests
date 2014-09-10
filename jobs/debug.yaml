@@ -6,6 +6,7 @@ a:
     param_b: string
     param.d: only accessible in bash by iterating all_program_env
   b:
+    ENV_VAR: 2nd-level env hash key:val
     debug-setup:
       param_a: 2
       param_b: hello world!
