@@ -45,8 +45,6 @@ def is_perf_metric(name)
 end
 
 def is_valid_perf_metric(name, delta, max)
-	# general filter
-	return false if max < 0.1
 
 	$perf_metrics_threshold.each { |k, v|
 		next unless name =~ %r{^#{k}$}
