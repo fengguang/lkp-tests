@@ -232,6 +232,7 @@ when /run-job/
 	}
 when /job-env/
 	create_programs_hash "{setup,monitors,tests}/**/*"
+	$top_env.each { |key, val| puts "#{key}: #{val}" }
 when /extract-stats/
 	ARGV[1..-1].each { |f| $testcase.merge!(YAML.load_file(f)) }
 	if $testcase['job_state'] == 'kernel_oops'
@@ -263,7 +264,6 @@ def run_program(program, env)
 	program_env, args = program_env(program, env)
 
 	if $PROGRAM_NAME =~ /job-env/
-		puts program + ': '
 		program_env.each { |key, val| puts "#{program}.#{key}: #{val}" }
 		return
 	end
@@ -308,7 +308,3 @@ for_each_program($testcase) { |k, v|
 $child_pids.each { |pid|
 	Process.waitpid(pid, Process::WNOHANG)
 }
-
-if $PROGRAM_NAME =~ /job-env/
-	$top_env.each { |key, val| puts "#{key}: #{val}" }
-end
