@@ -54,6 +54,15 @@ def shell_run_head
 	$opt_shell.puts "#!/bin/bash\n\n"
 end
 
+def update_global_env
+	return unless File.exists? "#{TMP}/env.yaml"
+	env = YAML.load_file "#{TMP}/env.yaml"
+	env.each { |k, v|
+		env[k] = expand_shell_var $top_env, v
+	}
+	$top_env.update(env)
+end
+
 def shell_export_env
 	$top_env.each { |k, v|
 		$opt_shell.puts "export #{k}=\"#{v}\""
@@ -180,7 +189,11 @@ def run_child(key, val)
 end
 
 
-shell_run_head if $opt_shell
+if $opt_shell
+	shell_run_head
+	update_global_env
+	shell_export_env
+end
 
 case $PROGRAM_NAME
 when /run-job/
@@ -258,18 +271,7 @@ def run_program(program, env)
 	end
 end
 
-def update_global_env
-	return unless File.exists? "#{TMP}/env.yaml"
-	env = YAML.load_file "#{TMP}/env.yaml"
-	env.each { |k, v|
-		env[k] = expand_shell_var $top_env, v
-	}
-	$top_env.update(env)
-end
-
 if $opt_shell
-	update_global_env
-	shell_export_env
 	for_each_program($testcase) { |k, v|
 		shell_run_program k, v
 	}
