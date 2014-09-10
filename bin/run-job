@@ -27,6 +27,11 @@ opts = OptionParser.new do |opts|
                 File.open(file, 'w') { |f| f.write "#{$$}\n" }
         end
 
+        opts.on('-s', '--shell', 'Create shell run script') do
+		$opt_shell = true
+		$shell_run = "#{TMP}/run-job.sh"
+        end
+
         opts.on_tail('-h', '--help', 'Show this message') do
                 puts opts
                 exit
@@ -45,6 +50,42 @@ $testcase = YAML.load_file(ARGV[0])
 $top_env = expand_toplevel_vars Hash.new, $testcase
 
 $child_pids = []
+
+def shell_run_head
+	File.open($shell_run, mode='w') { |file|
+		file.puts "#!/bin/bash\n\n"
+	}
+end
+
+def shell_export_env
+	File.open($shell_run, mode='a') { |file|
+		$top_env.each { |k, v|
+			file.puts "export #{k}=\"#{v}\""
+		}
+		file.puts "\n\n"
+	}
+end
+
+def shell_read_env_vars
+	File.open($shell_run, mode='a') { |file|
+		file.puts "\nread_env_vars()\n{"
+		file.puts "\teval $(sed -e '/^ *$/d;/^#/d;s/: */=\"/g;s/$/\"/g;s/ *=/=/g' #{TMP}/env.yaml)"
+		file.puts '}'
+		file.puts "read_env_vars\n\n"
+	}
+end
+
+def shell_run_pre_test(program)
+	return if $pre_test_executed
+	return unless $programs[program].index("#{LKP_SRC}/tests/") == 0
+	$pre_test_executed = true
+	shell_read_env_vars
+	File.open($shell_run, mode='a') { |file|
+		file.puts "#{LKP_SRC}/monitors/event/wakeup pre-test"
+		file.puts "sleep 1"
+		file.puts "date '+%s' > #{TMP}/start_time\n\n"
+	}
+end
 
 def add_one_env(program_env, k, v)
 	if v.class == Array and v[0].class != Array and v[0].class != Hash
@@ -104,6 +145,43 @@ def create_cmd(program, args)
 	return cmd
 end
 
+def shell_run_program(program, env)
+	program_env, args = program_env(program, env)
+
+	shell_run_pre_test(program)
+
+	cmd = create_cmd(program, args)
+	File.open($shell_run, mode='a') { |file|
+		program_env.each { |k, v|
+			file.print "\t" if $shell_run_program_indent
+			file.puts "#{k}=#{v} \\"
+		}
+		file.print "\t" if $shell_run_program_indent
+		file.puts cmd.join' '
+	}
+end
+
+def shell_run_child(key, val)
+	File.open($shell_run, mode='a') { |file|
+		file.puts "#{key}()\n{"
+	}
+	$shell_run_program_indent = true
+	for_each_program(val) { |k, v|
+		shell_run_program(k, v)
+	}
+	$shell_run_program_indent = false
+	File.open($shell_run, mode='a') { |file|
+		file.puts "}\n\n"
+		file.puts "#{key}&\n\n"
+	}
+end
+
+def shell_wait_child()
+	File.open($shell_run, mode='a') { |file|
+		file.puts "\nwait"
+	}
+end
+
 def run_child(key, val)
 	val['testcase']  = $testcase['testcase']
 
@@ -118,6 +196,9 @@ def run_child(key, val)
 				     "#{LKP_SRC}/bin/run-job #{temp_yaml}")
 end
 
+
+shell_run_head if $opt_shell
+
 case $PROGRAM_NAME
 when /run-job/
 	$pre_test_executed = false
@@ -128,7 +209,11 @@ when /run-job/
 		next if $programs.include? key
 		next if val.class != Hash
 
-		run_child(key, val)
+		if $opt_shell
+			shell_run_child(key, val)
+		else
+			run_child(key, val)
+		end
 
 		# remove key and val to avoid re-run them in the end
 		true
@@ -197,6 +282,17 @@ def update_global_env
 		env[k] = expand_shell_var $top_env, v
 	}
 	$top_env.update(env)
+end
+
+if $opt_shell
+	update_global_env
+	shell_export_env
+	for_each_program($testcase) { |k, v|
+		shell_run_program k, v
+	}
+
+	shell_wait_child
+	exit
 end
 
 for_each_program($testcase) { |k, v|
