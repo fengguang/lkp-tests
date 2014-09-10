@@ -17,7 +17,7 @@ fs_options() {
 		}
 		;;
 	ext*)
-		ensure_mkfs='-q'
+		ensure_mkfs='-q -F'
 		;;
 	btrfs)
 		;;
