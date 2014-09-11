@@ -1,0 +1,20 @@
+testcase: fsmark
+
+iterations: 1x
+nr_threads: 1t
+
+disk: 11HDD
+md:
+- RAID0
+- RAID5
+
+fs:
+- xfs
+- ext4
+
+fsmark:
+  filesize: 4M
+  test_size: 16G
+  sync_method: fsyncBeforeClose
+  nr_directories: 16d
+  nr_files_per_directory: 256f

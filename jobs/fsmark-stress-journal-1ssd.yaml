@@ -1,0 +1,17 @@
+testcase: fsmark
+
+iterations: 1x
+nr_threads: 1t
+
+disk: 1SSD
+
+fs:
+- xfs
+- ext4
+
+fsmark:
+  filesize: 4K
+  test_size: 1G
+  sync_method: fsyncBeforeClose
+  nr_directories: 16d
+  nr_files_per_directory: 256f
