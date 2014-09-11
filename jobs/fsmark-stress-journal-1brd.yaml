@@ -8,6 +8,7 @@ disk: 1BRD_32G
 fs:
 - xfs
 - ext4
+- btrfs
 
 fsmark:
   filesize: 4K
