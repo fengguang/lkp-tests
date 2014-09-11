@@ -7,6 +7,7 @@ require 'optparse'
 require 'ostruct'
 
 $opt_output_path = '.'
+$opt_set_key_value = {}
 
 opts = OptionParser.new do |opts|
 	opts.banner = "Usage: split-job [options] jobs..."
@@ -31,6 +32,10 @@ opts = OptionParser.new do |opts|
 		$opt_commit = commit
 	end
 
+        opts.on("-s 'KEY: VALUE'", "--set 'KEY: VALUE'", "add YAML hash to job") do |key_value|
+                $opt_set_key_value.merge!(YAML.load key_value)
+        end
+
 	opts.on("--any", "save one single random atom job") do
 		$opt_any = true
 	end
@@ -53,6 +58,7 @@ $atom_jobs = []
 ARGV.each { |jobfile|
 	jobs = Job.new
 	jobs.load(jobfile) or next
+	$opt_set_key_value.each { |k, v| jobs[k] = v }
 	jobs['kconfig'] = $opt_kconfig if $opt_kconfig
 	jobs['commit'] = $opt_commit if $opt_commit
 	jobs['enqueue_time'] = Time.now
