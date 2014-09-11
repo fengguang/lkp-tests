@@ -64,8 +64,8 @@ output.each_line { |line|
 	next if line =~ /INFO: NMI handler .* took too long to run:/
 
 	case line
-	when /(INFO: rcu.* self-detected stall on CPU)/,
-	     /(INFO: rcu.* detected stalls on CPUs\/tasks:)/
+	when /(INFO: rcu[_a-z]* self-detected stall on CPU)/,
+	     /(INFO: rcu[_a-z]* detected stalls on CPUs\/tasks:)/
 		line = $1
 		bug_to_bisect = $1
 	when /(BUG: unable to handle kernel)/,
