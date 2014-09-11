@@ -155,7 +155,7 @@ def shell_run_program(program, env)
 	cmd = create_cmd(program, args)
 	program_env.each { |k, v|
 		$opt_shell.print "\t" if $shell_run_program_indent
-		$opt_shell.puts "#{k}=#{v} \\"
+		$opt_shell.puts "#{k}=\"#{v}\" \\"
 	}
 	$opt_shell.print "\t" if $shell_run_program_indent
 	cmd_str = cmd.join' '
