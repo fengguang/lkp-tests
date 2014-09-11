@@ -206,6 +206,7 @@ class Job
 	def each_job
 		create_programs_hash "{setup,tests}/**/*"
 		$programs['commit'] = '' # help split the cyclic job's commit: [BASE, HEAD]
+		$programs['rootfs'] = ''
 		last_item = ''
 		for_each_program_or_param(@job) { |k, v| last_item = k }
 		for_each_program_or_param(@job) { |k, v|
