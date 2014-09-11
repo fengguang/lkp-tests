@@ -68,10 +68,9 @@ output.each_line { |line|
 	     /(INFO: rcu.* detected stalls on CPUs\/tasks:)/
 		line = $1
 		bug_to_bisect = $1
-	when /BUG: unable to handle kernel $/
-		next
-	when /(BUG: unable to handle kernel NULL pointer dereference)/,
-	     /(BUG: unable to handle kernel paging request)/
+	when /(BUG: unable to handle kernel)/,
+	     /(BUG: unable to handle kernel) NULL pointer dereference/,
+	     /(BUG: unable to handle kernel) paging request/
 		line = $1
 		bug_to_bisect = $1
 	when /(BUG: scheduling while atomic:)/,
