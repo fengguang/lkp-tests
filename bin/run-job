@@ -147,7 +147,7 @@ def create_cmd(program, args)
 	return cmd
 end
 
-def shell_run_program(program, env)
+def shell_run_program(program, env, tabs='')
 	program_env, args = program_env(program, env)
 
 	shell_run_pre_test(program)
@@ -155,13 +155,13 @@ def shell_run_program(program, env)
 	cmd = create_cmd(program, args)
 	program_env.each { |k, v|
 		$opt_shell.print "\t" if $shell_run_program_indent
-		$opt_shell.puts "#{k}=\"#{v}\" \\"
+		$opt_shell.puts "#{tabs}#{k}=\"#{v}\" \\"
 	}
 	$opt_shell.print "\t" if $shell_run_program_indent
 	cmd_str = cmd.join' '
 	cmd_str.gsub!(%r"#{LKP_SRC}", '$LKP_SRC')
 	cmd_str.gsub!(%r"#{TMP}", '$TMP')
-	$opt_shell.puts cmd_str
+	$opt_shell.puts tabs + cmd_str
 end
 
 def shell_run_one_shot
@@ -173,22 +173,28 @@ def shell_run_one_shot
 	}
 end
 
-def shell_run_child(key, val)
+def shell_run_child(key, val, tabs = '')
+	$opt_shell.puts "\n#{tabs}#{key}()\n#{tabs}{"
+	val.delete_if { |k, v|
+		next if $programs.include? k
+		next if v.class == Hash
+		$opt_shell.puts "\t#{tabs}export #{k}=\"#{v}\""
+		true
+	}
 	val.delete_if { |k, v|
 		next if $programs.include? k
 		next if v.class != Hash
-		shell_run_child(k, v)
+		shell_run_child(k, v, tabs + "\t")
 
 		true
 	}
-	$opt_shell.puts "\n#{key}()\n{"
 	$shell_run_program_indent = true
 	for_each_program(val) { |k, v|
-		shell_run_program(k, v)
+		shell_run_program(k, v, tabs)
 	}
 	$shell_run_program_indent = false
-	$opt_shell.puts "}\n\n"
-	$opt_shell.puts "#{key} &\n\n"
+	$opt_shell.puts "#{tabs}}\n\n"
+	$opt_shell.puts "#{tabs}#{key} &\n\n"
 end
 
 def shell_wait_child()
