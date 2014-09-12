@@ -71,13 +71,16 @@ def shell_export_env
 end
 
 def shell_define_read_env_vars
-	$opt_shell.puts "\nread_env_vars()\n{"
-	$opt_shell.puts "\teval $(sed -e '/^ *$/d;/^#/d;s/: */=\"/g;s/$/\"/g;s/ *=/=/g' $TMP/env.yaml)"
-	$opt_shell.puts "}\n\n"
+	$opt_shell.puts <<EOF
+====================================() # read env vars
+{
+	eval $(sed -e '/^ *$/d;/^#/d;s/: */=\"/g;s/$/\"/g;s/ *=/=/g' $TMP/env.yaml)
+}
+EOF
 end
 
 def shell_call_read_env_vars(tabs='')
-	$opt_shell.puts "#{tabs}read_env_vars\n"
+	$opt_shell.puts "#{tabs}====================================\n"
 end
 
 def shell_run_pre_test(program)
