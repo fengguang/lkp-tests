@@ -76,8 +76,8 @@ def shell_define_read_env_vars
 	$opt_shell.puts "}\n\n"
 end
 
-def shell_call_read_env_vars
-	$opt_shell.puts "\nread_env_vars\n"
+def shell_call_read_env_vars(tabs='')
+	$opt_shell.puts "#{tabs}read_env_vars\n"
 end
 
 def shell_run_pre_test(program)
@@ -162,6 +162,10 @@ def shell_run_program(program, env, tabs='')
 	cmd_str.gsub!(%r"#{LKP_SRC}", '$LKP_SRC')
 	cmd_str.gsub!(%r"#{TMP}", '$TMP')
 	$opt_shell.puts tabs + cmd_str
+	if $programs[program].index("#{LKP_SRC}/setup/") == 0
+		$opt_shell.print "\t" if $shell_run_program_indent
+		shell_call_read_env_vars(tabs)
+	end
 end
 
 def shell_run_one_shot
@@ -221,6 +225,8 @@ if $opt_shell
 	shell_run_head
 	update_global_env
 	shell_export_env
+	shell_define_read_env_vars
+	shell_call_read_env_vars
 	shell_run_one_shot
 end
 
@@ -301,9 +307,7 @@ def run_program(program, env)
 end
 
 if $opt_shell
-	shell_define_read_env_vars
 	for_each_program($testcase) { |k, v|
-		shell_call_read_env_vars
 		shell_run_program k, v
 	}
 
