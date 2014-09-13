@@ -11,6 +11,7 @@ while line = STDIN.gets
 		next if $prefix.index ':/autogroup-'
 		puts "#{$prefix}#{$1}: #{$2}"
 	when /^runnable tasks:/
+		next
 		sub_names = STDIN.gets.split
 		line = STDIN.gets
 		while line = STDIN.gets
