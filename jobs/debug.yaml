@@ -11,5 +11,11 @@ a:
       param_a: 2
       param_b: hello world!
       param_c: /dev/disk/by-id/ata-*
+    d:
+      ENV_VAR: 3rd-level env hash key:val
+      debug-setup:
+        param_a: 3
+        param_b: good world!
+        param_c: one star one shine
   c:
     debug-setup: --option and args
