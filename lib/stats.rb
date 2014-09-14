@@ -188,7 +188,9 @@ def load_base_matrix(matrix_path)
 	matrix = {}
 	tags_merged = []
 
-	if not commit_exists(commit)
+	if commit_exists(commit)
+		version, is_exact_match = last_linus_release_tag commit
+	else
 		kconfig = File.basename __result_root
 		context_file = install_path(kconfig, commit) + "/context.yaml"
 		version = nil
@@ -201,8 +203,6 @@ def load_base_matrix(matrix_path)
 			STDERR.puts "Cannot get base RC commit for #{commit}"
 			return nil
 		end
-	else
-		version, is_exact_match = last_linus_release_tag commit
 	end
 	order = tag_order(version)
 
