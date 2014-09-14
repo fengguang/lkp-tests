@@ -224,6 +224,8 @@ class Job
 				yield self
 			end
 		}
+		$programs.delete 'commit'
+		$programs.delete 'rootfs'
 	end
 
 	def each_jobs(&block)
