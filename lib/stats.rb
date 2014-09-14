@@ -223,7 +223,7 @@ def load_base_matrix(matrix_path)
 			tags_merged << tag
 			cols += matrix['stats_source'].size
 			break if tags_merged.size >= 3 and cols >= 20
-			break if tag =~ /-rc1$/ and tags_merged.size >= 2 and cols >= 10
+			break if tag =~ /-rc1$/ and cols >= 3
 		end
 	}
 
