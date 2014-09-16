@@ -2,6 +2,7 @@
 
 RESULT_MNT	= '/result'
 RESULT_PATHS	= '/lkp/paths'
+RESULT_ROOT_DEPTH = 8
 
 def tbox_group(hostname)
 	hostname.sub /-[0-9]+$/, ''
