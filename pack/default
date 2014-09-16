@@ -42,7 +42,7 @@ patch_source()
 
 build()
 {
-	cd $source_dir
+	cd "$source_dir"
 	patch_source
 	[[ -x "./configure" ]] && ./configure $CONFIGURE_FLAGS
 	[[ -f Makefile ]] && make
