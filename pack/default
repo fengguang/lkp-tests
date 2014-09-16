@@ -45,12 +45,16 @@ build()
 	cd "$source_dir"
 	patch_source
 	[[ -x "./configure" ]] && ./configure $CONFIGURE_FLAGS
-	[[ -f Makefile ]] && make
+	if [[ -f 'Makefile' ]]; then
+		make
+	fi
 }
 
 install()
 {
-	[[ -f Makefile ]] && make install-exec
+	if [[ -f 'Makefile' ]]; then
+		make install-exec
+	fi
 }
 
 pack_deb()
