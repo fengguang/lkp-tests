@@ -2,7 +2,7 @@
 
 download()
 {
-	git clone https://github.com/antonblanchard/will-it-scale.git
+	git_clone_update https://github.com/antonblanchard/will-it-scale.git
 	source_dir="will-it-scale"
 }
 

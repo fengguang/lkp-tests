@@ -2,7 +2,7 @@
 
 download()
 {
-	git clone git://oss.sgi.com/xfs/cmds/xfstests.git
+	git_clone_update git://oss.sgi.com/xfs/cmds/xfstests.git
 	source_dir=$BM_NAME
 }
 

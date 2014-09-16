@@ -9,7 +9,7 @@ fi
 
 download()
 {
-	[[ -d kvm-unit-tests ]] || git clone git://git.kernel.org/pub/scm/virt/kvm/kvm-unit-tests.git
+	git_clone_update git://git.kernel.org/pub/scm/virt/kvm/kvm-unit-tests.git
 	source_dir=$BM_NAME
 }
 

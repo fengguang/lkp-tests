@@ -2,9 +2,9 @@
 
 pre_download()
 {
-	[[ -d waffle		]] || git clone git://github.com/waffle-gl/waffle
-	[[ -d piglit		]] || git clone git://anongit.freedesktop.org/piglit
-	[[ -d intel-gpu-tools	]] || git clone git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+	git_clone_update git://github.com/waffle-gl/waffle
+	git_clone_update git://anongit.freedesktop.org/piglit
+	git_clone_update git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
 }
 
 build()

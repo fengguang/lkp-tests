@@ -2,7 +2,7 @@
 
 download()
 {
-	git clone https://github.com/linux-test-project/ltp.git
+	git_clone_update https://github.com/linux-test-project/ltp.git
 	source_dir=$BM_NAME
 }
 
