@@ -7,6 +7,7 @@ require "#{LKP_SRC}/lib/result.rb"
 require 'fileutils'
 require 'yaml'
 require 'json'
+require 'set'
 require 'pp'
 
 def deepcopy(o)
@@ -105,12 +106,13 @@ def for_each_program(ah)
 end
 
 def for_each_program_or_param(ah)
+	$dims_to_expand ||= Set.new [ 'commit', 'rootfs' ]
 	for_each(ah) { |k, v|
 		# puts k
-		if $programs.include? k
+		if $programs.include?(k) or $dims_to_expand.include?(k)
 			if (v.class == Array and v.size > 1) or (v.class == Hash and v.size >= 1)
 				options = {}
-				if $programs[k].size > 0
+				if $programs[k] and $programs[k].size > 0
 					`#{LKP_SRC}/bin/program-options #{$programs[k]}`.each_line { |line|
 						type, name = line.split
 						options[name] = type
@@ -205,8 +207,6 @@ class Job
 
 	def each_job
 		create_programs_hash "{setup,tests}/**/*"
-		$programs['commit'] = '' # help split the cyclic job's commit: [BASE, HEAD]
-		$programs['rootfs'] = ''
 		last_item = ''
 		for_each_program_or_param(@job) { |k, v| last_item = k }
 		for_each_program_or_param(@job) { |k, v|
@@ -224,8 +224,6 @@ class Job
 				yield self
 			end
 		}
-		$programs.delete 'commit'
-		$programs.delete 'rootfs'
 	end
 
 	def each_jobs(&block)
