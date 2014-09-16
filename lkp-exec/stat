@@ -70,7 +70,9 @@ result_roots.sort.each { |result_root|
 
 	result_path = Result_path.new
 	result_path.parse_result_root(result_root)
-	result_path['test'] = result_path.test_desc
+	result_path['_rt'] = _rt
+	result_path['__rt'] = __rt
+	result_path['test'] = result_path.test_desc 'commit', true
 
 	group = result_path[$opt_group]
 	groups[group] ||= []
