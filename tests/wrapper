@@ -7,5 +7,7 @@ program_dir=$(dirname $0)
 # This prevents some server/client test cases from blocking on OOM.
 echo 1000 > /proc/$PPID/oom_score_adj
 
+echo $$ > $TMP/pid-$program
+
 shift
 exec $exec_prefix $program_dir/$program "$@" | tee > $RESULT_ROOT/$program
