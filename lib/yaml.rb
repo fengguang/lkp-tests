@@ -27,10 +27,10 @@ def load_yaml(file)
 			if File.size(file) == 0
 				puts "YAML file is empty: #{file}"
 			else
-				STDERR.puts "Move corrupted YAML file to #{file}-bad"
+				STDERR.puts "Move corrupted YAML file to .#{file}-bad"
 				STDERR.puts "#{file}: " + e.message
 				STDERR.puts e.backtrace.join("\n")
-				FileUtils.mv file, file + '-bad'
+				FileUtils.mv file, '.' + file + '-bad'
 			end
 		else
 			STDERR.puts "YAML file does not exist: #{file}"
