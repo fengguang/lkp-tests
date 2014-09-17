@@ -1,5 +1,4 @@
 igt/kms_flip/2x-plain-flip-interruptible
-igt/gem_partial_pwrite_pread/reads
 igt/kms_flip/2x-flip-vs-modeset-interruptible
 igt/kms_flip/bo-too-big-interruptible
 igt/kms_flip/rcs-flip-vs-panning-interruptible
@@ -26,7 +25,6 @@ igt/gem_exec_parse/cmd-crossing-page
 igt/gem_ringfill/blitter
 igt/gem_unfence_active_buffers
 igt/gem_concurrent_blit/cpu-overwrite-source
-igt/gem_userptr_blits/forked-unsync-multifd-mempressure-normal
 igt/kms_pipe_crc_basic/read-crc-pipe-C
 igt/kms_flip/plain-flip-ts-check-interruptible
 igt/kms_pipe_crc_basic/read-crc-pipe-A

@@ -8,7 +8,6 @@ igt/kms_flip/flip-vs-bad-tiling
 igt/gem_reset_stats/close-pending-fork-render
 igt/kms_psr_sink_crc/setdomain_wait_write_cpu
 igt/gem_cs_tlb/blt
-igt/gem_partial_pwrite_pread/writes-after-reads-snoop
 igt/drv_suspend/debugfs-reader
 igt/gen3_render_mixed_blits
 igt/kms_flip/plain-flip-interruptible
@@ -31,7 +30,6 @@ igt/kms_flip/2x-flip-vs-bad-tiling
 igt/gem_reloc_overflow/source-offset-unaligned-reloc-cpu
 igt/gem_flink_race/flink_name
 igt/gem_concurrent_blit/cpu-gpu-read-after-write-interruptible
-igt/gem_close_race/gem-close-race
 igt/kms_addfb/framebuffer-vs-set-tiling
 igt/gem_tiled_partial_pwrite_pread/writes-after-reads
 igt/gem_userptr_blits/forked-sync-mempressure-normal

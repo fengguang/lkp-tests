@@ -11,7 +11,6 @@ igt/kms_flip/modeset-vs-vblank-race-interruptible
 igt/prime_self_import/reimport-vs-gem_close-race
 igt/drm_vma_limiter_cpu
 igt/gem_concurrent_blit/prw-early-read-interruptible
-igt/gem_userptr_blits/forked-unsync-swapping-mempressure-interruptible
 igt/kms_flip/2x-flip-vs-fences
 igt/gem_pwrite/uncached
 igt/kms_flip/flip-vs-modeset-interruptible
@@ -23,7 +22,6 @@ igt/prime_self_import/with_one_bo
 igt/gem_pread_after_blit/interruptible-snoop
 igt/kms_flip/rcs-flip-vs-modeset-interruptible
 igt/kms_plane/plane-position-hole-pipe-A-plane-1
-igt/gem_partial_pwrite_pread/writes-after-reads-uncached
 igt/prime_nv_api/i915_self_import
 igt/gem_reset_stats/reset-count-ctx-render
 igt/gem_userptr_blits/forked-sync-swapping-multifd-mempressure-interruptible

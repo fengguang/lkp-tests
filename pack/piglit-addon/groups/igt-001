@@ -23,7 +23,6 @@ igt/kms_plane/plane-panning-bottom-right-pipe-C-plane-2
 igt/gem_pread/normal
 igt/pm_rpm/gem-mmap-cpu
 igt/gem_mmap_gtt/write-read-distinct
-igt/gem_userptr_blits/forked-unsync-multifd-mempressure-interruptible
 igt/kms_mmio_vs_cs_flip/setcrtc_vs_cs_flip
 igt/kms_flip/busy-flip-interruptible
 igt/gem_caching/writes
@@ -86,7 +85,6 @@ igt/kms_psr_sink_crc/page_flip_and_mmap_cpu
 igt/kms_flip/flip-vs-fences-interruptible
 igt/kms_flip/2x-blocking-absolute-wf_vblank-interruptible
 igt/kms_flip/2x-plain-flip-fb-recreate-interruptible
-igt/gem_userptr_blits/forked-unsync-swapping-multifd-mempressure-interruptible
 igt/gem_set_tiling_vs_blt/tiled-to-tiled
 igt/gen3_render_tiledx_blits
 igt/gem_reloc_vs_gpu/forked-interruptible-thrash-inactive
