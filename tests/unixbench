@@ -8,4 +8,5 @@ export LANG=C
 cmd ./Run $test
 
 chmod g+w $BENCHMARK_ROOT/unixbench/results/*
+chown lkp.lkp $BENCHMARK_ROOT/unixbench/results/*
 cp -a $BENCHMARK_ROOT/unixbench/results/* $RESULT_ROOT/
