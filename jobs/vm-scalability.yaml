@@ -35,39 +35,39 @@ vm-scalability:
   - shm-pread-rand-mt
   - shm-xread-rand
   - shm-xread-rand-mt
-  - truncate
-  - msync
-
----
-size: 64G
-
-vm-scalability:
-  test:
-  - anon-cow-rand
-  - anon-cow-rand-mt
-  - anon-w-seq-mt
-  - anon-w-rand
-  - anon-w-rand-mt
-  - anon-wx-rand-mt
-  - msync-mt
-  - lru-shm-rand
 
 ---
 size: 128G
 
 vm-scalability:
   test:
-  - lru-shm
-  - remap
+  - truncate
 
 ---
 size: 1T
 
 vm-scalability:
   test:
+  - remap
+  - msync
+  - msync-mt
+  - lru-shm
+  - lru-shm-rand
+  - anon-cow-rand
+  - anon-cow-rand-mt
+  - anon-w-rand
+  - anon-w-rand-mt
+  - anon-wx-rand-mt
+
+---
+size: 8T
+
+vm-scalability:
+  test:
   - anon-cow-seq
   - anon-cow-seq-mt
   - anon-w-seq
+  - anon-w-seq-mt
   - anon-wx-seq-mt
   - shm-pread-seq
   - shm-pread-seq-mt
