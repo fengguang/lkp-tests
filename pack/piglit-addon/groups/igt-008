@@ -15,7 +15,6 @@ igt/kms_plane/plane-position-covered-pipe-A-plane-2
 igt/gen3_render_tiledy_blits
 igt/gem_basic/create-close
 igt/gem_concurrent_blit/prw-gpu-read-after-write-forked
-igt/gem_persistent_relocs/forked
 igt/gem_readwrite/beyond-EOB
 igt/gem_userptr_blits/forked-unsync-interruptible
 igt/gem_reloc_overflow/single-overflow
@@ -42,10 +41,8 @@ igt/prime_nv_pcopy/test2
 igt/pm_rc6_residency/rc6-residency-counter
 igt/gem_readwrite/new-obj
 igt/gem_exec_parse/bitmasks
-igt/kms_flip/vblank-vs-dpms-suspend-interruptible
 igt/gem_tiled_blits/normal
 igt/kms_flip/2x-vblank-vs-hang
-igt/kms_cursor_crc/cursor-128-onscreen
 igt/prime_nv_api/i915_nv_import_twice
 igt/pm_rpm/modeset-non-lpsp-stress
 igt/kms_flip/2x-bcs-wf_vblank-vs-modeset-interruptible

@@ -2,9 +2,7 @@ igt/prime_self_import/with_fd_dup
 igt/gem_reloc_vs_gpu/normal
 igt/gem_reset_stats/params-ctx-render
 igt/gem_reset_stats/reset-count-vebox
-igt/kms_flip/bcs-wf_vblank-vs-modeset
 igt/gem_reset_stats/close-pending-ctx-bsd
-igt/kms_cursor_crc/cursor-256-onscreen
 igt/gem_fenced_exec_thrash/no-spare-fences-busy
 igt/gem_reset_stats/close-pending-fork-vebox
 igt/pm_lpsp/non-edp
@@ -22,7 +20,6 @@ igt/kms_flip/2x-vblank-vs-suspend-interruptible
 igt/gem_tiled_blits/interruptible
 igt/kms_flip/2x-rcs-wf_vblank-vs-modeset-interruptible
 igt/prime_nv_api/nv_i915_import_twice_check_flink_name
-igt/kms_flip/rcs-wf_vblank-vs-dpms
 igt/prime_nv_test/nv_write_i915_gtt_mmap_read
 igt/gem_reset_stats/close-pending-bsd
 igt/prime_self_import/with_one_bo_two_files
@@ -34,7 +31,6 @@ igt/drv_hangman/error-state-capture-vebox
 igt/gem_userptr_blits/forked-unsync-swapping-normal
 igt/gem_reset_stats/ban-blt
 igt/gem_mmap_gtt/write-no-prefault
-igt/gem_userptr_blits/forked-sync-swapping-normal
 igt/drv_suspend/fence-restore-tiled2untiled
 igt/kms_mmio_vs_cs_flip/setplane_vs_cs_flip
 igt/gem_evict_everything/forked-swapping-multifd-mempressure-normal
@@ -79,7 +75,6 @@ igt/gem_reloc_overflow/source-offset-big-reloc-gtt
 igt/kms_flip/2x-rcs-flip-vs-modeset-interruptible
 igt/kms_psr_sink_crc/blt
 igt/kms_psr_sink_crc/render
-igt/gem_tiled_partial_pwrite_pread/writes
 igt/kms_flip/2x-bcs-flip-vs-panning-interruptible
 igt/kms_setmode/invalid-clone-single-crtc
 igt/gem_madvise/dontneed-before-pwrite
@@ -87,10 +82,8 @@ igt/gem_dummy_reloc_loop/bsd
 igt/pm_lpsp/screens-disabled
 igt/gem_fenced_exec_thrash/no-spare-fences-busy-interruptible
 igt/kms_fbc_crc/context
-igt/gem_userptr_blits/forked-sync-swapping-interruptible
 igt/gem_concurrent_blit/cpu-early-read
 igt/kms_flip/flip-vs-panning-interruptible
-igt/kms_flip/rcs-flip-vs-panning
 igt/kms_flip/2x-flip-vs-absolute-wf_vblank-interruptible
 igt/gem_write_read_ring_switch/blt2vebox
 igt/gem_pwrite_pread/snooped-copy-correctness

@@ -3,7 +3,6 @@ igt/gem_flink_race/flink_close
 igt/gem_userptr_blits/swapping-unsync-interruptible
 igt/gem_reloc_overflow/batch-end-unaligned
 igt/prime_udl
-igt/gem_evict_alignment/minor-normal
 igt/gem_pwrite/display
 igt/drm_vma_limiter_cached
 igt/gem_mmap_gtt/access
@@ -48,7 +47,6 @@ igt/gem_dummy_reloc_loop/mixed_multi_fd
 igt/kms_flip/2x-blocking-absolute-wf_vblank
 igt/kms_flip/2x-rcs-wf_vblank-vs-dpms
 igt/gem_evict_everything/forked-swapping-normal
-igt/kms_flip/rcs-flip-vs-dpms
 igt/prime_nv_api/i915_self_import_to_different_fd
 igt/kms_flip/flip-vs-wf_vblank
 igt/kms_flip/2x-wf_vblank-vs-modeset-interruptible
@@ -63,12 +61,10 @@ igt/kms_universal_plane/universal-plane-pipe-B-functional
 igt/kms_psr_sink_crc/sprite
 igt/kms_flip/single-buffer-flip-vs-dpms-off-vs-modeset-interruptible
 igt/pm_rpm/debugfs-read
-igt/kms_flip/vblank-vs-suspend
 igt/gem_ring_sync_copy
 igt/kms_flip/flip-vs-absolute-wf_vblank-interruptible
 igt/kms_psr_sink_crc/mmap_cpu
 igt/gem_ctx_bad_exec/blt
-igt/kms_flip/rcs-flip-vs-modeset
 igt/kms_universal_plane/universal-plane-pipe-C-sanity
 igt/gem_mmap_gtt/read-write-distinct
 igt/kms_flip/2x-rcs-wf_vblank-vs-dpms-interruptible

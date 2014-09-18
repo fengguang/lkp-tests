@@ -4,7 +4,6 @@ igt/kms_pipe_crc_basic/read-crc-pipe-B-frame-sequence
 igt/gem_persistent_relocs/forked-thrashing
 igt/gem_userptr_blits/access-control
 igt/gem_gtt_speed
-igt/kms_setmode/clone-exclusive-crtc
 igt/kms_fbc_crc/mmap_gtt
 igt/prime_nv_pcopy/test_semaphore
 igt/gem_reloc_vs_gpu/forked-interruptible-faulting-reloc
@@ -19,14 +18,12 @@ igt/gem_pread_after_blit/normal-uncached
 igt/gem_reloc_vs_gpu/forked-thrashing
 igt/gem_concurrent_blit/gtt-early-read-forked
 igt/gem_ctx_exec/basic
-igt/kms_flip/wf_vblank-vs-modeset
 igt/gen3_mixed_blits
 igt/kms_flip/2x-rcs-flip-vs-dpms-interruptible
 igt/pm_rps/min-max-config-loaded
 igt/kms_flip/2x-flip-vs-bad-tiling-interruptible
 igt/kms_flip/2x-vblank-vs-modeset-suspend
 igt/gem_reset_stats/close-pending-fork-reverse-blt
-igt/kms_flip/wf_vblank-vs-dpms
 igt/gem_userptr_blits/unsync-unmap-cycles
 igt/kms_universal_plane/universal-plane-pipe-C-functional
 igt/gem_reset_stats/unrelated-ctx-bsd

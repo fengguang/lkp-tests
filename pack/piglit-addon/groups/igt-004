@@ -23,7 +23,6 @@ igt/kms_universal_plane/disable-primary-vs-flip-pipe-C
 igt/kms_flip/single-buffer-flip-vs-dpms-off-vs-modeset
 igt/kms_flip/wf_vblank-vs-dpms-interruptible
 igt/gem_reset_stats/reset-count-render
-igt/kms_flip/bcs-flip-vs-dpms
 igt/gem_userptr_blits/swapping-normal-sync
 igt/gem_fenced_exec_thrash/no-spare-fences-interruptible
 igt/gem_exec_parse/registers
@@ -50,9 +49,6 @@ igt/drm_vma_limiter
 igt/kms_flip/vblank-vs-hang
 igt/gem_render_tiled_blits
 igt/gem_tiled_swapping
-igt/kms_flip/rcs-wf_vblank-vs-modeset
-igt/kms_flip/flip-vs-panning
-igt/kms_flip/vblank-vs-modeset-suspend-interruptible
 igt/drv_hangman/error-state-basic
 igt/pm_rpm/drm-resources-equal
 igt/kms_flip/blocking-absolute-wf_vblank-interruptible
@@ -60,7 +56,6 @@ igt/kms_flip/2x-plain-flip
 igt/kms_flip/flip-vs-dpms-interruptible
 igt/prime_nv_pcopy/test3_4
 igt/gem_write_read_ring_switch/blt2bsd
-igt/kms_flip/bcs-flip-vs-modeset
 igt/gem_concurrent_blit/cpu-early-read-forked
 igt/gem_userptr_blits/forked-unsync-swapping-multifd-normal
 igt/prime_nv_pcopy/test1_macro
