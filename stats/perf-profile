@@ -219,7 +219,7 @@ loop do
 	# function_name is like _spin_lock_irqsave
 	base_percent  = $1.to_f / 100
 	proc_name     = $2  # Not used now
-	symbol_name = line.split[4]
+	symbol_name = line.split[-1]
 	func_name = symbol_name.index('(') ? symbol_name.split('(')[0] :
 			symbol_name
 	base_function_name = $cur_event + "." + func_name
