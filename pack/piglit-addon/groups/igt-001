@@ -29,9 +29,7 @@ igt/kms_flip/wf_vblank-vs-modeset-interruptible
 igt/prime_nv_api/i915_nv_double_export
 igt/gem_pwrite_pread/snooped-pwrite-blt-cpu_mmap-correctness
 igt/gem_reloc_overflow/source-offset-page-stradle-gen8-reloc-cpu
-igt/gem_fence_upload/thread-performance-write
 igt/gem_reset_stats/close-pending-ctx-render
-igt/gem_fence_upload/thread-performance-read
 igt/gem_reset_stats/ban-vebox
 igt/pm_rpm/gem-execbuf-stress
 igt/gem_render_copy_redux
@@ -50,8 +48,6 @@ igt/gem_pread/uncached
 igt/gem_userptr_blits/sync-unmap
 igt/kms_flip/rcs-wf_vblank-vs-modeset-interruptible
 igt/kms_fbc_crc/blt
-igt/kms_cursor_crc/cursor-64-sliding
-igt/kms_cursor_crc/cursor-64-offscreen
 igt/kms_flip/flip-vs-expired-vblank-interruptible
 igt/gem_exec_bad_domains/conflicting-write-domain
 igt/gem_madvise/dontneed-after-mmap
