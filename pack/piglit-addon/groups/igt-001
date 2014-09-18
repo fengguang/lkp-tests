@@ -25,7 +25,6 @@ igt/pm_rpm/gem-mmap-cpu
 igt/gem_mmap_gtt/write-read-distinct
 igt/kms_mmio_vs_cs_flip/setcrtc_vs_cs_flip
 igt/kms_flip/busy-flip-interruptible
-igt/gem_caching/writes
 igt/kms_flip/wf_vblank-vs-modeset-interruptible
 igt/prime_nv_api/i915_nv_double_export
 igt/gem_pwrite_pread/snooped-pwrite-blt-cpu_mmap-correctness
@@ -77,7 +76,6 @@ igt/kms_psr_sink_crc/mmap_gtt_waiting_no_busy
 igt/gem_storedw_batches_loop/secure-dispatch
 igt/gem_exec_params/rel-constants-invalid-rel-gen5
 igt/kms_plane/plane-position-hole-pipe-A-plane-2
-igt/gem_partial_pwrite_pread/reads-display
 igt/gem_userptr_blits/forked-unsync-mempressure-interruptible
 igt/gem_dummy_reloc_loop/mixed
 igt/kms_plane/plane-position-hole-pipe-A-plane-3
