@@ -38,7 +38,7 @@ if (( nr_hdd )); then
 elif (( nr_brd )); then
 	[[ $ramdisk_size ]] || ramdisk_size="1G"
 	modprobe -r brd
-	modprobe brd rd_nr=$nr_brd rd_size=$(to_kb $ramdisk_size)
+	modprobe brd rd_nr=$nr_brd rd_size=$(to_kb $ramdisk_size) part_show=1
 	sleep 1
 	partitions=$(ls /dev/ram*)
 	nr_partitions=$nr_brd
