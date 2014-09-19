@@ -89,16 +89,12 @@ if [[ -z "$nr_directories" && "$nr_files_per_directory"  ]]; then
 	nr_directories=$((nr_files / nr_files_per_directory))
 fi
 
-if [[ -z "$nr_directories" || -z "$nr_files_per_directory" ]]; then
-	echo "invalid paramter: nr_directories=$nr_directories, "\
-	     "nr_files_per_directory=$nr_files_per_directory" 1>&2
-	exit 1
+if [[ "$nr_directories" && "$nr_files_per_directory" ]]; then
+	PARAM+=" -D $nr_directories -N $nr_files_per_directory"
 fi
 
 cmd ./fs_mark \
 	$PARAM \
-	-D $nr_directories \
-	-N $nr_files_per_directory \
 	-n $nr_files	\
 	-L $iterations \
 	-S $sync_method \
