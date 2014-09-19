@@ -45,6 +45,10 @@
 1BRD_64G:    { nr_brd: 1, ramdisk_size: 64G   }
 1BRD_128G:   { nr_brd: 1, ramdisk_size: 128G  }
 
+4BRD_12G:    { nr_brd: 4, ramdisk_size: 12G   }
+4BRD_32G:    { nr_brd: 4, ramdisk_size: 32G   }
+4BRD_64G:    { nr_brd: 4, ramdisk_size: 64G   }
+
 1SRD:   { nr_srd: 1  }
 2SRD:   { nr_srd: 2  }
 3SRD:   { nr_srd: 3  }
@@ -62,6 +66,8 @@
 1SRD_32G:    { nr_srd: 1, ramdisk_size: 32G   }
 1SRD_64G:    { nr_srd: 1, ramdisk_size: 64G   }
 1SRD_128G:   { nr_srd: 1, ramdisk_size: 128G  }
+
+4SRD_32G:    { nr_srd: 4, ramdisk_size: 32G   }
 
 SCSI_RAM_32G:  { scsi_ram: 1, ramdisk_size: 32G }
 SCSI_RAM_64G:  { scsi_ram: 1, ramdisk_size: 64G }
