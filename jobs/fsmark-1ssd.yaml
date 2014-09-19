@@ -17,7 +17,7 @@ fsmark:
   - NoSync
   - fsyncBeforeClose
   nr_directories: 16d
-  nr_files_per_directory: 256f
+  nr_files_per_directory: 256fpd
 
 ---
 fsmark:
@@ -28,4 +28,4 @@ fsmark:
   test_size: 400M
   sync_method: fsyncBeforeClose
   nr_directories: 16d
-  nr_files_per_directory: 256f
+  nr_files_per_directory: 256fpd
