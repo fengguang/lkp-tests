@@ -13,6 +13,10 @@ check_raid_level()
 check_raid_level
 
 check_partition_size() {
+	# though we can set 'show_part=1' for brd to make those ram disk to
+	# show up at /proc/partitions, it's new parameter added lately, hence
+	# we still meet troubles with old kernele. Here workaround it.
+	[[ "$disk_description" =~ brd ]] && return
 	for dev do
 		[[ $dev =~ :/ ]] && continue
 
