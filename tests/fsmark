@@ -26,8 +26,6 @@ for thread in $(seq 1 $nr_threads); do
 done
 
 filesize=$(to_byte $filesize)
-nr_directories=${nr_directories%d}
-nr_files_per_directory=${nr_files_per_directory%f}
 
 declare -A SYNC_METHODS=(
 	[NoSync]=0
@@ -84,6 +82,18 @@ calc_nr_file()
 }
 
 calc_nr_file
+
+nr_directories=${nr_directories%d}
+nr_files_per_directory=${nr_files_per_directory%f}
+if [[ -z "$nr_directories" && "$nr_files_per_directory"  ]]; then
+	nr_directories=$((nr_files / nr_files_per_directory))
+fi
+
+if [[ -z "$nr_directories" || -z "$nr_files_per_directory" ]]; then
+	echo "invalid paramter: nr_directories=$nr_directories, "\
+	     "nr_files_per_directory=$nr_files_per_directory" 1>&2
+	exit 1
+fi
 
 cmd ./fs_mark \
 	$PARAM \
