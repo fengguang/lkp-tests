@@ -1,0 +1,21 @@
+testcase: fsmark
+
+iterations: 1x
+nr_threads:
+- 1t
+- 64t
+
+disk: 1BRD_48G
+need_memory: 50G
+
+fs:
+- xfs
+- ext4
+- btrfs
+
+fsmark:
+  filesize: 4M
+  test_size: 40G
+  sync_method:
+  - NoSync
+  - fsyncBeforeClose
