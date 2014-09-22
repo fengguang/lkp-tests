@@ -66,6 +66,7 @@ ARGV.each { |jobfile|
 	jobs.each_jobs { |job|
 		unit_jobfile = prefix + '-' + job.path_params
 		unit_jobfile += '-' + job['commit'] if job['commit']
+		unit_jobfile += '-' + job['rootfs'] if job['rootfs']
 		unit_jobfile += '.yaml'
 		if $opt_any
 			$atom_jobs << [jobfile, unit_jobfile, deepcopy(job)]
