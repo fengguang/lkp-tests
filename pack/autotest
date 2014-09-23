@@ -1,0 +1,12 @@
+#!/bin/bash
+
+download()
+{
+	[[ -d autotest ]] || git clone --recursive https://github.com/autotest/autotest.git
+	source_dir="autotest"
+}
+
+install()
+{
+	cp -af /tmp/$BM_NAME /lkp/benchmarks/
+}
