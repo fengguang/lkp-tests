@@ -1,0 +1,15 @@
+#!/bin/bash
+# - test
+
+cd $BENCHMARK_ROOT/autotest || exit
+
+cmd client/autotest-local run $test 2>&1
+
+mkdir $RESULT_ROOT/results
+chmod g+w	$BENCHMARK_ROOT/autotest/client/results/default/status.json
+chown lkp.lkp	$BENCHMARK_ROOT/autotest/client/results/default/status.json
+cp -a		$BENCHMARK_ROOT/autotest/client/results/default/status.json $RESULT_ROOT/results
+
+chmod g+w	$BENCHMARK_ROOT/autotest/client/results/default/debug/*
+chown lkp.lkp	$BENCHMARK_ROOT/autotest/client/results/default/debug/*
+cp -a		$BENCHMARK_ROOT/autotest/client/results/default/debug/* $RESULT_ROOT/results

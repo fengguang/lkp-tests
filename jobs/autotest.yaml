@@ -1,0 +1,109 @@
+testcase: autotest
+
+default_monitors:
+  wait: pre- test
+  vmstat:
+
+autotest:
+  test:
+  # - aborttest
+  - aio_dio_bugs
+  - aiostress
+  # - asynctest # run time too short
+  # - autotest_regression
+  - barriertest
+  - bash_shared_mapping
+  - bonnie
+  - btreplay
+  - cgroup
+  - cgroup_tests
+  - compilebench
+  - connectathon
+  - cpuflags
+  - cpu_hotplug
+  - ctcs
+  - cyclictest
+  - dacapo
+  # - dbench
+  - dbt2
+  - disktest
+  - dma_memtest
+  - docker
+  # - ebizzy
+  - error_cleanup
+  - error_initialize
+  - error_setup
+  - error_skip_step
+  - error_test_bug
+  - error_test_error
+  - error_test_fail
+  - error_test_na
+  - ffsb
+  # - fio
+  - flail
+  - fsdev
+  - fsfuzzer
+  # - fs_mark
+  - fsstress
+  - fsx
+  # - hackbench
+  # - hwclock
+  - interbench
+  - iosched_bugs
+  # - iozone
+  # - iperf
+  - ipv6connect
+  - isic
+  # - kernbench
+  # - kernelbuild
+  # - kernelinstall
+  - libhugetlbfs
+  # - libvirt_tck
+  # - libvirt_test_api
+  - linus_stress
+  - linux-tools
+  - lmbench
+  # - ltp
+  - lvsetup
+  - memory_api
+  - monotonic_time
+  # - netperf2
+  - netpipe
+  - npb
+  - parallel_dd
+  - perfmon
+  - pi_tests
+  - pktgen
+  - posixtest
+  - profiler_sync
+  - profiler_test
+  - qemu_iotests
+  - reaim
+  - real_time_tests
+  - regression
+  - rmaptest
+  - rtc
+  - rttester
+  - scrashme
+  - scsi_testsuite
+  # - selftest
+  - signaltest
+  # - sleeptest
+  - smatch
+  - sparse
+  - spew
+  - stress
+  - synctest
+  # - sysbench
+  - systemtap
+  # - tbench
+  - tiobench
+  - tracing_microbenchmark
+  - tsc
+  - unixbench
+  # - unixbench5
+  - uptime
+  # - virt
+  - wb_kupdate
+  # - xfstests
+  - xmtest
