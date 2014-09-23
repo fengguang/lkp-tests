@@ -180,6 +180,21 @@ end
 
 class Job
 
+	def update(hash, top = false)
+		@job ||= {}
+		if top
+			@job = hash.merge @job
+		else
+			@job.update hash
+		end
+	end
+
+	def load_head(jobfile, top = false)
+		return nil unless File.exist? jobfile
+		job = YAML.load_file jobfile
+		self.update(job, top)
+	end
+
 	def load(jobfile)
 		begin
 			yaml = File.read jobfile
@@ -187,7 +202,7 @@ class Job
 			YAML.load_stream(yaml, jobfile) do |hash|
 				@jobs << hash
 			end
-			@job = YAML.load_file "#{LKP_SRC}/jobs/DEFAULTS"
+			@job ||= {}
 			@job.update @jobs.shift
 		rescue Errno::ENOENT
 			return nil

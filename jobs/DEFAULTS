@@ -24,8 +24,3 @@ default_monitors:
   turbostat:
   sched_debug:
     interval: 10
-
-# default setups
-cpufreq_governor:
-- performance
-- powersave

@@ -32,6 +32,10 @@ opts = OptionParser.new do |opts|
 		$opt_commit = commit
 	end
 
+	opts.on("-t HOSTNAME", "--test-box HOSTNAME", "test box") do |testbox|
+		$opt_testbox = testbox
+	end
+
         opts.on("-s 'KEY: VALUE'", "--set 'KEY: VALUE'", "add YAML hash to job") do |key_value|
                 $opt_set_key_value.merge!(YAML.load key_value)
         end
@@ -53,10 +57,13 @@ if ARGV.size == 0
 	exit
 end
 
+$opt_testbox ||= `hostname`.chomp
 $atom_jobs = []
 
 ARGV.each { |jobfile|
 	jobs = Job.new
+	jobs.load_head("#{LKP_SRC}/jobs/DEFAULTS")
+	jobs.load_head("#{LKP_SRC}/hosts/#{$opt_testbox}")
 	jobs.load(jobfile) or next
 	$opt_set_key_value.each { |k, v| jobs[k] = v }
 	jobs['kconfig'] = $opt_kconfig if $opt_kconfig
