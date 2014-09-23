@@ -1,0 +1,11 @@
+#!/usr/bin/ruby
+
+require 'yaml'
+
+RESULT_ROOT = ENV['RESULT_ROOT']
+
+status = YAML.load_file("#{RESULT_ROOT}/results/status.json")
+
+unless status['job_passed']
+	puts "#{status['operations'][0]['subdir']}.fail: 1"
+end
