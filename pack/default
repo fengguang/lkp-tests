@@ -81,7 +81,8 @@ pack()
 	{
 		echo /lkp
 		echo /lkp/benchmarks
-		find /lkp/benchmarks/$BM_NAME
+		echo /lkp/benchmarks/$BM_NAME
+		find /lkp/benchmarks/$BM_NAME/*
 	} |
 	cpio -o -H newc | gzip -n -9 > /tmp/${BM_NAME}.cgz
 	[[ $arch ]] && mv "/tmp/${BM_NAME}.cgz" "/tmp/${BM_NAME}-${arch}.cgz"
