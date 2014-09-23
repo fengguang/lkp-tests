@@ -106,7 +106,7 @@ def for_each_program(ah)
 end
 
 def for_each_program_or_param(ah)
-	$dims_to_expand ||= Set.new [ 'commit', 'rootfs' ]
+	$dims_to_expand ||= Set.new [ 'kconfig', 'commit', 'rootfs' ]
 	for_each(ah) { |k, v|
 		# puts k
 		if $programs.include?(k) or $dims_to_expand.include?(k)
