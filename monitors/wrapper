@@ -5,9 +5,7 @@ monitor_dir=$(dirname $0)
 shift
 
 # Always use a FIFO, whose 64k buffer helps prevent write stalls on NFS dir.
-fifo_dir=$TMP/monitor_fifo
-fifo=$fifo_dir/$monitor
-mkdir -p $fifo_dir
+fifo=$TMP/fifo-$monitor
 
 # The same monitor already running. This could happen if the expanded default
 # monitors happen to duplicate what's specified additionally by the user.
