@@ -7,5 +7,9 @@ RESULT_ROOT = ENV['RESULT_ROOT']
 status = YAML.load_file("#{RESULT_ROOT}/results/status.json")
 
 unless status['job_passed']
+	unless status['operations'][0]
+		STDERR.puts "Test environment is not able"
+		exit
+	end
 	puts "#{status['operations'][0]['subdir']}.fail: 1"
 end
