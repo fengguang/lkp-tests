@@ -38,7 +38,7 @@ path=$BENCHMARK_ROOT/piglit/lib/piglit/bin/igt
 EOF
 
 if [[ $group =~ 'igt-' ]]; then
-	$LKP_SRC/tests/piglit-xinitrc
+	$LKP_SRC/tests/piglit.xinitrc
 else
 	mkdir -p		/tmp/.X11-unix
 	chmod 1777		/tmp/.X11-unix
