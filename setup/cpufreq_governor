@@ -1,6 +1,7 @@
 #!/bin/bash
 
 scaling_governor=$1
+[[ $scaling_governor ]] || exit 0
 
 for file in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
 do
