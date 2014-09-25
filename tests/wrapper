@@ -10,4 +10,10 @@ echo 1000 > /proc/$PPID/oom_score_adj
 echo $$ > $TMP/pid-$program
 
 shift
-exec $exec_prefix $program_dir/$program "$@" | tee > $RESULT_ROOT/$program
+
+fifo=$TMP/fifo-$program
+[[ -p $fifo ]] || mkfifo $fifo
+[[ -L $LKP_SRC/bin/tee-$program ]] || ln -s -T /usr/bin/tee $LKP_SRC/bin/tee-$program
+tee-$program < $fifo > $TMP_RESULT_ROOT/$program &
+echo $! >> $TMP/.pid-pipes
+exec $exec_prefix $program_dir/$program "$@" > $fifo

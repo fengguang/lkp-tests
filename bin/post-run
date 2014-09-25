@@ -54,7 +54,7 @@ wait_for_pipe()
 	for i in $(seq 5)
 	do
 		sleep $i
-		pgrep --pidfile $TMP/.pid-pipes '(cat|gzip)-.*' >/dev/null && continue
+		pgrep --pidfile $TMP/.pid-pipes '(tee|cat|gzip)-.*' >/dev/null && continue
 
 		for result in "${tmp_results[@]}"
 		do
