@@ -61,7 +61,8 @@ autotest:
   # - libvirt_tck
   # - libvirt_test_api
   - linus_stress
-  - linux-tools
+  - linux-tools/crontab
+  - linux-tools/pax
   - lmbench
   # - ltp
   - lvsetup
