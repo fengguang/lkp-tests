@@ -178,6 +178,10 @@ def atomic_save_yaml_json(object, file)
 	FileUtils.mv temp_file, file, :force => true
 end
 
+def rootfs_filename(rootfs)
+	strip_trivial_array(rootfs).split(/[^a-zA-Z0-9._-]/)[-1]
+end
+
 class Job
 
 	def update(hash, top = false)
@@ -307,7 +311,7 @@ class Job
 		result_path = Result_path.new
 		result_path.update @job
 		result_path['rootfs'] ||= 'debian-x86_64.cgz'
-		result_path['rootfs'] = strip_trivial_array(result_path['rootfs']).split(/[^a-zA-Z0-9._-]/)[-1]
+		result_path['rootfs'] = rootfs_filename result_path['rootfs']
 		result_path['path_params'] = self.path_params
 		result_path._result_root
 	end
