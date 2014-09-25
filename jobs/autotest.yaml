@@ -75,7 +75,7 @@ autotest:
   - pi_tests
   - pktgen
   - posixtest
-  - profiler_sync
+  # - profiler_sync # Not a test case
   - profiler_test
   - qemu_iotests
   - reaim
