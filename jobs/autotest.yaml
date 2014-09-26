@@ -30,14 +30,14 @@ autotest:
   - dma_memtest
   - docker
   # - ebizzy
-  - error_cleanup
-  - error_initialize
-  - error_setup
+  # - error_cleanup
+  # - error_initialize
+  # - error_setup
   # - error_skip_step
-  - error_test_bug
-  - error_test_error
-  - error_test_fail
-  - error_test_na
+  # - error_test_bug
+  # - error_test_error
+  #- error_test_fail
+  #- error_test_na
   - ffsb
   # - fio
   - flail
