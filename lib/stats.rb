@@ -278,9 +278,7 @@ end
 def __get_changed_stats(a, b, options)
 	changed_stats = {}
 	is_incomplete_run = a['last_state.is_incomplete_run'] ||
-			    b['last_state.is_incomplete_run'] ||
-			    a['dmesg.boot_failures'] ||
-			    b['dmesg.boot_failures']
+			    b['last_state.is_incomplete_run']
 	resize = options['resize']
 	if b['stats_source']
 		good_commit = File.basename File.dirname File.dirname b['stats_source'][0]

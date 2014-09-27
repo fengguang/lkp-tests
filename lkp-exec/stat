@@ -63,9 +63,8 @@ result_roots.sort.each { |result_root|
 
 	matrix = load_json _rt + '/matrix.json'
 	next unless matrix
-	unless $opt_field =~ /dmesg|last_state/
+	unless $opt_field =~ /last_state/
 		next if matrix['last_state.is_incomplete_run']
-		next if matrix['dmesg.boot_failures']
 	end
 
 	result_path = Result_path.new
