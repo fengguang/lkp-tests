@@ -301,10 +301,18 @@ def run_program(program, env)
 	ret = system $top_env.merge(program_env), *cmd
 	case ret
 	when false
-		STDERR.puts program + ' ' + $?.to_s
+                File.open(ENV['RESULT_ROOT'] + '/last_state', 'a') { |f|
+			if $?.exited?
+				f.write "#{program}.exit_code.#{$?.exitstatus}: 1\n"
+			else
+				f.write "#{program}.kill_code.#{$?.to_i}: 1\n"
+			end
+		}
 		exit 1
 	when nil
-		STDERR.puts 'Cannot run ' + program
+                File.open(ENV['RESULT_ROOT'] + '/last_state', 'a') { |f|
+			f.write "#{program}.cannot_execute: 1\n"
+		}
 		exit 1
 	end
 end
