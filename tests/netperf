@@ -18,3 +18,5 @@ for i in $(seq $nr_threads)
 do
 	cmd netperf -t $test -c -C -l $runtime $test_options &
 done
+
+wait
