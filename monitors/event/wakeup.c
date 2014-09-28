@@ -4,8 +4,36 @@
 #include <stdlib.h>
 #include <signal.h>
 
-#define PIPE_DIR "/tmp/event_pipe"
-#define PID_FILE "/tmp/pid-wakeup"
+char *get_tmp_dir(void)
+{
+	char *tmp;
+
+	tmp = getenv("TMP");
+	if (tmp)
+		return tmp;
+	else
+		return "/tmp";
+}
+
+char *get_pipe_dir(void)
+{
+	static char pipe_dir[2048];
+
+	if (!pipe_dir[0])
+		snprintf(pipe_dir, sizeof(pipe_dir), "%s/event_pipe",
+			 get_tmp_dir());
+	return pipe_dir;
+}
+
+char *get_pid_file(void)
+{
+	static char pid_file[2048];
+
+	if (!pid_file[0])
+		snprintf(pid_file, sizeof(pid_file), "%s/pid-wakeup",
+			 get_tmp_dir());
+	return pid_file;
+}
 
 char *basename(char *path)
 {
@@ -21,10 +49,11 @@ char *basename(char *path)
 void *save_pid(int pid)
 {
 	FILE *file;
+	char *pid_file = get_pid_file();
 
-	file = fopen(PID_FILE, "a");
+	file = fopen(pid_file, "a");
 	if (!file) {
-		perror(PID_FILE);
+		perror(pid_file);
 		exit(1);
 	}
 
@@ -41,6 +70,7 @@ int main(int argc, char *argv[])
 	char buf[1024];
 	char *filename;
 	int is_wait;
+	char *pipe_dir = get_pipe_dir();
 
 	if (argc <= 1) {
 		printf("Usage: %s PIPE\n", argv[0]);
@@ -50,8 +80,8 @@ int main(int argc, char *argv[])
 	is_wait = !strcmp(basename(argv[0]), "wait");
 	filename = argv[1];
 
-	mkdir(PIPE_DIR, 0770);
-	chdir(PIPE_DIR);
+	mkdir(pipe_dir, 0770);
+	chdir(pipe_dir);
 	mkfifo(filename, 0660);
 
 	if (is_wait)
