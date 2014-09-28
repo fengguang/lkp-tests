@@ -3,3 +3,5 @@
 sort -u
 
 [[ -s $RESULT_ROOT/err_log ]] && echo "has_stderr: 1"
+
+true
