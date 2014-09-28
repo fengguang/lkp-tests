@@ -257,13 +257,7 @@ when /job-env/
 	$top_env.each { |key, val| puts "#{key}: #{val}" }
 when /extract-stats/
 	ARGV[1..-1].each { |f| $testcase.merge!(YAML.load_file(f)) }
-	if $testcase['job_state'] == 'kernel_oops'
-		create_programs_hash "stats/dmesg"
-	elsif $testcase['job_state'] =~ /booting|running|soft_timeout|failed|error_mount|error_umount/
-		create_programs_hash "stats/{dmesg,last_state}"
-	else
-		create_programs_hash "stats/**/*"
-	end
+	create_programs_hash "stats/**/*"
 else
 	STDERR.puts "Unknown program name."
 	exit 1
