@@ -1,6 +1,7 @@
 model: Ivytown Ivy Bridge-EP
 nr_cpu: 48
 memory: 64G
+nr_hdd_partitions: 3
 hdd_partitions: /dev/disk/by-id/scsi-SATA_WDC_WD1003FBYZ-_WD-WCAW36*-part1
 swap_partitions: /dev/disk/by-id/scsi-SATA_WDC_WD1003FBYZ-_WD-WCAW36795753-part2
 rootfs_partition: /dev/disk/by-id/scsi-SATA_WDC_WD1003FBYZ-_WD-WCAW36795753-part3
