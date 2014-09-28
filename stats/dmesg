@@ -38,6 +38,9 @@ def oops_to_bisect_pattern(line)
 		patterns = []
 		words.each { |w|
 			case w
+			when /([a-zA-Z0-9_]+)\.(isra|constprop|part)\.[0-9]+\+0x/
+				patterns << $1
+				break
 			when /([a-zA-Z0-9_]+\+0x)/, /([a-zA-Z0-9_]+=)/
 				patterns << $1
 				break
