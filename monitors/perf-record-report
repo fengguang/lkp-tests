@@ -1,0 +1,24 @@
+#!/bin/bash
+# - delay
+# - duration
+# - gap
+
+# NOTE: this monitor is aimed for capturing all hot code as testcase runs
+# with the minimum effort of storing and then parsing huge data file. And
+# it's for debug purpose.
+#
+# Some idea and code are borrowed from monitor/no-stdout/perf-profile
+
+: ${delay:=0}
+: ${duration:=10}
+: ${gap:=10}
+
+sleep $delay
+
+while true; do
+	perf record -g -a -q -o perf.record -- timeout $duration $WAIT_POST_TEST_CMD
+
+	date "+%F %T"
+	perf report -i perf.record --stdio 2>/dev/null | head -n 300
+	sleep $gap
+done
