@@ -61,6 +61,7 @@ result_roots.sort.each { |result_root|
 	next if _rts[_rt]
 	_rts[_rt] = true
 
+	next unless File.exist? _rt + '/matrix.json'
 	matrix = load_json _rt + '/matrix.json'
 	next unless matrix
 	unless $opt_field =~ /last_state/
