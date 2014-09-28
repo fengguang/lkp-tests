@@ -2,11 +2,21 @@
 
 def fixup_dmesg(line)
 	line.chomp!
-	line.gsub(/(.+)(\[ *[0-9]{1,6}\.[0-9]{6}\] .*)/, "\\1\n\\2").
-	     sub(%r{/lkp/[^/]+/linux[0-9]*/}, '').
-	     sub(%r{/c/kernel-tests/src/[^/]+/}, '').
-	     sub(%r{/kbuild/src/[^/]+/}, '').
-	     sub(%r{/c/(wfg|yliu)/[^/]+/}, '')
+
+	# remove absolute path names
+	line.sub!(%r{/lkp/[^/]+/linux[0-9]*/}, '')
+	line.sub!(%r{/c/kernel-tests/src/[^/]+/}, '')
+	line.sub!(%r{/kbuild/src/[^/]+/}, '')
+	line.sub!(%r{/c/(wfg|yliu)/[^/]+/}, '')
+
+	# break up mixed messages
+	case line
+	when /^<[0-9]>/
+	when /(.+)(\[ *[0-9]{1,6}\.[0-9]{6}\] .*)/
+		line = $1 + "\n" + $2
+	end
+
+	return line
 end
 
 def grep_crash_head(dmesg, grep_options = '')
