@@ -9,6 +9,8 @@ def fixup_dmesg(line)
 	line.sub!(%r{/kbuild/src/[^/]+/}, '')
 	line.sub!(%r{/c/(wfg|yliu)/[^/]+/}, '')
 
+	line.sub!(/\.(isra|constprop|part)\.[0-9]+\+0x/, '+0x')
+
 	# break up mixed messages
 	case line
 	when /^<[0-9]>/
