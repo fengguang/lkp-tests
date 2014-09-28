@@ -96,6 +96,7 @@ def load_json(file)
 		return load_yaml file.sub(/\.json(\.gz)?$/, ".yaml")
 	else
 		STDERR.puts "JSON/YAML file not exist: #{file}"
+		STDERR.puts caller
 		return nil
 	end
 end
