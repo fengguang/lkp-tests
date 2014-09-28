@@ -27,6 +27,7 @@ fi
 [[ $testbox =~ ^vm- ]] ||
 [[ $program = 'dmesg' ]] ||
 [[ -s $tmpfile ]] ||
+[[ ! -s $RESULT_ROOT/time ]] ||
 { [[ $program = 'turbostat' ]] && grep -q -e 'No invariant TSC' $log; } ||
 grep -q "^$program\." $LKP_SRC/etc/failure ||
 echo "WARN: empty stats for $log" >&2
