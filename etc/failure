@@ -4,5 +4,8 @@ xfstests.*.inconsistent_fs
 ltp.*.TFAIL
 ltp.*.TBROK
 kernel_selftests.*.fail
-last_state.is_incomplete_run
+last_state.*
 packetdrill.*.FAIL
+autotest.*
+pm-qa.*
+kvm-unit-tests.*
