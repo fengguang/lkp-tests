@@ -6,7 +6,19 @@ program=$1
 program_dir=$(dirname $0)
 log=$RESULT_ROOT/$program
 
+check_incomplete_run()
+{
+	local file=$1
+
+	[[ -s $file ]] && return
+	[[ -f $LKP_SRC/tests/$program ]] || return
+
+	echo "is_incomplete_run: 1" >> $RESULT_ROOT/last_state
+}
+
 [ -f $log.gz ] && zcat $log.gz > $log
+
+check_incomplete_run $log
 
 [[ -s $log ]] ||
 [[ $program = 'tcrypt' ]] ||
@@ -32,11 +44,8 @@ fi
 grep -q "^$program\." $LKP_SRC/etc/failure ||
 echo "WARN: empty stats for $log" >&2
 
-[[ ! -s $tmpfile ]] &&
-[[ -f $LKP_SRC/tests/$program ]] &&
-! grep -q "^$program\." $LKP_SRC/etc/failure && {
-	echo "is_incomplete_run: 1"		>> $RESULT_ROOT/last_state
-}
+grep -q "^$program\." $LKP_SRC/etc/failure ||
+check_incomplete_run $tmpfile
 
 $LKP_SRC/sbin/dump-stat $program	< $tmpfile || { echo "$LKP_SRC/sbin/dump-stat $program  exit code $?, check $tmpfile" >&2; exit 1; }
 rm $tmpfile
