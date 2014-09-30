@@ -3,9 +3,9 @@
 
 cd $BENCHMARK_ROOT/kernel_selftests || exit
 
-testcases=(breakpoints cpu-hotplug ipc kcmp mqueue memory-hotplug net ptrace sysctl user timers vm)
-for i in ${testcases[@]}; do
-	cmd make run_tests -C $i 2> >(tee $RESULT_ROOT/kernel_selftests.info |
+for mf in */Makefile; do
+	subtest=${mf%/Makefile}
+	cmd make run_tests -C $subtest 2> >(tee $RESULT_ROOT/kernel_selftests.info |
 		grep -v -e "^info:" \
 			-e "^ERROR:" \
 			-e "^test:" \

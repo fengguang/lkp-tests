@@ -2,7 +2,7 @@
 
 download()
 {
-	git clone --depth 1 http://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+	[[ -d linux ]] || git clone --depth 1 --reference /c/linux http://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
 	source_dir="linux"
 }
 
@@ -15,17 +15,14 @@ build()
 	sleep 5
 	kill $pid
 	cd tools/testing/selftests
-	white_list=($(cat $LKP_SRC/pack/${BM_NAME}-white-list))
-	for i in ${white_list[@]}; do
-		[[ -d $i ]] && make -C $i
+	for mf in */Makefile; do
+		make -C ${mf%/Makefile}
 	done
 }
 
 install()
 {
-	for i in ${white_list[@]}; do
-		[[ -d $i ]] && cp -af $i $BM_ROOT
-	done
+	cp -af * $BM_ROOT
 	find $BM_ROOT -name "*.c" -exec rm -f {} \;
 	find $BM_ROOT -name "Makefile" -exec sed -i 's/\(run_tests:\) all/\1/' {} \;
 }
