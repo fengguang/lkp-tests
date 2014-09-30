@@ -4,6 +4,7 @@ require 'yaml'
 
 RESULT_ROOT = ENV['RESULT_ROOT']
 
+exit unless File.exist?("#{RESULT_ROOT}/results/status.json")
 status = YAML.load_file("#{RESULT_ROOT}/results/status.json")
 
 unless status['job_passed']
