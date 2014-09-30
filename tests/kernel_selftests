@@ -3,7 +3,7 @@
 
 cd $BENCHMARK_ROOT/kernel_selftests || exit
 
-testcases=(breakpoints ipc kcmp mqueue net ptrace timers)
+testcases=(breakpoints cpu-hotplug ipc kcmp mqueue memory-hotplug net ptrace sysctl user timers vm)
 for i in ${testcases[@]}; do
 	cmd make run_tests -C $i 2> >(tee $RESULT_ROOT/kernel_selftests.info |
 		grep -v -e "^info:" \
