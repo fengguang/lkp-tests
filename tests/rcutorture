@@ -1,0 +1,8 @@
+#!/bin/bash
+# - runtime
+
+modprobe rcutorture 2>/dev/null || exit 0
+
+sleep $runtime
+
+rmmod rcutorture
