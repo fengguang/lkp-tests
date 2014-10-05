@@ -163,6 +163,7 @@ blacklist = File.read(BLACKLIST).split "\n"
 			nr_line_short += 1 if line.size < MIN_MSG_LEN
 			next
 		end
+		next if str.gsub(/[^a-zA-Z]/, '').size <= MIN_MSG_LEN / 2
 		next unless blacklist.grep(str).empty?
 		errids << str
 	}
