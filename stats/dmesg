@@ -69,6 +69,7 @@ output.each_line { |line|
 	# next if line =~ /INFO: task .* blocked for more than \d+ seconds/
 	next if line =~ /INFO: Stall ended before state dump start/
 	next if line =~ /INFO: NMI handler .* took too long to run:/
+	next if line =~ /Killed process \d+ \(/
 
 	case line
 	when /(INFO: rcu[_a-z]* self-detected stall on CPU)/,
@@ -99,6 +100,9 @@ output.each_line { |line|
 	     /(Kernel panic - not syncing: No init found.)  Try passing init= option to kernel. /
 		line = $1
 		bug_to_bisect = line
+	when /(Out of memory: Kill process) \d+ \(/
+		line = $1
+		bug_to_bisect = $1
 	when /([a-zA-Z]+[ a-zA-Z]*: [a-f0-9]{4}) \[#[0-9]+\] [A-Z_ ]*$/
 		line = $1
 		bug_to_bisect = $1
