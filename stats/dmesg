@@ -2,8 +2,6 @@
 
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($0)))
 require "#{LKP_SRC}/lib/dmesg.rb"
-require "fileutils"
-require "tempfile"
 
 if ENV['RESULT_ROOT']
 	serial_file = "#{ENV['RESULT_ROOT']}/.dmesg"
@@ -24,18 +22,7 @@ if not File.exist?(dmesg_file) or File.size(dmesg_file) == 0
 	exit
 end
 
-tmpfile = Tempfile.new 'fixup-dmesg-', ENV['RESULT_ROOT']
-dmesg_lines = []
-File.open(dmesg_file, 'rb') do |f|
-	f.each_line { |line|
-		line = fixup_dmesg(line)
-		dmesg_lines << line
-		tmpfile.puts line
-	}
-end
-tmpfile.chmod 0664
-tmpfile.close
-FileUtils.mv tmpfile.path, dmesg_file, :force => true
+dmesg_lines = fixup_dmesg_file(dmesg_file)
 
 =begin
 # <4>[  256.557393] [ INFO: possible circular locking dependency detected ]

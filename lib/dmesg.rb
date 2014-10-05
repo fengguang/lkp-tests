@@ -1,5 +1,8 @@
 #!/usr/bin/ruby
 
+require "fileutils"
+require "tempfile"
+
 def fixup_dmesg(line)
 	line.chomp!
 
@@ -19,6 +22,22 @@ def fixup_dmesg(line)
 	end
 
 	return line
+end
+
+def fixup_dmesg_file(dmesg_file)
+	tmpfile = Tempfile.new '.fixup-dmesg-', File.dirname(dmesg_file)
+	dmesg_lines = []
+	File.open(dmesg_file, 'rb') do |f|
+		f.each_line { |line|
+			line = fixup_dmesg(line)
+			dmesg_lines << line
+			tmpfile.puts line
+		}
+	end
+	tmpfile.chmod 0664
+	tmpfile.close
+	FileUtils.mv tmpfile.path, dmesg_file, :force => true
+	return dmesg_lines
 end
 
 def grep_crash_head(dmesg, grep_options = '')
