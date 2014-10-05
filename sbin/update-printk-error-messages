@@ -4,6 +4,8 @@ require 'optparse'
 require 'ostruct'
 require 'set'
 
+LKP_SRC		= ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
+BLACKLIST	= LKP_SRC + '/etc/kmsg-blacklist'
 MIN_MSG_LEN	= 18
 OUTPUT_FILE	= '/lkp/printk-error-messages'
 DIRS_TO_GREP	= 'arch block crypto drivers firmware fs include init ipc kernel lib mm net security sound virt'
@@ -127,6 +129,8 @@ count = Hash.new
 nr_too_short = 0
 nr_line_short = 0
 
+blacklist = File.read(BLACKLIST).split "\n"
+
 `git grep -A1 -E '(#{PRINTK_PATTERNS})' -- #{DIRS_TO_GREP} | grep -o '".*"'`.each_line { |line|
 	line = line[1..-3]
 	next if line =~ /"/
@@ -159,6 +163,7 @@ nr_line_short = 0
 			nr_line_short += 1 if line.size < MIN_MSG_LEN
 			next
 		end
+		next unless blacklist.grep(str).empty?
 		errids << str
 	}
 }
