@@ -6,22 +6,27 @@ require "fileutils"
 require "tempfile"
 
 if ENV['RESULT_ROOT']
-	dmesg = "#{ENV['RESULT_ROOT']}/.dmesg"
-	dmesg = "#{ENV['RESULT_ROOT']}/dmesg" if not File.exist? dmesg
+	serial_file = "#{ENV['RESULT_ROOT']}/.dmesg"
+	kmsg_file = "#{ENV['RESULT_ROOT']}/dmesg"
+	if File.exist? serial_file
+		dmesg_file = serial_file
+	else
+		dmesg_file = kmsg_file
+	end
 elsif ARGV[0]
-	dmesg = ARGV[0]
+	dmesg_file = ARGV[0]
 else
 	exit
 end
 
-if not File.exist?(dmesg) or File.size(dmesg) == 0
+if not File.exist?(dmesg_file) or File.size(dmesg_file) == 0
 	puts "early-boot-hang: 1"
 	exit
 end
 
 tmpfile = Tempfile.new 'fixup-dmesg-', ENV['RESULT_ROOT']
 dmesg_lines = []
-File.open(dmesg, 'rb') do |f|
+File.open(dmesg_file, 'rb') do |f|
 	f.each_line { |line|
 		line = fixup_dmesg(line)
 		dmesg_lines << line
@@ -30,7 +35,7 @@ File.open(dmesg, 'rb') do |f|
 end
 tmpfile.chmod 0664
 tmpfile.close
-FileUtils.mv tmpfile.path, dmesg, :force => true
+FileUtils.mv tmpfile.path, dmesg_file, :force => true
 
 =begin
 # <4>[  256.557393] [ INFO: possible circular locking dependency detected ]
@@ -62,9 +67,9 @@ end
 
 error_ids = {}
 if $PROGRAM_NAME =~ /dmesg/
-	output = grep_crash_head dmesg, '-o'
+	output = grep_crash_head dmesg_file, '-o'
 else
-	output = grep_printk_errors dmesg, dmesg_lines
+	output = grep_printk_errors dmesg_file, dmesg_lines
 end
 exit if output.empty?
 exit if output =~ /trinity.*: page allocation failure|Out of memory: .*trinity/ # trinity is known to trigger OOM
