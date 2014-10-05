@@ -20,8 +20,13 @@ if not File.exist?(dmesg) or File.size(dmesg) == 0
 end
 
 tmpfile = Tempfile.new 'fixup-dmesg-', ENV['RESULT_ROOT']
+dmesg_lines = []
 File.open(dmesg, 'rb') do |f|
-	f.each_line { |line| tmpfile.puts fixup_dmesg(line) }
+	f.each_line { |line|
+		line = fixup_dmesg(line)
+		dmesg_lines << line
+		tmpfile.puts line
+	}
 end
 tmpfile.chmod 0664
 tmpfile.close
@@ -56,7 +61,11 @@ def oops_to_bisect_pattern(line)
 end
 
 error_ids = {}
-output = grep_crash_head dmesg, '-o'
+if $PROGRAM_NAME =~ /dmesg/
+	output = grep_crash_head dmesg, '-o'
+else
+	output = grep_printk_errors dmesg, dmesg_lines
+end
 exit if output.empty?
 exit if output =~ /trinity.*: page allocation failure|Out of memory: .*trinity/ # trinity is known to trigger OOM
 
@@ -125,7 +134,7 @@ output.each_line { |line|
 
 exit if error_ids.empty?
 
-puts "boot_failures: 1"
+puts "boot_failures: 1" if $PROGRAM_NAME =~ /dmesg/
 
 # This shows each error id only once
 error_ids.each { |error_id, line|

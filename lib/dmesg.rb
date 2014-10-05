@@ -54,3 +54,14 @@ def grep_crash_head(dmesg, grep_options = '')
 	return ''
 end
 
+def grep_printk_errors(dmesg_file, dmesg_lines)
+	oops = `grep -a -f #{LKP_SRC}/etc/oops-pattern #{dmesg_file}`
+	dmesg = dmesg_lines.join "\n"
+	oops += `grep -a -f #{LKP_SRC}/etc/ext4-crit-pattern	#{dmesg_file}` if dmesg.index 'EXT4-fs ('
+	oops += `grep -a -f #{LKP_SRC}/etc/xfs-alert-pattern	#{dmesg_file}` if dmesg.index 'XFS ('
+	oops += `grep -a -f #{LKP_SRC}/etc/btrfs-crit-pattern	#{dmesg_file}` if dmesg.index 'btrfs: '
+	return oops if ENV['testcase'] =~ /trinity/
+	return oops unless File.exist?('/lkp/printk-error-messages')
+	oops += `grep -a -F -o -f /lkp/printk-error-messages	#{dmesg_file}`
+	oops
+end
