@@ -1,0 +1,25 @@
+#!/usr/bin/ruby
+
+require 'set'
+
+def stderr_id(line)
+	line.gsub(/\b[^-a-zA-Z_\/+().,%=]+\b/, " ").
+		gsub(/[^a-zA-Z0-9+._\/(),%=-]+/, " ").
+		gsub(/ +([a-zA-Z])/, '-\1').
+		gsub(/([a-zA-Z0-9]) +/, '\1-').
+		gsub(/ +/, '').
+		gsub(/^[^\/a-zA-Z(]+/, '').
+		gsub(/[^a-zA-Z0-9)]+$/, '')
+end
+
+error_ids = Set.new
+
+while line = gets
+	id = stderr_id(line)
+	next if id.size < 3
+	error_ids << id
+end
+
+error_ids.each { |id|
+	puts id + ': 1'
+}
