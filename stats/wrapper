@@ -24,6 +24,7 @@ check_incomplete_run $log
 [[ $program = 'tcrypt' ]] ||
 [[ $program = 'kernel-size' ]] ||
 [[ $program = 'perf-profile' ]] ||
+[[ $program = 'kmsg' ]] ||
 [[ $program = 'dmesg' && -s $RESULT_ROOT/.dmesg ]] || {
 	rm -f $log $log.gz
 	exit 0
