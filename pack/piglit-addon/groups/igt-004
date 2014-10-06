@@ -23,7 +23,6 @@ igt/kms_universal_plane/disable-primary-vs-flip-pipe-C
 igt/kms_flip/single-buffer-flip-vs-dpms-off-vs-modeset
 igt/kms_flip/wf_vblank-vs-dpms-interruptible
 igt/gem_reset_stats/reset-count-render
-igt/gem_userptr_blits/swapping-normal-sync
 igt/gem_fenced_exec_thrash/no-spare-fences-interruptible
 igt/gem_exec_parse/registers
 igt/gem_exec_params/invalid-flag
@@ -36,7 +35,6 @@ igt/gem_exec_nop/bsd
 igt/kms_flip/2x-flip-vs-dpms-off-vs-modeset
 igt/gem_concurrent_blit/prw-overwrite-source-interruptible
 igt/gem_exec_faulting_reloc/normal
-igt/gem_userptr_blits/sync-overlap
 igt/gem_storedw_loop_render
 igt/kms_fbc_crc/page_flip_and_render
 igt/pm_rc6_residency/rc6-residency-check
@@ -44,15 +42,12 @@ igt/pm_rpm/modeset-stress-extra-wait
 igt/kms_fbc_crc/page_flip_and_mmap_gtt
 igt/prime_nv_test/i915_blt_fill_nv_read
 igt/kms_universal_plane/universal-plane-pipe-A-sanity
-igt/gem_userptr_blits/major-unsync-normal
-igt/drm_vma_limiter
 igt/kms_flip/vblank-vs-hang
 igt/gem_render_tiled_blits
 igt/gem_tiled_swapping
 igt/drv_hangman/error-state-basic
 igt/pm_rpm/drm-resources-equal
 igt/kms_flip/blocking-absolute-wf_vblank-interruptible
-igt/kms_flip/2x-plain-flip
 igt/kms_flip/flip-vs-dpms-interruptible
 igt/prime_nv_pcopy/test3_4
 igt/gem_write_read_ring_switch/blt2bsd

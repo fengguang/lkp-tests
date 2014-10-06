@@ -56,7 +56,6 @@ igt/gem_pwrite_pread/display-copy-correctness
 igt/pm_rpm/modeset-lpsp-stress-no-wait
 igt/gem_persistent_relocs/forked-faulting-reloc-thrash-inactive
 igt/drv_module_reload
-igt/gem_concurrent_blit/gtt-gpu-read-after-write-interruptible
 igt/kms_flip/flip-vs-dpms
 igt/kms_addfb/bad-pitch-999
 igt/gem_close_race/process-exit
@@ -65,7 +64,6 @@ igt/gem_reloc_overflow/source-offset-end-gen8-reloc-cpu
 igt/gem_concurrent_blit/prw-overwrite-source-forked
 igt/kms_flip/flip-vs-modeset-vs-hang
 igt/gem_tiled_partial_pwrite_pread/reads
-igt/gem_concurrent_blit/gtt-early-read-interruptible
 igt/kms_flip/vblank-vs-dpms-suspend
 igt/gem_reset_stats/params-ctx-bsd
 igt/gem_exec_lut_handle
