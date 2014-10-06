@@ -330,6 +330,8 @@ def setup_dims()
 		if ARGV.size == 1
 			if ARGV[0].index('/') # looks like a branch? compare its BASE_RC..HEAD
 				$opt_dims.unshift git_commit(base_rc_tag($opt_dims[0]))
+			elsif is_sha1_40(ARGV[0]) # compare with parent commit(s)
+				git_parent_commits(ARGV[0]).reverse_each { |parent| $opt_dims.unshift parent }
 			elsif $opt_index
 				$opt_dims.unshift git_commit(PERF_INDEX_KENREL)
 			end

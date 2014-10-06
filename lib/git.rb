@@ -32,6 +32,10 @@ def expand_possible_commit(s)
 	return git_commit s
 end
 
+def git_parent_commits(commit)
+	`#{GIT} log -n1 --format=%P #{commit}`.chomp.split(' ')
+end
+
 def git_committer_name(commit)
 	`#{GIT} log -n1 --pretty=format:'%cn' #{commit}`.chomp
 end
@@ -52,8 +56,12 @@ def linus_release_tag(commit)
 	end
 end
 
+def is_sha1_40(commit)
+	commit.size == 40 and commit =~ /^[0-9a-f]+$/
+end
+
 def git_commit(commit)
-	return commit if commit.size == 40 and commit =~ /^[0-9a-f]+$/
+	return commit if is_sha1_40(commit)
 
 	`#{GIT} rev-list -n1 #{commit}`.chomp
 end
