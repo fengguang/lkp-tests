@@ -2,6 +2,6 @@
 
 sort -u
 
-[[ -s $RESULT_ROOT/err_log ]] && echo "has_stderr: 1"
+[[ -s $RESULT_ROOT/stderr ]] && echo "has_stderr: 1"
 
 true
