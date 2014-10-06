@@ -1,7 +1,19 @@
 testcase: autotest
 
+autotest:
+  test:
+  - compilebench
+  - docker
+  - iosched_bugs
+  - isic
+  - monotonic_time
+  - pi_tests
+  - systemtap
+  - unixbench
+
+---
 default_monitors:
-  wait: pre- test
+  wait: pre-test
   vmstat:
 
 autotest:
@@ -17,7 +29,6 @@ autotest:
   - btreplay
   - cgroup
   - cgroup_tests
-  - compilebench
   - connectathon
   - cpuflags
   - cpu_hotplug
@@ -28,7 +39,6 @@ autotest:
   - dbt2
   - disktest
   - dma_memtest
-  - docker
   # - ebizzy
   # - error_cleanup
   # - error_initialize
@@ -49,11 +59,9 @@ autotest:
   # - hackbench
   # - hwclock
   - interbench
-  - iosched_bugs
   # - iozone
   # - iperf
   - ipv6connect
-  - isic
   # - kernbench
   # - kernelbuild
   # - kernelinstall
@@ -67,13 +75,11 @@ autotest:
   # - ltp
   - lvsetup
   - memory_api
-  - monotonic_time
   # - netperf2
   # - netpipe
   - npb
   # - parallel_dd
   - perfmon
-  - pi_tests
   - pktgen
   - posixtest
   # - profiler_sync # Not a test case
@@ -96,12 +102,10 @@ autotest:
   - stress
   - synctest
   # - sysbench
-  - systemtap
   # - tbench
   - tiobench
   - tracing_microbenchmark
   - tsc
-  - unixbench
   # - unixbench5
   # - uptime
   # - virt
