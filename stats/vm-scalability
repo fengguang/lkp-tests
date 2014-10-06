@@ -20,6 +20,8 @@ while line = STDIN.gets
 		kbps << $3.to_i
 	when /(\d+) bytes \([0-9.]+ .B\) copied, ([0-9.]+) s, ([0-9.]+) .B.s/
 		kbps << ($1.to_i >> 10) / $2.to_f
+	when /(\d+) bytes truncated in (\d+)-(\d+) seconds/
+		kbps << ($1.to_i >> 10) / ($3.to_f - $2.to_f)
 	when /\d+ \* \d+ bytes migrated, \d+ usecs, (\d+) MB.s/
 		puts 'migrate_mbps: ' + $1
 	when /(\d+) bytes remapped, (\d+) usecs, (\d+) MB.s/
