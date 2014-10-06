@@ -11,7 +11,6 @@ igt/kms_flip/2x-vblank-vs-hang-interruptible
 igt/gem_ctx_exec/reset-pin-leak
 igt/kms_addfb/bad-pitch-65536
 igt/gem_readwrite/write-bad-handle
-igt/gem_fence_thrash/bo-write-verify-threaded-x
 igt/gem_pread_after_blit/normal
 igt/kms_flip/blocking-absolute-wf_vblank
 igt/kms_plane/plane-panning-bottom-right-pipe-C-plane-1
@@ -28,7 +27,6 @@ igt/gem_pwrite_pread/snooped-pwrite-blt-cpu_mmap-correctness
 igt/gem_reloc_overflow/source-offset-page-stradle-gen8-reloc-cpu
 igt/gem_reset_stats/close-pending-ctx-render
 igt/gem_reset_stats/ban-vebox
-igt/pm_rpm/gem-execbuf-stress
 igt/gem_render_copy_redux
 igt/gem_pwrite_pread/uncached-pwrite-blt-gtt_mmap-correctness
 igt/kms_flip/2x-flip-vs-absolute-wf_vblank
@@ -41,7 +39,6 @@ igt/gem_concurrent_blit/prw-gpu-read-after-write
 igt/kms_flip/2x-flip-vs-wf_vblank
 igt/gem_pread/uncached
 igt/gem_userptr_blits/sync-unmap
-igt/kms_flip/rcs-wf_vblank-vs-modeset-interruptible
 igt/kms_fbc_crc/blt
 igt/kms_flip/flip-vs-expired-vblank-interruptible
 igt/gem_exec_bad_domains/conflicting-write-domain
@@ -67,7 +64,6 @@ igt/kms_psr_sink_crc/mmap_gtt_waiting_no_busy
 igt/gem_storedw_batches_loop/secure-dispatch
 igt/gem_exec_params/rel-constants-invalid-rel-gen5
 igt/kms_plane/plane-position-hole-pipe-A-plane-2
-igt/gem_userptr_blits/forked-unsync-mempressure-interruptible
 igt/gem_dummy_reloc_loop/mixed
 igt/kms_plane/plane-position-hole-pipe-A-plane-3
 igt/kms_psr_sink_crc/page_flip_and_mmap_cpu
