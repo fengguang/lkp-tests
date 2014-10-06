@@ -4,6 +4,8 @@ default_monitors:
   wait: pre-test
   vmstat:
 
+timeout: 30m
+
 piglit:
   group:
     - igt-000
