@@ -232,9 +232,9 @@ def add_result_root(result_root)
 	}
 end
 
-def setup_test_group(result_root)
+def setup_test_group(_result_root)
 	result_path = Result_path.new
-	result_path.parse_result_root result_root
+	result_path.parse_result_root _result_root
 	test = result_path.test_desc $opt_dimension, $dim_not_a_param
 	if not $tests.has_key?(test)
 		$tests[test] = test
@@ -246,7 +246,6 @@ def setup_result_root_hash()
 	$opt_dims.each do |dim|
 		`grep -h -r -F -e #{dim} #{RESULT_PATHS}`.each_line do |result_root|
 			add_result_root result_root
-			setup_test_group result_root
 		end
 	end
 	$_result_root_tuple.delete_if { |k, v| v.size <= 1 }
@@ -313,6 +312,8 @@ def setup_changed_stats()
 			$changed_stats[stat][k] = v
 			$stat_records[stat] << record
 		}
+		setup_test_group v[0]
+		setup_test_group v[1]
 	}
 end
 
