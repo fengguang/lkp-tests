@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# contributed by:
+# "Srivatsa S. Bhat" <srivatsa.bhat@linux.vnet.ibm.com>
+# Peter Zijlstra <peterz@infradead.org>
+
+CPUPATH="/sys/devices/system/cpu"
+
+NUMBER_OF_CPUS=$(ls -d $CPUPATH/cpu[0-9]* | wc -l)
+
+while :
+do
+	for interval in 0 0.1 1 10 100
+	do
+		for ((i=1; i < NUMBER_OF_CPUS; i++))
+		do
+			sleep $interval
+			state=$(< $CPUPATH/cpu$i/online)
+			echo $((state^1)) > $CPUPATH/cpu$i/online
+		done
+	done
+done
