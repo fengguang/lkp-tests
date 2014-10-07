@@ -1,0 +1,9 @@
+#!/bin/bash
+# - runtime
+
+trinity -q --dangerous -x get_robust_list -N 999999 &
+
+pid=$!
+sleep $runtime
+
+kill -9 $pid
