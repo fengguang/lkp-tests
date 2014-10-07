@@ -32,13 +32,6 @@ cp $TMP/time		$RESULT_ROOT/
 
 cp $TMP/env.yaml 	$RESULT_ROOT/
 
-if [[ -f $RESULT_ROOT/run_log ]]; then
-	echo "$RESULT_ROOT/run_log already exists, check race conditions" >> $TMP/stderr
-	cp $TMP/run_log $RESULT_ROOT/run_log.1
-elif [[ -f $TMP/run_log ]]; then	# run-local don't have run_log
-	cp $TMP/run_log $RESULT_ROOT/
-fi
-
 PERF_EVENT_DATA=$TMP/perf.data
 [[ -s $PERF_EVENT_DATA ]] && {
 	perf report --header -U -g fractal,5 -i $PERF_EVENT_DATA 2>/dev/null | gzip > $RESULT_ROOT/perf-profile.gz && {
@@ -85,5 +78,6 @@ wait_for_pipe()
 	}
 }
 
-[[ -s $TMP/stderr ]] &&
-cp $TMP/stderr		$RESULT_ROOT/
+[[ -s $TMP/stdout ]] && cp $TMP/stdout $RESULT_ROOT/
+[[ -s $TMP/stderr ]] && cp $TMP/stderr $RESULT_ROOT/
+[[ -s $TMP/output ]] && cp $TMP/output $RESULT_ROOT/
