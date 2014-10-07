@@ -97,7 +97,7 @@ end
 def install_debian_packages(script)
 	if File.exist? "#{LKP_SRC}/debian/#{script}"
 		packages = File.read("#{LKP_SRC}/debian/#{script}").split
-		unless system 'apt-get', 'install', *packages
+		unless system 'apt-get', 'install', '-y', *packages
 			puts "Cannot install some packages in #{LKP_SRC}/debian/#{script}"
 			exit 1
 		end
