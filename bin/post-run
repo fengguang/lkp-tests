@@ -16,7 +16,7 @@ wait_for_monitors()
 	done
 
 	echo "some monitors do not quit in time" >&2
-	ps faux >&2
+	ps faux
 }
 
 $LKP_SRC/monitors/event/wakeup post-test
@@ -69,8 +69,8 @@ wait_for_pipe()
 	done
 
 	echo "wait_for_pipe timeout $i" >&2
-	ps faux >&2
-	ls -l $TMP_RESULT_ROOT >&2
+	ps faux
+	ls -l $TMP_RESULT_ROOT
 	return 1
 }
 
