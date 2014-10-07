@@ -1,0 +1,19 @@
+#!/bin/bash
+
+download()
+{
+	git_clone_update git://git.kernel.org/pub/scm/utils/cpu/mce/mce-test.git
+	source_dir=$BM_NAME
+}
+
+build()
+{
+	cd $source_dir
+	make
+}
+
+install()
+{
+	make install
+	cp -af * $BM_ROOT
+}

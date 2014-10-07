@@ -1,0 +1,27 @@
+#!/bin/bash
+
+cd $BENCHMARK_ROOT/mce-test || exit
+
+echo > ./work/rastest.caselist <<EOF
+APEI-INJ cases/function/apei-inj/runtest.sh
+ERST-INJ cases/function/erst-inject/runtest.sh
+PFA cases/function/pfa/runtest.sh
+HWPOISON-SOFT cases/function/hwpoison/run_soft.sh
+HWPOISON-HARD cases/function/hwpoison/run_hard.sh
+HWPOISON-HUGEPAGE cases/function/hwpoison/run_hugepage.sh
+HWPOISON-THP cases/function/hwpoison/run_thp.sh
+STRESS-HWPOISON-SOFT cases/stress/hwpoison/run_soft.sh
+STRESS-HWPOISON-HARD cases/stress/hwpoison/run_hard.sh
+EOF
+
+./runmcetest -t ./work -s ./summary -o ./results -b ./bin -l ./work/rastest.caselist -r 1
+
+[[ $nr_partitions -ge 1 ]] || exit
+partition=${partitions%% *}
+
+[[ $duration ]] || duration=60
+
+HWPOISON=./cases/stress/hwpoison/hwpoison.sh
+
+$HWPOISON -t $duration -d $partition -L
+$HWPOISON -t $duration -d $partition -M
