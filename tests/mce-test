@@ -9,7 +9,9 @@ PFA cases/function/pfa/runtest.sh
 HWPOISON-SOFT cases/function/hwpoison/run_soft.sh
 HWPOISON-HARD cases/function/hwpoison/run_hard.sh
 HWPOISON-HUGEPAGE cases/function/hwpoison/run_hugepage.sh
+HWPOISON-HUGEPAGE-OVERCOMMIT cases/function/hwpoison/run_hugepage_overcommit.sh
 HWPOISON-THP cases/function/hwpoison/run_thp.sh
+BSP cases/function/bsp/runtest.sh
 STRESS-HWPOISON-SOFT cases/stress/hwpoison/run_soft.sh
 STRESS-HWPOISON-HARD cases/stress/hwpoison/run_hard.sh
 EOF

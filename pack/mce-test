@@ -2,7 +2,7 @@
 
 download()
 {
-	git_clone_update git://git.kernel.org/pub/scm/utils/cpu/mce/mce-test.git
+	git_clone_update git://git.kernel.org/pub/scm/linux/kernel/git/gong.chen/mce-test.git
 	source_dir=$BM_NAME
 }
 
