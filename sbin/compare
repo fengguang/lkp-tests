@@ -381,7 +381,11 @@ def show_one_diff(dim, v0, v, v0_stddev, v_stddev, is_float, is_exp, is_fail=fal
 	elsif is_float
 		buf += sprintf "%#{ABS_WIDTH}.2f", v
 	elsif is_fail
-		buf += sprintf "%#{ABS_WIDTH+1}d", v
+		if v == 0
+			buf += sprintf "%#{ABS_WIDTH+1}s", ' '
+		else
+			buf += sprintf "%#{ABS_WIDTH+1}d", v
+		end
 	else
 		buf += sprintf "%#{ABS_WIDTH}d", v
 	end
