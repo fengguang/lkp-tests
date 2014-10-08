@@ -23,7 +23,7 @@ partition=${partitions%% *}
 
 [[ $duration ]] || duration=60
 
-HWPOISON=./cases/stress/hwpoison/hwpoison.sh
+cd cases/stress/hwpoison || exit
 
-$HWPOISON -t $duration -d $partition -L
-$HWPOISON -t $duration -d $partition -M
+./hwpoison.sh -t $duration -d $partition -L
+./hwpoison.sh -t $duration -d $partition -M
