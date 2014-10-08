@@ -10,7 +10,7 @@ fifo=$TMP/fifo-$monitor
 # The same monitor already running. This could happen if the expanded default
 # monitors happen to duplicate what's specified additionally by the user.
 [ -p $fifo ] && exit 0
-mkfifo $fifo || exit 0
+mkfifo $fifo 2>/dev/null || exit 0
 
 if grep -q -x -F "$monitor" $monitor_dir/need_timestamp; then
 	stdbuf -o0 -e0 $monitor_dir/$monitor "$@" | ruby -n -e 'printf "%s %s", Time.now.strftime("%s.%N"), $_' > $fifo &
