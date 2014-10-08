@@ -34,6 +34,8 @@ $base_gm = {}
 $head_gm = {}
 $nr_gm = {}
 
+$header_shown = {}
+
 opts = OptionParser.new do |opts|
         opts.banner = 'Usage: compare [options] RESULT_ROOT...'
 
@@ -431,13 +433,15 @@ def show_delta(stat, key_g)
 	return if $cases.empty?
 	$cases = Hash[$cases.sort]
 
+	is_fail = is_failure stat
+
 	if ! $group_by_test
 		$dims.each { |dim, name|
 			width = (dim == $first_dim ? ABS_WIDTH + ERR_WIDTH : REL_WIDTH + ABS_WIDTH + ERR_WIDTH)
 			printf "%#{width}s  ", name[0..(width-1)]
 		}
 
-		if $header_shown
+		if $header_shown[is_fail]
 			puts
 		else
 			puts 'testbox/testcase/testparams'
@@ -465,10 +469,7 @@ def show_delta(stat, key_g)
 		}
 	}
 
-	is_fail = is_failure stat
-	$header_shown = false if $last_is_fail != is_fail
-	$last_is_fail = is_fail
-	if $header_shown
+	if $header_shown[is_fail]
 		puts if ! $group_by_test
 	else
 		puts '---------------------------' if ! $group_by_test
@@ -479,7 +480,7 @@ def show_delta(stat, key_g)
 		end
 		puts '            \          |                 /'
 
-		$header_shown = true
+		$header_shown[is_fail] = true
 	end
 	$cases.each { |_rt, value|
 
