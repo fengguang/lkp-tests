@@ -7,7 +7,7 @@
 	seed=$(echo $kconfig | cksum | tr -d ' ')
 }
 
-cmd trinity -q --dangerous -s $seed -x get_robust_list -N 999999 &
+cmd chroot --userspec nobody:nogroup / trinity -q -s $seed -x get_robust_list -N 999999 &
 
 pid=$!
 sleep $runtime
