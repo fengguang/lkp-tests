@@ -317,7 +317,6 @@ def __get_changed_stats(a, b, options)
 
 		next unless b[k] or
 			is_failure_stat or
-			k =~ /^(dmesg|last_state)\./ or
 			(k =~ /^(lock_stat|perf-profile|latency_stats)\./ and b_monitors[$1])
 
 		b_k = b[k] || [0] * cols_b
