@@ -74,6 +74,7 @@ if $opt_result_root == nil
 		exit 1
 	)
 	job['testbox'] = HOSTNAME
+	job['tbox_group'] = tbox_group(HOSTNAME)
 	job['kconfig'] ||= 'defconfig'
 	job['commit'] ||= `uname -r`.chomp!
 	job['rootfs'] ||= `grep -m1 ^ID= /etc/os-release`.split('=')[1].chomp
