@@ -360,7 +360,11 @@ def show_one_diff(dim, v0, v, v_stddev, is_float, is_exp, is_fail=false)
 	if dim == $first_dim
 		buf = ''
 	else
-		p = 100.0 * (v - v0) / v0
+		if is_fail
+			p = 100 * (v - v0)
+		else
+			p = 100.0 * (v - v0) / v0
+		end
 		if p.abs < 100000
 			buf = sprintf "%+8.1f%% ", p
 		else
@@ -484,7 +488,7 @@ def show_delta(stat, key_g)
 		else
 			puts '---------------------------' if ! $group_by_test
 			if is_fail
-				puts '     nr_runs        %change               nr_runs'
+				puts '     nr_runs      %reproduction           nr_runs'
 			else
 				puts '     %stddev        %change               %stddev'
 			end
