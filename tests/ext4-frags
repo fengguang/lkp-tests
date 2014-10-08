@@ -24,8 +24,8 @@ mnt=/mnt
 mkdir -p $mnt
 
 mke2fs -t ext4 -b 1024 -J size=1 $partition
-mount -t ext2 $partition $mnt ||
-mount -t ext2 $partition $mnt || exit
+mount -t ext2 $partition $mnt 2>/dev/null ||
+mount -t ext4 $partition $mnt             || exit
 mkdir $mnt/a
 cd $mnt/a
 seq 1 210000  | xargs -n 1 fallocate -l 1m
