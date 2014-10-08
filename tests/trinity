@@ -3,8 +3,8 @@
 # - seed
 
 [[ $seed ]] || {
-	echo Seeding trinity based on $branch $kconfig $tbox_group
-	seed=$(echo $branch $kconfig $tbox_group | cksum | tr -d ' ')
+	echo Seeding trinity based on $kconfig
+	seed=$(echo $kconfig | cksum | tr -d ' ')
 }
 
 cmd trinity -q --dangerous -s $seed -x get_robust_list -N 999999 &
