@@ -469,19 +469,6 @@ def show_delta(stat, key_g)
 		}
 	}
 
-	if $header_shown[is_fail]
-		puts if ! $group_by_test
-	else
-		puts '---------------------------' if ! $group_by_test
-		if is_fail
-			puts '     nr_runs        %change               nr_runs'
-		else
-			puts '     %stddev        %change               %stddev'
-		end
-		puts '            \          |                 /'
-
-		$header_shown[is_fail] = true
-	end
 	$cases.each { |_rt, value|
 
 		result_path = Result_path.new
@@ -491,6 +478,21 @@ def show_delta(stat, key_g)
 		if $group_by_test
 			next unless test == key_g
 		end
+
+		if $header_shown[is_fail]
+			puts if ! $group_by_test
+		else
+			puts '---------------------------' if ! $group_by_test
+			if is_fail
+				puts '     nr_runs        %change               nr_runs'
+			else
+				puts '     %stddev        %change               %stddev'
+			end
+			puts '            \          |                 /'
+
+			$header_shown[is_fail] = true
+		end
+
 		v0 = value[$first_dim]
 		v0 = v0.average if Array === v0
 		$dims.each { |dim, v|
