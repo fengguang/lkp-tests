@@ -1,7 +1,13 @@
 #!/bin/bash
 # - runtime
+# - seed
 
-trinity -q --dangerous -x get_robust_list -N 999999 &
+[[ $seed ]] || {
+	echo Seeding trinity based on $branch $kconfig $tbox_group
+	seed=$(echo $branch $kconfig $tbox_group | cksum | tr -d ' ')
+}
+
+cmd trinity -q --dangerous -s $seed -x get_robust_list -N 999999 &
 
 pid=$!
 sleep $runtime
