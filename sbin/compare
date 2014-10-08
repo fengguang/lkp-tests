@@ -18,7 +18,7 @@ require 'set'
 
 ABS_WIDTH = 10
 REL_WIDTH = 10
-ERR_WIDTH = 5
+ERR_WIDTH = 6
 
 PERF_INDEX_KENREL = 'v3.14'
 PERF_INDEX_KCONFIG = 'x86_64-rhel'
@@ -381,17 +381,17 @@ def show_one_diff(dim, v0, v, v0_stddev, v_stddev, is_float, is_exp, is_fail=fal
 	elsif is_float
 		buf += sprintf "%#{ABS_WIDTH}.2f", v
 	elsif is_fail
-		buf += sprintf "%#{ABS_WIDTH}d", v
+		buf += sprintf "%#{ABS_WIDTH+1}d", v
 	else
 		buf += sprintf "%#{ABS_WIDTH}d", v
 	end
 
 	if v_stddev
 		if is_fail
-			buf += sprintf ":%-#{ERR_WIDTH-1}d", v_stddev
+			buf += sprintf ":%-#{ERR_WIDTH-2}d", v_stddev
 		else
 			v_stddev = 100 * v_stddev / v if v != 0
-			buf += sprintf "  ±%#{ERR_WIDTH-3}d%%", v_stddev
+			buf += sprintf " ±%#{ERR_WIDTH-3}d%%", v_stddev
 		end
 	else
 		buf += ' ' * ERR_WIDTH
@@ -507,11 +507,11 @@ def show_delta(stat, key_g)
 		else
 			puts '---------------------------' if ! $group_by_test
 			if is_fail
-				puts ' nr_fail:nr_run  %reproduction  nr_fail:nr_run'
-				puts '         \             |              /'
+				puts '       fail:runs  %reproduction    fail:runs'
+				puts '           |            |              |'
 			else
-				puts '     %stddev        %change               %stddev'
-				puts '            \          |                 /'
+				puts '     %stddev         %change               %stddev'
+				puts '            \           |                 /'
 			end
 
 			$header_shown[is_fail] = true
