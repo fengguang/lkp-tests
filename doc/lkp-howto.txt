@@ -60,6 +60,10 @@ Preinstall necessary packages:
 
 	# apt-get install ruby ruby-oj
 
+For now Debian based distros are required. ruby-oj is only available since
+Debian jessie which is currently in the testing phase. For Debian stable, you
+will need to install it with rubygems.
+
 5.1 Split job file
 
 Use split-job command to split the predefined job file.
@@ -152,4 +156,4 @@ in which <N> is a RESULT_ROOT number increases from 1.
 
 Which can be listed by command
 
-	# lkp rt ebizzy
+	# ./sbin/lkp rt ebizzy
