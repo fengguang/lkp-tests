@@ -122,7 +122,7 @@ $_result_root_saved = Set.new
 
 $dims = Hash.new
 $cases = Hash.new
-$tests = Hash.new
+$tests = Set.new
 $sum = Hash.new { |hash, key| hash[key] = 0 }
 $stddev = Hash.new { |hash, key| hash[key] = 0 }
 
@@ -238,9 +238,7 @@ def setup_test_group(_result_root)
 	result_path = Result_path.new
 	result_path.parse_result_root _result_root
 	test = result_path.test_desc $opt_dimension, $dim_not_a_param
-	if not $tests.has_key?(test)
-		$tests[test] = test
-	end
+	$tests.add test
 end
 
 def setup_result_root_hash()
@@ -597,7 +595,7 @@ if $opt_all or $opt_index
 	end
 
 	if $group_by_test
-		$tests.each { |key, value|
+		$tests.each { |key|
 			show_test_group key
 			stats.each { |stat|
 				show_one_stat stat
