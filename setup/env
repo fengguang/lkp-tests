@@ -1,5 +1,8 @@
 #!/bin/bash
 
+source $LKP_SRC/lib/result.sh
+set_tbox_group $HOSTNAME
+
 cat - $LKP_SRC/hosts/${tbox_group} > $TMP/env.yaml <<EOF
 # setup/env
 nr_cpu: $(getconf _NPROCESSORS_CONF)
