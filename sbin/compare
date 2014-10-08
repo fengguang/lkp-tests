@@ -354,7 +354,7 @@ def setup_dims()
 	}
 end
 
-def show_one_diff(dim, v0, v, v_stddev, is_float, is_exp)
+def show_one_diff(dim, v0, v, v_stddev, is_float, is_exp, is_fail=false)
 	if dim == $first_dim
 		buf = ''
 	else
@@ -372,15 +372,19 @@ def show_one_diff(dim, v0, v, v_stddev, is_float, is_exp)
 		else
 			buf += sprintf "%#{ABS_WIDTH}.4g", v
 		end
-	elsif is_float
+	elsif is_float or is_fail
 		buf += sprintf "%#{ABS_WIDTH}.2f", v
 	else
 		buf += sprintf "%#{ABS_WIDTH}d", v
 	end
 
 	if v_stddev
-		v_stddev = 100 * v_stddev / v if v != 0
-		buf += sprintf " ±%2d%%", v_stddev
+		if is_fail
+			buf += sprintf "  /%-2d", v_stddev
+		else
+			v_stddev = 100 * v_stddev / v if v != 0
+			buf += sprintf "  ±%2d%%", v_stddev
+		end
 	else
 		buf += ' ' * ERR_WIDTH
 	end
@@ -442,15 +446,6 @@ def show_delta(stat, key_g)
 			printf '-' * width + '  '
 		}
 
-		if $header_shown
-			puts
-		else
-			puts '---------------------------'
-			puts '     %stddev        %change               %stddev'
-			puts '            \          |                 /'
-
-			$header_shown = true
-		end
 	end
 
 	is_float = false
@@ -468,6 +463,24 @@ def show_delta(stat, key_g)
 		}
 	}
 
+	is_fail = is_failure stat
+	$header_shown = false if $last_is_fail != is_fail
+	$last_is_fail = is_fail
+	if ! $group_by_test
+		if $header_shown
+			puts
+		else
+			puts '---------------------------'
+			if is_fail
+				puts '    %nr_runs        %change               %nr_runs'
+			else
+				puts '     %stddev        %change               %stddev'
+			end
+			puts '            \          |                 /'
+
+			$header_shown = true
+		end
+	end
 	$cases.each { |_rt, value|
 
 		result_path = Result_path.new
@@ -484,13 +497,19 @@ def show_delta(stat, key_g)
 
 			v_stddev = nil
 			if Array === v
-				v_stddev = v.standard_deviation if v.size > 1
+				if is_fail
+					v_stddev = v.length
+				else
+					v_stddev = v.standard_deviation if v.size > 1
+				end
 				v = v.average
+			elsif is_fail
+				v_stddev = 1
 			end
 
-			show_one_diff dim, v0, v, v_stddev, is_float, is_exp
+			show_one_diff dim, v0, v, v_stddev, is_float, is_exp, is_fail
 			$sum[dim] += v
-			if v_stddev
+			if v_stddev and not is_fail
 				$stddev[dim] += v_stddev if $stddev[dim]
 			else
 				$stddev[dim] = nil
