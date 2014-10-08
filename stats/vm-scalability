@@ -9,8 +9,9 @@ def add_one_sample(kbps, throughput)
 	return if kbps.empty?
 	throughput << kbps.sum
 	puts "# #{kbps.size} #{kbps.sum}"
-	if kbps.size != 1 and (kbps.size & 1) != 0
+	if kbps.size != 1 and (kbps.size & 1) != 0 and not $warned
 		STDERR.puts "stats/vm-scalability: possibly disordered output #{ARGV[0]}"
+		$warned = true
 	end
 end
 
