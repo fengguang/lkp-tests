@@ -534,8 +534,13 @@ def show_delta(stat, key_g)
 			v, v_stddev = get_v_and_stddev value, dim, is_fail
 
 			show_one_diff dim, v0, v, v0_stddev, v_stddev, is_float, is_exp, is_fail
-			$sum[dim] += v
-			if v_stddev
+			if is_fail
+				$sum[dim] += v
+			else
+				$sum[dim] += Math.log(v)
+			end
+
+			if v_stddev and is_fail
 				$stddev[dim] += v_stddev if $stddev[dim]
 			else
 				$stddev[dim] = nil
@@ -550,13 +555,23 @@ def show_delta(stat, key_g)
 		end
 	}
 
+	unless is_fail
+		$sum.each { |k, v|
+			$sum[k] = Math.exp($sum[k] / $cases.length)
+		}
+	end
+
 	if ! $group_by_test
 		v0 = $sum[$first_dim]
 		v0_stddev = $stddev[$first_dim]
 		$sum.each { |dim, v|
 			show_one_diff dim, v0, v, v0_stddev, $stddev[dim], is_float, is_exp, is_fail
 		}
-		puts "TOTAL #{$opt_field}"
+		if is_fail
+			puts "TOTAL #{$opt_field}"
+		else
+			puts "GEO-MEAN #{$opt_field}"
+		end
 	end
 end
 
