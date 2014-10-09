@@ -2,12 +2,16 @@
 
 cd $BENCHMARK_ROOT/kvm-unit-tests || exit
 
-ldd /usr/bin/qemu-system-x86_64
-lsmod
-modprobe kvm_intel
-lsmod
+[[ -c /dev/kvm ]] || modprobe kvm_intel
 
-cmd ./run_tests.sh
+cmd ./run_tests.sh || {
+	exit_code=$?
+
+	# dump debug info
+	ldd /usr/bin/qemu-system-x86_64
+	lsmod
+	exit $exit_code
+}
 
 chmod g+w	$BENCHMARK_ROOT/kvm-unit-tests/test.log
 chown lkp.lkp	$BENCHMARK_ROOT/kvm-unit-tests/test.log
