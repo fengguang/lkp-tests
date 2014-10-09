@@ -496,6 +496,21 @@ def show_delta(stat, key_g)
 		}
 	}
 
+	if $header_shown[is_fail]
+		puts if ! $group_by_test
+	else
+		puts '---------------------------' if ! $group_by_test
+		if is_fail
+			puts '       fail:runs  %reproduction    fail:runs'
+			puts '           |            |              |'
+		else
+			puts '     %stddev         %change               %stddev'
+			puts '            \           |                 /'
+		end
+
+		$header_shown[is_fail] = true
+	end
+
 	$cases.each { |_rt, value|
 
 		result_path = Result_path.new
@@ -504,21 +519,6 @@ def show_delta(stat, key_g)
 
 		if $group_by_test
 			next unless test == key_g
-		end
-
-		if $header_shown[is_fail]
-			puts if ! $group_by_test
-		else
-			puts '---------------------------' if ! $group_by_test
-			if is_fail
-				puts '       fail:runs  %reproduction    fail:runs'
-				puts '           |            |              |'
-			else
-				puts '     %stddev         %change               %stddev'
-				puts '            \           |                 /'
-			end
-
-			$header_shown[is_fail] = true
 		end
 
 		v0 = value[$first_dim]
