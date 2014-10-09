@@ -25,5 +25,7 @@ partition=${partitions%% *}
 
 cd cases/stress/hwpoison || exit
 
+export TERM=linux # to quiet stderr message "TERM environment variable not set."
+
 ./hwpoison.sh -t $duration -d $partition -L
 ./hwpoison.sh -t $duration -d $partition -M
