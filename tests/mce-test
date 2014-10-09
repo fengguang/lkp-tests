@@ -27,5 +27,8 @@ cd cases/stress/hwpoison || exit
 
 export TERM=linux # to quiet stderr message "TERM environment variable not set."
 
-./hwpoison.sh -c /dev/null -t $duration -d $partition -L
+mount
+./hwpoison.sh -c /dev/null -t $duration -d $partition -L || exit
+
+umount $partition
 ./hwpoison.sh -c /dev/null -t $duration -d $partition -M
