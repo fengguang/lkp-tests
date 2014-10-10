@@ -3,8 +3,7 @@ kmsg.*
 stderr.*
 xfstests.*.fail
 xfstests.*.inconsistent_fs
-ltp.*.TFAIL
-ltp.*.TBROK
+ltp.*.fail
 kernel_selftests.*.fail
 last_state.*
 packetdrill.*.FAIL

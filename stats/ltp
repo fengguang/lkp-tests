@@ -1,13 +1,11 @@
 #!/usr/bin/ruby
 
-require 'set'
+RESULT_ROOT = ENV['RESULT_ROOT']
 
-result = Set.new
-while line = STDIN.gets
-	case line
-	when /^([^ ]+) +(\d+)  (TFAIL|TBROK)  :  /
-		result.add $1 + '.' + $2 + '.' + $3
+Dir["#{RESULT_ROOT}/LTP_RUN_ON-*.log", "#{RESULT_ROOT}/ltp-results/LTP_RUN_ON-*.log"].each { |log|
+	File.readlines(log).each do |line|
+		if line =~ /^(\S+)\s+FAIL/
+			puts "#{$1}.fail: 1"
+		end
 	end
-end
-
-result.each { |k| puts "#{k}: 1" }
+}
