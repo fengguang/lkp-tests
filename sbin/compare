@@ -450,7 +450,7 @@ def show_delta(stat, key_g)
 		noisy = false
 		value.each { |k, v|
 			next unless Array === v and v.size > 1
-			if v.standard_deviation.abs > v.average.abs / 2
+			if v.standard_deviation.abs > v.average.abs / 2 or v.average < 0
 				noisy = true
 				break
 			end
