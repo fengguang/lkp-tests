@@ -5,6 +5,7 @@ cd $BENCHMARK_ROOT/ltp || exit
 
 cmd ./runltp -f $test
 
+mkdir $RESULT_ROOT/ltp-results
 chmod g+w	$BENCHMARK_ROOT/ltp/{results,output}/*
 chown lkp.lkp	$BENCHMARK_ROOT/ltp/{results,output}/*
-cp -a		$BENCHMARK_ROOT/ltp/{results,output}/* $RESULT_ROOT/
+cp -a		$BENCHMARK_ROOT/ltp/{results,output}/* $RESULT_ROOT/ltp-results
