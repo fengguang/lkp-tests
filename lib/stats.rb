@@ -28,7 +28,10 @@ def test_prefixes()
 	tests = Dir["#{LKP_SRC}/tests/**/*"].map { |path| File.basename path }
 	tests = stats & tests
 	tests.delete 'wrapper'
-	tests.push 'dmesg' # this will set higher score_perf_change for kernel oops
+	tests.push 'kmsg'
+	tests.push 'dmesg'
+	tests.push 'stderr'
+	tests.push 'last_state'
 	return tests.map { |test| test + '.' }
 end
 $test_prefixes = test_prefixes
