@@ -500,12 +500,15 @@ def show_delta(stat, key_g)
 		puts if ! $group_by_test
 	else
 		puts '---------------------------' if ! $group_by_test
+		nr_headers = $dims.length - 1
 		if is_fail
-			puts '       fail:runs  %reproduction    fail:runs'
-			puts '           |            |              |'
+			# (ABS_WIDTH + ERR_WIDTH)   (2 + REL_WIDTH + ABS_WIDTH + ERR_WIDTH)
+			#      |<-------------->|   |<--------------------------->|
+			printf '       fail:runs' + '  %%reproduction    fail:runs' * nr_headers + "\n"
+			printf '           |    ' + '         |             |    ' * nr_headers + "\n"
 		else
-			puts '     %stddev         %change               %stddev'
-			puts '            \           |                 /'
+			printf '         %%stddev' + '     %%change         %%stddev' * nr_headers + "\n"
+			printf '             \  ' + '        |                \  ' * nr_headers + "\n"
 		end
 
 		$header_shown[is_fail] = true
