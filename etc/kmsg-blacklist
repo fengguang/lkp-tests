@@ -42,3 +42,18 @@ usb: port power management may be unreliable
 ** unsafe for produciton use.                           **
 ** If you see this message and you are not debugging    **
 ** the kernel, report this immediately to your vendor!  **
+No controller found
+ failed with error 
+ address mismatch in FADT: 
+Invalid length for FADT/
+32/64X address mismatch in FADT/
+32/64X length mismatch in FADT/
+perf interrupt took too long (
+ conflicts with OpRegion 0x
+unable to register 
+Poll interval is 0 for generic hardware error source: 
+exception Emask 0x
+ - rounding interval to 
+ microframes, ep desc says 
+BMC returned incorrect response,
+Starting new kernel
