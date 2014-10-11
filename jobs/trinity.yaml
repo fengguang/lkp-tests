@@ -1,5 +1,8 @@
 testcase: trinity
 
+default_monitors:
+  vmstat:
+
 runtime: 300s
 
 rootfs: debian-x86_64.cgz

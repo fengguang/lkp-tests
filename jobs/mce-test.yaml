@@ -1,5 +1,8 @@
 testcase: mce-test
 
+default_monitors:
+  vmstat:
+
 disk:
 - 1HDD
 

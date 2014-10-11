@@ -1,5 +1,8 @@
 testcase: rcutorture
 
+default_monitors:
+  vmstat:
+
 runtime: 300s
 
 rcutorture:

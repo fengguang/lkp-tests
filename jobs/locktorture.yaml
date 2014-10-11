@@ -1,5 +1,8 @@
 testcase: locktorture
 
+default_monitors:
+  vmstat:
+
 runtime: 300s
 
 locktorture:
