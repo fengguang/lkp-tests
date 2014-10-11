@@ -1,27 +1,32 @@
 #!/usr/bin/ruby
 
-require 'set'
-
 def stderr_id(line)
-	line.gsub(/\b[^-a-zA-Z_\/+().,%=]+\b/, " ").
-		gsub(/[^a-zA-Z0-9+._\/(),%=-]+/, " ").
-		gsub(/ +([a-zA-Z])/, '-\1').
-		gsub(/([a-zA-Z0-9]) +/, '\1-').
-		gsub(/ +/, '').
-		gsub(/^[^\/a-zA-Z(]+/, '').
-		gsub(/[^a-zA-Z0-9)]+$/, '')
+	line = line.chomp
+	line.gsub! /\b3\.[0-9]+[-a-z0-9.]+/, '#'			# linux version: 3.17.0-next-20141008-g099669ed
+	line.gsub! /\b[1-9][0-9]-[A-Z][a-z]+-[0-9]{4}\b/, '#'		# Date: 28-Dec-2013
+	line.gsub! /\b0x[0-9a-f]+\b/, '#'				# hex number
+	line.gsub! /\b[0-9][0-9.]*/, '#'				# number
+	line.gsub! /[ \t]/, '_'
+	line.gsub! /__+/, '_'
+	line.gsub! /([^a-zA-Z0-9])_/, '\1'
+	line.gsub! /_([^a-zA-Z])/, '\1'
+	line.gsub! /^_/, ''
+	line.gsub! /_$/, ''
+	line
 end
 
-error_ids = Set.new
+error_ids = Hash.new
 
 while line = gets
 	id = stderr_id(line)
 	next if id.size < 3
-	error_ids << id
+	error_ids[id] = line
 end
 
-error_ids.each { |id|
+error_ids.each { |id, line|
+	puts '# ' + line
 	puts id + ': 1'
+	puts
 }
 
 if error_ids.size > 100
