@@ -114,6 +114,9 @@ output.each_line { |line|
 	when /(Writer stall state) \d+ g\d+ c\d+ f/
 		line = $1
 		bug_to_bisect = $1
+	when /(used greatest stack depth:)/
+		line = $1
+		bug_to_bisect = $1
 	when /([a-zA-Z]+[ a-zA-Z]*: [a-f0-9]{4}) \[#[0-9]+\] [A-Z_ ]*$/
 		line = $1
 		bug_to_bisect = $1
