@@ -58,7 +58,7 @@ if $PROGRAM_NAME =~ /dmesg/
 else
 	output = grep_printk_errors dmesg_file, dmesg_lines
 	if kmsg_file and File.exist?(kmsg_file) and File.exist?('/lkp/printk-error-messages')
-		output += `grep -a '^<[0123]>' #{kmsg_file} | grep -v -a -F -f /lkp/printk-error-messages`
+		output += `grep -a '^<[0123]>' #{kmsg_file} | grep -v -a -F -f /lkp/printk-error-messages | grep -v -a -F -f #{LKP_SRC}/etc/kmsg-blacklist`
 	end
 end
 exit if output.empty?
