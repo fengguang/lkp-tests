@@ -8,7 +8,7 @@
 }
 
 cd /tmp
-cmd chroot --userspec nobody:nogroup / trinity -q -s $seed -x get_robust_list -N 999999 &
+cmd chroot --userspec nobody:nogroup / trinity -q -s $seed -x get_robust_list -N 999999 2>&1 &
 
 pid=$!
 sleep $runtime
