@@ -130,6 +130,8 @@ output.each_line { |line|
 
 	error_id.gsub! /#:\[<#>\]\[<#>\]/, ''				# RIP: 0010:[<ffffffff91906d8d>]  [<ffffffff91906d8d>] validate_chain+0xed/0xe80
 
+	next if error_id.size <= 3
+
 	error_ids[error_id] ||= bug_to_bisect
 }
 
