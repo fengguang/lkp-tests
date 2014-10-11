@@ -71,6 +71,11 @@ output.each_line { |line|
 	next if line =~ /INFO: NMI handler .* took too long to run:/
 	next if line =~ /Killed process \d+ \(/					# duplicated with "Out of memory: Kill process "
 
+	# print_hex_dump
+	next if line =~ /(\s[0-9a-f]{2}){16}/
+	next if line =~ /(\s[0-9a-f]{4}){8}/
+	next if line =~ /(\s[0-9a-f]{8}){4}/
+
 	next if line =~ /[^\t\n\0[:print:]]/
 	line.tr! "\0", ''
 
