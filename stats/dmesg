@@ -112,21 +112,23 @@ output.each_line { |line|
 		bug_to_bisect = oops_to_bisect_pattern line
 	end
 
-	error_id = line.sub(/^[^a-zA-Z]+/, "").
-			gsub(/\/c\/kernel-tests\/src\/[^\/]+\//, '').
-			gsub(/\/c\/(wfg|yliu)\/[^\/]+\//, '').
-			gsub(/\/lkp\/[^\/]+\/linux[0-9]*\//, '').
-			gsub(/\/kernel-tests\/linux[0-9]*\//, '').
-			gsub(/\.(isra|constprop|part)\.[0-9]+/, '').
-			gsub(/\b[0-9a-f]{8}\b/, "").
-			gsub(/\b[0-9a-f]{16}\b/, "").
-			gsub(/[+-\/]?0x[0-9a-f]+\b/, "").
-			gsub(/[+-\/][0-9]+\b/, "").
-			gsub(/\b[0-9]+[:]?/, "").
-			gsub(/[^a-zA-Z0-9.:_\/(), =-]+/, "").
-			gsub(/([a-zA-Z0-9]) +([a-zA-Z])/, '\1_\2').
-			gsub(/ /, '').
-			sub(/[_.:]*$/, ": 1")
+	error_id = line.sub(/^[^a-zA-Z]+/, "")
+	error_id.gsub! /\ \]$/, ""					# [ INFO: possible recursive locking detected ]
+	error_id.gsub! /\/c\/kernel-tests\/src\/[^\/]+\//, ''
+	error_id.gsub! /\/c\/(wfg|yliu)\/[^\/]+\//, ''
+	error_id.gsub! /\/lkp\/[^\/]+\/linux[0-9]*\//, ''
+	error_id.gsub! /\/kernel-tests\/linux[0-9]*\//, ''
+	error_id.gsub! /\.(isra|constprop|part)\.[0-9]+/, ''
+
+	error_id.gsub! /\b[0-9a-f]{8}\b/, "#"
+	error_id.gsub! /\b[0-9a-f]{16}\b/, "#"
+	error_id.gsub! /[+\/]0x[0-9a-f]+\b/, ''
+	error_id.gsub! /[+\/][0-9a-f]+\b/, ''
+	error_id.gsub! /([a-z]:)[0-9]+/, '\1'				# WARNING: at arch/x86/kernel/cpu/perf_event.c:1077 x86_pmu_start+0xaa/0x110()
+
+	error_id = common_error_id(error_id) + ': 1'
+
+	error_id.gsub! /#:\[<#>\]\[<#>\]/, ''				# RIP: 0010:[<ffffffff91906d8d>]  [<ffffffff91906d8d>] validate_chain+0xed/0xe80
 
 	error_ids[error_id] ||= bug_to_bisect
 }
