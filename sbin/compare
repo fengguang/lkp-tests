@@ -165,7 +165,7 @@ end
 
 def get_json_field(file, key)
 	matrix = load_json file
-	matrix[key]
+	samples_fill_missing_zeros(matrix, key)
 end
 
 def add_stats(path)
