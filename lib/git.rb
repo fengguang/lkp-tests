@@ -36,8 +36,14 @@ def git_parent_commits(commit)
 	`#{GIT} log -n1 --format=%P #{commit}`.chomp.split(' ')
 end
 
-def git_committer_name(commit)
+def __git_committer_name(commit)
 	`#{GIT} log -n1 --pretty=format:'%cn' #{commit}`.chomp
+end
+
+def git_committer_name(commit)
+	$__committer_name_cache ||= {}
+	$__committer_name_cache[commit] ||= __git_committer_name(commit)
+	return $__committer_name_cache[commit]
 end
 
 def is_linus_commit(commit)
