@@ -117,13 +117,18 @@ end
 
 # => ["v3.11-rc6", "v3.11-rc5", "v3.11-rc4", "v3.11-rc3", "v3.11-rc2", "v3.11-rc1",
 #     "v3.10", "v3.10-rc7", "v3.10-rc6", ..., "v2.6.12-rc3", "v2.6.12-rc2", "v2.6.11"]
-def linus_tags()
+def __linus_tags()
 	tags = []
 	`#{GIT} tag -l 'v*.*'`.each_line { |tag|
 		tag.chomp!
 		tags << tag if tag =~ /^(v2\.\d+|v3)\.\d+(-rc\d+)?$/
 	}
 	tags.sort_by { |tag| - tag_order(tag) }
+end
+
+def linus_tags()
+	$__linus_tags_cache ||= __linus_tags
+	return $__linus_tags_cache
 end
 
 # if commit has a version tag, return it directly;
