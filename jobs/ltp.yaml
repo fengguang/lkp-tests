@@ -7,3 +7,10 @@ default_monitors:
 ltp:
   test:
   - syscalls
+  - fs
+  - dio
+  - fs_bind
+  - fs_perms_simple
+  - fs_readonly
+  #  - fs_ext4
+  - fsx
