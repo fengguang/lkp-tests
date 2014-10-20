@@ -139,7 +139,7 @@ end
 
 # if commit has a version tag, return it directly;
 # otherwise checkout commit and get latest version from Makefile.
-def last_linus_release_tag(commit)
+def __last_linus_release_tag(commit)
 	tag = linus_release_tag commit
 	return [tag, true] if tag =~ /^v.*/
 
@@ -172,6 +172,12 @@ def last_linus_release_tag(commit)
 
 	tag += "-rc#{rc}" if rc and rc > 0
 	return [tag, false]
+end
+
+def last_linus_release_tag(commit)
+	$__last_linus_tag_cache ||= {}
+	$__last_linus_tag_cache[commit] ||= __last_linus_release_tag(commit)
+	return $__last_linus_tag_cache[commit]
 end
 
 def base_rc_tag(commit)
