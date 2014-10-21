@@ -21,6 +21,8 @@ fs_options() {
 		;;
 	btrfs)
 		;;
+	f2fs)
+		;;
 	nfsv3)
 		def_mount="-o vers=3"
 		fs="nfs"
