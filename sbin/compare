@@ -441,6 +441,21 @@ def get_v_and_stddev(value, dim, is_fail)
 	return v, v_stddev
 end
 
+def show_header(is_fail)
+	puts '---------------------------' if ! $group_by_test
+	nr_headers = $dims.length - 1
+	if is_fail
+		# (ABS_WIDTH + ERR_WIDTH)   (2 + REL_WIDTH + ABS_WIDTH + ERR_WIDTH)
+		#      |<-------------->|   |<--------------------------->|
+		printf '       fail:runs' + '  %%reproduction    fail:runs' * nr_headers + "\n"
+		printf '           |    ' + '         |             |    ' * nr_headers + "\n"
+	else
+		printf '         %%stddev' + '     %%change         %%stddev' * nr_headers + "\n"
+		printf '             \  ' + '        |                \  ' * nr_headers + "\n"
+	end
+	$header_shown[is_fail] = true
+end
+
 def show_delta(stat, key_g)
 	$cases.delete_if { |_rt, value|
 		next true if value.size < 2
@@ -498,20 +513,6 @@ def show_delta(stat, key_g)
 
 	if $header_shown[is_fail]
 		puts if ! $group_by_test
-	else
-		puts '---------------------------' if ! $group_by_test
-		nr_headers = $dims.length - 1
-		if is_fail
-			# (ABS_WIDTH + ERR_WIDTH)   (2 + REL_WIDTH + ABS_WIDTH + ERR_WIDTH)
-			#      |<-------------->|   |<--------------------------->|
-			printf '       fail:runs' + '  %%reproduction    fail:runs' * nr_headers + "\n"
-			printf '           |    ' + '         |             |    ' * nr_headers + "\n"
-		else
-			printf '         %%stddev' + '     %%change         %%stddev' * nr_headers + "\n"
-			printf '             \  ' + '        |                \  ' * nr_headers + "\n"
-		end
-
-		$header_shown[is_fail] = true
 	end
 
 	$cases.each { |_rt, value|
@@ -523,6 +524,8 @@ def show_delta(stat, key_g)
 		if $group_by_test
 			next unless test == key_g
 		end
+
+		show_header(is_fail) unless $header_shown[is_fail]
 
 		v0 = value[$first_dim]
 		if Array === v0
