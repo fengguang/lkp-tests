@@ -105,8 +105,12 @@ end
 
 def program_env(program, env)
 	program_env = {}
+	args = []
 
 	env = strip_trivial_array(env)
+	if env == nil
+		return program_env, args
+	end
 
 	# expand predefined parameter set name
 	if env.class != Hash and env.class != Array
@@ -117,7 +121,6 @@ def program_env(program, env)
 		end
 	end
 
-	args = []
 	if env.class == String
 		return if env == 'disable'
 		args = env.split if env != ''

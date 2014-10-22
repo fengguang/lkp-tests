@@ -87,7 +87,7 @@ def for_each(ah)
 		ah.each { |k, v|
 			yield k, v
 		}
-	elsif ah and ah != ''
+	else
 		yield ah, nil
 	end
 end
