@@ -2,6 +2,6 @@ model: qemu-system-x86_64 -enable-kvm -cpu Nehalem
 nr_vm: 8
 nr_cpu: 2
 memory: 1G
-rootfs: clearlinux-x86_64.cgz
-hdd_partitions: /dev/vdb /dev/vdc /dev/vdd /dev/vde /dev/vdf
-swap_partitions: /dev/vda
+rootfs: debian-x86_64.cgz
+hdd_partitions: /dev/vda /dev/vdb /dev/vdc /dev/vdd /dev/vde
+swap_partitions: /dev/vdf
