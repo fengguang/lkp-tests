@@ -3,7 +3,7 @@
 # - mkfs
 # - mount
 
-[[ $fs ]] || fs=ext4
+[[ $fs ]] || exit 0
 
 def_mount=
 def_mkfs=
@@ -39,8 +39,6 @@ is_btrfs_raid_levels() {
 }
 
 destroy_devices() {
-	[[ $fs =~ "nfs" ]] && return
-
 	for dev in $partitions
 	do
 		dd if=/dev/zero of=$dev bs=4k count=100 status=noxfer \
@@ -48,9 +46,31 @@ destroy_devices() {
 	done
 }
 
-make_fs() {
-	[[ $fs =~ "nfs" ]] && return
+start_nfsd()
+{
+	local mp
+	for mp
+	do
+		echo "$mp *(rw)"
+	done > /etc/exports
 
+	cmd /etc/init.d/nfs-kernel-server start
+}
+
+mount_local_nfs()
+{
+	local dir
+	for dir
+	do
+		local mnt=/nfs/$(basename $dir)
+		local dev=localhost:$dir
+		mkdir -p $mnt
+		cmd mount -t $fs ${mount:-$def_mount} $dev $mnt || exit
+		nfs_mount_points+="$mnt "
+	done
+}
+
+make_fs() {
 	is_btrfs_raid_levels && {
 		cmd mkfs.btrfs --data ${raid_level#b} $mkfs $ensure_mkfs $partitions || exit
 		return
@@ -72,7 +92,7 @@ make_fs() {
 mount_fs() {
 	for dev in $bdevs
 	do
-		mnt=/fs/$(basename $dev)
+		local mnt=/fs/$(basename $dev)
 		mkdir -p $mnt
 		cmd mount -t $fs ${mount:-$def_mount} $dev $mnt || exit
 		mount_points+="$mnt "
@@ -86,13 +106,23 @@ else
 fi
 
 fs_options
-destroy_devices
-make_fs
-mount_fs
+
+case $fs in
+	nfs)
+		start_nfsd $mount_points
+		mount_local_nfs $mount_points
+		;;
+
+	*)
+		destroy_devices
+		make_fs
+		mount_fs
+		;;
+esac
 
 cat >> $TMP/env.yaml <<EOF
 
 # setup/fs
 fs: $fs
-mount_points: $mount_points
+mount_points: $nfs_mount_points $mount_points
 EOF
