@@ -375,6 +375,8 @@ def __get_changed_stats(a, b, options)
 				     'a'		=>	sorted_a,
 				     'b'		=>	sorted_b,
 				     'ttl'		=>	Time.now,
+				     'is_failure'	=>	is_failure_stat,
+				     'is_latency'	=>	is_latency_stat,
 				     'ratio'		=>	ratio,
 				     'delta'		=>	delta,
 				     'mean_a'		=>	mean_a,
