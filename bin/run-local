@@ -98,7 +98,7 @@ exit if ENV["LKP_DRYRUN"]
 stats = create_stats_matrix ENV['RESULT_ROOT']
 if $opt_result_root == nil
 	stats['stats_source'] = result_root + '/stats.json'
-	unite_to(stats, _result_root, true)
+	unite_to(stats, _result_root)
 	user = ENV['USER']
 	save_paths(result_root, user)
 	system(LKP_SRC + '/sbin/unite-params', result_root)

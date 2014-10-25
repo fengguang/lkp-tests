@@ -23,4 +23,4 @@ _result_root = File.dirname result_root
 stats = create_stats_matrix(result_root)
 stats['stats_source'] = result_root + '/stats.json'
 
-unite_to(stats, _result_root, true)
+unite_to(stats, _result_root)

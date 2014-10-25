@@ -105,26 +105,21 @@ def shrink_matrix(matrix)
 	end
 end
 
-def unite_to(stats, matrix_root, recreate)
+def unite_to(stats, matrix_root)
 	matrix_file = matrix_root + '/matrix.json'
 
 	matrix = load_matrix_file(matrix_root + '/matrix.json')
 	matrix = load_matrix_file(matrix_root + '/matrix.yaml') unless matrix
 	matrix = {} unless matrix
 
-	if not matrix['stats_source'] and recreate
-		matrix = matrix_from_stats_files Dir["#{matrix_root}/**/stats.json"]
+	old_stats_sources = matrix['stats_source'] || []
+	files = Dir["#{matrix_root}/**/stats.json"]
+
+	if old_stats_sources.size + 1 != files.size
+		matrix = matrix_from_stats_files files
 	else
-		old_stats_sources = matrix['stats_source'] || []
-		stats_sources = old_stats_sources + [ stats['stats_source'] ]
-		if stats_sources.uniq != stats_sources
-			# we got duplicate records, recreate them
-			stats_sources.delete_if { |f| not File.file? "#{f}" }
-			matrix = matrix_from_stats_files stats_sources.uniq
-		else
-			matrix = add_stats_to_matrix(stats, matrix)
-			shrink_matrix(matrix)
-		end
+		matrix = add_stats_to_matrix(stats, matrix)
+		shrink_matrix(matrix)
 	end
 
 	save_json(matrix, matrix_file)
