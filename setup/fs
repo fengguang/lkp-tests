@@ -51,7 +51,7 @@ start_nfsd()
 	local mp
 	for mp
 	do
-		echo "$mp *(rw)"
+		echo "$mp *(rw,no_subtree_check)"
 	done > /etc/exports
 
 	cmd /etc/init.d/nfs-kernel-server start
