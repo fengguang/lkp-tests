@@ -103,7 +103,7 @@ def add_one_env(program_env, k, v)
 	return false
 end
 
-def program_env(program, env)
+def get_program_env(program, env)
 	program_env = {}
 	args = []
 
@@ -122,7 +122,9 @@ def program_env(program, env)
 	end
 
 	if env.class == String
-		return if env == 'disable'
+		if env == 'disable'
+			return program_env, args
+		end
 		args = env.split if env != ''
 	elsif env.class == Fixnum or env.class == Float
 		args = env.to_s
@@ -154,7 +156,8 @@ def create_cmd(program, args)
 end
 
 def shell_run_program(program, env, tabs='')
-	program_env, args = program_env(program, env)
+	program_env, args = get_program_env(program, env)
+	return if program_env.empty? and args.empty? and File.exist?(LKP_SRC + '/setup/' + program)
 
 	shell_run_pre_test(program)
 
@@ -280,7 +283,8 @@ def run_pre_test(program)
 end
 
 def run_program(program, env)
-	program_env, args = program_env(program, env)
+	program_env, args = get_program_env(program, env)
+	return if program_env.empty? and args.empty? and File.exist?(LKP_SRC + '/setup/' + program)
 
 	if $PROGRAM_NAME =~ /job-env/
 		program_env.each { |key, val| puts "#{program}.#{key}: #{val}" }
