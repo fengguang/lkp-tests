@@ -54,6 +54,8 @@ start_nfsd()
 		echo "$mp *(rw,no_subtree_check)"
 	done > /etc/exports
 
+	cmd /etc/init.d/rpcbind start
+	cmd /etc/init.d/nfs-common start
 	cmd /etc/init.d/nfs-kernel-server start
 }
 
