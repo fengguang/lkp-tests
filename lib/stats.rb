@@ -204,6 +204,7 @@ def load_base_matrix(matrix_path)
 		end
 		unless version
 			STDERR.puts "Cannot get base RC commit for #{commit}"
+			STDERR.puts caller
 			return nil
 		end
 	end
