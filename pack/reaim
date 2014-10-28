@@ -1,0 +1,21 @@
+#!/bin/bash
+
+VERSION="7.0.1.13"
+WEB_URL="http://heanet.dl.sourceforge.net/project/re-aim-7/re-aim/${VERSION}/osdl-aim-${VERSION}.tar.gz"
+source_dir="osdl-aim-7"
+
+build()
+{
+	cd "$source_dir"
+	patch_source
+	./bootstrap
+	LDFLAGS=-laio \
+	./configure --prefix=$BM_ROOT
+	make
+}
+
+install()
+{
+	cp -af src/reaim $BM_ROOT
+	cp -af data $BM_ROOT
+}

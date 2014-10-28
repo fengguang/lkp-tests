@@ -1,0 +1,14 @@
+# patch from Mel Gorman's MMTests
+diff --git a/src/drv_funcs.c.orig b/src/drv_funcs.c
+index f11a988..7fe7348 100644
+--- a/src/drv_funcs.c.orig
++++ b/src/drv_funcs.c
+@@ -171,7 +171,7 @@ int write_debug_file(char *debug_msg)
+ 
+ char *ext_strcat(char *s1, char *s2)
+ {
+-	char *stmp = (char*)malloc(strlen(s1)+strlen(s2));
++	char *stmp = (char*)malloc(strlen(s1)+strlen(s2)+1);
+ 	stmp[0] = '\0';
+ 	strcat(stmp,s1);
+ 	strcat(stmp,s2);
