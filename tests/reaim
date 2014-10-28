@@ -1,0 +1,30 @@
+#!/bin/bash
+# - test
+
+cd $BENCHMARK_ROOT/reaim || exit
+
+REAIM_STARTUSERS=1
+REAIM_ENDUSERS=$((nr_cpu*4))
+REAIM_INCREMENT=$((nr_cpu/4))
+[[ $REAIM_INCREMENT == 0 ]] && REAIM_INCREMENT=1
+
+REAIM_FILESIZE=10k
+REAIM_POOLSIZE=1m
+# setup config file
+if [[ "$mount_points" ]]; then
+	REAIM_TESTDIR=$mount_points
+else
+	mkdir -p /fs/shm
+	umount /fs/shm &> /dev/null
+	mount -t tmpfs /dev/shm /fs/shm
+	REAIM_TESTDIR="/fs/shm"
+fi
+
+echo FILESIZE $REAIM_FILESIZE > reaim.config
+echo POOLSIZE $REAIM_POOLSIZE >> reaim.config
+echo DISKDIR $REAIM_TESTDIR  >> reaim.config
+
+cmd ./reaim  -s1 -e$REAIM_ENDUSERS -i$REAIM_INCREMENT -f data/workfile.$test \
+	-r1 -c./reaim.config -l$RESULT_ROOT/reaim_debug \
+	2> >(grep -v -e "^DEBUG:" >&2) |
+	grep -v -e "^NSIG"
