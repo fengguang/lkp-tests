@@ -1,0 +1,24 @@
+#!/usr/bin/ruby
+
+require ENV['LKP_SRC'] + "/lib/statistics.rb"
+
+keys = %w(parent_time child_systime child_utime jobs_per_min
+	  jobs_per_min_child std_dev_time std_dev_percent jti)
+
+while line = STDIN.gets
+	case line
+	when /^[ \d.]+$/
+		data = line.split
+		data[1..-1].each_with_index { |v, i|
+			$results ||= {}
+			$results[keys[i]] ||= []
+			$results[keys[i]] << v.to_f
+		}
+	end
+end
+
+$results.each { |k, v|
+	puts "#{k}: #{v.average}"
+}
+
+puts "max_jobs_per_min: #{$results['jobs_per_min'].max}"
