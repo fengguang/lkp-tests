@@ -66,6 +66,15 @@ opts = OptionParser.new do |opts|
                 $opt_all = true
         end
 
+        opts.on('-s', '--save-changes', 'save all performance and bisectable changes to a file') do
+		$opt_save_changes = true
+		$all_changed_stats = []
+
+		# save performance and bisectable changes only to limit the change set size
+		$options['perf'] = true
+		$options['distance'] = 5
+        end
+
         opts.on('-t', '--group-by-test', 'test-grouped output format') do
                 $group_by_test = true
         end
@@ -309,6 +318,22 @@ def setup_changed_stats()
 		changed_stats = get_changed_stats matrix_file2, matrix_file1, $options
 		next unless changed_stats and changed_stats.size > 0
 		changed_stats.each { |stat, record|
+			if $opt_save_changes
+				result_root = "#{File.dirname matrix_file2}/0"
+				result_path = Result_path.new
+				result_path.parse_result_root result_root
+
+				record['result_root']  = result_root
+				record['_result_root'] = File.dirname result_root
+				record['tbox_group']   = result_path['testbox']
+				record['testbox']      = result_path['testbox']
+				record['commit']       = result_path['commit']
+				# silent get_avg_run_time warnning
+				record['run_time']     = 0
+
+				$all_changed_stats.push record
+				next
+			end
 			$changed_stats[stat][k] = v
 			$stat_records[stat] << record
 		}
@@ -343,6 +368,37 @@ def setup_dims()
 		$opt_dims.unshift PERF_INDEX_KCONFIG if ARGV.size == 1 and $opt_index
 		$longest_dims = $opt_dims.sort { |a, b| b.length <=> a.length }
 	end
+
+	if $opt_save_changes
+		if $opt_dimension != "commit"
+			puts "error: -s/--save-changes works only with commit comapre"
+			exit 1
+		end
+
+		if $opt_dims.size != 2
+			puts "error: -s/--save-changes works only with 2 commits"
+			exit 1
+		end
+
+		commit_is_ancestor = false
+		[
+			[$opt_dims[0], $opt_dims[1]],
+			[$opt_dims[1], $opt_dims[0]],
+		].each { |dim|
+			system "#{GIT} merge-base --is-ancestor #{dim[0]} #{dim[1]}"
+			if $?.exitstatus == 0
+				$opt_dims = dim
+				commit_is_ancestor = true
+				break
+			end
+		}
+
+		if not commit_is_ancestor
+			puts "error: #{$opt_dims[0]} and #{$opt_dims[1]} not in acestor relation; comparation between them makes no sense"
+			exit 1
+		end
+	end
+
 
 	$opt_dims.each { |dim|
 		if $dims[dim]
@@ -602,6 +658,14 @@ if $opt_all or $opt_index
 	setup_dims
 	setup_result_root_hash
 	setup_changed_stats
+
+	if $opt_save_changes
+		cs_file = "/tmp/cs-#{dim_name $opt_dims[0]}.vs.#{dim_name $opt_dims[1]}-#{ENV['USER']}.yaml"
+
+		puts "saving all cs to #{cs_file}..."
+		save_yaml $all_changed_stats, cs_file
+		exit
+	end
 
 	if $opt_index
 		show_one_index 'perf'
