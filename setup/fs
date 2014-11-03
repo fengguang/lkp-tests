@@ -49,10 +49,25 @@ destroy_devices() {
 start_nfsd()
 {
 	local mp
+
+	# exportfs: /fs does not support NFS export
+	#
+	# the solution is to either run this earlier
+	#   mountpoint -q /fs || mount -t tmpfs fs /fs
+	# or mount --bind to a tmpfs nfsv4 export root.
+	#
+	mountpoint -q /export || {
+		mkdir /export
+		mount -t tmpfs 'nfsv4_root_export' /export
+	}
+	echo "/export *(fsid=0,rw,no_subtree_check,no_root_squash)" > /etc/exports
+
 	for mp
 	do
-		echo "$mp *(rw,no_subtree_check)"
-	done > /etc/exports
+		mkdir -p /export/$mp
+		mount --bind $mp /export/$mp
+		echo "/export/$mp *(rw,no_subtree_check,no_root_squash)"
+	done >> /etc/exports
 
 	cmd /etc/init.d/rpcbind start
 	cmd /etc/init.d/nfs-common start
@@ -67,7 +82,10 @@ mount_local_nfs()
 		local mnt=/nfs/$(basename $dir)
 		local dev=localhost:$dir
 		mkdir -p $mnt
-		cmd mount -t $fs ${mount:-$def_mount} $dev $mnt || exit
+		cmd mount -t $fs ${mount:-$def_mount} $dev $mnt || {
+			sleep 1h
+			exit
+		}
 		nfs_mount_points+="$mnt "
 	done
 }
