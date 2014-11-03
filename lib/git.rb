@@ -69,7 +69,11 @@ end
 def git_commit(commit)
 	return commit if is_sha1_40(commit)
 
-	`#{GIT} rev-list -n1 #{commit}`.chomp
+	$__git_commit_cache ||= {}
+	return $__git_commit_cache[commit] if $__git_commit_cache.include?(commit)
+	sha1_commit = `#{GIT} rev-list -n1 #{commit}`.chomp
+	$__git_commit_cache[commit] = sha1_commit unless sha1_commit.empty?
+	return sha1_commit
 end
 
 def git_commit_author(commit)
