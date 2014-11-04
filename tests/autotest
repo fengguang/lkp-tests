@@ -5,8 +5,8 @@ cd $BENCHMARK_ROOT/autotest || exit
 
 (
 	cd /usr/bin
-	[[ -f automake ]] || ln -s automake-* /usr/bin/automake
-	[[ -f aclocal  ]] || ln -s aclocal-* /usr/bin/aclocal
+	[[ -x automake ]] || ln -s automake-* automake
+	[[ -x aclocal  ]] || ln -s aclocal-* aclocal
 )
 
 cmd client/autotest-local run $test 2>&1
