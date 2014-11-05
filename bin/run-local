@@ -12,7 +12,7 @@ require "#{LKP_SRC}/lib/stats.rb"
 require "#{LKP_SRC}/lib/matrix.rb"
 require "#{LKP_SRC}/lib/job.rb"
 
-TMP = LKP_SRC + '/tmp'
+TMP = '/tmp/lkp'
 ENV['TMP'] = TMP
 
 ENV['PATH'] = ENV['PATH'] + ":#{LKP_SRC}/bin"
