@@ -10,7 +10,7 @@ NUMBER_OF_CPUS=$(ls -d $CPUPATH/cpu[0-9]* | wc -l)
 
 while :
 do
-	for interval in 0 0.1 1 10 100
+	for interval in 0 0.1 1
 	do
 		for ((i=1; i < NUMBER_OF_CPUS; i++))
 		do
