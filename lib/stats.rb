@@ -316,7 +316,9 @@ def __get_changed_stats(a, b, options)
 		end
 
 		unless is_failure_stat
-			next if cols_a < 3 or cols_b < 3
+			# for none-failure stats field, we need asure that
+			# at least one matrix has 3 samples.
+			next if cols_a < 3 and cols_b < 3
 		end
 
 		next unless b[k] or
