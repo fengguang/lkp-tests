@@ -2,8 +2,9 @@
 
 require 'set'
 
-GIT_TREE ||= ENV['GIT_WORK_TREE'] || ENV['LINUX_GIT'] || '/c/lkp/linux'
-GIT	 ||= "git --work-tree=#{GIT_TREE} --git-dir=#{GIT_TREE}/.git"
+GIT_WORK_TREE	||= ENV['GIT_WORK_TREE'] || ENV['LINUX_GIT'] || '/c/lkp/linux'
+GIT_DIR		||= ENV['GIT_DIR'] || GIT_WORK_TREE + '/.git'
+GIT		||= "git --work-tree=#{GIT_WORK_TREE} --git-dir=#{GIT_DIR}"
 
 def __commit_tag(commit)
 	`#{GIT} describe --tags --exact-match #{commit} 2>/dev/null | sed 's#linux-devel/##'`.chomp
@@ -169,7 +170,7 @@ def __last_linus_release_tag(commit)
 	elsif version == 2
 		tag = "v2.#{patch_level}.#{sub_level}"
 	else
-		STDERR.puts "Not a kernel tree? check #{GIT_TREE}"
+		STDERR.puts "Not a kernel tree? check #{GIT_WORK_TREE}"
 		STDERR.puts caller.join "\n"
 		return nil
 	end
