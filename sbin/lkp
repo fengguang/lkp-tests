@@ -55,7 +55,7 @@ if File.executable? "#{LKP_SRC}/lkp-exec/#{ARGV[0]}"
 else
 	bins = Dir[LKP_SRC + "/{bin,sbin}/" + ARGV[0]]
 	if bins.size == 0
-		STDERR.puts "#{ARGV[0]}: no such commond for lkp"
+		STDERR.puts "#{ARGV[0]}: no such command for lkp"
 		exit 1
 	elsif bins.size > 1
 		STDERR.puts "ambiguous bin: " + ARGV[0]
