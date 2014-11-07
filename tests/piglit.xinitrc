@@ -15,10 +15,10 @@ mkdir $RESULT_ROOT/results
 i=0
 for testcase in "${testcases[@]}"
 do
-	start_time=$(date +%s)
+	start_time=$(date +%s.%N)
 	cmd piglit run $tset -t "$testcase" $TMP/piglit-results-$i
-	end_time=$(date +%s)
-	echo "${testcase// /_}".seconds: $(( end_time - start_time ))
+	end_time=$(date +%s.%N)
+	echo "${testcase// /_}".seconds: $(echo $end_time - $start_time | bc)
 	cmd piglit summary console $TMP/piglit-results-$i
 	cp $TMP/piglit-results-$i/results.json $RESULT_ROOT/results/${i}.json
 	(( i++ ))
