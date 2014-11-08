@@ -7,7 +7,9 @@ will-it-scale:
   test:
   - brk1
   - context_switch1
+  - dup1
   - eventfd1
+  - fallocate1
   - futex1
   - futex2
   - futex3
@@ -32,19 +34,25 @@ will-it-scale:
   - posix_semaphore1
   - pread1
   - pread2
+  - pread3
   - pthread_mutex1
   - pthread_mutex2
   - pwrite1
   - pwrite2
+  - pwrite3
   - read1
   - read2
   #  - read3
   #  - read4
-  - readseek
+  - readseek1
+  - readseek2
+  - readseek3
   - sched_yield
   - signal1
   - unix1
   - unlink1
   - unlink2
   - write1
-  - writeseek
+  - writeseek1
+  - writeseek2
+  - writeseek3
