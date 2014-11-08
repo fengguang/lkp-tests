@@ -47,7 +47,7 @@ chown lkp.lkp $TMP/pid-dd
 mv $TMP/pid-dd  $RESULT_ROOT/pid
 ls -li $files > $RESULT_ROOT/ls-files
 truncate --size=0 $files
-rm $files
+rm -f $files
 
 t=$(date +%s)
 echo "rm_time: $((t - tt))"
