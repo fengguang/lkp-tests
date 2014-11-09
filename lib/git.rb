@@ -190,3 +190,9 @@ def base_rc_tag(commit)
 	version, is_exact_match = last_linus_release_tag commit
 	return version
 end
+
+def version_tag(commit)
+	tag, is_exact_match = last_linus_release_tag(commit)
+	tag += '+' unless is_exact_match
+	return tag
+end
