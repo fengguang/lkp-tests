@@ -2,17 +2,17 @@
 # - runtime
 # - protocol
 
-cd $BENCHMARK_ROOT/iperf || exit
+export PATH=$BENCHMARK_ROOT/iperf/bin:$PATH
 
 [[ $runtime ]] || runtime=300
 [[ $protocol = udp ]] && opt_udp=-u
 
-cmd ./iperf3 -s &>/dev/null &
+cmd iperf3 -s &>/dev/null &
 pid=$!
 
 sleep 1
 
-client_cmd=(./iperf3 -t $runtime -f M -J -c 127.0.0.1 $opt_udp)
+client_cmd=(iperf3 -t $runtime -f M -J -c 127.0.0.1 $opt_udp)
 
 echo "$(date +'%F %T') ${client_cmd[@]}" >> $RESULT_ROOT/reproduce.sh
 "${client_cmd[@]}"

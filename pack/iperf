@@ -3,7 +3,4 @@
 VERSION="3.0.3"
 WEB_URL="http://stats.es.net/software/${BM_NAME}-${VERSION}.tar.gz"
 
-install()
-{
-	cp -af src/${BM_NAME}3 ${BM_ROOT}
-}
+CONFIGURE_FLAGS="--prefix=$BM_ROOT"
