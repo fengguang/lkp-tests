@@ -3,4 +3,9 @@
 VERSION="3.0.3"
 WEB_URL="http://stats.es.net/software/${BM_NAME}-${VERSION}.tar.gz"
 
-CONFIGURE_FLAGS="--prefix=$BM_ROOT"
+build()
+{
+	cd "$source_dir"
+	LDFLAGS=-Wl,-rpath=$BM_ROOT/lib,--enable-new-dtags ./configure --prefix=$BM_ROOT
+	make
+}
