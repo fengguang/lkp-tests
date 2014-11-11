@@ -7,10 +7,7 @@ def fixup_dmesg(line)
 	line.chomp!
 
 	# remove absolute path names
-	line.sub!(%r{/lkp/[^/]+/linux[0-9]*/}, '')
-	line.sub!(%r{/c/kernel-tests/src/[^/]+/}, '')
 	line.sub!(%r{/kbuild/src/[^/]+/}, '')
-	line.sub!(%r{/c/(wfg|yliu)/[^/]+/}, '')
 
 	line.sub!(/\.(isra|constprop|part)\.[0-9]+\+0x/, '+0x')
 
