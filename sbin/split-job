@@ -44,6 +44,10 @@ opts = OptionParser.new do |opts|
 		$opt_any = true
 	end
 
+	opts.on("--no-defaults", "do not load the defaults headers") do
+		$opt_no_defaults = true
+	end
+
 	opts.on_tail("-h", "--help", "show this message") do
 		puts opts
 		exit
@@ -62,8 +66,10 @@ $atom_jobs = []
 
 ARGV.each { |jobfile|
 	jobs = Job.new
-	jobs.load_head("#{LKP_SRC}/jobs/DEFAULTS")
-	jobs.load_head("#{LKP_SRC}/hosts/#{$opt_testbox}")
+	unless $opt_no_defaults
+		jobs.load_head("#{LKP_SRC}/jobs/DEFAULTS")
+		jobs.load_head("#{LKP_SRC}/hosts/#{$opt_testbox}")
+	end
 	jobs.load(jobfile) or next
 	$opt_set_key_value.each { |k, v| jobs[k] = v }
 	jobs['kconfig'] = $opt_kconfig if $opt_kconfig
