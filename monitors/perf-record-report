@@ -20,6 +20,6 @@ while true; do
 	perf record -g -a -q -o perf.record -- timeout $duration $WAIT_POST_TEST_CMD
 
 	date "+%F %T"
-	perf report -i perf.record --stdio 2>/dev/null | head -n 300
+	perf report -i perf.record --stdio 2>/dev/null | head -n 1000
 	sleep $gap
 done
