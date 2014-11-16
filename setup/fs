@@ -22,6 +22,7 @@ fs_options() {
 	btrfs)
 		;;
 	f2fs)
+		modprobe f2fs 2>/dev/null
 		;;
 	nfsv3)
 		def_mount="-o vers=3"
