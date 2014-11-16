@@ -232,7 +232,7 @@ def load_base_matrix(matrix_path)
 	}
 
 	if matrix.size > 0
-		if cols >= 3
+		if cols >= 3 or cols >= 1 and matrix_path =~ /piglit|xfstests|ltp/
 			puts "compare with release matrix: #{matrix_path} #{tags_merged}" if ENV["LKP_VERBOSE"]
 			return matrix
 		else
