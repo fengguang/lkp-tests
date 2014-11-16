@@ -4,8 +4,9 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($0)))
 require "#{LKP_SRC}/lib/dmesg.rb"
 
 if ENV['RESULT_ROOT']
-	serial_file = "#{ENV['RESULT_ROOT']}/.dmesg"
-	kmsg_file = "#{ENV['RESULT_ROOT']}/dmesg"
+	RESULT_ROOT = ENV['RESULT_ROOT']
+	serial_file = "#{RESULT_ROOT}/.dmesg"
+	kmsg_file = "#{RESULT_ROOT}/dmesg"
 	if File.exist? serial_file
 		dmesg_file = serial_file
 
@@ -34,6 +35,22 @@ if not File.exist?(dmesg_file) or File.size(dmesg_file) == 0
 end
 
 dmesg_lines = fixup_dmesg_file(dmesg_file)
+
+# check possibly misplaced serial log
+def verify_serial_log(dmesg_lines)
+	return unless $PROGRAM_NAME =~ /dmesg/
+	return unless ENV['RESULT_ROOT']
+	dmesg_lines.grep(/RESULT_ROOT=/) { |line|
+		next if line =~ /^kexec -l | --initrd=| --append=|"$/
+		next unless line =~ / RESULT_ROOT=([A-Za-z0-9.,;_\/+%:@=-]+) /
+		rt = $1
+		next unless Dir.exist? rt # serial console is often not reliable
+		if rt != RESULT_ROOT
+			STDERR.puts "RESULT_ROOT mismatch in dmesg: #{RESULT_ROOT} #{rt}"
+		end
+	}
+end
+verify_serial_log(dmesg_lines)
 
 =begin
 # <4>[  256.557393] [ INFO: possible circular locking dependency detected ]
