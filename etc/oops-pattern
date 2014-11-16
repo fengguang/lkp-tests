@@ -7,7 +7,11 @@ BUG .* (.*): .*
 Oops: .*
 WARNING: at .*
 WARNING: CPU: [0-9]\+ PID: [0-9]\+ at .*
-^INFO: .*
+^INFO: .*detected stall.*
+^INFO: .* cpu=.*
+^INFO: Slab 0x.*
+^INFO: Object 0x.*
+^INFO: 0x.*. First byte 0x.*
 \[ *[0-9.]\+\] INFO: .*
 \[ INFO: [^i].* \]
 RCU used illegally from offline CPU!
@@ -45,3 +49,11 @@ assertion failed
 Assertion failed
 assertion failure
 Assertion failure
+32-bit relocation outside of kernel!
+64-bit relocation outside of kernel!
+Kernel is not a valid ELF file
+Failed to allocate space for phdrs
+Destination address inappropriately aligned
+Destination address too large
+Wrong destination address
+ -- System halted
