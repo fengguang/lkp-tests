@@ -23,3 +23,5 @@ do
 	cp $TMP/piglit-results-$i/results.json $RESULT_ROOT/results/${i}.json
 	(( i++ ))
 done
+
+echo all tests finished
