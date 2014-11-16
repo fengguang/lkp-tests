@@ -11,4 +11,4 @@ packetdrill.*.FAIL
 autotest.*
 pm-qa.*
 kvm-unit-tests.*
-piglit.*.fail
+piglit.*.(fail|crash|timeout|warn|dmesg-warn|dmesg-fail)
