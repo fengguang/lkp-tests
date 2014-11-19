@@ -3,7 +3,6 @@ aim7.*.jobs-per-min-per-task
 aim7.*.real
 aim7.*.cpu
 iostat.*.svctm
-kmsg.*
 dmesg.boot_successes
 dmesg.boot_failures
 dmesg.INFO:rcu_sched_detected_stalls_on_CPUs/tasks:
@@ -28,8 +27,3 @@ zoneinfo.*
 buddyinfo.*
 pagetypeinfo.*
 interrupts.*
-xfstests.nr_fail
-last_state.has_stderr
-last_state.*.exit_code
-last_state.*.kill_code
-last_state.*.cannot_execute
