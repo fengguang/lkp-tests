@@ -1,0 +1,20 @@
+diff --git a/client/tests/linux-tools/crontab/control b/client/tests/linux-tools/crontab/control
+index 6885725..b97956c 100644
+--- a/client/tests/linux-tools/crontab/control
++++ b/client/tests/linux-tools/crontab/control
+@@ -19,4 +19,4 @@ LOGFILE = '/tmp/autotest_cron-%s' % time.strftime('%Y-%m-%d-%H.%M.%S')
+ 
+ tests = ['normal_cron', 'deny_cron', 'allow_cron']
+ for i in range(0,3):
+-    job.run_test('crontab', test = tests[i], wait_time = 65, tag = tests[i], log = LOGFILE)
++    job.run_test('linux-tools/crontab', test = tests[i], wait_time = 300, tag = tests[i], log = LOGFILE)
+diff --git a/client/tests/linux-tools/pax/control b/client/tests/linux-tools/pax/control
+index 7d86f17..78ce2bc 100644
+--- a/client/tests/linux-tools/pax/control
++++ b/client/tests/linux-tools/pax/control
+@@ -19,4 +19,4 @@ ARCHIVE = '/tmp/archive-%s' % time.strftime('%Y-%m-%d-%H.%M.%S')
+ 
+ tests = ['create', 'list', 'extract', 'copy']
+ for i in tests:
+-    job.run_test('pax', test = i, tag = i, archive = ARCHIVE)
++    job.run_test('linux-tools/pax', test = i, tag = i, archive = ARCHIVE)
