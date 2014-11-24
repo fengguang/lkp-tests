@@ -87,6 +87,7 @@ def common_error_id(line)
 	line.gsub! /\b3\.[0-9]+[-a-z0-9.]+/, '#'			# linux version: 3.17.0-next-20141008-g099669ed
 	line.gsub! /\b[1-9][0-9]-[A-Z][a-z]+-[0-9]{4}\b/, '#'		# Date: 28-Dec-2013
 	line.gsub! /\b0x[0-9a-f]+\b/, '#'				# hex number
+	line.gsub! /\b[a-f0-9]{40}\b/, '#'				# SHA-1
 	line.gsub! /\b[0-9][0-9.]*/, '#'				# number
 	line.gsub! /#x\b/, '0x'
 	line.gsub! /[ \t]/, ' '
