@@ -13,6 +13,10 @@ function set_env()
 	export TEST_DIR=${mount_points%% *}
 	export TEST_DEV=${partitions%% *}
 
+	# f2fs needs this to prevent mount failure
+	note export FSTYP=$fs
+	export FSTYP=$fs
+
 	note export SCRATCH_MNT=/fs/scratch
 	export SCRATCH_MNT=/fs/scratch
 	cmd mkdir $SCRATCH_MNT -p
