@@ -2,7 +2,14 @@
 
 require 'json'
 
-obj = JSON.load STDIN
+begin
+	obj = JSON.load STDIN
+rescue JSON::ParserError => e
+	STDERR.puts "error: malformed iperf result"
+	STDERR.puts e.message[0..300]
+	STDERR.puts e.backtrace.join("\n")
+	exit 1
+end
 
 puts 'tcp.sender.bps: '		+ obj['end']['streams'][0]['sender']['bits_per_second'].to_s	if obj['end']['streams'][0]['sender']
 puts 'tcp.receiver.bps: '	+ obj['end']['streams'][0]['receiver']['bits_per_second'].to_s	if obj['end']['streams'][0]['receiver']
