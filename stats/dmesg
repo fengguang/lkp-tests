@@ -145,6 +145,10 @@ output.each_line { |line|
 	when /(used greatest stack depth:)/
 		line = $1
 		bug_to_bisect = $1
+	# printk(KERN_ERR "BUG: Dentry %p{i=%lx,n=%pd} still in use (%d) [unmount of %s %s]\n"
+	when  /(BUG: Dentry ).* (still in use) .* \[unmount of /
+		line = $1 + $2
+		bug_to_bisect = $1 + '.* ' + $2
 	when /([a-zA-Z]+[ a-zA-Z]*: [a-f0-9]{4}) \[#[0-9]+\] [A-Z_ ]*$/
 		line = $1
 		bug_to_bisect = $1
@@ -155,9 +159,6 @@ output.each_line { |line|
 	end
 
 	error_id = line.sub(/^[^a-zA-Z]+/, "")
-
-	# printk(KERN_ERR "BUG: Dentry %p{i=%lx,n=%pd} still in use (%d) [unmount of %s %s]\n"
-	error_id.gsub! /(BUG: Dentry).*(still in use).*(\[unmount of.*)/, '\1 \2 \3'
 
 	error_id.gsub! /\ \]$/, ""					# [ INFO: possible recursive locking detected ]
 	error_id.gsub! /\/c\/kernel-tests\/src\/[^\/]+\//, ''
