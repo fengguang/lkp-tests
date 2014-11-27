@@ -155,6 +155,10 @@ output.each_line { |line|
 	end
 
 	error_id = line.sub(/^[^a-zA-Z]+/, "")
+
+	# printk(KERN_ERR "BUG: Dentry %p{i=%lx,n=%pd} still in use (%d) [unmount of %s %s]\n"
+	error_id.gsub! /(BUG: Dentry).*(still in use).*(\[unmount of.*)/, '\1 \2 \3'
+
 	error_id.gsub! /\ \]$/, ""					# [ INFO: possible recursive locking detected ]
 	error_id.gsub! /\/c\/kernel-tests\/src\/[^\/]+\//, ''
 	error_id.gsub! /\/c\/(wfg|yliu)\/[^\/]+\//, ''
