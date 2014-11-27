@@ -55,5 +55,5 @@ export LANG=C
 set_env
 run_test
 
-sudo -u lkp cp -d -R --preserve=timestamps $BENCHMARK_ROOT/xfstests/results $RESULT_ROOT/
+sudo -u lkp cp -d -R --preserve=timestamps $BENCHMARK_ROOT/xfstests/results $RESULT_ROOT/ &&
 ls -l $RESULT_ROOT/results
