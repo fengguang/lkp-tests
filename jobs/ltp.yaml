@@ -8,9 +8,19 @@ ltp:
   test:
   - syscalls
   - fs
-  - dio
   - fs_bind
   - fs_perms_simple
   - fs_readonly
   #  - fs_ext4
   - fsx
+
+---
+disk: 1HDD
+fs:
+- ext4
+- xfs
+- btrfs
+
+ltp:
+  test:
+  - dio

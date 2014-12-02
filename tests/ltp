@@ -3,6 +3,11 @@
 
 cd $BENCHMARK_ROOT/ltp || exit
 
+if [[ $test = "dio" ]]; then
+	[[ ! "$mount_points" ]] && exit
+	export TMPDIR=$(echo $mount_points | cut -d' ' -f1)
+fi
+
 cmd ./runltp -f $test
 
 mkdir $RESULT_ROOT/ltp-results
