@@ -1,0 +1,8 @@
+#!/bin/bash
+
+cd /tmp
+cp -a /usr/share/doc/hpcc/examples/_hpccinf.txt hpccinf.txt
+
+cmd mpirun.openmpi -np $nr_cpu hpcc
+
+cat /tmp/hpccoutf.txt
