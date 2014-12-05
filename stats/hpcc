@@ -1,0 +1,9 @@
+#!/usr/bin/awk -f
+
+BEGIN { FS="=" }
+
+/Begin of Summary section/, /End of Summary section/ {
+	if (/=/) {
+		print $1": "$2
+	}
+}
