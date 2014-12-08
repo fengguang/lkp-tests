@@ -1,7 +1,7 @@
 testcase: perf-bench-sched-pipe
 
 perf-bench-sched-pipe:
-  loops: 1000000ops
+  loops: 10000000ops
   mode:
     - process
     - threads
