@@ -5,7 +5,7 @@
 
 require 'base64'
 
-$runtime = ENV['runtime'] || (ARGV[0] || 300).to_i
+$runtime = (ENV['runtime'] || 300).to_i
 $nr_threads = ENV['nr_threads'] || ENV['nr_cpu']
 $blocksize = (ENV['blocksize'] || 128).to_i
 $pigz_options = "-p #{$nr_threads}" if $nr_threads
