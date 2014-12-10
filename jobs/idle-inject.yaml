@@ -1,0 +1,9 @@
+testcase: idle-inject
+
+runtime: 60s
+nr_threads: 200%
+
+intel_powerclamp:
+  cur_state: 10cp
+
+pigz:

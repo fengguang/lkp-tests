@@ -1,0 +1,25 @@
+#!/bin/bash
+# - cur_state
+# - max_state
+
+if [[ $0 =~ 'intel_powerclamp' ]]; then
+	type='intel_powerclamp'
+else
+	type='Processor'
+fi
+
+for i in /sys/class/thermal/cooling_device*
+do
+	[[ -f $i/type ]] || continue
+	[[ $(<$i/type) = $type ]] || continue
+
+	[[ $cur_state ]] && {
+		note   "echo ${cur_state%cp} > $i/cur_state"
+			echo ${cur_state%cp} > $i/cur_state
+	}
+
+	[[ $max_state ]] && {
+		note   "echo ${max_state%mp} > $i/max_state"
+			echo ${max_state%mp} > $i/max_state
+	}
+done
