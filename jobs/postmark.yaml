@@ -1,0 +1,16 @@
+testcase: postmark
+
+disk: 1HDD
+fs:
+- ext4
+- xfs
+- btrfs
+fs2:
+- nfsv4
+
+postmark:
+  number:
+  - 20000n
+  - 50000n
+  trans: 100000s
+  subdirs: 100d

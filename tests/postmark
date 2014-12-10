@@ -1,0 +1,21 @@
+#!/bin/bash
+# - number
+# - trans
+# - subdirs
+
+[[ ! "$mount_points" ]] && exit
+location=$(echo $mount_points | cut -d' ' -f1)
+number=${number%n}
+trans=${trans%s}
+subdirs=${subdirs%d}
+
+cmd postmark <<EOF
+set size 10000 20000
+set number $number
+set transactions $trans
+set subdirectories $subdirs
+set location $location
+set report terse
+show
+run
+EOF
