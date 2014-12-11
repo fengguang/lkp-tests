@@ -1,0 +1,10 @@
+#!/usr/bin/ruby
+
+while line = STDIN.gets
+	case line.chomp!
+	when /^SUSPEND RESUME TEST SUCCESS$/
+		exit
+	end
+end
+
+puts "fail: 1"
