@@ -13,7 +13,7 @@ check_incomplete_run()
 	[[ -s $file ]] && return
 	[[ -f $LKP_SRC/tests/$program ]] || return
 
-	echo "is_incomplete_run: 1" >> $RESULT_ROOT/last_state
+	echo -e "# missing $program $file\nis_incomplete_run: 1" >> $RESULT_ROOT/last_state
 }
 
 [ -f $log.gz ] && zcat $log.gz > $log
