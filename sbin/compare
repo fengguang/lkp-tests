@@ -662,8 +662,8 @@ if $opt_all or $opt_index
 	if $opt_save_changes
 		cs_file = "/tmp/cs-#{dim_name $opt_dims[0]}.vs.#{dim_name $opt_dims[1]}-#{ENV['USER']}.yaml"
 
-		puts "saving all cs to #{cs_file}..."
 		save_yaml $all_changed_stats, cs_file
+		puts "saved all changed stats to #{cs_file}"
 		exit
 	end
 
