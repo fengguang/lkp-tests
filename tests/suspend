@@ -3,8 +3,8 @@
 # - iterations
 
 shopt -s nullglob
-alarm_path=(/sys/devices/pnp*/*:*/rtc/rtc*/wakealarm)
-[[ $alarm_path ]] || exit
+alarm_path="/sys/class/rtc/rtc0/wakealarm"
+[[ -f $alarm_path ]] || exit
 
 [[ $runtime ]] || runtime=300
 [[ $iterations ]] || iterations=30
