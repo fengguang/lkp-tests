@@ -233,7 +233,7 @@ def load_base_matrix(matrix_path, head_matrix)
 
 	if matrix.size > 0
 		if cols >= 3 or
-		  (cols >= 1 and matrix_path =~ %r{/boot|piglit|xfstests|ltp|idle-inject|kernel_selftests|autotest|pm-qa|kvm-unit-tests|packetdrill/}) or
+		  (cols >= 1 and matrix_path =~ %r{/boot|piglit|xfstests|ltp|idle-inject|kernel_selftests|autotest|pm-qa|kvm-unit-tests|packetdrill|suspend/}) or
 		  head_matrix['last_state.is_incomplete_run'] or
 		  head_matrix['dmesg.boot_failures'] or
 		  head_matrix['stderr.has_stderr']
