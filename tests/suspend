@@ -13,9 +13,9 @@ interval=$(( runtime / iterations ))
 for i in `seq 1 $iterations`
 do
 	echo "+$interval" > $alarm_path
-	echo $i time before suspend: $(date "+%F %T")
+	echo $(date "+%F %T") suspending
 	echo freeze > /sys/power/state
-	echo $i time after suspend: $(date "+%F %T")
+	echo $(date "+%F %T") resumed $i
 done
 
 echo "SUSPEND RESUME TEST SUCCESS"
