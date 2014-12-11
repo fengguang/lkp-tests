@@ -17,6 +17,10 @@ error_ids.each { |id, line|
 	puts
 }
 
+if error_ids.size > 0
+	puts 'has_stderr: 1'
+end
+
 if error_ids.size > 100
 	STDERR.puts "WARN: noisy stderr, check #{ENV['RESULT_ROOT']}/stderr"
 end

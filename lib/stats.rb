@@ -181,7 +181,7 @@ def install_path(kconfig, commit)
 	"/kernel/#{kconfig}/#{commit}"
 end
 
-def load_base_matrix(matrix_path)
+def load_base_matrix(matrix_path, head_matrix)
 	matrix_path = File.realpath matrix_path
 	matrix_path = File.dirname matrix_path if File.file? matrix_path
 	matrix_path = File.dirname matrix_path if File.basename(matrix_path) =~ /^[0-9]+$/
@@ -232,7 +232,11 @@ def load_base_matrix(matrix_path)
 	}
 
 	if matrix.size > 0
-		if cols >= 3 or (cols >= 1 and matrix_path =~ /piglit|xfstests|ltp/)
+		if cols >= 3 or
+		  (cols >= 1 and matrix_path =~ %r{/boot|piglit|xfstests|ltp|idle-inject|kernel_selftests|autotest|pm-qa|kvm-unit-tests|packetdrill/}) or
+		  head_matrix['last_state.is_incomplete_run'] or
+		  head_matrix['dmesg.boot_failures'] or
+		  head_matrix['stderr.has_stderr']
 			puts "compare with release matrix: #{matrix_path} #{tags_merged}" if ENV["LKP_VERBOSE"]
 			return matrix
 		else
@@ -304,7 +308,7 @@ def __get_changed_stats(a, b, options)
 	a.each { |k, v|
 		next if String === v[-1]
 		next if options['perf'] and not is_perf_metric k
-		next if is_incomplete_run and k !~ /^(dmesg|last_state)\./
+		next if is_incomplete_run and k !~ /^(dmesg|last_state|stderr)\./
 		next if k =~ $metrics_blacklist_re
 
 		is_failure_stat = is_failure k
@@ -403,10 +407,11 @@ end
 def load_matrices_to_compare(matrix_path1, matrix_path2 = nil)
 	begin
 		a = search_load_json matrix_path1
+		return [nil, nil] unless a
 		if matrix_path2
 			b = search_load_json matrix_path2
 		else
-			b = load_base_matrix matrix_path1
+			b = load_base_matrix matrix_path1, a
 		end
 	rescue Exception
 		return [nil, nil]

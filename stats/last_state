@@ -2,6 +2,4 @@
 
 sort -u
 
-[[ -s $RESULT_ROOT/stderr ]] && echo "has_stderr: 1"
-
 true
