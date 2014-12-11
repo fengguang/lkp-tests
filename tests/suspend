@@ -1,0 +1,21 @@
+#!/bin/bash
+# - runtime
+# - iterations
+
+shopt -s nullglob
+alarm_path=(/sys/devices/pnp*/*:*/rtc/rtc*/wakealarm)
+[[ $alarm_path ]] || exit
+
+[[ $runtime ]] || runtime=300
+[[ $iterations ]] || iterations=30
+interval=$(( runtime / iterations ))
+
+for i in `seq 1 $iterations`
+do
+	echo "+$interval" > $alarm_path
+	echo $i time before suspend: $(date "+%F %T")
+	echo freeze > /sys/power/state
+	echo $i time after suspend: $(date "+%F %T")
+done
+
+echo "SUSPEND RESUME TEST SUCCESS"
