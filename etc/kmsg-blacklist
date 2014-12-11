@@ -1,3 +1,12 @@
+###### unstable ######
+ invoked oom-killer: gfp_mask=0x
+' is using obsolete 
+sockopt(PACKET_SIZE) is deprecated: fix your app
+sockopt(CHANGE_L/R) is deprecated: fix your app
+' is using deprecated sysctl (
+ is using a deprecated SCSI ioctl, please convert it to SG_IO
+) uses deprecated remap_file_pages() syscall. 
+ using old stat() call. Recompile your binary.
 ###### shows up also in normal printk levels ######
 Asymmetric key parser '
  conflict with 
