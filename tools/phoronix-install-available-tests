@@ -1,0 +1,19 @@
+#!/bin/bash
+
+phoronix-test-suite list-available-tests | tee /tmp/pst:list-available-tests
+grep -E -o '^pts/[a-zA-Z_.0-9-]+\>' /tmp/pst:list-available-tests > /tmp/pst:available-tests
+
+pst()
+{
+	local action=$1
+
+	for t in $(</tmp/pst:available-tests)
+	do
+		echo \
+		phoronix-test-suite $action $t
+		phoronix-test-suite $action $t
+	done
+}
+
+pst install-dependencies
+pst batch-install
