@@ -1,0 +1,7 @@
+#!/bin/bash
+# - test
+
+cmd phoronix-test-suite run $test << EOF
+Test All Options
+n
+EOF
