@@ -1,0 +1,12 @@
+#!/usr/bin/ruby
+
+while line = STDIN.gets
+	case line.chomp!
+	when /pts\/(\D+-[0-9.]+)(?: \[.*: (.*)\])?/
+		option = $1
+		option += "_#{$2.gsub(' ', '_')}" if $2
+	when /Average: ([0-9.]+) (.*)/
+		value = $1
+		puts "#{option}_Average_#{$2.gsub(' ', '_')}: #{value}"
+	end
+end
