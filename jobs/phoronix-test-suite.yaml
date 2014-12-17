@@ -1,5 +1,7 @@
 testcase: phoronix-test-suite
 
+rootfs: inn:/export/debian-full-x86_64
+
 phoronix-test-suite:
   test:
   - urbanterror-1.2.1
