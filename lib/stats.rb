@@ -13,6 +13,7 @@ require "#{LKP_SRC}/lib/statistics.rb"
 $metric_add_max_latency	= IO.read("#{LKP_SRC}/etc/add-max-latency").split("\n")
 $metric_latency		= IO.read("#{LKP_SRC}/etc/latency").split("\n")
 $metric_failure		= IO.read("#{LKP_SRC}/etc/failure").split("\n")
+$metric_functional	= IO.read("#{LKP_SRC}/etc/functional").split("\n")
 $perf_metrics_threshold = YAML.load_file "#{LKP_SRC}/etc/perf-metrics-threshold.yaml"
 $perf_metrics_prefixes	= File.read("#{LKP_SRC}/etc/perf-metrics-prefixes").split
 
@@ -181,6 +182,11 @@ def install_path(kconfig, commit)
 	"/kernel/#{kconfig}/#{commit}"
 end
 
+def is_functional(path)
+	$metric_functional.each { |pattern| return true if path =~ %r{#{pattern}} }
+	return false
+end
+
 def load_base_matrix(matrix_path, head_matrix)
 	matrix_path = File.realpath matrix_path
 	matrix_path = File.dirname matrix_path if File.file? matrix_path
@@ -233,7 +239,7 @@ def load_base_matrix(matrix_path, head_matrix)
 
 	if matrix.size > 0
 		if cols >= 3 or
-		  (cols >= 1 and matrix_path =~ %r{/boot|piglit|xfstests|ltp|idle-inject|kernel_selftests|autotest|pm-qa|kvm-unit-tests|packetdrill|suspend/}) or
+		  (cols >= 1 and is_functional matrix_path) or
 		  head_matrix['last_state.is_incomplete_run'] or
 		  head_matrix['dmesg.boot_failures'] or
 		  head_matrix['stderr.has_stderr']
