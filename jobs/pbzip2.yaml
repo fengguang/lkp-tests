@@ -1,0 +1,13 @@
+testcase: pbzip2
+
+perf-profile:
+  freq: 800
+
+nr_threads:
+- 100%
+- 25%
+
+pbzip2:
+  blocksize:
+  - 500K
+  - 900K
