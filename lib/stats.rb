@@ -5,15 +5,17 @@ MAX_RATIO = 5
 
 LKP_SRC ||= ENV['LKP_SRC']
 
+require "set.rb"
 require "#{LKP_SRC}/lib/git.rb"
 require "#{LKP_SRC}/lib/yaml.rb"
+require "#{LKP_SRC}/lib/result.rb"
 require "#{LKP_SRC}/lib/bounds.rb"
 require "#{LKP_SRC}/lib/statistics.rb"
 
 $metric_add_max_latency	= IO.read("#{LKP_SRC}/etc/add-max-latency").split("\n")
 $metric_latency		= IO.read("#{LKP_SRC}/etc/latency").split("\n")
 $metric_failure		= IO.read("#{LKP_SRC}/etc/failure").split("\n")
-$metric_functional	= IO.read("#{LKP_SRC}/etc/functional").split("\n")
+$functional_tests	= Set.new IO.read("#{LKP_SRC}/etc/functional-tests").split("\n")
 $perf_metrics_threshold = YAML.load_file "#{LKP_SRC}/etc/perf-metrics-threshold.yaml"
 $perf_metrics_prefixes	= File.read("#{LKP_SRC}/etc/perf-metrics-prefixes").split
 
@@ -182,9 +184,10 @@ def install_path(kconfig, commit)
 	"/kernel/#{kconfig}/#{commit}"
 end
 
-def is_functional(path)
-	$metric_functional.each { |pattern| return true if path =~ %r{#{pattern}} }
-	return false
+def is_functional_test(path)
+	rp = Result_path.new
+	rp.parse_result_root path
+	$functional_tests.include? rp['testcase']
 end
 
 def load_base_matrix(matrix_path, head_matrix)
@@ -239,7 +242,7 @@ def load_base_matrix(matrix_path, head_matrix)
 
 	if matrix.size > 0
 		if cols >= 3 or
-		  (cols >= 1 and is_functional matrix_path) or
+		  (cols >= 1 and is_functional_test matrix_path) or
 		  head_matrix['last_state.is_incomplete_run'] or
 		  head_matrix['dmesg.boot_failures'] or
 		  head_matrix['stderr.has_stderr']
