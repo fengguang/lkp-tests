@@ -64,7 +64,9 @@ show_one_path()
 		echo
 		;;
 	ll)
+		echo "$1"
 		ls -l "$1"
+		echo
 		;;
 	*)
 		echo "$1"
