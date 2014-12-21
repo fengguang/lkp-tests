@@ -25,6 +25,5 @@ echo POOLSIZE $REAIM_POOLSIZE >> reaim.config
 echo DISKDIR $REAIM_TESTDIR  >> reaim.config
 
 cmd ./reaim  -s1 -e$REAIM_ENDUSERS -i$REAIM_INCREMENT -f data/workfile.$test \
-	-r1 -c./reaim.config -l$RESULT_ROOT/reaim_debug \
-	2> >(grep -v -e "^DEBUG:" >&2) |
-	grep -v -e "^NSIG"
+	-r1 -c./reaim.config -l$RESULT_ROOT/reaim_debug |
+	grep -v -e "^NSIG is "
