@@ -1,15 +1,26 @@
 #!/usr/bin/ruby
 
+$hits	= Hash.new { |hash, key| hash[key] = 0 }
+$sum	= Hash.new { |hash, key| hash[key] = 0 }
+$max	= Hash.new { |hash, key| hash[key] = 0 }
+
+
 STDIN.each_line do |line|
 	case line
 	when /Latency Top version/
 		next
-	when /^time:/
-		puts line
-	else
-		values = line.split
-		puts values[3] + ".hits: " + values[0]
-		puts values[3] + ".sum: " + values[1]
-		puts values[3] + ".max: " + values[2]
+	when /[0-9]+ [0-9]+ [0-9]+ [a-zA-Z]+/
+		values = line.gsub(/\.(isra|constprop|part)\.[0-9]+/, '').split
+		funcs = values[3..-1].join('.')
+		$hits[funcs] += values[0].to_i
+		$sum[funcs] += values[1].to_i
+		$max[funcs] = [values[2].to_i, $max[funcs]].max
 	end
 end
+
+$hits.each_pair { |funcs, hits|
+	puts "hits.#{funcs}: #{hits}"
+	puts "sum.#{funcs}: #{$sum[funcs]}"
+	puts "avg.#{funcs}: #{$sum[funcs] / hits}"
+	puts "max.#{funcs}: #{$max[funcs]}"
+}
