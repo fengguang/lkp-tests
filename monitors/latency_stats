@@ -2,7 +2,7 @@
 
 # reference code: linux/kernel/latencytop.c
 
-[[ -d /proc/latency_stats ]] || exit 0
+[[ -f /proc/latency_stats ]] || exit 0
 
 snapshot()
 {
