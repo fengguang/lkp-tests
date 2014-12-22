@@ -5,7 +5,20 @@ require "#{LKP_SRC}/lib/dmesg.rb"
 
 error_ids = Hash.new
 
+$ignore_patterns = []
+Dir["#{LKP_SRC}/ignore-stderr/*"].each { |f|
+	File.open(f).each_line { |line|
+		$ignore_patterns << Regexp.new('^' + line.chomp + '$')
+	}
+}
+
+def should_ignore_stderr(line)
+	$ignore_patterns.each { |re| return true if re.match line }
+	return false
+end
+
 while line = gets
+	next if should_ignore_stderr(line.chomp!)
 	id = common_error_id(line)
 	next if id.size < 3
 	error_ids[id] = line

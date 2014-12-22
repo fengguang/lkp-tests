@@ -19,8 +19,7 @@ do
 		files+="$file "
 		rm -f $file
 		note "dd $opt_bs if=/dev/zero of=$file status=noxfer &"
-		timeout -s KILL $runtime  dd $opt_bs if=/dev/zero of=$file status=noxfer \
-		2> >(grep -v -e "records in$" -e "records out$" >&2) &
+		timeout -s KILL $runtime  dd $opt_bs if=/dev/zero of=$file status=noxfer &
 		disown
 		pid+=" $!"
 	done
