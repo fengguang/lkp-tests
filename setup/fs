@@ -46,8 +46,7 @@ is_btrfs_raid_levels() {
 destroy_devices() {
 	for dev in $partitions
 	do
-		dd if=/dev/zero of=$dev bs=4k count=100 status=noxfer \
-		2> >(grep -v -e "records in$" -e "records out$" >&2)
+		wipefs -a $dev
 	done
 }
 
