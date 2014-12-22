@@ -18,4 +18,5 @@ install()
 {
 	cp -af src/reaim $BM_ROOT
 	cp -af data $BM_ROOT
+	cp -af scripts $BM_ROOT
 }
