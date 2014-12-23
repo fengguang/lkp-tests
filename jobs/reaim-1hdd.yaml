@@ -1,0 +1,11 @@
+testcase: reaim
+
+disk: 1HDD
+fs:
+- ext4
+- xfs
+- btrfs
+
+reaim:
+  test:
+  - disk
