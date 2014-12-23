@@ -1,0 +1,15 @@
+testcase: ltp
+
+default_monitors:
+  wait: pre-test
+  vmstat:
+
+disk: 1HDD
+fs:
+- ext4
+- xfs
+- btrfs
+
+ltp:
+  test:
+  - dio
