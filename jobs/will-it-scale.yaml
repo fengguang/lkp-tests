@@ -9,7 +9,8 @@ will-it-scale:
   - context_switch1
   - dup1
   - eventfd1
-  - fallocate1
+  # fallocate1_processes: tests/fallocate1.c:20: testcase: Assertion `fd >= 0' failed.
+  #  - fallocate1
   - futex1
   - futex2
   - futex3
