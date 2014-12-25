@@ -1,0 +1,13 @@
+testcase: siege
+
+runtime: 300s
+iterations: 10x
+nr_threads:
+- 100%
+- 400%
+- 800%
+- 1600%
+- 3200%
+- 6400%
+
+siege:

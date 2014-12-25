@@ -1,0 +1,67 @@
+#!/bin/bash
+# - runtime
+# - iterations
+# - nr_threads
+
+iter_time=$(( runtime / iterations ))
+
+cat > /var/www/html/siege.html <<EOF
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>siege dummy tester</title>
+</head>
+<body>
+<h1>siege dummy tester</h1>
+
+This is a basic HTML page with no useful information and serves as a static
+web page for testing siege. Obviously more complex tests of the software
+stack would require pages that exercise the system of interest.
+
+Here is a text to bring the page size up to 1K.
+Here is a text to bring the page size up to 1K.
+Here is a text to bring the page size up to 1K.
+Here is a bunch of text to bring the page size up to 1K.
+Here is a bunch of text to bring the page size up to 1K.
+Here is a bunch of text to bring the page size up to 1K.
+Here is a bunch of text to bring the page size up to 1K.
+Here is a bunch of text to bring the page size up to 1K.
+Here is a bunch of text to bring the page size up to 1K.
+<img src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01 Transitional" height="31" width="88">
+</p>
+</body>
+</html>
+EOF
+
+
+apachectl -k restart 2>&1
+
+cat > $HOME/.siegerc << EOF
+verbose = false
+quiet = true
+gmethod = HEAD
+show-logfile = true
+logging = false
+protocol = HTTP/1.1
+chunked = true
+cache = false
+connection = close
+concurrent = 500
+file = /etc/siege/urls.txt
+delay = 1
+timeout = 40
+failures = 10
+internet = false
+benchmark = false
+user-agent = MMTests
+accept-encoding = gzip
+url-escaping = true
+spinner = true
+unique = true
+EOF
+
+for ITER in `seq 1 $iterations`; do
+	cmd siege -q -b -t ${iter_time}s \
+			-c $nr_threads \
+			http://localhost/siege.html 2>&1
+done
