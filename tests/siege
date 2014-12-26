@@ -5,6 +5,7 @@
 
 iter_time=$(( runtime / iterations ))
 
+# Below HTML and siegerc from Mel Gorman's MMTests
 cat > /var/www/html/siege.html <<EOF
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -53,7 +54,7 @@ timeout = 40
 failures = 10
 internet = false
 benchmark = false
-user-agent = MMTests
+user-agent = LKP
 accept-encoding = gzip
 url-escaping = true
 spinner = true
