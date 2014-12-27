@@ -149,7 +149,7 @@ def create_cmd(program, args)
 	end
 
 	if $programs[program] =~ %r{/tests/}
-		cmd = [ "/usr/bin/time", "-v", "-o", "#{TMP}/time", *cmd ]
+		cmd = [ "/usr/bin/time", "-v", "-o", "#{TMP}/#{program}.time", *cmd ]
 	end
 
 	return cmd

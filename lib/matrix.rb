@@ -2,12 +2,19 @@
 
 MAX_MATRIX_COLS = 100
 
+require 'set'
+
 def is_event_counter(name)
 	$event_counter_prefixes ||= File.read("#{LKP_SRC}/etc/event-counter-prefixes").split
 	$event_counter_prefixes.each { |prefix|
 		return true if name.index(prefix) == 0
 	}
 	return false
+end
+
+def is_independent_counter(name)
+	$independent_counters ||= Set.new File.read("#{LKP_SRC}/etc/independent-counters").split
+	$independent_counters.include? name
 end
 
 def max_cols(matrix)
@@ -45,7 +52,7 @@ def create_stats_matrix(result_root)
 
 		next if monitor == 'stats' # stats.json already created?
 		next if monitor == 'matrix'
-		unless $programs[monitor]
+		unless $programs[monitor] or monitor =~ /.+\.time$/
 			STDERR.puts "skip unite #{file}: #{monitor} not in #{$programs.keys}"
 			next
 		end
@@ -56,6 +63,8 @@ def create_stats_matrix(result_root)
 			next if k == "#{monitor}.time"
 			if v.size == 1
 				stats[k] = v[0]
+			elsif is_independent_counter k
+				stats[k] = v.sum
 			elsif is_event_counter k
 				stats[k] = v[-1] - v[0]
 			else

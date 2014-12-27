@@ -1,9 +1,7 @@
 #!/usr/bin/ruby
 
-# skip the first line "Command being timed: ..."
-STDIN.gets
-
 while line = STDIN.gets
+	next if line.index('Command being timed: ')
 	key, val = line.split ': '
 	key = key.gsub(/^\s+/, '').gsub(/ \([^)]+\)/, '').gsub(/\s+/, '_').downcase
 	case key

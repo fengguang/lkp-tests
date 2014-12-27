@@ -74,14 +74,32 @@ copy_to_result()
 {
 	local file=$1
 
-	[[ -s $file ]] || return 0
+	[[ -s $file ]] || return
 
 	cp $file $RESULT_ROOT
 }
 
-[[ -s $TMP/time ]] || ps faux --cols 1000 > $RESULT_ROOT/time-debug
+copy_time_files()
+{
+	local time_files=($TMP/*.time)
+	local ret_copy_time_files=0
 
-copy_to_result $TMP/time
+	[[ $time_files ]] || return
+
+	for time_file in "${time_files[@]}"
+	do
+		if copy_to_result $time_file; then
+			cat $time_file >> $RESULT_ROOT/time
+		else
+			ret_copy_time_files=1
+		fi
+	done
+
+	return $ret_copy_time_files
+}
+
+copy_time_files || ps faux --cols 1000 > $RESULT_ROOT/time-debug
+
 copy_to_result $TMP/boottime
 copy_to_result $TMP/env.yaml
 copy_to_result $TMP/stdout
