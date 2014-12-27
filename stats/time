@@ -12,6 +12,7 @@ while line = STDIN.gets
 		val = times.inject(0) {|tt, t| tt * 60 + t.to_f}
 	when 'percent_of_cpu_this_job_got'
 		val.chomp!("%\n")
+		val = '0' if val == '?'
 	end
 	puts "#{key}: #{val}"
 end
