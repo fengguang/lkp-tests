@@ -2,6 +2,7 @@ aim7.*.jti
 aim7.*.jobs-per-min-per-task
 aim7.*.real
 aim7.*.cpu
+stderr.*scripts/aim_..sh:not_found
 iostat.*.svctm
 dmesg.boot_successes
 dmesg.boot_failures
