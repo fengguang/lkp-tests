@@ -89,6 +89,10 @@ opts = OptionParser.new do |opts|
 		$all_index	= $perf_index.merge($power_index).merge($latency_index).merge($size_index)
         end
 
+        opts.on('--ignore-incomplete-run', 'ignore incomplete runs') do
+                $options['ignore-incomplete-run'] = true
+        end
+
 	opts.on("-D N", "--distance N", "threshold of changes") { |n|
 		$options['distance'] = n.to_i
 	}
