@@ -1,0 +1,11 @@
+testcase: stutter
+
+iterations: 5x
+disk: 1HDD
+fs: ext4
+
+default_monitors:
+  wait: pre-test
+  vmstat:
+
+stutter:
