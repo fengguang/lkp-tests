@@ -6,8 +6,7 @@ boot-meminfo:
 memmap:
 
 # stats
-boot-memory:
-bootmem: # depends on memmap and boot-meminfo stats
+boot-memory: # depends on memmap and boot-meminfo stats
 boot-time:
 kernel-size:
 
