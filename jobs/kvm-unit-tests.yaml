@@ -1,6 +1,6 @@
 testcase: kvm-unit-tests
 
-default_monitors:
+default-monitors:
   wait: pre-test
   vmstat:
 
