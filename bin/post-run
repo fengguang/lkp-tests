@@ -100,7 +100,7 @@ copy_time_files()
 
 copy_time_files || ps faux --cols 1000 > $RESULT_ROOT/time-debug
 
-copy_to_result $TMP/boottime
+copy_to_result $TMP/boot-time
 copy_to_result $TMP/env.yaml
 copy_to_result $TMP/stdout
 copy_to_result $TMP/stderr
