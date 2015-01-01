@@ -1,0 +1,202 @@
+#!/usr/bin/ruby
+
+TMP = ENV['TMP'] || '/tmp'
+LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
+
+require "#{LKP_SRC}/lib/job.rb"
+require 'shellwords'
+require 'optparse'
+require 'ostruct'
+require 'yaml'
+
+$opt_test_file = STDOUT
+$opt_stats_file = nil
+$stats_lines = []
+
+opts = OptionParser.new do |opts|
+        opts.banner = "Usage: #{$PROGRAM_NAME} [options] job.yaml"
+
+        opts.separator ''
+        opts.separator 'options:'
+
+        opts.on('-t FILE', '--save-test-script FILE', 'save shell script to FILE (default: stdout)') do |file|
+		$opt_test_file = File.open(file, mode='w', perm=0755)
+        end
+
+        opts.on('-s FILE', '--save-stats-script FILE', 'save stats extract script to FILE (default: no output)') do |file|
+		$opt_stats_file = File.open(file, mode='w', perm=0755)
+        end
+
+        opts.on_tail('-h', '--help', 'Show this message') do
+                puts opts
+                exit
+        end
+
+end
+
+if ARGV == []
+        argv = ['-h']
+else
+        argv = ARGV
+end
+opts.parse!(argv)
+
+
+def exec_line(line = nil)
+	$opt_test_file.puts line if $opt_test_file
+end
+
+def shell_escape_expand(val)
+	val = strip_trivial_array(val)
+	case val
+	when nil, ''
+		return ''
+	when Fixnum
+		return val.to_s
+	when %r{^/dev/disk/by-}
+		return "$(readlink -e #{val})"
+	when /^[-a-zA-Z0-9~!@#%^&*()_+=;:.,<>\/?| "]+$/, Time
+		return "'#{val}'"
+	when /^[-a-zA-Z0-9~!@#%^&*()_+=;:.,<>\/?| '$]+$/
+		return '"' + val + '"'
+	else
+		return Shellwords.shellescape(val)
+	end
+end
+
+def get_program_env(program, env)
+	program_env = {}
+	args = []
+
+	env = strip_trivial_array(env)
+	if env == nil
+		return program_env, args
+	end
+
+	# expand predefined parameter set name
+	if String === env
+		param_yaml = LKP_SRC + '/params/' + program + '.yaml'
+		if File.exists?(param_yaml)
+			params = YAML.load_file(param_yaml)
+			env = params[env] if params[env]
+		end
+	end
+
+	case env
+	when String
+		args = Shellwords.shellsplit(env).map { |s| shell_escape_expand(s) }
+	when Fixnum, Float
+		args = env.to_s
+	when Hash
+		env.each { |k, v|
+			case v
+			when Hash
+				v.each { |kk, vv|
+				program_env[kk] = strip_trivial_array(vv)
+				}
+			else
+				program_env[k] = strip_trivial_array(v)
+			end
+		}
+	end
+
+	return program_env, args
+end
+
+def create_cmd(program, args)
+	wrapper = File.dirname($programs[program]) + '/wrapper'
+	if File.executable?(wrapper)
+		cmd = [ wrapper, program, *args ]
+	else
+		cmd = [ $programs[program], *args ]
+	end
+
+	case $programs[program]
+	when %r{/monitors/}
+		cmd = [ "run_monitor", *cmd ]
+	when %r{/setup/}
+		cmd = [ "run_setup", *cmd ]
+	when %r{/tests/}
+		cmd = [ "run_test", "/usr/bin/time", "-v", "-o", "$TMP/#{program}.time", *cmd ]
+		$stats_lines << "$LKP_SRC/stats/wrapper time #{program}.time"
+	end
+
+	return cmd
+end
+
+def shell_run_program(tabs, program, env)
+	program_env, args = get_program_env(program, env)
+
+	return if program_env.empty? and args.empty? and File.exist?(LKP_SRC + '/setup/' + program)
+
+	exec_line unless program_env.empty?
+	program_env.each { |k, v|
+		exec_line tabs + "#{k}=" + shell_escape_expand(v) + "\t\\\n"
+	}
+	cmd = create_cmd(program, args)
+	cmd_str = cmd.join ' '
+	cmd_str.gsub!(LKP_SRC, '$LKP_SRC')
+	cmd_str.gsub!(TMP, '$TMP')
+	$cur_file.puts tabs + cmd_str
+end
+
+def valid_shell_variable?(key)
+	key =~ /^[a-zA-Z_]+[a-zA-Z0-9_]*$/
+end
+
+def shell_export_env(tabs, key, val)
+	exec_line tabs + "export #{key}=" + shell_escape_expand(val)
+end
+
+def indent(ancestors)
+	$cur_file == $opt_stats_file ? '' : "\t" * ancestors.size
+end
+
+def parse_one(ancestors, key, val, pass)
+	nr_bg = 0
+	tabs = indent(ancestors)
+	if $programs.include? key
+		return nr_bg unless pass == 1
+		shell_run_program(tabs, key, val)
+	elsif Hash === val
+		return nr_bg unless pass == 1
+		exec_line
+		exec_line tabs + "#{key}()"
+		exec_line tabs + "{"
+		parse_hash(ancestors + [key], val)
+		exec_line tabs + "}\n"
+		exec_line tabs + "#{key} &"
+		nr_bg += 1
+	elsif valid_shell_variable?(key)
+		return nr_bg unless pass == 0
+		shell_export_env(tabs, key, val)
+	end
+	return nr_bg
+end
+
+def parse_hash(ancestors, hash)
+	nr_bg = 0
+	hash.each { |key, val| nr_bg += parse_one(ancestors, key, val, 0) }
+	hash.each { |key, val| nr_bg += parse_one(ancestors, key, val, 1) }
+	exec_line indent(ancestors) + "wait\n" if nr_bg > 0
+end
+
+def shell_header(file)
+	$cur_file = file
+	$cur_file.puts "#!/bin/bash\n\n"
+	exec_line "source $LKP_SRC/lib/job.sh\n\n"
+end
+
+job = YAML.load_file(ARGV[0])
+
+shell_header $opt_test_file
+create_programs_hash "{setup,monitors,tests}/**/*"
+parse_hash [], job
+
+exit unless $opt_stats_file
+shell_header $opt_stats_file
+create_programs_hash "stats/**/*"
+parse_hash [], job
+$opt_stats_file.puts
+$opt_stats_file.puts $stats_lines
+parse_hash [], YAML.load_file(LKP_SRC + '/etc/default_stats.yaml')
