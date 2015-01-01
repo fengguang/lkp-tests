@@ -84,11 +84,13 @@ ENV['TMP_RESULT_ROOT'] = ENV['RESULT_ROOT']
 FileUtils.rm_rf TMP
 Dir.mkdir TMP
 
+job_script = jobfile.chomp('.yaml') + '.sh'
+system LKP_SRC + '/sbin/job2sh', '--output', job_script, jobfile
+
 system LKP_SRC + '/setup/env'
-system LKP_SRC + '/bin/run-job', jobfile
+system job_script, 'run_job'
 system LKP_SRC + '/bin/post-run'
-system LKP_SRC + '/sbin/extract-result-stats', ENV['RESULT_ROOT']
-system LKP_SRC + '/sbin/extract-stats', jobfile, LKP_SRC + '/etc/default_stats.yaml'
+system job_script, 'extract_stats'
 
 stats = create_stats_matrix ENV['RESULT_ROOT']
 if $opt_result_root == nil
