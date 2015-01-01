@@ -1,4 +1,5 @@
 #!/bin/bash
+# - group
 # - cpu.cfs_period_us
 # - cpu.cfs_quota_us
 # - cpu.rt_period_us
@@ -32,7 +33,7 @@
 # - blkio.throttle.write_iops_device
 
 CGROUP_MNT=/cgroup
-dir=$CGROUP_MNT/$(basename $testcase)$job_pwd
+dir=$CGROUP_MNT/$(basename $testcase)/$group
 
 # This is the fail safe mount.
 # mount_cgroup() in run-lkp will normally do a better job for us
@@ -44,16 +45,19 @@ dir=$CGROUP_MNT/$(basename $testcase)$job_pwd
 }
 cmd mkdir -p $dir
 
-while read key val
+env | grep -F '_46_' |
+while read line
 do
-	[[ "$val" ]] || continue
-	key=${key%:}
+	key=${line%%=*}
+	val=${line#*=}
+	[[ $val ]] || continue
+	[[ $key =~ '_46_' ]] || continue
+	key=${key//_46_/.}
 	[[ -f $dir/"$key" ]] || continue
 
 	note "echo $val > $dir/$key"
 	echo "$val" > $dir/"$key"
-
-done <<<"$all_program_env"
+done
 
 note "echo $PPID > $dir/tasks"
 echo $PPID > $dir/tasks
