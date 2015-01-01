@@ -59,9 +59,9 @@ def shell_escape_expand(val)
 		return val.to_s
 	when %r{^/dev/disk/by-}
 		return "$(readlink -e #{val})"
-	when /^[-a-zA-Z0-9~!@#%^&*()_+=;:.,<>\/?| "]+$/, Time
+	when /^[-a-zA-Z0-9~!@#%^&*()_+=;:.,<>\/?|\t "]+$/, Time
 		return "'#{val}'"
-	when /^[-a-zA-Z0-9~!@#%^&*()_+=;:.,<>\/?| '$]+$/
+	when /^[-a-zA-Z0-9~!@#%^&*()_+=;:.,<>\/?|\t '$]+$/
 		return '"' + val + '"'
 	else
 		return Shellwords.shellescape(val)
