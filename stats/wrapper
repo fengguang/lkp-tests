@@ -4,7 +4,7 @@ set -o pipefail
 
 program=$1
 program_dir=$(dirname $0)
-log=$RESULT_ROOT/$program
+log=$RESULT_ROOT/${2:-$program}
 
 check_incomplete_run()
 {
