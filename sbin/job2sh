@@ -18,6 +18,7 @@ SHELL_BLOCK_KEYWORDS = {
 	'for'		=> [ 'do', 'done' ],
 	'while'		=> [ 'do', 'done' ],
 	'until'		=> [ 'do', 'done' ],
+	'function'	=> [ '{', '}' ],
 }
 
 opts = OptionParser.new do |opts|
@@ -191,6 +192,16 @@ def parse_one(ancestors, key, val, pass)
 		exec_line 'EOF'
 		exec_line tabs + "chmod +x $LKP_SRC/#{script_file}"
 		exec_line
+	elsif String === val and key =~ /^(function)\s/
+		return nr_bg unless pass == :PASS_NEW_SCRIPT
+		shell_block = $1
+		exec_line
+		exec_line tabs + "#{key}"
+		exec_line tabs + SHELL_BLOCK_KEYWORDS[shell_block][0]
+		val.each_line { |l|
+			exec_line "\t" + tabs + l
+		}
+		exec_line tabs + SHELL_BLOCK_KEYWORDS[shell_block][1]
 	elsif Hash === val and key =~ /^(if|for|while|until)\s/
 		return nr_bg unless pass == :PASS_RUN_COMMANDS
 		shell_block = $1
