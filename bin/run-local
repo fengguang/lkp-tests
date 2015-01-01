@@ -32,10 +32,6 @@ opts = OptionParser.new do |opts|
                 ENV['RESULT_ROOT'] = $opt_result_root = File.realpath dir
         end
 
-        opts.on('-n', '--dry-run', 'dry run only') do
-                ENV["LKP_DRYRUN"] = '1'
-        end
-
         opts.on_tail('-h', '--help', 'Show this message') do
                 puts opts
                 exit
@@ -93,8 +89,6 @@ system LKP_SRC + '/bin/run-job', jobfile
 system LKP_SRC + '/bin/post-run'
 system LKP_SRC + '/sbin/extract-result-stats', ENV['RESULT_ROOT']
 system LKP_SRC + '/sbin/extract-stats', jobfile, LKP_SRC + '/etc/default_stats.yaml'
-
-exit if ENV["LKP_DRYRUN"]
 
 stats = create_stats_matrix ENV['RESULT_ROOT']
 if $opt_result_root == nil
