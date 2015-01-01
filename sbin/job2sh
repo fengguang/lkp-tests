@@ -9,8 +9,7 @@ require 'optparse'
 require 'ostruct'
 require 'yaml'
 
-$opt_test_file = STDOUT
-$opt_stats_file = nil
+$opt_file = STDOUT
 $stats_lines = []
 
 opts = OptionParser.new do |opts|
@@ -19,12 +18,8 @@ opts = OptionParser.new do |opts|
         opts.separator ''
         opts.separator 'options:'
 
-        opts.on('-t FILE', '--save-test-script FILE', 'save shell script to FILE (default: stdout)') do |file|
-		$opt_test_file = File.open(file, mode='w', perm=0755)
-        end
-
-        opts.on('-s FILE', '--save-stats-script FILE', 'save stats extract script to FILE (default: no output)') do |file|
-		$opt_stats_file = File.open(file, mode='w', perm=0755)
+        opts.on('-o FILE', '--output FILE', 'save shell script to FILE (default: stdout)') do |file|
+		$opt_file = File.open(file, mode='w', perm=0755)
         end
 
         opts.on_tail('-h', '--help', 'Show this message') do
@@ -43,7 +38,7 @@ opts.parse!(argv)
 
 
 def exec_line(line = nil)
-	$opt_test_file.puts line if $opt_test_file
+	$opt_file.puts line if $cur_func == :run_job
 end
 
 def shell_encode_keyword(key)
@@ -122,7 +117,7 @@ def create_cmd(program, args)
 		cmd = [ "run_setup", *cmd ]
 	when %r{/tests/}
 		cmd = [ "run_test", "/usr/bin/time", "-v", "-o", "$TMP/#{program}.time", *cmd ]
-		$stats_lines << "$LKP_SRC/stats/wrapper time #{program}.time"
+		$stats_lines << "\t$LKP_SRC/stats/wrapper time #{program}.time"
 	end
 
 	return cmd
@@ -141,7 +136,7 @@ def shell_run_program(tabs, program, env)
 	cmd_str = cmd.join ' '
 	cmd_str.gsub!(LKP_SRC, '$LKP_SRC')
 	cmd_str.gsub!(TMP, '$TMP')
-	$cur_file.puts tabs + cmd_str
+	$opt_file.puts tabs + cmd_str
 end
 
 def valid_shell_variable?(key)
@@ -153,7 +148,7 @@ def shell_export_env(tabs, key, val)
 end
 
 def indent(ancestors)
-	$cur_file == $opt_stats_file ? '' : "\t" * ancestors.size
+	"\t" * ($cur_func == :extract_stats ? 1 : 1 + ancestors.size)
 end
 
 def parse_one(ancestors, key, val, pass)
@@ -185,22 +180,31 @@ def parse_hash(ancestors, hash)
 	exec_line indent(ancestors) + "wait\n" if nr_bg > 0
 end
 
-def shell_header(file)
-	$cur_file = file
-	$cur_file.puts "#!/bin/bash\n\n"
-	exec_line "source $LKP_SRC/lib/job.sh\n\n"
+def shell_header
+	$opt_file.puts "#!/bin/bash\n\n"
+	$opt_file.puts "source $LKP_SRC/lib/job.sh\n\n"
 end
+
+shell_header
 
 job = YAML.load_file(ARGV[0])
 
-shell_header $opt_test_file
+$cur_func = :run_job
+$opt_file.puts "run_job()"
+$opt_file.puts "{"
 create_programs_hash "{setup,monitors,tests}/**/*"
 parse_hash [], job
+$opt_file.puts "}"
+$opt_file.puts
 
-exit unless $opt_stats_file
-shell_header $opt_stats_file
+$cur_func = :extract_stats
+$opt_file.puts "extract_stats()"
+$opt_file.puts "{"
 create_programs_hash "stats/**/*"
 parse_hash [], job
-$opt_stats_file.puts
-$opt_stats_file.puts $stats_lines
+$opt_file.puts
+$opt_file.puts $stats_lines
 parse_hash [], YAML.load_file(LKP_SRC + '/etc/default_stats.yaml')
+$opt_file.puts "}"
+$opt_file.puts
+$opt_file.puts '"$@"'
