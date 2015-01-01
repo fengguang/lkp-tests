@@ -46,6 +46,10 @@ def exec_line(line = nil)
 	$opt_test_file.puts line if $opt_test_file
 end
 
+def shell_encode_keyword(key)
+	key.gsub(/[^a-z0-9_]/) { |m| '_' + m.getbyte(0).to_s + '_' }
+end
+
 def shell_escape_expand(val)
 	val = strip_trivial_array(val)
 	case val
@@ -131,7 +135,7 @@ def shell_run_program(tabs, program, env)
 
 	exec_line unless program_env.empty?
 	program_env.each { |k, v|
-		exec_line tabs + "#{k}=" + shell_escape_expand(v) + "\t\\\n"
+		exec_line tabs + shell_encode_keyword(k) + "=" + shell_escape_expand(v) + "\t\\\n"
 	}
 	cmd = create_cmd(program, args)
 	cmd_str = cmd.join ' '
