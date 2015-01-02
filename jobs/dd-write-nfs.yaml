@@ -9,12 +9,12 @@ common-monitors:
       global_dirty_state
       writeback_single_inode
 
-if server_role:
+if role server:
   disk: 1HDD
   fs: ext4
   nfsd:
 
-if client_role:
+if role client:
   fs: nfsv4
   nr_threads:
   - 2dd

@@ -1,16 +1,9 @@
 #!/bin/bash
 
-server_role()
+role()
 {
-	[[ $server_hosts == 'localhost' ]] && return 0
-	[[ " $server_hosts " =~ " $HOSTNAME " ]] && return 0
-	return 1
-}
-
-client_role()
-{
-	[[ $client_hosts == 'localhost' ]] && return 0
-	[[ " $client_hosts " =~ " $HOSTNAME " ]] && return 0
-	return 1
+	# $host_roles will be determined at job schedule time and
+	# set accordingly in each scheduled job
+	[[ " $host_roles " =~ " $1 " ]]
 }
 
