@@ -14,28 +14,30 @@ wakeup_pre_test()
 	date '+%s' > $TMP/start_time
 }
 
-wait_server()
+wait_other_hosts()
 {
-	:
+	[[ $host_roles ]] || return
+	[[ $all_hosts = $HOSTNAME ]] && return
+
+	local program_type=$1
+	local program=$2
+	[[ $program_type = 'test' ]] && echo $program >> $TMP/executed-test-programs
+
+	mkdir $TMP/wait_other_hosts-once 2>/dev/null || return
+
+	# exit if either of the other hosts failed its job
 }
 
-wait_clients()
-{
-	:
-}
-
-wakeup_clients()
-{
-	:
-}
-
-notify_server_finish()
-{
-	:
-}
-
+# In a cluster test, if some server/service role only started daemon(s) and
+# finished the job quickly, wait until the clients have finished with their
+# test jobs.
 wait_clients_finish()
 {
+	[[ $host_roles ]] || return
+	[[ $all_hosts = $HOSTNAME ]] && return
+	[[ -f $TMP/executed-test-programs ]] && return
+
+	# contact LKP server, it knows whether all clients have finished
 	:
 }
 
@@ -67,19 +69,20 @@ start_daemon()
 	local program=${1##*/}
 	"$@"
 	check_exit_code $?
-	wait_clients
+
+	# If failed to start the daemon above, the job will abort.
+	# LKP server on notice of the failed job will abort the other waiting hosts.
+
+	wait_other_hosts 'daemon' $program
 	wakeup_pre_test
-	wakeup_clients
-	wait_clients_finish
 }
 
 run_test()
 {
 	local program=${2##*/}
-	wait_server
+	wait_other_hosts 'test' $program
 	wakeup_pre_test
 	"$@"
 	check_exit_code $?
-	notify_server_finish
 }
 
