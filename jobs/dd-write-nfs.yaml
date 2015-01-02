@@ -1,0 +1,22 @@
+testcase: dd-write-nfs
+
+common-monitors:
+  wait: pre-test
+  ftrace:
+  - events:
+      balance_dirty_pages
+      bdi_dirty_ratelimit
+      global_dirty_state
+      writeback_single_inode
+
+if server_role:
+  disk: 1HDD
+  fs: ext4
+  nfsd:
+
+if client_role:
+  fs: nfsv4
+  nr_threads:
+  - 2dd
+  dd:
+    bs: 4k

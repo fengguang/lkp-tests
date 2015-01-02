@@ -14,6 +14,31 @@ wakeup_pre_test()
 	date '+%s' > $TMP/start_time
 }
 
+wait_server()
+{
+	:
+}
+
+wait_clients()
+{
+	:
+}
+
+wakeup_clients()
+{
+	:
+}
+
+notify_server_finish()
+{
+	:
+}
+
+wait_clients_finish()
+{
+	:
+}
+
 check_exit_code()
 {
 	local exit_code=$1
@@ -37,11 +62,24 @@ run_setup()
 	read_env_vars
 }
 
+start_daemon()
+{
+	local program=${1##*/}
+	"$@"
+	check_exit_code $?
+	wait_clients
+	wakeup_pre_test
+	wakeup_clients
+	wait_clients_finish
+}
+
 run_test()
 {
 	local program=${2##*/}
+	wait_server
 	wakeup_pre_test
 	"$@"
 	check_exit_code $?
+	notify_server_finish
 }
 

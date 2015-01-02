@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# XXX: setup exports for $mount_points
+
+/etc/init.d/nfs-kernel-server restart

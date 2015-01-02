@@ -135,6 +135,9 @@ def create_cmd(program, args)
 	when %r{/setup/}
 		cmd = [ "run_setup", *cmd ]
 		exec_line
+	when %r{/daemon/}
+		cmd = [ "start_daemon", *cmd ]
+		exec_line
 	when %r{/tests/}
 		cmd = [ "run_test", "/usr/bin/time", "-v", "-o", "$TMP/#{program}.time", *cmd ]
 		exec_line
@@ -239,7 +242,9 @@ end
 
 def shell_header
 	out_line "#!/bin/bash\n\n"
-	out_line "source $LKP_SRC/lib/job.sh\n\n"
+	out_line "source $LKP_SRC/lib/job.sh\n"
+	out_line "source $LKP_SRC/lib/env.sh\n"
+	out_line
 end
 
 shell_header
