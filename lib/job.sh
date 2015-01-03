@@ -2,8 +2,19 @@
 
 read_env_vars()
 {
-	[[ -f $TMP/env.yaml ]] &&
-	eval $(sed -e '/^ *$/d;/^#/d;s/^/export /;s/: */=\"/g;s/$/\"/g;s/ *=/=/g' $TMP/env.yaml)
+	[[ -f $TMP/env.yaml ]] || return 0
+
+	local key
+	local val
+
+	while read key val
+	do
+		[[ $key =~ [a-zA-Z_]+[a-zA-Z0-9_]*:$ ]] || continue
+		key=${key%:}
+		export "$key=$val"
+	done < $TMP/env.yaml
+
+	return 0
 }
 
 wakeup_pre_test()
