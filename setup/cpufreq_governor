@@ -5,6 +5,5 @@ scaling_governor=$1
 
 for file in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
 do
-	note "echo $scaling_governor > $file"
 	echo $scaling_governor > $file
 done
