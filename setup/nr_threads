@@ -4,7 +4,12 @@ nr_threads=${1%%[a-z]*}
 
 if [[ "$nr_threads" =~ %$ ]]; then
 	nr_threads=${nr_threads%%%}
-	nr_threads=$(echo "$nr_threads * $nr_cpu / 100" | bc)
+	div=100
+	if [[ $nr_threads =~ ([0-9]+)'.'([0-9]+) ]]; then
+		nr_threads="${BASH_REMATCH[1]}${BASH_REMATCH[2]}"
+		div+="${BASH_REMATCH[2]//?/0}"
+	fi
+	nr_threads=$((nr_threads * nr_cpu / div))
 fi
 
 cat >> $TMP/env.yaml <<EOF
