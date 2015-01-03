@@ -1,5 +1,6 @@
 testcase: hackbench
 
+nr_node: $(echo /sys/devices/system/node/node* | wc -w)
 cgroup:
   cpuset.mems: 0-$((nr_node-1))
   cpuset.cpus: 0-$((nr_cpu-1))

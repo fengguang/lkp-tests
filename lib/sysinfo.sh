@@ -3,6 +3,7 @@
 setup_threads_to_iterate()
 {
 	threads_to_iterate=1
+	nr_node=$(echo /sys/devices/system/node/node* | wc -w)
 
 	local threads_per_core=$(lscpu | awk '/Thread\(s\) per core:/ { print $4 }')
 	local cores_per_node=$((nr_cpu / nr_node / threads_per_core))

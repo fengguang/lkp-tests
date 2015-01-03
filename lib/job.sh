@@ -2,6 +2,7 @@
 
 read_env_vars()
 {
+	[[ -f $TMP/env.yaml ]] &&
 	eval $(sed -e '/^ *$/d;/^#/d;s/^/export /;s/: */=\"/g;s/$/\"/g;s/ *=/=/g' $TMP/env.yaml)
 }
 
