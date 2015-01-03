@@ -6,7 +6,7 @@ cd $BENCHMARK_ROOT/pm-qa || exit
 run_one()
 {
 	local testcase=$1
-	if [ $testcase = 'cpuhotplug' ]; then
+	if [ "$testcase" = 'cpuhotplug' ]; then
 		ext_opt='hotplug_allow_cpu0=0'
 	else
 		ext_opt=
@@ -21,7 +21,7 @@ run_one()
 	}
 }
 
-if [ $test = 'all' ]; then
+if [ "$test" = 'all' ]; then
 	for i in cpufreq cpuhotplug cputopology cpuidle thermal
 	do
 		run_one $i

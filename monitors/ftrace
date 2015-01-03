@@ -4,7 +4,7 @@
 
 test_save_time_delta()
 {
-	[ $HOSTNAME = avoton2 ] &&
+	[ "$HOSTNAME" = avoton2 ] &&
 	grep -q -F uptime /sys/kernel/debug/tracing/trace_clock && {
 		echo uptime > /sys/kernel/debug/tracing/trace_clock
 		echo 0 > $TMP/time_delta

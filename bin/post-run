@@ -60,7 +60,7 @@ wait_for_pipe()
 }
 
 [ -n "$TMP_RESULT_ROOT" ] &&
-[ $TMP_RESULT_ROOT != $RESULT_ROOT ] && {
+[ "$TMP_RESULT_ROOT" != "$RESULT_ROOT" ] && {
 	tmp_results=($TMP_RESULT_ROOT/*)
 	[ -n "$tmp_results" ] && {
 		# give chance to monitor fifo writer to sync data back to file

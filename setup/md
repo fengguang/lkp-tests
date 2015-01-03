@@ -27,7 +27,7 @@ check_partition_size() {
 			exit 1
 		}
 		if [ -n "$prev_size" ]; then
-			[ $size != $prev_size ] || {
+			[ "$size" != "$prev_size" ] || {
 				echo "non-equal partition size: $dev $size" >&2
 				cat /proc/partitions >&2
 				exit 1

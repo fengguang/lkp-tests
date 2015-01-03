@@ -2,7 +2,7 @@
 # - loops
 # - mode
 
-loops=${loops%%ops}
-[ $mode = "threads" ] && opt_threads="-T"
+loops="${loops%%ops}"
+[ "$mode" = 'threads' ] && opt_threads='-T'
 
 cmd perf bench sched pipe -l $loops $opt_threads

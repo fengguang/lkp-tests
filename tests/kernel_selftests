@@ -11,12 +11,12 @@ sed -i 's/hugetlbfstest//' vm/Makefile
 
 for mf in */Makefile; do
 	subtest=${mf%/Makefile}
-	[ $subtest = net ] && continue
-	[ $subtest = user ] && continue
-	[ $subtest = sysctl ] && continue
-	[ $subtest = efivarfs ] && continue
-	[ $subtest = firmware ] && continue
-	[ $subtest = memory-hotplug ] && continue
+	[ "$subtest" = net ] && continue
+	[ "$subtest" = user ] && continue
+	[ "$subtest" = sysctl ] && continue
+	[ "$subtest" = efivarfs ] && continue
+	[ "$subtest" = firmware ] && continue
+	[ "$subtest" = memory-hotplug ] && continue
 	cmd make run_tests -C $subtest 2> >(tee $RESULT_ROOT/kernel_selftests.info |
 		grep -v -e "^info:" \
 			-e "^ERROR:" \

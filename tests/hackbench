@@ -4,7 +4,7 @@
 # - mode
 # - ipc
 
-[ $ipc = 'pipe' ] && ipc_option='--pipe'
+[ "$ipc" = 'pipe' ] && ipc_option='--pipe'
 
 [ -n "$runtime" ] || runtime=600
 
