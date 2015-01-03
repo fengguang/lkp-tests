@@ -121,14 +121,16 @@ def get_program_env(program, env)
 end
 
 def create_cmd(program, args)
-	wrapper = File.dirname($programs[program]) + '/wrapper'
+	program_path = $programs[program] || program
+
+	wrapper = File.dirname(program_path) + '/wrapper'
 	if File.executable?(wrapper)
 		cmd = [ wrapper, program, *args ]
 	else
-		cmd = [ $programs[program], *args ]
+		cmd = [ program_path, *args ]
 	end
 
-	case $programs[program]
+	case program_path
 	when %r{/monitors/}
 		cmd = [ "run_monitor", *cmd ]
 		exec_line unless $script_lines[-1] =~ /run_monitor/
@@ -142,6 +144,8 @@ def create_cmd(program, args)
 		cmd = [ "run_test", "/usr/bin/time", "-v", "-o", "$TMP/#{program}.time", *cmd ]
 		exec_line
 		$stats_lines << "\t$LKP_SRC/stats/wrapper time #{program}.time"
+	else
+		exec_line
 	end
 
 	return cmd
@@ -178,9 +182,9 @@ end
 def parse_one(ancestors, key, val, pass)
 	nr_bg = 0
 	tabs = indent(ancestors)
-	if $programs.include? key
+	if $programs.include?(key) or (key =~ /^(call|command|source)\s/ and $cur_func == :run_job)
 		return nr_bg unless pass == :PASS_RUN_COMMANDS
-		shell_run_program(tabs, key, val)
+		shell_run_program(tabs, key.sub(/^call\s+/, ''), val)
 	elsif String === val and key =~ %r{^script\s+(monitors|setup|tests|stats)/([-a-zA-Z0-9_/]+)$}
 		return nr_bg unless pass == :PASS_NEW_SCRIPT
 		script_file = $1 + '/' + $2
