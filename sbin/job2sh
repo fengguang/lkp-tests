@@ -180,13 +180,13 @@ def indent(ancestors)
 end
 
 def parse_one(ancestors, key, val, pass)
-	nr_bg = 0
 	tabs = indent(ancestors)
 	if $programs.include?(key) or (key =~ /^(call|command|source)\s/ and $cur_func == :run_job)
-		return nr_bg unless pass == :PASS_RUN_COMMANDS
+		return false unless pass == :PASS_RUN_COMMANDS
 		shell_run_program(tabs, key.sub(/^call\s+/, ''), val)
+		return :action_call_command
 	elsif String === val and key =~ %r{^script\s+(monitors|setup|tests|stats)/([-a-zA-Z0-9_/]+)$}
-		return nr_bg unless pass == :PASS_NEW_SCRIPT
+		return false unless pass == :PASS_NEW_SCRIPT
 		script_file = $1 + '/' + $2
 		script_name = File.basename $2
 		if $cur_func == :run_job	and script_file =~ %r{^(monitors|setup|tests)/} or
@@ -199,8 +199,9 @@ def parse_one(ancestors, key, val, pass)
 		exec_line 'EOF'
 		exec_line tabs + "chmod +x $LKP_SRC/#{script_file}"
 		exec_line
+		return :action_new_script
 	elsif String === val and key =~ /^(function)\s/
-		return nr_bg unless pass == :PASS_NEW_SCRIPT
+		return false unless pass == :PASS_NEW_SCRIPT
 		shell_block = $1
 		exec_line
 		exec_line tabs + "#{key}"
@@ -209,35 +210,38 @@ def parse_one(ancestors, key, val, pass)
 			exec_line "\t" + tabs + l
 		}
 		exec_line tabs + SHELL_BLOCK_KEYWORDS[shell_block][1]
+		return :action_new_function
 	elsif Hash === val and key =~ /^(if|for|while|until)\s/
-		return nr_bg unless pass == :PASS_RUN_COMMANDS
+		return false unless pass == :PASS_RUN_COMMANDS
 		shell_block = $1
 		exec_line
 		exec_line tabs + "#{key}"
 		exec_line tabs + SHELL_BLOCK_KEYWORDS[shell_block][0]
 		parse_hash(ancestors + [key], val)
 		exec_line tabs + SHELL_BLOCK_KEYWORDS[shell_block][1]
+		return :action_control_block
 	elsif Hash === val
-		return nr_bg unless pass == :PASS_RUN_COMMANDS
+		return false unless pass == :PASS_RUN_COMMANDS
 		exec_line
 		exec_line tabs + "#{key}()"
 		exec_line tabs + "{"
 		parse_hash(ancestors + [key], val)
 		exec_line tabs + "}\n"
 		exec_line tabs + "#{key} &"
-		nr_bg += 1
+		return :action_background_function
 	elsif valid_shell_variable?(key)
-		return nr_bg unless pass == :PASS_EXPORT_ENV
+		return false unless pass == :PASS_EXPORT_ENV
 		shell_export_env(tabs, key, val)
+		return :action_export_env
 	end
-	return nr_bg
+	return nil
 end
 
 def parse_hash(ancestors, hash)
 	nr_bg = 0
-	hash.each { |key, val| nr_bg += parse_one(ancestors, key, val, :PASS_EXPORT_ENV) }
-	hash.each { |key, val| nr_bg += parse_one(ancestors, key, val, :PASS_NEW_SCRIPT) }
-	hash.each { |key, val| nr_bg += parse_one(ancestors, key, val, :PASS_RUN_COMMANDS) }
+	hash.each { |key, val| parse_one(ancestors, key, val, :PASS_EXPORT_ENV) }
+	hash.each { |key, val| parse_one(ancestors, key, val, :PASS_NEW_SCRIPT) }
+	hash.each { |key, val| parse_one(ancestors, key, val, :PASS_RUN_COMMANDS) == :action_background_function and nr_bg += 1 }
 	if nr_bg > 0
 		exec_line
 		exec_line indent(ancestors) + "wait"
@@ -256,9 +260,16 @@ shell_header
 job = YAML.load_file(ARGV[0])
 
 $cur_func = :run_job
-out_line "run_job()"
+
+out_line "export_top_env()"
 out_line "{"
 create_programs_hash "{setup,monitors,tests}/**/*"
+job.delete_if { |key, val| parse_one([], key, val, :PASS_EXPORT_ENV) }
+out_line "}\n\n"
+
+out_line "run_job()"
+out_line "{"
+out_line "\texport_top_env\n\n"
 parse_hash [], job
 out_line "}\n\n"
 
