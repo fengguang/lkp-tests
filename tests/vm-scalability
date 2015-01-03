@@ -20,8 +20,8 @@ create_sparse_root
 set_repeat_count()
 {
 	(( size = size * nr_node ))
-	if [[ $test =~ 'shm' ]]; then
-		if [[ $test =~ 'lru' ]]; then
+	if [ "${test#*shm}" != "$test" ]; then
+		if [ "${test#*lru}" != "$test" ]; then
 			(( unit_size = shm_size / 2 ))
 		else
 			(( unit_size = shm_size * nr_cpu / 2 ))

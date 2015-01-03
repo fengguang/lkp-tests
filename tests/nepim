@@ -4,8 +4,8 @@
 # - protocol
 
 [ -n "$nr_threads" ] && opt_streams="-n $nr_threads"
-[[ $protocol =~ ^udp ]]	&& opt_udp=-u
-[[ $protocol =~ 6$ ]]	&& opt_addr='::1' || opt_addr='127.0.0.1'
+[ "${protocol#udp}" != "$protocol" ]	&& opt_udp=-u
+[ "${protocol%6}" != "$protocol" ]	&& opt_addr='::1' || opt_addr='127.0.0.1'
 [ -n "$runtime" ] || runtime=300
 
 cd $BENCHMARK_ROOT/nepim || exit

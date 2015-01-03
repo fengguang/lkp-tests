@@ -51,7 +51,7 @@ do
 	key=${line%%=*}
 	val=${line#*=}
 	[ -n "$val" ] || continue
-	[[ $key =~ '_46_' ]] || continue
+	[ "${key#*_46_}" != "$key" ] || continue
 	key=${key//_46_/.}
 	[ -f "$dir/$key" ] || continue
 

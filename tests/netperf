@@ -9,7 +9,7 @@ export PATH=$BENCHMARK_ROOT/netperf/bin:$PATH
 # start netserver
 cmd netserver
 
-[[ $test =~ 'SCTP' ]] && modprobe sctp 2>/dev/null
+[ "${test#*SCTP}" != "$test" ] && modprobe sctp 2>/dev/null
 sleep 1
 
 [ -n "$send_size" ] && test_options="-- -m $send_size"

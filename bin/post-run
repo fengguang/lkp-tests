@@ -43,7 +43,7 @@ wait_for_pipe()
 
 		for result in "${tmp_results[@]}"
 		do
-			[[ $result =~ '.gz' ]] || continue
+			[ "${result#*.gz}" != "$result" ] || continue
 			[ -s "$result" ] && continue
 
 			echo "wait_for_pipe $i: empty $result" >&2

@@ -5,7 +5,7 @@
 : ${group_file_number:=8}
 
 jobfile=fio_jbod_${disk_description}_${rw}_${ioengine}_${fallocate}_${blocksize}
-[[ $jobfile =~ '__' ]] && {
+[ "${jobfile#*__}" != "$jobfile" ] && {
 	echo "error composing $jobfile: missing options" >&2
 	exit 1
 }

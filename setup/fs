@@ -15,7 +15,7 @@ fs_options() {
 	case $fs in
 	xfs)
 		def_mount="-o nobarrier,inode64"
-		[[ $raid_level =~ raid ]] && (( $nr_partitions > 1 )) && {
+		[ "${raid_level#*raid}" != "$raid_level" ] && [[ $nr_partitions -gt 1 ]] && {
 			def_mount+=",logbsize=262144"
 			def_mkfs="-f -d agcount=$nr_partitions"
 		}
@@ -135,7 +135,7 @@ case $fs in
 	nfs)
 		start_nfsd $mount_points
 		mount_local_nfs $mount_points
-		[[ $0 =~ 'fs1' ]] && mount_points=
+		[ "${0#*fs1}" != "$0" ] && mount_points=
 		;;
 
 	*)

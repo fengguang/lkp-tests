@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[[ $fs =~ 'nfs' ]] || exit 0
+[ "${fs#*nfs}" != "$fs" ] || exit 0
 
 while :
 do

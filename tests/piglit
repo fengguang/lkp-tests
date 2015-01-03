@@ -37,7 +37,7 @@ cat > piglit.conf <<EOF
 path=$BENCHMARK_ROOT/piglit/lib/piglit/bin/igt
 EOF
 
-if [[ $group =~ 'igt-' ]]; then
+if [ "${group#*igt-}" != "$group" ]; then
 	$LKP_SRC/tests/piglit.xinitrc
 else
 	mkdir -p		/tmp/.X11-unix

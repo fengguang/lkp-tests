@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # skip unreliable machines
-[[ $HOSTNAME =~ (lkp-a0[1-9]|snb-drag) ]] && exit 0
+[ "${HOSTNAME#*lkp-a0[1-9]}"	!= "$HOSTNAME" ] && exit 0
+[ "${HOSTNAME#*snb-drag}"	!= "$HOSTNAME" ] && exit 0
 
 if [ ! -c /dev/cpu/0/msr ]; then
 	modprobe msr

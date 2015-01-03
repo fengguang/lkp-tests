@@ -52,7 +52,7 @@ run()
 note cd "$mount_points"
 cd "$mount_points" || exit
 
-if [[ $rwmode =~ 'wr' ]]; then
+if [ "${rwmode#*wr}" != "$rwmode" ]; then
 	prepare_fallocate
 else
 	prepare

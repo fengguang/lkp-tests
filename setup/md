@@ -7,8 +7,8 @@
 
 check_raid_level()
 {
-	[[ $raid_level =~ 'raid' ]] || exit 0
-	[[ $raid_level =~ 'braid' ]] && exit 0
+	[ "${raid_level#*raid}" != "$raid_level" ] || exit 0
+	[ "${raid_level#*braid}" != "$raid_level" ] && exit 0
 }
 check_raid_level
 
@@ -18,7 +18,7 @@ check_partition_size() {
 	# we still meet troubles with old kernele. Here workaround it.
 	[[ "$disk_description" =~ brd ]] && return
 	for dev do
-		[[ $dev =~ :/ ]] && continue
+		[ "${dev#*:/}" != "$dev" ] && continue
 
 		local part=$(basename $dev)
 		local size=$(grep $part /proc/partitions | awk '{ print $3 }')
