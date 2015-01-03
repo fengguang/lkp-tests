@@ -249,9 +249,10 @@ def parse_hash(ancestors, hash)
 end
 
 def shell_header
-	out_line "#!/bin/bash\n\n"
-	out_line "source $LKP_SRC/lib/job.sh\n"
-	out_line "source $LKP_SRC/lib/env.sh\n"
+	out_line "#!/bin/bash"
+	out_line
+	out_line "source $LKP_SRC/lib/job.sh"
+	out_line "source $LKP_SRC/lib/env.sh"
 	out_line
 end
 
@@ -269,7 +270,11 @@ out_line "}\n\n"
 
 out_line "run_job()"
 out_line "{"
-out_line "\texport_top_env\n\n"
+out_line
+out_line "\techo $$ > $TMP/run-job.pid"
+out_line
+out_line "\texport_top_env"
+out_line
 parse_hash [], job
 out_line "}\n\n"
 
