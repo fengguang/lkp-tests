@@ -10,15 +10,15 @@ fi
 
 for i in /sys/class/thermal/cooling_device*
 do
-	[[ -f $i/type ]] || continue
-	[[ $(<$i/type) = $type ]] || continue
+	[ -f "$i/type" ] || continue
+	[ $(<$i/type) = $type ] || continue
 
-	[[ $cur_state ]] && {
+	[ -n "$cur_state" ] && {
 		note   "echo ${cur_state%cp} > $i/cur_state"
 			echo ${cur_state%cp} > $i/cur_state
 	}
 
-	[[ $max_state ]] && {
+	[ -n "$max_state" ] && {
 		note   "echo ${max_state%mp} > $i/max_state"
 			echo ${max_state%mp} > $i/max_state
 	}

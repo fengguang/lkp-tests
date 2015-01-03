@@ -8,7 +8,7 @@ source $LKP_SRC/lib/sysinfo.sh
 
 setup_params()
 {
-	[[ $runtime ]] || runtime=300
+	[ -n "$runtime" ] || runtime=300
 	WARMUP_ITERATIONS=5 # defined in will-it-scale/main.c
 	iterations=$((3 + nr_node))
 	duration=$(( runtime / iterations / 2 - WARMUP_ITERATIONS ))

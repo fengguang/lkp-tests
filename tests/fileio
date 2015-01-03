@@ -6,11 +6,11 @@
 # - size
 # - filenum
 
-[[ $period   ]] || period=600
-[[ $rwmode   ]] || rwmode=rndrw
-[[ $iomode   ]] || iomode=sync
-[[ $size     ]] || size=$((128<<30))
-[[ $filenum  ]] || filenum=128
+[ -n "$period"	] || period=600
+[ -n "$rwmode"	] || rwmode=rndrw
+[ -n "$iomode"	] || iomode=sync
+[ -n "$size"	] || size=$((128<<30))
+[ -n "$filenum"	] || filenum=128
 
 filenum=${filenum%f}
 
@@ -33,7 +33,7 @@ prepare_fallocate()
 {
 	# in seqwr mode, fileio will remove all exist files, hence
 	# it's worthless to create them here.
-	[[ "$rwmode" = "seqwr" ]] && return
+	[ "$rwmode" = "seqwr" ] && return
 
 	local filesize=$((size / filenum))
 	for ((i = 0; i < filenum; i++))

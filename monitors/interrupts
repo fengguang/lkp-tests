@@ -12,7 +12,7 @@ take_snapshot()
 	cat /proc/$file
 }
 
-if [[ $interval ]]; then
+if [ -n "$interval" ]; then
 	source $LKP_SRC/lib/builtin.sh
 
 	while :

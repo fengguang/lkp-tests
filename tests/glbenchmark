@@ -3,8 +3,8 @@
 # - width
 # - height
 
-[[ $width  ]] || width=1366
-[[ $height ]] || height=768
+[ -n "$width" ] || width=1366
+[ -n "$height" ] || height=768
 
 width=${width%w}
 height=${height%h}

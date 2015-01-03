@@ -7,12 +7,12 @@
 # = preferred
 
 opts=
-[[ -v $all        ]] && opts+=" --all"
-[[ -v $localalloc ]] && opts+=" --localalloc"
-[[ $interleave    ]] && opts+=" --interleave=$interleave"
-[[ $membind       ]] && opts+=" --membind=$membind"
-[[ $cpunodebind   ]] && opts+=" --cpunodebind=$cpunodebind"
-[[ $preferred     ]] && opts+=" --preferred=$preferred"
+[ -v "$all"		] && opts+=" --all"
+[ -v "$localalloc"	] && opts+=" --localalloc"
+[ -n "$interleave"	] && opts+=" --interleave=$interleave"
+[ -n "$membind"		] && opts+=" --membind=$membind"
+[ -n "$cpunodebind"	] && opts+=" --cpunodebind=$cpunodebind"
+[ -n "$preferred"	] && opts+=" --preferred=$preferred"
 
 cat >> $TMP/env.yaml <<EOF
 

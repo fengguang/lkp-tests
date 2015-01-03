@@ -4,18 +4,18 @@
 # - dirty_background_ratio
 # - dirty_background_bytes
 
-if [[ $dirty_ratio ]]; then
+if [ -n "$dirty_ratio" ]; then
 	note "echo $dirty_ratio > /proc/sys/vm/dirty_ratio"
 	      echo $dirty_ratio > /proc/sys/vm/dirty_ratio
-elif [[ $dirty_bytes ]]; then
+elif [ -n "$dirty_bytes" ]; then
 	note "echo $dirty_bytes > /proc/sys/vm/dirty_bytes"
 	      echo $dirty_bytes > /proc/sys/vm/dirty_bytes
 fi
 
-if [[ $dirty_background_ratio ]]; then
+if [ -n "$dirty_background_ratio" ]; then
 	note "echo $dirty_background_ratio > /proc/sys/vm/dirty_background_ratio"
 	      echo $dirty_background_ratio > /proc/sys/vm/dirty_background_ratio
-elif [[ $dirty_background_bytes ]]; then
+elif [ -n "$dirty_background_bytes" ]; then
 	note "echo $dirty_background_bytes > /proc/sys/vm/dirty_background_bytes"
 	      echo $dirty_background_bytes > /proc/sys/vm/dirty_background_bytes
 fi

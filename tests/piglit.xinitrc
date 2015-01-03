@@ -2,8 +2,8 @@
 
 tset=${group%%-*}
 groups_dir=$BENCHMARK_ROOT/piglit/groups
-[[ -d $groups_dir ]] || groups_dir=$LKP_SRC/pack/piglit-addon/groups
-[[ -f $groups_dir/$tset-all ]] || cat $groups_dir/$tset-[0-9][0-9][0-9] > $groups_dir/$tset-all
+[ -d "$groups_dir" ] || groups_dir=$LKP_SRC/pack/piglit-addon/groups
+[ -f "$groups_dir/$tset-all" ] || cat $groups_dir/$tset-[0-9][0-9][0-9] > $groups_dir/$tset-all
 
 testcases=()
 while read testcase

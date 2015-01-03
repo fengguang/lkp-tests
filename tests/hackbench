@@ -4,9 +4,9 @@
 # - mode
 # - ipc
 
-[[ $ipc = 'pipe' ]] && ipc_option='--pipe'
+[ $ipc = 'pipe' ] && ipc_option='--pipe'
 
-[[ $runtime ]] || runtime=600
+[ -n "$runtime" ] || runtime=600
 
 set_env()
 {

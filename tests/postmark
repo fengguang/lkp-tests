@@ -3,7 +3,7 @@
 # - trans
 # - subdirs
 
-[[ ! "$mount_points" ]] && exit
+[ -z "$mount_points" ] && exit
 location=$(echo $mount_points | cut -d' ' -f1)
 number=${number%n}
 trans=${trans%s}

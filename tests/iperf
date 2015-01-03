@@ -4,8 +4,8 @@
 
 export PATH=$BENCHMARK_ROOT/iperf/bin:$PATH
 
-[[ $runtime ]] || runtime=300
-[[ $protocol = udp ]] && opt_udp=-u
+[ -n "$runtime" ] || runtime=300
+[ $protocol = udp ] && opt_udp=-u
 
 cmd iperf3 -s &>/dev/null &
 pid=$!

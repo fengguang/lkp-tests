@@ -36,7 +36,7 @@ if (( nr_hdd )); then
 	partitions="$hdd_partitions"
 	disk_description=${nr_hdd}hdd
 elif (( nr_brd )); then
-	[[ $ramdisk_size ]] || ramdisk_size="1G"
+	[ -n "$ramdisk_size" ] || ramdisk_size="1G"
 	modprobe -r brd
 	modprobe brd rd_nr=$nr_brd rd_size=$(to_kb $ramdisk_size) part_show=1
 	sleep 1
@@ -45,7 +45,7 @@ elif (( nr_brd )); then
 	disk_description=${nr_brd}brd
 	disks=$(echo $partitions | tr '\n' ' ')
 elif (( nr_srd )); then
-	[[ $ramdisk_size ]] || ramdisk_size="1G"
+	[ -n "$ramdisk_size" ] || ramdisk_size="1G"
 	modprobe -r scsi_debug
 	modprobe scsi_debug add_host=1 num_tgts=$nr_srd max_luns=1 dev_size_mb=$(to_mb $ramdisk_size)
 	sleep 1
@@ -54,7 +54,7 @@ elif (( nr_srd )); then
 	disk_description=${nr_srd}srd
 	disks=$(echo $partitions | tr '\n' ' ')
 elif (( scsi_ram )); then
-	[[ $ramdisk_size ]] || ramdisk_size="1G"
+	[ -n "$ramdisk_size" ] || ramdisk_size="1G"
 	modprobe -r scsi_ram
 	modprobe scsi_ram capacity=$(($(to_byte $ramdisk_size) / 512))
 	sleep 1
@@ -69,7 +69,7 @@ else
 fi
 
 partitions=$(echo $partitions | cut -f1-$nr_partitions -d' ')
-[[ $disks ]] || disks=$(echo $partitions | grep -o '[/a-z]\+' | sort -u | tr '\n' ' ')
+[ -n "$disks" ] || disks=$(echo $partitions | grep -o '[/a-z]\+' | sort -u | tr '\n' ' ')
 
 cat >> $TMP/env.yaml <<EOF
 

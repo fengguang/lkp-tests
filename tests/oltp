@@ -3,8 +3,8 @@
 # - nr_threads
 # - table_size
 
-[[ $runtime ]] || runtime=600
-[[ $table_size ]] && arg_table_size="--oltp-table-size=$table_size"
+[ -n "$runtime" ] || runtime=600
+[ -n "$table_size" ] && arg_table_size="--oltp-table-size=$table_size"
 
 args=(
 	--mysql-user=root

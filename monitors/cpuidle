@@ -24,7 +24,7 @@ take_snapshot()
 
 file=$(basename $0)
 
-if [[ ! $interval ]]; then
+if [ -z "$interval" ]; then
 	source $LKP_SRC/lib/wait.sh
 	take_snapshot
 	wait_post_test

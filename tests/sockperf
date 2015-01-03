@@ -10,7 +10,7 @@ pid=$!
 cmd ./sockperf server --tcp &
 pid_tcp=$!
 
-[[ $runtime ]] || runtime=600
+[ -n "$runtime" ] || runtime=600
 time=$((runtime / 6))
 msg_size=${msg_size%%[bB]}
 

@@ -16,7 +16,7 @@ sctp_lat
 # rds_lat
 )
 
-[[ $runtime ]] || runtime=600
+[ -n "$runtime" ] || runtime=600
 time=$((runtime / ${#tests[@]}))
 
 cmd ./qperf &

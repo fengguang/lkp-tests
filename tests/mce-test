@@ -18,10 +18,10 @@ EOF
 
 ./runmcetest -t ./work -s ./summary -o ./results -b ./bin -l ./work/rastest.caselist -r 1
 
-[[ $nr_partitions -ge 1 ]] || exit
+[ $nr_partitions -ge 1 ] || exit
 partition=${partitions%% *}
 
-[[ $duration ]] || duration=60
+[ -n "$duration" ] || duration=60
 
 cd cases/stress/hwpoison || exit
 

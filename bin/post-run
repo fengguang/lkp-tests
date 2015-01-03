@@ -6,7 +6,7 @@ umask 002
 wait_for_monitors()
 {
 	local pidfile=$TMP/.pid-wait-monitors
-	[[ -s $pidfile ]] || return 0
+	[ -s "$pidfile" ] || return 0
 
 	for i in 1 2 3 4 5
 	do
@@ -25,7 +25,7 @@ wait_for_monitors
 kill $(cat $TMP/pid-* /dev/null) 2>/dev/null
 
 PERF_EVENT_DATA=$TMP/perf.data
-[[ -s $PERF_EVENT_DATA ]] && {
+[ -s "$PERF_EVENT_DATA" ] && {
 	perf report --header -U -g fractal,5 -i $PERF_EVENT_DATA 2>/dev/null | gzip > $RESULT_ROOT/perf-profile.gz && {
 		rm -f $PERF_EVENT_DATA
 	}
@@ -44,7 +44,7 @@ wait_for_pipe()
 		for result in "${tmp_results[@]}"
 		do
 			[[ $result =~ '.gz' ]] || continue
-			[[ -s $result ]] && continue
+			[ -s "$result" ] && continue
 
 			echo "wait_for_pipe $i: empty $result" >&2
 			continue 2
@@ -59,10 +59,10 @@ wait_for_pipe()
 	return 1
 }
 
-[[ $TMP_RESULT_ROOT ]] &&
-[[ $TMP_RESULT_ROOT != $RESULT_ROOT ]] && {
+[ -n "$TMP_RESULT_ROOT" ] &&
+[ $TMP_RESULT_ROOT != $RESULT_ROOT ] && {
 	tmp_results=($TMP_RESULT_ROOT/*)
-	[[ $tmp_results ]] && {
+	[ -n "$tmp_results" ] && {
 		# give chance to monitor fifo writer to sync data back to file
 		wait_for_pipe
 		chown lkp.lkp "${tmp_results[@]}"
@@ -74,7 +74,7 @@ copy_to_result()
 {
 	local file=$1
 
-	[[ -s $file ]] || return
+	[ -s "$file" ] || return
 
 	cp $file $RESULT_ROOT
 }
@@ -84,7 +84,7 @@ copy_time_files()
 	local time_files=($TMP/*.time)
 	local ret_copy_time_files=0
 
-	[[ $time_files ]] || return
+	[ -n "$time_files" ] || return
 
 	for time_file in "${time_files[@]}"
 	do

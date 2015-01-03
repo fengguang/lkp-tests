@@ -2,8 +2,8 @@
 # - testtime
 # - test
 
-[[ $test ]] || exit
-[[ $testtime ]] || exit
+[ -n "$test"		] || exit
+[ -n "$testtime"	] || exit
 
 testtime=${testtime%s}
 

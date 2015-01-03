@@ -12,7 +12,7 @@ if [ ! -c /dev/cpu/0/msr ]; then
 	fi
 fi
 
-[[ $# -ge 1 ]] && exec turbostat "$@" 2>&1
+[ $# -ge 1 ] && exec turbostat "$@" 2>&1
 
 source $LKP_SRC/lib/wait.sh
 

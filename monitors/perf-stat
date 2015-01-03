@@ -6,14 +6,14 @@
 # perf may consume lots of fd
 ulimit -n 102400
 
-[[ "$events" ]] || events='hardware cache software'
+[ -n "$events" ] || events='hardware cache software'
 events=$(perf-events $events)
-[[ "$events" ]] || exit
+[ -n "$events" ] || exit
 
 opt_events="-e $(echo $events | sed 's/ / -e /g')"
 
-[[ "$command" ]] || {
-	if [[ $time ]]; then
+[ -n "$command" ] || {
+	if [ -n "$time" ]; then
 		command="sleep $time"
 	else
 		source $LKP_SRC/lib/wait.sh

@@ -12,7 +12,7 @@ cmd netserver
 [[ $test =~ 'SCTP' ]] && modprobe sctp 2>/dev/null
 sleep 1
 
-[[ "$send_size" ]] && test_options="-- -m $send_size"
+[ -n "$send_size" ] && test_options="-- -m $send_size"
 
 for i in $(seq $nr_threads)
 do

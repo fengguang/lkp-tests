@@ -3,9 +3,9 @@
 # - segments
 # - nr_threads
 
-[[ $segments ]] || segments=1024
-[[ $nr_threads ]] || nr_threads=16
-[[ $runtime ]] || runtime=600
+[ -n "$segments"	] || segments=1024
+[ -n "$nr_threads"	] || nr_threads=16
+[ -n "$runtime"		] || runtime=600
 
 segments=${segments%s}
 

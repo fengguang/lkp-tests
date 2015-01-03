@@ -13,12 +13,12 @@ export LOGDIR_RESULTS=$RESULT_ROOT/log_result
 
 mkdir -p $LOGDIR_RESULTS
 
-[[ ! "$mount_points" ]] && exit
+[ -z "$mount_points" ] && exit
 export TESTDISK_DIR=$(echo $mount_points | cut -d' ' -f1)
 
 echo "# running ./run.sh..."
 ./run.sh
-if [[ $? -ne 0 ]]; then
+if [ $? -ne 0 ]; then
 	echo "run_fail: 1"
 else
 	echo "# run success"

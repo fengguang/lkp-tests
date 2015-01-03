@@ -4,10 +4,10 @@
 
 shopt -s nullglob
 alarm_path="/sys/class/rtc/rtc0/wakealarm"
-[[ -f $alarm_path ]] || exit
+[ -f "$alarm_path" ] || exit
 
-[[ $runtime ]] || runtime=300
-[[ $iterations ]] || iterations=30
+[ -n "$runtime" ] || runtime=300
+[ -n "$iterations" ] || iterations=30
 interval=$(( runtime / iterations ))
 
 for i in `seq 1 $iterations`

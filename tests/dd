@@ -2,10 +2,10 @@
 # - runtime
 # - bs
 
-[[ $mount_points ]] || { echo "empty mount_points, disk failed?" >&2; exit; }
+[ -n "$mount_points" ] || { echo "empty mount_points, disk failed?" >&2; exit; }
 
 : ${runtime:=600}
-[[ $bs ]] && opt_bs="bs=$bs"
+[ -n "$bs" ] && opt_bs="bs=$bs"
 
 t=$(date +%s)
 

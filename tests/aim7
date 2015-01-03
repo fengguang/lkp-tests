@@ -3,8 +3,8 @@
 # - load
 #
 
-[[ $test ]] || exit
-[[ $load ]] || exit
+[ -n "$test" ] || exit
+[ -n "$load" ] || exit
 
 aim7_setup()
 {
@@ -24,7 +24,7 @@ EOF
 	fi
 
 	# setup config file
-	if [[ "$mount_points" ]]; then
+	if [ -n "$mount_points" ]; then
 		echo "$mount_points" > config
 	else
 		mkdir -p /fs/shm

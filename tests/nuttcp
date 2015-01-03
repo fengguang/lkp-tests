@@ -3,7 +3,7 @@
 
 cd $BENCHMARK_ROOT/nuttcp || exit
 
-[[ $runtime ]] || runtime=300
+[ -n "$runtime" ] || runtime=300
 
 cmd ./nuttcp -S --nofork &
 pid=$!

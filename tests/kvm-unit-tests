@@ -2,7 +2,7 @@
 
 cd $BENCHMARK_ROOT/kvm-unit-tests || exit
 
-[[ -c /dev/kvm ]] || modprobe kvm_intel
+[ -c '/dev/kvm' ] || modprobe kvm_intel
 
 cmd ./run_tests.sh || {
 	exit_code=$?

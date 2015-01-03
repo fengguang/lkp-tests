@@ -9,15 +9,15 @@ cd $BENCHMARK_ROOT/$BM_NAME || exit
 
 (( nr_threads > 1 )) && opt_threads="-t $nr_threads"
 
-[[ $samples ]] || samples=10000
+[ -n "$samples" ] || samples=10000
 
 samples=${samples%%ss}
 
-[[ $iterations ]] || iterations=20
+[ -n "$iterations" ] || iterations=20
 
-if [[ $BM_NAME == "ftq" ]]; then
+if [ "$BM_NAME" = 'ftq' ]; then
 	opt_iterations="-i $iterations"
-elif [[ $BM_NAME == "fwq" ]]; then
+elif [ "$BM_NAME" = 'fwq' ]; then
 	opt_iterations="-w $iterations"
 fi
 

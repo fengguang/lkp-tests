@@ -22,7 +22,7 @@ fi
 # quit when the FIFO writer is killed.
 echo $! >> $TMP/pid-monitors
 
-[[ -L $LKP_SRC/bin/cat-$monitor ]] || ln -s -T /bin/cat $LKP_SRC/bin/cat-$monitor
+[ -L "$LKP_SRC/bin/cat-$monitor" ] || ln -s -T /bin/cat $LKP_SRC/bin/cat-$monitor
 
 if grep -q -x -F $monitor $monitor_dir/need_gzip; then
 	#
@@ -36,9 +36,9 @@ if grep -q -x -F $monitor $monitor_dir/need_gzip; then
 	#
 	# gzip is pretty balanced.
 	#
-	[[ -L $LKP_SRC/bin/gzip-$monitor ]] || ln -s -T /bin/gzip $LKP_SRC/bin/gzip-$monitor
+	[ -L "$LKP_SRC/bin/gzip-$monitor" ] || ln -s -T /bin/gzip $LKP_SRC/bin/gzip-$monitor
 
-	if [[ $monitor = 'ftrace' ]]; then
+	if [ $monitor = 'ftrace' ]; then
 		# ftrace output may be too large for tmpfs
 		gzip-$monitor -c < $fifo | cat-$monitor > $RESULT_ROOT/$monitor.gz &
 	else
@@ -46,7 +46,7 @@ if grep -q -x -F $monitor $monitor_dir/need_gzip; then
 	fi
 else
 	# The small continuous output of vmstat is a convenient alive indicator
-	if [[ $monitor = vmstat ]]; then
+	if [ $monitor = vmstat ]; then
 		cat-$monitor	   $fifo		> $RESULT_ROOT/$monitor &
 	else
 		cat-$monitor	   $fifo		> $TMP_RESULT_ROOT/$monitor &

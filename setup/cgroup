@@ -37,7 +37,7 @@ dir=$CGROUP_MNT/$(basename $testcase)/$group
 
 # This is the fail safe mount.
 # mount_cgroup() in run-lkp will normally do a better job for us
-[[ -f $CGROUP_MNT/tasks ]] || {
+[ -f "$CGROUP_MNT/tasks" ] || {
 	subsys=$(awk 'NR > 1 {printf $1 ","}' /proc/cgroups)
 	subsys=${subsys%,}
 	cmd mkdir $CGROUP_MNT 2>/dev/null &&
@@ -50,10 +50,10 @@ while read line
 do
 	key=${line%%=*}
 	val=${line#*=}
-	[[ $val ]] || continue
+	[ -n "$val" ] || continue
 	[[ $key =~ '_46_' ]] || continue
 	key=${key//_46_/.}
-	[[ -f $dir/"$key" ]] || continue
+	[ -f "$dir/$key" ] || continue
 
 	note "echo $val > $dir/$key"
 	echo "$val" > $dir/"$key"

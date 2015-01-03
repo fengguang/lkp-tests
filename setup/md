@@ -22,12 +22,12 @@ check_partition_size() {
 
 		local part=$(basename $dev)
 		local size=$(grep $part /proc/partitions | awk '{ print $3 }')
-		[[ $size ]] || {
+		[ -n "$size" ] || {
 			echo "failed to get partition size for $dev" >&2
 			exit 1
 		}
-		if [[ $prev_size ]]; then
-			[[ $size != $prev_size ]] || {
+		if [ -n "$prev_size" ]; then
+			[ $size != $prev_size ] || {
 				echo "non-equal partition size: $dev $size" >&2
 				cat /proc/partitions >&2
 				exit 1

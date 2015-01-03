@@ -5,7 +5,7 @@ export PATH=$BENCHMARK_ROOT/piglit/bin:$PATH
 
 dri_exist()
 {
-	[[ -d /sys/kernel/debug/dri ]]
+	[ -d '/sys/kernel/debug/dri' ]
 }
 
 check_wait_dri()

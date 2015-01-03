@@ -8,7 +8,7 @@
 : ${duration:=10}
 : ${delay:=100}
 
-[[ $freq ]] &&
+[ -n "$freq" ] &&
 opt_freq="--freq=$freq"
 opt_events="-e ${events// / -e }"
 

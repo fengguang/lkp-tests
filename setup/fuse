@@ -4,7 +4,7 @@
 # - write_ratelimit
 # - writeback_cache
 
-if [[ $mount_max ]]; then
+if [ -n "$mount_max" ]; then
 	mount_max=${mount_max%%[a-zA-Z_]*}
 else
 	mount_max=10000
@@ -12,10 +12,10 @@ fi
 stack_mount_points=$(echo $mount_points | cut -f-$mount_max -d' ')
 keep_mount_points=$(echo $mount_points | cut -f$((mount_max+1))- -d' ')
 
-[[ $write_ratelimit	]] && export FUSE_WB=${write_ratelimit%M*}
+[ -n "$write_ratelimit" ] && export FUSE_WB=${write_ratelimit%M*}
 
-[[ $thread_model = serialized	]] && options+='-s '
-[[ $writeback_cache = wc	]] && options+='-o writeback_cache '
+[ $thread_model = serialized ] && options+='-s '
+[ $writeback_cache = wc ] && options+='-o writeback_cache '
 
 for mnt in $stack_mount_points
 do

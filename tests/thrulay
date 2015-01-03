@@ -3,7 +3,7 @@
 
 export PATH=$BENCHMARK_ROOT/thrulay/sbin:$BENCHMARK_ROOT/thrulay/bin:$PATH
 
-[[ $runtime ]] || runtime=300
+[ -n "$runtime" ] || runtime=300
 
 cmd thrulayd
 

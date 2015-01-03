@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[[ $events ]] || exit 0
+[ -n "$events" ] || exit 0
 
 TRACING_ROOT=/sys/kernel/debug/tracing
 

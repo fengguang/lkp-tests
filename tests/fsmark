@@ -14,7 +14,7 @@ source $LKP_SRC/lib/unit.sh
 # NOTE: support 1 disk test only so far
 test_dir=${mount_points%% *}
 
-[[ $nr_threads ]] || nr_threads=$nr_cpu
+[ -n "$nr_threads" ] || nr_threads=$nr_cpu
 
 # limit from fsmark
 (( nr_threads > 64 )) && nr_threads=64
@@ -37,7 +37,7 @@ declare -A SYNC_METHODS=(
 	[syncPostFsync]=6
 )
 
-if [[ $sync_method ]]; then
+if [ -n "$sync_method" ]; then
 	sync_method=${SYNC_METHODS[$sync_method]}
 else
 	sync_method=1
@@ -46,7 +46,7 @@ fi
 # calculate how many files we need create at one loop
 calc_nr_file()
 {
-	[[ "$test_size" ]] || {
+	[ -n "$test_size" ] || {
 		# set test_size to 80G by default to avoid running too long
 		test_size="80G"
 
@@ -57,7 +57,7 @@ calc_nr_file()
 
 	local disk_size=$(df -B M | grep $test_dir  | awk '{print $2}')
 	disk_size=$(to_byte $disk_size)
-	[[ "$test_size" -gt "$disk_size" ]] && test_size=$disk_size
+	[ "$test_size" -gt "$disk_size" ] && test_size=$disk_size
 
 	# set the minimal size to 4K, the default blocksize. filesize
 	# smaller than 4K is used to test fs iniline data or small file
@@ -70,7 +70,7 @@ calc_nr_file()
 	(( size < 4096 )) && size=4096
 
 	nr_files=$((test_size / size / nr_threads / iterations))
-	[[ "$nr_files" -lt 1 ]] && {
+	[ "$nr_files" -lt 1 ] && {
 		echo "Warning: nr_files too small; "
 		echo "    test_size: $(to_gb $test_size), filesize: $filesize"
 		echo "    nr_threads: $nr_threads, iterations: $iterations"
@@ -78,7 +78,7 @@ calc_nr_file()
 	}
 
 	# limit nr_files to 1000000; it's a limit from fsmark itself
-	[[ "$nr_files" -gt 1000000 ]] && nr_files=1000000
+	[ "$nr_files" -gt 1000000 ] && nr_files=1000000
 }
 
 calc_nr_file
@@ -89,7 +89,7 @@ if [[ -z "$nr_directories" && "$nr_files_per_directory"  ]]; then
 	nr_directories=$((nr_files / nr_files_per_directory))
 fi
 
-if [[ "$nr_directories" && "$nr_files_per_directory" ]]; then
+if [ "$nr_directories" -a "$nr_files_per_directory" ]; then
 	PARAM+=" -D $nr_directories -N $nr_files_per_directory"
 fi
 

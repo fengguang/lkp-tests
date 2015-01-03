@@ -6,7 +6,7 @@
 
 cd $BENCHMARK_ROOT/vm-scalability || exit
 
-[[ $runtime ]] || runtime=300
+[ -n "$runtime" ] || runtime=300
 
 echo 1		> /proc/sys/vm/overcommit_memory
 echo $((1<<30)) > /proc/sys/vm/max_map_count
@@ -34,7 +34,7 @@ set_repeat_count()
 	echo "repeat count: $repeat"
 }
 
-if [[ $size ]]; then
+if [ -n "$size" ]; then
 	set_repeat_count
 	for ((i = 0; i < repeat; i++))
 	do

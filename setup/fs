@@ -7,7 +7,7 @@
 # fs1: followup scripts will see NFS mount_points only
 # fs2: followup scripts will see NFS mount_points as well as original mount_points
 
-[[ $fs ]] || exit 0
+[ -n "$fs" ] || exit 0
 
 def_mount=
 def_mkfs=
