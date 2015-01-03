@@ -15,7 +15,7 @@ fs_options() {
 	case $fs in
 	xfs)
 		def_mount="-o nobarrier,inode64"
-		[ "${raid_level#*raid}" != "$raid_level" ] && [[ $nr_partitions -gt 1 ]] && {
+		[ "${raid_level#*raid}" != "$raid_level" ] && [ "$nr_partitions" -gt 1 ] && {
 			def_mount+=",logbsize=262144"
 			def_mkfs="-f -d agcount=$nr_partitions"
 		}
@@ -40,7 +40,9 @@ fs_options() {
 }
 
 is_btrfs_raid_levels() {
-	[[ $fs = 'btrfs' && $raid_level =~ ^braid(0|1|10)$ ]]
+	[ "$fs" = 'btrfs' ] && [ "$raid_level" = 'braid0' -o \
+				 "$raid_level" = 'braid1' -o \
+				 "$raid_level" = 'braid10' ]
 }
 
 destroy_devices() {

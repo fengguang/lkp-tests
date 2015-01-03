@@ -51,7 +51,7 @@ calc_nr_file()
 		test_size="80G"
 
 		# limit test size again for small writes; as they are much slower
-		[[ "$filesize" -lt "$(to_byte 1M)" ]] && test_size="20G"
+		[ "$filesize" -lt "$(to_byte 1M)" ] && test_size="20G"
 	}
 	test_size=$(to_byte $test_size)
 
@@ -85,7 +85,7 @@ calc_nr_file
 
 nr_directories=${nr_directories%d}
 nr_files_per_directory=${nr_files_per_directory%fpd}
-if [[ -z "$nr_directories" && "$nr_files_per_directory"  ]]; then
+if [ -z "$nr_directories" -a -n "$nr_files_per_directory" ]; then
 	nr_directories=$((nr_files / nr_files_per_directory))
 fi
 

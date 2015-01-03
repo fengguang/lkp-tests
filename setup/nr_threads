@@ -2,7 +2,7 @@
 
 nr_threads=${1%%[a-z]*}
 
-if [[ "$nr_threads" =~ %$ ]]; then
+if [ "${nr_threads%%%}" != "$nr_threads" ]; then
 	nr_threads=${nr_threads%%%}
 	div=100
 	if [ "${nr_threads#*.[0-9]}" != "$nr_threads" ]; then
@@ -11,7 +11,7 @@ if [[ "$nr_threads" =~ %$ ]]; then
 		integer_digits=${integer_digits#0}
 		nr_threads="$integer_digits$decimal_digits"
 		i=0
-		while [[ $i -lt ${#decimal_digits} ]]
+		while [ $i -lt ${#decimal_digits} ]
 		do
 			div="${div}0"
 			i=$((i + 1))

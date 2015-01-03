@@ -21,7 +21,7 @@ function set_env()
 	export SCRATCH_MNT=/fs/scratch
 	cmd mkdir $SCRATCH_MNT -p
 
-	if [[ $fs = btrfs && $nr_partitions -ge 4 ]]; then
+	if [ "$fs" = btrfs ] && [ "$nr_partitions" -ge 4 ]; then
 		note export SCRATCH_DEV_POOL=\"${partitions#* }\"
 		export SCRATCH_DEV_POOL="${partitions#* }"
 	else
@@ -29,7 +29,7 @@ function set_env()
 		export SCRATCH_DEV=${partitions##* }
 	fi
 
-	if [[ $fs = xfs && $nr_partitions -ge 3 ]]; then
+	if [ "$fs" = xfs ] && [ "$nr_partitions" -ge 3 ]; then
 		SCRATCH_LOGDEV=${partitions#* }
 		SCRATCH_LOGDEV=${SCRATCH_LOGDEV%% *}
 		note export SCRATCH_LOGDEV=$SCRATCH_LOGDEV
