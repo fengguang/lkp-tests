@@ -4,8 +4,8 @@ shopt -s nullglob
 
 for m in /sys/firmware/memmap/*
 do
-	start=$(<$m/start)
-	end=$(<$m/end)
-	type=$(<$m/type)
+	start=$(cat $m/start)
+	end=$(cat $m/end)
+	type=$(cat $m/type)
 	echo ${m##*/},$start,$end,$(( end - start + 1 )),$type
 done

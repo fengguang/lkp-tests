@@ -6,7 +6,7 @@ cd /sys/kernel/debug/tracing || exit
 
 do_test()
 {
-	for tracer in $(<available_tracers)
+	for tracer in $(cat available_tracers)
 	do
 		note "echo $tracer > current_tracer"
 		      echo $tracer > current_tracer

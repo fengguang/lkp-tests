@@ -16,7 +16,7 @@ do
 		done < /sys/devices/system/cpu/$cpu/cpufreq/stats/time_in_state
 
 		echo $cpu.total_trans: \
-			$(</sys/devices/system/cpu/$cpu/cpufreq/stats/total_trans)
+			$(cat /sys/devices/system/cpu/$cpu/cpufreq/stats/total_trans)
 	done
 
 	sleep ${interval:-1}

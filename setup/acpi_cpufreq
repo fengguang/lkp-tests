@@ -1,8 +1,8 @@
 #!/bin/bash
 # - scaling_governor
 
-[ -d "/sys/devices/system/cpu/cpu0/cpufreq" ] || exit 0
-[ $(</sys/devices/system/cpu/cpu0/cpufreq/scaling_driver) = "acpi-cpufreq" ] || exit 0
+[ -d '/sys/devices/system/cpu/cpu0/cpufreq' ] || exit 0
+[ "$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_driver)" = "acpi-cpufreq" ] || exit 0
 
 [ -n "$scaling_governor" ] || scaling_governor=performance
 

@@ -15,7 +15,7 @@ do
 		for ((i=1; i < NUMBER_OF_CPUS; i++))
 		do
 			sleep $interval
-			state=$(< $CPUPATH/cpu$i/online)
+			state=$(cat $CPUPATH/cpu$i/online)
 			echo $((state^1)) > $CPUPATH/cpu$i/online
 		done
 	done
