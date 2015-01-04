@@ -252,9 +252,6 @@ end
 def shell_header
 	out_line "#!/bin/bash"
 	out_line
-	out_line ". $LKP_SRC/lib/job.sh"
-	out_line ". $LKP_SRC/lib/env.sh"
-	out_line
 end
 
 shell_header
@@ -267,6 +264,7 @@ out_line "export_top_env()"
 out_line "{"
 create_programs_hash "{setup,monitors,tests}/**/*"
 job.delete_if { |key, val| parse_one([], key, val, :PASS_EXPORT_ENV) }
+out_line "\texport LKP_SRC=/lkp/${user:-lkp}/src"
 out_line "}\n\n"
 
 out_line "run_job()"
@@ -275,6 +273,9 @@ out_line
 out_line "\techo $$ > $TMP/run-job.pid"
 out_line
 out_line "\texport_top_env"
+out_line
+out_line "\t. $LKP_SRC/lib/job.sh"
+out_line "\t. $LKP_SRC/lib/env.sh"
 out_line
 parse_hash [], job
 out_line "}\n\n"
