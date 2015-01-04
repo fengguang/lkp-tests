@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # - test
 
 cd $BENCHMARK_ROOT/ltp || exit
@@ -11,6 +11,9 @@ fi
 cmd ./runltp -f $test
 
 mkdir $RESULT_ROOT/ltp-results
-chmod g+w	$BENCHMARK_ROOT/ltp/{results,output}/*
-chown lkp.lkp	$BENCHMARK_ROOT/ltp/{results,output}/*
-cp -a		$BENCHMARK_ROOT/ltp/{results,output}/* $RESULT_ROOT/ltp-results
+for dir in results output
+do
+	chmod g+w	$BENCHMARK_ROOT/ltp/$dir/*
+	chown lkp.lkp	$BENCHMARK_ROOT/ltp/$dir/*
+	cp -a		$BENCHMARK_ROOT/ltp/$dir/* $RESULT_ROOT/ltp-results
+done
