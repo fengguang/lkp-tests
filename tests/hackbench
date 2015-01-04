@@ -18,7 +18,7 @@ set_env()
 	ulimit -n $((tasks + 2048))
 
 	def_pid_max=32768
-	[ "$tasks" -gt def_pid_max / 2  ] && {
+	[ "$tasks" -gt $((def_pid_max / 2)) ] && {
 		sysctl -w kernel.pid_max=$((tasks * 2))
 		sysctl -w kernel.threads-max=$((tasks * 2))
 		sysctl -w vm.max_map_count=$((tasks * 100))
@@ -44,5 +44,5 @@ while :
 do
 	run_hackbench
 	now=$(date +%s)
-	[ now - start_time -gt "$runtime" ] && break
+	[ $((now - start_time)) -gt "$runtime" ] && break
 done
