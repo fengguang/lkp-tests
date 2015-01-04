@@ -10,7 +10,7 @@
 
 cd $BENCHMARK_ROOT/nepim || exit
 
-cmd ./nepim >/dev/null & 2>&1
+cmd ./nepim >/dev/null 2>&1 &
 pid=$!
 
 sleep 1
