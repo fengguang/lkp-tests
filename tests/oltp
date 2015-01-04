@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # - runtime
 # - nr_threads
 # - table_size
@@ -6,7 +6,7 @@
 [ -n "$runtime" ] || runtime=600
 [ -n "$table_size" ] && arg_table_size="--oltp-table-size=$table_size"
 
-args=(
+args="
 	--mysql-user=root
 	--mysql-db=mysql
 	--oltp-read-only=on
@@ -14,7 +14,7 @@ args=(
 	--num-threads=$nr_threads
 	--max-time=$runtime
 	$arg_table_size
-)
+"
 
 setup_mysql()
 {
@@ -37,12 +37,12 @@ stop_mysql()
 
 prepare()
 {
-	cmd sysbench --test=oltp ${args[@]} prepare
+	cmd sysbench --test=oltp ${args} prepare
 }
 
 run()
 {
-	cmd sysbench --test=oltp ${args[@]} run
+	cmd sysbench --test=oltp ${args} run
 }
 
 setup_mysql
