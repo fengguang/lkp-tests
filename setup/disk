@@ -31,11 +31,11 @@ check_nr_partitions
 ((nr_ssd > max_ssd)) && nr_ssd=$max_ssd
 ((nr_hdd > max_hdd)) && nr_hdd=$max_hdd
 
-if (( nr_hdd )); then
+if [ -n "$nr_hdd" -a "$nr_hdd" != 0 ]; then
 	nr_partitions=$nr_hdd
 	partitions="$hdd_partitions"
 	disk_description=${nr_hdd}hdd
-elif (( nr_brd )); then
+elif [ -n "$nr_brd" -a "$nr_brd" != 0 ]; then
 	[ -n "$ramdisk_size" ] || ramdisk_size="1G"
 	modprobe -r brd
 	modprobe brd rd_nr=$nr_brd rd_size=$(to_kb $ramdisk_size) part_show=1
@@ -44,7 +44,7 @@ elif (( nr_brd )); then
 	nr_partitions=$nr_brd
 	disk_description=${nr_brd}brd
 	disks=$(echo $partitions | tr '\n' ' ')
-elif (( nr_srd )); then
+elif [ -n "$nr_srd" -a "$nr_srd" != 0 ]; then
 	[ -n "$ramdisk_size" ] || ramdisk_size="1G"
 	modprobe -r scsi_debug
 	modprobe scsi_debug add_host=1 num_tgts=$nr_srd max_luns=1 dev_size_mb=$(to_mb $ramdisk_size)
@@ -53,7 +53,7 @@ elif (( nr_srd )); then
 	nr_partitions=$nr_srd
 	disk_description=${nr_srd}srd
 	disks=$(echo $partitions | tr '\n' ' ')
-elif (( scsi_ram )); then
+elif [ -n "$scsi_ram" -a "$scsi_ram" != 0 ]; then
 	[ -n "$ramdisk_size" ] || ramdisk_size="1G"
 	modprobe -r scsi_ram
 	modprobe scsi_ram capacity=$(($(to_byte $ramdisk_size) / 512))

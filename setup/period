@@ -14,7 +14,7 @@ case $period in
 		;;
 esac
 
-(( unit )) && (( period = ${period%?} * unit ))
+[ -n "$unit" -a "$unit" != 0 ] && period=$(( ${period%?} * unit  ))
 
 cat >> $TMP/env.yaml <<EOF
 period: $period

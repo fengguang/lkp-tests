@@ -1,7 +1,7 @@
 #!/bin/bash
 # - test
 
-(( nr_partitions < 2)) && exit 1
+[ "$nr_partitions" -lt 2 ] && exit 1
 cd $BENCHMARK_ROOT/xfstests || exit
 
 function set_env()

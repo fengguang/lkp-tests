@@ -12,7 +12,7 @@ setup_params()
 	WARMUP_ITERATIONS=5 # defined in will-it-scale/main.c
 	iterations=$((3 + nr_node))
 	duration=$(( runtime / iterations / 2 - WARMUP_ITERATIONS ))
-	(( duration < 5 )) && duration=5
+	[ "$duration" -lt 5  ] && duration=5
 }
 
 setup_threads_to_iterate

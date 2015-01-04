@@ -19,29 +19,29 @@ create_sparse_root
 
 set_repeat_count()
 {
-	(( size = size * nr_node ))
+	size=$(( size * nr_node  ))
 	if [ "${test#*shm}" != "$test" ]; then
 		if [ "${test#*lru}" != "$test" ]; then
-			(( unit_size = shm_size / 2 ))
+			unit_size=$(( shm_size / 2  ))
 		else
-			(( unit_size = shm_size * nr_cpu / 2 ))
+			unit_size=$(( shm_size * nr_cpu / 2  ))
 		fi
 	else
-		(( unit_size = mem / 2 ))
+		unit_size=$(( mem / 2  ))
 	fi
-	(( unit_size > size )) && (( unit_size = size ))
-	(( repeat = size / unit_size ))
+	[ "$unit_size" -gt "$size" ] && unit_size=$(( size  ))
+	repeat=$(( size / unit_size  ))
 	echo "repeat count: $repeat"
 }
 
 if [ -n "$size" ]; then
 	set_repeat_count
-	for ((i = 0; i < repeat; i++))
+	for i in $(seq $repeat)
 	do
 		cmd "./case-$test"
-		(( i < repeat )) && {
+		[ "$i" -le "$repeat" ] && {
 			read uptime idletime < /proc/uptime
-			(( ${uptime%.*} > runtime * 3 )) && {
+			[ "${uptime%.*}" -gt "$((runtime * 3))" ] && {
 				echo "runtime exceeded, consider adjust size configuration"
 				break
 			}

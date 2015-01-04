@@ -7,7 +7,7 @@ BM_NAME=$(basename $0)
 
 cd $BENCHMARK_ROOT/$BM_NAME || exit
 
-(( nr_threads > 1 )) && opt_threads="-t $nr_threads"
+[ "$nr_threads" -gt 1  ] && opt_threads="-t $nr_threads"
 
 [ -n "$samples" ] || samples=10000
 

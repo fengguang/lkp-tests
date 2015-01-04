@@ -23,7 +23,7 @@ case $runtime in
 		;;
 esac
 
-(( unit )) && (( runtime = ${runtime%?} * unit ))
+[ -n "$unit" -a "$unit" != 0 ] && runtime=$(( ${runtime%?} * unit  ))
 
 cat >> $TMP/env.yaml <<EOF
 runtime: $runtime

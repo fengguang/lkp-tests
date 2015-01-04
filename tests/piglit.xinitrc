@@ -21,7 +21,7 @@ do
 	echo "${testcase// /_}".seconds: $(echo $end_time - $start_time | bc)
 	cmd piglit summary console $TMP/piglit-results-$i
 	cp $TMP/piglit-results-$i/results.json $RESULT_ROOT/results/${i}.json
-	(( i++ ))
+	[ -n "$i++" -a "$i++" != 0 ]
 done
 
 echo all tests finished

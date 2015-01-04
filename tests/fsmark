@@ -17,7 +17,7 @@ test_dir=${mount_points%% *}
 [ -n "$nr_threads" ] || nr_threads=$nr_cpu
 
 # limit from fsmark
-(( nr_threads > 64 )) && nr_threads=64
+[ "$nr_threads" -gt 64  ] && nr_threads=64
 
 PARAM=
 for thread in $(seq 1 $nr_threads); do
@@ -67,7 +67,7 @@ calc_nr_file()
 	# need one block to store the data. So, to avoid running out of
 	# space for many small files, set the minimal size to 4K.
 	local size=$filesize
-	(( size < 4096 )) && size=4096
+	[ "$size" -lt 4096  ] && size=4096
 
 	nr_files=$((test_size / size / nr_threads / iterations))
 	[ "$nr_files" -lt 1 ] && {

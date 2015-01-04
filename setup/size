@@ -17,7 +17,7 @@ case $size in
 		;;
 esac
 
-(( bits )) && (( size = ${size%?} << bits ))
+[ -n "$bits" -a "$bits" != 0 ] && size=$(( ${size%?} << bits  ))
 
 cat >> $TMP/env.yaml <<EOF
 size: $size
