@@ -28,6 +28,9 @@ check_nr_partitions()
 }
 check_nr_partitions
 
+[ -z "$nr_hdd" ] && nr_hdd=0
+[ -z "$nr_ssd" ] && nr_ssd=0
+
 [ "$nr_ssd" -gt "$max_ssd" ] && nr_ssd=$max_ssd
 [ "$nr_hdd" -gt "$max_hdd" ] && nr_hdd=$max_hdd
 
