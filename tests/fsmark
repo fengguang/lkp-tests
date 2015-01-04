@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # - nr_threads
 # - test_size
 # - filesize
@@ -27,21 +27,16 @@ done
 
 filesize=$(to_byte $filesize)
 
-declare -A SYNC_METHODS=(
-	[NoSync]=0
-	[fsyncBeforeClose]=1
-	[syncFsync]=2
-	[PostReverseFsync]=3
-	[syncPostReverseFsync]=4
-	[PostFsync]=5
-	[syncPostFsync]=6
-)
-
-if [ -n "$sync_method" ]; then
-	sync_method=${SYNC_METHODS[$sync_method]}
-else
-	sync_method=1
-fi
+case "$sync_method" in
+	NoSync)			sync_method=0 ;;
+	fsyncBeforeClose)	sync_method=1 ;;
+	syncFsync)		sync_method=2 ;;
+	PostReverseFsync)	sync_method=3 ;;
+	syncPostReverseFsync)	sync_method=4 ;;
+	PostFsync)		sync_method=5 ;;
+	syncPostFsync)		sync_method=6 ;;
+	'')			sync_method=1 ;;
+esac
 
 # calculate how many files we need create at one loop
 calc_nr_file()
