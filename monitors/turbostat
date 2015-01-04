@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # skip unreliable machines
 [ "${HOSTNAME#*lkp-a0[1-9]}"	!= "$HOSTNAME" ] && exit 0

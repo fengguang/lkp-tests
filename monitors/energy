@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # These events are based on https://lwn.net/Articles/569674/
 events=$($LKP_SRC/bin/perf-events 'power/energy-*')

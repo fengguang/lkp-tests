@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 for dev in $partitions; do
 	# skip nfs dev

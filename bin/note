@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 date=$(date +'%F %T')
 echo "$date $@"

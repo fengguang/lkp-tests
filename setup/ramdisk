@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # - nr_rd
 
 [ -n "$size"	] || size=$(( 1024 * 1024 * 1024 ))

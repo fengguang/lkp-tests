@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # - runtime
 
 modprobe locktorture 2>/dev/null || exit 0
