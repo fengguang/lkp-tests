@@ -8,12 +8,7 @@ if [ "$test" = 'dio' ]; then
 	export TMPDIR=$(echo $mount_points | cut -d' ' -f1)
 fi
 
-cmd ./runltp -f $test
+cmd ./runltp -f $test || exit
 
-mkdir $RESULT_ROOT/ltp-results
-for dir in results output
-do
-	chmod g+w	$BENCHMARK_ROOT/ltp/$dir/*
-	chown lkp.lkp	$BENCHMARK_ROOT/ltp/$dir/*
-	cp -a		$BENCHMARK_ROOT/ltp/$dir/* $RESULT_ROOT/ltp-results
-done
+copy-results	$BENCHMARK_ROOT/ltp/results/* \
+		$BENCHMARK_ROOT/ltp/output/*

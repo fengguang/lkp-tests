@@ -10,14 +10,17 @@ i=0
 grep -F -x -f $groups_dir/$tset-all $groups_dir/$group |
 while read testcase
 do
+	tmp_results="$TMP/piglit-results-$i"
 	start_time=$(date +%s.%N)
-	cmd piglit run $tset -t "$testcase" $TMP/piglit-results-$i
+	cmd piglit run $tset -t "$testcase" "$tmp_results"
 	end_time=$(date +%s.%N)
 	id=$(echo "$testcase" | tr ' ' _).seconds
 	elapsed=$(echo $end_time - $start_time | bc)
 	echo "$id: $elapsed"
-	cmd piglit summary console $TMP/piglit-results-$i
-	cp $TMP/piglit-results-$i/results.json $RESULT_ROOT/results/${i}.json
+	cmd piglit summary console "$tmp_results"
+	mv		"$tmp_results"/results.json \
+			"$tmp_results"/${i}.json
+	copy-results	"$tmp_results"/${i}.json
 	[ -n "$i++" -a "$i++" != 0 ]
 done
 

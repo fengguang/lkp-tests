@@ -14,11 +14,7 @@ run_one()
 
 	cmd make -C $testcase $ext_opt run_tests
 
-	ls $BENCHMARK_ROOT/pm-qa/$testcase/*.log >/dev/null 2>&1 && {
-		chmod g+w	$BENCHMARK_ROOT/pm-qa/$testcase/*.log
-		chown lkp.lkp	$BENCHMARK_ROOT/pm-qa/$testcase/*.log
-		cp -a		$BENCHMARK_ROOT/pm-qa/$testcase/*.log $RESULT_ROOT/
-	}
+	copy-results $BENCHMARK_ROOT/pm-qa/$testcase/*.log
 }
 
 if [ "$test" = 'all' ]; then

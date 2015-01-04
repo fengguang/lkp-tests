@@ -22,6 +22,6 @@ if [ -z "$jobfile" ]; then
 	. $(dirname $0)/$testcase
 fi
 
-cp $jobfile $RESULT_ROOT
+copy-results $jobfile
 
 cmd fio $jobfile

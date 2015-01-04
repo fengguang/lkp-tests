@@ -5,8 +5,6 @@ cd $BENCHMARK_ROOT/unixbench || exit
 
 export LANG=C
 
-cmd ./Run $test
+cmd ./Run $test || exit
 
-chmod g+w $BENCHMARK_ROOT/unixbench/results/*
-chown lkp.lkp $BENCHMARK_ROOT/unixbench/results/*
-cp -a $BENCHMARK_ROOT/unixbench/results/* $RESULT_ROOT/
+copy-results $BENCHMARK_ROOT/unixbench/results/*

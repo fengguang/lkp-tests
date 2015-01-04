@@ -13,6 +13,4 @@ cmd ./run_tests.sh || {
 	exit $exit_code
 }
 
-chmod g+w	$BENCHMARK_ROOT/kvm-unit-tests/test.log
-chown lkp.lkp	$BENCHMARK_ROOT/kvm-unit-tests/test.log
-cp -a		$BENCHMARK_ROOT/kvm-unit-tests/test.log $RESULT_ROOT/
+copy-results $BENCHMARK_ROOT/kvm-unit-tests/test.log

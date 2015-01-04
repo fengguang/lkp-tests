@@ -21,8 +21,6 @@ elif [ "$BM_NAME" = 'fwq' ]; then
 	opt_iterations="-w $iterations"
 fi
 
-cmd ./t_$BM_NAME -n $samples $opt_iterations $opt_threads
+cmd ./t_$BM_NAME -n $samples $opt_iterations $opt_threads || exit
 
-chmod g+w	$BENCHMARK_ROOT/$BM_NAME/*.dat
-chown lkp.lkp	$BENCHMARK_ROOT/$BM_NAME/*.dat
-cp -a		$BENCHMARK_ROOT/$BM_NAME/*.dat $RESULT_ROOT/
+copy-results $BENCHMARK_ROOT/$BM_NAME/*.dat
