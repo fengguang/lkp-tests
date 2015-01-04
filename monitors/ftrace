@@ -27,9 +27,12 @@ mkdir $RESULT_ROOT/trace_event
 
 for event in $events
 do
-	knob=(/sys/kernel/debug/tracing/events/*/$event/enable)
-	echo "echo 1 > $knob" >> $RESULT_ROOT/reproduce.sh
-	echo 1 > $knob
+	for knob in /sys/kernel/debug/tracing/events/*/$event/enable
+	do
+		[ -e "$knob" ] || break
+		echo "echo 1 > $knob" >> $RESULT_ROOT/reproduce.sh
+		echo 1 > $knob
+	done
 
 	cp /sys/kernel/debug/tracing/events/*/$event/format $RESULT_ROOT/trace_event/$event.fmt
 done

@@ -1,9 +1,8 @@
 #!/bin/bash
 
-shopt -s nullglob
-
 for m in /sys/firmware/memmap/*
 do
+	[ -e "$m" ] || exit 0
 	start=$(cat $m/start)
 	end=$(cat $m/end)
 	type=$(cat $m/type)

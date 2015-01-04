@@ -3,8 +3,6 @@
 
 [ -f /sys/devices/system/cpu/cpu0/cpuidle/state0/name ] || exit 0
 
-shopt -s nullglob
-
 take_snapshot()
 {
 	echo time: $(date +%s.%N)

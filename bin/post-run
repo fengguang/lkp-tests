@@ -1,6 +1,5 @@
 #!/bin/bash
 
-shopt -s nullglob
 umask 002
 
 wait_for_monitors()
@@ -41,7 +40,7 @@ wait_for_pipe()
 		sleep $i
 		pgrep --pidfile $TMP/.pid-pipes '(tee|cat|gzip)-.*' >/dev/null && continue
 
-		for result in "${tmp_results[@]}"
+		for result in ${tmp_results}
 		do
 			[ "${result#*.gz}" != "$result" ] || continue
 			[ -s "$result" ] && continue
@@ -61,12 +60,12 @@ wait_for_pipe()
 
 [ -n "$TMP_RESULT_ROOT" ] &&
 [ "$TMP_RESULT_ROOT" != "$RESULT_ROOT" ] && {
-	tmp_results=($TMP_RESULT_ROOT/*)
-	[ -n "$tmp_results" ] && {
+	tmp_results=$(echo $TMP_RESULT_ROOT/*)
+	[ "$tmp_results" != "$TMP_RESULT_ROOT/*" ] && {
 		# give chance to monitor fifo writer to sync data back to file
 		wait_for_pipe
-		chown lkp.lkp "${tmp_results[@]}"
-		mv --no-clobber "${tmp_results[@]}" $RESULT_ROOT/
+		chown lkp.lkp ${tmp_results}
+		mv --no-clobber ${tmp_results} $RESULT_ROOT/
 	}
 }
 
@@ -81,13 +80,12 @@ copy_to_result()
 
 copy_time_files()
 {
-	local time_files=($TMP/*.time)
 	local ret_copy_time_files=0
 
-	[ -n "$time_files" ] || return
-
-	for time_file in "${time_files[@]}"
+	for time_file in $TMP/*.time
 	do
+		[ -e "$time_file" ] || return
+
 		if copy_to_result $time_file; then
 			cat $time_file >> $RESULT_ROOT/time
 		else
