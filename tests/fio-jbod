@@ -37,7 +37,7 @@ do
 		line="filename="
 		for fn in $(seq $group_file_number)
 		do
-			line+=$mnt/$fn:
+			line="${line}$mnt/$fn:"
 		done
 		echo $line
 	done >> $jobfile

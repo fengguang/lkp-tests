@@ -19,7 +19,7 @@ echo fallocate=$fallocate
 export blocksize=$bs
 
 if [ -z "$jobfile" ]; then
-	source $(dirname $0)/$testcase
+	. $(dirname $0)/$testcase
 fi
 
 cp $jobfile $RESULT_ROOT

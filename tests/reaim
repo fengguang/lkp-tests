@@ -15,7 +15,7 @@ if [ -n "$mount_points" ]; then
 	REAIM_TESTDIR=$mount_points
 else
 	mkdir -p /fs/shm
-	umount /fs/shm &> /dev/null
+	umount /fs/shm > /dev/null 2>&1
 	mount -t tmpfs /dev/shm /fs/shm
 	REAIM_TESTDIR="/fs/shm"
 fi

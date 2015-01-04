@@ -28,7 +28,7 @@ EOF
 		echo "$mount_points" > config
 	else
 		mkdir -p /fs/shm
-		umount /fs/shm &> /dev/null
+		umount /fs/shm > /dev/null 2>&1
 		mount -t tmpfs /dev/shm /fs/shm
 		echo "/fs/shm" > config
 	fi

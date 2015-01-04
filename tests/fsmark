@@ -9,7 +9,7 @@
 
 cd $BENCHMARK_ROOT/fsmark || exit
 
-source $LKP_SRC/lib/unit.sh
+. $LKP_SRC/lib/unit.sh
 
 # NOTE: support 1 disk test only so far
 test_dir=${mount_points%% *}
@@ -90,7 +90,7 @@ if [ -z "$nr_directories" -a -n "$nr_files_per_directory" ]; then
 fi
 
 if [ "$nr_directories" -a "$nr_files_per_directory" ]; then
-	PARAM+=" -D $nr_directories -N $nr_files_per_directory"
+	PARAM="${PARAM} -D $nr_directories -N $nr_files_per_directory"
 fi
 
 cmd ./fs_mark \

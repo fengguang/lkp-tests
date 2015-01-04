@@ -13,7 +13,7 @@ echo $((1<<30)) > /proc/sys/vm/max_map_count
 echo $((1<<20)) > /proc/sys/kernel/threads-max
 
 export CMD=cmd
-source ./hw_vars
+. ./hw_vars
 mount_tmpfs
 create_sparse_root
 

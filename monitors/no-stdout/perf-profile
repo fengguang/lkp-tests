@@ -17,7 +17,7 @@ ulimit -n 102400
 
 sleep $delay
 
-source $LKP_SRC/lib/wait.sh
+. $LKP_SRC/lib/wait.sh
 
 perf record -q -ag --realtime=1 -m 256 $opt_freq $opt_events \
 	-o $TMP/perf.data -- \

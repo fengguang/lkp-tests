@@ -5,7 +5,7 @@ file=${file#numa-}
 
 [ -f /sys/devices/system/node/node1/$file ] || exit 0
 
-source $LKP_SRC/lib/builtin.sh
+. $LKP_SRC/lib/builtin.sh
 
 NODES=`grep ^Node /proc/zoneinfo | awk '{print $2}' | sed -e 's/,//' | sort | uniq`
 while :

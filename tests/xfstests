@@ -4,7 +4,7 @@
 [ "$nr_partitions" -lt 2 ] && exit 1
 cd $BENCHMARK_ROOT/xfstests || exit
 
-function set_env()
+set_env()
 {
 	umount $mount_points
 
@@ -37,7 +37,7 @@ function set_env()
 	fi
 }
 
-function run_test()
+run_test()
 {
 	if [ "${test%[a-z]-[0-9][0-9][0-9]}" != "$test" ]; then
 		all_tests=${test/-/\/}

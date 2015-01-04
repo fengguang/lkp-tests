@@ -16,7 +16,7 @@ opt_events="-e $(echo $events | sed 's/ / -e /g')"
 	if [ -n "$time" ]; then
 		command="sleep $time"
 	else
-		source $LKP_SRC/lib/wait.sh
+		. $LKP_SRC/lib/wait.sh
 		command="$WAIT_POST_TEST_CMD"
 	fi
 }

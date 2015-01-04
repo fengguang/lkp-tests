@@ -8,7 +8,7 @@ groups_dir=$BENCHMARK_ROOT/piglit/groups
 testcases=()
 while read testcase
 do
-	testcases+=( "$testcase" )
+	testcases="${testcases}( "$testcase" )"
 done <<< "$(grep -F -x -f $groups_dir/$tset-all $groups_dir/$group)"
 
 mkdir $RESULT_ROOT/results

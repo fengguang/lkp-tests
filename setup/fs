@@ -16,7 +16,7 @@ fs_options() {
 	xfs)
 		def_mount="-o nobarrier,inode64"
 		[ "${raid_level#*raid}" != "$raid_level" ] && [ "$nr_partitions" -gt 1 ] && {
-			def_mount+=",logbsize=262144"
+			def_mount="${def_mount},logbsize=262144"
 			def_mkfs="-f -d agcount=$nr_partitions"
 		}
 		;;
@@ -92,7 +92,7 @@ mount_local_nfs()
 			sleep 1h
 			exit
 		}
-		nfs_mount_points+="$mnt "
+		nfs_mount_points="${nfs_mount_points}$mnt "
 	done
 }
 
@@ -106,7 +106,7 @@ make_fs() {
 	for dev in $bdevs
 	do
 		cmd mkfs -t $fs ${mkfs:-$def_mkfs} $ensure_mkfs $dev &
-		pids+="$! "
+		pids="${pids} $! "
 	done
 
 	local pid
@@ -121,7 +121,7 @@ mount_fs() {
 		local mnt=/fs/$(basename $dev)
 		mkdir -p $mnt
 		cmd mount -t $fs ${mount:-$def_mount} $dev $mnt || exit
-		mount_points+="$mnt "
+		mount_points="${mount_points}$mnt "
 	done
 }
 

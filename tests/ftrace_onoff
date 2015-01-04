@@ -19,4 +19,4 @@ do_test()
 	done
 }
 
-source $LKP_SRC/lib/runtime_loop.sh
+. $LKP_SRC/lib/runtime_loop.sh

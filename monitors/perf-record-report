@@ -15,7 +15,7 @@
 
 sleep $delay
 
-source $LKP_SRC/lib/wait.sh
+. $LKP_SRC/lib/wait.sh
 while true; do
 	perf record -g -a -q -o perf.record -- timeout $duration $WAIT_POST_TEST_CMD
 

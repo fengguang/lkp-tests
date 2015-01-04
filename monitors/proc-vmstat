@@ -6,7 +6,7 @@ file=${file#proc-}
 
 [ -f /proc/$file ] || exit
 
-source $LKP_SRC/lib/builtin.sh
+. $LKP_SRC/lib/builtin.sh
 
 while :
 do

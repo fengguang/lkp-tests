@@ -9,7 +9,7 @@
 # - hard code nr_xxx_partitions; make     xxx_partitions a shell glob to be expanded in test box
 
 
-source $LKP_SRC/lib/unit.sh
+. $LKP_SRC/lib/unit.sh
 
 max_ssd=$(echo $ssd_partitions | wc -w)
 max_hdd=$(echo $hdd_partitions | wc -w)

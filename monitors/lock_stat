@@ -9,7 +9,7 @@ take_snapshot()
 
 echo 0 > /proc/lock_stat
 
-source $LKP_SRC/lib/wait.sh
+. $LKP_SRC/lib/wait.sh
 
 wait_post_test
 take_snapshot

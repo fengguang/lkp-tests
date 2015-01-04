@@ -13,7 +13,7 @@ take_snapshot()
 }
 
 if [ -n "$interval" ]; then
-	source $LKP_SRC/lib/builtin.sh
+	. $LKP_SRC/lib/builtin.sh
 
 	while :
 	do
@@ -21,7 +21,7 @@ if [ -n "$interval" ]; then
 		sleep $interval
 	done
 else
-	source $LKP_SRC/lib/wait.sh
+	. $LKP_SRC/lib/wait.sh
 
 	take_snapshot
 	wait_post_test

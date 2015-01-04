@@ -11,7 +11,7 @@ take_snapshot()
 	perf stat -a -x' ' $opt_events 2>&1 -- $1
 }
 
-source $LKP_SRC/lib/wait.sh
+. $LKP_SRC/lib/wait.sh
 
 echo time: $(date +%s.%N)
 take_snapshot "$WAIT_POST_TEST_CMD"

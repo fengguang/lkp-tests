@@ -4,7 +4,7 @@
 
 cd $BENCHMARK_ROOT/will-it-scale || exit
 
-source $LKP_SRC/lib/sysinfo.sh
+. $LKP_SRC/lib/sysinfo.sh
 
 setup_params()
 {

@@ -2,7 +2,7 @@
 
 cd $BENCHMARK_ROOT/pft || exit
 
-source $LKP_SRC/lib/sysinfo.sh
+. $LKP_SRC/lib/sysinfo.sh
 
 memory=${memory/M/*1024*1024}
 memory=${memory/G/*1024*1024*1024}

@@ -16,12 +16,12 @@ do
 	for mnt in $mount_points
 	do     
 		file=$mnt/zero-$i
-		files+="$file "
+		files="$files $file "
 		rm -f $file
 		note "dd $opt_bs if=/dev/zero of=$file status=noxfer &"
 		timeout -s KILL $runtime  dd $opt_bs if=/dev/zero of=$file status=noxfer &
 		disown
-		pid+=" $!"
+		pid="${pid} $!"
 	done
 done
 
