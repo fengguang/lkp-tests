@@ -10,7 +10,7 @@
 
 [ -n "$freq" ] &&
 opt_freq="--freq=$freq"
-opt_events="-e ${events// / -e }"
+opt_events="-e $(echo "$events" | sed 's/ / -e /g')"
 
 # perf may consume lots of fd
 ulimit -n 102400
