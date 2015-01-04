@@ -39,13 +39,18 @@ wait_for_pipe()
 	do
 		sleep $i
 		pgrep --pidfile $TMP/.pid-pipes '(tee|cat|gzip)-.*' >/dev/null && continue
+	done
+
+	for i in $(seq 5)
+	do
+		sleep $i
 
 		for result in ${tmp_results}
 		do
-			[ "${result#*.gz}" != "$result" ] || continue
+			[ "${result%.gz}" != "$result" ] || continue
 			[ -s "$result" ] && continue
 
-			echo "wait_for_pipe $i: empty $result" >&2
+			echo "wait_for_pipe $i: empty $result"
 			continue 2
 		done
 
