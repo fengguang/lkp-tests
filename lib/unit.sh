@@ -2,28 +2,29 @@
 
 to_byte()
 {
-	[[ "$1" =~ ^([0-9]+)([bBkKmMgGtTpP]) ]] || {
-		echo "$1" | grep -o '^[0-9]*'
+	local s=$1
+	local size="${s%%[a-zA-Z]*}"
+	local unit="${s##*[0-9]}"
+
+	[ "$size" = "$s" ] && {
+		echo "$s"
 		return
 	}
 
-	local size=${BASH_REMATCH[1]}
-	local unit=${BASH_REMATCH[2]}
-
 	case $unit in
-		P|p)
+		PB|pb|P|p)
 			echo $((size << 50))
 			;;
-		T|t)
+		TB|tb|T|t)
 			echo $((size << 40))
 			;;
-		G|g)
+		GB|gb|G|g)
 			echo $((size << 30))
 			;;
-		M|m)
+		MB|mb|M|m)
 			echo $((size << 20))
 			;;
-		K|k)
+		KB|kb|K|k)
 			echo $((size << 10))
 			;;
 		B|b)
