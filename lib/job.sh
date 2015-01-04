@@ -1,15 +1,15 @@
-#!/bin/bash
+#!/bin/sh
 
 read_env_vars()
 {
-	[[ -f $TMP/env.yaml ]] || return 0
+	[ -f "$TMP/env.yaml" ] || return 0
 
 	local key
 	local val
 
 	while read key val
 	do
-		[[ $key =~ [a-zA-Z_]+[a-zA-Z0-9_]*:$ ]] || continue
+		[ "${key%[a-zA-Z0-9_]:}" != "$key" ] || continue
 		key=${key%:}
 		export "$key=$val"
 	done < $TMP/env.yaml
@@ -28,12 +28,12 @@ wakeup_pre_test()
 
 wait_other_hosts()
 {
-	[[ $host_roles ]] || return
-	[[ $all_hosts = $HOSTNAME ]] && return
+	[ -n "$host_roles" ] || return
+	[ "$all_hosts" = "$HOSTNAME" ] && return
 
 	local program_type=$1
 	local program=$2
-	[[ $program_type = 'test' ]] && echo $program >> $TMP/executed-test-programs
+	[ "$program_type" = 'test' ] && echo "$program" >> $TMP/executed-test-programs
 
 	mkdir $TMP/wait_other_hosts-once 2>/dev/null || return
 
@@ -45,9 +45,9 @@ wait_other_hosts()
 # test jobs.
 wait_clients_finish()
 {
-	[[ $host_roles ]] || return
-	[[ $all_hosts = $HOSTNAME ]] && return
-	[[ -f $TMP/executed-test-programs ]] && return
+	[ -n "$host_roles" ] || return
+	[ "$all_hosts" = "$HOSTNAME" ] && return
+	[ -f "$TMP/executed-test-programs" ] && return
 
 	# contact LKP server, it knows whether all clients have finished
 	:
@@ -57,10 +57,10 @@ check_exit_code()
 {
 	local exit_code=$1
 
-	(( $exit_code == 0 )) && return
+	[ "$exit_code" = 0 ] && return
 
 	echo "${program}.exit_code.$exit_code: 1" >> $RESULT_ROOT/last_state
-	exit $exit_code
+	exit "$exit_code"
 }
 
 run_monitor()
