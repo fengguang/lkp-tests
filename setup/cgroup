@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # - group
 # - cpu.cfs_period_us
 # - cpu.cfs_quota_us
@@ -52,7 +52,7 @@ do
 	val=${line#*=}
 	[ -n "$val" ] || continue
 	[ "${key#*_46_}" != "$key" ] || continue
-	key=${key//_46_/.}
+	key=$(echo "$key" | sed 's/_46_/./g')
 	[ -f "$dir/$key" ] || continue
 
 	note "echo $val > $dir/$key"
