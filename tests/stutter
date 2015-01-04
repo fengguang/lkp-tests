@@ -1,13 +1,11 @@
-#!/bin/bash
+#!/bin/sh
 # - iterations
 
 cd $BENCHMARK_ROOT/stutter || exit
 
-memory=${memory/M/*1024*1024}
-memory=${memory/G/*1024*1024*1024}
-memory=${memory/T/*1024*1024*1024*1024}
+. $LKP_SRC/lib/unit.sh
 
-export MEMTOTAL_BYTES=$memory
+export MEMTOTAL_BYTES=$(to_byte $memory)
 export ITERATIONS=$iterations
 export LOGDIR_RESULTS=$RESULT_ROOT/log_result
 

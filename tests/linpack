@@ -1,15 +1,15 @@
-#!/bin/bash
+#!/bin/sh
 
 cd $BENCHMARK_ROOT/linpack || exit
 
-memory=${memory/M/*1024*1024}
-memory=${memory/G/*1024*1024*1024}
-memory=${memory/T/*1024*1024*1024*1024}
+. $LKP_SRC/lib/unit.sh
+
+export memory_bytes=$(to_byte $memory)
 
 max_mem=$((32<<30))
-[ "$memory" -gt "$max_mem" ] && memory=$max_mem
+[ "$memory_bytes" -gt "$max_mem" ] && memory_bytes=$max_mem
 
-dimension=$(echo "sqrt ($memory * 0.9 / 8)" | bc)
+dimension=$(echo "sqrt ($memory_bytes * 0.9 / 8)" | bc)
 
 cat > lininput_xeon64 <<EOF
 Sample Intel(R) Optimized LINPACK Benchmark data file (lininput_xeon64)
