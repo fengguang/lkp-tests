@@ -30,12 +30,12 @@ EOF
 for mnt in $mount_points
 do
 	sdx=$(basename $mnt)
-	for ((sgx=0; sgx < $sub_group_number; sgx++))
+	for sgx in $(seq $sub_group_number)
 	do
 		echo "[job_${sdx}_sub$sgx]"
 		echo "startdelay=0"
 		line="filename="
-		for ((fn=0; fn < $group_file_number; fn++))
+		for fn in $(seq $group_file_number)
 		do
 			line+=$mnt/$fn:
 		done

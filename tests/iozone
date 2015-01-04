@@ -3,7 +3,7 @@
 for mnt in $mount_points
 do
 	cmd iozone -a -f $mnt/iozonetest > $TMP/iozone-$i &
-	((i++))
+	i=$((i+1))
 done
 
 wait
