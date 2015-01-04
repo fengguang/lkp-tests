@@ -1,5 +1,7 @@
 #!/bin/bash
 
+if [ -n "$BASH_VERSION" ]; then
+
 sleep()
 {
 	local seconds=${1%s}
@@ -18,3 +20,5 @@ cat()
 		echo "$(<$file)"
 	done
 }
+
+fi
