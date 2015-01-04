@@ -200,7 +200,7 @@ def parse_one(ancestors, key, val, pass)
 		exec_line tabs + "chmod +x $LKP_SRC/#{script_file}"
 		exec_line
 		return :action_new_script
-	elsif String === val and key =~ /^(function)\s+(.+)$/
+	elsif String === val and key =~ /^(function)\s+([a-zA-Z_]+[a-zA-Z_0-9]*)$/
 		return false unless pass == :PASS_NEW_SCRIPT
 		shell_block = $1
 		func_name = $2
@@ -224,11 +224,12 @@ def parse_one(ancestors, key, val, pass)
 	elsif Hash === val
 		return false unless pass == :PASS_RUN_COMMANDS
 		exec_line
-		exec_line tabs + "#{key}()"
+		func_name = key.tr('^a-zA-Z0-9_', '_')
+		exec_line tabs + "#{func_name}()"
 		exec_line tabs + "{"
 		parse_hash(ancestors + [key], val)
 		exec_line tabs + "}\n"
-		exec_line tabs + "#{key} &"
+		exec_line tabs + "#{func_name} &"
 		return :action_background_function
 	elsif valid_shell_variable?(key)
 		return false unless pass == :PASS_EXPORT_ENV
