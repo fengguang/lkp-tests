@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # - group
 
 export PATH=$BENCHMARK_ROOT/piglit/bin:$PATH
@@ -19,7 +19,7 @@ check_wait_dri()
 
 	modprobe drm
 
-	for i in {1..9}
+	for i in $(seq 9)
 	do
 		sleep $i
 		dri_exist && return
