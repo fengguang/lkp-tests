@@ -183,7 +183,7 @@ def parse_one(ancestors, key, val, pass)
 	tabs = indent(ancestors)
 	if $programs.include?(key) or (key =~ /^(call|command|source)\s/ and $cur_func == :run_job)
 		return false unless pass == :PASS_RUN_COMMANDS
-		shell_run_program(tabs, key.sub(/^call\s+/, ''), val)
+		shell_run_program(tabs, key.sub(/^call\s+/, '').sub(/^source\s+/, '.'), val)
 		return :action_call_command
 	elsif String === val and key =~ %r{^script\s+(monitors|setup|tests|stats)/([-a-zA-Z0-9_/]+)$}
 		return false unless pass == :PASS_NEW_SCRIPT
@@ -200,11 +200,12 @@ def parse_one(ancestors, key, val, pass)
 		exec_line tabs + "chmod +x $LKP_SRC/#{script_file}"
 		exec_line
 		return :action_new_script
-	elsif String === val and key =~ /^(function)\s/
+	elsif String === val and key =~ /^(function)\s+(.+)$/
 		return false unless pass == :PASS_NEW_SCRIPT
 		shell_block = $1
+		func_name = $2
 		exec_line
-		exec_line tabs + "#{key}"
+		exec_line tabs + "#{func_name}()"
 		exec_line tabs + SHELL_BLOCK_KEYWORDS[shell_block][0]
 		val.each_line { |l|
 			exec_line "\t" + tabs + l
@@ -251,8 +252,8 @@ end
 def shell_header
 	out_line "#!/bin/bash"
 	out_line
-	out_line "source $LKP_SRC/lib/job.sh"
-	out_line "source $LKP_SRC/lib/env.sh"
+	out_line ". $LKP_SRC/lib/job.sh"
+	out_line ". $LKP_SRC/lib/env.sh"
 	out_line
 end
 
