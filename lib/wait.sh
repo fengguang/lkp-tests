@@ -8,3 +8,4 @@ wait_post_test()
 }
 
 echo $$ >> $TMP/.pid-wait-monitors
+echo ${0##*/} >> $TMP/.name-wait-monitors

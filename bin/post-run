@@ -7,10 +7,12 @@ wait_for_monitors()
 	local pidfile=$TMP/.pid-wait-monitors
 	[ -s "$pidfile" ] || return 0
 
+	echo wait for background monitors: $(cat $TMP/.name-wait-monitors)
+
 	for i in 1 2 3 4 5
 	do
 		sleep $i
-		pgrep --pidfile $pidfile >/dev/null && continue
+		pgrep --pidfile $pidfile && continue
 		return 0
 	done
 
