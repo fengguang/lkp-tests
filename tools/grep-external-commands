@@ -197,5 +197,5 @@ commands=$(echo -e "$coreutils\n$bin_sbin" | grep -v -x -F -f <(echo -e "$androi
 
 for cmd in $commands
 do
-	grep --color -r -E "(^|if|\(|\`|cmd|command|\||;|&|bin/)\s*\<$cmd\s" $script_dirs
+	grep --color -r -E "(^|if|\(|\`|cmd|command|exec|\||;|&|bin/)\s*\<$cmd\s" $script_dirs
 done
