@@ -35,7 +35,7 @@ def matrix_fill_missing_zeros(matrix)
 	return matrix
 end
 
-def add_performance_per_watt(result_root, stats, matrix)
+def add_performance_per_watt(stats, matrix)
 	watt = stats['pmeter.Average_Active_Power']
 	return unless watt and watt > 0
 
@@ -46,9 +46,7 @@ def add_performance_per_watt(result_root, stats, matrix)
 	kpi_stats.each { |stat, weight|
 		next if stat == 'boot-time.dhcp'
 		next if stat == 'boot-time.boot'
-		if stat.index 'iostat.'
-			next unless result_root =~ /\/(dd-write)\//
-		end
+		next if stat.index 'iostat.' and not stats['dd.startup_time']
 
 		value = stats[stat]
 		if (value)
@@ -106,7 +104,7 @@ def create_stats_matrix(result_root)
 		matrix.merge! monitor_stats
 	}
 
-	add_performance_per_watt(result_root, stats, matrix)
+	add_performance_per_watt(stats, matrix)
 	save_json(stats, result_root + '/stats.json')
 	save_json(matrix, result_root + '/matrix.json', compress=true)
 	return stats
