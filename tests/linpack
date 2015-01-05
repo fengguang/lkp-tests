@@ -5,11 +5,14 @@ cd $BENCHMARK_ROOT/linpack || exit
 . $LKP_SRC/lib/unit.sh
 
 export memory_bytes=$(to_byte $memory)
+memory_bytes=$((memory_bytes * 2 / 3))
 
 max_mem=$((32<<30))
 [ "$memory_bytes" -gt "$max_mem" ] && memory_bytes=$max_mem
 
 dimension=$(echo "sqrt ($memory_bytes * 0.9 / 8)" | bc)
+
+echo "memory_bytes=$memory_bytes dimension=$dimension"
 
 cat > lininput_xeon64 <<EOF
 Sample Intel(R) Optimized LINPACK Benchmark data file (lininput_xeon64)
@@ -20,5 +23,7 @@ $dimension	# leading dimensions
 1		# times to run a test
 4		# alignment values (in KBytes)"
 EOF
+
+copy-results lininput_xeon64
 
 cmd ./runme_xeon64
