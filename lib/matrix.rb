@@ -35,6 +35,34 @@ def matrix_fill_missing_zeros(matrix)
 	return matrix
 end
 
+def add_perf_per_watt_stat(result_root)
+	obj = load_yaml("#{LKP_SRC}/etc/index-perf.yaml")
+	return if !obj
+
+	performance = watt = 0
+
+	obj.each { |stat, weight|
+		if stat == 'time.elapsed_time'
+			next unless result_root =~ /\/(kbuild)\//
+		end
+		if stat.index 'iostat.'
+			next unless result_root =~ /\/(dd-write)\//
+		end
+
+		value = stats[stat]
+		if (value)
+			if (weight < 0)
+				value = 1 / value
+				weight = -weight
+			end
+			performance += value * weight
+		end
+	}
+
+	watt = stats["pmeter.Average_Active_Power"]
+	stats["performance_per_watt"] = performance / watt if watt > 0
+end
+
 def create_stats_matrix(result_root)
 	stats = {}
 	matrix = {}
@@ -75,6 +103,7 @@ def create_stats_matrix(result_root)
 		matrix.merge! monitor_stats
 	}
 
+	add_perf_per_watt_stat(result_root)
 	save_json(stats, result_root + '/stats.json')
 	save_json(matrix, result_root + '/matrix.json', compress=true)
 	return stats
