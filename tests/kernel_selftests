@@ -17,5 +17,6 @@ for mf in */Makefile; do
 	[ "$subtest" = efivarfs ] && continue
 	[ "$subtest" = firmware ] && continue
 	[ "$subtest" = memory-hotplug ] && continue
+	[ "$subtest" = memfd ] && continue
 	cmd make run_tests -C $subtest
 done
