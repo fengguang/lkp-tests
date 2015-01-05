@@ -8,7 +8,7 @@ mqueue_speed = {}
 
 while line = STDIN.gets
 	case line
-	when /make: Entering directory \`.*\/(.*)\'/
+	when /make: Entering directory .*\/(.*)'/
 		testname = $1
 	when /Failed/, /FAIL/
 		failed_cases.add testname
