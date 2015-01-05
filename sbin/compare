@@ -585,14 +585,6 @@ def show_delta(stat, key_g)
 
 		show_header(is_fail) unless $header_shown[is_fail]
 
-		v0 = value[$first_dim]
-		if Array === v0
-			if is_fail
-				v0 = v0.sum
-			else
-				v0 = v0.average
-			end
-		end
 		v0, v0_stddev = get_v_and_stddev value, $first_dim, is_fail
 		$dims.each { |dim, v|
 			v, v_stddev = get_v_and_stddev value, dim, is_fail
