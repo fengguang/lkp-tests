@@ -35,16 +35,17 @@ def matrix_fill_missing_zeros(matrix)
 	return matrix
 end
 
-def add_perf_per_watt_stat(result_root)
-	obj = load_yaml("#{LKP_SRC}/etc/index-perf.yaml")
-	return if !obj
+def add_performance_per_watt(result_root, stats, matrix)
+	watt = stats['pmeter.Average_Active_Power']
+	return unless watt and watt > 0
 
-	performance = watt = 0
+	kpi_stats = load_yaml("#{LKP_SRC}/etc/index-perf.yaml")
+	return unless kpi_stats
 
-	obj.each { |stat, weight|
-		if stat == 'time.elapsed_time'
-			next unless result_root =~ /\/(kbuild)\//
-		end
+	performance = 0
+	kpi_stats.each { |stat, weight|
+		next if stat == 'boot-time.dhcp'
+		next if stat == 'boot-time.boot'
 		if stat.index 'iostat.'
 			next unless result_root =~ /\/(dd-write)\//
 		end
@@ -59,8 +60,10 @@ def add_perf_per_watt_stat(result_root)
 		end
 	}
 
-	watt = stats["pmeter.Average_Active_Power"]
-	stats["performance_per_watt"] = performance / watt if watt > 0
+	return unless performance > 0
+
+	stats['performance_per_watt'] = performance / watt
+	matrix['performance_per_watt'] = [performance / watt]
 end
 
 def create_stats_matrix(result_root)
@@ -103,7 +106,7 @@ def create_stats_matrix(result_root)
 		matrix.merge! monitor_stats
 	}
 
-	add_perf_per_watt_stat(result_root)
+	add_performance_per_watt(result_root, stats, matrix)
 	save_json(stats, result_root + '/stats.json')
 	save_json(matrix, result_root + '/matrix.json', compress=true)
 	return stats
