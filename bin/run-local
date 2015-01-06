@@ -86,7 +86,7 @@ ENV['TMP_RESULT_ROOT'] = ENV['RESULT_ROOT']
 FileUtils.rm_rf TMP
 Dir.mkdir TMP
 
-job_script = jobfile.chomp('.yaml') + '.sh'
+job_script = File.realpath(jobfile).chomp('.yaml') + '.sh'
 system LKP_SRC + '/sbin/job2sh', '--output', job_script, jobfile
 
 system job_script, 'run_job'
