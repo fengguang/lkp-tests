@@ -24,7 +24,7 @@ if File.exist? $params_file and Time.now - File.ctime($params_root) > 3600
 end
 
 params = {}
-params = YAML.load_file($params_file) if File.exists? $params_file
+params = YAML.load_file($params_file) if File.exist? $params_file
 
 job = Job.new
 job.load($result_root + '/job.yaml') or exit

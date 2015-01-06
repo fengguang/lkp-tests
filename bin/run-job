@@ -55,7 +55,7 @@ def shell_run_head
 end
 
 def update_global_env
-	return unless File.exists? "#{TMP}/env.yaml"
+	return unless File.exist? "#{TMP}/env.yaml"
 	env = YAML.load_file "#{TMP}/env.yaml"
 	env.each { |k, v|
 		env[k] = expand_shell_var $top_env, v
@@ -115,7 +115,7 @@ def get_program_env(program, env)
 	# expand predefined parameter set name
 	if env.class != Hash and env.class != Array
 		param_yaml = LKP_SRC + '/params/' + program + '.yaml'
-		if File.exists?(param_yaml)
+		if File.exist?(param_yaml)
 			params = YAML.load_file(param_yaml)
 			env = params[env] if params[env]
 		end

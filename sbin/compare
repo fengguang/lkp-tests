@@ -191,7 +191,7 @@ def add_stats(path)
 	else
 		stats_json = path + '/matrix.json'
 	end
-	unless File.exists? stats_json
+	unless File.exist? stats_json
 		# No need for a warning here.
 		# STDERR.puts stats_json + ' does not exist'
 		return
@@ -279,8 +279,8 @@ def setup_changed_stats()
 	$_result_root_tuple.each { |k, v|
 		matrix_file1 = v[0] + '/matrix.json'
 		matrix_file2 = v[1] + '/matrix.json'
-		next unless File.exists? matrix_file1
-		next unless File.exists? matrix_file2
+		next unless File.exist? matrix_file1
+		next unless File.exist? matrix_file2
 		if $opt_index
 			matrix1 = load_json matrix_file1
 			matrix2 = load_json matrix_file2

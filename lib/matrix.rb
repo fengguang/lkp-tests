@@ -125,7 +125,7 @@ end
 def load_matrix_file(matrix_file)
 	matrix = nil
 	begin
-		matrix = load_json(matrix_file) if File.exists? matrix_file
+		matrix = load_json(matrix_file) if File.exist? matrix_file
 	rescue Exception
 		return nil
 	end
