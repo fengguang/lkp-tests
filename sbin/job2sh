@@ -265,6 +265,8 @@ out_line "export_top_env()"
 out_line "{"
 create_programs_hash "{setup,monitors,tests}/**/*"
 job.delete_if { |key, val| parse_one([], key, val, :PASS_EXPORT_ENV) }
+out_line
+out_line "\t[ -n \"$LKP_SRC\" ] ||"
 out_line "\texport LKP_SRC=/lkp/${user:-lkp}/src"
 out_line "}\n\n"
 
