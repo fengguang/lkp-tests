@@ -1,10 +1,12 @@
 #!/bin/sh
+# - mode
 # - runtime
 # - iterations
 
 alarm_path="/sys/class/rtc/rtc0/wakealarm"
 [ -f "$alarm_path" ] || exit
 
+[ -n "$mode" ] || mode='freeze'
 [ -n "$runtime" ] || runtime=300
 [ -n "$iterations" ] || iterations=30
 interval=$(( runtime / iterations ))
@@ -13,7 +15,7 @@ for i in `seq 1 $iterations`
 do
 	echo "+$interval" > $alarm_path
 	echo $(date "+%F %T") suspending
-	echo freeze > /sys/power/state
+	echo $mode > /sys/power/state
 	echo $(date "+%F %T") resumed $i
 done
 

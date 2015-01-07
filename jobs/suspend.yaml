@@ -4,3 +4,6 @@ runtime: 300s
 iterations: 30x
 
 suspend:
+  mode:
+  - mem
+  - freeze
