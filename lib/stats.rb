@@ -320,6 +320,9 @@ def __get_changed_stats(a, b, options)
 	if options['ignore-incomplete-run']
 		filter_incomplete_run(a)
 		filter_incomplete_run(b)
+
+		is_all_run_incomplete = b['stats_source'].size == 0
+		return nil if is_all_run_incomplete
 	end
 
 	is_incomplete_run = a['last_state.is_incomplete_run'] ||
