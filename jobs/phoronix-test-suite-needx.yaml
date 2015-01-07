@@ -1,0 +1,62 @@
+testcase: phoronix-test-suite
+
+rootfs: inn:/export/debian-full-x86_64
+need_x: true
+
+phoronix-test-suite:
+  test:
+  - apitest-1.1.0
+  - apitrace-1.0.1
+  - cairo-demos-1.0.1
+  - cairo-perf-trace-1.0.1
+  - corebreach-1.1.1
+  - csgo-1.0.0
+  - cstrike-1.0.1
+  - doom3-1.1.0
+  - et-1.1.0
+  - etqw-1.1.0
+  - etqw-demo-1.1.0
+  - etxreal-1.0.0
+  - glmark2-1.0.2
+  - gluxmark-1.0.3
+  - gputest-1.3.0
+  - gtkperf-1.2.1
+  - hl2lostcoast-1.0.1
+  - j2dbench-1.1.0
+  - jgfxbat-1.1.0
+  - jxrendermark-1.2.0
+  - lightsmark-1.2.0
+  - mplayer-base-1.3.0
+  - nexuiz-1.6.1
+  - openarena-1.5.2
+  - padman-1.1.0
+  - portal-1.0.0
+  - ppracer-1.1.1
+  - prey-1.1.2
+  - qgears2-1.0.1
+  - quake4-1.1.0
+  - qvdpautest-1.0.1
+  - reaction-1.0.5
+  - render-bench-1.1.2
+  - smokin-guns-1.2.2
+  - specviewperf10-1.2.0
+  - specviewperf9-1.1.0
+  - supertuxkart-1.2.1
+  - tesseract-1.1.0
+  - tf2-1.0.2
+  - tremulous-1.1.0
+  - trislam-1.0.0
+  - unigine-heaven-1.5.3
+  - unigine-sanctuary-1.5.2
+  - unigine-tropics-1.5.3
+  - unigine-valley-1.0.3
+  - unvanquished-1.5.0
+  - urbanterror-1.2.1
+  - ut2004-demo-1.2.0
+  - vdrift-1.2.0
+  - video-cpu-usage-1.2.1
+  - viennacl-1.0.0
+  - warsow-1.5.1
+  - x11perf-1.1.1
+  - xonotic-1.3.2
+  - xplane9-1.3.0

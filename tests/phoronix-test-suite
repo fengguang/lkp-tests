@@ -1,7 +1,13 @@
 #!/bin/sh
 # - test
+# - need_x
 
-cmd phoronix-test-suite run $test << EOF
-Test All Options
-n
-EOF
+if [ "$need_x" = true ]; then
+	mkdir -p		/tmp/.X11-unix
+	chmod 1777		/tmp/.X11-unix
+	chown root:root		/tmp/.X11-unix
+
+	xinit $LKP_SRC/tests/phoronix-test-suite.xinitrc -- $LKP_SRC/tests/piglit.xserverrc
+else
+	$LKP_SRC/tests/phoronix-test-suite.xinitrc
+fi
