@@ -6,9 +6,15 @@ cd $BENCHMARK_ROOT/ltp || exit
 if [ "$test" = 'dio' ]; then
 	[ -z "$mount_points" ] && exit
 	export TMPDIR=$(echo $mount_points | cut -d' ' -f1)
+elif [ "$test" = 'fs_readonly' ]; then
+	[ -z "$fs" ] && exit
+	[ -z "$partitions" ] && exit
+	big_dev=$(echo $partitions | cut -d' ' -f1)
+	umount $big_dev
+	big_dev_opt="-Z $fs -z $big_dev"
 fi
 
-cmd ./runltp -f $test || exit
+cmd ./runltp -f $test $big_dev_opt || exit
 
 copy-results	$BENCHMARK_ROOT/ltp/results/* \
 		$BENCHMARK_ROOT/ltp/output/*
