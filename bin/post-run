@@ -23,7 +23,7 @@ wait_for_monitors()
 $LKP_SRC/monitors/event/wakeup post-test
 wait_for_monitors
 
-kill $(cat $TMP/pid-* /dev/null) 2>/dev/null
+kill -INT $(cat $TMP/pid-* /dev/null) 2>/dev/null
 
 PERF_EVENT_DATA=$TMP/perf.data
 [ -s "$PERF_EVENT_DATA" ] && {
