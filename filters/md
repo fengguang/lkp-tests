@@ -10,7 +10,7 @@ check_raid_disks()
 	[[ "$md_raid_level" = $raid_level ]] &&
 	(( disk_nr_hdd < raid_disks )) &&
 	(( disk_nr_ssd < raid_disks )) && {
-		echo "rm $job_file due to no enough disks for $md_raid_level"
+		echo "rm $job_file due to not enough disks for $md_raid_level"
 		rm $job_file
 		exit
 	}
