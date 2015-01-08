@@ -193,6 +193,8 @@ end
 
 def version_tag(commit)
 	tag, is_exact_match = last_linus_release_tag(commit)
+	return nil unless tag
+
 	tag += '+' unless is_exact_match
 	return tag
 end
