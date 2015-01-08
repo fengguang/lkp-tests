@@ -20,7 +20,7 @@ do
 		rm -f $file
 		note "dd $opt_bs if=/dev/zero of=$file status=noxfer &"
 		timeout -s KILL $runtime  dd $opt_bs if=/dev/zero of=$file status=noxfer &
-		disown
+		[ -n "$BASH_VERSION" ] && disown
 		pid="${pid} $!"
 	done
 done
