@@ -126,7 +126,7 @@ mount_fs() {
 }
 
 if is_btrfs_raid_levels; then
-	bdevs=$(echo $partitions | cut -f1 -d' ')
+	bdevs="${partitions%% *}"
 else
 	bdevs="$partitions"
 fi

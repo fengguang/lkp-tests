@@ -4,7 +4,7 @@
 # - subdirs
 
 [ -z "$mount_points" ] && exit
-location=$(echo $mount_points | cut -d' ' -f1)
+location="${mount_points%% *}"
 number=${number%n}
 trans=${trans%s}
 subdirs=${subdirs%d}
