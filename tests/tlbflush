@@ -11,7 +11,16 @@ cd $BENCHMARK_ROOT/tlbflush || exit
 TLBFLUSH_MAX_ENTRIES=$entries
 TLBFLUSH_ITERATIONS=$iterations
 
-NR_ENTRIES=$((RANDOM%TLBFLUSH_MAX_ENTRIES))
+rand()
+{
+	if [ -n "$RANDOM" ]; then	# bash, mksh, zsh
+		echo $(( RANDOM % $1 ))
+	else
+		awk "BEGIN { srand(); printf(\"%d\n\",rand()*$1) }"
+	fi
+}
+
+NR_ENTRIES=$(rand $TLBFLUSH_MAX_ENTRIES)
 
 for ITERATION in $(seq 1 $TLBFLUSH_ITERATIONS); do
 
@@ -24,7 +33,7 @@ for ITERATION in $(seq 1 $TLBFLUSH_ITERATIONS); do
 	THIS_MIN_ENTRIES=$((RANGE*NR_SECTION+1))
 	THIS_MAX_ENTRIES=$((THIS_MIN_ENTRIES+RANGE))
 
-	NR_ENTRIES=$((THIS_MIN_ENTRIES+(RANDOM%RANGE)))
+	NR_ENTRIES=$(( THIS_MIN_ENTRIES + $(rand $RANGE) ))
 	if [ $NR_ENTRIES -gt $THIS_MAX_ENTRIES ]; then
 		NR_ENTRIES=$THIS_MAX_ENTRIES
 	fi
