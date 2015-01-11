@@ -8,7 +8,7 @@
 }
 
 cd /tmp
-cmd chroot --userspec nobody:nogroup / trinity -q -s $seed -x get_robust_list -x remap_file_pages -N 999999 2>&1 &
+cmd chroot --userspec nobody:nogroup / trinity -q -s $seed -x get_robust_list -x remap_file_pages -N 999999999 2>&1 &
 
 pid=$!
 sleep $runtime
