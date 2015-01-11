@@ -71,6 +71,11 @@ else
 	disk_description=${nr_ssd}ssd
 fi
 
+[ -z "$nr_partitions" -o "$nr_partitions" -lt 1 ] && {
+	echo "setup/disk: no disk partitions found, nr_partitions=$nr_partitions"
+	exit 1
+}
+
 partitions=$(echo $partitions | cut -f1-$nr_partitions -d' ')
 [ -n "$disks" ] || disks=$(echo $partitions | grep -o '[/a-z]\+' | sort -u | tr '\n' ' ')
 
