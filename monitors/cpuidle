@@ -11,9 +11,9 @@ take_snapshot()
 	do
 		for state in $(cd /sys/devices/system/cpu/$cpu && echo cpuidle/state*)
 		do
-			state_name=$(cat /sys/devices/system/cpu/$cpu/$state/name)
-			state_time=$(cat /sys/devices/system/cpu/$cpu/$state/time)
-			state_usage=$(cat /sys/devices/system/cpu/$cpu/$state/usage)
+			read state_name  < /sys/devices/system/cpu/$cpu/$state/name
+			read state_time  < /sys/devices/system/cpu/$cpu/$state/time
+			read state_usage < /sys/devices/system/cpu/$cpu/$state/usage
 			echo $cpu.${state_name}.time: ${state_time}
 			echo $cpu.${state_name}.usage: ${state_usage}
 		done
