@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
+#include <getopt.h>
 
 char *get_tmp_dir(void)
 {
@@ -62,6 +63,11 @@ void *save_pid(int pid)
 	fclose(file);
 }
 
+void do_timeout(int n)
+{
+	exit(ETIME);
+}
+
 int main(int argc, char *argv[])
 {
 	int fd;
@@ -71,22 +77,47 @@ int main(int argc, char *argv[])
 	char *filename;
 	int is_wait;
 	char *pipe_dir = get_pipe_dir();
-
-	if (argc <= 1) {
-		printf("Usage: %s PIPE\n", argv[0]);
-		exit(0);
-	}
+	int timeout = 0;
 
 	is_wait = !strcmp(basename(argv[0]), "wait");
-	filename = argv[1];
+
+	while (1) {
+		int c;
+		int option_index = 0;
+		static struct option long_options[] = {
+			{"timeout", required_argument, 0, 't'},
+			{0,         0,                 0,  0 }
+		};
+
+		c = getopt_long(argc, argv, "t:", long_options, &option_index);
+		if (c == -1)
+			break;
+
+		switch (c) {
+		case 't':
+			timeout = atoi(optarg);
+			break;
+		}
+	}
+
+	if (optind < argc) {
+		filename = argv[optind];
+	} else {
+		printf("Usage: %s [-t|--timeout seconds] PIPE_NAME\n", argv[0]);
+		exit(0);
+	}
 
 	mkdir(pipe_dir, 0770);
 	chdir(pipe_dir);
 	mkfifo(filename, 0660);
 
-	if (is_wait)
+	if (is_wait) {
+		if (timeout) {
+			signal(SIGALRM, do_timeout);
+			alarm(timeout);
+		}
 		fd = open(filename, O_RDONLY);
-	else
+	} else
 		fd = open(filename, O_RDWR|O_NONBLOCK);
 	if (fd < 0) {
 		perror(filename);
