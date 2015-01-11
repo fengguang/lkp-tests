@@ -7,16 +7,15 @@ take_snapshot()
 {
 	echo time: $(date +%s.%N)
 
-	for cpu in $(cd /sys/devices/system/cpu && echo cpu[0-9]*)
+	for dir in /sys/devices/system/cpu/cpu*/cpuidle/state*/
 	do
-		for state in $(cd /sys/devices/system/cpu/$cpu && echo cpuidle/state*)
-		do
-			read state_name  < /sys/devices/system/cpu/$cpu/$state/name
-			read state_time  < /sys/devices/system/cpu/$cpu/$state/time
-			read state_usage < /sys/devices/system/cpu/$cpu/$state/usage
-			echo $cpu.${state_name}.time: ${state_time}
-			echo $cpu.${state_name}.usage: ${state_usage}
-		done
+		cpu=${dir#/sys/devices/system/cpu/}
+		cpu=${cpu%%/*}
+		read state_name  < $dir/name
+		read state_time  < $dir/time
+		read state_usage < $dir/usage
+		echo $cpu.${state_name}.time: ${state_time}
+		echo $cpu.${state_name}.usage: ${state_usage}
 	done
 }
 
