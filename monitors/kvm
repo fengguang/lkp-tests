@@ -2,11 +2,13 @@
 
 cd /sys/kernel/debug/kvm || exit 0
 
+. $LKP_SRC/lib/wait.sh
+
 while :
 do
 	echo time: $(date +%s.%N)
 
 	grep . * | sed 's/:/: /'
 
-	sleep ${interval:-1}
+	wait_timeout $interval
 done

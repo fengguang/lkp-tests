@@ -15,9 +15,8 @@ opt_events="-e $(echo "$events" | sed 's/ / -e /g')"
 # perf may consume lots of fd
 ulimit -n 102400
 
-sleep $delay
-
 . $LKP_SRC/lib/wait.sh
+wait_timeout $delay
 
 perf record -q -ag --realtime=1 -m 256 $opt_freq $opt_events \
 	-o $TMP/perf.data -- \

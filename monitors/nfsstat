@@ -2,9 +2,11 @@
 
 [ "${fs#*nfs}" != "$fs" ] || exit 0
 
+. $LKP_SRC/lib/wait.sh
+
 while :
 do
 	echo time: $(date +%s.%N)
 	nfsstat -v
-	sleep ${interval:-1}
+	wait_timeout $interval
 done

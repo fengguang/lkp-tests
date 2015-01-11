@@ -12,17 +12,15 @@ take_snapshot()
 	cat /proc/$file
 }
 
-if [ -n "$interval" ]; then
-	. $LKP_SRC/lib/builtin.sh
+. $LKP_SRC/lib/wait.sh
 
+if [ -n "$interval" ]; then
 	while :
 	do
 		take_snapshot
-		sleep $interval
+		wait_timeout $interval
 	done
 else
-	. $LKP_SRC/lib/wait.sh
-
 	take_snapshot
 	wait_post_test
 	take_snapshot

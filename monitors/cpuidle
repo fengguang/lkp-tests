@@ -22,8 +22,9 @@ take_snapshot()
 
 file=$(basename $0)
 
+. $LKP_SRC/lib/wait.sh
+
 if [ -z "$interval" ]; then
-	. $LKP_SRC/lib/wait.sh
 	take_snapshot
 	wait_post_test
 	take_snapshot
@@ -33,5 +34,5 @@ fi
 while :
 do
 	take_snapshot
-	sleep $interval
+	wait_timeout $interval
 done

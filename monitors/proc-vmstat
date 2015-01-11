@@ -6,11 +6,11 @@ file=${file#proc-}
 
 [ -f /proc/$file ] || exit
 
-. $LKP_SRC/lib/builtin.sh
+. $LKP_SRC/lib/wait.sh
 
 while :
 do
 	echo time: $(date +%s.%N)
 	cat /proc/$file
-	sleep ${interval:-1}
+	wait_timeout $interval
 done

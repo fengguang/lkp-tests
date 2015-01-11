@@ -13,10 +13,11 @@ events=$(perf-events $events)
 opt_events="-e $(echo $events | sed 's/ / -e /g')"
 
 [ -n "$command" ] || {
+	. $LKP_SRC/lib/wait.sh
+
 	if [ -n "$time" ]; then
-		command="sleep $time"
+		command="$WAIT_POST_TEST_CMD --timeout $time"
 	else
-		. $LKP_SRC/lib/wait.sh
 		command="$WAIT_POST_TEST_CMD"
 	fi
 }
