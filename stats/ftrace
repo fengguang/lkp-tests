@@ -72,11 +72,12 @@ end
 # - invoke generated event parser
 # - normlize data generated at above step
 #
-def parse_event(event)
-	%x[ cat #{RESULT_ROOT}/trace_event/#{event}.fmt ] =~ /print fmt: "([^"]*)".*$/
+def parse_event(event_fmt)
+	%x[ cat #{event_fmt} ] =~ /print fmt: "([^"]*)".*$/
 	fmt = $1
 	return if fmt == nil
 
+	event = File.basename(event_fmt, '.fmt')
 	pattern = " ([0-9]\+\\.[0-9]\+): #{event}: "
 	replace = "time: \\1\\n"
 	index = 2
@@ -109,6 +110,6 @@ def parse_event(event)
 end
 
 
-ENV['events'].split(' ').each { |event|
-	parse_event event
+Dir["#{RESULT_ROOT}/trace_event/*.fmt"].each { |event_fmt|
+	parse_event event_fmt
 }

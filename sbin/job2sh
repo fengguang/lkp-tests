@@ -162,7 +162,7 @@ def shell_run_program(tabs, program, env)
 	cmd_str.gsub!(TMP, '$TMP')
 
 	program_env.each { |k, v|
-		out_line tabs + shell_encode_keyword(k) + "=" + shell_escape_expand(v) + "\t\\\n"
+		exec_line tabs + shell_encode_keyword(k) + "=" + shell_escape_expand(v) + "\t\\\n"
 	}
 	out_line tabs + cmd_str
 end
