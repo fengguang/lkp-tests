@@ -13,17 +13,39 @@ wait_for_monitors()
 	do
 		sleep $i
 		pgrep --pidfile $pidfile && continue
-		return 0
+		return $i
 	done
 
 	echo "some monitors do not quit in time" >&2
 	ps faux
+	return $i
 }
 
-$LKP_SRC/monitors/event/wakeup post-test
-wait_for_monitors
+kill_monitors()
+{
+	local signal=$1
+	local wait_pidfile="$TMP/.pid-wait-monitors"
+	local pids
 
-command kill -INT $(cat $TMP/pid-* /dev/null)
+	for pidfile in $TMP/pid-*
+	do
+		[ -s "$pidfile" ] || break
+
+		if [ -s "$wait_pidfile" ]; then
+			pids=$(grep -v -x -F "$wait_pidfile" "$pidfile")
+		else
+			pids=$(cat "$pidfile")
+		fi
+
+		[ -n "$pids" ] || continue
+		/bin/kill $signal $pids
+	done
+}
+
+kill_monitors -INT
+$LKP_SRC/monitors/event/wakeup post-test
+wait_for_monitors && sleep 1
+kill_monitors -KILL
 
 PERF_EVENT_DATA=$TMP/perf.data
 [ -s "$PERF_EVENT_DATA" ] && {
