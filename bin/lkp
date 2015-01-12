@@ -1,0 +1,53 @@
+#!/bin/sh
+
+[ -n "$LKP_SRC" ] ||
+export LKP_SRC=$(dirname $(dirname $(realpath $0)))
+
+show_help()
+{
+	cat <<EOF
+Usage: lkp <command> [options]
+$(cat $LKP_SRC/doc/command-index/*)
+
+More commands can be found in ${LKP_SRC}/{bin,sbin,tools}/
+EOF
+}
+
+[ $# = 0 -o "$*" = 'help' ] && {
+	show_help
+	exit
+}
+
+lkp_command="$1"
+lkp_args=
+shift
+
+if [ "$lkp_command" = 'help' ]; then
+	lkp_command="$1"
+	lkp_args='--help'
+	shift
+fi
+
+case "$lkp_command" in
+	'install')	lkp_command='setup-local'	;;
+	'split')	lkp_command='split-job'		;;
+	'compile')	lkp_command='job2sh'		;;
+	'run')		lkp_command='run-local'		;;
+esac
+
+try_run()
+{
+	local subdir="$1"
+	local path="$LKP_SRC/$subdir/$lkp_command"
+	shift
+
+	[ -x "$path" ] && exec "$path" $lkp_args "$@"
+}
+
+try_run 'bin'		"$@"
+try_run 'sbin'		"$@"
+try_run 'tools'		"$@"
+try_run 'lkp-exec'	"$@"
+
+echo "Cannot find LKP command under $LKP_SRC/{bin,sbin,tools,lkp-exec}/"
+exit 1
