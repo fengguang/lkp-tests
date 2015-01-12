@@ -1,15 +1,24 @@
-#!/usr/bin/awk -f
+#!/usr/bin/ruby
 
 # procs -----------memory---------- ---swap-- -----io---- -system-- ----cpu----
 #  r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa
 
-BEGIN {
-	items = "time procs.r procs.b memory.swpd memory.free memory.buff memory.cache swap.si swap.so io.bi io.bo system.in system.cs cpu.us cpu.sy cpu.id cpu.wa"
-	n = split(items, item_list)
-}
+keys = %w(time procs.r procs.b memory.swpd memory.free
+	  memory.buff memory.cache swap.si swap.so io.bi
+	  io.bo system.in system.cs cpu.us cpu.sy cpu.id cpu.wa)
 
-NR > 2 {
-	for(i = 1; i <= n; i++) {
-		print item_list[i]": "$i
-	}
-}
+while line = STDIN.gets
+	case line.chomp!
+	when /^[\d\s.]+$/
+		data = line.split
+		if data[0] =~ /\./
+			keys.each_with_index { |v, i|
+				puts "#{v}: #{data[i]}"
+			}
+		else
+			keys[1..-1].each_with_index { |v, i|
+				puts "#{v}: #{data[i]}"
+			}
+		end
+	end
+end

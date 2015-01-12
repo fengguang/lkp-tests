@@ -12,11 +12,7 @@ fifo=$TMP/fifo-$monitor
 [ -p $fifo ] && exit 0
 mkfifo $fifo 2>/dev/null || exit 0
 
-if grep -q -x -F "$monitor" $monitor_dir/need_timestamp; then
-	stdbuf -o0 -e0 $monitor_dir/$monitor "$@" | ruby -n -e 'printf "%s %s", Time.now.strftime("%s.%N"), $_' > $fifo &
-else
-	stdbuf -o0 -e0 $monitor_dir/$monitor "$@"            > $fifo &
-fi
+stdbuf -o0 -e0 $monitor_dir/$monitor "$@" > $fifo &
 
 # Save pid to be killed when the tests complete. gzip/cat will auto
 # quit when the FIFO writer is killed.
