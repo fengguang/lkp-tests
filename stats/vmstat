@@ -1,24 +1,33 @@
 #!/usr/bin/ruby
 
-# procs -----------memory---------- ---swap-- -----io---- -system-- ----cpu----
-#  r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa
+require 'time'
 
-keys = %w(time procs.r procs.b memory.swpd memory.free
+# procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu----- -----timestamp-----
+#  r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st                 PST
+#  2  0      0 224636  33636 6760228    0    0    54   141  129   23  1  1 98  0  0 2015-01-11 20:18:35
+#  0  0      0 224752  33636 6760180    0    0     0     4  753 2187  2  1 98  0  0 2015-01-11 20:18:36
+
+
+keys = %w(procs.r procs.b memory.swpd memory.free
 	  memory.buff memory.cache swap.si swap.so io.bi
-	  io.bo system.in system.cs cpu.us cpu.sy cpu.id cpu.wa)
+	  io.bo system.in system.cs cpu.us cpu.sy cpu.id cpu.wa cpu.st time)
+
+old_keys = %w(time procs.r procs.b memory.swpd memory.free
+	  memory.buff memory.cache swap.si swap.so io.bi
+	  io.bo system.in system.cs cpu.us cpu.sy cpu.id cpu.wa cpu.st)
+
+def show_record(keys, data)
+	keys.each_with_index { |v, i| puts "#{v}: #{data[i]}" }
+end
 
 while line = STDIN.gets
-	case line.chomp!
-	when /^[\d\s.]+$/
-		data = line.split
-		if data[0] =~ /\./
-			keys.each_with_index { |v, i|
-				puts "#{v}: #{data[i]}"
-			}
-		else
-			keys[1..-1].each_with_index { |v, i|
-				puts "#{v}: #{data[i]}"
-			}
-		end
+	next unless line =~ /[0-9]/
+	data = line.split
+	if data.size == keys.size + 1
+		time = Time.parse(data.pop(2).join ' ').to_i
+		data.push time
+		show_record keys, data
+	elsif data.size == old_keys.size
+		show_record old_keys, data
 	end
 end
