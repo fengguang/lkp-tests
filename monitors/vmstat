@@ -1,3 +1,9 @@
 #!/bin/sh
 
-exec vmstat --timestamp -n ${interval:-1} $count
+if vmstat --help | grep -q -F 'timestamp'; then
+	opt_timestamp='--timestamp'
+else
+	opt_timestamp=
+fi
+
+exec vmstat $opt_timestamp -n ${interval:-1} $count

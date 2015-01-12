@@ -17,17 +17,19 @@ old_keys = %w(time procs.r procs.b memory.swpd memory.free
 	  io.bo system.in system.cs cpu.us cpu.sy cpu.id cpu.wa cpu.st)
 
 def show_record(keys, data)
-	keys.each_with_index { |v, i| puts "#{v}: #{data[i]}" }
+	data.each_with_index { |v, i| puts "#{keys[i]}: #{v}" }
 end
 
 while line = STDIN.gets
 	next unless line =~ /[0-9]/
 	data = line.split
-	if data.size == keys.size + 1
+	if data.size == keys.size + 1	# has "date time" in end of line
 		time = Time.parse(data.pop(2).join ' ').to_i
 		data.push time
 		show_record keys, data
-	elsif data.size == old_keys.size
+	elsif data.size == keys.size - 1 # no timestamp in old versions of vmstat
+		show_record keys, data
+	elsif data.size == old_keys.size # has timestamp in the first column
 		show_record old_keys, data
 	end
 end
