@@ -15,7 +15,7 @@ else
 end
 
 data = []
-Dir["#{RESULT_ROOT}/#{BM_NAME}_*_#{DATA_NAME}.dat"].each { |file|
+Dir["#{RESULT_ROOT}/results/#{BM_NAME}_*_#{DATA_NAME}.dat"].each { |file|
 	data.concat(File.read(file).split.map(&:to_i))
 }
 
