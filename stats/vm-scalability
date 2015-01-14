@@ -44,4 +44,8 @@ else
 end
 
 printf "throughput: %d\n", throughput.average
+if kbps.empty?
+	STDERR.puts "stats/vm-scalability: incomplete output"
+	exit
+end
 printf "stddev:     %g\n", stddev
