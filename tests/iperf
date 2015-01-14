@@ -2,8 +2,6 @@
 # - runtime
 # - protocol
 
-export PATH=$BENCHMARK_ROOT/iperf/bin:$PATH
-
 [ -n "$runtime" ] || runtime=300
 [ "$protocol" = udp ] && opt_udp=-u
 
