@@ -1,0 +1,23 @@
+#!/bin/bash
+
+download()
+{
+	wget --no-clobber https://vilimpoc.org/research/ku-latency/ku-latency.c
+	wget --no-clobber https://vilimpoc.org/research/ku-latency/send-data.c
+}
+
+build()
+{
+	gcc -o $BM_ROOT/ku-latency ku-latency.c -lrt -Wall
+	gcc -o $BM_ROOT/send-data send-data.c -lrt -Wall
+}
+
+install()
+{
+	:
+}
+
+cleanup()
+{
+	rm -f "/tmp/ku-latency.c" "/tmp/send-data.c"
+}
