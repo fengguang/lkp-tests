@@ -1,0 +1,9 @@
+testcase: ku-latency
+
+runtime: 300s
+
+default-monitors:
+  wait: pre-test
+  vmstat:
+
+ku-latency:
