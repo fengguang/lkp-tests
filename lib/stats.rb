@@ -185,7 +185,7 @@ def install_path(kconfig, commit)
 end
 
 def is_functional_test(path)
-	rp = Result_path.new
+	rp = ResultPath.new
 	rp.parse_result_root path
 	$functional_tests.include? rp['testcase']
 end

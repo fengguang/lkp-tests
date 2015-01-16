@@ -12,7 +12,7 @@ if not File.directory? $result_root
 	exit 1
 end
 
-result_path = Result_path.new
+result_path = ResultPath.new
 result_path.parse_result_root $result_root
 
 $params_file  = result_path.params_file

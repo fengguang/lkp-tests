@@ -8,7 +8,7 @@ def tbox_group(hostname)
 	hostname.sub /-[0-9]+$/, ''
 end
 
-class Result_path < Hash
+class ResultPath < Hash
 
 	def parse_result_root(rt)
 		dirs = rt.sub(RESULT_MNT, '').split('/')

@@ -68,7 +68,7 @@ result_roots.sort.each { |result_root|
 		next if matrix['last_state.is_incomplete_run']
 	end
 
-	result_path = Result_path.new
+	result_path = ResultPath.new
 	result_path.parse_result_root(result_root)
 	result_path['_rt'] = _rt
 	result_path['__rt'] = __rt

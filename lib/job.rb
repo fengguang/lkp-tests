@@ -308,7 +308,7 @@ class Job
 	end
 
 	def _result_root
-		result_path = Result_path.new
+		result_path = ResultPath.new
 		result_path.update @job
 		result_path['rootfs'] ||= 'debian-x86_64.cgz'
 		result_path['rootfs'] = rootfs_filename result_path['rootfs']

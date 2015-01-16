@@ -202,7 +202,7 @@ def add_stats(path)
 		field_value = 0
 	end
 
-	result_path = Result_path.new
+	result_path = ResultPath.new
 	result_path.parse_result_root(File.realpath(path))
 
 	if $dim_not_a_param
@@ -249,7 +249,7 @@ def add_result_root(result_root)
 end
 
 def setup_test_group(_result_root)
-	result_path = Result_path.new
+	result_path = ResultPath.new
 	result_path.parse_result_root _result_root
 	test = result_path.test_desc $opt_dimension, $dim_not_a_param
 	$tests.add test
@@ -322,7 +322,7 @@ def setup_changed_stats()
 		changed_stats.each { |stat, record|
 			if $opt_save_changes
 				result_root = "#{File.dirname matrix_file2}/0"
-				result_path = Result_path.new
+				result_path = ResultPath.new
 				result_path.parse_result_root result_root
 
 				record['result_root']  = result_root
@@ -575,7 +575,7 @@ def show_delta(stat, key_g)
 
 	$cases.each { |_rt, value|
 
-		result_path = Result_path.new
+		result_path = ResultPath.new
 		result_path.parse_result_root(_rt)
 		test = result_path.test_desc $opt_dimension, $dim_not_a_param
 
