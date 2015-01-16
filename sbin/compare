@@ -593,7 +593,7 @@ def show_delta(stat, key_g)
 			if is_fail
 				$sum[dim] += v
 			else
-				$sum[dim] += Math.log(v)
+				$sum[dim] += Math.log(v) if v > 0
 			end
 
 			if v_stddev and is_fail
