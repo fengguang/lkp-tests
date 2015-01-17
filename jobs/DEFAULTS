@@ -19,9 +19,9 @@ default-monitors:
   bdi_dev_mapping:
   diskstats:
   nfsstat:
-  energy:
   cpuidle:
   cpufreq-stats:
   turbostat:
+  pmeter:
   sched_debug:
     interval: 10
