@@ -1,0 +1,13 @@
+testcase: netpipe
+
+default-monitors:
+  wait: pre-test
+  vmstat:
+
+netpipe:
+  test:
+  # - lam
+  # - mpich2
+  # - openmpi
+  # - pvm
+  - tcp

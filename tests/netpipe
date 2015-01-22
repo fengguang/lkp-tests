@@ -1,0 +1,9 @@
+#!/bin/sh
+# - test
+
+case $test in
+tcp )
+	NPtcp &
+	NPtcp -n 1000 -h localhost 2>&1
+	;;
+esac
