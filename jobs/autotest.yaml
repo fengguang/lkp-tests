@@ -25,7 +25,7 @@ autotest:
   - aiostress
   # - asynctest # run time too short
   # - autotest_regression
-  - barriertest
+  # - barriertest  # autotest self test
   - bash_shared_mapping
   - bonnie
   - btreplay
