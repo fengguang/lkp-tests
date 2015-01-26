@@ -16,9 +16,8 @@ opt_events="-e $(echo "$events" | sed 's/ / -e /g')"
 ulimit -n 102400
 
 . $LKP_SRC/lib/wait.sh
-wait_timeout $delay
 
 perf record -q -ag --realtime=1 -m 256 $opt_freq $opt_events \
-	-o $TMP/perf.data -- \
-	timeout $duration \
+	-o $TMP/perf.data -D $((delay * 1000)) -- \
+	timeout $((delay + duration)) \
 	$WAIT_POST_TEST_CMD
