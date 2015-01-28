@@ -18,10 +18,10 @@ nproc()
 
 role()
 {
-	# $host_roles will be determined at job schedule time and
+	# $node_roles will be determined at job schedule time and
 	# set accordingly in each scheduled job
-	local __my_host_rules=" $host_roles "
+	local __my_roles=" $node_roles "
 
-	[ "${__my_host_rules#* $1 }" != "$__my_host_rules" ]
+	[ "${__my_roles#* $1 }" != "$__my_roles" ]
 }
 
