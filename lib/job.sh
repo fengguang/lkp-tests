@@ -26,10 +26,17 @@ wakeup_pre_test()
 	date '+%s' > $TMP/start_time
 }
 
+should_wait_cluster()
+{
+	[ -z "$LKP_SERVER" ] && return 1
+	[ -z "$node_roles" ] && return 1
+	[ "$all_nodes" = "$HOSTNAME" ] && return 1
+	return 0
+}
+
 wait_other_nodes()
 {
-	[ -n "$node_roles" ] || return
-	[ "$all_nodes" = "$HOSTNAME" ] && return
+	should_wait_cluster || return
 
 	local program_type=$1
 	local program=$2
@@ -38,6 +45,25 @@ wait_other_nodes()
 	mkdir $TMP/wait_other_nodes-once 2>/dev/null || return
 
 	# exit if either of the other nodes failed its job
+
+	for i in $(seq 100)
+	do
+		result=$(wget -O - "http://$LKP_SERVER/~$LKP_USER/cgi-bin/lkp-cluster-sync?cluster=$cluster&node=$HOSTNAME" |
+			 grep -o -w -F -e 'ready' -e 'retry' -e 'abort')
+		case $result in
+		'abort')
+			echo "cluster.abort: 1" >> $RESULT_ROOT/last_state
+			exit
+			;;
+		'ready')
+			return
+			;;
+		'retry')
+			;;
+		esac
+	done
+
+	wget -O /dev/null "http://$LKP_SERVER/~$LKP_USER/cgi-bin/lkp-cluster-sync?cluster=$cluster&node=$HOSTNAME&abort=true"
 }
 
 # In a cluster test, if some server/service role only started daemon(s) and
@@ -60,6 +86,7 @@ check_exit_code()
 	[ "$exit_code" = 0 ] && return
 
 	echo "${program}.exit_code.$exit_code: 1" >> $RESULT_ROOT/last_state
+	should_wait_cluster && wget -O /dev/null "http://$LKP_SERVER/~$LKP_USER/cgi-bin/lkp-cluster-sync?cluster=$cluster&node=$HOSTNAME&failed=true"
 	exit "$exit_code"
 }
 
