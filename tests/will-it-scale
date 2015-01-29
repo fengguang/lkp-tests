@@ -1,6 +1,7 @@
 #!/bin/sh
 # - runtime
 # - test
+# - nr_task
 
 cd $BENCHMARK_ROOT/will-it-scale || exit
 
@@ -17,4 +18,7 @@ setup_params()
 
 setup_threads_to_iterate
 setup_params
+
+threads_to_iterate=${nr_task:-$threads_to_iterate}
+
 cmd ./runtest.py $test $duration $threads_to_iterate

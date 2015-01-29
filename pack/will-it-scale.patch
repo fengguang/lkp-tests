@@ -19,7 +19,7 @@ index b4c2730..8d4a2cf 100755
  
  nr_cores=0
  r = re.compile('^processor')
-@@ -87,14 +87,8 @@ if arch == 'ppc64':
+@@ -87,14 +87,9 @@ if arch == 'ppc64':
  print 'tasks,processes,processes_idle,threads,threads_idle,linear'
  print '0,0,100,0,100,0'
  
@@ -31,6 +31,7 @@ index b4c2730..8d4a2cf 100755
 -	data_points.insert(0, 1)
 -
 -for i in data_points:
++linear = 1
 +for i in threads:
 +	i = int(i)
  	c = './%s_processes -t %d -s %d' % (cmd, i, duration)
