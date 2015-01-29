@@ -21,7 +21,7 @@ done
 export GIT_DIR=/c/lkp/linux/.git
 
 if [[ $opt_date ]]; then
-	files=$(find /lkp/paths -type f -ctime -$opt_date)
+	files=$(find /lkp/paths -type f -name "????-??-??-*" -ctime -$opt_date)
 elif [[ $script_name =~ ^_ ]]; then
 	files="/lkp/paths/????-??-??-* /lkp/paths/.????-??-??-*"
 else
