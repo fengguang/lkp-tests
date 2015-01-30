@@ -28,7 +28,8 @@ autotest:
   # - barriertest  # autotest self test
   - bash_shared_mapping
   - bonnie
-  - btreplay
+  # NameError: invalid file /lkp/benchmarks/autotest/client/tests/btreplay/blktrace-git-latest.tar.gz to cat to command tar xvf - 2>/dev/null
+  # - btreplay
   - cgroup
   - cgroup_tests
   - connectathon
