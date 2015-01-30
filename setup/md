@@ -42,7 +42,7 @@ check_partition_size $partitions
 destroy_devices() {
 	for dev in $partitions
 	do
-		wipefs -a $dev
+		wipefs -q -a $dev
 	done
 }
 
