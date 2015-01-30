@@ -76,7 +76,24 @@ wait_clients_finish()
 	[ -f "$TMP/executed-test-programs" ] && return
 
 	# contact LKP server, it knows whether all clients have finished
-	:
+	for i in $(seq 100)
+	do
+		result=$(wget -O - "http://$LKP_SERVER/~$LKP_USER/cgi-bin/lkp-cluster-sync?cluster=$cluster&node=$HOSTNAME&state=wait_finish" |
+			 grep -o -w -F -e 'finish' -e 'retry' -e 'abort')
+		case $result in
+		'abort')
+			echo "cluster.abort: 1" >> $RESULT_ROOT/last_state
+			exit
+			;;
+		'finish')
+			return
+			;;
+		'retry')
+			;;
+		esac
+	done
+
+	wget -O /dev/null "http://$LKP_SERVER/~$LKP_USER/cgi-bin/lkp-cluster-sync?cluster=$cluster&node=$HOSTNAME&state=abort"
 }
 
 check_exit_code()
@@ -109,11 +126,13 @@ start_daemon()
 	"$@"
 	check_exit_code $?
 
+	should_wait_cluster && wget -O /dev/null "http://$LKP_SERVER/~$LKP_USER/cgi-bin/lkp-cluster-sync?cluster=$cluster&node=$HOSTNAME&state=finished"
 	# If failed to start the daemon above, the job will abort.
 	# LKP server on notice of the failed job will abort the other waiting nodes.
 
 	wait_other_nodes 'daemon' $program
 	wakeup_pre_test
+	wait_clients_finish
 }
 
 run_test()
@@ -123,5 +142,6 @@ run_test()
 	wakeup_pre_test
 	"$@"
 	check_exit_code $?
+	should_wait_cluster && wget -O /dev/null "http://$LKP_SERVER/~$LKP_USER/cgi-bin/lkp-cluster-sync?cluster=$cluster&node=$HOSTNAME&state=finished"
 }
 
