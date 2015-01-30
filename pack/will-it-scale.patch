@@ -1,5 +1,5 @@
 diff --git a/runtest.py b/runtest.py
-index b4c2730..5215bb3 100755
+index b4c2730..99d5bb8 100755
 --- a/runtest.py
 +++ b/runtest.py
 @@ -48,12 +48,13 @@ class linux_stat():
@@ -35,17 +35,18 @@ index b4c2730..5215bb3 100755
 -	c = './%s_processes -t %d -s %d' % (cmd, i, duration)
 -	before = linux_stat()
 -	pipe = subprocess.Popen(setarch + ' ' + c, shell=True, stdout=subprocess.PIPE).stdout
-+linear = 1
-+for i in threads:
-+	i = int(i)
- 	processes_avg = -1
+-	processes_avg = -1
 -	for line in pipe.readlines():
 -		if 'testcase:' in line:
 -			(testcase, val) = line.split(':')
 -			title = open(cmd + '.title', 'w')
 -			title.write(val)	
 -			title.close() 
-+	processes_idle = -1
++linear = 1
++for i in threads:
++	i = int(i)
++	processes_avg = 1
++	processes_idle = 1
 +	if mode == 'process' or mode == 'both':
 +		c = './%s_processes -t %d -s %d' % (cmd, i, duration)
 +		before = linux_stat()
@@ -63,17 +64,11 @@ index b4c2730..5215bb3 100755
 -	pipe.close()
 -	after = linux_stat()
 -	processes_idle = after.idle_fraction(before) * 100
-+			if 'average:' in line:
-+				(name, val) = line.split(':')
-+				processes_avg = int(val)
-+		pipe.close()
-+		after = linux_stat()
-+		processes_idle = after.idle_fraction(before) * 100
- 
+-
 -	c = './%s_threads -t %d -s %d' % (cmd, i, duration)
 -	before = linux_stat()
 -	pipe = subprocess.Popen(setarch + ' ' + c, shell=True, stdout=subprocess.PIPE).stdout
- 	threads_avg = -1
+-	threads_avg = -1
 -	for line in pipe.readlines():
 -		if 'average:' in line:
 -			(name, val) = line.split(':')
@@ -81,7 +76,15 @@ index b4c2730..5215bb3 100755
 -	pipe.close()
 -	after = linux_stat()
 -	threads_idle = after.idle_fraction(before) * 100
-+	threads_idle = -1
++			if 'average:' in line:
++				(name, val) = line.split(':')
++				processes_avg = int(val)
++		pipe.close()
++		after = linux_stat()
++		processes_idle = after.idle_fraction(before) * 100
++
++	threads_avg = 1
++	threads_idle = 1
 +	if mode == 'thread' or mode == 'both':
 +		c = './%s_threads -t %d -s %d' % (cmd, i, duration)
 +		before = linux_stat()
