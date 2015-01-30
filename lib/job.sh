@@ -77,7 +77,7 @@ wait_other_nodes()
 
 	# exit if either of the other nodes failed its job
 
-	wait_cluster_state
+	wait_cluster_state 'wait_ready'
 }
 
 # In a cluster test, if some server/service role only started daemon(s) and
