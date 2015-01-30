@@ -1,6 +1,7 @@
 #!/bin/sh
 # - runtime
 # - test
+# - mode
 # - nr_task
 
 cd $BENCHMARK_ROOT/will-it-scale || exit
@@ -12,6 +13,7 @@ setup_params()
 	[ "$duration" -lt 5  ] && duration=5
 }
 
+[ -n "$mode" ] || mode='both'
 [ -n "$runtime" ] || runtime=300
 WARMUP_ITERATIONS=5 # defined in will-it-scale/main.c
 
@@ -25,4 +27,4 @@ else
 	setup_params
 fi
 
-cmd ./runtest.py $test $duration $threads_to_iterate
+cmd ./runtest.py $test $duration $mode $threads_to_iterate
