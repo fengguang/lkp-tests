@@ -107,7 +107,8 @@ autotest:
   # - sysbench
   # - tbench
   - tiobench
-  - tracing_microbenchmark
+  # Permission denied: '/sys/kernel/debug/tracing/tracing_enabled'
+  # - tracing_microbenchmark
   - tsc
   # - unixbench5
   # - uptime
