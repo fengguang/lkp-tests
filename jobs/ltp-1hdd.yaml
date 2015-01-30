@@ -14,3 +14,8 @@ ltp:
   test:
   - dio
   - fs_readonly
+  - fs
+  - fs_bind
+  - fs_perms_simple
+  #  - fs_ext4
+  - fsx
