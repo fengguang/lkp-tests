@@ -63,7 +63,7 @@ wait_other_nodes()
 		esac
 	done
 
-	wget -O /dev/null "http://$LKP_SERVER/~$LKP_USER/cgi-bin/lkp-cluster-sync?cluster=$cluster&node=$HOSTNAME&abort=true"
+	wget -O /dev/null "http://$LKP_SERVER/~$LKP_USER/cgi-bin/lkp-cluster-sync?cluster=$cluster&node=$HOSTNAME&state=abort"
 }
 
 # In a cluster test, if some server/service role only started daemon(s) and
@@ -86,7 +86,7 @@ check_exit_code()
 	[ "$exit_code" = 0 ] && return
 
 	echo "${program}.exit_code.$exit_code: 1" >> $RESULT_ROOT/last_state
-	should_wait_cluster && wget -O /dev/null "http://$LKP_SERVER/~$LKP_USER/cgi-bin/lkp-cluster-sync?cluster=$cluster&node=$HOSTNAME&failed=true"
+	should_wait_cluster && wget -O /dev/null "http://$LKP_SERVER/~$LKP_USER/cgi-bin/lkp-cluster-sync?cluster=$cluster&node=$HOSTNAME&state=failed"
 	exit "$exit_code"
 }
 
