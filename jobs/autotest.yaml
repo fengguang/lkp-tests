@@ -81,7 +81,8 @@ autotest:
   # - netpipe
   - npb
   # - parallel_dd
-  - perfmon
+  # build error
+  # - perfmon
   - pktgen
   - posixtest
   # - profiler_sync # Not a test case
