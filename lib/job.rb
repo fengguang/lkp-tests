@@ -77,13 +77,7 @@ def strip_trivial_array(a)
 end
 
 def for_each(ah)
-	if ah.class == Array
-		ah.each { |a|
-			for_each(a) { |k, v|
-				yield k, v
-			}
-		}
-	elsif ah.class == Hash
+	if ah.class == Hash
 		ah.each { |k, v|
 			yield k, v
 		}
@@ -229,7 +223,7 @@ class Job
 		last_item = ''
 		for_each_program_or_param(@job) { |k, v| last_item = k }
 		for_each_program_or_param(@job) { |k, v|
-			if (v.class == Array or v.class == Hash) and v.size > 1
+			if Array === v and v.size > 1
 				copy = deepcopy(v)
 				for_each(copy) { |kk, vv|
 					restore(v, copy)
