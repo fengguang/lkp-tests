@@ -76,56 +76,13 @@ def strip_trivial_array(a)
 	end
 end
 
-def for_each(ah)
-	if ah.class == Hash
-		ah.each { |k, v|
+def for_each_in(ah, set)
+	ah.each { |k, v|
+		if set.include?(k)
 			yield ah, k, v
-		}
-	else
-		yield ah, nil, nil
-	end
-end
-
-def for_each_program(ah)
-	for_each(ah) { |h, k, v|
-		# puts k
-		if $programs.include? k
-			yield h, k, v
-		elsif Hash === v
-			for_each_program(v) { |h, k, v|
-				yield h, k, v
-			}
 		end
-	}
-end
-
-def for_each_program_or_param(ah)
-	$dims_to_expand ||= Set.new [ 'kconfig', 'commit', 'rootfs' ]
-	for_each(ah) { |h, k, v|
-		# puts k
-		if $programs.include?(k) or $dims_to_expand.include?(k)
-			if (v.class == Array and v.size > 1) or (v.class == Hash and v.size >= 1)
-				options = {}
-				if $programs[k] and $programs[k].size > 0
-					`#{LKP_SRC}/bin/program-options #{$programs[k]}`.each_line { |line|
-						type, name = line.split
-						options[name] = type
-					}
-				end
-				if options.include? string_or_hash_key(strip_trivial_array(v)) 
-					if v.class == Hash
-						v.each { |kk, vv| yield kk, vv }
-					# elsif v.class == Array
-						# v.each { |kk| yield kk, vv }
-					end
-				else
-					yield h, k, v
-				end
-			else
-				yield h, k, v
-			end
-		elsif Hash === v
-			for_each_program_or_param(v) { |h, k, v|
+		if Hash === v
+			for_each_in(v, set) { |h, k, v|
 				yield h, k, v
 			}
 		end
@@ -178,6 +135,8 @@ end
 
 class Job
 
+	EXPAND_DIMS = %w(kconfig commit rootfs)
+
 	def update(hash, top = false)
 		@job ||= {}
 		if top
@@ -218,28 +177,40 @@ class Job
 		atomic_save_yaml_json @job, jobfile
 	end
 
-	def each_job
-		create_programs_hash "{setup,tests}/**/*"
-		last_item = ''
-		for_each_program_or_param(@job) { |h, k, v| last_item = k }
-		for_each_program_or_param(@job) { |h, k, v|
-			if Array === v and v.size > 1
-				copy = deepcopy(v)
-				for_each(copy) { |hh, kk, vv|
-					restore(v, copy)
-					v.keep_if { |a, b| a == kk }
-					# expand_one(job) { |job| yield job }
-					each_job { yield self }
-				}
-				restore(v, copy)
-				break
-			elsif k == last_item
-				yield self
-			end
+	def init_program_options
+		@program_options = {}
+		for_each_in(@job, $programs) { |h, k, v|
+			`#{LKP_SRC}/bin/program-options #{$programs[k]}`.each_line { |line|
+				type, name = line.split
+				@program_options[name] = type
+			}
 		}
 	end
 
+	def each_job_init
+		create_programs_hash "{setup,tests}/**/*"
+		init_program_options
+		@dims_to_expand = Set.new EXPAND_DIMS
+		@dims_to_expand.merge $programs.keys
+		@dims_to_expand.merge @program_options.keys
+	end
+
+	def each_job
+		for_each_in(@job, @dims_to_expand) { |h, k, v|
+			if Array === v
+				v.each { |vv|
+					h[k] = vv
+					each_job { yield self }
+				}
+				h[k] = v
+				return
+			end
+		}
+		yield self
+	end
+
 	def each_jobs(&block)
+		each_job_init
 		each_job &block
 		@jobs.each do |hash|
 			@job.update hash
@@ -249,31 +220,16 @@ class Job
 
 	def each_param
 		create_programs_hash "{setup,tests}/**/*"
-		for_each_program(@job) { |h, k, v|
-			options = {}
-			if $programs[k].size > 0
-				`#{LKP_SRC}/bin/program-options #{$programs[k]}`.each_line { |line|
-					type, name = line.split
-					options[name] = type
-				}
-			end
-			if v.class == Hash
-				v.each { |kk, vv| yield kk, options.include?(kk) ? strip_trivial_array(vv) : kk, options[kk] }
-			elsif v.class == Array
-				if v[0].class == Hash
-					v[0].each { |kk, vv| yield kk, options.include?(kk) ? strip_trivial_array(vv) : kk, options[kk] }
-				else
-					yield k, v[0], options[k]
-				end
-			else
-				yield k, v, options[k]
-			end
+		init_program_options
+		for_each_in(@job, $programs.clone.merge(@program_options)) { |h, k, v|
+			next if Hash === v
+			yield k, v, @program_options[k]
 		}
 	end
 
 	def each_program(glob)
 		create_programs_hash(glob)
-		for_each_program(@job) { |h, k, v|
+		for_each_in(@job, $programs) { |h, k, v|
 			yield k, v
 		}
 	end
