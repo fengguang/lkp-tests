@@ -101,7 +101,7 @@ def parse_event(event_fmt)
 	event_parser     = FMT_DIR + event + ".sh"
 	event_parser_out = FMT_DIR + event + ".out"
 	File.open(event_parser, "w") { |file|
-		file.puts "cat #{ARGV[0]} | grep -F #{event} | perl -pe 's/^.*#{pattern}.*$/#{replace}/' > #{event_parser_out}"
+		file.puts "grep -F ' #{event}: ' #{ARGV[0]} | perl -pe 's/^.*#{pattern}.*$/#{replace}/' > #{event_parser_out}"
 	}
 
 	FileUtils.chmod "+x", event_parser
