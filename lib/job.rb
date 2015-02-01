@@ -79,21 +79,21 @@ end
 def for_each(ah)
 	if ah.class == Hash
 		ah.each { |k, v|
-			yield k, v
+			yield ah, k, v
 		}
 	else
-		yield ah, nil
+		yield ah, nil, nil
 	end
 end
 
 def for_each_program(ah)
-	for_each(ah) { |k, v|
+	for_each(ah) { |h, k, v|
 		# puts k
 		if $programs.include? k
-			yield k, v
+			yield h, k, v
 		elsif Hash === v
-			for_each_program(v) { |k, v|
-				yield k, v
+			for_each_program(v) { |h, k, v|
+				yield h, k, v
 			}
 		end
 	}
@@ -101,7 +101,7 @@ end
 
 def for_each_program_or_param(ah)
 	$dims_to_expand ||= Set.new [ 'kconfig', 'commit', 'rootfs' ]
-	for_each(ah) { |k, v|
+	for_each(ah) { |h, k, v|
 		# puts k
 		if $programs.include?(k) or $dims_to_expand.include?(k)
 			if (v.class == Array and v.size > 1) or (v.class == Hash and v.size >= 1)
@@ -119,14 +119,14 @@ def for_each_program_or_param(ah)
 						# v.each { |kk| yield kk, vv }
 					end
 				else
-					yield k, v
+					yield h, k, v
 				end
 			else
-				yield k, v
+				yield h, k, v
 			end
 		elsif Hash === v
-			for_each_program_or_param(v) { |k, v|
-				yield k, v
+			for_each_program_or_param(v) { |h, k, v|
+				yield h, k, v
 			}
 		end
 	}
@@ -221,11 +221,11 @@ class Job
 	def each_job
 		create_programs_hash "{setup,tests}/**/*"
 		last_item = ''
-		for_each_program_or_param(@job) { |k, v| last_item = k }
-		for_each_program_or_param(@job) { |k, v|
+		for_each_program_or_param(@job) { |h, k, v| last_item = k }
+		for_each_program_or_param(@job) { |h, k, v|
 			if Array === v and v.size > 1
 				copy = deepcopy(v)
-				for_each(copy) { |kk, vv|
+				for_each(copy) { |hh, kk, vv|
 					restore(v, copy)
 					v.keep_if { |a, b| a == kk }
 					# expand_one(job) { |job| yield job }
@@ -249,7 +249,7 @@ class Job
 
 	def each_param
 		create_programs_hash "{setup,tests}/**/*"
-		for_each_program(@job) { |k, v|
+		for_each_program(@job) { |h, k, v|
 			options = {}
 			if $programs[k].size > 0
 				`#{LKP_SRC}/bin/program-options #{$programs[k]}`.each_line { |line|
@@ -273,7 +273,7 @@ class Job
 
 	def each_program(glob)
 		create_programs_hash(glob)
-		for_each_program(@job) { |k, v|
+		for_each_program(@job) { |h, k, v|
 			yield k, v
 		}
 	end
