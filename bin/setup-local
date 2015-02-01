@@ -49,11 +49,11 @@ end
 opts.parse!(argv)
 
 scripts = []
-create_programs_hash "{tests,setup,monitors}/**/*"
 ARGV.each { |arg|
 	if arg =~ /.yaml/
-		job = load_yaml(arg)
-		for_each_program(job) { |k, v|
+		job = Job.new
+		job.load(arg)
+		job.each_program("{tests,setup,monitors}/**/*") { |k, v|
 			scripts << k
 		}
 	elsif File.executable? arg
