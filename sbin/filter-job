@@ -38,7 +38,8 @@ def get_job_vars(job, jobfile)
 end
 
 jobfile = ARGV[0]
-job	= YAML.load_file jobfile
+job = Job.new
+job.load(jobfile)
 $job_vars = get_job_vars job, jobfile
 
 if $PROGRAM_NAME =~ /job-vars/
@@ -46,8 +47,7 @@ if $PROGRAM_NAME =~ /job-vars/
 	exit
 end
 
-create_programs_hash "{filters}/**/*"
-for_each_program(job) { |program|
+job.each_program("{filters}/**/*") { |program, env|
 	run_program program
 	break unless File.exist? jobfile
 }
