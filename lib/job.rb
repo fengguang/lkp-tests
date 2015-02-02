@@ -247,6 +247,7 @@ class Job
 				next
 			end
 			next unless v
+			v = strip_trivial_array(v)
 			path += v.to_s.tr('/$()', '_')
 			path += '-'
 		}
