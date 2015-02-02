@@ -48,7 +48,7 @@ is_btrfs_raid_levels() {
 destroy_devices() {
 	for dev in $partitions
 	do
-		wipefs -a $dev
+		wipefs -a --force $dev
 	done
 }
 
