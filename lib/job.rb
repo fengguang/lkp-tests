@@ -135,7 +135,7 @@ end
 
 class Job
 
-	EXPAND_DIMS = %w(kconfig commit rootfs)
+	EXPAND_DIMS = %w(kconfig commit rootfs boot_params)
 
 	def update(hash, top = false)
 		@job ||= {}
@@ -178,7 +178,9 @@ class Job
 	end
 
 	def init_program_options
-		@program_options = {}
+		@program_options = {
+			'boot_params' => '-',
+		}
 		for_each_in(@job, $programs) { |h, k, v|
 			`#{LKP_SRC}/bin/program-options #{$programs[k]}`.each_line { |line|
 				type, name = line.split
