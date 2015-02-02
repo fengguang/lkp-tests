@@ -28,7 +28,7 @@ $metrics_blacklist_re = Regexp.new metrics_blacklist.join('|')
 # => ["tcrypt.", "hackbench.", "dd.", "xfstests.", "aim7.", ..., "oltp.", "fileio.", "dmesg."]
 def test_prefixes()
 	stats = Dir["#{LKP_SRC}/stats/**/*"].map { |path| File.basename path }
-	tests = Dir["#{LKP_SRC}/tests/**/*"].map { |path| File.basename path }
+	tests = Dir["#{LKP_SRC}/{tests,daemon}/**/*"].map { |path| File.basename path }
 	tests = stats & tests
 	tests.delete 'wrapper'
 	tests.push 'kmsg'

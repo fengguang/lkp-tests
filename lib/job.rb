@@ -188,7 +188,7 @@ class Job
 	end
 
 	def each_job_init
-		create_programs_hash "{setup,tests}/**/*"
+		create_programs_hash "{setup,tests,daemon}/**/*"
 		init_program_options
 		@dims_to_expand = Set.new EXPAND_DIMS
 		@dims_to_expand.merge $programs.keys
@@ -219,7 +219,7 @@ class Job
 	end
 
 	def each_param
-		create_programs_hash "{setup,tests}/**/*"
+		create_programs_hash "{setup,tests,daemon}/**/*"
 		init_program_options
 		for_each_in(@job, $programs.clone.merge(@program_options)) { |h, k, v|
 			next if Hash === v

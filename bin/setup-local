@@ -53,7 +53,7 @@ ARGV.each { |arg|
 	if arg =~ /.yaml/
 		job = Job.new
 		job.load(arg)
-		job.each_program("{tests,setup,monitors}/**/*") { |k, v|
+		job.each_program("{daemon,tests,setup,monitors}/**/*") { |k, v|
 			scripts << k
 		}
 	elsif File.executable? arg

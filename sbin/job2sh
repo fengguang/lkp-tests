@@ -185,11 +185,11 @@ def parse_one(ancestors, key, val, pass)
 		return false unless pass == :PASS_RUN_COMMANDS
 		shell_run_program(tabs, key.sub(/^call\s+/, '').sub(/^source\s+/, '.'), val)
 		return :action_call_command
-	elsif String === val and key =~ %r{^script\s+(monitors|setup|tests|stats)/([-a-zA-Z0-9_/]+)$}
+	elsif String === val and key =~ %r{^script\s+(monitors|setup|tests|daemon|stats)/([-a-zA-Z0-9_/]+)$}
 		return false unless pass == :PASS_NEW_SCRIPT
 		script_file = $1 + '/' + $2
 		script_name = File.basename $2
-		if $cur_func == :run_job	and script_file =~ %r{^(monitors|setup|tests)/} or
+		if $cur_func == :run_job	and script_file =~ %r{^(monitors|setup|tests|daemon)/} or
 		   $cur_func == :extract_stats	and script_file.index('stats/') == 0
 			$programs[script_name] = LKP_SRC + '/' + script_file
 		end
@@ -263,7 +263,7 @@ $cur_func = :run_job
 
 out_line "export_top_env()"
 out_line "{"
-create_programs_hash "{setup,monitors,tests}/**/*"
+create_programs_hash "{setup,monitors,tests,daemon}/**/*"
 job.delete_if { |key, val| parse_one([], key, val, :PASS_EXPORT_ENV) }
 out_line
 out_line "\t[ -n \"$LKP_SRC\" ] ||"

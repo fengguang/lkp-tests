@@ -246,7 +246,7 @@ end
 
 
 if $opt_shell
-	create_programs_hash "{setup,monitors,tests}/**/*"
+	create_programs_hash "{setup,monitors,tests,daemon}/**/*"
 	shell_run_head
 	update_global_env
 	shell_export_env
@@ -258,7 +258,7 @@ end
 case $PROGRAM_NAME
 when /run-job/
 	$pre_test_executed = false
-	create_programs_hash "{setup,monitors,tests}/**/*"
+	create_programs_hash "{setup,monitors,tests,daemon}/**/*"
 	ENV['job_pwd'] ||= '/'
 
 	$testcase.delete_if { |key, val|
@@ -275,7 +275,7 @@ when /run-job/
 		true
 	}
 when /job-env/
-	create_programs_hash "{setup,monitors,tests}/**/*"
+	create_programs_hash "{setup,monitors,tests,daemon}/**/*"
 	$top_env.each { |key, val| puts "#{key}: #{val}" }
 when /extract-stats/
 	ARGV[1..-1].each { |f| $testcase.merge!(YAML.load_file(f)) }
