@@ -4,8 +4,8 @@ monitors:
   perf-profile:
     freq: 800
     events:
-    - cycles
-    - LLC-loads
+      cycles
+      LLC-loads
 
 nr_threads: 1600%
 

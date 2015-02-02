@@ -13,7 +13,7 @@ monitors:
   perf-stat:
   perf-profile:
   ftrace:
-  - events:
+    events:
       balance_dirty_pages
       bdi_dirty_ratelimit
       global_dirty_state

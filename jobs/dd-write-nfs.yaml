@@ -3,7 +3,7 @@ testcase: dd-write-nfs
 common-monitors:
   wait: pre-test
   ftrace:
-  - events:
+    events:
       balance_dirty_pages
       bdi_dirty_ratelimit
       global_dirty_state
