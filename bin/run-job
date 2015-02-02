@@ -103,6 +103,22 @@ def add_one_env(program_env, k, v)
 	return false
 end
 
+def for_each(ah)
+        if ah.class == Array
+                ah.each { |a|
+                        for_each(a) { |k, v|
+                                yield k, v
+                        }
+                }
+        elsif ah.class == Hash
+                ah.each { |k, v|
+                        yield k, v
+                }
+        else
+                yield ah, nil
+        end
+end
+
 def get_program_env(program, env)
 	program_env = {}
 	args = []
@@ -202,7 +218,7 @@ def shell_run_child(key, val, tabs = '')
 		true
 	}
 	$shell_run_program_indent = true
-	for_each_program(val) { |k, v|
+	for_each_in(val, $programs) { |h, k, v|
 		shell_run_program(k, v, tabs)
 	}
 	$shell_run_program_indent = false
@@ -319,7 +335,7 @@ def run_program(program, env)
 end
 
 if $opt_shell
-	for_each_program($testcase) { |k, v|
+	for_each_in($testcase, $programs) { |h, k, v|
 		shell_run_program k, v
 	}
 
@@ -329,7 +345,7 @@ if $opt_shell
 	exit
 end
 
-for_each_program($testcase) { |k, v|
+for_each_in($testcase, $programs) { |h, k, v|
 	update_global_env
 	run_program k, v
 }
