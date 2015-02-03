@@ -15,7 +15,8 @@ while line = STDIN.gets
 		values = line.split ','
 		nr_task = values.shift
 		next if nr_task == '0'
-		$scalability << values[0].to_f / values[-1].to_i
+		linear = values[-1].to_i
+		$scalability << values[0].to_f / linear if linear != 0 and nr_task != '1'
 		$per_process << values[0].to_f / nr_task.to_i
 		$per_thread << values[2].to_f / nr_task.to_i
 		names.each_with_index do |name, i|
@@ -26,8 +27,6 @@ while line = STDIN.gets
 	end
 end
 
-exit if $scalability.empty?
-
-printf "scalability: %f\n", $scalability[-1]
-printf "per_process_ops: %d\n", $per_process.average
-printf "per_thread_ops: %d\n", $per_thread.average
+printf "scalability: %f\n", $scalability[-1] unless $scalability.empty?
+printf "per_process_ops: %d\n", $per_process.average unless $per_process.empty?
+printf "per_thread_ops: %d\n", $per_thread.average unless $per_thread.empty?

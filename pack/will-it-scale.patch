@@ -1,5 +1,5 @@
 diff --git a/runtest.py b/runtest.py
-index b4c2730..99d5bb8 100755
+index b4c2730..696664d 100755
 --- a/runtest.py
 +++ b/runtest.py
 @@ -48,12 +48,13 @@ class linux_stat():
@@ -42,11 +42,11 @@ index b4c2730..99d5bb8 100755
 -			title = open(cmd + '.title', 'w')
 -			title.write(val)	
 -			title.close() 
-+linear = 1
++linear = 0
 +for i in threads:
 +	i = int(i)
-+	processes_avg = 1
-+	processes_idle = 1
++	processes_avg = 0
++	processes_idle = 0
 +	if mode == 'process' or mode == 'both':
 +		c = './%s_processes -t %d -s %d' % (cmd, i, duration)
 +		before = linux_stat()
@@ -83,8 +83,8 @@ index b4c2730..99d5bb8 100755
 +		after = linux_stat()
 +		processes_idle = after.idle_fraction(before) * 100
 +
-+	threads_avg = 1
-+	threads_idle = 1
++	threads_avg = 0
++	threads_idle = 0
 +	if mode == 'thread' or mode == 'both':
 +		c = './%s_threads -t %d -s %d' % (cmd, i, duration)
 +		before = linux_stat()
