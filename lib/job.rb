@@ -241,9 +241,9 @@ class Job
 		each_param { |k, v, option_type|
 			if option_type == '='
 				if v and v != ''
-					path += "#{k}=#{v}".tr('/$()', '_')
+					path += "#{k}=#{v}".tr('^-a-zA-Z0-9+=:.%', '_')
 				else
-					path += "#{k}".tr('/$()', '_')
+					path += "#{k}".tr('^-a-zA-Z0-9+=:.%', '_')
 				end
 				path += '-'
 				next
