@@ -1,6 +1,6 @@
 testcase: tcrypt
 
-boot_params: nowatchdog rcupdate.rcu_cpu_stall_suppress=1
+kernel_cmdline: nowatchdog rcupdate.rcu_cpu_stall_suppress=1
 
 period: 2s
 
