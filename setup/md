@@ -39,18 +39,12 @@ check_partition_size() {
 }
 check_partition_size $partitions
 
-destroy_devices() {
-	for dev in $partitions
-	do
-		wipefs -a --force $dev
-	done
-}
-
 make_md() {
 	grep -q '^md0 : active' /proc/mdstat && cmd mdadm --stop /dev/md0
 	echo y | cmd mdadm -q --create /dev/md0 --chunk=$raid_chunk --level=$raid_level --raid-devices=$nr_partitions --force --assume-clean $partitions
 }
 
+. $LKP_SRC/lib/wipefs.sh
 destroy_devices
 make_md
 

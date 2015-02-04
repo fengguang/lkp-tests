@@ -45,13 +45,6 @@ is_btrfs_raid_levels() {
 				 "$raid_level" = 'braid10' ]
 }
 
-destroy_devices() {
-	for dev in $partitions
-	do
-		wipefs -a --force $dev
-	done
-}
-
 start_nfsd()
 {
 	local mp
@@ -141,6 +134,7 @@ case $fs in
 		;;
 
 	*)
+		. $LKP_SRC/lib/wipefs.sh
 		destroy_devices
 		make_fs
 		mount_fs
