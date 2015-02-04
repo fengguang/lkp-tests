@@ -210,8 +210,10 @@ def add_stats(path)
 	else
 		$params ||= YAML.load_file result_path.params_file
 		return unless $params.has_key? $opt_dimension
-		path_params = result_path['path_params'].partition Regexp.new '\b(' + $params[$opt_dimension].join('|') + ')\b'
+		path_params = result_path['path_params'].partition Regexp.new '\b-?(' + $params[$opt_dimension].join('|') + ')-?\b'
 		dim = path_params[1]
+		dim[0] = '' if dim[0] == '-'
+		dim[-1] = '' if dim[-1] == '-'
 		return unless dim
 	end
 
@@ -236,12 +238,23 @@ def add_result_root(result_root)
 	$opt_grep.each  { |re| return if result_root !~ re }
 	$opt_vgrep.each { |re| return if result_root =~ re }
 
-	_result_root = File.dirname result_root
+	begin
+		_result_root = File.dirname result_root
+	rescue ArgumentError
+		# ArgumentError: string contains null byte
+		return
+	end
 	return unless $_result_root_saved.add? _result_root
 
 	$longest_dims.each { |dim|
-		if _result_root.index(dim)
-			key = _result_root.sub(dim, '')
+		if dim.size == 0
+			key = _result_root
+			if $_result_root_tuple[key].size > 0
+				$_result_root_tuple[key] << _result_root
+			end
+			return
+		elsif _result_root.index(dim)
+			key = _result_root.sub(/-?#{dim}-?/, '')
 			$_result_root_tuple[key] << _result_root
 			return
 		end
@@ -258,7 +271,7 @@ end
 def setup_result_root_hash()
 	ENV['LC_ALL'] = 'C'
 	$opt_dims.each do |dim|
-		`grep -h -r -F -e #{dim} #{RESULT_PATHS}`.each_line do |result_root|
+		`grep -h -r -F -e '#{dim}' #{RESULT_PATHS}`.each_line do |result_root|
 			add_result_root result_root
 		end
 	end
