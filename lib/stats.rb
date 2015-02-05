@@ -7,6 +7,7 @@ LKP_SRC ||= ENV['LKP_SRC']
 
 require "set.rb"
 require "#{LKP_SRC}/lib/git.rb"
+require "#{LKP_SRC}/lib/git-tag.rb"
 require "#{LKP_SRC}/lib/yaml.rb"
 require "#{LKP_SRC}/lib/result.rb"
 require "#{LKP_SRC}/lib/bounds.rb"
@@ -200,9 +201,13 @@ def load_base_matrix(matrix_path, head_matrix)
 	matrix = {}
 	tags_merged = []
 
-	if commit_exists(commit)
-		version, is_exact_match = last_linus_release_tag commit
-	else
+	remote = branch_remote(branch_commit(commit)) rescue "default"
+	git_tag = GitTag.new(:remote => remote)
+
+	version, is_exact_match = git_tag.last_release_tag(commit)
+
+	# FIXME: remove it later; or move it somewhere in future
+	if not version
 		kconfig = File.basename __result_root
 		context_file = install_path(kconfig, commit) + "/context.yaml"
 		version = nil
@@ -217,11 +222,12 @@ def load_base_matrix(matrix_path, head_matrix)
 			return nil
 		end
 	end
-	order = tag_order(version)
+
+	order = git_tag.tag_order(version)
 
 	cols = 0
-	linus_tags.each { |tag|
-		o = tag_order(tag)
+	git_tag.base_tags.each { |tag|
+		o = git_tag.tag_order(tag)
 		next if o >  order
 		next if o == order and is_exact_match
 		next if is_exact_match and tag =~ /^#{version}-rc[0-9]+$/
