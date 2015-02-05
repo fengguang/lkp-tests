@@ -4,6 +4,8 @@
 [ "${HOSTNAME#*lkp-a0[1-9]}"	!= "$HOSTNAME" ] && exit 0
 [ "${HOSTNAME#*snb-drag}"	!= "$HOSTNAME" ] && exit 0
 
+cd $BENCHMARK_ROOT/turbostat || exit
+
 if [ ! -c /dev/cpu/0/msr ]; then
 	modprobe msr
 
@@ -13,8 +15,8 @@ if [ ! -c /dev/cpu/0/msr ]; then
 	fi
 fi
 
-[ $# -ge 1 ] && exec turbostat "$@" 2>&1
+[ $# -ge 1 ] && exec ./turbostat "$@" 2>&1
 
 . $LKP_SRC/lib/wait.sh
 
-exec turbostat -v $WAIT_POST_TEST_CMD 2>&1
+exec ./turbostat -v $WAIT_POST_TEST_CMD 2>&1
