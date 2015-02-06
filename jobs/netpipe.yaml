@@ -1,13 +1,16 @@
 testcase: netpipe
 
-default-monitors:
-  wait: pre-test
-  vmstat:
+test:
+# - lam
+# - mpich2
+# - openmpi
+# - pvm
+- tcp
 
-netpipe:
-  test:
-  # - lam
-  # - mpich2
-  # - openmpi
-  # - pvm
-  - tcp
+cluster: cs-localhost
+
+if role server:
+  netpiped:
+
+if role client:
+  netpipe:

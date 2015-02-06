@@ -3,6 +3,6 @@
 
 case $test in
 tcp )
-	NPtcp -n 1000 -h localhost 2>&1
+	NPtcp &
 	;;
 esac
