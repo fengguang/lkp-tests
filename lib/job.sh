@@ -30,7 +30,7 @@ should_wait_cluster()
 {
 	[ -z "$LKP_SERVER" ] && return 1
 	[ -z "$node_roles" ] && return 1
-	[ "$all_nodes" = "$HOSTNAME" ] && return 1
+	[ "$cluster" = "cs-localhost" ] && return 1
 	return 0
 }
 
@@ -86,7 +86,7 @@ wait_other_nodes()
 wait_clients_finish()
 {
 	[ -n "$node_roles" ] || return
-	[ "$all_nodes" = "$HOSTNAME" ] && return
+	[ "$cluster" = "cs-localhost" ] && return
 	[ -f "$TMP/executed-test-programs" ] && return
 
 	# contact LKP server, it knows whether all clients have finished
