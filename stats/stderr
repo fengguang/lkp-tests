@@ -6,7 +6,7 @@ require "#{LKP_SRC}/lib/dmesg.rb"
 error_ids = Hash.new
 
 $ignore_patterns = []
-Dir["#{LKP_SRC}/ignore-stderr/*"].each { |f|
+Dir["#{LKP_SRC}/etc/ignore-stderr/*"].each { |f|
 	File.open(f).each_line { |line|
 		$ignore_patterns << Regexp.new('^' + line.chomp + '$')
 	}
