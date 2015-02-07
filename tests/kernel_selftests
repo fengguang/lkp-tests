@@ -11,12 +11,5 @@ sed -i 's/hugetlbfstest//' vm/Makefile
 
 for mf in */Makefile; do
 	subtest=${mf%/Makefile}
-	[ "$subtest" = net ] && continue
-	[ "$subtest" = user ] && continue
-	[ "$subtest" = sysctl ] && continue
-	[ "$subtest" = efivarfs ] && continue
-	[ "$subtest" = firmware ] && continue
-	[ "$subtest" = memory-hotplug ] && continue
-	[ "$subtest" = memfd ] && continue
 	cmd make run_tests -C $subtest
 done
