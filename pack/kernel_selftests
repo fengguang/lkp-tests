@@ -10,19 +10,12 @@ build()
 {
 	cd $source_dir
 	make allyesconfig
-	make &
-	pid=$!
-	sleep 5
-	kill $pid
+	make prepare
 	cd tools/testing/selftests
-	for mf in */Makefile; do
-		make -C ${mf%/Makefile}
-	done
+	make
 }
 
 install()
 {
 	cp -af * $BM_ROOT
-	find $BM_ROOT -name "*.c" -exec rm -f {} \;
-	find $BM_ROOT -name "Makefile" -exec sed -i 's/\(run_tests:\) all/\1/' {} \;
 }
