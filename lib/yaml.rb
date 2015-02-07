@@ -5,12 +5,6 @@ LKP_SRC ||= ENV['LKP_SRC']
 require 'fileutils'
 require 'yaml'
 require 'json'
-require 'oj'
-
-Oj.default_options = {
-	:mode	=> :strict,
-	:indent	=> 1,
-}
 
 def compress_file(file)
 	system "gzip #{file} < /dev/null"
