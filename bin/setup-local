@@ -133,6 +133,8 @@ make_wakeup
 create_lkp_dirs
 create_host_config
 install_packages("lkp", distro)
+install_packages("lkp-dev", distro)
+install_packages("makepkg", distro)
 
 scripts.each { |script|
 	install_packages(script, distro)
