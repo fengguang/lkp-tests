@@ -1,0 +1,14 @@
+pkgbase = turbostat
+	pkgdesc = Newer version of turbostat-shows CPU frequency and C-state residency on modern Intel turbo-capable processors.
+	pkgver = 3.7
+	pkgrel = 4
+	url = http://acpi.sourceforge.net/dsdt/index.php
+	arch = x86_64
+	arch = i686
+	license = GPL
+	conflicts = pmtools
+	source = http://www.kernel.org/pub/linux/kernel/v3.x/linux-3.18.tar.xz
+	sha256sums = becc413cc9e6d7f5cc52a3ce66d65c3725bc1d1cc1001f4ce6c32b69eb188cbd
+
+pkgname = turbostat
+

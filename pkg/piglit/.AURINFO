@@ -1,0 +1,24 @@
+pkgbase = piglit-git
+	pkgdesc = Open-source test suite for OpenGL implementations
+	pkgver = r6113.d216a33
+	pkgrel = 1
+	url = http://piglit.freedesktop.org/
+	arch = i686
+	arch = x86_64
+	license = MIT
+	license = GPL
+	makedepends = git
+	makedepends = cmake
+	makedepends = glproto
+	depends = waffle
+	depends = python2-mako
+	depends = python2-numpy
+	depends = glu
+	provides = piglit
+	conflicts = piglit
+	source = git://anongit.freedesktop.org/piglit
+	source = 10-no-rpath-in-build.patch
+	options = !emptydirs
+
+pkgname = piglit-git
+

@@ -1,0 +1,34 @@
+# Maintainer: (swish) Divan Santana <divan (a) s-tainment.co.za>
+pkgname=qperf
+pkgver=0.4.9
+pkgrel=1
+pkgdesc="Measure socket and RDMA performance"
+arch=('i686' 'x86_64')
+url="http://www.openfabrics.org/downloads/qperf/"
+license=('GPL')
+groups=()
+depends=()
+makedepends=()
+optdepends=()
+provides=()
+conflicts=()
+replaces=()
+backup=()
+options=()
+install=
+changelog=
+source=(http://www.openfabrics.org/downloads/qperf/$pkgname-$pkgver.tar.gz)
+noextract=()
+md5sums=(a9eea1953ee5379e57ae5fd7b09fecf2) #generate with 'makepkg -g'
+
+build() {
+        cd "$srcdir/$pkgname-$pkgver"
+        ./autogen.sh
+        ./configure  --prefix=/usr
+        make
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+  make DESTDIR="$pkgdir/" install
+}

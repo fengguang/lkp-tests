@@ -1,0 +1,12 @@
+Index: b/CMakeLists.txt
+===================================================================
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -17,6 +17,7 @@
+ 	add_definitions(-DPIGLIT_HAS_X11)
+ endif()
+ 
++SET(CMAKE_SKIP_RPATH TRUE)
+ 
+ option(PIGLIT_BUILD_GL_TESTS "Build tests for OpenGL" ON)
+ option(PIGLIT_BUILD_GLES1_TESTS "Build tests for OpenGL ES1" OFF)

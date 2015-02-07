@@ -1,0 +1,13 @@
+pkgbase = ebizzy
+	pkgdesc = Generate a workload resembling common web application server workloads.
+	pkgver = 0.3
+	pkgrel = 2
+	url = http://ebizzy.sourceforge.net/
+	arch = i686
+	arch = x86_64
+	license = GPL2
+	depends = glibc
+	source = http://downloads.sourceforge.net/project/ebizzy/ebizzy/0.3/ebizzy-0.3.tar.gz
+
+pkgname = ebizzy
+
