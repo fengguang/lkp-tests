@@ -156,7 +156,7 @@ class Job
 		begin
 			yaml = File.read jobfile
 			@jobs = []
-			YAML.load_stream(yaml, jobfile) do |hash|
+			YAML.load_stream(yaml) do |hash|
 				@jobs << hash
 			end
 			@job ||= {}
