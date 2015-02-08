@@ -241,22 +241,22 @@ class Job
 		each_param { |k, v, option_type|
 			if option_type == '='
 				if v and v != ''
-					path += "#{k}=#{v}".tr('^-a-zA-Z0-9+=:.%', '_')
+					path += "#{k}=#{v}"
 				else
-					path += "#{k}".tr('^-a-zA-Z0-9+=:.%', '_')
+					path += "#{k}"
 				end
 				path += '-'
 				next
 			end
 			next unless v
 			v = strip_trivial_array(v)
-			path += v.to_s.tr('/$()', '_')
+			path += v.to_s
 			path += '-'
 		}
 		if path.empty?
 			return 'defaults'
 		else
-			return path.chomp('-')
+			return path.chomp('-').tr('^-a-zA-Z0-9+:.%', '_')
 		end
 	end
 
