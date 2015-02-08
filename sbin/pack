@@ -2,18 +2,29 @@
 
 [[ $LKP_SRC ]] || export LKP_SRC="$(dirname $(dirname $(realpath $0)))"
 
-usage() { echo "Usage: $0 [-a <arch>] [-c] [-d] -n <BM_NAME>"; exit 1; }
+usage() { echo "Usage: $0 [-a <arch>] [-c] [-d] <BM_NAME>"; exit 1; }
 
-while getopts "a:cdn:" opt
+install_required_packages()
+{
+    local required_packs
+    if [ -f $1 ]; then
+        required_packs=$(cat $1)
+        apt-get install -y $required_packs
+    fi
+}
+
+while getopts "a:cd" opt
 do
 	case $opt in
 	a ) arch="$OPTARG" ;;
 	c ) opt_clean=true ;;
 	d ) opt_deb=true ;;
-	n ) BM_NAME="$OPTARG" ;;
 	? ) usage ;;
 	esac
 done
+
+shift $(($OPTIND-1))
+BM_NAME=$1;
 
 [[ $BM_NAME ]] || usage
 BM_ROOT=/lkp/benchmarks/$BM_NAME
@@ -25,7 +36,8 @@ rm -fr "$BM_ROOT"
 mkdir -p $BM_ROOT
 
 cd /tmp
-
+install_required_packages $LKP_SRC/debian/$BM_NAME
+install_required_packages $LKP_SRC/debian/$BM_NAME-dev
 download
 build
 install
