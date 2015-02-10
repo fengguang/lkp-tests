@@ -87,8 +87,10 @@ class GitTag
 	end
 
 	def __commit_tag(commit)
-		tag = %x[ #{@git_cmd} tag --points-at #{commit} | grep -E '#{release_tag_pattern}' ].chomp
-		@commit_tag_cache[commit] = tag
+		@commit_tag_cache[commit] = %x[ #{@git_cmd} tag --points-at #{commit}].each_line { |tag|
+			tag.chomp!
+			break tag if release_tag_pattern_regexp.match(tag)
+		}
 	end
 
 	# Start a brutal force searching for the last_release tag
