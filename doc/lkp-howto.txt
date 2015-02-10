@@ -58,11 +58,9 @@ based on a Debian system.
 
 Preinstall necessary packages:
 
-	# apt-get install ruby ruby-oj
+	# apt-get install ruby
 
-For now Debian based distros are required. ruby-oj is only available since
-Debian jessie which is currently in the testing phase. For Debian stable, you
-will need to install it with rubygems.
+For now Debian based distros are required.
 
 5.1 Split job file
 
