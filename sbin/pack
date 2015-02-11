@@ -2,7 +2,47 @@
 
 [[ $LKP_SRC ]] || export LKP_SRC="$(dirname $(dirname $(realpath $0)))"
 
-usage() { echo "Usage: $0 [-a <arch>] [-c] [-d] <BM_NAME>"; exit 1; }
+usage()
+{
+	cat <<-EOF
+
+		LKP provides $0 to generate locally and upload to inn server the customized installation of external programs and/or system packages in .cgz and .deb formats.
+		lkp-tests/pack/default implements default behavior of $0.
+		Based on lkp-tests/pack/default, a script is named after an external program, and overrides default implementation of download(), build(), and install() functions.
+		The script named after an external program works in conjunction with $0
+
+		Usage: $0 [-a <arch>] [-c] [-d] <BM_NAME>
+
+		[-a <arch>]       Optional parameter: specific architecture of <BM_NAME>, used as suffixe in .cgz file name, overrides default value
+		[-c]              Optional parameter: work environment is cleaned up after execution
+		[-d]              Optional parameter: generates customized installation in .deb format for <BM_NAME> - simplifies later installation on debian systems
+		<BM_NAME>         Mandatory parameter: generates customized installationa in .cgz format for <BM_NAME>, default architecture of the compiling machine is used as suffixe in .cgz file name
+
+		Note:
+		[-a <arch>] and [-d] optional parameters do not work together, and <arch> cannot be used as suffixe in .deb file name.
+
+		Examples:
+		$ pack my_program
+		Output: /tmp/my_program/
+		Output: /lkp/benchmarks/my_program/
+		Output: /lkp/benchmarks/my_program-<default_arch>.cgz
+		Output: inn:/lkp/benchmarks/my_program-<default_arch>.cgz
+
+		$ pack -a my_arch -c my_program
+		Output: /lkp/benchmarks/my_program/
+		Output: /lkp/benchmarks/my_program-my_arch.cgz
+		Output: inn:/lkp/benchmarks/my_program-my_arch.cgz
+
+		$ pack -d my_program
+		Output: /tmp/my_program/
+		Output: /tmp/my-program-LKP/
+		Output: /tmp/my-program-LKP.deb
+		Output: /lkp/benchmarks/my_program/
+		Output: inn:/lkp/benchmarks/my-program-LKP.deb
+
+	EOF
+	exit 1
+}
 
 install_required_packages()
 {
@@ -29,6 +69,8 @@ BM_NAME=$1;
 [[ $BM_NAME ]] || usage
 BM_ROOT=/lkp/benchmarks/$BM_NAME
 
+[[ $arch ]] || arch=`arch`
+
 source $LKP_SRC/pack/default
 source $LKP_SRC/pack/$BM_NAME
 
@@ -43,8 +85,10 @@ build
 install
 if [[ $opt_deb ]]; then
 	pack_deb
+	rsync -av /tmp/"${BM_NAME//_/-}-LKP".deb inn:/lkp/benchmarks
 else
 	pack
+	rsync -av /lkp/benchmarks/${BM_NAME}-${arch}.cgz inn:/lkp/benchmarks
 fi
 
 [[ $opt_clean ]] && cleanup
