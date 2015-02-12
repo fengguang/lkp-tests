@@ -38,7 +38,6 @@ usage()
 		Output: /tmp/my-program-LKP/
 		Output: /tmp/my-program-LKP.deb
 		Output: /lkp/benchmarks/my_program/
-		Output: inn:/lkp/benchmarks/my-program-LKP.deb
 
 	EOF
 	exit 1
@@ -85,7 +84,6 @@ build
 install
 if [[ $opt_deb ]]; then
 	pack_deb
-	rsync -av /tmp/"${BM_NAME//_/-}-LKP".deb inn:/lkp/benchmarks
 else
 	pack
 	rsync -av /lkp/benchmarks/${BM_NAME}-${arch}.cgz inn:/lkp/benchmarks
