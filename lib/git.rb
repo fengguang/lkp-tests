@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 
 require 'set'
+require 'time'
 
 GIT_WORK_TREE	||= ENV['GIT_WORK_TREE'] || ENV['LINUX_GIT'] || '/c/lkp/linux'
 GIT_DIR		||= ENV['GIT_DIR'] || GIT_WORK_TREE + '/.git'
@@ -83,6 +84,11 @@ end
 
 def git_committer(commit)
 	`#{GIT} log -n1 --pretty=format:'%cn <%ce>' #{commit}`.chomp
+end
+
+def git_commit_time(commit)
+	scdate = `#{GIT} log -n1 --pretty=format:'%cD' #{commit}`.chomp
+	Time.rfc822 scdate
 end
 
 def commit_exists(commit)
