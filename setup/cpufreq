@@ -1,7 +1,8 @@
-#!/bin/sh
+#!/bin/sh -e
 # - scaling_max_freq
 
 for i in $(seq 0 $((nr_cpu-1)))
 do
-	echo $scaling_max_freq > /sys/devices/system/cpu/cpu$i/cpufreq/scaling_max_freq
+	note "echo $scaling_max_freq > /sys/devices/system/cpu/cpu$i/cpufreq/scaling_max_freq"
+	      echo $scaling_max_freq > /sys/devices/system/cpu/cpu$i/cpufreq/scaling_max_freq
 done
