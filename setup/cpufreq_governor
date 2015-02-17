@@ -1,9 +1,10 @@
-#!/bin/sh
+#!/bin/sh -e
 
 scaling_governor=$1
 [ -n "$scaling_governor" ] || exit 0
 
 for file in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
 do
-	echo $scaling_governor > $file
+	note "echo $scaling_governor > $file"
+	      echo $scaling_governor > $file
 done
