@@ -134,7 +134,8 @@ start_daemon()
 
 run_test()
 {
-	local program=${*##* }	# the last argument
+	local program="$*"
+	program=${program##* }	# the last argument
 				# test scripts normally start with some wrappers,
 				# use env vars rather than command line arguments
 	program=${program##*/}	# basename
