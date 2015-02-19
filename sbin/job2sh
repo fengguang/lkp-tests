@@ -70,8 +70,6 @@ def shell_escape_expand(val)
 		return ''
 	when Fixnum
 		return val.to_s
-	when %r{^/dev/disk/by-}
-		return "\"$(readlink -e #{val})\""
 	when /^[-a-zA-Z0-9~!@#%^&*()_+=;:.,<>\/?|\t "]+$/, Time
 		return "'#{val}'"
 	when /^[-a-zA-Z0-9~!@#%^&*()_+=;:.,<>\/?|\t '$]+$/
