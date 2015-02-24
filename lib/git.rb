@@ -113,7 +113,7 @@ def tag_order(tag)
 	case tag
 	when /^v2\.(\d+)\.(\d+)/
 		sort_key = 200000 + $1.to_i * 10000 + $2.to_i * 100
-	when /^v3\.(\d+)/
+	when /^v[3-9]\.(\d+)/
 		sort_key = 300000 + $1.to_i * 100
 	else
 		STDERR.puts "Invalid tag #{tag}"
@@ -138,7 +138,7 @@ def __linus_tags()
 	tags = []
 	`#{GIT} tag -l 'v*.*'`.each_line { |tag|
 		tag.chomp!
-		tags << tag if tag =~ /^(v2\.\d+|v3)\.\d+(-rc\d+)?$/
+		tags << tag if tag =~ /^(v2\.\d+|v[3-9])\.\d+(-rc\d+)?$/
 	}
 	tags.sort_by { |tag| - tag_order(tag) }
 end
@@ -171,8 +171,8 @@ def __last_linus_release_tag(commit)
 		end
 	}
 
-	if version == 3
-		tag = "v3.#{patch_level}"
+	if version >= 3
+		tag = "v#{version}.#{patch_level}"
 	elsif version == 2
 		tag = "v2.#{patch_level}.#{sub_level}"
 	else
