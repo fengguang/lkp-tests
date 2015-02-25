@@ -171,7 +171,7 @@ def __last_linus_release_tag(commit)
 		end
 	}
 
-	if version >= 3
+	if version and version >= 3
 		tag = "v#{version}.#{patch_level}"
 	elsif version == 2
 		tag = "v2.#{patch_level}.#{sub_level}"
