@@ -10,6 +10,7 @@ LKP_SRC = ENV["LKP_SRC"]
 
 require "#{LKP_SRC}/lib/yaml.rb"
 require "#{LKP_SRC}/lib/job.rb"
+require "#{LKP_SRC}/lib/distro-info.rb"
 
 TMP = LKP_SRC + '/tmp'
 
@@ -122,12 +123,16 @@ def install_benchmarks(script)
 	end
 end
 
-if File.executable? '/usr/bin/apt-get' and File.exist? '/etc/apt/sources.list'
+
+distroInfo = LKP::DistroInfo.instance
+
+if distroInfo.systemName == "Debian"
 	distro = "debian"
 else
 	puts "Not a Debian system, cannot install packages under #{LKP_SRC}/distro/debian"
 	exit 1
 end
+
 
 make_wakeup
 create_lkp_dirs
@@ -140,3 +145,4 @@ scripts.each { |script|
 	install_packages(script, distro)
 	install_benchmarks(script)
 }
+
