@@ -6,17 +6,18 @@ usage()
 {
 	cat <<-EOF
 
-		LKP provides $0 to generate locally and upload to inn server the customized installation of external programs and/or system packages in .cgz and .deb formats.
+		LKP provides $0 to generate locally and support upload to LKP server the customized installation of external programs and/or system packages. The generated package could be in .cgz(default) or .deb(-d option) formats.
 		lkp-tests/pack/default implements default behavior of $0.
 		Based on lkp-tests/pack/default, a script is named after an external program, and overrides default implementation of download(), build(), and install() functions.
 		The script named after an external program works in conjunction with $0
 
 		Usage: $0 [-a <arch>] [-c] [-d] <BM_NAME>
 
-		[-a <arch>]       Optional parameter: specific architecture of <BM_NAME>, used as suffixe in .cgz file name, overrides default value
-		[-c]              Optional parameter: work environment is cleaned up after execution
-		[-d]              Optional parameter: generates customized installation in .deb format for <BM_NAME> - simplifies later installation on debian systems
-		<BM_NAME>         Mandatory parameter: generates customized installationa in .cgz format for <BM_NAME>, default architecture of the compiling machine is used as suffixe in .cgz file name
+		[-a <arch>]       Optional parameter: specific architecture of <BM_NAME>, used as suffixe in .cgz file name, overrides default value.
+		[-c]              Optional parameter: work environment is cleaned up after execution.
+		[-d]              Optional parameter: If specified, will generates customized installation in .deb format (default is .cgz format) for <BM_NAME> - simplifies later installation on debian systems.
+		[-s <dest>]       Optional parameter: If specified, will sync generated package to destination given.
+		<BM_NAME>         Mandatory parameter: generates customized installation package for <BM_NAME>, default architecture of the compiling machine is used as suffixe in .cgz file name
 
 		Note:
 		[-a <arch>] and [-d] optional parameters do not work together, and <arch> cannot be used as suffixe in .deb file name.
@@ -52,12 +53,13 @@ install_required_packages()
     fi
 }
 
-while getopts "a:cd" opt
+while getopts "a:cds:" opt
 do
 	case $opt in
 	a ) arch="$OPTARG" ;;
 	c ) opt_clean=true ;;
 	d ) opt_deb=true ;;
+	s ) sync_dest="$OPTARG" ;;
 	? ) usage ;;
 	esac
 done
@@ -86,7 +88,8 @@ if [[ $opt_deb ]]; then
 	pack_deb
 else
 	pack
-	rsync -av /lkp/benchmarks/${BM_NAME}-${arch}.cgz inn:/lkp/benchmarks
 fi
+
+[[ -n $sync_dest ]] && rsync -av /lkp/benchmarks/${BM_NAME}-${arch}.cgz $sync_dest
 
 [[ $opt_clean ]] && cleanup
