@@ -2238,6 +2238,13 @@ create_package() {
 	[[ -f $pkg_file ]] && rm -f "$pkg_file"
 	[[ -f $pkg_file.sig ]] && rm -f "$pkg_file.sig"
 
+	# LKP specific feature
+	if [[ $PKGEXT = ".cgz" ]]; then
+		mkdir -p /pkg/${pkgname}/${fullver}
+		find . | cpio -o -H newc --owner=root.root | gzip -n -9 > /pkg/${pkgname}/${fullver}/$(basename $pkg_file)
+		return
+	fi
+
 	# when fileglobbing, we want * in an empty directory to expand to
 	# the null string rather than itself
 	shopt -s nullglob
