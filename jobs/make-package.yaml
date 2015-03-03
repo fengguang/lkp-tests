@@ -1,0 +1,10 @@
+testcase: make-package
+
+default-monitors:
+
+rootfs: debian-x86_64.cgz
+
+make-package:
+  pkgname:
+  - gcc
+  - ebizzy
