@@ -53,7 +53,17 @@ install_crosstool()
 	local URL=https://www.kernel.org/pub/tools/crosstool/files/bin
 	local list=/tmp/crosstool-files
 
-	[[ -s $list ]] || lftp -c "open $URL && find x86_64 > $list" || exit
+	[[ -s $list ]] || {
+		local os_bit=$(getconf LONG_BIT)
+
+		if [[ $os_bit = 32 ]]; then
+			local os_arch=i686
+		else
+			local os_arch=x86_64
+		fi
+
+		lftp -c "open $URL && find $os_arch > $list" || exit
+	}
 
 	local file=$(grep "${gcc_arch}.*\.tar\.xz" $list | tail -1)
 	[[ $file ]] || {
