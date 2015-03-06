@@ -132,8 +132,8 @@ def load_matrix_file(matrix_file)
 	return matrix
 end
 
-def shrink_matrix(matrix)
-	n = matrix['stats_source'].size - MAX_MATRIX_COLS
+def shrink_matrix(matrix, max_cols)
+	n = matrix['stats_source'].size - max_cols
 	if n > 1
 		empty_keys = []
 		matrix.each { |k, v|
@@ -144,7 +144,7 @@ def shrink_matrix(matrix)
 	end
 end
 
-def unite_to(stats, matrix_root)
+def unite_to(stats, matrix_root, max_cols = nil)
 	matrix_file = matrix_root + '/matrix.json'
 
 	matrix = load_matrix_file(matrix_root + '/matrix.json')
@@ -158,7 +158,7 @@ def unite_to(stats, matrix_root)
 		matrix = matrix_from_stats_files files
 	else
 		matrix = add_stats_to_matrix(stats, matrix)
-		shrink_matrix(matrix)
+		shrink_matrix(matrix, max_cols) if max_cols
 	end
 
 	save_json(matrix, matrix_file)
