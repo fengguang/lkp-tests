@@ -3,5 +3,6 @@
 
 cd $LKP_SRC/pkg/$pkgname || exit
 
-PACMAN=true BUILDDIR=$TMP PKGEXT=.cgz \
+sudo -E -u lkp \
+	PACMAN=true BUILDDIR=$TMP PKGEXT=.cgz \
 	$LKP_SRC/sbin/makepkg --config $LKP_SRC/etc/makepkg.conf
