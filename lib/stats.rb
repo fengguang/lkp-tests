@@ -320,19 +320,9 @@ end
 
 # b is the base of compare (eg. rc kernels) and normally have more samples than
 # a (eg. the branch HEADs)
-def __get_changed_stats(a, b, options)
+def __get_changed_stats(a, b, is_incomplete_run, options)
 	changed_stats = {}
 
-	if options['ignore-incomplete-run']
-		filter_incomplete_run(a)
-		filter_incomplete_run(b)
-
-		is_all_run_incomplete = b['stats_source'].size == 0
-		return nil if is_all_run_incomplete
-	end
-
-	is_incomplete_run = a['last_state.is_incomplete_run'] ||
-			    b['last_state.is_incomplete_run']
 	resize = options['resize']
 
 	if b['stats_source']
@@ -470,7 +460,28 @@ def get_changed_stats(matrix_path1, matrix_path2 = nil, options = {})
 	a, b = load_matrices_to_compare matrix_path1, matrix_path2
 	return nil if a == nil or b == nil
 
-	changed_stats = __get_changed_stats(a, b, options)
+	is_incomplete_run =	a['last_state.is_incomplete_run'] ||
+				b['last_state.is_incomplete_run']
+
+	if is_incomplete_run and options['ignore-incomplete-run']
+		changed_stats = {}
+	else
+		changed_stats = __get_changed_stats(a, b, is_incomplete_run, options)
+		return changed_stats unless is_incomplete_run
+	end
+
+	# If reaches here, changed_stats only contains changed error ids.
+	# Now remove incomplete runs to get any changed perf stats.
+	filter_incomplete_run(a)
+	filter_incomplete_run(b)
+
+	is_all_incomplete_run =	(a['stats_source'].empty? ||
+				 b['stats_source'].empty?)
+	return changed_stats if is_all_incomplete_run
+
+	more_changed_stats = __get_changed_stats(a, b, false, options)
+	changed_stats.merge(more_changed_stats) if more_changed_stats
+
 	return changed_stats
 end
 
