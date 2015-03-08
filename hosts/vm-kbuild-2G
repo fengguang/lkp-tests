@@ -3,5 +3,5 @@ nr_vm: 16
 nr_cpu: 2
 memory: 2G
 rootfs: debian-x86_64.cgz
-hdd_partitions: /dev/vda /dev/vdb /dev/vdc /dev/vdd
-swap_partitions: /dev/vde
+hdd_partitions: /dev/vda /dev/vdb /dev/vdc /dev/vdd /dev/vde /dev/vdf
+swap_partitions: /dev/vdg

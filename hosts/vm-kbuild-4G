@@ -3,5 +3,5 @@ nr_vm: 8
 nr_cpu: 4
 memory: 4G
 rootfs: debian-x86_64.cgz
-hdd_partitions: /dev/vda /dev/vdb /dev/vdc /dev/vdd
-swap_partitions: /dev/vde
+hdd_partitions: /dev/vda /dev/vdb /dev/vdc /dev/vdd /dev/vde /dev/vdf
+swap_partitions: /dev/vdg
