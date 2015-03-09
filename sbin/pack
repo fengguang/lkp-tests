@@ -90,6 +90,6 @@ else
 	pack
 fi
 
-[[ -n $sync_dest ]] && rsync -av /lkp/benchmarks/${BM_NAME}-${arch}.cgz $sync_dest
+[[ -n $sync_dest ]] && rsync -av /lkp/benchmarks/${BM_NAME}-${arch}.cgz $sync_dest/${BM_NAME}-${arch}.cgz
 
 [[ $opt_clean ]] && cleanup
