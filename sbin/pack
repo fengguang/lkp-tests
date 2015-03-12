@@ -79,8 +79,7 @@ rm -fr "$BM_ROOT"
 mkdir -p $BM_ROOT
 
 cd /tmp
-install_required_packages $LKP_SRC/debian/$BM_NAME
-install_required_packages $LKP_SRC/debian/$BM_NAME-dev
+install_required_packages $LKP_SRC/distro/debian/$BM_NAME-dev
 download
 build
 install
