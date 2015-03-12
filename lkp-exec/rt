@@ -21,7 +21,12 @@ done
 export GIT_DIR=/c/lkp/linux/.git
 
 if [[ $opt_date ]]; then
-	files=$(find /lkp/paths -type f -name "????-??-??-*" -ctime -$opt_date)
+	files=()
+	for d in $(seq $opt_date)
+	do
+		day=$(date +%F -d "$d days ago")
+		files+=(/lkp/paths/$day-*)
+	done
 elif [[ $script_name =~ ^_ ]]; then
 	files="/lkp/paths/????-??-??-* /lkp/paths/.????-??-??-*"
 else
