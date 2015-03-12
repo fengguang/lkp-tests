@@ -20,6 +20,8 @@ done
 
 export GIT_DIR=/c/lkp/linux/.git
 
+shopt -s nullglob
+
 if [[ $opt_date ]]; then
 	files=()
 	for d in $(seq $opt_date)
@@ -28,10 +30,12 @@ if [[ $opt_date ]]; then
 		files+=(/lkp/paths/$day-*)
 	done
 elif [[ $script_name =~ ^_ ]]; then
-	files="/lkp/paths/????-??-??-* /lkp/paths/.????-??-??-*"
+	files=(/lkp/paths/????-??-??-* /lkp/paths/.????-??-??-*)
 else
-	files="/lkp/paths/*"
+	files=(/lkp/paths/????-??-??-*)
 fi
+
+[[ $files ]] || exit 0
 
 for pattern
 do
@@ -46,7 +50,7 @@ do
 	if [[ "$paths" ]]; then
 		paths=$(echo "$paths" | grep -E "$pattern")
 	else
-		paths=$(grep -h -E "$pattern" $files)
+		paths=$(grep -h -E "$pattern" "${files[@]}")
 	fi
 done
 
