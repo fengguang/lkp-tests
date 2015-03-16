@@ -36,6 +36,20 @@ def load_yaml(file)
 	return nil
 end
 
+def load_yaml_merge(files)
+	all = {}
+	files.each do |file|
+		next unless File.exist? file
+		yaml = load_yaml(file)
+		if Hash === yaml
+			all.update(yaml)
+		elsif yaml
+			STDERR.puts "YAML is not a hash: #{file} #{yaml[0..300]}"
+		end
+	end
+	return all
+end
+
 def load_yaml_tail(file)
 	begin
 		return YAML.load %x[ tail -n 100 #{file} ]

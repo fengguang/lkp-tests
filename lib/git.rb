@@ -3,6 +3,8 @@
 require 'set'
 require 'time'
 
+LKP_SRC ||= ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
+
 GIT_WORK_TREE	||= ENV['GIT_WORK_TREE'] || ENV['LINUX_GIT'] || '/c/lkp/linux'
 GIT_DIR		||= ENV['GIT_DIR'] || GIT_WORK_TREE + '/.git'
 GIT		||= "git --work-tree=#{GIT_WORK_TREE} --git-dir=#{GIT_DIR}"
@@ -203,4 +205,16 @@ def version_tag(commit)
 
 	tag += '+' unless is_exact_match
 	return tag
+end
+
+def load_remotes
+	remotes = {}
+	files = Dir[LKP_SRC + '/repo/*/*']
+	files.each do |file|
+		remote = File.basename file
+		next if remote == 'DEFAULTS'
+		defaults = File.dirname(file) + '/DEFAULTS'
+		remotes[remote] = load_yaml_merge [defaults, file]
+	end
+	remotes
 end
