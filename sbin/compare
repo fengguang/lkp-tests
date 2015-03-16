@@ -661,6 +661,38 @@ def show_one_index(type)
 	printf "%6d  %8s-index  %s\n", index, type, ARGV[-1]
 end
 
+def setup_stats_priority(stats)
+	all_stats = Dir["#{LKP_SRC}/stats/**/*"].map { |d| File.basename(d) }
+	all_stats.sort!
+
+	tests = Dir["#{LKP_SRC}/tests/**/*"].map { |d| File.basename (d) }
+	tests.sort!
+
+	tests.reverse_each { |x|
+		all_stats.unshift x if all_stats.delete x
+	}
+
+	stats_num = {}
+	stats.each { |x|
+		k = x.split('.')[0]
+		next if tests.include?(k)
+		stats_num[k] ||= 0
+		stats_num[k] += 1
+	}
+
+	sorted_keys = stats_num.keys.sort_by { |x| stats_num[x] }
+	sorted_keys.each { |x|
+		all_stats.push x if all_stats.delete x
+	}
+
+	# convert the array to a hash with array index as values
+	$stats_priority = Hash[all_stats.map.with_index.to_a]
+end
+
+def stat_priority(stat)
+	return $stats_priority[stat] ? $stats_priority[stat] : 0
+end
+
 if $opt_all or $opt_index
 	setup_dims
 	setup_result_root_hash
@@ -685,6 +717,9 @@ if $opt_all or $opt_index
 	else
 		stats = sort_stats($stat_records)
 	end
+
+	setup_stats_priority(stats)
+	stats.sort_by! { |x| [stat_priority(x.split('.')[0]), x.split('.')[1]] }
 
 	if $group_by_test
 		$tests.each { |key|
