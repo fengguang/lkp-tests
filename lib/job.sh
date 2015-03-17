@@ -112,6 +112,7 @@ run_monitor()
 run_setup()
 {
 	local program=${1##*/}
+	[ "$program" = 'wrapper' ] && program=$2
 	"$@"
 	check_exit_code $?
 	read_env_vars
@@ -120,6 +121,7 @@ run_setup()
 start_daemon()
 {
 	local program=${1##*/}
+	[ "$program" = 'wrapper' ] && program=$2
 	"$@"
 	check_exit_code $?
 
@@ -134,11 +136,8 @@ start_daemon()
 
 run_test()
 {
-	local program="$*"
-	program=${program##* }	# the last argument
-				# test scripts normally start with some wrappers,
-				# use env vars rather than command line arguments
-	program=${program##*/}	# basename
+	local program="${*#*/wrapper }"
+	program=${program%% *}
 	wait_other_nodes 'test' $program
 	wakeup_pre_test
 	"$@"

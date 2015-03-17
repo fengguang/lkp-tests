@@ -16,4 +16,4 @@ fifo=$TMP/fifo-$program
 [ -L "$LKP_SRC/bin/tee-$program" ] || ln -s -T /usr/bin/tee $LKP_SRC/bin/tee-$program
 tee-$program -a $TMP_RESULT_ROOT/$program < $fifo &
 echo $! >> $TMP/.pid-pipes
-exec $exec_prefix $program_dir/$program "$@" > $fifo
+exec /usr/bin/time -v -o $TMP/${program}.time $exec_prefix $program_dir/$program "$@" > $fifo

@@ -139,7 +139,7 @@ def create_cmd(program, args)
 		cmd = [ "start_daemon", *cmd ]
 		exec_line
 	when %r{/tests/}
-		cmd = [ "run_test", "/usr/bin/time", "-v", "-o", "$TMP/#{program}.time", *cmd ]
+		cmd = [ "run_test", *cmd ]
 		exec_line
 		$stats_lines << "\t$LKP_SRC/stats/wrapper time #{program}.time"
 	else
