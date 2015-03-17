@@ -10,6 +10,7 @@ PLOT_SIZE_Y = 20
 NR_PLOT = 1
 
 def mmplot(matrix1, matrix2, fields, title_prefix=nil)
+	files = []
 	Gnuplot.open do |gnuplot|
 	fields.each do |field|
 	Gnuplot::Plot.new(gnuplot) do |plot|
@@ -44,6 +45,7 @@ def mmplot(matrix1, matrix2, fields, title_prefix=nil)
 		file = field.tr('^a-zA-Z0-9_.:+=-', '_')
 		file = "#{$opt_output_path}/#{file}.png"
 		plot.output "#{file}"
+		files << file
 	else
 		plot.terminal "dumb nofeed size #{PLOT_SIZE_X},#{PLOT_SIZE_Y}"
 	end
@@ -62,6 +64,7 @@ def mmplot(matrix1, matrix2, fields, title_prefix=nil)
 	end
 	end
 	end
+	files
 end
 
 def mmsplot(matrixes1, matrixes2, fields, title_prefix=nil)
