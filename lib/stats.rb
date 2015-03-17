@@ -201,7 +201,7 @@ def load_base_matrix(matrix_path, head_matrix)
 	matrix = {}
 	tags_merged = []
 
-	remote = branch_remote(branch_commit(commit)) rescue "default"
+	remote = branch_remote(find_branch(commit)) rescue "default"
 	git_tag = GitTag.new(:remote => remote)
 
 	version, is_exact_match = git_tag.last_release_tag(commit)
