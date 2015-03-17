@@ -6,11 +6,11 @@ class GitTag
 		@base_tags_cache = nil
 		@commit_tag_cache = {}
 
-		# TODO: do not hardcode it
-		git_work_dir = ENV['GIT_WORK_TREE'] || ENV['LINUX_GIT'] || '/c/repo/linux'
-		@git_cmd = "git --work-tree=#{git_work_dir} --git-dir=#{git_work_dir}/.git"
-
 		load_tag_patterns(args[:remote])
+
+		# TODO: might need rename tag_patterns in future
+		git_work_dir = @tag_patterns['git_work_dir'] || ENV['GIT_WORK_TREE'] || ENV['LINUX_GIT'] || '/c/repo/linux'
+		@git_cmd = "git --work-tree=#{git_work_dir} --git-dir=#{git_work_dir}/.git"
 	end
 
 	def release_tag_pattern()
