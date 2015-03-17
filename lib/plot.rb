@@ -1,6 +1,9 @@
 #!/usr/bin/ruby
 
+LKP_SRC ||= ENV['LKP_SRC']
+
 require "gnuplot"
+require "#{LKP_SRC}/lib/matrix.rb"
 
 PLOT_SIZE_X = 80
 PLOT_SIZE_Y = 20
@@ -59,6 +62,12 @@ def mmplot(matrix1, matrix2, fields, title_prefix=nil)
 	end
 	end
 	end
+end
+
+def mmsplot(matrixes1, matrixes2, fields, title_prefix=nil)
+	m1 = merge_matrixes(matrixes1)
+	m2 = merge_matrixes(matrixes2)
+	mmplot(m1, m2, fields, title_prefix)
 end
 
 def mplot(matrix, stats)

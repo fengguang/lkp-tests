@@ -182,3 +182,10 @@ def save_paths(result_root, user)
 	}
 end
 
+def merge_matrixes(matrixes)
+	mresult = {}
+	matrixes.each { |m|
+		add_stats_to_matrix(m, mresult)
+	}
+	mresult
+end
