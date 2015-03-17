@@ -30,6 +30,10 @@ class GitTag
 		@commit_tag_cache[commit] || __commit_tag(commit)
 	end
 
+	def to_commit(tag)
+		%x[ #{@git_cmd} rev-list -n 1 #{tag} ].chomp
+	end
+
 	def tag_order(tag)
 		ver = Regexp.new(release_tag_pattern).match tag
 
