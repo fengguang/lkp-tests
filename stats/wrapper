@@ -23,7 +23,6 @@ check_incomplete_run $log
 
 [[ -s $log ]] ||
 [[ $program = 'tcrypt' ]] ||
-[[ $program = 'testbot-kpi' ]] ||
 [[ $program = 'kernel-size' ]] ||
 [[ $program = 'perf-profile' ]] ||
 [[ $program = 'kmsg' ]] ||
