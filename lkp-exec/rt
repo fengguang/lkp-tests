@@ -18,7 +18,7 @@ do
         esac
 done
 
-export GIT_DIR=/c/lkp/linux/.git
+export GIT_DIR=/c/repo/linux/.git
 
 shopt -s nullglob
 

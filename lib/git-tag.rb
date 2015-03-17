@@ -7,7 +7,7 @@ class GitTag
 		@commit_tag_cache = {}
 
 		# TODO: do not hardcode it
-		git_work_dir = ENV['GIT_WORK_TREE'] || ENV['LINUX_GIT'] || '/c/lkp/linux'
+		git_work_dir = ENV['GIT_WORK_TREE'] || ENV['LINUX_GIT'] || '/c/repo/linux'
 		@git_cmd = "git --work-tree=#{git_work_dir} --git-dir=#{git_work_dir}/.git"
 
 		load_tag_patterns(args[:remote])
