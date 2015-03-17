@@ -303,7 +303,7 @@ end
 def setup_changed_stats()
 	$_result_root_tuple.each { |k, v|
 		matrix_file1 = v[0] + '/matrix.json'
-		matrix_file2 = v[1] + '/matrix.json'
+		matrix_file2 = v[-1] + '/matrix.json'
 		next unless File.exist? matrix_file1
 		next unless File.exist? matrix_file2
 		if $opt_index
@@ -365,7 +365,7 @@ def setup_changed_stats()
 			$stat_records[stat] << record
 		}
 		setup_test_group v[0]
-		setup_test_group v[1]
+		setup_test_group v[-1]
 	}
 end
 
