@@ -16,6 +16,7 @@ require 'yaml'
 require 'pp'
 require 'gnuplot'
 require 'set'
+require 'term/ansicolor'
 
 ABS_WIDTH = 10
 REL_WIDTH = 10
@@ -42,6 +43,17 @@ opts = OptionParser.new do |opts|
 
         opts.separator ''
         opts.separator 'options:'
+
+	opts.on('-c WHEN', '--color WHEN', 'WHEN coloful: never, always, auto.') do |w|
+		case w
+		when 'never'
+			$colorful = false
+		when 'always'
+			$colorful = true
+		when 'auto'
+			$colorful = system '/usr/bin/test', '-t', '1'
+		end
+	end
 
         opts.on('-d DIMENSION', '--dimension DIMENSION', 'DIMENSION to compare: commit, kconfig, fs, etc.') do |dimension|
 		$opt_dimension = dimension
@@ -440,6 +452,10 @@ def show_one_diff(dim, v0, v, v0_stddev, v_stddev, is_float, is_exp, is_fail=fal
 			buf = sprintf "%+#{REL_WIDTH-2}.1f%% ", p
 		else
 			buf = sprintf "%+#{REL_WIDTH-2}.2g%% ", p
+		end
+
+		if p.abs >= 50 and $colorful
+			buf = Term::ANSIColor.intense_red(buf)
 		end
 	end
 
