@@ -121,6 +121,8 @@ end
 def create_cmd(program, args)
 	program_path = $programs[program] || program
 
+	args = [] if program_path.index('/stats/')
+
 	wrapper = File.dirname(program_path) + '/wrapper'
 	if File.executable?(wrapper)
 		cmd = [ wrapper, program, *args ]
