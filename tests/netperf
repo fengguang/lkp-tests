@@ -6,9 +6,6 @@
 
 export PATH=$BENCHMARK_ROOT/netperf/bin:$PATH
 
-# start netserver
-cmd netserver
-
 [ "${test#*SCTP}" != "$test" ] && modprobe sctp 2>/dev/null
 sleep 1
 
