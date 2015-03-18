@@ -3,16 +3,13 @@
 LKP_SRC ||= ENV['LKP_SRC']
 LKP_SERVER ||= 'inn'
 
+require "#{LKP_SRC}/lib/common.rb"
 require "#{LKP_SRC}/lib/result.rb"
 require 'fileutils'
 require 'yaml'
 require 'json'
 require 'set'
 require 'pp'
-
-def deepcopy(o)
-	Marshal.load(Marshal.dump(o))
-end
 
 def restore(ah, copy)
 	if ah.class == Hash
