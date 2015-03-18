@@ -2,6 +2,7 @@
 
 LKP_SRC ||= ENV['LKP_SRC']
 
+require "#{LKP_SRC}/lib/common.rb"
 require 'fileutils'
 require 'yaml'
 require 'json'
@@ -81,15 +82,16 @@ def load_json(file)
 	   (file =~ /.json$/ and File.exist? file + '.gz' and file += '.gz')
 		begin
 			mtime = File.mtime(file)
-			return $json_cache[file] if $json_cache[file] and $json_mtime[file] == mtime
-			if file =~ /\.json$/
-				obj = JSON.load File.read(file)
-			else
-				obj = JSON.load `zcat #{file}`
+			unless $json_cache[file] and $json_mtime[file] == mtime
+				if file =~ /\.json$/
+					obj = JSON.load File.read(file)
+				else
+					obj = JSON.load `zcat #{file}`
+				end
+				$json_cache[file] = obj
+				$json_mtime[file] = mtime
 			end
-			$json_cache[file] = obj
-			$json_mtime[file] = mtime
-			return obj
+			return deepcopy($json_cache[file])
 		rescue SignalException
 			raise
 		rescue Exception
