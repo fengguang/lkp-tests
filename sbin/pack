@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-[[ $LKP_SRC ]] || export LKP_SRC="$(dirname $(dirname $(realpath $0)))"
+[[ $LKP_SRC ]] || export LKP_SRC="$(dirname $(dirname $(readlink -e $0)))"
 
 usage()
 {
