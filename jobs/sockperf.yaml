@@ -2,5 +2,11 @@ testcase: sockperf
 
 runtime: 600s
 
-sockperf:
-  msg_size: 1472b
+cluster: cs-localhost
+
+if role server:
+  sockperf-server:
+
+if role client:
+  sockperf:
+    msg_size: 1472b

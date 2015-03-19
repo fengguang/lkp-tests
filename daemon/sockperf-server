@@ -1,0 +1,6 @@
+#!/bin/sh
+
+cd $BENCHMARK_ROOT/sockperf || exit
+
+cmd ./sockperf server &
+cmd ./sockperf server --tcp &
