@@ -10,11 +10,4 @@
 
 cd $BENCHMARK_ROOT/nepim || exit
 
-cmd ./nepim >/dev/null 2>&1 &
-pid=$!
-
-sleep 1
-
 cmd ./nepim -c $opt_addr -d $opt_udp -a $runtime $opt_streams 2>&1
-
-kill $pid

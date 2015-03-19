@@ -1,0 +1,6 @@
+#!/bin/sh
+
+cd $BENCHMARK_ROOT/nepim || exit
+
+cmd ./nepim >/dev/null 2>&1 &
+sleep 1

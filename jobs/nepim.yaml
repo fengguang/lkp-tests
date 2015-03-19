@@ -5,9 +5,15 @@ nr_threads:
 - 100%
 - 25%
 
-nepim:
-  protocol:
-  - tcp
-  - tcp6
-  - udp
-  - udp6
+cluster: cs-localhost
+
+if role server:
+  nepim-server:
+
+if role client:
+  nepim:
+    protocol:
+    - tcp
+    - tcp6
+    - udp
+    - udp6
