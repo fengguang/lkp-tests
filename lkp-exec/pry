@@ -1,0 +1,8 @@
+#!/bin/bash
+
+for i in $LKP_SRC/lib/*.rb
+do
+	opt_libs+="-r $i "
+done
+
+pry $opt_libs
