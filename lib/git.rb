@@ -140,7 +140,7 @@ def __linus_tags()
 	tags = []
 	`#{GIT} tag -l 'v*.*'`.each_line { |tag|
 		tag.chomp!
-		tags << tag if tag =~ /^(v2\.\d+|v[3-9])\.\d+(-rc\d+)?$/
+		tags << tag if tag =~ /^(v2\.6|v[3-9])\.\d+(-rc\d+)?$/
 	}
 	tags.sort_by { |tag| - tag_order(tag) }
 end
