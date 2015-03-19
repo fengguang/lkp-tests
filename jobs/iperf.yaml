@@ -2,7 +2,13 @@ testcase: iperf
 
 runtime: 300s
 
-iperf:
-  protocol:
-  - tcp
-  - udp
+cluster: cs-localhost
+
+if role server:
+  iperf-server:
+
+if role client:
+  iperf:
+    protocol:
+    - tcp
+    - udp

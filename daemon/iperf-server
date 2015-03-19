@@ -1,0 +1,4 @@
+#!/bin/sh
+
+cmd iperf3 --server --daemon >/dev/null 2>/dev/null
+sleep 1

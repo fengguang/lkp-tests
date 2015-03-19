@@ -5,10 +5,6 @@
 [ -n "$runtime" ] || runtime=300
 [ "$protocol" = udp ] && opt_udp=-u
 
-cmd iperf3 --server --daemon >/dev/null 2>/dev/null
-
-sleep 1
-
 client_cmd="iperf3 -t $runtime -f M -J -c 127.0.0.1 $opt_udp"
 
 echo "$(date +'%F %T') ${client_cmd}" >> $RESULT_ROOT/reproduce.sh
