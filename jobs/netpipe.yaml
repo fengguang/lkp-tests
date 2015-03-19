@@ -10,7 +10,7 @@ test:
 cluster: cs-localhost
 
 if role server:
-  netpiped:
+  netpipe-server:
 
 if role client:
   netpipe:
