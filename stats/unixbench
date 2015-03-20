@@ -7,4 +7,6 @@ while line = STDIN.gets
 	end
 end
 
-puts 'score: ' + score
+if defined? score
+	puts 'score: ' + score
+end
