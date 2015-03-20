@@ -9,4 +9,7 @@ end
 
 if defined? score
 	puts 'score: ' + score
+else
+	puts 'incomplete_result: 1'
+	STDERR.puts "unixbench: missing score, check " + ENV['RESULT_ROOT']
 end
