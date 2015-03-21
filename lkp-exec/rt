@@ -24,7 +24,7 @@ shopt -s nullglob
 
 if [[ $opt_date ]]; then
 	files=()
-	for d in $(seq $opt_date)
+	for d in 0 $(seq $opt_date)
 	do
 		day=$(date +%F -d "$d days ago")
 		files+=(/lkp/paths/$day-*)
