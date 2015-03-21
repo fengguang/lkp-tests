@@ -136,8 +136,8 @@ start_daemon()
 
 run_test()
 {
-	local program="${*#*/wrapper }"
-	program=${program%% *}
+	local program=${1##*/}
+	[ "$program" = 'wrapper' ] && program=$2
 	wait_other_nodes 'test' $program
 	wakeup_pre_test
 	"$@"
