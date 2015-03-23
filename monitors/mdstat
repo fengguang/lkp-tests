@@ -3,7 +3,8 @@
 # NOTE: it's not about /proc/mdstat
 
 # FIXME: not hardcode the path
-grep -q 'raid[456]' /sys/dev/block/9:0/md/level 2>/dev/null || exit 0
+cd /sys/dev/block/9:0/md || exit 0
+grep -q 'raid[456]' level 2>/dev/null || exit 0
 
 stat_files="stripe_cache_active stripe_cache_size"
 
