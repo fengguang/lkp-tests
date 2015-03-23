@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# NOTE: it's not about /proc/mdstat
+
+# FIXME: not hardcode the path
+grep -q 'raid[456]' /sys/dev/block/9:0/md/level 2>/dev/null || exit 0
+
+stat_files="stripe_cache_active stripe_cache_size"
+
+while true; do
+	echo time: $(date +%s.%N)
+	grep . $stat_files  | sed 's/:/: /'
+
+	sleep 1
+done
