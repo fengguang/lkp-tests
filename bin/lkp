@@ -32,7 +32,12 @@ case "$lkp_command" in
 	'install')	lkp_command='setup-local'	;;
 	'split')	lkp_command='split-job'		;;
 	'compile')	lkp_command='job2sh'		;;
-	'run')		lkp_command='run-local'		;;
+	'run')
+		if echo "$*" | grep '\.sh$' >/dev/null; then
+			lkp_command='run-local.sh'
+		else
+			lkp_command='run-local'
+		fi ;;
 esac
 
 try_run()
