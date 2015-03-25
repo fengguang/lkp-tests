@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
 	int pid;
 	int len;
 	char buf[1024];
-	char *filename;
+	char *pipename;
 	int is_wait;
 	char *pipe_dir = get_pipe_dir();
 	int timeout = 0;
@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
 	}
 
 	if (optind < argc) {
-		filename = argv[optind];
+		pipename = argv[optind];
 	} else {
 		printf("Usage: %s [-t|--timeout seconds] PIPE_NAME\n", argv[0]);
 		exit(0);
@@ -109,18 +109,22 @@ int main(int argc, char *argv[])
 
 	mkdir(pipe_dir, 0770);
 	chdir(pipe_dir);
-	mkfifo(filename, 0660);
+	mkfifo(pipename, 0660);
 
 	if (is_wait) {
 		if (timeout) {
 			signal(SIGALRM, do_timeout);
 			alarm(timeout);
 		}
-		fd = open(filename, O_RDONLY);
+		/*
+		 * wait processes will be blocked here until the
+		 * wakeup process writes some data to the pipe
+		 */
+		fd = open(pipename, O_RDONLY);
 	} else
-		fd = open(filename, O_RDWR|O_NONBLOCK);
+		fd = open(pipename, O_RDWR|O_NONBLOCK);
 	if (fd < 0) {
-		perror(filename);
+		perror(pipename);
 		exit(1);
 	}
 
