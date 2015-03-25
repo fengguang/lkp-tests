@@ -13,6 +13,7 @@ module LKP
 	# Example of properties on debian
 	# 	p systemType => Linux
 	# 	p systemName => Debian
+	#   p systemNameL => debian (lowercase)
 	# 	p systemArch => x86_64
 	# 	p systemVersion => jessie_sid
 	#
@@ -20,7 +21,7 @@ module LKP
 	#
 	class DistroInfo
 		include Singleton
-		attr_reader :systemType, :systemName, :systemArch, :systemVersion
+		attr_reader :systemType, :systemName, :systemNameL, :systemArch, :systemVersion
 
 		def initialize
 			path_to_script = "#{LKP_SRC}/lib/detect-system.sh"
@@ -29,6 +30,8 @@ module LKP
 			@systemType.strip!
 			@systemName = `. #{path_to_script} && echo $_system_name`
 			@systemName.strip!
+			@systemNameL = `. #{path_to_script} && echo $_system_name_lowercase`
+			@systemNameL.strip!
 			@systemArch = `. #{path_to_script} && echo $_system_arch`
 			@systemArch.strip!
 			@systemVersion = `. #{path_to_script} && echo $_system_version`
