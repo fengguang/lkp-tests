@@ -1,0 +1,24 @@
+#!/usr/bin/ruby
+
+LKP_SRC ||= ENV['LKP_SRC']
+
+Dir[LKP_SRC + '/lib/*.rb'].each { |lib|
+	require lib
+}
+
+if $PROGRAM_NAME =~ /\/ruby$/
+	function = ARGV[0]
+	arguments = ARGV.drop(1)
+else
+	function = File.basename $PROGRAM_NAME
+	arguments = ARGV
+end
+
+def escape_argument(arg)
+	arg = arg.gsub("'", "\\'").gsub("\\", "\\\\")
+	"'#{arg}'"
+end
+
+arguments_str = arguments.map { |a| escape_argument(a) }.join ', '
+
+eval "#{function}(#{arguments_str})"
