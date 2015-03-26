@@ -1,0 +1,166 @@
+#!/bin/sh
+
+if ! [ $(id -u) = 0 ]; then
+	echo "This script must be run as root" 1>&2
+	exit 1
+fi
+
+[ -n "$HOSTNAME" ] || HOSTNAME=$(hostname)		#?chomp
+[ -n "$LKP_SRC" ] || export LKP_SRC=$(dirname $(dirname $(readlink -e -v $0)))
+TMP="$LKP_SRC/tmp"
+
+usage() {
+	echo "Usage: $0 [options] <script>/<jobfile>"
+	echo "options: "
+	echo "--hdd partition: HDD partition for IO tests"
+	echo "--ssd partition: SSD partition for IO tests"
+	echo "--dry-run: preview changes will made testbox by install"
+}
+
+while [ $# -gt 0 ]
+do
+	case "$1" in
+		--hdd)
+		hdd_partitions=$2
+		shift
+		;;
+		--ssd)
+		sdd_partitions=$2
+		shift
+		;;
+		--dry-run)
+		DRY_RUN=0
+		;;
+		*)
+		break
+		;;
+	esac
+	shift
+done
+
+parse_yaml() {
+	local s='[[:space:]]*' w='[a-zA-Z0-9_]*'
+	local tmp_filter=$(mktemp)
+	ls -LR $LKP_SRC/setup $LKP_SRC/monitors $LKP_SRC/tests $LKP_SRC/daemon > $tmp_filter
+	scripts=$(cat $1 | sed -ne "s|^\($s\):|\1|" \
+	         -e "s|^\($s\)\($w\)$s:$s[\"']\(.*\)[\"']$s\$|\2|p" \
+	         -e "s|^\($s\)\($w\)$s:$s\(.*\)$s\$|\2|p" | grep -x -F -f $tmp_filter | grep -v -e ':$' -e '^$')
+}
+
+make_wakeup() {
+	echo "make -C $LKP_SRC/monitors/event"
+	[ -n "$DRY_RUN" ] && return
+
+	[ -x "$LKP_SRC/monitors/event/wakeup" ] || {
+		make -C "$LKP_SRC/monitors/event" wakeup
+	}
+}
+
+# todo: make paths configurable and less intrusive to developer's system
+# currently it's hard coded in a number of places, should be changed together
+create_lkp_dirs() {
+	[ -n "$DRY_RUN" ] && return
+
+	mkdir -p $TMP
+	mkdir -p '/lkp/paths'
+	mkdir -p '/lkp/benchmarks'
+}
+
+create_host_config() {
+	[ -n "$DRY_RUN" ] && return
+
+	local host_config="$LKP_SRC/hosts/${HOSTNAME}"
+	[ -e $host_config ] || {
+		echo "Creating testbox configuration file: $host_config."
+
+		local mem_kb=$(grep MemTotal /proc/meminfo | awk '{print $2}')
+		local mem_gb=$(((mem_kb)/1024/1024))
+
+		cat <<EOT >> $host_config
+memory: ${mem_gb}G
+hdd_partitions: ${hdd_partitions}
+ssd_partitions: ${ssd_partitions}
+EOT
+	}
+}
+
+install_debian_package() {
+	local _script=$1
+	[ -f "$LKP_SRC/distro/debian/${_script}" ] || return
+
+	echo "apt-get install $(cat $LKP_SRC/distro/debian/${_script})"
+	[ -n "$DRY_RUN" ] && return
+
+	apt-get install -y `cat $LKP_SRC/distro/debian/${_script}` || {
+		echo "Cannot install some packages in $LKP_SRC/distro/debian/${_script}"
+		exit 1
+	}
+}
+
+install_packages() {
+	local _script=$1
+	install_${DISTRO}_package "$_script"
+	install_${DISTRO}_package "${_script}-dev"
+}
+
+build_install_benchmarks() {
+	local _script=$1
+
+	[ -x "$LKP_SRC/pack/$_script" ] || return
+
+	local deb_name=$(printf '%s-LKP.deb\n' "$_script" | sed 's/_/-/g')
+	echo "Making $deb_name..."
+
+	[ -n "$DRY_RUN" ] && return
+	$LKP_SRC/sbin/pack -d -c $_script
+	if [ $? -eq 0 ]; then
+		echo "Installing $deb_name"
+		dpkg -i /tmp/$deb_name
+	else
+		echo "Making $deb_name failed"
+	fi
+}
+
+[ $# -eq 0 ] && {
+	usage
+	exit
+}
+
+. $LKP_SRC/lib/detect-system.sh
+
+DISTRO=$_system_name_lowercase
+[ "$DISTRO" = "debian" ] || {
+	echo "Not a supported system, cannot install packages."
+	exit 1
+}
+
+make_wakeup
+create_lkp_dirs
+create_host_config
+install_packages "lkp"
+
+for filename in "$@"
+do
+	scripts=
+	if [ -x "$filename" ]; then
+		scripts=$(basename $filename)
+	elif [ ${filename##*.} = "yaml" ]; then
+		if [ -f $filename ]; then
+			parse_yaml $filename
+		else
+			echo "$0: cannot find file $filename" >&2
+		fi
+	else
+		echo "$0: skip unknown parameter $filename" >&2
+	fi
+
+	for script in $scripts
+	do
+		[ -n "$makepkg_once" ] || [ -d "$LKP_SRC/pkg/$script" ] && ! [ -x "$LKP_SRC/pack/$script" ] {
+			install_packages "makepkg"
+			makepkg_once=1
+		}
+		install_packages "$script"
+		build_install_benchmarks "$script"
+	done
+done
