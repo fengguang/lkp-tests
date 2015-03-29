@@ -1,3 +1,6 @@
 testcase: linux-ci
 project: linux
-release_tag_pattern: v(?<major>[2-9])\.(?<minor>\d+)\.?(?<micro>\d+)?(-rc(?<prerelease>\d+))?
+release_tag_pattern:
+  v(?<major>2)\.(?<minor>\d+)\.?(?<micro>\d+)?(-rc(?<prerelease>\d+))?
+  v(?<major>[3-9])\.(?<minor>\d+)\.?(?<micro>)(-rc(?<prerelease>\d+))?
+release_tag_committer: Linus Torvalds

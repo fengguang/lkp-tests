@@ -59,7 +59,7 @@ def linus_release_tag(commit)
 
 	tag = commit_tag(commit)
 	case tag
-	when /^v[34]\.\d+(|-rc\d+)$/, /^v2\.\d+\.\d+(|-rc\d)$/
+	when /^v[34]\.\d+(-rc\d+)?$/, /^v2\.\d+\.\d+(-rc\d)?$/
 		tag
 	else
 		nil
@@ -107,42 +107,66 @@ def commit_exists(commit)
 	return false
 end
 
-# v2.6.32	        => 263200
-# v3.11-rc6	        => 301006
-# v3.11-rc6_081811	=> 301006.081811
-# v3.11		        => 301100
-def tag_order(tag)
-	case tag
-	when /^v2\.(\d+)\.(\d+)/
-		sort_key = 200000 + $1.to_i * 10000 + $2.to_i * 100
-	when /^v[3-9]\.(\d+)/
-		sort_key = 300000 + $1.to_i * 100
-	else
-		STDERR.puts "Invalid tag #{tag}"
-		return 0
+def compare_version(aa, bb)
+	aa.names.each do |name|
+		aaa = aa[name]
+		bbb = bb[name]
+		next if aaa == bbb
+		if name =~ /prerelease/
+			direction = -1
+		else
+			direction = 1
+		end
+		if aaa and bbb
+			unless name =~ /str|name/
+				aaa = aaa.to_i
+				bbb = bbb.to_i
+			end
+			return aaa <=> bbb
+		elsif aaa and !bbb
+			return direction
+		elsif !aaa and bbb
+			return -direction
+		end
 	end
+	return 0
+end
 
-	if tag =~ /-rc(\d+)/
-		sort_key += $1.to_i
-		sort_key -= 100
+def sort_tags(pattern, tags)
+	tags.sort do |a, b|
+		aa = pattern.match a
+		bb = pattern.match b
+		-compare_version(aa, bb)
 	end
+end
 
-	if tag =~ /_(\d+)$/
-		sort_key += ('.' + $1).to_f
-	end
-
-	return sort_key
+def get_tags(pattern, committer)
+	tags = []
+	`#{GIT} tag -l`.each_line { |tag|
+		tag.chomp!
+		next unless pattern.match(tag)
+		next unless committer == nil or committer == git_committer_name(tag)
+		tags << tag
+	}
+	tags
 end
 
 # => ["v3.11-rc6", "v3.11-rc5", "v3.11-rc4", "v3.11-rc3", "v3.11-rc2", "v3.11-rc1",
 #     "v3.10", "v3.10-rc7", "v3.10-rc6", ..., "v2.6.12-rc3", "v2.6.12-rc2", "v2.6.11"]
 def __linus_tags()
-	tags = []
-	`#{GIT} tag -l 'v*.*'`.each_line { |tag|
-		tag.chomp!
-		tags << tag if tag =~ /^(v2\.6|v[3-9])\.\d+(-rc\d+)?$/
-	}
-	tags.sort_by { |tag| - tag_order(tag) }
+	$remotes ||= load_remotes
+	pattern = Regexp.new '^' + $remotes['linux']['release_tag_pattern'].sub(' ', '$|^') + '$'
+	tags = get_tags(pattern, $remotes['linux']['release_tag_committer'])
+	tags = sort_tags(pattern, tags)
+	tags_order = {}
+	tags.each_with_index do |tag, i|
+		tags_order[tag] = -i
+	end
+	tags_order
+end
+
+def tag_order(tag)
+	linus_tags[tag]
 end
 
 def linus_tags()
