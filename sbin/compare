@@ -182,7 +182,7 @@ def dim_name(dim)
 	case $opt_dimension
 	when 'commit'
 		tag = commit_tag(dim)
-		return tag if not tag.empty?
+		return tag if tag
 		return dim[0..(REL_WIDTH + ABS_WIDTH + ERR_WIDTH)]
 	else
 		return dim

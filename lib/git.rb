@@ -10,7 +10,11 @@ GIT_DIR		||= ENV['GIT_DIR'] || GIT_WORK_TREE + '/.git'
 GIT		||= "git --work-tree=#{GIT_WORK_TREE} --git-dir=#{GIT_DIR}"
 
 def __commit_tag(commit)
-	`#{GIT} describe --tags --exact-match #{commit} 2>/dev/null | sed 's#linux-devel/##'`.chomp
+	tags = `#{GIT} tag --points-at #{commit}`.split
+	tags.each do |tag|
+		return tag if linus_tags.include? tag
+	end
+	return tags[0]
 end
 
 def commit_tag(commit)
@@ -21,7 +25,7 @@ end
 
 def commit_name(commit)
 	tag = commit_tag(commit)
-	return tag if not tag.empty?
+	return tag if tag
 	return commit
 end
 
