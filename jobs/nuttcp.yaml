@@ -2,4 +2,10 @@ testcase: nuttcp
 
 runtime: 300s
 
-nuttcp:
+cluster: cs-localhost
+
+if role server:
+  nuttcp-server:
+
+if role client:
+  nuttcp:

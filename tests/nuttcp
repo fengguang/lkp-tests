@@ -5,8 +5,7 @@ cd $BENCHMARK_ROOT/nuttcp || exit
 
 [ -n "$runtime" ] || runtime=300
 
-cmd ./nuttcp -S --nofork &
-pid=$!
+[ -z "$server" ] && server=127.0.0.1
+server=${server%% *}
 
-cmd ./nuttcp -T $runtime 127.0.0.1
-kill $pid
+cmd ./nuttcp -T $runtime $server

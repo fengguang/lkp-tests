@@ -1,0 +1,5 @@
+#!/bin/sh
+
+cd $BENCHMARK_ROOT/nuttcp || exit
+
+cmd ./nuttcp -S --nofork &
