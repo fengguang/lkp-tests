@@ -5,8 +5,7 @@ export PATH=$BENCHMARK_ROOT/thrulay/sbin:$BENCHMARK_ROOT/thrulay/bin:$PATH
 
 [ -n "$runtime" ] || runtime=300
 
-cmd thrulayd
+[ -z "$server" ] && server=127.0.0.1
+server=${server%% *}
 
-sleep 1
-
-cmd thrulay -t $runtime 127.0.0.1
+cmd thrulay -t $runtime $server
