@@ -38,7 +38,11 @@ sync_cluster_state()
 {
 	local state_option
 	[ -n "$1" ] && state_option="&state=$1"
-	should_wait_cluster && wget -O - "http://$LKP_SERVER/~$LKP_USER/cgi-bin/lkp-cluster-sync?cluster=$cluster&node=$HOSTNAME$state_option"
+	[ -n "$2" ] && {
+		shift 1
+		other_options="&$(IFS='&' && echo -n "$*")"
+	}
+	should_wait_cluster && wget -O - "http://$LKP_SERVER/~$LKP_USER/cgi-bin/lkp-cluster-sync?cluster=$cluster&node=$HOSTNAME$state_option$other_options"
 }
 
 wait_cluster_state()
@@ -74,6 +78,8 @@ wait_other_nodes()
 	[ "$program_type" = 'test' ] && echo "$program" >> $TMP/executed-test-programs
 
 	mkdir $TMP/wait_other_nodes-once 2>/dev/null || return
+
+	sync_cluster_state 'write_state' "node_roles=${node_roles// /+}" "ip=$(hostname -I | cut -d' ' -f1)"
 
 	# exit if either of the other nodes failed its job
 
