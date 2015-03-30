@@ -3,4 +3,10 @@ testcase: qperf
 runtime: 600s
 perf-profile:
 
-qperf:
+cluster: cs-localhost
+
+if role server:
+  qperf-server:
+
+if role client:
+  qperf:

@@ -20,6 +20,7 @@ sctp_lat
 [ -n "$runtime" ] || runtime=600
 time=$((runtime / $nr_tests))
 
-cmd ./qperf &
-pid=$!
-cmd ./qperf 127.0.0.1 --unify_units --time $time $tests quit || kill $pid
+[ -z "$server" ] && server=127.0.0.1
+server=${server%% *}
+
+cmd ./qperf $server --unify_units --time $time $tests quit
