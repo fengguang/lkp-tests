@@ -84,6 +84,10 @@ wait_other_nodes()
 	# exit if either of the other nodes failed its job
 
 	wait_cluster_state 'wait_ready'
+
+	while read line; do
+		export "$line"
+	done < <(sync_cluster_state 'roles_ip')
 }
 
 # In a cluster test, if some server/service role only started daemon(s) and
