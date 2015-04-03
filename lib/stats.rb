@@ -480,7 +480,7 @@ def get_changed_stats(matrix_path1, matrix_path2 = nil, options = {})
 	return changed_stats if is_all_incomplete_run
 
 	more_changed_stats = __get_changed_stats(a, b, false, options)
-	changed_stats.merge(more_changed_stats) if more_changed_stats
+	changed_stats.merge!(more_changed_stats) if more_changed_stats
 
 	return changed_stats
 end
