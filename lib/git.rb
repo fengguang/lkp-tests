@@ -149,7 +149,8 @@ def get_tags(pattern, committer)
 	`#{GIT} tag -l`.each_line { |tag|
 		tag.chomp!
 		next unless pattern.match(tag)
-		next unless committer == nil or committer == git_committer_name(tag)
+		# disabled: too slow and lots of git lead to OOM
+		# next unless committer == nil or committer == git_committer_name(tag)
 		tags << tag
 	}
 	tags
