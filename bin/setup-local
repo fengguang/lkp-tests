@@ -96,12 +96,12 @@ def create_host_config
 end
 
 def install_debian_packages(script)
-	if File.exist? "#{LKP_SRC}/distro/debian/#{script}"
-		packages = File.read("#{LKP_SRC}/distro/debian/#{script}").split
-		unless system 'apt-get', 'install', '-y', *packages
-			puts "Cannot install some packages in #{LKP_SRC}/distro/debian/#{script}"
-			exit 1
-		end
+	packages = get_dependency_packages 'debian', script
+	return unless packages
+
+	unless system 'apt-get', 'install', '-y', *packages
+		puts "Cannot install some packages in #{LKP_SRC}/distro/debian/#{script}"
+		exit 1
 	end
 end
 

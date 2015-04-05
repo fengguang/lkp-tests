@@ -88,10 +88,11 @@ install_debian_package() {
 	local _script=$1
 	[ -f "$LKP_SRC/distro/debian/${_script}" ] || return
 
-	echo "apt-get install $(cat $LKP_SRC/distro/debian/${_script})"
+	local packages="$(get_dependency_packages debian ${_script})"
+	echo apt-get install $packages
 	[ -n "$DRY_RUN" ] && return
 
-	apt-get install -y `cat $LKP_SRC/distro/debian/${_script}` || {
+	apt-get install -y $packages || {
 		echo "Cannot install some packages in $LKP_SRC/distro/debian/${_script}"
 		exit 1
 	}
