@@ -75,6 +75,23 @@ detect_system_arch()
 	detect_executable_arch $rootfs/usr/bin/*		&& return
 }
 
+detect_libc_version()
+{
+	local rootfs=${1:-/}
+	local libc_version
+
+	local file
+	for file in $rootfs/lib/libc-*.*.so $rootfs/lib/*-linux-gnu/libc-*.*.so
+	do
+		[ -x "$file" ] || continue
+		libc_version=${file#*/libc-}
+		libc_version=${libc_version%.so}
+		_system_version=libc-$libc_version
+		return 0
+	done
+	return 1
+}
+
 detect_system()
 {
 	local rootfs=${1:-/}
@@ -101,7 +118,7 @@ detect_system()
 		[ -f /etc/altlinux-release ]
 	then
 		_system_name="Arch"
-		_system_version="libc-$(ldd --version  | \command \awk 'NR==1 {print $NF}' | \command \awk -F. '{print $1"."$2}' | head -n 1)"
+		detect_libc_version $rootfs
 	elif
 		[ -f /etc/os-release ] &&
 			GREP_OPTIONS="" \command \grep "ID=opensuse" /etc/os-release >/dev/null
@@ -135,7 +152,7 @@ detect_system()
 		[ -f /etc/arch-release ]
 	then
 		_system_name="Arch"
-		_system_version="libc-$(ldd --version  | \command \awk 'NR==1 {print $NF}' | \command \awk -F. '{print $1"."$2}' | head -n 1)"
+		detect_libc_version $rootfs
 	elif
 		[ -f /etc/fedora-release ]
 	then
@@ -155,7 +172,7 @@ detect_system()
 		_system_name="CentOS"
 		_system_version="$(GREP_OPTIONS="" \command \grep -Eo '[0-9\.]+' /etc/centos-release  | \command \awk -F. '{print $1}' | head -n 1)"
 	else
-		_system_version="libc-$(ldd --version  | \command \awk 'NR==1 {print $NF}' | \command \awk -F. '{print $1"."$2}' | head -n 1)"
+		detect_libc_version $rootfs
 	fi
 	_system_name=$(printf '%s\n' "$_system_name" | sed 's/[ \/]/_/g')  #"${_system_name//[ \/]/_}"
 	_system_name_lowercase="$(echo ${_system_name} | \command \tr '[A-Z]' '[a-z]')"
