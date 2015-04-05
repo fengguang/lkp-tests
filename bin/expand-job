@@ -1,0 +1,47 @@
+#!/usr/bin/ruby
+
+LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
+
+require 'yaml'
+require 'pp'
+require "#{LKP_SRC}/lib/constant.rb"
+require "#{LKP_SRC}/lib/job.rb"
+
+$testcase = YAML.load_file(ARGV[0])
+# pp $testcase
+
+def add_keyval(ah, k, v)
+	if ah.class == Hash
+		ah[k] = v
+	elsif ah.class == Array and ah[0].class == Hash
+		h = {}
+		h[k] = v
+		ah.push(h)
+	end
+end
+
+add_keyval($testcase, 'kconfig', DEVEL_HOURLY_KCONFIGS[0])
+
+def expand_one
+	for_each($testcase) { |k, v|
+		next unless k == 'params'
+		last_item = ''
+		for_each(v) { |kk, vv| last_item = kk }
+		for_each(v) { |kk, vv|
+			if (vv.class == Array or vv.class == Hash) and vv.size > 1
+				copy = deepcopy(vv)
+				for_each(copy) { |kkk, vvv|
+					restore(vv, copy)
+					vv.keep_if { |a, b| a == kkk }
+					expand_one
+				}
+				restore(vv, copy)
+				break
+			elsif kk == last_item
+				puts $testcase.to_yaml
+			end
+		}
+	}
+end
+
+expand_one

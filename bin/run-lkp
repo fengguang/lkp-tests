@@ -1,0 +1,75 @@
+#!/bin/sh
+
+. $LKP_SRC/lib/bootstrap.sh
+. $LKP_SRC/lib/misc.sh 2>/dev/null
+
+export BENCHMARK_ROOT=/lkp/benchmarks
+export CGROUP_MNT=/cgroup
+
+echo $$ > $TMP/run-lkp.pid	# for use by monitors/watchdog
+
+setup_result_root
+mount_debugfs
+mount_cgroup
+
+# the NMI warning messages are often in a mess
+[ -f '/sys/kernel/debug/x86/nmi_longest_ns' ] && echo 100000000 > /sys/kernel/debug/x86/nmi_longest_ns
+
+record_dmesg
+
+echo run-job $job
+set_job_state 'running'
+job_script=${job%.yaml}.sh
+if [ -x "$job_script" ]; then
+	$LKP_DEBUG_PREFIX $job_script run_job
+else
+	run-job --pid-file $TMP/run-job.pid $job
+fi
+run_job_failed=$?
+
+end_time=$(date '+%s')
+
+$LKP_SRC/bin/post-run
+
+[ "$result_fs" = 'cifs' ] || {
+	chown -R .lkp $RESULT_ROOT
+	chmod -R g+rw $RESULT_ROOT
+}
+
+[ -s "$TMP/time_delta" ] && time_delta="time_delta=$(cat $TMP/time_delta)"
+[ -s "$LKP_SRC/version" ] && version="version=$(cat $LKP_SRC/version)"
+jobfile_append_var		"loadavg=$(cat /proc/loadavg)" \
+				"start_time=$(cat $TMP/start_time)" \
+				"end_time=$end_time" \
+				"$version" \
+				"$time_delta"
+
+if [ "$HOSTNAME" = t100 ]; then
+	sync
+elif ! mountpoint -q $RESULT_MNT; then
+	set_job_state 'error_umounted'
+	job_done_boot_next
+elif ! umount $RESULT_MNT; then
+	{ ps faux --cols 1000; mount; lsof | grep $RESULT_MNT; grep -s . $TMP/.pid-wait-monitors $TMP/.pid-pipes $TMP/pid-*; } | tee $RESULT_ROOT/error-umount
+	set_job_state 'error_umount'
+	sleep 180
+	umount $RESULT_MNT >> $RESULT_ROOT/error-umount 2>&1 ||
+	job_done_boot_next
+fi
+
+if [ "$run_job_failed" != 0 ]; then
+	if [ -f "$TMP/OOM" ]; then
+		set_job_state "OOM"
+	elif [ -f "$TMP/soft_timeout" ]; then
+		set_job_state 'soft_timeout'
+	else
+		set_job_state 'failed'
+	fi
+elif [ -f '/var/log/wtmp' ] && last -n1 | grep -q -E '(pts/|tty)[0-9]'; then
+	set_job_state 'disturbed'
+	disturbed=1
+else
+	set_job_state 'finished'
+fi
+
+job_done_boot_next

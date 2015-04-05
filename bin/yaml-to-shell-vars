@@ -1,0 +1,29 @@
+#!/usr/bin/ruby
+
+require 'yaml'
+require 'shellwords'
+
+def get_simple_value(v)
+	if v.class == Hash
+		return v.keys[0]
+	elsif v.class == Array
+		v.map! { |vv|
+			if vv.class == Hash
+				vv.keys[0]
+			else
+				vv.to_s
+			end
+		}
+		return v.join ' '
+	else
+		return v.to_s
+	end
+end
+
+ARGV.each { |file|
+	vars = YAML.load_file file
+	vars.each { |k, v|
+		var_name = k.gsub(/[^a-zA-Z0-9_]/, '_').gsub(/^[^a-zA-Z]/, '_')
+		STDOUT.write(var_name + '=' + Shellwords.escape(get_simple_value(v)) + "\n")
+	}
+}

@@ -1,0 +1,40 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          nfsroot
+# Required-Start:    $all
+# Required-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:
+# Short-Description: NFSROOT setup
+# Description:       NFSROOT setup
+### END INIT INFO
+
+umask 002
+
+. $LKP_SRC/lib/bootstrap.sh
+
+mount_tmpfs
+
+export PATH=$PATH:$LKP_SRC/bin
+echo   PATH=$PATH
+
+export TMP=/tmp/lkp
+mkdir -p $TMP
+rm -fr $TMP/*
+
+cp /proc/uptime $TMP/boot-time
+
+redirect_stdout_stderr
+announce_bootup
+
+add_lkp_user
+
+fixup_packages
+setup_hostname
+setup_hosts
+
+setup_network
+run_ntpdate
+
+echo $LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp
+$LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp

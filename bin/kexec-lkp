@@ -1,0 +1,30 @@
+#!/bin/sh
+#
+# Get a new job and kexec returned kernel to run lkp
+#
+# Copyright (c) 2013, Intel Corporation.
+# Author: Yuanhan Liu
+#
+
+if [ -n "$1" ]; then
+	LKP_USER=$1
+elif [ -z "$LKP_USER" ]; then
+	LKP_USER=lkp
+fi
+
+[ -n "$LKP_SRC" ] || export LKP_SRC=/lkp/$LKP_USER/src
+
+. $LKP_SRC/lib/bootstrap.sh
+. $LKP_SRC/lib/kexec.sh
+. $LKP_SRC/lib/misc.sh 2>/dev/null
+
+if mountpoint -q /opt/rootfs; then
+	CACHE_DIR=/opt/rootfs/tmp
+	cleanup_kernel_cache $CACHE_DIR/kernel
+else
+	CACHE_DIR=/tmp
+fi
+
+NEXT_JOB="$CACHE_DIR/next-job-$LKP_USER"
+
+kexec_to_next_job
