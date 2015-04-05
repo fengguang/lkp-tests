@@ -8,12 +8,11 @@ module LKP
 
 	#
 	# DistroInfo is singleton, and provide information to distribution information of local system
-	# Include: system type, system name, system version, system arch
-	# In the backend, it's invoking detect-system.sh to get environment infomation.
+	# Include: system name, system version, system arch
+	# In the backend, it's invoking detect-system.sh to get environment information.
 	# Example of properties on debian
-	# 	p systemType => Linux
 	# 	p systemName => Debian
-	#   p systemNameL => debian (lowercase)
+	#	p systemNameL => debian (lowercase)
 	# 	p systemArch => x86_64
 	# 	p systemVersion => jessie_sid
 	#
@@ -21,21 +20,19 @@ module LKP
 	#
 	class DistroInfo
 		include Singleton
-		attr_reader :systemType, :systemName, :systemNameL, :systemArch, :systemVersion
+		attr_reader :systemName, :systemNameL, :systemVersion, :systemArch
 
-		def initialize
+		def initialize(rootfs = '/')
 			path_to_script = "#{LKP_SRC}/lib/detect-system.sh"
 
-			@systemType = `. #{path_to_script} && echo $_system_type`
-			@systemType.strip!
-			@systemName = `. #{path_to_script} && echo $_system_name`
-			@systemName.strip!
-			@systemNameL = `. #{path_to_script} && echo $_system_name_lowercase`
-			@systemNameL.strip!
-			@systemArch = `. #{path_to_script} && echo $_system_arch`
-			@systemArch.strip!
-			@systemVersion = `. #{path_to_script} && echo $_system_version`
-			@systemVersion.strip!
+			@systemName, @systemNameL, @systemVersion, @systemArch = %x[
+				. #{path_to_script}
+				detect_system #{rootfs}
+				echo $_system_name
+				echo $_system_name_lowercase
+				echo $_system_version
+				echo $_system_arch
+			].split
 		end
 	end
 
