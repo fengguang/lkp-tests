@@ -3,6 +3,7 @@
 . $LKP_SRC/lib/bootstrap.sh
 . $LKP_SRC/lib/misc.sh 2>/dev/null
 
+export LKP_USER=$user
 export BENCHMARK_ROOT=/lkp/benchmarks
 export CGROUP_MNT=/cgroup
 
