@@ -1,0 +1,10 @@
+[Unit]
+Description=LKP bootstrap
+After=sysinit.target
+
+[Service]
+Type=oneshot
+ExecStart=/etc/init.d/lkp-bootstrap
+
+[Install]
+WantedBy=multi-user.target
