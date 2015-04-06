@@ -251,7 +251,7 @@ def parse_hash(ancestors, hash)
 end
 
 def shell_header
-	out_line "#!/bin/bash"
+	out_line "#!/bin/sh"
 	out_line
 end
 
