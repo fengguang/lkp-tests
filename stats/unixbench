@@ -7,7 +7,7 @@ while line = STDIN.gets
 	end
 end
 
-if defined? score
+if score
 	puts 'score: ' + score
 else
 	puts 'incomplete_result: 1'
