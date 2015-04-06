@@ -87,9 +87,9 @@ def for_each_in(ah, set)
 end
 
 # programs[script] = full/path/to/script
-def __create_programs_hash(glob)
+def __create_programs_hash(glob, lkp_src)
 	$programs = {}
-	Dir.glob("#{LKP_SRC}/#{glob}").each { |path|
+	Dir.glob("#{lkp_src}/#{glob}").each { |path|
 		next if File.directory?(path)
 		next if not File.executable?(path)
 		file = File.basename(path)
@@ -102,14 +102,14 @@ def __create_programs_hash(glob)
 	}
 end
 
-def create_programs_hash(glob)
+def create_programs_hash(glob, lkp_src = LKP_SRC)
 	$programs_cache ||= {}
 	if $programs_cache[glob]
 		$programs = $programs_cache[glob]
 		return
 	end
 
-	__create_programs_hash(glob)
+	__create_programs_hash(glob, lkp_src)
 
 	$programs_cache[glob] = $programs
 end
@@ -174,6 +174,14 @@ class Job
 		atomic_save_yaml_json @job, jobfile
 	end
 
+	def lkp_src
+		if @job['user'] and Dir.exist? (dir = '/lkp/' + @job['user'] + '/src')
+			dir
+		else
+			LKP_SRC
+		end
+	end
+
 	def init_program_options
 		@program_options = {
 			'boot_params' => '-',
@@ -187,7 +195,7 @@ class Job
 	end
 
 	def each_job_init
-		create_programs_hash "{setup,tests,daemon}/**/*"
+		create_programs_hash "{setup,tests,daemon}/**/*", lkp_src
 		init_program_options
 		@dims_to_expand = Set.new EXPAND_DIMS
 		@dims_to_expand.merge $programs.keys
@@ -218,7 +226,7 @@ class Job
 	end
 
 	def each_param
-		create_programs_hash "{setup,tests,daemon}/**/*"
+		create_programs_hash "{setup,tests,daemon}/**/*", lkp_src
 		init_program_options
 		for_each_in(@job, $programs.clone.merge(@program_options)) { |h, k, v|
 			next if Hash === v
@@ -227,7 +235,7 @@ class Job
 	end
 
 	def each_program(glob)
-		create_programs_hash(glob)
+		create_programs_hash(glob, lkp_src)
 		for_each_in(@job, $programs) { |h, k, v|
 			yield k, v
 		}
