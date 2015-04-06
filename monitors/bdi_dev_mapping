@@ -1,5 +1,8 @@
 #!/bin/sh
 
+. $LKP_SRC/lib/job.sh
+read_env_vars	# for $partitions
+
 for dev in $partitions; do
 	# skip nfs dev
 	[ "${dev#*:/}" != "$dev" ] && continue
