@@ -35,6 +35,7 @@ warn_empty_stats()
 	[[ -s $tmpfile ]] && return
 	[[ $testbox =~ ^vm- ]] && return
 	[[ $program = 'dmesg' ]] && return
+	[[ $program = 'ftrace' ]] && return
 	[[ -s $RESULT_ROOT/time ]] || return
 	[[ -s $RESULT_ROOT/last_state ]] && return
 	[[ $program = 'turbostat' ]] && grep -q -e 'No invariant TSC' $log && return
@@ -60,8 +61,24 @@ check_incomplete_run $tmpfile
 
 warn_empty_stats
 
-$LKP_SRC/sbin/dump-stat $stats_group	< $tmpfile || { echo "$LKP_SRC/sbin/dump-stat $program  exit code $?, check $tmpfile" >&2; exit 1; }
-rm $tmpfile
+dump_stat()
+{
+	local stats_group=$1
+	local file=$2
+
+	$LKP_SRC/sbin/dump-stat $stats_group < $file || { echo "$LKP_SRC/sbin/dump-stat $program  exit code $?, check $file" >&2; exit 1; }
+	rm $file
+}
+
+if [[ $program = 'ftrace' ]]; then
+	for file in $RESULT_ROOT/$program.*.yaml
+	do
+		stats_group=$(basename $file .yaml)
+		dump_stat $stats_group $file
+	done
+else
+	dump_stat $stats_group $tmpfile
+fi
 
 [ -f $log.gz ] && rm $log
 

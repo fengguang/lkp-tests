@@ -14,6 +14,8 @@ $bdi_dev_mapping = YAML.load_file(RESULT_ROOT + '/bdi_dev_mapping') if File.exis
 # for each event in 1s unit
 $last_recorded_time = {}
 
+$yaml_files = {}
+
 def normlize_record(event, record, key_prefix_items)
 	key_prefix = event
 	key_prefix_items.each { |key|
@@ -34,12 +36,14 @@ def normlize_record(event, record, key_prefix_items)
 	return if $last_recorded_time[key_prefix] == record['time']
 	$last_recorded_time[key_prefix] = record['time']
 
+	$yaml_files[key_prefix] ||= File.new(RESULT_ROOT + '/' + "ftrace.#{key_prefix}.yaml", 'w', 0664)
+
 	record.each { |k, v|
 		next if key_prefix_items.include? k
 
 		# we store digit only
 		next unless v =~ /^-?\d+(\.\d+)?$/
-		puts "#{key_prefix}.#{k}: #{v}"
+		$yaml_files[key_prefix].puts "#{k}: #{v}"
 	}
 end
 
