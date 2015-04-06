@@ -1,5 +1,7 @@
 #!/bin/sh
 
+. $LKP_SRC/lib/mount.sh
+
 mount_tmpfs()
 {
 	# ubuntu etc/init/mounted-tmp.conf wrongly mounted /tmp:
@@ -156,9 +158,7 @@ fixup_packages()
 
 mount_debugfs()
 {
-	if [ ! -e /sys/kernel/debug/tracing/ ]; then
-		mount -t debugfs none /sys/kernel/debug
-	fi
+	check_mount debug /sys/kernel/debug -t debugfs
 }
 
 mount_cgroup()
