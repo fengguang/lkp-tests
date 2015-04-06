@@ -1,7 +1,5 @@
 #!/bin/bash
 
-[ -n "$LKP_SRC" ] || export LKP_SRC=$(dirname $(dirname $(readlink -e -v $0)))
-
 cleanup_qemu_drives()
 {
 	rm -f $VDISK_ROOT/initrd-$vm_name
