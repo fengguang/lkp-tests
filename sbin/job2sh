@@ -162,9 +162,12 @@ def shell_run_program(tabs, program, env)
 	cmd_str.gsub!(TMP, '$TMP')
 
 	program_env.each { |k, v|
-		exec_line tabs + shell_encode_keyword(k) + "=" + shell_escape_expand(v) + "\t\\\n"
+		exec_line tabs + 'export ' + shell_encode_keyword(k) + "=" + shell_escape_expand(v)
 	}
 	out_line tabs + cmd_str
+	program_env.each { |k, v|
+		exec_line tabs + 'unset ' + shell_encode_keyword(k)
+	}
 end
 
 def valid_shell_variable?(key)
