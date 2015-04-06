@@ -38,8 +38,7 @@ def fixup_dmesg_file(dmesg_file)
 end
 
 def grep_crash_head(dmesg, grep_options = '')
-	oops = %x[ grep -a -f #{LKP_SRC}/etc/oops-pattern #{grep_options} #{dmesg} |
-		   grep -v -e 'INFO: NMI handler .* took too long to run' |
+	oops = %x[ grep -a -f #{LKP_SRC}/etc/oops-pattern #{grep_options} #{dmesg} | grep -v -f #{LKP_SRC}/etc/oops-pattern-ignore |
 		   awk '{line = $0; sub(/^(<[0-9]>)?\[[ 0-9.]+\] /, "", line); if (!x[line]++) print;}'
 	]
 	unless oops.empty?
@@ -71,7 +70,7 @@ def grep_crash_head(dmesg, grep_options = '')
 end
 
 def grep_printk_errors(dmesg_file, dmesg_lines)
-	oops = `grep -a -f #{LKP_SRC}/etc/oops-pattern #{dmesg_file}`
+	oops = `grep -a -f #{LKP_SRC}/etc/oops-pattern #{dmesg_file} | grep -v -f #{LKP_SRC}/etc/oops-pattern-ignore`
 	dmesg = dmesg_lines.join "\n"
 	oops += `grep -a -f #{LKP_SRC}/etc/ext4-crit-pattern	#{dmesg_file}` if dmesg.index 'EXT4-fs ('
 	oops += `grep -a -f #{LKP_SRC}/etc/xfs-alert-pattern	#{dmesg_file}` if dmesg.index 'XFS ('
