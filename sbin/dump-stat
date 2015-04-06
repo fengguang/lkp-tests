@@ -11,35 +11,39 @@ require "#{LKP_SRC}/lib/job.rb"
 $monitor = ARGV[0]
 
 $result = {}
-$invalid_lines = []
-$line_no = {}
+$invalid_records = []
+record_index = 0
 while line = STDIN.gets
 	next if line[0] == '#'
 	k, v = line.split(': ')
 	next if v == nil
 
-	full_key = $monitor + '.' + k
-	$line_no[full_key] ||= 0
+	k = $monitor + '.' + k
+	$result[k] ||= []
+	size = $result[k].size
+	if record_index < size
+		record_index = size
+	elsif record_index - size > 0
+		# fill 0 for missing values
+		$result[k].concat ([0] * (record_index - size))
+	end
+
 	if k =~ /[ \t]/
-		$invalid_lines.push $line_no[full_key]
+		$invalid_records.push record_index
 		STDERR.puts "whitespace in stats name: #{k}"
 	end
 	if v.chomp!.strip! =~ /[^0-9a-fx.-]/
-		$invalid_lines.push $line_no[full_key]
+		$invalid_records.push record_index
 		STDERR.puts "invalid stats value: #{v}"
 	end
 
-	k = full_key
 	v = v.index('.') ? v.to_f : v.to_i
 	if not is_valid_stats_range k, v
-		$invalid_lines.push $line_no[full_key]
-		puts "outside valid range: #{v} in #{full_key} #{RESULT_ROOT}"
+		$invalid_records.push record_index
+		puts "outside valid range: #{v} in #{k} #{RESULT_ROOT}"
 	end
 
-	$result[k] ||= []
 	$result[k].push v
-
-	$line_no[full_key] += 1
 end
 
 exit if $result.empty?
@@ -63,9 +67,9 @@ zero_stats.each { |k| $result.delete k }
 
 if $monitor != 'ftrace'
 	# delete invalid number in reverse order
-	$invalid_lines.reverse.each { |line_no|
+	$invalid_records.reverse.each { |index|
 		$result.each { |k, v|
-			v.delete_at line_no
+			v.delete_at index
 		}
 	}
 end
@@ -74,9 +78,6 @@ if min_cols < max_cols and $monitor != 'ftrace'
 	if min_cols == max_cols - 1
 		$result.each { |k, v| v.pop if v.size == max_cols }
 		puts "Last record seems incomplete. Truncated #{RESULT_ROOT}/#{$monitor}.json"
-	elsif $monitor =~ /slabinfo|diskstats/ and $invalid_lines.empty? and max_cols - min_cols < 20
-		puts "Leading #{max_cols - min_cols} records incomplete. Fixup #{RESULT_ROOT}/#{$monitor}.json"
-		$result.each { |k, v| v.shift(v.size - min_cols) if v.size > min_cols }
 	else
 		STDERR.puts "Not a matrix: #{min_cols_stat}: #{min_cols} != #{max_cols}: #{RESULT_ROOT}/#{$monitor}.json"
 	end
