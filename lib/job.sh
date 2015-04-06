@@ -87,7 +87,9 @@ wait_other_nodes()
 
 	while read line; do
 		export "$line"
-	done < <(sync_cluster_state 'roles_ip')
+	done <<EOF
+$(sync_cluster_state 'roles_ip')
+EOF
 }
 
 # In a cluster test, if some server/service role only started daemon(s) and
