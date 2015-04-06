@@ -17,19 +17,36 @@ check_incomplete_run()
 	echo -e "# missing $program $file\nis_incomplete_run: 1" >> $RESULT_ROOT/last_state
 }
 
-[ -f $log.gz ] && zcat $log.gz > $log
+check_empty_output()
+{
+	[[ -s $log ]] && return
+	[[ $program = 'tcrypt' ]] && return
+	[[ $program = 'kernel-size' ]] && return
+	[[ $program = 'perf-profile' ]] && return
+	[[ $program = 'kmsg' ]] && return
+	[[ $program = 'dmesg' && -s $RESULT_ROOT/.dmesg ]] && return
 
-check_incomplete_run $log
-
-[[ -s $log ]] ||
-[[ $program = 'tcrypt' ]] ||
-[[ $program = 'kernel-size' ]] ||
-[[ $program = 'perf-profile' ]] ||
-[[ $program = 'kmsg' ]] ||
-[[ $program = 'dmesg' && -s $RESULT_ROOT/.dmesg ]] || {
 	rm -f $log $log.gz
 	exit 0
 }
+
+warn_empty_stats()
+{
+	[[ -s $tmpfile ]] && return
+	[[ $testbox =~ ^vm- ]] && return
+	[[ $program = 'dmesg' ]] && return
+	[[ -s $RESULT_ROOT/time ]] || return
+	[[ -s $RESULT_ROOT/last_state ]] && return
+	[[ $program = 'turbostat' ]] && grep -q -e 'No invariant TSC' $log && return
+	grep -q "^$program\." $LKP_SRC/etc/failure && return
+
+	echo "WARN: empty stats for $log" >&2
+}
+
+[ -f $log.gz ] && zcat $log.gz > $log
+
+check_incomplete_run $log
+check_empty_output
 
 tmpfile=$(mktemp --tmpdir=/dev/shm lkp-stats.XXXXXXXX)
 if [[ -f $log ]]; then
@@ -41,14 +58,7 @@ fi
 grep -q "^$program\." $LKP_SRC/etc/failure ||
 check_incomplete_run $tmpfile
 
-[[ $testbox =~ ^vm- ]] ||
-[[ $program = 'dmesg' ]] ||
-[[ -s $tmpfile ]] ||
-[[ ! -s $RESULT_ROOT/time ]] ||
-[[ -s $RESULT_ROOT/last_state ]] ||
-{ [[ $program = 'turbostat' ]] && grep -q -e 'No invariant TSC' $log; } ||
-grep -q "^$program\." $LKP_SRC/etc/failure ||
-echo "WARN: empty stats for $log" >&2
+warn_empty_stats
 
 $LKP_SRC/sbin/dump-stat $stats_group	< $tmpfile || { echo "$LKP_SRC/sbin/dump-stat $program  exit code $?, check $tmpfile" >&2; exit 1; }
 rm $tmpfile
