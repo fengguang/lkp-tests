@@ -17,8 +17,8 @@ network_ok()
 	for i in /sys/class/net/*/
 	do
 		[ "${i#*/lo/}" != "$i" ] && continue
-		[ "$(cat $i/operstate)" = 'up' ]	&& return 0
-		[ "$(cat $i/carrier)" = '1' ]	&& return 0
+		[ "$(cat $i/operstate)" = 'up' ]		&& return 0
+		[ "$(cat $i/carrier 2>/dev/null)" = '1' ]	&& return 0
 	done
 	return 1
 }
