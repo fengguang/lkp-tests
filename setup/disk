@@ -88,6 +88,9 @@ elif [ -n "$scsi_ram" -a "$scsi_ram" != 0 ]; then
 	disks=$(echo $partitions | tr '\n' ' ')
 else
 	echo "setup/disk: should not reach here" >&2
+	echo "setup/disk: dumping shell variables:"
+	set
+	echo
 	exit 1
 fi
 
