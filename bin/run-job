@@ -351,5 +351,5 @@ for_each_in($testcase, $programs) { |h, k, v|
 }
 
 $child_pids.each { |pid|
-	Process.waitpid(pid, Process::WNOHANG)
+	Process.waitpid(pid)
 }
