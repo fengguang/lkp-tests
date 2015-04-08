@@ -11,6 +11,7 @@ LKP_SRC = ENV["LKP_SRC"]
 require "#{LKP_SRC}/lib/yaml.rb"
 require "#{LKP_SRC}/lib/job.rb"
 require "#{LKP_SRC}/lib/distro-info.rb"
+require "#{LKP_SRC}/lib/install.rb"
 
 TMP = LKP_SRC + '/tmp'
 
