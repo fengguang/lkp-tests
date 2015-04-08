@@ -48,7 +48,6 @@ opts.parse!(argv)
 $testcase = YAML.load_file(ARGV[0])
 $top_env = expand_toplevel_vars Hash.new, $testcase
 
-$child_pids = []
 
 def shell_run_head
 	$opt_shell.puts "#!/bin/bash\n\n"
@@ -240,8 +239,8 @@ def run_child(key, val)
 	child_job_pwd = ENV['job_pwd']
 	child_job_pwd += '/' unless child_job_pwd[-1] == '/'
 	child_job_pwd += key
-	$child_pids << Process.spawn($top_env.merge({'job_pwd' => child_job_pwd}),
-				     "#{LKP_SRC}/bin/run-job #{temp_yaml}")
+	Process.spawn($top_env.merge({'job_pwd' => child_job_pwd}),
+		      "#{LKP_SRC}/bin/run-job #{temp_yaml}")
 end
 
 
@@ -350,6 +349,4 @@ for_each_in($testcase, $programs) { |h, k, v|
 	run_program k, v
 }
 
-$child_pids.each { |pid|
-	Process.waitpid(pid)
-}
+Process.waitall
