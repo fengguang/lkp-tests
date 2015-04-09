@@ -27,13 +27,14 @@ done
 shift $(($OPTIND-1))
 job_script=$1
 [ -n "$job_script" ] || usage
+job_script=$(readlink -e -v $job_script)
 
 if [ -z $opt_result_root ]; then
 	[ -n "$RESULT_ROOT" ] || usage
 	mkdir -p -m 02775 $RESULT_ROOT
 else
 	mkdir -p -m 02775 $opt_result_root
-	export RESULT_ROOT=$(realpath $opt_result_root)
+	export RESULT_ROOT=$(readlink -e -v $opt_result_root)
 fi
 
 export TMP_RESULT_ROOT=$RESULT_ROOT
