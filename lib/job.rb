@@ -65,14 +65,6 @@ def string_or_hash_key(h)
 	end
 end
 
-def strip_trivial_array(a)
-	if a.class == Array
-		return a[0]
-	else
-		return a
-	end
-end
-
 def for_each_in(ah, set)
 	ah.each { |k, v|
 		if set.include?(k)
@@ -127,7 +119,7 @@ def atomic_save_yaml_json(object, file)
 end
 
 def rootfs_filename(rootfs)
-	strip_trivial_array(rootfs).split(/[^a-zA-Z0-9._-]/)[-1]
+	rootfs.split(/[^a-zA-Z0-9._-]/)[-1]
 end
 
 class Job
@@ -254,7 +246,6 @@ class Job
 				next
 			end
 			next unless v
-			v = strip_trivial_array(v)
 			path += v.to_s
 			path += '-'
 		}
@@ -275,7 +266,7 @@ class Job
 	end
 
 	def [](k)
-		strip_trivial_array(@job[k])
+		@job[k]
 	end
 
 	def []=(k, v)

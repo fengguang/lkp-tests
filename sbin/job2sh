@@ -64,7 +64,6 @@ def shell_encode_keyword(key)
 end
 
 def shell_escape_expand(val)
-	val = strip_trivial_array(val)
 	case val
 	when nil, ''
 		return ''
@@ -83,7 +82,6 @@ def get_program_env(program, env)
 	program_env = {}
 	args = []
 
-	env = strip_trivial_array(env)
 	if env == nil
 		return program_env, args
 	end
@@ -107,10 +105,10 @@ def get_program_env(program, env)
 			case v
 			when Hash
 				v.each { |kk, vv|
-				program_env[kk] = strip_trivial_array(vv)
+				program_env[kk] = vv
 				}
 			else
-				program_env[k] = strip_trivial_array(v)
+				program_env[k] = v
 			end
 		}
 	end

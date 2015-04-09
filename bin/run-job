@@ -122,7 +122,6 @@ def get_program_env(program, env)
 	program_env = {}
 	args = []
 
-	env = strip_trivial_array(env)
 	if env == nil
 		return program_env, args
 	end
