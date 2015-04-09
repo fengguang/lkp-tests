@@ -18,30 +18,30 @@ require 'optparse'
 require 'ostruct'
 
 opts = OptionParser.new do |opts|
-        opts.banner = "Usage: #{$PROGRAM_NAME} [options] job.yaml"
+	opts.banner = "Usage: #{$PROGRAM_NAME} [options] job.yaml"
 
-        opts.separator ''
-        opts.separator 'options:'
+	opts.separator ''
+	opts.separator 'options:'
 
-        opts.on('--pid-file FILE', 'Save PID to FILE') do |file|
-                File.open(file, 'w') { |f| f.write "#{$$}\n" }
-        end
+	opts.on('--pid-file FILE', 'Save PID to FILE') do |file|
+		File.open(file, 'w') { |f| f.write "#{$$}\n" }
+	end
 
-        opts.on('-s FILE', '--shell FILE', 'Create shell run script') do |file|
+	opts.on('-s FILE', '--shell FILE', 'Create shell run script') do |file|
 		$opt_shell = File.open(file, mode='w')
-        end
+	end
 
-        opts.on_tail('-h', '--help', 'Show this message') do
-                puts opts
-                exit
-        end
+	opts.on_tail('-h', '--help', 'Show this message') do
+		puts opts
+		exit
+	end
 
 end
 
 if ARGV == []
-        argv = ['-h']
+	argv = ['-h']
 else
-        argv = ARGV
+	argv = ARGV
 end
 opts.parse!(argv)
 
@@ -103,19 +103,19 @@ def add_one_env(program_env, k, v)
 end
 
 def for_each(ah)
-        if ah.class == Array
-                ah.each { |a|
-                        for_each(a) { |k, v|
-                                yield k, v
-                        }
-                }
-        elsif ah.class == Hash
-                ah.each { |k, v|
-                        yield k, v
-                }
-        else
-                yield ah, nil
-        end
+	if ah.class == Array
+		ah.each { |a|
+			for_each(a) { |k, v|
+				yield k, v
+			}
+		}
+	elsif ah.class == Hash
+		ah.each { |k, v|
+			yield k, v
+		}
+	else
+		yield ah, nil
+	end
 end
 
 def get_program_env(program, env)
@@ -317,7 +317,7 @@ def run_program(program, env)
 	ret = system $top_env.merge(program_env), *cmd
 	case ret
 	when false
-                File.open(ENV['RESULT_ROOT'] + '/last_state', 'a') { |f|
+		File.open(ENV['RESULT_ROOT'] + '/last_state', 'a') { |f|
 			if $?.exited?
 				f.write "#{program}.exit_code.#{$?.exitstatus}: 1\n"
 			else
@@ -326,7 +326,7 @@ def run_program(program, env)
 		}
 		exit 1
 	when nil
-                File.open(ENV['RESULT_ROOT'] + '/last_state', 'a') { |f|
+		File.open(ENV['RESULT_ROOT'] + '/last_state', 'a') { |f|
 			f.write "#{program}.cannot_execute: 1\n"
 		}
 		exit 1

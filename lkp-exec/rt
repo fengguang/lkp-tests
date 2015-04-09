@@ -11,11 +11,11 @@ usage()
 
 while getopts "f:0123456789" opt
 do
-        case $opt in
-                f ) opt_file="$OPTARG"; ;;
-                [0-9] ) opt_date="$opt"; ;;
-                ? ) usage; ;;
-        esac
+	case $opt in
+		f ) opt_file="$OPTARG"; ;;
+		[0-9] ) opt_date="$opt"; ;;
+		? ) usage; ;;
+	esac
 done
 
 export GIT_DIR=/c/repo/linux/.git

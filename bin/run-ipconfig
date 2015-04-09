@@ -11,8 +11,8 @@ do
 	case $x in
 		ip=*)
 		IP="${x#ip=}"
-                ;;
-        esac
+		;;
+	esac
 done
 
 configure_networking

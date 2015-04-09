@@ -22,26 +22,26 @@ SHELL_BLOCK_KEYWORDS = {
 }
 
 opts = OptionParser.new do |opts|
-        opts.banner = "Usage: #{$PROGRAM_NAME} [options] job.yaml"
+	opts.banner = "Usage: #{$PROGRAM_NAME} [options] job.yaml"
 
-        opts.separator ''
-        opts.separator 'options:'
+	opts.separator ''
+	opts.separator 'options:'
 
-        opts.on('-o FILE', '--output FILE', 'save shell script to FILE (default: stdout)') do |file|
+	opts.on('-o FILE', '--output FILE', 'save shell script to FILE (default: stdout)') do |file|
 		$opt_file = File.open(file, mode='w', perm=0755)
-        end
+	end
 
-        opts.on_tail('-h', '--help', 'Show this message') do
-                puts opts
-                exit
-        end
+	opts.on_tail('-h', '--help', 'Show this message') do
+		puts opts
+		exit
+	end
 
 end
 
 if ARGV == []
-        argv = ['-h']
+	argv = ['-h']
 else
-        argv = ARGV
+	argv = ARGV
 end
 opts.parse!(argv)
 

@@ -21,27 +21,27 @@ ENV['BENCHMARK_ROOT'] = '/lkp/benchmarks'
 $opt_result_root = nil
 
 opts = OptionParser.new do |opts|
-        opts.banner = 'Usage: run-local [--dry-run] [-o RESULT_ROOT] JOBFILE'
+	opts.banner = 'Usage: run-local [--dry-run] [-o RESULT_ROOT] JOBFILE'
 
-        opts.separator ''
-        opts.separator 'options:'
+	opts.separator ''
+	opts.separator 'options:'
 
-        opts.on('-o RESULT_ROOT', '--output RESULT_ROOT', 'dir for storing all results') do |dir|
+	opts.on('-o RESULT_ROOT', '--output RESULT_ROOT', 'dir for storing all results') do |dir|
 		FileUtils.rm_rf dir
 		Dir.mkdir dir unless Dir.exist? dir
-                ENV['RESULT_ROOT'] = $opt_result_root = File.realpath dir
-        end
+		ENV['RESULT_ROOT'] = $opt_result_root = File.realpath dir
+	end
 
-        opts.on_tail('-h', '--help', 'Show this message') do
-                puts opts
-                exit
-        end
+	opts.on_tail('-h', '--help', 'Show this message') do
+		puts opts
+		exit
+	end
 end
 
 if ARGV == []
-        argv = ['-h']
+	argv = ['-h']
 else
-        argv = ARGV
+	argv = ARGV
 end
 opts.parse!(argv)
 

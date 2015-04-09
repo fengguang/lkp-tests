@@ -24,29 +24,29 @@ $opt_hdd = []
 $opt_ssd = []
 
 opts = OptionParser.new do |opts|
-        opts.banner = 'Usage: setup-local [options] <script>/<jobfile>'
+	opts.banner = 'Usage: setup-local [options] <script>/<jobfile>'
 
-        opts.separator ''
-        opts.separator 'options:'
+	opts.separator ''
+	opts.separator 'options:'
 
-        opts.on('--hdd partition', 'HDD partition for IO tests') do |hdd|
+	opts.on('--hdd partition', 'HDD partition for IO tests') do |hdd|
 		$opt_hdd << hdd
-        end
+	end
 
-        opts.on('--ssd partition', 'SSD partition for IO tests') do |ssd|
+	opts.on('--ssd partition', 'SSD partition for IO tests') do |ssd|
 		$opt_ssd << ssd
-        end
+	end
 
-        opts.on_tail('-h', '--help', 'Show this message') do
-                puts opts
-                exit
-        end
+	opts.on_tail('-h', '--help', 'Show this message') do
+		puts opts
+		exit
+	end
 end
 
 if ARGV == []
-        argv = ['-h']
+	argv = ['-h']
 else
-        argv = ARGV
+	argv = ARGV
 end
 opts.parse!(argv)
 

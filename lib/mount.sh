@@ -19,9 +19,9 @@ check_mount()
 		return
 	}
 
-        is_mount_point $2 && return
-        mkdir -p $2
-        mount $* && return
+	is_mount_point $2 && return
+	mkdir -p $2
+	mount $* && return
 
 	# debug mount failure
 	local exit_code=$?

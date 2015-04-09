@@ -12,9 +12,9 @@ t=$(date +%s)
 files=
 pid=
 for i in $(seq ${nr_threads:-1})
-do     
+do
 	for mnt in $mount_points
-	do     
+	do
 		file=$mnt/zero-$i
 		files="$files $file "
 		rm -f $file

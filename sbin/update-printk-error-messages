@@ -107,19 +107,19 @@ Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
 
 opts = OptionParser.new do |opts|
-        opts.banner = "Usage: update-printk-error-messages [-v] [-h]"
+	opts.banner = "Usage: update-printk-error-messages [-v] [-h]"
 
-        opts.separator ""
-        opts.separator "options:"
+	opts.separator ""
+	opts.separator "options:"
 
-        opts.on("-v", "--verbose") do
+	opts.on("-v", "--verbose") do
 		$opt_verbose = true
-        end
-        
-        opts.on_tail("-h", "--help", "show this message") do
-                puts opts
-                exit
-        end
+	end
+
+	opts.on_tail("-h", "--help", "show this message") do
+		puts opts
+		exit
+	end
 end
 
 opts.parse!(ARGV)

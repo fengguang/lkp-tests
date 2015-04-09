@@ -36,9 +36,9 @@ opts = OptionParser.new do |opts|
 		$opt_testbox = testbox
 	end
 
-        opts.on("-s 'KEY: VALUE'", "--set 'KEY: VALUE'", "add YAML hash to job") do |key_value|
-                $opt_set_key_value.merge!(YAML.load key_value)
-        end
+	opts.on("-s 'KEY: VALUE'", "--set 'KEY: VALUE'", "add YAML hash to job") do |key_value|
+		$opt_set_key_value.merge!(YAML.load key_value)
+	end
 
 	opts.on("--any", "save one single random atom job") do
 		$opt_any = true

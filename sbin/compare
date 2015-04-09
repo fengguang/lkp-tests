@@ -39,10 +39,10 @@ $nr_gm = {}
 $header_shown = {}
 
 opts = OptionParser.new do |opts|
-        opts.banner = 'Usage: compare [options] RESULT_ROOT...'
+	opts.banner = 'Usage: compare [options] RESULT_ROOT...'
 
-        opts.separator ''
-        opts.separator 'options:'
+	opts.separator ''
+	opts.separator 'options:'
 
 	opts.on('-c WHEN', '--color WHEN', 'WHEN coloful: never, always, auto.') do |w|
 		case w
@@ -55,55 +55,55 @@ opts = OptionParser.new do |opts|
 		end
 	end
 
-        opts.on('-d DIMENSION', '--dimension DIMENSION', 'DIMENSION to compare: commit, kconfig, fs, etc.') do |dimension|
+	opts.on('-d DIMENSION', '--dimension DIMENSION', 'DIMENSION to compare: commit, kconfig, fs, etc.') do |dimension|
 		$opt_dimension = dimension
-        end
+	end
 
-        opts.on('-f FIELD', '--field FIELD', 'FIELD to evaluate: vmstat.cpu.sy, iostat.sda.util, etc.') do |field|
+	opts.on('-f FIELD', '--field FIELD', 'FIELD to evaluate: vmstat.cpu.sy, iostat.sda.util, etc.') do |field|
 		$opt_field = field
-        end
+	end
 
-        opts.on('-g PATTERN', '--grep PATTERN', 'only compare result roots that match PATTERN') do |pattern|
-                $opt_grep.push Regexp.new(expand_possible_commit(pattern))
-        end
+	opts.on('-g PATTERN', '--grep PATTERN', 'only compare result roots that match PATTERN') do |pattern|
+		$opt_grep.push Regexp.new(expand_possible_commit(pattern))
+	end
 
-        opts.on('-G PATTERN', '--invert-grep PATTERN', 'dont compare result roots that match PATTERN') do |pattern|
-                $opt_vgrep.push Regexp.new(expand_possible_commit(pattern))
-        end
+	opts.on('-G PATTERN', '--invert-grep PATTERN', 'dont compare result roots that match PATTERN') do |pattern|
+		$opt_vgrep.push Regexp.new(expand_possible_commit(pattern))
+	end
 
-        opts.on('-p', '--plot', 'plot bar graph') do
-                $opt_plot = true
-        end
+		opts.on('-p', '--plot', 'plot bar graph') do
+		$opt_plot = true
+	end
 
-        opts.on('-a', '--all', 'compare all') do
-                $opt_all = true
-        end
+	opts.on('-a', '--all', 'compare all') do
+		$opt_all = true
+	end
 
-        opts.on('-s', '--save-changes', 'save all performance and bisectable changes to a file') do
+	opts.on('-s', '--save-changes', 'save all performance and bisectable changes to a file') do
 		$opt_save_changes = true
 		$all_changed_stats = []
 
 		# save performance and bisectable changes only to limit the change set size
 		$options['perf'] = true
 		$options['distance'] = 5
-        end
+	end
 
-        opts.on('-t', '--group-by-test', 'test-grouped output format') do
-                $group_by_test = true
-        end
+	opts.on('-t', '--group-by-test', 'test-grouped output format') do
+		$group_by_test = true
+	end
 
-        opts.on('-i', '--index', 'performance/power index') do
+	opts.on('-i', '--index', 'performance/power index') do
 		$opt_index	= true
 		$size_index	= load_yaml LKP_SRC + '/etc/index-size.yaml'
 		$perf_index	= load_yaml LKP_SRC + '/etc/index-perf.yaml'
 		$power_index	= load_yaml LKP_SRC + '/etc/index-power.yaml'
 		$latency_index	= load_yaml LKP_SRC + '/etc/index-latency.yaml'
 		$all_index	= $perf_index.merge($power_index).merge($latency_index).merge($size_index)
-        end
+	end
 
-        opts.on('--ignore-incomplete-run', 'ignore incomplete runs') do
-                $options['ignore-incomplete-run'] = true
-        end
+	opts.on('--ignore-incomplete-run', 'ignore incomplete runs') do
+		$options['ignore-incomplete-run'] = true
+	end
 
 	opts.on("-D N", "--distance N", "threshold of changes") { |n|
 		$options['distance'] = n.to_i
@@ -125,10 +125,10 @@ opts = OptionParser.new do |opts|
 		$opt_no_hide_noises = true
 	}
 
-        opts.on_tail('-h', '--help', 'Show this message') do
-                puts opts
-                exit
-        end
+	opts.on_tail('-h', '--help', 'Show this message') do
+		puts opts
+		exit
+	end
 
 end
 

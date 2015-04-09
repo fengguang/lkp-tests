@@ -46,11 +46,11 @@ usage()
 
 install_required_packages()
 {
-    local required_packs
-    if [ -f $1 ]; then
-        required_packs=$(cat $1)
-        apt-get install -y $required_packs
-    fi
+	local required_packs
+	if [ -f $1 ]; then
+		required_packs=$(cat $1)
+		apt-get install -y $required_packs
+	fi
 }
 
 while getopts "a:cds:" opt
