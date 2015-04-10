@@ -306,6 +306,8 @@ tbox_cant_kexec()
 	# following tbox are buggy while using kexec to boot
 	[ "${HOSTNAME#*lkp-nex04}"	!= "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-t410}"	!= "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-bdw01}"	!= "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-bdw02}"	!= "$HOSTNAME" ] && return 0
 
 	[ -x '/sbin/kexec' ] || return 0
 
