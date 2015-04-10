@@ -64,6 +64,8 @@ def shell_encode_keyword(key)
 end
 
 def shell_escape_expand(val)
+	val = val.join "\n" if Array === val
+
 	case val
 	when nil, ''
 		return ''
