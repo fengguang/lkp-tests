@@ -7,9 +7,7 @@ require "#{LKP_SRC}/lib/job.rb"
 
 def run_program(program)
 	printf "run: %s\n", $programs[program]
-	if not ENV["LKP_DRYRUN"]
-		system $job_vars, [ $programs[program], program ]
-	end
+	system $job_vars, [ $programs[program], program ]
 end
 
 def get_yaml_vars(file, job_vars)
