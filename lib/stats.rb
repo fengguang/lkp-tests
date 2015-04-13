@@ -20,11 +20,8 @@ $functional_tests	= Set.new IO.read("#{LKP_SRC}/etc/functional-tests").split("\n
 $perf_metrics_threshold = YAML.load_file "#{LKP_SRC}/etc/perf-metrics-threshold.yaml"
 $perf_metrics_prefixes	= File.read("#{LKP_SRC}/etc/perf-metrics-prefixes").split
 
-$perf_metrics_patterns	= File.read("#{LKP_SRC}/etc/perf-metrics-patterns").split
-$perf_metrics_re	= Regexp.new $perf_metrics_patterns.join('|')
-
-metrics_blacklist  = File.read("#{LKP_SRC}/etc/blacklist").split
-$metrics_blacklist_re = Regexp.new metrics_blacklist.join('|')
+$perf_metrics_re	= load_regular_expressions("#{LKP_SRC}/etc/perf-metrics-patterns")
+$metrics_blacklist_re	= load_regular_expressions("#{LKP_SRC}/etc/blacklist")
 
 # => ["tcrypt.", "hackbench.", "dd.", "xfstests.", "aim7.", ..., "oltp.", "fileio.", "dmesg."]
 def test_prefixes()

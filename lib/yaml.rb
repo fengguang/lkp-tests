@@ -138,3 +138,8 @@ def search_load_json(path)
 	try_load_json(path + '/matrix.json') or
 	try_load_json(path + '/stats.json') or raise "Failed to load JSON for #{path}"
 end
+
+def load_regular_expressions(file)
+	pattern	= File.read(file).split
+	regex	= Regexp.new pattern.join('|')
+end
