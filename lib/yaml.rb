@@ -140,6 +140,6 @@ def search_load_json(path)
 end
 
 def load_regular_expressions(file)
-	pattern	= File.read(file).split
+	pattern	= File.read(file).split("\n")
 	regex	= Regexp.new pattern.join('|')
 end

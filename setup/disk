@@ -3,11 +3,13 @@
 # - nr_hdd
 # - nr_brd
 # - nr_srd
+# - wait_disks_timeout
 
 # the hosts config may either
 # - hard code    xxx_partitions; leave nr_xxx_partitions empty
 # - hard code nr_xxx_partitions; make     xxx_partitions a shell glob to be expanded in test box
 
+[ -n "$wait_disks_timeout" ] || wait_disks_timeout=30
 
 . $LKP_SRC/lib/unit.sh
 
@@ -33,7 +35,7 @@ check_nr_partitions()
 
 wait_disks()
 {
-	for i in $(seq 30)
+	for i in $(seq $wait_disks_timeout)
 	do
 		check_nr_partitions && return
 		sleep 1
