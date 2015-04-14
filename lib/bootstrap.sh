@@ -146,7 +146,7 @@ fixup_packages()
 
 	# hpcc dependent library
 	[ -e /usr/lib/atlas-base/atlas/libblas.so.3 ] && [ ! -e /usr/lib/libblas.so.3 ] &&
-	ln -sf /usr/lib/libblas.so.3 /usr/lib/atlas-base/atlas/libblas.so.3
+	ln -sf /usr/lib/atlas-base/atlas/libblas.so.3 /usr/lib/libblas.so.3
 
 	local aclocal_bin
 	for aclocal_bin in /usr/bin/aclocal-*
