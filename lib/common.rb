@@ -14,3 +14,7 @@ class << Cached
 		@cache[key] or @cache[key] = new(*args)
 	end
 end
+
+def instance_variable_sym(str)
+	"@#{str}".intern
+end
