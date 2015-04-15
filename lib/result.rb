@@ -9,6 +9,8 @@ def tbox_group(hostname)
 end
 
 class ResultPath < Hash
+	MAXIS_KEYS = ['testbox', 'testcase', 'path_params', 'rootfs', 'kconfig', 'commit'].freeze
+	AXIS_KEYS = (MAXIS_KEYS + ['run']).freeze
 
 	def parse_result_root(rt)
 		dirs = rt.sub(RESULT_MNT, '').split('/')

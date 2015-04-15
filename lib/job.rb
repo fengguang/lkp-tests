@@ -256,6 +256,26 @@ class Job
 		end
 	end
 
+	def axes
+		as = {}
+		ResultPath::MAXIS_KEYS.each { |k|
+			next if k == 'path_params'
+			as[k] = @job[k]
+		}
+		as['rootfs'] ||= 'debian-x86_64.cgz'
+		as['rootfs'] = rootfs_filename as['rootfs']
+
+		each_param { |k, v, option_type|
+			if option_type == '='
+				as[k] = v || ''
+			else
+				as[k] = v if v
+			end
+		}
+		as
+	end
+
+	# TODO: reimplement with axes
 	def _result_root
 		result_path = ResultPath.new
 		result_path.update @job
