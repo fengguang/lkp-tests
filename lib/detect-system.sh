@@ -56,6 +56,8 @@ detect_executable_arch()
 		detect_arch_by_readelf $executable && return
 		detect_arch_by_file $executable && return
 	done
+
+	[ "$_system_arch" != "unknown"  ]
 }
 
 detect_system_arch()
