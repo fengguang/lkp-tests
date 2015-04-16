@@ -103,74 +103,74 @@ detect_system()
 	export _system_version="unknown"
 
 	if
-		[ -f /etc/lsb-release ] &&
-			GREP_OPTIONS="" \command \grep "DISTRIB_ID=Ubuntu"    /etc/lsb-release >/dev/null
+		[ -f ${rootfs}/etc/lsb-release ] &&
+			GREP_OPTIONS="" \command \grep "DISTRIB_ID=Ubuntu"    ${rootfs}/etc/lsb-release >/dev/null
 	then
 		_system_name="Ubuntu"
-		_system_version="$(awk -F'=' '$1=="DISTRIB_RELEASE"{print $2}' /etc/lsb-release | head -n 1)"
+		_system_version="$(awk -F'=' '$1=="DISTRIB_RELEASE"{print $2}' ${rootfs}/etc/lsb-release | head -n 1)"
 	elif
-		[ -f /etc/lsb-release ] &&
-			GREP_OPTIONS="" \command \grep "DISTRIB_ID=LinuxMint" /etc/lsb-release >/dev/null
+		[ -f ${rootfs}/etc/lsb-release ] &&
+			GREP_OPTIONS="" \command \grep "DISTRIB_ID=LinuxMint" ${rootfs}/etc/lsb-release >/dev/null
 	then
 		_system_name="Mint"
-		_system_version="$(awk -F'=' '$1=="DISTRIB_RELEASE"{print $2}' /etc/lsb-release | head -n 1)"
+		_system_version="$(awk -F'=' '$1=="DISTRIB_RELEASE"{print $2}' ${rootfs}/etc/lsb-release | head -n 1)"
 	elif
-		[ -f /etc/altlinux-release ]
+		[ -f ${rootfs}/etc/altlinux-release ]
 	then
 		_system_name="Arch"
 		detect_libc_version $rootfs
 	elif
-		[ -f /etc/os-release ] &&
-			GREP_OPTIONS="" \command \grep "ID=opensuse" /etc/os-release >/dev/null
+		[ -f ${rootfs}/etc/os-release ] &&
+			GREP_OPTIONS="" \command \grep "ID=opensuse" ${rootfs}/etc/os-release >/dev/null
 	then
 		_system_name="OpenSuSE"
-		_system_version="$(awk -F'=' '$1=="VERSION_ID"{gsub(/"/,"");print $2}' /etc/os-release | head -n 1)" #'
+		_system_version="$(awk -F'=' '$1=="VERSION_ID"{gsub(/"/,"");print $2}' ${rootfs}/etc/os-release | head -n 1)" #'
 	elif
-		[ -f /etc/SuSE-release ]
+		[ -f ${rootfs}/etc/SuSE-release ]
 	then
 		_system_name="SuSE"
 		_system_version="$(
-		\command \awk -F'=' '{gsub(/ /,"")} $1~/VERSION/ {version=$2} $1~/PATCHLEVEL/ {patch=$2} END {print version"."patch}' < /etc/SuSE-release
+		\command \awk -F'=' '{gsub(/ /,"")} $1~/VERSION/ {version=$2} $1~/PATCHLEVEL/ {patch=$2} END {print version"."patch}' < ${rootfs}/etc/SuSE-release
 		)"
 	elif
-		[ -f /etc/debian_version ]
+		[ -f ${rootfs}/etc/debian_version ]
 	then
 		_system_name="Debian"
-		_system_version="$(\command \cat /etc/debian_version | \command \awk -F. '{print $1}' | head -n 1)"
+		_system_version="$(\command \cat ${rootfs}/etc/debian_version | \command \awk -F. '{print $1}' | head -n 1)"
 	elif
-		[ -f /etc/os-release ] &&
-			GREP_OPTIONS="" \command \grep "ID=debian" /etc/os-release >/dev/null
+		[ -f ${rootfs}/etc/os-release ] &&
+			GREP_OPTIONS="" \command \grep "ID=debian" ${rootfs}/etc/os-release >/dev/null
 	then
 		_system_name="Debian"
-		_system_version="$(awk -F'=' '$1=="VERSION_ID"{gsub(/"/,"");print $2}' /etc/os-release | \command \awk -F. '{print $1}' | head -n 1)" #'
+		_system_version="$(awk -F'=' '$1=="VERSION_ID"{gsub(/"/,"");print $2}' ${rootfs}/etc/os-release | \command \awk -F. '{print $1}' | head -n 1)" #'
 	elif
-		[ -f /etc/gentoo-release ]
+		[ -f ${rootfs}/etc/gentoo-release ]
 	then
 		_system_name="Gentoo"
-		_system_version="base-$(\command \cat /etc/gentoo-release | \command \awk 'NR==1 {print $NF}' | \command \awk -F. '{print $1"."$2}' | head -n 1)"
+		_system_version="base-$(\command \cat ${rootfs}/etc/gentoo-release | \command \awk 'NR==1 {print $NF}' | \command \awk -F. '{print $1"."$2}' | head -n 1)"
 	elif
-		[ -f /etc/arch-release ]
+		[ -f ${rootfs}/etc/arch-release ]
 	then
 		_system_name="Arch"
 		detect_libc_version $rootfs
 	elif
-		[ -f /etc/fedora-release ]
+		[ -f ${rootfs}/etc/fedora-release ]
 	then
 		_system_name="Fedora"
-		_system_version="$(GREP_OPTIONS="" \command \grep -Eo '[0-9]+' /etc/fedora-release | head -n 1)"
+		_system_version="$(GREP_OPTIONS="" \command \grep -Eo '[0-9]+' ${rootfs}/etc/fedora-release | head -n 1)"
 	elif
-		[ -f /etc/redhat-release ]
+		[ -f ${rootfs}/etc/redhat-release ]
 	then
 		_system_name="$(
-		GREP_OPTIONS="" \command \grep -Eo 'CentOS|ClearOS|Mageia|PCLinuxOS|Scientific|ROSA Desktop|OpenMandriva' /etc/redhat-release 2>/dev/null | \command \head -n 1 | \command \sed "s/ //"
+		GREP_OPTIONS="" \command \grep -Eo 'CentOS|ClearOS|Mageia|PCLinuxOS|Scientific|ROSA Desktop|OpenMandriva' ${rootfs}/etc/redhat-release 2>/dev/null | \command \head -n 1 | \command \sed "s/ //"
 		)"
 		_system_name="${_system_name:-RedHat}"
-		_system_version="$(GREP_OPTIONS="" \command \grep -Eo '[0-9\.]+' /etc/redhat-release  | \command \awk -F. 'NR==1{print $1}' | head -n 1)"
+		_system_version="$(GREP_OPTIONS="" \command \grep -Eo '[0-9\.]+' ${rootfs}/etc/redhat-release  | \command \awk -F. 'NR==1{print $1}' | head -n 1)"
 	elif
-		[ -f /etc/centos-release ]
+		[ -f ${rootfs}/etc/centos-release ]
 	then
 		_system_name="CentOS"
-		_system_version="$(GREP_OPTIONS="" \command \grep -Eo '[0-9\.]+' /etc/centos-release  | \command \awk -F. '{print $1}' | head -n 1)"
+		_system_version="$(GREP_OPTIONS="" \command \grep -Eo '[0-9\.]+' ${rootfs}/etc/centos-release  | \command \awk -F. '{print $1}' | head -n 1)"
 	else
 		detect_libc_version $rootfs
 	fi
