@@ -81,7 +81,7 @@ def create_stats_matrix(result_root)
 
 		next if monitor == 'stats' # stats.json already created?
 		next if monitor == 'matrix'
-		unless $programs[monitor] or monitor =~ /.+\.time$/
+		unless $programs[monitor] or monitor =~ /^ftrace\.|.+\.time$/
 			STDERR.puts "skip unite #{file}: #{monitor} not in #{$programs.keys}"
 			next
 		end
