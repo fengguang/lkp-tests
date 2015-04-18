@@ -39,4 +39,8 @@ job.each_param { |k, v, option_type|
 	end
 }
 
-atomic_save_yaml_json params, $params_file
+begin
+	atomic_save_yaml_json params, $params_file
+rescue Exception => e
+	STDERR.puts $PROGRAM_NAME + ': ' + e.message
+end
