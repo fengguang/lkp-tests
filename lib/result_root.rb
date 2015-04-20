@@ -39,8 +39,18 @@ class MResultRoot
 		@path
 	end
 
+	def axes_path
+		as = deepcopy(@axes)
+		as['path_params'] = job.path_params
+		as
+	end
+
 	def goto_commit(commit)
-		collection.set_commit(commit.to_s).first
+		rp = ResultPath.new
+		rp.update(axes_path)
+		rp['commit'] = commit
+		_rtp = rp._result_root
+		MResultRoot.new _rtp if File.exists? _rtp
 	end
 
 	def path(sub)
@@ -65,9 +75,7 @@ class MResultRoot
 	end
 
 	def collection
-		as = deepcopy(@axes)
-		as['path_params'] = job.path_params
-		MResultRootCollection.new as
+		MResultRootCollection.new axes_path
 	end
 
 	def boot_collection
