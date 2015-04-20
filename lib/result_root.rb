@@ -67,7 +67,7 @@ class MResultRoot
 	def collection
 		as = deepcopy(@axes)
 		as['path_params'] = job.path_params
-		MResultRootCollection.new @axes
+		MResultRootCollection.new as
 	end
 
 	def boot_collection
