@@ -19,6 +19,9 @@ class Completion
 	end
 end
 
+# Result root for multiple runs of a job
+# M here stands for multiple runs
+# _rt or mrt may be used as variable name
 class MResultRoot
 	DMESG_GLOB1 = '[0-9]*/.dmesg'
 	DMESG_GLOB2 = '[0-9]*/dmesg'
