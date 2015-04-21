@@ -60,8 +60,8 @@ def add_performance_per_watt(stats, matrix)
 
 	return unless performance > 0
 
-	stats['performance_per_watt'] = performance / watt
-	matrix['performance_per_watt'] = [performance / watt]
+	stats['pmeter.performance_per_watt'] = performance / watt
+	matrix['pmeter.performance_per_watt'] = [performance / watt]
 end
 
 def create_stats_matrix(result_root)
