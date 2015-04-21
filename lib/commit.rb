@@ -4,7 +4,7 @@ require "#{LKP_SRC}/lib/git-tag.rb"
 git_update_rb = "#{LKP_SRC}/lib/git-update.rb"
 require git_update_rb if File.exists? git_update_rb
 
-class Commit < Cached
+class Commit
 	def initialize(commit)
 		@commit = commit
 	end
@@ -36,6 +36,10 @@ end
 
 class << Commit
 	private :new
+
+	singleton_class.include AddCachedMethod
+
+	add_cached_method :new
 
 	def open(commit, branch = nil)
 		git_update branch if branch
