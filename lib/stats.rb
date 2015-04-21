@@ -523,3 +523,10 @@ def samples_fill_missing_zeros(matrix, key)
 	return samples
 end
 
+def parse_stat_key(stat_key)
+	stat_key.to_s.split('.')
+end
+
+def stat_key_base(stat_key)
+	parse_stat_key(stat_key)[0]
+end
