@@ -1,7 +1,8 @@
 #!/bin/sh
 
 . $LKP_SRC/lib/bootstrap.sh
-. $LKP_SRC/lib/misc.sh 2>/dev/null
+[ -f $LKP_SRC/lib/misc.sh ] &&
+	. $LKP_SRC/lib/misc.sh 2>/dev/null
 
 export LKP_USER=$user
 export BENCHMARK_ROOT=/lkp/benchmarks
@@ -32,7 +33,7 @@ end_time=$(date '+%s')
 
 $LKP_SRC/bin/post-run
 
-[ "$result_fs" = 'cifs' ] || {
+[ "$result_fs" = 'cifs' -o "$result_fs" = 'virtfs' ] || {
 	chown -R .lkp $RESULT_ROOT
 	chmod -R g+rw $RESULT_ROOT
 }
@@ -73,4 +74,8 @@ else
 	set_job_state 'finished'
 fi
 
-job_done_boot_next
+if [ "$result_fs" = 'virtfs' ]; then
+	echo "Test job done..."
+else
+	job_done_boot_next
+fi

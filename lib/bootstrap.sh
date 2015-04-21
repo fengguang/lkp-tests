@@ -220,6 +220,14 @@ mount_result_root()
 			mount.cifs -o guest $result_service $RESULT_MNT || return
 			result_fs=cifs
 			;;
+		9p/*)
+			mkdir -p -m 02775 $RESULT_ROOT
+			export RESULT_MNT=$RESULT_ROOT
+			export TMP_RESULT_ROOT=$RESULT_ROOT
+			mkdir -p $TMP
+			mount -t 9p -o trans=virtio $result_service $RESULT_MNT  -oversion=9p2000.L,posixacl,cache=loose
+			result_fs=virtfs
+			;;
 		*)
 			echo "unknown result_service $result_service" >&2
 			return 1
