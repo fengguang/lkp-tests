@@ -1,0 +1,4 @@
+#!/bin/sh
+
+LD_LIBRARY_PATH=/lkp/benchmarks/ndctl/lib \
+/lkp/benchmarks/ndctl/bin/ndctl test
