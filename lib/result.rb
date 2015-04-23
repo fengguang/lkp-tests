@@ -73,3 +73,17 @@ class ResultPath < Hash
 		].join '/'
 	end
 end
+
+class << ResultPath
+	def parse(rt)
+		rp = new
+		rp.parse_result_root(rt)
+		rp
+	end
+
+	def new_from_axes(axes)
+		rp = new
+		rp.update(axes)
+		rp
+	end
+end
