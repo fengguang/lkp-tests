@@ -262,6 +262,7 @@ class Job
 			next if k == 'path_params'
 			as[k] = @job[k]
 		}
+		as['testbox'] = tbox_group as['testbox']
 		as['rootfs'] ||= 'debian-x86_64.cgz'
 		as['rootfs'] = rootfs_filename as['rootfs']
 
