@@ -268,9 +268,9 @@ class Job
 
 		each_param { |k, v, option_type|
 			if option_type == '='
-				as[k] = v || ''
+				as[k] = "#{v}"
 			else
-				as[k] = v if v
+				as[k] = "#{v}" if v
 			end
 		}
 		as
