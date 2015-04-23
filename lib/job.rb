@@ -297,3 +297,11 @@ class Job
 		@job.delete(k)
 	end
 end
+
+class << Job
+	def open(jobfile)
+		j = new
+		j.load(jobfile)
+		j
+	end
+end
