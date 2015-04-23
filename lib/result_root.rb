@@ -150,7 +150,7 @@ class MResultRootCollection
 	end
 
 	def each
-		block_given? or return enum_for(__method__, proc)
+		block_given? or return enum_for(__method__)
 
 		`lkp _rt '#{pattern}'`.each_line { |_rt|
 			yield MResultRoot.new _rt.strip
