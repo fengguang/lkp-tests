@@ -4,4 +4,10 @@ nr_threads: 100%
 
 perf-profile:
 
-tbench:
+cluster: cs-localhost
+
+if role server:
+  tbench-server:
+
+if role client:
+  tbench:

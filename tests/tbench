@@ -1,17 +1,7 @@
 #!/bin/sh
 # - nr_threads
 
-run_tbench()
-{
-	note "tbench_srv &"
-	tbench_srv &
-	pid=$!
-	sleep 1
+[ -z "$server" ] && server=127.0.0.1
+server=${server%% *}
 
-	cmd tbench $nr_threads 127.0.0.1
-
-	note "killall tbench_srv"
-	kill $pid
-}
-
-run_tbench
+cmd tbench $nr_threads $server
