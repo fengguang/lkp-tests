@@ -3,7 +3,7 @@
 usage()
 {
 	cat <<EOF
-Usage: run-qemu.sh [-o RESULT_ROOT] job.sh job.yaml
+Usage: run-qemu.sh [-o RESULT_ROOT] job.sh
 
 options:
 	-o  RESULT_ROOT		 dir for storing all results
@@ -11,7 +11,7 @@ options:
 Note:
 This script uses qemu to start a VM to run LKP test-job.
 It downloads kernel, initrd, bm_initrd, modules_initrd through LKP_SERVER,
-and  generates lkp-initrd locally and creates job-initrd with 'job.sh' and 'job.yaml' you specified.
+and  generates lkp-initrd locally and creates job-initrd with 'job.sh'  you specified.
 
 You can check test results in dir '/tmp/vm_test_result/' or a RESULT_ROOT you specified.
 EOF
@@ -41,7 +41,6 @@ create_lkp_initrd()
 create_job_initrd()
 {
 	mkdir -p /tmp$job_initrd_dir
-	cp $job_yaml /tmp$job_file
 	cp $job_script /tmp${job_file%.yaml}.sh
 	archive=/tmp${job_file%.yaml}
 	(cd /tmp && find lkp | cpio -o -H newc -F $archive.cpio
@@ -60,10 +59,8 @@ done
 shift $(($OPTIND-1))
 
 job_script=$1
-job_yaml=$2
 
 [ -n "$job_script" ] || usage
-[ -n "$job_yaml" ] || usage
 . $job_script
 export_top_env
 

@@ -27,11 +27,16 @@ read_kernel_cmdline_vars()
 
 read_kernel_cmdline_vars
 [ -n "$job" ] || job=$(echo /lkp/scheduled/*/*.yaml) # in case CONFIG_PROC_FS is not set
-[ -e "$job" ] || {
+[ -e "$job" -o -e ${job%.yaml}.sh ] || {
 	echo $job does not exist, quit from LKP
 	exit 0 # to work with non-LKP boots
 }
-. ${job%.yaml}.sh
+
+if echo $job | grep '\.sh$' >/dev/null; then
+	. $job
+else
+	. ${job%.yaml}.sh
+fi
 export_top_env
 
 : ${user:=lkp}
