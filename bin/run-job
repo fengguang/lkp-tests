@@ -322,6 +322,7 @@ def run_program(program, env)
 			else
 				f.write "#{program}.kill_code.#{$?.to_i}: 1\n"
 			end
+			f.write "exit_fail: 1\n"
 		}
 		exit 1
 	when nil

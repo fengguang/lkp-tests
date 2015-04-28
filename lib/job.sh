@@ -111,7 +111,8 @@ check_exit_code()
 
 	[ "$exit_code" = 0 ] && return
 
-	echo "${program}.exit_code.$exit_code: 1" >> $RESULT_ROOT/last_state
+	echo "${program}.exit_code.$exit_code: 1"	>> $RESULT_ROOT/last_state
+	echo "exit_fail: 1"				>> $RESULT_ROOT/last_state
 	sync_cluster_state 'failed'
 	exit "$exit_code"
 }
