@@ -1,3 +1,5 @@
-nodes_roles:
-- lkp-g5:	[ server ]
-- client1:	[ client ]
+lkp-g5:
+  roles: [ server ]
+
+client1:
+  roles: [ client ]

@@ -1,4 +1,2 @@
-nodes_roles:
-- localhost:
-  - server
-  - client
+localhost:
+  roles: [ server, client ]
