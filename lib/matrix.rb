@@ -190,3 +190,20 @@ def merge_matrixes(matrixes)
 	}
 	mresult
 end
+
+def check_warn_test_error(matrix)
+	ids = %w(
+			last_state.is_incomplete_run
+			last_state.exit_fail
+			stderr.has_stderr
+		)
+
+	ids.each do |errid|
+		samples = matrix[errid]
+		next unless samples
+		if samples.last(10).sum == 10
+			STDERR.puts "The last 10 results might failed, check: #{errid} #{matrix['stats_source'][-1]}"
+		end
+	end
+end
+

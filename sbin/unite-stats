@@ -8,7 +8,6 @@ require "#{LKP_SRC}/lib/stats.rb"
 require "#{LKP_SRC}/lib/yaml.rb"
 require "#{LKP_SRC}/lib/git.rb"
 require "#{LKP_SRC}/lib/job.rb"
-require "#{LKP_SRC}/lib/log.rb"
 
 File.umask 0002
 
@@ -28,34 +27,4 @@ stats['stats_source'] = result_root + '/stats.json'
 unite_to(stats, _result_root)
 __matrix = unite_to(stats, __result_root, 100)
 
-exit unless (__matrix and not __matrix.empty?)
-
-__matrix.each { |key, value| 
-	case key
-	when 'dmsg.early-boot-hang'
-		if value.last(10).sum == 10
-			log_error 'The last 10 results from #{__result_root} might failed, please check: #{key}.'
-			break
-		end
-	when 'stderr.has_stderr'
-		if value.last(10).sum == 10
-			log_error 'The last 10 results from #{__result_root} might failed, please check: #{key}.'
-			break
-		end
-	when 'dmsg.boot_failures'
-		if value.last(10).sum == 10
-			log_error 'The last 10 results from #{__result_root} might failed, please check: #{key}.'
-			break
-		end
-	when 'last_state.is_incomplete_run'
-		if value.last(10).sum == 10
-			log_error 'The last 10 results from #{__result_root} might failed, please check: #{key}.'
-			break
-		end
-	when /exit_code.[1-9]/
-		if value.last(10).sum == 10
-			log_error 'The last 10 results from #{__result_root} might failed due to error: #{key}.'
-			break
-		end
-	end
-}
+check_warn_test_error __matrix
