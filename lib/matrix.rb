@@ -172,6 +172,7 @@ def unite_to(stats, matrix_root, max_cols = nil)
 		STDERR.puts "matrix contains non-number values, move to #{matrix_file}-bad"
 		FileUtils.mv matrix_file, matrix_file + '-bad', :force => true   # never raises exception
 	end
+	return matrix
 end
 
 # serves as locate db
