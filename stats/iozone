@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 
 keys = %w(write rewrite read reread random_read random_write
 	  bkwd_read record_rewrite stride_read fwrite frewrite

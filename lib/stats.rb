@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 
 MARGIN_SHIFT = 5
 MAX_RATIO = 5

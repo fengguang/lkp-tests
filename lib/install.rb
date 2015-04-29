@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 
 def get_dependency_packages(distro, script)
 	file = "#{LKP_SRC}/distro/#{distro}/#{script}"

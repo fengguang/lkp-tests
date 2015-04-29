@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 
 def show_dmesg_times
 	dmesg = "#{ENV['RESULT_ROOT']}/dmesg"

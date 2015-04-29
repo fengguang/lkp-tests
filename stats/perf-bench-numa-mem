@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 
 keys = { 'secs_latency' => 'secs latency to NUMA-converge',
 	 'secs_slowest' => 'secs slowest \(max\) thread-runtime',

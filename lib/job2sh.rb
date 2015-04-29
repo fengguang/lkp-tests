@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 
 SHELL_BLOCK_KEYWORDS = {
 	'if'		=> [ 'then', 'fi' ],

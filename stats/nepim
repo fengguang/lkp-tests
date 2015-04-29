@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 
 tcp_key = %w(kbps_in kbps_out rcv_s snd_s)
 udp_key = %w(kbps_in kbps_out rcv_s snd_s loss ooo LOST)

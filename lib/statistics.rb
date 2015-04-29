@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 #
 # https://www.bcg.wisc.edu/webteam/support/ruby/standard_deviation
 

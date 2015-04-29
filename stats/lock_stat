@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 
 exit unless STDIN.gets =~ /lock_stat version 0.[34]/
 exit unless STDIN.gets =~ /---------------------/

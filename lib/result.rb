@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 
 RESULT_MNT	= '/result'
 RESULT_PATHS	= '/lkp/paths'

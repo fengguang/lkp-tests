@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 
 while line = STDIN.gets
 	if line =~ /(\d+) ops\/sec/

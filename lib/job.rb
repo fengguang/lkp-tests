@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 
 LKP_SRC ||= ENV['LKP_SRC']
 LKP_SERVER ||= 'inn'

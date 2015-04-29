@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 
 $hits	= Hash.new { |hash, key| hash[key] = 0 }
 $sum	= Hash.new { |hash, key| hash[key] = 0 }

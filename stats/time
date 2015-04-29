@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 
 while line = STDIN.gets
 	next if line.index('Command being timed: ')
