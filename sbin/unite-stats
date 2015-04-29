@@ -28,7 +28,7 @@ stats['stats_source'] = result_root + '/stats.json'
 unite_to(stats, _result_root)
 __matrix = unite_to(stats, __result_root, 100)
 
-return unless (__matrix and not __matrix.empty?)
+exit unless (__matrix and not __matrix.empty?)
 
 __matrix.each { |key, value| 
 	case key
