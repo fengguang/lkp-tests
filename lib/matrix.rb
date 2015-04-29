@@ -3,7 +3,6 @@
 MAX_MATRIX_COLS = 100
 
 require 'set'
-require_relative 'stats.rb'
 
 def is_event_counter(name)
 	$event_counter_prefixes ||= File.read("#{LKP_SRC}/etc/event-counter-prefixes").split

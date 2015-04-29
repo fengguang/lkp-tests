@@ -6,12 +6,12 @@ MAX_RATIO = 5
 LKP_SRC ||= ENV['LKP_SRC']
 
 require "set.rb"
-require_relative "git.rb"
-require_relative "git-tag.rb"
-require_relative "yaml.rb"
-require_relative "result.rb"
-require_relative "bounds.rb"
-require_relative "statistics.rb"
+require "#{LKP_SRC}/lib/git.rb"
+require "#{LKP_SRC}/lib/git-tag.rb"
+require "#{LKP_SRC}/lib/yaml.rb"
+require "#{LKP_SRC}/lib/result.rb"
+require "#{LKP_SRC}/lib/bounds.rb"
+require "#{LKP_SRC}/lib/statistics.rb"
 
 $metric_add_max_latency	= IO.read("#{LKP_SRC}/etc/add-max-latency").split("\n")
 $metric_latency		= IO.read("#{LKP_SRC}/etc/latency").split("\n")
