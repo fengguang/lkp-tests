@@ -40,7 +40,7 @@ check_partition_size() {
 check_partition_size $partitions
 
 make_md() {
-	grep -q '^md0 : active' /proc/mdstat && cmd mdadm --stop /dev/md0
+	grep -q '^md0 : active' /proc/mdstat && cmd mdadm -q --stop /dev/md0
 	echo y | cmd mdadm -q --create /dev/md0 --chunk=$raid_chunk --level=$raid_level --raid-devices=$nr_partitions --force --assume-clean $partitions
 }
 
