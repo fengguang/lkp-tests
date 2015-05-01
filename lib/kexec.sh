@@ -61,7 +61,8 @@ kexec_to_next_job()
 	echo "geting new job..."
 	[ -n "$HOSTNAME" ] || HOSTNAME=$testbox
 	[ -n "$HOSTNAME" ] || HOSTNAME=$(hostname)
-	wget "http://$LKP_SERVER:$LKP_CGI_PORT/~$LKP_USER/cgi-bin/gpxelinux.cgi?hostname=${HOSTNAME}&lkp_wtmp" \
+	local mac="$(ip link | awk '/ether/ {print $2; exit}')"
+	wget "http://$LKP_SERVER:$LKP_CGI_PORT/~$LKP_USER/cgi-bin/gpxelinux.cgi?hostname=${HOSTNAME}&mac=$mac&lkp_wtmp" \
 	     -nv -O $NEXT_JOB
 	grep -q "^KERNEL " $NEXT_JOB || {
 		echo "no KERNEL found" 1>&2
