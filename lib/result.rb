@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+DEFAULT_COMPILER = 'gcc-4.9'
+
 RESULT_MNT	= '/result'
 RESULT_PATHS	= '/lkp/paths'
 RESULT_ROOT_DEPTH = 8

@@ -178,8 +178,8 @@ def load_release_matrix(matrix_file)
 	return matrix
 end
 
-def install_path(kconfig, commit)
-	"/kernel/#{kconfig}/#{commit}"
+def vmlinuz_dir(kconfig, compiler, commit)
+	"/kernel/#{kconfig}/#{compiler}/#{commit}"
 end
 
 def is_functional_test(path)
@@ -206,7 +206,8 @@ def load_base_matrix(matrix_path, head_matrix)
 	# FIXME: remove it later; or move it somewhere in future
 	if not version
 		kconfig = File.basename __result_root
-		context_file = install_path(kconfig, commit) + "/context.yaml"
+		compiler = DEFAULT_COMPILER
+		context_file = vmlinuz_dir(kconfig, compiler, commit) + "/context.yaml"
 		version = nil
 		if File.exist? context_file
 			context = YAML.load_file context_file
