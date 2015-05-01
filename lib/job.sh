@@ -43,6 +43,7 @@ sync_cluster_state()
 		other_options="&$(IFS='&' && echo -n "$*")"
 	}
 	should_wait_cluster && wget -O - "http://$LKP_SERVER/~$LKP_USER/cgi-bin/lkp-cluster-sync?cluster=$cluster&node=$HOSTNAME$state_option$other_options"
+	:
 }
 
 wait_cluster_state()
