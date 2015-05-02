@@ -309,6 +309,10 @@ class Job
 	def delete(k)
 		@job.delete(k)
 	end
+
+	def to_hash
+		@job
+	end
 end
 
 class << Job

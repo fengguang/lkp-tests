@@ -11,6 +11,7 @@ LKP_USER = ENV["USER"] || `whoami`.chomp
 require "#{LKP_SRC}/lib/yaml.rb"
 require "#{LKP_SRC}/lib/stats.rb"
 require "#{LKP_SRC}/lib/matrix.rb"
+require "#{LKP_SRC}/lib/job2sh.rb"
 require "#{LKP_SRC}/lib/job.rb"
 
 TMP = "/tmp/lkp-#{LKP_USER}"
@@ -90,15 +91,16 @@ ENV['TMP_RESULT_ROOT'] = ENV['RESULT_ROOT']
 FileUtils.rm_rf TMP
 Dir.mkdir TMP
 
-job_script = File.realpath(jobfile).chomp('.yaml') + '.sh'
-system LKP_SRC + '/sbin/job2sh', '--output', job_script, jobfile
+job_script = result_root + '/job.sh'
+File.open(job_script, mode='w', perm=0755) do |file|
+	job2sh(deepcopy(job.to_hash), file)
+end
 
 system job_script, 'run_job'
 system LKP_SRC + '/bin/post-run'
 system job_script, 'extract_stats'
 
 job.save result_root + '/job.yaml'
-FileUtils.cp job_script, result_root + '/job.sh'
 
 stats = create_stats_matrix ENV['RESULT_ROOT']
 if $opt_result_root == nil
