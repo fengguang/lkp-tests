@@ -23,7 +23,6 @@ check_empty_output()
 	[[ $program = 'tcrypt' ]] && return
 	[[ $program = 'kernel-size' ]] && return
 	[[ $program = 'perf-profile' ]] && return
-	[[ $program = 'kmsg' ]] && return
 	[[ $program = 'dmesg' && -s $RESULT_ROOT/.dmesg ]] && return
 
 	rm -f $log $log.gz

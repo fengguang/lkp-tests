@@ -19,7 +19,10 @@ if ENV['RESULT_ROOT']
 	elsif File.exist? kmsg_file
 		dmesg_file = kmsg_file
 	else
-		puts "early-boot-hang: 1"
+		# disabled due to not applicable for "lkp run";
+		# "last_state.booting" should be enough
+		#
+		# puts "early-boot-hang: 1"
 		exit
 	end
 
@@ -30,7 +33,7 @@ else
 end
 
 if not File.exist?(dmesg_file) or File.size(dmesg_file) == 0
-	puts "early-boot-hang: 1"
+	# puts "early-boot-hang: 1"
 	exit
 end
 
