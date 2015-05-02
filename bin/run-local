@@ -21,6 +21,7 @@ ENV['PATH'] = ENV['PATH'] + ":#{LKP_SRC}/bin"
 ENV['BENCHMARK_ROOT'] = '/lkp/benchmarks'
 
 $opt_result_root = nil
+$opt_set_key_value = {}
 
 opts = OptionParser.new do |opts|
 	opts.banner = 'Usage: run-local [--dry-run] [-o RESULT_ROOT] JOBFILE'
@@ -32,6 +33,10 @@ opts = OptionParser.new do |opts|
 		FileUtils.rm_rf dir
 		Dir.mkdir dir unless Dir.exist? dir
 		ENV['RESULT_ROOT'] = $opt_result_root = File.realpath dir
+	end
+
+	opts.on("-s 'KEY: VALUE'", "--set 'KEY: VALUE'", "add YAML hash to job") do |key_value|
+		$opt_set_key_value.merge!(YAML.load key_value)
 	end
 
 	opts.on_tail('-h', '--help', 'Show this message') do
@@ -70,15 +75,19 @@ job.load(jobfile) or (
 	exit 1
 )
 
-if $opt_result_root == nil
-	HOSTNAME = ENV["HOSTNAME"] || `hostname`.chomp
-	job['testbox'] = HOSTNAME
-	job['tbox_group'] = tbox_group(HOSTNAME)
-	job['kconfig'] ||= 'defconfig'
-	job['commit'] ||= `uname -r`.chomp!
-	job['rootfs'] ||= `grep -m1 ^ID= /etc/os-release`.split('=')[1].chomp
-	job['nr_cpu'] ||= '$(nproc)'
+HOSTNAME = ENV["HOSTNAME"] || `hostname`.chomp
+job['testbox'] = HOSTNAME
+job['tbox_group'] = tbox_group(HOSTNAME)
+job['kconfig'] ||= 'defconfig'
+job['commit'] ||= `uname -r`.chomp!
+job['rootfs'] ||= `grep -m1 ^ID= /etc/os-release`.split('=')[1].chomp
+job['nr_cpu'] ||= '$(nproc)'
 
+$opt_set_key_value.each { |k, v|
+	job[k] = v
+}
+
+if $opt_result_root == nil
 	_result_root = job._result_root
 	result_root = create_result_root(_result_root) or exit
 	ENV['RESULT_ROOT'] = result_root

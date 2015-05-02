@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require 'shellwords'
+
 SHELL_BLOCK_KEYWORDS = {
 	'if'		=> [ 'then', 'fi' ],
 	'for'		=> [ 'do', 'done' ],
