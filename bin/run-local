@@ -5,14 +5,15 @@ require 'ostruct'
 require 'fileutils'
 
 ENV["LKP_SRC"] ||= File.dirname File.dirname File.realpath $PROGRAM_NAME
-LKP_SRC = ENV["LKP_SRC"]
+LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
+LKP_USER = ENV["USER"] || `whoami`.chomp
 
 require "#{LKP_SRC}/lib/yaml.rb"
 require "#{LKP_SRC}/lib/stats.rb"
 require "#{LKP_SRC}/lib/matrix.rb"
 require "#{LKP_SRC}/lib/job.rb"
 
-TMP = '/tmp/lkp'
+TMP = "/tmp/lkp-#{LKP_USER}"
 ENV['TMP'] = TMP
 
 ENV['PATH'] = ENV['PATH'] + ":#{LKP_SRC}/bin"
