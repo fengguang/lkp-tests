@@ -361,7 +361,6 @@ boot_next()
 
 job_done_boot_next() {
 	touch $TMP/job-finished
-	$LKP_SRC/monitors/event/wakeup job-finished
 	wait_on_manual_check
 	[ -n "$disturbed" ] || job_done
 	boot_next

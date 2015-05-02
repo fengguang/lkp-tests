@@ -1,7 +1,6 @@
 #!/bin/bash
 
 WAIT_POST_TEST_CMD="$LKP_SRC/monitors/event/wait post-test"
-WAIT_JOB_FINISHED_CMD="$LKP_SRC/monitors/event/wait job-finished"
 
 wait_post_test()
 {

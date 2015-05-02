@@ -44,4 +44,3 @@ mkdir $TMP
 $job_script run_job
 
 $LKP_SRC/bin/post-run
-$LKP_SRC/monitors/event/wakeup job-finished
