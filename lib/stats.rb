@@ -231,7 +231,7 @@ def load_base_matrix(matrix_path, head_matrix)
 		next if is_exact_match and tag =~ /^#{version}-rc[0-9]+$/
 		break if tag =~ /\.[0-9]+$/ and tags_merged.size >= 2 and cols >= 10
 
-		base_matrix_file = "#{__result_root}/#{git_tag.to_commit tag}/matrix.json"
+		base_matrix_file = "#{__result_root}/#{tag}/matrix.json"
 		next unless File.exist? base_matrix_file
 
 		rc_matrix = load_release_matrix base_matrix_file
