@@ -126,6 +126,8 @@ class Job
 
 	EXPAND_DIMS = %w(kconfig commit rootfs boot_params)
 
+	attr_reader :path_scheme
+
 	def update(hash, top = false)
 		@job ||= {}
 		if top
@@ -280,6 +282,7 @@ class Job
 	def _result_root
 		result_path = ResultPath.new
 		result_path.update @job
+		@path_scheme = result_path.path_scheme
 		result_path['rootfs'] ||= 'debian-x86_64.cgz'
 		result_path['rootfs'] = rootfs_filename result_path['rootfs']
 		result_path['path_params'] = self.path_params

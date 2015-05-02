@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require 'set'
+
 DEFAULT_COMPILER = 'gcc-4.9'
 
 RESULT_MNT	= '/result'
@@ -14,42 +16,46 @@ class ResultPath < Hash
 	MAXIS_KEYS = ['testbox', 'testcase', 'path_params', 'rootfs', 'kconfig', 'commit'].freeze
 	AXIS_KEYS = (MAXIS_KEYS + ['run']).freeze
 
+	PATH_SCHEME = {
+		'default'	=> %w[ path_params tbox_group rootfs kconfig compiler commit run ],
+		'health-stats'	=> %w[ path_params run ],
+		'hwinfo'	=> %w[ testbox run ],
+	}
+
+	def path_scheme
+		PATH_SCHEME[self['testcase']] || PATH_SCHEME['default']
+	end
+
 	def parse_result_root(rt)
 		dirs = rt.sub(RESULT_MNT, '').split('/')
 		dirs.shift if dirs[0] == ''
 
-		self['testbox'],
-		self['testcase'],
-		self['path_params'],
-		self['rootfs'],
-		self['kconfig'],
-		self['commit'],
-		self['run'] = dirs
+		self['testcase'] = dirs.shift
+		path_scheme.each do |key|
+			self[key] = dirs.shift
+		end
+	end
+
+	def assemble_result_root(skip_keys = nil)
+		dirs = [
+			RESULT_MNT,
+			self['testcase']
+		]
+
+		path_scheme.each do |key|
+			next if skip_keys and skip_keys.include? key
+			dirs << self[key]
+		end
+
+		dirs.join '/'
 	end
 
 	def _result_root
-		[
-			RESULT_MNT,
-			tbox_group(self['testbox']),
-			self['testcase'],
-			self['path_params'],
-			self['rootfs'],
-			self['kconfig'],
-			self['commit']
-		].join '/'
+		assemble_result_root ['run'].to_set
 	end
 
 	def result_root
-		[
-			RESULT_MNT,
-			tbox_group(self['testbox']),
-			self['testcase'],
-			self['path_params'],
-			self['rootfs'],
-			self['kconfig'],
-			self['commit'],
-			self['run']
-		].join '/'
+		assemble_result_root
 	end
 
 	def test_desc(dim, dim_not_a_param)
@@ -57,9 +63,9 @@ class ResultPath < Hash
 		self.delete('rootfs') if dim != 'rootfs'
 		self.delete('kconfig') if dim != 'kconfig'
 		[
-			self['testbox'],
 			self['testcase'],
 			self['path_params'],
+			self['tbox_group'],
 			self['rootfs'],
 			self['kconfig'],
 			self['commit']
@@ -69,7 +75,6 @@ class ResultPath < Hash
 	def params_file
 		[
 			RESULT_MNT,
-			tbox_group(self['testbox']),
 			self['testcase'],
 			'params.yaml'
 		].join '/'
