@@ -59,7 +59,7 @@ unless jobfile
 end
 
 def create_result_root(_result_root)
-	1.upto(100) do |i|
+	0.upto(99) do |i|
 		result_root = "#{_result_root}/#{i}"
 		next if Dir.exist? result_root
 		FileUtils.mkdir_p result_root, :mode => 02775
