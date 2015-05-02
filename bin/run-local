@@ -63,13 +63,14 @@ def create_result_root(_result_root)
 	return nil
 end
 
+job = Job.new
+job.load(jobfile) or (
+	STDERR.puts "#{jobfile} is not a valid jobfile"
+	exit 1
+)
+
 if $opt_result_root == nil
 	HOSTNAME = ENV["HOSTNAME"] || `hostname`.chomp
-	job = Job.new
-	job.load(jobfile) or (
-		STDERR.puts "#{jobfile} is not a valid jobfile"
-		exit 1
-	)
 	job['testbox'] = HOSTNAME
 	job['tbox_group'] = tbox_group(HOSTNAME)
 	job['kconfig'] ||= 'defconfig'
@@ -80,6 +81,8 @@ if $opt_result_root == nil
 	_result_root = job._result_root
 	result_root = create_result_root(_result_root) or exit
 	ENV['RESULT_ROOT'] = result_root
+else
+	result_root = $opt_result_root
 end
 
 ENV['TMP_RESULT_ROOT'] = ENV['RESULT_ROOT']
@@ -93,6 +96,9 @@ system LKP_SRC + '/sbin/job2sh', '--output', job_script, jobfile
 system job_script, 'run_job'
 system LKP_SRC + '/bin/post-run'
 system job_script, 'extract_stats'
+
+job.save result_root + '/job.yaml'
+FileUtils.cp job_script, result_root + '/job.sh'
 
 stats = create_stats_matrix ENV['RESULT_ROOT']
 if $opt_result_root == nil
