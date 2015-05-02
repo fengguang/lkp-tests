@@ -289,6 +289,15 @@ class Job
 		result_path._result_root
 	end
 
+	def _boot_result_root
+		result_path = ResultPath.new
+		result_path.update @job
+		result_path['testcase'] = 'boot'
+		result_path['path_params'] = '*'
+		result_path['rootfs'] = '*'
+		result_path._result_root
+	end
+
 	def [](k)
 		@job[k]
 	end
