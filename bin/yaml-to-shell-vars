@@ -20,10 +20,23 @@ def get_simple_value(v)
 	end
 end
 
+def shell_escape(v)
+	if $opt_expand_var and v.index('$')
+		'"' + v + '"'
+	else
+		Shellwords.escape(v)
+	end
+end
+
+if ARGV[0] == '--expand'
+	$opt_expand_var = true
+	ARGV.shift
+end
+
 ARGV.each { |file|
 	vars = YAML.load_file file
 	vars.each { |k, v|
 		var_name = k.gsub(/[^a-zA-Z0-9_]/, '_').gsub(/^[^a-zA-Z]/, '_')
-		STDOUT.write(var_name + '=' + Shellwords.escape(get_simple_value(v)) + "\n")
+		STDOUT.write(var_name + '=' + shell_escape(get_simple_value(v)) + "\n")
 	}
 }
