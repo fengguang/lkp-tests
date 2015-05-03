@@ -142,6 +142,7 @@ run_kvm()
 		-kernel $kernel_file
 		-append "$bootloader_append ip=dhcp result_service=$mount_tag"
 		$initrd_option
+		-smp $nr_cpu
 		-m $mem_mb
 		-no-reboot
 		$netdev_option
