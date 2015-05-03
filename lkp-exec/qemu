@@ -143,6 +143,7 @@ run_kvm()
 		-append "$bootloader_append ip=dhcp result_service=$mount_tag"
 		$initrd_option
 		-m $mem_mb
+		-no-reboot
 		$netdev_option
 		$qemu_console_option
 	)

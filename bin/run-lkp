@@ -74,8 +74,4 @@ else
 	set_job_state 'finished'
 fi
 
-if [ "$result_fs" = 'virtfs' ]; then
-	echo "Test job done..."
-else
-	job_done_boot_next
-fi
+job_done_boot_next
