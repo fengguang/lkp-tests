@@ -7,6 +7,7 @@ Usage: run-qemu.sh [-o RESULT_ROOT] job.sh
 
 options:
 	-o  RESULT_ROOT		 dir for storing all results
+	-s  SSH_PORT		 forward ssh port to host
 
 Note:
 This script uses qemu to start a VM to run LKP test-job.
@@ -48,10 +49,13 @@ create_job_initrd()
 	 mv -f $archive.cpio.gz $archive.cgz)
 }
 
-while getopts "o:" opt
+. $LKP_SRC/lib/qemu.sh
+
+while getopts "o:s:" opt
 do
 	case $opt in
 		o ) opt_result_root="$OPTARG" ;;
+		s ) opt_ssh="$OPTARG" ;;
 		? ) usage ;;
 	esac
 done
@@ -145,7 +149,7 @@ run_kvm()
 		-smp $nr_cpu
 		-m $mem_mb
 		-no-reboot
-		$netdev_option
+		$qemu_netdev_option
 		$qemu_console_option
 	)
 	echo "exec command: ${KVM_COMMAND[@]}"
@@ -154,4 +158,5 @@ run_kvm()
 
 download_kernel_initrd
 setup_qemu_console
+setup_qemu_netdev
 run_kvm
