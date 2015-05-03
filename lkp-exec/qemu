@@ -90,7 +90,6 @@ mkdir -p $vm_result_path
 
 # download kernel and initrds, then cat them
 LKP_SERVER=bee.sh.intel.com
-initrd=/osimage/debian/$rootfs
 CACHE_DIR=/tmp/lkp-qemu-downloads
 [ -d $CACHE_DIR ] || mkdir $CACHE_DIR
 LKP_USER="lkp"
@@ -114,7 +113,7 @@ download_kernel_initrd()
 		_initrd=$(echo $_initrd | sed 's/^\///')
 		local file=$CACHE_DIR/$_initrd
 		wget -nv -N "http://$LKP_SERVER/~$LKP_USER/$_initrd" -P $(dirname $file) || {
-			echo ls Failed to download $_initrd
+			echo Failed to download $_initrd
 			exit 1
 		}
 		initrds="${initrds}$file "
