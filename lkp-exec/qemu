@@ -143,7 +143,7 @@ run_kvm()
 		-append "$bootloader_append ip=dhcp result_service=$mount_tag"
 		$initrd_option
 		-m $mem_mb
-		-$netdev_option
+		$netdev_option
 		$qemu_console_option
 	)
 	echo "exec command: ${KVM_COMMAND[@]}"
