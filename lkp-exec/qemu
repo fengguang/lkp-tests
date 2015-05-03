@@ -149,6 +149,8 @@ run_kvm()
 		-smp $nr_cpu
 		-m $mem_mb
 		-no-reboot
+		-watchdog i6300esb
+		-rtc base=localtime
 		$qemu_netdev_option
 		$qemu_console_option
 	)
