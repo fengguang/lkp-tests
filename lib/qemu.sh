@@ -71,3 +71,14 @@ setup_qemu_drives()
 	return 0
 }
 
+setup_qemu_console()
+{
+	if [[ "$DISPLAY" ]]; then
+		qemu_console_option=
+	elif [[ -t 1 ]]; then
+		qemu_console_option="-display none -monitor null -serial stdio"
+	else
+		qemu_console_option="-daemonize -display none -monitor null"
+	fi
+}
+

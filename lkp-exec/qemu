@@ -144,11 +144,12 @@ run_kvm()
 		$initrd_option
 		-m $mem_mb
 		-$netdev_option
-		$console
+		$qemu_console_option
 	)
 	echo "exec command: ${KVM_COMMAND[@]}"
 	"${KVM_COMMAND[@]}"
 }
 
 download_kernel_initrd
+setup_qemu_console
 run_kvm
