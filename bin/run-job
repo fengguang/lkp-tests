@@ -48,6 +48,8 @@ opts.parse!(argv)
 $testcase = YAML.load_file(ARGV[0])
 $top_env = expand_toplevel_vars Hash.new, $testcase
 
+$job_params = $testcase['params'] || {}
+
 
 def shell_run_head
 	$opt_shell.puts "#!/bin/bash\n\n"
@@ -128,10 +130,14 @@ def get_program_env(program, env)
 
 	# expand predefined parameter set name
 	if env.class != Hash and env.class != Array
-		param_yaml = LKP_SRC + '/params/' + program + '.yaml'
-		if File.exist?(param_yaml)
-			params = YAML.load_file(param_yaml)
-			env = params[env] if params[env]
+		if $job_params[env]
+			env = $job_params[env]
+		else
+			param_yaml = LKP_SRC + '/params/' + program + '.yaml'
+			if File.exist?(param_yaml)
+				params = YAML.load_file(param_yaml)
+				env = params[env] if params[env]
+			end
 		end
 	end
 

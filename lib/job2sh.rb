@@ -54,10 +54,14 @@ def get_program_env(program, env)
 
 	# expand predefined parameter set name
 	if String === env
-		param_yaml = LKP_SRC + '/params/' + program + '.yaml'
-		if File.exist?(param_yaml)
-			params = YAML.load_file(param_yaml)
-			env = params[env] if params[env]
+		if $job_params[env]
+			env = $job_params[env]
+		else
+			param_yaml = LKP_SRC + '/params/' + program + '.yaml'
+			if File.exist?(param_yaml)
+				params = YAML.load_file(param_yaml)
+				env = params[env] if params[env]
+			end
 		end
 	end
 
@@ -223,6 +227,8 @@ def shell_header
 end
 
 def job2sh(job, out_script)
+	$job_params = job['params'] || {}
+
 	$script_lines = []
 	$stats_lines = []
 
