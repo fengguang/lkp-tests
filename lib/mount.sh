@@ -25,6 +25,7 @@ check_mount()
 
 	# debug mount failure
 	local exit_code=$?
+	echo "mount $*"
 	mount
 	cat /proc/filesystems
 	return $exit_code
