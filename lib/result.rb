@@ -12,14 +12,19 @@ def tbox_group(hostname)
 	hostname.sub /-[0-9]+$/, ''
 end
 
+def is_tbox_group(hostname)
+	Dir[LKP_SRC + '/hosts/' + hostname][0]
+end
+
 class ResultPath < Hash
 	MAXIS_KEYS = ['testbox', 'testcase', 'path_params', 'rootfs', 'kconfig', 'commit'].freeze
 	AXIS_KEYS = (MAXIS_KEYS + ['run']).freeze
 
 	PATH_SCHEME = {
+		'legacy'	=> %w[ testcase path_params rootfs kconfig commit run ],
 		'default'	=> %w[ path_params tbox_group rootfs kconfig compiler commit run ],
 		'health-stats'	=> %w[ path_params run ],
-		'hwinfo'	=> %w[ testbox run ],
+		'hwinfo'	=> %w[ tbox_group run ],
 	}
 
 	def path_scheme
@@ -31,7 +36,15 @@ class ResultPath < Hash
 		dirs.shift if dirs[0] == ''
 
 		self['testcase'] = dirs.shift
-		path_scheme.each do |key|
+		ps = path_scheme()
+
+		# for backwards compatibilty
+		if is_tbox_group(self['testcase'])
+			self['tbox_group'] = self['testcase']
+			ps = PATH_SCHEME['legacy']
+		end
+
+		ps.each do |key|
 			self[key] = dirs.shift
 		end
 	end

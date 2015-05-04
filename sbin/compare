@@ -352,8 +352,8 @@ def setup_changed_stats()
 
 				record['result_root']  = result_root
 				record['_result_root'] = File.dirname result_root
-				record['tbox_group']   = result_path['testbox']
-				record['testbox']      = result_path['testbox']
+				record['tbox_group']   = result_path['tbox_group']
+				record['testbox']      = result_path['tbox_group']
 				record['commit']       = result_path['commit']
 				# silent get_avg_run_time warnning
 				record['run_time']     = 0
