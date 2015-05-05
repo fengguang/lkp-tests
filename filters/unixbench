@@ -3,9 +3,15 @@
 # Filter context1 from unixbench on some testboxes, where it always failed due to error:
 # 	Run: "Pipe-based Context Switching": slave write failed: Broken pipe; aborting
 
-declare -A tbox_to_disable=([lituya]=1 [loslunas]=1 [nhm-white]=1)
-
-[[ ${tbox_to_disable[$testbox]} == 1 ]] && [[ "$test" == "context1" ]] && {
-	echo "rm $job_file due to $test are known to fail on $testbox"
-	rm $job_file
+[[ "$test" == "context1" ]] && {
+	declare -A tbox_to_disable=(
+		[lituya]=1
+		[loslunas]=1
+		[nhm-white]=1
+	)
+	[[ ${tbox_to_disable[$testbox]} == 1 ]] && {
+		echo "rm $job_file due to $test are known to fail on $testbox"
+		rm $job_file
+	}
 }
+
