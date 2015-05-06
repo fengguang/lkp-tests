@@ -10,6 +10,7 @@ default-monitors:
   numa-meminfo:
   proc-vmstat:
   proc-stat:
+    interval: 10
   meminfo:
   slabinfo:
   interrupts:
