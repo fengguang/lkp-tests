@@ -5,5 +5,9 @@
 for i in $(seq ${modes%-*} ${modes#*-})
 do
 	# tcrypt do testing by modules inserting, then exit from kernel
-	cmd /sbin/modprobe tcrypt sec=$period mode=$i 2>/dev/null
+	cmd /sbin/modprobe tcrypt sec=$period mode=$i
 done
+
+# to silence the "expected" failure explicitly:
+#    modprobe: ERROR: could not insert 'tcrypt': Resource temporarily unavailable
+exit 0
