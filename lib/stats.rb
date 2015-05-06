@@ -11,6 +11,7 @@ require "#{LKP_SRC}/lib/git-tag.rb"
 require "#{LKP_SRC}/lib/yaml.rb"
 require "#{LKP_SRC}/lib/result.rb"
 require "#{LKP_SRC}/lib/bounds.rb"
+require "#{LKP_SRC}/lib/constant.rb"
 require "#{LKP_SRC}/lib/statistics.rb"
 
 $metric_add_max_latency	= IO.read("#{LKP_SRC}/etc/add-max-latency").split("\n")
@@ -179,7 +180,7 @@ def load_release_matrix(matrix_file)
 end
 
 def vmlinuz_dir(kconfig, compiler, commit)
-	"/kernel/#{kconfig}/#{compiler}/#{commit}"
+	"#{KERNEL_ROOT}/#{kconfig}/#{compiler}/#{commit}"
 end
 
 def is_functional_test(path)
