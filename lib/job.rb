@@ -289,12 +289,13 @@ class Job
 		result_path._result_root
 	end
 
-	def _boot_result_root
+	def _boot_result_root(commit)
 		result_path = ResultPath.new
 		result_path.update @job
 		result_path['testcase'] = 'boot'
 		result_path['path_params'] = '*'
 		result_path['rootfs'] = '*'
+		result_path['commit'] = commit
 		result_path._result_root
 	end
 
