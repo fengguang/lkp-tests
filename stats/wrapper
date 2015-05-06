@@ -79,6 +79,10 @@ else
 	dump_stat $stats_group $tmpfile
 fi
 
+if [[ $program =~ ^(sched_debug|proc-stat|perf-profile|\.dmesg|dmesg)$ ]]; then
+	[ -f $log ] && xz $log && rm -f $log.gz
+fi
+
 [ -f $log.gz ] && rm $log
 
 exit 0

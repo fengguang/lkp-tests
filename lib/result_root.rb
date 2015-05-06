@@ -23,8 +23,8 @@ end
 # M here stands for multiple runs
 # _rt or mrt may be used as variable name
 class MResultRoot
-	DMESG_GLOB1 = '[0-9]*/.dmesg'
-	DMESG_GLOB2 = '[0-9]*/dmesg'
+	DMESG_GLOB1 = '[0-9]*/.dmesg*'
+	DMESG_GLOB2 = '[0-9]*/dmesg*'
 	JOB_GLOB = '[0-9]*/job.yaml'
 	COMPLETIONS_FILE = 'completions'
 	MATRIX = 'matrix.json'
