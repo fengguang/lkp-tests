@@ -47,6 +47,10 @@ class ResultPath < Hash
 		ps.each do |key|
 			self[key] = dirs.shift
 		end
+
+		if self['commit'] == DEFAULT_COMPILER
+			STDERR.puts "ResultPath parse error for #{rt}"
+		end
 	end
 
 	def assemble_result_root(skip_keys = nil)
