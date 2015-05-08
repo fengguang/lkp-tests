@@ -15,8 +15,8 @@
 
 check_nr_partitions()
 {
-	max_ssd=$(echo $ssd_partitions | wc -w)
-	max_hdd=$(echo $hdd_partitions | wc -w)
+	max_ssd=$(ls $ssd_partitions 2>/dev/null | wc -l)
+	max_hdd=$(ls $hdd_partitions 2>/dev/null | wc -l)
 
 	local warn_last=$1
 
