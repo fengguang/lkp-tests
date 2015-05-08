@@ -76,6 +76,21 @@ class ResultPath < Hash
 		assemble_result_root
 	end
 
+	def test_desc_keys(dim, dim_not_a_param)
+		keys = [
+			'testcase',
+			'path_params',
+			'tbox_group',
+			'rootfs',
+			'kconfig',
+			'commit'
+		]
+		keys.delete(dim) if dim && dim_not_a_param
+		keys.delete('rootfs') if dim != 'rootfs'
+		keys.delete('kconfig') if dim != 'kconfig'
+		keys
+	end
+
 	def test_desc(dim, dim_not_a_param)
 		self.delete(dim) if dim_not_a_param
 		self.delete('rootfs') if dim != 'rootfs'
@@ -88,6 +103,16 @@ class ResultPath < Hash
 			self['kconfig'],
 			self['commit']
 		].compact.join '/'
+	end
+
+	def parse_test_desc(desc, dim='commit', dim_not_a_param=true)
+		values = desc.split('/')
+		keys = test_desc_keys dim, dim_not_a_param
+		kv = {}
+		keys.each.with_index { |k, i|
+			kv[k] = values[i]
+		}
+		kv
 	end
 
 	def params_file

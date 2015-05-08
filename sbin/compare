@@ -492,7 +492,8 @@ def show_one_diff(dim, v0, v, v0_stddev, v_stddev, is_float, is_exp, is_fail=fal
 end
 
 def show_test_group(key)
-	printf "testbox/testcase/testparams: "
+	rtp = ResultPath.new
+	printf "#{rtp.test_desc_keys($opt_dimension, $dim_not_a_param).join '/'}: "
 	puts key
 	puts
 
