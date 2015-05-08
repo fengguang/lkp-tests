@@ -202,7 +202,7 @@ def check_warn_test_error(matrix, result_root)
 		samples = matrix[errid]
 		next unless samples
 		if samples.last(10).sum == 10
-			STDERR.puts "The last 10 results might failed, check: #{errid} #{result_root}"
+			STDERR.puts "The last 10 results all failed, check: #{errid} #{result_root}"
 		end
 	end
 end
