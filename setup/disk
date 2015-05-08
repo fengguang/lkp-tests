@@ -15,18 +15,16 @@
 
 check_nr_partitions()
 {
-	max_ssd=$(ls $ssd_partitions 2>/dev/null | wc -l)
-	max_hdd=$(ls $hdd_partitions 2>/dev/null | wc -l)
-
-	local warn_last=$1
+	max_ssd=$(ls $ssd_partitions | wc -l)
+	max_hdd=$(ls $hdd_partitions | wc -l)
 
 	[ "$nr_ssd_partitions" ] && [ "$nr_ssd_partitions" != "$max_ssd" ] && {
-		[ -n "$warn_last" ] && echo "disk number $nr_ssd_partitions mismatch with $max_ssd real disks: $ssd_partitions" >&2
+		echo "disk number $nr_ssd_partitions mismatch with $max_ssd real disks: $ssd_partitions" >&2
 		return 1
 	}
 
 	[ "$nr_hdd_partitions" ] && [ "$nr_hdd_partitions" != "$max_hdd" ] && {
-		[ -n "$warn_last" ] && echo "disk number $nr_hdd_partitions mismatch with $max_hdd real disks: $hdd_partitions" >&2
+		echo "disk number $nr_hdd_partitions mismatch with $max_hdd real disks: $hdd_partitions" >&2
 		return 1
 	}
 
@@ -37,11 +35,11 @@ wait_disks()
 {
 	for i in $(seq $wait_disks_timeout)
 	do
-		check_nr_partitions && return
+		check_nr_partitions 2>/dev/null && return
 		sleep 1
 	done
 
-	check_nr_partitions warn_last && return
+	check_nr_partitions && return
 	exit 1
 }
 
