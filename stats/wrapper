@@ -35,9 +35,9 @@ warn_empty_stats()
 	[[ $testbox =~ ^vm- ]] && return
 	[[ $program = 'dmesg' ]] && return
 	[[ $program = 'ftrace' ]] && return
+	[[ $program = 'turbostat' ]] && return
 	[[ -s $RESULT_ROOT/time ]] || return
 	[[ -s $RESULT_ROOT/last_state ]] && return
-	[[ $program = 'turbostat' ]] && grep -q -e 'No invariant TSC' $log && return
 	grep -q "^$program\." $LKP_SRC/etc/failure && return
 
 	echo "WARN: empty stats for $log" >&2
