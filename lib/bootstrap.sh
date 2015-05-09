@@ -40,7 +40,7 @@ setup_network()
 		echo "!!! $err_msg !!!" >&2
 		echo "!!! $err_msg !!!" > /dev/ttyS0
 	}
-	reboot
+	reboot 2>/dev/null
 	exit
 }
 
@@ -344,7 +344,7 @@ job_done()
 boot_next()
 {
 	tbox_cant_kexec && {
-		reboot
+		reboot 2>/dev/null
 		exit
 	}
 

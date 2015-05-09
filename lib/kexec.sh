@@ -82,7 +82,7 @@ kexec_to_next_job()
 		# expecting the system to run "kexec -e" in some rc6.d/* script
 		echo "LKP: rebooting"
 		echo "LKP: rebooting" > /dev/ttyS0 &
-		reboot
+		reboot 2>/dev/null
 		sleep 100 || exit	# exit if reboot kills sleep as expected
 	fi
 
@@ -92,14 +92,14 @@ kexec_to_next_job()
 	sync
 	echo "LKP: kexecing"
 	echo "LKP: kexecing" > /dev/ttyS0 &
-	kexec -e
+	kexec -e 2>/dev/null
 
 	set_job_state "kexec_fail"
 
 	# in case kexec failed
 	echo "LKP: rebooting after kexec"
 	echo "LKP: rebooting after kexec" > /dev/ttyS0 &
-	reboot
+	reboot 2>/dev/null
 }
 
 # cache kernel for only one week to avoid "no splace left" issue
