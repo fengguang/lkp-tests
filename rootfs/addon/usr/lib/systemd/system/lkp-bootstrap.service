@@ -5,6 +5,7 @@ After=sysinit.target
 [Service]
 Type=oneshot
 ExecStart=/etc/init.d/lkp-bootstrap
+IgnoreSIGPIPE=no
 
 [Install]
 WantedBy=multi-user.target
