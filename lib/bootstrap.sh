@@ -212,21 +212,21 @@ mount_result_root()
 
 	case $result_service in
 		*:*)
-			mount.nfs $result_service $RESULT_MNT || return
 			result_fs=nfs
+			mount.nfs $result_service $RESULT_MNT || return
 			;;
 		//*/*)
+			result_fs=cifs
 			modprobe cifs 2>/dev/null
 			mount.cifs -o guest $result_service $RESULT_MNT || return
-			result_fs=cifs
 			;;
 		9p/*)
+			result_fs=virtfs
 			mkdir -p -m 02775 $RESULT_ROOT
 			export RESULT_MNT=$RESULT_ROOT
 			export TMP_RESULT_ROOT=$RESULT_ROOT
 			mkdir -p $TMP
 			mount -t 9p -o trans=virtio $result_service $RESULT_MNT  -oversion=9p2000.L,posixacl,cache=loose
-			result_fs=virtfs
 			;;
 		*)
 			echo "unknown result_service $result_service" >&2
@@ -253,7 +253,9 @@ setup_result_root()
 
 	mkdir -p $RESULT_MNT
 	mount_result_root $RESULT_MNT || {
-		if grep -q -w $result_fs /proc/filesystems; then
+		if [ -z "$result_fs" ]; then
+			set_job_state "unknown_result_service"
+		elif grep -q -w "$result_fs" /proc/filesystems; then
 			set_job_state 'error_mount'
 			sleep 300
 		else
