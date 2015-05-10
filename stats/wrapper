@@ -43,7 +43,11 @@ warn_empty_stats()
 	echo "WARN: empty stats for $log" >&2
 }
 
-[ -f $log.gz ] && zcat $log.gz > $log
+if [ -f $log.gz ]; then
+	zcat $log.gz > $log
+elif [ -f $log.xz ]; then
+	xzcat $log.xz > $log
+fi
 
 check_incomplete_run $log
 check_empty_output
@@ -79,10 +83,15 @@ else
 	dump_stat $stats_group $tmpfile
 fi
 
-if [[ $program =~ ^(sched_debug|proc-stat|perf-profile|\.dmesg|dmesg)$ ]]; then
-	[ -f $log ] && xz $log && rm -f $log.gz
+# xz large files for long term storage, remove possible .gz
+if [[ $program =~ ^(sched_debug|proc-stat|perf-profile|ftrace|\.dmesg|dmesg)$ ]]; then
+	[ -f $log ] && [ ! -f $log.xz ] && xz $log && rm -f $log.gz
 fi
 
-[ -f $log.gz ] && rm $log
+if [ -f $log.gz ]; then
+	rm $log
+elif [ -f $log.xz ]; then
+	rm $log -f
+fi
 
 exit 0
