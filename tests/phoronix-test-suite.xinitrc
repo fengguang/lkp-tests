@@ -22,6 +22,12 @@ elif [ $(echo $test | grep systester) ]; then
 3
 n
 EOF
+elif [ $(echo $test | grep interbench) ]; then
+	cmd phoronix-test-suite run $test <<EOF
+Test All Options
+Test All Options
+n
+EOF
 else
 	cmd phoronix-test-suite run $test <<EOF
 Test All Options
