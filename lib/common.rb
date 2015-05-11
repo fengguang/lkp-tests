@@ -19,3 +19,50 @@ end
 def instance_variable_sym(str)
 	"@#{str}".intern
 end
+
+def with_set_globals(*var_val_list)
+	var_vals = var_val_list.each_slice(2).to_a
+	ovals = var_vals.map { |var, val| eval(var.to_s) }
+	var_vals.each { |var, val| eval "#{var} = val" }
+	yield
+ensure
+	if ovals
+		var_vals.zip(ovals).map { |var_val, oval|
+			var, val = var_val
+			eval("#{var} = oval")
+		}
+	end
+end
+
+## IO redirection
+
+def pager
+	saved_stdout = $stdout
+	IO.popen("/usr/bin/less","w") { |io|
+		$stdout = io
+		yield
+	}
+ensure
+	$stdout = saved_stdout
+end
+
+def redirect(*args)
+	if args.empty?
+		args = ['stdout.txt', 'w']
+	end
+	saved_stdout = $stdout
+	File.open(*args) { |f|
+		$stdout = f
+		yield
+	}
+ensure
+	$stdout = saved_stdout
+end
+
+## Date and time
+
+ONE_DAY = 60 * 60 * 24
+
+def str_date(t)
+	t.strftime('%F')
+end
