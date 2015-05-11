@@ -2,45 +2,33 @@
 
 start_time=$(date +%s.%N)
 
-if [ $(echo $test | grep tiobench) ]; then
-	cmd phoronix-test-suite run $test <<EOF
-Test All Options
-Test All Options
-Test All Options
-Test All Options
-n
-EOF
-elif [ $(echo $test | grep systester) ]; then
-	# Choose  
+case $test in
+tiobench-[0-9]*)
+	test_opt="Test All Options\nTest All Options\nTest All Options\nTest All Options\nn"
+	;;
+systester-[0-9]*)
+	# Choose
 	# 1: Gauss-Legendre algorithm [Recommended.]
 	# 2: 16 Million Digits [This Test could take a while to finish.]
 	# 3: 4 threads [2+ Cores Recommended]
 	# todo: select different test according to testbox's hardware
-	cmd phoronix-test-suite run $test <<EOF
-1
-2
-3
-n
+	test_opt="1\n2\n3\nn"
+	;;
+interbench-[0-9]*)
+	test_opt="Test All Options\nTest All Options\nn"
+	;;
+iozone-[0-9]*)
+	test_opt="Test All Options\nTest All Options\nTest All Options\nn"
+	;;
+*)
+	test_opt="Test All Options\nn"
+	;;
+esac
+
+cmd phoronix-test-suite run $test <<EOF
+$(echo -e $test_opt)
 EOF
-elif [ $(echo $test | grep interbench) ]; then
-	cmd phoronix-test-suite run $test <<EOF
-Test All Options
-Test All Options
-n
-EOF
-elif [ $(echo $test | grep iozone) ]; then
-	cmd phoronix-test-suite run $test <<EOF
-Test All Options
-Test All Options
-Test All Options
-n
-EOF
-else
-	cmd phoronix-test-suite run $test <<EOF
-Test All Options
-n
-EOF
-fi
+
 end_time=$(date +%s.%N)
 elapsed=$(echo $end_time - $start_time | bc)
 echo "${test}.seconds: $elapsed"
