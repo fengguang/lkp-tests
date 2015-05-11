@@ -1,5 +1,8 @@
 #!/bin/bash
 
+. $LKP_SRC/lib/kexec.sh
+. $LKP_SRC/lib/qemu.sh
+
 usage()
 {
 	cat <<EOF
@@ -49,7 +52,14 @@ create_job_initrd()
 	 mv -f $archive.cpio.gz $archive.cgz)
 }
 
-. $LKP_SRC/lib/qemu.sh
+get_qemu_kernel_initrd()
+{
+	local lkp_initrd=
+	local job_initrd=
+	download_kernel_initrd $1 $2
+
+	initrd_option="-initrd $concatenate_initrd"
+}
 
 while getopts "o:s:" opt
 do
@@ -98,39 +108,6 @@ CACHE_DIR=/tmp/lkp-qemu-downloads
 [ -d $CACHE_DIR ] || mkdir $CACHE_DIR
 LKP_USER="lkp"
 
-download_kernel_initrd()
-{
-	local _initrd
-	local initrds
-	kernel=$(echo $kernel| sed 's/^\///')
-	kernel_file=$CACHE_DIR/$kernel
-
-	echo "downloading kernel image ..."
-	wget "http://$LKP_SERVER/~$LKP_USER/$kernel" -nv -N -P $(dirname $kernel_file) || {
-		echo "failed to download kernel: $kernel" 1>&2
-		exit 1
-	}
-
-	echo "downloading initrds ..."
-	for _initrd in $(echo $initrd $tbox_initrd $bm_initrd $modules_initrd  | tr , ' ') # not download lkp_initrd job_initrd
-	do
-		_initrd=$(echo $_initrd | sed 's/^\///')
-		local file=$CACHE_DIR/$_initrd
-		wget -nv -N "http://$LKP_SERVER/~$LKP_USER/$_initrd" -P $(dirname $file) || {
-			echo Failed to download $_initrd
-			exit 1
-		}
-		initrds="${initrds}$file "
-	done
-
-	[ -n "$initrds" ] && {
-		concatenate_initrd="$CACHE_DIR/initrd-$$"
-		cat $initrds $lkp_initrd $job_initrd > $concatenate_initrd
-		initrd_option="-initrd $concatenate_initrd"
-	}
-	return 0
-}
-
 run_kvm()
 {
 	trap - EXIT
@@ -158,7 +135,7 @@ run_kvm()
 	"${KVM_COMMAND[@]}"
 }
 
-download_kernel_initrd
+get_qemu_kernel_initrd $lkp_initrd $job_initrd
 setup_qemu_console
 setup_qemu_netdev
 run_kvm

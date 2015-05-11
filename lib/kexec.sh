@@ -18,14 +18,8 @@ download_kernel_initrd()
 {
 	local _initrd
 	local initrds
-	local kernel=$(awk  '/^KERNEL / { print $2; exit }' $NEXT_JOB)
+
 	kernel=$(echo $kernel | sed 's/^\///')
-
-	append=$(grep -m1 '^APPEND ' $NEXT_JOB | sed 's/^APPEND //')
-	rm -f /tmp/initrd-* /tmp/modules.cgz
-
-	read_kernel_cmdline_vars_from_append "$append"
-	append=$(echo "$append" | sed -r 's/ [a-z_]*initrd=[^ ]+//g')
 
 	echo "downloading kernel image ..."
 	set_job_state "wget_kernel"
@@ -50,7 +44,11 @@ download_kernel_initrd()
 
 	[ -n "$initrds" ] && {
 		concatenate_initrd="/tmp/initrd-$$"
-		cat $initrds > $concatenate_initrd
+		if [ $# == 0 ]; then
+			cat $initrds > $concatenate_initrd
+		else
+			cat $initrds $* > $concatenate_initrd
+		fi
 		initrd_option="--initrd=$concatenate_initrd"
 	}
 	return 0
@@ -69,6 +67,13 @@ kexec_to_next_job()
 		cat $NEXT_JOB
 		exit 1
 	}
+
+	local kernel=$(awk  '/^KERNEL / { print $2; exit }' $NEXT_JOB)
+	append=$(grep -m1 '^APPEND ' $NEXT_JOB | sed 's/^APPEND //')
+	rm -f /tmp/initrd-* /tmp/modules.cgz
+
+	read_kernel_cmdline_vars_from_append "$append"
+	append=$(echo "$append" | sed -r 's/ [a-z_]*initrd=[^ ]+//g')
 
 	download_kernel_initrd
 
