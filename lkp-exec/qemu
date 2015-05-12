@@ -1,5 +1,6 @@
 #!/bin/bash
 
+. $LKP_SRC/lib/bootstrap.sh
 . $LKP_SRC/lib/kexec.sh
 . $LKP_SRC/lib/qemu.sh
 
