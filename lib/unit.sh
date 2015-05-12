@@ -1,5 +1,17 @@
 #!/bin/bash
 
+source_meminfo()
+{
+	while read key val unit
+	do
+		key=${key%%:}
+		key=${key%%)}
+		[ "${key#*(}" != "$key" ] &&
+		key=${key%(*}_${key#*(}
+		eval $key=$val
+	done < /proc/meminfo
+}
+
 to_byte()
 {
 	local s=$1

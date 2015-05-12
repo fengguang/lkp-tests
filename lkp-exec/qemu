@@ -3,6 +3,7 @@
 . $LKP_SRC/lib/bootstrap.sh
 . $LKP_SRC/lib/kexec.sh
 . $LKP_SRC/lib/qemu.sh
+. $LKP_SRC/lib/unit.sh
 
 usage()
 {
@@ -40,6 +41,20 @@ get_qemu_kernel_initrd()
 	download_kernel_initrd $1 $2
 
 	initrd_option="-initrd $concatenate_initrd"
+}
+
+get_memory()
+{
+	source_meminfo
+	mem_kb=$(to_kb $memory)
+
+	if [ $(($MemAvailable >> 1)) -ge $mem_kb ]; then
+		mem_kb="${mem_kb}kb"
+		echo "$(to_mb $mem_kb)M"
+	else
+		mem_kb="$(($MemAvailable >> 1))kb"
+		echo "$(to_mb $mem_kb)M"
+	fi 
 }
 
 while getopts "o:s:" opt
@@ -101,7 +116,7 @@ run_kvm()
 {
 	trap - EXIT
 
-	local mem_mb=1024
+	local mem_mb=$(get_memory)
 	local mount_tag=9p/virtfs_mount
 	model='qemu-system-x86_64 -enable-kvm'
 	netdev_option="-device e1000,netdev=net0 "
