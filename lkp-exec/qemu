@@ -22,26 +22,6 @@ EOF
 	exit 1
 }
 
-create_lkp_initrd()
-{
-	local local_src_dir=$1
-	local tmp_dir=/tmp/lkp_initrd
-	local tmp_src=$tmp_dir/lkp/$user/src
-	local archive=$tmp_dir/lkp/$user/lkp-x86_64
-	make -C $local_src_dir/monitors/event wakeup
-
-	[ -d $tmp_src ] && rm -rf $tmp_dir
-
-	mkdir -p $tmp_src
-	find $local_src_dir -mindepth 1 -maxdepth 1 -exec cp -a {} $tmp_src \;
-	(cd $tmp_dir && find lkp | cpio -o  -H newc -F $archive.cpio
-	 cd $tmp_dir/lkp/$user/src/rootfs/addon		&& find * | cpio -o  -H newc -F $archive.cpio --append)
-	 gzip -n -9 $archive.cpio
-	 mv -f	  $archive.cpio.gz $archive.cgz
-
-	lkp_initrd=$archive.cgz
-}
-
 create_job_initrd()
 {
 	mkdir -p /tmp$job_initrd_dir
@@ -80,7 +60,8 @@ export_top_env
 
 # create lkp-x86_64.cgz
 srcpath=$(dirname $(dirname $(readlink -e -v $0)))
-create_lkp_initrd $srcpath
+PACK_SRC_PATH=$srcpath $LKP_SRC/sbin/pack lkp-src
+lkp_initrd=/tmp/lkp_initrd/lkp/$USER/lkp-x86_64.cgz
 
 # create job_initrd.cgz
 job_initrd=/tmp${job_file%.yaml}.cgz
