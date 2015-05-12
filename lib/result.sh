@@ -2,7 +2,6 @@
 
 export RESULT_MNT='/result'
 export RESULT_PATHS='/lkp/paths'
-export RESULT_ROOT_DEPTH=8
 
 set_tbox_group()
 {

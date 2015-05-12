@@ -6,7 +6,6 @@ DEFAULT_COMPILER = 'gcc-4.9'
 
 RESULT_MNT	= '/result'
 RESULT_PATHS	= '/lkp/paths'
-RESULT_ROOT_DEPTH = 8
 
 def tbox_group(hostname)
 	hostname.sub /-[0-9]+$/, ''
@@ -45,13 +44,16 @@ class ResultPath < Hash
 			ps = PATH_SCHEME['legacy']
 		end
 
+		return false if ps.size != dirs.size
 		ps.each do |key|
 			self[key] = dirs.shift
 		end
 
 		if self['commit'] == DEFAULT_COMPILER
 			STDERR.puts "ResultPath parse error for #{rt}"
+			return false
 		end
+		return true
 	end
 
 	def assemble_result_root(skip_keys = nil)
