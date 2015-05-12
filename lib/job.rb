@@ -262,12 +262,24 @@ class Job
 		as = {}
 		ResultPath::MAXIS_KEYS.each { |k|
 			next if k == 'path_params'
-			as[k] = @job[k]
+			as[k] = @job[k] if @job.has_key? k
 		}
-		as['rootfs'] ||= 'debian-x86_64.cgz'
-		as['rootfs'] = rootfs_filename as['rootfs']
-		as['compiler'] ||= DEFAULT_COMPILER
 
+		## TODO: remove the following lines when we need not
+		## these default processing in the future
+		rtp = ResultPath.new
+		rtp['testcase'] = @job['testcase']
+		path_scheme = rtp.path_scheme
+		if path_scheme.include? 'rootfs'
+			as['rootfs'] ||= 'debian-x86_64.cgz'
+		end
+		if path_scheme.include? 'compiler'
+			as['compiler'] ||= DEFAULT_COMPILER
+		end
+
+		if as.has_key? 'rootfs'
+			as['rootfs'] = rootfs_filename as['rootfs']
+		end
 		each_param { |k, v, option_type|
 			if option_type == '='
 				as[k] = "#{v}"
