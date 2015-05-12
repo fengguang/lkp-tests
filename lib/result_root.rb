@@ -32,8 +32,7 @@ class MResultRoot
 	def initialize(path)
 		@path = path
 		@path.freeze
-		@axes = job.axes
-		@axes.freeze
+		@axes = calc_axes
 	end
 
 	attr_reader :axes
@@ -42,9 +41,24 @@ class MResultRoot
 		@path
 	end
 
+	def calc_axes
+		if job_file
+			job.axes
+		else
+			rp = ResultPath.parse @path
+			Hash[rp.to_a]
+		end
+	end
+
 	def axes_path
 		as = deepcopy(@axes)
-		as['path_params'] = job.path_params
+		if job_file
+			path_params = job.path_params
+		else
+			rp = ResultPath.parse @path
+			path_params = rp['path_params']
+		end
+		as['path_params'] = path_params
 		as
 	end
 
@@ -72,9 +86,7 @@ class MResultRoot
 	end
 
 	def job
-		j = Job.new
-		j.load job_file
-		j
+		Job.open job_file
 	end
 
 	def collection
