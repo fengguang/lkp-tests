@@ -7,7 +7,7 @@
 cd $BENCHMARK_ROOT/turbostat || exit
 
 if [ ! -c /dev/cpu/0/msr ]; then
-	modprobe msr
+	modprobe msr 2>&1 || exit
 
 	if [ ! -c /dev/cpu/0/msr ]; then
 		echo "/dev/cpu/0/msr not available"

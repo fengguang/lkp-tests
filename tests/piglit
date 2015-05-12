@@ -17,7 +17,7 @@ check_wait_dri()
 
 	dri_exist && return
 
-	modprobe drm
+	modprobe drm 2>&1 || exit
 
 	for i in $(seq 9)
 	do
