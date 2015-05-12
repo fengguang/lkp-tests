@@ -61,10 +61,14 @@ export_top_env
 
 # create lkp-$arch.cgz
 export LKP_USER=$user
-export arch=${arch:-x86_64}
+if [[ "$kconfig" =~ ^(i386|x86_64)- ]]; then
+	arch=${kconfig%%-*}
+else
+	arch=$(arch)
+fi
 
 srcpath=$(dirname $(dirname $(readlink -e -v $0)))
-PACK_SRC_PATH=$srcpath $LKP_SRC/sbin/pack lkp-src
+$LKP_SRC/sbin/pack -a $arch lkp-src
 lkp_initrd=/tmp/lkp_initrd-$USER/lkp/$LKP_USER/lkp-$arch.cgz
 
 # create job_initrd.cgz
