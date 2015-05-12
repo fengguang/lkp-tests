@@ -130,6 +130,13 @@ class MResultRoot
 	}
 end
 
+class << MResultRoot
+	def valid?(path)
+		return false if !File.exists? path
+		return Dir[File.join path, self::JOB_GLOB].first
+	end
+end
+
 class MResultRootCollection
 	def initialize(conditions)
 		ResultPath::MAXIS_KEYS.each { |f|
@@ -152,8 +159,11 @@ class MResultRootCollection
 	def each
 		block_given? or return enum_for(__method__)
 
-		`lkp _rt '#{pattern}'`.each_line { |_rt|
-			yield MResultRoot.new _rt.strip
+		`lkp _rt '#{pattern}'`.each_line { |_rtp|
+			_rtp = _rtp.strip
+			if MResultRoot.valid? _rtp
+				yield MResultRoot.new _rtp.strip
+			end
 		}
 	end
 
