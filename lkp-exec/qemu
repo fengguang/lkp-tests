@@ -59,10 +59,13 @@ job_script=$1
 . $job_script
 export_top_env
 
-# create lkp-x86_64.cgz
+# create lkp-$arch.cgz
+export LKP_USER=$user
+export arch=${arch:-x86_64}
+
 srcpath=$(dirname $(dirname $(readlink -e -v $0)))
 PACK_SRC_PATH=$srcpath $LKP_SRC/sbin/pack lkp-src
-lkp_initrd=/tmp/lkp_initrd-$USER/lkp/$USER/lkp-x86_64.cgz
+lkp_initrd=/tmp/lkp_initrd-$USER/lkp/$LKP_USER/lkp-$arch.cgz
 
 # create job_initrd.cgz
 job_initrd=/tmp${job_file%.yaml}.cgz

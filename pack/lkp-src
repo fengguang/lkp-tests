@@ -2,6 +2,7 @@
 
 LKP_SRC=${LKP_SRC:-/lkp/$USER/src}
 ARCH=${arch:-x86_64}
+LKP_USER=${LKP_USER:-$USER}
 [ -n "$OWNER" ] && OWNER_OPT="--owner $OWNER"
 
 download()
@@ -19,22 +20,22 @@ build()
 
 install()
 {
-	mkdir -p /tmp/lkp_initrd-$USER/rootfs/lkp/$USER/src
-	mkdir -p /tmp/lkp_initrd-$USER/lkp/$USER
-	ln -sfT $LKP_SRC /tmp/lkp_initrd-$USER/lkp/$USER/src
+	mkdir -p /tmp/lkp_initrd-$USER/rootfs/lkp/$LKP_USER/src
+	mkdir -p /tmp/lkp_initrd-$USER/lkp/$LKP_USER
+	ln -sfT $LKP_SRC /tmp/lkp_initrd-$USER/lkp/$LKP_USER/src
 }
 
 pack()
 {
 	local tmp_dir=/tmp/lkp_initrd-$USER
-	local tmp_src=$tmp_dir/lkp/$USER/src
-	local archive=$tmp_dir/lkp/$USER/lkp-${ARCH}
+	local tmp_src=$tmp_dir/lkp/$LKP_USER/src
+	local archive=$tmp_dir/lkp/$LKP_USER/lkp-${ARCH}
 	local cpio_cmd="cpio -o $OWNER_OPT -H newc -F ${archive}.cpio"
 
 	(
 		cd $tmp_dir/rootfs			&& find lkp		| $cpio_cmd
-		cd $tmp_dir				&& find lkp/$USER/src/* | $cpio_cmd --append
-		cd $tmp_dir/lkp/$USER/src/rootfs/addon	&& find *		| $cpio_cmd --append
+		cd $tmp_dir				&& find lkp/$LKP_USER/src/* | $cpio_cmd --append
+		cd $tmp_dir/lkp/$LKP_USER/src/rootfs/addon	&& find *		| $cpio_cmd --append
 
 		[ -d /osimage/addon-${ARCH} ] &&
 		cd /osimage/addon-${ARCH}		&& find *		| $cpio_cmd --append
