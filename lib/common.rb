@@ -34,6 +34,14 @@ ensure
 	end
 end
 
+def ensure_array(obj)
+	if obj.is_a? Array
+		obj
+	else
+		[obj]
+	end
+end
+
 ## IO redirection
 
 def pager
@@ -65,4 +73,19 @@ ONE_DAY = 60 * 60 * 24
 
 def str_date(t)
 	t.strftime('%F')
+end
+
+module DirObject
+	def to_s
+		@path
+	end
+
+	def path(*sub)
+		File.join @path, *sub
+	end
+
+	def open(sub, *args, &b)
+		sub = ensure_array(sub)
+		File.open path(*sub), *args, &b
+	end
 end
