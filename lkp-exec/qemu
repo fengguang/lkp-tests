@@ -61,7 +61,7 @@ export_top_env
 # create lkp-x86_64.cgz
 srcpath=$(dirname $(dirname $(readlink -e -v $0)))
 PACK_SRC_PATH=$srcpath $LKP_SRC/sbin/pack lkp-src
-lkp_initrd=/tmp/lkp_initrd/lkp/$USER/lkp-x86_64.cgz
+lkp_initrd=/tmp/lkp_initrd-$USER/lkp/$USER/lkp-x86_64.cgz
 
 # create job_initrd.cgz
 job_initrd=/tmp${job_file%.yaml}.cgz
