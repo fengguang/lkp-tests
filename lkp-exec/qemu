@@ -5,10 +5,12 @@
 . $LKP_SRC/lib/qemu.sh
 . $LKP_SRC/lib/unit.sh
 
+script_name=$(basename $0)
+
 usage()
 {
 	cat <<EOF
-Usage: lkp qemu [-o RESULT_ROOT] job.sh
+Usage: lkp $script_name [-o RESULT_ROOT] job.sh
 
 options:
 	-o  RESULT_ROOT		 dir for storing all results

@@ -5,12 +5,14 @@ if ! [ $(id -u) = 0 ]; then
 	exit 1
 fi
 
+script_name=$(basename $0)
+
 [ -n "$HOSTNAME" ] || HOSTNAME=$(hostname)		#?chomp
 [ -n "$LKP_SRC" ] || export LKP_SRC=$(dirname $(dirname $(readlink -e -v $0)))
 TMP="$LKP_SRC/tmp"
 
 usage() {
-	echo "Usage: $0 [options] <script>/<jobfile>"
+	echo "Usage: lkp $script_name [options] <script>/<jobfile>"
 	echo "options: "
 	echo "--hdd partition: HDD partition for IO tests"
 	echo "--ssd partition: SSD partition for IO tests"
