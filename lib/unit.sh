@@ -1,14 +1,16 @@
 #!/bin/bash
 
-source_meminfo()
+export_meminfo()
 {
+	local key val unit
+
 	while read key val unit
 	do
-		key=${key%%:}
-		key=${key%%)}
+		key="${key%%:}"
+		key="${key%%)}"
 		[ "${key#*(}" != "$key" ] &&
-		key=${key%(*}_${key#*(}
-		eval $key=$val
+		key="${key%(*}_${key#*(}"
+		export "$key=$val"
 	done < /proc/meminfo
 }
 
