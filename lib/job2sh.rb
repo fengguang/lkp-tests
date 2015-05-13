@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+LKP_SRC ||= ENV['LKP_SRC']
+
 require 'shellwords'
 
 SHELL_BLOCK_KEYWORDS = {

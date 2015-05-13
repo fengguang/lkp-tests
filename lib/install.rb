@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+LKP_SRC ||= ENV['LKP_SRC']
+
 def get_dependency_packages(distro, script)
 	file = "#{LKP_SRC}/distro/#{distro}/#{script}"
 	return nil unless File.exist? file

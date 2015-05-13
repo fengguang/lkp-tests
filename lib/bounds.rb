@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+LKP_SRC ||= ENV['LKP_SRC']
+
 def is_valid_stats_range(stats_field, num)
 	monitor = stats_field.split('.')[0]
 	range_file = "#{LKP_SRC}/etc/valid-range-#{monitor}.yaml"

@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+LKP_SRC ||= ENV['LKP_SRC']
+
 MAX_MATRIX_COLS = 100
 
 require 'set'

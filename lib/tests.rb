@@ -1,3 +1,4 @@
+LKP_SRC ||= ENV['LKP_SRC']
 
 require 'set'
 

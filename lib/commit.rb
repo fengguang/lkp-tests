@@ -1,3 +1,5 @@
+LKP_SRC ||= ENV['LKP_SRC']
+
 require "#{LKP_SRC}/lib/common.rb"
 require "#{LKP_SRC}/lib/git.rb"
 require "#{LKP_SRC}/lib/git-tag.rb"

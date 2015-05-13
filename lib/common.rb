@@ -1,3 +1,5 @@
+LKP_SRC ||= ENV['LKP_SRC']
+
 # common utilities
 
 def deepcopy(o)

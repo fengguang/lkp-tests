@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+LKP_SRC ||= ENV['LKP_SRC']
+
 require "fileutils"
 require "tempfile"
 

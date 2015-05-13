@@ -1,4 +1,5 @@
 # coding: utf-8
+LKP_SRC ||= ENV['LKP_SRC']
 require "#{LKP_SRC}/lib/common.rb"
 require "#{LKP_SRC}/lib/enumerator.rb"
 require "#{LKP_SRC}/lib/stats.rb"

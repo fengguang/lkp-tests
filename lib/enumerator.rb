@@ -1,5 +1,7 @@
 # Enhancement to enumerable and enumerator
 
+LKP_SRC ||= ENV['LKP_SRC']
+
 module Enumerable
 	def feach(func)
 		block_given? or return enum_for(__method__, func)

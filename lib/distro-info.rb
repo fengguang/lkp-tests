@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
-
 module LKP
 
 	require "singleton"
