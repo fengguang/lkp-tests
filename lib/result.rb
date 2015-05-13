@@ -44,7 +44,7 @@ class ResultPath < Hash
 			ps = PATH_SCHEME['legacy']
 		end
 
-		return false if ps.size != dirs.size
+		ndirs = dirs.size
 		ps.each do |key|
 			self[key] = dirs.shift
 		end
@@ -53,7 +53,8 @@ class ResultPath < Hash
 			STDERR.puts "ResultPath parse error for #{rt}"
 			return false
 		end
-		return true
+		# for rt and _rt
+		return ps.size == ndirs || ps.size == ndirs + 1
 	end
 
 	def assemble_result_root(skip_keys = nil)
