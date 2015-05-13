@@ -10,11 +10,12 @@ script_name=$(basename $0)
 usage()
 {
 	cat <<EOF
-Usage: lkp $script_name [-o RESULT_ROOT] job.sh
+Usage: lkp $script_name [-o RESULT_ROOT] [-p VDISK_PATH] [-s SSH_PORT] job.sh
 
 options:
 	-o  RESULT_ROOT		 dir for storing all results
 	-s  SSH_PORT		 forward ssh port to host
+    -p  VDISK_PATH       specify vdisk path
 
 Note:
 This script uses qemu to start a VM to run LKP test-job.
@@ -25,6 +26,31 @@ You can check test results in dir '/tmp/vm_test_result/' or a RESULT_ROOT you sp
 EOF
 	exit 1
 }
+
+replace_script_hdd_val()
+{
+    local disk_names=(vd{a..z})
+    local i
+    local job_script="$1"
+    if [[ $nr_hdd_partitions ]]; then
+        VDISK_NUM=$nr_hdd_partitions
+    else
+        VDISK_NUM=$(echo $hdd_partitions | wc -w)
+    fi 
+
+    if (($VDISK_NUM)); then
+        local vdisk_parations_val=
+
+        for i in $(seq 0 $(($VDISK_NUM - 1)))
+        do
+            vdisk_parations_val="$vdisk_parations_val $(echo /dev/${disk_names[$i]})"
+        done
+
+        local hdd_partitions_val="$(awk -F"'" '/hdd_partitions=/ { printf("%s",$2)}' $job_script)"
+        $(sed -i "s%${hdd_partitions_val}%${vdisk_parations_val}%g" $job_script)
+    fi 
+}
+
 
 create_job_initrd()
 {
@@ -57,11 +83,31 @@ max_sane_qemu_memory()
 	echo $((mem_kb >> 10))M
 }
 
+# setup qemu drives
+setup_qemu_disks()
+{
+	local vm_name=$testbox
+	
+	if [[ "$opt_vdiskpath" ]]; then
+		[[ -d "$opt_vdiskpath" ]] || {
+			echo "$opt_vdiskpath: no such directory"
+			exit 1
+		}
+		VDISK_ROOT="$opt_vdiskpath"
+	else
+		VDISK_ROOT=/tmp/vdisk
+		[[ -d $VDISK_ROOT ]] || mkdir -p $VDISK_ROOT
+	fi
+
+	setup_qemu_drives
+}
+
 while getopts "o:s:" opt
 do
 	case $opt in
 		o ) opt_result_root="$OPTARG" ;;
 		s ) opt_ssh="$OPTARG" ;;
+		p ) opt_vdiskpath="$OPTARG" ;;
 		? ) usage ;;
 	esac
 done
@@ -73,6 +119,7 @@ job_script=$1
 [ -n "$job_script" ] || usage
 . $job_script
 export_top_env
+replace_script_hdd_val $job_script
 
 # create lkp-$arch.cgz
 export LKP_USER=$user
@@ -134,6 +181,7 @@ run_kvm()
 		-rtc base=localtime
 		$qemu_netdev_option
 		$qemu_console_option
+		$QEMU_DRIVE_OPTION
 	)
 	echo "exec command: ${KVM_COMMAND[@]}"
 	"${KVM_COMMAND[@]}"
@@ -142,4 +190,5 @@ run_kvm()
 get_qemu_kernel_initrd $lkp_initrd $job_initrd
 setup_qemu_console
 setup_qemu_netdev
+setup_qemu_disks
 run_kvm
