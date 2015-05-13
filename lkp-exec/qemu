@@ -8,7 +8,7 @@
 usage()
 {
 	cat <<EOF
-Usage: run-qemu.sh [-o RESULT_ROOT] job.sh
+Usage: lkp qemu [-o RESULT_ROOT] job.sh
 
 options:
 	-o  RESULT_ROOT		 dir for storing all results
