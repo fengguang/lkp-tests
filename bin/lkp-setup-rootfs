@@ -23,13 +23,15 @@ boot_init()
 	echo   PATH=$PATH
 
 	redirect_stdout_stderr
+
+	setup_hostname
+	setup_hosts
+
 	announce_bootup
 
 	add_lkp_user
 
 	fixup_packages
-	setup_hostname
-	setup_hosts
 
 	setup_network
 	run_ntpdate
