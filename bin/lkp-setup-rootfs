@@ -18,10 +18,6 @@ umask 002
 boot_init()
 {
 	mount_tmpfs
-
-	export PATH=$PATH:$LKP_SRC/bin
-	echo   PATH=$PATH
-
 	redirect_stdout_stderr
 
 	setup_hostname
@@ -35,6 +31,9 @@ boot_init()
 
 	setup_network
 	run_ntpdate
+
+	export PATH=$PATH:$LKP_SRC/bin
+	echo   PATH=$PATH
 }
 
 boot_init
