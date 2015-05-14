@@ -107,12 +107,11 @@ announce_bootup()
 
 redirect_stdout_stderr()
 {
-	exec  > $TMP/stdout
-	exec 2> $TMP/stderr
+	exec  > /tmp/stdout
+	exec 2> /tmp/stderr
 
-	ln -s /usr/bin/tail $LKP_SRC/bin/tail-to-console
-	ln -s /usr/bin/tail $LKP_SRC/bin/tail-to-output
-	ln -s /usr/bin/tail $LKP_SRC/bin/tail-to-serial
+	ln -s /usr/bin/tail /bin/tail-to-console
+	ln -s /usr/bin/tail /bin/tail-to-serial
 
 	# write log to screen as well so that we can see them
 	# even network is broken
@@ -126,14 +125,12 @@ redirect_stdout_stderr()
 
 	# the test fixes "cannot create /dev/console: Input/output error"
 	[ -c /dev/console ] &&
-	tail-to-console -f $TMP/stdout $TMP/stderr > /dev/console &
-
-	tail-to-output  -f $TMP/stdout $TMP/stderr > $TMP/output &
+	tail-to-console -f /tmp/stdout /tmp/stderr > /dev/console &
 
 	# some machines do not have serial console, writing to /dev/ttyS0 may fail
 	[ -c /dev/ttyS0 ] &&
 	echo > /dev/ttyS0 2>/dev/null && {
-		tail-to-serial -f $TMP/stdout $TMP/stderr > /dev/ttyS0 2>/dev/null &
+		tail-to-serial -f /tmp/stdout /tmp/stderr > /dev/ttyS0 2>/dev/null &
 	}
 }
 

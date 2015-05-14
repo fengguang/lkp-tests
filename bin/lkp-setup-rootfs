@@ -37,18 +37,9 @@ boot_init()
 	run_ntpdate
 }
 
-# per-job initiation; should be invoked before run a job
-job_init()
-{
-	export TMP=/tmp/lkp
-	mkdir -p $TMP
-	rm -fr $TMP/*
-
-	cp /proc/uptime $TMP/boot-time
-}
-
 boot_init
 
+. $LKP_SRC/job-init.sh
 job_init
 echo $LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp
 $LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp
