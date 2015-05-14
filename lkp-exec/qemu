@@ -27,30 +27,38 @@ EOF
 	exit 1
 }
 
-replace_script_hdd_val()
+replace_script_partition_val()
 {
-    local disk_names=(vd{a..z})
-    local i
+    local disk_names=(/dev/vd{a..z})
     local job_script="$1"
-    if [[ $nr_hdd_partitions ]]; then
-        VDISK_NUM=$nr_hdd_partitions
-    else
-        VDISK_NUM=$(echo $hdd_partitions | wc -w)
-    fi 
+    local nr_hdd_vdisk=$(echo $hdd_partitions | wc -w)
+    local nr_ssd_vdisk=$(echo $ssd_partitions | wc -w)
+    local nr_swap_vdisk=$(echo $swap_partitions | wc -w)
+    local nr_rootfs_vdisk=$(echo $rootfs_partition | wc -w)
+
+    [[ $nr_hdd_partitions ]] || nr_hdd_partitions=$nr_hdd_vdisk
+    [[ $nr_ssd_partitions ]] || nr_ssd_partitions=$nr_ssd_vdisk
+
+    VDISK_NUM=$((nr_hdd_partitions+nr_ssd_partitions+nr_swap_vdisk+nr_rootfs_vdisk))
 
     if (($VDISK_NUM)); then
-        local vdisk_parations_val=
+        local index=0
+        local vdisk_hdd_val="${disk_names[@]:$index:$nr_hdd_partitions}"
+        index=$((index+nr_hdd_partitions))
+        local vdisk_ssd_val="${disk_names[@]:$index:$nr_ssd_partitions}"
+        index=$((index+nr_ssd_partitions))
+        local vdisk_rootfs_val="${disk_names[@]:$index:$nr_rootfs_vdisk}"
+        index=$((index+nr_rootfs_vdisk))
+        local vdisk_swap_val="${disk_names[@]:$index:$nr_swap_vdisk}"
 
-        for i in $(seq 0 $(($VDISK_NUM - 1)))
-        do
-            vdisk_parations_val="$vdisk_parations_val $(echo /dev/${disk_names[$i]})"
-        done
+        local pattern='/dev/vd.*'
 
-        local hdd_partitions_val="$(awk -F"'" '/hdd_partitions=/ { printf("%s",$2)}' $job_script)"
-        $(sed -i "s%${hdd_partitions_val}%${vdisk_parations_val}%g" $job_script)
-    fi 
+        [[ $hdd_partitions =~ $pattern ]] || sed -i -e "s%export hdd_partitions=.*%export hdd_partitions='${vdisk_hdd_val}'%" $job_script
+        [[ $ssd_partitions =~ $pattern ]] || sed -i -e "s%export ssd_partitions=.*%export ssd_partitions='${vdisk_ssd_val}'%" $job_script
+        [[ $swap_partitions =~ $pattern ]] || sed -i -e "s%swap_partitions=.*%swap_partitions='${vdisk_swap_val}'%" $job_script
+        [[ $rootfs_partition =~ $pattern ]] || sed -i -e "s%rootfs_partition=.*%rootfs_partition='${vdisk_rootfs_val}'%" $job_script
+    fi
 }
-
 
 create_job_initrd()
 {
@@ -83,10 +91,9 @@ max_sane_qemu_memory()
 	echo $((mem_kb >> 10))M
 }
 
-# setup qemu drives
-setup_qemu_disks()
+setup_vdisk_root()
 {
-	local vm_name=$testbox
+	vm_name=$testbox
 	
 	if [[ "$opt_vdiskpath" ]]; then
 		[[ -d "$opt_vdiskpath" ]] || {
@@ -95,11 +102,9 @@ setup_qemu_disks()
 		}
 		VDISK_ROOT="$opt_vdiskpath"
 	else
-		VDISK_ROOT=/tmp/vdisk
+		VDISK_ROOT=/tmp/vdisk-$USER
 		[[ -d $VDISK_ROOT ]] || mkdir -p $VDISK_ROOT
 	fi
-
-	setup_qemu_drives
 }
 
 while getopts "o:s:" opt
@@ -119,7 +124,7 @@ job_script=$1
 [ -n "$job_script" ] || usage
 . $job_script
 export_top_env
-replace_script_hdd_val $job_script
+replace_script_partition_val $job_script
 
 # create lkp-$arch.cgz
 export LKP_USER=$user
@@ -190,5 +195,6 @@ run_kvm()
 get_qemu_kernel_initrd $lkp_initrd $job_initrd
 setup_qemu_console
 setup_qemu_netdev
-setup_qemu_disks
+setup_vdisk_root
+setup_qemu_drives
 run_kvm
