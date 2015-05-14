@@ -29,35 +29,36 @@ EOF
 
 replace_script_partition_val()
 {
-    local disk_names=(/dev/vd{a..z})
-    local job_script="$1"
-    local nr_hdd_vdisk=$(echo $hdd_partitions | wc -w)
-    local nr_ssd_vdisk=$(echo $ssd_partitions | wc -w)
-    local nr_swap_vdisk=$(echo $swap_partitions | wc -w)
-    local nr_rootfs_vdisk=$(echo $rootfs_partition | wc -w)
+	[[ "$hdd_partitions$ssd_partitions$swap_partitions$rootfs_partition" =~ '/dev/vda' ]] && return
 
-    [[ $nr_hdd_partitions ]] || nr_hdd_partitions=$nr_hdd_vdisk
-    [[ $nr_ssd_partitions ]] || nr_ssd_partitions=$nr_ssd_vdisk
+	local disk_names=(/dev/vd{a..z})
+	local job_script="$1"
+	local nr_hdd_vdisk=$(echo $hdd_partitions | wc -w)
+	local nr_ssd_vdisk=$(echo $ssd_partitions | wc -w)
+	local nr_swap_vdisk=$(echo $swap_partitions | wc -w)
+	local nr_rootfs_vdisk=$(echo $rootfs_partition | wc -w)
 
-    VDISK_NUM=$((nr_hdd_partitions+nr_ssd_partitions+nr_swap_vdisk+nr_rootfs_vdisk))
+	[[ $nr_hdd_partitions ]] || nr_hdd_partitions=$nr_hdd_vdisk
+	[[ $nr_ssd_partitions ]] || nr_ssd_partitions=$nr_ssd_vdisk
 
-    if (($VDISK_NUM)); then
-        local index=0
-        local vdisk_hdd_val="${disk_names[@]:$index:$nr_hdd_partitions}"
-        index=$((index+nr_hdd_partitions))
-        local vdisk_ssd_val="${disk_names[@]:$index:$nr_ssd_partitions}"
-        index=$((index+nr_ssd_partitions))
-        local vdisk_rootfs_val="${disk_names[@]:$index:$nr_rootfs_vdisk}"
-        index=$((index+nr_rootfs_vdisk))
-        local vdisk_swap_val="${disk_names[@]:$index:$nr_swap_vdisk}"
+	VDISK_NUM=$((nr_hdd_partitions+nr_ssd_partitions+nr_swap_vdisk+nr_rootfs_vdisk))
 
-        local pattern='/dev/vd.*'
+	if ((VDISK_NUM)); then
+		local index=0
+		local vdisk_hdd_val="${disk_names[@]:$index:$nr_hdd_partitions}"
+		index=$((index+nr_hdd_partitions))
+		local vdisk_ssd_val="${disk_names[@]:$index:$nr_ssd_partitions}"
+		index=$((index+nr_ssd_partitions))
+		local vdisk_rootfs_val="${disk_names[@]:$index:$nr_rootfs_vdisk}"
+		index=$((index+nr_rootfs_vdisk))
+		local vdisk_swap_val="${disk_names[@]:$index:$nr_swap_vdisk}"
 
-        [[ $hdd_partitions =~ $pattern ]] || sed -i -e "s%export hdd_partitions=.*%export hdd_partitions='${vdisk_hdd_val}'%" $job_script
-        [[ $ssd_partitions =~ $pattern ]] || sed -i -e "s%export ssd_partitions=.*%export ssd_partitions='${vdisk_ssd_val}'%" $job_script
-        [[ $swap_partitions =~ $pattern ]] || sed -i -e "s%swap_partitions=.*%swap_partitions='${vdisk_swap_val}'%" $job_script
-        [[ $rootfs_partition =~ $pattern ]] || sed -i -e "s%rootfs_partition=.*%rootfs_partition='${vdisk_rootfs_val}'%" $job_script
-    fi
+		sed -i	-e "s%export hdd_partitions=.*%export hdd_partitions='${vdisk_hdd_val}'%" \
+			-e "s%export ssd_partitions=.*%export ssd_partitions='${vdisk_ssd_val}'%" \
+			-e "s%export swap_partitions=.*%export swap_partitions='${vdisk_swap_val}'%" \
+			-e "s%export rootfs_partition=.*%export rootfs_partition='${vdisk_rootfs_val}'%" \
+			$job_script
+	fi
 }
 
 create_job_initrd()
