@@ -29,8 +29,6 @@ EOF
 
 replace_script_partition_val()
 {
-	[[ "$hdd_partitions$ssd_partitions$swap_partitions$rootfs_partition" =~ '/dev/vda' ]] && return
-
 	local disk_names=(/dev/vd{a..z})
 	local job_script="$1"
 	local nr_hdd_vdisk=$(echo $hdd_partitions | wc -w)
@@ -42,6 +40,8 @@ replace_script_partition_val()
 	[[ $nr_ssd_partitions ]] || nr_ssd_partitions=$nr_ssd_vdisk
 
 	VDISK_NUM=$((nr_hdd_partitions+nr_ssd_partitions+nr_swap_vdisk+nr_rootfs_vdisk))
+
+	[[ "$hdd_partitions$ssd_partitions$swap_partitions$rootfs_partition" =~ '/dev/vda' ]] && return
 
 	if ((VDISK_NUM)); then
 		local index=0
