@@ -13,28 +13,40 @@ umask 002
 
 . $LKP_SRC/lib/bootstrap.sh
 
-mount_tmpfs
+# initiation at boot stage; should be invoked once for
+# each fresh boot.
+boot_init()
+{
+	mount_tmpfs
 
-export PATH=$PATH:$LKP_SRC/bin
-echo   PATH=$PATH
+	export PATH=$PATH:$LKP_SRC/bin
+	echo   PATH=$PATH
 
-export TMP=/tmp/lkp
-mkdir -p $TMP
-rm -fr $TMP/*
+	redirect_stdout_stderr
+	announce_bootup
 
-cp /proc/uptime $TMP/boot-time
+	add_lkp_user
 
-redirect_stdout_stderr
-announce_bootup
+	fixup_packages
+	setup_hostname
+	setup_hosts
 
-add_lkp_user
+	setup_network
+	run_ntpdate
+}
 
-fixup_packages
-setup_hostname
-setup_hosts
+# per-job initiation; should be invoked before run a job
+job_init()
+{
+	export TMP=/tmp/lkp
+	mkdir -p $TMP
+	rm -fr $TMP/*
 
-setup_network
-run_ntpdate
+	cp /proc/uptime $TMP/boot-time
+}
 
+boot_init
+
+job_init
 echo $LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp
 $LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp
