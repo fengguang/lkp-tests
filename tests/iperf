@@ -5,6 +5,7 @@
 [ -n "$runtime" ] || runtime=300
 [ "$protocol" = udp ] && opt_udp=-u
 
+[ -n "$direct_server_ips" ] && server=$direct_server_ips
 [ -z "$server" ] && server=127.0.0.1
 server=${server%% *}
 
