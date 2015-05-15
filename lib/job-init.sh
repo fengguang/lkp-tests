@@ -166,6 +166,24 @@ set_job_state()
 	jobfile_append_var "job_state=$1"
 }
 
+next_job()
+{
+
+	NEXT_JOB="$CACHE_DIR/next-job-$LKP_USER"
+
+	echo "geting new job..."
+	local mac="$(ip link | awk '/ether/ {print $2; exit}')"
+	wget "http://$LKP_SERVER:$LKP_CGI_PORT/~$LKP_USER/cgi-bin/gpxelinux.cgi?hostname=${HOSTNAME}&mac=$mac&lkp_wtmp" \
+	     -nv -O $NEXT_JOB
+	grep -q "^KERNEL " $NEXT_JOB || {
+		echo "no KERNEL found" 1>&2
+		cat $NEXT_JOB
+		return 1
+	}
+
+	return 0
+}
+
 boot_next()
 {
 	tbox_cant_kexec && {
@@ -176,7 +194,8 @@ boot_next()
 	local secs=300
 	while true
 	do
-		$LKP_SRC/bin/kexec-lkp $pxe_user
+		next_job && $LKP_SRC/bin/kexec-lkp ${pxe_user:-lkp} $NEXT_JOB
+
 		sleep $secs || exit # killed by reboot
 		secs=$(( secs + 300 ))
 	done

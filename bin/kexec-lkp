@@ -6,11 +6,9 @@
 # Author: Yuanhan Liu
 #
 
-if [ -n "$1" ]; then
-	LKP_USER=$1
-elif [ -z "$LKP_USER" ]; then
-	LKP_USER=lkp
-fi
+LKP_USER=$1
+NEXT_JOB=$2
+[ -z "$NEXT_JOB" ] && echo "Usage: kexec-lkp user job.yaml" 1>&2 && exit 1
 
 [ -n "$LKP_SRC" ] || export LKP_SRC=/lkp/$LKP_USER/src
 
@@ -18,6 +16,4 @@ fi
 . $LKP_SRC/lib/kexec.sh
 . $LKP_SRC/lib/misc.sh 2>/dev/null
 
-NEXT_JOB="$CACHE_DIR/next-job-$LKP_USER"
-
-kexec_to_next_job
+kexec_to_next_job $NEXT_JOB

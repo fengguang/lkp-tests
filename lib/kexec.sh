@@ -56,18 +56,6 @@ download_kernel_initrd()
 
 kexec_to_next_job()
 {
-	echo "geting new job..."
-	[ -n "$HOSTNAME" ] || HOSTNAME=$testbox
-	[ -n "$HOSTNAME" ] || HOSTNAME=$(hostname)
-	local mac="$(ip link | awk '/ether/ {print $2; exit}')"
-	wget "http://$LKP_SERVER:$LKP_CGI_PORT/~$LKP_USER/cgi-bin/gpxelinux.cgi?hostname=${HOSTNAME}&mac=$mac&lkp_wtmp" \
-	     -nv -O $NEXT_JOB
-	grep -q "^KERNEL " $NEXT_JOB || {
-		echo "no KERNEL found" 1>&2
-		cat $NEXT_JOB
-		exit 1
-	}
-
 	local kernel=$(awk  '/^KERNEL / { print $2; exit }' $NEXT_JOB)
 	append=$(grep -m1 '^APPEND ' $NEXT_JOB | sed 's/^APPEND //')
 	rm -f /tmp/initrd-* /tmp/modules.cgz
