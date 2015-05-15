@@ -80,7 +80,10 @@ wait_other_nodes()
 
 	mkdir $TMP/wait_other_nodes-once 2>/dev/null || return
 
-	sync_cluster_state 'write_state' "node_roles=${node_roles// /+}" "ip=$(hostname -I | cut -d' ' -f1)"
+	sync_cluster_state 'write_state' "node_roles=${node_roles// /+}" \
+					 "ip=$(hostname -I | cut -d' ' -f1)" \
+					 "direct_macs=${direct_macs// /+}" \
+					 "direct_ips=${direct_ips// /+}"
 
 	# exit if either of the other nodes failed its job
 
