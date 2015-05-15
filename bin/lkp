@@ -1,5 +1,8 @@
 #!/bin/sh
 
+export LC_ALL=C.UTF-8
+export LANG=C.UTF-8
+
 [ -n "$LKP_SRC" ] ||
 export LKP_SRC=$(dirname $(dirname $(readlink -e -v $0)))
 

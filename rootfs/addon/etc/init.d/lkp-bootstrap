@@ -9,6 +9,9 @@
 # Description:       LKP bootstrap
 ### END INIT INFO
 
+export LC_ALL=C.UTF-8
+export LANG=C.UTF-8
+
 mkdir /dev/shm/lkp-bootstrap-once 2>/dev/null || exit 0
 
 read_kernel_cmdline_vars()
