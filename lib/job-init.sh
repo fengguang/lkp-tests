@@ -221,12 +221,23 @@ refresh_lkp_tmp()
 
 job_redirect_stdout_stderr()
 {
-	ln -s /usr/bin/tail /bin/tail-to-lkp
+	ln -sf /usr/bin/tail /bin/tail-to-lkp
 
 	tail-to-lkp -n 0 -f /tmp/stdout > $TMP/stdout &
 	tail-to-lkp -n 0 -f /tmp/stderr > $TMP/stderr &
 
 	tail-to-lkp -n 0 -f /tmp/stdout /tmp/stderr > $TMP/output &
+}
+
+job_env()
+{
+	if echo $job_file | grep -q '\.sh$'; then
+		. $job_file
+	else
+		. ${job_file%.yaml}.sh
+	fi
+
+	export_top_env
 }
 
 # per-job initiation; should be invoked before run a job
@@ -236,4 +247,6 @@ job_init()
 	cp /proc/uptime $TMP/boot-time
 
 	job_redirect_stdout_stderr
+
+	job_env
 }
