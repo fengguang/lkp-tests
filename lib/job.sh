@@ -85,6 +85,17 @@ wait_other_nodes()
 					 "direct_macs=${direct_macs// /+}" \
 					 "direct_ips=${direct_ips// /+}"
 
+	[ -n "$direct_macs" ] && {
+		local macs_arr=($direct_macs)
+		local ips_arr=($direct_ips)
+		for idx in $(seq 0 $((${#macs_arr[@]} - 1)))
+		do
+			DIRECT_DEVICE=$(ip link | grep -B1 ${macs_arr[$idx]} | awk -F': ' 'NR==1 {print $2}') \
+			DIRECT_IP=${ips_arr[$idx]} \
+			$LKP_DEBUG_PREFIX $LKP_SRC/bin/run-ipconfig
+		done
+	}
+
 	# exit if either of the other nodes failed its job
 
 	wait_cluster_state 'wait_ready'
