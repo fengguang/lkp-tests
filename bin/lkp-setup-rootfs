@@ -32,6 +32,9 @@ boot_init()
 	setup_network
 	run_ntpdate
 
+	mount_debugfs
+	mount_rootfs
+
 	export PATH=$PATH:$LKP_SRC/bin
 	echo   PATH=$PATH
 }

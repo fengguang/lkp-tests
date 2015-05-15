@@ -347,8 +347,6 @@ boot_next()
 		exit
 	}
 
-	mount_rootfs
-
 	local secs=300
 	while true
 	do

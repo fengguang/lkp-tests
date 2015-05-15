@@ -11,7 +11,6 @@ export CGROUP_MNT=/cgroup
 echo $$ > $TMP/run-lkp.pid	# for use by monitors/watchdog
 
 setup_result_root
-mount_debugfs
 mount_cgroup
 
 # the NMI warning messages are often in a mess
