@@ -4,15 +4,20 @@ export PATH="$PATH:/usr/lib/klibc/bin"
 
 . /usr/share/initramfs-tools/scripts/functions
 
-DEVICE=eth0
+DEVICE=${DIRECT_DEVICE:-eth0}
+IP=$DIRECT_IP
 
-for x in $(cat /proc/cmdline)
-do
-	case $x in
-		ip=*)
-		IP="${x#ip=}"
-		;;
-	esac
-done
+read_ip()
+{
+	for x in $(cat /proc/cmdline)
+	do
+		case $x in
+			ip=*)
+			IP="${x#ip=}"
+			;;
+		esac
+	done
+}
 
+[ -n "$IP" ] || read_ip
 configure_networking
