@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. $LKP_SRC/lib/bootstrap.sh
+. $LKP_SRC/lib/job-init.sh
 [ -f $LKP_SRC/lib/misc.sh ] &&
 	. $LKP_SRC/lib/misc.sh 2>/dev/null
 
