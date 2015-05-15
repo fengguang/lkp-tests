@@ -158,11 +158,31 @@ mount_debugfs()
 	check_mount debug /sys/kernel/debug -t debugfs
 }
 
+# cache kernel for only one week to avoid "no splace left" issue
+cleanup_kernel_cache()
+{
+	local kernel_cache=$1
+	local cleanup_stamp=$kernel_cache/cleanup_stamp/$(date +%U)
+	[ -d "$cleanup_stamp" ] && return
+	mkdir $cleanup_stamp -p
+
+	find "$kernel_cache" \( -type f -mtime +7 -delete \) -or \( -type d -ctime +7 -empty -delete \)
+}
+
 mount_rootfs()
 {
-	[ -n "$rootfs_partition" ] || return
-	mkdir -p /opt/rootfs
-	mount $rootfs_partition /opt/rootfs && return
-	mkfs.ext4 -q $rootfs_partition
-	mount $rootfs_partition /opt/rootfs
+	if [ -n "$rootfs_partition" ]; then
+		mkdir -p /opt/rootfs/tmp
+		mount $rootfs_partition /opt/rootfs || {
+			mkfs.ext4 -q $rootfs_partition
+			mount $rootfs_partition /opt/rootfs
+		}
+		CACHE_DIR=/opt/rootfs/tmp
+		cleanup_kernel_cache $CACHE_DIR/kernel
+	else
+		CACHE_DIR=/tmp/cache
+		mkdir -p $CACHE_DIR
+	fi
+
+	export CACHE_DIR
 }

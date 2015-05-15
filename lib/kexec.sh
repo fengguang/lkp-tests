@@ -106,15 +106,3 @@ kexec_to_next_job()
 	echo "LKP: rebooting after kexec" > /dev/ttyS0 &
 	reboot 2>/dev/null
 }
-
-# cache kernel for only one week to avoid "no splace left" issue
-cleanup_kernel_cache()
-{
-	local kernel_cache=$1
-	local cleanup_stamp=$kernel_cache/cleanup_stamp/$(date +%U)
-	[ -d "$cleanup_stamp" ] && return
-	mkdir $cleanup_stamp -p
-
-	find "$kernel_cache" \( -type f -mtime +7 -delete \) -or \( -type d -ctime +7 -empty -delete \)
-}
-
