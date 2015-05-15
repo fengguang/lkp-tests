@@ -193,6 +193,14 @@ job_done_boot_next() {
 	[ -n "$disturbed" ] || job_done
 	boot_next
 }
+
+refresh_lkp_tmp()
+{
+	export TMP=/tmp/lkp
+	mkdir -p $TMP
+	rm -fr $TMP/*
+}
+
 job_redirect_stdout_stderr()
 {
 	ln -s /usr/bin/tail /bin/tail-to-lkp
@@ -206,10 +214,7 @@ job_redirect_stdout_stderr()
 # per-job initiation; should be invoked before run a job
 job_init()
 {
-	export TMP=/tmp/lkp
-	mkdir -p $TMP
-	rm -fr $TMP/*
-
+	refresh_lkp_tmp
 	cp /proc/uptime $TMP/boot-time
 
 	job_redirect_stdout_stderr
