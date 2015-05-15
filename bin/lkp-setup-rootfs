@@ -41,7 +41,5 @@ boot_init()
 
 boot_init
 
-. $LKP_SRC/lib/job-init.sh
-job_init
 echo $LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp
 $LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp
