@@ -13,7 +13,7 @@ job_init
 
 echo $$ > $TMP/run-lkp.pid	# for use by monitors/watchdog
 
-setup_result_root
+setup_result_root || job_done 1
 mount_cgroup
 
 # the NMI warning messages are often in a mess
@@ -52,13 +52,13 @@ if [ "$HOSTNAME" = t100 ]; then
 	sync
 elif ! mountpoint -q $RESULT_MNT; then
 	set_job_state 'error_umounted'
-	job_done_boot_next
+	job_done 1
 elif ! umount $RESULT_MNT; then
 	{ ps faux --cols 1000; mount; lsof | grep $RESULT_MNT; grep -s . $TMP/.pid-wait-monitors $TMP/.pid-pipes $TMP/pid-*; } | tee $RESULT_ROOT/error-umount
 	set_job_state 'error_umount'
 	sleep 180
 	umount $RESULT_MNT >> $RESULT_ROOT/error-umount 2>&1 ||
-	job_done_boot_next
+	job_done 1
 fi
 
 if [ "$run_job_failed" != 0 ]; then
@@ -76,4 +76,4 @@ else
 	set_job_state 'finished'
 fi
 
-job_done_boot_next
+job_done

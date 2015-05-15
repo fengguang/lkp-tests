@@ -43,3 +43,7 @@ boot_init
 
 echo $LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp
 $LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp
+
+# TODO: move `boot_next' out from job-init.sh
+. $LKP_SRC/lib/job-init.sh
+boot_next

@@ -15,8 +15,10 @@ validate_result_root()
 	[ -n "$RESULT_ROOT" ] || {
 		echo 'No RESULT_ROOT' >&2
 		run_job_failed=1
-		job_done_boot_next
+		return 1
 	}
+
+	return 0
 }
 
 should_do_cifs()
@@ -67,7 +69,7 @@ mount_result_root()
 
 setup_result_root()
 {
-	validate_result_root
+	validate_result_root || return 1
 
 	echo RESULT_ROOT=$RESULT_ROOT
 	echo job=$job
@@ -89,11 +91,13 @@ setup_result_root()
 		else
 			set_job_state "miss_$result_fs"
 		fi
-		job_done_boot_next
+		return 1
 	}
 
 	local files="$(echo $RESULT_ROOT/*)"
 	[ -e "${files%% *}" ] && echo "RESULT_ROOT not empty: $(ls -l $RESULT_ROOT)" >&2
+
+	return 0
 }
 
 record_dmesg()
@@ -201,10 +205,11 @@ boot_next()
 	done
 }
 
-job_done_boot_next() {
+job_done() {
 	touch $TMP/job-finished
 	wait_on_manual_check
-	boot_next
+
+	exit $1
 }
 
 refresh_lkp_tmp()
