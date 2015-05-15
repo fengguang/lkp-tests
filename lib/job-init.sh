@@ -205,8 +205,14 @@ boot_next()
 	done
 }
 
+clean_job_resource()
+{
+	killall tail-to-lkp
+}
+
 job_done() {
 	touch $TMP/job-finished
+	clean_job_resource
 	wait_on_manual_check
 
 	exit $1
