@@ -166,11 +166,6 @@ set_job_state()
 	jobfile_append_var "job_state=$1"
 }
 
-job_done()
-{
-	:
-}
-
 boot_next()
 {
 	tbox_cant_kexec && {
@@ -190,7 +185,6 @@ boot_next()
 job_done_boot_next() {
 	touch $TMP/job-finished
 	wait_on_manual_check
-	[ -n "$disturbed" ] || job_done
 	boot_next
 }
 
