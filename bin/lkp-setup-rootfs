@@ -41,9 +41,30 @@ boot_init()
 
 boot_init
 
-echo $LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp
-$LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp $job
-
-# TODO: move `boot_next' out from job-init.sh
 . $LKP_SRC/lib/job-init.sh
-boot_next
+
+# when to not reboot is a policy issue, which can be refined later.
+# here just serves as an example only.
+job_does_not_need_reboot()
+{
+	grep -q "^do_not_reboot: 1$" $job
+}
+
+while true; do
+	echo $LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp
+	$LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp $job
+
+	tbox_cant_kexec && reboot 2>/dev/null && exit
+
+	# To debug what left from last run
+	# ps faux
+	# ls -l /tmp/
+	# ls -l /tmp/lkp
+	# lsmod
+	# set -x
+
+	next_job
+	job_does_not_need_reboot || break
+done
+
+$LKP_SRC/bin/kexec-lkp ${pxe_user:-lkp} $NEXT_JOB

@@ -1,8 +1,6 @@
 #!/bin/sh
 
-# get the real path of job_file, as $1 might point to a file like
-# /tmp/next-job.yaml
-export job_file=$(awk '/job_file: /{print $2}' $1 | tr -d '"')
+export job_file="$1"
 [ -z "$job_file" ] && echo "Usage: run-lkp job.yaml" 1>&2 && exit 1
 
 # TODO: replace job with job_file completely in future

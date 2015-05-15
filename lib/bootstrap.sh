@@ -186,3 +186,59 @@ mount_rootfs()
 
 	export CACHE_DIR
 }
+
+tbox_cant_kexec()
+{
+	[ "$(virt-what)" = 'kvm' ] && return 0
+
+	# following tbox are buggy while using kexec to boot
+	[ "${HOSTNAME#*lkp-nex04}"	!= "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-t410}"	!= "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-bdw01}"	!= "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-bdw02}"	!= "$HOSTNAME" ] && return 0
+
+	[ -x '/sbin/kexec' ] || return 0
+
+	return 1
+}
+
+download_job()
+{
+	job=$(grep -o 'job=[^ ]*.yaml' $NEXT_JOB | awk -F '=' '{print $2}')
+	local job_cgz=${job%.yaml}.cgz
+
+	# TODO: escape is necessary. We might also need download some extra cgz
+	wget -O /tmp/next-job.cgz "http://$LKP_SERVER:$LKP_CGI_PORT/~$LKP_USER/$job_cgz"
+	(cd /; gzip -dc /tmp/next-job.cgz | cpio -id)
+}
+
+__next_job()
+{
+	NEXT_JOB="$CACHE_DIR/next-job-$LKP_USER"
+
+	echo "geting new job..."
+	local mac="$(ip link | awk '/ether/ {print $2; exit}')"
+	wget "http://$LKP_SERVER:$LKP_CGI_PORT/~$LKP_USER/cgi-bin/gpxelinux.cgi?hostname=${HOSTNAME}&mac=$mac&lkp_wtmp" \
+	     -nv -O $NEXT_JOB
+	grep -q "^KERNEL " $NEXT_JOB || {
+		echo "no KERNEL found" 1>&2
+		cat $NEXT_JOB
+		return 1
+	}
+
+	return 0
+}
+
+next_job()
+{
+	__next_job || {
+		local secs=300
+		while true; do
+			sleep $secs || exit # killed by reboot
+			secs=$(( secs + 300 ))
+			__next_job && break
+		done
+	}
+
+	download_job
+}

@@ -141,21 +141,6 @@ wait_on_manual_check()
 	return $disturbed
 }
 
-tbox_cant_kexec()
-{
-	[ "$(virt-what)" = 'kvm' ] && return 0
-
-	# following tbox are buggy while using kexec to boot
-	[ "${HOSTNAME#*lkp-nex04}"	!= "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-t410}"	!= "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-bdw01}"	!= "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-bdw02}"	!= "$HOSTNAME" ] && return 0
-
-	[ -x '/sbin/kexec' ] || return 0
-
-	return 1
-}
-
 jobfile_append_var()
 {
 	local i
@@ -168,41 +153,6 @@ jobfile_append_var()
 set_job_state()
 {
 	jobfile_append_var "job_state=$1"
-}
-
-next_job()
-{
-
-	NEXT_JOB="$CACHE_DIR/next-job-$LKP_USER"
-
-	echo "geting new job..."
-	local mac="$(ip link | awk '/ether/ {print $2; exit}')"
-	wget "http://$LKP_SERVER:$LKP_CGI_PORT/~$LKP_USER/cgi-bin/gpxelinux.cgi?hostname=${HOSTNAME}&mac=$mac&lkp_wtmp" \
-	     -nv -O $NEXT_JOB
-	grep -q "^KERNEL " $NEXT_JOB || {
-		echo "no KERNEL found" 1>&2
-		cat $NEXT_JOB
-		return 1
-	}
-
-	return 0
-}
-
-boot_next()
-{
-	tbox_cant_kexec && {
-		reboot 2>/dev/null
-		exit
-	}
-
-	local secs=300
-	while true
-	do
-		next_job && $LKP_SRC/bin/kexec-lkp ${pxe_user:-lkp} $NEXT_JOB
-
-		sleep $secs || exit # killed by reboot
-		secs=$(( secs + 300 ))
-	done
 }
 
 clean_job_resource()
