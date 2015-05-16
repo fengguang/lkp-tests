@@ -9,6 +9,9 @@
 # Description:       LKP bootstrap
 ### END INIT INFO
 
+# Call this script at boot time.
+# Keep it simple and stupid -- it will be installed in a number of rootfs.
+
 export LC_ALL=C.UTF-8
 export LANG=C.UTF-8
 
@@ -29,6 +32,9 @@ read_kernel_cmdline_vars()
 }
 
 read_kernel_cmdline_vars
+
+# The job file is contained in the initrd -- no need to download it here.
+
 [ -n "$job" ] || job=$(echo /lkp/scheduled/*/*.yaml) # in case CONFIG_PROC_FS is not set
 [ -e "$job" -o -e ${job%.yaml}.sh ] || {
 	echo $job does not exist, quit from LKP
