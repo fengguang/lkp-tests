@@ -20,6 +20,7 @@ build()
 
 install()
 {
+	umask 002
 	mkdir -p /tmp/lkp_initrd-$USER/rootfs/lkp/$LKP_USER/src
 	mkdir -p /tmp/lkp_initrd-$USER/lkp/$LKP_USER
 	ln -sfT $LKP_SRC /tmp/lkp_initrd-$USER/lkp/$LKP_USER/src
@@ -33,12 +34,12 @@ pack()
 	local cpio_cmd="cpio -o $OWNER_OPT -H newc -F ${archive}.cpio"
 
 	(
-		cd $tmp_dir/rootfs			&& find lkp		| $cpio_cmd
-		cd $tmp_dir				&& find lkp/$LKP_USER/src/* | $cpio_cmd --append
-		cd $tmp_dir/lkp/$LKP_USER/src/rootfs/addon	&& find *		| $cpio_cmd --append
+		cd $tmp_dir/rootfs				&& find lkp			| $cpio_cmd
+		cd $tmp_dir					&& find lkp/$LKP_USER/src/*	| $cpio_cmd --append
+		cd $tmp_dir/lkp/$LKP_USER/src/rootfs/addon	&& find *			| $cpio_cmd --append
 
 		[ -d /osimage/addon-${ARCH} ] &&
-		cd /osimage/addon-${ARCH}		&& find *		| $cpio_cmd --append
+		cd /osimage/addon-${ARCH}			&& find *			| $cpio_cmd --append
 	)
 
 	gzip -n -9 ${archive}.cpio
