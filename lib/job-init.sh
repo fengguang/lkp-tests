@@ -165,8 +165,8 @@ job_done() {
 refresh_lkp_tmp()
 {
 	export TMP=/tmp/lkp
+	rm -fr $TMP
 	mkdir -p $TMP
-	rm -fr $TMP/*
 }
 
 job_redirect_stdout_stderr()
