@@ -1,7 +1,12 @@
 #!/bin/sh
 
-export LC_ALL=C.UTF-8
-export LANG=C.UTF-8
+LOCALE=$(locale -a | grep -i 'C.UTF-\?8\|en_US.UTF-\?8' | head -1)
+[ -z "$LOCALE" ] && {
+	echo 1>&2 "No required locale!  Some functionalities may not work properly"
+	LOCALE=C
+}
+export LC_ALL=$LOCALE
+export LANG=$LOCALE
 
 [ -n "$LKP_SRC" ] ||
 export LKP_SRC=$(dirname $(dirname $(readlink -e -v $0)))
