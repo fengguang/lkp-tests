@@ -51,5 +51,5 @@ else
 	cmd "./case-$test"
 fi
 
-remove_tmpfs
 remove_sparse_root
+remove_tmpfs
