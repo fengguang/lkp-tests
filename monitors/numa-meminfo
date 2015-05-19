@@ -6,6 +6,7 @@ file=${file#numa-}
 [ -f /sys/devices/system/node/node1/$file ] || exit 0
 
 . $LKP_SRC/lib/wait.sh
+setup_wait
 
 NODES=`grep ^Node /proc/zoneinfo | awk '{print $2}' | sed -e 's/,//' | sort | uniq`
 while :

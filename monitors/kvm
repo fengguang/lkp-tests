@@ -3,6 +3,7 @@
 cd /sys/kernel/debug/kvm || exit 0
 
 . $LKP_SRC/lib/wait.sh
+setup_wait
 
 while :
 do

@@ -26,5 +26,8 @@ wait_timeout()
 	[ $exit_code -eq 62 ] || exit $exit_code
 }
 
-echo $$ >> $TMP/.pid-wait-monitors
-echo ${0##*/} >> $TMP/.name-wait-monitors
+setup_wait()
+{
+	echo $$ >> $TMP/.pid-wait-monitors
+	echo ${0##*/} >> $TMP/.name-wait-monitors
+}

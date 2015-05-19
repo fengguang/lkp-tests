@@ -14,6 +14,7 @@ opt_events="-e $(echo $events | sed 's/ / -e /g')"
 
 [ -n "$command" ] || {
 	. $LKP_SRC/lib/wait.sh
+	setup_wait
 
 	if [ -n "$time" ]; then
 		command="$WAIT_POST_TEST_CMD --timeout $time"

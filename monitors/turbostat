@@ -18,5 +18,6 @@ fi
 [ $# -ge 1 ] && exec ./turbostat "$@" 2>&1
 
 . $LKP_SRC/lib/wait.sh
+setup_wait
 
 exec ./turbostat -v $WAIT_POST_TEST_CMD 2>&1

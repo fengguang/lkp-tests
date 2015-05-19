@@ -12,6 +12,7 @@ take_snapshot()
 }
 
 . $LKP_SRC/lib/wait.sh
+setup_wait
 
 echo time: $(date +%s.%N)
 take_snapshot "$WAIT_POST_TEST_CMD"

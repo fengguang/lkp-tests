@@ -13,6 +13,7 @@ take_snapshot()
 }
 
 . $LKP_SRC/lib/wait.sh
+setup_wait
 
 if [ -n "$interval" ]; then
 	while :

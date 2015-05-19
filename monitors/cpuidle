@@ -22,6 +22,7 @@ take_snapshot()
 file=$(basename $0)
 
 . $LKP_SRC/lib/wait.sh
+setup_wait
 
 if [ -z "$interval" ]; then
 	take_snapshot

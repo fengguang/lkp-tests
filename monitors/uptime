@@ -1,6 +1,7 @@
 #!/bin/sh
 
 . $LKP_SRC/lib/wait.sh
+setup_wait
 
 snapshot()
 {
