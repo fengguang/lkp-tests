@@ -35,6 +35,8 @@ boot_init()
 	mount_debugfs
 	mount_rootfs
 
+	netconsole_init
+
 	export PATH=$PATH:$LKP_SRC/bin
 	echo   PATH=$PATH
 }

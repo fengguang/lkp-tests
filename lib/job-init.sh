@@ -108,12 +108,6 @@ record_dmesg()
 	stdbuf -o0 -e0 cat-kmsg /proc/kmsg >> $RESULT_ROOT/dmesg &
 	echo $! > $TMP/pid-dmesg
 	[ -n "$BASH_VERSION" ] && disown # quiet the "Terminated" notification to stderr
-
-	[ -n "$netconsole_port" ] && {
-		# use default gateway as netconsole server
-		netconsole_server=$(ip -4 route list 0/0 | cut -f3 -d' ')
-		modprobe netconsole netconsole=@/,$netconsole_port@$netconsole_server/ 2>/dev/null
-	}
 }
 
 # in case someone is logged in, give him at most 10hour time to do manual checks

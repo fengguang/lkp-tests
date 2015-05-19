@@ -187,6 +187,16 @@ mount_rootfs()
 	export CACHE_DIR
 }
 
+netconsole_init()
+{
+
+	[ -z "$netconsole_port" ] && return
+
+	# use default gateway as netconsole server
+	netconsole_server=$(ip -4 route list 0/0 | cut -f3 -d' ')
+	modprobe netconsole netconsole=@/,$netconsole_port@$netconsole_server/ 2>/dev/null
+}
+
 tbox_cant_kexec()
 {
 	[ "$(virt-what)" = 'kvm' ] && return 0
