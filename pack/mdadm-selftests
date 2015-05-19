@@ -1,0 +1,14 @@
+download()
+{
+	git_clone_update git://git.neil.brown.name/mdadm.git
+}
+
+build()
+{
+	cd /tmp/mdadm && make
+}
+
+install()
+{
+	cp -a mdadm test tests $BM_ROOT
+}

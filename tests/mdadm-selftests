@@ -1,0 +1,21 @@
+#!/bin/sh
+# - test_prefix
+
+cd $BENCHMARK_ROOT/mdadm-selftests || exit 1
+[ -z "$test_prefix" ] && echo "nil test_prefix" 1>&2 && exit 1
+
+run_test()
+{
+	timeout 30m ./test "--tests=$testcase"
+	[ $? -eq 124 ] && echo "$testcase TIMEOUT"
+
+	local res_dir="result/$testcase"
+	mkdir -p  $res_dir
+	cp /var/tmp/log $res_dir
+}
+
+for testcase in $(cd tests && ls ${test_prefix}*); do
+	run_test
+done
+
+copy-results result/*

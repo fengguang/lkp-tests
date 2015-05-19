@@ -1,0 +1,25 @@
+testcase: mdadm-selftests
+
+default-monitors:
+  vmstat:
+
+mdadm-selftests:
+  test_prefix:
+  - '00'
+  - '01'
+  - '02'
+  - '03'
+  - '04'
+  - '05'
+  - '06'
+  - '07'
+  - '09'
+  - '10'
+  - '11'
+  - '12'
+  - '13'
+  - '14'
+  - '15'
+  - '16'
+  - '18'
+  - '19'

@@ -1,0 +1,26 @@
+#!/usr/bin/awk -f
+
+BEGIN {
+	nr_failed    = 0
+	nr_timeout   = 0
+	nr_succeeded = 0
+}
+
+/FAILED/ {
+	nr_failed += 1
+}
+
+/succeeded/ {
+	nr_succeeded += 1
+}
+
+/TIMEOUT/ {
+	nr_failed  += 1
+	nr_timeout += 1
+}
+
+END {
+	print "nr_failed: ",     nr_failed
+	print "nr_timeout: ",    nr_timeout
+	print "nr_succeeded: ",  nr_succeeded
+}
