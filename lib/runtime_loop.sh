@@ -21,7 +21,10 @@ test_loop()
 	done
 }
 
-test_loop &
-sleep $runtime
-kill -s SIGHUP %1
-wait
+runtime_loop()
+{
+	test_loop &
+	sleep $runtime
+	kill -s SIGHUP %1
+	wait
+}
