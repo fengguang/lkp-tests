@@ -43,8 +43,6 @@ boot_init()
 
 boot_init
 
-. $LKP_SRC/lib/job-init.sh
-
 # when to not reboot is a policy issue, which can be refined later.
 # here just serves as an example only.
 job_does_not_need_reboot()
