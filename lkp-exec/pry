@@ -5,4 +5,4 @@ do
 	opt_libs+="-r $i "
 done
 
-pry $opt_libs
+exec pry $opt_libs "$@"
