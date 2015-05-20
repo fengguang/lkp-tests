@@ -82,10 +82,10 @@ wait_other_nodes()
 
 	mkdir $TMP/wait_other_nodes-once 2>/dev/null || return
 
-	sync_cluster_state 'write_state' "node_roles=${node_roles// /+}" \
+	sync_cluster_state 'write_state' "node_roles=$(echo "$node_roles" | tr -s ' ' '+')" \
 					 "ip=$(hostname -I | cut -d' ' -f1)" \
-					 "direct_macs=${direct_macs// /+}" \
-					 "direct_ips=${direct_ips// /+}"
+					 "direct_macs=$(echo "$direct_macs" | tr -s ' ' '+')" \
+					 "direct_ips=$(echo "$direct_ips" | tr -s ' ' '+')"
 
 	local idx=1
 	for mac in $direct_macs
