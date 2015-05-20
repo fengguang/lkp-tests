@@ -47,19 +47,17 @@ txt_subst()
 
 enable_configs()
 {
-	local configs=$1
-	for config in $configs
+	for config in $@
 	do
-		txt_subst "^${CONFIG_}$config=.*" "${CONFIG_}$config=y" "config/common_linuxapp"
+		txt_subst "^CONFIG_$config=.*" "CONFIG_$config=y" "config/common_linuxapp"
 	done
 }
 
 disable_configs()
 {
-	local configs=$1
-	for config in $configs
+	for config in $@
 	do
-		txt_subst "^${CONFIG_}$config=.*" "${CONFIG_}$config=n" "config/common_linuxapp"
+		txt_subst "^CONFIG_$config=.*" "CONFIG_$config=n" "config/common_linuxapp"
 	done
 }
 
