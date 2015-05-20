@@ -32,15 +32,49 @@ chmod -R 777 /tmp/DPDK_Builds/${ChaseBranch}
 default_gcc_target=x86_64-native-linuxapp-gcc
 feature_gcc_target=x86_64-ivshmem-linuxapp-gcc
 
+# borrow from linux/script/config
+txt_subst()
+{
+	local before="$1"
+	local after="$2"
+	local infile="$3"
+	local tmpfile="$infile.swp"
+
+	sed -e "s:$before:$after:" "$infile" >"$tmpfile"
+	# replace original file with the edited one
+	mv "$tmpfile" "$infile"
+}
+
+enable_configs()
+{
+	local configs=$1
+	for config in $configs
+	do
+		txt_subst "^${CONFIG_}$config=.*" "${CONFIG_}$config=y" "config/common_linuxapp"
+	done
+}
+
+disable_configs()
+{
+	local configs=$1
+	for config in $configs
+	do
+		txt_subst "^${CONFIG_}$config=.*" "${CONFIG_}$config=n" "config/common_linuxapp"
+	done
+}
+
 gcc_build()
 {
 	# build default gcc
 	echo ">>>Build Default<<<"
 	# sed -i 's/^CONFIG_RTE_LIBRTE_PMD_PCAP=.*$/CONFIG_RTE_LIBRTE_PMD_PCAP=n/g' config/defconfig_x86_64-native-linuxapp-gcc
 	# sed -i 's/^CONFIG_RTE_NIC_BYPASS=.*$/CONFIG_RTE_NIC_BYPASS=n/g' config/defconfig_x86_64-native-linuxapp-gcc
-	sed -i 's/^CONFIG_RTE_LIBRTE_PMD_PCAP=.*$/CONFIG_RTE_LIBRTE_PMD_PCAP=n/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_NIC_BYPASS=.*$/CONFIG_RTE_NIC_BYPASS=n/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_BUILD_SHARED_LIB=.*$/CONFIG_RTE_BUILD_SHARED_LIB=n/g' config/common_linuxapp
+	local RTE_CONFIGS="
+		RTE_LIBRTE_PMD_PCAP
+		RTE_NIC_BYPASS
+		RTE_BUILD_SHARED_LIB"
+	disable_configs "$RTE_CONFIGS"
+
 	gmake install T=$default_gcc_target 2>&1 | tee /tmp/null
 
 	echo ""
@@ -54,57 +88,58 @@ gcc_build()
 	gmake install T=$feature_gcc_target 2>&1   | tee -a ${TARGET_ROOT}/build_ivshmem.log
 
 	# x86_64-native-linuxapp-gcc%CONFIG_RTE_LIBRTE_PMD_PCAP=y@CONFIG_RTE_NIC_BYPASS=y
-	sed -i 's/^CONFIG_RTE_LIBRTE_PMD_PCAP=.*$/CONFIG_RTE_LIBRTE_PMD_PCAP=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_NIC_BYPASS=.*$/CONFIG_RTE_NIC_BYPASS=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_BUILD_SHARED_LIB=.*$/CONFIG_RTE_BUILD_SHARED_LIB=y/g' config/common_linuxapp
+	enable_configs "$RTE_CONFIGS"
 
 	echo "${OS_INFO}" | tee ${TARGET_ROOT}/build_configuration_modification.log
 	echo ">>>$default_gcc_target%CONFIG_RTE_LIBRTE_PMD_PCAP=y@CONFIG_RTE_NIC_BYPASS=y@CONFIG_RTE_BUILD_SHARED_LIB=y<<<" | tee -a ${TARGET_ROOT}/build_configuration_modification.log
 	gmake install T=$default_gcc_target 2>&1 | tee -a ${TARGET_ROOT}/build_configuration_modification.log
 
 	# x86_64-native-linuxapp-gcc%enable all DEBUG OPTION :y
-	sed -i 's/^CONFIG_RTE_LIBRTE_ETHDEV_DEBUG=.*$/CONFIG_RTE_LIBRTE_ETHDEV_DEBUG=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_E1000_DEBUG_INIT=.*$/CONFIG_RTE_LIBRTE_E1000_DEBUG_INIT=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_E1000_DEBUG_RX=.*$/CONFIG_RTE_LIBRTE_E1000_DEBUG_RX=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_E1000_DEBUG_TX=.*$/CONFIG_RTE_LIBRTE_E1000_DEBUG_TX=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_E1000_DEBUG_TX_FREE=.*$/CONFIG_RTE_LIBRTE_E1000_DEBUG_TX_FREE=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_E1000_DEBUG_DRIVER=.*$/CONFIG_RTE_LIBRTE_E1000_DEBUG_DRIVER=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_IXGBE_DEBUG_INIT=.*$/CONFIG_RTE_LIBRTE_IXGBE_DEBUG_INIT=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_IXGBE_DEBUG_RX=.*$/CONFIG_RTE_LIBRTE_IXGBE_DEBUG_RX=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_IXGBE_DEBUG_TX=.*$/CONFIG_RTE_LIBRTE_IXGBE_DEBUG_TX=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_IXGBE_DEBUG_TX_FREE=.*$/CONFIG_RTE_LIBRTE_IXGBE_DEBUG_TX_FREE=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_IXGBE_DEBUG_DRIVER=.*$/CONFIG_RTE_LIBRTE_IXGBE_DEBUG_DRIVER=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_I40E_DEBUG_INIT=.*$/CONFIG_RTE_LIBRTE_I40E_DEBUG_INIT=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_I40E_DEBUG_RX=.*$/CONFIG_RTE_LIBRTE_I40E_DEBUG_RX=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_I40E_DEBUG_TX=.*$/CONFIG_RTE_LIBRTE_I40E_DEBUG_TX=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_I40E_DEBUG_TX_FREE=.*$/CONFIG_RTE_LIBRTE_I40E_DEBUG_TX_FREE=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_I40E_DEBUG_DRIVER=.*$/CONFIG_RTE_LIBRTE_I40E_DEBUG_DRIVER=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_VIRTIO_DEBUG_INIT=.*$/CONFIG_RTE_LIBRTE_VIRTIO_DEBUG_INIT=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_VIRTIO_DEBUG_RX=.*$/CONFIG_RTE_LIBRTE_VIRTIO_DEBUG_RX=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_VIRTIO_DEBUG_TX=.*$/CONFIG_RTE_LIBRTE_VIRTIO_DEBUG_TX=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_VIRTIO_DEBUG_DRIVER=.*$/CONFIG_RTE_LIBRTE_VIRTIO_DEBUG_DRIVER=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_VIRTIO_DEBUG_DUMP=.*$/CONFIG_RTE_LIBRTE_VIRTIO_DEBUG_DUMP=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_VMXNET3_DEBUG_INIT=.*$/CONFIG_RTE_LIBRTE_VMXNET3_DEBUG_INIT=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_VMXNET3_DEBUG_RX=.*$/CONFIG_RTE_LIBRTE_VMXNET3_DEBUG_RX=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_VMXNET3_DEBUG_TX=.*$/CONFIG_RTE_LIBRTE_VMXNET3_DEBUG_TX=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_VMXNET3_DEBUG_TX_FREE=.*$/CONFIG_RTE_LIBRTE_VMXNET3_DEBUG_TX_FREE=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_VMXNET3_DEBUG_DRIVER=.*$/CONFIG_RTE_LIBRTE_VMXNET3_DEBUG_DRIVER=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_RING_DEBUG=.*$/CONFIG_RTE_LIBRTE_RING_DEBUG=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_MEMPOOL_DEBUG=.*$/CONFIG_RTE_LIBRTE_MEMPOOL_DEBUG=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_MBUF_DEBUG=.*$/CONFIG_RTE_LIBRTE_MBUF_DEBUG=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_TIMER_DEBUG=.*$/CONFIG_RTE_LIBRTE_TIMER_DEBUG=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_MALLOC_DEBUG=.*$/CONFIG_RTE_LIBRTE_MALLOC_DEBUG=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_CMDLINE_DEBUG=.*$/CONFIG_RTE_LIBRTE_CMDLINE_DEBUG=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_HASH_DEBUG=.*$/CONFIG_RTE_LIBRTE_HASH_DEBUG=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_LPM_DEBUG=.*$/CONFIG_RTE_LIBRTE_LPM_DEBUG=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_ACL_DEBUG=.*$/CONFIG_RTE_LIBRTE_ACL_DEBUG=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_POWER_DEBUG=.*$/CONFIG_RTE_LIBRTE_POWER_DEBUG=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_IP_FRAG_DEBUG=.*$/CONFIG_RTE_LIBRTE_IP_FRAG_DEBUG=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_KNI_KO_DEBUG=.*$/CONFIG_RTE_KNI_KO_DEBUG=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_KNI_VHOST_DEBUG_RX=.*$/CONFIG_RTE_KNI_VHOST_DEBUG_RX=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_KNI_VHOST_DEBUG_TX=.*$/CONFIG_RTE_KNI_VHOST_DEBUG_TX=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_POWER_DEBUG=.*$/CONFIG_RTE_LIBRTE_POWER_DEBUG=y/g' config/common_linuxapp
-	sed -i 's/^CONFIG_RTE_LIBRTE_VHOST_DEBUG=.*$/CONFIG_RTE_LIBRTE_VHOST_DEBUG=y/g' config/common_linuxapp
+	local DEBUG_CONFIGS="
+		RTE_LIBRTE_ETHDEV_DEBUG
+		RTE_LIBRTE_E1000_DEBUG_INIT
+		RTE_LIBRTE_E1000_DEBUG_RX
+		RTE_LIBRTE_E1000_DEBUG_TX
+		RTE_LIBRTE_E1000_DEBUG_TX_FREE
+		RTE_LIBRTE_E1000_DEBUG_DRIVER
+		RTE_LIBRTE_IXGBE_DEBUG_INIT
+		RTE_LIBRTE_IXGBE_DEBUG_RX
+		RTE_LIBRTE_IXGBE_DEBUG_TX
+		RTE_LIBRTE_IXGBE_DEBUG_TX_FREE
+		RTE_LIBRTE_IXGBE_DEBUG_DRIVER
+		RTE_LIBRTE_I40E_DEBUG_INIT
+		RTE_LIBRTE_I40E_DEBUG_RX
+		RTE_LIBRTE_I40E_DEBUG_TX
+		RTE_LIBRTE_I40E_DEBUG_TX_FREE
+		RTE_LIBRTE_I40E_DEBUG_DRIVER
+		RTE_LIBRTE_VIRTIO_DEBUG_INIT
+		RTE_LIBRTE_VIRTIO_DEBUG_RX
+		RTE_LIBRTE_VIRTIO_DEBUG_TX
+		RTE_LIBRTE_VIRTIO_DEBUG_DRIVER
+		RTE_LIBRTE_VIRTIO_DEBUG_DUMP
+		RTE_LIBRTE_VMXNET3_DEBUG_INIT
+		RTE_LIBRTE_VMXNET3_DEBUG_RX
+		RTE_LIBRTE_VMXNET3_DEBUG_TX
+		RTE_LIBRTE_VMXNET3_DEBUG_TX_FREE
+		RTE_LIBRTE_VMXNET3_DEBUG_DRIVER
+		RTE_LIBRTE_RING_DEBUG
+		RTE_LIBRTE_MEMPOOL_DEBUG
+		RTE_LIBRTE_MBUF_DEBUG
+		RTE_LIBRTE_TIMER_DEBUG
+		RTE_LIBRTE_MALLOC_DEBUG
+		RTE_LIBRTE_CMDLINE_DEBUG
+		RTE_LIBRTE_HASH_DEBUG
+		RTE_LIBRTE_LPM_DEBUG
+		RTE_LIBRTE_ACL_DEBUG
+		RTE_LIBRTE_POWER_DEBUG
+		RTE_LIBRTE_IP_FRAG_DEBUG
+		RTE_KNI_KO_DEBUG
+		RTE_KNI_VHOST_DEBUG_RX
+		RTE_KNI_VHOST_DEBUG_TX
+		RTE_LIBRTE_POWER_DEBUG
+		RTE_LIBRTE_VHOST_DEBUG"
+
+	enable_configs "$DEBUG_CONFIGS"
 
 	echo ">>>$default_gcc_target%enable all DEBUG OPTION :y<<<" | tee -a ${TARGET_ROOT}/build_configuration_modification.log
 	gmake install T=$default_gcc_target 2>&1 | tee -a ${TARGET_ROOT}/build_configuration_modification.log
