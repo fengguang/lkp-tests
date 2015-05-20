@@ -32,33 +32,23 @@ chmod -R 777 /tmp/DPDK_Builds/${ChaseBranch}
 default_gcc_target=x86_64-native-linuxapp-gcc
 feature_gcc_target=x86_64-ivshmem-linuxapp-gcc
 
-enable_configs()
+change_configs()
 {
-	for config in $@
-	do
-		sed -i -e "s:^\(CONFIG_$config=\).*:\1y" config/common_linuxapp
-	done
-}
-
-disable_configs()
-{
-	for config in $@
-	do
-		sed -i -e "s:^\(CONFIG_$config=\).*:\1n" config/common_linuxapp
-	done
+	local common_config="config/common_linuxapp"
+	local lines=$(awk -F= '!x[$1]++' "$@" "$common_config")
+	echo "$lines" > "$common_config"
 }
 
 gcc_build()
 {
+	local configs_dir="$LKP_SRC/etc/dpdk-configs"
+
 	# build default gcc
 	echo ">>>Build Default<<<"
 	# sed -i 's/^CONFIG_RTE_LIBRTE_PMD_PCAP=.*$/CONFIG_RTE_LIBRTE_PMD_PCAP=n/g' config/defconfig_x86_64-native-linuxapp-gcc
 	# sed -i 's/^CONFIG_RTE_NIC_BYPASS=.*$/CONFIG_RTE_NIC_BYPASS=n/g' config/defconfig_x86_64-native-linuxapp-gcc
-	local RTE_CONFIGS="
-		RTE_LIBRTE_PMD_PCAP
-		RTE_NIC_BYPASS
-		RTE_BUILD_SHARED_LIB"
-	disable_configs "$RTE_CONFIGS"
+
+	change_configs "$configs_dir/dpdk-rte-configs-n"
 
 	gmake install T=$default_gcc_target 2>&1 | tee /tmp/null
 
@@ -72,59 +62,13 @@ gcc_build()
 	echo ">>>$feature_gcc_target<<<" | tee -a ${TARGET_ROOT}/build_ivshmem.log
 	gmake install T=$feature_gcc_target 2>&1   | tee -a ${TARGET_ROOT}/build_ivshmem.log
 
-	# x86_64-native-linuxapp-gcc%CONFIG_RTE_LIBRTE_PMD_PCAP=y@CONFIG_RTE_NIC_BYPASS=y
-	enable_configs "$RTE_CONFIGS"
+	change_configs "$configs_dir/dpdk-rte-configs-y"
 
 	echo "${OS_INFO}" | tee ${TARGET_ROOT}/build_configuration_modification.log
 	echo ">>>$default_gcc_target%CONFIG_RTE_LIBRTE_PMD_PCAP=y@CONFIG_RTE_NIC_BYPASS=y@CONFIG_RTE_BUILD_SHARED_LIB=y<<<" | tee -a ${TARGET_ROOT}/build_configuration_modification.log
 	gmake install T=$default_gcc_target 2>&1 | tee -a ${TARGET_ROOT}/build_configuration_modification.log
 
-	# x86_64-native-linuxapp-gcc%enable all DEBUG OPTION :y
-	local DEBUG_CONFIGS="
-		RTE_LIBRTE_ETHDEV_DEBUG
-		RTE_LIBRTE_E1000_DEBUG_INIT
-		RTE_LIBRTE_E1000_DEBUG_RX
-		RTE_LIBRTE_E1000_DEBUG_TX
-		RTE_LIBRTE_E1000_DEBUG_TX_FREE
-		RTE_LIBRTE_E1000_DEBUG_DRIVER
-		RTE_LIBRTE_IXGBE_DEBUG_INIT
-		RTE_LIBRTE_IXGBE_DEBUG_RX
-		RTE_LIBRTE_IXGBE_DEBUG_TX
-		RTE_LIBRTE_IXGBE_DEBUG_TX_FREE
-		RTE_LIBRTE_IXGBE_DEBUG_DRIVER
-		RTE_LIBRTE_I40E_DEBUG_INIT
-		RTE_LIBRTE_I40E_DEBUG_RX
-		RTE_LIBRTE_I40E_DEBUG_TX
-		RTE_LIBRTE_I40E_DEBUG_TX_FREE
-		RTE_LIBRTE_I40E_DEBUG_DRIVER
-		RTE_LIBRTE_VIRTIO_DEBUG_INIT
-		RTE_LIBRTE_VIRTIO_DEBUG_RX
-		RTE_LIBRTE_VIRTIO_DEBUG_TX
-		RTE_LIBRTE_VIRTIO_DEBUG_DRIVER
-		RTE_LIBRTE_VIRTIO_DEBUG_DUMP
-		RTE_LIBRTE_VMXNET3_DEBUG_INIT
-		RTE_LIBRTE_VMXNET3_DEBUG_RX
-		RTE_LIBRTE_VMXNET3_DEBUG_TX
-		RTE_LIBRTE_VMXNET3_DEBUG_TX_FREE
-		RTE_LIBRTE_VMXNET3_DEBUG_DRIVER
-		RTE_LIBRTE_RING_DEBUG
-		RTE_LIBRTE_MEMPOOL_DEBUG
-		RTE_LIBRTE_MBUF_DEBUG
-		RTE_LIBRTE_TIMER_DEBUG
-		RTE_LIBRTE_MALLOC_DEBUG
-		RTE_LIBRTE_CMDLINE_DEBUG
-		RTE_LIBRTE_HASH_DEBUG
-		RTE_LIBRTE_LPM_DEBUG
-		RTE_LIBRTE_ACL_DEBUG
-		RTE_LIBRTE_POWER_DEBUG
-		RTE_LIBRTE_IP_FRAG_DEBUG
-		RTE_KNI_KO_DEBUG
-		RTE_KNI_VHOST_DEBUG_RX
-		RTE_KNI_VHOST_DEBUG_TX
-		RTE_LIBRTE_POWER_DEBUG
-		RTE_LIBRTE_VHOST_DEBUG"
-
-	enable_configs "$DEBUG_CONFIGS"
+	change_configs "$configs_dir/dpdk-debug-configs-y"
 
 	echo ">>>$default_gcc_target%enable all DEBUG OPTION :y<<<" | tee -a ${TARGET_ROOT}/build_configuration_modification.log
 	gmake install T=$default_gcc_target 2>&1 | tee -a ${TARGET_ROOT}/build_configuration_modification.log
