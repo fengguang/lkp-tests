@@ -32,24 +32,11 @@ chmod -R 777 /tmp/DPDK_Builds/${ChaseBranch}
 default_gcc_target=x86_64-native-linuxapp-gcc
 feature_gcc_target=x86_64-ivshmem-linuxapp-gcc
 
-# borrow from linux/script/config
-txt_subst()
-{
-	local before="$1"
-	local after="$2"
-	local infile="$3"
-	local tmpfile="$infile.swp"
-
-	sed -e "s:$before:$after:" "$infile" >"$tmpfile"
-	# replace original file with the edited one
-	mv "$tmpfile" "$infile"
-}
-
 enable_configs()
 {
 	for config in $@
 	do
-		txt_subst "^CONFIG_$config=.*" "CONFIG_$config=y" "config/common_linuxapp"
+		sed -i -e "s:^\(CONFIG_$config=\).*:\1y" config/common_linuxapp
 	done
 }
 
@@ -57,7 +44,7 @@ disable_configs()
 {
 	for config in $@
 	do
-		txt_subst "^CONFIG_$config=.*" "CONFIG_$config=n" "config/common_linuxapp"
+		sed -i -e "s:^\(CONFIG_$config=\).*:\1n" config/common_linuxapp
 	done
 }
 
