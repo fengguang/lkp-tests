@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # -  dpdk_commit
 # -  dpdk_chase_branch
 # -  dpdk_compiler
@@ -10,7 +10,7 @@ OS="`cat /etc/issue | sed -n '1p' | tr ' ' '_'`"
 BUILDDIR="${OS}-build"
 COMPILER=$dpdk_compiler
 
-echo -ne "Update Local code\n"
+echo "Update Local code"
 git clone git://gitmirror/dpdk $WORKSPACE/DPDK
 
 export ICP_ROOT=$WORKSPACE
@@ -35,7 +35,7 @@ feature_gcc_target=x86_64-ivshmem-linuxapp-gcc
 gcc_build()
 {
     #build default gcc
-    echo -ne ">>>Build Default<<<\n"
+    echo ">>>Build Default<<<"
     #sed -i 's/^CONFIG_RTE_LIBRTE_PMD_PCAP=.*$/CONFIG_RTE_LIBRTE_PMD_PCAP=n/g' config/defconfig_x86_64-native-linuxapp-gcc
     #sed -i 's/^CONFIG_RTE_NIC_BYPASS=.*$/CONFIG_RTE_NIC_BYPASS=n/g' config/defconfig_x86_64-native-linuxapp-gcc
     sed -i 's/^CONFIG_RTE_LIBRTE_PMD_PCAP=.*$/CONFIG_RTE_LIBRTE_PMD_PCAP=n/g' config/common_linuxapp
@@ -46,7 +46,7 @@ gcc_build()
     echo ""
 
     #build features gcc
-    echo -ne ">>>Build Features<<<\n"
+    echo ">>>Build Features<<<"
 
     ##ivshmem
     echo "${OS_INFO}" | tee ${TARGET_ROOT}/build_ivshmem.log
