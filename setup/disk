@@ -18,12 +18,15 @@ check_nr_partitions()
 	max_ssd=$(ls $ssd_partitions | wc -l)
 	max_hdd=$(ls $hdd_partitions | wc -l)
 
-	[ "$nr_ssd_partitions" ] && [ "$nr_ssd_partitions" != "$max_ssd" ] && {
+	nr_ssd_partitions=${nr_ssd_partitions:-$(echo $ssd_partitions | wc -w)}
+	nr_hdd_partitions=${nr_hdd_partitions:-$(echo $hdd_partitions | wc -w)}
+
+	[ "$ssd_partitions" ] && [ "$nr_ssd_partitions" != "$max_ssd" ] && {
 		echo "disk number $nr_ssd_partitions mismatch with $max_ssd real disks: $ssd_partitions" >&2
 		return 1
 	}
 
-	[ "$nr_hdd_partitions" ] && [ "$nr_hdd_partitions" != "$max_hdd" ] && {
+	[ "$hdd_partitions" ] && [ "$nr_hdd_partitions" != "$max_hdd" ] && {
 		echo "disk number $nr_hdd_partitions mismatch with $max_hdd real disks: $hdd_partitions" >&2
 		return 1
 	}
