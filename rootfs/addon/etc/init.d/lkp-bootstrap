@@ -9,13 +9,8 @@
 # Description:       LKP bootstrap
 ### END INIT INFO
 
-LOCALE=$(locale -a | grep -i 'C.UTF-\?8\|en_US.UTF-\?8' | head -1)
-[ -z "$LOCALE" ] && {
-	echo 1>&2 "No required locale!  Some functionalities may not work properly"
-	LOCALE=C
-}
-export LC_ALL=$LOCALE
-export LANG=$LOCALE
+# Call this script at boot time.
+# Keep it simple and stupid -- it will be installed in a number of rootfs.
 
 mkdir /dev/shm/lkp-bootstrap-once 2>/dev/null || exit 0
 
