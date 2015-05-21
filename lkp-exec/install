@@ -130,6 +130,7 @@ build_install_benchmarks() {
 }
 
 . $LKP_SRC/lib/detect-system.sh
+. $LKP_SRC/lib/install.sh
 
 detect_system
 DISTRO=$_system_name_lowercase
