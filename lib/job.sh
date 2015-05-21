@@ -42,12 +42,13 @@ sync_cluster_state()
 		shift 1
 		other_options="&$(IFS='&' && echo -n "$*")"
 	}
-	local url="http://$LKP_SERVER:$LKP_CGI_PORT/~$LKP_USER/cgi-bin/lkp-cluster-sync?cluster=$cluster&node=$HOSTNAME$state_option$other_options"
-	should_wait_cluster && {
+
+	# the return value matters, do not change ! || to &&
+	! should_wait_cluster || {
+		local url="http://$LKP_SERVER:$LKP_CGI_PORT/~$LKP_USER/cgi-bin/lkp-cluster-sync?cluster=$cluster&node=$HOSTNAME$state_option$other_options"
 		echo "wget $url"
 		wget -q -O - "$url"
 	}
-	:
 }
 
 wait_cluster_state()
