@@ -161,7 +161,7 @@ do
 
 	for script in $scripts
 	do
-		[ -n "$makepkg_once" ] || [ -d "$LKP_SRC/pkg/$script" ] && ! [ -x "$LKP_SRC/pack/$script" ] {
+		[ -z "$makepkg_once" ] && [ -d "$LKP_SRC/pkg/$script" ] && ! [ -x "$LKP_SRC/pack/$script" ] && {
 			install_packages "makepkg"
 			makepkg_once=1
 		}
