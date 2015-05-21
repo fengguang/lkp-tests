@@ -159,6 +159,8 @@ job_done() {
 	clean_job_resource
 	wait_on_manual_check
 
+	[ -z "$disturbed" ] && trigger_post_process
+
 	exit $1
 }
 
