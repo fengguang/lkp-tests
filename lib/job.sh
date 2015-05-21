@@ -93,7 +93,7 @@ wait_other_nodes()
 		DIRECT_DEVICE=$(ip link | grep -B1 $mac | awk -F': ' 'NR==1 {print $2}') \
 		DIRECT_IP=$(echo $direct_ips | cut -d' ' -f $idx) \
 		$LKP_DEBUG_PREFIX $LKP_SRC/bin/run-ipconfig
-		((idx++))
+		idx=$((idx + 1))
 	done
 
 	# exit if either of the other nodes failed its job
