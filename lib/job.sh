@@ -46,7 +46,7 @@ sync_cluster_state()
 	# the return value matters, do not change ! || to &&
 	! should_wait_cluster || {
 		local url="http://$LKP_SERVER:$LKP_CGI_PORT/~$LKP_USER/cgi-bin/lkp-cluster-sync?cluster=$cluster&node=$HOSTNAME$state_option$other_options"
-		echo "wget $url"
+		echo "# wget $url"
 		wget -q -O - "$url"
 	}
 }
@@ -105,6 +105,7 @@ wait_other_nodes()
 	wait_cluster_state 'wait_ready'
 
 	while read line; do
+		[ "${line#\#}" != "$line" ] && continue
 		export "$line"
 	done <<EOF
 $(sync_cluster_state 'roles_ip')
