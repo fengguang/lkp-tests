@@ -1,21 +1,22 @@
 #!/bin/bash
 
-. $LKP_SRC/lib/bootstrap.sh
 . $LKP_SRC/lib/kexec.sh
 . $LKP_SRC/lib/qemu.sh
 . $LKP_SRC/lib/unit.sh
+. $LKP_SRC/lib/job-init.sh
 
 script_name=$(basename $0)
 
 usage()
 {
 	cat <<EOF
-Usage: lkp $script_name [-o RESULT_ROOT] [-p VDISK_PATH] [-s SSH_PORT] job.sh
+Usage: lkp $script_name [-o RESULT_ROOT] [-p VDISK_PATH] [-s SSH_PORT] [-S] job.sh
 
 options:
-	-o  RESULT_ROOT		 dir for storing all results
-	-s  SSH_PORT		 forward ssh port to host
-    -p  VDISK_PATH       specify vdisk path
+	-o  RESULT_ROOT		 	dir for storing all results
+	-s  SSH_PORT		 	forward ssh port to host
+	-p  VDISK_PATH			specify vdisk path
+	-S				output boot message to stdio
 
 Note:
 This script uses qemu to start a VM to run LKP test-job.
@@ -108,12 +109,13 @@ setup_vdisk_root()
 	fi
 }
 
-while getopts "o:s:" opt
+while getopts "o:p:s:S" opt
 do
 	case $opt in
 		o ) opt_result_root="$OPTARG" ;;
 		s ) opt_ssh="$OPTARG" ;;
 		p ) opt_vdiskpath="$OPTARG" ;;
+		S ) unset DISPLAY ;;
 		? ) usage ;;
 	esac
 done
