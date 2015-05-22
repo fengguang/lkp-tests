@@ -93,9 +93,10 @@ wait_other_nodes()
 	local idx=1
 	for mac in $direct_macs
 	do
-		DIRECT_DEVICE=$(ip link | grep -B1 $mac | awk -F': ' 'NR==1 {print $2}') \
-		DIRECT_IP=$(echo $direct_ips | cut -d' ' -f $idx) \
-		$LKP_DEBUG_PREFIX $LKP_SRC/bin/run-ipconfig
+		local device=$(ip link | grep -B1 $mac | awk -F': ' 'NR==1 {print $2}')
+		local ip=$(echo $direct_ips | cut -d' ' -f $idx)
+		ip addr add $ip/24 dev $device
+		ip link set $device up
 		idx=$((idx + 1))
 	done
 
