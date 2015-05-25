@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# IOzone is a filesystem benchmark tool. The benchmark generates
+# and measures a variety of file operations.
+
 for mnt in $mount_points
 do
 	cmd iozone -a -f $mnt/iozonetest > $TMP/iozone-$i &

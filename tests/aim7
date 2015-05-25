@@ -1,7 +1,13 @@
 #!/bin/sh
 # - test
 # - load
-#
+
+# AIM7 is a program written in C that forks many processes called
+# tasks, each of which concurrently runs in random order a set of
+# subtests called jobs. There are 53 kinds of jobs, each of which
+# exercises a different aspect of the operating system, such as
+# disk-file operations, process creation, user virtual memory
+# operations, pipe I/O, and compute-bound arithmetic loops.
 
 [ -n "$test" ] || exit
 [ -n "$load" ] || exit

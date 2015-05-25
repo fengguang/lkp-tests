@@ -2,6 +2,8 @@
 # - runtime
 # - seed
 
+# A Linux System call fuzz tester
+
 [ -n "$seed" ] || {
 	echo Seeding trinity based on $kconfig
 	seed=$(echo $kconfig | cksum | tr -d ' ')

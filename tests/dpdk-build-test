@@ -3,6 +3,12 @@
 # -  dpdk_chase_branch
 # -  dpdk_compiler
 
+# DPDK is a set of libraries and drivers for fast packet processing.
+# It was designed to run on any processors knowing Intel x86 has
+# been the first CPU to be supported. Ports for other CPUs like
+# IBM Power 8 are under progress. It runs mostly in Linux userland.
+# A FreeBSD port is now available for a subset of DPDK features.
+
 WORKSPACE=/tmp
 COMMIT=$dpdk_commit
 DPDK_ChaseBranch=$dpdk_chase_branch

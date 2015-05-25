@@ -1,6 +1,10 @@
 #!/bin/sh
 # - nr_threads
 
+# Both  dbench  and  tbench  read a load description file called
+# client.txt that was derived from a network sniffer dump of
+# a real netbench run.
+
 [ -z "$server" ] && server=127.0.0.1
 server=${server%% *}
 

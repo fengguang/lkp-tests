@@ -4,6 +4,11 @@
 # - mode
 # - ipc
 
+# Hackbench  is  both  a benchmark and a stress test for the Linux kernel scheduler.
+# It's main job is to create a specified number  of  pairs  of schedulable entities
+# (either threads or traditional processes) which communicate via either sockets or
+# pipes and time how long it takes  for each pair to send data back and forth.
+
 [ "$ipc" = 'pipe' ] && ipc_option='--pipe'
 
 [ -n "$runtime" ] || runtime=600

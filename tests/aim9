@@ -2,6 +2,9 @@
 # - testtime
 # - test
 
+# Suite IX is the "AIM Independent Resource Benchmark:"
+# the famous synthetic benchmark.
+
 [ -n "$test"		] || exit
 [ -n "$testtime"	] || exit
 

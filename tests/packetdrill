@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# The packetdrill scripting tool enables quick, precise tests for
+# entire TCP/UDP/IPv4/IPv6 network stacks, from the system call
+# layer down to the NIC hardware.
+
 cd $BENCHMARK_ROOT/packetdrill || exit
 
 for f in $(find . -name "*.pkt" ! -name "*diag-ipv6*" | sort); do

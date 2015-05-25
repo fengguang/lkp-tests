@@ -1,6 +1,10 @@
 #!/bin/sh
 # - test
 
+# NetPIPE is a protocol independent performance tool that encapsulates
+# the best of ttcp and netperf and visually represents the network
+# performance under a variety of conditions.
+
 case $test in
 tcp )
 	NPtcp -n 1000 -h localhost 2>&1

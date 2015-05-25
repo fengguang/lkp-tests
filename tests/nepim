@@ -3,6 +3,10 @@
 # - nr_threads
 # - protocol
 
+# nepim stands for network pipemeter, a tool for measuring
+# available bandwidth between hosts. nepim is also useful
+# to generate network traffic for testing purposes.
+
 [ -n "$nr_threads" ] && opt_streams="-n $nr_threads"
 [ "${protocol#udp}" != "$protocol" ]	&& opt_udp=-u
 [ "${protocol%6}" != "$protocol" ]	&& opt_addr='::1' || opt_addr='127.0.0.1'

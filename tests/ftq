@@ -3,6 +3,9 @@
 # - samples
 # - iterations
 
+# The FTQ and FWQ benchmarks measure hardware and softwareinterference
+# or ‘noise’ on a node from the applications perspective.
+
 BM_NAME=$(basename $0)
 
 cd $BENCHMARK_ROOT/$BM_NAME || exit

@@ -1,6 +1,8 @@
 #!/bin/sh
 # - group
 
+# Piglit is a collection of automated tests for OpenGL implementations.
+
 export PATH=$BENCHMARK_ROOT/piglit/bin:$PATH
 
 dri_exist()

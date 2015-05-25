@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# Page Fault Test
+
 cd $BENCHMARK_ROOT/pft || exit
 
 . $LKP_SRC/lib/unit.sh

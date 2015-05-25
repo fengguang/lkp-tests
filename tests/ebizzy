@@ -3,6 +3,11 @@
 # - duration
 # - iterations
 
+# ebizzy is designed to generate a workload resembling common
+# webapplication server workloads. It is highly threaded,
+# has a large in-memory working set, and allocates
+# and deallocates memory frequently.
+
 cd $BENCHMARK_ROOT/ebizzy || exit
 
 duration=${duration%%s}

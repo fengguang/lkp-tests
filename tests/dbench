@@ -1,6 +1,9 @@
 #!/bin/sh
 # - nr_threads
 
+# DBENCH is a tool to generate I/O workloads to either a filesystem
+# or to a networked CIFS or NFS server.
+
 run_dbench()
 {
 	cmd dbench $nr_threads -c /usr/share/dbench/client.txt

@@ -1,6 +1,8 @@
 #!/bin/sh
 # - test
 
+# Utilities for testing Power Management
+
 cd $BENCHMARK_ROOT/pm-qa || exit
 
 run_one()

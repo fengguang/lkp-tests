@@ -3,6 +3,9 @@
 # - segments
 # - nr_threads
 
+# Create a bunch of shared memory segments, then a bunch of
+# threads that continually clone and exit.
+
 [ -n "$segments"	] || segments=1024
 [ -n "$nr_threads"	] || nr_threads=16
 [ -n "$runtime"		] || runtime=600

@@ -1,6 +1,8 @@
 #!/bin/sh
 # - test
 
+# Regression test suite for xfs and other filesystems.
+
 [ "$nr_partitions" -lt 2 ] && exit 1
 cd $BENCHMARK_ROOT/xfstests || exit
 

@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# wrapper to run other other tests
+
 program=$1
 program_dir=$(dirname $0)
 

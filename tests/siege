@@ -3,6 +3,10 @@
 # - iterations
 # - nr_threads
 
+# Siege is an http load testing and benchmarking utility. It was
+# designed to let web developers measure their code under duress,
+# to see how it will stand up to load on the internet.
+
 iter_time=$(( runtime / iterations ))
 
 # Below HTML and siegerc from Mel Gorman's MMTests

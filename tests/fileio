@@ -6,6 +6,10 @@
 # - size
 # - filenum
 
+# SysBench is a modular, cross-platform and multi-threaded benchmark
+# tool for evaluating OS parameters that are important for a system
+# running a database under intensive load.
+
 [ -n "$period"	] || period=600
 [ -n "$rwmode"	] || rwmode=rndrw
 [ -n "$iomode"	] || iomode=sync

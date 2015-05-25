@@ -4,6 +4,11 @@
 # - test
 # - send_size
 
+# Netperf is a benchmark that can be use to measure various aspect of
+# networking performance. The primary foci are bulk (aka unidirectional)
+# data transfer and request/response performance using either TCP
+# or UDP and the Berkeley Sockets interface.
+
 export PATH=$BENCHMARK_ROOT/netperf/bin:$PATH
 
 [ "${test#*SCTP}" != "$test" ] && modprobe sctp 2>/dev/null

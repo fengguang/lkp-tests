@@ -2,6 +2,8 @@
 # - runtime
 # - msg_size
 
+# sockperf is a tool for network performance measurement
+
 cd $BENCHMARK_ROOT/sockperf || exit
 
 [ -n "$runtime" ] || runtime=600

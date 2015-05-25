@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Blogbench is a portable filesystem benchmark that tries to
+# reproduce the load of a real-world busy file server.
+
 cd $BENCHMARK_ROOT/blogbench || {
 	echo "ERROR: no blogbench installed" 1>&2
 	exit 1
