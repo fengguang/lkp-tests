@@ -1,0 +1,11 @@
+#!/bin/sh
+
+serial_server=$1
+
+wget -q -O - "http://$serial_server/cgi-bin/pmeter?tbox=$HOSTNAME&cmd=start" || exit 1
+
+. $LKP_SRC/lib/wait.sh
+
+wait_post_test
+
+wget -q -O - "http://$serial_server/cgi-bin/pmeter?tbox=$HOSTNAME&cmd=stop"
