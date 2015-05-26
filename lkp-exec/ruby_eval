@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+LKP_SRC ||= ENV['LKP_SRC']
+
+require "#{LKP_SRC}/lib/#{ARGV[0]}.rb"
+
+ARGV.drop(1).each { |arg|
+	eval arg
+}
