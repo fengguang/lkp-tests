@@ -5,6 +5,7 @@
 # client.txt that was derived from a network sniffer dump of
 # a real netbench run.
 
+[ -n "$direct_server_ips" ] && server=$direct_server_ips
 [ -z "$server" ] && server=127.0.0.1
 server=${server%% *}
 
