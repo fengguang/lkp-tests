@@ -8,6 +8,7 @@ cd $BENCHMARK_ROOT/nuttcp || exit
 
 [ -n "$runtime" ] || runtime=300
 
+[ -n "$direct_server_ips" ] && server=$direct_server_ips
 [ -z "$server" ] && server=127.0.0.1
 server=${server%% *}
 
