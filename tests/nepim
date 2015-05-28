@@ -9,8 +9,14 @@
 
 [ -n "$nr_threads" ] && opt_streams="-n $nr_threads"
 [ "${protocol#udp}" != "$protocol" ]	&& opt_udp=-u
-[ "${protocol%6}" != "$protocol" ]	&& opt_addr='::1' || opt_addr='127.0.0.1'
+[ "${protocol%6}" != "$protocol" ]	&& opt_addr='::1'
 [ -n "$runtime" ] || runtime=300
+
+#TODO: support ipv6 addr of remote host
+[ -n "$direct_server_ips" ] && server=$direct_server_ips
+[ -z "$server" ] && server=127.0.0.1
+server=${server%% *}
+[ -z "$opt_addr" ] && opt_addr=$server
 
 cd $BENCHMARK_ROOT/nepim || exit
 
