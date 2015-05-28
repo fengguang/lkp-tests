@@ -16,9 +16,13 @@ sleep 1
 
 [ -n "$send_size" ] && test_options="-- -m $send_size"
 
+[ -n "$direct_server_ips" ] && server=$direct_server_ips
+[ -z "$server" ] && server=127.0.0.1
+server=${server%% *}
+
 for i in $(seq $nr_threads)
 do
-	cmd netperf -t $test -c -C -l $runtime $test_options &
+	cmd netperf -t $test -c -C -l $runtime $test_options -H $server &
 done
 
 wait
