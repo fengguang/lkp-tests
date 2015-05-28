@@ -5,8 +5,12 @@
 # the best of ttcp and netperf and visually represents the network
 # performance under a variety of conditions.
 
+[ -n "$direct_server_ips" ] && server=$direct_server_ips
+[ -z "$server" ] && server=127.0.0.1
+server=${server%% *}
+
 case $test in
 tcp )
-	NPtcp -n 1000 -h localhost 2>&1
+	NPtcp -n 1000 -h $server 2>&1
 	;;
 esac
