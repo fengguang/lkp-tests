@@ -1,4 +1,15 @@
 # patch from Mel Gorman's MMTests
+--- ebizzy-0.3/configure        2007-10-02 05:49:45.000000000 +0300
++++ ebizzy-0.3-fix/configure    2015-05-29 12:43:41.973028023 +0300
+@@ -16,7 +16,7 @@
+        exit 1
+ fi
+ 
+-LIBS="-lpthread"
++LIBS="-pthread"
+ FLAGS=""
+ 
+ case "$OS" in
 diff --git a/ebizzy.c b/ebizzy.c
 index 76c7492..3e7644f 100644
 --- a/ebizzy.c
