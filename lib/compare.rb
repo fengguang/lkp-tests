@@ -152,6 +152,15 @@ module Compare
 		end
 	end
 
+	class GroupData
+		def initialize(group, stat_enum)
+			@group = group
+			@stat_enum = stat_enum
+		end
+
+		attr_reader :group, :stat_enum
+	end
+
 	def self.calc_failure_fail(stat)
 		return unless stat[:failure]
 		stat[:fails] = stat[:values].map { |v|
@@ -190,6 +199,28 @@ module Compare
 		calc_failure_change stat
 		calc_avg_stddev stat
 		calc_perf_change stat
+	end
+
+	def self.do_compare(params)
+		groups = Groups.new(params)
+
+		groups.each_group { |g|
+			unless params[:show_all_stats]
+				g.calc_changed_stats
+				include_stats = params[:include_stats]
+				if include_stats
+					g.include_stats(include_stats)
+				end
+			end
+		}
+
+		data = groups.each_group.map { |g|
+			stat_enum = g.each_changed_stat.feach(method(:calc_stat_change))
+
+			GroupData.new(g, stat_enum)
+		}
+
+		data
 	end
 
 	def self.sort_stats(stat_enum)
@@ -323,9 +354,9 @@ module Compare
 		puts
 	end
 
-	def self.show_by_group(groups, stat_enums)
-		groups.each_group.with_index { |g, i|
-			show_group g, stat_enums[i]
+	def self.show_by_group(compare_data)
+		compare_data.each { |gd|
+			show_group gd.group, gd.stat_enum
 		}
 	end
 
@@ -339,7 +370,10 @@ module Compare
 		stat_map
 	end
 
-	def self.show_by_stats(groups, stat_enums)
+	def self.show_by_stats(compare_data)
+		stat_enums = compare_data.map { |d|
+			sort_stats d.stat_enum
+		}
 		stat_enum = EnumeratorCollection.new(*stat_enums)
 		stat_map = group_by_stat(stat_enum)
 		stat_map.each { |stat_key, stats|
@@ -355,31 +389,17 @@ module Compare
 		}
 	end
 
-	def self.compare(params)
-		groups = Groups.new(params)
-
-		groups.each_group { |g|
-			unless params[:show_all_stats]
-				g.calc_changed_stats
-				include_stats = params[:include_stats]
-				if include_stats
-					g.include_stats(include_stats)
-				end
-			end
-		}
-
-		stat_enums = groups.each_group.map { |g|
-			stat_enum = g.each_changed_stat.feach(method(:calc_stat_change))
-			unless params[:group_by_stat]
-				sort_stats stat_enum
-			end
-		}
-
+	def self.show_compare_data(compare_data, params)
 		if params[:group_by_stat]
-			show_by_stats(groups, stat_enums)
+			show_by_stats(compare_data)
 		else
-			show_by_group(groups, stat_enums)
+			show_by_group(compare_data)
 		end
+	end
+
+	def self.compare(params)
+		data = do_compare(params)
+		show_compare_data(data, params)
 	end
 
 	def self.compare_commits(commits, params_in = {})
@@ -400,7 +420,7 @@ module Compare
 	def self.test_compare_commits
 		commits = ['f5c0a122800c301eecef93275b0c5d58bb4c15d9', '3a8b36f378060d20062a0918e99fae39ff077bf0']
 		compare_axis_keys = ['commit', 'rwmode']
-		page {
+		pager {
 			#compare_commits(commits, show_all_stats: true, group_by_stat: true)
 			compare_commits(commits, show_all_stats: false, group_by_stat: false,
 					compare_axis_keys: compare_axis_keys)
@@ -420,6 +440,22 @@ module Compare
 			show_all_stats: false,
 		}
 		page {
+			compare(params)
+		}
+	end
+
+	def self.test_compare_aim7
+		_result_roots = MResultRootCollection.new(
+			'commit' => '39a8804455fb23f09157341d3ba7db6d7ae6ee76',
+			'tbox_group' => 'grantley',
+			'test' => 'ram_copy',
+		).to_a
+		compare_axis_keys = ['load']
+		params = {
+			_result_roots: _result_roots,
+			compare_axis_keys: compare_axis_keys,
+		}
+		pager {
 			compare(params)
 		}
 	end
