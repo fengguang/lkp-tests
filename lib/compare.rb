@@ -98,17 +98,17 @@ module Compare
 			@complete_matrixes
 		end
 
-		def all_stats
+		def calc_all_stats
 			stat_keys = []
 			matrixes.each { |m|
 				stat_keys |= m.keys
 			}
 			stat_keys.delete 'stats_source'
-			stat_keys
+			@changed_stats = stat_keys
 		end
 
-		def changed_stats
-			@changed_stats ||= all_stats
+		def set_stat_keys(stat_keys)
+			@changed_stats = stat_keys
 		end
 
 		def calc_changed_stats
@@ -127,6 +127,10 @@ module Compare
 				astats.select { |stat| re.match stat }
 			}.flatten
 			@changed_stats |= matched
+		end
+
+		def changed_stats
+			@changed_stats || calc_all_stats
 		end
 
 		def each_changed_stat
@@ -205,7 +209,11 @@ module Compare
 		groups = Groups.new(params)
 
 		groups.each_group { |g|
-			unless params[:show_all_stats]
+			if params[:all_stats]
+				g.calc_all_stats
+			elsif params[:set_stat_keys]
+				g.set_stat_keys params[:set_stat_keys]
+			else
 				g.calc_changed_stats
 				include_stats = params[:include_stats]
 				if include_stats
@@ -421,8 +429,8 @@ module Compare
 		commits = ['f5c0a122800c301eecef93275b0c5d58bb4c15d9', '3a8b36f378060d20062a0918e99fae39ff077bf0']
 		compare_axis_keys = ['commit', 'rwmode']
 		pager {
-			#compare_commits(commits, show_all_stats: true, group_by_stat: true)
-			compare_commits(commits, show_all_stats: false, group_by_stat: false,
+			#compare_commits(commits, all_stats: true, group_by_stat: true)
+			compare_commits(commits, all_stats: false, group_by_stat: false,
 					compare_axis_keys: compare_axis_keys)
 		}
 	end
@@ -437,7 +445,7 @@ module Compare
 		params = {
 			_result_roots: rts_,
 			compare_axis_keys: ['commit'],
-			show_all_stats: false,
+			all_stats: false,
 		}
 		page {
 			compare(params)
