@@ -151,6 +151,12 @@ fixup_packages()
 		[ -x "$aclocal_bin" ] && [ ! -e /usr/bin/aclocal ] &&
 		ln -sf $aclocal_bin /usr/bin/aclocal
 	done
+
+	# /lib64/ld-linux-x86-64.so.2 program interpreter
+	[ -e /lib64/ld-linux-x86-64.so.2 ] || {
+		[ -d /lib64 ] || mkdir /lib64
+		ln -s /lib/ld-linux-x86-64.so.2 /lib64/ld-linux-x86-64.so.2
+	}
 }
 
 mount_debugfs()
