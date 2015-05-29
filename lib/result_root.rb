@@ -151,9 +151,12 @@ end
 
 class MResultRootCollection
 	def initialize(conditions)
+		cond = deepcopy(conditions)
 		ResultPath::MAXIS_KEYS.each { |f|
 			instance_variable_set(instance_variable_sym(f), conditions.fetch(f, '.*'))
+			cond.delete f
 		}
+		@other_conditions = cond.values.join ' '
 	end
 
 	include Enumerable
@@ -171,7 +174,7 @@ class MResultRootCollection
 	def each
 		block_given? or return enum_for(__method__)
 
-		`lkp _rt '#{pattern}'`.each_line { |_rtp|
+		`lkp _rt '#{pattern}' #{@other_conditions}`.each_line { |_rtp|
 			_rtp = _rtp.strip
 			if MResultRoot.valid? _rtp
 				yield MResultRoot.new _rtp.strip
