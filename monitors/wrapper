@@ -32,13 +32,21 @@ if grep -q -x -F $monitor $monitor_dir/need_gzip; then
 	#
 	# gzip is pretty balanced.
 	#
-	[ -L "$LKP_SRC/bin/gzip-$monitor" ] || ln -s -T /bin/gzip $LKP_SRC/bin/gzip-$monitor
+
+	# gzip may link to busybox which not support other name to link
+	if [ -L '/bin/gzip' ]; then
+		gzip='gzip'
+	else
+		gzip="gzip-$monitor"
+	fi
+
+	[ -L "$LKP_SRC/bin/$gzip" ] || ln -s -T /bin/gzip $LKP_SRC/bin/$gzip
 
 	if [ "$monitor" = 'ftrace' ]; then
 		# ftrace output may be too large for tmpfs
-		gzip-$monitor -c < $fifo | cat-$monitor > $RESULT_ROOT/$monitor.gz &
+		$gzip -c < $fifo | cat-$monitor > $RESULT_ROOT/$monitor.gz &
 	else
-		gzip-$monitor -c < $fifo		> $TMP_RESULT_ROOT/$monitor.gz &
+		$gzip -c < $fifo		> $TMP_RESULT_ROOT/$monitor.gz &
 	fi
 else
 	# The small continuous output of vmstat is a convenient alive indicator
