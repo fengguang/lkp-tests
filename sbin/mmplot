@@ -41,7 +41,7 @@ opts = OptionParser.new do |opts|
 
 	opts.on("-o DIR", "--output DIR", "output dir") do |dir|
 		Dir.mkdir dir unless File.directory? dir
-		$opt_output_path = dir
+		$opt_output_path = ensure_dir dir
 	end
 
 	opts.on_tail("-h", "--help", "show help message") do

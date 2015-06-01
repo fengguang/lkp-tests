@@ -85,7 +85,7 @@ def mplot(matrix, stats)
 	next if values.max == values.min
 	Gnuplot::Plot.new( gp ) do |plot|
 	if $opt_output_path
-		file = $opt_output_path + '/' + field.tr('^a-zA-Z0-9_.:+=-', '_')
+		file = $opt_output_path + field.tr('^a-zA-Z0-9_.:+=-', '_')
 		case $opt_output_path
 		when /eps/
 			plot.terminal "eps size 8,4.8 fontscale 1"

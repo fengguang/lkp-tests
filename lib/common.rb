@@ -1,6 +1,6 @@
 LKP_SRC ||= ENV['LKP_SRC']
 
-# common utilities
+## common utilities
 
 def deepcopy(o)
 	Marshal.load(Marshal.dump(o))
@@ -46,6 +46,12 @@ end
 
 def string_to_num(str)
 	str.index('.') ? str.to_f : str.to_i
+end
+
+## Pathname
+
+def ensure_dir(dir)
+	dir[-1] == '/' ? dir : dir + '/'
 end
 
 ## IO redirection
