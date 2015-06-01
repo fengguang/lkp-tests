@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# skip if cpu doesn't have msr
+grep flags /proc/cpuinfo|grep -q ' msr ' || exit 0
+
 # skip unreliable machines
 [ "${HOSTNAME#*lkp-a0[1-9]}"	!= "$HOSTNAME" ] && exit 0
 [ "${HOSTNAME#*snb-drag}"	!= "$HOSTNAME" ] && exit 0
