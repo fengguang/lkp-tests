@@ -127,7 +127,7 @@ end
 
 distroInfo = LKP::DistroInfo.instance
 
-if distroInfo.systemNameL == "debian"
+if distroInfo.systemNameL == "debian" or distroInfo.systemNameL == "ubuntu"
 	distro = "debian"
 else
 	puts "Not a Debian system, cannot install packages under #{LKP_SRC}/distro/debian"
