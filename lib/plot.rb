@@ -3,6 +3,7 @@
 LKP_SRC ||= ENV['LKP_SRC']
 
 require "gnuplot"
+require "#{LKP_SRC}/lib/common.rb"
 require "#{LKP_SRC}/lib/matrix.rb"
 
 PLOT_SIZE_X = 80
@@ -73,7 +74,7 @@ def mmsplot(matrixes1, matrixes2, fields, title_prefix=nil)
 	mmplot(m1, m2, fields, title_prefix)
 end
 
-def mplot(matrix, stats)
+def mplot(matrix, stats, x_stat_key = nil)
 	nr_plot = 0
 	unless $plot_unit
 		$plot_unit = load_yaml LKP_SRC + '/etc/plot-unit.yaml'
@@ -88,10 +89,14 @@ def mplot(matrix, stats)
 		file = $opt_output_path + field.tr('^a-zA-Z0-9_.:+=-', '_')
 		case $opt_output_path
 		when /eps/
-			plot.terminal "eps size 8,4.8 fontscale 1"
+			$figure_width ||= 8
+			$figure_height ||= 4.8
+			plot.terminal "eps size #{$figure_width},#{$figure_height} fontscale 1"
 			file += ".eps"
 		else
-			plot.terminal "png size 800,480"
+			$figure_width ||= 800
+			$figure_height ||= 480
+			plot.terminal "png size #{$figure_width},#{$figure_height}"
 			file += ".png"
 		end
 		plot.output file
@@ -111,15 +116,20 @@ def mplot(matrix, stats)
 
 	plot.notitle # necessary for updating title
 	if var
-		plot.title format("%s (var %.2f)", field, var)
+		plot.title format("%s%s (var %.2f)", $figure_title_prefix, field, var)
 	else
-		plot.title format("%s", field)
+		plot.title format("%s%s", $figure_title_prefix, field)
 	end
 
-	plot.noxtics
+	if x_stat_key
+		data = [matrix[x_stat_key], values]
+	else
+		data = [values]
+		plot.noxtics
+	end
 	plot.ytics 'nomirror'
 
-	plot.data << Gnuplot::DataSet.new( [values] ) do |ds|
+	plot.data << Gnuplot::DataSet.new(data) do |ds|
 		if $opt_output_path
 			ds.with = "linespoints pt 5"
 		else
@@ -130,4 +140,16 @@ def mplot(matrix, stats)
 	end
 	end
 	end
+end
+
+def with_figure_output_prefix(prefix, &b)
+	with_set_globals :$opt_output_path, prefix, &b
+end
+
+def with_figure_size(width, height, &b)
+	with_set_globals :$figure_width, width, :$figure_height, height, &b
+end
+
+def with_figure_title_prefix(prefix, &b)
+	with_set_globals :$figure_title_prefix, prefix, &b
 end
