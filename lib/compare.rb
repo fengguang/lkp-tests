@@ -163,6 +163,62 @@ module Compare
 		end
 
 		attr_reader :group, :stat_enum
+
+		def matrix(data_key = :avgs)
+			m = {}
+			@stat_enum.each { |stat|
+				m[stat[:stat_key]] = stat[data_key]
+			}
+			m
+		end
+
+		def common_axes
+			@group.common_axes
+		end
+
+		def common_axes_string(sep1 = '-', sep2 = '=')
+			common_axes.map { |k, v|
+				"#{k}#{sep2}#{v}"
+			}.join sep1
+		end
+
+		def common_axes_value_string(sep = '-')
+			common_axes.values.join sep
+		end
+
+		def compare_axeses
+			@group.compare_axeses
+		end
+
+		def matrix_with_axes(data_key = nil, params = {})
+			cas = compare_axeses
+			cas_keys = cas[0].keys
+
+			data_key ||= :avgs
+			axes_as_num = params.fetch(:axes_as_num, true)
+			prefix = params.fetch(:axes_prefix, "")
+			sort_key = params.fetch(:sort, prefix + cas_keys[0])
+
+			axis_converter = lambda { |axis_key|
+				if axes_as_num && (axes_as_num == true ||
+						   axes_as_num.index(axis_key))
+					return method(:string_to_num)
+				else
+					return ->x{x}
+				end
+			}
+
+			m = {}
+			cas_keys.each { |axis_key|
+				conv = axis_converter.(axis_key)
+				m[prefix + axis_key] = cas.map { |as|
+					conv.(as[axis_key])
+				}
+			}
+			m.merge! matrix(data_key)
+			m = sort_matrix(m, sort_key) if sort_key
+			m
+		end
 	end
 
 	def self.calc_failure_fail(stat)

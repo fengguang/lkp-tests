@@ -44,6 +44,10 @@ def ensure_array(obj)
 	end
 end
 
+def string_to_num(str)
+	str.index('.') ? str.to_f : str.to_i
+end
+
 ## IO redirection
 
 def pager
