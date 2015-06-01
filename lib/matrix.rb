@@ -210,3 +210,16 @@ def check_warn_test_error(matrix, result_root)
 	end
 end
 
+def sort_matrix(matrix, key)
+	key_index = matrix.keys.index key
+	t = matrix.values.transpose
+	t.sort_by! { |vs|
+		vs[key_index]
+	}
+	values = t.transpose
+	m = {}
+	matrix.keys.each_with_index { |k, i|
+		m[k] = values[i]
+	}
+	m
+end
