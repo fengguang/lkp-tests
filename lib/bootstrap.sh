@@ -1,6 +1,7 @@
 #!/bin/sh
 
 . $LKP_SRC/lib/mount.sh
+. $LKP_SRC/lib/env.sh
 
 mount_tmpfs()
 {
@@ -205,7 +206,7 @@ netconsole_init()
 
 tbox_cant_kexec()
 {
-	[ "$(virt-what)" = 'kvm' ] && return 0
+	is_virt && return 0
 
 	# following tbox are buggy while using kexec to boot
 	[ "${HOSTNAME#*lkp-nex04}"	!= "$HOSTNAME" ] && return 0

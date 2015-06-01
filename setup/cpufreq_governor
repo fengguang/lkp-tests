@@ -1,9 +1,11 @@
 #!/bin/sh -e
 
+. $LKP_SRC/lib/env.sh
+
 scaling_governor=$1
 [ -n "$scaling_governor" ] || exit 0
 
-[ "$(virt-what)" = 'kvm' ] && exit 0
+is_virt && exit 0
 
 for file in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
 do

@@ -25,3 +25,11 @@ role()
 	[ "${__my_roles#* $1 }" != "$__my_roles" ]
 }
 
+is_virt()
+{
+	if has_cmd 'virt-what'; then
+		[ "$(virt-what)" = "kvm" ]
+	else
+		grep -q -w hypervisor /proc/cpuinfo
+	fi
+}
