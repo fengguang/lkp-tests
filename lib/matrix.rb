@@ -223,3 +223,11 @@ def sort_matrix(matrix, key)
 	}
 	m
 end
+
+def save_matrix_as_csv(file, matrix, sep = ' ', header = true)
+	file.puts matrix.keys.join(sep)
+	t = matrix.values.transpose
+	t.each { |vs|
+		file.puts vs.map { |v| v.to_s }.join(sep)
+	}
+end
