@@ -156,7 +156,7 @@ class MResultRootCollection
 			instance_variable_set(instance_variable_sym(f), conditions.fetch(f, '.*'))
 			cond.delete f
 		}
-		@other_conditions = cond.values.join ' '
+		@other_conditions = cond.values
 	end
 
 	include Enumerable
@@ -174,7 +174,12 @@ class MResultRootCollection
 	def each
 		block_given? or return enum_for(__method__)
 
-		`lkp _rt '#{pattern}' #{@other_conditions}`.each_line { |_rtp|
+		cmdline = "grep -he '#{pattern}' /lkp/paths/*"
+		@other_conditions.each { |ocond|
+			cmdline += " | grep -e '#{ocond}'"
+		}
+		cmdline += " | sed -e '1,$s?\\(.*\\)/[0-9]*?\\1?' | sort | uniq"
+		`#{cmdline}`.each_line { |_rtp|
 			_rtp = _rtp.strip
 			if MResultRoot.valid? _rtp
 				yield MResultRoot.new _rtp.strip
