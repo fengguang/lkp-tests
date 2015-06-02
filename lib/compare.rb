@@ -241,8 +241,8 @@ module Compare
 	def self.calc_avg_stddev(stat)
 		return if stat[:failure]
 		vs = stat[:values]
-		stat[:avgs] = vs.map { |v| v ? v.average : 0 }
-		stat[:stddevs] = vs.map { |v| v.standard_deviation if v && v.size > 1 }
+		stat[:avgs] = vs.map { |v| v && v.size > 0 ? v.average : 0 }
+		stat[:stddevs] = vs.map { |v| v && v.size > 1 ? v.standard_deviation : -1 }
 	end
 
 	def self.calc_perf_change(stat)
