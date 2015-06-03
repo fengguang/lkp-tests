@@ -35,6 +35,8 @@ class MResultRoot
 		@axes = calc_axes
 	end
 
+	include DirObject
+
 	attr_reader :axes
 
 	def to_s
@@ -70,18 +72,14 @@ class MResultRoot
 		MResultRoot.new _rtp if File.exists? _rtp
 	end
 
-	def path(sub)
-		File.join @path, sub
-	end
-
 	def dmesgs
-		dmesgs = Dir[path(DMESG_GLOB1)]
-		dmesgs = Dir[path(DMESG_GLOB2)] if dmesgs.size == 0
+		dmesgs = glob(DMESG_GLOB1)
+		dmesgs = glob(DMESG_GLOB2) if dmesgs.size == 0
 		dmesgs
 	end
 
 	def job_file
-		jobs = Dir[path(JOB_GLOB)]
+		jobs = glob(JOB_GLOB)
 		jobs[0] if jobs.size != 0
 	end
 
@@ -128,7 +126,7 @@ class MResultRoot
 	end
 
 	def completions
-		File.open(path(COMPLETIONS_FILE), "r") { |f|
+		open(COMPLETIONS_FILE, "r") { |f|
 			f.each_line.map { |line|
 				Completion.new line
 			}.sort_by { |cmp| -cmp.time.to_i }

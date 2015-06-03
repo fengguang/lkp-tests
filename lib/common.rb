@@ -100,4 +100,27 @@ module DirObject
 		sub = ensure_array(sub)
 		File.open path(*sub), *args, &b
 	end
+
+	def glob(pattern, flags = nil, &b)
+		fpattern = path pattern
+		if flags
+			Dir.glob fpattern, flags, &b
+		else
+			Dir.glob fpattern, &b
+		end
+	end
+
+	def chdir(&b)
+		Dir.chdir @path, &b
+	end
+
+	def run_in(cmd)
+		chdir {
+			system cmd
+		}
+	end
+
+	def bash
+		run_in('/bin/bash -i')
+	end
 end
