@@ -150,13 +150,13 @@ class << MResultRoot
 end
 
 class MResultRootCollection
-	def initialize(conditions)
+	def initialize(conditions = {})
 		cond = deepcopy(conditions)
 		ResultPath::MAXIS_KEYS.each { |f|
 			instance_variable_set(instance_variable_sym(f), conditions.fetch(f, '.*'))
 			cond.delete f
 		}
-		@other_conditions = cond.values
+		@other_conditions = cond
 	end
 
 	include Enumerable
@@ -175,7 +175,7 @@ class MResultRootCollection
 		block_given? or return enum_for(__method__)
 
 		cmdline = "grep -he '#{pattern}' /lkp/paths/*"
-		@other_conditions.each { |ocond|
+		@other_conditions.values.each { |ocond|
 			cmdline += " | grep -e '#{ocond}'"
 		}
 		cmdline += " | sed -e '1,$s?\\(.*\\)/[0-9]*?\\1?' | sort | uniq"
@@ -187,15 +187,31 @@ class MResultRootCollection
 		}
 	end
 
+	def select(field, value)
+		field = field.to_s
+		value = value.to_s
+		if ResultPath::MAXIS_KEYS.index field
+			instance_variable_set(instance_variable_sym(field), value)
+		else
+			@other_conditions[field] = value
+		end
+		self
+	end
+
 	def unselect(*fields)
 		fields.each { |f|
-			instance_variable_set(instance_variable_sym(f), '.*')
+			f = f.to_s
+			if ResultPath::MAXIS_KEYS.index f
+				instance_variable_set(instance_variable_sym(f), '.*')
+			else
+				@other_conditions.delete f
+			end
 		}
 		self
 	end
 
-	def set_testbox(value)
-		self.testbox = value
+	def set_tbox_group(value)
+		self.tbox_group = value
 		self
 	end
 
@@ -221,6 +237,11 @@ class MResultRootCollection
 
 	def set_commit(value)
 		self.commit = value
+		self
+	end
+
+	def set_compiler(value)
+		self.compiler = value
 		self
 	end
 end
