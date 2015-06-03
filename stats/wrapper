@@ -85,7 +85,7 @@ fi
 
 # xz large files for long term storage, remove possible .gz
 if [[ $program =~ ^(sched_debug|proc-stat|perf-profile|ftrace|\.dmesg|dmesg)$ ]]; then
-	[ -f $log ] && [ ! -f $log.xz ] && xz $log && rm -f $log.gz
+	[ -s $log ] && [ ! -f $log.xz ] && xz $log && rm -f $log.gz
 fi
 
 if [ -f $log.gz ]; then
