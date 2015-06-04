@@ -5,6 +5,32 @@ LKP_SRC ||= ENV['LKP_SRC']
 require "fileutils"
 require "tempfile"
 
+# dmesg can be below forms
+# [    0.298729] Last level iTLB entries: 4KB 512, 2MB 7, 4MB 7
+# [    8.898106] system 00:01: [io  0x0400-0x047f] could not be reserved
+class DmesgTimestamp
+	include Comparable
+
+	attr_reader :timestamp
+
+	def initialize(line)
+		match = line.match(/.*\[ *(?<timestamp>\d{1,6}\.\d{6})\]/)
+		@timestamp = match && match[:timestamp]
+	end
+
+	def valid?
+		@timestamp != nil
+	end
+
+	def <=>(other)
+		return 0 unless self.valid? || other.valid?
+		return -1 unless self.valid?
+		return 1 unless other.valid?
+
+		self.timestamp.to_f <=> other.timestamp.to_f
+	end
+end
+
 def fixup_dmesg(line)
 	line.chomp!
 
