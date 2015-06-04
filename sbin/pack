@@ -70,7 +70,7 @@ BM_NAME=$1;
 [[ $BM_NAME ]] || usage
 BM_ROOT=/lkp/benchmarks/$BM_NAME
 
-[[ $arch ]] || arch=`arch`
+[[ $arch ]] || arch=`uname -m`
 
 source $LKP_SRC/pack/default
 source $LKP_SRC/pack/$BM_NAME
