@@ -4,6 +4,7 @@ LKP_SRC ||= ENV['LKP_SRC']
 
 require "gnuplot"
 require "#{LKP_SRC}/lib/common.rb"
+require "#{LKP_SRC}/lib/property.rb"
 require "#{LKP_SRC}/lib/matrix.rb"
 
 PLOT_SIZE_X = 80
@@ -74,82 +75,97 @@ def mmsplot(matrixes1, matrixes2, fields, title_prefix=nil)
 	mmplot(m1, m2, fields, title_prefix)
 end
 
+class MatrixPlotter
+	def initialize
+		@pixel_size = [800, 480]
+		@inch_size = [8, 4.8]
+		@char_size = [PLOT_SIZE_X, PLOT_SIZE_Y]
+		@nr_plot = NR_PLOT
+
+		@plot_unit = load_yaml LKP_SRC + '/etc/plot-unit.yaml'
+		@unit_size = load_yaml LKP_SRC + '/etc/unit-size.yaml'
+	end
+
+	include Property
+	prop_with :output_prefix, :title_prefix
+	prop_with :pixel_size, :inch_size, :char_size, :nr_plot
+	prop_with :matrix, :x_stat_key, :y_stat_keys
+
+	def plot
+		np = 0
+		Gnuplot.open do |gp|
+		@y_stat_keys.each do |field, var|
+		values = @matrix[field]
+		next if values.max == values.min
+		Gnuplot::Plot.new( gp ) do |p|
+		if @output_prefix
+			file = @output_prefix + field.tr('^a-zA-Z0-9_.:+=-', '_')
+			case @output_prefix
+			when /eps/
+				p.terminal "eps size %d,%d fontscale 1" % @inch_size
+				file += ".eps"
+			else
+				p.terminal "png size %d,%d" % @pixel_size
+				file += ".png"
+			end
+			p.output file
+		else
+			if np % @nr_plot == 0
+				p.terminal "dumb nofeed size %d,%d" % @char_size
+				p.multiplot "layout 1,#{@nr_plot}"
+			end
+			np += 1
+		end
+
+		if @plot_unit[field]
+			p.ylabel @plot_unit[field]
+			unit_scale = @unit_size[@plot_unit[field]]
+			values = values.map { |v| v / unit_scale.to_f }
+		end
+
+		p.notitle # necessary for updating title
+		if var
+			p.title format("%s%s (var %.2f)", @title_prefix, field, var)
+		else
+			p.title format("%s%s", @title_prefix, field)
+		end
+
+		if @x_stat_key
+			data = [@matrix[@x_stat_key], values]
+		else
+			data = [values]
+			p.noxtics
+		end
+		p.ytics 'nomirror'
+
+		p.data << Gnuplot::DataSet.new(data) do |ds|
+			if @output_prefix
+				ds.with = "linespoints pt 5"
+			else
+				ds.with = "linespoints pt 15 lt 0"
+			end
+			ds.notitle
+		end
+		end
+		end
+		end
+	end
+
+	def call(matrix_in = nil, y_stat_keys_in = nil, x_stat_key_in = nil)
+		with_matrix(matrix_in || matrix) {
+			with_x_stat_key(x_stat_key_in || x_stat_key) {
+				with_y_stat_keys(y_stat_keys_in || y_stat_keys) {
+					plot
+				}
+			}
+		}
+	end
+end
+
 def mplot(matrix, stats, x_stat_key = nil)
-	nr_plot = 0
-	unless $plot_unit
-		$plot_unit = load_yaml LKP_SRC + '/etc/plot-unit.yaml'
-		$unit_size = load_yaml LKP_SRC + '/etc/unit-size.yaml'
-	end
-	Gnuplot.open do |gp|
-	stats.each do |field, var|
-	values = matrix[field]
-	next if values.max == values.min
-	Gnuplot::Plot.new( gp ) do |plot|
+	p = MatrixPlotter.new
 	if $opt_output_path
-		file = $opt_output_path + field.tr('^a-zA-Z0-9_.:+=-', '_')
-		case $opt_output_path
-		when /eps/
-			$figure_width ||= 8
-			$figure_height ||= 4.8
-			plot.terminal "eps size #{$figure_width},#{$figure_height} fontscale 1"
-			file += ".eps"
-		else
-			$figure_width ||= 800
-			$figure_height ||= 480
-			plot.terminal "png size #{$figure_width},#{$figure_height}"
-			file += ".png"
-		end
-		plot.output file
-	else
-		if nr_plot % NR_PLOT == 0
-			plot.terminal "dumb nofeed size #{PLOT_SIZE_X},#{PLOT_SIZE_Y}"
-			plot.multiplot "layout 1,#{NR_PLOT}"
-		end
-		nr_plot += 1
+		p.set_output_prefix ensure_dir($opt_output_path)
 	end
-
-	if $plot_unit[field]
-		plot.ylabel $plot_unit[field]
-		unit_scale = $unit_size[$plot_unit[field]]
-		values = values.map { |v| v / unit_scale.to_f }
-	end
-
-	plot.notitle # necessary for updating title
-	if var
-		plot.title format("%s%s (var %.2f)", $figure_title_prefix, field, var)
-	else
-		plot.title format("%s%s", $figure_title_prefix, field)
-	end
-
-	if x_stat_key
-		data = [matrix[x_stat_key], values]
-	else
-		data = [values]
-		plot.noxtics
-	end
-	plot.ytics 'nomirror'
-
-	plot.data << Gnuplot::DataSet.new(data) do |ds|
-		if $opt_output_path
-			ds.with = "linespoints pt 5"
-		else
-			ds.with = "linespoints pt 15 lt 0"
-		end
-		ds.notitle
-	end
-	end
-	end
-	end
-end
-
-def with_figure_output_prefix(prefix, &b)
-	with_set_globals :$opt_output_path, prefix, &b
-end
-
-def with_figure_size(width, height, &b)
-	with_set_globals :$figure_width, width, :$figure_height, height, &b
-end
-
-def with_figure_title_prefix(prefix, &b)
-	with_set_globals :$figure_title_prefix, prefix, &b
+	p.(matrix, stats, x_stat_key)
 end
