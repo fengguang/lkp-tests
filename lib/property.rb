@@ -26,7 +26,7 @@ def set_#{prop}(value)
 end
 
 def unset_#{prop}
-	remove_instance_variable @#{prop}
+	remove_instance_variable :"@#{prop}"
 	self
 end
 			}
