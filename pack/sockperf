@@ -1,7 +1,19 @@
 #!/bin/bash
 
-VERSION="2.5.241"
-WEB_URL="http://sockperf.googlecode.com/files/${BM_NAME}-${VERSION}.tar.gz"
+download()
+{
+	git_clone_update https://github.com/Mellanox/sockperf.git
+	source_dir=sockperf
+}
+
+build()
+{
+	cd "$source_dir"
+	git checkout -b build origin/sockperf_v2
+	./autogen.sh
+	./configure
+	make
+}
 
 install()
 {
