@@ -1,4 +1,7 @@
+LKP_SRC ||= ENV['LKP_SRC']
+
 require "#{LKP_SRC}/lib/common.rb"
+require "#{LKP_SRC}/lib/property.rb"
 require "#{LKP_SRC}/lib/yaml.rb"
 require "#{LKP_SRC}/lib/result.rb"
 require "#{LKP_SRC}/lib/stats.rb"
@@ -151,22 +154,21 @@ class MResultRootCollection
 	def initialize(conditions = {})
 		cond = deepcopy(conditions)
 		ResultPath::MAXIS_KEYS.each { |f|
-			instance_variable_set(instance_variable_sym(f), conditions[f])
+			set_prop f, conditions[f]
 			cond.delete f
 		}
 		@other_conditions = cond
 	end
 
+	include Property
 	include Enumerable
 
-	ResultPath::MAXIS_KEYS.each { |k|
-		attr_accessor k
-	}
+	prop_with *ResultPath::MAXIS_KEYS
 
 	def pattern
 		result_path = ResultPath.new
 		ResultPath::MAXIS_KEYS.each { |k|
-			result_path[k] = instance_variable_get(instance_variable_sym(k)) || '.*'
+			result_path[k] = get_prop(k) || '.*'
 		}
 		result_path._result_root
 	end
@@ -191,7 +193,7 @@ class MResultRootCollection
 		field = field.to_s
 		value = value.to_s
 		if ResultPath::MAXIS_KEYS.index field
-			instance_variable_set(instance_variable_sym(field), value)
+			set_prop(field, value)
 		else
 			@other_conditions[field] = value
 		end
@@ -202,46 +204,11 @@ class MResultRootCollection
 		fields.each { |f|
 			f = f.to_s
 			if ResultPath::MAXIS_KEYS.index f
-				instance_variable_set(instance_variable_sym(f), nil)
+				set_prop(f, nil)
 			else
 				@other_conditions.delete f
 			end
 		}
-		self
-	end
-
-	def set_tbox_group(value)
-		self.tbox_group = value
-		self
-	end
-
-	def set_testcase(value)
-		self.testcase = value
-		self
-	end
-
-	def set_path_params(value)
-		self.path_params = value
-		self
-	end
-
-	def set_rootfs(value)
-		self.rootfs = value
-		self
-	end
-
-	def set_kconfig(value)
-		self.kconfig = value
-		self
-	end
-
-	def set_commit(value)
-		self.commit = value
-		self
-	end
-
-	def set_compiler(value)
-		self.compiler = value
 		self
 	end
 end
