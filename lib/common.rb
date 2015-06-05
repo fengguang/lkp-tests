@@ -44,6 +44,14 @@ def ensure_array(obj)
 	end
 end
 
+class Array
+	# multiple two arrays via multiple element with same index,
+	# return the result array.
+	def pos_mulitple(an_arr)
+		zip(an_arr).map { |v1, v2| v1 * v2 }
+	end
+end
+
 def string_to_num(str)
 	str.index('.') ? str.to_f : str.to_i
 end
