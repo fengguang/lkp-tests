@@ -151,7 +151,7 @@ class MResultRootCollection
 	def initialize(conditions = {})
 		cond = deepcopy(conditions)
 		ResultPath::MAXIS_KEYS.each { |f|
-			instance_variable_set(instance_variable_sym(f), conditions.fetch(f, '.*'))
+			instance_variable_set(instance_variable_sym(f), conditions[f])
 			cond.delete f
 		}
 		@other_conditions = cond
@@ -165,7 +165,9 @@ class MResultRootCollection
 
 	def pattern
 		result_path = ResultPath.new
-		ResultPath::MAXIS_KEYS.each { |k| result_path[k] = instance_variable_get(instance_variable_sym(k)) }
+		ResultPath::MAXIS_KEYS.each { |k|
+			result_path[k] = instance_variable_get(instance_variable_sym(k)) || '.*'
+		}
 		result_path._result_root
 	end
 
@@ -200,7 +202,7 @@ class MResultRootCollection
 		fields.each { |f|
 			f = f.to_s
 			if ResultPath::MAXIS_KEYS.index f
-				instance_variable_set(instance_variable_sym(f), '.*')
+				instance_variable_set(instance_variable_sym(f), nil)
 			else
 				@other_conditions.delete f
 			end
