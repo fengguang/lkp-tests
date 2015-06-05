@@ -3,3 +3,10 @@
 VERSION="2.6.0"
 WEB_URL="ftp://ftp.netperf.org/netperf/netperf-${VERSION}.tar.gz"
 CONFIGURE_FLAGS="--prefix=$BM_ROOT --enable-demo --enable-unixdomain --enable-sctp --enable-dccp --enable-burst"
+build()
+{
+    cd "$source_dir"
+    cp /usr/share/misc/config.{guess,sub} .
+    ./configure $CONFIGURE_FLAGS
+    make
+}

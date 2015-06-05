@@ -3,3 +3,10 @@
 VERSION="0.9"
 WEB_URL="http://jaist.dl.sourceforge.net/project/${BM_NAME}/${BM_NAME}/${VERSION}/${BM_NAME}-${VERSION}.tar.gz"
 CONFIGURE_FLAGS="--prefix=$BM_ROOT"
+build()
+{
+    cd "$source_dir"
+    cp /usr/share/misc/config.{guess,sub} .
+    ./configure $CONFIGURE_FLAGS
+    make
+}
