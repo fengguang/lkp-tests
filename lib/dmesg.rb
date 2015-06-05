@@ -27,7 +27,49 @@ class DmesgTimestamp
 		return -1 unless self.valid?
 		return 1 unless other.valid?
 
-		self.timestamp.to_f <=> other.timestamp.to_f
+		@timestamp.to_f <=> other.timestamp.to_f
+	end
+
+	def to_s
+		@timestamp
+	end
+
+	# put this functionality inside DmesgTimestamp class for now
+	# below patterns are required to match in order to detect
+	# abnormal sequence that indicates a possible reboot
+	# LARGE timestamp
+	# LARGE timestamp
+	# LARGE timestamp
+	# SMALL timestamp
+	# SMALL timestamp
+	# SMALL timestamp
+	class AbnormalSequenceDetector
+		def initialize
+			@large_dmesg_timestamps = []
+			@small_dmesg_timestamps = []
+		end
+
+		# dmesg "[ 0.000000]\n[ 1.000000]\n[ 1.000000]\n[ 2.000000]\n
+		#        [ 0.000000]\n[ 0.100000]\n[ 0.200000]" is abnormal
+		# dmesg "[ 0.000000]\n[ 1.000000]\n[ 1.000000]\n[ 2.000000]\n[ 1.000000]\n
+		#        [ 0.100000]\n[ 0.200000]\n[ 0.300000]" is abnormal
+		# dmesg "[ 0.000000]\n[ 1.000000]\n[ 0.000000]\n[ 2.000000]\n[ 1.000000]\n
+		#        [ 0.100000]\n[ 0.200000]\n[ 0.300000]" is normal
+		def detected?(line)
+			dmesg_timestamp = DmesgTimestamp.new(line)
+			if dmesg_timestamp.valid?
+				if @large_dmesg_timestamps.empty? || @large_dmesg_timestamps.any? {|large_dmesg_timestamp| large_dmesg_timestamp <= dmesg_timestamp}
+					@large_dmesg_timestamps.push(dmesg_timestamp)
+					@large_dmesg_timestamps = @large_dmesg_timestamps.drop(1) if @large_dmesg_timestamps.count > 3
+
+					@small_dmesg_timestamps.clear
+				else
+					@small_dmesg_timestamps.push(dmesg_timestamp)
+				end
+			end
+
+			@small_dmesg_timestamps.count >= 3
+		end
 	end
 end
 
