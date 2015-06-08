@@ -2,6 +2,9 @@ LKP_SRC ||= ENV['LKP_SRC']
 
 ## common utilities
 
+require "pathname"
+require 'fileutils'
+
 def deepcopy(o)
 	Marshal.load(Marshal.dump(o))
 end
@@ -56,43 +59,29 @@ def string_to_num(str)
 	str.index('.') ? str.to_f : str.to_i
 end
 
+def remove_common_head(arr1, arr2)
+	s = [arr1.size, arr2.size].min
+	(0...s).each { |i|
+		if arr1[i] != arr2[i]
+			return [arr1[i...arr1.size], arr2[i...arr2.size]]
+		end
+	}
+	[arr1[s...arr1.size] || [], arr2[s...arr2.size] || []]
+end
+
 ## Pathname
 
 def ensure_dir(dir)
 	dir[-1] == '/' ? dir : dir + '/'
 end
 
-## IO redirection
-
-def pager
-	saved_stdout = $stdout
-	IO.popen("/usr/bin/less","w") { |io|
-		$stdout = io
-		yield
-	}
-ensure
-	$stdout = saved_stdout
+def split_path(path)
+	path.split('/').select { |c| c && c.size != 0 }
 end
 
-def redirect(*args)
-	if args.empty?
-		args = ['stdout.txt', 'w']
-	end
-	saved_stdout = $stdout
-	File.open(*args) { |f|
-		$stdout = f
-		yield
-	}
-ensure
-	$stdout = saved_stdout
-end
-
-## Date and time
-
-ONE_DAY = 60 * 60 * 24
-
-def str_date(t)
-	t.strftime('%F')
+def canonicalize_path(path, dir = nil)
+	abs_path = File.absolute_path(path, dir)
+	Pathname.new(abs_path).cleanpath.to_s
 end
 
 module DirObject
@@ -131,4 +120,63 @@ module DirObject
 	def bash
 		run_in('/bin/bash -i')
 	end
+end
+
+## IO redirection
+
+def pager
+	saved_stdout = $stdout
+	IO.popen("/usr/bin/less","w") { |io|
+		$stdout = io
+		yield
+	}
+ensure
+	$stdout = saved_stdout
+end
+
+def redirect(*args)
+	if args.empty?
+		args = ['stdout.txt', 'w']
+	end
+	saved_stdout = $stdout
+	File.open(*args) { |f|
+		$stdout = f
+		yield
+	}
+ensure
+	$stdout = saved_stdout
+end
+
+## Date and time
+
+ONE_DAY = 60 * 60 * 24
+DATE_GLOB = '????-??-??'.freeze
+
+def str_date(t)
+	t.strftime('%F')
+end
+
+## File system
+
+def make_relative_symlink(src, dst)
+	if File.directory? dst
+		dst = File.join(dst, File.basename(src))
+	end
+	return if File.exists? dst
+	src_comps = split_path(src)
+	dst_comps = split_path(dst)
+	src_comps, dst_comps = remove_common_head(src_comps, dst_comps)
+	rsrc = File.join([".."] * (dst_comps.size - 1) + src_comps)
+	File.symlink(rsrc, dst)
+end
+
+def mkdir_p(dir, mode = 02755)
+	FileUtils.mkdir_p dir, :mode => mode
+end
+
+def with_flock(lock_file)
+	File.open(lock_file, File::RDWR|File::CREAT, 0644) { |f|
+		f.flock(File::LOCK_EX)
+		yield
+	}
 end
