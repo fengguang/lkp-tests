@@ -4,8 +4,23 @@ LKP_SRC ||= ENV['LKP_SRC']
 
 require 'yaml'
 
+def adapt_packages(distro, generic_packages)
+	distro_file = "#{LKP_SRC}/distro/adaptation/#{distro}"
+	return generic_packages unless File.exist? distro_file
+
+	distro_packages = YAML.load_file(distro_file)
+
+	generic_packages.map do |pkg|
+		if distro_packages.include? pkg
+			distro_packages[pkg].split
+		else
+			pkg
+		end
+	end
+end
+
 def get_dependency_packages(distro, script)
-	base_file = "#{LKP_SRC}/distro/debian/#{script}"
+	base_file = "#{LKP_SRC}/distro/depends/#{script}"
 	return [] unless File.exist? base_file
 
 	generic_packages = []
@@ -14,19 +29,7 @@ def get_dependency_packages(distro, script)
                 generic_packages.concat line.split
         end
 
-	# generic_packages based on debian
-	return generic_packages if distro == 'debian'
-
-	distro_file = "#{LKP_SRC}/distro/adaptation/#{distro}"
-	distro_packages = YAML.load_file(distro_file)
-	packages = []
-	generic_packages.each_with_index { |pkg_name, index|
-		if distro_packages.include? pkg_name
-			packages.push distro_packages[pkg_name]
-		else
-			packages.push generic_packages[index]
-		end
-	}
+	packages = adapt_packages(distro, generic_packages)
 
 	return packages.flatten.compact
 end
