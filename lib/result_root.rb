@@ -8,6 +8,7 @@ require "#{LKP_SRC}/lib/yaml.rb"
 require "#{LKP_SRC}/lib/result.rb"
 require "#{LKP_SRC}/lib/stats.rb"
 require "#{LKP_SRC}/lib/job.rb"
+require "#{LKP_SRC}/lib/data_store.rb"
 
 class ResultRoot
 	JOB_FILE = 'job.yaml'
@@ -327,4 +328,62 @@ class MResultRootCollection
 		}
 		self
 	end
+end
+
+class ResultRootTable < DataStore::Table
+	RESULT_ROOT_DIR = File.join LKP_DATA_DIR, 'result_root'
+end
+
+class << ResultRootTable
+	def create_layout(force = false)
+		return if !force && DataStore::Layout.exists?(self::RESULT_ROOT_DIR)
+		FileUtils.rm_rf(self::RESULT_ROOT_DIR)
+		layout = DataStore::Layout.create_new self::RESULT_ROOT_DIR
+		dmap = DataStore::Map
+		rtp = ResultPath.new
+		as_keys = ['testcase'] + rtp.path_scheme
+		as_keys[as_keys.index 'path_params'] = dmap::ALL_OTHERS_KEY
+		layout.add_map(dmap::NAME => 'default',
+			       dmap::AXIS_KEYS => as_keys,
+			       dmap::SUPPRESS_LAST => true)
+		layout.set_compress_matrix true
+		layout.save
+	end
+
+	def open
+		super(self::RESULT_ROOT_DIR)
+	end
+end
+
+def convert_one_result_root(rt, rt_table)
+	n = rt_table.new_node(rt.axes)
+	n.create_storage_link(rt.path)
+	n.update_desc { |desc|
+		desc.update(rt.desc)
+	}
+	n.index(true)
+end
+
+def convert_all_result_root
+	ResultRootTable.create_layout(true)
+	rtt = ResultRootTable.open
+
+	rtc = ResultRootCollection.new
+	rtc.each.first(3).each { |rt|
+		puts rt
+		convert_one_result_root(rt, rtt)
+	}
+end
+
+def convert_rt(rt_path)
+	rtt = ResultRootTable.open
+	rt = ResultRoot.new(rt_path)
+	convert_one_result_root(rt, rtt)
+end
+
+def delete_rt(rt_path)
+	rtt = ResultRootTable.open
+	rt = ResultRoot.new(rt_path)
+	n = rtt.open_node(rt.axes)
+	rtt.delete(n)
 end

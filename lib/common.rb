@@ -5,6 +5,8 @@ LKP_SRC ||= ENV['LKP_SRC']
 require "pathname"
 require 'fileutils'
 
+LKP_DATA_DIR = '/data'
+
 def deepcopy(o)
 	Marshal.load(Marshal.dump(o))
 end
