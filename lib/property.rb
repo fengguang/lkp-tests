@@ -3,16 +3,9 @@ LKP_SRC ||= ENV['LKP_SRC']
 require "#{LKP_SRC}/lib/common.rb"
 
 class Module
-	def check_prop_requirement
-		unless include?(Property)
-			raise "Must include 'Property' to use prop_xxx method!"
-		end
-	end
-
-	private :check_prop_requirement
+	alias prop_reader attr_reader
 
 	def prop_accessor(*props)
-		check_prop_requirement
 		attr_reader *props
 		props.each { |prop|
 			class_eval %Q{
@@ -34,7 +27,6 @@ end
 	end
 
 	def prop_with(*props)
-		check_prop_requirement
 		prop_accessor *props
 		props.each { |prop|
 			class_eval %Q{
