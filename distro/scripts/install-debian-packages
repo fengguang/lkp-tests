@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# Debian package installation
+
+apt-get -y install $*

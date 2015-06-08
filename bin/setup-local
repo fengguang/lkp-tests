@@ -96,44 +96,57 @@ def create_host_config
 	end
 end
 
-def install_debian_packages(script)
-	packages = get_dependency_packages 'debian', script
-	return unless packages
+def install_packages(script, distro)
+	packages = get_dependency_packages(distro, script)
+	dev_packages = get_dependency_packages(distro, script + '-dev')
+	packages |= dev_packages
+	return if packages.empty?
 
-	unless system 'apt-get', 'install', '-y', *packages
-		puts "Cannot install some packages in #{LKP_SRC}/distro/debian/#{script}"
+	unless system "#{LKP_SRC}/distro/scripts/install-#{distro}-packages", *packages
+		puts "Cannot install some packages in #{LKP_SRC}/distro/#{distro}/#{script}"
 		exit 1
 	end
 end
 
-def install_packages(script, distro)
-	send("install_#{distro}_packages", script)
-	send("install_#{distro}_packages", script + '-dev')
-end
-
-def install_benchmarks(script)
-	if File.file? "#{LKP_SRC}/pack/#{script}"
-		deb_name = script.gsub(/_/, '-') + '-LKP.deb'
-		puts "Making #{deb_name}..."
-		if system "#{LKP_SRC}/sbin/pack -d -c #{script}"
-			puts "Installing #{deb_name}..."
-			system "dpkg -i /tmp/#{deb_name}"
-		else
-			puts "Making #{deb_name} failed"
+def install_benchmarks(script, distro)
+	case distro
+	when "debian"
+		if File.file? "#{LKP_SRC}/pack/#{script}"
+			deb_name = script.gsub(/_/, '-') + '-LKP.deb'
+			puts "Making #{deb_name}..."
+			if system "#{LKP_SRC}/sbin/pack -d -c #{script}"
+				puts "Installing #{deb_name}..."
+				system "dpkg -i /tmp/#{deb_name}"
+			else
+				puts "Making #{deb_name} failed"
+			end
 		end
+	when "archlinux"
+		if File.file? "#{LKP_SRC}/pack/#{script}"
+			puts "Making #{script} benchmarks for #{distro}"
+			if system "#{LKP_SRC}/sbin/pack -c #{script}"
+				# TODO: make benchmark.cgz to '.tar.xz/.rpm'
+				puts "Making successfully"
+			else
+				puts "Making #{script} benchmarks failed"
+			end
+		end
+	else
+		puts "Unsupport #{distro} distribution"
 	end
 end
 
-
 distroInfo = LKP::DistroInfo.instance
 
-if distroInfo.systemNameL == "debian" or distroInfo.systemNameL == "ubuntu"
+case distroInfo.systemNameL
+when "debian", "ubuntu"
 	distro = "debian"
+when "arch"
+	distro = "archlinux"
+# TODO: support more distro
 else
-	puts "Not a Debian system, cannot install packages under #{LKP_SRC}/distro/debian"
-	exit 1
+	puts "Unsupport system, cannot instal packages under #{LKP_SRC}/distro/#{distro}"
 end
-
 
 make_wakeup
 create_lkp_dirs
@@ -143,6 +156,6 @@ install_packages("makepkg", distro)
 
 scripts.each { |script|
 	install_packages(script, distro)
-	install_benchmarks(script)
+	install_benchmarks(script, distro)
 }
 
