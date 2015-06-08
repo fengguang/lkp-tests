@@ -92,25 +92,25 @@ def create_cmd(program, args)
 	program_path = $programs[program] || program
 
 	args = [] if program_path.index('/stats/')
-
-	wrapper = File.dirname(program_path) + '/wrapper'
+	program_dir = File.dirname(program_path)
+	wrapper = program_dir + '/wrapper'
 	if File.executable?(wrapper)
 		cmd = [ wrapper, program, *args ]
 	else
 		cmd = [ program_path, *args ]
 	end
 
-	case program_path
-	when %r{/monitors/}
+	case program_dir
+	when %r{/monitors}
 		cmd = [ "run_monitor", *cmd ]
 		exec_line unless $script_lines[-1] =~ /run_monitor/
-	when %r{/setup/}
+	when %r{/setup$}
 		cmd = [ "run_setup", *cmd ]
 		exec_line
-	when %r{/daemon/}
+	when %r{/daemon$}
 		cmd = [ "start_daemon", *cmd ]
 		exec_line
-	when %r{/tests/}
+	when %r{/tests$}
 		cmd = [ "run_test", *cmd ]
 		exec_line
 		$stats_lines << "\t$LKP_SRC/stats/wrapper time #{program}.time"
