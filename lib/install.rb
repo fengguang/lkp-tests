@@ -12,7 +12,7 @@ def adapt_packages(distro, generic_packages)
 
 	generic_packages.map do |pkg|
 		if distro_packages.include? pkg
-			distro_packages[pkg].split
+			distro_packages[pkg].to_s.split
 		else
 			pkg
 		end
