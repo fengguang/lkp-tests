@@ -102,7 +102,7 @@ def install_packages(script, distro)
 	packages |= dev_packages
 	return if packages.empty?
 
-	unless system "#{LKP_SRC}/distro/scripts/install-#{distro}-packages", *packages
+	unless system "#{LKP_SRC}/distro/installer/#{distro}", *packages
 		puts "Cannot install some packages in #{LKP_SRC}/distro/#{distro}/#{script}"
 		exit 1
 	end

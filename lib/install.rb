@@ -17,7 +17,7 @@ def get_dependency_packages(distro, script)
 	# generic_packages based on debian
 	return generic_packages if distro == 'debian'
 
-	distro_file = "#{LKP_SRC}/distro/#{distro}-packages.yaml"
+	distro_file = "#{LKP_SRC}/distro/adaptation/#{distro}"
 	distro_packages = YAML.load_file(distro_file)
 	packages = []
 	generic_packages.each_with_index { |pkg_name, index|
