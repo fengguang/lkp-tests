@@ -11,6 +11,29 @@ module Compare
 	REL_WIDTH = 10
 	ERR_WIDTH = 6
 
+	COMPARE_AXIS_KEYS = :compare_axis_keys
+	MRESULT_ROOTS = :_result_roots
+	ALL_STATS = :all_stats
+	SET_STAT_KEYS = :set_stat_keys
+	INCLUDE_STATS = :include_stats
+	GROUP_BY_STAT = :group_by_stat
+
+	STAT_KEY = :stat_key
+	FAILURE = :failure
+	GROUP = :group
+	VALUES = :values
+	RUNS = :runs
+
+	STAT_BASE = :stat_base
+	AVGS = :avgs
+	STDDEVS = :stddevs
+	FAILS = :fails
+	CHANGES = :changes
+
+	AXES_AS_NUM = :axes_as_num
+	AXES_PREFIX = :axes_prefix
+	SORT = :sort
+
 	class Groups
 		private
 
@@ -21,13 +44,13 @@ module Compare
 
 		def calc_common_axes(axes)
 			as = deepcopy(axes)
-			@params[:compare_axis_keys].each { |ak| as.delete ak }
+			@params[COMPARE_AXIS_KEYS].each { |ak| as.delete ak }
 			as
 		end
 
 		def group
 			map = {}
-			@params[:_result_roots].each { |_rt|
+			@params[MRESULT_ROOTS].each { |_rt|
 				as = calc_common_axes(_rt.axes)
 				as.freeze
 				cg = map[as] ||= Group.new(@params, as)
@@ -66,7 +89,7 @@ module Compare
 		end
 
 		def calc_compare_axeses
-			compare_axis_keys = @params[:compare_axis_keys]
+			compare_axis_keys = @params[COMPARE_AXIS_KEYS]
 			@_result_roots.map { |_rt|
 				_rt.axes.select { |k,v| compare_axis_keys.index k }
 			}
@@ -145,11 +168,11 @@ module Compare
 				tms = failure ? ms : cms
 				truns = failure ? runs : cruns
 				stat = {
-					stat_key: stat_key,
-					failure: failure,
-					group: self,
-					values: tms.map { |m| m[stat_key] },
-					runs: truns
+					STAT_KEY => stat_key,
+					FAILURE => failure,
+					GROUP => self,
+					VALUES => tms.map { |m| m[stat_key] },
+					RUNS => truns
 				}
 				yield stat
 			}
@@ -164,10 +187,10 @@ module Compare
 
 		attr_reader :group, :stat_enum
 
-		def matrix(data_key = :avgs)
+		def matrix(data_key = AVGS)
 			m = {}
 			@stat_enum.each { |stat|
-				m[stat[:stat_key]] = stat[data_key]
+				m[stat[STAT_KEY]] = stat[data_key]
 			}
 			m
 		end
@@ -194,10 +217,10 @@ module Compare
 			cas = compare_axeses
 			cas_keys = cas[0].keys
 
-			data_key ||= :avgs
-			axes_as_num = params.fetch(:axes_as_num, true)
-			prefix = params.fetch(:axes_prefix, "")
-			sort_key = params.fetch(:sort, prefix + cas_keys[0])
+			data_key ||= AVGS
+			axes_as_num = params.fetch(AXES_AS_NUM, true)
+			prefix = params.fetch(AXES_PREFIX, "")
+			sort_key = params.fetch(SORT, prefix + cas_keys[0])
 
 			axis_converter = lambda { |axis_key|
 				if axes_as_num && (axes_as_num == true ||
@@ -222,34 +245,34 @@ module Compare
 	end
 
 	def self.calc_failure_fail(stat)
-		return unless stat[:failure]
-		stat[:fails] = stat[:values].map { |v|
+		return unless stat[FAILURE]
+		stat[FAILS] = stat[VALUES].map { |v|
 			v ? v.sum : 0
 		}
 	end
 
 	def self.calc_failure_change(stat)
-		return unless stat[:failure]
-		fs = stat[:fails]
-		runs = stat[:runs]
+		return unless stat[FAILURE]
+		fs = stat[FAILS]
+		runs = stat[RUNS]
 		reproduce0 = fs[0].to_f / runs[0]
-		stat[:changes] = fs.drop(1).each_with_index.map { |f, i|
+		stat[CHANGES] = fs.drop(1).each_with_index.map { |f, i|
 			100 * (f.to_f / runs[i] - reproduce0)
 		}
 	end
 
 	def self.calc_avg_stddev(stat)
-		return if stat[:failure]
-		vs = stat[:values]
-		stat[:avgs] = vs.map { |v| v && v.size > 0 ? v.average : 0 }
-		stat[:stddevs] = vs.map { |v| v && v.size > 1 ? v.standard_deviation : -1 }
+		return if stat[FAILURE]
+		vs = stat[VALUES]
+		stat[AVGS] = vs.map { |v| v && v.size > 0 ? v.average : 0 }
+		stat[STDDEVS] = vs.map { |v| v && v.size > 1 ? v.standard_deviation : -1 }
 	end
 
 	def self.calc_perf_change(stat)
-		return if stat[:failure]
-		avgs = stat[:avgs]
+		return if stat[FAILURE]
+		avgs = stat[AVGS]
 		avg0 = avgs[0]
-		stat[:changes] = avgs.drop(1).map { |avg|
+		stat[CHANGES] = avgs.drop(1).map { |avg|
 			100.0 * (avg - avg0) / avg0
 		}
 	end
@@ -265,13 +288,13 @@ module Compare
 		groups = Groups.new(params)
 
 		groups.each_group { |g|
-			if params[:all_stats]
+			if params[ALL_STATS]
 				g.calc_all_stats
-			elsif params[:set_stat_keys]
-				g.set_stat_keys params[:set_stat_keys]
+			elsif params[SET_STAT_KEYS]
+				g.set_stat_keys params[SET_STAT_KEYS]
 			else
 				g.calc_changed_stats
-				include_stats = params[:include_stats]
+				include_stats = params[INCLUDE_STATS]
 				if include_stats
 					g.include_stats(include_stats)
 				end
@@ -291,9 +314,9 @@ module Compare
 		stats = stat_enum.to_a
 		stat_base_map = {}
 		stats.each { |stat|
-			base = stat_key_base stat[:stat_key]
-			stat[:stat_base] = base
-			stat_base_map[base] ||= stat[:failure] ? -10000 : 0
+			base = stat_key_base stat[STAT_KEY]
+			stat[STAT_BASE] = base
+			stat_base_map[base] ||= stat[FAILURE] ? -10000 : 0
 			stat_base_map[base] += 1
 		}
 		AllTests.each { |test|
@@ -302,15 +325,15 @@ module Compare
 				stat_base_map[test] = 0
 			end
 		}
-		stats.sort_by! { |stat| [stat_base_map[stat[:stat_base]], stat[:stat_key]] }
+		stats.sort_by! { |stat| [stat_base_map[stat[STAT_BASE]], stat[STAT_KEY]] }
 		stats.each
 	end
 
 	def self.show_failure_change(stat)
-		return unless stat[:failure]
-		fails = stat[:fails]
-		changes = stat[:changes]
-		runs = stat[:runs]
+		return unless stat[FAILURE]
+		fails = stat[FAILS]
+		changes = stat[CHANGES]
+		runs = stat[RUNS]
 		fails.each_with_index { |f, i|
 			unless i == 0
 				printf "%#{REL_WIDTH}.0f%% ", changes[i-1]
@@ -325,10 +348,10 @@ module Compare
 	end
 
 	def self.show_perf_change(stat)
-		return if stat[:failure]
-		avgs = stat[:avgs]
-		stddevs = stat[:stddevs]
-		changes = stat[:changes]
+		return if stat[FAILURE]
+		avgs = stat[AVGS]
+		stddevs = stat[STDDEVS]
+		changes = stat[CHANGES]
 		avgs.each_with_index { |avg, i|
 			unless i == 0
 				p = changes[i-1]
@@ -354,7 +377,7 @@ module Compare
 	end
 
 	def self.show_stat(stat)
-		printf "  %s\n", stat[:stat_key]
+		printf "  %s\n", stat[STAT_KEY]
 	end
 
 	def self.show_group_header(group)
@@ -396,7 +419,7 @@ module Compare
 
 	def self.show_group(group, stat_enum)
 		nr_header = group._result_roots.size - 1
-		failure, perf = stat_enum.partition { |stat| stat[:failure] }
+		failure, perf = stat_enum.partition { |stat| stat[FAILURE] }
 		show_group_header group
 
 		unless failure.empty?
@@ -427,7 +450,7 @@ module Compare
 	def self.group_by_stat(stat_enum)
 		stat_map = {}
 		stat_enum.each { |stat|
-			key = stat[:stat_key]
+			key = stat[STAT_KEY]
 			stat_map[key] ||= []
 			stat_map[key] << stat
 		}
@@ -443,18 +466,18 @@ module Compare
 		stat_map.each { |stat_key, stats|
 			puts "#{stat_key}:"
 			stats.each { |stat|
-				if stat[:failure]
+				if stat[FAILURE]
 					show_failure_change stat
 				else
 					show_perf_change stat
 				end
-				printf "  %s\n", stat[:group].common_axes.values.join('/')
+				printf "  %s\n", stat[GROUP].common_axes.values.join('/')
 			}
 		}
 	end
 
 	def self.show_compare_data(compare_data, params)
-		if params[:group_by_stat]
+		if params[GROUP_BY_STAT]
 			show_by_stats(compare_data)
 		else
 			show_by_group(compare_data)
@@ -475,8 +498,8 @@ module Compare
 		_result_roots = commits.map { |c| MResultRootCollection.new('commit' => c).to_a }.flatten
 		compare_axis_keys = ['commit']
 		params = {
-			_result_roots: _result_roots,
-			compare_axis_keys: compare_axis_keys
+			MRESULT_ROOTS => _result_roots,
+			COMPARE_AXIS_KEYS => compare_axis_keys
 		}.merge(params_in)
 		compare(params)
 	end
@@ -485,9 +508,12 @@ module Compare
 		commits = ['f5c0a122800c301eecef93275b0c5d58bb4c15d9', '3a8b36f378060d20062a0918e99fae39ff077bf0']
 		compare_axis_keys = ['commit', 'rwmode']
 		pager {
-			#compare_commits(commits, all_stats: true, group_by_stat: true)
-			compare_commits(commits, all_stats: false, group_by_stat: false,
-					compare_axis_keys: compare_axis_keys)
+			#compare_commits(commits,
+			#		 ALL_STATS => true,
+			#		 GROUP_BY_STAT => true)
+			compare_commits(commits, ALL_STATS => false,
+					GROUP_BY_STAT => false,
+					COMPARE_AXIS_KEYS => compare_axis_keys)
 		}
 	end
 
@@ -499,9 +525,9 @@ module Compare
 			puts "#{_rt.runs}"
 		}
 		params = {
-			_result_roots: rts_,
-			compare_axis_keys: ['commit'],
-			all_stats: false,
+			MRESULT_ROOTS => rts_,
+			COMPARE_AXIS_KEYS => ['commit'],
+			ALL_STATS => false,
 		}
 		page {
 			compare(params)
@@ -516,8 +542,8 @@ module Compare
 		).to_a
 		compare_axis_keys = ['load']
 		params = {
-			_result_roots: _result_roots,
-			compare_axis_keys: compare_axis_keys,
+			MRESULT_ROOTS => _result_roots,
+			COMPARE_AXIS_KEYS => compare_axis_keys,
 		}
 		pager {
 			compare(params)
