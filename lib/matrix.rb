@@ -153,15 +153,8 @@ def unite_to(stats, matrix_root, max_cols = nil)
 	matrix = load_matrix_file(matrix_root + '/matrix.yaml') unless matrix
 	matrix = {} unless matrix
 
-	old_stats_sources = matrix['stats_source'] || []
-	files = Dir["#{matrix_root}/**/stats.json"]
-
-	if old_stats_sources.size + 1 != files.size
-		matrix = matrix_from_stats_files files
-	else
-		matrix = add_stats_to_matrix(stats, matrix)
-		shrink_matrix(matrix, max_cols) if max_cols
-	end
+	matrix = add_stats_to_matrix(stats, matrix)
+	shrink_matrix(matrix, max_cols) if max_cols
 
 	save_json(matrix, matrix_file)
 	matrix = matrix_fill_missing_zeros(matrix)
