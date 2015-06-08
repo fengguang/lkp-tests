@@ -1,11 +1,127 @@
 LKP_SRC ||= ENV['LKP_SRC']
 
+require "time"
+
 require "#{LKP_SRC}/lib/common.rb"
 require "#{LKP_SRC}/lib/property.rb"
 require "#{LKP_SRC}/lib/yaml.rb"
 require "#{LKP_SRC}/lib/result.rb"
 require "#{LKP_SRC}/lib/stats.rb"
 require "#{LKP_SRC}/lib/job.rb"
+
+class ResultRoot
+	JOB_FILE = 'job.yaml'
+
+	include DirObject
+	prop_reader :axes
+
+	private
+
+	def initialize(path)
+		@path = path
+		@path.freeze
+		@axes = calc_axes
+	end
+
+	def calc_axes
+		as = job.axes
+		rp = ResultPath.parse(@path)
+		as['run'] = rp['run']
+		as
+	end
+
+	public
+
+	def axes_path
+		as = deepcopy(@axes)
+		as['path_params'] = job.path_params
+		as
+	end
+
+	def job
+		@job ||= Job.open path(JOB_FILE)
+	end
+
+	def calc_desc
+		m = {}
+		j = job
+		['queue', 'job_state'].each { |k|
+			m[k] = j[k]
+		}
+		end_time = j['end_time']
+		if end_time
+			create_time = Time.at(end_time.to_i)
+		else
+			create_time = j['dequeue_time']
+		end
+		m['create_time'] = create_time
+		m
+	end
+
+	def desc
+		@desc ||= calc_desc
+	end
+
+	def _result_root
+		rp = ResultPath.parse(@path)
+		rp._result_root
+	end
+
+	def collection
+		ResultRootCollection.new axes_path
+	end
+end
+
+# Minimal implementation just for convert to general data store
+class ResultRootCollection
+	INDEX_DIR = '/lkp/paths'
+
+	include Enumerable
+
+	def initialize(conditions = {})
+		@conditions = conditions
+	end
+
+	def set(key, value)
+		@conditions[key] = value
+		self
+	end
+
+	def unset(key)
+		@conditions.delete key
+		self
+	end
+
+	def set_date_glob(glob)
+		@date_glob = glob
+	end
+
+	def set_date(time)
+		@date_glob = str_date(time)
+	end
+
+	def set_queue(queue)
+		@queue = queue
+	end
+
+	def each
+		block_given? or return enum_for(__method__)
+
+		files = Dir[File.join INDEX_DIR, DATE_GLOB + '-*']
+		files.sort!
+		files.reverse!
+		files.each { |fn|
+			File.open(fn) { |f|
+				f.readlines.reverse!.each { |rtp|
+				#f.readlines.each { |rtp|
+					rtp = rtp.strip
+					next if ! File.exists? rtp
+					yield ResultRoot.new rtp
+				}
+			}
+		}
+	end
+end
 
 class Completion
 	def initialize(line)
