@@ -18,4 +18,11 @@ fifo=$TMP/fifo-$program
 [ -L "$LKP_SRC/bin/tee-$program" ] || ln -s -T /usr/bin/tee $LKP_SRC/bin/tee-$program
 tee-$program -a $TMP_RESULT_ROOT/$program < $fifo &
 echo $! >> $TMP/.pid-pipes
-exec /usr/bin/time -v -o $TMP/${program}.time $exec_prefix $program_dir/$program "$@" > $fifo
+
+# time command may link to busybox which not support -o option
+if [ -L '/usr/bin/time' ]; then
+	time_prefix=
+else
+	time_prefix="/usr/bin/time -v -o $TMP/${program}.time"
+fi
+exec $time_prefix $exec_prefix $program_dir/$program "$@" > $fifo
