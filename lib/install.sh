@@ -12,8 +12,9 @@ adapt_packages()
 
 	for pkg in $generic_packages
 	do
-		if grep -q "^$pkg:" $distro_file; then
-			distro_pkg=$(sed -n "/^$pkg:/p" $distro_file | cut -d' ' -f 2- | tr -d '\"')
+		local mapping=$(grep -q "^$pkg:" $distro_file)
+		if [ -n "$mapping" ]; then
+			distro_pkg=${mapping#$pkg:}
 			[ -n "$distro_pkg" ] && echo $distro_pkg
 		else
 			echo $pkg
