@@ -114,7 +114,7 @@ build_install_benchmarks() {
 	[ -n "$DRY_RUN" ] && return
 
 	case $_distro in
-		"debian")
+		debian|ubuntu)
 			local deb_name=$(printf '%s-LKP.deb\n' "$_script" | sed 's/_/-/g')
 			$LKP_SRC/sbin/pack -d -c $_script
 			if [ $? -eq 0 ]; then
@@ -148,8 +148,6 @@ build_install_benchmarks() {
 detect_system
 DISTRO=$_system_name_lowercase
 case $DISTRO in
-	"debian"|"ubuntu")
-		distro="debian" ;;
 	"arch")
 		distro="archlinux" ;;
 	*)
