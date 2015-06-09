@@ -146,14 +146,12 @@ build_install_benchmarks() {
 . $LKP_SRC/lib/install.sh
 
 detect_system
-DISTRO=$_system_name_lowercase
-case $DISTRO in
-	"arch")
-		distro="archlinux" ;;
-	*)
-		echo "Not a supported system, cannot install packages."
-		exit 1 ;;
-esac
+distro=$_system_name_lowercase
+
+[ -x $LKP_SRC/distro/installer/$distro ] || {
+	echo "Not a supported system, cannot install packages."
+	exit 1
+}
 
 make_wakeup
 create_lkp_dirs

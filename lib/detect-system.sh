@@ -123,7 +123,7 @@ detect_system()
 	elif
 		[ -f ${rootfs}/etc/altlinux-release ]
 	then
-		_system_name="Arch"
+		_system_name="ArchLinux"
 		detect_libc_version $rootfs
 	elif
 		[ -f ${rootfs}/etc/os-release ] &&
@@ -157,7 +157,7 @@ detect_system()
 	elif
 		[ -f ${rootfs}/etc/arch-release ]
 	then
-		_system_name="Arch"
+		_system_name="ArchLinux"
 		detect_libc_version $rootfs
 	elif
 		[ -f ${rootfs}/etc/fedora-release ]
