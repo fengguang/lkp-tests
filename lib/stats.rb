@@ -204,6 +204,7 @@ def load_base_matrix(matrix_path, head_matrix)
 	git_tag = GitTag.new(:remote => remote)
 
 	version, is_exact_match = git_tag.last_release_tag(commit)
+	puts "remote: #{remote}, version: #{version}, is exact match: #{is_exact_match}" if ENV['LKP_VERBOSE']
 
 	# FIXME: remove it later; or move it somewhere in future
 	if not version
