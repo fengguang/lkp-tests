@@ -1,0 +1,7 @@
+#!/bin/bash
+
+tbox=$1
+nr_last=$2
+[ -z "$tbox" ] && echo "Usage: last-rt tbox <nr_last|10>" 1>&2 && exit 1
+
+grep -o '/result/.*' /lkp/wtmp/$tbox.yaml | tail -n ${nr_last:-10}
