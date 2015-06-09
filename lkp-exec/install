@@ -86,42 +86,55 @@ EOT
 	}
 }
 
-install_debian_package() {
+install_packages() {
 	local _script=$1
-	[ -f "$LKP_SRC/distro/debian/${_script}" ] || return
+	local _distro=$2
 
-	local packages="$(get_dependency_packages debian ${_script})"
-	echo apt-get install $packages
+	local packages=$(get_dependency_packages ${_distro} ${_script})
+	local dev_packages=$(get_dependency_packages ${_distro} ${_script}-dev)
+	packages="$(echo $packages $dev_packages | tr '\n' ' ')"
+	[ -n "$packages" -a "$packages" != " " ] || return
+
+	echo "Use: $LKP_SRC/distro/installer/$distro install $packages"
 	[ -n "$DRY_RUN" ] && return
 
-	apt-get install -y $packages || {
-		echo "Cannot install some packages in $LKP_SRC/distro/debian/${_script}"
+	$LKP_SRC/distro/installer/$distro $packages || {
+		echo "Cannot install some packages in $LKP_SRC/distro/depends/${_script}"
 		exit 1
 	}
 }
 
-install_packages() {
-	local _script=$1
-	install_${DISTRO}_package "$_script"
-	install_${DISTRO}_package "${_script}-dev"
-}
-
 build_install_benchmarks() {
 	local _script=$1
+	local _distro=$2
 
 	[ -x "$LKP_SRC/pack/$_script" ] || return
 
-	local deb_name=$(printf '%s-LKP.deb\n' "$_script" | sed 's/_/-/g')
-	echo "Making $deb_name..."
-
+	echo "Making $script benchmark for $distro"
 	[ -n "$DRY_RUN" ] && return
-	$LKP_SRC/sbin/pack -d -c $_script
-	if [ $? -eq 0 ]; then
-		echo "Installing $deb_name"
-		dpkg -i /tmp/$deb_name
-	else
-		echo "Making $deb_name failed"
-	fi
+
+	case $_distro in
+		"debian")
+			local deb_name=$(printf '%s-LKP.deb\n' "$_script" | sed 's/_/-/g')
+			$LKP_SRC/sbin/pack -d -c $_script
+			if [ $? -eq 0 ]; then
+				echo "Installing $deb_name"
+				dpkg -i /tmp/$deb_name
+			else
+				echo "Making $deb_name failed"
+			fi ;;
+		"archlinux")
+			$LKP_SRC/sbin/pack -c $_script
+			# TODO: make benchmark.cgz to '.tar.xz/.rpm'
+			if [ $? -eq 0 ]; then
+				echo "Making successfully"
+			else
+				echo "Making $script benchmark failed"
+			fi ;;
+		*)
+			echo "Unsupport $distro distribution"
+			exit 1 ;;
+	esac
 }
 
 [ $# -eq 0 ] && {
@@ -134,15 +147,20 @@ build_install_benchmarks() {
 
 detect_system
 DISTRO=$_system_name_lowercase
-[ "$DISTRO" = "debian" ] || {
-	echo "Not a supported system, cannot install packages."
-	exit 1
-}
+case $DISTRO in
+	"debian"|"ubuntu")
+		distro="debian" ;;
+	"arch")
+		distro="archlinux" ;;
+	*)
+		echo "Not a supported system, cannot install packages."
+		exit 1 ;;
+esac
 
 make_wakeup
 create_lkp_dirs
 create_host_config
-install_packages "lkp"
+install_packages "lkp" $distro
 
 for filename in "$@"
 do
@@ -162,10 +180,10 @@ do
 	for script in $scripts
 	do
 		[ -z "$makepkg_once" ] && [ -d "$LKP_SRC/pkg/$script" ] && ! [ -x "$LKP_SRC/pack/$script" ] && {
-			install_packages "makepkg"
+			install_packages "makepkg" $distro
 			makepkg_once=1
 		}
-		install_packages "$script"
-		build_install_benchmarks "$script"
+		install_packages "$script" $distro
+		build_install_benchmarks "$script" $distro
 	done
 done

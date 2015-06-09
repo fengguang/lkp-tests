@@ -1,13 +1,35 @@
 #!/bin/sh
 
+adapt_packages()
+{
+	local distro_file="$LKP_SRC/distro/adaptation/$distro"
+	[ -f "$distro_file" ] || {
+		echo $generic_packages
+		return
+	}
+
+	local distro_pkg=
+
+	for pkg in $generic_packages
+	do
+		if grep -q "^$pkg:" $distro_file; then
+			distro_pkg=$(sed -n "/^$pkg:/p" $distro_file | cut -d' ' -f 2- | tr -d '\"')
+			[ -n "$distro_pkg" ] && echo $distro_pkg
+		else
+			echo $pkg
+		fi
+	done
+}
+
 get_dependency_packages()
 {
 	local distro=$1
 	local script=$2
-	local file="$LKP_SRC/distro/$distro/${script}"
+	local base_file="$LKP_SRC/distro/depends/${script}"
 
-	[ -f "$file" ] || return
+	[ -f "$base_file" ] || return
 
-	sed 's/#.*//' "$file"
+	local generic_packages=$(sed 's/#.*//' "$base_file")
+
+	adapt_packages
 }
-
