@@ -29,7 +29,7 @@ if [ "$lkp_command" = 'help' ]; then
 fi
 
 case "$lkp_command" in
-	'install')	lkp_command='setup-local'	;;
+	'install')	lkp_command='install'		;;
 	'split')	lkp_command='split-job'		;;
 	'compile')	lkp_command='job2sh'		;;
 	'run')
