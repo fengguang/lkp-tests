@@ -236,7 +236,7 @@ def load_base_matrix(matrix_path, head_matrix)
 
 		base_matrix_file = "#{__result_root}/#{tag}/matrix.json"
 		unless File.exist? base_matrix_file
-			base_matrix_file = "#{__result_root}/#{git_tag.to_commit tag}/matrix.json"
+			base_matrix_file = "#{__result_root}/#{git_commit tag}/matrix.json"
 		end
 		next unless File.exist? base_matrix_file
 
