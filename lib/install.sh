@@ -12,7 +12,7 @@ adapt_packages()
 
 	for pkg in $generic_packages
 	do
-		local mapping=$(grep -q "^$pkg:" $distro_file)
+		local mapping=$(grep "^$pkg:" $distro_file)
 		if [ -n "$mapping" ]; then
 			distro_pkg=${mapping#$pkg:}
 			[ -n "$distro_pkg" ] && echo $distro_pkg
