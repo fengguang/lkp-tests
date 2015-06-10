@@ -574,7 +574,7 @@ def show_delta(stat, key_g)
 		if $header_shown[is_fail]
 			puts
 		else
-			puts 'testbox/testcase/testparams'
+			puts 'testcase/testparams/testbox'
 		end
 
 		$dims.keys.each { |dim|
