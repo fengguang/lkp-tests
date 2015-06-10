@@ -12,7 +12,7 @@ adapt_packages()
 
 	for pkg in $generic_packages
 	do
-		local mapping=$(grep "^$pkg:" $distro_file)
+		local mapping="$(grep "^$pkg:" $distro_file)"
 		if [ -n "$mapping" ]; then
 			distro_pkg=${mapping#$pkg:}
 			[ -n "$distro_pkg" ] && echo $distro_pkg
@@ -30,7 +30,7 @@ get_dependency_packages()
 
 	[ -f "$base_file" ] || return
 
-	local generic_packages=$(sed 's/#.*//' "$base_file")
+	local generic_packages="$(sed 's/#.*//' "$base_file")"
 
 	adapt_packages
 }

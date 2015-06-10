@@ -90,8 +90,8 @@ install_packages() {
 	local _script=$1
 	local _distro=$2
 
-	local packages=$(get_dependency_packages ${_distro} ${_script})
-	local dev_packages=$(get_dependency_packages ${_distro} ${_script}-dev)
+	local packages="$(get_dependency_packages ${_distro} ${_script})"
+	local dev_packages="$(get_dependency_packages ${_distro} ${_script}-dev)"
 	packages="$(echo $packages $dev_packages | tr '\n' ' ')"
 	[ -n "$packages" -a "$packages" != " " ] || return
 
