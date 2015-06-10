@@ -6,7 +6,7 @@ WEB_URL="http://download.savannah.gnu.org/releases/${BM_NAME}/${BM_NAME}-${VERSI
 build()
 {
 	cd $source_dir/src
-	make
+	LDFLAGS="-Wl,--no-as-needed" make
 }
 
 install()
