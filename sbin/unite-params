@@ -5,42 +5,8 @@ MAX_COLS = 100
 LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
 
 require "#{LKP_SRC}/lib/job.rb"
+require "#{LKP_SRC}/lib/matrix.rb"
 
-$result_root = ARGV[0] || ENV["RESULT_ROOT"]
-if not File.directory? $result_root
-	STDERR.puts "#{$result_root} is not a directory"
-	exit 1
-end
+result_root = ARGV[0] || ENV["RESULT_ROOT"]
 
-result_path = ResultPath.new
-result_path.parse_result_root $result_root
-
-$params_file  = result_path.params_file
-$params_root  = File.dirname $params_file
-
-if File.exist? $params_file and Time.now - File.ctime($params_root) > 3600
-	# no need to update params
-	exit 0
-end
-
-params = {}
-params = YAML.load_file($params_file) if File.exist? $params_file
-
-job = Job.new
-job.load($result_root + '/job.yaml') or exit
-
-job.each_param { |k, v, option_type|
-	if params[k]
-		if not params[k].include? v
-			params[k] << v
-		end
-	else
-		params[k] = [ v ]
-	end
-}
-
-begin
-	atomic_save_yaml_json params, $params_file
-rescue Exception => e
-	STDERR.puts $PROGRAM_NAME + ': ' + e.message
-end
+unite_params result_root
