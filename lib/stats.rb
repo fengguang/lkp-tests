@@ -200,8 +200,10 @@ def load_base_matrix(matrix_path, head_matrix)
 	matrix = {}
 	tags_merged = []
 
-	remote = branch_remote(find_branch(commit)) rescue "default"
-	git_tag = GitTag.new(:remote => remote)
+	# FIXME
+	remote = 'linus'
+	$git_tag ||= GitTag.new(:remote => remote)
+	git_tag = $git_tag
 
 	version, is_exact_match = git_tag.last_release_tag(commit)
 	puts "remote: #{remote}, version: #{version}, is exact match: #{is_exact_match}" if ENV['LKP_VERBOSE']
