@@ -224,3 +224,62 @@ def save_matrix_as_csv(file, matrix, sep = ' ', header = true)
 		file.puts vs.map { |v| v.to_s }.join(sep)
 	}
 end
+
+def unite_params(result_root)
+	if not File.directory? result_root
+		STDERR.puts "#{result_root} is not a directory"
+		return false
+	end
+
+	result_path = ResultPath.new
+	result_path.parse_result_root result_root
+
+	params_file = result_path.params_file
+	params_root = File.dirname params_file
+
+	if File.exist? params_file and Time.now - File.ctime(params_root) > 3600
+		# no need to update params
+		return true
+	end
+
+	params = {}
+	params = YAML.load_file(params_file) if File.exist? params_file
+
+	job = Job.new
+	job.load(result_root + '/job.yaml') or return
+
+	job.each_param { |k, v, option_type|
+		if params[k]
+			if not params[k].include? v
+				params[k] << v
+			end
+		else
+			params[k] = [ v ]
+		end
+	}
+
+	begin
+		atomic_save_yaml_json params, params_file
+	rescue Exception => e
+		STDERR.puts 'unite_params: ' + e.message
+	end
+end
+
+def unite_stats(result_root)
+	if not File.directory? result_root
+		STDERR.puts "#{result_root} is not a directory"
+		return false
+	end
+
+	result_root = File.realpath result_root
+	_result_root = File.dirname result_root
+	__result_root = File.dirname _result_root
+
+	stats = create_stats_matrix(result_root)
+	stats['stats_source'] = result_root + '/stats.json'
+
+	unite_to(stats, _result_root)
+	__matrix = unite_to(stats, __result_root, 100)
+
+	check_warn_test_error __matrix, result_root
+end
