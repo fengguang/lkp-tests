@@ -1,4 +1,20 @@
 #!/bin/bash
 
-echo rm -fr "$1"
-echo sed -i \'"/${1//\//\\/}/d"\' "/lkp/paths/*"
+source $LKP_SRC/lib/common.sh
+
+remove()
+{
+	for path; do
+		path=$(abs_path $path)
+		echo sed -i \'"/${path//\//\\/}/d"\' "/lkp/paths/*"
+		echo rm -fr "$path"
+	done
+}
+
+echo "The command to remove the result path are:"
+remove "$@"
+echo -n "!!! Are you really want to do that? [No/yes]: "
+read answer
+if [[ $answer = "yes" ]]; then
+	remove "$@" | bash
+fi
