@@ -1,0 +1,45 @@
+testcase: piglit
+
+default-monitors:
+  wait: pre-test
+  vmstat:
+
+timeout: 30m
+
+piglit:
+  group:
+    - igt-050
+    - igt-051
+    - igt-052
+    - igt-053
+    - igt-054
+    - igt-055
+    - igt-056
+    - igt-057
+    - igt-058
+    - igt-059
+    - igt-060
+    - igt-061
+    - igt-062
+    - igt-063
+    - igt-064
+    - igt-065
+    - igt-066
+    - igt-067
+    - igt-068
+    - igt-069
+    - igt-070
+    - igt-071
+    - igt-072
+    - igt-073
+    - igt-074
+    - igt-075
+    - igt-076
+    - igt-077
+    - igt-078
+    - igt-079
+    - igt-080
+    - igt-081
+    - igt-082
+    - igt-083
+    - igt-084
