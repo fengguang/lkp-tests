@@ -1,60 +1,12 @@
 #!/bin/sh
 
-[ -x "/usr/sbin/bmc-watchdog" ] && {
-	bmc-watchdog --stop 2>/dev/null
-}
-
-[ "${HOSTNAME#*lkp-os}"		!= "$HOSTNAME" ] && exit
-[ "${HOSTNAME#*lkp-st01}"	!= "$HOSTNAME" ] && exit
-[ "${job#*/borrow/}" != "$job" ] && exit
-
 [ -n "$max_uptime" ] || max_uptime=$((5 * 3600))
 max_uptime=${max_uptime%%.*}
 
-start_watchdog_daemon()
-{
-	touch $TMP/uptime-for-watchdog
-
-	if [ -f "/var/run/watchdog.pid" ] && watchdog_pid=$(cat /var/run/watchdog.pid)
-	   [ "$(readlink /proc/$watchdog_pid/exe)" = '/usr/sbin/watchdog' ]; then
-		/etc/init.d/watchdog stop 2>/dev/null
-	fi
-
-	cat > $LKP_SRC/etc/watchdog.conf <<EOF
-watchdog-device = /dev/watchdog
-watchdog-timeout = 60
-interval = 10
-realtime = yes
-
-pidfile = $TMP/run-lkp.pid
-
-file = $TMP/uptime-for-watchdog
-change = $((max_uptime + 600))
-
-# ping = 192.168.1.1
-EOF
-
-	/usr/sbin/watchdog -c $LKP_SRC/etc/watchdog.conf
-
-	# now disable nmi watchdog to free the PMU counter to perf tools
-	[ -f "/proc/sys/kernel/softlockup_panic" ] && echo 0 > /proc/sys/kernel/softlockup_panic
-	[ -f "/proc/sys/kernel/nmi_watchdog" ] && echo 0 > /proc/sys/kernel/nmi_watchdog
-}
-
-modprobe ipmi_watchdog 2>/dev/null
-
-if [ -x "/usr/sbin/watchdog" ]; then
-	start_watchdog_daemon
-elif [ -x "/usr/sbin/bmc-watchdog" ]; then
-	bmc-watchdog -d
-fi
-
 . $LKP_SRC/lib/wait.sh
+setup_wait
 
 wait_post_test --timeout $max_uptime && {
-	/etc/init.d/watchdog stop 2>/dev/null
-	killall -9 watchdog
-	rmmod ipmi_watchdog
 	exit 0
 }
 
