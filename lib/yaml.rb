@@ -77,7 +77,7 @@ end
 $json_cache = {}
 $json_mtime = {}
 
-def load_json(file)
+def load_json(file, cache = false)
 	if (file =~ /.json(\.gz)?$/ and File.exist? file) or
 	   (file =~ /.json$/ and File.exist? file + '.gz' and file += '.gz')
 		begin
@@ -88,10 +88,11 @@ def load_json(file)
 				else
 					obj = JSON.load `zcat #{file}`
 				end
+				return obj unless cache
 				$json_cache[file] = obj
 				$json_mtime[file] = mtime
 			end
-			return deepcopy($json_cache[file])
+			return $json_cache[file].freeze
 		rescue SignalException
 			raise
 		rescue Exception

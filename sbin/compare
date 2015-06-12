@@ -190,7 +190,7 @@ def dim_name(dim)
 end
 
 def get_json_field(file, key)
-	matrix = load_json file
+	matrix = load_json file, true
 	samples_fill_missing_zeros(matrix, key)
 end
 
@@ -307,8 +307,8 @@ def setup_changed_stats()
 		next unless File.exist? matrix_file1
 		next unless File.exist? matrix_file2
 		if $opt_index
-			matrix1 = load_json matrix_file1
-			matrix2 = load_json matrix_file2
+			matrix1 = load_json matrix_file1, true
+			matrix2 = load_json matrix_file2, true
 			$all_index.each { |stat, weight|
 				if stat.index 'iostat.'
 					next unless k =~ /\/(dd-write)\//
@@ -664,8 +664,8 @@ end
 def call_mmplot
 	$cases.each { |_rt, value|
 		file = _rt + '/matrix.json'
-		matrix1 = load_json file
-		matrix2 = load_json file.sub($opt_dims[0], $opt_dims[1])
+		matrix1 = load_json file, true
+		matrix2 = load_json file.sub($opt_dims[0], $opt_dims[1]), true
 		mmplot(matrix2, matrix1, [$opt_field], File.dirname(File.dirname(_rt)))
 	}
 end
