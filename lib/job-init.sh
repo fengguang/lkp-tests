@@ -49,7 +49,9 @@ mount_result_root()
 		//*/*)
 			result_fs=cifs
 			modprobe cifs 2>/dev/null
-			mount.cifs -o guest $result_service $RESULT_MNT || return
+			local cifs_mount_option='-o guest'
+			[ -n "$LKP_CIFS_PORT" ] && cifs_mount_option="$cifs_mount_option,port=$LKP_CIFS_PORT"
+			mount.cifs $cifs_mount_option $result_service $RESULT_MNT || return
 			;;
 		9p/*)
 			result_fs=virtfs
