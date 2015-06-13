@@ -1,5 +1,6 @@
 testcase: xfstests
 
+cpufreq_governor:
 default-monitors:
   wait: pre-test
   vmstat:

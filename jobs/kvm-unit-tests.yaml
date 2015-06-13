@@ -1,5 +1,6 @@
 testcase: kvm-unit-tests
 
+cpufreq_governor:
 default-monitors:
   wait: pre-test
   vmstat:

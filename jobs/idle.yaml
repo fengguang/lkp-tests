@@ -1,5 +1,6 @@
 testcase: idle
 
+cpufreq_governor:
 default-monitors:
   # These monitors will not wake up from time to time,
   # so it's perfectly OK to include them here.

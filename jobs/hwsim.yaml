@@ -1,5 +1,6 @@
 testcase: hwsim
 
+cpufreq_governor:
 default-monitors:
   wait: pre-test
   vmstat:
