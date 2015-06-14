@@ -1,7 +1,10 @@
 #!/bin/sh
 
+. $LKP_SRC/lib/env.sh
+
 start_bmc_watchdog()
 {
+	is_virt && return
 	[ -x /usr/sbin/bmc-watchdog ] || return
 	bmc-watchdog --stop 2>/dev/null || return
 
