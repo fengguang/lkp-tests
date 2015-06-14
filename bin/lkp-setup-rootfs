@@ -61,12 +61,14 @@ while true; do
 
 	tbox_cant_kexec && reboot 2>/dev/null && exit
 
-	# To debug what left from last run
-	# ps faux
-	# ls -l /tmp/
-	# ls -l /tmp/lkp
-	# lsmod
-	# set -x
+	if [ -n "$LKP_DEBUG" ]; then
+		# To debug what left from last run
+		set -x
+		ps faux
+		ls -l /tmp/
+		ls -l /tmp/lkp
+		lsmod
+	fi
 
 	next_job
 	job_does_not_need_reboot || break
