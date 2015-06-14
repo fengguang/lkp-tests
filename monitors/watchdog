@@ -1,5 +1,15 @@
 #!/bin/sh
 
+start_bmc_watchdog()
+{
+	[ -x /usr/sbin/bmc-watchdog ] || return
+	bmc-watchdog --stop
+
+	[ -f /var/run/watchdog.pid ] && return
+	bmc-watchdog -d -u 4 -p 0 -a 1 -F -P -L -S -O -i 300 -e 30
+}
+start_bmc_watchdog
+
 [ -n "$max_uptime" ] || max_uptime=$((5 * 3600))
 max_uptime=${max_uptime%%.*}
 
