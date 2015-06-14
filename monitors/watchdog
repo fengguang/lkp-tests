@@ -3,7 +3,7 @@
 start_bmc_watchdog()
 {
 	[ -x /usr/sbin/bmc-watchdog ] || return
-	bmc-watchdog --stop
+	bmc-watchdog --stop 2>/dev/null || return
 
 	[ -f /var/run/watchdog.pid ] && return
 	bmc-watchdog -d -u 4 -p 0 -a 1 -F -P -L -S -O -i 300 -e 30
