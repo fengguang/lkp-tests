@@ -4,7 +4,7 @@ LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAM
 
 require 'optparse'
 require 'ostruct'
-require "#{LKP_SRC}/lib/git.rb"
+require "#{LKP_SRC}/lib/lkp_git"
 require "#{LKP_SRC}/lib/yaml.rb"
 require "#{LKP_SRC}/lib/stats.rb"
 require "#{LKP_SRC}/lib/result.rb"

@@ -1,7 +1,7 @@
 LKP_SRC ||= ENV['LKP_SRC']
 
 require "#{LKP_SRC}/lib/common.rb"
-require "#{LKP_SRC}/lib/git.rb"
+require "#{LKP_SRC}/lib/lkp_git"
 require "#{LKP_SRC}/lib/git-tag.rb"
 git_update_rb = "#{LKP_SRC}/lib/git-update.rb"
 require git_update_rb if File.exists? git_update_rb
