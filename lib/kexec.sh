@@ -44,7 +44,7 @@ download_kernel_initrd()
 
 	[ -n "$initrds" ] && {
 		concatenate_initrd="/tmp/initrd-$$"
-		if [ $# == 0 ]; then
+		if [ $# = 0 ]; then
 			cat $initrds > $concatenate_initrd
 		else
 			cat $initrds $* > $concatenate_initrd
