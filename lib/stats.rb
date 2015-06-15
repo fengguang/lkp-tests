@@ -270,14 +270,26 @@ def load_base_matrix(matrix_path, head_matrix)
 	end
 end
 
-def is_failure(stats_field)
+def __is_failure(stats_field)
 	$metric_failure.each { |pattern| return true if stats_field =~ %r{^#{pattern}} }
 	return false
 end
 
-def is_latency(stats_field)
+def is_failure(stats_field)
+	$__is_failure_cache ||= {}
+	$__is_failure_cache[stats_field] ||= __is_failure(stats_field)
+	return $__is_failure_cache[stats_field]
+end
+
+def __is_latency(stats_field)
 	$metric_latency.each { |pattern| return true if stats_field =~ %r{^#{pattern}} }
 	return false
+end
+
+def is_latency(stats_field)
+	$__is_latency_cache ||= {}
+	$__is_latency_cache[stats_field] ||= __is_latency(stats_field)
+	return $__is_latency_cache[stats_field]
 end
 
 def should_add_max_latency(stats_field)
