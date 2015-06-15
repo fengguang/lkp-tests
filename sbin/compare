@@ -545,9 +545,11 @@ def show_header(is_fail)
 end
 
 def show_delta(stat, key_g)
+	is_fail = is_failure stat
+
 	$cases.delete_if { |_rt, value|
 		next true if value.size < 2
-		next false if is_failure stat
+		next false if is_fail
 		next false if is_latency stat
 		next false if $opt_no_hide_noises
 		noisy = false
@@ -562,8 +564,6 @@ def show_delta(stat, key_g)
 	}
 	return if $cases.empty?
 	$cases = Hash[$cases.sort]
-
-	is_fail = is_failure stat
 
 	if ! $group_by_test
 		$dims.each { |dim, name|
