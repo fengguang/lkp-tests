@@ -2,12 +2,53 @@
 
 require 'set'
 require 'time'
+require 'git'
 
 LKP_SRC ||= ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
 
 GIT_WORK_TREE	||= ENV['GIT_WORK_TREE'] || ENV['LINUX_GIT'] || '/c/repo/linux'
 GIT_DIR		||= ENV['GIT_DIR'] || GIT_WORK_TREE + '/.git'
 GIT		||= "git --work-tree=#{GIT_WORK_TREE} --git-dir=#{GIT_DIR}"
+
+module Git
+	class Author
+		# FIXME need better name
+		def formatted_name
+			"#{@name} <#{@email}>"
+		end
+	end
+end
+
+# one alternative is to open Git to add more lkp specific functions
+# now add as a separate class for 1st step refactoring
+class LkpGit
+	class << self
+		# this is not exactly equal to use GIT_WORK_TREE/GIT_DIR that is
+		# evaluated at "require statement", instead the function is evaluated at each call.
+		# TODO furture refactoring such as caching
+		# TODO move the ENV evaluation resposibility to caller or another helper function
+		# TODO deduce project from branch
+
+		# init a repository
+		#
+		# options
+		#		:project => 'project_name', default is linux
+		#		:repository => '/path/to/alt_git_dir', default is '/working_dir/.git'
+		#
+		# example
+		#		LkpGit.init(project: 'dpdk')
+		#		LkpGit.init(repository: '/path/to/alt_git_dir')
+		#
+		def init(options = {})
+			options[:project] ||= 'linux'
+			options[:repository] ||= ENV['GIT_DIR']
+
+			working_dir = ENV['GIT_WORK_TREE'] || ENV['LINUX_GIT'] || "/c/repo/#{options[:project]}"
+
+			Git.init(working_dir, options)
+		end
+	end
+end
 
 def __commit_tag(commit)
 	tags = `#{GIT} tag --points-at #{commit}`.split
