@@ -113,28 +113,23 @@ build_install_benchmarks() {
 	echo "Making $script benchmark for $distro"
 	[ -n "$DRY_RUN" ] && return
 
-	case $_distro in
+	local pkg_name=$(printf '%s-LKP\n' "$_script" | sed 's/_/-/g')
+
+	$LKP_SRC/sbin/pack -d $distro -c $_script
+	if [ $? -eq 0 ]; then
+		echo "Installing $pkg_name"
+
+		case $_distro in
 		debian|ubuntu)
-			local deb_name=$(printf '%s-LKP.deb\n' "$_script" | sed 's/_/-/g')
-			$LKP_SRC/sbin/pack -d -c $_script
-			if [ $? -eq 0 ]; then
-				echo "Installing $deb_name"
-				dpkg -i /tmp/$deb_name
-			else
-				echo "Making $deb_name failed"
-			fi ;;
-		"archlinux")
-			$LKP_SRC/sbin/pack -c $_script
-			# TODO: make benchmark.cgz to '.tar.xz/.rpm'
-			if [ $? -eq 0 ]; then
-				echo "Making successfully"
-			else
-				echo "Making $script benchmark failed"
-			fi ;;
+			dpkg -i /tmp/$pkg_name.deb ;;
+		fedora)
+			rpm -ivh --replacepkgs /tmp/$pkg_name/RPMS/$pkg_name.$(uname -m).rpm ;;
 		*)
-			echo "Unsupport $distro distribution"
-			exit 1 ;;
-	esac
+			: ;;
+		esac
+	else
+		echo "Making $pkg_name failed"
+	fi
 }
 
 [ $# -eq 0 ] && {

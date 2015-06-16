@@ -59,13 +59,11 @@ install()
 
 pack_deb()
 {
-	local deb_name="${BM_NAME//_/-}-LKP"
-	rm -fr "/tmp/$deb_name"
-	mkdir -p /tmp/$deb_name/$BM_ROOT
-	cp -af $BM_ROOT /tmp/$deb_name/lkp/benchmarks
-	mkdir -p /tmp/$deb_name/DEBIAN
-	cat > /tmp/$deb_name/DEBIAN/control <<-EOF
-	Package: $deb_name
+	mkdir -p /tmp/$pkg_name/$BM_ROOT
+	cp -af $BM_ROOT /tmp/$pkg_name/lkp/benchmarks
+	mkdir -p /tmp/$pkg_name/DEBIAN
+	cat > /tmp/$pkg_name/DEBIAN/control <<-EOF
+	Package: $pkg_name
 	Version: $(date +%F)
 	Architecture: all
 	Maintainer: LKP
@@ -73,7 +71,60 @@ pack_deb()
 	EOF
 
 	cd /tmp
-	dpkg-deb --build $deb_name
+	dpkg-deb --build $pkg_name
+}
+
+pack_rpm()
+{
+	mkdir -p /tmp/$pkg_name/{BUILD,RPMS,S{OURCE,PEC,RPM}S}
+	cat > /tmp/$pkg_name/SPECS/$pkg_name.spec <<-EOF
+	Name: $pkg_name
+	Version: 1
+	License: None
+	Packager: LKP
+	Release: 1
+	Summary: LKP dependent packages
+
+	%description
+	LKP benchmarks rpm package
+
+	%install
+	# create directories where the files will be located
+	mkdir -p \$RPM_BUILD_ROOT/$BM_ROOT
+	# put the files in the relevant directories
+	cp -a $BM_ROOT/* \$RPM_BUILD_ROOT/$BM_ROOT
+
+	%files
+	%defattr(-,root,root)
+	$BM_ROOT/*
+	EOF
+
+	cat > /tmp/$pkg_name/.rpmmacros <<-EOF
+	%_topdir /tmp/$pkg_name
+	%_rpmfilename %%{NAME}.%%{ARCH}.rpm
+	EOF
+
+	(
+		export HOME=/tmp/$pkg_name
+		rpmbuild -bb --verbose /tmp/$pkg_name/SPECS/$pkg_name.spec
+	)
+}
+
+pack_pkg()
+{
+	local distro=$1
+	local pkg_name="${BM_NAME//_/-}-LKP"
+
+	rm -fr "/tmp/$pkg_name"
+
+	case $distro in
+	debian|ubuntu)
+		pack_deb ;;
+	fedora)
+		pack_rpm ;;
+	*)
+		echo "Unsupport $distro to make packages." ;;
+	esac
 }
 
 pack()
