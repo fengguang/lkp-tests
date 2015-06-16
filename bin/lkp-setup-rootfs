@@ -59,7 +59,11 @@ while true; do
 	echo $LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp
 	$LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp $job
 
-	tbox_cant_kexec && reboot 2>/dev/null && exit
+	tbox_cant_kexec && {
+		echo "LKP: rebooting"
+		echo "LKP: rebooting" > /dev/kmsg
+		reboot 2>/dev/null && exit
+	}
 
 	if [ -n "$LKP_DEBUG" ]; then
 		# To debug what left from last run
