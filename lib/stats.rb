@@ -277,8 +277,11 @@ end
 
 def is_failure(stats_field)
 	$__is_failure_cache ||= {}
-	$__is_failure_cache[stats_field] ||= __is_failure(stats_field)
-	return $__is_failure_cache[stats_field]
+	if $__is_failure_cache.include? stats_field
+		$__is_failure_cache[stats_field]
+	else
+		$__is_failure_cache[stats_field] = __is_failure(stats_field)
+	end
 end
 
 def __is_latency(stats_field)
@@ -288,8 +291,11 @@ end
 
 def is_latency(stats_field)
 	$__is_latency_cache ||= {}
-	$__is_latency_cache[stats_field] ||= __is_latency(stats_field)
-	return $__is_latency_cache[stats_field]
+	if $__is_latency_cache.include? stats_field
+		$__is_latency_cache[stats_field]
+	else
+		$__is_latency_cache[stats_field] = __is_latency(stats_field)
+	end
 end
 
 def should_add_max_latency(stats_field)
