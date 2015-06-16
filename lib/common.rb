@@ -3,7 +3,8 @@ LKP_SRC ||= ENV['LKP_SRC']
 ## common utilities
 
 require "pathname"
-require 'fileutils'
+require "fileutils"
+require "stringio"
 
 LKP_DATA_DIR = '/data'
 
@@ -126,27 +127,34 @@ end
 
 ## IO redirection
 
-def pager
+def redirect_to(io)
 	saved_stdout = $stdout
-	IO.popen("/usr/bin/less","w") { |io|
-		$stdout = io
-		yield
-	}
+	$stdout = io
+	yield
 ensure
 	$stdout = saved_stdout
 end
 
-def redirect(*args)
+def pager(&b)
+	IO.popen("/usr/bin/less","w") { |io|
+		redirect_to io, &b
+	}
+end
+
+def redirect_to_file(*args, &b)
 	if args.empty?
 		args = ['stdout.txt', 'w']
 	end
-	saved_stdout = $stdout
 	File.open(*args) { |f|
-		$stdout = f
-		yield
+		redirect_to f, &b
 	}
-ensure
-	$stdout = saved_stdout
+end
+
+def redirect_to_string(&b)
+	StringIO.open("", "w") { |so|
+		redirect_to so, &b
+		so.string
+	}
 end
 
 ## Date and time
