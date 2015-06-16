@@ -23,6 +23,10 @@ module Compare
 	FAILS = :fails
 	CHANGES = :changes
 
+	RUNS_STAT_KEY = 'runs'
+	COMPLETE_RUNS_STAT_KEY = 'runs.complete'
+	RUNS_STAT_KEYS = [RUNS_STAT_KEY, COMPLETE_RUNS_STAT_KEY]
+
 	class Comparer
 		include Property
 		# following properties are parameters for compare
@@ -149,6 +153,14 @@ module Compare
 			@complete_matrixes
 		end
 
+		def runs
+			matrixes.map { |m| matrix_cols m }
+		end
+
+		def complete_runs
+			complete_matrixes.map { |m| matrix_cols m }
+		end
+
 		def get_all_stat_keys
 			stat_keys = []
 			matrixes.each { |m|
@@ -198,12 +210,12 @@ module Compare
 			calc_funcs = @comparer.stat_calc_funcs
 			ms = matrixes
 			cms = complete_matrixes
-			runs = ms.map { |m| matrix_cols m }
-			cruns = cms.map { |m| matrix_cols m }
+			aruns = runs
+			cruns = complete_runs
 			changed_stat_keys.each { |stat_key|
 				failure = is_failure stat_key
 				tms = failure ? ms : cms
-				truns = failure ? runs : cruns
+				truns = failure ? aruns : cruns
 				stat = {
 					STAT_KEY => stat_key,
 					FAILURE => failure,
@@ -253,7 +265,8 @@ module Compare
 	class GroupResult::MatrixExporter
 		include Property
 		prop_with :data_type, :include_axes, :axes_as_num,
-			  :axis_prefix, :sort, :sort_stat_key
+			  :axis_prefix, :sort, :sort_stat_key,
+			  :include_runs
 		def initialize(group_result)
 			@group_result = group_result
 			@data_type = AVGS
@@ -267,6 +280,11 @@ module Compare
 			@group_result.stat_enum.each { |stat|
 				m[stat[STAT_KEY]] = stat[@data_type]
 			}
+			if @include_runs
+				g = @group_result.group
+				m[RUNS_STAT_KEY] = g.runs
+				m[COMPLETE_RUNS_STAT_KEY] = g.complete_runs
+			end
 			m
 		end
 
