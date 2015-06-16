@@ -87,11 +87,11 @@ EOT
 }
 
 install_packages() {
-	local _script=$1
-	local _distro=$2
+	local script=$1
+	local distro=$2
 
-	local packages="$(get_dependency_packages ${_distro} ${_script})"
-	local dev_packages="$(get_dependency_packages ${_distro} ${_script}-dev)"
+	local packages="$(get_dependency_packages ${distro} ${script})"
+	local dev_packages="$(get_dependency_packages ${distro} ${script}-dev)"
 	packages="$(echo $packages $dev_packages | tr '\n' ' ')"
 	[ -n "$packages" -a "$packages" != " " ] || return
 
@@ -99,27 +99,27 @@ install_packages() {
 	[ -n "$DRY_RUN" ] && return
 
 	$LKP_SRC/distro/installer/$distro $packages || {
-		echo "Cannot install some packages in $LKP_SRC/distro/depends/${_script}"
+		echo "Cannot install some packages in $LKP_SRC/distro/depends/${script}"
 		exit 1
 	}
 }
 
 build_install_benchmarks() {
-	local _script=$1
-	local _distro=$2
+	local script=$1
+	local distro=$2
 
-	[ -x "$LKP_SRC/pack/$_script" ] || return
+	[ -x "$LKP_SRC/pack/$script" ] || return
 
 	echo "Making $script benchmark for $distro"
 	[ -n "$DRY_RUN" ] && return
 
-	local pkg_name=$(printf '%s-LKP\n' "$_script" | sed 's/_/-/g')
+	local pkg_name=$(printf '%s-LKP\n' "$script" | sed 's/_/-/g')
 
-	$LKP_SRC/sbin/pack -d $distro -c $_script
+	$LKP_SRC/sbin/pack -d $distro -c $script
 	if [ $? -eq 0 ]; then
 		echo "Installing $pkg_name"
 
-		case $_distro in
+		case $distro in
 		debian|ubuntu)
 			dpkg -i /tmp/$pkg_name.deb ;;
 		fedora)
