@@ -12,7 +12,41 @@ GIT		||= "git --work-tree=#{GIT_WORK_TREE} --git-dir=#{GIT_DIR}"
 
 require "#{LKP_SRC}/lib/yaml.rb"
 
+module SimpleCacheMethod
+  def self.included(mod)
+    class << mod
+      include ClassMethods
+      attr_accessor :caches
+    end
+  end
+
+  module ClassMethods
+		def cache_method(method_name)
+			# credit to rails alias_method_chain
+			alias_method "#{method_name}_without_cache", method_name
+
+			@caches ||= {}
+
+			# FIXME rli9 do not support &block and complex args like Array
+			# FIXME rli9 better solution for generating key can refer to
+			# https://github.com/seamusabshere/cache_method/blob/master/lib/cache_method.rb
+			define_method(method_name) do |*args|
+				# FIXME rli9 to understand performance impact of different hash key
+				#cache_key = [method_name, args]
+				cache_key = "#{method_name}_#{args.join('_')}"
+				self.class.caches[cache_key] ||= self.send("#{method_name}_without_cache", *args)
+			end
+		end
+	end
+end
+
 module Git
+	class Base
+		include SimpleCacheMethod
+
+		cache_method :gcommit
+	end
+
 	class Author
 		# FIXME need better name
 		def formatted_name

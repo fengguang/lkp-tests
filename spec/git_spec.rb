@@ -25,6 +25,17 @@ describe Git do
 			expect(gcommit.date).to eq(git_commit_time(COMMIT))
 			expect(gcommit.tags[0]).to eq(__commit_tag(COMMIT))
 			expect(gcommit.parent_shas).to eq(git_parent_commits(COMMIT))
+			expect(gcommit.committer.name).to eq(git_committer_name(COMMIT))
+		end
+
+		it "should cache commits" do
+			git = LkpGit.init
+
+			gcommit1 = git.gcommit(COMMIT)
+			gcommit2 = git.gcommit(COMMIT)
+			expect(gcommit2.object_id).to eq gcommit1.object_id
+
+			expect(gcommit2.committer.name.object_id).to eq gcommit2.committer.name.object_id
 		end
 	end
 end
