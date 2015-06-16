@@ -24,6 +24,7 @@ describe Git do
 			expect(gcommit.subject).to eq(git_commit_subject(COMMIT))
 			expect(gcommit.date).to eq(git_commit_time(COMMIT))
 			expect(gcommit.tags[0]).to eq(__commit_tag(COMMIT))
+			expect(gcommit.parent_shas).to eq(git_parent_commits(COMMIT))
 		end
 	end
 end

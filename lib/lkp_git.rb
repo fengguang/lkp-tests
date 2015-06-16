@@ -29,6 +29,10 @@ module Git
 			def tags
 				@base.lib.tag('--points-at', @sha).split
 			end
+
+			def parent_shas
+				self.parents.map {|commit| commit.sha}
+			end
 		end
 	end
 end
