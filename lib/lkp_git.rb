@@ -17,6 +17,14 @@ module Git
 			"#{@name} <#{@email}>"
 		end
 	end
+
+	class Object
+		class Commit
+			def subject
+				self.message.split("\n").first
+			end
+		end
+	end
 end
 
 # one alternative is to open Git to add more lkp specific functions

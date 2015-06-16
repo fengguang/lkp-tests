@@ -3,5 +3,6 @@ require 'rubygems'
 require 'rspec/core/rake_task'
 
 RSpec::Core::RakeTask.new do |t|
-	t.ruby_opts = "-I \"#{['lib', 'spec'].join(File::PATH_SEPARATOR)}\""
+	# handle execution in either server or local
+	t.ruby_opts = "-I \"#{['lib', 'spec', '../lkp-core/lib'].join(File::PATH_SEPARATOR)}\""
 end
