@@ -10,6 +10,8 @@ GIT_WORK_TREE	||= ENV['GIT_WORK_TREE'] || ENV['LINUX_GIT'] || '/c/repo/linux'
 GIT_DIR		||= ENV['GIT_DIR'] || GIT_WORK_TREE + '/.git'
 GIT		||= "git --work-tree=#{GIT_WORK_TREE} --git-dir=#{GIT_DIR}"
 
+require "#{LKP_SRC}/lib/yaml.rb"
+
 module Git
 	class Author
 		# FIXME need better name
@@ -22,6 +24,10 @@ module Git
 		class Commit
 			def subject
 				self.message.split("\n").first
+			end
+
+			def tags
+				@base.lib.tag('--points-at', @sha).split
 			end
 		end
 	end
