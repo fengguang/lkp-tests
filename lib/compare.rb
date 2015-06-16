@@ -81,6 +81,7 @@ module Compare
 		def do_compare
 			compare_groups.map { |g|
 				stat_enum = g.each_changed_stat
+				stat_enum = Compare.sort_stats stat_enum
 				GroupResult.new g, stat_enum
 			}
 		end
@@ -350,6 +351,25 @@ module Compare
 
 	## Compare result renderer
 
+	def self.sort_stats(stat_enum)
+		stats = stat_enum.to_a
+		stat_base_map = {}
+		stats.each { |stat|
+			base = stat_key_base stat[STAT_KEY]
+			stat[STAT_BASE] = base
+			stat_base_map[base] ||= stat[FAILURE] ? -10000 : 0
+			stat_base_map[base] += 1
+		}
+		AllTests.each { |test|
+			c = stat_base_map[test]
+			if c and c > 0
+				stat_base_map[test] = 0
+			end
+		}
+		stats.sort_by! { |stat| [stat_base_map[stat[STAT_BASE]], stat[STAT_KEY]] }
+		stats.each
+	end
+
 	def self.show_failure_change(stat)
 		return unless stat[FAILURE]
 		fails = stat[FAILS]
@@ -466,25 +486,6 @@ module Compare
 		compare_result.each { |gd|
 			show_group gd.group, gd.stat_enum
 		}
-	end
-
-	def self.sort_stats(stat_enum)
-		stats = stat_enum.to_a
-		stat_base_map = {}
-		stats.each { |stat|
-			base = stat_key_base stat[STAT_KEY]
-			stat[STAT_BASE] = base
-			stat_base_map[base] ||= stat[FAILURE] ? -10000 : 0
-			stat_base_map[base] += 1
-		}
-		AllTests.each { |test|
-			c = stat_base_map[test]
-			if c and c > 0
-				stat_base_map[test] = 0
-			end
-		}
-		stats.sort_by! { |stat| [stat_base_map[stat[STAT_BASE]], stat[STAT_KEY]] }
-		stats.each
 	end
 
 	def self.group_by_stat(stat_enum)
