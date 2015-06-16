@@ -18,8 +18,7 @@ describe Git do
 			expect(gcommit.author.formatted_name).to eq(git_commit_author(COMMIT))
 			expect(gcommit.committer.formatted_name).to eq(git_committer(COMMIT))
 			expect(gcommit.subject).to eq(git_commit_subject(COMMIT))
-
-			#expect(gcommit.date).to eq(git_commit_time(COMMIT))
+			expect(gcommit.date).to eq(git_commit_time(COMMIT))
 		end
 	end
 end
