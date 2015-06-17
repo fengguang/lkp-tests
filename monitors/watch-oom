@@ -21,6 +21,7 @@ do
 
 	grep -s -q -F -e 'Out of memory' -e 'invoked oom-killer: gfp_mask=0x' $RESULT_ROOT/dmesg && {
 		touch $TMP/OOM
+		touch $RESULT_ROOT/OOM
 		pid_tests=$(cat $TMP/pid-tests)
 		pid_job=$(cat $TMP/run-job.pid)
 		echo "$(date)  Out of memory, stop tests programs" $pid_tests $pid_job
