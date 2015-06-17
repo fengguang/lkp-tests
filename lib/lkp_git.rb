@@ -68,6 +68,12 @@ module Git
 		include SimpleCacheMethod
 
 		cache_method :gcommit
+
+		# add tag_names because Base::tags is slow to obtain all tag objects
+		# FIXME consider to cache this method
+		def tag_names
+			lib.tag('-l').split("\n")
+		end
 	end
 
 	class Author
@@ -120,7 +126,8 @@ module Git
 			project_remote = project_remotes(options)[options[:remote]]
 
 			pattern = Regexp.new '^' + project_remote['release_tag_pattern'].sub(' ', '$|^') + '$'
-			tags = get_tags(pattern, project_remote['release_tag_committer'])
+
+			tags = select_tags(pattern, project_remote['release_tag_committer'], project: options[:project])
 			tags = sort_tags(pattern, tags)
 
 			Hash[tags.map.with_index {|tag, i| [tag, -i]}]
@@ -148,6 +155,14 @@ module Git
 
 		cache_method :project_tags
 		cache_method :project_remotes
+
+		private
+		def select_tags(pattern, committer, options)
+			git = LkpGit.init(project: options[:project])
+
+			git.tag_names.map {|tag_name| tag_name.chomp}
+			             .select {|tag_name| pattern.match(tag_name)}
+		end
 	end
 end
 
