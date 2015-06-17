@@ -5,13 +5,14 @@ require 'rspec'
 $LOAD_PATH.concat($LOAD_PATH.shift(3))
 
 ENV['LKP_SRC'] = File.expand_path "#{File.dirname(__FILE__)}/.."
-ENV['GIT_WORK_TREE'] = File.expand_path "#{File.dirname(__FILE__)}/.."
 
 require 'lkp_git'
 require "git-update"
 
 describe Git do
-	COMMIT = "aa5067e781217fe698ee55e993e1465b83b5d65e"
+	# commit from linux tree
+	# tag v4.1-rc8
+	COMMIT = "0f57d86787d8b1076ea8f9cbdddda2a46d534a27"
 
 	describe Git::Object::Commit do
 		it "should have same output as lkp git" do
