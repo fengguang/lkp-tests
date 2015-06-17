@@ -75,17 +75,102 @@ def mmsplot(matrixes1, matrixes2, fields, title_prefix=nil)
 	mmplot(m1, m2, fields, title_prefix)
 end
 
-class MatrixPlotter
+class MatrixPlotterBase
 	def initialize
 		@pixel_size = [800, 480]
 		@inch_size = [8, 4.8]
 		@char_size = [PLOT_SIZE_X, PLOT_SIZE_Y]
-		@nr_plot = NR_PLOT
 	end
 
 	include Property
-	prop_with :output_prefix, :title_prefix
-	prop_with :pixel_size, :inch_size, :char_size, :nr_plot
+	prop_with :pixel_size, :inch_size, :char_size
+
+	def setup_output(plot, file_name)
+		if file_name
+			case file_name
+			when /eps/
+				plot.terminal "eps size %d,%d fontscale 1" % @inch_size
+				unless file_name.end_with? '.eps'
+					file_name += '.eps'
+				end
+			else
+				plot.terminal "png size %d,%d" % @pixel_size
+				unless file_name.end_with? '.png'
+					file_name += '.png'
+				end
+			end
+			plot.output file_name
+		else
+			plot.terminal "dumb nofeed size %d,%d" % @char_size
+		end
+	end
+end
+
+# Multiple Matrix Plotter
+class MMatrixPlotter < MatrixPlotterBase
+	def initialize
+		super
+		@lines = []
+		@y_margin = 0.1
+		@y_range = [nil, nil]
+	end
+
+	prop_with :output_file_name, :title
+	prop_with :x_stat_key, :lines
+	prop_with :y_margin, :y_range
+
+	def plot
+		Gnuplot.open { |gp|
+		Gnuplot::Plot.new(gp) { |p|
+			setup_output(p, @output_file_name)
+			p.title @title if @title
+
+			p.ytics 'nomirror'
+
+			y_min, y_max = nil
+			@lines.each { |matrix, y_stat_key, line_title|
+				values = matrix[y_stat_key]
+				max = values.max
+				min = values.min
+				next if max == 0 && min == 0
+
+				y_min = y_min ? [min, y_min].min : min
+				y_max = y_max ? [max, y_max].max : max
+				if @x_stat_key
+					data = [matrix[@x_stat_key], values]
+				else
+					data = [values]
+					p.noxtics
+				end
+
+				p.data << Gnuplot::DataSet.new(data) { |ds|
+					if @output_file_name
+						ds.with = "linespoints pt 5"
+					else
+						ds.with = "linespoints pt 15 lt 0"
+					end
+					ds.title = line_title if line_title
+				}
+			}
+			y_size = y_max - y_min
+			y_size = y_min if y_size = 0
+			y_min -= y_size * @y_margin
+			y_max += y_size * @y_margin
+			y_min = @y_range[0] || y_min
+			y_max = @y_range[1] || y_max
+			p.yrange "[#{y_min}:#{y_max}]"
+		}
+		}
+	end
+end
+
+class MatrixPlotter < MatrixPlotterBase
+	def initialize
+		super
+		@nr_plot = NR_PLOT
+	end
+
+	prop_with :output_prefix, :title_prefix, :nr_plot
 	prop_with :matrix, :x_stat_key, :y_stat_keys
 
 	def plot
@@ -97,15 +182,7 @@ class MatrixPlotter
 		Gnuplot::Plot.new( gp ) do |p|
 		if @output_prefix
 			file = @output_prefix + field.tr('^a-zA-Z0-9_.:+=-', '_')
-			case @output_prefix
-			when /eps/
-				p.terminal "eps size %d,%d fontscale 1" % @inch_size
-				file += ".eps"
-			else
-				p.terminal "png size %d,%d" % @pixel_size
-				file += ".png"
-			end
-			p.output file
+			setup_output p, file
 		else
 			if np % @nr_plot == 0
 				p.terminal "dumb nofeed size %d,%d" % @char_size
