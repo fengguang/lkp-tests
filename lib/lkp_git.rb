@@ -81,11 +81,11 @@ module Git
 			end
 
 			def tags
-				@base.lib.tag('--points-at', @sha).split
+				@tags ||= @base.lib.tag('--points-at', @sha).split
 			end
 
 			def parent_shas
-				self.parents.map {|commit| commit.sha}
+				@parent_shas ||= self.parents.map {|commit| commit.sha}
 			end
 		end
 	end
