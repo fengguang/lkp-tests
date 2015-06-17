@@ -16,7 +16,7 @@ describe Git do
 
 	describe Git::Object::Commit do
 		it "should have same output as lkp git" do
-			git = LkpGit.init
+			git = Git.project_init
 			gcommit = git.gcommit(COMMIT)
 
 			expect(gcommit.author.formatted_name).to eq(git_commit_author(COMMIT))
@@ -29,7 +29,7 @@ describe Git do
 		end
 
 		it "should cache interested_tag" do
-			git = LkpGit.init
+			git = Git.project_init
 			gcommit = git.gcommit(COMMIT)
 
 			expect(gcommit.interested_tag.object_id).to eq(gcommit.interested_tag.object_id)
@@ -38,7 +38,7 @@ describe Git do
 
 	describe Git::Base do
 		it "should cache commits of single git object" do
-			git = LkpGit.init
+			git = Git.project_init
 
 			gcommit1 = git.gcommit(COMMIT)
 			gcommit2 = git.gcommit(COMMIT)
@@ -48,8 +48,8 @@ describe Git do
 		end
 
 		it "should cache commits of multiple git objects" do
-			git1 = LkpGit.init
-			git2 = LkpGit.init
+			git1 = Git.project_init
+			git2 = Git.project_init
 			expect(git2.object_id).not_to eq git1.object_id
 
 			expect(git2.gcommit(COMMIT).object_id).to eq git1.gcommit(COMMIT).object_id
