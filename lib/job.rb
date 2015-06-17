@@ -179,6 +179,7 @@ class Job
 	def init_program_options
 		@program_options = {
 			'boot_params' => '-',
+			'cluster' => '-',
 		}
 		for_each_in(@job, $programs) { |h, k, v|
 			`#{LKP_SRC}/bin/program-options #{$programs[k]}`.each_line { |line|
