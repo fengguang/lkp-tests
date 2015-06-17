@@ -10,6 +10,9 @@ kill_one()
 . $LKP_SRC/lib/wait.sh
 setup_wait
 
+# dont OOM kill me
+echo -1000 > /proc/$$/oom_score_adj
+
 while :
 do
 	wait_timeout 11
