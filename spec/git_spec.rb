@@ -11,21 +11,27 @@ require 'lkp_git'
 require "git-update"
 
 describe Git do
-	describe "git gcommit" do
-
+	describe Git::Object::Commit do
 		COMMIT = "aa5067e781217fe698ee55e993e1465b83b5d65e"
 
 		it "should have same output as lkp git" do
 			git = LkpGit.init
-
 			gcommit = git.gcommit(COMMIT)
+
 			expect(gcommit.author.formatted_name).to eq(git_commit_author(COMMIT))
 			expect(gcommit.committer.formatted_name).to eq(git_committer(COMMIT))
 			expect(gcommit.subject).to eq(git_commit_subject(COMMIT))
 			expect(gcommit.date).to eq(git_commit_time(COMMIT))
-			expect(gcommit.tags[0]).to eq(commit_tag(COMMIT))
+			expect(gcommit.interested_tag).to eq(commit_tag(COMMIT))
 			expect(gcommit.parent_shas).to eq(git_parent_commits(COMMIT))
 			expect(gcommit.committer.name).to eq(git_committer_name(COMMIT))
+		end
+
+		it "should cache interested_tag" do
+			git = LkpGit.init
+			gcommit = git.gcommit(COMMIT)
+
+			expect(gcommit.interested_tag.object_id).to eq(gcommit.interested_tag.object_id)
 		end
 
 		it "should cache commits of single git object" do

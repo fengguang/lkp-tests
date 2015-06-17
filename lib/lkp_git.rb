@@ -76,17 +76,51 @@ module Git
 
 	class Object
 		class Commit
+			include SimpleCacheMethod
+
 			def subject
 				self.message.split("\n").first
 			end
 
 			def tags
+				check_commit
 				@tags ||= @base.lib.tag('--points-at', @sha).split
 			end
 
 			def parent_shas
 				@parent_shas ||= self.parents.map {|commit| commit.sha}
 			end
+
+			# FIXME need better name
+			def interested_tag(options = {})
+				project_tags = Git.project_tags(options)
+				tags.find {|tag| project_tags.include? tag} || tags.first
+			end
+
+			cache_method :interested_tag, ->(obj) {obj.to_s}
+		end
+	end
+
+	class << self
+		#
+		# options
+		#	  :project => 'project_name', default is linux
+		#	  :remote => 'remote_name', default is 'linus'
+		#
+		def project_tags(options = {})
+			options[:project] ||= 'linux'
+			# FIXME remote default need be mapped from project
+			options[:remote] ||= 'linus'
+
+			@remotes ||= load_remotes
+			pattern = Regexp.new '^' + @remotes[options[:remote]]['release_tag_pattern'].sub(' ', '$|^') + '$'
+			tags = get_tags(pattern, @remotes[options[:remote]]['release_tag_committer'])
+			tags = sort_tags(pattern, tags)
+			tags_order = {}
+			tags.each_with_index do |tag, i|
+				tags_order[tag] = -i
+			end
+			tags_order
 		end
 	end
 end
