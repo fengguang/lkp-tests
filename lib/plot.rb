@@ -149,7 +149,11 @@ class MMatrixPlotter < MatrixPlotterBase
 					else
 						ds.with = "linespoints pt 15 lt 0"
 					end
-					ds.title = line_title if line_title
+					if line_title
+						ds.title = line_title
+					else
+						ds.notitle
+					end
 				}
 			}
 			y_size = y_max - y_min
