@@ -153,7 +153,7 @@ class MMatrixPlotter < MatrixPlotterBase
 				}
 			}
 			y_size = y_max - y_min
-			y_size = y_min if y_size = 0
+			y_size = y_min if y_size == 0
 			y_min -= y_size * @y_margin
 			y_max += y_size * @y_margin
 			y_min = @y_range[0] || y_min
