@@ -11,9 +11,9 @@ require 'lkp_git'
 require "git-update"
 
 describe Git do
-	describe Git::Object::Commit do
-		COMMIT = "aa5067e781217fe698ee55e993e1465b83b5d65e"
+	COMMIT = "aa5067e781217fe698ee55e993e1465b83b5d65e"
 
+	describe Git::Object::Commit do
 		it "should have same output as lkp git" do
 			git = LkpGit.init
 			gcommit = git.gcommit(COMMIT)
@@ -33,7 +33,9 @@ describe Git do
 
 			expect(gcommit.interested_tag.object_id).to eq(gcommit.interested_tag.object_id)
 		end
+	end
 
+	describe Git::Base do
 		it "should cache commits of single git object" do
 			git = LkpGit.init
 
