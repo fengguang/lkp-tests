@@ -13,6 +13,7 @@ describe Git do
 	# commit from linux tree
 	# tag v4.1-rc8
 	COMMIT = "0f57d86787d8b1076ea8f9cbdddda2a46d534a27"
+	NON_RELEASE_COMMIT = "b86a7563ca617aa49dfd6b836da4dd0351fe2acc"
 
 	describe Git::Object::Commit do
 		it "should have same output as lkp git" do
@@ -33,6 +34,17 @@ describe Git do
 			gcommit = git.gcommit(COMMIT)
 
 			expect(gcommit.interested_tag.object_id).to eq(gcommit.interested_tag.object_id)
+		end
+
+		describe "release_tag" do
+			it "should be same as linus_release_tag with default arguments" do
+				git = Git.project_init
+
+				expect(git.gcommit(COMMIT).release_tag).to eq(linus_release_tag(COMMIT))
+
+				expect(git.gcommit(NON_RELEASE_COMMIT).release_tag).to eq nil
+				expect(git.gcommit(NON_RELEASE_COMMIT).release_tag).to eq(linus_release_tag(NON_RELEASE_COMMIT))
+			end
 		end
 	end
 

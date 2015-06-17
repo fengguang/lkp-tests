@@ -106,6 +106,21 @@ module Git
 				tags.find {|tag| project_tags.include? tag} || tags.first
 			end
 
+			# FIXME one alternative is to put this as Git class method
+			# FIXME consider to store project information to base when init git
+			# options
+			#	  :committer => 'committer_name', default is 'Linus Torvalds'
+			#
+			def release_tag(options = {})
+				options[:committer] ||= 'Linus Torvalds'
+
+				if committer.name == options[:committer]
+					tag = self.interested_tag(options)
+					# FIXME abstract to a function and mapped from project
+					tag if tag && (tag.match(/^v[34]\.\d+(-rc\d+)?$/) || tag.match(/^v2\.\d+\.\d+(-rc\d)?$/))
+				end
+			end
+
 			cache_method :interested_tag, ->(obj) {obj.to_s}
 		end
 	end
