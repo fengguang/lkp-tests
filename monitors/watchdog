@@ -11,6 +11,8 @@ should_touch_watchdog=
 watchdog_initial_countdown=300
 watchdog_reset_period=32
 
+[ -x /usr/bin/schedtool ] && /usr/bin/schedtool -R $$	# SCHED_RR
+
 wait_touch_watchdog()
 {
 	local elapsed=0
