@@ -43,7 +43,9 @@ module SimpleCacheMethod
 			define_method(method_name) do |*args|
 				cache_key = self.class.cache_key(self, method_name, *args)
 
-				self.class.caches[cache_key] ||= self.send("#{method_name}_without_cache", *args)
+				self.class.caches[cache_key] = self.send("#{method_name}_without_cache", *args) unless self.class.caches.has_key? cache_key
+
+				self.class.caches[cache_key]
 			end
 		end
 
