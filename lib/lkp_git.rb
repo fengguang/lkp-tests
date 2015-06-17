@@ -105,6 +105,7 @@ module Git
 	end
 
 	class << self
+		include SimpleCacheMethod
 		#
 		# options
 		#	  :project => 'project_name', default is linux
@@ -119,12 +120,11 @@ module Git
 			pattern = Regexp.new '^' + @remotes[options[:remote]]['release_tag_pattern'].sub(' ', '$|^') + '$'
 			tags = get_tags(pattern, @remotes[options[:remote]]['release_tag_committer'])
 			tags = sort_tags(pattern, tags)
-			tags_order = {}
-			tags.each_with_index do |tag, i|
-				tags_order[tag] = -i
-			end
-			tags_order
+
+			Hash[tags.map.with_index {|tag, i| [tag, -i]}]
 		end
+
+		cache_method :project_tags
 	end
 end
 

@@ -55,4 +55,18 @@ describe Git do
 			expect(git2.gcommit(COMMIT).object_id).to eq git1.gcommit(COMMIT).object_id
 		end
 	end
+
+	describe "project_tags" do
+		it "should be same as linus_tags when project is linux/linus" do
+			actual = linus_tags
+			expect = described_class.project_tags
+
+			expect(expect.count).to be > 0
+			expect(expect).to eq actual
+		end
+
+		it "should cache result" do
+			expect(described_class.project_tags.object_id).to eq described_class.project_tags.object_id
+		end
+	end
 end
