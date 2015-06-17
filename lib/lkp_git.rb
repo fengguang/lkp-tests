@@ -41,11 +41,12 @@ module SimpleCacheMethod
 			# FIXME rli9 better solution for generating key can refer to
 			# https://github.com/seamusabshere/cache_method/blob/master/lib/cache_method.rb
 			define_method(method_name) do |*args|
-				cache_key = self.class.cache_key(self, method_name, *args)
+				kclass = (self.instance_of?(Class) || self.instance_of?(Module)) ? self.singleton_class : self.class
 
-				self.class.caches[cache_key] = self.send("#{method_name}_without_cache", *args) unless self.class.caches.has_key? cache_key
+				cache_key = kclass.cache_key(self, method_name, *args)
 
-				self.class.caches[cache_key]
+				kclass.caches[cache_key] = self.send("#{method_name}_without_cache", *args) unless kclass.caches.has_key? cache_key
+				kclass.caches[cache_key]
 			end
 		end
 
