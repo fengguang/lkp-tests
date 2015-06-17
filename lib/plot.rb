@@ -119,6 +119,11 @@ class MMatrixPlotter < MatrixPlotterBase
 	prop_with :x_stat_key, :lines
 	prop_with :y_margin, :y_range
 
+	def set_line(matrix, y_stat_key, line_title = nil)
+		@lines = [[matrix, y_stat_key, line_title]]
+		self
+	end
+
 	def plot
 		Gnuplot.open { |gp|
 		Gnuplot::Plot.new(gp) { |p|
