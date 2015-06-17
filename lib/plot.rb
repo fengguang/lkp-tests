@@ -81,9 +81,6 @@ class MatrixPlotter
 		@inch_size = [8, 4.8]
 		@char_size = [PLOT_SIZE_X, PLOT_SIZE_Y]
 		@nr_plot = NR_PLOT
-
-		@plot_unit = load_yaml LKP_SRC + '/etc/plot-unit.yaml'
-		@unit_size = load_yaml LKP_SRC + '/etc/unit-size.yaml'
 	end
 
 	include Property
@@ -117,9 +114,11 @@ class MatrixPlotter
 			np += 1
 		end
 
-		if @plot_unit[field]
-			p.ylabel @plot_unit[field]
-			unit_scale = @unit_size[@plot_unit[field]]
+		plot_unit = MatrixPlotter.plot_unit
+		unit_size = MatrixPlotter.unit_size
+		if plot_unit[field]
+			p.ylabel plot_unit[field]
+			unit_scale = unit_size[plot_unit[field]]
 			values = values.map { |v| v / unit_scale.to_f }
 		end
 
@@ -159,6 +158,16 @@ class MatrixPlotter
 				}
 			}
 		}
+	end
+end
+
+class << MatrixPlotter
+	def plot_unit
+		@plot_unit ||= load_yaml LKP_SRC + '/etc/plot-unit.yaml'
+	end
+
+	def unit_size
+		@unit_size = load_yaml LKP_SRC + '/etc/unit-size.yaml'
 	end
 end
 
