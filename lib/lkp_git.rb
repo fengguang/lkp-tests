@@ -116,15 +116,38 @@ module Git
 			# FIXME remote default need be mapped from project
 			options[:remote] ||= 'linus'
 
-			@remotes ||= load_remotes
-			pattern = Regexp.new '^' + @remotes[options[:remote]]['release_tag_pattern'].sub(' ', '$|^') + '$'
-			tags = get_tags(pattern, @remotes[options[:remote]]['release_tag_committer'])
+			# FIXME consider to check whether project_remote is nil
+			project_remote = project_remotes(options)[options[:remote]]
+
+			pattern = Regexp.new '^' + project_remote['release_tag_pattern'].sub(' ', '$|^') + '$'
+			tags = get_tags(pattern, project_remote['release_tag_committer'])
 			tags = sort_tags(pattern, tags)
 
 			Hash[tags.map.with_index {|tag, i| [tag, -i]}]
 		end
 
+		# FIXME remove ENV usage
+		# FIXME to design default project as * or linux
+		def project_remotes(options = {})
+			lkp_src = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
+
+			options[:project] ||= '*'
+
+			remotes = {}
+
+			Dir[lkp_src + "/repo/#{options[:project]}/*"].each do |file|
+				remote = File.basename file
+				next if remote == 'DEFAULTS'
+
+				defaults = File.dirname(file) + '/DEFAULTS'
+				remotes[remote] = load_yaml_merge [defaults, file]
+			end
+
+			remotes
+		end
+
 		cache_method :project_tags
+		cache_method :project_remotes
 	end
 end
 

@@ -69,4 +69,18 @@ describe Git do
 			expect(described_class.project_tags.object_id).to eq described_class.project_tags.object_id
 		end
 	end
+
+	describe "project_remotes" do
+		it "should be same as load_remotes when project is linux/linus" do
+			actual = load_remotes
+			expect = described_class.project_remotes
+
+			expect(expect.count).to be > 0
+			expect(expect).to eq actual
+		end
+
+		it "should cache result" do
+			expect(described_class.project_remotes.object_id).to eq described_class.project_remotes.object_id
+		end
+	end
 end
