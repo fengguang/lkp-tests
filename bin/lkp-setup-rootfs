@@ -55,6 +55,14 @@ job_does_not_need_reboot()
 	return 1
 }
 
+start_reboot_watchdog()
+{
+	[ -n "$boot_timeout" ] || return
+	[ -f /var/lock/bmc-watchdog ] && return
+
+	bmc-watchdog --set --start-after-set -i $boot_timeout
+}
+
 while true; do
 	echo $LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp
 	$LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp $job
@@ -62,6 +70,7 @@ while true; do
 	tbox_cant_kexec && {
 		echo "LKP: rebooting"
 		echo "LKP: rebooting" > /dev/kmsg
+		start_reboot_watchdog
 		reboot 2>/dev/null && exit
 	}
 

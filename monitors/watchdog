@@ -37,6 +37,10 @@ start_bmc_watchdog()
 
 	[ -f /var/run/watchdog.pid ] && return
 	[ -f /var/run/bmc-watchdog.pid ] && return
+	(
+	        set -o noclobber
+		echo $$ > /var/lock/bmc-watchdog
+	) 2>/dev/null || return
 
 	bmc-watchdog -d -u 4 -p 0 -a 1 -F -P -L -S -O -i $watchdog_initial_countdown -e $watchdog_reset_period && {
 		sleep 10
