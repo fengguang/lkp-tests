@@ -8,6 +8,7 @@ kill_one()
 }
 
 . $LKP_SRC/lib/wait.sh
+setup_wait
 
 while :
 do

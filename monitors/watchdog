@@ -1,6 +1,31 @@
 #!/bin/sh
 
 . $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/wait.sh
+setup_wait
+
+[ -n "$max_uptime" ] || max_uptime=$((5 * 3600))
+max_uptime=${max_uptime%%.*}
+
+should_touch_watchdog=
+watchdog_initial_countdown=300
+watchdog_reset_period=32
+
+wait_touch_watchdog()
+{
+	local elapsed=0
+
+	while :
+	do
+		wait_timeout $watchdog_reset_period
+		[ -f "$TMP/job-finished" ] && exit
+
+		bmc-watchdog --reset
+
+		elapsed=$(( elapsed + watchdog_reset_period ))
+		[ $elapsed -gt $max_uptime ] && return
+	done
+}
 
 start_bmc_watchdog()
 {
@@ -9,19 +34,32 @@ start_bmc_watchdog()
 	bmc-watchdog --stop 2>/dev/null || return
 
 	[ -f /var/run/watchdog.pid ] && return
-	bmc-watchdog -d -u 4 -p 0 -a 1 -F -P -L -S -O -i 300 -e 30
+	[ -f /var/run/bmc-watchdog.pid ] && return
+
+	bmc-watchdog -d -u 4 -p 0 -a 1 -F -P -L -S -O -i $watchdog_initial_countdown -e $watchdog_reset_period && {
+		sleep 10
+		local pid=$(pidof bmc-watchdog)
+		[ -n "$pid" ] &&
+		bmc-watchdog --get | grep -q 'Timer:.*Running' && {
+			echo $pid > /var/run/bmc-watchdog.pid
+			return
+		}
+	}
+
+	bmc-watchdog --set --start-after-set -i $watchdog_initial_countdown || {
+		bmc-watchdog --stop
+		return
+	}
+
+	should_touch_watchdog=1
 }
 start_bmc_watchdog
 
-[ -n "$max_uptime" ] || max_uptime=$((5 * 3600))
-max_uptime=${max_uptime%%.*}
-
-. $LKP_SRC/lib/wait.sh
-setup_wait
-
-wait_post_test --timeout $max_uptime && {
-	exit 0
-}
+if [ -n "$should_touch_watchdog" ]; then
+	wait_touch_watchdog
+else
+	wait_post_test --timeout $max_uptime && exit 0
+fi
 
 touch $TMP/soft_timeout
 
