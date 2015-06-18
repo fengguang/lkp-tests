@@ -10,3 +10,4 @@ dbench.max_latency
 iostat\..*\.(await|r_await|w_await|svctm|avgqu-sz)\.max
 ebizzy.throughput.per_thread.stddev_percent
 vm-scalability.stddev
+latency_stats\..*
