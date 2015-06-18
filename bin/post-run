@@ -63,6 +63,7 @@ wait_for_pipe()
 	do
 		sleep $i
 		pgrep --pidfile $TMP/.pid-pipes '(tee|cat|gzip)-.*' >/dev/null && continue
+		break
 	done
 
 	for i in $(seq 5)
