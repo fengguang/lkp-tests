@@ -112,13 +112,13 @@ module Compare
 	end
 
 	class Group
-		prop_reader :mresult_roots, :common_axes
+		prop_reader :mresult_roots, :axes
 
 		private
 
 		def initialize(comparer, common_axes)
 			@comparer = comparer
-			@common_axes = common_axes
+			@axes = common_axes
 			@mresult_roots = []
 		end
 
@@ -239,17 +239,17 @@ module Compare
 
 		prop_reader :group, :stat_enum
 
-		def common_axes
-			@group.common_axes
+		def axes
+			@group.axes
 		end
 
-		def common_axes_string(sep1 = '-', sep2 = '=')
+		def axes_string(sep1 = '-', sep2 = '=')
 			common_axes.map { |k, v|
 				"#{k}#{sep2}#{v}"
 			}.join sep1
 		end
 
-		def common_axes_value_string(sep = '-')
+		def axes_value_string(sep = '-')
 			common_axes.values.join sep
 		end
 
@@ -440,7 +440,7 @@ module Compare
 	end
 
 	def self.show_group_header(group)
-		common_axes = group.common_axes
+		common_axes = group.axes
 		compare_axeses = group.compare_axeses
 		puts "========================================================================================="
 		printf "%s:\n", common_axes.keys.join('/')
@@ -530,7 +530,7 @@ module Compare
 				else
 					show_perf_change stat
 				end
-				printf "  %s\n", stat[GROUP].common_axes.values.join('/')
+				printf "  %s\n", stat[GROUP].axes.values.join('/')
 			}
 		}
 	end
