@@ -58,6 +58,30 @@ describe Git do
 					expect(git.gcommit(LINUX_NON_RELEASE_COMMIT).release_tag).to eq(linus_release_tag(LINUX_NON_RELEASE_COMMIT))
 				end
 			end
+
+			describe "base_release_tag" do
+				it "should be same as last_linus_release_tag with default arguments" do
+					git = Git.project_init
+
+					expect(git.gcommit(LINUX_RELEASE_COMMIT).base_release_tag).to eq(["v4.1-rc8", true])
+					expect(git.gcommit(LINUX_RELEASE_COMMIT).base_release_tag).to eq(last_linus_release_tag(LINUX_RELEASE_COMMIT))
+
+					v2_6_13_commit = "02b3e4e2d71b6058ec11cc01c72ac651eb3ded2b"
+					expect(git.gcommit(v2_6_13_commit).base_release_tag).to eq(["v2.6.13", true])
+					expect(git.gcommit(v2_6_13_commit).base_release_tag).to eq(last_linus_release_tag(v2_6_13_commit))
+
+					v2_6_13_child_commit = "af36d7f0df56de3e3e4bbfb15d0915097ecb8cab"
+					expect(git.gcommit(v2_6_13_child_commit).base_release_tag).to eq(["v2.6.13-rc7", false])
+					expect(git.gcommit(v2_6_13_child_commit).base_release_tag).to eq(last_linus_release_tag(v2_6_13_child_commit))
+				end
+
+				it "should cache result" do
+					git = Git.project_init
+
+					v2_6_13_child_commit = "af36d7f0df56de3e3e4bbfb15d0915097ecb8cab"
+					expect(git.gcommit(v2_6_13_child_commit).base_release_tag.object_id).to eq git.gcommit(v2_6_13_child_commit).base_release_tag.object_id
+				end
+			end
 		end
 
 		describe Git::Base do

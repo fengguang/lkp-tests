@@ -140,7 +140,47 @@ module Git
 				end
 			end
 
+			#
+			# if commit has a version tag, return it directly;
+			# otherwise checkout commit and get latest version from Makefile.
+			#
+			def base_release_tag(options = {})
+				tag = release_tag(options)
+				return [tag, true] if tag =~ /^v.*/
+
+				version = patch_level = sub_level = rc = nil
+
+				@base.lib.command_lines('show', "#{@sha}:Makefile").each do |line|
+					case line
+					when /VERSION *= *(\d+)/
+						version = $1.to_i
+					when /PATCHLEVEL *= *(\d+)/
+						patch_level = $1.to_i
+					when /SUBLEVEL *= *(\d+)/
+						sub_level = $1.to_i
+					when /EXTRAVERSION *= *-rc(\d+)/
+						rc = $1.to_i
+					else
+						break
+					end
+				end
+
+				if version && version >= 2
+					tag = "v#{version}.#{patch_level}"
+					tag += ".#{sub_level}" if version ==2
+					tag += "-rc#{rc}" if rc && rc > 0
+
+					[tag, false]
+				else
+					STDERR.puts "Not a kernel tree? Check #{@base.repo}"
+					STDERR.puts caller.join "\n"
+
+					nil
+				end
+			end
+
 			cache_method :interested_tag, ->(obj) {obj.to_s}
+			cache_method :base_release_tag, ->(obj) {obj.to_s}
 		end
 	end
 
