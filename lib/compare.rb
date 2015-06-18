@@ -6,6 +6,54 @@ require "#{LKP_SRC}/lib/stats.rb"
 require "#{LKP_SRC}/lib/tests.rb"
 require "#{LKP_SRC}/lib/result_root.rb"
 
+class AxesGrouper
+	include Property
+	prop_with :group_axis_keys, :axes_data
+
+	private
+
+	def calc_common_axes(axes)
+		as = deepcopy(axes)
+		group_axis_keys.each { |k| as.delete k }
+		as
+	end
+
+	public
+
+	def group
+		map = {}
+		@axes_data.each { |d|
+			as = calc_common_axes d.axes
+			as.freeze
+			map[as] ||= AxesGroup.new self, as
+			map[as].add_axes_datum d
+		}
+		groups = map.values
+		groups
+	end
+end
+
+class AxesGroup
+	prop_with :axes, :axes_data
+
+	def initialize(grouper, common_axes)
+		@grouper = grouper
+		@axes = common_axes
+		@axes_data = []
+	end
+
+	def add_axes_datum(datum)
+		@axes_data << datum
+	end
+
+	def group_axeses
+		group_axis_keys = @grouper.group_axis_keys
+		@axes_data.map { |d|
+			d.axes.select { |k,v| group_axis_keys.index k }
+		}
+	end
+end
+
 module Compare
 	ABS_WIDTH = 10
 	REL_WIDTH = 10
@@ -42,12 +90,6 @@ module Compare
 			@stat_calc_funcs = [Compare.method(:calc_stat_change)]
 		end
 
-		def calc_common_axes(axes)
-			as = deepcopy(axes)
-			compare_axis_keys.each { |ak| as.delete ak }
-			as
-		end
-
 		public
 
 		def set_params(params)
@@ -56,16 +98,14 @@ module Compare
 		end
 
 		def compare_groups
-			map = {}
-			mresult_roots.each { |_rt|
-				as = calc_common_axes(_rt.axes)
-				as.freeze
-				cg = map[as] ||= Group.new(self, as)
-				cg.add_mresult_root _rt
-			}
-			groups = map.values
-			groups.reject! { |cg| cg.mresult_roots.size < 2 }
-			groups
+			grouper = AxesGrouper.new
+			groups = grouper.set_axes_data(@mresult_roots).
+				       set_group_axis_keys(@compare_axis_keys).
+				       group
+			groups.map { |g|
+				next if g.axes_data.size < 2
+				Group.new self, g
+			}.compact
 		end
 
 		# stat calc func is a function object with signature:
@@ -112,32 +152,18 @@ module Compare
 	end
 
 	class Group
-		prop_reader :mresult_roots, :axes
+		prop_reader :mresult_roots, :axes, :compare_axeses
 
 		private
 
-		def initialize(comparer, common_axes)
+		def initialize(comparer, axes_group)
 			@comparer = comparer
-			@axes = common_axes
-			@mresult_roots = []
-		end
-
-		def calc_compare_axeses
-			compare_axis_keys = @comparer.compare_axis_keys
-			@mresult_roots.map { |_rt|
-				_rt.axes.select { |k,v| compare_axis_keys.index k }
-			}
+			@axes = axes_group.axes
+			@mresult_roots = axes_group.axes_data
+			@compare_axeses = axes_group.group_axeses
 		end
 
 		public
-
-		def add_mresult_root(_rt)
-			@mresult_roots << _rt
-		end
-
-		def compare_axeses
-			@compare_axeses ||= calc_compare_axeses
-		end
 
 		def matrixes
 			@matrixes ||= mresult_roots.map { |_rt| _rt.matrix.freeze }
