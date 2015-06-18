@@ -5,8 +5,8 @@ require "#{LKP_SRC}/lib/dmesg.rb"
 
 if ENV['RESULT_ROOT']
 	RESULT_ROOT = ENV['RESULT_ROOT']
-	serial_file = "#{RESULT_ROOT}/.dmesg"
-	kmsg_file = "#{RESULT_ROOT}/dmesg"
+	serial_file = "#{RESULT_ROOT}/dmesg"
+	kmsg_file = "#{RESULT_ROOT}/kmsg"
 	if File.exist? serial_file
 		dmesg_file = serial_file
 

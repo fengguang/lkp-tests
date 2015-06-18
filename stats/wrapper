@@ -23,7 +23,7 @@ check_empty_output()
 	[[ $program = 'tcrypt' ]] && return
 	[[ $program = 'kernel-size' ]] && return
 	[[ $program = 'perf-profile' ]] && return
-	[[ $program = 'dmesg' && -s $RESULT_ROOT/.dmesg ]] && return
+	[[ $program = 'dmesg' && -s $RESULT_ROOT/kmsg ]] && return
 
 	rm -f $log $log.gz
 	exit 0
@@ -84,7 +84,7 @@ else
 fi
 
 # xz large files for long term storage, remove possible .gz
-if [[ $program =~ ^(sched_debug|proc-stat|perf-profile|ftrace|\.dmesg|dmesg)$ ]]; then
+if [[ $program =~ ^(sched_debug|proc-stat|perf-profile|ftrace|kmsg|dmesg)$ ]]; then
 	[ -s $log ] && [ ! -f $log.xz ] && xz $log && rm -f $log.gz
 fi
 

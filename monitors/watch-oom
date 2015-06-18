@@ -19,7 +19,7 @@ do
 
 	[ -f "$TMP/job-finished" ] && exit
 
-	grep -s -q -F -e 'Out of memory' -e 'invoked oom-killer: gfp_mask=0x' $RESULT_ROOT/dmesg && {
+	grep -s -q -F -e 'Out of memory' -e 'invoked oom-killer: gfp_mask=0x' $RESULT_ROOT/kmsg && {
 		touch $TMP/OOM
 		touch $RESULT_ROOT/OOM
 		pid_tests=$(cat $TMP/pid-tests)

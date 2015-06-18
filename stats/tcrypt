@@ -7,7 +7,7 @@ RESULT_ROOT = ENV['RESULT_ROOT']
 $test = ''
 $vals = []
 
-exit unless File.exist?("#{RESULT_ROOT}/dmesg")
+exit unless File.exist?("#{RESULT_ROOT}/kmsg")
 
 def show_one(new_test)
 	printf "%s: %d\n", $test, $vals.average unless $test.empty? or $vals.empty?
@@ -15,7 +15,7 @@ def show_one(new_test)
 	$vals = []
 end
 
-File.foreach("#{RESULT_ROOT}/dmesg") do |line|
+File.foreach("#{RESULT_ROOT}/kmsg") do |line|
 	case line
 	when /testing speed of (.*)$/
 		show_one $1.tr(' ', '.')

@@ -107,10 +107,10 @@ setup_result_root()
 record_dmesg()
 {
 	killall rsyslogd klogd 2>/dev/null || :
-	dmesg > $RESULT_ROOT/dmesg
+	dmesg > $RESULT_ROOT/kmsg
 	ln -sf $(command -v cat) $LKP_SRC/bin/cat-kmsg
-	stdbuf -o0 -e0 cat-kmsg /proc/kmsg >> $RESULT_ROOT/dmesg &
-	echo $! > $TMP/pid-dmesg
+	stdbuf -o0 -e0 cat-kmsg /proc/kmsg >> $RESULT_ROOT/kmsg &
+	echo $! > $TMP/pid-kmsg
 	[ -n "$BASH_VERSION" ] && disown # quiet the "Terminated" notification to stderr
 }
 
