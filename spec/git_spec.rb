@@ -131,6 +131,16 @@ describe Git do
 				expect(described_class.project_remotes.object_id).to eq described_class.project_remotes.object_id
 			end
 		end
+
+		describe "project_tag_order" do
+			it "should be same as tag_order with default parameters" do
+				actual = tag_order("v2.6.13-rc7")
+				expect = described_class.project_tag_order('v2.6.13-rc7')
+
+				expect(expect).to be < 0
+				expect(expect).to eq actual
+			end
+		end
 	end
 
 	context "gcc" do

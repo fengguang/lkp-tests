@@ -253,6 +253,10 @@ module Git
 			remotes
 		end
 
+		def project_tag_order(tag, options = {})
+			project_tags(options)[tag]
+		end
+
 		cache_method :project_tags
 		cache_method :project_remotes
 
