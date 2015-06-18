@@ -16,9 +16,12 @@ describe Git do
 		linux_non_release_commit = "b86a7563ca617aa49dfd6b836da4dd0351fe2acc"
 
 		describe Git::Object::Commit do
-			it "should have same output as lkp git" do
-				git = Git.project_init
-				gcommit = git.gcommit(linux_v4_1_rc8_commit)
+			before do
+				@git = Git.project_init
+			end
+
+			it "should be same as lkp git" do
+				gcommit = @git.gcommit(linux_v4_1_rc8_commit)
 
 				expect(gcommit.author.formatted_name).to eq(git_commit_author(linux_v4_1_rc8_commit))
 				expect(gcommit.committer.formatted_name).to eq(git_committer(linux_v4_1_rc8_commit))
@@ -41,93 +44,86 @@ describe Git do
 				#expect(gcommit.interested_tag).to eq nil
 			end
 
-			it "should cache interested_tag" do
-				git = Git.project_init
-				gcommit = git.gcommit(linux_v4_1_rc8_commit)
+			describe "interested_tag" do
+				it "should cache result" do
+					gcommit = @git.gcommit(linux_v4_1_rc8_commit)
 
-				expect(gcommit.interested_tag.object_id).to eq(gcommit.interested_tag.object_id)
+					expect(gcommit.interested_tag.object_id).to eq(gcommit.interested_tag.object_id)
+				end
 			end
 
 			describe "release_tag" do
 				it "should be same as linus_release_tag with default arguments" do
-					git = Git.project_init
+					expect(@git.gcommit(linux_v4_1_rc8_commit).release_tag).to eq 'v4.1-rc8'
+					expect(@git.gcommit(linux_v4_1_rc8_commit).release_tag).to eq(linus_release_tag(linux_v4_1_rc8_commit))
 
-					expect(git.gcommit(linux_v4_1_rc8_commit).release_tag).to eq 'v4.1-rc8'
-					expect(git.gcommit(linux_v4_1_rc8_commit).release_tag).to eq(linus_release_tag(linux_v4_1_rc8_commit))
-
-					expect(git.gcommit(linux_non_release_commit).release_tag).to eq nil
-					expect(git.gcommit(linux_non_release_commit).release_tag).to eq(linus_release_tag(linux_non_release_commit))
+					expect(@git.gcommit(linux_non_release_commit).release_tag).to eq nil
+					expect(@git.gcommit(linux_non_release_commit).release_tag).to eq(linus_release_tag(linux_non_release_commit))
 				end
 			end
 
 			describe "base_release_tag" do
 				it "should be same as last_linus_release_tag with default arguments" do
-					git = Git.project_init
-
-					expect(git.gcommit(linux_v4_1_rc8_commit).base_release_tag).to eq(["v4.1-rc8", true])
-					expect(git.gcommit(linux_v4_1_rc8_commit).base_release_tag).to eq(last_linus_release_tag(linux_v4_1_rc8_commit))
+					expect(@git.gcommit(linux_v4_1_rc8_commit).base_release_tag).to eq(["v4.1-rc8", true])
+					expect(@git.gcommit(linux_v4_1_rc8_commit).base_release_tag).to eq(last_linus_release_tag(linux_v4_1_rc8_commit))
 
 					v2_6_13_commit = "02b3e4e2d71b6058ec11cc01c72ac651eb3ded2b"
-					expect(git.gcommit(v2_6_13_commit).base_release_tag).to eq(["v2.6.13", true])
-					expect(git.gcommit(v2_6_13_commit).base_release_tag).to eq(last_linus_release_tag(v2_6_13_commit))
+					expect(@git.gcommit(v2_6_13_commit).base_release_tag).to eq(["v2.6.13", true])
+					expect(@git.gcommit(v2_6_13_commit).base_release_tag).to eq(last_linus_release_tag(v2_6_13_commit))
 
 					v2_6_13_child_commit = "af36d7f0df56de3e3e4bbfb15d0915097ecb8cab"
-					expect(git.gcommit(v2_6_13_child_commit).base_release_tag).to eq(["v2.6.13-rc7", false])
-					expect(git.gcommit(v2_6_13_child_commit).base_release_tag).to eq(last_linus_release_tag(v2_6_13_child_commit))
+					expect(@git.gcommit(v2_6_13_child_commit).base_release_tag).to eq(["v2.6.13-rc7", false])
+					expect(@git.gcommit(v2_6_13_child_commit).base_release_tag).to eq(last_linus_release_tag(v2_6_13_child_commit))
 				end
 
 				it "should cache result" do
-					git = Git.project_init
-
 					v2_6_13_child_commit = "af36d7f0df56de3e3e4bbfb15d0915097ecb8cab"
-					expect(git.gcommit(v2_6_13_child_commit).base_release_tag.object_id).to eq git.gcommit(v2_6_13_child_commit).base_release_tag.object_id
+					expect(@git.gcommit(v2_6_13_child_commit).base_release_tag.object_id).to eq @git.gcommit(v2_6_13_child_commit).base_release_tag.object_id
 				end
 			end
 		end
 
 		describe Git::Base do
-			it "should cache commits of single git object" do
-				git = Git.project_init
-
-				gcommit1 = git.gcommit(linux_v4_1_rc8_commit)
-				gcommit2 = git.gcommit(linux_v4_1_rc8_commit)
-				expect(gcommit2.object_id).to eq gcommit1.object_id
-
-				expect(gcommit2.committer.name.object_id).to eq gcommit2.committer.name.object_id
+			before do
+				@git = Git.project_init
 			end
 
-			it "should cache commits of multiple git objects" do
-				git1 = Git.project_init
-				git2 = Git.project_init
-				expect(git2.object_id).not_to eq git1.object_id
+			describe "gcommit" do
+				it "should cache commits of single git object" do
+					gcommit1 = @git.gcommit(linux_v4_1_rc8_commit)
+					gcommit2 = @git.gcommit(linux_v4_1_rc8_commit)
 
-				expect(git2.gcommit(linux_v4_1_rc8_commit).object_id).to eq git1.gcommit(linux_v4_1_rc8_commit).object_id
+					expect(gcommit2.object_id).to eq gcommit1.object_id
+					expect(gcommit2.committer.name.object_id).to eq gcommit2.committer.name.object_id
+				end
+
+				it "should cache commits of multiple git objects" do
+					git1 = Git.project_init
+					git2 = Git.project_init
+
+					expect(git2.object_id).not_to eq git1.object_id
+					expect(git2.gcommit(linux_v4_1_rc8_commit).object_id).to eq git1.gcommit(linux_v4_1_rc8_commit).object_id
+				end
 			end
 
 			describe "tags_with_order" do
 				it "should be same as linus_tags when project is linux/linus" do
-					git = Git.project_init
-
 					actual = linus_tags
-					expect = git.tags_with_order
+					expect = @git.tags_with_order
 
 					expect(expect.count).to be > 0
 					expect(expect).to eq actual
 				end
 
 				it "should cache result" do
-					git = Git.project_init
-
-					expect(git.tags_with_order.object_id).to eq git.tags_with_order.object_id
+					expect(@git.tags_with_order.object_id).to eq @git.tags_with_order.object_id
 				end
 			end
 
 			describe "tag_order" do
 				it "should be same as tag_order with default parameters" do
-					git = Git.project_init
-
 					actual = tag_order("v2.6.13-rc7")
-					expect = git.tag_order('v2.6.13-rc7')
+					expect = @git.tag_order('v2.6.13-rc7')
 
 					expect(expect).to be < 0
 					expect(expect).to eq actual
@@ -154,6 +150,7 @@ describe Git do
 		before do
 			@git = Git.project_init(project: 'gcc')
 		end
+
 		# tag gcc-5_1_0-release
 		gcc_5_1_0_release_commit = "d5ad84b309d0d97d3955fb1f62a96fc262df2b76"
 		gcc_non_release_commit = "ab2a707c83582b85a20079b53f1c8bc19942f5d1"
@@ -180,8 +177,8 @@ describe Git do
 
 			describe "release_tag" do
 				it "should be correct" do
-					expect(@git.gcommit(gcc_5_1_0_release_commit).release_tag(remote: 'gcc')).to eq 'gcc-5_1_0-release'
-					expect(@git.gcommit(gcc_non_release_commit).release_tag(remote: 'gcc')).to eq nil
+					expect(@git.gcommit(gcc_5_1_0_release_commit).release_tag(remote: 'gcc', committer: 'gccadmin')).to eq 'gcc-5_1_0-release'
+					expect(@git.gcommit(gcc_non_release_commit).release_tag(remote: 'gcc', committer: 'gccadmin')).to eq nil
 				end
 			end
 		end
