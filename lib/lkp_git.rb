@@ -129,7 +129,8 @@ module Git
 
 			# FIXME need better name
 			def interested_tag(options = {})
-				project_tags = Git.project_tags(options)
+				project_tags = Git.project_tags(options.merge(project: @base.project))
+
 				tags.find {|tag| project_tags.include? tag} || tags.first
 			end
 
