@@ -127,13 +127,16 @@ module Git
 			command_lines = command(cmd, opts, chdir)
 			begin
 				command_lines.split("\n")
-			rescue
-				STDERR.puts "Git error: #{cmd} #{opts}"
+			rescue Exception => e
+				STDERR.puts "GIT error: #{cmd} #{opts}: #{e.message}"
 
-				STDERR.puts "GIT ENV: LANG = #{ENV['LANG']}, LANGUAGE = #{ENV['LANGUAGE']}, LC_ALL = #{ENV['LC_ALL']}"
-				STDERR.puts "GIT string: encoding = #{command_lines.encoding}, "\
-				            "scrub = #{command_lines == command_lines.scrub}, "\
-				            "utf8 = #{command_lines == command_lines.encode("UTF-8", "UTF-8", invalid: :replace, undef: :replace)}"
+				begin
+					STDERR.puts "GIT env: LANG = #{ENV['LANG']}, LANGUAGE = #{ENV['LANGUAGE']}, LC_ALL = #{ENV['LC_ALL']}, "\
+					            "encoding = #{command_lines.encoding}, "\
+					            "scrub = #{command_lines == command_lines.scrub}, "\
+					            "utf8 = #{command_lines.force_encoding("UTF-8") == command_lines.encode("UTF-8", "UTF-8", undef: :replace)}"
+				rescue
+				end
 
 				command_lines.encode("UTF-8", "binary", invalid: :replace, undef: :replace).split("\n")
 			end
