@@ -109,43 +109,34 @@ def install_packages(script, distro)
 end
 
 def install_benchmarks(script, distro)
-	case distro
-	when "debian"
-		if File.file? "#{LKP_SRC}/pack/#{script}"
-			deb_name = script.gsub(/_/, '-') + '-LKP.deb'
-			puts "Making #{deb_name}..."
-			if system "#{LKP_SRC}/sbin/pack -d -c #{script}"
-				puts "Installing #{deb_name}..."
-				system "dpkg -i /tmp/#{deb_name}"
-			else
-				puts "Making #{deb_name} failed"
-			end
-		end
-	when "archlinux"
-		if File.file? "#{LKP_SRC}/pack/#{script}"
-			puts "Making #{script} benchmarks for #{distro}"
-			if system "#{LKP_SRC}/sbin/pack -c #{script}"
-				# TODO: make benchmark.cgz to '.tar.xz/.rpm'
-				puts "Making successfully"
-			else
-				puts "Making #{script} benchmarks failed"
-			end
+	return unless File.file? "#{LKP_SRC}/pack/#{script}"
+
+	pkg_name = script.gsub(/_/, '-') + '-LKP'
+	arch = `uname -m`.chomp
+	puts "Making #{script} benchmark for #{distro}"
+
+	if system "#{LKP_SRC}/sbin/pack -d #{distro} -c #{script}"
+		puts "Installing #{pkg_name}..."
+
+		case distro
+		when 'debian','ubuntu'
+			system "dpkg -i /tmp/#{deb_name}"
+		when 'fedora'
+			system "rpm -ivh --replacepkgs /tmp/#{pkg_name}/RPMS/#{pkg_name}.#{arch}.rpm"
+		else
+			puts "Just make /lkp/benchmarks/#{script}-#{arch}.cgz"
 		end
 	else
-		puts "Unsupport #{distro} distribution"
+		puts "Making #{pkg_name} failed"
 	end
 end
 
 distroInfo = LKP::DistroInfo.instance
+distro = distroInfo.systemNameL
 
-case distroInfo.systemNameL
-when "debian", "ubuntu"
-	distro = "debian"
-when "arch"
-	distro = "archlinux"
-# TODO: support more distro
-else
-	puts "Unsupport system, cannot instal packages under #{LKP_SRC}/distro/#{distro}"
+unless File.executable? "#{LKP_SRC}/distro/installer/#{distro}"
+	puts "Unsupport #{distro} system, cannot install packages."
+	exit 1
 end
 
 make_wakeup

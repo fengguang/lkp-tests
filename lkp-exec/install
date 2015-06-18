@@ -125,7 +125,7 @@ build_install_benchmarks() {
 		fedora)
 			rpm -ivh --replacepkgs /tmp/$pkg_name/RPMS/$pkg_name.$(uname -m).rpm ;;
 		*)
-			: ;;
+			echo "Just make /lkp/benchmarks/$script-$(uname -m).cgz" ;;
 		esac
 	else
 		echo "Making $pkg_name failed"
