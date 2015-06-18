@@ -8,10 +8,10 @@ setup_wait
 max_uptime=${max_uptime%%.*}
 
 should_touch_watchdog=
-watchdog_initial_countdown=300
+watchdog_initial_countdown=${boot_timeout:-300}
 watchdog_reset_period=32
 
-[ -x /usr/bin/schedtool ] && /usr/bin/schedtool -R $$	# SCHED_RR
+[ -x /usr/bin/schedtool ] && /usr/bin/schedtool -R $$ -p 1	# SCHED_RR
 
 wait_touch_watchdog()
 {
