@@ -119,12 +119,25 @@ class MMatrixPlotter < MatrixPlotterBase
 	prop_with :x_stat_key, :lines
 	prop_with :y_margin, :y_range
 
+	# shortcut for one line figure
 	def set_line(matrix, y_stat_key, line_title = nil)
 		@lines = [[matrix, y_stat_key, line_title]]
 		self
 	end
 
+	def check_line(values)
+		return values.max != 0 || values.min != 0
+	end
+
+	def check_lines
+		@lines.each { |matrix, y_stat_key, line_title|
+			return true if check_line(matrix[y_stat_key])
+		}
+		return false
+	end
+
 	def plot
+		return unless check_lines
 		Gnuplot.open { |gp|
 		Gnuplot::Plot.new(gp) { |p|
 			setup_output(p, @output_file_name)
@@ -135,19 +148,19 @@ class MMatrixPlotter < MatrixPlotterBase
 			y_min, y_max = nil
 			@lines.each { |matrix, y_stat_key, line_title|
 				values = matrix[y_stat_key]
+				next if !check_line(values)
+
 				max = values.max
 				min = values.min
-				next if max == 0 && min == 0
-
 				y_min = y_min ? [min, y_min].min : min
 				y_max = y_max ? [max, y_max].max : max
+
 				if @x_stat_key
 					data = [matrix[@x_stat_key], values]
 				else
 					data = [values]
 					p.noxtics
 				end
-
 				p.data << Gnuplot::DataSet.new(data) { |ds|
 					if @output_file_name
 						ds.with = "linespoints pt 5"
