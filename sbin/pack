@@ -58,7 +58,7 @@ do
 	case $opt in
 	a ) arch="$OPTARG" ;;
 	c ) opt_clean=true ;;
-	d ) opt_pkg=true; distro="$OPTARG" ;;
+	d ) distro="$OPTARG" ;;
 	s ) sync_dest="$OPTARG" ;;
 	? ) usage ;;
 	esac
@@ -83,11 +83,7 @@ install_required_packages $LKP_SRC/distro/debian/$BM_NAME-dev
 download
 build
 install
-if [[ $opt_pkg ]]; then
-	pack_pkg $distro
-else
-	pack
-fi
+pack_pkg $distro
 
 [[ -n $sync_dest ]] && rsync -av /lkp/benchmarks/${BM_NAME}-${arch}.cgz $sync_dest/${BM_NAME}-${arch}.cgz
 

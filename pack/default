@@ -110,23 +110,6 @@ pack_rpm()
 	)
 }
 
-pack_pkg()
-{
-	local distro=$1
-	local pkg_name="${BM_NAME//_/-}-LKP"
-
-	rm -fr "/tmp/$pkg_name"
-
-	case $distro in
-	debian|ubuntu)
-		pack_deb ;;
-	fedora)
-		pack_rpm ;;
-	*)
-		echo "Unsupport $distro to make packages." ;;
-	esac
-}
-
 pack()
 {
 	{
@@ -137,6 +120,23 @@ pack()
 	} |
 	cpio -o -H newc --owner=root.root | gzip -n -9 > /lkp/benchmarks/${BM_NAME}.cgz
 	[[ $arch ]] && mv "/lkp/benchmarks/${BM_NAME}.cgz" "/lkp/benchmarks/${BM_NAME}-${arch}.cgz"
+}
+
+pack_pkg()
+{
+	local distro=$1
+	local pkg_name="${BM_NAME//_/-}-LKP"
+
+	rm -fr "/tmp/$pkg_name"
+
+	case $distro in
+		debian|ubuntu)
+			pack_deb ;;
+		fedora)
+			pack_rpm ;;
+		*)
+			pack ;;
+	esac
 }
 
 post_cleanup()
