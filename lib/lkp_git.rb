@@ -90,6 +90,36 @@ module Git
 
 			load_yaml(lkp_src + "/repo/#{@project}/DEFAULTS")
 		end
+
+		#
+		# options
+		#	  :remote => 'remote_name', default is 'linus'
+		#
+		def tags_with_order(options = {})
+			# FIXME remote default need be mapped from project
+			options[:remote] ||= 'linus'
+
+			# FIXME consider to check whether remote is nil
+			remote = Git.project_remotes(options.merge(project: @project))[options[:remote]]
+
+			pattern = Regexp.new '^' + remote['release_tag_pattern'].sub(' ', '$|^') + '$'
+
+			tags = self.select_tags(pattern, remote['release_tag_committer'])
+			tags = sort_tags(pattern, tags)
+
+			Hash[tags.map.with_index {|tag, i| [tag, -i]}]
+		end
+
+		cache_method :tags_with_order
+
+		def tag_order(tag, options = {})
+			tags_with_order(options)[tag]
+		end
+
+		def select_tags(pattern, committer)
+			self.tag_names.map {|tag_name| tag_name.chomp}
+			              .select {|tag_name| pattern.match(tag_name)}
+		end
 	end
 
 	class Lib
@@ -137,7 +167,7 @@ module Git
 
 			# FIXME need better name
 			def interested_tag(options = {})
-				project_tags = Git.project_tags(options.merge(project: @base.project))
+				project_tags = @base.tags_with_order(options)
 
 				tags.find {|tag| project_tags.include? tag} || tags.first
 			end
@@ -229,27 +259,6 @@ module Git
 			Git.init(working_dir, options)
 		end
 
-		#
-		# options
-		#	  :project => 'project_name', default is linux
-		#	  :remote => 'remote_name', default is 'linus'
-		#
-		def project_tags(options = {})
-			options[:project] ||= 'linux'
-			# FIXME remote default need be mapped from project
-			options[:remote] ||= 'linus'
-
-			# FIXME consider to check whether project_remote is nil
-			project_remote = project_remotes(options)[options[:remote]]
-
-			pattern = Regexp.new '^' + project_remote['release_tag_pattern'].sub(' ', '$|^') + '$'
-
-			tags = select_tags(pattern, project_remote['release_tag_committer'], project: options[:project])
-			tags = sort_tags(pattern, tags)
-
-			Hash[tags.map.with_index {|tag, i| [tag, -i]}]
-		end
-
 		# FIXME remove ENV usage
 		# FIXME to design default project as * or linux
 		def project_remotes(options = {})
@@ -270,20 +279,7 @@ module Git
 			remotes
 		end
 
-		def project_tag_order(tag, options = {})
-			project_tags(options)[tag]
-		end
-
-		cache_method :project_tags
 		cache_method :project_remotes
-
-		private
-		def select_tags(pattern, committer, options)
-			git = Git.project_init(project: options[:project])
-
-			git.tag_names.map {|tag_name| tag_name.chomp}
-			             .select {|tag_name| pattern.match(tag_name)}
-		end
 	end
 end
 

@@ -103,19 +103,35 @@ describe Git do
 
 				expect(git2.gcommit(linux_v4_1_rc8_commit).object_id).to eq git1.gcommit(linux_v4_1_rc8_commit).object_id
 			end
-		end
 
-		describe "project_tags" do
-			it "should be same as linus_tags when project is linux/linus" do
-				actual = linus_tags
-				expect = described_class.project_tags
+			describe "tags_with_order" do
+				it "should be same as linus_tags when project is linux/linus" do
+					git = Git.project_init
 
-				expect(expect.count).to be > 0
-				expect(expect).to eq actual
+					actual = linus_tags
+					expect = git.tags_with_order
+
+					expect(expect.count).to be > 0
+					expect(expect).to eq actual
+				end
+
+				it "should cache result" do
+					git = Git.project_init
+
+					expect(git.tags_with_order.object_id).to eq git.tags_with_order.object_id
+				end
 			end
 
-			it "should cache result" do
-				expect(described_class.project_tags.object_id).to eq described_class.project_tags.object_id
+			describe "tag_order" do
+				it "should be same as tag_order with default parameters" do
+					git = Git.project_init
+
+					actual = tag_order("v2.6.13-rc7")
+					expect = git.tag_order('v2.6.13-rc7')
+
+					expect(expect).to be < 0
+					expect(expect).to eq actual
+				end
 			end
 		end
 
@@ -130,16 +146,6 @@ describe Git do
 
 			it "should cache result" do
 				expect(described_class.project_remotes.object_id).to eq described_class.project_remotes.object_id
-			end
-		end
-
-		describe "project_tag_order" do
-			it "should be same as tag_order with default parameters" do
-				actual = tag_order("v2.6.13-rc7")
-				expect = described_class.project_tag_order('v2.6.13-rc7')
-
-				expect(expect).to be < 0
-				expect(expect).to eq actual
 			end
 		end
 	end
