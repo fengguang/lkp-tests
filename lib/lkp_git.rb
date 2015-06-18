@@ -82,6 +82,14 @@ module Git
 		def tag_names
 			lib.tag('-l').split("\n")
 		end
+
+		def default_remote
+			# FIXME remove ENV usage
+			# TODO abstract File.dirname(File.dirname logic
+			lkp_src = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
+
+			load_yaml(lkp_src + "/repo/#{@project}/DEFAULTS")
+		end
 	end
 
 	class Lib
@@ -137,10 +145,10 @@ module Git
 			# FIXME one alternative is to put this as Git class method
 			# FIXME consider to store project information to base when init git
 			# options
-			#	  :committer => 'committer_name', default is 'Linus Torvalds'
+			#	  :committer => 'committer_name', default is configured in /path/to/project/DEFAULTS
 			#
 			def release_tag(options = {})
-				options[:committer] ||= 'Linus Torvalds'
+				options[:committer] ||= @base.default_remote['release_tag_committer']
 
 				if committer.name == options[:committer]
 					tag = self.interested_tag(options)
