@@ -151,6 +151,9 @@ describe Git do
 	end
 
 	context "gcc" do
+		before do
+			@git = Git.project_init(project: 'gcc')
+		end
 		# tag gcc-5_1_0-release
 		gcc_5_1_0_release_commit = "d5ad84b309d0d97d3955fb1f62a96fc262df2b76"
 		gcc_non_release_commit = "ab2a707c83582b85a20079b53f1c8bc19942f5d1"
@@ -165,9 +168,7 @@ describe Git do
 
 		describe Git::Object::Commit do
 			it "should be correct" do
-				git = Git.project_init(project: 'gcc')
-
-				gcommit = git.gcommit(gcc_5_1_0_release_commit)
+				gcommit = @git.gcommit(gcc_5_1_0_release_commit)
 
 				expect(gcommit.author.formatted_name).to eq('gccadmin <gccadmin@138bc75d-0d04-0410-961f-82ee72b054a4>')
 				expect(gcommit.committer.formatted_name).to eq gcommit.author.formatted_name
@@ -179,10 +180,8 @@ describe Git do
 
 			describe "release_tag" do
 				it "should be correct" do
-					git = Git.project_init
-
-					expect(git.gcommit(gcc_5_1_0_release_commit).release_tag).to eq 'gcc-5_1_0-release'
-					expect(git.gcommit(gcc_non_release_commit).release_tag).to eq nil
+					expect(@git.gcommit(gcc_5_1_0_release_commit).release_tag(remote: 'gcc')).to eq 'gcc-5_1_0-release'
+					expect(@git.gcommit(gcc_non_release_commit).release_tag(remote: 'gcc')).to eq nil
 				end
 			end
 		end

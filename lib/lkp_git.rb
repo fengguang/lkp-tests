@@ -180,9 +180,8 @@ module Git
 				options[:committer] ||= @base.default_remote['release_tag_committer']
 
 				if committer.name == options[:committer]
-					tag = self.interested_tag(options)
-					# FIXME abstract to a function and mapped from project
-					tag if tag && (tag.match(/^v[34]\.\d+(-rc\d+)?$/) || tag.match(/^v2\.\d+\.\d+(-rc\d)?$/))
+					tags_with_order = @base.tags_with_order(options)
+					tags.find {|tag| tags_with_order.include? tag}
 				end
 			end
 
