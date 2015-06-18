@@ -1,7 +1,7 @@
 #!/bin/sh
 # - test_prefix
 
-# mdadm is a tool for managing Linux Software RAID arrays.
+## mdadm is a tool for managing Linux Software RAID arrays.
 
 cd $BENCHMARK_ROOT/mdadm-selftests || exit 1
 [ -z "$test_prefix" ] && echo "nil test_prefix" 1>&2 && exit 1

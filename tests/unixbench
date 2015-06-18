@@ -1,10 +1,10 @@
 #!/bin/sh
 # - test
 
-# UnixBench is the original BYTE UNIX benchmark suite. The purpose
-# of UnixBench is to provide a basic indicator of the performance
-# of a Unix-like system; hence, multiple tests are used to test
-# various aspects of the system's performance.
+## UnixBench is the original BYTE UNIX benchmark suite. The purpose
+## of UnixBench is to provide a basic indicator of the performance
+## of a Unix-like system; hence, multiple tests are used to test
+## various aspects of the system's performance.
 
 cd $BENCHMARK_ROOT/unixbench || exit
 

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Measuring latency in the Linux network stack between kernel and user space.
+## Measuring latency in the Linux network stack between kernel and user space.
 
 cd $BENCHMARK_ROOT/ku-latency || exit
 

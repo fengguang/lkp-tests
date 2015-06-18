@@ -1,9 +1,9 @@
 #!/bin/sh
 # - test
 
-# Autotest is a framework for fully automated testing. It is designed
-# primarily to test the Linux kernel, though it is useful for many
-# other functions such as qualifying new hardware.
+## Autotest is a framework for fully automated testing. It is designed
+## primarily to test the Linux kernel, though it is useful for many
+## other functions such as qualifying new hardware.
 
 cd $BENCHMARK_ROOT/autotest || exit
 

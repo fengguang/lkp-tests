@@ -4,10 +4,10 @@
 # - mode
 # - nr_task
 
-# It Scale takes a testcase and runs it from 1 through to n
-# parallel copies to see if the testcase will scale. It
-# builds both a process and threads based test in order
-# to see any differences between the two.
+## It Scale takes a testcase and runs it from 1 through to n
+## parallel copies to see if the testcase will scale. It
+## builds both a process and threads based test in order
+## to see any differences between the two.
 
 cd $BENCHMARK_ROOT/will-it-scale || exit
 

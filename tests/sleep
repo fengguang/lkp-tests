@@ -1,6 +1,6 @@
 #!/bin/sh
 # - runtime
 
-# delay for a specified amount of time
+## delay for a specified amount of time
 
 exec sleep ${1:-$runtime}

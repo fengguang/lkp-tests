@@ -1,8 +1,8 @@
 #!/bin/sh
 
-# The MCE test suite is a collection of tools and test scripts for
-# testing the Linux RAS related features, including CPU/Memory
-# error containment and recovery, ACPI/APEI support etc.
+## The MCE test suite is a collection of tools and test scripts for
+## testing the Linux RAS related features, including CPU/Memory
+## error containment and recovery, ACPI/APEI support etc.
 
 cd $BENCHMARK_ROOT/mce-test || exit
 

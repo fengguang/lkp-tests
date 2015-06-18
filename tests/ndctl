@@ -1,5 +1,5 @@
 #!/bin/sh
-# Utility library for managing the Linux Kernel ND (NFIT-defined/NVDIMM) Subsystem
+## Utility library for managing the Linux Kernel ND (NFIT-defined/NVDIMM) Subsystem
 
 LD_LIBRARY_PATH=/lkp/benchmarks/ndctl/lib \
 /lkp/benchmarks/ndctl/bin/ndctl test

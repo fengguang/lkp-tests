@@ -3,9 +3,9 @@
 # - nr_threads
 # - protocol
 
-# nepim stands for network pipemeter, a tool for measuring
-# available bandwidth between hosts. nepim is also useful
-# to generate network traffic for testing purposes.
+## nepim stands for network pipemeter, a tool for measuring
+## available bandwidth between hosts. nepim is also useful
+## to generate network traffic for testing purposes.
 
 [ -n "$nr_threads" ] && opt_streams="-n $nr_threads"
 [ "${protocol#udp}" != "$protocol" ]	&& opt_udp=-u

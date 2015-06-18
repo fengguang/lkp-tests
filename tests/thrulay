@@ -1,9 +1,9 @@
 #!/bin/sh
 # - runtime
 
-# The program thrulay is used to measure the capacity, delay,
-# and other performance metrics of a network by sending a
-# bulk TCP or UDP stream over it.
+## The program thrulay is used to measure the capacity, delay,
+## and other performance metrics of a network by sending a
+## bulk TCP or UDP stream over it.
 
 export PATH=$BENCHMARK_ROOT/thrulay/sbin:$BENCHMARK_ROOT/thrulay/bin:$PATH
 

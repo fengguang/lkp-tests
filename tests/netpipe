@@ -1,9 +1,9 @@
 #!/bin/sh
 # - test
 
-# NetPIPE is a protocol independent performance tool that encapsulates
-# the best of ttcp and netperf and visually represents the network
-# performance under a variety of conditions.
+## NetPIPE is a protocol independent performance tool that encapsulates
+## the best of ttcp and netperf and visually represents the network
+## performance under a variety of conditions.
 
 [ -n "$direct_server_ips" ] && server=$direct_server_ips
 [ -z "$server" ] && server=127.0.0.1

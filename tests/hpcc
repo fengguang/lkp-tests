@@ -1,8 +1,8 @@
 #!/bin/sh
 
-# The mpirun command controls several aspects of program
-# execution in Open MPI. mpirun uses the Open Run-Time
-# Environment (ORTE) to launch jobs.
+## The mpirun command controls several aspects of program
+## execution in Open MPI. mpirun uses the Open Run-Time
+## Environment (ORTE) to launch jobs.
 
 cd /tmp
 cp -a /usr/share/doc/hpcc/examples/_hpccinf.txt hpccinf.txt

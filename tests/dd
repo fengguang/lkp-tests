@@ -2,7 +2,7 @@
 # - runtime
 # - bs
 
-# Copy a file, converting and formatting according to the operands.
+## Copy a file, converting and formatting according to the operands.
 
 [ -n "$mount_points" ] || { echo "empty mount_points, disk failed?" >&2; exit; }
 

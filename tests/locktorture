@@ -1,9 +1,9 @@
 #!/bin/sh
 # - runtime
 
-# The tests periodically output status messages via printk(),
-# which can be examined via the dmesg (perhaps grepping for "torture")
-# The test is started when the module is loaded, and stops when the module is unloaded.
+## The tests periodically output status messages via printk(),
+## which can be examined via the dmesg (perhaps grepping for "torture")
+## The test is started when the module is loaded, and stops when the module is unloaded.
 
 modprobe locktorture 2>/dev/null || exit 0
 

@@ -1,11 +1,11 @@
 #!/bin/sh
 
-# Tests for x86 architecture are run as kernel images for qemu
-# that supports multiboot format. Tests uses an infrastructure
-# called from the bios code. The infrastructure initialize the
-# system/cpu's, switch to long-mode and calls the 'main' function
-# of the individual test. Tests uses a qemu's virtual test device,
-# named testdev, for services like printing, exiting, query memory size etc.
+## Tests for x86 architecture are run as kernel images for qemu
+## that supports multiboot format. Tests uses an infrastructure
+## called from the bios code. The infrastructure initialize the
+## system/cpu's, switch to long-mode and calls the 'main' function
+## of the individual test. Tests uses a qemu's virtual test device,
+## named testdev, for services like printing, exiting, query memory size etc.
 
 cd $BENCHMARK_ROOT/kvm-unit-tests || exit
 

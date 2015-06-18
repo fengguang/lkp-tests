@@ -1,8 +1,8 @@
 #!/bin/sh
 # - runtime
 
-# creates an rcutorture kernel module that can be loaded to
-# run a torture test.
+## creates an rcutorture kernel module that can be loaded to
+## run a torture test.
 
 modprobe rcutorture 2>/dev/null || exit 0
 

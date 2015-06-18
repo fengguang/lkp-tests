@@ -3,12 +3,12 @@
 # - nr_threads
 # - table_size
 
-# OLTP (On-line Transaction Processing) is characterized by a large
-# number of short on-line transactions (INSERT, UPDATE, DELETE).
-# The main emphasis for OLTP systems is put on very fast query
-# processing, maintaining data integrity in multi-access
-# environments and an effectiveness measured by number
-# of transactions per second.
+## OLTP (On-line Transaction Processing) is characterized by a large
+## number of short on-line transactions (INSERT, UPDATE, DELETE).
+## The main emphasis for OLTP systems is put on very fast query
+## processing, maintaining data integrity in multi-access
+## environments and an effectiveness measured by number
+## of transactions per second.
 
 [ -n "$runtime" ] || runtime=600
 [ -n "$table_size" ] && arg_table_size="--oltp-table-size=$table_size"

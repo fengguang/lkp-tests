@@ -4,10 +4,10 @@
 # - test
 # - send_size
 
-# Netperf is a benchmark that can be use to measure various aspect of
-# networking performance. The primary foci are bulk (aka unidirectional)
-# data transfer and request/response performance using either TCP
-# or UDP and the Berkeley Sockets interface.
+## Netperf is a benchmark that can be use to measure various aspect of
+## networking performance. The primary foci are bulk (aka unidirectional)
+## data transfer and request/response performance using either TCP
+## or UDP and the Berkeley Sockets interface.
 
 export PATH=$BENCHMARK_ROOT/netperf/bin:$PATH
 

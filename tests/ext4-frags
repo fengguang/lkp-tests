@@ -1,21 +1,21 @@
 #!/bin/sh
 
-# Author: Theodore Ts'o <tytso@mit.edu>
-#
-# For future reference, there are a couple of things that are of
-# interest to ext4 developers when trying to create repro's:
-#
-# 1)  The use of mounting with ext2 to speed up the setup.
-#
-# 2)  The first two "seq ... | xargs ..." commands to create a very
-# fragmented file system.
-#
-# 3) Using a 1k block size file system to stress the extent tree code
-# and htree directory (since its easier to make larger tree structure).
-#
-# 4)  The use of the mount option commit=10000 to test what happens when
-# the journal is full (without using a nice, fast device such as RAID array
-# or without burning write cycles on an expensive flash device.)
+## Author: Theodore Ts'o <tytso@mit.edu>
+##
+## For future reference, there are a couple of things that are of
+## interest to ext4 developers when trying to create repro's:
+##
+## 1)  The use of mounting with ext2 to speed up the setup.
+##
+## 2)  The first two "seq ... | xargs ..." commands to create a very
+## fragmented file system.
+##
+## 3) Using a 1k block size file system to stress the extent tree code
+## and htree directory (since its easier to make larger tree structure).
+##
+## 4)  The use of the mount option commit=10000 to test what happens when
+## the journal is full (without using a nice, fast device such as RAID array
+## or without burning write cycles on an expensive flash device.)
 
 [ $nr_partitions -ge 1 ] || exit
 partition=${partitions%% *}
