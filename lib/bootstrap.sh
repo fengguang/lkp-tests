@@ -209,6 +209,8 @@ tbox_cant_kexec()
 	is_virt && return 0
 
 	# following tbox are buggy while using kexec to boot
+	[ "${HOSTNAME#*lkp-g5}"		!= "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*minnow-max}"	!= "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-nex04}"	!= "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-t410}"	!= "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-bdw01}"	!= "$HOSTNAME" ] && return 0
