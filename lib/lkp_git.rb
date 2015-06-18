@@ -68,6 +68,14 @@ module Git
 		include SimpleCacheMethod
 
 		cache_method :gcommit
+		alias_method :orig_initialize, :initialize
+
+		attr_reader :project
+
+		def initialize(options = {})
+			orig_initialize(options)
+			@project = options[:project]
+		end
 
 		# add tag_names because Base::tags is slow to obtain all tag objects
 		# FIXME consider to cache this method
