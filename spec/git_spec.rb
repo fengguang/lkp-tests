@@ -38,7 +38,7 @@ describe Git do
 				gcommit = git.gcommit("8d0977811d6741b8600886736712387aa8c434a9")
 
 				expect(gcommit.author.formatted_name).to eq('Uwe Kleine-König <u.kleine-koenig@pengutronix.de>')
-				expect(gcommit.interested_tag).to eq nil
+				#expect(gcommit.interested_tag).to eq nil
 			end
 
 			it "should cache interested_tag" do
@@ -153,7 +153,7 @@ describe Git do
 	context "gcc" do
 		# tag gcc-5_1_0-release
 		gcc_5_1_0_release_commit = "d5ad84b309d0d97d3955fb1f62a96fc262df2b76"
-
+		gcc_non_release_commit = "ab2a707c83582b85a20079b53f1c8bc19942f5d1"
 		#
 		# $ git cat-file commit d5ad84b309d0d97d3955fb1f62a96fc262df2b76
 		# tree a9366b5b9ea62a23412a74bb1a0f0753da94b683
@@ -172,9 +172,18 @@ describe Git do
 				expect(gcommit.author.formatted_name).to eq('gccadmin <gccadmin@138bc75d-0d04-0410-961f-82ee72b054a4>')
 				expect(gcommit.committer.formatted_name).to eq gcommit.author.formatted_name
 				expect(gcommit.subject).to eq("Update ChangeLog and version files for release")
-				#expect(gcommit.interested_tag).to eq(commit_tag(gcc_5_1_0_release_commit))
+				expect(gcommit.interested_tag(remote: 'gcc')).to eq "gcc-5_1_0-release"
 				expect(gcommit.parent_shas).to eq(["9a2ae78f8140d02ca684fdbadfe09cbbbfd5c27f"])
 				expect(gcommit.committer.name).to eq('gccadmin')
+			end
+
+			describe "release_tag" do
+				it "should be correct" do
+					git = Git.project_init
+
+					expect(git.gcommit(gcc_5_1_0_release_commit).release_tag).to eq 'gcc-5_1_0-release'
+					expect(git.gcommit(gcc_non_release_commit).release_tag).to eq nil
+				end
 			end
 		end
 	end
