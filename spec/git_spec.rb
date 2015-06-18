@@ -29,6 +29,18 @@ describe Git do
 				expect(gcommit.committer.name).to eq(git_committer_name(LINUX_RELEASE_COMMIT))
 			end
 
+			it "should handle non ascii chars" do
+				git = Git.project_init(project: "ukl")
+
+				# commit 8d0977811d6741b8600886736712387aa8c434a9
+				# Author: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+				# Date:   Mon Nov 18 11:40:16 2013 +0100
+				gcommit = git.gcommit("8d0977811d6741b8600886736712387aa8c434a9")
+
+				expect(gcommit.author.formatted_name).to eq('Uwe Kleine-König <u.kleine-koenig@pengutronix.de>')
+				expect(gcommit.interested_tag).to eq nil
+			end
+
 			it "should cache interested_tag" do
 				git = Git.project_init
 				gcommit = git.gcommit(LINUX_RELEASE_COMMIT)

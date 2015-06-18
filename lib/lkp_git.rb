@@ -76,6 +76,25 @@ module Git
 		end
 	end
 
+	class Lib
+		public
+		def command_lines(cmd, opts = [], chdir = true, redirect = '')
+			command_lines = command(cmd, opts, chdir)
+			begin
+				command_lines.split("\n")
+			rescue
+				STDERR.puts "Git error: #{cmd} #{opts}"
+
+				STDERR.puts "GIT ENV: LANG = #{ENV['LANG']}, LANGUAGE = #{ENV['LANGUAGE']}, LC_ALL = #{ENV['LC_ALL']}"
+				STDERR.puts "GIT string: encoding = #{command_lines.encoding}, "\
+				            "scrub = #{command_lines == command_lines.scrub}, "\
+				            "utf8 = #{command_lines == command_lines.encode("UTF-8", "UTF-8", invalid: :replace, undef: :replace)}"
+
+				command_lines.encode("UTF-8", "binary", invalid: :replace, undef: :replace).split("\n")
+			end
+		end
+	end
+
 	class Author
 		# FIXME need better name
 		def formatted_name
