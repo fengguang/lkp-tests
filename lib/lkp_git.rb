@@ -98,7 +98,6 @@ module Git
 		def tags_with_order(options = {})
 			# FIXME remote default need be mapped from project
 			options[:remote] ||= 'linus'
-
 			# FIXME consider to check whether remote is nil
 			remote = Git.project_remotes(options.merge(project: @project))[options[:remote]]
 
@@ -110,7 +109,7 @@ module Git
 			Hash[tags.map.with_index {|tag, i| [tag, -i]}]
 		end
 
-		cache_method :tags_with_order
+		cache_method :tags_with_order, ->obj {obj.project}
 
 		def tag_order(tag, options = {})
 			tags_with_order(options)[tag]
@@ -263,7 +262,6 @@ module Git
 		# FIXME to design default project as * or linux
 		def project_remotes(options = {})
 			lkp_src = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
-
 			options[:project] ||= '*'
 
 			remotes = {}
