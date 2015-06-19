@@ -70,11 +70,12 @@ module Git
 		cache_method :gcommit
 		alias_method :orig_initialize, :initialize
 
-		attr_reader :project
+		attr_reader :project, :base_release_tag_strategy
 
 		def initialize(options = {})
 			orig_initialize(options)
 			@project = options[:project]
+			@base_release_tag_strategy = options[:base_release_tag_strategy]
 		end
 
 		# add tag_names because Base::tags is slow to obtain all tag objects
@@ -102,7 +103,12 @@ module Git
 			Hash[tags.map.with_index {|tag, i| [tag, -i]}]
 		end
 
+		def release_commit_shas
+			release_tags_with_order.keys.map {|release_tag| lib.command('rev-list', ['-1', release_tag])}
+		end
+
 		cache_method :release_tags_with_order, ->obj {obj.project}
+		cache_method :release_commit_shas, ->obj {obj.project}
 
 		def release_tag_order(tag)
 			release_tags_with_order[tag]
@@ -110,7 +116,6 @@ module Git
 	end
 
 	class Lib
-		public
 		def command_lines(cmd, opts = [], chdir = true, redirect = '')
 			command_lines = command(cmd, opts, chdir)
 
@@ -132,6 +137,22 @@ module Git
 				end
 			end
 		end
+
+		# copy from https://github.com/schacon/ruby-git
+		def command_string(cmd, opts = [], chdir = true, redirect = '')
+			global_opts = []
+			global_opts << "--git-dir=#{@git_dir}" if !@git_dir.nil?
+			global_opts << "--work-tree=#{@git_work_dir}" if !@git_work_dir.nil?
+
+			opts = [opts].flatten.map {|s| escape(s) }.join(' ')
+
+			global_opts = global_opts.flatten.map {|s| escape(s) }.join(' ')
+
+			"#{Git::Base.config.binary_path} #{global_opts} #{cmd} #{opts} #{redirect} 2>&1"
+		end
+
+		public :command_lines
+		public :command
 	end
 
 	class Author
@@ -176,35 +197,7 @@ module Git
 			def base_release_tag
 				return [release_tag, true] if release_tag
 
-				version = patch_level = sub_level = rc = nil
-
-				@base.lib.command_lines('show', "#{@sha}:Makefile").each do |line|
-					case line
-					when /VERSION *= *(\d+)/
-						version = $1.to_i
-					when /PATCHLEVEL *= *(\d+)/
-						patch_level = $1.to_i
-					when /SUBLEVEL *= *(\d+)/
-						sub_level = $1.to_i
-					when /EXTRAVERSION *= *-rc(\d+)/
-						rc = $1.to_i
-					else
-						break
-					end
-				end
-
-				if version && version >= 2
-					tag = "v#{version}.#{patch_level}"
-					tag += ".#{sub_level}" if version ==2
-					tag += "-rc#{rc}" if rc && rc > 0
-
-					[tag, false]
-				else
-					STDERR.puts "Not a kernel tree? Check #{@base.repo}"
-					STDERR.puts caller.join "\n"
-
-					nil
-				end
+				@base.base_release_tag_strategy.call @base, @sha
 			end
 
 			cache_method :base_release_tag, ->(obj) {obj.to_s}
@@ -229,10 +222,49 @@ module Git
 		def project_init(options = {})
 			options[:project] ||= 'linux'
 			options[:repository] ||= ENV['GIT_DIR']
+			options[:base_release_tag_strategy] ||= options[:project] == 'linux' ? singleton_method(:linux_base_release_tag_strategy) : singleton_method(:default_base_release_tag_strategy)
 
 			working_dir = ENV['GIT_WORK_TREE'] || ENV['LINUX_GIT'] || "/c/repo/#{options[:project]}"
 
 			Git.init(working_dir, options)
+		end
+
+		# FIXME move strategy to a better place like seperate file or inside a inherited class
+		def linux_base_release_tag_strategy(git_base, commit_sha)
+			version = patch_level = sub_level = rc = nil
+
+			git_base.lib.command_lines('show', "#{commit_sha}:Makefile").each do |line|
+				case line
+				when /VERSION *= *(\d+)/
+					version = $1.to_i
+				when /PATCHLEVEL *= *(\d+)/
+					patch_level = $1.to_i
+				when /SUBLEVEL *= *(\d+)/
+					sub_level = $1.to_i
+				when /EXTRAVERSION *= *-rc(\d+)/
+					rc = $1.to_i
+				else
+					break
+				end
+			end
+
+			if version && version >= 2
+				tag = "v#{version}.#{patch_level}"
+				tag += ".#{sub_level}" if version ==2
+				tag += "-rc#{rc}" if rc && rc > 0
+
+				[tag, false]
+			else
+				STDERR.puts "Not a kernel tree? Check #{@base.repo}"
+				STDERR.puts caller.join "\n"
+
+				nil
+			end
+		end
+
+		def default_base_release_tag_strategy(git_base, commit_sha)
+			base_release_commit = `#{git_base.lib.command_string('rev-list', ['--first-parent', commit_sha])} | grep -m1 -Fx \"#{git_base.release_commit_shas.join("\n")}\"`
+			base_release_commit && !base_release_commit.empty? ? [git_base.gcommit(base_release_commit.chomp).release_tag, false] : nil
 		end
 
 		# FIXME remove ENV usage
