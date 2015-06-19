@@ -67,19 +67,28 @@ else
 	wait_post_test --timeout $max_uptime && exit 0
 fi
 
+echo 'detected soft_timeout'
 touch $TMP/soft_timeout
 touch $RESULT_ROOT/soft_timeout
 
 # try to unblock the main shell, which will copy files to
 # $RESULT_ROOT, which helps debug the hang reason
-kill $(cat $TMP/pid-* /dev/null) 2>/dev/null
-sleep 3
-kill -9 $(cat $TMP/pid-* /dev/null) 2>/dev/null
+kill_tests
 
-# reboot it the hard way, if the main shell failed to reboot
-sleep 3m && {
-	echo w > /proc/sysrq-trigger
-	echo s > /proc/sysrq-trigger
-	sleep 10
-	echo b > /proc/sysrq-trigger
-}
+echo 'wait_post_test --timeout 60'
+wait_post_test --timeout 60 && exit 0
+
+# reboot it the hard way, if the main shell failed to kill me
+sleep 141 || exit
+
+test -f $TMP/job-finished && exit
+
+echo 'try to force reboot'
+reboot
+
+sleep 144 || exit
+
+echo w > /proc/sysrq-trigger
+echo s > /proc/sysrq-trigger
+sleep 10
+echo b > /proc/sysrq-trigger
