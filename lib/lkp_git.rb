@@ -160,9 +160,7 @@ module Git
 
 			# FIXME need better name
 			def interested_tag
-				project_tags = @base.release_tags_with_order
-
-				tags.find {|tag| project_tags.include? tag} || tags.first
+				release_tag || tags.first
 			end
 
 			# FIXME one alternative is to put this as Git class method
