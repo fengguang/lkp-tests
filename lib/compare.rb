@@ -31,6 +31,15 @@ class AxesGrouper
 		groups = map.values
 		groups
 	end
+
+	def global_common_axes
+		as = deepcopy(@axes_data.first.axes)
+		@axes_data.drop(1).each { |ad|
+			ad_as = ad.axes
+			as.select! { |k, v| v && v == ad_as[k] }
+		}
+		as
+	end
 end
 
 class AxesGroup
@@ -106,6 +115,12 @@ module Compare
 				next if g.axes_data.size < 2
 				Group.new self, g
 			}.compact
+		end
+
+		def global_common_axes
+			grouper = AxesGrouper.new
+			grouper.set_axes_data(@mresult_roots).
+				global_common_axes
 		end
 
 		# stat calc func is a function object with signature:
