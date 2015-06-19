@@ -3,17 +3,42 @@
 # - runtime
 # - iterations
 
-alarm_path="/sys/class/rtc/rtc0/wakealarm"
-[ -f "$alarm_path" ] || exit
-
+# some code from http://people.canonical.com/~apw/suspend-resume/test-suspend
 [ -n "$mode" ] || mode='freeze'
 [ -n "$runtime" ] || runtime=300
 [ -n "$iterations" ] || iterations=30
 interval=$(( runtime / iterations ))
 
-for i in `seq 1 $iterations`
+setup_wakeup_timer()
+{
+	timeout="$1"
+
+	#
+	# Request wakeup from the RTC or ACPI alarm timers.  Set the timeout
+	# at 'now' + $timeout seconds.
+	#
+	ctl='/sys/class/rtc/rtc0/wakealarm'
+	if [ -f "$ctl" ]; then
+		time=$(date '+%s' -d "+ $timeout seconds")
+		# Cancel any outstanding timers.
+		echo "0" >"$ctl"
+		# rtcN/wakealarm uses absolute time in seconds
+		echo "$time" >"$ctl"
+		return 0
+	fi
+	ctl='/proc/acpi/alarm'
+	if [ -f "$ctl" ]; then
+		echo $(date '+%F %T' -d '+ '$timeout' seconds') >"$ctl"
+		return 0
+	fi
+
+	echo "no method to awaken machine automatically" 1>&2
+	exit 1
+}
+
+for i in $(seq $iterations)
 do
-	echo "+$interval" > $alarm_path
+	setup_wakeup_timer "$interval"
 	echo $(date "+%F %T") suspending
 	echo $mode > /sys/power/state
 	echo $(date "+%F %T") resumed $i
