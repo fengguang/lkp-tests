@@ -107,47 +107,31 @@ def fixup_dmesg_file(dmesg_file)
 	return dmesg_lines
 end
 
-def grep_crash_head(dmesg, grep_options = '')
-	oops = %x[ grep -a -f #{LKP_SRC}/etc/oops-pattern #{grep_options} #{dmesg} | grep -v -f #{LKP_SRC}/etc/oops-pattern-ignore |
+def grep_crash_head(dmesg_file, grep_options = '')
+	oops = %x[ grep -a -f #{LKP_SRC}/etc/oops-pattern #{grep_options} #{dmesg_file} | grep -v -f #{LKP_SRC}/etc/oops-pattern-ignore |
 		   awk '{line = $0; sub(/^(<[0-9]>)?\[[ 0-9.]+\] /, "", line); if (!x[line]++) print;}'
 	]
 	unless oops.empty?
-		oops += `grep -v -F ' ? ' #{dmesg} |
+		oops += `grep -v -F ' ? ' #{dmesg_file} |
 			 grep -E -B1 '(do_one_initcall|kthread|kernel_thread|process_one_work|SyS_[a-z0-9_]+|init_[a-z0-9_]+|[a-z0-9_]+_init)\\+0x' |
 			 grep -v -E  '(do_one_initcall|kthread|kernel_thread|process_one_work|worker_thread|kernel_init|rest_init|warn_slowpath_)\\+0x' |
 			 grep -o -E '[a-zA-Z0-9_.]+\\+0x[0-9a-fx/]+' |
 			 awk '!x[$0]++' |
 			 sed 's/^/backtrace:&/' `
-		return oops
 	end
 
-	if system "grep -q -F 'EXT4-fs ('	#{dmesg}"
-		oops = `grep -a -f #{LKP_SRC}/etc/ext4-crit-pattern	#{grep_options} #{dmesg}`
-		return oops unless oops.empty?
-	end
-
-	if system "grep -q -F 'XFS ('	#{dmesg}"
-		oops = `grep -a -f #{LKP_SRC}/etc/xfs-alert-pattern	#{grep_options} #{dmesg}`
-		return oops unless oops.empty?
-	end
-
-	if system "grep -q -F 'btrfs: '	#{dmesg}"
-		oops = `grep -a -f #{LKP_SRC}/etc/btrfs-crit-pattern	#{grep_options} #{dmesg}`
-		return oops unless oops.empty?
-	end
-
-	return ''
+	oops
 end
 
 def grep_printk_errors(dmesg_file, dmesg_lines)
-	oops = `grep -a -f #{LKP_SRC}/etc/oops-pattern #{dmesg_file} | grep -v -f #{LKP_SRC}/etc/oops-pattern-ignore`
+	return '' if ENV['testcase'] =~ /trinity/
+	return '' unless File.exist?('/lkp/printk-error-messages')
+
+	oops = `grep -a -v -f #{LKP_SRC}/etc/oops-pattern #{dmesg_file} | grep -a -F -f /lkp/printk-error-messages`
 	dmesg = dmesg_lines.join "\n"
 	oops += `grep -a -f #{LKP_SRC}/etc/ext4-crit-pattern	#{dmesg_file}` if dmesg.index 'EXT4-fs ('
 	oops += `grep -a -f #{LKP_SRC}/etc/xfs-alert-pattern	#{dmesg_file}` if dmesg.index 'XFS ('
 	oops += `grep -a -f #{LKP_SRC}/etc/btrfs-crit-pattern	#{dmesg_file}` if dmesg.index 'btrfs: '
-	return oops if ENV['testcase'] =~ /trinity/
-	return oops unless File.exist?('/lkp/printk-error-messages')
-	oops += `grep -a -F -f /lkp/printk-error-messages	#{dmesg_file}`
 	oops
 end
 
