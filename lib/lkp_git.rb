@@ -103,7 +103,7 @@ module Git
 
 			pattern = Regexp.new '^' + remote['release_tag_pattern'].sub(' ', '$|^') + '$'
 
-			tags = self.select_tags(pattern, remote['release_tag_committer'])
+			tags = self.select_tags(pattern)
 			tags = sort_tags(pattern, tags)
 
 			Hash[tags.map.with_index {|tag, i| [tag, -i]}]
@@ -115,7 +115,7 @@ module Git
 			tags_with_order(options)[tag]
 		end
 
-		def select_tags(pattern, committer)
+		def select_tags(pattern)
 			self.tag_names.map {|tag_name| tag_name.chomp}
 			              .select {|tag_name| pattern.match(tag_name)}
 		end
@@ -177,15 +177,10 @@ module Git
 			# FIXME one alternative is to put this as Git class method
 			# FIXME consider to store project information to base when init git
 			# options
-			#	  :committer => 'committer_name', default is configured in /path/to/project/DEFAULTS
 			#
 			def release_tag(options = {})
-				options[:committer] ||= @base.default_remote['release_tag_committer']
-
-				if committer.name == options[:committer]
 					tags_with_order = @base.tags_with_order(options)
 					tags.find {|tag| tags_with_order.include? tag}
-				end
 			end
 
 			#

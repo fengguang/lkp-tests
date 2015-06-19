@@ -177,18 +177,18 @@ describe Git do
 
 			describe "release_tag" do
 				it "should be correct" do
-					expect(@git.gcommit(gcc_5_1_0_release_commit).release_tag(remote: 'gcc', committer: 'gccadmin')).to eq 'gcc-5_1_0-release'
-					expect(@git.gcommit(gcc_non_release_commit).release_tag(remote: 'gcc', committer: 'gccadmin')).to eq nil
+					expect(@git.gcommit(gcc_5_1_0_release_commit).release_tag(remote: 'gcc')).to eq 'gcc-5_1_0-release'
+					expect(@git.gcommit(gcc_non_release_commit).release_tag(remote: 'gcc')).to eq nil
 				end
 			end
 
 			describe "base_release_tag" do
 				it "should be correct" do
-					expect(@git.gcommit(gcc_5_1_0_release_commit).base_release_tag(remote: 'gcc', committer: 'gccadmin')).to eq ['gcc-5_1_0-release', true]
+					expect(@git.gcommit(gcc_5_1_0_release_commit).base_release_tag(remote: 'gcc')).to eq ['gcc-5_1_0-release', true]
 
 					# below commit is at branch gcc-4_9-branch
 					gcc_4_9_2_release_commit = "c1283af40b65f1ad862cf5b27e2d9ed10b2076b6"
-					expect(@git.gcommit(gcc_4_9_2_release_commit).base_release_tag(remote: 'gcc', committer: 'gccadmin')).to eq ['gcc-4_9_2-release', true]
+					expect(@git.gcommit(gcc_4_9_2_release_commit).base_release_tag(remote: 'gcc')).to eq ['gcc-4_9_2-release', true]
 
 					gcc_4_9_2_release_child_commit = "84a4713962eb632bc75f235566ba1d47690bbf10"
 					expect(@git.gcommit(gcc_4_9_2_release_child_commit).base_release_tag).to eq(['gcc-4_9_2-release', false])
