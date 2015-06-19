@@ -99,7 +99,9 @@ setup_result_root()
 	}
 
 	local files="$(echo $RESULT_ROOT/*)"
-	[ -e "${files%% *}" ] && echo "RESULT_ROOT not empty: $(ls -l $RESULT_ROOT)" >&2
+	[ "$files" = "$RESULT_ROOT/*" ] ||
+	[ "$files" = "$RESULT_ROOT/dmesg" ] ||
+	echo "RESULT_ROOT not empty: $(ls -l $RESULT_ROOT)" >&2
 
 	return 0
 }
