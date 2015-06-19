@@ -106,24 +106,24 @@ describe Git do
 				end
 			end
 
-			describe "tags_with_order" do
+			describe "release_tags_with_order" do
 				it "should be same as linus_tags when project is linux/linus" do
 					actual = linus_tags
-					expect = @git.tags_with_order
+					expect = @git.release_tags_with_order
 
 					expect(expect.count).to be > 0
 					expect(expect).to eq actual
 				end
 
 				it "should cache result" do
-					expect(@git.tags_with_order.object_id).to eq @git.tags_with_order.object_id
+					expect(@git.release_tags_with_order.object_id).to eq @git.release_tags_with_order.object_id
 				end
 			end
 
-			describe "tag_order" do
+			describe "release_tag_order" do
 				it "should be same as tag_order with default parameters" do
 					actual = tag_order("v2.6.13-rc7")
-					expect = @git.tag_order('v2.6.13-rc7')
+					expect = @git.release_tag_order('v2.6.13-rc7')
 
 					expect(expect).to be < 0
 					expect(expect).to eq actual

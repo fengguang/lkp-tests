@@ -91,7 +91,7 @@ module Git
 			load_yaml(lkp_src + "/repo/#{@project}/DEFAULTS")
 		end
 
-		def tags_with_order
+		def release_tags_with_order
 			pattern = Regexp.new '^' + default_remote['release_tag_pattern'].sub(' ', '$|^') + '$'
 
 			tags = self.select_tags(pattern)
@@ -100,10 +100,10 @@ module Git
 			Hash[tags.map.with_index {|tag, i| [tag, -i]}]
 		end
 
-		cache_method :tags_with_order, ->obj {obj.project}
+		cache_method :release_tags_with_order, ->obj {obj.project}
 
-		def tag_order(tag)
-			tags_with_order[tag]
+		def release_tag_order(tag)
+			release_tags_with_order[tag]
 		end
 
 		def select_tags(pattern)
@@ -160,7 +160,7 @@ module Git
 
 			# FIXME need better name
 			def interested_tag
-				project_tags = @base.tags_with_order
+				project_tags = @base.release_tags_with_order
 
 				tags.find {|tag| project_tags.include? tag} || tags.first
 			end
@@ -170,8 +170,8 @@ module Git
 			# options
 			#
 			def release_tag
-					tags_with_order = @base.tags_with_order
-					tags.find {|tag| tags_with_order.include? tag}
+					release_tags_with_order = @base.release_tags_with_order
+					tags.find {|tag| release_tags_with_order.include? tag}
 			end
 
 			#
