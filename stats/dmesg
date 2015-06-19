@@ -27,6 +27,7 @@ if ENV['RESULT_ROOT']
 	end
 
 elsif ARGV[0]
+	kmsg_file = ARGV[0]
 	dmesg_file = ARGV[0]
 else
 	exit
@@ -87,10 +88,7 @@ error_ids = {}
 if $PROGRAM_NAME =~ /dmesg/
 	output = grep_crash_head dmesg_file, '-o'
 else
-	output = grep_printk_errors dmesg_file, dmesg_lines
-	if kmsg_file and File.exist?(kmsg_file) and File.exist?('/lkp/printk-error-messages')
-		output += `grep -a '^<[0123]>' #{kmsg_file} | grep -v -a -F -f /lkp/printk-error-messages | grep -v -a -F -f #{LKP_SRC}/etc/kmsg-blacklist`
-	end
+	output = grep_printk_errors kmsg_file, dmesg_file, dmesg_lines
 end
 exit if output.empty?
 exit if output =~ /trinity.*: page allocation failure|Out of memory: .*trinity/ # trinity is known to trigger OOM

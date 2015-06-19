@@ -123,15 +123,26 @@ def grep_crash_head(dmesg_file, grep_options = '')
 	oops
 end
 
-def grep_printk_errors(dmesg_file, dmesg_lines)
-	return '' if ENV['testcase'] =~ /trinity/
+def grep_printk_errors(kmsg_file, dmesg_file, dmesg_lines)
+	return '' if ENV['RESULT_ROOT'].index '/trinity/'
 	return '' unless File.exist?('/lkp/printk-error-messages')
 
-	oops = `grep -a -v -f #{LKP_SRC}/etc/oops-pattern #{dmesg_file} | grep -a -F -f /lkp/printk-error-messages`
-	dmesg = dmesg_lines.join "\n"
-	oops += `grep -a -f #{LKP_SRC}/etc/ext4-crit-pattern	#{dmesg_file}` if dmesg.index 'EXT4-fs ('
-	oops += `grep -a -f #{LKP_SRC}/etc/xfs-alert-pattern	#{dmesg_file}` if dmesg.index 'XFS ('
-	oops += `grep -a -f #{LKP_SRC}/etc/btrfs-crit-pattern	#{dmesg_file}` if dmesg.index 'btrfs: '
+	if kmsg_file == dmesg_file
+		dmesg = dmesg_lines.join "\n"
+	elsif File.exist?(kmsg_file)
+		dmesg = File.read kmsg_file
+	else
+		dmesg = dmesg_lines.join "\n"
+		kmsg_file = dmesg_file
+	end
+
+	oops = `grep -a -v -f #{LKP_SRC}/etc/oops-pattern #{kmsg_file} | grep -a -F -f /lkp/printk-error-messages`
+	oops += `grep -a '^<[0123]>' #{kmsg_file} |
+		 grep -a -v -f #{LKP_SRC}/etc/oops-pattern |
+		 grep -a -v -F -f /lkp/printk-error-messages -f #{LKP_SRC}/etc/kmsg-blacklist` if kmsg_file =~ /\/kmsg$/
+	oops += `grep -a -f #{LKP_SRC}/etc/ext4-crit-pattern	#{kmsg_file}` if dmesg.index 'EXT4-fs ('
+	oops += `grep -a -f #{LKP_SRC}/etc/xfs-alert-pattern	#{kmsg_file}` if dmesg.index 'XFS ('
+	oops += `grep -a -f #{LKP_SRC}/etc/btrfs-crit-pattern	#{kmsg_file}` if dmesg.index 'btrfs: '
 	oops
 end
 

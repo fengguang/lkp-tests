@@ -20,10 +20,12 @@ check_incomplete_run()
 check_empty_output()
 {
 	[[ -s $log ]] && return
+
 	[[ $program = 'tcrypt' ]] && return
 	[[ $program = 'kernel-size' ]] && return
 	[[ $program = 'perf-profile' ]] && return
 	[[ $program = 'dmesg' && -s $RESULT_ROOT/kmsg ]] && return
+	[[ $program = 'kmsg' && -s $RESULT_ROOT/dmesg ]] && return
 
 	rm -f $log $log.gz
 	exit 0
