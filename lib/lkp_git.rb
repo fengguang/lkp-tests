@@ -92,21 +92,24 @@ module Git
 			load_yaml(lkp_src + "/repo/#{@project}/DEFAULTS")
 		end
 
+		def release_tags
+			pattern = Regexp.new '^' + default_remote['release_tag_pattern'].sub(' ', '$|^') + '$'
+			self.tag_names.select {|tag_name| pattern.match(tag_name)}
+		end
+
 		def release_tags_with_order
 			pattern = Regexp.new '^' + default_remote['release_tag_pattern'].sub(' ', '$|^') + '$'
 
-			# FIXME rli9 is it required to chomp
-			tags = self.tag_names.map {|tag_name| tag_name.chomp}
-			                     .select {|tag_name| pattern.match(tag_name)}
-			tags = sort_tags(pattern, tags)
+			tags = sort_tags(pattern, self.release_tags)
 
 			Hash[tags.map.with_index {|tag, i| [tag, -i]}]
 		end
 
 		def release_commit_shas
-			release_tags_with_order.keys.map {|release_tag| lib.command('rev-list', ['-1', release_tag])}
+			release_tags.map {|release_tag| lib.command('rev-list', ['-1', release_tag])}
 		end
 
+		cache_method :release_tags, ->obj {obj.project}
 		cache_method :release_tags_with_order, ->obj {obj.project}
 		cache_method :release_commit_shas, ->obj {obj.project}
 
