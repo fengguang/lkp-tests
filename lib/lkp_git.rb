@@ -158,12 +158,15 @@ module Git
 			end
 
 			def interested_tag
-				release_tag || tags.first
+				@interested_tag ||= release_tag || tags.first
 			end
 
 			def release_tag
+				unless @release_tag
 					release_tags_with_order = @base.release_tags_with_order
-					tags.find {|tag| release_tags_with_order.include? tag}
+					@release_tag = tags.find {|tag| release_tags_with_order.include? tag}
+				end
+				@release_tag
 			end
 
 			#
@@ -171,8 +174,7 @@ module Git
 			# otherwise checkout commit and get latest version from Makefile.
 			#
 			def base_release_tag
-				tag = release_tag
-				return [tag, true] if tag =~ /^v.*/
+				return [release_tag, true] if release_tag
 
 				version = patch_level = sub_level = rc = nil
 
@@ -205,7 +207,6 @@ module Git
 				end
 			end
 
-			cache_method :interested_tag, ->(obj) {obj.to_s}
 			cache_method :base_release_tag, ->(obj) {obj.to_s}
 		end
 	end

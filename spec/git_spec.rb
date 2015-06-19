@@ -60,6 +60,10 @@ describe Git do
 					expect(@git.gcommit(linux_non_release_commit).release_tag).to eq nil
 					expect(@git.gcommit(linux_non_release_commit).release_tag).to eq(linus_release_tag(linux_non_release_commit))
 				end
+
+				it "should cache result" do
+					expect(@git.gcommit(linux_v4_1_rc8_commit).release_tag.object_id).to eq @git.gcommit(linux_v4_1_rc8_commit).release_tag.object_id
+				end
 			end
 
 			describe "base_release_tag" do
