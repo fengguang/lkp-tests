@@ -1,12 +1,5 @@
 #!/bin/sh
 
-kill_one()
-{
-	kill    $* 2>/dev/null
-	sleep 3
-	kill -9 $* 2>/dev/null
-}
-
 . $LKP_SRC/lib/wait.sh
 setup_wait
 
@@ -22,12 +15,9 @@ do
 	grep -s -q -F -e 'Out of memory' -e 'invoked oom-killer: gfp_mask=0x' $RESULT_ROOT/kmsg && {
 		touch $TMP/OOM
 		touch $RESULT_ROOT/OOM
-		pid_tests=$(cat $TMP/pid-tests)
-		pid_job=$(cat $TMP/run-job.pid)
-		echo "$(date)  Out of memory, stop tests programs" $pid_tests $pid_job
+		echo "$(date)  Out of memory, stop tests programs"
 		df -t tmpfs
-		kill_one $pid_tests
-		kill_one $pid_job
+		kill_tests
 		exit
 	}
 done

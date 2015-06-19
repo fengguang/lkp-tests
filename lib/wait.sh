@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 WAIT_POST_TEST_CMD="$LKP_SRC/monitors/event/wait post-test"
 
@@ -30,4 +30,21 @@ setup_wait()
 {
 	echo $$ >> $TMP/.pid-wait-monitors
 	echo ${0##*/} >> $TMP/.name-wait-monitors
+}
+
+kill_one()
+{
+	kill    $* 2>/dev/null
+	sleep 3
+	kill -9 $* 2>/dev/null
+}
+
+kill_tests()
+{
+	local pid_tests=$(cat $TMP/pid-tests)
+	local pid_job=$(cat $TMP/run-job.pid)
+
+	kill_one $pid_tests
+	sleep 3
+	kill_one $pid_job
 }
