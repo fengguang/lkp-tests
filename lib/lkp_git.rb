@@ -37,7 +37,7 @@ module SimpleCacheMethod
 
 			@cache_key_prefix_generators[method_name] = cache_key_prefix_generator
 
-			# FIXME rli9 do not support &block and complex args like Array
+			# FIXME rli9 do not support &block
 			# FIXME rli9 better solution for generating key can refer to
 			# https://github.com/seamusabshere/cache_method/blob/master/lib/cache_method.rb
 			define_method(method_name) do |*args|
@@ -138,7 +138,6 @@ module Git
 	end
 
 	class Author
-		# FIXME need better name
 		def formatted_name
 			"#{@name} <#{@email}>"
 		end
@@ -161,15 +160,10 @@ module Git
 				@parent_shas ||= self.parents.map {|commit| commit.sha}
 			end
 
-			# FIXME need better name
 			def interested_tag
 				release_tag || tags.first
 			end
 
-			# FIXME one alternative is to put this as Git class method
-			# FIXME consider to store project information to base when init git
-			# options
-			#
 			def release_tag
 					release_tags_with_order = @base.release_tags_with_order
 					tags.find {|tag| release_tags_with_order.include? tag}
@@ -222,12 +216,8 @@ module Git
 	class << self
 		include SimpleCacheMethod
 
-		# this is not exactly equal to use GIT_WORK_TREE/GIT_DIR that is
-		# evaluated at "require statement", instead the function is evaluated at each call.
-		# TODO furture refactoring such as caching
 		# TODO move the ENV evaluation resposibility to caller or another helper function
 		# TODO deduce project from branch
-
 		# init a repository
 		#
 		# options
@@ -248,7 +238,11 @@ module Git
 		end
 
 		# FIXME remove ENV usage
-		# FIXME to design default project as * or linux
+		# load remotes information from config files
+		#
+		# options
+		#		:project => 'project_name', default is linux
+		#
 		def project_remotes(options = {})
 			lkp_src = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
 			options[:project] ||= '*'
