@@ -35,7 +35,7 @@ setup_wait()
 kill_one()
 {
 	kill    $* 2>/dev/null
-	sleep 3
+	wait_post_test --timeout 3 && exit
 	kill -9 $* 2>/dev/null
 }
 
@@ -45,6 +45,6 @@ kill_tests()
 	local pid_job=$(cat $TMP/run-job.pid)
 
 	kill_one $pid_tests
-	sleep 3
+	wait_post_test --timeout 3 && exit
 	kill_one $pid_job
 }
