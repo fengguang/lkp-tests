@@ -170,25 +170,25 @@ describe Git do
 				expect(gcommit.author.formatted_name).to eq('gccadmin <gccadmin@138bc75d-0d04-0410-961f-82ee72b054a4>')
 				expect(gcommit.committer.formatted_name).to eq gcommit.author.formatted_name
 				expect(gcommit.subject).to eq("Update ChangeLog and version files for release")
-				expect(gcommit.interested_tag(remote: 'gcc')).to eq "gcc-5_1_0-release"
+				expect(gcommit.interested_tag).to eq "gcc-5_1_0-release"
 				expect(gcommit.parent_shas).to eq(["9a2ae78f8140d02ca684fdbadfe09cbbbfd5c27f"])
 				expect(gcommit.committer.name).to eq('gccadmin')
 			end
 
 			describe "release_tag" do
 				it "should be correct" do
-					expect(@git.gcommit(gcc_5_1_0_release_commit).release_tag(remote: 'gcc')).to eq 'gcc-5_1_0-release'
-					expect(@git.gcommit(gcc_non_release_commit).release_tag(remote: 'gcc')).to eq nil
+					expect(@git.gcommit(gcc_5_1_0_release_commit).release_tag).to eq 'gcc-5_1_0-release'
+					expect(@git.gcommit(gcc_non_release_commit).release_tag).to eq nil
 				end
 			end
 
 			describe "base_release_tag" do
 				it "should be correct" do
-					expect(@git.gcommit(gcc_5_1_0_release_commit).base_release_tag(remote: 'gcc')).to eq ['gcc-5_1_0-release', true]
+					expect(@git.gcommit(gcc_5_1_0_release_commit).base_release_tag).to eq ['gcc-5_1_0-release', true]
 
 					# below commit is at branch gcc-4_9-branch
 					gcc_4_9_2_release_commit = "c1283af40b65f1ad862cf5b27e2d9ed10b2076b6"
-					expect(@git.gcommit(gcc_4_9_2_release_commit).base_release_tag(remote: 'gcc')).to eq ['gcc-4_9_2-release', true]
+					expect(@git.gcommit(gcc_4_9_2_release_commit).base_release_tag).to eq ['gcc-4_9_2-release', true]
 
 					gcc_4_9_2_release_child_commit = "84a4713962eb632bc75f235566ba1d47690bbf10"
 					expect(@git.gcommit(gcc_4_9_2_release_child_commit).base_release_tag).to eq(['gcc-4_9_2-release', false])

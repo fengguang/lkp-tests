@@ -91,17 +91,8 @@ module Git
 			load_yaml(lkp_src + "/repo/#{@project}/DEFAULTS")
 		end
 
-		#
-		# options
-		#	  :remote => 'remote_name', default is 'linus'
-		#
-		def tags_with_order(options = {})
-			# FIXME remote default need be mapped from project
-			options[:remote] ||= 'linus'
-			# FIXME consider to check whether remote is nil
-			remote = Git.project_remotes(options.merge(project: @project))[options[:remote]]
-
-			pattern = Regexp.new '^' + remote['release_tag_pattern'].sub(' ', '$|^') + '$'
+		def tags_with_order
+			pattern = Regexp.new '^' + default_remote['release_tag_pattern'].sub(' ', '$|^') + '$'
 
 			tags = self.select_tags(pattern)
 			tags = sort_tags(pattern, tags)
@@ -111,8 +102,8 @@ module Git
 
 		cache_method :tags_with_order, ->obj {obj.project}
 
-		def tag_order(tag, options = {})
-			tags_with_order(options)[tag]
+		def tag_order(tag)
+			tags_with_order[tag]
 		end
 
 		def select_tags(pattern)
@@ -168,8 +159,8 @@ module Git
 			end
 
 			# FIXME need better name
-			def interested_tag(options = {})
-				project_tags = @base.tags_with_order(options)
+			def interested_tag
+				project_tags = @base.tags_with_order
 
 				tags.find {|tag| project_tags.include? tag} || tags.first
 			end
@@ -178,8 +169,8 @@ module Git
 			# FIXME consider to store project information to base when init git
 			# options
 			#
-			def release_tag(options = {})
-					tags_with_order = @base.tags_with_order(options)
+			def release_tag
+					tags_with_order = @base.tags_with_order
 					tags.find {|tag| tags_with_order.include? tag}
 			end
 
@@ -187,8 +178,8 @@ module Git
 			# if commit has a version tag, return it directly;
 			# otherwise checkout commit and get latest version from Makefile.
 			#
-			def base_release_tag(options = {})
-				tag = release_tag(options)
+			def base_release_tag
+				tag = release_tag
 				return [tag, true] if tag =~ /^v.*/
 
 				version = patch_level = sub_level = rc = nil
