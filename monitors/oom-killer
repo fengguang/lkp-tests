@@ -1,0 +1,24 @@
+#!/bin/sh
+
+. $LKP_SRC/lib/wait.sh
+setup_wait
+
+# dont OOM kill me
+echo -1000 > /proc/$$/oom_score_adj
+
+while :
+do
+	wait_timeout 11
+
+	[ -f "$TMP/job-finished" ] && exit
+
+	dmesg | grep -q -F \
+			-e 'Out of memory' \
+			-e 'invoked oom-killer: gfp_mask=0x' \
+			-e ': page allocation failure: order:' && break
+done
+
+touch $TMP/OOM
+touch $RESULT_ROOT/OOM
+echo "Out of memory, stop tests programs"
+kill_tests
