@@ -94,7 +94,9 @@ module Git
 		def release_tags_with_order
 			pattern = Regexp.new '^' + default_remote['release_tag_pattern'].sub(' ', '$|^') + '$'
 
-			tags = self.select_tags(pattern)
+			# FIXME rli9 is it required to chomp
+			tags = self.tag_names.map {|tag_name| tag_name.chomp}
+			                     .select {|tag_name| pattern.match(tag_name)}
 			tags = sort_tags(pattern, tags)
 
 			Hash[tags.map.with_index {|tag, i| [tag, -i]}]
@@ -104,11 +106,6 @@ module Git
 
 		def release_tag_order(tag)
 			release_tags_with_order[tag]
-		end
-
-		def select_tags(pattern)
-			self.tag_names.map {|tag_name| tag_name.chomp}
-			              .select {|tag_name| pattern.match(tag_name)}
 		end
 	end
 
