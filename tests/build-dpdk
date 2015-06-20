@@ -1,4 +1,5 @@
 #!/bin/bash
+# - dpdk_branch
 # - dpdk_commit
 # - dpdk_config
 # - dpdk_compiler
@@ -32,10 +33,13 @@ OBJ_ROOT=/build/dpdk/obj
 ARCH=${dpdk_config%%-*}
 dpdk_compiler_name=${dpdk_compiler%%-*}
 
+[[ $dpdk_branch ]] || dpdk_branch='dpdk/master'
+dpdk_remote=${dpdk_branch%%/*}
+
 check_mount dpdk-src $SRC_ROOT -t tmpfs
 check_mount dpdk-obj $OBJ_ROOT -t tmpfs
 
-git_clone_update git://gitmirror/dpdk $SRC_ROOT || die "failed clone dpdk tree"
+git_clone_update git://gitmirror/$dpdk_remote $SRC_ROOT || die "failed clone dpdk tree"
 git checkout $dpdk_commit || die "failed to checkout commit $dpdk_commit"
 
 export RTE_KERNELDIR=/usr/src/kernels/3.19.5-100.fc20.x86_64/
