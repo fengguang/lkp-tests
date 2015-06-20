@@ -48,3 +48,13 @@ kill_tests()
 	wait_post_test --timeout 3 && exit
 	kill_one $pid_job
 }
+
+check_oom()
+{
+	dmesg | grep -q -F \
+			-e 'Out of memory' \
+			-e 'invoked oom-killer: gfp_mask=0x' \
+			-e ': page allocation failure: order:' || return
+
+	touch $TMP/OOM
+}

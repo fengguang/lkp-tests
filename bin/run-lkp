@@ -35,7 +35,7 @@ if [ -x "$job_script" ]; then
 else
 	run-job --pid-file $TMP/run-job.pid $job
 fi
-run_job_failed=$?
+run_job_exit_code=$?
 
 end_time=$(date '+%s')
 
@@ -67,8 +67,8 @@ elif ! umount $RESULT_MNT; then
 	job_done 1
 fi
 
-if [ "$run_job_failed" != 0 ]; then
-	if [ -f "$TMP/OOM" ]; then
+if [ "$run_job_exit_code" != 0 ]; then
+	if [ -f "$TMP/OOM" ] || check_oom; then
 		set_job_state "OOM"
 	elif [ -f "$TMP/soft_timeout" ]; then
 		set_job_state 'soft_timeout'

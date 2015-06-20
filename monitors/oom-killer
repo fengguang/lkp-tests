@@ -12,13 +12,9 @@ do
 
 	[ -f "$TMP/job-finished" ] && exit
 
-	dmesg | grep -q -F \
-			-e 'Out of memory' \
-			-e 'invoked oom-killer: gfp_mask=0x' \
-			-e ': page allocation failure: order:' && break
+	check_oom && break
 done
 
-touch $TMP/OOM
 touch $RESULT_ROOT/OOM
 echo "Out of memory, stop tests programs"
 kill_tests
