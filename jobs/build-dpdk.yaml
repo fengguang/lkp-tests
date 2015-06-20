@@ -1,7 +1,5 @@
 testcase: build-dpdk
 
-rootfs: 192.168.1.1:/export/fed20_64_dpdk
-
 dpdk_branch:
 dpdk_commit:
 dpdk_config: x86_64-native-linuxapp-gcc
