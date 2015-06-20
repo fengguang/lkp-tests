@@ -9,12 +9,12 @@ git_clone_update()
 	if [ -d $dir/.git ]; then
 		(
 			cd $dir
-			git remote update origin
-			git checkout origin/master
+			git remote update origin 2>&1
+			git checkout -q origin/master
 		)
 	else
-		rm -fr "$dir"
-		git clone $url $dir
+		rm -fr "$dir" 2>/dev/null
+		git clone -q $url $dir
 	fi
 }
 
