@@ -1,4 +1,4 @@
-testcase: dpdk-build-test
+testcase: build-dpdk
 
 rootfs: 192.168.1.1:/export/fed20_64_dpdk
 
@@ -6,4 +6,4 @@ dpdk-build-test:
 
 dpdk_commit:
 dpdk_chase_branch: master
-dpdk_compiler: gcc
+dpdk_compiler: gcc-4.9
