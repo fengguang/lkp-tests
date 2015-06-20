@@ -25,6 +25,7 @@ class ResultPath < Hash
 		'default'	=> %w[ path_params tbox_group rootfs kconfig compiler commit run ],
 		'health-stats'	=> %w[ path_params run ],
 		'hwinfo'	=> %w[ tbox_group run ],
+		'build-dpdk'	=> %w[ dpdk_config dpdk_compiler dpdk_commit run ],
 	}
 
 	def path_scheme
