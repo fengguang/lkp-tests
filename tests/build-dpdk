@@ -21,18 +21,13 @@ shopt -s nullglob
 merge_configs()
 {
 	local config_file=$1
-	local dot_config=$OBJ_ROOT/.config
+	local dot_config=$DPDK_OBJ/.config
 	local lines="$(awk -F= '!x[$1]++' $config_file $dot_config)"
 	echo "$lines" > $dot_config
 }
 
-config_file=$LKP_SRC/etc/dpdk-configs/$dpdk_config
-[ -f $config_file ] ||
-config_file=$SRC_ROOT/config/defconfig_$dpdk_config
-[ -f $config_file ] || die "invalid config file $config_file"
-
-SRC_ROOT=/build/dpdk/src
-OBJ_ROOT=/build/dpdk/obj
+DPDK_SRC=/build/dpdk/src
+DPDK_OBJ=/build/dpdk/obj
 export RTE_KERNELDIR=/build/linux/src
 
 ARCH=${dpdk_config%%-*}
@@ -44,21 +39,33 @@ dpdk_remote=${dpdk_branch%%/*}
 [[ $branch ]] || branch='linus/master'
 remote=${branch%%/*}
 
-check_mount dpdk-src $SRC_ROOT -t tmpfs
-check_mount dpdk-obj $OBJ_ROOT -t tmpfs
+check_mount dpdk-src $DPDK_SRC -t tmpfs
+check_mount dpdk-obj $DPDK_OBJ -t tmpfs
 check_mount kernel-src $RTE_KERNELDIR -t tmpfs
 
 git_clone_update git://gitmirror/$remote $RTE_KERNELDIR || die "failed clone kernel tree $remote"
 cd $RTE_KERNELDIR
 git checkout $commit || die "failed to checkout kernel commit $_commit"
+make allmodconfig || die "make allmodconfig failed"
+make prepare || die "make prepare failed"
+make scripts/ || die "make scripts/ failed"
 
-git_clone_update git://gitmirror/$dpdk_remote $SRC_ROOT || die "failed clone dpdk tree $dpdk_remote"
-cd $SRC_ROOT
+git_clone_update git://gitmirror/$dpdk_remote $DPDK_SRC || die "failed clone dpdk tree $dpdk_remote"
+cd $DPDK_SRC
 git checkout $dpdk_commit || die "failed to checkout dpdk commit $dpdk_commit"
 
-make O=$OBJ_ROOT config T=$ARCH-native-linuxapp-$dpdk_compiler_name || die "failed to make config"
+config_file=$LKP_SRC/etc/dpdk-configs/$dpdk_config
+[ -f $config_file ] ||
+config_file=$DPDK_SRC/config/defconfig_$dpdk_config
+[ -f $config_file ] || die "invalid config file $config_file"
 
-[[ $config_file =~ "$SRC_ROOT/config" ]] ||
+make O=$DPDK_OBJ T=$ARCH-native-linuxapp-$dpdk_compiler_name config || die "failed to make config"
+
+[[ $config_file =~ "$DPDK_SRC/config" ]] ||
 merge_configs $config_file
 
-make O=$OBJ_ROOT DESTDIR=$RESULT_ROOT install || die "make failed"
+grep -r -l 'Werror' $DPDK_SRC | xargs sed -i 's/ -Werror//'
+
+make O=$DPDK_OBJ DESTDIR=$RESULT_ROOT
+
+git reset --hard

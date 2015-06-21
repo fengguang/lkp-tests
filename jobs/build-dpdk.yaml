@@ -1,7 +1,10 @@
 testcase: build-dpdk
 
+branch: linus/master
+commit: v4.0
+
 dpdk_branch:
-dpdk_commit:
+dpdk_commit: v2.0.0
 dpdk_config: x86_64-native-linuxapp-gcc
 dpdk_compiler: gcc
 
