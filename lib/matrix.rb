@@ -279,7 +279,11 @@ def unite_stats(result_root)
 	stats['stats_source'] = result_root + '/stats.json'
 
 	unite_to(stats, _result_root)
-	__matrix = unite_to(stats, __result_root, 100)
+	begin
+		__matrix = unite_to(stats, __result_root, 100)
+		check_warn_test_error __matrix, result_root
+	rescue Exception
+	end
 
-	check_warn_test_error __matrix, result_root
+	return true
 end
