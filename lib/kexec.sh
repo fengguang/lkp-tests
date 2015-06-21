@@ -94,4 +94,7 @@ kexec_to_next_job()
 	echo "LKP: rebooting after kexec"
 	echo "LKP: rebooting after kexec" > /dev/ttyS0 &
 	reboot 2>/dev/null
+	sleep 244 || exit
+	echo s > /proc/sysrq-trigger
+	echo b > /proc/sysrq-trigger
 }
