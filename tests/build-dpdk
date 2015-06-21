@@ -22,7 +22,7 @@ merge_configs()
 {
 	local config_file=$1
 	local dot_config=$OBJ_ROOT/.config
-	local lines=$(awk -F= '!x[$1]++' $config_file $dot_config)
+	local lines="$(awk -F= '!x[$1]++' $config_file $dot_config)"
 	echo "$lines" > $dot_config
 }
 

@@ -32,10 +32,10 @@ replace_script_partition_val()
 {
 	local disk_names=(/dev/vd{a..z})
 	local job_script="$1"
-	local nr_hdd_vdisk=$(echo $hdd_partitions | wc -w)
-	local nr_ssd_vdisk=$(echo $ssd_partitions | wc -w)
-	local nr_swap_vdisk=$(echo $swap_partitions | wc -w)
-	local nr_rootfs_vdisk=$(echo $rootfs_partition | wc -w)
+	local nr_hdd_vdisk="$(echo $hdd_partitions | wc -w)"
+	local nr_ssd_vdisk="$(echo $ssd_partitions | wc -w)"
+	local nr_swap_vdisk="$(echo $swap_partitions | wc -w)"
+	local nr_rootfs_vdisk="$(echo $rootfs_partition | wc -w)"
 
 	[[ $nr_hdd_partitions ]] || nr_hdd_partitions=$nr_hdd_vdisk
 	[[ $nr_ssd_partitions ]] || nr_ssd_partitions=$nr_ssd_vdisk
@@ -84,7 +84,7 @@ get_qemu_kernel_initrd()
 # limit $1 to MemAvailable/2
 max_sane_qemu_memory()
 {
-	local mem_kb=$(to_kb $1)
+	local mem_kb="$(to_kb $1)"
 
 	export_meminfo
 
@@ -171,7 +171,7 @@ run_kvm()
 {
 	trap - EXIT
 
-	local mem_mb=$(max_sane_qemu_memory $memory)
+	local mem_mb="$(max_sane_qemu_memory $memory)"
 	local mount_tag=9p/virtfs_mount
 	model='qemu-system-x86_64 -enable-kvm'
 	netdev_option="-device e1000,netdev=net0 "

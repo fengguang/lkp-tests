@@ -39,7 +39,7 @@ prepare_fallocate()
 	# it's worthless to create them here.
 	[ "$rwmode" = "seqwr" ] && return
 
-	local filesize=$((size / filenum))
+	local filesize="$((size / filenum))"
 	for i in $(seq 0 $((filenum-1)))
 	do
 		cmd fallocate -l $filesize test_file.$i

@@ -56,7 +56,8 @@ download_kernel_initrd()
 
 kexec_to_next_job()
 {
-	local kernel=$(awk  '/^KERNEL / { print $2; exit }' $NEXT_JOB)
+	local kernel append
+	kernel=$(awk  '/^KERNEL / { print $2; exit }' $NEXT_JOB)
 	append=$(grep -m1 '^APPEND ' $NEXT_JOB | sed 's/^APPEND //')
 	rm -f /tmp/initrd-* /tmp/modules.cgz
 

@@ -49,18 +49,21 @@ to_byte()
 
 to_kb()
 {
-	local bytes=$(to_byte "$1")
+	local bytes
+	bytes=$(to_byte "$1")
 	echo $((bytes >> 10))
 }
 
 to_mb()
 {
-	local bytes=$(to_byte "$1")
+	local bytes
+	bytes=$(to_byte "$1")
 	echo $((bytes >> 20))
 }
 
 to_gb()
 {
-	local bytes=$(to_byte "$1")
+	local bytes
+	bytes=$(to_byte "$1")
 	echo $((bytes >> 30))
 }

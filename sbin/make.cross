@@ -43,7 +43,7 @@ download_extract()
 	echo lftpget -c $URL
 	     lftpget -c $URL
 
-	local file=$(basename $URL)
+	local file="$(basename $URL)"
 	echo tar Jxf $file -C /usr/local
 	sudo tar Jxf $file -C /usr/local
 }
@@ -54,7 +54,7 @@ install_crosstool()
 	local list=/tmp/crosstool-files
 
 	[[ -s $list ]] || {
-		local os_bit=$(getconf LONG_BIT)
+		local os_bit="$(getconf LONG_BIT)"
 
 		if [[ $os_bit = 32 ]]; then
 			local os_arch=i686
@@ -65,7 +65,8 @@ install_crosstool()
 		lftp -c "open $URL && find $os_arch > $list" || exit
 	}
 
-	local file=$(grep "${gcc_arch}.*\.tar\.xz" $list | tail -1)
+	local file
+	file=$(grep "${gcc_arch}.*\.tar\.xz" $list | tail -1)
 	[[ $file ]] || {
 		echo "Cannot find $gcc_arch under $URL check $list"
 		exit 1
@@ -81,7 +82,7 @@ install_linaro()
 
 	download_extract "$URL/$file"
 
-	local dir=/usr/local/$(basename $file .tar.xz)
+	local dir="/usr/local/$(basename $file .tar.xz)"
 	local cross_gcc_version=($dir/bin/${gcc_arch}-gcc-*.*.*)
 	local cross_gcc_version=${cross_gcc_version##*-}
 

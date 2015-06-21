@@ -92,8 +92,9 @@ wait_other_nodes()
 	local idx=1
 	for mac in $direct_macs
 	do
-		local device=$(ip link | grep -B1 $mac | awk -F': ' 'NR==1 {print $2}')
-		local ip=$(echo $direct_ips | cut -d' ' -f $idx)
+		local device ip
+		device=$(ip link | grep -B1 $mac | awk -F': ' 'NR==1 {print $2}')
+		ip=$(echo $direct_ips | cut -d' ' -f $idx)
 		ip addr add $ip/24 dev $device
 		ip link set $device up
 		idx=$((idx + 1))

@@ -41,8 +41,8 @@ kill_one()
 
 kill_tests()
 {
-	local pid_tests=$(cat $TMP/pid-tests)
-	local pid_job=$(cat $TMP/run-job.pid)
+	local pid_tests="$(cat $TMP/pid-tests)"
+	local pid_job="$(cat $TMP/run-job.pid)"
 
 	kill_one $pid_tests
 	wait_post_test --timeout 3 && exit

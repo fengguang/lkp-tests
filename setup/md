@@ -20,8 +20,8 @@ check_partition_size() {
 	for dev do
 		[ "${dev#*:/}" != "$dev" ] && continue
 
-		local part=$(basename $dev)
-		local size=$(grep -w $part /proc/partitions | awk '{ print $3 }')
+		local part="$(basename $dev)"
+		local size="$(grep -w $part /proc/partitions | awk '{ print $3 }')"
 		[ -n "$size" ] || {
 			echo "failed to get partition size for $dev" >&2
 			exit 1

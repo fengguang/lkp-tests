@@ -44,7 +44,7 @@ start_bmc_watchdog()
 
 	bmc-watchdog -d -u 4 -p 0 -a 1 -F -P -L -S -O -i $watchdog_initial_countdown -e $watchdog_reset_period && {
 		sleep 10
-		local pid=$(pidof bmc-watchdog)
+		local pid="$(pidof bmc-watchdog)"
 		[ -n "$pid" ] &&
 		bmc-watchdog --get | grep -q 'Timer:.*Running' && {
 			echo $pid > /var/run/bmc-watchdog.pid

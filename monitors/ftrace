@@ -12,7 +12,7 @@ test_save_time_delta()
 	}
 
 	echo 0 > /sys/kernel/debug/tracing/trace
-	local date_ts=$(date '+%s.%N')
+	local date_ts="$(date '+%s.%N')"
 	echo a long long timestamp detect string > /sys/kernel/debug/tracing/trace_marker
 	local trace_ts="$(grep -m1 -o '[0-9.]\+: tracing_mark_write: a long long timestamp detect string' /sys/kernel/debug/tracing/trace)" || {
 		echo "Failed to detect ftrace time delta."

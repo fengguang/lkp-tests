@@ -55,7 +55,7 @@ calc_nr_file()
 	}
 	test_size=$(to_byte $test_size)
 
-	local disk_size=$(df -B M | grep $test_dir  | awk '{print $2}')
+	local disk_size="$(df -B M | grep $test_dir  | awk '{print $2}')"
 	disk_size=$(to_byte $disk_size)
 	[ "$test_size" -gt "$disk_size" ] && test_size=$disk_size
 

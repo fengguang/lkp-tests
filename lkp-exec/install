@@ -41,8 +41,9 @@ do
 done
 
 parse_yaml() {
-	local s='[[:space:]]*' w='[a-zA-Z0-9_]*'
-	local tmp_filter=$(mktemp)
+	local s='[[:space:]]*'
+	local w='[a-zA-Z0-9_]*'
+	local tmp_filter="$(mktemp)"
 	ls -LR $LKP_SRC/setup $LKP_SRC/monitors $LKP_SRC/tests $LKP_SRC/daemon > $tmp_filter
 	scripts=$(cat $1 | sed -ne "s|^\($s\):|\1|" \
 	         -e "s|^\($s\)\($w\)$s:$s[\"']\(.*\)[\"']$s\$|\2|p" \
@@ -75,8 +76,8 @@ create_host_config() {
 	[ -e $host_config ] || {
 		echo "Creating testbox configuration file: $host_config."
 
-		local mem_kb=$(grep MemTotal /proc/meminfo | awk '{print $2}')
-		local mem_gb=$(((mem_kb)/1024/1024))
+		local mem_kb="$(grep MemTotal /proc/meminfo | awk '{print $2}')"
+		local mem_gb="$(((mem_kb)/1024/1024))"
 
 		cat <<EOT >> $host_config
 memory: ${mem_gb}G
@@ -113,7 +114,8 @@ build_install_benchmarks() {
 	echo "Making $script benchmark for $distro"
 	[ -n "$DRY_RUN" ] && return
 
-	local pkg_name=$(printf '%s-LKP\n' "$script" | sed 's/_/-/g')
+	local pkg_name
+	pkg_name=$(printf '%s-LKP\n' "$script" | sed 's/_/-/g')
 
 	$LKP_SRC/sbin/pack -d $distro -c $script
 	if [ $? -eq 0 ]; then
