@@ -47,7 +47,7 @@ check_mount kernel-src $RTE_KERNELDIR -t tmpfs
 git_clone_update git://gitmirror/$remote $RTE_KERNELDIR || die "failed clone kernel tree $remote"
 cd $RTE_KERNELDIR
 git checkout $commit || die "failed to checkout kernel commit $_commit"
-make allmodconfig || die "make allmodconfig failed"
+make_config allmodconfig || die "make allmodconfig failed"
 make prepare || die "make prepare failed"
 make scripts/ || die "make scripts/ failed"
 
