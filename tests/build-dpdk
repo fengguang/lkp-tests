@@ -15,6 +15,7 @@
 shopt -s nullglob
 
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/build.sh
 . $LKP_SRC/lib/mount.sh
 . $LKP_SRC/lib/git.sh
 
@@ -69,3 +70,5 @@ grep -r -l 'Werror' $DPDK_SRC | xargs sed -i 's/ -Werror//'
 make O=$DPDK_OBJ DESTDIR=$RESULT_ROOT
 
 git reset --hard
+
+build_complete
