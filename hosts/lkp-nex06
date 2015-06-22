@@ -1,7 +1,7 @@
 model: Nehalem-EX
-memory: 64G
+memory: 32G
 nr_cpu: 64
 nr_hdd_partitions: 0
 hdd_partitions:
-swap_partitions:
+swap_partitions: LABEL=SWAP
 rootfs_partition:
