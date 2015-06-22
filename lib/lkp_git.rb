@@ -105,13 +105,13 @@ module Git
 			Hash[tags.map.with_index {|tag, i| [tag, -i]}]
 		end
 
-		def release_commit_shas
+		def release_shas
 			release_tags.map {|release_tag| lib.command('rev-list', ['-1', release_tag])}
 		end
 
 		cache_method :release_tags, ->obj {obj.project}
 		cache_method :release_tags_with_order, ->obj {obj.project}
-		cache_method :release_commit_shas, ->obj {obj.project}
+		cache_method :release_shas, ->obj {obj.project}
 
 		def release_tag_order(tag)
 			release_tags_with_order[tag]
@@ -266,7 +266,7 @@ module Git
 		end
 
 		def default_base_release_tag_strategy(git_base, commit_sha)
-			base_release_commit = `#{git_base.lib.command_string('rev-list', ['--first-parent', commit_sha])} | grep -m1 -Fx \"#{git_base.release_commit_shas.join("\n")}\"`
+			base_release_commit = `#{git_base.lib.command_string('rev-list', ['--first-parent', commit_sha])} | grep -m1 -Fx \"#{git_base.release_shas.join("\n")}\"`
 			base_release_commit && !base_release_commit.empty? ? [git_base.gcommit(base_release_commit.chomp).release_tag, false] : nil
 		end
 
