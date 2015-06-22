@@ -106,10 +106,7 @@ module Git
 		end
 
 		def release_commit_shas
-			opts = ['--no-patch', '--format=%H']
-			opts << release_tags.map {|tag| tag + '^{commit}'}
-			opts << '--'
-			lib.command('show', opts).split
+			release_tags.map {|release_tag| lib.command('rev-list', ['-1', release_tag])}
 		end
 
 		cache_method :release_tags, ->obj {obj.project}
