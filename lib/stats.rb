@@ -200,12 +200,18 @@ def load_base_matrix(matrix_path, head_matrix)
 	matrix = {}
 	tags_merged = []
 
-	# FIXME
-	remote = 'linus'
-	$git_tag ||= GitTag.new(:remote => remote)
-	git_tag = $git_tag
+	# XXX
+	if matrix_path.index('/build-dpdk/')
+		project = 'dpdk'
+	else
+		project = 'linux'
+	end
 
-	version, is_exact_match = git_tag.last_release_tag(commit)
+	$git ||= {}
+	$git[project] ||= Git.project_init project
+	git = $git[project]
+
+	version, is_exact_match = git.last_release_tag(commit)
 	puts "remote: #{remote}, version: #{version}, is exact match: #{is_exact_match}" if ENV['LKP_VERBOSE']
 
 	# FIXME: remove it later; or move it somewhere in future
@@ -226,11 +232,9 @@ def load_base_matrix(matrix_path, head_matrix)
 		end
 	end
 
-	order = git_tag.tag_order(version)
-
+	order = git.release_tag_order(version)
 	cols = 0
-	git_tag.base_tags.each { |tag|
-		o = git_tag.tag_order(tag)
+	git.release_tags_with_order.each { |tag, o|
 		next if o >  order
 		next if o == order and is_exact_match
 		next if is_exact_match and tag =~ /^#{version}-rc[0-9]+$/
