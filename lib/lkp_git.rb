@@ -109,12 +109,45 @@ module Git
 			release_tags.map {|release_tag| lib.command('rev-list', ['-1', release_tag])}
 		end
 
+		def release_tags2shas
+			tags = release_tags
+			shas = release_shas
+			tags2shas = {}
+			tags.each_with_index {|tag, i| tags2shas[tag] = shas[i]}
+			tags2shas
+		end
+
+		def release_shas2tags
+			tags = release_tags
+			shas = release_shas
+			shas2tags = {}
+			shas.each_with_index {|sha, i| shas2tags[sha] = tags[i]}
+			shas2tags
+		end
+
 		cache_method :release_tags, ->obj {obj.project}
 		cache_method :release_tags_with_order, ->obj {obj.project}
 		cache_method :release_shas, ->obj {obj.project}
 
 		def release_tag_order(tag)
 			release_tags_with_order[tag]
+		end
+
+		def last_release_sha(commit)
+			lib.command("rev-list --first-parent #{commit} | grep -m1 -F -x -e #{release_shas.join ' -e '}").chomp
+		end
+
+		# return the last release tag for #{commit}.
+		#
+		# If the tag points to the #{commit} exactly, is_exact_match
+		# is set true, otherwise, it's set false.
+		def last_release_tag(commit)
+			case @project
+			when 'linux'
+				last_linus_release_tag(commit)
+			else
+				release_shas2tags[last_release_sha(commit)]
+			end
 		end
 	end
 
