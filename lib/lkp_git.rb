@@ -257,10 +257,8 @@ module Git
 		#
 		def project_init(options = {})
 			options[:project] ||= 'linux'
-			options[:repository] ||= ENV['GIT_DIR']
 			options[:base_release_tag_strategy] ||= options[:project] == 'linux' ? singleton_method(:linux_base_release_tag_strategy) : singleton_method(:default_base_release_tag_strategy)
-
-			working_dir = ENV['GIT_WORK_TREE'] || ENV['LINUX_GIT'] || "/c/repo/#{options[:project]}"
+			working_dir = ENV['SRC_ROOT'] || "/c/repo/#{options[:project]}"
 
 			Git.init(working_dir, options)
 		end
