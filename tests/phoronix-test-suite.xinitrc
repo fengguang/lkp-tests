@@ -1,5 +1,7 @@
 #!/bin/sh
 
+## See 'tests/phoronix-test-suite'.
+
 start_time=$(date +%s.%N)
 
 case $test in

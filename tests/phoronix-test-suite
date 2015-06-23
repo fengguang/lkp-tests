@@ -2,6 +2,10 @@
 # - test
 # - need_x
 
+## The Phoronix Test Suite is the most comprehensive testing and benchmarking
+## platform available that provides an extensible framework for which new tests
+## can be easily added.
+
 if [ "$need_x" = true ]; then
 	mkdir -p		/tmp/.X11-unix
 	chmod 1777		/tmp/.X11-unix
