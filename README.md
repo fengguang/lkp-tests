@@ -40,3 +40,14 @@ Check result
 
 	lkp result hackbench
 
+Supported Distributions
+-----------------------
+
+Most test cases should install/run well in
+
+- Debian sid
+- Ubuntu 14.04
+- Fedora 22
+- Archlinux
+
+As for now, lkp-tests still needs to run as root.
