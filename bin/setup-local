@@ -120,7 +120,7 @@ def install_benchmarks(script, distro)
 
 		case distro
 		when 'debian','ubuntu'
-			system "dpkg -i /tmp/#{deb_name}"
+			system "dpkg -i /tmp/#{pkg_name}.deb"
 		when 'fedora'
 			system "rpm -ivh --replacepkgs /tmp/#{pkg_name}/RPMS/#{pkg_name}.#{arch}.rpm"
 		else
