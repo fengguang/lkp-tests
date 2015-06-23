@@ -143,8 +143,10 @@ end
 # M here stands for multiple runs
 # _rt or mrt may be used as variable name
 class MResultRoot
-	DMESG_GLOB1 = '[0-9]*/dmesg*'
-	DMESG_GLOB2 = '[0-9]*/kmsg*'
+	# TODO: remove GLOB1 after we convert all .dmesg to dmesg
+	DMESG_GLOB1 = '[0-9]*/.dmesg*'
+	DMESG_GLOB2 = '[0-9]*/dmesg*'
+	DMESG_GLOB3 = '[0-9]*/kmsg*'
 	JOB_GLOB = '[0-9]*/job.yaml'
 	COMPLETIONS_FILE = 'completions'
 	MATRIX = 'matrix.json'
@@ -194,7 +196,8 @@ class MResultRoot
 
 	def dmesgs
 		dmesgs = glob(DMESG_GLOB1)
-		dmesgs = glob(DMESG_GLOB2) if dmesgs.size == 0
+		dmesgs = glob(DMESG_GLOB2) if dmesgs.empty?
+		dmesgs = glob(DMESG_GLOB3) if dmesgs.empty?
 		dmesgs
 	end
 
