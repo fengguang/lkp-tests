@@ -2,4 +2,66 @@ linux-tools: perf
 ruby-gnuplot:
 xz-utils: xz
 libpcap-dev: libpcap-devel
-
+ncurses-bin: ncurses
+build-essential: make automake gcc gcc-c++ kernel-devel
+cgroup-bin: libcgroup
+apt-file:
+sg3-utils: sg3_utils
+btrfs-tools: btrfs-progs
+nfs-common: nfs-utils
+nfs-kernel-server: nfs-utils
+dbench=4.0-2: dbench
+libnl-3-200: libnl3
+libnl-genl-3-200: libnl3
+libnl-3-dev: libnl3-devel
+libnl-genl-3-dev: libnl3-devel
+libpcap0.8: libpcap
+libpcap0.8-dev: libpcap-devel
+libdbus-1-dev: dbus-libs
+libssl-dev: openssl-devel
+binutils-dev: binutils-devel
+libiberty-dev:
+libsqlite3-dev: libsqlite3x-devel
+iozone3: iozone
+libc6-dev: glibc-devel
+libpopt0: popt
+libpopt-dev: popt-devel
+python-minimal: python2
+libudev1: libgudev1
+libudev-dev: libgudev1-devel
+libuuid1: libuuid
+uuid-dev: uuid-devel
+libkmod2: kmod-libs
+libkmod-dev: kmod-devel
+autotools-dev: autoconf
+liboop-dev: liboop
+libsctp-dev: lksctp-tools-devel
+netpipe-lam: NetPIPE
+netpipe-mpich2: NetPIPE
+netpipe-openmpi: NetPIPE
+netpipe-pvm: NetPIPE
+netpipe-tcp: NetPIPE
+mysql-server: mariadb
+libnuma1: numactl
+xinit: xorg-x11-xinit
+freeglut3: freeglut
+libglib2.0-0: glib
+libgles2-mesa: mesa-libGLES
+dpkg-dev: dpkg-devel
+libx11-xcb-dev: libx11-devel
+libdrm-dev: libdrm-devel
+xutils-dev: imake
+libibverbs-dev: libibverbs-devel
+librdmacm-dev: librdmacm-devel
+libaio1: libaio
+libaio-dev: libaio-devel
+initramfs-tools: dracut
+klibc-utils:
+apache2: httpd
+perl-base:
+perl-modules:
+libperl5.20: perl-libs
+libhwloc-dev: hwloc-devel
+xfslibs-dev: xfsprogs-devel
+libattr1-dev: libattr-devel
+libacl1-dev: libacl-devel
