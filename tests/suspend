@@ -3,7 +3,9 @@
 # - runtime
 # - iterations
 
-# some code from http://people.canonical.com/~apw/suspend-resume/test-suspend
+## Use the /sys/power/state file to control system sleep states.
+## And some code from http://people.canonical.com/~apw/suspend-resume/test-suspend
+
 [ -n "$mode" ] || mode='freeze'
 [ -n "$runtime" ] || runtime=300
 [ -n "$iterations" ] || iterations=30

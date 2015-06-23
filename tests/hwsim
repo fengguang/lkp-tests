@@ -1,5 +1,8 @@
 #!/bin/sh
 
+## Automated hostapd/wpa_supplicant testing with mac80211_hwsim.
+## See: https://github.com/jmalinen/hostap/tree/master/tests/hwsim
+
 cd $BENCHMARK_ROOT/hwsim/tests/hwsim || exit
 
 nm_conf="/etc/NetworkManager/NetworkManager.conf"

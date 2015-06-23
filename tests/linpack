@@ -1,5 +1,9 @@
 #!/bin/sh
 
+## The Linpack Benchmark is a measure of a computer’s floating-point rate of execution. It is
+## determined by running a computer program that solves a dense system of linear equations.
+## See: http://www.netlib.org/utk/people/JackDongarra/faq-linpack.html#_Toc27885709
+
 cd $BENCHMARK_ROOT/linpack || exit
 
 . $LKP_SRC/lib/unit.sh

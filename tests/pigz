@@ -3,6 +3,10 @@
 # - nr_threads
 # - blocksize
 
+## pigz, which stands for parallel implementation of gzip, is a fully
+## functional replacement for gzip that exploits multiple processors
+## and multiple cores to the hilt when compressing data.
+
 require 'base64'
 
 $runtime = (ENV['runtime'] || 300).to_i

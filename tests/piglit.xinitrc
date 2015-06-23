@@ -1,5 +1,7 @@
 #!/bin/sh
 
+## See 'tests/piglit'.
+
 tset=${group%%-*}
 groups_dir=$BENCHMARK_ROOT/piglit/groups
 [ -d "$groups_dir" ] || groups_dir=$LKP_SRC/pack/piglit-addon/groups

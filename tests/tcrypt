@@ -2,6 +2,8 @@
 # - modes
 # - period
 
+## tcrypt.ko module purpose is to test different crypto algorithm from the kenrel space.
+
 for i in $(seq ${modes%-*} ${modes#*-})
 do
 	# tcrypt do testing by modules inserting, then exit from kernel

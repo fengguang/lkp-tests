@@ -3,6 +3,12 @@
 # - trans
 # - subdirs
 
+## File system benchmark from NetApp.
+## Benchmark that's based around small file operations similar to those
+## used on large mail servers and news servers. Has been ported to NT
+## so should be good for comparing OSs. "Postmark: a new file system
+## benchmark", Jeffrey Katcher, Network Appliance Technical Report TR-3022, October 1997
+
 [ -z "$mount_points" ] && exit
 location="${mount_points%% *}"
 number=${number%n}

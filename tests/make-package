@@ -1,6 +1,11 @@
 #!/bin/bash
 # - pkgname
 
+## makepkg is a script that automates the building of packages; it can download and validate source files,
+## check dependencies, configure build-time settings, compile the sources, install into a temporary root,
+## make customizations, generate meta-info, and package everything together.
+## See: https://wiki.archlinux.org/index.php/Makepkg
+
 cd $LKP_SRC/pkg/$pkgname || exit
 
 [ -n "$LKP_SERVER" ] && {

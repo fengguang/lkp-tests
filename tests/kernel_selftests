@@ -1,5 +1,9 @@
 #!/bin/sh
-#
+
+## The kernel contains a set of "self tests" under the tools/testing/selftests/
+## directory. These are intended to be small unit tests to exercise individual
+## code paths in the kernel.
+## See: https://www.kernel.org/doc/Documentation/kselftest.txt
 
 cd $BENCHMARK_ROOT/kernel_selftests || exit
 
