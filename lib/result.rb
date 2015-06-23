@@ -1,6 +1,9 @@
 #!/usr/bin/env ruby
 
+LKP_SRC ||= ENV['LKP_SRC']
+
 require 'set'
+require "#{LKP_SRC}/lib/lkp_git"
 
 DEFAULT_COMPILER = 'gcc-4.9'
 
@@ -50,10 +53,13 @@ class ResultPath < Hash
 			self[key] = dirs.shift
 		end
 
-		if self['commit'] == DEFAULT_COMPILER
-			STDERR.puts "ResultPath parse error for #{rt}"
-			return false
+		if ps.include?('commit')
+			unless self['commit'] && is_commit(self['commit'])
+				#STDERR.puts "ResultPath parse error for #{rt}"
+				return false
+			end
 		end
+
 		# for rt and _rt
 		return ps.size == ndirs || ps.size == ndirs + 1
 	end

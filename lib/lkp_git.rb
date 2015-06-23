@@ -354,7 +354,8 @@ end
 
 def is_commit(commit)
 	commit =~ /^[0-9a-f~^]{7,}$/ or
-	commit =~ /^v[234]\.\d+/
+	commit =~ /^v[234]\.\d+/ or
+	commit =~ /[a-f0-9]{40}/
 end
 
 def expand_possible_commit(s)
