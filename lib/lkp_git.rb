@@ -70,12 +70,12 @@ module Git
 		cache_method :gcommit
 		alias_method :orig_initialize, :initialize
 
-		attr_reader :project, :base_release_tag_strategy
+		attr_reader :project, :last_release_tag_strategy
 
 		def initialize(options = {})
 			orig_initialize(options)
 			@project = options[:project]
-			@base_release_tag_strategy = options[:base_release_tag_strategy]
+			@last_release_tag_strategy = options[:last_release_tag_strategy]
 		end
 
 		# add tag_names because Base::tags is slow to obtain all tag objects
@@ -230,16 +230,16 @@ module Git
 			# if commit has a version tag, return it directly;
 			# otherwise checkout commit and get latest version from Makefile.
 			#
-			def base_release_tag
+			def last_release_tag
 				return [release_tag, true] if release_tag
 
-				@base.base_release_tag_strategy.call @base, @sha
+				@base.last_release_tag_strategy.call @base, @sha
 			end
 
 			# v3.11     => v3.11
 			# v3.11-rc1 => v3.10
 			def last_official_release_tag
-				tag, is_exact_match = self.base_release_tag
+				tag, is_exact_match = self.last_release_tag
 				return tag unless tag =~ /-rc/
 
 				order = @base.release_tag_order(tag)
@@ -251,7 +251,7 @@ module Git
 			# v3.11     => v3.10
 			# v3.11-rc1 => v3.10
 			def prev_official_release_tag
-				tag, is_exact_match = self.base_release_tag
+				tag, is_exact_match = self.last_release_tag
 
 				order = @base.release_tag_order(tag)
 				tag_with_order = @base.release_tags_with_order.find do |tag, o|
@@ -280,7 +280,7 @@ module Git
 				nil
 			end
 
-			cache_method :base_release_tag, ->(obj) {obj.to_s}
+			cache_method :last_release_tag, ->(obj) {obj.to_s}
 		end
 
 		class Tag
@@ -308,10 +308,10 @@ module Git
 		#
 		def project_init(options = {})
 			options[:project] ||= 'linux'
-			options[:base_release_tag_strategy] ||=
+			options[:last_release_tag_strategy] ||=
 				options[:project] == 'linux' ?
-					singleton_method(:linux_base_release_tag_strategy) :
-					singleton_method(:default_base_release_tag_strategy)
+					singleton_method(:linux_last_release_tag_strategy) :
+					singleton_method(:default_last_release_tag_strategy)
 
 			working_dir = ENV['SRC_ROOT'] || "/c/repo/#{options[:project]}"
 
@@ -319,7 +319,7 @@ module Git
 		end
 
 		# FIXME move strategy to a better place like seperate file or inside a inherited class
-		def linux_base_release_tag_strategy(git_base, commit_sha)
+		def linux_last_release_tag_strategy(git_base, commit_sha)
 			version = patch_level = sub_level = rc = nil
 
 			git_base.lib.command_lines('show', "#{commit_sha}:Makefile").each do |line|
@@ -351,7 +351,7 @@ module Git
 			end
 		end
 
-		def default_base_release_tag_strategy(git_base, commit_sha)
+		def default_last_release_tag_strategy(git_base, commit_sha)
 			base_release_commit = `#{git_base.lib.command_string('rev-list', ['--first-parent', commit_sha])} | grep -m1 -Fx \"#{git_base.release_shas.join("\n")}\"`
 			base_release_commit && !base_release_commit.empty? ? [git_base.gcommit(base_release_commit.chomp).release_tag, false] : nil
 		end

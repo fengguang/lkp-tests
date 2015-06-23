@@ -108,24 +108,24 @@ describe Git do
 				end
 			end
 
-			describe "base_release_tag" do
+			describe "last_release_tag" do
 				it "should be same as last_linus_release_tag with default arguments" do
-					expect(@git.gcommit(linux_v4_1_rc8_commit).base_release_tag).to eq(["v4.1-rc8", true])
-					expect(@git.gcommit(linux_v4_1_rc8_commit).base_release_tag).to eq(last_linus_release_tag(linux_v4_1_rc8_commit))
+					expect(@git.gcommit(linux_v4_1_rc8_commit).last_release_tag).to eq(["v4.1-rc8", true])
+					expect(@git.gcommit(linux_v4_1_rc8_commit).last_release_tag).to eq(last_linus_release_tag(linux_v4_1_rc8_commit))
 
 					linux_v2_6_32_commit = @git.tag('v2.6.32').commit
-					expect(linux_v2_6_32_commit.base_release_tag).to eq ["v2.6.32", true]
-					expect(linux_v2_6_32_commit.base_release_tag).to eq last_linus_release_tag(linux_v2_6_32_commit)
+					expect(linux_v2_6_32_commit.last_release_tag).to eq ["v2.6.32", true]
+					expect(linux_v2_6_32_commit.last_release_tag).to eq last_linus_release_tag(linux_v2_6_32_commit)
 
 
 					linux_v2_6_32_child_commit = "03b1320dfceeb093890cdd7433e910dca6225ddb"
-					expect(@git.gcommit(linux_v2_6_32_child_commit).base_release_tag).to eq ["v2.6.32-rc8", false]
-					expect(@git.gcommit(linux_v2_6_32_child_commit).base_release_tag).to eq last_linus_release_tag(linux_v2_6_32_child_commit)
+					expect(@git.gcommit(linux_v2_6_32_child_commit).last_release_tag).to eq ["v2.6.32-rc8", false]
+					expect(@git.gcommit(linux_v2_6_32_child_commit).last_release_tag).to eq last_linus_release_tag(linux_v2_6_32_child_commit)
 				end
 
 				it "should cache result" do
 					linux_v2_6_32_child_commit = "03b1320dfceeb093890cdd7433e910dca6225ddb"
-					expect(@git.gcommit(linux_v2_6_32_child_commit).base_release_tag.object_id).to eq @git.gcommit(linux_v2_6_32_child_commit).base_release_tag.object_id
+					expect(@git.gcommit(linux_v2_6_32_child_commit).last_release_tag.object_id).to eq @git.gcommit(linux_v2_6_32_child_commit).last_release_tag.object_id
 				end
 			end
 		end
@@ -229,16 +229,16 @@ describe Git do
 				end
 			end
 
-			describe "base_release_tag" do
+			describe "last_release_tag" do
 				it "should be correct" do
-					expect(@git.gcommit(gcc_5_1_0_release_commit).base_release_tag).to eq ['gcc-5_1_0-release', true]
+					expect(@git.gcommit(gcc_5_1_0_release_commit).last_release_tag).to eq ['gcc-5_1_0-release', true]
 
 					# below commit is at branch gcc-4_9-branch
 					gcc_4_9_2_release_commit = @git.tag('gcc-4_9_2-release').commit
-					expect(gcc_4_9_2_release_commit.base_release_tag).to eq ['gcc-4_9_2-release', true]
+					expect(gcc_4_9_2_release_commit.last_release_tag).to eq ['gcc-4_9_2-release', true]
 
 					gcc_4_9_2_release_child_commit = "84a4713962eb632bc75f235566ba1d47690bbf10"
-					expect(@git.gcommit(gcc_4_9_2_release_child_commit).base_release_tag).to eq(['gcc-4_9_2-release', false])
+					expect(@git.gcommit(gcc_4_9_2_release_child_commit).last_release_tag).to eq(['gcc-4_9_2-release', false])
 				end
 			end
 		end
