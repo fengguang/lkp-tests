@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ## The kernel contains a set of "self tests" under the tools/testing/selftests/
 ## directory. These are intended to be small unit tests to exercise individual
@@ -12,6 +12,24 @@ mkdir -p /hugepages
 
 # has too many errors now
 sed -i 's/hugetlbfstest//' vm/Makefile
+
+# On debian, linux-headers-amd64 installs to /usr/src/linux-headers-*-amd64/
+# and /usr/src/linux-headers-*-common/, where common dir contains the actual
+# headers.
+
+shopt -s nullglob
+linux_headers_dirs=(
+	/usr/src/linux-headers-*-common/
+	# TODO may add more for other distros
+)
+
+[[ $linux_headers_dirs ]] || {
+	echo "KERNEL SELFTESTS: fail to find linux-headers package" >&2
+	exit
+}
+
+linux_headers_dir=${linux_headers_dirs[-1]}
+echo "KERNEL SELFTESTS: linux_headers_dir is $linux_headers_dir"
 
 for mf in */Makefile; do
 	subtest=${mf%/Makefile}
@@ -28,5 +46,5 @@ for mf in */Makefile; do
 			mount -t efivarfs efivarfs /sys/firmware/efi/efivars
 			;;
 	esac
-	cmd make run_tests -C $subtest
+	cmd make run_tests -C $subtest -I $linux_headers_dir/include -I $linux_headers_dir/include/uapi
 done
