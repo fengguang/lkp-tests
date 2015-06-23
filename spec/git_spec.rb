@@ -78,6 +78,34 @@ describe Git do
 						expect(linux_v3_11_rc1_commit.last_official_release_tag).to eq official_release_tag(linux_v3_11_rc1_commit)
 					end
 				end
+
+				# v3.11     => v3.10
+				# v3.11-rc1 => v3.10
+				describe "prev_official_release_tag" do
+					it "should be same as lkp prev_official_release_tag" do
+						linux_v3_11_commit = @git.tag('v3.11').commit
+						expect(linux_v3_11_commit.prev_official_release_tag).to eq 'v3.10'
+						expect(linux_v3_11_commit.prev_official_release_tag).to eq prev_official_release_tag(linux_v3_11_commit)
+
+						linux_v3_11_rc1_commit = @git.tag('v3.11-rc1').commit
+						expect(linux_v3_11_rc1_commit.prev_official_release_tag).to eq 'v3.10'
+						expect(linux_v3_11_rc1_commit.prev_official_release_tag).to eq prev_official_release_tag(linux_v3_11_rc1_commit)
+					end
+				end
+
+				# v3.12-rc1 => v3.12
+				# v3.12     => v3.13
+				describe "next_official_release_tag" do
+					it "should be same as lkp next_official_release_tag" do
+						linux_v3_12_rc1_commit = @git.tag('v3.12-rc1').commit
+						expect(linux_v3_12_rc1_commit.next_official_release_tag).to eq 'v3.12'
+						expect(linux_v3_12_rc1_commit.next_official_release_tag).to eq next_official_release_tag(linux_v3_12_rc1_commit)
+
+						linux_v3_12_commit = @git.tag('v3.12').commit
+						expect(linux_v3_12_commit.next_official_release_tag).to eq 'v3.13'
+						expect(linux_v3_12_commit.next_official_release_tag).to eq next_official_release_tag(linux_v3_12_commit)
+					end
+				end
 			end
 
 			describe "base_release_tag" do

@@ -248,6 +248,38 @@ module Git
 				tag_with_order ? tag_with_order[0] : nil
 			end
 
+			# v3.11     => v3.10
+			# v3.11-rc1 => v3.10
+			def prev_official_release_tag
+				tag, is_exact_match = self.base_release_tag
+
+				order = @base.release_tag_order(tag)
+				tag_with_order = @base.release_tags_with_order.find do |tag, o|
+					next if o > order
+					next if o == order and is_exact_match
+
+					tag !~ /-rc/
+				end
+
+				tag_with_order ? tag_with_order[0] : nil
+			end
+
+			# v3.12-rc1 => v3.12
+			# v3.12     => v3.13
+			def next_official_release_tag
+				tag = self.release_tag
+				return nil unless tag
+
+				order = tag_order(tag)
+				@base.release_tags_with_order.reverse_each do |tag, o|
+					next if o <= order
+
+					return tag unless tag =~ /-rc/
+				end
+
+				nil
+			end
+
 			cache_method :base_release_tag, ->(obj) {obj.to_s}
 		end
 
