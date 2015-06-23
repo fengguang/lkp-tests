@@ -85,18 +85,19 @@ describe Git do
 					expect(@git.gcommit(linux_v4_1_rc8_commit).base_release_tag).to eq(["v4.1-rc8", true])
 					expect(@git.gcommit(linux_v4_1_rc8_commit).base_release_tag).to eq(last_linus_release_tag(linux_v4_1_rc8_commit))
 
-					v2_6_13_commit = "02b3e4e2d71b6058ec11cc01c72ac651eb3ded2b"
-					expect(@git.gcommit(v2_6_13_commit).base_release_tag).to eq(["v2.6.13", true])
-					expect(@git.gcommit(v2_6_13_commit).base_release_tag).to eq(last_linus_release_tag(v2_6_13_commit))
+					linux_v2_6_32_commit = @git.tag('v2.6.32').commit
+					expect(linux_v2_6_32_commit.base_release_tag).to eq ["v2.6.32", true]
+					expect(linux_v2_6_32_commit.base_release_tag).to eq last_linus_release_tag(linux_v2_6_32_commit)
 
-					v2_6_13_child_commit = "af36d7f0df56de3e3e4bbfb15d0915097ecb8cab"
-					expect(@git.gcommit(v2_6_13_child_commit).base_release_tag).to eq(["v2.6.13-rc7", false])
-					expect(@git.gcommit(v2_6_13_child_commit).base_release_tag).to eq(last_linus_release_tag(v2_6_13_child_commit))
+
+					linux_v2_6_32_child_commit = "03b1320dfceeb093890cdd7433e910dca6225ddb"
+					expect(@git.gcommit(linux_v2_6_32_child_commit).base_release_tag).to eq ["v2.6.32-rc8", false]
+					expect(@git.gcommit(linux_v2_6_32_child_commit).base_release_tag).to eq last_linus_release_tag(linux_v2_6_32_child_commit)
 				end
 
 				it "should cache result" do
-					v2_6_13_child_commit = "af36d7f0df56de3e3e4bbfb15d0915097ecb8cab"
-					expect(@git.gcommit(v2_6_13_child_commit).base_release_tag.object_id).to eq @git.gcommit(v2_6_13_child_commit).base_release_tag.object_id
+					linux_v2_6_32_child_commit = "03b1320dfceeb093890cdd7433e910dca6225ddb"
+					expect(@git.gcommit(linux_v2_6_32_child_commit).base_release_tag.object_id).to eq @git.gcommit(linux_v2_6_32_child_commit).base_release_tag.object_id
 				end
 			end
 		end
@@ -140,8 +141,8 @@ describe Git do
 
 			describe "release_tag_order" do
 				it "should be same as tag_order with default parameters" do
-					actual = tag_order("v2.6.13-rc7")
-					expect = @git.release_tag_order('v2.6.13-rc7')
+					actual = tag_order("v2.6.32-rc8")
+					expect = @git.release_tag_order('v2.6.32-rc8')
 
 					expect(expect).to be < 0
 					expect(expect).to eq actual
