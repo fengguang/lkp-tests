@@ -236,6 +236,18 @@ module Git
 				@base.base_release_tag_strategy.call @base, @sha
 			end
 
+			# v3.11     => v3.11
+			# v3.11-rc1 => v3.10
+			def last_official_release_tag
+				tag, is_exact_match = self.base_release_tag
+				return tag unless tag =~ /-rc/
+
+				order = @base.release_tag_order(tag)
+				tag_with_order = @base.release_tags_with_order.find {|tag, o| o <= order && tag !~ /-rc/}
+
+				tag_with_order ? tag_with_order[0] : nil
+			end
+
 			cache_method :base_release_tag, ->(obj) {obj.to_s}
 		end
 	end

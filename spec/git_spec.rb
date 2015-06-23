@@ -64,6 +64,20 @@ describe Git do
 				it "should cache result" do
 					expect(@git.gcommit(linux_v4_1_rc8_commit).release_tag.object_id).to eq @git.gcommit(linux_v4_1_rc8_commit).release_tag.object_id
 				end
+
+				describe "last_official_release_tag" do
+					# v3.11     => v3.11
+					# v3.11-rc1 => v3.10
+					it "should be same as lkp official_release_tag" do
+						linux_v3_11_commit = "6e4664525b1db28f8c4e1130957f70a94c19213e"
+						expect(@git.gcommit(linux_v3_11_commit).last_official_release_tag).to eq 'v3.11'
+						expect(@git.gcommit(linux_v3_11_commit).last_official_release_tag).to eq official_release_tag(linux_v3_11_commit)
+
+						linux_v3_11_rc1_commit = 'ad81f0545ef01ea651886dddac4bef6cec930092'
+						expect(@git.gcommit(linux_v3_11_rc1_commit).last_official_release_tag).to eq 'v3.10'
+						expect(@git.gcommit(linux_v3_11_rc1_commit).last_official_release_tag).to eq official_release_tag(linux_v3_11_rc1_commit)
+					end
+				end
 			end
 
 			describe "base_release_tag" do
