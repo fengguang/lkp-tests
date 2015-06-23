@@ -184,40 +184,36 @@ def vmlinuz_dir(kconfig, compiler, commit)
 	"#{KERNEL_ROOT}/#{kconfig}/#{compiler}/#{commit}"
 end
 
-def is_functional_test(path)
-	rp = ResultPath.new
-	rp.parse_result_root path
-	$functional_tests.include? rp['testcase']
+def is_functional_test(testcase)
+	$functional_tests.include? testcase
 end
 
-def load_base_matrix(matrix_path, head_matrix)
+def load_base_matrix(matrix_path, head_matrix, options)
 	matrix_path = File.realpath matrix_path
 	matrix_path = File.dirname matrix_path if File.file? matrix_path
-	matrix_path = File.dirname matrix_path if File.basename(matrix_path) =~ /^[0-9]+$/
-	commit        = File.basename matrix_path
-	__result_root = File.dirname matrix_path
 
+	rp = ResultPath.new
+	rp.parse_result_root matrix_path
+
+	puts rp if ENV['LKP_VERBOSE']
+	project = options['bisect_project'] || 'linux'
+	axis = options['bisect_axis'] || 'commit'
+
+	commit = rp[axis]
 	matrix = {}
 	tags_merged = []
 
-	# XXX
-	if matrix_path.index('/build-dpdk/')
-		project = 'dpdk'
-	else
-		project = 'linux'
-	end
-
 	$git ||= {}
-	$git[project] ||= Git.project_init project
+	$git[project] ||= Git.project_init(project: project)
 	git = $git[project]
 
 	version, is_exact_match = git.last_release_tag(commit)
-	puts "remote: #{remote}, version: #{version}, is exact match: #{is_exact_match}" if ENV['LKP_VERBOSE']
+	puts "project: #{project}, version: #{version}, is exact match: #{is_exact_match}" if ENV['LKP_VERBOSE']
 
 	# FIXME: remove it later; or move it somewhere in future
-	if not version
-		kconfig = File.basename __result_root
-		compiler = DEFAULT_COMPILER
+	if project == 'linux' and not version
+		kconfig = rp['kconfig']
+		compiler = rp['compiler']
 		context_file = vmlinuz_dir(kconfig, compiler, commit) + "/context.yaml"
 		version = nil
 		if File.exist? context_file
@@ -240,9 +236,11 @@ def load_base_matrix(matrix_path, head_matrix)
 		next if is_exact_match and tag =~ /^#{version}-rc[0-9]+$/
 		break if tag =~ /\.[0-9]+$/ and tags_merged.size >= 2 and cols >= 10
 
-		base_matrix_file = "#{__result_root}/#{tag}/matrix.json"
+		rp[axis] = tag
+		base_matrix_file = rp._result_root + '/matrix.json'
 		unless File.exist? base_matrix_file
-			base_matrix_file = "#{__result_root}/#{git_commit tag}/matrix.json"
+			rp[axis] = git.release_tags2shas[tag]
+			base_matrix_file = rp._result_root + '/matrix.json'
 		end
 		next unless File.exist? base_matrix_file
 
@@ -258,11 +256,12 @@ def load_base_matrix(matrix_path, head_matrix)
 
 	if matrix.size > 0
 		if cols >= 3 or
-		  (cols >= 1 and is_functional_test matrix_path) or
+		  (cols >= 1 and is_functional_test rp['testcase']) or
 		  head_matrix['last_state.is_incomplete_run'] or
 		  head_matrix['dmesg.boot_failures'] or
 		  head_matrix['stderr.has_stderr']
 			puts "compare with release matrix: #{matrix_path} #{tags_merged}" if ENV["LKP_VERBOSE"]
+			options['good_commit'] = tags_merged.first
 			return matrix
 		else
 			puts "release matrix too small: #{matrix_path} #{tags_merged}" if ENV["LKP_VERBOSE"]
@@ -352,11 +351,6 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
 	changed_stats = {}
 
 	resize = options['resize']
-
-	if b['stats_source']
-		good_commit = File.basename File.dirname File.dirname b['stats_source'][0]
-		STDERR.puts "#{good_commit} not a commit, stats_source is #{b['stats_source']} #{a['stats_source']}" unless is_commit(good_commit)
-	end
 
 	cols_a = matrix_cols a
 	cols_b = matrix_cols b
@@ -463,29 +457,59 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
 				     'max'		=>	max,
 				     'nr_run'		=>	v.size,
 		}
-		changed_stats[k]['good_commit'] = good_commit if good_commit
+		changed_stats[k].merge! options
 	}
 
 	return changed_stats
 end
 
-def load_matrices_to_compare(matrix_path1, matrix_path2 = nil)
+def load_matrices_to_compare(matrix_path1, matrix_path2, options = {})
 	begin
 		a = search_load_json matrix_path1
 		return [nil, nil] unless a
 		if matrix_path2
 			b = search_load_json matrix_path2
 		else
-			b = load_base_matrix matrix_path1, a
+			b = load_base_matrix matrix_path1, a, options
 		end
-	rescue Exception
+	rescue Exception => e
+		STDERR.puts e.message
+		STDERR.puts e.backtrace
 		return [nil, nil]
 	end
 	return [a, b]
 end
 
+def find_changed_stats(matrix_path, options)
+	changed_stats = {}
+	_result_root = File.dirname matrix_path
+	rp = ResultPath.new
+	rp.parse_result_root _result_root
+	rp.each do |axis, val|
+		case axis
+		when 'commit'
+			project = 'linux'
+		when /_commit$/
+			project = axis.sub(/_.*$/, '')
+		else
+			next
+		end
+
+		options['bisect_axis'] = axis
+		options['bisect_project'] = project
+		puts options if ENV['LKP_VERBOSE']
+		more_cs = get_changed_stats(matrix_path, nil, options)
+		changed_stats.merge!(more_cs) if more_cs
+	end
+	changed_stats
+end
+
 def get_changed_stats(matrix_path1, matrix_path2 = nil, options = {})
-	a, b = load_matrices_to_compare matrix_path1, matrix_path2
+	unless matrix_path2 or options['bisect_axis']
+		return find_changed_stats(matrix_path1, options)
+	end
+
+	a, b = load_matrices_to_compare matrix_path1, matrix_path2, options
 	return nil if a == nil or b == nil
 
 	is_incomplete_run =	a['last_state.is_incomplete_run'] ||
