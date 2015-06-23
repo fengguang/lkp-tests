@@ -250,6 +250,13 @@ module Git
 
 			cache_method :base_release_tag, ->(obj) {obj.to_s}
 		end
+
+		class Tag
+			def commit
+				check_tag
+				@base.gcommit(@base.lib.command('rev-list', ['-1', @name]))
+			end
+		end
 	end
 
 	class << self

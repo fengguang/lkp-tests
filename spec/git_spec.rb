@@ -69,13 +69,13 @@ describe Git do
 					# v3.11     => v3.11
 					# v3.11-rc1 => v3.10
 					it "should be same as lkp official_release_tag" do
-						linux_v3_11_commit = "6e4664525b1db28f8c4e1130957f70a94c19213e"
-						expect(@git.gcommit(linux_v3_11_commit).last_official_release_tag).to eq 'v3.11'
-						expect(@git.gcommit(linux_v3_11_commit).last_official_release_tag).to eq official_release_tag(linux_v3_11_commit)
+						linux_v3_11_commit = @git.tag('v3.11').commit
+						expect(linux_v3_11_commit.last_official_release_tag).to eq 'v3.11'
+						expect(linux_v3_11_commit.last_official_release_tag).to eq official_release_tag(linux_v3_11_commit)
 
-						linux_v3_11_rc1_commit = 'ad81f0545ef01ea651886dddac4bef6cec930092'
-						expect(@git.gcommit(linux_v3_11_rc1_commit).last_official_release_tag).to eq 'v3.10'
-						expect(@git.gcommit(linux_v3_11_rc1_commit).last_official_release_tag).to eq official_release_tag(linux_v3_11_rc1_commit)
+						linux_v3_11_rc1_commit = @git.tag('v3.11-rc1').commit
+						expect(linux_v3_11_rc1_commit.last_official_release_tag).to eq 'v3.10'
+						expect(linux_v3_11_rc1_commit.last_official_release_tag).to eq official_release_tag(linux_v3_11_rc1_commit)
 					end
 				end
 			end
@@ -205,8 +205,8 @@ describe Git do
 					expect(@git.gcommit(gcc_5_1_0_release_commit).base_release_tag).to eq ['gcc-5_1_0-release', true]
 
 					# below commit is at branch gcc-4_9-branch
-					gcc_4_9_2_release_commit = "c1283af40b65f1ad862cf5b27e2d9ed10b2076b6"
-					expect(@git.gcommit(gcc_4_9_2_release_commit).base_release_tag).to eq ['gcc-4_9_2-release', true]
+					gcc_4_9_2_release_commit = @git.tag('gcc-4_9_2-release').commit
+					expect(gcc_4_9_2_release_commit.base_release_tag).to eq ['gcc-4_9_2-release', true]
 
 					gcc_4_9_2_release_child_commit = "84a4713962eb632bc75f235566ba1d47690bbf10"
 					expect(@git.gcommit(gcc_4_9_2_release_child_commit).base_release_tag).to eq(['gcc-4_9_2-release', false])
