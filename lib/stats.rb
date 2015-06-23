@@ -497,6 +497,7 @@ def find_changed_stats(matrix_path, options)
 
 		options['bisect_axis'] = axis
 		options['bisect_project'] = project
+		options['BAD_COMMIT'] = val
 		puts options if ENV['LKP_VERBOSE']
 		more_cs = get_changed_stats(matrix_path, nil, options)
 		changed_stats.merge!(more_cs) if more_cs
