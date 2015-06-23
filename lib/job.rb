@@ -236,6 +236,10 @@ class Job
 		}
 	end
 
+	def each(&block)
+		@job.each(&block)
+	end
+
 	def path_params
 		path = ''
 		each_param { |k, v, option_type|
