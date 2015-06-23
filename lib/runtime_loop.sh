@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 report_ops()
 {
@@ -17,7 +17,7 @@ test_loop()
 	while :
 	do
 		do_test
-		(( operations++ ))
+		operations=$((operations + 1))
 	done
 }
 
