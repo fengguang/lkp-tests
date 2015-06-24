@@ -23,13 +23,13 @@ describe Git do
 			it "should be same as lkp git" do
 				gcommit = @git.gcommit(linux_v4_1_rc8_commit)
 
-				expect(gcommit.author.formatted_name).to eq(git_commit_author(linux_v4_1_rc8_commit))
-				expect(gcommit.committer.formatted_name).to eq(git_committer(linux_v4_1_rc8_commit))
-				expect(gcommit.subject).to eq(git_commit_subject(linux_v4_1_rc8_commit))
-				expect(gcommit.date).to eq(git_commit_time(linux_v4_1_rc8_commit))
-				expect(gcommit.interested_tag).to eq(commit_tag(linux_v4_1_rc8_commit))
-				expect(gcommit.parent_shas).to eq(git_parent_commits(linux_v4_1_rc8_commit))
-				expect(gcommit.committer.name).to eq(git_committer_name(linux_v4_1_rc8_commit))
+				expect(gcommit.author.formatted_name).to eq git_commit_author(linux_v4_1_rc8_commit)
+				expect(gcommit.committer.formatted_name).to eq git_committer(linux_v4_1_rc8_commit)
+				expect(gcommit.subject).to eq git_commit_subject(linux_v4_1_rc8_commit)
+				expect(gcommit.date).to eq git_commit_time(linux_v4_1_rc8_commit)
+				expect(gcommit.interested_tag).to eq commit_tag(linux_v4_1_rc8_commit)
+				expect(gcommit.parent_shas).to eq git_parent_commits(linux_v4_1_rc8_commit)
+				expect(gcommit.committer.name).to eq git_committer_name(linux_v4_1_rc8_commit)
 			end
 
 			it "should handle non ascii chars" do
@@ -40,7 +40,7 @@ describe Git do
 				# Date:   Mon Nov 18 11:40:16 2013 +0100
 				gcommit = git.gcommit("8d0977811d6741b8600886736712387aa8c434a9")
 
-				expect(gcommit.author.formatted_name).to eq('Uwe Kleine-König <u.kleine-koenig@pengutronix.de>')
+				expect(gcommit.author.formatted_name).to eq 'Uwe Kleine-König <u.kleine-koenig@pengutronix.de>'
 				#expect(gcommit.interested_tag).to eq nil
 			end
 
@@ -48,17 +48,17 @@ describe Git do
 				it "should cache result" do
 					gcommit = @git.gcommit(linux_v4_1_rc8_commit)
 
-					expect(gcommit.interested_tag.object_id).to eq(gcommit.interested_tag.object_id)
+					expect(gcommit.interested_tag.object_id).to eq gcommit.interested_tag.object_id
 				end
 			end
 
 			describe "release_tag" do
 				it "should be same as linus_release_tag with default arguments" do
 					expect(@git.gcommit(linux_v4_1_rc8_commit).release_tag).to eq 'v4.1-rc8'
-					expect(@git.gcommit(linux_v4_1_rc8_commit).release_tag).to eq(linus_release_tag(linux_v4_1_rc8_commit))
+					expect(@git.gcommit(linux_v4_1_rc8_commit).release_tag).to eq linus_release_tag(linux_v4_1_rc8_commit)
 
 					expect(@git.gcommit(linux_non_release_commit).release_tag).to eq nil
-					expect(@git.gcommit(linux_non_release_commit).release_tag).to eq(linus_release_tag(linux_non_release_commit))
+					expect(@git.gcommit(linux_non_release_commit).release_tag).to eq linus_release_tag(linux_non_release_commit)
 				end
 
 				it "should cache result" do
@@ -110,8 +110,8 @@ describe Git do
 
 			describe "last_release_tag" do
 				it "should be same as last_linus_release_tag with default arguments" do
-					expect(@git.gcommit(linux_v4_1_rc8_commit).last_release_tag).to eq(["v4.1-rc8", true])
-					expect(@git.gcommit(linux_v4_1_rc8_commit).last_release_tag).to eq(last_linus_release_tag(linux_v4_1_rc8_commit))
+					expect(@git.gcommit(linux_v4_1_rc8_commit).last_release_tag).to eq ["v4.1-rc8", true]
+					expect(@git.gcommit(linux_v4_1_rc8_commit).last_release_tag).to eq last_linus_release_tag(linux_v4_1_rc8_commit)
 
 					linux_v2_6_32_commit = @git.tag('v2.6.32').commit
 					expect(linux_v2_6_32_commit.last_release_tag).to eq ["v2.6.32", true]
@@ -155,11 +155,10 @@ describe Git do
 
 			describe "release_tags_with_order" do
 				it "should be same as linus_tags when project is linux/linus" do
-					actual = linus_tags
-					expect = @git.release_tags_with_order
+					actual = @git.release_tags_with_order
 
-					expect(expect.count).to be > 0
-					expect(expect).to eq actual
+					expect(actual.count).to be > 0
+					expect(actual).to eq linus_tags
 				end
 
 				it "should cache result" do
@@ -169,22 +168,20 @@ describe Git do
 
 			describe "release_tag_order" do
 				it "should be same as tag_order with default parameters" do
-					actual = tag_order("v2.6.32-rc8")
-					expect = @git.release_tag_order('v2.6.32-rc8')
+					actual = @git.release_tag_order('v2.6.32-rc8')
 
-					expect(expect).to be < 0
-					expect(expect).to eq actual
+					expect(actual).to be < 0
+					expect(actual).to eq tag_order("v2.6.32-rc8")
 				end
 			end
 		end
 
 		describe "project_remotes" do
 			it "should be same as load_remotes when project is linux/linus" do
-				actual = load_remotes
-				expect = described_class.project_remotes
+				actual = described_class.project_remotes
 
-				expect(expect.count).to be > 0
-				expect(expect).to eq actual
+				expect(actual.count).to be > 0
+				expect(actual).to eq load_remotes
 			end
 
 			it "should cache result" do
@@ -214,12 +211,12 @@ describe Git do
 			it "should be correct" do
 				gcommit = @git.gcommit(gcc_5_1_0_release_commit)
 
-				expect(gcommit.author.formatted_name).to eq('gccadmin <gccadmin@138bc75d-0d04-0410-961f-82ee72b054a4>')
+				expect(gcommit.author.formatted_name).to eq 'gccadmin <gccadmin@138bc75d-0d04-0410-961f-82ee72b054a4>'
 				expect(gcommit.committer.formatted_name).to eq gcommit.author.formatted_name
-				expect(gcommit.subject).to eq("Update ChangeLog and version files for release")
+				expect(gcommit.subject).to eq "Update ChangeLog and version files for release"
 				expect(gcommit.interested_tag).to eq "gcc-5_1_0-release"
-				expect(gcommit.parent_shas).to eq(["9a2ae78f8140d02ca684fdbadfe09cbbbfd5c27f"])
-				expect(gcommit.committer.name).to eq('gccadmin')
+				expect(gcommit.parent_shas).to eq ["9a2ae78f8140d02ca684fdbadfe09cbbbfd5c27f"]
+				expect(gcommit.committer.name).to eq 'gccadmin'
 			end
 
 			describe "release_tag" do
@@ -238,7 +235,7 @@ describe Git do
 					expect(gcc_4_9_2_release_commit.last_release_tag).to eq ['gcc-4_9_2-release', true]
 
 					gcc_4_9_2_release_child_commit = "84a4713962eb632bc75f235566ba1d47690bbf10"
-					expect(@git.gcommit(gcc_4_9_2_release_child_commit).last_release_tag).to eq(['gcc-4_9_2-release', false])
+					expect(@git.gcommit(gcc_4_9_2_release_child_commit).last_release_tag).to eq ['gcc-4_9_2-release', false]
 				end
 			end
 		end
