@@ -190,8 +190,7 @@ module Git
 			end
 
 			def tags
-				check_commit
-				@tags ||= @base.lib.tag('--points-at', @sha).split
+				@tags ||= @base.lib.tag('--points-at', self.sha).split
 			end
 
 			def parent_shas
