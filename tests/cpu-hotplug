@@ -12,7 +12,7 @@ while :
 do
 	for interval in 0 0.1 1
 	do
-		for i in $(seq $NUMBER_OF_CPUS)
+		for i in $(seq $((NUMBER_OF_CPUS - 1)))
 		do
 			sleep $interval
 			state=$(cat $CPUPATH/cpu$i/online)
