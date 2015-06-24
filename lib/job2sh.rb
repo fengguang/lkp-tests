@@ -124,8 +124,6 @@ end
 def shell_run_program(tabs, program, env)
 	program_env, args = get_program_env(program, env)
 
-	return if program_env.empty? and args.empty? and File.exist?(LKP_SRC + '/setup/' + program)
-
 	cmd = create_cmd(program, args)
 	cmd_str = cmd.join ' '
 	cmd_str.gsub!(LKP_SRC, '$LKP_SRC')
