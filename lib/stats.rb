@@ -207,7 +207,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
 	$git[project] ||= Git.project_init(project: project)
 	git = $git[project]
 
-	version, is_exact_match = git.last_release_tag(commit)
+	version, is_exact_match = git.gcommit(commit).last_release_tag
 	puts "project: #{project}, version: #{version}, is exact match: #{is_exact_match}" if ENV['LKP_VERBOSE']
 
 	# FIXME: remove it later; or move it somewhere in future
