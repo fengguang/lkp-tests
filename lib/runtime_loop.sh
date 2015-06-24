@@ -9,7 +9,7 @@ report_ops()
 
 test_loop()
 {
-	trap report_ops SIGHUP
+	trap report_ops HUP
 
 	start_time=$(date +%s)
 	operations=0
@@ -25,6 +25,6 @@ runtime_loop()
 {
 	test_loop &
 	sleep $runtime
-	kill -s SIGHUP %1
+	kill -s HUP %1
 	wait
 }
