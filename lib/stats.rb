@@ -40,7 +40,7 @@ end
 $test_prefixes = test_prefixes
 $perf_metrics_prefixes.concat $test_prefixes
 
-def is_perf_metric(name)
+def __is_perf_metric(name)
 	return true if name =~ $perf_metrics_re
 
 	$perf_metrics_prefixes.each { |prefix|
@@ -48,6 +48,15 @@ def is_perf_metric(name)
 	}
 
 	return false
+end
+
+def is_perf_metric(name)
+	$__is_perf_metric_cache ||= {}
+	if $__is_perf_metric_cache.include? name
+		$__is_perf_metric_cache[name]
+	else
+		$__is_perf_metric_cache[name] = __is_perf_metric(name)
+	end
 end
 
 def is_valid_perf_metric(name, delta, max)
