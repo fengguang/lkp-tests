@@ -194,6 +194,7 @@ def vmlinuz_dir(kconfig, compiler, commit)
 end
 
 def is_functional_test(testcase)
+	return true if testcase =~ /^build-/
 	$functional_tests.include? testcase
 end
 
@@ -292,6 +293,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
 end
 
 def __is_failure(stats_field)
+	return false if stats_field.index('.time.')
 	$metric_failure.each { |pattern| return true if stats_field =~ %r{^#{pattern}} }
 	return false
 end
