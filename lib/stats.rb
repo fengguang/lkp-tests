@@ -216,8 +216,17 @@ def load_base_matrix(matrix_path, head_matrix, options)
 	$git[project] ||= Git.project_init(project: project)
 	git = $git[project]
 
-	version, is_exact_match = git.gcommit(commit).last_release_tag
-	puts "project: #{project}, version: #{version}, is exact match: #{is_exact_match}" if ENV['LKP_VERBOSE']
+	begin
+		version, is_exact_match = git.gcommit(commit).last_release_tag
+		puts "project: #{project}, version: #{version}, is exact match: #{is_exact_match}" if ENV['LKP_VERBOSE']
+	rescue Exception => e
+		STDERR.puts e.message
+		STDERR.puts "git: #{git.to_yaml}"
+		STDERR.puts "options: #{options}"
+		STDERR.puts "matrix_path: #{matrix_path}"
+		STDERR.puts e.backtrace
+		return nil
+	end
 
 	# FIXME: remove it later; or move it somewhere in future
 	if project == 'linux' and not version
