@@ -132,6 +132,19 @@ class ResultPath < Hash
 			'params.yaml'
 		].join '/'
 	end
+
+	def each_commit
+		return unless block_given?
+
+		self.each do |axis, val|
+			case axis
+			when 'commit'
+				yield 'linux', axis
+			when /_commit$/
+				yield axis.sub(/_.*$/, ''), axis
+			end
+		end
+	end
 end
 
 class << ResultPath
