@@ -502,25 +502,21 @@ end
 
 def find_changed_stats(matrix_path, options)
 	changed_stats = {}
+
 	rp = ResultPath.new
 	rp.parse_result_root matrix_path
-	rp.each do |axis, val|
-		case axis
-		when 'commit'
-			project = 'linux'
-		when /_commit$/
-			project = axis.sub(/_.*$/, '')
-		else
-			next
-		end
 
-		options['bisect_axis'] = axis
-		options['bisect_project'] = project
-		options['BAD_COMMIT'] = val
+	rp.each_commit do |commit_project, commit_axis|
+		options['bisect_axis'] = commit_axis
+		options['bisect_project'] = commit_project
+		options['BAD_COMMIT'] = rp[commit_axis]
+
 		puts options if ENV['LKP_VERBOSE']
+
 		more_cs = get_changed_stats(matrix_path, nil, options)
 		changed_stats.merge!(more_cs) if more_cs
 	end
+
 	changed_stats
 end
 
