@@ -168,7 +168,7 @@ module Git
 
 			global_opts = global_opts.flatten.map {|s| escape(s) }.join(' ')
 
-			"#{Git::Base.config.binary_path} #{global_opts} #{cmd} #{opts} #{redirect} 2>&1"
+			"#{global_opts} #{cmd} #{opts} #{redirect} 2>&1"
 		end
 
 		public :command_lines
