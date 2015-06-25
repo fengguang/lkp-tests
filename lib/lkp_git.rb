@@ -173,6 +173,18 @@ module Git
 
 		public :command_lines
 		public :command
+
+		alias_method :orig_command, :command
+		def command(cmd, opts = [], chdir = true, redirect = '', &block)
+			begin
+				orig_command(cmd, opts, chdir, redirect, &block)
+			rescue Exception => e
+				STDERR.puts "GIT error: #{e.message}"
+				STDERR.puts "GIT error: #{cmd} #{opts}"
+				STDERR.puts "GIT error: #{command_string(cmd, opts, chdir, redirect)}"
+				STDERR.puts "GIT error: #{self.inspect}"
+			end
+		end
 	end
 
 	class Author
