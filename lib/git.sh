@@ -9,11 +9,17 @@ git_clone_update()
 	if [ -d $dir/.git ]; then
 		(
 			cd $dir
-			git remote update origin 2>&1
-			git checkout -q origin/master
+			for retry in 1 2
+			do
+				git remote update origin 2>&1 ||
+				git remote update origin 2>&1
+				git checkout -q origin/master && break
+			done
 		)
 	else
 		rm -fr "$dir" 2>/dev/null
+		git clone -q $url $dir 2>&1 ||
+		git clone -q $url $dir 2>&1 ||
 		git clone -q $url $dir 2>&1
 	fi
 }
