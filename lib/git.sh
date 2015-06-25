@@ -14,7 +14,7 @@ git_clone_update()
 		)
 	else
 		rm -fr "$dir" 2>/dev/null
-		git clone -q $url $dir
+		git clone -q $url $dir 2>&1
 	fi
 }
 
