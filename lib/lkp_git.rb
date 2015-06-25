@@ -158,19 +158,6 @@ module Git
 			end
 		end
 
-		# copy from https://github.com/schacon/ruby-git
-		def command_string(cmd, opts = [], chdir = true, redirect = '')
-			global_opts = []
-			global_opts << "--git-dir=#{@git_dir}" if !@git_dir.nil?
-			global_opts << "--work-tree=#{@git_work_dir}" if !@git_work_dir.nil?
-
-			opts = [opts].flatten.map {|s| escape(s) }.join(' ')
-
-			global_opts = global_opts.flatten.map {|s| escape(s) }.join(' ')
-
-			"#{global_opts} #{cmd} #{opts} #{redirect} 2>&1"
-		end
-
 		public :command_lines
 		public :command
 
@@ -179,8 +166,8 @@ module Git
 			begin
 				orig_command(cmd, opts, chdir, redirect, &block)
 			rescue Exception => e
-				STDERR.puts "GIT error: #{command_string(cmd, opts, chdir, redirect)}: #{e.message}"
-				STDERR.puts "GIT error: #{self.inspect}"
+				STDERR.puts "GIT error: #{cmd} #{opts}: #{e.message}"
+				STDERR.puts "GIT dump: #{self.inspect}"
 				raise
 			end
 		end
