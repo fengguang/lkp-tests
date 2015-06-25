@@ -13,7 +13,7 @@ git_clone_update()
 			do
 				git remote update origin 2>&1 ||
 				git remote update origin 2>&1
-				git checkout -q origin/master && break
+				git checkout -q origin/master 2>&1 && break
 			done
 		)
 	else
