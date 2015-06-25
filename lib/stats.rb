@@ -500,9 +500,8 @@ end
 
 def find_changed_stats(matrix_path, options)
 	changed_stats = {}
-	_result_root = File.dirname matrix_path
 	rp = ResultPath.new
-	rp.parse_result_root _result_root
+	rp.parse_result_root matrix_path
 	rp.each do |axis, val|
 		case axis
 		when 'commit'
