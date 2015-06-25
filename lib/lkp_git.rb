@@ -67,7 +67,7 @@ module Git
 	class Base
 		include SimpleCacheMethod
 
-		cache_method :gcommit
+		cache_method :gcommit, ->obj {obj.project}
 		alias_method :orig_initialize, :initialize
 
 		attr_reader :project
@@ -179,10 +179,9 @@ module Git
 			begin
 				orig_command(cmd, opts, chdir, redirect, &block)
 			rescue Exception => e
-				STDERR.puts "GIT error: #{e.message}"
-				STDERR.puts "GIT error: #{cmd} #{opts}"
-				STDERR.puts "GIT error: #{command_string(cmd, opts, chdir, redirect)}"
+				STDERR.puts "GIT error: #{command_string(cmd, opts, chdir, redirect)}: #{e.message}"
 				STDERR.puts "GIT error: #{self.inspect}"
+				raise
 			end
 		end
 	end
