@@ -20,7 +20,7 @@ case $test in
 		test_opt="Test All Options\nTest All Options\nn"
 		;;
 	iozone-[0-9]*)
-		test_opt="Test All Options\nTest All Options\nTest All Options\nn"
+		test_opt="Test All Options\nTest All Options\nTest All Options\nTest All Options\nn"
 		;;
 	ramspeed-[0-9]*)
 		test_opt="Test All Options\nTest All Options\nn"
