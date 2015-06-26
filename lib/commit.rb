@@ -19,8 +19,8 @@ class Commit
 		@parents ||= git_parent_commits(@commit).map { |cstr| Commit.open cstr }
 	end
 
-	def commit_time
-		@commit_time ||= git_commit_time @commit
+	def committer_date
+		@committer_date ||= git_commit_time @commit
 	end
 
 	def author

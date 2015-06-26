@@ -27,6 +27,7 @@ describe Git do
 				expect(gcommit.committer.formatted_name).to eq git_committer(linux_v4_1_rc8_commit)
 				expect(gcommit.subject).to eq git_commit_subject(linux_v4_1_rc8_commit)
 				expect(gcommit.date).to eq git_commit_time(linux_v4_1_rc8_commit)
+				expect(gcommit.committer_date).to eq git_commit_time(linux_v4_1_rc8_commit)
 				expect(gcommit.interested_tag).to eq commit_tag(linux_v4_1_rc8_commit)
 				expect(gcommit.parent_shas).to eq git_parent_commits(linux_v4_1_rc8_commit)
 				expect(gcommit.committer.name).to eq git_committer_name(linux_v4_1_rc8_commit)
