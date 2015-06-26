@@ -367,6 +367,7 @@ module Git
 		end
 
 		cache_method :project_remotes
+		cache_method :project_init
 	end
 end
 

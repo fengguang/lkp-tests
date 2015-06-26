@@ -155,7 +155,7 @@ describe Git do
 					git1 = Git.project_init
 					git2 = Git.project_init
 
-					expect(git2.object_id).not_to eq git1.object_id
+					expect(git2.object_id).to eq git1.object_id
 					expect(git2.gcommit(linux_v4_1_rc8_commit).object_id).to eq git1.gcommit(linux_v4_1_rc8_commit).object_id
 				end
 			end
