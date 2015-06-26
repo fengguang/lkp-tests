@@ -1,7 +1,7 @@
 testcase: DEFAULTS
 
 default-monitors:
-  wait: pre-test
+  wait: activate-monitor
   uptime:
   iostat:
   vmstat:

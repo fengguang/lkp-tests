@@ -1,7 +1,7 @@
 testcase: dd-write-nfs
 
 common-monitors:
-  wait: pre-test
+  wait: activate-monitor
   ftrace:
     events:
       balance_dirty_pages

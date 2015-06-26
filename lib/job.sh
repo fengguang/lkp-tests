@@ -21,7 +21,14 @@ wakeup_pre_test()
 {
 	mkdir $TMP/wakeup_pre_test-once 2>/dev/null || return
 
-	$LKP_SRC/monitors/event/wakeup pre-test
+	if [ -n "$monitor_delay" ]; then
+		(
+			$LKP_SRC/monitors/event/wait post-test --timeout $monitor_delay &&
+			$LKP_SRC/monitors/event/wakeup activate-monitor
+		) &
+	else
+		$LKP_SRC/monitors/event/wakeup activate-monitor
+	fi
 	sleep 1
 	date '+%s' > $TMP/start_time
 }

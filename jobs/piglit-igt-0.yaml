@@ -2,7 +2,7 @@ testcase: piglit
 
 cpufreq_governor:
 default-monitors:
-  wait: pre-test
+  wait: activate-monitor
   vmstat:
 
 timeout: 30m

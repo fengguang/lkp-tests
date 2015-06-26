@@ -6,7 +6,7 @@ fs: ext4
 
 cpufreq_governor:
 default-monitors:
-  wait: pre-test
+  wait: activate-monitor
   vmstat:
 
 stutter:

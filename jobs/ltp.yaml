@@ -2,7 +2,7 @@ testcase: ltp
 
 cpufreq_governor:
 default-monitors:
-  wait: pre-test
+  wait: activate-monitor
   vmstat:
 
 ltp:

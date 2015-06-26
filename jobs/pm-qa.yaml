@@ -2,7 +2,7 @@ testcase: pm-qa
 
 cpufreq_governor:
 default-monitors:
-  wait: pre-test
+  wait: activate-monitor
   vmstat:
 
 pm-qa:
