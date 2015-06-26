@@ -1,10 +1,20 @@
 #!/bin/bash
-
-# $ARCH can be passed in 4 ways:
+#
+# linux kernel CROSS make wrapper
+#
+# It will download/unpack the cross tool chain if necessary,
+# then invoke make with suitable options.
+#
+# It detects ARCH in 4 ways.
+#
 # - make.i386 # make it a symlink to this script
 # - make.cross ARCH=i386
 # - cd obj-i386; make.cross
 # - export ARCH=i386; make.cross
+#
+# Copyright (c) 2014, Intel Corporation.
+# Author: Fengguang Wu <fengguang.wu@intel.com>
+# Credit: Tony Breeds <tony@bakeyournoodle.com> for crosstool
 
 if [[ ! "$0" =~ 'make.cross' && "$0" =~ make\.([a-z0-9_]+) ]]; then
 	export ARCH="${BASH_REMATCH[1]}"
