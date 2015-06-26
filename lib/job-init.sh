@@ -21,14 +21,13 @@ validate_result_root()
 	return 0
 }
 
-# cifs has higher priority over nfs
 should_do_cifs()
 {
 	grep -q clear-linux-os /etc/os-release && return 0
-	grep -q -w 'cifs' /proc/filesystems && return 0
-	modprobe cifs 2>/dev/null
-	grep -q -w 'cifs' /proc/filesystems && return 0
-	return 1
+	grep -q -w 'nfs' /proc/filesystems && return 1
+	modprobe nfs 2>/dev/null
+	grep -q -w 'nfs' /proc/filesystems && return 1
+	return 0
 }
 
 mount_result_root()
@@ -67,7 +66,6 @@ mount_result_root()
 			;;
 	esac
 
-	echo "result fs type is ${result_fs}"
 	mountpoint -q $RESULT_MNT
 }
 
