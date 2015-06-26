@@ -5,9 +5,6 @@
 start_time=$(date +%s.%N)
 
 case $test in
-	tiobench-[0-9]*)
-		test_opt="Test All Options\nTest All Options\nTest All Options\nTest All Options\nn"
-		;;
 	systester-[0-9]*)
 		# Choose
 		# 1: Gauss-Legendre algorithm [Recommended.]
@@ -16,23 +13,13 @@ case $test in
 		# todo: select different test according to testbox's hardware
 		test_opt="1\n2\n3\nn"
 		;;
-	interbench-[0-9]*)
-		test_opt="Test All Options\nTest All Options\nn"
-		;;
-	iozone-[0-9]*)
-		test_opt="Test All Options\nTest All Options\nTest All Options\nTest All Options\nn"
-		;;
-	ramspeed-[0-9]*)
-		test_opt="Test All Options\nTest All Options\nn"
-		;;
-	*)
-		test_opt="Test All Options\nn"
-		;;
 esac
 
-cmd phoronix-test-suite run $test <<EOF
-$(echo -e $test_opt)
-EOF
+if [ "$test_opt" ]; then
+	echo -e "$test_opt" | cmd phoronix-test-suite run $test
+else
+	echo n | cmd phoronix-test-suite default-run $test
+fi
 
 end_time=$(date +%s.%N)
 elapsed=$(echo $end_time - $start_time | bc)
