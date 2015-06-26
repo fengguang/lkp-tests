@@ -37,11 +37,7 @@ class Commit
 end
 
 class << Commit
-	private :new
-
-	singleton_class.include AddCachedMethod
-
-	add_cached_method :new
+	include SimpleCacheMethod
 
 	def open(commit, branch = nil)
 		git_update branch if branch
@@ -49,8 +45,11 @@ class << Commit
 		unless is_commit lcommit
 			raise ArgumentError, "Invalid commit: #{commit}"
 		end
-		cached_new lcommit, lcommit
+
+		self.new(lcommit)
 	end
+
+	cache_method :open
 
 	def open_branch(branch)
 		git_update branch
@@ -58,7 +57,8 @@ class << Commit
 		unless is_commit commit
 			raise ArgumentError, "Invalid branch: #{branch}"
 		end
-		cached_new commit, commit
+
+		self.new(commit)
 	end
 
 	def tag_finder
