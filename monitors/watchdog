@@ -59,35 +59,41 @@ start_bmc_watchdog()
 
 	should_touch_watchdog=1
 }
+
+start_watchdog()
+{
+	if [ -n "$should_touch_watchdog" ]; then
+		wait_touch_watchdog
+	else
+		wait_post_test --timeout $max_uptime && exit 0
+	fi
+
+	echo 'detected soft_timeout'
+	touch $TMP/soft_timeout
+
+	# try to unblock the main shell, which will copy files to
+	# $RESULT_ROOT, which helps debug the hang reason
+	kill_tests
+
+	echo 'wait_post_test --timeout 60'
+	wait_post_test --timeout 60 && exit 0
+
+	# reboot it the hard way, if the main shell failed to kill me
+	sleep 141 || exit
+
+	test -f $TMP/job-finished && exit
+
+	echo 'try to force reboot'
+	reboot
+
+	sleep 144 || exit
+
+	echo w > /proc/sysrq-trigger
+	echo s > /proc/sysrq-trigger
+	sleep 10
+	echo b > /proc/sysrq-trigger
+}
+
 start_bmc_watchdog
-
-if [ -n "$should_touch_watchdog" ]; then
-	wait_touch_watchdog
-else
-	wait_post_test --timeout $max_uptime && exit 0
-fi
-
-echo 'detected soft_timeout'
-touch $TMP/soft_timeout
-
-# try to unblock the main shell, which will copy files to
-# $RESULT_ROOT, which helps debug the hang reason
-kill_tests
-
-echo 'wait_post_test --timeout 60'
-wait_post_test --timeout 60 && exit 0
-
-# reboot it the hard way, if the main shell failed to kill me
-sleep 141 || exit
-
-test -f $TMP/job-finished && exit
-
-echo 'try to force reboot'
-reboot
-
-sleep 144 || exit
-
-echo w > /proc/sysrq-trigger
-echo s > /proc/sysrq-trigger
-sleep 10
-echo b > /proc/sysrq-trigger
+start_watchdog &
+disown
