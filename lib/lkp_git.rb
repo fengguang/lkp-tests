@@ -183,6 +183,15 @@ module Git
 		class Commit
 			include SimpleCacheMethod
 
+			alias_method :orig_initialize, :initialize
+			def initialize(base, sha, init = nil)
+				orig_initialize(base, sha, init)
+				# this is to convert non sha1 40 such as tag name to corresponding commit sha
+				# otherwise Object::AbstractObject uses @base.lib.revparse(@objectish) to get sha
+				# which sometimes is not as expected when we give a tag name
+				self.objectish = @base.lib.command('rev-list', ['-1', self.objectish]) unless is_sha1_40(self.objectish)
+			end
+
 			def subject
 				self.message.split("\n").first
 			end

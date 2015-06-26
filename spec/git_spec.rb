@@ -44,6 +44,13 @@ describe Git do
 				#expect(gcommit.interested_tag).to eq nil
 			end
 
+			describe "sha" do
+				it "should return sha 40 of corresponding commit" do
+					expect(@git.gcommit("0f57d86787d8b1076ea8f9cbdddda2a46d5").sha).to eq linux_v4_1_rc8_commit
+					expect(@git.gcommit("v4.1-rc8").sha).to eq linux_v4_1_rc8_commit
+				end
+			end
+
 			describe "interested_tag" do
 				it "should cache result" do
 					gcommit = @git.gcommit(linux_v4_1_rc8_commit)
