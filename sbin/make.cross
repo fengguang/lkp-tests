@@ -16,6 +16,8 @@
 # Author: Fengguang Wu <fengguang.wu@intel.com>
 # Credit: Tony Breeds <tony@bakeyournoodle.com> for crosstool
 
+GCC_INSTALL_PATH=/opt
+
 if [[ ! "$0" =~ 'make.cross' && "$0" =~ make\.([a-z0-9_]+) ]]; then
 	export ARCH="${BASH_REMATCH[1]}"
 elif [[ "$*" =~ ARCH=([a-z0-9_]+) ]]; then
@@ -54,8 +56,8 @@ download_extract()
 	     lftpget -c $URL
 
 	local file="$(basename $URL)"
-	echo tar Jxf $file -C /usr/local
-	sudo tar Jxf $file -C /usr/local
+	echo tar Jxf $file -C $GCC_INSTALL_PATH
+	sudo tar Jxf $file -C $GCC_INSTALL_PATH
 }
 
 install_crosstool()
@@ -92,14 +94,14 @@ install_linaro()
 
 	download_extract "$URL/$file"
 
-	local dir="/usr/local/$(basename $file .tar.xz)"
+	local dir="$GCC_INSTALL_PATH/$(basename $file .tar.xz)"
 	local cross_gcc_version=($dir/bin/${gcc_arch}-gcc-*.*.*)
 	local cross_gcc_version=${cross_gcc_version##*-}
 
-	echo mkdir -p /usr/local/gcc-$cross_gcc_version
-	sudo mkdir -p /usr/local/gcc-$cross_gcc_version
-	echo mv $dir  /usr/local/gcc-$cross_gcc_version/$gcc_arch
-	sudo mv $dir  /usr/local/gcc-$cross_gcc_version/$gcc_arch
+	echo mkdir -p $GCC_INSTALL_PATH/gcc-$cross_gcc_version
+	sudo mkdir -p $GCC_INSTALL_PATH/gcc-$cross_gcc_version
+	echo mv $dir  $GCC_INSTALL_PATH/gcc-$cross_gcc_version/$gcc_arch
+	sudo mv $dir  $GCC_INSTALL_PATH/gcc-$cross_gcc_version/$gcc_arch
 }
 
 install_cross_compiler()
@@ -165,10 +167,10 @@ setup_crosstool()
 	esac
 
 	if [[ $gcc_arch ]]; then
-		gcc_exec=(/usr/local/gcc-*/${gcc_arch}/bin/${gcc_arch}-gcc)
+		gcc_exec=($GCC_INSTALL_PATH/gcc-*/${gcc_arch}/bin/${gcc_arch}-gcc)
 		[[ -x $gcc_exec ]] || install_cross_compiler
 
-		gcc_exec=(/usr/local/gcc-*/${gcc_arch}/bin/${gcc_arch}-gcc)
+		gcc_exec=($GCC_INSTALL_PATH/gcc-*/${gcc_arch}/bin/${gcc_arch}-gcc)
 		[[ -x $gcc_exec ]] || {
 			echo "No cross compiler for $ARCH"
 			exit
