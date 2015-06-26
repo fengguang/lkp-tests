@@ -1,6 +1,7 @@
 #!/bin/sh
 
 WAIT_POST_TEST_CMD="$LKP_SRC/monitors/event/wait post-test"
+WAIT_JOB_FINISHED_CMD="$LKP_SRC/monitors/event/wait job-finished"
 
 wait_post_test()
 {
@@ -35,7 +36,7 @@ setup_wait()
 kill_one()
 {
 	kill    $* 2>/dev/null
-	wait_post_test --timeout 3 && exit
+	wait_post_test --timeout 3 && return
 	kill -9 $* 2>/dev/null
 }
 
@@ -45,7 +46,7 @@ kill_tests()
 	local pid_job="$(cat $TMP/run-job.pid)"
 
 	kill_one $pid_tests
-	wait_post_test --timeout 3 && exit
+	wait_post_test --timeout 3 && return
 	kill_one $pid_job
 }
 

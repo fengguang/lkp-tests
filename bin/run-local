@@ -107,6 +107,7 @@ end
 
 system job_script, 'run_job'
 system LKP_SRC + '/bin/post-run'
+system LKP_SRC + '/monitors/event/wakeup', 'job-finished'
 system job_script, 'extract_stats'
 
 job.save result_root + '/job.yaml'
