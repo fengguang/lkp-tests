@@ -69,7 +69,6 @@ fi
 
 echo 'detected soft_timeout'
 touch $TMP/soft_timeout
-touch $RESULT_ROOT/soft_timeout
 
 # try to unblock the main shell, which will copy files to
 # $RESULT_ROOT, which helps debug the hang reason
