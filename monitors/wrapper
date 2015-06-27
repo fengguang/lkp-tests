@@ -50,7 +50,7 @@ if grep -q -x -F $monitor $monitor_dir/need_gzip; then
 	fi
 else
 	# The small continuous output of vmstat is a convenient alive indicator
-	if [ "$monitor" = vmstat ]; then
+	if [ "$monitor" = vmstat ] || [ "$monitor" = kmsg ]; then
 		cat-$monitor	   $fifo		> $RESULT_ROOT/$monitor &
 	else
 		cat-$monitor	   $fifo		> $TMP_RESULT_ROOT/$monitor &
