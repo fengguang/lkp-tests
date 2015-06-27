@@ -13,6 +13,11 @@ watchdog_reset_period=32
 
 [ -x /usr/bin/schedtool ] && /usr/bin/schedtool -R -p 1 $$	# SCHED_RR
 
+timed_echo()
+{
+	echo "$(date) $*"
+}
+
 wait_touch_watchdog()
 {
 	local elapsed=0
@@ -68,22 +73,23 @@ start_watchdog()
 		wait_job_finished --timeout $max_uptime && exit 0
 	fi
 
-	echo 'detected soft_timeout'
+	timed_echo 'detected soft_timeout'
 	touch $TMP/soft_timeout
 
 	# try to unblock the main shell, which will copy files to
 	# $RESULT_ROOT, which helps debug the hang reason
 	kill_tests
 
-	echo 'wait_job_finished --timeout 60'
+	timed_echo 'wait_job_finished --timeout 60'
 	wait_job_finished --timeout 60 && exit 0
 
 	# reboot it the hard way, if the main shell failed to kill me
+	timed_echo 'sleep 141'
 	sleep 141 || exit
 
 	test -f $TMP/job-finished && exit
 
-	echo 'try to force reboot'
+	timed_echo 'try to force reboot'
 	reboot
 
 	sleep 144 || exit
