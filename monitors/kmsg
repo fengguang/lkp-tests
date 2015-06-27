@@ -1,0 +1,15 @@
+#!/bin/sh
+
+record_kmsg()
+{
+	killall rsyslogd klogd 2>/dev/null || :
+
+	dmesg > $RESULT_ROOT/kmsg
+
+	while :
+	do
+		cat /proc/kmsg >> $RESULT_ROOT/kmsg
+	done
+}
+
+record_kmsg

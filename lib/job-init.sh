@@ -104,16 +104,6 @@ setup_result_root()
 	return 0
 }
 
-record_dmesg()
-{
-	killall rsyslogd klogd 2>/dev/null || :
-	dmesg > $RESULT_ROOT/kmsg
-	ln -sf $(command -v cat) $LKP_SRC/bin/cat-kmsg
-	stdbuf -o0 -e0 cat-kmsg /proc/kmsg >> $RESULT_ROOT/kmsg &
-	echo $! > $TMP/pid-kmsg
-	[ -n "$BASH_VERSION" ] && disown # quiet the "Terminated" notification to stderr
-}
-
 # in case someone is logged in, give him at most 10hour time to do manual checks
 wait_on_manual_check()
 {

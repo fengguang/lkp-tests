@@ -26,8 +26,6 @@ mount_cgroup
 # the NMI warning messages are often in a mess
 [ -f '/sys/kernel/debug/x86/nmi_longest_ns' ] && echo 100000000 > /sys/kernel/debug/x86/nmi_longest_ns
 
-record_dmesg
-
 echo run-job $job
 set_job_state 'running'
 job_script=${job%.yaml}.sh
