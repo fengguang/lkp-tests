@@ -28,6 +28,7 @@ wakeup_pre_test()
 		) &
 	else
 		$LKP_SRC/monitors/event/wakeup activate-monitor
+		$LKP_SRC/monitors/event/wakeup pre-test # compatibility code, remove after 1 month
 	fi
 	sleep 1
 	date '+%s' > $TMP/start_time
