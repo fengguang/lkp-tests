@@ -24,7 +24,7 @@ wait_touch_watchdog()
 
 	while :
 	do
-		wait_timeout $watchdog_reset_period
+		wait_job_finished --timeout $watchdog_reset_period && exit 0
 		[ -f "$TMP/job-finished" ] && exit
 
 		bmc-watchdog --reset
