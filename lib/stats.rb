@@ -321,6 +321,10 @@ def is_latency(stats_field)
 	end
 end
 
+def is_memory_change(stats_field)
+	stats_field =~ /^(boot-meminfo|boot-memory|proc-vmstat|numa-vmstat|meminfo|memmap|numa-meminfo)\./
+end
+
 def should_add_max_latency(stats_field)
 	$metric_add_max_latency.each { |pattern| return true if stats_field =~ %r{^#{pattern}$} }
 	return false
@@ -402,8 +406,14 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
 			# for none-failure stats field, we need asure that
 			# at least one matrix has 3 samples.
 			next if cols_a < 3 and cols_b < 3
+
+			# virtual hosts are dynamic and noisy
+			next if options['tbox_group'] =~ /^vh-/
+			# VM boxes' memory stats are still good
+			next if options['tbox_group'] =~ /^vm-/ and !options['is_perf_test_vm'] and is_memory_change k
 		end
 
+		# newly added monitors don't have values to compare in the base matrix
 		next unless b[k] or
 			is_failure_stat or
 			(k =~ /^(lock_stat|perf-profile|latency_stats)\./ and b_monitors[$1])
