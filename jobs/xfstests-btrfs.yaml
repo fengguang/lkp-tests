@@ -1,9 +1,5 @@
 testcase: xfstests
-
-cpufreq_governor:
-default-monitors:
-  wait: activate-monitor
-  vmstat:
+category: functional
 
 disk: 6HDD
 

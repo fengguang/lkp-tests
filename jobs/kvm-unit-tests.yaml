@@ -1,8 +1,4 @@
 testcase: kvm-unit-tests
-
-cpufreq_governor:
-default-monitors:
-  wait: activate-monitor
-  vmstat:
+category: functional
 
 kvm-unit-tests:

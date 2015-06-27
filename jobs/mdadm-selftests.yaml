@@ -1,8 +1,5 @@
 testcase: mdadm-selftests
-
-cpufreq_governor:
-default-monitors:
-  vmstat:
+category: functional
 
 mdadm-selftests:
   test_prefix:

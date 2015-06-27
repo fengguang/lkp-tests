@@ -1,9 +1,5 @@
 testcase: ltp
-
-cpufreq_governor:
-default-monitors:
-  wait: activate-monitor
-  vmstat:
+category: functional
 
 disk: 1HDD
 fs:

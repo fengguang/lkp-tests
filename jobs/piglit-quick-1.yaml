@@ -1,9 +1,5 @@
 testcase: piglit
-
-cpufreq_governor:
-default-monitors:
-  wait: activate-monitor
-  vmstat:
+category: functional
 
 timeout: 30m
 

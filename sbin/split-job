@@ -66,11 +66,11 @@ $atom_jobs = []
 
 ARGV.each { |jobfile|
 	jobs = Job.new
-	unless $opt_no_defaults
-		jobs.load_head("#{LKP_SRC}/jobs/DEFAULTS")
-		jobs.load_head("#{LKP_SRC}/hosts/#{$opt_testbox}")
-	end
 	jobs.load(jobfile) or next
+	unless $opt_no_defaults
+		jobs.load_head("#{LKP_SRC}/hosts/#{$opt_testbox}", true)
+		jobs.load_head("#{LKP_SRC}/jobs/DEFAULTS-#{jobs['category']}", true)
+	end
 	$opt_set_key_value.each { |k, v| jobs[k] = v }
 	jobs['kconfig'] = $opt_kconfig if $opt_kconfig
 	jobs['commit'] = $opt_commit if $opt_commit

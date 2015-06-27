@@ -1,10 +1,6 @@
 testcase: ku-latency
+category: benchmark
 
 runtime: 300s
-
-cpufreq_governor:
-default-monitors:
-  wait: activate-monitor
-  vmstat:
 
 ku-latency:

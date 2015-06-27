@@ -1,12 +1,8 @@
 testcase: stutter
+category: functional
 
 iterations: 5x
 disk: 1HDD
 fs: ext4
-
-cpufreq_governor:
-default-monitors:
-  wait: activate-monitor
-  vmstat:
 
 stutter:
