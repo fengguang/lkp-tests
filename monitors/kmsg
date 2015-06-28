@@ -1,15 +1,7 @@
 #!/bin/sh
 
-record_kmsg()
-{
-	killall rsyslogd klogd 2>/dev/null || :
+killall rsyslogd klogd 2>/dev/null
 
-	dmesg
+dmesg
 
-	while :
-	do
-		cat /proc/kmsg
-	done
-}
-
-record_kmsg
+exec cat /proc/kmsg
