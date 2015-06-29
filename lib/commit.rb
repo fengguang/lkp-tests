@@ -13,10 +13,6 @@ class Commit < Git::Object::Commit
 		super(git, commit)
 	end
 
-	def author
-		super.author.formatted_name
-	end
-
 	def base_tag
 		@base_tag ||= Commit.tag_finder.last_release_tag(self.sha)
 	end
