@@ -21,11 +21,7 @@ setup_wakeup_timer()
 	#
 	ctl='/sys/class/rtc/rtc0/wakealarm'
 	if [ -f "$ctl" ]; then
-		time=$(date '+%s' -d "+ $timeout seconds")
-		# Cancel any outstanding timers.
-		echo "0" >"$ctl"
-		# rtcN/wakealarm uses absolute time in seconds
-		echo "$time" >"$ctl"
+		echo "+$timeout" >"$ctl"
 		return 0
 	fi
 	ctl='/proc/acpi/alarm'
