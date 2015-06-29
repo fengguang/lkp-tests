@@ -13,12 +13,12 @@ GIT		||= "git --work-tree=#{GIT_WORK_TREE} --git-dir=#{GIT_DIR}"
 require "#{LKP_SRC}/lib/yaml.rb"
 
 module SimpleCacheMethod
-  def self.included(mod)
-    class << mod
-      include ClassMethods
-      attr_accessor :caches, :cache_key_prefix_generators
-    end
-  end
+	def self.included(mod)
+		class << mod
+			include ClassMethods
+			attr_accessor :caches, :cache_key_prefix_generators
+		end
+	end
 
   module ClassMethods
 		#
@@ -32,6 +32,8 @@ module SimpleCacheMethod
 			# credit to rails alias_method_chain
 			alias_method "#{method_name}_without_cache", method_name
 
+			kclass = self
+
 			@caches ||= {}
 			@cache_key_prefix_generators ||= {}
 
@@ -41,8 +43,6 @@ module SimpleCacheMethod
 			# FIXME rli9 better solution for generating key can refer to
 			# https://github.com/seamusabshere/cache_method/blob/master/lib/cache_method.rb
 			define_method(method_name) do |*args|
-				kclass = (self.instance_of?(Class) || self.instance_of?(Module)) ? self.singleton_class : self.class
-
 				cache_key = kclass.cache_key(self, method_name, *args)
 
 				kclass.caches[cache_key] = self.send("#{method_name}_without_cache", *args) unless kclass.caches.has_key? cache_key
