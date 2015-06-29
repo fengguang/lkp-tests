@@ -6,33 +6,23 @@ require "#{LKP_SRC}/lib/git-tag.rb"
 git_update_rb = "#{LKP_SRC}/lib/git-update.rb"
 require git_update_rb if File.exists? git_update_rb
 
-class Commit
+class Commit < Git::Object::Commit
 	def initialize(commit)
-		@commit = commit
-	end
-
-	def to_s
-		@commit
+		# TODO pass real project info to project_init
+		git = Git.project_init
+		super(git, commit)
 	end
 
 	def parents
 		@parents ||= git_parent_commits(@commit).map { |cstr| Commit.open cstr }
 	end
 
-	def committer_date
-		@committer_date ||= git_commit_time @commit
-	end
-
 	def author
-		@author ||= git_commit_author @commit
-	end
-
-	def subject
-		@subject ||= git_commit_subject @commit
+		super.author.formatted_name
 	end
 
 	def base_tag
-		@base_tag ||= Commit.tag_finder.last_release_tag(@commit)
+		@base_tag ||= Commit.tag_finder.last_release_tag(self.sha)
 	end
 end
 

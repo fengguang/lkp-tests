@@ -20,13 +20,20 @@ describe Commit do
 			end
 
 			it "should work" do
-				commit = Commit.open(linux_v4_1_rc8_commit)
+				commit = described_class.open(linux_v4_1_rc8_commit)
+
+				expect(commit).to be_an_instance_of described_class
 
 				expect(commit.to_s).to eq linux_v4_1_rc8_commit
+				expect(commit.subject).to eq "Linux 4.1-rc8"
+				expect(commit.committer_date).to eq git_commit_time(linux_v4_1_rc8_commit)
+
+				#expect(commit.last_release_tag).to eq ["v4.1-rc8", true]
+				#expect(commit.last_release_tag).to eq commit.base_tag
 			end
 
 			it "should cache commit" do
-				expect(Commit.open(linux_v4_1_rc8_commit).object_id).to eq Commit.open(linux_v4_1_rc8_commit).object_id
+				expect(described_class.open(linux_v4_1_rc8_commit).object_id).to eq described_class.open(linux_v4_1_rc8_commit).object_id
 			end
 		end
 	end
