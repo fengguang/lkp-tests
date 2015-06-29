@@ -13,10 +13,6 @@ class Commit < Git::Object::Commit
 		super(git, commit)
 	end
 
-	def parents
-		@parents ||= git_parent_commits(@commit).map { |cstr| Commit.open cstr }
-	end
-
 	def author
 		super.author.formatted_name
 	end
