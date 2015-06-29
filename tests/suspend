@@ -8,7 +8,7 @@
 
 [ -n "$mode" ] || mode='freeze'
 [ -n "$runtime" ] || runtime=300
-[ -n "$iterations" ] || iterations=30
+[ -n "$iterations" ] || iterations=10
 interval=$(( runtime / iterations ))
 
 setup_wakeup_timer()
