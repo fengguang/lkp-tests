@@ -108,11 +108,11 @@ def fixup_dmesg_file(dmesg_file)
 end
 
 def grep_crash_head(dmesg_file, grep_options = '')
-	oops = %x[ grep -a -f #{LKP_SRC}/etc/oops-pattern #{grep_options} #{dmesg_file} | grep -v -f #{LKP_SRC}/etc/oops-pattern-ignore |
+	oops = %x[ xzgrep -a -f #{LKP_SRC}/etc/oops-pattern #{grep_options} #{dmesg_file} | grep -v -f #{LKP_SRC}/etc/oops-pattern-ignore |
 		   awk '{line = $0; sub(/^(<[0-9]>)?\[[ 0-9.]+\] /, "", line); if (!x[line]++) print;}'
 	]
 	unless oops.empty?
-		oops += `grep -v -F ' ? ' #{dmesg_file} |
+		oops += `xzgrep -v -F ' ? ' #{dmesg_file} |
 			 grep -E -B1 '(do_one_initcall|kthread|kernel_thread|process_one_work|SyS_[a-z0-9_]+|init_[a-z0-9_]+|[a-z0-9_]+_init)\\+0x' |
 			 grep -v -E  '(do_one_initcall|kthread|kernel_thread|process_one_work|worker_thread|kernel_init|rest_init|warn_slowpath_)\\+0x' |
 			 grep -o -E '[a-zA-Z0-9_.]+\\+0x[0-9a-fx/]+' |
