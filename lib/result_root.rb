@@ -143,10 +143,10 @@ end
 # M here stands for multiple runs
 # _rt or mrt may be used as variable name
 class MResultRoot
-	# TODO: remove GLOB1 after we convert all .dmesg to dmesg
-	DMESG_GLOB1 = '[0-9]*/.dmesg*'
-	DMESG_GLOB2 = '[0-9]*/dmesg*'
-	DMESG_GLOB3 = '[0-9]*/kmsg*'
+	# TODO: remove .dmesg after we convert all .dmesg to dmesg
+	DMESG_FILE_GLOBS = ['.dmesg', 'dmesg', 'dmesg.xz', 'kmsg', 'kmsg.xz']
+	DMESG_GLOBS = DMESG_FILE_GLOBS.map { |g| "[0-9]*/#{g}" }
+	DMESG_JSON_GLOB = '[0-9]*/dmesg.json'
 	JOB_GLOB = '[0-9]*/job.yaml'
 	COMPLETIONS_FILE = 'completions'
 	MATRIX = 'matrix.json'
@@ -195,10 +195,15 @@ class MResultRoot
 	end
 
 	def dmesgs
-		dmesgs = glob(DMESG_GLOB1)
-		dmesgs = glob(DMESG_GLOB2) if dmesgs.empty?
-		dmesgs = glob(DMESG_GLOB3) if dmesgs.empty?
-		dmesgs
+		DMESG_GLOBS.each { |g|
+			dmesgs = glob(g)
+			return dmesgs unless dmesgs.empty?
+		}
+		[]
+	end
+
+	def dmesg_jsons
+		glob DMESG_JSON_GLOB
 	end
 
 	def job_file
