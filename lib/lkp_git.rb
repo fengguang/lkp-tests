@@ -282,7 +282,6 @@ module Git
 
 		class Tag
 			def commit
-				check_tag
 				@base.gcommit(@base.lib.command('rev-list', ['-1', @name]))
 			end
 		end
