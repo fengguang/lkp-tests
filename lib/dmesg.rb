@@ -58,7 +58,7 @@ class DmesgTimestamp
 		def detected?(line)
 			dmesg_timestamp = DmesgTimestamp.new(line)
 			if dmesg_timestamp.valid?
-				if @large_dmesg_timestamps.empty? || @large_dmesg_timestamps.any? {|large_dmesg_timestamp| large_dmesg_timestamp <= dmesg_timestamp}
+				if @large_dmesg_timestamps.size < 3 || @large_dmesg_timestamps.any? {|large_dmesg_timestamp| large_dmesg_timestamp <= dmesg_timestamp}
 					@large_dmesg_timestamps.push(dmesg_timestamp)
 					@large_dmesg_timestamps = @large_dmesg_timestamps.drop(1) if @large_dmesg_timestamps.count > 3
 
