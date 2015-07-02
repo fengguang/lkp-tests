@@ -4,8 +4,6 @@ require 'rspec'
 # of lib files, like yaml.rb, time.rb
 $LOAD_PATH.concat($LOAD_PATH.shift(3))
 
-ENV['LKP_SRC'] = File.expand_path "#{File.dirname(__FILE__)}/.."
-
 require 'lkp_git'
 require "git-update"
 
