@@ -1,3 +1,5 @@
 #!/bin/sh
 
-sudo apt-get -y install $*
+sudo apt-get -o Dpkg::Options::="--force-confdef" \
+     -o Dpkg::Options::="--force-confold" \
+     -y install $*
