@@ -42,6 +42,7 @@ kill_one()
 
 kill_tests()
 {
+	[ -z "$node_roles" -o "${node_roles#*client}" != "${node_roles}" ] &&
 	local pid_tests="$(cat $TMP/pid-tests)"
 	local pid_job="$(cat $TMP/run-job.pid)"
 
