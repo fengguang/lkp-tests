@@ -51,6 +51,11 @@ elif [ -f $log.xz ]; then
 	xzcat $log.xz > $log
 fi
 
+# extract kmsg for kmsg related stats
+if [[ $log =~ ^(boot-memory|boot-time|tcrypt)$ ]]; then
+	[ -f kmsg.xz ] && xzcat kmsg.xz > kmsg
+fi
+
 check_incomplete_run $log
 check_empty_output
 
@@ -95,5 +100,8 @@ if [ -f $log.gz ]; then
 elif [ -f $log.xz ]; then
 	rm $log -f
 fi
+
+# delete temporarily extracted kmsg above
+[ -f kmsg.xz ] && rm -f kmsg
 
 exit 0
