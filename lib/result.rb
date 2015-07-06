@@ -152,6 +152,12 @@ class ResultPath < Hash
 	def commit_axis
 		self.path_scheme.find {|axis| axis =~ /commit$/}
 	end
+
+	class << self
+		def maxis_keys(test_case)
+			PATH_SCHEME[test_case].reject {|key| key == 'run'}
+		end
+	end
 end
 
 class << ResultPath

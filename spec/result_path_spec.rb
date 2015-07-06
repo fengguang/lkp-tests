@@ -58,5 +58,11 @@ describe ResultPath do
 				expect(result_path.commit_axis).to eq 'commit'
 			end
 		end
+
+		describe "maxis_keys" do
+			it "should handle dpdk path" do
+				expect(ResultPath.maxis_keys('build-dpdk').size).to eq 3
+			end
+		end
 	end
 end
