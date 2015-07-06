@@ -150,11 +150,7 @@ class ResultPath < Hash
 	# return commit axis name, assume single commit axis of result root
 	#
 	def commit_axis
-		#self.keys.find {|axis| axis =~ /commit$/}
-		# FIXME rli9 hack code now to check whether it is dpdk, b/c
-		# sometimes keys will include 'commit' after loading job file
-		# such as MResultRoot.axes_path
-		self.keys.include?('dpdk_commit') ? 'dpdk_commit' : self.keys.find {|axis| axis =~ /commit$/}
+		self.path_scheme.find {|axis| axis =~ /commit$/}
 	end
 end
 
