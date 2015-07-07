@@ -157,6 +157,17 @@ class ResultPath < Hash
 		def maxis_keys(test_case)
 			PATH_SCHEME[test_case].reject {|key| key == 'run'}
 		end
+
+		#
+		# code snippet from MResultRootCollection
+		# FIXME rli9 refactor MResultRootCollection to embrace different maxis keys
+		#
+		def grep(test_case, options = {})
+			pattern = [RESULT_MNT, test_case, PATH_SCHEME[test_case].map {|key| options[key] || '.*'}].flatten.join('/')
+
+			cmdline = "grep -he '#{pattern}' /lkp/paths/* | sed -e '1,$s?\\(.*\\)/[0-9]*?\\1?' | sort | uniq"
+			`#{cmdline}`
+		end
 	end
 end
 
