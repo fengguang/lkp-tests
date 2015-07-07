@@ -36,7 +36,10 @@ pack()
 	(
 		cd $tmp_dir/rootfs				&& find lkp			| $cpio_cmd
 		cd $tmp_dir					&& find lkp/$LKP_USER/src/*	| $cpio_cmd --append
-		cd $tmp_dir/lkp/$LKP_USER/src/rootfs/addon	&& find *			| $cpio_cmd --append
+		{
+			cd $tmp_dir/lkp/$LKP_USER/src/rootfs/addon
+			chmod -R 600 etc/ssh/* # to avoid sshd Permissions too open error
+		}						&& find *			| $cpio_cmd --append
 
 		[ -d /osimage/addon-${ARCH} ] &&
 		cd /osimage/addon-${ARCH}			&& find *			| $cpio_cmd --append
