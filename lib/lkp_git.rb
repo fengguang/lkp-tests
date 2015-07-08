@@ -450,19 +450,6 @@ def git_commit(commit)
 	return sha1_commit
 end
 
-def git_commit_author(commit)
-	`#{GIT} log -n1 --pretty=format:'%an <%ae>' #{commit}`.chomp
-end
-
-def git_committer(commit)
-	`#{GIT} log -n1 --pretty=format:'%cn <%ce>' #{commit}`.chomp
-end
-
-def git_commit_time(commit)
-	scdate = `#{GIT} log -n1 --pretty=format:'%cD' #{commit}`.chomp
-	Time.rfc822 scdate
-end
-
 def commit_exists(commit)
 	return false unless commit
 

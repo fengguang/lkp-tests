@@ -24,7 +24,7 @@ describe Commit do
 
 				expect(commit.to_s).to eq linux_v4_1_rc8_commit
 				expect(commit.subject).to eq "Linux 4.1-rc8"
-				expect(commit.committer_date).to eq git_commit_time(linux_v4_1_rc8_commit)
+				expect(commit.committer_date.to_s).to eq '2015-06-15 09:51:10 +0800'
 
 				#expect(commit.last_release_tag).to eq ["v4.1-rc8", true]
 				#expect(commit.last_release_tag).to eq commit.base_tag
