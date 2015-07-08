@@ -204,6 +204,10 @@ module Git
 				@parent_shas ||= self.parents.map {|commit| commit.sha}
 			end
 
+			def show(content)
+				@base.lib.command_lines('show', "#{self.sha}:#{content}")
+			end
+
 			def interested_tag
 				@interested_tag ||= release_tag || tags.first
 			end
