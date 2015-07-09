@@ -8,7 +8,6 @@ LKP_SRC ||= ENV['LKP_SRC']
 require "set.rb"
 require "#{LKP_SRC}/lib/lkp_git"
 require "#{LKP_SRC}/lib/git-update.rb" if File.exist?("#{LKP_SRC}/lib/git-update.rb")
-require "#{LKP_SRC}/lib/git-tag.rb"
 require "#{LKP_SRC}/lib/yaml.rb"
 require "#{LKP_SRC}/lib/result.rb"
 require "#{LKP_SRC}/lib/bounds.rb"
