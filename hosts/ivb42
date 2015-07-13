@@ -1,3 +1,5 @@
 model: Ivytown Ivy Bridge-EP
 nr_cpu: 48
 memory: 64G
+swap_partitions: LABEL=SWAP
+rootfs_partition: LABEL=LKP-ROOTFS
