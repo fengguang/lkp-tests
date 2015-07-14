@@ -1,0 +1,10 @@
+#!/bin/bash
+
+ROOTFS=$1
+[ -d "$ROOTFS" ] || {
+	echo "Cannot find rootfs directory: $ROOTFS" 1>&2
+	exit 1
+}
+
+# stop auto configuration of adapter, for NFS bootup
+sed -i "s/dhcp/none/" $ROOTFS/etc/sysconfig/network-scripts/ifcfg-eth0

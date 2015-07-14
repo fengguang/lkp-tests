@@ -1,0 +1,40 @@
+#!/bin/bash
+
+[ -n "$LKP_SRC" ] || export LKP_SRC=$(dirname $(dirname $(readlink -e -v $0)))
+
+[ -n "$1" ] || {
+	echo "Usage: $0 <rootfs_dir>"
+	echo "$0 will configure different distro's rootfs specified in <rootfs_dir>, so it can be bootup via NFS export. "
+	exit 1
+}
+
+ROOTFS=$1
+[ -d "$ROOTFS" ] || {
+	echo "Cannot find rootfs directory: $ROOTFS" 1>&2
+	exit 1
+}
+
+# Prevent configure '/' by miss operation
+[ "/" = "$(readlink -e -v $ROOTFS)" ] && {
+	echo "Cannot configure root /." 1>&2
+	exit 1
+}
+
+source $LKP_SRC/lib/detect-system.sh
+detect_system $ROOTFS
+
+[ "$_system_name" == "unknown" ] && {
+	echo "Detect system failed: $ROOTFS"
+	exit 1
+}
+
+distro=$_system_name_lowercase
+config_rootfs_path=$LKP_SRC/distro/config-rootfs
+
+if [ -d $config_rootfs_path/$distro ]; then
+	run-parts $config_rootfs_path/common -a $ROOTFS
+	run-parts $config_rootfs_path/$distro -a $ROOTFS
+else
+	echo "Dir: $config_rootfs_path/$distro not exist"
+	exit 1
+fi

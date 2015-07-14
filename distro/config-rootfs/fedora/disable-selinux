@@ -1,0 +1,11 @@
+#!/bin/bash
+
+ROOTFS=$1
+[ -d "$ROOTFS" ] || {
+	echo "Cannot find rootfs directory: $ROOTFS" 1>&2
+	exit 1
+}
+
+# disable SELINUX, which will cause /bin/bash permission denied
+# maybe we can figure out a workable SELINUX setting later.
+sed -i "s/SELINUX=enforcing/SELINUX=disabled/" $ROOTFS/etc/selinux/config

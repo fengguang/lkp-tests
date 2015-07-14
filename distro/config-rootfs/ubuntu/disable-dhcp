@@ -1,0 +1,9 @@
+#!/bin/bash
+
+ROOTFS=$1
+[ -d "$ROOTFS" ] || {
+	echo "Cannot find rootfs directory: $ROOTFS" 1>&2
+	exit 1
+}
+
+sed -i "s/dhcp/manual/" $ROOTFS/etc/network/interfaces
