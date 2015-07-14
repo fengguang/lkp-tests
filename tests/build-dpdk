@@ -46,14 +46,14 @@ check_mount kernel-src $RTE_KERNELDIR -t tmpfs
 
 git_clone_update git://gitmirror/$remote $RTE_KERNELDIR || die "failed clone kernel tree $remote"
 cd $RTE_KERNELDIR
-git checkout $commit || die "failed to checkout kernel commit $_commit"
+git checkout -q $commit || die "failed to checkout kernel commit $_commit"
 make_config allmodconfig || die "make allmodconfig failed"
 make prepare || die "make prepare failed"
 make scripts/ || die "make scripts/ failed"
 
 git_clone_update git://gitmirror/$dpdk_remote $DPDK_SRC || die "failed clone dpdk tree $dpdk_remote"
 cd $DPDK_SRC
-git checkout $dpdk_commit || die "failed to checkout dpdk commit $dpdk_commit"
+git checkout -q $dpdk_commit || die "failed to checkout dpdk commit $dpdk_commit"
 
 config_file=$LKP_SRC/etc/dpdk-configs/$dpdk_config
 [ -f $config_file ] ||
