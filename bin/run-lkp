@@ -7,6 +7,7 @@ export job_file="$1"
 export job=$job_file
 
 . $LKP_SRC/lib/wait.sh
+. $LKP_SRC/lib/mount.sh
 . $LKP_SRC/lib/job-init.sh
 [ -f $LKP_SRC/lib/misc.sh ] &&
 	. $LKP_SRC/lib/misc.sh 2>/dev/null

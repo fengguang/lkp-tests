@@ -32,6 +32,8 @@ should_do_cifs()
 
 mount_result_root()
 {
+	is_mount_point $RESULT_MNT && return 0
+
 	[ -n "$result_service" ] || {
 		if should_do_cifs; then
 			result_service=//$LKP_SERVER/result
