@@ -303,15 +303,16 @@ module Git
 		#		:repository => '/path/to/alt_git_dir', default is '/working_dir/.git'
 		#
 		# example
-		#		Git.project_init(project: 'dpdk')
-		#		Git.project_init(repository: '/path/to/alt_git_dir')
+		#		Git.init(project: 'dpdk')
+		#		Git.init(repository: '/path/to/alt_git_dir')
 		#
-		def project_init(options = {})
+		alias_method :orig_init, :init
+		def init(options = {})
 			options[:project] ||= 'linux'
 
 			working_dir = ENV['SRC_ROOT'] || "/c/repo/#{options[:project]}"
 
-			Git.init(working_dir, options)
+			Git.orig_init(working_dir, options)
 		end
 
 		def linux_last_release_tag_strategy(git_base, commit_sha)
@@ -370,7 +371,7 @@ module Git
 		end
 
 		cache_method :project_remotes
-		cache_method :project_init
+		cache_method :init
 	end
 end
 

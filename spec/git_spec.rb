@@ -15,7 +15,7 @@ describe Git do
 
 		describe Git::Object::Commit do
 			before do
-				@git = Git.project_init
+				@git = Git.init
 			end
 
 			it "should be same as lkp git" do
@@ -32,7 +32,7 @@ describe Git do
 			end
 
 			it "should handle non ascii chars" do
-				git = Git.project_init(project: "ukl")
+				git = Git.init(project: "ukl")
 
 				# commit 8d0977811d6741b8600886736712387aa8c434a9
 				# Author: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
@@ -138,7 +138,7 @@ describe Git do
 
 		describe Git::Base do
 			before do
-				@git = Git.project_init
+				@git = Git.init
 			end
 
 			describe "gcommit" do
@@ -151,8 +151,8 @@ describe Git do
 				end
 
 				it "should cache commits of multiple git objects" do
-					git1 = Git.project_init
-					git2 = Git.project_init
+					git1 = Git.init
+					git2 = Git.init
 
 					expect(git2.object_id).to eq git1.object_id
 					expect(git2.gcommit(linux_v4_1_rc8_commit).object_id).to eq git1.gcommit(linux_v4_1_rc8_commit).object_id
@@ -198,7 +198,7 @@ describe Git do
 
 	context "gcc" do
 		before do
-			@git = Git.project_init(project: 'gcc')
+			@git = Git.init(project: 'gcc')
 		end
 
 		# tag gcc-5_1_0-release

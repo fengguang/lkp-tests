@@ -213,7 +213,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
 	tags_merged = []
 
 	$git ||= {}
-	$git[project] ||= Git.project_init(project: project)
+	$git[project] ||= Git.init(project: project)
 	git = $git[project]
 
 	begin
