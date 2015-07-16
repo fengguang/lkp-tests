@@ -32,10 +32,11 @@ set_job_state 'running'
 job_script=${job%.yaml}.sh
 if [ -x "$job_script" ]; then
 	$LKP_DEBUG_PREFIX $job_script run_job
+	grep -q 'exit_code' $RESULT_ROOT/last_state && run_job_failed=1
 else
 	run-job --pid-file $TMP/run-job.pid $job
+	run_job_exit_code=$?
 fi
-run_job_exit_code=$?
 
 end_time=$(date '+%s')
 
