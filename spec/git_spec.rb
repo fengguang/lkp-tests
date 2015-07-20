@@ -15,7 +15,7 @@ describe Git do
 
 		describe Git::Object::Commit do
 			before do
-				@git = Git.init
+				@git = Git.open
 			end
 
 			it "should be same as lkp git" do

@@ -265,6 +265,18 @@ module Git
 			Git.orig_init(working_dir, options)
 		end
 
+		#
+		# open an existing repository
+		#
+		alias_method :orig_open, :open
+		def open(project = nil)
+			project ||= 'linux'
+
+			working_dir = ENV['SRC_ROOT'] || "/c/repo/#{project}"
+
+			Git.orig_open(working_dir, project: project)
+		end
+
 		def linux_last_release_tag_strategy(git_base, commit_sha)
 			version = patch_level = sub_level = rc = nil
 
