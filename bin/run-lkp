@@ -6,21 +6,12 @@ export job_file="$1"
 # TODO: replace job with job_file completely in future
 export job=$job_file
 
+. $LKP_SRC/lib/common.sh
 . $LKP_SRC/lib/wait.sh
 . $LKP_SRC/lib/mount.sh
 . $LKP_SRC/lib/job-init.sh
 [ -f $LKP_SRC/lib/misc.sh ] &&
 	. $LKP_SRC/lib/misc.sh 2>/dev/null
-
-# TODO: move it to a proper place
-query_var_from_yaml()
-{
-	local var=$1
-	local file=$2
-	[ -f "$file" ] || return
-
-	grep "/^$var:/" $file | awk '{print $2}'
-}
 
 export LKP_USER=$user
 export BENCHMARK_ROOT=/lkp/benchmarks
@@ -42,7 +33,9 @@ set_job_state 'running'
 job_script=${job%.yaml}.sh
 if [ -x "$job_script" ]; then
 	$LKP_DEBUG_PREFIX $job_script run_job
-	exit_code=$(query_var_from_yaml "exit_code" $RESULT_ROOT/last_state)
+	last_stat_file=$RESULT_ROOT/last_state
+	[ -f "$last_stat_file" ] &&
+		exit_code=$(query_var_from_yaml "exit_code" $last_state_file)
 	run_job_exit_code=${exit_code:-0}
 else
 	run-job --pid-file $TMP/run-job.pid $job
