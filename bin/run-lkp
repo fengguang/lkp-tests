@@ -33,9 +33,9 @@ set_job_state 'running'
 job_script=${job%.yaml}.sh
 if [ -x "$job_script" ]; then
 	$LKP_DEBUG_PREFIX $job_script run_job
-	last_stat_file=$RESULT_ROOT/last_state
-	[ -f "$last_stat_file" ] &&
-		exit_code=$(query_var_from_yaml "exit_code" $last_state_file)
+	last_state_file=$RESULT_ROOT/last_state
+	[ -f "$last_state_file" ] &&
+		exit_code=$(query_var_from_yaml "exit_code" "$last_state_file")
 	run_job_exit_code=${exit_code:-0}
 else
 	run-job --pid-file $TMP/run-job.pid $job
