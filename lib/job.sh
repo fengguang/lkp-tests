@@ -163,6 +163,10 @@ start_daemon()
 {
 	local program=${1##*/}
 	[ "$program" = 'wrapper' ] && program=$2
+
+	# will be killed by watchdog when timeout
+	echo $$ >> $TMP/pid-start-daemon
+
 	"$@"
 	check_exit_code $?
 
@@ -179,6 +183,11 @@ run_test()
 {
 	local program=${1##*/}
 	[ "$program" = 'wrapper' ] && program=$2
+
+	# wait other nodes may block until watchdog timeout,
+	# it should be able to killed by watchdog
+	echo $$ >> $TMP/pid-run-tests
+
 	wait_other_nodes 'test' $program
 	wakeup_pre_test
 	"$@"
