@@ -139,7 +139,7 @@ else
 end
 opts.parse!(argv)
 
-$dim_not_a_param = $opt_dimension =~ /^(testbox|rootfs|kconfig|commit|run)$/
+$dim_not_a_param = $opt_dimension =~ /^(testbox|rootfs|kconfig|.*commit|run)$/
 
 $changed_stats 	    = Hash.new { |hash, key| hash[key] = {} }
 $stat_records 	    = Hash.new { |hash, key| hash[key] = [] }
@@ -184,6 +184,12 @@ def dim_name(dim)
 		tag = commit_tag(dim)
 		return tag if tag
 		return dim[0..(REL_WIDTH + ABS_WIDTH + ERR_WIDTH)]
+	when /_commit$/
+		# FIXME rli9 duplicated code below, need refactoring
+		project = $opt_dimension.sub(/_.*$/, '')
+		tag = Git.open(project).gcommit(dim).interested_tag
+
+		tag || dim[0..(REL_WIDTH + ABS_WIDTH + ERR_WIDTH)]
 	else
 		return dim
 	end
