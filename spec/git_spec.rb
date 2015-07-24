@@ -114,6 +114,16 @@ describe Git do
 				end
 			end
 
+			describe "version_tag" do
+				it "should be same as version_tag with default arguments" do
+					expect(@git.gcommit(linux_v4_1_rc8_commit).version_tag).to eq "v4.1-rc8"
+					expect(@git.gcommit(linux_non_release_commit).version_tag).to eq "v4.1-rc7+"
+
+					linux_v2_6_32_child_commit = "03b1320dfceeb093890cdd7433e910dca6225ddb"
+					expect(@git.gcommit(linux_v2_6_32_child_commit).version_tag).to eq "v2.6.32-rc8+"
+				end
+			end
+
 			describe "last_release_tag" do
 				it "should be same as last_linus_release_tag with default arguments" do
 					expect(@git.gcommit(linux_v4_1_rc8_commit).last_release_tag).to eq ["v4.1-rc8", true]

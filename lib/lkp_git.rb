@@ -231,6 +231,13 @@ module Git
 				nil
 			end
 
+			def version_tag
+				tag, is_exact_match = last_release_tag
+
+				tag += '+' if tag && !is_exact_match
+				tag
+			end
+
 			cache_method :last_release_tag, ->(obj) {obj.to_s}
 		end
 
@@ -543,14 +550,6 @@ def base_rc_tag(commit)
 	commit += '~' if is_linus_commit(commit)
 	version, is_exact_match = last_linus_release_tag commit
 	return version
-end
-
-def version_tag(commit)
-	tag, is_exact_match = last_linus_release_tag(commit)
-	return nil unless tag
-
-	tag += '+' unless is_exact_match
-	return tag
 end
 
 def load_remotes
