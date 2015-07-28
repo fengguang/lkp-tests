@@ -221,7 +221,7 @@ module Git
 				tag = self.release_tag
 				return nil unless tag
 
-				order = tag_order(tag)
+				order = @base.release_tag_order(tag)
 				@base.release_tags_with_order.reverse_each do |tag, o|
 					next if o <= order
 
@@ -492,10 +492,6 @@ def __linus_tags()
 		tags_order[tag] = -i
 	end
 	tags_order
-end
-
-def tag_order(tag)
-	linus_tags[tag]
 end
 
 def linus_tags()

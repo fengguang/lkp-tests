@@ -178,10 +178,7 @@ describe Git do
 
 			describe "release_tag_order" do
 				it "should be same as tag_order with default parameters" do
-					actual = @git.release_tag_order('v2.6.32-rc8')
-
-					expect(actual).to be < 0
-					expect(actual).to eq tag_order("v2.6.32-rc8")
+					expect(@git.release_tag_order('v2.6.32-rc8')).to eq(-249)
 				end
 			end
 		end
