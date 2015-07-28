@@ -345,22 +345,10 @@ module Git
 	end
 end
 
-def __commit_tag(commit)
-	tags = `#{GIT} tag --points-at #{commit}`.split
-	tags.each do |tag|
-		return tag if linus_tags.include? tag
-	end
-	return tags[0]
-end
-
-def commit_tag(commit)
-	$__commit_tag_cache ||= {}
-	return $__commit_tag_cache[commit] if $__commit_tag_cache.include?(commit)
-	return $__commit_tag_cache[commit] = __commit_tag(commit)
-end
-
 def commit_name(commit)
-	tag = commit_tag(commit)
+	git = Git.open('linux')
+	tag = git.gcommit(commit).interested_tag
+
 	return tag if tag
 	return commit
 end

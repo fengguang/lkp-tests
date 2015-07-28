@@ -181,7 +181,9 @@ end
 def dim_name(dim)
 	case $opt_dimension
 	when 'commit'
-		tag = commit_tag(dim)
+		project = 'linux'
+		tag = Git.open(project).gcommit(dim).interested_tag
+
 		return tag if tag
 		return dim[0..(REL_WIDTH + ABS_WIDTH + ERR_WIDTH)]
 	when /_commit$/

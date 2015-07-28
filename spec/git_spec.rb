@@ -26,7 +26,7 @@ describe Git do
 				expect(gcommit.subject).to eq git_commit_subject(linux_v4_1_rc8_commit)
 				expect(gcommit.date.to_s).to eq '2015-06-15 09:51:10 +0800'
 				expect(gcommit.committer_date.to_s).to eq '2015-06-15 09:51:10 +0800'
-				expect(gcommit.interested_tag).to eq commit_tag(linux_v4_1_rc8_commit)
+				expect(gcommit.interested_tag).to eq "v4.1-rc8"
 				expect(gcommit.parent_shas).to eq git_parent_commits(linux_v4_1_rc8_commit)
 				expect(gcommit.committer.name).to eq 'Linus Torvalds'
 			end
