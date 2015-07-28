@@ -1,0 +1,20 @@
+#!/bin/bash
+
+download()
+{
+	rsync -a inn:/c/otc_kernel_qa-ts_ltp_ddt/* $BM_NAME --exclude agcc --exclude .git --exclude .gitignore --exclude .mailmap
+	source_dir=$BM_NAME
+}
+
+build()
+{
+	cd $source_dir
+	make autotools
+	./configure --prefix=$BM_ROOT > $BM_ROOT/configure.log
+	make > $BM_ROOT/make.log
+}
+
+install()
+{
+	make SKIP_IDCHECK=1 install
+}
