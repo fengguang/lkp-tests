@@ -164,8 +164,13 @@ describe Git do
 				it "should be same as linus_tags when project is linux/linus" do
 					actual = @git.release_tags_with_order
 
-					expect(actual.count).to be > 0
-					expect(actual).to eq linus_tags
+					# {"v4.2-rc4"=>0, "v4.2-rc3"=>-1, "v4.2-rc2"=>-2, "v4.2-rc1"=>-3, "v4.1"=>-4, "v4.1-rc8"=>-5, ...,
+					#  "v2.6.20-rc4"=>-364, "v2.6.20-rc3"=>-365, "v2.6.20-rc2"=>-366, "v2.6.20-rc1"=>-367}
+
+					expect(actual["v4.2-rc4"]).to eq 0
+					expect(actual["v4.2-rc3"]).to eq(-1)
+					expect(actual["v2.6.20-rc2"]).to eq(-366)
+					expect(actual["v2.6.20-rc1"]).to eq(-367)
 				end
 
 				it "should cache result" do
