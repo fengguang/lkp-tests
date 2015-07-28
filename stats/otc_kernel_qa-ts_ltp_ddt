@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+RESULT_ROOT = ENV['RESULT_ROOT']
+
+Dir["#{RESULT_ROOT}/**/LTP_RUN_ON-*.log"].each { |log|
+	File.readlines(log).each do |line|
+		if line =~ /^(\S+)\s+FAIL/
+			puts "#{$1}.fail: 1"
+		end
+	end
+}
