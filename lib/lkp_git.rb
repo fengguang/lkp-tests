@@ -12,6 +12,7 @@ GIT		||= "git --work-tree=#{GIT_WORK_TREE} --git-dir=#{GIT_DIR}"
 
 require "#{LKP_SRC}/lib/yaml.rb"
 require "#{LKP_SRC}/lib/simple_cache_method"
+require "#{LKP_SRC}/lib/assert"
 
 module Git
 	class Base
@@ -276,8 +277,8 @@ module Git
 		# open an existing repository
 		#
 		alias_method :orig_open, :open
-		def open(project = nil)
-			project ||= 'linux'
+		def open(project)
+			assert(project, "project parameter can't be #{project.inspect}")
 
 			working_dir = ENV['SRC_ROOT'] || "/c/repo/#{project}"
 
