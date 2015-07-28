@@ -395,18 +395,6 @@ def is_linus_commit(commit)
 	git_committer_name(commit) == 'Linus Torvalds'
 end
 
-def linus_release_tag(commit)
-	return nil unless is_linus_commit(commit)
-
-	tag = commit_tag(commit)
-	case tag
-	when /^v[34]\.\d+(-rc\d+)?$/, /^v2\.\d+\.\d+(-rc\d)?$/
-		tag
-	else
-		nil
-	end
-end
-
 def is_sha1_40(commit)
 	commit.size == 40 and commit =~ /^[0-9a-f]+$/
 end

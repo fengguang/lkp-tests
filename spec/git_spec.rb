@@ -61,10 +61,7 @@ describe Git do
 			describe "release_tag" do
 				it "should be same as linus_release_tag with default arguments" do
 					expect(@git.gcommit(linux_v4_1_rc8_commit).release_tag).to eq 'v4.1-rc8'
-					expect(@git.gcommit(linux_v4_1_rc8_commit).release_tag).to eq linus_release_tag(linux_v4_1_rc8_commit)
-
 					expect(@git.gcommit(linux_non_release_commit).release_tag).to eq nil
-					expect(@git.gcommit(linux_non_release_commit).release_tag).to eq linus_release_tag(linux_non_release_commit)
 				end
 
 				it "should cache result" do
