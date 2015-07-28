@@ -22,6 +22,7 @@ describe Git do
 				gcommit = @git.gcommit(linux_v4_1_rc8_commit)
 
 				expect(gcommit.author.formatted_name).to eq "Linus Torvalds <torvalds@linux-foundation.org>"
+				expect(gcommit.committer.name).to eq "Linus Torvalds"
 				expect(gcommit.committer.formatted_name).to eq "Linus Torvalds <torvalds@linux-foundation.org>"
 				expect(gcommit.subject).to eq git_commit_subject(linux_v4_1_rc8_commit)
 				expect(gcommit.date.to_s).to eq '2015-06-15 09:51:10 +0800'

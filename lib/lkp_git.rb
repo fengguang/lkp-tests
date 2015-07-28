@@ -366,18 +366,9 @@ def expand_possible_commit(s)
 	return git_commit s
 end
 
-def __git_committer_name(commit)
-	`#{GIT} log -n1 --pretty=format:'%cn' #{commit}`.chomp
-end
-
-def git_committer_name(commit)
-	$__committer_name_cache ||= {}
-	$__committer_name_cache[commit] ||= __git_committer_name(commit)
-	return $__committer_name_cache[commit]
-end
-
 def is_linus_commit(commit)
-	git_committer_name(commit) == 'Linus Torvalds'
+	git = Git.open('linux')
+	git.gcommit(commit).committer.name == 'Linus Torvalds'
 end
 
 def is_sha1_40(commit)
