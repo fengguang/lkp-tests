@@ -366,10 +366,6 @@ def expand_possible_commit(s)
 	return git_commit s
 end
 
-def git_parent_commits(commit)
-	`#{GIT} log -n1 --format=%P #{commit}`.chomp.split(' ')
-end
-
 def __git_committer_name(commit)
 	`#{GIT} log -n1 --pretty=format:'%cn' #{commit}`.chomp
 end

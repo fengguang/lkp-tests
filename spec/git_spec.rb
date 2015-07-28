@@ -27,7 +27,7 @@ describe Git do
 				expect(gcommit.date.to_s).to eq '2015-06-15 09:51:10 +0800'
 				expect(gcommit.committer_date.to_s).to eq '2015-06-15 09:51:10 +0800'
 				expect(gcommit.interested_tag).to eq "v4.1-rc8"
-				expect(gcommit.parent_shas).to eq git_parent_commits(linux_v4_1_rc8_commit)
+				expect(gcommit.parent_shas).to eq ["b86a7563ca617aa49dfd6b836da4dd0351fe2acc"]
 				expect(gcommit.committer.name).to eq 'Linus Torvalds'
 			end
 
@@ -47,6 +47,13 @@ describe Git do
 				it "should return sha 40 of corresponding commit" do
 					expect(@git.gcommit("0f57d86787d8b1076ea8f9cbdddda2a46d5").sha).to eq linux_v4_1_rc8_commit
 					expect(@git.gcommit("v4.1-rc8").sha).to eq linux_v4_1_rc8_commit
+				end
+			end
+
+			describe "parent_shas" do
+				it "should return multiple commits of merge commit" do
+					gcommit = @git.gcommit("2579d019ad591043634b02d038cadcabb5eb21f8")
+					expect(gcommit.parent_shas).to eq ["2800348613953b5892c196e4bfab2ae5783a519e", "2c534c0da0a68418693e10ce1c4146e085f39518"]
 				end
 			end
 
