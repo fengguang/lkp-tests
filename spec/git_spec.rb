@@ -105,11 +105,9 @@ describe Git do
 					it "should be same as lkp next_official_release_tag" do
 						linux_v3_12_rc1_commit = @git.tag('v3.12-rc1').commit
 						expect(linux_v3_12_rc1_commit.next_official_release_tag).to eq 'v3.12'
-						expect(linux_v3_12_rc1_commit.next_official_release_tag).to eq next_official_release_tag(linux_v3_12_rc1_commit)
 
 						linux_v3_12_commit = @git.tag('v3.12').commit
 						expect(linux_v3_12_commit.next_official_release_tag).to eq 'v3.13'
-						expect(linux_v3_12_commit.next_official_release_tag).to eq next_official_release_tag(linux_v3_12_commit)
 					end
 				end
 			end
