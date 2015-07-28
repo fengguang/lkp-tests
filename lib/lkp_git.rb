@@ -503,52 +503,11 @@ def linus_tags()
 	return $__linus_tags_cache
 end
 
-# if commit has a version tag, return it directly;
-# otherwise checkout commit and get latest version from Makefile.
-def __last_linus_release_tag(commit)
-	tag = linus_release_tag commit
-	return [tag, true] if tag =~ /^v.*/
-
-	version = patch_level = sub_level = rc = nil
-
-	`#{GIT} show #{commit}:Makefile`.each_line { |line|
-		case line
-		when /VERSION *= *(\d+)/
-			version = $1.to_i
-		when /PATCHLEVEL *= *(\d+)/
-			patch_level = $1.to_i
-		when /SUBLEVEL *= *(\d+)/
-			sub_level = $1.to_i
-		when /EXTRAVERSION *= *-rc(\d+)/
-			rc = $1.to_i
-		else
-			break
-		end
-	}
-
-	if version and version >= 3
-		tag = "v#{version}.#{patch_level}"
-	elsif version == 2
-		tag = "v2.#{patch_level}.#{sub_level}"
-	else
-		STDERR.puts "Not a kernel tree? check #{GIT_WORK_TREE}"
-		STDERR.puts caller.join "\n"
-		return nil
-	end
-
-	tag += "-rc#{rc}" if rc and rc > 0
-	return [tag, false]
-end
-
-def last_linus_release_tag(commit)
-	$__last_linus_tag_cache ||= {}
-	$__last_linus_tag_cache[commit] ||= __last_linus_release_tag(commit)
-	return $__last_linus_tag_cache[commit]
-end
-
 def base_rc_tag(commit)
 	commit += '~' if is_linus_commit(commit)
-	version, is_exact_match = last_linus_release_tag commit
+
+	git = Git.open('linux')
+	version, is_exact_match = git.gcommit(commit).last_release_tag
 	return version
 end
 

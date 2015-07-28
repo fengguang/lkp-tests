@@ -123,16 +123,14 @@ describe Git do
 			describe "last_release_tag" do
 				it "should be same as last_linus_release_tag with default arguments" do
 					expect(@git.gcommit(linux_v4_1_rc8_commit).last_release_tag).to eq ["v4.1-rc8", true]
-					expect(@git.gcommit(linux_v4_1_rc8_commit).last_release_tag).to eq last_linus_release_tag(linux_v4_1_rc8_commit)
 
 					linux_v2_6_32_commit = @git.tag('v2.6.32').commit
 					expect(linux_v2_6_32_commit.last_release_tag).to eq ["v2.6.32", true]
-					expect(linux_v2_6_32_commit.last_release_tag).to eq last_linus_release_tag(linux_v2_6_32_commit)
 
+					expect(@git.gcommit('v2.6.32~').last_release_tag).to eq ["v2.6.32-rc8", false]
 
 					linux_v2_6_32_child_commit = "03b1320dfceeb093890cdd7433e910dca6225ddb"
 					expect(@git.gcommit(linux_v2_6_32_child_commit).last_release_tag).to eq ["v2.6.32-rc8", false]
-					expect(@git.gcommit(linux_v2_6_32_child_commit).last_release_tag).to eq last_linus_release_tag(linux_v2_6_32_child_commit)
 				end
 
 				it "should cache result" do
