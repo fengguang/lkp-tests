@@ -54,7 +54,7 @@ class ResultPath < Hash
 		end
 
 		if ps.include?('commit')
-			unless self['commit'] && is_sha1_40(self['commit'])
+			unless self['commit'] && Git.sha1_40?(self['commit'])
 				#STDERR.puts "ResultPath parse error for #{rt}"
 				return false
 			end

@@ -140,7 +140,7 @@ module Git
 				# this is to convert non sha1 40 such as tag name to corresponding commit sha
 				# otherwise Object::AbstractObject uses @base.lib.revparse(@objectish) to get sha
 				# which sometimes is not as expected when we give a tag name
-				self.objectish = @base.lib.command('rev-list', ['-1', self.objectish]) unless is_sha1_40(self.objectish)
+				self.objectish = @base.lib.command('rev-list', ['-1', self.objectish]) unless Git.sha1_40?(self.objectish)
 			end
 
 			def subject
@@ -340,6 +340,10 @@ module Git
 			remotes
 		end
 
+		def sha1_40?(commit)
+			commit =~ /^[\da-f]{40}$/
+		end
+
 		cache_method :project_remotes
 		cache_method :init
 		cache_method :open
@@ -371,12 +375,8 @@ def is_linus_commit(commit)
 	git.gcommit(commit).committer.name == 'Linus Torvalds'
 end
 
-def is_sha1_40(commit)
-	commit.size == 40 and commit =~ /^[0-9a-f]+$/
-end
-
 def git_commit(commit)
-	return commit if is_sha1_40(commit)
+	return commit if Git.sha1_40?(commit)
 
 	$__git_commit_cache ||= {}
 	return $__git_commit_cache[commit] if $__git_commit_cache.include?(commit)

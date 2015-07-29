@@ -8,6 +8,17 @@ require 'lkp_git'
 require "git-update"
 
 describe Git do
+	describe "sha1_40?" do
+		it "should be falsy when invalid commits" do
+			expect(described_class.sha1_40?("0f57d86787d8b1076ea8f9cbdddda2a46d534a2")).to be_falsy
+			expect(described_class.sha1_40?("0z57d86787d8b1076ea8f9cbdddda2a46d534a2")).to be_falsy
+		end
+
+		it "should be truthy when valid commits" do
+			expect(described_class.sha1_40?("0f57d86787d8b1076ea8f9cbdddda2a46d534a27")).to be_truthy
+		end
+	end
+
 	context "linux" do
 		# tag v4.1-rc8
 		linux_v4_1_rc8_commit = "0f57d86787d8b1076ea8f9cbdddda2a46d534a27"
