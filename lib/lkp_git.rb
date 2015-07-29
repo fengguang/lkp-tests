@@ -143,6 +143,10 @@ module Git
 				self.objectish = @base.lib.command('rev-list', ['-1', self.objectish]) unless Git.sha1_40?(self.objectish)
 			end
 
+			def project
+				@base.project
+			end
+
 			def subject
 				self.message.split("\n").first
 			end
