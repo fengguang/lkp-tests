@@ -43,18 +43,6 @@ describe Git do
 				expect(gcommit.committer.name).to eq 'Linus Torvalds'
 			end
 
-			it "should handle non ascii chars" do
-				git = Git.init(project: "ukl")
-
-				# commit 8d0977811d6741b8600886736712387aa8c434a9
-				# Author: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-				# Date:   Mon Nov 18 11:40:16 2013 +0100
-				gcommit = git.gcommit("8d0977811d6741b8600886736712387aa8c434a9")
-
-				expect(gcommit.author.formatted_name).to eq 'Uwe Kleine-König <u.kleine-koenig@pengutronix.de>'
-				#expect(gcommit.interested_tag).to eq nil
-			end
-
 			describe "sha" do
 				it "should return sha 40 of corresponding commit" do
 					expect(@git.gcommit("0f57d86787d8b1076ea8f9cbdddda2a46d5").sha).to eq linux_v4_1_rc8_commit
@@ -86,43 +74,43 @@ describe Git do
 				it "should cache result" do
 					expect(@git.gcommit(linux_v4_1_rc8_commit).release_tag.object_id).to eq @git.gcommit(linux_v4_1_rc8_commit).release_tag.object_id
 				end
+			end
 
-				describe "last_official_release_tag" do
-					# v3.11     => v3.11
-					# v3.11-rc1 => v3.10
-					it "should be same as lkp official_release_tag" do
-						linux_v3_11_commit = @git.tag('v3.11').commit
-						expect(linux_v3_11_commit.last_official_release_tag).to eq 'v3.11'
-
-						linux_v3_11_rc1_commit = @git.tag('v3.11-rc1').commit
-						expect(linux_v3_11_rc1_commit.last_official_release_tag).to eq 'v3.10'
-					end
-				end
-
-				# v3.11     => v3.10
+			describe "last_official_release_tag" do
+				# v3.11     => v3.11
 				# v3.11-rc1 => v3.10
-				describe "prev_official_release_tag" do
-					it "should be same as lkp prev_official_release_tag" do
-						linux_v3_11_commit = @git.tag('v3.11').commit
-						expect(linux_v3_11_commit.prev_official_release_tag).to eq 'v3.10'
+				it "should be same as lkp official_release_tag" do
+					linux_v3_11_commit = @git.tag('v3.11').commit
+					expect(linux_v3_11_commit.last_official_release_tag).to eq 'v3.11'
 
-						linux_v3_11_rc1_commit = @git.tag('v3.11-rc1').commit
-						expect(linux_v3_11_rc1_commit.prev_official_release_tag).to eq 'v3.10'
-
-						expect(@git.gcommit('linus/master').prev_official_release_tag).to eq 'v4.1'
-					end
+					linux_v3_11_rc1_commit = @git.tag('v3.11-rc1').commit
+					expect(linux_v3_11_rc1_commit.last_official_release_tag).to eq 'v3.10'
 				end
+			end
 
-				# v3.12-rc1 => v3.12
-				# v3.12     => v3.13
-				describe "next_official_release_tag" do
-					it "should be same as lkp next_official_release_tag" do
-						linux_v3_12_rc1_commit = @git.tag('v3.12-rc1').commit
-						expect(linux_v3_12_rc1_commit.next_official_release_tag).to eq 'v3.12'
+			# v3.11     => v3.10
+			# v3.11-rc1 => v3.10
+			describe "prev_official_release_tag" do
+				it "should be same as lkp prev_official_release_tag" do
+					linux_v3_11_commit = @git.tag('v3.11').commit
+					expect(linux_v3_11_commit.prev_official_release_tag).to eq 'v3.10'
 
-						linux_v3_12_commit = @git.tag('v3.12').commit
-						expect(linux_v3_12_commit.next_official_release_tag).to eq 'v3.13'
-					end
+					linux_v3_11_rc1_commit = @git.tag('v3.11-rc1').commit
+					expect(linux_v3_11_rc1_commit.prev_official_release_tag).to eq 'v3.10'
+
+					expect(@git.gcommit('linus/master').prev_official_release_tag).to eq 'v4.1'
+				end
+			end
+
+			# v3.12-rc1 => v3.12
+			# v3.12     => v3.13
+			describe "next_official_release_tag" do
+				it "should be same as lkp next_official_release_tag" do
+					linux_v3_12_rc1_commit = @git.tag('v3.12-rc1').commit
+					expect(linux_v3_12_rc1_commit.next_official_release_tag).to eq 'v3.12'
+
+					linux_v3_12_commit = @git.tag('v3.12').commit
+					expect(linux_v3_12_commit.next_official_release_tag).to eq 'v3.13'
 				end
 			end
 
@@ -185,7 +173,6 @@ describe Git do
 
 					# {"v4.2-rc4"=>0, "v4.2-rc3"=>-1, "v4.2-rc2"=>-2, "v4.2-rc1"=>-3, "v4.1"=>-4, "v4.1-rc8"=>-5, ...,
 					#  "v2.6.20-rc4"=>-364, "v2.6.20-rc3"=>-365, "v2.6.20-rc2"=>-366, "v2.6.20-rc1"=>-367}
-
 					expect(actual["v4.2-rc4"]).to eq 0
 					expect(actual["v4.2-rc3"]).to eq(-1)
 					expect(actual["v2.6.20-rc2"]).to eq(-366)
