@@ -39,6 +39,8 @@ pack()
 		{
 			cd $tmp_dir/lkp/$LKP_USER/src/rootfs/addon
 			chmod -R 600 etc/ssh/* # to avoid sshd Permissions too open error
+			chmod g-ws root
+			chmod -R go-rwxs root/.ssh
 		}						&& find *			| $cpio_cmd --append
 
 		[ -d /osimage/addon-${ARCH} ] &&
