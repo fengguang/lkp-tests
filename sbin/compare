@@ -296,6 +296,7 @@ def setup_result_root_hash()
 		end
 	end
 	$_result_root_tuple.delete_if { |k, v| v.size <= 1 }
+	puts "tests: #{$_result_root_tuple.size}\n"
 end
 
 def get_valid_average(matrix, key)
