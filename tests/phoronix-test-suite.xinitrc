@@ -11,14 +11,14 @@ case $test in
 		# 2: 16 Million Digits [This Test could take a while to finish.]
 		# 3: 4 threads [2+ Cores Recommended]
 		# todo: select different test according to testbox's hardware
-		test_opt="Y\n1\n2\n3\nn"
+		test_opt="1\n2\n3\nn"
 		;;
 esac
 
 if [ "$test_opt" ]; then
 	echo -e "$test_opt" | cmd phoronix-test-suite run $test
 else
-	echo -e "Y\nn" | cmd phoronix-test-suite default-run $test
+	echo n | cmd phoronix-test-suite default-run $test
 fi
 
 end_time=$(date +%s.%N)
