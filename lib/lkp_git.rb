@@ -368,22 +368,13 @@ end
 def expand_possible_commit(s)
 	return s unless Git.commit_name? s
 	return s unless commit_exists s
-	return git_commit s
+	git = Git.open('linux')
+	return git.gcommit(s).sha
 end
 
 def is_linus_commit(commit)
 	git = Git.open('linux')
 	git.gcommit(commit).committer.name == 'Linus Torvalds'
-end
-
-def git_commit(commit)
-	return commit if Git.sha1_40?(commit)
-
-	$__git_commit_cache ||= {}
-	return $__git_commit_cache[commit] if $__git_commit_cache.include?(commit)
-	sha1_commit = `#{GIT} rev-list -n1 #{commit}`.chomp
-	$__git_commit_cache[commit] = sha1_commit unless sha1_commit.empty?
-	return sha1_commit
 end
 
 def commit_exists(commit)
