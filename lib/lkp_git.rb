@@ -151,6 +151,11 @@ module Git
 				self.message.split("\n").first
 			end
 
+			# FIXME rli9 need a better name, or remove the function if not common
+			def name
+				interested_tag || self.sha
+			end
+
 			def tags
 				@tags ||= @base.lib.tag('--points-at', self.sha).split
 			end
@@ -352,14 +357,6 @@ module Git
 		cache_method :init
 		cache_method :open
 	end
-end
-
-def commit_name(commit)
-	git = Git.open('linux')
-	tag = git.gcommit(commit).interested_tag
-
-	return tag if tag
-	return commit
 end
 
 def is_commit(commit)

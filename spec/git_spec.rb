@@ -32,6 +32,8 @@ describe Git do
 			it "should be same as lkp git" do
 				gcommit = @git.gcommit(linux_v4_1_rc8_commit)
 
+				expect(gcommit.name).to eq "v4.1-rc8"
+				expect(gcommit.sha).to eq linux_v4_1_rc8_commit
 				expect(gcommit.project).to eq "linux"
 				expect(gcommit.author.formatted_name).to eq "Linus Torvalds <torvalds@linux-foundation.org>"
 				expect(gcommit.committer.name).to eq "Linus Torvalds"

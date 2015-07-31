@@ -647,7 +647,9 @@ def show_delta(stat, key_g)
 		if $group_by_test
 			puts "#{$opt_field}"
 		else
-			result_path['commit'] = commit_name(result_path['commit']) if $opt_dimension != 'commit'
+			git = Git.open('linux')
+
+			result_path['commit'] = git.gcommit(result_path['commit']).name if $opt_dimension != 'commit'
 			test = result_path.test_desc $opt_dimension, $dim_not_a_param
 			puts test
 		end
