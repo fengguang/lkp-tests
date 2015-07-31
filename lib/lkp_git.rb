@@ -34,6 +34,14 @@ module Git
 			lib.tag('-l').split("\n")
 		end
 
+		def commit_exist?(commit)
+			lib.orig_command('rev-list', ['-1', commit])
+		rescue
+			false
+		else
+			true
+		end
+
 		def default_remote
 			# FIXME remove ENV usage
 			# TODO abstract File.dirname(File.dirname logic
@@ -367,28 +375,15 @@ end
 
 def expand_possible_commit(s)
 	return s unless Git.commit_name? s
-	return s unless commit_exists s
+
 	git = Git.open('linux')
+	return s unless git.commit_exist? s
 	return git.gcommit(s).sha
 end
 
 def is_linus_commit(commit)
 	git = Git.open('linux')
 	git.gcommit(commit).committer.name == 'Linus Torvalds'
-end
-
-def commit_exists(commit)
-	return false unless commit
-
-	$commits_set ||= Set.new
-	return true if $commits_set.include? commit
-
-	if system "#{GIT} rev-parse --quiet --verify '#{commit}^{commit}' >/dev/null 2>/dev/null"
-		$commits_set.add commit
-		return true
-	end
-
-	return false
 end
 
 def compare_version(aa, bb)

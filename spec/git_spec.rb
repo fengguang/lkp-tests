@@ -40,11 +40,23 @@ describe Git do
 		linux_v4_1_rc8_commit = "0f57d86787d8b1076ea8f9cbdddda2a46d534a27"
 		linux_non_release_commit = "b86a7563ca617aa49dfd6b836da4dd0351fe2acc"
 
-		describe Git::Object::Commit do
-			before do
-				@git = Git.open('linux')
-			end
+		before do
+			@git = Git.open('linux')
+		end
 
+		describe "commit_exist?" do
+			it "should detect commit existence" do
+				expect(@git.commit_exist? linux_v4_1_rc8_commit).to be true
+				expect(@git.commit_exist? "v4.1-rc8").to be true
+
+				expect(@git.commit_exist? linux_v4_1_rc8_commit + "bad").to be false
+				expect(@git.commit_exist? "v4.1-rc8" + "bad").to be false
+
+				expect(@git.commit_exist? nil).to be false
+			end
+		end
+
+		describe Git::Object::Commit do
 			it "should be same as lkp git" do
 				gcommit = @git.gcommit(linux_v4_1_rc8_commit)
 
@@ -164,10 +176,6 @@ describe Git do
 		end
 
 		describe Git::Base do
-			before do
-				@git = Git.init
-			end
-
 			describe "gcommit" do
 				it "should cache commits of single git object" do
 					gcommit1 = @git.gcommit(linux_v4_1_rc8_commit)
