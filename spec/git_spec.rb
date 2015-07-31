@@ -19,6 +19,22 @@ describe Git do
 		end
 	end
 
+	describe "commit_name?" do
+		it "should be falsy when invalid commit name" do
+			expect(described_class.commit_name?("0f57d8")).to be_falsy
+			expect(described_class.commit_name?("0z57d86787d8b1076ea8f9cbdddda2a46d534a2")).to be_falsy
+			expect(described_class.commit_name?("0f57d86787d8b1076ea8f9cbdddda2a46d534a271")).to be_falsy
+		end
+
+		it "should be truthy when valid commit name" do
+			expect(described_class.commit_name?("0f57d86")).to be_truthy
+			expect(described_class.commit_name?("0f57d867")).to be_truthy
+			expect(described_class.commit_name?("0f57d86787d8b1076ea8f9cbdddda2a46d534a2")).to be_truthy
+			expect(described_class.commit_name?("0f57d86787d8b1076ea8f9cbdddda2a46d534a27")).to be_truthy
+			expect(described_class.commit_name?("v4.1-rc8")).to be_truthy
+		end
+	end
+
 	context "linux" do
 		# tag v4.1-rc8
 		linux_v4_1_rc8_commit = "0f57d86787d8b1076ea8f9cbdddda2a46d534a27"

@@ -353,20 +353,20 @@ module Git
 			commit =~ /^[\da-f]{40}$/
 		end
 
+		def commit_name?(commit_name)
+			commit_name =~ /^[\da-f~^]{7,}$/ ||
+			commit_name =~ /^v[234]\.\d+/ ||
+			sha1_40?(commit_name)
+		end
+
 		cache_method :project_remotes
 		cache_method :init
 		cache_method :open
 	end
 end
 
-def is_commit(commit)
-	commit =~ /^[0-9a-f~^]{7,}$/ or
-	commit =~ /^v[234]\.\d+/ or
-	commit =~ /[a-f0-9]{40}/
-end
-
 def expand_possible_commit(s)
-	return s unless is_commit s
+	return s unless Git.commit_name? s
 	return s unless commit_exists s
 	return git_commit s
 end
