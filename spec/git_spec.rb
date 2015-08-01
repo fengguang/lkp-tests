@@ -70,6 +70,7 @@ describe Git do
 				expect(gcommit.date.to_s).to eq '2015-06-15 09:51:10 +0800'
 				expect(gcommit.committer_date.to_s).to eq '2015-06-15 09:51:10 +0800'
 				expect(gcommit.interested_tag).to eq "v4.1-rc8"
+				expect(gcommit.interested_tag).to eq commit_tag(linux_v4_1_rc8_commit)
 				expect(gcommit.parent_shas).to eq ["b86a7563ca617aa49dfd6b836da4dd0351fe2acc"]
 				expect(gcommit.committer.name).to eq 'Linus Torvalds'
 			end
@@ -99,7 +100,10 @@ describe Git do
 			describe "release_tag" do
 				it "should be same as linus_release_tag with default arguments" do
 					expect(@git.gcommit(linux_v4_1_rc8_commit).release_tag).to eq 'v4.1-rc8'
+					expect(@git.gcommit(linux_v4_1_rc8_commit).release_tag).to eq linus_release_tag(linux_v4_1_rc8_commit)
+
 					expect(@git.gcommit(linux_non_release_commit).release_tag).to eq nil
+					expect(@git.gcommit(linux_non_release_commit).release_tag).to eq linus_release_tag(linux_non_release_commit)
 				end
 
 				it "should cache result" do
@@ -158,14 +162,17 @@ describe Git do
 			describe "last_release_tag" do
 				it "should be same as last_linus_release_tag with default arguments" do
 					expect(@git.gcommit(linux_v4_1_rc8_commit).last_release_tag).to eq ["v4.1-rc8", true]
+					expect(@git.gcommit(linux_v4_1_rc8_commit).last_release_tag).to eq last_linus_release_tag(linux_v4_1_rc8_commit)
 
 					linux_v2_6_32_commit = @git.tag('v2.6.32').commit
 					expect(linux_v2_6_32_commit.last_release_tag).to eq ["v2.6.32", true]
+					expect(linux_v2_6_32_commit.last_release_tag).to eq last_linus_release_tag(linux_v2_6_32_commit)
 
 					expect(@git.gcommit('v2.6.32~').last_release_tag).to eq ["v2.6.32-rc8", false]
 
 					linux_v2_6_32_child_commit = "03b1320dfceeb093890cdd7433e910dca6225ddb"
 					expect(@git.gcommit(linux_v2_6_32_child_commit).last_release_tag).to eq ["v2.6.32-rc8", false]
+					expect(@git.gcommit(linux_v2_6_32_child_commit).last_release_tag).to eq last_linus_release_tag(linux_v2_6_32_child_commit)
 				end
 
 				it "should cache result" do
@@ -204,6 +211,8 @@ describe Git do
 					expect(actual["v4.2-rc3"]).to eq(-1)
 					expect(actual["v2.6.20-rc2"]).to eq(-366)
 					expect(actual["v2.6.20-rc1"]).to eq(-367)
+
+					expect(actual).to eq linus_tags
 				end
 
 				it "should cache result" do
