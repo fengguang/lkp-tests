@@ -9,6 +9,29 @@ describe ResultPath do
 			expect(result_path.parse_result_root '/result/aim7/performance-2000-fork_test/brickland3/debian-x86_64-2015-02-07.cgz/x86_64-rhel/gcc-4.9/0f57d86787d8b1076ea8f9cbdddda2a46d534a27/2').to be true
 			expect(result_path.parse_result_root '/result/aim7/performance-2000-fork_test/brickland3/debian-x86_64-2015-02-07.cgz/x86_64-rhel/gcc-4.9/0f57d86787d8b1076ea8f9cbdddda2a46d534a27/').to be true
 			expect(result_path.parse_result_root '/result/aim7/performance-2000-fork_test/brickland3/debian-x86_64-2015-02-07.cgz/x86_64-rhel/gcc-4.9/0f57d86787d8b1076ea8f9cbdddda2a46d534a27').to be true
+			expect(result_path['testcase']).to eq 'aim7'
+			expect(result_path['path_params']).to eq 'performance-2000-fork_test'
+			expect(result_path['tbox_group']).to eq 'brickland3'
+			expect(result_path['rootfs']).to eq 'debian-x86_64-2015-02-07.cgz'
+			expect(result_path['kconfig']).to eq 'x86_64-rhel'
+			expect(result_path['compiler']).to eq 'gcc-4.9'
+			expect(result_path['commit']).to eq '0f57d86787d8b1076ea8f9cbdddda2a46d534a27'
+			expect(result_path.parse_result_root '/result/build-dpdk/x86_64-native-linuxapp-gcc/gcc/60c5c5692107abf4157d48493aa2dec01f6b97cc/0').to be true
+			expect(result_path.parse_result_root '/result/build-dpdk/x86_64-native-linuxapp-gcc/gcc/60c5c5692107abf4157d48493aa2dec01f6b97cc/').to be true
+			expect(result_path.parse_result_root '/result/build-dpdk/x86_64-native-linuxapp-gcc/gcc/60c5c5692107abf4157d48493aa2dec01f6b97cc').to be true
+			expect(result_path['testcase']).to eq 'build-dpdk'
+			expect(result_path['dpdk_config']).to eq 'x86_64-native-linuxapp-gcc'
+			expect(result_path['dpdk_compiler']).to eq 'gcc'
+			expect(result_path['dpdk_commit']).to eq '60c5c5692107abf4157d48493aa2dec01f6b97cc'
+			expect(result_path.parse_result_root '/result/lkp-a03/hwinfo/performance-1/debian-x86_64.cgz/x86_64-rhel/0df1f2487d2f0d04703f142813d53615d62a1da4/').to be true
+			expect(result_path.parse_result_root '/result/lkp-a03/hwinfo/performance-1/debian-x86_64.cgz/x86_64-rhel/0df1f2487d2f0d04703f142813d53615d62a1da4').to be true
+			expect(result_path['testcase']).to eq 'hwinfo'
+			expect(result_path['path_params']).to eq 'performance-1'
+			expect(result_path['tbox_group']).to eq 'lkp-a03'
+			expect(result_path['rootfs']).to eq 'debian-x86_64.cgz'
+			expect(result_path['kconfig']).to eq 'x86_64-rhel'
+			expect(result_path['compiler']).to eq 'gcc-4.9'
+			expect(result_path['commit']).to eq '0df1f2487d2f0d04703f142813d53615d62a1da4'
 		end
 
 		it "should fail when commit id length is invalid" do
@@ -17,6 +40,12 @@ describe ResultPath do
 			expect(result_path.parse_result_root '/result/aim7/performance-2000-fork_test/brickland3/debian-x86_64-2015-02-07.cgz/x86_64-rhel/gcc-4.9/0f57d86787d8b1076ea8f9cbdddda2a46d534a2').to be false
 			expect(result_path.parse_result_root '/result/aim7/performance-2000-fork_test/brickland3/debian-x86_64-2015-02-07.cgz/x86_64-rhel/gcc-4.9/').to be false
 			expect(result_path.parse_result_root '/result/aim7/performance-2000-fork_test/brickland3/debian-x86_64-2015-02-07.cgz/x86_64-rhel/gcc-4.9').to be false
+			expect(result_path.parse_result_root '/result/build-dpdk/x86_64-native-linuxapp-gcc/gcc/60c5c5692107abf4157d48493aa2dec01f6b97c').to be false
+			expect(result_path.parse_result_root '/result/build-dpdk/x86_64-native-linuxapp-gcc/gcc/').to be false
+			expect(result_path.parse_result_root '/result/build-dpdk/x86_64-native-linuxapp-gcc/gcc').to be false
+			expect(result_path.parse_result_root '/result/lkp-a03/hwinfo/performance-1/debian-x86_64.cgz/x86_64-rhel/0df1f2487d2f0d04703f142813d53615d62a1da').to be false
+			expect(result_path.parse_result_root '/result/lkp-a03/hwinfo/performance-1/debian-x86_64.cgz/x86_64-rhel/').to be false
+			expect(result_path.parse_result_root '/result/lkp-a03/hwinfo/performance-1/debian-x86_64.cgz/x86_64-rhel').to be false
 		end
 
 		describe "project_info" do
