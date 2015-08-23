@@ -90,7 +90,8 @@ module Compare
 		prop_reader :stat_calc_funcs
 		prop_with :mresult_roots, :compare_axis_keys,
 			  :use_all_stat_keys, :include_stat_keys,
-			  :use_stat_keys, :group_by_stat
+			  :include_all_failure_stat_keys, :use_stat_keys,
+			  :group_by_stat
 
 		private
 
@@ -230,6 +231,11 @@ module Compare
 			}.flatten
 		end
 
+		def get_include_all_failure_stat_keys
+			return [] unless @comparer.include_all_failure_stat_keys
+			get_all_stat_keys.select { |stat_key| is_failure stat_key }
+		end
+
 		def calc_changed_stat_keys
 			if @comparer.use_all_stat_keys
 				stat_keys = get_all_stat_keys
@@ -238,7 +244,8 @@ module Compare
 			else
 				stat_keys = _calc_changed_stat_keys
 			end
-			stat_keys | get_include_stat_keys
+			stat_keys |= get_include_stat_keys
+			stat_keys |= get_include_all_failure_stat_keys
 		end
 
 		def changed_stat_keys
