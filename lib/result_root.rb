@@ -148,6 +148,7 @@ class MResultRoot
 	DMESG_GLOBS = DMESG_FILE_GLOBS.map { |g| "[0-9]*/#{g}" }
 	DMESG_JSON_GLOB = '[0-9]*/dmesg.json'
 	JOB_GLOB = '[0-9]*/job.yaml'
+	JOB_FILE1 = 'job.yaml'
 	COMPLETIONS_FILE = 'completions'
 	MATRIX = 'matrix.json'
 
@@ -207,6 +208,8 @@ class MResultRoot
 	end
 
 	def job_file
+		job1 = path(JOB_FILE1)
+		return job1 if File.exist? job1
 		jobs = glob(JOB_GLOB)
 		jobs[0] if jobs.size != 0
 	end
@@ -270,6 +273,7 @@ end
 
 class << MResultRoot
 	def valid?(path)
+		return true if File.exists? File.join(path, self::JOB_FILE1)
 		return false if !File.exists? path
 		return Dir[File.join path, self::JOB_GLOB].first
 	end
