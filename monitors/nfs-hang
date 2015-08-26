@@ -1,0 +1,42 @@
+#!/bin/sh
+
+. $LKP_SRC/lib/common.sh
+. $LKP_SRC/lib/wait.sh
+. $LKP_SRC/lib/job-init.sh
+[ -f $LKP_SRC/lib/misc.sh ] &&
+	. $LKP_SRC/lib/misc.sh 2>/dev/null
+
+setup_wait
+
+force_reboot()
+{
+	echo s > /proc/sysrq-trigger
+	sleep 5
+	echo b > /proc/sysrq-trigger
+}
+
+nfs_hang()
+{
+	for i in $(seq 10); do
+		timeout 120 df > /dev/null
+		[ "$?" -eq 124 ] || return 1
+	done
+	ping -c 5 -q $LKP_SERVER > /dev/null || return 1
+	return 0
+}
+
+nfs_hang_watchdog()
+{
+	while :
+	do
+		wait_timeout 1800
+
+		if nfs_hang; then
+			set_job_state "nfs_hang"
+			echo "NFS hang! Force reboot!" 1>&2
+			force_reboot
+		fi
+	done
+}
+
+nfs_hang_watchdog
