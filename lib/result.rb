@@ -32,7 +32,8 @@ class ResultPath < Hash
 		# FIXME rli9 result path can be part of test configuration, like combine # - indicated parameter in test
 		# FIXME rli9 move to lkp-core for internal project
 		'build-gmin'	=> %w[ gmin_compiler gmin_commit run ],
-		'gmin-kpi' => %w[ gmin_compiler gmin_commit gmin_kpi run ]
+		'gmin-kpi' => %w[ gmin_compiler gmin_commit gmin_kpi run ],
+		'build-android'	=> %w[ android_branch android_manifest android_lunch run ],
 	}
 
 	def path_scheme
