@@ -295,6 +295,22 @@ class Job
 		as
 	end
 
+	def each_commit
+		block_given? or return enum_for(__method__)
+
+		@job.each { |key, val|
+			case key
+			when 'commit'
+				yield val, @job['branch'], 'linux'
+			when 'head_commit', 'base_commit'
+				nil
+			when /_commit$/
+				project = key.sub /_.*$/, ''
+				yield val, @job["#{project}_branch"], project
+			end
+		}
+	end
+
 	# TODO: reimplement with axes
 	def _result_root
 		result_path = ResultPath.new
