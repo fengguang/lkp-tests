@@ -3,6 +3,7 @@
 LKP_SRC ||= ENV['LKP_SRC']
 
 MAX_MATRIX_COLS = 100
+STATS_SOURCE_KEY = 'stats_source'
 
 require 'set'
 
@@ -146,12 +147,21 @@ def shrink_matrix(matrix, max_cols)
 	end
 end
 
+def matrix_delete_col(matrix, col)
+	matrix.each { |k, v|
+		v.delete_at col
+	}
+end
+
 def unite_to(stats, matrix_root, max_cols = nil)
 	matrix_file = matrix_root + '/matrix.json'
 
 	matrix = load_matrix_file(matrix_root + '/matrix.json')
 	matrix = load_matrix_file(matrix_root + '/matrix.yaml') unless matrix
 	matrix = {} unless matrix
+
+	dup_col = matrix[STATS_SOURCE_KEY].index stats[STATS_SOURCE_KEY]
+	matrix_delete_col(matrix, dup_col) if dup_col
 
 	matrix = add_stats_to_matrix(stats, matrix)
 	shrink_matrix(matrix, max_cols) if max_cols
