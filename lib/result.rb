@@ -33,7 +33,7 @@ class ResultPath < Hash
 		# FIXME rli9 move to lkp-core for internal project
 		'build-gmin'	=> %w[ gmin_compiler gmin_commit run ],
 		'gmin-kpi' => %w[ gmin_compiler gmin_commit gmin_kpi run ],
-		'build-android'	=> %w[ android_branch android_manifest android_lunch run ],
+		'build-android'	=> %w[ android_manifest android_commit android_lunch run ],
 	}
 
 	def path_scheme
