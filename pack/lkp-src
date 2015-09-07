@@ -42,6 +42,12 @@ pack()
 			chmod g-ws root
 			chmod -R go-rwxs root/.ssh
 		}						&& find *			| $cpio_cmd --append
+		{
+			# restore permission for cleanup
+			cd $tmp_dir/lkp/$LKP_USER/src/rootfs/addon
+			find . -type d -exec chmod g+rwx \{\} \;
+			chmod -R g+rw *
+		}
 
 		[ -d /osimage/addon-${ARCH} ] &&
 		cd /osimage/addon-${ARCH}			&& find *			| $cpio_cmd --append
