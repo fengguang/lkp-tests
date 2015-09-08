@@ -14,6 +14,8 @@ require "#{LKP_SRC}/lib/yaml.rb"
 require "#{LKP_SRC}/lib/simple_cache_method"
 require "#{LKP_SRC}/lib/assert"
 
+$work_tree_base_dir = '/c/repo'
+
 module Git
 	class Base
 		include SimpleCacheMethod
@@ -285,7 +287,7 @@ module Git
 		def init(options = {})
 			options[:project] ||= 'linux'
 
-			working_dir = ENV['SRC_ROOT'] || "/c/repo/#{options[:project]}"
+			working_dir = ENV['SRC_ROOT'] || project_work_tree(options[:project])
 
 			Git.orig_init(working_dir, options)
 		end
@@ -297,7 +299,7 @@ module Git
 		def open(project)
 			assert(project, "project parameter can't be #{project.inspect}")
 
-			working_dir = ENV['SRC_ROOT'] || "/c/repo/#{project}"
+			working_dir = ENV['SRC_ROOT'] || project_work_tree(project)
 
 			Git.orig_open(working_dir, project: project)
 		end
@@ -371,6 +373,10 @@ module Git
 		cache_method :init
 		cache_method :open
 	end
+end
+
+def project_work_tree(project)
+	File.join $work_tree_base_dir, project
 end
 
 def expand_possible_commit(s)
