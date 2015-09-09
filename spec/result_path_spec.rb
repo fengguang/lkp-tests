@@ -72,6 +72,15 @@ describe ResultPath do
 			end
 		end
 
+		describe "each_commit" do
+			it "should return enumerator" do
+				result_path = ResultPath.new
+				result_path.parse_result_root '/result/build-dpdk/x86_64-native-linuxapp-gcc/gcc/60c5c5692107abf4157d48493aa2dec01f6b97cc'
+
+				expect(result_path.each_commit.any? {|project| project == 'dpdk'}).to be true
+			end
+		end
+
 		describe "commit_axis" do
 			it "should handle dpdk path" do
 				result_path = ResultPath.new

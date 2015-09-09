@@ -138,7 +138,7 @@ class ResultPath < Hash
 	end
 
 	def each_commit
-		return unless block_given?
+		return enum_for(__method__) unless block_given?
 
 		self.each do |axis, val|
 			case axis
