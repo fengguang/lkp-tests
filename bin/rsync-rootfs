@@ -1,0 +1,52 @@
+#!/bin/sh
+# This script is used to sync a remote-rootfs directory to local
+# disk partition, in order to sync multiple rootfs, we use the
+# btrfs as the local disk partition filesystem, for its subvolume
+# feature.
+#
+# Currently, only support NFS format remote-rootfs as the first
+# parameter, but easy to add more remote-rootfs format support
+# in future if we need.
+
+# eg: inn:/export/debian-full-x86_64
+source=$1
+[ -z "${source}" ] && {
+	echo "Parameter is empty." 
+	exit 1
+}
+
+rootfs_name=${source##*/}
+
+# eg: /dev/disk/by-id/ata-WDC_WD1002FAEX-00Z3A0_WD-WCATRC577623-part2
+dest_partition=$2
+[ ! -b ${dest_partition} ] && {
+	echo "Partition ${dest_partition} can't be found!" 
+	exit 1
+}
+
+fs_type=$(blkid -o value -s TYPE $dest_partition)
+[ "${fs_type}" != "btrfs" ] && {
+	mkfs.btrfs -f ${dest_partition} || exit 
+}
+
+mkdir -p /opt/rootfs || exit 
+mount ${dest_partition} /opt/rootfs || exit
+
+# for CACHE_DIR
+mkdir -p /opt/rootfs/tmp || exit
+
+# After create, the subvolume can be used like:
+# mount -o subvol=$rootfs_name $dest_partition /some-path
+[ ! -d "/opt/rootfs/${rootfs_name}" ] && {
+	btrfs subvolume create /opt/rootfs/$rootfs_name || exit
+}
+
+# create NFS mount directory
+nfs_mount_rootfs=/opt/rootfs/NFS-${rootfs_name}
+
+[ -d ${nfs_mount_rootfs} ] || mkdir -p ${nfs_mount_rootfs} || exit
+
+# mount NFS to local and rsync to destination subvolume
+mount $source $nfs_mount_rootfs || exit
+rsync -aix --delete $nfs_mount_rootfs/ /opt/rootfs/$rootfs_name || exit 
+
