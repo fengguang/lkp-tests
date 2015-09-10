@@ -2,4 +2,5 @@
 
 cd $BENCHMARK_ROOT/nuttcp || exit
 
+# add multi-thread
 cmd ./nuttcp -S --nofork &

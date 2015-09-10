@@ -1,5 +1,14 @@
 #!/bin/sh
 ## Utility library for managing the Linux Kernel ND (NFIT-defined/NVDIMM) Subsystem
 
+# cd
+# modprobe
+# read commit from kernel module
+git checkout $commit
+
+./autogen.sh
+./configure CFLAGS='-g -O0' --enable-test --prefix=/lkp/benchmarks/ndctl --sysconfdir=/lkp/benchmarks/ndctl/etc --libdir=/lkp/benchmarks/ndctl/lib
+make
+
 LD_LIBRARY_PATH=/lkp/benchmarks/ndctl/lib \
 /lkp/benchmarks/ndctl/bin/ndctl test
