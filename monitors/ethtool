@@ -1,0 +1,20 @@
+#!/bin/sh
+
+command -v ethtool >/dev/null || exit 0
+
+IFACE=eth0 # FIXME
+
+take_snapshot()
+{
+	echo time: $(date +%s.%N)
+	ethtool -S $IFACE
+}
+
+take_snapshot
+
+. $LKP_SRC/lib/wait.sh
+setup_wait
+
+wait_post_test
+
+take_snapshot
