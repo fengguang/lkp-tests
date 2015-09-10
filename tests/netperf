@@ -1,6 +1,7 @@
 #!/bin/sh
 # - runtime
 # - nr_threads
+# - ip
 # - test
 # - send_size
 
@@ -17,12 +18,26 @@ sleep 1
 [ -n "$send_size" ] && test_options="-- -m $send_size"
 
 [ -n "$direct_server_ips" ] && server=$direct_server_ips
-[ -z "$server" ] && server=127.0.0.1
+[ -z "$server" ] && {
+	if [ "$ip" = 'ipv6' ]; then
+		server=::1
+	else
+		server=127.0.0.1
+	fi
+}
 server=${server%% *}
+
+opt_ip=
+[ "$ip" = 'ipv4' ] && opt_ip='-4'
+[ "$ip" = 'ipv6' ] && opt_ip='-6'
 
 for i in $(seq $nr_threads)
 do
-	cmd netperf -t $test -c -C -l $runtime $test_options -H $server &
+	cmd netperf $opt_ip -t $test -c -C -l $runtime $test_options -H $server &
 done
 
 wait
+
+# Comments from Jesse Brandeburg <jesse.brandeburg@intel.com>
+# -P0 -- -r 64k -b 10
+# -T0,0

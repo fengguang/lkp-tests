@@ -1,6 +1,10 @@
 testcase: netperf
 category: benchmark
 
+ip:
+- ipv4
+# - ipv6
+
 runtime: 300s
 nr_threads:
 - 200%

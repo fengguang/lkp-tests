@@ -1,6 +1,11 @@
 #!/bin/sh
+# - ip
 
 export PATH=$BENCHMARK_ROOT/netperf/bin:$PATH
 
+opt_ip=
+[ "$ip" = 'ipv4' ] && opt_ip='-4'
+[ "$ip" = 'ipv6' ] && opt_ip='-6'
+
 # start netserver
-cmd netserver
+cmd netserver $opt_ip
