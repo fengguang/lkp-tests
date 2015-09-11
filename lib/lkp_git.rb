@@ -1,14 +1,15 @@
 #!/usr/bin/env ruby
 
-require 'set'
-require 'time'
-require 'git'
-
 LKP_SRC ||= ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
 
+# Note! require 'git' will reset ENV GIT_WORK_TREE/GIT_DIR
 GIT_WORK_TREE	||= ENV['GIT_WORK_TREE'] || ENV['LINUX_GIT'] || '/c/repo/linux'
 GIT_DIR		||= ENV['GIT_DIR'] || GIT_WORK_TREE + '/.git'
 GIT		||= "git --work-tree=#{GIT_WORK_TREE} --git-dir=#{GIT_DIR}"
+
+require 'set'
+require 'time'
+require 'git'
 
 require "#{LKP_SRC}/lib/yaml.rb"
 require "#{LKP_SRC}/lib/simple_cache_method"
