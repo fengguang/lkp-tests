@@ -139,7 +139,6 @@ build_install_benchmarks() {
 	exit
 }
 
-. $LKP_SRC/lib/detect-system.sh
 . $LKP_SRC/lib/install.sh
 
 detect_system
