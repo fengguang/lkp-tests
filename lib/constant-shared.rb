@@ -1,5 +1,3 @@
-#!/bin/bash
-
 #########################################################
 # CAUTION: For constants shared between shell and ruby
 #          Be careful to write code compatible with shell
