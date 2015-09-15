@@ -197,16 +197,26 @@ def dim_name(dim)
 	end
 end
 
-def get_json_field(file, key)
+def get_json_field(file, key, is_rt)
 	matrix = load_json file, true
-	samples_fill_missing_zeros(matrix, key)
+	if is_rt
+		# convert stats.json data structure to that of matrix.json
+		nmatrix = {}
+		matrix.each { |k, v|
+			nmatrix[k] = [v]
+		}
+	else
+		nmatrix = matrix
+	end
+	samples_fill_missing_zeros(nmatrix, key)
 end
 
 def add_stats(path)
 	$opt_grep.each  { |re| return false if path !~ re }
 	$opt_vgrep.each { |re| return false if path =~ re }
 
-	if File.basename(path) =~ /^[0-9]{1,3}$/
+	is_rt = File.basename(path) =~ /^[0-9]{1,3}$/
+	if is_rt
 		stats_json = path + '/stats.json'
 	else
 		stats_json = path + '/matrix.json'
@@ -216,7 +226,7 @@ def add_stats(path)
 		# STDERR.puts stats_json + ' does not exist'
 		return
 	end
-	field_value = get_json_field(stats_json, $opt_field)
+	field_value = get_json_field(stats_json, $opt_field, is_rt)
 	if field_value == nil or field_value == ''
 		# STDERR.puts "#{stats_json}: no such field: #{$opt_field}"
 		field_value = 0
