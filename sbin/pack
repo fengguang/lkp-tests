@@ -44,15 +44,6 @@ usage()
 	exit 1
 }
 
-install_required_packages()
-{
-	local required_packs
-	if [ -f $1 ]; then
-		required_packs=$(cat $1)
-		apt-get install -y $required_packs
-	fi
-}
-
 while getopts "a:cd:s:" opt
 do
 	case $opt in
@@ -79,7 +70,6 @@ rm -fr "$BM_ROOT"
 mkdir -p $BM_ROOT
 
 cd /tmp
-[[ "$distro" = "debian" ]] && install_required_packages $LKP_SRC/distro/debian/$BM_NAME-dev
 download
 build
 install
