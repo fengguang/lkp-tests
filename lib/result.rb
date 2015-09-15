@@ -33,6 +33,7 @@ class ResultPath < Hash
 		# FIXME rli9 move to lkp-core for internal project
 		'android-kpi' => %w[ android_kpi android_manifest android_lunch android_commit run ],
 		'build-android'	=> %w[ android_manifest android_lunch android_commit run ],
+		'build-gerrit_change' => %w[gerrit_change_manifest, gerrit_change_lunch, gerrit_change_commit run]
 	}
 
 	def path_scheme
