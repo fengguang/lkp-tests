@@ -31,7 +31,7 @@ class ResultPath < Hash
 		'build-dpdk'	=> %w[ dpdk_config dpdk_compiler dpdk_commit run ],
 		# FIXME rli9 result path can be part of test configuration, like combine # - indicated parameter in test
 		# FIXME rli9 move to lkp-core for internal project
-		'android-kpi' => %w[ android_compiler android_kpi android_commit run ],
+		'android-kpi' => %w[ android_kpi android_manifest android_lunch android_commit run ],
 		'build-android'	=> %w[ android_manifest android_lunch android_commit run ],
 	}
 
