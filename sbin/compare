@@ -182,10 +182,8 @@ def dim_name(dim)
 	case $opt_dimension
 	when 'commit'
 		project = 'linux'
-		tag = Git.open(project).gcommit(dim).interested_tag
-
-		return tag if tag
-		return dim[0..(REL_WIDTH + ABS_WIDTH + ERR_WIDTH)]
+		tag = Git.open(project).gcommit(dim).interested_tag if Git.project_exist?(project)
+		return tag || dim[0..(REL_WIDTH + ABS_WIDTH + ERR_WIDTH)]
 	when /_commit$/
 		# FIXME rli9 duplicated code below, need refactoring
 		project = $opt_dimension.sub(/_.*$/, '')

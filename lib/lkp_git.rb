@@ -59,6 +59,10 @@ module Git
 			Git.orig_open(working_dir, project: project)
 		end
 
+		def project_exist?(project)
+			Dir.exist? project_work_tree(project)
+		end
+
 		def linux_last_release_tag_strategy(git_base, commit_sha)
 			version = patch_level = sub_level = rc = nil
 
