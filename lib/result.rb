@@ -146,7 +146,7 @@ class ResultPath < Hash
 			when 'commit'
 				yield 'linux', axis
 			when /_commit$/
-				yield axis.sub(/_.*$/, ''), axis
+				yield axis.sub(/_commit$/, ''), axis
 			end
 		end
 	end

@@ -305,7 +305,7 @@ class Job
 			when 'head_commit', 'base_commit'
 				nil
 			when /_commit$/
-				project = key.sub /_.*$/, ''
+				project = key.sub /_commit$/, ''
 				yield val, @job["#{project}_branch"], project
 			end
 		}
