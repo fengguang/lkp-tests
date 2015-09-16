@@ -352,7 +352,6 @@ end
 class << Job
 	def open(jobfile)
 		j = new
-		j.load(jobfile)
-		j
+		j.load(jobfile) && j
 	end
 end
