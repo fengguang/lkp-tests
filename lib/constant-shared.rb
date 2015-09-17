@@ -13,6 +13,7 @@ ERR_ASYNC=12
 ERR_INVALID_COMMIT=13
 ERR_INVALID=14		# Invalid argument
 ERR_UNSUPPORTED=15	# Unsupported feature
+ERR_TIMEOUT=16		# Timed out
 ERR_UNKNOWN=127		# Unknown error
 
 ##
