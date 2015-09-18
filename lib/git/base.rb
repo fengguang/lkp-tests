@@ -31,6 +31,10 @@ module Git
 			true
 		end
 
+		def remote_branch_exist?(remote, branch)
+			!command("branch --list -r #{remote}/#{branch}").empty?
+		end
+
 		def default_remote
 			# FIXME remove ENV usage
 			# TODO abstract File.dirname(File.dirname logic
@@ -80,6 +84,10 @@ module Git
 
 		def release_tag_order(tag)
 			release_tags_with_order[tag]
+		end
+
+		def command(cmd, opts = [], chdir = true, redirect = '', &block)
+			lib.command(cmd, opts, chdir, redirect)
 		end
 	end
 end
