@@ -80,18 +80,19 @@ end
 
 # programs[script] = full/path/to/script
 def __create_programs_hash(glob, lkp_src)
-	$programs = {}
+	programs = {}
 	Dir.glob("#{lkp_src}/#{glob}").each { |path|
 		next if File.directory?(path)
 		next if not File.executable?(path)
 		file = File.basename(path)
 		next if file == 'wrapper'
-		if $programs.include? file
+		if programs.include? file
 			STDERR.puts "Conflict names #{$programs[file]} and #{path}"
 			next
 		end
-		$programs[file] = path
+		programs[file] = path
 	}
+	programs
 end
 
 def create_programs_hash(glob, lkp_src = LKP_SRC)
@@ -101,7 +102,7 @@ def create_programs_hash(glob, lkp_src = LKP_SRC)
 		return
 	end
 
-	__create_programs_hash(glob, lkp_src)
+	$programs = __create_programs_hash(glob, lkp_src)
 
 	$programs_cache[glob] = $programs
 end
