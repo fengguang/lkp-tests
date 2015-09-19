@@ -53,7 +53,7 @@ def stats_with_most_variation(matrix)
 		margin = size >> MARGIN_SHIFT
 		min = sorted[margin]
 		max = sorted[-margin - 1]
-		next unless is_valid_perf_metric(field, max, max)
+		next unless is_reasonable_perf_change(field, max, max)
 		next if min == max
 		next if sorted[0] == values[0] and
 			sorted[-1] == values[-1] and

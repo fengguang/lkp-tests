@@ -58,7 +58,9 @@ def is_perf_metric(name)
 	end
 end
 
-def is_valid_perf_metric(name, delta, max)
+# Check whether it looks like a reasonable performance change,
+# to avoid showing unreasonable ones to humans in compare/mplot output.
+def is_reasonable_perf_change(name, delta, max)
 
 	$perf_metrics_threshold.each { |k, v|
 		next unless name =~ %r{^#{k}$}
@@ -459,7 +461,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
 
 		next unless ratio > 1.01 # time.elapsed_time only has 0.01s precision
 		next unless ratio > 1.1 or is_perf_metric(k)
-		next unless is_valid_perf_metric(k, delta, max)
+		next unless is_reasonable_perf_change(k, delta, max)
 
 		interval_a = "[ %-10.5g - %-10.5g ]" % [ min_a, max_a ]
 		interval_b = "[ %-10.5g - %-10.5g ]" % [ min_b, max_b ]
