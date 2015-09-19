@@ -153,6 +153,9 @@ output.each_line { |line|
 	when /([A-Z]+[ a-zA-Z]*): [a-f0-9]{4} \[#[0-9]+\] /
 		line = $1
 		bug_to_bisect = $1
+	when /(BUG: KASan: [a-z ]+) in /
+		line = $1
+		bug_to_bisect = $1
 	when /^backtrace:([a-zA-Z0-9_]+)/
 		bug_to_bisect = $1 + '+0x'
 	else
