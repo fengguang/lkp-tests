@@ -150,7 +150,7 @@ output.each_line { |line|
 	when  /(BUG: Dentry ).* (still in use) .* \[unmount of /
 		line = $1 + $2
 		bug_to_bisect = $1 + '.* ' + $2
-	when /([a-zA-Z]+[ a-zA-Z]*: [a-f0-9]{4}) \[#[0-9]+\] [A-Z_ ]*$/
+	when /([A-Z]+[ a-zA-Z]*): [a-f0-9]{4} \[#[0-9]+\] /
 		line = $1
 		bug_to_bisect = $1
 	when /^backtrace:([a-zA-Z0-9_]+)/
