@@ -102,17 +102,18 @@ def is_changed_stats(sorted_a, min_a, mean_a, max_a,
 	end
 
 	if is_latency_stat
-		if min_a > max_b + (max_b - min_b) or
-		   min_b > max_a + (max_a - min_a)
+		if options['distance']
+			# auto start bisect only for big regression
+			return false if sorted_b.size <= 3 and sorted_a.size <= 3
+			return false if sorted_b.size <= 3 and min_a < 2 * options['distance'] * max_b
+			return false if max_a < 2 * options['distance'] * max_b
+			return false if mean_a < options['distance'] * max_b
 			return true
-		elsif options['distance']
-			return false unless max_a > 2 * options['distance'] * max_b and mean_a > options['distance'] * max_b or
-					    max_b > 2 * options['distance'] * max_a and mean_b > options['distance'] * max_a
 		else
-			return false unless max_a > 3 * max_b or
-				            max_b > 3 * max_a
+			return true if max_a > 3 * max_b
+			return true if max_b > 3 * max_a
+			return false
 		end
-		return true
 	end
 
 	len_a = max_a - min_a
