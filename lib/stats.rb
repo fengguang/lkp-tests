@@ -376,6 +376,12 @@ end
 def __get_changed_stats(a, b, is_incomplete_run, options)
 	changed_stats = {}
 
+	if options['regression-only']
+		has_boot_fix = (b['last_state.booting'] && !a['last_state.booting'])
+	else
+		has_boot_fix = nil
+	end
+
 	resize = options['resize']
 
 	cols_a = matrix_cols a
@@ -442,6 +448,18 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
 		next unless is_changed_stats(sorted_a, min_a, mean_a, max_a,
 					     sorted_b, min_b, mean_b, max_b,
 					     is_failure_stat, is_latency_stat, options)
+
+		if options['regression-only']
+			if is_failure_stat
+				if max_a == 0
+					has_boot_fix = true if k =~ /^dmesg\./
+					next
+				end
+				# this relies on the fact dmesg.* comes ahead
+				# of kmsg.* in etc/default_stats.yaml
+				next if has_boot_fix and k =~ /^kmsg\./
+			end
+		end
 
 		max = [max_b, max_a].max
 		x = max_a - min_a
