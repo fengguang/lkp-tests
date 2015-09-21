@@ -123,6 +123,18 @@ module Git
 			end
 
 			cache_method :last_release_tag, ->(obj) {obj.to_s}
+
+			RE_BY_CC = /(?:by|[Cc][Cc]):\s*([^<\r\n]+) <([^>]+@[^>]+)>\s*$/
+			def by_cc
+				m = message
+				pos = 0
+				res = []
+				while mat = RE_BY_CC.match(m, pos)
+					res.push Git::Author.new("#{mat[1]} <#{mat[2]}> #{Time.now.to_i} ")
+					pos = mat.end 0
+				end
+				res
+			end
 		end
 
 		class Tag
