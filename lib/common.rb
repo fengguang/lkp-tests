@@ -58,6 +58,22 @@ class Array
 	end
 end
 
+# Array "-" + "uniq!" with block to calculate key
+def array_subtract(arr1, arr2, &blk_key)
+	if blk_key
+		harr = {}
+		arr1.each { |e|
+			harr[blk_key.(e)] = e
+		}
+		arr2.each { |e|
+			harr.delete blk_key.(e)
+		}
+		harr.values
+	else
+		arr1 - arr2
+	end
+end
+
 def string_to_num(str)
 	str.index('.') ? str.to_f : str.to_i
 end
