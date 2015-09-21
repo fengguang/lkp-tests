@@ -124,7 +124,7 @@ def grep_crash_head(dmesg_file, grep_options = '')
 end
 
 def grep_printk_errors(kmsg_file, dmesg_file, dmesg_lines)
-	return '' if ENV['RESULT_ROOT'].index '/trinity/'
+	return '' if ENV.fetch('RESULT_ROOT', "").index '/trinity/'
 	return '' unless File.exist?('/lkp/printk-error-messages')
 
 	if kmsg_file == dmesg_file
