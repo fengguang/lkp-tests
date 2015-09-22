@@ -5,7 +5,7 @@
 
 for mnt in $mount_points
 do
-	cmd iozone -a -f $mnt/iozonetest > $TMP/iozone-$i &
+	bgcmd iozone -a -f $mnt/iozonetest > $TMP/iozone-$i
 	i=$((i+1))
 done
 
