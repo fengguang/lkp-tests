@@ -42,11 +42,11 @@ def mmplot(matrix1, matrix2, fields, title_prefix=nil)
 
 	return if ds1 == nil and ds2 == nil
 
+	normalized_field = field.tr('^a-zA-Z0-9_.:+=-', '_')
 	if $opt_output_path
 		plot.terminal "png"
-		file = field.tr('^a-zA-Z0-9_.:+=-', '_')
-		file = "#{$opt_output_path}/#{file}.png"
-		plot.output "#{file}"
+		file = "#{$opt_output_path}/#{normalized_field}.png"
+		plot.output file
 		files << file
 	else
 		plot.terminal "dumb nofeed size #{PLOT_SIZE_X},#{PLOT_SIZE_Y}"
@@ -55,7 +55,7 @@ def mmplot(matrix1, matrix2, fields, title_prefix=nil)
 	plot.notitle # necessary for updating title
 
 	title_prefix += ": " if title_prefix
-	plot.title  format("%s%s", title_prefix, field)
+	plot.title  format("%s%s", title_prefix, normalized_field)
 
 	plot.noxtics
 	plot.ytics 'nomirror'
@@ -201,9 +201,10 @@ class MatrixPlotter < MatrixPlotterBase
 		@y_stat_keys.each do |field, var|
 		values = @matrix[field]
 		next if values.max == values.min
+		normalized_field = field.tr('^a-zA-Z0-9_.:+=-', '_')
 		Gnuplot::Plot.new( gp ) do |p|
 		if @output_prefix
-			file = @output_prefix + field.tr('^a-zA-Z0-9_.:+=-', '_')
+			file = @output_prefix + normalized_field
 			setup_output p, file
 		else
 			if np % @nr_plot == 0
@@ -223,9 +224,9 @@ class MatrixPlotter < MatrixPlotterBase
 
 		p.notitle # necessary for updating title
 		if var
-			p.title format("%s%s (var %.2f)", @title_prefix, field, var)
+			p.title format("%s%s (var %.2f)", @title_prefix, normalized_field, var)
 		else
-			p.title format("%s%s", @title_prefix, field)
+			p.title format("%s%s", @title_prefix, normalized_field)
 		end
 
 		if @x_stat_key
