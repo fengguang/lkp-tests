@@ -18,8 +18,8 @@ module Git
 				if utf8_command_lines == utf8_command_lines.encode("UTF-8", "UTF-8", undef: :replace)
 					utf8_command_lines.split("\n")
 				else
-					STDERR.puts "GIT error: #{cmd} #{opts}: #{e.message}"
-					STDERR.puts "GIT env: LANG = #{ENV['LANG']}, LANGUAGE = #{ENV['LANGUAGE']}, LC_ALL = #{ENV['LC_ALL']}, "\
+					$stderr.puts "GIT error: #{cmd} #{opts}: #{e.message}"
+					$stderr.puts "GIT env: LANG = #{ENV['LANG']}, LANGUAGE = #{ENV['LANGUAGE']}, LC_ALL = #{ENV['LC_ALL']}, "\
 					            "encoding = #{command_lines.encoding}"
 
 					command_lines.encode("UTF-8", "binary", invalid: :replace, undef: :replace).split("\n")
@@ -35,8 +35,8 @@ module Git
 			begin
 				orig_command(cmd, opts, chdir, redirect, &block)
 			rescue Exception => e
-				STDERR.puts "GIT error: #{cmd} #{opts}: #{e.message}"
-				STDERR.puts "GIT dump: #{self.inspect}"
+				$stderr.puts "GIT error: #{cmd} #{opts}: #{e.message}"
+				$stderr.puts "GIT dump: #{self.inspect}"
 				raise
 			end
 		end

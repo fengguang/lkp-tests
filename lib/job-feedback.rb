@@ -77,7 +77,7 @@ class JobFeedbackQuery
 
 	def feedback
 		if not File.exist?(@feedback_file)
-			STDERR.puts "no feedback given!"
+			$stderr.puts "no feedback given!"
 			return nil
 		end
 

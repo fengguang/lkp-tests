@@ -88,8 +88,8 @@ module Git
 
 				[tag, false]
 			else
-				STDERR.puts "Not a kernel tree? Check #{@base.repo}"
-				STDERR.puts caller.join "\n"
+				$stderr.puts "Not a kernel tree? Check #{@base.repo}"
+				$stderr.puts caller.join "\n"
 
 				nil
 			end
@@ -215,8 +215,8 @@ def __last_linus_release_tag(commit)
 	elsif version == 2
 		tag = "v2.#{patch_level}.#{sub_level}"
 	else
-		STDERR.puts "Not a kernel tree? check #{GIT_WORK_TREE}"
-		STDERR.puts caller.join "\n"
+		$stderr.puts "Not a kernel tree? check #{GIT_WORK_TREE}"
+		$stderr.puts caller.join "\n"
 		return nil
 	end
 

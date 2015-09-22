@@ -6,6 +6,6 @@ while line = STDIN.gets
 	     /^(.*): +(\d+)$/
 		puts $1 + ': ' + $2
 	else
-		STDERR.puts "malformed meminfo line: " + line
+		$stderr.puts "malformed meminfo line: " + line
 	end
 end

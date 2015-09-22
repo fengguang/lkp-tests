@@ -87,7 +87,7 @@ def __create_programs_hash(glob, lkp_src)
 		file = File.basename(path)
 		next if file == 'wrapper'
 		if programs.include? file
-			STDERR.puts "Conflict names #{$programs[file]} and #{path}"
+			$stderr.puts "Conflict names #{$programs[file]} and #{path}"
 			next
 		end
 		programs[file] = path
@@ -156,9 +156,9 @@ class Job
 		rescue Errno::ENOENT
 			return nil
 		rescue Exception
-			STDERR.puts "Failed to open job #{jobfile}: #{$!}"
+			$stderr.puts "Failed to open job #{jobfile}: #{$!}"
 			if File.size(jobfile) == 0
-				STDERR.puts "Removing empty job file #{jobfile}"
+				$stderr.puts "Removing empty job file #{jobfile}"
 				FileUtils.rm jobfile
 			end
 			raise

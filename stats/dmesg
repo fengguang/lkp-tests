@@ -13,7 +13,7 @@ if ENV['RESULT_ROOT']
 		if File.exist?(kmsg_file) and
 		   File.size(serial_file) == 0 and
 		   File.size(kmsg_file) > 0
-			STDERR.puts "unexpected 0-sized serial file " + serial_file
+			$stderr.puts "unexpected 0-sized serial file " + serial_file
 			dmesg_file = kmsg_file
 		end
 	elsif File.exist? kmsg_file
@@ -50,7 +50,7 @@ def verify_serial_log(dmesg_lines)
 		rt = $1
 		next unless Dir.exist? rt # serial console is often not reliable
 		if rt != RESULT_ROOT
-			STDERR.puts "RESULT_ROOT mismatch in dmesg: #{RESULT_ROOT} #{rt}"
+			$stderr.puts "RESULT_ROOT mismatch in dmesg: #{RESULT_ROOT} #{rt}"
 		end
 	}
 end

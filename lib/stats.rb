@@ -223,11 +223,11 @@ def load_base_matrix(matrix_path, head_matrix, options)
 		version, is_exact_match = git.gcommit(commit).last_release_tag
 		puts "project: #{project}, version: #{version}, is exact match: #{is_exact_match}" if ENV['LKP_VERBOSE']
 	rescue Exception => e
-		STDERR.puts e.message
-		STDERR.puts "git: #{git.to_yaml}"
-		STDERR.puts "options: #{options}"
-		STDERR.puts "matrix_path: #{matrix_path}"
-		STDERR.puts e.backtrace
+		$stderr.puts e.message
+		$stderr.puts "git: #{git.to_yaml}"
+		$stderr.puts "options: #{options}"
+		$stderr.puts "matrix_path: #{matrix_path}"
+		$stderr.puts e.backtrace
 		return nil
 	end
 
@@ -243,8 +243,8 @@ def load_base_matrix(matrix_path, head_matrix, options)
 			is_exact_match = false
 		end
 		unless version
-			STDERR.puts "Cannot get base RC commit for #{commit}"
-			STDERR.puts caller
+			$stderr.puts "Cannot get base RC commit for #{commit}"
+			$stderr.puts caller
 			return nil
 		end
 	end
@@ -523,8 +523,8 @@ def load_matrices_to_compare(matrix_path1, matrix_path2, options = {})
 			b = load_base_matrix matrix_path1, a, options
 		end
 	rescue Exception => e
-		STDERR.puts e.message
-		STDERR.puts e.backtrace
+		$stderr.puts e.message
+		$stderr.puts e.backtrace
 		return [nil, nil]
 	end
 	return [a, b]
@@ -606,7 +606,7 @@ def matrix_from_stats_files(stats_files, add_source = true)
 	stats_files.each { |stats_file|
 		stats = load_json stats_file
 		unless stats
-			STDERR.puts "WARN: empty or non-exist stats file #{stats_file}"
+			$stderr.puts "WARN: empty or non-exist stats file #{stats_file}"
 			next
 		end
 		stats['stats_source'] ||= stats_file if add_source

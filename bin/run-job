@@ -289,7 +289,7 @@ when /extract-stats/
 	ARGV[1..-1].each { |f| $testcase.merge!(YAML.load_file(f)) }
 	create_programs_hash "stats/**/*"
 else
-	STDERR.puts "Unknown program name."
+	$stderr.puts "Unknown program name."
 	exit 1
 end
 

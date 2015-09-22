@@ -35,5 +35,5 @@ if error_ids.size > 0
 end
 
 if error_ids.size > 100
-	STDERR.puts "WARN: noisy stderr, check #{ENV['RESULT_ROOT']}/stderr"
+	$stderr.puts "WARN: noisy stderr, check #{ENV['RESULT_ROOT']}/stderr"
 end

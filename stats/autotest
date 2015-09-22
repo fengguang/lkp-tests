@@ -8,7 +8,7 @@ exit unless File.exist?("#{RESULT_ROOT}/results/status.json")
 status = YAML.load_file("#{RESULT_ROOT}/results/status.json")
 
 if status['operations'].empty?
-	STDERR.puts "Test environment is not able"
+	$stderr.puts "Test environment is not able"
 	exit
 end
 

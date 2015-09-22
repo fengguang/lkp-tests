@@ -5,9 +5,9 @@ require 'json'
 begin
 	obj = JSON.load STDIN
 rescue JSON::ParserError => e
-	STDERR.puts "error: malformed iperf result"
-	STDERR.puts e.message[0..300]
-	STDERR.puts e.backtrace.join("\n")
+	$stderr.puts "error: malformed iperf result"
+	$stderr.puts e.message[0..300]
+	$stderr.puts e.backtrace.join("\n")
 	exit 1
 end
 

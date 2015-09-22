@@ -12,7 +12,7 @@ app_overhead = []
 while line = STDIN.gets
 	iteration = line.split
 	if iteration.size != 5
-		STDERR.puts "WARNING: unexpected fsmark output: #{line}"
+		$stderr.puts "WARNING: unexpected fsmark output: #{line}"
 		next
 	end
 	files_per_sec << iteration[3].to_f

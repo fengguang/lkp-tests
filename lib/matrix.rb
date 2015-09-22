@@ -85,7 +85,7 @@ def create_stats_matrix(result_root)
 		next if monitor == 'stats' # stats.json already created?
 		next if monitor == 'matrix'
 		unless $programs[monitor] or monitor =~ /^ftrace\.|.+\.time$/
-			STDERR.puts "skip unite #{file}: #{monitor} not in #{$programs.keys}"
+			$stderr.puts "skip unite #{file}: #{monitor} not in #{$programs.keys}"
 			next
 		end
 
@@ -176,7 +176,7 @@ def unite_to(stats, matrix_root, max_cols = nil)
 		save_json(matrix_average(matrix), matrix_root + '/avg.json')
 		save_json(matrix_stddev(matrix), matrix_root + '/stddev.json')
 	rescue TypeError
-		STDERR.puts "matrix contains non-number values, move to #{matrix_file}-bad"
+		$stderr.puts "matrix contains non-number values, move to #{matrix_file}-bad"
 		FileUtils.mv matrix_file, matrix_file + '-bad', :force => true   # never raises exception
 	end
 	return matrix
@@ -212,7 +212,7 @@ def check_warn_test_error(matrix, result_root)
 		next unless samples
 		next unless samples.last(10).sum == 10
 		next if errid == 'last_state.is_incomplete_run' and matrix['dmesg.boot_failures']
-		STDERR.puts "The last 10 results all failed, check: #{errid} #{result_root}"
+		$stderr.puts "The last 10 results all failed, check: #{errid} #{result_root}"
 	end
 end
 
@@ -240,7 +240,7 @@ end
 
 def unite_params(result_root)
 	if not File.directory? result_root
-		STDERR.puts "#{result_root} is not a directory"
+		$stderr.puts "#{result_root} is not a directory"
 		return false
 	end
 
@@ -274,13 +274,13 @@ def unite_params(result_root)
 	begin
 		atomic_save_yaml_json params, params_file
 	rescue Exception => e
-		STDERR.puts 'unite_params: ' + e.message
+		$stderr.puts 'unite_params: ' + e.message
 	end
 end
 
 def unite_stats(result_root)
 	if not File.directory? result_root
-		STDERR.puts "#{result_root} is not a directory"
+		$stderr.puts "#{result_root} is not a directory"
 		return false
 	end
 

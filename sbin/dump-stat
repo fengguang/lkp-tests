@@ -30,11 +30,11 @@ while line = STDIN.gets
 
 	if k =~ /[ \t]/
 		$invalid_records.push record_index
-		STDERR.puts "whitespace in stats name: #{k}"
+		$stderr.puts "whitespace in stats name: #{k}"
 	end
 	if v.chomp!.strip! =~ /[^0-9a-fx.-]/
 		$invalid_records.push record_index
-		STDERR.puts "invalid stats value: #{v}"
+		$stderr.puts "invalid stats value: #{v}"
 	end
 
 	v = v.index('.') ? v.to_f : v.to_i
@@ -79,7 +79,7 @@ if min_cols < max_cols and $monitor != 'ftrace'
 		$result.each { |k, v| v.pop if v.size == max_cols }
 		puts "Last record seems incomplete. Truncated #{RESULT_ROOT}/#{$monitor}.json"
 	else
-		STDERR.puts "Not a matrix: #{min_cols_stat}: #{min_cols} != #{max_cols}: #{RESULT_ROOT}/#{$monitor}.json"
+		$stderr.puts "Not a matrix: #{min_cols_stat}: #{min_cols} != #{max_cols}: #{RESULT_ROOT}/#{$monitor}.json"
 	end
 end
 

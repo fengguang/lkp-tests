@@ -15,8 +15,8 @@ def get_yaml_vars(file, job_vars)
 	begin
 		env = YAML.load env_yaml
 	rescue Psych::SyntaxError => e
-		STDERR.puts e.message
-		STDERR.puts env_yaml
+		$stderr.puts e.message
+		$stderr.puts env_yaml
 	end
 	env.each { |key, val| job_vars[key.gsub(/[^a-zA-Z0-9_]/, '_')] = val.to_s }
 end

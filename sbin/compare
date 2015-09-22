@@ -221,12 +221,12 @@ def add_stats(path)
 	end
 	unless File.exist? stats_json
 		# No need for a warning here.
-		# STDERR.puts stats_json + ' does not exist'
+		# $stderr.puts stats_json + ' does not exist'
 		return
 	end
 	field_value = get_json_field(stats_json, $opt_field, is_rt)
 	if field_value == nil or field_value == ''
-		# STDERR.puts "#{stats_json}: no such field: #{$opt_field}"
+		# $stderr.puts "#{stats_json}: no such field: #{$opt_field}"
 		field_value = 0
 	end
 

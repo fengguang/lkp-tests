@@ -22,15 +22,15 @@ def load_yaml(file)
 			if File.size(file) == 0
 				puts "YAML file is empty: #{file}"
 			else
-				STDERR.puts "Move corrupted YAML file to .#{file}-bad"
-				STDERR.puts "#{file}: " + e.message
-				STDERR.puts e.backtrace.join("\n")
+				$stderr.puts "Move corrupted YAML file to .#{file}-bad"
+				$stderr.puts "#{file}: " + e.message
+				$stderr.puts e.backtrace.join("\n")
 				FileUtils.mv file, '.' + file + '-bad'
 			end
 		else
-			STDERR.puts "YAML file does not exist: #{file}"
-			STDERR.puts "#{file}: " + e.message
-			STDERR.puts e.backtrace.join("\n")
+			$stderr.puts "YAML file does not exist: #{file}"
+			$stderr.puts "#{file}: " + e.message
+			$stderr.puts e.backtrace.join("\n")
 		end
 		raise
 	end
@@ -45,7 +45,7 @@ def load_yaml_merge(files)
 		if Hash === yaml
 			all.update(yaml)
 		elsif yaml
-			STDERR.puts "YAML is not a hash: #{file} #{yaml[0..300]}"
+			$stderr.puts "YAML is not a hash: #{file} #{yaml[0..300]}"
 		end
 	end
 	return all
@@ -55,7 +55,7 @@ def load_yaml_tail(file)
 	begin
 		return YAML.load %x[ tail -n 100 #{file} ]
 	rescue Psych::SyntaxError => e
-		STDERR.puts "#{file}: " + e.message
+		$stderr.puts "#{file}: " + e.message
 	end
 	return nil
 end
@@ -84,7 +84,7 @@ class WTMP
 
 			load(tail)
 		rescue Exception => e
-			STDERR.puts "#{file}: " + e.message
+			$stderr.puts "#{file}: " + e.message
 		end
 	end
 end
@@ -126,8 +126,8 @@ def load_json(file, cache = false)
 			raise
 		rescue Exception
 			tempfile = file + "-bad"
-			STDERR.puts "Failed to load JSON file: #{file}"
-			STDERR.puts "Kept corrupted JSON file for debugging: #{tempfile}"
+			$stderr.puts "Failed to load JSON file: #{file}"
+			$stderr.puts "Kept corrupted JSON file for debugging: #{tempfile}"
 		        FileUtils.mv file, tempfile, :force => true
 			raise
 		end
@@ -135,8 +135,8 @@ def load_json(file, cache = false)
 	elsif File.exist? file.sub(/\.json(\.gz)?$/, ".yaml")
 		return load_yaml file.sub(/\.json(\.gz)?$/, ".yaml")
 	else
-		STDERR.puts "JSON/YAML file not exist: #{file}"
-		STDERR.puts caller
+		$stderr.puts "JSON/YAML file not exist: #{file}"
+		$stderr.puts caller
 		return nil
 	end
 end

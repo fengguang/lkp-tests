@@ -10,7 +10,7 @@ def add_one_sample(kbps, throughput)
 	throughput << kbps.sum
 	puts "# #{kbps.size} #{kbps.sum}"
 	if kbps.size != 1 and (kbps.size & 1) != 0 and not $warned
-		STDERR.puts "stats/vm-scalability: possibly disordered output #{ARGV[0]}"
+		$stderr.puts "stats/vm-scalability: possibly disordered output #{ARGV[0]}"
 		$warned = true
 	end
 end
@@ -45,7 +45,7 @@ end
 
 printf "throughput: %d\n", throughput.average
 if kbps.empty?
-	STDERR.puts "stats/vm-scalability: incomplete output"
+	$stderr.puts "stats/vm-scalability: incomplete output"
 	exit
 end
 printf "stddev:     %g\n", stddev

@@ -19,7 +19,7 @@ opts = OptionParser.new do |opts|
 		if File.directory? path
 			$opt_output_path = path
 		else
-			STDERR.puts "#{path}: no such directory"
+			$stderr.puts "#{path}: no such directory"
 			exit
 		end
 	end

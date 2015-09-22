@@ -9,7 +9,7 @@ module Enumerable
 		begin
 			return self.inject(0) { |acc, i| acc + i }
 		rescue TypeError
-			STDERR.puts self
+			$stderr.puts self
 			raise
 		end
 	end
