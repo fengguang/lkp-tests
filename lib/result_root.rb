@@ -310,11 +310,14 @@ class MResultRootCollection
 			cmdline += " | grep -e '#{ocond}'"
 		}
 		cmdline += " | sed -e '1,$s?\\(.*\\)/[0-9]*?\\1?' | sort | uniq"
-		`#{cmdline}`.each_line { |_rtp|
-			_rtp = _rtp.strip
-			if MResultRoot.valid? _rtp
-				yield MResultRoot.new _rtp.strip
-			end
+		IO.popen(cmdline) { |io|
+			io.each_line { |_rtp|
+				_rtp = _rtp.strip
+				if MResultRoot.valid? _rtp
+					yield MResultRoot.new _rtp.strip
+				end
+			}
+			Process.waitpid io.pid
 		}
 	end
 
