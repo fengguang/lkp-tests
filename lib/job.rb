@@ -123,6 +123,15 @@ def rootfs_filename(rootfs)
 	rootfs.split(/[^a-zA-Z0-9._-]/)[-1]
 end
 
+class JobFileSyntaxError < RuntimeError
+	def initialize(jobfile, syn_msg)
+		@jobfile = jobfile
+		super "Jobfile: #{jobfile}, syntax error: #{syn_msg}"
+	end
+
+	attr_reader :jobfile
+end
+
 class Job
 
 	EXPAND_DIMS = %w(kconfig commit rootfs boot_params)
@@ -155,6 +164,8 @@ class Job
 			@job.update @jobs.shift
 		rescue Errno::ENOENT
 			return nil
+		rescue Psych::SyntaxError => ex
+			raise JobFileSyntaxError, jobfile, ex.message
 		rescue Exception
 			$stderr.puts "Failed to open job #{jobfile}: #{$!}"
 			if File.size(jobfile) == 0
