@@ -27,7 +27,7 @@ do
 		shift
 		;;
 		--ssd)
-		sdd_partitions=$2
+		ssd_partitions=$2
 		shift
 		;;
 		--dry-run)
