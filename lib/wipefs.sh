@@ -19,7 +19,7 @@ do_wipefs()
 
 remove_dm()
 {
-	[ -n "$nr_hdd_partitions" ] || [ -n "$nr_ssd_partitions" ] || return
+	[ -n "$nr_partitions" ] || return
 	command -v dmsetup >/dev/null || return
 
 	dmsetup remove_all
