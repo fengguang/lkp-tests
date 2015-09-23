@@ -82,7 +82,7 @@ job['kconfig'] ||= 'defconfig'
 job['commit'] ||= `uname -r`.chomp!
 job['rootfs'] ||= `grep -m1 ^ID= /etc/os-release`.split('=')[1].chomp
 job['nr_cpu'] ||= '$(nproc)'
-job['compiler'] ||= File.readlink('/usr/bin/gcc')
+job['compiler'] ||= File.symlink?('/usr/bin/gcc') ? File.readlink('/usr/bin/gcc') : 'gcc'
 
 $opt_set_key_value.each { |k, v|
 	job[k] = v
