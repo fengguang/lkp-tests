@@ -112,5 +112,7 @@ fi
 
 # delete temporarily extracted kmsg above
 [ -f $kmsg_log.xz ] && rm -f $kmsg_log
+# delete temporarily extracted dmesg above
+[ -f $dmesg_log.xz ] && rm -f $dmesg_log
 
 exit 0
