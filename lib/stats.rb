@@ -392,7 +392,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
 	end
 
 	b_monitors = {}
-	b.keys.each { |k| b_monitors[k.split('.')[0]] = true }
+	b.keys.each { |k| b_monitors[stat_to_monitor(k)] = true }
 
 	b.keys.each { |k| a[k] = [0] * cols_a unless a.include?(k) }
 
@@ -630,4 +630,8 @@ end
 
 def stat_key_base(stat_key)
 	parse_stat_key(stat_key)[0]
+end
+
+def stat_to_monitor(stat)
+	stat.partition('.').first
 end
