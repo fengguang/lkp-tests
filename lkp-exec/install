@@ -19,15 +19,20 @@ usage() {
 	echo "--dry-run: preview changes will made testbox by install"
 }
 
+hdd_index=1
+ssd_index=1
+
 while [ $# -gt 0 ]
 do
 	case "$1" in
 		--hdd)
-		hdd_partitions=$2
+		hdd_partitions[$hdd_index]=$2
+		hdd_index=$((hdd_index+1))
 		shift
 		;;
 		--ssd)
-		ssd_partitions=$2
+		ssd_partitions[$ssd_index]=$2
+		ssd_index=$((ssd_index+1))
 		shift
 		;;
 		--dry-run)
@@ -81,8 +86,8 @@ create_host_config() {
 
 		cat <<EOT >> $host_config
 memory: ${mem_gb}G
-hdd_partitions: ${hdd_partitions}
-ssd_partitions: ${ssd_partitions}
+hdd_partitions: ${hdd_partitions[*]}
+ssd_partitions: ${ssd_partitions[*]}
 EOT
 	}
 }
