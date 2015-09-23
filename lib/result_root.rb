@@ -144,7 +144,7 @@ end
 # _rt or mrt may be used as variable name
 class MResultRoot
 	# TODO: remove .dmesg after we convert all .dmesg to dmesg
-	DMESG_FILE_GLOBS = ['.dmesg', 'dmesg', 'dmesg.xz', 'kmsg', 'kmsg.xz']
+	DMESG_FILE_GLOBS = ['dmesg.xz', 'dmesg', '.dmesg', 'kmsg.xz', 'kmsg']
 	DMESG_GLOBS = DMESG_FILE_GLOBS.map { |g| "[0-9]*/#{g}" }
 	DMESG_JSON_GLOB = '[0-9]*/dmesg.json'
 	JOB_GLOB = '[0-9]*/job.yaml'
