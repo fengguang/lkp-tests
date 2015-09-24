@@ -14,7 +14,7 @@ def get_simple_value(v)
 				vv.to_s
 			end
 		}
-		return v.join ' '
+		return v.join "\n"
 	else
 		return v.to_s
 	end
