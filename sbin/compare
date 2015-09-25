@@ -231,7 +231,7 @@ def add_stats(path)
 	end
 
 	result_path = ResultPath.new
-	result_path.parse_result_root(File.realpath(path))
+	return unless result_path.parse_result_root(File.realpath(path))
 
 	if $dim_not_a_param
 		dim = result_path[$opt_dimension]
