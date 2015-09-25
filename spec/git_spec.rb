@@ -183,6 +183,13 @@ describe Git do
 		end
 
 		describe Git::Base do
+			it "should not impact env" do
+				ENV["GIT_DIR"] = "NOT_GIT"
+				@git.gcommit('v3.11-rc1')
+
+				expect(ENV["GIT_DIR"]).to eq "NOT_GIT"
+			end
+
 			describe "gcommit" do
 				it "should cache commits of single git object" do
 					gcommit1 = @git.gcommit(linux_v4_1_rc8_commit)
