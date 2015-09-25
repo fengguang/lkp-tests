@@ -11,11 +11,11 @@ snapshot()
 }
 
 echo 0 > /proc/latency_stats
-echo 1 > /proc/sys/kernel/latencytop
+echo -n 1 > /proc/sys/kernel/latencytop
 
 . $LKP_SRC/lib/wait.sh
 setup_wait
 
 wait_post_test
 snapshot
-echo 0 > /proc/sys/kernel/latencytop
+echo -n 0 > /proc/sys/kernel/latencytop
