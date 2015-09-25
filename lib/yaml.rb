@@ -163,10 +163,19 @@ def try_load_json(path)
 	end
 end
 
+class JSONFileNotExistError < StandardError
+	def initialize(path)
+		super "Failed to load JSON for #{path}"
+		@path = path
+	end
+
+	attr_reader :path
+end
+
 def search_load_json(path)
 	try_load_json(path) or
 	try_load_json(path + '/matrix.json') or
-	try_load_json(path + '/stats.json') or raise "Failed to load JSON for #{path}"
+	try_load_json(path + '/stats.json') or raise(JSONFileNotExistError, path)
 end
 
 def load_regular_expressions(file)
