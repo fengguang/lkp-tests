@@ -73,11 +73,6 @@ echo "$(date +'%F %T') cat $DPDK_OBJ/.config start"
 cat $DPDK_OBJ/.config
 echo "cat $DPDK_OBJ/.config end"
 
-#
-# FIXME rli9 update make to accept -j parameter
-# set nr_cpu=1 to trace the make behavior of dpdk
-#
-export nr_cpu=1
 make O=$DPDK_OBJ DESTDIR=$RESULT_ROOT
 
 git reset --hard
