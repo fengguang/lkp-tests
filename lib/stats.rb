@@ -250,6 +250,11 @@ def load_base_matrix(matrix_path, head_matrix, options)
 	end
 
 	order = git.release_tag_order(version)
+	unless order
+		$stderr.puts "unknown version #{version} matrix: #{matrix_path} options: #{options}"
+		return nil
+	end
+
 	cols = 0
 	git.release_tags_with_order.each { |tag, o|
 		next if o >  order
