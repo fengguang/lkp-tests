@@ -78,13 +78,23 @@ def string_to_num(str)
 	str.index('.') ? str.to_f : str.to_i
 end
 
-def remove_common_head(arr1, arr2)
+def array_diff_index(arr1, arr2)
 	s = [arr1.size, arr2.size].min
 	(0...s).each { |i|
 		if arr1[i] != arr2[i]
-			return [arr1[i...arr1.size], arr2[i...arr2.size]]
+			return i
 		end
 	}
+	s
+end
+
+def array_common_head(arr1, arr2)
+	s = array_diff_index arr1, arr2
+	arr1[0...s] || []
+end
+
+def remove_common_head(arr1, arr2)
+	s = array_diff_index arr1, arr2
 	[arr1[s...arr1.size] || [], arr2[s...arr2.size] || []]
 end
 
