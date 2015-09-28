@@ -32,7 +32,7 @@ module Git
 
 		alias_method :orig_command, :command
 
-		ENV_VARIABLE_NAMES = ['GIT_DIR', 'GIT_WORK_TREE', 'GIT_INDEX_FILE', 'GIT_SSH']
+		ENV_VARIABLE_NAMES = ['GIT_DIR', 'GIT_WORK_TREE', 'GIT_INDEX_FILE', 'GIT_SSH'] unless defined? ENV_VARIABLE_NAMES
 
 		def command(cmd, opts = [], chdir = true, redirect = '', &block)
 			begin
