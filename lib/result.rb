@@ -27,6 +27,7 @@ class ResultPath < Hash
 		'legacy'	=> %w[ testcase path_params rootfs kconfig commit run ],
 		'default'	=> %w[ path_params tbox_group rootfs kconfig compiler commit run ],
 		'health-stats'	=> %w[ path_params run ],
+		'lkp-bug'	=> %w[ path_params run ],
 		'hwinfo'	=> %w[ tbox_group run ],
 		'build-dpdk'	=> %w[ dpdk_config dpdk_compiler dpdk_commit run ],
 		# FIXME rli9 result path can be part of test configuration, like combine # - indicated parameter in test
