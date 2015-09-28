@@ -172,10 +172,23 @@ class JSONFileNotExistError < StandardError
 	attr_reader :path
 end
 
+def load_merge_jsons(path)
+	return nil unless path.index(',')
+
+	files = path.split(',')
+	files.each do |file|
+		return nil unless File.exist? file
+	end
+
+	matrix_from_stats_files(files)
+end
+
 def search_load_json(path)
 	try_load_json(path) or
 	try_load_json(path + '/matrix.json') or
-	try_load_json(path + '/stats.json') or raise(JSONFileNotExistError, path)
+	try_load_json(path + '/stats.json') or
+	load_merge_jsons(path) or
+	raise(JSONFileNotExistError, path)
 end
 
 def search_json(path)
