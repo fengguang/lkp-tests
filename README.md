@@ -1,9 +1,8 @@
-Linux Kernel Performance tests
-==============================
+# Linux Kernel Performance tests
 
-Getting started
----------------
+## Getting started
 
+```
 	git clone git://git.kernel.org/pub/scm/linux/kernel/git/wfg/lkp-tests.git
 
 	cd lkp-tests
@@ -11,17 +10,19 @@ Getting started
 	export PATH=$PATH:$LKP_SRC/bin
 
 	lkp help
+```
 
-Install packages for a job
---------------------------
+## Install packages for a job
 
+```
 	# browse and select a job you want to run, for example, jobs/hackbench.yaml
 	ls $LKP_SRC/jobs
 	lkp install $LKP_SRC/jobs/hackbench.yaml
+```
 
-Run one atomic job
-------------------
+## Run one atomic job
 
+```
 	lkp split-job $LKP_SRC/jobs/hackbench.yaml
 	# output is:
 	# jobs/hackbench.yaml => ./hackbench-1600%-process-pipe.yaml
@@ -34,14 +35,14 @@ Run one atomic job
 	# jobs/hackbench.yaml => ./hackbench-50%-threads-socket.yaml
 
 	lkp run ./hackbench-50%-threads-socket.yaml
+```
 
-Check result
-------------
-
+## Check result
+```
 	lkp result hackbench
+```
 
-Supported Distributions
------------------------
+## Supported Distributions
 
 Most test cases should install/run well in
 

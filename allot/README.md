@@ -1,5 +1,4 @@
-Job Allocation
-==============
+﻿## Job Allocation
 
 This disk layout defines a number of job allocation schemes.
 
@@ -9,6 +8,7 @@ The format is
 
 A tree example:
 
+```
 	allot
 	├── cyclic
 	│   ├── brickland1
@@ -36,6 +36,7 @@ A tree example:
 	│       └── xfstests-xfs.yaml -> ../../../jobs/xfstests-xfs.yaml
 	├── scsi:fixes -> scsi
 	└── scsi:misc -> scsi
+```
 
 
 The allocation scheme may be referenced by the queue command
@@ -44,20 +45,21 @@ The allocation scheme may be referenced by the queue command
 
 For example,
 
+```
 	$ queue scsi
+```
 
 will queue the 4 xfstests jobs to testbox vm-kbuild-4G.
 
 
-Job Allocation Schemes
-======================
+## Job Allocation Schemes
 
 - cyclic
 
   Whenever a testbox's cyclic queue goes empty, it will be auto refilled with
   the set of jobs defined in this scheme.
 
-  It should ideally assign the same amount of works (eg. 1 day) to each testbox.
+  It should ideally assign the same amount of works (e.g. 1 day) to each testbox.
   The same job will be assigned to multiple testboxes of different hardware
   generations.
 
@@ -66,7 +68,9 @@ Job Allocation Schemes
   Suitable for evaluating a patchset that can potentially impact many different
   kind of workloads.
 
+```
 	$ queue diag -b linux-next
+```
 
   It should normally assign one job (or multiple quick jobs) to each testbox.
 

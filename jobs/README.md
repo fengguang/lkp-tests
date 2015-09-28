@@ -1,5 +1,5 @@
-Job definition to execution
-===========================
+# Job definition to execution
+
 
 Job files are the basic unit of test description and execution.
 They are written in [YAML](http://yaml.org/YAML_for_ruby.html) format.
@@ -7,8 +7,7 @@ They are written in [YAML](http://yaml.org/YAML_for_ruby.html) format.
 In the most fundemental form, a job YAML contains a hash table of key-values.
 The keys fall into 2 main categories:
 
-Scripts
--------
+## Scripts
 
 If the key matches some script file in the below paths, it is treated as an
 executable script.
@@ -18,8 +17,8 @@ executable script.
   - $LKP_SRC/daemon
   - $LKP_SRC/tests
 
-Variables
----------
+
+## Variables
 
 Otherwise if
 
@@ -31,6 +30,7 @@ They will be exported as environment variables.
 `$LKP_SRC/sbin/job2sh` uses the above 2 main rules to convert a job YAML file
 into an executable shell script. Here is a conceptual demo.
 
+```
 	job.yaml (by USER)             ===>     job.sh (by LKP)
 	define environment & actions            compile into sh for execution
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -45,3 +45,6 @@ into an executable shell script. Here is a conceptual demo.
 	  setup_script1:                           $LKP_SRC/setup/setup_script1
 	  setup_script2:                           $LKP_SRC/setup/setup_script2
 	  test_script:                             $LKP_SRC/tests/test_script
+```
+## job allocation
+This page (README-job-allocation.html) talks about job allocation

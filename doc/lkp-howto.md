@@ -4,21 +4,21 @@
 
 ##Abstract
 
-This document explains the steps of setup and running the test
-suite for daily kernel development.
+This document explains the steps of setting up and running the test
+suite for Linux kernel test.
 
 
 ##Preface
 
-This document is written to help developers run tests and get
-the results on local develop machine and bring the community up
-to speed on the ins and outs of the Linux Kernel Performance tests
+This document is written to help developers leveraging Intel [0-Day](https://01.org/lkp/documentation/0-day-brief-introduction),a Linux kernel test infrastructure to run tests and get
+the results on local development machine and bring the community up
+to speed on the ins and outs of the Linux Kernel Performance test
 project.
 
 
 ###Copyright
 
-Refer to COPYING.
+Refer to [COPYING](COYPING.html).
 
 
 ###Disclaimer
@@ -41,15 +41,13 @@ before major installation and backups at regular intervals.
 
 
 ##Introduction
-
-
-##Structure
+Before using the Linux kernel test infrastrucutre, please go to [LKP website] (https://01.org/lkp) to understand about what the infrastructure can do. 
 
 
 ##Writing Tests
 
 In general, we can sum up to three steps to write a simple test
-on our infrastructure.
+on the infrastructure.
 
 Let's describe step by step with an example: ebizzy.
 
@@ -71,21 +69,24 @@ Let's describe step by step with an example: ebizzy.
 - Write the main test case script.
 
  The main test case script should be placed to "tests" directory.
- Create a executable script and write the benchmark running process in.
+ Create an executable script and write the benchmark running process in.
  Note that the parameters should be declared at the top of the script
  like following from "tests/ebizzy":
 
+```
 		#!/bin/sh
 		# - nr_threads
 		# - duration
 		# - iterations
+```
 
- The next step is writing a jobfile for the new created test case script
+ The next step is writing a [jobfile](README-job-file.html) for the new created test case script
  under "jobs" directory so that we can easily testing new parameters by
  just changing the yaml formated jobfile.
 
  See the example of "jobs/ebizzy.yaml":
 
+```
 		testcase: ebizzy  <= test case name, the same with test script name
 
 		nr_threads: 200%  <= parameter, be parsed with setup/nr_threads
@@ -93,6 +94,7 @@ Let's describe step by step with an example: ebizzy.
 
 		ebizzy:
 		  duration: 10s   <= parameter, be parsed by test script self
+```
 
 - Write the test case result parser.
 
@@ -105,6 +107,7 @@ Let's describe step by step with an example: ebizzy.
 
  See an example of ebizzy output and parsed json result:
 
+```
 		# cat /result/ebizzy/25%-2x-3s/debian/debian/defconfig/4.0.0-1-amd64/0/ebizzy
 		Iteration: 1
 		2015-06-17 16:10:33 ./ebizzy -t 2 -S 3
@@ -151,6 +154,7 @@ Let's describe step by step with an example: ebizzy.
 		    4.05
 		  ]
 		}
+```
 
 ##Testing
 
@@ -159,8 +163,9 @@ accurate results and reduce strange errors since it was developed
 based on a Debian system.
 
 Preinstall necessary packages:
-
+```
 	# apt-get install ruby
+```
 
 For now Debian based distros are required.
 
@@ -168,6 +173,7 @@ For now Debian based distros are required.
 
 Use split-job command to split the predefined job file.
 
+```
 	# ./sbin/split-job -h
 	Usage: split-job [options] jobs...
 
@@ -176,6 +182,7 @@ Use split-job command to split the predefined job file.
 	    -c, --config CONFIG              test kernel config
 	    -k, --kernel COMMIT              test kernel commit
 	    -h, --help                       show this message
+```
 
 Here use the '-c' option to specify the kconfig of the testing kernel, if
 omitted, it will be set to "defconfig" in the following setup-local step.
@@ -188,6 +195,7 @@ the following setup-local step.
 
 Use setup-local command to configure local test environment.
 
+```
 	# ./bin/setup-local -h
 	Usage: setup-local [options] <script>/<jobfile>
 
@@ -195,6 +203,8 @@ Use setup-local command to configure local test environment.
 	        --hdd partition              HDD partition for IO tests
 	        --ssd partition              SSD partition for IO tests
 	    -h, --help                       Show this message
+
+```
 
 It is easy to understand the options '--hdd' and '--ssd'. While the argument
 "script" means the scripts path under the directories "monitors",
@@ -210,14 +220,18 @@ After this step, there will be a configuration file under "hosts" directory
 named with local hostname. For example, my hostname is "allen", then content
 of this file may be like this:
 
+```
 	# cat hosts/allen
 	memory: 8G
 	hdd_partitions: /dev/sdc2
 	ssd_partitions:
+```
 
 Note that you may need to set environment variable
 
+```
 	# export LINUX_GIT=/path/to/linux/kernel/repo
+```
 
 in order to run some of the commands.
 
@@ -225,9 +239,11 @@ in order to run some of the commands.
 
 Use run-local command to run a test job.
 
+```
 	# ./bin/run-local -h
 	Usage: run-local [--dry-run] [-o RESULT_ROOT] JOBFILE
 	...
+```
 
 The argument "JOBFILE" above is one of the job files split from split-job
 command we described in 5.1. If the result root is not specified using
@@ -240,19 +256,27 @@ above steps.
 
 - split the job file:
 
+```
 		# ./sbin/split-job jobs/ebizzy.yaml
 		jobs/ebizzy.yaml => ./ebizzy-200%-100x-10s.yaml
+```
 
 - setup the local environment:
 
+```
 		# ./bin/setup-local ./ebizzy-200%-100x-10s.yaml
+```
 
 - run the generated job file:
 
+```
 		# ./bin/run-local ./ebizzy-200%-100x-10s.yaml
+```
 
 Then the running result will be placed at '/result'.
 
 Which can be listed by command
 
+```
 	# ./sbin/lkp rt ebizzy
+```
