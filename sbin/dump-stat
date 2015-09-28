@@ -7,6 +7,7 @@ require "#{LKP_SRC}/lib/statistics.rb"
 require "#{LKP_SRC}/lib/bounds.rb"
 require "#{LKP_SRC}/lib/yaml.rb"
 require "#{LKP_SRC}/lib/job.rb"
+require 'set'
 
 $monitor = ARGV[0]
 
@@ -74,7 +75,9 @@ if $monitor != 'ftrace'
 	}
 end
 
-if min_cols < max_cols and $monitor != 'ftrace'
+UNSTRUCTURED_MONITORS = %w(ftrace).to_set
+
+if min_cols < max_cols and not UNSTRUCTURED_MONITORS.include?($monitor)
 	if min_cols == max_cols - 1
 		$result.each { |k, v| v.pop if v.size == max_cols }
 		puts "Last record seems incomplete. Truncated #{RESULT_ROOT}/#{$monitor}.json"
