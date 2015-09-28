@@ -58,6 +58,11 @@ unless jobfile
 	exit 1
 end
 
+if !jobfile.index('/') and !File.exist?(jobfile)
+	file = LKP_SRC + '/jobs/' + jobfile
+	jobfile = file if File.exist?(file)
+end
+
 def create_result_root(_result_root)
 	0.upto(99) do |i|
 		result_root = "#{_result_root}/#{i}"
