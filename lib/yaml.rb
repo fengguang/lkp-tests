@@ -178,6 +178,12 @@ def search_load_json(path)
 	try_load_json(path + '/stats.json') or raise(JSONFileNotExistError, path)
 end
 
+def search_json(path)
+	search_load_json path
+rescue JSONFileNotExistError
+	return false
+end
+
 def load_regular_expressions(file)
 	pattern	= File.read(file).split("\n")
 	regex	= Regexp.new pattern.join('|')
