@@ -1,5 +1,21 @@
 #!/usr/bin/env ruby
 
+# dmesg and kmsg both their strengths and limitations, so both are used.
+#
+# dmesg is only available for the KVM test boxes and the test boxes that
+# have serial console output. Near half of the physical test boxes do
+# not have serial console, hence do not have these dmesg files -- they
+# only have RESULT_ROOT/kmsg which is the output of /proc/kmsg and
+# collected inside the running kernel. dmesg is collected outside of the
+# running kernel, so is more reliable when there are kernel oops. While
+# kmsg is more accurate than the lossy/noisy serial console when there
+# is no oops.
+#
+# So we use dmesg.* stats (which try to use dmesg then fall back to kmsg)
+# to catch obvious kernel warning/bugs, while use kmsg.* stats (which is based
+# on kmsg and falls back to dmesg) to catch 50000+ printk messages whose level
+# is >= KERN_WARNING.
+
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($0)))
 require "#{LKP_SRC}/lib/dmesg.rb"
 
