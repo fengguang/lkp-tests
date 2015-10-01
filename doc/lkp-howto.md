@@ -41,7 +41,7 @@ before major installation and backups at regular intervals.
 
 
 ## Introduction
-Before using the Linux kernel test infrastrucutre, please go to [LKP website] (https://01.org/lkp) to understand about what the infrastructure can do. 
+Before using the Linux kernel test infrastrucutre, please go to [LKP website](https://01.org/lkp) to understand about what the infrastructure can do. 
 
 
 ## Writing Tests
