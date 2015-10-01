@@ -1,14 +1,14 @@
 
-#Linux Kernel Performance tests HOWTO
+# Linux Kernel Performance tests HOWTO
 
 
-##Abstract
+## Abstract
 
 This document explains the steps of setting up and running the test
 suite for Linux kernel test.
 
 
-##Preface
+## Preface
 
 This document is written to help developers leveraging Intel [0-Day](https://01.org/lkp/documentation/0-day-brief-introduction),a Linux kernel test infrastructure to run tests and get
 the results on local development machine and bring the community up
@@ -16,12 +16,12 @@ to speed on the ins and outs of the Linux Kernel Performance test
 project.
 
 
-###Copyright
+### Copyright
 
 Refer to [COPYING](COYPING.html).
 
 
-###Disclaimer
+### Disclaimer
 
 Use the information in this document at your own risk. We
 disavow any potential liability for the contents of this
@@ -40,11 +40,11 @@ You are strongly recommended to take a backup of your system
 before major installation and backups at regular intervals.
 
 
-##Introduction
+## Introduction
 Before using the Linux kernel test infrastrucutre, please go to [LKP website] (https://01.org/lkp) to understand about what the infrastructure can do. 
 
 
-##Writing Tests
+## Writing Tests
 
 In general, we can sum up to three steps to write a simple test
 on the infrastructure.
@@ -80,7 +80,7 @@ Let's describe step by step with an example: ebizzy.
 		# - iterations
 ```
 
- The next step is writing a [jobfile](README-job-file.html) for the new created test case script
+ The next step is writing a [job file](README-job-file.html) for the new created test case script
  under "jobs" directory so that we can easily testing new parameters by
  just changing the yaml formated jobfile.
 
@@ -156,7 +156,7 @@ Let's describe step by step with an example: ebizzy.
 		}
 ```
 
-##Testing
+## Testing
 
 Better to use a Debian system to run the tests in order to get more
 accurate results and reduce strange errors since it was developed
@@ -169,7 +169,7 @@ Preinstall necessary packages:
 
 For now Debian based distros are required.
 
-###Split job file
+### Split job file
 
 Use split-job command to split the predefined job file.
 
@@ -191,7 +191,7 @@ testing kernel, if omitted, it will be set to the local kernel version in
 the following setup-local step.
 
 
-###Setup local environment
+### Setup local environment
 
 Use setup-local command to configure local test environment.
 
@@ -235,7 +235,7 @@ Note that you may need to set environment variable
 
 in order to run some of the commands.
 
-###Run job
+### Run job
 
 Use run-local command to run a test job.
 
@@ -249,7 +249,7 @@ The argument "JOBFILE" above is one of the job files split from split-job
 command we described in 5.1. If the result root is not specified using
 '-o' option here, the running result will be placed to "/result" directory.
 
-###Example
+### Example
 
 Here, we give an example how to run a specific testcase ebizzy following
 above steps.
