@@ -68,3 +68,21 @@ BMC returned incorrect response,
 Starting new kernel
 drm:drm_edid_block_valid
 Raw EDID:
+ACPI: Invalid BIOS MADT, disabling ACPI
+ACPI: Error parsing LAPIC address override entry
+ACPI: Error parsing LAPIC NMI entry
+ACPI: No IRQ available for PCI Interrupt Link 
+ACPI: PCI Interrupt Link .* enabled at IRQ 
+ACPI needs to be enabled for this driver to work!
+: Failed to register ACPI driver: 
+No Caching mode page found
+Assuming drive cache: write through
+DMAR-IR: Failed to copy IR table for dmar[0-9] from previous kernel
+CPU feature 'AVX registers' is not supported.
+CPU feature '(null)' is not supported.
+callbacks.suppressed
+smpboot: weird, boot CPU (#0) not listed by the BIOS
+Consider compiling CPUfreq support into your kernel.
+PnPBIOS: 
+Warning: Processor Platform Limit event detected, but not handled.
+Kernel Offset: disabled
