@@ -1,2 +1,12 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/swarren/linux-tegra.git
 owner: Thierry Reding <treding@nvidia.com>
+subsystems:
+- tegra
+- arm
+- clk
+- soc
+- fuse
+- memory
+- tegra-smmu
+- iommu
+- of

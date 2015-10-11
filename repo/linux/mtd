@@ -2,3 +2,7 @@ url: git://git.infradead.org/linux-mtd.git
 integration_testing_branches: master
 mail_to: linux-mtd@lists.infradead.org
 owner: Brian Norris <computersforpeace@gmail.com>
+subsystems:
+- mtd
+- sunxi
+- nand

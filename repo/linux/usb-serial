@@ -1,3 +1,8 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/johan/usb-serial.git
 integration_testing_branches: usb-next usb-linus
 owner: Johan Hovold <johan@kernel.org>
+subsystems:
+- usb
+- io_ti
+- qcserial
+- option

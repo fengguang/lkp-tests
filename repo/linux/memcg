@@ -1,2 +1,10 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/mhocko/mm.git
 owner: Michal Hocko <mhocko@suse.cz>
+subsystems:
+- mm
+- zram
+- memcontrol
+- page-flags
+- memcg
+- zsmalloc
+- hugetlb

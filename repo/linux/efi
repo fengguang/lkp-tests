@@ -1,3 +1,8 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/mfleming/efi.git
 mail_to: linux-efi@vger.kernel.org
 owner: Matt Fleming <matt.fleming@intel.com>
+subsystems:
+- efi
+- x86
+- arm64
+- apei

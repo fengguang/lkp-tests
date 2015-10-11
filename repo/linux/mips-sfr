@@ -1,3 +1,8 @@
 url: http://git.linux-mips.org/pub/scm/ralf/upstream-sfr
 integration_testing_branches: mips-for-linux-next
 owner: Ralf Baechle <ralf@linux-mips.org>
+subsystems:
+- mips
+- octeon
+- math-emu
+- s390

@@ -3,3 +3,11 @@ integration_testing_branches: for-next
 mail_cc:
 - linux-ide@vger.kernel.org
 owner: Tejun Heo <tj@kernel.org>
+subsystems:
+- libata
+- ata
+- ahci
+- sata_dwc_460ex
+- sata_rcar
+- ahci_xgene
+- libahci

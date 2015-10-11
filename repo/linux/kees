@@ -1,2 +1,13 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git
 owner: Kees Cook <keescook@chromium.org>
+subsystems:
+- arm
+- lsm
+- mm
+- seccomp
+- yama
+- string_helpers
+- x86
+- lib
+- crypto
+- kexec

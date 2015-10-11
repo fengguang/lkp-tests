@@ -2,3 +2,15 @@ url: https://git.kernel.org/pub/scm/linux/kernel/git/jejb/scsi.git
 integration_testing_branches: for-next
 mail_to: linux-scsi@vger.kernel.org
 owner: James Bottomley <JBottomley@Odin.com>
+subsystems:
+- qla2xxx
+- hpsa
+- mpt3sas
+- pm80xx
+- storvsc
+- cxlflash
+- ipr
+- scsi_dh
+- scsi
+- st
+- scsi_debug

@@ -1,2 +1,18 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms.git
 owner: Marc Zyngier <marc.zyngier@arm.com>
+subsystems:
+- irqchip
+- arm64
+- gicv3
+- pci
+- kvm
+- arm
+- msi
+- its
+- irqdomain
+- gic
+- genirq
+- gicv3-its
+- acpi
+- drivers
+- of

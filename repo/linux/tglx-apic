@@ -1,2 +1,9 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/tglx/apic.git
 owner: Thomas Gleixner <tglx@linutronix.de>
+subsystems:
+- iommu
+- x86
+- vt-d
+- amd
+- irq_remapping
+- acpi

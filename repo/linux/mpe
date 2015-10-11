@@ -1,3 +1,9 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/mpe/linux
 integration_testing_branches: next fixes
 owner: Michael Ellerman <mpe@ellerman.id.au>
+subsystems:
+- powerpc
+- cxl
+- powernv
+- ps3
+- perf

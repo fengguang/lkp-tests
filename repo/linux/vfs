@@ -1,2 +1,10 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs.git
 owner: Al Viro <viro@zeniv.linux.org.uk>
+subsystems:
+- namei
+- link_path_walk
+- vfs
+- 9p
+- lustre
+- ufs
+- orangefs

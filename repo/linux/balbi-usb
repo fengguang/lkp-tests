@@ -4,3 +4,10 @@ mail_cc:
 - linux-usb@vger.kernel.org
 - linux-omap@vger.kernel.org
 owner: Felipe Balbi <balbi@ti.com>
+subsystems:
+- usb
+- gadget
+- dwc2
+- dwc3
+- arm
+- host

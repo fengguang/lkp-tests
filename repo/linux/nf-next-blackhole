@@ -1,2 +1,6 @@
 url: git://blackhole.kfki.hu/nf-next
 owner: Pablo Neira Ayuso <pablo@netfilter.org>
+subsystems:
+- netfilter
+- nft_limit
+- nf_conntrack

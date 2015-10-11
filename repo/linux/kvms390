@@ -2,3 +2,6 @@ url: https://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux
 integration_testing_branches: next
 mail_to: linux-s390@vger.kernel.org
 owner: Christian Borntraeger <borntraeger@de.ibm.com>
+subsystems:
+- kvm
+- s390

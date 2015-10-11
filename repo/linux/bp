@@ -1,3 +1,14 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/bp/bp
 integration_testing_branches: for-next
 owner: Borislav Petkov <bp@suse.de>
+subsystems:
+- x86
+- edac
+- mce
+- fpu
+- drivers
+- mm
+- fbdev
+- video
+- pat
+- lib

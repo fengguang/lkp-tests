@@ -1,2 +1,7 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/jdelvare/staging.git
 owner: Jean Delvare <jdelvare@suse.de>
+subsystems:
+- firmware
+- dmi_scan
+- hwmon
+- dmi

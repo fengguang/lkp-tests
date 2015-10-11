@@ -2,3 +2,17 @@ url: https://github.com/Xilinx/linux-xlnx
 mail_cc:
 - linux-arm-kernel@lists.infradead.org
 owner: Michal Simek <michal.simek@xilinx.com>
+subsystems:
+- xilinx
+- dma
+- net
+- zynqmp
+- zynq
+- remoteproc
+- drm
+- cdma
+- arm64
+- arm
+- zynqmp_r5_remoteproc
+- spi
+- ethernet

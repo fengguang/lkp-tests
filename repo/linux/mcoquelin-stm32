@@ -2,3 +2,17 @@ url: https://git.kernel.org/pub/scm/linux/kernel/git/mcoquelin/stm32.git
 mail_cc:
 - linux-arm-kernel@lists.infradead.org
 owner: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+subsystems:
+- arm
+- dt-bindings
+- dts
+- drivers
+- configs
+- maintainers
+- stm32-usart
+- link-vmlinux
+- serial
+- reset
+- scripts
+- armv7-m
+- clocksource

@@ -1,2 +1,11 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/konrad/xen.git
 owner: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+subsystems:
+- xen-blkfront
+- xen-blkback
+- xen
+- drivers
+- block
+- driver
+- blkfront
+- blkback

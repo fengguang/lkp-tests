@@ -4,3 +4,8 @@ mail_cc:
 - linux-arm-kernel@lists.infradead.org
 - kvmarm@lists.cs.columbia.edu
 owner: Christoffer Dall <christoffer.dall@linaro.org>
+subsystems:
+- kvm
+- arm64
+- arm
+- arch_timer

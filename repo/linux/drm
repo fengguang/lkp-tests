@@ -3,3 +3,12 @@ integration_testing_branches: drm-next
 mail_cc:
 - dri-devel@lists.freedesktop.org
 owner: Dave Airlie <airlied@redhat.com>
+subsystems:
+- drm
+- radeon
+- mst
+- qxl
+- dp
+- atomic
+- udl
+- bochs

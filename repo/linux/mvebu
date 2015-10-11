@@ -1,3 +1,8 @@
 url: git://git.infradead.org/linux-mvebu
 integration_testing_branches: for-next
 owner: Gregory CLEMENT <gregory.clement@free-electrons.com>
+subsystems:
+- arm
+- mvebu
+- leds
+- leds-ns2

@@ -2,3 +2,8 @@ url: git://git.infradead.org/users/pcmoore/selinux
 integration_testing_branches: next
 mail_to: selinux@tycho.nsa.gov
 owner: Paul Moore <pmoore@redhat.com>
+subsystems:
+- selinux
+- signals
+- lsm
+- security

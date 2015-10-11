@@ -1,3 +1,12 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux
 integration_testing_branches: for-next
 owner: Rob Herring <robh@kernel.org>
+subsystems:
+- arm
+- of
+- versatile
+- pci
+- dt-bindings
+- host
+- documentation
+- dtc

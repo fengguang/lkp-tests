@@ -1,2 +1,10 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/mark/linux.git
 owner: Mark Rutland <mark.rutland@arm.com>
+subsystems:
+- arm64
+- psci
+- arm
+- perf
+- kvm
+- smp_plat
+- smp

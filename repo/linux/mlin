@@ -1,2 +1,11 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/mlin/linux.git
 owner: Ming Lin <mlin@kernel.org>
+subsystems:
+- block
+- bcache
+- md
+- raid5
+- fs
+- documentation
+- btrfs
+- dm

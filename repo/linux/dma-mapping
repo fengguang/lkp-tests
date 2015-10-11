@@ -1,3 +1,6 @@
 url: https://git.linaro.org/people/mszyprowski/linux-dma-mapping.git
 integration_testing_branches: dma-mapping-next
 owner: Marek Szyprowski <m.szyprowski@samsung.com>
+subsystems:
+- mm
+- cma

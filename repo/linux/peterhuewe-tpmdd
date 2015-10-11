@@ -1,2 +1,8 @@
 url: https://github.com/PeterHuewe/linux-tpmdd.git
 owner: Peter Huewe <peterhuewe@gmx.de>
+subsystems:
+- tpm
+- tpm_i2c_stm_st33
+- pnp
+- char
+- tpm_ibmvtpm

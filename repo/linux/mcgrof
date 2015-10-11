@@ -1,2 +1,10 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/mcgrof/linux.git
 owner: Luis R. Rodriguez <mcgrof@do-not-panic.com>
+subsystems:
+- kernel
+- firmware
+- modsign
+- x.509
+- workqueue.c
+- params.c
+- module.c

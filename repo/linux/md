@@ -1,3 +1,8 @@
 url: git://neil.brown.name/md
 integration_testing_branches: for-next
 owner: NeilBrown <neilb@suse.com>
+subsystems:
+- md
+- raid5-cache
+- raid5
+- md-cluster

@@ -2,3 +2,12 @@ url: https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git
 integration_testing_branches: tty-next tty-linus
 mail_to: linux-serial@vger.kernel.org
 owner: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+subsystems:
+- serial
+- sh-sci
+- tty
+- 8250_dw
+- imx
+- msm
+- drivers
+- '8250'

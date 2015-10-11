@@ -1,2 +1,9 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/andrea/aa.git
 owner: Andrea Arcangeli <aarcange@redhat.com>
+subsystems:
+- userfaultfd
+- mm
+- zone_reclaim
+- compaction
+- gup
+- remap_pages

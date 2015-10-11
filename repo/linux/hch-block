@@ -1,2 +1,7 @@
 url: git://git.infradead.org/users/hch/block.git
 owner: Christoph Hellwig <hch@lst.de>
+subsystems:
+- usb-gadget
+- nvme
+- dma-mapping
+- block

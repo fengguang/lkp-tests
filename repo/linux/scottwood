@@ -3,3 +3,7 @@ integration_testing_branches: next
 mail_cc:
 - linuxppc-dev@lists.ozlabs.org
 owner: Scott Wood <scottwood@freescale.com>
+subsystems:
+- powerpc
+- 85xx
+- '32'

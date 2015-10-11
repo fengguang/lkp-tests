@@ -3,3 +3,11 @@ integration_testing_branches: auto-latest
 mail_cc:
 - linux-kernel@vger.kernel.org
 owner: Ingo Molnar <mingo@kernel.org>
+subsystems:
+- x86
+- fpu
+- perf
+- sched
+- intel
+- locking
+- documentation

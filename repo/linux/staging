@@ -3,3 +3,11 @@ integration_testing_branches: staging-next staging-linus
 mail_cc:
 - devel@driverdev.osuosl.org
 owner: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+subsystems:
+- staging
+- wilc1000
+- lustre
+- ldlm
+- rtl8712
+- unisys
+- ptlrpc

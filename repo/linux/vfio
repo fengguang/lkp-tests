@@ -3,3 +3,7 @@ integration_testing_branches: next for-linus
 mail_cc:
 - kvm@vger.kernel.org
 owner: Alex Williamson <alex.williamson@redhat.com>
+subsystems:
+- vfio
+- pci
+- platform

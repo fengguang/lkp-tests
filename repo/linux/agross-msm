@@ -1,3 +1,15 @@
 url: git://codeaurora.org/quic/kernel/agross-msm
 integration_testing_branches: qcom/for-next
 owner: Andy Gross <agross@codeaurora.org>
+subsystems:
+- qcom
+- dts
+- arm64
+- arm
+- remoteproc
+- soc
+- dt
+- firmware
+- scm
+- smd
+- gpio

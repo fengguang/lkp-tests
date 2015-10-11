@@ -1,3 +1,15 @@
 url: git://git.infradead.org/users/jcooper/linux.git
 integration_testing_branches: irqchip/for-next
 owner: Jason Cooper <jason@lakedaemon.net>
+subsystems:
+- irqchip
+- gicv3-its
+- gicv3
+- arm
+- its
+- tegra
+- armada-370-xp
+- gic
+- dt
+- atmel-aic
+- renesas-irqc

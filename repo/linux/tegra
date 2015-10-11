@@ -2,3 +2,13 @@ url: https://git.kernel.org/pub/scm/linux/kernel/git/tegra/linux
 integration_testing_branches: for-next
 mail_to: linux-tegra@vger.kernel.org
 owner: Thierry Reding <treding@nvidia.com>
+subsystems:
+- tegra
+- arm
+- clk
+- soc
+- fuse
+- memory
+- tegra-smmu
+- iommu
+- of

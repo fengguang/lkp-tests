@@ -1,2 +1,12 @@
 url: git://git.infradead.org/users/hch/pmem.git
 owner: Christoph Hellwig <hch@lst.de>
+subsystems:
+- scatterlist
+- dma-mapping
+- crypto
+- arch
+- dax
+- mm
+- pmem
+- block
+- x86

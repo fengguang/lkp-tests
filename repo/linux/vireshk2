@@ -1,2 +1,11 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/vireshk/linux.git
 owner: Viresh Kumar <viresh.kumar@linaro.org>
+subsystems:
+- clocksource
+- arm
+- cpu_cooling
+- time
+- mips
+- clockevents
+- thermal
+- timer

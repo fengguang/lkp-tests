@@ -1,2 +1,9 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/agruen/linux-richacl.git
 owner: Andreas Gruenbacher <agruenba@redhat.com>
+subsystems:
+- richacl
+- vfs
+- nfsd
+- nfs
+- ext4
+- sunrpc

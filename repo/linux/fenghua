@@ -1,2 +1,10 @@
 url: https://github.com/fyu1/linux.git
 owner: Fenghua Yu <fenghua.yu@intel.com>
+subsystems:
+- x86
+- intel_rdt
+- x86-32
+- xsaves
+- intel_rapl
+- intel_cqm
+- xsave.c

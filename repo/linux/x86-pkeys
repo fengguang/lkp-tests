@@ -1,2 +1,7 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/daveh/x86-pkeys.git
 owner: Dave Hansen <dave.hansen@intel.com>
+subsystems:
+- mm
+- x86
+- xsaves
+- inotify

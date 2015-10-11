@@ -1,3 +1,6 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/pjw/omap-pending.git
 integration_testing_branches: for-next
 owner: Paul Walmsley <paul@pwsan.com>
+subsystems:
+- arm
+- hwmod

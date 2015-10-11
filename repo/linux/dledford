@@ -1,2 +1,11 @@
 url: https://github.com/dledford/linux.git
 owner: Doug Ledford <dledford@redhat.com>
+subsystems:
+- ib
+- hfi1
+- iser
+- core
+- srp
+- rdma
+- mlx4
+- verbs

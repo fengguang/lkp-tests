@@ -2,3 +2,8 @@ url: https://git.kernel.org/pub/scm/linux/kernel/git/joro/iommu.git
 integration_testing_branches: next
 mail_to: iommu@lists.linux-foundation.org
 owner: Joerg Roedel <jroedel@suse.de>
+subsystems:
+- iommu
+- exynos
+- amd
+- omap

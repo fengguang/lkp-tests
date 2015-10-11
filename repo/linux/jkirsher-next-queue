@@ -2,3 +2,10 @@ url: https://git.kernel.org/pub/scm/linux/kernel/git/jkirsher/next-queue.git
 mail_cc:
 - intel-wired-lan@lists.osuosl.org
 owner: Jeff Kirsher <jeffrey.t.kirsher@intel.com>
+subsystems:
+- i40e
+- ixgbe
+- i40evf
+- fm10k
+- igb
+- e1000

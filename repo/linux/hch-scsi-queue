@@ -1,2 +1,12 @@
 url: git://git.infradead.org/users/hch/scsi-queue.git
 owner: Christoph Hellwig <hch@lst.de>
+subsystems:
+- scsi
+- hpsa
+- megaraid_sas
+- scsi_debug
+- ncr5380
+- storvsc
+- ses
+- mpt2sas
+- esp_scsi

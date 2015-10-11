@@ -2,3 +2,9 @@ url: https://git.kernel.org/pub/scm/linux/kernel/git/abelloni/linux.git
 integration_testing_branches: rtc-next
 mail_to: rtc-linux@googlegroups.com
 owner: Alexandre Belloni <alexandre.belloni@free-electrons.com>
+subsystems:
+- at91
+- arm
+- dt
+- rtc
+- clk

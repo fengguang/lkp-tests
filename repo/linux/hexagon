@@ -2,3 +2,6 @@ url: https://git.kernel.org/pub/scm/linux/kernel/git/rkuo/linux-hexagon-kernel.g
 integration_testing_branches: linux-next
 mail_to: linux-hexagon@vger.kernel.org
 owner: Richard Kuo <rkuo@codeaurora.org>
+subsystems:
+- hexagon
+- time

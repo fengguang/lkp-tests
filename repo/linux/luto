@@ -1,3 +1,9 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/luto/linux.git
 integration_testing_branches: next
 owner: Andy Lutomirski <luto@amacapital.net>
+subsystems:
+- x86
+- entry_64.s
+- perf
+- mm
+- ia32entry.s

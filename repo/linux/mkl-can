@@ -1,3 +1,7 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can
 mail_to: linux-can@vger.kernel.org
 owner: David S. Miller <davem@davemloft.net>
+subsystems:
+- net
+- dsa
+- i40e

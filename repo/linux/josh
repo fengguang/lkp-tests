@@ -1,3 +1,9 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/josh/linux.git
 integration_testing_branches: tiny/next
 owner: Josh Triplett <josh@joshtriplett.org>
+subsystems:
+- x86
+- lib
+- rtc
+- fs
+- tiny

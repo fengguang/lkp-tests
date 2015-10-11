@@ -1,3 +1,11 @@
 url: http://git.pengutronix.de/git/ukl/linux
 integration_testing_branches: for-next
 owner: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+subsystems:
+- drm
+- bridge
+- pwm
+- gpio
+- usb
+- clk
+- msm

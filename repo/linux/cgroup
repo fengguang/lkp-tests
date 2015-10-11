@@ -2,3 +2,9 @@ url: https://git.kernel.org/pub/scm/linux/kernel/git/tj/cgroup.git
 integration_testing_branches: for-next
 mail_to: cgroups@vger.kernel.org
 owner: Tejun Heo <tj@kernel.org>
+subsystems:
+- writeback
+- blkcg
+- cgroup
+- cfq-iosched
+- memcg

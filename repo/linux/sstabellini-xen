@@ -1,2 +1,7 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/sstabellini/xen
 owner: Stefano Stabellini <stefano.stabellini@eu.citrix.com>
+subsystems:
+- xen
+- arm
+- arm64
+- swiotlb-xen

@@ -1,2 +1,11 @@
 url: git://linuxtv.org/pinchartl/fbdev.git
 owner: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+subsystems:
+- drm
+- rcar-du
+- arm
+- shmobile
+- iommu
+- ipmmu-vmsa
+- dmaengine
+- rcar-dmac

@@ -2,3 +2,8 @@ url: https://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can-next
 mail_cc:
 - linux-can@vger.kernel.org
 owner: Marc Kleine-Budde <mkl@pengutronix.de>
+subsystems:
+- can
+- flexcan
+- rx-fifo
+- headers

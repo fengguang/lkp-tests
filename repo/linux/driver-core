@@ -3,3 +3,14 @@ integration_testing_branches: driver-core-next driver-core-linus
 mail_cc:
 - devel@driverdev.osuosl.org
 owner: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+subsystems:
+- debugfs
+- platform
+- kobject
+- base
+- cma
+- devres
+- sysfs
+- soc
+- mm
+- driver-core

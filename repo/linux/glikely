@@ -2,3 +2,9 @@ url: https://git.kernel.org/pub/scm/linux/kernel/git/glikely/linux
 integration_testing_branches: devicetree/next devicetree/merge
 mail_to: devicetree@vger.kernel.org
 owner: Grant Likely <grant.likely@linaro.org>
+subsystems:
+- of
+- reconfig
+- unittest
+- overlay
+- fdt

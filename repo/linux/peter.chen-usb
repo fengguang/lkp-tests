@@ -2,3 +2,13 @@ url: https://git.kernel.org/pub/scm/linux/kernel/git/peter.chen/usb
 mail_cc:
 - linux-usb@vger.kernel.org
 owner: Peter Chen <peter.chen@freescale.com>
+subsystems:
+- usb
+- chipidea
+- imx
+- usbtest
+- arm
+- misc
+- ci-hdrc-usb2
+- doc
+- dts

@@ -5,3 +5,16 @@ mail_cc:
 - virtualization@lists.linux-foundation.org
 - netdev@vger.kernel.org
 owner: Michael S. Tsirkin <mst@redhat.com>
+subsystems:
+- virtio
+- virtio_pci
+- vhost
+- uaccess
+- tools
+- virtio_net
+- virtio_ccw
+- tun
+- s390
+- net
+- kvm
+- virtio_blk

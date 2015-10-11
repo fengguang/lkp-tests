@@ -1,2 +1,9 @@
 url: https://github.com/congwang/linux.git
 owner: Cong Wang <xiyou.wangcong@gmail.com>
+subsystems:
+- net_sched
+- mm
+- net
+- memcg
+- fou
+- arch

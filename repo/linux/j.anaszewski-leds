@@ -2,3 +2,10 @@ url: https://git.kernel.org/pub/scm/linux/kernel/git/j.anaszewski/linux-leds
 integration_testing_branches: for-next
 mail_to: linux-leds@vger.kernel.org
 owner: Jacek Anaszewski <j.anaszewski@samsung.com>
+subsystems:
+- leds
+- leds-ipaq-micro
+- leds-bcm6328
+- netxbig
+- aat1290
+- arm

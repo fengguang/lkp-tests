@@ -2,3 +2,11 @@ url: https://git.linaro.org/people/ulf.hansson/mmc
 integration_testing_branches: next
 mail_to: linux-mmc@vger.kernel.org
 owner: Ulf Hansson <ulf.hansson@linaro.org>
+subsystems:
+- mmc
+- tmio
+- sdhci-pxav3
+- sh_mobile_sdhi
+- sdhci
+- sdhci-pci
+- core

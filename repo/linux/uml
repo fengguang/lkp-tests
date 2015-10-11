@@ -2,3 +2,6 @@ url: https://git.kernel.org/pub/scm/linux/kernel/git/rw/uml.git
 integration_testing_branches: linux-next
 mail_to: user-mode-linux-devel@lists.sourceforge.net
 owner: Richard Weinberger <richard@nod.at>
+subsystems:
+- um
+- hostfs

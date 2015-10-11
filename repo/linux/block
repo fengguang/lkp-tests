@@ -1,3 +1,12 @@
 url: git://git.kernel.dk/linux-block.git
 integration_testing_branches: for-next
 owner: Jens Axboe <axboe@fb.com>
+subsystems:
+- blk-mq
+- block
+- nvme
+- writeback
+- mtip32xx
+- scsi
+- blkcg
+- nbd

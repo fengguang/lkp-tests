@@ -3,3 +3,10 @@ integration_testing_branches: master
 mail_cc:
 - linux-pm@vger.kernel.org
 owner: Sebastian Reichel <sre@kernel.org>
+subsystems:
+- power
+- reset
+- bq24257
+- bq27xxx_battery
+- xgene
+- at91-reset

@@ -1,2 +1,10 @@
 url: https://git.linaro.org/people/john.stultz/linux.git
 owner: John Stultz <john.stultz@linaro.org>
+subsystems:
+- time
+- rtc
+- timers
+- clocksource
+- timekeeping
+- selftest
+- sched_clock

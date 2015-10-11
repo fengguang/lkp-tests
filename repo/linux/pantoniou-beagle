@@ -1,2 +1,13 @@
 url: https://github.com/pantoniou/linux-beagle-track-mainline.git
 owner: Pantelis Antoniou <pantelis.antoniou@konsulko.com>
+subsystems:
+- of
+- overlay
+- arm
+- omap
+- unittest
+- nvmem
+- dt
+- doc
+- i2c
+- platform

@@ -1,2 +1,13 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/geert/renesas-drivers.git
 owner: Geert Uytterhoeven <geert+renesas@glider.be>
+subsystems:
+- serial
+- sh-sci
+- shmobile
+- arm
+- sh-pfc
+- clk
+- pinctrl
+- arm64
+- renesas
+- r8a7795

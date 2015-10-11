@@ -1,2 +1,5 @@
 url: git://git.infradead.org/intel-iommu
 owner: David Woodhouse <David.Woodhouse@intel.com>
+subsystems:
+- iommu
+- vt-d

@@ -1,2 +1,11 @@
 url: git://git.infradead.org/users/ezequielg/linux
 owner: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+subsystems:
+- dt
+- watchdog
+- clocksource
+- mtd
+- iio
+- mips-gic
+- adc
+- nand

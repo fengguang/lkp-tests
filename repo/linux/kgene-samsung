@@ -1,3 +1,9 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/kgene/linux-samsung.git
 integration_testing_branches: for-next
 owner: Kukjin Kim <kgene@kernel.org>
+subsystems:
+- arm
+- dts
+- exynos
+- exynos_defconfig
+- arm64

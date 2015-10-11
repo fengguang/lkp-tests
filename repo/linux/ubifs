@@ -1,2 +1,7 @@
 url: git://git.infradead.org/linux-ubifs.git
 owner: Richard Weinberger <richard@nod.at>
+subsystems:
+- ubi
+- ubifs
+- fastmap
+- block

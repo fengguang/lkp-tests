@@ -2,3 +2,11 @@ url: git://linuxtv.org/media_tree.git
 integration_testing_branches: master
 mail_to: linux-media@vger.kernel.org
 owner: Mauro Carvalho Chehab <mchehab@osg.samsung.com>
+subsystems:
+- docbook
+- media
+- coda
+- c8sectpfe
+- v4l
+- i2c
+- usbvision

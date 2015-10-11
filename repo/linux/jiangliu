@@ -1,2 +1,13 @@
 url: https://github.com/jiangliu/linux.git
 owner: Jiang Liu <jiang.liu@linux.intel.com>
+subsystems:
+- x86
+- irq
+- acpi
+- irq_remapping
+- iommu
+- pci
+- genirq
+- vt-d
+- msi
+- amd

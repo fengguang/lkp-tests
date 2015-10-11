@@ -1,2 +1,10 @@
 url: git://people.freedesktop.org/~jbarnes/linux
 owner: Jesse Barnes <jbarnes@virtuousgeek.org>
+subsystems:
+- drm
+- i915
+- iommu
+- vt-d
+- android
+- sync
+- hack

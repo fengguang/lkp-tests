@@ -1,2 +1,13 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/frederic/linux-dynticks.git
 owner: Frederic Weisbecker <fweisbec@gmail.com>
+subsystems:
+- nohz
+- cputime
+- kmod
+- preempt
+- sched
+- context_tracking
+- alpha
+- smpboot
+- jiffies
+- apm32

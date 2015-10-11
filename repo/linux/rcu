@@ -3,3 +3,7 @@ integration_testing_branches: rcu/next
 mail_cc:
 - linux-kernel@vger.kernel.org
 owner: Paul E. McKenney <paulmck@linux.vnet.ibm.com>
+subsystems:
+- rcu
+- rcutorture
+- documentation

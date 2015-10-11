@@ -1,2 +1,9 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/sre/linux-power-supply.git
 owner: Sebastian Reichel <sre@kernel.org>
+subsystems:
+- power
+- bq24257
+- bq27xxx_battery
+- reset
+- at91-reset
+- wm831x_power

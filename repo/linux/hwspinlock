@@ -1,3 +1,8 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/ohad/hwspinlock.git
 integration_testing_branches: for-next
 owner: Ohad Ben-Cohen <ohad@wizery.com>
+subsystems:
+- hwspinlock
+- dt
+- qcom
+- documentation

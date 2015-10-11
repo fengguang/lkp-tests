@@ -1,3 +1,16 @@
 url: git://git.infradead.org/users/hesselba/linux-berlin
 integration_testing_branches: berlin/for-next
 owner: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+subsystems:
+- berlin
+- arm
+- dts
+- mmc
+- armada-xp
+- sdhci-pxav3
+- mvebu
+- phy
+- net
+- pxa168_eth
+- berlin-sata
+- clk

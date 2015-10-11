@@ -1,2 +1,18 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/tj/misc.git
 owner: Tejun Heo <tj@kernel.org>
+subsystems:
+- netconsole
+- printk
+- writeback
+- workqueue
+- cpuset
+- xtensa
+- x86
+- rcu
+- powerpc
+- mips
+- bitmap
+- memcg
+- sched
+- tile
+- percpu

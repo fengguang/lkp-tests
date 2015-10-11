@@ -3,3 +3,7 @@ integration_testing_branches: for-next
 mail_cc:
 - linux-parisc@vger.kernel.org
 owner: Helge Deller <deller@gmx.de>
+subsystems:
+- parisc
+- compat
+- mm

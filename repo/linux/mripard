@@ -1,3 +1,14 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/mripard/linux.git
 integration_testing_branches: sunxi/for-next
 owner: Maxime Ripard <maxime.ripard@free-electrons.com>
+subsystems:
+- arm
+- dts
+- sunxi
+- sun7i
+- sun4i
+- sun6i
+- sun5i
+- sun8i
+- sun9i
+- clk

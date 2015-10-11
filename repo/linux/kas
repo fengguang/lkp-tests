@@ -1,2 +1,13 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/kas/linux.git
 owner: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+subsystems:
+- mm
+- thp
+- page-flags
+- rmap
+- lib
+- memcg
+- checkpatch
+- parse_integer
+- khugepaged
+- ksm

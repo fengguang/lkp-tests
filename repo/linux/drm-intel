@@ -4,3 +4,8 @@ mail_cc:
 - intel-gfx@lists.freedesktop.org
 - dri-devel@lists.freedesktop.org
 owner: Daniel Vetter <daniel.vetter@ffwll.ch>
+subsystems:
+- drm
+- i915
+- bxt
+- gen8

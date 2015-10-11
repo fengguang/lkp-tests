@@ -4,3 +4,10 @@ mail_cc:
 - linux-input@vger.kernel.org
 - linux-usb@vger.kernel.org
 owner: Jiri Kosina <jkosina@suse.cz>
+subsystems:
+- hid
+- wacom
+- sony
+- hid-lg4ff
+- logitech-hidpp
+- rmi

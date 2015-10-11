@@ -1,3 +1,11 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/jkirsher/net-queue.git
 mail_to: intel-wired-lan@lists.osuosl.org
 owner: David S. Miller <davem@davemloft.net>
+subsystems:
+- net
+- tcp
+- cxgb4
+- maintainers
+- fec
+- ibmveth
+- net_sched
