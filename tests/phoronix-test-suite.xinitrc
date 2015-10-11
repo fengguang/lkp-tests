@@ -15,6 +15,9 @@ case $test in
 		;;
 esac
 
+export PTS_SILENT_MODE=1
+echo PTS_SILENT_MODE=$PTS_SILENT_MODE
+
 if [ "$test_opt" ]; then
 	echo -e "$test_opt" | cmd phoronix-test-suite run $test
 else
