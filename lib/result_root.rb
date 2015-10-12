@@ -10,6 +10,10 @@ require "#{LKP_SRC}/lib/stats.rb"
 require "#{LKP_SRC}/lib/job.rb"
 require "#{LKP_SRC}/lib/data_store.rb"
 
+def rt_create_time_from_job(job)
+	job['end_time'] && job['dequeue_time']
+end
+
 class ResultRoot
 	JOB_FILE = 'job.yaml'
 
@@ -49,13 +53,7 @@ class ResultRoot
 		['queue', 'job_state'].each { |k|
 			m[k] = j[k]
 		}
-		end_time = j['end_time']
-		if end_time
-			create_time = Time.at(end_time.to_i)
-		else
-			create_time = j['dequeue_time']
-		end
-		m['create_time'] = create_time
+		m['create_time'] = rt_create_time_from_job j
 		m
 	end
 
@@ -63,9 +61,13 @@ class ResultRoot
 		@desc ||= calc_desc
 	end
 
-	def _result_root
+	def _result_root_path
 		rp = ResultPath.parse(@path)
 		rp._result_root
+	end
+
+	def _result_root
+		MResultRoot.new _result_root_path
 	end
 
 	def collection
@@ -269,6 +271,21 @@ class MResultRoot
 	ResultPath::MAXIS_KEYS.each { |k|
 		define_method(k.intern) { @axes[k] }
 	}
+
+	def calc_create_time
+		(job_file && rt_create_time_from_job(job)) ||
+			glob("*").map { |f| File.mtime f }.min
+	end
+
+	def calc_desc
+		{
+			DataStore::CREATE_TIME => calc_create_time
+		}
+	end
+
+	def desc
+		@desc ||= calc_desc
+	end
 end
 
 class << MResultRoot
@@ -345,60 +362,74 @@ class MResultRootCollection
 	end
 end
 
-class ResultRootTable < DataStore::Table
-	RESULT_ROOT_DIR = File.join LKP_DATA_DIR, 'result_root'
+class MResultRootTable < DataStore::Table
+	MRESULT_ROOT_DIR = File.join LKP_DATA_DIR, 'mresult_root'
 end
 
-class << ResultRootTable
+class << MResultRootTable
 	def create_layout(force = false)
-		return if !force && DataStore::Layout.exists?(self::RESULT_ROOT_DIR)
-		FileUtils.rm_rf(self::RESULT_ROOT_DIR)
-		layout = DataStore::Layout.create_new self::RESULT_ROOT_DIR
-		dmap = DataStore::Map
-		rtp = ResultPath.new
-		as_keys = ['testcase'] + rtp.path_scheme
-		as_keys[as_keys.index 'path_params'] = dmap::ALL_OTHERS_KEY
-		layout.add_map(dmap::NAME => 'default',
-			       dmap::AXIS_KEYS => as_keys,
-			       dmap::SUPPRESS_LAST => true)
+		return if !force && DataStore::Layout.exist?(self::MRESULT_ROOT_DIR)
+		FileUtils.rm_rf(self::MRESULT_ROOT_DIR)
+		layout = DataStore::Layout.create_new self::MRESULT_ROOT_DIR
 		layout.set_compress_matrix true
 		layout.save
+		layout.add_index DataStore::DateIndex
+		layout.add_index(DataStore::AxisIndex, "commit") { |index|
+			index.set_axis_keys ["commit"]
+		}
 	end
 
 	def open
-		super(self::RESULT_ROOT_DIR)
+		super(self::MRESULT_ROOT_DIR)
 	end
 end
 
-def convert_one_result_root(rt, rt_table)
-	n = rt_table.new_node(rt.axes)
-	n.create_storage_link(rt.path)
-	n.update_desc { |desc|
-		desc.update(rt.desc)
-	}
-	n.index(true)
+def convert_one_mresult_root(_rt, _rt_table)
+	n = _rt_table.new_node(_rt.axes)
+	if File.exist? n.path
+		false
+	else
+		n.create_storage_link(_rt.path)
+		n.update_desc { |desc|
+			desc.update(_rt.desc)
+		}
+		n.index(true)
+		true
+	end
 end
 
-def convert_all_result_root
-	ResultRootTable.create_layout(true)
-	rtt = ResultRootTable.open
+def convert_all_mresult_root
+	MResultRootTable.create_layout(true)
+	_rtt = MResultRootTable.open
+
+	exclude_testcases =
+		['0day-boot-tests', '0day-kbuild-tests', 'android-kpi', 'gmin-kpi',
+		 'health-stats', 'lkp-bug', 'hwinfo',
+		 'convert-lkpdoc-to-html', 'convert-lkpdoc-to-html-css',
+		 'build-dpdk', 'build-android', 'build-gerrit_change', 'build-gmin',
+		 'dpdk-build-test',
+		 'ipmi-setup', 'lkp-install-run', 'lkp-services', 'lkp-src', 'pack-deps']
 
 	rtc = ResultRootCollection.new
-	rtc.each.first(3).each { |rt|
-		puts rt
-		convert_one_result_root(rt, rtt)
+	n = 0
+	rtc.each { |rt|
+		n+=1
+		break if n > 1000
+		_rt = rt._result_root
+		next if exclude_testcases.index _rt.testcase
+		convert_one_mresult_root(_rt, _rtt) && puts(_rt)
 	}
 end
 
-def convert_rt(rt_path)
-	rtt = ResultRootTable.open
-	rt = ResultRoot.new(rt_path)
-	convert_one_result_root(rt, rtt)
+def convert_mrt(_rt_path)
+	_rtt = ResultRootTable.open
+	_rt = ResultRoot.new(_rt_path)
+	convert_one_mresult_root(_rt, _rtt)
 end
 
-def delete_rt(rt_path)
-	rtt = ResultRootTable.open
-	rt = ResultRoot.new(rt_path)
-	n = rtt.open_node(rt.axes)
-	rtt.delete(n)
+def delete_mrt(_rt_path)
+	_rtt = ResultRootTable.open
+	_rt = ResultRoot.new(_rt_path)
+	n = rtt.open_node(_rt.axes)
+	_rtt.delete(n)
 end
