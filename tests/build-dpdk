@@ -51,6 +51,7 @@ make_config allmodconfig || die "make allmodconfig failed"
 make prepare || die "make prepare failed"
 make scripts/ || die "make scripts/ failed"
 
+rm -fr "$DPDK_REPO_ROOT" 2>/dev/null
 git_clone_update git://gitmirror/$dpdk_remote $DPDK_REPO_ROOT || die "failed clone dpdk tree $dpdk_remote"
 cd $DPDK_REPO_ROOT
 git checkout -q $dpdk_commit || die "failed to checkout dpdk commit $dpdk_commit"
@@ -74,7 +75,9 @@ cat $DPDK_OBJ/.config
 echo "cat $DPDK_OBJ/.config end"
 
 make O=$DPDK_OBJ DESTDIR=$RESULT_ROOT
+make_exit_status=$?
 
 git reset --hard
 
 build_complete
+exit $make_exit_status
