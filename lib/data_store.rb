@@ -8,6 +8,16 @@ require "#{LKP_SRC}/lib/property.rb"
 require "#{LKP_SRC}/lib/yaml.rb"
 
 module DataStore
+	CREATE_TIME = 'create_time'
+
+	def self.normalize_axes(axes)
+		naxes = {}
+		axes.each { |k, v|
+			naxes[k.to_s] = v.to_s
+		}
+		naxes
+	end
+
 	class Map
 		NAME = :name
 		AXIS_KEYS = :axis_keys
@@ -39,9 +49,12 @@ module DataStore
 	class Layout
 		CONFIG_FILE = 'layout.yaml'.freeze
 		MATRIX_FILE = 'matrix.json'.freeze
-		INDEX_LOCK_FILE = '.lock'.freeze
+		INDEX_DIR = 'index'.freeze
+		INDEX_GLOB = "#{INDEX_DIR}/*".freeze
 		MAPS = :maps
 		COMPRESS_MATRIX = :comrpess_matrix
+
+		include DirObject
 
 		prop_reader :maps
 		prop_accessor :compress_matrix
@@ -77,10 +90,6 @@ module DataStore
 			}
 		end
 
-		def path(*subs)
-			File.join @path, *subs
-		end
-
 		public
 
 		def save
@@ -89,36 +98,14 @@ module DataStore
 			save_yaml elayout, path(CONFIG_FILE)
 		end
 
-		def axes_to_string(axes)
-			axes.each.map { |k, v|
-				"#{k}=#{v}"
-			}.sort!.join('/')
-		end
-
-		def axes_from_string(str)
-			as = {}
-			kvs = str.split '/'
-			kvs.each { |kv|
-				k, v = kv.split '='
-				as[k] = v
-			}
-			as
-		end
-
-		def axes_str_hash(axes_str)
-			Digest::SHA1.hexdigest axes_str
-		end
-
-		def axes_hash(axes)
-			axes_str_hash axes_to_string(axes)
-		end
+		# storage
 
 		def storage_hash_path(hash_str)
 			path 'storage', hash_str[0...2], hash_str
 		end
 
 		def storage_path(axes)
-			storage_hash_path axes_hash(axes)
+			storage_hash_path Layout.axes_hash(axes)
 		end
 
 		def matrix_path(node)
@@ -126,6 +113,8 @@ module DataStore
 			mf += '.gz' if @comparess_matrix
 			node.path(mf)
 		end
+
+		# map
 
 		def add_map(params)
 			@maps << Map.new(params)
@@ -174,55 +163,63 @@ module DataStore
 			if map.suppress_last
 				mpath = mdir
 			else
-				mpath = File.join mdir, axes_hash(node.axes)
+				mpath = File.join mdir, Layout.axes_hash(node.axes)
 			end
 			FileUtils.rm_f(mpath)
 		end
 
-		def index_dir
-			path 'index'
-		end
-
-		def index_file(date)
-			File.join index_dir, str_date(date)
-		end
-
-		def index_lock_file
-			File.join index_dir, INDEX_LOCK_FILE
-		end
-
-		def index(node)
+		def map(node)
 			@maps.each { |m|
 				make_map(m, node)
 			}
-			mkdir_p index_dir
-			with_flock(index_lock_file) {
-				File.open(index_file(node.create_time), "a") { |f|
-					f.write("#{axes_to_string node.axes}\n")
-				}
-			}
 		end
 
-		def delete_index(node)
+		def unmap(node)
 			@maps.each { |m|
 				delete_map(m, node)
 			}
-			with_flock(index_lock_file) {
-				as_str = axes_to_string node.axes
-				idxf = index_file node.create_time
-				system "sed -i -e '\\?^#{as_str}$?d' #{idxf}"
+		end
+
+		# index
+
+		def parse_index_path(dir)
+			dir = File.basename dir
+			n = dir.index "-"
+			if n
+				[dir[0,n], dir[n+1...dir.size]]
+			else
+				[dir, nil]
+			end
+		end
+
+		def cons_index_path(cls, name)
+			base = if name && !name.empty?
+							 [cls.name, name].join "-"
+						 else
+							 cls.name
+						 end
+			path INDEX_DIR, base
+		end
+
+		def load_indexes
+			indexes = []
+			glob(INDEX_GLOB) { |dir|
+				if Dir.exist?(dir)
+					cls_name, name = parse_index_path dir
+					if Object.const_defined?(cls_name) and cls = Object.const_get(cls_name)
+						indexes << cls.new(dir)
+					end
+				end
 			}
+			indexes
 		end
 
-		def index_glob
-			File.join index_dir, DATE_GLOB
-		end
-
-		def all_index_files
-			files = Dir.glob(index_glob)
-			files.sort!
-			files.reverse!
-			files
+		def add_index(cls, name = nil)
+			dir = cons_index_path cls, name
+			raise "Index already exist: #{dir}" if Dir.exist? dir
+			index = cls.new(dir, true)
+			yield index if block_given?
+			index.save_config
 		end
 	end
 
@@ -242,8 +239,8 @@ module DataStore
 			self.cached_new path, path, true
 		end
 
-		def exists?(path)
-			File.exists? File.join(path, self::CONFIG_FILE)
+		def exist?(path)
+			File.exist? File.join(path, self::CONFIG_FILE)
 		end
 
 		def node_dir_to_table_dir(node_dir)
@@ -258,10 +255,221 @@ module DataStore
 				node_dir_to_table_dir node_dir
 			end
 		end
+
+		def axes_to_string(axes)
+			axes.each.map { |k, v|
+				"#{k}=#{v}"
+			}.sort!.join('/')
+		end
+
+		def axes_from_string(str)
+			as = {}
+			kvs = str.split '/'
+			kvs.each { |kv|
+				k, v = kv.split '='
+				as[k] = v
+			}
+			as
+		end
+
+		def axes_str_hash(axes_str)
+			Digest::SHA1.hexdigest axes_str
+		end
+
+		def axes_hash(axes)
+			axes_str_hash axes_to_string(axes)
+		end
+	end
+
+	class Index
+		LOCK_FILE = '.lock'.freeze
+		CONFIG_FILE = 'index.yaml'
+
+		include DirObject
+
+		def initialize(path, create_new = false)
+			@path = path
+			load_config unless create_new
+		end
+
+		def load_config()
+			data = load_yaml path(CONFIG_FILE)
+			from_data data
+		end
+
+		def save_config()
+			data = to_data
+			mkdir_p path
+			save_yaml data, path(CONFIG_FILE)
+		end
+
+		def from_data(data)
+		end
+
+		def to_data()
+			{}
+		end
+
+		def with_index_lock(&blk)
+			with_flock(path(LOCK_FILE), &blk)
+		end
+	end
+
+	module IndexFile
+		def delete_str(file, str)
+			system "sed", "-i", "-e", "?#{str}?d", file
+		end
+
+		def grep(conditions, files)
+			cond_arr = conditions.to_a
+			k0, v0 = cond_arr[0]
+			grep_cmdline = "grep -F -e '#{Regexp.escape k0}=#{Regexp.escape v0}'"
+			ext_grep_cmdline = ""
+			cond_arr.drop(1).each { |k, v|
+				ext_grep_cmdline += " | grep -F -e '#{Regexp.escape k}=#{Regexp.escape v}'"
+			}
+
+			files.each { |ifn|
+				`#{grep_cmdline} #{ifn} #{ext_grep_cmdline}`.lines.reverse!.each { |line|
+					line = line.strip
+					yield line unless line.empty?
+				}
+			}
+		end
+	end
+
+	class DateIndex < Index
+		include IndexFile
+
+		def score(conditions)
+			10
+		end
+
+		def index_file(date)
+			path str_date(date)
+		end
+
+		def index(node)
+			with_index_lock {
+				File.open(index_file(node.create_time), "a") { |f|
+					str = Layout.axes_to_string node.axes
+					f.write "#{str}\n"
+				}
+			}
+		end
+
+		def delete(node)
+			with_index_lock {
+				str = Layout.axes_to_string node.axes
+				ifn = index_file node.create_time
+				delete_str str, ifn
+			}
+		end
+
+		def index_files(date = nil)
+			if date
+				fn = index_file date
+				if File.exists? fn
+					[fn]
+				else
+					[]
+				end
+			else
+				files = glob(DATE_GLOB)
+				files.sort!
+				files.reverse!
+				files
+			end
+		end
+
+		def each_for_all
+			index_files.each { |ifn|
+				File.open(ifn) { |f|
+					f.readlines.reverse!.each { |line|
+						line = line.strip
+						yield line unless line.empty?
+					}
+				}
+			}
+		end
+
+		def each(conditions, date = nil, &blk)
+			block_given? or return enum_for(__method__)
+
+			if conditions.empty?
+				each_for_all(&blk)
+			else
+				grep(conditions, index_files(date), &blk)
+			end
+		end
+	end
+
+	class AxisIndex < Index
+		AXIS_KEYS = :axis_keys
+
+		include Property
+		include IndexFile
+
+		prop_accessor AXIS_KEYS
+
+		def from_data(data)
+			@axis_keys = data[AXIS_KEYS]
+		end
+
+		def to_data
+			{
+				AXIS_KEYS => axis_keys
+			}
+		end
+
+		def score(conditions)
+			v = conditions[@axis_keys.first]
+			if v and !v.empty?
+				100
+			else
+				0
+			end
+		end
+
+		def index_file(axes)
+			bn = axes[@axis_keys.first]
+			if bn
+				path bn
+			end
+		end
+
+		def index(node)
+			axes = node.axes
+			ifn = index_file axes
+			return unless ifn
+			with_index_lock {
+				File.open(ifn, "a") { |f|
+					str = Layout.axes_to_string axes
+					f.write "#{str}\n"
+				}
+			}
+		end
+
+		def delete(node)
+			axes = node.axes
+			ifn = index_file axes
+			return unless ifn
+			str = Layout.axes_to_string axes
+			delete_str str, ifn
+		end
+
+		def each(conditions, date = nil, &blk)
+			block_given? or return enum_for(__method__)
+
+			ifn = index_file conditions
+			return unless ifn
+			nconds = conditions.dup
+			nconds.delete @axis_keys.first
+			grep(conditions, [ifn], &blk)
+		end
 	end
 
 	class Node
-		CREATE_TIME = 'create_time'
 		AXES = :axes
 		DESC = :desc
 		STAT_KEY = :key
@@ -297,7 +505,7 @@ module DataStore
 		public
 
 		def init_from_axes(axes)
-			@axes = deepcopy(axes).freeze
+			@axes = DataStore.normalize_axes(axes).freeze
 			@path = layout.storage_path(@axes)
 		end
 
@@ -309,7 +517,7 @@ module DataStore
 		end
 
 		def hash
-			layout.axes_hash(axes)
+			Layout.axes_hash(axes)
 		end
 
 		def load_matrix
@@ -390,25 +598,15 @@ module DataStore
 				desc[CREATE_TIME] ||= calc_create_time
 			}
 
-			start_index_file = path(START_INDEX_FILE)
-			start_index = File.exists? start_index_file
-			if start_index
-				if collection.first
-					FileUtils.touch indexed_file
-					return
-				end
-			else
-				FileUtils.touch start_index_file
-			end
-
-			layout.index(self)
+			FileUtils.touch path(START_INDEX_FILE)
+			@table.index_node(self)
 			FileUtils.touch indexed_file
 		end
 
-		def delete_index
+		def unindex
 			indexed_file = path(INDEXED_FILE)
 			return unless File.exists? indexed_file
-			layout.delete_index(self)
+			@table.unindex_node(self)
 			FileUtils.rm_f indexed_file
 			FileUtils.rm_f path(START_INDEX_FILE)
 		end
@@ -437,7 +635,7 @@ module DataStore
 		end
 
 		def delete
-			delete_index
+			unindex
 			if File.symlink? @path
 				FileUtils.rm_f @path
 			else
@@ -480,6 +678,7 @@ module DataStore
 		def initialize(table, conditions = {})
 			@table = table
 			@conditions = deepcopy(conditions)
+			@date = nil
 		end
 
 		def set(key, value)
@@ -497,53 +696,12 @@ module DataStore
 			self
 		end
 
-		def index_files
-			layout = @table.layout
-			if @date
-				fn = layout.index_file(@date)
-				if File.exists? fn
-					[fn]
-				else
-					[]
-				end
-			else
-				layout.all_index_files
-			end
-		end
-
-		def each_for_all
-			index_files.each { |ifn|
-				File.open(ifn) { |f|
-					f.readlines.reverse!.each { |line|
-						line = line.strip
-						next if line.size == 0
-						yield @table.open_node_from_index_line(line)
-					}
-				}
-			}
-		end
-
-		def each(&b)
+		def each
 			block_given? or return enum_for(__method__)
 
-			if @conditions.empty?
-				each_for_all(&b)
-				return
-			end
-
-			cond_arr = @conditions.to_a
-			k0, v0 = cond_arr[0]
-			grep_cmdline = "grep -e '#{k0}=#{v0}'"
-			cond_arr.drop(1).each { |k, v|
-				grep_cmdline += " | grep -e '#{k}=#{v}'"
-			}
-
-			index_files.each { |ifn|
-				`cat #{ifn} | #{grep_cmdline}`.lines.reverse!.each { |line|
-					line = line.strip
-					next if line.size == 0
-					yield @table.open_node_from_index_line(line)
-				}
+			index = @table.find_best_index @conditions
+			index.each(@conditions, @date) { |axes_str|
+				yield @table.open_node_from_axes_str(axes_str)
 			}
 		end
 
@@ -562,6 +720,7 @@ module DataStore
 		def initialize(layout)
 			@node_class = Node
 			@layout = layout
+			@indexes = layout.load_indexes
 		end
 
 		def new_node(axes)
@@ -576,12 +735,34 @@ module DataStore
 			@node_class.open_table_dir self, dir
 		end
 
-		def open_node_from_index_line(line)
-			open_node @layout.axes_from_string(line)
+		def open_node_from_axes_str(axes_str)
+			open_node Layout.axes_from_string(axes_str)
 		end
 
 		def delete_node(node)
 			node.delete
+		end
+
+		def index_node(node)
+			@layout.map(node)
+			@indexes.each { |idx|
+				idx.index node
+			}
+		end
+
+		def unindex_node(node)
+			@layout.unmap(node)
+			@indexes.each { |idx|
+				idx.delete node
+			}
+		end
+
+		def find_best_index(conditions)
+			indexes = @indexes.dup
+			indexes.sort_by! { |idx|
+				idx.score(conditions)
+			}
+			indexes.last
 		end
 
 		def collection(conditions = {})
@@ -619,6 +800,10 @@ module DataStore
 		layout.add_map(Map::NAME => 'c',
 			       Map::AXIS_KEYS => ['c'])
 		layout.save
+		layout.add_index DateIndex
+		layout.add_index(AxisIndex, 'a') { |index|
+			index.set_axis_keys ['a']
+		}
 		tbl = Table.open tbl_path
 		0.upto(3) { |a|
 			'h'.upto('k') { |b|
@@ -639,5 +824,6 @@ module DataStore
 		coll.each_stat { |s|
 			puts "  stat: #{s}"
 		}
+		tbl
 	end
 end
