@@ -66,8 +66,17 @@ module CMResultRoot
 	}
 end
 
+class NMResultRoot < DataStore::Node
+	include CMResultRoot
+end
+
 class MResultRootTable < DataStore::Table
 	MRESULT_ROOT_DIR = File.join LKP_DATA_DIR, 'mresult_root'
+
+	def initialize(layout)
+		super
+		@node_class = NMResultRoot
+	end
 end
 
 class << MResultRootTable
