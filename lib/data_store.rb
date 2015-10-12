@@ -520,8 +520,12 @@ module DataStore
 			Layout.axes_hash(axes)
 		end
 
+		def matrix_file
+			layout.matrix_path self
+		end
+
 		def matrix
-			try_load_json(layout.matrix_path(self)) || {}
+			try_load_json(matrix_file) || {}
 		end
 
 		def save_matrix(m)
