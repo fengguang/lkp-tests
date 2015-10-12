@@ -89,5 +89,9 @@ module Git
 		def command(cmd, opts = [], chdir = true, redirect = '', &block)
 			lib.command(cmd, opts, chdir, redirect)
 		end
+
+		def command_lines(cmd, opts = [], chdir = true, redirect = '')
+			lib.command_lines(cmd, opts, chdir, redirect)
+		end
 	end
 end
