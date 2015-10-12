@@ -141,16 +141,68 @@ class Completion
 	end
 end
 
-# Result root for multiple runs of a job
-# M here stands for multiple runs
-# _rt or mrt may be used as variable name
-class MResultRoot
+# Common Multiple Result Root
+#   to share code betwen original MResultRoot and NMResultRoot
+module CMResultRoot
 	# TODO: remove .dmesg after we convert all .dmesg to dmesg
 	DMESG_FILE_GLOBS = ['dmesg.xz', 'dmesg', '.dmesg', 'kmsg.xz', 'kmsg']
 	DMESG_GLOBS = DMESG_FILE_GLOBS.map { |g| "[0-9]*/#{g}" }
 	DMESG_JSON_GLOB = '[0-9]*/dmesg.json'
 	JOB_GLOB = '[0-9]*/job.yaml'
 	JOB_FILE1 = 'job.yaml'
+
+	def dmesgs
+		DMESG_GLOBS.each { |g|
+			dmesgs = glob(g)
+			return dmesgs unless dmesgs.empty?
+		}
+		[]
+	end
+
+	def dmesg_jsons
+		glob DMESG_JSON_GLOB
+	end
+
+	def job_file
+		job1 = path(JOB_FILE1)
+		return job1 if File.exist? job1
+		jobs = glob(JOB_GLOB)
+		jobs[0] if jobs.size != 0
+	end
+
+	def job
+		Job.open job_file
+	end
+
+	def complete_matrix(m = nil)
+		m ||= matrix
+		if m['last_state.is_incomplete_run']
+			m = deepcopy(m)
+			filter_incomplete_run m
+			m
+		else
+			m
+		end
+	end
+
+	def runs(m = nil)
+		m ||= matrix
+		return 0, 0 unless m
+		all_runs = matrix_cols m
+		cm = complete_matrix m
+		complete_runs = matrix_cols cm
+		[all_runs, complete_runs]
+	end
+
+	ResultPath::MAXIS_KEYS.each { |k|
+		define_method(k.intern) { @axes[k] }
+	}
+end
+
+# Result root for multiple runs of a job
+# M here stands for multiple runs
+# _rt or mrt may be used as variable name
+class MResultRoot
 	COMPLETIONS_FILE = 'completions'
 	MATRIX = 'matrix.json'
 
@@ -161,6 +213,7 @@ class MResultRoot
 	end
 
 	include DirObject
+	include CMResultRoot
 
 	attr_reader :axes
 
@@ -197,29 +250,6 @@ class MResultRoot
 		MResultRoot.new _rtp if File.exists? _rtp
 	end
 
-	def dmesgs
-		DMESG_GLOBS.each { |g|
-			dmesgs = glob(g)
-			return dmesgs unless dmesgs.empty?
-		}
-		[]
-	end
-
-	def dmesg_jsons
-		glob DMESG_JSON_GLOB
-	end
-
-	def job_file
-		job1 = path(JOB_FILE1)
-		return job1 if File.exist? job1
-		jobs = glob(JOB_GLOB)
-		jobs[0] if jobs.size != 0
-	end
-
-	def job
-		Job.open job_file
-	end
-
 	def collection
 		MResultRootCollection.new axes_path
 	end
@@ -238,26 +268,6 @@ class MResultRoot
 		try_load_json matrix_file
 	end
 
-	def complete_matrix(m = nil)
-		m ||= matrix
-		if m['last_state.is_incomplete_run']
-			m = deepcopy(m)
-			filter_incomplete_run m
-			m
-		else
-			m
-		end
-	end
-
-	def runs(m = nil)
-		m ||= matrix
-		return 0, 0 unless m
-		all_runs = matrix_cols m
-		cm = complete_matrix m
-		complete_runs = matrix_cols cm
-		[all_runs, complete_runs]
-	end
-
 	def completions
 		open(COMPLETIONS_FILE, "r") { |f|
 			f.each_line.map { |line|
@@ -267,10 +277,6 @@ class MResultRoot
 	rescue Errno::ENOENT
 		[]
 	end
-
-	ResultPath::MAXIS_KEYS.each { |k|
-		define_method(k.intern) { @axes[k] }
-	}
 
 	def calc_create_time
 		(job_file && rt_create_time_from_job(job)) ||
