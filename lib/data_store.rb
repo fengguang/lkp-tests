@@ -497,9 +497,9 @@ module DataStore
 			save_json m, layout.matrix_path(self)
 		end
 
-		def __save_desc(desc)
-			desc[AXES] = @axes
-			save_yaml desc, path(DESC_FILE)
+		def __save_desc(d)
+			d[AXES] = @axes
+			save_yaml d, path(DESC_FILE)
 		end
 
 		public
@@ -511,8 +511,8 @@ module DataStore
 
 		def init_from_path(dir)
 			@path = dir
-			desc = load_yaml(path(DESC_FILE))
-			@axes = desc[AXES]
+			d = load_yaml(path(DESC_FILE))
+			@axes = d[AXES]
 			@axes.freeze
 		end
 
@@ -520,7 +520,7 @@ module DataStore
 			Layout.axes_hash(axes)
 		end
 
-		def load_matrix
+		def matrix
 			try_load_json(layout.matrix_path(self)) || {}
 		end
 
@@ -534,36 +534,36 @@ module DataStore
 		def update_matrix
 			mkdir_p @path
 			with_flock(path(LOCK_FILE)) {
-				m = load_matrix
+				m = matrix
 				yield m
 				__save_matrix m
 			}
 		end
 
-		def load_desc
+		def desc
 			desc_file = path(DESC_FILE)
 			if File.exists? desc_file
-				desc = load_yaml desc_file
+				d = load_yaml desc_file
 			else
-				desc = {}
+				d = {}
 			end
-			desc[AXES] = @axes
-			desc
+			d[AXES] = @axes
+			d
 		end
 
-		def save_desc(desc)
+		def save_desc(d)
 			mkdir_p @path
 			with_flock(path(LOCK_FILE)) {
-				__save_desc desc
+				__save_desc d
 			}
 		end
 
 		def update_desc
 			mkdir_p @path
 			with_flock(path(LOCK_FILE)) {
-				desc = load_desc
-				yield desc if block_given?
-				__save_desc desc
+				d = desc
+				yield d if block_given?
+				__save_desc d
 			}
 		end
 
@@ -582,8 +582,8 @@ module DataStore
 
 		def create_time
 			unless @create_time
-				desc = load_desc
-				@create_time = desc[CREATE_TIME]
+				d = desc
+				@create_time = d[CREATE_TIME]
 			end
 			@create_time
 		end
@@ -594,8 +594,8 @@ module DataStore
 			indexed = File.exists? indexed_file
 			return if indexed
 
-			update_desc { |desc|
-				desc[CREATE_TIME] ||= calc_create_time
+			update_desc { |d|
+				d[CREATE_TIME] ||= calc_create_time
 			}
 
 			FileUtils.touch path(START_INDEX_FILE)
@@ -615,13 +615,13 @@ module DataStore
 			block_given? or return enum_for(__method__)
 
 			as = @axes
-			desc = load_desc
-			matrix = load_matrix
+			d = desc
+			m = matrix
 
-			matrix.each { |k, v|
+			m.each { |k, v|
 				stat = {
 					AXES => as,
-					DESC => desc,
+					DESC => d,
 					STAT_KEY => k,
 					STAT_VALUE => v,
 				}
@@ -808,7 +808,7 @@ module DataStore
 		0.upto(3) { |a|
 			'h'.upto('k') { |b|
 				n = tbl.new_node({'a' => a, 'b' => b, 'c' => 2})
-				m = n.load_matrix
+				m = n.matrix
 				m['s1'] = [1, 2, 3]
 				m['s2'] = [4, a, b]
 				n.save_matrix m
@@ -817,7 +817,7 @@ module DataStore
 		}
 		puts "all nodes:"
 		tbl.collection.each { |n|
-			puts "  node: #{n.axes}: #{n.load_matrix}"
+			puts "  node: #{n.axes}: #{n.matrix}"
 		}
 		puts "collection: 'b' => 'i'"
 		coll = Collection.new tbl, 'b' => 'i'
