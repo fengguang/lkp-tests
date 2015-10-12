@@ -4,8 +4,6 @@ integration_testing_branches: kdbus char-misc-next char-misc-linus
 owner: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 subsystems:
 - kdbus
-- misc
-- documentation
 - mic
 - selftests
 - nvmem
@@ -34,7 +32,6 @@ subsystems:
 - eeprom
 - echo
 - cxl
-- common
 - cb710
 - card
 - c2port
