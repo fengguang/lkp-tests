@@ -3,6 +3,8 @@
 
 ## Regression test suite for xfs and other filesystems.
 
+. $LKP_SRC/lib/job.sh
+
 [ "$nr_partitions" -lt 2 ] && exit 1
 cd $BENCHMARK_ROOT/xfstests || exit
 
