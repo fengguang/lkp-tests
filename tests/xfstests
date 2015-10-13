@@ -54,6 +54,7 @@ run_test()
 
 export LC_ALL=C
 export LANG=C
+read_env_vars
 set_env
 run_test
 
