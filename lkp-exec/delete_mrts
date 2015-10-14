@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+LKP_SRC ||= ENV['LKP_SRC']
+
+require "#{LKP_SRC}/lib/result_root"
+
+def main
+	$stdin.each_line { |_rtp|
+		_rtp = _rtp.strip
+		next if !File.exist? _rtp
+		delete_mrt _rtp
+	}
+end
+
+main

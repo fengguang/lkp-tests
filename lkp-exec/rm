@@ -2,6 +2,8 @@
 
 source $LKP_SRC/lib/common.sh
 
+shopt -s nullglob
+
 remove()
 {
 	for path; do
@@ -11,10 +13,34 @@ remove()
 	done
 }
 
+is_mrt()
+{
+	local dir=$1
+	local -a jobs
+	local -a matrix
+	matrix=( $dir/matrix.json* )
+	[ ${#matrix} -eq 0 ] && return 1
+	jobs=( $dir/[0-9]*/job.yaml )
+	[ ${#jobs} -ge 1 ]
+}
+
+remove_from_mrtts()
+{
+	local path
+	local dir
+	for path; do
+		path=$(abs_path $path)
+		for dir in $(find $path -type d); do
+			is_mrt $dir && echo $dir
+		done | lkp delete_mrts
+	done
+}
+
 echo "The command to remove the result path are:"
 remove "$@"
 echo -n "!!! Are you really want to do that? [No/yes]: "
 read answer
 if [[ $answer = "yes" ]]; then
+	remove_from_mrtts "$@"
 	remove "$@" | bash
 fi
