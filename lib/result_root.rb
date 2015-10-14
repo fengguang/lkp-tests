@@ -9,7 +9,12 @@ require "#{LKP_SRC}/lib/result.rb"
 require "#{LKP_SRC}/lib/nresult_root.rb"
 
 def rt_create_time_from_job(job)
-	job['end_time'] && job['dequeue_time']
+	end_time = job['end_time']
+	if end_time
+		Time.at(end_time.to_i)
+	else
+		job['dequeue_time']
+	end
 end
 
 class ResultRoot
@@ -346,13 +351,15 @@ def convert_all_mresult_root
 end
 
 def convert_mrt(_rt_path)
-	_rt = ResultRoot.new(_rt_path)
+	_rt = MResultRoot.new(_rt_path)
 	convert_one_mresult_root(_rt)
 end
 
 def delete_mrt(_rt_path)
 	mrtts = mrt_table_set
-	_rt = ResultRoot.new(_rt_path)
+	_rt = MResultRoot.new(_rt_path)
 	n = mrtts.open_node(_rt.axes)
-	n.delete(n)
+	if File.exist? n.path
+		n.delete
+	end
 end
