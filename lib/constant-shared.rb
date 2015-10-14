@@ -24,3 +24,5 @@ KERNEL_ROOT='/pkg/linux'
 
 BOOT_TEST_CASE='boot'
 DMESG_BOOT_FAILURES_STAT_KEY='dmesg.boot_failures'
+
+TESTCASE_AXIS_KEY='testcase'

@@ -308,8 +308,9 @@ class MResultRootCollection
 	end
 end
 
-def convert_one_mresult_root(_rt, _rt_table)
-	n = _rt_table.new_node(_rt.axes)
+def convert_one_mresult_root(_rt)
+	mrtts = mrt_table_set
+	n = mrtts.new_node(_rt.axes)
 	if File.exist? n.path
 		false
 	else
@@ -322,38 +323,29 @@ def convert_one_mresult_root(_rt, _rt_table)
 	end
 end
 
+def create_mresult_root_tables
+	MResultRootTableSet.create_tables_layout(true)
+end
+
 def convert_all_mresult_root
-	MResultRootTable.create_layout(true)
-	_rtt = MResultRootTable.open
-
-	exclude_testcases =
-		['0day-boot-tests', '0day-kbuild-tests', 'android-kpi', 'gmin-kpi',
-		 'health-stats', 'lkp-bug', 'hwinfo',
-		 'convert-lkpdoc-to-html', 'convert-lkpdoc-to-html-css',
-		 'build-dpdk', 'build-android', 'build-gerrit_change', 'build-gmin',
-		 'dpdk-build-test',
-		 'ipmi-setup', 'lkp-install-run', 'lkp-services', 'lkp-src', 'pack-deps']
-
 	rtc = ResultRootCollection.new
 	n = 0
 	rtc.each { |rt|
 		n+=1
-		break if n > 1000
+		break if n > 10000
 		_rt = rt._result_root
-		next if exclude_testcases.index _rt.testcase
-		convert_one_mresult_root(_rt, _rtt) && puts(_rt)
+		convert_one_mresult_root(_rt) && puts(_rt)
 	}
 end
 
 def convert_mrt(_rt_path)
-	_rtt = ResultRootTable.open
 	_rt = ResultRoot.new(_rt_path)
-	convert_one_mresult_root(_rt, _rtt)
+	convert_one_mresult_root(_rt)
 end
 
 def delete_mrt(_rt_path)
-	_rtt = ResultRootTable.open
+	mrtts = mrt_table_set
 	_rt = ResultRoot.new(_rt_path)
-	n = rtt.open_node(_rt.axes)
-	_rtt.delete(n)
+	n = mrtts.open_node(_rt.axes)
+	n.delete(n)
 end
