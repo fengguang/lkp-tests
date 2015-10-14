@@ -81,6 +81,7 @@ class ResultRootCollection
 
 	def initialize(conditions = {})
 		@conditions = conditions
+		@date_glob = nil
 	end
 
 	def set(key, value)
@@ -108,7 +109,8 @@ class ResultRootCollection
 	def each
 		block_given? or return enum_for(__method__)
 
-		files = Dir[File.join INDEX_DIR, DATE_GLOB + '-*']
+		date_glob = @date_glob || DATE_GLOB
+		files = Dir[File.join INDEX_DIR, date_glob + '-*']
 		files.sort!
 		files.reverse!
 		files.each { |fn|
@@ -328,13 +330,18 @@ def create_mresult_root_tables
 end
 
 def convert_all_mresult_root
+	days = 12
+
 	rtc = ResultRootCollection.new
 	n = 0
-	rtc.each { |rt|
-		n+=1
-		break if n > 10000
-		_rt = rt._result_root
-		convert_one_mresult_root(_rt) && puts(_rt)
+	0.upto(days).each { |day|
+		rtc.set_date(Time.now - day * ONE_DAY)
+		rtc.each { |rt|
+			n+=1
+			#break if n > 10000
+			_rt = rt._result_root
+			convert_one_mresult_root(_rt) and puts "#{n}: #{_rt}"
+		}
 	}
 end
 
