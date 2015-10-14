@@ -463,6 +463,7 @@ module DataStore
 
 			ifn = index_file conditions
 			return unless ifn
+			return unless File.exist? ifn
 			nconds = conditions.dup
 			nconds.delete @axis_keys.first
 			grep(conditions, [ifn], &blk)
