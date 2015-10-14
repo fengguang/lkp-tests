@@ -101,13 +101,15 @@ module Git
 		# options
 		#		:project => 'project_name', default is linux
 		#
-		def project_remotes(options = {})
+		def remote_descs(options = {})
 			lkp_src = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
+
 			options[:project] ||= '*'
+			options[:remote] ||= '*'
 
 			remotes = {}
 
-			Dir[lkp_src + "/repo/#{options[:project]}/*"].each do |file|
+			Dir[File.join(lkp_src, "repo", options[:project], options[:remote])].each do |file|
 				remote = File.basename file
 				next if remote == 'DEFAULTS'
 
@@ -116,6 +118,12 @@ module Git
 			end
 
 			remotes
+		end
+
+		def remote_desc(options = {})
+			assert(options[:remote], "options[:remote] parameter can't be #{options[:remote].inspect}")
+
+			remote_descs(options)[options[:remote]]
 		end
 
 		def sha1_40?(commit)
@@ -128,7 +136,7 @@ module Git
 			sha1_40?(commit_name)
 		end
 
-		cache_method :project_remotes
+		cache_method :remote_descs
 		cache_method :init
 		cache_method :open
 	end

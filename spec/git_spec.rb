@@ -236,16 +236,16 @@ describe Git do
 			end
 		end
 
-		describe "project_remotes" do
+		describe "remote_descs" do
 			it "should be same as load_remotes when project is linux/linus" do
-				actual = described_class.project_remotes
+				actual = described_class.remote_descs
 
 				expect(actual.count).to be > 0
 				expect(actual).to eq load_remotes
 			end
 
 			it "should cache result" do
-				expect(described_class.project_remotes.object_id).to eq described_class.project_remotes.object_id
+				expect(described_class.remote_descs.object_id).to eq described_class.remote_descs.object_id
 			end
 		end
 	end
