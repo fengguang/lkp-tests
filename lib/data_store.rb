@@ -316,8 +316,9 @@ module DataStore
 	end
 
 	module IndexFile
-		def delete_str(file, str)
-			system "sed", "-i", "-e", "?#{str}?d", file
+		def delete_str(str, file)
+			str = Regexp.escape str
+			system "sed", "-i", "-e", "\\?#{str}?d", file
 		end
 
 		def grep(conditions, files)
