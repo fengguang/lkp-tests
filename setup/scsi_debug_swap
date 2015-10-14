@@ -1,0 +1,42 @@
+#!/bin/sh
+# - swap_size
+
+setup_swap_size()
+{
+	if [ "${swap_size#*%}" != "$swap_size" ]; then
+		swap_size=${swap_size%%%*}
+		totalmem=`cat /proc/meminfo | grep MemTotal | awk '{print $2}'`
+		swap_size=$(((totalmem >> 10) * swap_size / 100))
+	else
+		case $swap_size in
+			*M)
+				bits=0
+				;;
+			*G)
+				bits=10
+				;;
+			*T)
+				bits=20
+				;;
+		esac
+		[ -n "$bits" ] && swap_size=$(( ${swap_size%%[A-Z]*} << bits  ))
+	fi
+}
+
+sysctl -w kernel.softlockup_panic=0
+modprobe -r scsi_debug 2>/dev/null
+freemem=`cat /proc/meminfo | grep MemFree | awk '{print $2}'`
+setup_swap_size
+[ -n "$swap_size" ] || swap_size=$((($freemem >> 10 ) * 4 / 5 ))
+modprobe scsi_debug dev_size_mb=$swap_size
+errno=$?
+sysctl -w kernel.softlockup_panic=1
+if [ "$errno" -ne 0 ]; then
+	echo "Fail to modprobe scsi_debug dev_size_mb=$swap_size " 2>&1
+	exit
+fi
+
+partitions=$(grep -l -e scsi_debug /sys/block/*/device/model | awk -F'/' '{print "/dev/"$4}')
+swapoff -a
+mkswap $partitions
+swapon $partitions
