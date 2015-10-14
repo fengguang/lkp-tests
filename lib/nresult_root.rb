@@ -121,12 +121,13 @@ class MResultRootTableSet
 		 'dd-write', 'ebizzy', 'fileio', 'fishtank', 'fsmark', 'glbenchmark',
 		 'hackbench', 'hpcc', 'idle', 'iozone', 'iperf', 'jsbenchmark', 'kbuild',
 		 'ku-latency', 'linpack', 'ltp', 'mlc', 'nepim', 'netperf', 'netpipe',
-		 'nuttcp', 'octane', 'oltp', 'openarena', 'pbzip2', 'perf-bench-numa-mem',
-		 'perf-bench-sched-pipe', 'pft', 'phoronix-test-suite', 'pigz', 'pixz',
-		 'plzip', 'postmark', 'pxz', 'qperf', 'reaim', 'sdf', 'siege', 'sockperf',
-		 'speccpu', 'specjbb2013', 'specjbb2015', 'specpower', 'stutter',
-		 'sunspider', 'tbench', 'tcrypt', 'thrulay', 'tlbflush', 'unixbench',
-		 'vm-scalability', 'will-it-scale', 'xfstests']
+		 'nuttcp', 'octane', 'oltp', 'openarena', 'packetdrill', 'pbzip2',
+		 'perf-bench-numa-mem', 'perf-bench-sched-pipe', 'pft',
+		 'phoronix-test-suite', 'pigz', 'pixz', 'plzip', 'postmark', 'pxz', 'qperf',
+		 'reaim', 'sdf', 'siege', 'sockperf', 'speccpu', 'specjbb2013',
+		 'specjbb2015', 'specpower', 'stutter', 'sunspider', 'tbench', 'tcrypt',
+		 'thrulay', 'tlbflush', 'unixbench', 'vm-scalability', 'will-it-scale',
+		 'xfstests']
 	LINUX_TESTCASES =
 		['boot', 'audio', 'cpu-hotplug', 'ext4-frags', 'ftq', 'ftrace_onoff', 'fwq',
 		 'galileo', 'irda-kernel', 'kernel_selftests', 'kvm-unit-tests',
