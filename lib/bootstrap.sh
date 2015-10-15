@@ -111,8 +111,8 @@ redirect_stdout_stderr()
 	exec  > /tmp/stdout
 	exec 2> /tmp/stderr
 
-	ln -s /usr/bin/tail /bin/tail-to-console
-	ln -s /usr/bin/tail /bin/tail-to-serial
+	ln -sf /usr/bin/tail /bin/tail-to-console
+	ln -sf /usr/bin/tail /bin/tail-to-serial
 
 	# write log to screen as well so that we can see them
 	# even network is broken
