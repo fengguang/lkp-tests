@@ -47,7 +47,7 @@ done
 
 parse_yaml() {
 	local s='[[:space:]]*'
-	local w='[a-zA-Z0-9_]*'
+	local w='[a-zA-Z0-9_-]*'
 	local tmp_filter="$(mktemp)"
 	ls -LR $LKP_SRC/setup $LKP_SRC/monitors $LKP_SRC/tests $LKP_SRC/daemon > $tmp_filter
 	scripts=$(cat $1 | sed -ne "s|^\($s\):|\1|" \
