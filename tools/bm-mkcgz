@@ -1,0 +1,21 @@
+#!/bin/bash
+
+usage()
+{
+	echo "Usage: $(basename $0) <benchmark>"
+	echo "  /lkp/benchmarks/<benchmark> should have benchmark files"
+	exit 1
+}
+
+[ $# -eq 1 ] || usage
+
+BM_NAME=$1
+
+bm_path=/lkp/benchmarks/$BM_NAME
+
+[ -d $bm_path ] || {
+	echo "No benchmark directory: $bm_path" 2>&1
+	exit 1
+}
+
+find $bm_path | cpio -o -H newc | gzip -n -9 > $BM_NAME.cgz
