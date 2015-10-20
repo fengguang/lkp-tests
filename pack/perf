@@ -1,0 +1,21 @@
+#!/bin/bash
+
+download()
+{
+	[[ -d linux ]] || {
+		[[ -d /c/repo/linux ]] && local opt_ref="--reference /c/repo/linux"
+		git clone $opt_ref https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+	}
+	source_dir="linux"
+}
+
+build()
+{
+	cd $source_dir/tools/perf
+	make
+}
+
+install()
+{
+	cp -af perf $BM_ROOT
+}
