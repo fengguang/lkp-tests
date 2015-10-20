@@ -362,8 +362,10 @@ module DataStore
 		def delete(node)
 			with_index_lock {
 				str = Layout.axes_to_string node.axes
-				ifn = index_file node.create_time
-				delete_str str, ifn
+				ifns = index_files node.create_time
+				ifns.each { |ifn|
+					delete_str str, ifn
+				}
 			}
 		end
 
@@ -611,7 +613,6 @@ module DataStore
 
 		def unindex
 			indexed_file = path(INDEXED_FILE)
-			return unless File.exists? indexed_file
 			@table.unindex_node(self)
 			FileUtils.rm_f indexed_file
 			FileUtils.rm_f path(START_INDEX_FILE)
