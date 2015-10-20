@@ -1,0 +1,33 @@
+#!/bin/sh
+# - events
+# - freq
+# - delay
+# - duration
+
+: ${events:='cpu-cycles'}
+: ${duration:=10}
+: ${delay:=100}
+
+[ -n "$freq" ] &&
+opt_freq="--freq=$freq"
+opt_events="-e $(echo "$events" | sed 's/ / -e /g')"
+
+# perf may consume lots of fd
+ulimit -n 102400
+
+. $LKP_SRC/lib/wait.sh
+setup_wait
+
+perf=/lkp/benchmarks/perf-report-srcline/perf
+
+$perf record -q -ag --realtime=1 -m 256 $opt_freq $opt_events \
+	-o $TMP/perf.data -D $((delay * 1000)) -- \
+	timeout $((delay + duration)) \
+	$WAIT_POST_TEST_CMD
+
+$WAIT_POST_TEST_CMD
+
+$perf report -i $TMP/perf.data --no-children -f -v --stdio \
+      --sort sym,srcline -w 10,50,100 --full-source-path
+
+rm -f $TMP/perf.data
