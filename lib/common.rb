@@ -192,6 +192,10 @@ def str_date(t)
 	t.strftime('%F')
 end
 
+def date_of_time(t)
+	Time.new t.year, t.month, t.day
+end
+
 ## File system
 
 def make_relative_symlink(src, dst)

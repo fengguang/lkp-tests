@@ -334,20 +334,20 @@ def create_mresult_root_tables
 	MResultRootTableSet.create_tables_layout(true)
 end
 
-def convert_all_mresult_root
-	days = 12
-
+def convert_all_mresult_root(date_from_in = nil, date_to_in = nil)
 	rtc = ResultRootCollection.new
+	date = date_of_time date_from_in
+	date_to = date_of_time date_to_in
 	n = 0
-	0.upto(days).each { |day|
-		rtc.set_date(Time.now - day * ONE_DAY)
+	while date <= date_to
+		rtc.set_date(date)
 		rtc.each { |rt|
 			n+=1
-			#break if n > 10000
 			_rt = rt._result_root
 			convert_one_mresult_root(_rt) and puts "#{n}: #{_rt}"
 		}
-	}
+		date += ONE_DAY
+	end
 end
 
 def convert_mrt(_rt_path)
