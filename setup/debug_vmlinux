@@ -1,0 +1,18 @@
+#!/bin/sh
+
+if [ -z "$vmlinux_file" ]; then
+	echo "No vmlinux_file in job file" 1>&2
+	exit 1
+fi
+
+KBUILD_DIR=/lkp/kbuild
+
+mkdir -p $KBUILD_DIR
+
+wget -q -O $KBUILD_DIR/vmlinux \
+     "http://$LKP_SERVER:$LKP_CGI_PORT/~$LKP_USER/$vmlinux_file"
+
+modules_dir=/lib/modules/$(uname -r)
+
+mkdir -p $modules_dir
+ln -sf $KBUILD_DIR $modules_dir/build
