@@ -12,7 +12,7 @@ wait_for_monitors()
 	for i in 1 2 3 4 5
 	do
 		sleep $i
-		pgrep --pidfile $pidfile && continue
+		ps axho pid | grep -qFwf $pidfile && continue
 		return $i
 	done
 
