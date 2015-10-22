@@ -54,6 +54,15 @@ PERF_EVENT_DATA=$TMP/perf.data
 	}
 }
 
+PERF_REPORT_SRCLINE_DATA=$TMP/perf-report-srcline.data
+[ -s $PERF_REPORT_SRCLINE_DATA ] && {
+	perf=/lkp/benchmarks/perf-report-srcline/perf
+	$perf report -i $PERF_REPORT_SRCLINE_DATA --no-children -f -v --stdio \
+	      --sort sym,srcline -w 10,50,100 --full-source-path 2>/dev/null | \
+		gzip > $RESULT_ROOT/perf-report-srcline.gz &&
+		rm -f $PERF_REPORT_SRCLINE_DATA
+}
+
 wait_for_pipe()
 {
 	local i
