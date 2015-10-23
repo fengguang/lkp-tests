@@ -80,4 +80,10 @@ make_exit_status=$?
 git reset --hard
 
 build_complete
+
+if [[ $make_exit_status = 0 ]]; then
+	echo "$testcase success"
+else
+	echo "$testcase fail $make_exit_status"
+fi
 exit $make_exit_status
