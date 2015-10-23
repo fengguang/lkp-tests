@@ -87,7 +87,7 @@ def __create_programs_hash(glob, lkp_src)
 		file = File.basename(path)
 		next if file == 'wrapper'
 		if programs.include? file
-			$stderr.puts "Conflict names #{$programs[file]} and #{path}"
+			$stderr.puts "Conflict names #{programs[file]} and #{path}"
 			next
 		end
 		programs[file] = path

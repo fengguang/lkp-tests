@@ -13,7 +13,7 @@ end
 def get_yaml_vars(file, job_vars)
 	env_yaml = `#{LKP_SRC}/bin/job-env #{file}`
 	begin
-		env = YAML.load env_yaml
+		env = YAML.load_file env_yaml
 	rescue Psych::SyntaxError => e
 		$stderr.puts e.message
 		$stderr.puts env_yaml
