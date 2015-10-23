@@ -5,6 +5,7 @@ xfstests.*.fail
 xfstests.*.inconsistent_fs
 ltp.*.fail
 kernel_selftests.*.fail
+.*\.fail$
 last_state.*
 packetdrill.*.FAIL
 autotest.*
