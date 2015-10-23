@@ -165,7 +165,7 @@ class Job
 		rescue Errno::ENOENT
 			return nil
 		rescue Psych::SyntaxError => ex
-			raise JobFileSyntaxError, jobfile, ex.message
+			raise JobFileSyntaxError.new(jobfile, ex.message)
 		rescue Exception
 			$stderr.puts "Failed to open job #{jobfile}: #{$!}"
 			if File.size(jobfile) == 0
