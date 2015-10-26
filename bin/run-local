@@ -107,7 +107,7 @@ FileUtils.rm_rf TMP
 Dir.mkdir TMP
 
 job_script = result_root + '/job.sh'
-File.open(job_script, mode='w', perm=0755) do |file|
+File.open(job_script, mode='w', perm=0775) do |file|
 	job2sh(deepcopy(job.to_hash), file)
 end
 

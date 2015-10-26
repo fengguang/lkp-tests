@@ -215,7 +215,7 @@ def mkdir_p(dir, mode = 02775)
 end
 
 def with_flock(lock_file)
-	File.open(lock_file, File::RDWR|File::CREAT, 0644) { |f|
+	File.open(lock_file, File::RDWR|File::CREAT, 0664) { |f|
 		f.flock(File::LOCK_EX)
 		yield
 	}
