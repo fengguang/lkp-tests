@@ -210,7 +210,7 @@ def make_relative_symlink(src, dst)
 	File.symlink(rsrc, dst)
 end
 
-def mkdir_p(dir, mode = 02755)
+def mkdir_p(dir, mode = 02775)
 	FileUtils.mkdir_p dir, :mode => mode
 end
 
