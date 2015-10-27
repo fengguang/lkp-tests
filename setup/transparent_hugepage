@@ -1,0 +1,5 @@
+#!/bin/sh
+# - hugepage_mode
+
+[ -n "$hugepage_mode" ] || exit 0
+echo $hugepage_mode >/sys/kernel/mm/transparent_hugepage/enabled
