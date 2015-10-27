@@ -13,8 +13,11 @@ Dir["#{LKP_SRC}/etc/ignore-stderr/*"].each { |f|
 }
 
 def should_ignore_stderr(line)
-	$ignore_patterns.each { |re| return true if re.match line }
-	return false
+	$ignore_patterns.any? do |re|
+		# ERR in `match': invalid byte sequence in US-ASCII (ArgumentError)
+		# treat unrecognized line as "can't be ignored"
+		re.match line rescue nil
+	end
 end
 
 while line = gets
