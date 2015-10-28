@@ -182,12 +182,12 @@ def dim_name(dim)
 	case $opt_dimension
 	when 'commit'
 		project = 'linux'
-		tag = Git.open(project).gcommit(dim).interested_tag if Git.project_exist?(project)
+		tag = Git.open(project: project).gcommit(dim).interested_tag if Git.project_exist?(project)
 		return tag || dim[0..(REL_WIDTH + ABS_WIDTH + ERR_WIDTH)]
 	when /_commit$/
 		# FIXME rli9 duplicated code below, need refactoring
 		project = $opt_dimension.sub(/_.*$/, '')
-		tag = Git.open(project).gcommit(dim).interested_tag
+		tag = Git.open(project: project).gcommit(dim).interested_tag
 
 		tag || dim[0..(REL_WIDTH + ABS_WIDTH + ERR_WIDTH)]
 	else
@@ -396,7 +396,7 @@ end
 
 def setup_dims()
 	if $opt_dimension == 'commit'
-		git = Git.open('linux')
+		git = Git.open(project: 'linux')
 
 		$opt_dims = ARGV.map { |v| git.gcommit(v).sha }
 		if ARGV.size == 1
@@ -655,7 +655,7 @@ def show_delta(stat, key_g)
 		if $group_by_test
 			puts "#{$opt_field}"
 		else
-			git = Git.open('linux')
+			git = Git.open(project: 'linux')
 
 			result_path['commit'] = git.gcommit(result_path['commit']).name if $opt_dimension != 'commit'
 			test = result_path.test_desc $opt_dimension, $dim_not_a_param

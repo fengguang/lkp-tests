@@ -47,7 +47,7 @@ opts = OptionParser.new do |opts|
 end
 
 opts.parse!(ARGV)
-git = Git.open('linux')
+git = Git.open(project: 'linux')
 $opt_kernel = git.gcommit($opt_kernel).sha
 result_roots = `grep -r -h -F /#{$opt_kernel}/ /lkp/paths/`.split
 $opt_pattern.each do |pattern|

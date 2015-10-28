@@ -51,12 +51,12 @@ module Git
 		# open an existing repository
 		#
 		alias_method :orig_open, :open
-		def open(project)
-			assert(project, "project parameter can't be #{project.inspect}")
+		def open(options = {})
+			assert(options[:project], "options[:project] can't be #{options[:project].inspect}")
 
-			working_dir = ENV['SRC_ROOT'] || project_work_tree(project)
+			working_dir = ENV['SRC_ROOT'] || project_work_tree(options[:project])
 
-			Git.orig_open(working_dir, project: project)
+			Git.orig_open(working_dir, options)
 		end
 
 		def project_exist?(project)
@@ -149,13 +149,13 @@ end
 def expand_possible_commit(s)
 	return s unless Git.commit_name? s
 
-	git = Git.open('linux')
+	git = Git.open(project: 'linux')
 	return s unless git.commit_exist? s
 	return git.gcommit(s).sha
 end
 
 def is_linus_commit(commit)
-	git = Git.open('linux')
+	git = Git.open(project: 'linux')
 	git.gcommit(commit).committer.name == 'Linus Torvalds'
 end
 
