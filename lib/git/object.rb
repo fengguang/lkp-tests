@@ -71,6 +71,19 @@ module Git
 				end
 			end
 
+			def base_rc_tag
+				# FIXME rli9 bad smell here to distinguish linux by case/when
+				commit = case @base.project
+				when 'linux'
+					@base.gcommit("#{self.sha}~") if self.committer.name == 'Linus Torvalds'
+				end
+
+				commit ||= self
+
+				tag, is_exact_match = commit.last_release_tag
+				tag
+			end
+
 			# v3.11     => v3.11
 			# v3.11-rc1 => v3.10
 			def last_official_release_tag
