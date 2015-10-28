@@ -401,7 +401,8 @@ def setup_dims()
 		$opt_dims = ARGV.map { |v| git.gcommit(v).sha }
 		if ARGV.size == 1
 			if ARGV[0].index('/') # looks like a branch? compare its BASE_RC..HEAD
-				$opt_dims.unshift git.gcommit(base_rc_tag($opt_dims[0])).sha
+				tag = git.gcommit($opt_dims[0]).base_rc_tag
+				$opt_dims.unshift git.gcommit(tag).sha
 			elsif Git.sha1_40?(ARGV[0]) # compare with parent commit(s)
 				# FIXME rli9 deduce project info from opt_dimensions
 				git.gcommit(ARGV[0]).parent_shas.reverse_each { |parent| $opt_dims.unshift parent }
