@@ -154,9 +154,18 @@ def expand_possible_commit(s)
 	return git.gcommit(s).sha
 end
 
+def __git_committer_name(commit)
+	`#{GIT} log -n1 --pretty=format:'%cn' #{commit}`.chomp
+end
+
+def git_committer_name(commit)
+	$__committer_name_cache ||= {}
+	$__committer_name_cache[commit] ||= __git_committer_name(commit)
+	return $__committer_name_cache[commit]
+end
+
 def is_linus_commit(commit)
-	git = Git.open(project: 'linux')
-	git.gcommit(commit).committer.name == 'Linus Torvalds'
+	git_committer_name(commit) == 'Linus Torvalds'
 end
 
 def git_commit(commit)
