@@ -1,11 +1,15 @@
 #!/usr/bin/env ruby
 
+stats = []
+
 while line = STDIN.gets
 	case line
 	when /^(.*): (fail|crash|timeout|warn|dmesg-warn|dmesg-fail)/
 		fail_type = $2
-		puts $1.gsub(' ', '_') + ".#{fail_type}: 1"
+		stats << $1.gsub(' ', '_') + ".#{fail_type}: 1"
 	when /\.seconds: [0-9]+$/
-		puts line
+		stats << line
 	end
 end
+
+stats.uniq.each {|stat| puts stat}
