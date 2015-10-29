@@ -1,4 +1,6 @@
 url: git://git.infradead.org/intel-iommu
+mirrors:
+- git://git.infradead.org/iommu-2.6.git
 owner: David Woodhouse <David.Woodhouse@intel.com>
 subsystems:
 - iommu
