@@ -17,11 +17,19 @@ force_reboot()
 
 nfs_hang()
 {
+	local loadavg
+	local misc
+
+	read loadavg misc < /proc/loadavg
+	(( ${loadavg%.*} > 10 )) && return 1
+
 	for i in $(seq 10); do
-		timeout 120 df > /dev/null
+		timeout 600 df > /dev/null
 		[ "$?" -eq 124 ] || return 1
 	done
+
 	ping -c 5 -q $LKP_SERVER > /dev/null || return 1
+
 	return 0
 }
 
