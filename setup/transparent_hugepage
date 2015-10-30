@@ -1,5 +1,10 @@
 #!/bin/sh
-# - hugepage_mode
+# - thp_mode
+# - thp_defrag
 
-[ -n "$hugepage_mode" ] || exit 0
-echo $hugepage_mode >/sys/kernel/mm/transparent_hugepage/enabled
+if [ -n "$thp_mode" ]; then 
+	echo $thp_mode >/sys/kernel/mm/transparent_hugepage/enabled
+fi
+if [ -n "$thp_defrag" ]; then
+	echo $thp_defrag >/sys/kernel/mm/transparent_hugepage/defrag
+fi
