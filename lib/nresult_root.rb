@@ -253,3 +253,15 @@ class NMResultRootCollection
 		end
 	end
 end
+
+def nresult_root_fsck
+	col = NMResultRootCollection.new
+	col.each { |mrt|
+		puts mrt.path
+		if Dir.exist?(mrt.path)
+			yield(mrt) if block_given?
+		else
+			mrt.delete
+		end
+	}
+end
