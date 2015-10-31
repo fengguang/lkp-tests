@@ -53,7 +53,7 @@ libdrm-dev: libdrm-devel
 xutils-dev: imake
 libibverbs-dev: libibverbs-devel
 librdmacm-dev: librdmacm-devel
-libaio1: libaio
+libaio1: libaio libaio-devel
 libaio-dev: libaio-devel
 initramfs-tools: dracut
 klibc-utils:
