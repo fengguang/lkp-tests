@@ -251,8 +251,21 @@ def load_base_matrix(matrix_path, head_matrix, options)
 
 	order = git.release_tag_order(version)
 	unless order
-		$stderr.puts "unknown version #{version} matrix: #{matrix_path} options: #{options}"
-		return nil
+		# ERR unknown version v4.3 matrix
+		# b/c git repo like /c/repo/linux on inn keeps changing, it is possible
+		# that git object is cached in an older time, and v4.3 commit 6a13feb9c82803e2b815eca72fa7a9f5561d7861 appears later.
+		# - git.gcommit(6a13feb9c82803e2b815eca72fa7a9f5561d7861).last_release_tag returns [v4.3, false]
+		# - git.release_tag_order(v4.3) returns nil
+		# refresh the cache to invalidate previous git object
+		git = $git[project] = Git.open(project: project)
+		version, is_exact_match = git.gcommit(commit).last_release_tag
+		order = git.release_tag_order(version)
+
+		# FIXME rli9 after above change, below situation is not reasonable, keep it for debugging purpose now
+		unless order
+			$stderr.puts "unknown version #{version} matrix: #{matrix_path} options: #{options}"
+			return nil
+		end
 	end
 
 	cols = 0
