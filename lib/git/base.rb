@@ -7,7 +7,7 @@ module Git
 	class Base
 		include SimpleCacheMethod
 
-		cache_method :gcommit, ->obj {obj.project}
+		cache_method :gcommit, ->obj {obj.object_id}
 		alias_method :orig_initialize, :initialize
 
 		attr_reader :project
@@ -44,43 +44,52 @@ module Git
 		end
 
 		def release_tags
-			pattern = Regexp.new '^' + default_remote['release_tag_pattern'].sub(' ', '$|^') + '$'
-			self.tag_names.select {|tag_name| pattern.match(tag_name)}
+			unless @release_tags
+				pattern = Regexp.new '^' + default_remote['release_tag_pattern'].sub(' ', '$|^') + '$'
+				@release_tags = self.tag_names.select {|tag_name| pattern.match(tag_name)}
+			end
+
+			@release_tags
 		end
 
 		def release_tags_with_order
-			pattern = Regexp.new '^' + default_remote['release_tag_pattern'].sub(' ', '$|^') + '$'
+			unless @release_tags_with_order
+				pattern = Regexp.new '^' + default_remote['release_tag_pattern'].sub(' ', '$|^') + '$'
 
-			tags = sort_tags(pattern, self.release_tags)
+				tags = sort_tags(pattern, self.release_tags)
+				@release_tags_with_order = Hash[tags.map.with_index {|tag, i| [tag, -i]}]
+			end
 
-			Hash[tags.map.with_index {|tag, i| [tag, -i]}]
+			@release_tags_with_order
 		end
 
 		def release_shas
-			release_tags.map {|release_tag| lib.command('rev-list', ['-1', release_tag])}
+			@release_shas ||= release_tags.map {|release_tag| lib.command('rev-list', ['-1', release_tag])}
 		end
 
 		def release_tags2shas
-			tags = release_tags
-			shas = release_shas
-			tags2shas = {}
-			tags.each_with_index {|tag, i| tags2shas[tag] = shas[i]}
-			tags2shas
+			unless @release_tags2shas
+				tags = release_tags
+				shas = release_shas
+
+				@release_tags2shas = {}
+				tags.each_with_index {|tag, i| @release_tags2shas[tag] = shas[i]}
+			end
+
+			@release_tags2shas
 		end
 
 		def release_shas2tags
-			tags = release_tags
-			shas = release_shas
-			shas2tags = {}
-			shas.each_with_index {|sha, i| shas2tags[sha] = tags[i]}
-			shas2tags
-		end
+			unless @release_shas2tags
+				tags = release_tags
+				shas = release_shas
 
-		cache_method :release_tags, ->obj {obj.project}
-		cache_method :release_tags_with_order, ->obj {obj.project}
-		cache_method :release_shas, ->obj {obj.project}
-		cache_method :release_tags2shas, ->obj {obj.project}
-		cache_method :release_shas2tags, ->obj {obj.project}
+				@release_shas2tags = {}
+				shas.each_with_index {|sha, i| @release_shas2tags[sha] = tags[i]}
+			end
+
+			@release_shas2tags
+		end
 
 		def release_tag_order(tag)
 			release_tags_with_order[tag]

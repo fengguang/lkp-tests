@@ -137,8 +137,6 @@ module Git
 		end
 
 		cache_method :remote_descs
-		cache_method :init
-		cache_method :open
 	end
 end
 

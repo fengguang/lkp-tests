@@ -35,12 +35,6 @@ describe Git do
 		end
 	end
 
-	describe "open" do
-		it "should cache git objects " do
-			expect(described_class.open(project: 'linux').object_id).to eq described_class.open(project: 'linux').object_id
-		end
-	end
-
 	context "linux" do
 		# tag v4.1-rc8
 		linux_v4_1_rc8_commit = "0f57d86787d8b1076ea8f9cbdddda2a46d534a27"
@@ -221,14 +215,6 @@ describe Git do
 					expect(gcommit2.object_id).to eq gcommit1.object_id
 					expect(gcommit2.committer.name.object_id).to eq gcommit2.committer.name.object_id
 				end
-
-				it "should cache commits of multiple git objects" do
-					git1 = Git.init
-					git2 = Git.init
-
-					expect(git2.object_id).to eq git1.object_id
-					expect(git2.gcommit(linux_v4_1_rc8_commit).object_id).to eq git1.gcommit(linux_v4_1_rc8_commit).object_id
-				end
 			end
 
 			describe "release_tags_with_order" do
@@ -237,7 +223,7 @@ describe Git do
 
 					# {"v4.2-rc4"=>0, "v4.2-rc3"=>-1, "v4.2-rc2"=>-2, "v4.2-rc1"=>-3, "v4.1"=>-4, "v4.1-rc8"=>-5, ...,
 					#  "v2.6.20-rc4"=>-364, "v2.6.20-rc3"=>-365, "v2.6.20-rc2"=>-366, "v2.6.20-rc1"=>-367}
-					v4_2_rc4_order = -12
+					v4_2_rc4_order = -13
 					expect(actual["v4.2-rc4"]).to eq v4_2_rc4_order
 					expect(actual["v4.2-rc3"]).to eq(v4_2_rc4_order - 1)
 					expect(actual["v2.6.20-rc2"]).to eq(v4_2_rc4_order - 366)
@@ -253,7 +239,7 @@ describe Git do
 
 			describe "release_tag_order" do
 				it "should be same as tag_order with default parameters" do
-					v4_2_rc4_order = -12
+					v4_2_rc4_order = -13
 					expect(@git.release_tag_order('v2.6.32-rc8')).to eq(v4_2_rc4_order - 249)
 				end
 			end
