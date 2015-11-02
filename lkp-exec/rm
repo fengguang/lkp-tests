@@ -38,7 +38,7 @@ remove_from_mrtts()
 
 echo "The command to remove the result path are:"
 remove "$@"
-echo -n "!!! Are you really want to do that? [No/yes]: "
+echo -n "!!! Do you really want to do that? [No/yes]: "
 read answer
 if [[ $answer = "yes" ]]; then
 	remove_from_mrtts "$@"
