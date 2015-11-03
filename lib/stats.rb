@@ -13,6 +13,7 @@ require "#{LKP_SRC}/lib/result.rb"
 require "#{LKP_SRC}/lib/bounds.rb"
 require "#{LKP_SRC}/lib/constant.rb"
 require "#{LKP_SRC}/lib/statistics.rb"
+require "#{LKP_SRC}/lib/error.rb"
 
 $metric_add_max_latency	= IO.read("#{LKP_SRC}/etc/add-max-latency").split("\n")
 $metric_latency		= IO.read("#{LKP_SRC}/etc/latency").split("\n")
@@ -541,8 +542,7 @@ def load_matrices_to_compare(matrix_path1, matrix_path2, options = {})
 			b = load_base_matrix matrix_path1, a, options
 		end
 	rescue Exception => e
-		$stderr.puts e.message
-		$stderr.puts e.backtrace
+		dump_exception(e, binding)
 		return [nil, nil]
 	end
 	return [a, b]
