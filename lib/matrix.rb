@@ -153,7 +153,7 @@ def matrix_delete_col(matrix, col)
 	}
 end
 
-def unite_to(stats, matrix_root, max_cols = nil)
+def unite_to(stats, matrix_root, max_cols = nil, delete = false)
 	matrix_file = matrix_root + '/matrix.json'
 
 	matrix = load_matrix_file(matrix_root + '/matrix.json')
@@ -166,7 +166,9 @@ def unite_to(stats, matrix_root, max_cols = nil)
 		matrix = {}
 	end
 
-	matrix = add_stats_to_matrix(stats, matrix)
+	unless delete
+		matrix = add_stats_to_matrix(stats, matrix)
+	end
 	shrink_matrix(matrix, max_cols) if max_cols
 
 	save_json(matrix, matrix_file)
@@ -278,7 +280,7 @@ def unite_params(result_root)
 	end
 end
 
-def unite_stats(result_root)
+def unite_stats(result_root, delete = false)
 	if not File.directory? result_root
 		$stderr.puts "#{result_root} is not a directory"
 		return false
@@ -291,9 +293,9 @@ def unite_stats(result_root)
 	stats = create_stats_matrix(result_root)
 	stats['stats_source'] = result_root + '/stats.json'
 
-	unite_to(stats, _result_root)
+	unite_to(stats, _result_root, nil, delete)
 	begin
-		__matrix = unite_to(stats, __result_root, 100)
+		__matrix = unite_to(stats, __result_root, 100, nil, delete)
 		check_warn_test_error __matrix, result_root
 	rescue Exception
 	end
