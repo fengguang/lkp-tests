@@ -2,6 +2,7 @@ make
 automake
 gcc
 libtool
+libtool-bin
 patch
 git
 cpio
