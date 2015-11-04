@@ -8,6 +8,6 @@ download()
 
 install()
 {
-	cp -af $BM_NAME $BM_ROOT
+	cp -af /tmp/$BM_NAME $BM_ROOT
 	cp -af $LKP_SRC/pack/${BM_NAME}-addon/* $BM_ROOT/
 }
