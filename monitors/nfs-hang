@@ -21,7 +21,7 @@ nfs_hang()
 	local misc
 
 	read loadavg misc < /proc/loadavg
-	(( ${loadavg%.*} > 10 )) && return 1
+	(( ${loadavg%.*} > 3 * nr_cpu + 10 )) && return 1
 
 	for i in $(seq 10); do
 		timeout 600 df > /dev/null
