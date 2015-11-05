@@ -188,6 +188,9 @@ end
 def save_paths(result_root, user)
 	paths_file = "/lkp/paths/#{Time.now.strftime('%F')}-#{user}"
 
+	# to avoid confusing between .../1 and .../11, etc. when search/remove, etc.
+	result_root += '/' unless result_root.end_with?('/')
+
 	File.open(paths_file, "a") { |f|
 		f.puts(result_root)
 	}
