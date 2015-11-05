@@ -1,5 +1,7 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/rostedt/linux-trace.git
-integration_testing_branches: for-next for-next-urgent
+integration_testing_branches:
+- for-next
+- for-next-urgent
 owner: Steven Rostedt <rostedt@goodmis.org>
 subsystems:
 - tracing

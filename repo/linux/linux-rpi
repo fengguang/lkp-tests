@@ -1,5 +1,7 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/rpi/linux-rpi
-integration_testing_branches: for-rpi-next for-next
+integration_testing_branches:
+- for-rpi-next
+- for-next
 mail_cc:
 - linux-rpi-kernel@lists.infradead.org
 - linux-arm-kernel@lists.infradead.org

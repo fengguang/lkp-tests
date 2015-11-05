@@ -1,6 +1,9 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
 git_am_branch: char-misc-next
-integration_testing_branches: kdbus char-misc-next char-misc-linus
+integration_testing_branches:
+- kdbus
+- char-misc-next
+- char-misc-linus
 owner: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 subsystems:
 - kdbus

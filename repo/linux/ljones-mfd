@@ -1,5 +1,7 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git
-integration_testing_branches: for-mfd-next for-mfd-fixes
+integration_testing_branches:
+- for-mfd-next
+- for-mfd-fixes
 owner: Lee Jones <lee.jones@linaro.org>
 subsystems:
 - mfd

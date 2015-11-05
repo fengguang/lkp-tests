@@ -1,5 +1,7 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/helgaas/pci.git
-integration_testing_branches: next for-linus
+integration_testing_branches:
+- next
+- for-linus
 mail_to: linux-pci@vger.kernel.org
 owner: Bjorn Helgaas <bhelgaas@google.com>
 subsystems:

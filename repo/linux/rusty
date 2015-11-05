@@ -1,5 +1,7 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/rusty/linux.git
-integration_testing_branches: modules-next fixes
+integration_testing_branches:
+- modules-next
+- fixes
 owner: Rusty Russell <rusty@rustcorp.com.au>
 subsystems:
 - lguest
