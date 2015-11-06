@@ -3,7 +3,9 @@ integration_testing_branches:
 - for-next
 - for-linus
 mail_to: alsa-devel@alsa-project.org
-owner: Takashi Iwai <tiwai@suse.de>
+owner:
+- Takashi Iwai <tiwai@suse.de>
+- Takashi Iwai <tiwai@suse.com>
 subsystems:
 - alsa
 - line6
