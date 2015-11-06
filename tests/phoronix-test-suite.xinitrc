@@ -15,6 +15,19 @@ case $test in
 		;;
 esac
 
+## We used the v5.6.0 version of "pts" before, but the enviroment variable "PTS_SILENT_MODE" only can work in more than v5.6.0 version.
+## so we upgrade to v5.8.1 version, and it can work normally now.
+##
+## "pts" just is a test framework, need to download a large amount of benchmarks to run.
+## Unfortunately,the v5.6.0 and v5.8.0 use the different of directories to store the downloaded benchmark.
+##
+## For example:
+## 1)the benchmarks are stored under directory /root/.phoronix-test-suite/installed-tests/ in 5.6.0 version.
+## 2)the benchmarks are stored under directory /var/lib/phoronix-test-suite/installed-tests/ in 5.8.1 version.
+##
+## This will result in the newer version of "pts" will can't use the old benchmark which be located in /root.phoronix-test-suite/ directory.
+## To avoid do too many modifies and download a large amount of benchmarks, we create a symlink to link /root/.phoronix-test-suite/installed-tests## in /var/lib/phoronix-test-suite/ directory, thus the new version of "pts" could continue to use the old benchmarks, and it can work normally. 
+
 export PTS_SILENT_MODE=1
 echo PTS_SILENT_MODE=$PTS_SILENT_MODE
 
