@@ -1,14 +1,29 @@
 #!/usr/bin/env ruby
 
+require "#{LKP_SRC}/lib/string_ext"
+
+def stat_line(line)
+		case line
+		when /Failures: (.*)/
+			fails = $1.split
+			fails.each { |seq| puts "#{seq.tr('/', '.')}.fail: 1" }
+			puts "nr_fail: #{fails.size}"
+		when /^_check_generic_filesystem: filesystem on .+ is inconsistent \(see .+\/([a-z]+)\/([0-9]+)\.full\)/
+			puts "#{$1}.#{$2}.inconsistent_fs: 1"
+		when /^(generic|shared|ext4|xfs|btrfs|udf)\/(\d\d\d)\t (\d+)s/
+			puts "#{$1}.#{$2}.seconds: #{$3}"
+		end
+end
+
 while line = STDIN.gets
-	case line
-	when /Failures: (.*)/
-		fails = $1.split
-		fails.each { |seq| puts "#{seq.tr('/', '.')}.fail: 1" }
-		puts "nr_fail: #{fails.size}"
-	when /^_check_generic_filesystem: filesystem on .+ is inconsistent \(see .+\/([a-z]+)\/([0-9]+)\.full\)/
-		puts "#{$1}.#{$2}.inconsistent_fs: 1"
-	when /^(generic|shared|ext4|xfs|btrfs|udf)\/(\d\d\d)\t (\d+)s/
-		puts "#{$1}.#{$2}.seconds: #{$3}"
+	begin
+		stat_line(line)
+	rescue Exception => e
+		if e.message =~ /invalid byte sequence in US-ASCII/
+			line = line.remediate_invalid_byte_sequence(replace: '_')
+			stat_line(line)
+		else
+			raise e
+		end
 	end
 end
