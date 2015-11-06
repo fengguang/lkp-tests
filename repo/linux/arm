@@ -1,7 +1,9 @@
 url: http://repo.or.cz/linux-2.6/linux-2.6-arm.git
 mirrors:
+- git://ftp.arm.linux.org.uk/~rmk/linux-arm
 - git://ftp.arm.linux.org.uk/pub/linux/arm/kernel/git-cur/linux-arm.git
 - http://ftp.arm.linux.org.uk/pub/linux/arm/kernel/git-cur/linux-2.6-arm.git
+- http://ftp.arm.linux.org.uk/pub/armlinux/kernel/git-cur/linux-2.6-arm
 integration_testing_branches:
 - for-next
 - fixes
