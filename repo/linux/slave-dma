@@ -2,6 +2,7 @@ url: https://git.kernel.org/pub/scm/linux/kernel/git/vkoul/slave-dma.git
 mirrors:
 - git://git.infradead.org/users/vkoul/slave-dma
 owner: Vinod Koul <vinod.koul@intel.com>
+integration_testing_branches: next
 subsystems:
 - dmaengine
 - asoc
