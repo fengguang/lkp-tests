@@ -2,7 +2,9 @@ url: https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux
 integration_testing_branches: for-next/core
 mail_cc:
 - linux-arm-kernel@lists.infradead.org
-owner: Will Deacon <will.deacon@arm.com>
+owner:
+- Catalin Marinas <catalin.marinas@arm.com>
+- Will Deacon <will.deacon@arm.com>
 subsystems:
 - arm64
 - psci
