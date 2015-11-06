@@ -7,6 +7,7 @@
 ## designed to let web developers measure their code under duress,
 ## to see how it will stand up to load on the internet.
 
+apache_dir="/etc/apache2"
 iter_time=$(( runtime / iterations ))
 
 ## Below HTML and siegerc from Mel Gorman's MMTests
@@ -38,6 +39,8 @@ Here is a bunch of text to bring the page size up to 1K.
 </html>
 EOF
 
+ln -s $apache_dir/mods-available/authz_core.load $apache_dir/mods-enabled/
+ln -s $apache_dir/mods-available/mpm_event.load $apache_dir/mods-enabled/
 
 apachectl -k restart 2>&1
 
