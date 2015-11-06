@@ -1,4 +1,7 @@
-url: https://git.kernel.org/pub/scm/linux/kernel/git/steve/gfs2-3.0-nmw.git
-owner: Steven Whitehouse <swhiteho@redhat.com>
+url: https://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git
+integration_testing_branches: for-next
+owner:
+- Steven Whitehouse <swhiteho@redhat.com>
+- Bob Peterson <rpeterso@redhat.com>
 subsystems:
 - gfs2
