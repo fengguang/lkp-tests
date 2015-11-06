@@ -2,6 +2,7 @@
 
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($0)))
 require "#{LKP_SRC}/lib/dmesg.rb"
+require "#{LKP_SRC}/lib/string_ext"
 
 error_ids = Hash.new
 
@@ -27,7 +28,7 @@ while line = gets
 	rescue Exception => e
 		# ERR: lib/dmesg.rb:151:in `gsub!': invalid byte sequence in US-ASCII (ArgumentError)
 		if e.message =~ /invalid byte sequence in (UTF-8|US-ASCII)/
-			line = line.force_encoding("UTF-8").encode("UTF-8", "UTF-8", invalid: :replace, undef: :replace, replace: '_')
+			line = line.remediate_invalid_byte_sequence(replace: '_')
 			id = common_error_id(line)
 		else
 			raise e
