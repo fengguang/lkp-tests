@@ -1,6 +1,8 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/axboe/linux-block.git
 integration_testing_branches: for-next
-owner: Jens Axboe <axboe@fb.com>
+owner:
+- Jens Axboe <axboe@fb.com>
+- Jens Axboe <axboe@kernel.dk>
 subsystems:
 - blk-mq
 - block
