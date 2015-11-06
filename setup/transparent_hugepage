@@ -1,9 +1,9 @@
 #!/bin/sh
-# - thp_mode
+# - thp_enabled
 # - thp_defrag
 
-if [ -n "$thp_mode" ]; then 
-	echo $thp_mode >/sys/kernel/mm/transparent_hugepage/enabled
+if [ -n "$thp_enabled" ]; then 
+	echo $thp_enabled >/sys/kernel/mm/transparent_hugepage/enabled
 fi
 if [ -n "$thp_defrag" ]; then
 	echo $thp_defrag >/sys/kernel/mm/transparent_hugepage/defrag
