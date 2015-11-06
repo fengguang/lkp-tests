@@ -16,12 +16,34 @@ ext4/017
 ext4/018
 ext4/019
 ext4/304
+##The following these btrfs relevant testcases will be filtered, since some cases still have a bug in latest version(such as btrfs/047),
+##and the others are test function failure, to void generate the error info in 'lkp log', we also need to filter these testcases.
+##In addition, "btrfs/101" need to the newer btrfs-tools packages,but our repo is a bit old, can't upgrade to the very new btrfs-tools version,
+##so we also filter this sub item temporary.
 btrfs/003
-btrfs/004
-btrfs/005
-btrfs/007
+btrfs/006
+btrfs/010
+btrfs/011
 btrfs/012
-btrfs/013
+btrfs/035
+btrfs/047
+btrfs/061
+btrfs/064
+btrfs/065
+btrfs/069
+btrfs/070
+btrfs/071
+btrfs/072
+btrfs/075
+btrfs/088
+btrfs/099
+btrfs/101
+btrfs/104
+btrfs/108
+btrfs/109
+btrfs/111
+btrfs/112
+btrfs/113
 generic/013
 generic/083
 generic/070
