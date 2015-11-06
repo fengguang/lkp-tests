@@ -6,10 +6,21 @@ mail_to: linux-kbuild@vger.kernel.org
 owner: Michal Marek <mmarek@suse.com>
 subsystems:
 - kbuild
+- kconfig
+- menuconfig
+- makefile
+- scripts
 - free
-- 'null'
 - iterators
 - locks
 - tests
 - api
 - alloc
+- coccinelle
+- dtc
+- gdb
+- genksyms
+- package
+- nconf
+- mconf
+- menuconfig
