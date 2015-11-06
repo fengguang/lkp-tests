@@ -1,12 +1,27 @@
+##The following these ext4 relevant testcases(ext4/006 ~ ext4/019) need to the newer e2fsprogs package(v1.43.xxx),
+##currently we use the command "apt-get install e2fsprogs" can't upgrade to v1.43.xxx version,
+##this is due to our apt-get repo is a bit old, so we filter these testcases temporary.
+ext4/006
+ext4/007
+ext4/008
+ext4/009
+ext4/010
+ext4/011
+ext4/012
+ext4/013
+ext4/014
+ext4/015
+ext4/016
+ext4/017
+ext4/018
+ext4/019
+ext4/304
 btrfs/003
 btrfs/004
 btrfs/005
 btrfs/007
 btrfs/012
 btrfs/013
-ext4/302
-ext4/303
-ext4/304
 generic/013
 generic/083
 generic/070
