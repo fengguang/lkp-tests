@@ -17,6 +17,8 @@ wait_for_monitors()
 	done
 
 	echo "some monitors do not quit in time" >&2
+	ps axho pid | grep -Fwf $pidfile | xargs ps u >&2
+
 	ps faux
 	return $i
 }
