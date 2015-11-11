@@ -1,15 +1,17 @@
-#
-# TODO add usage example
-#
-module SimpleCacheMethod
+module Cacheable
 	def self.included(mod)
-		class << mod
-			include ClassMethods
-			attr_accessor :caches, :cache_key_prefix_generators
-		end
+		class << mod; include ClassMethods;	end
 	end
 
-  module ClassMethods
+	module ClassMethods
+		def cache
+			@cache ||= {}
+		end
+
+		def cache_configure
+			@cache = yield
+		end
+
 		#
 		# cache_key_prefix_generator - customized key prefix generator, possible values
 		#   default => share cache between all objects belong to same class
@@ -23,19 +25,18 @@ module SimpleCacheMethod
 
 			kclass = self
 
-			@caches ||= {}
 			@cache_key_prefix_generators ||= {}
-
 			@cache_key_prefix_generators[method_name] = cache_key_prefix_generator
 
-			# FIXME rli9 do not support &block
+			# FIXME rli9 not support &block
 			# FIXME rli9 better solution for generating key can refer to
 			# https://github.com/seamusabshere/cache_method/blob/master/lib/cache_method.rb
 			define_method(method_name) do |*args|
 				cache_key = kclass.cache_key(self, method_name, *args)
 
-				kclass.caches[cache_key] = self.send("#{method_name}_without_cache", *args) unless kclass.caches.has_key? cache_key
-				kclass.caches[cache_key]
+				kclass.cache_fetch cache_key do
+					self.send("#{method_name}_without_cache", *args)
+				end
 			end
 		end
 
@@ -48,6 +49,12 @@ module SimpleCacheMethod
 			cache_key = "#{cache_key_prefix_generator.call obj}_#{cache_key}" if cache_key_prefix_generator
 
 			cache_key
+		end
+
+		def cache_fetch(cache_key)
+			return cache[cache_key] if cache.has_key? cache_key
+
+			cache[cache_key] = yield
 		end
 	end
 end

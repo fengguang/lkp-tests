@@ -12,7 +12,7 @@ require 'time'
 require 'git'
 
 require "#{LKP_SRC}/lib/yaml.rb"
-require "#{LKP_SRC}/lib/simple_cache_method"
+require "#{LKP_SRC}/lib/cache"
 require "#{LKP_SRC}/lib/assert"
 
 require "#{LKP_SRC}/lib/git/base"
