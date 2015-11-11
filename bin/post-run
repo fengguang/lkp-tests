@@ -34,7 +34,7 @@ kill_monitors()
 		[ -s "$pidfile" ] || break
 
 		if [ -s "$wait_pidfile" ]; then
-			pids=$(grep -v -x -F "$wait_pidfile" "$pidfile")
+			pids=$(grep -v -x -F -f "$wait_pidfile" "$pidfile")
 		else
 			pids=$(cat "$pidfile")
 		fi
