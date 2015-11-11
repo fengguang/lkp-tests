@@ -133,7 +133,7 @@ describe Git do
 					linux_v3_11_rc1_commit = @git.tag('v3.11-rc1').commit
 					expect(linux_v3_11_rc1_commit.prev_official_release_tag).to eq 'v3.10'
 
-					expect(@git.gcommit('linus/master').prev_official_release_tag).to eq 'v4.2'
+					expect(@git.gcommit('linus/master').prev_official_release_tag).to eq 'v4.3'
 				end
 			end
 
@@ -251,10 +251,6 @@ describe Git do
 
 				expect(actual.count).to be > 0
 				expect(actual).to eq load_remotes
-			end
-
-			it "should cache result" do
-				expect(described_class.remote_descs.object_id).to eq described_class.remote_descs.object_id
 			end
 		end
 	end

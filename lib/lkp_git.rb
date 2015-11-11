@@ -19,13 +19,12 @@ require "#{LKP_SRC}/lib/git/base"
 require "#{LKP_SRC}/lib/git/object"
 require "#{LKP_SRC}/lib/git/lib"
 require "#{LKP_SRC}/lib/git/author"
+require "#{LKP_SRC}/lib/git/cache"
 
 $work_tree_base_dir = '/c/repo'
 
 module Git
 	class << self
-		include SimpleCacheMethod
-
 		# TODO move the ENV evaluation resposibility to caller or another helper function
 		# TODO deduce project from branch
 		# init a repository
@@ -135,8 +134,6 @@ module Git
 			commit_name =~ /^v[234]\.\d+/ ||
 			sha1_40?(commit_name)
 		end
-
-		cache_method :remote_descs
 	end
 end
 

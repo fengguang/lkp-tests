@@ -1,13 +1,9 @@
 LKP_SRC ||= ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
 
-require "#{LKP_SRC}/lib/simple_cache_method"
 require 'git'
 
 module Git
 	class Base
-		include SimpleCacheMethod
-
-		cache_method :gcommit, ->obj {obj.object_id}
 		alias_method :orig_initialize, :initialize
 
 		attr_reader :project

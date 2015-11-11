@@ -1,13 +1,10 @@
 LKP_SRC ||= ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
 
-require "#{LKP_SRC}/lib/simple_cache_method"
 require 'git'
 
 module Git
 	class Object
 		class Commit
-			include SimpleCacheMethod
-
 			alias_method :orig_initialize, :initialize
 			def initialize(base, sha, init = nil)
 				orig_initialize(base, sha, init)
@@ -134,8 +131,6 @@ module Git
 				tag += '+' if tag && !is_exact_match
 				tag
 			end
-
-			cache_method :last_release_tag, ->(obj) {obj.to_s}
 
 			RE_BY_CC = /(?:by|[Cc][Cc]):\s*([^<\r\n]+) <([^>]+@[^>]+)>\s*$/
 			def by_cc
