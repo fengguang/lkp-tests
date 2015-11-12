@@ -4,6 +4,23 @@ source $LKP_SRC/lib/common.sh
 
 shopt -s nullglob
 
+is_rt()
+{
+	local path=$1
+	local bn=$(basename $path)
+	local dn=$(dirname $path)
+	[[ $bn =~ [0-9]+ ]] &&
+		[[ -f $path/job.yaml ]] &&
+		[[ -f $dn/stddev.json ]]
+}
+
+check_rt()
+{
+	local path=${1%%/}
+	local dn=$(dirname $path)
+	grep -q $path/stats.json $dn/matrix.json
+}
+
 remove()
 {
 	for path; do
@@ -41,6 +58,12 @@ remove "$@"
 echo -n "!!! Do you really want to do that? [No/yes]: "
 read answer
 if [[ $answer = "yes" ]]; then
+	if is_rt $path && check_rt $path; then
+		lkp reprocess -d $path
+		while check_rt $path; do
+			sleep 10
+		done
+	fi
 	remove_from_mrtts "$@"
 	remove "$@" | bash
 fi
