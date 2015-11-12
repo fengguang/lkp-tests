@@ -300,6 +300,8 @@ def setup_result_root_hash()
 	ENV['LC_ALL'] = 'C'
 	$opt_dims.each do |dim|
 		`grep -h -r -F -e '#{dim}' #{RESULT_PATHS}`.each_line do |result_root|
+			result_root.chomp!
+			result_root.chomp! "/"
 			add_result_root result_root
 		end
 	end
