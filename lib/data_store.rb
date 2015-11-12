@@ -324,10 +324,10 @@ module DataStore
 		def grep(conditions, files)
 			cond_arr = conditions.to_a
 			k0, v0 = cond_arr[0]
-			grep_cmdline = "grep -F -e '#{Regexp.escape k0}=#{Regexp.escape v0}'"
+			grep_cmdline = "grep -F -e '#{k0}=#{v0}'"
 			ext_grep_cmdline = ""
 			cond_arr.drop(1).each { |k, v|
-				ext_grep_cmdline += " | grep -F -e '#{Regexp.escape k}=#{Regexp.escape v}'"
+				ext_grep_cmdline += " | grep -F -e '#{k}=#{v}'"
 			}
 
 			files.each { |ifn|
