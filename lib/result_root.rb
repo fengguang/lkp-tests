@@ -279,7 +279,7 @@ class MResultRootCollection
 		@other_conditions.values.each { |ocond|
 			cmdline += " | grep -e '#{ocond}'"
 		}
-		cmdline += " | sed -e '1,$s?\\(.*\\)/[0-9]*?\\1?' | sort | uniq"
+		cmdline += " | sed -e '1,$s|\\(.*\\)/[0-9]\\+/\\?$|\\1|' | sort | uniq"
 		IO.popen(cmdline) { |io|
 			io.each_line { |_rtp|
 				_rtp = _rtp.strip
