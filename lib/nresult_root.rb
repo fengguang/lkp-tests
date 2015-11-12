@@ -216,12 +216,17 @@ end
 
 class NMResultRootCollection
 	def initialize(conditions = {})
-		@conditions = deepcopy conditions
+		@conditions = {}
+		conditions.each { |k, v|
+			@conditions[k] = v.to_s
+		}
 		@date = nil
 	end
 
+	include Enumerable
+
 	def set(key, value)
-		@conditions[key] = value
+		@conditions[key] = value.to_s
 		self
 	end
 

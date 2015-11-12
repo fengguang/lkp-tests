@@ -684,12 +684,15 @@ module DataStore
 
 		def initialize(table, conditions = {})
 			@table = table
-			@conditions = deepcopy(conditions)
+			@conditions = {}
+			conditions.each { |k, v|
+				@conditions[k] = v.to_s
+			}
 			@date = nil
 		end
 
 		def set(key, value)
-			@conditions[key] = value
+			@conditions[key] = value.to_s
 			self
 		end
 
