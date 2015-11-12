@@ -599,6 +599,20 @@ module Compare
 		comparer.compare
 	end
 
+	def self.ncommits_comparer(commits, params = nil)
+		_rts = commits.map { |c| NMResultRootCollection.new('commit' => c).to_a}.flatten
+		compare_axis_keys = ['commit']
+		comparer = Comparer.new
+		comparer.set_mresult_roots _rts
+		comparer.set_compare_axis_keys compare_axis_keys
+		comparer.set_params params
+	end
+
+	def self.ncompare_commits(commits, params = nil)
+		comparer = ncommits_comparer commits, params
+		comparer.compare
+	end
+
 	## Test functions
 
 	def self.test_compare_commits
