@@ -56,6 +56,8 @@ done
 
 [[ $paths ]] || exit 0
 
+paths=$(echo "$paths" | sed -e '1,$s?\(.*\)/$?\1?')
+
 case $script_name in
 rt|ls|ll)
 	paths=$(echo "$paths" | sort)
