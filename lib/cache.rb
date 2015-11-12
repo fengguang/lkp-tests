@@ -4,12 +4,8 @@ module Cacheable
 	end
 
 	module ClassMethods
-		def cache
-			@cache ||= {}
-		end
-
-		def cache_configure
-			@cache = yield
+		def cache_store
+			@cache_store ||= {}
 		end
 
 		#
@@ -34,7 +30,7 @@ module Cacheable
 			define_method(method_name) do |*args|
 				cache_key = kclass.cache_key(self, method_name, *args)
 
-				kclass.cache_fetch cache_key do
+				kclass.cache_store.fetch cache_key do
 					self.send("#{method_name}_without_cache", *args)
 				end
 			end
@@ -49,12 +45,6 @@ module Cacheable
 			cache_key = "#{cache_key_prefix_generator.call obj}_#{cache_key}" if cache_key_prefix_generator
 
 			cache_key
-		end
-
-		def cache_fetch(cache_key)
-			return cache[cache_key] if cache.has_key? cache_key
-
-			cache[cache_key] = yield
 		end
 	end
 end
