@@ -37,6 +37,14 @@ wait_touch_watchdog()
 start_bmc_watchdog()
 {
 	is_virt && return
+
+	[ -x /usr/sbin/dmidecode ] || return
+	dmidecode | grep "IPMI" 2>/dev/null
+	if [ $? -ne 0 ]; then
+		echo "IPMI BMC is not supported on this machine, skip bmc-watchdog setup!"
+		return
+	fi
+
 	[ -x /usr/sbin/bmc-watchdog ] || return
 	bmc-watchdog --stop 2>/dev/null || return
 
