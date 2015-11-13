@@ -45,7 +45,7 @@ start_bmc_watchdog()
 		return
 	fi
 	[ -x /usr/local/bin/ipmi-setup ] || return
-	ipmi-setup | grep "BMC"
+	ipmi-setup 2> /dev/null | grep "BMC"
 	if [ $? -ne 0 ]; then
 		echo "ipmi setup fail, skip bmc-watchdog setup!"
 		return
