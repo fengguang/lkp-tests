@@ -44,6 +44,12 @@ start_bmc_watchdog()
 		echo "IPMI BMC is not supported on this machine, skip bmc-watchdog setup!"
 		return
 	fi
+	[ -x /usr/local/bin/ipmi-setup ] || return
+	ipmi-setup | grep "BMC"
+	if [ $? -ne 0 ]; then
+		echo "ipmi setup fail, skip bmc-watchdog setup!"
+		return
+	fi
 
 	[ -x /usr/sbin/bmc-watchdog ] || return
 	bmc-watchdog --stop 2>/dev/null || return
