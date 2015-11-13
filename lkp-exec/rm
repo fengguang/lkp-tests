@@ -25,7 +25,7 @@ remove()
 {
 	for path; do
 		path=$(abs_path $path)
-		echo sed -i \'"/${path//\//\\/}/d"\' "/lkp/paths/*"
+		echo sed -i \'"/${path//\//\\/}/d"\' "/lkp/paths/????-??-??-*"
 		echo rm -fr "$path"
 	done
 }

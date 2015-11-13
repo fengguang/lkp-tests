@@ -56,7 +56,7 @@ done
 
 [[ $paths ]] || exit 0
 
-paths=$(echo "$paths" | sed -e '1,$s?\(.*\)/$?\1?')
+paths=$(echo "$paths" | sed -e 's#/$##')
 
 case $script_name in
 rt|ls|ll)

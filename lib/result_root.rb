@@ -275,11 +275,11 @@ class MResultRootCollection
 	def each
 		block_given? or return enum_for(__method__)
 
-		cmdline = "grep -he '#{pattern}' /lkp/paths/*"
+		cmdline = "grep -he '#{pattern}' /lkp/paths/????-??-??-*"
 		@other_conditions.values.each { |ocond|
 			cmdline += " | grep -e '#{ocond}'"
 		}
-		cmdline += " | sed -e '1,$s|\\(.*\\)/[0-9]\\+/\\?$|\\1|' | sort | uniq"
+		cmdline += " | sed -e 's#[0-9]\\+/$##' | sort | uniq"
 		IO.popen(cmdline) { |io|
 			io.each_line { |_rtp|
 				_rtp = _rtp.strip
