@@ -41,7 +41,7 @@ module Git
 		def init(options = {})
 			options[:project] ||= 'linux'
 
-			working_dir = ENV['SRC_ROOT'] || project_work_tree(options[:project])
+			working_dir = options[:working_dir] || ENV['SRC_ROOT'] || project_work_tree(options[:project])
 
 			Git.orig_init(working_dir, options)
 		end
@@ -53,7 +53,7 @@ module Git
 		def open(options = {})
 			assert(options[:project], "options[:project] can't be #{options[:project].inspect}")
 
-			working_dir = ENV['SRC_ROOT'] || project_work_tree(options[:project])
+			working_dir = options[:working_dir] || ENV['SRC_ROOT'] || project_work_tree(options[:project])
 
 			Git.orig_open(working_dir, options)
 		end
