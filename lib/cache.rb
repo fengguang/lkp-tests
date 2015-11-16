@@ -1,3 +1,7 @@
+LKP_SRC ||= ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
+
+require "#{LKP_SRC}/lib/error"
+
 module Cacheable
 	def self.included(mod)
 		class << mod; include ClassMethods;	end
@@ -30,7 +34,12 @@ module Cacheable
 			define_method(method_name) do |*args|
 				cache_key = kclass.cache_key(self, method_name, *args)
 
-				kclass.cache_store.fetch cache_key do
+				begin
+					kclass.cache_store.fetch cache_key do
+						self.send("#{method_name}_without_cache", *args)
+					end
+				rescue Exception => e
+					dump_exception e, binding
 					self.send("#{method_name}_without_cache", *args)
 				end
 			end
