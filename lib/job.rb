@@ -433,7 +433,7 @@ module LKP
 		end
 
 		class << self
-			def wait_for(jobs, timeout)
+			def wait_for(jobs, timeout, options = {})
 				if Hash === jobs
 					jobs = jobs.map do |_result_root, ids|
 						ids.map {|id| self.new _result_root, id}
@@ -442,16 +442,16 @@ module LKP
 
 				Timeout::timeout(timeout) {
 					start = Time.now
-					print "[#{start.strftime('%Y-%m-%d %H:%M:%S')}] wait for #{jobs.size} jobs "
+					print "[#{start.strftime('%Y-%m-%d %H:%M:%S')}] wait for #{jobs.size} jobs " if options[:verbose]
 
 					while true
-						print "x"
+						print "x" if options[:verbose]
 						sleep 60
 
 						break if jobs.all?(&:completed?)
 					end
 
-					puts " [#{(Time.now - start) / 60}m]"
+					puts " [#{(Time.now - start) / 60}m]" if options[:verbose]
 				}
 
 				jobs
