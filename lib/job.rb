@@ -367,3 +367,96 @@ class << Job
 		j.load(jobfile) && j
 	end
 end
+
+module LKP
+	class QueuedJob
+		attr_reader :id
+		def initialize(_result_root, id)
+			@_result_root = _result_root
+			@id = id
+		end
+
+		def completion
+			return @completion if @completion
+
+			completions = @_result_root + '/completions'
+
+			if File.exist? completions
+				@completion = File.readlines(completions).find {|completion| completion.index @id}
+			end
+		end
+
+		def stage
+			@stage || @stage = self.completion.split(@id).last.split(' ')[1] if self.completed?
+		end
+
+		def result_root
+			@result_root ||= if self.completed?
+				# "unite" is "unite failed"
+				if ["united", "bad", "unite"].include? self.stage
+					self.completion.split(@id).last.split(' ')[0]
+				elsif self.stage == "skipped"
+					File.join(@_result_root, "0")
+				end
+			end
+		end
+
+		def status
+			if self.completed?
+				status = (File.exist?(File.join(self.result_root, "last_state")) ||
+				          !["skipped", "united"].include?(self.stage) ||
+#				          !File.exist?(File.join(self.result_root, "#{self['testcase']}.success"))
+				          File.exist?(File.join(self.result_root, "#{self['testcase']}.fail"))
+				         ) ? "FAIL" : "PASS"
+				"#{status} (#{self.stage})"
+			else
+				"NOT COMPLETED"
+			end
+		end
+
+		def completed?
+			self.completion != nil
+		end
+
+		def pass?
+			self.status.index "PASS"
+		end
+
+		def [](key)
+			self.contents[key] if self.contents
+		end
+
+		def contents
+			@contents ||= if self.completed? && File.exist?(File.join(self.result_root, "job.yaml"))
+				YAML.load_file File.join(self.result_root, "job.yaml")
+			end
+		end
+
+		class << self
+			def wait_for(jobs, timeout)
+				if Hash === jobs
+					jobs = jobs.map do |_result_root, ids|
+						ids.map {|id| self.new _result_root, id}
+					end.flatten
+				end
+
+				Timeout::timeout(timeout) {
+					start = Time.now
+					print "[#{start.strftime('%Y-%m-%d %H:%M:%S')}] wait for #{jobs.size} jobs "
+
+					while true
+						print "x"
+						sleep 60
+
+						break if jobs.all?(&:completed?)
+					end
+
+					puts " [#{(Time.now - start) / 60}m]"
+				}
+
+				jobs
+			end
+		end
+	end
+end
+
