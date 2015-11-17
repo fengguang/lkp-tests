@@ -2,6 +2,11 @@ url: https://git.kernel.org/pub/scm/linux/kernel/git/sage/ceph-client.git
 mirrors:
 - https://github.com/ceph/ceph-client.git
 mail_to: ceph-devel@vger.kernel.org
-owner: Ilya Dryomov <idryomov@gmail.com>
+git_am_branch: for-linus
+owner:
+- Ilya Dryomov <idryomov@gmail.com>
+- Yan Zheng <zyan@redhat.com>
+- Sage Weil <sage@redhat.com>
 subsystems:
+- ceph
 - libceph
