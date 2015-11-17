@@ -47,4 +47,4 @@ into an executable shell script. Here is a conceptual demo.
 	  test_script:                             $LKP_SRC/tests/test_script
 ```
 ## job allocation
-This page (README-job-allocation.html) talks about job allocation
+[This page](README-job-allocation.html) talks about job allocation.

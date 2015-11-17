@@ -18,7 +18,7 @@ project.
 
 ### Copyright
 
-Refer to [COPYING](COYPING.html).
+Refer to [COPYING](COPYING.html).
 
 
 ### Disclaimer
