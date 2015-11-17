@@ -1,0 +1,7 @@
+model: Ivy Bridge
+nr_cpu: 4
+memory: 8G
+nr_hdd_partitions: 1
+hdd_partitions: /dev/disk/by-id/ata-ST1000DM003-1CH162_Z1DBQSB0-part1
+swap_partitions: /dev/disk/by-id/ata-ST1000DM003-1CH162_Z1DBQSB0-part3
+rootfs_partition: /dev/disk/by-id/ata-ST1000DM003-1CH162_Z1DBQSB0-part4
