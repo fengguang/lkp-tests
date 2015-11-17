@@ -1,7 +1,10 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/jejb/scsi.git
 integration_testing_branches: for-next
 mail_to: linux-scsi@vger.kernel.org
-owner: James Bottomley <JBottomley@Odin.com>
+owner:
+- James Bottomley <JBottomley@Odin.com>
+- James E. J. Bottomley <JBottomley@odin.com>
+- James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
 subsystems:
 - qla2xxx
 - hpsa
