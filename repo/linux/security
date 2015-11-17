@@ -3,6 +3,7 @@ integration_testing_branches: next
 mail_to: linux-security-module@vger.kernel.org
 owner: James Morris <james.l.morris@oracle.com>
 subsystems:
+- security
 - smack
 - tomoyo
 - policy
