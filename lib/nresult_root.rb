@@ -127,7 +127,7 @@ class MResultRootTableSet
 		 'reaim', 'sdf', 'siege', 'sockperf', 'speccpu', 'specjbb2013',
 		 'specjbb2015', 'specpower', 'stutter', 'sunspider', 'tbench', 'tcrypt',
 		 'thrulay', 'tlbflush', 'unixbench', 'vm-scalability', 'will-it-scale',
-		 'xfstests']
+		 'xfstests', 'swap']
 	LINUX_TESTCASES =
 		['boot', 'audio', 'cpu-hotplug', 'ext4-frags', 'ftq', 'ftrace_onoff', 'fwq',
 		 'galileo', 'irda-kernel', 'kernel_selftests', 'kvm-unit-tests',
@@ -135,9 +135,8 @@ class MResultRootTableSet
 		 'qemu', 'rcutorture', 'suspend', 'trinity']
 	OTHER_TESTCASES =
 		['0day-boot-tests', '0day-kbuild-tests', 'android-kpi', 'build-dpdk',
-		 'build-android', 'build-gerrit_change', 'build-gmin',
-		 'convert-lkpdoc-to-html', 'convert-lkpdoc-to-html-css', 'dpdk-build-test',
-		 'gmin-kpi', 'health-stats', 'hwinfo', 'internal-lkp-service', 'ipmi-setup',
+		 'build-android', 'convert-lkpdoc-to-html', 'convert-lkpdoc-to-html-css',
+		 'health-stats', 'hwinfo', 'internal-lkp-service', 'ipmi-setup',
 		 'lkp-bug', 'lkp-install-run', 'lkp-services', 'lkp-src', 'pack',
 		 'pack-deps']
 
