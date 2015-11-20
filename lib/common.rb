@@ -220,3 +220,7 @@ def with_flock(lock_file)
 		yield
 	}
 end
+
+def delete_file_if_exist(file)
+	File.exist?(file) and File.delete(file)
+end
