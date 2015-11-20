@@ -8,12 +8,43 @@ require "#{LKP_SRC}/lib/job.rb"
 require "#{LKP_SRC}/lib/result.rb"
 require "#{LKP_SRC}/lib/data_store.rb"
 
-# Common Multiple Result Root
-#   to share code betwen original MResultRoot and NMResultRoot
-module CMResultRoot
+# Common Result Root
+# to share code between original ResultRoot and NResultRoot
+class CResultRoot
 	# TODO: remove .dmesg after we convert all .dmesg to dmesg
-	DMESG_FILE_GLOBS = ['dmesg.xz', 'dmesg', '.dmesg', 'kmsg.xz', 'kmsg']
-	DMESG_GLOBS = DMESG_FILE_GLOBS.map { |g| "[0-9]*/#{g}" }
+	DMESG_FILES = ['dmesg.xz', 'dmesg', '.dmesg', 'kmsg.xz', 'kmsg']
+	DMESG_JSON_FILE = 'dmesg.json'
+
+	include DirObject
+
+	def initialize(path)
+		@path = path
+		@path.freeze
+	end
+
+	def dmesg_json_file
+		fn = path(DMESG_JSON_FILE)
+		fn if File.exist?(fn)
+	end
+
+	def dmesg_json
+		fn = dmesg_json_file
+		load_json(fn) if fn
+	end
+
+	def dmesg_file
+		DMESG_FILES.each { |fn|
+			ffn = path fn
+			return ffn if File.exist? ffn
+		}
+		nil
+	end
+end
+
+# Common Multiple Result Root
+#   to share code between original MResultRoot and NMResultRoot
+module CMResultRoot
+	DMESG_GLOBS = CResultRoot::DMESG_FILES.map { |g| "[0-9]*/#{g}" }
 	DMESG_JSON_GLOB = '[0-9]*/dmesg.json'
 	JOB_GLOB = '[0-9]*/job.yaml'
 	JOB_FILE1 = 'job.yaml'
@@ -47,6 +78,12 @@ module CMResultRoot
 		reproduce_files[0] unless reproduce_files.empty?
 	end
 
+	def result_root_paths
+		glob(JOB_GLOB).map { |jfn|
+			File.dirname jfn
+		}
+	end
+
 	def complete_matrix(m = nil)
 		m ||= matrix
 		if m['last_state.is_incomplete_run']
@@ -72,8 +109,17 @@ module CMResultRoot
 	}
 end
 
+class NResultRoot < CResultRoot
+end
+
 class NMResultRoot < DataStore::Node
 	include CMResultRoot
+
+	def result_roots
+		result_root_paths.map { |p|
+			NResultRoot.new p
+		}
+	end
 end
 
 class MResultRootTable < DataStore::Table

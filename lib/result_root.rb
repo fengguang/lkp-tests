@@ -17,10 +17,10 @@ def rt_create_time_from_job(job)
 	end
 end
 
-class ResultRoot
+class ResultRoot < CResultRoot
 	JOB_FILE = 'job.yaml'
 
-	include DirObject
+	include Property
 	prop_reader :axes
 
 	private
@@ -195,6 +195,12 @@ class MResultRoot
 		rp[rp.commit_axis] = commit
 		_rtp = rp._result_root
 		MResultRoot.new _rtp if File.exists? _rtp
+	end
+
+	def result_roots
+		result_root_paths.map { |p|
+			ResultRoot.new p
+		}
 	end
 
 	def collection
