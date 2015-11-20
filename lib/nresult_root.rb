@@ -17,6 +17,7 @@ module CMResultRoot
 	DMESG_JSON_GLOB = '[0-9]*/dmesg.json'
 	JOB_GLOB = '[0-9]*/job.yaml'
 	JOB_FILE1 = 'job.yaml'
+	REPRODUCE_GLOB = '[0-9]*/reproduce.sh'
 
 	def dmesgs
 		DMESG_GLOBS.each { |g|
@@ -39,6 +40,11 @@ module CMResultRoot
 
 	def job
 		Job.open job_file
+	end
+
+	def reproduce_file
+		reproduce_files = glob(REPRODUCE_GLOB)
+		reproduce_files[0] unless reproduce_files.empty?
 	end
 
 	def complete_matrix(m = nil)
