@@ -4,9 +4,10 @@
 ## Regression test suite for xfs and other filesystems.
 
 . $LKP_SRC/lib/job.sh
+. $LKP_SRC/lib/debug.sh
 
-[ "$nr_partitions" -lt 2 ] && exit 1
-cd $BENCHMARK_ROOT/xfstests || exit
+[ "$nr_partitions" -lt 2 ] && die "$nr_partitions -lt 2"
+cd $BENCHMARK_ROOT/xfstests || die "fail to cd $BENCHMARK_ROOT/xfstests"
 
 set_env()
 {
@@ -61,7 +62,7 @@ run_test()
 		all_tests=$(cd tests && ls $test/[0-9][0-9][0-9] | grep -v -F -f broken)
 	fi
 
-	cmd ./check $all_tests || exit
+	cmd ./check $all_tests
 }
 
 export LC_ALL=C
@@ -69,5 +70,7 @@ export LANG=C
 read_env_vars
 set_env
 run_test
+exit_value=$?
 
 copy-results $BENCHMARK_ROOT/xfstests/results/*
+exit $exit_value
