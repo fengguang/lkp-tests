@@ -3,6 +3,7 @@
 LKP_SRC ||= ENV['LKP_SRC']
 
 require "#{LKP_SRC}/lib/common.rb"
+require "#{LKP_SRC}/lib/error"
 require 'fileutils'
 require 'yaml'
 require 'json'
@@ -13,8 +14,7 @@ end
 
 def load_yaml(file)
 	begin
-		obj = YAML.load_file file
-		return obj
+		return YAML.load_file file
 	rescue SignalException
 		raise
 	rescue Exception => e
@@ -29,13 +29,11 @@ def load_yaml(file)
 				FileUtils.mv file, bad_file
 			end
 		else
-			$stderr.puts "YAML file does not exist: #{file}"
-			$stderr.puts "#{file}: " + e.message
-			$stderr.puts e.backtrace.join("\n")
+			dump_exception e, binding
 		end
+
 		raise
 	end
-	return nil
 end
 
 def load_yaml_merge(files)
