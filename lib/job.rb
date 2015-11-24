@@ -134,7 +134,7 @@ end
 
 class Job
 
-	EXPAND_DIMS = %w(kconfig commit rootfs boot_params)
+	EXPAND_DIMS = %w(kconfig commit rootfs)
 
 	attr_reader :path_scheme
 
@@ -190,7 +190,6 @@ class Job
 
 	def init_program_options
 		@program_options = {
-			'boot_params' => '-',
 			'cluster' => '-',
 		}
 		for_each_in(@job, $programs) { |h, k, v|

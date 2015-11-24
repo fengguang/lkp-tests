@@ -4,5 +4,6 @@ memory: 16G
 hdd_partitions: 
 swap_partitions: 
 rootfs_partition: 
-boot_params: disable_mtrr_trim
+boot_params:
+  bp_disable_mtrr_trim:
 netconsole_port: 6646
