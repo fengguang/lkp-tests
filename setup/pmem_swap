@@ -1,0 +1,12 @@
+#!/bin/sh
+
+cat /sys/block/pmem*/size >/dev/null 2>&1 || {
+	echo "No pmem device"
+	exit 1
+}
+
+pmem_size=$(cat /sys/block/pmem*/size | sort -nr | head -1)
+pmem_device=$(grep -l -e $pmem_size /sys/block/pmem*/size | awk -F'/' '{print "/dev/"$4}')
+swapoff -a
+mkswap $pmem_device
+swapon $pmem_device
