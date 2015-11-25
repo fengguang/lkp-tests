@@ -1,6 +1,10 @@
 testcase: unixbench
 category: benchmark
 
+nr_task:
+  - 1
+  - 100%
+
 unixbench:
   test:
   - whetstone-double
