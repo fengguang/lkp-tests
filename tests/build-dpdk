@@ -44,16 +44,16 @@ check_mount dpdk-src $DPDK_REPO_ROOT -t tmpfs
 check_mount dpdk-obj $DPDK_OBJ -t tmpfs
 check_mount kernel-src $RTE_KERNELDIR -t tmpfs
 
-cmd git_clone_update git://gitmirror/$remote $RTE_KERNELDIR || die "failed clone kernel tree $remote"
-cmd cd $RTE_KERNELDIR
+git_clone_update git://gitmirror/$remote $RTE_KERNELDIR || die "failed clone kernel tree $remote"
+cd $RTE_KERNELDIR
 git checkout -q $commit || die "failed to checkout kernel commit $_commit"
 make_config allmodconfig || die "make allmodconfig failed"
 cmd make prepare || die "make prepare failed"
 cmd make scripts/ || die "make scripts/ failed"
 
 rm -fr "$DPDK_REPO_ROOT" 2>/dev/null
-cmd git_clone_update git://gitmirror/$dpdk_remote $DPDK_REPO_ROOT || die "failed clone dpdk tree $dpdk_remote"
-cmd cd $DPDK_REPO_ROOT
+git_clone_update git://gitmirror/$dpdk_remote $DPDK_REPO_ROOT || die "failed clone dpdk tree $dpdk_remote"
+cd $DPDK_REPO_ROOT
 cmd git checkout -q $dpdk_commit || die "failed to checkout dpdk commit $dpdk_commit"
 
 cd $DPDK_REPO_ROOT
