@@ -10,6 +10,8 @@ cd $BENCHMARK_ROOT/unixbench || exit
 
 export LANG=C
 
-cmd ./Run $test || exit
+[ -n "$nr_task" ] && other_params="-c $nr_task"
+
+cmd ./Run $test $other_params || exit
 
 copy-results $BENCHMARK_ROOT/unixbench/results/*
