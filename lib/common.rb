@@ -183,6 +183,10 @@ def redirect_to_string(&b)
 	}
 end
 
+def monitor_file(file)
+	system "tail", "-f", file
+end
+
 ## Date and time
 
 ONE_DAY = 60 * 60 * 24
