@@ -183,8 +183,8 @@ def redirect_to_string(&b)
 	}
 end
 
-def monitor_file(file)
-	system "tail", "-f", file
+def monitor_file(file, history = 10)
+	system "tail", "-f", "-n", history.to_s, file
 end
 
 ## Date and time
