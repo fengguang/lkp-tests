@@ -398,6 +398,8 @@ module LKP
 					File.join(@_result_root, "0")
 				end
 			end
+
+			@result_root || "#{@_result_root} => #{@id}"
 		end
 
 		def status
@@ -407,6 +409,7 @@ module LKP
 #				          !File.exist?(File.join(self.result_root, "#{self['testcase']}.success"))
 				          File.exist?(File.join(self.result_root, "#{self['testcase']}.fail"))
 				         ) ? "FAIL" : "PASS"
+				status = "PASS" if File.exist?(File.join(self.result_root, "#{self['testcase']}.success"))
 				"#{status} (#{self.stage})"
 			else
 				"NOT COMPLETED"
