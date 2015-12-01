@@ -252,6 +252,8 @@ __next_job()
 
 next_job()
 {
+	LKP_USER=${pxe_user:-lkp}
+
 	__next_job || {
 		local secs=300
 		while true; do
