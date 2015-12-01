@@ -586,7 +586,9 @@ module Compare
 	## Helper functions
 
 	def self.commits_comparer(commits, params = nil)
-		_result_roots = commits.map { |c| MResultRootCollection.new('commit' => c).to_a }.flatten
+		_result_roots = commits.map { |c|
+			MResultRootCollection.new('commit' => c.to_s).to_a
+		}.flatten
 		compare_axis_keys = ['commit']
 		comparer = Comparer.new
 		comparer.set_mresult_roots _result_roots
@@ -600,7 +602,9 @@ module Compare
 	end
 
 	def self.ncommits_comparer(commits, params = nil)
-		_rts = commits.map { |c| NMResultRootCollection.new('commit' => c).to_a}.flatten
+		_rts = commits.map { |c|
+			NMResultRootCollection.new('commit' => c.to_s).to_a
+		}.flatten
 		compare_axis_keys = ['commit']
 		comparer = Comparer.new
 		comparer.set_mresult_roots _rts
