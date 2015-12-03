@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pre_download()
+download()
 {
 	git_clone_update git://github.com/waffle-gl/waffle
 	git_clone_update git://anongit.freedesktop.org/piglit
@@ -33,7 +33,7 @@ build()
 
 create_config()
 {
-	cat > piglit.conf <<-EOF
+	cat > /lkp/benchmarks/piglit/piglit.conf <<-EOF
 	[igt]
 	path=$BM_ROOT/lib/piglit/bin/igt
 	EOF
@@ -93,9 +93,11 @@ pack()
 		find /lkp/benchmarks/$BM_NAME
 		echo /usr/lib/x86_64-linux-gnu/libwaffle-1.so
 		echo /usr/lib/x86_64-linux-gnu/libwaffle-1.so.0
-		echo /usr/lib/x86_64-linux-gnu/libwaffle-1.so.0.3.0
+		echo /usr/lib/x86_64-linux-gnu/libwaffle-1.so.0.*
 	} |
-	cpio -o -H newc | gzip -n -9 > /tmp/${BM_NAME}.cgz
+	cpio -o -H newc | gzip -n -9 > /lkp/benchmarks/${BM_NAME}.cgz
+	[[ $arch ]] && mv "/lkp/benchmarks/${BM_NAME}.cgz" "/lkp/benchmarks/${BM_NAME}-${arch}.cgz"
+
 }
 
 post_cleanup()
