@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. $LKP_SRC/lib/env.sh
+
 download()
 {
 	git_clone_update git://github.com/waffle-gl/waffle
@@ -12,23 +14,25 @@ build()
 	# apt-get build-dep intel-gpu-tools
 	# apt-get install libglu1-mesa-dev python3-dev
 
+	local ncpu=$(nproc)
+
 	cd /tmp/waffle
 	cmake	-Dwaffle_has_glx=1	\
 		-Dwaffle_has_x11_egl=1	\
 		-Dwaffle_has_wayland=1	\
 		-Dwaffle_has_gbm=1	\
 		-DCMAKE_INSTALL_PREFIX=/usr
-	make
-	make install
+	make -j $ncpu
+	make install -j $ncpu
 
 	cd ../$BM_NAME
 	cmake -DCMAKE_INSTALL_PREFIX=$BM_ROOT
-	make
-	make install
+	make -j $ncpu
+	make install -j $ncpu
 
 	cd ../intel-gpu-tools
 	./autogen.sh
-	make
+	make -j $ncpu
 }
 
 create_config()
