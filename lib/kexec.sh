@@ -76,7 +76,7 @@ kexec_to_next_job()
 		# expecting the system to run "kexec -e" in some rc6.d/* script
 		echo "LKP: rebooting"
 		echo "LKP: rebooting" > /dev/ttyS0 &
-		reboot 2>/dev/null
+		kexec -e 2>/dev/null
 		sleep 100 || exit	# exit if reboot kills sleep as expected
 	fi
 
