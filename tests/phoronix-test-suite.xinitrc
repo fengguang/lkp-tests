@@ -26,7 +26,11 @@ esac
 ## 2)the benchmarks are stored under directory /var/lib/phoronix-test-suite/installed-tests/ in 5.8.1 version.
 ##
 ## This will result in the newer version of "pts" will can't use the old benchmark which be located in /root.phoronix-test-suite/ directory.
-## To avoid do too many modifies and download a large amount of benchmarks, we create a symlink to link /root/.phoronix-test-suite/installed-tests## in /var/lib/phoronix-test-suite/ directory, thus the new version of "pts" could continue to use the old benchmarks, and it can work normally. 
+## To avoid do too many modifies and download a large amount of benchmarks, we need to create the below softlink:
+##
+## ln -sf /var/lib/phoronix-test-suite  /root/.phoronix-test-suite
+##
+## Thus the new version of "pts" could continue to use the old benchmarks, and it can work normally. 
 
 export PTS_SILENT_MODE=1
 echo PTS_SILENT_MODE=$PTS_SILENT_MODE
