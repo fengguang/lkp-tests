@@ -38,7 +38,7 @@ module Cacheable
 					kclass.cache_store.fetch cache_key do
 						self.send("#{method_name}_without_cache", *args)
 					end
-				rescue Exception => e
+				rescue StandardError => e
 					dump_exception e, binding
 					self.send("#{method_name}_without_cache", *args)
 				end

@@ -541,7 +541,7 @@ def load_matrices_to_compare(matrix_path1, matrix_path2, options = {})
 		else
 			b = load_base_matrix matrix_path1, a, options
 		end
-	rescue Exception => e
+	rescue StandardError => e
 		dump_exception(e, binding)
 		return [nil, nil]
 	end

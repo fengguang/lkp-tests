@@ -17,7 +17,7 @@ def load_yaml(file)
 		return YAML.load_file file
 	rescue SignalException
 		raise
-	rescue Exception => e
+	rescue StandardError => e
 		if File.exist? file
 			if File.size(file) == 0
 				puts "YAML file is empty: #{file}"
