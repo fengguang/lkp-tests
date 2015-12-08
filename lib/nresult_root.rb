@@ -282,9 +282,13 @@ class NMResultRootCollection
 			@conditions[k] = v.to_s
 		}
 		@date = nil
+		@exact = false
 	end
 
 	include Enumerable
+	include Property
+
+	prop_accessor :exact
 
 	def set(key, value)
 		@conditions[key] = value.to_s
@@ -305,7 +309,7 @@ class NMResultRootCollection
 
 		table_each = ->tbl{
 			col = DataStore::Collection.new tbl, @conditions
-			col.set_date @date
+			col.set_date(@date).set_exact(@exact)
 			col.each(&b)
 		}
 
