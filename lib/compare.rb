@@ -219,7 +219,10 @@ module Compare
 			changed_stat_keys = []
 			mfile0 = @mresult_roots[0].matrix_file
 			@mresult_roots.drop(1).each { |_rt|
-				changed_stat_keys |= get_changed_stats(_rt.matrix_file, mfile0).keys
+				changes = get_changed_stats(_rt.matrix_file, mfile0)
+				if changes
+					changed_stat_keys |= changes.keys
+				end
 			}
 			changed_stat_keys
 		end
