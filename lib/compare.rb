@@ -93,7 +93,7 @@ module Compare
 							:use_testcase_stat_keys,
 							:include_stat_keys, :include_all_failure_stat_keys,
 							:filter_stat_keys, :filter_testcase_stat_keys,
-							:group_by_stat, :show_empty_group
+							:group_by_stat, :show_empty_group, :compact_show
 
 		private
 
@@ -556,6 +556,11 @@ module Compare
 		puts
 	end
 
+	def self.compact_show_group_header(group)
+		common_axes = group.axes
+		puts common_axes.map { |k, v| "#{k}=#{v}" }.join("/")
+	end
+
 	def self.show_perf_header(n = 1)
 		# (ABS_WIDTH + ERR_WIDTH)   (2 + REL_WIDTH + ABS_WIDTH + ERR_WIDTH)
 		#      |<-------------->|   |<--------------------------->|
@@ -569,17 +574,23 @@ module Compare
 	end
 
 	def self.show_group(group, stat_enum)
+		compact_show = group.comparer.compact_show
+
 		failure, perf = stat_enum.partition { |stat| stat[FAILURE] }
 
 		if failure.empty? && perf.empty? && !group.comparer.show_empty_group
 			return
 		end
 
-		show_group_header group
+		if compact_show
+			compact_show_group_header group
+		else
+			show_group_header group
+		end
 		nr_header = group.mresult_roots.size - 1
 
 		unless failure.empty?
-			show_failure_header(nr_header)
+			show_failure_header(nr_header) unless compact_show
 			failure.each { |stat|
 				show_failure_change stat
 				show_stat stat
@@ -587,7 +598,7 @@ module Compare
 		end
 
 		unless perf.empty?
-			show_perf_header(nr_header)
+			show_perf_header(nr_header) unless compact_show
 			perf.each { |stat|
 				show_perf_change stat
 				show_stat stat
@@ -674,7 +685,8 @@ module Compare
 		comparer = Comparer.new
 		comparer.set_mresult_roots(_rts).
 			set_compare_axis_keys(compare_axis_keys).
-			set_filter_testcase_stat_keys(true)
+			set_filter_testcase_stat_keys(true).
+			set_compact_show(true)
 	end
 
 	def self.perf_compare(commits)
