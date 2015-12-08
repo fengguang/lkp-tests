@@ -89,9 +89,11 @@ module Compare
 		# following properties are parameters for compare
 		prop_reader :stat_calc_funcs
 		prop_with :mresult_roots, :compare_axis_keys,
-			  :use_all_stat_keys, :include_stat_keys,
-			  :include_all_failure_stat_keys, :use_stat_keys,
-			  :group_by_stat
+							:use_all_stat_keys, :use_stat_keys,
+							:use_testcase_stat_keys,
+							:include_stat_keys, :include_all_failure_stat_keys,
+							:filter_stat_keys, :filter_testcase_stat_keys,
+							:group_by_stat
 
 		private
 
@@ -221,14 +223,23 @@ module Compare
 			changed_stat_keys
 		end
 
+		def do_filter_stat_keys(stats, filters)
+			filters.map { |sre|
+				re = Regexp.new(sre)
+				stats.select { |stat_key| re.match stat_key }
+			}.flatten
+		end
+
 		def get_include_stat_keys
 			stat_key_res = @comparer.include_stat_keys
 			return [] unless stat_key_res
-			astats = get_all_stat_keys
-			stat_key_res.map { |sre|
-				re = Regexp.new(sre)
-				astats.select { |stat_key| re.match stat_key }
-			}.flatten
+			do_filter_stat_keys get_all_stat_keys, stat_key_res
+		end
+
+		def filter_stat_keys(stats)
+			filters = @comparer.filter_stat_keys
+			return stats unless filters && !filter.empty?
+			do_filter_stat_keys stats, filters
 		end
 
 		def get_include_all_failure_stat_keys
@@ -236,16 +247,45 @@ module Compare
 			get_all_stat_keys.select { |stat_key| is_failure stat_key }
 		end
 
+		def do_filter_testcase_stat_keys(stats)
+			testcase = axes[TESTCASE_AXIS_KEY]
+			if testcase
+				testcase_time = "#{testcase}.time."
+				stats.select { |k|
+					k.start_with?(testcase) &&
+						!k.start_with?(testcase_time)
+				}
+			else
+				[]
+			end
+		end
+
+		def get_testcase_stat_keys
+			do_filter_testcase_stat_keys get_all_stat_keys
+		end
+
+		def filter_testcase_stat_keys(stats)
+			do_filter_testcase_stat_keys stats
+		end
+
 		def calc_changed_stat_keys
 			if @comparer.use_all_stat_keys
 				stat_keys = get_all_stat_keys
 			elsif @comparer.use_stat_keys
 				stat_keys = @comparer.use_stat_keys
+			elsif @comparer.use_testcase_stat_keys
+				stat_keys = get_testcase_stat_keys
 			else
 				stat_keys = _calc_changed_stat_keys
 			end
 			stat_keys |= get_include_stat_keys
 			stat_keys |= get_include_all_failure_stat_keys
+			stat_keys = filter_stat_keys stat_keys
+			if @comparer.filter_testcase_stat_keys
+				stat_keys = filter_testcase_stat_keys stat_keys
+			else
+				stat_keys
+			end
 		end
 
 		def changed_stat_keys
