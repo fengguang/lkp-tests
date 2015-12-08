@@ -54,17 +54,26 @@ remove_from_mrtts()
 	done
 }
 
+revert_unite_rt()
+{
+	local path
+	for path; do
+		is_rt $path && check_rt $path &&
+			lkp reprocess -d $path
+	done
+	for path; do
+		while is_rt $path && check_rt $path; do
+			sleep 10
+		done
+	done
+}
+
 echo "The command to remove the result path are:"
 remove "$@"
 echo -n "!!! Do you really want to do that? [No/yes]: "
 read answer
 if [[ $answer = "yes" ]]; then
-	if is_rt $path && check_rt $path; then
-		lkp reprocess -d $path
-		while check_rt $path; do
-			sleep 10
-		done
-	fi
+	revert_unite_rt "$@"
 	remove_from_mrtts "$@"
 	remove "$@" | bash
 fi
