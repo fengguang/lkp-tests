@@ -8,6 +8,8 @@ fs:
 
 xfstests:
   test:
+## "not-run" and "output-mismatch" testcase will be remove later, 
+##  now we distinguish them in order to convenient to test and fix them.
   - xfs-042
   - xfs-167
   - xfs-227
@@ -15,3 +17,5 @@ xfstests:
   - xfs-mid1
   - xfs-mid2
   - xfs-quick
+# - xfs-not-run
+# - xfs-out-mismacth
