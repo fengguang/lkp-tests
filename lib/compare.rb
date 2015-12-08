@@ -93,7 +93,8 @@ module Compare
 							:use_testcase_stat_keys,
 							:include_stat_keys, :include_all_failure_stat_keys,
 							:filter_stat_keys, :filter_testcase_stat_keys,
-							:group_by_stat, :show_empty_group, :compact_show
+							:group_by_stat, :show_empty_group, :compact_show,
+							:sort_by_group
 
 		private
 
@@ -166,6 +167,9 @@ module Compare
 		# - show compare result: show_compare_result
 		def compare
 			result = do_compare
+			if sort_by_group
+				result = Compare.sort_group result
+			end
 			show_compare_result result
 		end
 	end
@@ -461,6 +465,14 @@ module Compare
 
 	## Compare result renderer
 
+	def self.sort_group(compare_result)
+		compare_result.sort_by! { |gd|
+			-(gd.stat_enum.map { |s|
+					s[CHANGES].map { |c| c.abs }.max || 0
+				}.max || 0)
+		}
+	end
+
 	def self.sort_stats(stat_enum)
 		stats = stat_enum.to_a
 		stat_base_map = {}
@@ -694,6 +706,7 @@ module Compare
 		comparer.set_mresult_roots(_rts).
 			set_compare_axis_keys(compare_axis_keys).
 			set_filter_testcase_stat_keys(true).
+			set_sort_by_group(true).
 			set_compact_show(true)
 	end
 
