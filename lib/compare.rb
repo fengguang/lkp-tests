@@ -189,25 +189,24 @@ module Compare
 		public
 
 		def matrixes
-			@matrixes ||= mresult_roots.map { |_rt| _rt.matrix.freeze }
+			mresult_roots.map { |_rt| _rt.matrix.freeze }
 		end
 
-		def complete_matrixes
-			unless @complete_matrixes
-				cms = mresult_roots.zip(matrixes).map { |_rt, m|
-					_rt.complete_matrix m
-				}
-				@complete_matrixes = cms
-			end
-			@complete_matrixes
+		def complete_matrixes(ms = nil)
+			ms ||= matrixes
+			mresult_roots.zip(ms).map { |_rt, m|
+				_rt.complete_matrix m
+			}
 		end
 
-		def runs
-			matrixes.map { |m| matrix_cols m }
+		def runs(ms = nil)
+			ms ||= matrixes
+			ms.map { |m| matrix_cols m }
 		end
 
-		def complete_runs
-			complete_matrixes.map { |m| matrix_cols m }
+		def complete_runs(cms = nil)
+			cms ||= complete_matrixes
+			cms.map { |m| matrix_cols m }
 		end
 
 		def get_all_stat_keys
@@ -305,10 +304,10 @@ module Compare
 
 			calc_funcs = @comparer.stat_calc_funcs
 			ms = matrixes
-			cms = complete_matrixes
-			aruns = runs
-			cruns = complete_runs
-			changed_stat_keys.each { |stat_key|
+			cms = complete_matrixes ms
+			aruns = runs ms
+			cruns = complete_runs cms
+			changed_stat_keys.each {| stat_key|
 				failure = is_failure stat_key
 				tms = failure ? ms : cms
 				truns = failure ? aruns : cruns
