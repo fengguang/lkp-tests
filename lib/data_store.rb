@@ -681,6 +681,7 @@ module DataStore
 
 	class Collection
 		include Enumerable
+		include Property
 
 		def initialize(table, conditions = {})
 			@table = table
@@ -689,7 +690,10 @@ module DataStore
 				@conditions[k] = v.to_s
 			}
 			@date = nil
+			@exact = false
 		end
+
+		prop_accessor :exact
 
 		def set(key, value)
 			@conditions[key] = value.to_s
@@ -711,7 +715,10 @@ module DataStore
 
 			index = @table.find_best_index @conditions
 			index.each(@conditions, @date) { |axes_str|
-				yield @table.open_node_from_axes_str(axes_str)
+				node = @table.open_node_from_axes_str(axes_str)
+				if !@exact || node.axes == @conditions
+					yield node
+				end
 			}
 		end
 
