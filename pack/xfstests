@@ -6,6 +6,15 @@ download()
 	source_dir=$BM_NAME
 }
 
+build()
+{
+    cd /tmp/xfstests
+    patch_source
+    ## Currently, ./configure file can't work with "--prefix" option correctly,
+    ## so we just use the "make" command to generate the execuable file.
+    make
+}
+
 install()
 {
 	cp -af /tmp/$BM_NAME/* $BM_ROOT/
