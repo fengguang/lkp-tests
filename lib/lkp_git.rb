@@ -149,6 +149,16 @@ def expand_possible_commit(s)
 	return git.gcommit(s).sha
 end
 
+def linux_commit(c)
+	git = Git.open(project: 'linux')
+	git.gcommit(c)
+end
+
+def linux_commits(*commits)
+	git = Git.open(project: 'linux')
+	commits.map { |c| git.gcommit(c) }
+end
+
 def __git_committer_name(commit)
 	`#{GIT} log -n1 --pretty=format:'%cn' #{commit}`.chomp
 end
