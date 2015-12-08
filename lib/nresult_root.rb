@@ -127,7 +127,7 @@ class NMResultRoot < DataStore::Node
 
 	def goto_commit(commit)
 		c = collection
-		c.set('commit', commit)
+		c.set(COMMIT_AXIS_KEY, commit)
 		c.to_a.first
 	end
 end

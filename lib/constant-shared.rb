@@ -26,3 +26,4 @@ BOOT_TEST_CASE='boot'
 DMESG_BOOT_FAILURES_STAT_KEY='dmesg.boot_failures'
 
 TESTCASE_AXIS_KEY='testcase'
+COMMIT_AXIS_KEY='commit'

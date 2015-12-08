@@ -587,9 +587,9 @@ module Compare
 
 	def self.commits_comparer(commits, params = nil)
 		_result_roots = commits.map { |c|
-			MResultRootCollection.new('commit' => c.to_s).to_a
+			MResultRootCollection.new(COMMIT_AXIS_KEY => c.to_s).to_a
 		}.flatten
-		compare_axis_keys = ['commit']
+		compare_axis_keys = [COMMIT_AXIS_KEY]
 		comparer = Comparer.new
 		comparer.set_mresult_roots _result_roots
 		comparer.set_compare_axis_keys compare_axis_keys
@@ -603,9 +603,9 @@ module Compare
 
 	def self.ncommits_comparer(commits, params = nil)
 		_rts = commits.map { |c|
-			NMResultRootCollection.new('commit' => c.to_s).to_a
+			NMResultRootCollection.new(COMMIT_AXIS_KEY => c.to_s).to_a
 		}.flatten
-		compare_axis_keys = ['commit']
+		compare_axis_keys = [COMMIT_AXIS_KEY]
 		comparer = Comparer.new
 		comparer.set_mresult_roots _rts
 		comparer.set_compare_axis_keys compare_axis_keys
@@ -622,7 +622,7 @@ module Compare
 	def self.test_compare_commits
 		commits = ['f5c0a122800c301eecef93275b0c5d58bb4c15d9', '3a8b36f378060d20062a0918e99fae39ff077bf0']
 		comparer = commits_comparer commits
-		comparer.set_compare_axis_keys(['commit', 'rwmode']).
+		comparer.set_compare_axis_keys([COMMIT_AXIS_KEY, 'rwmode']).
 			set_use_all_stats(false).
 			set_group_by_stat(false)
 
@@ -640,7 +640,7 @@ module Compare
 		}
 		comparer = Comparer.new
 		comparer.set_mresult_roots(_rts).
-			set_compare_axis_keys(['commit']).
+			set_compare_axis_keys([COMMIT_AXIS_KEY]).
 			set_use_all_stats(false)
 		page {
 			comparer.compare
@@ -649,7 +649,7 @@ module Compare
 
 	def self.test_compare_aim7
 		_result_roots = MResultRootCollection.new(
-			'commit' => '39a8804455fb23f09157341d3ba7db6d7ae6ee76',
+			COMMIT_AXIS_KEY => '39a8804455fb23f09157341d3ba7db6d7ae6ee76',
 			'tbox_group' => 'grantley',
 			'test' => 'ram_copy',
 		).to_a
