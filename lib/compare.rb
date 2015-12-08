@@ -93,13 +93,14 @@ module Compare
 							:use_testcase_stat_keys,
 							:include_stat_keys, :include_all_failure_stat_keys,
 							:filter_stat_keys, :filter_testcase_stat_keys,
-							:group_by_stat
+							:group_by_stat, :show_empty_group
 
 		private
 
 		def initialize(params = nil)
 			set_params params
 			@stat_calc_funcs = [Compare.method(:calc_stat_change)]
+			@show_empty_group = false
 		end
 
 		public
@@ -170,7 +171,7 @@ module Compare
 	end
 
 	class Group
-		prop_reader :mresult_roots, :axes, :compare_axeses
+		prop_reader :mresult_roots, :axes, :compare_axeses, :comparer
 
 		private
 
@@ -565,9 +566,14 @@ module Compare
 	end
 
 	def self.show_group(group, stat_enum)
-		nr_header = group.mresult_roots.size - 1
 		failure, perf = stat_enum.partition { |stat| stat[FAILURE] }
+
+		if failure.empty? && perf.empty? && !group.comparer.show_empty_group
+			return
+		end
+
 		show_group_header group
+		nr_header = group.mresult_roots.size - 1
 
 		unless failure.empty?
 			show_failure_header(nr_header)
