@@ -27,3 +27,4 @@ DMESG_BOOT_FAILURES_STAT_KEY='dmesg.boot_failures'
 
 TESTCASE_AXIS_KEY='testcase'
 COMMIT_AXIS_KEY='commit'
+TBOX_GROUP_AXIS_KEY='tbox_group'

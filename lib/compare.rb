@@ -681,6 +681,14 @@ module Compare
 		_rts = commits.map { |c|
 			DataStore::Collection.new(mrt_table_set.linux_perf_table, 'commit' => c.to_s).to_a
 		}.flatten
+		_rts.select! { |_rt|
+			axes = _rt.axes
+			testcase = axes[TESTCASE_AXIS_KEY]
+			next false if testcase == 'xfstests' || testcase == 'autotest'
+			tbox = axes[TBOX_GROUP_AXIS_KEY]
+			next false if tbox.start_with? 'vm-'
+			true
+		}
 		compare_axis_keys = [COMMIT_AXIS_KEY]
 		comparer = Comparer.new
 		comparer.set_mresult_roots(_rts).
@@ -690,7 +698,7 @@ module Compare
 	end
 
 	def self.perf_compare(commits)
-		comparer = testcase_comparer commits
+		comparer = perf_comparer commits
 		comparer.compare
 	end
 
