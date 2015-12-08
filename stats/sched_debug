@@ -1,15 +1,38 @@
 #!/usr/bin/env ruby
 
+LKP_SRC ||= ENV['LKP_SRC']
+require "#{LKP_SRC}/lib/statistics"
+
+def statistics
+	if $sample
+		$sample.each { |k, v|
+			puts "#{k}.max: #{v.max}"
+			puts "#{k}.min: #{v.min}"
+			puts "#{k}.avg: #{v.average}"
+			puts "#{k}.stddev: #{v.standard_deviation}"
+		}
+	end
+end
+
 while line = STDIN.gets
 	case line
 	when /^time:/
+		statistics
 		puts line
 		$prefix = ""
+		$sample = {}
 	when /^Sched Debug Version:/
 		next
 	when /^\s*(\S+)\s*:\s+([0-9.-]+)/
 		next if $prefix.index ':/autogroup-'
-		puts "#{$prefix}#{$1}: #{$2}"
+		key = $prefix + $1
+		if $no && !$no.strip.empty?
+			puts "#{key}.#{$no}: #{$2}"
+			$sample[key] ||= []
+			$sample[key] << $2.to_f
+		else
+			puts "#{key}: #{$2}"
+		end
 	when /^runnable tasks:/
 		next
 		sub_names = STDIN.gets.split
@@ -24,6 +47,19 @@ while line = STDIN.gets
 	else
 		values = line.split
 		next unless values.size > 0
-		$prefix = values[0].tr(',', '')
+		prefix = values[0].tr(',', '')
+		case prefix
+		when /^(.*)#([0-9]+)$/
+			$prefix = $1
+			$no = $2
+		when /^(.*)\[([0-9]+)\](.*)$/
+			$prefix = $1 + $3
+			$no = $2
+		else
+			$prefix = prefix
+			$no = nil
+		end
 	end
 end
+
+statistics
