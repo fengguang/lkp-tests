@@ -48,8 +48,8 @@ git_clone_update git://gitmirror/$remote $RTE_KERNELDIR || die "failed clone ker
 cd $RTE_KERNELDIR
 git checkout -q $commit || die "failed to checkout kernel commit $_commit"
 make_config allmodconfig || die "make allmodconfig failed"
-cmd make prepare || die "make prepare failed"
-cmd make scripts/ || die "make scripts/ failed"
+make prepare || die "make prepare failed"
+make scripts/ || die "make scripts/ failed"
 
 rm -fr "$DPDK_REPO_ROOT" 2>/dev/null
 git_clone_update git://gitmirror/$dpdk_remote $DPDK_REPO_ROOT || die "failed clone dpdk tree $dpdk_remote"
@@ -62,7 +62,7 @@ config_file=$LKP_SRC/etc/dpdk-configs/$dpdk_config
 [ -f $config_file ] || config_file=$DPDK_REPO_ROOT/config/defconfig_$dpdk_config
 [ -f $config_file ] || die "invalid config file $config_file"
 
-cmd make O=$DPDK_OBJ T=$ARCH-native-linuxapp-$dpdk_compiler_name config || die "failed to make config"
+make O=$DPDK_OBJ T=$ARCH-native-linuxapp-$dpdk_compiler_name config || die "failed to make config"
 
 [[ $config_file =~ "$DPDK_REPO_ROOT/config" ]] ||
 merge_configs $config_file
@@ -71,7 +71,7 @@ grep -r -l 'Werror' $DPDK_REPO_ROOT | xargs sed -i 's/ -Werror//'
 
 cp $DPDK_OBJ/.config $RESULT_ROOT/dpdk_config
 
-cmd make O=$DPDK_OBJ DESTDIR=$RESULT_ROOT
+make O=$DPDK_OBJ DESTDIR=$RESULT_ROOT
 build_complete $?
 
 git reset --hard
