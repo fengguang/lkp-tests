@@ -174,6 +174,10 @@ output.each_line { |line|
 		bug_to_bisect = $1
 	when /^backtrace:([a-zA-Z0-9_]+)/
 		bug_to_bisect = $1 + '+0x'
+	when /Corrupted low memory at/
+		# [   61.268659] Corrupted low memory at ffff880000007b08 (7b08 phys) = 27200c000000000
+		bug_to_bisect = oops_to_bisect_pattern line
+		line = line.sub(/\b[0-9a-f]+\b phys/, "# phys").sub(/= \b[0-9a-f]+\b/, "= #")
 	else
 		bug_to_bisect = oops_to_bisect_pattern line
 	end
