@@ -6,12 +6,12 @@ rootfs: debian-x86_64.cgz
 autotest:
   test:
   - compilebench
-  - docker
-  - iosched_bugs
-  - isic
+  # - docker # /usr/bin/docker: No such file or directory
+  # - iosched_bugs # make: *** [dirty] Error1: undefined reference to 'rdtsc'
+  # - isic # make: *** [all-recursive] Error1: undefined reference to 'libnet_getgre_length'
   - monotonic_time
   - pi_tests
-  - systemtap
+  # - systemtap # simple systemtap test failed, kernel debuginfo package may be missing. Checking "/lib/modules/4.3.0/build/.config" failed with error: No such file or direcotry
   - unixbench
 
 ---
@@ -20,27 +20,26 @@ category: functional
 autotest:
   test:
   # - aborttest
-  - aio_dio_bugs
+  # - aio_dio_bugs # open dio failed: 22
   - aiostress
   # - asynctest # run time too short
   # - autotest_regression
   # - barriertest  # autotest self test
-  - bash_shared_mapping
-  - bonnie
-  # NameError: invalid file /lkp/benchmarks/autotest/client/tests/btreplay/blktrace-git-latest.tar.gz to cat to command tar xvf - 2>/dev/null
-  # - btreplay
-  - cgroup
-  - cgroup_tests
+  # - bash_shared_mapping # killed unexpectedly
+  # - bonnie # killed unexpectedlyi: bonnie++ invoke oom-killer: gfp_mask=0x200d2, order=0, oom_score_adj=0
+  # - btreplay # NameError: invalid file /lkp/benchmarks/autotest/client/tests/btreplay/blktrace-git-latest.tar.gz to cat to command tar xvf - 2>/dev/null
+  # - cgroup # Device or resource busy: '/sys/fs/cgroup/memory/cgroup-nXGuwX/
+  # - cgroup_tests # OSError: [Errno 2] No such file or directory: '/cgroup/memory'
   - connectathon
-  - cpuflags
-  - cpu_hotplug
-  - ctcs
+  # - cpuflags # cp: cannot stat '/lkp/benchmarks/autotest/client/tests/virt/shared/deps/test_cpu_flags/*': No such file or directory
+  # - cpu_hotplug # cost about 1 hour, terminated
+  # - ctcs # ld returned 1 exit status: undefined reference to 'permute', 'quictSort', 'verify', 'heapSort'...etc
   - cyclictest
-  - dacapo
+  # - dacapo # URLError: <urlopen error [Errno 111] Connection refused>
   # - dbench
-  - dbt2
+  # - dbt2 # URLError: <urlopen error ftp [Errno 111] Connection refused>
   - disktest
-  - dma_memtest
+  # - dma_memtest # URLError: <urlopen error [Errno 101] Network is unreachable>
   # - ebizzy
   # - error_cleanup
   # - error_initialize
@@ -48,72 +47,69 @@ autotest:
   # - error_skip_step
   # - error_test_bug
   # - error_test_error
-  #- error_test_fail
-  #- error_test_na
-  - ffsb
+  # - error_test_fail
+  # - error_test_na
+  # - ffsb # kernel_oops: ffsb invoked oom-killer: gfp_mask=0x200d2, order=0, oom_score_adj=0
   # - fio
-  - flail
-  - fsdev
+  # - flail # incomplete run
+  # - fsdev # KeyError: '4.3.0'
   - fsfuzzer
   # - fs_mark
   - fsstress
   - fsx
   # - hackbench
   # - hwclock
-  - interbench
+  # - interbench # incomplete run
   # - iozone
   # - iperf
-  - ipv6connect
+  # - ipv6connect # kernel_oops: Out of memory: Kill process 2476 (systemd-cgroups) score 0 or sarifice child
   # - kernbench
   # - kernelbuild
   # - kernelinstall
-  - libhugetlbfs
+  # - libhugetlbfs # make error: expected expression before 'restrict'; too few arguments to funciton '__buildin_strncpy'...etc
   # - libvirt_tck
   # - libvirt_test_api
   - linus_stress
-  - linux-tools/crontab
-  - linux-tools/pax
-  - lmbench
+  # - linux-tools/crontab # Test failed: allow_cron
+  # - linux-tools/pax # Test failed: copy
+  # - lmbench # killed unexpectedly, kernel_oops: proc-vmstat invoked oom-killer
   # - ltp
-  - lvsetup
-  - memory_api
+  # - lvsetup # incomplete run
+  # - memory_api # ld returned 1 exit status: undefined reference to 'waitnext'
   # - netperf2
   # - netpipe
-  - npb
+  # - npb # NPB3.3-OMP/bin/bt.S: No such file or directory
   # - parallel_dd
-  # build error
-  # - perfmon
+  # - perfmon # build error
   - pktgen
   - posixtest
   # - profiler_sync # Not a test case
-  - profiler_test
-  - qemu_iotests
+  # - profiler_test # AutotestError: No oprofile avaiable
+  # - qemu_iotests # Miss cmds qemu-img or qemu-io
   - reaim
   - real_time_tests
   # - regression
   - rmaptest
   - rtc
-  - rttester
+  # - rttester # No such file or directory: '/sys/devices/system/rttest/rttest/rttest0/command'
   - scrashme
-  - scsi_testsuite
+  # - scsi_testsuite # TestFail: Disk not found, cannot execute tests
   # - selftest
   - signaltest
   # - sleeptest
   # - smatch
   # - sparse
-  - spew
-  # stress: FAIL: [2957] (238) invalid hdd byte value: 0
-  # - stress
-  - synctest
+  # - spew # make [common.o] Error 1: 'memcpy'/'strrchr'/'strerror'/'strsignal' was not declared in this scope
+  # - stress # stress: FAIL: [2957] (238) invalid hdd byte value: 0
+  # - synctest # FAIL: sync not interrupted
   # - sysbench
   # - tbench
-  - tiobench
-  # Permission denied: '/sys/kernel/debug/tracing/tracing_enabled'
-  # - tracing_microbenchmark
+  # - tiobench # ld returned 1 exit status: undefined reference to 'crc32'
+  # - tracing_microbenchmark # Permission denied: '/sys/kernel/debug/tracing/tracing_enabled'
   - tsc
   # - unixbench5
   # - uptime
   # - virt
   - wb_kupdate
   # - xfstests
-  - xmtest
+  # - xmtest # Connecting to xm-test.xensource.com (xm-test.xensource.com)|220.250.64.225|:80... failed: Connection refused.
