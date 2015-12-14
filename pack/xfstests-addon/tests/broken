@@ -47,6 +47,7 @@ btrfs/112
 btrfs/113
 ## The following these xfs relevant testcases will be filtered, and some cases(85~102,142~163) need to the newer e2fsprogs package and "DMAPI"
 ## user space tools, currently we use the command "apt-get install" can't install "DMAPI" package, so we filter these testcases temporarily.
+## We try use "libdm0" and "libdm0-dev" package to instead of "DMAPI" package, but it still failed.
 xfs/014
 xfs/016
 xfs/018
@@ -140,19 +141,24 @@ xfs/287
 xfs/293
 xfs/298
 xfs/300
-generic/013
-generic/083
-generic/070
-generic/091
-generic/204
-generic/208
-generic/232
-generic/233
-generic/263
-generic/269
-generic/270
-generic/273
-generic/306
-generic/311
-generic/310
-generic/319
+## The "generic" testcase will use the different filesystem to test which will generate the different running result.
+## For example:
+## generic/114 with ext4 filesystem can pass the function checking.
+## generic/114 with xfs  filesystem can't pass the function checking.
+##
+## Due to "generic" testcase have the different result with the different filesystem, we just filter the subcase which can't pass any filesystem.
+generic/010
+generic/019
+generic/038
+generic/042
+generic/081
+generic/093
+generic/097
+generic/099
+generic/108
+generic/114
+generic/128
+generic/241
+generic/251
+generic/260
+generic/288
