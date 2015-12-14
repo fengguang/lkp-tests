@@ -18,6 +18,8 @@ do
 	esac
 done
 
+shift $(($OPTIND-1))
+
 export GIT_DIR=/c/repo/linux/.git
 
 shopt -s nullglob
@@ -39,9 +41,6 @@ fi
 
 for pattern
 do
-	[[ "$pattern" =~ ^-[0-9f] ]] && continue
-	[[ "$pattern" = "$opt_file" ]] && continue
-
 	# expand v3.12 etc. to commit SHA1
 	commit=$(git rev-list -n1 "$pattern" 2>/dev/null) &&
 	[[ $commit ]] &&
