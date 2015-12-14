@@ -5,6 +5,8 @@ timeout: 30m
 
 piglit:
   group:
+    ## The following some subcases are skipped, since the info "Test requirement not met in function" will appear in test result,
+    ## and result in test failure.
     - igt-050
     - igt-051
     - igt-052
@@ -15,28 +17,28 @@ piglit:
     - igt-057
     - igt-058
     - igt-059
-    - igt-060
+    #- igt-060
     - igt-061
     - igt-062
     - igt-063
     - igt-064
     - igt-065
-    - igt-066
+    #- igt-066
     - igt-067
     - igt-068
     - igt-069
     - igt-070
-    - igt-071
-    - igt-072
+    #- igt-071
+    #- igt-072
     - igt-073
     - igt-074
     - igt-075
     - igt-076
     - igt-077
-    # - igt-078 # Test requirement not met in function run_pair
+    #- igt-078
     - igt-079
     - igt-080
-    - igt-081
+    #- igt-081
     - igt-082
     - igt-083
     - igt-084
