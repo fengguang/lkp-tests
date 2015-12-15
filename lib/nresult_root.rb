@@ -130,6 +130,10 @@ class NMResultRoot < DataStore::Node
 		c.set(COMMIT_AXIS_KEY, commit)
 		c.to_a.first
 	end
+
+	def mresult_root_path
+		File.readlink @path
+	end
 end
 
 class MResultRootTable < DataStore::Table
