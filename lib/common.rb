@@ -162,7 +162,8 @@ ensure
 end
 
 def pager(&b)
-	IO.popen("/usr/bin/less","w") { |io|
+	pager_prog = ENV['PAGER'] || "/usr/bin/less"
+	IO.popen(pager_prog, "w") { |io|
 		redirect_to io, &b
 	}
 end
