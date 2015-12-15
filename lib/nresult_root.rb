@@ -15,6 +15,7 @@ class CResultRoot
 	DMESG_FILES = ['dmesg.xz', 'dmesg', '.dmesg', 'kmsg.xz', 'kmsg']
 	DMESG_JSON_FILE = 'dmesg.json'
 	KMSG_JSON_FILE = 'kmsg.json'
+	MATRIX_FILE = 'matrix.json'
 
 	include DirObject
 
@@ -49,6 +50,14 @@ class CResultRoot
 			return ffn if File.exist? ffn
 		}
 		nil
+	end
+
+	def matrix_file
+		path(MATRIX_FILE)
+	end
+
+	def matrix
+		try_load_json matrix_file
 	end
 end
 
@@ -113,6 +122,12 @@ module CMResultRoot
 		cm = complete_matrix m
 		complete_runs = matrix_cols cm
 		[all_runs, complete_runs]
+	end
+
+	def result_roots_with_stat(stat)
+		result_roots.select { |rt|
+			rt.matrix[stat]
+		}
 	end
 
 	ResultPath::MAXIS_KEYS.each { |k|
