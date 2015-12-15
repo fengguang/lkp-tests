@@ -4,6 +4,7 @@ aim7.*.real
 aim7.*.cpu
 stderr.*scripts/aim_..sh:not_found
 iostat.*.svctm
+kmsg.Corrupted_low_memory_at.............*
 dmesg.boot_successes
 dmesg.boot_failures
 dmesg.INFO:rcu_sched_detected_stalls_on_CPUs/tasks:
