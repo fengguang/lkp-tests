@@ -399,6 +399,12 @@ module Compare
 			MatrixExporter.new self
 		end
 
+		def score
+			stat_enum.map { |s|
+				s[CHANGES].map { |c| c.abs }.max || 0
+			}.max || 0
+		end
+
 		def to_data
 			{
 				group: @group.to_data,
@@ -537,11 +543,7 @@ module Compare
 	## Compare result renderer
 
 	def self.sort_group(compare_result)
-		compare_result.sort_by! { |gd|
-			-(gd.stat_enum.map { |s|
-					s[CHANGES].map { |c| c.abs }.max || 0
-				}.max || 0)
-		}
+		compare_result.sort_by! { |gd| -gd.score }
 	end
 
 	def self.sort_stats(stat_enum)
