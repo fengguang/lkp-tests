@@ -134,6 +134,16 @@ class NMResultRoot < DataStore::Node
 	def mresult_root_path
 		File.readlink @path
 	end
+
+	def to_data
+		axes
+	end
+
+	class << self
+		def from_data(data)
+			mrt_table_set.open_node data
+		end
+	end
 end
 
 class MResultRootTable < DataStore::Table

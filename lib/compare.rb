@@ -99,9 +99,9 @@ module Compare
 		private
 
 		def initialize(params = nil)
+			@show_empty_group = false
 			set_params params
 			@stat_calc_funcs = [Compare.method(:calc_stat_change)]
-			@show_empty_group = false
 		end
 
 		public
@@ -118,7 +118,7 @@ module Compare
 				       group
 			groups.map { |g|
 				next if g.axes_data.size < 2
-				Group.new self, g
+				Group.new self, g.axes, g.group_axeses, g.axes_data
 			}.compact
 		end
 
@@ -172,6 +172,29 @@ module Compare
 			end
 			show_compare_result result
 		end
+
+		def to_data
+			{
+				compare_axis_keys: @compare_axis_keys,
+				use_all_stat_keys: @use_all_stat_keys,
+				use_stat_keys: @use_stat_keys,
+				use_testcase_stat_keys: @use_testcase_stat_keys,
+				include_stat_keys: @include_stat_keys,
+				include_all_failure_stat_keys: @include_all_failure_stat_keys,
+				filter_stat_keys: @filter_stat_keys,
+				filter_testcase_stat_keys: @filter_testcase_stat_keys,
+				group_by_stat: @group_by_stat,
+				show_empty_group: @show_empty_group,
+				compact_show: @compact_show,
+				sort_by_group: @sort_by_group,
+			}
+		end
+
+		class << self
+			def from_data(data)
+				new data
+			end
+		end
 	end
 
 	class Group
@@ -179,11 +202,11 @@ module Compare
 
 		private
 
-		def initialize(comparer, axes_group)
+		def initialize(comparer, axes, compare_axeses, mresult_roots)
 			@comparer = comparer
-			@axes = axes_group.axes
-			@mresult_roots = axes_group.axes_data
-			@compare_axeses = axes_group.group_axeses
+			@axes = axes
+			@mresult_roots = mresult_roots
+			@compare_axeses = compare_axeses
 		end
 
 		public
@@ -324,6 +347,26 @@ module Compare
 				yield stat
 			}
 		end
+
+		def to_data
+			{
+				comparer: @comparer.to_data,
+				axes: @axes,
+				mresult_roots: @mresult_roots.map { |_rt| _rt.to_data },
+				compare_axeses: @compare_axeses,
+			}
+		end
+
+		class << self
+			def from_data(data)
+				comparer = Comparer.from_data data[:comparer]
+				_rts = data[:mresult_roots].map { |_rtd|
+					NMResultRoot.from_data _rtd
+				}
+				comparer.set_mresult_roots _rts
+				new comparer, data[:axes], data[:compare_axeses], _rts
+			end
+		end
 	end
 
 	class GroupResult
@@ -354,6 +397,21 @@ module Compare
 
 		def matrix_exporter
 			MatrixExporter.new self
+		end
+
+		def to_data
+			{
+				group: @group.to_data,
+				stats: Compare.stats_to_data(@stat_enum.to_a)
+			}
+		end
+
+		class << self
+			def from_data(data)
+				group = Group.from_data(data[:group])
+				stats = Compare.stats_from_data(data[:stats], group)
+				GroupResult.new group, stats.each
+			end
 		end
 	end
 
@@ -418,6 +476,20 @@ module Compare
 				matrix
 			end
 		end
+	end
+
+	## Stat load/store functions
+
+	def self.stats_to_data(stats)
+		stats.map { |stat|
+			ns = stat.clone
+			ns.delete GROUP
+			ns
+		}
+	end
+
+	def self.stats_from_data(stats, group)
+		stats.each { |stat| stat[GROUP] = group }
 	end
 
 	## Stat Calculation Functions
