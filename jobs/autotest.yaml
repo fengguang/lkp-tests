@@ -12,7 +12,7 @@ autotest:
   - monotonic_time
   - pi_tests
   # - systemtap # simple systemtap test failed, kernel debuginfo package may be missing. Checking "/lib/modules/4.3.0/build/.config" failed with error: No such file or direcotry
-  - unixbench
+  # - unixbench # duplicate to jobs/unixbench.yaml
 
 ---
 category: functional
