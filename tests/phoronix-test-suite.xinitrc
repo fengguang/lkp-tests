@@ -11,7 +11,7 @@ case $test in
 		# 2: 16 Million Digits [This Test could take a while to finish.]
 		# 3: 4 threads [2+ Cores Recommended]
 		# todo: select different test according to testbox's hardware
-		test_opt="1\n2\n3\nn"
+		test_opt="\n1\n2\n3\nn"
 		;;
 esac
 
