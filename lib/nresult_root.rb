@@ -14,6 +14,7 @@ class CResultRoot
 	# TODO: remove .dmesg after we convert all .dmesg to dmesg
 	DMESG_FILES = ['dmesg.xz', 'dmesg', '.dmesg', 'kmsg.xz', 'kmsg']
 	DMESG_JSON_FILE = 'dmesg.json'
+	KMSG_JSON_FILE = 'kmsg.json'
 
 	include DirObject
 
@@ -29,6 +30,16 @@ class CResultRoot
 
 	def dmesg_json
 		fn = dmesg_json_file
+		load_json(fn) if fn
+	end
+
+	def kmsg_json_file
+		fn = path(KMSG_JSON_FILE)
+		fn if File.exist?(fn)
+	end
+
+	def kmsg_json
+		fn = kmsg_json_file
 		load_json(fn) if fn
 	end
 
