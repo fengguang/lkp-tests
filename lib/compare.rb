@@ -619,9 +619,20 @@ module Compare
 		printf "  %s\n", stat[STAT_KEY]
 	end
 
+	def self.axes_format(axes)
+		naxes = {}
+		axes.each { |k, v|
+			nk, nv = axis_format k, v
+			naxes[nk] = nv
+		}
+		naxes
+	end
+
 	def self.show_group_header(group)
-		common_axes = group.axes
-		compare_axeses = group.compare_axeses
+		common_axes = axes_format group.axes
+		compare_axeses = group.compare_axeses.map { |axes|
+			axes_format axes
+		}
 		puts "========================================================================================="
 		printf "%s:\n", common_axes.keys.join('/')
 		printf "  %s\n\n", common_axes.values.join('/')

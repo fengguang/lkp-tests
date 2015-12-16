@@ -159,6 +159,31 @@ def linux_commits(*commits)
 	commits.map { |c| git.gcommit(c) }
 end
 
+def axis_key_project(axis_key)
+	case axis_key
+	when 'commit'
+		'linux'
+	when 'head_commit', 'base_commit'
+		'linux'
+	when /_commit$/
+		key.sub(/_commit$/, '')
+	end
+end
+
+def axis_format(axis_key, value)
+	project = axis_key_project(axis_key)
+	if project
+		tag = Git.open(project: project).gcommit(value).tags.first
+		if tag
+			[axis_key, tag]
+		else
+			[axis_key, value]
+		end
+  else
+		[axis_key, value]
+	end
+end
+
 def __git_committer_name(commit)
 	`#{GIT} log -n1 --pretty=format:'%cn' #{commit}`.chomp
 end
