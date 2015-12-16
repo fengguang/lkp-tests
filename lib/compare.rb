@@ -1,5 +1,8 @@
 # coding: utf-8
 LKP_SRC ||= ENV['LKP_SRC']
+
+require 'optparse'
+
 require "#{LKP_SRC}/lib/common.rb"
 require "#{LKP_SRC}/lib/enumerator.rb"
 require "#{LKP_SRC}/lib/stats.rb"
@@ -107,7 +110,7 @@ module Compare
 		public
 
 		def set_params(params)
-			set_prop *params.flatten if params
+			set_prop(*params.flatten) if params
 			self
 		end
 
@@ -785,6 +788,37 @@ module Compare
 
 	def self.perf_compare(commits)
 		comparer = perf_comparer commits
+		comparer.compare
+	end
+
+	def self.parse_argv(argv)
+		options = {
+			compare_axis_keys: [COMMIT_AXIS_KEY],
+		}
+		parser = OptionParser.new do |p|
+			p.banner = 'Usage: ncompare [options] <commit>...'
+			p.separator ''
+			p.separator 'options:'
+
+			p.on_tail('-h', '--help', 'Show this message') {
+				puts p
+				return nil
+			}
+		end
+		argv = ['-h'] if argv.empty?
+		argv = parser.parse(argv)
+
+		unless options[:mresult_roots]
+			options[:mresult_roots] = argv.map { |c|
+				MResultRootCollection.new(COMMIT_AXIS_KEY => c.to_s).to_a
+			}.flatten
+		end
+    options
+	end
+
+	def self.compare(argv)
+		options = parse_argv argv
+		comparer = Comparer.new options
 		comparer.compare
 	end
 

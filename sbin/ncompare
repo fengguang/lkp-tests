@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+# encoding: utf-8
+
+LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
+
+require "#{LKP_SRC}/lib/compare"
+
+Compare.compare ARGV
