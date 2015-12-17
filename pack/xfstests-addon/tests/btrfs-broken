@@ -1,3 +1,7 @@
+## The following these btrfs relevant testcases will be filtered, since some cases still have a bug in latest version(such as btrfs/047),
+## and the others are test function failure, to void generate the error info in 'lkp log', we also need to filter these testcases.
+## In addition, "btrfs/101" need to the newer btrfs-tools packages,but our repo is a bit old, can't upgrade to the very new btrfs-tools version,
+## so we also filter this sub item temporarily.
 003
 011
 047

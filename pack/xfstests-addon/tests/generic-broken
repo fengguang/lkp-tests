@@ -1,3 +1,9 @@
+## The "generic" testcase will use the different filesystem to test which will generate the different running result.
+## For example:
+## generic/114 with ext4 filesystem can pass the function checking.
+## generic/114 with xfs  filesystem can't pass the function checking.
+##
+## Due to "generic" testcase have the different result with the different filesystem, we just filter the subcase which can't pass any filesystem.
 010
 019
 038

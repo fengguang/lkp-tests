@@ -1,3 +1,6 @@
+## The following these xfs relevant testcases will be filtered, and some cases(85~102,142~163) need to the newer e2fsprogs package and "DMAPI"
+## user space tools, currently we use the command "apt-get install" can't install "DMAPI" package, so we filter these testcases temporarily.
+## We try use "libdm0" and "libdm0-dev" package to instead of "DMAPI" package, but it still failed.
 016
 022
 023

@@ -1,3 +1,6 @@
+## The following these ext4 relevant testcases(ext4/006 ~ ext4/019) need to the newer e2fsprogs package(v1.43.xxx),
+## currently we use the command "apt-get install e2fsprogs" can't upgrade to v1.43.xxx version,
+## this is due to our apt-get repo is a bit old, so we filter these testcases temporarily.
 006
 007
 008
