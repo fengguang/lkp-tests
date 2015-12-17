@@ -67,6 +67,8 @@ run_test()
 
 	if [ "${test#*-}" = "all" ]; then
 		all_tests=$(cd tests && ls ${test%-*}/[0-9][0-9][0-9])
+	elif [ "${test#*-}" = "new" ]; then
+		all_tests=$(cd tests && sed "s:^:${test%-*}/:" $test)
 	elif [ "${test%[a-z]-[0-9][0-9][0-9]}" != "$test" ]; then
 		all_tests="${test%-*}/${test#*-}"
 	elif [ "${test#*-}" != "$test" ]; then
