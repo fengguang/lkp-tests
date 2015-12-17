@@ -166,7 +166,7 @@ def axis_key_project(axis_key)
 	when 'head_commit', 'base_commit'
 		'linux'
 	when /_commit$/
-		key.sub(/_commit$/, '')
+		axis_key.sub(/_commit$/, '')
 	end
 end
 
