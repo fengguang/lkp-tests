@@ -63,14 +63,16 @@ run_test()
 	## - generic-not-run
 	## - generic-out-mismatch
 
+	local test_dir="$LKP_SRC/pack/xfstests-addon/tests"
+
 	if [ "${test#*-}" = "all" ]; then
 		all_tests=$(cd tests && ls ${test%-*}/[0-9][0-9][0-9])
 	elif [ "${test%[a-z]-[0-9][0-9][0-9]}" != "$test" ]; then
 		all_tests="${test%-*}/${test#*-}"
 	elif [ "${test#*-}" != "$test" ]; then
-		all_tests=$(sed "s:^:${test%-*}/:" tests/$test)
+		all_tests=$(sed "s:^:${test%-*}/:" $test_dir/$test)
 	else
-		all_tests=$(cd tests && ls $test/[0-9][0-9][0-9] | grep -v -F -f $test-broken)
+		all_tests=$(cd tests && ls $test/[0-9][0-9][0-9] | grep -v -F -f $test_dir/$test-broken)
 	fi
 
 	cmd ./check $all_tests
