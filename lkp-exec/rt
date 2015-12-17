@@ -90,9 +90,10 @@ show_one_path()
 
 for path in $paths
 do
-	[[ ! $opt_file ]] &&  show_one_path "$path"
-
-	file_path=$(find $path -name $opt_file)
-	[[ $file_path ]] && show_one_path "$file_path"
-
+	if [[ ! $opt_file ]]; then
+		show_one_path "$path"
+	else
+		file_path=$(find $path -name $opt_file)
+		[[ $file_path ]] && show_one_path "$file_path"
+	fi
 done
