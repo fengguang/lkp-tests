@@ -91,6 +91,13 @@ module Git
 			release_tags_with_order[tag]
 		end
 
+		def sort_commits(commits)
+			scommits = commits.map { |c| c.to_s }
+			r = lib.command('rev-list', ['--no-walk', '--topo-order',
+																	 '--reverse'] + scommits)
+			r.split.map { |sc| gcommit sc }
+		end
+
 		def command(cmd, opts = [], chdir = true, redirect = '', &block)
 			lib.command(cmd, opts, chdir, redirect)
 		end
