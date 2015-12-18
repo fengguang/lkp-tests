@@ -93,9 +93,16 @@ module Git
 
 		def sort_commits(commits)
 			scommits = commits.map { |c| c.to_s }
-			r = lib.command('rev-list', ['--no-walk', '--topo-order',
-																	 '--reverse'] + scommits)
-			r.split.map { |sc| gcommit sc }
+			if scommits.size == 2
+				r = lib.command('rev-list', ["-n", "1", "^#{scommits[0]}", scommits[1]])
+				if r.strip.empty?
+					scommits.reverse!
+				end
+			else
+				r = lib.command('rev-list', ['--no-walk', '--topo-order', '--reverse'] + scommits)
+				scommits = r.split
+			end
+			scommits.map { |sc| gcommit sc }
 		end
 
 		def command(cmd, opts = [], chdir = true, redirect = '', &block)
