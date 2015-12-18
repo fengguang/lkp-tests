@@ -184,6 +184,10 @@ def axis_format(axis_key, value)
 	end
 end
 
+def commits_to_string(commits)
+	commits.map { |c| c.to_s }
+end
+
 def __git_committer_name(commit)
 	`#{GIT} log -n1 --pretty=format:'%cn' #{commit}`.chomp
 end
