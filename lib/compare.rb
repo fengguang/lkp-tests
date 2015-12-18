@@ -776,14 +776,17 @@ module Compare
 	## Helper functions
 
 	def self.commits_comparer(commits, params = nil)
+		git = axis_key_git COMMIT_AXIS_KEY
+		commits = git.sort_commits commits
 		_result_roots = commits.map { |c|
 			MResultRootCollection.new(COMMIT_AXIS_KEY => c.to_s).to_a
 		}.flatten
 		compare_axis_keys = [COMMIT_AXIS_KEY]
 		comparer = Comparer.new
-		comparer.set_mresult_roots _result_roots
-		comparer.set_compare_axis_keys compare_axis_keys
-		comparer.set_params params
+		comparer.set_mresult_roots(_result_roots).
+			set_sort_mresult_roots(false).
+			set_compare_axis_keys(compare_axis_keys).
+			set_params(params)
 	end
 
 	def self.compare_commits(commits, params = nil)
@@ -792,14 +795,17 @@ module Compare
 	end
 
 	def self.ncommits_comparer(commits, params = nil)
+		git = axis_key_git COMMIT_AXIS_KEY
+		commits = git.sort_commits commits
 		_rts = commits.map { |c|
 			NMResultRootCollection.new(COMMIT_AXIS_KEY => c.to_s).to_a
 		}.flatten
 		compare_axis_keys = [COMMIT_AXIS_KEY]
 		comparer = Comparer.new
-		comparer.set_mresult_roots _rts
-		comparer.set_compare_axis_keys compare_axis_keys
-		comparer.set_params params
+		comparer.set_mresult_roots(_rts).
+			set_sort_mresult_roots(false).
+			set_compare_axis_keys(compare_axis_keys).
+			set_params(params)
 	end
 
 	def self.ncompare_commits(commits, params = nil)
@@ -808,6 +814,8 @@ module Compare
 	end
 
 	def self.perf_comparer(commits)
+		git = axis_key_git COMMIT_AXIS_KEY
+		commits = git.sort_commits commits
 		_rts = commits.map { |c|
 			DataStore::Collection.new(mrt_table_set.linux_perf_table, 'commit' => c.to_s).to_a
 		}.flatten
@@ -822,6 +830,7 @@ module Compare
 		compare_axis_keys = [COMMIT_AXIS_KEY]
 		comparer = Comparer.new
 		comparer.set_mresult_roots(_rts).
+			set_sort_mresult_roots(false).
 			set_compare_axis_keys(compare_axis_keys).
 			set_filter_testcase_stat_keys(true).
 			set_sort_by_group(true).
