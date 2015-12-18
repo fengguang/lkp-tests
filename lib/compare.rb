@@ -439,6 +439,10 @@ module Compare
 			}.max || 0
 		end
 
+		def show
+			Compare.show_group @group, @stat_enum
+		end
+
 		def to_data
 			{
 				group: @group.to_data,
