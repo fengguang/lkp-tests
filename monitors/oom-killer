@@ -4,7 +4,11 @@
 setup_wait
 
 # dont OOM kill me
-echo -1000 > /proc/$$/oom_score_adj
+# dont change me, "echo -1000" won't work well with some stdbuf,
+# and maybe appear like this error "echo: write error: Invalid argument".
+cat > /proc/$$/oom_score_adj <<EOF
+-1000
+EOF
 
 while :
 do
