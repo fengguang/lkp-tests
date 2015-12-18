@@ -92,6 +92,7 @@ module Compare
 		# following properties are parameters for compare
 		prop_reader :stat_calc_funcs
 		prop_with :mresult_roots, :compare_axis_keys,
+							:sort_mresult_roots,
 							:use_all_stat_keys, :use_stat_keys,
 							:use_testcase_stat_keys,
 							:include_stat_keys, :include_all_failure_stat_keys,
@@ -103,6 +104,7 @@ module Compare
 
 		def initialize(params = nil)
 			@show_empty_group = false
+			@sort_mresult_roots = true
 			set_params params
 			@stat_calc_funcs = [Compare.method(:calc_stat_change)]
 		end
@@ -114,7 +116,36 @@ module Compare
 			self
 		end
 
+		def do_sort_mresult_roots
+			if sort_mresult_roots
+				skeys = @compare_axis_keys.map { |k|
+					git = axis_key_git(k)
+					if git
+						[k, git]
+					end
+				}
+				skeys.compact!
+				unless skeys.empty?
+					keys_values = skeys.map { |k, git|
+						values = @mresult_roots.map { |_rt| _rt.axes[k] }
+						values.compact!
+						values.uniq!
+						[k, commits_to_string(git.sort_commits(values))]
+					}
+					@mresult_roots.sort_by! { |_rt|
+						axes = _rt.axes
+						keys_values.map { |k, values |
+							values.index(axes[k]) || -1
+						}
+					}
+				end
+			else
+				@mresult_roots
+			end
+		end
+
 		def compare_groups
+			do_sort_mresult_roots
 			grouper = AxesGrouper.new
 			groups = grouper.set_axes_data(@mresult_roots).
 				       set_group_axis_keys(@compare_axis_keys).
@@ -141,7 +172,7 @@ module Compare
 			block_given? or return enum_for(__method__)
 
 			compare_groups.each { |g|
-				g.each_changed_stat &b
+				g.each_changed_stat(&b)
 			}
 		end
 

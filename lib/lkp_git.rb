@@ -170,10 +170,17 @@ def axis_key_project(axis_key)
 	end
 end
 
-def axis_format(axis_key, value)
+def axis_key_git(axis_key)
 	project = axis_key_project(axis_key)
 	if project
-		tag = Git.open(project: project).gcommit(value).tags.first
+		Git.open(project: project)
+	end
+end
+
+def axis_format(axis_key, value)
+	git = axis_key_git(axis_key)
+	if git
+		tag = git.gcommit(value).tags.first
 		if tag
 			[axis_key, tag]
 		else
