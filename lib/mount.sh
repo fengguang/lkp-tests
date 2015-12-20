@@ -31,3 +31,10 @@ check_mount()
 	return $exit_code
 }
 
+# NFSv4 is required for remote clients;
+# NFSv3 looks more stable for local clients.
+check_mount_nfs()
+{
+	check_mount "$@" -o v3 ||
+	check_mount "$@"
+}
