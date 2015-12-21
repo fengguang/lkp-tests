@@ -5,6 +5,8 @@ aim7.*.cpu
 stderr.*scripts/aim_..sh:not_found
 iostat.*.svctm
 kmsg.Corrupted_low_memory_at.............*
+kmsg.tsc:Unable_to_calibrate_against_PIT
+kmsg.tsc:Fast_TSC_calibration_failed
 dmesg.boot_successes
 dmesg.boot_failures
 dmesg.INFO:rcu_sched_detected_stalls_on_CPUs/tasks:
@@ -34,10 +36,13 @@ stderr.has_stderr
 stderr.*:cannot_create_regular_file.*:File_exists
 stderr.some_monitors_do_not_quit_in_time
 stderr.pmeter_server_does_not_start_correctly
+stderr.Killed
+stderr.*oom-killer:*Invalid_argument
 latency_stats.*cifs.*
 last_state.exit_fail
 last_state.build-*
 last_state.booting
 last_state.running
+last_state.error_umounted
 build-android.warning.*
 build-dpdk.warning.*
