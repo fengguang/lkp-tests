@@ -520,7 +520,7 @@ module DataStore
 			@axes.freeze
 		end
 
-		def hash
+		def axes_hash
 			Layout.axes_hash(axes)
 		end
 
