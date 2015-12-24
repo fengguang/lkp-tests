@@ -131,7 +131,7 @@ redirect_stdout_stderr()
 	# some machines do not have serial console, writing to /dev/ttyS0 may fail
 	[ -c /dev/ttyS0 ] &&
 	echo > /dev/ttyS0 2>/dev/null && {
-		tail-to-serial -f /tmp/stdout /tmp/stderr > /dev/ttyS0 2>/dev/null &
+		tail-to-serial -f /tmp/stderr > /dev/ttyS0 2>/dev/null &
 	}
 }
 
