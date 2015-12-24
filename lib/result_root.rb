@@ -261,6 +261,10 @@ class << MResultRoot
 		return false if !File.exists? path
 		return Dir[File.join path, self::JOB_GLOB].first
 	end
+
+	def from_nmresult_root(nmresult_root)
+		new nmresult_root.mresult_root_path
+	end
 end
 
 class MResultRootCollection
