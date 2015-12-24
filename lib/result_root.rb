@@ -177,6 +177,14 @@ class MResultRoot
 		end
 	end
 
+	def eql?(_rto)
+		@axes.eql?(_rto.axes)
+	end
+
+	def hash
+		@axes.hash
+	end
+
 	def axes_path
 		as = deepcopy(@axes)
 		if job_file
