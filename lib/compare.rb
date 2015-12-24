@@ -92,7 +92,7 @@ module Compare
 		# following properties are parameters for compare
 		prop_reader :stat_calc_funcs
 		prop_with :mresult_roots, :compare_axis_keys,
-							:sort_mresult_roots,
+							:sort_mresult_roots, :dedup_mresult_roots,
 							:use_all_stat_keys, :use_stat_keys,
 							:use_testcase_stat_keys,
 							:include_stat_keys, :include_all_failure_stat_keys,
@@ -105,6 +105,7 @@ module Compare
 		def initialize(params = nil)
 			@show_empty_group = false
 			@sort_mresult_roots = true
+			@dedup_mresult_roots = true
 			set_params params
 			@stat_calc_funcs = [Compare.method(:calc_stat_change)]
 		end
@@ -144,8 +145,11 @@ module Compare
 			end
 		end
 
-		def compare_groups
+    def compare_groups
 			do_sort_mresult_roots
+			if dedup_mresult_roots
+				@mresult_roots.uniq!
+			end
 			grouper = AxesGrouper.new
 			groups = grouper.set_axes_data(@mresult_roots).
 				       set_group_axis_keys(@compare_axis_keys).
