@@ -35,6 +35,9 @@ esac
 export PTS_SILENT_MODE=1
 echo PTS_SILENT_MODE=$PTS_SILENT_MODE
 
+## Currently, we use the rootfs by NFS network, in order to avoid to write the "test-results" to NFSROOT, we mount the tmpfs on below directory.
+mount -t tmpfs tmpfs /var/lib/phoronix-test-suite/test-results || exit
+
 if [ "$test_opt" ]; then
 	echo -e "$test_opt" | cmd phoronix-test-suite run $test
 else
