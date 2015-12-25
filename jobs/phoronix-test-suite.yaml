@@ -47,7 +47,7 @@ phoronix-test-suite:
   - compress-7zip-1.6.1
   - crafty-1.3.0
   - encode-opus-1.0.1
-  - iozone-1.8.0
+  # - iozone-1.8.0  # generate some temp files in local disk when running, remove it.
   - espeak-1.3.0
   - stockfish-1.0.0
   - compilebench-1.0.1
@@ -75,7 +75,7 @@ phoronix-test-suite:
   # - pyopencl-1.0.0 # The test run did not produce a result
   # - tiobench-1.2.0 # [PROBLEM] pts/tiobench-1.2.0 is not installed
   - phpbench-1.1.0
-  - interbench-1.0.1
+  # - interbench-1.0.1 # generate some temp files in local disk when running, remove it.
   - clomp-1.0.0
   - blogbench-1.0.0
   - tscp-1.2.0
