@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 ## Utility library for managing the Linux Kernel ND (NFIT-defined/NVDIMM) Subsystem
 
 # cd
@@ -8,7 +8,20 @@ git checkout $commit
 
 ./autogen.sh
 ./configure CFLAGS='-g -O0' --enable-test --prefix=/lkp/benchmarks/ndctl --sysconfdir=/lkp/benchmarks/ndctl/etc --libdir=/lkp/benchmarks/ndctl/lib
-make
+
+# linux-headers file is created by 0day system for each x86_64-rhel kernel, and located in /usr/src/linux-headers-$kconfig-$commit directory.
+shopt -s nullglob
+linux_headers_dirs=(/usr/src/linux-headers*)
+
+[[ $linux_headers_dirs ]] || {
+	echo "ndctl: fail to find linux-headers package" >&2
+	exit
+}
+
+linux_headers_dir=${linux_headers_dirs[-1]}
+echo "ndctl: linux_headers_dir is $linux_headers_dir"
+
+make -I $linux_headers_dir/include
 
 LD_LIBRARY_PATH=/lkp/benchmarks/ndctl/lib \
 /lkp/benchmarks/ndctl/bin/ndctl test
