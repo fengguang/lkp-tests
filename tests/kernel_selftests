@@ -13,15 +13,9 @@ mkdir -p /hugepages
 # has too many errors now
 sed -i 's/hugetlbfstest//' vm/Makefile
 
-# On debian, linux-headers-amd64 installs to /usr/src/linux-headers-*-amd64/
-# and /usr/src/linux-headers-*-common/, where common dir contains the actual
-# headers.
-
+# linux-headers file is created by 0day system for each x86_64-rhel kernel, and located in /usr/src/linux-headers-$kconfig-$commit directory.
 shopt -s nullglob
-linux_headers_dirs=(
-	/usr/src/linux-headers-*-common/
-	# TODO may add more for other distros
-)
+linux_headers_dirs=(/usr/src/linux-headers*)
 
 [[ $linux_headers_dirs ]] || {
 	echo "KERNEL SELFTESTS: fail to find linux-headers package" >&2
