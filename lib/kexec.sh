@@ -11,6 +11,7 @@ read_kernel_cmdline_vars_from_append()
 		[ "$i" != "${i#lkp_initrd=}" ]		&& export "$i"
 		[ "$i" != "${i#modules_initrd=}" ]	&& export "$i"
 		[ "$i" != "${i#tbox_initrd=}" ]		&& export "$i"
+		[ "$i" != "${i#linux_headers_initrd=}" ]	&& export "$i"
 	done
 }
 
@@ -31,7 +32,7 @@ download_kernel_initrd()
 
 	echo "downloading initrds ..."
 	set_job_state "wget_initrd"
-	for _initrd in $(echo $initrd $tbox_initrd $job_initrd $lkp_initrd $bm_initrd $modules_initrd | tr , ' ')
+	for _initrd in $(echo $initrd $tbox_initrd $job_initrd $lkp_initrd $bm_initrd $modules_initrd $linux_headers_initrd | tr , ' ')
 	do
 		_initrd=$(echo $_initrd | sed 's/^\///')
 		local file=$CACHE_DIR/$_initrd
