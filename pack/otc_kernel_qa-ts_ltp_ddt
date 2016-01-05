@@ -2,7 +2,7 @@
 
 download()
 {
-	rsync -a inn:/c/otc_kernel_qa-ts_ltp_ddt/* $BM_NAME --exclude agcc --exclude .git --exclude .gitignore --exclude .mailmap
+	rsync -a inn::otc_kernel_qa-ts_ltp_ddt $BM_NAME --exclude agcc --exclude .git --exclude .gitignore --exclude .mailmap
 	source_dir=$BM_NAME
 }
 
@@ -10,7 +10,7 @@ build()
 {
 	cd $source_dir
 	make autotools
-	./configure --prefix=$BM_ROOT > $BM_ROOT/configure.log
+	./configure --prefix=$BM_ROOT --with-open-posix-testsuite > $BM_ROOT/configure.log
 	make > $BM_ROOT/make.log
 }
 
