@@ -19,8 +19,8 @@ phoronix-test-suite:
   - system-decompress-bzip2-1.0.2
   - openssl-1.9.0
   - system-decompress-xz-1.0.2
-  - dbench-1.0.0
-  - pgbench-1.5.2
+  # - dbench-1.0.0 # generate some temp files in local disk when running, remove it.
+  # - pgbench-1.5.2 # generate some temp files in local disk when running, remove it.
   - botan-1.1.0
   - minion-1.4.0 # [PROBLEM] pts/minion-1.4.0 is not installed
   - mrbayes-1.2.0
@@ -33,7 +33,7 @@ phoronix-test-suite:
   - primesieve-1.3.0
   # - tachyon-1.1.1 # E: ./tachyon-benchmark: 3: ./tachyon-benchmark: ./tachyon: not found
   - john-the-ripper-1.5.1
-  - fio-1.8.2
+  # - fio-1.8.2 # generate some temp files in local disk when running, remove it.
   - encode-ogg-1.4.1
   - nginx-1.1.0
   - build-imagemagick-1.7.2
