@@ -443,6 +443,12 @@ module Compare
 			}.max || 0
 		end
 
+		def stats
+			stat_enum.map { |s|
+				s[STAT_KEY]
+			}
+		end
+
 		def show
 			Compare.show_group @group, @stat_enum
 		end
