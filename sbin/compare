@@ -105,6 +105,10 @@ opts = OptionParser.new do |opts|
 		$options['ignore-incomplete-run'] = true
 	end
 
+	opts.on('--regression-only', 'show regressions only') do
+		$options['regression-only'] = true
+	end
+
 	opts.on("-D N", "--distance N", "threshold of changes") { |n|
 		$options['distance'] = n.to_i
 	}
