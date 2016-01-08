@@ -70,8 +70,8 @@ kexec_to_next_job()
 	set_job_state "booting"
 
 	echo "LKP: kexec loading..."
-	echo kexec -l $kernel_file $initrd_option --append=\"$append\"
-	kexec -l $kernel_file $initrd_option --append="$append"
+	echo kexec --noefi -l $kernel_file $initrd_option --append=\"$append\"
+	kexec --noefi -l $kernel_file $initrd_option --append="$append"
 
 	if [ -n "$(find /etc/rc6.d -name '[SK][0-9][0-9]kexec' 2>/dev/null)" ]; then
 		# expecting the system to run "kexec -e" in some rc6.d/* script
