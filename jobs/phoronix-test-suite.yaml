@@ -8,7 +8,7 @@ phoronix-test-suite:
   # - open-porous-media-1.3.1 # Killed Bus error
   - x264-opencl-1.9.0
   - x264-1.9.0
-  - ffmpeg-2.5.0
+  # - ffmpeg-2.5.0 # This test failed to run properly.
   - mencoder-1.4.1
   - system-libxml2-1.0.2
   - build-firefox-1.0.0
@@ -22,7 +22,7 @@ phoronix-test-suite:
   # - dbench-1.0.0 # generate some temp files in local disk when running, remove it.
   # - pgbench-1.5.2 # generate some temp files in local disk when running, remove it.
   - botan-1.1.0
-  - minion-1.4.0 # [PROBLEM] pts/minion-1.4.0 is not installed
+  # - minion-1.4.0 # [PROBLEM] pts/minion-1.4.0 is not installed
   - mrbayes-1.2.0
   - build-php-1.3.1
   # - gcrypt-1.0.3 # E: ./gcrypt: 2: ./gcrypt: ./libgcrypt-1.4.4/tests/benchmark: not found
@@ -96,7 +96,7 @@ phoronix-test-suite:
   - noise-level-1.1.0
   # - nexuiz-iqc-1.0.0 # The test run did not produce a result
   - network-loopback-1.0.1
-  - idle-power-usage-1.0.0
+  # - idle-power-usage-1.0.0 # This test failed to run properly.
   - idle-1.1.0
   - hdparm-read-1.0.0
   - compress-gzip-1.1.0
