@@ -1,15 +1,1 @@
-testcase: 0day-boot-tests
-
-default-monitors:
-  turbostat: -v -i 100
-  kmsg:
-  vmstat:
-    interval: 100
-
-rootfs: debian-x86_64.cgz
-runtime: 1y
-
-swapon:
-ganglia:
-lkp-serial:
-0day-boot-tests:
+../../../jobs/0day-boot-tests-1y.yaml

@@ -1,16 +1,1 @@
-testcase: xfstests
-
-default-monitors:
-
-disk: 4HDD
-
-fs:
-- ext4
-
-xfstests:
-  test:
-  - generic-113
-  - generic-slow1
-  - generic-slow2
-  - generic-mid
-  - generic-quick
+../../../jobs/xfstests-generic-ext4.yaml

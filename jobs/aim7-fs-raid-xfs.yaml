@@ -1,0 +1,39 @@
+testcase: aim7
+
+disk:
+- 4BRD_12G
+md:
+- RAID0
+- RAID5
+fs:
+- xfs
+
+aim7:
+  load: 3000
+  test:
+  - disk_src
+  - disk_rr
+  - disk_rw
+  - disk_cp
+  - disk_wrt
+
+
+---
+aim7:
+  load: 600
+  test:
+  - sync_disk_rw
+
+
+---
+aim7:
+  load: 1500
+  test:
+  - creat-clo
+
+
+---
+aim7:
+  load: 9000
+  test:
+  - disk_rd

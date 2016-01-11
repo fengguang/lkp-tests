@@ -1,0 +1,27 @@
+testcase: fsmark
+category: benchmark
+
+iterations: 1x
+nr_threads:
+- 1t
+- 64t
+
+disk: 8BRD_12G
+need_memory: 100G
+md:
+- RAID0
+- RAID5
+- RAID6
+
+fs:
+- xfs
+- ext4
+- btrfs
+- f2fs
+
+fsmark:
+  filesize: 4M
+  test_size: 60G
+  sync_method:
+  - NoSync
+  - fsyncBeforeClose
