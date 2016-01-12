@@ -568,14 +568,7 @@ def find_changed_stats(matrix_path, options)
 	changed_stats
 end
 
-def get_changed_stats(matrix_path1, matrix_path2 = nil, options = {})
-	unless matrix_path2 or options['bisect_axis']
-		return find_changed_stats(matrix_path1, options)
-	end
-
-	a, b = load_matrices_to_compare matrix_path1, matrix_path2, options
-	return nil if a == nil or b == nil
-
+def _get_changed_stats(a, b, options)
 	is_incomplete_run =	a['last_state.is_incomplete_run'] ||
 				b['last_state.is_incomplete_run']
 
@@ -598,7 +591,18 @@ def get_changed_stats(matrix_path1, matrix_path2 = nil, options = {})
 	more_changed_stats = __get_changed_stats(a, b, false, options)
 	changed_stats.merge!(more_changed_stats) if more_changed_stats
 
-	return changed_stats
+	changed_stats
+end
+
+def get_changed_stats(matrix_path1, matrix_path2 = nil, options = {})
+	unless matrix_path2 or options['bisect_axis']
+		return find_changed_stats(matrix_path1, options)
+	end
+
+	a, b = load_matrices_to_compare matrix_path1, matrix_path2, options
+	return nil if a == nil or b == nil
+
+	_get_changed_stats(a, b, options)
 end
 
 def add_stats_to_matrix(stats, matrix)
