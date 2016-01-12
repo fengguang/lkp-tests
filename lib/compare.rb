@@ -279,11 +279,13 @@ module Compare
 			stat_keys
 		end
 
-		def _calc_changed_stat_keys
+		def _calc_changed_stat_keys(matrixes_in)
+			matrixes_in ||= matrixes
 			changed_stat_keys = []
-			mfile0 = @mresult_roots[0].matrix_file
-			@mresult_roots.drop(1).each { |_rt|
-				changes = get_changed_stats(_rt.matrix_file, mfile0)
+			ms = deepcopy(matrixes_in)
+			m0 = ms[0]
+			ms.drop(1).each { |m|
+				changes = _get_changed_stats(m, m0, {})
 				if changes
 					changed_stat_keys |= changes.keys
 				end
@@ -336,7 +338,7 @@ module Compare
 			do_filter_testcase_stat_keys stats
 		end
 
-		def calc_changed_stat_keys
+		def calc_changed_stat_keys(matrixes_in)
 			if @comparer.use_all_stat_keys
 				stat_keys = get_all_stat_keys
 			elsif @comparer.use_stat_keys
@@ -344,7 +346,7 @@ module Compare
 			elsif @comparer.use_testcase_stat_keys
 				stat_keys = get_testcase_stat_keys
 			else
-				stat_keys = _calc_changed_stat_keys
+				stat_keys = _calc_changed_stat_keys(matrixes_in)
 			end
 			stat_keys |= get_include_stat_keys
 			stat_keys |= get_include_all_failure_stat_keys
@@ -356,8 +358,8 @@ module Compare
 			end
 		end
 
-		def changed_stat_keys
-			@changed_stat_keys ||= calc_changed_stat_keys
+		def changed_stat_keys(matrixes_in = nil)
+			@changed_stat_keys ||= calc_changed_stat_keys(matrixes_in)
 		end
 
 		def each_changed_stat
@@ -368,7 +370,7 @@ module Compare
 			cms = complete_matrixes ms
 			aruns = runs ms
 			cruns = complete_runs cms
-			changed_stat_keys.each {| stat_key|
+			changed_stat_keys(ms).each {| stat_key|
 				failure = is_failure stat_key
 				tms = failure ? ms : cms
 				truns = failure ? aruns : cruns
