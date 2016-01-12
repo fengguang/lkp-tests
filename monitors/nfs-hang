@@ -28,6 +28,9 @@ nfs_hang()
 		[ "$?" -eq 124 ] || return 1
 	done
 
+	# If ping failed -- possibly due to physical cable loose, network
+	# switch crashed, LKP server down, etc. -- it probably won't help
+	# to reboot (and keep rebooting).
 	ping -c 5 -q $LKP_SERVER > /dev/null || return 1
 
 	return 0
