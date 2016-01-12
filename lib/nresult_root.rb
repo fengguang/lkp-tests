@@ -172,6 +172,36 @@ class NMResultRoot < DataStore::Node
 	end
 end
 
+# Multiple "Multiple Result Root (_rt)"
+class MMResultRoot
+	def initialize
+		@mresult_roots = []
+	end
+
+	def add_mresult_root(_rt)
+		@mresult_roots << _rt
+	end
+
+	def matrix
+		merge_matrixes(@mresult_roots.map { |_rt| _rt.matrix })
+	end
+
+	def complete_matrix(m = nil)
+		m ||= matrix
+		if m['last_state.is_incomplete_run']
+			m = deepcopy(m)
+			filter_incomplete_run m
+			m
+		else
+			m
+		end
+	end
+
+	def axes
+		@mresult_roots.first.axes
+	end
+end
+
 class MResultRootTable < DataStore::Table
 	MRESULT_ROOT_DIR = File.join LKP_DATA_DIR, 'mresult_root'
 
