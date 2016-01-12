@@ -15,14 +15,27 @@ force_reboot()
 	echo b > /proc/sysrq-trigger
 }
 
+cpu_utilization()
+{
+	local cpu_usage
+	read cpu a b c previdle rest < /proc/stat
+	prevtotal=$((a+b+c+previdle))
+	sleep 10
+	read cpu a b c idle rest < /proc/stat
+	total=$((a+b+c+idle))
+	cpu_usage=$((100*((total-prevtotal) - (idle-previdle)) / (total-prevtotal) ))
+	echo $cpu_usage
+}
+
 nfs_hang()
 {
 	local loadavg
 	local misc
 
 	read loadavg misc < /proc/loadavg
-	[ ${loadavg%.*} -ge $((3 * nr_cpu + 10)) ] && return 1
-
+	[ ${loadavg%.*} -ge $((3 * nr_cpu + 10)) ] && {
+		[ $(cpu_utilization) -ge 5 ] && return 1
+	}
 	for i in $(seq 3); do
 		timeout 600 df > /dev/null
 		[ "$?" -eq 124 ] || return 1
