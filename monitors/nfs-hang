@@ -46,6 +46,7 @@ nfs_hang()
 	# to reboot (and keep rebooting).
 	ping -c 5 -q $LKP_SERVER > /dev/null || return 1
 
+	echo "nfs hang, loadavg: $loadavg, cpu utilization: $(cpu_utilization)%"
 	return 0
 }
 
