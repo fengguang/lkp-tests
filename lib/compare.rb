@@ -79,6 +79,8 @@ module Compare
 
 	STAT_BASE = :stat_base
 	AVGS = :avgs
+	MIN = :min
+	MAX = :max
 	STDDEVS = :stddevs
 	FAILS = :fails
 	CHANGES = :changes
@@ -574,6 +576,13 @@ module Compare
 		stat[STDDEVS] = vs.map { |v| v && v.size > 1 ? v.standard_deviation : -1 }
 	end
 
+	def self.calc_min_max(stat)
+		return if stat[FAILURE]
+		vs = stat[VALUES]
+		stat[MIN] = vs.map { |v| v && v.size > 0 ? v.min : -1 }
+		stat[MAX] = vs.map { |v| v && v.size > 0 ? v.max : -1 }
+	end
+
 	def self.calc_perf_change(stat)
 		return if stat[FAILURE]
 		avgs = stat[AVGS]
@@ -587,6 +596,7 @@ module Compare
 		calc_failure_fail stat
 		calc_failure_change stat
 		calc_avg_stddev stat
+		calc_min_max stat
 		calc_perf_change stat
 	end
 
