@@ -59,6 +59,10 @@ module Git
 			@release_tags_with_order
 		end
 
+		def ordered_release_tags
+			release_tags_with_order.map { |tag, order| tag }
+		end
+
 		def release_shas
 			@release_shas ||= release_tags.map {|release_tag| lib.command('rev-list', ['-1', release_tag])}
 		end
