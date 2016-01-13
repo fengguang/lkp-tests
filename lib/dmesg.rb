@@ -248,6 +248,11 @@ def analyze_error_id(line)
 		# [   61.268659] Corrupted low memory at ffff880000007b08 (7b08 phys) = 27200c000000000
 		bug_to_bisect = oops_to_bisect_pattern line
 		line = line.sub(/\b[0-9a-f]+\b phys/, "# phys").sub(/= \b[0-9a-f]+\b/, "= #")
+	when /nbd\d+/
+		# [   31.694592] ADFS-fs error (device nbd10): adfs_fill_super: unable to read superblock
+		# [   33.147854] block nbd15: Attempted send on closed socket
+		bug_to_bisect = oops_to_bisect_pattern line
+		line = line.gsub(/\bnbd\d+\b/, "nbd#")
 	else
 		bug_to_bisect = oops_to_bisect_pattern line
 	end
