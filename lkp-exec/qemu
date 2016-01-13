@@ -137,7 +137,6 @@ else
 	arch=$(arch)
 fi
 
-srcpath=$(dirname $(dirname $(readlink -e -v $0)))
 $LKP_SRC/sbin/pack -a $arch lkp-src
 lkp_initrd=/tmp/lkp_initrd-$USER/lkp/$LKP_USER/lkp-$arch.cgz
 
