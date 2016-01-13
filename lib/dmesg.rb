@@ -253,6 +253,11 @@ def analyze_error_id(line)
 		# [   33.147854] block nbd15: Attempted send on closed socket
 		bug_to_bisect = oops_to_bisect_pattern line
 		line = line.gsub(/\bnbd\d+\b/, "nbd#")
+	when /\b([a-zA-Z]+)\d+\b: set_features/
+		# [   14.754513] plip0: set_features() failed (-1); wanted 0x0000000000004000, left 0x0000000000004800
+		# [   14.626736] bcsf1: set_features() failed (-1); wanted 0x0000000000004000, left 0x0000000000004800
+		bug_to_bisect = oops_to_bisect_pattern line
+		line = line.sub(/\b([a-zA-Z]+)\d+\b: set_features/, '\1#: set_features')
 	else
 		bug_to_bisect = oops_to_bisect_pattern line
 	end

@@ -29,5 +29,13 @@ describe "Dmesg" do
 			line, bug_to_bisect = analyze_error_id "[   29.177529] REISERFS warning (device nbd3): sh-2006 read_super_block: bread failed (dev nbd3, block 2, size 4096)"
 			expect(line).to eq "REISERFS_warning(device_nbd#):sh-#read_super_block:bread_failed(dev_nbd#,block#,size#): 1"
 		end
+
+		it "should comparess set_feature messages" do
+			line, bug_to_bisect = analyze_error_id "[   14.754513] plip0: set_features() failed (-1); wanted 0x0000000000004000, left 0x0000000000004800"
+			expect(line).to eq "plip#:set_features()failed(-#);wanted#,left: 1"
+
+			line, bug_to_bisect = analyze_error_id "[   14.626736] bcsf1: set_features() failed (-1); wanted 0x0000000000004000, left 0x0000000000004800"
+			expect(line).to eq "bcsf#:set_features()failed(-#);wanted#,left: 1"
+		end
 	end
 end
