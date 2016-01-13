@@ -1,12 +1,12 @@
 model: Sandy Bridge
 memory: 6G
 hdd_partitions:
-  /dev/disk/by-id/ata-ST3750528AS_6VP2W0PA-part5
-  /dev/disk/by-id/ata-ST3750528AS_6VP2W0PA-part6
-  /dev/disk/by-id/ata-ST3750528AS_6VP2W0PA-part7
-  /dev/disk/by-id/ata-ST3750528AS_6VP2W0PA-part8
-  /dev/disk/by-id/ata-ST3750528AS_6VP2W0PA-part9
-  /dev/disk/by-id/ata-ST3750528AS_6VP2W0PA-part10
+  /dev/disk/by-id/ata-WDC_WD20EZRX-00D8PB0_WD-WCC4M6XASAKV-part5
+  /dev/disk/by-id/ata-WDC_WD20EZRX-00D8PB0_WD-WCC4M6XASAKV-part6
+  /dev/disk/by-id/ata-WDC_WD20EZRX-00D8PB0_WD-WCC4M6XASAKV-part7
+  /dev/disk/by-id/ata-WDC_WD20EZRX-00D8PB0_WD-WCC4M6XASAKV-part8
+  /dev/disk/by-id/ata-WDC_WD20EZRX-00D8PB0_WD-WCC4M6XASAKV-part9
+  /dev/disk/by-id/ata-WDC_WD20EZRX-00D8PB0_WD-WCC4M6XASAKV-part10
 swap_partitions:
-rootfs_partition: /dev/disk/by-id/ata-ST3750528AS_6VP2W0PA-part2
+rootfs_partition: /dev/disk/by-id/ata-WDC_WD20EZRX-00D8PB0_WD-WCC4M6XASAKV-part2
 netconsole_port: 6648
