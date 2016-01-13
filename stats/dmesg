@@ -72,34 +72,6 @@ def verify_serial_log(dmesg_lines)
 end
 verify_serial_log(dmesg_lines)
 
-=begin
-# <4>[  256.557393] [ INFO: possible circular locking dependency detected ]
- INFO_possible_circular_locking_dependency_detected: 1
-=end
-
-def oops_to_bisect_pattern(line)
-		words = line.split
-		return '' if words.empty?
-		patterns = []
-		words.each { |w|
-			case w
-			when /([a-zA-Z0-9_]+)\.(isra|constprop|part)\.[0-9]+\+0x/
-				patterns << $1
-				break
-			when /([a-zA-Z0-9_]+\+0x)/, /([a-zA-Z0-9_]+=)/
-				patterns << $1
-				break
-			when /[^a-zA-Z\/:._-]/
-				patterns << '.*' if patterns[-1] != '.*'
-			else
-				patterns << w
-			end
-		}
-		patterns.shift while patterns[0] == '.*'
-		patterns.pop   if patterns[-1] == '.*'
-		patterns.join(' ')
-end
-
 error_ids = {}
 if $PROGRAM_NAME =~ /dmesg/
 	output = grep_crash_head dmesg_file, '-o'
@@ -124,84 +96,7 @@ output.each_line { |line|
 	next if line =~ /[^\t\n\0[:print:]]/
 	line.tr! "\0", ''
 
-	case line
-	when /(INFO: rcu[_a-z]* self-detected stall on CPU)/,
-	     /(INFO: rcu[_a-z]* detected stalls on CPUs\/tasks:)/
-		line = $1
-		bug_to_bisect = $1
-	when /(BUG: unable to handle kernel)/,
-	     /(BUG: unable to handle kernel) NULL pointer dereference/,
-	     /(BUG: unable to handle kernel) paging request/
-		line = $1
-		bug_to_bisect = $1
-	when /(BUG: scheduling while atomic:)/,
-	     /(BUG: Bad page map in process)/,
-	     /(BUG: Bad page state in process)/,
-	     /(BUG: soft lockup - CPU#\d+ stuck for \d+s!)/,
-	     /(BUG: spinlock .* on CPU#\d+)/
-		line = $1
-		bug_to_bisect = $1
-	when /(BUG: ).* (still has locks held)/,
-	     /(INFO: task ).* (blocked for more than \d+ seconds)/
-		line = $1 + $2
-		bug_to_bisect = $2
-	when /WARNING:.* at .* ([a-zA-Z.0-9_]+\+0x)/
-		bug_to_bisect = 'WARNING:.* at .* ' + $1.sub(/\.(isra|constprop|part)\.[0-9]+\+0x/, '')
-		line =~ /(at .*)/
-		line = "WARNING: " + $1
-	when /(Kernel panic - not syncing: No working init found.)  Try passing init= option to kernel. /,
-	     /(Kernel panic - not syncing: No init found.)  Try passing init= option to kernel. /
-		line = $1
-		bug_to_bisect = line
-	when /(Out of memory: Kill process) \d+ \(/
-		line = $1
-		bug_to_bisect = $1
-	when /(Writer stall state) \d+ g\d+ c\d+ f/
-		line = $1
-		bug_to_bisect = $1
-	when /(used greatest stack depth:)/
-		line = $1
-		bug_to_bisect = $1
-	# printk(KERN_ERR "BUG: Dentry %p{i=%lx,n=%pd} still in use (%d) [unmount of %s %s]\n"
-	when  /(BUG: Dentry ).* (still in use) .* \[unmount of /
-		line = $1 + $2
-		bug_to_bisect = $1 + '.* ' + $2
-	when /([A-Z]+[ a-zA-Z]*): [a-f0-9]{4} \[#[0-9]+\] /
-		line = $1
-		bug_to_bisect = $1
-	when /(BUG: KASan: [a-z ]+) in /
-		line = $1
-		bug_to_bisect = $1
-	when /^backtrace:([a-zA-Z0-9_]+)/
-		bug_to_bisect = $1 + '+0x'
-	when /Corrupted low memory at/
-		# [   61.268659] Corrupted low memory at ffff880000007b08 (7b08 phys) = 27200c000000000
-		bug_to_bisect = oops_to_bisect_pattern line
-		line = line.sub(/\b[0-9a-f]+\b phys/, "# phys").sub(/= \b[0-9a-f]+\b/, "= #")
-	else
-		bug_to_bisect = oops_to_bisect_pattern line
-	end
-
-	error_id = line.sub(/^[^a-zA-Z]+/, "")
-
-	error_id.gsub! /\ \]$/, ""					# [ INFO: possible recursive locking detected ]
-	error_id.gsub! /\/c\/kernel-tests\/src\/[^\/]+\//, ''
-	error_id.gsub! /\/c\/(wfg|yliu)\/[^\/]+\//, ''
-	error_id.gsub! /\/lkp\/[^\/]+\/linux[0-9]*\//, ''
-	error_id.gsub! /\/kernel-tests\/linux[0-9]*\//, ''
-	error_id.gsub! /\.(isra|constprop|part)\.[0-9]+/, ''
-
-	error_id.gsub! /\b[0-9a-f]{8}\b/, "#"
-	error_id.gsub! /\b[0-9a-f]{16}\b/, "#"
-	error_id.gsub! /(=)[0-9a-f]+\b/, '\1#'
-	error_id.gsub! /[+\/]0x[0-9a-f]+\b/, ''
-	error_id.gsub! /[+\/][0-9a-f]+\b/, ''
-
-	error_id = common_error_id(error_id) + ': 1'
-
-	error_id.gsub! /([a-z]:)[0-9]+\b/, '\1'				# WARNING: at arch/x86/kernel/cpu/perf_event.c:1077 x86_pmu_start+0xaa/0x110()
-	error_id.gsub! /#:\[<#>\]\[<#>\]/, ''				# RIP: 0010:[<ffffffff91906d8d>]  [<ffffffff91906d8d>] validate_chain+0xed/0xe80
-
+	error_id, bug_to_bisect = analyze_error_id line
 	next if error_id.size <= 3
 
 	error_ids[error_id] ||= bug_to_bisect
