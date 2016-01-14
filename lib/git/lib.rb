@@ -38,10 +38,6 @@ module Git
 				system_env_variables = Hash[ENV_VARIABLE_NAMES.map {|name| [name, ENV[name]]}]
 
 				orig_command(cmd, opts, chdir, redirect, &block)
-			rescue Exception => e
-				$stderr.puts "GIT error: #{cmd} #{opts}: #{e.message}"
-				$stderr.puts "GIT dump: #{self.inspect}"
-				raise
 			ensure
 				system_env_variables.each {|name, value| ENV[name] = value}
 			end
