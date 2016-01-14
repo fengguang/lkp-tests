@@ -2,6 +2,10 @@
 
 LKP_SRC ||= ENV['LKP_SRC']
 
+# /c/linux% git grep '"[a-z][a-z_]\+%d"'|grep -o '"[a-z_]\+'|cut -c2-|sort -u
+LINUX_DEVICE_NAMES = IO.read("#{LKP_SRC}/etc/linux-device-names").split("\n")
+LINUX_DEVICE_NAMES_RE = /\b(#{LINUX_DEVICE_NAMES.join('|')})\d+/
+
 require "fileutils"
 require "tempfile"
 
@@ -271,11 +275,7 @@ def analyze_error_id(line)
 	# /c/linux-next% git grep -w 'register_blkdev' | grep -o '".*"'
 	error_id.gsub! /\b(bcache|blkext|btt|dasd|drbd|fd|hd|jsfd|lloop|loop|md|mdp|mmc|nbd|nd_blk|nfhd|nullb|nvme|pmem|ramdisk|scm|sd|simdisk|sr|ubd|ubiblock|virtblk|xsysace|zram)\d+/, '\1#'
 
-	# /c/linux% git grep -A2 'alloc_netdev' | grep '"[a-z]\+%d"' | grep -o '"[a-z]\+' | cut -c2- | sort -u
-	error_id.gsub! /\b(arc|ax|bce|bnep|bond|bpq|can|cfspi|dlci|dummy|es|eth|fc|fddi|firewire|hdlc|hip|hsi|hso|hwsim|ifb|irda|iucv|lapb|lt|meth|mon|msh|nas|osn|pvc|pvceth|sbni|sp|teql|upnlink|wifi|wlan|wm|wmx)\d+/, '\1#'
-
-	# /c/linux% git grep 'sprintf.*"[a-z]\+%d"' | grep -o '"[a-z]\+' | cut -c2- | sort -u
-	error_id.gsub! /\b(atm|bank|bce|bcp|bcsf|bcsh|callfunc|callfuncsingle|cciss|cdev|ch|clkout|context|cosa|cp|cpu|dcssblk|debug|default|dmamux|dmar|dpti|drbd|dvmrp|entry|eth|fb|fd|fealnx|graph|hba|hci|hpet|ida|img|ioc|ipmi|ippp|irqwork|jsfd|label|lec|line|lloop|loop|lt|mc|mclk|md|memcpy|midi|mpp|msblk|mspblk|nbd|node|nr|nullb|osd|osst|overlay|parport|plip|pmu|port|ppp|qsfp|raid|ram|rd|resched|resource|rfcomm|rose|rx|rxtx|sbni|scsi|sdma|sg|sl|slave|slcan|slram|spinlock|sr|ssid|st|stream|sym|timer|tx|unknown|video|yam)\d+/, '\1#'
+	error_id.gsub LINUX_DEVICE_NAMES_RE, '\1#'
 
 	error_id.gsub! /\b[0-9a-f]{8}\b/, "#"
 	error_id.gsub! /\b[0-9a-f]{16}\b/, "#"
