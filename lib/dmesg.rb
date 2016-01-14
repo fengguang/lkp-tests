@@ -248,11 +248,6 @@ def analyze_error_id(line)
 		# [   61.268659] Corrupted low memory at ffff880000007b08 (7b08 phys) = 27200c000000000
 		bug_to_bisect = oops_to_bisect_pattern line
 		line = line.sub(/\b[0-9a-f]+\b phys/, "# phys").sub(/= \b[0-9a-f]+\b/, "= #")
-	when /nbd\d+/
-		# [   31.694592] ADFS-fs error (device nbd10): adfs_fill_super: unable to read superblock
-		# [   33.147854] block nbd15: Attempted send on closed socket
-		bug_to_bisect = oops_to_bisect_pattern line
-		line = line.gsub(/\bnbd\d+\b/, "nbd#")
 	when /\b([a-zA-Z]+)\d+\b: set_features/
 		# [   14.754513] plip0: set_features() failed (-1); wanted 0x0000000000004000, left 0x0000000000004800
 		# [   14.626736] bcsf1: set_features() failed (-1); wanted 0x0000000000004000, left 0x0000000000004800
@@ -270,6 +265,11 @@ def analyze_error_id(line)
 	error_id.gsub! /\/lkp\/[^\/]+\/linux[0-9]*\//, ''
 	error_id.gsub! /\/kernel-tests\/linux[0-9]*\//, ''
 	error_id.gsub! /\.(isra|constprop|part)\.[0-9]+/, ''
+
+	# [   31.694592] ADFS-fs error (device nbd10): adfs_fill_super: unable to read superblock
+	# [   33.147854] block nbd15: Attempted send on closed socket
+	# /c/linux-next% git grep -w 'register_blkdev' | grep -o '".*"'
+	error_id.gsub! /\b(bcache|blkext|btt|dasd|drbd|fd|hd|jsfd|lloop|loop|md|mdp|mmc|nbd|nd_blk|nfhd|nullb|nvme|pmem|ramdisk|scm|sd|simdisk|sr|ubd|ubiblock|virtblk|xsysace|zram)\d+/, '\1#'
 
 	error_id.gsub! /\b[0-9a-f]{8}\b/, "#"
 	error_id.gsub! /\b[0-9a-f]{16}\b/, "#"
