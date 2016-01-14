@@ -475,21 +475,39 @@ module Compare
 
 	class GroupResult::MatrixExporter
 		include Property
-		prop_with :data_type, :include_axes, :axes_as_num,
+		prop_with :data_types, :data_type, :include_axes, :axes_as_num,
 			  :axis_prefix, :sort, :sort_stat_key,
-			  :include_runs
+			  :include_runs, :data_type_in_key
 		def initialize(group_result)
 			@group_result = group_result
-			@data_type = AVGS
+			@data_types = [AVGS]
 			@axes_as_num = true
 			@axis_prefix = ""
 			@sort = true
+			@data_type_in_key = false
+		end
+
+		def data_type
+			@data_types.first
+		end
+
+		def set_data_type(dt)
+			@data_types[0] = dt
+			self
 		end
 
 		def matrix
 			m = {}
 			@group_result.stat_enum.each { |stat|
-				m[stat[STAT_KEY]] = stat[@data_type]
+				stat_key = stat[STAT_KEY]
+				if @data_types.size == 1 && !@data_type_in_key
+					m[stat_key] = stat[@data_types.first]
+				else
+					@data_types.each { |dt|
+						key = GroupResult::MatrixExporter.key_with_data_type(stat_key, dt)
+						m[key] = stat[dt]
+					}
+				end
 			}
 			if @include_runs
 				g = @group_result.group
@@ -532,6 +550,12 @@ module Compare
 				matrix_with_axes
 			else
 				matrix
+			end
+		end
+
+		class << self
+			def key_with_data_type(key, data_type)
+				"#{key}.#{data_type}"
 			end
 		end
 	end
