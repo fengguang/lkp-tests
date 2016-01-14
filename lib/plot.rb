@@ -116,7 +116,7 @@ class MMatrixPlotter < MatrixPlotterBase
 	end
 
 	prop_with :output_file_name, :title
-	prop_with :x_stat_key, :x_label_key, :lines
+	prop_with :x_stat_key, :x_as_label, :lines
 	prop_with :y_margin, :y_range
 
 	# shortcut for one line figure
@@ -157,8 +157,6 @@ class MMatrixPlotter < MatrixPlotterBase
 
 				if @x_stat_key
 					data = [matrix[@x_stat_key], values]
-				elsif @x_label_key
-					data = [matrix[@x_label_key], values]
 				else
 					data = [values]
 					p.noxtics
@@ -169,7 +167,7 @@ class MMatrixPlotter < MatrixPlotterBase
 					else
 						ds.with = "linespoints pt 15 lt 0"
 					end
-					if @x_label_key
+					if @x_as_label
 						ds.using = "2:xticlabels(1)"
 					end
 					if line_title
