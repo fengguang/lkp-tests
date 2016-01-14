@@ -46,4 +46,8 @@ last_state.booting
 last_state.running
 last_state.error_umounted
 build-android.warning.*
+build-android.error.cp:*
+build-android.error.bin-bash:*
+build-android.error.grep:*
+build-android.error.find:*
 build-dpdk.warning.*
