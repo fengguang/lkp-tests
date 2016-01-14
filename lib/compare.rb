@@ -519,6 +519,7 @@ module Compare
 
 		def matrix_with_axes
 			cas = @group_result.compare_axeses
+			cas = cas.map { |as| Compare.axes_format as }
 			cas_keys = cas[0].keys
 			if @sort
 				sort_key = @sort_stat_key ||
