@@ -243,6 +243,18 @@ def save_matrix_as_csv(file, matrix, sep = ' ', header = true)
 	}
 end
 
+def print_matrix(matrix)
+	ks = matrix.map { |k, vs| k.size }.max
+	matrix.each { |k, vs|
+		printf "%-#{ks}s ", k
+		vs.each { |v|
+			s = format_number(v)
+			printf "%-12s", s
+		}
+		puts
+	}
+end
+
 def unite_params(result_root)
 	if not File.directory? result_root
 		$stderr.puts "#{result_root} is not a directory"

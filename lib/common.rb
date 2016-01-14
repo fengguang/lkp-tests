@@ -98,6 +98,28 @@ def remove_common_head(arr1, arr2)
 	[arr1[s...arr1.size] || [], arr2[s...arr2.size] || []]
 end
 
+## IO
+
+def format_number(number)
+	case number
+	when Float
+		an = number.abs
+		fmt =
+			if an < 1
+				'%.4f'
+			elsif an < 1000
+				'%.2f'
+			elsif an < 100000
+				'%.1f'
+			else
+				'%.4g'
+			end
+		fmt % [number]
+	else
+		number.to_s
+	end
+end
+
 ## Pathname
 
 def ensure_dir(dir)
