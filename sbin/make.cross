@@ -62,7 +62,7 @@ download_extract()
 
 install_crosstool()
 {
-	local URL=https://www.kernel.org/pub/tools/crosstool/files/bin
+	local URL=https://cdn.kernel.org/pub/tools/crosstool/files/bin
 	local list=/tmp/crosstool-files
 
 	[[ -s $list ]] || {
