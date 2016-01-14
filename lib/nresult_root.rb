@@ -395,6 +395,14 @@ class NMResultRootCollection
 	end
 end
 
+def nmresult_root_collections_for_axis(_rt, axis_key, values)
+	axes = _rt.axes
+	values.map { |v|
+		c = NMResultRootCollection.new axes
+		c.set(axis_key, v.to_s)
+	}
+end
+
 def nresult_root_fsck
 	col = NMResultRootCollection.new
 	col.each { |mrt|
