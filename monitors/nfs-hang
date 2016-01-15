@@ -19,12 +19,12 @@ force_reboot()
 cpu_utilization()
 {
 	local cpu_usage
-	read cpu a b c previdle rest < /proc/stat
-	prevtotal=$((a+b+c+previdle))
+	read cpu user_t nice_t system_t previdle_t rest < /proc/stat
+	prevtotal_t=$((user_t+nice_t+system_t+previdle_t))
 	sleep 10
-	read cpu a b c idle rest < /proc/stat
-	total=$((a+b+c+idle))
-	cpu_usage=$((100*((total-prevtotal) - (idle-previdle)) / (total-prevtotal) ))
+	read cpu user_t nice_t system_t idle_t rest < /proc/stat
+	total_t=$((user_t+nice_t+system_t+idle_t))
+	cpu_usage=$((100*((total_t-prevtotal_t)-(idle_t-previdle_t))/(total_t-prevtotal_t)))
 	echo $cpu_usage
 }
 
