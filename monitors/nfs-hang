@@ -15,6 +15,7 @@ force_reboot()
 	echo b > /proc/sysrq-trigger
 }
 
+# caculate cpu utilization roughly without iowait time
 cpu_utilization()
 {
 	local cpu_usage
@@ -34,6 +35,9 @@ nfs_hang()
 
 	read loadavg misc < /proc/loadavg
 	[ ${loadavg%.*} -ge $((3 * nr_cpu + 10)) ] && {
+	# If loadavg is high, but cpu ulilization(without counting iowait time)
+	# is low, it indicates many jobs are waiting for I/O(state D), may due
+	# to nfs hang.
 		[ $(cpu_utilization) -ge 5 ] && return 1
 	}
 	for i in $(seq 3); do
