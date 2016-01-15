@@ -213,7 +213,7 @@ tbox_cant_kexec()
 	[ "${HOSTNAME#*lkp-g5}"		!= "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*minnow-max}"	!= "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-nex04}"	!= "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-t410-v2}"	!= "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-t410}"	!= "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-bdw01}"	!= "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-bdw02}"	!= "$HOSTNAME" ] && return 0
 
