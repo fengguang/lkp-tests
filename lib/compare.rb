@@ -94,13 +94,14 @@ module Compare
 		# following properties are parameters for compare
 		prop_reader :stat_calc_funcs
 		prop_with :mresult_roots, :compare_axis_keys,
-							:sort_mresult_roots, :dedup_mresult_roots,
-							:use_all_stat_keys, :use_stat_keys,
-							:use_testcase_stat_keys,
-							:include_stat_keys, :include_all_failure_stat_keys,
-							:filter_stat_keys, :filter_testcase_stat_keys,
-							:group_by_stat, :show_empty_group, :compact_show,
-							:sort_by_group
+			:sort_mresult_roots, :dedup_mresult_roots,
+			:use_all_stat_keys, :use_stat_keys,
+			:use_testcase_stat_keys,
+			:include_stat_keys, :include_all_failure_stat_keys,
+			:filter_stat_keys, :filter_testcase_stat_keys,
+			:gap,
+			:group_by_stat, :show_empty_group, :compact_show,
+			:sort_by_group
 
 		private
 
@@ -108,6 +109,7 @@ module Compare
 			@show_empty_group = false
 			@sort_mresult_roots = true
 			@dedup_mresult_roots = true
+			@gap = nil
 			set_params params
 			@stat_calc_funcs = [Compare.method(:calc_stat_change)]
 		end
@@ -147,7 +149,7 @@ module Compare
 			end
 		end
 
-    def compare_groups
+		def compare_groups
 			do_sort_mresult_roots
 			if dedup_mresult_roots
 				@mresult_roots.uniq!
@@ -287,7 +289,7 @@ module Compare
 			ms = deepcopy(matrixes_in)
 			m0 = ms[0]
 			ms.drop(1).each { |m|
-				changes = _get_changed_stats(m, m0, {})
+				changes = _get_changed_stats(m, m0, {'gap' => @comparer.gap})
 				if changes
 					changed_stat_keys |= changes.keys
 				end
