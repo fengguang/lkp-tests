@@ -252,11 +252,6 @@ def analyze_error_id(line)
 		# [   61.268659] Corrupted low memory at ffff880000007b08 (7b08 phys) = 27200c000000000
 		bug_to_bisect = oops_to_bisect_pattern line
 		line = line.sub(/\b[0-9a-f]+\b phys/, "# phys").sub(/= \b[0-9a-f]+\b/, "= #")
-	when /\b([a-zA-Z]+)\d+\b: set_features/
-		# [   14.754513] plip0: set_features() failed (-1); wanted 0x0000000000004000, left 0x0000000000004800
-		# [   14.626736] bcsf1: set_features() failed (-1); wanted 0x0000000000004000, left 0x0000000000004800
-		bug_to_bisect = oops_to_bisect_pattern line
-		line = line.sub(/\b([a-zA-Z]+)\d+\b: set_features/, '\1#: set_features')
 	else
 		bug_to_bisect = oops_to_bisect_pattern line
 	end
