@@ -2,7 +2,7 @@
 
 download()
 {
-	git_clone_update https://git.kernel.org/cgit/linux/kernel/git/wfg/vm-scalability.git/
+	git_clone_update https://git.kernel.org/pub/scm/linux/kernel/git/wfg/vm-scalability.git
 	source_dir="vm-scalability"
 }
 
