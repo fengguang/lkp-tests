@@ -275,7 +275,7 @@ def analyze_error_id(line)
 	# /c/linux-next% git grep -w 'register_blkdev' | grep -o '".*"'
 	error_id.gsub! /\b(bcache|blkext|btt|dasd|drbd|fd|hd|jsfd|lloop|loop|md|mdp|mmc|nbd|nd_blk|nfhd|nullb|nvme|pmem|ramdisk|scm|sd|simdisk|sr|ubd|ubiblock|virtblk|xsysace|zram)\d+/, '\1#'
 
-	error_id.gsub LINUX_DEVICE_NAMES_RE, '\1#'
+	error_id.gsub! LINUX_DEVICE_NAMES_RE, '\1#'
 
 	error_id.gsub! /\b[0-9a-f]{8}\b/, "#"
 	error_id.gsub! /\b[0-9a-f]{16}\b/, "#"
