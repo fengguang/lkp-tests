@@ -10,7 +10,7 @@ while line = STDIN.gets
 	case line
 	when /make: Entering directory .*\/(.*)'/
 		testname = $1
-	when /Failed/, /FAIL/
+	when /Failed/, /FAIL/, /failed$/
 		failed_cases.add testname
 	when /Test #([1-9].*):/
 		mqueue_test = $1
