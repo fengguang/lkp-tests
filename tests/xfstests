@@ -87,8 +87,5 @@ set_env
 run_test
 exit_value=$?
 
-# In the xfstests, there maybe a error "No space left on device" in results/generic/*.
-[ -d $BENCHMARK_ROOT/xfstests/results ] && grep -r -m 1 'No space left on device' $BENCHMARK_ROOT/xfstests/results 1>&2
-
 copy-results $BENCHMARK_ROOT/xfstests/results/*
 exit $exit_value
