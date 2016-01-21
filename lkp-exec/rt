@@ -20,7 +20,8 @@ done
 
 shift $(($OPTIND-1))
 
-export GIT_DIR=/c/repo/linux/.git
+export GIT_WORK_TREE=${GIT_WORK_TREE:-${LKP_GIT_WORK_TREE:-/c/repo/linux}}
+export GIT_DIR=${GIT_DIR:-$GIT_WORK_TREE/.git}
 
 shopt -s nullglob
 
