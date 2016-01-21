@@ -191,7 +191,7 @@ def dim_name(dim)
 	when /_commit$/
 		# FIXME rli9 duplicated code below, need refactoring
 		project = $opt_dimension.sub(/_.*$/, '')
-		tag = Git.open(project: project).gcommit(dim).interested_tag
+		tag = Git.open(project: project).gcommit(dim).interested_tag if Git.project_exist?(project)
 
 		tag || dim[0..(REL_WIDTH + ABS_WIDTH + ERR_WIDTH)]
 	else
@@ -402,10 +402,14 @@ end
 
 def setup_dims()
 	if $opt_dimension == 'commit'
-		git = Git.open(project: 'linux')
+		git = Git.open(project: 'linux') if Git.project_exist?('linux')
+		unless git
+			puts "info: \"export LKP_GIT_WORK_TREE=/path/to/project/git/repo/\" to enable parsing non-sha1 commit names." if ARGV.any? { |v| not Git.sha1_40?(v) }
+			puts "info: \"export LKP_GIT_WORK_TREE=/path/to/project/git/repo/\" to enable guessing what to compare." if ARGV.size == 1
+		end
 
-		$opt_dims = ARGV.map { |v| git.gcommit(v).sha }
-		if ARGV.size == 1
+		$opt_dims = ARGV.map { |v| git ? git.gcommit(v).sha : v }
+		if ARGV.size == 1 and git
 			if ARGV[0].index('/') # looks like a branch? compare its BASE_RC..HEAD
 				tag = git.gcommit($opt_dims[0]).base_rc_tag
 				$opt_dims.unshift git.gcommit(tag).sha
@@ -662,9 +666,10 @@ def show_delta(stat, key_g)
 		if $group_by_test
 			puts "#{$opt_field}"
 		else
-			git = Git.open(project: 'linux')
-
-			result_path['commit'] = git.gcommit(result_path['commit']).name if $opt_dimension != 'commit'
+			if Git.project_exist?('linux')
+				git = Git.open(project: 'linux')
+				result_path['commit'] = git.gcommit(result_path['commit']).name if $opt_dimension != 'commit'
+			end
 			test = result_path.test_desc $opt_dimension, $dim_not_a_param
 			puts test
 		end
