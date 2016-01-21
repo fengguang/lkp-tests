@@ -31,6 +31,8 @@ $opt_grep  = Array.new
 $opt_vgrep = Array.new
 $options = {}
 
+$project = 'linux'
+
 $perf_indices = {}
 $base_gm = {}
 $head_gm = {}
@@ -185,17 +187,22 @@ end
 def dim_name(dim)
 	case $opt_dimension
 	when 'commit'
-		project = 'linux'
-		tag = Git.open(project: project).gcommit(dim).interested_tag if Git.project_exist?(project)
+		tag = Git.open(project: $project, working_dir: GIT_WORK_TREE).gcommit(dim).interested_tag if Dir.exist?(GIT_WORK_TREE)
 		return tag || dim[0..(REL_WIDTH + ABS_WIDTH + ERR_WIDTH)]
 	when /_commit$/
 		# FIXME rli9 duplicated code below, need refactoring
-		project = $opt_dimension.sub(/_.*$/, '')
-		tag = Git.open(project: project).gcommit(dim).interested_tag if Git.project_exist?(project)
+		tag = Git.open(project: $project, working_dir: GIT_WORK_TREE).gcommit(dim).interested_tag if Dir.exist?(GIT_WORK_TREE)
 
 		tag || dim[0..(REL_WIDTH + ABS_WIDTH + ERR_WIDTH)]
 	else
 		return dim
+	end
+end
+
+def setup_project()
+	if $opt_dimension =~ /_commit$/
+		$project = $opt_dimension.sub(/_.*$/, '')
+		$opt_dimension = 'commit'
 	end
 end
 
@@ -401,8 +408,8 @@ def show_one_stat(stat)
 end
 
 def setup_dims()
-	if $opt_dimension == 'commit'
-		git = Git.open(project: 'linux') if Git.project_exist?('linux')
+	if $opt_dimension =~ /^(.*_)?commit$/
+		git = Git.open(project: $project, working_dir: GIT_WORK_TREE) if Dir.exist?(GIT_WORK_TREE)
 		unless git
 			puts "info: \"export LKP_GIT_WORK_TREE=/path/to/project/git/repo/\" to enable parsing non-sha1 commit names." if ARGV.any? { |v| not Git.sha1_40?(v) }
 			puts "info: \"export LKP_GIT_WORK_TREE=/path/to/project/git/repo/\" to enable guessing what to compare." if ARGV.size == 1
@@ -428,7 +435,7 @@ def setup_dims()
 	end
 
 	if $opt_save_changes
-		if $opt_dimension != "commit"
+		if $opt_dimension !~ /^(.*_)?commit$/
 			puts "error: -s/--save-changes works only with commit comapre"
 			exit 1
 		end
@@ -666,9 +673,9 @@ def show_delta(stat, key_g)
 		if $group_by_test
 			puts "#{$opt_field}"
 		else
-			if Git.project_exist?('linux')
-				git = Git.open(project: 'linux')
-				result_path['commit'] = git.gcommit(result_path['commit']).name if $opt_dimension != 'commit'
+			if Dir.exist?(GIT_WORK_TREE)
+				git = Git.open(project: $project, working_dir: GIT_WORK_TREE)
+				result_path['commit'] = git.gcommit(result_path['commit']).name if $opt_dimension !~ /^(.*_)?commit$/
 			end
 			test = result_path.test_desc $opt_dimension, $dim_not_a_param
 			puts test
@@ -745,6 +752,7 @@ def stat_priority(stat)
 end
 
 if $opt_all or $opt_index
+	setup_project
 	setup_dims
 	setup_result_root_hash
 	setup_changed_stats
