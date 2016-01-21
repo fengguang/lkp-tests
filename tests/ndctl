@@ -6,6 +6,7 @@
 # read commit from kernel module
 git checkout $commit
 
+cd /lkp/benchmarks/ndctl
 ./autogen.sh
 ./configure CFLAGS='-g -O0' --enable-test --prefix=/lkp/benchmarks/ndctl --sysconfdir=/lkp/benchmarks/ndctl/etc --libdir=/lkp/benchmarks/ndctl/lib
 
