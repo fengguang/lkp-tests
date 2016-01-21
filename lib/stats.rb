@@ -220,8 +220,14 @@ def load_base_matrix(matrix_path, head_matrix, options)
 	tags_merged = []
 
 	$git ||= {}
-	$git[project] ||= Git.open(project: project)
+	$git[project] ||= Git.open(project: project) if Git.project_exist?(project)
 	git = $git[project]
+
+	unless git
+		$stderr.puts "error: Cannot find project #{project} for bisecting"
+		$stderr.puts caller
+		return nil
+	end
 
 	begin
 		version, is_exact_match = git.gcommit(commit).last_release_tag
