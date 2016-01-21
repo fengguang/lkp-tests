@@ -230,7 +230,7 @@ of this file may be like this:
 Note that you may need to set environment variable
 
 ```
-	# export LINUX_GIT=/path/to/linux/kernel/repo
+	# export LKP_GIT_WORK_TREE=/path/to/linux/kernel/repo
 ```
 
 in order to run some of the commands.

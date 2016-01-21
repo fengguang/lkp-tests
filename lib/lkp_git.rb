@@ -3,7 +3,7 @@
 LKP_SRC ||= ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
 
 # Note! require 'git' will reset ENV GIT_WORK_TREE/GIT_DIR
-GIT_WORK_TREE	||= ENV['GIT_WORK_TREE'] || ENV['LINUX_GIT'] || '/c/repo/linux'
+GIT_WORK_TREE	||= ENV['GIT_WORK_TREE'] || ENV['LKP_GIT_WORK_TREE'] || '/c/repo/linux'
 GIT_DIR		||= ENV['GIT_DIR'] || GIT_WORK_TREE + '/.git'
 GIT		||= "git --work-tree=#{GIT_WORK_TREE} --git-dir=#{GIT_DIR}"
 
