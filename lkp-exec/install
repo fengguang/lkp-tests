@@ -154,10 +154,10 @@ distro=$_system_name_lowercase
 	exit 1
 }
 
+install_packages "lkp" $distro
 make_wakeup
 create_lkp_dirs
 create_host_config
-install_packages "lkp" $distro
 
 for filename in "$@"
 do
