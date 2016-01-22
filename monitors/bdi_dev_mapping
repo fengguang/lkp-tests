@@ -6,6 +6,8 @@ read_env_vars	# for $partitions
 for dev in $partitions; do
 	# skip nfs dev
 	[ "${dev#*:/}" != "$dev" ] && continue
+	# skip pmem dev
+	[ "${dev#*pmem}" != "$dev" ] && continue
 
 	[ "${dev#/dev/md}" != "$dev" ]	||
 	[ "${dev#/dev/ram}" != "$dev" ]	|| dev=$(echo "$dev" | tr -d '0-9')
