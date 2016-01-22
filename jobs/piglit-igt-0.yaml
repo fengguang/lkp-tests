@@ -5,17 +5,15 @@ timeout: 30m
 
 piglit:
   group:
-    ## The following some subcases are skipped, since the info "Test requirement not met in function" will appear in test result,
-    ## and result in test failure.
-    #- igt-000
+    - igt-000
     - igt-001
-    #- igt-002
-    #- igt-003
-    #- igt-004
-    #- igt-005
-    #- igt-006
-    #- igt-007
-    #- igt-008
+    #- igt-002 # OOM
+    #- igt-003 # skipped: Test requirement not met in function
+    #- igt-004 # OOM
+    #- igt-005 # skipped: Test requirement not met in function
+    #- igt-006 # skipped: Test requirement not met in function
+    - igt-007
+    #- igt-008 # skipped: Test requirement not met in function
     - igt-009
     - igt-010
     - igt-011
@@ -35,18 +33,18 @@ piglit:
     - igt-025
     - igt-026
     - igt-027
-    #- igt-028
+    #- igt-028 # skipped: Test requirement not met in function
     - igt-029
     - igt-030
     #- igt-031 # crash Out of memory: Kill process
-    #- igt-032
+    - igt-032
     - igt-033
     - igt-034
-    #- igt-035
-    #- igt-036
-    #- igt-037
+    - igt-035
+    - igt-036
+    - igt-037
     - igt-038
-    #- igt-039
+    - igt-039
     - igt-040
     - igt-041
     - igt-042
