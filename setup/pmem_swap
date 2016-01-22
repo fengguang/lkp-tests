@@ -1,12 +1,9 @@
 #!/bin/sh
 
-cat /sys/block/pmem*/size >/dev/null 2>&1 || {
-	echo "No pmem device"
+if [ -z "$partitions" ]; then
+	echo "no pmem partitions specified" >&2
 	exit 1
-}
+fi
 
-pmem_size=$(cat /sys/block/pmem*/size | sort -nr | head -1)
-pmem_device=$(grep -l -e $pmem_size /sys/block/pmem*/size | awk -F'/' '{print "/dev/"$4}')
 swapoff -a
-mkswap $pmem_device
-swapon $pmem_device
+for i in $partitions; do mkswap $i && swapon $i -p 1; done
