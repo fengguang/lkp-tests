@@ -3,6 +3,7 @@
 # - nr_hdd
 # - nr_brd
 # - nr_srd
+# - nr_pmem
 # - wait_disks_timeout
 
 # the hosts config may either
@@ -48,11 +49,20 @@ wait_disks()
 
 wait_disks
 
+max_pmem=$(echo /sys/block/pmem* | wc -w)
+[ $max_pmem -eq 0 ] && {
+	echo "No pmem device"
+	exit 1
+}
+
 [ -z "$nr_hdd" ] && nr_hdd=0
 [ -z "$nr_ssd" ] && nr_ssd=0
+[ -z "$nr_pmem" ] && nr_pmem=0
 
 [ "$nr_ssd" -gt "$max_ssd" ] && nr_ssd=$max_ssd
 [ "$nr_hdd" -gt "$max_hdd" ] && nr_hdd=$max_hdd
+[ "$nr_pmem" -gt "$max_pmem" ] && nr_pmem=$max_pmem
+
 
 if [ -n "$nr_hdd" -a "$nr_hdd" != 0 ]; then
 	nr_partitions=$nr_hdd
@@ -89,6 +99,11 @@ elif [ -n "$scsi_ram" -a "$scsi_ram" != 0 ]; then
 	nr_partitions=1
 	disk_description=1scsi_ram
 	disks=$(echo $partitions | tr '\n' ' ')
+elif [ -n "$nr_pmem" -a "$nr_pmem" != 0 ]; then
+         nr_partitions=$nr_pmem
+         partitions=`ls /dev/pmem*`
+         disk_descriptions=${nr_pmem}pmem
+         disks="fake pmem disk, you shouldn't use it"
 else
 	echo "setup/disk: should not reach here" >&2
 	echo "setup/disk: dumping shell variables:"
