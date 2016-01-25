@@ -51,7 +51,7 @@ wait_disks
 
 max_pmem=$(echo /sys/block/pmem* | wc -w)
 [ $max_pmem -eq 0 ] && {
-	echo "No pmem device"
+	echo "No pmem device" >&2
 	exit 1
 }
 
@@ -113,7 +113,7 @@ else
 fi
 
 [ -z "$nr_partitions" -o "$nr_partitions" -lt 1 ] && {
-	echo "setup/disk: no disk partitions found, nr_partitions=$nr_partitions"
+	echo "setup/disk: no disk partitions found, nr_partitions=$nr_partitions" >&2
 	exit 1
 }
 
