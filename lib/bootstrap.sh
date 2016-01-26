@@ -186,7 +186,7 @@ mount_rootfs()
 		}
 		mkdir -p /opt/rootfs/tmp
 		CACHE_DIR=/opt/rootfs/tmp
-		cleanup_commit_cache $CACHE_DIR/pkg
+		cleanup_pkg_cache $CACHE_DIR/pkg
 	else
 		CACHE_DIR=/tmp/cache
 		mkdir -p $CACHE_DIR
