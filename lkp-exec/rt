@@ -43,9 +43,14 @@ fi
 for pattern
 do
 	# expand v3.12 etc. to commit SHA1
-	commit=$(git rev-list -n1 "$pattern" 2>/dev/null) &&
-	[[ $commit ]] &&
-	pattern=$commit
+	[[ "$pattern" =~ (v[0-9].[0-9]+[_-rc0-9]*) ]] &&
+	{
+		git_tag=$BASH_REMATCH
+		git_tag="${git_tag%/}"
+
+		commit=$(git rev-list -n1 "$git_tag" 2>/dev/null) &&
+		[[ $commit ]] && pattern="${pattern/$git_tag/$commit}"
+	}
 
 	if [[ "$paths" ]]; then
 		paths=$(echo "$paths" | grep -E "$pattern")
