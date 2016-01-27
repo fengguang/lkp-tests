@@ -52,9 +52,9 @@ do
 	else
 		paths=$(grep -h -E "$pattern" "${files[@]}")
 	fi
-done
 
-[[ $paths ]] || exit 0
+	[[ $paths ]] || exit 0
+done
 
 paths=$(echo "$paths" | sed -e 's#/$##')
 
