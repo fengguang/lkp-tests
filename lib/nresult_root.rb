@@ -239,7 +239,7 @@ class << LinuxMResultRootTable
 		layout = super
 		layout.add_index(DataStore::AxisIndex, "commit") { |index|
 			index.set_axis_keys ["commit"]
-		}
+		} if layout
 		layout
 	end
 end
