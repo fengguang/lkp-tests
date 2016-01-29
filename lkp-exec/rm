@@ -101,11 +101,25 @@ revert_unite_rt()
 	done
 }
 
+usage()
+{
+	cat <<-EOF
+Usage: lkp $script_name <result_root> | < pattern1 [pattern2] ...>
+For example:
+lkp rm /result/xfstests/4HDD-ext4-ext4/lkp-ws02/debian-x86_64-2015-02-07.cgz/x86_64-rhel/gcc-4.9/v4.3/0/
+lkp rm /xfstests/ /v4.3/
+EOF
+	exit 1
+}
+
+script_name=$(basename $0)
+[[ $# = 0 ]] && usage
+
 for param; do
 	is_abs_path $param ||
 	{
 		echo "Please use an absolute path for $param"
-		exit 1
+		usage
 	}
 done
 
