@@ -19,10 +19,11 @@ fifo=$TMP/fifo-$program
 tee-$program -a $TMP_RESULT_ROOT/$program < $fifo &
 echo $! >> $TMP/.pid-pipes
 
-# time command may link to busybox which not support -o option
-if [ -L '/usr/bin/time' ]; then
-	time_prefix=
-else
-	time_prefix="/usr/bin/time -v -o $TMP/${program}.time"
+time_path=$(which time)
+if [ "x${time_path}" != "x" ];then
+	time_help=$(${time_path} --help)
+	[ "${time_help#*--output}" != "${time_help}" ] &&
+		time_prefix="${time_path} -v -o $TMP/${program}.time"
 fi
+
 exec $time_prefix $exec_prefix $program_dir/$program "$@" > $fifo
