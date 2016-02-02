@@ -1,11 +1,6 @@
 #!/bin/bash
 
-if [[ $arch ]]; then
-	CONFIGURE_FLAGS="--arch=$arch"
-elif [[ ! $opt_deb ]]; then
-	echo "must specify '-a <arch>' argument"
-	exit
-fi
+CONFIGURE_FLAGS="--arch=$arch"
 
 download()
 {
@@ -15,11 +10,5 @@ download()
 
 install()
 {
-	cp -af config.mak run_tests.sh x86-run $BM_ROOT
-
-	# remove color character for test result
-	sed -i 's/\\e\[[03][12]*m//g' $BM_ROOT/run_tests.sh
-
-	mkdir -p $BM_ROOT/x86
-	cp -af x86/*.flat x86/run x86/unittests.cfg $BM_ROOT/x86
+	cp -af /tmp/$BM_NAME/* $BM_ROOT/
 }
