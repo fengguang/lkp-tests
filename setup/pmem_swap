@@ -6,4 +6,6 @@ if [ -z "$partitions" ]; then
 fi
 
 swapoff -a
-for i in $partitions; do mkswap $i && swapon $i -p 1; done
+for i in $partitions; do
+	mkswap $i && swapon $i -p 1
+done
