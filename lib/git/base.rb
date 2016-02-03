@@ -20,7 +20,7 @@ module Git
 		end
 
 		def commit_exist?(commit)
-			lib.orig_command('rev-list', ['-1', commit])
+			self.command('rev-list', ['-1', commit])
 		rescue
 			false
 		else
@@ -28,7 +28,7 @@ module Git
 		end
 
 		def remote_branch_exist?(remote, branch)
-			!command("branch --list -r #{remote}/#{branch}").empty?
+			!self.command("branch --list -r #{remote}/#{branch}").empty?
 		end
 
 		def default_remote
@@ -64,7 +64,7 @@ module Git
 		end
 
 		def release_shas
-			@release_shas ||= release_tags.map {|release_tag| lib.command('rev-list', ['-1', release_tag])}
+			@release_shas ||= release_tags.map {|release_tag| self.command('rev-list', ['-1', release_tag])}
 		end
 
 		def release_tags2shas
@@ -98,12 +98,10 @@ module Git
 		def sort_commits(commits)
 			scommits = commits.map { |c| c.to_s }
 			if scommits.size == 2
-				r = lib.command('rev-list', ["-n", "1", "^#{scommits[0]}", scommits[1]])
-				if r.strip.empty?
-					scommits.reverse!
-				end
+				r = self.command('rev-list', ["-n", "1", "^#{scommits[0]}", scommits[1]])
+				scommits.reverse! if r.strip.empty?
 			else
-				r = lib.command('rev-list', ['--no-walk', '--topo-order', '--reverse'] + scommits)
+				r = self.command('rev-list', ['--no-walk', '--topo-order', '--reverse'] + scommits)
 				scommits = r.split
 			end
 			scommits.map { |sc| gcommit sc }
