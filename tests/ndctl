@@ -4,9 +4,15 @@
 # cd
 # modprobe
 # read commit from kernel module
-git checkout $commit
+# git checkout $commit
 
 cd /lkp/benchmarks/ndctl
+
+(
+	cd /usr/bin
+	[ -x "automake"	] || ln -s automake-* automake
+)
+
 ./autogen.sh
 ./configure CFLAGS='-g -O0' --enable-test --prefix=/lkp/benchmarks/ndctl --sysconfdir=/lkp/benchmarks/ndctl/etc --libdir=/lkp/benchmarks/ndctl/lib
 
