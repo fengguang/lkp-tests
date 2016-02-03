@@ -1,0 +1,11 @@
+#!/bin/sh
+# - pipe_user_pages_soft
+
+sysctl_path="/proc/sys/fs/pipe-user-pages-soft"
+
+# for old kernel without the sysctl
+[ -f $sysctl_path ] || exit 0
+
+[ -n "$pipe_user_pages_soft" ] || pipe_user_pages_soft=0
+
+echo $pipe_user_pages_soft > $sysctl_path
