@@ -2,10 +2,15 @@
 
 RESULT_ROOT = ENV['RESULT_ROOT']
 
-Dir["#{RESULT_ROOT}/**/LTP_RUN_ON-*.log"].each { |log|
+Dir["#{RESULT_ROOT}/**/*.csv"].each { |log|
 	File.readlines(log).each do |line|
-		if line =~ /^(\S+)\s+FAIL/
-			puts "#{$1}.fail: 1"
+		if line =~ /(^LTP|^DDT)_[a-zA-Z0-9]+\;.+\;.*\;\d?\;\d?\;\d?\;$/
+			result = line.split(";")
+			if result[3] == "1"
+				puts "#{result[0]}.#{result[1]}.fail: 0"
+			else
+				puts "#{result[0]}.#{result[1]}.fail: 1"
+			end
 		end
 	end
 }
