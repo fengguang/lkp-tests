@@ -1,29 +1,36 @@
 #!/bin/bash
 
+shopt -s nullglob
+
 script_name=$(basename $0)
 usage()
 {
-	echo "Usage: lkp $script_name [-f filename] patterns..."
+	cat <<-EOF
+echo "Usage: lkp $script_name [-d N[dwm]] [-f filename] patterns..."
+echo "For example:"
+echo "lkp $script_name -d 3d  lkp-ws02  xfstests /0/"
+EOF
+
 	exit 1
 }
 
 [[ $# = 0 ]] && usage
 
-while getopts "f:0123456789" opt
+while getopts "f:d:" opt
 do
 	case $opt in
 		f ) opt_file="$OPTARG"; ;;
-		[0-9] ) opt_date="$opt"; ;;
-		? ) usage; ;;
+		d ) opt_date="$OPTARG"; ;;
+		? ) usage >&2; ;;
 	esac
 done
 
 shift $(($OPTIND-1))
 
-export GIT_WORK_TREE=${GIT_WORK_TREE:-${LKP_GIT_WORK_TREE:-/c/repo/linux}}
-export GIT_DIR=${GIT_DIR:-$GIT_WORK_TREE/.git}
+[[ $opt_date =~ [0-9]+d$ ]] && opt_date=${opt_date%d}
+[[ $opt_date =~ [0-9]+w$ ]] && opt_date=$((${opt_date%w} * 7))
+[[ $opt_date =~ [0-9]+m$ ]] && opt_date=$((${opt_date%m} * 30))
 
-shopt -s nullglob
 
 if [[ $opt_date ]]; then
 	files=()
@@ -39,6 +46,9 @@ else
 fi
 
 [[ $files ]] || exit 0
+
+export GIT_WORK_TREE=${GIT_WORK_TREE:-${LKP_GIT_WORK_TREE:-/c/repo/linux}}
+export GIT_DIR=${GIT_DIR:-$GIT_WORK_TREE/.git}
 
 for pattern
 do
