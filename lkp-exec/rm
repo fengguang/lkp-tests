@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source $LKP_SRC/lib/common.sh
+
 shopt -s nullglob
 
 is_rt()
@@ -21,56 +23,40 @@ check_rt()
 
 remove_ready()
 {
-	local result_root=$1
-	local patterns=
+	local i=0
+	local path
+	for path; do
+		[[ $path =~ /$ ]] || path="$path/"
+		if [[ -d "$path" ]] && is_rt $path ; then
+			paths[$i]=$path
+		else
+			paths[$i]=$(sed -n "/${path//\//\\/}/p" /lkp/paths/????-??-??-*)
+		fi
 
-	remove_flag=0  #0: remove RESULT_ROOT  1: remove _RESULT_ROOT
-	paths=
+		echo "sed -i /${path//\//\\/}/d  /lkp/paths/????-??-??-*"
+		echo "rm -fr ${paths[$i]}"
 
-
-	if [[ -d "$result_root" ]]; then
-		is_rt "$result_root" && paths="$result_root" || usage >&2
-	else
-
-		patterns="$@"
-
-		case $script_name in
-		rm)
-			paths=$($LKP_SRC/lkp-exec/rt "$patterns")
-			;;
-		_rm)
-			paths=$($LKP_SRC/lkp-exec/_rt "$patterns")
-			remove_flag=1
-			;;
-		esac
-
-		[[ "$paths" ]] ||
-		{
-			echo "Can not find result root match the patterns: $patterns" 1>&2
-			usage >&2
-		}
-
-	fi
-
-	echo "$paths"
+		i=$(( i + 1 ))
+	done
 }
 
 remove()
 {
+	local i=0
 	local path
-	local options
 	local file_name
 
-	for path in $paths; do
-		options="$options -e /${path//\//\\/}/d"
-	done
+	for path; do
+		[[ $path =~ /$ ]] || path="$path/"
 
-	# to avoid sed crash
-	for file_name in /lkp/paths/????-??-??-*; do
-		sed -i "$options" $file_name
-	done
+		# to avoid sed crash
+		for file_name in /lkp/paths/????-??-??-*; do
+			sed -i "/${path//\//\\/}/d"  $file_name
+		done
 
-	echo "$paths" | xargs rm -fr
+		rm -fr "${paths[$i]}"
+		i=$(( i + 1 ))
+	done
 }
 
 is_mrt()
@@ -86,13 +72,11 @@ is_mrt()
 
 remove_from_mrtts()
 {
-	[[ "$remove_flag" = "1" ]] && return
-
 	local path
 	local _path
 	local _paths
 
-	for path in $paths; do
+	for path in ${paths[@]}; do
 		_paths="$_paths\n$(dirname $path)"
 	done
 
@@ -105,14 +89,12 @@ remove_from_mrtts()
 
 revert_unite_rt()
 {
-	[[ "$remove_flag" = "1" ]] && return
-
 	local path
-	for path in $paths; do
+	for path in ${paths[@]}; do
 		is_rt $path && check_rt $path &&
 			lkp reprocess -d $path
 	done
-	for path in $paths; do
+	for path in ${paths[@]}; do
 		while is_rt $path && check_rt $path; do
 			sleep 10
 		done
@@ -131,14 +113,22 @@ EOF
 }
 
 script_name=$(basename $0)
-[[ $# = 0 ]] && usage >&2
+[[ $# = 0 ]] && usage
+
+for param; do
+	is_abs_path $param ||
+	{
+		echo "Please use an absolute path for $param"
+		usage
+	}
+done
 
 echo "The command to remove the result path are:"
-remove_ready "$@" | less
+remove_ready "$@"
 echo -n "!!! Do you really want to do that? [No/yes]: "
 read answer
 if [[ $answer = "yes" ]]; then
 	revert_unite_rt
 	remove_from_mrtts
-	remove
+	remove "$@"
 fi
