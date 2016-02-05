@@ -21,41 +21,13 @@ check_rt()
 	grep -q $path/stats.json $dn/matrix.json
 }
 
-remove_ready()
-{
-	local i=0
-	local path
-	for path; do
-		[[ $path =~ /$ ]] || path="$path/"
-		if [[ -d "$path" ]] && is_rt $path ; then
-			paths[$i]=$path
-		else
-			paths[$i]=$(sed -n "/${path//\//\\/}/p" /lkp/paths/????-??-??-*)
-		fi
-
-		echo "sed -i /${path//\//\\/}/d  /lkp/paths/????-??-??-*"
-		echo "rm -fr ${paths[$i]}"
-
-		i=$(( i + 1 ))
-	done
-}
-
 remove()
 {
-	local i=0
-	local path
-	local file_name
-
 	for path; do
+		path=$(abs_path $path)
 		[[ $path =~ /$ ]] || path="$path/"
-
-		# to avoid sed crash
-		for file_name in /lkp/paths/????-??-??-*; do
-			sed -i "/${path//\//\\/}/d"  $file_name
-		done
-
-		rm -fr "${paths[$i]}"
-		i=$(( i + 1 ))
+		echo sed -i \'"/${path//\//\\/}/d"\' "/lkp/paths/????-??-??-*"
+		echo rm -fr "$path"
 	done
 }
 
@@ -73,48 +45,35 @@ is_mrt()
 remove_from_mrtts()
 {
 	local path
-	local _path
-	local _paths
-
-	for path in ${paths[@]}; do
-		_paths="$_paths\n$(dirname $path)"
+	local dir
+	for path; do
+		path=$(abs_path $path)
+		for dir in $(find $path -type d); do
+			is_mrt $dir && echo $dir
+		done | lkp delete_mrts
 	done
-
-	_paths=$(echo -e "$_paths" | sort | uniq)
-
-	for _path in $_paths; do
-		is_mrt $_path && echo $_path
-	done | lkp delete_mrts
 }
 
 revert_unite_rt()
 {
 	local path
-	for path in ${paths[@]}; do
+	for path; do
 		is_rt $path && check_rt $path &&
 			lkp reprocess -d $path
 	done
-	for path in ${paths[@]}; do
+	for path; do
 		while is_rt $path && check_rt $path; do
 			sleep 10
 		done
 	done
 }
 
-for param; do
-	is_abs_path $param ||
-	{
-		echo "Please use an absolute path for $param"
-		exit 1
-	}
-done
-
 echo "The command to remove the result path are:"
-remove_ready "$@"
+remove "$@"
 echo -n "!!! Do you really want to do that? [No/yes]: "
 read answer
 if [[ $answer = "yes" ]]; then
-	revert_unite_rt
-	remove_from_mrtts
-	remove "$@"
+	revert_unite_rt "$@"
+	remove_from_mrtts "$@"
+	remove "$@" | bash
 fi
