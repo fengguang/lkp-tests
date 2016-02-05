@@ -3,6 +3,7 @@
 # - nr_threads
 # - mode
 # - ipc
+# - iterations
 
 ## Hackbench  is  both  a benchmark and a stress test for the Linux kernel scheduler.
 ## It's main job is to create a specified number  of  pairs  of schedulable entities
@@ -41,13 +42,30 @@ run_hackbench()
 	cmd /usr/bin/hackbench -g $nr_threads --$mode $ipc_option -l $loops
 }
 
+run_for_time()
+{
+	start_time=$(date +%s)
+	while :
+	do
+		run_hackbench
+		now=$(date +%s)
+		[ $((now - start_time)) -gt "$runtime" ] && break
+	done
+}
+
+run_for_iterations()
+{
+	for i in $(seq 1 $iterations); do
+		echo "Iterations: $i"
+		run_hackbench
+	done
+}
+
 set_env
 set_loops
 
-start_time=$(date +%s)
-while :
-do
-	run_hackbench
-	now=$(date +%s)
-	[ $((now - start_time)) -gt "$runtime" ] && break
-done
+if [ -n "$iterations" ]; then
+	run_for_iterations
+else
+	run_for_time
+fi
