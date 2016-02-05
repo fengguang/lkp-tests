@@ -25,6 +25,11 @@ remove()
 {
 	for path; do
 		path=$(abs_path $path)
+		[[ -d "$path" ]] || {
+			echo "The path doesn't exist: $path" >&2
+			exit 1
+		}
+
 		[[ $path =~ /$ ]] || path="$path/"
 		echo sed -i \'"/${path//\//\\/}/d"\' "/lkp/paths/????-??-??-*"
 		echo rm -fr "$path"
@@ -67,6 +72,19 @@ revert_unite_rt()
 		done
 	done
 }
+
+usage()
+{
+	cat >&2 <<-EOF
+Usage: lkp $script_name <paths>
+For example:
+lkp $script_name /result/xfstests/4HDD-ext4-ext4/lkp-ws02/debian-x86_64-2015-02-07.cgz/x86_64-rhel/gcc-4.9/v4.3/0/
+EOF
+	exit 1
+}
+
+script_name=$(basename $0)
+[[ $# = 0 ]] && usage
 
 echo "The command to remove the result path are:"
 remove "$@"
