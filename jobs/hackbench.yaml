@@ -1,6 +1,33 @@
 testcase: hackbench
 category: benchmark
 
+default-monitors:
+  wait: activate-monitor
+  kmsg:
+  uptime:
+  iostat:
+  vmstat:
+  numa-numastat:
+  numa-vmstat:
+  numa-meminfo:
+  proc-vmstat:
+  proc-stat:
+    interval: 10
+  meminfo:
+  slabinfo:
+  interrupts:
+  lock_stat:
+  softirqs:
+  bdi_dev_mapping:
+  diskstats:
+  nfsstat:
+  cpuidle:
+  cpufreq-stats:
+  turbostat:
+  pmeter:
+  sched_debug:
+    interval: 60
+
 nr_threads:
 - 1600%
 - 50%
