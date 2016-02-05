@@ -9,8 +9,23 @@
 [ "$nr_partitions" -lt 2 ] && die "$nr_partitions -lt 2"
 cd $BENCHMARK_ROOT/xfstests || die "fail to cd $BENCHMARK_ROOT/xfstests"
 
+check_add_user()
+{
+	[ "x$1" != "x" ] || return
+
+	cat /etc/passwd | grep -q "$1"
+	[ $? -eq 0 ] && return
+
+	useradd --uid 1001 --gid 1001 "$1"
+	[ $? -eq 0 ] || echo "$(basename $0): useradd $1 failed" 1>&2
+}
+
 set_env()
 {
+	# "fsgqa" user is required in some of xfstests, thus check if such user
+	# has already been added. If not, add "fsgqa" user.
+	check_add_user "fsgqa"
+
 	umount $mount_points
 
 	note export TEST_DIR=${mount_points%% *}
