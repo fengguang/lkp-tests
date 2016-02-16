@@ -14,3 +14,33 @@ set_tbox_group()
 	fi
 }
 
+is_mrt()
+{
+	local dir=$1
+	local -a jobs
+	local -a matrix
+	matrix=( $dir/matrix.json* )
+	[ ${#matrix} -eq 0 ] && return 1
+	jobs=( $dir/[0-9]*/job.yaml )
+	[ ${#jobs} -ge 1 ]
+}
+
+# expand v4.1 etc. to commit SHA1
+# eg: /gcc-4.9/v4.1/ => /gcc-4.9/b953c0d234bc72e8489d3bf51a276c5c4ec85345/
+expand_tag_to_commit()
+{
+	local param=$1
+	local git_tag
+	local commit
+
+	[[ "$param" =~ (v[0-9].[0-9]+[_-rc0-9]*) ]] &&
+	{
+		git_tag=$BASH_REMATCH
+		git_tag="${git_tag%/*}"
+
+		commit=$(git rev-list -n1 "$git_tag" 2>/dev/null) &&
+		[[ $commit ]] && param="${param/$git_tag/$commit}"
+	}
+
+	echo "$param"
+}

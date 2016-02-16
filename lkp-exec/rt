@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source $LKP_SRC/lib/result.sh
+
 shopt -s nullglob
 
 script_name=$(basename $0)
@@ -60,14 +62,7 @@ flag_pattern=0
 for pattern
 do
 	# expand v3.12 etc. to commit SHA1
-	[[ "$pattern" =~ (v[0-9].[0-9]+[_-rc0-9]*) ]] &&
-	{
-		git_tag=$BASH_REMATCH
-		git_tag="${git_tag%/}"
-
-		commit=$(git rev-list -n1 "$git_tag" 2>/dev/null) &&
-		[[ $commit ]] && pattern="${pattern/$git_tag/$commit}"
-	}
+	pattern=$(expand_tag_to_commit $pattern)
 
 	if [[ "$flag_pattern" = "0" ]]; then
 		cmd="grep -h -E $pattern "${files[@]}""
