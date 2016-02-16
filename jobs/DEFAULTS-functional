@@ -3,5 +3,5 @@ testcase: DEFAULTS
 default-monitors:
   wait: activate-monitor
   kmsg:
-  vmstat:
+  heartbeat:
     interval: 10

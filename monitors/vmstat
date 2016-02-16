@@ -1,9 +1,19 @@
 #!/bin/sh
 
+file=$(basename $0)
+
 if vmstat --help | grep -q -F 'timestamp'; then
 	opt_timestamp='--timestamp'
 else
 	opt_timestamp=
 fi
 
-exec vmstat $opt_timestamp -n ${interval:-1} $count
+if [ -z "$interval" ]; then
+	if [ "$file" = heartbeat ]; then
+		interval=10
+	else
+		interval=1
+	fi
+fi
+
+exec vmstat $opt_timestamp -n $interval $count
