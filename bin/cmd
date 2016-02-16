@@ -2,6 +2,6 @@
 
 date=$(date +'%F %T')
 echo "$date $@"
-echo "$date $@" >> $RESULT_ROOT/reproduce.sh
+echo "$date $@" >> $TMP_RESULT_ROOT/reproduce.sh
 
 exec "$@"
