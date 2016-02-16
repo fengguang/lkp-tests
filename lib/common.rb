@@ -5,6 +5,7 @@ LKP_SRC ||= ENV['LKP_SRC']
 require "pathname"
 require "fileutils"
 require "stringio"
+require "#{LKP_SRC}/lib/array_ext"
 
 LKP_DATA_DIR = '/data'
 
@@ -47,14 +48,6 @@ def ensure_array(obj)
 		obj
 	else
 		[obj]
-	end
-end
-
-class Array
-	# multiple two arrays via multiple element with same index,
-	# return the result array.
-	def pos_mulitple(an_arr)
-		zip(an_arr).map { |v1, v2| v1 * v2 }
 	end
 end
 
