@@ -31,18 +31,24 @@ shift $(($OPTIND-1))
 [[ $opt_date =~ [0-9]+w$ ]] && opt_date=$((${opt_date%w} * 7))
 [[ $opt_date =~ [0-9]+m$ ]] && opt_date=$((${opt_date%m} * 30))
 
-
 if [[ $opt_date ]]; then
 	files=()
 	for d in 0 $(seq $opt_date)
 	do
 		day=$(date +%F -d "$d days ago")
-		files+=(/lkp/paths/$day-*)
+
+		if [[ $script_name =~ ^_ ]]; then
+			files+=(/lkp/paths/$day-* /lkp/paths/.$day-*)
+		else
+			files+=(/lkp/paths/$day-*)
+		fi
 	done
-elif [[ $script_name =~ ^_ ]]; then
-	files=(/lkp/paths/????-??-??-* /lkp/paths/.????-??-??-*)
 else
-	files=(/lkp/paths/????-??-??-*)
+	if [[ $script_name =~ ^_ ]]; then
+		files=(/lkp/paths/????-??-??-* /lkp/paths/.????-??-??-*)
+	else
+		files=(/lkp/paths/????-??-??-*)
+	fi
 fi
 
 [[ $files ]] || exit 0
