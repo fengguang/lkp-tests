@@ -26,7 +26,7 @@ remove()
 	for path; do
 		path=$(abs_path $path)
 		[[ -d "$path" ]] || {
-			echo "The path doesn't exist: $path" >&2
+			echo "The path does not exist: $path" >&2
 			exit 1
 		}
 
