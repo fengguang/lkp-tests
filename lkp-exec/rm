@@ -1,5 +1,7 @@
 #!/bin/bash
 
+shopt -s nullglob
+
 is_mrt()
 {
     local dir=$1
@@ -20,13 +22,24 @@ remove_from_mrtts()
 remove()
 {
 	local pattern
-	local cmd
-	local file
+	local git_tag
+	local commit
 	local flag_pattern=0
-	local tmp_file=$(mktemp)
+	local cmd
+	local path_file
+	local dot_temp_file
 
 	for pattern in $patterns
 	do
+		# expand v3.12 etc. to commit SHA1
+		[[ "$pattern" =~ (v[0-9].[0-9]+[_-rc0-9]*) ]] &&
+		{
+			git_tag=$BASH_REMATCH
+			git_tag="${git_tag%/*}"
+			commit=$(git rev-list -n1 "$git_tag" 2>/dev/null) &&
+			[[ $commit ]] && pattern="${pattern/$git_tag/$commit}"
+		}
+
 		if [[ "$flag_pattern" = "0" ]]; then
 			cmd="/${pattern//\//\\/}/"
 			flag_pattern=1
@@ -35,17 +48,17 @@ remove()
 		fi
 	done
 
-	for file in $(grep -l "$pattern" /lkp/paths/????-??-??-*)
+	[[ -d "/lkp/.paths/" ]] || mkdir "/lkp/.paths/" || exit
+	dot_temp_file=$(mktemp -p /lkp/.paths/ .tmpXXXXXX)
+
+	for path_file in $(grep -l "$pattern" /lkp/paths/????-??-??-* /lkp/paths/.????-??-??-*)
 	do
-		if awk "$cmd {next}; {print}" $file > $tmp_file; then
-			mv -f $tmp_file $file
-		else
-			rm -f $tmp_file
-			echo "awk command have an error occurs: awk $cmd {next}; {print} $file" >&2
-			exit 1
-		fi
+		awk "BEGIN {modified=0} $cmd {modified=1;next}; {print} END {exit 1-modified}" $path_file > $dot_temp_file &&
+		mv -f $dot_temp_file $path_file
+
 	done
 
+	rm -f $dot_temp_file
 	cat $temp_file | xargs rm -rf
 }
 
@@ -64,21 +77,27 @@ script_name=$(basename $0)
 
 patterns="$*"
 
-echo "The command to remove the _result_root are:" >&2
-echo "awk $patterns /lkp/paths/????-??-??-*"
-
 temp_file=$(mktemp)
 lkp _rt $patterns > $temp_file
 
 [[ -s "$temp_file" ]] ||
 {
 	rm -f $temp_file
-	echo "Cannot find the match path according to the patterns: $patterns" >&2
+	echo "Cannot find the match _result_root according to the patterns: $patterns" >&2
 	exit 1
 }
 
-sleep 1
-more $temp_file
+export GIT_WORK_TREE=${GIT_WORK_TREE:-${LKP_GIT_WORK_TREE:-/c/repo/linux}}
+export GIT_DIR=${GIT_DIR:-$GIT_WORK_TREE/.git}
+
+{
+echo "Warning:"
+echo "\"lkp _rt $patterns\" will be used to search the _resutl_root."
+echo "\"lkp rm $patterns\" will remove the following _result_root."
+echo
+
+cat $temp_file
+} | more
 
 echo -n "!!! Do you really want to do that? [No/yes]: "
 read answer
@@ -94,5 +113,5 @@ if [[ $answer = "yes" ]]; then
 	echo "Done" >&2
 fi
 
-rm -f $temp_file
+rm $temp_file
 
