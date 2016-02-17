@@ -5,6 +5,12 @@ source $LKP_SRC/lib/result.sh
 shopt -s nullglob
 
 script_name=$(basename $0)
+
+# Tips:
+# - to search file under /result/xxx/result/ directory, use `-f result/xxx` option,like below:
+#   lkp rt -d 3d -f result/0.json piglit /0/
+# - to filter non-existence directory, use `-f .` option,like below:
+#   lkp rt -d 3d -f . piglit  /0/
 usage()
 {
 	cat <<-EOF
