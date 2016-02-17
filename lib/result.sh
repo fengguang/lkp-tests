@@ -77,3 +77,30 @@ cleanup_path_record_from_patterns()
 
 	rm -f $dot_temp_file
 }
+
+cleanup_path_record_from_result_root()
+{
+
+	local path=$1
+	local cmd
+	local path_file
+	local dot_temp_file
+
+	path=$(expand_tag_to_commit $path)
+	cmd="/${path//\//\\/}/"
+
+	[[ -d "/lkp/.paths/" ]] || mkdir "/lkp/.paths/" || return
+	dot_temp_file=$(mktemp -p /lkp/.paths/ .tmpXXXXXX)
+
+	for path_file in $(grep -l "$path" /lkp/paths/????-??-??-* /lkp/paths/.????-??-??-*)
+	do
+		lockfile-create -q --use-pid --retry 10 --lock-name "$path_file".lock
+
+		awk "BEGIN {modified=0} $cmd {modified=1;next}; {print} END {exit 1-modified}" $path_file > $dot_temp_file &&
+		mv -f $dot_temp_file $path_file
+
+		lockfile-remove --lock-name "$path_file".lock
+	done
+
+	rm -f $dot_temp_file
+}
