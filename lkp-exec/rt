@@ -8,9 +8,10 @@ script_name=$(basename $0)
 usage()
 {
 	cat <<-EOF
-echo "Usage: lkp $script_name [-d N[dwm]] [-f filename] patterns..."
-echo "For example:"
-echo "lkp $script_name -d 3d  lkp-ws02  xfstests /0/"
+Usage:
+	lkp $script_name [-d N[dwm]] [-f filename] patterns...
+Example:
+	lkp $script_name -d 3d  lkp-ws02  xfstests /0/
 EOF
 
 	exit 1
