@@ -38,7 +38,8 @@ expand_tag_to_commit()
 		git_tag=$BASH_REMATCH
 		git_tag="${git_tag%/*}"
 
-		commit=$(git rev-list -n1 "$git_tag" 2>/dev/null) &&
+		commit=$(GIT_WORK_TREE=${GIT_WORK_TREE:-${LKP_GIT_WORK_TREE:-/c/repo/linux}} GIT_DIR=${GIT_DIR:-$GIT_WORK_TREE/.git} \
+				git rev-list -n1 "$git_tag" 2>/dev/null) &&
 		[[ $commit ]] && param="${param/$git_tag/$commit}"
 	}
 

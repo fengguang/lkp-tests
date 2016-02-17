@@ -56,9 +56,6 @@ fi
 
 [[ $files ]] || exit 0
 
-export GIT_WORK_TREE=${GIT_WORK_TREE:-${LKP_GIT_WORK_TREE:-/c/repo/linux}}
-export GIT_DIR=${GIT_DIR:-$GIT_WORK_TREE/.git}
-
 flag_pattern=0
 for pattern
 do

@@ -41,9 +41,6 @@ lkp _rt $patterns > $temp_file
 	exit 1
 }
 
-export GIT_WORK_TREE=${GIT_WORK_TREE:-${LKP_GIT_WORK_TREE:-/c/repo/linux}}
-export GIT_DIR=${GIT_DIR:-$GIT_WORK_TREE/.git}
-
 {
 echo "Warning:"
 echo "\"lkp _rt $patterns\" will be used to search the _resutl_root."
