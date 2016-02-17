@@ -232,12 +232,8 @@ def load_base_matrix(matrix_path, head_matrix, options)
 	begin
 		version, is_exact_match = git.gcommit(commit).last_release_tag
 		puts "project: #{project}, version: #{version}, is exact match: #{is_exact_match}" if ENV['LKP_VERBOSE']
-	rescue Exception => e
-		$stderr.puts e.message
-		$stderr.puts "git: #{git.to_yaml}"
-		$stderr.puts "options: #{options}"
-		$stderr.puts "matrix_path: #{matrix_path}"
-		$stderr.puts e.backtrace
+	rescue StandardError => e
+		dump_exception e, binding
 		return nil
 	end
 
