@@ -69,6 +69,7 @@ cleanup_path_record_from_patterns()
 
 	[[ -d "/lkp/.paths/" ]] || mkdir "/lkp/.paths/" || return
 	dot_temp_file=$(mktemp -p /lkp/.paths/ .tmpXXXXXX)
+	chmod 664 $dot_temp_file || return
 
 	for path_file in $(grep -l "$pattern" /lkp/paths/????-??-??-* /lkp/paths/.????-??-??-*)
 	do
@@ -92,6 +93,7 @@ cleanup_path_record_from_result_root()
 
 	[[ -d "/lkp/.paths/" ]] || mkdir "/lkp/.paths/" || return
 	dot_temp_file=$(mktemp -p /lkp/.paths/ .tmpXXXXXX)
+	chmod 664 $dot_temp_file || return
 
 	for path_file in $(grep -l "$path" /lkp/paths/????-??-??-* /lkp/paths/.????-??-??-*)
 	do
