@@ -155,26 +155,16 @@ class Job
 	end
 
 	def load(jobfile)
-		begin
-			yaml = File.read jobfile
-			@jobs = []
-			YAML.load_stream(yaml) do |hash|
-				@jobs << hash
-			end
-			@job ||= {}
-			@job.update @jobs.shift
-		rescue Errno::ENOENT
-			return nil
-		rescue Psych::SyntaxError => ex
-			raise JobFileSyntaxError.new(jobfile, ex.message)
-		rescue Exception
-			$stderr.puts "Failed to open job #{jobfile}: #{$!}"
-			if File.size(jobfile) == 0
-				$stderr.puts "Removing empty job file #{jobfile}"
-				FileUtils.rm jobfile
-			end
-			raise
+		yaml = File.read jobfile
+		raise ArgumentError.new("empty jobfile #{jobfile}") if yaml.size == 0
+
+		@jobs = []
+		YAML.load_stream(yaml) do |hash|
+			@jobs << hash
 		end
+
+		@job ||= {}
+		@job.update @jobs.shift
 	end
 
 	def save(jobfile)
