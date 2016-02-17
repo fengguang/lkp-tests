@@ -75,7 +75,7 @@ def create_result_root(_result_root)
 end
 
 job = Job.new
-job.load(jobfile) or (
+job.load(jobfile) rescue (
 	$stderr.puts "#{jobfile} is not a valid jobfile"
 	exit 1
 )
