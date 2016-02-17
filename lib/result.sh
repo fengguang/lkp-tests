@@ -44,3 +44,36 @@ expand_tag_to_commit()
 
 	echo "$param"
 }
+
+cleanup_path_record_from_patterns()
+{
+
+	local pattern
+	local flag_pattern=0
+	local cmd
+	local path_file
+	local dot_temp_file
+
+	for pattern
+	do
+		pattern=$(expand_tag_to_commit $pattern)
+
+		if [[ "$flag_pattern" = "0" ]]; then
+			cmd="/${pattern//\//\\/}/"
+			flag_pattern=1
+		else
+			cmd="$cmd && /${pattern//\//\\/}/"
+		fi
+	done
+
+	[[ -d "/lkp/.paths/" ]] || mkdir "/lkp/.paths/" || return
+	dot_temp_file=$(mktemp -p /lkp/.paths/ .tmpXXXXXX)
+
+	for path_file in $(grep -l "$pattern" /lkp/paths/????-??-??-* /lkp/paths/.????-??-??-*)
+	do
+		awk "BEGIN {modified=0} $cmd {modified=1;next}; {print} END {exit 1-modified}" $path_file > $dot_temp_file &&
+		mv -f $dot_temp_file $path_file
+	done
+
+	rm -f $dot_temp_file
+}
