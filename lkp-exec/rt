@@ -115,13 +115,8 @@ show_one_path()
 
 while read path
 do
-	if [[ ! $opt_file ]]; then
-		show_one_path "$path"
-	else
-		file_path=$(find $path -name $opt_file)
-		[[ $file_path ]] && show_one_path "$file_path"
-	fi
+	[[ ! "$opt_file" || -e "$path/$opt_file" ]] &&
+	show_one_path "$path/$opt_file"
 done < $temp_file_sort
-
 
 rm -rf $temp_file_unsort  $temp_file_sort
