@@ -1,0 +1,15 @@
+testcase: pack-deps
+
+default-monitors:
+
+branch: linus/master
+commit: v4.3
+testbox: vm-kbuild-2G
+
+pack-deps:
+
+rootfs:
+- debian-x86_64.cgz
+
+benchmark:
+- all

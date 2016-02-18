@@ -1,0 +1,59 @@
+#!/bin/bash
+
+. $LKP_SRC/lib/install.sh
+
+update()
+{
+	apt-get update
+}
+
+download()
+{
+	echo apt-get download $*
+	apt-get download $*
+}
+
+hardlink_to_symlink()
+{
+	while read line
+	do
+		local hard_links=($line)
+		for i in {1..9}
+		do
+			[[ ${hard_links[$i]} ]] || break
+			echo \
+			ln -sf ${hard_links[0]#.} ${hard_links[$i]}
+			ln -sf ${hard_links[0]#.} ${hard_links[$i]}
+		done
+	done < <(for i in $(find . -type f -links +1); do find . -samefile $i | awk '{printf "%s ", $1}'; printf "\n"; done | sort | uniq)
+}
+
+install()
+{
+	for deb in *.deb; do
+		dpkg-deb -x $deb .
+	done
+
+	hardlink_to_symlink
+}
+
+pack()
+{
+	[[ $pack_to ]] || {
+		pack_to=/osimage/deps/$rootfs
+		mkdir -p $pack_to
+	}
+
+	date=$(date +"%Y-%m-%d")
+
+	{
+		find . -xdev ! -name "*.deb" |
+		grep -v -f $LKP_SRC/rootfs/rootfs-strip-list
+
+		[[ -f $LKP_SRC/distro/$DISTRO/$BM_NAME-whitelist ]] &&
+		cat   $LKP_SRC/distro/$DISTRO/$BM_NAME-whitelist
+	} |
+	cpio --quiet -o -H newc --owner=root.root | gzip -n -9 > $pack_to/${BM_NAME}_$date.cgz
+	ln -sf $pack_to/${BM_NAME}_$date.cgz   $pack_to/${BM_NAME}.cgz
+	echo package installed to $pack_to/${BM_NAME}.cgz
+}

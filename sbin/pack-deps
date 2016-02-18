@@ -1,0 +1,17 @@
+#!/bin/bash
+
+[[ $LKP_SRC ]] || export LKP_SRC="$(dirname $(dirname $(readlink -e -v $0)))"
+
+PACK_NAME=$1
+BM_NAME=${PACK_NAME%-*}
+DISTRO=${PACK_NAME##*-}
+
+umask 002
+source $LKP_SRC/pack/${DISTRO}
+
+work_dir=$(mktemp -d)
+cd $work_dir
+
+download $(get_dependency_packages $DISTRO $BM_NAME) || exit
+install
+pack

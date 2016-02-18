@@ -1,0 +1,46 @@
+#!/bin/bash
+# - rootfs
+# - benchmark
+
+## Use '$LKP_SRC/sbin/pack' to generate all benchmarks and dependencies cgz formart packages.
+
+DISTRO=${rootfs%%-*}
+
+. $LKP_SRC/pack/${DISTRO}
+
+DEPS_MNT=/osimage/deps
+mkdir -p "$DEPS_MNT"
+mount $LKP_SERVER:$DEPS_MNT $DEPS_MNT || exit
+
+pack_to=$DEPS_MNT/$rootfs
+mkdir -p "$pack_to"
+
+update
+
+[[ ! $benchmark || $benchmark = all ]] && benchmark="$(ls $LKP_SRC/distro/depends | grep -v -e Makefile -e '-rootfs' -e '-dev' -e '-whitelist')"
+
+for BM_NAME in $benchmark
+do
+	packages=$(get_dependency_packages $DISTRO $BM_NAME)
+	PACKAGE_LIST=$(apt-get --simulate --no-install-recommends install $packages | \
+		       awk '/The following NEW packages will be installed:/{flag=1; next}/^[^ ]/{flag=0}flag; \
+			   /The following packages will be upgraded:/{flag2=1; next}/^[^ ]/{flag2=0}flag2')
+
+	[[ $PACKAGE_LIST ]] || {
+		echo "empty PACKAGE_LIST for $BM_NAME"
+		continue
+	}
+
+	work_dir=$(mktemp -d)
+	cd $work_dir
+
+	if download "$PACKAGE_LIST"; then
+		install
+		pack
+		echo "$PACKAGE_LIST" > $pack_to/.${BM_NAME}.packages | sed -E -e 's/^  +//' -e 's/ +/\n/g'
+	else
+		echo "failed to pack-deps $BM_NAME" >&2
+	fi
+
+	rm -fr "$work_dir"
+done
