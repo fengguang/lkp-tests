@@ -12,8 +12,29 @@ remove_from_mrtts()
 
 remove()
 {
-	cleanup_path_record_from_patterns $patterns || exit
-	cat $temp_file | xargs rm -rf
+	local temp_file_unsort=$(mktemp)
+	cleanup_path_record_from_patterns $patterns > $temp_file_unsort || exit
+
+	[[ -s "$temp_file_unsort" ]] ||
+	{
+		rm -f $temp_file_unsort
+		echo "Cannot find the match _result_root according to the patterns: $patterns" >&2
+		exit 1
+	}
+
+	local temp_file_sort=$(mktemp)
+	awk -F'/' '{OFS="/"; NF=NF-2; print}' $temp_file_unsort | sort -u > $temp_file_sort
+
+	local path
+	while read path
+	do
+		remove_from_mrtts $path
+	done < $temp_file_sort
+
+	cat $temp_file_sort | xargs rm -rf
+
+	rm -f $temp_file_unsort
+	rm -f $temp_file_sort
 }
 
 usage()
@@ -31,38 +52,12 @@ script_name=$(basename $0)
 
 patterns="$*"
 
-temp_file=$(mktemp)
-lkp _rt $patterns > $temp_file
-
-[[ -s "$temp_file" ]] ||
-{
-	rm -f $temp_file
-	echo "Cannot find the match _result_root according to the patterns: $patterns" >&2
-	exit 1
-}
-
-{
-echo "Warning:"
-echo "\"lkp _rt $patterns\" will be used to search the _resutl_root."
-echo "\"lkp rm $patterns\" will remove the following _result_root."
-echo
-
-cat $temp_file
-} | more
-
 echo -n "!!! Do you really want to do that? [No/yes]: "
 read answer
 if [[ $answer = "yes" ]]; then
-
-	while read path
-	do
-		remove_from_mrtts $path
-	done < $temp_file
 
 	remove
 
 	echo "Done" >&2
 fi
-
-rm $temp_file
 
