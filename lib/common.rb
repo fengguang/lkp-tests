@@ -51,6 +51,12 @@ def ensure_array(obj)
 	end
 end
 
+def array_add!(arr_dst, arr_src)
+	0.upto(arr_dst.size - 1) { |i|
+		arr_dst[i] += arr_src[i]
+	}
+end
+
 # Array "-" + "uniq!" with block to calculate key
 def array_subtract(arr1, arr2, &blk_key)
 	if blk_key
