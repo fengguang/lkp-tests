@@ -1,5 +1,5 @@
 #!/usr/bin/awk -f
 
-/^FAIL/ {
+/FAIL/ {
 	printf("%s.fail: 1\n", $2)
 }
