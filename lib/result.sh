@@ -54,6 +54,7 @@ cleanup_path_record_from_patterns()
 	local cmd
 	local path_file
 	local dot_temp_file
+	local match_temp_file
 
 	for pattern
 	do
@@ -68,16 +69,23 @@ cleanup_path_record_from_patterns()
 	done
 
 	[[ -d "/lkp/.paths/" ]] || mkdir "/lkp/.paths/" || return
-	dot_temp_file=$(mktemp -p /lkp/.paths/ .tmpXXXXXX)
+	dot_temp_file=$(mktemp -p /lkp/.paths/ .tmpXXXXXX) || return
+	match_temp_file=$(mktemp -p /lkp/.paths/ .tmpXXXXXX) || return
 	chmod 664 $dot_temp_file || return
 
 	for path_file in $(grep -l "$pattern" /lkp/paths/????-??-??-* /lkp/paths/.????-??-??-*)
 	do
-		awk "BEGIN {modified=0} $cmd {modified=1;next}; {print} END {exit 1-modified}" $path_file > $dot_temp_file &&
+		awk -v file1="$match_temp_file" -v file2="$dot_temp_file"  "BEGIN {modified=0} $cmd {print >> file1; modified=1; next}; \
+		{print > file2} END {exit 1-modified}" $path_file &&
 		mv -f $dot_temp_file $path_file
+
 	done
 
+	cat $match_temp_file
+
 	rm -f $dot_temp_file
+	rm -f $match_temp_file
+
 }
 
 cleanup_path_record_from_result_root()
