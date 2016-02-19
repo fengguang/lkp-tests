@@ -191,6 +191,24 @@ def axis_format(axis_key, value)
 	end
 end
 
+def axis_gcommit(axis_key, value)
+	git = axis_key_git(axis_key)
+	if git
+		[axis_key, git.gcommit(value).sha]
+	else
+		[axis_key, value]
+	end
+end
+
+def axes_gcommit(axes)
+	naxes = {}
+	axes.each { |k, v|
+		k, v = axis_gcommit(k, v)
+		naxes[k] = v
+	}
+	naxes
+end
+
 def commits_to_string(commits)
 	commits.map { |c| c.to_s }
 end
