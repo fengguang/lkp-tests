@@ -7,5 +7,5 @@ fi
 
 swapoff -a
 for i in $partitions; do
-	mkswap $i && swapon $i -p 1
+	mkswap $i 2>/dev/null && swapon $i -p 1
 done
