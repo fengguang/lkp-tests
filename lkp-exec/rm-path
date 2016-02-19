@@ -66,9 +66,10 @@ revert_unite_rt()
 usage()
 {
 	cat >&2 <<-EOF
-Usage: lkp $script_name <paths>
-For example:
-lkp $script_name /result/xfstests/4HDD-ext4-ext4/lkp-ws02/debian-x86_64-2015-02-07.cgz/x86_64-rhel/gcc-4.9/v4.3/0/
+Usage:
+	lkp $script_name <paths>
+Example:
+	lkp $script_name /result/xfstests/4HDD-ext4-ext4/lkp-ws02/debian-x86_64-2015-02-07.cgz/x86_64-rhel/gcc-4.9/v4.3/0/
 EOF
 	exit 1
 }
