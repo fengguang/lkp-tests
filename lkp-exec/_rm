@@ -40,9 +40,10 @@ remove()
 usage()
 {
 	cat >&2 <<-EOF
-Usage: lkp $script_name <patterns>
-For example:
-lkp $script_name /xfstests/ /lkp-ws02/ /v4.3/
+Usage:
+	lkp $script_name <patterns>
+Example:
+	lkp $script_name /xfstests/ /lkp-ws02/ /v4.3/
 EOF
 	exit 1
 }
