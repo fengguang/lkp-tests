@@ -447,17 +447,15 @@ module LKP
 						print "x" if options[:verbose]
 
 						if jobs.all?(&:completed?)
-							if options[:wait_shadow]
-								job_ids = jobs.map(&:id)
-								shadows = jobs.reject {|job| job_ids.include? job['id']}
-								unless shadows.empty?
-									jobs.concat(shadows.map {|shadow| self.new shadow._result_root, shadow['id']}.uniq(&:id))
-									print " => #{jobs.size} jobs " if options[:verbose]
-									next
-								end
-							end
+							break unless options[:wait_shadow]
 
-							break
+							job_ids = jobs.map(&:id)
+							shadows = jobs.reject {|job| job_ids.include? job['id']}
+
+							break if shadows.empty?
+
+							jobs.concat(shadows.reject {|shadow| shadow['id'] == nil}.map {|shadow| self.new shadow._result_root, shadow['id']}.uniq(&:id))
+							print " => #{jobs.size} jobs " if options[:verbose]
 						end
 
 						sleep 60
