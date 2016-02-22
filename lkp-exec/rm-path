@@ -24,16 +24,15 @@ check_rt()
 
 remove()
 {
+	local path
 	for path; do
 		path=$(abs_path $path)
 		[[ -d "$path" ]] || {
 			echo "The path does not exist: $path" >&2
 			exit 1
 		}
-
-		[[ $path =~ /$ ]] || path="$path/"
-		echo sed -i \'"/${path//\//\\/}/d"\' "/lkp/paths/????-??-??-*"
-		echo rm -fr "$path"
+		cleanup_path_record_from_result_root "$path"
+		rm -fr "$path"
 	done
 }
 
@@ -77,12 +76,10 @@ EOF
 script_name=$(basename $0)
 [[ $# = 0 ]] && usage
 
-echo "The command to remove the result path are:"
-remove "$@"
 echo -n "!!! Do you really want to do that? [No/yes]: "
 read answer
 if [[ $answer = "yes" ]]; then
 	revert_unite_rt "$@"
 	remove_from_mrtts "$@"
-	remove "$@" | bash
+	remove "$@"
 fi
