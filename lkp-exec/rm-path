@@ -27,6 +27,7 @@ remove_index()
 	local path
 	for path; do
 		path=$(abs_path $path)
+		[[ -d "$path" ]] || continue
 		cleanup_path_record_from_result_root "$path"
 	done
 }
@@ -36,6 +37,7 @@ remove_paths()
 	local path
 	for path; do
 		path=$(abs_path $path)
+		[[ -d "$path" ]] || continue
 		echo rm -fr "$path"
 	done
 }
@@ -46,6 +48,7 @@ remove_from_mrtts()
 	local dir
 	for path; do
 		path=$(abs_path $path)
+		[[ -d "$path" ]] || continue
 		for dir in $(find $path -type d); do
 			is_mrt $dir && echo $dir
 		done | lkp delete_mrts
