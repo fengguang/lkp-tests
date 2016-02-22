@@ -27,10 +27,6 @@ remove_index()
 	local path
 	for path; do
 		path=$(abs_path $path)
-		[[ -d "$path" ]] || {
-			echo "The path does not exist: $path" >&2
-			exit 1
-		}
 		cleanup_path_record_from_result_root "$path"
 	done
 }
@@ -40,10 +36,6 @@ remove_paths()
 	local path
 	for path; do
 		path=$(abs_path $path)
-		[[ -d "$path" ]] || {
-			echo "The path does not exist: $path" >&2
-			exit 1
-		}
 		echo rm -fr "$path"
 	done
 }
@@ -87,6 +79,14 @@ EOF
 
 script_name=$(basename $0)
 [[ $# = 0 ]] && usage
+
+for path; do
+	path=$(abs_path $path)
+	[[ -d "$path" ]] || {
+		echo "The path does not exist: $path" >&2
+		exit 1
+	}
+done
 
 echo "The command to remove the result path are:"
 remove_paths "$@"
