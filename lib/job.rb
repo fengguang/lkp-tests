@@ -360,7 +360,7 @@ end
 
 module LKP
 	class QueuedJob
-		attr_reader :id
+		attr_reader :id, :_result_root
 		def initialize(_result_root, id)
 			@_result_root = _result_root
 			@id = id
@@ -382,11 +382,15 @@ module LKP
 
 		def result_root
 			@result_root ||= if self.completed?
+				result_root = self.completion.split(@id).last.split(' ')[0]
 				# "unite" is "unite failed"
 				if ["united", "bad", "unite"].include? self.stage
-					self.completion.split(@id).last.split(' ')[0]
+					result_root
 				elsif self.stage == "skipped"
-					File.join(@_result_root, "0")
+					# 2016-02-19 06:00:48 +0800 ed3c74a721d4c459b336f12f2b19a4ccdd2d5b27 /lkp/scheduled/vm-kbuild-1G-5/validate_boot-1-debian-x86_64-2015-02-07.cgz-x86_64-randconfig-s2-02190153-e5a2e3c8478215aea5b4c58e6154f1b6b170b0ca-20160219-83395-h6q5ri-2.yaml skipped due to already exists
+					# 2016-02-19 06:32:47 +0800 7a4db7f7784e3aa284e99e6c9d6c331ef035bdbf /result/boot/1/vm-kbuild-1G/debian-x86_64-2015-02-07.cgz/x86_64-randconfig-s2-02190153/gcc-5/e5a2e3c8478215aea5b4c58e6154f1b6b170b0ca/2 united
+					result_root =~ /-(\d+)\.yaml/
+					File.join(@_result_root, $1.to_i.to_s)
 				end
 			end
 
@@ -430,18 +434,33 @@ module LKP
 				if Hash === jobs
 					jobs = jobs.map do |_result_root, ids|
 						ids.map {|id| self.new _result_root, id}
-					end.flatten
+					end.flatten.uniq(&:id)
 				end
 
 				Timeout::timeout(timeout) {
-					start = Time.now
-					print "[#{start.strftime('%Y-%m-%d %H:%M:%S')}] wait for #{jobs.size} jobs " if options[:verbose]
+					if options[:verbose]
+						start = Time.now
+						print "[#{start.strftime('%Y-%m-%d %H:%M:%S')}] wait for #{jobs.size} jobs "
+					end
 
 					while true
 						print "x" if options[:verbose]
-						sleep 60
 
-						break if jobs.all?(&:completed?)
+						if jobs.all?(&:completed?)
+							if options[:wait_shadow]
+								job_ids = jobs.map(&:id)
+								shadows = jobs.reject {|job| job_ids.include? job['id']}
+								unless shadows.empty?
+									jobs.concat(shadows.map {|shadow| self.new shadow._result_root, shadow['id']}.uniq(&:id))
+									print " => #{jobs.size} jobs " if options[:verbose]
+									next
+								end
+							end
+
+							break
+						end
+
+						sleep 60
 					end
 
 					puts " [#{(Time.now - start) / 60}m]" if options[:verbose]
