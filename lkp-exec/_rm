@@ -53,6 +53,25 @@ script_name=$(basename $0)
 
 patterns="$*"
 
+temp_file=$(mktemp)
+trap "rm -f $temp_file" EXIT
+
+lkp _rt $patterns > $temp_file
+[[ -s "$temp_file" ]] || {
+	echo "Cannot find the match _result_root according to the patterns: $patterns" >&2
+	exit 1
+}
+
+_result_root_lines=$(cat $temp_file | wc -l)
+echo "The command will remove the following $_result_root_lines _result_root:"
+
+if (( $_result_root_lines > 20 )); then
+	 cat $temp_file | head -20
+	 echo "..."
+else
+	cat $temp_file
+fi
+
 echo -n "!!! Do you really want to do that? [No/yes]: "
 read answer
 if [[ $answer = "yes" ]]; then
