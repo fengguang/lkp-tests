@@ -18,5 +18,23 @@ install()
 	cd /tmp/mce-test
 	make install
 	cp -af * $BM_ROOT
+
+	cd /tmp/mce-inject
+	make install
 	cp -af /tmp/mce-inject/mce-inject $BM_ROOT
+}
+
+pack()
+{
+	{
+		echo /usr
+		echo /usr/sbin
+		echo /usr/sbin/mce-inject
+		echo /lkp
+		echo /lkp/benchmarks
+		echo /lkp/benchmarks/$BM_NAME
+		find /lkp/benchmarks/$BM_NAME/*
+	} |
+	cpio -o -H newc --owner=root.root | gzip -n -9 > /lkp/benchmarks/${BM_NAME}.cgz
+	[[ $arch ]] && mv "/lkp/benchmarks/${BM_NAME}.cgz" "/lkp/benchmarks/${BM_NAME}-${arch}.cgz"
 }
