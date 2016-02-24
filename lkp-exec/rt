@@ -89,13 +89,13 @@ sed -i -e 's#/$##' $temp_file_unsort
 temp_file_sort=$(mktemp)
 
 case $script_name in
-rt|ls|ll)
+rt|ls|ll|result)
 	sort $temp_file_unsort > $temp_file_sort
 	;;
-_rt)
+_rt|_result)
 	awk -F'/' '{OFS="/"; NF=NF-1; print}' $temp_file_unsort | sort -u > $temp_file_sort
 	;;
-__rt)
+__rt|__result)
 	awk -F'/' '{OFS="/"; NF=NF-2; print}' $temp_file_unsort | sort -u > $temp_file_sort
 	;;
 esac
