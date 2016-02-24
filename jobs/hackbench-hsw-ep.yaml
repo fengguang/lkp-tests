@@ -1,0 +1,59 @@
+testcase: hackbench
+category: benchmark
+
+default-monitors:
+  wait: activate-monitor
+  kmsg:
+  uptime:
+  iostat:
+  heartbeat:
+  vmstat:
+  numa-numastat:
+  numa-vmstat:
+  numa-meminfo:
+  proc-vmstat:
+  proc-stat:
+    interval: 10
+  meminfo:
+  slabinfo:
+  interrupts:
+  lock_stat:
+  softirqs:
+  bdi_dev_mapping:
+  diskstats:
+  nfsstat:
+  cpuidle:
+  cpufreq-stats:
+  turbostat:
+  pmeter:
+  sched_debug:
+    interval: 60
+
+nr_threads:
+- 1600%
+
+perf-profile:
+  freq: 800
+
+hackbench:
+  iterations: 18
+  mode:
+  - process
+  - threads
+  ipc:
+  - pipe
+  - socket
+
+---
+
+nr_threads:
+- 50%
+
+hackbench:
+  iterations: 12
+  mode:
+  - process
+  - threads
+  ipc:
+  - pipe
+  - socket
