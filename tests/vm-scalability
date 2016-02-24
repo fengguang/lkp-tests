@@ -3,10 +3,12 @@
 # - test
 # - size
 # - fs
+# - pre_setup
 
 cd $BENCHMARK_ROOT/vm-scalability || exit
 
 [ -n "$runtime" ] || runtime=300
+[ -n "$pre_setup" ] || pre_setup=0
 
 echo 1		> /proc/sys/vm/overcommit_memory
 echo $((1<<30)) > /proc/sys/vm/max_map_count
@@ -14,8 +16,14 @@ echo $((1<<20)) > /proc/sys/kernel/threads-max
 
 export CMD=cmd
 . ./hw_vars
-mount_tmpfs
-create_sparse_root
+
+if [ "$pre_setup" = "0" ]; then
+	# The value of "pre_setup" can be 0 or 1.
+	# 0 is the default value, means setup by vm-scalability itself.
+	# 1 means setup by disk/fs, etc.
+	mount_tmpfs
+	create_sparse_root
+fi
 
 set_repeat_count()
 {
@@ -51,5 +59,7 @@ else
 	cmd "./case-$test"
 fi
 
-remove_sparse_root
-remove_tmpfs
+if [ "$pre_setup" = "0" ]; then 
+	remove_sparse_root
+	remove_tmpfs
+fi
