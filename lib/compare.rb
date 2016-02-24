@@ -99,6 +99,7 @@ module Compare
 			:use_testcase_stat_keys,
 			:include_stat_keys, :include_all_failure_stat_keys,
 			:filter_stat_keys, :filter_testcase_stat_keys,
+			:exclude_stat_keys,
 			:gap,
 			:group_by_stat, :show_empty_group, :compact_show,
 			:sort_by_group
@@ -316,6 +317,16 @@ module Compare
 			do_filter_stat_keys stats, filters
 		end
 
+		def exclude_stat_keys(stats)
+			excludes = @comparer.exclude_stat_keys
+			return stats unless excludes && !excludes.empty?
+			excludes.each { |sre|
+				re = Regexp.new(sre)
+				stats.reject! { |stat_key| re.match stat_key }
+			}
+			stats
+		end
+
 		def get_include_all_failure_stat_keys
 			return [] unless @comparer.include_all_failure_stat_keys
 			get_all_stat_keys.select { |stat_key| is_failure stat_key }
@@ -357,9 +368,8 @@ module Compare
 			stat_keys = filter_stat_keys stat_keys
 			if @comparer.filter_testcase_stat_keys
 				stat_keys = filter_testcase_stat_keys stat_keys
-			else
-				stat_keys
 			end
+			stat_keys = exclude_stat_keys stat_keys
 		end
 
 		def changed_stat_keys(matrixes_in = nil)
