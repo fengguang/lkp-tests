@@ -4,6 +4,7 @@ download()
 {
 	git_clone_update git://git.kernel.org/pub/scm/linux/kernel/git/gong.chen/mce-test.git
 	git_clone_update git://git.kernel.org/pub/scm/utils/cpu/mce/mce-inject.git
+	git_clone_update https://github.com/linux-test-project/ltp.git
 	source_dir=$BM_NAME
 }
 
@@ -22,6 +23,8 @@ install()
 	cd /tmp/mce-inject
 	make install
 	cp -af /tmp/mce-inject/mce-inject $BM_ROOT
+
+	cp -af /tmp/ltp $BM_ROOT
 }
 
 pack()
