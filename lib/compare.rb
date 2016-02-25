@@ -877,6 +877,7 @@ module Compare
 	end
 
 	def self.perf_comparer(commits)
+		ignored_testcases = Set.new ['xfstest', 'autotest', 'phoronix-test-suite']
 		git = axis_key_git COMMIT_AXIS_KEY
 		commits = git.sort_commits commits
 		_rts = commits.map { |c|
@@ -885,7 +886,7 @@ module Compare
 		_rts.select! { |_rt|
 			axes = _rt.axes
 			testcase = axes[TESTCASE_AXIS_KEY]
-			next false if testcase == 'xfstests' || testcase == 'autotest'
+			next false if ignored_testcases.member?(testcase)
 			tbox = axes[TBOX_GROUP_AXIS_KEY]
 			next false if tbox.start_with? 'vm-'
 			true
