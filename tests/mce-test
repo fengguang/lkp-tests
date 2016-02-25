@@ -4,6 +4,9 @@
 ## testing the Linux RAS related features, including CPU/Memory
 ## error containment and recovery, ACPI/APEI support etc.
 
+. $LKP_SRC/lib/job.sh
+read_env_vars
+
 cd $BENCHMARK_ROOT/mce-test || exit
 
 echo > ./work/rastest.caselist <<EOF
@@ -32,7 +35,7 @@ cd cases/stress/hwpoison || exit
 export TERM=linux # to quiet stderr message "TERM environment variable not set."
 
 umount $partition
-./hwpoison.sh -c /dev/null -t $duration -d $partition -o $BENCHMARK_ROOT/mce-test/ltp -L || exit
+./hwpoison.sh -c /dev/null -t $duration -d $partition -o $BENCHMARK_ROOT/mce-test/ltp -f $fs -L || exit
 
 umount $partition
-./hwpoison.sh -c /dev/null -t $duration -d $partition -o $BENCHMARK_ROOT/mce-test/ltp -M
+./hwpoison.sh -c /dev/null -t $duration -d $partition -o $BENCHMARK_ROOT/mce-test/ltp -f $fs -M
