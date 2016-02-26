@@ -5,6 +5,10 @@
 # - fs
 # - pre_setup
 
+# The value of "pre_setup" can be 0 or 1.
+# 0 is the default value, means setup by vm-scalability itself.
+# 1 means setup by disk/fs, etc.
+
 cd $BENCHMARK_ROOT/vm-scalability || exit
 
 [ -n "$runtime" ] || runtime=300
@@ -18,9 +22,6 @@ export CMD=cmd
 . ./hw_vars
 
 if [ "$pre_setup" = "0" ]; then
-	# The value of "pre_setup" can be 0 or 1.
-	# 0 is the default value, means setup by vm-scalability itself.
-	# 1 means setup by disk/fs, etc.
 	mount_tmpfs
 	create_sparse_root
 fi
