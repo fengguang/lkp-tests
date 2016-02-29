@@ -450,7 +450,7 @@ module LKP
 							break unless options[:wait_shadow]
 
 							job_ids = jobs.map(&:id)
-							shadows = jobs.reject {|job| job_ids.include? job['id']}
+							shadows = jobs.select {|job| job.stage == "skipped" && !job_ids.include?(job['id'])}
 
 							break if shadows.empty?
 
