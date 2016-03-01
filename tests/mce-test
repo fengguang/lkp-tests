@@ -43,6 +43,5 @@ umount $partition
 wipefs -a $partition
 echo y | ./hwpoison.sh -c /dev/null -t $duration -d $partition -o $BENCHMARK_ROOT/mce-test/ltp -f $fs -L || exit
 
-umount $partition
 wipefs -a $partition
 echo y | ./hwpoison.sh -c /dev/null -t $duration -d $partition -o $BENCHMARK_ROOT/mce-test/ltp -f $fs -M
