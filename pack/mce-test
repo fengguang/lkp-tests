@@ -10,6 +10,9 @@ download()
 
 build()
 {
+	cd /tmp/mce-test
+	patch_source
+
 	make -C /tmp/mce-test
 	make -C /tmp/mce-inject
 }
