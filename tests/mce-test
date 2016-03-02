@@ -41,12 +41,12 @@ export TERM=linux # to quiet stderr message "TERM environment variable not set."
 
 umount $partition
 wipefs -a $partition
-echo y | ./hwpoison.sh -c /dev/null -t $duration -d $partition -o $BENCHMARK_ROOT/mce-test/ltp -f $fs -L
+echo y | ./hwpoison.sh -c /dev/null -t $duration -d $partition -o $BENCHMARK_ROOT/mce-test/ltp -f $fs -L 2>&1
 exit_value=$?
 
 if [ "$exit_value" = "0" ]; then
 	wipefs -a $partition
-	echo y | ./hwpoison.sh -c /dev/null -t $duration -d $partition -o $BENCHMARK_ROOT/mce-test/ltp -f $fs -M
+	echo y | ./hwpoison.sh -c /dev/null -t $duration -d $partition -o $BENCHMARK_ROOT/mce-test/ltp -f $fs -M 2>&1
 	exit_value=$?
 fi
 
