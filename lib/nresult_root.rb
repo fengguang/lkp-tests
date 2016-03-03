@@ -264,7 +264,7 @@ class MResultRootTableSet
 		['boot', 'audio', 'cpu-hotplug', 'ext4-frags', 'ftq', 'ftrace_onoff', 'fwq',
 		 'galileo', 'irda-kernel', 'kernel_selftests', 'kvm-unit-tests',
 		 'locktorture', 'mce-test',  'otc_kernel_qa-ts_ltp_ddt', 'piglit', 'pm-qa',
-		 'qemu', 'rcutorture', 'suspend', 'trinity']
+		 'qemu', 'rcutorture', 'suspend', 'trinity', 'ndctl']
 	OTHER_TESTCASES =
 		['0day-boot-tests', '0day-kbuild-tests', 'android-kpi', 'build-dpdk',
 		 'build-android', 'convert-lkpdoc-to-html', 'convert-lkpdoc-to-html-css',
