@@ -5,18 +5,11 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($0)))
 def stat_line(line)
 	case line
 	when /^\s+(\w+) --.* (\d+) tests failed/
-		puts "#{$1}.nr_fail: #{$2}"
-	when /^totally (\d+) task-groups report failures/
-		$total_nr_fail+=$1.to_i
+		puts "#{$1}.fail: 1"
 	end
 end
 
-$total_nr_fail = 0
 while line = STDIN.gets
         stat_line(line)
 end
-
-if $total_nr_fail != 0
-	puts "task-groups.nr_fail: #{$total_nr_fail}"
-end 
 
