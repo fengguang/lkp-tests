@@ -1,14 +1,22 @@
 #!/bin/sh
 # - test
+# - nr_task
+# - nr_job
 
 ## Update and improve the existing Open Source AIM 7 benchmark
 
 cd $BENCHMARK_ROOT/reaim || exit
 
-REAIM_STARTUSERS=1
-REAIM_ENDUSERS=$((nr_cpu*4))
-REAIM_INCREMENT=$((nr_cpu/4))
-[ "$REAIM_INCREMENT" = 0 ] && REAIM_INCREMENT=1
+if [ -z "$nr_task" ]; then
+	REAIM_STARTUSERS=1
+	REAIM_ENDUSERS=$((nr_cpu*4))
+	REAIM_INCREMENT=$((nr_cpu/4))
+	[ "$REAIM_INCREMENT" = 0 ] && REAIM_INCREMENT=1
+else
+	REAIM_STARTUSERS=$nr_task
+	REAIM_ENDUSERS=$nr_task
+	REAIM_INCREMENT=$nr_task
+fi
 
 REAIM_FILESIZE=10k
 REAIM_POOLSIZE=1m
@@ -26,6 +34,6 @@ echo FILESIZE $REAIM_FILESIZE > reaim.config
 echo POOLSIZE $REAIM_POOLSIZE >> reaim.config
 echo DISKDIR $REAIM_TESTDIR  >> reaim.config
 
-cmd ./reaim  -s1 -e$REAIM_ENDUSERS -i$REAIM_INCREMENT -f data/workfile.$test \
-	-r1 -c./reaim.config -l$RESULT_ROOT/reaim_debug |
+cmd ./reaim -s$REAIM_STARTUSERS -e$REAIM_ENDUSERS -i$REAIM_INCREMENT -fdata/workfile.$test \
+	-r1 -c./reaim.config -l$TMP_RESULT_ROOT/reaim_debug -j${nr_job:-100} |
 	grep -v -e "^NSIG is "
