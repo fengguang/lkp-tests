@@ -1,4 +1,4 @@
-# patch from Mel Gorman's MMTests
+# First part (for drv_funcs.c) is patch from Mel Gorman's MMTests
 diff --git a/src/drv_funcs.c.orig b/src/drv_funcs.c
 index f11a988..7fe7348 100644
 --- a/src/drv_funcs.c.orig
@@ -12,3 +12,16 @@ index f11a988..7fe7348 100644
  	stmp[0] = '\0';
  	strcat(stmp,s1);
  	strcat(stmp,s2);
+--- a/src/creat_clo.c.orig
++++ b/src/creat_clo.c
+@@ -88,8 +88,8 @@ source_file *creat_clo_c()
+  * SIGUSR2, a message is printed and 'error' is set to 1 which
+  * will terminate the test.
+  */
+-static int sigcount;		/* count of signals */
+-static int error;		/* no errors now */
++static volatile int sigcount;		/* count of signals */
++static volatile int error;		/* no errors now */
+ static void sighandler(int sig)
+ {				/* trap handler */
+ 	signal(SIGUSR2, sighandler);	/* install the signal hander */
