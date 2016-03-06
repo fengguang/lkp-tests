@@ -8,7 +8,7 @@ set_tbox_group()
 	local tbox=$1
 
 	if [[ $tbox =~ ^(.*)-[0-9]+$ ]]; then
-		tbox_group=${BASH_REMATCH[1]}
+		tbox_group=$(echo ${BASH_REMATCH[1]} | sed -r 's#-[0-9]+-#-#')
 	else
 		tbox_group=$tbox
 	fi

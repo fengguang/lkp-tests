@@ -11,7 +11,7 @@ RESULT_MNT	= '/result'
 RESULT_PATHS	= '/lkp/paths'
 
 def tbox_group(hostname)
-	hostname.sub /-[0-9]+$/, ''
+	hostname.sub(/-[0-9]+$/, '').sub(/-[\d]+-/, '-')
 end
 
 def is_tbox_group(hostname)
