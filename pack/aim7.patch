@@ -1,0 +1,17 @@
+---
+ creat-clo.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+--- a/creat-clo.c
++++ b/creat-clo.c
+@@ -94,8 +94,8 @@ creat_clo_c()
+  * SIGUSR2, a message is printed and 'error' is set to 1 which
+  * will terminate the test.
+  */
+-static int sigcount;			/* count of signals */
+-static int error;			/* no errors now */
++static volatile int sigcount;			/* count of signals */
++static volatile int error;			/* no errors now */
+ static void
+ sighandler(int sig)
+ {					/* trap handler */
