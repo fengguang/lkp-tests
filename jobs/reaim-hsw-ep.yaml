@@ -1,0 +1,88 @@
+testcase: reaim
+category: benchmark
+
+# Avoid nfs latency for sync used in benchmark
+avoid_nfs: 1
+perf-profile:
+  freq: 1000
+
+nr_task: 6400%
+reaim:
+  iterations: 70
+  test: short
+
+---
+nr_task: 1600%
+reaim:
+  iterations: 30
+  test:
+  - new_dbase
+  - dbase
+  - alltests
+  - shared
+  - custom
+  - compute
+  - aim9
+
+---
+reaim:
+  iterations: 20
+  test:
+  - fserver
+  - new_fserver
+  - all_utime
+  - high_systime
+
+---
+reaim:
+  iterations: 10
+  test: long
+
+---
+reaim:
+  iterations: 6
+  test: five_sec
+
+---
+nr_task: 100%
+reaim:
+  iterations: 40
+  nr_job: 10000
+  test: short
+
+---
+reaim:
+  iterations: 20
+  nr_job: 3000
+  test:
+  - new_dbase
+  - dbase
+  - fserver
+  - new_fserver
+  - custom
+  - shared
+  - compute
+
+---
+reaim:
+  iterations: 20
+  nr_job: 1500
+  test:
+  - five_sec
+  - all_utime
+
+---
+reaim:
+  iterations: 6
+  nr_job: 1000
+  test:
+  - alltests
+  - aim9
+
+---
+reaim:
+  iterations: 2
+  nr_job: 1000
+  test:
+  - high_systime
+  - long
