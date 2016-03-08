@@ -25,3 +25,17 @@ index f11a988..7fe7348 100644
  static void sighandler(int sig)
  {				/* trap handler */
  	signal(SIGUSR2, sighandler);	/* install the signal hander */
+--- a/src/drv_funcs.c.orig
++++ b/src/drv_funcs.c
+@@ -634,9 +634,11 @@ void repeat_fix_results(int repeat, int
+ 	} else {
+ 		sprintf(m1_buf, "mv multiuser.ss multiuser.%d.ss", repeat);
+ 		system(m1_buf);
++		/*
+ 		sprintf(m1_buf, "mv multiuser.csv multiuser.%d.csv",
+ 			repeat);
+ 		system(m1_buf);
++		*/
+ 		if (brief) {
+ 			sprintf(m1_buf,
+ 				"mv stp_mdata.txt stp_mdata.%d.txt",
