@@ -2,6 +2,10 @@
 # - test
 # - nr_task
 # - nr_job
+# - iterations
+
+iterations=${iterations:-1}
+nr_job=${nr_job:-100}
 
 ## Update and improve the existing Open Source AIM 7 benchmark
 
@@ -35,5 +39,5 @@ echo POOLSIZE $REAIM_POOLSIZE >> reaim.config
 echo DISKDIR $REAIM_TESTDIR  >> reaim.config
 
 cmd ./reaim -s$REAIM_STARTUSERS -e$REAIM_ENDUSERS -i$REAIM_INCREMENT -fdata/workfile.$test \
-	-r1 -c./reaim.config -l$TMP_RESULT_ROOT/reaim_debug -j${nr_job:-100} |
+	-r$iterations -c./reaim.config -l$TMP_RESULT_ROOT/reaim_debug -j$nr_job |
 	grep -v -e "^NSIG is "
