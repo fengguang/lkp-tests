@@ -9,6 +9,6 @@ commit: v4.0
 dpdk_branch:
 dpdk_commit: v2.0.0
 dpdk_config: x86_64-native-linuxapp-gcc
-dpdk_compiler: gcc
+dpdk_compiler: gcc-4.9
 
 build-dpdk:

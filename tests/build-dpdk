@@ -19,6 +19,8 @@ shopt -s nullglob
 . $LKP_SRC/lib/mount.sh
 . $LKP_SRC/lib/git.sh
 
+gcc -v 2>&1
+
 merge_configs()
 {
 	local config_file=$1
@@ -45,6 +47,7 @@ check_mount dpdk-obj $DPDK_OBJ -t tmpfs
 check_mount kernel-src $RTE_KERNELDIR -t tmpfs
 
 git_clone_update git://gitmirror/$remote $RTE_KERNELDIR || die "failed clone kernel tree $remote"
+
 cd $RTE_KERNELDIR
 git checkout -q $commit || die "failed to checkout kernel commit $_commit"
 make_config allmodconfig || die "make allmodconfig failed"
@@ -53,10 +56,9 @@ make scripts/ || die "make scripts/ failed"
 
 rm -fr "$DPDK_REPO_ROOT" 2>/dev/null
 git_clone_update git://gitmirror/$dpdk_remote $DPDK_REPO_ROOT || die "failed clone dpdk tree $dpdk_remote"
-cd $DPDK_REPO_ROOT
-cmd git checkout -q $dpdk_commit || die "failed to checkout dpdk commit $dpdk_commit"
 
 cd $DPDK_REPO_ROOT
+cmd git checkout -q $dpdk_commit || die "failed to checkout dpdk commit $dpdk_commit"
 
 config_file=$LKP_SRC/etc/dpdk-configs/$dpdk_config
 [ -f $config_file ] || config_file=$DPDK_REPO_ROOT/config/defconfig_$dpdk_config
@@ -72,8 +74,10 @@ grep -r -l 'Werror' $DPDK_REPO_ROOT | xargs sed -i 's/ -Werror//'
 cp $DPDK_OBJ/.config $RESULT_ROOT/dpdk_config
 
 make O=$DPDK_OBJ DESTDIR=$RESULT_ROOT
-build_complete $?
+make_exit_status=$?
+
+build_complete $make_exit_status
 
 git reset --hard
 
-exit 0
+exit $make_exit_status
