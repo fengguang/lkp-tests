@@ -49,7 +49,8 @@ if grep -q -x -F $monitor $monitor_dir/need_gzip; then
 		$gzip -c < $fifo		> $TMP_RESULT_ROOT/$monitor.gz &
 	fi
 else
-	if [ "$monitor" = heartbeat ] || [ "$monitor" = kmsg ]; then
+	if [ -z "$avoid_nfs" ] &&
+		( [ "$monitor" = heartbeat ] || [ "$monitor" = kmsg ] ); then
 		cat-$monitor	   $fifo		> $RESULT_ROOT/$monitor &
 	else
 		cat-$monitor	   $fifo		> $TMP_RESULT_ROOT/$monitor &
