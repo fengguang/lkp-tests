@@ -1,5 +1,14 @@
 #!/usr/bin/awk -f
 
+BEGIN { nr_test = 0 }
+
+/PASS/ {
+	nr_test += 1
+}
+
 /FAIL/ {
 	printf("%s.fail: 1\n", $2)
+	nr_test += 1
 }
+
+END { printf("total_test: %d\n", nr_test) }
