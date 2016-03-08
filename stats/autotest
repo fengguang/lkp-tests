@@ -12,8 +12,12 @@ if status['operations'].empty?
 	exit
 end
 
+nr_test = 0
 status['operations'].each { |op|
 	if op['status_code'] != 'GOOD'
 		puts "#{op['subdir']}.fail: 1"
 	end
+	nr_test = nr_test + 1
 }
+
+puts "total_test: #{nr_test}"
