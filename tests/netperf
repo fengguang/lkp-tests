@@ -33,7 +33,7 @@ opt_ip=
 
 for i in $(seq $nr_threads)
 do
-	bgcmd netperf $opt_ip -t $test -c -C -l $runtime $test_options -H $server
+	bgcmd netperf $opt_ip -t $test -c -C -l $runtime $test_options -H $server &
 done
 
 wait
