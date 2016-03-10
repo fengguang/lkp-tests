@@ -39,3 +39,30 @@ index f11a988..7fe7348 100644
  		if (brief) {
  			sprintf(m1_buf,
  				"mv stp_mdata.txt stp_mdata.%d.txt",
+--- a/src/creat_clo.c
++++ b/src/creat_clo.c
+@@ -478,11 +478,22 @@ static int exec_test(int argc, char **ar
+ 								     0177));
+ 						}
+ 					} else {	/* child exit()ed */
+-						if (((status >> 8) & 0377))	/* isolate status */
++						/*
++						 * Found warning of child exit with 1, check
++						 * child program (scripts/true), found warning
++						 * comes from exit code of "ls -l".  Accroding
++						 * to ls(1), ls exit with 1 "if minor
++						 * problems (e.g., cannot access
++						 * subdirectory),".  To work around the
++						 * warning ignore exit code 1 explictly.
++						 */
++						int exit_code;
++						exit_code = (status >> 8) & 0377;
++						if (exit_code && exit_code != 1) /* isolate status */
+ 							(void)
+ 							    fprintf(stderr,
+ 								    "\nChild process called exit(), status = %d\n",
+-								    ((status >> 8) & 0377));
++								    exit_code);
+ 					}
+ 				} else if (errno == ECHILD)
+ 					break;
