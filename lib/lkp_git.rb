@@ -25,23 +25,23 @@ $work_tree_base_dir = '/c/repo'
 
 module Git
 	class << self
-		# TODO move the ENV evaluation resposibility to caller or another helper function
-		# TODO deduce project from branch
 		# init a repository
 		#
 		# options
-		#		:project => 'project_name', default is linux
-		#		:repository => '/path/to/alt_git_dir', default is '/working_dir/.git'
+		#		:project     => 'project_name', default is linux
+		#		:working_dir => 'work_tree_dir', mandatory parameter
+		#		:repository  => '/path/to/alt_git_dir', default is '/working_dir/.git'
+		#		:index       => '/path/to/alt_index_file', default is '/working_dir/.git/index'
 		#
 		# example
-		#		Git.init(project: 'dpdk')
-		#		Git.init(repository: '/path/to/alt_git_dir')
+		#		Git.init({project: 'dpdk',working_dir: '/c/repo/dpdk'})
 		#
 		alias_method :orig_init, :init
 		def init(options = {})
 			options[:project] ||= 'linux'
 
-			working_dir = options[:working_dir] || ENV['SRC_ROOT'] || project_work_tree(options[:project])
+			assert(options[:working_dir], "Git.init: options[:working_dir] can't be #{options[:working_dir].inspect}")
+			working_dir = options[:working_dir]
 
 			Git.orig_init(working_dir, options)
 		end
