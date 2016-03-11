@@ -186,7 +186,7 @@ def axis_format(axis_key, value)
 		else
 			[axis_key, value]
 		end
-  else
+	else
 		[axis_key, value]
 	end
 end
