@@ -144,18 +144,21 @@ end
 def expand_possible_commit(s)
 	return s unless Git.commit_name? s
 
-	git = Git.open(project: 'linux')
+	working_dir = ENV['SRC_ROOT'] || project_work_tree('linux')
+	git = Git.open(project: 'linux', working_dir: working_dir)
 	return s unless git.commit_exist? s
 	return git.gcommit(s).sha
 end
 
 def linux_commit(c)
-	git = Git.open(project: 'linux')
+	working_dir = ENV['SRC_ROOT'] || project_work_tree('linux')
+	git = Git.open(project: 'linux', working_dir: working_dir)
 	git.gcommit(c)
 end
 
 def linux_commits(*commits)
-	git = Git.open(project: 'linux')
+	working_dir = ENV['SRC_ROOT'] || project_work_tree('linux')
+	git = Git.open(project: 'linux', working_dir: working_dir)
 	commits.map { |c| git.gcommit(c) }
 end
 
@@ -173,7 +176,8 @@ end
 def axis_key_git(axis_key)
 	project = axis_key_project(axis_key)
 	if project
-		Git.open(project: project)
+		working_dir = ENV['SRC_ROOT'] || project_work_tree(project)
+		git = Git.open(project: project, working_dir: working_dir)
 	end
 end
 

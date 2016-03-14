@@ -49,7 +49,8 @@ end
 opts.parse!(ARGV)
 result_roots = `grep -r -h -F /#{$opt_kernel}/ /lkp/paths/`.split
 if Git.project_exist?('linux') and not Git.sha1_40?($opt_kernel)
-	git = Git.open(project: 'linux')
+	working_dir = ENV['SRC_ROOT'] || project_work_tree('linux')
+	git = Git.open(project: 'linux', working_dir: working_dir)
 	sha = git.gcommit($opt_kernel).sha
 	result_roots += `grep -r -h -F /#{sha}/ /lkp/paths/`.split
 end
