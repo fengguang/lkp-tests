@@ -1,0 +1,22 @@
+#!/bin/sh
+# - events
+# - interval
+# - delay
+
+perf=/lkp/benchmarks/perf-node/perf
+
+# perf may consume lots of fd
+ulimit -n 102400
+
+[ -n "$events" ] || events="node-loads node-load-misses node-stores node-store-misses"
+events=$(perf-events $events)
+[ -n "$events" ] || exit
+
+opt_events="-e $(echo $events | sed 's/ / -e /g')"
+[ -n "$interval" ] || interval=1
+opt_interval="-I $((interval*1000))"
+
+[ -n "$delay" ] || delay=0
+opt_delay="-D $((delay*1000))"
+
+exec $perf stat -a $opt_events $opt_interval $opt_delay -o $TMP_RESULT_ROOT/$(basename $0)
