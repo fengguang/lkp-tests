@@ -220,11 +220,11 @@ def load_base_matrix(matrix_path, head_matrix, options)
 	tags_merged = []
 	working_dir = ENV['SRC_ROOT'] || project_work_tree(project)
 
-	$git ||= {}
-	$git[project] ||= Git.open(project: project, working_dir: working_dir) if Git.project_exist?(project)
-	git = $git[project]
-
-	unless git
+	begin
+		$git ||= {}
+		$git[project] ||= Git.open(project: project, working_dir: working_dir)
+		git = $git[project]
+	rescue
 		$stderr.puts "error: Cannot find project #{project} for bisecting"
 		$stderr.puts caller
 		return nil
