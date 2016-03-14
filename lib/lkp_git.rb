@@ -51,9 +51,10 @@ module Git
 		#
 		alias_method :orig_open, :open
 		def open(options = {})
-			assert(options[:project], "options[:project] can't be #{options[:project].inspect}")
+			assert(options[:project], "Git.open: options[:project] can't be #{options[:project].inspect}")
 
-			working_dir = options[:working_dir] || ENV['SRC_ROOT'] || project_work_tree(options[:project])
+			assert(options[:working_dir], "Git.open: options[:working_dir] can't be #{options[:working_dir].inspect}")
+			working_dir = options[:working_dir]
 
 			Git.orig_open(working_dir, options)
 		end
