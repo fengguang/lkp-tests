@@ -19,7 +19,8 @@ shopt -s nullglob
 . $LKP_SRC/lib/mount.sh
 . $LKP_SRC/lib/git.sh
 
-gcc -v 2>&1
+export CC=$dpdk_compiler
+$CC -v 2>&1
 
 merge_configs()
 {
@@ -31,7 +32,7 @@ merge_configs()
 
 DPDK_REPO_ROOT=/build/dpdk/src
 DPDK_OBJ=/build/dpdk/obj
-export RTE_KERNELDIR=/build/linux/src
+LINUX_KERNEL_ROOT=/build/linux/src
 
 ARCH=${dpdk_config%%-*}
 dpdk_compiler_name=${dpdk_compiler%%-*}
@@ -44,11 +45,11 @@ remote=${branch%%/*}
 
 check_mount dpdk-src $DPDK_REPO_ROOT -t tmpfs
 check_mount dpdk-obj $DPDK_OBJ -t tmpfs
-check_mount kernel-src $RTE_KERNELDIR -t tmpfs
+check_mount kernel-src $LINUX_KERNEL_ROOT -t tmpfs
 
-git_clone_update git://gitmirror/$remote $RTE_KERNELDIR || die "failed clone kernel tree $remote"
+git_clone_update git://gitmirror/$remote $LINUX_KERNEL_ROOT || die "failed to clone kernel tree $remote"
 
-cd $RTE_KERNELDIR
+cd $LINUX_KERNEL_ROOT
 git checkout -q $commit || die "failed to checkout kernel commit $_commit"
 make_config allmodconfig || die "make allmodconfig failed"
 make prepare || die "make prepare failed"
@@ -66,8 +67,7 @@ config_file=$LKP_SRC/etc/dpdk-configs/$dpdk_config
 
 make O=$DPDK_OBJ T=$ARCH-native-linuxapp-$dpdk_compiler_name config || die "failed to make config"
 
-[[ $config_file =~ "$DPDK_REPO_ROOT/config" ]] ||
-merge_configs $config_file
+[[ $config_file =~ "$DPDK_REPO_ROOT/config" ]] || merge_configs $config_file
 
 grep -r -l 'Werror' $DPDK_REPO_ROOT | xargs sed -i 's/ -Werror//'
 
