@@ -1,11 +1,15 @@
 #!/bin/sh
+# - priority
 
 if [ -z "$partitions" ]; then
 	echo "no pmem partitions specified" >&2
 	exit 1
 fi
 
+[ -n "$priority" ] && opt_priority="-p $priority"
+
 swapoff -a
 for i in $partitions; do
-	mkswap $i 2>/dev/null && swapon $i -p 1
+	mkswap $i 2>/dev/null && swapon $i $opt_priority
 done
+cat /proc/swaps
