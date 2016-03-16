@@ -20,7 +20,10 @@ shopt -s nullglob
 . $LKP_SRC/lib/git.sh
 
 export CC=$dpdk_compiler
-$CC -v 2>&1
+$CC -v 2>&1 || {
+	echo "can not find executable $CC" >&2
+	return 1
+}
 
 merge_configs()
 {
