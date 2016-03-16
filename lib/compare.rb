@@ -400,6 +400,9 @@ module Compare
 				}
 				yield stat
 			}
+		rescue StandardError
+			$stderr.puts "Error while comparing: #{mresult_roots.map { |_rt| _rt.to_s}.join ' '}"
+			raise
 		end
 
 		def to_data
