@@ -179,7 +179,7 @@ detect_system()
 		_system_version="$(GREP_OPTIONS="" \command \grep -Eo '[0-9\.]+' ${rootfs}/etc/centos-release  | \command \awk -F. '{print $1}' | head -n 1)"
 	elif
 		[ -f ${rootfs}/etc/os-release ] &&
-			GREP_OPTIONS="" \command \grep "ID=eywa" ${rootfs}/etc/os-release >/dev/null
+			GREP_OPTIONS="" \command \grep "ID=\"eywa\"" ${rootfs}/etc/os-release >/dev/null
 	then
 		_system_name="Eywa"
 		_system_version="$(grep 'VERSION_ID=' ${rootfs}/etc/os-release | cut -d '=' -f 2)"
