@@ -10,18 +10,18 @@ end
 if ((sum["node-loads"] + sum["node-load-misses"]) != 0)
 	node_local_load_ratio = (100 * sum["node-loads"]) / (sum["node-loads"] + sum["node-load-misses"])
 else
-	node_local_load_ratio = "N/A"
+	node_local_load_ratio = -1
 end
 
 if (sum["node-stores"] + sum["node-store-misses"]) != 0
 	node_local_store_ratio = (100 * sum["node-stores"]) / (sum["node-stores"] + sum["node-store-misses"])
 else
-	node_local_store_ratio = "N/A"
+	node_local_store_ratio = -1
 end
 
 puts "node-loads: #{sum['node-loads']}"
 puts "node-load-misses: #{sum['node-load-misses']}"
 puts "node-stores: #{sum['node-stores']}"
 puts "node-store-misses: #{sum['node-store-misses']}"
-puts "node-local-load-ratio: #{node_local_load_ratio}"
-puts "node-local-store-ratio: #{node_local_store_ratio}"
+puts "node-local-load-ratio: #{node_local_load_ratio}" if node_local_load_ratio != -1
+puts "node-local-store-ratio: #{node_local_store_ratio}" if node_local_store_ratio != -1
