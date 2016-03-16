@@ -45,6 +45,7 @@
 ^last_state.booting
 ^last_state.running
 ^last_state.error_umounted
+^last_state.error_mount
 ^build-android.warning.*
 ^build-android.error.cp:*
 ^build-android.error.bin-bash:*
