@@ -1,5 +1,5 @@
 model: qemu-system-x86_64 -enable-kvm -cpu host
-nr_vm: 16
+nr_vm: 24
 nr_cpu: 1
 memory: 1G
 rootfs: debian-x86_64.cgz
