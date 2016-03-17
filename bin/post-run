@@ -106,16 +106,7 @@ wait_for_pipe()
 		# give chance to monitor fifo writer to sync data back to file
 		wait_for_pipe
 		chown lkp.lkp ${tmp_results}
-		mv --no-clobber ${tmp_results} $RESULT_ROOT/ && {
-			(
-				cd $RESULT_ROOT
-				for file_name in ${tmp_results}
-				do
-					ls -l $(basename $file_name)
-				done
-				echo
-			)
-		} || ls -l $tmp_results $RESULT_ROOT 2>&1
+		mv --no-clobber ${tmp_results} $RESULT_ROOT/ || ls -l $tmp_results $RESULT_ROOT 2>&1
 	}
 }
 

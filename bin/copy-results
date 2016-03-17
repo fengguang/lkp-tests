@@ -14,4 +14,3 @@ mkdir $dir 2>/dev/null && {
 chmod -R g+w		"$@"
 chown -R lkp.lkp	"$@"
 cp -dR			"$@"	$dir/
-ls -dR $dir
