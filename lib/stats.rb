@@ -663,3 +663,11 @@ end
 def stat_to_monitor(stat)
 	stat.partition('.').first
 end
+
+$kpi_stat_blacklist = Set.new [ 'vm-scalability.stddev' ]
+
+def is_kpi_stat(stat, axes, values = nil)
+	return false if $kpi_stat_blacklist.include?(stat)
+	testcase = axes[TESTCASE_AXIS_KEY]
+	stat.start_with?(testcase + '.') && !stat.start_with?(testcase + '.time')
+end
