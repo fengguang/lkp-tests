@@ -891,7 +891,7 @@ module Compare
 	end
 
 	def self.perf_comparer(commits)
-		ignored_testcases = Set.new ['xfstest', 'autotest', 'phoronix-test-suite']
+		ignored_testcases = Set.new ['xfstests', 'autotest', 'phoronix-test-suite']
 		git = axis_key_git COMMIT_AXIS_KEY
 		commits = git.sort_commits commits
 		_rts = commits.map { |c|
