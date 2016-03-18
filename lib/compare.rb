@@ -99,6 +99,7 @@ module Compare
 			:use_testcase_stat_keys,
 			:include_stat_keys, :include_all_failure_stat_keys,
 			:filter_stat_keys, :filter_testcase_stat_keys,
+			:filter_kpi_stat_keys,
 			:exclude_stat_keys,
 			:gap,
 			:group_by_stat, :show_empty_group, :compact_show,
@@ -226,6 +227,7 @@ module Compare
 				include_all_failure_stat_keys: @include_all_failure_stat_keys,
 				filter_stat_keys: @filter_stat_keys,
 				filter_testcase_stat_keys: @filter_testcase_stat_keys,
+				filter_kpi_stat_keys: @filter_kpi_stat_keys,
 				group_by_stat: @group_by_stat,
 				show_empty_group: @show_empty_group,
 				compact_show: @compact_show,
@@ -353,6 +355,12 @@ module Compare
 			do_filter_testcase_stat_keys stats
 		end
 
+		def filter_kpi_stat_keys(stats, matrixes_in)
+			stats.select { |k|
+				is_kpi_stat(k, axes, matrixes_in.map { |m| m[k] })
+			}
+		end
+
 		def calc_changed_stat_keys(matrixes_in)
 			if @comparer.use_all_stat_keys
 				stat_keys = get_all_stat_keys
@@ -368,6 +376,9 @@ module Compare
 			stat_keys = filter_stat_keys stat_keys
 			if @comparer.filter_testcase_stat_keys
 				stat_keys = filter_testcase_stat_keys stat_keys
+			end
+			if @comparer.filter_kpi_stat_keys
+				stat_keys = filter_kpi_stat_keys stat_keys, matrixes_in
 			end
 			stat_keys = exclude_stat_keys stat_keys
 		end
@@ -899,7 +910,7 @@ module Compare
 		comparer.set_mresult_roots(_rts).
 			set_sort_mresult_roots(false).
 			set_compare_axis_keys(compare_axis_keys).
-			set_filter_testcase_stat_keys(true).
+			set_filter_kpi_stat_keys(true).
 			set_sort_by_group(true).
 			set_compact_show(true)
 	end
