@@ -52,9 +52,13 @@ exit if $result.empty?
 max_cols = 0
 min_cols = Float::INFINITY
 min_cols_stat = ''
+max_cols_stat = ''
 zero_stats = []
 $result.each { |k, v|
-	max_cols = v.size if max_cols < v.size
+	if max_cols < v.size
+		max_cols = v.size
+		max_cols_stat = k
+	end
 	if min_cols > v.size
 		min_cols = v.size
 		min_cols_stat = k
@@ -82,7 +86,7 @@ if min_cols < max_cols and not UNSTRUCTURED_MONITORS.include?($monitor)
 		$result.each { |k, v| v.pop if v.size == max_cols }
 		puts "Last record seems incomplete. Truncated #{RESULT_ROOT}/#{$monitor}.json"
 	else
-		$stderr.puts "Not a matrix: #{min_cols_stat}: #{min_cols} != #{max_cols}: #{RESULT_ROOT}/#{$monitor}.json"
+		$stderr.puts "Not a matrix: value size is different - #{min_cols_stat}: #{min_cols} != #{max_cols_stat}: #{max_cols}: #{RESULT_ROOT}/#{$monitor}.json"
 	end
 end
 
