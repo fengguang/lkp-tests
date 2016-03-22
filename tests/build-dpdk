@@ -22,7 +22,7 @@ shopt -s nullglob
 export CC=$dpdk_compiler
 $CC -v 2>&1 || {
 	echo "can not find executable $CC" >&2
-	return 1
+	exit 1
 }
 
 merge_configs()
