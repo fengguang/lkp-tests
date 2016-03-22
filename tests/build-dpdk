@@ -77,6 +77,19 @@ grep -r -l 'Werror' $DPDK_REPO_ROOT | xargs sed -i 's/ -Werror//'
 
 cp $DPDK_OBJ/.config $RESULT_ROOT/dpdk_config
 
+# To fix the following error info:
+# make[3]: *** [test] Error 1
+# /usr/lib/x86_64-linux-gnu/libmvec_nonshared.a(svml_finite_alias.oS): In function `_ZGVbN2v___log_finite':
+# (.text+0x0): multiple definition of `_ZGVbN2v___log_finite'
+# /usr/lib/x86_64-linux-gnu/libmvec_nonshared.a(svml_finite_alias.oS):(.text+0x0): first defined here
+# collect2: error: ld returned 1 exit status
+# make[1]: *** [app] Error 2
+# make[2]: *** [test-acl] Error 2
+#
+# when gcc on ld stage, it will find libmvec_nonshared.a file, so can not remove it, just link to another more popular .so library.
+# and actually dpdk fully do not depend on libmvec_nonshared.a library.
+ln -sf /usr/lib/x86_64-linux-gnu/libmvec.so  /usr/lib/x86_64-linux-gnu/libmvec_nonshared.a
+
 make O=$DPDK_OBJ DESTDIR=$RESULT_ROOT
 make_exit_status=$?
 
