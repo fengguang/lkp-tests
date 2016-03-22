@@ -36,6 +36,7 @@ merge_configs()
 DPDK_REPO_ROOT=/build/dpdk/src
 DPDK_OBJ=/build/dpdk/obj
 LINUX_KERNEL_ROOT=/build/linux/src
+export RTE_KERNELDIR="$LINUX_KERNEL_ROOT"
 
 ARCH=${dpdk_config%%-*}
 dpdk_compiler_name=${dpdk_compiler%%-*}
