@@ -153,6 +153,14 @@ def matrix_delete_col(matrix, col)
 	}
 end
 
+def unite_remove_blacklist_stats(matrix)
+	# sched_debug per-cpu stats usually change a lot among multiple running,
+	# still keep statistic stats such as avg, min, max, stddev, etc.
+	matrix.reject { |k, v|
+		k =~ /^sched_debug.*\.[0-9]+$/
+	}
+end
+
 def unite_to(stats, matrix_root, max_cols = nil, delete = false)
 	matrix_file = matrix_root + '/matrix.json'
 
@@ -171,6 +179,7 @@ def unite_to(stats, matrix_root, max_cols = nil, delete = false)
 	end
 	shrink_matrix(matrix, max_cols) if max_cols
 
+	matrix = unite_remove_blacklist_stats(matrix)
 	save_json(matrix, matrix_file)
 	matrix = matrix_fill_missing_zeros(matrix)
 	matrix.delete 'stats_source'
