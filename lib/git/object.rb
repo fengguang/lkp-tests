@@ -143,6 +143,12 @@ module Git
 				end
 				res
 			end
+
+			def reachable_from?(branch)
+				branch = @base.gcommit(branch)
+				r = @base.command('rev-list', ["-n", "1", sha, "^#{branch.sha}"])
+				r.strip.empty?
+			end
 		end
 
 		class Tag
