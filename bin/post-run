@@ -139,6 +139,11 @@ copy_time_files()
 
 copy_time_files || ps faux --cols 1000 > $RESULT_ROOT/time-debug
 
+[ "$kconfig" = "x86_64-rhel_gcov" ] && [ -d /sys/kernel/debug/gcov ] && {
+	$LKP_SRC/tools/gather-gcov-test $TMP/gcov-test.tar.gz
+	copy_to_result $TMP/gcov-test.tar.gz
+}
+
 truncate --no-create --size='<10M' $TMP/output $TMP/stdout $TMP/stderr
 
 copy_to_result $TMP/boot-time
