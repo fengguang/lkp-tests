@@ -15,7 +15,7 @@ cd $BENCHMARK_ROOT/kvm-unit-tests || exit
 # Debian/Fedora/Ubuntu use /usr/bin/qemu-system-x86_64 as QEMU Emulator.
 # RHEL use /usr/libexec/qemu-kvm as QEMU Emulator.
 
-if qemu-system-x86_64 --help &> /dev/null; then
+if qemu-system-x86_64 --help >/dev/null 2>&1; then
 	export QEMU="/usr/bin/qemu-system-x86_64"
 else
 	if [[ -f "/usr/libexec/qemu-kvm" ]]; then
