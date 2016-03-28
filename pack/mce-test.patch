@@ -18,15 +18,3 @@ index 707e4a8..115d26b 100755
  
  	k_log "The k-tree size is $tree_size M, the total free space reqirements is about $total_size M."
  
-diff --git a/cases/stress/hwpoison/hwpoison.sh b/cases/stress/hwpoison/hwpoison.sh
-index 6cd3b82..2cf3f6e 100755
---- a/cases/stress/hwpoison/hwpoison.sh
-+++ b/cases/stress/hwpoison/hwpoison.sh
-@@ -741,6 +741,7 @@ run_fsck()
- 	echo -n "" > $result
- 
- 	[ $g_fstype = "btrfs" ] && fsck="btrfsck"
-+	[ $g_fstype = "xfs" ] && fsck="xfs_repair"
- 	[ $g_fstype = "reiserfs" ] && {
- 	        fsck="reiserfsck"
- 	        opts="-y"
