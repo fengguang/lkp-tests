@@ -270,7 +270,7 @@ class MResultRootTableSet
 		 'build-android', 'convert-lkpdoc-to-html', 'convert-lkpdoc-to-html-css',
 		 'health-stats', 'hwinfo', 'internal-lkp-service', 'ipmi-setup',
 		 'lkp-bug', 'lkp-install-run', 'lkp-services', 'lkp-src', 'pack',
-		 'pack-deps']
+		 'pack-deps', 'borrow']
 
 	def initialize
 		@linux_perf_table = LinuxMResultRootTable.open(LINUX_PERF_TABLE)
