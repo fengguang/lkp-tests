@@ -30,16 +30,3 @@ index 6cd3b82..2cf3f6e 100755
  	[ $g_fstype = "reiserfs" ] && {
  	        fsck="reiserfsck"
  	        opts="-y"
-diff --git a/cases/stress/hwpoison/hwpoison.sh b/cases/stress/hwpoison/hwpoison.sh
-index 2cf3f6e..f178c84 100755
---- a/cases/stress/hwpoison/hwpoison.sh
-+++ b/cases/stress/hwpoison/hwpoison.sh
-@@ -746,6 +746,8 @@ run_fsck()
- 	        fsck="reiserfsck"
- 	        opts="-y"
- 	}
-+	[[ $g_fstype =~ ext[2-4] ]] && opts="-p"
-+
- 	begin "launch $fsck on $g_dev to check test result"
- 	silent_exec which $fsck || {
- 		fsck_err "fsck: unsupported fstype: $g_fstype"
