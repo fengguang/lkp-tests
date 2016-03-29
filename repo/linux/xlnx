@@ -1,4 +1,6 @@
 url: https://github.com/Xilinx/linux-xlnx
+mail_cc:
+- linux-arm-kernel@lists.infradead.org
 owner: Michal Simek <michal.simek@xilinx.com>
 git_am_branch: master
 subsystems:
@@ -14,3 +16,11 @@ subsystems:
 - crtc
 - plane
 - apf
+- dma
+- zynqmp
+- remoteproc
+- cdma
+- arm64
+- zynqmp_r5_remoteproc
+- spi
+- ethernet
