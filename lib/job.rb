@@ -430,6 +430,28 @@ module LKP
 		end
 
 		class << self
+			def try_wait(jobs, options = {})
+				if Hash === jobs
+					jobs = jobs.map do |_result_root, ids|
+						ids.map {|id| self.new _result_root, id}
+					end.flatten.uniq(&:id)
+				end
+
+				return nil unless jobs.all?(&:completed?)
+
+				return jobs unless options[:wait_shadow]
+
+				job_ids = jobs.map(&:id)
+				shadows = jobs.select {|job| job.stage == "skipped" && !job_ids.include?(job['id'])}
+
+				return jobs if shadows.empty?
+
+				jobs.concat(shadows.reject {|shadow| shadow['id'] == nil}.map {|shadow| self.new shadow._result_root, shadow['id']}.uniq(&:id))
+				return jobs if jobs.all?(&:completed?)
+
+				nil
+			end
+
 			def wait_for(jobs, timeout, options = {})
 				if Hash === jobs
 					jobs = jobs.map do |_result_root, ids|
