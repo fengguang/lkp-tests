@@ -36,6 +36,13 @@ def load_yaml(file)
 	end
 end
 
+def load_yaml_with_flock(file)
+	lock_file = file + '.lock'
+	with_flock(lock_file) {
+		load_yaml file
+	}
+end
+
 def load_yaml_merge(files)
 	all = {}
 	files.each do |file|
@@ -100,6 +107,13 @@ def save_yaml(object, file, compress=false)
 	FileUtils.mv temp_file, file, :force => true
 
 	compress_file(file) if compress
+end
+
+def save_yaml_with_flock(object, file, compress=false)
+	lock_file = file + '.lock'
+	with_flock(lock_file) {
+		save_yaml object, file, compress
+	}
 end
 
 $json_cache = {}
