@@ -392,3 +392,34 @@ def load_remotes
 	end
 	remotes
 end
+
+def git_committer(commit)
+	`#{GIT} log -n1 --pretty=format:'%cn <%ce>' #{commit}`.chomp
+end
+
+def relative_commit_date(commit)
+	`#{GIT} log -n1 --format=format:"%cr" #{commit}`.chomp
+end
+
+def git_commit_subject(commit)
+	`#{GIT} log -1 --format=%s #{commit}`.chomp
+end
+
+def remote_exists?(remote)
+	`#{GIT} remote` =~ /^#{remote}$/
+end
+
+def branch_exists?(branch)
+	`#{GIT} branch --list -r #{branch}` != ''
+end
+
+def __commit_name(commit)
+	return commit unless commit =~ /^[a-f0-9]+$/
+	name = commit[0..11]
+	name += ' ' + git_commit_subject(commit)[0..59]
+end
+
+$__commit_name_cache = Hash.new
+def commit_name(commit)
+	$__commit_name_cache[commit] ||= __commit_name(commit)
+end
