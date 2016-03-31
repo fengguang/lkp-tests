@@ -1,5 +1,5 @@
-require 'rspec'
-require 'result'
+require 'spec_helper'
+require "#{LKP_SRC}/lib/result"
 
 describe ResultPath do
 	describe "parse_result_root" do

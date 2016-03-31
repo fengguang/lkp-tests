@@ -1,9 +1,6 @@
-require 'rspec'
+require 'spec_helper'
 require 'timeout'
-
-$LOAD_PATH.concat($LOAD_PATH.shift(3))
-
-require "#{ENV['LKP_SRC']}/lib/yaml"
+require "#{LKP_SRC}/lib/yaml"
 
 describe WTMP do
 	describe "load" do

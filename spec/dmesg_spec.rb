@@ -1,5 +1,5 @@
-require 'rspec'
-require 'dmesg'
+require 'spec_helper'
+require "#{LKP_SRC}/lib/dmesg"
 
 describe "Dmesg" do
 	describe "analyze_bisect_pattern" do

@@ -1,5 +1,5 @@
-require 'rspec'
-require 'dmesg'
+require 'spec_helper'
+require "#{LKP_SRC}/lib/dmesg"
 
 describe DmesgTimestamp do
 	VALID_MSG = "0-[   30.336811] [drm] Initialized mgag200 1.0.0 20110418 for 0000:11:00.0 on minor 0"

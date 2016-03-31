@@ -1,8 +1,5 @@
-require 'rspec'
-
-$LOAD_PATH.concat($LOAD_PATH.shift(3))
-
-require 'job'
+require 'spec_helper'
+require "#{LKP_SRC}/lib/job"
 
 describe Job do
 	describe "project" do
