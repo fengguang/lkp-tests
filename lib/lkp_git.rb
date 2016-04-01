@@ -413,6 +413,10 @@ def branch_exists?(branch)
 	`#{GIT} branch --list -r #{branch}` != ''
 end
 
+def commit_exists?(commit)
+	`#{GIT} rev-list -1 #{commit}` != ''
+end
+
 def __commit_name(commit)
 	return commit unless commit =~ /^[a-f0-9]+$/
 	name = commit[0..11]
