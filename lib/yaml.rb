@@ -85,9 +85,9 @@ class WTMP
 		end
 
 		def load_tail(file)
-			# FIXME rli9 file existence check
-			tail = %x[ tail -n 100 #{file} ]
+			return nil unless File.exist? file
 
+			tail = %x[ tail -n 100 #{file} ]
 			load(tail)
 		rescue Exception => e
 			$stderr.puts "#{file}: " + e.message
