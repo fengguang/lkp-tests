@@ -18,7 +18,7 @@ cd $BENCHMARK_ROOT/kvm-unit-tests || exit
 if qemu-system-x86_64 --help >/dev/null 2>&1; then
 	export QEMU="/usr/bin/qemu-system-x86_64"
 else
-	if [[ -f "/usr/libexec/qemu-kvm" ]]; then
+	if [ -f "/usr/libexec/qemu-kvm" ]; then
 		export QEMU="/usr/libexec/qemu-kvm"
 	else
 		echo "Can not find QEMU Emulator" >&2
