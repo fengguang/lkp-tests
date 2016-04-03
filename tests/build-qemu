@@ -1,0 +1,36 @@
+#!/bin/bash
+# - qemu_commit
+# qemu_branch
+
+## QEMU is a generic and open source machine emulator and virtualizer. 
+## detailed info can refer to http://wiki.qemu.org/Main_Page.
+
+shopt -s nullglob
+
+. $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/build.sh
+. $LKP_SRC/lib/mount.sh
+. $LKP_SRC/lib/git.sh
+
+QEMU_REPO_ROOT=/build/qemu/src
+
+[[ $qemu_branch ]] || qemu_branch='qemu/master'
+qemu_remote=${qemu_branch%%/*}
+
+check_mount qemu-src $QEMU_REPO_ROOT -t tmpfs
+
+rm -fr "$QEMU_REPO_ROOT" 2>/dev/null
+git_clone_update git://gitmirror/$qemu_remote $QEMU_REPO_ROOT || die "failed clone qemu tree $qemu_remote"
+
+cd "$QEMU_REPO_ROOT"
+cmd git checkout -q $qemu_commit || die "failed to checkout qemu commit $qemu_commit"
+
+./configure || die "failed to run ./configure"
+make
+
+make_exit_status=$?
+build_complete $make_exit_status
+
+git reset --hard
+
+exit $make_exit_status
