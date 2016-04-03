@@ -1,0 +1,11 @@
+testcase: build-qemu
+category: functional
+
+testbox: vm-lkp-wsx03-4G
+
+branch: linus/master
+commit: v4.4
+
+qemu_branch: qemu/master
+qemu_commit: v2.5.1
+build-qemu:
