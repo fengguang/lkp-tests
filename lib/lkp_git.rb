@@ -418,7 +418,7 @@ def commit_exists?(commit)
 end
 
 def __commit_name(commit)
-	return commit unless commit =~ /^[a-f0-9]+$/
+	return commit unless commit =~ /^[a-f0-9]+$/ || commit =~ /^v\d\.\d+/
 	name = commit[0..11]
 	name += ' ' + git_commit_subject(commit)[0..59]
 end
