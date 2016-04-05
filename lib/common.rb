@@ -2,6 +2,7 @@ LKP_SRC ||= ENV['LKP_SRC']
 
 ## common utilities
 
+require "timeout"
 require "pathname"
 require "fileutils"
 require "stringio"
@@ -243,6 +244,21 @@ end
 def with_flock(lock_file)
 	File.open(lock_file, File::RDWR|File::CREAT, 0664) { |f|
 		f.flock(File::LOCK_EX)
+		yield
+	}
+end
+
+def with_flock_timeout(lock_file, timeout)
+	File.open(lock_file, File::RDWR|File::CREAT, 0664) { |f|
+		begin
+			Timeout::timeout(timeout) {
+				f.flock(File::LOCK_EX)
+			}
+		rescue
+			$stderr.puts "Timeout [#{timeout} seconds] to grabbing flock for #{lock_file}"
+			return
+		end
+
 		yield
 	}
 end

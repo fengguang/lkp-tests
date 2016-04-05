@@ -36,11 +36,18 @@ def load_yaml(file)
 	end
 end
 
-def load_yaml_with_flock(file)
+def load_yaml_with_flock(file, timeout=nil)
 	lock_file = file + '.lock'
-	with_flock(lock_file) {
-		load_yaml file
-	}
+
+	if timeout
+		with_flock_timeout(lock_file, timeout) {
+			load_yaml file
+		}
+	else
+		with_flock(lock_file) {
+			load_yaml file
+		}
+	end
 end
 
 def load_yaml_merge(files)
@@ -109,11 +116,18 @@ def save_yaml(object, file, compress=false)
 	compress_file(file) if compress
 end
 
-def save_yaml_with_flock(object, file, compress=false)
+def save_yaml_with_flock(object, file, timeout=nil, compress=false)
 	lock_file = file + '.lock'
-	with_flock(lock_file) {
-		save_yaml object, file, compress
-	}
+
+	if timeout
+		with_flock_timeout(lock_file, timeout) {
+			save_yaml object, file, compress
+		}
+	else
+		with_flock(lock_file) {
+			save_yaml object, file, compress
+		}
+	end
 end
 
 $json_cache = {}
