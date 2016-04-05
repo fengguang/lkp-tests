@@ -1,14 +1,44 @@
 #!/bin/bash
 
+. $LKP_SRC/lib/env.sh
+
 CONFIGURE_FLAGS="--arch=$arch"
 
 download()
 {
 	git_clone_update git://git.kernel.org/pub/scm/virt/kvm/kvm-unit-tests.git
-	source_dir=$BM_NAME
+	git_clone_update git://git.qemu-project.org/qemu.git
+}
+
+build()
+{
+	# build kvm-unit-tests
+	cd kvm-unit-tests
+	./configure $CONFIGURE_FLAGS
+	make -j $ncpu
+
+	# build qemu
+	cd ../qemu
+	apt-get update
+	apt-get -y install pkg-config zlib1g-dev libglib2.0-dev libpixman-1-dev libfdt-dev
+	mkdir /tmp/qemu_install
+	./configure --prefix=/tmp/qemu_install/  --target-list=x86_64-softmmu
+	make -j $ncpu
 }
 
 install()
 {
-	cp -af /tmp/$BM_NAME/* $BM_ROOT/
+	make install -j $ncpu
+	cp -af /tmp/kvm-unit-tests/* $BM_ROOT/
+}
+
+pack()
+{
+	{
+		cd /tmp/qemu_install
+		find /lkp/benchmarks/$BM_NAME/*
+		find ./*
+	} |
+	cpio -o -H newc --owner=root.root | gzip -n -9 > /lkp/benchmarks/${BM_NAME}.cgz
+	[[ $arch ]] && mv "/lkp/benchmarks/${BM_NAME}.cgz" "/lkp/benchmarks/${BM_NAME}-${arch}.cgz"
 }
