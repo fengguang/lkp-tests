@@ -126,7 +126,7 @@ module CMResultRoot
 
 	def result_roots_with_stat(stat)
 		result_roots.select { |rt|
-			rt.matrix[stat]
+			(m = rt.matrix) && m[stat]
 		}
 	end
 
