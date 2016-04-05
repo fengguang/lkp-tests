@@ -110,6 +110,9 @@ def is_changed_stats(sorted_a, min_a, mean_a, max_a,
 			return false if max_a < 2 * options['distance'] * max_b
 			return false if mean_a < options['distance'] * max_b
 			return true
+		elsif gap = options['gap']
+			return true if min_b > max_a and (min_b - max_a) > (mean_b - mean_a) * gap
+			return true if min_a > max_b and (min_a - max_b) > (mean_a - mean_b) * gap
 		else
 			return true if max_a > 3 * max_b
 			return true if max_b > 3 * max_a
