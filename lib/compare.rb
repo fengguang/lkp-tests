@@ -630,8 +630,8 @@ module Compare
 	def self.calc_min_max(stat)
 		return if stat[FAILURE]
 		vs = stat[VALUES]
-		stat[MIN] = vs.map { |v| v && v.size > 0 ? v.min : -1 }
-		stat[MAX] = vs.map { |v| v && v.size > 0 ? v.max : -1 }
+		stat[MIN] = vs.map { |v| v && v.size > 0 ? v.min : 0 }
+		stat[MAX] = vs.map { |v| v && v.size > 0 ? v.max : 0 }
 	end
 
 	def self.calc_perf_change(stat)
