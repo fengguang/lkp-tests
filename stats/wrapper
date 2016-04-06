@@ -57,14 +57,14 @@ fi
 kmsg_log=$RESULT_ROOT/kmsg
 
 # extract kmsg for kmsg related stats
-if [[ $log =~ ^$RESULT_ROOT/(boot-memory|boot-time|tcrypt|dmesg)$ ]]; then
+if [[ $log =~ ^"$RESULT_ROOT"/(boot-memory|boot-time|tcrypt|dmesg)$ ]]; then
 	[ -f $kmsg_log.xz ] && xzcat $kmsg_log.xz > $kmsg_log
 fi
 
 dmesg_log=$RESULT_ROOT/dmesg
 
 # extract dmesg for dmesg related stats
-if [[ $log =~ ^$RESULT_ROOT/kmsg$ ]]; then
+if [[ $log =~ ^"$RESULT_ROOT"/kmsg$ ]]; then
 	[ -f $dmesg_log.xz ] && xzcat $dmesg_log.xz > $dmesg_log
 fi
 
