@@ -130,6 +130,19 @@ module CMResultRoot
 		}
 	end
 
+	def kpi_avg_stddev
+		cm = complete_matrix
+		if matrix_cols(cm) < 3
+			return nil
+		end
+		avg_stddev = {}
+		cm.each { |k, v|
+			next unless is_kpi_stat(k, axes, [v])
+			avg_stddev[k] = [v.average, v.standard_deviation]
+		}
+		avg_stddev
+	end
+
 	ResultPath::MAXIS_KEYS.each { |k|
 		define_method(k.intern) { @axes[k] }
 	}
@@ -413,4 +426,98 @@ def nresult_root_fsck
 			mrt.delete
 		end
 	}
+end
+
+module ResultStddev
+	BASE_DIR = File.join(LKP_DATA_DIR, 'result_stddev')
+	SOURCE_KEY = 'stat_source'
+	DATA_NR_MAX = 5
+
+	module_function
+
+	# FIXME: Only Linux is supported
+	def path(axes)
+		caxes = deepcopy axes
+		caxes.delete COMMIT_AXIS_KEY
+		tbox = caxes[TBOX_GROUP_AXIS_KEY] || '-'
+		hash = DataStore::Layout.axes_hash(caxes)
+		dir = File.join(BASE_DIR, tbox)
+		file = "#{hash}.json"
+		[dir, file]
+	end
+
+	def delete_col(data, col)
+		dkeys = []
+		data.each { |k, vs|
+			vs.delete_at col
+			if vs.compact.empty?
+				dkeys << k
+			end
+		}
+		dkeys.each { |k|
+			data.delete k
+		}
+	end
+
+	def save(_rt)
+		axes = _rt.axes
+		commit = axes[COMMIT_AXIS_KEY]
+		return unless commit
+		# Only save for release tags
+		proj = 'linux'
+		git = Git.open(project: proj, working_dir: ENV['SRC_ROOT'] || project_work_tree(proj))
+		return unless git.gcommit(commit).release_tag
+		avg_stddev = _rt.kpi_avg_stddev
+		return unless avg_stddev
+
+		dir, file = ResultStddev.path axes
+		FileUtils.mkdir_p dir
+		path = File.join(dir, file)
+		if File.exist? path
+			data = load_json(path)
+		else
+			data = {}
+		end
+
+		sources = data[SOURCE_KEY] || []
+		source_str = DataStore::Layout.axes_to_string(axes)
+		idx = sources.index source_str
+		delete_col(data, idx) if idx
+		delete_col(data, 0 ) if sources.size >= DATA_NR_MAX
+
+		avg_stddev.each { |k, v|
+			unless data[k]
+				data[k] = [nil] * sources.size
+			end
+			data[k] << v
+		}
+		sources << source_str
+		data[SOURCE_KEY] = sources
+		data.each { |k, vs|
+			if vs.size < sources.size
+				vs << nil
+			end
+		}
+
+		save_json data, path
+	end
+
+	def load(axes)
+		dir, file = ResultStddev.path axes
+		path = File.join dir, file
+		return nil unless File.exist? path
+		load_json path
+	end
+
+	def load_values(axes)
+		data = load(axes)
+		return nil unless data && !data.empty?
+		data.delete SOURCE_KEY
+		data.each { |k, vs|
+			vs.compact!
+			avgs, stddevs = vs.first.zip(*vs.drop(1))
+			data[k] = [avgs.average, stddevs.average]
+		}
+		data
+	end
 end
