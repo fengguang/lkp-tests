@@ -2,5 +2,6 @@ testcase: ftrace_onoff
 category: functional
 
 runtime: 5m
+need_memory: 2G
 
 ftrace_onoff:
