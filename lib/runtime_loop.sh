@@ -24,7 +24,8 @@ test_loop()
 runtime_loop()
 {
 	test_loop &
+	local pid="$!"
 	sleep $runtime
-	kill -s HUP %1
+	kill -s HUP $pid
 	wait
 }
