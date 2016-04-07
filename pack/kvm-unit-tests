@@ -34,6 +34,9 @@ pack()
 {
 	{
 		cd /tmp/qemu_install
+		echo /lkp
+		echo /lkp/benchmarks
+		echo /lkp/benchmarks/$BM_NAME
 		find /lkp/benchmarks/$BM_NAME/*
 		find ./*
 	} |
