@@ -4,10 +4,17 @@
 # - nr_job
 # - iterations
 
+## REAIM is an updated and improved version of AIM 7 benchmark. It
+## forks many processes called tasks, each of which concurrently runs
+## in random order a set of subtests called jobs.  Each job exercises
+## a different aspect of the operating system, such as disk-file
+## operations, process creation, user virtual memory operations, pipe
+## I/O, and compute-bound arithmetic loops.
+##
+## Homepage: https://sourceforge.net/projects/re-aim-7/
+
 iterations=${iterations:-1}
 nr_job=${nr_job:-100}
-
-## Update and improve the existing Open Source AIM 7 benchmark
 
 cd $BENCHMARK_ROOT/reaim || exit
 
