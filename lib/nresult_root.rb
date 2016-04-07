@@ -463,6 +463,8 @@ module ResultStddev
 		axes = _rt.axes
 		commit = axes[COMMIT_AXIS_KEY]
 		return unless commit
+		testcase = axes[TESTCASE_AXIS_KEY]
+		return unless MResultRootTableSet::LINUX_PERF_TESTCASES.index testcase
 		# Only save for release tags
 		proj = 'linux'
 		git = Git.open(project: proj, working_dir: ENV['SRC_ROOT'] || project_work_tree(proj))
