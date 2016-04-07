@@ -1,5 +1,6 @@
 #!/bin/bash
 # - qemu_commit
+# - qemu_config
 # qemu_branch
 
 ## QEMU is a generic and open source machine emulator and virtualizer. 
@@ -26,7 +27,8 @@ cd "$QEMU_REPO_ROOT"
 cmd git checkout -q $qemu_commit || die "failed to checkout qemu commit $qemu_commit"
 
 ./configure || die "failed to run ./configure"
-make
+[[ "$qemu_config" ]] || die "qemu_config is empty"
+make --target-list="$qemu_config"
 
 make_exit_status=$?
 build_complete $make_exit_status
