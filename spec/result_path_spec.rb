@@ -17,6 +17,13 @@ describe ResultPath do
 			expect(result_path['compiler']).to eq 'gcc-4.9'
 			expect(result_path['commit']).to eq '0f57d86787d8b1076ea8f9cbdddda2a46d534a27'
 
+			expect(result_path.parse_result_root '/result/build-qemu/x86_64-softmmu/a58047f7fbb055677e45c9a7d65ba40fbfad4b92/2').to be true
+			expect(result_path.parse_result_root '/result/build-qemu/x86_64-softmmu/a58047f7fbb055677e45c9a7d65ba40fbfad4b92/').to be true
+			expect(result_path.parse_result_root '/result/build-qemu/x86_64-softmmu/a58047f7fbb055677e45c9a7d65ba40fbfad4b92').to be true
+			expect(result_path['testcase']).to eq 'build-qemu'
+			expect(result_path['qemu_config']).to eq 'x86_64-softmmu'
+			expect(result_path['qemu_commit']).to eq 'a58047f7fbb055677e45c9a7d65ba40fbfad4b92'
+
 			expect(result_path.parse_result_root '/result/build-dpdk/x86_64-native-linuxapp-gcc/0f57d86787d8b1076ea8f9cbdddda2a46d534a27/gcc-4.9/60c5c5692107abf4157d48493aa2dec01f6b97cc/0').to be true
 			expect(result_path.parse_result_root '/result/build-dpdk/x86_64-native-linuxapp-gcc/0f57d86787d8b1076ea8f9cbdddda2a46d534a27/gcc-4.9/60c5c5692107abf4157d48493aa2dec01f6b97cc/').to be true
 			expect(result_path.parse_result_root '/result/build-dpdk/x86_64-native-linuxapp-gcc/0f57d86787d8b1076ea8f9cbdddda2a46d534a27/gcc-4.9/60c5c5692107abf4157d48493aa2dec01f6b97cc').to be true
@@ -45,6 +52,8 @@ describe ResultPath do
 			expect(result_path.parse_result_root '/result/lkp-a03/hwinfo/performance-1/debian-x86_64.cgz/x86_64-rhel/').to be false
 			expect(result_path.parse_result_root '/result/lkp-a03/hwinfo/performance-1/debian-x86_64.cgz/x86_64-rhel').to be false
 
+			expect(result_path.parse_result_root '/result/build-qemu/a58047f7fbb055677e45c9a7d65ba40fbfad4b92/').to be false
+
 			expect(result_path.parse_result_root '/result/build-dpdk/0f57d86787d8b1076ea8f9cbdddda2a46d534a27/x86_64-native-linuxapp-gcc/gcc-4.9/60c5c5692107abf4157d48493aa2dec01f6b97cc').to be false
 			expect(result_path.parse_result_root '/result/build-dpdk/x86_64-native-linuxapp-gcc/gcc/60c5c5692107abf4157d48493aa2dec01f6b97cc').to be false
 			expect(result_path.parse_result_root '/result/build-dpdk/x86_64-native-linuxapp-gcc/gcc/60c5c5692107abf4157d48493aa2dec01f6b97cc/0').to be false
@@ -52,6 +61,7 @@ describe ResultPath do
 	end
 
 	valid_dpdk_result_root = '/result/build-dpdk/x86_64-native-linuxapp-gcc/0f57d86787d8b1076ea8f9cbdddda2a46d534a27/gcc-4.9/60c5c5692107abf4157d48493aa2dec01f6b97cc/0'
+	valid_qemu_result_root = '/result/build-qemu/x86_64-softmmu/a58047f7fbb055677e45c9a7d65ba40fbfad4b92/2'
 
 	describe "each_commit" do
 		it "should handle default path" do
@@ -76,6 +86,17 @@ describe ResultPath do
 			expect(project_mappings['dpdk']).to eq 'dpdk_commit'
 		end
 
+		it "should handle qemu path" do
+			result_path = ResultPath.new
+
+			result_path.parse_result_root valid_qemu_result_root
+
+			project_mappings = Hash[result_path.each_commit.map {|project, commit_axis| [project, commit_axis]}]
+			expect(project_mappings.size).to eq 1
+			expect(project_mappings['linux']).to eq nil
+			expect(project_mappings['qemu']).to eq 'qemu_commit'
+		end
+
 		it "should return enumerator" do
 			result_path = ResultPath.new
 			result_path.parse_result_root valid_dpdk_result_root
@@ -92,6 +113,13 @@ describe ResultPath do
 			expect(result_path.commit_axis).to eq 'commit'
 		end
 
+		it "should handle qemu path" do
+			result_path = ResultPath.new
+
+			result_path.parse_result_root valid_qemu_result_root
+			expect(result_path.commit_axis).to eq 'qemu_commit'
+		end
+
 		it "should handle linux path" do
 			result_path = ResultPath.new
 
@@ -103,6 +131,10 @@ describe ResultPath do
 	describe "maxis_keys" do
 		it "should handle dpdk path" do
 			expect(ResultPath.maxis_keys('build-dpdk').size).to eq 4
+		end
+
+		it "should handle qemu path" do
+			expect(ResultPath.maxis_keys('build-qemu').size).to eq 2
 		end
 	end
 end
