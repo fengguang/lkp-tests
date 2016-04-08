@@ -36,22 +36,14 @@ describe ResultPath do
 			expect(result_path['commit']).to eq '0df1f2487d2f0d04703f142813d53615d62a1da4'
 		end
 
-		it "should fail when commit id length is invalid" do
+		it "should fail when result root is invalid" do
 			result_path = ResultPath.new
-
 			expect(result_path.parse_result_root '/result/aim7/performance-2000-fork_test/brickland3/debian-x86_64-2015-02-07.cgz/x86_64-rhel/gcc-4.9/0f57d86787d8b1076ea8f9cbdddda2a46d534a2').to be false
 			expect(result_path.parse_result_root '/result/aim7/performance-2000-fork_test/brickland3/debian-x86_64-2015-02-07.cgz/x86_64-rhel/gcc-4.9/').to be false
 			expect(result_path.parse_result_root '/result/aim7/performance-2000-fork_test/brickland3/debian-x86_64-2015-02-07.cgz/x86_64-rhel/gcc-4.9').to be false
-			expect(result_path.parse_result_root '/result/build-dpdk/x86_64-native-linuxapp-gcc/gcc/60c5c5692107abf4157d48493aa2dec01f6b97c').to be false
-			expect(result_path.parse_result_root '/result/build-dpdk/x86_64-native-linuxapp-gcc/gcc/').to be false
-			expect(result_path.parse_result_root '/result/build-dpdk/x86_64-native-linuxapp-gcc/gcc').to be false
 			expect(result_path.parse_result_root '/result/lkp-a03/hwinfo/performance-1/debian-x86_64.cgz/x86_64-rhel/0df1f2487d2f0d04703f142813d53615d62a1da').to be false
 			expect(result_path.parse_result_root '/result/lkp-a03/hwinfo/performance-1/debian-x86_64.cgz/x86_64-rhel/').to be false
 			expect(result_path.parse_result_root '/result/lkp-a03/hwinfo/performance-1/debian-x86_64.cgz/x86_64-rhel').to be false
-		end
-
-		it "should fail when result root is invalid" do
-			result_path = ResultPath.new
 
 			expect(result_path.parse_result_root '/result/build-dpdk/0f57d86787d8b1076ea8f9cbdddda2a46d534a27/x86_64-native-linuxapp-gcc/gcc-4.9/60c5c5692107abf4157d48493aa2dec01f6b97cc').to be false
 			expect(result_path.parse_result_root '/result/build-dpdk/x86_64-native-linuxapp-gcc/gcc/60c5c5692107abf4157d48493aa2dec01f6b97cc').to be false
