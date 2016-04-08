@@ -280,7 +280,7 @@ class MResultRootTableSet
 		 'qemu', 'rcutorture', 'suspend', 'trinity', 'ndctl']
 	OTHER_TESTCASES =
 		['0day-boot-tests', '0day-kbuild-tests', 'android-kpi', 'build-dpdk',
-		 'build-android', 'convert-lkpdoc-to-html', 'convert-lkpdoc-to-html-css',
+		 'build-qemu','build-android', 'convert-lkpdoc-to-html', 'convert-lkpdoc-to-html-css',
 		 'health-stats', 'hwinfo', 'internal-lkp-service', 'ipmi-setup',
 		 'lkp-bug', 'lkp-install-run', 'lkp-services', 'lkp-src', 'pack',
 		 'pack-deps', 'borrow']
