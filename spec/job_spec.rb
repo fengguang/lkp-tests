@@ -5,7 +5,7 @@ describe Job do
 	describe "project" do
 		it "should recognize dpdk project" do
 			job = Job.new
-			job.load('/result/build-dpdk/x86_64-native-linuxapp-gcc/gcc/7173acefc7cfdfbbb9b91fcba1c9a67adb4c07c9/0/job.yaml')
+			job.load('/result/build-dpdk/x86_64-native-linuxapp-gcc/afd2ff9b7e1b367172f18ba7f693dfb62bdcb2dc/gcc-5/2e14846d15addd349a909176473e936f0cf79075/0/job.yaml')
 
 			expect(job.project).to eq 'dpdk'
 			job.each_jobs do |j|
@@ -15,7 +15,7 @@ describe Job do
 
 		it "should recognize linux project" do
 			job = Job.new
-			job.load('/result/aim7/performance-2000-fork_test/brickland3/debian-x86_64-2015-02-07.cgz/x86_64-rhel/gcc-4.9/0f57d86787d8b1076ea8f9cbdddda2a46d534a27/0/job.yaml')
+			job.load('/result/aim7/600-mem_rtns_1/lkp-a03/debian-x86_64-2015-02-07.cgz/x86_64-rhel/gcc-4.9/171912fdeb2159d6cbf60bda4d0438da9fb1c731/0/job.yaml')
 
 			expect(job.project).to eq 'linux'
 			job.each_jobs do |j|
