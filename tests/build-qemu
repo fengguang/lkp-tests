@@ -26,9 +26,9 @@ git_clone_update git://gitmirror/$qemu_remote $QEMU_REPO_ROOT || die "failed clo
 cd "$QEMU_REPO_ROOT"
 cmd git checkout -q $qemu_commit || die "failed to checkout qemu commit $qemu_commit"
 
-./configure || die "failed to run ./configure"
 [[ "$qemu_config" ]] || die "qemu_config is empty"
-make --target-list="$qemu_config"
+./configure --target-list="$qemu_config" || die "failed to run ./configure"
+make
 
 make_exit_status=$?
 build_complete $make_exit_status
