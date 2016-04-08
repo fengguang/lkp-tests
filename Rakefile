@@ -4,7 +4,10 @@ require 'rspec/core/rake_task'
 require 'fileutils'
 
 #
-# usage: rake spec spec=result_path
+# usage: rake spec [spec=result_path]
+# example:
+# - "rake spec" : check all unit tests status
+# - "rake spec spec=job" : check spec/job_spec.rb status
 #
 
 RSpec::Core::RakeTask.new do |t|
