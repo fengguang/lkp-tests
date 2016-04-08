@@ -41,6 +41,7 @@
 ^stderr.*oom-killer:*Invalid_argument
 ^latency_stats.*cifs.*
 ^last_state.exit_fail
+^last_state.*.exit_code.*
 ^last_state.build-*
 ^last_state.booting
 ^last_state.running
