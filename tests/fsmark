@@ -7,10 +7,12 @@
 # - sync_method
 # - iterations
 
-## The fs_mark benchmark tests synchronous write workloads.It can vary
+## The fs_mark benchmark tests synchronous write workloads. It can vary
 ## the number of files, directory depth, etc. It has detailed timings
-## for reads, writes, unlinks and fsyncs that make it good for
+## for creates, writes, unlinks, close and fsyncs that make it good for
 ## simulating mail servers and other setups.
+##
+## Homepage: https://sourceforge.net/projects/fsmark/
 
 cd $BENCHMARK_ROOT/fsmark || exit
 
