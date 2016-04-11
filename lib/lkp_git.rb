@@ -132,7 +132,7 @@ module Git
 
 		def commit_name?(commit_name)
 			commit_name =~ /^[\da-f~^]{7,}$/ ||
-			commit_name =~ /^v[234]\.\d+/ ||
+			commit_name =~ /^v[\d]+\.\d+/ ||
 			sha1_40?(commit_name)
 		end
 	end
