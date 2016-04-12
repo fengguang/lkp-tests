@@ -74,9 +74,6 @@ _rts = {}
 _result_roots.each { |_rt|
 	__rt = File.dirname _rt
 
-	next if _rts[_rt]
-	_rts[_rt] = true
-
 	next unless File.exist? _rt + '/matrix.json'
 	matrix = load_json _rt + '/matrix.json'
 	next unless matrix
