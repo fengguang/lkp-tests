@@ -10,7 +10,7 @@ require "#{LKP_SRC}/lib/stats.rb"
 require "#{LKP_SRC}/lib/result.rb"
 
 $opt_group = '_rt'
-$opt_kernel = 'v4.5'
+$opt_kernel = ''
 $opt_field = 'time.elapsed_time'
 $opt_pattern = ''
 
@@ -58,13 +58,15 @@ opts = OptionParser.new do |opts|
 end
 
 opts.parse!(ARGV)
-if Git.project_exist?('linux') and not Git.sha1_40?($opt_kernel)
-	working_dir = ENV['SRC_ROOT'] || project_work_tree('linux')
-	git = Git.open(project: 'linux', working_dir: working_dir)
-	$opt_kernel = git.gcommit($opt_kernel).sha
-end
 
-$opt_pattern << " " + $opt_kernel
+unless $opt_kernel.empty?
+	if Git.project_exist?('linux') and not Git.sha1_40?($opt_kernel)
+		working_dir = ENV['SRC_ROOT'] || project_work_tree('linux')
+		git = Git.open(project: 'linux', working_dir: working_dir)
+		$opt_kernel = git.gcommit($opt_kernel).sha
+	end
+	$opt_pattern << " " + $opt_kernel
+end
 
 _result_roots = `#{LKP_SRC}/lkp-exec/_rt #{$opt_pattern}`.split
 groups = {}
