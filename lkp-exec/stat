@@ -10,9 +10,9 @@ require "#{LKP_SRC}/lib/stats.rb"
 require "#{LKP_SRC}/lib/result.rb"
 
 $opt_group = '_rt'
-$opt_kernel = 'v3.13'
+$opt_kernel = 'v4.5'
 $opt_field = 'time.elapsed_time'
-$opt_pattern = []
+$opt_pattern = ''
 
 opts = OptionParser.new do |opts|
 	opts.banner = "Usage: lkp stat [options]"
@@ -29,7 +29,7 @@ opts = OptionParser.new do |opts|
 	end
 
 	opts.on("-p PATTERN", "--pattern PATTERN", "grep RESULT_ROOT with PATTERN") do |pattern|
-		$opt_pattern << Regexp.new(pattern)
+		$opt_pattern << " " + pattern
 	end
 
 	opts.on("-f FIELD", "--field FIELD", "stats field name") do |field|
@@ -47,20 +47,18 @@ opts = OptionParser.new do |opts|
 end
 
 opts.parse!(ARGV)
-result_roots = `grep -r -h -F /#{$opt_kernel}/ /lkp/paths/`.split
 if Git.project_exist?('linux') and not Git.sha1_40?($opt_kernel)
 	working_dir = ENV['SRC_ROOT'] || project_work_tree('linux')
 	git = Git.open(project: 'linux', working_dir: working_dir)
-	sha = git.gcommit($opt_kernel).sha
-	result_roots += `grep -r -h -F /#{sha}/ /lkp/paths/`.split
+	$opt_kernel = git.gcommit($opt_kernel).sha
 end
-$opt_pattern.each do |pattern|
-	result_roots = result_roots.grep pattern
-end
+
+$opt_pattern << " " + $opt_kernel
+
+_result_roots = `#{LKP_SRC}/lkp-exec/_rt #{$opt_pattern}`.split
 groups = {}
 _rts = {}
-result_roots.sort.each { |result_root|
-	_rt = File.dirname result_root
+_result_roots.each { |_rt|
 	__rt = File.dirname _rt
 
 	next if _rts[_rt]
@@ -74,7 +72,7 @@ result_roots.sort.each { |result_root|
 	end
 
 	result_path = ResultPath.new
-	result_path.parse_result_root(result_root)
+	result_path.parse_result_root(_rt)
 	result_path['_rt'] = _rt
 	result_path['__rt'] = __rt
 	result_path['test'] = result_path.test_desc 'commit', true
