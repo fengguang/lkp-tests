@@ -3,6 +3,7 @@
 while line = STDIN.gets
 	case line.chomp!
 	when /^(.*): +(\d+) kB$/,
+	     /^(.*): +(\d+) KiB$/,
 	     /^(.*): +(\d+)$/
 		puts $1 + ': ' + $2
 	else
