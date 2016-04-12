@@ -32,6 +32,17 @@ opts = OptionParser.new do |opts|
 		$opt_pattern << " " + pattern
 	end
 
+	opts.on("-d DATE", "--date DATE", "search latest DATE days's RESULT_ROOT") do |date|
+		case date
+		when /[0-9]+m$/, /[0-9]+w$/, /[0-9]+d$/, /[0-9]+$/
+			$opt_pattern = "  -d #{date}" + $opt_pattern
+		else
+			$stderr.puts "-d #{date}: parameter is unsuitable."
+			puts opts
+		    exit
+		end
+	end
+
 	opts.on("-f FIELD", "--field FIELD", "stats field name") do |field|
 		$opt_field = field
 	end
