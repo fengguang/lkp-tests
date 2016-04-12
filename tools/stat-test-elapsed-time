@@ -1,0 +1,58 @@
+#!/usr/bin/env ruby
+
+LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
+
+require 'optparse'
+require "#{LKP_SRC}/lib/yaml"
+require "#{LKP_SRC}/lib/misc"
+
+$opt_group = '_rt'
+$opt_kernel = ''
+$opt_date = ''
+$cmd = ''
+
+OptionParser.new do |opts|
+	opts.banner = "Usage: #{File.basename $PROGRAM_NAME} [options]"
+
+	opts.on("-g GROUP", "--group-by GROUP", "group by GROUP") do |group|
+		$opt_group = group
+	end
+
+	opts.on("-k KERNEL", "--kernel KERNEL", "kernel branch/commit") do |kernel|
+		$opt_kernel = kernel
+	end
+
+	opts.on("-d DATE", "--date DATE", "search latest DATE days's RESULT_ROOT") do |date|
+		case date
+		when /[0-9]+m$/, /[0-9]+w$/, /[0-9]+d$/, /[0-9]+$/
+			$opt_date = date
+		else
+			$stderr.puts "-d #{date}: parameter is unsuitable."
+			puts opts
+			exit
+		end
+	end
+
+	opts.on("-h", "--help", "Prints this help") do
+		puts opts
+		exit
+	end
+end.parse!
+
+test_specs = Dir["#{LKP_SRC}/jobs/*"].select {|job_file| File.file?(job_file) && job_file.end_with?('.yaml')}
+                                     .map {|job_file| YAML.load_file job_file}
+                                     .select {|test_spec| test_spec['category'] == 'functional' && test_spec['rootfs'] !~ /(t100|eywa|rhel)/}
+
+test_cases = test_specs.map {|test_spec| test_spec['testcase']}.compact.uniq
+
+#puts test_cases.join("\n")
+test_cases.each_with_index do |test_case, index|
+	puts "NO #{index + 1}"
+	puts test_case
+	puts "=" * test_case.size
+	$cmd = "#{LKP_SRC}/lkp-exec/stat -p #{test_case} -f time.elapsed_time -g #{$opt_group}"
+	$cmd << " -k " + $opt_kernel unless $opt_kernel.empty?
+	$cmd << " -d " + $opt_date unless $opt_date.empty?
+	puts `#{$cmd}`
+	puts
+end
