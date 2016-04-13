@@ -2,7 +2,7 @@
 # - priority
 
 if [ -z "$partitions" ]; then
-	echo "no pmem partitions specified" >&2
+	echo "no partitions found" >&2
 	exit 1
 fi
 
@@ -12,4 +12,5 @@ swapoff -a
 for i in $partitions; do
 	mkswap $i 2>/dev/null && swapon $i $opt_priority
 done
+# verify swap priority
 cat /proc/swaps
