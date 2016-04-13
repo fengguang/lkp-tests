@@ -1,0 +1,34 @@
+testcase: vm-scalability
+category: benchmark
+
+transparent_hugepage:
+  thp_enabled:
+    - never
+  thp_defrag:
+    - never
+
+nr_task:
+  - 1
+  - 4
+  - 16
+  - 64
+
+boot_params:
+  bp1_memmap: 24G!4G
+  bp2_memmap: 24G!28G
+  bp3_memmap: 24G!66G
+  bp4_memmap: 24G!90G
+
+disk:
+  nr_pmem: 4
+
+swap:
+  priority: 1
+perf-profile:
+  delay: 20
+perf-node:
+vm-scalability:
+  test:
+    - swap-w-seq
+    - swap-w-rand
+kconfig: x86_64-rhel-pmem
