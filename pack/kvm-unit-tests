@@ -19,6 +19,8 @@ build()
 
 	# build qemu
 	cd ../qemu
+	apt-get update
+	apt-get -y install pkg-config zlib1g-dev libglib2.0-dev libpixman-1-dev libfdt-dev
 	mkdir /tmp/qemu_install
 	./configure --prefix=/tmp/qemu_install/  --target-list=x86_64-softmmu
 	make -j $ncpu
