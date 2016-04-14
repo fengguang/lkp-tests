@@ -275,7 +275,7 @@ class MResultRootTableSet
 		 'xfstests', 'swap']
 	LINUX_TESTCASES =
 		['boot', 'audio', 'cpu-hotplug', 'ext4-frags', 'ftq', 'ftrace_onoff', 'fwq',
-		 'galileo', 'irda-kernel', 'kernel_selftests', 'kvm-unit-tests',
+		 'galileo', 'irda-kernel', 'kernel_selftests', 'kvm-unit-tests','kvm-unit-tests-qemu',
 		 'locktorture', 'mce-test',  'otc_kernel_qa-ts_ltp_ddt', 'piglit', 'pm-qa',
 		 'qemu', 'rcutorture', 'suspend', 'trinity', 'ndctl']
 	OTHER_TESTCASES =
