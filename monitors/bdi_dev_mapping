@@ -10,7 +10,9 @@ for dev in $partitions; do
 	[ "${dev#*pmem}" != "$dev" ] && continue
 
 	[ "${dev#/dev/md}" != "$dev" ]	||
-	[ "${dev#/dev/ram}" != "$dev" ]	|| dev=$(echo "$dev" | tr -d '0-9')
+	[ "${dev#/dev/ram}" != "$dev" ]	||
+	[ "${dev#/dev/nvme}" != "$dev" ] && dev=$(echo "$dev" | sed 's/p.*//') ||
+	dev=$(echo "$dev" | tr -d '0-9')
 	bdi=$(ls -l $dev | sed 's/,[[:space:]]*/:/' | awk '{print $5}')
 	echo "'$bdi': ${dev#/dev/}"
 done
