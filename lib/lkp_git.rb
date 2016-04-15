@@ -20,6 +20,7 @@ require "#{LKP_SRC}/lib/git/object"
 require "#{LKP_SRC}/lib/git/lib"
 require "#{LKP_SRC}/lib/git/author"
 require "#{LKP_SRC}/lib/git/cache"
+require "#{LKP_SRC}/lib/constant"
 
 $work_tree_base_dir = '/c/repo'
 
@@ -38,10 +39,9 @@ module Git
 		#
 		alias_method :orig_init, :init
 		def init(options = {})
-			options[:project] ||= 'linux'
+			assert(options[:project], "Git.init: options[:project] can't be #{options[:project].inspect}")
 
-			assert(options[:working_dir], "Git.init: options[:working_dir] can't be #{options[:working_dir].inspect}")
-			working_dir = options[:working_dir]
+			working_dir = options[:working_dir] || "#{GIT_ROOT_DIR}/#{options[:project]}"
 
 			Git.orig_init(working_dir, options)
 		end
@@ -53,8 +53,7 @@ module Git
 		def open(options = {})
 			assert(options[:project], "Git.open: options[:project] can't be #{options[:project].inspect}")
 
-			assert(options[:working_dir], "Git.open: options[:working_dir] can't be #{options[:working_dir].inspect}")
-			working_dir = options[:working_dir]
+			working_dir = options[:working_dir] || "#{GIT_ROOT_DIR}/#{options[:project]}"
 
 			Git.orig_open(working_dir, options)
 		end
