@@ -503,8 +503,8 @@ module Compare
 		include Property
 		prop_with :data_types, :data_type, :include_axes, :axes_as_num,
 			  :axis_prefix, :sort, :sort_stat_key,
-			  :include_runs, :data_type_in_key
-		def initialize(group_result)
+			  :include_runs, :data_type_in_key, :group_result
+		def initialize(group_result = nil)
 			@group_result = group_result
 			@data_types = [AVGS]
 			@axes_as_num = true
