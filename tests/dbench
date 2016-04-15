@@ -2,7 +2,11 @@
 # - nr_threads
 
 ## DBENCH is a tool to generate I/O workloads to either a filesystem
-## or to a networked CIFS or NFS server.
+## or to a networked CIFS or NFS server. It generates load patterns
+## similar to those of the commercial Netbench benchmark, but without
+## requiring a lab of Windows load generators to run.
+##
+## Homepage: https://dbench.samba.org/
 
 run_dbench()
 {
