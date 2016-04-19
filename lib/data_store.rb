@@ -520,6 +520,10 @@ module DataStore
 			@axes.freeze
 		end
 
+		def exist?
+			Dir.exist? @path
+		end
+
 		def axes_hash
 			Layout.axes_hash(axes)
 		end
@@ -721,12 +725,18 @@ module DataStore
 		def each
 			block_given? or return enum_for(__method__)
 
+			if @exact
+				node = @table.open_node @conditions
+				if node.exist?
+					yield node
+				end
+				return
+			end
+
 			index = @table.find_best_index @conditions
 			index.each(@conditions, @date) { |axes_str|
 				node = @table.open_node_from_axes_str(axes_str)
-				if !@exact || node.axes == @conditions
-					yield node
-				end
+				yield node
 			}
 		end
 
