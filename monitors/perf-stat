@@ -23,4 +23,4 @@ opt_events="-e $(echo $events | sed 's/ / -e /g')"
 	fi
 }
 
-exec perf stat -a -x' ' $opt_events -o $TMP_RESULT_ROOT/$(basename $0) -- $command
+exec perf stat -a -x' ' $opt_events --log-fd 1 -- $command

@@ -20,4 +20,4 @@ opt_interval="-I $((interval*1000))"
 opt_delay="-D $((delay*1000))"
 
 $perf -v
-exec $perf stat -a $opt_events $opt_interval $opt_delay -o $TMP_RESULT_ROOT/$(basename $0)
+exec $perf stat -a $opt_events $opt_interval $opt_delay --log-fd 1
