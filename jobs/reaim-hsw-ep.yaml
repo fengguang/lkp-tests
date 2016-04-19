@@ -30,10 +30,16 @@ reaim:
   test:
   - fserver
   - new_fserver
-  - all_utime
   - high_systime
 
 ---
+disable_latency_stats: 1
+reaim:
+  iterations: 20
+  test: all_utime
+
+---
+disable_latency_stats:
 reaim:
   iterations: 10
   test: long
@@ -67,11 +73,17 @@ reaim:
 reaim:
   iterations: 20
   nr_job: 1500
-  test:
-  - five_sec
-  - all_utime
+  test: five_sec
 
 ---
+disable_latency_stats: 1
+reaim:
+  iterations: 20
+  nr_job: 1500
+  test: all_utime
+
+---
+disable_latency_stats:
 reaim:
   iterations: 6
   nr_job: 1000
