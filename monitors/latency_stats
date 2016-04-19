@@ -2,6 +2,8 @@
 
 # reference code: linux/kernel/latencytop.c
 
+[ -n "disable_latency_stats" ] && exit 0
+
 [ -f "/proc/latency_stats" ] || exit 0
 
 snapshot()
