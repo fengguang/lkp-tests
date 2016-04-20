@@ -222,11 +222,10 @@ def load_base_matrix(matrix_path, head_matrix, options)
 	commit = rp[axis]
 	matrix = {}
 	tags_merged = []
-	working_dir = ENV['SRC_ROOT'] || project_work_tree(project)
 
 	begin
 		$git ||= {}
-		$git[project] ||= Git.open(project: project, working_dir: working_dir)
+		$git[project] ||= Git.open(project: project, working_dir: ENV['SRC_ROOT'])
 		git = $git[project]
 	rescue
 		$stderr.puts "error: Cannot find project #{project} for bisecting"
@@ -268,7 +267,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
 		# - git.gcommit(6a13feb9c82803e2b815eca72fa7a9f5561d7861).last_release_tag returns [v4.3, false]
 		# - git.release_tag_order(v4.3) returns nil
 		# refresh the cache to invalidate previous git object
-		git = $git[project] = Git.open(project: project, working_dir: working_dir)
+		git = $git[project] = Git.open(project: project, working_dir: ENV['SRC_ROOT'])
 		version, is_exact_match = git.gcommit(commit).last_release_tag
 		order = git.release_tag_order(version)
 
