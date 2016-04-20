@@ -154,6 +154,10 @@ end
 class NMResultRoot < DataStore::Node
 	include CMResultRoot
 
+	def matrix
+		matrix_fill_missing_zeros(super)
+	end
+
 	def result_roots
 		result_root_paths.map { |p|
 			NResultRoot.new p
