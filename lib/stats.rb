@@ -21,6 +21,7 @@ $metric_failure		= IO.read("#{LKP_SRC}/etc/failure").split("\n")
 $functional_tests	= Set.new IO.read("#{LKP_SRC}/etc/functional-tests").split("\n")
 $perf_metrics_threshold = YAML.load_file "#{LKP_SRC}/etc/perf-metrics-threshold.yaml"
 $perf_metrics_prefixes	= File.read("#{LKP_SRC}/etc/perf-metrics-prefixes").split
+$index_perf 		= load_yaml "#{LKP_SRC}/etc/index-perf.yaml"
 
 $perf_metrics_re	= load_regular_expressions("#{LKP_SRC}/etc/perf-metrics-patterns")
 $metrics_blacklist_re	= load_regular_expressions("#{LKP_SRC}/etc/blacklist")
@@ -674,4 +675,13 @@ def is_kpi_stat(stat, axes, values = nil)
 	return false if $kpi_stat_blacklist.include?(stat)
 	testcase = axes[TESTCASE_AXIS_KEY]
 	stat.start_with?(testcase + '.') && !stat.start_with?(testcase + '.time')
+end
+
+def kpi_stat_direction(stat_name, stat_change_percentage)
+	change_direction = "improvement"
+
+	if $index_perf[stat_name] && $index_perf[stat_name] * stat_change_percentage < 0
+		change_direction = "regression"
+	end
+	change_direction
 end
