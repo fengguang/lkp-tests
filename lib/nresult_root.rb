@@ -472,7 +472,7 @@ module ResultStddev
 		return unless MResultRootTableSet::LINUX_PERF_TESTCASES.index testcase
 		# Only save for release tags
 		proj = 'linux'
-		git = Git.open(project: proj, working_dir: ENV['SRC_ROOT'] || project_work_tree(proj))
+		git = Git.open(project: proj, working_dir: ENV['SRC_ROOT'])
 		return unless git.gcommit(commit).release_tag
 		avg_stddev = _rt.kpi_avg_stddev
 		return unless avg_stddev
