@@ -667,7 +667,8 @@ def stat_to_monitor(stat)
 	stat.partition('.').first
 end
 
-$kpi_stat_blacklist = Set.new [ 'vm-scalability.stddev' ]
+$kpi_stat_blacklist = Set.new [ 'vm-scalability.stddev',
+	'unixbench.incomplete_result' ]
 
 def is_kpi_stat(stat, axes, values = nil)
 	return false if $kpi_stat_blacklist.include?(stat)
