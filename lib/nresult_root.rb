@@ -7,6 +7,7 @@ require "#{LKP_SRC}/lib/stats.rb"
 require "#{LKP_SRC}/lib/job.rb"
 require "#{LKP_SRC}/lib/result.rb"
 require "#{LKP_SRC}/lib/data_store.rb"
+require "#{LKP_SRC}/lib/matrix.rb"
 
 # Common Result Root
 # to share code between original ResultRoot and NResultRoot
