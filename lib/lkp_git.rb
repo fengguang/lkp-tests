@@ -22,8 +22,6 @@ require "#{LKP_SRC}/lib/git/author"
 require "#{LKP_SRC}/lib/git/cache"
 require "#{LKP_SRC}/lib/constant"
 
-$work_tree_base_dir = '/c/repo'
-
 module Git
 	class << self
 		# init a repository
@@ -56,10 +54,6 @@ module Git
 			working_dir = options[:working_dir] || "#{GIT_ROOT_DIR}/#{options[:project]}"
 
 			Git.orig_open(working_dir, options)
-		end
-
-		def project_exist?(project)
-			Dir.exist? project_work_tree(project)
 		end
 
 		def linux_last_release_tag_strategy(git_base, commit_sha)
@@ -137,28 +131,21 @@ module Git
 	end
 end
 
-def project_work_tree(project)
-	File.join $work_tree_base_dir, project
-end
-
 def expand_possible_commit(s)
 	return s unless Git.commit_name? s
 
-	working_dir = ENV['SRC_ROOT'] || project_work_tree('linux')
-	git = Git.open(project: 'linux', working_dir: working_dir)
+	git = Git.open(project: 'linux', working_dir: ENV['SRC_ROOT'])
 	return s unless git.commit_exist? s
 	return git.gcommit(s).sha
 end
 
 def linux_commit(c)
-	working_dir = ENV['SRC_ROOT'] || project_work_tree('linux')
-	git = Git.open(project: 'linux', working_dir: working_dir)
+	git = Git.open(project: 'linux')
 	git.gcommit(c)
 end
 
 def linux_commits(*commits)
-	working_dir = ENV['SRC_ROOT'] || project_work_tree('linux')
-	git = Git.open(project: 'linux', working_dir: working_dir)
+	git = Git.open(project: 'linux')
 	commits.map { |c| git.gcommit(c) }
 end
 
@@ -176,8 +163,7 @@ end
 def axis_key_git(axis_key)
 	project = axis_key_project(axis_key)
 	if project
-		working_dir = ENV['SRC_ROOT'] || project_work_tree(project)
-		git = Git.open(project: project, working_dir: working_dir)
+		git = Git.open(project: project, working_dir: ENV['SRC_ROOT'])
 	end
 end
 
