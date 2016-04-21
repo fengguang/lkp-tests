@@ -99,3 +99,16 @@ index b4c2730..696664d 100755
  
  	if i == 1:
  		linear = max(processes_avg, threads_avg)
+diff --git a/tests/read2.c b/tests/read2.c
+index 10a3981..c687397 100644
+--- a/tests/read2.c
++++ b/tests/read2.c
+@@ -25,7 +25,7 @@ void testcase_prepare(unsigned long nr_tasks)
+ void testcase(unsigned long long *iterations, unsigned long nr)
+ {
+ 	char buf[BUFLEN];
+-	char fd = open(tmpfile, O_RDONLY);
++	int fd = open(tmpfile, O_RDONLY);
+ 
+ 	assert(fd >= 0);
+ 
