@@ -1,6 +1,9 @@
 testcase: tbench
 category: benchmark
 
+# upto 40% CPU cycles may be used by latency stats
+disable_latency_stats: 1
+
 nr_threads: 100%
 
 perf-profile:
