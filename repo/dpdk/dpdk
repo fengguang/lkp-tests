@@ -2,13 +2,5 @@ url: http://dpdk.org/git/dpdk
 fetch_tags: true
 upstream: true
 owner: Thomas Monjalon <thomas.monjalon@6wind.com>
-subsystems:
-- base
-- i40e
-- doc
-- fm10k
-- ixgbe
-- app
-- vhost
-- eal
-- test
+git_am_branch: master
+maintained_files: '*'
