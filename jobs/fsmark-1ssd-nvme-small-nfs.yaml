@@ -1,0 +1,28 @@
+testcase: fsmark
+category: benchmark
+
+iterations: 4
+disk: 1SSD
+
+perf-profile:
+  freq: 1000
+
+nr_threads: 4
+
+fs: ext4
+fs2: nfsv4
+
+fsmark:
+  filesize: 9B
+  test_size: 10G
+  sync_method: fsyncBeforeClose
+  nr_directories: 16d
+  nr_files_per_directory: 256fpd
+
+---
+fsmark:
+  filesize: 8K
+  test_size: 20G
+  sync_method: fsyncBeforeClose
+  nr_directories: 16d
+  nr_files_per_directory: 256fpd
