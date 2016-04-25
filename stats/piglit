@@ -7,7 +7,7 @@ while line = STDIN.gets
 	when /^(.*): (fail|crash|timeout|warn|dmesg-warn|dmesg-fail)/
 		fail_type = $2
 		stats << $1.gsub(' ', '_') + ".#{fail_type}: 1"
-	when /\.seconds: [0-9]+$/
+	when /\.seconds: [0-9.]+$/
 		stats << line
 	end
 end
