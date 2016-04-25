@@ -1,0 +1,39 @@
+testcase: fsmark
+category: benchmark
+
+iterations: 1
+nr_threads: 1
+
+disk: 3HDD
+md:
+- RAID0
+- RAID5
+
+fs: ext4
+fs2: nfsv4
+
+perf-profile:
+  freq: 1000
+
+fsmark:
+  filesize: 4M
+  test_size: 30G
+  sync_method: NoSync
+
+---
+nr_threads: 64
+
+md: RAID5
+
+fsmark:
+  filesize: 4M
+  test_size: 60G
+  sync_method: NoSync
+
+---
+md: RAID0
+
+fsmark:
+  filesize: 4M
+  test_size: 100G
+  sync_method: NoSync
