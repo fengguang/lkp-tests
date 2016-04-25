@@ -70,7 +70,6 @@ end
 
 _result_roots = `#{LKP_SRC}/lkp-exec/_rt #{$opt_pattern}`.split
 groups = {}
-_rts = {}
 _result_roots.each { |_rt|
 	__rt = File.dirname _rt
 
