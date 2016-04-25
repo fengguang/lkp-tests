@@ -25,5 +25,5 @@ do
 	i=$((i + 1))
 done
 
-copy-results	"$tmp_results/*.json"
+copy-results	$tmp_results/*.json
 echo all tests finished
