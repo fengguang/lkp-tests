@@ -5,6 +5,8 @@
 : ${raid_level:=JBOD}
 : ${raid_chunk:=256}
 
+. $LKP_SRC/lib/wipefs.sh
+
 check_raid_level()
 {
 	[ "${raid_level#*raid}" != "$raid_level" ] || exit 0
@@ -40,13 +42,12 @@ check_partition_size() {
 check_partition_size $partitions
 
 make_md() {
+	grep -q '^md0 : active' /proc/mdstat && cmd mdadm -q --stop /dev/md0
+	destroy_devices
 	echo y | cmd mdadm -q --create /dev/md0 --chunk=$raid_chunk --level=$raid_level --raid-devices=$nr_partitions --force --assume-clean $partitions
 }
 
-. $LKP_SRC/lib/wipefs.sh
-grep -q '^md0 : active' /proc/mdstat && cmd mdadm -q --stop /dev/md0
-destroy_devices
-make_md
+make_md || make_md
 
 cat >> $TMP/env.yaml <<EOF
 
