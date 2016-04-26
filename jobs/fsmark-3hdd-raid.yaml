@@ -1,15 +1,13 @@
 testcase: fsmark
 category: benchmark
 
-iterations: 1x
+iterations: 1
 nr_threads:
-- 1t
-- 64t
+- 1
+- 64
 
 disk: 3HDD
-md:
-- RAID0
-- RAID5
+md: RAID0
 
 fs:
 - xfs
@@ -22,4 +20,36 @@ perf-profile:
 fsmark:
   filesize: 4M
   test_size: 200G
+  sync_method: NoSync
+
+---
+nr_threads: 1
+md: RAID5
+fs:
+- xfs
+- ext4
+- btrfs
+
+fsmark:
+  filesize: 4M
+  test_size: 130G
+  sync_method: NoSync
+
+---
+nr_threads: 64
+fs: btrfs
+
+fsmark:
+  filesize: 4M
+  test_size: 130G
+  sync_method: NoSync
+
+---
+fs:
+- xfs
+- ext4
+
+fsmark:
+  filesize: 4M
+  test_size: 70G
   sync_method: NoSync
