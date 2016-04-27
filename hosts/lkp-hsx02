@@ -1,6 +1,7 @@
 model: Brickland Haswell-EX
 nr_cpu: 144
 memory: 128G
-hdd_partitions: 
+nr_ssd_partitions: 1
+ssd_partitions: /dev/disk/by-id/ata-INTEL_SSDSC2BA800G3_BTTV451303QX800JGN-part1
 swap_partitions: 
 rootfs_partition: 
