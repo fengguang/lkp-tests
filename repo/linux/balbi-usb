@@ -5,7 +5,7 @@ integration_testing_branches:
 mail_cc:
 - linux-usb@vger.kernel.org
 - linux-omap@vger.kernel.org
-owner: Felipe Balbi <balbi@ti.com>
+owner: Felipe Balbi <felipe.balbi@linux.intel.com>
 subsystems:
 - usb
 - gadget
@@ -17,3 +17,6 @@ subsystems:
 - bdc
 - function
 - legacy
+whitelist_branch: dwc3|musb|xceiv|gadget|fixes|next|testing/fixes|testing/next
+blacklist_branch: .*
+
