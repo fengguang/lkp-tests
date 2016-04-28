@@ -1,0 +1,9 @@
+testcase: piglit
+category: functional
+
+timeout: 24h
+
+piglit:
+  group:
+    - igt-all
+    - quick-all
