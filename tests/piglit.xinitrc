@@ -2,15 +2,28 @@
 
 ## See 'tests/piglit'.
 
+## Currently, just support the following two formats's test item,
+## Using "igt" testcase as an example:
+## - igt-$num (get test item from $LKP_SRC)
+## - igt-all (get test item from $BENCHMARK_ROOT)
+
 tset=${group%%-*}
-groups_dir=$BENCHMARK_ROOT/piglit/groups
-[ -d "$groups_dir" ] || groups_dir=$LKP_SRC/pack/piglit-addon/groups
-[ -f "$groups_dir/$tset-all" ] || cat $groups_dir/$tset-[0-9][0-9][0-9] > $groups_dir/$tset-all
+
+if [ "${group#*-}" = "all" ]; then
+	config_file=$BENCHMARK_ROOT/piglit/groups/$group
+else
+	config_file=$LKP_SRC/pack/piglit-addon/groups/$group
+fi
+
+[ -f "$config_file" ] || {
+	echo "config file not exist: $config_file" 1>&2
+	exit 1
+}
 
 tmp_results="$TMP/piglit-results"
 i=0
 
-grep -F -x -f $groups_dir/$tset-all $groups_dir/$group |
+grep -F -f $BENCHMARK_ROOT/piglit/groups/$tset-all $config_file |
 while read testcase
 do
 	start_time=$(date +%s.%N)
@@ -26,4 +39,4 @@ do
 done
 
 copy-results	$tmp_results/*.json
-echo all tests finished
+echo "all tests finished"
