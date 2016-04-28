@@ -32,11 +32,11 @@ do
 	id=$(echo "$testcase" | tr ' ' _).seconds
 	elapsed=$(echo $end_time - $start_time | bc)
 	echo "$id: $elapsed"
-	cmd piglit summary console "$tmp_results/results.json"
-	mv		"$tmp_results"/results.json \
-			"$tmp_results"/${i}.json
+	cmd piglit summary console "$tmp_results/results.json.bz2"
+	mv		"$tmp_results"/results.json.bz2 \
+			"$tmp_results"/${i}.json.bz2
 	i=$((i + 1))
 done
 
-copy-results	$tmp_results/*.json
+copy-results	$tmp_results/*.json.bz2
 echo "all tests finished"
