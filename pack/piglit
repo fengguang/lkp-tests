@@ -47,13 +47,11 @@ install()
 {
 	mv -T /tmp/intel-gpu-tools $BM_ROOT/lib/$BM_NAME/bin/igt
 
-	cp -af $LKP_SRC/pack/${BM_NAME}-addon/* $BM_ROOT/
-
 	create_config
-	update_test_groups
+	generate_test_groups
 }
 
-update_test_groups()
+generate_test_groups()
 {
 	(
 	cd /lkp/benchmarks/piglit
@@ -62,28 +60,11 @@ update_test_groups()
 	local tset
 	for tset in sanity igt all quick
 	do
-		bin/piglit run $tset /tmp/piglit-output -d -v | grep 'running ::' | sed 's/running :: //' > groups/$tset-all
-
-		cd groups
-		[[ -f $tset-000 ]] || split -d -a3 -l100 $tset-all $tset-
-
-		# add new tests to group 000
-		cat ${tset}-[0-9][0-9][0-9] > $tset-known
-		[[ -f ${tset}-broken ]] && cat ${tset}-broken >> $tset-known
-		grep -v -x -F -f $tset-known $tset-all > $tset-new
-		[[ -s $tset-new ]] &&
-		cat $tset-new >> $tset-000
-
-		# delete missing cases
-		local group
-		for group in ${tset}-[0-9][0-9][0-9]
-		do
-			grep -x -F -f $tset-all $group > tmp
-			mv tmp $group
-		done
-
-		rm $tset-known $tset-new
-		cd ..
+		# the output like below:
+		# running: spec/!opengl 1.1/streaming-texture-leak
+		#
+		# using `sed` command may result in some errors, it is due to exist some special character such as "!"
+		bin/piglit run $tset /tmp/piglit-output -d -v | grep 'running:' | cut -f2- -d":" > groups/$tset-all
 	done
 	)
 }
