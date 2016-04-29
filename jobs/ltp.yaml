@@ -3,4 +3,30 @@ category: functional
 
 ltp:
   test:
+  - admin_tools
+  - cap_bounds
+  - connectors
+  - containers
+  - cpuhotplug
+  - crashme
+  - fcntl-locktests
+  - filecaps
+  - hugetlb
+  - hyperthreading
+  - ima
+  - ipc
+  - lvm.part1
+  - lvm.part2
+  - math
+  - mm
+  - nptl
+  - numa
+  - nw_under_ns
+  - pipes
+  - pty
+  - quickhit
+  - sched
+  - sctp
+  - securebits
   - syscalls
+  - timers
