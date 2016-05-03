@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ## See 'tests/piglit'.
 
@@ -23,7 +23,12 @@ fi
 tmp_results="$TMP/piglit-results"
 i=0
 
-grep -F -f $BENCHMARK_ROOT/piglit/groups/$tset-all $config_file |
+if [ -s "$LKP_SRC/pack/piglit-addon/groups/broken" ]; then
+	testcases=$(grep -F -f $BENCHMARK_ROOT/piglit/groups/$tset-all $config_file | grep -F -v -f $LKP_SRC/pack/piglit-addon/groups/broken)
+else
+	testcases=$(grep -F -f $BENCHMARK_ROOT/piglit/groups/$tset-all $config_file)
+fi
+
 while read testcase
 do
 	start_time=$(date +%s.%N)
@@ -36,7 +41,7 @@ do
 	mv		"$tmp_results"/results.json.bz2 \
 			"$tmp_results"/${i}.json.bz2
 	i=$((i + 1))
-done
+done <<< "$testcases"
 
 copy-results	$tmp_results/*.json.bz2
 echo "all tests finished"
