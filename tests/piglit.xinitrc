@@ -24,9 +24,9 @@ tmp_results="$TMP/piglit-results"
 i=0
 
 if [ -s "$LKP_SRC/pack/piglit-addon/groups/broken" ]; then
-	testcases=$(grep -F -f $BENCHMARK_ROOT/piglit/groups/$tset-all $config_file | grep -F -v -f $LKP_SRC/pack/piglit-addon/groups/broken)
+	testcases=$(grep -F -x -f $BENCHMARK_ROOT/piglit/groups/$tset-all $config_file | grep -F -x -v -f $LKP_SRC/pack/piglit-addon/groups/broken)
 else
-	testcases=$(grep -F -f $BENCHMARK_ROOT/piglit/groups/$tset-all $config_file)
+	testcases=$(grep -F -x -f $BENCHMARK_ROOT/piglit/groups/$tset-all $config_file)
 fi
 
 while read testcase
