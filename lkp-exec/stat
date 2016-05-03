@@ -47,7 +47,7 @@ opts = OptionParser.new do |opts|
 		$opt_field = field
 	end
 
-	opts.on("-r ", "--raw-samples", "show raw samples") do
+	opts.on("-r", "--raw-samples", "show raw samples") do
 		$opt_raw = true
 	end
 
