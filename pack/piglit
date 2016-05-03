@@ -64,7 +64,7 @@ generate_test_groups()
 		# running: spec/!opengl 1.1/streaming-texture-leak
 		#
 		# using `sed` command may result in some errors, it is due to exist some special character such as "!"
-		bin/piglit run $tset /tmp/piglit-output -d -v | grep 'running:' | cut -f2- -d":" > groups/$tset-all
+		bin/piglit run $tset /tmp/piglit-output -d -v | grep 'running:' | cut -f2- -d":" | tr -d " " > groups/$tset-all
 	done
 	)
 }
