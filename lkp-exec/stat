@@ -101,8 +101,8 @@ groups.each { |k, v|
 	if $opt_raw
 		puts "#{k}: #{v}"
 	else
+		next if v.delete_if {|value| value == 0}.empty?
 		total = v.sum
-		next if total == 0
 		avg = v.average
 		stddev = 100 * v.standard_deviation / v.average
 		printf "%8d %16.2f %16.2f %6d%%  %s\n", v.size, total, avg, stddev, k
