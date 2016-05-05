@@ -1,100 +1,100 @@
-spec/NV_conditional_render/generatemipmap
-spec/!OpenGL 1.1/depthstencil-default_fb-readpixels-FLOAT-and-USHORT samples=4
-spec/NV_primitive_restart/primitive-restart-DISABLE_VBO
-spec/NV_primitive_restart/primitive-restart-draw-mode-lines
-glean/glsl1-matrix, vector multiply (3)
-spec/ARB_fragment_program/trinity-fp1
-glean/pointSprite
-spec/ARB_sample_shading/interpolate-at-sample-position 4
-spec/ARB_sample_shading/interpolate-at-sample-position 2
-glean/fragProg1-LG2 test
-spec/EXT_texture_integer/fbo_integer_readpixels_sint_uint
-hiz/hiz-depth-read-window-stencil1
-glean/glsl1-GL state variable reference (point attenuation)
-spec/EGL 1.4/eglQuerySurface EGL_BAD_SURFACE
-spec/!OpenGL 1.1/copyteximage 1D
-hiz/hiz-depth-stencil-test-fbo-d24-s8
-spec/!OpenGL 1.1/copyteximage-border
-spec/glsl-1.20/recursion/indirect-complex
-spec/EXT_texture_array/fbo-array
-glean/fragProg1-DP3 test (2)
-hiz/hiz-depth-stencil-test-fbo-d24-s0
-spec/ARB_texture_float/arb_texture_float-texture-float-formats
-glean/vertProg1-MAX test
-hiz/hiz-depth-read-window-stencil0
-spec/!OpenGL 1.1/draw-pixels
-spec/ARB_draw_elements_base_vertex/arb_draw_elements_base_vertex-drawelements-user_varrays
-glean/vertProg1-DP3 test
-glean/orthoPosVLines
-spec/!OpenGL 1.1/roundmode-getintegerv
-spec/!OpenGL 1.1/GL_SELECT - no test function
-glean/makeCurrent
-spec/!OpenGL 1.1/depthstencil-default_fb-blit samples=2
-spec/!OpenGL 1.1/depthstencil-default_fb-blit samples=4
-spec/!OpenGL 1.1/depthstencil-default_fb-blit samples=6
-spec/!OpenGL 1.1/depthstencil-default_fb-blit samples=8
-spec/!OpenGL 1.1/longprim
-glx/glx-query-drawable-GLX_FBCONFIG_ID-GLXPBUFFER
-spec/EXT_draw_buffers2/fbo-drawbuffers2-colormask
-glean/glsl1-TPPStreamCompiler::assignOperands
-spec/EXT_vertex_array_bgra/bgra-sec-color-pointer
-spec/ARB_depth_texture/texdepth
-spec/!OpenGL 1.2/draw-elements-vs-inputs
-spec/glsl-1.20/recursion/indirect-separate
-spec/!OpenGL 1.1/depthstencil-default_fb-blit
-spec/SGIS_generate_mipmap/gen-texsubimage
-spec/!OpenGL 1.1/depthstencil-default_fb-copypixels samples=2
-spec/!OpenGL 1.1/depthstencil-default_fb-copypixels samples=6
-spec/!OpenGL 1.2/two-sided-lighting-separate-specular
-glean/vertProg1-DPH test
-glean/fragProg1-LIT test 1
-spec/ARB_half_float_vertex/draw-vertices-half-float
-spec/!OpenGL 1.2/tex-skipped-unit
-spec/EXT_framebuffer_blit/fbo-sys-blit
-glean/vertProg1-MOV test (with swizzle)
-spec/ARB_transform_feedback3/arb_transform_feedback3-ext_interleaved_two_bufs_gs
-security/initialized-vbo
-spec/!OpenGL 1.1/depthstencil-default_fb-readpixels-FLOAT-and-USHORT
-spec/NV_primitive_restart/primitive-restart-draw-mode-line_strip
-spec/ARB_texture_cube_map/copyteximage CUBE samples=6
-spec/ARB_base_instance/arb_base_instance-baseinstance-doesnt-affect-gl-instance-id
-spec/EGL_KHR_create_context/valid attribute empty GL
-glean/vertProg1-ABS test
-hiz/hiz-stencil-read-fbo-d0-s8
-glean/fragProg1-CMP test
-glean/vertProg1-DST test
-spec/!OpenGL 1.1/draw-pixels samples=32
-spec/ARB_texture_cube_map/copyteximage CUBE
-spec/APPLE_object_purgeable/object_purgeable-api-pbo
-glean/fragProg1-Computed fog exp2 test
-spec/EGL_KHR_create_context/pre-GL3.2 profile
-spec/!OpenGL 1.1/texgen
-spec/!OpenGL 2.0/occlusion-query-discard
-spec/ARB_vertex_type_2_10_10_10_rev/draw-vertices-2101010
-spec/!OpenGL 1.1/draw-arrays-colormaterial
-spec/ARB_texture_rectangle/copyteximage RECT samples=6
-spec/ARB_texture_rectangle/copyteximage RECT samples=4
-spec/ARB_texture_rectangle/copyteximage RECT samples=8
-spec/!OpenGL 1.1/depthstencil-default_fb-copypixels
-glx/glx-query-drawable-GLXPBUFFER-GLX_HEIGHT
-glean/glsl1-Swizzled writemask (2)
-glx/glx-buffer-age vblank_mode=0
-glean/glsl1-uniform matrix
-spec/EXT_texture_sRGB/tex-srgb
-spec/glsl-1.30/execution/isinf-and-isnan fs_fbo
-glean/fragProg1-Divide by zero test
-glean/glsl1-&& operator, short-circuit
-glean/vertProg1-LG2 test
-glx/GLX_EXT_import_context/get context ID
-glean/fragProg1-swizzled add test
-spec/!OpenGL 1.1/getteximage-formats
-spec/EXT_texture_array/copyteximage 1D_ARRAY
-glx/glx-query-drawable-GLXWINDOW-GLX_HEIGHT
-spec/!OpenGL 1.1/read-front clear-front-first samples=8
-spec/NV_primitive_restart/primitive-restart-VBO_INDEX_ONLY
-spec/!OpenGL 1.4/copy-pixels
-spec/!OpenGL 1.1/fdo10370
-glean/glsl1-Swizzle (rgba)
-spec/NV_vertex_program2_option/vp-clipdistance-01
-glx/glx-query-drawable-GLX_FBCONFIG_ID-GLXPIXMAP
-glean/fragProg1-SGE test
+spec/glsl-1.10/execution/built-in-functions/fs-greaterthanequal-ivec4-ivec4
+spec/glsl-4.00/compiler/built-in-functions/op-sub-dmat4x3-double.vert
+spec/glsl-1.50/execution/built-in-functions/gs-trunc-vec2
+spec/glsl-4.00/execution/built-in-functions/vs-mix-dvec2-dvec2-dvec2
+spec/glsl-4.00/compiler/built-in-functions/smoothstep-double-double-dvec2.vert
+spec/ext_framebuffer_multisample/unaligned-blit32depthmsaa
+spec/arb_gpu_shader5/texturegatheroffsets/fs-rgb-0-uint-2d
+spec/amd_shader_trinary_minmax/execution/built-in-functions/tcs-max3-uvec3-uvec3-uvec3
+spec/glsl-1.30/execution/tex-miplevel-selectiontexture()2darray
+spec/arb_explicit_attrib_location/1.10/compiler/in-01.vert
+spec/arb_framebuffer_srgb/blitrenderbufferlinearupsampleenabled
+spec/arb_texture_gather/texturegather/fs-rgba-blue-unorm-2d
+spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-eq-ivec4-ivec4-using-if
+spec/arb_copy_image/arb_copy_image-formats
+spec/glsl-es-1.00/compiler/precision-qualifiers/no-default-float-precision.frag
+spec/glsl-1.20/execution/built-in-functions/vs-transpose-mat4
+spec/glsl-4.00/compiler/built-in-functions/op-add-dvec3-dvec3.geom
+spec/arb_gpu_shader5/texturegatheroffset/fs-rgba-0-float-2drect-const
+spec/glsl-4.00/compiler/built-in-functions/op-mult-dvec2-dvec2.vert
+spec/glsl-1.20/execution/built-in-functions/vs-transpose-mat2
+spec/glsl-1.20/execution/built-in-functions/vs-transpose-mat3
+spec/arb_separate_shader_objects/compiler/1.50/layout-location.frag
+spec/arb_texture_gather/texturegatheroffset/vs-rgb-zero-float-2darray
+spec/glsl-4.00/execution/built-in-functions/fs-op-sub-dmat2-double
+spec/arb_uniform_buffer_object/negative-bindbuffer-target
+spec/glsl-1.50/execution/varying-struct-basic-gs-fs
+spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-bitor-not-ivec3-int
+spec/glsl-1.20/compiler/built-in-functions/op-add-ivec3-ivec3.vert
+spec/glsl-1.50/execution/built-in-functions/gs-op-mult-mat2x4-mat4x2
+spec/glsl-1.30/execution/built-in-functions/fs-op-bitor-abs-not-ivec2-ivec2
+spec/arb_gpu_shader5/compiler/implicit-conversions-02.vert
+spec/glsl-4.00/compiler/built-in-functions/op-mult-dmat4x2-dmat3x4.geom
+spec/glsl-4.00/execution/built-in-functions/vs-op-mult-dmat4x2-dmat4
+spec/glsl-1.50/compiler/built-in-functions/trunc-float.geom
+spec/arb_texture_gather/texturegather/fs-rgba-one-unorm-2darray
+spec/!opengl1.0/gl-1.0-long-dlist
+spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-mult-float-mat3x2
+spec/glsl-1.30/execution/built-in-functions/vs-op-assign-lshift-int-int
+spec/glsl-4.30/execution/built-in-functions/cs-op-bitxor-not-ivec2-ivec2
+spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-assign-lshift-uvec2-uint
+spec/glsl-1.20/execution/variable-indexing/vs-temp-array-mat2-col-wr
+spec/glsl-1.30/execution/texelfetchfssampler2darray1x129x9-98x129x9
+spec/glsl-4.00/compiler/built-in-functions/dot-dvec3-dvec3.vert
+spec/glsl-4.00/compiler/built-in-functions/mix-dvec3-dvec3-double.geom
+spec/glsl-4.00/compiler/built-in-functions/lessthanequal-dvec4-dvec4.geom
+spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-faceforward-dvec4-dvec4-dvec4
+spec/arb_texture_cube_map_array/texturesize/fs-texturesize-isamplercubearray
+spec/glsl-4.30/execution/built-in-functions/cs-op-bitor-int-ivec3
+spec/glsl-4.00/execution/built-in-functions/vs-max-dvec2-double
+spec/arb_gpu_shader5/texturegather/fs-rgb-0-unorm-2drect
+spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-matrixcompmult-dmat4x2-dmat4x2
+spec/arb_gpu_shader5/texturegatheroffset/vs-rgba-2-int-2d
+spec/arb_framebuffer_srgb/blitrenderbuffersrgb_to_linearupsampledisabled
+spec/arb_gpu_shader5/compiler/implicit-conversions-01.vert
+spec/glsl-1.10/execution/variable-indexing/vs-varying-array-mat3-index-row-rd
+spec/glsl-1.50/linker/unsized-in-unnamed-interface-block-gs
+spec/glsl-es-1.00/compiler/precision-qualifiers/default-precision-nested-scope-03.frag
+spec/glsl-1.20/compiler/built-in-functions/clamp-vec2-vec2-vec2.frag
+spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-assign-add-mat3x4-mat3x4
+spec/arb_tessellation_shader/compiler/custom-out-indexing-const.tesc
+spec/glsl-1.30/compiler/built-in-functions/op-neg-uint.vert
+spec/arb_tessellation_shader/compiler/uniform-block-non-array.tesc
+spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-mult-dmat4x2-dmat3x4.vert
+spec/glsl-4.00/compiler/built-in-functions/mod-dvec4-double.frag
+spec/glsl-1.40/compiler/gl_pointcoord.frag
+spec/glsl-1.20/compiler/built-in-functions/ceil-vec3.frag
+spec/glsl-1.10/execution/built-in-functions/vs-clamp-vec3-vec3-vec3
+spec/arb_tessellation_shader/execution/tcs-input-read-nonconst-interface
+spec/arb_texture_gather/texturegatheroffset/vs-r-red-float-2darray
+spec/glsl-4.30/execution/built-in-functions/cs-op-assign-div-vec4-float
+spec/glsl-1.20/execution/variable-indexing/vs-uniform-array-mat3-row-rd
+spec/glsl-1.20/execution/variable-indexing/vs-varying-array-mat4-rd
+spec/glsl-1.10/compiler/expressions/invalid-equality-04.vert
+spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-assign-sub-vec4-float
+spec/glsl-1.50/execution/built-in-functions/gs-op-assign-sub-vec4-float
+spec/glsl-4.00/execution/built-in-functions/vs-op-mult-dmat2x4-dmat4x2
+glslparsertest/glsl2/loop-07.frag
+spec/glsl-4.00/execution/built-in-functions/fs-op-mult-dmat3-double
+spec/glsl-4.30/execution/built-in-functions/cs-op-assign-div-float-float
+spec/ext_transform_feedback/structs_gles3basic-structrun
+spec/arb_gpu_shader5/texturegatheroffset/vs-rgb-2-int-2drect
+spec/ext_framebuffer_multisample/interpolation2non-centroid-deriv-disabled
+spec/glsl-1.30/compiler/built-in-functions/op-rshift-uvec4-uvec4.frag
+spec/arb_texture_gather/texturegather/vs-rg-green-int-cube
+spec/arb_gpu_shader_fp64/compiler/built-in-functions/clamp-double-double-double.vert
+spec/ext_texture_shared_exponent/texwrapformatsbordercolor-swizzled
+spec/arb_texture_gather/texturegather/vs-rgba-red-int-2darray
+spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-ne-uvec3-uvec3-using-if
+spec/glsl-1.50/execution/built-in-functions/gs-op-bitor-uvec3-uvec3
+spec/glsl-1.30/execution/fs-float-uint-conversion
+spec/glsl-1.50/execution/built-in-functions/gs-op-eq-ivec4-ivec4
+shaders/glsl-fs-swizzle-1
+spec/arb_texture_gather/texturegather/fs-rgba-none-int-cube
+spec/glsl-1.20/compiler/built-in-functions/lessthanequal-vec2-vec2.frag
+spec/glsl-1.50/compiler/built-in-functions/lessthanequal-ivec2-ivec2.geom
+spec/arb_texture_gather/texturegather/vs-rg-red-float-cube
+spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-sub-dvec4-double.vert
+spec/glsl-1.20/execution/vs-outerproduct-const-mat4x2-ivec
+spec/glsl-1.20/execution/variable-indexing/vs-uniform-array-mat4-col-rd
+spec/glsl-1.30/execution/built-in-functions/vs-op-div-uint-uvec3
