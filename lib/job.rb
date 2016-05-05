@@ -398,16 +398,29 @@ module LKP
 		end
 
 		def status
-			if self.completed?
-				status = (File.exist?(File.join(self.result_root, "last_state")) ||
-				          !["skipped", "united"].include?(self.stage) ||
-#				          !File.exist?(File.join(self.result_root, "#{self['testcase']}.success"))
-				          File.exist?(File.join(self.result_root, "#{self['testcase']}.fail"))
-				         ) ? "FAIL" : "PASS"
-				status = "PASS" if File.exist?(File.join(self.result_root, "#{self['testcase']}.success"))
-				"#{status} (#{self.stage})"
+			if completed?
+				if File.exist?(File.join(result_root, "#{self['testcase']}.success"))
+					"PASS"
+				elsif last_state['is_incomplete_run'] == 1
+					"INCOMPLETE"
+				else
+					(File.exist?(File.join(result_root, "last_state")) ||
+					 !["skipped", "united"].include?(stage) ||
+					 File.exist?(File.join(result_root, "#{self['testcase']}.fail"))
+					) ? "FAIL" : "PASS"
+				end
 			else
 				"NOT COMPLETED"
+			end
+		end
+
+		def last_state
+			last_state_path = File.join(result_root, "last_state")
+
+			if completed? && File.exist?(last_state_path)
+				YAML.load_file last_state_path
+			else
+				{}
 			end
 		end
 
