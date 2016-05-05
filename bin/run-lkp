@@ -34,7 +34,7 @@ if [ -x "$job_script" ]; then
 	$LKP_DEBUG_PREFIX $job_script run_job
 	last_state_file=$RESULT_ROOT/last_state
 	[ -f "$last_state_file" ] &&
-		exit_code=$(query_var_from_yaml "exit_fail" "$last_state_file")
+		exit_code=$(sed -ne "s/\(.*\)exit_code.\(.*\):\(.*\)/\\2/p" "$last_state_file")
 	run_job_exit_code=${exit_code:-0}
 else
 	run-job --pid-file $TMP/run-job.pid $job
@@ -77,7 +77,12 @@ if [ "$run_job_exit_code" != 0 ]; then
 	elif [ -f "$TMP/soft_timeout" ]; then
 		set_job_state 'soft_timeout'
 	else
-		set_job_state 'failed'
+		# "99" is a fixed number from lib/debug die() function
+		if [ "$run_job_exit_code" == "99" ]; then
+			set_job_state 'incomplete'
+		else
+			set_job_state 'failed'
+		fi
 	fi
 elif [ -f '/var/log/wtmp' ] && last -n1 | grep -q -E '(pts/|tty)[0-9]'; then
 	set_job_state 'disturbed'

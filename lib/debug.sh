@@ -16,5 +16,8 @@ die()
 {
 	echo "$@" 1>&2
 	dump_call_stack
-	exit 1
+	# http://tldp.org/LDP/abs/html/exitcodes.html#EXITCODESREF
+	# According to the above table, exit codes 1 - 2, 126 - 165, and 255 [1] have special meanings,
+	# and should therefore be avoided for user-specified exit parameters.
+	exit 99
 }
