@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+
+require 'json'
+
+BW = 'bw'
+IOPS = 'iops'
+
+def parse
+	fn = File.join ENV['RESULT_ROOT'], 'fio.output'
+	res = JSON.load(File.read fn)
+	res_job = res['jobs'].first
+	res_write = res_job['write']
+	res_read = res_job['read']
+	puts "write_bw: #{res_write[BW]}"
+	puts "write_iops: #{res_write[IOPS]}"
+	puts "read_bw: #{res_read[BW]}"
+	puts "read_iops: #{res_read[IOPS]}"
+end
+
+parse

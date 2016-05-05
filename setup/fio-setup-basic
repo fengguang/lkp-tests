@@ -1,0 +1,54 @@
+#!/bin/sh
+# - runtime
+# - rw
+# - bs
+# - ioengine
+# - iodepth
+# - direct
+# - test_size
+# - nr_task
+# - fallocate
+
+. $LKP_SRC/lib/unit.sh
+
+[ -n "$test_size" ] || {
+	echo "test_size must be specified for fio" >&2
+	exit 1
+}
+
+test_size=$(to_byte $test_size)
+size=$((test_size / nr_task))
+
+# NOTE: support 1 disk test only so far
+test_dir=${mount_points%% *}
+
+: ${bs:=4k}
+: ${ioengine:=sync}
+: ${runtime:=300}
+: ${rw:=write}
+: ${iodepth:=32}
+: ${direct:=0}
+: ${fallocate:=posix}
+: ${nr_task:=1}
+: ${test_dir:=.}
+
+task="
+[global]
+bs=$bs
+ioengine=$ioengine
+iodepth=$iodepth
+size=$size
+direct=$direct
+runtime=$runtime
+invalidate=1
+fallocate=$fallocate
+directory=$test_dir
+group_reporting
+
+[task]
+rw=$rw
+numjobs=$nr_task
+"
+
+echo -n "$task" > $TMP_RESULT_ROOT/fio.task
+(echo -n "$task"; echo "runtime=1") | fio --output-format=json - > /dev/null

@@ -1,32 +1,16 @@
 #!/bin/sh
-# - runtime
-# - rw
-# - bs
-# - ioengine
-# - fallocate
-# - sub_group_number
-# - group_file_number
 
 ## fio  is  a  tool that will spawn a number of threads or processes
 ## doing a particular type of I/O action as specified by the user.
 ## The typical use of fio is to write a job file matching
 ## the I/O load one wants to simulate.
 
-echo runtime=$runtime
-echo rw=$rw
-echo bs=$bs
-echo ioengine=$ioengine
-echo fallocate=$fallocate
+task=$(cat /$TMP_RESULT_ROOT/fio.task)
 
-: ${bs:=4k}
-: ${fallocate:=posix}
+[ -n "$task" ] || {
+	echo "fio task file isn't setup properly!" >&2
+	exit 1
+}
 
-export blocksize=$bs
-
-if [ -z "$jobfile" ]; then
-	. $(dirname $0)/$testcase
-fi
-
-copy-results $jobfile
-
-cmd fio $jobfile
+note "echo \"$task\" | fio --output-format=json -"
+echo "$task" | fio --output-format=json - > $TMP_RESULT_ROOT/fio.output
