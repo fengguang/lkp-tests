@@ -8,3 +8,4 @@ subsystems:
 - vmx
 - mmu
 belongs_to: kvm
+blacklist_branch: auto-next

@@ -2,3 +2,5 @@ url: git://git.open-mesh.org/linux-merge
 owner: Antonio Quartulli <antonio@meshcoding.com>
 subsystems:
 - batman-adv
+whitelist_branch: batman-adv/next
+blacklist_branch: .*

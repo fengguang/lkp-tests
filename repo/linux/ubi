@@ -1,2 +1,4 @@
 url: git://git.infradead.org/linux-ubi.git
 owner: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
+whitelist_branch: linux-next
+blacklist_branch: .*

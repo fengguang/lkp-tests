@@ -9,3 +9,5 @@ subsystems:
 - usb
 - clk
 - msm
+whitelist_branch: for-next
+blacklist_branch: .*

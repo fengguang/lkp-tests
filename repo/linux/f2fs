@@ -4,3 +4,5 @@ mail_to: linux-f2fs-devel@lists.sourceforge.net
 owner: Jaegeuk Kim <jaegeuk@kernel.org>
 subsystems:
 - f2fs
+whitelist_branch: dev|dev-test
+blacklist_branch: .*

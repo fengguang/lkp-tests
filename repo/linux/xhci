@@ -4,3 +4,4 @@ subsystems:
 - xhci
 - usb
 - mailbox
+blacklist_branch: .*\<stable\>

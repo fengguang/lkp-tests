@@ -2,3 +2,5 @@ url: git://evilpiepirate.org/~kent/linux-bcache.git
 owner: Kent Overstreet <kmo@daterainc.com>
 subsystems:
 - bcache
+whitelist_branch: for-jens|for-next
+blacklist_branch: .*

@@ -1,2 +1,4 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git
 owner: Kees Cook <keescook@chromium.org>
+whitelist_branch: experimental
+blacklist_branch: nx-emu
