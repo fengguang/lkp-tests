@@ -43,7 +43,7 @@ class ResultPath < Hash
 	end
 
 	def parse_result_root(rt)
-		dirs = rt.sub(RESULT_MNT, '').split('/')
+		dirs = rt.sub(/\/result\d*/, '').split('/')
 		dirs.shift if dirs[0] == ''
 
 		self['testcase'] = dirs.shift
