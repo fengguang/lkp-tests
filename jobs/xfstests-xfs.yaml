@@ -10,10 +10,14 @@ xfstests:
   test:
 ## "not-run" and "output-mismatch" testcase will be remove later, 
 ##  now we distinguish them in order to convenient to test and fix them.
-  - xfs-slow
+  - xfs-slow1
+  - xfs-slow2
   - xfs-mid1
   - xfs-mid2
-  - xfs-quick
+  - xfs-mid3
+  - xfs-mid4
+  - xfs-quick1
+  - xfs-quick2
 # - xfs-not-run
 # - xfs-out-mismacth
 # - xfs-new
