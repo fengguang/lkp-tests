@@ -1,0 +1,11 @@
+testcase: nfs-test
+category: benchmark
+
+NFS_HANG_DF_TIMEOUT: 10
+NFS_HANG_CHECK_INTERVAL: 20
+
+nfs-hang:
+
+runtime: 30
+
+sleep:
