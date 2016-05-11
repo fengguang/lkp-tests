@@ -53,6 +53,9 @@
 ^build-android.error.bin-bash:*
 ^build-android.error.grep:*
 ^build-android.error.find:*
+^build-android.time.*
+^build-dpdk.time.*
+^build-qemu.time.*
 .*\.total_test
 ^0day-kbuild-tests.*
 ^0day-boot-tests.*
