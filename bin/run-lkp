@@ -78,7 +78,7 @@ if [ "$run_job_exit_code" != 0 ]; then
 		set_job_state 'soft_timeout'
 	else
 		# "99" is a fixed number from lib/debug die() function
-		if [ "$run_job_exit_code" == "99" ]; then
+		if [ "$run_job_exit_code" = "99" ]; then
 			set_job_state 'incomplete'
 		else
 			set_job_state 'failed'
