@@ -27,6 +27,10 @@ module Git
 			true
 		end
 
+		def remote_exist?(remote)
+			command('remote') =~ /^#{remote}$/
+		end
+
 		def branch_exist?(pattern)
 			!command('branch', ['--list', '-a', pattern]).empty?
 		end
