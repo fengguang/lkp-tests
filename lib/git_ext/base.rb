@@ -27,8 +27,8 @@ module Git
 			true
 		end
 
-		def remote_branch_exist?(remote, branch)
-			!self.command("branch --list -r #{remote}/#{branch}").empty?
+		def branch_exist?(pattern)
+			!command('branch', ['--list', '-a', pattern]).empty?
 		end
 
 		def default_remote
