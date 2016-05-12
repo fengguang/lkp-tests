@@ -29,7 +29,9 @@ ulimit -n 102400
 . $LKP_SRC/lib/wait.sh
 setup_wait
 
-perf record -q -ag --realtime=1 -m 256 $opt_freq $opt_events \
+perf=/lkp/benchmarks/perf-profile/perf
+
+$perf record -q -ag --realtime=1 -m 256 $opt_freq $opt_events \
 	-o $TMP/perf.data -D $((delay * 1000)) -- \
 	timeout $((delay + duration)) \
 	$WAIT_POST_TEST_CMD
