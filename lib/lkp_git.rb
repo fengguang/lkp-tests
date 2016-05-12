@@ -14,24 +14,6 @@ require "#{LKP_SRC}/lib/assert"
 require "#{LKP_SRC}/lib/git_ext"
 require "#{LKP_SRC}/lib/constant"
 
-def expand_possible_commit(s)
-	return s unless Git.commit_name? s
-
-	git = Git.open(project: 'linux', working_dir: ENV['SRC_ROOT'])
-	return s unless git.commit_exist? s
-	return git.gcommit(s).sha
-end
-
-def linux_commit(c)
-	git = Git.open(project: 'linux')
-	git.gcommit(c)
-end
-
-def linux_commits(*commits)
-	git = Git.open(project: 'linux')
-	commits.map { |c| git.gcommit(c) }
-end
-
 def axis_key_project(axis_key)
 	case axis_key
 	when 'commit'
@@ -80,10 +62,6 @@ def axes_gcommit(axes)
 		naxes[k] = v
 	}
 	naxes
-end
-
-def commits_to_string(commits)
-	commits.map { |c| c.to_s }
 end
 
 def __git_committer_name(commit)

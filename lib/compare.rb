@@ -66,6 +66,10 @@ class AxesGroup
 	end
 end
 
+def commits_to_string(commits)
+	commits.map { |c| c.to_s }
+end
+
 module Compare
 	ABS_WIDTH = 10
 	REL_WIDTH = 10

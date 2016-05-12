@@ -40,6 +40,14 @@ $nr_gm = {}
 
 $header_shown = {}
 
+def expand_possible_commit(s)
+	return s unless Git.commit_name? s
+
+	git = Git.open(project: 'linux', working_dir: ENV['SRC_ROOT'])
+	return s unless git.commit_exist? s
+	return git.gcommit(s).sha
+end
+
 opts = OptionParser.new do |opts|
 	opts.banner = 'Usage: compare [options] RESULT_ROOT...'
 
