@@ -15,8 +15,9 @@ ltp:
   - hyperthreading
   - ima
   - ipc
-  - lvm.part1
-  - lvm.part2
+# Cause OOM, require at least 32GB memory
+#  - lvm.part1
+#  - lvm.part2
   - math
   - mm
   - nptl
