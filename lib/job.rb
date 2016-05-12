@@ -361,6 +361,7 @@ end
 module LKP
 	class QueuedJob
 		attr_reader :id, :_result_root
+
 		def initialize(_result_root, id)
 			@_result_root = _result_root
 			@id = id
@@ -369,84 +370,112 @@ module LKP
 		def completion
 			return @completion if @completion
 
-			completions = @_result_root + '/completions'
-
-			if File.exist? completions
-				@completion = File.readlines(completions).find {|completion| completion.index @id}
-			end
-		end
-
-		def stage
-			@stage || @stage = self.completion.split(@id).last.split(' ')[1] if self.completed?
-		end
-
-		def result_root
-			@result_root ||= if self.completed?
-				result_root = self.completion.split(@id).last.split(' ')[0]
-				# "unite" is "unite failed"
-				if ["united", "bad", "unite"].include? self.stage
-					result_root
-				elsif self.stage == "skipped"
-					# 2016-02-19 06:00:48 +0800 ed3c74a721d4c459b336f12f2b19a4ccdd2d5b27 /lkp/scheduled/vm-kbuild-1G-5/validate_boot-1-debian-x86_64-2015-02-07.cgz-x86_64-randconfig-s2-02190153-e5a2e3c8478215aea5b4c58e6154f1b6b170b0ca-20160219-83395-h6q5ri-2.yaml skipped due to already exists
-					# 2016-02-19 06:32:47 +0800 7a4db7f7784e3aa284e99e6c9d6c331ef035bdbf /result/boot/1/vm-kbuild-1G/debian-x86_64-2015-02-07.cgz/x86_64-randconfig-s2-02190153/gcc-5/e5a2e3c8478215aea5b4c58e6154f1b6b170b0ca/2 united
-					result_root =~ /-(\d+)\.yaml/
-					File.join(@_result_root, $1.to_i.to_s)
-				end
-			end
-
-			@result_root || "#{@_result_root} => #{@id}"
-		end
-
-		def status
-			if completed?
-				if File.exist?(File.join(result_root, "#{self['testcase']}.success"))
-					"PASS"
-				elsif last_state['is_incomplete_run'] == 1
-					"INCOMPLETE"
-				else
-					(File.exist?(File.join(result_root, "last_state")) ||
-					 !["skipped", "united"].include?(stage) ||
-					 File.exist?(File.join(result_root, "#{self['testcase']}.fail"))
-					) ? "FAIL" : "PASS"
-				end
-			else
-				"NOT COMPLETED"
-			end
-		end
-
-		def last_state
-			last_state_path = File.join(result_root, "last_state")
-
-			if completed? && File.exist?(last_state_path)
-				YAML.load_file last_state_path
-			else
-				{}
+			completions_path = @_result_root + '/completions'
+			if File.exist? completions_path
+				@completion = File.readlines(completions_path).find {|completion| completion.index @id}
 			end
 		end
 
 		def completed?
-			self.completion != nil
+			completion != nil
+		end
+
+		def stage
+			return nil unless completed?
+
+			@stage ||= completion.split(@id).last.split(' ')[1]
+		end
+
+		def result_root
+			return "#{@_result_root}/#{@id}" unless completed?
+
+			unless @result_root
+				result_root = completion.split(@id).last.split(' ')[0]
+
+				# "unite" is "unite failed"
+				@result_root = if ["united", "bad", "unite"].include?(stage)
+					result_root
+				elsif stage == "skipped"
+					# 2016-02-19 06:00:48 +0800 ed3c74a721d4c459b336f12f2b19a4ccdd2d5b27 /lkp/scheduled/vm-kbuild-1G-5/validate_boot-1-debian-x86_64-2015-02-07.cgz-x86_64-randconfig-s2-02190153-e5a2e3c8478215aea5b4c58e6154f1b6b170b0ca-20160219-83395-h6q5ri-2.yaml skipped due to already exists
+					# 2016-02-19 06:32:47 +0800 7a4db7f7784e3aa284e99e6c9d6c331ef035bdbf /result/boot/1/vm-kbuild-1G/debian-x86_64-2015-02-07.cgz/x86_64-randconfig-s2-02190153/gcc-5/e5a2e3c8478215aea5b4c58e6154f1b6b170b0ca/2 united
+					result_root =~ /-(\d+)\.yaml/
+					File.join(@_result_root, $1.to_i.to_s)
+				else
+					"#{@_result_root}/#{@id}"
+				end
+			end
+
+			@result_root
+		end
+
+		def status
+			return "NOT COMPLETED" unless completed?
+
+			if path?("#{self['testcase']}.success")
+				"PASS"
+			elsif last_state['is_incomplete_run'] == 1
+				"INCOMPLETE"
+			elsif path?("last_state") || path?("#{self['testcase']}.fail") || !["skipped", "united"].include?(stage)
+				"FAIL"
+			elsif stage == 'skipped'
+				"SKIP"
+			else # united stage
+				if path?("#{self['testcase']}.json")
+					stats = JSON.parse File.read(path("#{self['testcase']}.json"))
+					stats.any? {|k, v| k =~ /^#{self['testcase']}\..+\.fail/} ? "FAIL" : "PASS"
+				else
+					"PASS"
+				end
+			end
+		end
+
+		def last_state
+			return nil unless completed?
+
+			unless @last_state
+				last_state_path = File.join(result_root, "last_state")
+				@last_state = File.exist?(last_state_path) ? YAML.load_file(last_state_path) : {}
+			end
+
+			@last_state
 		end
 
 		def pass?
+			return nil unless completed?
+
 			self.status.index "PASS"
 		end
 
 		def [](key)
-			self.contents[key] if self.contents
+			return nil unless completed?
+
+			contents[key]
 		end
 
 		def contents
-			@contents ||= if self.completed? && File.exist?(File.join(self.result_root, "job.yaml"))
-				YAML.load_file File.join(self.result_root, "job.yaml")
+			return nil unless completed?
+
+			unless @contents
+				job_path = path('job.yaml')
+				@contents = File.exist?(job_path) ? YAML.load_file(job_path) : {}
 			end
+
+			@contents
+		end
+
+		def path(name)
+			File.join(result_root, name)
+		end
+
+		def path?(name)
+			File.exist? path(name)
 		end
 
 		class << self
 			def try_wait(jobs, options = {})
 				if Hash === jobs
 					jobs = jobs.map do |_result_root, ids|
-						ids.map {|id| self.new _result_root, id}
+						ids.map {|id| new _result_root, id}
 					end.flatten.uniq(&:id)
 				end
 
@@ -459,7 +488,7 @@ module LKP
 
 				return jobs if shadows.empty?
 
-				jobs.concat(shadows.reject {|shadow| shadow['id'] == nil}.map {|shadow| self.new shadow._result_root, shadow['id']}.uniq(&:id))
+				jobs.concat(shadows.reject {|shadow| shadow['id'] == nil}.map {|shadow| new shadow._result_root, shadow['id']}.uniq(&:id))
 				return jobs if jobs.all?(&:completed?)
 
 				nil
@@ -468,7 +497,7 @@ module LKP
 			def wait_for(jobs, timeout, options = {})
 				if Hash === jobs
 					jobs = jobs.map do |_result_root, ids|
-						ids.map {|id| self.new _result_root, id}
+						ids.map {|id| new _result_root, id}
 					end.flatten.uniq(&:id)
 				end
 
@@ -489,7 +518,7 @@ module LKP
 
 							break if shadows.empty?
 
-							jobs.concat(shadows.reject {|shadow| shadow['id'] == nil}.map {|shadow| self.new shadow._result_root, shadow['id']}.uniq(&:id))
+							jobs.concat(shadows.reject {|shadow| shadow['id'] == nil}.map {|shadow| new shadow._result_root, shadow['id']}.uniq(&:id))
 							print " => #{jobs.size} jobs " if options[:verbose]
 						end
 
