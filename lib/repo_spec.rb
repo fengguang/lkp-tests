@@ -10,8 +10,10 @@ class RepoSpec
 	ROOT_DIR = LKP_SRC + '/repo'
 
 	def initialize(name)
-		spec_path = Dir[File.join(ROOT_DIR, '*', name)].first
-		assert spec_path, "can't find #{name} spec under #{ROOT_DIR}"
+		@name = name
+
+		spec_path = Dir[File.join(ROOT_DIR, '*', @name)].first
+		assert spec_path, "can't find #{@name} spec under #{ROOT_DIR}"
 
 		@spec = YAML.load_file(spec_path)
 		assert @spec, "invalid spec #{spec_path}"
@@ -27,6 +29,10 @@ class RepoSpec
 
 	def [](key)
 		@spec[key]
+	end
+
+	def internal?
+		@name =~ /^internal-/
 	end
 
 	class << self
