@@ -1,5 +1,6 @@
 # broken basic testcase
 igt/drv_module_reload_basic
+igt/gem_exec_suspend/basic-s3
 igt/gem_exec_suspend/basic-s4
 igt/kms_pipe_crc_basic/read-crc-pipe-b-frame-sequence
 igt/gem_exec_create/basic
@@ -24,3 +25,25 @@ igt/kms_pipe_crc_basic/read-crc-pipe-c-frame-sequence
 igt/gem_sync/basic-default
 igt/gem_mmap_gtt/basic-small-copy
 igt/kms_addfb_basic/unused-handle
+igt/kms_pipe_crc_basic/bad-pipe
+igt/kms_pipe_crc_basic/nonblocking-crc-pipe-c-frame-sequence
+igt/kms_pipe_crc_basic/nonblocking-crc-pipe-c
+igt/kms_pipe_crc_basic/nonblocking-crc-pipe-a
+igt/kms_pipe_crc_basic/nonblocking-crc-pipe-a-frame-sequence
+igt/kms_pipe_crc_basic/read-crc-pipe-a-frame-sequence
+igt/kms_pipe_crc_basic/read-crc-pipe-b-frame-sequence
+igt/kms_pipe_crc_basic/nonblocking-crc-pipe-b-frame-sequence
+igt/kms_pipe_crc_basic/read-crc-pipe-c-frame-sequence
+igt/kms_pipe_crc_basic/nonblocking-crc-pipe-b
+igt/kms_pipe_crc_basic/suspend-read-crc-pipe-b
+igt/kms_pipe_crc_basic/suspend-read-crc-pipe-c
+igt/kms_pipe_crc_basic/suspend-read-crc-pipe-a
+igt/kms_pipe_crc_basic/bad-source
+igt/kms_pipe_crc_basic/bad-nb-words-3
+igt/kms_pipe_crc_basic/bad-nb-words-1
+igt/kms_pipe_crc_basic/read-crc-pipe-a
+igt/kms_pipe_crc_basic/read-crc-pipe-c
+igt/kms_pipe_crc_basic/read-crc-pipe-b
+igt/kms_pipe_crc_basic/hang-read-crc-pipe-c
+igt/kms_pipe_crc_basic/hang-read-crc-pipe-b
+igt/kms_pipe_crc_basic/hang-read-crc-pipe-a
