@@ -105,29 +105,6 @@ describe ResultPath do
 		end
 	end
 
-	describe "commit_axis" do
-		it "should handle dpdk path" do
-			result_path = ResultPath.new
-
-			result_path.parse_result_root valid_dpdk_result_root
-			expect(result_path.commit_axis).to eq 'commit'
-		end
-
-		it "should handle qemu path" do
-			result_path = ResultPath.new
-
-			result_path.parse_result_root valid_qemu_result_root
-			expect(result_path.commit_axis).to eq 'qemu_commit'
-		end
-
-		it "should handle linux path" do
-			result_path = ResultPath.new
-
-			result_path.parse_result_root '/result/aim7/performance-2000-fork_test/brickland3/debian-x86_64-2015-02-07.cgz/x86_64-rhel/gcc-4.9/0f57d86787d8b1076ea8f9cbdddda2a46d534a27/2'
-			expect(result_path.commit_axis).to eq 'commit'
-		end
-	end
-
 	describe "maxis_keys" do
 		it "should handle dpdk path" do
 			expect(ResultPath.maxis_keys('build-dpdk').size).to eq 4
