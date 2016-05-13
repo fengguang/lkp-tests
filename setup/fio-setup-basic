@@ -51,4 +51,4 @@ numjobs=$nr_task
 "
 
 echo -n "$task" > $TMP_RESULT_ROOT/fio.task
-(echo -n "$task"; echo "runtime=1") | fio --output-format=json - > /dev/null
+(echo -n "$task"; echo "create_only=1") | fio --output-format=json - > /dev/null
