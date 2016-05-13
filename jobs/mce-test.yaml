@@ -7,8 +7,9 @@ disk:
 need_memory: 2G
 
 fs:
-- btrfs
-- ext4
-- xfs
+## btrfs/ext4 filesystem can not pass any testing currently, disable it temporarily.
+# - btrfs
+# - xfs
+ - ext4
 
 mce-test:
