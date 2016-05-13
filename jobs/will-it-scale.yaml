@@ -7,7 +7,6 @@ perf-profile:
 will-it-scale:
   test:
   - brk1
-  - context_switch1
   - dup1
   - eventfd1
   # fallocate1_processes: tests/fallocate1.c:20: testcase: Assertion `fd >= 0' failed.
@@ -58,3 +57,11 @@ will-it-scale:
   - writeseek1
   - writeseek2
   - writeseek3
+
+---
+# upto 40% CPU cycles may be used by latency stats
+disable_latency_stats: 1
+
+will-it-scale:
+  test:
+  - context_switch1
