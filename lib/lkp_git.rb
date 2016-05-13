@@ -273,3 +273,13 @@ $__commit_name_cache = Hash.new
 def commit_name(commit)
 	$__commit_name_cache[commit] ||= __commit_name(commit)
 end
+
+def linux_commit(c)
+	git = Git.open(project: 'linux')
+	git.gcommit(c)
+end
+
+def linux_commits(*commits)
+	git = Git.open(project: 'linux')
+	commits.map { |c| git.gcommit(c) }
+end
