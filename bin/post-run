@@ -51,7 +51,8 @@ kill_monitors -KILL
 
 PERF_EVENT_DATA=$TMP/perf.data
 [ -s "$PERF_EVENT_DATA" ] && {
-	perf report --header -U -g fractal,5 -i $PERF_EVENT_DATA 2>/dev/null | gzip > $RESULT_ROOT/perf-profile.gz && {
+	perf=/lkp/benchmarks/perf-profile/perf
+	$perf report --header -U -g fractal,5 -i $PERF_EVENT_DATA 2>/dev/null | gzip > $RESULT_ROOT/perf-profile.gz && {
 		rm -f $PERF_EVENT_DATA
 	}
 }
