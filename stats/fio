@@ -11,9 +11,9 @@ def parse
 	res_job = res['jobs'].first
 	res_write = res_job['write']
 	res_read = res_job['read']
-	puts "write_bw: #{res_write[BW]}"
+	puts "write_bw_MBps: #{res_write[BW].to_f / 1024}"
 	puts "write_iops: #{res_write[IOPS]}"
-	puts "read_bw: #{res_read[BW]}"
+	puts "read_bw_MBps: #{res_read[BW].to_f / 1024}"
 	puts "read_iops: #{res_read[IOPS]}"
 end
 
