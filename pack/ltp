@@ -6,10 +6,33 @@ download()
 	source_dir=$BM_NAME
 }
 
+split_syscalls()
+{
+	local cmdfile="runtest/syscalls"
+	[ -f "$cmdfile" ] || return 0
+	# syscalls_partN file exists, abort splitting
+	[ -f "${cmdfile}_part1" ] && return 0
+
+	i=1
+	n=1
+	cat $cmdfile | sed -e '/^$/ d' -e 's/^[ ,\t]*//' -e '/^#/ d' | while read line
+	do
+		if [ $n -gt 300 ];then
+			i=$(($i+1))
+			n=1
+		fi
+		echo "$line" >> "runtest/syscalls_part${i}"
+		n=$(($n+1))
+	done
+
+	echo "Splitting syscalls to syscalls_part1, ..., syscalls_part$i"
+}
+
 build()
 {
 	cd $source_dir
 	patch_source
+	split_syscalls
 	make autotools
 	./configure --prefix=$BM_ROOT
 	make
