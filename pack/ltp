@@ -9,6 +9,7 @@ download()
 build()
 {
 	cd $source_dir
+	patch_source
 	make autotools
 	./configure --prefix=$BM_ROOT
 	make

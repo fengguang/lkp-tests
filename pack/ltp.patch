@@ -1,0 +1,13 @@
+diff --git a/runtest/syscalls b/runtest/syscalls
+index 6af3dad..a990f2e 100644
+--- a/runtest/syscalls
++++ b/runtest/syscalls
+@@ -744,7 +744,8 @@ madvise02 madvise02
+ madvise03 madvise03
+ madvise04 madvise04
+ madvise05 madvise05
+-madvise06 madvise06
++# Cause OOM, deactivate it temporarily.
++#madvise06 madvise06
+ 
+ newuname01 newuname01
