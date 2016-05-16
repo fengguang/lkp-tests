@@ -8,3 +8,4 @@ subsystems:
 - intel_rapl
 - intel_cqm
 - xsave.c
+notify_build_success_branch: .*

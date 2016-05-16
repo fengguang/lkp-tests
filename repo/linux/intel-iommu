@@ -5,3 +5,4 @@ owner: David Woodhouse <David.Woodhouse@intel.com>
 subsystems:
 - iommu
 - vt-d
+notify_build_success_branch: .*

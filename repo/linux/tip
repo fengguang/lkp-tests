@@ -13,5 +13,5 @@ subsystems:
 - sched
 - intel
 - locking
-
 blacklist_branch: auto-.*|tmp-.*|base-.*|test.*|.*-for-linus
+notify_build_success_branch: .*

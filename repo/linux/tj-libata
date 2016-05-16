@@ -11,3 +11,4 @@ subsystems:
 - sata_rcar
 - ahci_xgene
 - libahci
+notify_build_success_branch: .*

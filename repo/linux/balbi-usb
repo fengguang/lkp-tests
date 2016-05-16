@@ -19,4 +19,4 @@ subsystems:
 - legacy
 whitelist_branch: dwc3|musb|xceiv|gadget|fixes|next|testing/fixes|testing/next
 blacklist_branch: .*
-
+notify_build_success_branch: testing/.*

@@ -5,3 +5,4 @@ subsystems:
 - nvme
 - dma-mapping
 - block
+notify_build_success_branch: .*
