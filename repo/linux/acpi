@@ -6,4 +6,6 @@ mail_cc:
 owner: Len Brown <len.brown@intel.com>
 subsystems:
 - intel_idle
-notify_bisect_result_cc: linux-acpi@vger.kernel.org,linux-pm@vger.kernel.org
+notify_bisect_result_cc:
+- linux-acpi@vger.kernel.org
+- linux-pm@vger.kernel.org

@@ -15,4 +15,6 @@ subsystems:
 - sony-laptop
 - acerhdf
 notify_build_success_branch: .*
-notify_bisect_result_cc: dvhart@infradead.org,andriy.shevchenko@linux.intel.com
+notify_bisect_result_cc:
+- Darren Hart <dvhart@infradead.org>
+- Andy Shevchenko <andriy.shevchenko@linux.intel.com>

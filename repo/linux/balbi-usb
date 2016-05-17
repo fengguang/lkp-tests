@@ -21,4 +21,6 @@ whitelist_branch: dwc3|musb|xceiv|gadget|fixes|next|testing/fixes|testing/next
 blacklist_branch: .*
 notify_build_success_branch: testing/.*
 notify_build_success_cc: felipe.balbi@linux.intel.com
-notify_bisect_result_cc: linux-usb@vger.kernel.org,felipe.balbi@linux.intel.com
+notify_bisect_result_cc:
+- linux-usb@vger.kernel.org
+- Felipe Balbi <felipe.balbi@linux.intel.com>

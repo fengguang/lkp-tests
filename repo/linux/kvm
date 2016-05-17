@@ -9,4 +9,6 @@ subsystems:
 - mmu
 belongs_to: kvm
 blacklist_branch: auto-next
-notify_bisect_result_cc: kvm@vger.kernel.org,robert.hu@intel.com
+notify_bisect_result_cc:
+- kvm@vger.kernel.org
+- Robert Hu <robert.hu@intel.com>

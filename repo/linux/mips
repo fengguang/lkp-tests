@@ -3,4 +3,6 @@ git_am_branch: upstream
 owner: Ralf Baechle <ralf@linux-mips.org>
 subsystems:
 - mips
-notify_bisect_result_cc: linux-mips@linux-mips.org,sjhill@mips.com
+notify_bisect_result_cc:
+- linux-mips@linux-mips.org
+- Steven J. Hill <sjhill@mips.com>

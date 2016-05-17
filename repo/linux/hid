@@ -13,4 +13,6 @@ subsystems:
 - rmi
 - i2c-hid
 - usbhid
-notify_bisect_result_cc: linux-input@vger.kernel.org,linux-usb@vger.kernel.org
+notify_bisect_result_cc:
+- linux-input@vger.kernel.org
+- linux-usb@vger.kernel.org
