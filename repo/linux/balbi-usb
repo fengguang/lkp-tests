@@ -21,5 +21,5 @@ subsystems:
 whitelist_branch: dwc3|musb|xceiv|gadget|fixes|next|testing/fixes|testing/next
 blacklist_branch: .*
 notify_build_success_branch: testing/.*
-notify_build_success_cc: felipe.balbi@linux.intel.com
+build_mail_cc: felipe.balbi@linux.intel.com
 
