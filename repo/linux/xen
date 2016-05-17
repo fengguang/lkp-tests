@@ -7,4 +7,4 @@ subsystems:
 - blkfront
 - blkback
 blacklist_branch: devel/.*
-notify_bisect_result_cc: xen-devel@lists.xensource.com
+mail_cc: xen-devel@lists.xensource.com

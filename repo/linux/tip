@@ -2,6 +2,7 @@ url: https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git
 integration_testing_branches: auto-latest
 mail_cc:
 - linux-kernel@vger.kernel.org
+- tipbuild@zytor.com
 owner:
 - Ingo Molnar <mingo@kernel.org>
 - H. Peter Anvin <hpa@zytor.com>
@@ -16,4 +17,3 @@ subsystems:
 blacklist_branch: auto-.*|tmp-.*|base-.*|test.*|.*-for-linus
 notify_build_success_branch: .*
 build_mail_to: tip build status <tipbuild@zytor.com>
-notify_bisect_result_cc: tipbuild@zytor.com

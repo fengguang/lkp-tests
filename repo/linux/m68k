@@ -2,7 +2,7 @@ url: https://git.kernel.org/pub/scm/linux/kernel/git/geert/linux-m68k.git
 integration_testing_branches:
 - for-next
 - for-linus
-mail_to: linux-m68k@lists.linux-m68k.org
+mail_cc: linux-m68k@lists.linux-m68k.org
 owner: Geert Uytterhoeven <geert@linux-m68k.org>
 subsystems:
 - m68k
@@ -12,4 +12,3 @@ subsystems:
 - fat
 - mac
 notify_build_success_branch: .*
-notify_bisect_result_cc: linux-m68k@lists.linux-m68k.org

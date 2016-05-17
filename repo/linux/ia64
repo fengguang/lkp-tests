@@ -1,6 +1,6 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/aegl/linux.git
 integration_testing_branches: next
-mail_to: linux-ia64@vger.kernel.org
+mail_cc: linux-ia64@vger.kernel.org
 owner: Tony Luck <tony.luck@intel.com>
 subsystems:
 - ia64
@@ -9,4 +9,3 @@ subsystems:
 - ram
 - pstore-ram
 - ramoops
-notify_bisect_result_cc: linux-ia64@vger.kernel.org

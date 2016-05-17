@@ -1,6 +1,9 @@
 url: git://git.infradead.org/users/dvhart/linux-platform-drivers-x86.git
 integration_testing_branches: for-next
-mail_to: platform-driver-x86@vger.kernel.org
+mail_cc:
+- platform-driver-x86@vger.kernel.org
+- Darren Hart <dvhart@infradead.org>
+- Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 owner: Darren Hart <dvhart@linux.intel.com>
 subsystems:
 - toshiba_acpi
@@ -15,6 +18,3 @@ subsystems:
 - sony-laptop
 - acerhdf
 notify_build_success_branch: .*
-notify_bisect_result_cc:
-- Darren Hart <dvhart@infradead.org>
-- Andy Shevchenko <andriy.shevchenko@linux.intel.com>

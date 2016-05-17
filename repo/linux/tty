@@ -3,7 +3,7 @@ integration_testing_branches:
 - tty-next
 - tty-linus
 git_am_branch: tty-testing
-mail_to: linux-serial@vger.kernel.org
+mail_cc: linux-serial@vger.kernel.org
 owner: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 subsystems:
 - serial
@@ -19,4 +19,3 @@ subsystems:
 - cpm_uart
 - jsm
 notify_build_success_branch: .*
-notify_bisect_result_cc: linux-serial@vger.kernel.org

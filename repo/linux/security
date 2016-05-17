@@ -1,6 +1,6 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/jmorris/linux-security.git
 integration_testing_branches: next
-mail_to: linux-security-module@vger.kernel.org
+mail_cc: linux-security-module@vger.kernel.org
 owner: James Morris <james.l.morris@oracle.com>
 subsystems:
 - security
@@ -17,4 +17,3 @@ subsystems:
 - keys
 - encrypted-keys
 - yama
-notify_bisect_result_cc: linux-security-module@vger.kernel.org

@@ -1,5 +1,5 @@
 url: https://github.com/ceph/ceph-client.git
-mail_to: ceph-devel@vger.kernel.org
+mail_cc: ceph-devel@vger.kernel.org
 git_am_branch: for-linus
 owner:
 - Ilya Dryomov <idryomov@gmail.com>
@@ -8,4 +8,3 @@ owner:
 subsystems:
 - ceph
 - libceph
-notify_bisect_result_cc: ceph-devel@vger.kernel.org

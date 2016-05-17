@@ -1,6 +1,8 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/clk/linux.git
 integration_testing_branches: clk-next
-mail_to: linux-clk@vger.kernel.org
+mail_cc:
+- linux-clk@vger.kernel.org
+- linux-arm-kernel@lists.infradead.org
 owner: Michael Turquette <mturquette@linaro.org>
 subsystems:
 - clk
@@ -39,4 +41,3 @@ subsystems:
 - nxp
 - hisilicon
 - shmobile
-notify_bisect_result_cc: linux-arm-kernel@lists.infradead.org

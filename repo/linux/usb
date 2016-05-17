@@ -3,7 +3,7 @@ integration_testing_branches:
 - usb-next
 - usb-linus
 git_am_branch: usb-testing
-mail_to: linux-usb@vger.kernel.org
+mail_cc: linux-usb@vger.kernel.org
 owner: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 subsystems:
 - usb
@@ -35,4 +35,3 @@ subsystems:
 - phy
 - dwc2
 notify_build_success_branch: .*
-notify_bisect_result_cc: linux-usb@vger.kernel.org

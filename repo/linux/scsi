@@ -1,6 +1,6 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/jejb/scsi.git
 integration_testing_branches: for-next
-mail_to: linux-scsi@vger.kernel.org
+mail_cc: linux-scsi@vger.kernel.org
 owner:
 - James Bottomley <JBottomley@Odin.com>
 - James E. J. Bottomley <JBottomley@odin.com>
@@ -53,4 +53,3 @@ subsystems:
 - libsas
 - mpt2sas
 - fc
-notify_bisect_result_cc: linux-scsi@vger.kernel.org

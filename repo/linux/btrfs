@@ -1,9 +1,8 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/mason/linux-btrfs.git
 integration_testing_branches: next
-mail_to: linux-btrfs@vger.kernel.org
+mail_cc: linux-btrfs@vger.kernel.org
 owner: Chris Mason <clm@fb.com>
 subsystems:
 - btrfs
 - qgroup
 - tests
-notify_bisect_result_cc: linux-btrfs@vger.kernel.org

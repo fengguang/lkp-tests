@@ -1,7 +1,6 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/davem/ide.git
 integration_testing_branches: master
-mail_to: linux-ide@vger.kernel.org
+mail_cc: linux-ide@vger.kernel.org
 owner: David S. Miller <davem@davemloft.net>
 subsystems:
 - ide
-notify_bisect_result_cc: linux-ide@vger.kernel.org

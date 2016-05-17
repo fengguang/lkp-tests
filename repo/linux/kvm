@@ -1,6 +1,5 @@
 url: https://git.kernel.org/pub/scm/virt/kvm/kvm.git
 integration_testing_branches: linux-next
-mail_to: kvm@vger.kernel.org
 owner: Paolo Bonzini <pbonzini@redhat.com>
 subsystems:
 - kvm
@@ -9,6 +8,6 @@ subsystems:
 - mmu
 belongs_to: kvm
 blacklist_branch: auto-next
-notify_bisect_result_cc:
+mail_cc:
 - kvm@vger.kernel.org
 - Robert Hu <robert.hu@intel.com>

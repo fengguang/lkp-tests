@@ -8,4 +8,4 @@ subsystems:
 - md-cluster
 notify_build_success_branch: .*
 build_mail_to: NeilBrown <zero-day@neil.brown.name>
-notify_bisect_result_cc: linux-raid@vger.kernel.org
+mail_cc: linux-raid@vger.kernel.org

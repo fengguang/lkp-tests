@@ -1,11 +1,8 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/lenb/linux.git
 integration_testing_branches: next
-mail_to: linux-acpi@vger.kernel.org
 mail_cc:
 - linux-pm@vger.kernel.org
+- linux-acpi@vger.kernel.org
 owner: Len Brown <len.brown@intel.com>
 subsystems:
 - intel_idle
-notify_bisect_result_cc:
-- linux-acpi@vger.kernel.org
-- linux-pm@vger.kernel.org

@@ -1,9 +1,9 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git
 integration_testing_branches: linux-next
-mail_to: linux-pm@vger.kernel.org
 mail_cc:
 - linux-acpi@vger.kernel.org
 - devel@acpica.org
+- linux-pm@vger.kernel.org
 owner: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 subsystems:
 - acpica
@@ -25,4 +25,3 @@ subsystems:
 - ec
 - man
 notify_build_success_branch: bleeding-edge|master|fixes
-notify_bisect_result_cc: linux-pm@vger.kernel.org

@@ -1,5 +1,5 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/jkirsher/net-queue.git
-mail_to: intel-wired-lan@lists.osuosl.org
+mail_cc: intel-wired-lan@lists.osuosl.org
 owner: David S. Miller <davem@davemloft.net>
 subsystems:
 - net
@@ -11,4 +11,3 @@ subsystems:
 - net_sched
 notify_build_success_branch: .*
 build_mail_to: Intel Wired LAN <intel-wired-lan@lists.osuosl.org>
-notify_bisect_result_cc: intel-wired-lan@lists.osuosl.org

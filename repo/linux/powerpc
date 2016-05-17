@@ -2,7 +2,7 @@ url: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git
 integration_testing_branches:
 - next
 - fixes
-mail_to: linuxppc-dev@lists.ozlabs.org
+mail_cc: linuxppc-dev@lists.ozlabs.org
 owner: Benjamin Herrenschmidt <benh@kernel.crashing.org>
 subsystems:
 - powerpc
@@ -10,4 +10,3 @@ subsystems:
 - eeh
 - pseries
 notify_build_success_branch: .*
-notify_bisect_result_cc: linuxppc-dev@lists.ozlabs.org
