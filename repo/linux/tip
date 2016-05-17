@@ -15,4 +15,5 @@ subsystems:
 - locking
 blacklist_branch: auto-.*|tmp-.*|base-.*|test.*|.*-for-linus
 notify_build_success_branch: .*
+build_mail_to: tip build status <tipbuild@zytor.com>
 notify_bisect_result_cc: tipbuild@zytor.com

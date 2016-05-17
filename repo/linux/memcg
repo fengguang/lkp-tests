@@ -8,4 +8,5 @@ subsystems:
 - memcg
 - zsmalloc
 - hugetlb
+build_mail_to: Andrew Morton <akpm@linux-foundation.org>
 notify_bisect_result_cc: linux-mm@kvack.org
