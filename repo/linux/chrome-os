@@ -9,3 +9,4 @@ notify_build_success_branch: .*
 notify_build_success_cc: james.ausmus@intel.com,wayne.boyer@intel.com,marc.herbert@intel.com,matthew.s.atwood@intel.com,harry.pan@intel.com
 build_mail_to: cros-kernel-buildreports@googlegroups.com
 mail_to: cros-kernel-buildreports@googlegroups.com
+too_old_relative_commit_date: month|year|^[4-9]+ weeks
