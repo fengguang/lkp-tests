@@ -2,6 +2,32 @@
 
 require 'yaml'
 require 'shellwords'
+require 'optparse'
+require 'ostruct'
+
+opts = OptionParser.new do |opts|
+	opts.banner = "Usage: #{$PROGRAM_NAME} [options] YAML-FILE"
+
+	opts.separator ''
+	opts.separator 'options:'
+
+	opts.on('--expand', 'Enable "$shell_variable" expansion') do
+		$opt_expand_shell_variable = true
+	end
+
+	opts.on_tail('-h', '--help', 'Show this message') do
+		puts opts
+		exit
+	end
+
+end
+
+if ARGV == []
+	argv = ['-h']
+else
+	argv = ARGV
+end
+opts.parse!(argv)
 
 def get_simple_value(v)
 	if v.class == Hash
@@ -21,16 +47,11 @@ def get_simple_value(v)
 end
 
 def shell_escape(v)
-	if $opt_expand_var and v.index('$')
+	if $opt_expand_shell_variable and v.index('$')
 		'"' + v + '"'
 	else
 		Shellwords.escape(v)
 	end
-end
-
-if ARGV[0] == '--expand'
-	$opt_expand_var = true
-	ARGV.shift
 end
 
 ARGV.each { |file|
