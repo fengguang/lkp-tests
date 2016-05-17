@@ -5,6 +5,8 @@ require 'shellwords'
 require 'optparse'
 require 'ostruct'
 
+$opt_name_prefix = ''
+
 opts = OptionParser.new do |opts|
 	opts.banner = "Usage: #{$PROGRAM_NAME} [options] YAML-FILE"
 
@@ -13,6 +15,14 @@ opts = OptionParser.new do |opts|
 
 	opts.on('--expand', 'Enable "$shell_variable" expansion') do
 		$opt_expand_shell_variable = true
+	end
+
+	opts.on('--array ARRAY', 'Store values to associative array') do |array_name|
+		$opt_assoc_array = array_name
+	end
+
+	opts.on('--prefix PREFIX', 'Add prefix to variable names') do |prefix|
+		$opt_name_prefix = prefix
 	end
 
 	opts.on_tail('-h', '--help', 'Show this message') do
@@ -57,7 +67,8 @@ end
 ARGV.each { |file|
 	vars = YAML.load_file file
 	vars.each { |k, v|
-		var_name = k.gsub(/[^a-zA-Z0-9_]/, '_').gsub(/^[^a-zA-Z]/, '_')
+		var_name = $opt_name_prefix + k.gsub(/[^a-zA-Z0-9_]/, '_').gsub(/^[^a-zA-Z]/, '_')
+		var_name = $opt_assoc_array + '[' + var_name + ']' if $opt_assoc_array
 		STDOUT.write(var_name + '=' + shell_escape(get_simple_value(v)) + "\n")
 	}
 }
