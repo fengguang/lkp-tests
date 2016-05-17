@@ -11,3 +11,4 @@ subsystems:
 - firewire-lib
 whitelist_branch: master
 blacklist_branch: .*
+notify_bisect_result_cc: alsa-devel@alsa-project.org

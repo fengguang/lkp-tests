@@ -9,3 +9,4 @@ subsystems:
 - cfq-iosched
 - memcg
 notify_build_success_branch: .*
+notify_bisect_result_cc: cgroups@vger.kernel.org

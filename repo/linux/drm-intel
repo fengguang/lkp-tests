@@ -14,3 +14,4 @@ subsystems:
 - gen8
 belongs_to: drm
 blacklist_branch: rerere-cache|maintainer-tools
+notify_bisect_result_cc: intel-gfx@lists.freedesktop.org

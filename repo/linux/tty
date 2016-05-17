@@ -19,3 +19,4 @@ subsystems:
 - cpm_uart
 - jsm
 notify_build_success_branch: .*
+notify_bisect_result_cc: linux-serial@vger.kernel.org

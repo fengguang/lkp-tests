@@ -25,3 +25,4 @@ subsystems:
 - ec
 - man
 notify_build_success_branch: bleeding-edge|master|fixes
+notify_bisect_result_cc: linux-pm@vger.kernel.org

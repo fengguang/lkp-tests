@@ -7,3 +7,4 @@ subsystems:
 - raid5
 - md-cluster
 notify_build_success_branch: .*
+notify_bisect_result_cc: linux-raid@vger.kernel.org
