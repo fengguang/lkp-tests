@@ -1,0 +1,6 @@
+model: Broadwell-EP
+memory: 128G
+nr_ssd_partitions: 1
+ssd_partitions: /dev/nvme0n1p1
+swap_partitions:
+rootfs_partition:
