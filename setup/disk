@@ -10,14 +10,6 @@
 # - hard code    xxx_partitions; leave nr_xxx_partitions empty
 # - hard code nr_xxx_partitions; make     xxx_partitions a shell glob to be expanded in test box
 
-# To deal with nullglob, which is not supported by dash
-echo_path()
-{
-	for f in "$@"; do
-		[ -e "$f" ] && echo -n "$f "
-	done
-}
-
 [ -n "$wait_disks_timeout" ] || wait_disks_timeout=30
 
 . $LKP_SRC/lib/unit.sh
@@ -27,8 +19,8 @@ check_nr_partitions()
 	max_ssd=$(ls $ssd_partitions | wc -l)
 	max_hdd=$(ls $hdd_partitions | wc -l)
 
-	nr_ssd_partitions=${nr_ssd_partitions:-$(echo_path $ssd_partitions | wc -w)}
-	nr_hdd_partitions=${nr_hdd_partitions:-$(echo_path $hdd_partitions | wc -w)}
+	nr_ssd_partitions=${nr_ssd_partitions:-$(echo $ssd_partitions | wc -w)}
+	nr_hdd_partitions=${nr_hdd_partitions:-$(echo $hdd_partitions | wc -w)}
 
 	[ "$ssd_partitions" ] && [ "$nr_ssd_partitions" != "$max_ssd" ] && {
 		echo "disk number $nr_ssd_partitions mismatch with $max_ssd real disks: $ssd_partitions" >&2
@@ -57,7 +49,7 @@ wait_disks()
 
 check_nr_pmem()
 {
-	max_pmem=$(echo_path /sys/block/pmem* | wc -w)
+	max_pmem=$(ls /sys/block/pmem* | wc -w)
 	[ $max_pmem -eq 0 ] && {
 		echo "No pmem device" >&2
 		exit 1
