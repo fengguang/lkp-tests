@@ -94,17 +94,14 @@ class ResultPath < Hash
 	end
 
 	def test_desc_keys(dim, dim_not_a_param)
-		keys = [
-			'testcase',
-			'path_params',
-			'tbox_group',
-			'rootfs',
-			'kconfig',
-			'commit'
-		]
-		keys.delete(dim) if dim && dim_not_a_param
-		keys.delete('rootfs') if dim != 'rootfs'
-		keys.delete('kconfig') if dim != 'kconfig'
+		dim = /^#{dim}$/ if dim.instance_of? String
+
+		keys = ['testcase'] + path_scheme
+		keys.delete_if {|key| key =~ dim} if dim_not_a_param
+
+		default_removal_pattern = /compiler|^rootfs$|^kconfig$/
+		keys.delete_if {|key| key =~ default_removal_pattern && key !~ dim}
+
 		keys
 	end
 
