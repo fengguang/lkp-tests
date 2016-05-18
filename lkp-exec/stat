@@ -77,7 +77,7 @@ _result_roots.each { |_rt|
 	matrix = load_json _rt + '/matrix.json'
 	next unless matrix
 	unless $opt_field =~ /last_state/
-		next if matrix['last_state.is_incomplete_run']
+		next if matrix['last_state.is_incomplete_run'] #&& matrix['last_state.is_incomplete_run'].sum == matrix_cols(matrix)
 	end
 
 	result_path = ResultPath.new
