@@ -88,11 +88,8 @@ _result_roots.each { |_rt|
 
 	group = result_path[$opt_group]
 	groups[group] ||= []
-	if $opt_group =~ /__rt|_rt|test/
-		groups[group].concat samples_fill_missing_zeros(matrix, $opt_field)
-	else
-		groups[group] << samples_fill_missing_zeros(matrix, $opt_field).average
-	end
+
+	groups[group].concat samples_fill_missing_zeros(matrix, $opt_field)
 }
 
 printf "%8s %16s %16s %6s%%  %s\n", 'runs', 'sum', 'average', 'stddev', 'case'
