@@ -84,7 +84,7 @@ _result_roots.each { |_rt|
 	result_path.parse_result_root(_rt)
 	result_path['_rt'] = _rt
 	result_path['__rt'] = __rt
-	result_path['test'] = result_path.test_desc 'commit', true
+	result_path['test'] = result_path.test_desc(/commit/, true)
 
 	group = result_path[$opt_group]
 	groups[group] ||= []
