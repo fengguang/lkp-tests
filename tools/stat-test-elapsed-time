@@ -52,15 +52,23 @@ def puts_md_heading(heading)
 	puts "=" * heading.size
 end
 
+cmd = "#{LKP_SRC}/lkp-exec/stat -g #{$opt_group}"
+cmd << " -k " + $opt_kernel unless $opt_kernel.empty?
+cmd << " -d " + $opt_date unless $opt_date.empty?
+
 test_specs.each_with_index do |test_spec, index|
 	test_case = test_spec['testcase']
-	puts_md_heading "[#{index + 1}] #{test_case} (#{test_spec['category'] || 'benchmark'})"
-	
-	cmd = "#{LKP_SRC}/lkp-exec/stat -p /#{test_case}/ -f time.elapsed_time -g #{$opt_group}"
-	cmd << " -k " + $opt_kernel unless $opt_kernel.empty?
-	cmd << " -d " + $opt_date unless $opt_date.empty?
-	
-	puts cmd
-	puts `#{cmd}`
+	base_cmd = cmd + " -p /#{test_case}/ "
+
+	last_state_is_incomplete_run_cmd = base_cmd + " -f last_state.is_incomplete_run "
+	incomplete_runs = `#{last_state_is_incomplete_run_cmd} | awk '{print $1}' | awk 'BEGIN {sum=0}; {sum = sum+$1} END {print sum}'`.chomp.to_i
+
+	time_elapsed_time_cmd = base_cmd + " -f time.elapsed_time "
+	complete_runs = `#{time_elapsed_time_cmd} | awk '{print $1}' | awk 'BEGIN {sum=0}; {sum = sum+$1} END {print sum}'`.chomp.to_i
+
+	puts_md_heading "[#{index + 1}] #{test_case} (#{test_spec['category'] || 'benchmark'}) [#{complete_runs}/#{complete_runs + incomplete_runs}]"
+
+	puts time_elapsed_time_cmd
+	puts `#{time_elapsed_time_cmd}`
 	puts
 end
