@@ -2,7 +2,7 @@
 
 download()
 {
-	rsync -a inn::otc_kernel_qa-ts_ltp_ddt $BM_NAME --exclude agcc --exclude .git --exclude .gitignore --exclude .mailmap
+	rsync -a inn::otc_ddt $BM_NAME --exclude agcc --exclude .git --exclude .gitignore --exclude .mailmap
 	source_dir=$BM_NAME
 }
 
