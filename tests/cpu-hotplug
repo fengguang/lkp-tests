@@ -6,13 +6,13 @@
 
 ## updated by:
 ## "Wenzhong Sun" <wenzhong.sun@intel.com>
-##  - Limit the test's runtime in 10 minutes
+##  - Limit the test's runtime in 5 minutes
 
 CPUPATH="/sys/devices/system/cpu"
 
 NUMBER_OF_CPUS=$(ls -d $CPUPATH/cpu[0-9]* | wc -l)
 
-TEST_DURATION=600
+TEST_DURATION=300
 
 do_test()
 {
