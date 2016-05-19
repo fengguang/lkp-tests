@@ -106,17 +106,9 @@ class ResultPath < Hash
 	end
 
 	def test_desc(dim, dim_not_a_param)
-		self.delete(dim) if dim_not_a_param
-		self.delete('rootfs') if dim != 'rootfs'
-		self.delete('kconfig') if dim != 'kconfig'
-		[
-			self['testcase'],
-			self['path_params'],
-			self['tbox_group'],
-			self['rootfs'],
-			self['kconfig'],
-			self['commit']
-		].compact.join '/'
+		keys = test_desc_keys(dim, dim_not_a_param)
+
+		keys.map {|key| self[key]}.compact.join '/'
 	end
 
 	def parse_test_desc(desc, dim='commit', dim_not_a_param=true)
