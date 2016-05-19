@@ -4,11 +4,17 @@
 ## "Srivatsa S. Bhat" <srivatsa.bhat@linux.vnet.ibm.com>
 ## Peter Zijlstra <peterz@infradead.org>
 
+## updated by:
+## "Wenzhong Sun" <wenzhong.sun@intel.com>
+##  - Limit the test's runtime in 10 minutes
+
 CPUPATH="/sys/devices/system/cpu"
 
 NUMBER_OF_CPUS=$(ls -d $CPUPATH/cpu[0-9]* | wc -l)
 
-while :
+current_time=$(date +%s)
+end_time=$(($current_time+10*60))
+while [ $current_time -lt $end_time ]
 do
 	for interval in 0 0.1 1
 	do
@@ -19,4 +25,6 @@ do
 			echo $((state^1)) > $CPUPATH/cpu$i/online
 		done
 	done
+
+	current_time=$(date +%s)
 done
