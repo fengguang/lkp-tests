@@ -2,6 +2,8 @@
 
 BEGIN { nr_test = 0 }
 
+/pku$/ || /vmx$/ || /svm$/ {next}
+
 /PASS/ {
 	nr_test += 1
 }
