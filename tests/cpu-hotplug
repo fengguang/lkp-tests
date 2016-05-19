@@ -12,10 +12,12 @@ CPUPATH="/sys/devices/system/cpu"
 
 NUMBER_OF_CPUS=$(ls -d $CPUPATH/cpu[0-9]* | wc -l)
 
-current_time=$(date +%s)
-end_time=$(($current_time+10*60))
-while [ $current_time -lt $end_time ]
-do
+TEST_DURATION=600
+
+do_test()
+{
+  while :
+  do
 	for interval in 0 0.1 1
 	do
 		for i in $(seq $((NUMBER_OF_CPUS - 1)))
@@ -25,6 +27,14 @@ do
 			echo $((state^1)) > $CPUPATH/cpu$i/online
 		done
 	done
+  done
+}
 
-	current_time=$(date +%s)
-done
+do_test &
+pid=$!
+
+sleep $TEST_DURATION
+kill -15 $pid
+[ -d /proc/$pid ] && kill -9 $pid
+
+exit 0
