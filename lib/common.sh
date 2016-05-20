@@ -25,3 +25,12 @@ query_var_from_yaml()
 
 	sed -ne "1,\$s/^$key[[:space:]]*:[[:space:]]*\\(.*\\)[[:space:]]*\$/\\1/p" "$yaml_file"
 }
+
+# null string, or string starts with 0 or no are false, otherwise true
+parse_bool()
+{
+	[ -z "$1" ] && { echo 0; return 1; }
+	[ "${1#0}" != "$1" ] && { echo 0; return 1; }
+	[ "${1#no}" != "$1" ] && { echo 0; return 1; }
+	echo 1; return 0
+}

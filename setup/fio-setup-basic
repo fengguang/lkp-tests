@@ -9,6 +9,7 @@
 # - nr_task
 # - fallocate
 
+. $LKP_SRC/lib/common.sh
 . $LKP_SRC/lib/unit.sh
 
 [ -n "$test_size" ] || {
@@ -31,6 +32,8 @@ test_dir=${mount_points%% *}
 : ${fallocate:=posix}
 : ${nr_task:=1}
 : ${test_dir:=.}
+
+direct=$(parse_bool $direct)
 
 task="
 [global]
