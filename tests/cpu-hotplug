@@ -7,17 +7,16 @@
 ## updated by:
 ## "Wenzhong Sun" <wenzhong.sun@intel.com>
 ##  - Limit the test's runtime in 5 minutes
+##  - Adapt test to use runtime_loop framework
 
 CPUPATH="/sys/devices/system/cpu"
 
 NUMBER_OF_CPUS=$(ls -d $CPUPATH/cpu[0-9]* | wc -l)
 
-TEST_DURATION=300
+: ${runtime:=300}
 
 do_test()
 {
-  while :
-  do
 	for interval in 0 0.1 1
 	do
 		for i in $(seq $((NUMBER_OF_CPUS - 1)))
@@ -27,14 +26,7 @@ do_test()
 			echo $((state^1)) > $CPUPATH/cpu$i/online
 		done
 	done
-  done
 }
 
-do_test &
-pid=$!
-
-sleep $TEST_DURATION
-kill -15 $pid
-[ -d /proc/$pid ] && kill -9 $pid
-
-exit 0
+. $LKP_SRC/lib/runtime_loop.sh
+runtime_loop
