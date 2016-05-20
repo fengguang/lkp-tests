@@ -1,0 +1,38 @@
+#!/bin/sh
+# - interval
+
+path=/sys/class/thermal/
+
+take_snapshot()
+{
+	echo time: $(date +%s.%N)
+	id=0
+	while [ -d $path/thermal_zone$id ]:
+	do
+		value=$(cat $path/thermal_zone$id/temp)
+		echo "zone$id: $value"
+		id=$(($id+1))
+	done
+	id=0
+	while [ -d $path/cooling_device$id ]:
+	do
+		value=$(cat $path/cooling_device$id/cur_state)
+		echo "cdev$id: $value"
+		id=$(($id+1))
+	done
+}
+
+. $LKP_SRC/lib/wait.sh
+setup_wait
+
+if [ -n "$interval" ]; then
+	while :
+	do
+		take_snapshot
+		wait_timeout $interval
+	done
+else
+	take_snapshot
+	wait_post_test
+	take_snapshot
+fi
