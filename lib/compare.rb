@@ -670,7 +670,7 @@ module Compare
 			stat_base_map[base] ||= stat[FAILURE] ? -10000 : 0
 			stat_base_map[base] += 1
 		}
-		AllTests.each { |test|
+		all_tests_set.each { |test|
 			c = stat_base_map[test]
 			if c and c > 0
 				stat_base_map[test] = 0

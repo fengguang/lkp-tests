@@ -2,10 +2,17 @@ LKP_SRC ||= ENV['LKP_SRC']
 
 require 'set'
 
-def __calc_all_tests
-	tests = Dir["#{LKP_SRC}/tests/**/*"].map { |d| File.basename (d) }
+def get_all_tests
+	tests = Dir["#{LKP_SRC}/{tests,daemon}/**/*"].map { |d| File.basename (d) }
+	tests.delete 'wrapper'
 	tests.sort!
+	tests
 end
 
-AllTests = __calc_all_tests.freeze
-AllTestsSet = Set.new(AllTests).freeze
+def all_tests
+	$__all_tests ||= get_all_tests.freeze
+end
+
+def all_tests_set
+	$__all_tests_set ||= Set.new(all_tests).freeze
+end
