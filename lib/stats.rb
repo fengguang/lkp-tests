@@ -421,7 +421,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
 	end
 
 	b_monitors = {}
-	b.keys.each { |k| b_monitors[stat_to_monitor(k)] = true }
+	b.keys.each { |k| b_monitors[stat_key_base(k)] = true }
 
 	b.keys.each { |k| a[k] = [0] * cols_a unless a.include?(k) }
 
@@ -656,15 +656,7 @@ def samples_fill_missing_zeros(matrix, key)
 	return samples
 end
 
-def parse_stat_key(stat_key)
-	stat_key.to_s.split('.')
-end
-
-def stat_key_base(stat_key)
-	parse_stat_key(stat_key)[0]
-end
-
-def stat_to_monitor(stat)
+def stat_key_base(stat)
 	stat.partition('.').first
 end
 
