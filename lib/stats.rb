@@ -14,6 +14,7 @@ require "#{LKP_SRC}/lib/bounds.rb"
 require "#{LKP_SRC}/lib/constant.rb"
 require "#{LKP_SRC}/lib/statistics.rb"
 require "#{LKP_SRC}/lib/error.rb"
+require "#{LKP_SRC}/lib/tests.rb"
 
 $metric_add_max_latency	= IO.read("#{LKP_SRC}/etc/add-max-latency").split("\n")
 $metric_latency		= IO.read("#{LKP_SRC}/etc/latency").split("\n")
@@ -672,8 +673,8 @@ $kpi_stat_blacklist = Set.new [ 'vm-scalability.stddev',
 
 def is_kpi_stat(stat, axes, values = nil)
 	return false if $kpi_stat_blacklist.include?(stat)
-	testcase = axes[TESTCASE_AXIS_KEY]
-	stat.start_with?(testcase + '.') && !stat.start_with?(testcase + '.time')
+	base, _, remainder = stat.partition('.')
+	all_tests_set.include?(base) && !remainder.start_with?('time.')
 end
 
 def kpi_stat_direction(stat_name, stat_change_percentage)
