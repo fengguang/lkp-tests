@@ -103,7 +103,7 @@ module Compare
 			:use_testcase_stat_keys,
 			:include_stat_keys, :include_all_failure_stat_keys,
 			:filter_stat_keys, :filter_testcase_stat_keys,
-			:filter_kpi_stat_keys,
+			:filter_kpi_stat_keys, :filter_kpi_stat_strict_keys,
 			:exclude_stat_keys,
 			:gap,
 			:group_by_stat, :show_empty_group, :compact_show,
@@ -232,6 +232,7 @@ module Compare
 				filter_stat_keys: @filter_stat_keys,
 				filter_testcase_stat_keys: @filter_testcase_stat_keys,
 				filter_kpi_stat_keys: @filter_kpi_stat_keys,
+				filter_kpi_stat_strict_keys: @filter_kpi_stat_strict_keys,
 				group_by_stat: @group_by_stat,
 				show_empty_group: @show_empty_group,
 				compact_show: @compact_show,
@@ -365,6 +366,12 @@ module Compare
 			}
 		end
 
+		def filter_kpi_stat_strict_keys(stats, matrixes_in)
+			stats.select { |k|
+				is_kpi_stat_strict(k, axes, matrixes_in.map { |m| m[k] })
+			}
+		end
+
 		def calc_changed_stat_keys(matrixes_in)
 			if @comparer.use_all_stat_keys
 				stat_keys = get_all_stat_keys
@@ -383,6 +390,9 @@ module Compare
 			end
 			if @comparer.filter_kpi_stat_keys
 				stat_keys = filter_kpi_stat_keys stat_keys, matrixes_in
+			end
+			if @comparer.filter_kpi_stat_strict_keys
+				stat_keys = filter_kpi_stat_strict_keys stat_keys, matrixes_in
 			end
 			stat_keys = exclude_stat_keys stat_keys
 		end
@@ -894,7 +904,7 @@ module Compare
 		comparer.compare
 	end
 
-	def self.perf_comparer(commits)
+	def self.perf_comparer(commits, strict = false)
 		ignored_testcases = Set.new ['xfstests', 'autotest', 'phoronix-test-suite']
 		git = axis_key_git COMMIT_AXIS_KEY
 		commits = git.sort_commits commits
@@ -914,9 +924,13 @@ module Compare
 		comparer.set_mresult_roots(_rts).
 			set_sort_mresult_roots(false).
 			set_compare_axis_keys(compare_axis_keys).
-			set_filter_kpi_stat_keys(true).
 			set_sort_by_group(true).
 			set_compact_show(true)
+		if strict
+			comparer.set_filter_kpi_stat_strict_keys(true)
+		else
+			comparer.set_filter_kpi_stat_keys(true)
+		end
 	end
 
 	def self.perf_compare(commits)
