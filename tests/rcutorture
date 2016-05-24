@@ -9,3 +9,6 @@ modprobe rcutorture 2>/dev/null || exit 0
 sleep $runtime
 
 rmmod rcutorture
+
+dmesg | grep torture:
+[ $? -ne 0 ] && exit 1
