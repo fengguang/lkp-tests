@@ -4,7 +4,9 @@
 ## creates an rcutorture kernel module that can be loaded to
 ## run a torture test.
 
-modprobe rcutorture 2>/dev/null || exit 0
+. $LKP_SRC/lib/debug.sh
+
+modprobe rcutorture || die "failed to load rcutorture module"
 
 sleep $runtime
 
