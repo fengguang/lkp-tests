@@ -340,16 +340,10 @@ module Compare
 		end
 
 		def do_filter_testcase_stat_keys(stats)
-			testcase = axes[TESTCASE_AXIS_KEY]
-			if testcase
-				testcase_time = "#{testcase}.time."
-				stats.select { |k|
-					k.start_with?(testcase) &&
-						!k.start_with?(testcase_time)
-				}
-			else
-				[]
-			end
+			stats.select { |k|
+				base, _, remainder = k.partition('.')
+				all_tests_set.include?(base) && !remainder.start_with?('time.')
+			}
 		end
 
 		def get_testcase_stat_keys
