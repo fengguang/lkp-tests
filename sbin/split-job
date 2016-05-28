@@ -74,7 +74,6 @@ ARGV.each { |jobfile|
 	$opt_set_key_value.each { |k, v| jobs[k] = v }
 	jobs['kconfig'] = $opt_kconfig if $opt_kconfig
 	jobs['commit'] = $opt_commit if $opt_commit
-	jobs['enqueue_time'] = Time.now
 	jobs['node_roles'] = 'server client' if jobs['cluster']
 	prefix = $opt_output_path + '/' + File.basename(jobfile, '.yaml')
 	jobs.each_jobs { |job|
