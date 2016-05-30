@@ -3,6 +3,7 @@
 # - nr_task
 # - nr_job
 # - iterations
+# - runtime
 
 ## REAIM is an updated and improved version of AIM 7 benchmark. It
 ## forks many processes called tasks, each of which concurrently runs
@@ -13,8 +14,31 @@
 ##
 ## Homepage: https://sourceforge.net/projects/re-aim-7/
 
-iterations=${iterations:-1}
 nr_job=${nr_job:-100}
+[ -n "$runtime" ] || runtime=300
+
+run_reaim()
+{
+	cmd ./reaim -s$REAIM_STARTUSERS -e$REAIM_ENDUSERS -i$REAIM_INCREMENT -fdata/workfile.$test \
+		-r${1:-1} -c./reaim.config -l$TMP_RESULT_ROOT/reaim_debug -j$nr_job |
+		grep -v -e "^NSIG is "
+}
+
+run_for_time()
+{
+	start_time=$(date +%s)
+	while :
+	do
+		run_reaim
+		now=$(date +%s)
+		[ $((now - start_time)) -gt "$runtime" ] && break
+	done
+}
+
+run_for_iterations()
+{
+	run_reaim $iterations
+}
 
 cd $BENCHMARK_ROOT/reaim || exit
 
@@ -45,6 +69,11 @@ echo FILESIZE $REAIM_FILESIZE > reaim.config
 echo POOLSIZE $REAIM_POOLSIZE >> reaim.config
 echo DISKDIR $REAIM_TESTDIR  >> reaim.config
 
-cmd ./reaim -s$REAIM_STARTUSERS -e$REAIM_ENDUSERS -i$REAIM_INCREMENT -fdata/workfile.$test \
-	-r$iterations -c./reaim.config -l$TMP_RESULT_ROOT/reaim_debug -j$nr_job |
-	grep -v -e "^NSIG is "
+if [ -n "$runtime" ]; then
+	echo "runtime mode"
+	run_for_time
+else
+	echo "iterations mode"
+	iterations=${iterations:-1}
+	run_for_iterations
+fi
