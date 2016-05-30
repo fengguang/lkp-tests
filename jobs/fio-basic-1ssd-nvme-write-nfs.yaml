@@ -5,10 +5,10 @@ disk: 1SSD
 fs: ext4
 fs2: nfsv4
 
+runtime: 300s
 nr_task: 8
 
 fio-setup-basic:
-  runtime: 300
   rw: write
   bs: 4k
   ioengine: sync
