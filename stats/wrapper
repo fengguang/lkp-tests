@@ -102,11 +102,6 @@ else
 	dump_stat $stats_group $tmpfile
 fi
 
-# xz large files for long term storage, remove possible .gz
-if [[ $program =~ ^(sched_debug|proc-stat|perf-profile|ftrace|kmsg|dmesg)$ ]]; then
-	[ -s $log ] && [ ! -f $log.xz ] && xz $log && rm -f $log.gz
-fi
-
 if [ -f $log.gz ]; then
 	rm $log
 elif [ -f $log.xz ]; then
