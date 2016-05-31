@@ -2,14 +2,16 @@
 
 require 'erb'
 require 'yaml'
-require 'ostruct'
+
+LKP_SRC ||= File.dirname File.dirname __FILE__
+require "#{LKP_SRC}/lib/hashugar.rb"
 
 def expand_erb(template)
 	return template unless template =~ /^%|<%|{{/
 	template.gsub!(/{{(.*?)}}/m, '<%=\1%>')
 	yaml = template.gsub(/^%.*$/, '').gsub(/<%.*?%>/m, '')
 	job = YAML.load(yaml)
-	context = OpenStruct.new(job).instance_eval {binding}
+	context = Hashugar.new(job).instance_eval {binding}
 	ERB.new(template, nil, '%').result(context)
 end
 
