@@ -10,8 +10,6 @@ fs:
 - btrfs
 
 monitors:
-  perf-stat:
-  perf-profile:
   ftrace:
     events:
       balance_dirty_pages

@@ -6,8 +6,6 @@ disable_latency_stats: 1
 
 nr_threads: 100%
 
-perf-profile:
-
 cluster: cs-localhost
 
 if role server:

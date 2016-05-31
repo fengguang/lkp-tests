@@ -5,8 +5,6 @@ kernel_cmdline: nowatchdog rcupdate.rcu_cpu_stall_suppress=1
 
 period: 2s
 
-perf-profile:
-
 tcrypt:
   modes:
   - 200-204
