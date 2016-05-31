@@ -66,7 +66,7 @@ $atom_jobs = []
 
 ARGV.each { |jobfile|
 	jobs = Job.new
-	jobs.load(jobfile) or next
+	jobs.load(jobfile, true) or next
 	unless $opt_no_defaults
 		jobs.load_head("#{LKP_SRC}/hosts/#{$opt_testbox}", true)
 		jobs.load_head("#{LKP_SRC}/jobs/DEFAULTS-#{jobs['category']}", true)

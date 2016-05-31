@@ -15,7 +15,6 @@ end
 def load_yaml(file)
 	begin
 		yaml = File.read file
-		yaml = yaml_merge_included_files yaml, File.dirname(file)
 		return YAML.load yaml
 	rescue SignalException
 		raise

@@ -154,11 +154,11 @@ class Job
 		self.update(job, top)
 	end
 
-	def load(jobfile)
+	def load(jobfile, expand_template = false)
 		yaml = File.read jobfile
 		raise ArgumentError.new("empty jobfile #{jobfile}") if yaml.size == 0
 
-		yaml = yaml_merge_included_files yaml, File.dirname(jobfile)
+		yaml = yaml_merge_included_files(yaml, File.dirname(jobfile)) if expand_template
 
 		@jobs = []
 		YAML.load_stream(yaml) do |hash|
