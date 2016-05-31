@@ -5,6 +5,7 @@ LKP_SERVER ||= 'inn'
 
 require "#{LKP_SRC}/lib/common.rb"
 require "#{LKP_SRC}/lib/result.rb"
+require "#{LKP_SRC}/lib/hash.rb"
 require "#{LKP_SRC}/lib/erb.rb"
 require 'fileutils'
 require 'yaml'
@@ -143,9 +144,10 @@ class Job
 	def update(hash, top = false)
 		@job ||= {}
 		if top
-			@job = hash.merge @job
+			revise_hash(hash, @job)
+			@job = hash
 		else
-			@job.update hash
+			revise_hash(@job, hash)
 		end
 	end
 
