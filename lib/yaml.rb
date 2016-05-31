@@ -12,9 +12,16 @@ def compress_file(file)
 	system "gzip #{file} < /dev/null"
 end
 
-def load_yaml(file)
+def expand_yaml_template(yaml, file)
+	yaml = yaml_merge_included_files(yaml, File.dirname(file))
+	yaml = literal_double_braces(yaml)
+	yaml = expand_erb(yaml)
+end
+
+def load_yaml(file, expand_template = false)
 	begin
 		yaml = File.read file
+		yaml = expand_yaml_template(yaml, file) if expand_template
 		return YAML.load yaml
 	rescue SignalException
 		raise

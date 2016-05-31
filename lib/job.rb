@@ -154,7 +154,7 @@ class Job
 
 	def load_head(jobfile, top = false)
 		return nil unless File.exist? jobfile
-		job = YAML.load_file jobfile
+		job = load_yaml jobfile, true
 		self.update(job, top)
 	end
 
@@ -163,9 +163,7 @@ class Job
 		raise ArgumentError.new("empty jobfile #{jobfile}") if yaml.size == 0
 
 		if expand_template
-			yaml = yaml_merge_included_files(yaml, File.dirname(jobfile))
-			yaml = literal_double_braces(yaml)
-			yaml = expand_erb(yaml)
+			yaml = expand_yaml_template(yaml, jobfile)
 		end
 
 		@jobs = []
