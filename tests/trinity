@@ -6,7 +6,8 @@
 
 [ -n "$seed" ] || {
 	echo Seeding trinity based on $kconfig
-	seed=$(echo $kconfig | cksum | tr -d ' ')
+	seed=$(echo $kconfig | cksum)
+	seed=${seed%% *}
 }
 
 cd /tmp
