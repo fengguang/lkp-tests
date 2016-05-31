@@ -23,6 +23,10 @@ def lookup_hash(hash, path, create_missing = false)
 end
 
 def revise_hash(original, revisions)
+	# deal with empty YAML files gracefully
+	original ||= {}
+	revisions ||= {}
+
 	rev_keys = revisions.keys
 	rev_keys.delete_if do |k|
 		v = revisions[k]

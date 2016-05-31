@@ -73,6 +73,38 @@ expects = [
 				"a-: ",
 				{}
 	],
+
+	# deal with abnormal cases gracefully
+	['empty + empty',
+				"",
+				"",
+				{}
+	],
+	['empty + create path',
+				"",
+				"a.b.c: 1",
+				{"a"=>{"b"=>{"c"=>1}}}
+	],
+	['empty + nil',
+				"",
+				"---",
+				{}
+	],
+	['nil + empty',
+				"---",
+				"",
+				{}
+	],
+	['nil + create path',
+				"---",
+				"a.b.c: 1",
+				{"a"=>{"b"=>{"c"=>1}}}
+	],
+	['nil + nil',
+				"---",
+				"---",
+				{}
+	],
 ]
 
 describe "hash lookup/revise:" do
