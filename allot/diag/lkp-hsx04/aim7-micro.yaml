@@ -1,22 +1,21 @@
 testcase: aim7
 
 aim7:
-  load: 2000
   test:
   - fork_test
+  load: 2000
 
 ---
 aim7:
-  load: 3000
   test:
   - brk_test
   - disk_cp
   - disk_rd
   - sieve
+  load: 3000
 
 ---
 aim7:
-  load: 8000
   test:
   - mem_rtns_1
   - misc_rtns_1
@@ -26,3 +25,4 @@ aim7:
   - sort_rtns_1
   - string_rtns
   - disk_src
+  load: 8000

@@ -1,7 +1,6 @@
 testcase: aim7
 
 aim7:
-  load: 4000
   test:
   - misc_rtns_1
   - dgram_pipe
@@ -13,3 +12,4 @@ aim7:
   - stream_pipe
   - tcp_test
   - udp_test
+  load: 4000

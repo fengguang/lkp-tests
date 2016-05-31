@@ -1,7 +1,6 @@
 testcase: aim7
 
 aim7:
-  load: 400
   test:
   - brk_test
   - exec_test
@@ -13,4 +12,5 @@ aim7:
   - string_rtns
   - page_test
   - trig_rtns
+  load: 400
 

@@ -4,15 +4,14 @@ perf-profile:
   freq: 1000
 
 aim7:
-  load: 4000
   test:
   - exec_test
   - creat-clo
   - trig_rtns
+  load: 4000
 
 ---
 aim7:
-  load: 6000
   test:
   - disk_src
   - disk_rr
@@ -20,10 +19,11 @@ aim7:
   - link_test
   - page_test
   - signal_test
+  load: 6000
 
 ---
 aim7:
-  load: 10000
   test:
   - sync_disk_rw
   - udp_test
+  load: 10000
