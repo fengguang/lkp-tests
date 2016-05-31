@@ -161,6 +161,7 @@ class Job
 
 		if expand_template
 			yaml = yaml_merge_included_files(yaml, File.dirname(jobfile))
+			yaml = literal_double_braces(yaml)
 			yaml = expand_erb(yaml)
 		end
 
@@ -205,9 +206,29 @@ class Job
 		@dims_to_expand.merge @program_options.keys
 	end
 
+	def expand_each_in(ah, set)
+		ah.each { |k, v|
+			if set.include?(k) or (String === v and v =~ /^{{(.*)}}$/m)
+				yield ah, k, v
+			end
+			if Hash === v
+				expand_each_in(v, set) { |h, k, v|
+					yield h, k, v
+				}
+			end
+		}
+	end
+
 	def each_job
-		for_each_in(@job, @dims_to_expand) { |h, k, v|
-			if Array === v
+		expand_each_in(@job, @dims_to_expand) { |h, k, v|
+			if String === v and v =~ /^{{(.*)}}$/m
+				expr = expand_expression(@job, $1)
+				return if expr == nil
+				h[k] = expr
+				each_job { yield self }
+				h[k] = v
+				return
+			elsif Array === v
 				v.each { |vv|
 					h[k] = vv
 					each_job { yield self }
