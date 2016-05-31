@@ -4,15 +4,15 @@ category: benchmark
 # Avoid nfs latency for sync used in benchmark
 avoid_nfs: 1
 
+runtime: 300s
+
 nr_task: 6400%
 reaim:
-  runtime: 300
   test: short
 
 ---
 nr_task: 1600%
 reaim:
-  runtime: 300
   test:
   - new_dbase
   - dbase
@@ -24,7 +24,6 @@ reaim:
 
 ---
 reaim:
-  runtime: 300
   test:
   - fserver
   - new_fserver
@@ -33,30 +32,25 @@ reaim:
 ---
 disable_latency_stats: 1
 reaim:
-  runtime: 300
   test: all_utime
 
 ---
 disable_latency_stats:
 reaim:
-  runtime: 300
   test: long
 
 ---
 reaim:
-  runtime: 300
   test: five_sec
 
 ---
 nr_task: 100%
 reaim:
-  runtime: 300
   nr_job: 10000
   test: short
 
 ---
 reaim:
-  runtime: 300
   nr_job: 3000
   test:
   - new_dbase
@@ -69,21 +63,18 @@ reaim:
 
 ---
 reaim:
-  runtime: 300
   nr_job: 1500
   test: five_sec
 
 ---
 disable_latency_stats: 1
 reaim:
-  runtime: 300
   nr_job: 1500
   test: all_utime
 
 ---
 disable_latency_stats:
 reaim:
-  runtime: 300
   nr_job: 1000
   test:
   - alltests
@@ -91,7 +82,6 @@ reaim:
 
 ---
 reaim:
-  runtime: 300
   nr_job: 1000
   test:
   - high_systime
