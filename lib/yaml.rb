@@ -110,7 +110,7 @@ end
 def yaml_merge_included_files(yaml, relative_to, search_paths = nil)
 	yaml.gsub(/(.*)<< *: +([^*\[].*)/) do |match|
 		prefix = $1
-		file = $2
+		file = $2.chomp
 		path = search_file_in_paths file, relative_to, search_paths
 		if path
 			to_merge = File.read path
