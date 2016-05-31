@@ -24,6 +24,23 @@ The hash contents of FILE will be merged into the current YAML location.
 In the most fundemental form, a job YAML contains a hash table of key-values.
 The keys fall into 2 main categories:
 
+## ERB template
+
+The following template tags are recognized
+
+  <% Ruby code -- inline with output %>
+  <%= Ruby expression -- replace with result %>
+  {{  Ruby expression -- replace with result }} # syntax sugar for the above standard ERB
+  {{ can.reference.variable.defined.in.same.job }}
+  <%# comment -- ignored -- useful in testing %>
+  % a line of Ruby code -- treated as <% line %>
+  %% replaced with % if first thing on a line and % processing is used
+  <%% or %%> -- replace with <% or %> respectively
+
+Please do not overuse ERB templates: it's anti-intuitive and discouraged
+to write complex ERB templates. WARNING: our code is designed to fail when
+loading complex ERB templates.
+
 ## Scripts
 
 If the key matches some script file in the below paths, it is treated as an
