@@ -5,6 +5,7 @@ LKP_SERVER ||= 'inn'
 
 require "#{LKP_SRC}/lib/common.rb"
 require "#{LKP_SRC}/lib/result.rb"
+require "#{LKP_SRC}/lib/erb.rb"
 require 'fileutils'
 require 'yaml'
 require 'json'
@@ -158,7 +159,10 @@ class Job
 		yaml = File.read jobfile
 		raise ArgumentError.new("empty jobfile #{jobfile}") if yaml.size == 0
 
-		yaml = yaml_merge_included_files(yaml, File.dirname(jobfile)) if expand_template
+		if expand_template
+			yaml = yaml_merge_included_files(yaml, File.dirname(jobfile))
+			yaml = expand_erb(yaml)
+		end
 
 		@jobs = []
 		YAML.load_stream(yaml) do |hash|
