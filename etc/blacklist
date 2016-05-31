@@ -7,6 +7,7 @@
 ^kmsg.Corrupted_low_memory_at.............*
 ^kmsg.tsc:Unable_to_calibrate_against_PIT
 ^kmsg.tsc:Fast_TSC_calibration_failed
+^(kmsg|dmesg).genirq:Flags_mismatch_irq##\(serial\)vs.#\(goldfish_pdev_bus\)
 ^kmsg.Command_line:*
 ^dmesg.boot_successes
 ^dmesg.boot_failures
