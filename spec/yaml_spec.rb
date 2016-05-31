@@ -75,7 +75,7 @@ end
 describe "yaml_merge_included_files" do
 	YAML_MERGE_SPEC = <<EOF
 contents: &borrow-1d
-  <<: jobs/borrow-1d.yaml
+  #{YAML.load_file('jobs/borrow-1d.yaml').to_json}
 
 :merge project path:
                         - <<: jobs/borrow-1d.yaml
