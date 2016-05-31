@@ -14,9 +14,6 @@ fs:
 - ext4
 - btrfs
 
-perf-profile:
-  freq: 1000
-
 fsmark:
   filesize: 4M
   test_size: 200G

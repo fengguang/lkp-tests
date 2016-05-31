@@ -14,9 +14,6 @@ nr_threads:
 - 25%
 - 1
 
-perf-profile:
-    freq: 800
-
 cluster: cs-localhost
 
 if role server:
