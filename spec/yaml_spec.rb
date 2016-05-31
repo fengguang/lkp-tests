@@ -72,3 +72,51 @@ describe "save_yaml_with_flock" do
 	end
 end
 
+describe "yaml_merge_included_files" do
+	YAML_MERGE_SPEC = <<EOF
+contents: &borrow-1d
+  <<: jobs/borrow-1d.yaml
+
+:merge project path:
+                        - <<: jobs/borrow-1d.yaml
+                        - *borrow-1d
+:merge relative path:
+                        - <<: ../jobs/borrow-1d.yaml
+                        - *borrow-1d
+:merge absolute path:
+                        - <<: #{LKP_SRC}/jobs/borrow-1d.yaml
+                        - *borrow-1d
+:merge into hash:
+                        - a:
+                          <<: jobs/borrow-1d.yaml
+                        - a:
+                          <<: *borrow-1d
+:merge hash and update:
+                        - a:
+                          <<: jobs/borrow-1d.yaml
+                          runtime: 1
+                          b: c
+                        - a:
+                          <<: *borrow-1d
+                          runtime: 1
+                          b: c
+:merge update hash:
+                        - a:
+                          b: c
+                          runtime: 1
+                          <<: jobs/borrow-1d.yaml
+                        - a:
+                          b: c
+                          runtime: 1
+                          <<: *borrow-1d
+EOF
+	yaml = yaml_merge_included_files(YAML_MERGE_SPEC, File.dirname(__FILE__))
+	expects = YAML.load(yaml)
+	expects.each do |k, v|
+		next unless Symbol === k
+		next unless Array === v and v.size >= 2
+		it k.to_s do
+			expect(v[0]).to eq v[1]
+		end
+	end
+end

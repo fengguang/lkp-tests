@@ -14,7 +14,9 @@ end
 
 def load_yaml(file)
 	begin
-		return YAML.load_file file
+		yaml = File.read file
+		yaml = yaml_merge_included_files yaml, File.dirname(file)
+		return YAML.load yaml
 	rescue SignalException
 		raise
 	rescue StandardError => e
@@ -71,6 +73,55 @@ def load_yaml_tail(file)
 		$stderr.puts "#{file}: " + e.message
 	end
 	return nil
+end
+
+def search_file_in_paths(file, relative_to = nil, search_paths = nil)
+	if file[0] == '/'
+		return nil unless File.exist? file
+		return file
+	end
+
+	relative_to ||= Dir.pwd
+
+	if file =~ /^\.\.?\//
+		file = File.join(relative_to, file)
+		return nil unless File.exist? file
+		return file
+	end
+
+	search_paths ||= [ File.dirname(File.dirname(__FILE__)) ]
+	search_paths.unshift(relative_to)
+
+	search_paths.each do |search_path|
+		path = File.join(search_path, file)
+		if File.exist? path
+			return path
+		end
+	end
+	return nil
+end
+
+def yaml_merge_included_files(yaml, relative_to, search_paths = nil)
+	yaml.gsub(/(.*)<< *: +([^*\[].*)/) do |match|
+		prefix = $1
+		file = $2
+		path = search_file_in_paths file, relative_to, search_paths
+		if path
+			to_merge = File.read path
+			indent = prefix.tr '^ ', ' '
+			indented = [prefix]
+			to_merge.split("\n").each do |line|
+				if line =~ /^%([!%]*)$/
+					indented << '%' + indent + line[1..-1]
+				else
+					indented << indent + line
+				end
+			end
+			indented.join("\n")
+		else
+			raise "Included yaml file not found: #{file}"
+		end
+	end
 end
 
 #

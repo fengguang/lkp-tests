@@ -4,6 +4,23 @@
 Job files are the basic unit of test description and execution.
 They are written in [YAML](http://yaml.org/YAML_for_ruby.html) format.
 
+The job YAML is extended and interpreted in the below ways.
+
+## include/merge hash from an external file
+
+YAML has a hash merge feature:
+
+  http://yaml.org/type/merge.html
+
+	<< : *REF
+
+We make it a bit more convenient to support merging from external file, too.
+If the job file contains a line
+
+	<< : FILE
+
+The hash contents of FILE will be merged into the current YAML location.
+
 In the most fundemental form, a job YAML contains a hash table of key-values.
 The keys fall into 2 main categories:
 
