@@ -141,6 +141,7 @@ class Job
 
 	attr_reader :path_scheme
 
+	# the default "top = false" helps maintain compatibility with Hash
 	def update(hash, top = false)
 		@job ||= {}
 		if top
@@ -369,6 +370,18 @@ class Job
 
 	def []=(k, v)
 		@job[k] = v
+	end
+
+	def include?(k)
+		@job.include?(k)
+	end
+
+	def has_key?(k)
+		@job.include?(k)
+	end
+
+	def empty?
+		@job.empty?
 	end
 
 	def delete(k)
