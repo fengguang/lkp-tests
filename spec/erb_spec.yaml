@@ -1,0 +1,59 @@
+:ERB comment:
+                        - hello <%# ERB %> world
+                        - hello  world
+
+:ERB code line:
+% if true
+                        - hello world
+% else
+                        - hello!
+% end
+                        - hello world
+
+:ERB code:
+                        - hello <% if true %> world <% else %> ! <% end %>
+                        - hello  world
+
+:ERB expression:
+                        - hello <%= 'world' %>
+                        - hello world
+
+a: world
+:read YAML key:
+                        - hello <%= a %>
+                        - hello world
+
+# cannot directly read 'A' because ruby will treat it as CONSTANT
+A: WORLD
+:read YAML KEY:
+                        - hello <%= self.A %>
+                        - hello WORLD
+
+# cannot directly read 'to-a' because it's not a ruby variable name
+to-a: new-world
+:read YAML-key:
+                        - hello <%= self['to-a'] %>
+                        - hello new-world
+
+path:
+  TO:
+    the: new world
+:read YAML path:
+                        - hello <%= path.TO.the %>
+                        - hello new world
+
+array:
+- new
+- world
+:read YAML array by index:
+                        - hello <%= array[1] %>
+                        - hello world
+
+:read YAML array by method:
+                        - hello <%= array.last %>
+                        - hello world
+
+# to_seconds() is defined in lib/unit.rb
+:call ruby function:
+                        - 1d is <%= to_seconds('1d') %> seconds
+                        - 1d is <%= 3600 * 24 %> seconds
