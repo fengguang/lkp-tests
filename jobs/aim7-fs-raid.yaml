@@ -1,0 +1,51 @@
+testcase: aim7
+
+disk:
+- 4BRD_12G
+md:
+- RAID0
+- RAID5
+fs:
+- xfs
+- ext4
+- btrfs
+- f2fs
+
+aim7:
+  test:
+  - {{ fs == 'f2fs' ? nil : 'disk_src' }}
+  - disk_rr
+  - disk_rw
+  - disk_cp
+  - disk_wrt
+  load: {{
+          if fs == 'btrfs'
+                  aim7.test == 'disk_src' ? 500 : 1500
+          else
+                  3000
+          end
+        }}
+
+---
+aim7:
+  test:
+  - sync_disk_rw
+  load: {{ fs == 'btrfs' ? 20 : 600 }}
+
+---
+aim7:
+  test:
+  - creat-clo
+  load: {{
+          case fs
+          when 'btrfs' then 2
+          when 'ext4'  then 1000
+          else              1500
+          end
+        }}
+
+---
+aim7:
+  test:
+  - disk_rd
+  load: 9000
