@@ -125,7 +125,7 @@ def yaml_merge_included_files(yaml, relative_to, search_paths = nil)
 			end
 			indented.join("\n")
 		else
-			raise "Included yaml file not found: #{file}"
+			raise "Included yaml file not found: '#{file}'"
 		end
 	end
 end
@@ -219,7 +219,7 @@ def load_json(file, cache = false)
 	elsif File.exist? file.sub(/\.json(\.gz)?$/, ".yaml")
 		return load_yaml file.sub(/\.json(\.gz)?$/, ".yaml")
 	else
-		$stderr.puts "JSON/YAML file not exist: #{file}"
+		$stderr.puts "JSON/YAML file not exist: '#{file}'"
 		$stderr.puts caller
 		return nil
 	end
