@@ -6,6 +6,9 @@ require 'yaml'
 LKP_SRC ||= File.dirname File.dirname __FILE__
 require "#{LKP_SRC}/lib/hashugar.rb"
 
+# bring in functions usable for ERB code segments
+require "#{LKP_SRC}/lib/unit.rb"
+
 # Support references to variables (with real values) defined in the same job.
 #
 # This follows the KISS principle: just good enough to meet simple requirements.
