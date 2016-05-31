@@ -1,17 +1,7 @@
-testcase: vm-scalability
-category: benchmark
+<<: jobs/vm-scalability-swap.yaml
 
-transparent_hugepage:
-  thp_enabled:
-    - never
-  thp_defrag:
-    - never
-
-nr_task:
-  - 1
-  - 4
-  - 16
-  - 64
+disk:
+  nr_pmem: 8
 
 boot_params:
   bp1_memmap: 12G!4G
@@ -23,16 +13,7 @@ boot_params:
   bp7_memmap: 12G!90G
   bp8_memmap: 12G!102G
 
-disk:
-  nr_pmem: 8
-
 swap:
   priority: 1
-perf-profile:
-  delay: 20
+
 perf-node:
-vm-scalability:
-  test:
-    - swap-w-seq
-    - swap-w-rand
-kconfig: x86_64-rhel-pmem

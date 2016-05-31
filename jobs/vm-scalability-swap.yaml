@@ -1,0 +1,26 @@
+testcase: vm-scalability
+category: benchmark
+
+transparent_hugepage:
+  thp_enabled:
+    - never
+  thp_defrag:
+    - never
+
+nr_task:
+  - 1
+  - 4
+  - 16
+  - 64
+
+swap:
+
+perf-profile:
+  delay: 20
+
+vm-scalability:
+  test:
+    - swap-w-seq
+    - swap-w-rand
+
+kconfig: x86_64-rhel-pmem
