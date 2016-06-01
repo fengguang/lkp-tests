@@ -12,94 +12,74 @@ reaim:
 ---
 nr_task: 1600%
 reaim:
-  iterations: 30
-  test:
-  - new_dbase
-  - dbase
-  - compute
-  - alltests
-  - shared
+  - iterations: 30
+    test:
+    - new_dbase
+    - dbase
+    - compute
+    - alltests
+    - shared
 
----
-reaim:
-  iterations: 20
-  test:
-  - aim9
-  - all_utime
+  - iterations: 20
+    test:
+    - aim9
+    - all_utime
 
----
-reaim:
-  iterations: 10
-  test:
-  - long
-  - custom
+  - iterations: 10
+    test:
+    - long
+    - custom
 
----
-reaim:
-  iterations: 4
-  test:
-  - fserver
-  - new_fserver
-  - high_systime
+  - iterations: 4
+    test:
+    - fserver
+    - new_fserver
+    - high_systime
 
----
-reaim:
-  iterations: 2
-  test:
-  - five_sec
+  - iterations: 2
+    test:
+    - five_sec
 
 ---
 nr_task: 100%
 reaim:
-  iterations: 20
-  nr_job: 10000
-  test: short
+  - iterations: 20
+    nr_job: 10000
+    test: short
 
----
-reaim:
-  iterations: 20
-  nr_job: 3000
-  test:
-  - new_dbase
-  - dbase
+  - iterations: 20
+    nr_job: 3000
+    test:
+    - new_dbase
+    - dbase
 
----
-reaim:
-  iterations: 15
-  nr_job: 3000
-  test:
-  - compute
-  - shared
-  - custom
+  - iterations: 15
+    nr_job: 3000
+    test:
+    - compute
+    - shared
+    - custom
 
----
-reaim:
-  iterations: 20
-  nr_job: 1500
-  test:
-  - all_utime
-  - fserver
-  - new_fserver
+  - iterations: 20
+    nr_job: 1500
+    test:
+    - all_utime
+    - fserver
+    - new_fserver
 
----
-reaim:
-  iterations: 10
-  nr_job: 1000
-  test:
-  - five_sec
-  - alltests
+  - iterations: 10
+    nr_job: 1000
+    test:
+    - five_sec
+    - alltests
 
----
-reaim:
-  iterations: 6
-  nr_job: 1000
-  test:
-  - aim9
+  - iterations: 6
+    nr_job: 1000
+    test:
+    - aim9
 
----
-reaim:
-  iterations: 2
-  nr_job: 1000
-  test:
-  - high_systime
-  - long
+  - iterations: 2
+    nr_job: 1000
+    test:
+    - high_systime
+    - long
