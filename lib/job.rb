@@ -135,6 +135,10 @@ class Job
 
 	attr_reader :path_scheme
 
+	def initialize
+		@available_programs = {}
+	end
+
 	# the default "top = false" helps maintain compatibility with Hash
 	def update(hash, top = false)
 		@job ||= {}
@@ -181,23 +185,52 @@ class Job
 		end
 	end
 
+	def available_programs(type)
+		@available_programs[type] ||=
+		case type
+		when Array
+			p = {}
+			type.each do |t|
+				p.merge! available_programs(t)
+			end
+			p
+		when :workload_and_monitors
+			# This is all scripts that run in testbox.
+			# The other stats/* and filters/* run in server.
+			available_programs %i(workload_elements monitors)
+		when :workload_elements
+			# the options of these programs could impact test result
+			available_programs %i(setup tests daemon)
+		else
+			create_programs_hash "#{type}/**/*", lkp_src
+		end
+	end
+
+	def referenced_programs
+		@referenced_programs
+	end
+
 	def init_program_options
+		@referenced_programs = {}
 		@program_options = {
 			'cluster' => '-',
 		}
-		for_each_in(@job, $programs) { |pk, h, k, v|
-			`#{LKP_SRC}/bin/program-options #{$programs[k]}`.each_line { |line|
+		programs = available_programs(:workload_elements)
+		for_each_in(@job, programs) { |pk, h, k, v|
+			options = `#{LKP_SRC}/bin/program-options #{programs[k]}`.split("\n")
+			@referenced_programs[k] = {}
+			options.each { |line|
 				type, name = line.split
 				@program_options[name] = type
+				@referenced_programs[k][name] = nil
 			}
 		}
 	end
 
 	def each_job_init
-		create_programs_hash "{setup,tests,daemon}/**/*", lkp_src
 		init_program_options
 		@dims_to_expand = Set.new EXPAND_DIMS
-		@dims_to_expand.merge $programs.keys
+		@dims_to_expand.merge @referenced_programs.keys
 		@dims_to_expand.merge @program_options.keys
 	end
 
@@ -245,17 +278,42 @@ class Job
 	end
 
 	def each_param
-		create_programs_hash "{setup,tests,daemon}/**/*", lkp_src
 		init_program_options
-		for_each_in(@job, $programs.clone.merge(@program_options)) { |pk, h, k, v|
+
+		# Some programs, especially setup/*, can accept params directly
+		# via command line string, ie.
+		#
+		#   program: param
+		#
+		# instead of the normal
+		#
+		#   program:
+		#     option1: v1
+		#     option2: v2
+		#
+		# So need to iterate programs, too.
+		set = @program_options.merge available_programs(:workload_elements)
+
+		# We also allow program options to be set non-locally, ie.
+		#
+		#   option1: param1
+		#   program:
+		#     option2: param2
+		#
+		monitors = available_programs(:monitors)
+		for_each_in(@job, set) { |pk, h, k, v|
 			next if Hash === v
+
+			# skip monitor options which happen to have the same
+			# name with referenced :workload_elements programs
+			next if pk and monitors.include? pk
+
 			yield k, v, @program_options[k]
 		}
 	end
 
-	def each_program(glob)
-		create_programs_hash(glob, lkp_src)
-		for_each_in(@job, $programs) { |pk, h, k, v|
+	def each_program(type)
+		for_each_in(@job, available_programs(type)) { |pk, h, k, v|
 			yield k, v
 		}
 	end

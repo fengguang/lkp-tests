@@ -45,7 +45,7 @@ if $PROGRAM_NAME =~ /job-vars/
 	exit
 end
 
-job.each_program("{filters}/**/*") { |program, env|
+job.each_program(:filters) { |program, env|
 	run_program program
 	break unless File.exist? jobfile
 }
