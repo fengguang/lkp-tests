@@ -85,7 +85,10 @@ def __create_programs_hash(glob, lkp_src)
 	programs = {}
 	Dir.glob("#{lkp_src}/#{glob}").each { |path|
 		next if File.directory?(path)
-		next if not File.executable?(path)
+		if not File.executable?(path)
+			$stderr.puts "WARNING: skip non-executable #{path}"
+			next
+		end
 		file = File.basename(path)
 		next if file == 'wrapper'
 		if programs.include? file
