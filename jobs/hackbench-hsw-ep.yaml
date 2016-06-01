@@ -20,11 +20,4 @@ hackbench:
 nr_threads:
 - 50%
 
-hackbench:
-  iterations: 12
-  mode:
-  - process
-  - threads
-  ipc:
-  - pipe
-  - socket
+hackbench.iterations: 12

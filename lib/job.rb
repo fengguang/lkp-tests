@@ -245,7 +245,7 @@ class Job
 		each_job_init
 		each_job &block
 		@jobs.each do |hash|
-			@job.update hash
+			self.update hash
 			each_job &block
 		end
 	end
