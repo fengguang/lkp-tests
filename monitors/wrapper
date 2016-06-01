@@ -20,7 +20,7 @@ echo $! >> $TMP/pid-monitors
 
 [ -L "$LKP_SRC/bin/cat-$monitor" ] || ln -s -T $(command -v cat) $LKP_SRC/bin/cat-$monitor
 
-if grep -q -x -F $monitor $monitor_dir/need_gzip; then
+if grep -q -x -F $monitor $LKP_SRC/etc/monitors_need_gzip; then
 	#
 	# FILE          SIZE     COMPRESS TIME
 	# ====================================================================
