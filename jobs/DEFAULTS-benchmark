@@ -33,6 +33,7 @@ default-monitors:
 # Run perf-profile at top level: some few test cases need to run
 # perf-profile with customized delay/freq.
 perf-profile:
+  period: 1000003
 % if self['runtime']
   delay: {{ to_seconds(runtime) / 2 }}
 % end

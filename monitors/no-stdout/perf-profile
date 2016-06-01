@@ -1,5 +1,6 @@
 #!/bin/sh
 # - events
+# - period
 # - freq
 # - delay
 # - duration
@@ -21,6 +22,10 @@ default_events()
 
 [ -n "$freq" ] &&
 opt_freq="--freq=$freq"
+
+[ -n "$period" ] &&
+opt_period="--count $period"
+
 opt_events="-e $(echo "$events" | sed 's/ / -e /g')"
 
 # perf may consume lots of fd
@@ -31,7 +36,7 @@ setup_wait
 
 perf=/lkp/benchmarks/perf-profile/perf
 
-$perf record -q -ag --realtime=1 -m 256 $opt_freq $opt_events \
+$perf record -q -ag --realtime=1 -m 256 $opt_freq $opt_period $opt_events \
 	-o $TMP/perf.data -D $((delay * 1000)) -- \
 	timeout $((delay + duration)) \
 	$WAIT_POST_TEST_CMD
