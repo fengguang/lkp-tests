@@ -70,8 +70,8 @@ end
 scripts.uniq!
 
 def make_wakeup
-	return if File.executable? LKP_SRC + '/monitors/event/wakeup'
-	system "cd #{LKP_SRC}/monitors/event && make wakeup"
+	return if File.executable? LKP_SRC + '/bin/event/wakeup'
+	system "cd #{LKP_SRC}/bin/event && make wakeup"
 end
 
 def create_lkp_dirs

@@ -56,11 +56,11 @@ parse_yaml() {
 }
 
 make_wakeup() {
-	echo "make -C $LKP_SRC/monitors/event"
+	echo "make -C $LKP_SRC/bin/event"
 	[ -n "$DRY_RUN" ] && return
 
-	[ -x "$LKP_SRC/monitors/event/wakeup" ] || {
-		make -C "$LKP_SRC/monitors/event" wakeup
+	[ -x "$LKP_SRC/bin/event/wakeup" ] || {
+		make -C "$LKP_SRC/bin/event" wakeup
 	}
 }
 

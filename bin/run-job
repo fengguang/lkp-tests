@@ -89,9 +89,9 @@ def shell_run_pre_test(program)
 	return unless $programs[program].index("#{LKP_SRC}/tests/") == 0
 	$pre_test_executed = true
 	if $testcase['monitor_delay']
-		$opt_shell.puts "($LKP_SRC/monitors/event/wait post-test --timeout $monitor_delay && $LKP_SRC/monitors/event/wakeup activate-monitor) &"
+		$opt_shell.puts "($LKP_SRC/bin/event/wait post-test --timeout $monitor_delay && $LKP_SRC/bin/event/wakeup activate-monitor) &"
 	else
-		$opt_shell.puts "$LKP_SRC/monitors/event/wakeup activate-monitor"
+		$opt_shell.puts "$LKP_SRC/bin/event/wakeup activate-monitor"
 	end
 	$opt_shell.puts "sleep 1"
 	$opt_shell.puts "date '+%s' > $TMP/start_time\n\n"
@@ -302,9 +302,9 @@ def run_pre_test(program)
 	return if ENV["LKP_DRYRUN"]
 
 	if $testcase['monitor_delay']
-		Process.spawn("#{LKP_SRC}/monitors/event/wait post-test --timeout #{$testcase['monitor_delay']} && #{LKP_SRC}/monitors/event/wakeup activate-monitor")
+		Process.spawn("#{LKP_SRC}/bin/event/wait post-test --timeout #{$testcase['monitor_delay']} && #{LKP_SRC}/bin/event/wakeup activate-monitor")
 	else
-		system "#{LKP_SRC}/monitors/event/wakeup", 'activate-monitor'
+		system "#{LKP_SRC}/bin/event/wakeup", 'activate-monitor'
 	end
 	sleep 1
 	%x[ date '+%s' > #{TMP}/start_time ]

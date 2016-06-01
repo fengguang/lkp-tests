@@ -12,7 +12,7 @@ download()
 
 build()
 {
-	local program=$LKP_SRC/monitors/event/wakeup
+	local program=$LKP_SRC/bin/event/wakeup
 	local option=
 	[[ $ARCH = i386 ]] && option='-m32'
 	gcc $option -o $program $program.c

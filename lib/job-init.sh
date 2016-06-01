@@ -151,7 +151,7 @@ clean_job_resource()
 }
 
 job_done() {
-	$LKP_SRC/monitors/event/wakeup job-finished
+	$LKP_SRC/bin/event/wakeup job-finished
 	touch $TMP/job-finished
 	clean_job_resource
 	wait_on_manual_check
