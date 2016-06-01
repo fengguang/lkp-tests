@@ -226,7 +226,7 @@ def shell_run_child(key, val, tabs = '')
 		true
 	}
 	$shell_run_program_indent = true
-	for_each_in(val, $programs) { |h, k, v|
+	for_each_in(val, $programs) { |pk, h, k, v|
 		shell_run_program(k, v, tabs)
 	}
 	$shell_run_program_indent = false
@@ -348,7 +348,7 @@ def run_program(program, env)
 end
 
 if $opt_shell
-	for_each_in($testcase, $programs) { |h, k, v|
+	for_each_in($testcase, $programs) { |pk, h, k, v|
 		shell_run_program k, v
 	}
 
@@ -358,7 +358,7 @@ if $opt_shell
 	exit
 end
 
-for_each_in($testcase, $programs) { |h, k, v|
+for_each_in($testcase, $programs) { |pk, h, k, v|
 	update_global_env
 	run_program k, v
 }

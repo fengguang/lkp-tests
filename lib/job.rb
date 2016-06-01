@@ -67,14 +67,14 @@ def string_or_hash_key(h)
 	end
 end
 
-def for_each_in(ah, set)
+def for_each_in(ah, set, pk = nil)
 	ah.each { |k, v|
 		if set.include?(k)
-			yield ah, k, v
+			yield pk, ah, k, v
 		end
 		if Hash === v
-			for_each_in(v, set) { |h, k, v|
-				yield h, k, v
+			for_each_in(v, set, k) { |pk, h, k, v|
+				yield pk, h, k, v
 			}
 		end
 	}
@@ -185,7 +185,7 @@ class Job
 		@program_options = {
 			'cluster' => '-',
 		}
-		for_each_in(@job, $programs) { |h, k, v|
+		for_each_in(@job, $programs) { |pk, h, k, v|
 			`#{LKP_SRC}/bin/program-options #{$programs[k]}`.each_line { |line|
 				type, name = line.split
 				@program_options[name] = type
@@ -247,7 +247,7 @@ class Job
 	def each_param
 		create_programs_hash "{setup,tests,daemon}/**/*", lkp_src
 		init_program_options
-		for_each_in(@job, $programs.clone.merge(@program_options)) { |h, k, v|
+		for_each_in(@job, $programs.clone.merge(@program_options)) { |pk, h, k, v|
 			next if Hash === v
 			yield k, v, @program_options[k]
 		}
@@ -255,7 +255,7 @@ class Job
 
 	def each_program(glob)
 		create_programs_hash(glob, lkp_src)
-		for_each_in(@job, $programs) { |h, k, v|
+		for_each_in(@job, $programs) { |pk, h, k, v|
 			yield k, v
 		}
 	end
