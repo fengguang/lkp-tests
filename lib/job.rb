@@ -100,14 +100,8 @@ end
 def create_programs_hash(glob, lkp_src = LKP_SRC)
 	cache_key = [glob, lkp_src].join ":"
 	$programs_cache ||= {}
-	if $programs_cache[cache_key]
-		$programs = $programs_cache[cache_key]
-		return
-	end
-
-	$programs = __create_programs_hash(glob, lkp_src)
-
-	$programs_cache[cache_key] = $programs
+	$programs =
+	$programs_cache[cache_key] ||= __create_programs_hash(glob, lkp_src).freeze
 end
 
 def atomic_save_yaml_json(object, file)
