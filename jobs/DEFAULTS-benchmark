@@ -28,6 +28,7 @@ default-monitors:
   pmeter:
   sched_debug:
     interval: 60
+  perf-stat:
 
 # Run perf-profile at top level: some few test cases need to run
 # perf-profile with customized delay/freq.
