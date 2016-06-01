@@ -22,15 +22,9 @@ nr_threads: 64
 
 md: RAID5
 
-fsmark:
-  filesize: 4M
-  test_size: 60G
-  sync_method: NoSync
+fsmark.test_size: 60G
 
 ---
 md: RAID0
 
-fsmark:
-  filesize: 4M
-  test_size: 100G
-  sync_method: NoSync
+fsmark.test_size: 100G

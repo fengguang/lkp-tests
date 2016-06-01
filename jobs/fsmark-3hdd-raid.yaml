@@ -27,26 +27,15 @@ fs:
 - ext4
 - btrfs
 
-fsmark:
-  filesize: 4M
-  test_size: 130G
-  sync_method: NoSync
+fsmark.test_size: 130G
 
 ---
 nr_threads: 64
 fs: btrfs
-
-fsmark:
-  filesize: 4M
-  test_size: 130G
-  sync_method: NoSync
 
 ---
 fs:
 - xfs
 - ext4
 
-fsmark:
-  filesize: 4M
-  test_size: 70G
-  sync_method: NoSync
+fsmark.test_size: 70G
