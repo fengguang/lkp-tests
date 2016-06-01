@@ -1,122 +1,4 @@
 #!/usr/bin/env ruby
-
-def process_sub_record(base_bypass_len, base_deep, base_percent, base_record)
-	# There exist 2 type of input data:
-	# 1: No next-level record like:
-	#    |--56.02%-- vfs_write
-	#               SyS_write
-	#               system_call_fastpath
-	#               start_thread
-	#    Record (vfs_write.SyS_write.system_call_fastpath.start_thread)
-	#    is saved before current function return.
-	#
-	# 2: Next-level record exist like:
-	#    |--99.61%-- autoremove_wake_function
-	#               __wake_up_common
-	#               __wake_up_sync_key
-	#               |
-	#               |--75.50%-- sock_def_readable
-	#               |          ...
-	#    Record (autoremove_wake_function.__wake_up_common.__wake_up_sync_key.sock_def_readable...)
-	#    already saved in next process_sub_record() call,
-	#    current function should output save record again before return.
-	#
-	# detail_printed is used for this.
-	# in case 1: no next recursion call, detail_printed is false,
-	#   and record is saved before function return.
-	# in case 2: next recursion call have responsibility to save record,
-	#   then detail_printed is set to true, and current function
-	#   will not save record again before return.
-	#
-	detail_printed = false
-
-	# We don't need to output call stack after no name function
-	# for ex:
-	#  trace_hardirqs_on_thunk.__write_nocancel.0x401b82.x900000006
-	#  should be output as:
-	#  trace_hardirqs_on_thunk.__write_nocancel
-	#
-	# bypass_remain is set to true when no-name function found,
-	# and used to bypass subsequent parse
-	#
-	bypass_remain = false
-
-	while next_line = STDIN.gets
-		line = next_line[base_bypass_len..-1]
-
-		# return on segment end
-		# segment end have following types:
-		# " [...]"
-		# " (nil)"
-		# ""
-		# "        "
-		# " --14.51%-- [...]"
-		case line
-		when /^ \[\.\.\.\]/, /^ \(nil\)/
-			unless detail_printed
-				$results[base_record] ||= 0
-				$results[base_record] += base_percent
-			end
-			return STDIN.gets
-		when nil, /^\s*$/, /^ --\d+\.\d+%-- \[\.\.\.\]/
-			unless detail_printed
-				$results[base_record] ||= 0
-				$results[base_record] += base_percent
-			end
-			return next_line
-		end
-
-		# We only record max 5 leves of call stack
-		next if base_deep >= 5 || bypass_remain
-
-		case line
-		when /^\s*([\w\.]+)\s*$/
-			# next backtrace like
-			# " free_poll_entry"
-			func_name = $1.split(".")[0]
-			if func_name =~ /0x[0-9a-fA-F]/
-				bypass_remain = true
-				next
-			end
-
-			base_record += "." + func_name
-			base_deep = base_deep + 1
-		when /^.*--+(\d+\.\d+)%-- ([\w\.]+)\s*$/
-			# new record like
-			#  "                     |--99.23%-- sock_alloc_send_pskb"
-			#  "                     |          |--63.50%-- kmem_cache_free"
-			#  "                     |--9.17%-- get_partial_node.isra.40"
-			#  "                      --47.63%-- add_wait_queue"
-			#
-			percent = $1.to_f / 100
-			func_name = $2.split(".")[0]
-			if func_name =~ /0x[0-9a-fA-F]/
-				bypass_remain = true
-				next
-			end
-
-			# Unlike bypass_len of first function call,
-			# bypass_len in child block always increase 11,
-			# it have no relationship with place of '--',
-			# ex1:
-			# |--99.23%-- sock_alloc_send_pskb
-			# |          unix_stream_sendmsg
-			#
-			# ex2:
-			# |--100.00%-- skb_free_head
-			# |          skb_release_data
-			#
-			next_line = process_sub_record base_bypass_len + 11, base_deep + 1, base_percent * percent, base_record + "." + func_name
-			detail_printed = true
-			redo
-		when /^\s*\|\s*$/
-			# Ignore
-		when /.*/
-			# puts "Bug: Unknown content: " + line
-		end
-	end
-end
-
 # First line of perf report:
 #
 # with --header argument:
@@ -179,106 +61,23 @@ loop do
 	end
 
 	# Wait for new record as:
-	#     0.38%  qemu-system-x86  [kernel.kallsyms]         [k] _spin_lock_irqsave
-	unless line =~ /^\s+(\d+\.\d+)%\s+(\S+)\s+.+\s+(\S+)\s*$/
+	# 0.10% entry_SYSCALL_64_fastpath;__write_nocancel;run_builtin;main;__libc_start_main
+	unless line =~ /^(\d+\.\d+)%\s+(\S+)$/
 		line = STDIN.gets
 		next
 	end
 
-	# Use recursion for following style
-	#     0.38%  qemu-system-x86  [kernel.kallsyms]         [k] _spin_lock_irqsave
-	#            |
-	#            --- _spin_lock_irqsave
-	#               |
-	#               |--52.37%-- remove_wait_queue
-	#               |          free_poll_entry
-	#               |          poll_freewait
-	#               |          do_sys_poll
-	#               |          sys_poll
-	#               |          system_call_fastpath
-	#               |          __poll
-	#               |
-	#                --47.63%-- add_wait_queue
-	#                          __pollwait
-	#                          |
-	#                          |--60.04%-- signalfd_poll
-	#                          |          do_sys_poll
-	#                          |          sys_poll
-	#                          |          system_call_fastpath
-	#                          |          __poll
-	#                          |
-	#                           --39.96%-- eventfd_poll
-	#                                     do_sys_poll
-	#                                     sys_poll
-	#                                     system_call_fastpath
-	#                                     __poll
-	#
-
-	# base_percent  is like 0.38
-	# proc_name     is like qemu-system-x86
-	# function_name is like _spin_lock_irqsave
+	# base_percent  is like 0.10
+	# symbol_name is like entry_SYSCALL_64_fastpath.__write_nocancel.run_builtin;main.__libc_start_main
 	base_percent  = $1.to_f / 100
-	proc_name     = $2  # Not used now
-	symbol_name = line.split[-1]
-	func_name = symbol_name.index('(') ? symbol_name.split('(')[0] :
-			symbol_name
-	base_function_name = $cur_event + "." + func_name
+	# We only record max 5 leves of call stack
+	function_names = $2.split(';')[0, 5]
+	symbol_name = function_names.join('.')
+	$results[symbol_name] = base_percent
 
-	# Skip some head lines as:
-	#            |
-	#            --- _spin_lock_irqsave
 	line = STDIN.gets
-
-	# maybe some exeception-records as such cases:
-	#      8.13%         qemu-kvm  qemu-kvm                     [.] 0x00000000001f1dac
-	#                         |
-	#                         |--6.20%-- 0x7f352bbfa273
-	# or:
-	#      1.42%         qemu-kvm  qemu-kvm                     [.] 0x0000000000088ea1
-	if line =~ /^$/
-		$results[base_function_name]= base_percent
-		next
-	end
-	line = STDIN.gets
-	if line.index(" --- ")
-		# bypass_len for first_level function is not const,
-		# it is depends on process name len, output change
-		# bypass_len to ensure right-align for it, as:
-		# case1:
-		#      0.01%          swapper  [kernel.kallsyms]   [k] cpu_startup_entry
-		#                     |
-		#                     --- cpu_startup_entry
-		#                         start_secondary
-		#                         ...
-		#
-		# case2:
-		#      0.01%        hackbench  [kernel.kallsyms]   [k] copy_process.part.29
-		#                   |
-		#                   --- copy_process.part.29
-		#                       do_fork
-		#                       ...
-		#
-		# case3:
-		#      0.00%            sleep  [kernel.kallsyms]   [k] copy_page_rep
-		#                       |
-		#                       --- copy_page_rep
-		#                           handle_mm_fault
-		#                           ...
-		#
-		# we can calculate it by index of  '---'
-		#
-		bypass_len = line.index(" --- ") + 4
-	else
-		$results[base_function_name]= base_percent
-		while line = STDIN.gets
-			break unless line =~ /^$/
-		end
-		next
-	end
-
-	line = process_sub_record bypass_len, 1, base_percent, base_function_name
-
 end
+
 
 $all_results.each { |results|
 	results.sort_by{|_, v| -v}.each do |record,percent|
