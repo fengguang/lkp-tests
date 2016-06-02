@@ -1,0 +1,12 @@
+#!/bin/bash
+
+download()
+{
+	[[ -d chromeswap ]] || git clone https://github.com/aaronlu/chromeswap.git
+	source_dir="chromeswap"
+}
+
+install()
+{
+	cp -af /tmp/$BM_NAME /lkp/benchmarks/
+}

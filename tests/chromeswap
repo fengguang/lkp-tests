@@ -1,0 +1,7 @@
+#!/bin/sh
+# - selection
+# - nr_procs
+# - cycles
+# - swap_targets
+
+python $BENCHMARK_ROOT/chromeswap/platform_CompressedSwapPerf.py
