@@ -34,8 +34,6 @@ ulimit -n 102400
 . $LKP_SRC/lib/wait.sh
 setup_wait
 
-$LKP_SRC/bin/event/wait 'activate-monitor'
-
 perf=/lkp/benchmarks/perf-profile/perf
 
 $perf record -q -ag --realtime=1 -m 256 $opt_freq $opt_period $opt_events \

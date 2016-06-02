@@ -12,7 +12,10 @@ fifo=$TMP/fifo-$monitor
 [ -p $fifo ] && exit 0
 mkfifo $fifo 2>/dev/null || exit 0
 
-stdbuf -o0 -e0 $monitor_dir/$monitor "$@" > $fifo &
+(
+	$LKP_SRC/bin/event/wait 'activate-monitor'
+	exec stdbuf -o0 -e0 $monitor_dir/$monitor "$@"
+) > $fifo &
 
 # Save pid to be killed when the tests complete. gzip/cat will auto quit when the FIFO writer is killed.
 # Skip record the pid of watchdog process, since it will startup a new process and run in background,
