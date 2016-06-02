@@ -13,6 +13,7 @@ fifo=$TMP/fifo-$monitor
 mkfifo $fifo 2>/dev/null || exit 0
 
 (
+	# Some setup scripts take time and we don't want to profile them.
 	$LKP_SRC/bin/event/wait 'activate-monitor'
 	exec stdbuf -o0 -e0 $monitor_dir/$monitor "$@"
 ) > $fifo &
