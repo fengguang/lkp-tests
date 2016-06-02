@@ -1,6 +1,6 @@
 model: Broadwell-DE
 nr_cpu: 16
 memory: 8G
-hdd_partitions:
+sdd_partitions: /dev/disk/by-id/ata-INTEL_SSDSC2BB480G6_BTWA6075012T480FGN
 swap_partitions:
 rootfs_partition:
