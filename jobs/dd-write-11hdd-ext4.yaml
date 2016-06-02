@@ -1,6 +1,13 @@
 testcase: dd-write
 category: benchmark
 
+ftrace:
+- events:
+    balance_dirty_pages
+    bdi_dirty_ratelimit
+    global_dirty_state
+    writeback_single_inode
+
 runtime: 5m
 
 disk: 11HDD
@@ -11,14 +18,6 @@ iosched:
 - cfq
 fs:
 - ext4
-
-monitors:
-  ftrace:
-  - events:
-      balance_dirty_pages
-      bdi_dirty_ratelimit
-      global_dirty_state
-      writeback_single_inode
 
 nr_threads:
 - 100dd

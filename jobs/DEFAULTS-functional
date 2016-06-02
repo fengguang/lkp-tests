@@ -1,7 +1,6 @@
 testcase: DEFAULTS
 
-default-monitors:
-  wait: activate-monitor
-  kmsg:
-  heartbeat:
-    interval: 10
+# default monitors
+kmsg:
+heartbeat:
+  interval: 10

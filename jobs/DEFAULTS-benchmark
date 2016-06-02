@@ -1,37 +1,33 @@
 testcase: DEFAULTS
 
-default-monitors:
-  wait: activate-monitor
-  kmsg:
-  uptime:
-  iostat:
-  heartbeat:
-  vmstat:
-  numa-numastat:
-  numa-vmstat:
-  numa-meminfo:
-  proc-vmstat:
-  proc-stat:
-    interval: 10
-  meminfo:
-  slabinfo:
-  interrupts:
-  lock_stat:
-  latency_stats:
-  softirqs:
-  bdi_dev_mapping:
-  diskstats:
-  nfsstat:
-  cpuidle:
-  cpufreq-stats:
-  turbostat:
-  pmeter:
-  sched_debug:
-    interval: 60
-  perf-stat:
-
-# Run perf-profile at top level: some few test cases need to run
-# perf-profile with customized delay/freq.
+# default monitors
+kmsg:
+uptime:
+iostat:
+heartbeat:
+vmstat:
+numa-numastat:
+numa-vmstat:
+numa-meminfo:
+proc-vmstat:
+proc-stat:
+  interval: 10
+meminfo:
+slabinfo:
+interrupts:
+lock_stat:
+latency_stats:
+softirqs:
+bdi_dev_mapping:
+diskstats:
+nfsstat:
+cpuidle:
+cpufreq-stats:
+turbostat:
+pmeter:
+sched_debug:
+  interval: 60
+perf-stat:
 perf-profile:
   period: 1000003
 % if self['runtime']
