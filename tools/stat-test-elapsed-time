@@ -39,7 +39,7 @@ OptionParser.new do |opts|
 end.parse!
 
 test_specs = Dir["#{LKP_SRC}/jobs/*"].select {|job_file| File.size?(job_file) && job_file.end_with?('.yaml')}
-                                     .map {|job_file| load_yaml job_file}
+                                     .map {|job_file| load_yaml job_file, true}
 
 test_specs = test_specs.select {|test_spec| test_spec['testcase'] && test_spec['testcase'] !~ /0day|internal/}
                        .select {|test_spec| test_spec['category'] == 'functional'}
