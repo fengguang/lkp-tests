@@ -2,7 +2,6 @@
 
 . $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/wait.sh
-setup_wait
 
 [ -n "$max_uptime" ] || max_uptime=$((5 * 3600))
 max_uptime=${max_uptime%%.*}
@@ -117,4 +116,6 @@ start_watchdog()
 
 start_bmc_watchdog
 start_watchdog &
+echo $! >> $TMP/.pid-watchdog
+
 [ -n "$BASHPID" ] && disown
