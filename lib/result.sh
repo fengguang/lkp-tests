@@ -30,15 +30,18 @@ is_mrt()
 expand_tag_to_commit()
 {
 	local param=$1
+	local project=$2
 	local git_tag
 	local commit
+
+	[[ "$project" ]] || project="linux"
 
 	[[ "$param" =~ (v[0-9].[0-9]+[_-rc0-9]*) ]] &&
 	{
 		git_tag=$BASH_REMATCH
 		git_tag="${git_tag%/*}"
 
-		commit=$(GIT_WORK_TREE=${GIT_WORK_TREE:-${LKP_GIT_WORK_TREE:-/c/repo/linux}} GIT_DIR=${GIT_DIR:-$GIT_WORK_TREE/.git} \
+		commit=$(GIT_WORK_TREE="/c/repo/$project" GIT_DIR="$GIT_WORK_TREE/.git" \
 				git rev-list -n1 "$git_tag" 2>/dev/null) &&
 		[[ $commit ]] && param="${param/$git_tag/$commit}"
 	}

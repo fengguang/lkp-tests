@@ -15,7 +15,7 @@ usage()
 {
 	cat <<-EOF
 Usage:
-	lkp $script_name [-d N[dwm]] [-f filename] patterns...
+	lkp $script_name [-d N[dwm]] [-f filename] [ -p project ] patterns...
 Example:
 	lkp $script_name -d 3d  lkp-ws02  xfstests /0/
 EOF
@@ -25,11 +25,12 @@ EOF
 
 [[ $# = 0 ]] && usage
 
-while getopts "f:d:" opt
+while getopts "f:d:p:" opt
 do
 	case $opt in
 		f ) opt_file="$OPTARG"; ;;
 		d ) opt_date="$OPTARG"; ;;
+		p ) opt_project="$OPTARG"; ;;
 		? ) usage >&2; ;;
 	esac
 done
@@ -62,22 +63,32 @@ fi
 
 [[ $files ]] || exit 0
 
-flag_pattern=0
-for pattern
-do
-	# expand v3.12 etc. to commit SHA1
-	pattern=$(expand_tag_to_commit $pattern)
+case $opt_project in
+    all | ALL  ) projects=$(ls $LKP_SRC/repo/); ;;
+    ""         ) projects="linux"; ;;
+    *          ) projects=$opt_project; ;;
+esac
 
-	if [[ "$flag_pattern" = "0" ]]; then
-		cmd="grep -h -E $pattern "${files[@]}""
-		flag_pattern=1
-	else
-		cmd="$cmd | grep -E $pattern"
-	fi
-done
-
+patterns="$*"
 temp_file_unsort=$(mktemp)
-eval "$cmd" > $temp_file_unsort
+
+for project in $projects
+do
+	flag_pattern=0
+	for pattern in $patterns
+	do
+		# expand v3.12 etc. to commit SHA1
+		pattern=$(expand_tag_to_commit $pattern $project)
+
+		if [[ "$flag_pattern" = "0" ]]; then
+			cmd="grep -h -E $pattern "${files[@]}""
+			flag_pattern=1
+		else
+			cmd="$cmd | grep -E $pattern"
+		fi
+	done
+	eval "$cmd" >> $temp_file_unsort
+done
 
 [[ -s "$temp_file_unsort" ]] ||
 {
