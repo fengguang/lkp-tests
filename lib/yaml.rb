@@ -4,6 +4,7 @@ LKP_SRC ||= ENV['LKP_SRC']
 
 require "#{LKP_SRC}/lib/common.rb"
 require "#{LKP_SRC}/lib/error"
+require "#{LKP_SRC}/lib/erb"
 require 'fileutils'
 require 'yaml'
 require 'json'
