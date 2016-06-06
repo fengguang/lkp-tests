@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# check if testbox has enough cpu to run the job
+
+if (( need_cpu > nr_cpu )); then
+	echo "rm $job_file due to not enough cpu"
+	echo "need: $need_cpu cpu, has: $nr_cpu cpu"
+	rm $job_file
+fi
