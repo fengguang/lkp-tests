@@ -5,10 +5,12 @@
 # - delay
 # - duration
 
+perf=/lkp/benchmarks/perf-profile/perf
+
 default_events()
 {
 	for event in cycles:pp cycles:p; do
-		perf record -q --freq=800 -e $event -- sleep 0.01 >/dev/null 2>&1 && {
+		$perf record -q --freq=800 -e $event -- sleep 0.01 >/dev/null 2>&1 && {
 			echo $event
 			return
 		}
@@ -33,8 +35,6 @@ ulimit -n 102400
 
 . $LKP_SRC/lib/wait.sh
 setup_wait
-
-perf=/lkp/benchmarks/perf-profile/perf
 
 $perf record -q -ag --realtime=1 -m 256 $opt_freq $opt_period $opt_events \
 	-o $TMP/perf.data -D $((delay * 1000)) -- \
