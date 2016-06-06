@@ -1,4 +1,5 @@
 #!/bin/sh
+# - runtime
 # - test
 
 ## UnixBench is the original BYTE UNIX benchmark suite. The purpose
@@ -10,8 +11,13 @@ cd $BENCHMARK_ROOT/unixbench || exit
 
 export LANG=C
 
+[ -n "$runtime" ] || runtime=300
+
+# Each iteration in UnixBench is about 10 seconds
+iteration=$(( runtime / 10 ))
+
 [ -n "$nr_task" ] && other_params="-c $nr_task"
 
-cmd ./Run $test $other_params || exit
+cmd ./Run $test $other_params -i $iteration || exit
 
 copy-results $BENCHMARK_ROOT/unixbench/results/*
