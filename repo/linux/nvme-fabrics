@@ -1,0 +1,5 @@
+url: git://git.infradead.org/nvme-fabrics.git
+owner: Christoph Hellwig <hch@lst.de>
+subsystems:
+- nvme
+notify_build_success_branch: .*
