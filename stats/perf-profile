@@ -72,7 +72,7 @@ loop do
 	base_percent  = $1.to_f / 100
 	# We only record max 5 leves of call stack
 	function_names = $2.split(';')[0, 5]
-	symbol_name = function_names.join('.')
+	symbol_name = $cur_event + "." + function_names.join('.')
 	$results[symbol_name] = base_percent
 
 	line = STDIN.gets
