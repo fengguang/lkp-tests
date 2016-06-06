@@ -24,7 +24,7 @@ default_events()
 opt_freq="--freq=$freq"
 
 [ -n "$period" ] &&
-opt_period="--count $period"
+opt_period="--count=$period"
 
 opt_events="-e $(echo "$events" | sed 's/ / -e /g')"
 
