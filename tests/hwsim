@@ -30,4 +30,5 @@ bfd_library=(/usr/lib/libbfd*)
 }
 ln -sf ${bfd_library[-1]} /usr/lib/libbfd-2.24.51-system.20140818.so
 
+[[ $USER ]] || export USER=root
 cmd ./run-all.sh
