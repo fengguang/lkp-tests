@@ -45,7 +45,7 @@ while line = STDIN.gets
 end
 
 $all_results = Array.new
-$results = Hash.new
+$results = Hash.new(0)
 
 loop do
 	# break on current-segment-end
@@ -73,7 +73,7 @@ loop do
 	# We only record max 5 leves of call stack
 	function_names = $2.split(';')[0, 5]
 	symbol_name = $cur_event + "." + function_names.join('.')
-	$results[symbol_name] = base_percent
+	$results[symbol_name] += base_percent
 
 	line = STDIN.gets
 end
