@@ -1,6 +1,4 @@
-#!/bin/bash
-
-shopt -s nullglob
+#!/bin/sh
 
 ## Automated hostapd/wpa_supplicant testing with mac80211_hwsim.
 ## See: https://github.com/jmalinen/hostap/tree/master/tests/hwsim
@@ -8,27 +6,10 @@ shopt -s nullglob
 cd $BENCHMARK_ROOT/hwsim/tests/hwsim || exit
 
 nm_conf="/etc/NetworkManager/NetworkManager.conf"
-[[ -f "$nm_conf" ]] && cat >> $nm_conf <<EOF
+[ -f "$nm_conf" ] && cat >> $nm_conf <<EOF
 [keyfile]
 unmanaged-devices=mac:02:00:00:00:00:00;mac:02:00:00:00:01:00;mac:02:00:00:00:02:00;mac:02:00:00:00:03:00;mac:02:00:00:00:04:00
 EOF
-
-# This is a workaround to the following error:
-# /lkp/benchmarks/hwsim/tests/hwsim/../../wpa_supplicant/wpa_supplicant: error while loading shared libraries: libbfd-2.24.51-system.20140818.so: cannot open shared object file: No such file or directory
-# /lkp/benchmarks/hwsim/tests/hwsim/../../wpa_supplicant/wpa_supplicant: error while loading shared libraries: libbfd-2.24.51-system.20140818.so: cannot open shared object file: No such file or directory
-#
-# And debian rootfs already contain a libbfd library called libbfd-2.25-system.so.
-# inn:/osimage/debian$ gzip debian-x86_64.cgz  -dc | cpio -t | grep 'usr/lib/libbfd-2.25-system.so'
-# usr/lib/libbfd-2.25-system.so
-# 538957 blocks
-# inn:/osimage/debian$
-
-bfd_library=(/usr/lib/libbfd*)
-[[ "$bfd_library" ]] || {
-	echo "hwsim: cannot find /usr/lib/libbfd-xxx.so" >&2
-	exit
-}
-ln -sf ${bfd_library[-1]} /usr/lib/libbfd-2.24.51-system.20140818.so
 
 [[ $USER ]] || export USER=root
 cmd ./run-all.sh
