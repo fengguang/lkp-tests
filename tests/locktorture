@@ -5,8 +5,13 @@
 ## which can be examined via the dmesg (perhaps grepping for "torture")
 ## The test is started when the module is loaded, and stops when the module is unloaded.
 
-modprobe locktorture 2>/dev/null || exit 0
+. $LKP_SRC/lib/debug.sh
+
+modprobe locktorture || die "failed to load locktorture module"
 
 sleep $runtime
 
 rmmod locktorture
+
+dmesg | grep torture:
+[ $? -ne 0 ] && exit 1
