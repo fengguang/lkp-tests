@@ -1,6 +1,8 @@
 model: Ivytown Ivy Bridge-EP
 nr_cpu: 48
 memory: 64G
+brand: Xeon E5
+nr_socket: 2
 nr_ssd_partitions: 1
 ssd_partitions: /dev/disk/by-id/ata-INTEL_SSDSC2BB480G6_BTWA5444064C480FGN-part1
 swap_partitions:
