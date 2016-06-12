@@ -9,7 +9,7 @@ Dir["#{RESULT_ROOT}/**/*.csv"].each { |log|
 			nr_test = nr_test + 1
 			result = line.split(";")
 			if result[3] == "1"
-				puts "#{result[0]}.#{result[1]}.fail: 0"
+				puts "#{result[0]}.#{result[1]}.pass: 1"
 			elsif result[4] == "1"
 				puts "#{result[0]}.#{result[1]}.fail: 1"
 			end
