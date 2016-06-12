@@ -171,7 +171,10 @@ def save_yaml(object, file, compress=false)
 	}
 	FileUtils.mv temp_file, file, :force => true
 
-	compress_file(file) if compress
+	if compress
+		FileUtils.rm "#{file}.gz", :force => true
+		compress_file(file)
+	end
 end
 
 def save_yaml_with_flock(object, file, timeout=nil, compress=false)
@@ -233,7 +236,10 @@ def save_json(object, file, compress=false)
 	}
 	FileUtils.mv temp_file, file, :force => true
 
-	compress_file(file) if compress
+	if compress
+		FileUtils.rm "#{file}.gz", :force => true
+		compress_file(file)
+	end
 end
 
 def try_load_json(path)
