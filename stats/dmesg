@@ -19,7 +19,11 @@
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($0)))
 require "#{LKP_SRC}/lib/dmesg.rb"
 
-if ENV['RESULT_ROOT']
+if ARGV[0]
+	kmsg_file = ARGV[0]
+	dmesg_file = ARGV[0]
+	RESULT_ROOT = ENV['RESULT_ROOT']
+elsif ENV['RESULT_ROOT']
 	RESULT_ROOT = ENV['RESULT_ROOT']
 	serial_file = "#{RESULT_ROOT}/dmesg"
 	kmsg_file = "#{RESULT_ROOT}/kmsg"
@@ -41,10 +45,6 @@ if ENV['RESULT_ROOT']
 		# puts "early-boot-hang: 1"
 		exit
 	end
-
-elsif ARGV[0]
-	kmsg_file = ARGV[0]
-	dmesg_file = ARGV[0]
 else
 	exit
 end
