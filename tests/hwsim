@@ -11,5 +11,5 @@ nm_conf="/etc/NetworkManager/NetworkManager.conf"
 unmanaged-devices=mac:02:00:00:00:00:00;mac:02:00:00:00:01:00;mac:02:00:00:00:02:00;mac:02:00:00:00:03:00;mac:02:00:00:00:04:00
 EOF
 
-[[ $USER ]] || export USER=root
+[ $USER ] || export USER=root
 cmd ./run-all.sh
