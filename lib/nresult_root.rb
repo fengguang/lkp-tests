@@ -169,9 +169,9 @@ class NMResultRoot < DataStore::Node
 		NMResultRootCollection.new axes
 	end
 
-	def goto_commit(commit)
+	def goto_commit(commit, commit_axis_key = 'commit')
 		c = collection
-		c.set(COMMIT_AXIS_KEY, commit)
+		c.set(commit_axis_key, commit)
 		c.to_a.first
 	end
 

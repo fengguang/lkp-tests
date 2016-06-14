@@ -197,11 +197,11 @@ class MResultRoot
 		as
 	end
 
-	def goto_commit(commit, commit_axis = 'commit')
+	def goto_commit(commit, commit_axis_key = 'commit')
 		rp = ResultPath.new
 		rp.update(axes_path)
 
-		rp[commit_axis] = commit
+		rp[commit_axis_key] = commit
 		_rtp = rp._result_root
 		MResultRoot.new _rtp if File.exists? _rtp
 	end
