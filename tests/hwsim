@@ -1,9 +1,14 @@
 #!/bin/sh
+# - group
 
 ## Automated hostapd/wpa_supplicant testing with mac80211_hwsim.
 ## See: https://github.com/jmalinen/hostap/tree/master/tests/hwsim
 
+. $LKP_SRC/lib/debug.sh
 cd $BENCHMARK_ROOT/hwsim/tests/hwsim || exit
+
+group_file=$LKP_SRC/pack/hwsim-addon/groups/$group
+[ -f "$group_file" ] || die "can not find group_file: $LKP_SRC/pack/hwsim-addon/groups/$group"
 
 nm_conf="/etc/NetworkManager/NetworkManager.conf"
 [ -f "$nm_conf" ] && cat >> $nm_conf <<EOF
@@ -12,4 +17,10 @@ unmanaged-devices=mac:02:00:00:00:00:00;mac:02:00:00:00:01:00;mac:02:00:00:00:02
 EOF
 
 [ $USER ] || export USER=root
-cmd ./run-all.sh
+
+./start.sh
+while read casename
+do
+	cmd ./run-tests.py $casename
+done < $group_file
+./stop.sh
