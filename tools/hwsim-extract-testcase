@@ -1,0 +1,33 @@
+#!/bin/bash
+
+## This script is to extract testcase from hwsim module file.
+
+usage()
+{
+	cat <<-EOF
+Usage:
+	$0 < case_dir >
+Example:
+	$0 /lkp/benchmarks/hwsim/tests/hwsim
+EOF
+	exit 1
+}
+
+case_dir=$1
+[[ "$case_dir" ]] ||  usage
+
+funcs=$(grep "def test_" -rh $case_dir/test_*.py) || usage
+
+tmpfile=$(mktemp)
+tmpfile_uniq=$(mktemp)
+
+while read func
+do
+	casename=$(echo $func | cut -d "(" -f1 )
+	echo ${casename#*_} >> $tmpfile
+done  <<< "$funcs"
+
+sort $tmpfile | uniq > $tmpfile_uniq
+split -d -a2 -l200 $tmpfile_uniq  hwsim-
+
+rm $tmpfile $tmpfile_uniq
