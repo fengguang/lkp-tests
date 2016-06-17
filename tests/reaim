@@ -14,12 +14,14 @@
 ##
 ## Homepage: https://sourceforge.net/projects/re-aim-7/
 
+[ -n "$test" ] || die "test is empty"
+
 nr_job=${nr_job:-100}
 [ -n "$runtime" ] || runtime=300
 
 run_reaim()
 {
-	cmd ./reaim -s$REAIM_STARTUSERS -e$REAIM_ENDUSERS -i$REAIM_INCREMENT -fdata/workfile.$test \
+	cmd ./reaim -s$REAIM_STARTUSERS -e$REAIM_ENDUSERS -i$REAIM_INCREMENT -fworkfile.$test \
 		-r${1:-1} -c./reaim.config -l$TMP_RESULT_ROOT/reaim_debug -j$nr_job |
 		grep -v -e "^NSIG is "
 }
@@ -55,6 +57,16 @@ fi
 
 REAIM_FILESIZE=10k
 REAIM_POOLSIZE=1m
+
+# setup workfile
+if [ -f "data/workfile.$test" ]; then
+	cmd cp data/workfile.$test .
+else
+	# create workfile onlive
+	note "echo 10 $test > workfile.$test"
+	echo 10 $test > workfile.$test
+fi
+
 # setup config file
 if [ -n "$mount_points" ]; then
 	REAIM_TESTDIR="${mount_points%% *}"
@@ -65,9 +77,15 @@ else
 	REAIM_TESTDIR="/fs/shm"
 fi
 
+note "echo FILESIZE $REAIM_FILESIZE > reaim.config"
 echo FILESIZE $REAIM_FILESIZE > reaim.config
+
+note "echo POOLSIZE $REAIM_POOLSIZE >> reaim.config"
 echo POOLSIZE $REAIM_POOLSIZE >> reaim.config
+
+note "echo DISKDIR $REAIM_TESTDIR  >> reaim.config"
 echo DISKDIR $REAIM_TESTDIR  >> reaim.config
+
 
 if [ -n "$runtime" ]; then
 	echo "runtime mode"
