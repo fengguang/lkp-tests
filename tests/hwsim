@@ -21,6 +21,7 @@ EOF
 ./start.sh
 while read casename
 do
-	cmd ./run-tests.py $casename
+	note ./run-tests.py $casename
+	./run-tests.py $casename 2>&1
 done < $group_file
 ./stop.sh
