@@ -1,5 +1,7 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/arm/arm-soc.git
+owner: Arnd Bergmann <arnd@arndb.de>
 integration_testing_branches: for-next
+notify_build_success_branch: .*
 mail_cc:
 - linux-arm-kernel@lists.infradead.org
 - arm@kernel.org
