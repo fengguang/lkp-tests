@@ -4,3 +4,4 @@ mail_cc: linux-arch@vger.kernel.org
 owner: Arnd Bergmann <arnd@arndb.de>
 subsystems:
 - asm-generic
+notify_build_success_branch: .*
