@@ -2,3 +2,4 @@ url: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
 fetch_tags: true
 upstream: true
 owner: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+test_old_branches: .*
