@@ -10,8 +10,9 @@ def run_program(program)
 		return unless $programs[program] =~ /by_scheduler/
 	else
 		return if $programs[program] =~ /by_scheduler/
+		printf "run: %s\n", $programs[program]
 	end
-	printf "run: %s\n", $programs[program]
+
 	system $job_vars, [ $programs[program], program ]
 end
 
