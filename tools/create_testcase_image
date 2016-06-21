@@ -1,0 +1,53 @@
+#!/bin/bash
+
+[[ -n "$LKP_SRC" ]] || LKP_SRC=$(dirname $(dirname $(readlink -e -v $0)))
+
+. $LKP_SRC/lib/install.sh
+
+if ! [[ $(id -u) = 0 ]]; then
+	echo "This script must be run as root" 1>&2
+	exit 1
+fi
+
+usage()
+{
+	cat <<-EOF
+Usage:
+	$0 < testcase > < image_name >
+Example:
+	$0 build-qemu  debian
+EOF
+	exit 1
+}
+
+[[ $# = 2 ]] || usage
+
+testcase=$1
+image_name=$2
+
+docker ps >/dev/null || exit
+
+packages=$(get_dependency_packages debian lkp)
+packages="$packages $(get_dependency_packages debian lkp-dev)"
+packages="$packages $(get_dependency_packages debian makepkg)"
+packages="$packages $(get_dependency_packages debian $testcase)"
+
+#docker run --name=$0-$$ -e DEBIAN_FRONTEND=noninteractive $image_name apt-get update
+#docker run --name=$0-$$ -e DEBIAN_FRONTEND=noninteractive $image_name apt-get install -y $packages  || exit
+
+tmp_dir=$(mktemp -d) || exit
+cat >$tmp_dir/dockerfile <<-EOF
+From $image_name
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update && \\
+    apt-get install -y $packages
+EOF
+
+cd $tmp_dir
+docker build -t ${image_name}_$testcase . || {
+  rm -rf $tmp_dir
+  exit 1
+}
+
+rm -rf $tmp_dir
+echo "Create docker image ${image_name}_$testcase for $testcase testcase successfully."
