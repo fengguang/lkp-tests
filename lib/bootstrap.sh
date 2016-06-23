@@ -239,7 +239,7 @@ __next_job()
 	local mac="$(ip link | awk '/ether/ {print $2; exit}')"
 	local last_kernel="$(grep ^kernel: $job | cut -d \" -f 2)"
 	wget "http://$LKP_SERVER:$LKP_CGI_PORT/~$LKP_USER/cgi-bin/gpxelinux.cgi?hostname=${HOSTNAME}&mac=$mac&last_kernel=$last_kernel&lkp_wtmp" \
-	     -nv -O $NEXT_JOB
+	     -nv -t 1 -O $NEXT_JOB
 	grep -q "^KERNEL " $NEXT_JOB || {
 		echo "no KERNEL found" 1>&2
 		cat $NEXT_JOB
