@@ -2,6 +2,10 @@
 
 [[ -n "$LKP_SRC" ]] || LKP_SRC=$(dirname $(dirname $(readlink -e -v $0)))
 
+LKP_SERVER=inn
+LKP_CGI_PORT=80
+LKP_USER=lkp
+
 . $LKP_SRC/lib/install.sh
 
 if ! [[ $(id -u) = 0 ]]; then
@@ -20,6 +24,43 @@ EOF
 	exit 1
 }
 
+cleanup()
+{
+	rm -rf $tmp_dir
+}
+
+download_testcase_benchmark()
+{
+
+	local testcase=$1
+	local ret=
+
+	wget -nv -N "http://$LKP_SERVER:$LKP_CGI_PORT/~$LKP_USER//lkp/benchmarks/${testcase}.cgz" &>/dev/null
+	ret=$?
+
+	# return value "8"(ERROR 404: Not Found) mean this testcase need no benchmark.
+	if [[ "$ret" = "0" ]]; then
+		echo ${testcase}.cgz
+	else
+		[[ "$ret" = "8" ]] || {
+			echo "Fail to download benchmark file: ${testcase}.cgz" 1>&2
+			exit 1
+		}
+
+		wget -nv -N "http://$LKP_SERVER:$LKP_CGI_PORT/~$LKP_USER//lkp/benchmarks/${testcase}-x86_64.cgz" &>/dev/null
+		ret=$?
+		if [[ "$ret" = "0" ]]; then
+			echo ${testcase}-x86_64.cgz
+		elif [[ "$ret" = "8" ]];then
+			:
+		else
+			echo "Fail to download benchmark file: ${testcase}-x86_64.cgz" 1>&2
+			exit 1
+		fi
+	fi
+}
+
+
 [[ $# = 2 ]] || usage
 
 testcase=$1
@@ -27,24 +68,30 @@ image_name=$2
 
 docker ps >/dev/null || exit
 
-packages="nfs-common $(get_dependency_packages debian $testcase)"
-
-#docker run --name=$0-$$ -e DEBIAN_FRONTEND=noninteractive $image_name apt-get update
-#docker run --name=$0-$$ -e DEBIAN_FRONTEND=noninteractive $image_name apt-get install -y $packages  || exit
-
 tmp_dir=$(mktemp -d) || exit
-cat >$tmp_dir/dockerfile <<-EOF
-FROM $image_name
-ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update && \\
-    apt-get install -y $packages
-EOF
+
+trap cleanup EXIT
 
 cd $tmp_dir
-docker build -t ${image_name}_$testcase . || {
-  rm -rf $tmp_dir
-  exit 1
-}
+benchmark_package=$(download_testcase_benchmark $testcase) || exit
 
-rm -rf $tmp_dir
+[[ $benchmark_package ]] && {
+	rm -rf /lkp/benchmarks/$testcase
+	gzip $tmp_dir/${benchmark_package} -dc | cpio -id &>/dev/null || exit
+	mv /lkp/benchmarks/$testcase  $tmp_dir/
+}
+mkdir -p ./$testcase
+
+dependency_packages="nfs-common $(get_dependency_packages debian $testcase)"
+
+cat >$tmp_dir/dockerfile <<-EOF
+FROM $image_name
+COPY ./$testcase /lkp/benchmarks/$testcase/
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update && \\
+    apt-get install -y $dependency_packages
+EOF
+
+docker build -t ${image_name}_$testcase . || exit
+
 echo "Create docker image ${image_name}_$testcase for $testcase testcase successfully."
