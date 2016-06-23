@@ -82,14 +82,15 @@ benchmark_package=$(download_testcase_benchmark $testcase) || exit
 }
 mkdir -p ./$testcase
 
-dependency_packages="nfs-common $(get_dependency_packages debian $testcase)"
+basic_packages="nfs-common wget cpio psmisc"
+dependency_packages="$(get_dependency_packages debian $testcase)"
 
 cat >$tmp_dir/dockerfile <<-EOF
 FROM $image_name
 COPY ./$testcase /lkp/benchmarks/$testcase/
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \\
-    apt-get install -y $dependency_packages
+    apt-get install -y $basic_packages $dependency_packages
 EOF
 
 docker build -t ${image_name}_$testcase . || exit
