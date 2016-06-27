@@ -74,6 +74,16 @@ def git_committer_name(commit)
 	return $__committer_name_cache[commit]
 end
 
+def __git_parents(commit)
+	`#{GIT} rev-list --parents -n1 #{commit}`.chomp.split[1..-1]
+end
+
+def git_parents(commit)
+	$__parents_cache ||= {}
+	$__parents_cache[commit] ||= __git_parents(commit)
+	return $__parents_cache[commit]
+end
+
 def is_linus_commit(commit)
 	git_committer_name(commit) == 'Linus Torvalds'
 end
