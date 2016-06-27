@@ -936,10 +936,22 @@ module Compare
 		options = {
 			compare_axis_keys: [COMMIT_AXIS_KEY],
 		}
+		msearch_axes = []
 		parser = OptionParser.new do |p|
 			p.banner = 'Usage: ncompare [options] <commit>...'
 			p.separator ''
 			p.separator 'options:'
+
+			p.on('-c <compare_axis_keys>',
+			     '--compare-axis-keys <compare_axis_keys>',
+			     'Compare Axis keys') { |compare_axis_keys|
+				options[:compare_axis_keys] = compare_axis_keys.split(',')
+			}
+
+			p.on('-s <search-axes>', '--search <search-axes>',
+			     'Search Axes') { |search_axes|
+				msearch_axes << DataStore::Layout.axes_from_string(search_axes)
+			}
 
 			p.on_tail('-h', '--help', 'Show this message') {
 				puts p
@@ -949,12 +961,17 @@ module Compare
 		argv = ['-h'] if argv.empty?
 		argv = parser.parse(argv)
 
-		unless options[:mresult_roots]
-			options[:mresult_roots] = argv.map { |c|
+		if !msearch_axes.empty?
+			_rts = msearch_axes.map { |axes|
+				MResultRootCollection.new(axes).to_a
+			}.flatten
+		else
+			_rts = argv.map { |c|
 				MResultRootCollection.new(COMMIT_AXIS_KEY => c.to_s).to_a
 			}.flatten
 		end
-    options
+		options[:mresult_roots] = _rts
+		options
 	end
 
 	def self.compare(argv)
