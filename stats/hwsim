@@ -12,4 +12,9 @@ BEGIN { nr_test = 0 }
 	nr_test += 1
 }
 
+/^SKIP/ {
+	printf("%s.skip: 1\n", $2)
+	nr_test += 1
+}
+
 END { printf("total_test: %d\n", nr_test) }
