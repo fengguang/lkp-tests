@@ -282,7 +282,7 @@ class MResultRootTableSet
 		['boot', 'audio', 'cpu-hotplug', 'ext4-frags', 'ftq', 'ftrace_onoff', 'fwq',
 		 'galileo', 'irda-kernel', 'kernel_selftests', 'kvm-unit-tests','kvm-unit-tests-qemu',
 		 'locktorture', 'mce-test',  'otc_ddt', 'piglit', 'pm-qa',
-		 'qemu', 'rcutorture', 'suspend', 'trinity', 'ndctl', 'nfs-test', 'hwsim',
+		 'qemu', 'rcutorture', 'suspend', 'trinity', 'ndctl', 'nfs-test', 'hwsim', 'idle-inject',
 		 'mdadm-selftests', 'xsave-test']
 	OTHER_TESTCASES =
 		['0day-boot-tests', '0day-kbuild-tests', 'android-kpi', 'build-dpdk',
