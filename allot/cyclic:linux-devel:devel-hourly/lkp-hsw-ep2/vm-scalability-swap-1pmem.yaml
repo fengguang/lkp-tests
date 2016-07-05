@@ -1,7 +1,1 @@
-<<: jobs/vm-scalability-swap.yaml
-
-disk:
-  nr_pmem: 1
-
-boot_params:
-  bp_memmap: 96G!4G
+../../../jobs/vm-scalability-swap-1pmem.yaml

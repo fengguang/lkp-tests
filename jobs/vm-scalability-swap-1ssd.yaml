@@ -1,0 +1,7 @@
+<<: jobs/vm-scalability-swap.yaml
+
+disk:
+  nr_ssd: 1
+
+perf-profile:
+  delay: 90

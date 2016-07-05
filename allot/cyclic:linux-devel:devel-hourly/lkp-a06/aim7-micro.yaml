@@ -1,15 +1,1 @@
-testcase: aim7
-
-aim7:
-  test:
-  - misc_rtns_1
-  - dgram_pipe
-  - new_raph
-  - num_rtns_1
-  - pipe_cpy
-  # create_shared_memory(): can't create semaphore, pausing...
-  # - shared_memory
-  - stream_pipe
-  - tcp_test
-  - udp_test
-  load: 4000
+../../../jobs/aim7-micro-lkp-a06.yaml
