@@ -4,3 +4,4 @@ memory: 8G
 sdd_partitions: /dev/disk/by-id/ata-INTEL_SSDSC2BB480G6_BTWA6075012T480FGN
 swap_partitions:
 rootfs_partition:
+kernel_cmdline: console=ttyS1,115200 console=tty0
