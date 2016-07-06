@@ -82,7 +82,7 @@ benchmark_package=$(download_testcase_benchmark $testcase) || exit
 }
 mkdir -p ./$testcase
 
-basic_packages="nfs-common wget cpio psmisc"
+basic_packages="nfs-common wget cpio psmisc time"
 dependency_packages="$(get_dependency_packages debian $testcase)"
 
 cat >$tmp_dir/dockerfile <<-EOF
