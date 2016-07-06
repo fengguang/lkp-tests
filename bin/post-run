@@ -95,6 +95,11 @@ wait_for_pipe()
 	done
 
 	echo "wait_for_pipe timeout $i" >&2
+
+	# Throw out stderr when monitors did not start due to waiting on activate-monitor
+	pgrep -f "$LKP_SRC/bin/event/wait activate-monitor" >/dev/null &&
+		echo "some monitors are blocked by activate-monitor" >&2
+
 	ps faux
 	ls -l $TMP_RESULT_ROOT
 	return 1
