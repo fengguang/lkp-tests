@@ -10,3 +10,9 @@ nr_task: 100
 reaim:
   test:
   - fork_test
+
+---
+nr_task: 800
+reaim:
+  test:
+  - brk_test
