@@ -4,4 +4,4 @@ monitor=$1
 monitor_dir=$(dirname $0)
 shift
 
-$monitor_dir/$monitor "$@" > $RESULT_ROOT/$monitor
+$monitor_dir/$monitor "$@" > $TMP_RESULT_ROOT/$monitor
