@@ -4,6 +4,7 @@ category: benchmark
 transparent_hugepage:
   thp_enabled:
     - never
+    - always
   thp_defrag:
     - never
 
