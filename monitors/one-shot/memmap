@@ -1,10 +1,29 @@
 #!/bin/sh
 
+memmap_read()
+{
+
+	local file=$1
+	local start
+	local end
+	local type
+
+	read start	< $file/start || return
+	[ -n "$start" ] || return
+
+	read end	< $file/end || return
+	[ -n "$end" ] || return
+
+	read type	< $file/type || return
+	[ -n "$type" ] || return
+
+	echo "${m##*/},$start,$end,$(( end - start + 1 )),$type"
+}
+
 for m in /sys/firmware/memmap/*
 do
 	[ -e "$m" ] || exit 0
-	read start	< $m/start
-	read end	< $m/end
-	read type	< $m/type
-	echo "${m##*/},$start,$end,$(( end - start + 1 )),$type"
+
+	memmap_read $m ||
+	memmap_read $m
 done
