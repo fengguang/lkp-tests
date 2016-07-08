@@ -24,6 +24,12 @@ reaim:
   - disk_rd
 
 ---
+nr_task: 400
+reaim:
+  test:
+  - disk_src
+
+---
 nr_task: 800
 reaim:
   test:
