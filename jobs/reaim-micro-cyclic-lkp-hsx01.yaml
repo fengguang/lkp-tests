@@ -12,6 +12,11 @@ reaim:
   - fork_test
 
 ---
+nr_task: 200
+reaim:
+  test:
+  - disk_cp
+---
 nr_task: 800
 reaim:
   test:

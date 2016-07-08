@@ -1,6 +1,7 @@
 testcase: reaim
 category: benchmark
 
+
 # Avoid nfs latency for sync used in benchmark
 avoid_nfs: 1
 
@@ -16,3 +17,9 @@ nr_task: 400
 reaim:
   test:
   - brk_test
+
+---
+nr_task: 900
+reaim:
+  test:
+  - disk_cp
