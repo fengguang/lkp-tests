@@ -30,6 +30,12 @@ reaim:
   - disk_src
 
 ---
+nr_task: 500
+reaim:
+  test:
+  - disk_wrt
+
+---
 nr_task: 800
 reaim:
   test:

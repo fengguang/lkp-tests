@@ -13,6 +13,12 @@ reaim:
   - fork_test
 
 ---
+nr_task: 300
+reaim:
+  test:
+  - disk_wrt
+
+---
 nr_task: 400
 reaim:
   test:
