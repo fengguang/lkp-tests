@@ -121,6 +121,7 @@ copy_to_result()
 	local file=$1
 
 	[ -s "$file" ] || return
+	chmod ug+w "$file"
 
 	cp $file $RESULT_ROOT || ls -l $file $RESULT_ROOT/$(basename $file) 2>&1
 }
