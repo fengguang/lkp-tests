@@ -15,9 +15,9 @@
 ## Homepage: https://sourceforge.net/projects/re-aim-7/
 
 [ -n "$test" ] || die "test is empty"
+[ -n "$runtime" ] || [ -n "$iterations" ] || die "runtime or iterations must be specified"
 
 nr_job=${nr_job:-100}
-[ -n "$runtime" ] || runtime=300
 
 run_reaim()
 {
