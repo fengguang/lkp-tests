@@ -31,3 +31,9 @@ nr_task: 900
 reaim:
   test:
   - disk_cp
+
+---
+nr_task: 1000
+reaim:
+  test:
+  - mem_rtns_1
