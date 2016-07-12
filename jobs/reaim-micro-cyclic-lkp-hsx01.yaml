@@ -43,3 +43,9 @@ reaim:
   test:
   - brk_test
   - mem_rtns_1
+
+---
+nr_task: 1000
+reaim:
+  test:
+  - string_rtns
