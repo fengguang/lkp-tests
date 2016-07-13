@@ -56,3 +56,9 @@ nr_task: 4000
 reaim:
   test:
   - shared_memory
+
+---
+nr_task: 6000
+reaim:
+  test:
+  - sort_rtns_1
