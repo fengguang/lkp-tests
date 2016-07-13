@@ -46,3 +46,9 @@ reaim:
   test:
   - mem_rtns_1
   - page_test
+
+---
+nr_task: 7000
+reaim:
+  test:
+  - shared_memory

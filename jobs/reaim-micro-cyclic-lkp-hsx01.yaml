@@ -50,3 +50,9 @@ reaim:
   test:
   - string_rtns
   - page_test
+
+---
+nr_task: 4000
+reaim:
+  test:
+  - shared_memory
