@@ -52,6 +52,13 @@ reaim:
   - page_test
 
 ---
+nr_task: 1000
+reaim:
+  nr_job: 6000
+  test:
+  - pipe_cpy
+
+---
 nr_task: 4000
 reaim:
   test:
