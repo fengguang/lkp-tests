@@ -1,0 +1,100 @@
+testcase: vm-scalability
+category: benchmark
+
+runtime: 300s
+size:
+
+disk:
+  nr_pmem: 1
+swap:
+
+boot_params:
+  bp_memmap: 32G!18G
+
+vm-scalability:
+  test:
+  - anon-r-rand
+  - anon-r-rand-mt
+  - anon-r-seq
+  - anon-r-seq-mt
+  - anon-rx-rand-mt
+  - anon-rx-seq-mt
+  - lru-file-mmap-read
+  - lru-file-mmap-read-rand
+  - lru-file-readonce
+  - lru-file-readtwice
+  - mmap-pread-rand
+  - mmap-pread-rand-mt
+  - mmap-pread-seq
+  - mmap-pread-seq-mt
+  - mmap-xread-rand-mt
+  - mmap-xread-seq-mt
+  - mremap-xread-rand-mt
+  - small-allocs
+  - small-allocs-mt
+
+---
+size: 16G
+
+vm-scalability:
+  test:
+  - shm-pread-rand
+  - shm-pread-rand-mt
+  - shm-xread-rand
+  - shm-xread-rand-mt
+
+---
+size: 128G
+
+vm-scalability:
+  test:
+  - truncate
+
+---
+size: 256G
+
+vm-scalability:
+  test:
+  - lru-shm-rand
+
+---
+size: 512G
+
+vm-scalability:
+  test:
+  - anon-cow-rand
+  - anon-cow-rand-mt
+  - anon-w-rand
+  - anon-w-rand-mt
+  - anon-wx-rand-mt
+
+---
+size: 1T
+
+vm-scalability:
+  test:
+  - remap
+  - msync
+  - msync-mt
+  - lru-shm
+
+---
+size: 2T
+
+vm-scalability:
+  test:
+  - shm-pread-seq
+  - shm-pread-seq-mt
+  - shm-xread-seq
+  - shm-xread-seq-mt
+
+---
+size: 8T
+
+vm-scalability:
+  test:
+  - anon-cow-seq
+  - anon-cow-seq-mt
+  - anon-w-seq
+  - anon-w-seq-mt
+  - anon-wx-seq-mt
