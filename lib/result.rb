@@ -5,7 +5,7 @@ LKP_SRC ||= ENV['LKP_SRC']
 require 'set'
 require "#{LKP_SRC}/lib/lkp_git"
 
-DEFAULT_COMPILER = 'gcc-4.9'
+DEFAULT_COMPILER = 'gcc-6'
 
 RESULT_MNT	= '/result'
 RESULT_PATHS	= '/lkp/paths'
