@@ -20,29 +20,10 @@ def expand_yaml_template(yaml, file)
 end
 
 def load_yaml(file, expand_template = false)
-	begin
-		yaml = File.read file
-		yaml = expand_yaml_template(yaml, file) if expand_template
-		return YAML.load yaml
-	rescue SignalException
-		raise
-	rescue StandardError => e
-		if File.exist? file
-			if File.size(file) == 0
-				puts "YAML file is empty: #{file}"
-			else
-				bad_file = File.join(File.dirname(file), ".#{File.basename file}-bad")
-				$stderr.puts "Move corrupted YAML file to #{bad_file}"
-				$stderr.puts "#{file}: " + e.message
-				$stderr.puts e.backtrace.join("\n")
-				FileUtils.mv file, bad_file
-			end
-		else
-			dump_exception e, binding
-		end
+	yaml = File.read file
+	yaml = expand_yaml_template(yaml, file) if expand_template
 
-		raise
-	end
+	YAML.load yaml
 end
 
 def load_yaml_with_flock(file, timeout=nil)
