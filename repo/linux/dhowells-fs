@@ -11,3 +11,4 @@ subsystems:
 - overlayfs
 - asn.1
 blacklist_branch: unionmount
+notify_build_success_branch: .*
