@@ -5,6 +5,7 @@ LKP_SRC ||= ENV['LKP_SRC']
 require "#{LKP_SRC}/lib/common.rb"
 require "#{LKP_SRC}/lib/error"
 require "#{LKP_SRC}/lib/erb"
+require "#{LKP_SRC}/lib/assert"
 require 'fileutils'
 require 'yaml'
 require 'json'
@@ -23,7 +24,10 @@ def load_yaml(file, expand_template = false)
 	yaml = File.read file
 	yaml = expand_yaml_template(yaml, file) if expand_template
 
-	YAML.load yaml
+	result = YAML.load yaml
+	assert result, "Possible empty file #{file}"
+
+	result
 end
 
 def load_yaml_with_flock(file, timeout=nil)
