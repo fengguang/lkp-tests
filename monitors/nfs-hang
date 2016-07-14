@@ -1,4 +1,6 @@
 #!/bin/sh
+# - timeout
+# - interval
 
 . $LKP_SRC/lib/common.sh
 . $LKP_SRC/lib/wait.sh
@@ -6,8 +8,8 @@
 [ -f $LKP_SRC/lib/misc.sh ] &&
 	. $LKP_SRC/lib/misc.sh 2>/dev/null
 
-: ${NFS_HANG_DF_TIMEOUT:=600}
-: ${NFS_HANG_CHECK_INTERVAL:=1800}
+: ${timeout:=200}
+: ${interval:=900}
 
 setup_wait
 
@@ -44,7 +46,7 @@ nfs_hang()
 		[ $(cpu_utilization) -ge 5 ] && return 1
 	}
 	for i in $(seq 3); do
-		timeout $NFS_HANG_DF_TIMEOUT df > /dev/null
+		timeout $timeout df > /dev/null
 		[ "$?" -eq 124 ] || return 1
 	done
 
@@ -61,7 +63,7 @@ nfs_hang_watchdog()
 {
 	while :
 	do
-		wait_timeout $NFS_HANG_CHECK_INTERVAL
+		wait_timeout $interval
 
 		if nfs_hang; then
 			set_job_state "nfs_hang"
