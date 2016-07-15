@@ -67,3 +67,35 @@ to_gb()
 	bytes=$(to_byte "$1")
 	echo $((bytes >> 30))
 }
+
+to_seconds()
+{
+	local time=$1
+	local unit
+
+	case $time in
+		*s)
+			unit=1
+			;;
+		*m)
+			unit=60
+			;;
+		*h)
+			unit=3600
+			;;
+		*d)
+			unit=$((24*3600))
+			;;
+		*w)
+			unit=$((7*24*3600))
+			;;
+		*y)
+			unit=$((365*24*3600))
+			;;
+		*)
+			echo $time
+			return
+	esac
+
+	echo $(( ${time%?} * unit ))
+}
