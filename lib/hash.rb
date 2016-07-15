@@ -22,6 +22,18 @@ def lookup_hash(hash, path, create_missing = false)
 	end
 end
 
+ACCUMULATIVE_KEYS = %w(
+		mail_cc
+		mail_to
+		build_mail_cc
+		constraints
+)
+def is_accumulative_key(k)
+	return true if ACCUMULATIVE_KEYS.include? k
+	return true if k =~ /^need_/
+	false
+end
+
 def revise_hash(original, revisions)
 	# deal with empty YAML files gracefully
 	original ||= {}
@@ -44,8 +56,8 @@ def revise_hash(original, revisions)
 				end
 			end
 			next false
-		elsif k[-1] == '+'
-			kk = k[0..-2]
+		elsif k[-1] == '+' or is_accumulative_key(k)
+			kk = k.chomp '+'
 			parent, pkey, hash, key, keys = lookup_hash(original, kk, true)
 			case hash[key]
 			when nil
