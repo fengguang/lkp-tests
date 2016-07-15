@@ -139,7 +139,7 @@ class Job2sh < Job
 	end
 
 	def create_cmd(program, args)
-		program_path = @programs[program] || program
+		program_path = @programs[program] || @monitors[program] || program
 
 		args = [] if program_path.index('/stats/')
 		program_dir = File.dirname(program_path)
@@ -177,13 +177,19 @@ class Job2sh < Job
 			return false unless pass == :PASS_RUN_COMMANDS
 			shell_run_program(tabs, key.sub(/^call\s+/, '').sub(/^source\s+/, '.'), val)
 			return :action_call_command
+		elsif @monitors.include?(key)
+			return false unless pass == :PASS_RUN_MONITORS
+			shell_run_program(tabs, key, val)
+			return :action_run_monitor
 		elsif String === val and key =~ %r{^script\s+(monitors|setup|tests|daemon|stats)/([-a-zA-Z0-9_/]+)$}
 			return false unless pass == :PASS_NEW_SCRIPT
 			script_file = $1 + '/' + $2
 			script_name = File.basename $2
-			if @cur_func == :run_job	and script_file =~ %r{^(monitors|setup|tests|daemon)/} or
+			if @cur_func == :run_job	and script_file =~ %r{^(setup|tests|daemon)/} or
 			   @cur_func == :extract_stats	and script_file.index('stats/') == 0
 				@programs[script_name] = LKP_SRC + '/' + script_file
+			elsif @cur_func == :run_job	and script_file =~ %r{^monitors/}
+				@monitors[script_name] = LKP_SRC + '/' + script_file
 			end
 			exec_line
 			exec_line tabs + "cat > $LKP_SRC/#{script_file} <<'EOF'"
@@ -235,6 +241,7 @@ class Job2sh < Job
 		nr_bg = 0
 		hash.each { |key, val| parse_one(ancestors, key, val, :PASS_EXPORT_ENV) }
 		hash.each { |key, val| parse_one(ancestors, key, val, :PASS_NEW_SCRIPT) }
+		hash.each { |key, val| parse_one(ancestors, key, val, :PASS_RUN_MONITORS) }
 		hash.each { |key, val| parse_one(ancestors, key, val, :PASS_RUN_COMMANDS) == :action_background_function and nr_bg += 1 }
 		if nr_bg > 0
 			exec_line
@@ -252,7 +259,8 @@ class Job2sh < Job
 
 		out_line "export_top_env()"
 		out_line "{"
-		@programs = available_programs(:workload_and_monitors)
+		@monitors = available_programs(:monitors)
+		@programs = available_programs(:workload_elements)
 		job = (@jobx||@job).clone # a shallow copy so that delete_if won't impact @job
 		job.delete_if { |key, val| parse_one([], key, val, :PASS_EXPORT_ENV) }
 		out_line
@@ -276,6 +284,7 @@ class Job2sh < Job
 		@cur_func = :extract_stats
 		out_line "extract_stats()"
 		out_line "{"
+		@monitors = {}
 		@programs = available_programs(:stats)
 		parse_hash [], job
 		out_line
