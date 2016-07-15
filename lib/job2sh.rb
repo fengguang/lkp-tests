@@ -174,7 +174,11 @@ class Job2sh < Job
 	def parse_one(ancestors, key, val, pass)
 		tabs = indent(ancestors)
 		if @programs.include?(key) or (key =~ /^(call|command|source)\s/ and @cur_func == :run_job)
-			return false unless pass == :PASS_RUN_COMMANDS
+			if @setups.include?(key)
+				return false unless pass == :PASS_RUN_SETUP
+			else
+				return false unless pass == :PASS_RUN_COMMANDS
+			end
 			shell_run_program(tabs, key.sub(/^call\s+/, '').sub(/^source\s+/, '.'), val)
 			return :action_call_command
 		elsif @monitors.include?(key)
@@ -242,6 +246,7 @@ class Job2sh < Job
 		hash.each { |key, val| parse_one(ancestors, key, val, :PASS_EXPORT_ENV) }
 		hash.each { |key, val| parse_one(ancestors, key, val, :PASS_NEW_SCRIPT) }
 		hash.each { |key, val| parse_one(ancestors, key, val, :PASS_RUN_MONITORS) }
+		hash.each { |key, val| parse_one(ancestors, key, val, :PASS_RUN_SETUP) }
 		hash.each { |key, val| parse_one(ancestors, key, val, :PASS_RUN_COMMANDS) == :action_background_function and nr_bg += 1 }
 		if nr_bg > 0
 			exec_line
@@ -260,6 +265,7 @@ class Job2sh < Job
 		out_line "export_top_env()"
 		out_line "{"
 		@monitors = available_programs(:monitors)
+		@setups   = available_programs(:setup)
 		@programs = available_programs(:workload_elements)
 		job = (@jobx||@job).clone # a shallow copy so that delete_if won't impact @job
 		job.delete_if { |key, val| parse_one([], key, val, :PASS_EXPORT_ENV) }
