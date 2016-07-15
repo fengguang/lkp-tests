@@ -195,6 +195,10 @@ class Job
 	def load_defaults(first_time = true)
 		return if @job[:no_defaults]
 
+		if first_time
+			@file_loaded = Hash.new
+		end
+
 		i = include_files
 		job = deepcopy(@job)
 		revise_hash(job, @overrides, true)
@@ -206,9 +210,10 @@ class Job
 			job['___'] = v
 
 			load_one = lambda do |f|
-				if i[k][f]
+				if i[k][f] and not (@file_loaded.include?(k) and @file_loaded[k].include?(f))
 					load_one_defaults i[k][f], job
-					i[k][f] = nil
+					@file_loaded[k]  ||= {}
+					@file_loaded[k][f] = true
 				end
 			end
 
