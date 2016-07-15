@@ -206,6 +206,8 @@ class Job
 
 		if first_time
 			@file_loaded = Hash.new
+		else
+			@file_loaded ||= Hash.new
 		end
 
 		i = include_files
@@ -220,7 +222,10 @@ class Job
 			job['___'] = v
 
 			load_one = lambda do |f|
-				if i[k][f] and not (@file_loaded.include?(k) and @file_loaded[k].include?(f))
+				if i[k][f] and
+				   not (@file_loaded.include?(k) and
+					@file_loaded[k].include?(f))
+
 					load_one_defaults i[k][f], job
 					@file_loaded[k]  ||= {}
 					@file_loaded[k][f] = true
