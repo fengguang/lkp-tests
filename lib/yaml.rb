@@ -47,12 +47,13 @@ end
 def load_yaml_merge(files)
 	all = {}
 	files.each do |file|
-		next unless File.exist? file
-		yaml = load_yaml(file)
-		if Hash === yaml
+		next unless File.size? file
+
+		begin
+			yaml = load_yaml(file)
 			all.update(yaml)
-		elsif yaml
-			$stderr.puts "YAML is not a hash: #{file} #{yaml[0..300]}"
+		rescue StandardError => e
+			$stderr.puts "#{e.class.name}: #{e.message.split("\n").first}: #{file}"
 		end
 	end
 	return all
