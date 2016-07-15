@@ -74,7 +74,6 @@ ARGV.each { |jobfile|
 	unless $opt_no_defaults
 		jobs.load_defaults
 		jobs.load_head("#{LKP_SRC}/hosts/#{$opt_testbox}", true)
-		jobs.load_head("#{LKP_SRC}/jobs/DEFAULTS-#{jobs['category']}", true)
 	end
 	prefix = $opt_output_path + '/' + File.basename(jobfile, '.yaml')
 	jobs.each_jobs { |job|
