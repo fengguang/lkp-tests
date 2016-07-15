@@ -256,6 +256,7 @@ class Job
 	end
 
 	def save(jobfile)
+		@job.delete :no_defaults
 		atomic_save_yaml_json @job, jobfile
 	end
 
