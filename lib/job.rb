@@ -201,7 +201,8 @@ class Job
 
 		i = include_files
 		job = deepcopy(@job)
-		revise_hash(job, @overrides, true)
+		revise_hash(job, deepcopy(@job2), true)
+		revise_hash(job, deepcopy(@overrides), true)
 		job['___'] = nil
 		expand_each_in(job, @dims_to_expand) { |h, k, v|
 			h.delete(k) if Array === v
@@ -240,6 +241,7 @@ class Job
 
 	def merge_defaults(first_time = true)
 		revise_hash(@job, @defaults, false)
+		revise_hash(@job, @job2, true) if first_time
 		revise_hash(@job, @overrides, true) if first_time
 		@defaults = {}
 	end
@@ -351,11 +353,12 @@ class Job
 	def each_jobs(&block)
 		each_job_init
 		job = deepcopy(@job)
+		@job2 = {}
 		load_defaults
 		each_job &block
 		@jobs.each do |hash|
 			@job = deepcopy(job)
-			revise_hash(@job, hash, true)
+			@job2 = hash
 			load_defaults
 			each_job &block
 		end
