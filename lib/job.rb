@@ -153,7 +153,7 @@ class Job
 		@job ||= {}
 		if top
 			revise_hash(hash, @job)
-			@job = hash
+			@job = hash if hash
 		else
 			revise_hash(@job, hash)
 		end
@@ -233,7 +233,7 @@ class Job
 	end
 
 	def lkp_src
-		if @job['user'] and Dir.exist? (dir = '/lkp/' + @job['user'] + '/src')
+		if String === @job['user'] and Dir.exist? (dir = '/lkp/' + @job['user'] + '/src')
 			dir
 		else
 			LKP_SRC
