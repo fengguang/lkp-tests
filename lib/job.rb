@@ -138,7 +138,8 @@ class Job
 
 	attr_reader :path_scheme
 
-	def initialize
+	def initialize(hash = nil)
+		@job = hash if hash
 		@available_programs = {}
 	end
 
