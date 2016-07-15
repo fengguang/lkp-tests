@@ -36,5 +36,5 @@ opts.parse!(argv)
 
 job = Job2sh.new
 job.load(ARGV[0])
-job.expand_params
+job.expand_params or exit
 $opt_file.puts job.to_shell

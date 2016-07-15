@@ -133,6 +133,11 @@ class JobFileSyntaxError < RuntimeError
 end
 
 class Job
+	class ParamError < ArgumentError
+	end
+end
+
+class Job
 
 	EXPAND_DIMS = %w(kconfig commit rootfs)
 

@@ -337,14 +337,26 @@ class Job2sh < Job
 		hash[key] = replace_symbol_keys(output) if output
 	end
 
+	def evaluate_param(hash, key, val, script)
+		hash = @jobx.merge({___: val})
+		expr = File.read script
+		expand_expression(hash, expr)
+	end
+
 	def expand_params
 		@jobx = deepcopy @job
 		maps, ruby_scripts = param_files
-		for_each_in(@jobx, maps.keys.to_set) { |pk, h, k, v|
-			map_param(h, k, v, maps[k])
-		}
-		for_each_in(@jobx, ruby_scripts.keys.to_set) { |pk, h, k, v|
-			evaluate_param(h, k, v, ruby_scripts[k])
-		}
+		begin
+			for_each_in(@jobx, maps.keys.to_set) { |pk, h, k, v|
+				map_param(h, k, v, maps[k])
+			}
+			for_each_in(@jobx, ruby_scripts.keys.to_set) { |pk, h, k, v|
+				evaluate_param(h, k, v, ruby_scripts[k])
+			}
+		rescue Job::ParamError => e
+			puts "Abandon job: #{e.message}"
+			return false
+		end
+		true
 	end
 end
