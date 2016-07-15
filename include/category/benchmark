@@ -9,7 +9,6 @@ numa-vmstat:
 numa-meminfo:
 proc-vmstat:
 proc-stat:
-  interval: 10
 meminfo:
 slabinfo:
 interrupts:
@@ -23,7 +22,6 @@ cpuidle:
 cpufreq-stats:
 turbostat:
 sched_debug:
-  interval: 60
 perf-stat:
 perf-profile:
   period: 1000003
