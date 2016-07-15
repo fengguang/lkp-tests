@@ -215,7 +215,7 @@ class Job
 			end
 
 			begin
-				prefix = v.sub(/[:-].*/, '')
+				prefix = String === v ? v.sub(/[:-].*/, '') : nil
 				if i[k].include?(v) or i[k].include?(prefix)
 					load_one[prefix]
 					load_one[v]
