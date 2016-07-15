@@ -355,11 +355,13 @@ class Job
 		job = deepcopy(@job)
 		@job2 = {}
 		load_defaults
+		each_job_init
 		each_job &block
 		@jobs.each do |hash|
 			@job = deepcopy(job)
 			@job2 = hash
 			load_defaults
+			each_job_init
 			each_job &block
 		end
 	end
