@@ -171,11 +171,13 @@ class Job
 	def include_files
 		return @include_files if @include_files
 		@include_files = {}
-		Dir["#{lkp_src}/include/*/"].map do |d|
+		Dir["#{lkp_src}/include/*"].map do |d|
 			key = File.basename d
 			@include_files[key] = {}
-			Dir["#{lkp_src}/include/#{key}/*"].each { |f|
-				@include_files[key][File.basename(f)] = nil
+			Dir["#{lkp_src}/include/#{key}",
+			    "#{lkp_src}/include/#{key}/*"].each { |f|
+				next if File.directory? f
+				@include_files[key][File.basename(f)] = f
 			}
 		end
 		@include_files
@@ -201,17 +203,21 @@ class Job
 			h[k] = nil if Array === v
 		}
 		for_each_in(job, i.keys) do |pk, h, k, v|
-			next unless v
 			job['___'] = v
 
 			load_one = lambda do |f|
-				if i[k].include?(f) and !i[k][f]
-					load_one_defaults "#{lkp_src}/include/#{k}/#{f}", job
-					i[k][f] = true
+				if i[k][f]
+					load_one_defaults i[k][f], job
+					i[k][f] = nil
 				end
 			end
 
 			begin
+				if @referenced_programs.include?(k) and load_one[k]
+					next
+				end
+				next unless v
+
 				prefix = String === v ? v.sub(/[:-].*/, '') : nil
 				if i[k].include?(v) or i[k].include?(prefix)
 					load_one[prefix]
