@@ -1,0 +1,6 @@
+/(\d+)HDD/	{ nr_hdd: $1.to_i	}
+/(\d+)SSD/	{ nr_ssd: $1.to_i	}
+/(\d+)BRD/	{ nr_brd: $1.to_i	}
+/(\d+)SRD/	{ nr_srd: $1.to_i	}
+/(\d+G)/	{ ramdisk_size: $1.to_i	}
+/SCSI_RAM/	{ scsi_ram: 1		}
