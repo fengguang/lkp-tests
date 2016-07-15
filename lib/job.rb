@@ -44,6 +44,7 @@ end
 def expand_toplevel_vars(env, hash)
 	vars = {}
 	hash.each { |key, val|
+		next unless String === key
 		case val
 		when Hash
 			next
