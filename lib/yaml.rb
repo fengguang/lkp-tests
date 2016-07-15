@@ -26,7 +26,7 @@ def load_yaml(file, template_context = nil)
 	yaml = expand_yaml_template(yaml, file, template_context) if template_context
 
 	result = YAML.load yaml
-	assert result, "Possible empty file #{file}"
+	assert result, "Possible empty file #{file}" unless template_context
 
 	result
 end
