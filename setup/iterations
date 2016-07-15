@@ -1,7 +1,0 @@
-#!/bin/sh
-
-iterations=${1%%x}
-
-cat >> $TMP/env.yaml <<EOF
-iterations: $iterations
-EOF
