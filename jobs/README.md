@@ -46,6 +46,47 @@ Please do not overuse ERB templates: it's anti-intuitive and discouraged
 to write complex ERB templates. WARNING: our code is designed to fail when
 loading complex ERB templates.
 
+## Multi-part job file
+
+When the job file contains several YAML documents separated by "---",
+
+	hash_0
+	---
+	hash_1
+	---
+	...
+	---
+	hash_N
+
+they'll be split into hashes
+
+	hash_0
+	hash_0 + hash_1
+	...
+	hash_0 + hash_N
+
+## Incremental Hash update
+
+These top level hash keys
+
+	a.b.c:
+	a[.b.c]+:
+	a[.b.c]-:
+
+are for incremental revising the preceding part in 3 cases:
+
+1) multi-part job: allows follow up parts to modify the base part
+2) modify contents of the "<< :" included file
+3) command line options to modify the job file
+
+These top level keys are accumulative everywhere:
+
+	mail_cc
+	mail_to
+	build_mail_cc
+	constraints
+	need_*
+
 ## Scripts
 
 If the key matches some script file in the below paths, it is treated as an

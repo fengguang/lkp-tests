@@ -142,22 +142,14 @@ class Job
 	EXPAND_DIMS = %w(kconfig commit rootfs)
 
 	attr_reader :path_scheme
+	attr_accessor :overrides
+	attr_accessor :defaults
 
-	def initialize(hash = nil)
-		@job = hash if hash
+	def initialize(job = {}, defaults = {}, overrides = {})
+		@job = job
+		@defaults = defaults	# from auto includes
+		@overrides = overrides	# from command line
 		@available_programs = {}
-	end
-
-	# the default "top = false" helps maintain compatibility with Hash
-	def update(hash, top = false)
-		@job ||= {}
-		revise_hash(@job, hash, !top)
-	end
-
-	def load_head(jobfile, top = false, context_hash = @job)
-		return nil unless File.exist? jobfile
-		job = load_yaml jobfile, context_hash
-		self.update(job, top)
 	end
 
 	def load(jobfile, expand_template = false)
@@ -173,8 +165,7 @@ class Job
 			@jobs << hash
 		end
 
-		@job ||= {}
-		@job.update @jobs.shift
+		revise_hash(@job, @jobs.shift)
 	end
 
 	def include_files
@@ -190,10 +181,21 @@ class Job
 		@include_files
 	end
 
+	def load_one_defaults(file, job)
+		return nil unless File.exist? file
+		context_hash = deepcopy(@defaults)
+		revise_hash(context_hash, job, true)
+		revise_hash(context_hash, @overrides, true)
+		defaults = load_yaml(file, context_hash)
+		revise_hash(@defaults, defaults, true)
+	end
+
 	def load_defaults
-		each_job_init
+		return if @job[:no_defaults]
+
 		i = include_files
 		job = deepcopy(@job)
+		revise_hash(job, @overrides, true)
 		job['___'] = nil
 		expand_each_in(job, @dims_to_expand) { |h, k, v|
 			h[k] = nil if Array === v
@@ -204,7 +206,7 @@ class Job
 
 			load_one = lambda do |f|
 				if i[k].include?(f) and !i[k][f]
-					load_head "#{lkp_src}/include/#{k}/#{f}", true, job
+					load_one_defaults "#{lkp_src}/include/#{k}/#{f}", job
 					i[k][f] = true
 				end
 			end
@@ -221,6 +223,13 @@ class Job
 			rescue KeyError
 			end
 		end
+	end
+
+	def merge_defaults(first_time = true)
+		revise_hash(@job, @defaults, false)
+		revise_hash(@job, @overrides, true) if first_time
+		@defaults = {}
+		@job.delete_if { |k, v| Symbol === k }
 	end
 
 	def save(jobfile)
@@ -303,26 +312,35 @@ class Job
 				expr = expand_expression(@job, $1)
 				return if expr == nil
 				h[k] = expr
-				each_job { yield self }
+				each_job { |job| yield job }
 				h[k] = v
 				return
 			elsif Array === v
 				v.each { |vv|
 					h[k] = vv
-					each_job { yield self }
+					each_job { |job| yield job }
 				}
 				h[k] = v
 				return
 			end
 		}
-		yield self
+		job = deepcopy self
+		job.load_defaults
+		job.merge_defaults false
+		yield job
 	end
 
 	def each_jobs(&block)
 		each_job_init
+		job = deepcopy(@job)
+		load_defaults
+		merge_defaults
 		each_job &block
 		@jobs.each do |hash|
-			self.update hash
+			@job = deepcopy(job)
+			revise_hash(@job, hash, true)
+			load_defaults
+			merge_defaults
 			each_job &block
 		end
 	end
