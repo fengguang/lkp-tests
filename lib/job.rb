@@ -295,7 +295,7 @@ class Job
 
 	def expand_each_in(ah, set)
 		ah.each { |k, v|
-			if set.include?(k) or (String === v and v =~ /^{{(.*)}}$/m)
+			if set.include?(k) or (String === v and v =~ /{{(.*)}}/m)
 				yield ah, k, v
 			end
 			if Hash === v
@@ -308,10 +308,16 @@ class Job
 
 	def each_job
 		expand_each_in(@job, @dims_to_expand) { |h, k, v|
-			if String === v and v =~ /^{{(.*)}}$/m
-				expr = expand_expression(@job, $1)
+			if String === v and v =~ /^(.*){{(.*)}}(.*)$/m
+				head = $1.lstrip
+				tail = $3.chomp.rstrip
+				expr = expand_expression(@job, $2)
 				return if expr == nil
-				h[k] = expr
+				if head.empty? and tail.empty?
+					h[k] = expr
+				else
+					h[k] = "#{head}#{expr}#{tail}"
+				end
 				each_job { |job| yield job }
 				h[k] = v
 				return
