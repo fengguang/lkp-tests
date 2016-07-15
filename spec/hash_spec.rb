@@ -74,6 +74,12 @@ expects = [
 				{}
 	],
 
+	['normal hash merge',
+				"a:\n  b: 1\nc: 2",
+				"a:\n  b: [3, 4]\nd: 5",
+				{"a"=>{"b"=>[3, 4]}, "c"=>2, "d"=>5}
+	],
+
 	# deal with abnormal cases gracefully
 	['empty + empty',
 				"",
