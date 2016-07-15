@@ -67,13 +67,13 @@ $atom_jobs = []
 ARGV.each { |jobfile|
 	jobs = Job.new
 	jobs.load(jobfile, true) or next
-	$opt_set_key_value.each { |k, v| jobs[k] = v }
 	jobs['kconfig'] = $opt_kconfig if $opt_kconfig
 	jobs['commit'] = $opt_commit if $opt_commit
 	jobs['testbox'] = $opt_testbox
 	jobs['tbox_group'] = tbox_group($opt_testbox)
 	jobs['node_roles'] = 'server client' if jobs['cluster']
 	jobs[:no_defaults] = true if $opt_no_defaults
+	jobs.overrides = $opt_set_key_value
 	prefix = $opt_output_path + '/' + File.basename(jobfile, '.yaml')
 	jobs.each_jobs { |job|
 		unit_jobfile = prefix + '-' + job.path_params
