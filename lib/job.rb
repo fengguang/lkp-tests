@@ -159,9 +159,9 @@ class Job
 		end
 	end
 
-	def load_head(jobfile, top = false)
+	def load_head(jobfile, top = false, context_hash = @job)
 		return nil unless File.exist? jobfile
-		job = load_yaml jobfile, @job
+		job = load_yaml jobfile, context_hash
 		self.update(job, top)
 	end
 
@@ -180,6 +180,50 @@ class Job
 
 		@job ||= {}
 		@job.update @jobs.shift
+	end
+
+	def include_files
+		return @include_files if @include_files
+		@include_files = {}
+		Dir["#{lkp_src}/include/*/"].map do |d|
+			key = File.basename d
+			@include_files[key] = {}
+			Dir["#{lkp_src}/include/#{key}/*"].each { |f|
+				@include_files[key][File.basename(f)] = nil
+			}
+		end
+		@include_files
+	end
+
+	def load_defaults
+		each_job_init
+		i = include_files
+		job = deepcopy(@job)
+		job['___'] = nil
+		expand_each_in(job, @dims_to_expand) { |h, k, v|
+			h[k] = nil if Array === v
+		}
+		for_each_in(job, i.keys) do |pk, h, k, v|
+			next unless v
+			job['___'] = v
+
+			load_one = lambda do |f|
+				if i[k].include?(f) and !i[k][f]
+					load_head "#{lkp_src}/include/#{k}/#{f}", true, job
+					i[k][f] = true
+				end
+			end
+
+			begin
+				if i[k].include? v
+					load_one[v]
+				else
+					load_one['OTHERS']
+				end
+				load_one['ALL']
+			rescue KeyError
+			end
+		end
 	end
 
 	def save(jobfile)

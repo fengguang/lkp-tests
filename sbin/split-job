@@ -72,11 +72,14 @@ ARGV.each { |jobfile|
 	jobs['commit'] = $opt_commit if $opt_commit
 	jobs['node_roles'] = 'server client' if jobs['cluster']
 	unless $opt_no_defaults
+		jobs.load_defaults
 		jobs.load_head("#{LKP_SRC}/hosts/#{$opt_testbox}", true)
 		jobs.load_head("#{LKP_SRC}/jobs/DEFAULTS-#{jobs['category']}", true)
 	end
 	prefix = $opt_output_path + '/' + File.basename(jobfile, '.yaml')
 	jobs.each_jobs { |job|
+		job = deepcopy job
+		job.load_defaults
 		unit_jobfile = prefix + '-' + job.path_params
 		unit_jobfile += '-' + job['commit'] if job['commit']
 		unit_jobfile += '-' + rootfs_filename(job['rootfs']) if job['rootfs']
