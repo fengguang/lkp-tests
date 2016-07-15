@@ -24,3 +24,22 @@ def to_seconds(time_spec)
 	end
 end
 
+SIZE_UNITS = {
+	P:	50,
+	T:	40,
+	G:	30,
+	M:	20,
+	K:	10
+}
+def to_byte(size_spec)
+	return size_spec unless String === size_spec
+
+	unit = size_spec.sub(/^\d+/, '').upcase.chomp('B')
+	shift = SIZE_UNITS[unit.to_sym]
+	if shift
+		n = size_spec.to_i
+		n << shift
+	else
+		size_spec
+	end
+end
