@@ -34,7 +34,10 @@ def is_accumulative_key(k)
 	false
 end
 
-def revise_hash(original, revisions)
+# "overwrite_top_keys = true" will have the same semantics with
+# original.update(revisions) except for the special *+, *-, a.b.c
+# notions and accumulative keys.
+def revise_hash(original, revisions, overwrite_top_keys = true)
 	# deal with empty YAML files gracefully
 	original ||= {}
 	revisions ||= {}
@@ -91,7 +94,7 @@ def revise_hash(original, revisions)
 		end
 
 		parent, pkey, hash, key, keys = lookup_hash(original, k, true)
-		hash[key] = v
+		hash[key] = v if overwrite_top_keys or hash.object_id != original.object_id or hash[key] == nil
 		if hash.object_id != original.object_id
 			next false
 		else

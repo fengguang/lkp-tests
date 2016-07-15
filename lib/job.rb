@@ -151,12 +151,7 @@ class Job
 	# the default "top = false" helps maintain compatibility with Hash
 	def update(hash, top = false)
 		@job ||= {}
-		if top
-			revise_hash(hash, @job)
-			@job = hash if hash
-		else
-			revise_hash(@job, hash)
-		end
+		revise_hash(@job, hash, !top)
 	end
 
 	def load_head(jobfile, top = false, context_hash = @job)
