@@ -165,7 +165,7 @@ class Job
 			@jobs << hash
 		end
 
-		revise_hash(@job, @jobs.shift)
+		@job = @jobs.shift
 	end
 
 	def include_files

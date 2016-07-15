@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require 'set'
+
 def lookup_hash(hash, path, create_missing = false)
 	keys = path.split('.')
 	parent = hash
@@ -42,9 +44,18 @@ def revise_hash(original, revisions, overwrite_top_keys = true)
 	original ||= {}
 	revisions ||= {}
 
-	rev_keys = revisions.keys
-	rev_keys.delete_if do |k|
-		v = revisions[k]
+	original.merge!(revisions) { |key, oldval, newval| overwrite_top_keys ? newval : oldval }
+
+	org_keys = original.keys.to_set
+	rev_keys = revisions.keys.to_set
+	all_keys = org_keys + rev_keys
+
+	all_keys.delete_if do |k|
+		if org_keys.include? k
+			v = original[k]
+		else
+			v = revisions[k]
+		end
 		if k[-1] == '-'
 			kk = k[0..-2]
 			parent, pkey, hash, key, keys = lookup_hash(original, kk)
@@ -93,6 +104,8 @@ def revise_hash(original, revisions, overwrite_top_keys = true)
 			next false
 		end
 
+		next true unless k.index('.')
+
 		parent, pkey, hash, key, keys = lookup_hash(original, k, true)
 		hash[key] = v if overwrite_top_keys or hash.object_id != original.object_id or hash[key] == nil
 		if hash.object_id != original.object_id
@@ -102,9 +115,7 @@ def revise_hash(original, revisions, overwrite_top_keys = true)
 		end
 	end
 
-	if revisions.object_id == original.object_id
-		rev_keys.each { |k| original.delete k }
-	end
+	all_keys.each { |k| original.delete k }
 
 	original
 end
