@@ -23,11 +23,12 @@ require "#{LKP_SRC}/lib/unit.rb"
 # - the ERB code reduced YAML may be an invalid YAML
 #   YAML.load will fail and you are probably writing too complex templates
 #
-def expand_erb(template)
+def expand_erb(template, context_hash = {})
 	return template unless template =~ /^%|<%/
 
 	yaml = template.gsub(/^%.*$/, '').gsub(/<%.*?%>/m, '')
 	job = YAML.load(yaml)
+	job.merge!(context_hash)
 	context = Hashugar.new(job).instance_eval {binding}
 
 	ERB.new(template, nil, '%').result(context)

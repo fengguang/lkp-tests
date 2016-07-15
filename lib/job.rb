@@ -161,7 +161,7 @@ class Job
 
 	def load_head(jobfile, top = false)
 		return nil unless File.exist? jobfile
-		job = load_yaml jobfile, true
+		job = load_yaml jobfile, @job
 		self.update(job, top)
 	end
 

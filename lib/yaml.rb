@@ -14,15 +14,16 @@ def compress_file(file)
 	system "gzip #{file} < /dev/null"
 end
 
-def expand_yaml_template(yaml, file)
+def expand_yaml_template(yaml, file, context_hash = {})
 	yaml = yaml_merge_included_files(yaml, File.dirname(file))
 	yaml = literal_double_braces(yaml)
-	yaml = expand_erb(yaml)
+	yaml = expand_erb(yaml, context_hash)
 end
 
-def load_yaml(file, expand_template = false)
+# template_context should be nil or Hash
+def load_yaml(file, template_context = nil)
 	yaml = File.read file
-	yaml = expand_yaml_template(yaml, file) if expand_template
+	yaml = expand_yaml_template(yaml, file, template_context) if template_context
 
 	result = YAML.load yaml
 	assert result, "Possible empty file #{file}"
