@@ -25,6 +25,8 @@ md: RAID5
 fsmark.test_size: 60G
 
 ---
+nr_threads: 64
+
 md: RAID0
 
 fsmark.test_size: 100G

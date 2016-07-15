@@ -23,6 +23,7 @@ reaim:
   - aim9
 
 ---
+nr_task: 1600%
 reaim:
   test:
   - fserver
@@ -31,15 +32,17 @@ reaim:
 
 ---
 disable_latency_stats: 1
+nr_task: 1600%
 reaim:
   test: all_utime
 
 ---
-disable_latency_stats:
+nr_task: 1600%
 reaim:
   test: long
 
 ---
+nr_task: 1600%
 reaim:
   test: five_sec
 
@@ -50,6 +53,7 @@ reaim:
   test: short
 
 ---
+nr_task: 100%
 reaim:
   nr_job: 3000
   test:
@@ -62,18 +66,20 @@ reaim:
   - compute
 
 ---
+nr_task: 100%
 reaim:
   nr_job: 1500
   test: five_sec
 
 ---
 disable_latency_stats: 1
+nr_task: 100%
 reaim:
   nr_job: 1500
   test: all_utime
 
 ---
-disable_latency_stats:
+nr_task: 100%
 reaim:
   nr_job: 1000
   test:
@@ -81,6 +87,7 @@ reaim:
   - aim9
 
 ---
+nr_task: 100%
 reaim:
   nr_job: 1000
   test:

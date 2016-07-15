@@ -43,10 +43,22 @@ fs: btrfs
 
 nr_task: 8
 
+fio-setup-basic:
+  rw: randwrite
+  bs: 4k
+  ioengine: sync
+  test_size: 512g
+
 ---
 fs: ext4
 
 nr_task: 64
+
+fio-setup-basic:
+  rw: randwrite
+  bs: 4k
+  ioengine: sync
+  test_size: 512g
 
 ---
 fs: ext4
@@ -60,6 +72,8 @@ fio-setup-basic:
   test_size: 512g
 
 ---
+fs: ext4
+
 nr_task: 16
 
 fio-setup-basic:

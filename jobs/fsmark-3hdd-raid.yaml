@@ -31,9 +31,14 @@ fsmark.test_size: 130G
 
 ---
 nr_threads: 64
+md: RAID5
 fs: btrfs
 
+fsmark.test_size: 130G
+
 ---
+nr_threads: 64
+md: RAID5
 fs:
 - xfs
 - ext4
