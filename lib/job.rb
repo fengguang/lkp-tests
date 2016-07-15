@@ -215,7 +215,9 @@ class Job
 			end
 
 			begin
-				if i[k].include? v
+				prefix = v.sub(/[:-].*/, '')
+				if i[k].include?(v) or i[k].include?(prefix)
+					load_one[prefix]
 					load_one[v]
 				else
 					load_one['OTHERS']
