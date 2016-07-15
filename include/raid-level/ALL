@@ -1,0 +1,7 @@
+<%=
+	case ___
+	when 'JBOD'
+	else
+		"need_kconfig: CONFIG_MD_#{___.upcase}"
+	end
+%>
