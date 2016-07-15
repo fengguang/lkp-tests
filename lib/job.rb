@@ -200,7 +200,7 @@ class Job
 		revise_hash(job, @overrides, true)
 		job['___'] = nil
 		expand_each_in(job, @dims_to_expand) { |h, k, v|
-			h[k] = nil if Array === v
+			h.delete(k) if Array === v
 		}
 		for_each_in(job, i.keys) do |pk, h, k, v|
 			job['___'] = v
