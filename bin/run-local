@@ -114,9 +114,10 @@ end
 system job_script, 'run_job'
 system LKP_SRC + '/bin/post-run'
 system LKP_SRC + '/bin/event/wakeup', 'job-finished'
-system job_script, 'extract_stats'
 
 job.save result_root + '/job.yaml'
+
+system job_script, 'extract_stats'
 
 stats = create_stats_matrix ENV['RESULT_ROOT']
 if $opt_result_root == nil
