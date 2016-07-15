@@ -7,7 +7,7 @@ RESULT_ROOT = ENV['RESULT_ROOT']
 TIME_DELTA  = YAML.load_file(RESULT_ROOT + "/job.yaml")['time_delta'].to_f
 FMT_DIR     = RESULT_ROOT + '/results/trace_event/'
 
-$key_prefix_mapping = YAML.load_file(File.dirname(__FILE__) + "/ftrace_key_prefix")
+$key_prefix_mapping = YAML.load_file(File.dirname(__FILE__) + "/../etc/ftrace_key_prefix")
 $bdi_dev_mapping = YAML.load_file(RESULT_ROOT + '/bdi_dev_mapping') if File.exist? RESULT_ROOT + '/bdi_dev_mapping'
 
 # A hash to make sure we record one event data only
