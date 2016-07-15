@@ -1,8 +1,0 @@
-#!/bin/bash
-
-if grep -q -f	<(echo "$conflict_params" | tr ' ' '\n') \
-		<(echo "$path_params")
-then
-	echo "rm $job_file due to conflicting params"
-	rm $job_file
-fi
