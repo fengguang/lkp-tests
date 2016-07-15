@@ -36,6 +36,39 @@ def is_accumulative_key(k)
 	false
 end
 
+def merge_accumulative(a, b)
+	case a
+	when nil
+		a = b
+	when Array
+		case b
+		when Array
+			a.concat b
+		else
+			a << b
+		end
+	when Hash
+		case b
+		when Hash
+			a.update(b)
+		else
+			a.update({ b => nil })
+		end
+	else
+		case b
+		when Array
+			a = [ a ].concat b
+		when Hash
+			b[a] ||= nil
+			a = b
+		else
+			a = [ a, b ]
+		end
+	end
+
+	return a
+end
+
 # "overwrite_top_keys = true" will have the same semantics with
 # original.update(revisions) except for the special *+, *-, a.b.c
 # notions and accumulative keys.
@@ -73,34 +106,7 @@ def revise_hash(original, revisions, overwrite_top_keys = true)
 		elsif k[-1] == '+' or is_accumulative_key(k)
 			kk = k.chomp '+'
 			parent, pkey, hash, key, keys = lookup_hash(original, kk, true)
-			case hash[key]
-			when nil
-				hash[key] = v
-			when Array
-				case v
-				when Array
-					hash[key].concat v
-				else
-					hash[key] << v
-				end
-			when Hash
-				case v
-				when Hash
-					hash[key].update(v)
-				else
-					hash[key].update({ v => nil })
-				end
-			else
-				case v
-				when Array
-					hash[key] = [ hash[key] ].concat v
-				when Hash
-					v[hash[key]] ||= nil
-					hash[key] = v
-				else
-					hash[key] = [ hash[key], v ]
-				end
-			end
+			hash[key] = merge_accumulative(hash[key], v)
 			next false
 		end
 
