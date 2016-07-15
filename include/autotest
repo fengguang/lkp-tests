@@ -1,1 +1,3 @@
+% if ___.test == 'rttester'
 need_kconfig: CONFIG_RT_MUTEX_TESTER
+% end
