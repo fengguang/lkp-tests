@@ -455,8 +455,10 @@ class Job
 		method = method.to_s
 		if method.chomp!('=')
 			@job[method] = args.first
-		else
+		elsif @job.include? method
 			@job[method]
+		else
+			raise KeyError, "unknown hash key: '#{method}'"
 		end
 	end
 end

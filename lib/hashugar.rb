@@ -39,8 +39,10 @@ class Hashugar
 		method = method.to_s
 		if method.chomp!('=')
 			@table[method] = args.first
-		else
+		elsif @table.include? method
 			@table[method]
+		else
+			raise KeyError, "unknown hash key: '#{method}'"
 		end
 	end
 
