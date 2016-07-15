@@ -47,15 +47,6 @@ def get_program_env(program, env)
 		return program_env, args
 	end
 
-	# expand predefined parameter set name
-	if String === env
-		param_yaml = LKP_SRC + '/params/' + program + '.yaml'
-		if File.exist?(param_yaml)
-			params = YAML.load_file(param_yaml)
-			env = params[env] if params[env]
-		end
-	end
-
 	case env
 	when String
 		args = Shellwords.shellsplit(env).map { |s| shell_escape_expand(s) }
@@ -75,6 +66,31 @@ def get_program_env(program, env)
 	end
 
 	return program_env, args
+end
+
+def read_param_map_rules(file)
+	lines = File.read file
+	rules = {}
+	prev_rule = nil
+	head = nil
+	loop do
+		head, rule, lines = lines.partition /^\/(.*?[^\\])\/\s+/
+		head.chomp!
+		rules[prev_rule] = head if prev_rule
+		break if rule.empty?
+		prev_rule = Regexp.new $1
+	end
+	rules[prev_rule] = head if prev_rule
+	rules
+end
+
+def replace_symbol_keys(hash)
+	return hash unless Hash === hash
+	sh = {}
+	hash.each do |k, v|
+		sh[k.to_s] = v
+	end
+	sh
 end
 
 class Job2sh < Job
@@ -237,7 +253,7 @@ class Job2sh < Job
 		out_line "export_top_env()"
 		out_line "{"
 		@programs = available_programs(:workload_and_monitors)
-		job = @job.clone # a shallow copy so that delete_if won't impact @job
+		job = (@jobx||@job).clone # a shallow copy so that delete_if won't impact @job
 		job.delete_if { |key, val| parse_one([], key, val, :PASS_EXPORT_ENV) }
 		out_line
 		out_line "\t[ -n \"$LKP_SRC\" ] ||"
@@ -270,5 +286,55 @@ class Job2sh < Job
 		out_line '"$@"'
 
 		@script_lines
+	end
+
+	def param_files
+		maps = {}
+		ruby_scripts = {}
+		Dir["#{lkp_src}/params/*"].map do |f|
+			name = File.basename f
+			case name
+			when /(.*)\.rb$/
+				ruby_scripts[$1] = f
+			else
+				maps[name] = f
+			end
+		end
+		[maps, ruby_scripts]
+	end
+
+	def map_param(hash, key, val, rule_file)
+		return unless String === val
+		___ = val.dup # for reference by expressions
+		output = nil
+		rules = read_param_map_rules(rule_file)
+		rules.each do |pattern, expression|
+			val.sub!(pattern) do |s|
+				# puts s, pattern, expression
+				o = eval(expression)
+				case output
+				when nil
+					output = o
+				when Hash
+					output.merge! o
+				else
+					$stderr.puts "confused while mapping param: #{___}"
+					break 2
+				end
+				nil
+			end
+		end
+		hash[key] = replace_symbol_keys(output) if output
+	end
+
+	def expand_params
+		@jobx = deepcopy @job
+		maps, ruby_scripts = param_files
+		for_each_in(@jobx, maps.keys.to_set) { |pk, h, k, v|
+			map_param(h, k, v, maps[k])
+		}
+		for_each_in(@jobx, ruby_scripts.keys.to_set) { |pk, h, k, v|
+			evaluate_param(h, k, v, ruby_scripts[k])
+		}
 	end
 end
