@@ -414,7 +414,7 @@ class Job2sh < Job
 				run_filter(h, k, v, file)
 			}
 		rescue TypeError => e
-			puts "#{file}: #{e.message} hash: #{hash}"
+			$stderr.puts "#{file}: #{e.message} hash: #{hash}"
 			raise
 		rescue Job::ParamError => e
 			puts "Abandon job: #{e.message}"
