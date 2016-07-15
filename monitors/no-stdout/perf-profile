@@ -20,7 +20,15 @@ default_events()
 
 : ${events:=$(default_events)}
 : ${duration:=10}
-: ${delay:=100}
+: ${period:=1000003}
+
+if [ -z "$delay" ]; then
+	if [ -n "$runtime" ]; then
+		delay=$((runtime / 2))
+	else
+		delay=100
+	fi
+fi
 
 [ -n "$freq" ] &&
 opt_freq="--freq=$freq"

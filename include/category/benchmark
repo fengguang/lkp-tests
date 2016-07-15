@@ -24,7 +24,3 @@ turbostat:
 sched_debug:
 perf-stat:
 perf-profile:
-  period: 1000003
-% if self['runtime']
-  delay: {{ to_seconds(runtime) / 2 }}
-% end
