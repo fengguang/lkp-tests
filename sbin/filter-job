@@ -6,13 +6,7 @@ ENV["LKP_SRC"] ||= LKP_SRC
 require "#{LKP_SRC}/lib/job.rb"
 
 def run_program(program)
-	if $PROGRAM_NAME =~ /scheduler-filter-job/
-		return unless $programs[program] =~ /by_scheduler/
-	else
-		return if $programs[program] =~ /by_scheduler/
-		printf "run: %s\n", $programs[program]
-	end
-
+	printf "run: %s\n", $programs[program]
 	system $job_vars, [ $programs[program], program ]
 end
 
@@ -42,14 +36,9 @@ def get_job_vars(job, jobfile)
 end
 
 jobfile = ARGV[0]
-kernel_dir = ARGV[1]
 job = Job.new
 job.load(jobfile)
 $job_vars = get_job_vars job, jobfile
-
-if kernel_dir && File.exist?(kernel_dir)
-	$job_vars['kconfig_file'] = kernel_dir + '/' + '.config'
-end
 
 if $PROGRAM_NAME =~ /job-vars/
 	$job_vars.each { |k, v| puts "#{k}=#{v.inspect}" }
