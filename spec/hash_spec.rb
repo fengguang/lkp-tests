@@ -48,10 +48,20 @@ expects = [
 				"a.b.c-: 1",
 				{"a"=>{"b"=>{"c"=>[2]}}}
 	],
+	['delete array items',
+				"a.b.c: [1, 2, 3]",
+				"a.b.c-: [1, 2]",
+				{"a"=>{"b"=>{"c"=>[3]}}}
+	],
 	['delete hash item',
 				"a.b.c: {1: 2, 3: 4}",
 				"a.b.c-: 1",
 				{"a"=>{"b"=>{"c"=>{3 => 4}}}}
+	],
+	['delete hash items',
+				"a.b.c: {1: 2, 3: 4}",
+				"a.b.c-: [1, 3]",
+				{"a"=>{"b"=>{"c"=>nil}}}
 	],
 	['delete last array',
 				"a.b.c: [1, 2]",
@@ -79,6 +89,32 @@ expects = [
 				"a:\n  b: [3, 4]\nd: 5",
 				{"a"=>{"b"=>[3, 4]}, "c"=>2, "d"=>5}
 	],
+	['accumulative key',
+				"mail_cc: XXX",
+				"mail_cc: YYY",
+				{"mail_cc"=>["XXX", "YYY"]}
+	],
+	['double add array',
+				"a+: 1",
+				"a+: [2, 3]",
+				{"a"=>[1, 2, 3]}
+	],
+	['double add hash',
+				"a+: 1",
+				"a+: {2: 3}",
+				{"a"=>{1=>nil, 2=>3}}
+	],
+	['double delete array',
+				"a: [1, 2, 3]\na-: 1",
+				"a-: [2]",
+				{"a"=>[3]}
+	],
+	['double delete hash',
+				"a: {b: 1, c: 2, d: 3}\na-: b",
+				"a-: [c]",
+				{"a"=>{"d"=>3}}
+	],
+
 
 	# deal with abnormal cases gracefully
 	['empty + empty',

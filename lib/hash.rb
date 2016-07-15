@@ -77,7 +77,15 @@ def revise_hash(original, revisions, overwrite_top_keys = true)
 	original ||= {}
 	revisions ||= {}
 
-	original.merge!(revisions) { |key, oldval, newval| overwrite_top_keys ? newval : oldval }
+	original.merge!(revisions) do |key, oldval, newval|
+		if key[-1] == '+' or
+		   key[-1] == '-' or
+		   is_accumulative_key(key)
+			merge_accumulative(oldval, newval)
+		else
+			overwrite_top_keys ? newval : oldval
+		end
+	end
 
 	org_keys = original.keys.to_set
 	rev_keys = revisions.keys.to_set
@@ -94,7 +102,13 @@ def revise_hash(original, revisions, overwrite_top_keys = true)
 			parent, pkey, hash, key, keys = lookup_hash(original, kk)
 			if hash.include? key
 				if v
-					hash[key].delete v
+					if v.is_a? Hash
+						keys = v.keys
+					else
+						keys = Array(v)
+					end
+					keys.each { |k| hash[key].delete k }
+					hash[key] = nil if hash[key].empty?
 				else
 					hash.delete key
 					if hash.empty? and parent.object_id != hash.object_id
@@ -103,7 +117,7 @@ def revise_hash(original, revisions, overwrite_top_keys = true)
 				end
 			end
 			next false
-		elsif k[-1] == '+' or is_accumulative_key(k)
+		elsif k[-1] == '+'
 			kk = k.chomp '+'
 			parent, pkey, hash, key, keys = lookup_hash(original, kk, true)
 			hash[key] = merge_accumulative(hash[key], v)
