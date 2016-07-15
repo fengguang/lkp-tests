@@ -37,8 +37,8 @@ if [ -x "$job_script" ]; then
 		exit_code=$(sed -ne "s/\(.*\)exit_code.\(.*\):\(.*\)/\\2/p" "$last_state_file")
 	run_job_exit_code=${exit_code:-0}
 else
-	run-job --pid-file $TMP/run-job.pid $job
-	run_job_exit_code=$?
+	echo "job shell script does not exist: $job_script"
+	exit 1
 fi
 
 end_time=$(date '+%s')
