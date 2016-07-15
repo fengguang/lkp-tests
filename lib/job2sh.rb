@@ -288,6 +288,16 @@ class Job2sh < Job
 		@script_lines
 	end
 
+	def method_missing(method, *args, &block)
+		job = @jobx || @job
+		method = method.to_s
+		if method.chomp!('=')
+			job[method] = args.first
+		else
+			job[method]
+		end
+	end
+
 	def param_files
 		maps = {}
 		ruby_scripts = {}

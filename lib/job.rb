@@ -445,6 +445,15 @@ class Job
 	def to_hash
 		@job
 	end
+
+	def method_missing(method, *args, &block)
+		method = method.to_s
+		if method.chomp!('=')
+			@job[method] = args.first
+		else
+			@job[method]
+		end
+	end
 end
 
 class << Job
