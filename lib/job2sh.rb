@@ -395,22 +395,26 @@ class Job2sh < Job
 		@jobx = deepcopy @job
 		maps, ruby_scripts, misc_scripts = param_files
 		begin
+			hash = nil
 			file = nil
 			for_each_in(@jobx, maps.keys.to_set) { |pk, h, k, v|
+				hash = h
 				file = maps[k]
 				map_param(h, k, v, file)
 			}
 			for_each_in(@jobx, ruby_scripts.keys.to_set) { |pk, h, k, v|
+				hash = h
 				file = ruby_scripts[k]
 				evaluate_param(h, k, v, file)
 			}
 			@filter_env = top_env(@jobx).merge(job_env(@jobx))
 			for_each_in(@jobx, misc_scripts.keys.to_set) { |pk, h, k, v|
+				hash = h
 				file = misc_scripts[k]
 				run_filter(h, k, v, file)
 			}
 		rescue TypeError => e
-			puts "#{file}: #{e.message}"
+			puts "#{file}: #{e.message} hash: #{hash}"
 			raise
 		rescue Job::ParamError => e
 			puts "Abandon job: #{e.message}"
