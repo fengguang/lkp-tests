@@ -22,7 +22,8 @@ EOF
 
 # here sleep is to fix below error info:
 # Failed to connect to wpa_supplicant global interface: /tmp/wpas-wlan1  error: No such file or directory
-sleep 3
+sleep 10
+ls /tmp
 
 while read casename
 do
