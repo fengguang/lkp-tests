@@ -168,6 +168,14 @@ class Job
 		@job = @jobs.shift
 	end
 
+	def load_hosts_config
+		return unless @job.include? 'tbox_group'
+		hosts_file = "#{lkp_src}/hosts/#{@job['tbox_group']}"
+		return unless File.exist? hosts_file
+		hwconfig = load_yaml(hosts_file, nil)
+		@job.merge! hwconfig
+	end
+
 	def include_files
 		return @include_files if @include_files
 		@include_files = {}
@@ -352,6 +360,7 @@ class Job
 
 	def each_jobs(&block)
 		each_job_init
+		load_hosts_config
 		job = deepcopy(@job)
 		@job2 = {}
 		load_defaults
