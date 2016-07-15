@@ -190,7 +190,7 @@ class Job
 		revise_hash(@defaults, defaults, true)
 	end
 
-	def load_defaults
+	def load_defaults(first_time = true)
 		return if @job[:no_defaults]
 
 		i = include_files
@@ -223,13 +223,14 @@ class Job
 			rescue KeyError
 			end
 		end
+
+		merge_defaults first_time
 	end
 
 	def merge_defaults(first_time = true)
 		revise_hash(@job, @defaults, false)
 		revise_hash(@job, @overrides, true) if first_time
 		@defaults = {}
-		@job.delete_if { |k, v| Symbol === k }
 	end
 
 	def save(jobfile)
@@ -331,8 +332,8 @@ class Job
 			end
 		}
 		job = deepcopy self
-		job.load_defaults
-		job.merge_defaults false
+		job.load_defaults false
+		@job.delete_if { |k, v| Symbol === k }
 		yield job
 	end
 
@@ -340,13 +341,11 @@ class Job
 		each_job_init
 		job = deepcopy(@job)
 		load_defaults
-		merge_defaults
 		each_job &block
 		@jobs.each do |hash|
 			@job = deepcopy(job)
 			revise_hash(@job, hash, true)
 			load_defaults
-			merge_defaults
 			each_job &block
 		end
 	end
