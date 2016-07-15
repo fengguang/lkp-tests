@@ -312,16 +312,22 @@ class Job2sh < Job
 	def param_files
 		maps = {}
 		ruby_scripts = {}
-		Dir["#{lkp_src}/params/*"].map do |f|
+		misc_scripts = {}
+		Dir["#{lkp_src}/params/*",
+		    "#{lkp_src}/filters/*"].map do |f|
 			name = File.basename f
 			case name
 			when /(.*)\.rb$/
 				ruby_scripts[$1] = f
 			else
-				maps[name] = f
+				if File.executable? f
+					misc_scripts[name] = f
+				else
+					maps[name] = f
+				end
 			end
 		end
-		[maps, ruby_scripts]
+		[maps, ruby_scripts, misc_scripts]
 	end
 
 	def map_param(hash, key, val, rule_file)
@@ -354,15 +360,50 @@ class Job2sh < Job
 		expand_expression(hash, expr)
 	end
 
+	def job_env(job)
+		job_env = {}
+		for_each_in(job, available_programs(:workload_elements)) do |pk, h, program, env|
+			if env.is_a? Hash
+				env.each { |key, val|
+					key = "#{program}_#{key}".gsub(/[^a-zA-Z0-9_]/, '_')
+					job_env[key] = val.to_s
+				}
+			else
+				job_env[program] = env.to_s
+			end
+		end
+		job_env
+	end
+
+	def top_env(job)
+		top_env = expand_toplevel_vars Hash.new, job
+		top_env['LKP_SRC'] = lkp_src
+		top_env['job_file'] = job['job_file'] || @jobfile
+		top_env
+	end
+
+	def run_filter(hash, key, val, script)
+
+		system @filter_env, script, {unsetenv_others: true}
+
+		if $?.exitstatus and $?.exitstatus != 0
+			raise Job::ParamError, "#{script}: exitstatus #{$?.exitstatus}"
+		end
+	end
+
 	def expand_params
 		@jobx = deepcopy @job
-		maps, ruby_scripts = param_files
+		maps, ruby_scripts, misc_scripts = param_files
 		begin
 			for_each_in(@jobx, maps.keys.to_set) { |pk, h, k, v|
 				map_param(h, k, v, maps[k])
 			}
 			for_each_in(@jobx, ruby_scripts.keys.to_set) { |pk, h, k, v|
 				evaluate_param(h, k, v, ruby_scripts[k])
+			}
+			@filter_env = top_env(@jobx).merge(job_env(@jobx))
+			for_each_in(@jobx, misc_scripts.keys.to_set) { |pk, h, k, v|
+				run_filter(h, k, v, misc_scripts[k])
 			}
 		rescue Job::ParamError => e
 			puts "Abandon job: #{e.message}"

@@ -7,8 +7,7 @@
 if (( disk_nr_hdd > nr_hdd_partitions )); then
 	echo "rm $job_file due to not enough HDD disks"
 	echo "need: $disk_nr_hdd, has: $nr_hdd_partitions"
-	rm $job_file
-	exit
+	exit 1
 fi
 
 [[ $nr_ssd_partitions ]] || nr_ssd_partitions=$(echo $ssd_partitions | wc -w)
@@ -16,5 +15,7 @@ fi
 if (( disk_nr_ssd > nr_ssd_partitions )); then
 	echo "rm $job_file due to not enough SSD disks"
 	echo "need: $disk_nr_ssd, has: $nr_ssd_partitions"
-	rm $job_file
+	exit 2
 fi
+
+exit 0

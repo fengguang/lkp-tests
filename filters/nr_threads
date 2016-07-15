@@ -11,5 +11,7 @@ nr_threads=${nr_threads%%.} # bash cannot handle float numbers
 
 (( nr_threads < 100 )) && ! support_rapl && {
 	echo "rm $job_file to skip power testing on non-RAPL capable machine"
-	rm $job_file
+	exit 1
 }
+
+exit 0

@@ -10,5 +10,7 @@ memory_mb=$(to_mb $memory)
 if (( need_memory_mb > memory_mb )); then
 	echo "rm $job_file due to not enough memory"
 	echo "need: $need_memory_mb MB, has: $memory MB"
-	rm $job_file
+	exit 1
 fi
+
+exit 0

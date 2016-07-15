@@ -166,6 +166,7 @@ class Job
 		end
 
 		@job = @jobs.shift
+		@jobfile = jobfile
 	end
 
 	def load_hosts_config

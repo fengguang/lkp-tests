@@ -5,5 +5,7 @@
 if (( need_cpu > nr_cpu )); then
 	echo "rm $job_file due to not enough cpu"
 	echo "need: $need_cpu cpu, has: $nr_cpu cpu"
-	rm $job_file
+	exit 1
 fi
+
+exit 0
