@@ -65,6 +65,7 @@ wait_cluster_state()
 		result=$(sync_cluster_state $1)
 		case $result in
 		'abort')
+			wakeup_pre_test
 			echo "cluster.abort: 1" >> $RESULT_ROOT/last_state
 			exit
 			;;
@@ -138,6 +139,9 @@ check_exit_code()
 	local exit_code=$1
 
 	[ "$exit_code" = 0 ] && return
+
+	# when setup scripts fail, the monitors should be wakeup
+	wakeup_pre_test
 
 	echo "${program}.exit_code.$exit_code: 1"	>> $RESULT_ROOT/last_state
 	echo "exit_fail: 1"				>> $RESULT_ROOT/last_state

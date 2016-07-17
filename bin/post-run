@@ -45,6 +45,7 @@ kill_monitors()
 }
 
 kill_monitors -INT
+$LKP_SRC/bin/event/wakeup activate-monitor
 $LKP_SRC/bin/event/wakeup post-test
 wait_for_monitors && sleep 1
 kill_monitors -KILL
