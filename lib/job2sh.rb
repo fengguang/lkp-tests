@@ -425,6 +425,8 @@ class Job2sh < Job
 		rescue Job::ParamError => e
 			puts "Abandon job: #{e.message}"
 			return false
+		rescue KeyError # no conclusion due to lack of information
+			return nil
 		end
 		true
 	end
