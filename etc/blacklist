@@ -6,7 +6,16 @@
 ^iostat.*.svctm
 ^kmsg.Corrupted_low_memory_at.............*
 ^kmsg.tsc:Unable_to_calibrate_against_PIT
+^kmsg.tsc:HPET/PMTIMER_calibration_failed
 ^kmsg.tsc:Fast_TSC_calibration_failed
+^kmsg.APIC_calibration_not_consistent_with_PM-Timer:#ms_instead_of#ms
+^kmsg.Starting_Bootlog_daemon:bootlogd:cannot_allocate_pseudo_tty:No_such_file_or_directory
+^kmsg.start:Job_is_already_running:rc
+^kmsg.power_supply_register:Expected_proper_parent_device_for
+^kmsg.intel_rapl:driver_does_not_support_CPU_family#model
+^kmsg.Disabling_lock_debugging_due_to_kernel_taint
+^kmsg.The_force_parameter_has_not_been_set_to#The_Iris_poweroff_handler_will_not_be_installed
+^kmsg.augmented_rbtree_testing
 ^(kmsg|dmesg).genirq:Flags_mismatch_irq##\(serial\)vs.#\(goldfish_pdev_bus\)
 ^kmsg.Command_line:*
 ^dmesg.boot_successes
