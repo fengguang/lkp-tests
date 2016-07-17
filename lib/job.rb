@@ -170,7 +170,7 @@ class Job
 		raise ArgumentError.new("empty jobfile #{jobfile}") if yaml.size == 0
 
 		# keep comment lines as symbols
-		yaml.gsub!(/\n#(.*)$/, "\n:#\\1: ")
+		yaml.gsub!(/\n\n#(.*)$/, "\n:#\\1: ")
 
 		if expand_template
 			yaml = expand_yaml_template(yaml, jobfile)
