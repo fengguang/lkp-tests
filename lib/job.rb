@@ -128,6 +128,10 @@ def rootfs_filename(rootfs)
 	rootfs.split(/[^a-zA-Z0-9._-]/)[-1]
 end
 
+def comment_to_symbol(str)
+	:"#! #{str}"
+end
+
 class JobFileSyntaxError < RuntimeError
 	def initialize(jobfile, syn_msg)
 		@jobfile = jobfile
@@ -158,7 +162,7 @@ class Job
 	end
 
 	def source_file_symkey(file)
-		:"#! #{file.sub(lkp_src + '/', '')}"
+		comment_to_symbol file.sub(lkp_src + '/', '')
 	end
 
 	def load(jobfile, expand_template = false)
@@ -178,7 +182,14 @@ class Job
 		end
 
 		@job = Hash.new
-		@job[source_file_symkey(jobfile)] = nil unless @jobs.first['job_origin']
+		unless @jobs.first['job_origin']
+			if File.symlink?(jobfile) and
+			   File.readlink(jobfile) =~ %r|^../../../(.*)|
+				@job[comment_to_symbol $1] = nil
+			else
+				@job[source_file_symkey jobfile] = nil
+			end
+		end
 		@job.merge!(@jobs.shift)
 		@job['job_origin'] ||= jobfile
 		@jobfile = jobfile
@@ -280,7 +291,7 @@ class Job
 		revise_hash(@job, @job2, true)
 
 		return if @overrides.empty?
-		key = source_file_symkey('user overrides')
+		key = comment_to_symbol('user overrides')
 		@job.delete key
 		@job[key] = nil
 		revise_hash(@job, @overrides, true)
