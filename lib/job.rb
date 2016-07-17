@@ -238,7 +238,10 @@ class Job
 	end
 
 	def load_defaults(first_time = true)
-		return if @job.include? :no_defaults
+		if @job.include? :no_defaults
+			merge_defaults first_time
+			return
+		end
 
 		if first_time
 			@file_loaded = Hash.new
