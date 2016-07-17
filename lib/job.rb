@@ -224,11 +224,16 @@ class Job
 		context_hash = deepcopy(@defaults)
 		revise_hash(context_hash, job, true)
 		revise_hash(context_hash, @overrides, true)
-		defaults = load_yaml(file, context_hash)
+		begin
+			defaults = load_yaml(file, context_hash)
+		rescue KeyError
+			return false
+		end
 		if Hash === defaults and not defaults.empty?
 			@defaults[source_file_symkey(file)] = nil
 			revise_hash(@defaults, defaults, true)
 		end
+		return true
 	end
 
 	def load_defaults(first_time = true)
@@ -252,32 +257,34 @@ class Job
 			job['___'] = v
 
 			load_one = lambda do |f|
-				if i[k][f] and
-				   not (@file_loaded.include?(k) and
-					@file_loaded[k].include?(f))
+				break unless i[k][f]
+				break if @file_loaded.include?(k) and
+					 @file_loaded[k].include?(f)
 
-					load_one_defaults i[k][f], job
-					@file_loaded[k]  ||= {}
-					@file_loaded[k][f] = true
-				end
+				break unless load_one_defaults(i[k][f], job)
+
+				@file_loaded[k]  ||= {}
+				@file_loaded[k][f] = true
 			end
 
-			begin
-				if @referenced_programs.include?(k) and load_one[k]
-					next
-				end
-				next unless v
+			next if @referenced_programs.include?(k) and load_one[k] != nil
+			next unless String === v
 
-				prefix = String === v ? v.sub(/[:-].*/, '') : nil
-				if i[k].include?(v) or i[k].include?(prefix)
-					load_one[prefix]
-					load_one[v]
-				else
-					load_one['OTHERS']
-				end
-				load_one['ALL']
-			rescue KeyError
+			# For testbox vm-lkp-wsx01-4G,
+			# try "vm", "vm-lkp", "vm-lkp-wsx01", "vm-lkp-wsx01-4G" in turn.
+			c = v
+			prefix = ''
+			hit = nil
+			loop do
+				a, b, c = c.partition /[:-]/
+				prefix += a
+				hit = load_one[prefix]
+				break if c.empty?
+				prefix += b
 			end
+
+			load_one['OTHERS'] if hit == nil
+			load_one['ALL']
 		end
 
 		merge_defaults first_time
