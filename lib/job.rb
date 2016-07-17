@@ -387,7 +387,7 @@ class Job
 		}
 		job = deepcopy self
 		job.load_defaults false
-		@job.delete_if { |k, v| Symbol === k }
+		job.delete :no_defaults
 		yield job
 	end
 
