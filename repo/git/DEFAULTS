@@ -1,6 +1,3 @@
-suite: git-ci
-testcase: git-ci
-project: git
 release_tag_pattern:
   v(?<major>[1-9])\.(?<minor>\d+)\.?(?<micro>)(-rc(?<prerelease>\d+))?
 release_tag_committer: Junio C Hamano

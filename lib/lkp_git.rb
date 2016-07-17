@@ -244,7 +244,24 @@ def load_remotes
 		remote = File.basename file
 		next if remote == 'DEFAULTS'
 		defaults = File.dirname(file) + '/DEFAULTS'
-		remotes[remote] = load_yaml_merge [defaults, file]
+		repo_info = load_yaml_merge [defaults, file]
+
+		project = File.basename(File.dirname(file))
+		repo_info['project']  ||= project
+		repo_info['suite']    ||= project + '-ci'
+		repo_info['testcase'] ||= project + '-ci'
+
+		if repo_info['project'] == remote
+			repo_info['upstream'] = true
+		end
+
+		if repo_info['upstream']
+			repo_info['fetch_tags']         = true
+			repo_info['git_am_branch']    ||= 'master'
+			repo_info['maintained_files'] ||= '*'
+		end
+
+		remotes[remote] = repo_info
 	end
 	remotes
 end

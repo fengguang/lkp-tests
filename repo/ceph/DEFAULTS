@@ -1,6 +1,3 @@
-suite: ceph-ci
-testcase: ceph-ci
-project: ceph
 release_tag_pattern:
   v(?<major>\d+)\.(?<minor>\d+)\.(?<micro>\d+)
 belongs_to: ceph

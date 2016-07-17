@@ -1,6 +1,3 @@
-suite: linux-ci
-testcase: linux-ci
-project: linux
 release_tag_pattern:
   v(?<major>2)\.(?<minor>\d+)\.?(?<micro>[23][0-9])?(-rc(?<prerelease>\d+))?
   v(?<major>[3-9])\.(?<minor>\d+)\.?(?<micro>)(-rc(?<prerelease>\d+))?
