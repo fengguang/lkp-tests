@@ -112,10 +112,13 @@ def atomic_save_yaml_json(object, file)
 	temp_file = file + "-#{$$}"
 	File.open(temp_file, mode='w') { |file|
 		if temp_file.index('.json')
-			file.write(JSON.pretty_generate(object, :allow_nan => true))
+			lines = JSON.pretty_generate(object, :allow_nan => true)
 		else
-			file.write(YAML.dump(object))
+			lines = YAML.dump(object)
+			# create comment lines from symbols
+			lines.gsub!(/^:#(.*): $/, "\n#\\1")
 		end
+		file.write(lines)
 	}
 	FileUtils.mv temp_file, file, :force => true
 end
@@ -160,6 +163,9 @@ class Job
 	def load(jobfile, expand_template = false)
 		yaml = File.read jobfile
 		raise ArgumentError.new("empty jobfile #{jobfile}") if yaml.size == 0
+
+		# keep comment lines as symbols
+		yaml.gsub!(/\n#(.*)$/, "\n:#\\1: ")
 
 		if expand_template
 			yaml = expand_yaml_template(yaml, jobfile)
