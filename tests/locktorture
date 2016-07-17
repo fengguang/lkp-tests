@@ -12,6 +12,3 @@ modprobe locktorture || die "failed to load locktorture module"
 sleep $runtime
 
 rmmod locktorture
-
-dmesg | grep torture:
-[ $? -ne 0 ] && exit 1
