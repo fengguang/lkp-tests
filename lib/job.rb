@@ -214,8 +214,10 @@ class Job
 		revise_hash(context_hash, job, true)
 		revise_hash(context_hash, @overrides, true)
 		defaults = load_yaml(file, context_hash)
-		@defaults[source_file_symkey(file)] = nil
-		revise_hash(@defaults, defaults, true)
+		if Hash === defaults and not defaults.empty?
+			@defaults[source_file_symkey(file)] = nil
+			revise_hash(@defaults, defaults, true)
+		end
 	end
 
 	def load_defaults(first_time = true)
