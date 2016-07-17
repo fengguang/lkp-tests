@@ -196,6 +196,7 @@ class Job
 	end
 
 	def load_hosts_config
+		return if @job.include? :no_defaults
 		return unless @job.include? 'tbox_group'
 		hosts_file = "#{lkp_src}/hosts/#{@job['tbox_group']}"
 		return unless File.exist? hosts_file
@@ -237,7 +238,7 @@ class Job
 	end
 
 	def load_defaults(first_time = true)
-		return if @job[:no_defaults]
+		return if @job.include? :no_defaults
 
 		if first_time
 			@file_loaded = Hash.new
