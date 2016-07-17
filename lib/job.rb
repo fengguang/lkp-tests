@@ -153,6 +153,10 @@ class Job
 		@available_programs = {}
 	end
 
+	def source_file_symkey(file)
+		:"#! #{file.sub(lkp_src + '/', '')}"
+	end
+
 	def load(jobfile, expand_template = false)
 		yaml = File.read jobfile
 		raise ArgumentError.new("empty jobfile #{jobfile}") if yaml.size == 0
@@ -166,7 +170,10 @@ class Job
 			@jobs << hash
 		end
 
-		@job = @jobs.shift
+		@job = Hash.new
+		@job[source_file_symkey(jobfile)] = nil unless @jobs.first['job_origin']
+		@job.merge!(@jobs.shift)
+		@job['job_origin'] ||= jobfile
 		@jobfile = jobfile
 	end
 
@@ -175,6 +182,7 @@ class Job
 		hosts_file = "#{lkp_src}/hosts/#{@job['tbox_group']}"
 		return unless File.exist? hosts_file
 		hwconfig = load_yaml(hosts_file, nil)
+		@job[source_file_symkey(hosts_file)] = nil
 		@job.merge! hwconfig
 	end
 
@@ -199,6 +207,7 @@ class Job
 		revise_hash(context_hash, job, true)
 		revise_hash(context_hash, @overrides, true)
 		defaults = load_yaml(file, context_hash)
+		@defaults[source_file_symkey(file)] = nil
 		revise_hash(@defaults, defaults, true)
 	end
 
@@ -256,9 +265,16 @@ class Job
 
 	def merge_defaults(first_time = true)
 		revise_hash(@job, @defaults, false)
-		revise_hash(@job, @job2, true) if first_time
-		revise_hash(@job, @overrides, true) if first_time
 		@defaults = {}
+
+		return unless first_time
+		revise_hash(@job, @job2, true)
+
+		return if @overrides.empty?
+		key = source_file_symkey('user overrides')
+		@job.delete key
+		@job[key] = nil
+		revise_hash(@job, @overrides, true)
 	end
 
 	def save(jobfile)

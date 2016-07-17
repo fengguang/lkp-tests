@@ -92,6 +92,7 @@ def revise_hash(original, revisions, overwrite_top_keys = true)
 	all_keys = org_keys + rev_keys
 
 	all_keys.delete_if do |k|
+		next true unless String === k
 		if org_keys.include? k
 			v = original[k]
 		else
