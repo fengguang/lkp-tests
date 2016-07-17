@@ -2,9 +2,6 @@ suite: reaim
 testcase: reaim
 category: benchmark
 
-# Avoid nfs latency for sync used in benchmark
-avoid_nfs: 1
-
 nr_task: 6400%
 reaim:
   iterations: 20
