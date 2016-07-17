@@ -3,7 +3,7 @@
 # - qemu_config
 # qemu_branch
 
-## QEMU is a generic and open source machine emulator and virtualizer. 
+## QEMU is a generic and open source machine emulator and virtualizer.
 ## detailed info can refer to http://wiki.qemu.org/Main_Page.
 
 shopt -s nullglob
@@ -20,6 +20,14 @@ qemu_remote=${qemu_branch%%/*}
 
 check_mount qemu-src $QEMU_REPO_ROOT -t tmpfs
 
+check_mount $LKP_SERVER:/pkg /pkg || die "failed to mount $LKP_SERVER:/pkg"
+
+[[ "$qemu_config" ]] || die "qemu_config is empty"
+[[ "$qemu_commit" ]] || die "qemu_commit is empty"
+
+QEMU_IMAGE_DIR="/pkg/qemu/$qemu_config/$qemu_commit"
+[[ -d "$QEMU_IMAGE_DIR" ]] || mkdir -p "$QEMU_IMAGE_DIR"
+
 rm -fr "$QEMU_REPO_ROOT" 2>/dev/null
 git_clone_update git://gitmirror/$qemu_remote $QEMU_REPO_ROOT || die "failed clone qemu tree $qemu_remote"
 
@@ -31,6 +39,11 @@ cmd git checkout -q $qemu_commit || die "failed to checkout qemu commit $qemu_co
 make
 
 make_exit_status=$?
+[[ $make_exit_status = 0 ]] && {
+	cmd cp -af $QEMU_REPO_ROOT/$qemu_config/qemu-system-x86_64 $QEMU_IMAGE_DIR/
+	cmd cp -af $QEMU_REPO_ROOT/pc-bios $QEMU_IMAGE_DIR/
+}
+
 build_complete $make_exit_status
 
 git reset --hard
