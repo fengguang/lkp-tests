@@ -35,17 +35,10 @@ module Git
 			!command('branch', ['--list', '-a', pattern]).empty?
 		end
 
-		def default_remote
-			# FIXME remove ENV usage
-			# TODO abstract File.dirname(File.dirname logic
-			lkp_src = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
-
-			load_yaml(lkp_src + "/repo/#{@project}/DEFAULTS")
-		end
-
 		def release_tags
 			unless @release_tags
-				pattern = Regexp.new '^' + default_remote['release_tag_pattern'].sub(' ', '$|^') + '$'
+				$remotes ||= load_remotes
+				pattern = Regexp.new '^' + $remotes[@project]['release_tag_pattern'].sub(' ', '$|^') + '$'
 				@release_tags = self.tag_names.select {|tag_name| pattern.match(tag_name)}
 			end
 
@@ -54,7 +47,8 @@ module Git
 
 		def release_tags_with_order
 			unless @release_tags_with_order
-				pattern = Regexp.new '^' + default_remote['release_tag_pattern'].sub(' ', '$|^') + '$'
+				$remotes ||= load_remotes
+				pattern = Regexp.new '^' + $remotes[@project]['release_tag_pattern'].sub(' ', '$|^') + '$'
 
 				tags = sort_tags(pattern, self.release_tags)
 				@release_tags_with_order = Hash[tags.map.with_index {|tag, i| [tag, -i]}]
