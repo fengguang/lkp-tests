@@ -6,12 +6,19 @@
 . $LKP_SRC/lib/debug.sh
 
 cd $BENCHMARK_ROOT/mdadm-selftests || exit 1
-[ -z "$test_prefix" ] && die "nil test_prefix"
+
+[ -n "$test_prefix" ] || die "test_prefix is emtpy"
+
+# https://raid.wiki.kernel.org/index.php/RAID_setup
+modprobe raid0
+modprobe raid1
+modprobe raid10
+modprobe raid456
 
 run_test()
 {
 	timeout 30m ./test "--tests=$testcase"
-	[ $? -eq 124 ] && echo "$testcase TIMEOUT"
+	[ $? -eq 124 ] && echo "$testcase TIMEOUT" >&2
 
 	local res_dir="result/$testcase"
 	mkdir -p  $res_dir
