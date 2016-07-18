@@ -591,6 +591,10 @@ class Job
 		@job.delete(k)
 	end
 
+	def update(k)
+		@job.update(k)
+	end
+
 	def to_hash
 		@job
 	end
