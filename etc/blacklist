@@ -18,6 +18,7 @@
 ^kmsg.augmented_rbtree_testing
 ^(kmsg|dmesg).genirq:Flags_mismatch_irq##\(serial\)vs.#\(goldfish_pdev_bus\)
 ^kmsg.Command_line:*
+^kmsg.Kernel_command_line
 ^dmesg.boot_successes
 ^dmesg.boot_failures
 ^dmesg.INFO:rcu_sched_detected_stalls_on_CPUs/tasks:
