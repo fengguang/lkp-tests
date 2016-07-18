@@ -18,7 +18,7 @@ EOF
 
 [ $USER ] || export USER=root
 
-./start.sh
+./start.sh || die "fail to setup test environment"
 
 # here sleep is to fix below error info:
 # Failed to connect to wpa_supplicant global interface: /tmp/wpas-wlan1  error: No such file or directory
