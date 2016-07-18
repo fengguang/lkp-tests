@@ -216,7 +216,7 @@ end
 #     "v3.10", "v3.10-rc7", "v3.10-rc6", ..., "v2.6.12-rc3", "v2.6.12-rc2", "v2.6.11"]
 def __linus_tags()
 	$remotes ||= load_remotes
-	pattern = Regexp.new '^' + $remotes['linus']['release_tag_pattern'].sub(' ', '$|^') + '$'
+	pattern = Regexp.new '^' + Array($remotes['linus']['release_tag_pattern']).join('$|^') + '$'
 	tags = get_tags(pattern, $remotes['linus']['release_tag_committer'])
 	tags = sort_tags(pattern, tags)
 	tags_order = {}

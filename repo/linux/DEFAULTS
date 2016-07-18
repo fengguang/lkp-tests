@@ -1,4 +1,4 @@
 release_tag_pattern:
-  v(?<major>2)\.(?<minor>\d+)\.?(?<micro>[23][0-9])?(-rc(?<prerelease>\d+))?
-  v(?<major>[3-9])\.(?<minor>\d+)\.?(?<micro>)(-rc(?<prerelease>\d+))?
+- v(?<major>2)\.(?<minor>\d+)\.?(?<micro>[23][0-9])?(-rc(?<prerelease>\d+))?
+- v(?<major>[3-9])\.(?<minor>\d+)\.?(?<micro>)(-rc(?<prerelease>\d+))?
 release_tag_committer: Linus Torvalds

@@ -1,4 +1,4 @@
 release_tag_pattern:
-  v(?<major>[1-9]+)\.(?<minor>\d+)\.?(?<micro>\d+)?(-rc(?<prerelease>\d+))?
-  v(?<major>[1-9]+)\.(?<minor>\d+)\.(?<micro>\d+)(r(?<prerelease>\d+))?
+- v(?<major>[1-9]+)\.(?<minor>\d+)\.?(?<micro>\d+)?(-rc(?<prerelease>\d+))?
+- v(?<major>[1-9]+)\.(?<minor>\d+)\.(?<micro>\d+)(r(?<prerelease>\d+))?
 belongs_to: dpdk
