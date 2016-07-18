@@ -1,0 +1,3 @@
+release_tag_pattern:
+- RELEASE-(?<major>\d+)\.(?<minor>\d+)\.(?<micro>\d+)
+- (?<major>\d+)\.(?<minor>\d+)\.(?<micro>\d+)-rc(?<prerelease>\d+)
