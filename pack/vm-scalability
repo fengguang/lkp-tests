@@ -14,6 +14,5 @@ build()
 
 install()
 {
-	find . -maxdepth 1 -type f -executable ! -name ".*" \
-		-exec cp -af {} $BM_ROOT \;
+	cp -af * $BM_ROOT
 }
