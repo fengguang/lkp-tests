@@ -10,7 +10,11 @@ fi
 
 if [ -z "$interval" ]; then
 	if [ "$file" = heartbeat ]; then
-		interval=10
+		if [ -n "$runtime" ] && [ "$runtime" -gt 36000 ]; then
+			interval=100
+		else
+			interval=10
+		fi
 	else
 		interval=1
 	fi
