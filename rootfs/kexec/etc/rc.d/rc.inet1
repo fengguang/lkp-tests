@@ -1,0 +1,90 @@
+#!/bin/bash
+
+[[ "$1" = "stop" ]] && return
+
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+
+read_kernel_cmdline_vars()
+{
+	for i in $(</proc/cmdline)
+	do
+		[[ "$i" =~ ^[a-zA-Z][a-zA-Z_0-9]+=[a-zA-Z0-9._~?\&%/+:-]+$ ]] && export "${i//&/\&}"
+	done
+}
+
+get_interfaces()
+{
+	ip link show |
+		grep '^[0-9]' |
+		cut -f2 -d: |
+		grep -v -w -E '(lo|dummy.*|bond.*|wlan.*)'
+}
+
+mac_to_hostname()
+{
+	[ -f /etc/mac-hostname ] || return
+
+	while read mac name; do
+		[[ "$1" == "$mac" ]] && echo $name
+	done < /etc/mac-hostname
+}
+
+my_mac()
+{
+	/sbin/ifconfig $1 | head -1 | tr -s ' ' | cut -d ' ' -f5
+}
+
+setup_hostname()
+{
+	for nic in $interfaces
+	do
+		#  $hostname may already be set from /proc/cmdline
+		[[ $hostname ]] && break
+
+		/sbin/ifconfig $nic | grep -q '\<HWaddr\>' || continue
+
+		hostname=$(mac_to_hostname $(my_mac $nic))
+	done
+}
+
+setup_dhcp_hostname()
+{
+	cat >/etc/dhclient-$hostname.conf<<EOF
+send dhcp-client-identifier "$hostname";
+send host-name "$hostname";
+EOF
+
+	dhclient_config_file="-cf /etc/dhclient-$hostname.conf"
+	udhcpc_hostname="--hostname $hostname"
+}
+
+
+interfaces=$(get_interfaces)
+read_kernel_cmdline_vars
+setup_hostname
+if [[ $hostname ]]; then
+	hostname $hostname
+	setup_dhcp_hostname
+fi
+
+echo -e "DHCP host-name:  \e[1;34m$(hostname)\e[0m"
+echo -n "DHCP interfaces: "
+
+if [ -x /sbin/dhclient ]; then
+	echo $interfaces
+	dhclient $dhclient_config_file $interfaces &
+else
+	for i in $interfaces
+	do
+		echo -n " $i"
+		# ifconfig $i up
+		# ifconfig $i down # otherwise mii-tool will show "no link"
+		# ifconfig $i up
+		udhcpc $udhcpc_hostname -T 1 -b -i $i &> /dev/null
+	done
+fi
+
+# in case something goes wrong, restart all over again
+(sleep 1h; reboot)&
+
+echo

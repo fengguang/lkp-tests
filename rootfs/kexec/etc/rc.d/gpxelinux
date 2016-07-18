@@ -1,0 +1,166 @@
+#!/bin/bash
+
+shopt -s nocasematch
+
+EXEC_DIR=/etc/rc.d
+# EXEC_DIR=$(dirname $0)
+# [[ $EXEC_DIR == '.' ]] && EXEC_DIR=$PWD
+
+# pxelinux-config needs this to find and call itself on "include" lines
+# This is hacky.. don't `cd`.
+export EXEC_DIR
+
+rm -f  /tmp/pxelinux.cfg /tmp/timeout
+rm -fr /tmp/cgi-bin
+
+if [[ $# -eq 0 ]]; then
+
+	[[ -f /proc/cmdline ]] || mount -t proc proc /proc
+
+	for i in $(</proc/cmdline)
+	do
+		[[ "$i" =~ ^[a-zA-Z][a-zA-Z_0-9]+=[a-zA-Z0-9._~?\&%/+:-]+$ ]] && export "${i//&/\&}"
+	done
+
+	# set defaults
+	[[ $path_prefix ]] || path_prefix='http://bee.sh.intel.com/~lkp/'
+	[[ $config_file ]] || {
+		config_file='cgi-bin/gpxelinux.cgi?hostname='$(hostname)'&mac=${mac}&ip=${ip}&gateway=${gateway}&netmask=${netmask}'
+	}
+	[[ "$config_file" =~ '?' ]] && config_file+='&lkp_wtmp'
+
+	export path_prefix
+	export config_file
+
+	$EXEC_DIR/pxelinux-include $config_file
+
+elif [[ -n "$path_prefix" && -n "$config_file" ]]; then
+
+	$EXEC_DIR/pxelinux-include $*
+	rm /tmp/pxelinux-selection.cfg
+else
+	exit 1
+fi
+
+# if [[ ! -s /tmp/pxelinux.cfg && ! $0 =~ 'retry' ]]; then
+	# $EXEC_DIR/rc.inet1 wait
+	# exec $0-retry
+if [[ ! -s /tmp/pxelinux.cfg ]]; then
+	if [[ -z "$USER" ]]; then
+		# echo ================================================================================
+		# echo
+		# echo path_prefix=$path_prefix
+		# echo config_file=$config_file
+		# echo
+		# mii-tool 2>/dev/null
+		# echo
+		# ifconfig
+		# echo ================================================================================
+		echo
+		echo "Failed to get gPXELINUX config, please check network connection and parameters."
+		echo "Drop into the shell for manually fixing things up."
+		echo -e "Run \e[1;37m$0\e[0m to restart the KEXEC based gPXELINUX boot loader."
+		echo "Have fun hacking!"
+		export PATH="$PATH:$EXEC_DIR"
+	fi
+	exit 1
+fi
+
+if [[ -s /tmp/timeout ]]; then
+	timeout=$(</tmp/timeout)
+	default=`head -n1 /tmp/pxelinux.cfg | cut -f2`
+	echo Press any key to edit boot menu.
+	echo
+
+	for i in `seq $((timeout/10)) -1 0`
+	do
+		echo -n -e "\rWill boot \e[1;33m$default\e[0m in $i seconds..."
+		read -t1 -n1 && break
+	done
+
+	echo
+	echo
+	if [[ $i = 0 ]]; then
+		head -n3 /tmp/pxelinux.cfg > /tmp/pxelinux-selection.cfg
+	fi
+fi
+
+[[ -f /tmp/pxelinux-selection.cfg ]] || vim -n -c "source $EXEC_DIR/pxelinux.vim" -c "echo" /tmp/pxelinux.cfg
+[[ -f /tmp/pxelinux-selection.cfg ]] || {
+	job=$(grep -w -o "job=[^ ]\+" /tmp/pxelinux.cfg)
+	job=${job#job=}
+	[[ $job ]] && wget "$path_prefix/cgi-bin/lkp-jobfile-append-var?job_file=$job&job_state=give_back"
+	exit 0
+}
+
+echo ================================================================================
+grep . /tmp/pxelinux-selection.cfg
+echo ================================================================================
+echo
+
+add_initrd()
+{
+	local rd
+	for rd
+	do
+		wget $path_prefix/$rd -nc -P $(dirname /tmp/$rd) || exit 1
+		initrd_files+="/tmp/$rd "
+	done
+}
+
+kernel=
+initrd_files=
+append=
+params=
+while read key val
+do
+	case $key in
+		label)
+			[[ -n "$kernel" ]] && break
+			;;
+		kernel)
+			kernel=/tmp/$val
+			params="BOOT_IMAGE=$val"
+			if [[ ! $kernel =~ (menu.c32|.lkrn)$ ]]; then
+				wget $path_prefix/$val -nc -P $(dirname $kernel) || exit 1
+			fi
+			;;
+		append)
+			append="$val"
+			for param in $val
+			do
+				if [[ $param =~ ^initrd= ]]; then
+					rds="${param#initrd=}"
+					add_initrd ${rds//,/ }
+				elif [[ $param =~ ^[a-z_]+_initrd=([^ ]+) ]]; then
+					rds="${BASH_REMATCH[1]}"
+					add_initrd ${rds//,/ }
+				else
+					[[ $param =~ ^job= ]] && export $param
+					params="$params $param"
+				fi
+			done
+			;;
+		initrd)
+			add_initrd "$val"
+			;;
+	esac
+done < /tmp/pxelinux-selection.cfg
+
+if [[ $kernel =~ 'menu.c32'$ ]]; then
+	$0 $append
+elif [[ $kernel =~ '.lkrn'$ || "$initrd_files" =~ '.gpxe'$ ]]; then
+	$EXEC_DIR/gpxe-config $rd
+elif [[ $kernel ]]; then
+	[[ $initrd_files ]] && {
+		echo initrd: $initrd_files
+		cat $initrd_files  > /tmp/combined-initrd
+		opt_initrd="--initrd /tmp/combined-initrd"
+	}
+	[[ $job ]] && wget "$path_prefix/cgi-bin/lkp-jobfile-append-var?job_file=$job&job_state=booting"
+	echo kexec -l $kernel --append=\"$params\" $opt_initrd
+	kexec -l $kernel --append="$params" $opt_initrd
+	kexec -e
+	[[ $job ]] && wget "$path_prefix/cgi-bin/lkp-jobfile-append-var?job_file=$job&job_state=kexec_fail"
+	# kexec -f $kernel $initrd --command-line="$params"
+fi

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+while read a b c
+do
+	[[ "$a" == "set" && "$b" == "hostname"    ]] && export hostname=$c
+	[[ "$a" == "set" && "$b" == "path-prefix" ]] && export path_prefix=$c
+	[[ "$a" == "set" && "$b" == "config-file" ]] && export config_file=$c
+
+	[[ "$b" == "pxelinux.0" ]] && break
+done < $1
+
+if [[ "$b" == "pxelinux.0" ]]; then
+	$EXEC_DIR/gpxelinux $config_file
+fi

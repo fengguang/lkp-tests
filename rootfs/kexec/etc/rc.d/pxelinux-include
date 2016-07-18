@@ -1,0 +1,45 @@
+#!/bin/bash
+
+pub_nic()
+{
+	ip route | grep '^default via' | cut -f5 -d' '
+}
+
+my_gw()
+{
+	ip route | grep '^default via' | cut -f3 -d' '
+}
+
+PUB_NIC=$(pub_nic)
+
+my_ip()
+{
+	ifconfig $PUB_NIC | grep '\<inet\>' | sed -n '1p' | tr -s ' ' | cut -d ' ' -f3 | cut -d ':' -f2
+}
+
+my_mac()
+{
+	ifconfig $PUB_NIC | head -1 | tr -s ' ' | cut -d ' ' -f5
+}
+
+my_netmask()
+{
+	ifconfig $PUB_NIC | grep '\<inet\>' | sed -n '1p' | tr -s ' ' | cut -d ' ' -f5 | cut -d ':' -f2
+}
+
+for i do
+	[[ $i == '~' ]] && i=$config_file
+
+	i=${i/\$\{hostname\}/$hostname}
+	i=${i/\$\{mac\}/$(my_mac)}
+	i=${i/\$\{ip\}/$(my_ip)}
+	i=${i/\$\{gateway\}/$(my_gw)}
+	i=${i/\$\{netmask\}/$(my_netmask)}
+
+	[[ -f /tmp/wget-ok ]] && quiet="-nv"
+	wget $quiet -nc -P $(dirname /tmp/$i) $path_prefix/$i
+	[[ $? -ne 0 ]] && continue
+	touch /tmp/wget-ok
+
+	$EXEC_DIR/pxelinux-config /tmp/$i
+done

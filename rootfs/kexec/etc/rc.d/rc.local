@@ -1,0 +1,71 @@
+#!/bin/sh
+#
+# /etc/rc.d/rc.local:  Local system initialization script.
+#
+# Put any local startup commands in here.  Also, if you have
+# anything that needs to be run at shutdown time you can
+# make an /etc/rc.d/rc.local_shutdown script and put those
+# commands in there.
+
+trap - INT
+
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+
+if [ -x /etc/rc.d/rc.serial_console ]; then
+   /etc/rc.d/rc.serial_console start
+fi
+
+if [ -x /etc/rc.d/rc.fstab ]; then
+   /etc/rc.d/rc.fstab start
+fi
+
+if [ -x /etc/rc.d/rc.wifi ]; then
+   /etc/rc.d/rc.wifi start
+fi
+
+if [ -x /etc/rc.d/rc.netscript ]; then
+   /etc/rc.d/rc.netscript start
+fi
+
+exit 0
+
+for i in $(</proc/cmdline)
+do
+	[[ $i =~ [a-zA-Z_]+= ]] && eval $i
+done
+
+if [[ -z $path_prefix ]]; then
+	path_prefix='http://bee.sh.intel.com/~lkp/'
+fi
+SERVER=${path_prefix##*://}
+SERVER=${SERVER%%/*}
+
+echo
+echo "Welcome to the KEXEC based gPXELINUX boot loader!"
+echo
+
+i=0
+while [[ ! -s /tmp/etc.tgz ]]; do
+
+	ifconfig | grep -q Ethernet || sleep 1
+	ifconfig | grep -q Ethernet || sleep 2
+	ifconfig | grep -q Ethernet || sleep 3
+
+	lftp -c "set dns:fatal-timeout 2s; \
+		set dns:max-retries 3; \
+		set net:timeout 1s; \
+		open $path_prefix && \
+		get -O /tmp usbkey/boot/kexec/etc.tgz" && break
+
+	let i=i+1
+	[[ $i -gt 2 ]] && break
+
+	# echo
+	# ifconfig eth0 down
+	# ifconfig eth0 up
+	# mii-tool 2> /dev/null
+	/etc/rc.d/rc.inet1 start
+done
+tar z -C / -xf /tmp/etc.tgz
+
+/etc/rc.d/gpxelinux

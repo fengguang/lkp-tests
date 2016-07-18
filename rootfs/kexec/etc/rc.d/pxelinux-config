@@ -1,0 +1,91 @@
+#!/usr/bin/awk -f
+
+BEGIN {
+	IGNORECASE = 1
+	cfg_file="/tmp/pxelinux.cfg"
+
+	exec_dir=ENVIRON["EXEC_DIR"]
+	if (length(exec_dir) == 0)
+		exec_dir="."
+
+	cpu_long_mode=system("grep -q ' lm ' /proc/cpuinfo")
+}
+
+function dump_entry() {
+	printf("LABEL\t%s\n", label)		>> cfg_file
+	printf("KERNEL\t%s\n", kernel)		>> cfg_file
+	if (length(append))
+		printf("APPEND\t%s\n", append)	>> cfg_file
+	if (length(initrd))
+		printf("INITRD\t%s\n", initrd)	>> cfg_file
+	printf("\n")				>> cfg_file
+}
+
+function entry_type() {
+	if (length(kernel) == 0)
+		return 0
+	if (kernel ~ /^(vmlinuz|bzImage)/) {
+		if (kernel ~ /(x86_64|amd64)/ && cpu_long_mode != 0)
+			return 0
+		else
+			return 1
+	}
+	if (kernel ~ /(menu|vesamenu)\.c32$/)
+		return 1
+	if (kernel ~ /gpxe.*\.lkrn/ || initrd ~ /\.gpxe$/)
+		return 1
+	if (kernel ~ /\.(c32|cdt|com|bin|lil|lkrn)$/)
+		return 0
+	if (kernel ~ /[a-zA-Z]\.0$/)
+		return 0
+	if (kernel ~ /(memdisk|memtest)$/)
+		return 0
+	if (kernel ~ /(x86_64|amd64)/ && cpu_long_mode != 0)
+		return 0
+	return 1
+}
+
+// {
+	sub(/^[ \t]+/, "")
+	gsub(/[ \t]+/, " ")
+}
+
+/^TIMEOUT/ {
+	print $2 >> "/tmp/timeout"
+}
+
+/^INCLUDE/ {
+	config_file = substr($0, 9)
+	system(exec_dir "/pxelinux-include " config_file)
+}
+
+/^LABEL/ {
+	if (entry_type() > 0)
+		dump_entry()
+	label=substr($0, 7)
+	kernel=""
+	append=""
+	initrd=""
+}
+
+/^MENU LABEL/ {
+	label=substr($0, 12)
+	sub(/\^/, "", label)
+}
+
+/^KERNEL/ {
+	kernel=substr($0, 8)
+}
+
+/^APPEND/ {
+	append=substr($0, 8)
+}
+
+/^INITRD/ {
+	initrd=substr($0, 8)
+}
+
+END {
+	if (entry_type() > 0)
+		dump_entry()
+}
