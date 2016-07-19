@@ -547,6 +547,7 @@ class Job
 	end
 
 	def param_files
+		@param_files ||= begin
 		maps = {}
 		ruby_scripts = {}
 		misc_scripts = {}
@@ -565,6 +566,7 @@ class Job
 			end
 		end
 		[maps, ruby_scripts, misc_scripts]
+		end
 	end
 
 	def map_param(hash, key, val, rule_file)
