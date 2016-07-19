@@ -1,0 +1,3 @@
+need_kconfig:
+- CONFIG_IOSCHED_<%= ___.upcase %>
+- CONFIG_BLOCK
