@@ -197,13 +197,21 @@ class Job
 		# keep comment lines as symbols
 		yaml.gsub!(/\n\n#(.*)$/, "\n:#\\1: ")
 
-		if expand_template
-			yaml = expand_yaml_template(yaml, jobfile)
-		end
+		begin
+			if expand_template
+				yaml = expand_yaml_template(yaml, jobfile)
+			end
 
-		@jobs = []
-		YAML.load_stream(yaml) do |hash|
-			@jobs << hash
+			@jobs = []
+			YAML.load_stream(yaml) do |hash|
+				@jobs << hash
+			end
+		rescue Exception => e
+			$stderr.puts "#{jobfile}: " + e.message
+			$stderr.puts '-' * 80
+			$stderr.puts yaml
+			$stderr.puts '-' * 80
+			raise
 		end
 
 		@job = Hash.new
