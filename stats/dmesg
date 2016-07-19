@@ -110,5 +110,5 @@ puts "boot_failures: 1" if $PROGRAM_NAME =~ /dmesg/
 error_ids.each { |error_id, line|
 	puts
 	puts '# ' + line
-	puts error_id
+	puts error_id + ': 1'
 }
