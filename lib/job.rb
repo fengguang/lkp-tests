@@ -271,7 +271,16 @@ class Job
 				@file_loaded[k][f] = true
 			end
 
-			next if @referenced_programs.include?(k) and load_one[k] != nil
+			if @referenced_programs.include?(k) and i.include? k
+				next if load_one[k] != nil
+				if Hash === v
+					v.each { |kk, vv|
+						next unless @referenced_programs[k].include? kk
+						job['___'] = vv
+						load_one[kk]
+					}
+				end
+			end
 			next unless String === v
 
 			# For testbox vm-lkp-wsx01-4G,
