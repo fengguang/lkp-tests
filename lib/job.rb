@@ -577,7 +577,8 @@ class Job
 		rules.each do |pattern, expression|
 			val.sub!(pattern) do |s|
 				# puts s, pattern, expression
-				o = eval(expression)
+				job = JobEval.new @jobx
+				o = job.instance_eval(expression)
 				case output
 				when nil
 					output = o
@@ -764,9 +765,11 @@ class Job
 	def to_hash
 		@job
 	end
+end
 
+class JobEval < Job
 	def method_missing(method, *args, &block)
-		job = @jobx || @job
+		job = @job
 		method = method.to_s
 		if method.chomp!('=')
 			job[method] = args.first
