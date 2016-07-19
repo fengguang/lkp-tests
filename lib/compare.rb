@@ -976,8 +976,10 @@ module Compare
 
 	def self.compare(argv)
 		options = parse_argv argv
-		comparer = Comparer.new options
-		comparer.compare
+		if options
+			comparer = Comparer.new options
+			comparer.compare
+		end
 	end
 
 	## Test functions
