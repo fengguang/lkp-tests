@@ -31,10 +31,13 @@ elsif ENV['RESULT_ROOT']
 		dmesg_file = serial_file
 
 		if File.exist?(kmsg_file) and
-		   File.size(serial_file) == 0 and
 		   File.size(kmsg_file) > 0
-			$stderr.puts "unexpected 0-sized serial file " + serial_file
-			dmesg_file = kmsg_file
+			if File.size(serial_file) == 0
+				$stderr.puts "unexpected 0-sized serial file " + serial_file
+				dmesg_file = kmsg_file
+			end
+		else
+			kmsg_file = dmesg_file
 		end
 	elsif File.exist? kmsg_file
 		dmesg_file = kmsg_file
@@ -74,9 +77,19 @@ verify_serial_log(dmesg_lines)
 
 error_ids = {}
 if $PROGRAM_NAME =~ /dmesg/
+	lines = dmesg_lines
 	output = grep_crash_head dmesg_file, '-o'
 else
-	output = grep_printk_errors kmsg_file, dmesg_file, dmesg_lines
+	if kmsg_file == dmesg_file
+		kmsg_lines = dmesg_lines
+		kmsg = kmsg_lines.join "\n"
+	elsif File.exist?(kmsg_file)
+		kmsg = File.read kmsg_file
+		kmsg_lines = kmsg_lines.split("\n")
+	end
+
+	lines = kmsg_lines
+	output = grep_printk_errors kmsg_file, kmsg
 end
 exit if output.empty?
 exit if output =~ /trinity.*: page allocation failure|Out of memory: .*trinity/ # trinity is known to trigger OOM
