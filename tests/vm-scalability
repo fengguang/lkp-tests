@@ -3,6 +3,7 @@
 # - nr_task
 # - test
 # - size
+# - unit_size
 # - fs
 # - pre_setup
 
@@ -28,9 +29,8 @@ if [ "$pre_setup" = "0" ]; then
 	create_sparse_root
 fi
 
-set_repeat_count()
+set_def_unit_size()
 {
-	size=$(( size * nr_node  ))
 	if [ "${test#*shm}" != "$test" ]; then
 		if [ "${test#*lru}" != "$test" ]; then
 			unit_size=$(( shm_size / 2  ))
@@ -39,6 +39,14 @@ set_repeat_count()
 		fi
 	else
 		unit_size=$(( mem / 2  ))
+	fi
+}
+
+set_repeat_count()
+{
+	size=$(( size * nr_node  ))
+	if [ -z "$unit_size" ]; then
+		set_def_unit_size
 	fi
 	[ "$unit_size" -gt "$size" ] && unit_size=$(( size  ))
 	repeat=$(( size / unit_size  ))
