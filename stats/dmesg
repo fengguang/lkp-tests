@@ -76,6 +76,8 @@ end
 verify_serial_log(dmesg_lines)
 
 error_ids = {}
+error_stamps = {}
+
 if $PROGRAM_NAME =~ /dmesg/
 	lines = dmesg_lines
 	output = grep_crash_head dmesg_file, '-o'
@@ -94,8 +96,21 @@ end
 exit if output.empty?
 exit if output =~ /trinity.*: page allocation failure|Out of memory: .*trinity/ # trinity is known to trigger OOM
 
+lines.reverse_each { |line|
+	if line =~ /^(<[0-9]+>)?\[ *(\d{1,6}\.\d{6})\] /
+		error_stamps['last'] = $2
+		break
+	end
+}
+
 output.each_line { |line|
 	line.chomp!
+
+	if line =~ /^(<[0-9]+>)?\[ *(\d{1,6}\.\d{6})\] /
+		timestamp = $2
+	else
+		timestamp = nil
+	end
 
 	next if line =~ /INFO: Stall ended before state dump start/
 	next if line =~ /INFO: NMI handler .* took too long to run:/
@@ -113,6 +128,7 @@ output.each_line { |line|
 	next if error_id.size <= 3
 
 	error_ids[error_id] ||= bug_to_bisect
+	error_stamps[error_id] ||= timestamp if timestamp
 }
 
 exit if error_ids.empty?
@@ -124,4 +140,9 @@ error_ids.each { |error_id, line|
 	puts
 	puts '# ' + line
 	puts error_id + ': 1'
+}
+
+puts
+error_stamps.each { |error_id, timestamp|
+	puts "timestamp.#{error_id}: #{timestamp}"
 }
