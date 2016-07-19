@@ -282,6 +282,9 @@ class Job
 		expand_each_in(job, @dims_to_expand) { |h, k, v|
 			h.delete(k) if Array === v
 		}
+		@jobx = job
+		expand_params(false)
+		@jobx = nil
 		for_each_in(job, i.keys) do |pk, h, k, v|
 			job['___'] = v
 
@@ -625,8 +628,8 @@ class Job
 		end
 	end
 
-	def expand_params
-		@jobx = deepcopy @job
+	def expand_params(run_scripts = true)
+		@jobx ||= deepcopy @job
 		maps, ruby_scripts, misc_scripts = param_files
 		begin
 			hash = nil
@@ -636,6 +639,7 @@ class Job
 				file = maps[k]
 				map_param(h, k, v, file)
 			}
+			return true unless run_scripts
 			for_each_in(@jobx, ruby_scripts.keys.to_set) { |pk, h, k, v|
 				hash = h
 				file = ruby_scripts[k]
