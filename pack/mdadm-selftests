@@ -5,10 +5,10 @@ download()
 
 build()
 {
-	cd /tmp/mdadm && make
+	cd /tmp/mdadm && make test
 }
 
 install()
 {
-	cp -a mdadm test tests $BM_ROOT
+	cp -a /tmp/mdadm/* $BM_ROOT/
 }
