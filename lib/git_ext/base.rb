@@ -13,6 +13,11 @@ module Git
 			@project = options[:project]
 		end
 
+		def project_defaults
+			$remotes ||= load_remotes
+			$remotes[@project] || $remotes['internal-' + @project]
+		end
+
 		# add tag_names because Base::tags is slow to obtain all tag objects
 		# FIXME consider to cache this method
 		def tag_names
@@ -38,7 +43,7 @@ module Git
 		def release_tags
 			unless @release_tags
 				$remotes ||= load_remotes
-				pattern = Regexp.new '^' + Array($remotes[@project]['release_tag_pattern']).join('$|^') + '$'
+				pattern = Regexp.new '^' + Array(project_defaults['release_tag_pattern']).join('$|^') + '$'
 				@release_tags = self.tag_names.select {|tag_name| pattern.match(tag_name)}
 			end
 
@@ -48,7 +53,7 @@ module Git
 		def release_tags_with_order
 			unless @release_tags_with_order
 				$remotes ||= load_remotes
-				pattern = Regexp.new '^' + Array($remotes[@project]['release_tag_pattern']).join('$|^') + '$'
+				pattern = Regexp.new '^' + Array(project_defaults['release_tag_pattern']).join('$|^') + '$'
 
 				tags = sort_tags(pattern, self.release_tags)
 				@release_tags_with_order = Hash[tags.map.with_index {|tag, i| [tag, -i]}]
