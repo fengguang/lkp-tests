@@ -19,7 +19,7 @@ modprobe loop
 
 run_test()
 {
-	timeout 30m ./test "--tests=$testcase"
+	timeout 5m ./test "--tests=$testcase"
 	[ $? -eq 124 ] && echo "$testcase TIMEOUT" >&2
 
 	local res_dir="result/$testcase"
