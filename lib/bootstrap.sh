@@ -181,7 +181,7 @@ mount_rootfs()
 	if [ -n "$rootfs_partition" ]; then
 		mkdir -p /opt/rootfs
 		mount $rootfs_partition /opt/rootfs || {
-			mkfs.ext4 -q $rootfs_partition
+			mkfs.btrfs -f $rootfs_partition
 			mount $rootfs_partition /opt/rootfs
 		}
 		mkdir -p /opt/rootfs/tmp
