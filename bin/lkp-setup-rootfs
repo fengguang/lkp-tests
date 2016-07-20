@@ -85,6 +85,7 @@ while true; do
 	fi
 
 	next_job
+	rsync_rootfs
 	job_does_not_need_reboot || break
 done
 

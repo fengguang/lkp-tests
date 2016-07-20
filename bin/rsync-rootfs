@@ -11,42 +11,57 @@
 # eg: inn:/export/debian-full-x86_64
 source=$1
 [ -z "${source}" ] && {
-	echo "Parameter is empty." 
+	echo "Parameter is empty."
 	exit 1
 }
 
 rootfs_name=${source##*/}
+# To remove the version info from rootfs's name
+# eywa-x86_64-20160714-1 ==> eywa-x86_64
+rootfs_name=${rootfs_name%*-[0-9]*-[0-9]}
 
 # eg: /dev/disk/by-id/ata-WDC_WD1002FAEX-00Z3A0_WD-WCATRC577623-part2
-dest_partition=$2
+# eg: LABEL=LKP-ROOTFS
+dest=$2
+dest_partition=$(readlink -e $dest)
+[ -z "$dest_partition" ] &&
+dest_partition=$(blkid | grep ${dest#*=} | cut -d':' -f1)
+
 [ ! -b ${dest_partition} ] && {
-	echo "Partition ${dest_partition} can't be found!" 
+	echo "Partition ${dest} can't be found!"
 	exit 1
 }
 
 fs_type=$(blkid -o value -s TYPE $dest_partition)
 [ "${fs_type}" != "btrfs" ] && {
-	mkfs.btrfs -f ${dest_partition} || exit 
+	umount ${dest_partition} 2>/dev/null
+	mkfs.btrfs -f ${dest_partition} || exit
 }
 
-mkdir -p /opt/rootfs || exit 
-mount ${dest_partition} /opt/rootfs || exit
+MNT_POINT=$(cat /proc/mounts | grep -w "$dest_partition" | cut -d' ' -f2)
+if [ -z "$MNT_POINT" ];then
+	MNT_POINT="/opt/rootfs"
+	mkdir -p $MNT_POINT || exit
+	mount ${dest_partition} $MNT_POINT || exit
+fi
 
 # for CACHE_DIR
-mkdir -p /opt/rootfs/tmp || exit
+mkdir -p $MNT_POINT/tmp || exit
 
 # After create, the subvolume can be used like:
 # mount -o subvol=$rootfs_name $dest_partition /some-path
-[ ! -d "/opt/rootfs/${rootfs_name}" ] && {
-	btrfs subvolume create /opt/rootfs/$rootfs_name || exit
+[ ! -d "$MNT_POINT/${rootfs_name}" ] && {
+	btrfs subvolume create $MNT_POINT/$rootfs_name || exit
 }
 
 # create NFS mount directory
-nfs_mount_rootfs=/opt/rootfs/NFS-${rootfs_name}
+nfs_mount_rootfs=$MNT_POINT/NFS-${rootfs_name}
 
 [ -d ${nfs_mount_rootfs} ] || mkdir -p ${nfs_mount_rootfs} || exit
 
 # mount NFS to local and rsync to destination subvolume
 mount $source $nfs_mount_rootfs || exit
-rsync -aix --delete $nfs_mount_rootfs/ /opt/rootfs/$rootfs_name || exit 
+rsync -aix --delete $nfs_mount_rootfs/ $MNT_POINT/$rootfs_name || exit
 
+# umount NFS
+umount $nfs_mount_rootfs || exit

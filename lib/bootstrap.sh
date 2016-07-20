@@ -264,3 +264,16 @@ next_job()
 
 	download_job
 }
+
+rsync_rootfs()
+{
+	local append=$(grep -m1 '^APPEND ' $NEXT_JOB | sed 's/^APPEND //')
+	for i in $append
+	do
+		[ "$i" != "${i#remote_rootfs=}" ] && export "$i"
+		[ "$i" != "${i#root=}" ] && export "$i"
+	done
+
+	[ -n "$remote_rootfs" -a -n "$root" ] &&
+	$LKP_DEBUG_PREFIX $LKP_SRC/bin/rsync-rootfs $remote_rootfs $root
+}
