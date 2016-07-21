@@ -132,13 +132,18 @@ def grep_printk_errors(kmsg_file, kmsg)
 	return '' if ENV.fetch('RESULT_ROOT', "").index '/trinity/'
 	return '' unless File.exist?('/lkp/printk-error-messages')
 
-	oops = `grep -a -v -f #{LKP_SRC}/etc/oops-pattern #{kmsg_file} | grep -a -F -f /lkp/printk-error-messages`
-	oops += `grep -a -E -e '^<[0123]>' -e '^kern  :(err   |crit  |alert |emerg ): ' #{kmsg_file} |
-		 grep -a -v -f #{LKP_SRC}/etc/oops-pattern |
-		 grep -a -v -F -f /lkp/printk-error-messages -f #{LKP_SRC}/etc/kmsg-blacklist` if kmsg_file =~ /\bkmsg$/
-	oops += `grep -a -f #{LKP_SRC}/etc/ext4-crit-pattern	#{kmsg_file}` if kmsg.index 'EXT4-fs ('
-	oops += `grep -a -f #{LKP_SRC}/etc/xfs-alert-pattern	#{kmsg_file}` if kmsg.index 'XFS ('
-	oops += `grep -a -f #{LKP_SRC}/etc/btrfs-crit-pattern	#{kmsg_file}` if kmsg.index 'btrfs: '
+	if kmsg_file =~ /\bkmsg$/
+		oops = `grep -a -E -e '^<[0123]>' -e '^kern  :(err   |crit  |alert |emerg ): ' #{kmsg_file} |
+			grep -a -v    -f #{LKP_SRC}/etc/oops-pattern |
+			grep -a -v -F -f #{LKP_SRC}/etc/kmsg-blacklist`
+	else
+		oops = `grep -a -F -f /lkp/printk-error-messages #{kmsg_file} |
+			grep -a -v    -f #{LKP_SRC}/etc/oops-pattern |
+			grep -a -v -F -f #{LKP_SRC}/etc/kmsg-blacklist`
+		oops += `grep -a -f #{LKP_SRC}/etc/ext4-crit-pattern	#{kmsg_file}` if kmsg.index 'EXT4-fs ('
+		oops += `grep -a -f #{LKP_SRC}/etc/xfs-alert-pattern	#{kmsg_file}` if kmsg.index 'XFS ('
+		oops += `grep -a -f #{LKP_SRC}/etc/btrfs-crit-pattern	#{kmsg_file}` if kmsg.index 'btrfs: '
+	end
 	oops
 end
 
