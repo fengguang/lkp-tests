@@ -69,7 +69,7 @@ exception Emask 0x
  microframes, ep desc says 
 BMC returned incorrect response,
 Starting new kernel
-drm:drm_edid_block_valid
+drm: drm_edid_block_valid
 Raw EDID:
 ACPI: Invalid BIOS MADT, disabling ACPI
 ACPI: Error parsing LAPIC address override entry
@@ -100,24 +100,24 @@ no IO addresses supplied
 used greatest stack depth:
 unsafe for production use.
 can't access extended PCI configuration
-intel rapl:no valid rapl domains found in package
+intel rapl: no valid rapl domains found in package
 dummy-irq: no IRQ given.  Use irq=N
 Unable to detect cache hierarchy from DT for CPU
 Failed to find cpu
 tp3780i::tp3780I_InitializeBoardData: Error: SMAPI is not available on this machine
-mwave:mwavedd::mwave init:Error:Failed to initialize
+mwavedd::mwave init: Error: Failed to initialize
 :--- Start of test: 
 no IO addresses supplied
 sc1200wdt: io parameter must be specified
-Error: Driver 'pcspkr' is already registered,aborting
+Error: Driver 'pcspkr' is already registered, aborting...
 wdt: I/O address 
-power supply register:Expected proper parent device for
+power supply register: Expected proper parent device for
 telclk interrupt = 0x
 i2c-parport-light: adapter type unspecified
 i2c-parport: adapter type unspecified
 watchdog: Software Watchdog: a legacy watchdog module is probably present
 Warning: could not register annotated branches stats
-pc87360: PC8736x not detected, module not inserted
+ not detected, module not inserted
 CPU feature 'AVX registers' is not supported
 applesmc: supported laptop not found
 applesmc: driver init failed
@@ -131,7 +131,7 @@ mk712: device not present
 kvm: no hardware support
 : invalid alarm value
 : cannot register miscdev on minor=
-Warning!fotg210 hcd should always be loaded before uhci hcd and ohci hcd,not after
+Warning! fotg210_hcd should always be loaded before uhci_hcd and ohci_hcd, not after
 : failed to read out thermal zone
 acer wmi: No or unsupported WMI interface, unable to load
 cros ec lpc: unsupported system
