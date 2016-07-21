@@ -117,8 +117,10 @@ wait_on_manual_check()
 
 	for i in $(seq 600)
 	do
+		if [ -f $TMP/disturbed ]; then
+			:
 		# t100 has XWindow auto login
-		if [ "$HOSTNAME" = 't100' ]; then
+		elif [ "$HOSTNAME" = 't100' ]; then
 			local users="$(users)"
 			[ "${users#* }" != "$users" ] || break
 		else

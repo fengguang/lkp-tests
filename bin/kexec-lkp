@@ -8,12 +8,22 @@
 
 LKP_USER=$1
 NEXT_JOB=$2
-[ -z "$NEXT_JOB" ] && echo "Usage: kexec-lkp user job.yaml" 1>&2 && exit 1
 
 [ -n "$LKP_SRC" ] || export LKP_SRC=/lkp/$LKP_USER/src
 
 . $LKP_SRC/lib/bootstrap.sh
 . $LKP_SRC/lib/kexec.sh
 . $LKP_SRC/lib/misc.sh 2>/dev/null
+
+# called from interactive shell to reboot the machine
+[ -z "$NEXT_JOB" ] && [ -n "$SSH_CONNECTION" ] && {
+
+	# to prevent post processing of current job,
+	# hence prevent race conditions in LKP server
+	touch /tmp/lkp/disturbed
+
+	manual_reboot='manual_reboot=1&'
+	next_job
+}
 
 kexec_to_next_job $NEXT_JOB

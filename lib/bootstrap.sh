@@ -219,8 +219,9 @@ __next_job()
 
 	echo "geting new job..."
 	local mac="$(ip link | awk '/ether/ {print $2; exit}')"
-	local last_kernel="$(grep ^kernel: $job | cut -d \" -f 2)"
-	wget "http://$LKP_SERVER:$LKP_CGI_PORT/~$LKP_USER/cgi-bin/gpxelinux.cgi?hostname=${HOSTNAME}&mac=$mac&last_kernel=$last_kernel&lkp_wtmp" \
+	local last_kernel=
+	[ -n "$job" ] && last_kernel="last_kernel=$(grep ^kernel: $job | cut -d \" -f 2)&"
+	wget "http://$LKP_SERVER:$LKP_CGI_PORT/~$LKP_USER/cgi-bin/gpxelinux.cgi?hostname=${HOSTNAME}&mac=$mac&${last_kernel}${manual_reboot}lkp_wtmp" \
 	     -nv -t 1 -O $NEXT_JOB
 	grep -q "^KERNEL " $NEXT_JOB || {
 		echo "no KERNEL found" 1>&2
