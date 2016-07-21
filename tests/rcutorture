@@ -10,7 +10,7 @@ modprobe rcutorture || die "failed to load rcutorture module"
 
 sleep $runtime
 
-rmmod rcutorture &> /dev/null
+rmmod rcutorture 2> /dev/null
 
 dmesg | grep torture:
 [ $? -ne 0 ] && exit 1
