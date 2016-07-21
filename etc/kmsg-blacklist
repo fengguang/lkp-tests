@@ -1,3 +1,4 @@
+#! grep -F
 ###### unstable ######
 Address belongs to variable 
 APIC calibration not consistent
@@ -74,7 +75,7 @@ ACPI: Invalid BIOS MADT, disabling ACPI
 ACPI: Error parsing LAPIC address override entry
 ACPI: Error parsing LAPIC NMI entry
 ACPI: No IRQ available for PCI Interrupt Link 
-ACPI: PCI Interrupt Link .* enabled at IRQ 
+ACPI: PCI Interrupt Link 
 ACPI needs to be enabled for this driver to work!
 : Failed to register ACPI driver: 
 No Caching mode page found
@@ -99,47 +100,38 @@ no IO addresses supplied
 used greatest stack depth:
 unsafe for production use.
 can't access extended PCI configuration
-ACPI:PCI Interrupt Link.*enabled at IRQ
 intel rapl:no valid rapl domains found in package
 dummy-irq: no IRQ given.  Use irq=N
 Unable to detect cache hierarchy from DT for CPU
 Failed to find cpu
 tp3780i::tp3780I_InitializeBoardData: Error: SMAPI is not available on this machine
 mwave:mwavedd::mwave init:Error:Failed to initialize
---- Start of test
+:--- Start of test: 
 no IO addresses supplied
 sc1200wdt: io parameter must be specified
 Error: Driver 'pcspkr' is already registered,aborting
-w83877f wdt: I/O address .* already in use
+wdt: I/O address 
 power supply register:Expected proper parent device for
-telclk interrupt = 0x.* non-mcpbl0010 hw
+telclk interrupt = 0x
 i2c-parport-light: adapter type unspecified
 i2c-parport: adapter type unspecified
-watchdog: Software Watchdog: cannot register miscdev on minor=
 watchdog: Software Watchdog: a legacy watchdog module is probably present
-pc87413 wdt: cannot register miscdev on minor=
 Warning: could not register annotated branches stats
-pc87360: PC8736x not detected,module not inserted
+pc87360: PC8736x not detected, module not inserted
 CPU feature 'AVX registers' is not supported
 applesmc: supported laptop not found
 applesmc: driver init failed
 wdt: misc register failed
 sch56xx common: Unsupported device id
-sbc epx c3: cannot register miscdev on minor=
-acquirewdt: I/O address .* already in use
-sbc60xxwdt: I/O address .* already in use
 uses deprecated remap_file_pages
-w83977f wdt: cannot register miscdev on minor=
 smsc37b787 wdt: Unable to register miscdev on minor
 hdaps: supported laptop not found
 hdaps: driver init failed
-wafer5823wdt: I/O address .* already in use
 mk712: device not present
 kvm: no hardware support
-sbc7240 wdt: I/O address .* already in use
-rtc rtc.*: invalid alarm value
-i6300esb: cannot register miscdev on minor=
+: invalid alarm value
+: cannot register miscdev on minor=
 Warning!fotg210 hcd should always be loaded before uhci hcd and ohci hcd,not after
-thermal thermal zone.*: failed to read out thermal zone
+: failed to read out thermal zone
 acer wmi: No or unsupported WMI interface, unable to load
 cros ec lpc: unsupported system
