@@ -13,4 +13,3 @@ sleep $runtime
 rmmod rcutorture 2> /dev/null
 
 dmesg | grep torture:
-[ $? -ne 0 ] && exit 1
