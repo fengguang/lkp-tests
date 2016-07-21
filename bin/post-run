@@ -152,10 +152,12 @@ copy_time_files || ps faux --cols 1000 > $RESULT_ROOT/time-debug
 	copy_to_result $TMP/gcov-test.tar.gz
 }
 
-truncate --no-create --size='<10M' $TMP/output $TMP/stdout $TMP/stderr
+dmesg --facility user --human --color=always > $TMP/umesg
+truncate --no-create --size='<10M' $TMP/output $TMP/stdout $TMP/stderr $TMP/umesg
 
 copy_to_result $TMP/boot-time
 copy_to_result $TMP/env.yaml
 copy_to_result $TMP/stdout
 copy_to_result $TMP/stderr
 copy_to_result $TMP/output
+copy_to_result $TMP/umesg
