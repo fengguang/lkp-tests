@@ -231,7 +231,9 @@ def analyze_error_id(line)
 	when /(Out of memory: Kill process) \d+ \(/
 		line = $1
 		bug_to_bisect = $1
-	when /(Writer stall state) \d+ g\d+ c\d+ f/
+        # old format: "[  122.209638 ] ??? Writer stall state 8 g62150 c62149 f0x2"
+        # new format: "[  122.209638 ] ??? Writer stall state RTWS_STUTTER(8) g62150 c62149 f0x2"
+	when /(Writer stall state \w*).+ g\d+ c\d+ f/
 		line = $1
 		bug_to_bisect = $1
 	when /(used greatest stack depth:)/
