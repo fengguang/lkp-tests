@@ -89,7 +89,7 @@ def is_linus_commit(commit)
 end
 
 def git_commit(commit)
-	return commit if Git.sha1_40?(commit)
+	return commit if sha1_40?(commit)
 
 	$__git_commit_cache ||= {}
 	return $__git_commit_cache[commit] if $__git_commit_cache.include?(commit)
@@ -299,6 +299,16 @@ end
 $__commit_name_cache = Hash.new
 def commit_name(commit)
 	$__commit_name_cache[commit] ||= __commit_name(commit)
+end
+
+def sha1_40?(commit)
+	commit =~ /^[\da-f]{40}$/
+end
+
+def commit_name?(commit_name)
+	commit_name =~ /^[\da-f~^]{7,}$/ ||
+	commit_name =~ /^v[\d]+\.\d+/ ||
+	sha1_40?(commit_name)
 end
 
 def linux_commit(c)
