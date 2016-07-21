@@ -108,31 +108,13 @@ announce_bootup()
 
 redirect_stdout_stderr()
 {
+	[ -c /dev/kmsg ] || return
+
 	exec  > /tmp/stdout
 	exec 2> /tmp/stderr
 
-	ln -sf /usr/bin/tail /bin/tail-to-console
-	ln -sf /usr/bin/tail /bin/tail-to-serial
-
-	# write log to screen as well so that we can see them
-	# even network is broken
-
-	for i in $(seq 10)
-	do
-		[ -c /dev/console ] &&
-		[ -c /dev/ttyS0   ] && break
-		sleep 1
-	done
-
-	# the test fixes "cannot create /dev/console: Input/output error"
-	[ -c /dev/console ] &&
-	tail-to-console -f /tmp/stdout /tmp/stderr > /dev/console &
-
-	# some machines do not have serial console, writing to /dev/ttyS0 may fail
-	[ -c /dev/ttyS0 ] &&
-	echo > /dev/ttyS0 2>/dev/null && {
-		tail-to-serial -f /tmp/stderr > /dev/ttyS0 2>/dev/null &
-	}
+	tail -f /tmp/stdout | stdbuf -i0 -o0 sed 's/^/<5>/' > /dev/kmsg &
+	tail -f /tmp/stderr | stdbuf -i0 -o0 sed 's/^/<3>/' > /dev/kmsg &
 }
 
 fixup_packages()
