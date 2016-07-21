@@ -97,7 +97,7 @@ exit if output.empty?
 exit if output =~ /trinity.*: page allocation failure|Out of memory: .*trinity/ # trinity is known to trigger OOM
 
 lines.reverse_each { |line|
-	if line =~ /^(<[0-9]+>)?\[ *(\d{1,6}\.\d{6})\] /
+	if line =~ /^(<[0-9]+>|....  :..... : )?\[ *(\d{1,6}\.\d{6})\] /
 		error_stamps['last'] = $2
 		break
 	end
@@ -106,7 +106,7 @@ lines.reverse_each { |line|
 output.each_line { |line|
 	line.chomp!
 
-	if line =~ /^(<[0-9]+>)?\[ *(\d{1,6}\.\d{6})\] /
+	if line =~ /^(<[0-9]+>|....  :..... : )?\[ *(\d{1,6}\.\d{6})\] /
 		timestamp = $2
 	else
 		timestamp = nil

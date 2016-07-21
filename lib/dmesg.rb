@@ -88,6 +88,7 @@ def fixup_dmesg(line)
 	# break up mixed messages
 	case line
 	when /^<[0-9]>/
+	when /^(kern  |user  |daemon):......: /
 	when /(.+)(\[ *[0-9]{1,6}\.[0-9]{6}\] .*)/
 		line = $1 + "\n" + $2
 	end
@@ -113,7 +114,7 @@ end
 
 def grep_crash_head(dmesg_file, grep_options = '')
 	oops = %x[ xzgrep -a -f #{LKP_SRC}/etc/oops-pattern #{grep_options} #{dmesg_file} | grep -v -f #{LKP_SRC}/etc/oops-pattern-ignore |
-		   awk '{line = $0; sub(/^(<[0-9]>)?\[[ 0-9.]+\] /, "", line); if (!x[line]++) print;}'
+		   awk '{line = $0; sub(/^(<[0-9]>|kern  :......: )?\[[ 0-9.]+\] /, "", line); if (!x[line]++) print;}'
 	]
 	unless oops.empty?
 		oops += `xzgrep -v -F ' ? ' #{dmesg_file} |
@@ -132,9 +133,9 @@ def grep_printk_errors(kmsg_file, kmsg)
 	return '' unless File.exist?('/lkp/printk-error-messages')
 
 	oops = `grep -a -v -f #{LKP_SRC}/etc/oops-pattern #{kmsg_file} | grep -a -F -f /lkp/printk-error-messages`
-	oops += `grep -a '^<[0123]>' #{kmsg_file} |
+	oops += `grep -a -E -e '^<[0123]>' -e '^kern  :(err   |crit  |alert |emerg ): ' #{kmsg_file} |
 		 grep -a -v -f #{LKP_SRC}/etc/oops-pattern |
-		 grep -a -v -F -f /lkp/printk-error-messages -f #{LKP_SRC}/etc/kmsg-blacklist` if kmsg_file =~ /\/kmsg$/
+		 grep -a -v -F -f /lkp/printk-error-messages -f #{LKP_SRC}/etc/kmsg-blacklist` if kmsg_file =~ /\bkmsg$/
 	oops += `grep -a -f #{LKP_SRC}/etc/ext4-crit-pattern	#{kmsg_file}` if kmsg.index 'EXT4-fs ('
 	oops += `grep -a -f #{LKP_SRC}/etc/xfs-alert-pattern	#{kmsg_file}` if kmsg.index 'XFS ('
 	oops += `grep -a -f #{LKP_SRC}/etc/btrfs-crit-pattern	#{kmsg_file}` if kmsg.index 'btrfs: '
@@ -189,6 +190,10 @@ def oops_to_bisect_pattern(line)
 end
 
 def analyze_error_id(line)
+
+	line.sub!(/^(kern  |user  |daemon):......: /, '')
+	line.sub!(/^[^a-zA-Z]+/, '')
+
 	case line
 	when /(INFO: rcu[_a-z]* self-detected stall on CPU)/,
 	     /(INFO: rcu[_a-z]* detected stalls on CPUs\/tasks:)/
@@ -247,7 +252,7 @@ def analyze_error_id(line)
 		bug_to_bisect = oops_to_bisect_pattern line
 	end
 
-	error_id = line.sub(/^[^a-zA-Z]+/, "")
+	error_id = line
 
 	error_id.gsub! /\ \]$/, ""					# [ INFO: possible recursive locking detected ]
 	error_id.gsub! /\/c\/kernel-tests\/src\/[^\/]+\//, ''
