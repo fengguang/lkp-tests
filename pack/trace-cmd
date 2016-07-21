@@ -1,0 +1,20 @@
+#!/bin/bash
+
+download()
+{
+	source_dir="trace-cmd"
+	[[ -d $source_dir ]] || {
+		git_clone_update https://git.kernel.org/pub/scm/linux/kernel/git/rostedt/trace-cmd.git
+	}
+}
+
+build()
+{
+	cd $source_dir
+	make prefix=$BM_ROOT
+}
+
+install()
+{
+	make prefix=$BM_ROOT install
+}
