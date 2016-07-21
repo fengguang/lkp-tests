@@ -102,6 +102,7 @@ class Job2sh < Job
 		cmd = create_cmd(program, args)
 		cmd_str = cmd.join ' '
 		cmd_str.gsub!(LKP_SRC, '$LKP_SRC')
+		cmd_str.gsub!(lkp_src, '$LKP_SRC')
 		cmd_str.gsub!(TMP, '$TMP')
 
 		program_env.each { |k, v|
