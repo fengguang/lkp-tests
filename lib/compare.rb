@@ -7,6 +7,7 @@ require "#{LKP_SRC}/lib/common.rb"
 require "#{LKP_SRC}/lib/enumerator.rb"
 require "#{LKP_SRC}/lib/stats.rb"
 require "#{LKP_SRC}/lib/tests.rb"
+require "#{LKP_SRC}/lib/axis.rb"
 require "#{LKP_SRC}/lib/result_root.rb"
 
 class AxesGrouper
