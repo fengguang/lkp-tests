@@ -5,6 +5,7 @@ read_kernel_cmdline_vars_from_append()
 	for i in $1
 	do
 		[ "$i" != "${i#job=}" ]			&& export "$i"
+		[ "$i" != "${i#RESULT_ROOT=}" ]		&& export "$i"
 		[ "$i" != "${i#initrd=}" ]		&& export "$i"
 		[ "$i" != "${i#bm_initrd=}" ]		&& export "$i"
 		[ "$i" != "${i#job_initrd=}" ]		&& export "$i"
@@ -71,6 +72,12 @@ kexec_to_next_job()
 
 	echo "LKP: kexec loading..."
 	echo kexec --noefi -l $kernel_file $initrd_option --append=\"$append\"
+
+	test -d 				"/$LKP_SERVER/$RESULT_ROOT/" &&
+	dmesg --human --decode --color=always > "/$LKP_SERVER/$RESULT_ROOT/pre-dmesg" &&
+	chown lkp.lkp				"/$LKP_SERVER/$RESULT_ROOT/pre-dmesg" &&
+	sync
+
 	kexec --noefi -l $kernel_file $initrd_option --append="$append"
 
 	if [ -n "$(find /etc/rc6.d -name '[SK][0-9][0-9]kexec' 2>/dev/null)" ]; then
