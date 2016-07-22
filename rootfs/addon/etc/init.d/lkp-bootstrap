@@ -49,4 +49,7 @@ export_top_env
 export LKP_USER=$user
 export LKP_SRC=/lkp/$user/src
 
-$LKP_DEBUG_PREFIX $LKP_SRC/bin/lkp-setup-rootfs
+$LKP_DEBUG_PREFIX $LKP_SRC/bin/lkp-setup-rootfs || {
+	# some reasonable debug time
+	sleep 10m
+}
