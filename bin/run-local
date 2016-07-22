@@ -103,12 +103,14 @@ end
 
 ENV['TMP_RESULT_ROOT'] = ENV['RESULT_ROOT']
 
+jobx = Job2sh.new(job.to_hash)
+jobx.expand_params or exit
+
 FileUtils.rm_rf TMP
 Dir.mkdir TMP
 
 job_script = result_root + '/job.sh'
 File.open(job_script, mode='w', perm=0775) do |file|
-	jobx = Job2sh.new(job.to_hash)
 	file.puts jobx.to_shell
 end
 
