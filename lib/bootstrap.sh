@@ -249,7 +249,7 @@ next_job()
 
 rsync_rootfs()
 {
-	local append=$(grep -m1 '^APPEND ' $NEXT_JOB | sed 's/^APPEND //')
+	local append="$(grep -m1 '^APPEND ' $NEXT_JOB | sed 's/^APPEND //')"
 	for i in $append
 	do
 		[ "$i" != "${i#remote_rootfs=}" ] && export "$i"
