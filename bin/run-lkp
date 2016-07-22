@@ -58,19 +58,6 @@ jobfile_append_var		"loadavg=$(cat /proc/loadavg)" \
 				"$version" \
 				"$time_delta"
 
-if [ "$HOSTNAME" = t100 ]; then
-	sync
-elif ! mountpoint -q $RESULT_MNT; then
-	set_job_state 'error_umounted'
-	job_done 1
-elif ! umount $RESULT_MNT; then
-	{ ps faux --cols 1000; mount; lsof | grep $RESULT_MNT; grep -s . $TMP/.pid-wait-monitors $TMP/.pid-pipes $TMP/pid-*; } | tee $RESULT_ROOT/error-umount
-	set_job_state 'error_umount'
-	sleep 180
-	umount $RESULT_MNT >> $RESULT_ROOT/error-umount 2>&1 ||
-	job_done 1
-fi
-
 if [ "$run_job_exit_code" != 0 ]; then
 	if [ -f "$TMP/OOM" ] || check_oom; then
 		set_job_state "OOM"
@@ -91,4 +78,5 @@ else
 	set_job_state 'finished'
 fi
 
+sync
 job_done
