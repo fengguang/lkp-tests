@@ -1,0 +1,19 @@
+#!/bin/sh
+# - events
+
+[ -z "$events" ] && exit
+
+. $LKP_SRC/lib/wait.sh
+setup_wait
+
+trace_cmd=$BENCHMARK_ROOT/trace-cmd
+
+opt_events="-e $(echo $events | sed 's/ / -e /g')"
+
+$trace_cmd/bin/trace-cmd record $opt_events -o $TMP_RESULT_ROOT/trace.dat &
+pid=$!
+
+wait_post_test
+
+# if trace-cmd is started without a command, it will stop when Ctrl-C is hit
+kill -INT $pid
