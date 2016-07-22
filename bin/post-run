@@ -44,9 +44,15 @@ kill_monitors()
 	done
 }
 
-kill_monitors -INT
+# There are 2 kind of monitor termination mechanisms:
+# 1) some smart monitors run setup_wait() and wait for the below post-test event
+#    => $TMP/.pid-wait-monitors
 $LKP_SRC/bin/event/wakeup activate-monitor
 $LKP_SRC/bin/event/wakeup post-test
+# 2) most simple monitors run until being killed
+#    => $TMP/pid-monitors
+kill_monitors -INT
+
 wait_for_monitors && sleep 1
 kill_monitors -KILL
 
