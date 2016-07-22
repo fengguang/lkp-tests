@@ -37,7 +37,7 @@ do
 	if download "$PACKAGE_LIST"; then
 		install
 		pack
-		echo "$PACKAGE_LIST" > $pack_to/.${BM_NAME}.packages | sed -E -e 's/^  +//' -e 's/ +/\n/g'
+		echo "$PACKAGE_LIST" > $pack_to/.${BM_NAME}.packages
 	else
 		echo "failed to pack-deps $BM_NAME" >&2
 	fi
