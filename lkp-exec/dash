@@ -3,7 +3,7 @@
 rc_file=$(tempfile --prefix=lkp-)
 trap "rm -rf $rc_file" EXIT
 
-for lib in debug.sh common.sh misc.sh job-init.sh bootstrap.sh job.sh env.sh; do
+for lib in debug.sh common.sh misc.sh wget.sh job-init.sh bootstrap.sh job.sh env.sh; do
 	echo ". $LKP_SRC/lib/$lib" >> $rc_file
 done
 

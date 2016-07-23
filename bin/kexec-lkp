@@ -13,7 +13,7 @@ NEXT_JOB=$2
 
 . $LKP_SRC/lib/bootstrap.sh
 . $LKP_SRC/lib/kexec.sh
-. $LKP_SRC/lib/misc.sh 2>/dev/null
+. $LKP_SRC/lib/wget.sh
 
 # called from interactive shell to reboot the machine
 [ -z "$NEXT_JOB" ] && [ -n "$SSH_CONNECTION" ] && {

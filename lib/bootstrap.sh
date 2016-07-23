@@ -1,8 +1,8 @@
 #!/bin/sh
 
 . $LKP_SRC/lib/mount.sh
+. $LKP_SRC/lib/wget.sh
 . $LKP_SRC/lib/env.sh
-. $LKP_SRC/lib/misc.sh 2>/dev/null
 
 mount_tmpfs()
 {

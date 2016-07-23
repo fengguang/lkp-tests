@@ -133,20 +133,6 @@ wait_on_manual_check()
 	return $disturbed
 }
 
-jobfile_append_var()
-{
-	local i
-	for i
-	do
-		echo "$i" >> $job_script
-	done
-}
-
-set_job_state()
-{
-	jobfile_append_var "job_state=$1"
-}
-
 clean_job_resource()
 {
 	killall tail-to-lkp

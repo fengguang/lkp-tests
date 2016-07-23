@@ -4,9 +4,8 @@
 
 . $LKP_SRC/lib/common.sh
 . $LKP_SRC/lib/wait.sh
+. $LKP_SRC/lib/wget.sh
 . $LKP_SRC/lib/job-init.sh
-[ -f $LKP_SRC/lib/misc.sh ] &&
-	. $LKP_SRC/lib/misc.sh 2>/dev/null
 
 : ${timeout:=200}
 : ${interval:=900}

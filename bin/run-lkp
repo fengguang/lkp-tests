@@ -8,10 +8,9 @@ export job=$job_file
 
 . $LKP_SRC/lib/common.sh
 . $LKP_SRC/lib/wait.sh
+. $LKP_SRC/lib/wget.sh
 . $LKP_SRC/lib/mount.sh
 . $LKP_SRC/lib/job-init.sh
-[ -f $LKP_SRC/lib/misc.sh ] &&
-	. $LKP_SRC/lib/misc.sh 2>/dev/null
 
 export BENCHMARK_ROOT=/lkp/benchmarks
 export CGROUP_MNT=/cgroup
