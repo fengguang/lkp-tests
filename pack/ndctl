@@ -2,13 +2,22 @@
 
 download()
 {
-	mkdir -p /lkp/benchmarks
-	cd /lkp/benchmarks
 	git_clone_update https://github.com/pmem/ndctl
+	source_dir=ndctl
 }
 
 build()
 {
-	# disable the default make
-	:
+	mkdir /lkp/benchmarks/ndctl/etc
+	mkdir /lkp/benchmarks/ndctl/lib
+
+	cd $source_dir
+	./autogen.sh
+	./configure CFLAGS='-g -O0' --enable-test --prefix=/lkp/benchmarks/ndctl --sysconfdir=/lkp/benchmarks/ndctl/etc --libdir=/lkp/benchmarks/ndctl/lib
+	make
+}
+
+install()
+{
+	cp -af /tmp/$source_dir/* $BM_ROOT
 }
