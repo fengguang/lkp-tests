@@ -2,6 +2,9 @@ suite: pft
 testcase: pft
 category: benchmark
 
+perf-profile:
+  delay: 30
+
 iterations: 20x
 
 pft:

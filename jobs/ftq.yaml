@@ -2,6 +2,9 @@ suite: ftq
 testcase: ftq
 category: benchmark
 
+perf-profile:
+  delay: 30
+
 nr_threads: 100%
 iterations: 20x
 
