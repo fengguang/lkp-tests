@@ -260,3 +260,28 @@ rsync_rootfs()
 	[ -n "$remote_rootfs" -a -n "$root" ] &&
 	$LKP_DEBUG_PREFIX $LKP_SRC/bin/rsync-rootfs $remote_rootfs $root
 }
+
+# initiation at boot stage; should be invoked once for
+# each fresh boot.
+boot_init()
+{
+	mount_tmpfs
+	redirect_stdout_stderr
+
+	setup_hostname
+	setup_hosts
+
+	announce_bootup
+
+	add_lkp_user
+
+	fixup_packages
+
+	setup_network
+	run_ntpdate
+
+	mount_debugfs
+	mount_rootfs
+
+	netconsole_init
+}

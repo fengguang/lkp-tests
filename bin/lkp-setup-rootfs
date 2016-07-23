@@ -11,35 +11,10 @@
 
 umask 002
 
+export PATH=$PATH:$LKP_SRC/bin
+echo   PATH=$PATH
+
 . $LKP_SRC/lib/bootstrap.sh
-
-# initiation at boot stage; should be invoked once for
-# each fresh boot.
-boot_init()
-{
-	mount_tmpfs
-	redirect_stdout_stderr
-
-	setup_hostname
-	setup_hosts
-
-	announce_bootup
-
-	add_lkp_user
-
-	fixup_packages
-
-	setup_network
-	run_ntpdate
-
-	mount_debugfs
-	mount_rootfs
-
-	netconsole_init
-
-	export PATH=$PATH:$LKP_SRC/bin
-	echo   PATH=$PATH
-}
 
 boot_init
 
