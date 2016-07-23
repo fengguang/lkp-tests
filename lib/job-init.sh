@@ -98,9 +98,9 @@ setup_result_root()
 		return 1
 	}
 
-	local files="$(echo $RESULT_ROOT/*)"
-	[ "$files" = "$RESULT_ROOT/*" ] ||
-	[ "$files" = "$RESULT_ROOT/dmesg" ] ||
+	# check emptiness except for files: dmesg pre-dmesg
+	local files="$(echo $RESULT_ROOT/*[^g])"
+	[ "$files" = "$RESULT_ROOT/*[^g]" ] ||
 	echo "RESULT_ROOT not empty: $(ls -l $RESULT_ROOT)" >&2
 
 	return 0
