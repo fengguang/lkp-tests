@@ -9,14 +9,21 @@ file=${file#proc-}
 if [ -z "$interval" ]; then
 	case $file in
 		sched_debug)	interval=60 ;;
-		proc-stat)	interval=10 ;;
-		proc-zoneinfo)	interval=10 ;;
+		stat)		interval=10 ;;
+		zoneinfo)	interval=10 ;;
 		*)		interval=1  ;;
 	esac
 fi
 
 . $LKP_SRC/lib/wait.sh
 setup_wait
+
+if [ $file = 'vmstat' ]; then
+	cat()
+	{
+		awk '!x[$1]++' "$@"
+	}
+fi
 
 while :
 do
