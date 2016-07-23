@@ -50,6 +50,8 @@ export LKP_USER=$user
 export LKP_SRC=/lkp/$user/src
 
 $LKP_DEBUG_PREFIX $LKP_SRC/bin/lkp-setup-rootfs || {
-	# some reasonable debug time
-	sleep 10m
+	# some reasonable debug time, if sleep is killed, it's likely
+	# someone has login and want more time to look things around
+	sleep 10m &&
+	reboot
 }
