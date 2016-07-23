@@ -7,8 +7,14 @@ scaling_governor=$1
 
 is_virt && exit 0
 
+note "
 for file in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
 do
-	note "echo $scaling_governor > $file"
-	      echo $scaling_governor > $file
+	echo $scaling_governor > \$file
+done
+"
+
+for file in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+do
+	echo $scaling_governor > $file
 done
