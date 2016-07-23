@@ -2,4 +2,4 @@
 
 date=$(date +'%F %T')
 echo "$date $@"
-echo "$date $@" >> $TMP_RESULT_ROOT/reproduce.sh
+echo "$@" >> $TMP_RESULT_ROOT/reproduce.sh
