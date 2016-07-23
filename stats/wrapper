@@ -41,6 +41,7 @@ warn_empty_stats()
 	[[ $program = 'dmesg' ]] && return
 	[[ $program = 'ftrace' ]] && return
 	[[ $program = 'turbostat' ]] && return
+	[[ $program = 'perf-profile' ]] && return
 	[[ -s $RESULT_ROOT/time ]] || return
 	[[ -s $RESULT_ROOT/last_state ]] && return
 	grep -q "^$program\." $LKP_SRC/etc/failure && return
