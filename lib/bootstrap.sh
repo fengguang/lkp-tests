@@ -114,8 +114,10 @@ redirect_stdout_stderr()
 	exec  > /tmp/stdout
 	exec 2> /tmp/stderr
 
-	tail -f /tmp/stdout | stdbuf -i0 -o0 sed 's/^/<5>/' > /dev/kmsg &
-	tail -f /tmp/stderr | stdbuf -i0 -o0 sed 's/^/<3>/' > /dev/kmsg &
+	# limit 200 characters is to fix the following errro info:
+	# sed: couldn't write N items to stdout: Invalid argument
+	tail -f /tmp/stdout | stdbuf -i0 -o0 sed -r 's/^(.{,300}).*$/<5>\1/'  > /dev/kmsg &
+	tail -f /tmp/stderr | stdbuf -i0 -o0 sed -r 's/^(.{,300}).*$/<3>\1/'  > /dev/kmsg &
 }
 
 fixup_packages()
