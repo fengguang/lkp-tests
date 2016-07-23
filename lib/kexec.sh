@@ -73,7 +73,7 @@ kexec_to_next_job()
 	echo "LKP: kexec loading..."
 	echo kexec --noefi -l $kernel_file $initrd_option
 	sleep 1 # kern  :warn  : [  +0.000073] sed: 34 output lines suppressed due to ratelimiting
-	echo --append="'${append// /$'\n'}\n'"
+	echo --append="${append}"
 	sleep 1
 
 	test -d 				"/$LKP_SERVER/$RESULT_ROOT/" &&
