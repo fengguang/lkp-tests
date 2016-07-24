@@ -28,6 +28,7 @@ cpu_utilization()
 	sleep 10
 	read cpu user_t nice_t system_t idle_t rest < /proc/stat
 	total_t=$((user_t+nice_t+system_t+idle_t))
+	[ $prevtotal_t -eq $total_t ] && echo 0 && return
 	cpu_usage=$((100*((total_t-prevtotal_t)-(idle_t-previdle_t))/(total_t-prevtotal_t)))
 	echo $cpu_usage
 }
