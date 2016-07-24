@@ -7,9 +7,9 @@ blkcnt: .* extent-state: .* lastx: .*
 Detected bogus zero next_unlinked field in incore inode buffer 0x.*.
 dino bp 0x.*, ino .*, forkoff 0x.*
 dino bp 0x.*, ino .*, total extents = .*, nblocks = .*
-.*: dip->di_magic (0x.*) != XFS_DINODE_MAGIC (0x.*)
-dquot too small (.*) in .*.
-.* failed (error .*)!
+.*: dip->di_magic \(0x.*\) != XFS_DINODE_MAGIC \(0x.*\)
+dquot too small \(.*\) in .*.
+.* failed \(error .*\)!
  fblk 0x.* blkno .* index .* magic 0x.*
  ... fblk is NULL
   GH   cycle = .*, GH   bytes = .*
@@ -21,5 +21,5 @@ start_block: .* start_off: .*
 .* Shutting down filesystem
   tail_cycle = .*, tail_bytes = .*
 total extents = .*, nblocks = .*, ptr 0x.*
-Trying to replay bad (0) inode di_next_unlinked field.
+Trying to replay bad \(0\) inode di_next_unlinked field.
 xfs_dir2_node_addname_int

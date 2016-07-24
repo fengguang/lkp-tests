@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 LKP_SRC ||= ENV['LKP_SRC']
+require "#{LKP_SRC}/lib/yaml.rb"
 
 # /c/linux% git grep '"[a-z][a-z_]\+%d"'|grep -o '"[a-z_]\+'|cut -c2-|sort -u
 LINUX_DEVICE_NAMES = IO.read("#{LKP_SRC}/etc/linux-device-names").split("\n")
@@ -112,20 +113,44 @@ def fixup_dmesg_file(dmesg_file)
 	return dmesg_lines
 end
 
-def grep_crash_head(dmesg_file, grep_options = '')
-	oops = %x[ xzgrep -a -f #{LKP_SRC}/etc/oops-pattern #{grep_options} #{dmesg_file} | grep -v -f #{LKP_SRC}/etc/oops-pattern-ignore |
-		   awk '{line = $0; sub(/^(<[0-9]>|kern  :......: )?\[[ 0-9.]+\] /, "", line); if (!x[line]++) print;}'
+# "grep -B1 | grep -v" to get the functions called by them,
+# which will hopefully be stable and representive.
+CALLTRACE_PATTERN = '(do_one_initcall|kthread|kernel_thread|process_one_work|SyS_[a-z0-9_]+|init_[a-z0-9_]+|[a-z0-9_]+_init)\\+0x'
+CALLTRACE_IGNORE  = '(do_one_initcall|kthread|kernel_thread|process_one_work|worker_thread|kernel_init|rest_init|warn_slowpath_.*)\\+0x'
+
+def grep_crash_head(dmesg_file)
+	raw_oops = %x[ xzgrep -a -E -f #{LKP_SRC}/etc/oops-pattern #{dmesg_file} |
+			 grep -v -E -f #{LKP_SRC}/etc/oops-pattern-ignore ]
+
+	return {} if raw_oops.empty?
+
+	raw_trace = %x[
+		xzgrep -B1 -E '#{CALLTRACE_PATTERN}' #{dmesg_file} |
+		grep -v -E -e ' \? ' -e '^--$' -e '#{CALLTRACE_IGNORE}'
 	]
-	unless oops.empty?
-		oops += `xzgrep -v -F ' ? ' #{dmesg_file} |
-			 grep -E -B1 '(do_one_initcall|kthread|kernel_thread|process_one_work|SyS_[a-z0-9_]+|init_[a-z0-9_]+|[a-z0-9_]+_init)\\+0x' |
-			 grep -v -E  '(do_one_initcall|kthread|kernel_thread|process_one_work|worker_thread|kernel_init|rest_init|warn_slowpath_)\\+0x' |
-			 grep -o -E '[a-zA-Z0-9_.]+\\+0x[0-9a-fx/]+' |
-			 awk '!x[$0]++' |
-			 sed 's/^/backtrace:&/' `
+
+	oops_map = {}
+
+	oops_re = load_regular_expressions("#{LKP_SRC}/etc/oops-pattern")
+	raw_oops.each_line do |line|
+		if line =~ oops_re
+			oops_map[$1] ||= line
+		else
+			$stderr.puts "oops pattern mismatch: #{line}"
+			next
+		end
 	end
 
-	oops
+	raw_trace.each_line do |line|
+		if line =~ /([a-zA-Z0-9_.]+\+0x)[0-9a-fx\/]+/
+			oops_map["backtrace:" + $1] ||= line
+		else
+			$stderr.puts "trace pattern mismatch: #{line} #{dmesg_file}"
+			next
+		end
+	end
+
+	return oops_map
 end
 
 def grep_printk_errors(kmsg_file, kmsg)
@@ -133,16 +158,18 @@ def grep_printk_errors(kmsg_file, kmsg)
 	return '' unless File.exist?('/lkp/printk-error-messages')
 
 	if kmsg_file =~ /\bkmsg$/
+		# the kmsg file is dumped inside the running kernel
 		oops = `grep -a -E -e '^<[0123]>' -e '^kern  :(err   |crit  |alert |emerg ): ' #{kmsg_file} |
-			grep -a -v    -f #{LKP_SRC}/etc/oops-pattern |
+			grep -a -v -E -f #{LKP_SRC}/etc/oops-pattern |
 			grep -a -v -F -f #{LKP_SRC}/etc/kmsg-blacklist`
 	else
+		# the dmesg file is from serial console
 		oops = `grep -a -F -f /lkp/printk-error-messages #{kmsg_file} |
-			grep -a -v    -f #{LKP_SRC}/etc/oops-pattern |
+			grep -a -v -E -f #{LKP_SRC}/etc/oops-pattern |
 			grep -a -v -F -f #{LKP_SRC}/etc/kmsg-blacklist`
-		oops += `grep -a -f #{LKP_SRC}/etc/ext4-crit-pattern	#{kmsg_file}` if kmsg.index 'EXT4-fs ('
-		oops += `grep -a -f #{LKP_SRC}/etc/xfs-alert-pattern	#{kmsg_file}` if kmsg.index 'XFS ('
-		oops += `grep -a -f #{LKP_SRC}/etc/btrfs-crit-pattern	#{kmsg_file}` if kmsg.index 'btrfs: '
+		oops += `grep -a -E -f #{LKP_SRC}/etc/ext4-crit-pattern	#{kmsg_file}` if kmsg.index 'EXT4-fs ('
+		oops += `grep -a -E -f #{LKP_SRC}/etc/xfs-alert-pattern	#{kmsg_file}` if kmsg.index 'XFS ('
+		oops += `grep -a -E -f #{LKP_SRC}/etc/btrfs-crit-pattern #{kmsg_file}` if kmsg.index 'btrfs: '
 	end
 	oops
 end
@@ -198,6 +225,7 @@ def analyze_error_id(line)
 
 	line.sub!(/^(kern  |user  |daemon):......: /, '')
 	line.sub!(/^[^a-zA-Z]+/, '')
+	# line.sub!(/^\[ *[0-9]{1,6}\.[0-9]{6}\] )/, '') # the above pattern includes this one
 
 	case line
 	when /(INFO: rcu[_a-z]* self-detected stall on CPU)/,

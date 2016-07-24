@@ -1,28 +1,28 @@
-[a-zA-Z ]\+: [a-f0-9]\{4\} \[#[0-9]\+\] [A-Z_ ]*$
+[a-zA-Z ]+: [a-f0-9]{4} \[#[0-9]+\] [A-Z_ ]*$
 kernel BUG at .*
 Kernel BUG at
 Kernel panic - not syncing: .*
 ^BUG: .*
-\[ *[0-9.]\+\] BUG: .*
-BUG .* (.*): .*
+\[ *[0-9.]+\] BUG: .*
+BUG .* \(.*\): .*
 Oops: .*
 WARNING: at .*
-WARNING: CPU: [0-9]\+ PID: [0-9]\+ at .*
-^INFO: .*detected stall.*
-^INFO: .* cpu=.*
-^INFO: Slab 0x.*
-^INFO: Object 0x.*
-^INFO: 0x.*. First byte 0x.*
-\[ *[0-9.]\+\] INFO: .*
+WARNING: CPU: [0-9]+ PID: [0-9]+ at .*
+INFO: .*detected stall.*
+INFO: .* cpu=.*
+INFO: Slab 0x.*
+INFO: Object 0x.*
+INFO: 0x.*. First byte 0x.*
+\[ *[0-9.]+\] INFO: .*
 \[ INFO: [^i].* \]
 RCU used illegally from offline CPU!
 RCU used illegally from idle CPU!
 RCU used illegally from extended quiescent state!
-inconsistent {.*} -> {.*} usage\.
+inconsistent \{.*\} -> \{.*\} usage\.
 initcall .* returned with .*
 \[ BUG: [^b].*! \]
- is trying to release lock (.*) at
- is trying to contend lock (.*) at
+ is trying to release lock \(.*\) at
+ is trying to contend lock \(.*\) at
  is trying to lock: .*
  but this task is not holding: .*
  is leaving the kernel with locks still held!
@@ -31,15 +31,15 @@ initcall .* returned with .*
 genirq: Flags mismatch irq .*
 Out of memory: Kill process 
 invoked oom-killer: gfp_mask=0x
-page allocation failure: order:[0-9]\+, mode:0x.*
+page allocation failure: order:[0-9]+, mode:0x.*
 pagealloc: single bit error
 pagealloc: memory corruption
-audit: (.*) error: .*
-getblk(): invalid block size [0-9]\+ requested
+audit: \(.*\) error: .*
+getblk\(\): invalid block size [0-9]+ requested
 KGDB: re-enter exception: ALL breakpoints killed
 IP-Config: Auto-configuration of network failed
-EIP is at [a-zA-Z0-9._]\++0x.*/0x.*
-RIP: [0-9a-f]\{4\}:\[.*\] [a-zA-Z0-9._]\++0x.*/0x.*
+EIP is at [a-zA-Z0-9._]+\+0x.*/0x.*
+RIP: [0-9a-f]{4}:\[.*\] [a-zA-Z0-9._]+\+0x.*/0x.*
 PANIC: early exception 
 PANIC: double fault, 
 Unknown interrupt or fault at:
@@ -66,4 +66,4 @@ sysctl could not get directory:
 sysctl table check failed: 
 sysctl link missing during unregister: 
 Mem-Info:
-warn_alloc_failed+0x
+warn_alloc_failed\+0x

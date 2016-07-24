@@ -2,6 +2,9 @@
 
 # dmesg and kmsg both their strengths and limitations, so both are used.
 #
+# dmesg - data from serial console
+# kmsg  - data from /dev/kmsg inside the running kernel
+#
 # dmesg is only available for the KVM test boxes and the test boxes that
 # have serial console output. Near half of the physical test boxes do
 # not have serial console, hence do not have these dmesg files -- they
@@ -64,7 +67,7 @@ def verify_serial_log(dmesg_lines)
 	return unless $PROGRAM_NAME =~ /dmesg/
 	return unless ENV['RESULT_ROOT']
 	dmesg_lines.grep(/RESULT_ROOT=/) { |line|
-		next if line =~ /^kexec -l | --initrd=| --append=|"$/
+		next if line =~ /(^|[0-9]\] )kexec -l | --initrd=| --append=|"$/
 		next unless line =~ / RESULT_ROOT=([A-Za-z0-9.,;_\/+%:@=-]+) /
 		rt = $1
 		next unless Dir.exist? rt # serial console is often not reliable
@@ -80,7 +83,7 @@ error_stamps = {}
 
 if $PROGRAM_NAME =~ /dmesg/
 	lines = dmesg_lines
-	output = grep_crash_head dmesg_file, '-o'
+	oops_map = grep_crash_head dmesg_file
 else
 	if kmsg_file == dmesg_file
 		kmsg_lines = dmesg_lines
@@ -92,9 +95,12 @@ else
 
 	lines = kmsg_lines
 	output = grep_printk_errors kmsg_file, kmsg
+
+	oops_map = {}
+	output.each_line do |line|
+		oops_map[line] ||= line
+	end
 end
-exit if output.empty?
-exit if output =~ /trinity.*: page allocation failure|Out of memory: .*trinity/ # trinity is known to trigger OOM
 
 lines.reverse_each { |line|
 	if line =~ /^(<[0-9]+>|....  :..... : )?\[ *(\d{1,6}\.\d{6})\] /
@@ -103,7 +109,7 @@ lines.reverse_each { |line|
 	end
 }
 
-output.each_line { |line|
+oops_map.each { |bug_to_bisect, line|
 	line.chomp!
 
 	if line =~ /^(<[0-9]+>|....  :..... : )?\[ *(\d{1,6}\.\d{6})\] /
@@ -111,10 +117,6 @@ output.each_line { |line|
 	else
 		timestamp = nil
 	end
-
-	next if line =~ /INFO: Stall ended before state dump start/
-	next if line =~ /INFO: NMI handler .* took too long to run:/
-	next if line =~ /Killed process \d+ \(/					# duplicated with "Out of memory: Kill process "
 
 	# print_hex_dump
 	next if line =~ /(\s[0-9a-f]{2}){16}/
@@ -124,16 +126,14 @@ output.each_line { |line|
 	next if line =~ /[^\t\n\0[:print:]]/
 	line.tr! "\0", ''
 
-	error_id, bug_to_bisect = analyze_error_id line
+	error_id, bug_to_bisect = analyze_error_id bug_to_bisect
 	next if error_id.size <= 3
 
 	error_ids[error_id] ||= bug_to_bisect
 	error_stamps[error_id] ||= timestamp if timestamp
 }
 
-exit if error_ids.empty?
-
-puts "boot_failures: 1" if $PROGRAM_NAME =~ /dmesg/
+puts "boot_failures: 1" if $PROGRAM_NAME =~ /dmesg/ and not error_ids.empty?
 
 # This shows each error id only once
 error_ids.each { |error_id, line|

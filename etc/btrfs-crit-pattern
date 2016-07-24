@@ -1,6 +1,6 @@
 btrfs: invalid dir item data len: .*
-BTRFS error (device .*) in .*:.*: errno=.* .* (.*)
-BTRFS error (device .*) in .*:.*: errno=.* .*
+BTRFS error \(device .*\) in .*:.*: errno=.* .* \(.*\)
+BTRFS error \(device .*\) in .*:.*: errno=.* .*
 trans .* running .*
 used .* nritems .*
 push items .* nr .*
