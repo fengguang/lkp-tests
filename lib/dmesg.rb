@@ -223,7 +223,7 @@ end
 
 def analyze_error_id(line)
 
-	line.sub!(/^(kern  |user  |daemon):......: /, '')
+	line = line.sub(/^(kern  |user  |daemon):......: /, '')
 	line.sub!(/^[^a-zA-Z]+/, '')
 	# line.sub!(/^\[ *[0-9]{1,6}\.[0-9]{6}\] )/, '') # the above pattern includes this one
 
