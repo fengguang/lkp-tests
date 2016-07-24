@@ -325,6 +325,7 @@ end
 
 def __is_failure(stats_field)
 	return false if stats_field.index('.time.')
+	return false if stats_field.index('.timestamp.')
 	$metric_failure.each { |pattern| return true if stats_field =~ %r{^#{pattern}} }
 	return false
 end
