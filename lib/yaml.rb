@@ -275,7 +275,8 @@ rescue JSONFileNotExistError
 	return false
 end
 
-def load_regular_expressions(file)
+def load_regular_expressions(file, options = {})
 	pattern	= File.read(file).split("\n")
-	regex	= Regexp.new pattern.join('|')
+	spec	= "#{options[:prefix]}(#{pattern.join('|')})#{options[:suffix]}"
+	regex	= Regexp.new spec
 end
