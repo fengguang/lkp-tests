@@ -3,6 +3,16 @@ Processed .* events and lost .* chunks!
 Check IO/CPU overload!
 
 couldn't get COMM and pgid, malformed /proc/.*/status
-.* out of order events recorded.*
+.* out of order events recorded.
 Error:
 The /tmp/.*/perf.data file has no samples!
+Reading /proc/.*/maps time out. You may want to increase the time limit by --proc-map-timeout
+1 map information files for pre-existing threads were
+not processed, if there are samples for addresses they
+will not be resolved, you may find out which are these
+threads by running with -v and redirecting the output
+to a file.
+The time limit to process proc map is too short?
+Increase it by --proc-map-timeout
+no symbols found in .*, maybe install a debug package?
+corrupted callchain. skipping...
