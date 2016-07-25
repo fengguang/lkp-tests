@@ -13,7 +13,7 @@ mkdir -p /hugepages
 # has too many errors now
 sed -i 's/hugetlbfstest//' vm/Makefile
 
-# linux-headers file is created by 0day system for each x86_64-rhel kernel, and located in /usr/src/linux-headers-$kconfig-$commit directory.
+# linux-headers file is created by 0day system, and located in /usr/src/linux-headers-$kconfig-$commit directory.
 shopt -s nullglob
 linux_headers_dirs=(/usr/src/linux-headers*)
 
