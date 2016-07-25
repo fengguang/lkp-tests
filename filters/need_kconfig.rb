@@ -12,7 +12,7 @@ def check_kconfig(kconfig_lines, line)
 		name = $1
 		kconfig_lines.index("# #{name} is not set") or
 		kconfig_lines !~ /^#{name}=[ym]/
-	when /^(CONFIG_[A-Z0-9_]+=[ym])/, /^(CONFIG_[A-Z0-9_]+)/
+	when /^(CONFIG_[A-Z0-9_]+=[ym])/, /^(CONFIG_[A-Z0-9_]+)/, /^(CONFIG_[A-Z0-9_]+=[0-9]+)/
 		kconfig_lines =~ /^#{$1}/
 	else
 		$stderr.puts "unknown kconfig option: #{line}"
