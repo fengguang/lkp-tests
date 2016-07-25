@@ -4,6 +4,8 @@
 ^aim7.*.cpu
 ^stderr.*scripts/aim_..sh:not_found
 ^iostat.*.svctm
+^kmsg.timestamp..*
+^dmesg.timestamp..*
 ^kmsg.tsc:Unable_to_calibrate_against_PIT
 ^kmsg.tsc:HPET/PMTIMER_calibration_failed
 ^kmsg.tsc:Fast_TSC_calibration_failed
