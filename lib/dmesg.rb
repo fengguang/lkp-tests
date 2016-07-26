@@ -137,16 +137,12 @@ def grep_crash_head(dmesg_file)
 			oops_map[$1] ||= line
 		else
 			$stderr.puts "oops pattern mismatch: #{line}"
-			next
 		end
 	end
 
 	raw_trace.each_line do |line|
 		if line =~ /([a-zA-Z0-9_.]+\+0x)[0-9a-fx\/]+/
 			oops_map["backtrace:" + $1] ||= line
-		else
-			$stderr.puts "trace pattern mismatch: #{line} #{dmesg_file}"
-			next
 		end
 	end
 
