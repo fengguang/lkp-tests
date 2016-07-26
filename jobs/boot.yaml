@@ -10,6 +10,8 @@ boot-memory: # depends on memmap and boot-meminfo stats
 boot-time:
 kernel-size:
 
+kmsg:
+
 timeout: 10m
 
 sleep: 1
