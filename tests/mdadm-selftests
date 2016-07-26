@@ -19,7 +19,13 @@ modprobe loop
 
 run_test()
 {
-	timeout 5m ./test "--tests=$testcase"
+	# sub-case "11" typicall need to cost ~15m.
+	if [ "$test_prefix" = "11" ]; then
+		timeout 20m ./test "--tests=$testcase"
+	else
+		timeout 5m ./test "--tests=$testcase"
+	fi
+
 	[ $? -eq 124 ] && echo "$testcase TIMEOUT"
 
 	local res_dir="result/$testcase"
