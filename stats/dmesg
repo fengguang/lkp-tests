@@ -144,5 +144,5 @@ error_ids.each { |error_id, line|
 
 puts
 error_stamps.each { |error_id, timestamp|
-	puts "timestamp.#{error_id}: #{timestamp}"
+	puts "timestamp:#{error_id}: #{timestamp}"
 }
