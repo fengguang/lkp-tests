@@ -2,6 +2,10 @@ suite: chromeswap
 testcase: chromeswap
 category: benchmark
 
+# place holder because disk has to be run before swap
+disk:
+swap:
+
 chromeswap:
   selection:
   - uniform
