@@ -126,7 +126,7 @@ def grep_crash_head(dmesg_file)
 
 	raw_trace = %x[
 		xzgrep -B1 -E '#{CALLTRACE_PATTERN}' #{dmesg_file} |
-		grep -v -E -e ' \? ' -e '^--$' -e '#{CALLTRACE_IGNORE}'
+		grep -v -E -e ' \\? ' -e '^--$' -e '#{CALLTRACE_IGNORE}'
 	]
 
 	oops_map = {}
