@@ -129,6 +129,7 @@ module Compare
 		end
 
 		def do_sort_mresult_roots
+			return if @mresult_roots.empty?
 			if sort_mresult_roots
 				skeys = @compare_axis_keys.map { |k|
 					git = axis_key_git(k)
