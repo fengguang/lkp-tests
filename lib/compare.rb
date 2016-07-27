@@ -970,15 +970,14 @@ module Compare
 		argv = ['-h'] if argv.empty?
 		argv = parser.parse(argv)
 
-		if !msearch_axes.empty?
-			_rts = msearch_axes.map { |axes|
-				MResultRootCollection.new(axes).to_a
-			}.flatten
-		else
-			_rts = argv.map { |c|
-				MResultRootCollection.new(COMMIT_AXIS_KEY => c.to_s).to_a
-			}.flatten
+		if msearch_axes.empty?
+			msearch_axes = argv.map { |c|
+				{ COMMIT_AXIS_KEY => c.to_s }
+			}
 		end
+		_rts = msearch_axes.map { |axes|
+			MResultRootCollection.new(axes).to_a
+		}.flatten
 		options[:mresult_roots] = _rts
 		options
 	end
