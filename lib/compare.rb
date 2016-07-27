@@ -977,7 +977,7 @@ module Compare
 		end
 		_rts = msearch_axes.map { |axes|
 			axes = axes_gcommit axes
-			MResultRootCollection.new(axes).to_a
+			NMResultRootCollection.new(axes).to_a
 		}.flatten
 		options[:mresult_roots] = _rts
 		options
