@@ -8,6 +8,10 @@ IOPS = 'iops'
 def parse
 	fn = File.join ENV['RESULT_ROOT'], 'fio.output'
 	res = JSON.load(File.read fn)
+	unless res
+		$stderr.puts 'Invalid/empty fio output'
+		return
+	end
 	res_job = res['jobs'].first
 	res_write = res_job['write']
 	res_read = res_job['read']
