@@ -44,17 +44,23 @@ check_partition_size $partitions
 make_md() {
 	grep -q '^md0 : active' /proc/mdstat && cmd mdadm -q --stop /dev/md0
 	destroy_devices
-	echo y | cmd mdadm -q --create /dev/md0 --chunk=$raid_chunk --level=$raid_level --raid-devices=$nr_partitions --force --assume-clean $partitions
+	for i in 0 1 2 3 4 5; do
+		raid_device=/dev/md$i
+		echo y | cmd mdadm -q --create $raid_device --chunk=$raid_chunk --level=$raid_level --raid-devices=$nr_partitions --force --assume-clean $partitions 2> /tmp/mdadm_stderr && return
+	done
+	echo "Failed to create RAID!" 1>&2
+	cat /tmp/mdadm_stderr 1>&2
+	exit 1
 }
 
-make_md || make_md
+make_md
 
 cat >> $TMP/env.yaml <<EOF
 
 # setup/md
 nr_partitions: 1
-partitions: /dev/md0
-raid_device: /dev/md0
+partitions: $raid_device
+raid_device: $raid_device
 raid_level: $raid_level
 raid_chunk: $raid_chunk
 EOF
