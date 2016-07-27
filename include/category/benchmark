@@ -23,4 +23,7 @@ cpufreq-stats:
 turbostat:
 sched_debug:
 perf-stat:
+
+% unless ___['nr_vm'] and ___['nr_vm'] > 1
 perf-profile:
+% end
