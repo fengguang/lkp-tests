@@ -2,5 +2,5 @@
 /(\d+)SSD/	{ nr_ssd: $1.to_i	}
 /(\d+)BRD/	{ nr_brd: $1.to_i	}
 /(\d+)SRD/	{ nr_srd: $1.to_i	}
-/(\d+G)/	{ ramdisk_size: $1.to_i	}
+/(\d+G)/	{ ramdisk_size: to_byte($1)	}
 /SCSI_RAM/	{ scsi_ram: 1		}
