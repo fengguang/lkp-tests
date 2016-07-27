@@ -939,7 +939,8 @@ module Compare
 		}
 		msearch_axes = []
 		parser = OptionParser.new do |p|
-			p.banner = 'Usage: ncompare [options] <commit>...'
+			p.banner = 'Usage: ncompare [options] <commit>...
+       ncompare [options] -s <axes> [-s <axes>] [-o <axes>]'
 			p.separator ''
 			p.separator 'options:'
 
@@ -952,6 +953,13 @@ module Compare
 			p.on('-s <search-axes>', '--search <search-axes>',
 			     'Search Axes') { |search_axes|
 				msearch_axes << DataStore::Layout.axes_from_string(search_axes)
+			}
+
+			p.on('-o <search-axes>', '--override-search <search-axes>',
+			     'Search Axes') { |search_axes|
+				search_axes = DataStore::Layout.axes_from_string(search_axes)
+				prev_axes = msearch_axes[-1] || {}
+				msearch_axes << prev_axes.merge(search_axes)
 			}
 
 			p.on_tail('-h', '--help', 'Show this message') {
