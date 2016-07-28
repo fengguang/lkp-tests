@@ -46,18 +46,31 @@ end
 
 $all_results = []
 $results = Hash.new(0)
+$all_func_results = []
+$func_results = []
 
 loop do
 	# break on current-segment-end
 	if line == nil
 		# need restore the last result of event
 		$all_results << $results unless $results.empty?
+		$all_func_results << $func_results unless $func_results.empty?
 		break
 	end
 	if line =~ /^\# Events: \d+[KMG ]\s+/ or line =~ /^# Samples: \d+[KMG ] of event /
 		$cur_event = $'.gsub(':', '-').gsub('\'', '').chomp
 		$all_results << $results unless $results.empty?
 		$results = Hash.new(0)
+		$all_func_results << $func_results unless $func_results.empty?
+		$func_results = []
+	end
+
+	# For function result as:
+	# 93.48%    93.48%  [kernel.kallsyms]   [k] clear_page_c_e
+	if line =~ /^\s*\d+\.\d+%\s+(\d+\.\d+)%\s+\S+\s+\S+\s+(\S+)\s*$/
+		$func_results << ["#{$cur_event}.#{$2}", $1.to_f]
+		line = STDIN.gets
+		next
 	end
 
 	# Wait for new record as:
@@ -83,4 +96,10 @@ $all_results.each { |results|
 	results.sort_by{|_, v| -v}.each do |record,percent|
 		puts record + ": " + format("%.2f", percent * 100) if percent >= 0.0001
 	end
+}
+
+$all_func_results.each { |results|
+	results.sort_by { |_, v| -v }.each { |record, percent|
+		puts "func.#{record}: #{format("%.2f", percent)}" if percent >= 0.05
+	}
 }
