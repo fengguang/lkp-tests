@@ -20,7 +20,7 @@ tee-$program -a $TMP_RESULT_ROOT/$program < $fifo &
 echo $! >> $TMP/.pid-pipes
 
 # in particular, avoid time in trinity
-[ -z "$category" ] && {
+[ -n "$category" ] && {
 	time_path=$(which time)
 	if [ "x${time_path}" != "x" ];then
 		time_help=$(${time_path} --help)
