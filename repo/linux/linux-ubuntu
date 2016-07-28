@@ -1,8 +1,3 @@
 url: git://kernel.ubuntu.com/ubuntu/linux.git
 owner: Kamal Mostafa <kamal@canonical.com>
-subsystems:
-- net
-- usb
-- drm
-- x86
-- alsa
+test_old_branches: .*
