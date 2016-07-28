@@ -112,7 +112,10 @@ pack_pkg()
 	local pkg_name="${BM_NAME//_/-}-LKP"
 
 	rm -fr "/tmp/$pkg_name"
-	[[ "$(ls -A $BM_ROOT)" ]] || exit
+
+	if [[ "$BM_NAME" != "lkp-src" ]]; then
+		[[  "$(ls -A $BM_ROOT)" ]] || exit
+	fi
 
 	case $distro in
 		debian|ubuntu)
