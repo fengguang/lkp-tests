@@ -1,14 +1,19 @@
 #!/bin/sh
 # - events
+# - revents
 # - time
 # - command
 
 # perf may consume lots of fd
 ulimit -n 102400
 
-[ -n "$events" ] || events='hardware cache software'
-events=$(perf-events $events)
-[ -n "$events" ] || exit
+if [ -n "$revents" ]; then
+	events="$revents"
+else
+	[ -n "$events" ] || events='hardware cache software'
+	events=$(perf-events $events)
+	[ -n "$events" ] || exit
+fi
 
 opt_events="-e $(echo $events | sed 's/ / -e /g')"
 
