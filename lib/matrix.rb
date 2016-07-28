@@ -246,6 +246,12 @@ end
 
 def save_matrix_as_csv(file, matrix, sep = ' ', header = true)
 	file.puts matrix.keys.join(sep)
+	cols = matrix.map { |k,v| v.size }.max
+	matrix.each { |k, v|
+		while v.size < cols
+			v << -1
+		end
+	}
 	t = matrix.values.transpose
 	t.each { |vs|
 		file.puts vs.map { |v| v.to_s }.join(sep)
