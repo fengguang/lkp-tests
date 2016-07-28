@@ -44,6 +44,9 @@ ulimit -n 102400
 . $LKP_SRC/lib/wait.sh
 setup_wait
 
+# WAIT_POST_TEST_CMD will start at the same time with perf
+# the former will wait for (delay+duration) before exit
+# the latter will wait for (delay) before collecting samples
 $perf record -q -ag --realtime=1 -m 256 $opt_freq $opt_period $opt_events \
 	-o $TMP/perf.data -D $((delay * 1000)) -- \
 	$WAIT_POST_TEST_CMD --timeout $((delay + duration))
