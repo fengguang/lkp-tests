@@ -44,7 +44,7 @@ while line = STDIN.gets
 	break unless line =~ /^\#/
 end
 
-$all_results = Array.new
+$all_results = []
 $results = Hash.new(0)
 
 loop do
@@ -57,7 +57,7 @@ loop do
 	if line =~ /^\# Events: \d+[KMG ]\s+/ or line =~ /^# Samples: \d+[KMG ] of event /
 		$cur_event = $'.gsub(':', '-').gsub('\'', '').chomp
 		$all_results << $results unless $results.empty?
-		$results = {}
+		$results = Hash.new(0)
 	end
 
 	# Wait for new record as:
