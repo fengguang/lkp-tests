@@ -9,10 +9,21 @@ ulimit -n 102400
 
 if [ -n "$revents" ]; then
 	events="$revents"
-else
-	[ -n "$events" ] || events='hardware cache software'
+elif [ -n "$events" ]; then
 	events=$(perf-events $events)
 	[ -n "$events" ] || exit
+else
+	events="\
+{cycles,instructions,cache-references,cache-misses,branch-instructions,branch-misses},\
+{dTLB-loads,dTLB-load-misses},\
+{dTLB-stores,dTLB-store-misses},\
+{instructions,iTLB-load-misses},\
+{node-loads,node-load-misses},\
+{node-stores,node-store-misses},\
+cpu-clock,task-clock,\
+page-faults,context-switches,\
+cpu-migrations,\
+minor-faults,major-faults"
 fi
 
 opt_events="-e $(echo $events | sed 's/ / -e /g')"
@@ -27,5 +38,9 @@ opt_events="-e $(echo $events | sed 's/ / -e /g')"
 		command="$WAIT_POST_TEST_CMD"
 	fi
 }
+
+# Disable NMI watchdog to free up one perf counter
+test -e  /proc/sys/kernel/nmi_watchdog &&
+echo 0 > /proc/sys/kernel/nmi_watchdog
 
 exec perf stat -a -I 1000 -x' ' $opt_events --log-fd 1 -- $command
