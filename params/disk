@@ -4,3 +4,4 @@
 /(\d+)SRD/	{ nr_srd: $1.to_i	}
 /(\d+G)/	{ ramdisk_size: to_byte($1)	}
 /SCSI_RAM/	{ scsi_ram: 1		}
+/(\d+)pmem/	{ nr_pmem: $1.to_i	}
