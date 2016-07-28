@@ -46,5 +46,4 @@ setup_wait
 
 $perf record -q -ag --realtime=1 -m 256 $opt_freq $opt_period $opt_events \
 	-o $TMP/perf.data -D $((delay * 1000)) -- \
-	timeout $((duration)) \
-	$WAIT_POST_TEST_CMD
+	$WAIT_POST_TEST_CMD --timeout $((duration))
