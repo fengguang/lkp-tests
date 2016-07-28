@@ -19,7 +19,7 @@ default_events()
 }
 
 : ${events:=$(default_events)}
-: ${duration:=100}
+: ${duration:=10}
 : ${period:=1000003}
 
 if [ -z "$delay" ]; then
