@@ -56,7 +56,7 @@ do
 done
 
 shift $(($OPTIND-1))
-BM_NAME=$1;
+BM_NAME=$1
 
 [[ $BM_NAME ]] || usage
 BM_ROOT=/lkp/benchmarks/$BM_NAME
@@ -64,16 +64,16 @@ BM_ROOT=/lkp/benchmarks/$BM_NAME
 [[ $arch ]] || arch=`uname -m`
 
 source $LKP_SRC/pack/default
-source $LKP_SRC/pack/$BM_NAME
+source $LKP_SRC/pack/$BM_NAME || exit
 
 rm -fr "$BM_ROOT"
-mkdir -p $BM_ROOT
+mkdir -p $BM_ROOT || exit
 
 cd /tmp
-download
-build
-install
-pack_pkg $distro
+download || exit
+build || exit
+install || exit
+pack_pkg $distro || exit
 
 [[ -n $sync_dest ]] && rsync -av /lkp/benchmarks/${BM_NAME}-${arch}.cgz $sync_dest/${BM_NAME}-${arch}.cgz
 
