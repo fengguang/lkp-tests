@@ -141,7 +141,7 @@ def grep_crash_head(dmesg_file)
 	end
 
 	raw_trace.each_line do |line|
-		if line =~ />\] ([a-zA-Z0-9_.]+\+0x)[0-9a-fx\/]+/
+		if line =~ />\] ([a-zA-Z0-9_.]+)\+0x[0-9a-fx\/]+/
 			oops_map["backtrace:" + $1] ||= line
 		end
 	end
