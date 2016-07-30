@@ -665,9 +665,6 @@ class Job
 		rescue TypeError => e
 			$stderr.puts "#{file}: #{e.message} hash: #{hash}"
 			raise
-		rescue Job::ParamError => e
-			puts "Abandon job: #{e.message}"
-			return false
 		rescue KeyError # no conclusion due to lack of information
 			return nil
 		end

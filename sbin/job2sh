@@ -34,7 +34,13 @@ else
 end
 opts.parse!(argv)
 
-job = Job2sh.new
-job.load(ARGV[0])
-job.expand_params or exit
+begin
+	job = Job2sh.new
+	job.load(ARGV[0])
+	job.expand_params
+rescue Job::ParamError => e
+	$stderr.puts "Abandon job: #{e.message}"
+	exit 1
+end
+
 $opt_file.puts job.to_shell
