@@ -90,7 +90,7 @@ else
 		kmsg = kmsg_lines.join "\n"
 	elsif File.exist?(kmsg_file)
 		kmsg = File.read kmsg_file
-		kmsg_lines = kmsg_lines.split("\n")
+		kmsg_lines = kmsg.split("\n")
 	end
 
 	lines = kmsg_lines
