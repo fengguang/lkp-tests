@@ -211,6 +211,10 @@ def load_remotes
 			repo_info['maintained_files'] ||= '*'
 		end
 
+		if remotes[remote]
+			$stderr.puts "conflict repo name in different projects: #{remote}"
+		end
+
 		remotes[remote] = repo_info
 	end
 	remotes
