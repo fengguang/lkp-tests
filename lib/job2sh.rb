@@ -221,8 +221,10 @@ class Job2sh < Job
 		nr_bg = 0
 		hash.each { |key, val| parse_one(ancestors, key, val, :PASS_EXPORT_ENV) }
 		hash.each { |key, val| parse_one(ancestors, key, val, :PASS_NEW_SCRIPT) }
-		hash.each { |key, val| parse_one(ancestors, key, val, :PASS_RUN_MONITORS) }
 		hash.each { |key, val| parse_one(ancestors, key, val, :PASS_RUN_SETUP) }
+		# run monitors after setup:
+		# monitors/iostat etc. depends on ENV variables by setup scripts
+		hash.each { |key, val| parse_one(ancestors, key, val, :PASS_RUN_MONITORS) }
 		hash.each { |key, val| parse_one(ancestors, key, val, :PASS_RUN_COMMANDS) == :action_background_function and nr_bg += 1 }
 		if nr_bg > 0
 			exec_line
