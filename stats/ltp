@@ -2,7 +2,7 @@
 
 BEGIN {
 	nr_test = 0
-	rst_tfail = 0
+	rst_tpass = rst_tfail = rst_tconf = 0
 }
 
 /^tag=/ {
@@ -17,6 +17,14 @@ $2 ~ /[0-9]*/ && $3 ~ /TBROK/ {
 	rst_tfail++
 }
 
+$2 ~ /[0-9]*/ && $3 ~ /TPASS/ {
+	rst_tpass++
+}
+
+$2 ~ /[0-9]*/ && $3 ~ /TCONF/ {
+	rst_tconf++
+}
+
 /termination_type=exited termination_id=[1-9]+/ {
 	rst_tfail++
 }
@@ -24,11 +32,15 @@ $2 ~ /[0-9]*/ && $3 ~ /TBROK/ {
 /<<<test_end>>>/ {
 	if ( rst_tfail ) {
 		printf("%s.fail: 1\n", tc_name)
+	} else if ( rst_tconf ) {
+		printf("%s.block: 1\n", tc_name)
+	} else if ( rst_tpass ) {
+		printf("%s.pass: 1\n", tc_name)
 	}
 
 	nr_test += 1
 	tc_name = "unknown"
-	rst_tfail = 0
+	rst_tpass = rst_tfail = rst_tconf = 0
 }
 
 END {
