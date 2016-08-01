@@ -19,6 +19,14 @@ while line = STDIN.gets
 	k, v = line.split(': ')
 	next if v == nil
 
+	v.chomp!
+	if v.chomp! == nil or
+	   v.strip! == nil
+		$invalid_records.push record_index
+		$stderr.puts "no line terminator in stats value: #{v}"
+		next
+	end
+
 	k = $monitor + '.' + k
 	$result[k] ||= []
 	size = $result[k].size
@@ -33,7 +41,7 @@ while line = STDIN.gets
 		$invalid_records.push record_index
 		$stderr.puts "whitespace in stats name: #{k}"
 	end
-	if v.chomp!.strip! =~ /[^0-9a-fx.-]/
+	if v =~ /[^0-9a-fx.-]/
 		$invalid_records.push record_index
 		$stderr.puts "invalid stats value: #{v}"
 	end
