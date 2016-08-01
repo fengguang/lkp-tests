@@ -1,26 +1,20 @@
 #!/usr/bin/awk -f
 
 BEGIN {
-	nr_failed    = 0
-	nr_timeout   = 0
-	nr_succeeded = 0
+	FS = "\\.\\.\\. "
+	nr_test = 0
 }
 
-/FAILED/ {
-	nr_failed += 1
+$2 ~ /FAILED/ {
+	nr_test += 1
+	printf("%s.fail: 1\n", substr($1, 7))
 }
 
-/succeeded/ {
-	nr_succeeded += 1
-}
-
-/TIMEOUT/ {
-	nr_failed  += 1
-	nr_timeout += 1
+$2 ~ /succeeded/ {
+	nr_test += 1
+	printf("%s.pass: 1\n", substr($1, 7))
 }
 
 END {
-	print "nr_failed: ",     nr_failed
-	print "nr_timeout: ",    nr_timeout
-	print "nr_succeeded: ",  nr_succeeded
+	printf("total_test: %d\n", nr_test)
 }
