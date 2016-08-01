@@ -2,10 +2,9 @@ suite: kbuild
 testcase: kbuild
 category: benchmark
 
-perf-profile:
-   delay: 50
+runtime: 300s
 
-nr_threads:
+nr_task:
 - 200%
 - 50%
 
