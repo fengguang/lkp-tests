@@ -125,7 +125,8 @@ def grep_crash_head(dmesg_file)
 	return {} if raw_oops.empty?
 
 	raw_trace = %x[
-		xzgrep -B1 -E '#{CALLTRACE_PATTERN}' #{dmesg_file} |
+		awk '/invoked oom-killer: gfp_mask=|Out of memory and no killable processes.../ {exit} // {print}' #{dmesg_file} |
+		grep -B1 -E '#{CALLTRACE_PATTERN}' |
 		grep -v -E -e ' \\? ' -e '^--$' -e '#{CALLTRACE_IGNORE}'
 	]
 
