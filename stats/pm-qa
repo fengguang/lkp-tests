@@ -1,7 +1,25 @@
 #!/usr/bin/awk -f
 
-BEGIN { FS=": " }
+BEGIN {
+	FS=": "
+	nr_test = 0
+}
 
-/fail$/ {
+$2 ~ /^ *fail$/ {
 	printf("%s.fail: 1\n", $1)
+	nr_test++
+}
+
+$2 ~ /^ *pass$/ {
+	printf("%s.pass: 1\n", $1)
+	nr_test++
+}
+
+$2 ~ /^ *skip$/ {
+	printf("%s.block: 1\n", $1)
+	nr_test++
+}
+
+END {
+	printf("total_test: %d\n", nr_test)
 }
