@@ -1,18 +1,27 @@
 #!/bin/sh
-# - nr_threads
+# - nr_task
+# - runtime
+# - build_kconfig
 
 ## Build linux kernel
 
-repeat=3
+: ${runtime:=300}
+: ${build_kconfig:=defconfig}
 
 run_kbuild()
 {
-	for i in $(seq $repeat)
-	do
+	start_time=$(date +%s)
+	iterations=0
+	while true; do
 		cmd make mrproper
-		cmd make defconfig
-		cmd make -j $nr_threads vmlinux 2> /dev/null
+		cmd make $build_kconfig
+		cmd make -j $nr_task vmlinux 2> /dev/null
+		iterations=$((iterations + 1))
+		now=$(date +%s)
+		[ $((now - start_time)) -gt "$runtime" ] && break
 	done
+	echo "iterations: $iterations"
+	echo "runtime: $((now - start_time))"
 }
 
 cd $BENCHMARK_ROOT/kbuild/linux || {

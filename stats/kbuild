@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+
+iterations = 0
+runtime = 0
+$stdin.each_line { |line|
+	if line =~ /^iterations: (\d+)/
+		iterations = $1.to_i
+	end
+	if line =~ /^runtime: (\d+)/
+		runtime = $1.to_f
+	end
+}
+
+if iterations != 0 && runtime != 0
+	puts "iterations: #{iterations}"
+	puts "build-time: #{runtime / iterations}"
+end
