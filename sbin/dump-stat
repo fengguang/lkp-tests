@@ -20,10 +20,16 @@ while line = STDIN.gets
 	next if v == nil
 
 	v.chomp!
-	if v.chomp! == nil or
-	   v.strip! == nil
+	if v.chomp! == nil
 		$invalid_records.push record_index
 		$stderr.puts "no line terminator in stats value: #{v}"
+		next
+	end
+
+	v.strip!
+	if v.empty?
+		$invalid_records.push record_index
+		$stderr.puts "empty stat value of #{k}"
 		next
 	end
 
