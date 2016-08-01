@@ -2,7 +2,7 @@ suite: build-qemu
 testcase: build-qemu
 category: functional
 
-testbox: qemu-builder
+testbox: vm-lkp-wsx03-4G
 
 branch: linus/master
 commit: v4.4
