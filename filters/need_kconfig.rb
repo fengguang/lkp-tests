@@ -23,7 +23,11 @@ end
 def check_all(kconfig_lines)
 	Array(___).each do |e|
 		unless check_kconfig(kconfig_lines, e)
-			raise Job::ParamError, "kconfig not satisfied: #{e}"
+			if File.basename($PROGRAM_NAME) == 'need_kconfig.rb'
+				raise Job::ParamError, "kconfig not satisfied: #{e}"
+			else
+				$stderr.puts "suggest_kconfig not satisfied: #{e}"
+			end
 		end
 	end
 end
