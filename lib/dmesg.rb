@@ -124,8 +124,13 @@ def grep_crash_head(dmesg_file)
 
 	return {} if raw_oops.empty?
 
+	if dmesg_file =~ /\.xz$/
+		cat = 'xzcat'
+	else
+		cat = 'cat'
+	end
 	raw_trace = %x[
-		awk '/invoked oom-killer: gfp_mask=|Out of memory and no killable processes.../ {exit} // {print}' #{dmesg_file} |
+		#{cat} #{dmesg_file} | awk '/invoked oom-killer: gfp_mask=|Out of memory and no killable processes.../ {exit} // {print}' |
 		grep -B1 -E '#{CALLTRACE_PATTERN}' |
 		grep -v -E -e ' \\? ' -e '^--$' -e '#{CALLTRACE_IGNORE}'
 	]
@@ -156,12 +161,12 @@ def grep_printk_errors(kmsg_file, kmsg)
 
 	if kmsg_file =~ /\bkmsg$/
 		# the kmsg file is dumped inside the running kernel
-		oops = `grep -a -E -e '^<[0123]>' -e '^kern  :(err   |crit  |alert |emerg ): ' #{kmsg_file} |
+		oops = `xzgrep -a -E -e '^<[0123]>' -e '^kern  :(err   |crit  |alert |emerg ): ' #{kmsg_file} |
 			grep -a -v -E -f #{LKP_SRC}/etc/oops-pattern |
 			grep -a -v -F -f #{LKP_SRC}/etc/kmsg-blacklist`
 	else
 		# the dmesg file is from serial console
-		oops = `grep -a -F -f /lkp/printk-error-messages #{kmsg_file} |
+		oops = `xzgrep -a -F -f /lkp/printk-error-messages #{kmsg_file} |
 			grep -a -v -E -f #{LKP_SRC}/etc/oops-pattern |
 			grep -a -v -F -f #{LKP_SRC}/etc/kmsg-blacklist`
 		oops += `grep -a -E -f #{LKP_SRC}/etc/ext4-crit-pattern	#{kmsg_file}` if kmsg.index 'EXT4-fs ('
