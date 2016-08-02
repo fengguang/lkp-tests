@@ -4,11 +4,14 @@
 events=$($LKP_SRC/bin/perf-events 'power/energy-*')
 [ -n "$events" ] || exit
 
+perf=/lkp/benchmarks/energy/perf
+[ -x "$perf" ] || exit
+
 opt_events="-e $(echo $events | sed 's/ / -e /g')"
 
 take_snapshot()
 {
-	perf stat -a -x' ' $opt_events 2>&1 -- $1
+	$perf stat -a -x' ' $opt_events 2>&1 -- $1
 }
 
 . $LKP_SRC/lib/wait.sh

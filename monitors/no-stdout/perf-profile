@@ -6,6 +6,7 @@
 # - duration
 
 perf=/lkp/benchmarks/perf-profile/perf
+[ -x "$perf" ] || exit
 
 default_events()
 {

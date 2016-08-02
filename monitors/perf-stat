@@ -4,6 +4,9 @@
 # - time
 # - command
 
+perf=/lkp/benchmarks/perf-stat/perf
+[ -x "$perf" ] || exit
+
 # perf may consume lots of fd
 ulimit -n 102400
 
@@ -43,4 +46,4 @@ opt_events="-e $(echo $events | sed 's/ / -e /g')"
 test -e  /proc/sys/kernel/nmi_watchdog &&
 echo 0 > /proc/sys/kernel/nmi_watchdog
 
-exec perf stat -a -I 1000 -x' ' $opt_events --log-fd 1 -- $command
+exec $perf stat -a -I 1000 -x' ' $opt_events --log-fd 1 -- $command
