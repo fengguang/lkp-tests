@@ -261,6 +261,9 @@ def analyze_error_id(line)
 	when /(Writer stall state \w*).+ g\d+ c\d+ f/
 		line = $1
 		bug_to_bisect = $1
+	when /(Could not create tracefs)/
+		line = $1
+		bug_to_bisect = $1
 	when /(used greatest stack depth:)/
 		line = $1
 		bug_to_bisect = $1
