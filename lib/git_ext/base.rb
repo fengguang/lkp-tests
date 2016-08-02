@@ -40,6 +40,39 @@ module Git
 			!command('branch', ['--list', '-a', pattern]).empty?
 		end
 
+		def __commit2tag
+			hash = {}
+			self.command('show-ref', ['--tags']).each_line do |line|
+				commit, tag = line.split ' refs/tags/'
+				hash[commit] = tag.chomp
+			end
+			hash
+		end
+
+		@@commit2tag_ts = nil
+		def commit2tag
+			return @@commit2tag if @@commit2tag_ts and Time.now - @@commit2tag_ts < 600
+			@@commit2tag_ts = Time.now
+			@@commit2tag = __commit2tag
+		end
+
+		def __head2branch
+			hash = {}
+			self.command('show-ref').each_line do |line|
+				commit, branch = line.split ' refs/remotes/'
+				next if branch == nil
+				hash[commit] = branch.chomp
+			end
+			hash
+		end
+
+		@@head2branch_ts = nil
+		def head2branch
+			return @@head2branch if @@head2branch_ts and Time.now - @@head2branch_ts < 600
+			@@head2branch_ts = Time.now
+			@@head2branch = __head2branch
+		end
+
 		def release_tags
 			unless @release_tags
 				$remotes ||= load_remotes
