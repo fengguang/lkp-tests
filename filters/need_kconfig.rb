@@ -26,7 +26,7 @@ def check_all(kconfig_lines)
 			if File.basename($PROGRAM_NAME) == 'need_kconfig.rb'
 				raise Job::ParamError, "kconfig not satisfied: #{e}"
 			else
-				$stderr.puts "suggest_kconfig not satisfied: #{e}"
+				puts "suggest kconfig: #{e}"
 			end
 		end
 	end
