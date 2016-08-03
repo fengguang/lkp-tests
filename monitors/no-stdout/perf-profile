@@ -8,6 +8,9 @@
 perf=/lkp/benchmarks/perf-profile/perf
 [ -x "$perf" ] || exit
 
+. $LKP_SRC/lib/env.sh
+is_virt && exit 0
+
 default_events()
 {
 	for event in cycles:pp cycles:p; do

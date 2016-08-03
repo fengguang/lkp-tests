@@ -7,6 +7,9 @@
 perf=/lkp/benchmarks/perf-stat/perf
 [ -x "$perf" ] || exit
 
+. $LKP_SRC/lib/env.sh
+is_virt && exit 0
+
 # perf may consume lots of fd
 ulimit -n 102400
 
