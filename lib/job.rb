@@ -433,7 +433,7 @@ class Job
 			if String === v and v =~ /^(.*){{(.*)}}(.*)$/m
 				head = $1.lstrip
 				tail = $3.chomp.rstrip
-				expr = expand_expression(@job, $2)
+				expr = expand_expression(@job, $2, k)
 				return if expr == nil
 				if head.empty? and tail.empty?
 					h[k] = expr
@@ -605,7 +605,7 @@ class Job
 	def evaluate_param(hash, key, val, script)
 		hash = @jobx.merge({___: val})
 		expr = File.read script
-		expand_expression(hash, expr)
+		expand_expression(hash, expr, script)
 	end
 
 	def job_env(job)

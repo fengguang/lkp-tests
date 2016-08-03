@@ -44,8 +44,8 @@ def literal_double_braces(yaml)
 	end
 end
 
-def expand_expression(job, expr)
+def expand_expression(job, expr, file)
 	# puts job, expr
 	context = Hashugar.new(job).instance_eval {binding}
-	context.eval(expr)
+	context.eval(expr, file)
 end
