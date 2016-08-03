@@ -12,13 +12,18 @@ results.each { |key, value|
 	puts "#{key}: #{value}"
 }
 
-results.each { |key, value|
+results.each { |key, miss|
 	if key =~ /(.*)-misses/
 		stem = $1
 		["s", "-references", "-instructions"].each { |pfx|
-			total = results[stem + pfx]
-			if total != 0
-				puts "#{stem}-miss-rate: #{value * 100.0 / total}"
+			value = results[stem + pfx]
+			if value != 0
+				if pfx == "s"
+					total = value + miss
+				else
+					total = value
+				end
+				puts "#{stem}-miss-rate: #{miss * 100.0 / total}"
 				break
 			end
 		}
