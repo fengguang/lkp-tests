@@ -75,6 +75,10 @@ build || exit
 install || exit
 pack_pkg $distro || exit
 
-[[ -n $sync_dest ]] && rsync -av /lkp/benchmarks/${BM_NAME}-${arch}.cgz $sync_dest/${BM_NAME}-${arch}.cgz
+[[ -n $sync_dest ]] && {
+	date=$(date +"%Y-%m-%d")
+	rsync -av /lkp/benchmarks/${BM_NAME}-${arch}.cgz $sync_dest/${BM_NAME}-${arch}_${date}.cgz
+	ln -sf $sync_dest/${BM_NAME}-${arch}_${date}.cgz $sync_dest/${BM_NAME}-${arch}.cgz
+}
 
 [[ $opt_clean ]] && cleanup
