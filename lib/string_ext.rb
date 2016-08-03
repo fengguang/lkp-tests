@@ -1,6 +1,16 @@
 #!/usr/bin/env ruby
 
+REGEX_ANSI_COLOR = /\e\[([0-9;]+m|[mK])/
+
 class String
+
+	# for converting log lines into "Content-Type: text/plain;" emails
+	def plain_text
+		self.gsub(REGEX_ANSI_COLOR, '').
+		     tr("\r", "\n").
+		     gsub(/[^[:print:]\n]/, '')
+	end
+
 	def remediate_invalid_byte_sequence(options = {})
 		self.clone
 		    .force_encoding("UTF-8")
