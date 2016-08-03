@@ -13,19 +13,34 @@ is_virt && exit 0
 # perf may consume lots of fd
 ulimit -n 102400
 
+avail_events=$(perf-events hardware cache)
+check_event()
+{
+	echo $avail_events | grep -qFw -e "$1"
+}
+
+check_add_events()
+{
+	in_events=$(echo "$*" | tr '{},' '   ')
+	for event in $in_events; do
+		check_event $event || return 1
+	done
+	events="$events$*,"
+}
+
 if [ -n "$revents" ]; then
 	events="$revents"
 elif [ -n "$events" ]; then
 	events=$(perf-events $events)
 	[ -n "$events" ] || exit
 else
-	events="\
-{cycles,instructions,cache-references,cache-misses,branch-instructions,branch-misses},\
-{dTLB-loads,dTLB-load-misses},\
-{dTLB-stores,dTLB-store-misses},\
-{instructions,iTLB-load-misses},\
-{node-loads,node-load-misses},\
-{node-stores,node-store-misses},\
+	check_add_events '{cycles,instructions,cache-references,cache-misses,branch-instructions,branch-misses}'
+	check_add_events '{dTLB-loads,dTLB-load-misses}'
+	check_add_events '{dTLB-stores,dTLB-store-misses}'
+	check_add_events '{instructions,iTLB-load-misses}'
+	check_add_events '{node-loads,node-load-misses}'
+	check_add_events '{node-stores,node-store-misses}'
+	events="$events\
 cpu-clock,task-clock,\
 page-faults,context-switches,\
 cpu-migrations,\
