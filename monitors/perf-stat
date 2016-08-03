@@ -13,6 +13,11 @@ is_virt && exit 0
 # perf may consume lots of fd
 ulimit -n 102400
 
+perf_reg_num()
+{
+	dmesg | grep -e 'Performance Events' -C 3 | sed -ne '1,$s/.*generic registers:\s*\([0-9]\+\)/\1/p'
+}
+
 avail_events=$(perf-events hardware cache)
 check_event()
 {
@@ -34,7 +39,13 @@ elif [ -n "$events" ]; then
 	events=$(perf-events $events)
 	[ -n "$events" ] || exit
 else
-	check_add_events '{cycles,instructions,cache-references,cache-misses,branch-instructions,branch-misses}'
+	reg_num=$(perf_reg_num)
+	if [ "$reg_num" -lt 4 ]; then
+		check_add_events '{cycles,instructions,cache-references,cache-misses}'
+		check_add_events '{branch-instructions,branch-misses}'
+	else
+		check_add_events '{cycles,instructions,cache-references,cache-misses,branch-instructions,branch-misses}'
+	fi
 	check_add_events '{dTLB-loads,dTLB-load-misses}'
 	check_add_events '{dTLB-stores,dTLB-store-misses}'
 	check_add_events '{instructions,iTLB-load-misses}'
