@@ -39,6 +39,8 @@ elif [ -n "$events" ]; then
 	events=$(perf-events $events)
 	[ -n "$events" ] || exit
 else
+	# Each event should be used only once, because we have no
+	# event group support in stats/perf-stat yet
 	reg_num=$(perf_reg_num)
 	if [ "$reg_num" -lt 4 ]; then
 		check_add_events '{cycles,instructions,cache-references,cache-misses}'
@@ -48,7 +50,7 @@ else
 	fi
 	check_add_events '{dTLB-loads,dTLB-load-misses}'
 	check_add_events '{dTLB-stores,dTLB-store-misses}'
-	check_add_events '{instructions,iTLB-load-misses}'
+	check_add_events '{iTLB-loads,iTLB-load-misses}'
 	check_add_events '{node-loads,node-load-misses}'
 	check_add_events '{node-stores,node-store-misses}'
 	events="$events\
