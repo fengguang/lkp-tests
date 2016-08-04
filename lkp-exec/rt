@@ -75,14 +75,15 @@ temp_file_unsort=$(mktemp)
 [[ $patterns ]] ||
 cat "${files[@]}" >> $temp_file_unsort
 
-[[ $patterns ]] &&
-for project in $projects
-do
+[[ $patterns ]] && {
 	flag_pattern=0
 	for pattern in $patterns
 	do
 		# expand v3.12 etc. to commit SHA1
-		pattern=$(expand_tag_to_commit $pattern $project)
+		for project in $projects
+		do
+			pattern=$(expand_tag_to_commit $pattern $project)
+		done
 
 		if [[ "$flag_pattern" = "0" ]]; then
 			cmd="grep -h -E $pattern "${files[@]}""
@@ -92,7 +93,7 @@ do
 		fi
 	done
 	eval "$cmd" >> $temp_file_unsort
-done
+}
 
 [[ -s "$temp_file_unsort" ]] ||
 {
