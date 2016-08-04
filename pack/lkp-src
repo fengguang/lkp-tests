@@ -31,7 +31,7 @@ pack()
 	local tmp_dir=/tmp/lkp_initrd-$USER
 	local tmp_src=$tmp_dir/lkp/$LKP_USER/src
 	local archive=$tmp_dir/lkp/$LKP_USER/lkp-${ARCH}
-	local cpio_cmd="cpio -o $OWNER_OPT -H newc -F ${archive}.cpio"
+	local cpio_cmd="cpio --quiet -o $OWNER_OPT -H newc -F ${archive}.cpio"
 
 	(
 		cd $tmp_dir/rootfs				&& find lkp			| $cpio_cmd
