@@ -2,7 +2,7 @@
 
 pre_download()
 {
-	wget -O ${BM_NAME}-latest.txt "https://www.openfabrics.org/downloads/qperf/latest.txt"
+	wget -q -O ${BM_NAME}-latest.txt "https://www.openfabrics.org/downloads/qperf/latest.txt"
 	WEB_URL="https://www.openfabrics.org/downloads/${BM_NAME}/$(<${BM_NAME}-latest.txt)"
 }
 

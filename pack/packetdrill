@@ -4,7 +4,7 @@ download()
 {
 	head_commit="03bfca429c99"
 	source_package="${head_commit}.zip"
-	wget --no-clobber "http://packetdrill.googlecode.com/archive/${source_package}"
+	wget -q --no-clobber "http://packetdrill.googlecode.com/archive/${source_package}"
 	source_dir="${BM_NAME}-${head_commit}"
 	[[ -d $source_dir ]] ||
 	unzip "$source_package"

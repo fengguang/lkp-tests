@@ -6,7 +6,7 @@ download()
 	source_dir=$BM_NAME
 	mkdir "$source_dir"
 	cd $source_dir
-	wget -O tlbflush.c.in "http://marc.info/?l=linux-kernel&m=133727348217113&q=raw"
+	wget -q -O tlbflush.c.in "http://marc.info/?l=linux-kernel&m=133727348217113&q=raw"
 	START_LINE=$(grep -n ^---$ tlbflush.c.in | cut -f1 -d:)
 	END_LINE=$(grep -n ^--$ tlbflush.c.in | cut -f1 -d:)
 	head -$((END_LINE-1)) tlbflush.c.in |
