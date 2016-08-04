@@ -4,7 +4,7 @@ download()
 {
 	[[ -d linux ]] || {
 		[[ -d /c/linux ]] && local opt_ref="--reference /c/linux"
-		git clone $opt_ref https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+		git clone -q $opt_ref https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
 	}
 	source_dir="linux"
 }

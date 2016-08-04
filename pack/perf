@@ -5,7 +5,7 @@ download()
 	[[ -d linux ]] || {
 		local linux_git=${GIT_WORK_TREE:-${LKP_GIT_WORK_TREE:-/c/repo/linux}}
 		[[ -d $linux_git ]] && local opt_ref="--reference $linux_git"
-		git clone $opt_ref https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+		git clone -q $opt_ref https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
 	}
 	source_dir="linux"
 }

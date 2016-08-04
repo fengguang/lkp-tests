@@ -2,7 +2,7 @@
 
 download()
 {
-	[[ -d chromeswap ]] || git clone https://github.com/aaronlu/chromeswap.git
+	git_clone_update https://github.com/aaronlu/chromeswap.git
 	source_dir="chromeswap"
 }
 

@@ -2,7 +2,7 @@
 
 download()
 {
-	[[ -d autotest ]] || git clone --recursive https://github.com/autotest/autotest.git
+	[[ -d autotest ]] || git clone -q --recursive https://github.com/autotest/autotest.git
 	source_dir="autotest"
 }
 
