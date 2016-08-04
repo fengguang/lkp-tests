@@ -42,7 +42,7 @@ else
 	# Each event should be used only once, because we have no
 	# event group support in stats/perf-stat yet
 	reg_num=$(perf_reg_num)
-	if [ "$reg_num" -lt 4 ]; then
+	if [ "0$reg_num" -lt 4 ]; then
 		check_add_events '{cycles,instructions,cache-references,cache-misses}'
 		check_add_events '{branch-instructions,branch-misses}'
 	else
