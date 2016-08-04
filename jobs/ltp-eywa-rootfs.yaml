@@ -1,0 +1,40 @@
+suite: ltp
+testcase: ltp
+category: functional
+
+rootfs: inn:/export/eywa-rootfs
+run_on_local_disk: true
+
+ltp:
+  test:
+  - admin_tools
+  - cap_bounds
+  - connectors
+  - containers
+  - cpuhotplug
+  - crashme
+  - fcntl-locktests
+  - filecaps
+  - hugetlb
+  - hyperthreading
+  - ima
+  - ipc
+# Cause OOM, require at least 32GB memory
+#  - lvm.part1
+#  - lvm.part2
+  - math
+  - mm
+  - nptl
+  - numa
+  - nw_under_ns
+  - pipes
+  - pty
+  - quickhit
+  - sched
+  - sctp
+  - securebits
+  - syscalls_part1
+  - syscalls_part2
+  - syscalls_part3
+  - syscalls_part4
+  - timers
