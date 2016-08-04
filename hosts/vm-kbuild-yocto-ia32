@@ -1,6 +1,6 @@
 model: qemu-system-x86_64 -enable-kvm -cpu Westmere
 nr_vm: 32
 nr_cpu: 1
-memory: 320M
+memory: 512M
 rootfs: yocto-minimal-i386.cgz
 swap_partitions: /dev/vda
