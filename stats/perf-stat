@@ -30,7 +30,7 @@ results.each { |key, miss|
 	end
 }
 
-cycles = results['cycles']
+cycles = results['cpu-cycles']
 instructions = results['instructions']
 
 if cycles != 0 && instructions != 0

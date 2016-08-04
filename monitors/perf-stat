@@ -18,10 +18,10 @@ perf_reg_num()
 	dmesg | grep -e 'Performance Events' -C 3 | sed -ne '1,$s/.*generic registers:\s*\([0-9]\+\)/\1/p'
 }
 
-avail_events=$(perf-events hardware cache)
+avail_events=" $(perf-events hardware cache) "
 check_event()
 {
-	echo $avail_events | grep -qFw -e "$1"
+	[ "${avail_events#* $1 }" != "$avail_events" ]
 }
 
 check_add_events()
@@ -43,17 +43,17 @@ else
 	# event group support in stats/perf-stat yet
 	reg_num=$(perf_reg_num)
 	if [ "0$reg_num" -lt 4 ]; then
-		check_add_events '{cycles,instructions,cache-references,cache-misses}'
+		check_add_events '{cpu-cycles,instructions,cache-references,cache-misses}'
 		check_add_events '{branch-instructions,branch-misses}'
 	else
-		check_add_events '{cycles,instructions,cache-references,cache-misses,branch-instructions,branch-misses}'
+		check_add_events '{cpu-cycles,instructions,cache-references,cache-misses,branch-instructions,branch-misses}'
 	fi
 	check_add_events '{dTLB-loads,dTLB-load-misses}'
 	check_add_events '{dTLB-stores,dTLB-store-misses}'
 	check_add_events '{iTLB-loads,iTLB-load-misses}'
 	check_add_events '{node-loads,node-load-misses}'
 	check_add_events '{node-stores,node-store-misses}'
-	events="$events\
+	events="${events}\
 cpu-clock,task-clock,\
 page-faults,context-switches,\
 cpu-migrations,\
