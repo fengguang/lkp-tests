@@ -11,7 +11,7 @@ mount_overlayfs()
 	# http://comments.gmane.org/gmane.linux.file-systems.union/190
 	[ "$BOOT" = 'nfs' ] && return
 
-	grep -q overlayfs /proc/filesystem || modprobe overlay || return
+	grep -q overlayfs /proc/filesystems || modprobe overlay || return
 
 	local overlay_mnt=/overlay
 	mkdir -p $overlay_mnt
