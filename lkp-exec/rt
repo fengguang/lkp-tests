@@ -72,6 +72,10 @@ esac
 patterns="$*"
 temp_file_unsort=$(mktemp)
 
+[[ $patterns ]] ||
+cat "${files[@]}" >> $temp_file_unsort
+
+[[ $patterns ]] &&
 for project in $projects
 do
 	flag_pattern=0
