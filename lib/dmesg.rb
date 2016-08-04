@@ -119,16 +119,19 @@ CALLTRACE_PATTERN = '(do_one_initcall|kthread|kernel_thread|process_one_work|SyS
 CALLTRACE_IGNORE  = '(do_one_initcall|kthread|kernel_thread|process_one_work|worker_thread|kernel_init|rest_init|warn_slowpath_.*)\\+0x'
 
 def grep_crash_head(dmesg_file)
-	raw_oops = %x[ xzgrep -a -E -f #{LKP_SRC}/etc/oops-pattern #{dmesg_file} |
+	if dmesg_file =~ /\.xz$/
+		grep = 'xzgrep'
+		cat = 'xzcat'
+	else
+		grep = 'grep'
+		cat = 'cat'
+	end
+
+	raw_oops = %x[ #{grep} -a -E -f #{LKP_SRC}/etc/oops-pattern #{dmesg_file} |
 			 grep -v -E -f #{LKP_SRC}/etc/oops-pattern-ignore ]
 
 	return {} if raw_oops.empty?
 
-	if dmesg_file =~ /\.xz$/
-		cat = 'xzcat'
-	else
-		cat = 'cat'
-	end
 	raw_trace = %x[
 		#{cat} #{dmesg_file} | awk '/invoked oom-killer: gfp_mask=|Out of memory and no killable processes.../ {exit} // {print}' |
 		grep -B1 -E '#{CALLTRACE_PATTERN}' |
@@ -159,14 +162,20 @@ def grep_printk_errors(kmsg_file, kmsg)
 	return '' if ENV.fetch('RESULT_ROOT', "").index '/trinity/'
 	return '' unless File.exist?('/lkp/printk-error-messages')
 
-	if kmsg_file =~ /\bkmsg$/
+	if kmsg_file =~ /\.xz$/
+		grep = 'xzgrep'
+	else
+		grep = 'grep'
+	end
+
+	if kmsg_file =~ /\bkmsg\b/
 		# the kmsg file is dumped inside the running kernel
-		oops = `xzgrep -a -E -e '^<[0123]>' -e '^kern  :(err   |crit  |alert |emerg ): ' #{kmsg_file} |
+		oops = `#{grep} -a -E -e '^<[0123]>' -e '^kern  :(err   |crit  |alert |emerg ): ' #{kmsg_file} |
 			grep -a -v -E -f #{LKP_SRC}/etc/oops-pattern |
 			grep -a -v -F -f #{LKP_SRC}/etc/kmsg-blacklist`
 	else
 		# the dmesg file is from serial console
-		oops = `xzgrep -a -F -f /lkp/printk-error-messages #{kmsg_file} |
+		oops = `#{grep} -a -F -f /lkp/printk-error-messages #{kmsg_file} |
 			grep -a -v -E -f #{LKP_SRC}/etc/oops-pattern |
 			grep -a -v -F -f #{LKP_SRC}/etc/kmsg-blacklist`
 		oops += `grep -a -E -f #{LKP_SRC}/etc/ext4-crit-pattern	#{kmsg_file}` if kmsg.index 'EXT4-fs ('
