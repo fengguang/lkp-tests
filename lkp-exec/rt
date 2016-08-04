@@ -15,7 +15,7 @@ usage()
 {
 	cat <<-EOF
 Usage:
-	lkp $script_name [-d N[dwm]] [-f filename] [ -p project ] patterns...
+	lkp $script_name [-d N[dwm]] [-f filename] [ -p project ] [patterns...]
 Example:
 	lkp $script_name -d 3d  lkp-ws02  xfstests /0/
 EOF
