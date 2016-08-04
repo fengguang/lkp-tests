@@ -1,0 +1,52 @@
+#!/bin/bash
+
+# Could possibly add "log to file" support in future.
+# Also possible to let user decide quiet build process.
+
+if command -v "chronic" >/dev/null; then
+	RUN_QUIET=chronic
+else
+	RUN_QUIET=
+	return
+fi
+
+gcc()
+{
+	$RUN_QUIET gcc "$@"
+}
+
+make()
+{
+	$RUN_QUIET make "$@"
+}
+
+cmake()
+{
+	$RUN_QUIET cmake "$@"
+}
+
+./bootstrap()
+{
+	$RUN_QUIET ./bootstrap "$@"
+}
+
+./autogen.sh()
+{
+	$RUN_QUIET ./autogen.sh "$@"
+}
+
+./configure()
+{
+	$RUN_QUIET ./configure "$@"
+}
+
+dpkg-deb()
+{
+	$RUN_QUIET dpkg-deb "$@"
+}
+
+rpmbuild()
+{
+	$RUN_QUIET rpmbuild "$@"
+}
+

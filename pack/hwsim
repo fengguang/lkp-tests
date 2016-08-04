@@ -9,7 +9,7 @@ download()
 build()
 {
 	cd $source_dir
-	./tests/hwsim/build.sh
+	$RUN_QUIET ./tests/hwsim/build.sh
 }
 
 install()

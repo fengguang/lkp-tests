@@ -63,6 +63,7 @@ BM_ROOT=/lkp/benchmarks/$BM_NAME
 
 [[ $arch ]] || arch=`uname -m`
 
+source $LKP_SRC/pack/quiet
 source $LKP_SRC/pack/default
 source $LKP_SRC/pack/$BM_NAME || exit
 
