@@ -198,8 +198,7 @@ class MResultRoot
 	end
 
 	def goto_commit(commit, commit_axis_key = 'commit')
-		rp = ResultPath.new
-		rp.update(axes_path)
+		rp = ResultPath.parse @path
 
 		rp[commit_axis_key] = commit
 		_rtp = rp._result_root
