@@ -1,10 +1,16 @@
 #!/bin/sh
 # - thp_enabled
 # - thp_defrag
+# - shmem_enabled
 
 if [ -n "$thp_enabled" ]; then 
-	echo $thp_enabled >/sys/kernel/mm/transparent_hugepage/enabled
+	echo $thp_enabled > /sys/kernel/mm/transparent_hugepage/enabled
 fi
+
 if [ -n "$thp_defrag" ]; then
-	echo $thp_defrag >/sys/kernel/mm/transparent_hugepage/defrag
+	echo $thp_defrag > /sys/kernel/mm/transparent_hugepage/defrag
+fi
+
+if [ -n "$shmem_enabled" ]; then
+	echo "$shmem_enabled" > /sys/kernel/mm/transparent_hugepage/shmem_enabled
 fi
