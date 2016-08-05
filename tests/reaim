@@ -71,9 +71,9 @@ fi
 if [ -n "$mount_points" ]; then
 	REAIM_TESTDIR="${mount_points%% *}"
 else
-	mkdir -p /fs/shm
-	umount /fs/shm > /dev/null 2>&1
-	mount -t tmpfs tmpfs /fs/shm
+	cmd mkdir -p /fs/shm
+	cmd umount /fs/shm > /dev/null 2>&1
+	cmd mount -t tmpfs tmpfs /fs/shm
 	REAIM_TESTDIR="/fs/shm"
 fi
 
