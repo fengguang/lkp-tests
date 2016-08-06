@@ -5,7 +5,10 @@
 # - duration
 
 perf=/lkp/benchmarks/perf-report-srcline/perf
-[ -x "$perf" ] || exit
+[ -x "$perf" ] || {
+    command -v perf > /dev/null || exit
+    perf="perf"
+}
 
 default_events()
 {

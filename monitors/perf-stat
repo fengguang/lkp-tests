@@ -5,7 +5,10 @@
 # - command
 
 perf=/lkp/benchmarks/perf-stat/perf
-[ -x "$perf" ] || exit
+[ -x "$perf" ] || {
+    command -v perf > /dev/null || exit
+    perf="perf"
+}
 
 . $LKP_SRC/lib/env.sh
 is_virt && exit 0

@@ -14,7 +14,10 @@
 : ${gap:=10}
 
 perf=/lkp/benchmarks/perf-record-report/perf
-[ -x "$perf" ] || exit
+[ -x "$perf" ] || {
+    command -v perf > /dev/null || exit
+    perf="perf"
+}
 
 . $LKP_SRC/lib/wait.sh
 setup_wait

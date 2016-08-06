@@ -4,7 +4,10 @@
 # - delay
 
 perf=/lkp/benchmarks/perf-node/perf
-[ -x "$perf" ] || exit
+[ -x "$perf" ] || {
+    command -v perf > /dev/null || exit
+    perf="perf"
+}
 
 # perf may consume lots of fd
 ulimit -n 102400

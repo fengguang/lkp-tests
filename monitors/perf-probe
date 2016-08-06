@@ -3,7 +3,10 @@
 [ -n "$events" ] || exit 0
 
 perf=/lkp/benchmarks/perf-probe/perf
-[ -x "$perf" ] || exit
+[ -x "$perf" ] || {
+    command -v perf > /dev/null || exit
+    perf="perf"
+}
 
 TRACING_ROOT=/sys/kernel/debug/tracing
 
