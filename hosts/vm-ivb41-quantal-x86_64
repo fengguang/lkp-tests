@@ -1,0 +1,5 @@
+model: qemu-system-x86_64 -enable-kvm
+nr_vm: 16
+nr_cpu: 2
+memory: 380M
+rootfs: quantal-core-x86_64.cgz
