@@ -11,6 +11,15 @@ require 'set'
 
 $monitor = ARGV[0]
 
+def warn_stat(msg)
+	$stderr.puts msg
+
+	unless $stat_context_showed
+		$stat_context_showed = true
+		$stderr.puts "dump-stat: check #{RESULT_ROOT}/#{$monitor}"
+	end
+end
+
 $result = {}
 $invalid_records = []
 record_index = 0
@@ -21,12 +30,12 @@ while line = STDIN.gets
 
 	# Line terminator is expected. If not, throw out an error warning.
 	if v.chomp! == nil
-		$stderr.puts "no line terminator in stats value: #{v}"
+		warn_stat "no line terminator in stats value: #{v}"
 	end
 
 	v.strip!
 	if v.empty?
-		$stderr.puts "empty stat value of #{k}"
+		warn_stat "empty stat value of #{k}"
 		next
 	end
 
@@ -42,11 +51,11 @@ while line = STDIN.gets
 
 	if k =~ /[ \t]/
 		$invalid_records.push record_index
-		$stderr.puts "whitespace in stats name: #{k}"
+		warn_stat "whitespace in stats name: #{k}"
 	end
 	if v =~ /[^0-9a-fx.-]/
 		$invalid_records.push record_index
-		$stderr.puts "invalid stats value: #{v}"
+		warn_stat "invalid stats value: #{v}"
 	end
 
 	v = v.index('.') ? v.to_f : v.to_i
@@ -97,7 +106,7 @@ if min_cols < max_cols and not UNSTRUCTURED_MONITORS.include?($monitor)
 		$result.each { |k, v| v.pop if v.size == max_cols }
 		puts "Last record seems incomplete. Truncated #{RESULT_ROOT}/#{$monitor}.json"
 	else
-		$stderr.puts "Not a matrix: value size is different - #{min_cols_stat}: #{min_cols} != #{max_cols_stat}: #{max_cols}: #{RESULT_ROOT}/#{$monitor}.json"
+		warn_stat "Not a matrix: value size is different - #{min_cols_stat}: #{min_cols} != #{max_cols_stat}: #{max_cols}: #{RESULT_ROOT}/#{$monitor}.json"
 	end
 end
 
