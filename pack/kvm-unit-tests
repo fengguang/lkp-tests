@@ -5,10 +5,10 @@ CONFIGURE_FLAGS="--arch=$arch"
 download()
 {
 	git_clone_update git://git.kernel.org/pub/scm/virt/kvm/kvm-unit-tests.git
-	source_dir=$BM_NAME
+	source_dir="kvm-unit-tests"
 }
 
 install()
 {
-	cp -af /tmp/$BM_NAME/* $BM_ROOT/
+	cp -af /tmp/kvm-unit-tests/* $BM_ROOT/
 }
