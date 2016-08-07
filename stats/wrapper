@@ -64,9 +64,11 @@ warn_empty_stats()
 	echo "WARN: empty stats for $log" >&2
 }
 
-if [ -f $log.gz ]; then
+if [ -e $log.gz ]; then
+	[ -s $log.gz ] || exit 0
 	zcat $log.gz > $log
-elif [ -f $log.xz ]; then
+elif [ -e $log.xz ]; then
+	[ -s $log.xz ] || exit 0
 	xzcat $log.xz > $log
 fi
 
