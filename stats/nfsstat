@@ -38,6 +38,14 @@ NF > 0 {
 		is_dbl = NF/nr_key-1
 		for (i = 1; i <= NF; i++) {
 			key_idx = int((i+is_dbl)/(1+is_dbl))
+
+			# Server file handle cache:
+			# lookup     anon       ncachedir  ncachedir  stale
+			# 0          0          0          0          0
+			# skip the 2nd duplicate ncachedir
+			if (key_idx == 4 && key_list[key_idx] == "ncachedir")
+				continue
+
 			print prefix"."key_list[key_idx]""resolve_value($i)
 		}
 	}
