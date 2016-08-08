@@ -11,7 +11,7 @@ set_perf_path "/lkp/benchmarks/perf-node/perf"
 ulimit -n 102400
 
 [ -n "$events" ] || events="node-loads node-load-misses node-stores node-store-misses"
-events=$(perf-events $events)
+events=$($LKP_SRC/bin/perf-events $events)
 [ -n "$events" ] || die "Events are empty"
 
 opt_events="-e $(echo $events | sed 's/ / -e /g')"

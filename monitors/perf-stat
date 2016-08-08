@@ -19,7 +19,7 @@ perf_reg_num()
 	dmesg | grep -e 'Performance Events' -C 3 | sed -ne '1,$s/.*generic registers:\s*\([0-9]\+\)/\1/p'
 }
 
-avail_events=" $(perf-events hardware cache) "
+avail_events=" $($LKP_SRC/bin/perf-events hardware cache) "
 check_event()
 {
 	[ "${avail_events#* $1 }" != "$avail_events" ]
@@ -37,7 +37,7 @@ check_add_events()
 if [ -n "$revents" ]; then
 	events="$revents"
 elif [ -n "$events" ]; then
-	events=$(perf-events $events)
+	events=$($LKP_SRC/bin/perf-events $events)
 	[ -n "$events" ] || die "Events are empty"
 else
 	# Each event should be used only once, because we have no
