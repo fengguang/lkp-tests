@@ -4,11 +4,9 @@
 # - delay
 # - duration
 
-perf=/lkp/benchmarks/perf-report-srcline/perf
-[ -x "$perf" ] || {
-    command -v perf > /dev/null || exit
-    perf="perf"
-}
+. $LKP_SRC/lib/env.sh
+
+set_perf_path "/lkp/benchmarks/perf-report-srcline/perf"
 
 default_events()
 {

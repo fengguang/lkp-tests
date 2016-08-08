@@ -3,18 +3,16 @@
 # - interval
 # - delay
 
-perf=/lkp/benchmarks/perf-node/perf
-[ -x "$perf" ] || {
-    command -v perf > /dev/null || exit
-    perf="perf"
-}
+. $LKP_SRC/lib/env.sh
+
+set_perf_path "/lkp/benchmarks/perf-node/perf"
 
 # perf may consume lots of fd
 ulimit -n 102400
 
 [ -n "$events" ] || events="node-loads node-load-misses node-stores node-store-misses"
 events=$(perf-events $events)
-[ -n "$events" ] || exit
+[ -n "$events" ] || die "Events are empty"
 
 opt_events="-e $(echo $events | sed 's/ / -e /g')"
 [ -n "$interval" ] || interval=1

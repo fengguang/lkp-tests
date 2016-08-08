@@ -9,15 +9,13 @@
 #
 # Some idea and code are borrowed from monitor/no-stdout/perf-profile
 
+. $LKP_SRC/lib/env.sh
+
 : ${delay:=0}
 : ${duration:=10}
 : ${gap:=10}
 
-perf=/lkp/benchmarks/perf-record-report/perf
-[ -x "$perf" ] || {
-    command -v perf > /dev/null || exit
-    perf="perf"
-}
+set_perf_path "/lkp/benchmarks/perf-record-report/perf"
 
 . $LKP_SRC/lib/wait.sh
 setup_wait

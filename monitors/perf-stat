@@ -4,11 +4,9 @@
 # - time
 # - command
 
-perf=/lkp/benchmarks/perf-stat/perf
-[ -x "$perf" ] || {
-    command -v perf > /dev/null || exit
-    perf="perf"
-}
+. $LKP_SRC/lib/env.sh
+
+set_perf_path "/lkp/benchmarks/perf-stat/perf"
 
 . $LKP_SRC/lib/env.sh
 is_virt && exit 0
@@ -40,7 +38,7 @@ if [ -n "$revents" ]; then
 	events="$revents"
 elif [ -n "$events" ]; then
 	events=$(perf-events $events)
-	[ -n "$events" ] || exit
+	[ -n "$events" ] || die "Events are empty"
 else
 	# Each event should be used only once, because we have no
 	# event group support in stats/perf-stat yet

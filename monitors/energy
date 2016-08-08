@@ -1,14 +1,12 @@
 #!/bin/sh
 
+. $LKP_SRC/lib/env.sh
+
 # These events are based on https://lwn.net/Articles/569674/
 events=$($LKP_SRC/bin/perf-events 'power/energy-*')
-[ -n "$events" ] || exit
+[ -n "$events" ] || die "Events are empty"
 
-perf=/lkp/benchmarks/energy/perf
-[ -x "$perf" ] || {
-	command -v perf > /dev/null || exit
-	perf="perf"
-}
+set_perf_path "/lkp/benchmarks/energy/perf"
 
 opt_events="-e $(echo $events | sed 's/ / -e /g')"
 

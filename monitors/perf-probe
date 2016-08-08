@@ -1,12 +1,10 @@
 #!/bin/sh
 
-[ -n "$events" ] || exit 0
+. $LKP_SRC/lib/env.sh
 
-perf=/lkp/benchmarks/perf-probe/perf
-[ -x "$perf" ] || {
-    command -v perf > /dev/null || exit
-    perf="perf"
-}
+[ -n "$events" ] || die "Events are empty"
+
+set_perf_path "/lkp/benchmarks/perf-probe/perf"
 
 TRACING_ROOT=/sys/kernel/debug/tracing
 

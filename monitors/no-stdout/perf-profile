@@ -5,11 +5,9 @@
 # - delay
 # - duration
 
-perf=/lkp/benchmarks/perf-profile/perf
-[ -x "$perf" ] || {
-	command -v perf > /dev/null || exit
-	perf="perf"
-}
+. $LKP_SRC/lib/env.sh
+
+set_perf_path "/lkp/benchmarks/perf-profile/perf"
 
 . $LKP_SRC/lib/env.sh
 is_virt && exit 0
