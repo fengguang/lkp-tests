@@ -17,5 +17,5 @@ build()
 
 install()
 {
-	cp -af src/$BM_NAME $BM_ROOT
+	cp -af /tmp/$source_dir/* $BM_ROOT
 }
