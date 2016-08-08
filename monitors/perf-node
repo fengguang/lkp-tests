@@ -6,6 +6,7 @@
 . $LKP_SRC/lib/env.sh
 
 set_perf_path "/lkp/benchmarks/perf-node/perf"
+export perf
 
 # perf may consume lots of fd
 ulimit -n 102400
