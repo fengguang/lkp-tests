@@ -1,5 +1,8 @@
 #!/bin/sh
 
+[ -n "$LKP_SRC" ] || LKP_SRC=$(dirname $(dirname $(readlink -e -v $0)))
+. $LKP_SRC/lib/debug.sh
+
 has_cmd()
 {
 	command -v "$1" >/dev/null
@@ -31,5 +34,14 @@ is_virt()
 		[ "$(virt-what)" = "kvm" ]
 	else
 		grep -q -w hypervisor /proc/cpuinfo
+	fi
+}
+
+set_perf_path()
+{
+	if [ -x "$1" ]; then
+		perf="$1"
+	else
+		perf=$(command -v perf) || die "Can not find perf command"
 	fi
 }
