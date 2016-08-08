@@ -49,6 +49,8 @@ export_top_env
 export LKP_USER=$user
 export LKP_SRC=/lkp/$user/src
 
+export PS4='+(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
+
 $LKP_DEBUG_PREFIX $LKP_SRC/bin/lkp-setup-rootfs || {
 	# some reasonable debug time, if sleep is killed, it's likely
 	# someone has login and want more time to look things around
