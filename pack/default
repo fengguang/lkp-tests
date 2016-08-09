@@ -19,7 +19,7 @@ download()
 
 patch_source()
 {
-	PATCH=$LKP_SRC/pack/${BM_NAME}.patch
+	local PATCH=$LKP_SRC/pack/${BM_NAME}.patch
 	[[ -f $PATCH ]] || return 0
 	patch -p1 < $PATCH
 }
