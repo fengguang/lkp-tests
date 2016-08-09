@@ -1,5 +1,7 @@
 #!/bin/sh
 
+. $LKP_SRC/lib/env.sh
+
 umask 002
 
 wait_for_monitors()
@@ -58,7 +60,7 @@ kill_monitors -KILL
 
 PERF_EVENT_DATA=$TMP/perf.data
 [ -s "$PERF_EVENT_DATA" ] && {
-	perf=/lkp/benchmarks/perf-profile/perf
+	set_perf_path "/lkp/benchmarks/perf-profile/perf"
 	$perf report --children --header -U -g folded,0.5,callee --sort=dso,symbol -i $PERF_EVENT_DATA |
 	gzip > $RESULT_ROOT/perf-profile.gz && {
 		rm -f $PERF_EVENT_DATA
@@ -67,7 +69,7 @@ PERF_EVENT_DATA=$TMP/perf.data
 
 PERF_REPORT_SRCLINE_DATA=$TMP/perf-report-srcline.data
 [ -s $PERF_REPORT_SRCLINE_DATA ] && {
-	perf=/lkp/benchmarks/perf-report-srcline/perf
+	set_perf_path "/lkp/benchmarks/perf-report-srcline/perf"
 	$perf report --header -i $PERF_REPORT_SRCLINE_DATA --no-children -f -v \
 	      --stdio --sort sym,srcline -w 10,50,100 --full-source-path |
 	gzip > $RESULT_ROOT/perf-report-srcline.gz &&
