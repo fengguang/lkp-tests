@@ -29,6 +29,17 @@ $2 ~ /[0-9]*/ && $3 ~ /TCONF/ {
 	rst_tfail++
 }
 
+# Treat termination_id=32 as block result
+#define TPASS	0	/* Test passed flag */
+#define TFAIL	1	/* Test failed flag */
+#define TBROK	2	/* Test broken flag */
+#define TWARN	4	/* Test warning flag */
+#define TINFO	16	/* Test information flag */
+#define TCONF	32	/* Test not appropriate for configuration flag */
+/termination_type=exited termination_id=32/ {
+	rst_tfail--
+}
+
 /<<<test_end>>>/ {
 	if ( rst_tfail ) {
 		printf("%s.fail: 1\n", tc_name)
