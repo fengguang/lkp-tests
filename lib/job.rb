@@ -969,3 +969,14 @@ module LKP
 	end
 end
 
+def each_job_in_dir(dir)
+	return enum_for(__method__, dir) unless block_given?
+
+	proc_jobfile = ->jobfile{
+		j = Job.open jobfile
+		j['jobfile'] = jobfile
+		yield j
+	}
+
+	Dir.glob(File.join(dir, "**/*.yaml")).each(&proc_jobfile)
+end
