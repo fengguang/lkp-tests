@@ -35,7 +35,7 @@ dest_partition=$(blkid | grep ${dest#*=} | cut -d':' -f1)
 fs_type=$(blkid -o value -s TYPE $dest_partition)
 [ "${fs_type}" != "btrfs" ] && {
 	umount ${dest_partition} 2>/dev/null
-	mkfs.btrfs -f ${dest_partition} || exit
+	mkfs.btrfs -L "ROOTFS" ${dest_partition} || exit
 }
 
 MNT_POINT=$(cat /proc/mounts | grep -w "$dest_partition" | cut -d' ' -f2)
@@ -60,7 +60,7 @@ nfs_mount_rootfs=$MNT_POINT/NFS-${rootfs_name}
 [ -d ${nfs_mount_rootfs} ] || mkdir -p ${nfs_mount_rootfs} || exit
 
 # mount NFS to local and rsync to destination subvolume
-mount $source $nfs_mount_rootfs || exit
+mount -o ro,nolock $source $nfs_mount_rootfs || exit
 rsync -aix --delete $nfs_mount_rootfs/ $MNT_POINT/$rootfs_name || exit
 
 # umount NFS
