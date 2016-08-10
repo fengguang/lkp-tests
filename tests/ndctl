@@ -3,15 +3,16 @@
 ## Utility library for managing the Linux Kernel ND (NFIT-defined/NVDIMM) Subsystem
 ## detailed info can refer to https://github.com/pmem/ndctl
 
+shopt -s nullglob
+
+. $LKP_SRC/lib/debug.sh
+
+[[ -x "/lkp/benchmarks/ndctl/bin/ndctl" ]] || die "Can not find executable ndctl file"
 
 # linux-headers file is created by 0day system, and located in /usr/src/linux-headers-$kconfig-$commit directory.
-shopt -s nullglob
 linux_headers_dirs=(/usr/src/linux-headers*)
 
-[[ $linux_headers_dirs ]] || {
-	echo "ndctl: fail to find linux-headers package" >&2
-	exit
-}
+[[ $linux_headers_dirs ]] || die "ndctl: fail to find linux-headers package"
 
 linux_headers_dir=${linux_headers_dirs[-1]}
 echo "ndctl: linux_headers_dir is $linux_headers_dir"
