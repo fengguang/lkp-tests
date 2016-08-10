@@ -19,5 +19,6 @@ build()
 
 install()
 {
+	make install
 	cp -af /tmp/$source_dir/* $BM_ROOT
 }
