@@ -135,6 +135,10 @@ do
 				elif [[ $param =~ ^[a-z_]+_initrd=([^ ]+) ]]; then
 					rds="${BASH_REMATCH[1]}"
 					add_initrd ${rds//,/ }
+				elif [[ $param =~ ^root= ]]; then
+					root="${param#root=}"
+				elif [[ $param =~ ^remote_rootfs= ]]; then
+					remote_rootfs="${param#remote_rootfs=}"
 				else
 					[[ $param =~ ^job= ]] && export $param
 					params="$params $param"
@@ -146,6 +150,10 @@ do
 			;;
 	esac
 done < /tmp/pxelinux-selection.cfg
+
+# rsync NFS rootfs to local disk and boot from it
+[[ $remote_rootfs ]] && [[ $root ]] &&
+$EXEC_DIR/rsync-rootfs $remote_rootfs $root
 
 if [[ $kernel =~ 'menu.c32'$ ]]; then
 	$0 $append
