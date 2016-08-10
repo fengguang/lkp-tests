@@ -25,6 +25,10 @@ $2 ~ /[0-9]*/ && $3 ~ /TCONF/ {
 	rst_tconf++
 }
 
+/termination_type=exited termination_id=0/ {
+	rst_tpass++
+}
+
 /termination_type=exited termination_id=[1-9]+/ {
 	rst_tfail++
 }
