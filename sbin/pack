@@ -74,6 +74,7 @@ cd /tmp
 download || exit
 build || exit
 install || exit
+strip_object_files
 pack_pkg $distro || exit
 
 [[ -n $sync_dest ]] && {
