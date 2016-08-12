@@ -1,8 +1,8 @@
 model: qemu-system-x86_64 -enable-kvm -cpu host
-nr_vm: 18
+nr_vm: 30
 nr_cpu: 2
 memory: 2G
 rootfs: debian-x86_64.cgz
 hdd_partitions: /dev/vda
 swap_partitions: /dev/vdb
-ssh_base_port: 23660
+ssh_base_port: 23630
