@@ -44,7 +44,7 @@ install()
 strip_object_files()
 {
 	[[ -d "/lkp/benchmarks/$BM_NAME" ]] &&
-	find /lkp/benchmarks/$BM_NAME/ -type f -executable -size +10K \
+	find /lkp/benchmarks/$BM_NAME/ -type f -executable -size +10k \
 	  \( ! -name "*.awk" -a ! -name "*.pl" -a ! -name "*.sh" -a ! -name "*.rb" -a ! -name "*.py" \) | xargs strip &> /dev/null
 }
 
