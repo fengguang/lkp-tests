@@ -47,6 +47,9 @@ pack()
 	date=$(date +"%Y-%m-%d")
 
 	{
+		[[ "$BM_NAME" = "lkp-eywa" ]] &&
+		ln -sf /usr/bin/gnuplot-qt usr/bin/gnuplot
+
 		find . -xdev ! -name "*.deb" |
 		grep -v -f $LKP_SRC/rootfs/rootfs-strip-list
 
