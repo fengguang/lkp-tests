@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+
+require ENV['LKP_SRC'] + "/lib/statistics.rb"
+
+RESULT_ROOT = ENV['RESULT_ROOT']
+
+data = []
+Dir["#{RESULT_ROOT}/results/ftq_*.dat"].each { |file|
+	rdata = File.read(file)
+	n = (rdata =~ /^[^#]/)
+	rdata.slice!(0, n)
+	sfdata = rdata.split
+	rdata = nil
+	sfdata.select!.with_index { |x, i| i.odd? }
+	data.concat(sfdata.map(&:to_i))
+}
+
+average = data.average
+stddev = data.standard_deviation / average
+
+printf "counts: %d\n", average
+printf "stddev%%: %g\n", stddev * 100

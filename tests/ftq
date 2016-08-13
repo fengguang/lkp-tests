@@ -1,0 +1,21 @@
+#!/bin/sh
+# - nr_task
+# - samples
+# - freq
+
+## The FTQ benchmarks measure hardware and softwareinterference
+## or 'noise' on a node from the applications perspective.
+
+cd $BENCHMARK_ROOT/ftq || exit
+
+[ 0"$nr_task" -gt 1  ] && opt_task="-t $nr_task"
+
+[ -n "$samples" ] || samples=10000
+
+[ -n "$freq" ] && opt_freq="-f $freq"
+
+samples=${samples%%ss}
+
+cmd ./ftq $opt_freq -n $samples $opt_task || exit
+
+copy-results $BENCHMARK_ROOT/ftq/*.dat
