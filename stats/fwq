@@ -1,1 +1,25 @@
-ftq
+#!/usr/bin/env ruby
+
+require ENV['LKP_SRC'] + "/lib/statistics.rb"
+
+RESULT_ROOT = ENV['RESULT_ROOT']
+
+BM_NAME = File.basename(__FILE__)
+
+if BM_NAME == 'ftq'
+	DATA_NAME = 'counts'
+elsif BM_NAME == 'fwq'
+	DATA_NAME = 'times'
+else
+	exit
+end
+
+data = []
+Dir["#{RESULT_ROOT}/results/#{BM_NAME}_*_#{DATA_NAME}.dat"].each { |file|
+	data.concat(File.read(file).split.map(&:to_i))
+}
+
+stddev = data.standard_deviation / data.average
+
+printf "counts: %d\n", data.average
+printf "stddev: %g\n", stddev
