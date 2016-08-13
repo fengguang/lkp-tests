@@ -1,11 +1,18 @@
 suite: ftq
 testcase: ftq
-category: benchmark
+category: noise-benchmark
 
-perf-profile:
-  delay: 30
+cpufreq_governor:
+  - performance
+  - powersave
 
 nr_task: 100%
 
+samples: 100000ss
+
 ftq:
-  samples: 100000ss
+  freq: 10000
+
+---
+ftq:
+  freq: 1000
