@@ -1,9 +1,18 @@
 suite: fwq
 testcase: fwq
-category: benchmark
+category: noise-benchmark
 
-nr_threads: 100%
-iterations: 20x
+cpufreq_governor:
+  - performance
+  - powersave
+
+nr_task: 100%
+
+samples: 100000ss
 
 fwq:
-  samples: 100000ss
+  iterations: 18x
+
+---
+fwq:
+  iterations: 15x
