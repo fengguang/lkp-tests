@@ -1,16 +1,14 @@
 #!/bin/sh
-# - nr_threads
+# - nr_task
 # - samples
 # - iterations
 
 ## The FTQ and FWQ benchmarks measure hardware and softwareinterference
-## or ‘noise’ on a node from the applications perspective.
+## or 'noise' on a node from the applications perspective.
 
-BM_NAME=$(basename $0)
+cd $BENCHMARK_ROOT/fwq || exit
 
-cd $BENCHMARK_ROOT/$BM_NAME || exit
-
-[ "$nr_threads" -gt 1  ] && opt_threads="-t $nr_threads"
+[ "$nr_task" -gt 1  ] && opt_task="-t $nr_task"
 
 [ -n "$samples" ] || samples=10000
 
@@ -18,12 +16,8 @@ samples=${samples%%ss}
 
 [ -n "$iterations" ] || iterations=20
 
-if [ "$BM_NAME" = 'ftq' ]; then
-	opt_iterations="-i $iterations"
-elif [ "$BM_NAME" = 'fwq' ]; then
-	opt_iterations="-w $iterations"
-fi
+opt_iterations="-w $iterations"
 
-cmd ./t_$BM_NAME -n $samples $opt_iterations $opt_threads || exit
+cmd ./t_fwq -n $samples $opt_iterations $opt_task || exit
 
-copy-results $BENCHMARK_ROOT/$BM_NAME/*.dat
+copy-results $BENCHMARK_ROOT/fwq/*.dat

@@ -1,15 +1,17 @@
 #!/bin/bash
 
-WEB_URL="https://asc.llnl.gov/CORAL-benchmarks/Skeleton/ftq_v1.1.tar"
-source_dir="ftqV110"
+download()
+{
+	git_clone_update https://github.com/hying-caritas/fwq.git
+}
 
 build()
 {
-	cd $source_dir/ftq
+	cd fwq
 	make
 }
 
 install()
 {
-	cp -af t_${BM_NAME} $BM_ROOT
+	cp -af t_fwq $BM_ROOT
 }

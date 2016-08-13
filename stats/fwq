@@ -1,25 +1,47 @@
 #!/usr/bin/env ruby
 
-require ENV['LKP_SRC'] + "/lib/statistics.rb"
-
 RESULT_ROOT = ENV['RESULT_ROOT']
 
-BM_NAME = File.basename(__FILE__)
-
-if BM_NAME == 'ftq'
-	DATA_NAME = 'counts'
-elsif BM_NAME == 'fwq'
-	DATA_NAME = 'times'
-else
-	exit
-end
+PDEL = 10
+UNIT = 1000.0
 
 data = []
-Dir["#{RESULT_ROOT}/results/#{BM_NAME}_*_#{DATA_NAME}.dat"].each { |file|
-	data.concat(File.read(file).split.map(&:to_i))
+files = Dir["#{RESULT_ROOT}/results/fwq_*_times.dat"]
+files.each { |file|
+	sfdata = File.read(file).split
+	n = sfdata.size
+	ndel = n * PDEL / 100
+	sfdata.slice!(n - ndel, ndel)
+	sfdata.slice!(0, ndel)
+	data.concat(sfdata.map(&:to_i))
+	sfdata = nil
 }
 
-stddev = data.standard_deviation / data.average
+threads = files.size
+data.sort!
+data.reverse!
+mean = data[data.size / 2]
+max = data.last
+samples = data.size
 
-printf "counts: %d\n", data.average
-printf "stddev: %g\n", stddev
+data = data.map { |d| d - mean }
+
+printf "max: %g\n", max / UNIT
+printf "mean: %g\n", mean / UNIT
+
+noise_levels = [100, 75, 50, 25, 5, 2]
+
+start = 0
+cycles = 0
+noise_num_levels = noise_levels.each_with_index.map { |level, i|
+	lnt = mean * level / 100
+	nstart = data.bsearch_index { |n| n < lnt }
+	nstart ||= samples
+	(start...nstart).each { |di| cycles += data[di] }
+	start = nstart
+	[level, cycles / UNIT / threads]
+}
+
+noise_num_levels.each { |level, mc|
+	printf "noise.%d%%: %g\n", level, mc
+}
