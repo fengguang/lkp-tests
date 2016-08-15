@@ -21,15 +21,44 @@ network_ok()
 	for i in /sys/class/net/*/
 	do
 		[ "${i#*/lo/}" != "$i" ] && continue
+		[ "${i#*/eth}" != "$i" ] && net_devices="$net_devices $(basename $i)"
 		[ "$(cat $i/operstate)" = 'up' ]		&& return 0
 		[ "$(cat $i/carrier 2>/dev/null)" = '1' ]	&& return 0
 	done
 	return 1
 }
 
+# Many randconfig test kernels may not have the necessary NIC driver.
+# Show warning only when the kernel does compile in suitable driver.
+# QEMU VMs use e1000 or virtio; HW machines mostly have e1000 or igb.
+# Let's catch and warn the common case.
+warn_no_eth0()
+{
+	[ -f /proc/config.gz ] || return
+
+	zgrep -q -F -x -e 'CONFIG_E1000=y' -e 'CONFIG_E1000E=y' /proc/config.gz || return
+
+	echo "!!! IP-Config: No eth0/1/.. under /sys/class/net/ !!!" >&2
+}
+
 setup_network()
 {
+	local net_devices=
+
 	network_ok && return
+
+	if [ -z "$net_devices" ]; then
+
+		warn_no_eth0
+
+		echo \
+		ls /sys/class/net
+		ls /sys/class/net
+
+		reboot 2>/dev/null
+		exit
+	fi
+
 	$LKP_DEBUG_PREFIX $LKP_SRC/bin/run-ipconfig
 	network_ok && return
 
