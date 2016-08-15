@@ -6,10 +6,6 @@ Kernel_panic-not_syncing:VFS:Unable_to_mount_root_fs_on_unknown-block(#,#): 1
 # prepare_namespace+0x
 calltrace:prepare_namespace: 1
 
-# kernel_init_freeable+0x
-calltrace:kernel_init_freeable: 1
-
 timestamp:last: 190.046228
 timestamp:Kernel_panic-not_syncing:VFS:Unable_to_mount_root_fs_on_unknown-block(#,#): 189.830178
 timestamp:calltrace:prepare_namespace: 190.001560
-timestamp:calltrace:kernel_init_freeable: 190.004103

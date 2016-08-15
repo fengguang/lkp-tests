@@ -15,9 +15,6 @@ calltrace:node_affinity_init: 1
 # hfi1_mod_init+0x
 calltrace:hfi1_mod_init: 1
 
-# kernel_init_freeable+0x
-calltrace:kernel_init_freeable: 1
-
 # general protection fault: .* SMP KASAN
 general_protection_fault:#[##]SMP_KASAN: 1
 
@@ -33,7 +30,6 @@ timestamp:calltrace:__asan_load8: 150.354373
 timestamp:calltrace:init_real_cpu_mask: 150.355637
 timestamp:calltrace:node_affinity_init: 150.358406
 timestamp:calltrace:hfi1_mod_init: 150.361179
-timestamp:calltrace:kernel_init_freeable: 150.363974
 timestamp:general_protection_fault:#[##]SMP_KASAN: 150.375503
 timestamp:RIP:init_real_cpu_mask: 150.382189
 timestamp:Kernel_panic-not_syncing:Fatal_exception: 150.524788

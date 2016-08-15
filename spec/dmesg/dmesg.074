@@ -3,13 +3,9 @@ boot_failures: 1
 # BUG: KASAN: use-after-free in kobj_kset_leave+0x
 BUG:KASAN:use-after-free_in_kobj_kset_leave_at_addr: 1
 
-# kernel_init_freeable+0x
-calltrace:kernel_init_freeable: 1
-
 # init+0x
 calltrace:init: 1
 
 timestamp:last: 4.629431
 timestamp:BUG:KASAN:use-after-free_in_kobj_kset_leave_at_addr: 4.538069
-timestamp:calltrace:kernel_init_freeable: 4.567022
 timestamp:calltrace:init: 4.594457

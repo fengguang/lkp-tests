@@ -9,11 +9,7 @@ RIP:find_busiest_group: 1
 # sock_init+0x
 calltrace:sock_init: 1
 
-# kernel_init_freeable+0x
-calltrace:kernel_init_freeable: 1
-
 timestamp:last: 0.546024
 timestamp:general_protection_fault:#[##]SMP_DEBUG_PAGEALLOC: 0.509411
 timestamp:RIP:find_busiest_group: 0.511353
 timestamp:calltrace:sock_init: 0.537289
-timestamp:calltrace:kernel_init_freeable: 0.540310

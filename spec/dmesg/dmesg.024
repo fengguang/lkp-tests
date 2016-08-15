@@ -24,9 +24,6 @@ calltrace:usb_serial_register_drivers: 1
 # usb_serial_module_init+0x
 calltrace:usb_serial_module_init: 1
 
-# kernel_init_freeable+0x
-calltrace:kernel_init_freeable: 1
-
 timestamp:last: 6.407623
 timestamp:BUG:KASAN:slab-out-of-bounds_in_inotify_read_at_addr: 6.359904
 timestamp:calltrace:vfs_read: 6.379960
@@ -36,4 +33,3 @@ timestamp:calltrace:SyS_linkat: 6.391050
 timestamp:calltrace:SyS_link: 6.391868
 timestamp:calltrace:usb_serial_register_drivers: 6.400357
 timestamp:calltrace:usb_serial_module_init: 6.401395
-timestamp:calltrace:kernel_init_freeable: 6.403225

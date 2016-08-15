@@ -12,9 +12,6 @@ calltrace:node_affinity_init: 1
 # hfi1_mod_init+0x
 calltrace:hfi1_mod_init: 1
 
-# kernel_init_freeable+0x
-calltrace:kernel_init_freeable: 1
-
 # init_real_cpu_mask+0x
 calltrace:init_real_cpu_mask: 1
 
@@ -26,6 +23,5 @@ timestamp:general_protection_fault:#[##]PREEMPT_SMP: 17.070650
 timestamp:RIP:init_real_cpu_mask: 17.075591
 timestamp:calltrace:node_affinity_init: 17.096550
 timestamp:calltrace:hfi1_mod_init: 17.098600
-timestamp:calltrace:kernel_init_freeable: 17.113396
 timestamp:calltrace:init_real_cpu_mask: 17.126230
 timestamp:Kernel_panic-not_syncing:Fatal_exception: 17.129242

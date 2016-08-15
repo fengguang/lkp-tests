@@ -117,6 +117,9 @@ end
 # which will hopefully be stable and representive.
 CALLTRACE_COMMON_CONTEXT = "
 	do_one_initcall|
+	do_basic_setup|
+	kernel_init_freeable|
+	kernel_init|
 	kthread|
 	kernel_thread|
 	process_one_work|
@@ -133,8 +136,6 @@ CALLTRACE_PATTERN = /(
 CALLTRACE_IGNORE_PATTERN  = /(
 	#{CALLTRACE_COMMON_CONTEXT}
 	worker_thread|
-	kernel_init|
-	rest_init|
 	warn_slowpath_.*
 )\+0x/x
 

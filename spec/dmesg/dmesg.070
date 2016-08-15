@@ -12,12 +12,8 @@ calltrace:node_affinity_init: 1
 # hfi1_mod_init+0x
 calltrace:hfi1_mod_init: 1
 
-# kernel_init_freeable+0x
-calltrace:kernel_init_freeable: 1
-
 timestamp:last: 22.431892
 timestamp:WARNING:at_include/linux/cpumask.h:#init_real_cpu_mask: 22.396650
 timestamp:calltrace:init_real_cpu_mask: 22.414119
 timestamp:calltrace:node_affinity_init: 22.415059
 timestamp:calltrace:hfi1_mod_init: 22.416007
-timestamp:calltrace:kernel_init_freeable: 22.421312
