@@ -6,14 +6,8 @@ general_protection_fault:#[##]PREEMPT_SMP: 1
 # RIP: .* init_real_cpu_mask+0x
 RIP:init_real_cpu_mask: 1
 
-# node_affinity_init+0x
-calltrace:node_affinity_init: 1
-
 # hfi1_mod_init+0x
 calltrace:hfi1_mod_init: 1
-
-# init_real_cpu_mask+0x
-calltrace:init_real_cpu_mask: 1
 
 # Kernel panic - not syncing: Fatal exception
 Kernel_panic-not_syncing:Fatal_exception: 1
@@ -21,7 +15,5 @@ Kernel_panic-not_syncing:Fatal_exception: 1
 timestamp:last: 17.129242
 timestamp:general_protection_fault:#[##]PREEMPT_SMP: 17.070650
 timestamp:RIP:init_real_cpu_mask: 17.075591
-timestamp:calltrace:node_affinity_init: 17.096550
 timestamp:calltrace:hfi1_mod_init: 17.098600
-timestamp:calltrace:init_real_cpu_mask: 17.126230
 timestamp:Kernel_panic-not_syncing:Fatal_exception: 17.129242

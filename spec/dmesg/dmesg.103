@@ -6,10 +6,6 @@ WARNING:at_mm/slab_common.c:#kmalloc_slab: 1
 # gcov_module_notifier+0x
 calltrace:gcov_module_notifier: 1
 
-# do_init_module+0x
-calltrace:do_init_module: 1
-
 timestamp:last: 30.515170
 timestamp:WARNING:at_mm/slab_common.c:#kmalloc_slab: 30.277063
 timestamp:calltrace:gcov_module_notifier: 30.468886
-timestamp:calltrace:do_init_module: 30.488135

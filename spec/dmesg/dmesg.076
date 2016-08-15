@@ -3,15 +3,6 @@ boot_failures: 1
 # BUG: KASAN: wild-memory-access on address
 BUG:KASAN:wild-memory-access_on_address: 1
 
-# __asan_load8+0x
-calltrace:__asan_load8: 1
-
-# init_real_cpu_mask+0x
-calltrace:init_real_cpu_mask: 1
-
-# node_affinity_init+0x
-calltrace:node_affinity_init: 1
-
 # hfi1_mod_init+0x
 calltrace:hfi1_mod_init: 1
 
@@ -26,9 +17,6 @@ Kernel_panic-not_syncing:Fatal_exception: 1
 
 timestamp:last: 150.524788
 timestamp:BUG:KASAN:wild-memory-access_on_address: 150.330704
-timestamp:calltrace:__asan_load8: 150.354373
-timestamp:calltrace:init_real_cpu_mask: 150.355637
-timestamp:calltrace:node_affinity_init: 150.358406
 timestamp:calltrace:hfi1_mod_init: 150.361179
 timestamp:general_protection_fault:#[##]SMP_KASAN: 150.375503
 timestamp:RIP:init_real_cpu_mask: 150.382189

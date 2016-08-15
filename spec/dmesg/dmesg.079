@@ -6,14 +6,6 @@ WARNING:at_mm/page_alloc.c:#__alloc_pages_slowpath: 1
 # gcov_module_notifier+0x
 calltrace:gcov_module_notifier: 1
 
-# do_init_module+0x
-calltrace:do_init_module: 1
-
-# SYSC_finit_module+0x
-calltrace:SYSC_finit_module: 1
-
 timestamp:last: 24.091722
 timestamp:WARNING:at_mm/page_alloc.c:#__alloc_pages_slowpath: 24.054463
 timestamp:calltrace:gcov_module_notifier: 24.084375
-timestamp:calltrace:do_init_module: 24.088637
-timestamp:calltrace:SYSC_finit_module: 24.091722

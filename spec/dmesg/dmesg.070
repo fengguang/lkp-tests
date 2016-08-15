@@ -3,17 +3,9 @@ boot_failures: 1
 # WARNING:.* at .* init_real_cpu_mask+0x
 WARNING:at_include/linux/cpumask.h:#init_real_cpu_mask: 1
 
-# init_real_cpu_mask+0x
-calltrace:init_real_cpu_mask: 1
-
-# node_affinity_init+0x
-calltrace:node_affinity_init: 1
-
 # hfi1_mod_init+0x
 calltrace:hfi1_mod_init: 1
 
 timestamp:last: 22.431892
 timestamp:WARNING:at_include/linux/cpumask.h:#init_real_cpu_mask: 22.396650
-timestamp:calltrace:init_real_cpu_mask: 22.414119
-timestamp:calltrace:node_affinity_init: 22.415059
 timestamp:calltrace:hfi1_mod_init: 22.416007

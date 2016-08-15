@@ -128,9 +128,7 @@ CALLTRACE_COMMON_CONTEXT = "
 
 CALLTRACE_PATTERN = /(
 	#{CALLTRACE_COMMON_CONTEXT}
-	SyS_[a-z0-9_]+|
-	init_[a-z0-9_]+|
-	[a-z0-9_]+_init
+	SyS_[a-z0-9_]+
 )\+0x/x
 
 CALLTRACE_IGNORE_PATTERN  = /(
@@ -180,7 +178,6 @@ def grep_crash_head(dmesg_file)
 		# Call Trace:
 		if line.index '+0x'
 			if line.index ' ? '
-				prev_line = nil
 				next
 			end
 

@@ -6,9 +6,6 @@ general_protection_fault:#[##]PREEMPT_SMP_DEBUG_PAGEALLOC_KASAN: 1
 # RIP: .* setup_udp_tunnel_sock+0x
 RIP:setup_udp_tunnel_sock: 1
 
-# rxe_net_init+0x
-calltrace:rxe_net_init: 1
-
 # rxe_module_init+0x
 calltrace:rxe_module_init: 1
 
@@ -18,6 +15,5 @@ Kernel_panic-not_syncing:Fatal_exception: 1
 timestamp:last: 123.818650
 timestamp:general_protection_fault:#[##]PREEMPT_SMP_DEBUG_PAGEALLOC_KASAN: 123.727307
 timestamp:RIP:setup_udp_tunnel_sock: 123.730428
-timestamp:calltrace:rxe_net_init: 123.736128
 timestamp:calltrace:rxe_module_init: 123.736128
 timestamp:Kernel_panic-not_syncing:Fatal_exception: 123.818650

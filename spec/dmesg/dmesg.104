@@ -9,7 +9,11 @@ calltrace:mark_rodata_ro: 1
 # blocked for more than 120 seconds
 INFO:task_blocked_for_more_than#seconds: 1
 
+# rcu_perf_writer+0x
+calltrace:rcu_perf_writer: 1
+
 timestamp:last: 275.792297
 timestamp:INFO:rcu_sched_self-detected_stall_on_CPU: 135.072505
 timestamp:calltrace:mark_rodata_ro: 135.152894
 timestamp:INFO:task_blocked_for_more_than#seconds: 246.602311
+timestamp:calltrace:rcu_perf_writer: 246.652117

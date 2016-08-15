@@ -3,17 +3,17 @@ boot_failures: 1
 # blocked for more than 120 seconds
 INFO:task_blocked_for_more_than#seconds: 1
 
-# kthread_stop+0x
-calltrace:kthread_stop: 1
-
 # test_rht_init+0x
 calltrace:test_rht_init: 1
 
 # Kernel panic - not syncing: hung_task: blocked tasks
 Kernel_panic-not_syncing:hung_task:blocked_tasks: 1
 
+# watchdog+0x
+calltrace:watchdog: 1
+
 timestamp:last: 257.812078
 timestamp:INFO:task_blocked_for_more_than#seconds: 251.950215
-timestamp:calltrace:kthread_stop: 254.138526
 timestamp:calltrace:test_rht_init: 254.165391
 timestamp:Kernel_panic-not_syncing:hung_task:blocked_tasks: 257.618158
+timestamp:calltrace:watchdog: 257.746675
