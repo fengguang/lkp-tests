@@ -23,6 +23,7 @@
 ^dmesg.INFO:NMI_handler.*took_too_long_to_run:
 ^dmesg.BUG:Bad_page_map_in_process_usemem_pte
 ^dmesg.backtrace
+^dmesg.calltrace
 ^dmesg.BUG:Dentry.*i=.*n=.*
 ^diskstats.*
 ^pagetypeinfo.pages_per_block

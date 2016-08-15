@@ -151,7 +151,7 @@ def grep_crash_head(dmesg_file)
 
 	raw_trace.each_line do |line|
 		if line =~ />\] ([a-zA-Z0-9_.]+)\+0x[0-9a-fx\/]+/
-			oops_map["backtrace:" + $1] ||= line
+			oops_map["calltrace:" + $1] ||= line
 		end
 	end
 
@@ -291,7 +291,8 @@ def analyze_error_id(line)
 	when /(BUG: KASan: [a-z ]+) in /
 		line = $1
 		bug_to_bisect = $1
-	when /^backtrace:([a-zA-Z0-9_]+)/
+	when /^backtrace:([a-zA-Z0-9_]+)/,
+	     /^calltrace:([a-zA-Z0-9_]+)/
 		bug_to_bisect = $1 + '+0x'
 	when /Corrupted low memory at/
 		# [   61.268659] Corrupted low memory at ffff880000007b08 (7b08 phys) = 27200c000000000
