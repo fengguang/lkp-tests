@@ -26,7 +26,7 @@ download_kernel_initrd()
 	echo "downloading kernel image ..."
 	set_job_state "wget_kernel"
 	kernel_file=$CACHE_DIR/$kernel
-	wget_resource "$kernel" -nv -N -P $(dirname $kernel_file) || {
+	http_get_newer "$kernel" $kernel_file || {
 		echo "failed to download kernel: $kernel" 1>&2
 		exit 1
 	}
@@ -37,7 +37,7 @@ download_kernel_initrd()
 	do
 		_initrd=$(echo $_initrd | sed 's/^\///')
 		local file=$CACHE_DIR/$_initrd
-		wget_resource "$_initrd" -nv -N -P $(dirname $file) || {
+		http_get_newer "$_initrd" $file || {
 			echo Failed to download $_initrd
 			exit 1
 		}

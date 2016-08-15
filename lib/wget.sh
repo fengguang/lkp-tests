@@ -1,84 +1,41 @@
-escape_cgi_param()
+#!/bin/sh
+
+setup_wget()
 {
-	local uri="$1"
-	# uri=${uri//%/%25} # must be the first one
-	# uri=${uri//+/%2B}
-	# uri=${uri//&/%26}
-	# uri=${uri//\?/%3F}
-	# uri=${uri//@/%40}
-	# uri=${uri//:/%3A}
-	# uri=${uri//;/%3D}
-	echo "$uri" |
-	sed	-e 's/%/%25/g' \
-		-e 's/+/%2B/g' \
-		-e 's/&/%26/g' \
-		-e 's/\?/%3F/g'
+	local wget
+	wget=$(command -v wget) || return
+
+	# wget command may link to busybox which not support --local-encoding
+	# etc. options
+	[ -L "$wget" ] && return 1
+
+	http_client_cmd="$wget -q"
+
+	local wget_help="$($http_client_cmd --help 2>&1)"
+
+	[ "$wget_help" != "${wget_help#*--local-encoding}" ] &&
+	http_client_cmd="$http_client_cmd --local-encoding=UTF-8"
+
+	[ "$wget_help" != "${wget_help#*--retry-connrefused}" ] &&
+	http_client_cmd="$http_client_cmd --retry-connrefused --waitretry 1000 --tries 1000"
+
+	return 0
 }
 
-# usage: wget_resource <path> [wget options...]
-wget_resource()
+[ -n "$http_client_cmd" ] || setup_wget || return
+
+http_get_file()
 {
-	local path="$1"
-	shift
-
-	# $ busybox wget http://XXX:/
-	# wget: bad port spec 'XXX:'
-	[ -n "$LKP_CGI_PORT" ] || echo "warning: LKP_CGI_PORT is empty"
-
-	local http_prefix="http://$LKP_SERVER:${LKP_CGI_PORT:-80}/~$LKP_USER"
-	local wget_encoding_option=
-
-	# wget command may link to busybox which not support --local-encoding option
-	[ -L '/usr/bin/wget' ] || wget_encoding_option="--local-encoding=UTF-8"
-
-	local opt_retry=
-	wget --help 2>&1 | grep -q '\--retry-connrefused' &&
-	{
-		opt_retry='--retry-connrefused --waitretry 1000 --tries 1000'
-	}
-
-	echo \
-	wget -q $wget_encoding_option $opt_retry "$http_prefix/$path" "$@"
-	wget -q $wget_encoding_option $opt_retry "$http_prefix/$path" "$@"
+	http_do_request "$1" -O "$2"
 }
 
-reset_broken_ipmi()
+http_get_newer()
 {
-	[ -f "$RESULT_MNT/.IPMI-reset/$HOSTNAME" ] || return
-	[ -x '/usr/sbin/bmc-device' ] || return
-
-	bmc-device --cold-reset
-	mv -f $RESULT_MNT/.IPMI-reset/$HOSTNAME $RESULT_MNT/.IPMI-reset/.$HOSTNAME
+	local path="$(dirname "$2")"
+	http_do_request "$1" -N -P "$path"
 }
 
-#
-# job handling at client is finished, tell server to do some
-# post handling, such as delete the job file, process all
-# monitors data, and so on
-#
-trigger_post_process()
+http_get_cgi()
 {
-	wget_resource "cgi-bin/lkp-post-run?job_file="$(escape_cgi_param "$job") -O /dev/null
-
-	reset_broken_ipmi
-}
-
-jobfile_append_var()
-{
-	[ -n "$job" ] || return
-
-	# input example: "var1=value1" "var2=value2 value_with_space" ....
-	[ -z "$*" ] && LOG_ERROR "no paramter specified at $FUNCTION" && return
-
-	local query_str=job_file=$(escape_cgi_param "$job")
-	for assignment in "$@"; do
-		query_str="${query_str}&$(escape_cgi_param "$assignment")"
-	done
-
-	wget_resource "cgi-bin/lkp-jobfile-append-var?$query_str" -O /dev/null
-}
-
-set_job_state()
-{
-	jobfile_append_var "job_state=$1"
+	http_do_request "$1" -O /dev/null
 }

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 . $LKP_SRC/lib/mount.sh
-. $LKP_SRC/lib/wget.sh
+. $LKP_SRC/lib/http.sh
 . $LKP_SRC/lib/env.sh
 
 mount_tmpfs()
@@ -241,7 +241,7 @@ download_job()
 	local job_cgz=${job%.yaml}.cgz
 
 	# TODO: escape is necessary. We might also need download some extra cgz
-	wget_resource "$job_cgz" -O /tmp/next-job.cgz
+	http_get_file "$job_cgz" /tmp/next-job.cgz
 	(cd /; gzip -dc /tmp/next-job.cgz | cpio -id)
 }
 
@@ -253,8 +253,8 @@ __next_job()
 	local mac="$(ip link | awk '/ether/ {print $2; exit}')"
 	local last_kernel=
 	[ -n "$job" ] && last_kernel="last_kernel=$(grep ^kernel: $job | cut -d \" -f 2)&"
-	wget_resource "cgi-bin/gpxelinux.cgi?hostname=${HOSTNAME}&mac=$mac&${last_kernel}${manual_reboot}lkp_wtmp" \
-	     -nv -t 1 -O $NEXT_JOB
+	http_get_file "cgi-bin/gpxelinux.cgi?hostname=${HOSTNAME}&mac=$mac&${last_kernel}${manual_reboot}lkp_wtmp" \
+		$NEXT_JOB
 	grep -q "^KERNEL " $NEXT_JOB || {
 		echo "no KERNEL found" 1>&2
 		cat $NEXT_JOB

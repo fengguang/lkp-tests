@@ -4,7 +4,7 @@
 
 . $LKP_SRC/lib/common.sh
 . $LKP_SRC/lib/wait.sh
-. $LKP_SRC/lib/wget.sh
+. $LKP_SRC/lib/http.sh
 . $LKP_SRC/lib/job-init.sh
 
 : ${timeout:=200}
