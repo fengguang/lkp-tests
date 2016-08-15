@@ -56,15 +56,16 @@ start_nfsd()
 	# or mount --bind to a tmpfs nfsv4 export root.
 	#
 	mountpoint -q /export || {
-		mkdir /export
-		mount -t tmpfs 'nfsv4_root_export' /export
+		cmd mkdir /export
+		cmd mount -t tmpfs 'nfsv4_root_export' /export
 	}
 	echo "/export *(fsid=0,rw,no_subtree_check,no_root_squash)" > /etc/exports
 
 	for mp
 	do
-		mkdir -p /export/$mp
-		mount --bind $mp /export/$mp
+		cmd mkdir -p /export/$mp
+		cmd mount --bind $mp /export/$mp
+		note "echo \"/export/$mp *(rw,no_subtree_check,no_root_squash)\" >> /etc/exports"
 		echo "/export/$mp *(rw,no_subtree_check,no_root_squash)"
 	done >> /etc/exports
 
@@ -80,7 +81,7 @@ mount_local_nfs()
 	do
 		local mnt=/nfs/$(basename $dir)
 		local dev=localhost:$dir
-		mkdir -p $mnt
+		cmd mkdir -p $mnt
 		cmd mount -t $fs ${mount:-$def_mount} $dev $mnt || {
 			sleep 600 # wait for local debug login
 			exit
@@ -112,7 +113,7 @@ mount_fs() {
 	for dev in $bdevs
 	do
 		local mnt=/fs/$(basename $dev)
-		mkdir -p $mnt
+		cmd mkdir -p $mnt
 		cmd mount -t $fs ${mount:-$def_mount} $dev $mnt || exit
 		mount_points="${mount_points}$mnt "
 	done
