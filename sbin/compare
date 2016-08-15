@@ -495,9 +495,9 @@ def show_one_diff(dim, v0, v, v0_stddev, v_stddev, is_float, is_exp, is_fail=fal
 		if is_fail
 			buf = sprintf "%#{REL_WIDTH-2}.0f%% ", p
 		elsif p.abs < 100000
-			buf = sprintf "%+#{REL_WIDTH-2}.1f%% ", p
+			buf = sprintf "%#{REL_WIDTH-2}.0f%% ", p
 		else
-			buf = sprintf "%+#{REL_WIDTH-2}.2g%% ", p
+			buf = sprintf "%#{REL_WIDTH-2}.0g%% ", p
 		end
 
 		if p.abs >= 50 and $colorful
