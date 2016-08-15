@@ -1,0 +1,6 @@
+# /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor: No such file or directory
+cpufreq_governor:
+
+# refer to arch/x86/configs/kvm_guest.config
+need_kconfig:
+- CONFIG_KVM_GUEST
