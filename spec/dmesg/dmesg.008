@@ -3,21 +3,17 @@ boot_failures: 1
 # RIP: .* insert_augmented+0x
 RIP:insert_augmented: 1
 
-# Kernel panic - not syncing: softlockup: hung tasks
-Kernel_panic-not_syncing:softlockup:hung_tasks: 1
-
 # rbtree_test_init+0x
 calltrace:rbtree_test_init: 1
 
 # kernel_init_freeable+0x
 calltrace:kernel_init_freeable: 1
 
-# ret_from_fork+0x
-calltrace:ret_from_fork: 1
+# Kernel panic - not syncing: softlockup: hung tasks
+Kernel_panic-not_syncing:softlockup:hung_tasks: 1
 
 timestamp:last: 511.772661
 timestamp:RIP:insert_augmented: 510.369402
-timestamp:Kernel_panic-not_syncing:softlockup:hung_tasks: 511.119241
 timestamp:calltrace:rbtree_test_init: 510.822824
 timestamp:calltrace:kernel_init_freeable: 510.904976
-timestamp:calltrace:ret_from_fork: 510.952996
+timestamp:Kernel_panic-not_syncing:softlockup:hung_tasks: 511.119241

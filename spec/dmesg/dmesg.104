@@ -3,17 +3,13 @@ boot_failures: 1
 # INFO: rcu_sched self-detected stall on CPU
 INFO:rcu_sched_self-detected_stall_on_CPU: 1
 
-# blocked for more than 120 seconds
-INFO:task_blocked_for_more_than#seconds: 1
-
 # mark_rodata_ro+0x
 calltrace:mark_rodata_ro: 1
 
-# ret_from_fork+0x
-calltrace:ret_from_fork: 1
+# blocked for more than 120 seconds
+INFO:task_blocked_for_more_than#seconds: 1
 
 timestamp:last: 275.792297
 timestamp:INFO:rcu_sched_self-detected_stall_on_CPU: 135.072505
-timestamp:INFO:task_blocked_for_more_than#seconds: 246.602311
 timestamp:calltrace:mark_rodata_ro: 135.152894
-timestamp:calltrace:ret_from_fork: 135.154810
+timestamp:INFO:task_blocked_for_more_than#seconds: 246.602311

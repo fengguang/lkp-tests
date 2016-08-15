@@ -9,15 +9,15 @@ Oops:#[##]: 1
 # EIP is at bpf_prog_free+0x
 EIP_is_at_bpf_prog_free: 1
 
-# Kernel panic - not syncing: Fatal exception
-Kernel_panic-not_syncing:Fatal_exception: 1
-
 # SyS_socketcall+0x
 calltrace:SyS_socketcall: 1
+
+# Kernel panic - not syncing: Fatal exception
+Kernel_panic-not_syncing:Fatal_exception: 1
 
 timestamp:last: 21.889319
 timestamp:BUG:unable_to_handle_kernel: 21.734461
 timestamp:Oops:#[##]: 21.748156
 timestamp:EIP_is_at_bpf_prog_free: 21.755582
-timestamp:Kernel_panic-not_syncing:Fatal_exception: 21.889319
 timestamp:calltrace:SyS_socketcall: 21.827023
+timestamp:Kernel_panic-not_syncing:Fatal_exception: 21.889319

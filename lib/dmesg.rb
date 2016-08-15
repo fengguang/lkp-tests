@@ -118,6 +118,9 @@ end
 CALLTRACE_PATTERN = '(do_one_initcall|kthread|kernel_thread|process_one_work|SyS_[a-z0-9_]+|init_[a-z0-9_]+|[a-z0-9_]+_init)\\+0x'
 CALLTRACE_IGNORE  = '(do_one_initcall|kthread|kernel_thread|process_one_work|worker_thread|kernel_init|rest_init|warn_slowpath_.*)\\+0x'
 
+OOM1='invoked oom-killer: gfp_mask='
+OOM2='Out of memory and no killable processes...'
+
 def grep_crash_head(dmesg_file)
 	if dmesg_file =~ /\.xz$/
 		grep = 'xzgrep'
@@ -127,32 +130,53 @@ def grep_crash_head(dmesg_file)
 		cat = 'cat'
 	end
 
-	raw_oops = %x[ #{grep} -a -E -f #{LKP_SRC}/etc/oops-pattern #{dmesg_file} |
+	raw_oops = %x[ #{grep} -a -E -e \\\\+0x -f #{LKP_SRC}/etc/oops-pattern #{dmesg_file} |
 			 grep -v -E -f #{LKP_SRC}/etc/oops-pattern-ignore ]
 
 	return {} if raw_oops.empty?
 
-	raw_trace = %x[
-		#{cat} #{dmesg_file} | awk '/invoked oom-killer: gfp_mask=|Out of memory and no killable processes.../ {exit} // {print}' |
-		grep -B1 -E '#{CALLTRACE_PATTERN}' |
-		grep -v -E -e ' \\? ' -e '^--$' -e '#{CALLTRACE_IGNORE}'
-	]
-
 	oops_map = {}
 
 	oops_re = load_regular_expressions("#{LKP_SRC}/etc/oops-pattern")
+	calltrace_re = Regexp.new CALLTRACE_PATTERN
+	calltrace_ignore_re = Regexp.new CALLTRACE_IGNORE
+	prev_line = nil
+	has_oom = false
+
+	add_one_calltrace = lambda do |line|
+		break if has_oom
+		break if line =~ calltrace_ignore_re
+		break unless line =~ />\] ([a-zA-Z0-9_.]+)\+0x[0-9a-fx\/]+/
+		oops_map["calltrace:" + $1] ||= line
+	end
+
 	raw_oops.each_line do |line|
 		if line =~ oops_re
 			oops_map[$1] ||= line
-		else
-			$stderr.puts "oops pattern mismatch: #{line}"
+			has_oom = true if line.index(OOM1)
+			has_oom = true if line.index(OOM2)
+			next
 		end
-	end
 
-	raw_trace.each_line do |line|
-		if line =~ />\] ([a-zA-Z0-9_.]+)\+0x[0-9a-fx\/]+/
-			oops_map["calltrace:" + $1] ||= line
+		# Call Trace:
+		if line.index '+0x'
+			if line.index ' ? '
+				prev_line = nil
+				next
+			end
+
+			if line =~ calltrace_re
+				add_one_calltrace[prev_line]
+				add_one_calltrace[line]
+				prev_line = nil
+			else
+				prev_line = line
+			end
+
+			next
 		end
+
+		$stderr.puts "oops pattern mismatch: #{line}"
 	end
 
 	return oops_map

@@ -30,6 +30,7 @@ initcall .* returned with .*
  is freeing memory .*, with a lock still held there!
 genirq: Flags mismatch irq .*
 Out of memory: Kill process 
+Out of memory and no killable processes
 invoked oom-killer: gfp_mask=0x
 page allocation failure: order:[0-9]+, mode:0x.*
 pagealloc: single bit error

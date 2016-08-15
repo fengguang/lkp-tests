@@ -15,13 +15,9 @@ calltrace:init_kprobes: 1
 # kernel_init_freeable+0x
 calltrace:kernel_init_freeable: 1
 
-# ret_from_fork+0x
-calltrace:ret_from_fork: 1
-
 timestamp:last: 14.966015
 timestamp:BUG:KASAN:stack-out-of-bounds_in_setjmp_pre_handler_at_addr: 14.931149
 timestamp:calltrace:kprobe_target: 14.950657
 timestamp:calltrace:init_test_probes: 14.951367
 timestamp:calltrace:init_kprobes: 14.954703
 timestamp:calltrace:kernel_init_freeable: 14.961942
-timestamp:calltrace:ret_from_fork: 14.963712

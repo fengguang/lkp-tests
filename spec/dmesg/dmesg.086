@@ -6,22 +6,18 @@ page_allocation_failure:order:#,mode:#(GFP_KERNEL|__GFP_COMP|__GFP_ZERO): 1
 # warn_alloc_failed+0x
 warn_alloc_failed+0x: 1
 
-# Mem-Info:
-Mem-Info: 1
-
 # dummy_stm_init+0x
 calltrace:dummy_stm_init: 1
 
 # kernel_init_freeable+0x
 calltrace:kernel_init_freeable: 1
 
-# ret_from_fork+0x
-calltrace:ret_from_fork: 1
+# Mem-Info:
+Mem-Info: 1
 
 timestamp:last: 48.717990
 timestamp:page_allocation_failure:order:#,mode:#(GFP_KERNEL|__GFP_COMP|__GFP_ZERO): 48.661306
 timestamp:warn_alloc_failed+0x: 48.664056
-timestamp:Mem-Info: 48.678701
 timestamp:calltrace:dummy_stm_init: 48.664056
 timestamp:calltrace:kernel_init_freeable: 48.664056
-timestamp:calltrace:ret_from_fork: 48.664056
+timestamp:Mem-Info: 48.678701

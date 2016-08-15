@@ -6,18 +6,18 @@ general_protection_fault:#[##]PREEMPT_DEBUG_PAGEALLOC: 1
 # EIP is at native_flush_tlb_global+0x
 EIP_is_at_native_flush_tlb_global: 1
 
-# Kernel panic - not syncing: Fatal exception
-Kernel_panic-not_syncing:Fatal_exception: 1
-
 # do_group_exit+0x
 calltrace:do_group_exit: 1
 
 # SyS_exit_group+0x
 calltrace:SyS_exit_group: 1
 
+# Kernel panic - not syncing: Fatal exception
+Kernel_panic-not_syncing:Fatal_exception: 1
+
 timestamp:last: 40.711101
 timestamp:general_protection_fault:#[##]PREEMPT_DEBUG_PAGEALLOC: 40.594570
 timestamp:EIP_is_at_native_flush_tlb_global: 40.600933
-timestamp:Kernel_panic-not_syncing:Fatal_exception: 40.711101
 timestamp:calltrace:do_group_exit: 40.672750
 timestamp:calltrace:SyS_exit_group: 40.674066
+timestamp:Kernel_panic-not_syncing:Fatal_exception: 40.711101

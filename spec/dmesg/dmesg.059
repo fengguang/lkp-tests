@@ -6,9 +6,6 @@ INFO:rcu_sched_detected_stalls_on_CPUs/tasks: 1
 # cpu_startup_entry+0x
 calltrace:cpu_startup_entry: 1
 
-# start_kernel+0x
-calltrace:start_kernel: 1
-
 # rcu_gp_slow+0x
 calltrace:rcu_gp_slow: 1
 
@@ -18,6 +15,5 @@ calltrace:rcu_gp_init: 1
 timestamp:last: 104.022076
 timestamp:INFO:rcu_sched_detected_stalls_on_CPUs/tasks: 103.985562
 timestamp:calltrace:cpu_startup_entry: 104.005988
-timestamp:calltrace:start_kernel: 104.007603
 timestamp:calltrace:rcu_gp_slow: 104.017255
 timestamp:calltrace:rcu_gp_init: 104.017741

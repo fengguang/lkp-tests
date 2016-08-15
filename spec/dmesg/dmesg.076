@@ -3,21 +3,6 @@ boot_failures: 1
 # BUG: KASAN: wild-memory-access on address
 BUG:KASAN:wild-memory-access_on_address: 1
 
-# general protection fault: .* SMP KASAN
-general_protection_fault:#[##]SMP_KASAN: 1
-
-# RIP: .* init_real_cpu_mask+0x
-RIP:init_real_cpu_mask: 1
-
-# Kernel panic - not syncing: Fatal exception
-Kernel_panic-not_syncing:Fatal_exception: 1
-
-# dump_stack+0x
-calltrace:dump_stack: 1
-
-# kasan_report_error+0x
-calltrace:kasan_report_error: 1
-
 # __asan_load8+0x
 calltrace:__asan_load8: 1
 
@@ -33,19 +18,22 @@ calltrace:hfi1_mod_init: 1
 # kernel_init_freeable+0x
 calltrace:kernel_init_freeable: 1
 
-# ret_from_fork+0x
-calltrace:ret_from_fork: 1
+# general protection fault: .* SMP KASAN
+general_protection_fault:#[##]SMP_KASAN: 1
+
+# RIP: .* init_real_cpu_mask+0x
+RIP:init_real_cpu_mask: 1
+
+# Kernel panic - not syncing: Fatal exception
+Kernel_panic-not_syncing:Fatal_exception: 1
 
 timestamp:last: 150.524788
 timestamp:BUG:KASAN:wild-memory-access_on_address: 150.330704
-timestamp:general_protection_fault:#[##]SMP_KASAN: 150.375503
-timestamp:RIP:init_real_cpu_mask: 150.382189
-timestamp:Kernel_panic-not_syncing:Fatal_exception: 150.524788
-timestamp:calltrace:dump_stack: 150.344815
-timestamp:calltrace:kasan_report_error: 150.347507
 timestamp:calltrace:__asan_load8: 150.354373
 timestamp:calltrace:init_real_cpu_mask: 150.355637
 timestamp:calltrace:node_affinity_init: 150.358406
 timestamp:calltrace:hfi1_mod_init: 150.361179
 timestamp:calltrace:kernel_init_freeable: 150.363974
-timestamp:calltrace:ret_from_fork: 150.366776
+timestamp:general_protection_fault:#[##]SMP_KASAN: 150.375503
+timestamp:RIP:init_real_cpu_mask: 150.382189
+timestamp:Kernel_panic-not_syncing:Fatal_exception: 150.524788

@@ -3,21 +3,13 @@ boot_failures: 1
 # BUG: KASAN: use-after-free in kobj_kset_leave+0x
 BUG:KASAN:use-after-free_in_kobj_kset_leave_at_addr: 1
 
-# device_del+0x
-calltrace:device_del: 1
+# kernel_init_freeable+0x
+calltrace:kernel_init_freeable: 1
 
 # init+0x
 calltrace:init: 1
 
-# kernel_init_freeable+0x
-calltrace:kernel_init_freeable: 1
-
-# ret_from_fork+0x
-calltrace:ret_from_fork: 1
-
 timestamp:last: 4.629431
 timestamp:BUG:KASAN:use-after-free_in_kobj_kset_leave_at_addr: 4.538069
-timestamp:calltrace:device_del: 4.560129
-timestamp:calltrace:init: 4.563627
 timestamp:calltrace:kernel_init_freeable: 4.567022
-timestamp:calltrace:ret_from_fork: 4.569369
+timestamp:calltrace:init: 4.594457

@@ -6,34 +6,26 @@ general_protection_fault:#[##]PREEMPT_SMP: 1
 # RIP: .* init_real_cpu_mask+0x
 RIP:init_real_cpu_mask: 1
 
-# Kernel panic - not syncing: Fatal exception
-Kernel_panic-not_syncing:Fatal_exception: 1
-
-# init_real_cpu_mask+0x
-calltrace:init_real_cpu_mask: 1
-
 # node_affinity_init+0x
 calltrace:node_affinity_init: 1
 
 # hfi1_mod_init+0x
 calltrace:hfi1_mod_init: 1
 
-# do_basic_setup+0x
-calltrace:do_basic_setup: 1
-
 # kernel_init_freeable+0x
 calltrace:kernel_init_freeable: 1
 
-# ret_from_fork+0x
-calltrace:ret_from_fork: 1
+# init_real_cpu_mask+0x
+calltrace:init_real_cpu_mask: 1
+
+# Kernel panic - not syncing: Fatal exception
+Kernel_panic-not_syncing:Fatal_exception: 1
 
 timestamp:last: 17.129242
 timestamp:general_protection_fault:#[##]PREEMPT_SMP: 17.070650
 timestamp:RIP:init_real_cpu_mask: 17.075591
-timestamp:Kernel_panic-not_syncing:Fatal_exception: 17.129242
-timestamp:calltrace:init_real_cpu_mask: 17.075591
 timestamp:calltrace:node_affinity_init: 17.096550
 timestamp:calltrace:hfi1_mod_init: 17.098600
-timestamp:calltrace:do_basic_setup: 17.111260
 timestamp:calltrace:kernel_init_freeable: 17.113396
-timestamp:calltrace:ret_from_fork: 17.116498
+timestamp:calltrace:init_real_cpu_mask: 17.126230
+timestamp:Kernel_panic-not_syncing:Fatal_exception: 17.129242
