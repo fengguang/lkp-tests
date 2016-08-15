@@ -3,6 +3,7 @@
 def read_kconfig_lines
 	return nil unless self['kernel']
 	kconfig_file = File.expand_path '../.config', kernel
+	return nil unless File.exist? kconfig_file
 	kconfig_lines = File.read kconfig_file
 end
 
