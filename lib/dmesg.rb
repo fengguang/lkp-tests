@@ -115,8 +115,8 @@ end
 
 # "grep -B1 | grep -v" to get the functions called by them,
 # which will hopefully be stable and representive.
-CALLTRACE_PATTERN = '(do_one_initcall|kthread|kernel_thread|process_one_work|SyS_[a-z0-9_]+|init_[a-z0-9_]+|[a-z0-9_]+_init)\\+0x'
-CALLTRACE_IGNORE  = '(do_one_initcall|kthread|kernel_thread|process_one_work|worker_thread|kernel_init|rest_init|warn_slowpath_.*)\\+0x'
+CALLTRACE_PATTERN = '(do_one_initcall|kthread|kernel_thread|process_one_work|notifier_call_chain|SyS_[a-z0-9_]+|init_[a-z0-9_]+|[a-z0-9_]+_init)\\+0x'
+CALLTRACE_IGNORE  = '(do_one_initcall|kthread|kernel_thread|process_one_work|notifier_call_chain|worker_thread|kernel_init|rest_init|warn_slowpath_.*)\\+0x'
 
 OOM1='invoked oom-killer: gfp_mask='
 OOM2='Out of memory and no killable processes...'
