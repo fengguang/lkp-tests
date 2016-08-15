@@ -21,7 +21,7 @@ If the job file contains a line
 
 The hash contents of FILE will be merged into the current YAML location.
 
-In the most fundemental form, a job YAML contains a hash table of key-values.
+In the most fundamental form, a job YAML contains a hash table of key-values.
 The keys fall into 2 main categories:
 
 ## ERB template
