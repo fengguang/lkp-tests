@@ -171,13 +171,13 @@ def grep_printk_errors(kmsg_file, kmsg)
 	if kmsg_file =~ /\bkmsg\b/
 		# the kmsg file is dumped inside the running kernel
 		oops = `#{grep} -a -E -e '^<[0123]>' -e '^kern  :(err   |crit  |alert |emerg ): ' #{kmsg_file} |
-			grep -a -v -E -f #{LKP_SRC}/etc/oops-pattern |
-			grep -a -v -F -f #{LKP_SRC}/etc/kmsg-blacklist`
+			grep -a -v -E -f #{LKP_SRC}/etc/oops-pattern \
+				      -f #{LKP_SRC}/etc/kmsg-blacklist`
 	else
 		# the dmesg file is from serial console
 		oops = `#{grep} -a -F -f /lkp/printk-error-messages #{kmsg_file} |
-			grep -a -v -E -f #{LKP_SRC}/etc/oops-pattern |
-			grep -a -v -F -f #{LKP_SRC}/etc/kmsg-blacklist`
+			grep -a -v -E -f #{LKP_SRC}/etc/oops-pattern \
+				      -f #{LKP_SRC}/etc/kmsg-blacklist`
 		oops += `grep -a -E -f #{LKP_SRC}/etc/ext4-crit-pattern	#{kmsg_file}` if kmsg.index 'EXT4-fs ('
 		oops += `grep -a -E -f #{LKP_SRC}/etc/xfs-alert-pattern	#{kmsg_file}` if kmsg.index 'XFS ('
 		oops += `grep -a -E -f #{LKP_SRC}/etc/btrfs-crit-pattern #{kmsg_file}` if kmsg.index 'btrfs: '
