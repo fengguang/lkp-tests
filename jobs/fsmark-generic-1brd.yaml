@@ -2,6 +2,9 @@ suite: fsmark
 testcase: fsmark
 category: benchmark
 
+perf-profile:
+  delay: 1
+
 iterations: 1x
 nr_threads:
 - 1t
