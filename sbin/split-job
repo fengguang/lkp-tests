@@ -56,6 +56,22 @@ end
 
 opts.parse!(ARGV)
 
+# Example usage:
+#
+# $ split-job jobs/aim7-fs-1brd.yaml fs=xfs
+#
+# This is be handy for daily operations, however may confuse job files
+# containing '=' in file name as key/value pairs. So please use the more
+# formal -s 'key: value' in scripts.
+ARGV.delete_if do |arg|
+        if arg.index '='
+		$opt_set_key_value.merge!(YAML.load arg.sub(/=/, ': '))
+                true
+        else
+                false
+        end
+end
+
 if ARGV.size == 0
 	puts opts
 	exit
