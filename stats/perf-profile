@@ -91,7 +91,6 @@ loop do
 	line = STDIN.gets
 end
 
-
 $all_results.each { |results|
 	results.sort_by{|_, v| -v}.each do |record,percent|
 		puts record + ": " + format("%.2f", percent * 100) if percent >= 0.0001
