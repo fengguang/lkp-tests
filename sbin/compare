@@ -494,6 +494,8 @@ def show_one_diff(dim, v0, v, v0_stddev, v_stddev, is_float, is_exp, is_fail=fal
 		end
 		if is_fail
 			buf = sprintf "%#{REL_WIDTH-2}.0f%% ", p
+		elsif p.abs < 3
+			buf = sprintf ' ' * REL_WIDTH
 		elsif p.abs < 100000
 			buf = sprintf "%#{REL_WIDTH-2}.0f%% ", p
 		else
