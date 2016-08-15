@@ -1,0 +1,27 @@
+
+# no core dumps, please
+ulimit -c 0
+
+# Set up the LS_COLORS and LS_OPTIONS environment variables for color ls:
+if [ -e ~/.dircolors ]; then
+	eval `dircolors -b ~/.dircolors`
+else
+	eval `dircolors -b`
+fi
+
+# Avoid stty warning in rsync
+if [ -t 0 ]; then
+
+	if [ -x /usr/bin/setterm ]; then
+		# setterm: terminal screen does not support --ulcolor
+		setterm -ulcolor bright yellow 2>/dev/null
+		setterm -hbcolor bright red
+	fi
+
+	# chinese
+	#stty cs8 -istrip 
+
+	stty pass8 
+	#  tty > /dev/null &&
+	stty -ixon -ixoff
+fi

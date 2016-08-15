@@ -1,0 +1,22 @@
+#!/bin/sh
+
+export HISTSIZE=51200
+
+export LESS=-MRiqscj5
+export PAGER=less
+
+[ -x /bin/lesspipe ] && eval "$(lesspipe)"
+[ -x /usr/bin/lesspipe.sh ] && eval "$(lesspipe.sh)"
+
+[ -z "$USER" ] && export USER="$(id -nu)"
+
+[ -z "$HOME" -o "$HOME" = "/" ] && export HOME="/home/$USER"
+
+export PATH=$HOME/bin:/usr/local/sbin:/usr/local/bin:/usr/lib/git-core:/usr/sbin:/usr/bin:/sbin:/bin:/usr/X11R6/bin:"$PATH":/usr/lib/xscreensaver
+
+. $HOME/bin/checkpath &>/dev/null
+
+# to run xeyes as root after su
+if [[ -n $SSH_CONNECTION || -n $DISPLAY ]]; then
+	export XAUTHORITY=~/.Xauthority
+fi

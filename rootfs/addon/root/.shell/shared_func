@@ -1,0 +1,207 @@
+#!/bin/sh
+
+# http://bethesignal.org/dotfiles/
+
+function l()
+{
+	[[ $# = 0 ]] && {
+		less
+		return
+	}
+
+	local opt_less=
+
+	[[ $(find "$@" -maxdepth 0 -size +1M 2>/dev/null) ]] && {
+		opt_less+='-n '
+
+		if [[ "$1" =~ 'log' ]]; then
+			opt_less+='+G '
+		elif [[ "$PWD" =~ 'log' && ! "$1" =~ ^/ ]]; then
+			opt_less+='+G '
+		fi
+	}
+
+	less $opt_less "$@"
+}
+
+function f()
+{
+	local file="/tmp/f_${*//[^-=a-zA-Z.0-9_]/_}"
+
+	(
+		c_kernel_tests=/c/kernel-tests
+		[[ -d $c_kernel_tests/.git ]] || # @ inn/bee
+		c_kernel_tests=/c/repo/0day-kernel-tests
+
+		_cd_git_grep /c/lkp-tests	"$@"
+		_cd_git_grep /c/lkp-core	"$@"
+		_cd_git_grep $c_kernel_tests	"$@"
+	) > "$file"
+
+	local lines=$(wc -l < $file)
+	(( lines ++ ))
+	vim +"cgetfile $file" +"copen $lines" +/"${@: -1}"
+}
+
+# vi patch
+function vp() { vim `quilt top`; }
+
+# vi tmux scroll buffer
+function etc()
+{
+	local lines=$1
+	[[ $lines ]] || lines=-1000
+
+	local vim=vim.gtk3
+	if [[ $DISPLAY ]]; then
+		command -v $vim >/dev/null || vim=vim.gnome
+		command -v $vim >/dev/null || vim=vim.gtk
+		command -v $vim >/dev/null || vim=vim
+	else
+		vim=vim
+	fi
+	tmux capture-pane -J -p -e -S $lines |
+	awk '
+NR == 1 { line = $0; next }
+/^\x1B/ { print line "\x1B[0m"; line = $0; next; }
+// { print line; line = $0; next; }
+END { print line "\x1B[0m"; }
+' |
+	$vim + +'set nowrap' +'AnsiEsc' -
+	# sed "s/$/\x1B\[0m/" |
+}
+
+function et()
+{
+	local lines=$1
+	[[ $lines ]] || lines=-1000
+
+	local vim=vim.gtk3
+	if [[ $DISPLAY ]]; then
+		command -v $vim >/dev/null || vim=vim.gnome
+		command -v $vim >/dev/null || vim=vim.gtk
+		command -v $vim >/dev/null || vim=vim
+	else
+		vim=vim
+	fi
+	tmux capture-pane -J -p -S $lines |
+	$vim + -
+}
+
+# A life without 'diff'? Unimaginably!!!!11!
+function mdiff() { diff -rupNd "$1" "$2" > diff.`date "+%Y-%m-%d"`."$1"; }
+function udiff() { diff -urd $* | egrep -v "^Only in |^Binary files "; }
+function cdiff() { diff -crd $* | egrep -v "^Only in |^Binary files "; }
+
+# mkdir && cd
+function mcd() { mkdir "$@" && cd "$@"; }
+
+# cd && ls
+function cl() { cd $1 && ls -a --color=auto; }
+
+# Use 'view' to read manpages, if u want colors, regex - search, ...
+# like vi(m).
+# It's shameless stolen from <http://www.vim.org/tips/tip.php?tip_id=167>
+function vman() {
+	command man "$@" | col -b | /usr/bin/view -c 'set ft=man nomod nolist' -c 'runtime macros/less.vim' --noplugin -
+}
+
+# http://unix.stackexchange.com/questions/148/colorizing-your-terminal-and-shell-environment
+function _colorman() {
+  env \
+    LESS_TERMCAP_mb=$(printf "\e[1;35m") \
+    LESS_TERMCAP_md=$(printf "\e[1;34m") \
+    LESS_TERMCAP_me=$(printf "\e[0m") \
+    LESS_TERMCAP_se=$(printf "\e[0m") \
+    LESS_TERMCAP_so=$(printf "\e[7;40m") \
+    LESS_TERMCAP_ue=$(printf "\e[0m") \
+    LESS_TERMCAP_us=$(printf "\e[1;33m") \
+      "$@"
+}
+function man() { _colorman man "$@"; }
+function perldoc() { command perldoc -n less "$@" |man -l -; }
+
+function mirror() {
+	lftp -c "mirror $@"
+}
+
+function start() { /etc/init.d/$1 start; }
+function stop()  { /etc/init.d/$1 stop;  }
+
+function gt() {
+	grep "$@" | sort | uniq -c | sort -nr | less
+}
+
+function egg() {
+	vim +/"${@: -1}" $(git grep -l $@)
+}
+
+function vc() {
+	if [[ $# == 1 && ! -e $1  ]]; then
+		if [[ $1 == *.rb ]]; then
+			echo '#!/usr/bin/ruby' > $1
+			chmod +x $1
+		else # [[ $1 == *.sh ]]; then
+			echo '#!/bin/bash' > $1
+			chmod +x $1
+		fi
+	fi
+	vi $@
+}
+
+function lc() {
+	ls --color | cut -c-$COLUMNS
+}
+
+function pssk() {
+	local processes
+	processes=`ps aux`
+	echo "$processes" | grep -E "$*" | awk '{print $2}' | xargs kill
+}
+
+function df() {
+	if [[ $# = 0 && -x /usr/bin/pydf ]]; then
+		command pydf
+	else
+		command df -h $*
+	fi
+}
+
+tc () {
+	tar -cz --force-local -f `basename $1`-`date +%F`.tar.gz $@
+}
+
+av () {
+	dpkg -l $@
+	apt-cache madison $@
+}
+
+ad () {
+        apt-cache show $@ | more
+}
+
+dL () {
+        dpkg -L $@ | more
+}
+
+function lw () {
+	local whichcmd=`command which $1`
+	[[ -n "$whichcmd" ]] && ls -l "$whichcmd" && ldd "$whichcmd";
+}
+
+function nocomment () { cat $* | sed -e '/^[ ]*#.*/d' -e 's/[ ]*#.*$//' | uniq ; }
+
+function nfsmount() { mount -o tcp,soft,rsize=32768,wsize=32768 $* ; }
+
+function lomount() { mount -o loop  "$1" "$2" ; }
+function isomount() { mount -t iso9660 -o loop  "$1" "${2:-/mnt/iso}" ; }
+
+function pp () {		# ps
+	local pids="$(pidof $1)"
+	[[ -n $pids ]] && ps -fp $pids
+}
+
+# view log with colors
+if [[ -x /usr/bin/ccze ]]; then
+	function lg() { /usr/bin/ccze -AC < $* | less ; }
+fi

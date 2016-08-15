@@ -1,0 +1,53 @@
+# ~/inputrc - personal inputrc for libreadline
+# See readline(3readline) and `info readline' for more information.
+
+$include  /etc/inputrc
+
+set meta-flag on
+set input-meta on
+set convert-meta off
+set output-meta on
+
+# do not bell on tab-completion
+set bell-style none
+set bell-style visible
+set visible-stats on
+set completion-ignore-case on
+set completion-query-items 100
+set show-all-if-ambiguous off
+set horizontal-scroll-mode off
+
+# C-Left/C-Right bindings
+"\eOd": backward-word
+"\eOc": forward-word
+
+"i": menu-complete
+
+$if Pari-GP
+	set blink-matching-paren on
+$endif
+
+# for linux console
+$if term=linux
+	"\e[1~": beginning-of-line
+	"\e[4~": end-of-line
+	"\e[5~": beginning-of-history
+	"\e[6~": end-of-history
+	"\e[3~": delete-char
+	"\e[2~": quoted-insert
+$endif
+
+$if term=rxvt-unicode
+	"\e[1~": beginning-of-line
+	"\e[4~": end-of-line
+$endif
+
+$if term=rxvt
+	"\e[8~": end-of-line
+$endif
+
+# for non RH/Debian xterm, can't hurt for RH/DEbian xterm
+$if term=xterm
+	"\eOH": beginning-of-line
+	"\eOF": end-of-line
+$endif

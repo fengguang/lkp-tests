@@ -1,0 +1,30 @@
+#!/bin/bash
+
+if test -n "$BASH" ; then
+	checkpath () 
+	{ 
+		error=0
+		newPATH=
+		local IFS=":"
+		for p in ${PATH//\/\//\/}
+		do
+			if [ ! -d "$p" ]; then
+				echo "checkpath: $p is not a directory; removing it" >&2
+			else
+				case :$newPATH: in 
+					*:$p:*) echo "checkpath: $p already in path" >&2
+					;;
+					*)
+						[ -d "$p" ] && newPATH=${newPATH:+$newPATH:}$p
+					;;
+				esac
+			fi
+		done
+		PATH=$newPATH
+		echo PATH=$newPATH
+		unset newPATH
+	}
+
+	checkpath
+	export PATH
+fi

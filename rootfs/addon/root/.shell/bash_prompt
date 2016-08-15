@@ -1,0 +1,50 @@
+#!/bin/bash
+
+. ~/bin/colors.sh
+
+# My Color Scheme
+if [ $UID -eq 0 ] ; then
+	Prompt="#"
+	UserColor="\[$LIGHT_RED\]"
+	BackColor="\[$LIGHT_RED_BG\]"
+	PromptColor="\[$RED\]"
+	XTermTitleUser="\u@"
+else
+	Prompt="$"
+	UserColor="\[$LIGHT_YELLOW\]"
+	BackColor="\[$LIGHT_BLUE_BG\]"
+	PromptColor="\[$LIGHT_BLACK\]"
+fi
+
+if [ -n "$SSH_CONNECTION" ] ; then
+	XTermTitleUser="\u@"
+	XTermTitleHost="\h:"
+fi
+
+SymboColor="\[$LIGHT_BLACK\]"
+BlackBackColr="\[$BLACK_BG\]"
+HostColor="\[$LIGHT_BLUE\]"
+PathColor="\[$WHITE$UNDERLINE\]"
+CommandColor="\[$WHITE\]"
+
+case $TERM in
+    xterm*|rxvt*)
+		XTermTitle="\[\033]0;$XTermTitleUser$XTermTitleHost\W\007\]"
+		#XTermTitle="\e[11;0]\e]2;\[$XTermTitleUser$XTermTitleHost\W\]\007\e[11]"
+		#export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD}\007"'
+        ;;
+    screen*)
+		#XTermTitle='\ek\e\\\e_\[SCREEN:$XTermTitleUser$XTermTitleHost\W\]\e\\'
+		XTermTitle='\[\ek\e\\\]'
+		#export PROMPT_COMMAND='echo -n -e "\033k\033\134"'
+		;;
+    *)
+		XTermTitle=''
+        ;;
+esac
+
+#XTermTitle=''
+PS1="\[$RESET\]$XTermTitle$SymboColor$UserColor\u$SymboColor@$HostColor\h$SymboColor $PathColor\w\[$RESET\]$SymboColor$PromptColor$Prompt $CommandColor"
+PS2="$SymboColor> $CommandColor"
+
+export PS1 PS2

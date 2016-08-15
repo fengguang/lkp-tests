@@ -1,0 +1,153 @@
+#!/bin/sh
+
+# some system has unusable vi
+alias e=vim
+alias iv=vim
+alias vi=vim
+alias vs="vim patches/series"
+alias t="vim -t"
+
+alias sc='sort | uniq -c | sort -nr | more'
+
+alias path='echo -e ${PATH//:/\\n}'
+
+nr_cpu=$(nproc)
+alias make="make -j$nr_cpu"
+
+alias route="route -n"
+alias iotop="iotop -d10"
+
+alias s=ssh
+alias x=startx
+alias q=quilt
+alias ff=firefox
+
+alias u="uname -a"
+
+alias gu="git remote update" # && git checkout origin/master"
+alias gs="git show --format=fuller --stat --patch -w -M"
+alias gl="git log --format=fuller"
+alias gd="git diff"
+alias gca="git commit -as"
+alias gg="git grep --color -n"
+alias ggc="git grep --color -n -C5"
+alias ggh="git grep --color -n -h"
+alias ggl="git grep --color -n -l"
+alias gr="git rebase HEAD~10"
+alias grc="git rebase --continue"
+
+alias ta='tmux attach'
+alias ts='tmux new-session -s'
+
+alias dm="dmesg| less"
+alias dt="dmesg| tail -n 20"
+alias dg="dmesg| grep -Ei"
+
+# open my email outbox at ~/Mail/archive/outbox
+alias o='mutt -f \<'
+
+alias diffstat='diffstat -p1 -w70'
+alias trueprint='trueprint --no-cover-sheet --no-file-index --no-page-break-after-function --ignore-form-feeds --no-holepunch --top-holepunch --no-page-furniture-lines --no-braces-depth --no-headers -3 --output -'
+
+alias arp='arp -n'
+
+alias grep='grep --color --exclude=cscope.out --exclude=tags'
+if [[ -x /usr/bin/glark ]]; then
+        alias g='glark --binary-files=without-match'
+        alias gr='glark -r --binary-files=without-match'
+        alias gi='glark -i --binary-files=without-match'
+        alias gir='glark -ir --binary-files=without-match'
+else
+        alias g='grep -E -I'
+        alias gc='grep -E -I -C5'
+        alias gi='grep -E -Ii'
+        alias gr='grep -E -Ir'
+        alias gir='grep -E -Iir'
+fi
+
+# grep file
+alias gf='find . -type f -print0 | xargs -0 grep -E'
+# grep the history
+alias gh='history 0 | grep -E'
+
+alias du='du -h'
+alias tree='tree -N'
+alias free='free -h'
+
+alias last='last | head -n $(( +LINES ? LINES - 4 : 20 ))'
+
+# disk/memory/package space eaters
+alias sd="find -maxdepth 1 -print0 |xargs -0i du -ks {} |sort -rn |head -11 | cut -f2 | xargs -i du -hs {}"
+alias sm='ps aux --sort=rss'
+alias sp='dpkg-query -W --showformat='\''${Installed-Size} ${Package}\n'\'' | sort -n'
+
+alias p='ps aux|less'
+alias pse='ps -eo user,pid,tid,class,rtprio,ni,pri,psr,pcpu,vsz,rss,pmem,stat,wchan:28,cmd|less'
+alias pss='processes=`ps aux`; echo "$processes" | head -n1; echo "$processes" |grep -E'
+
+[[ $USER = 'root' ]] && alias ai='apt-get install' \
+                     || alias ai='sudo apt-get install'
+[[ $USER = 'root' ]] && alias au='apt-get update' \
+                     || alias au='sudo apt-get update'
+[[ $USER = 'root' ]] && alias auu='apt-get update && apt-get upgrade' \
+                     || alias auu='sudo apt-get update && sudo apt-get upgrade'
+alias as='apt-cache search --names-only'
+alias af='apt-file'
+alias dl='dpkg -l'
+[[ -x /usr/bin/dlocate ]] && alias ds='dlocate -S' \
+                          || alias ds='dpkg -S'
+
+alias m='man'
+
+alias ls='ls -h --color=auto --show-control-chars'
+alias sl='ls'
+alias la='ls -A'
+alias ll='ls   -lrt --color=auto --time-style=long-iso'
+alias lla='ls -Alrt --color=auto --time-style=long-iso'
+
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+
+alias md='mkdir -p'
+alias rd=rmdir
+alias d='dirs -v'
+alias lo=locate
+
+if [ "$TERM" != dumb ] && [ -x /usr/bin/grc ]
+then
+	alias colourify="command grc -es --colour=on"
+	alias configure='colourify ./configure'
+	alias diff='colourify diff'
+	alias make='colourify make'
+	alias gcc='colourify gcc'
+	alias g++='colourify g++'
+	alias gas='colourify gas'
+	alias ld='colourify ld'
+	alias ps='colourify ps'
+	alias df='colourify df -h'
+	alias mount='colourify mount'
+	alias netstat='colourify netstat'
+	alias ifconfig='colourify ifconfig'
+	alias ping='colourify ping'
+	alias traceroute='colourify /usr/sbin/traceroute'
+	alias ll='colourify ls   -lrth --color=always --time-style=long-iso'
+	alias lla='colourify ls -Alrth --color=always --time-style=long-iso'
+fi
+
+if [ "$TERM" != dumb ] && [ -x /usr/local/bin/acoc ]
+then
+	# Interactive programs do not work well with acoc because its output is line-buffered.
+	# alias top='command stdbuf -o0 -e0 acoc top'
+	# alias apt-get='command stdbuf -o0 -e0 acoc apt-get'
+	# alias ai='sudo stdbuf -o0 -e0 acoc apt-get install'
+
+	alias w='command acoc w'
+	alias as='command acoc apt-cache search'
+	alias apt-cache='command acoc apt-cache'
+	alias strace='command acoc strace'
+	alias ltrace='command acoc ltrace'
+	alias tcpdump='command acoc tcpdump'
+	alias nmap='command acoc nmap'
+fi
