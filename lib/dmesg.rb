@@ -185,7 +185,7 @@ def grep_crash_head(dmesg_file)
 			end
 
 			if line =~ CALLTRACE_PATTERN
-				add_one_calltrace[prev_line]
+				add_one_calltrace[prev_line] unless line.index('SyS_')
 				add_one_calltrace[line]
 				prev_line = nil
 			else

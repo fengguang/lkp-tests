@@ -3,9 +3,6 @@ boot_failures: 1
 # BUG: KASAN: slab-out-of-bounds in copy_from_user+0x
 BUG:KASAN:slab-out-of-bounds_in_copy_from_user_at_addr: 1
 
-# copy_mount_string+0x
-calltrace:copy_mount_string: 1
-
 # SyS_mount+0x
 calltrace:SyS_mount: 1
 
@@ -14,6 +11,5 @@ calltrace:devtmpfsd: 1
 
 timestamp:last: 0.440853
 timestamp:BUG:KASAN:slab-out-of-bounds_in_copy_from_user_at_addr: 0.440853
-timestamp:calltrace:copy_mount_string: 0.440853
 timestamp:calltrace:SyS_mount: 0.440853
 timestamp:calltrace:devtmpfsd: 0.440853

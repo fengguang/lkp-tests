@@ -3,13 +3,9 @@ boot_failures: 1
 # BUG: sleeping function called from invalid context at
 BUG:sleeping_function_called_from_invalid_context_at_kernel/irq/manage.c: 1
 
-# vfs_write+0x
-calltrace:vfs_write: 1
-
 # SyS_write+0x
 calltrace:SyS_write: 1
 
 timestamp:last: 334.415826
 timestamp:BUG:sleeping_function_called_from_invalid_context_at_kernel/irq/manage.c: 334.390692
-timestamp:calltrace:vfs_write: 334.390728
 timestamp:calltrace:SyS_write: 334.390729

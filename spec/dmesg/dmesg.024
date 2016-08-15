@@ -3,14 +3,8 @@ boot_failures: 1
 # BUG: KASAN: slab-out-of-bounds in inotify_read+0x
 BUG:KASAN:slab-out-of-bounds_in_inotify_read_at_addr: 1
 
-# vfs_read+0x
-calltrace:vfs_read: 1
-
 # SyS_read+0x
 calltrace:SyS_read: 1
-
-# vfs_link+0x
-calltrace:vfs_link: 1
 
 # SyS_linkat+0x
 calltrace:SyS_linkat: 1
@@ -26,9 +20,7 @@ calltrace:usb_serial_module_init: 1
 
 timestamp:last: 6.407623
 timestamp:BUG:KASAN:slab-out-of-bounds_in_inotify_read_at_addr: 6.359904
-timestamp:calltrace:vfs_read: 6.379960
 timestamp:calltrace:SyS_read: 6.380723
-timestamp:calltrace:vfs_link: 6.390228
 timestamp:calltrace:SyS_linkat: 6.391050
 timestamp:calltrace:SyS_link: 6.391868
 timestamp:calltrace:usb_serial_register_drivers: 6.400357
