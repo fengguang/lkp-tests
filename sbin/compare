@@ -489,8 +489,10 @@ def show_one_diff(dim, v0, v, v0_stddev, v_stddev, is_float, is_exp, is_fail=fal
 	else
 		if is_fail
 			p = 100 * ((v.to_f/v_stddev) - (v0.to_f/v0_stddev))
-		else
+		elsif v0 != 0
 			p = 100.0 * (v - v0) / v0
+		else
+			p = 0
 		end
 		if is_fail
 			buf = sprintf "%#{REL_WIDTH-2}.0f%% ", p
