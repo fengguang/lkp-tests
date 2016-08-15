@@ -1,0 +1,11 @@
+boot_failures: 1
+
+# BUG: spinlock bad magic on CPU#1
+BUG:spinlock_bad_magic_on_CPU: 1
+
+# fd_timer_workfn+0x
+calltrace:fd_timer_workfn: 1
+
+timestamp:last: 90.333534
+timestamp:BUG:spinlock_bad_magic_on_CPU: 90.322140
+timestamp:calltrace:fd_timer_workfn: 90.322660

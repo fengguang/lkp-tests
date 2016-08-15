@@ -1,0 +1,42 @@
+[   90.252318] floppy: error -5 while reading block 0
+[   90.299883] EXT4-fs (nbd1): unable to read superblock
+[   90.321756] floppy: error -5 while reading block 0
+[   90.322140] BUG: spinlock bad magic on CPU#1, kworker/u4:1/123
+[   90.322177] CPU: 1 PID: 123 Comm: kworker/u4:1 Tainted: G S              4.8.0-rc1 #68
+[   90.322200] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[   90.322235] Workqueue: floppy fd_timer_workfn
+[   90.322269]  c1066ca5 00000046 cfcb1d58 c13d1bc5 c104c844 ce2fdd6c cfcb1d80 c106bb86
+[   90.322299]  c2371ede ce2fdd6c ce2fddb0 c104c844 48fff004 c10699e5 ce2fdd6c ce2fdd6c
+[   90.322329]  cfcb1d90 c106bbad c2371f40 ce2fdd6c cfcb1dac c106bcaf 00001010 ce2fdd7c
+[   90.322331] Call Trace:
+[   90.322362]  [<c1066ca5>] ? down_trylock+0x1e/0x27
+[   90.322370]  [<c13d1bc5>] dump_stack+0x55/0x6e
+[   90.322397]  [<c104c844>] ? try_to_grab_pending+0xe7/0xfe
+[   90.322404]  [<c106bb86>] spin_dump+0x71/0x7b
+[   90.322429]  [<c104c844>] ? try_to_grab_pending+0xe7/0xfe
+[   90.322434]  [<c10699e5>] ? lock_release+0x277/0x2b4
+[   90.322460]  [<c106bbad>] spin_bug+0x1d/0x21
+[   90.322465]  [<c106bcaf>] do_raw_spin_lock+0x1e/0xf4
+[   90.322494]  [<c1eb7287>] _raw_spin_lock_irqsave+0x51/0x65
+[   90.322500]  [<c1062b66>] complete+0x12/0x35
+[   90.322526]  [<c173ecea>] floppy_rb0_cb+0x31/0x38
+[   90.322533]  [<c13bc4e0>] bio_endio+0x3f/0x51
+[   90.322559]  [<c13bfd43>] blk_update_request+0x12a/0x1c3
+[   90.322564]  [<c13bfdea>] blk_update_bidi_request+0xe/0x4f
+[   90.322589]  [<c13bff35>] __blk_end_bidi_request+0x11/0x2c
+[   90.322594]  [<c13bffe4>] __blk_end_request+0xa/0xc
+[   90.322599]  [<c1740db5>] floppy_end_request+0x33/0x4d
+[   90.322624]  [<c1740edf>] request_done+0x110/0x128
+[   90.322630]  [<c173da6d>] ? disk_change+0x189/0x248
+[   90.322655]  [<c1740181>] floppy_ready+0x29d/0x4c3
+[   90.322660]  [<c173d70a>] fd_timer_workfn+0x9/0xb
+[   90.322686]  [<c104c9ec>] process_one_work+0x191/0x2c2
+[   90.322691]  [<c104c993>] ? process_one_work+0x138/0x2c2
+[   90.322696]  [<c104cced>] worker_thread+0x1ac/0x26b
+[   90.322721]  [<c104cb41>] ? process_scheduled_works+0x24/0x24
+[   90.322726]  [<c104cb41>] ? process_scheduled_works+0x24/0x24
+[   90.322753]  [<c1050c8a>] kthread+0x92/0x97
+[   90.322761]  [<c1eb79ae>] ret_from_kernel_thread+0xe/0x30
+[   90.322787]  [<c1050bf8>] ? __kthread_unpark+0x4f/0x4f
+[   90.333135] EXT4-fs (nbd1): unable to read superblock
+[   90.333534] EXT2-fs (nbd1): error: unable to read superblock

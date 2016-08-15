@@ -1,0 +1,46 @@
+[   22.355643] VUB300 Driver rom wait states = 1C irqpoll timeout = 0400usbcore: registered new interface driver vub300
+[   22.359061] sdhci-pltfm: SDHCI platform and OF driver helper
+[   22.361767] leds_ss4200: no LED devices found
+[   22.723585] BUG: unable to handle kernel NULL pointer dereference at 000000000000043f
+[   22.724817] IP: [<ffffffffb3e68c04>] setup_udp_tunnel_sock+0xc/0x63
+[   22.725747] PGD 0 
+[   22.726068] Oops: 0002 [#1] PREEMPT SMP
+[   22.726638] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 4.8.0-rc1 #1
+[   22.727535] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[   22.728821] task: ffff8ae5d4948040 task.stack: ffff8ae5d494c000
+[   22.729677] RIP: 0010:[<ffffffffb3e68c04>]  [<ffffffffb3e68c04>] setup_udp_tunnel_sock+0xc/0x63
+[   22.730958] RSP: 0000:ffff8ae5d494fd98  EFLAGS: 00010282
+[   22.731731] RAX: ffffffffffffffff RBX: 0000000000000001 RCX: 0000000000000000
+[   22.732759] RDX: ffff8ae5d494fdb8 RSI: ffffffffb6d13280 RDI: ffffffffb477a000
+[   22.733782] RBP: ffff8ae5d494fda8 R08: 0000000000000009 R09: ffffffffb6d13280
+[   22.734821] R10: 0000000000000000 R11: 0000000000000000 R12: 00000000ffffffff
+[   22.735844] R13: 0000000080000000 R14: ffffffffb48adc08 R15: 0000000000000001
+[   22.737323] FS:  0000000000000000(0000) GS:ffff8ae5d5400000(0000) knlGS:0000000000000000
+[   22.738507] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   22.739338] CR2: 000000000000043f CR3: 0000000009c06000 CR4: 00000000000006f0
+[   22.740363] Stack:
+[   22.740667]  0000000000000282 ffff8ae5d4948040 ffff8ae5d494fe18 ffffffffb3c45b28
+[   22.741821]  0000000000000000 0000000000000201 ffffffffb3c4537a 0000000000000000
+[   22.742959]  0000000080000000 ffffffffb48adc08 000000000000000a 0000b71200000000
+[   22.744096] Call Trace:
+[   22.744483]  [<ffffffffb3c45b28>] T.1588+0xa4/0xaf
+[   22.745176]  [<ffffffffb3c4537a>] ? rxe_notify+0xba/0xba
+[   22.745947]  [<ffffffffb3c45b60>] rxe_net_init+0x2d/0xda
+[   22.746723]  [<ffffffffb48049fb>] ? hfi1_mod_init+0x203/0x203
+[   22.747932]  [<ffffffffb4804a24>] rxe_module_init+0x29/0x58
+[   22.748745]  [<ffffffffb48049fb>] ? hfi1_mod_init+0x203/0x203
+[   22.749577]  [<ffffffffb48049fb>] ? hfi1_mod_init+0x203/0x203
+[   22.750410]  [<ffffffffb47ba926>] do_one_initcall+0x97/0x162
+[   22.751243]  [<ffffffffb47bac00>] ? kernel_init_freeable+0x58/0xf8
+[   22.752142]  [<ffffffffb47bab85>] do_basic_setup+0xa2/0xc5
+[   22.752938]  [<ffffffffb47baca0>] ? kernel_init_freeable+0xf8/0xf8
+[   22.753831]  [<ffffffffb47bac30>] kernel_init_freeable+0x88/0xf8
+[   22.754943]  [<ffffffffb3f71c7b>] kernel_init+0x9/0xf8
+[   22.755694]  [<ffffffffb3f7f66f>] ret_from_fork+0x1f/0x40
+[   22.756481]  [<ffffffffb3f71c72>] ? rest_init+0x139/0x139
+[   22.757253] Code: 1c 24 48 83 eb 50 48 81 fb 58 a1 77 b4 75 d0 e8 a6 fe ff ff 48 83 c4 38 5b 41 5c 41 5d c9 c3 55 48 89 e5 48 83 ec 10 48 8b 46 20 <80> a0 40 04 00 00 ef fe 80 43 04 00 00 48 8b 0a 48 89 4d f0 48 
+[   22.761612] RIP  [<ffffffffb3e68c04>] setup_udp_tunnel_sock+0xc/0x63
+[   22.762553]  RSP <ffff8ae5d494fd98>
+[   22.763061] CR2: 000000000000043f
+[   22.763559] ---[ end trace 0e72e9bdcbd1de5e ]---
+[   22.764232] Kernel panic - not syncing: Fatal exception

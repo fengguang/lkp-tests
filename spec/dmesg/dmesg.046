@@ -1,0 +1,7 @@
+boot_failures: 1
+
+# WARNING:.* at .* __fpregs_activate+0x
+WARNING:at_arch/x86/include/asm/fpu/internal.h:#__fpregs_activate: 1
+
+timestamp:last: 14.718730
+timestamp:WARNING:at_arch/x86/include/asm/fpu/internal.h:#__fpregs_activate: 6.978574

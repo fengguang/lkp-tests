@@ -1,0 +1,46 @@
+Starting udev
+/etc/rcS.d/S03udev: line 72: can't create /proc/sys/kernel/hotplug: nonexistent directory
+[   12.973833] ==================================================================
+[   12.974916] BUG: KASAN: slab-out-of-bounds in kernfs_fop_write+0x8c/0x1f0 at addr ffff880019af6798
+[   12.976214] Write of size 3 by task udevadm/219
+[   12.976871] CPU: 0 PID: 219 Comm: udevadm Not tainted 4.8.0-rc1 #1
+[   12.977766] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[   12.979048]  0000000000000000 ffff880016557d08 ffffffff812538ce ffff88001a001c80
+[   13.002264]  ffff880019af6798 ffff880016557d38 ffffffff8117aba7 0000000000000003
+[   13.003441]  ffff880019af6798 ffff88001a001c80 ffffed000335ecf3 ffff880016557dc8
+[   13.004611] Call Trace:
+[   13.004984]  [<ffffffff812538ce>] dump_stack+0x65/0x87
+[   13.005751]  [<ffffffff8117aba7>] kasan_object_err+0x27/0x90
+[   13.006587]  [<ffffffff8117af0d>] kasan_report+0x23d/0x4a0
+[   13.007404]  [<ffffffff8117a275>] ? kasan_kmalloc+0x85/0xb0
+[   13.008229]  [<ffffffff811e10ac>] ? kernfs_fop_write+0x8c/0x1f0
+[   13.009102]  [<ffffffff811799e1>] check_memory_region+0x141/0x170
+[   13.009993]  [<ffffffff81179be4>] kasan_check_write+0x14/0x20
+[   13.010841]  [<ffffffff811e10ac>] kernfs_fop_write+0x8c/0x1f0
+[   13.011692]  [<ffffffff81188203>] __vfs_write+0x23/0x120
+[   13.025480]  [<ffffffff810e8d72>] ? percpu_down_read+0x52/0x90
+[   13.026426]  [<ffffffff8118ba34>] ? __sb_start_write+0xd4/0xf0
+[   13.027392]  [<ffffffff8118ba34>] ? __sb_start_write+0xd4/0xf0
+[   13.028331]  [<ffffffff811884b0>] vfs_write+0xc0/0x190
+[   13.029189]  [<ffffffff8118867d>] SyS_write+0x4d/0xb0
+[   13.029937]  [<ffffffff8159e972>] entry_SYSCALL_64_fastpath+0x1a/0xa9
+[   13.030887] Object at ffff880019af6798, in cache kmalloc-8 size: 8
+[   13.031798] Allocated:
+[   13.032163] PID = 219
+[   13.032509]  [<ffffffff810245ea>] save_stack_trace+0x2a/0x50
+[   13.033368]  [<ffffffff81179a95>] kasan_kmalloc+0x55/0xe0
+[   13.034276]  [<ffffffff8117a275>] kasan_kmalloc+0x85/0xb0
+[   13.035097]  [<ffffffff81177b49>] __kmalloc+0xf9/0x190
+[   13.035873]  [<ffffffff811e112d>] kernfs_fop_write+0x10d/0x1f0
+[   13.036755]  [<ffffffff81188203>] __vfs_write+0x23/0x120
+[   13.037565]  [<ffffffff811884b0>] vfs_write+0xc0/0x190
+[   13.051373]  [<ffffffff8118867d>] SyS_write+0x4d/0xb0
+[   13.052152]  [<ffffffff8159e972>] entry_SYSCALL_64_fastpath+0x1a/0xa9
+[   13.053123] Freed:
+[   13.053433] PID = 209
+[   13.053777]  [<ffffffff810245ea>] save_stack_trace+0x2a/0x50
+[   13.054665]  [<ffffffff8117a11d>] kasan_slab_free+0xad/0x180
+[   13.055746]  [<ffffffff81177d84>] kfree+0xa4/0x190
+[   13.056674]  [<ffffffff811aad10>] SyS_mount+0x90/0xc0
+[   13.057646]  [<ffffffff8159e972>] entry_SYSCALL_64_fastpath+0x1a/0xa9
+[   13.058694] Memory state around the buggy address:

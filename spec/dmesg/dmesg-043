@@ -1,0 +1,44 @@
+[  112.698264] Writes:  Total: 2  Max/Min: 0/0   Fail: 0 
+[  174.126330] Writes:  Total: 2  Max/Min: 0/0   Fail: 0 
+[  235.582338] Writes:  Total: 2  Max/Min: 0/0   Fail: 0 
+[  251.950215] INFO: task swapper:1 blocked for more than 120 seconds.
+[  252.156188]       Not tainted 4.8.0-rc1 #3
+[  252.323174] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+[  252.414164] swapper         D cf03c000     0     1      0 0x00000000
+[  252.794158]  cf03be6c 0000ec97 cf02f000 cf03c000 cdbdff6c cf02f000 cf03be78 c147ea46
+[  253.099199]  7fffffff cf03beac c14810e7 00200046 c147f090 00000000 00000001 00000001
+[  253.460141]  cdbdff70 cdbdff6c cdbdff70 cf03beac c1481752 7fffffff cf03bee0 c147f097
+[  253.952228] Call Trace:
+[  253.998180]  [<c147ea46>] schedule+0x1e/0x31
+[  254.012364]  [<c14810e7>] schedule_timeout+0x15/0xa2
+[  254.033363]  [<c147f090>] ? __wait_for_common+0xd1/0xfe
+[  254.040307]  [<c1481752>] ? _raw_spin_unlock_irq+0x22/0x32
+[  254.064254]  [<c147f097>] __wait_for_common+0xd8/0xfe
+[  254.070995]  [<c14810d2>] ? console_conditional_schedule+0x24/0x24
+[  254.095358]  [<c1047344>] ? scheduler_tick+0x50/0x50
+[  254.115350]  [<c147f0d1>] wait_for_completion+0x14/0x17
+[  254.138526]  [<c1043a5e>] kthread_stop+0x32/0x4a
+[  254.165391]  [<c17c5191>] test_rht_init+0x544/0x595
+[  254.187328]  [<c17c4c4d>] ? test_hash_init+0x2b5/0x2b5
+[  254.201327]  [<c17aac26>] do_one_initcall+0x7c/0xf6
+[  254.223553]  [<c104340f>] ? parse_args+0x19a/0x26d
+[  254.243517]  [<c17aad5a>] ? kernel_init_freeable+0xba/0x159
+[  254.264524]  [<c17aad76>] kernel_init_freeable+0xd6/0x159
+[  254.272295]  [<c147d30c>] kernel_init+0x8/0xd0
+[  254.290380]  [<c1481ba2>] ret_from_kernel_thread+0xe/0x24
+[  254.309242]  [<c147d304>] ? rest_init+0xa0/0xa0
+[  257.500197] no locks held by swapper/1.
+[  257.618158] Kernel panic - not syncing: hung_task: blocked tasks
+[  257.636464] CPU: 0 PID: 13 Comm: khungtaskd Not tainted 4.8.0-rc1 #3
+[  257.655774]  00000000 cf02f000 cf121ee8 c11896fd cf121f00 c108b2d0 cf02f138 cf02f000
+[  257.677556]  cf02f138 00000002 cf121f28 c1079335 c165379e 000003ff 00008000 00000078
+[  257.699197]  cf02f000 cf117cb0 00000000 c107910e cf121fa4 c10436ef cf121f6c 00000000
+[  257.721696] Call Trace:
+[  257.725229]  [<c11896fd>] dump_stack+0x16/0x18
+[  257.741233]  [<c108b2d0>] panic+0x8b/0x1b1
+[  257.746675]  [<c1079335>] watchdog+0x227/0x287
+[  257.762685]  [<c107910e>] ? rcu_lock_acquire+0x21/0x21
+[  257.770464]  [<c10436ef>] kthread+0x8b/0x90
+[  257.787056]  [<c1481ba2>] ret_from_kernel_thread+0xe/0x24
+[  257.805198]  [<c1043664>] ? init_completion+0x1e/0x1e
+[  257.812078] Kernel Offset: disabled

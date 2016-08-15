@@ -43,4 +43,15 @@ describe "Dmesg" do
 			expect(line).to eq "parport#:cannot_grant_exclusive_access_for_device_spi-lm#llp"
 		end
 	end
+
+	describe "stats" do
+		files = Dir.glob "#{LKP_SRC}/spec/dmesg/dmesg-*"
+		files.each do |file|
+			it "invariance: #{file}" do
+				old_stat = File.read file.sub('dmesg-', 'dmesg.')
+				new_stat = `#{LKP_SRC}/stats/dmesg #{file}`
+				expect(new_stat).to eq old_stat
+			end
+		end
+	end
 end

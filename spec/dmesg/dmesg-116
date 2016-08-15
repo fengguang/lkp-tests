@@ -1,0 +1,44 @@
+[   37.718900] sock: process `trinity-main' is using obsolete setsockopt SO_BSDCOMPAT
+[   59.831688] 
+[   59.833367] ===============================
+[   59.833983] [ INFO: suspicious RCU usage. ]
+[   59.834642] 4.8.0-rc1 #136 Not tainted
+[   59.835188] -------------------------------
+[   59.835844] arch/x86/include/asm/msr-trace.h:47 suspicious rcu_dereference_check() usage!
+[   59.837301] 
+[   59.837301] other info that might help us debug this:
+[   59.837301] 
+[   59.838497] 
+[   59.838497] RCU used illegally from idle CPU!
+[   59.838497] rcu_scheduler_active = 1, debug_locks = 0
+[   59.840100] RCU used illegally from extended quiescent state!
+[   59.840957] no locks held by swapper/1/0.
+[   59.841545] 
+[   59.841545] stack backtrace:
+[   59.842207] CPU: 1 PID: 0 Comm: swapper/1 Not tainted 4.8.0-rc1 #136
+[   59.843163] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[   59.844427]  0000000000000001 ffff880014a03e88 ffffffff8144fbe6 ffff880014a03e58
+[   59.845585]  0000000000000000 ffff880014a03e88 ffff880013c56440 0000000000000001
+[   59.846727]  0000000000000000 ffffffff81df1260 ffff880017033148 ffff880014a03eb8
+[   59.847863] Call Trace:
+[   59.848218]  <IRQ>  [<ffffffff8144fbe6>] dump_stack+0x10f/0x189
+[   59.849122]  [<ffffffff8114f3d3>] lockdep_rcu_suspicious+0x103/0x140
+[   59.850024]  [<ffffffff814b2f15>] do_trace_write_msr+0x245/0x260
+[   59.850882]  [<ffffffff8107582d>] native_write_msr+0x7d/0xa0
+[   59.851695]  [<ffffffff81496eaf>] ? check_preemption_disabled+0x4f/0x1a0
+[   59.852651]  [<ffffffff8106cd7d>] native_apic_msr_write+0x4d/0x60
+[   59.853538]  [<ffffffff81073dd2>] kvm_guest_apic_eoi_write+0x52/0x60
+[   59.854438]  [<ffffffff810619fd>] smp_reschedule_interrupt+0x1d/0x30
+[   59.855341]  [<ffffffff819d565c>] reschedule_interrupt+0x8c/0xa0
+[   59.856185]  <EOI>  [<ffffffff81074fc6>] ? native_safe_halt+0x6/0x10
+[   59.857133]  [<ffffffff8115068d>] ? trace_hardirqs_on+0xd/0x10
+[   59.857977]  [<ffffffff8103bee2>] default_idle+0x92/0x310
+[   59.858786]  [<ffffffff811916a4>] ? rcu_idle_enter+0xc4/0xe0
+[   59.859413]  [<ffffffff8103b64f>] arch_cpu_idle+0xf/0x20
+[   59.860021]  [<ffffffff81144f82>] default_idle_call+0x72/0x80
+[   59.860574]  [<ffffffff8114593a>] cpu_startup_entry+0x83a/0x8e0
+[   59.861476]  [<ffffffff81496eaf>] ? check_preemption_disabled+0x4f/0x1a0
+[   59.862483]  [<ffffffff810639f5>] start_secondary+0x155/0x160
+[   64.577191] advantechwdt: Unexpected close, not stopping watchdog!
+[   68.995608] Writes:  Total: 4  Max/Min: 0/0   Fail: 0 
+[   80.249285] init: Failed to create pty - disabling logging for job

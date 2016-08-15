@@ -1,0 +1,78 @@
+[    4.533629] g_acm_ms usbip-vudc.0: failed to start g_acm_ms: -22
+[    4.534912] usbip-vudc: probe of usbip-vudc.0 failed with error -22
+[    4.536321] ==================================================================
+[    4.538069] BUG: KASAN: use-after-free in kobj_kset_leave+0x4f/0xa0 at addr ffff88000a35a5d8
+[    4.539956] Write of size 8 by task swapper/1
+[    4.540953] CPU: 0 PID: 1 Comm: swapper Not tainted 4.8.0-rc1 #2
+[    4.542161] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[    4.544105]  ffff88000a35a5d0 ffff8800116e7c40 ffffffff817c36be ffff8800116e7c68
+[    4.546147]  ffffffff812428e1 ffff8800116e7d00 ffff88000a35a5a0 ffff88001140c040
+[    4.548188]  ffff8800116e7cf0 ffffffff81242b9d ffff880016738b20 ffff8800116870a0
+[    4.550229] Call Trace:
+[    4.550991]  [<ffffffff817c36be>] dump_stack+0x19/0x1b
+[    4.552092]  [<ffffffff812428e1>] kasan_object_err+0x21/0x80
+[    4.553249]  [<ffffffff81242b9d>] kasan_report_error+0x20d/0x510
+[    4.554456]  [<ffffffff81242f48>] kasan_report+0x38/0x40
+[    4.555571]  [<ffffffff817c657f>] ? kobj_kset_leave+0x4f/0xa0
+[    4.556745]  [<ffffffff81242731>] __asan_store8+0x61/0x70
+[    4.557872]  [<ffffffff817c657f>] kobj_kset_leave+0x4f/0xa0
+[    4.559021]  [<ffffffff817c6615>] kobject_del+0x45/0x70
+[    4.560129]  [<ffffffff81a039db>] device_del+0x27b/0x360
+[    4.561248]  [<ffffffff82c6b647>] ? usbip_host_init+0xff/0xff
+[    4.562424]  [<ffffffff81a0bc82>] platform_device_del+0x32/0x110
+[    4.563627]  [<ffffffff82c6b7d5>] init+0x18e/0x1cd
+[    4.564679]  [<ffffffff82c6b647>] ? usbip_host_init+0xff/0xff
+[    4.565858]  [<ffffffff82c0a3ed>] do_one_initcall+0xa7/0x169
+[    4.567022]  [<ffffffff82c0a63d>] kernel_init_freeable+0x18e/0x225
+[    4.568253]  [<ffffffff82319033>] kernel_init+0x13/0x120
+[    4.569369]  [<ffffffff82320e5f>] ret_from_fork+0x1f/0x40
+[    4.570497]  [<ffffffff82319020>] ? rest_init+0x90/0x90
+[    4.571600] Object at ffff88000a35a5a8, in cache kmalloc-1024 size: 1024
+[    4.572891] Allocated:
+[    4.573631] PID = 1
+[    4.574340]  [<ffffffff81035aca>] save_stack_trace+0x2a/0x50
+[    4.575573]  [<ffffffff81241794>] kasan_kmalloc+0x64/0xf0
+[    4.576853]  [<ffffffff81241fd8>] kasan_kmalloc+0x78/0xa0
+[    4.578053]  [<ffffffff8123ea4c>] kmem_cache_alloc_trace+0xfc/0x200
+[    4.579360]  [<ffffffff81c37032>] usb_add_gadget_udc_release+0x42/0x470
+[    4.580709]  [<ffffffff81c37530>] usb_add_gadget_udc+0x10/0x20
+[    4.581964]  [<ffffffff81c6f0e4>] vudc_probe+0x3f4/0x4d0
+[    4.583164]  [<ffffffff81a0afb4>] platform_drv_probe+0x54/0xe0
+[    4.584415]  [<ffffffff81a09510>] driver_probe_device+0x310/0x3f0
+[    4.585698]  [<ffffffff81a0977d>] __device_attach_driver+0xbd/0xf0
+[    4.587002]  [<ffffffff81a06e9c>] bus_for_each_drv+0x8c/0xd0
+[    4.588227]  [<ffffffff81a090b9>] __device_attach+0xe9/0x150
+[    4.589457]  [<ffffffff81a09803>] device_initial_probe+0x13/0x20
+[    4.590737]  [<ffffffff81a072af>] bus_probe_device+0xef/0x110
+[    4.591984]  [<ffffffff81a0564b>] device_add+0x5fb/0x8b0
+[    4.593170]  [<ffffffff81a0ba51>] platform_device_add+0x151/0x350
+[    4.594457]  [<ffffffff82c6b6d4>] init+0x8d/0x1cd
+[    4.595569]  [<ffffffff82c0a3ed>] do_one_initcall+0xa7/0x169
+[    4.596815]  [<ffffffff82c0a63d>] kernel_init_freeable+0x18e/0x225
+[    4.598121]  [<ffffffff82319033>] kernel_init+0x13/0x120
+[    4.599312]  [<ffffffff82320e5f>] ret_from_fork+0x1f/0x40
+[    4.600514] Freed:
+[    4.601215] PID = 1
+[    4.601930]  [<ffffffff81035aca>] save_stack_trace+0x2a/0x50
+[    4.603166]  [<ffffffff81241e89>] kasan_slab_free+0xb9/0x190
+[    4.604400]  [<ffffffff8123f8df>] kfree+0x9f/0x190
+[    4.605519]  [<ffffffff81c370e6>] usb_add_gadget_udc_release+0xf6/0x470
+[    4.606874]  [<ffffffff81c37530>] usb_add_gadget_udc+0x10/0x20
+[    4.608126]  [<ffffffff81c6f0e4>] vudc_probe+0x3f4/0x4d0
+[    4.609314]  [<ffffffff81a0afb4>] platform_drv_probe+0x54/0xe0
+[    4.610565]  [<ffffffff81a09510>] driver_probe_device+0x310/0x3f0
+[    4.611858]  [<ffffffff81a0977d>] __device_attach_driver+0xbd/0xf0
+[    4.613158]  [<ffffffff81a06e9c>] bus_for_each_drv+0x8c/0xd0
+[    4.614393]  [<ffffffff81a090b9>] __device_attach+0xe9/0x150
+[    4.615626]  [<ffffffff81a09803>] device_initial_probe+0x13/0x20
+[    4.616909]  [<ffffffff81a072af>] bus_probe_device+0xef/0x110
+[    4.618153]  [<ffffffff81a0564b>] device_add+0x5fb/0x8b0
+[    4.619344]  [<ffffffff81a0ba51>] platform_device_add+0x151/0x350
+[    4.620633]  [<ffffffff82c6b6d4>] init+0x8d/0x1cd
+[    4.621751]  [<ffffffff82c0a3ed>] do_one_initcall+0xa7/0x169
+[    4.622985]  [<ffffffff82c0a63d>] kernel_init_freeable+0x18e/0x225
+[    4.624276]  [<ffffffff82319033>] kernel_init+0x13/0x120
+[    4.625460]  [<ffffffff82320e5f>] ret_from_fork+0x1f/0x40
+[    4.626653] Memory state around the buggy address:
+[    4.627700]  ffff88000a35a480: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[    4.629431]  ffff88000a35a500: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc

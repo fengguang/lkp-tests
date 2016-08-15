@@ -1,0 +1,15 @@
+boot_failures: 1
+
+# Kernel panic - not syncing: Attempted to kill .* exitcode=
+Kernel_panic-not_syncing:Attempted_to_kill_init!exitcode=: 1
+
+# WARNING:.* at .* __local_bh_enable_ip+0x
+WARNING:at_kernel/softirq.c:#__local_bh_enable_ip: 1
+
+# invoked oom-killer: gfp_mask=
+invoked_oom-killer:gfp_mask=0x: 1
+
+timestamp:last: 836.278657
+timestamp:Kernel_panic-not_syncing:Attempted_to_kill_init!exitcode=: 834.521552
+timestamp:WARNING:at_kernel/softirq.c:#__local_bh_enable_ip: 834.763284
+timestamp:invoked_oom-killer:gfp_mask=0x: 836.278657

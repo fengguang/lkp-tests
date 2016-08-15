@@ -1,0 +1,15 @@
+[   17.598291] test_firmware: load of 'test-firmware.bin' failed: -2
+[   17.599973] test_firmware: loaded: 0
+[   17.708265] ------------[ cut here ]------------
+[   17.709231] WARNING: CPU: 1 PID: 356 at kernel/sched/core.c:7497 __might_sleep+0x75/0x80()
+[   17.709231] do not call blocking ops when !TASK_RUNNING; state=f8aa4800 set at [<ffffffff810b7cb5>] finish_wait+0x5/0x70
+[   17.709231] Modules linked in: test_firmware rpcsec_gss_krb5 auth_rpcgss nfsv4 dns_resolver sg sr_mod cdrom ata_generic pata_acpi snd_pcm snd_timer snd soundcore ppdev crc32c_intel microcode pcspkr serio_raw i2c_piix4 ata_piix libata floppy parport_pc parport acpi_cpufreq
+[   17.709231] CPU: 1 PID: 356 Comm: cat-kmsg Not tainted 4.3.0 #1
+[   17.709231] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[   17.709231]  ffffffff81b94a88 ffff88000cffea30 ffffffff81404043 ffff88000cffea78
+[   17.709231]  ffff88000cffea68 ffffffff81075052 ffffffff81b822f0 0000000000000061
+[   17.709231]  0000000000000000 0000000000000000 0000000000000000 ffff88000cffeac8
+[   17.709231] Call Trace:
+[   17.709231]  <UNK> 
+[   17.709231] ---[ end trace 322af61ac3977ce8 ]---
+[   17.709231] invalid opcode: 0000 [#1] SMP 

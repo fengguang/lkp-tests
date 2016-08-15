@@ -1,0 +1,66 @@
+[    3.856449] hpet0: 3 comparators, 64-bit 100.000000 MHz counter
+[    3.865548] clocksource: Switched to clocksource kvm-clock
+[    3.976004] VFS: Disk quotas dquot_6.6.0
+[  103.985562] INFO: rcu_sched detected stalls on CPUs/tasks:
+[  103.986766] All QSes seen, last rcu_sched kthread activity 10002 (4294947638-4294937636), jiffies_till_next_fqs=1, root ->qsmask 0x0
+[  103.987881] swapper/0       R  running task    13504     0      0 0x00080000
+[  103.988548]  0000000000000000 ffff975b54803bf8 ffffffffbb0be4e5 ffffffffbc20b4c0
+[  103.989312]  0000000000000046 ffffffffbc243540 ffffffffbbfccc49 ffffffffbc243540
+[  103.990046]  0000000000000000 ffffffffffffff06 0000000000002712 ffff975b54803cd8
+[  103.990774] Call Trace:
+[  103.991008]  <IRQ>  [<ffffffffbb0be4e5>] sched_show_task+0xfa/0x107
+[  103.991611]  [<ffffffffbb0f4419>] print_other_cpu_stall+0x369/0x3de
+[  103.992182]  [<ffffffffbb02dd33>] ? kvm_clock_read+0x23/0x38
+[  103.992700]  [<ffffffffbb02dd5c>] ? kvm_sched_clock_read+0x9/0x12
+[  103.993253]  [<ffffffffbb10610a>] ? tick_nohz_handler+0xa8/0xa8
+[  103.993793]  [<ffffffffbb0f458f>] check_cpu_stall+0x101/0x10d
+[  103.994312]  [<ffffffffbb0d68e5>] ? __lock_acquire+0x347/0x3da
+[  103.994877]  [<ffffffffbb0d4aa2>] ? check_chain_key+0x98/0x103
+[  103.995443]  [<ffffffffbb0f45c0>] __rcu_pending+0x25/0x118
+[  103.995971]  [<ffffffffbb10610a>] ? tick_nohz_handler+0xa8/0xa8
+[  103.996505]  [<ffffffffbb0f49a7>] rcu_check_callbacks+0xf3/0x14a
+[  103.997080]  [<ffffffffbb0f8dc3>] update_process_times+0x2a/0x4f
+[  103.997624]  [<ffffffffbb106166>] tick_sched_timer+0x5c/0x84
+[  103.998137]  [<ffffffffbb0f9678>] __run_hrtimer+0x6a/0xed
+[  103.998647]  [<ffffffffbb0f9751>] __hrtimer_run_queues+0x56/0x7a
+[  103.999221]  [<ffffffffbb0f98f6>] hrtimer_interrupt+0xaf/0x1a3
+[  103.999764]  [<ffffffffbb0287e7>] local_apic_timer_interrupt+0x4c/0x50
+[  104.000372]  [<ffffffffbb028b4f>] smp_apic_timer_interrupt+0x23/0x34
+[  104.000954]  [<ffffffffbbbeca14>] apic_timer_interrupt+0x84/0x90
+[  104.001515]  <EOI>  [<ffffffffbb0b85f7>] ? blocking_notifier_chain_cond_register+0x5f/0x5f
+[  104.002272]  [<ffffffffbb02e040>] ? native_safe_halt+0x6/0x8
+[  104.002814]  [<ffffffffbb5286d6>] ? debug_smp_processor_id+0x17/0x19
+[  104.003417]  [<ffffffffbb01b890>] default_idle+0xe/0x17
+[  104.003894]  [<ffffffffbb01b72d>] arch_cpu_idle+0xa/0xc
+[  104.004393]  [<ffffffffbb0cfa01>] default_idle_call+0x32/0x34
+[  104.004940]  [<ffffffffbb0cfab3>] cpuidle_idle_call+0x6a/0x111
+[  104.005490]  [<ffffffffbb0cfc4f>] cpu_idle_loop+0xf5/0x12b
+[  104.005988]  [<ffffffffbb0cfce7>] cpu_startup_entry+0x62/0x69
+[  104.006504]  [<ffffffffbbbe5947>] rest_init+0xbe/0xc5
+[  104.006965]  [<ffffffffbbbe5889>] ? csum_partial_copy_generic+0x169/0x169
+[  104.007603]  [<ffffffffbc58f36b>] start_kernel+0x420/0x422
+[  104.008119]  [<ffffffffbc58ed81>] ? set_init_arg+0x5d/0x5d
+[  104.008622]  [<ffffffffbc58e234>] x86_64_start_reservations+0x29/0x2b
+[  104.009212]  [<ffffffffbc58e507>] x86_64_start_kernel+0xe2/0xf1
+[  104.009764] rcu_sched kthread starved for 10002 jiffies! g18446744073709551366 c18446744073709551365 f0x0 RCU_GP_DONE_GPS(2) ->state=0x2
+[  104.010868] rcu_sched       D ffff975b54037a08 13792     8      2 0x00080000
+[  104.011545]  ffff975b54037a08 ffff975b540379c8 0000000000000296 ffff975b5404c300
+[  104.012289]  ffff975b54032200 ffff975b00000000 00000000ffff8c27 ffff975b00000000
+[  104.013012]  ffffffffbb0bd84f ffff975b540379e8 ffff975b54034008 00000000ffff8c27
+[  104.013758] Call Trace:
+[  104.013985]  [<ffffffffbb0bd84f>] ? preempt_latency_start+0x25/0x5c
+[  104.014558]  [<ffffffffbbbe736d>] schedule+0xa2/0xba
+[  104.015047]  [<ffffffffbb0d4e19>] ? get_lock_stats+0x19/0x4c
+[  104.015563]  [<ffffffffbbbea8de>] schedule_timeout+0xa1/0xc5
+[  104.016121]  [<ffffffffbb0f8d2c>] ? add_timer_on+0xb1/0xb1
+[  104.016601]  [<ffffffffbbbea94c>] schedule_timeout_uninterruptible+0x24/0x26
+[  104.017255]  [<ffffffffbb0f1a73>] rcu_gp_slow+0x2e/0x30
+[  104.017741]  [<ffffffffbb0f5978>] rcu_gp_init+0x141/0x454
+[  104.018223]  [<ffffffffbbbebd39>] ? _raw_spin_unlock_irq+0x37/0x4b
+[  104.018802]  [<ffffffffbb0f5ee9>] ? rcu_gp_cleanup+0x25e/0x270
+[  104.019327]  [<ffffffffbbbebd88>] ? _raw_spin_unlock_irqrestore+0x3b/0x50
+[  104.019980]  [<ffffffffbb0cf596>] ? finish_swait+0x74/0x7f
+[  104.020477]  [<ffffffffbb0f600d>] rcu_gp_kthread+0x112/0x52e
+[  104.021027]  [<ffffffffbb0c90e3>] ? update_curr+0xc0/0x10b
+[  104.021544]  [<ffffffffbb0c4d98>] ? pick_next_entity+0xd0/0xdc
+[  104.022076]  [<ffffffffbbbe70f2>] ? __schedule+0x32d/0x34c

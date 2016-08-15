@@ -1,0 +1,41 @@
+[   24.896061] vgaarb: device changed decodes: PCI:0000:00:02.0,olddecodes=io+mem,decodes=io+mem:owns=io+mem
+[   24.922868] Kernel tests: Boot OK!
+[   24.925272] ------------[ cut here ]------------
+[   24.925604] WARNING: CPU: 0 PID: 173 at drivers/gpu/drm/i915/intel_display.c:15572 intel_modeset_init+0xce0/0xe50 [i915]
+[   24.925607] Could not determine valid watermarks for inherited state
+[   24.925636] Modules linked in: x86_pkg_temp_thermal intel_powerclamp coretemp kvm_intel kvm irqbypass crct10dif_pclmul crc32_pclmul crc32c_intel ghash_clmulni_intel aesni_intel lrw gf128mul glue_helper ablk_helper cryptd pcspkr serio_raw snd_hda_codec_hdmi(+) snd_hda_codec_conexant snd_hda_codec_generic ahci libahci i915(+) ideapad_laptop uvcvideo sparse_keymap snd_hda_intel bcma snd_hda_codec rfkill drm_kms_helper libata syscopyarea sysfillrect sysimgblt fb_sys_fops snd_hda_core snd_hwdep snd_pcm snd_timer snd soundcore wmi videobuf2_vmalloc videobuf2_memops videobuf2_v4l2 videobuf2_core videodev video drm shpchp
+[   24.925639] CPU: 0 PID: 173 Comm: systemd-udevd Not tainted 4.8.0-rc1 #1
+[   24.925640] Hardware name: LENOVO IdeaPad U410    /Lenovo          , BIOS 65CN15WW 06/05/2012
+[   24.925643]  0000000000000000 ffff88011c72f968 ffffffff814466a9 ffff88011c72f9b8
+[   24.925645]  0000000000000000 ffff88011c72f9a8 ffffffff8107e2bb 00003cd41a08a800
+[   24.925647]  00000000ffffffea ffff88011a089800 ffff88011ab2c000 ffff88011a490000
+[   24.925648] Call Trace:
+[   24.925654]  [<ffffffff814466a9>] dump_stack+0x63/0x8a
+[   24.925657]  [<ffffffff8107e2bb>] __warn+0xcb/0xf0
+[   24.925659]  [<ffffffff8107e32f>] warn_slowpath_fmt+0x4f/0x60
+[   24.925711]  [<ffffffffa032a3e0>] intel_modeset_init+0xce0/0xe50 [i915]
+[   24.925753]  [<ffffffffa02a1d64>] i915_driver_load+0x814/0x13e0 [i915]
+[   24.925757]  [<ffffffff81935465>] ? mutex_lock+0x25/0x50
+[   24.925760]  [<ffffffff814cc683>] ? acpi_dev_found+0x5d/0x64
+[   24.925814]  [<ffffffffa02ac66f>] i915_pci_probe+0x4f/0x70 [i915]
+[   24.925817]  [<ffffffff81495fe5>] local_pci_probe+0x45/0xa0
+[   24.925819]  [<ffffffff81497421>] pci_device_probe+0xe1/0x130
+[   24.925823]  [<ffffffff815a4683>] driver_probe_device+0x223/0x430
+[   24.925825]  [<ffffffff815a496f>] __driver_attach+0xdf/0xf0
+[   24.925827]  [<ffffffff815a4890>] ? driver_probe_device+0x430/0x430
+[   24.925829]  [<ffffffff815a2170>] bus_for_each_dev+0x60/0xa0
+[   24.925831]  [<ffffffff815a3dbe>] driver_attach+0x1e/0x20
+[   24.925833]  [<ffffffff815a3800>] bus_add_driver+0x170/0x270
+[   24.925835]  [<ffffffffa03dc000>] ? 0xffffffffa03dc000
+[   24.925837]  [<ffffffff815a52a0>] driver_register+0x60/0xe0
+[   24.925838]  [<ffffffffa03dc000>] ? 0xffffffffa03dc000
+[   24.925840]  [<ffffffff8149593c>] __pci_register_driver+0x4c/0x50
+[   24.925879]  [<ffffffffa03dc05b>] i915_init+0x5b/0x62 [i915]
+[   24.925883]  [<ffffffff8100217d>] do_one_initcall+0x3d/0x150
+[   24.925886]  [<ffffffff810a4659>] ? __might_sleep+0x49/0x80
+[   24.925888]  [<ffffffff811e3c33>] ? kmem_cache_alloc_trace+0x163/0x1b0
+[   24.925891]  [<ffffffff8117a8af>] do_init_module+0x5f/0x1ef
+[   24.925893]  [<ffffffff81108d9e>] load_module+0x142e/0x1b40
+[   24.925895]  [<ffffffff81105950>] ? __symbol_put+0x40/0x40
+[   24.925898]  [<ffffffff8120f683>] ? kernel_read_file+0x1a3/0x1c0
+[   24.925901]  [<ffffffff8120f759>] ? kernel_read_file_from_fd+0x49/0x80

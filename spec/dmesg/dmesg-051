@@ -1,0 +1,24 @@
+Starting udev
+[   19.563800] udevadm (161) used greatest stack depth: 6720 bytes left
+[   20.748285] ------------[ cut here ]------------
+[   20.749059] WARNING: CPU: 1 PID: 557 at arch/x86/include/asm/fpu/internal.h:534 fpregs_activate+0x76/0xa0
+[   20.750783] CPU: 1 PID: 557 Comm: rc Not tainted 4.8.0-rc1 #6
+[   20.751689] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[   20.753073]  00000000 00000246 cf747e68 c13225eb 00000000 c1033191 cf747e80 c1084a65
+[   20.754491]  00000216 cf704140 cf703c00 bfb92500 cf747e94 c1084b82 00000009 00000000
+[   20.755895]  00000000 cf747ea0 c1033191 cf704140 cf747eac c1034328 00000000 cf747f40
+[   20.757297] Call Trace:
+[   20.757703]  [<c13225eb>] dump_stack+0x146/0x197
+[   20.758435]  [<c1033191>] ? fpregs_activate+0x76/0xa0
+[   20.759229]  [<c1084a65>] __warn+0x139/0x17a
+[   20.759912]  [<c1084b82>] warn_slowpath_null+0x2d/0x40
+[   20.760727]  [<c1033191>] fpregs_activate+0x76/0xa0
+[   20.761503]  [<c1034328>] fpu__restore+0x41/0x7e
+[   20.762235]  [<c1035c16>] __fpu__restore_sig+0x525/0xa85
+[   20.763071]  [<c1036864>] fpu__restore_sig+0x9e/0xb0
+[   20.763853]  [<c10248eb>] restore_sigcontext+0x21d/0x26a
+[   20.764783]  [<c10258d0>] sys_sigreturn+0x128/0x173
+[   20.765558]  [<c100162e>] do_int80_syscall_32+0x89/0xb7
+[   20.766396]  [<c1d5ff12>] entry_INT80_32+0x2a/0x2a
+[   20.767197] ---[ end trace a3dfe24c8bc892e9 ]---
+Kernel tests: Boot OK!

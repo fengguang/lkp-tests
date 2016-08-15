@@ -1,0 +1,15 @@
+boot_failures: 1
+
+# BUG: looking up invalid subclass:
+BUG:looking_up_invalid_subclass: 1
+
+# do_group_exit+0x
+calltrace:do_group_exit: 1
+
+# SyS_exit_group+0x
+calltrace:SyS_exit_group: 1
+
+timestamp:last: 22.759375
+timestamp:BUG:looking_up_invalid_subclass: 22.740146
+timestamp:calltrace:do_group_exit: 22.757672
+timestamp:calltrace:SyS_exit_group: 22.758244

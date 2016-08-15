@@ -1,0 +1,30 @@
+         Stopping OpenBSD Secure Shell server...
+         Starting OpenBSD Secure Shell server...
+------------[ cut here ]------------
+[   30.277063] WARNING: CPU: 0 PID: 151 at mm/slab_common.c:861 kmalloc_slab+0xe4/0x260
+[   30.366953] Modules linked in: intel_powerclamp(-) evbug
+[   30.369242] CPU: 0 PID: 151 Comm: systemd-udevd Not tainted 4.8.0-rc1 #242
+[   30.392008] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[   30.395271]  0000000000000000 ffff88003f627ab0 ffffffffa5a2427a 0000000000000000
+[   30.398739]  0000000000000000 0000000000000002 ffffffffa5582774 ffff88003f627af0
+[   30.422260]  ffffffffa5310655 0000035da54b38a7 ffffffffa66c4610 000000000000035d
+[   30.425678] Call Trace:
+[   30.426977]  [<ffffffffa5a2427a>] dump_stack+0x118/0x17e
+[   30.428816]  [<ffffffffa5582774>] ? kmalloc_slab+0xe4/0x260
+[   30.442797]  [<ffffffffa5310655>] __warn+0x255/0x270
+[   30.444704]  [<ffffffffa547ab77>] ? gcov_info_dup+0x187/0x2c0
+[   30.446605]  [<ffffffffa53106b1>] warn_slowpath_null+0x41/0x50
+[   30.448504]  [<ffffffffa5582774>] kmalloc_slab+0xe4/0x260
+[   30.450354]  [<ffffffffa55ff6ef>] __kmalloc_track_caller+0x2f/0x6b0
+[   30.452379]  [<ffffffffa556eb69>] kmemdup+0x39/0xa0
+[   30.465167]  [<ffffffffa547ab77>] gcov_info_dup+0x187/0x2c0
+[   30.467022]  [<ffffffffa5479feb>] gcov_event+0x6bb/0xaa0
+[   30.468886]  [<ffffffffa5478162>] gcov_module_notifier+0x202/0x210
+[   30.470861]  [<ffffffffa5362208>] notifier_call_chain+0xe8/0x150
+[   30.472842]  [<ffffffffa5362c89>] __blocking_notifier_call_chain+0x89/0xc0
+[   30.486011]  [<ffffffffa5362cfa>] blocking_notifier_call_chain+0x3a/0x50
+[   30.488135]  [<ffffffffa5518959>] do_init_module+0x328/0x7aa
+[   30.490060]  [<ffffffffa54474bc>] load_module+0x275c/0x2830
+[   30.491939]  [<ffffffffa5441660>] ? frob_text+0xf0/0xf0
+[   30.493923]  [<ffffffffa5945df4>] ? security_kernel_post_read_file+0xe4/0x110
+[   30.515170]  [<ffffffffa564d47e>] ? kernel_read_file+0x5e/0x5d0

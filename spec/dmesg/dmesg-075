@@ -1,0 +1,24 @@
+[child0:413] delete_module (176) returned ENOSYS, marking as inactive.
+[   30.692227] ------------[ cut here ]------------
+[main] Random reseed: 2134582793
+[   30.707199] WARNING: CPU: 0 PID: 413 at drivers/pci/pci-sysfs.c:1024 pci_mmap_resource+0xf4/0x136
+[   30.708925] process "trinity-c0" tried to map 0x00200000 bytes at page 0x00000000 on 0000:00:09.0 BAR 0 (start 0x            c180, size 0x              40)
+[   30.711071] CPU: 0 PID: 413 Comm: trinity-c0 Not tainted 4.8.0-rc1 #23
+[   30.712082]  0000000000000000 ffff880009e53c60 ffffffff81229b06 ffff880009e53cb0
+[   30.713327]  ffffffff81aaec2e ffff880009e53ca0 ffffffff810ba6c6 0000040009e53d18
+[   30.714553]  ffff88000a77e850 ffff88000fc990b0 ffff88000fc99510 0000000000000000
+[   30.726601] Call Trace:
+[   30.727019]  [<ffffffff81229b06>] dump_stack+0x85/0xae
+[   30.728938]  [<ffffffff810ba6c6>] __warn+0xbb/0xd6
+[   30.730771]  [<ffffffff810ba727>] warn_slowpath_fmt+0x46/0x4e
+[   30.732767]  [<ffffffff810f37e6>] ? __lock_acquire+0x61b/0x882
+[   30.734844]  [<ffffffff8126e1a8>] pci_mmap_resource+0xf4/0x136
+[   30.736882]  [<ffffffff8126e202>] pci_mmap_resource_uc+0x18/0x1a
+[   30.738864]  [<ffffffff811d98b9>] sysfs_kf_bin_mmap+0x26/0x28
+[   30.740850]  [<ffffffff811d8c25>] kernfs_fop_mmap+0x68/0xea
+[   30.742808]  [<ffffffff8116c60d>] mmap_region+0x26b/0x433
+[   30.744739]  [<ffffffff8116cace>] do_mmap+0x2f9/0x35c
+[   30.746556]  [<ffffffff8115b091>] vm_mmap_pgoff+0x74/0xa5
+[   30.748427]  [<ffffffff8116aeac>] SyS_mmap_pgoff+0x142/0x19a
+[   30.750351]  [<ffffffff81003016>] ? lockdep_sys_exit_thunk+0x16/0x27
+[   30.752388]  [<ffffffff81025ae2>] SyS_mmap+0x1d/0x1f

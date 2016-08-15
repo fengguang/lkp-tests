@@ -1,0 +1,26 @@
+[    7.485149] init[1]: segfault at ffffffffff600400 ip ffffffffff600400 sp 00007fffc5ff7228 error 15
+[    7.487168] init[1] vsyscall attempted with vsyscall=none ip:ffffffffff600400 cs:33 sp:7fffc5ff6838 ax:ffffffffff600400 si:7f0c80ab5a4c di:7fffc5ff68f8
+[    7.489245] init[1]: segfault at ffffffffff600400 ip ffffffffff600400 sp 00007fffc5ff6838 error 15
+[    7.493303] Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
+[    7.493303] 
+[    7.494301] CPU: 1 PID: 1 Comm: init Not tainted 4.8.0-rc1 #140
+[    7.495077] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[    7.495077]  0000000000000000 ffff88000006fc80 ffffffff81259308 ffff88000006a000
+[    7.495077]  ffffffff8217b011 ffff88000006fd00 ffffffff81151d6b ffffffff00000010
+[    7.495077]  ffff88000006fd10 ffff88000006fca8 ffff88000006fcb8 000000000000000b
+[    7.495077] Call Trace:
+[    7.495077]  [<ffffffff81259308>] dump_stack+0x82/0xb8
+[    7.495077]  [<ffffffff81151d6b>] panic+0xd8/0x20d
+[    7.495077]  [<ffffffff810c48d2>] do_exit+0x4a9/0x935
+[    7.495077]  [<ffffffff810c4dfd>] do_group_exit+0x73/0xb8
+[    7.495077]  [<ffffffff810cdaaa>] get_signal+0x4a0/0x4cc
+[    7.495077]  [<ffffffff81032957>] do_signal+0x23/0x58c
+[    7.495077]  [<ffffffff8104e5b3>] ? __bad_area_nosemaphore+0x172/0x1a0
+[    7.495077]  [<ffffffff81100000>] ? freeze_processes+0x38/0xd9
+[    7.495077]  [<ffffffff81152277>] ? printk+0x49/0x51
+[    7.495077]  [<ffffffff8104e5f0>] ? bad_area_nosemaphore+0xf/0x11
+[    7.495077]  [<ffffffff81000d1f>] ? prepare_exit_to_usermode+0x76/0xdb
+[    7.495077]  [<ffffffff8126eacf>] ? __this_cpu_preempt_check+0x13/0x15
+[    7.495077]  [<ffffffff81000d3b>] prepare_exit_to_usermode+0x92/0xdb
+[    7.495077]  [<ffffffff81af6fb1>] retint_user+0x8/0x20
+[    7.495077] Kernel Offset: disabled

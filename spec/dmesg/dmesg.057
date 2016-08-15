@@ -1,0 +1,11 @@
+boot_failures: 1
+
+# WARNING:.* at .* schedule_bh+0x
+WARNING:at_drivers/block/floppy.c:#schedule_bh: 1
+
+# SyS_mount+0x
+calltrace:SyS_mount: 1
+
+timestamp:last: 220.867533
+timestamp:WARNING:at_drivers/block/floppy.c:#schedule_bh: 220.866913
+timestamp:calltrace:SyS_mount: 220.867533

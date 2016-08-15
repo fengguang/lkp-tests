@@ -1,0 +1,8 @@
+[   45.358173] Write protecting the kernel read-only data: 26624k
+[   45.362772] Freeing unused kernel memory: 1068K (ffff8800022f5000 - ffff880002400000)
+[   45.400526] Freeing unused kernel memory: 800K (ffff880002938000 - ffff880002a00000)
+[   91.718045] BUG: workqueue lockup - pool cpus=1 node=0 flags=0x0 nice=0 stuck for 45s!
+[   91.730295] BUG: workqueue lockup - pool cpus=0-1 flags=0x4 nice=0 stuck for 43s!
+[   91.731336] Showing busy workqueues and worker pools:
+[   91.731987] workqueue events: flags=0x0
+[   91.732514]   pwq 2: cpus=1 node=0 flags=0x0 nice=0 active=3/256

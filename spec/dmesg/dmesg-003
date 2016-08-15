@@ -1,0 +1,30 @@
+[   16.238279] WARNING: CPU: 0 PID: 546 at kernel/trace/ftrace.c:2006 ftrace_bug+0x216/0x330
+[   16.239374] Modules linked in:
+[   16.239806] CPU: 0 PID: 546 Comm: trinity-main Not tainted 4.8.0-rc1 #120
+[   16.240579]  0000000000000000 ffff93e2d5cffbb0 ffffffff856bd4be 0000000000000000
+[   16.241538]  0000000000000009 ffff93e2d5cffbf0 ffffffff850e51b6 000007d685cfb390
+[   16.242505]  ffff93e2d49abfc0 ffffffff85f94200 0000000000000001 ffffffff87d4f0f0
+[   16.243464] Call Trace:
+[   16.243805]  [<ffffffff856bd4be>] dump_stack+0x8a/0xbc
+[   16.244411]  [<ffffffff850e51b6>] __warn+0x146/0x160
+[   16.245004]  [<ffffffff85cfb390>] ? __fentry__+0x10/0x10
+[   16.245625]  [<ffffffff850e529d>] warn_slowpath_null+0x1d/0x20
+[   16.246295]  [<ffffffff851e5976>] ftrace_bug+0x216/0x330
+[   16.246922]  [<ffffffff8505faf2>] ftrace_replace_code+0x292/0x460
+[   16.247637]  [<ffffffff851e615c>] ftrace_modify_all_code+0x9c/0x120
+[   16.248420]  [<ffffffff8505fcd0>] arch_ftrace_update_code+0x10/0x20
+[   16.249140]  [<ffffffff851e624c>] ftrace_run_update_code+0x1c/0x60
+[   16.249862]  [<ffffffff851e636f>] ftrace_startup_enable+0x2f/0x50
+[   16.250567]  [<ffffffff851e822b>] ftrace_startup+0xfb/0x210
+[   16.251217]  [<ffffffff851e8700>] register_ftrace_function+0x50/0x70
+[   16.251982]  [<ffffffff85200d25>] perf_ftrace_event_register+0x65/0x130
+[   16.252740]  [<ffffffff85200991>] perf_trace_init+0xc1/0x2d0
+[   16.253396]  [<ffffffff8521a756>] perf_tp_event_init+0x56/0x90
+[   16.254072]  [<ffffffff8521bd7b>] perf_try_init_event+0x5b/0x100
+[   16.254769]  [<ffffffff8521c413>] perf_event_alloc+0x5f3/0xcd0
+[   16.255432]  [<ffffffff8521c2e2>] ? perf_event_alloc+0x4c2/0xcd0
+[   16.256135]  [<ffffffff85229a95>] SyS_perf_event_open+0x865/0x1740
+[   16.256845]  [<ffffffff85231b49>] ? __context_tracking_exit+0x99/0x170
+[   16.257639]  [<ffffffff85003a72>] do_int80_syscall_32+0x302/0x320
+[   16.258343]  [<ffffffff85cfb363>] entry_INT80_compat+0x33/0x40
+[   16.259149] ---[ end trace ff5911ac82bc7508 ]---

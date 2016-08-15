@@ -1,0 +1,15 @@
+boot_failures: 1
+
+# WARNING:.* at .* kmalloc_slab+0x
+WARNING:at_mm/slab_common.c:#kmalloc_slab: 1
+
+# blocking_notifier_call_chain+0x
+calltrace:blocking_notifier_call_chain: 1
+
+# do_init_module+0x
+calltrace:do_init_module: 1
+
+timestamp:last: 30.515170
+timestamp:WARNING:at_mm/slab_common.c:#kmalloc_slab: 30.277063
+timestamp:calltrace:blocking_notifier_call_chain: 30.486011
+timestamp:calltrace:do_init_module: 30.488135

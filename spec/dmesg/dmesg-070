@@ -1,0 +1,28 @@
+[   22.346879] usbcore: registered new interface driver ushc
+[   22.355562] leds_ss4200: no LED devices found
+[   22.395718] ------------[ cut here ]------------
+[   22.396650] WARNING: CPU: 1 PID: 1 at include/linux/cpumask.h:121 init_real_cpu_mask+0x9c/0x143
+[   22.398544] CPU: 1 PID: 1 Comm: swapper/0 Not tainted 4.8.0-rc1 #391
+[   22.399668] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[   22.401310]  0000000000000000 ffff880076093d78 ffffffff816886b3 0000000000000001
+[   22.402692]  ffffffff82950c37 0000000000000000 ffffffff82950c37 ffff880076093dc8
+[   22.404225]  ffffffff810a8c80 ffff88007e0440a0 0000000983df6eb8 ffff880076093db8
+[   22.405612] Call Trace:
+[   22.411151]  [<ffffffff816886b3>] dump_stack+0x89/0xcb
+[   22.412257]  [<ffffffff810a8c80>] __warn+0xd2/0xf0
+[   22.413110]  [<ffffffff810a8cb6>] warn_slowpath_null+0x18/0x1a
+[   22.414119]  [<ffffffff81e9a3f9>] init_real_cpu_mask+0x9c/0x143
+[   22.415059]  [<ffffffff81e9ae3e>] node_affinity_init+0x85/0xda
+[   22.416007]  [<ffffffff82eddea4>] hfi1_mod_init+0x1d/0x203
+[   22.416873]  [<ffffffff82edde87>] ? dev_init+0xfc/0xfc
+[   22.417690]  [<ffffffff82edde87>] ? dev_init+0xfc/0xfc
+[   22.418518]  [<ffffffff82e868bd>] do_one_initcall+0x88/0x123
+[   22.419420]  [<ffffffff82e86af1>] do_basic_setup+0xa7/0xca
+[   22.420302]  [<ffffffff82e86ccf>] ? kernel_init_freeable+0x1bb/0x1bb
+[   22.421312]  [<ffffffff82e86c53>] kernel_init_freeable+0x13f/0x1bb
+[   22.422322]  [<ffffffff8223960a>] ? kernel_init+0x9/0xf3
+[   22.423177]  [<ffffffff8223960a>] kernel_init+0x9/0xf3
+[   22.423956]  [<ffffffff8224504f>] ret_from_fork+0x1f/0x40
+[   22.424806]  [<ffffffff82239601>] ? rest_init+0x138/0x138
+[   22.425723] ---[ end trace 333ac3cae70d737e ]---
+[   22.431892] iscsi: registered transport (iser)

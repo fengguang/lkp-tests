@@ -1,0 +1,19 @@
+boot_failures: 1
+
+# BUG: KASAN: slab-out-of-bounds in memdup_user+0x
+BUG:KASAN:slab-out-of-bounds_in_memdup_user_at_addr: 1
+
+# copy_mount_string+0x
+calltrace:copy_mount_string: 1
+
+# SyS_mount+0x
+calltrace:SyS_mount: 1
+
+# devtmpfsd+0x
+calltrace:devtmpfsd: 1
+
+timestamp:last: 1.368103
+timestamp:BUG:KASAN:slab-out-of-bounds_in_memdup_user_at_addr: 1.229363
+timestamp:calltrace:copy_mount_string: 1.294567
+timestamp:calltrace:SyS_mount: 1.315931
+timestamp:calltrace:devtmpfsd: 1.358039

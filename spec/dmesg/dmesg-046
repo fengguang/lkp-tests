@@ -1,0 +1,24 @@
+Done parsing a
+[    4.295772] random: trinity: uninitialized urandom read (4 bytes read)
+[    4.309587] random: trinity: uninitialized urandom read (4 bytes read)
+[    6.978574] WARNING: CPU: 1 PID: 178 at arch/x86/include/asm/fpu/internal.h:534 __fpregs_activate+0x59/0xf8
+[    6.981454] Modules linked in:
+[    6.982636] CPU: 1 PID: 178 Comm: udevd Not tainted 4.8.0-rc1 #239
+[    6.984187] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[    6.986657]  00000001 00000246 00000000 d0c7fe4c cc75665b 00000000 ccbf475a d0c7fe64
+[    6.989749]  cc459b09 00000216 00000001 d107f9c0 00000001 d0c7fe78 cc459b9b 00000009
+[    6.992793]  00000000 00000000 d0c7fe8c cc4299fd 00000119 d107f9c0 000000fe d0c7fe9c
+[    6.995844] Call Trace:
+[    6.996831]  [<cc75665b>] dump_stack+0x86/0xb3
+[    6.998114]  [<cc459b09>] __warn+0x117/0x12e
+[    6.999371]  [<cc459b9b>] warn_slowpath_null+0x16/0x1b
+[    7.000754]  [<cc4299fd>] __fpregs_activate+0x59/0xf8
+[    7.002130]  [<cc42a04e>] fpu__restore+0xa3/0x136
+[    7.003443]  [<cc42bd76>] __fpu__restore_sig+0x588/0x8bf
+[    7.004851]  [<cc42c4f0>] fpu__restore_sig+0x55/0x5a
+[    7.006209]  [<cc41daf6>] restore_sigcontext+0xd4/0xf2
+[    7.007677]  [<cc41e4db>] sys_sigreturn+0xc8/0x101
+[    7.009006]  [<cc401d9d>] do_int80_syscall_32+0x8e/0xa3
+[    7.010438]  [<cca350ea>] entry_INT80_32+0x2a/0x2a
+[    7.011805] ---[ end trace 2755fffa1de8e5fb ]---
+[   14.718730] sock: process `trinity-main' is using obsolete setsockopt SO_BSDCOMPAT

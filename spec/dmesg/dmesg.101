@@ -1,0 +1,15 @@
+boot_failures: 1
+
+# WARNING:.* at .* __list_del_entry+0x
+WARNING:at_lib/list_debug.c:#__list_del_entry: 1
+
+# kernel_restart+0x
+calltrace:kernel_restart: 1
+
+# SyS_reboot+0x
+calltrace:SyS_reboot: 1
+
+timestamp:last: 85.105621
+timestamp:WARNING:at_lib/list_debug.c:#__list_del_entry: 85.102190
+timestamp:calltrace:kernel_restart: 85.105621
+timestamp:calltrace:SyS_reboot: 85.105621

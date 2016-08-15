@@ -1,0 +1,8 @@
+[  191.818020] raid6test: test_disks(15, 37): faila= 15(D)  failb= 37(D)  OK
+[  191.872242] raid6test: test_disks(15, 38): faila= 15(D)  failb= 38(D)  OK
+[  191.920038] raid6test: test_disks(15, 39): faila= 15(D)  failb= 39(D)  OK
+[  191.959315] BUG: workqueue lockup - pool cpus=0 node=0 flags=0x0 nice=0 stuck for 58s!
+[  191.959346] BUG: workqueue lockup - pool cpus=0 flags=0x4 nice=0 stuck for 31s!
+[  191.959380] Showing busy workqueues and worker pools:
+[  191.959384] workqueue events: flags=0x0
+[  191.959417]   pwq 0: cpus=0 node=0 flags=0x0 nice=0 active=3/256

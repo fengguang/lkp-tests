@@ -1,0 +1,61 @@
+[  834.411251] init[1]: segfault at ffffffffff600400 ip ffffffffff600400 sp 00007fff59f7caa8 error 15
+[  834.441532] init[1] vsyscall attempted with vsyscall=none ip:ffffffffff600400 cs:33 sp:7fff59f7c0b8 ax:ffffffffff600400 si:7f8ed260aa4c di:7fff59f7c178
+[  834.461448] init[1]: segfault at ffffffffff600400 ip ffffffffff600400 sp 00007fff59f7c0b8 error 15
+[  834.521552] Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
+[  834.521552] 
+[  834.542675] CPU: 0 PID: 1 Comm: init Not tainted 4.8.0-rc1 #111
+[  834.547258] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[  834.565462]  ffff88000c3f6078 ffff88000c3efbc0 ffffffff81ef3b9d 0000000000000000
+[  834.584636]  ffffffff84e46dd8 ffff88000c3efc40 ffffffff813ba116 ffff880000000010
+[  834.603550]  ffff88000c3efc50 ffff88000c3efbe8 ffff88000c3e5330 000000000000000b
+[  834.623817] Call Trace:
+[  834.628315]  [<ffffffff81ef3b9d>] dump_stack+0xa9/0xec
+[  834.643456]  [<ffffffff813ba116>] panic+0x142/0x35c
+[  834.648594]  [<ffffffff811e318f>] ? do_exit+0x1cbf/0x1d00
+[  834.664160]  [<ffffffff811e31c6>] do_exit+0x1cf6/0x1d00
+[  834.669418]  [<ffffffff811e32f3>] do_group_exit+0xb3/0x200
+[  834.684625]  [<ffffffff811f9506>] get_signal+0xb66/0xfa0
+[  834.690038]  [<ffffffff810e9340>] do_signal+0x30/0x570
+[  834.705082]  [<ffffffff8135483e>] ? ftrace_likely_update+0x2e/0x40
+[  834.710135]  [<ffffffff81002c7f>] exit_to_usermode_loop+0x10f/0x1e0
+[  834.725132]  [<ffffffff81003896>] prepare_exit_to_usermode+0xc6/0xd0
+[  834.730191]  [<ffffffff845c542f>] retint_user+0x8/0x10
+[  834.744804] Kernel Offset: disabled
+[  834.749190] ------------[ cut here ]------------
+[  834.763284] WARNING: CPU: 0 PID: 1 at kernel/softirq.c:150 __local_bh_enable_ip+0x180/0x1c0
+[  834.783198] CPU: 0 PID: 1 Comm: init Not tainted 4.8.0-rc1 #111
+[  834.796540] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[  834.812814]  ffffffff811e4bc0 ffff88000c3ef888 ffffffff81ef3b9d 0000000000000000
+[  834.825212]  0000000000000000 ffff88000c3ef8d0 ffffffff811d951a ffff88000c3e4c80
+[  834.852035]  00000096088e8cc0 0000000000000201 0000000000000001 ffff88000c30fda8
+[  834.870696] Call Trace:
+[  834.874652]  [<ffffffff811e4bc0>] ? __local_bh_enable_ip+0x180/0x1c0
+[  834.880695]  [<ffffffff81ef3b9d>] dump_stack+0xa9/0xec
+[  834.885655]  [<ffffffff811d951a>] __warn+0x17a/0x1b0
+[  834.890078]  [<ffffffff811d965d>] warn_slowpath_null+0x2d/0x40
+[  834.905248]  [<ffffffff811e4bc0>] __local_bh_enable_ip+0x180/0x1c0
+[  834.910096]  [<ffffffff845c42db>] _raw_spin_unlock_bh+0x3b/0x50
+[  834.934194]  [<ffffffff827942fe>] cn_netlink_send_mult+0x1de/0x340
+[  834.939293]  [<ffffffff827944a2>] cn_netlink_send+0x42/0x60
+[  834.946362]  [<ffffffff820ebe89>] uvesafb_exec+0x279/0x4b0
+[  834.961618]  [<ffffffff820ebbc0>] ? uvesafb_prep+0x70/0xc0
+[  834.973313]  [<ffffffff820ec2f3>] uvesafb_blank+0x233/0x2c0
+[  834.978474]  [<ffffffff8201cb54>] fb_blank+0x94/0x120
+[  834.987476]  [<ffffffff81ffeb38>] fbcon_blank+0x4f8/0x660
+[  835.002109]  [<ffffffff812b1866>] ? internal_add_timer+0x106/0x120
+[  835.006902]  [<ffffffff812b2a8a>] ? mod_timer+0x31a/0x680
+[  835.021713]  [<ffffffff82253bc0>] do_unblank_screen+0x1e0/0x410
+[  835.026296]  [<ffffffff82253e08>] unblank_screen+0x18/0x30
+[  835.030520]  [<ffffffff81f156e2>] bust_spinlocks+0x32/0x80
+[  835.044804]  [<ffffffff813ba1b8>] panic+0x1e4/0x35c
+[  835.048661]  [<ffffffff811e318f>] ? do_exit+0x1cbf/0x1d00
+[  835.062527]  [<ffffffff811e31c6>] do_exit+0x1cf6/0x1d00
+[  835.066238]  [<ffffffff811e32f3>] do_group_exit+0xb3/0x200
+[  835.070008]  [<ffffffff811f9506>] get_signal+0xb66/0xfa0
+[  835.083750]  [<ffffffff810e9340>] do_signal+0x30/0x570
+[  835.087274]  [<ffffffff8135483e>] ? ftrace_likely_update+0x2e/0x40
+[  835.100826]  [<ffffffff81002c7f>] exit_to_usermode_loop+0x10f/0x1e0
+[  835.104733]  [<ffffffff81003896>] prepare_exit_to_usermode+0xc6/0xd0
+[  835.108696]  [<ffffffff845c542f>] retint_user+0x8/0x10
+[  835.122328] ---[ end trace 9bd52e0b10ddc482 ]---
+[  836.278657] udevd invoked oom-killer: gfp_mask=0x24200ca(GFP_HIGHUSER_MOVABLE), order=0, oom_score_adj=-1000

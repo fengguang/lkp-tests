@@ -1,0 +1,36 @@
+[  220.284097] no cont in shutdown!
+[  220.284551] floppy0: floppy_shutdown: timeout handler died.  
+[  220.866855] ------------[ cut here ]------------
+[  220.866913] WARNING: CPU: 0 PID: 860 at drivers/block/floppy.c:975 schedule_bh+0x29/0x4b
+[  220.866918] Modules linked in:
+[  220.866946] CPU: 0 PID: 860 Comm: mount Not tainted 4.8.0-rc1 #1
+[  220.866949] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[  220.866979]  0000000000000000 ffff880015e4ba70 ffffffff8178d75d 0000000000000000
+[  220.867007]  0000000000000000 ffff880015e4bab0 ffffffff810e5cd8 000003cf15e4b9c0
+[  220.867014]  ffffffff81c0c606 ffffea00004cf0e8 ffff88001647d080 0000000000000000
+[  220.867016] Call Trace:
+[  220.867072]  [<ffffffff8178d75d>] dump_stack+0x82/0xb8
+[  220.867081]  [<ffffffff810e5cd8>] __warn+0xc2/0xdd
+[  220.867108]  [<ffffffff81c0c606>] ? request_done+0x14a/0x14a
+[  220.867114]  [<ffffffff810e5daf>] warn_slowpath_null+0x1d/0x1f
+[  220.867140]  [<ffffffff81c0a609>] schedule_bh+0x29/0x4b
+[  220.867146]  [<ffffffff81c0a64b>] process_fd_request+0x20/0x22
+[  220.867172]  [<ffffffff81c0a7e3>] __floppy_read_block_0+0xd9/0x11f
+[  220.867201]  [<ffffffff81c09d17>] ? floppy_cmos_show+0x2e/0x2e
+[  220.867208]  [<ffffffff81c0afbc>] floppy_revalidate+0x143/0x18b
+[  220.867238]  [<ffffffff8125480c>] check_disk_change+0x52/0x5e
+[  220.867244]  [<ffffffff81c0e47f>] floppy_open+0x27f/0x303
+[  220.867271]  [<ffffffff81255814>] __blkdev_get+0x108/0x3d0
+[  220.867299]  [<ffffffff81255ca3>] blkdev_get+0x1c7/0x2fe
+[  220.867306]  [<ffffffff8123fbc8>] ? mntput+0x2d/0x2f
+[  220.867333]  [<ffffffff8122c3ad>] ? path_put+0x1e/0x21
+[  220.867340]  [<ffffffff81255e0d>] blkdev_get_by_path+0x33/0x69
+[  220.867368]  [<ffffffff812264c7>] mount_bdev+0x48/0x197
+[  220.867397]  [<ffffffff812f2624>] ? ext4_calculate_overhead+0x2bd/0x2bd
+[  220.867428]  [<ffffffff812edda1>] ext4_mount+0x15/0x17
+[  220.867434]  [<ffffffff81227029>] mount_fs+0x67/0x131
+[  220.867461]  [<ffffffff8123ee0f>] vfs_kern_mount+0x6b/0xdb
+[  220.867467]  [<ffffffff81241739>] do_mount+0x708/0x97d
+[  220.867496]  [<ffffffff811e87e5>] ? __might_fault+0x7e/0x84
+[  220.867527]  [<ffffffff811da506>] ? strndup_user+0x3f/0x53
+[  220.867533]  [<ffffffff81241bce>] SyS_mount+0x77/0x9f

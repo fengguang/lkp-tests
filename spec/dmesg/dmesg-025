@@ -1,0 +1,39 @@
+[    5.418896] Freeing unused kernel memory: 372K (ffff8800015a3000 - ffff880001600000)
+[    5.424674] Freeing unused kernel memory: 1768K (ffff880001846000 - ffff880001a00000)
+[    5.428648] ==================================================================
+[    5.429402] BUG: KASAN: slab-out-of-bounds in copy_from_iter+0x2ef/0x3c0 at addr ffff88002d8e3a10
+[    5.430294] Write of size 74 by task systemd/1
+[    5.430761] CPU: 0 PID: 1 Comm: systemd Not tainted 4.8.0-rc1 #1
+[    5.431383] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[    5.432271]  0000000000000000 ffff88002e947be8 ffffffff812538ce ffff88002e801780
+[    5.433076]  ffff88002d8e3a00 ffff88002e947c18 ffffffff8117aba7 000000000000004a
+[    5.433867]  ffff88002d8e3a00 ffff88002e801780 ffffed0005b1c74b ffff88002e947ca8
+[    5.434654] Call Trace:
+[    5.434916]  [<ffffffff812538ce>] dump_stack+0x65/0x87
+[    5.435409]  [<ffffffff8117aba7>] kasan_object_err+0x27/0x90
+[    5.435995]  [<ffffffff8117af0d>] kasan_report+0x23d/0x4a0
+[    5.436536]  [<ffffffff8126545f>] ? copy_from_iter+0x2ef/0x3c0
+[    5.437120]  [<ffffffff811799e1>] check_memory_region+0x141/0x170
+[    5.437719]  [<ffffffff81179be4>] kasan_check_write+0x14/0x20
+[    5.438284]  [<ffffffff8126545f>] copy_from_iter+0x2ef/0x3c0
+[    5.438863]  [<ffffffff810f3a97>] devkmsg_write+0x87/0x160
+[    5.439389]  [<ffffffff810f3a10>] ? devkmsg_release+0x70/0x70
+[    5.439979]  [<ffffffff81187e77>] do_readv_writev+0x1f7/0x320
+[    5.440537]  [<ffffffff81188b89>] vfs_writev+0x39/0x40
+[    5.441074]  [<ffffffff81188beb>] do_writev+0x5b/0xd0
+[    5.441593]  [<ffffffff81188d1b>] SyS_writev+0xb/0x10
+[    5.442102]  [<ffffffff8159e972>] entry_SYSCALL_64_fastpath+0x1a/0xa9
+[    5.442751] Object at ffff88002d8e3a00, in cache kmalloc-96 size: 96
+[    5.443355] Allocated:
+[    5.443602] PID = 1
+[    5.443813]  [<ffffffff810245ea>] save_stack_trace+0x2a/0x50
+[    5.444409]  [<ffffffff81179a95>] kasan_kmalloc+0x55/0xe0
+[    5.445055]  [<ffffffff8117a275>] kasan_kmalloc+0x85/0xb0
+[    5.445600]  [<ffffffff81177b49>] __kmalloc+0xf9/0x190
+[    5.446127]  [<ffffffff810f3a7c>] devkmsg_write+0x6c/0x160
+[    5.446707]  [<ffffffff81187e77>] do_readv_writev+0x1f7/0x320
+[    5.447274]  [<ffffffff81188b89>] vfs_writev+0x39/0x40
+[    5.447803]  [<ffffffff81188beb>] do_writev+0x5b/0xd0
+[    5.448327]  [<ffffffff81188d1b>] SyS_writev+0xb/0x10
+[    5.448872]  [<ffffffff8159e972>] entry_SYSCALL_64_fastpath+0x1a/0xa9
+[    5.449526] Freed:

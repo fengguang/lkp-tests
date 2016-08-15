@@ -1,0 +1,27 @@
+boot_failures: 1
+
+# WARNING:.* at .* ftrace_bug+0x
+WARNING:at_kernel/trace/ftrace.c:#ftrace_bug: 1
+
+# perf_ftrace_event_register+0x
+calltrace:perf_ftrace_event_register: 1
+
+# perf_trace_init+0x
+calltrace:perf_trace_init: 1
+
+# perf_tp_event_init+0x
+calltrace:perf_tp_event_init: 1
+
+# perf_try_init_event+0x
+calltrace:perf_try_init_event: 1
+
+# SyS_perf_event_open+0x
+calltrace:SyS_perf_event_open: 1
+
+timestamp:last: 16.259149
+timestamp:WARNING:at_kernel/trace/ftrace.c:#ftrace_bug: 16.238279
+timestamp:calltrace:perf_ftrace_event_register: 16.251982
+timestamp:calltrace:perf_trace_init: 16.252740
+timestamp:calltrace:perf_tp_event_init: 16.253396
+timestamp:calltrace:perf_try_init_event: 16.254072
+timestamp:calltrace:SyS_perf_event_open: 16.256135

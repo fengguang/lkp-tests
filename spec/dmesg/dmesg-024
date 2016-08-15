@@ -1,0 +1,59 @@
+[    6.322171] Freeing unused kernel memory: 1768K (ffff880001846000 - ffff880001a00000)
+[    6.331224] random: init: uninitialized urandom read (12 bytes read)
+[    6.358786] ==================================================================
+[    6.359904] BUG: KASAN: slab-out-of-bounds in inotify_read+0x271/0x350 at addr ffff88000b67a3ec
+[    6.361207] Read of size 5 by task init/1
+[    6.361819] CPU: 0 PID: 1 Comm: init Not tainted 4.8.0-rc1 #1
+[    6.362495] random: trinity: uninitialized urandom read (4 bytes read)
+[    6.363664] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[    6.364983]  0000000000000000 ffff88001154fc88 ffffffff812538ce ffff8800114018c0
+[    6.366184]  ffff88000b67a3c0 ffff88001154fcb8 ffffffff8117aba7 0000000000000005
+[    6.367376]  ffff88000b67a3c0 ffff8800114018c0 ffffed00016cf47e ffff88001154fd48
+[    6.368570] Call Trace:
+[    6.368950]  [<ffffffff812538ce>] dump_stack+0x65/0x87
+[    6.369729]  [<ffffffff8117aba7>] kasan_object_err+0x27/0x90
+[    6.370586]  [<ffffffff8117af0d>] kasan_report+0x23d/0x4a0
+[    6.371418]  [<ffffffff810d08da>] ? preempt_count_add+0x4a/0xc0
+[    6.372308]  [<ffffffff811ba841>] ? inotify_read+0x271/0x350
+[    6.373162]  [<ffffffff811799e1>] check_memory_region+0x141/0x170
+[    6.374075]  [<ffffffff81179bc1>] kasan_check_read+0x11/0x20
+[    6.374919]  [<ffffffff811ba841>] inotify_read+0x271/0x350
+[    6.375825]  [<ffffffff810e4000>] ? wait_woken+0x90/0x90
+[    6.377517]  [<ffffffff81187fc3>] __vfs_read+0x23/0x110
+[    6.378310]  [<ffffffff810e896e>] ? up_read+0x1e/0x40
+[    6.379073]  [<ffffffff810387a7>] ? __do_page_fault+0x197/0x440
+[    6.379960]  [<ffffffff81188152>] vfs_read+0xa2/0x130
+[    6.380723]  [<ffffffff811885cd>] SyS_read+0x4d/0xb0
+[    6.381474]  [<ffffffff81038aab>] ? do_page_fault+0x2b/0x40
+[    6.382314]  [<ffffffff8159e972>] entry_SYSCALL_64_fastpath+0x1a/0xa9
+[    6.383285] Object at ffff88000b67a3c0, in cache kmalloc-64 size: 64
+[    6.384242] Allocated:
+[    6.384605] PID = 144
+[    6.384954]  [<ffffffff810245ea>] save_stack_trace+0x2a/0x50
+[    6.385831]  [<ffffffff81179a95>] kasan_kmalloc+0x55/0xe0
+[    6.386762]  [<ffffffff8117a275>] kasan_kmalloc+0x85/0xb0
+[    6.387638]  [<ffffffff81177b49>] __kmalloc+0xf9/0x190
+[    6.388477]  [<ffffffff811ba2e2>] inotify_handle_event+0x72/0x150
+[    6.389417]  [<ffffffff811b80f1>] fsnotify+0x251/0x3a0
+[    6.390228]  [<ffffffff811970c5>] vfs_link+0x1f5/0x260
+[    6.391050]  [<ffffffff811972c8>] SyS_linkat+0x198/0x260
+[    6.391868]  [<ffffffff811973a9>] SyS_link+0x19/0x20
+[    6.392642]  [<ffffffff8159e972>] entry_SYSCALL_64_fastpath+0x1a/0xa9
+[    6.393631] Freed:
+[    6.393944] PID = 1
+[    6.394278]  [<ffffffff810245ea>] save_stack_trace+0x2a/0x50
+[    6.395155]  [<ffffffff8117a11d>] kasan_slab_free+0xad/0x180
+[    6.396028]  [<ffffffff81177d84>] kfree+0xa4/0x190
+[    6.396767]  [<ffffffff81257185>] kobject_uevent_env+0x125/0x3d0
+[    6.397690]  [<ffffffff8125743b>] kobject_uevent+0xb/0x10
+[    6.398527]  [<ffffffff8134d6c8>] driver_register+0x88/0xe0
+[    6.399387]  [<ffffffff8143b3ac>] usb_serial_bus_register+0x4c/0x60
+[    6.400357]  [<ffffffff81439ddc>] usb_serial_register_drivers+0x1dc/0x3d0
+[    6.401395]  [<ffffffff81af8ba1>] usb_serial_module_init+0x1e/0x20
+[    6.402346]  [<ffffffff81ac6fc0>] do_one_initcall+0x88/0x123
+[    6.403225]  [<ffffffff81ac7215>] kernel_init_freeable+0x1ba/0x24d
+[    6.404173]  [<ffffffff81597a69>] kernel_init+0x9/0x100
+[    6.404978]  [<ffffffff8159eb7f>] ret_from_fork+0x1f/0x40
+[    6.405817] Memory state around the buggy address:
+[    6.406545]  ffff88000b67a280: fc fc fc fc fb fb fb fb fb fb fb fb fc fc fc fc
+[    6.407623]  ffff88000b67a300: fb fb fb fb fb fb fb fb fc fc fc fc fb fb fb fb

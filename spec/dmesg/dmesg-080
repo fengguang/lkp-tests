@@ -1,0 +1,22 @@
+[    6.058440] BIOS EDD facility v0.16 2004-Jun-25, 6 devices found
+[    9.423402] Unregister pv shared memory for cpu 0
+[   10.796226] ------------[ cut here ]------------
+[   10.797613] WARNING: CPU: 1 PID: 25 at kernel/workqueue.c:2040 process_one_work+0x75/0x397
+[   10.800194] CPU: 1 PID: 25 Comm: kblockd Not tainted 4.8.0-rc1 #16
+[   10.801760] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[   10.804095]  0000000000000000 ffff88001425fd98 ffffffff814f7275 0000000000000086
+[   10.806712]  0000000000000000 ffff88001425fdd8 ffffffff810906c8 000007f800000000
+[   10.809250]  ffff880016f4f600 ffff880015817000 ffff88001581b600 0000000000000000
+[   10.813661] Call Trace:
+[   10.814454]  [<ffffffff814f7275>] dump_stack+0x62/0x7f
+[   10.815712]  [<ffffffff810906c8>] __warn+0xc5/0xe0
+[   10.816996]  [<ffffffff8109079a>] warn_slowpath_null+0x1d/0x1f
+[   10.818515]  [<ffffffff810a4a3f>] process_one_work+0x75/0x397
+[   10.820037]  [<ffffffff810a4d8d>] process_scheduled_works+0x2c/0x33
+[   10.821624]  [<ffffffff810a5308>] rescuer_thread+0x1c0/0x2fb
+[   10.823111]  [<ffffffff810a5148>] ? worker_thread+0x3b4/0x3b4
+[   10.826551]  [<ffffffff810a9c71>] kthread+0xdd/0xe5
+[   10.827863]  [<ffffffff81a4269f>] ret_from_fork+0x1f/0x40
+[   10.829187]  [<ffffffff810a9b94>] ? __kthread_parkme+0x83/0x83
+[   10.830602] ---[ end trace d1cb6a40c6544a79 ]---
+[   10.850735] CPU 0 is now offline

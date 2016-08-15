@@ -1,0 +1,35 @@
+[child0:421] child exiting.
+Bailing main loop. Exit reason: UID changed.
+[watchdog] [419] Watchdog exiting
+[   22.740146] BUG: looking up invalid subclass: 4294967295
+[   22.740885] turning off the locking correctness validator.
+[   22.741645] CPU: 1 PID: 411 Comm: trinity-main Not tainted 4.8.0-rc1 #117
+[   22.742423]  00000000 00000000 ca277dd4 cadec3f0 ffffffff cd74389c ca277e10 caca41e8
+[   22.743344]  cb7bebb3 cb7beb8b ffffffff ca278000 00000000 00000000 c9acd000 cb2cb70a
+[   22.744609]  d4c5c000 ffffffff ffffffff cd74389c cce06280 ca277e34 caca531f 00000000
+[   22.745847] Call Trace:
+[   22.746255]  [<cadec3f0>] dump_stack+0x58/0x72
+[   22.746983]  [<caca41e8>] register_lock_class+0x7b/0x3d2
+[   22.747885]  [<cb2cb70a>] ? sock_destroy_inode+0x23/0x26
+[   22.748800]  [<caca531f>] __lock_acquire+0x84/0x6c4
+[   22.749433]  [<caca5c36>] lock_acquire+0x57/0x75
+[   22.749893]  [<cb3be762>] ? hashbin_delete+0x6e/0xca
+[   22.750582]  [<cb49e42c>] _raw_spin_lock_irqsave_nested+0x34/0x45
+[   22.751362]  [<cb3be762>] ? hashbin_delete+0x6e/0xca
+[   22.751984]  [<cb3c0d1e>] ? irias_delete_value+0x4b/0x4b
+[   22.752671]  [<cb3be762>] hashbin_delete+0x6e/0xca
+[   22.753214]  [<cb3c0a44>] __irias_delete_object+0x51/0x64
+[   22.753780]  [<cb3c0aaf>] irias_delete_object+0x58/0x5f
+[   22.754328]  [<cb3c327d>] irda_release+0x54/0x100
+[   22.754851]  [<cb2cbd4d>] sock_release+0x10/0x54
+[   22.755324]  [<cb2cbd9c>] sock_close+0xb/0xf
+[   22.755794]  [<cad32e7e>] __fput+0xd3/0x168
+[   22.756270]  [<cad32f40>] ____fput+0x8/0xa
+[   22.756651]  [<cac89686>] task_work_run+0x54/0x78
+[   22.757211]  [<cac78ac1>] do_exit+0x34d/0x7fd
+[   22.757672]  [<cac78ff5>] do_group_exit+0x5d/0x8e
+[   22.758244]  [<cac79037>] SyS_exit_group+0x11/0x11
+[   22.758756]  [<cac029c3>] do_fast_syscall_32+0xaf/0x118
+[   22.759375]  [<cb49e9eb>] sysenter_past_esp+0x40/0x6a
+[init] 
+Ran 2 syscalls. Successes: 1  Failures: 1

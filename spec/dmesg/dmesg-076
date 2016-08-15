@@ -1,0 +1,66 @@
+[  150.300053] CHRDEV "ib_qib" major number 228 goes below the dynamic allocation range
+[  150.326671] CHRDEV "hfi1" major number 227 goes below the dynamic allocation range
+[  150.328867] ==================================================================
+[  150.330704] BUG: KASAN: wild-memory-access on address 0000ffff00013138
+[  150.332222] Read of size 8 by task swapper/0/1
+[  150.333361] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 4.8.0-rc1 #111
+[  150.334828] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[  150.336954]  0000000000000008 ffff8800104afd08 ffffffff81ef3b9d ffff8800104afd90
+[  150.339437]  ffffffff83a0b6e7 ffff8800104afd80 ffffffff814622aa ffff8800104afd40
+[  150.341732]  ffff88000910725c 0000000000000206 ffffffff8555f030 ffff880009106a58
+[  150.344038] Call Trace:
+[  150.344815]  [<ffffffff81ef3b9d>] dump_stack+0xa9/0xec
+[  150.346068]  [<ffffffff83a0b6e7>] ? init_real_cpu_mask+0x77/0x150
+[  150.347507]  [<ffffffff814622aa>] kasan_report_error+0x6ba/0x6d0
+[  150.348910]  [<ffffffff83a0b6e7>] ? init_real_cpu_mask+0x77/0x150
+[  150.350360]  [<ffffffff814623ee>] kasan_report+0x8e/0xb0
+[  150.351637]  [<ffffffff81ef8900>] ? kobject_put+0x40/0xf0
+[  150.352927]  [<ffffffff83a0b6e7>] ? init_real_cpu_mask+0x77/0x150
+[  150.354373]  [<ffffffff8146175e>] __asan_load8+0xae/0xd0
+[  150.355637]  [<ffffffff83a0b6e7>] init_real_cpu_mask+0x77/0x150
+[  150.357044]  [<ffffffff8613a7df>] ? dev_init+0x1df/0x1df
+[  150.358406]  [<ffffffff83a0b8a6>] node_affinity_init+0xe6/0x270
+[  150.359847]  [<ffffffff8613a7df>] ? dev_init+0x1df/0x1df
+[  150.361179]  [<ffffffff8613a80f>] hfi1_mod_init+0x30/0x3e1
+[  150.362582]  [<ffffffff86065c60>] do_one_initcall+0xe6/0x220
+[  150.363974]  [<ffffffff86065ff9>] kernel_init_freeable+0x25f/0x374
+[  150.365497]  [<ffffffff845b898b>] kernel_init+0x1b/0x210
+[  150.366776]  [<ffffffff845c4cbf>] ret_from_fork+0x1f/0x40
+[  150.367996]  [<ffffffff845b8970>] ? rest_init+0xf0/0xf0
+[  150.369260] ==================================================================
+[  150.371075] Disabling lock debugging due to kernel taint
+[  150.372432] kasan: CONFIG_KASAN_INLINE enabled
+[  150.373634] kasan: GPF could be caused by NULL-ptr deref or user memory access
+[  150.375503] general protection fault: 0000 [#1] SMP KASAN
+[  150.376803] CPU: 0 PID: 1 Comm: swapper/0 Tainted: G    B           4.8.0-rc1 #111
+[  150.378701] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[  150.380811] task: ffff8800104a6040 task.stack: ffff8800104a8000
+[  150.382189] RIP: 0010:[<ffffffff83a0b6e7>]  [<ffffffff83a0b6e7>] init_real_cpu_mask+0x77/0x150
+[  150.385452] RSP: 0000:ffff8800104afe00  EFLAGS: 00010202
+[  150.387721] RAX: ffff8800104a6040 RBX: 0000ffff00013138 RCX: ffffffff845c4267
+[  150.391410] RDX: 1ffffffff0c8d060 RSI: 0000000000000206 RDI: 0000000000000206
+[  150.394084] RBP: ffff8800104afe28 R08: 0000000000000000 R09: 746e696174206c65
+[  150.397796] R10: ffff8800104a6040 R11: 206f742065756420 R12: 0000000000000002
+[  150.401466] R13: 0000000000000040 R14: 0000000000000002 R15: 0000000000000038
+[  150.404068] FS:  0000000000000000(0000) GS:ffff880011000000(0000) knlGS:0000000000000000
+[  150.408071] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  150.411462] CR2: 00000000ffffffff CR3: 000000000520a000 CR4: 00000000000006b0
+[  150.413067] Stack:
+[  150.414805]  ffff880011013138 0000000000000000 ffffffff8613a7df ffffffff861d98f8
+[  150.419231]  0000000000000038 ffff8800104afe58 ffffffff83a0b8a6 0000000000000000
+[  150.424696]  0000000000000000 ffffffff8613a7df ffffffff861d98f8 ffff8800104afe78
+[  150.429039] Call Trace:
+[  150.468368]  [<ffffffff8613a7df>] ? dev_init+0x1df/0x1df
+[  150.470728]  [<ffffffff83a0b8a6>] node_affinity_init+0xe6/0x270
+[  150.473187]  [<ffffffff8613a7df>] ? dev_init+0x1df/0x1df
+[  150.476576]  [<ffffffff8613a80f>] hfi1_mod_init+0x30/0x3e1
+[  150.478955]  [<ffffffff86065c60>] do_one_initcall+0xe6/0x220
+[  150.482372]  [<ffffffff86065ff9>] kernel_init_freeable+0x25f/0x374
+[  150.484814]  [<ffffffff845b898b>] kernel_init+0x1b/0x210
+[  150.487106]  [<ffffffff845c4cbf>] ret_from_fork+0x1f/0x40
+[  150.490453]  [<ffffffff845b8970>] ? rest_init+0xf0/0xf0
+[  150.492714] Code: c7 c7 10 08 ae 85 e8 69 7c 51 fe 41 89 c5 4a 8d 3c ed 80 54 03 86 e8 d9 5f a5 fd 4a 03 1c ed 80 54 03 86 48 89 df e8 c9 5f a5 fd <48> 8b 3b be 40 00 00 00 48 83 05 21 66 de 03 01 e8 b4 6d 56 fe 
+[  150.516855] RIP  [<ffffffff83a0b6e7>] init_real_cpu_mask+0x77/0x150
+[  150.520538]  RSP <ffff8800104afe00>
+[  150.522598] ---[ end trace b130d896846ab2e6 ]---
+[  150.524788] Kernel panic - not syncing: Fatal exception

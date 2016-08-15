@@ -1,0 +1,20 @@
+[  189.796748] 1f00          131072 mtdblock0  (driver?)
+[  189.812393] 1f01          131072 mtdblock1  (driver?)
+[  189.823287] No filesystem could mount root, tried:  ext3 ext4 fuseblk udf jfs xfs nilfs2 ocfs2 f2fs
+[  189.830178] Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(1,0)
+[  189.845037] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 4.8.0-rc1 #4
+[  189.860779] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[  189.870302]  00200046 00200046 d4613efc c2038f95 d4613f00 00000000 00000000 d4613f14
+[  189.875585]  c1366c0a d5bb3030 d4613f38 d5bb3030 d5bb3030 d4613f64 c4accf55 c4069140
+[  189.907157]  d4613f38 c413dc9d c4068a5b 00000000 00008001 d4d523f8 6e6b6e75 2d6e776f
+[  189.916027] Call Trace:
+[  189.930615]  [<c2038f95>] dump_stack+0x1ca/0x2a5
+[  189.953645]  [<c1366c0a>] panic+0x1be/0x588
+[  189.958140]  [<c4accf55>] mount_block_root+0x4b0/0x5c0
+[  189.983971]  [<c4acd313>] mount_root+0xe8/0xfb
+[  190.001560]  [<c4acd719>] prepare_namespace+0x3f3/0x45c
+[  190.004103]  [<c4acc714>] kernel_init_freeable+0x5f0/0x62c
+[  190.018673]  [<c362cfae>] kernel_init+0x1e/0x360
+[  190.032376]  [<c3645f62>] ret_from_kernel_thread+0xe/0x24
+[  190.042963]  [<c362cf90>] ? rest_init+0x300/0x300
+[  190.046228] Kernel Offset: disabled

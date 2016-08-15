@@ -1,0 +1,33 @@
+[   23.793498] systemd-journald[154]: Vacuuming...
+[   23.794376] systemd-journald[154]: Vacuuming done, freed 0 bytes
+[   24.032492] ------------[ cut here ]------------
+[   24.054463] WARNING: CPU: 0 PID: 199 at mm/page_alloc.c:3470 __alloc_pages_slowpath+0x5a/0xd4e
+[   24.067133] Modules linked in: intel_uncore(-) evbug serio_raw e1000(+) virtio_pci(+) virtio_ring virtio i2c_piix4(+) parport_pc processor
+[   24.069369] CPU: 0 PID: 199 Comm: systemd-udevd Not tainted 4.8.0-rc1 #146
+[   24.070315]  0000000000000000 ffff88003d0aba40 ffffffff814f21e3 0000000000000000
+[   24.071415]  0000000000000000 ffff88003d0aba80 ffffffff810e4f1c 00000d8e000032ba
+[   24.072502]  00000000024040c0 00000000024040c0 00000000024040c0 0000000000000001
+[   24.073595] Call Trace:
+[   24.073950]  [<ffffffff814f21e3>] dump_stack+0x14c/0x1ba
+[   24.074683]  [<ffffffff810e4f1c>] __warn+0x11b/0x14b
+[   24.075364]  [<ffffffff810e4f72>] warn_slowpath_null+0x26/0x2f
+[   24.076190]  [<ffffffff811c5663>] __alloc_pages_slowpath+0x5a/0xd4e
+[   24.077238]  [<ffffffff811c46c9>] ? get_page_from_freelist+0x13b/0xad1
+[   24.078135]  [<ffffffff81136bf7>] ? lock_is_held+0x7e/0x92
+[   24.078893]  [<ffffffff811c64a6>] __alloc_pages_nodemask+0x14f/0x16e
+[   24.079768]  [<ffffffff8120d829>] alloc_pages_current+0xc7/0xd5
+[   24.080575]  [<ffffffff811dd627>] kmalloc_order+0x1a/0x8f
+[   24.081320]  [<ffffffff8121963a>] __kmalloc_track_caller+0x37/0x189
+[   24.082182]  [<ffffffff811d6674>] kmemdup+0x29/0x4c
+[   24.082861]  [<ffffffff8119605e>] gcov_info_dup+0xbf/0x154
+[   24.083617]  [<ffffffff81195bec>] gcov_event+0x451/0x557
+[   24.084375]  [<ffffffff81194a17>] gcov_module_notifier+0x12a/0x176
+[   24.085248]  [<ffffffff8110d345>] notifier_call_chain+0x3f/0x80
+[   24.086071]  [<ffffffff8110d946>] __blocking_notifier_call_chain+0x5c/0x84
+[   24.087010]  [<ffffffff81216265>] ? kfree+0x136/0x17e
+[   24.087716]  [<ffffffff8110d984>] blocking_notifier_call_chain+0x16/0x1f
+[   24.088637]  [<ffffffff811b893e>] do_init_module+0x274/0x552
+[   24.089415]  [<ffffffff81184146>] load_module+0x1391/0x15f6
+[   24.090186]  [<ffffffff8122f7c1>] ? fsnotify_access+0x76/0x84
+[   24.090978]  [<ffffffff81237359>] ? kernel_read+0x40/0x54
+[   24.091722]  [<ffffffff81184463>] SYSC_finit_module+0xb8/0xcc

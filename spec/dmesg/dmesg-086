@@ -1,0 +1,44 @@
+[   48.259033] intel_rapl: driver does not support CPU family 15 model 6
+[   48.261037] CHRDEV "dummy_stm.0" major number 225 goes below the dynamic allocation range
+[   48.262714] CHRDEV "dummy_stm.1" major number 224 goes below the dynamic allocation range
+[   48.661306] swapper/0: page allocation failure: order:8, mode:0x240c0c0(GFP_KERNEL|__GFP_COMP|__GFP_ZERO)
+[   48.663756] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 4.8.0-rc1 #206
+[   48.664056] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[   48.664056]  0000000000000000 ffff880008ebbc28 ffffffffb6560cf0 0000000000000008
+[   48.664056]  0000000000000000 0000000000000001 0000000000000000 ffff880008ebbcb0
+[   48.664056]  ffffffffb577fde1 0240c0c000000000 ffffffffba458d50 0000000000000008
+[   48.664056] Call Trace:
+[   48.664056]  [<ffffffffb6560cf0>] dump_stack+0x176/0x236
+[   48.664056]  [<ffffffffb577fde1>] warn_alloc_failed+0x1b1/0x270
+[   48.664056]  [<ffffffffb577f54d>] ? __alloc_pages_direct_compact+0x6d/0x190
+[   48.664056]  [<ffffffffb5781c35>] __alloc_pages_nodemask+0x1c15/0x2a10
+[   48.664056]  [<ffffffffb584d63a>] slob_new_pages+0x2a/0x90
+[   48.664056]  [<ffffffffb584e14c>] __kmalloc+0x57c/0xcb0
+[   48.664056]  [<ffffffffb7ae60f0>] ? stp_policy_node_put+0x30/0x30
+[   48.664056]  [<ffffffffb7ae4204>] ? stm_register_device+0x114/0x430
+[   48.664056]  [<ffffffffb7ae4204>] stm_register_device+0x114/0x430
+[   48.664056]  [<ffffffffb7ae60f0>] ? stp_policy_node_put+0x30/0x30
+[   48.664056]  [<ffffffffb7ae634f>] dummy_stm_init+0xff/0x1f0
+[   48.664056]  [<ffffffffb7ae6250>] ? dummy_stm_exit+0x80/0x80
+[   48.664056]  [<ffffffffbb3a815c>] do_one_initcall+0x117/0x2b6
+[   48.664056]  [<ffffffffbb3a84f4>] kernel_init_freeable+0x1f9/0x37e
+[   48.664056]  [<ffffffffb84153ab>] kernel_init+0x1b/0x2d0
+[   48.664056]  [<ffffffffb8428eaf>] ret_from_fork+0x1f/0x40
+[   48.664056]  [<ffffffffb8415390>] ? rest_init+0x280/0x280
+[   48.678701] Mem-Info:
+[   48.678992] active_anon:0 inactive_anon:0 isolated_anon:0
+[   48.678992]  active_file:0 inactive_file:0 isolated_file:0
+[   48.678992]  unevictable:18792 dirty:0 writeback:0 unstable:0
+[   48.678992]  slab_reclaimable:0 slab_unreclaimable:0
+[   48.678992]  mapped:0 shmem:0 pagetables:0 bounce:0
+[   48.678992]  free:544 free_pcp:10 free_cma:0
+[   48.681827] Node 0 active_anon:0kB inactive_anon:0kB active_file:0kB inactive_file:0kB unevictable:75168kB isolated(anon):0kB isolated(file):0kB mapped:0kB dirty:0kB writeback:0kB shmem:0kB shmem_thp: 0kB shmem_pmdmapped: 0kB anon_thp: 0kB writeback_tmp:0kB unstable:0kB pages_scanned:18799 all_unreclaimable? yes
+[   48.684452] DMA32 free:2176kB min:1508kB low:1884kB high:2260kB active_anon:0kB inactive_anon:0kB active_file:0kB inactive_file:0kB unevictable:75168kB writepending:0kB present:306680kB managed:142160kB mlocked:0kB slab_reclaimable:0kB slab_unreclaimable:0kB kernel_stack:1376kB pagetables:0kB bounce:0kB free_pcp:40kB local_pcp:24kB free_cma:0kB
+[   48.687165] lowmem_reserve[]: 0 0 0
+[   48.687629] DMA32: 4*4kB (UM) 4*8kB (M) 5*16kB (UM) 5*32kB (UM) 4*64kB (UM) 1*128kB (M) 2*256kB (UM) 2*512kB (UM) 0*1024kB 0*2048kB 0*4096kB = 2208kB
+[   48.689505] Node 0 hugepages_total=0 hugepages_free=0 hugepages_surp=0 hugepages_size=2048kB
+[   48.690267] 18799 total pagecache pages
+[   48.690633] 76670 pages RAM
+[   48.690926] 0 pages HighMem/MovableOnly
+[   48.691321] 41130 pages reserved
+[   48.717990] no UART detected at 0x1

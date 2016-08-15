@@ -1,0 +1,47 @@
+[   14.641285] audit: type=2000 audit(1470953153.018:1): initialized
+[   14.658653] Kprobe smoke test: started
+[   14.930140] ==================================================================
+[   14.931149] BUG: KASAN: stack-out-of-bounds in setjmp_pre_handler+0x165/0x200 at addr ffff880012057cb8
+[   14.932396] Read of size 64 by task swapper/0/1
+[   14.933007] page:ffffea00004815c0 count:0 mapcount:0 mapping:          (null) index:0x0
+[   14.934089] flags: 0x0()
+[   14.934438] page dumped because: kasan: bad access detected
+[   14.935185] CPU: 1 PID: 1 Comm: swapper/0 Not tainted 4.8.0-rc1 #1
+[   14.936013] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[   14.937186]  ffff880012057cb8 ffff8800120579f8 ffffffff81bd55c0 ffff880012057a88
+[   14.938311]  ffff880012057cb8 ffff880012057a78 ffffffff8149c571 ffff880012057ac0
+[   14.939370]  0000000000000046 ffff88001204c040 0000000000000086 1ffff1000240af51
+[   14.940426] Call Trace:
+[   14.940781]  [<ffffffff81bd55c0>] dump_stack+0x86/0xc6
+[   14.941472]  [<ffffffff8149c571>] kasan_report_error+0x2e1/0x490
+[   14.942277]  [<ffffffff8149cb58>] kasan_report+0x38/0x40
+[   14.943000]  [<ffffffff810a2e35>] ? setjmp_pre_handler+0x165/0x200
+[   14.943828]  [<ffffffff8149b473>] check_memory_region+0x183/0x190
+[   14.944645]  [<ffffffff8149b8c3>] memcpy+0x23/0x50
+[   14.945285]  [<ffffffff810a2e35>] setjmp_pre_handler+0x165/0x200
+[   14.946086]  [<ffffffff812dc2c1>] ? kprobe_target+0x1/0x20
+[   14.946826]  [<ffffffff810a3cc6>] kprobe_ftrace_handler+0x1e6/0x290
+[   14.947665]  [<ffffffff812dc2c5>] ? kprobe_target+0x5/0x20
+[   14.948401]  [<ffffffff8130dc96>] ftrace_ops_assist_func+0x286/0x310
+[   14.949252]  [<ffffffffa00000d5>] 0xffffffffa00000d5
+[   14.949921]  [<ffffffff812dc2c1>] ? kprobe_target+0x1/0x20
+[   14.950657]  [<ffffffff812dc2c5>] kprobe_target+0x5/0x20
+[   14.951367]  [<ffffffff812dc807>] init_test_probes+0x267/0x510
+[   14.952195]  [<ffffffff812dc2c5>] ? kprobe_target+0x5/0x20
+[   14.953009]  [<ffffffff812dc807>] ? init_test_probes+0x267/0x510
+[   14.953912]  [<ffffffff812dc5a0>] ? j_kprobe_target+0x40/0x40
+[   14.954703]  [<ffffffff83d33eb3>] init_kprobes+0x3b3/0x408
+[   14.955434]  [<ffffffff83d33b00>] ? debugfs_kprobe_init+0x10b/0x10b
+[   14.956283]  [<ffffffff811ff95d>] ? debug_mutex_init+0x2d/0x60
+[   14.957065]  [<ffffffff811fd822>] ? __mutex_init+0xe2/0xf0
+[   14.957805]  [<ffffffff81575a50>] ? fsnotify_alloc_group+0x1a0/0x220
+[   14.958654]  [<ffffffff83d33967>] ? audit_fsnotify_init+0x3a/0x3a
+[   14.959461]  [<ffffffff83d33b00>] ? debugfs_kprobe_init+0x10b/0x10b
+[   14.960301]  [<ffffffff81000589>] do_one_initcall+0x119/0x1e0
+[   14.961070]  [<ffffffff81000470>] ? initcall_blacklisted+0x140/0x140
+[   14.961942]  [<ffffffff83cf3a14>] kernel_init_freeable+0x417/0x4c5
+[   14.962927]  [<ffffffff82bb1953>] kernel_init+0x13/0x110
+[   14.963712]  [<ffffffff82bc570f>] ret_from_fork+0x1f/0x40
+[   14.964496]  [<ffffffff82bb1940>] ? rest_init+0x160/0x160
+[   14.965300] Memory state around the buggy address:
+[   14.966015]  ffff880012057b80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00

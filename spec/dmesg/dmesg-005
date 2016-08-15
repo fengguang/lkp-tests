@@ -1,0 +1,30 @@
+[   29.091557] IRQ15 -> 0:15
+[   29.091921] .................................... done.
+[   29.092667] Using IPI Shortcut mode
+[   29.096478] genirq: Flags mismatch irq 4. 00000000 (serial) vs. 00000080 (goldfish_pdev_bus)
+[   29.097957] Freeing unused kernel memory: 488K (c1c2b000 - c1ca5000)
+[   29.098872] Write protecting the kernel text: 6596k
+[   29.099755] Write protecting the kernel read-only data: 4008k
+[   29.100491] NX-protecting the kernel data: 7740k
+[   29.101800] ------------[ cut here ]------------
+[   29.102438] WARNING: CPU: 0 PID: 1 at arch/x86/mm/dump_pagetables.c:225 note_page+0xe0/0x50f
+[   29.103819] x86/mm: Found insecure W+X mapping at address c00a0000/0xc00a0000
+[   29.104714] Modules linked in:
+[   29.105134] CPU: 0 PID: 1 Comm: swapper Not tainted 4.8.0-rc1 #13
+[   29.105899] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[   29.107036]  00000000 cf43dee0 cf43deb0 c114c8a5 cf43decc c1035eea c1928286 000000e1
+[   29.108148]  00000000 cf43df58 80000000 cf43dee8 c1035f29 00000009 00000000 cf43dee0
+[   29.109249]  c1928250 cf43defc cf43df24 c1028969 c1928286 000000e1 c1928250 c00a0000
+[   29.110353] Call Trace:
+[   29.110685]  [<c114c8a5>] dump_stack+0x16/0x18
+[   29.111254]  [<c1035eea>] __warn+0xab/0xc2
+[   29.111782]  [<c1035f29>] warn_slowpath_fmt+0x28/0x2d
+[   29.112448]  [<c1028969>] note_page+0xe0/0x50f
+[   29.113021]  [<c1028f8f>] ptdump_walk_pgd_level_core+0x1c9/0x278
+[   29.113777]  [<c102905b>] ptdump_walk_pgd_level_checkwx+0x11/0x16
+[   29.114540]  [<c1022445>] mark_rodata_ro+0xd0/0xd8
+[   29.115201]  [<c16695a1>] kernel_init+0x20/0xcb
+[   29.115738]  [<c166eeae>] ret_from_kernel_thread+0xe/0x30
+[   29.116458]  [<c1669581>] ? rest_init+0x10e/0x10e
+[   29.117090] ---[ end trace abe6f705a196d176 ]---
+[   29.117821] x86/mm: Checked W+X mappings: FAILED, 96 W+X pages found.

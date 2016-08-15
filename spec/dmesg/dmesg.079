@@ -1,0 +1,19 @@
+boot_failures: 1
+
+# WARNING:.* at .* __alloc_pages_slowpath+0x
+WARNING:at_mm/page_alloc.c:#__alloc_pages_slowpath: 1
+
+# blocking_notifier_call_chain+0x
+calltrace:blocking_notifier_call_chain: 1
+
+# do_init_module+0x
+calltrace:do_init_module: 1
+
+# SYSC_finit_module+0x
+calltrace:SYSC_finit_module: 1
+
+timestamp:last: 24.091722
+timestamp:WARNING:at_mm/page_alloc.c:#__alloc_pages_slowpath: 24.054463
+timestamp:calltrace:blocking_notifier_call_chain: 24.087716
+timestamp:calltrace:do_init_module: 24.088637
+timestamp:calltrace:SYSC_finit_module: 24.091722

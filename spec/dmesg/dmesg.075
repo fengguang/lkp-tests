@@ -1,0 +1,19 @@
+boot_failures: 1
+
+# WARNING:.* at .* pci_mmap_resource+0x
+WARNING:at_drivers/pci/pci-sysfs.c:#pci_mmap_resource: 1
+
+# vm_mmap_pgoff+0x
+calltrace:vm_mmap_pgoff: 1
+
+# SyS_mmap_pgoff+0x
+calltrace:SyS_mmap_pgoff: 1
+
+# SyS_mmap+0x
+calltrace:SyS_mmap: 1
+
+timestamp:last: 30.752388
+timestamp:WARNING:at_drivers/pci/pci-sysfs.c:#pci_mmap_resource: 30.707199
+timestamp:calltrace:vm_mmap_pgoff: 30.746556
+timestamp:calltrace:SyS_mmap_pgoff: 30.748427
+timestamp:calltrace:SyS_mmap: 30.752388

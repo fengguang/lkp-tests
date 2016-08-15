@@ -1,0 +1,27 @@
+boot_failures: 1
+
+# kernel BUG at
+kernel_BUG_at_mm/rmap.c: 1
+
+# invalid opcode: .* SMP
+invalid_opcode:#[##]SMP: 1
+
+# RIP: .* page_remove_rmap+0x
+RIP:page_remove_rmap: 1
+
+# Kernel panic - not syncing: Fatal exception
+Kernel_panic-not_syncing:Fatal_exception: 1
+
+# do_munmap+0x
+calltrace:do_munmap: 1
+
+# SyS_munmap+0x
+calltrace:SyS_munmap: 1
+
+timestamp:last: 51.580132
+timestamp:kernel_BUG_at_mm/rmap.c: 51.531037
+timestamp:invalid_opcode:#[##]SMP: 51.531805
+timestamp:RIP:page_remove_rmap: 51.536690
+timestamp:Kernel_panic-not_syncing:Fatal_exception: 51.580132
+timestamp:calltrace:do_munmap: 51.564804
+timestamp:calltrace:SyS_munmap: 51.565929

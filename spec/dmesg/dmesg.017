@@ -1,0 +1,39 @@
+boot_failures: 1
+
+# BUG: unable to handle kernel
+BUG:unable_to_handle_kernel: 1
+
+# Oops
+Oops: 1
+
+# RIP: .* setup_udp_tunnel_sock+0x
+RIP:setup_udp_tunnel_sock: 1
+
+# Kernel panic - not syncing: Fatal exception
+Kernel_panic-not_syncing:Fatal_exception: 1
+
+# rxe_net_init+0x
+calltrace:rxe_net_init: 1
+
+# rxe_module_init+0x
+calltrace:rxe_module_init: 1
+
+# do_basic_setup+0x
+calltrace:do_basic_setup: 1
+
+# kernel_init_freeable+0x
+calltrace:kernel_init_freeable: 1
+
+# ret_from_fork+0x
+calltrace:ret_from_fork: 1
+
+timestamp:last: 22.764232
+timestamp:BUG:unable_to_handle_kernel: 22.723585
+timestamp:Oops: 22.726068
+timestamp:RIP:setup_udp_tunnel_sock: 22.729677
+timestamp:Kernel_panic-not_syncing:Fatal_exception: 22.764232
+timestamp:calltrace:rxe_net_init: 22.745947
+timestamp:calltrace:rxe_module_init: 22.747932
+timestamp:calltrace:do_basic_setup: 22.752142
+timestamp:calltrace:kernel_init_freeable: 22.753831
+timestamp:calltrace:ret_from_fork: 22.755694

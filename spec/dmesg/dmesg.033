@@ -1,0 +1,23 @@
+boot_failures: 1
+
+# WARNING:.* at .* intel_modeset_init+0x
+WARNING:at_drivers/gpu/drm/i915/intel_display.c:#intel_modeset_init[i915]: 1
+
+# intel_modeset_init+0x
+calltrace:intel_modeset_init: 1
+
+# __pci_register_driver+0x
+calltrace:__pci_register_driver: 1
+
+# i915_init+0x
+calltrace:i915_init: 1
+
+# do_init_module+0x
+calltrace:do_init_module: 1
+
+timestamp:last: 24.925901
+timestamp:WARNING:at_drivers/gpu/drm/i915/intel_display.c:#intel_modeset_init[i915]: 24.925604
+timestamp:calltrace:intel_modeset_init: 24.925711
+timestamp:calltrace:__pci_register_driver: 24.925840
+timestamp:calltrace:i915_init: 24.925879
+timestamp:calltrace:do_init_module: 24.925891

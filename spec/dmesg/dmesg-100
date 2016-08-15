@@ -1,0 +1,42 @@
+[  123.643406] usnic_verbs:usnic_ib_init:663: Unable to initalize umem with err -1
+[  123.712432] kasan: CONFIG_KASAN_INLINE enabled
+[  123.726152] kasan: GPF could be caused by NULL-ptr deref or user memory access
+[  123.727307] general protection fault: 0000 [#1] PREEMPT SMP DEBUG_PAGEALLOC KASAN
+[  123.728491] CPU: 1 PID: 1 Comm: swapper/0 Not tainted 4.8.0-rc1 #3
+[  123.729482] task: ffff880018148040 task.stack: ffff880018150000
+[  123.730428] RIP: 0010:[<ffffffff84324777>]  [<ffffffff84324777>] setup_udp_tunnel_sock+0x57/0x300
+[  123.731835] RSP: 0000:ffff880018157ca8  EFLAGS: 00010202
+[  123.732676] RAX: dffffc0000000000 RBX: 0000000000000000 RCX: 0000000000000085
+[  123.733813] RDX: ffff880018157d78 RSI: ffff880018148ba8 RDI: 0000000000000428
+[  123.734956] RBP: ffff880018157cc8 R08: ffffed000302afa9 R09: 0000000000000000
+[  123.736055] R10: ffff880018157d38 R11: ffffed000302afaa R12: ffff880018157dd8
+[  123.736128] R13: 0000000000000001 R14: 00000000ffffffff R15: 0000000000000000
+[  123.736128] FS:  0000000000000000(0000) GS:ffff880018d00000(0000) knlGS:0000000000000000
+[  123.736128] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  123.736128] CR2: 00000000ffffffff CR3: 000000000560e000 CR4: 00000000000006a0
+[  123.736128] Stack:
+[  123.736128]  ffffffff81376a81 1ffff1000302af9b 1ffff1000302af9b ffff880018157dd8
+[  123.736128]  ffff880018157df0 ffffffff83e74af8 0000000041b58ab3 ffffffff85512e20
+[  123.736128]  ffffffff83e749c0 ffffffff85469ac7 ffff880018148ba8 0000000000000000
+[  123.736128] Call Trace:
+[  123.736128]  [<ffffffff81376a81>] ? memset+0x31/0x40
+[  123.736128]  [<ffffffff83e74af8>] rxe_setup_udp_tunnel+0x138/0x180
+[  123.736128]  [<ffffffff83e749c0>] ? dma_device+0xa0/0xa0
+[  123.736128]  [<ffffffff811e42ac>] ? __raw_spin_lock_init+0x1c/0xf0
+[  123.736128]  [<ffffffff83e75a60>] ? net_to_rxe+0xf0/0xf0
+[  123.736128]  [<ffffffff811e42bd>] ? __raw_spin_lock_init+0x2d/0xf0
+[  123.736128]  [<ffffffff8618823d>] ? srpt_init_module+0x98/0x98
+[  123.736128]  [<ffffffff83e7628c>] rxe_net_init+0x2c/0xf0
+[  123.736128]  [<ffffffff86188260>] rxe_module_init+0x23/0x4d
+[  123.736128]  [<ffffffff860ed773>] do_one_initcall+0x112/0x1cb
+[  123.736128]  [<ffffffff860ed661>] ? start_kernel+0x57d/0x57d
+[  123.736128]  [<ffffffff811d8c4d>] ? trace_hardirqs_on+0xd/0x10
+[  123.736128]  [<ffffffff860edc50>] kernel_init_freeable+0x424/0x4d2
+[  123.736128]  [<ffffffff847d1f8e>] kernel_init+0xe/0x110
+[  123.736128]  [<ffffffff847e504f>] ret_from_fork+0x1f/0x40
+[  123.736128]  [<ffffffff847d1f80>] ? rest_init+0x160/0x160
+[  123.736128] Code: 75 e8 e8 4d 38 05 fd 48 8b 55 e0 48 8b 75 e8 48 8b 5e 20 48 b8 00 00 00 00 00 fc ff df 48 8d bb 28 04 00 00 48 89 f9 48 c1 e9 03 <0f> b6 04 01 84 c0 74 11 3c 01 7f 0d 48 89 55 e8 e8 d4 38 05 fd 
+[  123.736128] RIP  [<ffffffff84324777>] setup_udp_tunnel_sock+0x57/0x300
+[  123.736128]  RSP <ffff880018157ca8>
+[  123.817892] ---[ end trace ce44c6d33ee731e4 ]---
+[  123.818650] Kernel panic - not syncing: Fatal exception

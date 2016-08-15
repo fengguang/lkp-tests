@@ -1,0 +1,46 @@
+[    1.182613] x86: Booted up 1 node, 2 CPUs
+[    1.183591] smpboot: Total of 2 processors activated (11705.31 BogoMIPS)
+[    1.227557] ==================================================================
+[    1.229363] BUG: KASAN: slab-out-of-bounds in memdup_user+0x4f/0x90 at addr ffff880019d85f80
+[    1.231348] Write of size 9 by task kdevtmpfs/17
+[    1.232471] CPU: 1 PID: 17 Comm: kdevtmpfs Not tainted 4.8.0-rc1 #66
+[    1.233875] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[    1.235927]  0000000000000000 ffff880019f27ce8 ffffffffb9ec23c5 ffff880019c00100
+[    1.256234]  ffff880019d85f80 ffff880019f27d18 ffffffffb9ba3d57 0000000000000009
+[    1.258475]  ffff880019d85f80 0000000000000009 ffffffffba6403cf ffff880019f27d38
+[    1.260693] Call Trace:
+[    1.261435]  [<ffffffffb9ec23c5>] dump_stack+0x63/0x8e
+[    1.262645]  [<ffffffffb9ba3d57>] kasan_object_err+0x27/0x90
+[    1.263953]  [<ffffffffb9bb1e0f>] print_address_description+0xb9/0x11b
+[    1.285541]  [<ffffffffb9bb1f6e>] kasan_report_error+0xfd/0x116
+[    1.286907]  [<ffffffffb9ba3eb7>] kasan_report+0x37/0x40
+[    1.288130]  [<ffffffffb9b7e33f>] ? memdup_user+0x4f/0x90
+[    1.289387]  [<ffffffffb9ba3061>] check_memory_region+0x141/0x170
+[    1.290773]  [<ffffffffb9ba30e4>] kasan_check_write+0x14/0x20
+[    1.292093]  [<ffffffffb9b7e33f>] memdup_user+0x4f/0x90
+[    1.293326]  [<ffffffffb9b7e3ce>] strndup_user+0x4e/0x70
+[    1.294567]  [<ffffffffb9bd7ca5>] copy_mount_string+0x15/0x20
+[    1.315931]  [<ffffffffb9bd81a0>] SyS_mount+0x30/0xc0
+[    1.317137]  [<ffffffffba095920>] ? handle_create+0x140/0x140
+[    1.318561]  [<ffffffffba095975>] devtmpfsd+0x55/0x160
+[    1.319769]  [<ffffffffba095920>] ? handle_create+0x140/0x140
+[    1.321181]  [<ffffffffb9adc09f>] kthread+0xcf/0xf0
+[    1.322334]  [<ffffffffba2a285f>] ret_from_fork+0x1f/0x40
+[    1.323582]  [<ffffffffb9adbfd0>] ? flush_kthread_worker+0x90/0x90
+[    1.324955] Object at ffff880019d85f80, in cache kmalloc-32 size: 32
+[    1.330957] Allocated:
+[    1.333071] PID = 17
+[    1.333770]  [<ffffffffb9a208aa>] save_stack_trace+0x2a/0x50
+[    1.338307]  [<ffffffffb9ba3177>] save_stack+0x37/0xc0
+[    1.340588]  [<ffffffffb9ba336c>] kasan_kmalloc+0x9c/0xd0
+[    1.341813]  [<ffffffffb9ba104d>] __kmalloc_track_caller+0xed/0x150
+[    1.346631]  [<ffffffffb9b7e31b>] memdup_user+0x2b/0x90
+[    1.348646]  [<ffffffffb9b7e3ce>] strndup_user+0x4e/0x70
+[    1.350030]  [<ffffffffb9bd7ca5>] copy_mount_string+0x15/0x20
+[    1.355488]  [<ffffffffb9bd81a0>] SyS_mount+0x30/0xc0
+[    1.358039]  [<ffffffffba095975>] devtmpfsd+0x55/0x160
+[    1.360975]  [<ffffffffb9adc09f>] kthread+0xcf/0xf0
+[    1.362121]  [<ffffffffba2a285f>] ret_from_fork+0x1f/0x40
+[    1.365983] Freed:
+[    1.367403] PID = 0
+[    1.368103] (stack is not available)

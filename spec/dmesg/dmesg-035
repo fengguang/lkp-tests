@@ -1,0 +1,39 @@
+[   16.554390] init: Temporary process spawn error: No such file or directory
+udevd[351]: failed to execute '/sbin/modprobe' '/sbin/modprobe -bv platform:regulatory': No such file or directory
+[   21.349218] sock: process `trinity-main' is using obsolete setsockopt SO_BSDCOMPAT
+[   21.734461] BUG: unable to handle kernel paging request at 4d3f33b7
+[   21.742563] IP: [<81097a61>] bpf_prog_free+0x11/0x50
+[   21.747144] *pde = 00000000 
+[   21.748156] Oops: 0002 [#1]
+[   21.749012] Modules linked in:
+[   21.749922] CPU: 0 PID: 353 Comm: trinity-main Tainted: G S              4.8.0-rc1 #38
+[   21.751853] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[   21.753706] task: 95373080 task.stack: 956a8000
+[   21.754591] EIP: 0060:[<81097a61>] EFLAGS: 00010206 CPU: 0
+[   21.755582] EIP is at bpf_prog_free+0x11/0x50
+[   21.756343] EAX: 97c3c000 EBX: 4d3f339b ECX: 827f7044 EDX: 81c7acfb
+[   21.761293] ESI: 960134d8 EDI: 00000cf8 EBP: 956a9e98 ESP: 956a9e94
+[   21.768819]  DS: 007b ES: 007b FS: 0000 GS: 0033 SS: 0068
+[   21.775357] CR0: 80050033 CR2: 4d3f33b7 CR3: 156d4000 CR4: 00000610
+[   21.782974] Stack:
+[   21.785475]  97c3c000 956a9ea8 8181e625 00000059 ffffffea 956a9ed8 81820360 810cc855
+[   21.792154]  00000000 97c3c000 97c3c018 956a9ed8 8181e744 956a9f14 956a9f14 fffffff4
+[   21.794685]  97c3c000 956a9ef4 818206d9 09e5dcc0 000067c0 95203000 95203000 0000001a
+[   21.796780] Call Trace:
+[   21.797309]  [<8181e625>] __bpf_prog_release+0x35/0x40
+[   21.798345]  [<81820360>] bpf_prepare_filter+0x280/0x380
+[   21.799340]  [<810cc855>] ? kmemdup+0x25/0x30
+[   21.800126]  [<8181e744>] ? bpf_prog_store_orig_filter+0x44/0x80
+[   21.803982]  [<818206d9>] __get_filter+0xa9/0xf0
+[   21.809587]  [<8182091c>] sk_attach_filter+0xc/0x50
+[   21.815652]  [<817f3a70>] sock_setsockopt+0x630/0x9e0
+[   21.821868]  [<8111e71d>] ? __fdget+0xd/0x10
+[   21.827023]  [<817eefcb>] SyS_socketcall+0x42b/0x600
+[   21.833114]  [<810178c3>] ? lapic_next_event+0x13/0x20
+[   21.836440]  [<810011a6>] do_int80_syscall_32+0x56/0x110
+[   21.838048]  [<819b720b>] entry_INT80_32+0x2f/0x2f
+[   21.839296] Code: 9b 05 00 89 d8 e8 90 d0 04 00 5b 5d c3 8d b6 00 00 00 00 8d bc 27 00 00 00 00 55 b9 44 70 7f 82 ba fb ac c7 81 89 e5 53 8b 58 0c <c7> 43 1c e0 ff ff ff 8d 43 2c 6a 00 e8 fe 4e fc ff 8d 43 20 8b
+[   21.844983] EIP: [<81097a61>] bpf_prog_free+0x11/0x50 SS:ESP 0068:956a9e94
+[   21.851037] CR2: 000000004d3f33b7
+[   21.855384] ---[ end trace e30adaa989685092 ]---
+[   21.889319] Kernel panic - not syncing: Fatal exception

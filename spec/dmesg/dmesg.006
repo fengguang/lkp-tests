@@ -1,0 +1,11 @@
+boot_failures: 1
+
+# BUG: workqueue lockup - pool cpus=
+BUG:workqueue_lockup-pool_cpus=#node=#flags=#nice=#stuck_for#s: 1
+
+# BUG: workqueue lockup - pool cpus=
+BUG:workqueue_lockup-pool_cpus=#node=#flags=#nice=-#stuck_for#s: 1
+
+timestamp:last: 161.494271
+timestamp:BUG:workqueue_lockup-pool_cpus=#node=#flags=#nice=#stuck_for#s: 161.270280
+timestamp:BUG:workqueue_lockup-pool_cpus=#node=#flags=#nice=-#stuck_for#s: 161.341745

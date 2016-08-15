@@ -1,0 +1,71 @@
+[    0.502061] x86/mm: Memory block size: 128MB
+[    0.507512] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 7645041785100000 ns
+[    0.508518] pinctrl core: initialized pinctrl subsystem
+[    0.509411] general protection fault: 0000 [#1] SMP DEBUG_PAGEALLOC
+[    0.509970] Modules linked in:
+[    0.510267] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 4.8.0-rc1 #157
+[    0.510825] task: ffff880073d12040 task.stack: ffff880073d14000
+[    0.511353] RIP: 0010:[<ffffffff810af776>]  [<ffffffff810af776>] find_busiest_group+0xc6/0x8a0
+[    0.512126] RSP: 0000:ffff880073d174e8  EFLAGS: 00010002
+[    0.512601] RAX: 6d6d75642d676572 RBX: ffff880073d175f8 RCX: ffff8800000951a0
+[    0.513228] RDX: ffff880073d9c540 RSI: 0000000000000000 RDI: ffff8800000951b8
+[    0.513860] RBP: ffff880073d17678 R08: 6d6d75642d67658a R09: ffff88000008b700
+[    0.514494] R10: ffffffff810b1abe R11: 0000000000000000 R12: 0000000000016cc0
+[    0.515130] R13: 0000000000016cc0 R14: ffff880073d176e8 R15: 0000000000000000
+[    0.515760] FS:  0000000000000000(0000) GS:ffff880076a00000(0000) knlGS:0000000000000000
+[    0.516472] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    0.516980] CR2: 00000000ffffffff CR3: 0000000001e0e000 CR4: 00000000000006f0
+[    0.517617] Stack:
+[    0.517805]  ffff880000000000 ffff880073d17538 ffffffffffffffff 0000000000000000
+[    0.518515]  0000000073d17518 0000000000016cf8 00ff880073d17528 6d6d75642d676572
+[    0.519278]  0000000073d175a8 6d6d75642d67658a ffff8800000951a0 ffff880000095300
+[    0.520003] Call Trace:
+[    0.520236]  [<ffffffff810b1793>] ? update_blocked_averages+0x3b3/0x580
+[    0.520878]  [<ffffffff810b00da>] load_balance+0x18a/0x700
+[    0.521372]  [<ffffffff81036425>] ? kvm_clock_read+0x25/0x30
+[    0.521866]  [<ffffffff81036449>] ? kvm_sched_clock_read+0x9/0x20
+[    0.522399]  [<ffffffff8101a2f9>] ? sched_clock+0x9/0x10
+[    0.522864]  [<ffffffff810b1bd2>] idle_balance+0x272/0x370
+[    0.523348]  [<ffffffff810b1abe>] ? idle_balance+0x15e/0x370
+[    0.523842]  [<ffffffff810b257e>] pick_next_task_fair+0x5e/0x1e0
+[    0.524372]  [<ffffffff81997fba>] __schedule+0xfa/0x5e0
+[    0.524829]  [<ffffffff8199dd56>] ? _raw_spin_unlock_irq+0x26/0x40
+[    0.525374]  [<ffffffff810a30dc>] ? finish_task_switch+0xcc/0x250
+[    0.525901]  [<ffffffff810a3098>] ? finish_task_switch+0x88/0x250
+[    0.526437]  [<ffffffff81998612>] schedule+0x42/0xb0
+[    0.526874]  [<ffffffff810c1c64>] ? __lock_release+0xc4/0x3a0
+[    0.527379]  [<ffffffff8199caa7>] schedule_timeout+0x287/0x3a0
+[    0.527886]  [<ffffffff819997ed>] ? wait_for_completion+0xdd/0x120
+[    0.528429]  [<ffffffff819997f5>] wait_for_completion+0xe5/0x120
+[    0.528956]  [<ffffffff810a69a0>] ? try_to_wake_up+0x230/0x230
+[    0.529476]  [<ffffffff810dd3dd>] __wait_rcu_gp+0x10d/0x140
+[    0.529966]  [<ffffffff810e7196>] synchronize_sched+0x66/0x80
+[    0.530473]  [<ffffffff810dd450>] ? rcu_barrier_tasks+0x10/0x10
+[    0.530990]  [<ffffffff810e3c10>] ? call_rcu_bh+0x20/0x20
+[    0.531469]  [<ffffffff8117b16c>] setup_kmem_cache_node+0xec/0x150
+[    0.532007]  [<ffffffff8117b2cc>] __do_tune_cpucache+0xfc/0x130
+[    0.532529]  [<ffffffff8117b330>] do_tune_cpucache+0x30/0xd0
+[    0.533022]  [<ffffffff8117bbb9>] enable_cpucache+0x89/0x110
+[    0.533530]  [<ffffffff8199188d>] setup_cpu_cache+0x13d/0x1c0
+[    0.534036]  [<ffffffff8117bd8c>] __kmem_cache_create+0x14c/0x220
+[    0.534573]  [<ffffffff81156651>] create_cache+0xa1/0x1b0
+[    0.535046]  [<ffffffff818e1390>] ? sock_alloc_inode+0xc0/0xc0
+[    0.535682]  [<ffffffff818e1390>] ? sock_alloc_inode+0xc0/0xc0
+[    0.536300]  [<ffffffff811569a1>] kmem_cache_create+0xf1/0x190
+[    0.536811]  [<ffffffff81999c09>] ? mutex_unlock+0x9/0x10
+[    0.537289]  [<ffffffff81f89f93>] sock_init+0x38/0x94
+[    0.537732]  [<ffffffff81f89f5b>] ? bsp_pm_check_init+0x14/0x14
+[    0.538250]  [<ffffffff81f89f5b>] ? bsp_pm_check_init+0x14/0x14
+[    0.538772]  [<ffffffff810003c2>] do_one_initcall+0x42/0x150
+[    0.539274]  [<ffffffff81f43a58>] do_basic_setup+0xa8/0xcd
+[    0.539755]  [<ffffffff81f43c12>] ? kernel_init_freeable+0x195/0x195
+[    0.540310]  [<ffffffff81f43b92>] kernel_init_freeable+0x115/0x195
+[    0.540846]  [<ffffffff81990d09>] ? kernel_init+0x9/0x100
+[    0.541322]  [<ffffffff81990d09>] kernel_init+0x9/0x100
+[    0.541777]  [<ffffffff8199e17f>] ret_from_fork+0x1f/0x40
+[    0.542249]  [<ffffffff81990d00>] ? rest_init+0xd0/0xd0
+[    0.542706] Code: 89 ec 49 8d 44 c5 38 48 89 85 98 fe ff ff 4c 8b 85 a8 fe ff ff 45 8b 7e 14 48 8b 85 a8 fe ff ff 49 83 c0 18 4c 89 85 b8 fe ff ff <4c> 0f a3 78 18 41 0f 92 c7 45 0f b6 ff 48 8d 5d 80 45 85 ff 74 
+[    0.545141] RIP  [<ffffffff810af776>] find_busiest_group+0xc6/0x8a0
+[    0.545710]  RSP <ffff880073d174e8>
+[    0.546021] ---[ end trace 9e67a5c067482902 ]---
+[    0.546024] general protection fault: 0000 [#2] SMP DEBUG_PAGEALLOC

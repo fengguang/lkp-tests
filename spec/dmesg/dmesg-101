@@ -1,0 +1,24 @@
+[   85.057102] torture thread torture_stutter parking due to system shutdown
+[   85.071579] torture thread torture_shuffle parking due to system shutdown
+[   85.101530] ------------[ cut here ]------------
+[   85.102190] WARNING: CPU: 1 PID: 625 at lib/list_debug.c:59 __list_del_entry+0x82/0xd0
+[   85.103449] list_del corruption. prev->next should be ffff880014bfe018, but was 2f30363030617369
+[   85.104637] CPU: 1 PID: 625 Comm: reboot Not tainted 4.8.0-rc1 #156
+[   85.105485] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[   85.105621]  0000000000000001 ffff88000f333ce8 ffffffff8168e69c ffff88000f333d38
+[   85.105621]  0000000000000000 ffffffff825bb970 ffffffff816b2b82 ffff88000f333d28
+[   85.105621]  ffffffff8108e5ea 0000003b14000860 ffffffff825bb970 000000000000003b
+[   85.105621] Call Trace:
+[   85.105621]  [<ffffffff8168e69c>] dump_stack+0x80/0xb4
+[   85.105621]  [<ffffffff816b2b82>] ? __list_del_entry+0x82/0xd0
+[   85.105621]  [<ffffffff8108e5ea>] __warn+0x10a/0x130
+[   85.105621]  [<ffffffff81780c50>] ? pnp_unregister_card_driver+0x40/0x40
+[   85.105621]  [<ffffffff8108e673>] warn_slowpath_fmt+0x63/0x70
+[   85.105621]  [<ffffffff81864272>] ? device_shutdown+0x22/0x1f0
+[   85.105621]  [<ffffffff816b2b82>] __list_del_entry+0x82/0xd0
+[   85.105621]  [<ffffffff818642d5>] device_shutdown+0x85/0x1f0
+[   85.105621]  [<ffffffff810b569a>] kernel_restart_prepare+0x3a/0x40
+[   85.105621]  [<ffffffff810b57e5>] kernel_restart+0x15/0x70
+[   85.105621]  [<ffffffff810b5af3>] SyS_reboot+0x113/0x220
+[   85.105621]  [<ffffffff811e4d35>] ? sync_inodes_sb+0x355/0x370
+[   85.105621]  [<ffffffff811e9800>] ? sync_inodes_one_sb+0x30/0x30

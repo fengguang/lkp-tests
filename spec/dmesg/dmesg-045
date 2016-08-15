@@ -1,0 +1,40 @@
+Please press Enter to activate this console.
+[   17.774669] CE: hpet increased min_delta_ns to 85428 nsec
+[   30.540534] sock: process `trinity-main' is using obsolete setsockopt SO_BSDCOMPAT
+[   40.594570] general protection fault: 0000 [#1] PREEMPT DEBUG_PAGEALLOC
+[   40.596017] Modules linked in:
+[   40.596782] CPU: 0 PID: 3482 Comm: seq Not tainted 4.8.0-rc1 #128
+[   40.598402] task: cc3f1040 task.stack: ca6c2000
+[   40.599519] EIP: 0060:[<cc62405c>] EFLAGS: 00010006 CPU: 0
+[   40.600933] EIP is at native_flush_tlb_global+0x52/0x62
+[   40.602463] EAX: 000006b0 EBX: 00000001 ECX: 00000046 EDX: 00000630
+[   40.615349] ESI: 00000000 EDI: ca6c3e80 EBP: ca6c3e3c ESP: ca6c3e2c
+[   40.616922]  DS: 007b ES: 007b FS: 0000 GS: 0000 SS: 0068
+[   40.618288] CR0: 80050033 CR2: 08093680 CR3: 09dac020 CR4: 000006b0
+[   40.619574] Stack:
+[   40.620001]  00000000 00001000 00000002 00000001 ca6c3e44 cc6264ca ca6c3e8c cc6283ec
+[   40.622081]  cb76e000 ca6c3e4c 00000000 00000000 00000000 00000003 00000000 00000001
+[   40.636430]  00000001 0000b76d 00000000 00000000 00000000 cf3f3000 00000258 cb76dda8
+[   40.638876] Call Trace:
+[   40.639489]  [<cc6264ca>] __flush_tlb_all+0x12/0x1d
+[   40.640651]  [<cc6283ec>] __kernel_map_pages+0x95/0xe5
+[   40.641877]  [<cc6c3055>] slab_kernel_map+0xe1/0xe9
+[   40.643077]  [<cc635a86>] ? __mmdrop+0x7a/0x82
+[   40.644256]  [<cc6c43a2>] ___cache_free+0x1a2/0x2e6
+[   40.645567]  [<cc635a86>] ? __mmdrop+0x7a/0x82
+[   40.657835]  [<cc635a86>] ? __mmdrop+0x7a/0x82
+[   40.658999]  [<cc659cde>] ? debug_check_no_locks_freed+0xfd/0x11f
+[   40.660493]  [<cc6c452b>] kmem_cache_free+0x45/0x6c
+[   40.661683]  [<cc635a86>] __mmdrop+0x7a/0x82
+[   40.662764]  [<cc635e8f>] __mmput+0x84/0x88
+[   40.663844]  [<cc635eb8>] mmput+0x25/0x28
+[   40.664933]  [<cc6387bd>] do_exit+0x26f/0x708
+[   40.666127]  [<cc6cbfed>] ? vfs_write+0x92/0xa3
+[   40.672750]  [<cc6399ac>] do_group_exit+0x2f/0x85
+[   40.674066]  [<cc639a13>] SyS_exit_group+0x11/0x11
+[   40.675383]  [<cc600d60>] do_int80_syscall_32+0x48/0x5a
+[   40.676795]  [<cc99f9a7>] entry_INT80_32+0x2f/0x2f
+[   40.689121] Code: 45 f8 00 00 00 00 c7 45 fc 00 00 00 00 66 0f 38 82 01 eb 25 e8 a8 fc ff ff 89 c1 fa 90 8d 74 26 00 a1 58 bb c5 cc 89 c2 80 e2 7f <0f> 22 e2 0f 22 e0 89 c8 50 9d 8d 74 26 00 c9 c3 55 89 e5 53 8b
+[   40.696619] EIP: [<cc62405c>] native_flush_tlb_global+0x52/0x62 SS:ESP 0068:ca6c3e2c
+[   40.698776] ---[ end trace ab8661148f1a8c9e ]---
+[   40.711101] Kernel panic - not syncing: Fatal exception

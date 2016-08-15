@@ -1,0 +1,49 @@
+[    0.497826] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604462750000 ns
+[    0.499255] xor: measuring software checksum speed
+[    0.592026]    prefetch64-sse: 15224.400 MB/sec
+[    0.615078] general protection fault: 0000 [#1] SMP DEBUG_PAGEALLOC
+[    0.615690] CPU: 2 PID: 0 Comm: swapper/2 Not tainted 4.8.0-rc1 #190
+[    0.616250] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[    0.617022] task: ffff880074d70040 task.stack: ffff880074d84000
+[    0.617543] RIP: 0010:[<ffffffff810e461a>]  [<ffffffff810e461a>] find_busiest_group+0x24a/0xa40
+[    0.618317] RSP: 0000:ffff880077d03b38  EFLAGS: 00010246
+[    0.618781] RAX: 6b6b6b6b6b6b6b6b RBX: ffff880077d03c58 RCX: 0000000000000005
+[    0.619422] RDX: 0000000000000000 RSI: 00000000000003cf RDI: ffff880074e315b0
+[    0.620030] RBP: ffff880077d03ce8 R08: 0000000000000005 R09: a56b6b6b6b6b6b6b
+[    0.620663] R10: 0000000000000000 R11: 0000000000000000 R12: 00000000000141c0
+[    0.621280] R13: 00000000000141c0 R14: ffff880077d03d78 R15: 0000000000000000
+[    0.621902] FS:  0000000000000000(0000) GS:ffff880077d00000(0000) knlGS:0000000000000000
+[    0.622610] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    0.623112] CR2: 00000000ffffffff CR3: 0000000002014000 CR4: 00000000000006a0
+[    0.623757] Stack:
+[    0.623940]  ffff880074d52c40 ffff880077d03b88 ffff880000000003 0000000000000000
+[    0.624648]  0000000000014200 ffff880074e31598 00000000000141c0 0000000100000000
+[    0.625342]  ffff880074e315b0 0000000000000000 ffff880074e31cc8 ffff880074e319e8
+[    0.626036] Call Trace:
+[    0.626262]  <IRQ> 
+[    0.626441]  [<ffffffff815a88a6>] ? cpumask_next_and+0x36/0xc0
+[    0.626981]  [<ffffffff810e4f9e>] load_balance+0x18e/0xa50
+[    0.627488]  [<ffffffff810e672d>] ? update_blocked_averages+0x3cd/0x560
+[    0.628055]  [<ffffffff810e672d>] ? update_blocked_averages+0x3cd/0x560
+[    0.628650]  [<ffffffff810f6f87>] ? __lock_acquire+0x2d7/0x7b0
+[    0.629156]  [<ffffffff811144cc>] ? run_timer_softirq+0x1ac/0x1c0
+[    0.629691]  [<ffffffff810e6a56>] run_rebalance_domains+0x196/0x2d0
+[    0.630244]  [<ffffffff810e68c0>] ? update_blocked_averages+0x560/0x560
+[    0.630815]  [<ffffffff810357c9>] ? kvm_sched_clock_read+0x9/0x20
+[    0.631376]  [<ffffffff810b5c30>] __do_softirq+0xd0/0x200
+[    0.631837]  [<ffffffff810b5e5d>] irq_exit+0x7d/0x90
+[    0.632292]  [<ffffffff8102f351>] smp_apic_timer_interrupt+0x41/0x50
+[    0.632837]  [<ffffffff81be8a04>] apic_timer_interrupt+0x84/0x90
+[    0.633359]  <EOI> 
+[    0.633538]  [<ffffffff81035b56>] ? native_safe_halt+0x6/0x10
+[    0.634065]  [<ffffffff81021dd9>] default_idle+0x9/0x10
+[    0.634526]  [<ffffffff81021dca>] arch_cpu_idle+0xa/0x10
+[    0.634991]  [<ffffffff810ef3d9>] default_idle_call+0x29/0x40
+[    0.635522]  [<ffffffff810ef5ef>] cpu_startup_entry+0x1af/0x290
+[    0.636030]  [<ffffffff8102de41>] start_secondary+0x151/0x1b0
+[    0.636547] Code: ff ff 4c 8b 85 70 fe ff ff 4a 8b 7c 00 08 48 39 fe 48 0f 47 f7 e9 3c ff ff ff 48 8b 95 78 fe ff ff 48 8b 73 08 48 8b 42 10 31 d2 <8b> 48 04 48 89 f0 48 c1 e0 0a 48 f7 f1 48 89 4b 20 8b 4b 30 85 
+[    0.638977] RIP  [<ffffffff810e461a>] find_busiest_group+0x24a/0xa40
+[    0.639564]  RSP <ffff880077d03b38>
+[    0.639875] general protection fault: 0000 [#2] SMP DEBUG_PAGEALLOC
+[    0.639877] ---[ end trace 6f915ce721c74334 ]---
+[    0.639881] Kernel panic - not syncing: Fatal exception in interrupt

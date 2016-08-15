@@ -1,0 +1,74 @@
+[   29.068888] Write protecting the kernel read-only data: 26624k
+[   29.090806] Freeing unused kernel memory: 1360K (ffff8800020ac000 - ffff880002200000)
+[   29.142301] Freeing unused kernel memory: 1056K (ffff8800028f8000 - ffff880002a00000)
+[  135.072505] INFO: rcu_sched self-detected stall on CPU
+[  135.075862] Task dump for CPU 0:
+[  135.076437] swapper/0       R  running task    25256     1      0 0x00000008
+[  135.077728]  0000000000000000 ffff880019607d88 ffffffff811c8972 ffffffff811c8613
+[  135.079114]  ffff880019607d48 ffffffff00000010 0000000041b58ab3 ffffffff826f09be
+[  135.080495]  ffffffff811c83c0 ffff880000000000 0000000000000002 ffffffff82c1d898
+[  135.102924] Call Trace:
+[  135.103360]  <IRQ>  [<ffffffff811c8972>] sched_show_task+0x5b2/0x5f0
+[  135.104582]  [<ffffffff811c8613>] ? sched_show_task+0x253/0x5f0
+[  135.105645]  [<ffffffff811c83c0>] ? SyS_sched_rr_get_interval+0x470/0x470
+[  135.106805]  [<ffffffff8142d30f>] ? rcu_dump_cpu_stacks+0x85/0x353
+[  135.107856]  [<ffffffff811d07f0>] dump_cpu_task+0x90/0xa0
+[  135.108803]  [<ffffffff8142d4d5>] rcu_dump_cpu_stacks+0x24b/0x353
+[  135.109876]  [<ffffffff8180fd63>] ? _find_next_bit+0x153/0x170
+[  135.110922]  [<ffffffff812a40b3>] rcu_check_callbacks+0xd53/0x2500
+[  135.111986]  [<ffffffff8138c4d2>] ? time_hardirqs_off+0x332/0x360
+[  135.113031]  [<ffffffff812b9c6d>] update_process_times+0x4d/0xb0
+[  135.135106]  [<ffffffff812ea3d2>] tick_nohz_handler+0x212/0x310
+[  135.136141]  [<ffffffff810a40d6>] local_apic_timer_interrupt+0xb6/0xd0
+[  135.146284]  [<ffffffff820a8635>] smp_apic_timer_interrupt+0xa5/0xd0
+[  135.147421]  [<ffffffff820a70a9>] apic_timer_interrupt+0x89/0x90
+[  135.148484]  <EOI>  [<ffffffff810e4299>] ? note_page+0x249/0xe90
+[  135.149577]  [<ffffffff810e5425>] ptdump_walk_pgd_level_core+0x545/0x830
+[  135.150788]  [<ffffffff810e4ee0>] ? note_page+0xe90/0xe90
+[  135.151739]  [<ffffffff810e5774>] ptdump_walk_pgd_level_checkwx+0x24/0x30
+[  135.152894]  [<ffffffff810ca4c4>] mark_rodata_ro+0x1a4/0x1c0
+[  135.153887]  [<ffffffff8209217d>] kernel_init+0x5d/0x250
+[  135.154810]  [<ffffffff820a66ef>] ret_from_fork+0x1f/0x40
+[  135.155755]  [<ffffffff82092120>] ? rest_init+0x250/0x250
+[  246.602311] INFO: task rcu_perf_writer:48 blocked for more than 120 seconds.
+[  246.603656]       Not tainted 4.8.0-rc1 #1
+[  246.604354] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+[  246.605689] rcu_perf_writer D ffff8800120c7908 29544    48      2 0x00000000
+[  246.606974]  ffff8800120c7908 ffff88001f1db057 ffffed0003e3b60b 00000000022309c9
+[  246.608307]  ffffffff8404b800 ffff8800199e0370 ffff8800199e0398 ffff8800199dfa98
+[  246.609725]  ffff8800123dd190 ffff8800123de540 ffff8800123dcc00 ffff8800120c0000
+[  246.611034] Call Trace:
+[  246.611489]  [<ffffffff8209802f>] schedule+0x7f/0xc0
+[  246.612352]  [<ffffffff820a31f7>] schedule_timeout+0x97/0xd00
+[  246.613303]  [<ffffffff810c4245>] ? kvm_sched_clock_read+0x35/0x60
+[  246.614353]  [<ffffffff8106c481>] ? sched_clock+0x11/0x20
+[  246.615263]  [<ffffffff820a3160>] ? usleep_range+0x140/0x140
+[  246.616249]  [<ffffffff81221f40>] ? __lock_acquired+0x580/0xcc0
+[  246.617260]  [<ffffffff8138c0d0>] ? time_hardirqs_on+0x2c0/0x390
+[  246.618305]  [<ffffffff820a576c>] ? _raw_spin_unlock_irq+0x4c/0x80
+[  246.619407]  [<ffffffff82099847>] wait_for_common+0x307/0x410
+[  246.620391]  [<ffffffff82099540>] ? out_of_line_wait_on_atomic_t+0x210/0x210
+[  246.621549]  [<ffffffff811bd800>] ? try_to_wake_up+0x13b0/0x13b0
+[  246.622615]  [<ffffffff8121e92d>] ? lockdep_init_map+0x53d/0x6d0
+[  246.623630]  [<ffffffff82099aa5>] wait_for_completion+0x25/0x30
+[  246.624635]  [<ffffffff81283ce9>] __wait_rcu_gp+0x1c9/0x1f0
+[  246.644657]  [<ffffffff812975ca>] synchronize_sched+0x21a/0x260
+[  246.645734]  [<ffffffff812973b0>] ? synchronize_rcu_bh+0x260/0x260
+[  246.646806]  [<ffffffff8129b2d0>] ? __call_rcu+0x12a0/0x12a0
+[  246.647945]  [<ffffffff81283af0>] ? rcu_read_lock_sched_held+0x200/0x200
+[  246.649091]  [<ffffffff820995ec>] ? wait_for_common+0xac/0x410
+[  246.650094]  [<ffffffff812cde7b>] ? ktime_get_mono_fast_ns+0x1db/0x210
+[  246.651171]  [<ffffffff81288361>] synchronize_rcu+0x11/0x20
+[  246.652117]  [<ffffffff81288921>] rcu_perf_writer+0x381/0x700
+[  246.653113]  [<ffffffff812885a0>] ? rcu_perf_wait_shutdown+0x130/0x130
+[  246.654183]  [<ffffffff81192a31>] ? __kthread_parkme+0xd1/0x250
+[  246.655155]  [<ffffffff811940c9>] kthread+0x2d9/0x300
+[  246.668138]  [<ffffffff812885a0>] ? rcu_perf_wait_shutdown+0x130/0x130
+[  246.669218]  [<ffffffff81193df0>] ? kthread_stop+0x970/0x970
+[  246.670163]  [<ffffffff811b0a29>] ? finish_task_switch+0x499/0x5e0
+[  246.671180]  [<ffffffff820a66ef>] ret_from_fork+0x1f/0x40
+[  246.672077]  [<ffffffff81193df0>] ? kthread_stop+0x970/0x970
+[  246.673029] no locks held by rcu_perf_writer/48.
+[  272.911066] x86/mm: Checked W+X mappings: passed, no W+X pages found.
+[  275.775681] rcu-perf:rcu_perf_writer 1 has 100 measurements
+[  275.792297] rcu-perf:rcu_perf_writer 0 has 100 measurements

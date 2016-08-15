@@ -1,0 +1,36 @@
+[  334.389994] tasks,processes,processes_idle,threads,threads_idle,linear
+[  334.390280] 0,0,100,0,100,0
+[  334.390575] 1,13724134,87.22,13819317,87.27,13819317
+[  334.390692] BUG: sleeping function called from invalid context at kernel/irq/manage.c:110
+[  334.390693] in_atomic(): 1, irqs_disabled(): 1, pid: 329, name: sed
+[  334.390694] CPU: 6 PID: 329 Comm: sed Not tainted 4.8.0-rc1 #2
+[  334.390694] Hardware name:                  /DZ77BH-55K, BIOS BHZ7710H.86A.0097.2012.1228.1346 12/28/2012
+[  334.390696]  0000000000000000 ffff8803db3cfab8 ffffffff813b0249 ffff88040039cb80
+[  334.390696]  000000000000006e ffff8803db3cfad0 ffffffff810ae8e4 ffffffff81c95340
+[  334.390697]  ffff8803db3cfaf8 ffffffff810ae979 ffff8803ff615400 ffff8803ddb2c868
+[  334.390697] Call Trace:
+[  334.390701]  [<ffffffff813b0249>] dump_stack+0x63/0x8a
+[  334.390702]  [<ffffffff810ae8e4>] ___might_sleep+0xd4/0x120
+[  334.390703]  [<ffffffff810ae979>] __might_sleep+0x49/0x80
+[  334.390704]  [<ffffffff810e4098>] synchronize_irq+0x38/0xa0
+[  334.390705]  [<ffffffff810e37de>] ? __irq_put_desc_unlock+0x1e/0x40
+[  334.390706]  [<ffffffff810e4343>] ? __disable_irq_nosync+0x43/0x60
+[  334.390707]  [<ffffffff810e438c>] disable_irq+0x1c/0x20
+[  334.390709]  [<ffffffff815abc82>] e1000_netpoll+0xf2/0x120
+[  334.390711]  [<ffffffff81759a7c>] netpoll_poll_dev+0x5c/0x1a0
+[  334.390712]  [<ffffffff81722361>] ? __kmalloc_reserve+0x31/0x90
+[  334.390713]  [<ffffffff81759d2b>] netpoll_send_skb_on_dev+0x16b/0x250
+[  334.390714]  [<ffffffff8175a0fc>] netpoll_send_udp+0x2ec/0x450
+[  334.390717]  [<ffffffffa0030b62>] write_msg+0xb2/0xf0 [netconsole]
+[  334.390718]  [<ffffffff810e0204>] call_console_drivers+0xf4/0x100
+[  334.390719]  [<ffffffff810e1cff>] console_unlock+0x3ff/0x610
+[  334.390720]  [<ffffffff8100327e>] ? exit_to_usermode_loop+0x9e/0xd0
+[  334.390721]  [<ffffffff810e21dc>] vprintk_emit+0x2cc/0x510
+[  334.390722]  [<ffffffff8118e708>] printk_emit+0x33/0x3b
+[  334.390723]  [<ffffffff810e2548>] devkmsg_write+0xf8/0x150
+[  334.390725]  [<ffffffff8133fce8>] ? __inode_security_revalidate+0x68/0x80
+[  334.390727]  [<ffffffff8121dcc7>] __vfs_write+0xc7/0x140
+[  334.390728]  [<ffffffff8121e335>] vfs_write+0xb5/0x1a0
+[  334.390729]  [<ffffffff8121f676>] SyS_write+0x46/0xa0
+[  334.390730]  [<ffffffff818852b2>] entry_SYSCALL_64_fastpath+0x1a/0xa4
+[  334.415826] 4,50972149,49.68,52078480,49.73,55277268

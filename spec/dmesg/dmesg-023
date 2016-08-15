@@ -1,0 +1,45 @@
+[    0.427306] x86: Booted up 1 node, 4 CPUs
+[    0.427799] smpboot: Total of 4 processors activated (21556.90 BogoMIPS)
+[    0.440853] ==================================================================
+[    0.440853] BUG: KASAN: slab-out-of-bounds in copy_from_user+0x3e/0x6a at addr ffff880064d1ef80
+[    0.440853] Write of size 9 by task kdevtmpfs/27
+[    0.440853] CPU: 1 PID: 27 Comm: kdevtmpfs Not tainted 4.8.0-rc1 #1
+[    0.440853] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[    0.440853]  0000000000000001 ffff88006478fc28 ffffffff81435715 ffff880000098100
+[    0.440853]  ffff880064d1efa0 ffff88006478fc58 ffffffff812b7942 0000000000000000
+[    0.440853]  ffffed000c9a3df1 ffff880064d1ef80 ffff880000098100 ffff88006478fce8
+[    0.440853] Call Trace:
+[    0.440853]  [<ffffffff81435715>] dump_stack+0xd6/0x116
+[    0.440853]  [<ffffffff812b7942>] kasan_object_err+0x31/0xcb
+[    0.440853]  [<ffffffff812b7f6b>] kasan_report+0x497/0x72a
+[    0.440853]  [<ffffffff8126bd30>] ? strndup_user+0x92/0xee
+[    0.440853]  [<ffffffff812b6414>] check_memory_region+0x1a3/0x1b5
+[    0.440853]  [<ffffffff812b6686>] kasan_check_write+0x22/0x2b
+[    0.440853]  [<ffffffff8126b8c7>] copy_from_user+0x3e/0x6a
+[    0.440853]  [<ffffffff8126bc49>] memdup_user+0x6e/0xc3
+[    0.440853]  [<ffffffff8126bd30>] strndup_user+0x92/0xee
+[    0.440853]  [<ffffffff8225f845>] ? _raw_spin_unlock+0x3d/0x56
+[    0.440853]  [<ffffffff81310c65>] copy_mount_string+0x28/0x31
+[    0.440853]  [<ffffffff81312a73>] SyS_mount+0x2f/0x145
+[    0.440853]  [<ffffffff81bbb89a>] ? handle_create+0x367/0x367
+[    0.440853]  [<ffffffff81bbb922>] devtmpfsd+0x88/0x245
+[    0.440853]  [<ffffffff8112b865>] kthread+0x142/0x151
+[    0.440853]  [<ffffffff82260aff>] ret_from_fork+0x1f/0x40
+[    0.440853]  [<ffffffff8112b723>] ? freezing+0x68/0x68
+[    0.440853] Object at ffff880064d1ef80, in cache kmalloc-32 size: 32
+[    0.440853] Allocated:
+[    0.440853] PID = 27
+[    0.440853]  [<ffffffff8103f6b4>] save_stack_trace+0x33/0x74
+[    0.440853]  [<ffffffff812b64e4>] save_stack+0x3e/0xfe
+[    0.440853]  [<ffffffff812b6ce8>] kasan_kmalloc+0xce/0xe7
+[    0.440853]  [<ffffffff812b3813>] __kmalloc_track_caller+0x1e4/0x21d
+[    0.440853]  [<ffffffff8126bc0f>] memdup_user+0x34/0xc3
+[    0.440853]  [<ffffffff8126bd30>] strndup_user+0x92/0xee
+[    0.440853]  [<ffffffff81310c65>] copy_mount_string+0x28/0x31
+[    0.440853]  [<ffffffff81312a73>] SyS_mount+0x2f/0x145
+[    0.440853]  [<ffffffff81bbb922>] devtmpfsd+0x88/0x245
+[    0.440853]  [<ffffffff8112b865>] kthread+0x142/0x151
+[    0.440853]  [<ffffffff82260aff>] ret_from_fork+0x1f/0x40
+[    0.440853] Freed:
+[    0.440853] PID = 0
+[    0.440853] (stack is not available)

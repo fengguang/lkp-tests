@@ -1,0 +1,56 @@
+[    0.350413] devtmpfs: initialized
+[    0.351598] x86/mm: Memory block size: 128MB
+[    0.373607] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604462750000 ns
+[    0.410012] general protection fault: 0000 [#1] SMP
+[    0.410691] CPU: 2 PID: 0 Comm: swapper/2 Not tainted 4.8.0-rc1 #471
+[    0.411528] task: ffff8800002d0340 task.stack: ffff8800002d4000
+[    0.412324] RIP: 0010:[<ffffffff810fe412>]  [<ffffffff810fe412>] find_busiest_group+0x252/0x8a0
+[    0.413488] RSP: 0000:ffff880078903ad8  EFLAGS: 00010246
+[    0.414287] RAX: 6b6b6b6b6b6b6b6b RBX: ffff880078903be8 RCX: 0000000000000005
+[    0.415231] RDX: 0000000000000000 RSI: 000000000000000e RDI: ffff880000097d18
+[    0.416221] RBP: ffff880078903c68 R08: 0000000000000005 R09: a56b6b6b6b6b6b6b
+[    0.420000] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000015400
+[    0.420000] R13: 0000000000015400 R14: ffff880078903cd8 R15: 0000000000000000
+[    0.420000] FS:  0000000000000000(0000) GS:ffff880078900000(0000) knlGS:0000000000000000
+[    0.420000] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    0.420000] CR2: 00000000ffffffff CR3: 0000000002206000 CR4: 00000000000006a0
+[    0.420000] Stack:
+[    0.420000]  ffff8800002d0340 ffff880078903b28 ffff880078903b88 ffffffff00000003
+[    0.420000]  0000000078903b38 0000000000015440 00ff880078903b38 ffff880000097d00
+[    0.420000]  0000000100000096 ffff880000097d18 ffff880000097e80 ffff880000097060
+[    0.420000] Call Trace:
+[    0.420000]  <IRQ> 
+[    0.420000]  [<ffffffff810f7c0a>] ? sched_clock_cpu+0x11a/0x120
+[    0.420000]  [<ffffffff810fec3e>] load_balance+0x1de/0x900
+[    0.420000]  [<ffffffff811024c7>] ? update_blocked_averages+0x527/0x700
+[    0.420000]  [<ffffffff81102c10>] ? pick_next_task_fair+0x1c0/0x1c0
+[    0.420000]  [<ffffffff8102cbc8>] ? pvclock_clocksource_read+0x98/0x120
+[    0.420000]  [<ffffffff811194eb>] ? do_raw_spin_lock+0x10b/0x130
+[    0.420000]  [<ffffffff81102da5>] rebalance_domains+0x195/0x2d0
+[    0.420000]  [<ffffffff81102c10>] ? pick_next_task_fair+0x1c0/0x1c0
+[    0.420000]  [<ffffffff81102f0a>] run_rebalance_domains+0x2a/0x30
+[    0.420000]  [<ffffffff810c64fb>] __do_softirq+0x1ab/0x450
+[    0.420000]  [<ffffffff81139949>] ? update_process_times+0x59/0x70
+[    0.420000]  [<ffffffff8114c3ef>] ? tick_periodic+0x2f/0xc0
+[    0.420000]  [<ffffffff8114c4a9>] ? tick_handle_periodic+0x29/0x70
+[    0.420000]  [<ffffffff810c689d>] irq_exit+0x7d/0x90
+[    0.420000]  [<ffffffff810237b6>] smp_apic_timer_interrupt+0x46/0x60
+[    0.420000]  [<ffffffff81bb4d2f>] apic_timer_interrupt+0x7f/0x90
+[    0.420000]  <EOI> 
+[    0.420000]  [<ffffffff8102bce6>] ? native_safe_halt+0x6/0x10
+[    0.420000]  [<ffffffff81132984>] ? rcu_eqs_exit_common+0x54/0x160
+[    0.420000]  [<ffffffff81012b89>] default_idle+0x59/0x140
+[    0.420000]  [<ffffffff81133b6b>] ? T.1762+0xdb/0xe0
+[    0.420000]  [<ffffffff8101225f>] arch_cpu_idle+0xf/0x20
+[    0.420000]  [<ffffffff8110b1c8>] default_idle_call+0x58/0x60
+[    0.420000]  [<ffffffff8110b347>] cpuidle_idle_call+0x177/0x1c0
+[    0.420000]  [<ffffffff8110b57d>] cpu_idle_loop+0x1ed/0x2b0
+[    0.420000]  [<ffffffff810f3a00>] ? wake_up_state+0x10/0x20
+[    0.420000]  [<ffffffff8110b661>] cpu_startup_entry+0x21/0x30
+[    0.420000]  [<ffffffff81021669>] start_secondary+0xf9/0x100
+[    0.420000] Code: c4 fe ff 85 c0 8b 8d 88 fe ff ff 0f 84 f1 fe ff ff 83 43 34 01 e9 e8 fe ff ff 48 8b 95 a8 fe ff ff 48 8b 73 08 48 8b 42 10 31 d2 <8b> 48 04 48 89 f0 48 c1 e0 0a 48 f7 f1 48 89 4b 20 8b 4b 30 85 
+[    0.420000] RIP  [<ffffffff810fe412>] find_busiest_group+0x252/0x8a0
+[    0.420000]  RSP <ffff880078903ad8>
+[    0.420000] general protection fault: 0000 [#2] SMP
+[    0.420005] ---[ end trace fa7e4206b6f9a620 ]---
+[    0.420007] Kernel panic - not syncing: Fatal exception in interrupt

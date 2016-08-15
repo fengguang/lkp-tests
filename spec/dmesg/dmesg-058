@@ -1,0 +1,37 @@
+[   51.528695] flags: 0x100000000004018(uptodate|dirty|head)
+[   51.529437] page dumped because: VM_BUG_ON_PAGE(compound && !PageTransHuge(page))
+[   51.530415] ------------[ cut here ]------------
+[   51.531037] kernel BUG at mm/rmap.c:1306!
+[   51.531805] invalid opcode: 0000 [#1] SMP
+[   51.532349] Modules linked in: snd_pcsp
+[   51.533086] CPU: 2 PID: 3946 Comm: hugemmap01 Not tainted 4.8.0-rc1 #1
+[   51.533925] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[   51.535486] task: ffff88007c44d340 task.stack: ffff88007c404000
+[   51.536690] RIP: 0010:[<ffffffff811d105d>]  [<ffffffff811d105d>] page_remove_rmap+0x33/0xb3
+[   51.538694] RSP: 0018:ffff88007c407ce8  EFLAGS: 00010296
+[   51.539832] RAX: ffff88006b7575f0 RBX: ffffea0000a50000 RCX: 0000000000000000
+[   51.541179] RDX: 0000000000000000 RSI: ffff88006cfcce88 RDI: ffff88006cfcce88
+[   51.542522] RBP: ffff88007c407cf0 R08: 0000000000000001 R09: 0000000000000000
+[   51.543866] R10: ffff88007c407c68 R11: ffffffff83671a87 R12: ffff88007c407e08
+[   51.545213] R13: ffffffff836e5e20 R14: ffff88007d579658 R15: ffff88007d5e2e80
+[   51.546565] FS:  00007fe77aaa5700(0000) GS:ffff88006ce00000(0000) knlGS:0000000000000000
+[   51.548450] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   51.549631] CR2: 00007fe77aaab000 CR3: 000000007c705000 CR4: 00000000000006e0
+[   51.550982] Stack:
+[   51.551728]  ffff88007c131b40 ffff88007c407d68 ffffffff811dffdf 80000000294000e7
+[   51.553838]  0000000000200000 0000000000000000 00007fe77a200000 00007fe77a000000
+[   51.555934]  ffff88007c5a2290 ffffea0000a50000 00007fe77a000000 ffff88007c5a2290
+[   51.558030] Call Trace:
+[   51.558825]  [<ffffffff811dffdf>] __unmap_hugepage_range+0x207/0x2be
+[   51.560082]  [<ffffffff811e00a8>] __unmap_hugepage_range_final+0x12/0x1d
+[   51.561381]  [<ffffffff811c5c90>] unmap_single_vma+0x97/0xcb
+[   51.562556]  [<ffffffff811c5f4b>] unmap_vmas+0x56/0x83
+[   51.563670]  [<ffffffff811cb11d>] unmap_region+0xb2/0xff
+[   51.564804]  [<ffffffff811cd2ca>] do_munmap+0x269/0x2eb
+[   51.565929]  [<ffffffff811cd39f>] SyS_munmap+0x53/0x6c
+[   51.567047]  [<ffffffff81ce8d3c>] entry_SYSCALL_64_fastpath+0x1f/0xbd
+[   51.568314] Code: e5 53 48 8b 57 20 48 89 fb 48 8d 42 ff 80 e2 01 48 0f 44 c7 f6 40 08 01 75 68 40 84 f6 74 0e 48 c7 c6 be db 21 82 e8 a9 0d ff ff <0f> 0b e8 90 c6 00 00 85 c0 74 06 f0 ff 4b 48 eb 6c f0 83 43 18 
+[   51.576576] RIP  [<ffffffff811d105d>] page_remove_rmap+0x33/0xb3
+[   51.577863]  RSP <ffff88007c407ce8>
+[   51.578927] ---[ end trace 1eef36c8b31fd9d2 ]---
+[   51.580132] Kernel panic - not syncing: Fatal exception

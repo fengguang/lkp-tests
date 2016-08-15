@@ -1,0 +1,38 @@
+[    9.032916] OF: /testcase-data/phandle-tests/consumer-a: arguments longer than property
+[    9.035631] irq: no irq domain found for /testcase-data/interrupts/intc0 !
+[    9.040055] ### dt-test ### end of unittest - 129 passed, 0 failed
+[    9.041802] genirq: Flags mismatch irq 4. 00000000 (serial) vs. 00000080 (goldfish_pdev_bus)
+[    9.044293] Freeing unused kernel memory: 748K (c1f61000 - c201c000)
+[    9.045719] Write protecting the kernel text: 11416k
+[    9.047199] Write protecting the kernel read-only data: 3564k
+[    9.049260] genirq: Flags mismatch irq 4. 00000000 (serial) vs. 00000080 (goldfish_pdev_bus)
+[    9.051907] genirq: Flags mismatch irq 4. 00000000 (serial) vs. 00000080 (goldfish_pdev_bus)
+[    9.054735] genirq: Flags mismatch irq 4. 00000000 (serial) vs. 00000080 (goldfish_pdev_bus)
+[    9.057361] genirq: Flags mismatch irq 4. 00000000 (serial) vs. 00000080 (goldfish_pdev_bus)
+[    9.059993] genirq: Flags mismatch irq 4. 00000000 (serial) vs. 00000080 (goldfish_pdev_bus)
+[    9.063319] genirq: Flags mismatch irq 4. 00000000 (serial) vs. 00000080 (goldfish_pdev_bus)
+[    9.066126] genirq: Flags mismatch irq 4. 00000000 (serial) vs. 00000080 (goldfish_pdev_bus)
+[    9.069958] genirq: Flags mismatch irq 4. 00000000 (serial) vs. 00000080 (goldfish_pdev_bus)
+[    9.075523] genirq: Flags mismatch irq 4. 00000000 (serial) vs. 00000080 (goldfish_pdev_bus)
+[    9.083473] genirq: Flags mismatch irq 4. 00000000 (serial) vs. 00000080 (goldfish_pdev_bus)
+[    9.096137] genirq: Flags mismatch irq 4. 00000000 (serial) vs. 00000080 (goldfish_pdev_bus)
+[    9.594430] ------------[ cut here ]------------
+[    9.597652] WARNING: CPU: 0 PID: 361 at arch/x86/include/asm/fpu/internal.h:534 fpu__restore+0xd3/0x140
+[    9.600375] CPU: 0 PID: 361 Comm: network.sh Not tainted 4.8.0-rc1 #1
+[    9.601859] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[    9.604237]  00000286 00000286 cd5f1e70 c13fceff 00000000 c1d6ebc0 cd5f1e88 c104bd49
+[    9.606809]  00000216 ce7ddfc0 ce7dda40 ce7de240 cd5f1e9c c104bdd1 00000009 00000000
+[    9.609264]  00000000 cd5f1eb0 c101fe23 cd5f1eb0 00000000 ce7de240 cd5f1f48 c1020de6
+[    9.611686] Call Trace:
+[    9.612621]  [<c13fceff>] dump_stack+0x58/0x79
+[    9.613754]  [<c104bd49>] __warn+0xb9/0xd0
+[    9.614829]  [<c104bdd1>] warn_slowpath_null+0x11/0x20
+[    9.616200]  [<c101fe23>] fpu__restore+0xd3/0x140
+[    9.617335]  [<c1020de6>] __fpu__restore_sig+0x276/0x520
+[    9.618528]  [<c102132a>] fpu__restore_sig+0x2a/0x50
+[    9.619880]  [<c1016cd0>] restore_sigcontext+0xd0/0xf0
+[    9.621166]  [<c10175e4>] sys_sigreturn+0x94/0xa0
+[    9.622442]  [<c100100f>] do_int80_syscall_32+0x3f/0xa0
+[    9.623715]  [<c1b2366a>] entry_INT80_32+0x2a/0x2a
+[    9.624989] ---[ end trace 6539c82ee8c17181 ]---
+[   10.121027] genirq: Flags mismatch irq 4. 00000000 (serial) vs. 00000080 (goldfish_pdev_bus)

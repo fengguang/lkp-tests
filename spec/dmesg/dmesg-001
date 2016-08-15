@@ -1,0 +1,49 @@
+procd: Instance uhttpd::instance1 s in a crash loop 6 crashes, 0 seconds since last crash
+procd: Instance dnsmasq::instance1 s in a crash loop 6 crashes, 0 seconds since last crash
+[   81.050657] warning: process `trinity-c0' used the deprecated sysctl system call with 
+[   88.458154] 01-cpu-hotplug invoked oom-killer: gfp_mask=0x27080c0(GFP_KERNEL_ACCOUNT|__GFP_ZERO|__GFP_NOTRACK), order=0, oom_score_adj=0
+[   88.460408] CPU: 0 PID: 1067 Comm: 01-cpu-hotplug Not tainted 4.8.0-rc1 #28
+[   88.461318] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[   88.462409]  00000000 bc61be20 bc61bd4c b1351f32 bc61bd94 b1121980 b18389d8 bcdd31ec
+[   88.463447]  027080c0 bc61be2c 00000000 00000000 bc61bd7c b15d1a98 b1a80c40 b15eaee4
+[   88.464499]  bc61bd94 b1356acc 00000202 bbad8320 bbad8000 000000dd bc61bdb8 b10d8393
+[   88.465638] Call Trace:
+[   88.465926]  [<b1351f32>] dump_stack+0x16/0x18
+[   88.466453]  [<b1121980>] dump_header+0x3d/0x2c6
+[   88.467075]  [<b15d1a98>] ? _raw_spin_unlock_irqrestore+0x75/0x82
+[   88.467910]  [<b1356acc>] ? ___ratelimit+0xdd/0xe7
+[   88.468523]  [<b10d8393>] oom_kill_process+0x64/0x3ab
+[   88.469122]  [<b10d89d8>] out_of_memory+0x293/0x2ad
+[   88.469724]  [<b10dd3ec>] __alloc_pages_nodemask+0xb2f/0xc32
+[   88.470400]  [<b10dd632>] __get_free_pages+0x36/0x4e
+[   88.470989]  [<b10242fb>] pgd_alloc+0x16/0x9d
+[   88.471509]  [<b1031404>] mm_init+0x103/0x134
+[   88.472127]  [<b103241e>] copy_process+0xa47/0x16bc
+[   88.472788]  [<b1033215>] _do_fork+0xb5/0x5e7
+[   88.473306]  [<b135d403>] ? _copy_to_user+0x93/0x9f
+[   88.473887]  [<b1140d7e>] ? fd_install+0x1a/0x1d
+[   88.474441]  [<b112c9e4>] ? SyS_pipe2+0x90/0x99
+[   88.475052]  [<b10337b3>] SyS_clone+0x19/0x1b
+[   88.475612]  [<b10016f0>] do_int80_syscall_32+0x72/0x19a
+[   88.476289]  [<b15d243c>] entry_INT80_32+0x2c/0x2c
+[   88.489561] Mem-Info:
+[   88.490135] active_anon:14135 inactive_anon:27804 isolated_anon:0
+[   88.490135]  active_file:20 inactive_file:20 isolated_file:0
+[   88.490135]  unevictable:10546 dirty:0 writeback:0 unstable:0
+[   88.490135]  slab_reclaimable:4597 slab_unreclaimable:1754
+[   88.490135]  mapped:13204 shmem:40980 pagetables:53 bounce:0
+[   88.490135]  free:469 free_pcp:64 free_cma:0
+[   88.496358] Node 0 active_anon:56540kB inactive_anon:111216kB active_file:80kB inactive_file:80kB unevictable:42184kB isolated(anon):0kB isolated(file):0kB mapped:52816kB dirty:0kB writeback:0kB shmem:163920kB writeback_tmp:0kB unstable:0kB pages_scanned:0 all_unreclaimable? no
+[   88.527509] Normal free:1884kB min:1920kB low:2400kB high:2880kB active_anon:56540kB inactive_anon:111216kB active_file:80kB inactive_file:80kB unevictable:42184kB writepending:0kB present:261624kB managed:239500kB mlocked:0kB slab_reclaimable:18388kB slab_unreclaimable:7016kB kernel_stack:536kB pagetables:212kB bounce:0kB free_pcp:256kB local_pcp:256kB free_cma:0kB
+[   88.533165] lowmem_reserve[]: 0 0 0
+[   88.533678] Normal: 159*4kB (UME) 156*8kB (UE) 0*16kB 0*32kB 0*64kB 0*128kB 0*256kB 0*512kB 0*1024kB 0*2048kB 0*4096kB = 1884kB
+[   88.535354] Node 0 hugepages_total=0 hugepages_free=0 hugepages_surp=0 hugepages_size=4096kB
+[   88.536734] 51566 total pagecache pages
+[   88.547442] 0 pages in swap cache
+[   88.547828] Swap cache stats: add 0, delete 0, find 0/0
+[   88.548382] Free swap  = 0kB
+[   88.548710] Total swap = 0kB
+[   88.549036] 65406 pages RAM
+[   88.549351] 0 pages HighMem/MovableOnly
+[   88.549809] 5531 pages reserved
+[   88.550164] 0 pages cma reserved

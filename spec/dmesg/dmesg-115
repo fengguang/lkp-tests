@@ -1,0 +1,39 @@
+[   17.063111] user_verbs: couldn't register device number
+[   17.064142] ucm: couldn't register device number
+[   17.068964] CHRDEV "hfi1" major number 224 goes below the dynamic allocation range
+[   17.070650] general protection fault: 0000 [#1] PREEMPT SMP
+[   17.071693] CPU: 1 PID: 1 Comm: swapper/0 Not tainted 4.8.0-rc1 #73
+[   17.072796] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[   17.074526] task: ffff90b69453c000 task.stack: ffff90b694540000
+[   17.075591] RIP: 0010:[<ffffffffa0f913db>]  [<ffffffffa0f913db>] init_real_cpu_mask+0x4f/0x115
+[   17.077384] RSP: 0000:ffff90b694543de8  EFLAGS: 00010246
+[   17.078390] RAX: 0000ffff00000100 RBX: 000000000000a108 RCX: 0000000000000000
+[   17.079575] RDX: 0000000000000040 RSI: 0000000000000040 RDI: ffffffffa2a55038
+[   17.082131] RBP: ffff90b694543e08 R08: 0000000000000040 R09: ffffffffa304b5e0
+[   17.083328] R10: 00000000000000ba R11: ffff90b686319080 R12: 0000000000000002
+[   17.084518] R13: ffffffffa3794838 R14: ffffffffa3d916f8 R15: ffff90b6949d79d8
+[   17.085713] FS:  0000000000000000(0000) GS:ffff90b694a00000(0000) knlGS:0000000000000000
+[   17.087362] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   17.088405] CR2: 00000000ffffffff CR3: 000000000b416000 CR4: 00000000000006a0
+[   17.089594] Stack:
+[   17.090240]  ffffffffa1b38d70 00000000ffffffff 0000000080000000 ffffffffa3d916f8
+[   17.092117]  ffff90b694543e28 ffffffffa0f91f2f ffffffffa3cbbc2d 0000000000000000
+[   17.093983]  ffff90b694543e48 ffffffffa3cbbc60 00000000ffffffff ffffffffa3cbbc2d
+[   17.095852] Call Trace:
+[   17.096550]  [<ffffffffa0f91f2f>] node_affinity_init+0x85/0xf4
+[   17.097604]  [<ffffffffa3cbbc2d>] ? dev_init+0x17a/0x17a
+[   17.098600]  [<ffffffffa3cbbc60>] hfi1_mod_init+0x33/0x2f3
+[   17.109197]  [<ffffffffa3cbbc2d>] ? dev_init+0x17a/0x17a
+[   17.110224]  [<ffffffffa3bf8c84>] do_one_initcall+0xa2/0x218
+[   17.111260]  [<ffffffffa3bf8f93>] do_basic_setup+0xa7/0xca
+[   17.112281]  [<ffffffffa3bf92a0>] ? kernel_init_freeable+0x2ea/0x2ea
+[   17.113396]  [<ffffffffa3bf91e0>] kernel_init_freeable+0x22a/0x2ea
+[   17.114496]  [<ffffffffa157d4ca>] ? kernel_init+0x9/0x171
+[   17.115507]  [<ffffffffa157d4ca>] kernel_init+0x9/0x171
+[   17.116498]  [<ffffffffa158deaf>] ret_from_fork+0x1f/0x40
+[   17.117504]  [<ffffffffa157d4c1>] ? rest_init+0x168/0x168
+[   17.118512] Code: a2 41 55 49 c7 c5 38 48 79 a3 41 54 49 89 c4 53 48 c7 c3 08 a1 00 00 e8 f0 56 de fe 89 c0 be 40 00 00 00 48 8b 04 c5 50 3e a1 a3 <48> 8b 3c 18 31 db e8 6a 21 e3 fe 48 c7 c7 30 50 a5 a2 49 89 c6 
+[   17.126230] RIP  [<ffffffffa0f913db>] init_real_cpu_mask+0x4f/0x115
+[   17.127402]  RSP <ffff90b694543de8>
+[   17.128281] ---[ end trace b879c2b7ebd761a7 ]---
+[   17.129242] Kernel panic - not syncing: Fatal exception

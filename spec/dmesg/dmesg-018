@@ -1,0 +1,34 @@
+[child1:446] finit_module (313) returned ENOSYS, marking as inactive.
+[child0:445] lookup_dcookie (212) returned ENOSYS, marking as inactive.
+[watchdog] Watchdog is alive. (pid:432)
+[  111.628064] rb_consumer: page allocation failure: order:0, mode:0x24010c0(GFP_KERNEL|__GFP_NORETRY)
+[  111.629607] CPU: 0 PID: 54 Comm: rb_consumer Not tainted 4.8.0-rc1 #127
+[  111.630678] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[  111.631825] trinity-c1 invoked oom-killer: gfp_mask=0x24200ca(GFP_HIGHUSER_MOVABLE), order=0, oom_score_adj=500
+[  111.633377]  0000000000000001 ffff880012267a88 ffffffff81ba28d9 ffff880012267a58
+[  111.651525]  ffffffff81bb094d ffffffff833eea80 0000000000000000 0000000000000001
+[  111.652676]  ffff880012267c78 0000000000000000 00000000024010c0 ffff880012267b18
+[  111.653828] Call Trace:
+[  111.654259]  [<ffffffff81ba28d9>] dump_stack+0x197/0x25e
+[  111.655028]  [<ffffffff81bb094d>] ? ___ratelimit+0x2bd/0x2f0
+[  111.655863]  [<ffffffff81342ddb>] warn_alloc_failed+0x20b/0x240
+[  111.656734]  [<ffffffff8262b64f>] ? _cond_resched+0x2f/0x70
+[  111.657541]  [<ffffffff81342bb2>] ? __perform_reclaim+0xe2/0x100
+[  111.658399]  [<ffffffff813504b6>] __alloc_pages_slowpath+0x1d56/0x1df0
+[  111.659332]  [<ffffffff81188353>] ? finish_task_switch+0x3d3/0x550
+[  111.660219]  [<ffffffff8134e503>] ? get_page_from_freelist+0x483/0x530
+[  111.661233]  [<ffffffff813509fa>] __alloc_pages_nodemask+0x4aa/0xa30
+[  111.662156]  [<ffffffff8129b4b5>] ring_buffer_alloc_read_page+0x45/0xd0
+[  111.663100]  [<ffffffff812a3589>] read_page+0x29/0x640
+[  111.663843]  [<ffffffff8262baea>] ? schedule+0x1da/0x200
+[  111.677643]  [<ffffffff812a3c83>] ring_buffer_consumer+0xe3/0x3c0
+[  111.678520]  [<ffffffff812a3f60>] ? ring_buffer_consumer+0x3c0/0x3c0
+[  111.679427]  [<ffffffff812a3fa9>] ring_buffer_consumer_thread+0x49/0x130
+[  111.680383]  [<ffffffff81175dd1>] kthread+0x181/0x1a0
+[  111.681110]  [<ffffffff81188d7d>] ? schedule_tail+0x4d/0x180
+[  111.681921]  [<ffffffff8263a5cf>] ret_from_fork+0x1f/0x40
+[  111.682697]  [<ffffffff81175c50>] ? __init_kthread_worker+0x90/0x90
+[  111.683752] Mem-Info:
+[child1:446] delete_module (176) returned ENOSYS, marking as inactive.
+[main] Random reseed: 2530751814
+[main] Random reseed: 3797905854

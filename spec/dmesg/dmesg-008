@@ -1,0 +1,53 @@
+[  458.629571] rbtree testing -> 460135 cycles
+[  482.381374] augmented rbtree testingNMI watchdog: BUG: soft lockup - CPU#0 stuck for 23s! [swapper:1]
+[  510.271829] CPU: 0 PID: 1 Comm: swapper Not tainted 4.8.0-rc1 #131
+[  510.300508] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[  510.343932] task: ffff8800002a2000 task.stack: ffff8800002a4000
+[  510.369402] RIP: 0010:[<ffffffff8132969a>]  [<ffffffff8132969a>] insert_augmented+0x34/0x8e
+[  510.409943] RSP: 0000:ffff8800002a7e60  EFLAGS: 00000207
+[  510.438809] RAX: ffffffff84ab99b0 RBX: 0000000000000cf8 RCX: ffffffff84ab8d18
+[  510.469249] RDX: ffffffff84ab93a0 RSI: 0000000037a4cce9 RDI: 00000000ea05a45b
+[  510.504078] RBP: ffff8800002a7e60 R08: ffffffff84ab8d10 R09: ffffffff84ab9be9
+[  510.531433] R10: ffff8800002a7dd0 R11: ffffffff83941a27 R12: ffffffff84ab8ce0
+[  510.570059] R13: 0000014491a869d2 R14: 000000000000633d R15: ffffffff84ab9c80
+[  510.597054] FS:  0000000000000000(0000) GS:ffffffff82659000(0000) knlGS:0000000000000000
+[  510.641224] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  510.662325] CR2: 0000000000000000 CR3: 000000000260c000 CR4: 00000000000006b0
+[  510.695920] Stack:
+[  510.703248]  ffff8800002a7e98 ffffffff82df1977 ffffffff82df1777 00000000ffffffff
+[  510.738987]  0000000000000000 cccccccccccccccd ffff8800002a83d0 ffff8800002a7f08
+[  510.777201]  ffffffff82db4794 0000000000000000 ffff8800002a25b8 0000000000000000
+[  510.810120] Call Trace:
+[  510.822824]  [<ffffffff82df1977>] rbtree_test_init+0x200/0x317
+[  510.846774]  [<ffffffff82df1777>] ? irq_poll_setup+0x43/0x43
+[  510.874673]  [<ffffffff82db4794>] do_one_initcall+0xcf/0x1dc
+[  510.904976]  [<ffffffff82db4a95>] kernel_init_freeable+0x1f4/0x2ea
+[  510.929964]  [<ffffffff81b7a556>] kernel_init+0x10/0x199
+[  510.952996]  [<ffffffff81b833bf>] ret_from_fork+0x1f/0x40
+[  510.978532]  [<ffffffff81b7a546>] ? rest_init+0x14d/0x14d
+[  511.002487] Code: 45 31 c0 48 c7 c1 80 9c ab 84 48 89 e5 48 8b 11 48 85 d2 74 2f 48 ff 05 a5 ef 78 03 3b 72 1c 76 0a 48 ff 05 89 ef 78 03 89 72 1c <3b> 7a f8 48 8d 4a 10 72 0b 48 ff 05 7e ef 78 03 48 8d 4a 08 49 
+[  511.119241] Kernel panic - not syncing: softlockup: hung tasks
+[  511.145071] CPU: 0 PID: 1 Comm: swapper Tainted: G             L  4.8.0-rc1 #131
+[  511.168024] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[  511.208524]  0000000000000000 ffffffff8265ce50 ffffffff812ea8f6 ffffffff8265ced0
+[  511.233060]  ffffffff8119a2b6 ffff880000000008 ffffffff8265cee0 ffffffff8265ce78
+[  511.270102]  0000000000000000 00000000ffffffff 0000000000000000 0000000000000000
+[  511.297123] Call Trace:
+[  511.310996]  <IRQ>  [<ffffffff812ea8f6>] dump_stack+0x2e/0x3e
+[  511.335402]  [<ffffffff8119a2b6>] panic+0x134/0x354
+[  511.355516]  [<ffffffff8115d973>] watchdog_timer_fn+0x245/0x271
+[  511.384777]  [<ffffffff8115d72e>] ? watchdog+0x4a/0x4a
+[  511.408503]  [<ffffffff811364f8>] __hrtimer_run_queues+0x21e/0x40b
+[  511.443979]  [<ffffffff81137205>] hrtimer_interrupt+0xb3/0x210
+[  511.470235]  [<ffffffff8103b8a4>] local_apic_timer_interrupt+0x59/0x62
+[  511.501019]  [<ffffffff8103c176>] smp_apic_timer_interrupt+0x2b/0x48
+[  511.532060]  [<ffffffff81b83c12>] apic_timer_interrupt+0x82/0x90
+[  511.562077]  <EOI>  [<ffffffff8132969a>] ? insert_augmented+0x34/0x8e
+[  511.596393]  [<ffffffff82df1977>] rbtree_test_init+0x200/0x317
+[  511.623937]  [<ffffffff82df1777>] ? irq_poll_setup+0x43/0x43
+[  511.650700]  [<ffffffff82db4794>] do_one_initcall+0xcf/0x1dc
+[  511.677087]  [<ffffffff82db4a95>] kernel_init_freeable+0x1f4/0x2ea
+[  511.701694]  [<ffffffff81b7a556>] kernel_init+0x10/0x199
+[  511.737236]  [<ffffffff81b833bf>] ret_from_fork+0x1f/0x40
+[  511.758757]  [<ffffffff81b7a546>] ? rest_init+0x14d/0x14d
+[  511.772661] Kernel Offset: disabled

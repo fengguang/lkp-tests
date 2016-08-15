@@ -1,0 +1,25 @@
+[  193.258572] OF: /testcase-data/phandle-tests/consumer-a: arguments longer than property
+[  193.268101] irq: no irq domain found for /testcase-data/interrupts/intc0 !
+[  193.356895] ==================================================================
+[  193.358264] BUG: KASAN: slab-out-of-bounds in of_device_uevent+0x210/0x420 at addr ffff880012230f89
+[  193.359848] Read of size 1 by task swapper/1
+[  193.360633] CPU: 0 PID: 1 Comm: swapper Not tainted 4.8.0-rc1 #135
+[  193.361722] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[  193.363265]  ffff880012230f80 ffff880012a2f2e8 ffffffff81a7b858 ffff880012a2f310
+[  193.364655]  ffffffff8137614c ffffed00024461f1 ffff880012230f80 0000000000000002
+[  193.366009]  ffff880012a2f3a0 ffffffff81376650 ffff880012a2f3c0 ffff880012a2f358
+[  193.367375] Call Trace:
+[  193.367874]  [<ffffffff81a7b858>] dump_stack+0x1e/0x26
+[  193.368826]  [<ffffffff8137614c>] kasan_object_err+0x1c/0x90
+[  193.369778]  [<ffffffff81376650>] kasan_report+0x3e0/0x5f0
+[  193.370663]  [<ffffffff82c575f0>] ? of_device_uevent+0x210/0x420
+[  193.371696]  [<ffffffff82c50b58>] ? of_find_property+0x48/0x60
+[  193.372706]  [<ffffffff81375cc5>] __asan_load1+0x45/0x50
+[  193.373636]  [<ffffffff82c575f0>] of_device_uevent+0x210/0x420
+[  193.374636]  [<ffffffff81a95aff>] ? string+0x14f/0x160
+[  193.375535]  [<ffffffff82c573e0>] ? of_device_get_modalias+0x480/0x480
+[  193.376651]  [<ffffffff81a9a434>] ? vsnprintf+0xe54/0xe90
+[  193.377600]  [<ffffffff825ece2b>] dev_uevent+0x3bb/0x6e0
+[  193.378519]  [<ffffffff81a995e0>] ? num_to_str+0x1a0/0x1a0
+[  193.379457]  [<ffffffff825eca70>] ? device_get_devnode+0x3f0/0x3f0
+[  193.380681]  [<ffffffff8116a5f4>] ? __lock_is_held+0x64/0x80
