@@ -1,6 +1,8 @@
 <%=
 	case ___
 	when 'JBOD'
+	when /^raid[456]$/
+		"need_kconfig: CONFIG_MD_RAID456"
 	else
 		"need_kconfig: CONFIG_MD_#{___.upcase}"
 	end
