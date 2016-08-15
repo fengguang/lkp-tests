@@ -115,8 +115,28 @@ end
 
 # "grep -B1 | grep -v" to get the functions called by them,
 # which will hopefully be stable and representive.
-CALLTRACE_PATTERN = '(do_one_initcall|kthread|kernel_thread|process_one_work|notifier_call_chain|SyS_[a-z0-9_]+|init_[a-z0-9_]+|[a-z0-9_]+_init)\\+0x'
-CALLTRACE_IGNORE  = '(do_one_initcall|kthread|kernel_thread|process_one_work|notifier_call_chain|worker_thread|kernel_init|rest_init|warn_slowpath_.*)\\+0x'
+CALLTRACE_COMMON_CONTEXT = "
+	do_one_initcall|
+	kthread|
+	kernel_thread|
+	process_one_work|
+	notifier_call_chain|
+"
+
+CALLTRACE_PATTERN = /(
+	#{CALLTRACE_COMMON_CONTEXT}
+	SyS_[a-z0-9_]+|
+	init_[a-z0-9_]+|
+	[a-z0-9_]+_init
+)\+0x/x
+
+CALLTRACE_IGNORE_PATTERN  = /(
+	#{CALLTRACE_COMMON_CONTEXT}
+	worker_thread|
+	kernel_init|
+	rest_init|
+	warn_slowpath_.*
+)\+0x/x
 
 OOM1='invoked oom-killer: gfp_mask='
 OOM2='Out of memory and no killable processes...'
@@ -138,14 +158,12 @@ def grep_crash_head(dmesg_file)
 	oops_map = {}
 
 	oops_re = load_regular_expressions("#{LKP_SRC}/etc/oops-pattern")
-	calltrace_re = Regexp.new CALLTRACE_PATTERN
-	calltrace_ignore_re = Regexp.new CALLTRACE_IGNORE
 	prev_line = nil
 	has_oom = false
 
 	add_one_calltrace = lambda do |line|
 		break if has_oom
-		break if line =~ calltrace_ignore_re
+		break if line =~ CALLTRACE_IGNORE_PATTERN
 		break unless line =~ />\] ([a-zA-Z0-9_.]+)\+0x[0-9a-fx\/]+/
 		oops_map["calltrace:" + $1] ||= line
 	end
@@ -165,7 +183,7 @@ def grep_crash_head(dmesg_file)
 				next
 			end
 
-			if line =~ calltrace_re
+			if line =~ CALLTRACE_PATTERN
 				add_one_calltrace[prev_line]
 				add_one_calltrace[line]
 				prev_line = nil
