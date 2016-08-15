@@ -528,7 +528,11 @@ def show_one_diff(dim, v0, v, v0_stddev, v_stddev, is_float, is_exp, is_fail=fal
 			buf += sprintf ":%-#{ERR_WIDTH-2}d", v_stddev
 		else
 			v_stddev = 100 * v_stddev / v if v != 0
-			buf += sprintf " ±%#{ERR_WIDTH-3}d%%", v_stddev
+			if v_stddev > 3
+				buf += sprintf " ±%#{ERR_WIDTH-3}d%%", v_stddev
+			else
+				buf += ' ' * ERR_WIDTH
+			end
 		end
 	else
 		buf += ' ' * ERR_WIDTH
