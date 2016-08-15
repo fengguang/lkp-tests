@@ -1,2 +1,7 @@
 url: https://android.googlesource.com/kernel/common
+fetch_tags: true
+belongs_to: chrome-os
+notify_build_success_branch: .*
+build_mail_to: cros-kernel-buildreports@googlegroups.com
+mail_to: cros-kernel-buildreports@googlegroups.com
 mail_cc: Guenter Roeck <groeck@google.com>
