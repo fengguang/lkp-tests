@@ -40,18 +40,7 @@ while line = STDIN.gets
 	end
 end
 
-$all_results = []
-$all_func_results = []
-
-def add_results
-	$all_results	  << $results		if $results and !$results.empty?
-	$all_func_results << $func_results	if $func_results and !$func_results.empty?
-
-	$results = Hash.new(0)
-	$func_results = []
-end
-
-add_results
+$results = Hash.new(0)
 
 while line = STDIN.gets
 	line.chomp!
@@ -69,14 +58,13 @@ while line = STDIN.gets
 	     /^# Samples: \d+[KMG ] of event /
 
 		$cur_event = $'.gsub(':', '-').gsub('\'', '')
-		add_results
 
 	# 93.48%    93.48%  [kernel.kallsyms]   [k] clear_page_c_e
 	when /^\s*(\d+\.\d+)%\s+(\d+\.\d+)%\s+\S+\s+\S+\s+(\S+)\s*$/
 
 		symbol = fixup_symbol_name $3
-		$func_results << ["children.#{$cur_event}.#{symbol}", $1.to_f]
-		$func_results << ["self.#{$cur_event}.#{symbol}", $2.to_f]
+		$results['children.' + "#{$cur_event}.#{symbol}"] = $1.to_f
+		$results['self.'     + "#{$cur_event}.#{symbol}"] = $2.to_f
 
 	# 0.10% entry_SYSCALL_64_fastpath;__write_nocancel;run_builtin;main;__libc_start_main
 	when /^(\d+\.\d+)%\s+(\S+)$/
@@ -92,16 +80,9 @@ while line = STDIN.gets
 	end
 end
 
-add_results
-
-$all_results.each { |results|
-	results.sort_by{|_, v| -v}.each do |record,percent|
-		puts record + ": " + format("%.2f", percent) if percent >= 0.0001
-	end
-}
-
-$all_func_results.each { |results|
-	results.sort_by { |_, v| -v }.each { |record, percent|
-		puts "#{record}: #{format("%.2f", percent)}" if percent >= 0.05
-	}
+$results.sort_by { |k, v|
+	fields = k.split '.'
+	[ fields[1], fields[0], -v ]
+}.each { |record, percent|
+	puts "#{record}: #{format("%.2f", percent)}" if percent >= 0.05
 }
