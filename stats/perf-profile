@@ -45,51 +45,47 @@ while line = STDIN.gets
 end
 
 $all_results = []
-$results = Hash.new(0)
 $all_func_results = []
-$func_results = []
 
-loop do
-	# break on current-segment-end
-	if line == nil
-		# need restore the last result of event
-		$all_results << $results unless $results.empty?
-		$all_func_results << $func_results unless $func_results.empty?
-		break
-	end
-	if line =~ /^\# Events: \d+[KMG ]\s+/ or line =~ /^# Samples: \d+[KMG ] of event /
-		$cur_event = $'.gsub(':', '-').gsub('\'', '').chomp
-		$all_results << $results unless $results.empty?
-		$results = Hash.new(0)
-		$all_func_results << $func_results unless $func_results.empty?
-		$func_results = []
-	end
+def add_results
+	$all_results	  << $results		if $results and !$results.empty?
+	$all_func_results << $func_results	if $func_results and !$func_results.empty?
 
-	# For function result as:
-	# 93.48%    93.48%  [kernel.kallsyms]   [k] clear_page_c_e
-	if line =~ /^\s*\d+\.\d+%\s+(\d+\.\d+)%\s+\S+\s+\S+\s+(\S+)\s*$/
-		$func_results << ["#{$cur_event}.#{$2}", $1.to_f]
-		line = STDIN.gets
-		next
-	end
-
-	# Wait for new record as:
-	# 0.10% entry_SYSCALL_64_fastpath;__write_nocancel;run_builtin;main;__libc_start_main
-	unless line =~ /^(\d+\.\d+)%\s+(\S+)$/
-		line = STDIN.gets
-		next
-	end
-
-	# base_percent  is like 0.10
-	# symbol_name is like entry_SYSCALL_64_fastpath.__write_nocancel.run_builtin;main.__libc_start_main
-	base_percent  = $1.to_f / 100
-	# We only record max 5 leves of call stack
-	function_names = $2.split(';')[0, 5]
-	symbol_name = $cur_event + "." + function_names.join('.')
-	$results[symbol_name] += base_percent
-
-	line = STDIN.gets
+	$results = Hash.new(0)
+	$func_results = []
 end
+
+add_results
+
+while line = STDIN.gets
+	line.chomp!
+
+	case line
+	when /^\# Events: \d+[KMG ]\s+/,
+	     /^# Samples: \d+[KMG ] of event /
+
+		$cur_event = $'.gsub(':', '-').gsub('\'', '')
+		add_results
+
+	# 93.48%    93.48%  [kernel.kallsyms]   [k] clear_page_c_e
+	when /^\s*\d+\.\d+%\s+(\d+\.\d+)%\s+\S+\s+\S+\s+(\S+)\s*$/
+		$func_results << ["#{$cur_event}.#{$2}", $1.to_f]
+
+	# 0.10% entry_SYSCALL_64_fastpath;__write_nocancel;run_builtin;main;__libc_start_main
+	when /^(\d+\.\d+)%\s+(\S+)$/
+
+		# base_percent  is like 0.10
+		# symbol_name is like entry_SYSCALL_64_fastpath.__write_nocancel.run_builtin;main.__libc_start_main
+		base_percent  = $1.to_f / 100
+
+		# We only record max 5 leves of call stack
+		function_names = $2.split(';')[0, 5]
+		symbol_name = $cur_event + "." + function_names.join('.')
+		$results[symbol_name] += base_percent
+	end
+end
+
+add_results
 
 $all_results.each { |results|
 	results.sort_by{|_, v| -v}.each do |record,percent|
