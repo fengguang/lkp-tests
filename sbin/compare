@@ -483,7 +483,7 @@ def setup_dims()
 	}
 end
 
-def show_one_diff(dim, v0, v, v0_stddev, v_stddev, is_float, is_exp, is_fail=false)
+def show_one_diff(stat, dim, v0, v, v0_stddev, v_stddev, is_float, is_exp, is_fail=false)
 	if dim == $first_dim
 		buf = ''
 	else
@@ -496,6 +496,8 @@ def show_one_diff(dim, v0, v, v0_stddev, v_stddev, is_float, is_exp, is_fail=fal
 		end
 		if is_fail
 			buf = sprintf "%#{REL_WIDTH-2}.0f%% ", p
+		elsif stat =~ ABS_CHANGE_STATS_RE
+			buf = sprintf "%#{REL_WIDTH-1}.0g ", v - v0
 		elsif p.abs < 3
 			buf = sprintf ' ' * REL_WIDTH
 		elsif p.abs < 100000
@@ -592,7 +594,7 @@ def show_header(is_fail)
 		printf '       fail:runs' + '  %%reproduction    fail:runs' * nr_headers + "\n"
 		printf '           |    ' + '         |             |    ' * nr_headers + "\n"
 	else
-		printf '         %%stddev' + '     %%change         %%stddev' * nr_headers + "\n"
+		printf '         %%stddev' + '      change         %%stddev' * nr_headers + "\n"
 		printf '             \  ' + '        |                \  ' * nr_headers + "\n"
 	end
 	$header_shown[is_fail] = true
@@ -673,7 +675,7 @@ def show_delta(stat, key_g)
 		$dims.each { |dim, v|
 			v, v_stddev = get_v_and_stddev value, dim, is_fail
 
-			show_one_diff dim, v0, v, v0_stddev, v_stddev, is_float, is_exp, is_fail
+			show_one_diff stat, dim, v0, v, v0_stddev, v_stddev, is_float, is_exp, is_fail
 			if is_fail
 				$sum[dim] += v
 			else
@@ -708,7 +710,7 @@ def show_delta(stat, key_g)
 		v0 = $sum[$first_dim]
 		v0_stddev = $stddev[$first_dim]
 		$sum.each { |dim, v|
-			show_one_diff dim, v0, v, v0_stddev, $stddev[dim], is_float, is_exp, is_fail
+			show_one_diff stat, dim, v0, v, v0_stddev, $stddev[dim], is_float, is_exp, is_fail
 		}
 		if is_fail
 			puts "TOTAL #{$opt_field}"
