@@ -15,6 +15,10 @@
 #
 exit unless STDIN.gets =~ /^# ========$| --header/
 
+def fixup_symbol_name(symbol)
+	symbol.gsub /\.(isra|constprop|part)\.[0-9]+/, ''
+end
+
 # Bypass lines before cs records:
 #   ... <BYPASS> ...
 #   # Events: 342  context-switches
@@ -70,8 +74,9 @@ while line = STDIN.gets
 	# 93.48%    93.48%  [kernel.kallsyms]   [k] clear_page_c_e
 	when /^\s*(\d+\.\d+)%\s+(\d+\.\d+)%\s+\S+\s+\S+\s+(\S+)\s*$/
 
-		$func_results << ["children.#{$cur_event}.#{$3}", $1.to_f]
-		$func_results << ["self.#{$cur_event}.#{$3}", $2.to_f]
+		symbol = fixup_symbol_name $3
+		$func_results << ["children.#{$cur_event}.#{symbol}", $1.to_f]
+		$func_results << ["self.#{$cur_event}.#{symbol}", $2.to_f]
 
 	# 0.10% entry_SYSCALL_64_fastpath;__write_nocancel;run_builtin;main;__libc_start_main
 	when /^(\d+\.\d+)%\s+(\S+)$/
@@ -81,7 +86,7 @@ while line = STDIN.gets
 		base_percent  = $1.to_f
 
 		# We only record max 5 leves of call stack
-		function_names = $2.split(';')[0, 5]
+		function_names = $2.split(';')[0, 5].map { |s| fixup_symbol_name s }
 		symbol_name = "calltrace.#{$cur_event}.#{function_names.join('.')}"
 		$results[symbol_name] += base_percent
 	end
