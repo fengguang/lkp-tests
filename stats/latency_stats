@@ -3,7 +3,7 @@
 $hits	= Hash.new { |hash, key| hash[key] = 0 }
 $sum	= Hash.new { |hash, key| hash[key] = 0 }
 $max	= Hash.new { |hash, key| hash[key] = 0 }
-
+$top	= Hash.new { |hash, key| hash[key] = 0 }
 
 STDIN.each_line do |line|
 	case line
@@ -18,9 +18,18 @@ STDIN.each_line do |line|
 	end
 end
 
+def show_one(funcs, k, v)
+	puts "#{k}.#{funcs}: #{v}"
+	$top[k] = v if $top[k] < v
+end
+
 $hits.each_pair { |funcs, hits|
-	puts "hits.#{funcs}: #{hits}"
-	puts "sum.#{funcs}: #{$sum[funcs]}"
-	puts "avg.#{funcs}: #{$sum[funcs] / hits}"
-	puts "max.#{funcs}: #{$max[funcs]}"
+	show_one funcs, 'hits', hits
+	show_one funcs, 'sum', $sum[funcs]
+	show_one funcs, 'avg', $sum[funcs] / hits
+	show_one funcs, 'max', $max[funcs]
+}
+
+$top.each { |k, v|
+	puts "#{k}.max: #{v}"
 }
