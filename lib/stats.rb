@@ -98,7 +98,13 @@ end
 
 def is_changed_stats(sorted_a, min_a, mean_a, max_a,
 		     sorted_b, min_b, mean_b, max_b,
-		     is_failure_stat, is_latency_stat, options)
+		     is_failure_stat, is_latency_stat,
+		     stat, options)
+
+	if options['perf-profile'] and stat =~ /^perf-profile\./
+		return	mean_a > options['perf-profile'] ||
+			mean_b > options['perf-profile']
+	end
 
 	if is_failure_stat
 		return max_a != max_b
@@ -477,7 +483,8 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
 
 		next unless is_changed_stats(sorted_a, min_a, mean_a, max_a,
 					     sorted_b, min_b, mean_b, max_b,
-					     is_failure_stat, is_latency_stat, options)
+					     is_failure_stat, is_latency_stat,
+					     k, options)
 
 		if options['regression-only']
 			if is_failure_stat

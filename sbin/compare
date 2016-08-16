@@ -31,7 +31,7 @@ $opt_dimension = 'commit'
 $opt_field = 'vmstat.cpu.sy'
 $opt_grep  = Array.new
 $opt_vgrep = Array.new
-$options = {}
+$options = {'perf-profile' => 5}
 
 $project = 'linux'
 
