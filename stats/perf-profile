@@ -68,8 +68,10 @@ while line = STDIN.gets
 		add_results
 
 	# 93.48%    93.48%  [kernel.kallsyms]   [k] clear_page_c_e
-	when /^\s*\d+\.\d+%\s+(\d+\.\d+)%\s+\S+\s+\S+\s+(\S+)\s*$/
-		$func_results << ["#{$cur_event}.#{$2}", $1.to_f]
+	when /^\s*(\d+\.\d+)%\s+(\d+\.\d+)%\s+\S+\s+\S+\s+(\S+)\s*$/
+
+		$func_results << ["children.#{$cur_event}.#{$3}", $1.to_f]
+		$func_results << ["self.#{$cur_event}.#{$3}", $2.to_f]
 
 	# 0.10% entry_SYSCALL_64_fastpath;__write_nocancel;run_builtin;main;__libc_start_main
 	when /^(\d+\.\d+)%\s+(\S+)$/
@@ -80,7 +82,7 @@ while line = STDIN.gets
 
 		# We only record max 5 leves of call stack
 		function_names = $2.split(';')[0, 5]
-		symbol_name = $cur_event + "." + function_names.join('.')
+		symbol_name = "calltrace.#{$cur_event}.#{function_names.join('.')}"
 		$results[symbol_name] += base_percent
 	end
 end
@@ -95,6 +97,6 @@ $all_results.each { |results|
 
 $all_func_results.each { |results|
 	results.sort_by { |_, v| -v }.each { |record, percent|
-		puts "func.#{record}: #{format("%.2f", percent)}" if percent >= 0.05
+		puts "#{record}: #{format("%.2f", percent)}" if percent >= 0.05
 	}
 }
