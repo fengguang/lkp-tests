@@ -63,8 +63,8 @@ while line = STDIN.gets
 	when /^\s*(\d+\.\d+)%\s+(\d+\.\d+)%\s+\S+\s+\S+\s+(\S+)\s*$/
 
 		symbol = fixup_symbol_name $3
-		$results['children.' + "#{$cur_event}.#{symbol}"] = $1.to_f
-		$results['self.'     + "#{$cur_event}.#{symbol}"] = $2.to_f
+		$results['children.' + "#{$cur_event}.#{symbol}"] += $1.to_f
+		$results['self.'     + "#{$cur_event}.#{symbol}"] += $2.to_f
 
 	# 0.10% entry_SYSCALL_64_fastpath;__write_nocancel;run_builtin;main;__libc_start_main
 	when /^(\d+\.\d+)%\s+(\S+)$/
