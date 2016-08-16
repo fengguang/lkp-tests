@@ -40,14 +40,6 @@ while line = STDIN.gets
 	end
 end
 
-# Bypass lines before record begin:
-#   ... <BYPASS> ...
-#       0.38%  qemu-system-x86  [kernel.kallsyms]         [k] _spin_lock_irqsave
-#
-while line = STDIN.gets
-	break unless line =~ /^\#/
-end
-
 $all_results = []
 $all_func_results = []
 
@@ -65,6 +57,14 @@ while line = STDIN.gets
 	line.chomp!
 
 	case line
+
+	# Bypass lines before record begin:
+	#   ... <BYPASS> ...
+	#       0.38%  qemu-system-x86  [kernel.kallsyms]         [k] _spin_lock_irqsave
+	#
+	when /^\# /
+		next
+
 	when /^\# Events: \d+[KMG ]\s+/,
 	     /^# Samples: \d+[KMG ] of event /
 
