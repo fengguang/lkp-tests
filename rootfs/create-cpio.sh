@@ -7,9 +7,6 @@ INITRD_ROOT=/osimage/debian
 
 cd $distro || exit
 
-[ -d "addon" ]		&& cp -a ../addon/* .
-[ -d "addon-$arch" ]	&& cp -a ../addon-$arch/* .
-
 cpio_file=$distro-$(date +%F).cgz
 
 { find . -xdev; find dev; } |
