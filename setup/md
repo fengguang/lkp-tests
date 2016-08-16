@@ -42,7 +42,12 @@ check_partition_size() {
 check_partition_size $partitions
 
 make_md() {
-	grep -q '^md0 : active' /proc/mdstat && cmd mdadm -q --stop /dev/md0
+	if [ -e /proc/mdstat ]; then
+		grep -q '^md0 : active' /proc/mdstat &&
+		cmd mdadm -q --stop /dev/md0
+	else
+		cmd modprobe md
+	fi
 
 	destroy_devices
 
