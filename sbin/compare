@@ -25,6 +25,8 @@ ERR_WIDTH = 6
 PERF_INDEX_KENREL = 'v3.14'
 PERF_INDEX_KCONFIG = 'x86_64-rhel'
 
+ABS_CHANGE_STATS_RE = /^(perf-profile|latency_stats)/
+
 $opt_dimension = 'commit'
 $opt_field = 'vmstat.cpu.sy'
 $opt_grep  = Array.new
@@ -792,11 +794,28 @@ if $opt_all or $opt_index
 		puts
 		stats = $changed_stats.keys
 	else
-		stats = sort_stats($stat_records)
+		stats = $stat_records.keys
 	end
 
 	setup_stats_priority(stats)
-	stats.sort_by! { |x| [stat_priority(x.split('.')[0]), x.split('.')[1]] }
+	stats.sort_by! do |x|
+		fields = x.split('.')
+
+		record = $stat_records[x].last
+
+		a = record['a'].average
+		b = record['b'].average
+		abs_change = b - a
+		rel_change = abs_change / b
+
+		if x =~ ABS_CHANGE_STATS_RE
+			[ stat_priority(fields[0]), fields[1], abs_change ]
+		elsif fields.size >= 3 and not fields[1] =~ /^node\d+$/
+			[ stat_priority(fields[0]), fields[1], rel_change ]
+		else
+			[ stat_priority(fields[0]), rel_change ]
+		end
+	end
 
 	if $group_by_test
 		$tests.each { |key|
