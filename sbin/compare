@@ -813,7 +813,7 @@ if $opt_all or $opt_index
 		elsif fields.size >= 3 and not fields[1] =~ /^node\d+$/
 			[ stat_priority(fields[0]), fields[1], rel_change ]
 		else
-			[ stat_priority(fields[0]), rel_change ]
+			[ stat_priority(fields[0]), '', rel_change ]
 		end
 	end
 
