@@ -17,7 +17,7 @@ mkdir -p "$pack_to"
 
 update
 
-[[ ! $benchmark || $benchmark = all ]] && benchmark="$(ls $LKP_SRC/distro/depends | grep -v -e Makefile -e '-rootfs' -e '-dev' -e '-whitelist')"
+[[ ! $benchmark || $benchmark = all ]] && benchmark="$(ls $LKP_SRC/distro/depends | grep -v -e '-dev' -e '-whitelist')"
 
 for BM_NAME in $benchmark
 do
