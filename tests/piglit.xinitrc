@@ -21,7 +21,6 @@ fi
 }
 
 tmp_results="$TMP/piglit-results"
-i=0
 
 if [ -s "$LKP_SRC/pack/piglit-addon/groups/broken" ]; then
 	testcases=$(grep -F -x -f $BENCHMARK_ROOT/piglit/groups/$tset-all $config_file | grep -F -x -v -f $LKP_SRC/pack/piglit-addon/groups/broken)
@@ -38,9 +37,8 @@ do
 	elapsed=$(echo $end_time - $start_time | bc)
 	echo "$id: $elapsed"
 	cmd piglit summary console "$tmp_results/results.json.bz2"
-	mv		"$tmp_results"/results.json.bz2 \
-			"$tmp_results"/${i}.json.bz2
-	i=$((i + 1))
+	mv	"$tmp_results"/results.json.bz2 \
+		"$tmp_results"/${testcase//[^A-Za-z0-9_-]/-}.json.bz2
 done <<< "$testcases"
 
 copy-results	$tmp_results/*.json.bz2
