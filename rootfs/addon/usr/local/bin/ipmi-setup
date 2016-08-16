@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# first ensure your machine supports ipmi, then check if exists /dev/ipmi0, if not we must install ipmi driver
+modprobe ipmi_devintf
+modprobe ipmi_si
+
+ip=$1
+[[ $ip ]] || {
+	echo Usage: $0 IP
+	echo
+	echo When finished, please update inn:/etc/ipmi-config
+
+	ipmitool lan print 1
+	ipmitool user list 1
+
+	exit
+}
+
+ping -c 3 $ip && exit
+
+# install all needed packages
+# apt-get install freeipmi ipmitool openipmi
+
+# the first IPMI LAN channel will now be configured
+ipmitool lan set 1 ipsrc static
+
+# the static ip should never conflict with other ips
+ipmitool lan set 1 ipaddr $ip
+ipmitool lan set 1 netmask 255.255.255.0
+ipmitool lan set 1 defgw ipaddr ${ip%.*}.1
+ipmitool lan set 1 arp respond on
+ipmitool lan set 1 auth ADMIN MD5
+
+# enable the access of first LAN channel
+ipmitool lan set 1 access on
+
+#added by bai
+ipmitool user set name 2 root
+
+# set password for user 2 then enable it
+ipmitool user set password 2 'linux123'
+
+#added by bai
+ipmitool channel setaccess 1 2 link=on ipmi=on callin=on privilege=4
+
+ipmitool user enable 2
+ipmitool user list 1
