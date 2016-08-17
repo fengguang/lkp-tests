@@ -149,6 +149,12 @@ check_exit_code()
 	exit "$exit_code"
 }
 
+set_program()
+{
+	program=${1##*/}
+	[ "$program" = 'wrapper' ] && program=$2
+}
+
 run_monitor()
 {
 	"$@"
@@ -156,8 +162,8 @@ run_monitor()
 
 run_setup()
 {
-	local program=${1##*/}
-	[ "$program" = 'wrapper' ] && program=$2
+	local program
+	set_program "$@"
 	"$@"
 	check_exit_code $?
 	read_env_vars
@@ -165,8 +171,8 @@ run_setup()
 
 start_daemon()
 {
-	local program=${1##*/}
-	[ "$program" = 'wrapper' ] && program=$2
+	local program
+	set_program "$@"
 
 	# will be killed by watchdog when timeout
 	echo $$ >> $TMP/pid-start-daemon
@@ -185,8 +191,8 @@ start_daemon()
 
 run_test()
 {
-	local program=${1##*/}
-	[ "$program" = 'wrapper' ] && program=$2
+	local program
+	set_program "$@"
 
 	# wait other nodes may block until watchdog timeout,
 	# it should be able to killed by watchdog
