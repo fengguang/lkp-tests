@@ -26,6 +26,9 @@ setup_wget()
 
 http_get_file()
 {
+	local path="$(dirname "$2")"
+	[ -d "$path" ] || mkdir -p "$path"
+
 	http_do_request "$1" -O "$2"
 }
 

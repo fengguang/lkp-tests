@@ -10,11 +10,17 @@ setup_curl()
 
 http_get_file()
 {
+	local path="$(dirname "$2")"
+	[ -d "$path" ] || mkdir -p "$path"
+
 	http_do_request "$1" -o "$2"
 }
 
 http_get_newer()
 {
+	local path="$(dirname "$2")"
+	[ -d "$path" ] || mkdir -p "$path"
+
 	if [ -s "$2" ]; then
 		http_do_request "$1" -o "$2" -z "$2"
 	else
