@@ -80,9 +80,9 @@ http_setup_client()
 {
 	[ -n "$http_client_cmd" ] && return
 
-	. $LKP_SRC/lib/wget.sh		setup_wget		&& return
-	. $LKP_SRC/lib/curl.sh		setup_curl		&& return
-	. $LKP_SRC/lib/wget_busybox.sh	setup_wget_busybox	&& return
+	. $LKP_SRC/lib/wget.sh	&& return
+	. $LKP_SRC/lib/curl.sh	&& return
+	. $LKP_SRC/lib/wget_busybox.sh	&& return
 
 	echo "Cannot find wget/curl." >&2
 	return 1
