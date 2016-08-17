@@ -43,7 +43,7 @@ def get_program_env(program, env)
 	program_env = {}
 	args = []
 
-	if env == nil
+	if env == nil or @cur_func == :extract_stats
 		return program_env, args
 	end
 
@@ -98,23 +98,6 @@ class Job2sh < Job
 
 	def shell_run_program(tabs, program, env)
 		program_env, args = get_program_env(program, env)
-
-		cmd = create_cmd(program, args)
-		cmd_str = cmd.join ' '
-		cmd_str.gsub!(LKP_SRC, '$LKP_SRC')
-		cmd_str.gsub!(lkp_src, '$LKP_SRC')
-		cmd_str.gsub!(TMP, '$TMP')
-
-		program_env.each { |k, v|
-			exec_line tabs + 'export ' + shell_encode_keyword(k) + "=" + shell_escape_expand(v)
-		}
-		out_line tabs + cmd_str
-		program_env.each { |k, v|
-			exec_line tabs + 'unset ' + shell_encode_keyword(k)
-		}
-	end
-
-	def create_cmd(program, args)
 		program_path = @programs[program] || @monitors[program] || program
 
 		args = [] if program_path.index('/stats/')
@@ -126,25 +109,32 @@ class Job2sh < Job
 			cmd = [ program_path, *args ]
 		end
 
+		cmd.first.gsub!(LKP_SRC, '$LKP_SRC')
+		cmd.first.gsub!(lkp_src, '$LKP_SRC')
+
+		command = []
 		case program_dir
 		when %r{/monitors}
-			cmd = [ "run_monitor", *cmd ]
-			exec_line unless @script_lines[-1] =~ /run_monitor/
+			command << 'run_monitor'
 		when %r{/setup$}
-			cmd = [ "run_setup", *cmd ]
-			exec_line
+			command << 'run_setup'
 		when %r{/daemon$}
-			cmd = [ "start_daemon", *cmd ]
-			exec_line
+			command << 'start_daemon'
 		when %r{/tests$}
-			cmd = [ "run_test", *cmd ]
-			exec_line
+			command << 'run_test'
 			@stats_lines << "\t$LKP_SRC/stats/wrapper time #{program}.time"
 		else
-			exec_line
+			command << 'env' unless program_env.empty?
 		end
 
-		return cmd
+		program_env.each { |k, v|
+			command << shell_encode_keyword(k) + "=" + shell_escape_expand(v)
+		}
+
+		command.concat cmd
+
+		exec_line unless command.first == 'run_monitor' and @script_lines[-1] =~ /run_monitor/
+		out_line tabs + command.join(' ')
 	end
 
 	def parse_one(ancestors, key, val, pass)
