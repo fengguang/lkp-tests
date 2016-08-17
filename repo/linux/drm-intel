@@ -12,5 +12,5 @@ subsystems:
 - i915
 - bxt
 - gen8
-belongs_to: drm
+belongs_to: i915
 blacklist_branch: rerere-cache|maintainer-tools
