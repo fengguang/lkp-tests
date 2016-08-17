@@ -151,8 +151,14 @@ check_exit_code()
 
 set_program()
 {
-	program=${1##*/}
-	[ "$program" = 'wrapper' ] && program=$2
+	local i
+	for i
+	do
+		[ "$i" != "${i#*=}"       ] && continue  # skip env NAME=VALUE
+		[ "$i" != "${i%/wrapper}" ] && continue  # skip $LKP_SRC/**/wrapper
+		program=${i##*/}
+		return
+	done
 }
 
 run_monitor()
