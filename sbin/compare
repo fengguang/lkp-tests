@@ -25,6 +25,9 @@ ERR_WIDTH = 6
 PERF_INDEX_KENREL = 'v3.14'
 PERF_INDEX_KCONFIG = 'x86_64-rhel'
 
+# If a monitor contains various stats with the same logical class of values and
+# hence can be compared with each other, it's a good candidate to show and sort
+# by absolute changes.
 ABS_CHANGE_STATS_RE = /^(perf-profile|latency_stats)/
 
 $opt_dimension = 'commit'
@@ -811,6 +814,8 @@ if $opt_all or $opt_index
 		if x =~ ABS_CHANGE_STATS_RE
 			[ stat_priority(fields[0]), fields[1], abs_change ]
 		elsif fields.size >= 3 and not fields[1] =~ /^node\d+$/
+			# when a monitor can be broken into sub-groups of stats
+			# under which values can be logically compared
 			[ stat_priority(fields[0]), fields[1], rel_change ]
 		else
 			[ stat_priority(fields[0]), '', rel_change ]
