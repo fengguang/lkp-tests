@@ -13,3 +13,4 @@ subsystems:
 - mac80211-hwsim
 - minstrel_ht
 notify_build_success_branch: .*
+belongs_to: 802.11 wireless driver
