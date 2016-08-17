@@ -27,6 +27,7 @@ download_kernel_initrd()
 	set_job_state "wget_kernel"
 	kernel_file=$CACHE_DIR/$kernel
 	http_get_newer "$kernel" $kernel_file || {
+		set_job_state "wget_kernel_fail"
 		echo "failed to download kernel: $kernel" 1>&2
 		exit 1
 	}
@@ -38,6 +39,7 @@ download_kernel_initrd()
 		_initrd=$(echo $_initrd | sed 's/^\///')
 		local file=$CACHE_DIR/$_initrd
 		http_get_newer "$_initrd" $file || {
+			set_job_state "wget_initrd_fail"
 			echo Failed to download $_initrd
 			exit 1
 		}
