@@ -88,8 +88,7 @@ wait_other_nodes()
 	should_wait_cluster || return
 
 	local program_type=$1
-	local program=$2
-	[ "$program_type" = 'test' ] && echo "$program" >> $TMP/executed-test-programs
+	[ "$program_type" = 'test' ] && echo "${*#test }" >> $TMP/executed-test-programs
 
 	mkdir $TMP/wait_other_nodes-once 2>/dev/null || return
 
@@ -149,16 +148,29 @@ check_exit_code()
 	exit "$exit_code"
 }
 
-set_program()
+run_program()
 {
 	local i
+	local has_env=
+
 	for i
 	do
-		[ "$i" != "${i#*=}"       ] && continue  # skip env NAME=VALUE
+		[ "$i" != "${i#*=}"       ] && {	 # skip env NAME=VALUE
+			has_env=1
+			continue
+		}
 		[ "$i" != "${i%/wrapper}" ] && continue  # skip $LKP_SRC/**/wrapper
 		program=${i##*/}
-		return
+		break
 	done
+
+	if [ -n "$has_env" ]; then
+		env "$@"
+	else
+		"$@"
+	fi
+
+	check_exit_code $?
 }
 
 run_monitor()
@@ -169,22 +181,18 @@ run_monitor()
 run_setup()
 {
 	local program
-	set_program "$@"
-	"$@"
-	check_exit_code $?
+	run_program "$@"
 	read_env_vars
 }
 
 start_daemon()
 {
 	local program
-	set_program "$@"
 
 	# will be killed by watchdog when timeout
 	echo $$ >> $TMP/pid-start-daemon
 
-	"$@"
-	check_exit_code $?
+	run_program "$@"
 
 	sync_cluster_state 'finished'
 	# If failed to start the daemon above, the job will abort.
@@ -198,16 +206,14 @@ start_daemon()
 run_test()
 {
 	local program
-	set_program "$@"
 
 	# wait other nodes may block until watchdog timeout,
 	# it should be able to killed by watchdog
 	echo $$ >> $TMP/pid-run-tests
 
-	wait_other_nodes 'test' $program
+	wait_other_nodes 'test' "$@"
 	wakeup_pre_test
-	"$@"
-	check_exit_code $?
+	run_program "$@"
 	sync_cluster_state 'finished'
 }
 
