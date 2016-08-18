@@ -12,4 +12,4 @@ cd $BENCHMARK_ROOT/nuttcp || exit
 [ -z "$server" ] && server=127.0.0.1
 server=${server%% *}
 
-cmd ./nuttcp -T $runtime $server
+log_cmd ./nuttcp -T $runtime $server

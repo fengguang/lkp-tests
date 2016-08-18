@@ -9,4 +9,4 @@
 [ -z "$server" ] && server=127.0.0.1
 server=${server%% *}
 
-cmd tbench $nr_threads $server
+log_cmd tbench $nr_threads $server

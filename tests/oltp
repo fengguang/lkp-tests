@@ -44,12 +44,12 @@ stop_mysql()
 
 prepare()
 {
-	cmd sysbench --test=oltp ${args} prepare
+	log_cmd sysbench --test=oltp ${args} prepare
 }
 
 run()
 {
-	cmd sysbench --test=oltp ${args} run
+	log_cmd sysbench --test=oltp ${args} run
 }
 
 setup_mysql

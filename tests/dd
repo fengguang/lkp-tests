@@ -35,7 +35,7 @@ tt=$(date +%s)
 startup_time=$((tt - t))
 echo "startup_time: $startup_time"
 
-cmd sleep $((runtime > startup_time ? runtime - startup_time : 0))
+log_cmd sleep $((runtime > startup_time ? runtime - startup_time : 0))
 
 t=$(date +%s)
 pkill -9 --exact dd --pidfile $TMP/pid-dd

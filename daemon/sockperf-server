@@ -2,5 +2,5 @@
 
 cd $BENCHMARK_ROOT/sockperf || exit
 
-cmd ./sockperf server &
-cmd ./sockperf server --tcp &
+log_cmd ./sockperf server &
+log_cmd ./sockperf server --tcp &

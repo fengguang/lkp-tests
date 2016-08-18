@@ -8,4 +8,4 @@ cd $BENCHMARK_ROOT/blogbench || {
 	exit 1
 }
 
-cmd ./blogbench -d ${mount_points%% *}
+log_cmd ./blogbench -d ${mount_points%% *}

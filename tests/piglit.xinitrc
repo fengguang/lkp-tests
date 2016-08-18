@@ -31,12 +31,12 @@ fi
 while read testcase
 do
 	start_time=$(date +%s.%N)
-	cmd piglit run $tset -t "$testcase" "$tmp_results"
+	log_cmd piglit run $tset -t "$testcase" "$tmp_results"
 	end_time=$(date +%s.%N)
 	id=$(echo "$testcase" | tr ' ' _).seconds
 	elapsed=$(echo $end_time - $start_time | bc)
 	echo "$id: $elapsed"
-	cmd piglit summary console "$tmp_results/results.json.bz2"
+	log_cmd piglit summary console "$tmp_results/results.json.bz2"
 	mv	"$tmp_results"/results.json.bz2 \
 		"$tmp_results"/${testcase//[^A-Za-z0-9_-]/-}.json.bz2
 done <<< "$testcases"

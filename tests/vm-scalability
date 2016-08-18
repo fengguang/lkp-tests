@@ -57,7 +57,7 @@ if [ -n "$size" ]; then
 	set_repeat_count
 	for i in $(seq $repeat)
 	do
-		cmd "./case-$test"
+		log_cmd "./case-$test"
 		[ "$i" -le "$repeat" ] && {
 			read uptime idletime < /proc/uptime
 			[ "${uptime%.*}" -gt "$((runtime * 3))" ] && {
@@ -67,7 +67,7 @@ if [ -n "$size" ]; then
 		}
 	done
 else
-	cmd "./case-$test"
+	log_cmd "./case-$test"
 fi
 
 if [ "$pre_setup" = "0" ]; then 

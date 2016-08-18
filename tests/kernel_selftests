@@ -40,5 +40,5 @@ for mf in */Makefile; do
 			mount -t efivarfs efivarfs /sys/firmware/efi/efivars
 			;;
 	esac
-	cmd make run_tests -C $subtest -I $linux_headers_dir/include -I $linux_headers_dir/include/uapi
+	log_cmd make run_tests -C $subtest -I $linux_headers_dir/include -I $linux_headers_dir/include/uapi
 done

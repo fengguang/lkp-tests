@@ -18,4 +18,4 @@ cd /auto/benchmarks/glbenchmark2.7.0
 # export DISPLAY=:0
 export vblank_mode=0
 
-cmd ./build_x86_64/binaries/GLBenchmark -w $width -h $height -t $test
+log_cmd ./build_x86_64/binaries/GLBenchmark -w $width -h $height -t $test

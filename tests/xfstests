@@ -39,7 +39,7 @@ set_env()
 
 	note export SCRATCH_MNT=/fs/scratch
 	export SCRATCH_MNT=/fs/scratch
-	cmd mkdir $SCRATCH_MNT -p
+	log_cmd mkdir $SCRATCH_MNT -p
 
 	if [ "$fs" = btrfs ] && [ "$nr_partitions" -ge 4 ]; then
 		note export SCRATCH_DEV_POOL=\"${partitions#* }\"
@@ -92,7 +92,7 @@ run_test()
 		all_tests=$(cd tests && ls $test/[0-9][0-9][0-9] | grep -v -F -f $test_dir/$test-broken)
 	fi
 
-	cmd ./check $all_tests
+	log_cmd ./check $all_tests
 }
 
 export LC_ALL=C

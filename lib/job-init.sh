@@ -5,8 +5,8 @@ mount_cgroup()
 	cgroup_subsys=$(grep -o -f $TMP/availble-cgroup_subsys $job)
 	[ -n "$cgroup_subsys" ] || return
 	cgroup_subsys=$(echo $cgroup_subsys | sed -e 's/\. /,/g' -e 's/\.$//')
-	cmd mkdir -p $CGROUP_MNT
-	cmd mount -t cgroup -o $cgroup_subsys none $CGROUP_MNT
+	log_cmd mkdir -p $CGROUP_MNT
+	log_cmd mount -t cgroup -o $cgroup_subsys none $CGROUP_MNT
 }
 
 validate_result_root()

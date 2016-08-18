@@ -40,10 +40,10 @@ dir=$CGROUP_MNT/$(basename $testcase)/$group
 [ -f "$CGROUP_MNT/tasks" ] || {
 	subsys=$(awk 'NR > 1 {printf $1 ","}' /proc/cgroups)
 	subsys=${subsys%,}
-	cmd mkdir $CGROUP_MNT 2>/dev/null &&
-	cmd mount -t cgroup -o $subsys none $CGROUP_MNT
+	log_cmd mkdir $CGROUP_MNT 2>/dev/null &&
+	log_cmd mount -t cgroup -o $subsys none $CGROUP_MNT
 }
-cmd mkdir -p $dir
+log_cmd mkdir -p $dir
 
 env | grep -F '_46_' |
 while read line

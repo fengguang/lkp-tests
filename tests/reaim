@@ -21,7 +21,7 @@ nr_job=${nr_job:-100}
 
 run_reaim()
 {
-	cmd ./reaim -s$REAIM_STARTUSERS -e$REAIM_ENDUSERS -i$REAIM_INCREMENT -fworkfile.$test \
+	log_cmd ./reaim -s$REAIM_STARTUSERS -e$REAIM_ENDUSERS -i$REAIM_INCREMENT -fworkfile.$test \
 		-r${1:-1} -c./reaim.config -l$TMP_RESULT_ROOT/reaim_debug -j$nr_job |
 		grep -v -e "^NSIG is "
 }
@@ -60,7 +60,7 @@ REAIM_POOLSIZE=1m
 
 # setup workfile
 if [ -f "data/workfile.$test" ]; then
-	cmd cp data/workfile.$test .
+	log_cmd cp data/workfile.$test .
 else
 	# create workfile onlive
 	note "echo 10 $test > workfile.$test"
@@ -71,9 +71,9 @@ fi
 if [ -n "$mount_points" ]; then
 	REAIM_TESTDIR="${mount_points%% *}"
 else
-	cmd mkdir -p /fs/shm
-	cmd umount /fs/shm > /dev/null 2>&1
-	cmd mount -t tmpfs tmpfs /fs/shm
+	log_cmd mkdir -p /fs/shm
+	log_cmd umount /fs/shm > /dev/null 2>&1
+	log_cmd mount -t tmpfs tmpfs /fs/shm
 	REAIM_TESTDIR="/fs/shm"
 fi
 

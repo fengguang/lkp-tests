@@ -10,4 +10,4 @@
 
 mb_proc=$(to_mb $mem_proc)
 
-cmd perf bench numa mem -p $nr_cpu -t $nr_threads -m -0 -P $mb_proc
+log_cmd perf bench numa mem -p $nr_cpu -t $nr_threads -m -0 -P $mb_proc

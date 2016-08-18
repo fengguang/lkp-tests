@@ -14,4 +14,4 @@ segments=${segments%s}
 
 cd $BENCHMARK_ROOT/bust_shm_exit || exit
 
-cmd timeout $runtime ./bust_shm_exit $segments $nr_threads
+log_cmd timeout $runtime ./bust_shm_exit $segments $nr_threads

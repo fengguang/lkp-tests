@@ -13,9 +13,9 @@ run_kbuild()
 	start_time=$(date +%s)
 	iterations=0
 	while true; do
-		cmd make mrproper
-		cmd make $build_kconfig
-		cmd make -j $nr_task vmlinux 2> /dev/null
+		log_cmd make mrproper
+		log_cmd make $build_kconfig
+		log_cmd make -j $nr_task vmlinux 2> /dev/null
 		iterations=$((iterations + 1))
 		now=$(date +%s)
 		[ $((now - start_time)) -gt "$runtime" ] && break

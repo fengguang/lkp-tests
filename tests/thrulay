@@ -13,4 +13,4 @@ export PATH=$BENCHMARK_ROOT/thrulay/sbin:$BENCHMARK_ROOT/thrulay/bin:$PATH
 [ -z "$server" ] && server=127.0.0.1
 server=${server%% *}
 
-cmd thrulay -t $runtime $server
+log_cmd thrulay -t $runtime $server

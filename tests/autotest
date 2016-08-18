@@ -13,7 +13,7 @@ cd $BENCHMARK_ROOT/autotest || exit
 	[ -x "aclocal"	] || ln -s aclocal-* aclocal
 )
 
-cmd client/autotest-local run $test 2>&1 || exit
+log_cmd client/autotest-local run $test 2>&1 || exit
 
 copy-results	$BENCHMARK_ROOT/autotest/client/results/default/status.json \
 		$BENCHMARK_ROOT/autotest/client/results/default/debug/*

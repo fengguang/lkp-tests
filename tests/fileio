@@ -30,7 +30,7 @@ args="
 
 prepare()
 {
-	cmd sysbench --test=fileio ${args} prepare
+	log_cmd sysbench --test=fileio ${args} prepare
 }
 
 prepare_fallocate()
@@ -42,7 +42,7 @@ prepare_fallocate()
 	local filesize="$((size / filenum))"
 	for i in $(seq 0 $((filenum-1)))
 	do
-		cmd fallocate -l $filesize test_file.$i
+		log_cmd fallocate -l $filesize test_file.$i
 	done
 }
 
@@ -50,7 +50,7 @@ run()
 {
 	# permit more files open in system
 	ulimit -n $(($filenum + 2048))
-	cmd sysbench --test=fileio ${args} run
+	log_cmd sysbench --test=fileio ${args} run
 }
 
 note cd "$mount_points"

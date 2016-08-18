@@ -26,7 +26,7 @@ elif [ "$test" = 'fs_readonly' ]; then
 	big_dev_opt="-Z $fs -z $big_dev"
 fi
 
-cmd ./runltp -f $test $big_dev_opt || exit
+log_cmd ./runltp -f $test $big_dev_opt || exit
 
 copy-results	$BENCHMARK_ROOT/ltp/results/* \
 		$BENCHMARK_ROOT/ltp/output/*

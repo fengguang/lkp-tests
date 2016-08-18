@@ -32,4 +32,4 @@ else
 	setup_params
 fi
 
-cmd ./runtest.py $test $duration $mode $threads_to_iterate
+log_cmd ./runtest.py $test $duration $mode $threads_to_iterate

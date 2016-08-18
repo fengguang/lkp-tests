@@ -21,7 +21,7 @@ for mnt in $stack_mount_points
 do
 	fuse_mnt=/fs/fuse/$(basename $mnt)
 	mkdir -p $fuse_mnt
-	cmd /c/fuse/example/fusexmp_fh $options -o modules=subdir,subdir=$mnt $fuse_mnt || exit
+	log_cmd /c/fuse/example/fusexmp_fh $options -o modules=subdir,subdir=$mnt $fuse_mnt || exit
 	fuse_mount_points="${fuse_mount_points}$fuse_mnt "
 done
 

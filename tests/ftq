@@ -16,6 +16,6 @@ cd $BENCHMARK_ROOT/ftq || exit
 
 samples=${samples%%ss}
 
-cmd ./ftq $opt_freq -n $samples $opt_task || exit
+log_cmd ./ftq $opt_freq -n $samples $opt_task || exit
 
 copy-results $BENCHMARK_ROOT/ftq/*.dat

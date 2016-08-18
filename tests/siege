@@ -69,7 +69,7 @@ unique = true
 EOF
 
 for ITER in `seq 1 $iterations`; do
-	cmd siege -q -b -t ${iter_time}s \
+	log_cmd siege -q -b -t ${iter_time}s \
 			-c $nr_threads \
 			http://localhost/siege.html 2>&1
 done

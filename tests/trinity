@@ -14,7 +14,7 @@
 set +m
 
 cd /tmp
-cmd chroot --userspec nobody:nogroup / trinity -q -q -l off -s $seed -x get_robust_list -x remap_file_pages -N 999999999 2>&1 &
+log_cmd chroot --userspec nobody:nogroup / trinity -q -q -l off -s $seed -x get_robust_list -x remap_file_pages -N 999999999 2>&1 &
 
 pid=$!
 sleep $runtime

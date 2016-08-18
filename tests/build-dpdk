@@ -63,7 +63,7 @@ rm -fr "$DPDK_REPO_ROOT" 2>/dev/null
 git_clone_update git://gitmirror/$dpdk_remote $DPDK_REPO_ROOT || die "failed clone dpdk tree $dpdk_remote"
 
 cd $DPDK_REPO_ROOT
-cmd git checkout -q $dpdk_commit || die "failed to checkout dpdk commit $dpdk_commit"
+log_cmd git checkout -q $dpdk_commit || die "failed to checkout dpdk commit $dpdk_commit"
 
 config_file=$LKP_SRC/etc/dpdk-configs/$dpdk_config
 [ -f $config_file ] || config_file=$DPDK_REPO_ROOT/config/defconfig_$dpdk_config

@@ -20,7 +20,7 @@ aim7_setup()
 
 	# setup workfile
 	if [ -f "workfiles/workfile.$test" ]; then
-		cmd cp workfiles/workfile.$test workfile
+		log_cmd cp workfiles/workfile.$test workfile
 	else
 		# create workfile onlive
 		note "cat > workfile <<EOF
@@ -40,9 +40,9 @@ EOF
 		note "echo \"$mount_points\" > config"
 		echo "$mount_points" > config
 	else
-		cmd mkdir -p /fs/shm
-		cmd umount /fs/shm > /dev/null 2>&1
-		cmd mount -t tmpfs /dev/shm /fs/shm
+		log_cmd mkdir -p /fs/shm
+		log_cmd umount /fs/shm > /dev/null 2>&1
+		log_cmd mount -t tmpfs /dev/shm /fs/shm
 		note 'echo "/fs/shm" > config'
 		echo "/fs/shm" > config
 	fi

@@ -10,7 +10,7 @@
 
 run_dbench()
 {
-	cmd dbench $nr_threads -c /usr/share/dbench/client.txt
+	log_cmd dbench $nr_threads -c /usr/share/dbench/client.txt
 }
 
 run_dbench

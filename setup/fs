@@ -56,22 +56,22 @@ start_nfsd()
 	# or mount --bind to a tmpfs nfsv4 export root.
 	#
 	mountpoint -q /export || {
-		cmd mkdir /export
-		cmd mount -t tmpfs 'nfsv4_root_export' /export
+		log_cmd mkdir /export
+		log_cmd mount -t tmpfs 'nfsv4_root_export' /export
 	}
 	echo "/export *(fsid=0,rw,no_subtree_check,no_root_squash)" > /etc/exports
 
 	for mp
 	do
-		cmd mkdir -p /export/$mp
-		cmd mount --bind $mp /export/$mp
+		log_cmd mkdir -p /export/$mp
+		log_cmd mount --bind $mp /export/$mp
 		note "echo \"/export/$mp *(rw,no_subtree_check,no_root_squash)\" >> /etc/exports"
 		echo "/export/$mp *(rw,no_subtree_check,no_root_squash)"
 	done >> /etc/exports
 
-	cmd /etc/init.d/rpcbind start
-	cmd /etc/init.d/nfs-common start
-	cmd /etc/init.d/nfs-kernel-server start
+	log_cmd /etc/init.d/rpcbind start
+	log_cmd /etc/init.d/nfs-common start
+	log_cmd /etc/init.d/nfs-kernel-server start
 }
 
 mount_local_nfs()
@@ -81,8 +81,8 @@ mount_local_nfs()
 	do
 		local mnt=/nfs/$(basename $dir)
 		local dev=localhost:$dir
-		cmd mkdir -p $mnt
-		cmd mount -t $fs ${mount:-$def_mount} $dev $mnt || {
+		log_cmd mkdir -p $mnt
+		log_cmd mount -t $fs ${mount:-$def_mount} $dev $mnt || {
 			sleep 600 # wait for local debug login
 			exit
 		}
@@ -92,14 +92,14 @@ mount_local_nfs()
 
 make_fs() {
 	is_btrfs_raid_levels && {
-		cmd mkfs.btrfs --data ${raid_level#b} $mkfs $ensure_mkfs $partitions || exit
+		log_cmd mkfs.btrfs --data ${raid_level#b} $mkfs $ensure_mkfs $partitions || exit
 		return
 	}
 
 	local pids=
 	for dev in $bdevs
 	do
-		cmd mkfs -t $fs ${mkfs:-$def_mkfs} $ensure_mkfs $dev &
+		log_cmd mkfs -t $fs ${mkfs:-$def_mkfs} $ensure_mkfs $dev &
 		pids="${pids} $! "
 	done
 
@@ -113,8 +113,8 @@ mount_fs() {
 	for dev in $bdevs
 	do
 		local mnt=/fs/$(basename $dev)
-		cmd mkdir -p $mnt
-		cmd mount -t $fs ${mount:-$def_mount} $dev $mnt || exit
+		log_cmd mkdir -p $mnt
+		log_cmd mount -t $fs ${mount:-$def_mount} $dev $mnt || exit
 		mount_points="${mount_points}$mnt "
 	done
 }

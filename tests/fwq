@@ -18,6 +18,6 @@ samples=${samples%%ss}
 
 opt_iterations="-w $iterations"
 
-cmd ./t_fwq -n $samples $opt_iterations $opt_task || exit
+log_cmd ./t_fwq -n $samples $opt_iterations $opt_task || exit
 
 copy-results $BENCHMARK_ROOT/fwq/*.dat

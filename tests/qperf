@@ -27,4 +27,4 @@ time=$((runtime / $nr_tests))
 [ -z "$server" ] && server=127.0.0.1
 server=${server%% *}
 
-cmd ./qperf $server --unify_units --time $time $tests quit
+log_cmd ./qperf $server --unify_units --time $time $tests quit

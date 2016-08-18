@@ -38,5 +38,5 @@ for ITERATION in $(seq 1 $TLBFLUSH_ITERATIONS); do
 		NR_ENTRIES=$THIS_MAX_ENTRIES
 	fi
 
-	cmd ./tlbflush -n $NR_ENTRIES -t $nr_threads
+	log_cmd ./tlbflush -n $NR_ENTRIES -t $nr_threads
 done

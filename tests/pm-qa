@@ -14,7 +14,7 @@ run_one()
 		ext_opt=
 	fi
 
-	cmd make -C $testcase $ext_opt run_tests
+	log_cmd make -C $testcase $ext_opt run_tests
 
 	copy-results $BENCHMARK_ROOT/pm-qa/$testcase/*.log
 }

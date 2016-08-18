@@ -26,7 +26,7 @@ else
 	fi
 fi
 
-cmd ./run_tests.sh || {
+log_cmd ./run_tests.sh || {
 	exit_code=$?
 
 	# dump debug info

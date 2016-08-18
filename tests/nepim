@@ -20,4 +20,4 @@ server=${server%% *}
 
 cd $BENCHMARK_ROOT/nepim || exit
 
-cmd ./nepim -c $opt_addr -d $opt_udp -a $runtime $opt_streams 2>&1
+log_cmd ./nepim -c $opt_addr -d $opt_udp -a $runtime $opt_streams 2>&1

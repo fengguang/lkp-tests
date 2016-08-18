@@ -111,7 +111,7 @@ if [ "$nr_directories" -a "$nr_files_per_directory" ]; then
 	PARAM="${PARAM} -D $nr_directories -N $nr_files_per_directory"
 fi
 
-cmd ./fs_mark \
+log_cmd ./fs_mark \
 	$PARAM \
 	-n $nr_files	\
 	-L $iterations \

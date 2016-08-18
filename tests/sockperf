@@ -17,7 +17,7 @@ server=${server%% *}
 for subcmd in under-load ping-pong throughput
 do
 	echo "sockperf: subcommand $subcmd UDP"
-	cmd ./sockperf $subcmd -i $server --time $time --msg-size $msg_size
+	log_cmd ./sockperf $subcmd -i $server --time $time --msg-size $msg_size
 	echo "sockperf: subcommand $subcmd TCP"
-	cmd ./sockperf $subcmd -i $server --time $time --msg-size $msg_size --tcp
+	log_cmd ./sockperf $subcmd -i $server --time $time --msg-size $msg_size --tcp
 done

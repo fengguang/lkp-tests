@@ -2,5 +2,5 @@
 
 export PATH=$BENCHMARK_ROOT/thrulay/sbin:$BENCHMARK_ROOT/thrulay/bin:$PATH
 
-cmd thrulayd
+log_cmd thrulayd
 sleep 1

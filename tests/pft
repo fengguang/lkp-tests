@@ -18,6 +18,6 @@ do
 	for iteration in $(seq 1 $iterations)
 	do
 		echo Iteration: $iteration
-		cmd ./pft -m $pft_mapping_size -n $clients
+		log_cmd ./pft -m $pft_mapping_size -n $clients
 	done
 done

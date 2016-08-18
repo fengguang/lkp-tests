@@ -32,7 +32,7 @@ rm -fr "$QEMU_REPO_ROOT" 2>/dev/null
 git_clone_update git://gitmirror/$qemu_remote $QEMU_REPO_ROOT || die "failed clone qemu tree $qemu_remote"
 
 cd "$QEMU_REPO_ROOT"
-cmd git checkout -q $qemu_commit || die "failed to checkout qemu commit $qemu_commit"
+log_cmd git checkout -q $qemu_commit || die "failed to checkout qemu commit $qemu_commit"
 
 [[ "$qemu_config" ]] || die "qemu_config is empty"
 ./configure --target-list="$qemu_config" || die "failed to run ./configure"
@@ -40,8 +40,8 @@ make
 
 make_exit_status=$?
 [[ $make_exit_status = 0 ]] && {
-	cmd cp -af $QEMU_REPO_ROOT/$qemu_config/qemu-system-x86_64 $QEMU_IMAGE_DIR/
-	cmd cp -af $QEMU_REPO_ROOT/pc-bios $QEMU_IMAGE_DIR/
+	log_cmd cp -af $QEMU_REPO_ROOT/$qemu_config/qemu-system-x86_64 $QEMU_IMAGE_DIR/
+	log_cmd cp -af $QEMU_REPO_ROOT/pc-bios $QEMU_IMAGE_DIR/
 }
 
 build_complete $make_exit_status

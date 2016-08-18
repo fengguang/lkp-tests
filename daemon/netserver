@@ -8,4 +8,4 @@ opt_ip=
 [ "$ip" = 'ipv6' ] && opt_ip='-6'
 
 # start netserver
-cmd netserver $opt_ip
+log_cmd netserver $opt_ip

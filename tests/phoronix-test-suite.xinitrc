@@ -24,9 +24,9 @@ echo PTS_SILENT_MODE=$PTS_SILENT_MODE
 mount -t tmpfs tmpfs /var/lib/phoronix-test-suite/test-results || exit
 
 if [ "$test_opt" ]; then
-	echo -e "$test_opt" | cmd phoronix-test-suite run $test
+	echo -e "$test_opt" | log_cmd phoronix-test-suite run $test
 else
-	echo n | cmd phoronix-test-suite default-run $test
+	echo n | log_cmd phoronix-test-suite default-run $test
 fi
 
 end_time=$(date +%s.%N)
