@@ -5,6 +5,7 @@
 
 . $LKP_SRC/lib/job.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/reproduce-log.sh
 
 [ "$nr_partitions" -lt 2 ] && die "$nr_partitions -lt 2"
 cd $BENCHMARK_ROOT/xfstests || die "fail to cd $BENCHMARK_ROOT/xfstests"
@@ -28,25 +29,19 @@ set_env()
 
 	umount $mount_points
 
-	note export TEST_DIR=${mount_points%% *}
-	note export TEST_DEV=${partitions%% *}
-	export TEST_DIR=${mount_points%% *}
-	export TEST_DEV=${partitions%% *}
+	log_eval export TEST_DIR=${mount_points%% *}
+	log_eval export TEST_DEV=${partitions%% *}
 
 	# f2fs needs this to prevent mount failure
-	note export FSTYP=$fs
-	export FSTYP=$fs
+	log_eval export FSTYP=$fs
+	log_eval export SCRATCH_MNT=/fs/scratch
 
-	note export SCRATCH_MNT=/fs/scratch
-	export SCRATCH_MNT=/fs/scratch
 	log_cmd mkdir $SCRATCH_MNT -p
 
 	if [ "$fs" = btrfs ] && [ "$nr_partitions" -ge 4 ]; then
-		note export SCRATCH_DEV_POOL=\"${partitions#* }\"
-		export SCRATCH_DEV_POOL="${partitions#* }"
+		log_eval export SCRATCH_DEV_POOL=\"${partitions#* }\"
 	else
-		note export SCRATCH_DEV=${partitions##* }
-		export SCRATCH_DEV=${partitions##* }
+		log_eval export SCRATCH_DEV=${partitions##* }
 	fi
 
 	## We could use the "pack-deps" job to generate the relevant dependency package with cgz format,
@@ -62,8 +57,7 @@ set_env()
 	if [ "$fs" = xfs ] && [ "$nr_partitions" -ge 3 ]; then
 		SCRATCH_LOGDEV=${partitions#* }
 		SCRATCH_LOGDEV=${SCRATCH_LOGDEV%% *}
-		note export SCRATCH_LOGDEV=$SCRATCH_LOGDEV
-		export SCRATCH_LOGDEV
+		log_eval export SCRATCH_LOGDEV=$SCRATCH_LOGDEV
 	fi
 }
 

@@ -32,6 +32,8 @@
 # - blkio.throttle.read_iops_device
 # - blkio.throttle.write_iops_device
 
+. $LKP_SRC/lib/reproduce-log.sh
+
 CGROUP_MNT=/cgroup
 dir=$CGROUP_MNT/$(basename $testcase)/$group
 
@@ -55,9 +57,7 @@ do
 	key=$(echo "$key" | sed 's/_46_/./g')
 	[ -f "$dir/$key" ] || continue
 
-	note "echo $val > $dir/$key"
-	echo "$val" > $dir/"$key"
+	log_eval "echo '$val' > '$dir/$key'"
 done
 
-note "echo $PPID > $dir/tasks"
-echo $PPID > $dir/tasks
+log_eval "echo $PPID > '$dir/tasks'"

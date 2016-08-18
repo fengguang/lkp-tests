@@ -10,6 +10,8 @@
 ## tool for evaluating OS parameters that are important for a system
 ## running a database under intensive load.
 
+. $LKP_SRC/lib/reproduce-log.sh
+
 [ -n "$period"	] || period=600
 [ -n "$rwmode"	] || rwmode=rndrw
 [ -n "$iomode"	] || iomode=sync
@@ -53,8 +55,7 @@ run()
 	log_cmd sysbench --test=fileio ${args} run
 }
 
-note cd "$mount_points"
-cd "$mount_points" || exit
+log_eval cd "$mount_points" || exit
 
 if [ "${rwmode#*wr}" != "$rwmode" ]; then
 	prepare_fallocate

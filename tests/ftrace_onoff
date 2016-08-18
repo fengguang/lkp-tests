@@ -8,20 +8,17 @@
 
 cd /sys/kernel/debug/tracing || exit
 
+. $LKP_SRC/lib/reproduce-log.sh
+
 : ${runtime:=300}
 
 do_test()
 {
 	for tracer in $(cat available_tracers)
 	do
-		note "echo $tracer > current_tracer"
-		      echo $tracer > current_tracer
-
-		note "echo 1 > tracing_on"
-		      echo 1 > tracing_on
-
-		note "echo 0 > tracing_on"
-		      echo 0 > tracing_on
+		log_eval "echo $tracer > current_tracer"
+		log_eval "echo 1 > tracing_on"
+		log_eval "echo 0 > tracing_on"
 	done
 }
 

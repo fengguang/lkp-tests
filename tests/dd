@@ -7,6 +7,8 @@
 
 [ -n "$mount_points" ] || { echo "empty mount_points, disk failed?" >&2; exit; }
 
+. $LKP_SRC/lib/reproduce-log.sh
+
 : ${runtime:=600}
 [ -n "$bs" ] && opt_bs="bs=$bs"
 
@@ -21,8 +23,7 @@ do
 		file=$mnt/zero-$i
 		files="$files $file "
 		rm -f $file
-		note "dd $opt_bs if=/dev/zero of=$file status=noxfer &"
-		timeout -s KILL $runtime  dd $opt_bs if=/dev/zero of=$file status=noxfer &
+		log_eval "timeout -s KILL $runtime  dd $opt_bs if=/dev/zero of=$file status=noxfer &"
 		[ -n "$BASH_VERSION" ] && disown
 		pid="${pid} $!"
 	done
@@ -39,7 +40,7 @@ log_cmd sleep $((runtime > startup_time ? runtime - startup_time : 0))
 
 t=$(date +%s)
 pkill -9 --exact dd --pidfile $TMP/pid-dd
-note killall -9 dd
+log_echo killall -9 dd
 pkill -9 --exact dd --pidfile $TMP/pid-dd
 pkill -9 --exact dd --pidfile $TMP/pid-dd
 tt=$(date +%s)

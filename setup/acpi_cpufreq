@@ -1,6 +1,8 @@
 #!/bin/sh
 # - scaling_governor
 
+. $LKP_SRC/lib/reproduce-log.sh
+
 [ -d '/sys/devices/system/cpu/cpu0/cpufreq' ] || exit 0
 [ "$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_driver)" = "acpi-cpufreq" ] || exit 0
 
@@ -8,6 +10,5 @@
 
 for file in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
 do
-	note "echo $scaling_governor > $file"
-	echo $scaling_governor > $file
+	log_eval "echo $scaling_governor > $file"
 done

@@ -5,17 +5,16 @@
 
 [ -d "/sys/devices/system/cpu/intel_pstate" ] || exit 0
 
+. $LKP_SRC/lib/reproduce-log.sh
+
 [ -n "$max_perf_pct" ] && {
-	note "echo $max_perf_pct > /sys/devices/system/cpu/intel_pstate/max_perf_pct"
-	      echo $max_perf_pct > /sys/devices/system/cpu/intel_pstate/max_perf_pct
+	log_eval "echo $max_perf_pct > /sys/devices/system/cpu/intel_pstate/max_perf_pct"
 }
 
 [ -n "$min_perf_pct" ] && {
-	note "echo $min_perf_pct > /sys/devices/system/cpu/intel_pstate/min_perf_pct"
-	      echo $min_perf_pct > /sys/devices/system/cpu/intel_pstate/min_perf_pct
+	log_eval "echo $min_perf_pct > /sys/devices/system/cpu/intel_pstate/min_perf_pct"
 }
 
 [ -n "$no_turbo" ] && {
-	note "echo $no_turbo > /sys/devices/system/cpu/intel_pstate/no_turbo"
-	      echo $no_turbo > /sys/devices/system/cpu/intel_pstate/no_turbo
+	log_eval "echo $no_turbo > /sys/devices/system/cpu/intel_pstate/no_turbo"
 }

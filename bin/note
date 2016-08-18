@@ -1,5 +1,0 @@
-#!/bin/sh
-
-date=$(date +'%F %T')
-echo "$date $@"
-echo "$@" >> $TMP_RESULT_ROOT/reproduce.sh

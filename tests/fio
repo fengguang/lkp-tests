@@ -12,5 +12,8 @@ task=$(cat /$TMP_RESULT_ROOT/fio.task)
 	exit 1
 }
 
-note "echo \"$task\" | fio --output-format=json -"
+. $LKP_SRC/lib/reproduce-log.sh
+
+log_echo "\
+echo '$task' | fio --output-format=json -"
 echo "$task" | fio --output-format=json - > $TMP_RESULT_ROOT/fio.output

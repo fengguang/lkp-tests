@@ -2,6 +2,8 @@
 # - cur_state
 # - max_state
 
+. $LKP_SRC/lib/reproduce-log.sh
+
 if [ "${0#*intel_powerclamp}" != "$0" ]; then
 	type='intel_powerclamp'
 else
@@ -14,12 +16,10 @@ do
 	[ "$(cat $i/type)" = "$type" ] || continue
 
 	[ -n "$cur_state" ] && {
-		note   "echo ${cur_state%cp} > $i/cur_state"
-			echo ${cur_state%cp} > $i/cur_state
+		log_eval "echo ${cur_state%cp} > $i/cur_state"
 	}
 
 	[ -n "$max_state" ] && {
-		note   "echo ${max_state%mp} > $i/max_state"
-			echo ${max_state%mp} > $i/max_state
+		log_eval "echo ${max_state%mp} > $i/max_state"
 	}
 done

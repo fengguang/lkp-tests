@@ -14,6 +14,9 @@
 ##
 ## Homepage: https://sourceforge.net/projects/re-aim-7/
 
+. $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/reproduce-log.sh
+
 [ -n "$test" ] || die "test is empty"
 [ -n "$runtime" ] || [ -n "$iterations" ] || die "runtime or iterations must be specified"
 
@@ -63,8 +66,7 @@ if [ -f "data/workfile.$test" ]; then
 	log_cmd cp data/workfile.$test .
 else
 	# create workfile onlive
-	note "echo 10 $test > workfile.$test"
-	echo 10 $test > workfile.$test
+	log_eval "echo 10 $test > workfile.$test"
 fi
 
 # setup config file
@@ -77,15 +79,9 @@ else
 	REAIM_TESTDIR="/fs/shm"
 fi
 
-note "echo FILESIZE $REAIM_FILESIZE > reaim.config"
-echo FILESIZE $REAIM_FILESIZE > reaim.config
-
-note "echo POOLSIZE $REAIM_POOLSIZE >> reaim.config"
-echo POOLSIZE $REAIM_POOLSIZE >> reaim.config
-
-note "echo DISKDIR $REAIM_TESTDIR  >> reaim.config"
-echo DISKDIR $REAIM_TESTDIR  >> reaim.config
-
+log_eval "echo FILESIZE $REAIM_FILESIZE > reaim.config"
+log_eval "echo POOLSIZE $REAIM_POOLSIZE >> reaim.config"
+log_eval "echo DISKDIR $REAIM_TESTDIR  >> reaim.config"
 
 if [ -n "$runtime" ]; then
 	echo "runtime mode"

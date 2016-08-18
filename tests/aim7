@@ -12,39 +12,33 @@
 [ -n "$test" ] || exit
 [ -n "$load" ] || exit
 
+. $LKP_SRC/lib/reproduce-log.sh
+
 aim7_setup()
 {
 	# raise semaphore limit
-	note 'echo "500 32000 128 512" > /proc/sys/kernel/sem'
-	echo "500 32000 128 512" > /proc/sys/kernel/sem
+	log_eval 'echo "500 32000 128 512" > /proc/sys/kernel/sem'
 
 	# setup workfile
 	if [ -f "workfiles/workfile.$test" ]; then
 		log_cmd cp workfiles/workfile.$test workfile
 	else
 		# create workfile onlive
-		note "cat > workfile <<EOF
+		log_eval "cat > workfile <<EOF
 FILESIZE: 1M
 POOLSIZE: 10M
 10 $test
 EOF"
-		cat > workfile <<EOF
-FILESIZE: 1M
-POOLSIZE: 10M
-10 $test
-EOF
 	fi
 
 	# setup config file
 	if [ -n "$mount_points" ]; then
-		note "echo \"$mount_points\" > config"
-		echo "$mount_points" > config
+		log_eval "echo \"$mount_points\" > config"
 	else
 		log_cmd mkdir -p /fs/shm
 		log_cmd umount /fs/shm > /dev/null 2>&1
 		log_cmd mount -t tmpfs /dev/shm /fs/shm
-		note 'echo "/fs/shm" > config'
-		echo "/fs/shm" > config
+		log_eval 'echo "/fs/shm" > config'
 	fi
 }
 
@@ -54,7 +48,7 @@ run_aim()
 
 	aim7_setup
 
-	note "
+	log_eval "
 	(
 		echo $HOSTNAME
 		echo $test
@@ -65,17 +59,6 @@ run_aim()
 		echo $load
 		echo 1
 	) | ./multitask -t"
-
-	(
-		echo $HOSTNAME
-		echo $test
-
-		echo 1
-		echo $load
-		echo 2
-		echo $load
-		echo 1
-	) | ./multitask -t &
 
 	# Run multitask in background and wait for it to avoid the below error
 	# triggered by the kill(0, SIGINT) call in multitask.c

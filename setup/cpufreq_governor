@@ -8,7 +8,9 @@ is_virt && exit 0
 
 [ -e /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor ] || exit 0
 
-note "
+. $LKP_SRC/lib/reproduce-log.sh
+
+log_echo "
 for file in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
 do
 	echo $scaling_governor > \$file

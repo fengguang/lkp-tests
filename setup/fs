@@ -9,6 +9,8 @@
 
 [ -n "$fs" ] || exit 0
 
+. $LKP_SRC/lib/reproduce-log.sh
+
 def_mount=
 def_mkfs=
 fs_options() {
@@ -65,8 +67,10 @@ start_nfsd()
 	do
 		log_cmd mkdir -p /export/$mp
 		log_cmd mount --bind $mp /export/$mp
-		note "echo \"/export/$mp *(rw,no_subtree_check,no_root_squash)\" >> /etc/exports"
-		echo "/export/$mp *(rw,no_subtree_check,no_root_squash)"
+
+		local entry="/export/$mp *(rw,no_subtree_check,no_root_squash)"
+		log_echo "echo '$entry' >> /etc/exports"
+		echo "$entry"
 	done >> /etc/exports
 
 	log_cmd /etc/init.d/rpcbind start
