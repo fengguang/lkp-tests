@@ -2,8 +2,8 @@
 
 download()
 {
-	wget -q --no-clobber https://vilimpoc.org/research/ku-latency/ku-latency.c
-	wget -q --no-clobber https://vilimpoc.org/research/ku-latency/send-data.c
+	wget --no-clobber https://vilimpoc.org/research/ku-latency/ku-latency.c
+	wget --no-clobber https://vilimpoc.org/research/ku-latency/send-data.c
 }
 
 build()

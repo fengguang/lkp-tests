@@ -50,3 +50,7 @@ rpmbuild()
 	$RUN_QUIET rpmbuild "$@"
 }
 
+wget()
+{
+	$RUN_QUIET wget "$@"
+}
