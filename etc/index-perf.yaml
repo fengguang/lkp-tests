@@ -112,8 +112,18 @@ boot-time.boot: -1
 
 fio.write_bw_MBps: 1
 fio.write_iops: 1
+fio.write_slat_mean_us: -1
+fio.write_clat_mean_us: -1
+fio.write_clat_90%_us: -1
+fio.write_clat_95%_us: -1
+fio.write_clat_99%_us: -1
 fio.read_bw_MBps: 1
 fio.read_iops: 1
+fio.read_slat_mean_us: -1
+fio.read_clat_mean_us: -1
+fio.read_clat_90%_us: -1
+fio.read_clat_95%_us: -1
+fio.read_clat_99%_us: -1
 
 reaim.jobs_per_min: 1
 fileio.requests_per_sec: 1
