@@ -315,6 +315,9 @@ def analyze_error_id(line)
 	when /(Writer stall state \w*).+ g\d+ c\d+ f/
 		line = $1
 		bug_to_bisect = $1
+	when /(rcu_sched kthread starved) for \d+ jiffies/
+		line = $1
+		bug_to_bisect = $1
 	when /(Could not create tracefs)/
 		line = $1
 		bug_to_bisect = $1
