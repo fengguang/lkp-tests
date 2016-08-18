@@ -20,7 +20,7 @@ echo 1		> /proc/sys/vm/overcommit_memory
 echo $((1<<30)) > /proc/sys/vm/max_map_count
 echo $((1<<20)) > /proc/sys/kernel/threads-max
 
-export CMD=cmd
+export CMD=log_cmd
 [ -n "$mount_points" ] && export SPARSE_ROOT=$(echo $mount_points | cut -d " " -f1)
 . ./hw_vars
 
