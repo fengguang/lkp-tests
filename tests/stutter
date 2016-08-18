@@ -4,18 +4,18 @@
 cd $BENCHMARK_ROOT/stutter || exit
 
 . $LKP_SRC/lib/unit.sh
+. $LKP_SRC/lib/reproduce-log.sh
 
-export MEMTOTAL_BYTES=$(to_byte $memory)
-export ITERATIONS=$iterations
-export LOGDIR_RESULTS=$RESULT_ROOT/log_result
+log_eval export MEMTOTAL_BYTES=$(to_byte $memory)
+log_eval export ITERATIONS=$iterations
+log_eval export LOGDIR_RESULTS=$RESULT_ROOT/log_result
 
-mkdir -p $LOGDIR_RESULTS
+log_cmd mkdir -p $LOGDIR_RESULTS
 
 [ -z "$mount_points" ] && exit
-export TESTDISK_DIR="${mount_points%% *}"
+log_eval export TESTDISK_DIR="${mount_points%% *}"
 
-echo "# running ./run.sh..."
-./run.sh
+log_cmd ./run.sh
 if [ $? -ne 0 ]; then
 	echo "run_fail: 1"
 else

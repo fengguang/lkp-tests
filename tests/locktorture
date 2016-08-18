@@ -7,8 +7,8 @@
 
 . $LKP_SRC/lib/debug.sh
 
-modprobe locktorture || die "failed to load locktorture module"
+log_cmd modprobe locktorture || die "failed to load locktorture module"
 
-sleep $runtime
+log_cmd sleep $runtime
 
-rmmod locktorture
+log_cmd rmmod locktorture

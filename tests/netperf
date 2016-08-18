@@ -10,9 +10,11 @@
 ## data transfer and request/response performance using either TCP
 ## or UDP and the Berkeley Sockets interface.
 
+. $LKP_SRC/lib/reproduce-log.sh
+
 export PATH=$BENCHMARK_ROOT/netperf/bin:$PATH
 
-[ "${test#*SCTP}" != "$test" ] && modprobe sctp 2>/dev/null
+[ "${test#*SCTP}" != "$test" ] && log_cmd modprobe sctp 2>/dev/null
 sleep 1
 
 [ -n "$send_size" ] && test_options="-- -m $send_size"
@@ -33,10 +35,10 @@ opt_ip=
 
 for i in $(seq $nr_threads)
 do
-	bgcmd netperf $opt_ip -t $test -c -C -l $runtime $test_options -H $server &
+	log_eval "netperf $opt_ip -t $test -c -C -l $runtime $test_options -H $server &"
 done
 
-wait
+log_eval wait
 
 # Comments from Jesse Brandeburg <jesse.brandeburg@intel.com>
 # -P0 -- -r 64k -b 10

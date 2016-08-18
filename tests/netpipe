@@ -11,6 +11,6 @@ server=${server%% *}
 
 case $test in
 tcp )
-	NPtcp -n 1000 -h $server 2>&1
+	log_cmd NPtcp -n 1000 -h $server 2>&1
 	;;
 esac

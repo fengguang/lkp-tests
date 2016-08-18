@@ -3,12 +3,16 @@
 ## IOzone is a filesystem benchmark tool. The benchmark generates
 ## and measures a variety of file operations.
 
+. $LKP_SRC/lib/reproduce-log.sh
+
 for mnt in $mount_points
 do
-	bgcmd iozone -a -f $mnt/iozonetest > $TMP/iozone-$i &
+	cmd="iozone -a -f $mnt/iozonetest"
+	log_echo "$cmd &"
+	$cmd > $TMP/iozone-$i &
 	i=$((i+1))
 done
 
-wait
+log_eval wait
 
 cat $TMP/iozone-*

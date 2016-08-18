@@ -6,10 +6,10 @@
 
 . $LKP_SRC/lib/debug.sh
 
-modprobe rcutorture || die "failed to load rcutorture module"
+log_cmd modprobe rcutorture || die "failed to load rcutorture module"
 
-sleep $runtime
+log_cmd sleep $runtime
 
-rmmod rcutorture 2> /dev/null
+log_cmd rmmod rcutorture 2> /dev/null
 
 dmesg | grep torture:
