@@ -23,7 +23,7 @@ results.each { |key, miss|
 				else
 					total = value
 				end
-				puts "#{stem}-miss-rate: #{miss * 100.0 / total}"
+				puts "#{stem}-miss-rate%: #{miss * 100.0 / total}"
 				break
 			end
 		}
