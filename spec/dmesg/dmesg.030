@@ -2,12 +2,18 @@ boot_failures: 1
 
 # BUG: KASAN: slab-out-of-bounds in memdup_user+0x
 BUG:KASAN:slab-out-of-bounds_in_memdup_user_at_addr: 1
+message:BUG:KASAN:slab-out-of-bounds_in_memdup_user_at_addr: [    1.229363] BUG: KASAN: slab-out-of-bounds in memdup_user+0x4f/0x90 at addr ffff880019d85f80
+pattern:BUG:KASAN:slab-out-of-bounds_in_memdup_user_at_addr: BUG: KASAN: slab-out-of-bounds in memdup_user+0x
 
 # SyS_mount+0x
 calltrace:SyS_mount: 1
+message:calltrace:SyS_mount: [    1.315931]  [<ffffffffb9bd81a0>] SyS_mount+0x30/0xc0
+pattern:calltrace:SyS_mount: SyS_mount+0x
 
 # devtmpfsd+0x
 calltrace:devtmpfsd: 1
+message:calltrace:devtmpfsd: [    1.318561]  [<ffffffffba095975>] devtmpfsd+0x55/0x160
+pattern:calltrace:devtmpfsd: devtmpfsd+0x
 
 timestamp:last: 1.368103
 timestamp:BUG:KASAN:slab-out-of-bounds_in_memdup_user_at_addr: 1.229363

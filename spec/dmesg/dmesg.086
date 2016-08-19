@@ -2,15 +2,23 @@ boot_failures: 1
 
 # page allocation failure:
 page_allocation_failure:order:#,mode:#(GFP_KERNEL|__GFP_COMP|__GFP_ZERO): 1
+message:page_allocation_failure:order:#,mode:#(GFP_KERNEL|__GFP_COMP|__GFP_ZERO): [   48.661306] swapper/0: page allocation failure: order:8, mode:0x240c0c0(GFP_KERNEL|__GFP_COMP|__GFP_ZERO)
+pattern:page_allocation_failure:order:#,mode:#(GFP_KERNEL|__GFP_COMP|__GFP_ZERO): page allocation failure:
 
 # warn_alloc_failed+0x
 warn_alloc_failed+0x: 1
+message:warn_alloc_failed+0x: [   48.664056]  [<ffffffffb577fde1>] warn_alloc_failed+0x1b1/0x270
+pattern:warn_alloc_failed+0x: warn_alloc_failed+0x
 
 # dummy_stm_init+0x
 calltrace:dummy_stm_init: 1
+message:calltrace:dummy_stm_init: [   48.664056]  [<ffffffffb7ae634f>] dummy_stm_init+0xff/0x1f0
+pattern:calltrace:dummy_stm_init: dummy_stm_init+0x
 
 # Mem-Info:
 Mem-Info: 1
+message:Mem-Info: [   48.678701] Mem-Info:
+pattern:Mem-Info: Mem-Info:
 
 timestamp:last: 48.717990
 timestamp:page_allocation_failure:order:#,mode:#(GFP_KERNEL|__GFP_COMP|__GFP_ZERO): 48.661306

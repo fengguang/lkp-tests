@@ -2,15 +2,23 @@ boot_failures: 1
 
 # general protection fault: .* PREEMPT SMP
 general_protection_fault:#[##]PREEMPT_SMP: 1
+message:general_protection_fault:#[##]PREEMPT_SMP: [   17.070650] general protection fault: 0000 [#1] PREEMPT SMP
+pattern:general_protection_fault:#[##]PREEMPT_SMP: general protection fault: .* PREEMPT SMP
 
 # RIP: .* init_real_cpu_mask+0x
 RIP:init_real_cpu_mask: 1
+message:RIP:init_real_cpu_mask: [   17.075591] RIP: 0010:[<ffffffffa0f913db>]  [<ffffffffa0f913db>] init_real_cpu_mask+0x4f/0x115
+pattern:RIP:init_real_cpu_mask: RIP: .* init_real_cpu_mask+0x
 
 # hfi1_mod_init+0x
 calltrace:hfi1_mod_init: 1
+message:calltrace:hfi1_mod_init: [   17.098600]  [<ffffffffa3cbbc60>] hfi1_mod_init+0x33/0x2f3
+pattern:calltrace:hfi1_mod_init: hfi1_mod_init+0x
 
 # Kernel panic - not syncing: Fatal exception
 Kernel_panic-not_syncing:Fatal_exception: 1
+message:Kernel_panic-not_syncing:Fatal_exception: [   17.129242] Kernel panic - not syncing: Fatal exception
+pattern:Kernel_panic-not_syncing:Fatal_exception: Kernel panic - not syncing: Fatal exception
 
 timestamp:last: 17.129242
 timestamp:general_protection_fault:#[##]PREEMPT_SMP: 17.070650

@@ -2,6 +2,8 @@ boot_failures: 1
 
 # Kernel panic - not syncing: Attempted to kill .* exitcode=
 Kernel_panic-not_syncing:Attempted_to_kill_init!exitcode=: 1
+message:Kernel_panic-not_syncing:Attempted_to_kill_init!exitcode=: [    7.493303] Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
+pattern:Kernel_panic-not_syncing:Attempted_to_kill_init!exitcode=: Kernel panic - not syncing: Attempted to kill .* exitcode=
 
 timestamp:last: 7.495077
 timestamp:Kernel_panic-not_syncing:Attempted_to_kill_init!exitcode=: 7.493303

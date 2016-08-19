@@ -2,9 +2,13 @@ boot_failures: 1
 
 # Kernel panic - not syncing: VFS: Unable to mount root fs on
 Kernel_panic-not_syncing:VFS:Unable_to_mount_root_fs_on_unknown-block(#,#): 1
+message:Kernel_panic-not_syncing:VFS:Unable_to_mount_root_fs_on_unknown-block(#,#): [  189.830178] Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(1,0)
+pattern:Kernel_panic-not_syncing:VFS:Unable_to_mount_root_fs_on_unknown-block(#,#): Kernel panic - not syncing: VFS: Unable to mount root fs on
 
 # prepare_namespace+0x
 calltrace:prepare_namespace: 1
+message:calltrace:prepare_namespace: [  190.001560]  [<c4acd719>] prepare_namespace+0x3f3/0x45c
+pattern:calltrace:prepare_namespace: prepare_namespace+0x
 
 timestamp:last: 190.046228
 timestamp:Kernel_panic-not_syncing:VFS:Unable_to_mount_root_fs_on_unknown-block(#,#): 189.830178

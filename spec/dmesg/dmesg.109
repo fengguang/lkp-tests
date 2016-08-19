@@ -2,6 +2,8 @@ boot_failures: 1
 
 # BUG: KASAN: slab-out-of-bounds in of_device_uevent+0x
 BUG:KASAN:slab-out-of-bounds_in_of_device_uevent_at_addr: 1
+message:BUG:KASAN:slab-out-of-bounds_in_of_device_uevent_at_addr: [  193.358264] BUG: KASAN: slab-out-of-bounds in of_device_uevent+0x210/0x420 at addr ffff880012230f89
+pattern:BUG:KASAN:slab-out-of-bounds_in_of_device_uevent_at_addr: BUG: KASAN: slab-out-of-bounds in of_device_uevent+0x
 
 timestamp:last: 193.380681
 timestamp:BUG:KASAN:slab-out-of-bounds_in_of_device_uevent_at_addr: 193.358264

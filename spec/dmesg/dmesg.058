@@ -2,18 +2,28 @@ boot_failures: 1
 
 # kernel BUG at
 kernel_BUG_at_mm/rmap.c: 1
+message:kernel_BUG_at_mm/rmap.c: [   51.531037] kernel BUG at mm/rmap.c:1306!
+pattern:kernel_BUG_at_mm/rmap.c: kernel BUG at
 
 # invalid opcode: .* SMP
 invalid_opcode:#[##]SMP: 1
+message:invalid_opcode:#[##]SMP: [   51.531805] invalid opcode: 0000 [#1] SMP
+pattern:invalid_opcode:#[##]SMP: invalid opcode: .* SMP
 
 # RIP: .* page_remove_rmap+0x
 RIP:page_remove_rmap: 1
+message:RIP:page_remove_rmap: [   51.536690] RIP: 0010:[<ffffffff811d105d>]  [<ffffffff811d105d>] page_remove_rmap+0x33/0xb3
+pattern:RIP:page_remove_rmap: RIP: .* page_remove_rmap+0x
 
 # SyS_munmap+0x
 calltrace:SyS_munmap: 1
+message:calltrace:SyS_munmap: [   51.565929]  [<ffffffff811cd39f>] SyS_munmap+0x53/0x6c
+pattern:calltrace:SyS_munmap: SyS_munmap+0x
 
 # Kernel panic - not syncing: Fatal exception
 Kernel_panic-not_syncing:Fatal_exception: 1
+message:Kernel_panic-not_syncing:Fatal_exception: [   51.580132] Kernel panic - not syncing: Fatal exception
+pattern:Kernel_panic-not_syncing:Fatal_exception: Kernel panic - not syncing: Fatal exception
 
 timestamp:last: 51.580132
 timestamp:kernel_BUG_at_mm/rmap.c: 51.531037

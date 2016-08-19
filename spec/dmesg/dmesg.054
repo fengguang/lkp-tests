@@ -2,4 +2,6 @@ boot_failures: 1
 
 # BUG: kernel test hang
 BUG:kernel_test_hang: 1
+message:BUG:kernel_test_hang: BUG: kernel test hang
+pattern:BUG:kernel_test_hang: BUG: kernel test hang
 

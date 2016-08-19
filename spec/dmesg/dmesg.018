@@ -2,15 +2,23 @@ boot_failures: 1
 
 # page allocation failure:
 page_allocation_failure:order:#,mode:#(GFP_KERNEL|__GFP_NORETRY): 1
+message:page_allocation_failure:order:#,mode:#(GFP_KERNEL|__GFP_NORETRY): [  111.628064] rb_consumer: page allocation failure: order:0, mode:0x24010c0(GFP_KERNEL|__GFP_NORETRY)
+pattern:page_allocation_failure:order:#,mode:#(GFP_KERNEL|__GFP_NORETRY): page allocation failure:
 
 # invoked oom-killer: gfp_mask=
 invoked_oom-killer:gfp_mask=0x: 1
+message:invoked_oom-killer:gfp_mask=0x: [  111.631825] trinity-c1 invoked oom-killer: gfp_mask=0x24200ca(GFP_HIGHUSER_MOVABLE), order=0, oom_score_adj=500
+pattern:invoked_oom-killer:gfp_mask=0x: invoked oom-killer: gfp_mask=
 
 # warn_alloc_failed+0x
 warn_alloc_failed+0x: 1
+message:warn_alloc_failed+0x: [  111.655863]  [<ffffffff81342ddb>] warn_alloc_failed+0x20b/0x240
+pattern:warn_alloc_failed+0x: warn_alloc_failed+0x
 
 # Mem-Info:
 Mem-Info: 1
+message:Mem-Info: [  111.683752] Mem-Info:
+pattern:Mem-Info: Mem-Info:
 
 timestamp:last: 111.683752
 timestamp:page_allocation_failure:order:#,mode:#(GFP_KERNEL|__GFP_NORETRY): 111.628064

@@ -2,12 +2,18 @@ boot_failures: 1
 
 # general protection fault: .* SMP DEBUG_PAGEALLOC
 general_protection_fault:#[##]SMP_DEBUG_PAGEALLOC: 1
+message:general_protection_fault:#[##]SMP_DEBUG_PAGEALLOC: [    0.509411] general protection fault: 0000 [#1] SMP DEBUG_PAGEALLOC
+pattern:general_protection_fault:#[##]SMP_DEBUG_PAGEALLOC: general protection fault: .* SMP DEBUG_PAGEALLOC
 
 # RIP: .* find_busiest_group+0x
 RIP:find_busiest_group: 1
+message:RIP:find_busiest_group: [    0.511353] RIP: 0010:[<ffffffff810af776>]  [<ffffffff810af776>] find_busiest_group+0xc6/0x8a0
+pattern:RIP:find_busiest_group: RIP: .* find_busiest_group+0x
 
 # sock_init+0x
 calltrace:sock_init: 1
+message:calltrace:sock_init: [    0.537289]  [<ffffffff81f89f93>] sock_init+0x38/0x94
+pattern:calltrace:sock_init: sock_init+0x
 
 timestamp:last: 0.546024
 timestamp:general_protection_fault:#[##]SMP_DEBUG_PAGEALLOC: 0.509411

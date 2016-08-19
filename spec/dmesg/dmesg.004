@@ -2,4 +2,6 @@ boot_failures: 1
 
 # BUG: kernel early-boot hang
 BUG:kernel_early-boot_hang: 1
+message:BUG:kernel_early-boot_hang: BUG: kernel early-boot hang
+pattern:BUG:kernel_early-boot_hang: BUG: kernel early-boot hang
 

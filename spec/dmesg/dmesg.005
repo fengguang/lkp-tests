@@ -2,12 +2,18 @@ boot_failures: 1
 
 # genirq: Flags mismatch irq .* vs.
 genirq:Flags_mismatch_irq##(serial)vs.#(goldfish_pdev_bus): 1
+message:genirq:Flags_mismatch_irq##(serial)vs.#(goldfish_pdev_bus): [   29.096478] genirq: Flags mismatch irq 4. 00000000 (serial) vs. 00000080 (goldfish_pdev_bus)
+pattern:genirq:Flags_mismatch_irq##(serial)vs.#(goldfish_pdev_bus): genirq: Flags mismatch irq .* vs.
 
 # WARNING:.* at .* note_page+0x
 WARNING:at_arch/x86/mm/dump_pagetables.c:#note_page: 1
+message:WARNING:at_arch/x86/mm/dump_pagetables.c:#note_page: [   29.102438] WARNING: CPU: 0 PID: 1 at arch/x86/mm/dump_pagetables.c:225 note_page+0xe0/0x50f
+pattern:WARNING:at_arch/x86/mm/dump_pagetables.c:#note_page: WARNING:.* at .* note_page+0x
 
 # mark_rodata_ro+0x
 calltrace:mark_rodata_ro: 1
+message:calltrace:mark_rodata_ro: [   29.114540]  [<c1022445>] mark_rodata_ro+0xd0/0xd8
+pattern:calltrace:mark_rodata_ro: mark_rodata_ro+0x
 
 timestamp:last: 29.117821
 timestamp:genirq:Flags_mismatch_irq##(serial)vs.#(goldfish_pdev_bus): 29.096478

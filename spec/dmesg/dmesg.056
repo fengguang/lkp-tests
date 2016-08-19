@@ -2,4 +2,6 @@ boot_failures: 1
 
 # BUG: kernel early-boot hang Unable to boot - please use a kernel appropriate for your CPU.
 BUG:kernel_early-boot_hang_Unable_to_boot-please_use_a_kernel_appropriate_for_your_CPU: 1
+message:BUG:kernel_early-boot_hang_Unable_to_boot-please_use_a_kernel_appropriate_for_your_CPU: BUG: kernel early-boot hang Unable to boot - please use a kernel appropriate for your CPU.
+pattern:BUG:kernel_early-boot_hang_Unable_to_boot-please_use_a_kernel_appropriate_for_your_CPU: BUG: kernel early-boot hang Unable to boot - please use a kernel appropriate for your CPU.
 

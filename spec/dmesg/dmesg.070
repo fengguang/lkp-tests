@@ -2,9 +2,13 @@ boot_failures: 1
 
 # WARNING:.* at .* init_real_cpu_mask+0x
 WARNING:at_include/linux/cpumask.h:#init_real_cpu_mask: 1
+message:WARNING:at_include/linux/cpumask.h:#init_real_cpu_mask: [   22.396650] WARNING: CPU: 1 PID: 1 at include/linux/cpumask.h:121 init_real_cpu_mask+0x9c/0x143
+pattern:WARNING:at_include/linux/cpumask.h:#init_real_cpu_mask: WARNING:.* at .* init_real_cpu_mask+0x
 
 # hfi1_mod_init+0x
 calltrace:hfi1_mod_init: 1
+message:calltrace:hfi1_mod_init: [   22.416007]  [<ffffffff82eddea4>] hfi1_mod_init+0x1d/0x203
+pattern:calltrace:hfi1_mod_init: hfi1_mod_init+0x
 
 timestamp:last: 22.431892
 timestamp:WARNING:at_include/linux/cpumask.h:#init_real_cpu_mask: 22.396650

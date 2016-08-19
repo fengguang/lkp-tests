@@ -2,12 +2,18 @@ boot_failures: 1
 
 # Kernel panic - not syncing: Attempted to kill .* exitcode=
 Kernel_panic-not_syncing:Attempted_to_kill_init!exitcode=: 1
+message:Kernel_panic-not_syncing:Attempted_to_kill_init!exitcode=: [  834.521552] Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
+pattern:Kernel_panic-not_syncing:Attempted_to_kill_init!exitcode=: Kernel panic - not syncing: Attempted to kill .* exitcode=
 
 # WARNING:.* at .* __local_bh_enable_ip+0x
 WARNING:at_kernel/softirq.c:#__local_bh_enable_ip: 1
+message:WARNING:at_kernel/softirq.c:#__local_bh_enable_ip: [  834.763284] WARNING: CPU: 0 PID: 1 at kernel/softirq.c:150 __local_bh_enable_ip+0x180/0x1c0
+pattern:WARNING:at_kernel/softirq.c:#__local_bh_enable_ip: WARNING:.* at .* __local_bh_enable_ip+0x
 
 # invoked oom-killer: gfp_mask=
 invoked_oom-killer:gfp_mask=0x: 1
+message:invoked_oom-killer:gfp_mask=0x: [  836.278657] udevd invoked oom-killer: gfp_mask=0x24200ca(GFP_HIGHUSER_MOVABLE), order=0, oom_score_adj=-1000
+pattern:invoked_oom-killer:gfp_mask=0x: invoked oom-killer: gfp_mask=
 
 timestamp:last: 836.278657
 timestamp:Kernel_panic-not_syncing:Attempted_to_kill_init!exitcode=: 834.521552

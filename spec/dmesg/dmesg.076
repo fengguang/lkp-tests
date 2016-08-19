@@ -2,18 +2,28 @@ boot_failures: 1
 
 # BUG: KASAN: wild-memory-access on address
 BUG:KASAN:wild-memory-access_on_address: 1
+message:BUG:KASAN:wild-memory-access_on_address: [  150.330704] BUG: KASAN: wild-memory-access on address 0000ffff00013138
+pattern:BUG:KASAN:wild-memory-access_on_address: BUG: KASAN: wild-memory-access on address
 
 # hfi1_mod_init+0x
 calltrace:hfi1_mod_init: 1
+message:calltrace:hfi1_mod_init: [  150.361179]  [<ffffffff8613a80f>] hfi1_mod_init+0x30/0x3e1
+pattern:calltrace:hfi1_mod_init: hfi1_mod_init+0x
 
 # general protection fault: .* SMP KASAN
 general_protection_fault:#[##]SMP_KASAN: 1
+message:general_protection_fault:#[##]SMP_KASAN: [  150.375503] general protection fault: 0000 [#1] SMP KASAN
+pattern:general_protection_fault:#[##]SMP_KASAN: general protection fault: .* SMP KASAN
 
 # RIP: .* init_real_cpu_mask+0x
 RIP:init_real_cpu_mask: 1
+message:RIP:init_real_cpu_mask: [  150.382189] RIP: 0010:[<ffffffff83a0b6e7>]  [<ffffffff83a0b6e7>] init_real_cpu_mask+0x77/0x150
+pattern:RIP:init_real_cpu_mask: RIP: .* init_real_cpu_mask+0x
 
 # Kernel panic - not syncing: Fatal exception
 Kernel_panic-not_syncing:Fatal_exception: 1
+message:Kernel_panic-not_syncing:Fatal_exception: [  150.524788] Kernel panic - not syncing: Fatal exception
+pattern:Kernel_panic-not_syncing:Fatal_exception: Kernel panic - not syncing: Fatal exception
 
 timestamp:last: 150.524788
 timestamp:BUG:KASAN:wild-memory-access_on_address: 150.330704

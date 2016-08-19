@@ -2,9 +2,13 @@ boot_failures: 1
 
 # BUG: looking up invalid subclass:
 BUG:looking_up_invalid_subclass: 1
+message:BUG:looking_up_invalid_subclass: [   22.740146] BUG: looking up invalid subclass: 4294967295
+pattern:BUG:looking_up_invalid_subclass: BUG: looking up invalid subclass:
 
 # SyS_exit_group+0x
 calltrace:SyS_exit_group: 1
+message:calltrace:SyS_exit_group: [   22.758244]  [<cac79037>] SyS_exit_group+0x11/0x11
+pattern:calltrace:SyS_exit_group: SyS_exit_group+0x
 
 timestamp:last: 22.759375
 timestamp:BUG:looking_up_invalid_subclass: 22.740146

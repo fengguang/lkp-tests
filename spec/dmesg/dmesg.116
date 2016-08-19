@@ -2,12 +2,18 @@ boot_failures: 1
 
 # INFO: suspicious RCU usage.
 INFO:suspicious_RCU_usage: 1
+message:INFO:suspicious_RCU_usage: [   59.833983] [ INFO: suspicious RCU usage. ]
+pattern:INFO:suspicious_RCU_usage: INFO: suspicious RCU usage.
 
 # RCU used illegally from idle
 RCU_used_illegally_from_idle_CPU: 1
+message:RCU_used_illegally_from_idle_CPU: [   59.838497] RCU used illegally from idle CPU!
+pattern:RCU_used_illegally_from_idle_CPU: RCU used illegally from idle
 
 # RCU used illegally from extended quiescent
 RCU_used_illegally_from_extended_quiescent_state: 1
+message:RCU_used_illegally_from_extended_quiescent_state: [   59.840100] RCU used illegally from extended quiescent state!
+pattern:RCU_used_illegally_from_extended_quiescent_state: RCU used illegally from extended quiescent
 
 timestamp:last: 80.249285
 timestamp:INFO:suspicious_RCU_usage: 59.833983

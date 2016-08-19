@@ -2,4 +2,6 @@ boot_failures: 1
 
 # BUG: kernel early-boot crashed early console in setup code
 BUG:kernel_early-boot_crashed_early_console_in_setup_code: 1
+message:BUG:kernel_early-boot_crashed_early_console_in_setup_code: BUG: kernel early-boot crashed early console in setup code
+pattern:BUG:kernel_early-boot_crashed_early_console_in_setup_code: BUG: kernel early-boot crashed early console in setup code
 

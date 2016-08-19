@@ -2,9 +2,13 @@ boot_failures: 1
 
 # genirq: Flags mismatch irq .* vs.
 genirq:Flags_mismatch_irq##(serial)vs.#(goldfish_pdev_bus): 1
+message:genirq:Flags_mismatch_irq##(serial)vs.#(goldfish_pdev_bus): [    9.041802] genirq: Flags mismatch irq 4. 00000000 (serial) vs. 00000080 (goldfish_pdev_bus)
+pattern:genirq:Flags_mismatch_irq##(serial)vs.#(goldfish_pdev_bus): genirq: Flags mismatch irq .* vs.
 
 # WARNING:.* at .* fpu__restore+0x
 WARNING:at_arch/x86/include/asm/fpu/internal.h:#fpu__restore: 1
+message:WARNING:at_arch/x86/include/asm/fpu/internal.h:#fpu__restore: [    9.597652] WARNING: CPU: 0 PID: 361 at arch/x86/include/asm/fpu/internal.h:534 fpu__restore+0xd3/0x140
+pattern:WARNING:at_arch/x86/include/asm/fpu/internal.h:#fpu__restore: WARNING:.* at .* fpu__restore+0x
 
 timestamp:last: 10.121027
 timestamp:genirq:Flags_mismatch_irq##(serial)vs.#(goldfish_pdev_bus): 9.041802

@@ -2,12 +2,18 @@ boot_failures: 1
 
 # WARNING:.* at .* pci_mmap_resource+0x
 WARNING:at_drivers/pci/pci-sysfs.c:#pci_mmap_resource: 1
+message:WARNING:at_drivers/pci/pci-sysfs.c:#pci_mmap_resource: [   30.707199] WARNING: CPU: 0 PID: 413 at drivers/pci/pci-sysfs.c:1024 pci_mmap_resource+0xf4/0x136
+pattern:WARNING:at_drivers/pci/pci-sysfs.c:#pci_mmap_resource: WARNING:.* at .* pci_mmap_resource+0x
 
 # SyS_mmap_pgoff+0x
 calltrace:SyS_mmap_pgoff: 1
+message:calltrace:SyS_mmap_pgoff: [   30.748427]  [<ffffffff8116aeac>] SyS_mmap_pgoff+0x142/0x19a
+pattern:calltrace:SyS_mmap_pgoff: SyS_mmap_pgoff+0x
 
 # SyS_mmap+0x
 calltrace:SyS_mmap: 1
+message:calltrace:SyS_mmap: [   30.752388]  [<ffffffff81025ae2>] SyS_mmap+0x1d/0x1f
+pattern:calltrace:SyS_mmap: SyS_mmap+0x
 
 timestamp:last: 30.752388
 timestamp:WARNING:at_drivers/pci/pci-sysfs.c:#pci_mmap_resource: 30.707199

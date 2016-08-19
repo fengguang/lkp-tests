@@ -2,9 +2,13 @@ boot_failures: 1
 
 # WARNING:.* at .* schedule_bh+0x
 WARNING:at_drivers/block/floppy.c:#schedule_bh: 1
+message:WARNING:at_drivers/block/floppy.c:#schedule_bh: [  220.866913] WARNING: CPU: 0 PID: 860 at drivers/block/floppy.c:975 schedule_bh+0x29/0x4b
+pattern:WARNING:at_drivers/block/floppy.c:#schedule_bh: WARNING:.* at .* schedule_bh+0x
 
 # SyS_mount+0x
 calltrace:SyS_mount: 1
+message:calltrace:SyS_mount: [  220.867533]  [<ffffffff81241bce>] SyS_mount+0x77/0x9f
+pattern:calltrace:SyS_mount: SyS_mount+0x
 
 timestamp:last: 220.867533
 timestamp:WARNING:at_drivers/block/floppy.c:#schedule_bh: 220.866913

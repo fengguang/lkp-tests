@@ -2,9 +2,13 @@ boot_failures: 1
 
 # BUG: sleeping function called from invalid context at
 BUG:sleeping_function_called_from_invalid_context_at_kernel/irq/manage.c: 1
+message:BUG:sleeping_function_called_from_invalid_context_at_kernel/irq/manage.c: [  334.390692] BUG: sleeping function called from invalid context at kernel/irq/manage.c:110
+pattern:BUG:sleeping_function_called_from_invalid_context_at_kernel/irq/manage.c: BUG: sleeping function called from invalid context at
 
 # SyS_write+0x
 calltrace:SyS_write: 1
+message:calltrace:SyS_write: [  334.390729]  [<ffffffff8121f676>] SyS_write+0x46/0xa0
+pattern:calltrace:SyS_write: SyS_write+0x
 
 timestamp:last: 334.415826
 timestamp:BUG:sleeping_function_called_from_invalid_context_at_kernel/irq/manage.c: 334.390692

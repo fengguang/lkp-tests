@@ -2,15 +2,23 @@ boot_failures: 1
 
 # general protection fault: .* PREEMPT SMP DEBUG_PAGEALLOC KASAN
 general_protection_fault:#[##]PREEMPT_SMP_DEBUG_PAGEALLOC_KASAN: 1
+message:general_protection_fault:#[##]PREEMPT_SMP_DEBUG_PAGEALLOC_KASAN: [  123.727307] general protection fault: 0000 [#1] PREEMPT SMP DEBUG_PAGEALLOC KASAN
+pattern:general_protection_fault:#[##]PREEMPT_SMP_DEBUG_PAGEALLOC_KASAN: general protection fault: .* PREEMPT SMP DEBUG_PAGEALLOC KASAN
 
 # RIP: .* setup_udp_tunnel_sock+0x
 RIP:setup_udp_tunnel_sock: 1
+message:RIP:setup_udp_tunnel_sock: [  123.730428] RIP: 0010:[<ffffffff84324777>]  [<ffffffff84324777>] setup_udp_tunnel_sock+0x57/0x300
+pattern:RIP:setup_udp_tunnel_sock: RIP: .* setup_udp_tunnel_sock+0x
 
 # rxe_module_init+0x
 calltrace:rxe_module_init: 1
+message:calltrace:rxe_module_init: [  123.736128]  [<ffffffff86188260>] rxe_module_init+0x23/0x4d
+pattern:calltrace:rxe_module_init: rxe_module_init+0x
 
 # Kernel panic - not syncing: Fatal exception
 Kernel_panic-not_syncing:Fatal_exception: 1
+message:Kernel_panic-not_syncing:Fatal_exception: [  123.818650] Kernel panic - not syncing: Fatal exception
+pattern:Kernel_panic-not_syncing:Fatal_exception: Kernel panic - not syncing: Fatal exception
 
 timestamp:last: 123.818650
 timestamp:general_protection_fault:#[##]PREEMPT_SMP_DEBUG_PAGEALLOC_KASAN: 123.727307

@@ -2,12 +2,18 @@ boot_failures: 1
 
 # RIP: .* insert_augmented+0x
 RIP:insert_augmented: 1
+message:RIP:insert_augmented: [  510.369402] RIP: 0010:[<ffffffff8132969a>]  [<ffffffff8132969a>] insert_augmented+0x34/0x8e
+pattern:RIP:insert_augmented: RIP: .* insert_augmented+0x
 
 # rbtree_test_init+0x
 calltrace:rbtree_test_init: 1
+message:calltrace:rbtree_test_init: [  510.822824]  [<ffffffff82df1977>] rbtree_test_init+0x200/0x317
+pattern:calltrace:rbtree_test_init: rbtree_test_init+0x
 
 # Kernel panic - not syncing: softlockup: hung tasks
 Kernel_panic-not_syncing:softlockup:hung_tasks: 1
+message:Kernel_panic-not_syncing:softlockup:hung_tasks: [  511.119241] Kernel panic - not syncing: softlockup: hung tasks
+pattern:Kernel_panic-not_syncing:softlockup:hung_tasks: Kernel panic - not syncing: softlockup: hung tasks
 
 timestamp:last: 511.772661
 timestamp:RIP:insert_augmented: 510.369402

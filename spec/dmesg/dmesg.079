@@ -2,9 +2,13 @@ boot_failures: 1
 
 # WARNING:.* at .* __alloc_pages_slowpath+0x
 WARNING:at_mm/page_alloc.c:#__alloc_pages_slowpath: 1
+message:WARNING:at_mm/page_alloc.c:#__alloc_pages_slowpath: [   24.054463] WARNING: CPU: 0 PID: 199 at mm/page_alloc.c:3470 __alloc_pages_slowpath+0x5a/0xd4e
+pattern:WARNING:at_mm/page_alloc.c:#__alloc_pages_slowpath: WARNING:.* at .* __alloc_pages_slowpath+0x
 
 # gcov_module_notifier+0x
 calltrace:gcov_module_notifier: 1
+message:calltrace:gcov_module_notifier: [   24.084375]  [<ffffffff81194a17>] gcov_module_notifier+0x12a/0x176
+pattern:calltrace:gcov_module_notifier: gcov_module_notifier+0x
 
 timestamp:last: 24.091722
 timestamp:WARNING:at_mm/page_alloc.c:#__alloc_pages_slowpath: 24.054463

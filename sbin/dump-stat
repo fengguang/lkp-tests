@@ -54,6 +54,7 @@ while line = STDIN.gets
 		warn_stat "whitespace in stats name: #{k}"
 	end
 	if v =~ /[^0-9a-fx.-]/
+		next if k =~ /^(dmesg|kmsg)\.(message|pattern):/
 		$invalid_records.push record_index
 		warn_stat "invalid stats value: #{v}"
 	end

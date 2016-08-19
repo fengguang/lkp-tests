@@ -2,12 +2,18 @@ boot_failures: 1
 
 # BUG: KASAN: slab-out-of-bounds in kernfs_fop_write+0x
 BUG:KASAN:slab-out-of-bounds_in_kernfs_fop_write_at_addr: 1
+message:BUG:KASAN:slab-out-of-bounds_in_kernfs_fop_write_at_addr: [   12.974916] BUG: KASAN: slab-out-of-bounds in kernfs_fop_write+0x8c/0x1f0 at addr ffff880019af6798
+pattern:BUG:KASAN:slab-out-of-bounds_in_kernfs_fop_write_at_addr: BUG: KASAN: slab-out-of-bounds in kernfs_fop_write+0x
 
 # SyS_write+0x
 calltrace:SyS_write: 1
+message:calltrace:SyS_write: [   13.029189]  [<ffffffff8118867d>] SyS_write+0x4d/0xb0
+pattern:calltrace:SyS_write: SyS_write+0x
 
 # SyS_mount+0x
 calltrace:SyS_mount: 1
+message:calltrace:SyS_mount: [   13.056674]  [<ffffffff811aad10>] SyS_mount+0x90/0xc0
+pattern:calltrace:SyS_mount: SyS_mount+0x
 
 timestamp:last: 13.058694
 timestamp:BUG:KASAN:slab-out-of-bounds_in_kernfs_fop_write_at_addr: 12.974916

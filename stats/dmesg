@@ -79,6 +79,7 @@ end
 verify_serial_log(dmesg_lines)
 
 error_ids = {}
+error_lines = {}
 error_stamps = {}
 
 if $PROGRAM_NAME =~ /dmesg/
@@ -130,6 +131,7 @@ oops_map.each { |bug_to_bisect, line|
 	next if error_id.size <= 3
 
 	error_ids[error_id] ||= bug_to_bisect
+	error_lines[error_id] ||= line
 	error_stamps[error_id] ||= timestamp if timestamp
 }
 
@@ -140,6 +142,8 @@ error_ids.each { |error_id, line|
 	puts
 	puts '# ' + line
 	puts error_id + ': 1'
+	puts 'message:' + error_id + ': ' + error_lines[error_id]
+	puts 'pattern:' + error_id + ': ' + line
 }
 
 puts

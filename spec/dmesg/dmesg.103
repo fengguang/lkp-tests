@@ -2,9 +2,13 @@ boot_failures: 1
 
 # WARNING:.* at .* kmalloc_slab+0x
 WARNING:at_mm/slab_common.c:#kmalloc_slab: 1
+message:WARNING:at_mm/slab_common.c:#kmalloc_slab: [   30.277063] WARNING: CPU: 0 PID: 151 at mm/slab_common.c:861 kmalloc_slab+0xe4/0x260
+pattern:WARNING:at_mm/slab_common.c:#kmalloc_slab: WARNING:.* at .* kmalloc_slab+0x
 
 # gcov_module_notifier+0x
 calltrace:gcov_module_notifier: 1
+message:calltrace:gcov_module_notifier: [   30.468886]  [<ffffffffa5478162>] gcov_module_notifier+0x202/0x210
+pattern:calltrace:gcov_module_notifier: gcov_module_notifier+0x
 
 timestamp:last: 30.515170
 timestamp:WARNING:at_mm/slab_common.c:#kmalloc_slab: 30.277063

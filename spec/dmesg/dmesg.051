@@ -2,6 +2,8 @@ boot_failures: 1
 
 # WARNING:.* at .* fpregs_activate+0x
 WARNING:at_arch/x86/include/asm/fpu/internal.h:#fpregs_activate: 1
+message:WARNING:at_arch/x86/include/asm/fpu/internal.h:#fpregs_activate: [   20.749059] WARNING: CPU: 1 PID: 557 at arch/x86/include/asm/fpu/internal.h:534 fpregs_activate+0x76/0xa0
+pattern:WARNING:at_arch/x86/include/asm/fpu/internal.h:#fpregs_activate: WARNING:.* at .* fpregs_activate+0x
 
 timestamp:last: 20.767197
 timestamp:WARNING:at_arch/x86/include/asm/fpu/internal.h:#fpregs_activate: 20.749059

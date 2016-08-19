@@ -2,4 +2,6 @@ boot_failures: 1
 
 # BUG: kernel boot hang
 BUG:kernel_boot_hang: 1
+message:BUG:kernel_boot_hang: BUG: kernel boot hang
+pattern:BUG:kernel_boot_hang: BUG: kernel boot hang
 

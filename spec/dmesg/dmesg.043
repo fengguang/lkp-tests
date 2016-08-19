@@ -2,15 +2,23 @@ boot_failures: 1
 
 # blocked for more than 120 seconds
 INFO:task_blocked_for_more_than#seconds: 1
+message:INFO:task_blocked_for_more_than#seconds: [  251.950215] INFO: task swapper:1 blocked for more than 120 seconds.
+pattern:INFO:task_blocked_for_more_than#seconds: blocked for more than 120 seconds
 
 # test_rht_init+0x
 calltrace:test_rht_init: 1
+message:calltrace:test_rht_init: [  254.165391]  [<c17c5191>] test_rht_init+0x544/0x595
+pattern:calltrace:test_rht_init: test_rht_init+0x
 
 # Kernel panic - not syncing: hung_task: blocked tasks
 Kernel_panic-not_syncing:hung_task:blocked_tasks: 1
+message:Kernel_panic-not_syncing:hung_task:blocked_tasks: [  257.618158] Kernel panic - not syncing: hung_task: blocked tasks
+pattern:Kernel_panic-not_syncing:hung_task:blocked_tasks: Kernel panic - not syncing: hung_task: blocked tasks
 
 # watchdog+0x
 calltrace:watchdog: 1
+message:calltrace:watchdog: [  257.746675]  [<c1079335>] watchdog+0x227/0x287
+pattern:calltrace:watchdog: watchdog+0x
 
 timestamp:last: 257.812078
 timestamp:INFO:task_blocked_for_more_than#seconds: 251.950215

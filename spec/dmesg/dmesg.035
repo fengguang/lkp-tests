@@ -2,18 +2,28 @@ boot_failures: 1
 
 # BUG: unable to handle kernel
 BUG:unable_to_handle_kernel: 1
+message:BUG:unable_to_handle_kernel: [   21.734461] BUG: unable to handle kernel paging request at 4d3f33b7
+pattern:BUG:unable_to_handle_kernel: BUG: unable to handle kernel
 
 # Oops:
 Oops:#[##]: 1
+message:Oops:#[##]: [   21.748156] Oops: 0002 [#1]
+pattern:Oops:#[##]: Oops:
 
 # EIP is at bpf_prog_free+0x
 EIP_is_at_bpf_prog_free: 1
+message:EIP_is_at_bpf_prog_free: [   21.755582] EIP is at bpf_prog_free+0x11/0x50
+pattern:EIP_is_at_bpf_prog_free: EIP is at bpf_prog_free+0x
 
 # SyS_socketcall+0x
 calltrace:SyS_socketcall: 1
+message:calltrace:SyS_socketcall: [   21.827023]  [<817eefcb>] SyS_socketcall+0x42b/0x600
+pattern:calltrace:SyS_socketcall: SyS_socketcall+0x
 
 # Kernel panic - not syncing: Fatal exception
 Kernel_panic-not_syncing:Fatal_exception: 1
+message:Kernel_panic-not_syncing:Fatal_exception: [   21.889319] Kernel panic - not syncing: Fatal exception
+pattern:Kernel_panic-not_syncing:Fatal_exception: Kernel panic - not syncing: Fatal exception
 
 timestamp:last: 21.889319
 timestamp:BUG:unable_to_handle_kernel: 21.734461

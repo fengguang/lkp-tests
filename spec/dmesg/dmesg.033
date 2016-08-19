@@ -2,9 +2,13 @@ boot_failures: 1
 
 # WARNING:.* at .* intel_modeset_init+0x
 WARNING:at_drivers/gpu/drm/i915/intel_display.c:#intel_modeset_init[i915]: 1
+message:WARNING:at_drivers/gpu/drm/i915/intel_display.c:#intel_modeset_init[i915]: [   24.925604] WARNING: CPU: 0 PID: 173 at drivers/gpu/drm/i915/intel_display.c:15572 intel_modeset_init+0xce0/0xe50 [i915]
+pattern:WARNING:at_drivers/gpu/drm/i915/intel_display.c:#intel_modeset_init[i915]: WARNING:.* at .* intel_modeset_init+0x
 
 # i915_init+0x
 calltrace:i915_init: 1
+message:calltrace:i915_init: [   24.925879]  [<ffffffffa03dc05b>] i915_init+0x5b/0x62 [i915]
+pattern:calltrace:i915_init: i915_init+0x
 
 timestamp:last: 24.925901
 timestamp:WARNING:at_drivers/gpu/drm/i915/intel_display.c:#intel_modeset_init[i915]: 24.925604

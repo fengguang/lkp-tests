@@ -2,9 +2,13 @@ boot_failures: 1
 
 # INFO: rcu_sched detected stalls on CPUs/tasks:
 INFO:rcu_sched_detected_stalls_on_CPUs/tasks: 1
+message:INFO:rcu_sched_detected_stalls_on_CPUs/tasks: [  103.985562] INFO: rcu_sched detected stalls on CPUs/tasks:
+pattern:INFO:rcu_sched_detected_stalls_on_CPUs/tasks: INFO: rcu_sched detected stalls on CPUs/tasks:
 
 # rcu_gp_init+0x
 calltrace:rcu_gp_init: 1
+message:calltrace:rcu_gp_init: [  104.017741]  [<ffffffffbb0f5978>] rcu_gp_init+0x141/0x454
+pattern:calltrace:rcu_gp_init: rcu_gp_init+0x
 
 timestamp:last: 104.022076
 timestamp:INFO:rcu_sched_detected_stalls_on_CPUs/tasks: 103.985562

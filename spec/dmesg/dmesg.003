@@ -2,9 +2,13 @@ boot_failures: 1
 
 # WARNING:.* at .* ftrace_bug+0x
 WARNING:at_kernel/trace/ftrace.c:#ftrace_bug: 1
+message:WARNING:at_kernel/trace/ftrace.c:#ftrace_bug: [   16.238279] WARNING: CPU: 0 PID: 546 at kernel/trace/ftrace.c:2006 ftrace_bug+0x216/0x330
+pattern:WARNING:at_kernel/trace/ftrace.c:#ftrace_bug: WARNING:.* at .* ftrace_bug+0x
 
 # SyS_perf_event_open+0x
 calltrace:SyS_perf_event_open: 1
+message:calltrace:SyS_perf_event_open: [   16.256135]  [<ffffffff85229a95>] SyS_perf_event_open+0x865/0x1740
+pattern:calltrace:SyS_perf_event_open: SyS_perf_event_open+0x
 
 timestamp:last: 16.259149
 timestamp:WARNING:at_kernel/trace/ftrace.c:#ftrace_bug: 16.238279

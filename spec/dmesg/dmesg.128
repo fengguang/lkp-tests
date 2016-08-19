@@ -2,6 +2,8 @@ boot_failures: 1
 
 # BUG: workqueue lockup - pool
 BUG:workqueue_lockup-pool: 1
+message:BUG:workqueue_lockup-pool: [  134.526853] BUG: workqueue lockup - pool
+pattern:BUG:workqueue_lockup-pool: BUG: workqueue lockup - pool
 
 timestamp:last: 134.534982
 timestamp:BUG:workqueue_lockup-pool: 134.526853

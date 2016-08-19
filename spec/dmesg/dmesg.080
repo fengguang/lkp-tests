@@ -2,9 +2,13 @@ boot_failures: 1
 
 # WARNING:.* at .* process_one_work+0x
 WARNING:at_kernel/workqueue.c:#process_one_work: 1
+message:WARNING:at_kernel/workqueue.c:#process_one_work: [   10.797613] WARNING: CPU: 1 PID: 25 at kernel/workqueue.c:2040 process_one_work+0x75/0x397
+pattern:WARNING:at_kernel/workqueue.c:#process_one_work: WARNING:.* at .* process_one_work+0x
 
 # rescuer_thread+0x
 calltrace:rescuer_thread: 1
+message:calltrace:rescuer_thread: [   10.821624]  [<ffffffff810a5308>] rescuer_thread+0x1c0/0x2fb
+pattern:calltrace:rescuer_thread: rescuer_thread+0x
 
 timestamp:last: 10.850735
 timestamp:WARNING:at_kernel/workqueue.c:#process_one_work: 10.797613

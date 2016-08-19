@@ -2,9 +2,13 @@ boot_failures: 1
 
 # BUG: spinlock bad magic on CPU#1
 BUG:spinlock_bad_magic_on_CPU: 1
+message:BUG:spinlock_bad_magic_on_CPU: [   90.322140] BUG: spinlock bad magic on CPU#1, kworker/u4:1/123
+pattern:BUG:spinlock_bad_magic_on_CPU: BUG: spinlock bad magic on CPU#1
 
 # fd_timer_workfn+0x
 calltrace:fd_timer_workfn: 1
+message:calltrace:fd_timer_workfn: [   90.322660]  [<c173d70a>] fd_timer_workfn+0x9/0xb
+pattern:calltrace:fd_timer_workfn: fd_timer_workfn+0x
 
 timestamp:last: 90.333534
 timestamp:BUG:spinlock_bad_magic_on_CPU: 90.322140
