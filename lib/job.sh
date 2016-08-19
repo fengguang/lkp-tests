@@ -53,8 +53,8 @@ sync_cluster_state()
 
 	# the return value matters, do not change ! || to &&
 	! should_wait_cluster || {
-		local url="http://$LKP_SERVER:$LKP_CGI_PORT/~$LKP_USER/cgi-bin/lkp-cluster-sync?cluster=$cluster&node=$HOSTNAME$state_option$other_options"
-		wget -q -O - "$url"
+		local url="cgi-bin/lkp-cluster-sync?cluster=$cluster&node=$HOSTNAME$state_option$other_options"
+		http_get_file "$url" -
 	}
 }
 

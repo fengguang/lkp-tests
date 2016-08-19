@@ -247,6 +247,7 @@ class Job2sh < Job
 		out_line
 		out_line "\techo $$ > $TMP/run-job.pid"
 		out_line
+		out_line "\t. $LKP_SRC/lib/http.sh"
 		out_line "\t. $LKP_SRC/lib/job.sh"
 		out_line "\t. $LKP_SRC/lib/env.sh"
 		out_line
