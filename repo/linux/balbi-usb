@@ -22,4 +22,5 @@ whitelist_branch: dwc3|musb|xceiv|gadget|fixes|next|testing/fixes|testing/next
 blacklist_branch: .*
 notify_build_success_branch: testing/.*
 build_mail_cc: felipe.balbi@linux.intel.com
+belongs_to: USB driver
 
