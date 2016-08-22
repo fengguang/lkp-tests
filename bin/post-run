@@ -81,6 +81,10 @@ wait_for_pipe()
 	local i
 	local result
 
+	# If setup scripts failed, monitors&tests won't run and .pid-pipes
+	# will be missing.
+	[ -e $TMP/.pid-pipes ] || return
+
 	for i in $(seq 5)
 	do
 		sleep $i
