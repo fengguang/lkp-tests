@@ -75,7 +75,10 @@ start_nfsd()
 
 	log_cmd /etc/init.d/rpcbind start
 	log_cmd /etc/init.d/nfs-common start
-	log_cmd /etc/init.d/nfs-kernel-server start
+	log_cmd /etc/init.d/nfs-kernel-server start || {
+		systemctl status nfs-kernel-server.service
+		exit 1
+	}
 }
 
 mount_local_nfs()
