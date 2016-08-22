@@ -5,11 +5,16 @@ category: benchmark
 perf-profile:
   delay: 15
 
+# mdadm: cannot open /dev/sdd: Device or resource busy
+# mdadm --build can avoid that EBUSY error on scsi_debug disks,
+# however it is only usable for linear,raid0,raid1
+mdadm_mode: build
+
 disk:
 - 4SRD_12G
 md:
 - RAID0
-- RAID5
+- RAID1
 fs:
 - xfs
 - ext4
