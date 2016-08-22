@@ -55,7 +55,8 @@ make_md() {
 		raid_device=/dev/md$i
 		[ -b $raid_device ] && continue
 
-		echo y | log_cmd mdadm -q	--create $raid_device		\
+		echo y | log_cmd mdadm -q				\
+					--create $raid_device		\
 					--chunk=$raid_chunk		\
 					--level=$raid_level		\
 					--raid-devices=$nr_partitions	\
@@ -66,6 +67,9 @@ make_md() {
 
 	echo "Failed to create RAID!" 1>&2
 	cat $TMP/mdadm_stderr 1>&2
+	echo \
+	cat /proc/mdstat
+	cat /proc/mdstat
 	exit 1
 }
 
