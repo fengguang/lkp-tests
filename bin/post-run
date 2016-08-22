@@ -31,9 +31,9 @@ kill_monitors()
 	local wait_pidfile="$TMP/.pid-wait-monitors"
 	local pids
 
-	for pidfile in $TMP/pid-monitors
+	for pidfile in $TMP/pid-monitor-*
 	do
-		[ -s "$pidfile" ] || break
+		[ -s "$pidfile" ] || continue
 
 		if [ -s "$wait_pidfile" ]; then
 			pids=$(grep -v -x -F -f "$wait_pidfile" "$pidfile")
@@ -42,7 +42,8 @@ kill_monitors()
 		fi
 
 		[ -n "$pids" ] || continue
-		/bin/kill $signal $pids
+		/bin/kill $signal $pids ||
+		echo "failed to kill monitor ${pidfile##*/pid-monitor-}" >&2
 	done
 }
 
@@ -52,7 +53,7 @@ kill_monitors()
 $LKP_SRC/bin/event/wakeup activate-monitor
 $LKP_SRC/bin/event/wakeup post-test
 # 2) most simple monitors run until being killed
-#    => $TMP/pid-monitors
+#    => $TMP/pid-monitor-*
 kill_monitors -INT
 
 wait_for_monitors && sleep 1

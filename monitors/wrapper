@@ -23,7 +23,7 @@ mkfifo $fifo 2>/dev/null || exit 0
 # Save pid to be killed when the tests complete. gzip/cat will auto quit when the FIFO writer is killed.
 # Skip record the pid of watchdog process, since it will startup a new process and run in background,
 # so its pid will be changed.
-[ $monitor != "watchdog" ] && echo $! >> $TMP/pid-monitors
+[ $monitor != "watchdog" ] && echo $! >> $TMP/pid-monitor-$monitor
 
 [ -L "$LKP_SRC/bin/cat-$monitor" ] || ln -s -T $(command -v cat) $LKP_SRC/bin/cat-$monitor
 

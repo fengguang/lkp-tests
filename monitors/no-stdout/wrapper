@@ -9,4 +9,4 @@ shift
 	exec $monitor_dir/$monitor "$@"
 ) &
 
-echo $! >> $TMP/pid-monitors
+echo $! >> $TMP/pid-monitor-$monitor
