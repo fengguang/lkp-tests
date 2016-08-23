@@ -30,6 +30,7 @@ kill_monitors()
 	local signal=$1
 	local wait_pidfile="$TMP/.pid-wait-monitors"
 	local pids
+	local pid
 
 	for pidfile in $TMP/pid-monitor-*
 	do
@@ -42,8 +43,13 @@ kill_monitors()
 		fi
 
 		[ -n "$pids" ] || continue
-		/bin/kill $signal $pids ||
-		echo "failed to kill monitor ${pidfile##*/pid-monitor-}" >&2
+
+		for pid in $pids
+		do
+			[ -d /proc/$pid ] || continue
+			/bin/kill $signal $pids ||
+			echo "failed to kill monitor ${pidfile##*/pid-monitor-}" >&2
+		done
 	done
 }
 
