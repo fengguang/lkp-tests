@@ -3,7 +3,6 @@
 download()
 {
 	git_clone_update git://git.linaro.org/power/pm-qa.git
-	source_dir=$BM_NAME
 }
 
 install()

@@ -5,8 +5,9 @@
 download()
 {
 	git_clone_update git://github.com/waffle-gl/waffle
-	git_clone_update git://anongit.freedesktop.org/piglit
 	git_clone_update git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+	# keep it in the last to set the effective source_dir
+	git_clone_update git://anongit.freedesktop.org/piglit
 }
 
 build()

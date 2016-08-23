@@ -3,7 +3,6 @@
 download()
 {
 	git_clone_update https://github.com/aaronlu/turbostat.git
-	source_dir=turbostat
 }
 
 install()

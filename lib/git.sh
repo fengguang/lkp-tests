@@ -6,6 +6,8 @@ git_clone_update()
 	local dir=$2
 	[ "$dir" ] || dir=$(basename $url .git)
 
+	source_dir=$PWD/$dir
+
 	if [ -d $dir/.git ]; then
 		(
 			cd $dir

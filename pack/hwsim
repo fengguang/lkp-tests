@@ -3,7 +3,6 @@
 download()
 {
 	git_clone_update git://w1.fi/srv/git/hostap.git
-	source_dir=hostap
 }
 
 build()

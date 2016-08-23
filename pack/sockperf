@@ -3,7 +3,6 @@
 download()
 {
 	git_clone_update https://github.com/Mellanox/sockperf.git
-	source_dir=sockperf
 }
 
 build()

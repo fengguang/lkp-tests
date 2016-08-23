@@ -3,7 +3,6 @@
 download()
 {
 	git_clone_update git://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git
-	source_dir=xfstests-dev
 }
 
 build()
