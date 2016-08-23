@@ -2,13 +2,13 @@
 
 download()
 {
-	git_clone_update git://oss.sgi.com/xfs/cmds/xfstests.git
-	source_dir=$BM_NAME
+	git_clone_update git://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git
+	source_dir=xfstests-dev
 }
 
 build()
 {
-    cd /tmp/xfstests
+    cd $source_dir
     patch_source
     ## Currently, ./configure file can't work with "--prefix" option correctly,
     ## so we just use the "make" command to generate the execuable file.
@@ -17,7 +17,7 @@ build()
 
 install()
 {
-	cp -af /tmp/$BM_NAME/* $BM_ROOT/
+	cp -af $source_dir/* $BM_ROOT/
 	cp -af $LKP_SRC/pack/${BM_NAME}-addon/* $BM_ROOT/
 
 	## generate the new add subcase automatically after every upgrade xfstests
