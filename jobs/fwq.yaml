@@ -2,10 +2,6 @@ suite: fwq
 testcase: fwq
 category: noise-benchmark
 
-cpufreq_governor:
-  - performance
-  - powersave
-
 nr_task: 100%
 
 samples: 100000ss
