@@ -9,7 +9,7 @@ phoronix-test-suite:
   # - open-porous-media-1.3.1 # Killed Bus error
   - x264-opencl-1.9.0
   - x264-1.9.0
-  # - ffmpeg-2.5.0 # This test failed to run properly.
+  - ffmpeg-2.5.0
   - mencoder-1.4.1
   - system-libxml2-1.0.2
   - build-firefox-1.0.0
@@ -42,12 +42,12 @@ phoronix-test-suite:
   # - hpcc-1.1.5 # generate some temp files in local disk when running, remove it.
   - mafft-1.4.0
   - npb-1.2.1
-  # - dolfyn-1.0.0 # generate some temp files in local disk when running, remove it.
+  - dolfyn-1.0.0
   - build-apache-1.5.1
   - compress-pbzip2-1.5.0
   - compress-7zip-1.6.1
   - crafty-1.3.0
-  # - encode-opus-1.0.1 # generate some temp files in local disk when running, remove it.
+  - encode-opus-1.0.1
   # - iozone-1.8.0  # generate some temp files in local disk when running, remove it.
   - espeak-1.3.0
   - stockfish-1.0.0
@@ -62,7 +62,7 @@ phoronix-test-suite:
   - n-queens-1.1.0
   - bork-1.0.0
   - ffte-1.0.1
-  # - compress-lzma-1.2.0 # generate some temp files in local disk when running, remove it.
+  - compress-lzma-1.2.0
   - cyclictest-1.0.0
   - encode-ape-1.3.0
   # - fs-mark-1.0.1  #LKP has its own fsmark tests
@@ -70,7 +70,7 @@ phoronix-test-suite:
   - ramspeed-1.4.0
   - byte-1.2.0
   # - systester-1.0.0 # The test run did not produce a result
-  # - c-ray-1.1.0 # generate some temp files in local disk when running, remove it.
+  - c-ray-1.1.0
   - cachebench-1.0.0
   - polybench-c-1.0.2
   # - pyopencl-1.0.0 # The test run did not produce a result
@@ -88,7 +88,7 @@ phoronix-test-suite:
   - fhourstones-1.1.1
   - ebizzy-1.0.2
   - aio-stress-1.1.1
-  # - smallpt-1.0.1 # generate some temp files in local disk when running, remove it.
+  - smallpt-1.0.1
   - stream-1.2.0
   - himeno-1.1.0
   - sample-program-1.1.0
