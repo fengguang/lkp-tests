@@ -155,7 +155,7 @@ int main(int argc, char *argv[])
 	signal(SIGTTOU, SIG_IGN);
 	signal(SIGTTIN, SIG_IGN);
 
-	sleep(100);
+	sleep(3600);
 
 	return 0;
 }
