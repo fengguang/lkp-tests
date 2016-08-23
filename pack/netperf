@@ -5,7 +5,6 @@ WEB_URL="ftp://ftp.netperf.org/netperf/archive/netperf-${VERSION}.tar.gz"
 CONFIGURE_FLAGS="--prefix=$BM_ROOT --enable-demo --enable-unixdomain --enable-sctp --enable-dccp --enable-burst"
 build()
 {
-    cd "$source_dir"
     cp /usr/share/misc/config.{guess,sub} .
     CC=gcc-4.9 ./configure $CONFIGURE_FLAGS
     make

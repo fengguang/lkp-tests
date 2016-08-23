@@ -6,7 +6,6 @@ source_dir="osdl-aim-7"
 
 build()
 {
-	cd "$source_dir"
 	patch_source
 	./bootstrap
 	LDFLAGS=-laio \

@@ -7,7 +7,6 @@ download()
 
 build()
 {
-	cd "$source_dir"
 	git checkout -q -b build origin/sockperf_v2
 	./autogen.sh
 	./configure

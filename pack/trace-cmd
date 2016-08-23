@@ -7,7 +7,6 @@ download()
 
 build()
 {
-	cd $source_dir
 	make prefix=$BM_ROOT
 }
 

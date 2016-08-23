@@ -10,7 +10,6 @@ build()
 	mkdir /lkp/benchmarks/ndctl/etc
 	mkdir /lkp/benchmarks/ndctl/lib
 
-	cd $source_dir
 	./autogen.sh
 	./configure CFLAGS='-g -O0' --enable-test --disable-docs --prefix=/lkp/benchmarks/ndctl --sysconfdir=/lkp/benchmarks/ndctl/etc --libdir=/lkp/benchmarks/ndctl/lib
 	make

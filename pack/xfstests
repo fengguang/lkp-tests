@@ -7,7 +7,6 @@ download()
 
 build()
 {
-    cd $source_dir
     patch_source
     ## Currently, ./configure file can't work with "--prefix" option correctly,
     ## so we just use the "make" command to generate the execuable file.

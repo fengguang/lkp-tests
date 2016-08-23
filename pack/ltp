@@ -29,7 +29,6 @@ split_syscalls()
 
 build()
 {
-	cd $source_dir
 	patch_source
 	split_syscalls
 	make autotools

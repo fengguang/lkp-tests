@@ -8,7 +8,6 @@ download()
 
 build()
 {
-	cd $source_dir
 	make autotools
 	./configure --prefix=$BM_ROOT --with-open-posix-testsuite
 	make

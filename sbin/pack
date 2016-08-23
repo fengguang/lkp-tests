@@ -72,6 +72,7 @@ mkdir -p $BM_ROOT || exit
 
 cd /tmp
 download || exit
+cd "$source_dir" || exit
 build || exit
 install || exit
 strip_object_files

@@ -5,7 +5,6 @@ WEB_URL="http://download.pureftpd.org/pub/blogbench/blogbench-${VERSION}.tar.gz"
 
 build()
 {
-    cd "$source_dir"
     cp /usr/share/misc/config.{guess,sub} .
     ./configure $CONFIGURE_FLAGS
     make
