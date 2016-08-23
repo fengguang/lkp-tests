@@ -1,0 +1,7 @@
+model: qemu-system-x86_64 -enable-kvm -cpu host
+nr_vm: 20
+nr_cpu: 2
+memory: 4G
+rootfs: debian-x86_64.cgz
+hdd_partitions: /dev/vda
+swap_partitions: /dev/vdb
