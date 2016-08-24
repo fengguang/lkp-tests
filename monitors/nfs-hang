@@ -6,6 +6,7 @@
 . $LKP_SRC/lib/wait.sh
 . $LKP_SRC/lib/http.sh
 . $LKP_SRC/lib/job-init.sh
+. $LKP_SRC/lib/sysinfo.sh
 
 : ${timeout:=200}
 : ${interval:=900}
@@ -19,20 +20,6 @@ force_reboot()
 	echo b > /proc/sysrq-trigger
 }
 
-# caculate cpu utilization roughly without iowait time
-cpu_utilization()
-{
-	local cpu_usage
-	read cpu user_t nice_t system_t previdle_t rest < /proc/stat
-	prevtotal_t=$((user_t+nice_t+system_t+previdle_t))
-	sleep 10
-	read cpu user_t nice_t system_t idle_t rest < /proc/stat
-	total_t=$((user_t+nice_t+system_t+idle_t))
-	[ $prevtotal_t -eq $total_t ] && echo 0 && return
-	cpu_usage=$((100*((total_t-prevtotal_t)-(idle_t-previdle_t))/(total_t-prevtotal_t)))
-	echo $cpu_usage
-}
-
 nfs_hang()
 {
 	local loadavg
@@ -43,7 +30,8 @@ nfs_hang()
 	# If loadavg is high, but cpu ulilization(without counting iowait time)
 	# is low, it indicates many jobs are waiting for I/O(state D), may due
 	# to nfs hang.
-		[ $(cpu_utilization) -ge 5 ] && return 1
+		calc_cpu_utilization
+		[ $cpu_utilization -ge 5 ] && return 1
 	}
 	for i in $(seq 3); do
 		timeout $timeout df > /dev/null
