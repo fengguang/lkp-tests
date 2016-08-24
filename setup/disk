@@ -104,6 +104,8 @@ elif [ -n "$scsi_ram" -a "$scsi_ram" != 0 ]; then
 	disk_description=1scsi_ram
 	disks=$(echo $partitions | tr '\n' ' ')
 elif [ -n "$nr_pmem" -a "$nr_pmem" != 0 ]; then
+	log_cmd modprobe nd_e820
+	sleep 1
 	check_nr_pmem
 	nr_partitions=$nr_pmem
 	partitions=$(ls /dev/pmem*)
