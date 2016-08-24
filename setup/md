@@ -44,7 +44,7 @@ check_partition_size $partitions
 
 make_md() {
 	if [ -e /proc/mdstat ]; then
-		grep -q '^md0 : active' /proc/mdstat &&
+		grep -q '^md0 : \(in\)\?active' /proc/mdstat &&
 		log_cmd mdadm -q --stop /dev/md0
 	else
 		log_cmd modprobe md
