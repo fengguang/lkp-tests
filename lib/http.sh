@@ -67,8 +67,6 @@ http_do_request()
 
 	# $ busybox wget http://XXX:/
 	# wget: bad port spec 'XXX:'
-	[ -n "$LKP_CGI_PORT" ] || echo "warning: LKP_CGI_PORT is empty"
-
 	local http_prefix="http://$LKP_SERVER:${LKP_CGI_PORT:-80}/~$LKP_USER"
 
 	echo \
