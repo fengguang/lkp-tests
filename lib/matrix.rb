@@ -320,7 +320,7 @@ def unite_stats(result_root, delete = false)
 	_result_root = File.dirname result_root
 	__result_root = File.dirname _result_root
 
-	stats = create_stats_matrix(result_root)
+	stats = load_json result_root + '/stats.json'
 	stats['stats_source'] = result_root + '/stats.json'
 
 	unite_to(stats, _result_root, nil, delete)
