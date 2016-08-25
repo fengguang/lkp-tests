@@ -118,6 +118,11 @@ class Job2sh < Job
 			command << 'run_monitor'
 		when %r{/setup$}
 			command << 'run_setup'
+			# - 'fs2' will expand to empty in some job matrix;
+			# - 'cpufreq_governor' will be defined in one include
+			#    and redefined in another to be empty
+			# They all mean to cancel running the setup script.
+			return if program_env.empty? and args.empty?
 		when %r{/daemon$}
 			command << 'start_daemon'
 		when %r{/tests$}
