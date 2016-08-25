@@ -122,7 +122,8 @@ class Job2sh < Job
 			# - 'cpufreq_governor' will be defined in one include
 			#    and redefined in another to be empty
 			# They all mean to cancel running the setup script.
-			return if program_env.empty? and args.empty?
+			return if program_env.empty? and args.empty? and
+				program =~ /^(fs2|cpufreq_governor)$/
 		when %r{/daemon$}
 			command << 'start_daemon'
 		when %r{/tests$}
