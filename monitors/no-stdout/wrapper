@@ -4,9 +4,7 @@ monitor=$1
 monitor_dir=$(dirname $0)
 shift
 
-(
-	$LKP_SRC/bin/event/wait 'activate-monitor'
-	exec $monitor_dir/$monitor "$@"
-) &
+echo $$ >> $TMP/pid-monitor-$monitor
 
-echo $! >> $TMP/pid-monitor-$monitor
+$LKP_SRC/bin/event/wait 'activate-monitor'
+exec $monitor_dir/$monitor "$@"

@@ -12,17 +12,6 @@ fifo=$TMP/fifo-$monitor
 [ -p $fifo ] && exit 0
 mkfifo $fifo 2>/dev/null || exit 0
 
-(
-	# Some setup scripts take time and we don't want to profile them.
-	$LKP_SRC/bin/event/wait 'activate-monitor'
-
-	exec stdbuf -o0 -e0 $monitor_dir/$monitor "$@"
-) > $fifo &
-
-# Save pid to be killed when the tests complete. gzip/cat will auto quit when
-# the FIFO writer is killed.
-echo $! >> $TMP/pid-monitor-$monitor
-
 [ -L "$LKP_SRC/bin/cat-$monitor" ] || ln -s -T $(command -v cat) $LKP_SRC/bin/cat-$monitor
 
 if grep -q -x -F $monitor $LKP_SRC/etc/monitors_need_gzip; then
@@ -63,3 +52,13 @@ else
 fi
 
 echo $! >> $TMP/.pid-pipes
+
+# Save pid to be killed when the tests complete.
+# gzip/cat will auto quit when the FIFO writer is killed.
+echo $$ >> $TMP/pid-monitor-$monitor
+
+# Some setup scripts take time and we don't want to profile them.
+$LKP_SRC/bin/event/wait 'activate-monitor'
+
+exec stdbuf -o0 -e0 $monitor_dir/$monitor "$@" > $fifo
+

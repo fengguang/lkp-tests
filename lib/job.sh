@@ -176,9 +176,9 @@ run_program()
 run_monitor()
 {
 	if [ "$1" != "${1#*=}" ]; then
-		env "$@"
+		env "$@" &
 	else
-		"$@"
+		"$@" &
 	fi
 }
 
