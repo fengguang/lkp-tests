@@ -2,6 +2,8 @@ suite: vm-scalability
 testcase: vm-scalability
 category: benchmark
 
+runtime: 300
+
 transparent_hugepage:
   thp_enabled:
     - never
