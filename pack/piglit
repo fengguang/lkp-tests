@@ -46,6 +46,7 @@ create_config()
 
 install()
 {
+	cd /tmp
 	mv -T /tmp/intel-gpu-tools $BM_ROOT/lib/$BM_NAME/bin/igt
 
 	create_config
