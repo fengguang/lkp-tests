@@ -2,15 +2,21 @@
 
 download()
 {
+	git_clone_update git://oss.sgi.com/xfs/cmds/xfsprogs
 	git_clone_update git://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git
 }
 
 build()
 {
-    patch_source
-    ## Currently, ./configure file can't work with "--prefix" option correctly,
-    ## so we just use the "make" command to generate the execuable file.
-    make
+	cd /tmp/xfsprogs
+	make
+	make install-dev
+
+	cd /tmp/xfstests-dev
+	patch_source
+	## Currently, ./configure file can't work with "--prefix" option correctly,
+	## so we just use the "make" command to generate the execuable file.
+	make
 }
 
 install()
