@@ -54,7 +54,8 @@ sync_cluster_state()
 	# the return value matters, do not change ! || to &&
 	! should_wait_cluster || {
 		local url="cgi-bin/lkp-cluster-sync?cluster=$cluster&node=$HOSTNAME$state_option$other_options"
-		http_get_file "$url" -
+		# eliminate the first cmdline output from http_get_file
+		http_get_file "$url" - | tail -n +2
 	}
 }
 
