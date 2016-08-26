@@ -9,11 +9,8 @@ nr_node=$(echo /sys/devices/system/node/node[0-9]* | wc -w)
 [ -z "$size" ] && die "eatmem: size required"
 [ -z "$duration" ] && duration=$((3600*24))
 
-i=0
-while [[ $i < $nr_node ]]
-do
+for i in $(seq 0 $((nr_node-1))); do
 	numactl -m $i -N $i $USEMEM $((size/nr_node)) --detach --sleep $duration -p $TMP/eatmem_$i.pid
-	cat $TMP/eatmem_$i.pid >> $TMP/pid-monitors
+	cat $TMP/eatmem_$i.pid >> $TMP/pid-monitor-eatmem
 	rm $TMP/eatmem_$i.pid
-	i=i+1
 done
