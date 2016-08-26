@@ -113,6 +113,15 @@ def create_stats_matrix(result_root)
 	return stats
 end
 
+def load_create_stats_matrix(result_root)
+	stats_file = result_root + '/stats.json'
+	if File.exist? stats_file
+		load_json stats_file
+	else
+		create_stats_matrix result_root
+	end
+end
+
 def matrix_average(matrix)
 	avg = {}
 	matrix.each { |k, v| avg[k] = v.average }
@@ -320,7 +329,7 @@ def unite_stats(result_root, delete = false)
 	_result_root = File.dirname result_root
 	__result_root = File.dirname _result_root
 
-	stats = load_json result_root + '/stats.json'
+	stats = load_create_stats_matrix result_root
 	stats['stats_source'] = result_root + '/stats.json'
 
 	unite_to(stats, _result_root, nil, delete)
