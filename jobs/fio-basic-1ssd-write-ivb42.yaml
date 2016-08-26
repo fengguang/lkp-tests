@@ -1,0 +1,23 @@
+suite: fio-basic
+testcase: fio-basic
+category: benchmark
+
+runtime: 300s
+nr_task: 8t
+
+disk: 1SSD
+fs:
+- xfs
+- btrfs
+
+fio-setup-basic:
+  rw: write
+  bs: 4k
+  ioengine: sync
+  test_size: 512g
+
+fio:
+
+---
+nr_task: 16t
+fs: ext4
