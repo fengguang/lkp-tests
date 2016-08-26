@@ -121,7 +121,4 @@ start_watchdog()
 }
 
 start_bmc_watchdog
-start_watchdog &
-echo $! >> $TMP/.pid-watchdog
-
-[ -n "$BASHPID" ] && disown
+start_watchdog # will block wait until test finish
