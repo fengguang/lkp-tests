@@ -25,8 +25,8 @@ $invalid_records = []
 record_index = 0
 while line = STDIN.gets
 	next if line[0] == '#'
-	k, v = line.split(': ')
-	next if v == nil
+	k, _, v = line.partition(': ')
+	next if v.empty?
 
 	# Line terminator is expected. If not, throw out an error warning.
 	if v.chomp! == nil
