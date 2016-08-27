@@ -140,3 +140,30 @@ def revise_hash(original, revisions, overwrite_top_keys = true)
 
 	original
 end
+
+def escape_mongo_key(hash)
+	h = {}
+	hash.each do |k, v|
+		case k
+		when String
+			kk = k
+		when Symbol
+			kk = ':' + k.to_s
+		end
+		h[kk.tr '.', '․'] = v
+	end
+	h
+end
+
+def unescape_mongo_key(hash)
+	h = {}
+	hash.each do |k, v|
+		k = k.tr '․', '.'
+		case k
+		when /^:(.*)/
+			k = $1.to_sym
+		end
+		h[k] = v
+	end
+	h
+end
