@@ -77,6 +77,7 @@ start_nfsd()
 	log_cmd /etc/init.d/nfs-common start
 	log_cmd /etc/init.d/nfs-kernel-server start || {
 		systemctl status nfs-kernel-server.service
+		cat /etc/exports
 		exit 1
 	}
 }
