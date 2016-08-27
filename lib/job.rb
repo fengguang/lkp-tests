@@ -767,6 +767,10 @@ class Job
 		@job.update(k)
 	end
 
+	def merge(k)
+		@job.merge(k)
+	end
+
 	def to_hash
 		@job
 	end
