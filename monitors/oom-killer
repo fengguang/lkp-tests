@@ -14,7 +14,8 @@ while :
 do
 	wait_timeout 11
 
-	[ -f "$TMP/job-finished" ] && exit
+	[ -e "$TMP/post-run" ] && exit
+	[ -e "$TMP/job-finished" ] && exit
 
 	check_oom && break
 done
