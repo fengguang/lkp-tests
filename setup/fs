@@ -69,9 +69,8 @@ start_nfsd()
 		log_cmd mount --bind $mp /export/$mp
 
 		local entry="/export/$mp *(rw,no_subtree_check,no_root_squash)"
-		log_echo "echo '$entry' >> /etc/exports"
-		echo "$entry"
-	done >> /etc/exports
+		log_eval "echo '$entry' >> /etc/exports"
+	done
 
 	log_cmd /etc/init.d/rpcbind start
 	log_cmd /etc/init.d/nfs-common start
