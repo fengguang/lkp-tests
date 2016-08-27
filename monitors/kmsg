@@ -1,5 +1,3 @@
 #!/bin/sh
 
-killall rsyslogd klogd 2>/dev/null
-
 exec dmesg --follow --decode
