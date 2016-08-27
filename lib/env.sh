@@ -30,7 +30,10 @@ role()
 
 is_virt()
 {
-	if has_cmd 'virt-what'; then
+	if [ -n "$model" ]; then
+		# running inside LKP job
+		[ -n "$nr_vm" ]
+	elif has_cmd 'virt-what'; then
 		# run as root
 		[ -n "$(virt-what)" ]
 	else
