@@ -31,7 +31,8 @@ role()
 is_virt()
 {
 	if has_cmd 'virt-what'; then
-		[ "$(virt-what)" = "kvm" ]
+		# run as root
+		[ -n "$(virt-what)" ]
 	else
 		grep -q -w hypervisor /proc/cpuinfo
 	fi
