@@ -64,16 +64,11 @@ fi
 
 opt_events="-e $(echo $events | sed 's/ / -e /g')"
 
-[ -n "$command" ] || {
+if [ -n "$time" ]; then
 	. $LKP_SRC/lib/wait.sh
 	setup_wait
-
-	if [ -n "$time" ]; then
-		command="$WAIT_POST_TEST_CMD --timeout $time"
-	else
-		command="$WAIT_POST_TEST_CMD"
-	fi
-}
+	command="$WAIT_POST_TEST_CMD --timeout $time"
+fi
 
 # Disable NMI watchdog to free up one perf counter
 test -e  /proc/sys/kernel/nmi_watchdog &&
