@@ -1,3 +1,9 @@
 #!/bin/sh
 
+. $LKP_SRC/lib/env.sh
+
+# randconfig kernels may not have CONFIG_NET --
+# serial console has better availability.
+is_virt && exec > /dev/ttyS1
+
 exec dmesg --follow --decode
