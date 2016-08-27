@@ -233,6 +233,7 @@ def common_error_id(line)
 	line.gsub! /\b[a-f0-9]{40}\b/, '#'				# SHA-1
 	line.gsub! /\b[0-9][0-9.]*/, '#'				# number
 	line.gsub! /#x\b/, '0x'
+	line.gsub! /[\\"$]/, '~'
 	line.gsub! /[ \t]/, ' '
 	line.gsub! /\ \ +/, ' '
 	line.gsub! /([^a-zA-Z0-9])\ /, '\1'
