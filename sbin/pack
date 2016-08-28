@@ -57,11 +57,25 @@ done
 
 shift $(($OPTIND-1))
 BM_NAME=$1
-
 [[ $BM_NAME ]] || usage
-BM_ROOT=/lkp/benchmarks/$BM_NAME
 
 [[ $arch ]] || arch=`uname -m`
+
+# for packages with same dependencies, only need to create symlink for cgz
+check_shared_pack()
+{
+	[[ -L $LKP_SRC/pack/$BM_NAME ]] || return
+	[[ -z "$sync_dest" ]] && exit
+
+	local target
+	target=$(readlink $LKP_SRC/pack/$BM_NAME)
+	target=$(basename $target)
+	ln -sfT ${target}-${arch}.cgz $sync_dest/${BM_NAME}-${arch}.cgz
+	exit
+}
+check_shared_pack
+
+BM_ROOT=/lkp/benchmarks/$BM_NAME
 
 source $LKP_SRC/pack/quiet
 source $LKP_SRC/pack/default
