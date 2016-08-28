@@ -1,7 +1,7 @@
 #!/bin/bash
 
-VERSION="2.6.0"
-WEB_URL="ftp://ftp.netperf.org/netperf/archive/netperf-${VERSION}.tar.gz"
+VERSION="2.7.0"
+WEB_URL="ftp://ftp.netperf.org/netperf/netperf-${VERSION}.tar.gz"
 
 build()
 {
@@ -14,7 +14,6 @@ build()
 				--enable-burst
 	)
 
-	cp /usr/share/misc/config.{guess,sub} .
 	CC=gcc-4.9 ./configure "${configure_flags[@]}"
 	make
 }
