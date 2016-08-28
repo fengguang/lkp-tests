@@ -26,9 +26,8 @@ do
 	check_shared_package $BM_NAME && continue
 
 	packages=$(get_dependency_packages $DISTRO $BM_NAME)
-	PACKAGE_LIST=$(apt-get --simulate --no-install-recommends install $packages | \
-		       awk '/The following NEW packages will be installed:/{flag=1; next}/^[^ ]/{flag=0}flag; \
-			   /The following packages will be upgraded:/{flag2=1; next}/^[^ ]/{flag2=0}flag2')
+	PACKAGE_LIST=$(apt-get --simulate --no-install-recommends install $packages |
+			awk '/^Inst / {print $2}')
 
 	[[ $PACKAGE_LIST ]] || {
 		echo "empty PACKAGE_LIST for $BM_NAME"
@@ -41,7 +40,7 @@ do
 	if download "$PACKAGE_LIST"; then
 		install
 		pack
-		echo $PACKAGE_LIST | tr ' ' '\n' > $pack_to/.${BM_NAME}.packages
+		echo "$PACKAGE_LIST" > $pack_to/.${BM_NAME}.packages
 	else
 		echo "failed to pack-deps $BM_NAME" >&2
 	fi
