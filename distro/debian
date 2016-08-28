@@ -31,8 +31,15 @@ hardlink_to_symlink()
 
 install()
 {
+	local deb
 	for deb in *.deb; do
-		dpkg-deb -x $deb .
+		if echo "$deb" | grep -q -F -f $LKP_SRC/distro/keep-deb; then
+			mkdir -p opt/deb
+			mv "$deb"  opt/deb
+		else
+			dpkg-deb -x "$deb" . || return
+			rm "$deb"
+		fi
 	done
 
 	hardlink_to_symlink
@@ -59,7 +66,7 @@ pack()
 	[[ $(type -t fixup_$BM_NAME) = 'function' ]] && fixup_$BM_NAME
 
 	{
-		find . -xdev ! -name "*.deb" |
+		find . -xdev |
 		grep -v -f $LKP_SRC/rootfs/rootfs-strip-list
 
 		[[ -f $LKP_SRC/distro/$DISTRO/$BM_NAME-whitelist ]] &&

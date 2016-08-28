@@ -153,8 +153,21 @@ redirect_stdout_stderr()
 	tail -f /tmp/stderr | stdbuf -i0 -o0 sed -r 's/^(.{,300}).*$/<3>\1/'  > /dev/kmsg &
 }
 
+install_deb()
+{
+	local files
+
+	files="$(ls /opt/deb 2>/dev/null)" || return
+	[ -n "$files" ] || return
+
+	dpkg -i $files || return
+	rm $files
+}
+
 fixup_packages()
 {
+	install_deb
+
 	ldconfig
 
 	[ -x /usr/bin/gcc ] && [ ! -e /usr/bin/cc ] &&
