@@ -66,6 +66,6 @@ pack()
 		cat   $LKP_SRC/distro/$DISTRO/$BM_NAME-whitelist
 	} |
 	cpio --quiet -o -H newc --owner=root.root | gzip -n -9 > $pack_to/${BM_NAME}_$date.cgz
-	ln -sf $pack_to/${BM_NAME}_$date.cgz   $pack_to/${BM_NAME}.cgz
+	ln -sf ${BM_NAME}_$date.cgz $pack_to/${BM_NAME}.cgz
 	echo package installed to $pack_to/${BM_NAME}.cgz
 }
