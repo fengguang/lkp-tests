@@ -22,6 +22,7 @@ network_ok()
 	do
 		[ "${i#*/lo/}" != "$i" ] && continue
 		[ "${i#*/eth}" != "$i" ] && net_devices="$net_devices $(basename $i)"
+		[ "${i#*/en}"  != "$i" ] && net_devices="$net_devices $(basename $i)"
 		[ "$(cat $i/operstate)" = 'up' ]		&& return 0
 		[ "$(cat $i/carrier 2>/dev/null)" = '1' ]	&& return 0
 	done
