@@ -7,7 +7,14 @@ BM_NAME=${PACK_NAME%-*}
 DISTRO=${PACK_NAME##*-}
 
 umask 002
-source $LKP_SRC/pack/${DISTRO}
+
+. $LKP_SRC/distro/${DISTRO}
+
+rootfs=debian-x86_64.cgz
+pack_to=/osimage/deps/$rootfs
+mkdir -p $pack_to
+
+check_shared_package "$BM_NAME" && exit
 
 work_dir=$(mktemp -d)
 cd $work_dir

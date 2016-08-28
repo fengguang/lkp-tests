@@ -6,7 +6,7 @@
 
 DISTRO=${rootfs%%-*}
 
-. $LKP_SRC/pack/${DISTRO}
+. $LKP_SRC/distro/${DISTRO}
 
 DEPS_MNT=/osimage/deps
 mkdir -p "$DEPS_MNT"
@@ -15,12 +15,16 @@ mount $LKP_SERVER:$DEPS_MNT $DEPS_MNT || exit
 pack_to=$DEPS_MNT/$rootfs
 mkdir -p "$pack_to"
 
+check_shared_package "$benchmark" && exit
+
 update
 
 [[ ! $benchmark || $benchmark = all ]] && benchmark="$(ls $LKP_SRC/distro/depends | grep -v -e '-dev' -e '-whitelist')"
 
 for BM_NAME in $benchmark
 do
+	check_shared_package $BM_NAME && continue
+
 	packages=$(get_dependency_packages $DISTRO $BM_NAME)
 	PACKAGE_LIST=$(apt-get --simulate --no-install-recommends install $packages | \
 		       awk '/The following NEW packages will be installed:/{flag=1; next}/^[^ ]/{flag=0}flag; \

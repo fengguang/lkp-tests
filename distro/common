@@ -1,0 +1,18 @@
+#!/bin/bash
+
+check_shared_package()
+{
+	local bm_name="$1"
+
+	[[ -L "$LKP_SRC/distro/depends/$bm_name" ]] || return
+
+	local target
+	target=$(readlink $LKP_SRC/distro/depends/$bm_name)
+	target=$(basename $target)
+
+	echo \
+	ln -sf ${target}.cgz $pack_to/${bm_name}.cgz
+	ln -sf ${target}.cgz $pack_to/${bm_name}.cgz
+
+	return 0
+}

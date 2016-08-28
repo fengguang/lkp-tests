@@ -1,6 +1,7 @@
 #!/bin/bash
 
 . $LKP_SRC/lib/install.sh
+. $LKP_SRC/distro/common
 
 update()
 {
@@ -39,12 +40,7 @@ install()
 
 pack()
 {
-	[[ $pack_to ]] || {
-		pack_to=/osimage/deps/$rootfs
-		mkdir -p $pack_to
-	}
-
-	date=$(date +"%Y-%m-%d")
+	local date=$(date +"%Y-%m-%d")
 
 	{
 		[[ "$BM_NAME" = "lkp-eywa" ]] &&
