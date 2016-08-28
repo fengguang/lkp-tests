@@ -209,13 +209,22 @@ mount_rootfs()
 	export CACHE_DIR
 }
 
+show_default_gateway()
+{
+	if has_cmd ip; then
+		ip -4 route list 0/0 | cut -f3 -d' '
+	else
+		route -n | awk '$4 == "UG" {print $2}'
+	fi
+}
+
 netconsole_init()
 {
 
 	[ -z "$netconsole_port" ] && return
 
 	# use default gateway as netconsole server
-	netconsole_server=$(ip -4 route list 0/0 | cut -f3 -d' ')
+	netconsole_server=$(show_default_gateway)
 	modprobe netconsole netconsole=@/,$netconsole_port@$netconsole_server/ 2>/dev/null
 }
 
