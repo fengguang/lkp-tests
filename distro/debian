@@ -38,14 +38,27 @@ install()
 	hardlink_to_symlink
 }
 
+fixup_lkp-eywa()
+{
+	ln -sf /usr/bin/gnuplot-qt usr/bin/gnuplot
+}
+
+fixup_perf()
+{
+	local real_perf=(usr/bin/perf_*)
+	[[ $real_perf ]] || return
+
+	# replace the perf wrapper script
+	ln -sf /$real_perf usr/bin/perf
+}
+
 pack()
 {
 	local date=$(date +"%Y-%m-%d")
 
-	{
-		[[ "$BM_NAME" = "lkp-eywa" ]] &&
-		ln -sf /usr/bin/gnuplot-qt usr/bin/gnuplot
+	[[ $(type -t fixup_$BM_NAME) = 'function' ]] && fixup_$BM_NAME
 
+	{
 		find . -xdev ! -name "*.deb" |
 		grep -v -f $LKP_SRC/rootfs/rootfs-strip-list
 
