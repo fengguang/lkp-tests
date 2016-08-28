@@ -41,7 +41,7 @@ do
 	if download "$PACKAGE_LIST"; then
 		install
 		pack
-		echo "$PACKAGE_LIST" > $pack_to/.${BM_NAME}.packages
+		echo $PACKAGE_LIST | tr ' ' '\n' > $pack_to/.${BM_NAME}.packages
 	else
 		echo "failed to pack-deps $BM_NAME" >&2
 	fi
