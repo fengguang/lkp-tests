@@ -45,6 +45,11 @@ install()
 	hardlink_to_symlink
 }
 
+fixup_vim()
+{
+	ln -sf vim.basic usr/bin/vim
+}
+
 fixup_lkp-eywa()
 {
 	ln -sf /usr/bin/gnuplot-qt usr/bin/gnuplot
