@@ -2,10 +2,19 @@
 
 VERSION="2.6.0"
 WEB_URL="ftp://ftp.netperf.org/netperf/archive/netperf-${VERSION}.tar.gz"
-CONFIGURE_FLAGS="--prefix=$BM_ROOT --enable-demo --enable-unixdomain --enable-sctp --enable-dccp --enable-burst"
+
 build()
 {
-    cp /usr/share/misc/config.{guess,sub} .
-    CC=gcc-4.9 ./configure $CONFIGURE_FLAGS
-    make
+	local configure_flags=(
+				--prefix=$BM_ROOT
+				--enable-demo
+				--enable-unixdomain
+				--enable-sctp
+				--enable-dccp
+				--enable-burst
+	)
+
+	cp /usr/share/misc/config.{guess,sub} .
+	CC=gcc-4.9 ./configure "${configure_flags[@]}"
+	make
 }
