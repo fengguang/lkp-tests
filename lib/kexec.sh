@@ -78,9 +78,9 @@ kexec_to_next_job()
 	echo --append="${append}"
 	sleep 1
 
-	test -d 				"/$LKP_SERVER/$RESULT_ROOT/" &&
-	dmesg --human --decode --color=always > "/$LKP_SERVER/$RESULT_ROOT/pre-dmesg" &&
-	chown lkp.lkp				"/$LKP_SERVER/$RESULT_ROOT/pre-dmesg" &&
+	test -d 					"/$LKP_SERVER/$RESULT_ROOT/" &&
+	dmesg --human --decode --color=always | gzip >	"/$LKP_SERVER/$RESULT_ROOT/pre-dmesg.gz" &&
+	chown lkp.lkp					"/$LKP_SERVER/$RESULT_ROOT/pre-dmesg.gz" &&
 	sync
 
 	kexec --noefi -l $kernel_file $initrd_option --append="$append"
