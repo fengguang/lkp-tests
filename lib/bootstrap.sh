@@ -45,6 +45,9 @@ setup_network()
 {
 	local net_devices=
 
+	network_ok && return || { echo "LKP: waiting for network..."; sleep 2; }
+	network_ok && return || sleep 5
+	network_ok && return || sleep 10
 	network_ok && return
 
 	if [ -z "$net_devices" ]; then
