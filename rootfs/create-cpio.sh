@@ -19,3 +19,10 @@ echo
 echo "To deploy the rootfs:"
 echo "cp $cpio_file $INITRD_ROOT/$cpio_file"
 echo "ln -fs $cpio_file $INITRD_ROOT/${distro}.cgz"
+
+# tuning tips:
+# deborphan -sz
+# deborphan -az
+# apt-get purge $(deborphan) # check the list first
+# dpkg-query -W -f='${Installed-Size} \t${Package} \t${Priority} \n'|sort -n
+# less /osimage/debian/debian-x86_64.cgz|sort -k5 -n |less
