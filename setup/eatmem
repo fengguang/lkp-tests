@@ -2,6 +2,8 @@
 # - size
 # - duration
 
+USEMEM=/lkp/benchmarks/vm-scalability/usemem
+[ -x $USEMEM ] ||
 USEMEM=/lkp/benchmarks/eatmem/usemem
 
 nr_node=$(echo /sys/devices/system/node/node[0-9]* | wc -w)
