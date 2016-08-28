@@ -124,11 +124,20 @@ setup_hosts()
 	ln -fs /tmp/hosts /etc/hosts
 }
 
+show_mac_addr()
+{
+	if has_cmd ip; then
+		ip link | awk '/ether/ {print $2; exit}'
+	else
+		arp -n  | awk '/ether/ {print $3; exit}'
+	fi
+}
+
 announce_bootup()
 {
 	local version="$(cat /proc/sys/kernel/version | cut -f1 -d' ' | cut -c2-)"
 	local release="$(cat /proc/sys/kernel/osrelease)"
-	local mac="$(ip link | awk '/ether/ {print $2; exit}')"
+	local mac="$(show_mac_addr)"
 
 	echo 'Kernel tests: Boot OK!'
 
