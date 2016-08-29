@@ -9,5 +9,5 @@ download()
 
 install()
 {
-	cp -af /tmp/kvm-unit-tests/* $BM_ROOT/
+	cp -af $source_dir/* $BM_ROOT/
 }

@@ -1,3 +1,5 @@
+#!/bin/bash
+
 download()
 {
 	git_clone_update git://git.neil.brown.name/mdadm.git
@@ -5,10 +7,10 @@ download()
 
 build()
 {
-	cd /tmp/mdadm && make test
+	make test
 }
 
 install()
 {
-	cp -a /tmp/mdadm/* $BM_ROOT/
+	cp -a $source_dir/* $BM_ROOT/
 }

@@ -7,13 +7,13 @@ download()
 
 build()
 {
-	cd $source_dir/UnixBench
+	cd $source_dir/UnixBench || return
 	patch_source
 	make
 }
 
 install()
 {
-	cp -af /tmp/$source_dir/* $BM_ROOT
+	cp -af $source_dir/* $BM_ROOT
 	mkdir $BM_ROOT/results
 }

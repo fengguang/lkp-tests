@@ -7,16 +7,16 @@ download()
 
 build()
 {
-	mkdir /lkp/benchmarks/ndctl/etc
-	mkdir /lkp/benchmarks/ndctl/lib
+	mkdir $BM_ROOT/etc
+	mkdir $BM_ROOT/lib
 
 	./autogen.sh
-	./configure CFLAGS='-g -O0' --enable-test --disable-docs --prefix=/lkp/benchmarks/ndctl --sysconfdir=/lkp/benchmarks/ndctl/etc --libdir=/lkp/benchmarks/ndctl/lib
+	./configure CFLAGS='-g -O0' --enable-test --disable-docs --prefix=$BM_ROOT --sysconfdir=$BM_ROOT/etc --libdir=$BM_ROOT/lib
 	make
 }
 
 install()
 {
 	make install
-	cp -af /tmp/$source_dir/* $BM_ROOT
+	cp -af $source_dir/* $BM_ROOT
 }

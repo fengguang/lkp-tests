@@ -17,7 +17,7 @@ build()
 
 	local ncpu=$(nproc)
 
-	cd /tmp/waffle
+	cd ../waffle
 	cmake	-Dwaffle_has_glx=1	\
 		-Dwaffle_has_x11_egl=1	\
 		-Dwaffle_has_wayland=1	\
@@ -46,8 +46,8 @@ create_config()
 
 install()
 {
-	cd /tmp
-	mv -T /tmp/intel-gpu-tools $BM_ROOT/lib/$BM_NAME/bin/igt
+	cd $source_dir || return
+	mv -T ../intel-gpu-tools $BM_ROOT/lib/$BM_NAME/bin/igt
 
 	create_config
 	generate_test_groups
@@ -56,7 +56,7 @@ install()
 generate_test_groups()
 {
 	(
-	cd /lkp/benchmarks/piglit
+	cd $BM_ROOT || exit
 	mkdir -p groups
 
 	local tset
@@ -89,7 +89,7 @@ pack()
 
 post_cleanup()
 {
-	rm -fr "/tmp/$BM_NAME"
+	rm -fr "$source_dir"
 	rm -f /usr/lib/x86_64-linux-gnu/pkgconfig/waffle-1.pc
 	rm -f /usr/bin/wflinfo
 	rm -f /usr/lib/x86_64-linux-gnu/libwaffle-1.so*

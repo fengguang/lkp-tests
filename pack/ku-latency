@@ -19,5 +19,5 @@ install()
 
 cleanup()
 {
-	rm -f "/tmp/ku-latency.c" "/tmp/send-data.c"
+	rm "ku-latency.c" "send-data.c"
 }

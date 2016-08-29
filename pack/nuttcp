@@ -7,5 +7,5 @@ install()
 {
 	cp -af $source_dir $BM_ROOT
 	cd ${BM_ROOT}
-	ln -s $source_dir $BM_NAME
+	ln -s $(basename $source_dir) $BM_NAME
 }

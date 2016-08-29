@@ -7,5 +7,5 @@ download()
 
 install()
 {
-	cp -af /tmp/$BM_NAME /lkp/benchmarks/
+	cp -af $source_dir /lkp/benchmarks/
 }
