@@ -1,8 +1,8 @@
 #!/bin/bash
 
-kernel=vmlinuz
-initrd=rootfs.cgz
-hostname=vm-kexec
+kernel=${1:-vmlinuz}
+initrd=${2:-rootfs.cgz}
+hostname=${3:-vm-kexec}
 
 kvm=(
 	qemu-system-x86_64 -cpu kvm64 -enable-kvm
