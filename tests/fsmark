@@ -30,7 +30,8 @@
 ## - `fsmark.files_per_sec`: number of files written per second
 ## - `fsmark.app_overhead`: time in microseconds spent in the test not doing file writing related system calls
 
-cd $BENCHMARK_ROOT/fsmark || exit
+mkdir -p $BENCHMARK_ROOT
+cd $BENCHMARK_ROOT || exit
 
 . $LKP_SRC/lib/unit.sh
 
@@ -111,7 +112,7 @@ if [ "$nr_directories" -a "$nr_files_per_directory" ]; then
 	PARAM="${PARAM} -D $nr_directories -N $nr_files_per_directory"
 fi
 
-log_cmd ./fs_mark \
+log_cmd fs_mark \
 	$PARAM \
 	-n $nr_files	\
 	-L $iterations \
