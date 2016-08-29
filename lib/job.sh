@@ -79,9 +79,14 @@ wait_cluster_state()
 		esac
 	done
 
-	sync_cluster_state 'abort'
 	wakeup_pre_test
 	echo "cluster.abort: 1" >> $RESULT_ROOT/last_state
+
+	[ "$i" -eq 100 ] && {
+		sync_cluster_state 'abort'
+		echo "cluster.timeout: 1" >> $RESULT_ROOT/last_state
+	}
+
 	exit 1
 }
 
