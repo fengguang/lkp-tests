@@ -6,7 +6,13 @@ git_clone_update()
 	local dir
 	shift
 
-	dir=$(basename $url .git)
+	if [ "$1" != "${1#-}" ]; then
+		dir="$1"
+		shift
+	else
+		dir=$(basename $url .git)
+	fi
+
 	source_dir=$PWD/$dir
 
 	if [ -d $dir/.git ]; then
