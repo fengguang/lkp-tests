@@ -7,5 +7,5 @@ download()
 
 build()
 {
-	gcc -O2 -o ${BM_ROOT}/bust_shm_exit ${BM_NAME}/bust_shm_exit.c -lpthread
+	gcc -O2 -o ${BM_ROOT}/bust_shm_exit bust_shm_exit.c -lpthread
 }
