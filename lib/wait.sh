@@ -33,8 +33,21 @@ setup_wait()
 	echo ${0##*/} >> $TMP/.name-wait-monitors
 }
 
+explain_kill()
+{
+	local i
+	for i
+	do
+		echo -n "kill $i "
+		cat /proc/$i/cmdline 2>/dev/null | tr '\0' ' '
+		echo
+	done
+}
+
 kill_one()
 {
+	explain_kill $*
+
 	kill    $* 2>/dev/null
 	wait_post_test --timeout 3 && return
 	kill -9 $* 2>/dev/null

@@ -1,6 +1,7 @@
 #!/bin/sh
 
 . $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/wait.sh
 
 umask 002
 
@@ -47,6 +48,7 @@ kill_monitors()
 		for pid in $pids
 		do
 			[ -d /proc/$pid ] || continue
+			explain_kill $pids
 			/bin/kill $signal $pids ||
 			echo "failed to kill monitor ${pidfile##*/pid-monitor-}" >&2
 		done
