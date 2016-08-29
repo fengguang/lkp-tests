@@ -2,8 +2,8 @@
 
 download()
 {
-	[[ -d autotest ]] || chronic git clone --recursive https://github.com/autotest/autotest.git
-	source_dir="autotest"
+	source_dir="$PWD/autotest"
+	chronic git clone --recursive https://github.com/autotest/autotest.git
 }
 
 install()
