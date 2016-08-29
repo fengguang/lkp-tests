@@ -3,9 +3,10 @@
 git_clone_update()
 {
 	local url=$1
-	local dir=$2
-	[ "$dir" ] || dir=$(basename $url .git)
+	local dir
+	shift
 
+	dir=$(basename $url .git)
 	source_dir=$PWD/$dir
 
 	if [ -d $dir/.git ]; then
@@ -20,9 +21,9 @@ git_clone_update()
 		)
 	else
 		rm -fr "$dir" 2>/dev/null
-		git clone -q $url $dir 2>&1 ||
-		git clone -q $url $dir 2>&1 ||
-		git clone -q $url $dir 2>&1
+		git clone -q "$@" $url $dir 2>&1 ||
+		git clone -q "$@" $url $dir 2>&1 ||
+		git clone -q "$@" $url $dir 2>&1
 	fi
 }
 
