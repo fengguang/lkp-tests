@@ -26,7 +26,7 @@ patch_source()
 
 build()
 {
-	patch_source
+	patch_source || return
 	[[ -x "./configure" ]] && ./configure $CONFIGURE_FLAGS
 	if [[ -f 'Makefile' ]]; then
 		make
