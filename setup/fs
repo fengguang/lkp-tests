@@ -89,10 +89,7 @@ mount_local_nfs()
 		local mnt=/nfs/$(basename $dir)
 		local dev=localhost:$dir
 		log_cmd mkdir -p $mnt
-		log_cmd mount -t $fs ${mount:-$def_mount} $dev $mnt || {
-			sleep 600 # wait for local debug login
-			exit 1
-		}
+		log_cmd mount -t $fs ${mount:-$def_mount} $dev $mnt || exit
 		nfs_mount_points="${nfs_mount_points}$mnt "
 	done
 }
