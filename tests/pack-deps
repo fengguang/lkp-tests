@@ -27,7 +27,7 @@ do
 
 	packages=$(get_dependency_packages $DISTRO $BM_NAME)
 	PACKAGE_LIST=$(apt-get --simulate --no-install-recommends install $packages |
-			awk '/^Inst / {print $2}')
+			awk '/^Inst / { if (substr($3, 0, 1) != "[") print $2 }')
 
 	[[ $PACKAGE_LIST ]] || {
 		echo "empty PACKAGE_LIST for $BM_NAME"
