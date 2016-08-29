@@ -21,7 +21,7 @@ download_kernel_initrd()
 	local _initrd
 	local initrds
 
-	kernel=$(echo $kernel | sed 's/^\///')
+	kernel="$(echo $kernel | sed 's/^\///')"
 
 	echo "downloading kernel image ..."
 	set_job_state "wget_kernel"

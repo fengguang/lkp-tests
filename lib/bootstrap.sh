@@ -282,7 +282,7 @@ tbox_cant_kexec()
 
 download_job()
 {
-	job=$(grep -o 'job=[^ ]*.yaml' $NEXT_JOB | awk -F '=' '{print $2}')
+	job="$(grep -o 'job=[^ ]*.yaml' $NEXT_JOB | awk -F '=' '{print $2}')"
 	local job_cgz=${job%.yaml}.cgz
 
 	# TODO: escape is necessary. We might also need download some extra cgz
@@ -295,7 +295,7 @@ __next_job()
 	NEXT_JOB="$CACHE_DIR/next-job-$LKP_USER"
 
 	echo "getting new job..."
-	local mac="$(ip link | awk '/ether/ {print $2; exit}')"
+	local mac="$(show_mac_addr)"
 	local last_kernel=
 	[ -n "$job" ] && last_kernel="last_kernel=$(grep ^kernel: $job | cut -d \" -f 2)&"
 	http_get_file "cgi-bin/gpxelinux.cgi?hostname=${HOSTNAME}&mac=$mac&${last_kernel}${manual_reboot}lkp_wtmp" \
