@@ -23,7 +23,7 @@ git_clone_update()
 		rm -fr "$dir" 2>/dev/null
 		git clone -q "$@" $url $dir 2>&1 ||
 		git clone -q "$@" $url $dir 2>&1 ||
-		git clone -q "$@" $url $dir 2>&1
+		git clone -q "$@" $url $dir
 	fi
 }
 
