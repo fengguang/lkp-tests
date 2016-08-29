@@ -59,8 +59,15 @@ setup_network()
 		ls /sys/class/net
 		ls /sys/class/net
 
-		reboot 2>/dev/null
-		exit
+		# VMs do many randconfig boot tests which can write the
+		# valuable dmesg/kmsg to ttyS0/ttyS1
+		if is_virt; then
+			export NO_NETWORK=1
+			return
+		else
+			reboot 2>/dev/null
+			exit
+		fi
 	fi
 
 	$LKP_DEBUG_PREFIX $LKP_SRC/bin/run-ipconfig
@@ -75,6 +82,7 @@ setup_network()
 		echo "!!! $err_msg !!!" >&2
 		echo "!!! $err_msg !!!" > /dev/ttyS0
 	}
+
 	reboot 2>/dev/null
 	exit
 }
@@ -90,6 +98,7 @@ add_lkp_user()
 
 run_ntpdate()
 {
+	[ -z "$NO_NETWORK" ] || return
 	[ "$LKP_SERVER" = inn ] || return
 	[ -x '/usr/sbin/ntpdate' ] || return
 
@@ -246,11 +255,12 @@ show_default_gateway()
 
 netconsole_init()
 {
-
 	[ -z "$netconsole_port" ] && return
+	[ -n "$NO_NETWORK" ] && return
 
 	# use default gateway as netconsole server
 	netconsole_server=$(show_default_gateway)
+	[ -n "$netconsole_server" ] || return
 	modprobe netconsole netconsole=@/,$netconsole_port@$netconsole_server/ 2>/dev/null
 }
 
@@ -317,6 +327,8 @@ next_job()
 
 rsync_rootfs()
 {
+	[ -z "$NO_NETWORK" ] && return
+
 	local append="$(grep -m1 '^APPEND ' $NEXT_JOB | sed 's/^APPEND //')"
 	for i in $append
 	do

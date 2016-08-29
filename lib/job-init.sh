@@ -81,6 +81,11 @@ setup_result_root()
 	export TMP_RESULT_ROOT=$TMP/result
 	mkdir -p $TMP_RESULT_ROOT
 
+	[ -n "$NO_NETWORK" ] && {
+		export RESULT_ROOT=$TMP_RESULT_ROOT
+		return
+	}
+
 	RESULT_PREFIX=/$LKP_SERVER
 	export RESULT_ROOT=$RESULT_PREFIX$RESULT_ROOT
 	export RESULT_MNT=$RESULT_PREFIX/result

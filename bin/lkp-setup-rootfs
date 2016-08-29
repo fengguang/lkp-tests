@@ -45,7 +45,6 @@ while true; do
 
 	tbox_cant_kexec && {
 		echo "LKP: rebooting"
-		echo "LKP: rebooting" > /dev/kmsg
 		start_reboot_watchdog
 		reboot 2>/dev/null && exit
 	}

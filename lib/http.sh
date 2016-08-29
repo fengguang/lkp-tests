@@ -65,6 +65,11 @@ http_do_request()
 	local path="$1"
 	shift
 
+	[ -n "$NO_NETWORK" ] && {
+		echo skip http request: $path "$@"
+		return
+	}
+
 	# $ busybox wget http://XXX:/
 	# wget: bad port spec 'XXX:'
 	local http_prefix="http://$LKP_SERVER:${LKP_CGI_PORT:-80}/~$LKP_USER"
