@@ -149,6 +149,7 @@ wait_on_manual_check()
 
 clean_job_resource()
 {
+	test -f /tmp/pid-tail || return
 	kill $(cat /tmp/pid-tail)
 }
 
