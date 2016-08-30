@@ -9,7 +9,7 @@ OWNER_OPT="--owner $OWNER"
 
 download()
 {
-	:
+	tmp_dir=/tmp/lkp_initrd-$USER
 }
 
 build()
@@ -23,14 +23,14 @@ build()
 install()
 {
 	umask 002
-	mkdir -p /tmp/lkp_initrd-$USER/rootfs/lkp/$LKP_USER/src
-	mkdir -p /tmp/lkp_initrd-$USER/lkp/$LKP_USER
-	ln -sfT $LKP_SRC /tmp/lkp_initrd-$USER/lkp/$LKP_USER/src
+	rm -fr "$tmp_dir" || return
+	mkdir -p $tmp_dir/rootfs/lkp/$LKP_USER/src
+	mkdir -p $tmp_dir/lkp/$LKP_USER
+	ln -sfT $LKP_SRC $tmp_dir/lkp/$LKP_USER/src
 }
 
 pack()
 {
-	local tmp_dir=/tmp/lkp_initrd-$USER
 	local tmp_src=$tmp_dir/lkp/$LKP_USER/src
 	local archive=$tmp_dir/lkp/$LKP_USER/lkp-${ARCH}
 	local cpio_cmd="cpio --quiet -o $OWNER_OPT -H newc -F ${archive}.cpio"
