@@ -60,5 +60,8 @@ echo $$ >> $TMP/pid-monitor-$monitor
 # Some setup scripts take time and we don't want to profile them.
 $LKP_SRC/bin/event/wait 'activate-monitor'
 
-exec stdbuf -o0 -e0 $monitor_dir/$monitor "$@" > $fifo
+has_cmd stdbuf &&
+stdbuf='stdbuf -o0 -e0'
+
+exec $stdbuf $monitor_dir/$monitor "$@" > $fifo
 
