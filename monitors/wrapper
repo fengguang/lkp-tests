@@ -1,5 +1,7 @@
 #!/bin/sh
 
+. $LKP_SRC/lib/env.sh
+
 monitor=$1
 monitor_dir=$(dirname $0)
 shift
@@ -12,7 +14,7 @@ fifo=$TMP/fifo-$monitor
 [ -p $fifo ] && exit 0
 mkfifo $fifo 2>/dev/null || exit 0
 
-[ -L "$LKP_SRC/bin/cat-$monitor" ] || ln -s -T $(command -v cat) $LKP_SRC/bin/cat-$monitor
+[ -L "$LKP_SRC/bin/cat-$monitor" ] || ln -s -T $(cmd_path cat) $LKP_SRC/bin/cat-$monitor
 
 if grep -q -x -F $monitor $LKP_SRC/etc/monitors_need_gzip; then
 	#

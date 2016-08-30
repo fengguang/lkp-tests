@@ -4,7 +4,7 @@ setup_wget_busybox()
 {
 	local busybox
 
-	busybox=$(command -v busybox) || return
+	busybox=$(cmd_path busybox) || return
 
 	http_client_cmd="$busybox wget -q"
 }

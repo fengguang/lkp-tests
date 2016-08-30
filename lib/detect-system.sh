@@ -18,6 +18,8 @@
 #See the License for the specific language governing permissions and
 #limitations under the License.
 
+. $LKP_SRC/lib/env.sh
+
 parse_executable_arch()
 {
 	case "$1" in
@@ -38,14 +40,14 @@ parse_executable_arch()
 
 detect_arch_by_readelf()
 {
-	command -v readelf >/dev/null || return
+	has_cmd readelf || return
 
 	parse_executable_arch "$(readelf -h $1 | grep -m1 '  Machine:')"
 }
 
 detect_arch_by_file()
 {
-	command -v file >/dev/null || return
+	has_cmd file || return
 
 	parse_executable_arch "$(file -b $1 | cut -f2 -d,)"
 }

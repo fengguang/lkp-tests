@@ -1,6 +1,8 @@
 #!/bin/sh
 
-command -v ethtool >/dev/null || exit 0
+. $LKP_SRC/lib/env.sh
+
+has_cmd ethtool || exit 0
 
 IFACE=eth0 # FIXME
 

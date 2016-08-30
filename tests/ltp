@@ -6,11 +6,13 @@
 
 cd $BENCHMARK_ROOT/ltp || exit
 
+. $LKP_SRC/lib/env.sh
+
 workaround_env()
 {
 	# some LTP sh scripts actually need bash. Fixes
 	# > netns_childns.sh: 38: .: cmdlib.sh: not found
-	[ "$(command -v bash)" = '/bin/bash' ] && [ $(readlink -e /bin/sh) != '/bin/bash' ] &&
+	[ "$(cmd_path bash)" = '/bin/bash' ] && [ $(readlink -e /bin/sh) != '/bin/bash' ] &&
 	ln -fs bash /bin/sh
 }
 workaround_env

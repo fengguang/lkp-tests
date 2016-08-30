@@ -1,17 +1,36 @@
 #!/bin/sh
 
-[ -n "$LKP_SRC" ] || LKP_SRC=$(dirname $(dirname $(readlink -e -v $0)))
-. $LKP_SRC/lib/debug.sh
+[ -n "$lib_env_load_once" ] && return
+lib_env_load_once=1
 
-has_cmd()
-{
-	command -v "$1" >/dev/null
-}
+[ -n "$LKP_SRC" ] || LKP_SRC=$(dirname $(dirname $(readlink -e -v $0)))
+
+if command -v command >/dev/null 2>&1; then
+	has_cmd()
+	{
+		command -v "$1" >/dev/null
+	}
+
+	cmd_path()
+	{
+		command -v "$1"
+	}
+else
+	has_cmd()
+	{
+		type "$1" >/dev/null 2>&1
+	}
+
+	cmd_path()
+	{
+		has_cmd "$1" && which "$1"
+	}
+fi
 
 nproc()
 {
 	if has_cmd 'nproc'; then
-		command 'nproc'
+		/usr/bin/nproc
 	elif has_cmd 'getconf'; then
 		getconf '_NPROCESSORS_CONF'
 	else
@@ -46,6 +65,9 @@ set_perf_path()
 	if [ -x "$1" ]; then
 		perf="$1"
 	else
-		perf=$(command -v perf) || die "Can not find perf command"
+		perf=$(cmd_path perf) || {
+			. $LKP_SRC/lib/debug.sh
+			die "Can not find perf command"
+		}
 	fi
 }

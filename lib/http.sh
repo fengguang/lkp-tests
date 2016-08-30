@@ -1,5 +1,7 @@
 #!/bin/sh
 
+. $LKP_SRC/lib/env.sh
+
 escape_cgi_param()
 {
 	local uri="$1"

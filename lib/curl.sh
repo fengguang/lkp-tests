@@ -2,7 +2,7 @@
 
 setup_curl()
 {
-	http_client_cmd=$(command -v curl) || return
+	http_client_cmd=$(cmd_path curl) || return
 	http_client_cmd="$http_client_cmd -s"
 }
 

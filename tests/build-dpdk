@@ -18,6 +18,7 @@ shopt -s nullglob
 . $LKP_SRC/lib/build.sh
 . $LKP_SRC/lib/mount.sh
 . $LKP_SRC/lib/git.sh
+. $LKP_SRC/lib/env.sh
 
 export CC=$dpdk_compiler
 $CC -v 2>&1 || {

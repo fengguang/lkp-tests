@@ -3,7 +3,7 @@
 setup_wget()
 {
 	local wget
-	wget=$(command -v wget) || return
+	wget=$(cmd_path wget) || return
 
 	# wget command may link to busybox which not support --local-encoding
 	# etc. options

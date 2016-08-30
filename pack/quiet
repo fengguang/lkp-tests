@@ -1,9 +1,11 @@
 #!/bin/bash
 
+. $LKP_SRC/lib/env.sh
+
 # Could possibly add "log to file" support in future.
 # Also possible to let user decide quiet build process.
 
-if command -v "chronic" >/dev/null; then
+if has_cmd 'chronic'; then
 	RUN_QUIET=chronic
 else
 	RUN_QUIET=

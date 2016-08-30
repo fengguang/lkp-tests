@@ -1,5 +1,7 @@
 #!/bin/sh
 
+. $LKP_SRC/lib/env.sh
+
 do_wipefs()
 {
 	local dev=$1
@@ -20,7 +22,7 @@ do_wipefs()
 remove_dm()
 {
 	[ -n "$nr_partitions" ] || return
-	command -v dmsetup >/dev/null || return
+	has_cmd dmsetup || return
 
 	log_cmd dmsetup remove_all
 }

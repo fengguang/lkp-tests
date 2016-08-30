@@ -2,7 +2,7 @@
 
 is_mount_point()
 {
-	if command -v mountpoint >/dev/null; then
+	if has_cmd mountpoint; then
 		mountpoint -q $1
 	else
 		grep -q -F " $1 " /proc/mounts
