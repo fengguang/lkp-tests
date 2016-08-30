@@ -12,6 +12,7 @@ endif
 
 main : $(OBJECTS)
 	$(CC) $(CFLAGS) -static -o $(PROG) $(OBJECTS)
+	rm -f $(OBJECTS)
 	strip $(PROG)
 clean:
 	rm -fr $(PROG)	$(OBJECTS)
