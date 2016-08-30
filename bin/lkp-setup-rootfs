@@ -54,7 +54,7 @@ while true; do
 		# [  305.814260] Rebooting in 10 seconds..
 		is_virt && [ -e '/proc/sysrq-trigger' ] && {
 			sync
-			umount -a 2>/dev/null
+			echo s > /proc/sysrq-trigger
 			echo b > /proc/sysrq-trigger
 		}
 
