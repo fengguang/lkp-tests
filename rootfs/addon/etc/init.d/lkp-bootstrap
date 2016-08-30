@@ -12,7 +12,16 @@
 # Call this script at boot time.
 # Keep it simple and stupid -- it will be installed in a number of rootfs.
 
-mkdir /dev/shm/lkp-bootstrap-once 2>/dev/null || exit 0
+# We can install lkp-bootstrap several places, so that at least one of them can
+# take effect in a particular rootfs, and the follow up ones can check reboot
+# the machine if the former one failed to do so.
+if [ -e /run/lkp-bootstrap-once ]; then
+	# the previous lkp-bootstrap init.d script failed to restart the machine
+	echo "LKP bootstrap: first run may failed, retry rebooting"
+	reboot
+else
+	touch /run/lkp-bootstrap-once
+fi
 
 read_kernel_cmdline_vars()
 {
