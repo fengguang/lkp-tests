@@ -14,8 +14,6 @@ fifo=$TMP/fifo-$monitor
 [ -p $fifo ] && exit 0
 mkfifo $fifo 2>/dev/null || exit 0
 
-[ -L "$LKP_SRC/bin/cat-$monitor" ] || ln -s -T $(cmd_path cat) $LKP_SRC/bin/cat-$monitor
-
 if grep -q -x -F $monitor $LKP_SRC/etc/monitors_need_gzip; then
 	#
 	# FILE          SIZE     COMPRESS TIME
@@ -40,16 +38,16 @@ if grep -q -x -F $monitor $LKP_SRC/etc/monitors_need_gzip; then
 
 	if [ "$monitor" = 'ftrace' ]; then
 		# ftrace output may be too large for tmpfs
-		$gzip -c < $fifo | cat-$monitor > $RESULT_ROOT/$monitor.gz &
+		$gzip -c < $fifo | cat	> $RESULT_ROOT/$monitor.gz &
 	else
-		$gzip -c < $fifo		> $TMP_RESULT_ROOT/$monitor.gz &
+		$gzip -c < $fifo	> $TMP_RESULT_ROOT/$monitor.gz &
 	fi
 else
 	if [ -z "$avoid_nfs" ] &&
 		( [ "$monitor" = heartbeat ] || [ "$monitor" = kmsg ] ); then
-		cat-$monitor	   $fifo		> $RESULT_ROOT/$monitor &
+		cat $fifo > $RESULT_ROOT/$monitor &
 	else
-		cat-$monitor	   $fifo		> $TMP_RESULT_ROOT/$monitor &
+		cat $fifo > $TMP_RESULT_ROOT/$monitor &
 	fi
 fi
 
