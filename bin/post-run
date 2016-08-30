@@ -10,17 +10,17 @@ wait_for_monitors()
 	local pidfile=$TMP/.pid-wait-monitors
 	[ -s "$pidfile" ] || return 0
 
-	echo wait for background monitors: $(cat $TMP/.name-wait-monitors)
+	echo wait for background monitors: $(cat $pidfile $TMP/.name-wait-monitors)
 
 	for i in 1 2 3 4 5
 	do
 		sleep $i
-		ps axho pid | grep -qFwf $pidfile && continue
+		ps axho pid | grep -qFxf $pidfile && continue
 		return $i
 	done
 
 	echo "some monitors do not quit in time" >&2
-	ps axho pid | grep -Fwf $pidfile | xargs ps u >&2
+	ps axho pid | grep -Fxf $pidfile | xargs ps u >&2
 
 	ps faux
 	return $i
@@ -65,7 +65,8 @@ touch $TMP/post-run
 #    => $TMP/pid-monitor-*
 kill_monitors -INT
 
-wait_for_monitors && sleep 1
+wait_for_monitors
+sleep 1
 kill_monitors -KILL
 
 PERF_EVENT_DATA=$TMP/perf.data
