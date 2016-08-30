@@ -13,8 +13,8 @@ escape_cgi_param()
 	# uri=${uri//:/%3A}
 	# uri=${uri//;/%3D}
 	echo "$uri" |
-	sed	-e 's/%/%25/g' \
-		-e 's/+/%2B/g' \
+	sed -r	-e 's/%/%25/g' \
+		-e 's/\+/%2B/g' \
 		-e 's/&/%26/g' \
 		-e 's/\?/%3F/g'
 }
