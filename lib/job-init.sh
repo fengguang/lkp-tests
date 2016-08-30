@@ -23,7 +23,7 @@ validate_result_root()
 
 should_do_cifs()
 {
-	grep -q clear-linux-os /etc/os-release && return 0
+	grep -q -s clear-linux-os /etc/os-release && return 0
 	grep -q -w 'nfs' /proc/filesystems && return 1
 	modprobe nfs 2>/dev/null
 	grep -q -w 'nfs' /proc/filesystems && return 1
@@ -139,7 +139,7 @@ wait_on_manual_check()
 
 clean_job_resource()
 {
-	killall tail-to-lkp
+	kill $(cat /tmp/pid-tail)
 }
 
 job_done() {
@@ -160,14 +160,23 @@ refresh_lkp_tmp()
 	mkdir -p $TMP
 }
 
+job_redirect_one()
+{
+	local file=$1
+	shift
+
+	tail -n 0 -f $* > $file &
+	echo $! >> /tmp/pid-tail
+}
+
 job_redirect_stdout_stderr()
 {
-	ln -sf /usr/bin/tail /bin/tail-to-lkp
+	[ -e /tmp/stdout ] || return
+	[ -e /tmp/stderr ] || return
 
-	tail-to-lkp -n 0 -f /tmp/stdout > $TMP/stdout &
-	tail-to-lkp -n 0 -f /tmp/stderr > $TMP/stderr &
-
-	tail-to-lkp -n 0 -f /tmp/stdout /tmp/stderr > $TMP/output &
+	job_redirect_one $TMP/stdout /tmp/stdout
+	job_redirect_one $TMP/stderr /tmp/stderr
+	job_redirect_one $TMP/output /tmp/stdout /tmp/stderr
 }
 
 job_env()

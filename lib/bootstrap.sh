@@ -89,6 +89,10 @@ setup_network()
 
 add_lkp_user()
 {
+	has_cmd groupadd || return
+	has_cmd useradd || return
+	has_cmd getent || return
+
 	getent passwd lkp >/dev/null && return
 
 	mkdir -p /home
@@ -161,6 +165,8 @@ announce_bootup()
 redirect_stdout_stderr()
 {
 	[ -c /dev/kmsg ] || return
+	has_cmd stdbuf || return
+	has_cmd tail || return
 
 	exec  > /tmp/stdout
 	exec 2> /tmp/stderr
@@ -186,6 +192,7 @@ fixup_packages()
 {
 	install_deb
 
+	has_cmd ldconfig &&
 	ldconfig
 
 	[ -x /usr/bin/gcc ] && [ ! -e /usr/bin/cc ] &&
