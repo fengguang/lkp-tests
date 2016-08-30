@@ -1,6 +1,12 @@
 mount_cgroup()
 {
 	[ -f "$CGROUP_MNT/tasks" ] && return
+
+	[ -e '/proc/cgroups' ] || {
+		echo "/proc/cgroups not found, skip cgroup mount."
+		return 1
+	}
+
 	awk 'NR > 1 {print "\\s\\+" $1 "\\."}' /proc/cgroups > $TMP/availble-cgroup_subsys
 	cgroup_subsys=$(grep -o -f $TMP/availble-cgroup_subsys $job)
 	[ -n "$cgroup_subsys" ] || return

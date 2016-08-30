@@ -33,9 +33,12 @@
 # - blkio.throttle.write_iops_device
 
 . $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/debug.sh
 
 CGROUP_MNT=/cgroup
 dir=$CGROUP_MNT/$(basename $testcase)/$group
+
+[ -e '/proc/cgroups' ] || die "dir not exist: /proc/cgroups"
 
 # This is the fail safe mount.
 # mount_cgroup() in run-lkp will normally do a better job for us
