@@ -32,8 +32,10 @@ install()
 pack()
 {
 	local tmp_src=$tmp_dir/lkp/$LKP_USER/src
-	local archive=$tmp_dir/lkp/$LKP_USER/lkp-${ARCH}
+	local archive=/lkp/$USER/lkp-${ARCH}
 	local cpio_cmd="cpio --quiet -o $OWNER_OPT -H newc -F ${archive}.cpio"
+
+	rm -f $archive.cpio
 
 	(
 		cd $tmp_dir/rootfs				&& find lkp			| $cpio_cmd
@@ -56,5 +58,6 @@ pack()
 	)
 
 	gzip -n -9 ${archive}.cpio
+	# atomic mv to avoid race condition
 	mv -f ${archive}.cpio.gz ${archive}.cgz
 }
