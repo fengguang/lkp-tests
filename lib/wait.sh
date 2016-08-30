@@ -44,19 +44,6 @@ explain_kill()
 	done
 }
 
-set_wait_post_test_timeout()
-{
-	local timeout="${1:-0}"
-	wait_post_test_timeout_command=""
-
-	if [ $timeout -gt 0 ]; then
-		setup_wait
-		wait_post_test_timeout_command="$WAIT_POST_TEST_CMD \
---timeout $timeout"
-	fi
-}
-
-
 kill_one()
 {
 	explain_kill $*

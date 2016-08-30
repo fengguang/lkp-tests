@@ -44,9 +44,10 @@ unsupported_events=$($ocperf stat $opt_events --log-fd 1 true 2>&1 | grep 'inval
 
 . $LKP_SRC/lib/wait.sh
 
-set_wait_post_test_timeout $time
-
-[ -n "$wait_post_test_timeout_command" ] && command=$wait_post_test_timeout_command
+[ -n "$time" ] && {
+	setup_wait
+	command="$WAIT_POST_TEST_CMD --timeout $time"
+}
 
 disable_nmi_watchdog
 
