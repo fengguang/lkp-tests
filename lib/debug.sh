@@ -1,9 +1,26 @@
 #!/bin/sh
 
+die()
+{
+	echo "$@" 1>&2
+
+	dump_call_stack
+
+	# http://tldp.org/LDP/abs/html/exitcodes.html#EXITCODESREF
+	# According to the above table, exit codes 1 - 2, 126 - 165, and 255 [1] have special meanings,
+	# and should therefore be avoided for user-specified exit parameters.
+	exit 99
+}
+
 dump_call_stack()
 {
-	[ -n "$BASHPID" ] || return
+	:
+}
 
+[ -z "$BASHPID" ] && return
+
+dump_call_stack()
+{
 	local stack_depth=${#FUNCNAME[@]}
 	local i
 	for i in $(seq 0 $stack_depth); do
@@ -12,12 +29,3 @@ dump_call_stack()
 	done
 }
 
-die()
-{
-	echo "$@" 1>&2
-	dump_call_stack
-	# http://tldp.org/LDP/abs/html/exitcodes.html#EXITCODESREF
-	# According to the above table, exit codes 1 - 2, 126 - 165, and 255 [1] have special meanings,
-	# and should therefore be avoided for user-specified exit parameters.
-	exit 99
-}
