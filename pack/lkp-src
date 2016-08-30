@@ -14,10 +14,7 @@ download()
 
 build()
 {
-	local program=$LKP_SRC/bin/event/wakeup
-	local option=
-	[[ $ARCH = i386 ]] && option='-m32'
-	gcc $option -o $program $program.c
+	make -C $LKP_SRC/bin/event
 }
 
 install()

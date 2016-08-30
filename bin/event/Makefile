@@ -1,9 +1,17 @@
-CC = klcc
 PROG = wakeup
 OBJECTS = wakeup.o
+CFLAGS :=
+
+ifeq ($(ARCH),i386)
+	CFLAGS += -m32
+	# libklibc-dev:i386 conflicts with libklibc-dev, so fall back to gcc
+	CC = gcc
+else
+	CC = klcc
+endif
 
 main : $(OBJECTS)
-	$(CC) -static -o $(PROG) $(OBJECTS)
+	$(CC) $(CFLAGS) -static -o $(PROG) $(OBJECTS)
 	strip $(PROG)
 clean:
 	rm -fr $(PROG)	$(OBJECTS)
