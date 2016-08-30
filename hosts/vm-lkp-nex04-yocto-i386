@@ -2,5 +2,5 @@ model: qemu-system-i386 -enable-kvm
 nr_vm: 32
 nr_cpu: 2
 memory: 320M
-rootfs: yocto-minimal-i386.cgz
+rootfs: yocto-tiny-i386.cgz
 swap_partitions: /dev/vda
