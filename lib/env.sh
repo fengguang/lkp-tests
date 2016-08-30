@@ -3,8 +3,6 @@
 [ -n "$lib_env_load_once" ] && return
 lib_env_load_once=1
 
-[ -n "$LKP_SRC" ] || LKP_SRC=$(dirname $(dirname $(readlink -e -v $0)))
-
 if command -v command >/dev/null 2>&1; then
 	has_cmd()
 	{
