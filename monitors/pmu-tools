@@ -38,9 +38,9 @@ fi
 
 opt_events="-e $(echo $events | sed 's/ / -e /g')"
 
-unsupported_events=$($ocperf stat $opt_events --log-fd 1 true 2>&1 | grep 'invalid or unsupported event' | wc -l)
-
-[ $unsupported_events -gt 0 ] && die "invalid or unsupported event"
+$ocperf stat $opt_events --log-fd 1 true 2>&1 |
+grep 'invalid or unsupported event' &&
+exit 99
 
 . $LKP_SRC/lib/wait.sh
 
