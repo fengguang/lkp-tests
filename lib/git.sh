@@ -6,7 +6,7 @@ git_clone_update()
 	local dir
 	shift
 
-	if [ "$1" != "${1#-}" ]; then
+	if [ "$1" = "${1#-}" ]; then
 		dir="$1"
 		shift
 	else
