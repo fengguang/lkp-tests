@@ -21,26 +21,28 @@ validate_result_root()
 	return 0
 }
 
-should_do_cifs()
+supports_netfs()
 {
-	grep -q -s clear-linux-os /etc/os-release && return 0
-	grep -q -w 'nfs' /proc/filesystems && return 1
-	modprobe nfs 2>/dev/null
-	grep -q -w 'nfs' /proc/filesystems && return 1
-	return 0
+	has_cmd mount.$1 || return
+	grep -q -w $1 /proc/filesystems && return
+	modprobe $1 >/dev/null || return
+	grep -q -w $1 /proc/filesystems
+}
+
+setup_result_service()
+{
+	[ -n "$result_service" ] && return
+	[ -n "$NO_NETWORK" ] && return 1
+
+	supports_netfs 'nfs'	&& result_service=$LKP_SERVER:/result	&& return
+	supports_netfs 'cifs'	&& result_service=//$LKP_SERVER/result	&& return
+
+	return 1
 }
 
 mount_result_root()
 {
 	is_mount_point $RESULT_MNT && return 0
-
-	[ -n "$result_service" ] || {
-		if should_do_cifs; then
-			result_service=//$LKP_SERVER/result
-		else
-			result_service=$LKP_SERVER:/result
-		fi
-	}
 
 	case $result_service in
 		*:*)
@@ -81,7 +83,7 @@ setup_result_root()
 	export TMP_RESULT_ROOT=$TMP/result
 	mkdir -p $TMP_RESULT_ROOT
 
-	[ -n "$NO_NETWORK" ] && {
+	setup_result_service || {
 		export RESULT_ROOT=$TMP_RESULT_ROOT
 		return
 	}
