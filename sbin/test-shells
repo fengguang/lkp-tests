@@ -1,0 +1,8 @@
+#!/bin/sh
+
+for shell in bash dash mksh zsh sh "busybox sh"
+do
+	echo
+	echo $shell
+	$shell "$@"
+done
