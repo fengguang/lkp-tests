@@ -10,7 +10,7 @@ mount_tmpfs()
 	# mount -t tmpfs -o size=1048576,mode=1777 overflow /tmp
 	# grep -q /tmp /proc/mounts && umount /tmp
 
-	mountpoint -q /tmp && return
+	is_mount_point /tmp && return
 
 	mount -t tmpfs -o mode=1777 tmp /tmp
 }
