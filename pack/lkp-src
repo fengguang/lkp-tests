@@ -1,7 +1,7 @@
 #!/bin/bash
 
 LKP_SRC=${LKP_SRC:-/lkp/$USER/src}
-ARCH=${arch:-x86_64}
+export ARCH=${arch:-x86_64}
 LKP_USER=${LKP_USER:-$USER}
 
 [[ $OWNER ]] || OWNER="root:lkp"
