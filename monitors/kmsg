@@ -6,7 +6,7 @@
 # serial console has better availability.
 is_virt && exec > /dev/ttyS1
 
-if dmesg --help | grep -q -- --follow; then
+if dmesg --help 2>&1 | grep -q -- --follow; then
 	exec dmesg --follow --decode
 else
 	exec cat /proc/kmsg
