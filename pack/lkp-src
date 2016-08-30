@@ -3,7 +3,9 @@
 LKP_SRC=${LKP_SRC:-/lkp/$USER/src}
 ARCH=${arch:-x86_64}
 LKP_USER=${LKP_USER:-$USER}
-[ -n "$OWNER" ] && OWNER_OPT="--owner $OWNER"
+
+[[ $OWNER ]] || OWNER="root:lkp"
+OWNER_OPT="--owner $OWNER"
 
 download()
 {
