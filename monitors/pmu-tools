@@ -1,0 +1,53 @@
+#!/bin/sh
+# - events
+# - time
+# - command
+
+. $LKP_SRC/lib/env.sh
+is_virt && die "Don't run pmu-tools on virtual machine"
+
+# pmu-tools runs on top of Linux perf
+set_perf_path "$BENCHMARK_ROOT/pmu-tools/perf"
+export PATH=$BENCHMARK_ROOT/pmu-tools:$PATH
+
+ocperf=$BENCHMARK_ROOT/pmu-tools/ocperf.py
+[ -x "$ocperf" ] || die "Can't find pmu-tools"
+
+#
+# pmu-tools needs to download CPU map file from https://download.01.org/perfmon
+# to ~/.cache/pmu-events at first run. Since tbox doesn't enable external network,
+# we need to copy pre-downloaded CPU map file to home directory. But home
+# directory is not set in LKP running environment (a bug?), set it here so that
+# pmu-tools could get the CPU map file under it.
+#
+
+[ -n "$HOME" ] || export HOME=/root
+
+[ -d ~/.cache/pmu-events ] || {
+	mkdir -p ~/.cache
+	cp -af $BENCHMARK_ROOT/pmu-tools/None/.cache/pmu-events ~/.cache
+}
+
+# perf may consume lots of fd
+ulimit -n 102400
+
+if [ -z "$events" ]; then
+	# default event list
+	events="inst_retired.any cpu_clk_unhalted.thread cpu_clk_unhalted.ref_tsc"
+fi
+
+opt_events="-e $(echo $events | sed 's/ / -e /g')"
+
+unsupported_events=$($ocperf stat $opt_events --log-fd 1 true 2>&1 | grep 'invalid or unsupported event' | wc -l)
+
+[ $unsupported_events -gt 0 ] && die "invalid or unsupported event"
+
+. $LKP_SRC/lib/wait.sh
+
+set_wait_post_test_timeout $time
+
+[ -n "$wait_post_test_timeout_command" ] && command=$wait_post_test_timeout_command
+
+disable_nmi_watchdog
+
+exec $ocperf stat -a -I 1000 -x' ' $opt_events --log-fd 1 -- $command

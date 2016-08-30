@@ -69,3 +69,10 @@ set_perf_path()
 		}
 	fi
 }
+
+disable_nmi_watchdog()
+{
+	# Disable NMI watchdog to free up one perf counter
+	test -e  /proc/sys/kernel/nmi_watchdog &&
+	echo 0 > /proc/sys/kernel/nmi_watchdog
+}
