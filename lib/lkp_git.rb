@@ -224,6 +224,10 @@ def git_committer(commit)
 	`#{GIT} log -n1 --pretty=format:'%cn <%ce>' #{commit}`.chomp
 end
 
+def git_commit_author(commit)
+	`#{GIT} log -n1 --pretty=format:'%an <%ae>' #{commit}`.chomp
+end
+
 def relative_commit_date(commit)
 	`#{GIT} log -n1 --format=format:"%cr" #{commit}`.chomp
 end
