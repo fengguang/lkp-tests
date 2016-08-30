@@ -5,6 +5,27 @@
 
 umask 002
 
+any_pid_alive()
+{
+	local pidfile=$1
+	local ps_out
+	local pid
+
+	# busybox ps does not accept any parameter
+	ps_out=$(ps axho pid 2>/dev/null)
+
+	if [ -n "$ps_out" ]; then
+		echo "$ps_out" | grep -qFxf $pidfile
+	else
+		is_busybox_ps=1
+		for pid in $(cat $pidfile)
+		do
+			test -d /proc/$pid && return
+		done
+		return 1
+	fi
+}
+
 wait_for_monitors()
 {
 	local pidfile=$TMP/.pid-wait-monitors
@@ -15,14 +36,18 @@ wait_for_monitors()
 	for i in 1 2 3 4 5
 	do
 		sleep $i
-		ps axho pid | grep -qFxf $pidfile && continue
+		any_pid_alive $pidfile && continue
 		return $i
 	done
 
 	echo "some monitors do not quit in time" >&2
-	ps axho pid | grep -Fxf $pidfile | xargs ps u >&2
+	if [ -n "$is_busybox_ps" ]; then
+		ps
+	else
+		ps axho pid | grep -Fxf $pidfile | xargs ps u >&2
+		ps faux
+	fi
 
-	ps faux
 	return $i
 }
 
