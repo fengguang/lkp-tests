@@ -2,7 +2,6 @@
 
 LKP_SRC ||= ENV['LKP_SRC']
 require "#{LKP_SRC}/lib/yaml.rb"
-require "#{LKP_SRC}/lib/string_ext.rb"
 
 # /c/linux% git grep '"[a-z][a-z_]\+%d"'|grep -o '"[a-z_]\+'|cut -c2-|sort -u
 LINUX_DEVICE_NAMES = IO.read("#{LKP_SRC}/etc/linux-device-names").split("\n")
@@ -212,8 +211,9 @@ def grep_printk_errors(kmsg_file, kmsg)
 	if kmsg_file =~ /\bkmsg\b/
 		# the kmsg file is dumped inside the running kernel
 		oops = `#{grep} -a -E -e '^<[0123]>' -e '^kern  :(err   |crit  |alert |emerg ): ' #{kmsg_file} |
+			sed -r 's/\\x1b\\[([0-9;]+m|[mK])//g' |
 			grep -a -v -E -f #{LKP_SRC}/etc/oops-pattern |
-			grep -a -v -F -f #{LKP_SRC}/etc/kmsg-blacklist`.plain_text
+			grep -a -v -F -f #{LKP_SRC}/etc/kmsg-blacklist`
 	else
 		# the dmesg file is from serial console
 		oops = `#{grep} -a -F -f /lkp/printk-error-messages #{kmsg_file} |
