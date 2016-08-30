@@ -32,6 +32,7 @@ read_kernel_cmdline_vars()
 		[ "${i#user=}" != "$i" ] && export $i
 		[ "${i#job=}" != "$i" ] && export $i
 		[ "${i#ip=}" != "$i" ] && export $i
+		[ "${i#NO_NETWORK=}" != "$i" ] && export $i
 		[ "${i#result_service}" != "$i" ] && export $i
 	done
 	return 0
