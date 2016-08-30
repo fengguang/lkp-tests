@@ -15,8 +15,7 @@ shift
 
 fifo=$TMP/fifo-$program
 [ -p "$fifo" ] || mkfifo $fifo
-[ -L "$LKP_SRC/bin/tee-$program" ] || ln -s -T /usr/bin/tee $LKP_SRC/bin/tee-$program
-tee-$program -a $TMP_RESULT_ROOT/$program < $fifo &
+tee -a $TMP_RESULT_ROOT/$program < $fifo &
 echo $! >> $TMP/.pid-pipes
 
 # in particular, avoid time in trinity
