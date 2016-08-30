@@ -131,6 +131,8 @@ wait_on_manual_check()
 	do
 		if [ -f $TMP/disturbed ]; then
 			:
+		elif ! has_cmd 'users'; then
+			break
 		# t100 has XWindow auto login
 		elif [ "$HOSTNAME" = 't100' ]; then
 			local users="$(users)"
