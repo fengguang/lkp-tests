@@ -9,10 +9,22 @@ rootfs=$1
 	exit 1
 }
 
+show_cmd()
+{
+	echo "$@"
+	"$@"
+}
+
+queue()
+{
+	echo queue "$@"
+	command queue "$@"
+}
+
 . $LKP_SRC/distro/common
 
 # create cgz for the below jobs first, to avoid circular dependency
-$LKP_SRC/sbin/pack-deps $rootfs pack-deps	|| exit
+show_cmd $LKP_SRC/sbin/pack-deps $rootfs pack-deps	|| exit
 
 queue pack-deps.yaml rootfs=$rootfs benchmark=pack -q vip --wait 3600 || exit
 
