@@ -939,6 +939,7 @@ module Compare
 			compare_axis_keys: [COMMIT_AXIS_KEY],
 		}
 		msearch_axes = []
+		job_dir = nil
 		parser = OptionParser.new do |p|
 			p.banner = 'Usage: ncompare [options] <commit>...
        ncompare [options] -s <axes> [-s <axes>] [-o <axes>]'
@@ -963,6 +964,11 @@ module Compare
 				msearch_axes << prev_axes.merge(search_axes)
 			}
 
+			p.on('-j <job dir>', 'job-dir <job dir>',
+			     'Job Directory') { |jd|
+				job_dir = jd
+			}
+
 			p.on_tail('-h', '--help', 'Show this message') {
 				puts p
 				return nil
@@ -971,15 +977,22 @@ module Compare
 		argv = ['-h'] if argv.empty?
 		argv = parser.parse(argv)
 
-		if msearch_axes.empty?
-			msearch_axes = argv.map { |c|
-				{ COMMIT_AXIS_KEY => c.to_s }
+		if job_dir
+			_rts = each_job_in_dir(job_dir).map { |job|
+				mrt_table_set.open_node job.axes
 			}
+			_rts.select! { |_rt| _rt.exist? }
+		else
+			if msearch_axes.empty?
+				msearch_axes = argv.map { |c|
+					{ COMMIT_AXIS_KEY => c.to_s }
+				}
+			end
+			_rts = msearch_axes.map { |axes|
+				axes = axes_gcommit axes
+				NMResultRootCollection.new(axes).to_a
+			}.flatten
 		end
-		_rts = msearch_axes.map { |axes|
-			axes = axes_gcommit axes
-			NMResultRootCollection.new(axes).to_a
-		}.flatten
 		options[:mresult_roots] = _rts
 		options
 	end
