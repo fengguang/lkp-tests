@@ -124,7 +124,11 @@ wait_for_pipe()
 	for i in $(seq 5)
 	do
 		sleep $i
-		pgrep --pidfile $TMP/.pid-pipes '(tee|cat|gzip)-.*' >/dev/null && continue
+		if has_cmd pgrep; then
+			pgrep --pidfile $TMP/.pid-pipes 'tee|cat|gzip' >/dev/null && continue
+		else
+			any_pid_alive $TMP/.pid-pipes && continue
+		fi
 		break
 	done
 
@@ -147,6 +151,7 @@ wait_for_pipe()
 	echo "wait_for_pipe timeout $i" >&2
 
 	# Throw out stderr when monitors did not start due to waiting on activate-monitor
+	has_cmd pgrep &&
 	pgrep -f "$LKP_SRC/bin/event/wait activate-monitor" >/dev/null &&
 		echo "some monitors are blocked by activate-monitor" >&2
 
