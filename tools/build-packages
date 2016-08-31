@@ -13,7 +13,8 @@ rootfs=$1
 
 # create cgz for the below jobs first, to avoid circular dependency
 $LKP_SRC/sbin/pack-deps $rootfs pack-deps	|| exit
-$LKP_SRC/sbin/pack-deps $rootfs pack		|| exit
+
+queue pack-deps.yaml rootfs=$rootfs benchmark=pack -q vip --wait 3600 || exit
 
 if [[ $2 = 'each' ]]; then
 	for i in $(show_deps_list); do
