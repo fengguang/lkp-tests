@@ -15,5 +15,14 @@ rootfs=$1
 $LKP_SRC/sbin/pack-deps $rootfs pack-deps	|| exit
 $LKP_SRC/sbin/pack-deps $rootfs pack		|| exit
 
-queue pack-deps.yaml	rootfs=$rootfs benchmark="$(show_deps_list)"
-queue pack.yaml		rootfs=$rootfs benchmark="$(show_pack_list)"
+if [[ $2 = 'each' ]]; then
+	for i in $(show_deps_list); do
+		queue pack-deps.yaml	rootfs=$rootfs benchmark=$i
+	done
+	for i in $(show_pack_list); do
+		queue pack.yaml		rootfs=$rootfs benchmark=$i
+	done
+else
+	queue pack-deps.yaml	rootfs=$rootfs
+	queue pack.yaml		rootfs=$rootfs
+fi
