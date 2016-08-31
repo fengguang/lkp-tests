@@ -23,17 +23,18 @@ build()
 		-Dwaffle_has_wayland=1	\
 		-Dwaffle_has_gbm=1	\
 		-DCMAKE_INSTALL_PREFIX=/usr
-	make -j $ncpu
-	make install -j $ncpu
+	make
+	make install
 
 	cd ../$BM_NAME
 	cmake -DCMAKE_INSTALL_PREFIX=$BM_ROOT
-	make -j $ncpu
-	make install -j $ncpu
+	make
+	make install
+
 
 	cd ../intel-gpu-tools
 	./autogen.sh
-	make -j $ncpu
+	make
 }
 
 create_config()
