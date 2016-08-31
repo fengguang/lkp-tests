@@ -1,11 +1,25 @@
 #!/bin/sh
 
 # some system has unusable vi
-alias e=vim
-alias iv=vim
-alias vi=vim
-alias vs="vim patches/series"
-alias t="vim -t"
+setup_vim_alias()
+{
+	local vim
+
+	vim=$(command -v vim)		||
+	vim=$(command -v vim.basic)	||
+	vim=$(command -v vim.gtk)	||
+	vim=$(command -v vim.gtk3)	||
+	vim=$(command -v vi)		||
+	vim=$(command -v nvi)		||
+	vim=$(command -v levee)		|| return
+
+	alias e=$vim
+	alias iv=$vim
+	alias vi=$vim
+	alias vs="$vim patches/series"
+	alias t="$vim -t"
+}
+setup_vim_alias
 
 alias sc='sort | uniq -c | sort -nr | more'
 
