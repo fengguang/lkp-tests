@@ -12,8 +12,13 @@ DEPS_MNT=/osimage/deps
 mkdir -p "$DEPS_MNT"
 mount $LKP_SERVER:$DEPS_MNT $DEPS_MNT || exit
 
+umask 002
+
 pack_to=$DEPS_MNT/$rootfs
-mkdir -p "$pack_to"
+[[ -d "$pack_to" ]] || {
+	mkdir "$pack_to"
+	chown .lkp "$pack_to"
+}
 
 check_shared_package "$benchmark" && exit
 
