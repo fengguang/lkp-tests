@@ -150,7 +150,7 @@ show_mac_addr()
 	if has_cmd ip; then
 		ip link | awk '/ether/ {print $2; exit}'
 	else
-		arp -n  | awk '/ether/ {print $3; exit}'
+		ifconfig | awk '/ether/ {print $2; exit}'
 	fi
 }
 
