@@ -92,7 +92,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \\
     apt-get install -y $basic_packages $dependency_packages
 RUN groupadd --gid 1090 lkp
-RUN useradd --uid 1084 --gid 1090 lkp
+RUN useradd --uid 1090 --gid 1090 lkp
 EOF
 
 docker build -t ${image_name}_$testcase . || exit

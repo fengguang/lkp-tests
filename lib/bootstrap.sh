@@ -89,15 +89,23 @@ setup_network()
 
 add_lkp_user()
 {
-	has_cmd groupadd || return
-	has_cmd useradd || return
-	has_cmd getent || return
-
-	getent passwd lkp >/dev/null && return
+	if has_cmd getent; then
+		getent passwd lkp >/dev/null && return
+	else
+		grep -q '^lkp:' /etc/passwd && return
+	fi
 
 	mkdir -p /home
-	groupadd --gid 1090 lkp
-	useradd --uid 1084 --gid 1090 lkp
+
+	if has_cmd useradd; then
+		groupadd --gid 1090 lkp
+		useradd --uid 1090 --gid 1090 lkp
+	else
+		# busybox applet
+		# quiet this F_SETLK error in yocto tiny image:
+		# adduser: warning: can't lock '/etc/passwd': Permission denied
+		adduser -D -u 1090 lkp 2>/dev/null
+	fi
 }
 
 run_ntpdate()

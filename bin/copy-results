@@ -7,7 +7,9 @@ dir=$RESULT_ROOT/results
 
 mkdir $dir 2>/dev/null && {
 	chmod g+w	$dir
-	useradd lkp 2> /dev/null
+	# fall back to busybox useradd
+	useradd lkp 2> /dev/null ||
+	useradd -D lkp 2>/dev/null
 	chown lkp.lkp	$dir
 }
 
