@@ -2,18 +2,22 @@
 
 download()
 {
-	[[ -d linux ]] || {
-		[[ -d /c/linux ]] && local opt_ref="--reference /c/linux"
-		git clone -q $opt_ref https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-	}
 	source_dir="linux"
+
+	[[ -d linux ]] && return
+
+	[[ -d /c/linux ]] && local opt_ref="--reference /c/linux"
+
+	local cmd="git clone -q $opt_ref https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git"
+	$cmd && return
+	$cmd
 }
 
 build()
 {
-	make allyesconfig
-	make prepare
-	cd tools/testing/selftests
+	make allyesconfig		|| return
+	make prepare			|| return
+	cd tools/testing/selftests	|| return
 	make
 }
 
