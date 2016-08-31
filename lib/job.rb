@@ -536,7 +536,7 @@ class Job
 		each_param { |k, v, option_type|
 			if option_type == '='
 				if v and v != ''
-					path += "#{k}=#{v}"
+					path += "#{k}=#{v[0..30]}"
 				else
 					path += "#{k}"
 				end
@@ -544,7 +544,7 @@ class Job
 				next
 			end
 			next unless v
-			path += v.to_s
+			path += v.to_s[0..30]
 			path += '-'
 		}
 		if path.empty?
