@@ -2,15 +2,19 @@
 
 [[ $LKP_SRC ]] || export LKP_SRC="$(dirname $(dirname $(readlink -e -v $0)))"
 
-PACK_NAME=$1
-BM_NAME=${PACK_NAME%-*}
-DISTRO=${PACK_NAME##*-}
+rootfs=$1
+BM_NAME=$2
+
+[[ $BM_NAME ]] || {
+	echo Usage: $0 rootfs BM_NAME
+	exit 1
+}
 
 umask 002
 
-. $LKP_SRC/distro/${DISTRO}
+DISTRO=${rootfs%%-*}
+. $LKP_SRC/distro/$DISTRO
 
-rootfs=debian-x86_64.cgz
 pack_to=/osimage/deps/$rootfs
 mkdir -p $pack_to
 
