@@ -1,5 +1,7 @@
 #!/bin/sh
 
+. $LKP_SRC/lib/env.sh
+
 is_mount_point()
 {
 	if has_cmd mountpoint; then
