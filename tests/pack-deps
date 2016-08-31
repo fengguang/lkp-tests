@@ -34,6 +34,8 @@ do
 	PACKAGE_LIST=$(apt-get --simulate --no-install-recommends install $packages |
 			awk '/^Inst / { if (substr($3, 0, 1) != "[") print $2 }')
 
+	echo "original package list for $BM_NAME:" $packages
+
 	[[ $PACKAGE_LIST ]] || {
 		echo "empty PACKAGE_LIST for $BM_NAME"
 		continue
