@@ -65,7 +65,7 @@ while true; do
 	if [ -n "$LKP_DEBUG" ]; then
 		# To debug what left from last run
 		set -x
-		ps faux
+		ps faux 2>/dev/null || ps
 		ls -l /tmp/
 		ls -l /tmp/lkp
 		lsmod

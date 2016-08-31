@@ -94,7 +94,7 @@ start_watchdog()
 
 	timed_echo 'detected soft_timeout'
 	touch $TMP/soft_timeout
-	ps faux
+	ps faux 2>/dev/null || ps
 
 	# try to unblock the main shell, which will copy files to
 	# $RESULT_ROOT, which helps debug the hang reason
