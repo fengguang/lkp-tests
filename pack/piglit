@@ -10,6 +10,11 @@ download()
 	git_clone_update git://anongit.freedesktop.org/piglit
 }
 
+find_delete_files()
+{
+	find $1 -name '*.c' -or -name '*.o' -delete
+}
+
 build()
 {
 	# apt-get build-dep intel-gpu-tools
@@ -25,16 +30,19 @@ build()
 		-DCMAKE_INSTALL_PREFIX=/usr
 	make
 	make install
+	find_delete_files
 
 	cd ../$BM_NAME
 	cmake -DCMAKE_INSTALL_PREFIX=$BM_ROOT
 	make
 	make install
+	find_delete_files
 
 
 	cd ../intel-gpu-tools
 	./autogen.sh
 	make
+	find_delete_files
 }
 
 create_config()
