@@ -16,3 +16,20 @@ check_shared_package()
 
 	return 0
 }
+
+show_deps_list()
+{
+	local blacklist="^pack-deps$
+-dev$
+-whitelist$"
+
+	ls $LKP_SRC/distro/depends/ | grep -v "$blacklist"
+}
+
+show_pack_list()
+{
+	ls $LKP_SRC/pack |
+	grep -x -F -f <(find $LKP_SRC/{monitors,setup,tests,daemon} -type f -or -type l|sed 's:.*/::') |
+	grep -v -e '^0day-'
+}
+

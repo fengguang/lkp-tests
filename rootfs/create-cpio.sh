@@ -16,10 +16,17 @@ cpio -o -H newc | gzip -n -9 > ../$cpio_file || exit
 
 cd ..
 
-echo
-echo "To deploy the rootfs:"
-echo "cp $cpio_file $INITRD_ROOT/$cpio_file"
-echo "ln -fs $cpio_file $INITRD_ROOT/${distro}.cgz"
+cat <<EOF
+To deploy the rootfs:
+
+mount -o remount,rw /osimage
+cp -a $cpio_file $INITRD_ROOT/$cpio_file
+ln -fs $cpio_file $INITRD_ROOT/latest
+
+build-packages $cpio_file
+
+ln -fs $cpio_file $INITRD_ROOT/${distro}.cgz
+EOF
 
 # tuning tips:
 # deborphan -sz
