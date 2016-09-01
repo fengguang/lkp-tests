@@ -109,11 +109,14 @@ add_lkp_user()
 	if has_cmd useradd; then
 		groupadd --gid 1090 lkp
 		useradd --uid 1090 --gid 1090 lkp
-	else
+	elif has_cmd adduser; then
 		# busybox applet
 		# quiet this F_SETLK error in yocto tiny image:
 		# adduser: warning: can't lock '/etc/passwd': Permission denied
 		adduser -D -u 1090 lkp 2>/dev/null
+	else
+		echo 'lkp:x:1090:1090::/home/lkp:/bin/sh' >> /etc/passwd
+		echo 'lkp:x:1090:' >> /etc/group
 	fi
 }
 
