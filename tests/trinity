@@ -2,14 +2,20 @@
 # - runtime
 # - seed
 
+. $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/reproduce-log.sh
 
 ## A Linux System call fuzz tester
 
 [ -n "$seed" ] || {
 	echo Seeding trinity based on $kconfig
-	seed=$(echo $kconfig | cksum)
-	seed=${seed%% *}
+	if has_cmd cksum; then
+		seed=$(echo $kconfig | cksum)
+		seed=${seed%% *}
+	else
+		seed=$(echo $kconfig | md5sum | cut -c1-5)
+		seed=$(( 0x$seed ))
+	fi
 }
 
 # suppress "Killed" message to stderr
