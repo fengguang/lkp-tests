@@ -46,7 +46,7 @@ warn_no_eth0()
 {
 	[ -f /proc/config.gz ] || return
 
-	zgrep -q -F -x -e 'CONFIG_E1000=y' -e 'CONFIG_E1000E=y' /proc/config.gz || return
+	zcat /proc/config.gz | grep -q -F -x -e 'CONFIG_E1000=y' -e 'CONFIG_E1000E=y' || return
 
 	echo "!!! IP-Config: No eth0/1/.. under /sys/class/net/ !!!" >&2
 }
