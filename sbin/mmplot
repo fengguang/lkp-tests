@@ -79,4 +79,5 @@ else
 	changed_fields = changed_stats.keys
 end
 
+changed_fields.reject! { |stat| is_failure stat }
 mmplot(matrix1, matrix2, changed_fields)
