@@ -15,8 +15,14 @@
 # suppress "Killed" message to stderr
 set +m
 
+cmd="trinity -q -q -l off -s $seed -x get_robust_list -x remap_file_pages -N 999999999"
+
 cd /tmp
-log_cmd chroot --userspec nobody:nogroup / trinity -q -q -l off -s $seed -x get_robust_list -x remap_file_pages -N 999999999 2>&1 &
+if chroot --help 2>&1 | grep -q -- --userspec; then
+	log_cmd chroot --userspec nobody:nogroup / $cmd 2>&1 &
+else
+	log_cmd $cmd -X 2>&1 &
+fi
 
 pid=$!
 sleep $runtime
