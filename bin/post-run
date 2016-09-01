@@ -160,6 +160,43 @@ wait_for_pipe()
 	return 1
 }
 
+is_local_server()
+{
+	[ "$LKP_SERVER" != "${LKP_SERVER#inn}" ] && return
+	[ "$LKP_SERVER" != "${LKP_SERVER#192.168.}" ] && return
+	return 1
+}
+
+upload_files()
+{
+	local file
+	local ret=0
+
+	if has_cmd rsync && is_local_server; then
+		rsync -a --ignore-missing-args --min-size=1 "$@" rsync://$LKP_SERVER$JOB_RESULT_ROOT/
+	elif has_cmd curl; then
+		for file
+		do
+			[ -s "$file" ] || continue
+			curl -T $file http://$LKP_SERVER$JOB_RESULT_ROOT/ || ret=$?
+		done
+		return $ret
+	else
+		# NFS is the last resort -- it seems unreliable, either some
+		# content has not reached NFS server during post processing, or
+		# some files occasionally contain some few '\0' bytes.
+		for file
+		do
+			[ -s "$file" ] || continue
+			chown lkp.lkp "$file"
+			chmod ug+w    "$file"
+			cp -p --no-clobber "$file" $RESULT_ROOT/ || ret=$?
+		done
+		[ "$ret" -ne 0 ] && ls -l "$@" $RESULT_ROOT 2>&1
+		return $ret
+	fi
+}
+
 copy_results()
 {
 	[ -n "$TMP_RESULT_ROOT" ] || return
@@ -171,18 +208,7 @@ copy_results()
 	# give chance to monitor fifo writer to sync data back to file
 	wait_for_pipe
 
-	chown lkp.lkp ${tmp_results}
-	mv --no-clobber ${tmp_results} $RESULT_ROOT/ || ls -l $tmp_results $RESULT_ROOT 2>&1
-}
-
-copy_to_result()
-{
-	local file=$1
-
-	[ -s "$file" ] || return
-	chmod ug+w "$file"
-
-	cp $file $RESULT_ROOT || ls -l $file $RESULT_ROOT/$(basename $file) 2>&1
+	upload_files $tmp_results
 }
 
 copy_time_files()
@@ -193,12 +219,14 @@ copy_time_files()
 	do
 		[ -e "$time_file" ] || return
 
-		if copy_to_result $time_file; then
-			cat $time_file >> $RESULT_ROOT/time
+		if upload_files $time_file; then
+			cat $time_file >> $TMP/time
 		else
 			ret_copy_time_files=1
 		fi
 	done
+
+	[ -s $TMP/time ] && upload_files $TMP/time || return
 
 	return $ret_copy_time_files
 }
@@ -209,16 +237,16 @@ copy_time_files || ps faux --cols 1000 2>/dev/null || ps > $RESULT_ROOT/time-deb
 
 [ "$kconfig" = "x86_64-rhel_gcov" ] && [ -d /sys/kernel/debug/gcov ] && {
 	$LKP_SRC/tools/gather-gcov-test $TMP/gcov-test.tar.gz
-	copy_to_result $TMP/gcov-test.tar.gz
+	upload_files $TMP/gcov-test.tar.gz
 }
 
 # the busybox reduced dmesg/truncate will refuse to run and it's not a big deal
 dmesg --facility user --human --decode --color=always > $TMP/umesg 2>/dev/null
 truncate --no-create --size='<10M' $TMP/output $TMP/stdout $TMP/stderr $TMP/umesg 2>/dev/null
 
-copy_to_result $TMP/boot-time
-copy_to_result $TMP/env.yaml
-copy_to_result $TMP/stdout
-copy_to_result $TMP/stderr
-copy_to_result $TMP/output
-copy_to_result $TMP/umesg
+upload_files	$TMP/boot-time	\
+		$TMP/env.yaml	\
+		$TMP/stdout	\
+		$TMP/stderr	\
+		$TMP/output	\
+		$TMP/umesg

@@ -83,6 +83,8 @@ setup_result_root()
 {
 	validate_result_root || return 1
 
+	export JOB_RESULT_ROOT=$RESULT_ROOT
+
 	echo RESULT_ROOT=$RESULT_ROOT
 	echo job=$job
 
