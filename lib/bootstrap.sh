@@ -4,6 +4,15 @@
 . $LKP_SRC/lib/http.sh
 . $LKP_SRC/lib/env.sh
 
+mount_kernel_fs()
+{
+	[ -d /proc/1 ] ||
+	mount -t proc -o noexec,nosuid,nodev proc /proc
+
+	[ -d /sys/kernel ] ||
+	mount -t sysfs -o noexec,nosuid,nodev sysfs /sys
+}
+
 mount_tmpfs()
 {
 	# ubuntu etc/init/mounted-tmp.conf wrongly mounted /tmp:
@@ -363,6 +372,7 @@ rsync_rootfs()
 # each fresh boot.
 boot_init()
 {
+	mount_kernel_fs
 	mount_tmpfs
 	redirect_stdout_stderr
 
