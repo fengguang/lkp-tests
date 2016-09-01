@@ -131,7 +131,11 @@ setup_hostname()
 	echo $HOSTNAME > /tmp/hostname
 	ln -fs /tmp/hostname /etc/hostname
 
-	hostname $HOSTNAME
+	if has_cmd hostname; then
+		hostname $HOSTNAME
+	else
+		echo $HOSTNAME > /proc/sys/kernel/hostname
+	fi
 }
 
 setup_hosts()
