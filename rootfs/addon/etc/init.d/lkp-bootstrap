@@ -20,6 +20,7 @@ if [ -e /run/lkp-bootstrap-once ]; then
 	echo "LKP bootstrap: first run may failed, retry rebooting"
 	reboot
 else
+	mkdir -p /run
 	touch /run/lkp-bootstrap-once
 fi
 
