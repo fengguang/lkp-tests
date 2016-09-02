@@ -14,9 +14,9 @@ mount_dev()
 	[ -c /dev/ttyS0 ] &&
 	[ -c /dev/console ] && return
 
-	mkdir -p /dev/pts
-
+	mkdir -p /dev &&
 	mount -t devtmpfs -o mode=0755 udev /dev 2>/dev/null &&
+	mkdir -p /dev/pts &&
 	mount -t devpts -o noexec,nosuid,gid=5,mode=0620 devpts /dev/pts && return
 
 	has_cmd mknod || return
@@ -24,9 +24,9 @@ mount_dev()
 	echo "W: devtmpfs not available, falling back to tmpfs for /dev"
 	mount -t tmpfs -o mode=0755 udev /dev
 
-	[ -e /dev/console ]	|| mknod --mode=600 /dev/console c 5 1
-	[ -e /dev/kmsg ]	|| mknod --mode=644 /dev/kmsg c 1 11
-	[ -e /dev/null ]	|| mknod --mode=666 /dev/null c 1 3
+	[ -e /dev/console ]	|| mknod -m 600 /dev/console c 5 1
+	[ -e /dev/kmsg ]	|| mknod -m 644 /dev/kmsg c 1 11
+	[ -e /dev/null ]	|| mknod -m 666 /dev/null c 1 3
 }
 
 mount_kernel_fs()
