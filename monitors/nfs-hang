@@ -34,8 +34,14 @@ nfs_hang()
 		[ $cpu_utilization -ge 5 ] && return 1
 	}
 	for i in $(seq 3); do
-		timeout $timeout df > /dev/null
-		[ "$?" -eq 124 ] || return 1
+		if has_cmd timeout; then
+			timeout $timeout df > /dev/null
+			[ "$?" -eq 124 ] || return 1
+		else
+			(df > /dev/null) &
+			sleep $timeout
+			test -d /proc/$! || return 1
+		fi
 	done
 
 	# If ping failed -- possibly due to physical cable loose, network
