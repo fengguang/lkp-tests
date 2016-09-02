@@ -218,15 +218,25 @@ redirect_stdout_stderr()
 	exec  > /tmp/stdout
 	exec 2> /tmp/stderr
 
+	local sed_u=
+	sed -h 2>&1|grep -q -- -u && sed_u='-u'
+
 	local stdbuf='stdbuf -o0 -e0'
 	has_cmd stdbuf || stdbuf=
 
-	# limit 200 characters is to fix the following errro info:
-	# sed: couldn't write N items to stdout: Invalid argument
-	tail -f /tmp/stdout | $stdbuf sed -r 's/^(.{0,300}).*$/<5>\1/'  > /dev/kmsg &
-	echo $! >> /tmp/pid-tail-global
-	tail -f /tmp/stderr | $stdbuf sed -r 's/^(.{0,300}).*$/<3>\1/'  > /dev/kmsg &
-	echo $! >> /tmp/pid-tail-global
+	if [ -n "$stdbuf$sed_u" ]; then
+		# limit 300 characters is to fix the following errro info:
+		# sed: couldn't write N items to stdout: Invalid argument
+		tail -f /tmp/stdout | $stdbuf sed $sed_u -r 's/^(.{0,300}).*$/<5>\1/' > /dev/kmsg &
+		echo $! >> /tmp/pid-tail-global
+		tail -f /tmp/stderr | $stdbuf sed $sed_u -r 's/^(.{0,300}).*$/<3>\1/' > /dev/kmsg &
+		echo $! >> /tmp/pid-tail-global
+	else
+		tail -f /tmp/stdout > /dev/kmsg 2>/dev/null &
+		echo $! >> /tmp/pid-tail-global
+		tail -f /tmp/stderr > /dev/kmsg 2>/dev/null &
+		echo $! >> /tmp/pid-tail-global
+	fi
 }
 
 install_deb()
