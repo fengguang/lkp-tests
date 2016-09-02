@@ -1,0 +1,38 @@
+short_description: >
+ Fio is a tool that will spawn a number of threads or processes doing a
+ particular type of I/O action as specified by the user.
+
+description: >
+ Fio is a tool that will spawn a number of threads or processes doing a
+ particular type of I/O action as specified by the user. The typical use of
+ fio is to write a job file matching the I/O load one wants to simulate.
+
+ Fio was created to allow benchmarking specific disk IO workloads. It can issue
+ its IO requests using one of many synchronous and asynchronous IO APIs, and can
+ also use various APIs which allow many IO requests to be issued with a single
+ API call. You can also tune how large the files fio uses are, at what offsets
+ in those files IO is to happen at, how much delay if any there is between
+ issuing IO requests, and what if any filesystem sync calls are issued between
+ each IO request. The options to fio allow you to issue very precisely defined
+ IO patterns and see how long it takes your disk subsystem to complete these
+ tasks.
+
+homepage: https://github.com/axboe/fio
+
+parameters:
+ runtime:      limit run time to runtime seconds
+ rw:           type of I/O pattern
+ bs:           block size for I/O units. Default to 4k
+ ioengine:     defines how the job issues I/O
+ iodepth:      number of I/O units to keep in flight against the file
+ direct:       a boolean parameter, if true, use non-buffered I/O (usually O_DIRECT). Default to false.
+ test_size:    total size of I/O for this job, fio will run until this many bytes have been transfered,
+               unless limited by other options (runtime, for instance)
+ nr_task:      number of clones (processes/threads performing the same workload) of this job. Default to 1
+ fallocate:    whether pre-allocation is performed when laying down files
+
+results:
+ fio.write_bw_MBps:    average write bandwidth
+ fio.write_iops:       average write IOPS
+ fio.read_bw_MBps:     average read bandwith
+ fio.read_iops:        average read IOPS
