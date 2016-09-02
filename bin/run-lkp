@@ -70,7 +70,7 @@ if [ "$run_job_exit_code" != 0 ]; then
 			set_job_state 'failed'
 		fi
 	fi
-elif [ -f '/var/log/wtmp' ] && last -n1 | grep -q -E '(pts/|tty)[0-9]'; then
+elif [ -f '/var/log/wtmp' ] && has_cmd last && last -n1 | grep -q -E '(pts/|tty)[0-9]'; then
 	set_job_state 'disturbed'
 	disturbed=1
 else
