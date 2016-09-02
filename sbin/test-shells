@@ -1,6 +1,6 @@
 #!/bin/sh
 
-for shell in bash dash mksh zsh sh "busybox sh"
+for shell in bash dash mksh zsh sh "busybox sh" /usr/lib/klibc/bin/sh.shared
 do
 	echo
 	echo $shell
