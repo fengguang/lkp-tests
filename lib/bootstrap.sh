@@ -189,16 +189,18 @@ announce_bootup()
 redirect_stdout_stderr()
 {
 	[ -c /dev/kmsg ] || return
-	has_cmd stdbuf || return
 	has_cmd tail || return
 
 	exec  > /tmp/stdout
 	exec 2> /tmp/stderr
 
+	local stdbuf='stdbuf -o0 -e0'
+	has_cmd stdbuf || stdbuf=
+
 	# limit 200 characters is to fix the following errro info:
 	# sed: couldn't write N items to stdout: Invalid argument
-	tail -f /tmp/stdout | stdbuf -i0 -o0 sed -r 's/^(.{,300}).*$/<5>\1/'  > /dev/kmsg &
-	tail -f /tmp/stderr | stdbuf -i0 -o0 sed -r 's/^(.{,300}).*$/<3>\1/'  > /dev/kmsg &
+	tail -f /tmp/stdout | $stdbuf sed -r 's/^(.{,300}).*$/<5>\1/'  > /dev/kmsg &
+	tail -f /tmp/stderr | $stdbuf sed -r 's/^(.{,300}).*$/<3>\1/'  > /dev/kmsg &
 }
 
 install_deb()
