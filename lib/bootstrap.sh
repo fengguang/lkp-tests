@@ -8,13 +8,16 @@
 # Author: Paul E. McKenney <paulmck@linux.vnet.ibm.com>
 mount_dev()
 {
+	[ -d /dev/pts ] &&
 	[ -c /dev/kmsg ] &&
 	[ -c /dev/null ] &&
 	[ -c /dev/ttyS0 ] &&
 	[ -c /dev/console ] && return
 
-	mkdir -p /dev
-	mount -t devtmpfs -o mode=0755 udev /dev 2>/dev/null && return
+	mkdir -p /dev/pts
+
+	mount -t devtmpfs -o mode=0755 udev /dev 2>/dev/null &&
+	mount -t devpts -o noexec,nosuid,gid=5,mode=0620 devpts /dev/pts && return
 
 	has_cmd mknod || return
 
