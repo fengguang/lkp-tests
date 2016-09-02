@@ -399,7 +399,7 @@ next_job()
 
 rsync_rootfs()
 {
-	[ -z "$NO_NETWORK" ] && return
+	[ -z "$NO_NETWORK" ] || return
 
 	local append="$(grep -m1 '^APPEND ' $NEXT_JOB | sed 's/^APPEND //')"
 	for i in $append
