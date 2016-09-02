@@ -190,7 +190,7 @@ upload_files()
 			[ -s "$file" ] || continue
 			chown lkp.lkp "$file"
 			chmod ug+w    "$file"
-			cp -p --no-clobber "$file" $RESULT_ROOT/ || ret=$?
+			cp -p "$file" $RESULT_ROOT/ || ret=$?
 		done
 		[ "$ret" -ne 0 ] && ls -l "$@" $RESULT_ROOT 2>&1
 		return $ret
