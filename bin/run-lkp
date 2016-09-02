@@ -20,7 +20,7 @@ export LKP_USER=$user
 
 echo $$ > $TMP/run-lkp.pid	# for use by monitors/watchdog
 
-setup_result_root || job_done 1
+setup_result_root || { job_done; exit 1; }
 mount_cgroup
 
 # the NMI warning messages are often in a mess

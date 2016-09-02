@@ -162,9 +162,15 @@ job_done() {
 	clean_job_resource
 	wait_on_manual_check
 
-	[ -z "$disturbed" ] && trigger_post_process
+	[ -n "$disturbed" ] && return
 
-	exit $1
+	# The randconfig VM boot/trinity tests often cannot reliably finish and
+	# may not have the network to run trigger_post_process.
+	# The host side monitor will upload qemu.time/dmesg/kmsg files and then
+	# trigger_post_process for the test job in VM.
+	[ -n "nr_vm" ] && return
+
+	trigger_post_process
 }
 
 refresh_lkp_tmp()
