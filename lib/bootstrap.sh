@@ -224,7 +224,9 @@ redirect_stdout_stderr()
 	# limit 200 characters is to fix the following errro info:
 	# sed: couldn't write N items to stdout: Invalid argument
 	tail -f /tmp/stdout | $stdbuf sed -r 's/^(.{,300}).*$/<5>\1/'  > /dev/kmsg &
+	echo $! >> /tmp/pid-tail-global
 	tail -f /tmp/stderr | $stdbuf sed -r 's/^(.{,300}).*$/<3>\1/'  > /dev/kmsg &
+	echo $! >> /tmp/pid-tail-global
 }
 
 install_deb()

@@ -40,6 +40,8 @@ else
 	exit 1
 fi
 
+clean_job_resource
+
 end_time=$(date '+%s')
 
 $LKP_SRC/bin/post-run

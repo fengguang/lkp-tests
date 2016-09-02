@@ -86,6 +86,7 @@ kill_monitors()
 $LKP_SRC/bin/event/wakeup activate-monitor
 $LKP_SRC/bin/event/wakeup post-test
 touch $TMP/post-run
+sleep 1
 # 2) most simple monitors run until being killed
 #    => $TMP/pid-monitor-*
 kill_monitors -INT

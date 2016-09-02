@@ -153,6 +153,7 @@ clean_job_resource()
 {
 	test -f /tmp/pid-tail || return
 	kill $(cat /tmp/pid-tail)
+	rm /tmp/pid-tail
 }
 
 job_done() {
