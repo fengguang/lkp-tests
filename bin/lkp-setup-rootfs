@@ -46,12 +46,10 @@ while true; do
 	tbox_cant_kexec && {
 		echo "LKP: rebooting"
 
-		# Avoid kernel panic in yocto minimal rootfs.
+		# Avoid get stuck in yocto minimal rootfs.
 		# LKP: rebooting
-		# [  305.813308] Kernel panic - not syncing: Attempted to kill init! exitcode=0x00000000
-		# [  305.813308]
-		# [  305.813990] Kernel Offset: disabled
-		# [  305.814260] Rebooting in 10 seconds..
+		# [    8.124081] LKP: rebooting
+		# # (shell prompt)
 		is_virt && [ -e '/proc/sysrq-trigger' ] && {
 			sync
 			echo s > /proc/sysrq-trigger
