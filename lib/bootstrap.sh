@@ -87,6 +87,12 @@ setup_network()
 	network_ok && return || sleep 10
 	network_ok && return
 
+	is_virt &&
+	[ ! -e /usr/share/initramfs-tools/scripts/functions ] && {
+		export NO_NETWORK=1
+		return
+	}
+
 	if [ -z "$net_devices" ]; then
 
 		warn_no_eth0
