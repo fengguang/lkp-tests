@@ -6,6 +6,7 @@ After=sysinit.target
 Type=oneshot
 ExecStart=/etc/init.d/lkp-bootstrap
 IgnoreSIGPIPE=no
+KillMode=none
 
 [Install]
 WantedBy=multi-user.target
