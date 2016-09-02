@@ -15,13 +15,13 @@
 # We can install lkp-bootstrap several places, so that at least one of them can
 # take effect in a particular rootfs, and the follow up ones can check reboot
 # the machine if the former one failed to do so.
-if [ -e /run/lkp-bootstrap-once ]; then
+if [ -s /var/run/lkp-bootstrap.pid ]; then
+	pid=$(cat /var/run/lkp-bootstrap.pid)
+	[ -d /proc/$pid ] && exit
 	# the previous lkp-bootstrap init.d script failed to restart the machine
 	echo "LKP bootstrap: first run may failed, retry rebooting"
 	reboot
-else
-	mkdir -p /run
-	touch /run/lkp-bootstrap-once
+	exit
 fi
 
 read_kernel_cmdline_vars()
@@ -62,9 +62,16 @@ export LKP_SRC=/lkp/$user/src
 
 export PS4='+(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
 
-$LKP_DEBUG_PREFIX $LKP_SRC/bin/lkp-setup-rootfs || {
+set +m
+
+(
+	$LKP_DEBUG_PREFIX $LKP_SRC/bin/lkp-setup-rootfs && exit
+
 	# some reasonable debug time, if sleep is killed, it's likely
 	# someone has login and want more time to look things around
 	sleep 10m &&
 	reboot
-}
+) &
+
+mkdir -p /var/run
+echo $! > /var/run/lkp-bootstrap.pid
