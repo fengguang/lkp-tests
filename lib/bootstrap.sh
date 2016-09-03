@@ -15,7 +15,7 @@ mount_dev()
 	[ -c /dev/console ] && return
 
 	mkdir -p /dev &&
-	mount -t devtmpfs -o mode=0755 udev /dev 2>/dev/null &&
+	mount -t devtmpfs -o mode=0755 udev /dev &&
 	mkdir -p /dev/pts &&
 	mount -t devpts -o noexec,nosuid,gid=5,mode=0620 devpts /dev/pts && return
 
