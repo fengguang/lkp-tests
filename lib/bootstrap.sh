@@ -185,13 +185,18 @@ setup_hostname()
 
 setup_hosts()
 {
+	# /etc/hosts may be shared when it's NFSROOT and there is no obvious
+	# way to detect if rootfs is already RAM based. So unconditionally
+	# symlink it to my own tmpfs copy.
+	local tmpfs_hosts=/tmp/my_hosts
+
 	if [ -f '/etc/hosts-orig' ]; then
-		cp /etc/hosts-orig /tmp/hosts
+		cp /etc/hosts-orig $tmpfs_hosts
 	else
-		cp /etc/hosts /tmp/hosts
+		cp /etc/hosts $tmpfs_hosts
 	fi
-	echo "127.0.0.1 $HOSTNAME.sh.intel.com  $HOSTNAME" >> /tmp/hosts
-	ln -fs /tmp/hosts /etc/hosts
+	echo "127.0.0.1 $HOSTNAME.sh.intel.com  $HOSTNAME" >> $tmpfs_hosts
+	ln -fs $tmpfs_hosts /etc/hosts
 }
 
 show_mac_addr()
