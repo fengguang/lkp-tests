@@ -49,7 +49,7 @@ read_kernel_cmdline_vars
 	exit 0 # to work with non-LKP boots
 }
 
-if echo $job | grep '\.sh$' >/dev/null; then
+if [ "$job" != "${job%.sh}" ]; then
 	. $job
 else
 	. ${job%.yaml}.sh
