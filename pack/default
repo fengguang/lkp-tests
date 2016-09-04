@@ -13,6 +13,7 @@ download()
 	[[ $WEB_URL ]] && wget --no-clobber $WEB_URL
 	[[ $source_package ]] || source_package=$(basename $WEB_URL)
 	[[ $source_dir     ]] || source_dir=${source_package%%.tar.*}
+	[[ $source_dir     ]] || source_dir=${source_package%%.tgz}
 	[[ -d $source_dir ]] ||
 	tar xf "$source_package"
 }
