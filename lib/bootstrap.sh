@@ -210,8 +210,8 @@ show_mac_addr()
 
 announce_bootup()
 {
-	local version="$(cat /proc/sys/kernel/version | cut -f1 -d' ' | cut -c2-)"
-	local release="$(cat /proc/sys/kernel/osrelease)"
+	local version="$(cat /proc/sys/kernel/version 2>/dev/null| cut -f1 -d' ' | cut -c2-)"
+	local release="$(cat /proc/sys/kernel/osrelease 2>/dev/null)"
 	local mac="$(show_mac_addr)"
 
 	echo 'Kernel tests: Boot OK!'
