@@ -41,9 +41,19 @@ upload_files_lftp()
 upload_files_curl()
 {
 	local file
+	local files
+	local dir
+	local dirs
 	local ret=0
 
-	local files=$(find "$@" -type f -size +0 2>/dev/null)
+	dirs=$(find "$@" -type d 2>/dev/null)
+
+	for dir in $dirs
+	do
+		curl -X MKCOL http://$LKP_SERVER$JOB_RESULT_ROOT/$dir
+	done
+
+	files=$(find "$@" -type f -size +0 2>/dev/null)
 	[ -n "$files" ] || return
 
 	for file in $files
