@@ -12,6 +12,7 @@ download()
 	head -$((END_LINE-1)) tlbflush.c.in |
 	tail -$((END_LINE-START_LINE-1)) |
 	grep -v "define FILE_SIZE" > tlbflush.c
+	cd ..
 }
 
 build()
