@@ -17,7 +17,10 @@ upload_files_curl()
 	local file
 	local ret=0
 
-	for file
+	local files=$(find "$@" -type f -size +0 2>/dev/null)
+	[ -n "$files" ] || return
+
+	for file in $files
 	do
 		curl -T "$file" http://$LKP_SERVER$JOB_RESULT_ROOT/$file || ret=$?
 	done
@@ -26,6 +29,20 @@ upload_files_curl()
 }
 
 upload_files_copy()
+{
+	local file
+	local ret=0
+
+	for file
+	do
+		test -s "$file" || continue
+		upload_copy_one "$file" || ret=$?
+	done
+
+	return $ret
+}
+
+upload_copy_one()
 {
 	chown -R lkp.lkp "$@"
 	chmod -R ug+w "$@"
@@ -44,9 +61,6 @@ upload_files()
 		upload_files_rsync "$@"
 		return
 	fi
-
-	local files=$(find "$@" -type f -size +0 2>/dev/null)
-	[ -n "$files" ] || return
 
 	if has_cmd curl; then
 		upload_files_curl "$@"
