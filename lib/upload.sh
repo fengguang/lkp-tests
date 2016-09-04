@@ -23,7 +23,7 @@ upload_files()
 
 		for file in $files
 		do
-			curl -T $file http://$LKP_SERVER$JOB_RESULT_ROOT/ || ret=$?
+			curl -T $file http://$LKP_SERVER$JOB_RESULT_ROOT/$file || ret=$?
 		done
 		return $ret
 	else
