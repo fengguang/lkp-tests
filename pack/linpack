@@ -3,8 +3,13 @@
 WEB_URL="http://registrationcenter.intel.com/irc_nas/3914/l_lpk_p_11.1.2.005.tgz"
 source_dir="linpack_11.1.2"
 
+build()
+{
+	:
+}
+
 install()
 {
-	cp -af xlinpack_xeon64 $BM_ROOT
-	cp -af runme_xeon64 $BM_ROOT
+	cp -af benchmarks/linpack/xlinpack_xeon64 $BM_ROOT
+	cp -af benchmarks/linpack/runme_xeon64 $BM_ROOT
 }
