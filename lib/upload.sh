@@ -1,5 +1,7 @@
 #!/bin/sh
 
+. $LKP_SRC/lib/env.sh
+
 is_local_server()
 {
 	[ "$LKP_SERVER" != "${LKP_SERVER#inn}" ] && return
