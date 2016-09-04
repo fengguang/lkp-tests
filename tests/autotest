@@ -1,6 +1,8 @@
 #!/bin/sh
 # - test
 
+. $LKP_SRC/lib/upload.sh
+
 ## Autotest is a framework for fully automated testing. It is designed
 ## primarily to test the Linux kernel, though it is useful for many
 ## other functions such as qualifying new hardware.
@@ -15,5 +17,8 @@ cd $BENCHMARK_ROOT/autotest || exit
 
 log_cmd client/autotest-local run $test 2>&1 || exit
 
-copy-results	$BENCHMARK_ROOT/autotest/client/results/default/status.json \
-		$BENCHMARK_ROOT/autotest/client/results/default/debug/*
+exit_value=$?
+
+upload_files $BENCHMARK_ROOT/autotest/client/results/default
+
+exit $exit_value

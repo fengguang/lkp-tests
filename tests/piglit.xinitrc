@@ -7,6 +7,8 @@
 ## - igt-$num (get test item from $LKP_SRC)
 ## - igt-all (get test item from $BENCHMARK_ROOT)
 
+. $LKP_SRC/lib/upload.sh
+
 tset=${group%%-*}
 
 if [ "${group#*-}" = "all" ]; then
@@ -41,5 +43,5 @@ do
 		"$tmp_results"/${testcase//[^A-Za-z0-9_-]/-}.json.bz2
 done <<< "$testcases"
 
-copy-results	$tmp_results/*.json.bz2
+upload_files $tmp_results/*.json.bz2
 echo "all tests finished"

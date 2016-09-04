@@ -7,6 +7,7 @@
 ## of the individual test. Tests uses a qemu's virtual test device,
 ## named testdev, for services like printing, exiting, query memory size etc.
 
+. $LKP_SRC/lib/upload.sh
 
 cd $BENCHMARK_ROOT/kvm-unit-tests || exit
 
@@ -35,4 +36,8 @@ log_cmd ./run_tests.sh || {
 	exit $exit_code
 }
 
-copy-results $BENCHMARK_ROOT/kvm-unit-tests/test.log
+exit_value=$?
+
+upload_files $BENCHMARK_ROOT/kvm-unit-tests/test.log
+
+exit $exit_value

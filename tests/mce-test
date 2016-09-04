@@ -4,10 +4,11 @@
 ## testing the Linux RAS related features, including CPU/Memory
 ## error containment and recovery, ACPI/APEI support etc.
 
+cd $BENCHMARK_ROOT/mce-test || exit
+
+. $LKP_SRC/lib/upload.sh
 . $LKP_SRC/lib/job.sh
 read_env_vars
-
-cd $BENCHMARK_ROOT/mce-test || exit
 
 echo > ./work/rastest.caselist <<EOF
 APEI-INJ cases/function/apei-inj/runtest.sh
@@ -51,8 +52,7 @@ exit_value=$?
 #	exit_value=$?
 #fi
 
-copy-results $BENCHMARK_ROOT/mce-test/cases/stress/hwpoison/log
-copy-results $BENCHMARK_ROOT/mce-test/cases/stress/hwpoison/result
+upload_files $BENCHMARK_ROOT/mce-test/cases/stress/hwpoison/log \
+	$BENCHMARK_ROOT/mce-test/cases/stress/hwpoison/result
 
 exit $exit_value
-

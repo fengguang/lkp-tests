@@ -3,9 +3,10 @@
 
 ## mdadm is a tool for managing Linux Software RAID arrays.
 
-. $LKP_SRC/lib/debug.sh
-
 cd $BENCHMARK_ROOT/mdadm-selftests || exit 1
+
+. $LKP_SRC/lib/upload.sh
+. $LKP_SRC/lib/debug.sh
 
 [ -n "$test_prefix" ] || die "test_prefix is emtpy"
 
@@ -37,4 +38,8 @@ for testcase in $(cd tests && ls ${test_prefix}*); do
 	run_test
 done
 
-copy-results result/*
+exit_value=$?
+
+upload_files result
+
+exit $exit_value

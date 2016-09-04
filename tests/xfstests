@@ -5,6 +5,7 @@
 
 . $LKP_SRC/lib/job.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/upload.sh
 . $LKP_SRC/lib/reproduce-log.sh
 
 [ "$nr_partitions" -lt 2 ] && die "$nr_partitions -lt 2"
@@ -96,5 +97,5 @@ set_env
 run_test
 exit_value=$?
 
-copy-results $BENCHMARK_ROOT/xfstests/results/*
+upload_files $BENCHMARK_ROOT/xfstests/results
 exit $exit_value

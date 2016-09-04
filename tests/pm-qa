@@ -5,9 +5,13 @@
 
 cd $BENCHMARK_ROOT/pm-qa || exit
 
+. $LKP_SRC/lib/upload.sh
+
 run_one()
 {
 	local testcase=$1
+	local ret_value
+
 	if [ "$testcase" = 'cpuhotplug' ]; then
 		ext_opt='hotplug_allow_cpu0=0'
 	else
@@ -16,7 +20,11 @@ run_one()
 
 	log_cmd make -C $testcase $ext_opt run_tests
 
-	copy-results $BENCHMARK_ROOT/pm-qa/$testcase/*.log
+	ret_value=$?
+
+	upload_files $BENCHMARK_ROOT/pm-qa/$testcase/*.log
+
+	return $ret_value
 }
 
 if [ "$test" = 'all' ]; then

@@ -7,6 +7,7 @@
 cd $BENCHMARK_ROOT/ltp || exit
 
 . $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/upload.sh
 
 workaround_env()
 {
@@ -30,5 +31,9 @@ fi
 
 log_cmd ./runltp -f $test $big_dev_opt || exit
 
-copy-results	$BENCHMARK_ROOT/ltp/results/* \
-		$BENCHMARK_ROOT/ltp/output/*
+exit_value=$?
+
+upload_files $BENCHMARK_ROOT/ltp/results \
+	$BENCHMARK_ROOT/ltp/output
+
+exit $exit_value

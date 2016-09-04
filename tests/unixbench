@@ -10,6 +10,7 @@
 
 cd $BENCHMARK_ROOT/unixbench || exit
 
+. $LKP_SRC/lib/upload.sh
 export LANG=C
 
 [ -n "$runtime" ] || runtime=300
@@ -21,4 +22,8 @@ iteration=$(( runtime / 10 ))
 
 log_cmd ./Run $test $other_params -i $iteration || exit
 
-copy-results $BENCHMARK_ROOT/unixbench/results/*
+exit_value=$?
+
+upload_files $BENCHMARK_ROOT/unixbench/results
+
+exit $exit_value

@@ -6,6 +6,7 @@
 
 cd $BENCHMARK_ROOT/linpack || exit
 
+. $LKP_SRC/lib/upload.sh
 . $LKP_SRC/lib/unit.sh
 
 export memory_bytes=$(to_byte $memory)
@@ -28,6 +29,6 @@ $dimension	# leading dimensions
 4		# alignment values (in KBytes)"
 EOF
 
-copy-results lininput_xeon64
+upload_files lininput_xeon64
 
 log_cmd ./runme_xeon64

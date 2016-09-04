@@ -6,6 +6,8 @@
 ## The FTQ benchmarks measure hardware and softwareinterference
 ## or 'noise' on a node from the applications perspective.
 
+. $LKP_SRC/lib/upload.sh
+
 cd $BENCHMARK_ROOT/ftq || exit
 
 [ 0"$nr_task" -gt 1  ] && opt_task="-t $nr_task"
@@ -18,4 +20,8 @@ samples=${samples%%ss}
 
 log_cmd ./ftq $opt_freq -n $samples $opt_task || exit
 
-copy-results $BENCHMARK_ROOT/ftq/*.dat
+exit_value=$?
+
+upload_files $BENCHMARK_ROOT/ftq/*.dat
+
+exit $exit_value
