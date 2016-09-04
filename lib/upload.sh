@@ -17,10 +17,13 @@ upload_files()
 
 	if has_cmd rsync && is_local_server; then
 		rsync -a --ignore-missing-args --min-size=1 "$@" rsync://$LKP_SERVER$JOB_RESULT_ROOT/
-	elif has_cmd curl; then
-		files=$(find "$@" -type f -size +0 2>/dev/null)
-		[ -n "$files" ] || return
+		return $?
+	fi
 
+	files=$(find "$@" -type f -size +0 2>/dev/null)
+	[ -n "$files" ] || return
+
+	if has_cmd curl; then
 		for file in $files
 		do
 			curl -T $file http://$LKP_SERVER$JOB_RESULT_ROOT/$file || ret=$?
@@ -31,10 +34,10 @@ upload_files()
 		# content has not reached NFS server during post processing, or
 		# some files occasionally contain some few '\0' bytes.
 
-		chown -R lkp.lkp "$@"
-		chmod -R  ug+w "$@"
-		cp -a "$@" $RESULT_ROOT/ || {
-			ls -l "$@" $RESULT_ROOT 2>&1
+		chown -R lkp.lkp $files
+		chmod -R  ug+w $files
+		cp -a $files $RESULT_ROOT/ || {
+			ls -l $files $RESULT_ROOT 2>&1
 			return 1
 		}
 	fi
