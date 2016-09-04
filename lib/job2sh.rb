@@ -222,9 +222,14 @@ class Job2sh < Job
 		# monitors/iostat etc. depends on ENV variables by setup scripts
 		hash.each { |key, val| parse_one(ancestors, key, val, :PASS_RUN_MONITORS) }
 		hash.each { |key, val| parse_one(ancestors, key, val, :PASS_RUN_COMMANDS) == :action_background_function and nr_bg += 1 }
+
+		# Disabled -- this will wait for the background monitors
+		# started by run_monitor, while the monitors will wait for
+		# wakup events signaled in post-run after run_job, which leads
+		# to circular waits.
 		if nr_bg > 0
-			exec_line
-			exec_line indent(ancestors) + "wait"
+			# exec_line
+			# exec_line indent(ancestors) + "wait"
 		end
 	end
 
