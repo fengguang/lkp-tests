@@ -14,6 +14,30 @@ upload_files_rsync()
 	rsync -a --ignore-missing-args --min-size=1 "$@" rsync://$LKP_SERVER$JOB_RESULT_ROOT/
 }
 
+upload_files_lftp()
+{
+	local file
+	local dest_file
+	local dest_path
+	local ret=0
+	local LFTP_TIMEOUT='set net:timeout 2; set net:reconnect-interval-base 2; set net:max-retries 2;'
+
+	for file
+	do
+		if [[ -d "$file" ]]; then
+			[[ "$(ls -A $file)" ]] && lftp -c "$LFTP_TIMEOUT; open '$LKP_SERVER'; mirror -R '$file' '$JOB_RESULT_ROOT/'" || ret=$?
+		else
+			[[ -s "$file" ]] || continue
+			dest_path=$(dirname "$file")
+			dest_file=$JOB_RESULT_ROOT/$file
+
+			lftp -c "$LFTP_TIMEOUT; open '$LKP_SERVER'; mkdir -p '$dest_path'; put -c '$file' -o '$dest_file'" || ret=$?
+		fi
+	done
+
+	return $ret
+}
+
 upload_files_curl()
 {
 	local file
@@ -64,6 +88,11 @@ upload_files()
 		return
 	fi
 
+	if has_cmd lftp; then
+		upload_files_lftp "$@"
+		return
+	fi
+
 	if has_cmd curl; then
 		upload_files_curl "$@"
 		return
@@ -75,4 +104,3 @@ upload_files()
 		return
 	fi
 }
-
