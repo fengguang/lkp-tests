@@ -1,0 +1,20 @@
+short_description: >
+ Hackbench is both a benchmark and a stress test for the Linux kernel scheduler.
+
+description: >
+ Hackbench is both a benchmark and a stress test for the Linux kernel scheduler.
+ It's main job is to create a specified number of pairs of schedulable entities
+ (either threads or traditional processes) which communicate via either sockets or
+ pipes and time how long it takes for each pair to send data back and forth.
+
+homepage: https://github.com/linux-test-project/ltp/blob/master/testcases/kernel/sched/cfs-scheduler/hackbench.c
+
+parameters:
+ runtime:
+ nr_threads:    number of pairs of schedulable entities (either threads or processes)
+ mode:          [process, thread]
+ ipc:           [pipe]
+ iterations:
+
+results:
+ hackbench.throughput: unit-KB/s
