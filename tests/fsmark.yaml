@@ -1,0 +1,24 @@
+short_description: >
+ The fsmark is a file system benchmark to test synchronous write
+ workloads, for example, mail servers workload.
+
+description: >
+ The fsmark benchmark tests synchronous write workloads. It can vary
+ the number of files, directory depth, etc. It has detailed timings
+ for creates, writes, unlinks, close and fsyncs that make it good for
+ simulating mail servers and other setups.
+
+homepage: https://sourceforge.net/projects/fsmark/
+
+parameters:
+ nr_threads: number of processes to write concurrently
+ filesize:
+ nr_directories:
+ nr_files_per_directory: number of files in each subdirectory to write before moveing to next subdirectory in Round Robin mode
+ test_size: number of files to write in total is test_size / filesize
+ sync_method: [Sync, fsyncBeforeClose, syncFsync, PostReverseFsync, syncPostReverseFsync, PostFsync, syncPostFsync]
+ iterations:
+
+results:
+ fsmark.files_per_sec: number of files written per second
+ fsmark.app_overhead: time in microseconds spent in the test not doing file writing related system calls
