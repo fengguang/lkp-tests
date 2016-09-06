@@ -1,0 +1,6 @@
+#!/bin/sh
+# - testtime
+
+[ -n "$testtime" ] || testtime=1
+
+stress-ng --sequential $nr_cpu -t $testtime --timeout $((testtime * 2)) --times --verify 2>&1
