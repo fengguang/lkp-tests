@@ -71,27 +71,22 @@ upload_files_curl()
 
 upload_files_copy()
 {
+	chown -R lkp.lkp "$@"
+	chmod -R ug+w "$@"
+
 	local file
 	local ret=0
 
 	for file
 	do
 		test -s "$file" || continue
-		upload_copy_one "$file" || ret=$?
+		cp -a "$file" $RESULT_ROOT/ || {
+			ls -l "$@" $RESULT_ROOT 2>&1
+			ret=$?
+		}
 	done
 
 	return $ret
-}
-
-upload_copy_one()
-{
-	chown -R lkp.lkp "$@"
-	chmod -R ug+w "$@"
-
-	cp -a "$@" $RESULT_ROOT/ && return
-
-	ls -l "$@" $RESULT_ROOT 2>&1
-	return 1
 }
 
 upload_files()
