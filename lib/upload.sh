@@ -11,7 +11,11 @@ is_local_server()
 
 upload_files_rsync()
 {
-	rsync -a --ignore-missing-args --min-size=1 "$@" rsync://$LKP_SERVER$JOB_RESULT_ROOT/
+	rsync -a --no-owner --no-group \
+		--chmod=D775,F664 \
+		--ignore-missing-args \
+		--min-size=1 \
+		"$@" rsync://$LKP_SERVER$JOB_RESULT_ROOT/
 }
 
 upload_files_lftp()
