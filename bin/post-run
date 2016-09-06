@@ -210,8 +210,12 @@ dmesg --facility user --human --decode --color=always > $TMP/umesg 2>/dev/null
 truncate --no-create --size='<10M' $TMP/output $TMP/stdout $TMP/stderr $TMP/umesg 2>/dev/null
 
 upload_files	$TMP/boot-time	\
-		$TMP/env.yaml	\
 		$TMP/stdout	\
 		$TMP/stderr	\
 		$TMP/output	\
 		$TMP/umesg
+
+[ -s $TMP/env.yaml ] &&
+upload_files	$TMP/env.yaml
+
+exit 0
