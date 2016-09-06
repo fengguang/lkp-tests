@@ -98,19 +98,21 @@ upload_files()
 {
 	[ $# -ne 0 ] || return
 
-	if has_cmd rsync && is_local_server; then
-		upload_files_rsync "$@"
-		return
-	fi
+	if [ -z "$NO_NETWORK" ] && [ "$result_service" = "${result_service#9p/}" ]; then
+		if has_cmd rsync && is_local_server; then
+			upload_files_rsync "$@"
+			return
+		fi
 
-	if has_cmd lftp; then
-		upload_files_lftp "$@"
-		return
-	fi
+		if has_cmd lftp; then
+			upload_files_lftp "$@"
+			return
+		fi
 
-	if has_cmd curl; then
-		upload_files_curl "$@"
-		return
+		if has_cmd curl; then
+			upload_files_curl "$@"
+			return
+		fi
 	else
 		# NFS is the last resort -- it seems unreliable, either some
 		# content has not reached NFS server during post processing, or
