@@ -1,0 +1,25 @@
+short_description: >
+ DBENCH is a tool to generate I/O workloads to either a filesystem or to a
+ networked CIFS or NFS server.
+
+description: >
+ DBENCH is a tool to generate I/O workloads to either a filesystem or to a
+ networked CIFS or NFS server. It can even talk to an iSCSI target. DBENCH can
+ be used to stress a filesystem or a server to see which workload it becomes
+ saturated and can also be used for preditcion analysis to determine "How many
+ concurrent clients/applications performing this workload can my server handle
+ before response starts to lag?"
+
+ DBENCH provides a similar benchmarking and client emulation that is
+ implemented in SMBTORTURE using the BENCH-NBENCH test for CIFS, but DBENCH can
+ play these loadfiles onto a local filesystem instead of to a CIFS server.
+ Using a different type of loadfiles DBENCH can also generate and measure
+ latency for NFS.
+
+homepage: https://dbench.samba.org/
+
+parameters:
+ nr_threads:
+
+results:
+ dbench.throughput-MB/sec:
