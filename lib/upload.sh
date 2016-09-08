@@ -11,6 +11,23 @@ is_local_server()
 
 upload_files_rsync()
 {
+	[ -n "$target_directory" ] && {
+
+		local current_dir=$(pwd)
+		cd $(mktemp -d)
+		mkdir -p ${target_directory}
+
+		rsync -a --no-owner --no-group \
+			--chmod=D775,F664 \
+			--ignore-missing-args \
+			--min-size=1 \
+			${target_directory%%/*} rsync://$LKP_SERVER$JOB_RESULT_ROOT/
+
+		local JOB_RESULT_ROOT=$JOB_RESULT_ROOT/$target_directory
+
+		cd $current_dir
+	}
+
 	rsync -a --no-owner --no-group \
 		--chmod=D775,F664 \
 		--ignore-missing-args \
@@ -22,48 +39,62 @@ upload_files_lftp()
 {
 	local file
 	local dest_file
-	local dest_path
 	local ret=0
 	local LFTP_TIMEOUT='set net:timeout 2; set net:reconnect-interval-base 2; set net:max-retries 2;'
 	local UPLOAD_HOST="http://$LKP_SERVER"
 
+	[ -n "$target_directory" ] && {
+		local JOB_RESULT_ROOT=$JOB_RESULT_ROOT/$target_directory
+		lftp -c "$LFTP_TIMEOUT; open '$UPLOAD_HOST'; mkdir -p '$JOB_RESULT_ROOT'"
+	}
+
 	for file
 	do
-		if [[ -d "$file" ]]; then
-			[[ "$(ls -A $file)" ]] && lftp -c "$LFTP_TIMEOUT; open '$UPLOAD_HOST'; mirror -R '$file' '$JOB_RESULT_ROOT/'" || ret=$?
+		if [ -d "$file" ]; then
+			[ "$(ls -A $file)" ] && lftp -c "$LFTP_TIMEOUT; open '$UPLOAD_HOST'; mirror -R '$file' '$JOB_RESULT_ROOT/'" || ret=$?
 		else
-			[[ -s "$file" ]] || continue
-			dest_path=$(dirname "$file")
-			dest_file=$JOB_RESULT_ROOT/$file
+			[ -s "$file" ] || continue
+			dest_file=$JOB_RESULT_ROOT/$(basename $file)
 
-			lftp -c "$LFTP_TIMEOUT; open '$UPLOAD_HOST'; mkdir -p '$dest_path'; put -c '$file' -o '$dest_file'" || ret=$?
+			lftp -c "$LFTP_TIMEOUT; open '$UPLOAD_HOST'; put -c '$file' -o '$dest_file'" || ret=$?
 		fi
 	done
 
 	return $ret
 }
 
+upload_one_curl()
+{
+	if [ -d "$1" ]; then
+		(
+			cd $(dirname "$1")
+			dir=$(basename "$1")
+			find "$dir" -type d -exec curl -X MKCOL 'http://$LKP_SERVER$JOB_RESULT_ROOT/{}' \;
+			find "$dir" -type f -size +0 -exec curl -T '{}' 'http://$LKP_SERVER$JOB_RESULT_ROOT/{}' \;
+		)
+	else
+		curl -T "$file" http://$LKP_SERVER$JOB_RESULT_ROOT/
+	fi
+}
+
 upload_files_curl()
 {
 	local file
-	local files
-	local dir
-	local dirs
 	local ret=0
 
-	dirs=$(find "$@" -type d 2>/dev/null)
+	[ -n "$target_directory" ] && {
 
-	for dir in $dirs
+		local dir
+		for dir in $(echo $target_directory | tr '/' ' ')
+		do
+			local JOB_RESULT_ROOT=$JOB_RESULT_ROOT/$dir
+			curl -X MKCOL http://$LKP_SERVER$JOB_RESULT_ROOT
+		done
+	}
+
+	for file
 	do
-		curl -X MKCOL http://$LKP_SERVER$JOB_RESULT_ROOT/$dir
-	done
-
-	files=$(find "$@" -type f -size +0 2>/dev/null)
-	[ -n "$files" ] || return
-
-	for file in $files
-	do
-		curl -T "$file" http://$LKP_SERVER$JOB_RESULT_ROOT/$file || ret=$?
+		upload_one_curl "$file" || ret=$?
 	done
 
 	return $ret
@@ -71,6 +102,14 @@ upload_files_curl()
 
 upload_files_copy()
 {
+	[ -n "$target_directory" ] && {
+		local RESULT_ROOT="$RESULT_ROOT/$target_directory"
+
+		mkdir -p $RESULT_ROOT
+		chown -R lkp.lkp $RESULT_ROOT
+		chmod -R g+w $RESULT_ROOT
+	}
+
 	chown -R lkp.lkp "$@"
 	chmod -R ug+w "$@"
 
@@ -79,7 +118,7 @@ upload_files_copy()
 
 	for file
 	do
-		test -s "$file" || continue
+		[ -s "$file" ] || continue
 		cp -a "$file" $RESULT_ROOT/ || {
 			ls -l "$@" $RESULT_ROOT 2>&1
 			ret=$?
@@ -91,6 +130,12 @@ upload_files_copy()
 
 upload_files()
 {
+	if [ "$1" = "-t" ]; then
+		local target_directory="$2"
+
+		shift 2
+	fi
+
 	[ $# -ne 0 ] || return
 
 	if [ -z "$NO_NETWORK" ] && [ "$result_service" = "${result_service#9p/}" ]; then
