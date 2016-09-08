@@ -241,9 +241,9 @@ redirect_stdout_stderr()
 	if [ -n "$stdbuf$sed_u" ]; then
 		# limit 300 characters is to fix the following errro info:
 		# sed: couldn't write N items to stdout: Invalid argument
-		tail -f /tmp/stdout | $stdbuf sed $sed_u -r 's/^(.{0,300}).*$/<5>\1/' > /dev/kmsg &
+		tail -f /tmp/stdout | $stdbuf sed $sed_u -r 's/^(.{0,900}).*$/<5>\1/' > /dev/kmsg &
 		echo $! >> /tmp/pid-tail-global
-		tail -f /tmp/stderr | $stdbuf sed $sed_u -r 's/^(.{0,300}).*$/<3>\1/' > /dev/kmsg &
+		tail -f /tmp/stderr | $stdbuf sed $sed_u -r 's/^(.{0,900}).*$/<3>\1/' > /dev/kmsg &
 		echo $! >> /tmp/pid-tail-global
 	else
 		tail -f /tmp/stdout > /dev/kmsg 2>/dev/null &
