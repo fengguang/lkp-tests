@@ -25,6 +25,6 @@ log_cmd ./Run $test $other_params -i $iteration || exit
 
 exit_value=$?
 
-upload_files -t results $BENCHMARK_ROOT/unixbench/results/*
+upload_files -t results $BENCHMARK_ROOT/unixbench/UnixBench/results/*
 
 exit $exit_value
