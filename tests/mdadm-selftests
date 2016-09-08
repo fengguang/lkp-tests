@@ -40,6 +40,6 @@ done
 
 exit_value=$?
 
-upload_files result
+upload_files -t results result/*
 
 exit $exit_value

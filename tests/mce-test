@@ -52,7 +52,7 @@ exit_value=$?
 #	exit_value=$?
 #fi
 
-upload_files $BENCHMARK_ROOT/mce-test/cases/stress/hwpoison/log \
+upload_files -t results $BENCHMARK_ROOT/mce-test/cases/stress/hwpoison/log \
 	$BENCHMARK_ROOT/mce-test/cases/stress/hwpoison/result
 
 exit $exit_value

@@ -43,5 +43,5 @@ do
 		"$tmp_results"/${testcase//[^A-Za-z0-9_-]/-}.json.bz2
 done <<< "$testcases"
 
-upload_files $tmp_results/*.json.bz2
+upload_files -t results $tmp_results/*.json.bz2
 echo "all tests finished"

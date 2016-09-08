@@ -19,6 +19,6 @@ log_cmd client/autotest-local run $test 2>&1 || exit
 
 exit_value=$?
 
-upload_files $BENCHMARK_ROOT/autotest/client/results/default
+upload_files -t results $BENCHMARK_ROOT/autotest/client/results/default
 
 exit $exit_value

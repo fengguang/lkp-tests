@@ -22,6 +22,6 @@ log_cmd ./ftq $opt_freq -n $samples $opt_task || exit
 
 exit_value=$?
 
-upload_files $BENCHMARK_ROOT/ftq/*.dat
+upload_files -t results $BENCHMARK_ROOT/ftq/*.dat
 
 exit $exit_value

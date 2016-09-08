@@ -38,6 +38,6 @@ log_cmd ./run_tests.sh || {
 
 exit_value=$?
 
-upload_files $BENCHMARK_ROOT/kvm-unit-tests/test.log
+upload_files -t results $BENCHMARK_ROOT/kvm-unit-tests/test.log
 
 exit $exit_value

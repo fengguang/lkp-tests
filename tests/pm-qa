@@ -22,7 +22,7 @@ run_one()
 
 	ret_value=$?
 
-	upload_files $BENCHMARK_ROOT/pm-qa/$testcase/*.log
+	upload_files -t results $BENCHMARK_ROOT/pm-qa/$testcase/*.log
 
 	return $ret_value
 }

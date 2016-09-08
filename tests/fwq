@@ -24,6 +24,6 @@ log_cmd ./t_fwq -n $samples $opt_iterations $opt_task || exit
 
 exit_value=$?
 
-upload_files $BENCHMARK_ROOT/fwq/*.dat
+upload_files -t results $BENCHMARK_ROOT/fwq/*.dat
 
 exit $exit_value

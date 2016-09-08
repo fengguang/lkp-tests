@@ -29,6 +29,6 @@ $dimension	# leading dimensions
 4		# alignment values (in KBytes)"
 EOF
 
-upload_files lininput_xeon64
+upload_files -t results lininput_xeon64
 
 log_cmd ./runme_xeon64

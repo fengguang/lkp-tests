@@ -97,5 +97,5 @@ set_env
 run_test
 exit_value=$?
 
-upload_files $BENCHMARK_ROOT/xfstests/results
+upload_files -t results $BENCHMARK_ROOT/xfstests/results/*
 exit $exit_value

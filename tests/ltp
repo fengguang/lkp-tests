@@ -33,7 +33,7 @@ log_cmd ./runltp -f $test $big_dev_opt || exit
 
 exit_value=$?
 
-upload_files $BENCHMARK_ROOT/ltp/results \
+upload_files -t results $BENCHMARK_ROOT/ltp/results/* \
 	$BENCHMARK_ROOT/ltp/output
 
 exit $exit_value
