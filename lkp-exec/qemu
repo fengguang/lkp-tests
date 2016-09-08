@@ -1,6 +1,7 @@
 #!/bin/bash
 
 . $LKP_SRC/lib/kexec.sh
+. $LKP_SRC/lib/http.sh
 . $LKP_SRC/lib/qemu.sh
 . $LKP_SRC/lib/unit.sh
 . $LKP_SRC/lib/job-init.sh
