@@ -20,7 +20,8 @@ iteration=$(( runtime / 10 ))
 
 [ -n "$nr_task" ] && other_params="-c $nr_task"
 
-log_cmd ./UnixBench/Run $test $other_params -i $iteration || exit
+cd UnixBench
+log_cmd ./Run $test $other_params -i $iteration || exit
 
 exit_value=$?
 
