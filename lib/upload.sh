@@ -73,6 +73,7 @@ upload_one_curl()
 			find "$dir" -type f -size +0 -exec curl -T '{}' 'http://$LKP_SERVER$JOB_RESULT_ROOT/{}' \;
 		)
 	else
+		[ -s "$file" ] || return
 		curl -T "$file" http://$LKP_SERVER$JOB_RESULT_ROOT/
 	fi
 }
