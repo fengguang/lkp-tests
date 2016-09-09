@@ -1,0 +1,5 @@
+model: qemu-system-x86_64 -enable-kvm -cpu host
+nr_vm: 10
+nr_cpu: 2
+memory: 2G
+hdd_partitions: /dev/vda
