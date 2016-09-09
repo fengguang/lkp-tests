@@ -14,7 +14,8 @@ upload_files_rsync()
 	[ -n "$target_directory" ] && {
 
 		local current_dir=$(pwd)
-		cd $(mktemp -d)
+		local tmpdir=$(mktemp -d)
+		cd "$tmpdir"
 		mkdir -p ${target_directory}
 
 		rsync -a --no-owner --no-group \
@@ -26,6 +27,7 @@ upload_files_rsync()
 		local JOB_RESULT_ROOT=$JOB_RESULT_ROOT/$target_directory
 
 		cd $current_dir
+		rm -fr "$tmpdir"
 	}
 
 	rsync -a --no-owner --no-group \
