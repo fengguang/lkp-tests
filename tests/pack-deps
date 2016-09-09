@@ -41,7 +41,7 @@ do
 		continue
 	}
 
-	work_dir=$(mktemp -d)
+	work_dir=$(mktemp -d /tmp/pack-deps-$BM_NAME-XXXXXXXX)
 	cd $work_dir
 
 	if download "$PACKAGE_LIST"; then

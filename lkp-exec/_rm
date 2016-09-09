@@ -12,7 +12,7 @@ remove_from_mrtts()
 
 remove()
 {
-	local temp_file_unsort=$(mktemp)
+	local temp_file_unsort=$(mktemp /tmp/lkp-rm-unsort-XXXXXXXXX)
 	cleanup_path_record_from_patterns $patterns > $temp_file_unsort || exit
 
 	[[ -s "$temp_file_unsort" ]] ||
@@ -22,7 +22,7 @@ remove()
 		exit 1
 	}
 
-	local temp_file_sort=$(mktemp)
+	local temp_file_sort=$(mktemp /tmp/lkp-rm-sort-XXXXXXXXX)
 	awk -F'/' '{OFS="/"; NF=NF-2; print}' $temp_file_unsort | sort -u > $temp_file_sort
 
 	local path
@@ -53,7 +53,7 @@ script_name=$(basename $0)
 
 patterns="$*"
 
-temp_file=$(mktemp)
+temp_file=$(mktemp /tmp/lkp-rm-XXXXXXXXX)
 trap "rm -f $temp_file" EXIT
 
 lkp _rt $patterns > $temp_file

@@ -70,7 +70,7 @@ case $opt_project in
 esac
 
 patterns="$*"
-temp_file_unsort=$(mktemp)
+temp_file_unsort=$(mktemp /tmp/lkp-rt-unsort-XXXXXX)
 
 [[ $patterns ]] ||
 cat "${files[@]}" >> $temp_file_unsort
@@ -102,7 +102,7 @@ cat "${files[@]}" >> $temp_file_unsort
 }
 
 sed -i -e 's#/$##' $temp_file_unsort
-temp_file_sort=$(mktemp)
+temp_file_sort=$(mktemp /tmp/lkp-rt-sort-XXXXXX)
 
 case $script_name in
 rt|ls|ll|result)
@@ -141,4 +141,4 @@ do
 	show_one_path "$path/$opt_file"
 done < $temp_file_sort
 
-rm -rf $temp_file_unsort  $temp_file_sort
+rm $temp_file_unsort $temp_file_sort

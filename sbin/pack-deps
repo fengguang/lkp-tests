@@ -20,7 +20,7 @@ mkdir -p $pack_to
 
 check_shared_package "$BM_NAME" && exit
 
-work_dir=$(mktemp -d)
+work_dir=$(mktemp -d /tmp/pack-deps-$BM_NAME-XXXXXXXXX)
 cd $work_dir
 
 download $(get_dependency_packages $DISTRO $BM_NAME) || exit

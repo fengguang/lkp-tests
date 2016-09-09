@@ -18,8 +18,8 @@ case_dir=$1
 
 funcs=$(grep "def test_" -rh $case_dir/test_*.py) || usage
 
-tmpfile=$(mktemp)
-tmpfile_uniq=$(mktemp)
+tmpfile=$(mktemp /tmp/hwsim-extract-testcase-XXXXXX)
+tmpfile_uniq=$(mktemp /tmp/hwsim-extract-testcase-uniq-XXXXXX)
 
 while read func
 do

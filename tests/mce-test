@@ -35,7 +35,7 @@ cd cases/stress/hwpoison || exit
 
 # the latter hwpoison.sh script will call LTP project which will remove $TMP after run finished.
 # currently, the variable TMP=/tmp/lkp contain various log file, so need to export TMP variable to temp dir.
-tmp_dir=$(mktemp -d) || exit
+tmp_dir=$(mktemp -d /tmp/mce-test-XXXXXX) || exit
 export TMP=$tmp_dir
 
 export TERM=linux # to quiet stderr message "TERM environment variable not set."
@@ -54,5 +54,7 @@ exit_value=$?
 
 upload_files -t results $BENCHMARK_ROOT/mce-test/cases/stress/hwpoison/log \
 	$BENCHMARK_ROOT/mce-test/cases/stress/hwpoison/result
+
+rm -fr "$tmp_dir"
 
 exit $exit_value

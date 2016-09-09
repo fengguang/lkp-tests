@@ -68,7 +68,7 @@ image_name=$2
 
 docker ps >/dev/null || exit
 
-tmp_dir=$(mktemp -d) || exit
+tmp_dir=$(mktemp -d /tmp/create-testcase-image-XXXXXXXXX) || exit
 
 trap cleanup EXIT
 
@@ -98,3 +98,5 @@ EOF
 docker build -t ${image_name}_$testcase . || exit
 
 echo "Create docker image ${image_name}_$testcase for $testcase testcase successfully."
+
+rm -fr "$tmp_dir"
