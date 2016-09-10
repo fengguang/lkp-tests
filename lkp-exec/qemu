@@ -65,6 +65,7 @@ replace_script_partition_val()
 
 create_job_initrd()
 {
+	[[ -d /tmp$job_initrd_dir ]] && rm -rf "/tmp$job_initrd_dir"
 	mkdir -p /tmp$job_initrd_dir
 	cp $job_script /tmp${job_file%.yaml}.sh
 	archive=/tmp${job_file%.yaml}
