@@ -11,12 +11,13 @@ script_name=$(basename $0)
 usage()
 {
 	cat <<EOF
-Usage: lkp $script_name [-o RESULT_ROOT] [-p VDISK_PATH] [-s SSH_PORT] [-S] job.sh
+Usage: lkp $script_name [-o RESULT_ROOT] [-p VDISK_PATH] [-s SSH_PORT] [-k bzImage] [-S] job.sh
 
 options:
 	-o  RESULT_ROOT		 	dir for storing all results
 	-s  SSH_PORT		 	forward ssh port to host
 	-p  VDISK_PATH			specify vdisk path
+	-k  bzImage			specify bzImage as kernel image
 	-S				output boot message to stdio
 
 Note:
@@ -113,12 +114,13 @@ setup_vdisk_root()
 	fi
 }
 
-while getopts "o:p:s:S" opt
+while getopts "o:p:s:k:S" opt
 do
 	case $opt in
 		o ) opt_result_root="$OPTARG" ;;
 		s ) opt_ssh="$OPTARG" ;;
 		p ) opt_vdiskpath="$OPTARG" ;;
+		k ) opt_kernel_image="$OPTARG" ;;
 		S ) unset DISPLAY ;;
 		? ) usage ;;
 	esac
@@ -182,7 +184,7 @@ run_kvm()
 	KVM_COMMAND=(
 		$model
 		-fsdev local,id=test_dev,path=$vm_result_path,security_model=none -device virtio-9p-pci,fsdev=test_dev,mount_tag=$mount_tag
-		-kernel $kernel_file
+		-kernel ${opt_kernel_image:-$kernel_file}
 		-append "$bootloader_append ip=dhcp result_service=$mount_tag"
 		$initrd_option
 		-smp $nr_cpu
