@@ -28,7 +28,6 @@ initcall .* returned with .*
  is leaving the kernel with locks still held!
  is exiting with locks still held!
  is freeing memory .*, with a lock still held there!
-genirq: Flags mismatch irq .*
 Out of memory: Kill process 
 Out of memory and no killable processes
 invoked oom-killer: gfp_mask=0x
