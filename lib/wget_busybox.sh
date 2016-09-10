@@ -15,9 +15,6 @@ setup_wget_busybox()
 
 http_get_newer()
 {
-	# versioned files can be safely cached without checking timestamp
-	[ "${1#*-????-??-??}" != "$1" ] &&
-	[ -s "$2" ] && return
-
+	http_get_newer_can_skip "$@" && return
 	http_get_file "$@"
 }

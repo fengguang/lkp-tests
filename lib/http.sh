@@ -93,6 +93,15 @@ http_setup_client()
 	return 1
 }
 
+http_get_newer_can_skip()
+{
+	[ -s "$2" ] || return
+
+	# versioned files can be safely cached without checking timestamp
+	[ "${1%-????-??-??.cgz}" != "$1" ] && return
+	[ "${1%_????-??-??.cgz}" != "$1" ] && return
+}
+
 http_get_file()
 {
 	http_setup_client && http_get_file "$@"
