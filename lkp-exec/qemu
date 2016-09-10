@@ -11,14 +11,13 @@ script_name=$(basename $0)
 usage()
 {
 	cat <<EOF
-Usage: lkp $script_name [-o RESULT_ROOT] [-p VDISK_PATH] [-s SSH_PORT] [-k bzImage] [-S] job.sh
+Usage: lkp $script_name [-o RESULT_ROOT] [-p VDISK_PATH] [-s SSH_PORT] [-k bzImage] job.sh
 
 options:
 	-o  RESULT_ROOT		 	dir for storing all results
 	-s  SSH_PORT		 	forward ssh port to host
 	-p  VDISK_PATH			specify vdisk path
 	-k  bzImage			specify bzImage as kernel image
-	-S				output boot message to stdio
 
 Note:
 This script uses qemu to start a VM to run LKP test-job.
@@ -114,19 +113,20 @@ setup_vdisk_root()
 	fi
 }
 
-while getopts "o:p:s:k:S" opt
+while getopts "o:p:s:k:" opt
 do
 	case $opt in
 		o ) opt_result_root="$OPTARG" ;;
 		s ) opt_ssh="$OPTARG" ;;
 		p ) opt_vdiskpath="$OPTARG" ;;
 		k ) opt_kernel_image="$OPTARG" ;;
-		S ) unset DISPLAY ;;
 		? ) usage ;;
 	esac
 done
 
 shift $(($OPTIND-1))
+
+unset DISPLAY
 
 job_script=$1
 
