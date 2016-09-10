@@ -8,8 +8,8 @@ export_meminfo()
 	do
 		key="${key%%:}"
 		key="${key%%)}"
-		[ "${key#*(}" != "$key" ] &&
-		key="${key%(*}_${key#*(}"
+		[ "${key#*\(}" != "$key" ] &&
+		key="${key%\(*}_${key#*\(}"
 		export "$key=$val"
 	done < /proc/meminfo
 }
