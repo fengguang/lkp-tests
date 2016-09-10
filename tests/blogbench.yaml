@@ -1,0 +1,48 @@
+short_description: >
+ Blogbench is a portable filesystem benchmark that tries to reproduce the load
+ of a real-world busy file server.
+
+description: >
+ Blogbench is a portable filesystem benchmark that tries to reproduce the load
+ of a real-world busy file server.
+
+ It stresses the filesystem with multiple threads performing random reads,
+ writes and rewrites in order to get a realistic idea of the scalability and
+ the concurrency a system can handle.
+
+ Blogbench was initially designed to mimic the behavior of the Skyblog.com
+ blog service.
+
+ 4 different types of threads are started
+
+        * The writers. They create new blogs (directories) with a random amount
+          of fake articles and fake pictures.
+        * The rewriters. They add or they modify articles and pictures of
+          existing blogs.
+        * The “commenters”. They add fake comments to existing blogs in random
+          order.
+        * The readers. They read articles, pictures and comments of random
+          blogs. They sometimes even try to access non-existent files.
+
+ New files are written atomically. The content is pushed with 8 Kb chunks in a
+ temporary file that gets renamed if everything completes. 8 Kb is the default
+ PHP buffer size for writes.
+
+ Reads are performed with a 64 Kb buffer.
+
+ Concurrent writers and rewriters can quickly create fragmentation if the
+ preallocation is not optimal. But it is very interesting to check how
+ different file systems reacts to fragmentation.
+
+ Every blog is a new directory withing the same parent directory. Since some
+ filesystems are unable to manage more than 32k or 64k links to the same
+ directory (an example is UFS), you should not force the test to run a silly
+ amount of time on these filesystems.
+
+homepage: https://www.pureftpd.org/project/blogbench
+
+parameters:
+
+results:
+ blogbench.write_score:
+ blogbench.read_score:
