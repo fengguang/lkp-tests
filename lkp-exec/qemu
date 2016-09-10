@@ -89,6 +89,9 @@ max_sane_qemu_memory()
 
 	export_meminfo
 
+	[[ $MemAvailable ]] ||
+	(( MemAvailable = MemFree + (Active_file/2) + Inactive_file ))
+
 	(( mem_kb > MemAvailable / 2 )) && mem_kb=$((MemAvailable / 2))
 
 	echo $((mem_kb >> 10))M
