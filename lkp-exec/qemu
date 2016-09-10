@@ -145,7 +145,7 @@ else
 fi
 
 $LKP_SRC/sbin/pack -a $arch lkp-src
-lkp_initrd=/tmp/lkp_initrd-$USER/lkp/$LKP_USER/lkp-$arch.cgz
+lkp_initrd=/lkp/$USER/lkp-$arch.cgz
 
 # create job_initrd.cgz
 job_initrd=/tmp${job_file%.yaml}.cgz
