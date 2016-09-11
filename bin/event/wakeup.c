@@ -9,6 +9,38 @@
 #include <getopt.h>
 #include <unistd.h>
 
+int opt_timeout;
+char *opt_pipename;
+
+void parse_options(int argc, char *argv[])
+{
+	while (1) {
+		int c;
+		int option_index = 0;
+		static struct option long_options[] = {
+			{"timeout", required_argument, 0, 't'},
+			{0,         0,                 0,  0 }
+		};
+
+		c = getopt_long(argc, argv, "t:", long_options, &option_index);
+		if (c == -1)
+			break;
+
+		switch (c) {
+		case 't':
+			opt_timeout = atoi(optarg);
+			break;
+		}
+	}
+
+	if (optind < argc) {
+		opt_pipename = argv[optind];
+	} else {
+		printf("Usage: %s [-t|--timeout seconds] PIPE_NAME\n", argv[0]);
+		exit(0);
+	}
+}
+
 char *get_tmp_dir(void)
 {
 	char *tmp;
@@ -78,57 +110,31 @@ int main(int argc, char *argv[])
 	int pid;
 	int len;
 	char buf[1024];
-	char *pipename;
 	int is_wait;
 	char *pipe_dir = get_pipe_dir();
-	int timeout = 0;
 
 	is_wait = !strcmp(basename(argv[0]), "wait");
 
-	while (1) {
-		int c;
-		int option_index = 0;
-		static struct option long_options[] = {
-			{"timeout", required_argument, 0, 't'},
-			{0,         0,                 0,  0 }
-		};
-
-		c = getopt_long(argc, argv, "t:", long_options, &option_index);
-		if (c == -1)
-			break;
-
-		switch (c) {
-		case 't':
-			timeout = atoi(optarg);
-			break;
-		}
-	}
-
-	if (optind < argc) {
-		pipename = argv[optind];
-	} else {
-		printf("Usage: %s [-t|--timeout seconds] PIPE_NAME\n", argv[0]);
-		exit(0);
-	}
+	parse_options(argc, argv);
 
 	mkdir(pipe_dir, 0770);
 	chdir(pipe_dir);
-	mkfifo(pipename, 0660);
+	mkfifo(opt_pipename, 0660);
 
 	if (is_wait) {
-		if (timeout) {
+		if (opt_timeout) {
 			signal(SIGALRM, do_timeout);
-			alarm(timeout);
+			alarm(opt_timeout);
 		}
 		/*
 		 * wait processes will be blocked here until the
 		 * wakeup process writes some data to the pipe
 		 */
-		fd = open(pipename, O_RDONLY);
+		fd = open(opt_pipename, O_RDONLY);
 	} else
-		fd = open(pipename, O_RDWR|O_NONBLOCK);
+		fd = open(opt_pipename, O_RDWR|O_NONBLOCK);
 	if (fd < 0) {
-		perror(pipename);
+		perror(opt_pipename);
 		exit(1);
 	}
 
