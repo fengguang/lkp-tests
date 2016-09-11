@@ -13,7 +13,7 @@ http_get_file()
 	local path="$(dirname "$2")"
 	[ -d "$path" ] || mkdir -p "$path"
 
-	http_do_request "$1" -o "$2"
+	http_escape_request "$1" -o "$2"
 }
 
 http_get_newer()
@@ -22,9 +22,9 @@ http_get_newer()
 	[ -d "$path" ] || mkdir -p "$path"
 
 	if [ -s "$2" ]; then
-		http_do_request "$1" -o "$2" -z "$2"
+		http_escape_request "$1" -o "$2" -z "$2"
 	else
-		http_do_request "$1" -o "$2"
+		http_escape_request "$1" -o "$2"
 	fi
 }
 

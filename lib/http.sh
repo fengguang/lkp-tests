@@ -62,6 +62,13 @@ set_job_state()
 
 ####################################################
 
+http_escape_request()
+{
+	local path="$(escape_cgi_param "$1")"
+	shift
+	http_do_request "$path" "$@"
+}
+
 http_do_request()
 {
 	local path="$1"

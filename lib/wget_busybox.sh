@@ -13,6 +13,14 @@ setup_wget_busybox()
 
 . $LKP_SRC/lib/wget.sh
 
+http_get_file()
+{
+	local path="$(dirname "$2")"
+	[ -d "$path" ] || mkdir -p "$path"
+
+	http_escape_request "$1" -O "$2"
+}
+
 http_get_newer()
 {
 	http_get_newer_can_skip "$@" && return
