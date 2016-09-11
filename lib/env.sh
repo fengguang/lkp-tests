@@ -25,6 +25,16 @@ else
 	}
 fi
 
+# gawk has a known bug
+# awk: fatal error: internal error: segfault
+if has_cmd mawk; then
+	__mawk_cmd=$(cmd_path mawk)
+	awk()
+	{
+		$__mawk_cmd "$@"
+	}
+fi
+
 nproc()
 {
 	if has_cmd 'nproc'; then
