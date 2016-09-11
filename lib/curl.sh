@@ -30,5 +30,5 @@ http_get_newer()
 
 http_get_cgi()
 {
-	http_do_request "$1" -o /dev/null
+	http_do_request "$1" -o "${2:-/dev/null}"
 }
