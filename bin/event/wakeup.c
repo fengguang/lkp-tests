@@ -34,8 +34,8 @@ void parse_options(int argc, char *argv[])
 	}
 
 	if (optind < argc) {
-		opt_pipename = argv[optind];
-	} else {
+		opt_pipename = argv[optind++];
+	} else if (!opt_pipename) {
 		printf("Usage: %s [-t|--timeout seconds] PIPE_NAME\n", argv[0]);
 		exit(0);
 	}
@@ -116,6 +116,12 @@ int main(int argc, char *argv[])
 	is_wait = !strcmp(basename(argv[0]), "wait");
 
 	parse_options(argc, argv);
+	/*
+	 * klibc needs this to parse options after PIPE_NAME
+	 * ./wait PIPE_NAME --timeout 1
+	 */
+	if (optind < argc)
+		parse_options(argc, argv);
 
 	mkdir(pipe_dir, 0770);
 	chdir(pipe_dir);
