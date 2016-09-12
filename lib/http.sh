@@ -100,6 +100,14 @@ http_setup_client()
 	return 1
 }
 
+check_create_base_dir()
+{
+	[ -z "$1" ] && return
+
+	local path="$(dirname "$1")"
+	[ -d "$path" ] || mkdir -p "$path"
+}
+
 http_get_newer_can_skip()
 {
 	[ -s "$2" ] || return

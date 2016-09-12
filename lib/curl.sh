@@ -10,16 +10,13 @@ setup_curl()
 
 http_get_file()
 {
-	local path="$(dirname "$2")"
-	[ -d "$path" ] || mkdir -p "$path"
-
+	check_create_base_dir "$2"
 	http_escape_request "$1" -o "$2"
 }
 
 http_get_newer()
 {
-	local path="$(dirname "$2")"
-	[ -d "$path" ] || mkdir -p "$path"
+	check_create_base_dir "$2"
 
 	if [ -s "$2" ]; then
 		http_escape_request "$1" -o "$2" -z "$2"
