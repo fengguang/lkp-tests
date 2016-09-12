@@ -57,6 +57,8 @@ role()
 
 is_virt()
 {
+	[ -n "$VM_VIRTFS" ] && return 0
+
 	if [ -n "$model" ]; then
 		# running inside LKP job
 		[ -n "$nr_vm" ]
