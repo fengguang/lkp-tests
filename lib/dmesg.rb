@@ -318,6 +318,9 @@ def analyze_error_id(line)
 	when /(Writer stall state \w*).+ g\d+ c\d+ f/
 		line = $1
 		bug_to_bisect = $1
+	when /(BUG: key )[0-9a-f]+ (not in .data)/
+		line = $1 + $2
+		bug_to_bisect = $1 + '.* ' + $2
 	when /(rcu_sched kthread starved) for \d+ jiffies/
 		line = $1
 		bug_to_bisect = $1
