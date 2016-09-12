@@ -132,9 +132,8 @@ unset DISPLAY
 job_script=$1
 
 [ -n "$job_script" ] || usage
-. $job_script
-export_top_env
 replace_script_partition_val $job_script
+. $job_script export_top_env
 
 # create lkp-$arch.cgz
 export LKP_USER=$user
