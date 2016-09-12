@@ -410,7 +410,9 @@ next_job()
 
 rsync_rootfs()
 {
-	[ -z "$NO_NETWORK" ] || return
+	[ -n "$VM_VIRTFS" ] && return
+	[ -n "$NO_NETWORK" ] && return
+	[ -z "$LKP_SERVER" ] && return
 
 	local append="$(grep -m1 '^APPEND ' $NEXT_JOB | sed 's/^APPEND //')"
 	for i in $append
@@ -423,10 +425,18 @@ rsync_rootfs()
 	$LKP_DEBUG_PREFIX $LKP_SRC/bin/rsync-rootfs $remote_rootfs $root
 }
 
+setup_env()
+{
+	[ "$result_service" != "${result_service#9p/}" ] &&
+	export VM_VIRTFS=1
+}
+
 # initiation at boot stage; should be invoked once for
 # each fresh boot.
 boot_init()
 {
+	setup_env
+
 	mount_kernel_fs
 	mount_tmpfs
 	redirect_stdout_stderr

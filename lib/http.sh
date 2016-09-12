@@ -74,7 +74,7 @@ http_do_request()
 	local path="$1"
 	shift
 
-	[ -n "$NO_NETWORK" ] && {
+	[ -n "$NO_NETWORK$VM_VIRTFS" -o -z "$LKP_SERVER" ] && {
 		echo skip http request: $path "$@"
 		return
 	}

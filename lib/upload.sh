@@ -141,7 +141,7 @@ upload_files()
 
 	[ $# -ne 0 ] || return
 
-	if [ -z "$NO_NETWORK" ] && [ "$result_service" = "${result_service#9p/}" ]; then
+	if [ -z "$NO_NETWORK$VM_VIRTFS" ]; then
 		if has_cmd rsync && is_local_server; then
 			upload_files_rsync "$@"
 			return
