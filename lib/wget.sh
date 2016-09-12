@@ -38,5 +38,6 @@ http_get_newer()
 
 http_get_cgi()
 {
+	check_create_base_dir "$2"
 	http_do_request "$1" -O "${2:-/dev/null}"
 }
