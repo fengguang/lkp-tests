@@ -68,7 +68,7 @@ create_job_initrd()
 	[[ -d /tmp$job_initrd_dir ]] && rm -rf "/tmp$job_initrd_dir"
 	mkdir -p /tmp$job_initrd_dir
 	cp $job_script /tmp${job_file%.yaml}.sh
-	archive=/tmp${job_file%.yaml}
+	archive=/tmp${job_file%.yaml}-$job_sig
 	(cd /tmp && find lkp | cpio -o -H newc -F $archive.cpio
 	 gzip -n -9 $archive.cpio
 	 mv -f $archive.cpio.gz $archive.cgz)
@@ -153,9 +153,10 @@ lkp_initrd=/lkp/$USER/lkp-$arch-$src_sig.cgz
 }
 
 # create job_initrd.cgz
-job_initrd=/tmp${job_file%.yaml}.cgz
+job_sig=$(md5sum $job_script | cut -c1-5)
+job_initrd=/tmp${job_file%.yaml}-$job_sig.cgz
 job_initrd_dir=${job_file%/*}
-create_job_initrd
+[[ -f $job_initrd ]] || create_job_initrd
 
 # if job.sh not include bootloader_append entry, add default content
 if [ -n "$bootloader_append" ]; then
