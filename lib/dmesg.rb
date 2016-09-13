@@ -327,6 +327,9 @@ def analyze_error_id(line)
 	when /(BUG: workqueue lockup - pool)/
 		line = $1
 		bug_to_bisect = $1
+	when /(BUG: KASAN: slab-out-of-bounds)/
+		line = $1
+		bug_to_bisect = $1
 	when /(rcu_sched kthread starved) for \d+ jiffies/
 		line = $1
 		bug_to_bisect = $1
