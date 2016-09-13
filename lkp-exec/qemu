@@ -135,7 +135,7 @@ job_script=$1
 replace_script_partition_val $job_script
 . $job_script export_top_env
 
-# create lkp-$arch.cgz
+# create lkp_initrd
 export LKP_USER=$user
 if [[ "$kconfig" =~ ^(i386|x86_64)- ]]; then
 	arch=${kconfig%%-*}
@@ -143,8 +143,14 @@ else
 	arch=$(arch)
 fi
 
-$LKP_SRC/sbin/pack -a $arch lkp-src
-lkp_initrd=/lkp/$USER/lkp-$arch.cgz
+head_commit=$(cd $LKP_SRC && git rev-list -n1 HEAD)
+diff_id=$(cd $LKP_SRC && git diff | git patch-id | cut -c1-5)
+src_sig=${head_commit:0:4}${diff_id:0:4}
+lkp_initrd=/lkp/$USER/lkp-$arch-$src_sig.cgz
+[[ -f $lkp_initrd ]] || {
+	$LKP_SRC/sbin/pack -a $arch lkp-src
+	mv /lkp/$USER/lkp-$arch.cgz $lkp_initrd
+}
 
 # create job_initrd.cgz
 job_initrd=/tmp${job_file%.yaml}.cgz
