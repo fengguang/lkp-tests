@@ -71,8 +71,8 @@ upload_one_curl()
 		(
 			cd $(dirname "$1")
 			dir=$(basename "$1")
-			find "$dir" -type d -exec curl -X MKCOL 'http://$LKP_SERVER$JOB_RESULT_ROOT/{}' \;
-			find "$dir" -type f -size +0 -exec curl -T '{}' 'http://$LKP_SERVER$JOB_RESULT_ROOT/{}' \;
+			find "$dir" -type d -exec curl -X MKCOL "http://$LKP_SERVER$JOB_RESULT_ROOT/{}" \;
+			find "$dir" -type f -size +0 -exec curl -T '{}' "http://$LKP_SERVER$JOB_RESULT_ROOT/{}" \;
 		)
 	else
 		[ -s "$file" ] || return
