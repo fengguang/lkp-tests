@@ -1,0 +1,25 @@
+short_description: >
+ xfstests is a regression test suite for xfs and other files ystems.
+
+description: >
+ xfstests is a file system regression test suite written by SGI to test XFS,
+ just like XFS, it was originally targeted for lrix and later ported to linux
+ Currently, it can be used to test all major file systems on Linux, include
+ xfs, ext2/3/4, cifs, btrfs, f2fs, reiserfs, gfs2, jfs, udf, nfs, tmpfs. It
+ uses golden output pass/fail rule, group file is used to contain test grouping
+ info, up to now, the test suite contains ~135 tests and the number is still
+ growing, all tests are numbered.
+
+ The test suite may cause the following failures
+ - Not Run, something the test needed is missing
+ - Fail, golden output mismatch
+ - Filesystem inconsistency
+ - Test/machine hung
+ - Machine oops
+
+homepage: git://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git
+
+parameters:
+ test:
+
+results:
