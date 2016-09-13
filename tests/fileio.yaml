@@ -1,0 +1,25 @@
+short_description: >
+ fileio is a subtest of SysBench benchmark suite to measure file IO performance.
+
+description: >
+ SysBench is a modular, cross-platform and multi-threaded benchmark tool for
+ evaluating OS parameters that are important for a system running a database
+ under intensive load.
+
+ The idea of this benchmark suite is to quickly get an impression about system
+ performance without setting up complex database benchmarks or even without
+ installing a database at all.
+
+homepage: https://github.com/akopytov/sysbench
+
+parameters:
+ nr_threads:
+ period:
+ rwmode: [seqwr, seqrewr, seqrd, rndrd, rndwr, rndrw]
+ iomode: [sync, async, mmap]
+ size:
+ filenum:
+
+results:
+ fileio.requests_per_sec:
+ fileio.transactions:
