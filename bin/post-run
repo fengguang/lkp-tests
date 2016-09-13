@@ -90,7 +90,7 @@ touch $TMP/post-run
 sleep 1
 # 2) most simple monitors run until being killed
 #    => $TMP/pid-monitor-*
-kill_monitors -INT
+kill_monitors -TERM
 
 wait_for_monitors
 sleep 1
