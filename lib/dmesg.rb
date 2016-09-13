@@ -324,6 +324,9 @@ def analyze_error_id(line)
 	when /(BUG: using smp_processor_id\(\) in preemptible)/
 		line = $1
 		bug_to_bisect = oops_to_bisect_pattern line
+	when /(BUG: workqueue lockup - pool)/
+		line = $1
+		bug_to_bisect = $1
 	when /(rcu_sched kthread starved) for \d+ jiffies/
 		line = $1
 		bug_to_bisect = $1
