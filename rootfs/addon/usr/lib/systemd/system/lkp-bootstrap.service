@@ -1,9 +1,10 @@
 [Unit]
 Description=LKP bootstrap
 After=sysinit.target
+After=network.target
 
 [Service]
-Type=oneshot
+Type=forking
 ExecStart=/etc/init.d/lkp-bootstrap
 IgnoreSIGPIPE=no
 KillMode=none
