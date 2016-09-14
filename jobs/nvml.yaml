@@ -1,0 +1,8 @@
+suite: nvml
+testcase: nvml
+category: functional
+
+nvml:
+  test:
+  - non-pmem
+  - pmem

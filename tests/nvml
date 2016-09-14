@@ -1,0 +1,19 @@
+#!/bin/bash
+# - test
+
+. $LKP_SRC/lib/debug.sh
+
+cd $BENCHMARK_ROOT/nvml || die "Can not find nvml dir"
+
+if [[ "$test" = "non-pmem" ]]; then
+	tmp_dir=$(mktemp -d)
+	echo "NON_PMEM_FS_DIR=$tmp_dir" > src/test/testconfig.sh
+elif [[ "$test" = "pmem" ]]; then
+	echo "PMEM_FS_DIR_FORCE_PMEM=1" > src/test/testconfig.sh
+else
+	die "Parameter is wrong"
+fi
+
+make &&
+make test &&
+make check
