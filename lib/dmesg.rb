@@ -228,10 +228,9 @@ end
 
 def common_error_id(line)
 	line = line.chomp
-	line.gsub! /\b3\.[0-9]+[-a-z0-9.]+/, '#'			# linux version: 3.17.0-next-20141008-g099669ed
+	line.gsub! /\b[3-9]\.[0-9]+[-a-z0-9.]+/, '#'			# linux version: 3.17.0-next-20141008-g099669ed
 	line.gsub! /\b[1-9][0-9]-[A-Z][a-z]+-[0-9]{4}\b/, '#'		# Date: 28-Dec-2013
 	line.gsub! /\b0x[0-9a-f]+\b/, '#'				# hex number
-	line.gsub! /\bg[0-9a-f]{6,}\b/, '#'				# /lib/modules/4.8.0-rc1-00024-g390aafe/modules.dep.bin
 	line.gsub! /\b[a-f0-9]{40}\b/, '#'				# SHA-1
 	line.gsub! /\b[0-9][0-9.]*/, '#'				# number
 	line.gsub! /#x\b/, '0x'
