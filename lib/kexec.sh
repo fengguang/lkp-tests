@@ -47,11 +47,12 @@ download_kernel_initrd()
 	done
 
 	[ -n "$initrds" ] && {
-		initrd_option="--initrd=$concatenate_initrd"
 		[ $# != 0 ] && initrds="${initrds}$*"
 
 		signature=$(cat $initrds | md5sum | cut -c1-5)
 		concatenate_initrd="/tmp/initrd-$signature"
+		initrd_option="--initrd=$concatenate_initrd"
+
 		[ -f "$concatenate_initrd" ] && return 0
 		cat $initrds > $concatenate_initrd
 	}
