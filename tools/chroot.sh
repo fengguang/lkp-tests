@@ -1,5 +1,10 @@
 #!/bin/sh
 
+if [ $# = 2 ]; then
+        mount $1 $2 || exit
+        shift
+fi
+
 mnt=$1
 
 check_mount()
