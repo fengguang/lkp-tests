@@ -2,10 +2,14 @@
 
 mnt=$1
 
-mountpoint -q $mnt/proc || {
-	mount --rbind /dev	$mnt/dev
-	mount --bind  /sys	$mnt/sys
-	mount -t proc none	$mnt/proc
+check_mount()
+{
+	mountpoint -q "$2" && return
+	mount "$@"
 }
+
+check_mount	/dev	$mnt/dev	--rbind
+check_mount	/sys	$mnt/sys	--bind
+check_mount	none	$mnt/proc	-t proc
 
 chroot $mnt
