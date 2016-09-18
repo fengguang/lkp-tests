@@ -1,0 +1,49 @@
+short_description: >
+ The FTQ benchmarks measure hardware and software interference or 'noise' on a
+ node from the applications perspective.
+
+description: >
+ FTQ is a simple benchmark that probes interference within a system. It does so
+ as follows.  For a given sampling period (say, 1ms), we would like to know how
+ many units of work can be achieved by a user application.  The unit of work is
+ defined below.  We can iteratively sample the system, checking for a series of
+ 1ms sample intervals, how much work is actually achieved in each.  For a high
+ interference system, one will see a great deal of variability in they output
+ data. For a low interference system, one will see less variability.  Of
+ course, there is the distinct possibility that one may be experiencing
+ constant interference, which would be identical to the low interference case,
+ except with a lower than ideal mean value.  A method for investigating whether
+ or not this is the case is discussed below.
+
+ Traditionally, a simple benchmark to quantify this effect was what we call the
+ Fixed Work Quantum benchmark.  That method basically fixes a work quantum
+ (say, 10000 integer operations), and samples the amount of time it takes to
+ execute over a series of samples.  The problem with this method is that
+ although interference is revealed, the lack of a firm time axis (think about
+ it for a second -- instead of sampling intervals being defined in terms of
+ time, they're defined in terms of work!) makes sophisticated analysis in
+ things like the frequency domain difficult and at times, impossible.
+
+ FTQ fixes this with two subtle tweaks to FWQ.  First off, instead of
+ performing a single work quantum that requires on the order of the time we
+ wish the sampling period to be, FTQ uses many samples of work quanta that are
+ significantly smaller than the desired sampling period. Second, due to the
+ fact that FTQ is a self sampling system, it is entirely possible (actually,
+ it's almost guaranteed) that a sample may exceed the sampling interval by some
+ amount.  FTQ is constructed to compensate for that by shrinking subsequent
+ samples to get the time series back on track.
+
+ In the end, FTQ provides data that both reveals interference and is in a form
+ where sophisticated analysis is possible depending on the desires of the user.
+
+homepage: https://github.com/rminnich/ftq
+
+parameters:
+ nr_task:
+ samples:
+ freq:
+
+results:
+ ftq.max:
+ ftq.mean:
+ ftq.noise:
