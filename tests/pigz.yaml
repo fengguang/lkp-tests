@@ -1,0 +1,52 @@
+short_description: >
+ Pigz, which stands for parallel implementation of gzip, is a fully functional
+ replacement for gzip that exploits multiple processors and multiple cores to
+ the hilt when compressing data.
+
+description: >
+ Pigz compresses using threads to make use of multiple processors and cores.
+ The input is broken up into 128 KB chunks with each compressed in parallel.
+ The individual check value for each chunk is also calculated in parallel. The
+ compressed data is written in order to the output, and a combined check value
+ is calculated from the individual check values.
+
+ The compressed data for mat generated is in the gzip, zlib, or single-entr y
+ zip for mat using the deflate compression method. The compression produces
+ partial raw deflate streams which are concatenated byasingle write thread and
+ wrapped with the appropriate header and trailer, where the trailer contains
+ the combined check value.
+
+ Each partial raw deflate stream is terminated by an empty stored block (using
+ the Z_SYNC_FLUSH option of zlib), in order to end that partial bit stream at a
+ byte boundary. That allows the partial streams to be concatenated simply as
+ sequences of bytes. This adds a ver y small four to five byte overhead to the
+ output for each input chunk.
+
+ The default input block size is 128K, but can be changed with the -b option.
+ The number of compress threads is set by default to the number of online
+ processors, which can be changed using the -p option. Specifying -p 1 avoids
+ the use of threads entirely.
+
+ The input blocks, while compressed independently, have the last 32K of the
+ previous block loaded as a preset dictionary to preser ve the compression
+ effectiveness of deflating in a single thread. This can be turned off using
+ the -i or --independent option, so that the blocks can be decompressed
+ independently for partial error recovery or for random access.
+
+ Decompression can’t be parallelized, at least not without specially prepared
+ deflate streams for that purpose. Asaresult, pigz uses a single thread (the
+ main thread) for decompression, but will create three other threads for
+ reading, writing, and check calculation, which can speed up decompression
+ under some circumstances. Parallel decompression can be turned off by
+ specifying one process ( -dp 1 or -tp 1  ). Compressed files can be restored
+ to their original for m using pigz -d or unpigz.
+
+homepage: https://github.com/madler/pigz
+
+parameters:
+ runtime:
+ nr_threads:
+ blocksize:
+
+results:
+ pigz.throughput:
