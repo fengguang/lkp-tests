@@ -1,0 +1,36 @@
+short_description: >
+ The Linpack Benchmark is a measure of a computer’s floating-point rate of
+ execution.
+
+description: >
+ The LINPACK Benchmarks are a measure of a system's floating point computing
+ power. Introduced by Jack Dongarra, they measure how fast a computer solves a
+ dense n by n system of linear equations Ax = b, which is a common task in
+ engineering.
+
+ The latest version of these benchmarks is used to build the TOP500 list,
+ ranking the world's most powerful supercomputers.
+
+ The aim is to approximate how fast a computer will perform when solving real
+ problems. It is a simplification, since no single computational task can
+ reflect the overall performance of a computer system. Nevertheless, the
+ LINPACK benchmark performance can provide a good correction over the peak
+ performance provided by the manufacturer. The peak performance is the maximal
+ theoretical performance a computer can achieve, calculated as the machine's
+ frequency, in cycles per second, times the number of operations per cycle it
+ can perform. The actual performance will always be lower than the peak
+ performance. The performance of a computer is a complex issue that depends on
+ many interconnected variables. The performance measured by the LINPACK
+ benchmark consists of the number of 64-bit floating-point operations,
+ generally additions and multiplications, a computer can perform per second,
+ also known as FLOPS. However, a computer's performance when running actual
+ applications is likely to be far behind the maximal performance it achieves
+ running the appropriate LINPACK benchmark.
+
+homepage: http://registrationcenter.intel.com/irc_nas/3914/l_lpk_p_11.1.2.005.tgz
+
+parameters:
+ memory:
+
+results:
+ linpack.GFlops:
