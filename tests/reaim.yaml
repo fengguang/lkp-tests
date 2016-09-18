@@ -1,0 +1,21 @@
+short_description: >
+ REAIM is an updated and improved version of AIM 7 benchmark.
+
+description: >
+ REAIM is an updated and improved version of AIM 7 benchmark. It forks many
+ processes called tasks, each of which concurrently runs in random order a set
+ of subtests called jobs.  Each job exercises a different aspect of the
+ operating system, such as disk-file operations, process creation, user virtual
+ memory operations, pipe I/O, and compute-bound arithmetic loops.
+
+homepage: https://sourceforge.net/projects/re-aim-7/
+
+parameters:
+ test: micro test name
+ nr_task:
+ nr_job:
+ iterations:
+ runtime:
+
+results:
+ reaim.jobs_per_min:
