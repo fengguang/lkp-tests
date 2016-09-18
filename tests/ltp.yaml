@@ -1,0 +1,21 @@
+short_description: >
+ The LTP testsuite contains a collection of tools for testing the Linux
+ kernel and related features.
+
+description: >
+ linux test project is a joint project started by sgi, osdl and bull developed
+ and maintained by ibm, cisco, fujitsu, suse, red hat, oracle and others. the
+ project goal is to deliver tests to the open source community that validate
+ the reliability, robustness, and stability of linux.
+
+ The LTP testsuite contains a collection of tools for testing the Linux kernel
+ and related features. Our goal is to improve the Linux kernel and system
+ libraries by bringing test automation to the testing effort. Interested open
+ source contributors are encouraged to join.
+
+homepage: http://linux-test-project.github.io/
+
+parameters:
+ test: [dio, fs_readonly]
+
+results:
