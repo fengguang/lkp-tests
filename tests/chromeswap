@@ -4,9 +4,4 @@
 # - cycles
 # - swap_targets
 
-# workaround pack-deps' problem: it doesn't properly setup soft links.
-# this is only needed in LKP lab, not needed in local test environment
-[ -e /usr/lib/libblas.so.3 ] || ln -s /usr/lib/libblas/libblas.so.3.6.0 /usr/lib/libblas.so.3
-[ -e /usr/lib/liblapack.so.3 ] ||  ln -s /usr/lib/lapack/liblapack.so.3.6.0 /usr/lib/liblapack.so.3
-
 python $BENCHMARK_ROOT/chromeswap/platform_CompressedSwapPerf.py
