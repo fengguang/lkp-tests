@@ -8,6 +8,7 @@ Type=forking
 ExecStart=/etc/init.d/lkp-bootstrap
 IgnoreSIGPIPE=no
 KillMode=none
+TasksMax=infinity
 
 [Install]
 WantedBy=multi-user.target
