@@ -1,0 +1,37 @@
+short_description: >
+ NetPIPE is a protocol independent performance tool that encapsulates
+ the best of ttcp and netperf and visually represents the network
+ performance under a variety of conditions.
+
+description: >
+ NetPIPE uses a simple series of ping-pong tests over a range of message sizes
+ to provide a complete measure of the performance of a network. It bounces
+ messages of increasing size between two processes, whether across a network or
+ within an SMP system. Message sizes are chosen at regular intervals, and with
+ slight perturbations, to provide a complete evaluation of the communication
+ system. Each data point involves many ping-pong tests to provide an accurate
+ timing. Latencies are calculated by dividing the round trip time in half for
+ small messages ( less than 64 Bytes  ).
+
+ The communication time for small messages is dominated by the overhead in the
+ communication layers, meaning that the transmission is latency bound. For
+ larger messages, the communication rate becomes bandwidth limited by some
+ component in the communication subsystem (PCI bus, network card link, network
+ switch).
+
+ These measurements can be done at the message-passing layer (MPI, MPI-2, and
+ PVM) or at the native communications layers that that run upon (TCP/IP, GM for
+ Myrinet cards, InfiniBand, SHMEM for the Cray T3E systems, and LAPI for IBM SP
+ systems). Recent work is being aimed at measuring some internal system
+ properties such as the memcpy module that measures the internal memory copy
+ rates, or a disk module under development that measures the performance to
+ various I/O devices.
+
+homepage: http://bitspjoule.org/netpipe/
+
+parameters:
+ test:
+
+results:
+ netpipe.less_8K_usec.avg:
+ netpipe.bigger_5M_Mbps.avg:
