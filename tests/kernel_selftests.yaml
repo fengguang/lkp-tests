@@ -1,0 +1,22 @@
+short_description: >
+ The kernel contains a set of "self tests" under the tools/testing/selftests/
+ directory. These are intended to be small unit tests to exercise individual
+ code paths in the kernel.
+
+description: >
+ The kernel contains a set of "self tests" under the tools/testing/selftests/
+ directory. These are intended to be small unit tests to exercise individual
+ code paths in the kernel.
+
+ On some systems, hot-plug tests could hang forever waiting for cpu and memory
+ to be ready to be offlined. A special hot-plug target is created to run full
+ range of hot-plug tests. In default mode, hot-plug tests run in safe mode with
+ a limited scope. In limited mode, cpu-hotplug test is run on a single cpu as
+ opposed to all hotplug capable cpus, and memory hotplug test is run on 2% of
+ hotplug capable memory instead of 10%.
+
+homepage: https://www.kernel.org/doc/Documentation/kselftest.txt
+
+parameters:
+
+results:
