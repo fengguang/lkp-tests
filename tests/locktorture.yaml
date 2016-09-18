@@ -1,0 +1,26 @@
+short_description: >
+ This torture test consists of creating a number of kernel threads which
+ acquire the lock and hold it for specific amount of time, thus simulating
+ different critical region behaviors.
+
+description: >
+ The CONFIG LOCK_TORTURE_TEST config option provides a kernel module that runs
+ torture tests on core kernel locking primitives. The kernel module,
+ 'locktorture', may be built after the fact on the running kernel to be tested,
+ if desired. The tests periodically output status messages via printk(), which
+ can be examined via the dmesg (perhaps grepping for "torture").  The test is
+ started when the module is loaded, and stops when the module is unloaded. This
+ program is based on how RCU is tortured, via rcutorture.
+
+ This torture test consists of creating a number of kernel threads which
+ acquire the lock and hold it for specific amount of time, thus simulating
+ different critical region behaviors. The amount of contention on the lock can
+ be simulated by either enlarging this critical region hold time and/or
+ creating more kthreads.
+
+homepage: https://www.kernel.org/doc/Documentation/locking/locktorture.txt
+
+parameters:
+ runtime:
+
+results:
