@@ -1,0 +1,26 @@
+short_description: >
+ qperf measures bandwidth and latency between two nodes. It can work over
+ TCP/IP as well as the RDMA transports.
+
+description: >
+ qperf measures bandwidth and latency between two nodes. It can work over
+ TCP/IP as well as the RDMA transports. On one of the nodes, qperf is typically
+ run with no arguments designating it the server node. One may then run qperf
+ on a client node to obtain measurements such as bandwidth, latency and cpu
+ utilization.
+
+ In its most basic form, qperf is run on one node in server mode by invoking it
+ with no arguments. On the other node, it is run with two arguments, the name
+ of the server node followed by the name of the test. A list of tests can be
+ found in the section, TESTS. A variety of options may also be specified.
+
+homepage: https://www.openfabrics.org/downloads/qperf/
+
+parameters:
+ runtime:
+
+results:
+ qperf.sctp.bw:
+ qperf.tcp.bw:
+ qperf.udp.recv_bw:
+ qperf.udp.send_bw:
