@@ -257,7 +257,7 @@ install_deb()
 {
 	local files
 
-	files="$(ls /opt/deb 2>/dev/null)" || return
+	files="$(find /opt/deb -type f 2>/dev/null)" || return
 	[ -n "$files" ] || return
 
 	dpkg -i $files || return
