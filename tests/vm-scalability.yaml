@@ -1,0 +1,86 @@
+short_description: >
+ The motivation behind this suite is to exercise functions and regions of the
+ mm/ of the Linux kernel which are of interest to us.
+
+description: >
+ The motivation behind this suite is to exercise functions and regions of the
+ mm/ of the Linux kernel which are of interest to us. There are many more
+ regions which have not been covered by the test cases.
+
+ The test suite was developed with the help of gcov code coverage analysis
+ tool. Gcov can be enabled as a configuration option in linux kernel 2.6 and
+ upwards. GCOV gives a per line execution count for the source files. The
+ supporting tool versions that were used in the development of the suite are
+
+ gcov   - 4.6.3
+ gcc    - 4.6.3
+ Kernel - 3.4
+
+ The test kernel needs to be configured with the following options set
+
+        CONFIG_LOCK_STAT=y
+
+        CONFIG_GCOV_KERNEL=y
+        CONFIG_GCOV_PROFILE_ALL=y
+
+        CONFIG_PERF_EVENTS=y
+        CONFIG_FTRACE_SYSCALLS=y
+
+        CONFIG_TRANSPARENT_HUGEPAGE=y
+
+ Once the test kernel has been compiled and installed, a debugfs is mounted on
+ /sys/kernel.  writing to the file /sys/kernel/debug/gcov/reset resets all the
+ counters. The directory /sys/kernel/debug/gcov/ also has a link to the build
+ directory on the test system. For more information about setting up gcov,
+ consult the gcov documentation.
+
+ The cases in the suite call an exucutable file with options. Most of the cases
+ work on usemem. Some of the cases that call other ececutables have been
+ written in seperate files in order to modularise the code and have been named
+ based on the kernel functionality they exercise.
+
+ Some of the cases merely call trivial system calls and do not do anything
+ else. They can be extended suitably as per need.
+
+ Some cases like case-migration, case-mbind etc need a numa setup. This was
+ achieved using the numa=fake=<value>. The value is the number of nodes to be
+ emulated. The suite was tested with value = 2, which is the minimum value for
+ inter-core page migration. passed as a kernel boot option. Those cases that
+ require the numa setup need to be linked with -lnuma flag and the libnuma has
+ to be installed in the system. The executables that these cases call have been
+ taken from the numactl documentation and slightly modified. They have been
+ found to work on a 2 node numa-emulated machine.
+
+ cases which require the sysfs parameters to be using echo <value> >
+ sysfs_parameter set may need tweaking based on the system configuration. The
+ default values used in the case scripts may not scale well when systems
+ parameters are scaled. For example, for systems with higher memory, the
+ /sys/kernel/mm/transparent_hugepage/khugepaged/pages_to_scan may be needed to
+ be set to a higher value or the scan_sleep_millisecs needs to be reduced or
+ both. Failure to scale the values may result in disproportional or sometimes,
+ no observable coverage in corresponding functions.
+
+ cases can be run individually using
+
+ ./case-name
+
+ with the suite directory as pwd. The scripts work under this assumption. Also,
+ care has to taken to make sure that the sparse root is mounted. The run_cases
+ script takes care of mounting the sparse partition before running the scripts.
+
+ Hugepages are assumed to be of 2MB.
+
+homepage: https://git.kernel.org/cgit/linux/kernel/git/wfg/vm-scalability.git/
+
+parameters:
+ runtime:
+ nr_task:
+ test:
+ size:
+ unit_size:
+ fs:
+ pre_setup: [0, 1]
+
+results:
+ vm-scalability.throughput:
+ vm-scalability.migrate_mbps:
