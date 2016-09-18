@@ -1,0 +1,41 @@
+short_description: >
+ Trinity is a linux system call fuzz tester.
+
+description: >
+ The basic idea is fairly simple. As 'fuzz testing' suggests, we call syscalls
+ at random, with random arguments. Not an original idea, and one that has been
+ done many times before on Linux, and on other operating systems. Where Trinity
+ differs is that the arguments it passes are not purely random.
+
+ We found some bugs in the past by just passing random values, but once the
+ *really* dumb bugs were found, these dumb fuzzers would just run and run. The
+ problem was if a syscall took for example a file descriptor as an argument,
+ one of the first things it would try to do was validate that fd. Being
+ garbage, the kernel would just reject it as -EINVAL of course. So on startup,
+ Trinity creates a list of file descriptors, by opening pipes, scanning sysfs,
+ procfs, /dev, and creates a bunch of sockets using random network protocols.
+ Then when a syscall needs an fd, it gets passed one of these at random.
+
+ File descriptors aren't the only thing Trinity knows about. Every syscall has
+ its arguments annotated, and where possible it tries to provide something at
+ least semi-sensible. "Length" arguments for example get passed one of a whole
+ bunch of potentially interesting values.
+
+ Trinity also shares those file descriptors between multiple processes, which
+ causes havoc sometimes.
+
+ If a child process successfully creates an mmap, the pointer is stored, and
+ fed to subsequent syscalls, sometimes with hilarious results.
+
+ Trinity supports Alpha, Aarch64, ARM, i386, IA-64, MIPS, PowerPC-32,
+ PowerPC-64, S390, S390x, SPARC-64, x86-64. Adding support for additional
+ architectures is a small amount of work mostly involving just defining the
+ order of the syscall table.
+
+homepage: http://codemonkey.org.uk/projects/trinity/
+
+parameters:
+ runtime:
+ seed:
+
+results:
