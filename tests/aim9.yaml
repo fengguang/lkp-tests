@@ -1,0 +1,19 @@
+short_description: >
+ Suite IX is the "AIM Independent Resource Benchmark:" the famous synthetic
+ benchmark.
+
+description: >
+ The AIM Independent Resource Benchmark exercises and times each component of a
+ UNIX computer system, independently. The benchmark uses 58 subtests to
+ generate absolute processing rates, in operations per second, for subsystems,
+ I/O transfers, function calls, and UNIX system calls. GPL'd and can be
+ published under the "non-audited" clause.
+
+homepage: https://sourceforge.net/projects/aimbench/files/aim-suite9/ 
+
+parameters:
+ test: micro test name
+ testtime:
+
+results:
+ aim9.ops_per_sec:
