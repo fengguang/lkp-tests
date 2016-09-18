@@ -1,0 +1,22 @@
+short_description: >
+ Pft is the page fault test micro benchmark.
+
+description: >
+ Pft is original from Christoph Lameter's "Page Fault Test" tool, and posted to
+ LKML http://lkml.org/lkml/2006/8/29/294, modified by Lee Schermerhorn for mem
+ policy testing.
+
+ It is changed to allocate single large region before creating worker
+ threads/tasks. Then, carve up the region, giving each worker a piece to fault
+ in. This will cause the workers to contend for the cache line[s] holding the
+ in-kernel memory policy structure, the zone locks and page lists, ... In
+ multi-thread mode, the workers will also contend for the single test task's
+ mmap semaphore.
+
+homepage: https://github.com/gormanm/pft
+
+parameters:
+ memory: total size of test region
+
+results:
+ pft.faults_per_sec_per_cpu:
