@@ -48,6 +48,7 @@
 ^stderr.pmeter_server_does_not_start_correctly
 ^stderr.Killed
 ^stderr.*oom-killer:*Invalid_argument
+^stderr.modprobe:ERROR:../libkmod/libkmod.c:#kmod_search_moddep()could_not_open_moddep_file
 ^latency_stats.*cifs.*
 ^last_state.exit_fail
 ^last_state.*.exit_code.*
