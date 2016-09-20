@@ -774,6 +774,30 @@ def stat_priority(stat)
 	return $stats_priority[stat] ? $stats_priority[stat] : 0
 end
 
+def sort_stats(stats)
+	setup_stats_priority(stats)
+	stats.sort_by! do |x|
+		fields = x.split('.')
+
+		record = $stat_records[x].last
+
+		a = record['a'].average
+		b = record['b'].average
+		abs_change = b - a
+		rel_change = abs_change / b
+
+		if x =~ ABS_CHANGE_STATS_RE
+			[ stat_priority(fields[0]), fields[1], abs_change ]
+		elsif fields.size >= 3 and not fields[1] =~ /^node\d+$/
+			# when a monitor can be broken into sub-groups of stats
+			# under which values can be logically compared
+			[ stat_priority(fields[0]), fields[1], rel_change ]
+		else
+			[ stat_priority(fields[0]), '', rel_change ]
+		end
+	end
+end
+
 if $opt_all or $opt_index
 	setup_project
 	setup_dims
@@ -798,28 +822,7 @@ if $opt_all or $opt_index
 		stats = $changed_stats.keys
 	else
 		stats = $stat_records.keys
-	end
-
-	setup_stats_priority(stats)
-	stats.sort_by! do |x|
-		fields = x.split('.')
-
-		record = $stat_records[x].last
-
-		a = record['a'].average
-		b = record['b'].average
-		abs_change = b - a
-		rel_change = abs_change / b
-
-		if x =~ ABS_CHANGE_STATS_RE
-			[ stat_priority(fields[0]), fields[1], abs_change ]
-		elsif fields.size >= 3 and not fields[1] =~ /^node\d+$/
-			# when a monitor can be broken into sub-groups of stats
-			# under which values can be logically compared
-			[ stat_priority(fields[0]), fields[1], rel_change ]
-		else
-			[ stat_priority(fields[0]), '', rel_change ]
-		end
+		sort_stats(stats)
 	end
 
 	if $group_by_test
