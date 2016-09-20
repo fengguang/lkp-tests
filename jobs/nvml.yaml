@@ -14,5 +14,7 @@ disk:
 
 fs: ext4
 
+mount_option: dax
+
 boot_params:
   bp_memmap: 32G!4G
