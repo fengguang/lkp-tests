@@ -3,6 +3,16 @@ testcase: nvml
 category: functional
 
 nvml:
-  test:
-  - non-pmem
-  - pmem
+  test: non-pmem
+
+---
+nvml:
+  test: pmem
+
+disk:
+  nr_pmem: 1
+
+fs: ext4
+
+boot_params:
+  bp_memmap: 32G!4G
