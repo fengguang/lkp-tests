@@ -81,6 +81,7 @@ cat >> $TMP/env.yaml <<EOF
 # setup/md
 nr_partitions: 1
 partitions: $raid_device
+# used in setup/fs
 raid_device: $raid_device
 raid_level: $raid_level
 raid_chunk: $raid_chunk

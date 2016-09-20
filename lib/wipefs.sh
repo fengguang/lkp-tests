@@ -27,13 +27,17 @@ remove_dm()
 	log_cmd dmsetup remove_all
 }
 
-destroy_devices()
+destroy_fs()
 {
-	remove_dm
-
 	for dev in $partitions
 	do
 		do_wipefs $dev
 	done
+}
+
+destroy_devices()
+{
+	remove_dm
+	destroy_fs
 }
 

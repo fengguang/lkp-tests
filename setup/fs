@@ -143,7 +143,11 @@ case $fs in
 
 	*)
 		. $LKP_SRC/lib/wipefs.sh
-		destroy_devices
+		if [ -n "$raid_device" ]; then
+			destroy_fs
+		else
+			destroy_devices
+		fi
 		make_fs
 		mount_fs
 		;;
