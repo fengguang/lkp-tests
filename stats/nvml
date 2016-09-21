@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+
+stats = []
+nr_test = 0
+
+while line = STDIN.gets
+    case line
+    when /^(.+)\/(TEST[0-9]+): PASS$/
+        stats << $1 + "_" + $2 + '.pass: 1'
+        nr_test += 1
+    when /^(.+)\/(TEST[0-9]+): FAIL/
+        stats << $1 + "_" + $2 + '.fail: 1'
+        nr_test += 1
+    when /^(.+)\/(TEST[0-9]+): SKIP/
+        stats << $1 + "_" + $2 + '.skip: 1'
+        nr_test += 1
+    end
+end
+
+stats.uniq.each {|stat| puts stat}
+puts "total_test: #{nr_test}"
