@@ -29,7 +29,7 @@ install()
 pack()
 {
 	local tmp_src=$tmp_dir/lkp/$LKP_USER/src
-	local archive=/lkp/$USER/lkp-${ARCH}
+	local archive=${CACHE_DIR:-/lkp/$USER}/lkp-${ARCH}
 	local cpio_cmd="cpio --quiet -o $OWNER_OPT -H newc -F ${archive}.cpio"
 
 	rm -f $archive.cpio
