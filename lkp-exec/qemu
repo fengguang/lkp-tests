@@ -29,6 +29,36 @@ EOF
 	exit 1
 }
 
+create_lkp_home()
+{
+	[[ -e $HOME/.lkp ]] && return
+
+	cat <<-EOF
+	The approx. disk space requirements are
+
+	10M             simple boot test in rootfs openwrt
+	50M		simple boot test in rootfs debian
+	1G              plan to run a number of different tests
+	100G or more    IO tests
+
+	Please enter a dir with enough disk space, or simply press Enter to accept the default.
+	You may still symlink $HOME/.lkp to a more suitable place in future.
+	EOF
+
+	local dir
+	read -p "$HOME/.lkp => " dir
+
+	[[ $dir ]] && {
+	dir=$(realpath $dir)
+	mkdir -p $dir || exit
+	ln -sT $dir $HOME/.lkp || exit
+	}
+
+	mkdir -p $HOME/.lkp/cache
+	mkdir -p $HOME/.lkp/result
+	mkdir -p $HOME/.lkp/qemu-img
+}
+
 replace_script_partition_val()
 {
 	local disk_names=(/dev/vd{a..z})
@@ -65,11 +95,11 @@ replace_script_partition_val()
 
 create_job_initrd()
 {
-	[[ -d /tmp$job_initrd_dir ]] && rm -rf "/tmp$job_initrd_dir"
-	mkdir -p /tmp$job_initrd_dir
-	cp $job_script /tmp${job_file%.yaml}.sh
-	archive=/tmp${job_file%.yaml}-$job_sig
-	(cd /tmp && find lkp | cpio -o -H newc -F $archive.cpio
+	[[ -d $CACHE_DIR/$job_initrd_dir ]] && rm -rf "$CACHE_DIR/$job_initrd_dir"
+	mkdir -p $CACHE_DIR/$job_initrd_dir
+	cp $job_script $CACHE_DIR/${job_file%.yaml}.sh
+	archive=$CACHE_DIR/${job_file%.yaml}-$job_sig
+	(cd $CACHE_DIR && find lkp | cpio -o -H newc -F $archive.cpio
 	 gzip -n -9 $archive.cpio
 	 mv -f $archive.cpio.gz $archive.cgz)
 }
@@ -132,6 +162,10 @@ unset DISPLAY
 job_script=$1
 
 [ -n "$job_script" ] || usage
+
+create_lkp_home
+CACHE_DIR=$HOME/.lkp/cache
+
 replace_script_partition_val $job_script
 . $job_script export_top_env
 
@@ -154,7 +188,7 @@ lkp_initrd=/lkp/$USER/lkp-$arch-$src_sig.cgz
 
 # create job_initrd.cgz
 job_sig=$(md5sum $job_script | cut -c1-5)
-job_initrd=/tmp${job_file%.yaml}-$job_sig.cgz
+job_initrd=$CACHE_DIR/${job_file%.yaml}-$job_sig.cgz
 job_initrd_dir=${job_file%/*}
 [[ -f $job_initrd ]] || create_job_initrd
 
@@ -175,7 +209,6 @@ mkdir -p $vm_result_path
 
 # download kernel and initrds, then cat them
 LKP_SERVER=bee.sh.intel.com
-CACHE_DIR=/tmp/lkp-qemu-downloads
 [ -d $CACHE_DIR ] || mkdir $CACHE_DIR
 LKP_USER="lkp"
 
