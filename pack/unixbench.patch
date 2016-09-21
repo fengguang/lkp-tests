@@ -1,10 +1,25 @@
----
- Run |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
---- a/Run
-+++ b/Run
-@@ -750,7 +750,7 @@ sub getSystemInfo {
+diff --git a/UnixBench/Makefile b/UnixBench/Makefile
+index 880743a..e1243a4 100644
+--- a/UnixBench/Makefile
++++ b/UnixBench/Makefile
+@@ -86,9 +86,9 @@ OPTON = -O3 -ffast-math
+ ## OS detection.  Comment out if gmake syntax not supported by other 'make'.
+ OSNAME:=$(shell uname -s)
+ 
+-ifeq ($(OSNAME),Linux)
+-OPTON += -march=native -mtune=native
+-endif
++# ifeq ($(OSNAME),Linux)
++# OPTON += -march=native -mtune=native
++# endif
+ ifeq ($(OSNAME),Darwin)
+ # (adjust flags or comment out this section for older versions of XCode or OS X)
+ # (-mmacosx-versin-min= requires at least that version of SDK be installed)
+diff --git a/UnixBench/Run b/UnixBench/Run
+index a16a5c9..4af969b 100755
+--- a/UnixBench/Run
++++ b/UnixBench/Run
+@@ -809,7 +809,7 @@ sub getSystemInfo {
      }
  
      # Get graphics hardware info.
@@ -12,17 +27,8 @@
 +    #$info->{'graphics'} = getCmdOutput("3dinfo | cut -f1 -d\'(\'");
  
      # Get system run state, load and usage info.
-     $info->{'runlevel'} = getCmdOutput("runlevel | cut -f2 -d\" \"");
-@@ -1329,7 +1329,7 @@ sub runTests {
-         # If the benchmark doesn't want to run with this many copies, skip it.
-         my $cat = $params->{'cat'};
-         my $maxCopies = $testCats->{$cat}{'maxCopies'};
--        next if ($copies > $maxCopies);
-+        #next if ($copies > $maxCopies);
- 
-         # Run the benchmark.
-         my $bresult = runBenchmark($bench, $params, $verbose, $logFile, $copies);
-@@ -1764,7 +1764,7 @@ sub main {
+     $info->{'runlevel'} = getCmdOutput("who -r | awk '{print \$3}'");
+@@ -1823,7 +1823,7 @@ sub main {
          $tests = $index;
      }
  

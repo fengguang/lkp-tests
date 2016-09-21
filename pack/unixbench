@@ -7,8 +7,9 @@ download()
 
 build()
 {
-	cd $source_dir/UnixBench || return
+	cd $source_dir || return
 	patch_source
+	cd UnixBench
 	make
 }
 
