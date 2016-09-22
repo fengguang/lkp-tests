@@ -99,9 +99,17 @@ create_job_initrd()
 	mkdir -p $CACHE_DIR/$job_initrd_dir
 	cp $job_script $CACHE_DIR/${job_file%.yaml}.sh
 	archive=$CACHE_DIR/${job_file%.yaml}-$job_sig
-	(cd $CACHE_DIR && find lkp | cpio -o -H newc -F $archive.cpio
-	 gzip -n -9 $archive.cpio
-	 mv -f $archive.cpio.gz $archive.cgz)
+	(
+		cd $CACHE_DIR || exit
+		{
+			echo lkp
+			echo lkp/scheduled
+			echo ${job_initrd_dir#/}
+			find ${job_initrd_dir#/}/*
+		} | cpio -o -H newc -F $archive.cpio
+		gzip -n -9 $archive.cpio
+		mv -f $archive.cpio.gz $archive.cgz
+	)
 }
 
 get_qemu_kernel_initrd()
