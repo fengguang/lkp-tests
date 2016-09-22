@@ -1,5 +1,6 @@
 #!/bin/bash
 # - test
+# - group
 
 . $LKP_SRC/lib/debug.sh
 
@@ -9,12 +10,23 @@ if [[ "$test" = "non-pmem" ]]; then
 	tmp_dir=$(mktemp -d)
 	echo "NON_PMEM_FS_DIR=$tmp_dir" > src/test/testconfig.sh
 elif [[ "$test" = "pmem" ]]; then
-	echo "PMEM_FS_DIR_FORCE_PMEM=1" > src/test/testconfig.sh
 	echo "PMEM_FS_DIR=/fs/pmem0" > src/test/testconfig.sh
 else
-	die "Parameter is wrong"
+	die "Parameter \"test\" is wrong"
 fi
 
-make &&
-make test &&
-make check
+[[ -n "$group" ]] || die "Parameter \"group\" is empty"
+
+make || return
+make test || return
+
+cd src/test || die "Can not find test dir"
+testcases=$(ls -d "$group"_* 2>/dev/null) || testcases=$(ls -d "$group" 2>/dev/null)
+[[ -n "$testcases" ]] || die "Parameter \"group\" is invalid"
+
+echo "testcases: $testcases"
+
+while read testcase
+do
+	./RUNTESTS $testcase -f $test
+done <<< "$testcases"

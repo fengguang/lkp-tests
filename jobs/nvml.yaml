@@ -3,11 +3,35 @@ testcase: nvml
 category: functional
 
 nvml:
-  test: non-pmem
+group:
+  - arch
+  - blk
+  - bttdevice
+  - checksum
+  - ex
+  - libpmempool
+  - log
+  - magic
+  - obj
+  - out
+  - pmem
+  - pmemobjcli
+  - pmempool
+  - pmemspoil
+  - remote
+  - rpmem
+  - rpmemd
+  - scope
+  - set
+  - traces
+  - util
+  - vmem
+  - vmmalloc
+
+test: non-pmem
 
 ---
-nvml:
-  test: pmem
+test: pmem
 
 disk:
   nr_pmem: 1
