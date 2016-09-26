@@ -6,3 +6,4 @@ subsystems:
 - mac80211
 - pcie
 belongs_to: wireless driver
+notify_build_success_branch: .*
