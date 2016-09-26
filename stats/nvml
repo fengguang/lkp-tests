@@ -2,20 +2,30 @@
 
 stats = []
 nr_test = 0
+test_item = ""
+fs_type = ""
+build_type = ""
 
 while line = STDIN.gets
     case line
+    when /^(.+)\/TEST[0-9]+: SETUP \(.+\/(.+)\/(.+)\)$/
+		test_item = $1
+		fs_type = $2
+		build_type = $3
     when /^(.+)\/(TEST[0-9]+): PASS$/
-        stats << $1 + "_" + $2 + '.pass: 1'
+		next unless test_item == $1
+        stats << $1 + "_" + $2 + "_" + fs_type + "_" + build_type + '.pass: 1'
         nr_test += 1
     when /^(.+)\/(TEST[0-9]+): FAIL/
-        stats << $1 + "_" + $2 + '.fail: 1'
+		next unless test_item == $1
+        stats << $1 + "_" + $2 + "_" + fs_type + "_" + build_type + '.fail: 1'
         nr_test += 1
-    when /^(.+)\/(TEST[0-9]+): SKIP/
-        stats << $1 + "_" + $2 + '.skip: 1'
+    when /^(.+)\/(TEST[0-9]+): SKIP/, /^(.+)\/(TEST[0-9]+) crashed/
+		next unless test_item == $1
+        stats << $1 + "_" + $2 + "_" + fs_type + "_" + build_type + '.skip: 1'
         nr_test += 1
     end
 end
 
-stats.uniq.each {|stat| puts stat}
+stats.each {|stat| puts stat}
 puts "total_test: #{nr_test}"
