@@ -168,7 +168,7 @@ job_done() {
 	# may not have the network to run trigger_post_process.
 	# The host side monitor will upload qemu.time/dmesg/kmsg files and then
 	# trigger_post_process for the test job in VM.
-	[ -n "nr_vm" ] && return
+	[ -n "$nr_vm" ] && return
 
 	trigger_post_process
 }
