@@ -39,11 +39,14 @@ pack()
 		cd $tmp_dir					&& find lkp/$LKP_USER/src/*	| $cpio_cmd --append
 		{
 			cd $tmp_dir/lkp/$LKP_USER/src/rootfs/addon
+			[ -d etc/ssh ] &&
 			chmod -R 600 etc/ssh/* # to avoid sshd Permissions too open error
 			chmod g-ws root
-			chmod -R go-rwxs root/.ssh
-			mkdir -p etc/dropbear
-			cp -al root/.ssh/authorized_keys etc/dropbear/
+			[ -d root/.ssh ] && {
+				chmod -R go-rwxs root/.ssh
+				mkdir -p etc/dropbear
+				cp -al root/.ssh/authorized_keys etc/dropbear/
+			}
 		}						&& find *			| $cpio_cmd --append
 		{
 			# restore permission for cleanup
