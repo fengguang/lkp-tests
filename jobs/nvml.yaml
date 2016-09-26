@@ -4,10 +4,8 @@ category: functional
 
 nvml:
 group:
-  - arch
   - blk
   - bttdevice
-  - checksum
   - ex
   - libpmempool
   - log
@@ -21,9 +19,7 @@ group:
   - remote
   - rpmem
   - rpmemd
-  - scope
   - set
-  - traces
   - util
   - vmem
   - vmmalloc
