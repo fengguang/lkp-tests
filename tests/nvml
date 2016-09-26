@@ -28,5 +28,5 @@ echo "testcases: $testcases"
 
 while read testcase
 do
-	./RUNTESTS $testcase -f $test
+	./RUNTESTS $testcase
 done <<< "$testcases"
