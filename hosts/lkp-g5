@@ -1,6 +1,6 @@
 model: Westmere-EX
 nr_cpu: 128
 memory: 2048G
-rootfs_partition: 
+rootfs_partition: /dev/disk/by-id/scsi-3600605b0041a4ff01f7c1fab3b625b89-part3
 boot_timeout: 600
 brand: Intel(R) Xeon(R) CPU E7- 8830 @ 2.13GHz
