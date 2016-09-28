@@ -1,0 +1,34 @@
+short_description: >
+ apachebench is a tool for benchmarking your Apache Hypertext Transfer Protocol
+ (HTTP) server.
+
+description: >
+ apachebench is a tool for benchmarking your Apache Hypertext Transfer Protocol
+ (HTTP) server. It is designed to give you an impression of how your current
+ Apache installation performs. This especially shows you how many requests per
+ second your Apache installation is capable of serving.
+
+homepage: https://httpd.apache.org/docs/2.4/programs/ab.html
+
+parameters:
+ runtime:
+ concurrency:
+
+results:
+apachebench.requests_per_second:
+apachebench.time_per_request:
+apachebench.transfer_rate:
+apachebench.transfer_rate.unit: Kbytes/sec
+apachebench.connection_time.connect.max:
+apachebench.connection_time.processing.max:
+apachebench.connection_time.waiting.max:
+apachebench.connection_time.total.max:
+apachebench.max_latency.50%:
+apachebench.max_latency.66%:
+apachebench.max_latency.75%:
+apachebench.max_latency.80%:
+apachebench.max_latency.90%:
+apachebench.max_latency.95%:
+apachebench.max_latency.98%:
+apachebench.max_latency.99%:
+apachebench.max_latency.100%:

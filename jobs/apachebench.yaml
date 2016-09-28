@@ -1,0 +1,19 @@
+suite: apachebench
+testcase: apachebench
+category: benchmark
+
+runtime: 300s
+
+concurrency:
+- 1000
+- 2000
+- 4000
+- 8000
+
+cluster: cs-localhost
+
+if role server:
+  httpd:
+
+if role client:
+  apachebench:

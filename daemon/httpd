@@ -1,0 +1,11 @@
+#!/bin/bash
+
+#
+# MaxKeepAliveRequests: The maximum number of requests to allow
+# during a persistent connection. Set to 0 to allow an unlimited
+# amount for maximum performance.
+#
+sed -i -e 's/^MaxKeepAliveRequests.*/MaxKeepAliveRequests 0/' /etc/apache2/apache2.conf
+
+# start apache web server
+/etc/init.d/apache2 restart
