@@ -375,7 +375,7 @@ download_job()
 
 __next_job()
 {
-	NEXT_JOB="$CACHE_DIR/next-job-$LKP_USER"
+	NEXT_JOB="/tmp/next-job-$LKP_USER"
 
 	echo "getting new job..."
 	local mac="$(show_mac_addr)"
