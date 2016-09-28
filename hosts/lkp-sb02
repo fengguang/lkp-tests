@@ -2,8 +2,8 @@ model: Sandy Bridge-EP
 nr_node: 2
 nr_cpu: 32
 memory: 4G
-hdd_partitions: /dev/disk/by-id/ata-HDT722516DLA380_VDSD1DTCEKYAEJ-part2
-swap_partitions:
-rootfs_partition: /dev/disk/by-id/ata-HDT722516DLA380_VDSD1DTCEKYAEJ-part1
+hdd_partitions: /dev/disk/by-id/ata-WDC_WD20EZRX-00D8PB0_WD-WCC4M0KTT6NK-part2
+swap_partitions: /dev/disk/by-id/ata-WDC_WD20EZRX-00D8PB0_WD-WCC4M0KTT6NK-part1
+rootfs_partition: /dev/disk/by-id/ata-WDC_WD20EZRX-00D8PB0_WD-WCC4M0KTT6NK-part3
 netconsole_port: 6645
 brand: Intel(R) Core(TM) i5-2300 CPU @ 2.80GHz
