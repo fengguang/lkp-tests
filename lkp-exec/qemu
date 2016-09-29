@@ -216,7 +216,17 @@ fi
 mkdir -p $vm_result_path
 
 # download kernel and initrds, then cat them
-LKP_SERVER=bee.sh.intel.com
+if [[ $HTTP_PREFIX ]]; then
+	: # use environment value
+elif [[ $HOSTNAME = inn ]]; then
+	LKP_SERVER=inn
+elif grep -q intel.com /etc/resolv.conf; then
+	LKP_SERVER=bee.sh.intel.com
+else
+	LKP_SERVER=
+	HTTP_PREFIX=https://github.com/0day-ci/lkp-qemu/raw/master
+fi
+
 [ -d $CACHE_DIR ] || mkdir $CACHE_DIR
 LKP_USER="lkp"
 

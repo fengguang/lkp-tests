@@ -74,14 +74,20 @@ http_do_request()
 	local path="$1"
 	shift
 
-	[ -n "$NO_NETWORK$VM_VIRTFS" -o -z "$LKP_SERVER" ] && {
+	[ -n "$NO_NETWORK$VM_VIRTFS" -o -z "$LKP_SERVER$HTTP_PREFIX" ] && {
 		echo skip http request: $path "$@"
 		return
 	}
 
 	# $ busybox wget http://XXX:/
 	# wget: bad port spec 'XXX:'
-	local http_prefix="http://$LKP_SERVER:${LKP_CGI_PORT:-80}/~$LKP_USER"
+	local http_prefix
+
+	if [ -n "$HTTP_PREFIX" ]; then
+		http_prefix="$HTTP_PREFIX"
+	else
+		http_prefix="http://$LKP_SERVER:${LKP_CGI_PORT:-80}/~$LKP_USER"
+	fi
 
 	echo \
 	$http_client_cmd "$http_prefix/$path" "$@"
