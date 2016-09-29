@@ -8,6 +8,7 @@
 # - test_size
 # - nr_task
 # - fallocate
+# - time_based
 
 . $LKP_SRC/lib/common.sh
 . $LKP_SRC/lib/unit.sh
@@ -48,6 +49,13 @@ fallocate=$fallocate
 group_reporting
 create_only=1
 "
+
+if parse_bool -q "$time_based"; then
+	create_task="
+$create_task
+time_based
+"
+fi
 
 no=0
 for mount_point in $mount_points; do

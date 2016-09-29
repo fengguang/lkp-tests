@@ -29,8 +29,14 @@ query_var_from_yaml()
 # null string, or string starts with 0 or no are false, otherwise true
 parse_bool()
 {
-	[ -z "$1" ] && { echo 0; return 1; }
-	[ "${1#0}" != "$1" ] && { echo 0; return 1; }
-	[ "${1#no}" != "$1" ] && { echo 0; return 1; }
-	echo 1; return 0
+	if [ "$1" != "-q" ]; then
+		otrue=1
+		ofalse=0
+	else
+		shift
+	fi
+	[ -z "$1" ] && { echo $ofalse; return 1; }
+	[ "${1#0}" != "$1" ] && { echo $ofalse; return 1; }
+	[ "${1#no}" != "$1" ] && { echo $ofalse; return 1; }
+	echo $otrue; return 0
 }
