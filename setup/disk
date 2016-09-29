@@ -79,7 +79,7 @@ elif [ -n "$nr_ssd" -a "$nr_ssd" != 0 ]; then
 elif [ -n "$nr_brd" -a "$nr_brd" != 0 ]; then
 	[ -n "$ramdisk_size" ] || ramdisk_size="1G"
 	log_cmd modprobe -r brd
-	log_cmd modprobe brd rd_nr=$nr_brd rd_size=$(to_kb $ramdisk_size) part_show=1
+	log_cmd modprobe brd rd_nr=$nr_brd rd_size=$(to_kb $ramdisk_size)
 	sleep 1
 	partitions=$(ls /dev/ram*)
 	nr_partitions=$nr_brd
