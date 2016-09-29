@@ -11,17 +11,12 @@
 
 . $LKP_SRC/lib/common.sh
 . $LKP_SRC/lib/unit.sh
+. $LKP_SRC/lib/debug.sh
 
-[ -n "$test_size" ] || {
-	echo "test_size must be specified for fio" >&2
-	exit 1
-}
+[ -n "$test_size" ] || die "test_size must be specified for fio"
 
 test_size=$(to_byte $test_size)
 size=$((test_size / nr_task))
-
-# NOTE: support 1 disk test only so far
-test_dir=${mount_points%% *}
 
 : ${bs:=4k}
 : ${ioengine:=sync}
@@ -31,11 +26,16 @@ test_dir=${mount_points%% *}
 : ${direct:=0}
 : ${fallocate:=posix}
 : ${nr_task:=1}
-: ${test_dir:=.}
 
 direct=$(parse_bool $direct)
 
-task="
+nr_mount_point=$(echo $mount_points | wc -w)
+jobs_per_dev=$((nr_task / nr_mount_point))
+
+nr_task_remain=$((nr_task % nr_mount_point))
+[ "$nr_task_remain" -ne 0 ] && die "nr_task % nr_mount_point = $nr_task_remain"
+
+create_task="\
 [global]
 bs=$bs
 ioengine=$ioengine
@@ -45,13 +45,21 @@ direct=$direct
 runtime=$runtime
 invalidate=1
 fallocate=$fallocate
-directory=$test_dir
 group_reporting
-
-[task]
-rw=$rw
-numjobs=$nr_task
+create_only=1
 "
 
-echo -n "$task" > $TMP_RESULT_ROOT/fio.task
-(echo -n "$task"; echo "create_only=1") | fio --output-format=json - > /dev/null
+no=0
+for mount_point in $mount_points; do
+	create_task="\
+$create_task
+[task_$no]
+rw=$rw
+directory=$mount_point
+numjobs=$jobs_per_dev
+"
+	no=$((no+1))
+done
+
+echo -n "$create_task" | sed '/create_only/d' > $TMP_RESULT_ROOT/fio.task
+echo -n "$create_task" | fio --output-format=json - > /dev/null
