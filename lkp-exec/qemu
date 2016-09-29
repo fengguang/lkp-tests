@@ -116,7 +116,8 @@ get_qemu_kernel_initrd()
 {
 	local lkp_initrd=
 	local job_initrd=
-	download_kernel_initrd $1 $2
+	[[ $opt_kernel_image ]] || download_kernel
+	download_initrd
 
 	initrd_option="-initrd $concatenate_initrd"
 }

@@ -16,11 +16,8 @@ read_kernel_cmdline_vars_from_append()
 	done
 }
 
-download_kernel_initrd()
+download_kernel()
 {
-	local _initrd
-	local initrds
-
 	kernel="$(echo $kernel | sed 's/^\///')"
 
 	echo "downloading kernel image ..."
@@ -31,6 +28,12 @@ download_kernel_initrd()
 		echo "failed to download kernel: $kernel" 1>&2
 		exit 1
 	}
+}
+
+download_initrd()
+{
+	local _initrd
+	local initrds
 
 	echo "downloading initrds ..."
 	set_job_state "wget_initrd"
@@ -67,7 +70,8 @@ kexec_to_next_job()
 	read_kernel_cmdline_vars_from_append "$append"
 	append=$(echo "$append" | sed -r 's/ [a-z_]*initrd=[^ ]+//g')
 
-	download_kernel_initrd
+	download_kernel
+	download_initrd
 
 	set_job_state "booting"
 
