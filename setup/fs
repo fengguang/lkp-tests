@@ -3,6 +3,7 @@
 # - mkfs
 # - mount
 # - mount_option
+# - nr_tmpfs
 
 # This script supports 2 NFS mount schemes:
 # fs1: followup scripts will see NFS mount_points only
@@ -97,6 +98,18 @@ mount_local_nfs()
 	done
 }
 
+: ${nr_tmpfs:=1}
+
+mount_tmpfs()
+{
+	for i in $(seq 0 $((nr_tmpfs-1))); do
+		local mnt=/fs/tmpfs$i
+		log_cmd mkdir -p $mnt
+		log_cmd mount -t tmpfs ${mount:-$def_mount} $mount_option none $mnt || exit
+		mount_points="${mount_points}$mnt "
+	done
+}
+
 make_fs() {
 	is_btrfs_raid_levels && {
 		log_cmd mkfs.btrfs --data ${raid_level#b} $mkfs $ensure_mkfs $partitions || exit
@@ -139,6 +152,10 @@ case $fs in
 		start_nfsd $mount_points
 		mount_local_nfs $mount_points
 		[ "${0#*fs1}" != "$0" ] && mount_points=
+		;;
+
+	tmpfs)
+		mount_tmpfs
 		;;
 
 	*)
