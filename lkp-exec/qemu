@@ -178,26 +178,29 @@ export CACHE_DIR=$HOME/.lkp/cache
 replace_script_partition_val $job_script
 . $job_script export_top_env
 
-# create lkp_initrd
-export LKP_USER=$user
-if [[ "$kconfig" =~ ^(i386|x86_64)- ]]; then
-	arch=${kconfig%%-*}
-else
-	arch=$(arch)
-fi
+create_lkp_src_initrd()
+{
+	if [[ "$kconfig" =~ ^(i386|x86_64)- ]]; then
+		local arch=${kconfig%%-*}
+	else
+		local arch=$(arch)
+	fi
 
-if [ -d $LKP_SRC/.git ]; then
-	head_commit=$(cd $LKP_SRC && git rev-list -n1 HEAD)
-	diff_id=$(cd $LKP_SRC && git diff | git patch-id | cut -f1 -d' ')
-	src_sig=${head_commit:0:12}_${diff_id:0:12}
-else
-	src_sig=$(ls -lR $LKP_SRC|md5sum|cut -c1-12)
-fi
-lkp_initrd=$CACHE_DIR/lkp-$arch-$src_sig.cgz
-[[ -f $lkp_initrd ]] || {
-	$LKP_SRC/sbin/pack -a $arch lkp-src
-	mv $CACHE_DIR/lkp-$arch.cgz $lkp_initrd
+	if [ -d $LKP_SRC/.git ]; then
+		local head_commit=$(cd $LKP_SRC && git rev-list -n1 HEAD)
+		local diff_id=$(cd $LKP_SRC && git diff | git patch-id | cut -f1 -d' ')
+		local src_sig=${head_commit:0:12}_${diff_id:0:12}
+	else
+		local src_sig=$(ls -lR $LKP_SRC|md5sum|cut -c1-12)
+	fi
+	lkp_initrd=$CACHE_DIR/lkp-$arch-$src_sig.cgz
+	[[ -f $lkp_initrd ]] || {
+		LKP_USER=$user \
+		$LKP_SRC/sbin/pack -a $arch lkp-src
+		mv $CACHE_DIR/lkp-$arch.cgz $lkp_initrd
+	}
 }
+create_lkp_src_initrd
 
 # create job_initrd.cgz
 job_sig=$(md5sum $job_script | cut -c1-5)
