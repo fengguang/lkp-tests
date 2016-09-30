@@ -178,6 +178,8 @@ export CACHE_DIR=$HOME/.lkp/cache
 replace_script_partition_val $job_script
 . $job_script export_top_env
 
+[[ $opt_kernel_image ]] && unset modules_initrd
+
 create_lkp_src_initrd()
 {
 	if [[ "$kconfig" =~ ^(i386|x86_64)- ]]; then
