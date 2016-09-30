@@ -188,8 +188,8 @@ fi
 
 if [ -d $LKP_SRC/.git ]; then
 	head_commit=$(cd $LKP_SRC && git rev-list -n1 HEAD)
-	diff_id=$(cd $LKP_SRC && git diff | git patch-id | cut -c1-5)
-	src_sig=${head_commit:0:4}${diff_id:0:4}
+	diff_id=$(cd $LKP_SRC && git diff | git patch-id | cut -f1 -d' ')
+	src_sig=${head_commit:0:12}_${diff_id:0:12}
 else
 	src_sig=$(ls -lR $LKP_SRC|md5sum|cut -c1-12)
 fi
