@@ -14,16 +14,24 @@ while line = STDIN.gets
 		build_type = $3
     when /^(.+)\/(TEST[0-9]+): PASS$/
 		next unless test_item == $1
-        stats << $1 + "_" + $2 + "_" + fs_type + "_" + build_type + '.pass: 1'
-        nr_test += 1
+		stats << $1 + "_" + $2 + "_" + fs_type + "_" + build_type + '.pass: 1'
+		nr_test += 1
     when /^(.+)\/(TEST[0-9]+): FAIL/
 		next unless test_item == $1
-        stats << $1 + "_" + $2 + "_" + fs_type + "_" + build_type + '.fail: 1'
-        nr_test += 1
+		stats << $1 + "_" + $2 + "_" + fs_type + "_" + build_type + '.fail: 1'
+		nr_test += 1
+	when /RUNTESTS: stopping: (.+)\/(TEST[0-9]+) failed/
+		next unless test_item == $1
+		stats << $1 + "_" + $2 + "_" + fs_type + "_" + build_type + '.fail: 1'
+		nr_test += 1
+	when /RUNTESTS: stopping: (.+)\/(TEST[0-9]+) timed out/
+		next unless test_item == $1
+		stats << $1 + "_" + $2 + "_" + fs_type + "_" + build_type + '.timeout: 1'
+		nr_test += 1
     when /^(.+)\/(TEST[0-9]+): SKIP/, /^(.+)\/(TEST[0-9]+) crashed/
 		next unless test_item == $1
-        stats << $1 + "_" + $2 + "_" + fs_type + "_" + build_type + '.skip: 1'
-        nr_test += 1
+		stats << $1 + "_" + $2 + "_" + fs_type + "_" + build_type + '.skip: 1'
+		nr_test += 1
     end
 end
 
