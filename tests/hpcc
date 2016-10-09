@@ -7,6 +7,6 @@
 cd /tmp
 cp -a /usr/share/doc/hpcc/examples/_hpccinf.txt hpccinf.txt
 
-log_cmd mpirun.openmpi -np $nr_cpu hpcc
+log_cmd mpirun.openmpi --allow-run-as-root -np $nr_cpu hpcc
 
 cat /tmp/hpccoutf.txt
