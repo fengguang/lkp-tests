@@ -35,7 +35,9 @@ dest_partition=$(blkid | grep ${dest#*=} | cut -d':' -f1)
 fs_type=$(blkid -o value -s TYPE $dest_partition)
 [ "${fs_type}" != "btrfs" ] && {
 	umount ${dest_partition} 2>/dev/null
-	mkfs.btrfs -L "ROOTFS" ${dest_partition} || exit
+	local opt_mkfs=
+	mkfs.btrfs 2>&1 | grep -q -- --force && opt_mkfs='-f'
+	mkfs.btrfs $opt_mkfs -L "LKP-ROOTFS" ${dest_partition} || exit
 }
 
 MNT_POINT=$(cat /proc/mounts | grep -w "$dest_partition" | cut -d' ' -f2)
