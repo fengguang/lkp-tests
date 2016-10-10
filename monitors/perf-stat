@@ -5,6 +5,7 @@
 # - command
 
 . $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/debug.sh
 
 set_perf_path "/lkp/benchmarks/perf/perf"
 export perf

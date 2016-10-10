@@ -1,6 +1,7 @@
 #!/bin/sh
 
 . $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/debug.sh
 
 [ -n "$events" ] || die "Events are empty"
 
