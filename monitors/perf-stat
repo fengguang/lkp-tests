@@ -6,7 +6,7 @@
 
 . $LKP_SRC/lib/env.sh
 
-set_perf_path "/lkp/benchmarks/perf-stat/perf"
+set_perf_path "/lkp/benchmarks/perf/perf"
 export perf
 
 . $LKP_SRC/lib/env.sh

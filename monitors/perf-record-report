@@ -15,7 +15,7 @@
 : ${duration:=10}
 : ${gap:=10}
 
-set_perf_path "/lkp/benchmarks/perf-record-report/perf"
+set_perf_path "/lkp/benchmarks/perf/perf"
 
 . $LKP_SRC/lib/wait.sh
 setup_wait

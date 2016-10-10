@@ -7,7 +7,7 @@
 
 . $LKP_SRC/lib/env.sh
 
-set_perf_path "/lkp/benchmarks/perf-profile/perf"
+set_perf_path "/lkp/benchmarks/perf/perf"
 
 . $LKP_SRC/lib/env.sh
 is_virt && exit 0

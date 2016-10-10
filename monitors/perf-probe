@@ -4,7 +4,7 @@
 
 [ -n "$events" ] || die "Events are empty"
 
-set_perf_path "/lkp/benchmarks/perf-probe/perf"
+set_perf_path "/lkp/benchmarks/perf/perf"
 
 TRACING_ROOT=/sys/kernel/debug/tracing
 

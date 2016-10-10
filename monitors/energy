@@ -6,7 +6,7 @@
 events=$($LKP_SRC/bin/perf-events 'power/energy-*')
 [ -n "$events" ] || die "Events are empty"
 
-set_perf_path "/lkp/benchmarks/energy/perf"
+set_perf_path "/lkp/benchmarks/perf/perf"
 export perf
 
 opt_events="-e $(echo $events | sed 's/ / -e /g')"
