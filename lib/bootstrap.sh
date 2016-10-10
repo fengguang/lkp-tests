@@ -311,13 +311,14 @@ cleanup_pkg_cache()
 mount_rootfs()
 {
 	if [ -n "$rootfs_partition" ]; then
-		mkdir -p /opt/rootfs
-		mount $rootfs_partition /opt/rootfs || {
+		ROOTFS_DIR=/opt/rootfs
+		mkdir -p $ROOTFS_DIR
+		mount $rootfs_partition $ROOTFS_DIR || {
 			mkfs.btrfs -f $rootfs_partition
-			mount $rootfs_partition /opt/rootfs
+			mount $rootfs_partition $ROOTFS_DIR
 		}
-		mkdir -p /opt/rootfs/tmp
-		CACHE_DIR=/opt/rootfs/tmp
+		mkdir -p $ROOTFS_DIR/tmp
+		CACHE_DIR=$ROOTFS_DIR/tmp
 		cleanup_pkg_cache $CACHE_DIR/pkg
 	else
 		CACHE_DIR=/tmp/cache
@@ -421,8 +422,21 @@ rsync_rootfs()
 		[ "$i" != "${i#root=}" ] && export "$i"
 	done
 
-	[ -n "$remote_rootfs" -a -n "$root" ] &&
-	$LKP_DEBUG_PREFIX $LKP_SRC/bin/rsync-rootfs $remote_rootfs $root
+	if [ -n "$remote_rootfs" -a -n "$root" ]; then
+		$LKP_DEBUG_PREFIX $LKP_SRC/bin/rsync-rootfs $remote_rootfs $root
+
+		# reboot only if rsynced rootfs is incomplete
+		# What we really need to avoid is INCOMPLETE rsync, which might lead
+		# to unexpected consistency problems
+		local rootfs_name=${remote_rootfs##*/}
+		# To remove the version info from rootfs's name
+		# eywa-x86_64-20160714-1 ==> eywa-x86_64
+		rootfs_name=${rootfs_name%*-[0-9]*-[0-9]}
+		[ -f "$ROOTFS_DIR/$rootfs_name/etc/rsync-rootfs-complete" ] || {
+			echo "rsync rootfs incomplete: from $remote_rootfs to $root" >&2
+			exit 1
+		}
+	fi
 }
 
 setup_env()
