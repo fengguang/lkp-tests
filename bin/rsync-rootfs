@@ -50,10 +50,12 @@ fi
 # for CACHE_DIR
 mkdir -p $MNT_POINT/tmp || exit
 
-# After create, the subvolume can be used like:
+# create BTRFS subvolume
+# the subvolume can be used like:
 # mount -o subvol=$rootfs_name $dest_partition /some-path
-[ ! -d "$MNT_POINT/${rootfs_name}" ] && {
-	btrfs subvolume create $MNT_POINT/$rootfs_name || exit
+local_mount_rootfs=$MNT_POINT/$rootfs_name
+[ ! -d "$local_mount_rootfs" ] && {
+	btrfs subvolume create $local_mount_rootfs || exit
 }
 
 # create NFS mount directory
@@ -63,7 +65,15 @@ nfs_mount_rootfs=$MNT_POINT/NFS-${rootfs_name}
 
 # mount NFS to local and rsync to destination subvolume
 mount -o ro,nolock $source $nfs_mount_rootfs || exit
-rsync -aix --delete $nfs_mount_rootfs/ $MNT_POINT/$rootfs_name || exit
+
+# delete the completion file
+rm -f $local_mount_rootfs/etc/rsync-rootfs-complete
+
+# start rsyncing
+rsync -aix --delete $nfs_mount_rootfs/ $local_mount_rootfs || exit
+
+# touch a file to indicate the completion of rsync
+touch $local_mount_rootfs/etc/rsync-rootfs-complete
 
 # umount NFS
 umount $nfs_mount_rootfs || exit
