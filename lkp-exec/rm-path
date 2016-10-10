@@ -73,15 +73,25 @@ usage()
 {
 	cat >&2 <<-EOF
 Usage:
-	lkp $script_name <paths>
+	lkp $script_name [-y] <paths>
 Example:
-	lkp $script_name /result/xfstests/4HDD-ext4-ext4/lkp-ws02/debian-x86_64-2015-02-07.cgz/x86_64-rhel/gcc-4.9/v4.3/0/
+	lkp $script_name [-y] /result/xfstests/4HDD-ext4-ext4/lkp-ws02/debian-x86_64-2015-02-07.cgz/x86_64-rhel/gcc-4.9/v4.3/0/
 EOF
 	exit 1
 }
 
 script_name=$(basename $0)
 [[ $# = 0 ]] && usage
+
+opt_y=0
+while getopts "y" opt; do
+	case $opt in
+		y ) opt_y=1; ;;
+		? ) usage; ;;
+	esac
+done
+
+shift $(($OPTIND-1))
 
 for path; do
 	path=$(abs_path $path)
@@ -94,8 +104,13 @@ done
 echo "The command to remove the result path are:"
 remove_paths "$@"
 
-echo -n "!!! Do you really want to do that? [No/yes]: "
-read answer
+if [[ $opt_y = 1 ]]; then
+	answer="yes"
+else
+	echo -n "!!! Do you really want to do that? [No/yes]: "
+	read answer
+fi
+
 if [[ $answer = "yes" ]]; then
 	revert_unite_rt "$@"
 	remove_from_mrtts "$@"
