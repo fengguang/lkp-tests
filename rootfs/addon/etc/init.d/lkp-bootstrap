@@ -15,6 +15,9 @@
 # We can install lkp-bootstrap several places, so that at least one of them can
 # take effect in a particular rootfs, and the follow up ones can check reboot
 # the machine if the former one failed to do so.
+mkdir -p /var/lock
+mkdir /var/lock/lkp-bootstrap.lock || sleep 333.3
+
 if [ -s /var/run/lkp-bootstrap.pid ]; then
 	pid=$(cat /var/run/lkp-bootstrap.pid)
 	[ -d /proc/$pid ] && exit
