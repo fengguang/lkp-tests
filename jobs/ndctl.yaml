@@ -3,3 +3,6 @@ testcase: ndctl
 category: functional
 
 ndctl:
+
+boot_params:
+  bp_memmap: 4G!8G
