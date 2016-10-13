@@ -1,0 +1,8 @@
+suite: test_bpf
+testcase: test_bpf
+category: functional
+
+test_bpf:
+  test:
+  - jit
+  - non-jit

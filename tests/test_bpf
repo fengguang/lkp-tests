@@ -1,0 +1,25 @@
+#!/bin/sh
+# - test
+
+. $LKP_SRC/lib/debug.sh
+
+if [ "$test" = "jit" ]; then
+	sysctl net.core.bpf_jit_enable=1 || die "setup bpf_jit failed"
+
+	modprobe test_bpf
+	exit_value=$?
+elif [ "$test" = "non-jit" ]; then
+	modprobe test_bpf
+	exit_value=$?
+else
+	die "Parameter \"test\" is wrong"
+fi
+
+# there are mainly two reasons for "sleep 5" is here:
+# - extent runtime
+# - give a buffer time so that relevant info be fully written to dmesg
+sleep 5
+
+dmesg | tail -1000
+
+exit $exit_value

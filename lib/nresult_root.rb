@@ -283,7 +283,7 @@ class MResultRootTableSet
 		 'galileo', 'irda-kernel', 'kernel_selftests', 'kvm-unit-tests','kvm-unit-tests-qemu',
 		 'locktorture', 'mce-test',  'otc_ddt', 'piglit', 'pm-qa',
 		 'qemu', 'rcutorture', 'suspend', 'trinity', 'ndctl', 'nfs-test', 'hwsim', 'idle-inject',
-		 'mdadm-selftests', 'xsave-test', 'nvml']
+		 'mdadm-selftests', 'xsave-test', 'nvml', 'test_bpf']
 	OTHER_TESTCASES =
 		['0day-boot-tests', '0day-kbuild-tests', 'android-kpi', 'build-dpdk',
 		 'build-qemu','build-android', 'convert-lkpdoc-to-html', 'convert-lkpdoc-to-html-css',

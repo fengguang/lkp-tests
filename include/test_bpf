@@ -1,0 +1,4 @@
+need_kconfig:
+- CONFIG_BPF=y
+- CONFIG_TEST_BPF=m
+- CONFIG_BPF_JIT
