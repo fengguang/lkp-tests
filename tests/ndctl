@@ -17,5 +17,7 @@ linux_headers_dirs=(/usr/src/linux-headers*)
 linux_headers_dir=${linux_headers_dirs[-1]}
 echo "ndctl: linux_headers_dir is $linux_headers_dir"
 
+modprobe nfit_test || die "Can not load module nfit_test"
+
 LD_LIBRARY_PATH=/lkp/benchmarks/ndctl/lib \
 /lkp/benchmarks/ndctl/bin/ndctl test
