@@ -9,7 +9,7 @@ ROOTFS=$1
 # $ROOTFS/etc/rsync-rootfs-version is used for comparing the version
 # between local and remote rootfs when doing rsync.
 if [ -f $ROOTFS/etc/version ];then
-	ln -sf $ROOTFS/etc/version $ROOTFS/etc/rsync-rootfs-version
+	cd $ROOTFS/etc && ln -s version rsync-rootfs-version
 else
 	date +%Y%m%d%H%M%S > $ROOTFS/etc/rsync-rootfs-version
 fi
