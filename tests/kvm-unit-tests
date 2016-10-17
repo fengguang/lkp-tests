@@ -7,11 +7,14 @@
 ## of the individual test. Tests uses a qemu's virtual test device,
 ## named testdev, for services like printing, exiting, query memory size etc.
 
+. $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/upload.sh
 
 cd $BENCHMARK_ROOT/kvm-unit-tests || exit
 
-[ -c '/dev/kvm' ] || modprobe kvm_intel
+[ -c '/dev/kvm' ] || {
+	modprobe kvm_intel || die "failed to insert kvm_intel module"
+}
 
 # Debian/Fedora/Ubuntu use /usr/bin/qemu-system-x86_64 as QEMU Emulator.
 # RHEL use /usr/libexec/qemu-kvm as QEMU Emulator.
