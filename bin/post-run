@@ -45,9 +45,9 @@ wait_for_monitors()
 	if [ -n "$is_busybox_ps" ]; then
 		ps
 	else
-		ps axho pid | grep -Fxf $pidfile | xargs ps u >&2
+		ps axho pid | grep -Fxf $pidfile | xargs ps u
 		ps faux
-	fi
+	fi > $TMP_RESULT_ROOT/monitors-debug
 
 	return $i
 }
