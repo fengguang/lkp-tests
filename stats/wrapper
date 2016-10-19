@@ -9,9 +9,6 @@ log=$RESULT_ROOT/$stats_group
 
 check_incomplete_run()
 {
-	[[ -f $RESULT_ROOT/$program.permission_fixup ]] &&
-	echo "# $program file has ownership/permission problem: cp/mv may be incomplete." >> $RESULT_ROOT/last_state
-
 	local file=$1
 
 	[[ -s $file ]] && return
