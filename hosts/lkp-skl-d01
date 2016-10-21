@@ -1,7 +1,8 @@
 model: Skylake
 nr_cpu: 8
 memory: 8G
-hdd_partitions: /dev/sda1
-swap_partitions: /dev/sda3
-rootfs_partition: /dev/sda2
+nr_hdd_partitions: 1
+hdd_partitions: /dev/disk/by-id/ata-WDC_WD10EZEX-75WN4A0_WD-WCC6Y2JD9SLU-part1
+swap_partitions: /dev/disk/by-id/ata-WDC_WD10EZEX-75WN4A0_WD-WCC6Y2JD9SLU-part3
+rootfs_partition: /dev/disk/by-id/ata-WDC_WD10EZEX-75WN4A0_WD-WCC6Y2JD9SLU-part2
 brand: Intel(R) Core(TM) i7-6700 CPU @ 3.40GHz
