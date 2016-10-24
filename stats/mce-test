@@ -1,15 +1,22 @@
 #!/usr/bin/env ruby
 
-LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($0)))
+stats = []
+nr_test = 0
 
-def stat_line(line)
+while line = STDIN.gets
 	case line
-	when /^\s+(\w+) --.* (\d+) tests failed/
-		puts "#{$1}.fail: 1"
+	when /^\s+(.+) --.* pass/
+		stats <<  "#{$1}.pass: 1"
+		nr_test += 1
+	when /^\s+(.+) --.* failed/, /^\s+(.+) --.*no .* finished/
+		stats << "#{$1}.fail: 1"
+		nr_test += 1
+	when /^\s+(.+) --.* skip/
+		stats << "#{$1}.skip: 1"
+		nr_test += 1
+
 	end
 end
 
-while line = STDIN.gets
-        stat_line(line)
-end
-
+stats.each {|stat| puts stat}
+puts "total_test: #{nr_test}"
