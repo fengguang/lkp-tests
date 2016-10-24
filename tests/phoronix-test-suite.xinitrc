@@ -1,5 +1,7 @@
 #!/bin/sh
 
+. $LKP_SRC/lib/debug.sh
+
 ## See 'tests/phoronix-test-suite'.
 
 start_time=$(date +%s.%N)
@@ -21,7 +23,7 @@ export PTS_SILENT_MODE=1
 echo PTS_SILENT_MODE=$PTS_SILENT_MODE
 
 ## Currently, we use the rootfs by NFS network, in order to avoid to write the "test-results" to NFSROOT, we mount the tmpfs on below directory.
-mount -t tmpfs tmpfs /var/lib/phoronix-test-suite/test-results || exit
+mount -t tmpfs tmpfs /var/lib/phoronix-test-suite/test-results || die "failed to mount tmpfs"
 
 if [ "$test_opt" ]; then
 	echo -e "$test_opt" | log_cmd phoronix-test-suite run $test
@@ -29,6 +31,10 @@ else
 	echo n | log_cmd phoronix-test-suite default-run $test
 fi
 
+exit_value=$?
+
 end_time=$(date +%s.%N)
 elapsed=$(echo $end_time - $start_time | bc)
 echo "${test}.seconds: $elapsed"
+
+exit $exit_value
