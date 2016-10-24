@@ -383,7 +383,11 @@ __next_job()
 	local last_kernel=
 	[ -n "$job" ] && last_kernel="last_kernel=$(grep ^kernel: $job | cut -d \" -f 2)&"
 	http_get_cgi "cgi-bin/gpxelinux.cgi?hostname=${HOSTNAME}&mac=$mac&${last_kernel}${manual_reboot}lkp_wtmp" \
-		$NEXT_JOB
+		$NEXT_JOB || {
+		echo "cannot get next job" 1>&2
+		return 1
+	}
+
 	grep -q "^KERNEL " $NEXT_JOB || {
 		echo "no KERNEL found" 1>&2
 		cat $NEXT_JOB
