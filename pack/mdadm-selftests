@@ -7,6 +7,7 @@ download()
 
 build()
 {
+	sed -i "s/^test: mdadm mdmon test_stripe swap_super raid6check/^test: mdadm mdmon test_stripe swap_super/"  Makefile
 	make test
 }
 
