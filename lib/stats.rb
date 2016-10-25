@@ -26,6 +26,7 @@ $index_perf 		= load_yaml "#{LKP_SRC}/etc/index-perf.yaml"
 
 $perf_metrics_re	= load_regular_expressions("#{LKP_SRC}/etc/perf-metrics-patterns")
 $metrics_blacklist_re	= load_regular_expressions("#{LKP_SRC}/etc/blacklist")
+$kill_pattern_whitelist_re = load_regular_expressions("#{LKP_SRC}/etc/dmesg-kill-pattern")
 
 # => ["tcrypt.", "hackbench.", "dd.", "xfstests.", "aim7.", ..., "oltp.", "fileio.", "dmesg."]
 def test_prefixes()
@@ -491,7 +492,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
 			if is_failure_stat
 				if max_a == 0
 					has_boot_fix = true if k =~ /^dmesg\./
-					next
+					next if k !~ $kill_pattern_whitelist_re
 				end
 				# this relies on the fact dmesg.* comes ahead
 				# of kmsg.* in etc/default_stats.yaml
