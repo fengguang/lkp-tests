@@ -5,7 +5,6 @@
 
 [[ "$test" == "context1" ]] && {
 	declare -A tbox_to_disable=(
-		[lituya]=1
 		[nhm-white]=1
 	)
 	[[ ${tbox_to_disable[$testbox]} == 1 ]] && {
