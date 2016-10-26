@@ -2,7 +2,7 @@ model: Atom
 nr_node: 1
 nr_cpu: 4
 memory: 8G
-hdd_partitions: /dev/disk/by-id/ata-WDC_WD2500BEVT-24A23T0_WD-WX11A50A7795-part1
+hdd_partitions:
 swap_partitions:
-rootfs_partition: /dev/disk/by-id/ata-WDC_WD2500BEVT-24A23T0_WD-WX11A50A7795-part2
+rootfs_partition:
 brand: Intel(R) Atom(TM) CPU S1240 @ 1.60GHz
