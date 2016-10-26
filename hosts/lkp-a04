@@ -2,7 +2,7 @@ model: Atom
 nr_node: 1
 nr_cpu: 4
 memory: 8G
-ssd_partitions: /dev/disk/by-id/ata-INTEL_SSDSC2BW240A3_CVCV2390013B240CGN-part1
-swap_partitions: /dev/disk/by-id/ata-TOSHIBA_MK8061GSYB_22FUT098T-part3
-rootfs_partition: /dev/disk/by-id/ata-TOSHIBA_MK8061GSYB_22FUT098T-part2
+ssd_partitions:
+swap_partitions:
+rootfs_partition:
 brand: Intel(R) Atom(TM) CPU S1240 @ 1.60GHz
