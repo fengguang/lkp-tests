@@ -1,6 +1,8 @@
 #!/bin/sh
 
 . $LKP_SRC/lib/wait.sh
+. $LKP_SRC/lib/env.sh
+
 setup_wait
 
 # dont OOM kill me
@@ -20,6 +22,11 @@ do
 	check_oom && break
 done
 
-touch $RESULT_ROOT/OOM
+if has_cmd 'timeout'; then
+	timeout 10.12s touch $RESULT_ROOT/OOM
+else
+	touch $RESULT_ROOT/OOM
+fi
+
 echo "Out of memory, stop tests programs"
 kill_tests

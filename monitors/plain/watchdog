@@ -94,6 +94,13 @@ start_watchdog()
 
 	timed_echo 'detected soft_timeout'
 	touch $TMP/soft_timeout
+
+	if has_cmd 'timeout'; then
+		timeout 10.11s touch $RESULT_ROOT/soft_timeout
+	else
+		touch $RESULT_ROOT/soft_timeout
+	fi
+
 	ps faux 2>/dev/null || ps
 
 	# try to unblock the main shell, which will copy files to
