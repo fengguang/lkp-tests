@@ -1,0 +1,27 @@
+suite: fio-basic
+testcase: fio-basic
+category: benchmark
+
+debug-setup: tune
+
+boot_params:
+  bp1_memmap: 104G!26G
+  bp2_memmap: 104G!154G
+
+disk: 2pmem
+fs:
+  fs: ext4
+  mount_option: dax
+
+runtime: 300s
+nr_task: 8
+
+time_based: tb
+
+fio-setup-basic:
+  rw: write
+  bs: 4k
+  ioengine: sync
+  test_size: 200G
+
+fio:
