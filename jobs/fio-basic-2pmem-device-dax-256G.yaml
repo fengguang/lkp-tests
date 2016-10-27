@@ -1,0 +1,38 @@
+# Should run on 2 sockets, 256G RAM machine
+suite: fio-basic
+testcase: fio-basic
+category: benchmark
+
+boot_params:
+  bp1_memmap: 104G!4G
+  bp2_memmap: 104G!132G
+
+disk: 2pmem
+
+device-dax:
+
+runtime: 200s
+
+nr_task: 50%
+
+time_based: tb
+
+raw_disk: rd
+
+test_size: 200G
+
+fio-setup-basic:
+  rw:
+    - read
+    - write
+    - randread
+    - randwrite
+    - rw
+    - randrw
+  bs:
+    - 4k
+    - 2M
+  ioengine:
+    - mmap
+
+fio:
