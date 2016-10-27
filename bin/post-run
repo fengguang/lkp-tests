@@ -157,7 +157,7 @@ wait_for_pipe()
 	pgrep -f "$LKP_SRC/bin/event/wait activate-monitor" >/dev/null &&
 		echo "some monitors are blocked by activate-monitor" >&2
 
-	ps faux 2>/dev/null || ps
+	ps faux 2>/dev/null > $RESULT_ROOT/pipe-debug || ps > $RESULT_ROOT/pipe-debug
 	ls -l $TMP_RESULT_ROOT
 	return 1
 }
@@ -198,7 +198,7 @@ copy_time_files()
 
 copy_results
 
-copy_time_files || ps faux --cols 1000 2>/dev/null || ps > $RESULT_ROOT/time-debug
+copy_time_files || ps faux --cols 1000 2>/dev/null > $RESULT_ROOT/time-debug || ps > $RESULT_ROOT/time-debug
 
 [ "$kconfig" = "x86_64-rhel_gcov" ] && [ -d /sys/kernel/debug/gcov ] && {
 	$LKP_SRC/tools/gather-gcov-test $TMP/gcov-test.tar.gz

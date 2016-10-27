@@ -101,7 +101,7 @@ start_watchdog()
 		touch $RESULT_ROOT/soft_timeout
 	fi
 
-	ps faux 2>/dev/null || ps
+	ps faux 2>/dev/null > $TMP_RESULT_ROOT/watchdog-debug || ps > $TMP_RESULT_ROOT/watchdog-debug
 
 	# try to unblock the main shell, which will copy files to
 	# $RESULT_ROOT, which helps debug the hang reason
