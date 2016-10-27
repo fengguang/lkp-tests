@@ -1,0 +1,28 @@
+#!/bin/sh
+
+for ns in $(ls -d /sys/bus/nd/devices/namespace*); do
+	ns=$(basename $ns)
+	/lkp/benchmarks/ndctl/bin/ndctl create-namespace --reconfig=$ns --force --mode=dax || exit 1
+done
+
+daxes=$(ls /dev/dax*)
+nr_daxes=$(echo $daxes | wc -w)
+
+if [ "$nr_daxes" -ne "$nr_partitions" ]; then
+	echo "DAX devices number doesn't match that of PMEM devices" 1>&2
+	echo "DAX devices:" 1>&2
+	ls /dev/dax* 1>&2
+	echo "PMEM devices:" 1>&2
+	ls /dev/pmem* 1>&2
+	exit 1
+fi
+
+daxes=$(echo $daxes | cut -f1-$nr_daxes -d' ')
+
+cat >> $TMP/env.yaml <<EOF
+
+# setup/device-dax
+nr_partitions: $nr_daxes
+partitions: $daxes
+disk_description: DAX devices
+EOF

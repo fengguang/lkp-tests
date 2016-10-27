@@ -8,6 +8,8 @@ for dev in $partitions; do
 	[ "${dev#*:/}" != "$dev" ] && continue
 	# skip pmem dev
 	[ "${dev#*pmem}" != "$dev" ] && continue
+	# skip dax dev
+	[ "${dev#*dax}" != "$dev" ] && continue
 
 	[ "${dev#/dev/md}" != "$dev" ]	||
 	[ "${dev#/dev/ram}" != "$dev" ]	||
