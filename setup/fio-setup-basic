@@ -9,6 +9,7 @@
 # - nr_task
 # - fallocate
 # - time_based
+# - raw_disk
 
 . $LKP_SRC/lib/common.sh
 . $LKP_SRC/lib/unit.sh
@@ -29,12 +30,18 @@ size=$((test_size / nr_task))
 : ${nr_task:=1}
 
 direct=$(parse_bool $direct)
+raw_disk=$(parse_bool $raw_disk)
 
-nr_mount_point=$(echo $mount_points | wc -w)
-jobs_per_dev=$((nr_task / nr_mount_point))
+if [ "$raw_disk" = 1 ]; then
+	storages=$partitions
+else
+	storages=$mount_points
+fi
+nr_storages=$(echo $storages | wc -w)
+jobs_per_storage=$((nr_task / nr_storages))
 
-nr_task_remain=$((nr_task % nr_mount_point))
-[ "$nr_task_remain" -ne 0 ] && die "nr_task % nr_mount_point = $nr_task_remain"
+nr_task_remain=$((nr_task % nr_storages))
+[ "$nr_task_remain" -ne 0 ] && die "nr_task % nr_storages = $nr_task_remain"
 
 create_task="\
 [global]
@@ -58,13 +65,18 @@ time_based
 fi
 
 no=0
-for mount_point in $mount_points; do
+for storage in $storages; do
+	if [ "$raw_disk" = 1 ]; then
+		storage_setup="filename=$storage"
+	else
+		storage_setup="directory=$storage"
+	fi
 	create_task="\
 $create_task
 [task_$no]
 rw=$rw
-directory=$mount_point
-numjobs=$jobs_per_dev
+$storage_setup
+numjobs=$jobs_per_storage
 "
 	no=$((no+1))
 done
