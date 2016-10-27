@@ -59,19 +59,17 @@ jobfile_append_var		"loadavg=$(cat /proc/loadavg)" \
 				"$version" \
 				"$time_delta"
 
-if [ "$run_job_exit_code" != 0 ]; then
-	if [ -f "$TMP/OOM" ] || check_oom; then
-		set_job_state "OOM"
-	elif [ -f "$TMP/soft_timeout" ]; then
-		set_job_state 'soft_timeout'
-	else
+if [ -f "$TMP/OOM" ] || check_oom; then
+	set_job_state "OOM"
+elif [ -f "$TMP/soft_timeout" ]; then
+	set_job_state 'soft_timeout'
+elif [ "$run_job_exit_code" != 0 ]; then
 		# "99" is a fixed number from lib/debug die() function
 		if [ "$run_job_exit_code" = "99" ]; then
 			set_job_state 'incomplete'
 		else
 			set_job_state 'failed'
 		fi
-	fi
 elif [ -f '/var/log/wtmp' ] && has_cmd last && last -n1 | grep -q -E '(pts/|tty)[0-9]'; then
 	set_job_state 'disturbed'
 	disturbed=1
