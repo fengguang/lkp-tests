@@ -4,18 +4,74 @@ testcase: fio-basic
 category: benchmark
 
 runtime: 300s
-nr_task: 8
-
 disk: 1SSD
+
 fs:
 - ext4
 - xfs
 - btrfs
 
+nr_task: 4
+
 fio-setup-basic:
-  rw: write
-  bs: 4k
+  rw: randwrite
+  bs: 4M
   ioengine: sync
   test_size: 400g
 
 fio:
+---
+fs: xfs
+
+nr_task: 32
+
+fio-setup-basic:
+  rw: randwrite
+  bs: 4k
+  ioengine: sync
+  test_size: 400g
+
+---
+fs: btrfs
+
+nr_task: 8
+
+fio-setup-basic:
+  rw: randwrite
+  bs: 4k
+  ioengine: sync
+  test_size: 400g
+
+---
+fs: ext4
+
+nr_task: 64
+
+fio-setup-basic:
+  rw: randwrite
+  bs: 4k
+  ioengine: sync
+  test_size: 400g
+
+---
+fs: ext4
+
+nr_task: 4
+
+fio-setup-basic:
+  rw: write
+  bs: 4k
+  ioengine: libaio
+  test_size: 400g
+
+---
+fs: ext4
+
+nr_task: 16
+
+fio-setup-basic:
+  rw: write
+  direct: direct
+  bs: 4k
+  ioengine: sync
+  test_size: 400g
