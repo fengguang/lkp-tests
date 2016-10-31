@@ -81,8 +81,10 @@ source $LKP_SRC/pack/quiet
 source $LKP_SRC/pack/default
 source $LKP_SRC/pack/$BM_NAME || exit
 
-rm -fr "$BM_ROOT"
-mkdir -p $BM_ROOT || exit
+if [[ "$BM_NAME" != "lkp-src" ]]; then
+	rm -fr "$BM_ROOT"
+	mkdir -p $BM_ROOT || exit
+fi
 
 cd /tmp
 download || exit
