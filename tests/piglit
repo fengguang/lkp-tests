@@ -3,6 +3,8 @@
 
 ## Piglit is a collection of automated tests for OpenGL implementations.
 
+. $LKP_SRC/lib/debug.sh
+
 export PATH=$BENCHMARK_ROOT/piglit/bin:$PATH
 
 dri_exist()
@@ -15,11 +17,11 @@ check_wait_dri()
 	dri_exist && return
 
 	mountpoint /sys/kernel/debug ||
-	mount -t debugfs debugfs /sys/kernel/debug || exit
+	mount -t debugfs debugfs /sys/kernel/debug || die "failed to mount debugfs"
 
 	dri_exist && return
 
-	modprobe drm 2>&1 || exit
+	modprobe drm  || die "failed to modprobe drm"
 
 	for i in $(seq 9)
 	do

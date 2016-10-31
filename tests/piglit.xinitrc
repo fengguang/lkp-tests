@@ -7,6 +7,7 @@
 ## - igt-$num (get test item from $LKP_SRC)
 ## - igt-all (get test item from $BENCHMARK_ROOT)
 
+. $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/upload.sh
 
 tset=${group%%-*}
@@ -17,10 +18,7 @@ else
 	config_file=$LKP_SRC/pack/piglit-addon/groups/$group
 fi
 
-[ -f "$config_file" ] || {
-	echo "config file not exist: $config_file" 1>&2
-	exit 1
-}
+[ -f "$config_file" ] || die "can not find config file: $config_file"
 
 tmp_results="$TMP/piglit-results"
 
