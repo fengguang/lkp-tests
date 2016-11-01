@@ -149,6 +149,13 @@ module Git
 				r = @base.command('rev-list', ["-n", "1", sha, "^#{branch.sha}"])
 				r.strip.empty?
 			end
+
+			def merged_by
+				base = base_rc_tag
+				tags = @base.ordered_release_tags.reverse
+				tags = tags.drop_while { |tag| tag != base }.drop(1)
+				tags.find { |tag| reachable_from?(tag) }
+			end
 		end
 
 		class Tag
