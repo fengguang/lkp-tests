@@ -20,11 +20,9 @@ shopt -s nullglob
 . $LKP_SRC/lib/git.sh
 . $LKP_SRC/lib/env.sh
 
-export CC=$dpdk_compiler
-$CC -v 2>&1 || {
-	echo "can not find executable $CC" >&2
-	exit 1
-}
+[[ "$dpdk_compiler" ]] || die "parameter \"dpdk_compiler\" is empty."
+
+$dpdk_compiler -v 2>&1 || die "can not find executable compiler: $dpdk_compiler"
 
 merge_configs()
 {
@@ -37,6 +35,7 @@ merge_configs()
 DPDK_REPO_ROOT=/build/dpdk/src
 DPDK_OBJ=/build/dpdk/obj
 LINUX_KERNEL_ROOT=/build/linux/src
+MAKE_CMD="make HOSTCC=$dpdk_compiler CC=$dpdk_compiler"
 export RTE_KERNELDIR="$LINUX_KERNEL_ROOT"
 
 ARCH=${dpdk_config%%-*}
@@ -56,9 +55,9 @@ git_clone_update git://gitmirror/$remote $LINUX_KERNEL_ROOT || die "failed to cl
 
 cd $LINUX_KERNEL_ROOT
 git checkout -q $commit || die "failed to checkout kernel commit $_commit"
-make_config allmodconfig || die "make allmodconfig failed"
-make prepare || die "make prepare failed"
-make scripts/ || die "make scripts/ failed"
+make_config HOSTCC=$dpdk_compiler CC=$dpdk_compiler allmodconfig || die "make allmodconfig failed"
+$MAKE_CMD prepare || die "make prepare failed"
+$MAKE_CMD scripts/ || die "make scripts/ failed"
 
 rm -fr "$DPDK_REPO_ROOT" 2>/dev/null
 git_clone_update git://gitmirror/$dpdk_remote $DPDK_REPO_ROOT || die "failed clone dpdk tree $dpdk_remote"
@@ -70,7 +69,7 @@ config_file=$LKP_SRC/etc/dpdk-configs/$dpdk_config
 [ -f $config_file ] || config_file=$DPDK_REPO_ROOT/config/defconfig_$dpdk_config
 [ -f $config_file ] || die "invalid config file $config_file"
 
-make O=$DPDK_OBJ T=$ARCH-native-linuxapp-$dpdk_compiler_name config || die "failed to make config"
+$MAKE_CMD O=$DPDK_OBJ T=$ARCH-native-linuxapp-$dpdk_compiler_name config || die "failed to make config"
 
 [[ $config_file =~ "$DPDK_REPO_ROOT/config" ]] || merge_configs $config_file
 
@@ -91,7 +90,7 @@ cp $DPDK_OBJ/.config $RESULT_ROOT/dpdk_config
 # and actually dpdk fully do not depend on libmvec_nonshared.a library.
 ln -sf /usr/lib/x86_64-linux-gnu/libmvec.so  /usr/lib/x86_64-linux-gnu/libmvec_nonshared.a
 
-make O=$DPDK_OBJ DESTDIR=$RESULT_ROOT
+$MAKE_CMD O=$DPDK_OBJ DESTDIR=$RESULT_ROOT
 make_exit_status=$?
 
 build_complete $make_exit_status
