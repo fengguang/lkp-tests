@@ -29,6 +29,7 @@ while line = gets
 		# ERR: lib/dmesg.rb:151:in `gsub!': invalid byte sequence in US-ASCII (ArgumentError)
 		if e.message =~ /invalid byte sequence in (UTF-8|US-ASCII)/
 			line = line.remediate_invalid_byte_sequence(replace: '_')
+			line = line.strip_nonprintable_characters
 			id = common_error_id(line)
 		else
 			raise e
