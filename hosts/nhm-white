@@ -2,12 +2,7 @@ model: Nehalem
 nr_node: 1
 nr_cpu: 8
 memory: 6G
-hdd_partitions:
-  /dev/disk/by-id/ata-Hitachi_HDT721050SLA360_STH3D7ME0YEM5Y-part5
-  /dev/disk/by-id/ata-Hitachi_HDT721050SLA360_STH3D7ME0YEM5Y-part6
-  /dev/disk/by-id/ata-Hitachi_HDT721050SLA360_STH3D7ME0YEM5Y-part7
-  /dev/disk/by-id/ata-Hitachi_HDT721050SLA360_STH3D7ME0YEM5Y-part8
 swap_partitions:
-rootfs_partition: /dev/disk/by-id/ata-Hitachi_HDT721050SLA360_STH3D7ME0YEM5Y-part2
+rootfs_partition: /dev/disk/by-id/ata-Hitachi_HDT721050SLA360_STH3D7ME0YEM5Y-part1
 netconsole_port: 6647
 brand: Intel(R) Core(TM) i7 CPU 870 @ 2.93GHz
