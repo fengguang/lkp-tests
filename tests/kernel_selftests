@@ -5,25 +5,33 @@
 ## code paths in the kernel.
 ## See: https://www.kernel.org/doc/Documentation/kselftest.txt
 
-cd $BENCHMARK_ROOT/kernel_selftests || exit
+. $LKP_SRC/lib/debug.sh
+
+shopt -s nullglob
+
+# linux-headers file is created by 0day system, and located in /usr/src/linux-headers-$kconfig-$commit directory.
+linux_headers_dirs=(/usr/src/linux-headers*)
+
+[[ $linux_headers_dirs ]] || die "failed to find linux-headers package"
+
+linux_headers_dir=${linux_headers_dirs[-1]}
+echo "KERNEL SELFTESTS: linux_headers_dir is $linux_headers_dir"
+
+# linux-selftests file is created by 0day system, and located in /usr/src/linux-selftests-$kconfig-$commit directory.
+linux_selftests_dir=(/usr/src/linux-selftests-*)
+
+if [[ $linux_selftests_dir ]]; then
+	cd $linux_selftests_dir
+	log_cmd make || die "failed to run make"
+else
+	cd $BENCHMARK_ROOT/kernel_selftests || die "can not find benchmark dir"
+fi
 
 # workaround hugetlbfstest.c open_file() error
 mkdir -p /hugepages
 
 # has too many errors now
 sed -i 's/hugetlbfstest//' vm/Makefile
-
-# linux-headers file is created by 0day system, and located in /usr/src/linux-headers-$kconfig-$commit directory.
-shopt -s nullglob
-linux_headers_dirs=(/usr/src/linux-headers*)
-
-[[ $linux_headers_dirs ]] || {
-	echo "KERNEL SELFTESTS: fail to find linux-headers package" >&2
-	exit
-}
-
-linux_headers_dir=${linux_headers_dirs[-1]}
-echo "KERNEL SELFTESTS: linux_headers_dir is $linux_headers_dir"
 
 for mf in */Makefile; do
 	subtest=${mf%/Makefile}
