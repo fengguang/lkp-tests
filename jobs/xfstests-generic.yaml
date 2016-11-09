@@ -4,6 +4,8 @@ category: functional
 
 disk: 4HDD
 
+timeout: 2h
+
 fs:
 - ext4
 - xfs
@@ -27,23 +29,3 @@ xfstests:
 # - generic-out-mismatch
 # - generic-new
 # - generic-all
-
----
-fs:
-- ext4
-- btrfs
-- f2fs
-
-xfstests:
-  test:
-  - generic-127
-
----
-timeout: 2h
-
-fs:
-- xfs
-
-xfstests:
-  test:
-  - generic-127
