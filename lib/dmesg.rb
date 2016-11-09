@@ -282,19 +282,26 @@ def analyze_error_id(line)
 
 	case line
 	when /(INFO: rcu[_a-z]* self-detected stall on CPU)/,
-	     /(INFO: rcu[_a-z]* detected stalls on CPUs\/tasks:)/
-		line = $1
-		bug_to_bisect = $1
-	when /(BUG: unable to handle kernel)/,
+	     /(INFO: rcu[_a-z]* detected stalls on CPUs\/tasks:)/,
+	     /(BUG: unable to handle kernel)/,
 	     /(BUG: unable to handle kernel) NULL pointer dereference/,
-	     /(BUG: unable to handle kernel) paging request/
-		line = $1
-		bug_to_bisect = $1
-	when /(BUG: scheduling while atomic:)/,
+	     /(BUG: unable to handle kernel) paging request/,
+	     /(BUG: scheduling while atomic:)/,
 	     /(BUG: Bad page map in process)/,
 	     /(BUG: Bad page state in process)/,
 	     /(BUG: soft lockup - CPU#\d+ stuck for \d+s!)/,
-	     /(BUG: spinlock .* on CPU#\d+)/
+	     /(BUG: spinlock .* on CPU#\d+)/,
+	     /(Out of memory: Kill process) \d+ \(/,
+	     # old format: "[  122.209638 ] ??? Writer stall state 8 g62150 c62149 f0x2"
+             # new format: "[  122.209638 ] ??? Writer stall state RTWS_STUTTER(8) g62150 c62149 f0x2"
+	     /(Writer stall state \w*).+ g\d+ c\d+ f/,
+	     /(BUG: workqueue lockup - pool)/,
+	     /(BUG: KASAN: slab-out-of-bounds)/,
+	     /(rcu_sched kthread starved) for \d+ jiffies/,
+	     /(Could not create tracefs)/,
+	     /(used greatest stack depth:)/,
+	     /([A-Z]+[ a-zA-Z]*): [a-f0-9]{4} \[#[0-9]+\] /,
+	     /(BUG: KASan: [a-z ]+) in /
 		line = $1
 		bug_to_bisect = $1
 	when /(BUG: ).* (still has locks held)/,
@@ -309,45 +316,16 @@ def analyze_error_id(line)
 	     /(Kernel panic - not syncing: No init found.)  Try passing init= option to kernel. /
 		line = $1
 		bug_to_bisect = line
-	when /(Out of memory: Kill process) \d+ \(/
-		line = $1
-		bug_to_bisect = $1
-        # old format: "[  122.209638 ] ??? Writer stall state 8 g62150 c62149 f0x2"
-        # new format: "[  122.209638 ] ??? Writer stall state RTWS_STUTTER(8) g62150 c62149 f0x2"
-	when /(Writer stall state \w*).+ g\d+ c\d+ f/
-		line = $1
-		bug_to_bisect = $1
 	when /(BUG: key )[0-9a-f]+ (not in .data)/
 		line = $1 + $2
 		bug_to_bisect = $1 + '.* ' + $2
 	when /(BUG: using smp_processor_id\(\) in preemptible)/
 		line = $1
 		bug_to_bisect = oops_to_bisect_pattern line
-	when /(BUG: workqueue lockup - pool)/
-		line = $1
-		bug_to_bisect = $1
-	when /(BUG: KASAN: slab-out-of-bounds)/
-		line = $1
-		bug_to_bisect = $1
-	when /(rcu_sched kthread starved) for \d+ jiffies/
-		line = $1
-		bug_to_bisect = $1
-	when /(Could not create tracefs)/
-		line = $1
-		bug_to_bisect = $1
-	when /(used greatest stack depth:)/
-		line = $1
-		bug_to_bisect = $1
 	# printk(KERN_ERR "BUG: Dentry %p{i=%lx,n=%pd} still in use (%d) [unmount of %s %s]\n"
 	when  /(BUG: Dentry ).* (still in use) .* \[unmount of /
 		line = $1 + $2
 		bug_to_bisect = $1 + '.* ' + $2
-	when /([A-Z]+[ a-zA-Z]*): [a-f0-9]{4} \[#[0-9]+\] /
-		line = $1
-		bug_to_bisect = $1
-	when /(BUG: KASan: [a-z ]+) in /
-		line = $1
-		bug_to_bisect = $1
 	when /^backtrace:([a-zA-Z0-9_]+)/,
 	     /^calltrace:([a-zA-Z0-9_]+)/
 		bug_to_bisect = $1 + '+0x'
