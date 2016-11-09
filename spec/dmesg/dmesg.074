@@ -1,9 +1,9 @@
 boot_failures: 1
 
-# BUG: KASAN: use-after-free in kobj_kset_leave+0x
-BUG:KASAN:use-after-free_in_kobj_kset_leave_at_addr: 1
-message:BUG:KASAN:use-after-free_in_kobj_kset_leave_at_addr: [    4.538069] BUG: KASAN: use-after-free in kobj_kset_leave+0x4f/0xa0 at addr ffff88000a35a5d8
-pattern:BUG:KASAN:use-after-free_in_kobj_kset_leave_at_addr: BUG: KASAN: use-after-free in kobj_kset_leave+0x
+# BUG: KASAN: use-after-free in
+BUG:KASAN:use-after-free_in: 1
+message:BUG:KASAN:use-after-free_in: [    4.538069] BUG: KASAN: use-after-free in kobj_kset_leave+0x4f/0xa0 at addr ffff88000a35a5d8
+pattern:BUG:KASAN:use-after-free_in: BUG: KASAN: use-after-free in
 
 # init+0x
 calltrace:init: 1
@@ -11,5 +11,5 @@ message:calltrace:init: [    4.563627]  [<ffffffff82c6b7d5>] init+0x18e/0x1cd
 pattern:calltrace:init: init+0x
 
 timestamp:last: 4.629431
-timestamp:BUG:KASAN:use-after-free_in_kobj_kset_leave_at_addr: 4.538069
+timestamp:BUG:KASAN:use-after-free_in: 4.538069
 timestamp:calltrace:init: 4.563627
