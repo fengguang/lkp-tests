@@ -2,9 +2,13 @@
 
 BEGIN { nr_test = 0 }
 
-/pku$/ || /vmx$/ || /svm$/ {next}
-
 /PASS/ {
+	printf("%s.pass: 1\n", $2)
+	nr_test += 1
+}
+
+/SKIP/ {
+	printf("%s.skip: 1\n", $2)
 	nr_test += 1
 }
 
