@@ -20,7 +20,7 @@ build()
 
 install()
 {
-	cp -af $source_dir/* $BM_ROOT/
+	cp -af ./* $BM_ROOT/
 	cp -af $LKP_SRC/pack/${BM_NAME}-addon/* $BM_ROOT/
 
 	## generate the new add subcase automatically after every upgrade xfstests
