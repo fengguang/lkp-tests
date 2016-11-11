@@ -43,16 +43,16 @@ check_partition_size() {
 check_partition_size $partitions
 
 make_md() {
-	if [ -e /proc/mdstat ]; then
-		grep -q '^md0 : \(in\)\?active' /proc/mdstat &&
-		log_cmd mdadm -q --stop /dev/md0
-	else
-		log_cmd modprobe md
-	fi
-
-	destroy_devices
-
 	for i in 0 1 2 3 4 5; do
+		if [ -e /proc/mdstat ]; then
+			grep -q '^md0 : \(in\)\?active' /proc/mdstat &&
+				log_cmd mdadm -q --stop /dev/md0
+		else
+			log_cmd modprobe md
+		fi
+
+		destroy_devices
+
 		raid_device=/dev/md$i
 		[ -b $raid_device ] && continue
 
@@ -64,6 +64,8 @@ make_md() {
 					--force				\
 					--assume-clean $partitions	\
 					2> $TMP/mdadm_stderr && return
+
+		sleep 5
 	done
 
 	echo "Failed to create RAID!" 1>&2
