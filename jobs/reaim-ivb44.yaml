@@ -1,0 +1,57 @@
+suite: reaim
+testcase: reaim
+category: benchmark
+
+runtime: 300s
+
+nr_task: 100t
+reaim:
+  test:
+  - fork_test
+  - sieve
+
+---
+nr_task: 300t
+reaim:
+  test:
+  - disk_wrt
+
+---
+nr_task: 400t
+reaim:
+  test:
+  - brk_test
+  - disk_src
+
+---
+nr_task: 900t
+reaim:
+  test:
+  - disk_cp
+  - string_rtns
+
+---
+nr_task: 1000t
+reaim:
+  test:
+  - mem_rtns_1
+  - page_test
+
+---
+nr_task: 1000t
+reaim:
+  nr_job: 5000t
+  test:
+  - pipe_cpy
+
+---
+nr_task: 2000t
+reaim:
+  test:
+  - sort_rtns_1
+
+---
+nr_task: 7000t
+reaim:
+  test:
+  - shared_memory
