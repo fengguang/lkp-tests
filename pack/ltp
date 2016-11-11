@@ -2,7 +2,9 @@
 
 download()
 {
-	git_clone_update https://github.com/linux-test-project/ltp.git
+    git_clone_update https://github.com/ianw/numactl.git
+    git_clone_update https://github.com/linux-test-project/ltp.git
+
 }
 
 split_syscalls()
@@ -27,7 +29,7 @@ split_syscalls()
 	echo "Splitting syscalls to syscalls_part1, ..., syscalls_part$i"
 }
 
-build()
+build_ltp()
 {
 	patch_source
 	split_syscalls
@@ -36,9 +38,40 @@ build()
 	make
 }
 
-install()
+build_numactl()
+{
+    autoreconf
+    ./configure --prefix=$BM_ROOT/testcases/bin/numactl
+    make
+}
+
+install_ltp()
 {
 	make install
 	grep -v -w -f $LKP_SRC/pack/ltp-black-list \
 	runtest/syscalls > $BM_ROOT/runtest/syscalls
+}
+
+install_numactl()
+{
+    make install
+    ln -sf $BM_ROOT/testcases/bin/numactl/bin/numademo $BM_ROOT/testcases/bin/numademo
+    ln -sf $BM_ROOT/testcases/bin/numactl/bin/memhog $BM_ROOT/testcases/bin/memhog
+}
+
+build()
+{
+    build_ltp || exit
+
+    cd ../numactl || exit
+    build_numactl || exit
+}
+
+install()
+{
+    cd ../ltp || exit
+    install_ltp || exit
+
+    cd ../numactl || exit
+    install_numactl || exit
 }
