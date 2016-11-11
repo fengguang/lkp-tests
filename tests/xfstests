@@ -11,6 +11,13 @@
 [ "$nr_partitions" -lt 2 ] && die "$nr_partitions -lt 2"
 cd $BENCHMARK_ROOT/xfstests || die "fail to cd $BENCHMARK_ROOT/xfstests"
 
+# xfstests use awk to call strtonum(), however:
+# - gawk support strtonum()
+# - mawk not support strtonum()
+#
+# due to awk maybe link to mawk, so restore the gawk symlink.
+[ -f /usr/bin/gawk ] && ln -sf /usr/bin/gawk /usr/bin/awk
+
 check_add_user()
 {
 	[ "x$1" != "x" ] || return
