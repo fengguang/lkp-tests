@@ -367,3 +367,43 @@ def analyze_error_id(line)
 
 	[error_id, bug_to_bisect]
 end
+
+def get_crash_stats(dmesg_file)
+	if dmesg_file =~ /\.xz$/
+		`xz -d -k #{dmesg_file}`
+		uncompressed_dmesg = dmesg_file.gsub(/\.xz$/, '')
+		dmesg_file = uncompressed_dmesg
+	end
+
+	boot_error_ids = `#{LKP_SRC}/stats/dmesg #{dmesg_file}`
+
+	oops_map = {}
+	id = ''
+	new_error_id = false
+	boot_error_ids.each_line { |line|
+		line.chomp!
+		if line =~ /^# /
+			new_error_id = true
+			next
+		end
+
+		if new_error_id
+			# WARNING:at_kernel/locking/lockdep.c:#lock_release: 1
+			id = line.split(': ')[0..-2].join(': ')
+			new_error_id = false
+			next
+		end
+
+		if line =~ /^message:/
+			# message:WARNING:at_kernel/locking/lockdep.c:#lock_release: [   11.858566 ] WARNING: CPU: 0 PID: 11 at kernel/locking/lockdep.c:3536 lock_release+0x179/0x3b7
+			#
+			oops_map[id] = line.split(': ')[1..-1].join(': ')
+		end
+	}
+
+	if uncompressed_dmesg
+		FileUtils.rm uncompressed_dmesg
+	end
+
+	oops_map
+end
