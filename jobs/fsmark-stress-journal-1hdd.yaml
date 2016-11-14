@@ -9,8 +9,6 @@ disk: 1HDD
 
 fs:
 - xfs
-- ext4
-- btrfs
 #- f2fs
 fs2:
 - nfsv4
@@ -19,5 +17,16 @@ fs2:
 fsmark:
   filesize: 4K
   test_size: 400M
+  sync_method: fsyncBeforeClose
+  nr_files_per_directory: 1fpd
+
+---
+fs:
+- ext4
+- btrfs
+
+fsmark:
+  filesize: 4K
+  test_size: 80M
   sync_method: fsyncBeforeClose
   nr_files_per_directory: 1fpd
