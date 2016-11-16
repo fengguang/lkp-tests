@@ -12,7 +12,7 @@ download()
 
 build()
 {
-	cd $source_dir/tools/perf
+	cd tools/perf
 	make
 }
 
