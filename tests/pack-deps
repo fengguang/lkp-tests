@@ -2,7 +2,10 @@
 # - rootfs
 # - benchmark
 
-## Use '$LKP_SRC/sbin/pack' to generate all benchmarks and dependencies cgz formart packages.
+. $LKP_SRC/lib/debug.sh
+
+[ -n "$rootfs" ] || die "rootfs is empty"
+[ -n "$benchmark" ] || die "benchmark is empty"
 
 DISTRO=${rootfs%%-*}
 
@@ -10,7 +13,7 @@ DISTRO=${rootfs%%-*}
 
 DEPS_MNT=/osimage/deps
 mkdir -p "$DEPS_MNT"
-mount $LKP_SERVER:$DEPS_MNT $DEPS_MNT || exit
+mount $LKP_SERVER:$DEPS_MNT $DEPS_MNT || die "Failed to run mount"
 
 umask 002
 
@@ -24,7 +27,7 @@ check_shared_package "$benchmark" && exit
 
 update
 
-[[ ! $benchmark || $benchmark = all ]] && benchmark="$(ls $LKP_SRC/distro/depends | grep -v -e '-dev' -e '-whitelist')"
+[[ "$benchmark" = "all" ]] && benchmark="$(ls $LKP_SRC/distro/depends | grep -v -e '-dev' -e '-whitelist')"
 
 for BM_NAME in $benchmark
 do
