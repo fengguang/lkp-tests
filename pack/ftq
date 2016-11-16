@@ -14,5 +14,7 @@ build()
 
 install()
 {
-	cp -af ftq.linux $BM_ROOT/ftq
+	for f in ftq_*; do
+		[ -x $f ] && cp -af $f $BM_ROOT
+	done
 }

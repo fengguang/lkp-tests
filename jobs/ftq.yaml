@@ -7,8 +7,17 @@ nr_task: 100%
 samples: 100000ss
 
 ftq:
+  test: add
   freq: 10000
 
 ---
 ftq:
+  test: add
   freq: 1000
+
+---
+
+samples: 6000ss
+ftq:
+  test: cache
+  freq: 20
