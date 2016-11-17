@@ -23,18 +23,10 @@ end
 
 while line = gets
 	next if should_ignore_stderr(line.chomp!)
-	begin
-		id = common_error_id(line)
-	rescue Exception => e
-		# ERR: lib/dmesg.rb:151:in `gsub!': invalid byte sequence in US-ASCII (ArgumentError)
-		if e.message =~ /invalid byte sequence in (UTF-8|US-ASCII)/
-			line = line.remediate_invalid_byte_sequence(replace: '_')
-			line = line.strip_nonprintable_characters
-			id = common_error_id(line)
-		else
-			raise e
-		end
-	end
+	# ERR: lib/dmesg.rb:151:in `gsub!': invalid byte sequence in US-ASCII (ArgumentError)
+	line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
+	line = line.strip_nonprintable_characters
+	id = common_error_id(line)
 
 	next if id.size < 3
 	error_ids[id] = line
