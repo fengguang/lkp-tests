@@ -17,4 +17,5 @@ install()
 	for f in ftq_*; do
 		[ -x $f ] && cp -af $f $BM_ROOT
 	done
+	[ -n "$(ls $BM_ROOT)" ]
 }
