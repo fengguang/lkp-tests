@@ -19,3 +19,9 @@ RSpec::Core::RakeTask.new do |t|
 	spec = ENV['spec'] || '*'
 	t.pattern = "spec/**{,/*/**}/#{spec}_spec.rb"
 end
+
+if ENV['GENERATE_REPORTS'] == 'true'
+	require 'ci/reporter/rake/rspec'
+	task :spec => 'ci:setup:rspec'
+end
+
