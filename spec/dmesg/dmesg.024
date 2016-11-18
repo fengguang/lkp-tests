@@ -1,9 +1,9 @@
 boot_failures: 1
 
-# BUG: KASAN: slab-out-of-bounds in inotify_read+0x
-BUG:KASAN:slab-out-of-bounds_in_inotify_read_at_addr: 1
-message:BUG:KASAN:slab-out-of-bounds_in_inotify_read_at_addr: [    6.359904] BUG: KASAN: slab-out-of-bounds in inotify_read+0x271/0x350 at addr ffff88000b67a3ec
-pattern:BUG:KASAN:slab-out-of-bounds_in_inotify_read_at_addr: BUG: KASAN: slab-out-of-bounds in inotify_read+0x
+# BUG: KASAN: slab-out-of-bounds
+BUG:KASAN:slab-out-of-bounds: 1
+message:BUG:KASAN:slab-out-of-bounds: [    6.359904] BUG: KASAN: slab-out-of-bounds in inotify_read+0x271/0x350 at addr ffff88000b67a3ec
+pattern:BUG:KASAN:slab-out-of-bounds: BUG: KASAN: slab-out-of-bounds
 
 # SyS_read+0x
 calltrace:SyS_read: 1
@@ -26,7 +26,7 @@ message:calltrace:usb_serial_module_init: [    6.401395]  [<ffffffff81af8ba1>] u
 pattern:calltrace:usb_serial_module_init: usb_serial_module_init+0x
 
 timestamp:last: 6.407623
-timestamp:BUG:KASAN:slab-out-of-bounds_in_inotify_read_at_addr: 6.359904
+timestamp:BUG:KASAN:slab-out-of-bounds: 6.359904
 timestamp:calltrace:SyS_read: 6.380723
 timestamp:calltrace:SyS_linkat: 6.391050
 timestamp:calltrace:SyS_link: 6.391868

@@ -1,9 +1,9 @@
 boot_failures: 1
 
-# BUG: KASAN: slab-out-of-bounds in copy_from_user+0x
-BUG:KASAN:slab-out-of-bounds_in_copy_from_user_at_addr: 1
-message:BUG:KASAN:slab-out-of-bounds_in_copy_from_user_at_addr: [    0.440853] BUG: KASAN: slab-out-of-bounds in copy_from_user+0x3e/0x6a at addr ffff880064d1ef80
-pattern:BUG:KASAN:slab-out-of-bounds_in_copy_from_user_at_addr: BUG: KASAN: slab-out-of-bounds in copy_from_user+0x
+# BUG: KASAN: slab-out-of-bounds
+BUG:KASAN:slab-out-of-bounds: 1
+message:BUG:KASAN:slab-out-of-bounds: [    0.440853] BUG: KASAN: slab-out-of-bounds in copy_from_user+0x3e/0x6a at addr ffff880064d1ef80
+pattern:BUG:KASAN:slab-out-of-bounds: BUG: KASAN: slab-out-of-bounds
 
 # SyS_mount+0x
 calltrace:SyS_mount: 1
@@ -16,6 +16,6 @@ message:calltrace:devtmpfsd: [    0.440853]  [<ffffffff81bbb922>] devtmpfsd+0x88
 pattern:calltrace:devtmpfsd: devtmpfsd+0x
 
 timestamp:last: 0.440853
-timestamp:BUG:KASAN:slab-out-of-bounds_in_copy_from_user_at_addr: 0.440853
+timestamp:BUG:KASAN:slab-out-of-bounds: 0.440853
 timestamp:calltrace:SyS_mount: 0.440853
 timestamp:calltrace:devtmpfsd: 0.440853

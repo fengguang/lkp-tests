@@ -1,15 +1,9 @@
 boot_failures: 1
 
-# BUG: workqueue lockup - pool cpus=
-BUG:workqueue_lockup-pool_cpus=#node=#flags=#nice=#stuck_for#s: 1
-message:BUG:workqueue_lockup-pool_cpus=#node=#flags=#nice=#stuck_for#s: [   91.718045] BUG: workqueue lockup - pool cpus=1 node=0 flags=0x0 nice=0 stuck for 45s!
-pattern:BUG:workqueue_lockup-pool_cpus=#node=#flags=#nice=#stuck_for#s: BUG: workqueue lockup - pool cpus=
-
-# BUG: workqueue lockup - pool cpus=
-BUG:workqueue_lockup-pool_cpus=#-#flags=#nice=#stuck_for#s: 1
-message:BUG:workqueue_lockup-pool_cpus=#-#flags=#nice=#stuck_for#s: [   91.730295] BUG: workqueue lockup - pool cpus=0-1 flags=0x4 nice=0 stuck for 43s!
-pattern:BUG:workqueue_lockup-pool_cpus=#-#flags=#nice=#stuck_for#s: BUG: workqueue lockup - pool cpus=
+# BUG: workqueue lockup - pool
+BUG:workqueue_lockup-pool: 1
+message:BUG:workqueue_lockup-pool: [   91.718045] BUG: workqueue lockup - pool cpus=1 node=0 flags=0x0 nice=0 stuck for 45s!
+pattern:BUG:workqueue_lockup-pool: BUG: workqueue lockup - pool
 
 timestamp:last: 91.732514
-timestamp:BUG:workqueue_lockup-pool_cpus=#node=#flags=#nice=#stuck_for#s: 91.718045
-timestamp:BUG:workqueue_lockup-pool_cpus=#-#flags=#nice=#stuck_for#s: 91.730295
+timestamp:BUG:workqueue_lockup-pool: 91.718045
