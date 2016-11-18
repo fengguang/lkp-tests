@@ -67,13 +67,12 @@ nfs_mount_rootfs=$MNT_POINT/NFS-${rootfs_name}
 mount -o ro,nolock $source $nfs_mount_rootfs || exit
 
 # do rsync only when remote rootfs is updated
-diff $nfs_mount_rootfs/etc/rsync-rootfs-version \
-		$local_mount_rootfs/etc/rsync-rootfs-version &>/dev/null &&
-	[ -f $local_mount_rootfs/etc/rsync-rootfs-complete ] && {
-		echo "rsync-rootfs: $local_mount_rootfs rootfs is up-to-date"
-		umount $nfs_mount_rootfs
-		exit $?
-}
+diff $nfs_mount_rootfs/etc/rsync-rootfs-version $local_mount_rootfs/etc/rsync-rootfs-version
+if [ $? -eq 0 -a -f $local_mount_rootfs/etc/rsync-rootfs-complete ];then
+	echo "rsync-rootfs: $local_mount_rootfs rootfs is up-to-date"
+	umount $nfs_mount_rootfs
+	exit $?
+fi
 
 # delete the completion file
 rm -f $local_mount_rootfs/etc/rsync-rootfs-complete
