@@ -1,0 +1,7 @@
+#!/bin/bash
+
+category=${1:-benchmark}
+jobs_dir=${2:-$LKP_SRC/jobs}
+
+grep $category $jobs_dir/*.yaml -l |
+	xargs sed -ne '1,$s/^ *testcase: \+\(.*\)/\1/p' | sort -u
