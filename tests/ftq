@@ -8,6 +8,14 @@
 ## or 'noise' on a node from the applications perspective.
 
 . $LKP_SRC/lib/upload.sh
+. $LKP_SRC/lib/unit.sh
+
+[ "$test" = cache ] && {
+	cache_size=$(sed -ne '1,$s/cache size\s\+:\s\([0-9]\+\)\s\+\(.\)./\1\2/p' /proc/cpuinfo | tail -n 1)
+	cache_size_bytes=$(to_byte $cache_size)
+	task_cache_size=$((cache_size_bytes/nr_task))
+	opt_arg="-a $task_cache_size"
+}
 
 cd $BENCHMARK_ROOT/ftq || exit
 
@@ -19,7 +27,7 @@ cd $BENCHMARK_ROOT/ftq || exit
 
 samples=${samples%%ss}
 
-log_cmd ./ftq_$test $opt_freq -n $samples $opt_task || exit
+log_cmd ./ftq_$test $opt_freq -n $samples $opt_task $opt_arg || exit
 
 exit_value=$?
 
