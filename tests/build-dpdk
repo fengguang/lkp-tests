@@ -55,6 +55,10 @@ git_clone_update git://gitmirror/$remote $LINUX_KERNEL_ROOT || die "failed to cl
 
 cd $LINUX_KERNEL_ROOT
 git checkout -q $commit || die "failed to checkout kernel commit $_commit"
+
+# workaround this error: code model kernel does not support PIC mode 
+sed -i "s/-Wno-format-security/-Wno-format-security -fno-PIE/" Makefile || die "failed to run sed"
+
 make_config HOSTCC=$dpdk_compiler CC=$dpdk_compiler allmodconfig || die "make allmodconfig failed"
 $MAKE_CMD prepare || die "make prepare failed"
 $MAKE_CMD scripts/ || die "make scripts/ failed"
