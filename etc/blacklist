@@ -14,6 +14,7 @@
 ^kmsg.start:Job_is_already_running:rc
 ^kmsg.power_supply_register:Expected_proper_parent_device_for
 ^(kmsg|dmesg).genirq:Flags_mismatch_irq##\(serial\)vs.#\(goldfish_pdev_bus\)
+^kmsg.NFS:set_pnfs_layoutdriver:cl_exchange_flags
 ^kmsg.Command_line:*
 ^kmsg.Kernel_command_line
 ^dmesg.boot_successes
