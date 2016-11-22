@@ -36,6 +36,9 @@ sed -i 's/hugetlbfstest//' vm/Makefile
 for mf in */Makefile; do
 	subtest=${mf%/Makefile}
 	case $subtest in
+		filesystems)
+			   continue
+			   ;;
 		efivarfs)
 			[ -d /sys/firmware/efi ] || {
 				echo skip efivarfs test: /sys/firmware/efi dir does not exist
