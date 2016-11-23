@@ -1,0 +1,48 @@
+#!/bin/bash
+# - nvml_commit
+# nvml_branch
+
+## The NVM Library is a library for using memory-mapped persistence,
+## optimized specifically for persistent memory.
+## detailed info can refer to http://pmem.io/nvml/
+
+shopt -s nullglob
+
+. $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/build.sh
+. $LKP_SRC/lib/mount.sh
+. $LKP_SRC/lib/git.sh
+. $LKP_SRC/lib/env.sh
+
+[[ "$nvml_commit" ]] || die "nvml_commit is empty"
+
+[[ $nvml_branch ]] || nvml_branch='nvml/master'
+nvml_remote=${nvml_branch%%/*}
+
+NVML_REPO_ROOT=/build/nvml/src
+check_mount nvml-src $NVML_REPO_ROOT -t tmpfs
+
+check_mount $LKP_SERVER:/pkg /pkg || die "failed to mount $LKP_SERVER:/pkg"
+
+NVML_LIB_DIR="/pkg/nvml/$nvml_commit"
+[[ -d "$NVML_LIB_DIR" ]] || mkdir -p "$NVML_LIB_DIR"
+
+rm -fr "$NVML_REPO_ROOT" 2>/dev/null
+git_clone_update git://gitmirror/$nvml_remote $NVML_REPO_ROOT || die "failed clone nvml tree $nvml_remote"
+
+cd "$NVML_REPO_ROOT"
+log_cmd git checkout -q $nvml_commit || die "failed to checkout nvml commit $nvml_commit"
+
+make
+
+make_exit_status=$?
+[[ $make_exit_status = 0 ]] && {
+	# TODO: copy something to $NVML_LIB_DIR
+	:
+}
+
+build_complete $make_exit_status
+
+git reset --hard
+
+exit $make_exit_status

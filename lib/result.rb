@@ -31,6 +31,7 @@ class ResultPath < Hash
 		'hwinfo'	=> %w[ tbox_group run ],
 		'build-dpdk'	=> %w[ dpdk_config commit dpdk_compiler dpdk_commit run ],
 		'build-qemu'	=> %w[ qemu_config qemu_commit run ],
+		'build-nvml'    => %w[ nvml_commit run],
 		'kvm-unit-tests-qemu' => %w[ path_params tbox_group rootfs kconfig compiler commit qemu_config qemu_commit run ],
 		# FIXME rli9 result path can be part of test configuration, like combine # - indicated parameter in test
 		# FIXME rli9 move to lkp-core for internal project
