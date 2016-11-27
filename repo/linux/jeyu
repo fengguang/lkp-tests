@@ -1,3 +1,6 @@
-url: https://github.com/flaming-toast/linux-jeyu
+url: git://git.kernel.org/pub/scm/linux/kernel/git/jeyu/linux.git
+integration_testing_branches:
+- modules-next
+- modules-linus
 owner: Jessica Yu <jeyu@redhat.com>
 notify_build_success_branch: .*
