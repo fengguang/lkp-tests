@@ -53,6 +53,7 @@ fixup_vim()
 fixup_lkp-eywa()
 {
 	ln -sf /usr/bin/gnuplot-qt usr/bin/gnuplot
+	ln -sf /usr/bin/heirloom-mailx usr/bin/mailx
 }
 
 fixup_perf()
