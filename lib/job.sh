@@ -112,6 +112,9 @@ wait_other_nodes()
 		ip=$(echo $direct_ips | cut -d' ' -f $idx)
 		ip addr add $ip/24 dev $device
 		ip link set $device up
+		if [ -n "$set_nic_irq_affinity" ]; then
+			$LKP_SRC/bin/set_nic_irq_affinity all $device
+		fi
 		idx=$((idx + 1))
 	done
 
