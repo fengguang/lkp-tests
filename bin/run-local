@@ -21,7 +21,7 @@ require "#{LKP_SRC}/lib/result_root.rb"
 ENV['PATH'] = ENV['PATH'] + ":#{LKP_SRC}/bin"
 ENV['BENCHMARK_ROOT'] = '/lkp/benchmarks'
 
-$opt_result_root = nil
+$opt_result_root = 'result'
 $opt_set_key_value = {}
 
 opts = OptionParser.new do |opts|
@@ -30,10 +30,8 @@ opts = OptionParser.new do |opts|
 	opts.separator ''
 	opts.separator 'options:'
 
-	opts.on('-o RESULT_ROOT', '--output RESULT_ROOT', 'dir for storing all results') do |dir|
-		FileUtils.rm_rf dir
-		Dir.mkdir dir unless Dir.exist? dir
-		ENV['RESULT_ROOT'] = $opt_result_root = File.realpath dir
+	opts.on('-o RESULT_ROOT', '--output RESULT_ROOT', 'link to result directory') do |dir|
+		$opt_result_root = dir
 	end
 
 	opts.on("-s 'KEY: VALUE'", "--set 'KEY: VALUE'", "add YAML hash to job") do |key_value|
@@ -95,15 +93,10 @@ $opt_set_key_value.each { |k, v|
 	job[k] = v
 }
 
-if $opt_result_root == nil
-	_result_root = job._result_root
-	result_root = create_result_root(_result_root) or exit
-	ENV['RESULT_ROOT'] = result_root
-else
-	result_root = $opt_result_root
-end
-
-ENV['TMP_RESULT_ROOT'] = ENV['RESULT_ROOT']
+_result_root = job._result_root
+result_root = create_result_root(_result_root) or exit
+ENV['RESULT_ROOT'] = result_root
+ENV['TMP_RESULT_ROOT'] = result_root
 
 jobx = Job2sh.new(job.to_hash)
 jobx.expand_params or exit
@@ -126,13 +119,14 @@ job.save result_root + '/job.yaml'
 system job_script, 'extract_stats'
 
 stats = create_stats_matrix ENV['RESULT_ROOT']
-if $opt_result_root == nil
-	stats['stats_source'] = result_root + '/stats.json'
-	unite_to(stats, _result_root)
-	user = ENV['USER']
-	save_paths(result_root, user)
-	system(LKP_SRC + '/sbin/unite-params', result_root)
-end
+stats['stats_source'] = result_root + '/stats.json'
+unite_to(stats, _result_root)
+user = ENV['USER']
+save_paths(result_root, user)
+system(LKP_SRC + '/sbin/unite-params', result_root)
 
 MResultRootTableSet.create_tables_layout()
 convert_mrt(_result_root)
+
+FileUtils.rm_f($opt_result_root)
+FileUtils.ln_s(result_root, $opt_result_root)
