@@ -39,7 +39,6 @@ patch_source()
 build_ltp()
 {
 	patch_source ltp.patch
-	patch_source ltp-cpuhotplug-fix.patch
 	split_syscalls
 	make autotools
 	./configure --prefix=$BM_ROOT
