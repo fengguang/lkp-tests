@@ -16,6 +16,7 @@ require "#{LKP_SRC}/lib/stats.rb"
 require "#{LKP_SRC}/lib/matrix.rb"
 require "#{LKP_SRC}/lib/job2sh.rb"
 require "#{LKP_SRC}/lib/job.rb"
+require "#{LKP_SRC}/lib/result_root.rb"
 
 ENV['PATH'] = ENV['PATH'] + ":#{LKP_SRC}/bin"
 ENV['BENCHMARK_ROOT'] = '/lkp/benchmarks'
@@ -132,3 +133,6 @@ if $opt_result_root == nil
 	save_paths(result_root, user)
 	system(LKP_SRC + '/sbin/unite-params', result_root)
 end
+
+MResultRootTableSet.create_tables_layout()
+convert_mrt(_result_root)
