@@ -253,12 +253,18 @@ def sort_matrix(matrix, key)
 	m
 end
 
-def save_matrix_as_csv(file, matrix, sep = ' ', header = true)
-	cols = matrix.map { |k,v| v.size }.max
+def save_matrix_as_csv(file, matrix, sep = ' ', header = true, fill = -1)
+	fill && cols = matrix.map { |k,v| v.size }.max
 	matrix.each { |k, vs|
-		vs += [-1] * (cols - vs.size)
+		fill && vs += [fill] * (cols - vs.size)
 		fields = [k] + vs.map(&:to_s)
 		file.puts fields.join(sep)
+	}
+end
+
+def save_matrix_to_csv_file(file_name, matrix, sep = ',', header = true)
+	File.open(file_name, "w") { |f|
+		save_matrix_as_csv(f, matrix, sep, header, nil)
 	}
 end
 
