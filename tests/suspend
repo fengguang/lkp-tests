@@ -7,9 +7,10 @@
 ## And some code from http://people.canonical.com/~apw/suspend-resume/test-suspend
 
 [ -n "$mode" ] || mode='freeze'
-[ -n "$runtime" ] || runtime=300
+[ -n "$runtime" ] || runtime=600
 [ -n "$iterations" ] || iterations=10
-interval=$(( runtime / iterations ))
+
+wakeup_interval=30
 
 setup_wakeup_timer()
 {
@@ -36,7 +37,7 @@ setup_wakeup_timer()
 
 for i in $(seq $iterations)
 do
-	setup_wakeup_timer "$interval"
+	setup_wakeup_timer "$wakeup_interval"
 	echo $(date "+%F %T") suspending
 	echo $mode > /sys/power/state
 	echo $(date "+%F %T") resumed $i
