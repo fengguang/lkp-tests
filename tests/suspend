@@ -2,6 +2,7 @@
 # - mode
 # - runtime
 # - iterations
+# - presync
 
 ## Use the /sys/power/state file to control system sleep states.
 ## And some code from http://people.canonical.com/~apw/suspend-resume/test-suspend
@@ -47,6 +48,7 @@ done
 for i in $(seq $iterations)
 do
 	setup_wakeup_timer "$wakeup_interval"
+	[ "$presync" != "presync" ] || sync
 	echo $mode > /sys/power/state
 done
 

@@ -5,6 +5,7 @@ kernel_cmdline: "initcall_debug log_buf_len=4M no_console_suspend ignore_logleve
 
 runtime: 300s
 iterations: 10x
+presync: presync
 
 suspend:
   mode:
