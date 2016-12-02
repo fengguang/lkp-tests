@@ -1,10 +1,88 @@
 #!/usr/bin/env ruby
 
+$cycle = 0
+$srhash = nil
+$phase="none"
 while line = STDIN.gets
-	case line.chomp!
-	when /^SUSPEND RESUME TEST SUCCESS$/
-		exit
+	line.chomp!
+	if $srhash == nil
+		$srhash=Hash.new
 	end
-end
+	case line
+	when /^ *.* \[\d{3}\] .... *(\d{1,6}\.\d{6}): suspend_resume: (.*)\[(\d*)\] (.*)/
+                timestamp = $1
+		step = $2
+		id = $3
+		stage = $4
 
-puts "fail: 1"
+		next if step == "timekeeping_freeze"
+
+		# use CPU_ON/OFF + cpu_id as the hash key to avoid bogus duplicate
+		if step == "CPU_ON" || step == "CPU_OFF"
+			step = "#{step}_#{id}"
+		end
+
+		if stage == "begin"
+			$srhash[step]=timestamp
+		else
+			cost=(timestamp.to_f - $srhash[step].to_f)*1000
+			puts "#{step}: #{cost.to_i}"
+			$srhash.delete(step)
+		end
+
+		case step
+		when "suspend_enter"
+			if stage == "begin"
+				$srhash["suspend_overall"]=timestamp
+			end
+		when "machine_suspend"
+			if stage == "begin"
+				cost=(timestamp.to_f - $srhash["suspend_overall"].to_f)*1000
+				$srhash["suspend_overall"]=cost.to_i
+			else
+				$srhash["resume_overall"]=timestamp
+			end
+		when "thaw_processes"
+			if stage == "end"
+				cost=(timestamp.to_f - $srhash["resume_overall"].to_f)*1000
+				$srhash["resume_overall"]=cost.to_i
+				$srhash.each do |k,v|
+					if v.to_i >= 0
+						puts "#{k}: #{v}"
+					end
+				end
+				$srhash = nil
+			end
+		when /^dpm_(.*)$/
+			if stage == "begin"
+				$phase=$1
+			else
+				$phase="none"
+			end
+		end
+	when /^ *.* \[\d{3}\] .... *(\d{1,6}\.\d{6}): device_pm_callback_start: (.*) (.*), parent: .*$/
+		timestamp=$1
+		bus=$2
+		device=$3
+		id="#{bus}_#{device}".gsub(/ /, '_')
+		k="#{id}_#{$phase}"
+		if $srhash.has_key?(k)
+			$srhash[k]=-1
+		else
+			$srhash[k]=timestamp
+		end
+	when /^ *.* \[\d{3}\] .... *(\d{1,6}\.\d{6}): device_pm_callback_end: (.*) (.*), err=(\d?)/
+		timestamp=$1
+		bus=$2
+		device=$3.strip
+		err=$4
+		id="#{bus}_#{device}".gsub(/ /, '_')
+		k="#{id}_#{$phase}"
+		if $srhash[k] != -1
+			cost=(timestamp.to_f - $srhash[k].to_f)*1000
+			$srhash[k]=cost.to_i
+		end
+        else
+		next
+        end
+end
