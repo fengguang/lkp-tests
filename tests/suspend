@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - mode
 # - runtime
 # - iterations
@@ -11,6 +11,11 @@
 [ -n "$iterations" ] || iterations=10
 
 wakeup_interval=30
+
+trace_dir=/sys/kernel/debug/tracing
+event_dir=/sys/kernel/debug/tracing/events/power
+
+tevents=('suspend_resume' 'device_pm_callback_start' 'device_pm_callback_end')
 
 setup_wakeup_timer()
 {
@@ -35,12 +40,20 @@ setup_wakeup_timer()
 	exit 1
 }
 
+for event in "${tevents[@]}"; do
+        echo 1 > $event_dir/$event/enable
+done
+
 for i in $(seq $iterations)
 do
 	setup_wakeup_timer "$wakeup_interval"
-	echo $(date "+%F %T") suspending
 	echo $mode > /sys/power/state
-	echo $(date "+%F %T") resumed $i
 done
+
+for event in "${tevents[@]}"; do
+        echo 0 > $event_dir/$event/enable
+done
+
+cat $trace_dir/trace
 
 echo "SUSPEND RESUME TEST SUCCESS"
