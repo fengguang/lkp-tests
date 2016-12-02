@@ -139,6 +139,12 @@ mount_fs() {
 	done
 }
 
+umount_fs() {
+	for mt in /nfs/* /fs/*; do
+		mountpoint -q $mt && umount $mt
+	done
+}
+
 if is_btrfs_raid_levels; then
 	bdevs="${partitions%% *}"
 else
@@ -146,6 +152,8 @@ else
 fi
 
 fs_options
+
+umount_fs
 
 case $fs in
 	nfs)
