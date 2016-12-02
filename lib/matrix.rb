@@ -217,6 +217,7 @@ end
 
 # serves as locate db
 def save_paths(result_root, user)
+	FileUtils.mkdir_p "/lkp/paths"
 	paths_file = "/lkp/paths/#{Time.now.strftime('%F')}-#{user}"
 
 	# to avoid confusing between .../1 and .../11, etc. when search/remove, etc.
