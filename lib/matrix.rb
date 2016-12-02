@@ -256,6 +256,7 @@ end
 def save_matrix_as_csv(file, matrix, sep = ' ', header = true, fill = -1)
 	fill && cols = matrix.map { |k,v| v.size }.max
 	matrix.each { |k, vs|
+		vs = Array vs
 		fill && vs += [fill] * (cols - vs.size)
 		fields = [k] + vs.map(&:to_s)
 		file.puts fields.join(sep)
