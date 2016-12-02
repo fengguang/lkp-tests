@@ -110,6 +110,10 @@ def create_stats_matrix(result_root)
 	add_performance_per_watt(stats, matrix)
 	save_json(stats, result_root + '/stats.json')
 	save_json(matrix, result_root + '/matrix.json', compress=true)
+	if local_run?
+		save_matrix_to_csv_file(result_root + '/stats.csv', stats)
+		save_matrix_to_csv_file(result_root + '/matrix.csv', matrix)
+	end
 	return stats
 end
 
@@ -191,10 +195,19 @@ def unite_to(stats, matrix_root, max_cols = nil, delete = false)
 	matrix = unite_remove_blacklist_stats(matrix)
 	save_json(matrix, matrix_file)
 	matrix = matrix_fill_missing_zeros(matrix)
+	if local_run?
+		save_matrix_to_csv_file(matrix_root + '/matrix.csv', matrix)
+	end
 	matrix.delete 'stats_source'
 	begin
-		save_json(matrix_average(matrix), matrix_root + '/avg.json')
-		save_json(matrix_stddev(matrix), matrix_root + '/stddev.json')
+		avg = matrix_average(matrix)
+		stddev = matrix_stddev(matrix)
+		save_json(avg, matrix_root + '/avg.json')
+		save_json(stddev, matrix_root + '/stddev.json')
+		if local_run?
+			save_matrix_to_csv_file(matrix_root + '/avg.csv', avg)
+			save_matrix_to_csv_file(matrix_root + '/stddev.csv', stddev)
+		end
 	rescue TypeError
 		$stderr.puts "matrix contains non-number values, move to #{matrix_file}-bad"
 		FileUtils.mv matrix_file, matrix_file + '-bad', :force => true   # never raises exception
