@@ -1,0 +1,31 @@
+#!/bin/sh
+# - ramp_time
+# - run_time
+
+# run TPC-C
+cd /scalemp
+for i in $(seq 0 $((instance_number-1)))
+do
+	./run.sh $i $ramp_time $run_time &
+done
+wait
+
+# stop database instances
+for i in $(seq 0 $((instance_number-1)))
+do
+	mysqld_multi stop $i
+done
+
+# verify the database instances are stopped
+while :
+do
+	sleep 5
+	ps -e |grep -q mysqld && continue
+	break
+done
+
+mv /scalemp/multi-bench*.log $RESULT_ROOT
+
+cd /
+umount /var/lib/mysql
+umount /scalemp

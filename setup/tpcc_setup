@@ -1,0 +1,73 @@
+#!/bin/sh
+# - instance_number
+# - do_fresh
+
+[ -n "$instance_number" ] || instance_number=1
+[ -n "$do_fresh" ] || do_fresh=0
+
+scalemp_label=/dev/disk/by-label/scalemp
+if [ ! -h "$scalemp_label" ]; then
+	echo "no scalemp labeled disk available" >&2
+	exit 1
+fi
+
+if [ -d /scalemp ]; then
+	echo "/scalemp exists, exit" >&2
+	exit 1
+fi
+
+mkdir /scalemp
+mount /dev/disk/by-label/scalemp /scalemp
+
+rm -rf /scalemp/mysql
+mkdir /scalemp/mysql
+chown -R mysql.mysql /scalemp/mysql
+cd /scalemp
+for i in $(seq 0 $((instance_number-1)))
+do
+	if [ $do_fresh -eq 1 ]; then
+		echo "fresh $i"
+		./fresh.sh $i
+	fi
+	ln -s /scalemp/mysql$i /scalemp/mysql/
+done
+
+mount -o bind /scalemp/mysql /var/lib/mysql
+
+# tpcc needs libssl.so.10 and libcrypto.so.10, make softlink manually
+[ -e /usr/lib/x86_64-linux-gnu/libssl.so.10 ] || ln -s /usr/lib/x86_64-linux-gnu/libssl.so.1.0.0 /usr/lib/x86_64-linux-gnu/libssl.so.10
+[ -e /usr/lib/x86_64-linux-gnu/libcrypto.so.10 ] || ln -s /usr/lib/x86_64-linux-gnu/libcrypto.so.1.0.0 /usr/lib/x86_64-linux-gnu/libcrypto.so.10
+
+# install mysql
+DEBIAN_FRONTEND=noninteractive dpkg -i --force-all /scalemp/software/debian/percona-server-common-5.6_5.6.24-72.2-1.jessie_amd64.deb >/dev/null 2>&1
+DEBIAN_FRONTEND=noninteractive dpkg -i --force-all /scalemp/software/debian/libperconaserverclient18.1_5.6.24-72.2-1.jessie_amd64.deb >/dev/null 2>&1
+DEBIAN_FRONTEND=noninteractive dpkg -i --force-all /scalemp/software/debian/percona-server-client-5.6_5.6.24-72.2-1.jessie_amd64.deb >/dev/null 2>&1
+DEBIAN_FRONTEND=noninteractive dpkg -i --force-all /scalemp/software/debian/percona-server-server-5.6_5.6.24-72.2-1.jessie_amd64.deb >/dev/null 2>&1
+
+# copy config file
+/bin/cp /scalemp/my.cnf /etc
+
+# chown /scalemp/mysqlX
+chown -R mysql.mysql /scalemp/mysql*
+
+# start the databases
+for i in $(seq 0 $((instance_number-1)))
+do
+	mysqld_multi start $i
+done
+
+# verify the database instances are started
+for i in $(seq 0 $((instance_number-1)))
+do
+	while :
+	do
+		mysqld_multi report $i |grep -q "is running" && break
+		sleep 5
+	done
+done
+
+cat >> $TMP/env.yaml <<EOF
+
+# setup/tpcc_setup
+instance_number: $instance_number
+EOF
