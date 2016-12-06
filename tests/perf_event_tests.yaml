@@ -1,0 +1,13 @@
+short_description: >
+ The Perf Event Testsuite.
+
+description: >
+ This series of test is meant to validate that the perf_event subsystem is working.
+
+homepage: https://github.com/deater/perf_event_tests
+
+parameters:
+ paranoid:
+
+results:
+ perf_event_tests.throughput:

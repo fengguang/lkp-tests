@@ -1,0 +1,12 @@
+#!/bin/bash
+
+download()
+{
+	git_clone_update git://github.com/deater/perf_event_tests
+}
+
+install()
+{
+	cp -a * $BM_ROOT/ || exit
+}
+

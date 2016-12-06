@@ -1,0 +1,36 @@
+#!/bin/bash
+# - paranoid
+
+## perf_event_tests is designed to test trinity for perf
+## See: https://github.com/deater/perf_event_tests
+
+. $LKP_SRC/lib/debug.sh
+
+[[ "$paranoid" ]] || die "parameter \"paramoid\" is empty"
+
+cd $BENCHMARK_ROOT/perf_event_tests || die "can not find perf_event_test dir"
+
+perf_event_paranoid="/proc/sys/kernel/perf_event_paranoid"
+
+[[ -e "$perf_event_paranoid" ]] || die "can not find file $perf_event_paranoid"
+paranoid_value_old=`cat $perf_event_paranoid`
+
+case "$paranoid" in
+    not_paranoid_at_all)        paranoid_value=-1 ;;
+    disallow_raw_tracepoint)    paranoid_value=0  ;;
+    disallow_cpu_events)        paranoid_value=1  ;;
+    disallow_kernel_profiling)  paranoid_value=2  ;;
+esac
+
+echo $paranoid_value > $perf_event_paranoid
+
+[[ $paranoid_value = $(cat $perf_event_paranoid) ]] || die "write value $paranoid_value to $perf_event_paranoid failed"
+
+log_cmd ./run_tests.sh
+exit_value=$?
+
+echo $paranoid_value_old > $perf_event_paranoid
+
+[[ $paranoid_value_old = $(cat $perf_event_paranoid) ]] || echo "Warning: write value $paranoid_value_old to $perf_event_paranoid failed"
+
+exit $exit_value
