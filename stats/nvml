@@ -7,16 +7,16 @@ fs_type = ""
 build_type = ""
 
 while line = STDIN.gets
-    case line
-    when /^(.+)\/TEST[0-9]+: SETUP \(.+\/(.+)\/(.+)\)$/
+	case line
+	when /^(.+)\/TEST[0-9]+: SETUP \(.+\/(.+)\/(.+)\)$/
 		test_item = $1
 		fs_type = $2
 		build_type = $3
-    when /^(.+)\/(TEST[0-9]+): PASS$/
+	when /^(.+)\/(TEST[0-9]+): PASS$/
 		next unless test_item == $1
 		stats << $1 + "_" + $2 + "_" + fs_type + "_" + build_type + '.pass: 1'
 		nr_test += 1
-    when /^(.+)\/(TEST[0-9]+): FAIL/
+	when /^(.+)\/(TEST[0-9]+): FAIL/
 		next unless test_item == $1
 		stats << $1 + "_" + $2 + "_" + fs_type + "_" + build_type + '.fail: 1'
 		nr_test += 1
@@ -28,11 +28,15 @@ while line = STDIN.gets
 		next unless test_item == $1
 		stats << $1 + "_" + $2 + "_" + fs_type + "_" + build_type + '.timeout: 1'
 		nr_test += 1
-    when /^(.+)\/(TEST[0-9]+): SKIP/, /^(.+)\/(TEST[0-9]+) crashed/
+	when /^(.+)\/(TEST[0-9]+) crashed/
+		next unless test_item == $1
+		stats << $1 + "_" + $2 + "_" + fs_type + "_" + build_type + '.crashed: 1'
+		nr_test += 1
+	when /^(.+)\/(TEST[0-9]+): SKIP/
 		next unless test_item == $1
 		stats << $1 + "_" + $2 + "_" + fs_type + "_" + build_type + '.skip: 1'
 		nr_test += 1
-    end
+	end
 end
 
 stats.each {|stat| puts stat}

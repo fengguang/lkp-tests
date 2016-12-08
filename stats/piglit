@@ -5,15 +5,9 @@ nr_test = 0
 
 while line = STDIN.gets
 	case line
-	when /^(.*): (fail|crash|timeout|warn|dmesg-warn|dmesg-fail)/
-		fail_type = $2
-		stats << $1.tr(' /', '_.') + ".#{fail_type}: 1"
-		nr_test += 1
-	when /^(.*): pass/
-		stats << $1.tr(' /', '_.') + '.pass: 1'
-		nr_test += 1
-	when /^(.*): skip/
-		stats << $1.tr(' /', '_.') + '.block: 1'
+	when /^(.*): (fail|crash|timeout|warn|dmesg-warn|dmesg-fail|pass|skip)/
+		stats_type = $2
+		stats << $1.tr(' /', '_.') + ".#{stats_type}: 1"
 		nr_test += 1
 	when /\.seconds: [0-9.]+$/
 		stats << line.tr('/', '.')

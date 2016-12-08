@@ -8,32 +8,32 @@ success_test = 0
 fail_test = 0
 
 while line = STDIN.gets
-    case line
-    when /test_bpf: #[0-9]+ (.+) jited:.+ PASS$/
+	case line
+	when /test_bpf: #[0-9]+ (.+) jited:.+ PASS$/
 		type = $1.tr(" ", '_')
 		stats << type + ".pass: 1"
 		nr_test += 1
-    when /test_bpf: #[0-9]+ (.+) jited:.+ FAIL/
+	when /test_bpf: #[0-9]+ (.+) jited:.+ FAIL/
 		type = $1.tr(" ", '_')
 		stats << type + ".fail: 1"
 		nr_test += 1
-    when /test_bpf: #[0-9]+ check: (.+) PASS$/
+	when /test_bpf: #[0-9]+ check: (.+) PASS$/
 		type = $1.tr(" ", '_')
 		stats << "check:_" + type + ".pass: 1"
 		nr_test += 1
-    when /test_bpf: #[0-9]+ check: (.+) FAIL/
+	when /test_bpf: #[0-9]+ check: (.+) FAIL/
 		type = $1.tr(" ", '_')
 		stats << "check:_" + type + ".fail: 1"
 		nr_test += 1
-    when /test_bpf: #[0-9]+ check: (.+)/
+	when /test_bpf: #[0-9]+ check: (.+)/
 		flag = "1"
 		type = "check:_" + $1.tr(" ", '_')
 		nr_test += 1
-    when /test_bpf: #[0-9]+ (.+)/
+	when /test_bpf: #[0-9]+ (.+)/
 		flag = "1"
 		type = $1.tr(" ", '_')
 		nr_test += 1
-    when /test_bpf: Summary: ([0-9]+) PASSED, ([0-9]+) FAILED, \[.+ JIT'ed\]$/
+	when /test_bpf: Summary: ([0-9]+) PASSED, ([0-9]+) FAILED, \[.+ JIT'ed\]$/
 		success_test = $1
 		fail_test = $2
 	else
@@ -46,7 +46,7 @@ while line = STDIN.gets
 				flag = ""
 			end
 		end
-    end
+	end
 end
 
 stats.each {|stat| puts stat}

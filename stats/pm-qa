@@ -16,7 +16,7 @@ $2 ~ /^ *pass$/ {
 }
 
 $2 ~ /^ *skip$/ {
-	printf("%s.block: 1\n", $1)
+	printf("%s.skip: 1\n", $1)
 	nr_test++
 }
 
