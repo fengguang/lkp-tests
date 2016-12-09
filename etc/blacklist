@@ -59,15 +59,8 @@
 ^last_state.failed
 ^last_state.error_umounted
 ^last_state.error_mount
-^build-android.warning.*
-^build-android.error.cp:*
-^build-android.error.bin-bash:*
-^build-android.error.grep:*
-^build-android.error.find:*
-^build-android.time.*
 ^build-dpdk.time.*
 ^build-qemu.time.*
-^android-kpi.time.*
 .*\.total_test
 ^0day-kbuild-tests.*
 ^0day-boot-tests.*
