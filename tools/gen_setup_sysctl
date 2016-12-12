@@ -22,4 +22,8 @@ do
 EOF
 done
 
+# The script will return 1 unless the job file has set value for the last param
+# As returnning 1 will break the job run, return 0 explicitely.
+echo -e "\nexit 0" >> $output
+
 chmod +x $LKP_SRC/setup/sysctl

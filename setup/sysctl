@@ -376,3 +376,5 @@
 [ -n "$sc_vfs_cache_pressure" ] && echo $sc_vfs_cache_pressure > /proc/sys/vm/vfs_cache_pressure
 [ -n "$sc_watermark_scale_factor" ] && echo $sc_watermark_scale_factor > /proc/sys/vm/watermark_scale_factor
 [ -n "$sc_zone_reclaim_mode" ] && echo $sc_zone_reclaim_mode > /proc/sys/vm/zone_reclaim_mode
+
+exit 0
