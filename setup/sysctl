@@ -1,0 +1,378 @@
+#!/bin/sh
+# - sc_vsyscall32
+# - sc_fips_enabled
+# - sc_exception_trace
+# - sc_kprobes_optimization
+# - sc_aio_max_nr
+# - sc_aio_nr
+# - sc_dentry_state
+# - sc_dir_notify_enable
+# - sc_file_max
+# - sc_file_nr
+# - sc_inode_nr
+# - sc_inode_state
+# - sc_lease_break_time
+# - sc_leases_enable
+# - sc_nr_open
+# - sc_overflowgid
+# - sc_overflowuid
+# - sc_pipe_max_size
+# - sc_pipe_user_pages_hard
+# - sc_pipe_user_pages_soft
+# - sc_protected_hardlinks
+# - sc_protected_symlinks
+# - sc_suid_dumpable
+# - sc_acct
+# - sc_acpi_video_flags
+# - sc_auto_msgmni
+# - sc_bootloader_type
+# - sc_bootloader_version
+# - sc_cad_pid
+# - sc_cap_last_cap
+# - sc_compat_log
+# - sc_core_pattern
+# - sc_core_pipe_limit
+# - sc_core_uses_pid
+# - sc_ctrl_alt_del
+# - sc_dmesg_restrict
+# - sc_domainname
+# - sc_ftrace_dump_on_oops
+# - sc_ftrace_enabled
+# - sc_hardlockup_all_cpu_backtrace
+# - sc_hardlockup_panic
+# - sc_hostname
+# - sc_io_delay_type
+# - sc_kexec_load_disabled
+# - sc_kptr_restrict
+# - sc_kstack_depth_to_print
+# - sc_latencytop
+# - sc_max_lock_depth
+# - sc_modprobe
+# - sc_modules_disabled
+# - sc_msgmax
+# - sc_msgmnb
+# - sc_msgmni
+# - sc_msg_next_id
+# - sc_ngroups_max
+# - sc_nmi_watchdog
+# - sc_ns_last_pid
+# - sc_numa_balancing
+# - sc_numa_balancing_scan_delay_ms
+# - sc_numa_balancing_scan_period_max_ms
+# - sc_numa_balancing_scan_period_min_ms
+# - sc_numa_balancing_scan_size_mb
+# - sc_osrelease
+# - sc_ostype
+# - sc_overflowgid
+# - sc_overflowuid
+# - sc_panic
+# - sc_panic_on_io_nmi
+# - sc_panic_on_oops
+# - sc_panic_on_rcu_stall
+# - sc_panic_on_stackoverflow
+# - sc_panic_on_unrecovered_nmi
+# - sc_panic_on_warn
+# - sc_perf_cpu_time_max_percent
+# - sc_perf_event_max_contexts_per_stack
+# - sc_perf_event_max_sample_rate
+# - sc_perf_event_max_stack
+# - sc_perf_event_mlock_kb
+# - sc_perf_event_paranoid
+# - sc_pid_max
+# - sc_poweroff_cmd
+# - sc_print_fatal_signals
+# - sc_printk
+# - sc_printk_delay
+# - sc_printk_devkmsg
+# - sc_printk_ratelimit
+# - sc_printk_ratelimit_burst
+# - sc_randomize_va_space
+# - sc_real_root_dev
+# - sc_sched_autogroup_enabled
+# - sc_sched_cfs_bandwidth_slice_us
+# - sc_sched_child_runs_first
+# - sc_sched_latency_ns
+# - sc_sched_migration_cost_ns
+# - sc_sched_min_granularity_ns
+# - sc_sched_nr_migrate
+# - sc_sched_rr_timeslice_ms
+# - sc_sched_rt_period_us
+# - sc_sched_rt_runtime_us
+# - sc_sched_schedstats
+# - sc_sched_shares_window_ns
+# - sc_sched_time_avg_ms
+# - sc_sched_tunable_scaling
+# - sc_sched_wakeup_granularity_ns
+# - sc_sem
+# - sc_sem_next_id
+# - sc_sg_big_buff
+# - sc_shmall
+# - sc_shmmax
+# - sc_shmmni
+# - sc_shm_next_id
+# - sc_shm_rmid_forced
+# - sc_softlockup_all_cpu_backtrace
+# - sc_softlockup_panic
+# - sc_soft_watchdog
+# - sc_stack_tracer_enabled
+# - sc_sysctl_writes_strict
+# - sc_sysrq
+# - sc_tainted
+# - sc_threads_max
+# - sc_timer_migration
+# - sc_traceoff_on_warning
+# - sc_tracepoint_printk
+# - sc_unknown_nmi_panic
+# - sc_unprivileged_bpf_disabled
+# - sc_version
+# - sc_watchdog
+# - sc_watchdog_cpumask
+# - sc_watchdog_thresh
+# - sc_nf_conntrack_max
+# - sc_max_resvport
+# - sc_min_resvport
+# - sc_nfsd_debug
+# - sc_nfs_debug
+# - sc_nlm_debug
+# - sc_rpc_debug
+# - sc_tcp_fin_timeout
+# - sc_tcp_max_slot_table_entries
+# - sc_tcp_slot_table_entries
+# - sc_transports
+# - sc_udp_slot_table_entries
+# - sc_admin_reserve_kbytes
+# - sc_block_dump
+# - sc_compact_memory
+# - sc_compact_unevictable_allowed
+# - sc_dirty_background_bytes
+# - sc_dirty_background_ratio
+# - sc_dirty_bytes
+# - sc_dirty_expire_centisecs
+# - sc_dirty_ratio
+# - sc_dirtytime_expire_seconds
+# - sc_dirty_writeback_centisecs
+# - sc_drop_caches
+# - sc_extfrag_threshold
+# - sc_hugepages_treat_as_movable
+# - sc_hugetlb_shm_group
+# - sc_laptop_mode
+# - sc_legacy_va_layout
+# - sc_lowmem_reserve_ratio
+# - sc_max_map_count
+# - sc_memory_failure_early_kill
+# - sc_memory_failure_recovery
+# - sc_min_free_kbytes
+# - sc_min_slab_ratio
+# - sc_min_unmapped_ratio
+# - sc_mmap_min_addr
+# - sc_mmap_rnd_bits
+# - sc_mmap_rnd_compat_bits
+# - sc_nr_hugepages
+# - sc_nr_hugepages_mempolicy
+# - sc_nr_overcommit_hugepages
+# - sc_nr_pdflush_threads
+# - sc_numa_zonelist_order
+# - sc_oom_dump_tasks
+# - sc_oom_kill_allocating_task
+# - sc_overcommit_kbytes
+# - sc_overcommit_memory
+# - sc_overcommit_ratio
+# - sc_page_cluster
+# - sc_panic_on_oom
+# - sc_percpu_pagelist_fraction
+# - sc_stat_interval
+# - sc_stat_refresh
+# - sc_swappiness
+# - sc_user_reserve_kbytes
+# - sc_vfs_cache_pressure
+# - sc_watermark_scale_factor
+# - sc_zone_reclaim_mode
+
+[ -n "$sc_vsyscall32" ] && echo $sc_vsyscall32 > /proc/sys/abi/vsyscall32
+[ -n "$sc_fips_enabled" ] && echo $sc_fips_enabled > /proc/sys/crypto/fips_enabled
+[ -n "$sc_exception_trace" ] && echo $sc_exception_trace > /proc/sys/debug/exception-trace
+[ -n "$sc_kprobes_optimization" ] && echo $sc_kprobes_optimization > /proc/sys/debug/kprobes-optimization
+[ -n "$sc_aio_max_nr" ] && echo $sc_aio_max_nr > /proc/sys/fs/aio-max-nr
+[ -n "$sc_aio_nr" ] && echo $sc_aio_nr > /proc/sys/fs/aio-nr
+[ -n "$sc_dentry_state" ] && echo $sc_dentry_state > /proc/sys/fs/dentry-state
+[ -n "$sc_dir_notify_enable" ] && echo $sc_dir_notify_enable > /proc/sys/fs/dir-notify-enable
+[ -n "$sc_file_max" ] && echo $sc_file_max > /proc/sys/fs/file-max
+[ -n "$sc_file_nr" ] && echo $sc_file_nr > /proc/sys/fs/file-nr
+[ -n "$sc_inode_nr" ] && echo $sc_inode_nr > /proc/sys/fs/inode-nr
+[ -n "$sc_inode_state" ] && echo $sc_inode_state > /proc/sys/fs/inode-state
+[ -n "$sc_lease_break_time" ] && echo $sc_lease_break_time > /proc/sys/fs/lease-break-time
+[ -n "$sc_leases_enable" ] && echo $sc_leases_enable > /proc/sys/fs/leases-enable
+[ -n "$sc_nr_open" ] && echo $sc_nr_open > /proc/sys/fs/nr_open
+[ -n "$sc_overflowgid" ] && echo $sc_overflowgid > /proc/sys/fs/overflowgid
+[ -n "$sc_overflowuid" ] && echo $sc_overflowuid > /proc/sys/fs/overflowuid
+[ -n "$sc_pipe_max_size" ] && echo $sc_pipe_max_size > /proc/sys/fs/pipe-max-size
+[ -n "$sc_pipe_user_pages_hard" ] && echo $sc_pipe_user_pages_hard > /proc/sys/fs/pipe-user-pages-hard
+[ -n "$sc_pipe_user_pages_soft" ] && echo $sc_pipe_user_pages_soft > /proc/sys/fs/pipe-user-pages-soft
+[ -n "$sc_protected_hardlinks" ] && echo $sc_protected_hardlinks > /proc/sys/fs/protected_hardlinks
+[ -n "$sc_protected_symlinks" ] && echo $sc_protected_symlinks > /proc/sys/fs/protected_symlinks
+[ -n "$sc_suid_dumpable" ] && echo $sc_suid_dumpable > /proc/sys/fs/suid_dumpable
+[ -n "$sc_acct" ] && echo $sc_acct > /proc/sys/kernel/acct
+[ -n "$sc_acpi_video_flags" ] && echo $sc_acpi_video_flags > /proc/sys/kernel/acpi_video_flags
+[ -n "$sc_auto_msgmni" ] && echo $sc_auto_msgmni > /proc/sys/kernel/auto_msgmni
+[ -n "$sc_bootloader_type" ] && echo $sc_bootloader_type > /proc/sys/kernel/bootloader_type
+[ -n "$sc_bootloader_version" ] && echo $sc_bootloader_version > /proc/sys/kernel/bootloader_version
+[ -n "$sc_cad_pid" ] && echo $sc_cad_pid > /proc/sys/kernel/cad_pid
+[ -n "$sc_cap_last_cap" ] && echo $sc_cap_last_cap > /proc/sys/kernel/cap_last_cap
+[ -n "$sc_compat_log" ] && echo $sc_compat_log > /proc/sys/kernel/compat-log
+[ -n "$sc_core_pattern" ] && echo $sc_core_pattern > /proc/sys/kernel/core_pattern
+[ -n "$sc_core_pipe_limit" ] && echo $sc_core_pipe_limit > /proc/sys/kernel/core_pipe_limit
+[ -n "$sc_core_uses_pid" ] && echo $sc_core_uses_pid > /proc/sys/kernel/core_uses_pid
+[ -n "$sc_ctrl_alt_del" ] && echo $sc_ctrl_alt_del > /proc/sys/kernel/ctrl-alt-del
+[ -n "$sc_dmesg_restrict" ] && echo $sc_dmesg_restrict > /proc/sys/kernel/dmesg_restrict
+[ -n "$sc_domainname" ] && echo $sc_domainname > /proc/sys/kernel/domainname
+[ -n "$sc_ftrace_dump_on_oops" ] && echo $sc_ftrace_dump_on_oops > /proc/sys/kernel/ftrace_dump_on_oops
+[ -n "$sc_ftrace_enabled" ] && echo $sc_ftrace_enabled > /proc/sys/kernel/ftrace_enabled
+[ -n "$sc_hardlockup_all_cpu_backtrace" ] && echo $sc_hardlockup_all_cpu_backtrace > /proc/sys/kernel/hardlockup_all_cpu_backtrace
+[ -n "$sc_hardlockup_panic" ] && echo $sc_hardlockup_panic > /proc/sys/kernel/hardlockup_panic
+[ -n "$sc_hostname" ] && echo $sc_hostname > /proc/sys/kernel/hostname
+[ -n "$sc_io_delay_type" ] && echo $sc_io_delay_type > /proc/sys/kernel/io_delay_type
+[ -n "$sc_kexec_load_disabled" ] && echo $sc_kexec_load_disabled > /proc/sys/kernel/kexec_load_disabled
+[ -n "$sc_kptr_restrict" ] && echo $sc_kptr_restrict > /proc/sys/kernel/kptr_restrict
+[ -n "$sc_kstack_depth_to_print" ] && echo $sc_kstack_depth_to_print > /proc/sys/kernel/kstack_depth_to_print
+[ -n "$sc_latencytop" ] && echo $sc_latencytop > /proc/sys/kernel/latencytop
+[ -n "$sc_max_lock_depth" ] && echo $sc_max_lock_depth > /proc/sys/kernel/max_lock_depth
+[ -n "$sc_modprobe" ] && echo $sc_modprobe > /proc/sys/kernel/modprobe
+[ -n "$sc_modules_disabled" ] && echo $sc_modules_disabled > /proc/sys/kernel/modules_disabled
+[ -n "$sc_msgmax" ] && echo $sc_msgmax > /proc/sys/kernel/msgmax
+[ -n "$sc_msgmnb" ] && echo $sc_msgmnb > /proc/sys/kernel/msgmnb
+[ -n "$sc_msgmni" ] && echo $sc_msgmni > /proc/sys/kernel/msgmni
+[ -n "$sc_msg_next_id" ] && echo $sc_msg_next_id > /proc/sys/kernel/msg_next_id
+[ -n "$sc_ngroups_max" ] && echo $sc_ngroups_max > /proc/sys/kernel/ngroups_max
+[ -n "$sc_nmi_watchdog" ] && echo $sc_nmi_watchdog > /proc/sys/kernel/nmi_watchdog
+[ -n "$sc_ns_last_pid" ] && echo $sc_ns_last_pid > /proc/sys/kernel/ns_last_pid
+[ -n "$sc_numa_balancing" ] && echo $sc_numa_balancing > /proc/sys/kernel/numa_balancing
+[ -n "$sc_numa_balancing_scan_delay_ms" ] && echo $sc_numa_balancing_scan_delay_ms > /proc/sys/kernel/numa_balancing_scan_delay_ms
+[ -n "$sc_numa_balancing_scan_period_max_ms" ] && echo $sc_numa_balancing_scan_period_max_ms > /proc/sys/kernel/numa_balancing_scan_period_max_ms
+[ -n "$sc_numa_balancing_scan_period_min_ms" ] && echo $sc_numa_balancing_scan_period_min_ms > /proc/sys/kernel/numa_balancing_scan_period_min_ms
+[ -n "$sc_numa_balancing_scan_size_mb" ] && echo $sc_numa_balancing_scan_size_mb > /proc/sys/kernel/numa_balancing_scan_size_mb
+[ -n "$sc_osrelease" ] && echo $sc_osrelease > /proc/sys/kernel/osrelease
+[ -n "$sc_ostype" ] && echo $sc_ostype > /proc/sys/kernel/ostype
+[ -n "$sc_overflowgid" ] && echo $sc_overflowgid > /proc/sys/kernel/overflowgid
+[ -n "$sc_overflowuid" ] && echo $sc_overflowuid > /proc/sys/kernel/overflowuid
+[ -n "$sc_panic" ] && echo $sc_panic > /proc/sys/kernel/panic
+[ -n "$sc_panic_on_io_nmi" ] && echo $sc_panic_on_io_nmi > /proc/sys/kernel/panic_on_io_nmi
+[ -n "$sc_panic_on_oops" ] && echo $sc_panic_on_oops > /proc/sys/kernel/panic_on_oops
+[ -n "$sc_panic_on_rcu_stall" ] && echo $sc_panic_on_rcu_stall > /proc/sys/kernel/panic_on_rcu_stall
+[ -n "$sc_panic_on_stackoverflow" ] && echo $sc_panic_on_stackoverflow > /proc/sys/kernel/panic_on_stackoverflow
+[ -n "$sc_panic_on_unrecovered_nmi" ] && echo $sc_panic_on_unrecovered_nmi > /proc/sys/kernel/panic_on_unrecovered_nmi
+[ -n "$sc_panic_on_warn" ] && echo $sc_panic_on_warn > /proc/sys/kernel/panic_on_warn
+[ -n "$sc_perf_cpu_time_max_percent" ] && echo $sc_perf_cpu_time_max_percent > /proc/sys/kernel/perf_cpu_time_max_percent
+[ -n "$sc_perf_event_max_contexts_per_stack" ] && echo $sc_perf_event_max_contexts_per_stack > /proc/sys/kernel/perf_event_max_contexts_per_stack
+[ -n "$sc_perf_event_max_sample_rate" ] && echo $sc_perf_event_max_sample_rate > /proc/sys/kernel/perf_event_max_sample_rate
+[ -n "$sc_perf_event_max_stack" ] && echo $sc_perf_event_max_stack > /proc/sys/kernel/perf_event_max_stack
+[ -n "$sc_perf_event_mlock_kb" ] && echo $sc_perf_event_mlock_kb > /proc/sys/kernel/perf_event_mlock_kb
+[ -n "$sc_perf_event_paranoid" ] && echo $sc_perf_event_paranoid > /proc/sys/kernel/perf_event_paranoid
+[ -n "$sc_pid_max" ] && echo $sc_pid_max > /proc/sys/kernel/pid_max
+[ -n "$sc_poweroff_cmd" ] && echo $sc_poweroff_cmd > /proc/sys/kernel/poweroff_cmd
+[ -n "$sc_print_fatal_signals" ] && echo $sc_print_fatal_signals > /proc/sys/kernel/print-fatal-signals
+[ -n "$sc_printk" ] && echo $sc_printk > /proc/sys/kernel/printk
+[ -n "$sc_printk_delay" ] && echo $sc_printk_delay > /proc/sys/kernel/printk_delay
+[ -n "$sc_printk_devkmsg" ] && echo $sc_printk_devkmsg > /proc/sys/kernel/printk_devkmsg
+[ -n "$sc_printk_ratelimit" ] && echo $sc_printk_ratelimit > /proc/sys/kernel/printk_ratelimit
+[ -n "$sc_printk_ratelimit_burst" ] && echo $sc_printk_ratelimit_burst > /proc/sys/kernel/printk_ratelimit_burst
+[ -n "$sc_randomize_va_space" ] && echo $sc_randomize_va_space > /proc/sys/kernel/randomize_va_space
+[ -n "$sc_real_root_dev" ] && echo $sc_real_root_dev > /proc/sys/kernel/real-root-dev
+[ -n "$sc_sched_autogroup_enabled" ] && echo $sc_sched_autogroup_enabled > /proc/sys/kernel/sched_autogroup_enabled
+[ -n "$sc_sched_cfs_bandwidth_slice_us" ] && echo $sc_sched_cfs_bandwidth_slice_us > /proc/sys/kernel/sched_cfs_bandwidth_slice_us
+[ -n "$sc_sched_child_runs_first" ] && echo $sc_sched_child_runs_first > /proc/sys/kernel/sched_child_runs_first
+[ -n "$sc_sched_latency_ns" ] && echo $sc_sched_latency_ns > /proc/sys/kernel/sched_latency_ns
+[ -n "$sc_sched_migration_cost_ns" ] && echo $sc_sched_migration_cost_ns > /proc/sys/kernel/sched_migration_cost_ns
+[ -n "$sc_sched_min_granularity_ns" ] && echo $sc_sched_min_granularity_ns > /proc/sys/kernel/sched_min_granularity_ns
+[ -n "$sc_sched_nr_migrate" ] && echo $sc_sched_nr_migrate > /proc/sys/kernel/sched_nr_migrate
+[ -n "$sc_sched_rr_timeslice_ms" ] && echo $sc_sched_rr_timeslice_ms > /proc/sys/kernel/sched_rr_timeslice_ms
+[ -n "$sc_sched_rt_period_us" ] && echo $sc_sched_rt_period_us > /proc/sys/kernel/sched_rt_period_us
+[ -n "$sc_sched_rt_runtime_us" ] && echo $sc_sched_rt_runtime_us > /proc/sys/kernel/sched_rt_runtime_us
+[ -n "$sc_sched_schedstats" ] && echo $sc_sched_schedstats > /proc/sys/kernel/sched_schedstats
+[ -n "$sc_sched_shares_window_ns" ] && echo $sc_sched_shares_window_ns > /proc/sys/kernel/sched_shares_window_ns
+[ -n "$sc_sched_time_avg_ms" ] && echo $sc_sched_time_avg_ms > /proc/sys/kernel/sched_time_avg_ms
+[ -n "$sc_sched_tunable_scaling" ] && echo $sc_sched_tunable_scaling > /proc/sys/kernel/sched_tunable_scaling
+[ -n "$sc_sched_wakeup_granularity_ns" ] && echo $sc_sched_wakeup_granularity_ns > /proc/sys/kernel/sched_wakeup_granularity_ns
+[ -n "$sc_sem" ] && echo $sc_sem > /proc/sys/kernel/sem
+[ -n "$sc_sem_next_id" ] && echo $sc_sem_next_id > /proc/sys/kernel/sem_next_id
+[ -n "$sc_sg_big_buff" ] && echo $sc_sg_big_buff > /proc/sys/kernel/sg-big-buff
+[ -n "$sc_shmall" ] && echo $sc_shmall > /proc/sys/kernel/shmall
+[ -n "$sc_shmmax" ] && echo $sc_shmmax > /proc/sys/kernel/shmmax
+[ -n "$sc_shmmni" ] && echo $sc_shmmni > /proc/sys/kernel/shmmni
+[ -n "$sc_shm_next_id" ] && echo $sc_shm_next_id > /proc/sys/kernel/shm_next_id
+[ -n "$sc_shm_rmid_forced" ] && echo $sc_shm_rmid_forced > /proc/sys/kernel/shm_rmid_forced
+[ -n "$sc_softlockup_all_cpu_backtrace" ] && echo $sc_softlockup_all_cpu_backtrace > /proc/sys/kernel/softlockup_all_cpu_backtrace
+[ -n "$sc_softlockup_panic" ] && echo $sc_softlockup_panic > /proc/sys/kernel/softlockup_panic
+[ -n "$sc_soft_watchdog" ] && echo $sc_soft_watchdog > /proc/sys/kernel/soft_watchdog
+[ -n "$sc_stack_tracer_enabled" ] && echo $sc_stack_tracer_enabled > /proc/sys/kernel/stack_tracer_enabled
+[ -n "$sc_sysctl_writes_strict" ] && echo $sc_sysctl_writes_strict > /proc/sys/kernel/sysctl_writes_strict
+[ -n "$sc_sysrq" ] && echo $sc_sysrq > /proc/sys/kernel/sysrq
+[ -n "$sc_tainted" ] && echo $sc_tainted > /proc/sys/kernel/tainted
+[ -n "$sc_threads_max" ] && echo $sc_threads_max > /proc/sys/kernel/threads-max
+[ -n "$sc_timer_migration" ] && echo $sc_timer_migration > /proc/sys/kernel/timer_migration
+[ -n "$sc_traceoff_on_warning" ] && echo $sc_traceoff_on_warning > /proc/sys/kernel/traceoff_on_warning
+[ -n "$sc_tracepoint_printk" ] && echo $sc_tracepoint_printk > /proc/sys/kernel/tracepoint_printk
+[ -n "$sc_unknown_nmi_panic" ] && echo $sc_unknown_nmi_panic > /proc/sys/kernel/unknown_nmi_panic
+[ -n "$sc_unprivileged_bpf_disabled" ] && echo $sc_unprivileged_bpf_disabled > /proc/sys/kernel/unprivileged_bpf_disabled
+[ -n "$sc_version" ] && echo $sc_version > /proc/sys/kernel/version
+[ -n "$sc_watchdog" ] && echo $sc_watchdog > /proc/sys/kernel/watchdog
+[ -n "$sc_watchdog_cpumask" ] && echo $sc_watchdog_cpumask > /proc/sys/kernel/watchdog_cpumask
+[ -n "$sc_watchdog_thresh" ] && echo $sc_watchdog_thresh > /proc/sys/kernel/watchdog_thresh
+[ -n "$sc_nf_conntrack_max" ] && echo $sc_nf_conntrack_max > /proc/sys/net/nf_conntrack_max
+[ -n "$sc_max_resvport" ] && echo $sc_max_resvport > /proc/sys/sunrpc/max_resvport
+[ -n "$sc_min_resvport" ] && echo $sc_min_resvport > /proc/sys/sunrpc/min_resvport
+[ -n "$sc_nfsd_debug" ] && echo $sc_nfsd_debug > /proc/sys/sunrpc/nfsd_debug
+[ -n "$sc_nfs_debug" ] && echo $sc_nfs_debug > /proc/sys/sunrpc/nfs_debug
+[ -n "$sc_nlm_debug" ] && echo $sc_nlm_debug > /proc/sys/sunrpc/nlm_debug
+[ -n "$sc_rpc_debug" ] && echo $sc_rpc_debug > /proc/sys/sunrpc/rpc_debug
+[ -n "$sc_tcp_fin_timeout" ] && echo $sc_tcp_fin_timeout > /proc/sys/sunrpc/tcp_fin_timeout
+[ -n "$sc_tcp_max_slot_table_entries" ] && echo $sc_tcp_max_slot_table_entries > /proc/sys/sunrpc/tcp_max_slot_table_entries
+[ -n "$sc_tcp_slot_table_entries" ] && echo $sc_tcp_slot_table_entries > /proc/sys/sunrpc/tcp_slot_table_entries
+[ -n "$sc_transports" ] && echo $sc_transports > /proc/sys/sunrpc/transports
+[ -n "$sc_udp_slot_table_entries" ] && echo $sc_udp_slot_table_entries > /proc/sys/sunrpc/udp_slot_table_entries
+[ -n "$sc_admin_reserve_kbytes" ] && echo $sc_admin_reserve_kbytes > /proc/sys/vm/admin_reserve_kbytes
+[ -n "$sc_block_dump" ] && echo $sc_block_dump > /proc/sys/vm/block_dump
+[ -n "$sc_compact_memory" ] && echo $sc_compact_memory > /proc/sys/vm/compact_memory
+[ -n "$sc_compact_unevictable_allowed" ] && echo $sc_compact_unevictable_allowed > /proc/sys/vm/compact_unevictable_allowed
+[ -n "$sc_dirty_background_bytes" ] && echo $sc_dirty_background_bytes > /proc/sys/vm/dirty_background_bytes
+[ -n "$sc_dirty_background_ratio" ] && echo $sc_dirty_background_ratio > /proc/sys/vm/dirty_background_ratio
+[ -n "$sc_dirty_bytes" ] && echo $sc_dirty_bytes > /proc/sys/vm/dirty_bytes
+[ -n "$sc_dirty_expire_centisecs" ] && echo $sc_dirty_expire_centisecs > /proc/sys/vm/dirty_expire_centisecs
+[ -n "$sc_dirty_ratio" ] && echo $sc_dirty_ratio > /proc/sys/vm/dirty_ratio
+[ -n "$sc_dirtytime_expire_seconds" ] && echo $sc_dirtytime_expire_seconds > /proc/sys/vm/dirtytime_expire_seconds
+[ -n "$sc_dirty_writeback_centisecs" ] && echo $sc_dirty_writeback_centisecs > /proc/sys/vm/dirty_writeback_centisecs
+[ -n "$sc_drop_caches" ] && echo $sc_drop_caches > /proc/sys/vm/drop_caches
+[ -n "$sc_extfrag_threshold" ] && echo $sc_extfrag_threshold > /proc/sys/vm/extfrag_threshold
+[ -n "$sc_hugepages_treat_as_movable" ] && echo $sc_hugepages_treat_as_movable > /proc/sys/vm/hugepages_treat_as_movable
+[ -n "$sc_hugetlb_shm_group" ] && echo $sc_hugetlb_shm_group > /proc/sys/vm/hugetlb_shm_group
+[ -n "$sc_laptop_mode" ] && echo $sc_laptop_mode > /proc/sys/vm/laptop_mode
+[ -n "$sc_legacy_va_layout" ] && echo $sc_legacy_va_layout > /proc/sys/vm/legacy_va_layout
+[ -n "$sc_lowmem_reserve_ratio" ] && echo $sc_lowmem_reserve_ratio > /proc/sys/vm/lowmem_reserve_ratio
+[ -n "$sc_max_map_count" ] && echo $sc_max_map_count > /proc/sys/vm/max_map_count
+[ -n "$sc_memory_failure_early_kill" ] && echo $sc_memory_failure_early_kill > /proc/sys/vm/memory_failure_early_kill
+[ -n "$sc_memory_failure_recovery" ] && echo $sc_memory_failure_recovery > /proc/sys/vm/memory_failure_recovery
+[ -n "$sc_min_free_kbytes" ] && echo $sc_min_free_kbytes > /proc/sys/vm/min_free_kbytes
+[ -n "$sc_min_slab_ratio" ] && echo $sc_min_slab_ratio > /proc/sys/vm/min_slab_ratio
+[ -n "$sc_min_unmapped_ratio" ] && echo $sc_min_unmapped_ratio > /proc/sys/vm/min_unmapped_ratio
+[ -n "$sc_mmap_min_addr" ] && echo $sc_mmap_min_addr > /proc/sys/vm/mmap_min_addr
+[ -n "$sc_mmap_rnd_bits" ] && echo $sc_mmap_rnd_bits > /proc/sys/vm/mmap_rnd_bits
+[ -n "$sc_mmap_rnd_compat_bits" ] && echo $sc_mmap_rnd_compat_bits > /proc/sys/vm/mmap_rnd_compat_bits
+[ -n "$sc_nr_hugepages" ] && echo $sc_nr_hugepages > /proc/sys/vm/nr_hugepages
+[ -n "$sc_nr_hugepages_mempolicy" ] && echo $sc_nr_hugepages_mempolicy > /proc/sys/vm/nr_hugepages_mempolicy
+[ -n "$sc_nr_overcommit_hugepages" ] && echo $sc_nr_overcommit_hugepages > /proc/sys/vm/nr_overcommit_hugepages
+[ -n "$sc_nr_pdflush_threads" ] && echo $sc_nr_pdflush_threads > /proc/sys/vm/nr_pdflush_threads
+[ -n "$sc_numa_zonelist_order" ] && echo $sc_numa_zonelist_order > /proc/sys/vm/numa_zonelist_order
+[ -n "$sc_oom_dump_tasks" ] && echo $sc_oom_dump_tasks > /proc/sys/vm/oom_dump_tasks
+[ -n "$sc_oom_kill_allocating_task" ] && echo $sc_oom_kill_allocating_task > /proc/sys/vm/oom_kill_allocating_task
+[ -n "$sc_overcommit_kbytes" ] && echo $sc_overcommit_kbytes > /proc/sys/vm/overcommit_kbytes
+[ -n "$sc_overcommit_memory" ] && echo $sc_overcommit_memory > /proc/sys/vm/overcommit_memory
+[ -n "$sc_overcommit_ratio" ] && echo $sc_overcommit_ratio > /proc/sys/vm/overcommit_ratio
+[ -n "$sc_page_cluster" ] && echo $sc_page_cluster > /proc/sys/vm/page-cluster
+[ -n "$sc_panic_on_oom" ] && echo $sc_panic_on_oom > /proc/sys/vm/panic_on_oom
+[ -n "$sc_percpu_pagelist_fraction" ] && echo $sc_percpu_pagelist_fraction > /proc/sys/vm/percpu_pagelist_fraction
+[ -n "$sc_stat_interval" ] && echo $sc_stat_interval > /proc/sys/vm/stat_interval
+[ -n "$sc_stat_refresh" ] && echo $sc_stat_refresh > /proc/sys/vm/stat_refresh
+[ -n "$sc_swappiness" ] && echo $sc_swappiness > /proc/sys/vm/swappiness
+[ -n "$sc_user_reserve_kbytes" ] && echo $sc_user_reserve_kbytes > /proc/sys/vm/user_reserve_kbytes
+[ -n "$sc_vfs_cache_pressure" ] && echo $sc_vfs_cache_pressure > /proc/sys/vm/vfs_cache_pressure
+[ -n "$sc_watermark_scale_factor" ] && echo $sc_watermark_scale_factor > /proc/sys/vm/watermark_scale_factor
+[ -n "$sc_zone_reclaim_mode" ] && echo $sc_zone_reclaim_mode > /proc/sys/vm/zone_reclaim_mode

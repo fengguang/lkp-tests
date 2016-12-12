@@ -1,0 +1,25 @@
+#!/bin/sh
+
+output=$LKP_SRC/setup/sysctl
+echo "#!/bin/sh" > $output
+
+# params
+for i in `find /proc/sys -maxdepth 2 -type f |sort -u`
+do
+	j=`basename $i | sed -r 's/-/_/g'`
+	echo "# - sc_$j" >> $output
+done
+
+# separate line
+echo >> $output
+
+# set
+for i in `find /proc/sys -maxdepth 2 -type f| sort -u`
+do
+	j=`basename $i | sed -r 's/-/_/g'`
+	cat >> $output << EOF
+[ -n "\$sc_$j" ] && echo \$sc_$j > $i
+EOF
+done
+
+chmod +x $LKP_SRC/setup/sysctl
