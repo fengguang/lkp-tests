@@ -227,7 +227,7 @@ class MResultRoot
 
 	def matrix
 		m = try_load_json matrix_file
-		matrix_fill_missing_zeros m
+		matrix_fill_missing_zeros m if m
 	end
 
 	def completions
