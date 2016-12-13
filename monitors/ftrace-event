@@ -1,0 +1,13 @@
+#!/bin/sh
+# - delay
+# - duration
+# - buffer_size_kb
+# - ftrace_options
+# - events
+
+. $LKP_SRC/lib/ftrace.sh
+setup_wait
+
+ftrace_set_params
+
+ftrace_run

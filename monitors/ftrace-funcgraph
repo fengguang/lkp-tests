@@ -1,0 +1,16 @@
+#!/bin/sh
+# - delay
+# - duration
+# - buffer_size_kb
+# - ftrace_options
+# - functions
+# - graph_functions
+
+. $LKP_SRC/lib/ftrace.sh
+setup_wait
+
+current_tracer=function_graph
+ftrace_filters=$functions
+ftrace_set_params
+
+ftrace_run
