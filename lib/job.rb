@@ -851,13 +851,11 @@ module LKP
 		def status
 			return "NOT COMPLETED" unless completed?
 
-			if path?("#{self['testcase']}.success")
-				"PASS"
-			elsif last_state['is_incomplete_run'] == 1
+			if last_state['is_incomplete_run'] == 1
 				"INCOMPLETE"
-			elsif path?("last_state") || path?("#{self['testcase']}.fail") || !["skipped", "united"].include?(stage)
+			elsif path?("last_state") || stage !~ /skipped|united|removed/
 				"FAIL"
-			elsif stage == 'skipped'
+			elsif stage =~ /skipped|removed/
 				"SKIP"
 			else # united stage
 				if path?("#{self['testcase']}.json")
