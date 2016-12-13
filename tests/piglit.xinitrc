@@ -27,6 +27,7 @@ if [ -s "$LKP_SRC/pack/piglit-addon/groups/broken" ]; then
 else
 	testcases=$(grep -F -x -f $BENCHMARK_ROOT/piglit/groups/$tset-all $config_file)
 fi
+[ -n "$testcases" ] || die "can not get piglit test cases"
 
 while read testcase
 do
