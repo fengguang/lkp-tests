@@ -1,0 +1,31 @@
+#!/bin/sh
+# - nr_task
+# - size
+
+USEMEM=$BENCHMARK_ROOT/vm-scalability/usemem
+
+if [ ! -n "$size" ]; then
+	echo "size not specified" >&2
+	exit 1
+fi
+
+swaptotal=$(grep SwapTotal /proc/meminfo |awk '{print $2}')
+if [ "$swaptotal" -eq 0 ]; then
+        echo "No swap space. Please setup swap first" >&2
+        exit 1
+fi
+
+# start N detached processes and do write first to consume all memory
+# then wait for SIGUSR1 to resume to do read
+$USEMEM -n $nr_task -W -d -p $TMP/pidfile $((size / nr_task)) > $TMP_RESULT_ROOT/swapin-setup
+
+# Now that the N detached processes are done, start another process
+# to consume memory to push pages allocated by the first N processes
+# to swap.
+# Also, redirect its output to /dev/null so that it won't output any
+# statistics related information
+memtotal=$(grep MemTotal /proc/meminfo |awk '{print $2}')
+memtotal=$((memtotal << 10))
+$USEMEM $memtotal>/dev/null
+# do it again to push more memory to swap
+$USEMEM $memtotal>/dev/null

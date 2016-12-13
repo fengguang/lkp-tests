@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ ! -f $RESULT_ROOT/swapin-setup ]; then
+	echo "swapin-setup not created" >&2
+	exit 1
+fi
+
+cat $RESULT_ROOT/swapin-setup | $LKP_SRC/stats/vm-scalability

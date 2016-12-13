@@ -1,0 +1,20 @@
+suite: vm-scalability
+testcase: swapin
+category: benchmark
+
+perf-profile:
+
+disk:
+swap:
+
+swapin_setup:
+  size:
+    - 2G
+    - 8G
+    - 32G
+  nr_task:
+    - 1
+    - 8
+    - 72
+
+swapin:
