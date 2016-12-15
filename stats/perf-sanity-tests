@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+
+case_number = 0
+
+while line = STDIN.gets
+	case line
+	when /([\d.]+:) (.*) : FAILED!$/
+		case_name = $2.strip.gsub(' ', '_')
+		puts "#{case_name}.fail: 1"
+		case_number += 1
+	when /([\d.]+:) (.*) : Ok$/
+		case_name = $2.strip.gsub(' ', '_')
+		puts "#{case_name}.pass: 1"
+		case_number += 1
+	when /([\d.]+:) (.*) : [Skip$|Skip .*]/
+		case_name = $2.strip.gsub(' ', '_')
+		puts "#{case_name}.skip: 1"
+		case_number += 1
+	end
+end
+
+puts "total_test: #{case_number}"
