@@ -1,0 +1,4 @@
+need_kconfig:
+- CONFIG_X86_MCE=y
+- CONFIG_X86_MCE_INTEL=y
+- CONFIG_X86_MCE_INJECT=m

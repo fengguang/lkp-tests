@@ -1,0 +1,40 @@
+#!/bin/bash
+
+download()
+{
+	git_clone_update git://git.kernel.org/pub/scm/utils/cpu/mce/mce-inject.git
+	git_clone_update git://git.kernel.org/pub/scm/utils/cpu/mce/mce-test.git
+	git_clone_update git://github.com/andikleen/mcelog.git
+}
+
+build()
+{
+	make
+	make -C ../mce-inject
+	make -C ../mce-test
+}
+
+install()
+{
+	cp -af * $BM_ROOT || return
+	make install -C ../mce-inject || return
+	make install -C ../mce-test || return
+	cp ../mce-test/bin/page-types /usr/bin/page-types || return
+}
+
+pack()
+{
+	{
+		echo /usr
+		echo /usr/sbin
+		echo /usr/sbin/mce-inject
+		echo /usr/bin
+		echo /usr/bin/page-types
+		echo /lkp
+		echo /lkp/benchmarks
+		echo /lkp/benchmarks/$BM_NAME
+		find /lkp/benchmarks/$BM_NAME/*
+	} |
+	cpio --quiet -o -H newc --owner=root.root | gzip -n -9 > /lkp/benchmarks/${BM_NAME}.cgz
+	[[ $arch ]] && mv "/lkp/benchmarks/${BM_NAME}.cgz" "/lkp/benchmarks/${BM_NAME}-${arch}.cgz"
+}
