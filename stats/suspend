@@ -85,7 +85,10 @@ while line = STDIN.gets
 end
 
 $srhash.each do |k,v|
-	if v.to_i >= 0
-		puts "#{k}: #{v}"
+	case k
+	when /(.*)_\d*/
+		kmax=$1
+		next if $srmaxhash.has_key?(kmax) && $srmaxhash[kmax] < 50
+		puts "#{kmax}: #{v}"
 	end
 end
