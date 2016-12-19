@@ -1,8 +1,10 @@
 #!/bin/sh
 
+. $LKP_SRC/lib/upload.sh
 . $LKP_SRC/lib/wait.sh
 
 TRACING=/sys/kernel/debug/tracing
+FTRACE_EVENTS_DIR=$TMP/ftrace_events
 
 ftrace_get()
 {
@@ -82,11 +84,10 @@ ftrace_set_params()
 	[ -n "$buffer_size_kb" ] && ftrace_set buffer_size_kb $buffer_size_kb
 
 	if [ -n "$events" ]; then
-		local event_dir=$TMP_RESULT_ROOT/trace_event/
-		mkdir -p $event_dir
+		mkdir -p $FTRACE_EVENTS_DIR
 		for evt in $events; do
 			ftrace_append set_event $evt
-			cp $TRACING/events/*/$evt/format $event_dir/$evt.fmt
+			cp $TRACING/events/*/$evt/format $FTRACE_EVENTS_DIR/$evt.fmt
 		done
 	fi
 
@@ -144,4 +145,5 @@ ftrace_run()
 	ftrace_stop
 
 	touch $TMP_RESULT_ROOT/ftrace.data
+	[ -n "$events" ] && upload_files -t ftrace_events $FTRACE_EVENTS_DIR/*
 }
