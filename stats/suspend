@@ -1,13 +1,10 @@
 #!/usr/bin/env ruby
 
-$cycle = 0
-$srhash = nil
+$cycle = 1
+$srhash = Hash.new
 $phase="none"
 while line = STDIN.gets
 	line.chomp!
-	if $srhash == nil
-		$srhash=Hash.new
-	end
 	case line
 	when /^ *.* \[\d{3}\] .... *(\d{1,6}\.\d{6}): suspend_resume: (.*)\[(\d*)\] (.*)/
                 timestamp = $1
@@ -22,36 +19,32 @@ while line = STDIN.gets
 			step = "#{step}_#{id}"
 		end
 
+		k="#{step}_#{$cycle}"
+
 		if stage == "begin"
-			$srhash[step]=timestamp
+			$srhash[k]=timestamp
 		else
-			cost=(timestamp.to_f - $srhash[step].to_f)*1000
-			puts "#{step}: #{cost.to_i}"
-			$srhash.delete(step)
+			cost=(timestamp.to_f - $srhash[k].to_f)*1000
+			$srhash[k]=cost
 		end
 
 		case step
 		when "suspend_enter"
 			if stage == "begin"
-				$srhash["suspend_overall"]=timestamp
+				$srhash["suspend_overall_#{$cycle}"]=timestamp
 			end
 		when "machine_suspend"
 			if stage == "begin"
-				cost=(timestamp.to_f - $srhash["suspend_overall"].to_f)*1000
-				$srhash["suspend_overall"]=cost.to_i
+				cost=(timestamp.to_f - $srhash["suspend_overall_#{$cycle}"].to_f)*1000
+				$srhash["suspend_overall_#{$cycle}"]=cost.to_i
 			else
-				$srhash["resume_overall"]=timestamp
+				$srhash["resume_overall_#{$cycle}"]=timestamp
 			end
 		when "thaw_processes"
 			if stage == "end"
-				cost=(timestamp.to_f - $srhash["resume_overall"].to_f)*1000
-				$srhash["resume_overall"]=cost.to_i
-				$srhash.each do |k,v|
-					if v.to_i >= 0
-						puts "#{k}: #{v}"
-					end
-				end
-				$srhash = nil
+				cost=(timestamp.to_f - $srhash["resume_overall_#{$cycle}"].to_f)*1000
+				$srhash["resume_overall_#{$cycle}"]=cost.to_i
+				$cycle+=1
 			end
 		when /^dpm_(.*)$/
 			if stage == "begin"
@@ -65,7 +58,7 @@ while line = STDIN.gets
 		bus=$2
 		device=$3
 		id="#{bus}_#{device}".gsub(/ /, '_')
-		k="#{id}_#{$phase}"
+		k="#{id}_#{$phase}_#{$cycle}"
 		if $srhash.has_key?(k)
 			$srhash[k]=-1
 		else
@@ -77,7 +70,7 @@ while line = STDIN.gets
 		device=$3.strip
 		err=$4
 		id="#{bus}_#{device}".gsub(/ /, '_')
-		k="#{id}_#{$phase}"
+		k="#{id}_#{$phase}_#{$cycle}"
 		if $srhash[k] != -1
 			cost=(timestamp.to_f - $srhash[k].to_f)*1000
 			$srhash[k]=cost.to_i
@@ -85,4 +78,10 @@ while line = STDIN.gets
         else
 		next
         end
+end
+
+$srhash.each do |k,v|
+	if v.to_i >= 0
+		puts "#{k}: #{v}"
+	end
 end
