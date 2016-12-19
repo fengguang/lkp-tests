@@ -2,6 +2,7 @@
 
 $cycle = 1
 $srhash = Hash.new
+$srmaxhash = Hash.new
 $phase="none"
 while line = STDIN.gets
 	line.chomp!
@@ -70,10 +71,13 @@ while line = STDIN.gets
 		device=$3.strip
 		err=$4
 		id="#{bus}_#{device}".gsub(/ /, '_')
-		k="#{id}_#{$phase}_#{$cycle}"
+		kmax="#{id}_#{$phase}"
+		k="#{kmax}_#{$cycle}"
 		if $srhash[k] != -1
 			cost=(timestamp.to_f - $srhash[k].to_f)*1000
 			$srhash[k]=cost.to_i
+			$srmaxhash[kmax]=0 if $srmaxhash[kmax] == nil
+			$srmaxhash[kmax]=cost.to_i if $srmaxhash[kmax] < cost.to_i
 		end
         else
 		next
