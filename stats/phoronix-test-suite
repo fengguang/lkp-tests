@@ -2,18 +2,21 @@
 
 test_id = -1
 while line = STDIN.gets
-	case line.chomp!
-	when /pts\/(\S+)-[0-9.]+/
-		test_name = $1
-	when /Average: ([0-9.]+) (.*)/
-		value = $1
-		unit = $2
-		test_id += 1
-		unit = unit.downcase.gsub(' ', '_').gsub('/', '_')
-		puts "#{test_name}.#{test_id}.#{unit}: #{value}"
-	when /The following tests failed to properly run:/
-		puts "#{test_name}.fail: 1"
-	when /idle-([0-9.]+)seconds/
-	    puts "#{line.split()[1]}"
-	end
+  case line.chomp!
+  when %r{pts/(\S+)-[0-9.]+ is not installed}
+    item = Regexp.last_match[1]
+    puts "#{item}.not_installed: 1"
+  when %r{pts/(\S+)-[0-9.]+}
+    test_name = Regexp.last_match[1]
+  when /Average: ([0-9.]+) (.*)/
+    value = Regexp.last_match[1]
+    unit = Regexp.last_match[2]
+    test_id += 1
+    unit = unit.downcase.tr(' ', '_').tr('/', '_')
+    puts "#{test_name}.#{test_id}.#{unit}: #{value}"
+  when /The following tests failed to properly run:/
+    puts "#{test_name}.fail: 1"
+  when /idle-([0-9.]+)seconds/
+    puts line.split[1].to_s
+  end
 end

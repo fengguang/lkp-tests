@@ -1,25 +1,24 @@
-#!/usr/bin/awk -f
+#!/usr/bin/env ruby
 
-BEGIN {
-	FS=": "
-	nr_test = 0
-}
+stats = {}
+while line = STDIN.gets
+  case line
+  when /^### (cpufreq_\d+):$/
+    item = Regexp.last_match[1]
+    stats[item] = '' unless stats.key?(item)
+  when /^(cpufreq_\d+): (fail|pass|skip)$/
+    item = Regexp.last_match[1]
+    result = Regexp.last_match[2]
+    stats[item] = "#{result}: 1" unless stats.key?(item) && !stats[item].empty?
+  end
 
-$2 ~ /^ *fail$/ {
-	printf("%s.fail: 1\n", $1)
-	nr_test++
-}
+end
 
-$2 ~ /^ *pass$/ {
-	printf("%s.pass: 1\n", $1)
-	nr_test++
-}
-
-$2 ~ /^ *skip$/ {
-	printf("%s.skip: 1\n", $1)
-	nr_test++
-}
-
-END {
-	printf("total_test: %d\n", nr_test)
-}
+stats.each do |k, v|
+  if v.empty?
+    puts k + '.skip: 1'
+  else
+    puts k + '.' + v
+  end
+end
+puts 'total_test: ' + stats.size.to_s
