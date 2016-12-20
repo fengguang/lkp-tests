@@ -110,6 +110,8 @@ ftrace_set_params()
 			ftrace_set trace_options $opt
 		done
 	fi
+
+	[ -n "$trace_clock" ] && ftrace_set trace_clock $trace_clock
 }
 
 ftrace_show_params()
