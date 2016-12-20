@@ -116,7 +116,8 @@ PERF_REPORT_SRCLINE_DATA=$TMP/perf-report-srcline.data
 
 FTRACE_MONITOR_FILE=$TMP_RESULT_ROOT/ftrace.data
 [ -f $FTRACE_MONITOR_FILE ] && {
-	cat /sys/kernel/debug/tracing/trace > $FTRACE_MONITOR_FILE
+	rm $FTRACE_MONITOR_FILE
+	cat /sys/kernel/debug/tracing/trace | xz > $FTRACE_MONITOR_FILE.xz
 }
 
 wait_for_pipe()
