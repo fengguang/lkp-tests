@@ -3,7 +3,6 @@
 RESULT_ROOT = ENV['RESULT_ROOT']
 
 PDEL = 10
-UNIT = 1000.0
 
 data = []
 files = Dir["#{RESULT_ROOT}/results/fwq_*_times.dat"]
@@ -17,31 +16,6 @@ files.each { |file|
 	sfdata = nil
 }
 
-threads = files.size
-data.sort!
-data.reverse!
-mean = data[data.size / 2]
-max = data.last
-samples = data.size
-
-data = data.map { |d| d - mean }
-
-printf "max: %g\n", max / UNIT
-printf "mean: %g\n", mean / UNIT
-
-noise_levels = [100, 75, 50, 25, 5, 2]
-
-start = 0
-cycles = 0
-noise_num_levels = noise_levels.each_with_index.map { |level, i|
-	lnt = mean * level / 100
-	nstart = data.bsearch_index { |n| n < lnt }
-	nstart ||= samples
-	(start...nstart).each { |di| cycles += data[di] }
-	start = nstart
-	[level, cycles / UNIT / threads]
-}
-
-noise_num_levels.each { |level, mc|
-	printf "noise.%d%%: %g\n", level, mc
-}
+n = Noise.new("fwq", data)
+n.analyse
+n.log
