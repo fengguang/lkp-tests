@@ -1,0 +1,125 @@
+#!/usr/bin/ruby
+
+UNIT = 1000.0
+DEBUG = false
+RESULT_ROOT = ENV['RESULT_ROOT']
+LKP_SRC ||= ENV['LKP_SRC']
+
+require "#{LKP_SRC}/lib/noise.rb"
+
+$time = Hash.new
+$syscall_nr = Hash.new
+
+$syscall_total_nr = 0
+$syscall_max_nr = 0
+
+def parse_process_lines process_lines
+	syscall_1 = syscall_2 = ""
+	syscall_start = syscall_end = 0
+	start = true
+	find_next = true
+	last_line="init"
+
+	process_lines.each do |line|
+		a = line.split("]")
+		b = a[1].split
+
+		if find_next
+			if (b[3] == "->")
+				last_line = line
+				next
+			else
+				find_next = false
+				start = true
+			end
+		end
+
+		if start
+			if (b[3] == "->")
+				STDERR.puts "not a START of syscall\n" + last_line + line if DEBUG
+				find_next = true
+				last_line = line
+				next
+			end
+			c = b[2].split("(")
+			syscall_1 = c[0]
+			syscall_start = b[1].to_i
+			start = false
+		else
+			if (b[3] != "->")
+				STDERR.puts "not a syscall return:\n" + last_line + line if DEBUG
+				find_next = true
+				last_line = line
+				next
+			end
+			syscall_2 = b[2]
+			if (syscall_2 != syscall_1)
+				STDERR.puts "not the same syscall\n" + last_line + line if DEBUG
+				find_next = true
+				last_line = line
+				next
+			end
+			syscall_end = b[1].to_i
+			syscall_time = syscall_end - syscall_start
+			if ($time[syscall_2] == nil)
+				$time[syscall_2] = Array.new
+			end
+			$time[syscall_2] << syscall_time
+			start = true
+		end
+		last_line = line
+	end
+end
+
+def parse_syscalls
+	process_lines = Hash.new
+	f = IO.popen("xzcat #{RESULT_ROOT}/ftrace.data.xz")
+	return if f == nil
+	lines = f.readlines
+	f.close
+
+	lines.each do |line|
+		next if line.include? "CPU" or line.include? "#"
+
+		a = line.split
+		next if a[4] == nil
+
+		process_name = a[0]
+		if (process_lines[process_name] == nil)
+			process_lines[process_name] = Array.new
+		end
+		process_lines[process_name] << line
+	end
+
+	process_lines.each do |process_name, line_array|
+		parse_process_lines line_array
+	end
+end
+
+def get_syscall_nr
+	$time.each do |syscall, time_array|
+		$syscall_nr[syscall] = time_array.length
+	end
+
+	$syscall_nr.each do |syscall, nr|
+		$syscall_total_nr += nr
+		$syscall_max_nr = nr if nr > $syscall_max_nr
+	end
+
+	return $syscall_nr.sort_by { |key, val| val }.reverse
+end
+
+def show_syscalls_noise
+	a = get_syscall_nr
+	i = 0
+	a.each do |syscall, nr|
+		break if i == 5
+		n = Noise.new syscall, $time[syscall]
+		n.analyse
+		n.log
+		i += 1
+	end
+end
+
+parse_syscalls
+show_syscalls_noise
