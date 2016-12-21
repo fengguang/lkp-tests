@@ -14,7 +14,7 @@ describe WTMP do
 	describe 'load_tail' do
 		context 'error' do
 			it 'returns nil' do
-				actual = described_class.load_tail("time: 2015-08-06 20:25:44 +0800state: running")
+				actual = described_class.load_tail('time: 2015-08-06 20:25:44 +0800state: running')
 
 				expect(actual).to be nil
 			end

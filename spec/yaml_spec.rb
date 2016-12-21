@@ -2,8 +2,8 @@ require 'spec_helper'
 require 'timeout'
 require "#{LKP_SRC}/lib/yaml"
 
-describe "load_yaml_with_flock" do
-	TEST_YAML_FILE = "/tmp/test.yaml".freeze
+describe 'load_yaml_with_flock' do
+	TEST_YAML_FILE = '/tmp/test.yaml'.freeze
 
 	before(:example) do
 		File.open(TEST_YAML_FILE, 'w') { |f|
@@ -11,12 +11,12 @@ describe "load_yaml_with_flock" do
 		}
 	end
 
-	it "should return correct value" do
+	it 'returns correct value' do
 		yaml = load_yaml_with_flock TEST_YAML_FILE
 		expect(yaml['key2']).to eq 'value2'
 	end
 
-	it "should return nil due to flock by other process" do
+	it 'returns nil due to flock by other process' do
 		f = File.open(TEST_YAML_FILE + '.lock', File::RDWR|File::CREAT, 0664)
 		f.flock(File::LOCK_EX)
 
@@ -31,16 +31,16 @@ describe "load_yaml_with_flock" do
 	end
 end
 
-describe "save_yaml_with_flock" do
-	TEST_YAML_OBJ = {"key1"=>"value1","key2"=>"value2"}
+describe 'save_yaml_with_flock' do
+	TEST_YAML_OBJ = {'key1'=>'value1','key2'=>'value2'}
 
-	it "should save yaml file correctly" do
+	it 'saves yaml file' do
 		save_yaml_with_flock TEST_YAML_OBJ, TEST_YAML_FILE
 		yaml = load_yaml TEST_YAML_FILE
 		expect(yaml['key2']).to eq 'value2'
 	end
 
-	it "should return false due to flock by other process" do
+	it 'returns false due to flock by other process' do
 		f = File.open(TEST_YAML_FILE + '.lock', File::RDWR|File::CREAT, 0664)
 		f.flock(File::LOCK_EX)
 
@@ -55,7 +55,7 @@ describe "save_yaml_with_flock" do
 	end
 end
 
-describe "yaml_merge_included_files" do
+describe 'yaml_merge_included_files' do
 	YAML_MERGE_SPEC = <<EOF
 contents: &borrow-1d
   #{YAML.load_file('jobs/borrow-1d.yaml').to_json}

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "stats" do
+describe 'stats' do
 	files = Dir.glob "#{LKP_SRC}/spec/stats/*:[0-9]*"
 	files.each do |file|
 		it "invariance: #{file}" do
