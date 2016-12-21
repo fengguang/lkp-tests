@@ -34,6 +34,17 @@ def git_parents(commit)
 	return $__parents_cache[commit]
 end
 
+def __git_patchid(commit)
+	`#{GIT} show #{commit} 2>/dev/null | git patch-id --stable | awk '{ print $1 }'`.chomp
+end
+
+def git_patchid(commit)
+	$__patchid_cache ||= {}
+	patch_id = __git_patchid(commit)
+	$__patchid_cache[commit] ||= patch_id unless patch_id.empty?
+	return $__patchid_cache[commit]
+end
+
 def is_linus_commit(commit)
 	git_committer_name(commit) == 'Linus Torvalds'
 end
