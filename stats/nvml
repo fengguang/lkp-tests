@@ -1,43 +1,48 @@
 #!/usr/bin/env ruby
 
 stats = []
-nr_test = 0
-test_item = ""
-fs_type = ""
-build_type = ""
+test_item = ''
+fs_type = ''
+build_type = ''
 
-while line = STDIN.gets
+while (line = STDIN.gets)
 	case line
-	when /^(.+)\/TEST[0-9]+: SETUP \(.+\/(.+)\/(.+)\)$/
-		test_item = $1
-		fs_type = $2
-		build_type = $3
-	when /^(.+)\/(TEST[0-9]+): PASS$/
-		next unless test_item == $1
-		stats << $1 + "_" + $2 + "_" + fs_type + "_" + build_type + '.pass: 1'
-		nr_test += 1
-	when /^(.+)\/(TEST[0-9]+): FAIL/
-		next unless test_item == $1
-		stats << $1 + "_" + $2 + "_" + fs_type + "_" + build_type + '.fail: 1'
-		nr_test += 1
-	when /RUNTESTS: stopping: (.+)\/(TEST[0-9]+) failed/
-		next unless test_item == $1
-		stats << $1 + "_" + $2 + "_" + fs_type + "_" + build_type + '.fail: 1'
-		nr_test += 1
-	when /RUNTESTS: stopping: (.+)\/(TEST[0-9]+) timed out/
-		next unless test_item == $1
-		stats << $1 + "_" + $2 + "_" + fs_type + "_" + build_type + '.timeout: 1'
-		nr_test += 1
-	when /^(.+)\/(TEST[0-9]+) crashed/
-		next unless test_item == $1
-		stats << $1 + "_" + $2 + "_" + fs_type + "_" + build_type + '.crashed: 1'
-		nr_test += 1
-	when /^(.+)\/(TEST[0-9]+): SKIP/
-		next unless test_item == $1
-		stats << $1 + "_" + $2 + "_" + fs_type + "_" + build_type + '.skip: 1'
-		nr_test += 1
+	when %r{^(.+)/TEST[0-9]+: SETUP \(.+/(.+)/(.+)\)$}
+		test_item = Regexp.last_match[1]
+		fs_type = Regexp.last_match[2]
+		build_type = Regexp.last_match[3]
+	when %r{^(.+)/(TEST[0-9]+): PASS$}
+		item = Regexp.last_match[1]
+		name = Regexp.last_match[2]
+		next unless test_item == item
+		stats << item + '_' + name + '_' + fs_type + '_' + build_type + '.pass: 1'
+	when %r{^(.+)/(TEST[0-9]+): FAIL}
+		item = Regexp.last_match[1]
+		name = Regexp.last_match[2]
+		next unless test_item == item
+		stats << item + '_' + name + '_' + fs_type + '_' + build_type + '.fail: 1'
+	when %r{RUNTESTS: stopping: (.+)/(TEST[0-9]+) failed}
+		item = Regexp.last_match[1]
+		name = Regexp.last_match[2]
+		next unless test_item == item
+		stats << item + '_' + name + '_' + fs_type + '_' + build_type + '.fail: 1'
+	when %r{RUNTESTS: stopping: (.+)/(TEST[0-9]+) timed out}
+		item = Regexp.last_match[1]
+		name = Regexp.last_match[2]
+		next unless test_item == item
+		stats << item + '_' + name + '_' + fs_type + '_' + build_type + '.timeout: 1'
+	when %r{^(.+)/(TEST[0-9]+) crashed}
+		item = Regexp.last_match[1]
+		name = Regexp.last_match[2]
+		next unless test_item == item
+		stats << item + '_' + name + '_' + fs_type + '_' + build_type + '.crashed: 1'
+	when %r{^(.+)/(TEST[0-9]+): SKIP}
+		item = Regexp.last_match[1]
+		name = Regexp.last_match[2]
+		next unless test_item == item
+		stats << item + '_' + name + '_' + fs_type + '_' + build_type + '.skip: 1'
 	end
 end
 
-stats.each {|stat| puts stat}
-puts "total_test: #{nr_test}"
+stats.uniq.each { |stat| puts stat }
+puts "total_test: #{stats.uniq.size}"
