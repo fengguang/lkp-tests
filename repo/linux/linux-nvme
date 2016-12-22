@@ -1,0 +1,9 @@
+url: git://git.infradead.org/nvme.git
+owner:
+- Jens Axboe <axboe@fb.com>
+- Keith Busch <keith.busch@intel.com>
+- Sagi Grimberg <sagi@grimbeg.me>
+- Christoph Hellwig <hch@lst.de>
+subsystems:
+- nvme
+notify_build_success_branch: .*
