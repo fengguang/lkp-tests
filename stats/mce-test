@@ -3,10 +3,10 @@
 stats = []
 nr_test = 0
 
-while line = STDIN.gets
+while (line = STDIN.gets)
 	case line
 	when /^\s+(.+) --.* pass/
-		stats <<  "#{$1}.pass: 1"
+		stats << "#{$1}.pass: 1"
 		nr_test += 1
 	when /^\s+(.+) --.* failed/, /^\s+(.+) --.*no .* finished/
 		stats << "#{$1}.fail: 1"
@@ -14,7 +14,9 @@ while line = STDIN.gets
 	when /^\s+(.+) --.* skip/
 		stats << "#{$1}.skip: 1"
 		nr_test += 1
-
+	when /^HWPOISON-SOFT[ ]+(\w+)[ ]+/
+		stats << "ras.#{$1.downcase}: 1"
+		nr_test += 1
 	end
 end
 
