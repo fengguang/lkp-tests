@@ -5,8 +5,8 @@ rootfs: inn:/export/debian-full-x86_64
 
 phoronix-test-suite:
   test:
-  # - parboil-1.1.2 # This test failed to run properly
-  # - open-porous-media-1.3.1 # Killed Bus error
+  - parboil-1.1.2
+  - open-porous-media-1.3.1
   - x264-opencl-1.9.0
   - x264-1.9.0
   - ffmpeg-2.5.0
@@ -23,23 +23,23 @@ phoronix-test-suite:
   - dbench-1.0.0
   - pgbench-1.5.2
   - botan-1.1.0
-  # - minion-1.4.0 # [PROBLEM] pts/minion-1.4.0 is not installed
+  - minion-1.4.0
   - mrbayes-1.2.0
   - build-php-1.3.1
-  # - gcrypt-1.0.3 # E: ./gcrypt: 2: ./gcrypt: ./libgcrypt-1.4.4/tests/benchmark: not found
+  - gcrypt-1.0.3
   - ttsiod-renderer-1.6.0
   - graphics-magick-1.6.1
   - apache-1.6.1
   - build-webkitfltk-1.0.0
   - primesieve-1.3.0
-  # - tachyon-1.1.1 # E: ./tachyon-benchmark: 3: ./tachyon-benchmark: ./tachyon: not found
+  - tachyon-1.1.1
   - john-the-ripper-1.5.1
-  # - fio-1.8.2 # LKP has its own fio tests
+  - fio-1.8.2
   - encode-ogg-1.4.1
   - nginx-1.1.0
   - build-imagemagick-1.7.2
   - build-mplayer-1.3.0
-  # - hpcc-1.1.5 # LKP has its own hpcc tests
+  - hpcc-1.1.5
   - mafft-1.4.0
   - npb-1.2.1
   - dolfyn-1.0.0
@@ -48,13 +48,13 @@ phoronix-test-suite:
   - compress-7zip-1.6.1
   - crafty-1.3.0
   - encode-opus-1.0.1
-  # - iozone-1.8.0 # LKP has its own iozone tests
+  - iozone-1.8.0
   - espeak-1.3.0
   - stockfish-1.0.0
   - compilebench-1.0.1
   - encode-mp3-1.4.0
-  # - hpcg-1.0.0 # Killed OOM
-  # - stresscpu2-1.0.1  # runtime too long [12 Hours]
+  - hpcg-1.0.0
+  # - stresscpu2-1.0.1 # runtime too long [12 Hours]
   - encode-flac-1.5.0
   - sunflow-1.1.0
   - blake2-1.1.0
@@ -65,26 +65,26 @@ phoronix-test-suite:
   - compress-lzma-1.2.0
   - cyclictest-1.0.0
   - encode-ape-1.3.0
-  # - fs-mark-1.0.1  # LKP has its own fsmark tests
+  - fs-mark-1.0.1
   - pybench-1.0.0
   - ramspeed-1.4.0
   - byte-1.2.0
-  # - systester-1.0.0 # The test run did not produce a result
+  - systester-1.0.0
   - c-ray-1.1.0
   - cachebench-1.0.0
   - polybench-c-1.0.2
-  # - pyopencl-1.0.0 # The test run did not produce a result
-  # - tiobench-1.2.0 # [PROBLEM] pts/tiobench-1.2.0 is not installed
+  - pyopencl-1.0.0
+  - tiobench-1.2.0
   - phpbench-1.1.0
   - interbench-1.0.1
   - clomp-1.0.0
-  # - blogbench-1.0.0 # LKP has its own blogbench tests
+  - blogbench-1.0.0
   - tscp-1.2.0
   - java-scimark2-1.1.1
   - hint-1.0.0
   - scimark2-1.2.0
   - sudokut-1.0.0
-  # - postmark-1.1.0 # LKP has its own postmark tests
+  - postmark-1.1.0
   - fhourstones-1.1.1
   - ebizzy-1.0.2
   - aio-stress-1.1.1
@@ -92,13 +92,13 @@ phoronix-test-suite:
   - stream-1.2.0
   - himeno-1.1.0
   - sample-program-1.1.0
-  # - xplane9-iqc-1.0.0 # The test run did not produce a result
+  - xplane9-iqc-1.0.0
   - unpack-linux-1.0.0
   - noise-level-1.1.0
-  # - nexuiz-iqc-1.0.0 # The test run did not produce a result
+  - nexuiz-iqc-1.0.0
   - network-loopback-1.0.1
-  # - idle-power-usage-1.0.0 # This test failed to run properly.
+  - idle-power-usage-1.0.0
   - idle-1.1.0
   - hdparm-read-1.0.0
   - compress-gzip-1.1.0
-  # - system-decompress-gzip-1.1.0 # [PROBLEM] pts/system-decompress-gzip-1.1.0 is not installed
+  - system-decompress-gzip-1.1.0
