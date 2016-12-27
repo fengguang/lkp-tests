@@ -35,12 +35,24 @@ module Cacheable
 				cache_key = kclass.cache_key(self, method_name, *args)
 
 				begin
-					kclass.cache_store.fetch cache_key do
-						self.send("#{method_name}_without_cache", *args)
-					end
+					kclass.cache_fetch(self, method_name, *args)
 				rescue StandardError => e
 					dump_exception e, binding
 					self.send("#{method_name}_without_cache", *args)
+				end
+			end
+		end
+
+		def cache_fetch(obj, method_name, *args)
+			cache_key = cache_key(obj, method_name, *args)
+
+			if cache_store.instance_of?(Hash)
+				return cache_store[cache_key] if cache_store.key?(cache_key)
+
+				cache_store[cache_key] = obj.send("#{method_name}_without_cache", *args)
+			else
+				cache_store.fetch cache_key do
+					obj.send("#{method_name}_without_cache", *args)
 				end
 			end
 		end
