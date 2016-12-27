@@ -1,4 +1,4 @@
-LKP_SRC ||= ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
+LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
 require "#{LKP_SRC}/lib/error"
 
@@ -28,8 +28,8 @@ module Cacheable
 			@cache_key_prefix_generators ||= {}
 			@cache_key_prefix_generators[method_name] = cache_key_prefix_generator
 
-			# FIXME rli9 not support &block
-			# FIXME rli9 better solution for generating key can refer to
+			# rli9 FIXME: not support &block
+			# rli9 FIXME: better solution for generating key can refer to
 			# https://github.com/seamusabshere/cache_method/blob/master/lib/cache_method.rb
 			define_method(method_name) do |*args|
 				cache_key = kclass.cache_key(self, method_name, *args)
@@ -38,7 +38,7 @@ module Cacheable
 					kclass.cache_fetch(self, method_name, *args)
 				rescue StandardError => e
 					dump_exception e, binding
-					self.send("#{method_name}_without_cache", *args)
+					send("#{method_name}_without_cache", *args)
 				end
 			end
 		end
@@ -58,8 +58,8 @@ module Cacheable
 		end
 
 		def cache_key(obj, method_name, *args)
-			# FIXME rli9 to understand performance impact of different hash key
-			#cache_key = [self, method_name, args]
+			# rli9 FIXME: to understand performance impact of different hash key
+			# cache_key = [self, method_name, args]
 			cache_key = "#{method_name}_#{args.join('_')}"
 
 			cache_key_prefix_generator = @cache_key_prefix_generators[method_name]
