@@ -1,4 +1,6 @@
-LKP_SRC ||= ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
+#!/usr/bin/env ruby
+
+LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.dirname(File.realpath($PROGRAM_NAME))))
 
 require "#{LKP_SRC}/lib/cache"
 
@@ -6,7 +8,7 @@ module Git
 	class Base
 		include Cacheable
 
-		cache_method :gcommit, ->obj {obj.object_id}
+		cache_method :gcommit, ->(obj) {obj.object_id}
 	end
 end
 

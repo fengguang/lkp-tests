@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-LKP_SRC ||= ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
+LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
 require 'set'
 require 'time'
@@ -28,7 +28,7 @@ module Git
 		# example
 		#		Git.init({project: 'dpdk',working_dir: '/c/repo/dpdk'})
 		#
-		alias_method :orig_init, :init
+		alias orig_init init
 		def init(options = {})
 			assert(options[:project], "Git.init: options[:project] can't be #{options[:project].inspect}")
 
@@ -40,15 +40,13 @@ module Git
 		#
 		# open an existing repository
 		#
-		alias_method :orig_open, :open
+		alias orig_open open
 		def open(options = {})
 			assert(options[:project], "Git.open: options[:project] can't be #{options[:project].inspect}")
 
 			working_dir = options[:working_dir] || "#{GIT_ROOT_DIR}/#{options[:project]}"
 
-			if options[:may_not_exist] && !Dir.exist?(working_dir)
-				return nil
-			end
+			return nil if options[:may_not_exist] && !Dir.exist?(working_dir)
 
 			Git.orig_open(working_dir, options)
 		end
@@ -73,7 +71,7 @@ module Git
 
 			if version && version >= 2
 				tag = "v#{version}.#{patch_level}"
-				tag += ".#{sub_level}" if version ==2
+				tag += ".#{sub_level}" if version == 2
 				tag += "-rc#{rc}" if rc && rc > 0
 
 				[tag, false]
@@ -85,21 +83,21 @@ module Git
 			end
 		end
 
-		# FIXME remove ENV usage
+		# rli9 FIXME: remove ENV usage
 		# load remotes information from config files
 		#
 		# options
 		#		:project => 'project_name', default is linux
 		#
 		def remote_descs(options = {})
-			lkp_src = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
+			lkp_src = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
 			options[:project] ||= '*'
 			options[:remote] ||= '*'
 
 			remotes = {}
 
-			Dir[File.join(lkp_src, "repo", options[:project], options[:remote])].each do |file|
+			Dir[File.join(lkp_src, 'repo', options[:project], options[:remote])].each do |file|
 				remote = File.basename file
 				next if remote == 'DEFAULTS'
 

@@ -1,17 +1,20 @@
-LKP_SRC ||= ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
+#!/usr/bin/env ruby
+
+LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.dirname(File.realpath($PROGRAM_NAME))))
 
 require 'git'
 
 module Git
 	class Object
 		class Commit
-			alias_method :orig_initialize, :initialize
+			alias orig_initialize initialize
+
 			def initialize(base, sha, init = nil)
 				orig_initialize(base, sha, init)
 				# this is to convert non sha1 40 such as tag name to corresponding commit sha
 				# otherwise Object::AbstractObject uses @base.lib.revparse(@objectish) to get sha
 				# which sometimes is not as expected when we give a tag name
-				self.objectish = @base.lib.command('rev-list', ['-1', self.objectish]) unless sha1_40?(self.objectish)
+				self.objectish = @base.lib.command('rev-list', ['-1', objectish]) unless sha1_40?(objectish)
 			end
 
 			def project
@@ -19,24 +22,24 @@ module Git
 			end
 
 			def subject
-				self.message.split("\n").first
+				message.split("\n").first
 			end
 
 			# FIXME rli9 need a better name, or remove the function if not common
 			def name
-				interested_tag || self.sha
+				interested_tag || sha
 			end
 
 			def tags
-				@tags ||= @base.lib.tag('--points-at', self.sha).split
+				@tags ||= @base.lib.tag('--points-at', sha).split
 			end
 
 			def parent_shas
-				@parent_shas ||= self.parents.map {|commit| commit.sha}
+				@parent_shas ||= parents.map(&:sha)
 			end
 
 			def show(content)
-				@base.lib.command_lines('show', "#{self.sha}:#{content}")
+				@base.lib.command_lines('show', "#{sha}:#{content}")
 			end
 
 			def interested_tag
@@ -46,8 +49,9 @@ module Git
 			def release_tag
 				unless @release_tag
 					release_tags_with_order = @base.release_tags_with_order
-					@release_tag = tags.find {|tag| release_tags_with_order.include? tag}
+					@release_tag = tags.find { |tag| release_tags_with_order.include? tag }
 				end
+
 				@release_tag
 			end
 
@@ -60,35 +64,35 @@ module Git
 
 				case @base.project
 				when 'linux'
-					Git.linux_last_release_tag_strategy(@base, self.sha)
+					Git.linux_last_release_tag_strategy(@base, sha)
 				else
-					last_release_sha = @base.lib.command("rev-list --first-parent #{self.sha} | grep -m1 -Fx \"#{@base.release_shas.join("\n")}\"").chomp
+					last_release_sha = @base.lib.command("rev-list --first-parent #{sha} | grep -m1 -Fx \"#{@base.release_shas.join("\n")}\"").chomp
 
 					last_release_sha.empty? ? nil : [@base.release_shas2tags[last_release_sha], false]
 				end
 			end
 
 			def base_rc_tag
-				# FIXME rli9 bad smell here to distinguish linux by case/when
+				# rli9 FIXME: bad smell here to distinguish linux by case/when
 				commit = case @base.project
-				when 'linux'
-					@base.gcommit("#{self.sha}~") if self.committer.name == 'Linus Torvalds'
-				end
+				         when 'linux'
+				           @base.gcommit("#{sha}~") if committer.name == 'Linus Torvalds'
+				         end
 
 				commit ||= self
 
-				tag, is_exact_match = commit.last_release_tag
+				tag, _is_exact_match = commit.last_release_tag
 				tag
 			end
 
 			# v3.11     => v3.11
 			# v3.11-rc1 => v3.10
 			def last_official_release_tag
-				tag, is_exact_match = self.last_release_tag
+				tag, _is_exact_match = last_release_tag
 				return tag unless tag =~ /-rc/
 
 				order = @base.release_tag_order(tag)
-				tag_with_order = @base.release_tags_with_order.find {|tag, o| o <= order && tag !~ /-rc/}
+				tag_with_order = @base.release_tags_with_order.find { |tag, o| o <= order && tag !~ /-rc/ }
 
 				tag_with_order ? tag_with_order[0] : nil
 			end
@@ -96,12 +100,12 @@ module Git
 			# v3.11     => v3.10
 			# v3.11-rc1 => v3.10
 			def prev_official_release_tag
-				tag, is_exact_match = self.last_release_tag
+				tag, is_exact_match = last_release_tag
 
 				order = @base.release_tag_order(tag)
 				tag_with_order = @base.release_tags_with_order.find do |tag, o|
 					next if o > order
-					next if o == order and is_exact_match
+					next if o == order && is_exact_match
 
 					tag !~ /-rc/
 				end
@@ -112,7 +116,7 @@ module Git
 			# v3.12-rc1 => v3.12
 			# v3.12     => v3.13
 			def next_official_release_tag
-				tag = self.release_tag
+				tag = release_tag
 				return nil unless tag
 
 				order = @base.release_tag_order(tag)
@@ -138,7 +142,7 @@ module Git
 				m = message
 				pos = 0
 				res = []
-				while mat = RE_BY_CC.match(m, pos)
+				while (mat = RE_BY_CC.match(m, pos))
 					res.push Git::Author.new("#{mat[1]} <#{mat[2]}> #{Time.now.to_i} ")
 					pos = mat.end 0
 				end
@@ -147,7 +151,7 @@ module Git
 
 			def reachable_from?(branch)
 				branch = @base.gcommit(branch)
-				r = @base.command('rev-list', ["-n", "1", sha, "^#{branch.sha}"])
+				r = @base.command('rev-list', ['-n', '1', sha, "^#{branch.sha}"])
 				r.strip.empty?
 			end
 
