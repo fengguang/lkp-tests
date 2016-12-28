@@ -8,30 +8,34 @@ testname = ''
 mqueue_speed = {}
 nr_test = 0
 
-while line = STDIN.gets
-  case line
-  when %r{make: Entering directory .*/(.*)'}
-    testname = Regexp.last_match[1]
-    nr_test += 1
-  when /^selftests: (.*) .*PASS/
-    item = Regexp.last_match[1]
-    stats << testname + '_' + item + '.pass: 1'
-  when /^selftests: (.*) .*FAIL/
-    item = Regexp.last_match[1]
-    stats << testname + '_' + item + '.fail: 1'
-  when /Test #([1-9].*):/
-    mqueue_test = Regexp.last_match[1]
-  when /(Send|Recv) msg:/
-    io = Regexp.last_match[1]
-  when %r{(\d+) nsec/msg/}
-    item = Regexp.last_match[1]
-    mqueue_speed[mqueue_test + '.' + io] = item.to_i
-  when /^Makefile:[\s\S]+failed$/
-    stats << 'x86_make.fail: 1'
-  end
+while (line = STDIN.gets)
+	case line
+	when %r{make: Entering directory .*/(.*)'}
+		testname = Regexp.last_match[1]
+	when /^selftests: (.*) .*PASS/
+		item = Regexp.last_match[1]
+		stats << testname + '_' + item + '.pass: 1'
+	when /^selftests: (.*) .*FAIL/
+		item = Regexp.last_match[1]
+		stats << testname + '_' + item + '.fail: 1'
+	when /Test #([1-9].*):/
+		mqueue_test = Regexp.last_match[1]
+	when /(Send|Recv) msg:/
+		io = Regexp.last_match[1]
+	when %r{(\d+) nsec/msg/}
+		item = Regexp.last_match[1]
+		mqueue_speed[mqueue_test + '.' + io] = item.to_i
+	when /^Makefile:[\s\S]+failed$/
+		stats << 'x86_make.fail: 1'
+	end
 end
 
-puts "mqueue.nsec_per_msg: #{mqueue_speed.values.average.to_i}" if !mqueue_speed.empty?
+if !mqueue_speed.empty?
+	puts "mqueue.nsec_per_msg: #{mqueue_speed.values.average.to_i}"
+	nr_test = stats.uniq.size + 1
+else
+	nr_test = stats.uniq.size
+end
 
-stats.each { |stat| puts stat }
+stats.uniq.each { |stat| puts stat }
 puts "total_test: #{nr_test}"
