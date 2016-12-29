@@ -7,6 +7,22 @@ program=$1
 stats_group=${2:-$1}
 log=$RESULT_ROOT/$stats_group
 
+# exit processing the stats if the program is not in the program_list.
+# program_list is a file that records all the programs(setups, monitors, tests,
+# daemons) being executed during the test.
+# this is to solve the problem for cluster test jobs running on the server node
+# where no program's log file is generated for running server daemons but the
+# stats processing for the program running on client node will also be handled
+# on server node due to the current Job2sh algorithm.
+
+# default stats are not in the program_list
+grep -q "^$program\:" $LKP_SRC/etc/default_stats.yaml
+if [ $? -ne 0 ]; then
+	[ -f $RESULT_ROOT/program_list ] && {
+		grep -q "$program" $RESULT_ROOT/program_list || exit 0
+	}
+fi
+
 check_incomplete_run()
 {
 	local file=$1
