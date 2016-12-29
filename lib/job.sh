@@ -158,20 +158,38 @@ check_exit_code()
 	exit "$exit_code"
 }
 
+record_program()
+{
+	local i
+	local program
+
+	for i
+	do
+		[ "$i" != "${i#*=}" ] && continue # skip env NAME=VALUE
+		[ "$i" != "${i%/wrapper}" ] && continue  # skip $LKP_SRC/**/wrapper
+
+		program=${i##*/}
+		echo "${program}" >> $TMP/program_list
+		echo "${program}"
+		return 0
+	done
+
+	return 1
+}
+
 run_program()
 {
 	local i
 	local has_env=
 
+	local program=$(record_program "$@")
+
 	for i
 	do
-		[ "$i" != "${i#*=}"       ] && {	 # skip env NAME=VALUE
+		[ "$i" != "${i#*=}" ] && {	 # env NAME=VALUE
 			has_env=1
-			continue
+			break
 		}
-		[ "$i" != "${i%/wrapper}" ] && continue  # skip $LKP_SRC/**/wrapper
-		program=${i##*/}
-		break
 	done
 
 	if [ -n "$has_env" ]; then
@@ -185,6 +203,8 @@ run_program()
 
 run_monitor()
 {
+	local program=$(record_program "$@")
+
 	if [ "$1" != "${1#*=}" ]; then
 		env "$@" &
 	else
@@ -194,15 +214,12 @@ run_monitor()
 
 run_setup()
 {
-	local program
 	run_program "$@"
 	read_env_vars
 }
 
 start_daemon()
 {
-	local program
-
 	# will be killed by watchdog when timeout
 	echo $$ >> $TMP/pid-start-daemon
 
@@ -212,20 +229,18 @@ start_daemon()
 	# If failed to start the daemon above, the job will abort.
 	# LKP server on notice of the failed job will abort the other waiting nodes.
 
-	wait_other_nodes 'daemon' $program
+	wait_other_nodes 'daemon'
 	wakeup_pre_test
 	wait_clients_finish
 }
 
 run_test()
 {
-	local program
-
 	# wait other nodes may block until watchdog timeout,
 	# it should be able to killed by watchdog
 	echo $$ >> $TMP/pid-run-tests
 
-	wait_other_nodes 'test' "$@"
+	wait_other_nodes 'test'
 	wakeup_pre_test
 	run_program "$@"
 	sync_cluster_state 'finished'

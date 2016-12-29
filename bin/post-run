@@ -224,4 +224,7 @@ upload_files	$TMP/boot-time	\
 [ -s $TMP/env.yaml ] &&
 upload_files	$TMP/env.yaml
 
+[ -s $TMP/program_list ] &&
+upload_files	$TMP/program_list
+
 exit 0
