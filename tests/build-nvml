@@ -38,7 +38,7 @@ make
 make_exit_status=$?
 [[ $make_exit_status = 0 ]] && {
 	# TODO: copy something to $NVML_LIB_DIR
-	:
+	log_cmd cp -af $NVML_REPO_ROOT $NVML_LIB_DIR/
 }
 
 build_complete $make_exit_status
