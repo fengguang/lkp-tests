@@ -6,6 +6,8 @@
 # - unit_size
 # - fs
 # - pre_setup
+# - sync_rw
+# - bind_cpu
 
 # The value of "pre_setup" can be 0 or 1.
 # 0 is the default value, means setup by vm-scalability itself.
@@ -15,6 +17,14 @@ cd $BENCHMARK_ROOT/vm-scalability || exit
 
 [ -n "$runtime" ] || runtime=300
 [ -n "$pre_setup" ] || pre_setup=0
+export SYNC_RW=$sync_rw
+
+[ "$bind_cpu" -eq 0 ] && {
+	# HT share same core normally has cpu number distance: nr_cpu / 2
+	bind_cpu=$((nr_cpu / 2 / nr_task))
+}
+
+export BIND_CPU=$bind_cpu
 
 echo 1		> /proc/sys/vm/overcommit_memory
 echo $((1<<30)) > /proc/sys/vm/max_map_count
