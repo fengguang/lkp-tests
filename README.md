@@ -49,4 +49,26 @@ Most test cases should install/run well in
 - Ubuntu 14.04
 - Archlinux
 
+There is however some initial support for:
+
+- OpenSUSE:
+	- jobs/trinity.yaml
+- Fedora
+
 As for now, lkp-tests still needs to run as root.
+
+## Adding distribution support
+
+If you want to add support for your Linux distribution you will need
+an installer file which allows us to install dependencies per job. For
+examples look at: distro/installer/* files.
+
+Since packages can have different names we provide an adaptation mapping for a
+base Ubuntu package (since development started with that) to your own
+distribution package name, for example adaptation files see:
+distro/adaptation/*. For now adaptation files must have the architecture
+dependent packages (ie, that ends with the postfix :i386) towards the end
+of the adaptation file.
+
+You will also want to add a case for your distribution on sync_distro_sources()
+on the file lib/install.sh.

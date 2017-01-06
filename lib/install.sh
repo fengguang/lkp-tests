@@ -17,6 +17,8 @@ sync_distro_sources()
 			yum update
 		fi ;;
 	archlinux) yaourt -Sy ;;
+	opensuse)
+		zypper update ;;
 	*) echo "Not support $distro to do update" ;;
 	esac
 }
