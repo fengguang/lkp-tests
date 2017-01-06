@@ -31,5 +31,5 @@ def get_dependency_packages(distro, script)
 
 	packages = adapt_packages(distro, generic_packages)
 
-	return packages.flatten.compact
+	return packages.flatten.compact.uniq
 end

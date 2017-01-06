@@ -61,5 +61,5 @@ get_dependency_packages()
 
 	local generic_packages="$(sed 's/#.*//' "$base_file")"
 
-	adapt_packages
+	adapt_packages | sort | uniq
 }
