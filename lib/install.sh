@@ -33,9 +33,15 @@ adapt_packages()
 
 	for pkg in $generic_packages
 	do
-		local mapping="$(grep "^$pkg:" $distro_file)"
+		local mapping=""
+		local is_arch_dep="$(echo $pkg | grep ":")"
+		if [ -n "$is_arch_dep" ]; then
+			mapping="$(grep "^$pkg:" $distro_file | tail -1)"
+		else
+			mapping="$(grep "^$pkg:" $distro_file | head -1)"
+		fi
 		if [ -n "$mapping" ]; then
-			distro_pkg=${mapping#$pkg:}
+			distro_pkg=$(echo $mapping | awk -F": " '{print $2}')
 			[ -n "$distro_pkg" ] && echo $distro_pkg
 		else
 			echo $pkg

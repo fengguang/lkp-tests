@@ -1,3 +1,7 @@
+# Put architecture packages after the non architecture specific
+# package. We can change this requiremet if we modify
+# distro/adaptation/* files to use something uniq that is not
+# part of real packages, like: |
 make
 automake
 gcc
