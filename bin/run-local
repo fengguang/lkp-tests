@@ -114,7 +114,7 @@ end
 
 system 'killall', LKP_SRC + '/bin/event/wakeup'
 system job_script, 'run_job'
-system LKP_SRC + '/bin/post-run'
+system LKP_SRC + '/bin/run-with-job', job_script, LKP_SRC + '/bin/post-run'
 system LKP_SRC + '/bin/event/wakeup', 'job-finished'
 
 job.save result_root + '/job.yaml'

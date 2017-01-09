@@ -1,0 +1,8 @@
+#!/bin/sh
+
+. $LKP_SRC/lib/job-init.sh
+
+export job_file="$1"
+shift
+job_init
+exec "$@"
