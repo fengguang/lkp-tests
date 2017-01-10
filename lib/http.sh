@@ -128,6 +128,11 @@ http_get_file()
 	http_setup_client && http_get_file "$@"
 }
 
+http_get_directory()
+{
+	http_setup_client && http_get_directory "$@"
+}
+
 http_get_newer()
 {
 	http_setup_client && http_get_newer "$@"

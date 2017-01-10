@@ -30,6 +30,14 @@ http_get_file()
 	http_do_request "$1" -O "$2"
 }
 
+http_get_directory()
+{
+	local dir=$2
+	mkdir -p $dir
+	# download directory recursively
+	http_do_request "$1" -c -r -np -nd -P "$dir"
+}
+
 http_get_newer()
 {
 	local path="$(dirname "$2")"
