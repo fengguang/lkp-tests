@@ -2,7 +2,6 @@
 
 stats = []
 type = ""
-flag = ""
 nr_test = 0
 success_test = 0
 fail_test = 0
@@ -25,27 +24,23 @@ while line = STDIN.gets
 		type = $1.tr(" ", '_')
 		stats << "check:_" + type + ".fail: 1"
 		nr_test += 1
+	when /test_bpf: #[0-9]+ (.+) PASS$/
+		type = $1.tr(" ", '_')
+		stats << type + ".pass: 1"
+		nr_test += 1
+	when /test_bpf: #[0-9]+ (.+) FAIL/
+		type = $1.tr(" ", '_')
+		stats << type + ".fail: 1"
+		nr_test += 1
 	when /test_bpf: #[0-9]+ check: (.+)/
-		flag = "1"
 		type = "check:_" + $1.tr(" ", '_')
 		nr_test += 1
 	when /test_bpf: #[0-9]+ (.+)/
-		flag = "1"
 		type = $1.tr(" ", '_')
 		nr_test += 1
 	when /test_bpf: Summary: ([0-9]+) PASSED, ([0-9]+) FAILED, \[.+ JIT'ed\]$/
 		success_test = $1
 		fail_test = $2
-	else
-		unless flag.empty?
-			if line =~ /PASS/
-				stats << type + ".pass: 1"
-				flag = ""
-			elsif line =~ /FAIL/
-				stats << type + ".fail: 1"
-				flag = ""
-			end
-		end
 	end
 end
 
