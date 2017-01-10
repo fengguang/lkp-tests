@@ -551,7 +551,7 @@ class Job
 		if path.empty?
 			return 'defaults'
 		else
-			return path.chomp('-').tr('^-a-zA-Z0-9+:.%', '_')
+			return path.chomp('-').tr('^-a-zA-Z0-9+=:.%', '_')
 		end
 	end
 
