@@ -22,11 +22,16 @@ boot_init
 # here just serves as an example only.
 job_does_not_need_reboot()
 {
-	grep -q "^do_not_reboot: 1$" $job && return 0
+	grep -q "^do_not_reboot: 1$" $job && {
+		echo "LKP: [do_not_reboot] start a new job without rebooting"
+		return 0
+	}
 
-	local next_kernel
-	next_kernel=$(awk '/^kernel: /{print $2}' $job | tr -d '"')
-	grep -q "^do_not_reboot_for_same_kernel: 1$" $job && [ "$kernel" = "$next_kernel" ] && return 0
+	grep -q "^do_not_reboot_for_same_kernel: 1$" $job &&
+	is_same_kernel_and_rootfs && {
+		echo "LKP: [do_not_reboot_for_same_kernel] start a new job without rebooting"
+		return 0
+	}
 
 	return 1
 }

@@ -443,6 +443,36 @@ rsync_rootfs()
 	fi
 }
 
+is_same_kernel_and_rootfs()
+{
+	local next_kernel=$(awk '/^kernel: /{print $2}' $job | tr -d '"')
+	[ -n "$next_kernel" ] || {
+		echo "ERROR: no kernel in the job file: $job"
+		return 1
+	}
+
+	if [ "$kernel" = "$next_kernel" ]; then
+		# check run_on_local_disk flag in current and next job files
+		# if run_on_local_disk setting is different, reboot is required
+		grep -q "^run_on_local_disk: [a-zA-Z0-9_]*" $job
+		if [ $? -eq 0 ]; then
+			[ -n "$run_on_local_disk" ] || return 1
+		else
+			[ -n "$run_on_local_disk" ] && return 1
+		fi
+
+		local next_rootfs=$(awk '/^rootfs: /{print $2}' $job)
+		[ -n "$next_rootfs" ] || {
+			echo "ERROR: no rootfs in the job file: $job"
+			return 1
+		}
+
+		[ "$rootfs" = "$next_rootfs" ] && return 0
+	fi
+
+	return 1
+}
+
 setup_env()
 {
 	[ "$result_service" != "${result_service#9p/}" ] &&
