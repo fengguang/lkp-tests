@@ -89,7 +89,7 @@ install_crosstool()
 
 install_linaro()
 {
-	local URL='http://releases.linaro.org/14.08/components/toolchain/binaries'
+	local URL='http://releases.linaro.org/archive/14.08/components/toolchain/binaries'
 	local file='gcc-linaro-aarch64-linux-gnu-4.9-2014.08_linux.tar.xz'
 
 	download_extract "$URL/$file"
