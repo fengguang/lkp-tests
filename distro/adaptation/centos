@@ -1,0 +1,88 @@
+apache2: httpd
+apt-file:
+autotools-dev: autoconf
+binutils-dev: binutils-devel
+btrfs-tools: btrfs-progs
+build-essential: make automake gcc gcc-c++ kernel-devel
+cgroup-bin: libcgroup
+dbench=4.0-2: dbench
+dpkg-dev: dpkg-devel
+freeglut3: freeglut
+initramfs-tools: dracut
+iozone3: gnuplot* iozone iozoneruby-g
+iproute2: iproute
+klibc-utils:
+libacl1-dev: libacl-devel
+libaio-dev: libaio-devel
+libaio1: libaio libaio-devel
+libattr1-dev: libattr-devel
+libc-dev:i386:
+libc6-dev: glibc-devel
+libc6-dev:i386: 
+libdbus-1-dev: dbus-libs
+libdrm-dev: libdrm-devel
+libgles2-mesa: mesa-libGLES
+libglib2.0-0: glib
+libhwloc-dev: hwloc-devel
+libiberty-dev:
+libibverbs-dev: libibverbs-devel
+libklibc-dev:
+libkmod-dev: kmod-devel
+libkmod2: kmod-libs
+libnl-3-200: libnl3
+libnl-3-dev: libnl3-devel
+libnl-genl-3-200: libnl3
+libnl-genl-3-dev: libnl3-devel
+libnuma-dev: numactl-devel
+libnuma1: numactl
+liboop-dev: liboop
+libpcap-dev: libpcap-devel
+libpcap0.8-dev: libpcap-devel
+libpcap0.8: libpcap
+libperl5.20: perl-libs
+libpopt-dev: popt-devel
+libpopt0: popt
+librdmacm-dev: librdmacm-devel
+libreadline5: 
+libsctp-dev: lksctp-tools-devel
+libsqlite3-dev: libsqlite3x-devel
+libssl-dev: openssl-devel
+libtool-bin:
+libudev-dev: libgudev1-devel
+libudev1: libgudev1 libgudev1linux-tools: perf
+libuuid1: libuuid libuuid-devel
+libx11-xcb-dev: libx11-devel
+linux-libc-dev:
+linux-libc-dev:i386: 
+linux-perf: perf
+linux-tools: perf
+mysql-server: mariadb
+ncurses-bin: ncurses
+netpipe-lam: NetPIPE
+netpipe-mpich2: NetPIPE
+netpipe-openmpi: NetPIPE
+netpipe-pvm: NetPIPE
+netpipe-tcp: NetPIPE
+nfs-common: nfs-utils
+nfs-kernel-server: nfs-utils
+perl-base: 
+perl-modules: perl-CPAN
+python-minimal: python2
+python-numpy: numpy
+python3-numpy: python34-numpy
+python3-six: python34-six
+python3-markupsafe: python34-markupsafe
+python3-mako: python-pyramid-mako
+rt-tests:
+ruby-git:
+ruby-gnuplot:
+sg3-utils: sg3_utils
+uuid-dev: uuid-devel
+xfslibs-dev: xfsprogs-devel
+xinit: xorg-x11-xinit
+xutils-dev: imake
+xz-utils: xz
+gcc-4.9: gcc
+gcc-5: gcc
+gcc-6: gcc
+gfortran: gcc-c++
