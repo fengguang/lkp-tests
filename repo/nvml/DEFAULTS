@@ -1,4 +1,4 @@
-pkg_pattern: "src"
+pkg_pattern: "src/src/test/RUNTESTS"
 release_tag_pattern:
   (?<major>[0-9])\.(?<minor>\d+)(\+b|-rc(?<prerelease>\d+))?
 belongs_to: nvml
