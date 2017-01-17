@@ -19,7 +19,7 @@ cd $BENCHMARK_ROOT/vm-scalability || exit
 [ -n "$pre_setup" ] || pre_setup=0
 export SYNC_RW=$sync_rw
 
-[ "$bind_cpu" -eq 0 ] && {
+[ -n "$bind_cpu" ] && [ "$bind_cpu" -eq 0 ] && {
 	# HT share same core normally has cpu number distance: nr_cpu / 2
 	bind_cpu=$((nr_cpu / 2 / nr_task))
 }
