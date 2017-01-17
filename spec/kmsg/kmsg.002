@@ -1,0 +1,50 @@
+
+# rcu-torture: rtc: .* ver: .* tfle: .* rta: .* rtaf: .* rtf: .* rtmbe: .* rtbe: .* rtbke: .* rtbre: .* rtbf: .* rtb: .* nt: .* onoff: .* HZ=
+rcu-torture:rtc:#ver:#tfle:#rta:#rtaf:#rtf:#rtmbe:#rtbe:#rtbke:#rtbre:#rtbf:#rtb:#nt:#onoff:#:#-#,#:-#,##:#(HZ=#)barrier:#:#cbflood: 1
+message:rcu-torture:rtc:#ver:#tfle:#rta:#rtaf:#rtf:#rtmbe:#rtbe:#rtbke:#rtbre:#rtbf:#rtb:#nt:#onoff:#:#-#,#:-#,##:#(HZ=#)barrier:#:#cbflood: kern  :alert : [   82.978620] rcu-torture: rtc: ffffffffa0355b40 ver: 1375 tfle: 0 rta: 1375 rtaf: 0 rtf: 1366 rtmbe: 0 rtbe: 0 rtbke: 0 rtbre: 0 rtbf: 0 rtb: 0 nt: 27643 onoff: 0/0:0/0 -1,0:-1,0 0:0 (HZ=1000) barrier: 0/0:0 cbflood: 30
+pattern:rcu-torture:rtc:#ver:#tfle:#rta:#rtaf:#rtf:#rtmbe:#rtbe:#rtbke:#rtbre:#rtbf:#rtb:#nt:#onoff:#:#-#,#:-#,##:#(HZ=#)barrier:#:#cbflood: rcu-torture: rtc: .* ver: .* tfle: .* rta: .* rtaf: .* rtf: .* rtmbe: .* rtbe: .* rtbke: .* rtbre: .* rtbf: .* rtb: .* nt: .* onoff: .* HZ=
+
+# rcu-torture: Reader Pipe:
+rcu-torture:Reader_Pipe: 1
+message:rcu-torture:Reader_Pipe: kern  :alert : [   82.981938] rcu-torture: Reader Pipe:  215216958 2337 0 0 0 0 0 0 0 0 0
+pattern:rcu-torture:Reader_Pipe: rcu-torture: Reader Pipe:
+
+# rcu-torture: Reader Batch:
+rcu-torture:Reader_Batch: 1
+message:rcu-torture:Reader_Batch: kern  :alert : [   82.983445] rcu-torture: Reader Batch:  211461597 3757698 0 0 0 0 0 0 0 0 0
+pattern:rcu-torture:Reader_Batch: rcu-torture: Reader Batch:
+
+# rcu-torture: Free-Block Circulation:
+rcu-torture:Free-Block_Circulation: 1
+message:rcu-torture:Free-Block_Circulation: kern  :alert : [   82.984970] rcu-torture: Free-Block Circulation:  1374 1374 1373 1372 1371 1370 1369 1368 1367 1366 0
+pattern:rcu-torture:Free-Block_Circulation: rcu-torture: Free-Block Circulation:
+
+# rcu-torture: Stopping rcu_torture_reader
+rcu-torture:Stopping_rcu_torture_reader: 1
+message:rcu-torture:Stopping_rcu_torture_reader: kern  :alert : [  322.534753] rcu-torture: Stopping rcu_torture_reader
+pattern:rcu-torture:Stopping_rcu_torture_reader: rcu-torture: Stopping rcu_torture_reader
+
+# rcu-torture: Stopping torture_shuffle task
+rcu-torture:Stopping_torture_shuffle_task: 1
+message:rcu-torture:Stopping_torture_shuffle_task: kern  :alert : [  322.534753] rcu-torture: Stopping torture_shuffle task
+pattern:rcu-torture:Stopping_torture_shuffle_task: rcu-torture: Stopping torture_shuffle task
+
+# rcu-torture: Stopping torture_shuffle
+rcu-torture:Stopping_torture_shuffle: 1
+message:rcu-torture:Stopping_torture_shuffle: kern  :alert : [  322.534773] rcu-torture: Stopping torture_shuffle
+pattern:rcu-torture:Stopping_torture_shuffle: rcu-torture: Stopping torture_shuffle
+
+# rcu-torture: Stopping torture_stutter task
+rcu-torture:Stopping_torture_stutter_task: 1
+message:rcu-torture:Stopping_torture_stutter_task: kern  :alert : [  322.534787] rcu-torture: Stopping torture_stutter task
+pattern:rcu-torture:Stopping_torture_stutter_task: rcu-torture: Stopping torture_stutter task
+
+timestamp:last: 322.534787
+timestamp:rcu-torture:rtc:#ver:#tfle:#rta:#rtaf:#rtf:#rtmbe:#rtbe:#rtbke:#rtbre:#rtbf:#rtb:#nt:#onoff:#:#-#,#:-#,##:#(HZ=#)barrier:#:#cbflood: 82.978620
+timestamp:rcu-torture:Reader_Pipe: 82.981938
+timestamp:rcu-torture:Reader_Batch: 82.983445
+timestamp:rcu-torture:Free-Block_Circulation: 82.984970
+timestamp:rcu-torture:Stopping_rcu_torture_reader: 322.534753
+timestamp:rcu-torture:Stopping_torture_shuffle_task: 322.534753
+timestamp:rcu-torture:Stopping_torture_shuffle: 322.534773
+timestamp:rcu-torture:Stopping_torture_stutter_task: 322.534787

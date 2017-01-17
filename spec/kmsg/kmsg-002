@@ -1,0 +1,20 @@
+kern  :alert : [   82.978620] rcu-torture: rtc: ffffffffa0355b40 ver: 1375 tfle: 0 rta: 1375 rtaf: 0 rtf: 1366 rtmbe: 0 rtbe: 0 rtbke: 0 rtbre: 0 rtbf: 0 rtb: 0 nt: 27643 onoff: 0/0:0/0 -1,0:-1,0 0:0 (HZ=1000) barrier: 0/0:0 cbflood: 30
+kern  :alert : [   82.981938] rcu-torture: Reader Pipe:  215216958 2337 0 0 0 0 0 0 0 0 0
+kern  :alert : [   82.983445] rcu-torture: Reader Batch:  211461597 3757698 0 0 0 0 0 0 0 0 0
+kern  :alert : [   82.984970] rcu-torture: Free-Block Circulation:  1374 1374 1373 1372 1371 1370 1369 1368 1367 1366 0
+kern  :alert : [  144.416556] rcu-torture: rtc: ffffffffa03554b0 ver: 2527 tfle: 0 rta: 2527 rtaf: 0 rtf: 2518 rtmbe: 0 rtbe: 0 rtbke: 0 rtbre: 0 rtbf: 0 rtb: 0 nt: 53949 onoff: 0/0:0/0 -1,0:-1,0 0:0 (HZ=1000) barrier: 0/0:0 cbflood: 60
+kern  :alert : [  144.421153] rcu-torture: Reader Pipe:  426283872 4217 0 0 0 0 0 0 0 0 0
+kern  :alert : [  144.423254] rcu-torture: Reader Batch:  420106774 6181315 0 0 0 0 0 0 0 0 0
+kern  :alert : [  144.425342] rcu-torture: Free-Block Circulation:  2526 2526 2525 2524 2523 2522 2521 2520 2519 2518 0
+kern  :alert : [  205.854487] rcu-torture: rtc: ffffffffa0354c70 ver: 3812 tfle: 0 rta: 3812 rtaf: 0 rtf: 3803 rtmbe: 0 rtbe: 0 rtbke: 0 rtbre: 0 rtbf: 0 rtb: 0 nt: 81206 onoff: 0/0:0/0 -1,0:-1,0 0:0 (HZ=1000) barrier: 0/0:0 cbflood: 90
+kern  :alert : [  205.859073] rcu-torture: Reader Pipe:  645293670 6401 0 0 0 0 0 0 0 0 0
+kern  :alert : [  205.861279] rcu-torture: Reader Batch:  633674045 11626026 0 0 0 0 0 0 0 0 0
+kern  :alert : [  205.863334] rcu-torture: Free-Block Circulation:  3811 3811 3810 3809 3808 3807 3806 3805 3804 3803 0
+kern  :alert : [  267.292425] rcu-torture: rtc: ffffffffa03552a0 ver: 5025 tfle: 0 rta: 5025 rtaf: 0 rtf: 5016 rtmbe: 0 rtbe: 0 rtbke: 0 rtbre: 0 rtbf: 0 rtb: 0 nt: 108150 onoff: 0/0:0/0 -1,0:-1,0 0:0 (HZ=1000) barrier: 0/0:0 cbflood: 120
+kern  :alert : [  267.296821] rcu-torture: Reader Pipe:  860716067 8559 0 0 0 0 0 0 0 0 0
+kern  :alert : [  267.299029] rcu-torture: Reader Batch:  845135123 15589503 0 0 0 0 0 0 0 0 0
+kern  :alert : [  267.301039] rcu-torture: Free-Block Circulation:  5024 5024 5023 5022 5021 5020 5019 5018 5017 5016 0
+kern  :alert : [  322.534753] rcu-torture: Stopping rcu_torture_reader
+kern  :alert : [  322.534753] rcu-torture: Stopping torture_shuffle task
+kern  :alert : [  322.534773] rcu-torture: Stopping torture_shuffle
+kern  :alert : [  322.534787] rcu-torture: Stopping torture_stutter task
