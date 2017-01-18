@@ -17,6 +17,7 @@ usage() {
 	echo "--hdd partition: HDD partition for IO tests"
 	echo "--ssd partition: SSD partition for IO tests"
 	echo "--dry-run: preview changes will made testbox by install"
+	echo "--china: install gem packages from the mirror in China"
 }
 
 hdd_index=1
@@ -37,6 +38,9 @@ do
 		;;
 		--dry-run)
 		DRY_RUN=0
+		;;
+		--china)
+		CHINA=0
 		;;
 		*)
 		break
@@ -91,6 +95,14 @@ hdd_partitions: ${hdd_partitions[*]}
 ssd_partitions: ${ssd_partitions[*]}
 EOT
 	}
+}
+
+bundle_install_china() {
+	local tmpdir=$(mktemp -d /tmp/lkp-install-china-XXXXXX)
+	trap "rm -rf $tmpdir" EXIT
+	cp $LKP_SRC/Gemfile $tmpdir/Gemfile
+	cp $LKP_SRC/Gemfile.lock $tmpdir/Gemfile.lock
+	(cd $tmpdir; bundle config --local mirror.https://rubygems.org https://gems.ruby-china.org; bundle install)
 }
 
 install_packages() {
@@ -154,6 +166,14 @@ distro=$_system_name_lowercase
 	echo "Not a supported system, cannot install packages."
 	exit 1
 }
+
+if [ -n "$CHINA" ]; then
+	gem install bundler --clear-sources -s https://gems.ruby-china.org/
+	bundle_install_china
+else
+	gem install bundler
+	bundle install
+fi
 
 install_packages "lkp" $distro
 make_wakeup
