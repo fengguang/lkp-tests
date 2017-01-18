@@ -4,5 +4,6 @@ memory: 512G
 nr_ssd_partitions: 1
 ssd_partitions: /dev/nvme0n1p1
 swap_partitions:
-rootfs_partition:
+rootfs_partition: /dev/disk/by-id/scsi-3600508e000000000cd72e93c31c5150d-part1
 brand: Intel(R) Xeon(R) CPU E7-8890 v3 @ 2.50GHz
+
