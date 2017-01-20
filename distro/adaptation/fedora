@@ -1,9 +1,8 @@
 linux-tools: perf
-ruby-gnuplot:
 xz-utils: xz
 libpcap-dev: libpcap-devel
 ncurses-bin: ncurses
-build-essential: make automake gcc gcc-c++ kernel-devel
+build-essential: make automake gcc gcc-c++ kernel-devel rpm-build
 cgroup-bin: libcgroup
 apt-file:
 sg3-utils: sg3_utils
@@ -17,12 +16,12 @@ libnl-3-dev: libnl3-devel
 libnl-genl-3-dev: libnl3-devel
 libpcap0.8: libpcap
 libpcap0.8-dev: libpcap-devel
-libdbus-1-dev: dbus-libs
+libdbus-1-dev: dbus-devel
 libssl-dev: openssl-devel
 binutils-dev: binutils-devel
-libiberty-dev:
+libiberty-dev: binutils-devel
 libsqlite3-dev: libsqlite3x-devel
-iozone3: iozone
+iozone3:
 libc6-dev: glibc-devel
 libpopt0: popt
 libpopt-dev: popt-devel
@@ -34,7 +33,7 @@ uuid-dev: uuid-devel
 libkmod2: kmod-libs
 libkmod-dev: kmod-devel
 autotools-dev: autoconf
-liboop-dev: liboop
+liboop-dev:
 libsctp-dev: lksctp-tools-devel
 netpipe-lam: NetPIPE
 netpipe-mpich2: NetPIPE
@@ -48,7 +47,7 @@ freeglut3: freeglut
 libglib2.0-0: glib
 libgles2-mesa: mesa-libGLES
 dpkg-dev: dpkg-devel
-libx11-xcb-dev: libx11-devel
+libx11-xcb-dev: libX11-devel
 libdrm-dev: libdrm-devel
 xutils-dev: imake
 libibverbs-dev: libibverbs-devel
@@ -58,18 +57,70 @@ libaio-dev: libaio-devel
 initramfs-tools: dracut
 klibc-utils:
 apache2: httpd
-perl-base:
-perl-modules:
+perl-base: perl
+perl-modules: perl
 libperl5.20: perl-libs
 libhwloc-dev: hwloc-devel
 xfslibs-dev: xfsprogs-devel
 libattr1-dev: libattr-devel
 libacl1-dev: libacl-devel
-libreadline5: 
-libtool-bin:
+libreadline5: compat-readline5
+libtool-bin: libtool
 libnuma-dev: numactl-devel
-libc-dev:i386:
-linux-libc-dev:
-linux-libc-dev:i386:
+libc-dev:i386: glibc-devel.i686
+linux-libc-dev:i386: kernel-headers
+linux-libc-dev: kernel-headers
 libklibc-dev:
 linux-perf: perf
+libc6-dev:i386: glibc-devel.i686
+fsmark: fs_mark
+gfortran: gcc-gfortran
+iproute2: iproute
+libarchive-dev: libarchive-devel
+libblas3: blas
+libcairo2-dev: cairo-devel
+libcap-dev: libcap-devel
+libcap-ng-dev: libcap-ng-devel
+libdbd-mysql-perl: libdbi-dbd-mysql
+libdbi-perl: perl-DBI
+libelf-dev: elfutils-devel
+libfabric-dev: libfabric-devel
+libfdt-dev: libfdt-devel
+libfuse-dev: fuse-devel
+libglib2.0-dev: glib2-devel
+libgomp1: libgomp
+libjson-c-dev: json-c-devel
+libncurses5-dev: ncurses-devel
+libnl-route-3-dev: libnl3-devel
+libperl5.22: perl
+libpixman-1-dev: pixman-devel
+libssl1.0.0: openssl-devel
+libssl1.1: openssl-devel
+libunwind-dev: libunwind-devel
+libuv1-dev: libuv-devel
+perl-modules-5.22: perl
+pkg-config: pkgconfig
+zlib1g-dev: zlib-devel
+libaio-dev: libaio-devel
+libaudit-dev: audit-libs-devel
+libcap2: libcap
+libdw-dev: elfutils-devel
+libegl1-mesa-dev: mesa-libEGL-devel
+libgbm-dev: mesa-libgbm-devel
+libgl1-mesa-dev: mesa-libGL-devel
+libglu-dev: mesa-libGLU-devel
+libibverbs-dev: libibverbs-devel
+liblzma-dev: xz-devel
+libpciaccess-dev: libpciaccess-devel
+libpng12-dev: libpng12-devel
+librdmacm-dev: librdmacm-devel
+gcc-4.9: gcc
+gcc-5: gcc
+gcc-6: gcc
+tshark: wireshark
+rt-tests:
+hpcc:
+plzip:
+postmark:
+stress-ng:
+xorg:
