@@ -11,6 +11,7 @@ setup_wait
 
 current_tracer=function_graph
 ftrace_filters=$functions
+ftrace_options="nofuncgraph-overhead nofuncgraph-cpu funcgraph-proc funcgraph-duration funcgraph-tail"
 ftrace_set_params
 
 ftrace_run
