@@ -15,6 +15,6 @@ STDIN.each_line { |line|
 
 	dev_name = data[2]
 	data[3..-1].each_with_index { |v, i|
-		puts dev_name + '.' + keys[i] + ': ' + v
+		puts keys[i] + '.' + dev_name + ': ' + v
 	}
 }
