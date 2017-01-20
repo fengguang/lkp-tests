@@ -105,7 +105,9 @@ def format_number(number)
 	when Float
 		an = number.abs
 		fmt =
-			if an < 1
+      if an < 0.001
+        '%.4g'
+			elsif an < 1
 				'%.4f'
 			elsif an < 1000
 				'%.2f'
@@ -114,7 +116,13 @@ def format_number(number)
 			else
 				'%.4g'
 			end
-		fmt % [number]
+		s = fmt % [number]
+    # Remove trailing 0
+    if fmt[-1] == 'f'
+      s.gsub(/\.?0+$/, '')
+    else
+      s
+    end
 	else
 		number.to_s
 	end
