@@ -1,0 +1,19 @@
+#!/bin/sh
+# - interval
+
+: ${interval:=1}
+
+. $LKP_SRC/lib/wait.sh
+setup_wait
+
+while :; do
+	echo time: $(date +%s.%N)
+	for proc in /proc/[0-9]*; do
+		comm=$(cat $proc/comm 2>/dev/null)
+		[ -n "$comm" ] && {
+			echo "$proc $comm"
+			cat $proc/stack 2>/dev/null
+		}
+        done
+	wait_timeout $interval
+done

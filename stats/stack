@@ -1,0 +1,49 @@
+#!/usr/bin/env ruby
+
+MAX_STACK_DEPTH = 5
+THRESHOLD = 0.01
+
+def parse
+  results = Hash.new
+  cmd = nil
+  funcs = []
+
+  add_result = ->{
+      if !funcs.empty?
+        funcs = funcs.slice(0, MAX_STACK_DEPTH)
+        results[cmd] ||= Hash.new(0)
+        results[cmd][funcs.join(".")] += 1
+        funcs = []
+      end
+  }
+
+  $stdin.each_line { |line|
+    if line.start_with? '/proc/'
+      add_result.()
+      cmd = line.split[1].split('/')[0]
+    elsif line =~ /\[<[0-9a-f]+>\] ([a-zA-Z_][a-zA-Z0-9_]+)/
+      funcs.push $1
+    end
+  }
+  add_result.()
+
+  results.each { |c, cmd_result|
+    nr = cmd_result.reduce(0) { |sum, cr| sum + cr[1] }
+    results[c] = cmd_result.map { |bt, val|
+      [bt, val * 100.0 / nr]
+    }
+  }
+  results
+end
+
+def display(results)
+  results.each { |cmd, cmd_result|
+    cmd_result.sort_by! { |r| r[1] }
+    cmd_result.reverse.each { |bt, p|
+      break if p < THRESHOLD
+      puts "#{cmd}.#{bt}: #{p}"
+    }
+  }
+end
+
+display parse
