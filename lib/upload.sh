@@ -105,16 +105,20 @@ upload_files_curl()
 
 upload_files_copy()
 {
-	[ -n "$target_directory" ] && {
-		local RESULT_ROOT="$RESULT_ROOT/$target_directory"
+	local RESULT_ROOT="$RESULT_ROOT/$target_directory"
 
-		mkdir -p $RESULT_ROOT
-		chown -R lkp.lkp $RESULT_ROOT
-		chmod -R g+w $RESULT_ROOT
+
+	mkdir -p $RESULT_ROOT
+
+	[ "$LKP_LOCAL_RUN" -ne "1" ] && {
+		[ -n "$target_directory" ] && {
+			chown -R lkp.lkp $RESULT_ROOT
+			chmod -R g+w $RESULT_ROOT
+		}
+
+		chown -R lkp.lkp "$@"
+		chmod -R ug+w "$@"
 	}
-
-	chown -R lkp.lkp "$@"
-	chmod -R ug+w "$@"
 
 	local file
 	local ret=0
