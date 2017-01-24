@@ -3,10 +3,10 @@
 stats = {}
 while line = STDIN.gets
   case line
-  when /^### (cpufreq_\d+):$/
+  when /^### (\w+_\d+):$/
     item = Regexp.last_match[1]
     stats[item] = '' unless stats.key?(item)
-  when /^(cpufreq_\d+): (fail|pass|skip)$/
+  when /^(\w+_\d+): (fail|pass|skip)$/
     item = Regexp.last_match[1]
     result = Regexp.last_match[2]
     stats[item] = "#{result}: 1" unless stats.key?(item) && !stats[item].empty?
