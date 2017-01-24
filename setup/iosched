@@ -1,5 +1,5 @@
 #!/bin/sh
-# - scheduler
+# - iosched
 # - read_expire
 # - write_expire
 # - fifo_batch
@@ -8,10 +8,10 @@
 
 for i in /sys/block/*/queue/scheduler
 do
-	echo $scheduler > $i
+	echo $iosched > $i
 done
 
-[ x"$scheduler" = xdeadline ] &&
+[ x"$iosched" = xdeadline ] &&
 	for dev_iosched in /sys/block/*/queue/iosched; do
 		[ -n "$read_expire" ] &&
 			echo $read_expire > $dev_iosched/read_expire
