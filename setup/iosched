@@ -1,7 +1,26 @@
 #!/bin/sh
 # - scheduler
+# - read_expire
+# - write_expire
+# - fifo_batch
+# - writes_starved
+# - front_merges
 
 for i in /sys/block/*/queue/scheduler
 do
 	echo $scheduler > $i
 done
+
+[ x"$scheduler" = xdeadline ] &&
+	for dev_iosched in /sys/block/*/queue/iosched; do
+		[ -n "$read_expire" ] &&
+			echo $read_expire > $dev_iosched/read_expire
+		[ -n "$write_expire" ] &&
+			echo $write_expire > $dev_iosched/write_expire
+		[ -n "$fifo_batch" ] &&
+			echo $fifo_batch > $dev_iosched/fifo_batch
+		[ -n "$writes_starved" ] &&
+			echo $writes_starved > $dev_iosched/writes_starved
+		[ -n "$front_merges" ] &&
+			echo $front_merges > $dev_iosched/front_merges
+	done
