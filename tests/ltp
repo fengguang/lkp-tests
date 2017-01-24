@@ -15,10 +15,6 @@ workaround_env()
 	# > netns_childns.sh: 38: .: cmdlib.sh: not found
 	[ "$(cmd_path bash)" = '/bin/bash' ] && [ $(readlink -e /bin/sh) != '/bin/bash' ] &&
 	ln -fs bash /bin/sh
-
-	# make sure using gawk instead of mawk
-	[ "$(cmd_path awk)" = '/usr/bin/awk'  ] && [ $(readlink -e /usr/bin/awk) != '/usr/bin/gawk' ] &&
-	ln -fs gawk /usr/bin/awk
 }
 workaround_env
 
