@@ -16,7 +16,7 @@ cd $BENCHMARK_ROOT/xfstests || die "fail to cd $BENCHMARK_ROOT/xfstests"
 # - mawk not support strtonum()
 #
 # due to awk maybe link to mawk, so restore the gawk symlink.
-[ -f /usr/bin/gawk ] && ln -sf /usr/bin/gawk awk
+[ -f /usr/bin/gawk ] && ln -sf /usr/bin/gawk /usr/bin/awk
 
 check_add_user()
 {
