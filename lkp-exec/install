@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. $LKP_SRC/lib/result.sh
+
 if ! [ $(id -u) = 0 ]; then
 	echo "This script must be run as root" 1>&2
 	exit 1
@@ -94,6 +96,15 @@ memory: ${mem_gb}G
 hdd_partitions: ${hdd_partitions[*]}
 ssd_partitions: ${ssd_partitions[*]}
 EOT
+	}
+
+	local tbox_group
+	set_tbox_group $HOSTNAME
+
+	local host_group_config="$LKP_SRC/hosts/${tbox_group}"
+	[ -e $host_group_config ] || {
+		echo "Creating testbox group configuration file: $host_group_config."
+		cp $host_config $host_group_config
 	}
 }
 
