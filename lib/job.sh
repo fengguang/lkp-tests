@@ -152,7 +152,7 @@ check_exit_code()
 	# when setup scripts fail, the monitors should be wakeup
 	wakeup_pre_test
 
-	echo "${program}.exit_code.$exit_code: 1"	>> $RESULT_ROOT/last_state
+	echo "${program_type}.${program}.exit_code.$exit_code: 1" >> $RESULT_ROOT/last_state
 	echo "exit_fail: 1"				>> $RESULT_ROOT/last_state
 	sync_cluster_state 'failed'
 	exit "$exit_code"
@@ -181,6 +181,9 @@ run_program()
 {
 	local i
 	local has_env=
+
+	local program_type=$1
+	shift
 
 	local program=$(record_program "$@")
 
@@ -214,7 +217,7 @@ run_monitor()
 
 run_setup()
 {
-	run_program "$@"
+	run_program setup "$@"
 	read_env_vars
 }
 
@@ -223,7 +226,7 @@ start_daemon()
 	# will be killed by watchdog when timeout
 	echo $$ >> $TMP/pid-start-daemon
 
-	run_program "$@"
+	run_program daemon "$@"
 
 	sync_cluster_state 'finished'
 	# If failed to start the daemon above, the job will abort.
@@ -242,7 +245,7 @@ run_test()
 
 	wait_other_nodes 'test'
 	wakeup_pre_test
-	run_program "$@"
+	run_program test "$@"
 	sync_cluster_state 'finished'
 }
 

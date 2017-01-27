@@ -64,8 +64,9 @@ if [ -f "$TMP/OOM" ] || check_oom; then
 elif [ -f "$TMP/soft_timeout" ]; then
 	set_job_state 'soft_timeout'
 elif [ "$run_job_exit_code" != 0 ]; then
+		program_type=$(sed -ne "s/\(.*\)\..*\.exit_code\..*/\\1/p" "$last_state_file")
 		# "99" is a fixed number from lib/debug die() function
-		if [ "$run_job_exit_code" = "99" ]; then
+		if [ "$run_job_exit_code" = "99" -o "$program_type" = "setup" -o "$program_type" = "daemon" ]; then
 			set_job_state 'incomplete'
 		else
 			set_job_state 'failed'
