@@ -147,7 +147,7 @@ class WTMP
 
 			tail = %x[ tail -n 100 #{file} ]
 			load(tail)
-		rescue Exception => e
+		rescue StandardError => e
 			$stderr.puts "#{file}: " + e.message
 		end
 	end
@@ -205,7 +205,7 @@ def load_json(file, cache = false)
 			return $json_cache[file].freeze
 		rescue SignalException
 			raise
-		rescue Exception
+		rescue StandardError
 			tempfile = file + "-bad"
 			$stderr.puts "Failed to load JSON file: #{file}"
 			$stderr.puts "Kept corrupted JSON file for debugging: #{tempfile}"

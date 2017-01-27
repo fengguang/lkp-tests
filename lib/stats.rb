@@ -200,7 +200,7 @@ end
 def load_release_matrix(matrix_file)
 	begin
 		matrix = load_json matrix_file
-	rescue Exception
+	rescue StandardError
 		matrix = nil
 	end
 

@@ -50,7 +50,7 @@ end
 def normlize_event_data(event, event_data)
 	begin
 		key_prefix_items = $key_prefix_mapping[event].split(' ')
-	rescue Exception
+	rescue StandardError
 		key_prefix_items = []
 	end
 

@@ -142,7 +142,7 @@ def load_matrix_file(matrix_file)
 	matrix = nil
 	begin
 		matrix = load_json(matrix_file) if File.exist? matrix_file
-	rescue Exception
+	rescue StandardError
 		return nil
 	end
 	return matrix
@@ -330,7 +330,7 @@ def unite_params(result_root)
 
 	begin
 		atomic_save_yaml_json params, params_file
-	rescue Exception => e
+	rescue StandardError => e
 		$stderr.puts 'unite_params: ' + e.message
 	end
 end
@@ -352,7 +352,7 @@ def unite_stats(result_root, delete = false)
 	begin
 		__matrix = unite_to(stats, __result_root, 100, nil, delete)
 		check_warn_test_error __matrix, result_root
-	rescue Exception
+	rescue StandardError
 	end
 
 	return true

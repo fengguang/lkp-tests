@@ -26,7 +26,7 @@ end
 while line = STDIN.gets
 	begin
 		stat_line(line)
-	rescue Exception => e
+	rescue StandardError => e
 		if e.message =~ /invalid byte sequence in US-ASCII/
 			line = line.remediate_invalid_byte_sequence(replace: '_')
 			stat_line(line)

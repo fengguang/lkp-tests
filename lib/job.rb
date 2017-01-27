@@ -207,7 +207,7 @@ class Job
 			YAML.load_stream(yaml) do |hash|
 				@jobs << hash
 			end
-		rescue Exception => e
+		rescue StandardError => e
 			$stderr.puts "#{jobfile}: " + e.message
 			$stderr.puts '-' * 80
 			$stderr.puts yaml
