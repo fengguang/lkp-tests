@@ -5,7 +5,7 @@ require ENV['LKP_SRC'] + '/lib/string_ext'
 require 'set'
 
 stats = []
-testname = ''
+testname = nil
 mqueue_speed = {}
 nr_test = 0
 
@@ -15,24 +15,28 @@ while (line = STDIN.gets)
 	case line
 	when %r{make: Entering directory .*/(.*)'}
 		testname = Regexp.last_match[1]
+  when %r{make: Leaving directory .*/(.*)'}
+    # rli9 FIXME: consider the input has messed text like Entering doesn't match with Leaving
+    testname = nil
 	when /^selftests: (.*) .*(PASS|FAIL)/
 		stats << "#{testname}_#{Regexp.last_match[1]}.#{Regexp.last_match[2].downcase}: 1"
+    nr_test += 1
 	when /Test #([1-9].*):/
 		mqueue_test = Regexp.last_match[1]
 	when /(Send|Recv) msg:/
 		io = Regexp.last_match[1]
 	when %r{(\d+) nsec/msg}
 		mqueue_speed[mqueue_test + '.' + io] = Regexp.last_match[1].to_i
-	when /^Makefile:[\s\S]+failed$/
-		stats << 'x86_make.fail: 1'
+  when /: recipe for target.+failed$/
+    next unless testname
+    # do not count make fail in nr_test, which is for sub test number
+    stats << "#{testname}_make_fail: 1"
 	end
 end
 
-if !mqueue_speed.empty?
+unless mqueue_speed.empty?
 	puts "mqueue.nsec_per_msg: #{mqueue_speed.values.average.to_i}"
-	nr_test = stats.uniq.size + 1
-else
-	nr_test = stats.uniq.size
+  nr_test += 1
 end
 
 stats.uniq.each { |stat| puts stat }
