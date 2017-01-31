@@ -21,9 +21,8 @@ while (line = STDIN.gets)
 		mqueue_test = Regexp.last_match[1]
 	when /(Send|Recv) msg:/
 		io = Regexp.last_match[1]
-	when %r{(\d+) nsec/msg/}
-		item = Regexp.last_match[1]
-		mqueue_speed[mqueue_test + '.' + io] = item.to_i
+	when %r{(\d+) nsec/msg}
+		mqueue_speed[mqueue_test + '.' + io] = Regexp.last_match[1].to_i
 	when /^Makefile:[\s\S]+failed$/
 		stats << 'x86_make.fail: 1'
 	end
