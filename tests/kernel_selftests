@@ -19,13 +19,13 @@ echo "KERNEL SELFTESTS: linux_headers_dir is $linux_headers_dir"
 
 # linux-selftests file is created by 0day system, and located in /usr/src/linux-selftests-$kconfig-$commit directory.
 linux_selftests_dir=(/usr/src/linux-selftests-*)
+[[ $linux_selftests_dir ]] || die "failed to find linux-selftests dir"
 
-if [[ $linux_selftests_dir ]]; then
-	cd $linux_selftests_dir
-	log_cmd make || die "failed to run make"
-else
-	cd $BENCHMARK_ROOT/kernel_selftests || die "can not find benchmark dir"
-fi
+# headers_install's default location is usr/include which is required by several tests' Makefile
+mkdir -p "$linux_selftests_dir/usr/include" || die
+mount --bind $linux_headers_dir/include $linux_selftests_dir/usr/include || die
+
+cd $linux_selftests_dir/tools/testing/selftests || die
 
 # workaround hugetlbfstest.c open_file() error
 mkdir -p /hugepages
@@ -51,5 +51,7 @@ for mf in */Makefile; do
 			mount -t efivarfs efivarfs /sys/firmware/efi/efivars
 			;;
 	esac
-	log_cmd make run_tests -C $subtest -I $linux_headers_dir/include -I $linux_headers_dir/include/uapi
+
+	echo
+	log_cmd make run_tests -C $subtest
 done
