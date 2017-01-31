@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require ENV['LKP_SRC'] + '/lib/statistics.rb'
+require ENV['LKP_SRC'] + '/lib/string_ext'
 require 'set'
 
 stats = []
@@ -9,6 +10,8 @@ mqueue_speed = {}
 nr_test = 0
 
 while (line = STDIN.gets)
+  line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
+
 	case line
 	when %r{make: Entering directory .*/(.*)'}
 		testname = Regexp.last_match[1]
