@@ -13,14 +13,21 @@ def auto_range(max_level = 6, min_level = 0)
   }.flatten + [10 ** (max_level + 1)]
 end
 
-def histogram(data, range = nil, percent = true)
+def histogram(data, range = nil, params = {})
+  no_percent = params[:no_percent]
+  accumulate = params[:accumulate]
+
   range ||= auto_range
   total = data.size
   start = 0
   hist = range.map { |lc|
     next nil if start >= total
     nstart = data.bsearch_index { |l| l >= lc } || total
-    num = nstart - start
+    num = if accumulate
+            nstart
+          else
+            nstart - start
+          end
     start = nstart
     num
   }.compact
@@ -30,7 +37,7 @@ def histogram(data, range = nil, percent = true)
     range = range.slice(0, hist.size)
   end
 
-  if percent
+  if !no_percent
     hist = hist.map { |n| n * 100.0 / total }
   end
 
@@ -55,6 +62,7 @@ def print_histogram(range, hist, params = {})
   as_time = params[:as_time]
   unit = params[:unit] || 'u'
   to_plot = params[:to_plot]
+  no_extra = params[:no_extra]
 
   format_level = ->l{
     as_time ? format_time(l, unit) : format_number(l)
@@ -74,7 +82,7 @@ def print_histogram(range, hist, params = {})
     prev = lc
     printf "\n"
   }
-  if hist.size > range.size
+  if !no_extra && hist.size > range.size
     printf("%s+\t%s%s\n", format_level.(range[-1]),
            format_number(hist[-1]), format_to_plot.(range.size + 1))
   end
