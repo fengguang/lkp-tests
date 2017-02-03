@@ -1,8 +1,9 @@
 #!/usr/bin/env ruby
 
-require ENV['LKP_SRC'] + '/lib/statistics.rb'
-require ENV['LKP_SRC'] + '/lib/string_ext'
-require 'set'
+LKP_SRC = ENV['LKP_SRC']
+
+require "#{LKP_SRC}/lib/statistics"
+require "#{LKP_SRC}/lib/string_ext"
 
 stats = []
 testname = nil
@@ -12,30 +13,30 @@ nr_test = 0
 while (line = STDIN.gets)
   line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
 
-	case line
-	when %r{make: Entering directory .*/(.*)'}
-		testname = Regexp.last_match[1]
+  case line
+  when %r{make: Entering directory .*/(.*)'}
+    testname = Regexp.last_match[1]
   when %r{make: Leaving directory .*/(.*)'}
     # rli9 FIXME: consider the input has messed text like Entering doesn't match with Leaving
     testname = nil
-	when /^selftests: (.*) .*(PASS|FAIL)/
+  when /^selftests: (.*) .*(PASS|FAIL)/
     stats << "#{testname}.#{Regexp.last_match[1]}.#{Regexp.last_match[2].downcase}: 1"
     nr_test += 1
-	when /Test #([1-9].*):/
-		mqueue_test = Regexp.last_match[1]
-	when /(Send|Recv) msg:/
-		io = Regexp.last_match[1]
-	when %r{(\d+) nsec/msg}
-		mqueue_speed[mqueue_test + '.' + io] = Regexp.last_match[1].to_i
+  when /Test #([1-9].*):/
+    mqueue_test = Regexp.last_match[1]
+  when /(Send|Recv) msg:/
+    io = Regexp.last_match[1]
+  when %r{(\d+) nsec/msg}
+    mqueue_speed[mqueue_test + '.' + io] = Regexp.last_match[1].to_i
   when /: recipe for target.+failed$/
     next unless testname
     # do not count make fail in nr_test, which is for sub test number
     stats << "#{testname}.make_fail: 1"
-	end
+  end
 end
 
 unless mqueue_speed.empty?
-	puts "mqueue.nsec_per_msg: #{mqueue_speed.values.average.to_i}"
+  puts "mqueue.nsec_per_msg: #{mqueue_speed.values.average.to_i}"
   nr_test += 1
 end
 
