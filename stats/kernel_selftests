@@ -41,4 +41,4 @@ unless mqueue_speed.empty?
 end
 
 stats.uniq.each { |stat| puts stat }
-puts "total_test: #{nr_test}"
+puts "total_test: #{nr_test}" if nr_test.nonzero?

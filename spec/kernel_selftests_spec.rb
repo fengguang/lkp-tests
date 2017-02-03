@@ -29,7 +29,7 @@ Makefile:47: recipe for target 'sysret_ss_attrs_64' failed
 make: Leaving directory '/usr/src/linux-selftests-x86_64-rhel-7.2-a121103c922847ba5010819a3f250f1f7fc84ab8/tools/testing/selftests/x86'
 EOF
       actual = `echo "#{stdout}" | #{stats_script}`.split("\n")
-      expect(actual).to eq(['x86.make.fail: 1', 'total_test: 0'])
+      expect(actual).to eq(['x86.make_fail: 1'])
     end
 
     it 'stats mqueue result' do
