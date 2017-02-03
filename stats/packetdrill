@@ -3,6 +3,6 @@
 while line = STDIN.gets
 	case line.chomp!
 	when /^\.\/(.*)\/(.*).pkt failed/
-		puts $1 + '__' + $2 + '.FAIL' + ': 1'
+		puts $1 + '__' + $2 + '.fail' + ': 1'
 	end
 end
