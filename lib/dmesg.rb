@@ -407,3 +407,31 @@ def get_crash_stats(dmesg_file)
 
 	oops_map
 end
+
+def get_crash_calltraces(dmesg_file)
+  dmesg_content =
+    if dmesg_file =~ /\.xz$/
+      `xz -d -k #{dmesg_file} --stdout`
+    else
+      File.read(dmesg_file)
+    end
+
+  calltraces = []
+  index = 0
+  is_calltrace = false
+
+  dmesg_content.each_line do |line|
+    if line.index('------------[ cut here ]')
+      is_calltrace = true
+      calltraces[index] = line
+    elsif line.index('---[ end trace ')
+      is_calltrace = false
+      calltraces[index] << line
+      index += 1
+    elsif is_calltrace
+      calltraces[index] << line
+    end
+  end
+
+  calltraces
+end
