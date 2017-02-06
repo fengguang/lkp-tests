@@ -94,6 +94,8 @@ def create_host_config
 			file.puts "ssd_partitions: #{$opt_ssd.join ' '}"
 		}
 	end
+  host_group_config = LKP_SRC + "/hosts/#{tbox_group(HOSTNAME)}"
+  FileUtils.cp(host_config, host_group_config) unless File.exist? host_group_config
 end
 
 def install_packages(script, distro)
