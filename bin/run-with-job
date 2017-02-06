@@ -4,5 +4,5 @@
 
 export job_file="$1"
 shift
-job_init
+job_env
 exec "$@"
