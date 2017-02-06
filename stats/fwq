@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 
 RESULT_ROOT = ENV['RESULT_ROOT']
+LKP_SRC ||= ENV['LKP_SRC']
+require "#{LKP_SRC}/lib/noise.rb"
 
 PDEL = 10
 
