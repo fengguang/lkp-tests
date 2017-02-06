@@ -7,6 +7,7 @@ ifeq ($(KLCC_PATH),)
 	CC = gcc
 else
 	CC = klcc
+	LDFLAGS = -static
 endif
 ifeq ($(ARCH),i386)
 	CFLAGS += -m32
@@ -15,7 +16,7 @@ ifeq ($(ARCH),i386)
 endif
 
 main : $(OBJECTS)
-	$(CC) $(CFLAGS) -static -o $(PROG) $(OBJECTS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $(PROG) $(OBJECTS)
 	rm -f $(OBJECTS)
 	strip $(PROG)
 clean:
