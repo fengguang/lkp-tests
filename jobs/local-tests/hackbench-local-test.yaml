@@ -1,0 +1,17 @@
+suite: hackbench
+testcase: hackbench
+category: benchmark
+
+runtime: 20s
+
+disable_latency_stats: 1
+
+nr_threads:
+- 50%
+
+hackbench:
+  mode:
+  - process
+  - threads
+  ipc:
+  - pipe

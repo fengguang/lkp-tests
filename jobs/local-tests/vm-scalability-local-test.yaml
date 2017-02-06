@@ -1,0 +1,12 @@
+suite: vm-scalability
+testcase: vm-scalability
+category: benchmark
+
+perf-profile:
+
+runtime: 20s
+size:
+
+vm-scalability:
+  test:
+  - anon-r-rand
