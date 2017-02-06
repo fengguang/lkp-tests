@@ -1,0 +1,23 @@
+suite: reaim
+testcase: reaim
+category: benchmark
+
+runtime: 300s
+nr_task: 100%
+
+reaim:
+  test:
+  - aim9
+  - alltests
+  - all_utime
+  - compute
+  - custom
+  - dbase
+  - five_sec
+  - fserver
+  - high_systime
+  - long
+  - new_dbase
+  - new_fserver
+  - shared
+  - short

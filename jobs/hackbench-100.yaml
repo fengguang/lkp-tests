@@ -1,0 +1,15 @@
+suite: hackbench
+testcase: hackbench
+category: benchmark
+
+disable_latency_stats: 1
+
+nr_threads: 100%
+
+hackbench:
+  mode:
+  - process
+  - threads
+  ipc:
+  - pipe
+  - socket
