@@ -226,7 +226,9 @@ module DataStore
 	class << Layout
 		private :new
 
-		singleton_class.include AddCachedMethod
+    class << self
+      include AddCachedMethod
+    end
 		add_cached_method :new
 
 		def open(path)
@@ -808,7 +810,9 @@ module DataStore
 	class << Table
 		private :new
 
-		singleton_class.include AddCachedMethod
+    class << self
+      include AddCachedMethod
+    end
 		add_cached_method :new
 
 		def open(path)
