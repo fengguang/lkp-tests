@@ -35,22 +35,25 @@ sed -i 's/hugetlbfstest//' vm/Makefile
 
 for mf in */Makefile; do
 	subtest=${mf%/Makefile}
-	case $subtest in
-		filesystems)
-			   continue
-			   ;;
-		efivarfs)
-			[ -d /sys/firmware/efi ] || {
-				echo skip efivarfs test: /sys/firmware/efi dir does not exist
+
+	grep -E -q -m 1 "^TARGETS \+?=  ?$subtest" Makefile || {
+		echo "skip ${subtest} test: not be default compiling/testing target"
+		continue
+	}
+
+	if [[ $subtest = "efivarfs" ]]; then
+		[[ -d "/sys/firmware/efi" ]] || {
+				echo "skip efivarfs test: /sys/firmware/efi dir does not exist"
 				continue
-			}
-			grep -q -F -w efivarfs /proc/filesystems || modprobe efivarfs || {
-				echo skip efivarfs test: no efivarfs support, try enable CONFIG_EFIVAR_FS
-				continue
-			}
-			mount -t efivarfs efivarfs /sys/firmware/efi/efivars
-			;;
-	esac
+		}
+
+		grep -q -F -w efivarfs /proc/filesystems || modprobe efivarfs || {
+			echo "skip efivarfs test: no efivarfs support, try enable CONFIG_EFIVAR_FS"
+			continue
+		}
+
+		mount -t efivarfs efivarfs /sys/firmware/efi/efivars
+	fi
 
 	echo
 	log_cmd make run_tests -C $subtest
