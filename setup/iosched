@@ -11,7 +11,7 @@ do
 	echo $iosched > $i
 done
 
-[ x"$iosched" = xdeadline ] &&
+if [ x"$iosched" = xdeadline ]; then
 	for dev_iosched in /sys/block/*/queue/iosched; do
 		[ -n "$read_expire" ] &&
 			echo $read_expire > $dev_iosched/read_expire
@@ -24,3 +24,6 @@ done
 		[ -n "$front_merges" ] &&
 			echo $front_merges > $dev_iosched/front_merges
 	done
+else
+	true
+fi
