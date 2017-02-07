@@ -1,19 +1,21 @@
 #!/usr/bin/env ruby
 
-keys = { 'secs_latency' => 'secs latency to NUMA-converge',
-	 'secs_slowest' => 'secs slowest \(max\) thread-runtime',
-	 'secs_fastest' => 'secs fastest \(min\) thread-runtime',
-	 'secs_avg' => 'secs average thread-runtime',
-	 'max_avg_diff' => '% difference between max/avg runtime',
-	 'GB_per_thread' => 'GB data processed, per thread',
-	 'GB_total' =>  'GB data processed, total',
-	 'nsecs_byte_thread' => 'nsecs/byte/thread runtime',
-	 'GB_sec_thread' => 'GB/sec/thread speed',
-	 'GB_sec_total' => 'GB/sec total speed' }
+keys = {
+  'secs_latency' => 'secs,\s*NUMA-convergence-latency',
+	'secs_slowest' => 'secs,\s*runtime-max/thread',
+	'secs_fastest' => 'secs,\s*runtime-min/thread',
+	'secs_avg' => 'secs,\s*runtime-avg/thread',
+	'max_avg_diff' => '%,\s*spread-runtime/thread',
+	'GB_per_thread' => 'GB,\s*data/thread',
+	'GB_total' =>  'GB,\s*data-total',
+	'nsecs_byte_thread' => 'nsecs,\s*runtime/byte/thread',
+	'GB_sec_thread' => 'GB/sec,\s*thread-speed',
+	'GB_sec_total' => 'GB/sec,\s*total-speed'
+}
 
 while line = STDIN.gets
 	keys.each { |k, v|
-		if line =~ /([\d.]+) #{v}/
+		if line =~ /([\d.]+),\s*#{v}/
 			puts "#{k}: #{$1}"
 		end
 	}
