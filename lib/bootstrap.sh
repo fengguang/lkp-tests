@@ -256,13 +256,16 @@ redirect_stdout_stderr()
 install_deb()
 {
 	local files
-
-	files="$(find /opt/deb -type f 2>/dev/null)" || return
-	[ -n "$files" ] || return
-
-	dpkg -i $files || return
-	rm $files
-}
+	local line
+	while read -r line
+	do
+		files=$(find /opt/deb -type f -name "${line}_*")
+		[ -n "$files" ] && {
+			dpkg -i "$files" || return
+			rm "$files"
+		}
+	done < "$LKP_SRC/distro/keep-deb"
+} 
 
 fixup_packages()
 {
