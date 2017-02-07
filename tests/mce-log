@@ -12,6 +12,10 @@ cd $BENCHMARK_ROOT/mce-log || die "can not find mce-log dir"
 
 # workaround this error: '.depend: No such file or directory'
 touch .depend
+
+# skip test/socket case, because it requires hardware register CMCI support
+# match start with "\t./test socket*"
+sed -i '/.*\.\/test socket*/d' tests/Makefile
 make test
 exit_value=$?
 
