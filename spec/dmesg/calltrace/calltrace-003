@@ -1,0 +1,29 @@
+[   41.048800] BUG: unable to handle kernel NULL pointer dereference at 0000001c
+[   41.049642] IP: iput+0x9/0x142
+[   41.049990] *pde = 00000000 
+[   41.049990] 
+[   41.050500] Oops: 0000 [#1]
+[   41.050815] CPU: 0 PID: 330 Comm: trinity-c3 Not tainted 4.10.0-rc6-00059-g2497278 #1
+[   41.051675] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.9.3-20161025_171302-gandalf 04/01/2014
+[   41.052770] task: 4d900000 task.stack: 4d910000
+[   41.053278] EIP: iput+0x9/0x142
+[   41.053627] EFLAGS: 00010202 CPU: 0
+[   41.054013] EAX: 00000000 EBX: 534698dc ECX: 00000000 EDX: 00000000
+[   41.054699] ESI: 00000000 EDI: 5346bd48 EBP: 4d911f48 ESP: 4d911f34
+[   41.055385]  DS: 007b ES: 007b FS: 0000 GS: 00e0 SS: 0068
+[   41.055976] CR0: 80050033 CR2: 0000001c CR3: 0d904000 CR4: 00000690
+[   41.056667] Call Trace:
+[   41.056950]  iterate_bdevs+0xfb/0x103
+[   41.057359]  ? fdatawait_one_bdev+0x10/0x10
+[   41.057826]  sys_sync+0x52/0x70
+[   41.058180]  do_fast_syscall_32+0xa8/0x11c
+[   41.058642]  entry_SYSENTER_32+0x4e/0x7c
+[   41.059072] EIP: 0x3774ebb1
+[   41.059393] EFLAGS: 00000216 CPU: 0
+[   41.059785] EAX: ffffffda EBX: 0000fb1a ECX: 70000008 EDX: 00000fb0
+[   41.060477] ESI: 000000b4 EDI: 00000019 EBP: 745e374c ESP: 3ffac65c
+[   41.061165]  DS: 007b ES: 007b FS: 0000 GS: 0033 SS: 007b
+[   41.061762] Code: c8 00 00 00 eb ca b8 88 d3 a4 41 e8 cf 94 61 00 5a 89 d8 5b 5e 5f 5d c3 55 b8 01 00 00 00 89 e5 5d c3 55 89 e5 57 56 53 83 ec 08 <8b> 48 1c 85 c0 8b 71 20 89 4d f0 89 75 ec 0f 84 1e 01 00 00 f6
+[   41.063804] EIP: iput+0x9/0x142 SS:ESP: 0068:4d911f34
+[   41.064365] CR2: 000000000000001c
+[   41.064751] ---[ end trace 30f07bfbc097c0f2 ]---

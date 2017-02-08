@@ -408,28 +408,41 @@ def get_crash_stats(dmesg_file)
 	oops_map
 end
 
-def get_crash_calltraces(dmesg_file)
-  dmesg_content =
+def get_content(dmesg_file)
     if dmesg_file =~ /\.xz$/
       `xz -d -k #{dmesg_file} --stdout`
     else
       File.read(dmesg_file)
     end
+end
+
+CALLTRACE_LIMIT_LEN = 100
+def get_crash_calltraces(dmesg_file)
+  dmesg_content = get_content(dmesg_file)
 
   calltraces = []
   index = 0
-  is_calltrace = false
+  line_count = 0
+  in_calltrace = false
 
   dmesg_content.each_line do |line|
-    if line.index('------------[ cut here ]')
-      is_calltrace = true
-      calltraces[index] = line
-    elsif line.index('---[ end trace ')
-      is_calltrace = false
+    if line =~ / BUG: | WARNING: | INFO: | UBSAN: | kernel BUG at /
+      in_calltrace = true
+      calltraces[index] ||= ""
+      calltraces[index] << line
+      line_count = 1
+    elsif line.index('---[ end trace ') && in_calltrace
+      in_calltrace = false
       calltraces[index] << line
       index += 1
-    elsif is_calltrace
+    elsif in_calltrace
       calltraces[index] << line
+      line_count += 1
+      if line_count > CALLTRACE_LIMIT_LEN
+        line_count = 0
+        in_calltrace = false
+        index += 1
+      end
     end
   end
 

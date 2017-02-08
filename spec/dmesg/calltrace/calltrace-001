@@ -1,0 +1,54 @@
+[   14.371523] BUG: unable to handle kernel NULL pointer dereference at 00000178
+[   14.372723] IP: rt6_fill_node+0x473/0x980
+[   14.373313] *pdpt = 000000000c4cc001 *pde = 0000000000000000 
+[   14.373315] 
+[   14.374008] Oops: 0000 [#1] SMP
+[   14.374383] CPU: 0 PID: 520 Comm: netifd Not tainted 4.10.0-rc4-00654-g5e2f2bd #1
+[   14.375122] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.9.3-20161025_171302-gandalf 04/01/2014
+[   14.376145] task: 8d8c4000 task.stack: 8c4c8000
+[   14.376849] EIP: rt6_fill_node+0x473/0x980
+[   14.377456] EFLAGS: 00010206 CPU: 0
+[   14.377840] EAX: 00000000 EBX: 8c4327a0 ECX: 00000001 EDX: 00000002
+[   14.378444] ESI: 8d9dc028 EDI: 00000200 EBP: 8c4c9bf4 ESP: 8c4c9b64
+[   14.379067]  DS: 007b ES: 007b FS: 00d8 GS: 00e0 SS: 0068
+[   14.379607] CR0: 80050033 CR2: 00000178 CR3: 0d8c1240 CR4: 000006b0
+[   14.380218] Call Trace:
+[   14.380469]  ? __local_bh_enable_ip+0x105/0x160
+[   14.380902]  rt6_dump_route+0x97/0xb0
+[   14.381252]  fib6_dump_node+0x29/0x60
+[   14.381595]  fib6_walk_continue+0x2c5/0x320
+[   14.382009]  fib6_walk+0x33/0x70
+[   14.382370]  inet6_dump_fib+0x31d/0x400
+[   14.382748]  ? inet6_dump_fib+0x84/0x400
+[   14.383162]  netlink_dump+0x18e/0x3e0
+[   14.383531]  __netlink_dump_start+0x178/0x270
+[   14.383963]  ? fib6_flush_trees+0x60/0x60
+[   14.384349]  rtnetlink_rcv_msg+0x244/0x320
+[   14.384744]  ? fib6_flush_trees+0x60/0x60
+[   14.385122]  ? fib6_flush_trees+0x60/0x60
+[   14.385490]  ? __rtnl_unlock+0x60/0x60
+[   14.385848]  netlink_rcv_skb+0x129/0x170
+[   14.386367]  ? __rtnl_unlock+0x60/0x60
+[   14.386938]  rtnetlink_rcv+0x23/0x30
+[   14.387500]  netlink_unicast+0x20f/0x2c0
+[   14.388107]  netlink_sendmsg+0x4aa/0x4e0
+[   14.388689]  ___sys_sendmsg+0x168/0x3c0
+[   14.389323]  ? ___sys_recvmsg+0xf6/0x200
+[   14.390040]  ? __lru_cache_add+0xaa/0x120
+[   14.390809]  ? do_raw_spin_unlock+0xe5/0x140
+[   14.391561]  ? debug_lockdep_rcu_enabled+0x1a/0x20
+[   14.392398]  ? __fget_light+0xc1/0x100
+[   14.393051]  ? sockfd_lookup_light+0xd9/0x120
+[   14.393779]  __sys_sendmsg+0x73/0xb0
+[   14.394415]  SyS_socketcall+0x5dc/0xa60
+[   14.395133]  do_int80_syscall_32+0xaa/0x290
+[   14.395848]  entry_INT80_32+0x36/0x36
+[   14.396498] EIP: 0x77729384
+[   14.397018] EFLAGS: 00000216 CPU: 0
+[   14.397620] EAX: ffffffda EBX: 00000010 ECX: 7f9df738 EDX: 7776f000
+[   14.398810] ESI: 7f9df738 EDI: 09a28804 EBP: 7f9df788 ESP: 7f9df728
+[   14.399846]  DS: 007b ES: 007b FS: 0000 GS: 0033 SS: 007b
+[   14.400769] Code: ff 8b 45 88 8b 90 a8 00 00 00 29 d6 89 f2 e8 e5 d7 da ff e9 14 fc ff ff c7 46 18 10 00 00 00 8b 83 cc 00 00 00 ff 05 58 da 41 83 <8b> 90 78 01 00 00 31 c0 85 d2 0f 95 c0 85 d2 8b 3c 85 40 da 41
+[   14.404032] EIP: rt6_fill_node+0x473/0x980 SS:ESP: 0068:8c4c9b64
+[   14.405027] CR2: 0000000000000178
+[   14.405365] ---[ end trace 2967256f85d3e8d9 ]---

@@ -1,0 +1,17 @@
+[ 1457.701527] WARNING: CPU: 1 PID: 0 at kernel/sched/clock.c:114 set_sched_clock_stable+0x66/0x70
+[ 1457.701527] Modules linked in: rpcsec_gss_krb5 auth_rpcgss nfsv4 dns_resolver netconsole sr_mod cdrom sg intel_powerclamp coretemp kvm_intel kvm irqbypass crct10dif_pclmul crc32_pclmul crc32c_intel snd_hda_codec_realtek ghash_clmulni_intel ppdev mxm_wmi pcbc snd_hda_codec_generic aesni_intel crypto_simd glue_helper cryptd pcspkr ahci libahci firewire_ohci libata snd_hda_intel firewire_core crc_itu_t snd_hda_codec snd_hda_core snd_hwdep snd_pcm snd_timer snd soundcore i7core_edac edac_core shpchp winbond_cir rc_core floppy parport_pc parport wmi acpi_cpufreq ip_tables
+[ 1457.701544] CPU: 1 PID: 0 Comm: swapper/1 Tainted: G        W I     4.10.0-rc3-00259-g9881b02 #1
+[ 1457.701544] Hardware name:                  /DX58SO, BIOS SOX5810J.86A.4934.2010.0129.1220 01/29/2010
+[ 1457.701545] Call Trace:
+[ 1457.701549]  dump_stack+0x63/0x8a
+[ 1457.701550]  __warn+0xcb/0xf0
+[ 1457.701551]  warn_slowpath_null+0x1d/0x20
+[ 1457.701552]  set_sched_clock_stable+0x66/0x70
+[ 1457.701553]  early_init_intel+0x224/0x300
+[ 1457.701554]  init_intel+0x18/0x2c0
+[ 1457.701555]  identify_cpu+0x2b0/0x470
+[ 1457.701555]  identify_secondary_cpu+0x18/0x80
+[ 1457.701557]  smp_store_cpu_info+0x3f/0x50
+[ 1457.701558]  start_secondary+0x52/0x130
+[ 1457.701559]  start_cpu+0x14/0x14
+[ 1457.701560] ---[ end trace 90c670a2798ef0ed ]---

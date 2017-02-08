@@ -1,0 +1,35 @@
+[    0.000000] kernel BUG at arch/x86/mm/physaddr.c:26!
+[    0.000000] invalid opcode: 0000 [#1] SMP DEBUG_PAGEALLOC
+[    0.000000] Modules linked in:
+[    0.000000] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 4.8.0-rc1-00007-g20067c4 #1
+[    0.000000] task: ffffffffa3815540 task.stack: ffffffffa3800000
+[    0.000000] RIP: 0010:[<ffffffffa2e36d74>]  [<ffffffffa2e36d74>] __phys_addr+0x49/0x4d
+[    0.000000] RSP: 0000:ffffffffa3803e50  EFLAGS: 00010287
+[    0.000000] RAX: fffffcef170dffff RBX: 00000000fed00000 RCX: ffffffff024000c0
+[    0.000000] RDX: 0000000000000002 RSI: 0000000000001000 RDI: ffff8800970dffff
+[    0.000000] RBP: ffffffffa3803e50 R08: 0000000000000000 R09: 0000000000000000
+[    0.000000] R10: 0000000000000000 R11: ffffffffa3816050 R12: 0000000000000002
+[    0.000000] R13: 0000000000001000 R14: ffffba7180000000 R15: 0000000000000002
+[    0.000000] FS:  0000000000000000(0000) GS:ffff8b1115400000(0000) knlGS:0000000000000000
+[    0.000000] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    0.000000] CR2: 00000000ffffffff CR3: 0000000007a10000 CR4: 00000000000006b0
+[    0.000000] Stack:
+[    0.000000]  ffffffffa3803e80 ffffffffa2e35f8b ffff8b11150098c0 00000000fed00000
+[    0.000000]  0000000000001000 ffffba7180000000 ffffffffa3803ef0 ffffffffa2e32b0a
+[    0.000000]  8000000000000173 0000000000000400 ffffffffa3c2fdb2 00000000fed00000
+[    0.000000] Call Trace:
+[    0.000000]  [<ffffffffa2e35f8b>] kernel_map_sync_memtype+0x24/0xd0
+[    0.000000]  [<ffffffffa2e32b0a>] __ioremap_caller+0x222/0x2b5
+[    0.000000]  [<ffffffffa3c2fdb2>] ? hpet_enable+0x2b/0x280
+[    0.000000]  [<ffffffffa2e32baf>] ioremap_nocache+0x12/0x14
+[    0.000000]  [<ffffffffa3c2fdb2>] hpet_enable+0x2b/0x280
+[    0.000000]  [<ffffffffa3c256bb>] hpet_time_init+0x9/0x19
+[    0.000000]  [<ffffffffa3c2568b>] x86_late_time_init+0xa/0x11
+[    0.000000]  [<ffffffffa3c20e38>] start_kernel+0x37a/0x3f0
+[    0.000000]  [<ffffffffa3c20120>] ? early_idt_handler_array+0x120/0x120
+[    0.000000]  [<ffffffffa3c2029e>] x86_64_start_reservations+0x29/0x2b
+[    0.000000]  [<ffffffffa3c203a7>] x86_64_start_kernel+0x107/0x114
+[    0.000000] Code: 48 39 c7 73 14 eb 24 48 03 05 b9 e2 9d 00 48 81 ff ff ff ff 3f 76 16 0f 0b 0f b6 0d 80 bb da 00 48 89 c2 48 d3 ea 48 85 d2 74 02 <0f> 0b 5d c3 b8 00 00 00 80 55 48 01 f8 48 3d ff ff ff 3f 48 89 
+[    0.000000] RIP  [<ffffffffa2e36d74>] __phys_addr+0x49/0x4d
+[    0.000000]  RSP <ffffffffa3803e50>
+[    0.000000] ---[ end trace 0000000000000000 ]---

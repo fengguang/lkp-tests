@@ -1,0 +1,417 @@
+[    0.540085] ================================================================================
+[    0.541051] UBSAN: Undefined behaviour in drivers/acpi/acpica/dsutils.c:641:16
+[    0.542040] index -1 is out of range for type 'acpi_operand_object *[9]'
+[    0.542780] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 4.7.0-rc2-00316-g0451490 #1
+[    0.543593] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[    0.544556]  00000000 00200086 8ac6dc28 814015e0 00000001 8ac6dc4c ffffffff 8ac6dc38
+[    0.545522]  81453fce 8ac6dc38 81c38fcc 8ac6dc88 814544fb 8196e248 8ac6dc50 81c38fe4
+[    0.546493]  00200282 8100312d 81262f13 810ef937 8149d52f 00000002 d8415601 d8415605
+[    0.547455] Call Trace:
+[    0.547737]  [<814015e0>] dump_stack+0x78/0xb8
+[    0.548226]  [<81453fce>] ubsan_epilogue+0xe/0x40
+[    0.548746]  [<814544fb>] __ubsan_handle_out_of_bounds+0x6b/0x90
+[    0.549401]  [<8100312d>] ? update_vsyscall+0x24d/0x290
+[    0.549978]  [<81262f13>] ? cache_alloc_debugcheck_after+0x73/0x2d0
+[    0.550733]  [<810ef937>] ? debug_check_no_locks_freed+0x167/0x1d0
+[    0.551402]  [<8149d52f>] ? acpi_os_release_object+0x8/0xc
+[    0.552005]  [<810ef937>] ? debug_check_no_locks_freed+0x167/0x1d0
+[    0.552675]  [<8149d52f>] ? acpi_os_release_object+0x8/0xc
+[    0.553273]  [<814b002c>] acpi_ds_create_operand+0x20b/0x298
+[    0.553897]  [<814b01ad>] acpi_ds_create_operands+0xf4/0x139
+[    0.554514]  [<8149d52f>] ? acpi_os_release_object+0x8/0xc
+[    0.555113]  [<814d15c8>] ? acpi_ut_delete_generic_state+0x13/0x15
+[    0.555793]  [<814c7d16>] ? acpi_ps_pop_scope+0xb4/0x109
+[    0.556365]  [<814b077b>] acpi_ds_exec_end_op+0xe3/0x4b6
+[    0.557024]  [<814c6adf>] acpi_ps_parse_loop+0x618/0x68a
+[    0.557609]  [<814ce34d>] ? acpi_ut_remove_reference+0x25/0x28
+[    0.558247]  [<814ae2b3>] ? acpi_ds_call_control_method+0x12a/0x198
+[    0.558937]  [<814c7935>] acpi_ps_parse_aml+0x92/0x285
+[    0.559503]  [<814c835e>] acpi_ps_execute_method+0x1aa/0x1da
+[    0.560123]  [<814c154b>] acpi_ns_evaluate+0x1ee/0x269
+[    0.560687]  [<814c4cfb>] acpi_evaluate_object+0x105/0x1fb
+[    0.561283]  [<814a4cf8>] acpi_get_phys_id+0x32/0x195
+[    0.561844]  [<814a4f88>] acpi_get_cpuid+0xb/0x15
+[    0.562358]  [<81dd6b73>] early_init_pdc+0x81/0x95
+[    0.562892]  [<814c4932>] acpi_ns_walk_namespace+0xd9/0x1b5
+[    0.563505]  [<814c4b12>] acpi_walk_namespace+0x76/0xa0
+[    0.564075]  [<81dd6af2>] ? set_no_mwait+0x34/0x34
+[    0.564607]  [<81dd623e>] ? acpi_sleep_init+0x121/0x121
+[    0.565180]  [<81dd6baf>] acpi_early_processor_set_pdc+0x28/0x40
+[    0.565842]  [<81dd6af2>] ? set_no_mwait+0x34/0x34
+[    0.566364]  [<81dd6384>] acpi_init+0x146/0x273
+[    0.566876]  [<81dd623e>] ? acpi_sleep_init+0x121/0x121
+[    0.567453]  [<810005c5>] do_one_initcall+0x135/0x1f0
+[    0.568007]  [<81416380>] ? strchr+0x20/0x20
+[    0.568482]  [<81d96543>] ? repair_env_string+0x16/0x83
+[    0.569053]  [<81dd623e>] ? acpi_sleep_init+0x121/0x121
+[    0.569629]  [<810ad261>] ? parse_args+0x321/0x500
+[    0.570156]  [<81d97079>] kernel_init_freeable+0x1aa/0x261
+[    0.570766]  [<8177dedc>] kernel_init+0xc/0x120
+[    0.571264]  [<810c0eed>] ? schedule_tail+0xd/0xd0
+[    0.571802]  [<817892a2>] ret_from_kernel_thread+0xe/0x24
+[    0.572388]  [<8177ded0>] ? rest_init+0xb0/0xb0
+[    0.572895] ================================================================================
+[    0.574675] ACPI: Interpreter enabled
+[    0.575127] ACPI: (supports S0 S5)
+[    0.575519] ACPI: Using IOAPIC for interrupt routing
+[    0.576154] PCI: Using host bridge windows from ACPI; if necessary, use "pci=nocrs" and report a bug
+[    0.593870] ACPI: PCI Root Bridge [PCI0] (domain 0000 [bus 00-ff])
+[    0.594576] acpi PNP0A03:00: _OSC: OS supports [Segments MSI]
+[    0.595244] acpi PNP0A03:00: _OSC failed (AE_NOT_FOUND); disabling ASPM
+[    0.596028] acpi PNP0A03:00: fail to add MMCONFIG information, can't access extended PCI configuration space under this bridge.
+[    0.597609] PCI host bridge to bus 0000:00
+[    0.598092] pci_bus 0000:00: root bus resource [io  0x0000-0x0cf7 window]
+[    0.598859] pci_bus 0000:00: root bus resource [io  0x0d00-0xffff window]
+[    0.599611] pci_bus 0000:00: root bus resource [mem 0x000a0000-0x000bffff window]
+[    0.600441] pci_bus 0000:00: root bus resource [mem 0x0c000000-0xfebfffff window]
+[    0.601275] pci_bus 0000:00: root bus resource [bus 00-ff]
+[    0.601978] pci 0000:00:00.0: [8086:1237] type 00 class 0x060000
+[    0.603566] pci 0000:00:01.0: [8086:7000] type 00 class 0x060100
+[    0.605186] pci 0000:00:01.1: [8086:7010] type 00 class 0x010180
+[    0.612876] pci 0000:00:01.1: reg 0x20: [io  0xc0c0-0xc0cf]
+[    0.616578] pci 0000:00:01.1: legacy IDE quirk: reg 0x10: [io  0x01f0-0x01f7]
+[    0.618069] pci 0000:00:01.1: legacy IDE quirk: reg 0x14: [io  0x03f6]
+[    0.618796] pci 0000:00:01.1: legacy IDE quirk: reg 0x18: [io  0x0170-0x0177]
+[    0.619580] pci 0000:00:01.1: legacy IDE quirk: reg 0x1c: [io  0x0376]
+[    0.620937] pci 0000:00:01.3: [8086:7113] type 00 class 0x068000
+[    0.622014] pci 0000:00:01.3: quirk: [io  0x0600-0x063f] claimed by PIIX4 ACPI
+[    0.622822] pci 0000:00:01.3: quirk: [io  0x0700-0x070f] claimed by PIIX4 SMB
+[    0.624252] pci 0000:00:02.0: [1234:1111] type 00 class 0x030000
+[    0.627463] pci 0000:00:02.0: reg 0x10: [mem 0xfd000000-0xfdffffff pref]
+[    0.633364] pci 0000:00:02.0: reg 0x18: [mem 0xfebf0000-0xfebf0fff]
+[    0.644109] pci 0000:00:02.0: reg 0x30: [mem 0xfebe0000-0xfebeffff pref]
+[    0.645559] pci 0000:00:03.0: [8086:100e] type 00 class 0x020000
+[    0.648264] pci 0000:00:03.0: reg 0x10: [mem 0xfebc0000-0xfebdffff]
+[    0.651592] pci 0000:00:03.0: reg 0x14: [io  0xc000-0xc03f]
+[    0.663537] pci 0000:00:03.0: reg 0x30: [mem 0xfeb80000-0xfebbffff pref]
+[    0.666142] pci 0000:00:04.0: [1af4:1001] type 00 class 0x010000
+[    0.668879] pci 0000:00:04.0: reg 0x10: [io  0xc040-0xc07f]
+[    0.671369] pci 0000:00:04.0: reg 0x14: [mem 0xfebf1000-0xfebf1fff]
+[    0.683554] pci 0000:00:05.0: [1af4:1001] type 00 class 0x010000
+[    0.686831] pci 0000:00:05.0: reg 0x10: [io  0xc080-0xc0bf]
+[    0.690157] pci 0000:00:05.0: reg 0x14: [mem 0xfebf2000-0xfebf2fff]
+[    0.702038] pci 0000:00:06.0: [8086:25ab] type 00 class 0x088000
+[    0.703730] pci 0000:00:06.0: reg 0x10: [mem 0xfebf3000-0xfebf300f]
+[    0.711684] pci_bus 0000:00: on NUMA node 0
+[    0.714009] ACPI: PCI Interrupt Link [LNKA] (IRQs 5 *10 11)
+[    0.715040] ACPI: PCI Interrupt Link [LNKB] (IRQs 5 *10 11)
+[    0.716039] ACPI: PCI Interrupt Link [LNKC] (IRQs 5 10 *11)
+[    0.717050] ACPI: PCI Interrupt Link [LNKD] (IRQs 5 10 *11)
+[    0.717903] ACPI: PCI Interrupt Link [LNKS] (IRQs *9)
+[    0.719181] ACPI: Enabled 16 GPEs in block 00 to 0F
+[    0.720300] vgaarb: setting as boot device: PCI:0000:00:02.0
+[    0.720926] vgaarb: device added: PCI:0000:00:02.0,decodes=io+mem,owns=io+mem,locks=none
+[    0.721811] vgaarb: loaded
+[    0.722113] vgaarb: bridge control possible 0000:00:02.0
+[    0.723655] Linux video capture interface: v2.00
+[    0.724228] pps_core: LinuxPPS API ver. 1 registered
+[    0.724786] pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>
+[    0.725801] PTP clock support registered
+[    0.726603] FPGA manager framework
+[    0.727032] PCI: Using ACPI for IRQ routing
+[    0.727509] PCI: pci_cache_line_size set to 32 bytes
+[    0.728209] e820: reserve RAM buffer [mem 0x0009fc00-0x0009ffff]
+[    0.728871] e820: reserve RAM buffer [mem 0x0bfe0000-0x0bffffff]
+[    0.730415] NET: Registered protocol family 23
+[    0.731009] NET: Registered protocol family 8
+[    0.731497] NET: Registered protocol family 20
+[    0.732348] nfc: nfc_init: NFC Core ver 0.1
+[    0.732937] NET: Registered protocol family 39
+[    0.734280] HPET: 3 timers in total, 0 timers will be used for per-cpu timer
+[    0.735899] clocksource: Switched to clocksource kvm-clock
+[    0.802929] VFS: Disk quotas dquot_6.6.0
+[    0.803408] VFS: Dquot-cache hash table entries: 1024 (order 0, 4096 bytes)
+[    0.804431] FS-Cache: Loaded
+[    0.804993] CacheFiles: Loaded
+[    0.805444] pnp: PnP ACPI init
+[    0.806157] pnp 00:00: Plug and Play ACPI device, IDs PNP0b00 (active)
+[    0.807118] pnp 00:01: Plug and Play ACPI device, IDs PNP0303 (active)
+[    0.808064] pnp 00:02: Plug and Play ACPI device, IDs PNP0f13 (active)
+[    0.808880] pnp 00:03: [dma 2]
+[    0.809376] pnp 00:03: Plug and Play ACPI device, IDs PNP0700 (active)
+[    0.810390] pnp 00:04: Plug and Play ACPI device, IDs PNP0400 (active)
+[    0.811408] pnp 00:05: Plug and Play ACPI device, IDs PNP0501 (active)
+[    0.813051] pnp: PnP ACPI: found 6 devices
+[    0.850214] clocksource: acpi_pm: mask: 0xffffff max_cycles: 0xffffff, max_idle_ns: 2085701024 ns
+[    0.851300] pci_bus 0000:00: resource 4 [io  0x0000-0x0cf7 window]
+[    0.852007] pci_bus 0000:00: resource 5 [io  0x0d00-0xffff window]
+[    0.852674] pci_bus 0000:00: resource 6 [mem 0x000a0000-0x000bffff window]
+[    0.853426] pci_bus 0000:00: resource 7 [mem 0x0c000000-0xfebfffff window]
+[    0.854262] NET: Registered protocol family 1
+[    0.854773] pci 0000:00:00.0: Limiting direct PCI/PCI transfers
+[    0.855453] pci 0000:00:01.0: PIIX3: Enabling Passive Release
+[    0.856116] pci 0000:00:01.0: Activating ISA DMA hang workarounds
+[    0.856841] pci 0000:00:02.0: Video device with shadowed ROM at [mem 0x000c0000-0x000dffff]
+[    0.857798] PCI: CLS 0 bytes, default 32
+[    0.859040] Unpacking initramfs...
+[    0.860933] workqueue: round-robin CPU selection forced, expect performance impact
+[    1.855109] Freeing initrd memory: 11000K (8b522000 - 8bfe0000)
+[    1.856878] cryptomgr_test (27) used greatest stack depth: 7264 bytes left
+[    1.857927] cryptomgr_test (29) used greatest stack depth: 6812 bytes left
+[    1.859442] The force parameter has not been set to 1. The Iris poweroff handler will not be installed.
+[    1.860585] spin_lock-torture:--- Start of test [debug]: nwriters_stress=2 nreaders_stress=0 stat_interval=60 verbose=1 shuffle_interval=3 stutter=5 shutdown_secs=0 onoff_interval=0 onoff_holdoff=0
+[    1.862512] spin_lock-torture: Creating torture_shuffle task
+[    1.863277] spin_lock-torture: Creating torture_stutter task
+[    1.863995] spin_lock-torture: torture_shuffle task started
+[    1.864637] spin_lock-torture: Creating lock_torture_writer task
+[    1.865383] spin_lock-torture: torture_stutter task started
+[    1.866060] spin_lock-torture: Creating lock_torture_writer task
+[    1.866783] spin_lock-torture: lock_torture_writer task started
+[    1.867512] spin_lock-torture: Creating lock_torture_stats task
+[    1.868255] spin_lock-torture: lock_torture_writer task started
+[    1.868979] torture_init_begin: Refusing rcu init: spin_lock running.
+[    1.869680] torture_init_begin: One torture test at a time!
+[    1.871197] futex hash table entries: 16 (order: -2, 1024 bytes)
+[    1.871922] audit: initializing netlink subsys (disabled)
+[    1.872631] audit: type=2000 audit(1048608989.226:1): initialized
+[    1.873329] spin_lock-torture: lock_torture_stats task started
+[    1.874562] Initialise system trusted keyrings
+[    1.876549] workingset: timestamp_bits=25 max_order=16 bucket_order=0
+[    1.877500] ntfs: driver 2.1.32 [Flags: R/O].
+[    1.879031] cryptomgr_test (52) used greatest stack depth: 6648 bytes left
+[    1.884534] NET: Registered protocol family 38
+[    1.885099] Key type asymmetric registered
+[    1.885572] Asymmetric key parser 'x509' registered
+[    1.886323] io scheduler noop registered (default)
+[    1.886873] start plist test
+[    1.893058] end plist test
+[    1.893565] test_firmware: interface ready
+[    1.911347] test_hash: __hash_32() has no arch implementation to test.
+[    1.912090] test_hash: hash_32() has no arch implementation to test.
+[    1.912782] test_hash: hash_64() has no arch implementation to test.
+[    1.913474] test_hash: 33152 tests passed.
+[    1.913932] Running rhashtable test nelem=8, max_size=0, shrinking=0
+[    1.914610] Test 00:
+[    1.916787]   Adding 50000 keys
+[    2.000533]   Traversal complete: counted=50000, nelems=50000, entries=50000, table-jumps=0
+[    2.060005]   Traversal complete: counted=50000, nelems=50000, entries=50000, table-jumps=0
+[    2.060944]   Deleting 50000 keys
+[    2.105624]   Duration of test: 188460587 ns
+[    2.106148] Test 01:
+[    2.106838]   Adding 50000 keys
+[    2.189483]   Traversal complete: counted=50000, nelems=50000, entries=50000, table-jumps=0
+[    2.249216]   Traversal complete: counted=50000, nelems=50000, entries=50000, table-jumps=0
+[    2.250148]   Deleting 50000 keys
+[    2.294772]   Duration of test: 187551745 ns
+[    2.295290] Test 02:
+[    2.296013]   Adding 50000 keys
+[    2.378619]   Traversal complete: counted=50000, nelems=50000, entries=50000, table-jumps=0
+[    2.437968]   Traversal complete: counted=50000, nelems=50000, entries=50000, table-jumps=0
+[    2.438864]   Deleting 50000 keys
+[    2.483513]   Duration of test: 187149499 ns
+[    2.484044] Test 03:
+[    2.484857]   Adding 50000 keys
+[    2.568204]   Traversal complete: counted=50000, nelems=50000, entries=50000, table-jumps=0
+[    2.627551]   Traversal complete: counted=50000, nelems=50000, entries=50000, table-jumps=0
+[    2.628473]   Deleting 50000 keys
+[    2.673189]   Duration of test: 187952757 ns
+[    2.692784] Average test time: 187778647
+[    2.693296] Testing concurrent rhashtable access from 10 threads
+[    2.879510] tsc: Refined TSC clocksource calibration: 2260.990 MHz
+[    2.891943] clocksource: tsc: mask: 0xffffffffffffffff max_cycles: 0x2097420135d, max_idle_ns: 440795269473 ns
+[    6.110813] rhashtable_thra (93) used greatest stack depth: 6544 bytes left
+[    6.159041] Started 10 threads, 0 failed
+[    6.160051] test_uuid: all 18 tests passed
+[    6.161529] ipmi message handler version 39.2
+[    6.162114] ipmi device interface
+[    6.162556] Copyright (C) 2004 MontaVista Software - IPMI Powerdown via sys_reboot.
+[    6.165541] IPMI poweroff: Unable to register powercycle sysctl
+[    6.166680] input: Power Button as /devices/LNXSYSTM:00/LNXPWRBN:00/input/input0
+[    6.167601] ACPI: Power Button [PWRF]
+[    6.168233] Warning: Processor Platform Limit event detected, but not handled.
+[    6.169091] Consider compiling CPUfreq support into your kernel.
+[    6.173059] Serial: 8250/16550 driver, 4 ports, IRQ sharing disabled
+[    6.214970] 00:05: ttyS0 at I/O 0x3f8 (irq = 4, base_baud = 115200) is a 16550A
+[    6.218184] sonypi: Sony Programmable I/O Controller Driver v1.26.
+[    6.219100] Non-volatile memory driver v1.3
+[    6.219602] telclk_interrupt = 0xf non-mcpbl0010 hw.
+[    6.220195] Linux agpgart interface v0.103
+[    6.220866] Hangcheck: starting hangcheck timer 0.9.1 (tick is 180 seconds, margin is 60 seconds).
+[    6.223736] Phantom Linux Driver, version n0.9.8, init OK
+[    6.224981] panel: driver version 0.9.5 not yet registered
+[    6.227212] HSI/SSI char device loaded
+[    6.228357] i8042: PNP: PS/2 Controller [PNP0303:KBD,PNP0f13:MOU] at 0x60,0x64 irq 1,12
+[    6.230342] serio: i8042 KBD port at 0x60,0x64 irq 1
+[    6.231179] serio: i8042 AUX port at 0x60,0x64 irq 12
+[    6.286055] evbug: Connected device: input0 (Power Button at LNXPWRBN/button/input0)
+[    6.287874] input: AT Translated Set 2 keyboard as /devices/platform/i8042/serio0/input/input1
+[    6.289141] evbug: Connected device: input1 (AT Translated Set 2 keyboard at isa0060/serio0/input0)
+[    6.291751] rtc rtc0: invalid alarm value: 1900-1-26 0:0:0
+[    6.292614] rtc-test rtc-test.0: rtc core: registered test as rtc0
+[    6.293493] rtc rtc1: invalid alarm value: 1900-1-26 0:0:0
+[    6.294299] rtc-test rtc-test.1: rtc core: registered test as rtc1
+[    6.295133] i2c /dev entries driver
+[    6.296206] i2c-parport: adapter type unspecified
+[    6.297389] pps pps0: new PPS source ktimer
+[    6.297878] pps pps0: ktimer PPS source registered
+[    6.298534] Driver for 1-wire Dallas network protocol.
+[    6.299374] 1-Wire driver for the DS2760 battery monitor chip - (c) 2004-2005, Szabolcs Gyurko
+[    6.300364] __power_supply_register: Expected proper parent device for 'test_ac'
+[    6.301351] __power_supply_register: Expected proper parent device for 'test_battery'
+[    6.302647] thermal thermal_zone0: power_allocator: sustainable_power will be estimated
+[    6.303636] __power_supply_register: Expected proper parent device for 'test_usb'
+[    6.304988] acquirewdt: WDT driver for Acquire single board computer initialising
+[    6.306009] acquirewdt: I/O address 0x0043 already in use
+[    6.306644] acquirewdt: probe of acquirewdt failed with error -5
+[    6.307560] ib700wdt: WDT driver for IB700 single board computer initialising
+[    6.308768] sc1200wdt: build 20020303
+[    6.309261] sc1200wdt: io parameter must be specified
+[    6.309866] pc87413_wdt: Version 1.1 at io 0x2E
+[    6.310407] pc87413_wdt: cannot register miscdev on minor=130 (err=-16)
+[    6.311258] nv_tco: NV TCO WatchDog Timer Driver v0.01
+[    6.312067] machzwd: MachZ ZF-Logic Watchdog driver initializing
+[    6.312750] machzwd: no ZF-Logic found
+[    6.313466] lguest: mapped switcher at ffa93000
+[    6.314258] wbsd: Winbond W83L51xD SD/MMC card interface driver
+[    6.314955] wbsd: Copyright(c) Pierre Ossman
+[    6.315740] vme_pio2: No cards, skipping registration
+[    6.316341] FPGA DOWNLOAD --->
+[    6.316709] FPGA image file name: xlinx_fpga_firmware.bit
+[    6.317453] GPIO INIT FAIL!!
+[    6.318204] oprofile: using NMI interrupt.
+[    6.318774] NET: Registered protocol family 15
+[    6.319324] NET: Registered protocol family 5
+[    6.319934] IrCOMM protocol (Dag Brattli)
+[    6.326484] lec:lane_module_init: lec.c: initialized
+[    6.327222] NET: Registered protocol family 36
+[    6.328427] microcode: CPU0 sig=0x663, pf=0x1, revision=0x1
+[    6.329339] microcode: Microcode Update Driver: v2.01 <tigran@aivazian.fsnet.co.uk>, Peter Oruba
+[    6.330389] ... APIC ID:      00000000 (0)
+[    6.330858] ... APIC VERSION: 01050014
+[    6.331283] 0000000000000000000000000000000000000000000000000000000000000000
+[    6.332236] 0000000000000000000000000000000000000000000000000000000000000000
+[    6.333139] 0000000000000000000000000000000000000000000000000000000000008000
+[    6.334061] 
+[    6.334289] number of MP IRQ sources: 15.
+[    6.334748] number of IO-APIC #0 registers: 24.
+[    6.335285] testing the IO APIC.......................
+[    6.335882] IO APIC #0......
+[    6.336221] .... register #00: 00000000
+[    6.336664] .......    : physical APIC id: 00
+[    6.337170] .......    : Delivery Type: 0
+[    6.337625] .......    : LTS          : 0
+[    6.338086] .... register #01: 00170011
+[    6.338518] .......     : max redirection entries: 17
+[    6.339098] .......     : PRQ implemented: 0
+[    6.339581] .......     : IO APIC version: 11
+[    6.340087] .... register #02: 00000000
+[    6.340520] .......     : arbitration: 00
+[    6.340980] .... IRQ redirection table:
+[    6.341402] IOAPIC 0:
+[    6.341679]  pin00, disabled, edge , high, V(00), IRR(0), S(0), physical, D(00), M(0)
+[    6.342595]  pin01, enabled , edge , high, V(31), IRR(0), S(0), logical , D(01), M(1)
+[    6.343494]  pin02, enabled , edge , high, V(30), IRR(0), S(0), logical , D(01), M(1)
+[    6.344383]  pin03, enabled , edge , high, V(33), IRR(0), S(0), logical , D(01), M(1)
+[    6.345273]  pin04, disabled, edge , high, V(34), IRR(0), S(0), logical , D(01), M(1)
+[    6.346168]  pin05, disabled, level, high, V(35), IRR(0), S(0), logical , D(01), M(1)
+[    6.347063]  pin06, enabled , edge , high, V(36), IRR(0), S(0), logical , D(01), M(1)
+[    6.347944]  pin07, enabled , edge , high, V(37), IRR(0), S(0), logical , D(01), M(1)
+[    6.348805]  pin08, enabled , edge , high, V(38), IRR(0), S(0), logical , D(01), M(1)
+[    6.349698]  pin09, enabled , level, high, V(39), IRR(0), S(0), logical , D(01), M(1)
+[    6.350587]  pin0a, disabled, level, high, V(3A), IRR(0), S(0), logical , D(01), M(1)
+[    6.351523]  pin0b, disabled, level, high, V(3B), IRR(0), S(0), logical , D(01), M(1)
+[    6.352413]  pin0c, enabled , edge , high, V(3C), IRR(0), S(0), logical , D(01), M(1)
+[    6.353311]  pin0d, enabled , edge , high, V(3D), IRR(0), S(0), logical , D(01), M(1)
+[    6.354264]  pin0e, enabled , edge , high, V(3E), IRR(0), S(0), logical , D(01), M(1)
+[    6.355218]  pin0f, enabled , edge , high, V(3F), IRR(0), S(0), logical , D(01), M(1)
+[    6.356150]  pin10, disabled, edge , high, V(00), IRR(0), S(0), physical, D(00), M(0)
+[    6.357093]  pin11, disabled, edge , high, V(00), IRR(0), S(0), physical, D(00), M(0)
+[    6.357982]  pin12, disabled, edge , high, V(00), IRR(0), S(0), physical, D(00), M(0)
+[    6.358937]  pin13, disabled, edge , high, V(00), IRR(0), S(0), physical, D(00), M(0)
+[    6.359849]  pin14, disabled, edge , high, V(00), IRR(0), S(0), physical, D(00), M(0)
+[    6.360775]  pin15, disabled, edge , high, V(00), IRR(0), S(0), physical, D(00), M(0)
+[    6.361725]  pin16, disabled, edge , high, V(00), IRR(0), S(0), physical, D(00), M(0)
+[    6.362672]  pin17, disabled, edge , high, V(00), IRR(0), S(0), physical, D(00), M(0)
+[    6.363620] IRQ to pin mappings:
+[    6.364019] IRQ0 -> 0:2
+[    6.364330] IRQ1 -> 0:1
+[    6.364693] IRQ3 -> 0:3
+[    6.365019] IRQ4 -> 0:4
+[    6.365320] IRQ5 -> 0:5
+[    6.365678] IRQ6 -> 0:6
+[    6.366002] IRQ7 -> 0:7
+[    6.366301] IRQ8 -> 0:8
+[    6.366682] IRQ9 -> 0:9
+[    6.367023] IRQ10 -> 0:10
+[    6.367347] IRQ11 -> 0:11
+[    6.367734] IRQ12 -> 0:12
+[    6.368078] IRQ13 -> 0:13
+[    6.368396] IRQ14 -> 0:14
+[    6.368776] IRQ15 -> 0:15
+[    6.369132] .................................... done.
+[    6.369752] Using IPI No-Shortcut mode
+[    6.370884] registered taskstats version 1
+[    6.371367] Loading compiled-in X.509 certificates
+[    6.373955] rtc-test rtc-test.0: setting system clock to 2003-03-25 16:16:33 UTC (1048608993)
+[    6.374936] BIOS EDD facility v0.16 2004-Jun-25, 2 devices found
+[    6.378460] Freeing unused kernel memory: 1924K (81d96000 - 81f77000)
+[    6.379431] Write protecting the kernel text: 7724k
+[    6.380341] Write protecting the kernel read-only data: 2476k
+procd: Console is alive
+procd: - watchdog -
+procd: - preinit -
+[    6.396214] kmodloader (110) used greatest stack depth: 6276 bytes left
+[    6.406277] random: mktemp urandom read with 3 bits of entropy available
+Press the [f] key and hit [enter] to enter failsafe mode
+Press the [1], [2], [3] or [4] key and hit [enter] to select the debug level
+[    7.417797] sleep (121) used greatest stack depth: 6036 bytes left
+mounting /dev/root
+mount: mounting 1 on /mnt failed: No such device
+mv: can't rename '/mnt/sysupgrade.tgz': No such file or directory
+umount: can't umount /mnt: Invalid argument
+procd: - early -
+procd: - watchdog -
+[    9.494664] hotplug-call (142) used greatest stack depth: 6020 bytes left
+procd: - ubus -
+procd: - init -
+Please press Enter to activate this console.
+[   21.922329] sock: process `trinity-main' is using obsolete setsockopt SO_BSDCOMPAT
+[   22.436162] irda_setsockopt: not allowed to set MAXSDUSIZE for this socket type!
+[   22.489375] seq (916) used greatest stack depth: 5936 bytes left
+[   23.159490] irda_setsockopt: not allowed to set MAXSDUSIZE for this socket type!
+[   23.580274] seq (1854) used greatest stack depth: 5904 bytes left
+[   23.649834] seq (1914) used greatest stack depth: 5816 bytes left
+procd: Instance odhcpd::instance1 s in a crash loop 6 crashes, 0 seconds since last crash
+procd: Instance uhttpd::instance1 s in a crash loop 6 crashes, 0 seconds since last crash
+procd: Instance dnsmasq::instance1 s in a crash loop 6 crashes, 0 seconds since last crash
+[   53.617218] seq (3869) used greatest stack depth: 5808 bytes left
+[   61.873036] Writes:  Total: 2  Max/Min: 0/0   Fail: 0 
+[   76.898166] seq (665) used greatest stack depth: 5800 bytes left
+procd: - shutdown -
+[  112.077787] BUG: unable to handle kernel NULL pointer dereference at 0000000c
+[  112.078512] IP: [<810f2a20>] rt_mutex_adjust_prio+0x70/0xa0
+[  112.079054] *pdpt = 000000000bbeb001 *pde = 0000000000000000 
+[  112.079623] Oops: 0000 [#1] PREEMPT SMP
+[  112.079985] Modules linked in:
+[  112.080290] CPU: 0 PID: 11 Comm: rcub/0 Not tainted 4.7.0-rc2-00316-g0451490 #1
+[  112.080972] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Debian-1.8.2-1 04/01/2014
+[  112.081794] task: 8aca22c0 ti: 8aca4000 task.ti: 8aca4000
+[  112.082297] EIP: 0060:[<810f2a20>] EFLAGS: 00010093 CPU: 0
+[  112.082812] EIP is at rt_mutex_adjust_prio+0x70/0xa0
+[  112.083276] EAX: 00000000 EBX: 8aca22c0 ECX: 00000000 EDX: 00000000
+[  112.083865] ESI: 00000000 EDI: 8aca22c0 EBP: 8aca5e1c ESP: 8aca5e14
+[  112.084449]  DS: 007b ES: 007b FS: 00d8 GS: 00e0 SS: 0068
+[  112.084948] CR0: 80050033 CR2: 0000000c CR3: 07693d00 CR4: 00000630
+[  112.085538] Stack:
+[  112.085736]  81a92370 8aca5e9c 8aca5e4c 810f32e6 00000286 8aca5e4c 81789267 00000000
+[  112.086579]  8aca276c 80a2a400 8aca5e9c 8aca22c0 8aca5e9c 00000000 8aca5ecc 81786021
+[  112.087404]  00000000 185aedfc 0000001a 8aca27f0 81a92310 00000246 8aca5ecc 00000046
+[  112.088234] Call Trace:
+[  112.088491]  [<810f32e6>] task_blocks_on_rt_mutex+0x46/0x250
+[  112.089021]  [<81789267>] ? _raw_spin_lock_irqsave+0x77/0x81
+[  112.089554]  [<81786021>] rt_mutex_slowlock+0x191/0x360
+[  112.090042]  [<810b8ff8>] ? __might_sleep+0x148/0x170
+[  112.090522]  [<81786231>] rt_mutex_lock+0x41/0x50
+[  112.090962]  [<811150f8>] rcu_boost_kthread+0x4d8/0x920
+[  112.091453]  [<81114c20>] ? trace_rcu_utilization+0x1d0/0x1d0
+[  112.091987]  [<810addd8>] kthread+0x158/0x160
+[  112.092397]  [<81114c20>] ? trace_rcu_utilization+0x1d0/0x1d0
+[  112.092937]  [<810b8dc3>] ? finish_task_switch+0x243/0x330
+[  112.093457]  [<817892a2>] ret_from_kernel_thread+0xe/0x24
+[  112.093956]  [<810adc80>] ? kthread_unpark+0x40/0x40
+[  112.094417] Code: db 75 10 b8 08 11 a8 81 e8 fe 15 36 00 8d b6 00 00 00 00 8b b3 dc 04 00 00 83 fe 0c 75 0d 31 d2 b8 f0 10 a8 81 e8 e1 15 36 00 90 <8b> 56 0c 89 d8 e8 b6 eb fc ff 5b 5e 5d c3 66 90 ba 07 01 00 00
+[  112.097041] EIP: [<810f2a20>] rt_mutex_adjust_prio+0x70/0xa0 SS:ESP 0068:8aca5e14
+[  112.097766] CR2: 000000000000000c
+[  112.098080] ---[ end trace 23a7a9b1dc8f6d20 ]---
+[  112.098520] Kernel panic - not syncing: Fatal exception
+[  112.099043] Kernel Offset: disabled

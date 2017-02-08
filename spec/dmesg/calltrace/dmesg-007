@@ -1,0 +1,54 @@
+[   40.800286] VFS: Warning: trinity-c0 using old stat() call. Recompile your binary.
+[   41.048800] BUG: unable to handle kernel NULL pointer dereference at 0000001c
+[   41.049642] IP: iput+0x9/0x142
+[   41.049990] *pde = 00000000 
+[   41.049990] 
+[   41.050500] Oops: 0000 [#1]
+[   41.050815] CPU: 0 PID: 330 Comm: trinity-c3 Not tainted 4.10.0-rc6-00059-g2497278 #1
+[   41.051675] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.9.3-20161025_171302-gandalf 04/01/2014
+[   41.052770] task: 4d900000 task.stack: 4d910000
+[   41.053278] EIP: iput+0x9/0x142
+[   41.053627] EFLAGS: 00010202 CPU: 0
+[   41.054013] EAX: 00000000 EBX: 534698dc ECX: 00000000 EDX: 00000000
+[   41.054699] ESI: 00000000 EDI: 5346bd48 EBP: 4d911f48 ESP: 4d911f34
+[   41.055385]  DS: 007b ES: 007b FS: 0000 GS: 00e0 SS: 0068
+[   41.055976] CR0: 80050033 CR2: 0000001c CR3: 0d904000 CR4: 00000690
+[   41.056667] Call Trace:
+[   41.056950]  iterate_bdevs+0xfb/0x103
+[   41.057359]  ? fdatawait_one_bdev+0x10/0x10
+[   41.057826]  sys_sync+0x52/0x70
+[   41.058180]  do_fast_syscall_32+0xa8/0x11c
+[   41.058642]  entry_SYSENTER_32+0x4e/0x7c
+[   41.059072] EIP: 0x3774ebb1
+[   41.059393] EFLAGS: 00000216 CPU: 0
+
+[ 1457.700884] 
+[ 1457.701518] masked ExtINT on CPU#1
+[ 1457.701523] ------------[ cut here ]------------
+[ 1457.701527] WARNING: CPU: 1 PID: 0 at kernel/sched/clock.c:114 set_sched_clock_stable+0x66/0x70
+[ 1457.701527] Modules linked in: rpcsec_gss_krb5 auth_rpcgss nfsv4 dns_resolver netconsole sr_mod cdrom sg intel_powerclamp coretemp kvm_intel kvm irqbypass crct10dif_pclmul crc32_pclmul crc32c_intel snd_hda_codec_realtek ghash_clmulni_intel ppdev mxm_wmi pcbc snd_hda_codec_generic aesni_intel crypto_simd glue_helper cryptd pcspkr ahci libahci firewire_ohci libata snd_hda_intel firewire_core crc_itu_t snd_hda_codec snd_hda_core snd_hwdep snd_pcm snd_timer snd soundcore i7core_edac edac_core shpchp winbond_cir rc_core floppy parport_pc parport wmi acpi_cpufreq ip_tables
+[ 1457.701544] CPU: 1 PID: 0 Comm: swapper/1 Tainted: G        W I     4.10.0-rc3-00259-g9881b02 #1
+[ 1457.701544] Hardware name:                  /DX58SO, BIOS SOX5810J.86A.4934.2010.0129.1220 01/29/2010
+[ 1457.701545] Call Trace:
+[ 1457.701549]  dump_stack+0x63/0x8a
+[ 1457.701550]  __warn+0xcb/0xf0
+[ 1457.701551]  warn_slowpath_null+0x1d/0x20
+[ 1457.701552]  set_sched_clock_stable+0x66/0x70
+[ 1457.701553]  early_init_intel+0x224/0x300
+[ 1457.701554]  init_intel+0x18/0x2c0
+[ 1457.701555]  identify_cpu+0x2b0/0x470
+[ 1457.701555]  identify_secondary_cpu+0x18/0x80
+[ 1457.701557]  smp_store_cpu_info+0x3f/0x50
+[ 1457.701558]  start_secondary+0x52/0x130
+[ 1457.701559]  start_cpu+0x14/0x14
+[ 1457.701560] ---[ end trace 90c670a2798ef0ed ]---
+[ 1457.716129] smpboot: Booting Node 0 Processor 10 APIC 0x5
+[ 1457.721154] smpboot: Booting Node 0 Processor 11 APIC 0x15
+[ 1457.725698] smpboot: Booting Node 0 Processor 2 APIC 0x2
+[ 1457.730827] smpboot: Booting Node 0 Processor 3 APIC 0x12
+[ 1457.735695] smpboot: Booting Node 0 Processor 4 APIC 0x4
+[ 1457.740636] smpboot: Booting Node 0 Processor 5 APIC 0x14
+[ 1457.745309] smpboot: Booting Node 0 Processor 6 APIC 0x1
+[ 1457.750109] smpboot: Booting Node 0 Processor 7 APIC 0x11
+[ 1457.755172] smpboot: Booting Node 0 Processor 8 APIC 0x3
+[ 1457.760146] smpboot: Booting Node 0 Processor 9 APIC 0x13

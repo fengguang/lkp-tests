@@ -1,0 +1,181 @@
+[    0.391697] WARNING: CPU: 0 PID: 0 at kernel/sched/core.c:109 update_rq_clock+0x6a/0x99
+[    0.392350] rq->clock_update_flags & RQCF_UPDATED
+[    0.392674] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 4.9.0-rc1-00295-gaa55074 #1
+[    0.393172]  ffffffffaee03d18 ffffffffad3303ff ffffffffaee0b500 ffffffffaee03d80
+[    0.393729]  0000000000000000 ffffffffacd3f31a ffffffffaee03d58 ffffffffacd10b1b
+[    0.394255]  00000009aee03df0 ffffffffaeac8d4e ffff88007d216980 0000000000000000
+[    0.394788] Call Trace:
+[    0.394960]  [<ffffffffad3303ff>] dump_stack+0xb1/0x103
+[    0.395309]  [<ffffffffacd3f31a>] ? update_rq_clock+0x6a/0x99
+[    0.395695]  [<ffffffffacd10b1b>] __warn+0x104/0x124
+[    0.396027]  [<ffffffffacd10ba5>] warn_slowpath_fmt+0x6a/0x73
+[    0.396414]  [<ffffffffacd3f31a>] update_rq_clock+0x6a/0x99
+[    0.396784]  [<ffffffffacd3f360>] enqueue_task+0x17/0x56
+[    0.397138]  [<ffffffffacd3faa5>] activate_task+0x2d/0x2f
+[    0.397501]  [<ffffffffacd41876>] wake_up_new_task+0x84/0x1fc
+[    0.397884]  [<ffffffffacd0fe91>] _do_fork+0x2bb/0x47f
+[    0.398227]  [<ffffffffad3489cc>] ? _find_next_bit+0x82/0x90
+[    0.398646]  [<ffffffffad348a18>] ? find_next_bit+0x3e/0x48
+[    0.399018]  [<ffffffffae352abb>] ? rest_init+0x172/0x172
+[    0.399380]  [<ffffffffacd1008e>] kernel_thread+0x39/0x40
+[    0.399742]  [<ffffffffaf092af7>] ? trace_event_define_fields_x86_irq_vector+0x2c/0x2c
+[    0.400263]  [<ffffffffae352970>] rest_init+0x27/0x172
+[    0.400609]  [<ffffffffaf092af7>] ? trace_event_define_fields_x86_irq_vector+0x2c/0x2c
+[    0.401134]  [<ffffffffaf088218>] start_kernel+0x485/0x492
+[    0.401503]  [<ffffffffaf087120>] ? early_idt_handler_array+0x120/0x120
+[    0.401944]  [<ffffffffaf0872a7>] x86_64_start_reservations+0x38/0x3a
+[    0.402374]  [<ffffffffaf0873dc>] x86_64_start_kernel+0x133/0x142
+[    0.402781] ---[ end trace f68728a0d3053b52 ]---
+---
+[   11.845943] WARNING: CPU: 0 PID: 11 at kernel/sched/sched.h:797 rq_clock_task+0x60/0x6a
+[   11.846583] rq->clock_update_flags < RQCF_ACT_SKIP
+[   11.846898] CPU: 0 PID: 11 Comm: migration/0 Tainted: G        W       4.9.0-rc1-00295-gaa55074 #1
+[   11.847474]  ffffc9000036faa0 ffffffffad3303ff ffffffff7a459640 ffffc9000036fb08
+[   11.847989]  0000000000000000 ffffffffacd490e4 ffffc9000036fae0 ffffffffacd10b1b
+[   11.848509]  000000090036fb78 ffffffffaeac8aa9 ffff88007d216a10 ffff88007d216a10
+[   11.849023] Call Trace:
+[   11.849192]  [<ffffffffad3303ff>] dump_stack+0xb1/0x103
+[   11.849537]  [<ffffffffacd490e4>] ? rq_clock_task+0x60/0x6a
+[   11.849899]  [<ffffffffacd10b1b>] __warn+0x104/0x124
+[   11.850222]  [<ffffffffacd10ba5>] warn_slowpath_fmt+0x6a/0x73
+[   11.850600]  [<ffffffffacd490e4>] rq_clock_task+0x60/0x6a
+[   11.850951]  [<ffffffffacd4a114>] update_load_avg+0x36/0x237
+[   11.851320]  [<ffffffffacdd9b38>] ? time_hardirqs_off+0x30/0x35
+[   11.851705]  [<ffffffffacd4a360>] set_next_entity+0x4b/0x70
+[   11.852064]  [<ffffffffacd4a360>] ? set_next_entity+0x4b/0x70
+[   11.852438]  [<ffffffffacd4d2b0>] pick_next_task_fair+0x12a/0x43c
+[   11.852830]  [<ffffffffacd5a28d>] ? lock_pin_lock+0xc4/0xd3
+[   11.853190]  [<ffffffffacd3e2ee>] pick_next_task+0x62/0x81
+[   11.853547]  [<ffffffffacd45082>] sched_cpu_dying+0xb0/0x1c3
+[   11.853913]  [<ffffffffacd44fd2>] ? sched_cpu_starting+0x54/0x54
+[   11.854299]  [<ffffffffacd11d35>] cpuhp_invoke_callback+0x95/0x1ed
+[   11.854698]  [<ffffffffacd11f1b>] take_cpu_down+0x8e/0xb9
+[   11.855046]  [<ffffffffacdaf2a0>] multi_cpu_stop+0xbf/0x134
+[   11.855409]  [<ffffffffacdaf1e1>] ? __stop_cpus+0x96/0x96
+[   11.855756]  [<ffffffffacdaef45>] cpu_stopper_thread+0xa8/0x140
+[   11.856134]  [<ffffffffacd3ab2d>] smpboot_thread_fn+0x247/0x267
+[   11.856516]  [<ffffffffacd3a8e6>] ? cpumask_next+0x3f/0x3f
+[   11.856868]  [<ffffffffacd35e44>] kthread+0xf3/0x102
+[   11.857188]  [<ffffffffacd35d51>] ? __kthread_create_on_node+0x1c6/0x1c6
+[   11.857620]  [<ffffffffae35f9fa>] ret_from_fork+0x2a/0x40
+[   11.857965] ---[ end trace f68728a0d3053b54 ]---
+---
+[   11.858566] WARNING: CPU: 0 PID: 11 at kernel/locking/lockdep.c:3536 lock_release+0x179/0x3b7
+[   11.859222] releasing a pinned lock
+[   11.859453] CPU: 0 PID: 11 Comm: migration/0 Tainted: G        W       4.9.0-rc1-00295-gaa55074 #1
+[   11.860018]  ffffc9000036fb40 ffffffffad3303ff ffffffff7a459640 ffffc9000036fba8
+[   11.860530]  0000000000000000 ffffffffacd5bf91 ffffc9000036fb80 ffffffffacd10b1b
+[   11.861039]  000000090036fc18 ffffffffaeacb214 ffff88007d216998 0000000000000000
+[   11.861550] Call Trace:
+[   11.861715]  [<ffffffffad3303ff>] dump_stack+0xb1/0x103
+[   11.862052]  [<ffffffffacd5bf91>] ? lock_release+0x179/0x3b7
+[   11.862421]  [<ffffffffacd10b1b>] __warn+0x104/0x124
+[   11.862741]  [<ffffffffacd10ba5>] warn_slowpath_fmt+0x6a/0x73
+[   11.863111]  [<ffffffffacd5bf91>] lock_release+0x179/0x3b7
+[   11.863470]  [<ffffffffacd4a2ef>] ? update_load_avg+0x211/0x237
+[   11.863850]  [<ffffffffacd3da55>] ? rq_unlock+0x15/0x18
+[   11.864187]  [<ffffffffae35f114>] _raw_spin_unlock+0x1f/0x31
+[   11.864555]  [<ffffffffacd3da55>] rq_unlock+0x15/0x18
+[   11.864882]  [<ffffffffacd450ac>] sched_cpu_dying+0xda/0x1c3
+[   11.865246]  [<ffffffffacd44fd2>] ? sched_cpu_starting+0x54/0x54
+[   11.865638]  [<ffffffffacd11d35>] cpuhp_invoke_callback+0x95/0x1ed
+[   11.866033]  [<ffffffffacd11f1b>] take_cpu_down+0x8e/0xb9
+[   11.866384]  [<ffffffffacdaf2a0>] multi_cpu_stop+0xbf/0x134
+[   11.866743]  [<ffffffffacdaf1e1>] ? __stop_cpus+0x96/0x96
+[   11.867091]  [<ffffffffacdaef45>] cpu_stopper_thread+0xa8/0x140
+[   11.867474]  [<ffffffffacd3ab2d>] smpboot_thread_fn+0x247/0x267
+[   11.867854]  [<ffffffffacd3a8e6>] ? cpumask_next+0x3f/0x3f
+[   11.868207]  [<ffffffffacd35e44>] kthread+0xf3/0x102
+[   11.868530]  [<ffffffffacd35d51>] ? __kthread_create_on_node+0x1c6/0x1c6
+[   11.868958]  [<ffffffffae35f9fa>] ret_from_fork+0x2a/0x40
+[   11.869305] ---[ end trace f68728a0d3053b55 ]---
+---
+[   11.869910] WARNING: CPU: 0 PID: 11 at kernel/locking/lockdep.c:3536 lock_release+0x179/0x3b7
+[   11.870573] releasing a pinned lock
+[   11.870801] CPU: 0 PID: 11 Comm: migration/0 Tainted: G        W       4.9.0-rc1-00295-gaa55074 #1
+[   11.871371]  ffffc9000036fb40 ffffffffad3303ff ffffffff7a459640 ffffc9000036fba8
+[   11.871880]  0000000000000000 ffffffffacd5bf91 ffffc9000036fb80 ffffffffacd10b1b
+[   11.872392]  000000090036fc18 ffffffffaeacb214 ffff88007d216998 0000000000000000
+[   11.872899] Call Trace:
+[   11.873064]  [<ffffffffad3303ff>] dump_stack+0xb1/0x103
+[   11.873404]  [<ffffffffacd5bf91>] ? lock_release+0x179/0x3b7
+[   11.873766]  [<ffffffffacd10b1b>] __warn+0x104/0x124
+[   11.874085]  [<ffffffffacd10ba5>] warn_slowpath_fmt+0x6a/0x73
+[   11.874457]  [<ffffffffacd5bf91>] lock_release+0x179/0x3b7
+[   11.874808]  [<ffffffffacd4a2ef>] ? update_load_avg+0x211/0x237
+[   11.875187]  [<ffffffffacd3da55>] ? rq_unlock+0x15/0x18
+[   11.875524]  [<ffffffffae35f114>] _raw_spin_unlock+0x1f/0x31
+[   11.875887]  [<ffffffffacd3da55>] rq_unlock+0x15/0x18
+[   11.876211]  [<ffffffffacd450ac>] sched_cpu_dying+0xda/0x1c3
+[   11.876577]  [<ffffffffacd44fd2>] ? sched_cpu_starting+0x54/0x54
+[   11.876963]  [<ffffffffacd11d35>] cpuhp_invoke_callback+0x95/0x1ed
+[   11.877358]  [<ffffffffacd11f1b>] take_cpu_down+0x8e/0xb9
+[   11.877710]  [<ffffffffacdaf2a0>] multi_cpu_stop+0xbf/0x134
+[   11.878069]  [<ffffffffacdaf1e1>] ? __stop_cpus+0x96/0x96
+[   11.878421]  [<ffffffffacdaef45>] cpu_stopper_thread+0xa8/0x140
+[   11.878802]  [<ffffffffacd3ab2d>] smpboot_thread_fn+0x247/0x267
+[   11.879181]  [<ffffffffacd3a8e6>] ? cpumask_next+0x3f/0x3f
+[   11.879538]  [<ffffffffacd35e44>] kthread+0xf3/0x102
+[   11.879859]  [<ffffffffacd35d51>] ? __kthread_create_on_node+0x1c6/0x1c6
+[   11.880285]  [<ffffffffae35f9fa>] ret_from_fork+0x2a/0x40
+[   11.880633] ---[ end trace f68728a0d3053b56 ]---
+---
+[   11.881237] WARNING: CPU: 0 PID: 11 at kernel/locking/lockdep.c:3536 lock_release+0x179/0x3b7
+[   11.881895] releasing a pinned lock
+[   11.882124] CPU: 0 PID: 11 Comm: migration/0 Tainted: G        W       4.9.0-rc1-00295-gaa55074 #1
+[   11.882693]  ffffc9000036fb40 ffffffffad3303ff ffffffff7a459640 ffffc9000036fba8
+[   11.883203]  0000000000000000 ffffffffacd5bf91 ffffc9000036fb80 ffffffffacd10b1b
+[   11.883715]  000000090036fc18 ffffffffaeacb214 ffff88007d216998 0000000000000000
+[   11.884223] Call Trace:
+[   11.884392]  [<ffffffffad3303ff>] dump_stack+0xb1/0x103
+[   11.884729]  [<ffffffffacd5bf91>] ? lock_release+0x179/0x3b7
+[   11.885091]  [<ffffffffacd10b1b>] __warn+0x104/0x124
+[   11.885415]  [<ffffffffacd10ba5>] warn_slowpath_fmt+0x6a/0x73
+[   11.885784]  [<ffffffffacd5bf91>] lock_release+0x179/0x3b7
+[   11.886137]  [<ffffffffacd4a2ef>] ? update_load_avg+0x211/0x237
+[   11.886520]  [<ffffffffacd3da55>] ? rq_unlock+0x15/0x18
+[   11.886857]  [<ffffffffae35f114>] _raw_spin_unlock+0x1f/0x31
+[   11.887220]  [<ffffffffacd3da55>] rq_unlock+0x15/0x18
+[   11.887551]  [<ffffffffacd450ac>] sched_cpu_dying+0xda/0x1c3
+[   11.887914]  [<ffffffffacd44fd2>] ? sched_cpu_starting+0x54/0x54
+[   11.888300]  [<ffffffffacd11d35>] cpuhp_invoke_callback+0x95/0x1ed
+[   11.888700]  [<ffffffffacd11f1b>] take_cpu_down+0x8e/0xb9
+[   11.889048]  [<ffffffffacdaf2a0>] multi_cpu_stop+0xbf/0x134
+[   11.889410]  [<ffffffffacdaf1e1>] ? __stop_cpus+0x96/0x96
+[   11.889757]  [<ffffffffacdaef45>] cpu_stopper_thread+0xa8/0x140
+[   11.890135]  [<ffffffffacd3ab2d>] smpboot_thread_fn+0x247/0x267
+[   11.890517]  [<ffffffffacd3a8e6>] ? cpumask_next+0x3f/0x3f
+[   11.890869]  [<ffffffffacd35e44>] kthread+0xf3/0x102
+[   11.891189]  [<ffffffffacd35d51>] ? __kthread_create_on_node+0x1c6/0x1c6
+[   11.891618]  [<ffffffffae35f9fa>] ret_from_fork+0x2a/0x40
+[   11.891963] ---[ end trace f68728a0d3053b57 ]---
+---
+[   11.892568] WARNING: CPU: 0 PID: 11 at kernel/locking/lockdep.c:3536 lock_release+0x179/0x3b7
+[   11.893221] releasing a pinned lock
+[   11.893453] CPU: 0 PID: 11 Comm: migration/0 Tainted: G        W       4.9.0-rc1-00295-gaa55074 #1
+[   11.894017]  ffffc9000036fb30 ffffffffad3303ff ffffffff7a459640 ffffc9000036fb98
+[   11.894529]  0000000000000000 ffffffffacd5bf91 ffffc9000036fb70 ffffffffacd10b1b
+[   11.895039]  000000090036fc08 ffffffffaeacb214 ffff88007d216998 0000000000000000
+[   11.895556] Call Trace:
+[   11.895721]  [<ffffffffad3303ff>] dump_stack+0xb1/0x103
+[   11.896059]  [<ffffffffacd5bf91>] ? lock_release+0x179/0x3b7
+[   11.896425]  [<ffffffffacd10b1b>] __warn+0x104/0x124
+[   11.896746]  [<ffffffffacd10ba5>] warn_slowpath_fmt+0x6a/0x73
+[   11.897115]  [<ffffffffacd5bf91>] lock_release+0x179/0x3b7
+[   11.897472]  [<ffffffffacd5c14e>] ? lock_release+0x336/0x3b7
+[   11.897836]  [<ffffffffacd3daaf>] ? rq_unlock_irqrestore+0x1e/0x23
+[   11.898232]  [<ffffffffae35f1bd>] _raw_spin_unlock_irqrestore+0x24/0x5a
+[   11.898657]  [<ffffffffacd3daaf>] rq_unlock_irqrestore+0x1e/0x23
+[   11.899042]  [<ffffffffacd4514a>] sched_cpu_dying+0x178/0x1c3
+[   11.899414]  [<ffffffffacd44fd2>] ? sched_cpu_starting+0x54/0x54
+[   11.899800]  [<ffffffffacd11d35>] cpuhp_invoke_callback+0x95/0x1ed
+[   11.900195]  [<ffffffffacd11f1b>] take_cpu_down+0x8e/0xb9
+[   11.900545]  [<ffffffffacdaf2a0>] multi_cpu_stop+0xbf/0x134
+[   11.900904]  [<ffffffffacdaf1e1>] ? __stop_cpus+0x96/0x96
+[   11.901252]  [<ffffffffacdaef45>] cpu_stopper_thread+0xa8/0x140
+[   11.901635]  [<ffffffffacd3ab2d>] smpboot_thread_fn+0x247/0x267
+[   11.902014]  [<ffffffffacd3a8e6>] ? cpumask_next+0x3f/0x3f
+[   11.902372]  [<ffffffffacd35e44>] kthread+0xf3/0x102
+[   11.902694]  [<ffffffffacd35d51>] ? __kthread_create_on_node+0x1c6/0x1c6
+[   11.903123]  [<ffffffffae35f9fa>] ret_from_fork+0x2a/0x40
+[   11.903472] ---[ end trace f68728a0d3053b58 ]---
