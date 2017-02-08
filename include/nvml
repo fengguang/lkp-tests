@@ -1,3 +1,4 @@
+rootfs: debian-x86_64-2017-02-07.cgz
 need_kconfig:
 - CONFIG_NVDIMM_PFN=y
 - CONFIG_FS_DAX=y

@@ -1,3 +1,4 @@
+rootfs: debian-x86_64-2017-02-07.cgz
 % if ___.test == 'rttester'
 need_kconfig: CONFIG_RT_MUTEX_TESTER
 % end
