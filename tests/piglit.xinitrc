@@ -32,7 +32,8 @@ fi
 while read testcase
 do
 	start_time=$(date +%s.%N)
-	log_cmd piglit run $tset -t "$testcase" "$tmp_results"
+	# using excluding(-x) to avoid running all matching case
+	log_cmd piglit run $tset -t "$testcase" "$tmp_results" -x "${testcase}."
 	end_time=$(date +%s.%N)
 	id=$(echo "$testcase" | tr ' ' _).seconds
 	elapsed=$(echo $end_time - $start_time | bc)
