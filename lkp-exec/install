@@ -178,6 +178,8 @@ distro=$_system_name_lowercase
 	exit 1
 }
 
+install_packages "lkp" "$distro"
+
 if [ -n "$CHINA" ]; then
 	gem install bundler --clear-sources -s https://gems.ruby-china.org/
 	bundle_install_china
@@ -186,7 +188,6 @@ else
 	bundle install
 fi
 
-install_packages "lkp" $distro
 make_wakeup
 create_lkp_dirs
 create_host_config
