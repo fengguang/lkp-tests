@@ -11,7 +11,7 @@ do
 	echo $iosched > $i
 done
 
-if [ x"$iosched" = xdeadline ]; then
+if [ x"$iosched" = xdeadline ] || [ x"$iosched" = xmq-deadline ]; then
 	for dev_iosched in /sys/block/*/queue/iosched; do
 		[ -n "$read_expire" ] &&
 			echo $read_expire > $dev_iosched/read_expire
