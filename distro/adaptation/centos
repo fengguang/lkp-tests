@@ -1,5 +1,5 @@
 apache2: httpd
-apt-file:
+apt-file: 
 autotools-dev: autoconf
 binutils-dev: binutils-devel
 btrfs-tools: btrfs-progs
@@ -14,7 +14,7 @@ gcc-6: gcc
 initramfs-tools: dracut
 iozone3: gnuplot* 
 iproute2: iproute
-klibc-utils:
+klibc-utils: 
 libacl1-dev: libacl-devel
 libarchive-dev: libarchive-devel
 libaio-dev: libaio-devel
@@ -59,9 +59,9 @@ libdrm-dev: libdrm-devel
 libgles2-mesa: mesa-libGLES
 libglib2.0-0: glib
 libhwloc-dev: hwloc-devel
-libiberty-dev:
+libiberty-dev: 
 libibverbs-dev: libibverbs-devel
-libklibc-dev:
+libklibc-dev: 
 libkmod-dev: kmod-devel
 libkmod2: kmod-libs
 libnl-3-200: libnl3
@@ -88,7 +88,7 @@ libudev1: libgudev1
 linux-tools: perf
 libuuid1: libuuid libuuid-devel
 libx11-xcb-dev: libX11-devel
-linux-libc-dev:
+linux-libc-dev: 
 linux-libc-dev:i386: 
 linux-perf: perf
 linux-tools: perf
@@ -110,9 +110,9 @@ python3-numpy: python34-numpy
 python3-six: python34-six
 python3-markupsafe: python34-markupsafe
 python3-mako: python-pyramid-mako
-rt-tests:
-ruby-git:
-ruby-gnuplot:
+rt-tests: 
+ruby-git: 
+ruby-gnuplot: 
 sg3-utils: sg3_utils
 tshark: wireshark
 uuid-dev: uuid-devel
