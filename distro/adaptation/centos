@@ -8,18 +8,53 @@ cgroup-bin: libcgroup
 dbench=4.0-2: dbench
 dpkg-dev: dpkg-devel
 freeglut3: freeglut
+gcc-4.9: gcc
+gcc-5: gcc
+gcc-6: gcc
 initramfs-tools: dracut
-iozone3: gnuplot* iozone iozoneruby-g
+iozone3: gnuplot* 
 iproute2: iproute
 klibc-utils:
 libacl1-dev: libacl-devel
+libarchive-dev: libarchive-devel
 libaio-dev: libaio-devel
 libaio1: libaio libaio-devel
 libattr1-dev: libattr-devel
-libc-dev:i386:
+libaudit-dev: audit-libs-devel
+libblas3: liblas-libs
+libblkid-dev: libblkid-devel
+libcairo2-dev: cairo-devel
+libcap2: libcap 
+libcap-dev: libcap-devel
+libcap-ng-dev: libcap-ng-devel
+libdbd-mysql-perl: perl-DBD-MySQL
+libdbi-perl: perl-DBI
+libdw-dev: libdwarf-devel
+libegl1-mesa-dev: mesa-libEGL-devel
+libelf-dev: elfutils-libelf-devel
+libfabric-dev: libfabric-devel
+libfuse-dev: fuse-devel
+libgbm-dev: mesa-libgbm-devel
+libgl1-mesa-dev: mesa-libglapi
+libglib2.0-dev: glib2-devel
+libglu-dev: mesa-libGLU-devel
+libgomp1: libgomp
+libjson-c-dev: json-c-devel
+liblzma-dev: xz-devel
+libncurses5-dev: ncurses-devel
+libnl-route-3-dev: libnl3-devel
+libpciaccess-dev: libpciaccess-devel
+libperl5.22: perl-libs
+libpixman-1-dev: pixman-devel
+libpng12-dev: libpng12-devel
+libunwind-dev: libunwind-devel
+libuv1-dev: libuv-devel
+libssl1.0.0: openssl-devel
+libssl1.1: openssl-devel
+pkg-config: pkgconfig
 libc6-dev: glibc-devel
-libc6-dev:i386: 
-libdbus-1-dev: dbus-libs
+libc6-dev:i386: glibc-devel.i686
+libdbus-1-dev: dbus-devel
 libdrm-dev: libdrm-devel
 libgles2-mesa: mesa-libGLES
 libglib2.0-0: glib
@@ -43,30 +78,32 @@ libperl5.20: perl-libs
 libpopt-dev: popt-devel
 libpopt0: popt
 librdmacm-dev: librdmacm-devel
-libreadline5: 
+libreadligne5: readline
 libsctp-dev: lksctp-tools-devel
-libsqlite3-dev: libsqlite3x-devel
+libsqlite3-dev: sqlite-devel
 libssl-dev: openssl-devel
-libtool-bin:
+libtool-bin: libtool
 libudev-dev: libgudev1-devel
-libudev1: libgudev1 libgudev1linux-tools: perf
+libudev1: libgudev1
+linux-tools: perf
 libuuid1: libuuid libuuid-devel
-libx11-xcb-dev: libx11-devel
+libx11-xcb-dev: libX11-devel
 linux-libc-dev:
 linux-libc-dev:i386: 
 linux-perf: perf
 linux-tools: perf
 mysql-server: mariadb
 ncurses-bin: ncurses
-netpipe-lam: NetPIPE
-netpipe-mpich2: NetPIPE
-netpipe-openmpi: NetPIPE
-netpipe-pvm: NetPIPE
-netpipe-tcp: NetPIPE
+netpipe-lam: 
+netpipe-mpich2: 
+netpipe-openmpi: 
+netpipe-pvm: 
+netpipe-tcp: 
 nfs-common: nfs-utils
 nfs-kernel-server: nfs-utils
 perl-base: 
 perl-modules: perl-CPAN
+pixz: pxz
 python-minimal: python2
 python-numpy: numpy
 python3-numpy: python34-numpy
@@ -77,6 +114,7 @@ rt-tests:
 ruby-git:
 ruby-gnuplot:
 sg3-utils: sg3_utils
+tshark: wireshark
 uuid-dev: uuid-devel
 xfslibs-dev: xfsprogs-devel
 xinit: xorg-x11-xinit
@@ -86,3 +124,17 @@ gcc-4.9: gcc
 gcc-5: gcc
 gcc-6: gcc
 gfortran: gcc-c++
+zlib1g-dev: zlib-devel
+hpcc: 
+postmark: 
+stress-ng: 
+fsmark: fs_mark
+trinity: 
+plzip: 
+f2fs-tools: 
+liboop-dev: 
+liblz-dev: 
+hpcc: 
+libfdt-dev: 
+perl-modules-5.22: perl-CPAN
+xorg: 
