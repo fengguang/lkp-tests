@@ -1048,13 +1048,6 @@ run_pacman() {
 	else
 		cmd=("$PACMAN_PATH" "$@")
 	fi
-	if [[ $1 != -@(T|Qq) ]]; then
-		if type -p sudo >/dev/null; then
-			cmd=(sudo "${cmd[@]}")
-		else
-			cmd=(su root -c "$(printf '%q ' "${cmd[@]}")")
-		fi
-	fi
 	"${cmd[@]}"
 }
 

@@ -1,0 +1,103 @@
+#!/bin/bash
+
+[ -n "$LKP_SRC" ] ||
+	export LKP_SRC=$(dirname $(dirname $(readlink -e -v $0)))
+PKG_DIR="$LKP_SRC/pkg"
+DEPTEST=0
+UPGRADE=0
+SYNC=0
+QUERY=0
+REMOVE=0
+
+: ${PACMAN:=$0}
+: ${BUILDDIR:=$LKP_SRC/tmp-pkg}
+: ${PKGEXT:=tar.gz}
+: ${DBFILE:=$BUILDDIR/installed}
+export PACMAN BUILDDIR PKGEXT DBFILE
+
+have_function() {
+	func_name=$1
+	declare -f "$func_name" >/dev/null
+}
+
+query() {
+	:
+}
+
+upgrade() {
+	local SRC_DIR
+	SRC_DIR=$(pwd)
+	local INSTALL_DIR=$SRC_DIR/install
+	[ -d "$INSTALL_DIR" ] || mkdir "$INSTALL_DIR"
+	tar -zxf "$@" -C "$INSTALL_DIR"
+	(
+		[ -f "$INSTALL_DIR/.INSTALL" ] && source "$INSTALL_DIR/.INSTALL"
+		cp -r "$INSTALL_DIR/usr" / || return 1
+		if have_function post_install; then
+			post_install || return 1
+		fi
+	)
+	echo install succeed
+}
+
+deptest() {
+	pkg=$1
+	grep "\b$pkg\b" "$DBFILE" > /dev/null
+	if [[ $? -eq 1 ]]; then
+		echo "$pkg"
+		return 127
+	else
+		return 0
+	fi
+}
+
+sync() {
+	local pkg=$1
+	if [ -d "$PKG_DIR/$pkg" ]; then
+		(
+			cd "${PKG_DIR}/$pkg" && \
+			makepkg --config "$LKP_SRC/etc/makepkg.conf" -s -i --skippgpcheck
+		)
+	fi
+	echo "$pkg" >> "$DBFILE"
+}
+
+remove() {
+	:
+}
+
+case "$1" in
+# Pacman Options
+	-Qq)		QUERY=1;;
+	-U)			UPGRADE=1;;
+	-T)			DEPTEST=1;;
+	-S)			SYNC=1;;
+	-Rn)		REMOVE=1;;
+esac
+shift
+
+if [[ DEPTEST -eq 1 ]]; then
+	ret=0
+	if [ ! -f "$DBFILE" ]; then
+		echo "$@"
+		exit 127
+	fi
+	for dep in "$@"; do
+		deptest "$dep"
+		[[ $? -eq 127 ]] && ret=127
+	done
+	exit $ret
+fi
+
+if [[ SYNC -eq 1 ]]; then
+	shift
+	for dep in "$@"; do
+		sync "$dep"
+	done
+fi
+
+if [[ UPGRADE -eq 1 ]]; then
+	for dep in "$@"; do
+		upgrade "$dep" || exit 1
+	done
+fi
