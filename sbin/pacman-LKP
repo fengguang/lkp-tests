@@ -56,7 +56,7 @@ sync() {
 	if [ -d "$PKG_DIR/$pkg" ]; then
 		(
 			cd "${PKG_DIR}/$pkg" && \
-			makepkg --config "$LKP_SRC/etc/makepkg.conf" -s -i --skippgpcheck
+			"$LKP_SRC/sbin/makepkg" --config "$LKP_SRC/etc/makepkg.conf" -s -i --skippgpcheck
 		)
 	fi
 	echo "$pkg" >> "$DBFILE"
