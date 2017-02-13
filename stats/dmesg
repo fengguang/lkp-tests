@@ -65,7 +65,8 @@ dmesg_lines = fixup_dmesg_file(dmesg_file)
 # check possibly misplaced serial log
 def verify_serial_log(dmesg_lines)
 	return unless $PROGRAM_NAME =~ /dmesg/
-	return unless ENV['RESULT_ROOT']
+  return if RESULT_ROOT.nil? || RESULT_ROOT.empty?
+
 	dmesg_lines.grep(/RESULT_ROOT=/) { |line|
 		next if line =~ /(^|[0-9]\] )kexec -l | --initrd=| --append=|"$/
 		next unless line =~ / RESULT_ROOT=([A-Za-z0-9.,;_\/+%:@=-]+) /
