@@ -25,7 +25,12 @@ sync_distro_sources()
 
 adapt_packages()
 {
-	local distro_file="$LKP_SRC/distro/adaptation/$distro"
+	local distro_file
+	if [ -z "$PKG_TYPE" ]; then
+		distro_file="$LKP_SRC/distro/adaptation/$distro"
+	else
+		distro_file="$LKP_SRC/distro/adaptation-$PKG_TYPE/$distro"
+	fi
 	[ -f "$distro_file" ] || {
 		echo $generic_packages
 		return
@@ -44,9 +49,14 @@ adapt_packages()
 		fi
 		if [ -n "$mapping" ]; then
 			distro_pkg=$(echo $mapping | awk -F": " '{print $2}')
-			[ -n "$distro_pkg" ] && echo $distro_pkg
+			if [ -n "$distro_pkg" ]; then
+				echo $distro_pkg
+			else
+				distro_pkg=${mapping%%::*}
+				[ "$mapping" != "$distro_pkg" ] && [ -n "$distro_pkg" ] && echo $distro_pkg
+			fi
 		else
-			echo $pkg
+			[ -z "$PKG_TYPE" ] && echo $pkg
 		fi
 	done
 }
@@ -55,6 +65,7 @@ get_dependency_packages()
 {
 	local distro=$1
 	local script=$2
+	local PKG_TYPE=$3
 	local base_file="$LKP_SRC/distro/depends/${script}"
 
 	[ -f "$base_file" ] || return
