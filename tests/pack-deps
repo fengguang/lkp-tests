@@ -47,8 +47,15 @@ do
 	work_dir=$(mktemp -d /tmp/pack-deps-$BM_NAME-XXXXXXXX)
 	cd $work_dir
 
+	mkdir -p opt/deb
+	# sequence-deb content looks like:
+	#   libreadline7
+	#   libssl1.1
+	#   gawk
+	echo "$PACKAGE_LIST" | grep -F -f "$LKP_SRC/distro/keep-deb" > opt/deb/sequence-deb
+
 	if download "$PACKAGE_LIST"; then
-		install
+		install || exit 1
 		pack
 		echo "$PACKAGE_LIST" > $pack_to/.${BM_NAME}.packages
 	else

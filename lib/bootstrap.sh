@@ -256,12 +256,27 @@ redirect_stdout_stderr()
 install_deb()
 {
 	local files
+	local filename
 
-	files="$(find /opt/deb -type f 2>/dev/null)" || return
-	[ -n "$files" ] || return
+	[ -d /opt/deb ] || return 0
 
-	dpkg -i $files || return
-	rm $files
+	if [ -s "/opt/deb/keep-deb" ]; then
+		while read -r filename
+		do
+			dpkg -i /opt/deb/$filename || {
+				echo "error: dpkg -i /opt/deb/$filename failed." 1>&2
+				return 1
+			}
+			rm /opt/deb/$filename
+		done < /opt/deb/keep-deb
+	# this part for backward-compatibility to handle old deps which doesn't have keep-deb
+	else
+		files="$(find /opt/deb -name '*.deb' -type f 2>/dev/null)"
+		[ -n "$files" ] || return
+
+		dpkg -i $files || return
+		rm $files
+	fi
 }
 
 fixup_packages()

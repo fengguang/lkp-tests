@@ -31,15 +31,39 @@ hardlink_to_symlink()
 
 install()
 {
+	local deb_pkgname
+	local deb_filename
+	local deb_files
+
+	# sequence-deb content looks like:
+	#   libreadline7
+	#   libssl1.1
+	#   gawk
+	[ -s "opt/deb/sequence-deb" ] && {
+		deb_files=$(find ./ -name "*.deb" -type f)
+		while read -r deb_pkgname
+		do
+			# deb package naming specification, the file name must contain '_'
+			deb_filename=$(echo "$deb_files" | grep "^\./${deb_pkgname}_")
+			if [ -n "${deb_filename}" ]; then
+				mv "$deb_filename"  opt/deb
+
+				# keep-deb content looks like:
+				#   libreadline7_7.0-1_amd64.deb
+				#   libssl1.1_1.1.0d-2_amd64.deb
+				#   gawk_1%3a4.1.3+dfsg-0.1+b1_amd64.deb
+				echo $(basename $deb_filename) >> opt/deb/keep-deb
+			else
+				echo "error: $deb_filename is not exist." >&2
+				return 1
+			fi
+		done < opt/deb/sequence-deb
+	}
+
 	local deb
 	for deb in *.deb; do
-		if echo "$deb" | grep -q -F -f $LKP_SRC/distro/keep-deb; then
-			mkdir -p opt/deb
-			mv "$deb"  opt/deb
-		else
-			dpkg-deb -x "$deb" . || return
-			rm "$deb"
-		fi
+		dpkg-deb -x "$deb" . || return
+		rm "$deb"
 	done
 
 	hardlink_to_symlink
