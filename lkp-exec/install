@@ -116,6 +116,31 @@ bundle_install_china() {
 	(cd $tmpdir; bundle config --local mirror.https://rubygems.org https://gems.ruby-china.org; bundle install)
 }
 
+makepkg_install() {
+	local pkg=$1
+	[ -d "$LKP_SRC/pkg/$pkg" ] && \
+	(
+		cd "$LKP_SRC/pkg/$pkg" && \
+		PACMAN="$LKP_SRC/sbin/pacman-LKP" BUILDDIR="$LKP_SRC/tmp-pkg" PKGEXT=tar.gz \
+		"$LKP_SRC/sbin/makepkg" --config "$LKP_SRC/etc/makepkg.conf" -s -i --skippgpcheck
+	)
+}
+
+makepkg_install_packages() {
+	local script=$1
+	local distro=$2
+
+	local packages dev_packages
+	packages="$(get_dependency_packages ${distro} ${script} pkg)"
+	dev_packages="$(get_dependency_packages ${distro} ${script}-dev pkg)"
+	packages="$(echo $packages $dev_packages | tr '\n' ' ')"
+	[ -n "$packages" ] && [ "$packages" != " " ] || return
+
+	for pkg in $packages; do
+		makepkg_install "$pkg" || echo "Install $pkg failed"
+	done
+}
+
 install_packages() {
 	local script=$1
 	local distro=$2
@@ -173,6 +198,9 @@ build_install_benchmarks() {
 detect_system
 distro=$_system_name_lowercase
 
+DISTRO=$distro
+export DISTRO
+
 [ -x $LKP_SRC/distro/installer/$distro ] || {
 	echo "Not a supported system, cannot install packages."
 	exit 1
@@ -214,6 +242,7 @@ do
 			makepkg_once=1
 		}
 		install_packages "$script" $distro
+		makepkg_install_packages "$script" $distro
 		build_install_benchmarks "$script" $distro
 	done
 done
