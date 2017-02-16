@@ -1,1 +1,6 @@
-sudo yum install -y epel-release $*
+if ! rpm -q epel-release >/dev/null; then
+	sudo yum install -y epel-release
+	yum makecache fast
+fi
+
+sudo yum install -y $*
