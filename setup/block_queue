@@ -1,0 +1,15 @@
+#!/bin/sh
+# - block_queue_dev
+# - max_sectors_kb
+# - nr_requests
+
+block_queue_dev=${block_queue_dev:-*}
+
+for dev_queue in /sys/block/$block_queue_dev/queue; do
+	[ -n "$max_sectors_kb" ] &&
+		echo "$max_sectors_kb" > "$dev_queue"/max_sectors_kb
+	[ -n "$nr_requests" ] &&
+		echo "$nr_requests" > "$dev_queue"/nr_requests
+done
+
+true
