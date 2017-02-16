@@ -1,0 +1,22 @@
+#!/bin/sh
+# - taskset
+
+for pair in $(echo "$taskset" | tr '+' ' '); do
+        pattern=${pair%%:*}
+	if [ "$pattern" = "$pair" ]; then
+		test_taskset="$pair"
+	else
+		cpu_list=${pair##*:}
+		taskset -pc "$cpu_list" "$(pgrep "$pattern")"
+	fi
+done
+
+if [ -n "$test_taskset" ]; then
+	cat >> "$TMP"/env.yaml <<EOF
+
+# setup/taskset
+exec_prefix: taskset -c $test_taskset $exec_prefix
+EOF
+else
+	true
+fi
