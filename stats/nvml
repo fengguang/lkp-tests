@@ -11,16 +11,11 @@ while (line = STDIN.gets)
 		test_item = Regexp.last_match[1]
 		fs_type = Regexp.last_match[2]
 		build_type = Regexp.last_match[3]
-	when %r{^(.+)/(TEST[0-9]+): PASS$}
+	when %r{^(.+)/(TEST[0-9]+): (PASS|FAIL)$}
 		item = Regexp.last_match[1]
 		name = Regexp.last_match[2]
 		next unless test_item == item
-		stats << item + '_' + name + '_' + fs_type + '_' + build_type + '.pass: 1'
-	when %r{^(.+)/(TEST[0-9]+): FAIL}
-		item = Regexp.last_match[1]
-		name = Regexp.last_match[2]
-		next unless test_item == item
-		stats << item + '_' + name + '_' + fs_type + '_' + build_type + '.fail: 1'
+		stats << item + '_' + name + '_' + fs_type + '_' + build_type + "." + Regexp.last_match[3].downcase + ': 1'
 	when %r{RUNTESTS: stopping: (.+)/(TEST[0-9]+) failed}
 		item = Regexp.last_match[1]
 		name = Regexp.last_match[2]
@@ -31,11 +26,6 @@ while (line = STDIN.gets)
 		name = Regexp.last_match[2]
 		next unless test_item == item
 		stats << item + '_' + name + '_' + fs_type + '_' + build_type + '.timeout: 1'
-	when %r{^(.+)/(TEST[0-9]+) crashed}
-		item = Regexp.last_match[1]
-		name = Regexp.last_match[2]
-		next unless test_item == item
-		stats << item + '_' + name + '_' + fs_type + '_' + build_type + '.crashed: 1'
 	when %r{^(.+)/(TEST[0-9]+): SKIP}
 		item = Regexp.last_match[1]
 		name = Regexp.last_match[2]
