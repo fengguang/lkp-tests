@@ -27,6 +27,7 @@ query() {
 upgrade() {
 	local SRC_DIR
 	SRC_DIR=$(pwd)
+	local pkg=${SRC_DIR##*/}
 	local INSTALL_DIR=$SRC_DIR/install
 	[ -d "$INSTALL_DIR" ] || mkdir "$INSTALL_DIR"
 	tar -zxf "$@" -C "$INSTALL_DIR"
@@ -37,6 +38,7 @@ upgrade() {
 			post_install || return 1
 		fi
 	)
+	echo "$pkg" >> "$DBFILE"
 	echo install succeed
 }
 
