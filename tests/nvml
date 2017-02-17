@@ -24,9 +24,10 @@ cd src/test || die "Can not find test dir"
 testcases=$(ls -d "$group"_* 2>/dev/null) || testcases=$(ls -d "$group" 2>/dev/null)
 [[ -n "$testcases" ]] || die "Parameter \"group\" is invalid"
 
-echo "testcases: $testcases"
+echo "testcases:\n$testcases"
+echo
 
 while read testcase
 do
-	./RUNTESTS $testcase
+	./RUNTESTS $testcase  2>&1
 done <<< "$testcases"
