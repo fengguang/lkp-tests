@@ -10,5 +10,5 @@ build()
 
 install()
 {
-	cp -af $source_dir $BM_ROOT/linux
+	cp -af . $BM_ROOT/linux
 }
