@@ -16,8 +16,17 @@ log_cmd mkdir -p $LOGDIR_RESULTS
 log_eval export TESTDISK_DIR="${mount_points%% *}"
 
 log_cmd ./run.sh
-if [ $? -ne 0 ]; then
-	echo "run_fail: 1"
+ret=$?
+
+# This case reuqires disk_size > (system memory * 2 * 2), but it seems lkp has
+# not an existed filter to handle it, so here is to check whether there is a
+# 'No space left on device' error
+grep 'No space left on device' $LOGDIR_RESULTS/*.log && ret=1
+
+if [ $ret -ne 0 ]; then
+	echo "stutter: fail"
 else
-	echo "# run success"
+	echo "stutter: pass"
 fi
+
+exit $ret
