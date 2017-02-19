@@ -104,12 +104,31 @@ install_linaro()
 	sudo mv $dir  $GCC_INSTALL_PATH/gcc-$cross_gcc_version/$gcc_arch
 }
 
+install_openrisc()
+{
+	local URL='https://github.com/openrisc/or1k-gcc/releases/download/or1k-5.4.0-20170218'
+	local file='or1k-linux-5.4.0-20170218.tar.xz'
+
+	download_extract "$URL/$file"
+
+	local dir="$GCC_INSTALL_PATH/${gcc_arch}"
+	local cross_gcc_version=(${dir}/bin/${gcc_arch}-gcc-*.*.*)
+	local cross_gcc_version=${cross_gcc_version##*-}
+
+	echo mkdir -p $GCC_INSTALL_PATH/gcc-$cross_gcc_version
+	sudo mkdir -p $GCC_INSTALL_PATH/gcc-$cross_gcc_version
+	echo mv $dir  $GCC_INSTALL_PATH/gcc-$cross_gcc_version/$gcc_arch
+	sudo mv $dir  $GCC_INSTALL_PATH/gcc-$cross_gcc_version/$gcc_arch
+}
+
 install_cross_compiler()
 {
 	install_packages
 
 	if [[ $gcc_arch =~ 'aarch64' ]]; then
 		install_linaro
+	elif [[ $gcc_arch =~ 'or1k' ]]; then
+		install_openrisc
 	else
 		install_crosstool
 	fi
@@ -150,7 +169,7 @@ setup_crosstool()
 			fi
 			;;
 		openrisc)
-			gcc_arch=or32-linux
+			gcc_arch=or1k-linux
 			;;
 		s390)
 			gcc_arch=s390x-linux
