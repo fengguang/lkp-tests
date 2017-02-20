@@ -112,6 +112,7 @@ kernel=
 initrd_files=
 append=
 params=
+acpi_rsdp=
 while read key val
 do
 	case $key in
@@ -165,6 +166,16 @@ elif [[ $kernel ]]; then
 		cat $initrd_files  > /tmp/combined-initrd
 		opt_initrd="--initrd /tmp/combined-initrd"
 	}
+
+	# Pass the RSDP address to the kernel for EFI system
+	# Root System Description Pointer (RSDP) is a data structure used in the
+	# ACPI programming interface. On systems using Extensible Firmware
+	# Interface (EFI), attempting to boot a second kernel using kexec, an ACPI
+	# BIOS Error (bug): A valid RSDP was not found (20160422/tbxfroot-243) was
+	# logged.
+	acpi_rsdp=$(grep -m1 ^ACPI /sys/firmware/efi/systab 2>/dev/null | cut -f2- -d=)
+	[ -n "$acpi_rsdp" ] && params="$params acpi_rsdp=$acpi_rsdp"
+
 	[[ $job ]] && wget "$path_prefix/cgi-bin/lkp-jobfile-append-var?job_file=$job&job_state=booting"
 	echo kexec -l $kernel --append=\"$params\" $opt_initrd
 	kexec -l $kernel --append="$params" $opt_initrd
