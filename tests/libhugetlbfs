@@ -1,0 +1,17 @@
+#!/bin/sh
+# - pagesize
+# - pagenum
+
+. $LKP_SRC/lib/debug.sh
+
+cd $BENCHMARK_ROOT/libhugetlbfs || die "can not cd libhugetlbfs"
+
+log_cmd make || die "make failed"
+
+[ -z $pagesize -o -z $pagenum ] && die "invalid parameter"
+
+# in order to config huge pages size and number
+log_cmd obj/hugeadm --add-temp-swap=$pagenum --pool-pages-min $pagesize:$pagenum --hard \
+	|| die "config huge pages size and number failed"
+
+log_cmd make check

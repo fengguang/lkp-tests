@@ -1,0 +1,10 @@
+suite: libhugetlbfs
+testcase: libhugetlbfs
+category: benchmark
+
+libhugetlbfs:
+  pagesize:
+  - 2MB
+  pagenum:
+  - 25
+  - 50

@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+
+result = {}
+
+while line = STDIN.gets
+  case line
+  when /(32|64)\)\:\s+(PASS|FAIL)/
+    ret = "#{$1}bit.#{line.split('(')[0].rstrip.tr('[ .]', '_')}.#{$2}".downcase
+    result[ret] = 1
+  when /(32|64)\)\:\s+Bad/
+    ret = "#{$1}bit.#{line.split('(')[0].rstrip.tr('[ .]', '_')}.bad_configuration".downcase
+    result[ret] = 1
+  when /(32|64)\)\:\s+/
+    ret = "#{$1}bit.#{line.split('(')[0].rstrip.tr('[ .]', '_')}.killed_by_signal".downcase
+    result[ret] = 1
+  when /^\*\s+Total testcases:/
+    result['total_test'] = line.split[3].to_i + line.split[4].to_i
+  end
+end
+
+result.each do |k, v|
+  puts "#{k}: #{v}"
+end
