@@ -866,3 +866,5 @@ module DataStore
 		tbl
 	end
 end
+
+# vim:set ts=2:

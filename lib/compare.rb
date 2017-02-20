@@ -1050,3 +1050,5 @@ module Compare
 		}
 	end
 end
+
+# vim:set ts=2:
