@@ -71,12 +71,12 @@ upload_one_curl()
 		(
 			cd $(dirname "$1")
 			dir=$(basename "$1")
-			find "$dir" -type d -exec curl -sSf -X MKCOL "http://$LKP_SERVER$JOB_RESULT_ROOT/{}" \;
-			find "$dir" -type f -size +0 -exec curl -sSf -T '{}' "http://$LKP_SERVER$JOB_RESULT_ROOT/{}" \;
+			find "$dir" -type d -exec curl -sSf -X MKCOL "http://$LKP_SERVER$job_result_root/{}" \;
+			find "$dir" -type f -size +0 -exec curl -sSf -T '{}' "http://$LKP_SERVER$job_result_root/{}" \;
 		)
 	else
-		[ -s "$file" ] || return
-		curl -sSf -T "$file" http://$LKP_SERVER$JOB_RESULT_ROOT/
+		[ -s "$1" ] || return
+		curl -sSf -T "$1" http://$LKP_SERVER$job_result_root/
 	fi
 }
 
@@ -85,13 +85,16 @@ upload_files_curl()
 	local file
 	local ret=0
 
-	[ -n "$target_directory" ] && {
+	# "%" character as special character not be allowed in the URL when use curl command to transfer files, details can refer to below:
+	# https://www.werockyourweb.com/url-escape-characters/
+	local job_result_root=$(echo $JOB_RESULT_ROOT | sed 's/%/%25/g')
 
+	[ -n "$target_directory" ] && {
 		local dir
 		for dir in $(echo $target_directory | tr '/' ' ')
 		do
-			local JOB_RESULT_ROOT=$JOB_RESULT_ROOT/$dir
-			curl -sSf -X MKCOL http://$LKP_SERVER$JOB_RESULT_ROOT
+			job_result_root=$job_result_root/$dir
+			curl -sSf -X MKCOL http://$LKP_SERVER$job_result_root
 		done
 	}
 
