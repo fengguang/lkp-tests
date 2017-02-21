@@ -116,3 +116,42 @@ class TPTrace
     end
   end
 end
+
+# usemem-1668   |   0.043 us    |  } /* swap_lock_page_or_retry */
+# <...>-6436   |   0.065 us    |  swap_lock_page_or_retry();
+
+# Funcgraph Duration sample
+class FGSample
+  RE_SAMPLE = /^\s*(.+)-(\d+)\s*\|\s*([0-9.]+)[us ]*\|[} \/*]*([a-zA-Z0-9_]+)/
+
+  attr_reader :cmd, :pid, :duration, :func
+
+  def initialize(cmd, pid, duration, func)
+    @cmd = cmd
+    @pid = pid
+    @duration = duration
+    @func = func
+  end
+
+  class << self
+    def parse(str)
+      (md = self::RE_SAMPLE.match(str)) || return
+      new md[1], md[2].to_i, md[3].to_f, md[4].intern
+    end
+  end
+end
+
+class FGTrace
+  def initialize(file)
+    @file = file
+  end
+
+  def each
+    block_given? || (return enum_for(__method__))
+
+    @file.each_line do |line|
+      (sample = FGSample.parse(line)) || next
+      yield sample
+    end
+  end
+end
