@@ -218,6 +218,15 @@ def monitor_file(file, history = 10)
 	system "tail", "-f", "-n", history.to_s, file
 end
 
+def xzopen(fn, mode = "r", &blk)
+  sfn = fn[0, fn.size - 3]
+  if File.exist?(sfn)
+    File.open(sfn, mode, &blk)
+  else
+    IO.popen("xzcat #{fn}", mode, &blk)
+  end
+end
+
 ## Date and time
 
 ONE_DAY = 60 * 60 * 24
