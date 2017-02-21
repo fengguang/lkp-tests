@@ -110,7 +110,7 @@ upload_files_copy()
 
 	mkdir -p $RESULT_ROOT
 
-	[ "$LKP_LOCAL_RUN" -ne "1" ] && {
+	[ "$LKP_LOCAL_RUN" != "1" ] && {
 		[ -n "$target_directory" ] && {
 			chown -R lkp.lkp $RESULT_ROOT
 			chmod -R g+w $RESULT_ROOT
