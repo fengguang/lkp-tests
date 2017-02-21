@@ -73,10 +73,11 @@ end
 
 def parse_syscalls
 	process_lines = Hash.new
-	f = IO.popen("xzcat #{RESULT_ROOT}/ftrace.data.xz")
-	return if f == nil
-	lines = f.readlines
-	f.close
+  if File.exist?("#{RESULT_ROOT}/ftrace.data.xz")
+    lines = IO.popen("xzcat #{RESULT_ROOT}/ftrace.data.xz").readlines
+  else
+    lines = IO.readlines("#{RESULT_ROOT}/ftrace.data")
+  end
 
 	lines.each do |line|
 		next if line.include? "CPU" or line.include? "#"
