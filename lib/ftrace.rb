@@ -2,13 +2,18 @@
 
 LKP_SRC ||= ENV['LKP_SRC']
 
+#         modprobe-2427  [008] ....   242.913825: vmalloc_alloc_area: start=0xffffc90001b07000, end=0xffffc90001b39000
+
 class TPSample
   RES_ARG = "[^=,: \n]+=[^=,: \n]+".freeze
-  RE_SAMPLE = Regexp.new ": ([^: ]+): ((?:#{RES_ARG}, )*#{RES_ARG})$"
+  RE_SAMPLE = Regexp.new('^\s*(.*)-(\d+)\s+\[\d+\]\s+\S+\s+([0-9.]+): ([^: ]+): ' + "((?:#{RES_ARG}, )*#{RES_ARG})$")
 
-  attr_reader :type, :data
+  attr_reader :cmd, :pid, :timestamp, :type, :data
 
-  def initialize(type, data)
+  def initialize(cmd, pid, timestamp, type, data)
+    @cmd = cmd
+    @pid = pid
+    @timestamp = timestamp
     @type = type
     @data = data
   end
@@ -17,17 +22,24 @@ class TPSample
     @data[key]
   end
 
+  def conv_data(converter)
+    converter.call(@data)
+  end
+
   class << self
     def parse(str)
       (md = self::RE_SAMPLE.match(str)) || return
-      type = md[1].intern
-      arg_pair_strs = md[2].split(', ')
+      cmd = md[1]
+      pid = md[2].to_i
+      timestamp = md[3].to_f
+      type = md[4].intern
+      arg_pair_strs = md[5].split(', ')
       arg_pairs = arg_pair_strs.map do |ps|
         k, v = ps.split('=')
         [k.intern, v]
       end
       args = Hash[arg_pairs]
-      new type, args
+      new cmd, pid, timestamp, type, args
     end
   end
 end
@@ -52,9 +64,12 @@ class TPEventFormat
     @args_conv = Hash[conv]
   end
 
+  def convert_data(data)
+    data.each { |n, v| data[n] = @args_conv[n].call(v) }
+  end
+
   def convert(sample)
-    ndata = sample.data.map { |n, v| [n, @args_conv[n].call(v)] }
-    TPSample.new(sample.type, Hash[ndata])
+    sample.conv_data(method(:convert_data))
   end
 
   class << self
@@ -96,13 +111,8 @@ class TPTrace
     @file.each_line do |line|
       (sample = TPSample.parse(line)) || next
       fmt = @formats[sample.type]
-      csample =
-        if fmt
-          fmt.convert(sample)
-        else
-          sample
-        end
-      yield csample
+      fmt && fmt.convert(sample)
+      yield sample
     end
   end
 end
