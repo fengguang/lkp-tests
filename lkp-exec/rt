@@ -70,7 +70,11 @@ case $opt_project in
 esac
 
 patterns="$*"
+
 temp_file_unsort=$(mktemp /tmp/lkp-rt-unsort-XXXXXX)
+temp_file_sort=$(mktemp /tmp/lkp-rt-sort-XXXXXX)
+
+trap "rm -f $temp_file_unsort $temp_file_sort" EXIT
 
 [[ $patterns ]] ||
 cat "${files[@]}" >> $temp_file_unsort
@@ -95,14 +99,9 @@ cat "${files[@]}" >> $temp_file_unsort
 	eval "$cmd" >> $temp_file_unsort
 }
 
-[[ -s "$temp_file_unsort" ]] ||
-{
-	rm -rf $temp_file_unsort
-	exit 1
-}
+[[ -s "$temp_file_unsort" ]] || exit 1
 
 sed -i -e 's#/$##' $temp_file_unsort
-temp_file_sort=$(mktemp /tmp/lkp-rt-sort-XXXXXX)
 
 case $script_name in
 rt|ls|ll|result)
@@ -140,5 +139,3 @@ do
 	[[ ! "$opt_file" || -e "$path/$opt_file" ]] &&
 	show_one_path "$path/$opt_file"
 done < $temp_file_sort
-
-rm $temp_file_unsort $temp_file_sort
