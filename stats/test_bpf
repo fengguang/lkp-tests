@@ -4,6 +4,7 @@ stats = []
 nr_test = 0
 success_test = 0
 fail_test = 0
+is_divided = false
 
 while (line = STDIN.gets)
   case line
@@ -32,14 +33,21 @@ while (line = STDIN.gets)
     stats << type + '.fail: 1'
     nr_test += 1
   when /test_bpf: #[0-9]+ check: (.+)/
-    type = 'check:_' + $1.tr(' ', '_')
+    type = 'check:_' + $1.strip.tr(' ', '_')
+    is_divided = true
     nr_test += 1
   when /test_bpf: #[0-9]+ (.+)/
-    type = $1.tr(' ', '_')
+    type = $1.strip.tr(' ', '_')
+    is_divided = true
     nr_test += 1
   when /test_bpf: Summary: ([0-9]+) PASSED, ([0-9]+) FAILED, \[.+ JIT'ed\]$/
     success_test = $1
     fail_test = $2
+  when /(PASS|FAIL)/
+    if is_divided
+      stats << type + ".#{$1.downcase}: 1"
+      is_divided = false
+    end
   end
 end
 
