@@ -59,5 +59,28 @@ EOF
       actual = `echo "#{stdout}" | #{stats_script}`.split("\n")
       expect(actual).to eq(["mqueue.nsec_per_msg: #{(484 + 426 + 496 + 424) / 4}", 'total_test: 1'])
     end
+    it 'stats futex result' do
+      stdout = <<EOF
+make: Entering directory '/usr/src/linux-selftests-x86_64-rhel-7.2-d5adbfcd5f7bcc6fa58a41c5c5ada0e5c826ce2c/tools/testing/selftests/futex'
+futex_requeue_pi: Test requeue functionality
+	Arguments: broadcast=0 locked=0 owner=0 timeout=0ns
+Result:  PASS
+futex_requeue_pi: Test requeue functionality
+	Arguments: broadcast=1 locked=0 owner=0 timeout=0ns
+Result:  PASS
+
+futex_requeue_pi_mismatched_ops: Detect mismatched requeue_pi operations
+Result:  PASS
+
+futex_requeue_pi_signal_restart: Test signal handling during requeue_pi
+	Arguments: <none>
+Result:  PASS
+
+make: Leaving directory '/usr/src/linux-selftests-x86_64-rhel-7.2-d5adbfcd5f7bcc6fa58a41c5c5ada0e5c826ce2c/tools/testing/selftests/futex'
+EOF
+      actual = `echo "#{stdout}" | #{stats_script}`.split("\n")
+      expect(actual).to eq(['futex.futex_requeue_pi.broadcast=0_locked=0_owner=0_timeout=0ns.pass: 1', 'futex.futex_requeue_pi.broadcast=1_locked=0_owner=0_timeout=0ns.pass: 1',\
+                            'futex.futex_requeue_pi_mismatched_ops.pass: 1', 'futex.futex_requeue_pi_signal_restart.pass: 1', 'total_test: 4'])
+    end
   end
 end
