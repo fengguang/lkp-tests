@@ -8,16 +8,14 @@ exit unless File.exist?("#{RESULT_ROOT}/results/default/status.json")
 status = YAML.load_file("#{RESULT_ROOT}/results/default/status.json")
 
 if status['operations'].empty?
-	$stderr.puts "Test environment is not able"
-	exit
+  $stderr.puts 'Test environment is not able'
+  exit
 end
 
 nr_test = 0
-status['operations'].each { |op|
-	if op['status_code'] != 'GOOD'
-		puts "#{op['subdir']}.fail: 1"
-	end
-	nr_test = nr_test + 1
-}
+status['operations'].each do |op|
+  puts "#{op['subdir']}.fail: 1" if op['status_code'] != 'GOOD'
+  nr_test += 1
+end
 
 puts "total_test: #{nr_test}"
