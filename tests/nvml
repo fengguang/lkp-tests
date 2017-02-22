@@ -18,8 +18,15 @@ fi
 
 [[ -n "$group" ]] || die "Parameter \"group\" is empty"
 
-make || return
-make test || return
+# at pack/nvml stage, we install valgrind bianries to /tmp/valgrind_install/usr/local
+# and then pack them to /usr/local. However when those binaries are executed,
+# they will reference to /tmp/valgrind_install/user/local where they are installed
+# so here we create a symbolic link to make valgrind work
+mkdir -p /tmp/valgrind_install || die "mkdir -p /tmp/valgrind_install failed"
+ln -sf /usr /tmp/valgrind_install/usr || die "link failed"
+
+make EXTRA_CFLAGS=-DUSE_VALGRIND || die "make failed"
+make EXTRA_CFLAGS=-DUSE_VALGRIND test || "make test failed"
 
 cd src/test || die "Can not find test dir"
 testcases=$(ls -d "$group"_* 2>/dev/null) || testcases=$(ls -d "$group" 2>/dev/null)

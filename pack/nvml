@@ -2,15 +2,47 @@
 
 download()
 {
-	git_clone_update https://github.com/pmem/nvml.git
+	git_clone_update https://github.com/pmem/valgrind.git || return
+	git_clone_update https://github.com/pmem/nvml.git || return
+}
+
+build_install_valgrind_pmem()
+{
+	cd ../valgrind || return
+	git checkout origin/pmem-3.12 || return
+	git submodule init || return
+	git submodule update || return
+
+	./autogen.sh || return
+	./configure --prefix=/tmp/valgrind_install/usr/local || return
+	make || return
+	make install || return
 }
 
 build()
 {
-	:
+	build_install_valgrind_pmem || return
 }
 
 install()
 {
 	cp -af $source_dir/* $BM_ROOT
+}
+
+pack()
+{
+	cd /tmp/valgrind_install || return
+	{
+		echo /lkp
+		echo /lkp/benchmarks
+		find /lkp/benchmarks/$BM_NAME
+		find usr
+	} |
+	cpio --quiet -o -H newc | gzip -n -9 > /lkp/benchmarks/${BM_NAME}.cgz
+	[[ $arch ]] && mv "/lkp/benchmarks/${BM_NAME}.cgz" "/lkp/benchmarks/${BM_NAME}-${arch}.cgz"
+}
+
+post_cleanup()
+{
+	rm -rf /tmp/valgrind_install
 }
