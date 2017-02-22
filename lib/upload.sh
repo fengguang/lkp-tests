@@ -67,16 +67,19 @@ upload_files_lftp()
 
 upload_one_curl()
 {
-	if [ -d "$1" ]; then
+	local src=$1
+	local dest=$2
+
+	if [ -d "$src" ]; then
 		(
 			cd $(dirname "$1")
 			dir=$(basename "$1")
-			find "$dir" -type d -exec curl -sSf -X MKCOL "http://$LKP_SERVER$job_result_root/{}" \;
-			find "$dir" -type f -size +0 -exec curl -sSf -T '{}' "http://$LKP_SERVER$job_result_root/{}" \;
+			find "$dir" -type d -exec curl -sSf -X MKCOL "http://$LKP_SERVER$dest/{}" \;
+			find "$dir" -type f -size +0 -exec curl -sSf -T '{}' "http://$LKP_SERVER$dest/{}" \;
 		)
 	else
-		[ -s "$1" ] || return
-		curl -sSf -T "$1" http://$LKP_SERVER$job_result_root/
+		[ -s "$src" ] || return
+		curl -sSf -T "$src" http://$LKP_SERVER$dest/
 	fi
 }
 
@@ -94,13 +97,13 @@ upload_files_curl()
 		for dir in $(echo $target_directory | tr '/' ' ')
 		do
 			job_result_root=$job_result_root/$dir
-			curl -sSf -X MKCOL http://$LKP_SERVER$job_result_root
+			curl -sSf -X MKCOL http://$LKP_SERVER$job_result_root  >/dev/null
 		done
 	}
 
 	for file
 	do
-		upload_one_curl "$file" >/dev/null || ret=$?
+		upload_one_curl "$file" "$job_result_root" >/dev/null || ret=$?
 	done
 
 	return $ret
