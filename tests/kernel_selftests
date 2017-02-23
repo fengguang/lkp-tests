@@ -33,6 +33,9 @@ mkdir -p /hugepages
 # has too many errors now
 sed -i 's/hugetlbfstest//' vm/Makefile
 
+# temporarily workaround compile error on gcc-6
+command -v gcc >/dev/null || ln -sf /usr/bin/gcc-5 /usr/bin/gcc
+
 for mf in */Makefile; do
 	subtest=${mf%/Makefile}
 
