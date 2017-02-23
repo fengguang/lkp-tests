@@ -64,6 +64,7 @@ libibverbs-dev: libibverbs-devel
 libklibc-dev: 
 libkmod-dev: kmod-devel
 libkmod2: kmod-libs
+libmount-dev: libmount-devel
 libnl-3-200: libnl3
 libnl-3-dev: libnl3-devel
 libnl-genl-3-200: libnl3
@@ -78,7 +79,7 @@ libperl5.20: perl-libs
 libpopt-dev: popt-devel
 libpopt0: popt
 librdmacm-dev: librdmacm-devel
-libreadligne5: readline
+libreadline5: readline
 libsctp-dev: lksctp-tools-devel
 libsqlite3-dev: sqlite-devel
 libssl-dev: openssl-devel
@@ -120,9 +121,6 @@ xfslibs-dev: xfsprogs-devel
 xinit: xorg-x11-xinit
 xutils-dev: imake
 xz-utils: xz
-gcc-4.9: gcc
-gcc-5: gcc
-gcc-6: gcc
 gfortran: gcc-c++
 zlib1g-dev: zlib-devel
 hpcc: 
