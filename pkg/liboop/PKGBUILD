@@ -1,0 +1,21 @@
+pkgname=liboop
+pkgver=1.0
+pkgrel=1
+pkgdesc="A low-level event loop management library for POSIX-based operating systems"
+arch=('i686' 'x86_64')
+url="http://www.lysator.liu.se/liboop/"
+license=('GPL')
+depends=()
+source=("http://ftp.lysator.liu.se/pub/liboop/${pkgname}-$pkgver.$pkgrel.tar.gz")
+md5sums=('f2b3dff17355fd9a6e2229caca8993f0')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver.$pkgrel"
+  ./configure
+  make
+}
+
+package() {
+  cd "${srcdir}"/$pkgname-$pkgver.$pkgrel
+  make DESTDIR="${pkgdir}" install
+}
