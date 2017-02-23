@@ -1,0 +1,23 @@
+pkgname=f2fs-tools
+pkgver=1.6
+pkgrel=1
+pkgdesc="Tools for Flash-Friendly File System"
+arch=('i686' 'x86_64')
+url="http://git.kernel.org/cgit/linux/kernel/git/jaegeuk/f2fs-tools.git"
+license=('GPL')
+depends=()
+source=("git://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs-tools.git")
+md5sums=('f4fe0b59ffef1eef71c20d12381a3054')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver.$pkgrel"
+  autoreconf --install
+  ./configure
+  make
+}
+
+package() {
+  mkdir -p "$pkgdir/usr/local/bin"
+  cp "$srcdir/$pkgname-$pkgver.$pkgrel/mkfs/mkfs.f2fs" "$pkgdir/usr/local/bin/"
+}
+

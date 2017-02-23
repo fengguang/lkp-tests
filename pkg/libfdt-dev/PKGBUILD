@@ -1,0 +1,20 @@
+pkgname=libfdt-dev
+pkgver=1.4
+pkgrel=0
+pkgdesc="Flat Device Trees manipulation library "
+arch=('i686' 'x86_64')
+url="https://git.kernel.org/cgit/utils/dtc/dtc.git"
+license=('GPL')
+depends=()
+source=("git://git.kernel.org/pub/scm/utils/dtc/dtc.git")
+md5sums=('b7b4b691afe1c6cad6c2a1c267611794')
+
+build() {
+  cd "$srcdir/device-tree-compiler-1.4.0+dfsg.orig"
+  make
+}
+
+package() {
+  cd "$srcdir/device-tree-compiler-1.4.0+dfsg.orig"
+  make DESTDIR="$pkgdir/" install 
+}

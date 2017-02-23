@@ -1,0 +1,22 @@
+pkgname=iozone
+pkgver=3
+pkgrel=429
+pkgdesc="Filesystem and Disk Benchmarking Tool"
+arch=('i686' 'x86_64')
+url="http://www.iozone.org/"
+license=('GPL')
+depends=()
+source=("http://www.iozone.org/src/current/${pkgname}${pkgver}_$pkgrel.tar")
+md5sums=('71bd18cf6993b94f091b72df8106f9ab')
+
+build() {
+  cd "$srcdir/${pkgname}${pkgver}_$pkgrel/src/current"
+  make
+}
+
+package() {
+  local dir
+  dir="$srcdir/${pkgname}${pkgver}_$pkgrel/src/current"
+  mkdir -p "$pkgdir/usr/local/bin"
+  cp "$dir/$pkgname" "$dir/pit_server" "$dir/fileop" "$pkgdir/usr/local/bin/" 
+}
