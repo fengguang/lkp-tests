@@ -13,7 +13,10 @@ build()
 				--enable-dccp
 				--enable-burst
 	)
-
-	CC=gcc-4.9 ./configure "${configure_flags[@]}"
+	if [[ $distro == "centos" ]]; then
+		CC=gcc ./configure "${configure_flags[@]}"
+	else
+		CC=gcc-4.9 ./configure "${configure_flags[@]}"
+	fi
 	make
 }
