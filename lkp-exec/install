@@ -118,12 +118,15 @@ bundle_install_china() {
 
 makepkg_install() {
 	local pkg=$1
-	[ -d "$LKP_SRC/pkg/$pkg" ] && \
-	(
-		cd "$LKP_SRC/pkg/$pkg" && \
-		PACMAN="$LKP_SRC/sbin/pacman-LKP" BUILDDIR="$LKP_SRC/tmp-pkg" PKGEXT=tar.gz \
-		"$LKP_SRC/sbin/makepkg" --config "$LKP_SRC/etc/makepkg.conf" -s -i --skippgpcheck
-	)
+	if [ -d "$LKP_SRC/pkg/$pkg" ]; then
+		(
+			cd "$LKP_SRC/pkg/$pkg" && \
+			PACMAN="$LKP_SRC/sbin/pacman-LKP" BUILDDIR="$LKP_SRC/tmp-pkg" PKGEXT=tar.gz \
+			"$LKP_SRC/sbin/makepkg" --config "$LKP_SRC/etc/makepkg.conf" -s -i --skippgpcheck
+		)
+	else
+		return 0
+	fi
 }
 
 makepkg_install_packages() {
@@ -139,6 +142,11 @@ makepkg_install_packages() {
 	for pkg in $packages; do
 		makepkg_install "$pkg" || echo "Install $pkg failed"
 	done
+}
+
+makepkg_install_benchmark() {
+	local pkg=$1
+	makepkg_install "$pkg" || echo "Install $pkg failed"
 }
 
 install_packages() {
@@ -243,6 +251,7 @@ do
 		}
 		install_packages "$script" $distro
 		makepkg_install_packages "$script" $distro
+		makepkg_install_benchmark "$script"
 		build_install_benchmarks "$script" $distro
 	done
 done
