@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source $LKP_SRC/lib/log.sh
+
 set -o pipefail
 
 program_dir=$(dirname $0)
@@ -58,7 +60,7 @@ check_binary_output()
 
 	grep -Paq '\x0' $log || return
 
-	echo "WARN: skip binary file $log" >&2
+	log_warn "skip binary file $log"
 	exit 0
 }
 
@@ -74,7 +76,7 @@ warn_empty_stats()
 	[[ -s $RESULT_ROOT/last_state ]] && return
 	grep -q "^$program\." $LKP_SRC/etc/failure && return
 
-	echo "WARN: empty stats for $log" >&2
+	log_warn "empty stats for $log"
 }
 
 if [ -e $log.gz ]; then
@@ -105,9 +107,9 @@ check_binary_output
 
 tmpfile=$(mktemp --tmpdir=/dev/shm lkp-stats.XXXXXXXX)
 if [[ -f $log ]]; then
-	$program_dir/$program $log < $log > $tmpfile || { echo "$program_dir/$program $log < $log  exit code $?, check $tmpfile" >&2; exit 1; }
+	$program_dir/$program $log < $log > $tmpfile || { log_error "$program_dir/$program $log < $log  exit code $?, check $tmpfile"; exit 1; }
 else
-	$program_dir/$program < /dev/null > $tmpfile || { echo "$program_dir/$program < /dev/null  exit code $?, check $tmpfile" >&2; exit 1; }
+	$program_dir/$program < /dev/null > $tmpfile || { log_error "$program_dir/$program < /dev/null  exit code $?, check $tmpfile"; exit 1; }
 fi
 
 grep -q "^$program\." $LKP_SRC/etc/failure ||
@@ -120,7 +122,7 @@ dump_stat()
 	local stats_group=$1
 	local file=$2
 
-	$LKP_SRC/sbin/dump-stat $stats_group < $file || { echo "$LKP_SRC/sbin/dump-stat $program  exit code $?, check $file" >&2; exit 1; }
+	$LKP_SRC/sbin/dump-stat $stats_group < $file || { log_error "$LKP_SRC/sbin/dump-stat $program  exit code $?, check $file"; exit 1; }
 	rm $file
 }
 
