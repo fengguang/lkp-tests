@@ -32,7 +32,15 @@ cd src/test || die "Can not find test dir"
 testcases=$(ls -d "$group"_* 2>/dev/null) || testcases=$(ls -d "$group" 2>/dev/null)
 [[ -n "$testcases" ]] || die "Parameter \"group\" is invalid"
 
+user_filter="blk_pool log_pool obj_pool pmempool_rm util_file_create util_file_open"
 while read testcase
 do
-	log_cmd ./RUNTESTS $testcase  2>&1
+	if [ "$LKP_LOCAL_RUN" != "1" ] && echo "$user_filter" | grep -q -w "$testcase"; then
+		log_cmd chown lkp:lkp -R $BENCHMARK_ROOT/nvml
+		log_cmd chown lkp:lkp -R /tmp
+		[ "$test" = "pmem" ] && log_cmd chown lkp:lkp -R /fs/pmem0
+		log_cmd su lkp -c "./RUNTESTS $testcase  2>&1"
+	else
+		log_cmd ./RUNTESTS $testcase  2>&1
+	fi
 done <<< "$testcases"
