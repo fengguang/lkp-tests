@@ -8,7 +8,23 @@ require "#{LKP_SRC}/lib/string_ext"
 stats = []
 testname = nil
 mqueue_speed = {}
-nr_test = 0
+futex = {}
+
+def futex_stat(line, futex, stats)
+  case line
+  when /^(futex.+): /
+      futex['subtest'] = $1
+  when /^\s+Arguments: (.+)/
+      futex['argument'] = $1.tr(' ', '_')
+  when /^Result\:\s+(PASS|FAIL)/
+    if futex['argument'].nil? || (futex['argument'].include? 'none')
+      stats << "futex.#{futex['subtest']}.#{$1.downcase}: 1"
+    else
+      stats << "futex.#{futex['subtest']}.#{futex['argument']}.#{$1.downcase}: 1"
+    end
+    futex['argument'] = nil
+  end
+end
 
 while (line = STDIN.gets)
   line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
@@ -21,7 +37,6 @@ while (line = STDIN.gets)
     testname = nil
   when /^selftests: (.*) .*(PASS|FAIL)/
     stats << "#{testname}.#{Regexp.last_match[1]}.#{Regexp.last_match[2].downcase}: 1"
-    nr_test += 1
   when /Test #([1-9].*):/
     mqueue_test = Regexp.last_match[1]
   when /(Send|Recv) msg:/
@@ -32,13 +47,15 @@ while (line = STDIN.gets)
     next unless testname
     # do not count make fail in nr_test, which is for sub test number
     stats << "#{testname}.make_fail: 1"
+  else
+    futex_stat(line, futex, stats) if testname == 'futex'
   end
 end
 
 unless mqueue_speed.empty?
-  puts "mqueue.nsec_per_msg: #{mqueue_speed.values.average.to_i}"
-  nr_test += 1
+  stats << "mqueue.nsec_per_msg: #{mqueue_speed.values.average.to_i}"
 end
 
 stats.uniq.each { |stat| puts stat }
+nr_test = stats.count { |k, _v| k !~ /\.make_fail/ }
 puts "total_test: #{nr_test}" if nr_test.nonzero?
