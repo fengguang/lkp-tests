@@ -2,8 +2,6 @@ suite: autotest
 testcase: autotest
 category: benchmark
 
-rootfs: debian-x86_64.cgz
-
 autotest:
   test:
   - compilebench
