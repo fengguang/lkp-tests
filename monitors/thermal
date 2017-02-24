@@ -7,14 +7,14 @@ take_snapshot()
 {
 	echo time: $(date +%s.%N)
 	id=0
-	while [ -d $path/thermal_zone$id ]:
+	while [ -d $path/thermal_zone$id ]
 	do
 		value=$(cat $path/thermal_zone$id/temp)
 		echo "zone$id: $value"
 		id=$(($id+1))
 	done
 	id=0
-	while [ -d $path/cooling_device$id ]:
+	while [ -d $path/cooling_device$id ]
 	do
 		value=$(cat $path/cooling_device$id/cur_state)
 		echo "cdev$id: $value"
