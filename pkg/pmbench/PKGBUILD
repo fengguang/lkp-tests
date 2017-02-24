@@ -1,0 +1,27 @@
+pkgname=pmbench
+pkgver=0.7
+pkgrel=1
+pkgdesc="Micro benchmark for system pager performance "
+arch=(i686 x86_64)
+url=https://bitbucket.org/jisooy/pmbench
+license=(GPL)
+depends=()
+source=("https://downloads.sourceforge.net/project/pmbench/pmbench_071_src.tar")
+md5sums=('357e0e98ef4069985fffd68793a1ab4b')
+
+build()
+{
+  cd "${srcdir}"/pmbench
+  sed -i 's/$(CC) -lm -luuid -o $@ $+ $(LFLAGS_LINUX)/$(CC) -o $@ $+ $(LFLAGS_LINUX) -lm -luuid/g' Makefile
+  if [[ $CARCH == 'x86_64' ]]; then
+    march=64 make pmbench
+  else
+    march=32 make pmbench
+  fi
+}
+
+package()
+{ 
+  install -D ${srcdir}/$pkgname/pmbench $pkgdir/usr/local/bin/pmbench
+  install -m664 -D ${srcdir}/$pkgname/doc/pmbench.1 ${pkgdir}/usr/local/share/man/man1/pmbench.1
+}
