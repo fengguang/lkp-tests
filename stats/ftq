@@ -7,18 +7,18 @@ PDEL = 10
 data = []
 files = Dir["#{RESULT_ROOT}/results/ftq_*.dat"]
 files.each { |file|
-	rdata = File.read(file)
-	n = (rdata =~ /^[^#]/)
-	rdata.slice!(0, n)
-	sfdata = rdata.split
-	rdata = nil
-	sfdata.select!.with_index { |x, i| i.odd? }
-	n = sfdata.size
-	ndel = n * PDEL / 100
-	sfdata.slice!(n - ndel, ndel)
-	sfdata.slice!(0, ndel)
-	data.concat(sfdata.map(&:to_i))
-	sfdata = nil
+  rdata = File.read(file)
+  n = (rdata =~ /^[^#]/)
+  rdata.slice!(0, n)
+  sfdata = rdata.split
+  rdata = nil
+  sfdata.select!.with_index { |x, i| i.odd? }
+  n = sfdata.size
+  ndel = n * PDEL / 100
+  sfdata.slice!(n - ndel, ndel)
+  sfdata.slice!(0, ndel)
+  data.concat(sfdata.map(&:to_i))
+  sfdata = nil
 }
 
 data.sort!
@@ -33,14 +33,14 @@ perf_levels = [1, 25, 50, 75, 95, 98]
 
 start = 0
 perf_num_levels = perf_levels.each_with_index.map { |level, i|
-	lc = mean * level / 100
-	nstart = data.bsearch_index { |n| n >= lc }
-	nstart ||= samples
-	num = nstart * 1000000.0 / samples
-	start = nstart
-	[level, num]
+  lc = mean * level / 100
+  nstart = data.bsearch_index { |n| n >= lc }
+  nstart ||= samples
+  num = nstart * 1000000.0 / samples
+  start = nstart
+  [level, num]
 }
 
 perf_num_levels.each { |level, num|
-	printf "noise.%d%%: %g\n", 100 - level, num
+  printf "noise.%d%%: %g\n", 100 - level, num
 }
