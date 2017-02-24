@@ -8,7 +8,7 @@ require "#{LKP_SRC}/lib/string_ext"
 stats = []
 testname = nil
 mqueue_speed = {}
-futex = {}
+tests_stats = Hash.new { |h, k| h[k] = {} }
 
 def futex_stat(line, futex, stats)
   case line
@@ -26,6 +26,18 @@ def futex_stat(line, futex, stats)
   end
 end
 
+def memory_hotplug_stat(line, memory_hotplug, stats)
+  case line
+  when /^\.\/(.+\.sh).+selftests: memory-hotplug/
+    memory_hotplug['subtest'] = $1
+  when /^selftests: memory-hotplug \[FAIL\]/
+    stats << "memory-hotplug.#{memory_hotplug['subtest']}.fail: 1"
+    memory_hotplug['subtest'] = nil
+  when %r{make: Leaving directory .*/(.*)'}
+    stats << "memory-hotplug.#{memory_hotplug['subtest']}.pass: 1" if memory_hotplug['subtest']
+  end
+end
+
 while (line = STDIN.gets)
   line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
 
@@ -33,10 +45,15 @@ while (line = STDIN.gets)
   when %r{make: Entering directory .*/(.*)'}
     testname = Regexp.last_match[1]
   when %r{make: Leaving directory .*/(.*)'}
+    memory_hotplug_stat(line, tests_stats['memory-hotplug'], stats) if testname == 'memory-hotplug'
     # rli9 FIXME: consider the input has messed text like Entering doesn't match with Leaving
     testname = nil
   when /^selftests: (.*) .*(PASS|FAIL)/
-    stats << "#{testname}.#{Regexp.last_match[1]}.#{Regexp.last_match[2].downcase}: 1"
+    if testname == 'memory-hotplug'
+      memory_hotplug_stat(line, tests_stats['memory-hotplug'], stats)
+    else
+      stats << "#{testname}.#{Regexp.last_match[1]}.#{Regexp.last_match[2].downcase}: 1"
+    end
   when /Test #([1-9].*):/
     mqueue_test = Regexp.last_match[1]
   when /(Send|Recv) msg:/
@@ -48,7 +65,8 @@ while (line = STDIN.gets)
     # do not count make fail in nr_test, which is for sub test number
     stats << "#{testname}.make_fail: 1"
   else
-    futex_stat(line, futex, stats) if testname == 'futex'
+    futex_stat(line, tests_stats['futex'], stats) if testname == 'futex'
+    memory_hotplug_stat(line, tests_stats['memory-hotplug'], stats) if testname == 'memory-hotplug'
   end
 end
 
