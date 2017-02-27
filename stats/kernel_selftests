@@ -56,6 +56,16 @@ def mount_stat(line, mount, stats)
   end
 end
 
+def x86_stat(line, x86, stats)
+  case line
+  when /^processor lacks MPX XSTATE\(s\), can not run MPX tests/
+    stats << 'x86.mpx-mini-test_64.skip: 1'
+  when /^selftests: (.*) .*(PASS|FAIL)/
+    return if $1 == 'mpx-mini-test_64' && (stats.include? 'x86.mpx-mini-test_64.skip: 1')
+    stats << "x86.#{$1}.#{$2.downcase}: 1"
+  end
+end
+
 while (line = STDIN.gets)
   line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
 
@@ -70,6 +80,8 @@ while (line = STDIN.gets)
   when /^selftests: (.*) .*(PASS|FAIL)/
     if testname == 'memory-hotplug'
       memory_hotplug_stat(line, tests_stats['memory-hotplug'], stats)
+    elsif testname == 'x86'
+      x86_stat(line, tests_stats['x86'], stats)
     else
       stats << "#{testname}.#{Regexp.last_match[1]}.#{Regexp.last_match[2].downcase}: 1"
     end
@@ -84,9 +96,15 @@ while (line = STDIN.gets)
     # do not count make fail in nr_test, which is for sub test number
     stats << "#{testname}.make_fail: 1"
   else
-    futex_stat(line, tests_stats['futex'], stats) if testname == 'futex'
-    memory_hotplug_stat(line, tests_stats['memory-hotplug'], stats) if testname == 'memory-hotplug'
-    mount_stat(line, tests_stats['mount'], stats) if testname == 'mount'
+    if testname == 'futex'
+      futex_stat(line, tests_stats['futex'], stats)
+    elsif testname == 'memory-hotplug'
+      memory_hotplug_stat(line, tests_stats['memory-hotplug'], stats)
+    elsif testname == 'mount'
+      mount_stat(line, tests_stats['mount'], stats)
+    elsif testname == 'x86'
+      x86_stat(line, tests_stats['x86'], stats)
+    end
   end
 end
 
