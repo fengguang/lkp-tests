@@ -38,6 +38,24 @@ def memory_hotplug_stat(line, memory_hotplug, stats)
   end
 end
 
+def mount_stat(line, mount, stats)
+  case line
+  when %r{if .* then ./(.*) ; else echo}
+    mount['subtest'] = $1
+  when /^WARN\: No \/proc\/self\/uid_map exist, test skipped/
+    stats << "mount.#{mount['subtest']}.skip: 1"
+    mount['subtest'] = nil
+  when /^(MS.+|Default.+) malfunctions/
+    stats << "mount.#{mount['subtest']}.fail: 1"
+    mount['subtest'] = nil
+  when /^Mount flags unexpectedly changed after remount/
+    stats << "mount.#{mount['subtest']}.fail: 1"
+    mount['subtest'] = nil
+  when %r{make: Leaving directory .*/(.*)'}
+    stats << "mount.#{mount['subtest']}.pass: 1" if mount['subtest']
+  end
+end
+
 while (line = STDIN.gets)
   line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
 
@@ -46,6 +64,7 @@ while (line = STDIN.gets)
     testname = Regexp.last_match[1]
   when %r{make: Leaving directory .*/(.*)'}
     memory_hotplug_stat(line, tests_stats['memory-hotplug'], stats) if testname == 'memory-hotplug'
+    mount_stat(line, tests_stats['mount'], stats) if testname == 'mount'
     # rli9 FIXME: consider the input has messed text like Entering doesn't match with Leaving
     testname = nil
   when /^selftests: (.*) .*(PASS|FAIL)/
@@ -67,6 +86,7 @@ while (line = STDIN.gets)
   else
     futex_stat(line, tests_stats['futex'], stats) if testname == 'futex'
     memory_hotplug_stat(line, tests_stats['memory-hotplug'], stats) if testname == 'memory-hotplug'
+    mount_stat(line, tests_stats['mount'], stats) if testname == 'mount'
   end
 end
 
