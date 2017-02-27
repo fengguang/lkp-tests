@@ -6,6 +6,10 @@ PDEL = 10
 
 data = []
 files = Dir["#{RESULT_ROOT}/results/ftq_*.dat"]
+if files.empty?
+  $stderr.puts "can not find any log file at #{RESULT_ROOT}/results/"
+  exit 1
+end
 files.each { |file|
   rdata = File.read(file)
   n = (rdata =~ /^[^#]/)
