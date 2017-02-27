@@ -6,41 +6,41 @@ OPS = ['read', 'write']
 PERCENTILES = ['90.000000', '95.000000', '99.000000']
 
 def parse
-	fn = File.join ENV['RESULT_ROOT'], 'fio.output'
-	res = JSON.load(File.read fn)
-	unless res
-		$stderr.puts 'Invalid/empty fio output'
-		return
-	end
-	res_job = res['jobs'].first
-	OPS.each { |ops|
-		res = res_job[ops]
-		puts "#{ops}_bw_MBps: #{res['bw'].to_f / 1024}"
-		puts "#{ops}_iops: #{res['iops']}"
-		res_clat = res['clat']
-		res_clat_percentiles = res_clat['percentile']
-		puts "#{ops}_clat_mean_us: #{res_clat['mean']}"
-		puts "#{ops}_clat_stddev: #{res_clat['stddev']}"
-		PERCENTILES.each { |p|
-			sp = p.chomp('0')
-			while sp.chomp!('0')
-				true
-			end
-			sp.chomp!('.')
-			puts "#{ops}_clat_#{sp}%_us: #{res_clat_percentiles[p]}"
-		}
-		res_slat = res['slat']
-		puts "#{ops}_slat_mean_us: #{res_slat['mean']}"
-		puts "#{ops}_slat_stddev: #{res_slat['stddev']}"
-	}
-	res_latency_us = res_job['latency_us']
-	res_latency_us.each { |k, v|
-		puts "latency_#{k}us%: #{v}"
-	}
-	res_latency_ms = res_job['latency_ms']
-	res_latency_ms.each { |k, v|
-		puts "latency_#{k}ms%: #{v}"
-	}
+  fn = File.join ENV['RESULT_ROOT'], 'fio.output'
+  res = JSON.load(File.read fn)
+  unless res
+    $stderr.puts 'Invalid/empty fio output'
+    return
+  end
+  res_job = res['jobs'].first
+  OPS.each { |ops|
+    res = res_job[ops]
+    puts "#{ops}_bw_MBps: #{res['bw'].to_f / 1024}"
+    puts "#{ops}_iops: #{res['iops']}"
+    res_clat = res['clat']
+    res_clat_percentiles = res_clat['percentile']
+    puts "#{ops}_clat_mean_us: #{res_clat['mean']}"
+    puts "#{ops}_clat_stddev: #{res_clat['stddev']}"
+    PERCENTILES.each { |p|
+      sp = p.chomp('0')
+      while sp.chomp!('0')
+        true
+      end
+      sp.chomp!('.')
+      puts "#{ops}_clat_#{sp}%_us: #{res_clat_percentiles[p]}"
+    }
+    res_slat = res['slat']
+    puts "#{ops}_slat_mean_us: #{res_slat['mean']}"
+    puts "#{ops}_slat_stddev: #{res_slat['stddev']}"
+  }
+  res_latency_us = res_job['latency_us']
+  res_latency_us.each { |k, v|
+    puts "latency_#{k}us%: #{v}"
+  }
+  res_latency_ms = res_job['latency_ms']
+  res_latency_ms.each { |k, v|
+    puts "latency_#{k}ms%: #{v}"
+  }
 end
 
 parse
