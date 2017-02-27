@@ -128,5 +128,40 @@ EOF
       actual = `echo "#{stdout}" | #{stats_script}`.split("\n")
       expect(actual).to eq(['memory-hotplug.make_fail: 1'])
     end
+
+    it 'stats mount pass result' do
+      stdout = <<EOF
+make: Entering directory '/usr/src/linux-selftests-x86_64-rhel-7.2-69973b830859bc6529a7a0468ba0d80ee5117826/tools/testing/selftests/mount'
+gcc -Wall -O2 unprivileged-remount-test.c -o unprivileged-remount-test
+if [ -f /proc/self/uid_map ] ; then ./unprivileged-remount-test ; else echo "WARN: No /proc/self/uid_map exist, test skipped." ; fi
+make: Leaving directory '/usr/src/linux-selftests-x86_64-rhel-7.2-69973b830859bc6529a7a0468ba0d80ee5117826/tools/testing/selftests/mount'
+EOF
+      actual = `echo "#{stdout}" | #{stats_script}`.split("\n")
+      expect(actual).to eq(['mount.unprivileged-remount-test.pass: 1', 'total_test: 1'])
+    end
+
+    it 'stats mount fail result' do
+      stdout = <<EOF
+make: Entering directory '/usr/src/linux-selftests-x86_64-rhel-7.2-69973b830859bc6529a7a0468ba0d80ee5117826/tools/testing/selftests/mount'
+gcc -Wall -O2 unprivileged-remount-test.c -o unprivileged-remount-test
+if [ -f /proc/self/uid_map ] ; then ./unprivileged-remount-test ; else echo "WARN: No /proc/self/uid_map exist, test skipped." ; fi
+Mount flags unexpectedly changed after remount
+make: Leaving directory '/usr/src/linux-selftests-x86_64-rhel-7.2-69973b830859bc6529a7a0468ba0d80ee5117826/tools/testing/selftests/mount'
+EOF
+      actual = `echo "#{stdout}" | #{stats_script}`.split("\n")
+      expect(actual).to eq(['mount.unprivileged-remount-test.fail: 1', 'total_test: 1'])
+    end
+
+    it 'stats mount skip result' do
+      stdout = <<EOF
+make: Entering directory '/usr/src/linux-selftests-x86_64-rhel-7.2-69973b830859bc6529a7a0468ba0d80ee5117826/tools/testing/selftests/mount'
+gcc -Wall -O2 unprivileged-remount-test.c -o unprivileged-remount-test
+if [ -f /proc/self/uid_map ] ; then ./unprivileged-remount-test ; else echo "WARN: No /proc/self/uid_map exist, test skipped." ; fi
+WARN: No /proc/self/uid_map exist, test skipped.
+make: Leaving directory '/usr/src/linux-selftests-x86_64-rhel-7.2-69973b830859bc6529a7a0468ba0d80ee5117826/tools/testing/selftests/mount'
+EOF
+      actual = `echo "#{stdout}" | #{stats_script}`.split("\n")
+      expect(actual).to eq(['mount.unprivileged-remount-test.skip: 1', 'total_test: 1'])
+    end
   end
 end
