@@ -3,6 +3,5 @@ nr_vm: 12
 nr_cpu: 2
 memory: 1G
 disk_type: virtio-scsi
-rootfs: debian-x86_64.cgz
 hdd_partitions: /dev/sda /dev/sdb /dev/sdc /dev/sdd
 swap_partitions: /dev/sde
