@@ -62,5 +62,5 @@ for mf in */Makefile; do
 	fi
 
 	echo
-	log_cmd make run_tests -C $subtest
+	log_cmd make run_tests -C $subtest  2>&1
 done
