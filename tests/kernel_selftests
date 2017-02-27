@@ -33,6 +33,9 @@ mkdir -p /hugepages
 # has too many errors now
 sed -i 's/hugetlbfstest//' vm/Makefile
 
+# add mpx test as default
+sed -i "s/TARGETS_C_BOTHBITS := /TARGETS_C_BOTHBITS := mpx-mini-test /" x86/Makefile
+
 # temporarily workaround compile error on gcc-6
 command -v gcc >/dev/null || ln -sf /usr/bin/gcc-5 /usr/bin/gcc
 
