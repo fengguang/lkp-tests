@@ -5,6 +5,7 @@
 # - ftrace_options
 # - functions
 # - graph_functions
+# - trace_clock
 
 . $LKP_SRC/lib/ftrace.sh
 setup_wait
