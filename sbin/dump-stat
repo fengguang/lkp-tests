@@ -7,6 +7,7 @@ require "#{LKP_SRC}/lib/statistics.rb"
 require "#{LKP_SRC}/lib/bounds.rb"
 require "#{LKP_SRC}/lib/yaml.rb"
 require "#{LKP_SRC}/lib/job.rb"
+require "#{LKP_SRC}/lib/string_ext.rb"
 require 'set'
 
 $monitor = ARGV[0]
@@ -24,6 +25,8 @@ $result = {}
 $invalid_records = []
 record_index = 0
 while line = STDIN.gets
+  line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
+
 	next if line[0] == '#'
 	k, _, v = line.partition(': ')
 	next if v.empty?
