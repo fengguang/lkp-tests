@@ -350,7 +350,7 @@ def unite_stats(result_root, delete = false)
 
 	unite_to(stats, _result_root, nil, delete)
 	begin
-		__matrix = unite_to(stats, __result_root, 100, nil, delete)
+		__matrix = unite_to(stats, __result_root, 100, delete)
 		check_warn_test_error __matrix, result_root
 	rescue StandardError
 	end
