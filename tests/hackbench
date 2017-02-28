@@ -39,7 +39,13 @@ set_loops()
 run_hackbench()
 {
 	# args: groups number, mode [process/thread], times
-	log_cmd /usr/bin/hackbench -g $nr_threads --$mode $ipc_option -l $loops
+	local hackbench_path
+	if [ -f /usr/bin/hackbench ]; then
+		hackbench_path=/usr/bin/hackbench
+	else
+		hackbench_path=/usr/local/bin/hackbench
+	fi
+	log_cmd $hackbench_path -g $nr_threads --$mode $ipc_option -l $loops
 }
 
 run_for_time()
