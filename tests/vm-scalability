@@ -67,14 +67,16 @@ set_repeat_count()
 	echo "repeat count: $repeat"
 }
 
+cur=`date +%s`
+
 if [ -n "$size" ]; then
 	set_repeat_count
 	for i in $(seq $repeat)
 	do
 		log_cmd "./case-$test"
 		[ "$i" -le "$repeat" ] && {
-			read uptime idletime < /proc/uptime
-			[ "${uptime%.*}" -gt "$((runtime * 3))" ] && {
+			now=`date +%s`
+			[ "$((now - cur))" -gt "$runtime" ] && {
 				echo "runtime exceeded, consider adjust size configuration"
 				break
 			}
