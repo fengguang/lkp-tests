@@ -87,7 +87,10 @@ ftrace_set_params()
 		mkdir -p $FTRACE_EVENTS_DIR
 		for evt in $events; do
 			ftrace_append set_event $evt
-			cp $TRACING/events/*/$evt/format $FTRACE_EVENTS_DIR/$evt.fmt
+			fmt=$(echo $TRACING/events/*/$evt/format)
+			if [ -f $fmt ]; then
+				cp $fmt $FTRACE_EVENTS_DIR/$evt.fmt
+			fi
 		done
 	fi
 
