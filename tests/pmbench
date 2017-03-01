@@ -1,0 +1,33 @@
+#!/bin/sh
+# - runtime
+# - pattern
+# - mapsize
+# - shape
+# - jobs
+# - timestamp
+# - cold
+# - access
+
+[ -n "$runtime" ] || runtime=60
+
+set_opt()
+{
+	opt=
+	[ -n "$mapsize" ] && opt="${opt} -m${mapsize}"
+	[ -n "$setsize" ] && opt="${opt} -s${setsize}"
+	[ -n "$pattern" ] && opt="${opt} -p${pattern}"
+	[ -n "$shape" ] && opt="${opt} -e${shape}"
+	[ -n "$jobs" ] && opt="${opt} -j${jobs}"
+	[ -n "$timestamp" ] && opt="${opt} -t${timestamp}"
+	[[ $cold == 'y' ]] && opt="${opt} -c"
+	[ -n "$access" ] && opt="${opt} -a${access}"
+}
+
+run_pmbench()
+{
+	log_cmd /usr/local/bin/pmbench $opt $runtime
+}
+
+set_opt
+
+run_pmbench

@@ -1,0 +1,23 @@
+short_description: >
+ pmbench - paging and virtual memory benchmark
+
+description: >
+ pmbench is a micro-benchmark that profiles system paging performance by
+ measuring latencies of  each  memory  access  throughout  the  run  and
+ reporting the statistics of measured latencies.
+
+homepage: 
+
+parameters:
+ runtime: 
+ mapsize: Specify virtual address map size in Mebibyte (2^20 bytes)  unit. The default is 256.
+ setsize: Specify  working  set  size  in  Mebibyte unit.  It should be no greater than mapsize. The default is 128.
+ pattern: [linear, uniform, normal, pareto]  
+ shape: Pattern-specific  numeric parameter that determines the shape of the distribution.  See Usage for details.   
+ jobs: Number of concurrent worker threads to spawn for the  benchmark. Some releases may not support this option. The default is 1.
+ timestamp: [rdtsc, rdtscp, perfc]
+ cold: [y, n]
+ access: [histo, touch]
+
+results:
+ 
