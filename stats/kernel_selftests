@@ -66,6 +66,21 @@ def x86_stat(line, x86, stats)
   end
 end
 
+def sigaltstack_stat(line, sigaltstack, stats)
+  case line
+  when /gcc -Wall .+ -o (.+)/
+    sigaltstack['subtest'] = $1
+  when /^(\[FAIL\]|mmap)/
+    stats << "sigaltstack.#{sigaltstack['subtest']}.fail: 1"
+    sigaltstack['subtest'] = nil
+  when /Test passed/
+    stats << "sigaltstack.#{sigaltstack['subtest']}.pass: 1"
+    sigaltstack['subtest'] = nil
+  when %r{make: Leaving directory .*/(.*)'}
+    stats << "sigaltstack.#{sigaltstack['subtest']}.skip: 1" if sigaltstack['subtest']
+  end
+end
+
 while (line = STDIN.gets)
   line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
 
@@ -73,10 +88,16 @@ while (line = STDIN.gets)
   when %r{make: Entering directory .*/(.*)'}
     testname = Regexp.last_match[1]
   when %r{make: Leaving directory .*/(.*)'}
-    memory_hotplug_stat(line, tests_stats['memory-hotplug'], stats) if testname == 'memory-hotplug'
-    mount_stat(line, tests_stats['mount'], stats) if testname == 'mount'
-    # rli9 FIXME: consider the input has messed text like Entering doesn't match with Leaving
-    testname = nil
+    if testname == 'memory-hotplug'
+      memory_hotplug_stat(line, tests_stats['memory-hotplug'], stats)
+    elsif testname == 'mount'
+      mount_stat(line, tests_stats['mount'], stats)
+    elsif testname == 'sigaltstack'
+      sigaltstack_stat(line, tests_stats['sigaltstack'], stats)
+    else
+      # rli9 FIXME: consider the input has messed text like Entering doesn't match with Leaving
+      testname = nil
+    end
   when /^selftests: (.*) .*(PASS|FAIL)/
     if testname == 'memory-hotplug'
       memory_hotplug_stat(line, tests_stats['memory-hotplug'], stats)
@@ -104,6 +125,8 @@ while (line = STDIN.gets)
       mount_stat(line, tests_stats['mount'], stats)
     elsif testname == 'x86'
       x86_stat(line, tests_stats['x86'], stats)
+    elsif testname == 'sigaltstack'
+      sigaltstack_stat(line, tests_stats['sigaltstack'], stats)
     end
   end
 end
