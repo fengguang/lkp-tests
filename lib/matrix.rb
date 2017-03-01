@@ -249,7 +249,7 @@ def check_warn_test_error(matrix, result_root)
 		next unless samples
 		next unless samples.last(10).sum == 10
 		next if errid == 'last_state.is_incomplete_run' and matrix['dmesg.boot_failures']
-		$stderr.puts "The last 10 results all failed, check: #{errid} #{result_root}"
+		# $stderr.puts "The last 10 results all failed, check: #{errid} #{result_root}"
 	end
 end
 
