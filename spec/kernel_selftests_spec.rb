@@ -163,5 +163,32 @@ EOF
       actual = `echo "#{stdout}" | #{stats_script}`.split("\n")
       expect(actual).to eq(['mount.unprivileged-remount-test.skip: 1', 'total_test: 1'])
     end
+
+    it 'stats mpx skip result' do
+      stdout = <<EOF
+make: Entering directory '/usr/src/linux-selftests-x86_64-rhel-7.2-69973b830859bc6529a7a0468ba0d80ee5117826/tools/testing/selftests/x86'
+processor lacks MPX XSTATE(s), can not run MPX tests
+XSAVE is supported by HW & OS
+XSAVE processor supported state mask: 0x7
+XSAVE OS supported state mask: 0x7
+selftests: mpx-mini-test_64 [PASS]
+make: Leaving directory '/usr/src/linux-selftests-x86_64-rhel-7.2-69973b830859bc6529a7a0468ba0d80ee5117826/tools/testing/selftests/x86'
+EOF
+      actual = `echo "#{stdout}" | #{stats_script}`.split("\n")
+      expect(actual).to eq(['x86.mpx-mini-test_64.skip: 1', 'total_test: 1'])
+    end
+
+    it 'stats mpx pass result' do
+      stdout = <<EOF
+make: Entering directory '/usr/src/linux-selftests-x86_64-rhel-7.2-69973b830859bc6529a7a0468ba0d80ee5117826/tools/testing/selftests/x86'
+XSAVE is supported by HW & OS
+XSAVE processor supported state mask: 0x7
+XSAVE OS supported state mask: 0x7
+selftests: mpx-mini-test_64 [PASS]
+make: Leaving directory '/usr/src/linux-selftests-x86_64-rhel-7.2-69973b830859bc6529a7a0468ba0d80ee5117826/tools/testing/selftests/x86'
+EOF
+      actual = `echo "#{stdout}" | #{stats_script}`.split("\n")
+      expect(actual).to eq(['x86.mpx-mini-test_64.pass: 1', 'total_test: 1'])
+    end
   end
 end
