@@ -127,15 +127,15 @@ def load_create_stats_matrix(result_root)
 end
 
 def matrix_average(matrix)
-	avg = {}
-	matrix.each { |k, v| avg[k] = v.average }
-	avg
+  avg = {}
+  matrix.each { |k, v| avg[k] = v.empty? ? 0: v.average  }
+  avg
 end
 
 def matrix_stddev(matrix)
-	stddev = {}
-	matrix.each { |k, v| stddev[k] = v.standard_deviation }
-	stddev
+  stddev = {}
+  matrix.each { |k, v| stddev[k] = v.empty? ? 0: v.standard_deviation }
+  stddev
 end
 
 def load_matrix_file(matrix_file)
