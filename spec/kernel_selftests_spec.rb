@@ -190,5 +190,44 @@ EOF
       actual = `echo "#{stdout}" | #{stats_script}`.split("\n")
       expect(actual).to eq(['x86.mpx-mini-test_64.pass: 1', 'total_test: 1'])
     end
+
+    it 'stats sigaltstack pass result' do
+      stdout = <<EOF
+make: Entering directory '/usr/src/linux-selftests-x86_64-rhel-7.2-d5adbfcd5f7bcc6fa58a41c5c5ada0e5c826ce2c/tools/testing/selftests/sigaltstack'
+gcc -Wall    sas.c   -o sas
+[OK]	Initial sigaltstack state was SS_DISABLE
+[RUN]	signal USR1
+[OK]	sigaltstack is disabled in sighandler
+[RUN]	switched to user ctx
+[RUN]	signal USR2
+[OK]	Stack preserved
+[OK]	sigaltstack is still SS_AUTODISARM after signal
+[OK]	Test passed
+make: Leaving directory '/usr/src/linux-selftests-x86_64-rhel-7.2-d5adbfcd5f7bcc6fa58a41c5c5ada0e5c826ce2c/tools/testing/selftests/sigaltstack'
+EOF
+      actual = `echo "#{stdout}" | #{stats_script}`.split("\n")
+      expect(actual).to eq(['sigaltstack.sas.pass: 1', 'total_test: 1'])
+    end
+
+    it 'stats sigaltstack fail result' do
+      stdout = <<EOF
+make: Entering directory '/usr/src/linux-selftests-x86_64-rhel-7.2-d5adbfcd5f7bcc6fa58a41c5c5ada0e5c826ce2c/tools/testing/selftests/sigaltstack'
+gcc -Wall    sas.c   -o sas
+mmap()
+make: Leaving directory '/usr/src/linux-selftests-x86_64-rhel-7.2-d5adbfcd5f7bcc6fa58a41c5c5ada0e5c826ce2c/tools/testing/selftests/sigaltstack'
+EOF
+      actual = `echo "#{stdout}" | #{stats_script}`.split("\n")
+      expect(actual).to eq(['sigaltstack.sas.fail: 1', 'total_test: 1'])
+    end
+
+    it 'stats sigaltstack skip result' do
+      stdout = <<EOF
+make: Entering directory '/usr/src/linux-selftests-x86_64-rhel-7.2-d5adbfcd5f7bcc6fa58a41c5c5ada0e5c826ce2c/tools/testing/selftests/sigaltstack'
+gcc -Wall    sas.c   -o sas
+make: Leaving directory '/usr/src/linux-selftests-x86_64-rhel-7.2-d5adbfcd5f7bcc6fa58a41c5c5ada0e5c826ce2c/tools/testing/selftests/sigaltstack'
+EOF
+      actual = `echo "#{stdout}" | #{stats_script}`.split("\n")
+      expect(actual).to eq(['sigaltstack.sas.skip: 1', 'total_test: 1'])
+    end
   end
 end
