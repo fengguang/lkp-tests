@@ -22,7 +22,7 @@ EOF
       actual = `echo "#{stdout}" | #{stats_script}`.split("\n")
       expect(actual).to eq(['32bit.shm-fork_10_25.pass: 1', '64bit.shm-fork_10_25.pass: 1', '32bit.shm-perms.bad_configuration: 1', '64bit.shm-perms.bad_configuration: 1',\
                             '32bit.hugetlb_elfmap=rw_linkhuge_rw.killed_by_signal: 1', '64bit.hugetlb_elfmap=rw_linkhuge_rw.killed_by_signal: 1',\
-                            '32bit.hugetlb_share=1_hugetlb_elfmap=r_linkhuge_rw.fail: 1', '64bit.hugetlb_share=1_hugetlb_elfmap=r_linkhuge_rw.fail: 1', 'total_test: 223'])
+                            '32bit.hugetlb_share=1_hugetlb_elfmap=r_linkhuge_rw.fail: 1', '64bit.hugetlb_share=1_hugetlb_elfmap=r_linkhuge_rw.fail: 1', 'total_test: 8'])
     end
   end
 end
