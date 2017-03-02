@@ -121,7 +121,7 @@ makepkg_install() {
 	if [ -d "$LKP_SRC/pkg/$pkg" ]; then
 		(
 			cd "$LKP_SRC/pkg/$pkg" && \
-			PACMAN="$LKP_SRC/sbin/pacman-LKP" BUILDDIR="$LKP_SRC/tmp-pkg" PKGEXT=tar.gz \
+			PACMAN="$LKP_SRC/sbin/pacman-LKP" BUILDDIR="$LKP_SRC/tmp-pkg" \
 			"$LKP_SRC/sbin/makepkg" --config "$LKP_SRC/etc/makepkg.conf" -s -i --skippgpcheck
 		)
 	else
