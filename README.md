@@ -3,7 +3,7 @@
 ## Getting started
 
 ```
-	git clone git://git.kernel.org/pub/scm/linux/kernel/git/wfg/lkp-tests.git
+	git clone https://github.com/01org/lkp-tests.git
 
 	cd lkp-tests
 	make install
@@ -72,3 +72,11 @@ of the adaptation file.
 
 You will also want to add a case for your distribution on sync_distro_sources()
 on the file lib/install.sh.
+
+## Contributing
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
