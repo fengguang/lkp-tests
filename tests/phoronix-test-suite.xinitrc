@@ -17,12 +17,10 @@ case $test in
 		;;
 esac
 
-## We used the v5.6.0 version of "pts" before, but the enviroment variable "PTS_SILENT_MODE" only can work in more than v5.6.0 version.
-## so we upgrade to v5.8.1 version, and it can work normally now.
 export PTS_SILENT_MODE=1
 echo PTS_SILENT_MODE=$PTS_SILENT_MODE
 
-## Currently, we use the rootfs by NFS network, in order to avoid to write the "test-results" to NFSROOT, we mount the tmpfs on below directory.
+## this is to avoid to write the tmp "test-results" to disk
 mount -t tmpfs tmpfs /var/lib/phoronix-test-suite/test-results || die "failed to mount tmpfs"
 
 if [ "$test_opt" ]; then
