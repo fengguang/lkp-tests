@@ -1,28 +1,33 @@
 #!/usr/bin/env ruby
 
+LKP_SRC ||= ENV['LKP_SRC']
 RESULT_ROOT = ENV['RESULT_ROOT']
+
+require "#{LKP_SRC}/lib/common.rb"
 
 PDEL = 10
 
 data = []
-files = Dir["#{RESULT_ROOT}/results/ftq_*.dat"]
+files = Dir["#{RESULT_ROOT}/results/ftq_*.dat*"]
 if files.empty?
   $stderr.puts "can not find any log file at #{RESULT_ROOT}/results/"
   exit 1
 end
 files.each { |file|
-  rdata = File.read(file)
-  n = (rdata =~ /^[^#]/)
-  rdata.slice!(0, n)
-  sfdata = rdata.split
-  rdata = nil
-  sfdata.select!.with_index { |x, i| i.odd? }
-  n = sfdata.size
-  ndel = n * PDEL / 100
-  sfdata.slice!(n - ndel, ndel)
-  sfdata.slice!(0, ndel)
-  data.concat(sfdata.map(&:to_i))
-  sfdata = nil
+  zopen(file) do |f|
+    rdata = f.read
+    n = (rdata =~ /^[^#]/)
+    rdata.slice!(0, n)
+    sfdata = rdata.split
+    rdata = nil
+    sfdata.select!.with_index { |x, i| i.odd? }
+    n = sfdata.size
+    ndel = n * PDEL / 100
+    sfdata.slice!(n - ndel, ndel)
+    sfdata.slice!(0, ndel)
+    data.concat(sfdata.map(&:to_i))
+    sfdata = nil
+  end
 }
 
 data.sort!
