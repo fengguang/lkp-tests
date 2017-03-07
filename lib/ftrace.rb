@@ -3,18 +3,20 @@
 LKP_SRC ||= ENV['LKP_SRC']
 
 #         modprobe-2427  [008] ....   242.913825: vmalloc_alloc_area: start=0xffffc90001b07000, end=0xffffc90001b39000
+#            bash-266   [001] ..s. 60321.215759: softirq_entry: vec=1 [action=TIMER]
 
 class TPSample
-  RES_ARG = "[^=,: \n]+=[^=,: \n]+".freeze
-  RE_SAMPLE = Regexp.new('^\s*(.*)-(\d+)\s+\[\d+\]\s+\S+\s+([0-9.]+): ([^: ]+): ' + "((?:#{RES_ARG}, )*#{RES_ARG})$")
+  RES_ARG = /([^{\[(=,: \t\n]+)=([^}\])=,: \t\n]+)/
+  RE_SAMPLE = /^\s*(.*)-(\d+)\s+\[\d+\]\s+\S+\s+([0-9.]+): ([^: ]+): (.*)$/
 
-  attr_reader :cmd, :pid, :timestamp, :type, :data
+  attr_reader :cmd, :pid, :timestamp, :type, :raw_data, :data
 
-  def initialize(cmd, pid, timestamp, type, data)
+  def initialize(cmd, pid, timestamp, type, raw_data, data)
     @cmd = cmd
     @pid = pid
     @timestamp = timestamp
     @type = type
+    @raw_data = raw_data
     @data = data
   end
 
@@ -33,20 +35,19 @@ class TPSample
       pid = md[2].to_i
       timestamp = md[3].to_f
       type = md[4].intern
-      arg_pair_strs = md[5].split(', ')
-      arg_pairs = arg_pair_strs.map do |ps|
-        k, v = ps.split('=')
+      raw_data = md[5]
+      arg_pair_strs = raw_data.scan self::RES_ARG
+      arg_pairs = arg_pair_strs.map do |k, v|
         [k.intern, v]
       end
-      args = Hash[arg_pairs]
-      new cmd, pid, timestamp, type, args
+      data = Hash[arg_pairs]
+      new cmd, pid, timestamp, type, raw_data, data
     end
   end
 end
 
 class TPEventFormat
-  RES_ARG = "[^=,: \n]+=[^=,: \n]+".freeze
-  RE_FMT = Regexp.new "^print fmt: \"((?:#{RES_ARG}, )*#{RES_ARG})\", "
+  RE_FMT = /^print fmt: "(.*)", /
   RE_NAME = /^name: ([^=,: \n]+)/
   RE_INT_FMT = /^(?:0[xX])?%.*[xud]$/
 
@@ -79,9 +80,8 @@ class TPEventFormat
         name ||= self::RE_NAME.match line
         fmt = self::RE_FMT.match line
         if fmt
-          arg_pair_strs = fmt[1].split ', '
-          arg_pairs = arg_pair_strs.map do |ps|
-            k, v = ps.split('=')
+          arg_pair_strs = fmt[1].scan TPSample::RES_ARG
+          arg_pairs = arg_pair_strs.map do |k, v|
             [k.intern, v]
           end
           args = Hash[arg_pairs]
