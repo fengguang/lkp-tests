@@ -218,12 +218,15 @@ def monitor_file(file, history = 10)
 	system "tail", "-f", "-n", history.to_s, file
 end
 
-def xzopen(fn, mode = "r", &blk)
-  sfn = fn[0, fn.size - 3]
-  if File.exist?(sfn)
-    File.open(sfn, mode, &blk)
+def zopen(fn, mode = "r", &blk)
+  if File.exist?(fn)
+    File.open(fn, mode, &blk)
+  elsif File.exist?(fn + '.xz')
+    IO.popen("xzcat #{fn + '.xz'}", mode, &blk)
+  elsif File.exist?(fn + '.gz')
+    IO.popen("zcat #{fn + '.gz'}", mode, &blk)
   else
-    IO.popen("xzcat #{fn}", mode, &blk)
+    raise "File doesn't exist: #{fn}"
   end
 end
 
