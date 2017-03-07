@@ -219,6 +219,7 @@ def monitor_file(file, history = 10)
 end
 
 def zopen(fn, mode = "r", &blk)
+  fn.sub!(/(\.xz|\.gz)$/, "")
   if File.exist?(fn)
     File.open(fn, mode, &blk)
   elsif File.exist?(fn + '.xz')
