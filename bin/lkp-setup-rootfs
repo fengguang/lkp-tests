@@ -28,7 +28,7 @@ job_does_not_need_reboot()
 	}
 
 	grep -q "^do_not_reboot_for_same_kernel: 1$" $job &&
-	is_same_kernel_and_rootfs && {
+	is_same_kernel_and_rootfs && is_same_testcase && {
 		echo "LKP: [do_not_reboot_for_same_kernel] start a new job without rebooting"
 		return 0
 	}

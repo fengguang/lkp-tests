@@ -489,6 +489,14 @@ is_same_kernel_and_rootfs()
 	return 1
 }
 
+is_same_testcase()
+{
+	local current_testcase=$testcase
+	local next_testcase=$(awk '/^testcase: /{print $2}' $job | tr -d '"')
+
+	[ "$current_testcase" = "$next_testcase" ]
+}
+
 setup_env()
 {
 	[ "$result_service" != "${result_service#9p/}" ] &&
