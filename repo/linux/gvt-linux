@@ -1,7 +1,5 @@
 url: https://github.com/01org/gvt-linux.git
 belongs_to: GVT
-whitelist_branch: gvt-staging
-blacklist_branch: .*
 notify_build_success_branch: .*
 build_mail_cc:
 - zhenyu.z.wang@intel.com
