@@ -26,7 +26,7 @@ mkdir -p /tmp/valgrind_install || die "mkdir -p /tmp/valgrind_install failed"
 ln -sf /usr /tmp/valgrind_install/usr || die "link failed"
 
 make EXTRA_CFLAGS=-DUSE_VALGRIND || die "make failed"
-make EXTRA_CFLAGS=-DUSE_VALGRIND test || "make test failed"
+make EXTRA_CFLAGS=-DUSE_VALGRIND test || die "make test failed"
 
 cd src/test || die "Can not find test dir"
 testcases=$(ls -d "$group"_* 2>/dev/null) || testcases=$(ls -d "$group" 2>/dev/null)
