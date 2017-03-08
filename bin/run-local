@@ -3,6 +3,7 @@
 require 'optparse'
 require 'ostruct'
 require 'fileutils'
+require 'shellwords'
 
 ENV["LKP_SRC"] ||= File.dirname File.dirname File.realpath $PROGRAM_NAME
 LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
@@ -58,6 +59,15 @@ jobfile = ARGV[0]
 unless jobfile
 	puts "No jobfile specified"
 	exit 1
+end
+
+# Setup environment for user specified test case
+argv = ARGV.drop(1)
+if argv[0] == '--'
+  argv = argv.drop(1)
+end
+if argv.size > 0
+  ENV["MY_TEST_CMDLINE"] = Shellwords.join ARGV.drop(1)
 end
 
 if !jobfile.index('/') and !File.exist?(jobfile)
