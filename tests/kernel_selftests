@@ -52,6 +52,9 @@ for mf in */Makefile; do
 	}
 
 	[[ $subtest = "powerpc" ]] && continue
+	# skip zram since 0day-kernel-tests always disable CONFIG_ZRAM which is required by zram
+	# for local user, you can enable CONFIG_ZRAM by yourself
+	[[ $subtest = "zram" ]] && continue
 
 	if [[ $subtest = "efivarfs" ]]; then
 		[[ -d "/sys/firmware/efi" ]] || {
