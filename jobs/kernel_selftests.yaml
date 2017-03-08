@@ -4,3 +4,5 @@ category: functional
 
 need_cpu: 2
 kernel_selftests:
+# never register ERST as pstore backend
+kernel_cmdline: erst_disable

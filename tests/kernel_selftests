@@ -70,6 +70,15 @@ for mf in */Makefile; do
 		mount -t efivarfs efivarfs /sys/firmware/efi/efivars
 	fi
 
+	if [ "$subtest" = "pstore" ] && [ ! -e /dev/pmsg0 ]; then
+		# in order to create a /dev/pmsg0, we insert a dummy ramoops device
+		modprobe ramoops mem_address=0x8000000 ecc=1 mem_size=1000000 2>&1
+		[ ! -e /dev/pmsg0 ] && {
+			echo "skip pstore test: /dev/pmsg0 does not exist"
+			continue
+		}
+	fi
+
 	echo
 	log_cmd make run_tests -C $subtest  2>&1
 done
