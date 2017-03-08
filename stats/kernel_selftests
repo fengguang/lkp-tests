@@ -104,7 +104,7 @@ while (line = STDIN.gets)
     elsif testname == 'x86'
       x86_stat(line, tests_stats['x86'], stats)
     else
-      stats << "#{testname}.#{Regexp.last_match[1]}.#{Regexp.last_match[2].downcase}: 1"
+      stats << "#{testname}.#{Regexp.last_match[1].strip}.#{Regexp.last_match[2].downcase}: 1"
     end
   when /Test #([1-9].*):/
     mqueue_test = Regexp.last_match[1]
