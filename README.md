@@ -36,6 +36,17 @@
 	lkp run ./hackbench-50%-threads-socket.yaml
 ```
 
+## Run your own benchmarks
+
+To run your own benchmarks that are not part of lkp-tests, you can use mytest job.
+
+```
+	lkp split-job lkp-tests/jobs/mytest.yaml
+	# output is:
+	# jobs/mytest.yaml => ./mytest-defaults.yaml
+	lkp run ./mytest-defaults.yaml -- <command> <argument> ...
+```
+
 ## Check result
 ```
 	lkp result hackbench
