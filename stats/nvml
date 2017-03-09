@@ -19,6 +19,11 @@ while (line = STDIN.gets)
   when %r{RUNTESTS: stopping: (.+)/(TEST[0-9]+) failed}
     item = Regexp.last_match[1]
     name = Regexp.last_match[2]
+    if line =~ /FS=(.+) BUILD=(.+)/
+      test_item = item
+      fs_type = $1
+      build_type = $2
+    end
     next unless test_item == item
     stats << item + '_' + name + '_' + fs_type + '_' + build_type + '.fail: 1'
   when %r{RUNTESTS: stopping: (.+)/(TEST[0-9]+) timed out}
@@ -34,4 +39,4 @@ while (line = STDIN.gets)
 end
 
 stats.uniq.each { |stat| puts stat }
-puts "total_test: #{stats.uniq.size}"
+puts "total_test: #{stats.uniq.size}" if stats.uniq.size.nonzero?
