@@ -7,13 +7,14 @@ LKP_SRC ||= ENV['LKP_SRC']
 
 class TPSample
   RES_ARG = /([^{\[(=,: \t\n]+)=([^}\])=,: \t\n]+)/
-  RE_SAMPLE = /^\s*(.*)-(\d+)\s+\[\d+\]\s+\S+\s+([0-9.]+): ([^: ]+): (.*)$/
+  RE_SAMPLE = /^\s*(.*)-(\d+)\s+\[(\d+)\]\s+\S+\s+([0-9.]+): ([^: ]+): (.*)$/
 
-  attr_reader :cmd, :pid, :timestamp, :type, :raw_data, :data
+  attr_reader :cmd, :pid, :cpu, :timestamp, :type, :raw_data, :data
 
-  def initialize(cmd, pid, timestamp, type, raw_data, data)
+  def initialize(cmd, pid, cpu, timestamp, type, raw_data, data)
     @cmd = cmd
     @pid = pid
+    @cpu = cpu
     @timestamp = timestamp
     @type = type
     @raw_data = raw_data
@@ -33,15 +34,16 @@ class TPSample
       (md = self::RE_SAMPLE.match(str)) || return
       cmd = md[1]
       pid = md[2].to_i
-      timestamp = md[3].to_f
-      type = md[4].intern
-      raw_data = md[5]
+      cpu = md[3].to_i
+      timestamp = md[4].to_f
+      type = md[5].intern
+      raw_data = md[6]
       arg_pair_strs = raw_data.scan self::RES_ARG
       arg_pairs = arg_pair_strs.map do |k, v|
         [k.intern, v]
       end
       data = Hash[arg_pairs]
-      new cmd, pid, timestamp, type, raw_data, data
+      new cmd, pid, cpu, timestamp, type, raw_data, data
     end
   end
 end
