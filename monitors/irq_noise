@@ -1,0 +1,14 @@
+#!/bin/sh
+# - delay
+# - duration
+# - buffer_size_kb
+# - ftrace_options
+
+export events='irq_handler_entry irq_handler_exit softirq_entry softirq_exit'
+
+. $LKP_SRC/lib/ftrace.sh
+setup_wait
+
+ftrace_set_params
+
+ftrace_run
