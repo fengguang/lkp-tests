@@ -6,31 +6,31 @@ fs_type = ''
 build_type = ''
 
 while (line = STDIN.gets)
-	case line
-	when %r{^(.+)/TEST[0-9]+: SETUP \(.+/(.+)/(.+)\)$}
-		test_item = Regexp.last_match[1]
-		fs_type = Regexp.last_match[2]
-		build_type = Regexp.last_match[3]
-	when %r{^(.+)/(TEST[0-9]+): (PASS|FAIL|SKIP)$}
-		item = Regexp.last_match[1]
-		name = Regexp.last_match[2]
-		next unless test_item == item
-		stats << item + '_' + name + '_' + fs_type + '_' + build_type + "." + Regexp.last_match[3].downcase + ': 1'
-	when %r{RUNTESTS: stopping: (.+)/(TEST[0-9]+) failed}
-		item = Regexp.last_match[1]
-		name = Regexp.last_match[2]
-		next unless test_item == item
-		stats << item + '_' + name + '_' + fs_type + '_' + build_type + '.fail: 1'
-	when %r{RUNTESTS: stopping: (.+)/(TEST[0-9]+) timed out}
-		item = Regexp.last_match[1]
-		name = Regexp.last_match[2]
-		next unless test_item == item
-		stats << item + '_' + name + '_' + fs_type + '_' + build_type + '.timeout: 1'
-	when %r{^(.+)/(TEST[0-9]+): SKIP}
-		item = Regexp.last_match[1]
-		name = Regexp.last_match[2]
-		stats << item + '_' + name + '.test_skip: 1'
-	end
+  case line
+  when %r{^(.+)/TEST[0-9]+: SETUP \(.+/(.+)/(.+)\)$}
+    test_item = Regexp.last_match[1]
+    fs_type = Regexp.last_match[2]
+    build_type = Regexp.last_match[3]
+  when %r{^(.+)/(TEST[0-9]+): (PASS|FAIL|SKIP)$}
+    item = Regexp.last_match[1]
+    name = Regexp.last_match[2]
+    next unless test_item == item
+    stats << item + '_' + name + '_' + fs_type + '_' + build_type + '.' + Regexp.last_match[3].downcase + ': 1'
+  when %r{RUNTESTS: stopping: (.+)/(TEST[0-9]+) failed}
+    item = Regexp.last_match[1]
+    name = Regexp.last_match[2]
+    next unless test_item == item
+    stats << item + '_' + name + '_' + fs_type + '_' + build_type + '.fail: 1'
+  when %r{RUNTESTS: stopping: (.+)/(TEST[0-9]+) timed out}
+    item = Regexp.last_match[1]
+    name = Regexp.last_match[2]
+    next unless test_item == item
+    stats << item + '_' + name + '_' + fs_type + '_' + build_type + '.timeout: 1'
+  when %r{^(.+)/(TEST[0-9]+): SKIP}
+    item = Regexp.last_match[1]
+    name = Regexp.last_match[2]
+    stats << item + '_' + name + '.test_skip: 1'
+  end
 end
 
 stats.uniq.each { |stat| puts stat }
