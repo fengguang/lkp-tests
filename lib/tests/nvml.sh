@@ -57,6 +57,9 @@ test_env()
 
 run()
 {
+	# to fix SKIP: C++11 required
+	export CXX=g++
+
 	local casename=$1
 	local user_filter="blk_pool log_pool obj_pool pmempool_rm util_file_create util_file_open"
 
