@@ -121,6 +121,7 @@ oops_map.each { |bug_to_bisect, line|
 	end
 
 	break if line =~ /trinity.* invoked oom-killer:/
+	break if line =~ /trinity.* page allocation stalls for/
 
 	# print_hex_dump
 	# kern  :alert : [  205.863334] rcu-torture: Free-Block Circulation:  3811 3811 3810 3809 3808 3807 3806 3805 3804 3803 0
