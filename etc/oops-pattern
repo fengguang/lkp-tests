@@ -16,9 +16,7 @@ INFO: Object 0x.*
 INFO: 0x.*. First byte 0x.*
 \[ *[0-9.]+\] INFO: .*
 \[ INFO: [^i].* \]
-RCU used illegally from offline CPU!
-RCU used illegally from idle CPU!
-RCU used illegally from extended quiescent state!
+[^ ]*\.[ch]:[0-9]+ .*!$
 inconsistent \{.*\} -> \{.*\} usage\.
 initcall .* returned with .*
 \[ BUG: [^b].*! \]
