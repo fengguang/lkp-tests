@@ -79,6 +79,11 @@ for mf in */Makefile; do
 		}
 	fi
 
+	# As this case suggested, some distro(suse/debian) udev may have /lib/udev/rules.d/50-firmware.rules
+	# which contains "SUBSYSTEM==firmware, ACTION==add, ATTR{loading}=-1", it will
+	# immediately cancel all fallback requests, so here we remove it and restore after this case
+	[[ "$subtest" = "firmware" ]] && log_cmd mv /lib/udev/rules.d/50-firmware.rules .
 	echo
 	log_cmd make run_tests -C $subtest  2>&1
+	[[ "$subtest" = "firmware" ]] && log_cmd mv 50-firmware.rules /lib/udev/rules.d/50-firmware.rules
 done
