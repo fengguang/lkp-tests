@@ -116,8 +116,8 @@ while (line = STDIN.gets)
     next unless testname
     # do not count make fail in nr_test, which is for sub test number
     stats << "#{testname}.make_fail: 1"
-  when /^skip pstore test:/
-    stats << 'pstore.test_skip: 1'
+  when /^skip (.*) test:/
+    stats << "#{$1}.test_skip: 1"
   else
     if testname == 'futex'
       futex_stat(line, tests_stats['futex'], stats)
