@@ -138,6 +138,7 @@ do
 					add_initrd ${rds//,/ }
 				elif [[ $param =~ ^root= ]]; then
 					root="${param#root=}"
+					params="$params $param"
 				elif [[ $param =~ ^remote_rootfs= ]]; then
 					remote_rootfs="${param#remote_rootfs=}"
 				else
