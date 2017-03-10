@@ -3,6 +3,7 @@ kernel BUG at .*
 Kernel BUG at
 Kernel panic - not syncing: .*
 ^BUG: .*
+[a-zA-Z0-9_ -]+: BUG: .*
 \[ *[0-9.]+\] BUG: .*
 BUG .* \(.*\): .*
 Oops: .*
