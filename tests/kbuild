@@ -2,11 +2,14 @@
 # - nr_task
 # - runtime
 # - build_kconfig
+# - target
 
 ## Build linux kernel
 
 : ${runtime:=300}
 : ${build_kconfig:=defconfig}
+
+[ -n "$target" ] || target=vmlinux
 
 run_kbuild()
 {
@@ -15,7 +18,7 @@ run_kbuild()
 	while true; do
 		log_cmd make mrproper
 		log_cmd make $build_kconfig
-		log_cmd make -j $nr_task vmlinux 2> /dev/null
+		log_cmd make -j $nr_task $target 2> /dev/null
 		iterations=$((iterations + 1))
 		now=$(date +%s)
 		[ $((now - start_time)) -gt "$runtime" ] && break

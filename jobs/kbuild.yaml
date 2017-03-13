@@ -8,6 +8,10 @@ nr_task:
 - 200%
 - 50%
 
+target:
+  - vmlinux
+  - vmlinux_prereq
+
 kbuild:
 
 ---
