@@ -42,30 +42,21 @@ build_env()
 	log_cmd cd $BENCHMARK_ROOT/$casename
 
 	fixup_valgrind
+
 	log_cmd make EXTRA_CFLAGS=-DUSE_VALGRIND || die "make test failed"
-}
-
-
-test_env()
-{
-	local casename=$1
-
-	log_cmd cd $BENCHMARK_ROOT/$casename/src/test
-
-	fixup_valgrind
 	log_cmd make EXTRA_CFLAGS=-DUSE_VALGRIND test || die "make test failed"
 }
 
 
 run()
 {
-	# to fix SKIP: C++11 required
-	log_cmd export CXX=g++
-
 	local casename=$1
 	local user_filter="blk_pool log_pool obj_pool pmempool_rm util_file_create util_file_open"
 
 	log_cmd cd $BENCHMARK_ROOT/$casename/src/test
+
+	# to fix SKIP: C++11 required
+	log_cmd export CXX=g++
 
 	while read testcase
 	do
