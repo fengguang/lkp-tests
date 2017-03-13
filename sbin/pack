@@ -61,7 +61,8 @@ BM_NAME=$1
 
 [[ $arch ]] || arch=`uname -m`
 
-# for packages with same dependencies, only need to create symlink for cgz
+# for packages with same dependencies, force the update instead of generating link
+# due to schedule stage will auto detect symbolic link, so no need generate new link
 check_shared_pack()
 {
 	[[ -L $LKP_SRC/pack/$BM_NAME ]] || return
@@ -70,8 +71,8 @@ check_shared_pack()
 	local target
 	target=$(readlink $LKP_SRC/pack/$BM_NAME)
 	target=$(basename $target)
-	ln -sfT ${target}-${arch}.cgz $sync_dest/${BM_NAME}-${arch}.cgz
-	exit
+
+	BM_NAME="$target"
 }
 
 [[ "$LKP_LOCAL_RUN" != "1" ]] && check_shared_pack
