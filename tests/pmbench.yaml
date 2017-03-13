@@ -20,4 +20,28 @@ parameters:
  access: [histo, touch]
 
 results:
- 
+ pmbench.latency.ns.average:
+ pmbench.latency.ns.0-256%: 
+ pmbench.latency.ns.256-512%:
+ pmbench.latency.ns.512-1K%:
+ pmbench.latency.ns.1K-2K%:
+ pmbench.latency.ns.2K-4K%:
+ pmbench.latency.ns.4K-8K%:
+ pmbench.latency.ns.8K-16K%:
+ pmbench.latency.ns.16K-32K%:
+ pmbench.latency.ns.32K-64K%:
+ pmbench.latency.ns.64K-128K%:
+ pmbench.latency.ns.128K-256K%:
+ pmbench.latency.ns.256K-512K%:
+ pmbench.latency.ns.512K-1M%:
+ pmbench.latency.ns.1M-2M%:
+ pmbench.latency.ns.2M-4M%:
+ pmbench.latency.ns.4M-8M%:
+ pmbench.latency.ns.8M-16M%:
+ pmbench.latency.ns.16M-32M%:
+ pmbench.latency.ns.32M-64M%:
+ pmbench.latency.ns.64M-128M%:
+ pmbench.latency.ns.128M-256M%:
+ pmbench.latency.ns.256M-512M%:
+ pmbench.latency.ns.512M-1G%:
+ pmbench.latency.ns.1G-inf%:

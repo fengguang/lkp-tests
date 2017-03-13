@@ -1,0 +1,49 @@
+#!/usr/bin/env ruby
+
+sum = 0.0
+res = 0.0
+histo = Array.new(24)
+
+loop do
+  line = STDIN.gets
+  break unless line
+  case line
+  when /^  Page latency during benchmark \(inc. gen\): (\d+\.\d+) us \(\d+ clks\)/
+    latency = $1
+    puts "latency.ns.average: #{latency}"
+  when /^2\^\((\d+),(\d+)\) ns: (\d+)/
+    end_n = $2.to_i
+    cnt = $3.to_i
+    p = if end_n < 32
+          end_n - 8
+        else
+          end_n - 9
+        end
+    sum += cnt
+    histo[p] = cnt
+  end
+end
+
+def format_power2(num)
+  p = 0
+  unit = ['', 'K', 'M', 'G']
+  while num > 9
+    num -= 10
+    p += 1
+  end
+  (1 << num).to_s + unit[p]
+end
+
+if sum
+  (0..23).each do |i|
+    res = histo[i] / sum * 100
+
+    if i.zero?
+      puts "latency.ns.0-256%: #{res}"
+    elsif i == 23
+      puts "latency.ns.1G-inf%: #{res}"
+    else
+      puts "latency.ns.#{format_power2(i + 7)}-#{format_power2(i + 8)}%: #{res}"
+    end
+  end
+end
