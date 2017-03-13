@@ -167,6 +167,7 @@ ftrace_run()
 	$WAIT_POST_TEST_CMD --timeout "$duration"
 	ftrace_stop
 
+	$WAIT_POST_TEST_CMD
 	cat >> "$TMP_RESULT_ROOT/ftrace.postrun" <<EOF
 #!/bin/sh
 
