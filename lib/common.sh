@@ -40,3 +40,15 @@ parse_bool()
 	[ "${1#no}" != "$1" ] && { echo $ofalse; return 1; }
 	echo $otrue; return 0
 }
+
+expand_cpu_list()
+{
+	cpu_list=$1
+	for pair in $(echo "$cpu_list" | tr ',' ' '); do
+		if [ "${pair%%-*}" != "$pair" ]; then
+			seq $(echo "$pair" | tr '-' ' ')
+		else
+			echo "$pair"
+		fi
+	done
+}
