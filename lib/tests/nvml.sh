@@ -4,10 +4,10 @@ check_param()
 {
 	local casename=$1
 
-	cd $BENCHMARK_ROOT/$casename/src/test || die "Can not find $casename/src/test dir"
+	log_cmd cd $BENCHMARK_ROOT/$casename/src/test || die "Can not find $casename/src/test dir"
 
 	if [[ "$test" = "non-pmem" ]]; then
-    	local tmp_dir=$(mktemp -d)
+		local tmp_dir=$(mktemp -d)
 		echo "NON_PMEM_FS_DIR=$tmp_dir" > testconfig.sh
 	elif [[ "$test" = "pmem" ]]; then
 		echo "PMEM_FS_DIR=/fs/pmem0" > testconfig.sh
@@ -17,7 +17,9 @@ check_param()
 
 	[[ -n "$group" ]] || die "Parameter \"group\" is empty"
 
-	testcases=$(ls -d "$group"_* 2>/dev/null) || testcases=$(ls -d "$group" 2>/dev/null)
+	testcases=$(ls -d "$group"_* 2>/dev/null)
+
+	[[ -n "$testcases" ]] || testcases=$(ls -d "$group" 2>/dev/null)
 	[[ -n "$testcases" ]] || die "Parameter \"group\" is invalid"
 }
 
@@ -29,18 +31,18 @@ fixup_valgrind()
 	# they will reference to /tmp/valgrind_install/user/local where they are installed
 	# so here we create a symbolic link to make valgrind work
 
-	mkdir -p /tmp/valgrind_install || die "mkdir -p /tmp/valgrind_install failed"
-	ln -sf /usr /tmp/valgrind_install/usr || die "link failed"
+	log_cmd mkdir -p /tmp/valgrind_install || die "mkdir -p /tmp/valgrind_install failed"
+	log_cmd ln -sf /usr /tmp/valgrind_install/usr || die "link failed"
 }
 
 build_env()
 {
 	local casename=$1
 
-	cd $BENCHMARK_ROOT/$casename
+	log_cmd cd $BENCHMARK_ROOT/$casename
 
 	fixup_valgrind
-	make EXTRA_CFLAGS=-DUSE_VALGRIND || die "make test failed"
+	log_cmd make EXTRA_CFLAGS=-DUSE_VALGRIND || die "make test failed"
 }
 
 
@@ -48,22 +50,22 @@ test_env()
 {
 	local casename=$1
 
-	cd $BENCHMARK_ROOT/$casename/src/test
+	log_cmd cd $BENCHMARK_ROOT/$casename/src/test
 
 	fixup_valgrind
-	make EXTRA_CFLAGS=-DUSE_VALGRIND test || die "make test failed"
+	log_cmd make EXTRA_CFLAGS=-DUSE_VALGRIND test || die "make test failed"
 }
 
 
 run()
 {
 	# to fix SKIP: C++11 required
-	export CXX=g++
+	log_cmd export CXX=g++
 
 	local casename=$1
 	local user_filter="blk_pool log_pool obj_pool pmempool_rm util_file_create util_file_open"
 
-	cd $BENCHMARK_ROOT/$casename/src/test
+	log_cmd cd $BENCHMARK_ROOT/$casename/src/test
 
 	while read testcase
 	do
