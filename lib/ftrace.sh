@@ -141,7 +141,7 @@ ftrace_stop()
 ftrace_run()
 {
 	echo_time "going to sleep for $delay seconds"
-	$WAIT_POST_TEST_CMD --timeout "$delay"
+	[ "$delay" -ne 0 ] && $WAIT_POST_TEST_CMD --timeout "$delay"
 
 	ftrace_show_params
 
