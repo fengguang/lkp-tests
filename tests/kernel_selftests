@@ -66,8 +66,13 @@ for mf in */Makefile; do
 			echo "skip efivarfs test: no efivarfs support, try enable CONFIG_EFIVAR_FS"
 			continue
 		}
-
-		mount -t efivarfs efivarfs /sys/firmware/efi/efivars
+		# if efivarfs is built-in, "modprobe efivarfs" always returns 0, but it does not means
+		# efivarfs is supported since this requires some specified hardwares, such as booting from
+		# uefi, so check again
+		log_cmd mount -t efivarfs efivarfs /sys/firmware/efi/efivars || {
+			echo "skip efivarfs test: unable to mount efivarfs to /sys/firmware/efi/efivars"
+			continue
+		}
 	fi
 
 	if [ "$subtest" = "pstore" ] && [ ! -e /dev/pmsg0 ]; then
