@@ -214,6 +214,8 @@ export DISTRO
 	exit 1
 }
 
+export LKP_LOCAL_RUN=1
+
 install_packages "lkp" "$distro"
 
 if [ -n "$CHINA" ]; then

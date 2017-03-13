@@ -73,7 +73,8 @@ check_shared_pack()
 	ln -sfT ${target}-${arch}.cgz $sync_dest/${BM_NAME}-${arch}.cgz
 	exit
 }
-check_shared_pack
+
+[[ "$LKP_LOCAL_RUN" != "1" ]] && check_shared_pack
 
 BM_ROOT=/lkp/benchmarks/$BM_NAME
 
