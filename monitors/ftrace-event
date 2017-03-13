@@ -4,6 +4,7 @@
 # - buffer_size_kb
 # - ftrace_options
 # - events
+# - ftrace_cpuset
 
 . $LKP_SRC/lib/ftrace.sh
 setup_wait

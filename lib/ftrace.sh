@@ -1,5 +1,6 @@
 #!/bin/sh
 
+. $LKP_SRC/lib/common.sh
 . $LKP_SRC/lib/upload.sh
 . $LKP_SRC/lib/wait.sh
 
@@ -17,6 +18,20 @@ ftrace_set()
 	target=$1
 	shift
 	stdbuf -oL echo "$@" > "$TRACING/$target"
+}
+
+ftrace_set_cpuset()
+{
+	[ -z "$ftrace_cpuset" ] && {
+		ftrace_set "$@"
+		return
+	}
+
+	target=$1
+	shift
+	for cpu in $ftrace_cpuset; do
+		stdbuf -oL echo "$@" > "$TRACING/per_cpu/cpu$cpu/$target"
+	done
 }
 
 ftrace_append()
@@ -67,6 +82,8 @@ ftrace_test_save_time_delta()
 
 ftrace_set_params()
 {
+	ftrace_cpuset="$(expand_cpu_list "$ftrace_cpuset")"
+
 	if [ -z "$delay" ]; then
 		if [ -n "$runtime" ]; then
 			delay=$((runtime / 2))
@@ -81,7 +98,7 @@ ftrace_set_params()
 	# ftrace_test_save_time_delta
 	ftrace_reset
 
-	[ -n "$buffer_size_kb" ] && ftrace_set buffer_size_kb "$buffer_size_kb"
+	[ -n "$buffer_size_kb" ] && ftrace_set_cpuset buffer_size_kb "$buffer_size_kb"
 
 	if [ -n "$events" ]; then
 		mkdir -p "$FTRACE_EVENTS_DIR"
@@ -124,6 +141,7 @@ ftrace_show_params()
 	do
 		echo "$param:" "$(ftrace_get "$param")"
 	done
+	echo "cpu set: $ftrace_cpuset"
 }
 
 ftrace_start()
@@ -149,6 +167,16 @@ ftrace_run()
 	$WAIT_POST_TEST_CMD --timeout "$duration"
 	ftrace_stop
 
-	touch "$TMP_RESULT_ROOT/ftrace.data"
+	cat >> "$TMP_RESULT_ROOT/ftrace.postrun" <<EOF
+#!/bin/sh
+
+if [ -n "$ftrace_cpuset" ]; then
+	for cpu in $ftrace_cpuset; do
+		cat "/sys/kernel/debug/tracing/per_cpu/cpu\$cpu/trace"
+	done
+else
+	cat /sys/kernel/debug/tracing/trace
+fi | xz > $TMP_RESULT_ROOT/ftrace.data.xz
+EOF
 	[ -n "$events" ] && upload_files -t ftrace_events "$FTRACE_EVENTS_DIR"/*
 }
