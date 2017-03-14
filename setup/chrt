@@ -1,0 +1,21 @@
+#!/bin/sh
+# - sched_policy
+# - sched_priority
+
+# available sched_policy: other, fifo, rr, batch, idle, deadline
+
+[ -n "$sched_policy" ] || exit 0
+
+if [ "$sched_policy" = fifo ] || [ "$sched_policy" = rr]; then
+	default_priority=1
+else
+	default_priority=0
+fi
+
+: ${sched_priority:="$default_priority"}
+
+cat >> "$TMP"/env.yaml <<EOF
+
+# setup/chrt
+exec_prefix: chrt --$sched_policy $sched_priority $exec_prefix
+EOF
