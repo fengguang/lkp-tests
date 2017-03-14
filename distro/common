@@ -21,12 +21,12 @@ show_deps_list()
 -dev$
 -whitelist$"
 
-	ls $LKP_SRC/distro/depends/ | grep -v "$blacklist"
+	find $LKP_SRC/distro/depends/ -type f | sed 's:.*/::' | grep -v "$blacklist"
 }
 
 show_pack_list()
 {
-	ls $LKP_SRC/pack |
+	find  $LKP_SRC/pack -type -f | sed 's:.*/::' |
 	grep -x -F -f <(find $LKP_SRC/{monitors,setup,tests,daemon} -type f -or -type l|sed 's:.*/::') |
 	grep -v -e '^0day-'
 }
