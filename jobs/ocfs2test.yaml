@@ -1,0 +1,22 @@
+suite: ocfs2test
+testcase: ocfs2test
+category: functional
+
+disk:
+- 1HDD
+
+size: 200G
+
+ocfs2test:
+  test:
+    - test-quick
+    - test-mmaptruncate
+    - test-mkfs
+    # - test-buildkernel # we have kernel build already, ignore
+    - test-tunefs
+    - test-sendfile
+    - test-reserve_space
+    - test-backup_super
+    # - test-inline # runs slow (> 1h)
+    # - test-xattr # runs slow (> 1h)
+    # - test-reflink # runs slow (> 1h)

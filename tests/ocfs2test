@@ -1,0 +1,74 @@
+#!/bin/bash
+# - test
+
+. $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/reproduce-log.sh
+
+## test on a single node currently.
+
+OCFS2TEST_HOME="/home/ocfs2test"
+
+check_add_user()
+{
+	[[ "x$1" != "x" ]] || return
+
+	grep -q "$1" /etc/passwd && return
+
+	useradd -m -d "/home/$1" -s /bin/bash "$1" || die "create user $1 failed."
+}
+
+setup_test_env()
+{
+	# "ocfs2test" user is required in ocfs2 test, thus check if such user
+	# has already been added. If not, add "ocfs2test" user.
+	check_add_user "ocfs2test"
+
+	[[ -d $BENCHMARK_ROOT/ocfs2test/ocfs2 ]] || die "can not find ocfs2 dir"
+
+	cp -r $BENCHMARK_ROOT/ocfs2test/ocfs2 $OCFS2TEST_HOME
+
+	# the -k parameter is required in ocfs2test,
+	# but only testcase buildkernel needs linux-kernel.tar.gz
+	# since we have kernel build already, so ignore buildkernel testcase,
+	# and fake an empty linux-kernel.tar.gz for other testcases can be running.
+	mkdir linux-kernel
+	tar -zcvf $OCFS2TEST_HOME/linux-kernel.tar.gz linux-kernel
+
+	[[ -f $BENCHMARK_ROOT/ocfs2test/reflink ]] || die "can not find reflink file"
+
+	ln -s $BENCHMARK_ROOT/ocfs2test/reflink /usr/local/bin/reflink
+
+	# add /sbin to PATH for some ocfs2 command.
+	echo "PATH=$PATH:/sbin" >> $OCFS2TEST_HOME/.bashrc
+	su - ocfs2test -c "source .bashrc"
+
+	# add "ocfs2test" user into sudo list
+	echo "ocfs2test ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+	[[ -n "$hdd_partitions" ]] || die "HDD partitions is not exist."
+	partition=${hdd_partitions%% *}
+
+	chmod 755 $partition
+
+	[[ -d /mnt/ocfs2 ]] || mkdir -p /mnt/ocfs2
+
+	umount $partition 2>/dev/null
+
+	return 0
+}
+
+single_node_test()
+{
+	local test_dir="$LKP_SRC/pack/ocfs2test-addon/tests"
+	while read -r test_name
+	do
+		su - ocfs2test -c "$OCFS2TEST_HOME/ocfs2/bin/single_run-WIP.sh -k $OCFS2TEST_HOME/linux-kernel.tar.gz \
+		  -m /mnt/ocfs2 -l $OCFS2TEST_HOME/ocfs2log -t $test_name -d $partition"
+	done < $test_dir/$test
+
+	find $OCFS2TEST_HOME/ocfs2log -name single_run.log -type f | xargs cat
+}
+
+setup_test_env
+single_node_test
+

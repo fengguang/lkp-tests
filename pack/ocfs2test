@@ -1,0 +1,54 @@
+#!/bin/bash
+
+download()
+{
+	wget -q http://kr.archive.ubuntu.com/ubuntu/pool/main/g/glibc/libc6_2.23-0ubuntu3_amd64.deb || return
+	wget -q http://kr.archive.ubuntu.com/ubuntu/pool/main/g/glibc/libc-bin_2.23-0ubuntu3_amd64.deb || return
+	wget -q http://kr.archive.ubuntu.com/ubuntu/pool/main/g/glibc/libc-dev-bin_2.23-0ubuntu3_amd64.deb || return
+	wget -q http://kr.archive.ubuntu.com/ubuntu/pool/main/g/glibc/libc6-dev_2.23-0ubuntu3_amd64.deb || return
+
+	wget -q http://downloads.openfabrics.org/downloads/mpi-selector/mpi-selector-1.0.3.tar.gz || return
+
+	git_clone_update git://oss.oracle.com/git/jlbec/reflink.git || return
+	git_clone_update git://oss.oracle.com/git/ocfs2-test.git || return
+}
+
+build()
+{
+	dpkg -i ../libc6_2.23-0ubuntu3_amd64.deb || return
+	dpkg -i ../libc-bin_2.23-0ubuntu3_amd64.deb || return
+	dpkg -i ../libc-dev-bin_2.23-0ubuntu3_amd64.deb || return
+	dpkg -i ../libc6-dev_2.23-0ubuntu3_amd64.deb || return
+
+	tar -xzvf ../mpi-selector-1.0.3.tar.gz -C ../
+	cd ../mpi-selector-1.0.3
+	./configure || return
+	make install || return
+
+	cd ../reflink/
+	./configure || return
+	make install || return
+
+	cd ../ocfs2-test
+	./autogen.sh prefix=/ || return
+	make || return
+}
+
+install()
+{
+	make install DESTDIR=$BM_ROOT/ocfs2 || return
+
+	cp /usr/local/bin/reflink $BM_ROOT
+}
+
+pack()
+{
+	{
+		echo /lkp
+		echo /lkp/benchmarks
+		echo /lkp/benchmarks/$BM_NAME
+		find /lkp/benchmarks/$BM_NAME/*
+	} |
+	cpio --quiet -o -H newc --owner=root.root | gzip -n -9 > /lkp/benchmarks/${BM_NAME}.cgz
+	[[ $arch ]] && mv "/lkp/benchmarks/${BM_NAME}.cgz" "/lkp/benchmarks/${BM_NAME}-${arch}.cgz"
+}
