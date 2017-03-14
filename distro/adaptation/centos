@@ -3,7 +3,7 @@ apt-file:
 autotools-dev: autoconf
 binutils-dev: binutils-devel
 btrfs-tools: btrfs-progs
-build-essential: make automake gcc gcc-c++ kernel-devel
+build-essential: make automake gcc gcc-c++ kernel-devel rpm-build
 cgroup-bin: libcgroup
 dbench=4.0-2: dbench
 dpkg-dev: dpkg-devel
@@ -111,7 +111,7 @@ python3-numpy: python34-numpy
 python3-six: python34-six
 python3-markupsafe: python34-markupsafe
 python3-mako: python-pyramid-mako
-rt-tests: 
+rt-tests: numactl-devel
 ruby-git: 
 ruby-gnuplot: 
 sg3-utils: sg3_utils
