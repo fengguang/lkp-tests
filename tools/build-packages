@@ -35,7 +35,7 @@ if [[ $2 = 'each' ]]; then
 	for i in $(show_pack_list); do
 		queue pack.yaml		rootfs=$rootfs benchmark=$i
 	done
-else
-	queue pack-deps.yaml	rootfs=$rootfs
-	queue pack.yaml		rootfs=$rootfs
+elif [[ $2 = 'all' ]]; then
+	queue pack-deps.yaml -s "benchmark: all" rootfs=$rootfs
+	queue pack.yaml -s "benchmark: all" rootfs=$rootfs
 fi
