@@ -31,7 +31,7 @@ update
 
 for BM_NAME in $benchmark
 do
-	check_shared_package $BM_NAME && continue
+	check_shared_package $BM_NAME
 
 	packages=$(get_dependency_packages $DISTRO $BM_NAME)
 	PACKAGE_LIST=$(apt-get --simulate --no-install-recommends install $packages |
