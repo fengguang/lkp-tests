@@ -97,6 +97,12 @@ for mf in */Makefile; do
 		fi
 	}
 	echo
-	log_cmd make run_tests -C $subtest  2>&1
+	if [[ "$LKP_LOCAL_RUN" != "1" ]] && [[ "$subtest" = "capabilities" ]]; then
+		# workaround: run capabilities under user lkp
+		log_cmd chown lkp:lkp $subtest -R 2>&1
+		log_cmd su lkp -c "make run_tests -C $subtest 2>&1"
+	else
+		log_cmd make run_tests -C $subtest  2>&1
+	fi
 	[[ "$subtest" = "firmware" ]] && log_cmd mv 50-firmware.rules /lib/udev/rules.d/50-firmware.rules
 done
