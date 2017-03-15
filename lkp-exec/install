@@ -129,6 +129,18 @@ makepkg_install() {
 	fi
 }
 
+verify_install() {
+	local pkg=$1
+	case $DISTRO in
+		debian|ubuntu)
+			dpkg -l "$pkg" > /dev/null 2>&1;;
+		centos|fedora)
+			rpm -q "$pkg" > /dev/null;;
+		*)
+			return 1;;
+	esac
+}
+
 makepkg_install_packages() {
 	local script=$1
 	local distro=$2
@@ -140,7 +152,9 @@ makepkg_install_packages() {
 	[ -n "$packages" ] && [ "$packages" != " " ] || return
 
 	for pkg in $packages; do
-		makepkg_install "$pkg" || echo "Install $pkg failed"
+		if ! verify_install $pkg; then
+			makepkg_install "$pkg" || echo "Install $pkg failed"
+		fi
 	done
 }
 
@@ -253,7 +267,9 @@ do
 		}
 		install_packages "$script" $distro
 		makepkg_install_packages "$script" $distro
-		makepkg_install_benchmark "$script"
+		if ! verify_install "$script"; then
+			makepkg_install_benchmark "$script"
+		fi
 		build_install_benchmarks "$script" $distro
 	done
 done
