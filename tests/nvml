@@ -10,4 +10,6 @@ check_param "nvml"
 
 build_env  "nvml"
 
+enable_remote_node "nvml"
+
 run "nvml"
