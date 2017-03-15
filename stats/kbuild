@@ -11,7 +11,7 @@ $stdin.each_line { |line|
 	end
 }
 
-if iterations != 0 && runtime != 0
-	puts "iterations: #{iterations}"
-	puts "build-time: #{runtime / iterations}"
+if iterations != 0
+  buildtime_per_iteration = runtime / iterations
+  puts "buildtime_per_iteration: #{buildtime_per_iteration}"
 end

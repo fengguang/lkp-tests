@@ -1,0 +1,16 @@
+suite: kbuild
+testcase: kbuild
+category: benchmark
+
+runtime: 300s
+
+nr_task: 200%
+
+target: vmlinux_prereq
+build_kconfig: allyesconfig
+
+kbuild:
+
+---
+disk: 1HDD
+fs: ext4
