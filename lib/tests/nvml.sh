@@ -47,6 +47,34 @@ build_env()
 	log_cmd make EXTRA_CFLAGS=-DUSE_VALGRIND test || die "make test failed"
 }
 
+enable_remote_node()
+{
+	local casename=$1
+
+	log_cmd cd $BENCHMARK_ROOT/$casename/src/test || die "Can not find $casename/src/test dir"
+
+	# To fix no nodes provide. It takes another machines as remote nodes. We can use 
+	# localhost as remote node but need to do some configs as below.
+	for n in {0..3}
+	do
+		log_cmd echo "NODE[$n]=127.0.0.1" >> testconfig.sh
+		log_cmd mkdir -p "/remote/dir$n" || die "mkdir -p /remote/dir$n failed"
+		log_cmd echo "NODE_WORKING_DIR[$n]=/remote/dir$n" >> testconfig.sh
+	done
+
+	# enable ssh localhost without password
+	pgrep -l sshd || die "ssh server do not run"
+
+	log_cmd ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
+
+	log_cmd cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+
+	expect -c "set timeout -1;
+        spawn ssh 127.0.0.1 exit;
+        expect {
+            *(yes/no)* {send -- yes\r;exp_continue;}
+        }";
+}
 
 run()
 {
