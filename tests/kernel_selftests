@@ -75,10 +75,10 @@ for mf in */Makefile; do
 		}
 	fi
 
-	if [ "$subtest" = "pstore" ] && [ ! -e /dev/pmsg0 ]; then
+	if [[ "$subtest" = "pstore" ]] && [[ ! -e /dev/pmsg0 ]]; then
 		# in order to create a /dev/pmsg0, we insert a dummy ramoops device
 		modprobe ramoops mem_address=0x8000000 ecc=1 mem_size=1000000 2>&1
-		[ ! -e /dev/pmsg0 ] && {
+		[[ ! -e /dev/pmsg0 ]] && {
 			echo "skip pstore test: /dev/pmsg0 does not exist"
 			continue
 		}
@@ -90,7 +90,7 @@ for mf in */Makefile; do
 	[[ "$subtest" = "firmware" ]] && log_cmd mv /lib/udev/rules.d/50-firmware.rules . && {
 		# udev have many rules located at /lib/udev/rules.d/, once those rules are changed
 		# we need to restart udev service to reload the latest rules.
-		if [ -e /etc/init.d/udev ]; then
+		if [[ -e /etc/init.d/udev ]]; then
 			log_cmd /etc/init.d/udev restart
 		else
 			log_cmd systemctl restart systemd-udevd
