@@ -99,6 +99,7 @@ job['kconfig'] ||= 'defconfig'
 job['commit'] ||= `uname -r`.chomp!
 job['rootfs'] ||= `grep -m1 ^ID= /etc/os-release`.split('=')[1].chomp
 job['nr_cpu'] ||= `nproc`.to_i
+job['memory'] ||= `grep -w '^memory:' hosts/#{HOSTNAME}`.split(' ')[1].chomp
 job['compiler'] ||= File.symlink?('/usr/bin/gcc') ? File.readlink('/usr/bin/gcc') : 'gcc'
 job['NO_NETWORK'] = 1
 
