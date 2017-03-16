@@ -1,22 +1,35 @@
 #!/bin/sh
-# - taskset
+# - test_cpulist
+# - pgrp1_pattern
+# - pgrp1_cpulist
+# - pgrp2_pattern
+# - pgrp2_cpulist
 
-for pair in $(echo "$taskset" | tr '+' ' '); do
-        pattern=${pair%%:*}
-	if [ "$pattern" = "$pair" ]; then
-		test_taskset="$pair"
-	else
-		cpu_list=${pair##*:}
-		taskset -pc "$cpu_list" "$(pgrep "$pattern")"
-	fi
-done
+. $LKP_SRC/lib/reproduce-log.sh
 
-if [ -n "$test_taskset" ]; then
+if [ -n "$test_cpulist" ]; then
 	cat >> "$TMP"/env.yaml <<EOF
 
 # setup/taskset
-exec_prefix: taskset -c $test_taskset $exec_prefix
+exec_prefix: taskset -c $test_cpulist $exec_prefix
 EOF
-else
-	true
 fi
+
+taskset_for_pattern()
+{
+	pat=$1
+	cpulist=$2
+
+	if [ -n "$pat" ] && [ -n "$cpulist" ]; then
+		log_eval "
+for pid in \$(pgrep '$pat'); do
+	taskset -pc '$cpulist' \$pid
+done
+"
+	fi
+}
+
+taskset_for_pattern "$pgrp1_pattern" "$pgrp1_cpulist"
+taskset_for_pattern "$pgrp2_pattern" "$pgrp2_cpulist"
+
+true
