@@ -79,6 +79,32 @@ warn_empty_stats()
 	log_warn "empty stats for $log"
 }
 
+check_empty_json()
+{
+	local testcase=$(echo $RESULT_ROOT | cut -f3 -d"/")
+
+	[[ $testcase = '0day-boot-tests' ]] && return
+	[[ $testcase = '0day-kbuild-tests' ]] && return
+	[[ $testcase = 'borrow' ]] && return
+	[[ $testcase = 'boot' ]] && return
+
+	[[ -f $RESULT_ROOT/job.sh ]] || return
+
+	# testcase maybe different with run_case
+	# take fio-basic-1hdd-write.yaml job as example:
+	# - testcase will be fio-basic
+	# - run_case will be fio
+	local run_case=$(awk '/\$LKP_SRC\/tests\/wrapper/ {print $NF}' $RESULT_ROOT/job.sh)
+
+	[[ "$run_case" = "$stats_group" ]] || return
+
+	[[ -f $RESULT_ROOT/${stats_group}.json  || -f $RESULT_ROOT/${stats_group}.json.gz ]] || {
+		log_error "no generate json file for $stats_group, check $RESULT_ROOT"
+		echo -e "# no json file for $stats_group\nis_incomplete_run: 1" >> $RESULT_ROOT/last_state
+		exit 1
+	}
+}
+
 if [ -e $log.gz ]; then
 	[ -s $log.gz ] || exit 0
 	zcat $log.gz > $log
@@ -135,6 +161,8 @@ if [[ $program = 'ftrace' ]]; then
 else
 	dump_stat $stats_group $tmpfile
 fi
+
+check_empty_json
 
 if [ -f $log.gz ]; then
 	rm $log
