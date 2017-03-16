@@ -88,7 +88,7 @@ check_empty_json()
 	[[ $testcase = 'borrow' ]] && return
 	[[ $testcase = 'boot' ]] && return
 
-	[[ -f $RESULT_ROOT/job.sh ]] || return
+	[[ -f $RESULT_ROOT/job.sh ]] || return 0
 
 	# testcase maybe different with run_case
 	# take fio-basic-1hdd-write.yaml job as example:
@@ -96,12 +96,12 @@ check_empty_json()
 	# - run_case will be fio
 	local run_case=$(awk '/\$LKP_SRC\/tests\/wrapper/ {print $NF}' $RESULT_ROOT/job.sh)
 
-	[[ "$run_case" = "$stats_group" ]] || return
+	[[ "$run_case" = "$stats_group" ]] || return 0
 
-	[[ -f $RESULT_ROOT/${stats_group}.json  || -f $RESULT_ROOT/${stats_group}.json.gz ]] || {
-		log_error "no generate json file for $stats_group, check $RESULT_ROOT"
+	[[ -f $RESULT_ROOT/${stats_group}.json || -f $RESULT_ROOT/${stats_group}.json.gz ]] || {
+		log_warn "no generate json file for $stats_group, check $RESULT_ROOT"
 		echo -e "# no json file for $stats_group\nis_incomplete_run: 1" >> $RESULT_ROOT/last_state
-		exit 1
+		return 1
 	}
 }
 
