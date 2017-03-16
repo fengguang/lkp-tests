@@ -1,6 +1,8 @@
 #!/bin/sh
 # - priority
 
+. $LKP_SRC/lib/reproduce-log.sh
+
 if [ -z "$partitions" ]; then
 	echo "no partitions found" >&2
 	exit 1
@@ -8,9 +10,9 @@ fi
 
 [ -n "$priority" ] && opt_priority="-p $priority"
 
-swapoff -a
+log_cmd swapoff -a
 for i in $partitions; do
-	mkswap $i 2>/dev/null && swapon $i $opt_priority
+	log_cmd mkswap $i 2>/dev/null && log_cmd swapon $i $opt_priority
 done
 # verify swap priority
 cat /proc/swaps
