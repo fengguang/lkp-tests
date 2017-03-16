@@ -10,20 +10,23 @@ do
 	echo "# - sc_$j" >> $output
 done
 
-# separate line
-echo >> $output
+cat >> "$output" <<EOF
+
+. \$LKP_SRC/lib/reproduce-log.sh
+
+EOF
 
 # set
 for i in `find /proc/sys -maxdepth 2 -type f| sort -u`
 do
 	j=`basename $i | sed -r 's/-/_/g'`
 	cat >> $output << EOF
-[ -n "\$sc_$j" ] && echo \$sc_$j > $i
+[ -n "\$sc_$j" ] && log_eval "echo '\$sc_$j' > '$i'"
 EOF
 done
 
 # The script will return 1 unless the job file has set value for the last param
 # As returnning 1 will break the job run, return 0 explicitely.
-echo -e "\nexit 0" >> $output
+(echo; echo "exit 0") >> $output
 
 chmod +x $LKP_SRC/setup/sysctl
