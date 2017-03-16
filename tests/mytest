@@ -1,4 +1,6 @@
 #!/bin/sh
 # - mytest
 
-exec $MY_TEST_CMDLINE
+. $LKP_SRC/lib/reproduce-log.sh
+
+log_test $MY_TEST_CMDLINE
