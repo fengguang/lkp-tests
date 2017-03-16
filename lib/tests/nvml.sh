@@ -57,9 +57,9 @@ enable_remote_node()
 	# localhost as remote node but need to do some configs as below.
 	for n in {0..3}
 	do
-		log_cmd echo "NODE[$n]=127.0.0.1" >> testconfig.sh
+		echo "NODE[$n]=127.0.0.1" >> testconfig.sh
 		log_cmd mkdir -p "/remote/dir$n" || die "mkdir -p /remote/dir$n failed"
-		log_cmd echo "NODE_WORKING_DIR[$n]=/remote/dir$n" >> testconfig.sh
+		echo "NODE_WORKING_DIR[$n]=/remote/dir$n" >> testconfig.sh
 	done
 
 	# enable ssh localhost without password
