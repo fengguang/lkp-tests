@@ -98,6 +98,13 @@ def remove_common_head(arr1, arr2)
 	[arr1[s...arr1.size] || [], arr2[s...arr2.size] || []]
 end
 
+# To workaround const_defined?('A::B') error on some ruby version
+def get_the_const(name)
+  Object.const_get(name)
+rescue NameError
+  nil
+end
+
 ## IO
 
 def format_number(number)

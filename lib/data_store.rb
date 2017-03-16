@@ -206,7 +206,7 @@ module DataStore
 			glob(INDEX_GLOB) { |dir|
 				if Dir.exist?(dir)
 					cls_name, name = parse_index_path dir
-					if Object.const_defined?(cls_name) and cls = Object.const_get(cls_name)
+					if cls = get_the_const(cls_name)
 						indexes << cls.new(dir)
 					end
 				end
