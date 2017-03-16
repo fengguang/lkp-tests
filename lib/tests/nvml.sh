@@ -90,6 +90,9 @@ run()
 	# to fix SKIP: C++11 required
 	log_cmd export CXX=g++
 
+	# enable remote valgrind test
+	echo "RPMEM_VALGRIND_ENABLED=y" >> testconfig.sh
+
 	while read testcase
 	do
 		if [ "$LKP_LOCAL_RUN" != "1" ] && echo "$user_filter" | grep -q -w "$testcase"; then
