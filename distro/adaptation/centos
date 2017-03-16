@@ -52,8 +52,8 @@ libuv1-dev: libuv-devel
 libssl1.0.0: openssl-devel
 libssl1.1: openssl-devel
 pkg-config: pkgconfig
-libc6-dev: glibc-devel
-libc6-dev:i386: glibc-devel.i686
+libc6-dev: glibc-devel glibc-static
+libc6-dev:i386: glibc-devel.i686 glibc-static.i686
 libdbus-1-dev: dbus-devel
 libdrm-dev: libdrm-devel
 libgles2-mesa: mesa-libGLES

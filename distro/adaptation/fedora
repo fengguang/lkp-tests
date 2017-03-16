@@ -22,7 +22,7 @@ binutils-dev: binutils-devel
 libiberty-dev: binutils-devel
 libsqlite3-dev: libsqlite3x-devel
 iozone3:
-libc6-dev: glibc-devel
+libc6-dev: glibc-devel glibc-static
 libpopt0: popt
 libpopt-dev: popt-devel
 python-minimal: python2
@@ -72,7 +72,7 @@ linux-libc-dev:i386: kernel-headers
 linux-libc-dev: kernel-headers
 libklibc-dev:
 linux-perf: perf
-libc6-dev:i386: glibc-devel.i686
+libc6-dev:i386: glibc-devel.i686 glibc-static.i686
 fsmark: fs_mark
 gfortran: gcc-gfortran
 iproute2: iproute
