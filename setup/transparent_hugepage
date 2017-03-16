@@ -3,14 +3,16 @@
 # - thp_defrag
 # - shmem_enabled
 
-if [ -n "$thp_enabled" ]; then 
-	echo $thp_enabled > /sys/kernel/mm/transparent_hugepage/enabled
+. $LKP_SRC/lib/reproduce-log.sh
+
+if [ -n "$thp_enabled" ]; then
+	log_eval "echo '$thp_enabled' > /sys/kernel/mm/transparent_hugepage/enabled"
 fi
 
 if [ -n "$thp_defrag" ]; then
-	echo $thp_defrag > /sys/kernel/mm/transparent_hugepage/defrag
+	log_eval "echo '$thp_defrag' > /sys/kernel/mm/transparent_hugepage/defrag"
 fi
 
 if [ -n "$shmem_enabled" ]; then
-	echo "$shmem_enabled" > /sys/kernel/mm/transparent_hugepage/shmem_enabled
+	log_eval "echo '$shmem_enabled' > /sys/kernel/mm/transparent_hugepage/shmem_enabled"
 fi
