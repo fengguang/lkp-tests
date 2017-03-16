@@ -6,10 +6,12 @@
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/tests/nvml.sh
 
-check_param "nvml"
+check_param "$testcase"
 
-build_env  "nvml"
+fixup_valgrind
 
-enable_remote_node "nvml"
+build_env "$testcase" || die "build env failed"
 
-run "nvml"
+enable_remote_node "$testcase"
+
+run "$testcase"
