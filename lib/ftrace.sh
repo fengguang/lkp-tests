@@ -20,16 +20,16 @@ ftrace_set()
 	stdbuf -oL echo "$@" > "$TRACING/$target"
 }
 
-ftrace_set_cpuset()
+ftrace_set_cpulist()
 {
-	[ -z "$ftrace_cpuset" ] && {
+	[ -z "$ftrace_cpulist" ] && {
 		ftrace_set "$@"
 		return
 	}
 
 	target=$1
 	shift
-	for cpu in $ftrace_cpuset; do
+	for cpu in $ftrace_cpulist; do
 		stdbuf -oL echo "$@" > "$TRACING/per_cpu/cpu$cpu/$target"
 	done
 }
@@ -82,7 +82,7 @@ ftrace_test_save_time_delta()
 
 ftrace_set_params()
 {
-	ftrace_cpuset="$(expand_cpu_list "$ftrace_cpuset")"
+	ftrace_cpulist="$(expand_cpu_list "$ftrace_cpulist")"
 
 	if [ -z "$delay" ]; then
 		if [ -n "$runtime" ]; then
@@ -98,7 +98,7 @@ ftrace_set_params()
 	# ftrace_test_save_time_delta
 	ftrace_reset
 
-	[ -n "$buffer_size_kb" ] && ftrace_set_cpuset buffer_size_kb "$buffer_size_kb"
+	[ -n "$buffer_size_kb" ] && ftrace_set_cpulist buffer_size_kb "$buffer_size_kb"
 
 	if [ -n "$events" ]; then
 		mkdir -p "$FTRACE_EVENTS_DIR"
@@ -141,7 +141,7 @@ ftrace_show_params()
 	do
 		echo "$param:" "$(ftrace_get "$param")"
 	done
-	echo "cpu set: $ftrace_cpuset"
+	echo "cpu set: $ftrace_cpulist"
 }
 
 ftrace_start()
@@ -171,8 +171,8 @@ ftrace_run()
 	cat >> "$TMP_RESULT_ROOT/ftrace.postrun" <<EOF
 #!/bin/sh
 
-if [ -n "$ftrace_cpuset" ]; then
-	for cpu in $ftrace_cpuset; do
+if [ -n "$ftrace_cpulist" ]; then
+	for cpu in $ftrace_cpulist; do
 		cat "/sys/kernel/debug/tracing/per_cpu/cpu\$cpu/trace"
 	done
 else
