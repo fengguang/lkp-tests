@@ -1,9 +1,11 @@
 #!/bin/sh
 
+# usage: git_clone_update https://github.com/pmem/valgrind.git [dir] [--branch master]
 git_clone_update()
 {
 	local url=$1
 	local dir
+	local branch=master
 	shift
 
 	if [ -n "$1" -a "$1" = "${1#-}" ]; then
@@ -11,6 +13,10 @@ git_clone_update()
 		shift
 	else
 		dir=$(basename $url .git)
+	fi
+
+	if [ "$1" = "--branch" ] && [ -n "$2" ]; then
+		branch=$2
 	fi
 
 	source_dir=$PWD/$dir
@@ -28,8 +34,8 @@ git_clone_update()
 				$git remote update origin 2>&1
 
 				echo \
-				$git checkout -q origin/master
-				$git checkout -q origin/master 2>&1 && break
+				$git checkout -q origin/$branch
+				$git checkout -q origin/$branch 2>&1 && break
 			done
 		)
 	else
