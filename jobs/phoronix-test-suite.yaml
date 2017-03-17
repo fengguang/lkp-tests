@@ -4,6 +4,8 @@ category: benchmark
 
 rootfs: inn:/export/debian-full-x86_64
 
+need_memory: 8G
+
 phoronix-test-suite:
   test:
   - parboil-1.1.2
