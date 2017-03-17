@@ -1,0 +1,7 @@
+#!/bin/sh
+
+date=$(date +'%F %T')
+echo "$date $exec_prefix $*"
+echo "$exec_prefix" "$@" >> "$TMP_RESULT_ROOT/reproduce.sh"
+
+exec "$@"
