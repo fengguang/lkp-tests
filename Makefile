@@ -1,2 +1,2 @@
 install:
-	ln -sf $(PWD)/bin/lkp /usr/local/bin/lkp
+	ln -sf `pwd`/bin/lkp /usr/local/bin/lkp
