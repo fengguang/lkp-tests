@@ -15,7 +15,9 @@
 # 0 is the default value, means setup by vm-scalability itself.
 # 1 means setup by disk/fs, etc.
 
-cd $BENCHMARK_ROOT/vm-scalability || exit
+. $LKP_SRC/lib/reproduce-log.sh
+
+log_eval "cd $BENCHMARK_ROOT/vm-scalability" || exit
 
 [ -n "$runtime" ] || runtime=300
 [ -n "$pre_setup" ] || pre_setup=0
@@ -34,7 +36,7 @@ echo 1		> /proc/sys/vm/overcommit_memory
 echo $((1<<30)) > /proc/sys/vm/max_map_count
 echo $((1<<20)) > /proc/sys/kernel/threads-max
 
-export CMD=log_cmd
+export CMD=log_test
 [ -n "$mount_points" ] && export SPARSE_ROOT=$(echo $mount_points | cut -d " " -f1)
 . ./hw_vars
 
@@ -73,7 +75,7 @@ if [ -n "$size" ]; then
 	set_repeat_count
 	for i in $(seq $repeat)
 	do
-		log_cmd "./case-$test"
+		log_test "./case-$test"
 		[ "$i" -le "$repeat" ] && {
 			now=`date +%s`
 			[ "$((now - cur))" -gt "$runtime" ] && {
@@ -83,7 +85,7 @@ if [ -n "$size" ]; then
 		}
 	done
 else
-	log_cmd "./case-$test"
+	log_test "./case-$test"
 fi
 
 if [ "$pre_setup" = "0" ]; then 
