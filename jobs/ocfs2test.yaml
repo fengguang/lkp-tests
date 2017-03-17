@@ -15,7 +15,7 @@ ocfs2test:
     # - test-buildkernel # we have kernel build already, ignore
     - test-tunefs
     - test-sendfile
-    - test-reserve_space
+    # - test-reserve_space # known bug, this test case can not work 
     - test-backup_super
     # - test-inline # runs slow (> 1h)
     # - test-xattr # runs slow (> 1h)
