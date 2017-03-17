@@ -23,18 +23,6 @@ check_param()
 	[[ -n "$testcases" ]] || die "Parameter \"group\" is invalid"
 }
 
-
-fixup_valgrind()
-{
-	# at pack/nvml stage, we install valgrind bianries to /tmp/valgrind_install/usr/local
-	# and then pack them to /usr/local. However when those binaries are executed,
-	# they will reference to /tmp/valgrind_install/user/local where they are installed
-	# so here we create a symbolic link to make valgrind work
-
-	log_cmd mkdir -p /tmp/valgrind_install || die "mkdir -p /tmp/valgrind_install failed"
-	log_cmd ln -sf /usr /tmp/valgrind_install/usr || die "link failed"
-}
-
 build_env()
 {
 	local casename=$1

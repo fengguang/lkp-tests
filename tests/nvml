@@ -8,8 +8,6 @@
 
 check_param "$testcase"
 
-fixup_valgrind
-
 build_env "$testcase" || die "build env failed"
 
 enable_remote_node "$testcase"
