@@ -1,23 +1,37 @@
-pkgname=f2fs-tools
-pkgver=1.6
+# Maintainer: Boohbah <boohbah at gmail.com>
+# Contributor: Christian Hesse <mail at eworm.de>
+# Contributor: figue <ffigue at gmail.com>
+# Contributor: vinibali <vinibali1 at gmail.com>
+
+pkgname=f2fs-tools-git
+_gitname=f2fs-tools
+pkgver=1.7.0
 pkgrel=1
-pkgdesc="Tools for Flash-Friendly File System"
+pkgdesc="Tools for Flash-Friendly File System (F2FS) (git version)"
 arch=('i686' 'x86_64')
-url="http://git.kernel.org/cgit/linux/kernel/git/jaegeuk/f2fs-tools.git"
+url="http://sourceforge.net/projects/f2fs-tools/"
 license=('GPL')
-depends=()
+depends=('')
+provides=('f2fs-tools')
+conflicts=('f2fs-tools')
 source=("git://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs-tools.git")
-md5sums=('f4fe0b59ffef1eef71c20d12381a3054')
+md5sums=('SKIP')
+
+pkgver() {
+  cd $_gitname
+  git describe --all | sed 's:tags/::;s/v//;s/-/./g'
+}
 
 build() {
-  cd "$srcdir/$pkgname-$pkgver.$pkgrel"
-  autoreconf --install
-  ./configure
+  cd $_gitname
+  autoreconf -fi
+  ./configure --prefix=/usr --sbindir=/usr/bin
   make
 }
 
 package() {
-  mkdir -p "$pkgdir/usr/local/bin"
-  cp "$srcdir/$pkgname-$pkgver.$pkgrel/mkfs/mkfs.f2fs" "$pkgdir/usr/local/bin/"
+  cd $_gitname
+  make DESTDIR="$pkgdir" sbindir=/usr/bin install
 }
 
+# vim:set ts=2 sw=2 et:
