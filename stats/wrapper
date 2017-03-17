@@ -98,11 +98,15 @@ check_empty_json()
 
 	[[ "$run_case" = "$stats_group" ]] || return 0
 
-	[[ -f $RESULT_ROOT/${stats_group}.json || -f $RESULT_ROOT/${stats_group}.json.gz ]] || {
-		log_warn "no generate json file for $stats_group, check $RESULT_ROOT"
-		echo -e "# no json file for $stats_group\nis_incomplete_run: 1" >> $RESULT_ROOT/last_state
-		return 1
-	}
+	if [[ ! -f $RESULT_ROOT/${stats_group}.json && ! -f $RESULT_ROOT/${stats_group}.json.gz ]]; then
+		if [[ -f $RESULT_ROOT/last_state ]] && grep -q is_incomplete_run $RESULT_ROOT/last_state; then
+			return 1
+		else
+			log_warn "no generate json file for $stats_group, check $RESULT_ROOT"
+			echo -e "# no json file for $stats_group\nis_incomplete_run: 1" >> $RESULT_ROOT/last_state
+			return 1
+		fi
+	fi
 }
 
 if [ -e $log.gz ]; then
