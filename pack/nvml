@@ -2,14 +2,13 @@
 
 download()
 {
-	git_clone_update https://github.com/pmem/valgrind.git || return
+	git_clone_update https://github.com/pmem/valgrind.git --branch pmem-3.12 || return
 	git_clone_update https://github.com/pmem/nvml.git || return
 }
 
 build_install_valgrind_pmem()
 {
 	cd ../valgrind || return
-	git checkout origin/pmem-3.12 || return
 	git submodule init || return
 	git submodule update || return
 
