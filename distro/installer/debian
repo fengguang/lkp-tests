@@ -2,7 +2,7 @@
 
 # Debian package installation
 
-sudo dpkg --add-architecture i386 && sudo apt-get update
-sudo apt-get -o Dpkg::Options::="--force-confdef" \
+dpkg --add-architecture i386 && apt-get update
+apt-get -o Dpkg::Options::="--force-confdef" \
      -o Dpkg::Options::="--force-confold" \
      -y install $*
