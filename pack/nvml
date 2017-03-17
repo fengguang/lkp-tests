@@ -14,6 +14,11 @@ build_install_valgrind_pmem()
 	git submodule update || return
 
 	./autogen.sh || return
+	./configure --prefix=/usr/local || return
+	make || return
+	make install || return
+
+	# install to another directory so that we can pack them easily
 	./configure --prefix=/tmp/valgrind_install/usr/local || return
 	make || return
 	make install || return
@@ -36,7 +41,7 @@ pack()
 		echo /lkp
 		echo /lkp/benchmarks
 		find /lkp/benchmarks/$BM_NAME
-		find usr
+		find ./usr | sed 's/^.//'
 	} |
 	cpio --quiet -o -H newc | gzip -n -9 > /lkp/benchmarks/${BM_NAME}.cgz
 	[[ $arch ]] && mv "/lkp/benchmarks/${BM_NAME}.cgz" "/lkp/benchmarks/${BM_NAME}-${arch}.cgz"
