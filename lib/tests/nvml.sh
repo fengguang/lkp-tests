@@ -29,14 +29,8 @@ build_env()
 
 	log_cmd cd $BENCHMARK_ROOT/$casename
 
-	# not use log_cmd here
-	# since re-define make() in lib/build.sh, may cause the error like below:
-	#
-	# find: '/tmp/lkp/make-stderr': No such file or directory           
-	# cp: cannot stat '/tmp/lkp/make-stderr': No such file or directory
-	#
-	make EXTRA_CFLAGS=-DUSE_VALGRIND || return
-	make EXTRA_CFLAGS=-DUSE_VALGRIND test || return
+	log_cmd make EXTRA_CFLAGS=-DUSE_VALGRIND || return
+	log_cmd make EXTRA_CFLAGS=-DUSE_VALGRIND test || return
 }
 
 enable_remote_node()
