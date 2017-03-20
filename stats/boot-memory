@@ -4,12 +4,12 @@ RESULT_ROOT = ENV['RESULT_ROOT']
 
 require 'json'
 
-def calc_bootmem()
+def calc_bootmem
   return unless File.exist?("#{RESULT_ROOT}/memmap.json")
   return unless File.exist?("#{RESULT_ROOT}/boot-meminfo.json")
 
-  memmap = JSON.load File.read "#{RESULT_ROOT}/memmap.json"
-  meminfo = JSON.load File.read "#{RESULT_ROOT}/boot-meminfo.json"
+  memmap = JSON.parse(File.read("#{RESULT_ROOT}/memmap.json"))
+  meminfo = JSON.parse(File.read("#{RESULT_ROOT}/boot-meminfo.json"))
 
   printf "bootmem: %d\n", memmap['memmap.System_RAM'][0] - meminfo['boot-meminfo.MemTotal'][0]
 end

@@ -6,7 +6,7 @@ STDIN.gets
 num_objs = 0
 num_pages = 0
 
-while line = STDIN.gets
+while (line = STDIN.gets)
   v = line.split
   pagesperslab = v[5].to_i
   num_slabs = v[14].to_i

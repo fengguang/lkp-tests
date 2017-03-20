@@ -1,18 +1,22 @@
 #!/usr/bin/env ruby
 
-require ENV['LKP_SRC'] + "/lib/statistics.rb"
+require ENV['LKP_SRC'] + '/lib/statistics.rb'
 
-while line = STDIN.gets
+while (line = STDIN.gets)
   case line
   when /^(\d+) records\/s(.*)$/
     puts 'throughput: ' + $1
     throughput = $1.to_i
-    data = $2.split.map {|v| v.to_i }
+    data = $2.split.map(&:to_i)
+
     puts 'throughput.per_thread.min: ' + data.min.to_s
     puts 'throughput.per_thread.max: ' + data.max.to_s
     puts 'throughput.per_thread.stddev_percent: ' + (100.0 * data.standard_deviation / throughput).to_s
-  when /^real\ +(\d+.\d+) s/;  puts 'time.real: ' + $1
-  when /^user\ +(\d+.\d+) s/;  puts 'time.user: ' + $1
-  when /^sys\ +(\d+.\d+) s/;  puts 'time.sys: ' + $1
+  when /^real\ +(\d+.\d+) s/
+    puts 'time.real: ' + $1
+  when /^user\ +(\d+.\d+) s/
+    puts 'time.user: ' + $1
+  when /^sys\ +(\d+.\d+) s/
+    puts 'time.sys: ' + $1
   end
 end

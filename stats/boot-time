@@ -8,13 +8,13 @@ def show_dmesg_times
     case line
     when /\[ *(\d+\.\d+)\] Sending DHCP requests/
       puts 'dhcp: ' + $1
-      return
+      break
     end
   end
 end
 show_dmesg_times
 
-if line = STDIN.gets
+if (line = STDIN.gets)
   boot, idle = line.split
   puts 'boot: ' + boot
   puts 'idle: ' + idle

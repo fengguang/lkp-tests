@@ -4,8 +4,8 @@
 STDIN.each_line do |line|
   case line
   when /^Throughput/
-    throughput, clients, procs, max_latency = line.tr('a-zA-Z_=/', '').split
+    throughput, clients, _procs, _max_latency = line.tr('a-zA-Z_=/', '').split
     puts "throughput-#{clients}: #{throughput}"
-    puts ""
+    puts ''
   end
 end

@@ -12,9 +12,9 @@ STDIN.each_line do |line|
   end
 end
 
-counts.each { |k, v|
+counts.each do |k, v|
   # Joules to watts calculation formula: P(W) = E(J)/t(s)
   # To convert the raw count in Watt: W = C * 0.23 / (1e9 * time)
   watt = v.to_f * 0.23 / (1e9 * (time[1].to_f - time[0].to_f))
   puts "#{k}: #{watt}"
-}
+end
