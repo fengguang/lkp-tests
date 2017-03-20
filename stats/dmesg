@@ -19,7 +19,7 @@
 # on kmsg and falls back to dmesg) to catch 50000+ printk messages whose level
 # is >= KERN_WARNING.
 
-LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($0)))
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 require "#{LKP_SRC}/lib/dmesg.rb"
 
 if ARGV[0]
@@ -33,10 +33,9 @@ elsif ENV['RESULT_ROOT']
   if File.exist? serial_file
     dmesg_file = serial_file
 
-    if File.exist?(kmsg_file) and
-       File.size(kmsg_file) > 0
-      if File.size(serial_file) == 0
-        $stderr.puts "unexpected 0-sized serial file " + serial_file
+    if File.size?(kmsg_file)
+      if File.size(serial_file).zero?
+        $stderr.puts "unexpected 0-sized serial file #{serial_file}"
         dmesg_file = kmsg_file
       end
     else
@@ -55,7 +54,7 @@ else
   exit
 end
 
-if not File.exist?(dmesg_file) or File.size(dmesg_file) == 0
+unless File.size? dmesg_file
   # puts "early-boot-hang: 1"
   exit
 end
@@ -67,7 +66,7 @@ def verify_serial_log(dmesg_lines)
   return unless $PROGRAM_NAME =~ /dmesg/
   return if RESULT_ROOT.nil? || RESULT_ROOT.empty?
 
-  dmesg_lines.grep(/RESULT_ROOT=/) { |line|
+  dmesg_lines.grep(/RESULT_ROOT=/) do |line|
     next if line =~ /(^|[0-9]\] )kexec -l | --initrd=| --append=|"$/
     next unless line =~ / RESULT_ROOT=([A-Za-z0-9.,;_\/+%:@=-]+) /
     rt = $1
@@ -75,7 +74,7 @@ def verify_serial_log(dmesg_lines)
     if rt != RESULT_ROOT
       $stderr.puts "RESULT_ROOT mismatch in dmesg: #{RESULT_ROOT} #{rt}"
     end
-  }
+  end
 end
 verify_serial_log(dmesg_lines)
 
@@ -104,20 +103,18 @@ else
   end
 end
 
-lines.reverse_each { |line|
+lines.reverse_each do |line|
   if line =~ /^(<[0-9]+>|....  :..... : )?\[ *(\d{1,6}\.\d{6})\] /
     error_stamps['last'] = $2
     break
   end
-}
+end
 
-oops_map.each { |bug_to_bisect, line|
+oops_map.each do |bug_to_bisect, line|
   line.chomp!
 
   if line =~ /^(<[0-9]+>|....  :..... : )?\[ *(\d{1,6}\.\d{6})\] /
     timestamp = $2
-  else
-    timestamp = nil
   end
 
   break if line =~ /trinity.* invoked oom-killer:/
@@ -138,20 +135,20 @@ oops_map.each { |bug_to_bisect, line|
   error_ids[error_id] ||= bug_to_bisect
   error_lines[error_id] ||= line
   error_stamps[error_id] ||= timestamp if timestamp
-}
+end
 
-puts "boot_failures: 1" if $PROGRAM_NAME =~ /dmesg/ and not error_ids.empty?
+puts 'boot_failures: 1' if $PROGRAM_NAME =~ /dmesg/ && !error_ids.empty?
 
 # This shows each error id only once
-error_ids.each { |error_id, line|
+error_ids.each do |error_id, line|
   puts
   puts '# ' + line
   puts error_id + ': 1'
   puts 'message:' + error_id + ': ' + error_lines[error_id]
   puts 'pattern:' + error_id + ': ' + line
-}
+end
 
 puts
-error_stamps.each { |error_id, timestamp|
+error_stamps.each do |error_id, timestamp|
   puts "timestamp:#{error_id}: #{timestamp}"
-}
+end
