@@ -1,24 +1,24 @@
 #!/usr/bin/env ruby
 
-require ENV['LKP_SRC'] + "/lib/statistics.rb"
+require ENV['LKP_SRC'] + '/lib/statistics.rb'
 
-$samples = {}
+samples = {}
 
-def show_samples
-  $samples.each { |k, v|
+def show_samples(samples)
+  samples.each do |k, v|
     puts k + ': ' + v.sum.to_s
-  }
-  $samples.clear
+  end
+  samples.clear
 end
 
 STDIN.each_line do |line|
   case line
   when /^time: /
-    show_samples
+    show_samples samples
   when /^cpu\d+\.([^:]+): (.*)/
-    $samples[$1] ||= []
-    $samples[$1] << $2.to_i
+    samples[$1] ||= []
+    samples[$1] << $2.to_i
   end
 end
 
-show_samples
+show_samples samples
