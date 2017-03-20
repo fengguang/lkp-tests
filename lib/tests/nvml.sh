@@ -77,6 +77,12 @@ run()
 
 	while read testcase
 	do
+		# fix working dir not found
+		for n in {0..3}
+		do
+			log_cmd mkdir -p "/remote/dir$n/test_$testcase" || die "mkdir -p /remote/dir$n/test_testcase failed"
+		done
+
 		if [ "$LKP_LOCAL_RUN" != "1" ] && echo "$user_filter" | grep -q -w "$testcase"; then
 			log_cmd chown lkp:lkp -R $BENCHMARK_ROOT/$casename
 			log_cmd chown lkp:lkp -R /tmp
