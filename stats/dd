@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 
 while line = STDIN.gets
-	case line
-	when /^startup_time: /, /^kill_time: /
-		puts line
-	end
+  case line
+  when /^startup_time: /, /^kill_time: /
+    puts line
+  end
 end

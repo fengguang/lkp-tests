@@ -5,20 +5,20 @@ require ENV['LKP_SRC'] + "/lib/statistics.rb"
 $samples = {}
 
 def show_samples
-	$samples.each { |k, v|
-		puts k + ': ' + v.sum.to_s
-	}
-	$samples.clear
+  $samples.each { |k, v|
+    puts k + ': ' + v.sum.to_s
+  }
+  $samples.clear
 end
 
 STDIN.each_line do |line|
-	case line
-	when /^time: /
-		show_samples
-	when /^cpu\d+\.([^:]+): (.*)/
-		$samples[$1] ||= []
-		$samples[$1] << $2.to_i
-	end
+  case line
+  when /^time: /
+    show_samples
+  when /^cpu\d+\.([^:]+): (.*)/
+    $samples[$1] ||= []
+    $samples[$1] << $2.to_i
+  end
 end
 
 show_samples

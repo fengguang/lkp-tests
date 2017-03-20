@@ -2,14 +2,14 @@
 
 stats = {}
 while line = STDIN.gets
-	case line
-	when /^[ ]+\+ \S+\/(\S+)$/
-		item  = $1
-	when /\.\.\.[ ]+([\S\s]+)$/
-		stats[item] = $1.strip.to_s.gsub(' ', '_').downcase
-	end
+  case line
+  when /^[ ]+\+ \S+\/(\S+)$/
+    item  = $1
+  when /\.\.\.[ ]+([\S\s]+)$/
+    stats[item] = $1.strip.to_s.gsub(' ', '_').downcase
+  end
 end
 
 stats.each { |k, v|
-	puts k + '.' + v + ': 1'
+  puts k + '.' + v + ': 1'
 }

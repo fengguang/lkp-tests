@@ -2,21 +2,21 @@
 
 sum = { "node-loads"=>0, "node-load-misses"=>0, "node-stores"=>0, "node-store-misses"=>0 }
 STDIN.each_line do |line|
-	time, value, key = line.split
-	next unless value =~ /^\d+$/
-	sum[key] += value.to_i
+  time, value, key = line.split
+  next unless value =~ /^\d+$/
+  sum[key] += value.to_i
 end
 
 if ((sum["node-loads"] + sum["node-load-misses"]) != 0)
-	node_local_load_ratio = (100 * sum["node-loads"]) / (sum["node-loads"] + sum["node-load-misses"])
+  node_local_load_ratio = (100 * sum["node-loads"]) / (sum["node-loads"] + sum["node-load-misses"])
 else
-	node_local_load_ratio = -1
+  node_local_load_ratio = -1
 end
 
 if (sum["node-stores"] + sum["node-store-misses"]) != 0
-	node_local_store_ratio = (100 * sum["node-stores"]) / (sum["node-stores"] + sum["node-store-misses"])
+  node_local_store_ratio = (100 * sum["node-stores"]) / (sum["node-stores"] + sum["node-store-misses"])
 else
-	node_local_store_ratio = -1
+  node_local_store_ratio = -1
 end
 
 puts "node-loads: #{sum['node-loads']}"

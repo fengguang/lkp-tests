@@ -8,40 +8,40 @@ error_ids = Hash.new
 
 $ignore_patterns = []
 Dir["#{LKP_SRC}/etc/ignore-stderr/*"].each { |f|
-	File.open(f).each_line { |line|
-		$ignore_patterns << Regexp.new('^' + line.chomp + '$')
-	}
+  File.open(f).each_line { |line|
+    $ignore_patterns << Regexp.new('^' + line.chomp + '$')
+  }
 }
 
 def should_ignore_stderr(line)
-	$ignore_patterns.any? do |re|
-		# ERR in `match': invalid byte sequence in US-ASCII (ArgumentError)
-		# treat unrecognized line as "can't be ignored"
-		re.match line rescue nil
-	end
+  $ignore_patterns.any? do |re|
+    # ERR in `match': invalid byte sequence in US-ASCII (ArgumentError)
+    # treat unrecognized line as "can't be ignored"
+    re.match line rescue nil
+  end
 end
 
 while line = gets
-	next if should_ignore_stderr(line.chomp!)
-	# ERR: lib/dmesg.rb:151:in `gsub!': invalid byte sequence in US-ASCII (ArgumentError)
-	line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
-	line = line.strip_nonprintable_characters
-	id = common_error_id(line)
+  next if should_ignore_stderr(line.chomp!)
+  # ERR: lib/dmesg.rb:151:in `gsub!': invalid byte sequence in US-ASCII (ArgumentError)
+  line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
+  line = line.strip_nonprintable_characters
+  id = common_error_id(line)
 
-	next if id.size < 3
-	error_ids[id] = line
+  next if id.size < 3
+  error_ids[id] = line
 end
 
 error_ids.each { |id, line|
-	puts '# ' + line
-	puts id + ': 1'
-	puts
+  puts '# ' + line
+  puts id + ': 1'
+  puts
 }
 
 if error_ids.size > 0
-	puts 'has_stderr: 1'
+  puts 'has_stderr: 1'
 end
 
 if error_ids.size > 100
-	$stderr.puts "WARN: noisy stderr, check #{ENV['RESULT_ROOT']}/stderr"
+  $stderr.puts "WARN: noisy stderr, check #{ENV['RESULT_ROOT']}/stderr"
 end

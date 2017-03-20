@@ -3,17 +3,17 @@
 stats = {}
 
 while line = STDIN.gets
-	case line
-	when /^mce-log-item:(\S+)$/
-		item = $1
-	when /^(\S+)\.conf: triggers trigger as expected$/
-		stats[item + "." + $1] = "pass"
-	when /^(\S+)\.conf: triggers did not trigger as expected:/
-		stats[item + "." + $1] = "fail"
-	end
+  case line
+  when /^mce-log-item:(\S+)$/
+    item = $1
+  when /^(\S+)\.conf: triggers trigger as expected$/
+    stats[item + "." + $1] = "pass"
+  when /^(\S+)\.conf: triggers did not trigger as expected:/
+    stats[item + "." + $1] = "fail"
+  end
 end
 
 stats.each { |k, v|
-	puts k + '.' + v + ': 1'
+  puts k + '.' + v + ': 1'
 }
 puts "total_test: " + stats.size.to_s

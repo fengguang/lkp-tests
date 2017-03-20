@@ -7,24 +7,24 @@ $per_process = []
 $per_thread = []
 
 while line = STDIN.gets
-	case line.chomp!
-	when /^[a-z_,]+$/
-		names = line.split ','
-		names.shift
-	when /^[0-9.,]+$/
-		values = line.split ','
-		nr_task = values.shift
-		next if nr_task == '0'
-		linear = values[-1].to_i
-		$scalability << values[0].to_f / linear if linear != 0 and nr_task != '1'
-		$per_process << values[0].to_f / nr_task.to_i
-		$per_thread << values[2].to_f / nr_task.to_i
-		names.each_with_index do |name, i|
-			puts nr_task + '.' + name + ': ' + values[i]
-		end
-	when /(Assertion .* failed)/
-		puts $1.sub(/.*: /, '').tr('^a-zA-Z0-9<>!=', '_').gsub(/__+/, '_') + ': 1'
-	end
+  case line.chomp!
+  when /^[a-z_,]+$/
+    names = line.split ','
+    names.shift
+  when /^[0-9.,]+$/
+    values = line.split ','
+    nr_task = values.shift
+    next if nr_task == '0'
+    linear = values[-1].to_i
+    $scalability << values[0].to_f / linear if linear != 0 and nr_task != '1'
+    $per_process << values[0].to_f / nr_task.to_i
+    $per_thread << values[2].to_f / nr_task.to_i
+    names.each_with_index do |name, i|
+      puts nr_task + '.' + name + ': ' + values[i]
+    end
+  when /(Assertion .* failed)/
+    puts $1.sub(/.*: /, '').tr('^a-zA-Z0-9<>!=', '_').gsub(/__+/, '_') + ': 1'
+  end
 end
 
 printf "scalability: %f\n", $scalability[-1] unless $scalability.empty?

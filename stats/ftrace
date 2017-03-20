@@ -17,58 +17,58 @@ $last_recorded_time = {}
 $yaml_files = {}
 
 def normlize_record(event, record, key_prefix_items)
-	key_prefix = event
-	key_prefix_items.each { |key|
-		v = record[key]
-		next if v == nil or v == ""
+  key_prefix = event
+  key_prefix_items.each { |key|
+    v = record[key]
+    next if v == nil or v == ""
 
-		if key == "bdi"
-			return unless $bdi_dev_mapping
-			dev = $bdi_dev_mapping[v]
-			return unless dev
-			key_prefix += "." + dev
-		else
-			key_prefix += "." + key + "." + record[key]
-		end
-	}
+    if key == "bdi"
+      return unless $bdi_dev_mapping
+      dev = $bdi_dev_mapping[v]
+      return unless dev
+      key_prefix += "." + dev
+    else
+      key_prefix += "." + key + "." + record[key]
+    end
+  }
 
-	record['time'] = (record['time'].to_f + TIME_DELTA).floor.to_s
-	return if $last_recorded_time[key_prefix] == record['time']
-	$last_recorded_time[key_prefix] = record['time']
+  record['time'] = (record['time'].to_f + TIME_DELTA).floor.to_s
+  return if $last_recorded_time[key_prefix] == record['time']
+  $last_recorded_time[key_prefix] = record['time']
 
-	$yaml_files[key_prefix] ||= File.new(RESULT_ROOT + '/' + "ftrace.#{key_prefix}.yaml", 'w', 0664)
+  $yaml_files[key_prefix] ||= File.new(RESULT_ROOT + '/' + "ftrace.#{key_prefix}.yaml", 'w', 0664)
 
-	record.each { |k, v|
-		next if key_prefix_items.include? k
+  record.each { |k, v|
+    next if key_prefix_items.include? k
 
-		# we store digit only
-		next unless v =~ /^-?\d+(\.\d+)?$/
-		$yaml_files[key_prefix].puts "#{k}: #{v}"
-	}
+    # we store digit only
+    next unless v =~ /^-?\d+(\.\d+)?$/
+    $yaml_files[key_prefix].puts "#{k}: #{v}"
+  }
 end
 
 def normlize_event_data(event, event_data)
-	begin
-		key_prefix_items = $key_prefix_mapping[event].split(' ')
-	rescue StandardError
-		key_prefix_items = []
-	end
+  begin
+    key_prefix_items = $key_prefix_mapping[event].split(' ')
+  rescue StandardError
+    key_prefix_items = []
+  end
 
-	record = {}
-	file = File.open(event_data)
-	while line = file.gets
-		line = line.chomp
-		if line == '' and record['time'] != nil
-			normlize_record event, record, key_prefix_items
-			record = {}
-			next
-		end
+  record = {}
+  file = File.open(event_data)
+  while line = file.gets
+    line = line.chomp
+    if line == '' and record['time'] != nil
+      normlize_record event, record, key_prefix_items
+      record = {}
+      next
+    end
 
-		k, v = line.split(': ')
-		record[k] = v
-	end
-	file.close
-	File.delete event_data
+    k, v = line.split(': ')
+    record[k] = v
+  end
+  file.close
+  File.delete event_data
 end
 
 #
@@ -78,43 +78,43 @@ end
 # - normlize data generated at above step
 #
 def parse_event(event_fmt)
-	%x[ cat #{event_fmt} ] =~ /print fmt: "([^"]*)".*$/
-	fmt = $1
-	return if fmt == nil
+  %x[ cat #{event_fmt} ] =~ /print fmt: "([^"]*)".*$/
+  fmt = $1
+  return if fmt == nil
 
-	event = File.basename(event_fmt, '.fmt')
-	pattern = " ([0-9]\+\\.[0-9]\+): #{event}: "
-	replace = "time: \\1\\n"
-	index = 2
-	while fmt =~ /([a-zA-Z_]+[ =]%(s|l?[ud]):? *)/
-		item = $1
-		key, ignore = item.split(/[ =]/)
+  event = File.basename(event_fmt, '.fmt')
+  pattern = " ([0-9]\+\\.[0-9]\+): #{event}: "
+  replace = "time: \\1\\n"
+  index = 2
+  while fmt =~ /([a-zA-Z_]+[ =]%(s|l?[ud]):? *)/
+    item = $1
+    key, ignore = item.split(/[ =]/)
 
-		pattern += item
-		replace += "#{key}: $#{index}\\n"
+    pattern += item
+    replace += "#{key}: $#{index}\\n"
 
-		fmt = fmt.sub(item, "")
-		index += 1
-	end
+    fmt = fmt.sub(item, "")
+    index += 1
+  end
 
-	pattern = pattern.gsub('%s', '(.*)')
-	pattern = pattern.gsub(/%l?u/, "([0-9]\+)")
-	pattern = pattern.gsub(/%l?d/, "(\-?[0-9]\+)")
-	replace += "\\n"
+  pattern = pattern.gsub('%s', '(.*)')
+  pattern = pattern.gsub(/%l?u/, "([0-9]\+)")
+  pattern = pattern.gsub(/%l?d/, "(\-?[0-9]\+)")
+  replace += "\\n"
 
-	event_parser     = FMT_DIR + event + ".sh"
-	event_parser_out = FMT_DIR + event + ".out"
-	File.open(event_parser, "w") { |file|
-		file.puts "grep -F ' #{event}: ' #{ARGV[0]} | perl -pe 's/^.*#{pattern}.*$/#{replace}/' > #{event_parser_out}"
-	}
+  event_parser     = FMT_DIR + event + ".sh"
+  event_parser_out = FMT_DIR + event + ".out"
+  File.open(event_parser, "w") { |file|
+    file.puts "grep -F ' #{event}: ' #{ARGV[0]} | perl -pe 's/^.*#{pattern}.*$/#{replace}/' > #{event_parser_out}"
+  }
 
-	FileUtils.chmod "+x", event_parser
-	system event_parser
+  FileUtils.chmod "+x", event_parser
+  system event_parser
 
-	normlize_event_data(event, event_parser_out)
+  normlize_event_data(event, event_parser_out)
 end
 
 
 Dir["#{FMT_DIR}/*.fmt"].each { |event_fmt|
-	parse_event event_fmt
+  parse_event event_fmt
 }

@@ -1,35 +1,35 @@
 #!/usr/bin/env ruby
 
-$hits	= Hash.new { |hash, key| hash[key] = 0 }
-$sum	= Hash.new { |hash, key| hash[key] = 0 }
-$max	= Hash.new { |hash, key| hash[key] = 0 }
-$top	= Hash.new { |hash, key| hash[key] = 0 }
+$hits  = Hash.new { |hash, key| hash[key] = 0 }
+$sum  = Hash.new { |hash, key| hash[key] = 0 }
+$max  = Hash.new { |hash, key| hash[key] = 0 }
+$top  = Hash.new { |hash, key| hash[key] = 0 }
 
 STDIN.each_line do |line|
-	case line
-	when /Latency Top version/
-		next
-	when /[0-9]+ [0-9]+ [0-9]+ [a-zA-Z]+/
-		values = line.gsub(/\.(isra|constprop|part)\.[0-9]+/, '').split
-		funcs = values[3..-1].join('.')
-		$hits[funcs] += values[0].to_i
-		$sum[funcs] += values[1].to_i
-		$max[funcs] = [values[2].to_i, $max[funcs]].max
-	end
+  case line
+  when /Latency Top version/
+    next
+  when /[0-9]+ [0-9]+ [0-9]+ [a-zA-Z]+/
+    values = line.gsub(/\.(isra|constprop|part)\.[0-9]+/, '').split
+    funcs = values[3..-1].join('.')
+    $hits[funcs] += values[0].to_i
+    $sum[funcs] += values[1].to_i
+    $max[funcs] = [values[2].to_i, $max[funcs]].max
+  end
 end
 
 def show_one(funcs, k, v)
-	puts "#{k}.#{funcs}: #{v}"
-	$top[k] = v if $top[k] < v
+  puts "#{k}.#{funcs}: #{v}"
+  $top[k] = v if $top[k] < v
 end
 
 $hits.each_pair { |funcs, hits|
-	show_one funcs, 'hits', hits
-	show_one funcs, 'sum', $sum[funcs]
-	show_one funcs, 'avg', $sum[funcs] / hits
-	show_one funcs, 'max', $max[funcs]
+  show_one funcs, 'hits', hits
+  show_one funcs, 'sum', $sum[funcs]
+  show_one funcs, 'avg', $sum[funcs] / hits
+  show_one funcs, 'max', $max[funcs]
 }
 
 $top.each { |k, v|
-	puts "#{k}.max: #{v}"
+  puts "#{k}.max: #{v}"
 }

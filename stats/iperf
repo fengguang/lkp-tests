@@ -3,16 +3,16 @@
 require 'json'
 
 begin
-	obj = JSON.load STDIN
+  obj = JSON.load STDIN
 rescue JSON::ParserError => e
-	$stderr.puts "error: malformed iperf result"
-	$stderr.puts e.message[0..300]
-	$stderr.puts e.backtrace.join("\n")
-	exit 1
+  $stderr.puts "error: malformed iperf result"
+  $stderr.puts e.message[0..300]
+  $stderr.puts e.backtrace.join("\n")
+  exit 1
 end
 
 exit if obj['end'].empty?
 
-puts 'tcp.sender.bps: '		+ obj['end']['streams'][0]['sender']['bits_per_second'].to_s	if obj['end']['streams'][0]['sender']
-puts 'tcp.receiver.bps: '	+ obj['end']['streams'][0]['receiver']['bits_per_second'].to_s	if obj['end']['streams'][0]['receiver']
-puts 'udp.bps: '		+ obj['end']['streams'][0]['udp']['bits_per_second'].to_s	if obj['end']['streams'][0]['udp']
+puts 'tcp.sender.bps: '    + obj['end']['streams'][0]['sender']['bits_per_second'].to_s  if obj['end']['streams'][0]['sender']
+puts 'tcp.receiver.bps: '  + obj['end']['streams'][0]['receiver']['bits_per_second'].to_s  if obj['end']['streams'][0]['receiver']
+puts 'udp.bps: '    + obj['end']['streams'][0]['udp']['bits_per_second'].to_s  if obj['end']['streams'][0]['udp']

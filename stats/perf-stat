@@ -3,42 +3,42 @@
 results = Hash.new(0)
 
 STDIN.each_line do |line|
-	_, value, key = line.split
-	next unless value =~ /^\d+$/
-	results[key] += value.to_i
+  _, value, key = line.split
+  next unless value =~ /^\d+$/
+  results[key] += value.to_i
 end
 
 results.each { |key, value|
-	puts "#{key}: #{value}"
+  puts "#{key}: #{value}"
 }
 
 results.each { |key, miss|
-	if key =~ /(.*)-misses/
-		stem = $1
-		["s", "-references", "-instructions"].each { |pfx|
-			value = results[stem + pfx]
-			if value != 0
-				if pfx == "s"
-					total = value + miss
-				else
-					total = value
-				end
-				puts "#{stem}-miss-rate%: #{miss * 100.0 / total}"
-				break
-			end
-		}
-	end
+  if key =~ /(.*)-misses/
+    stem = $1
+    ["s", "-references", "-instructions"].each { |pfx|
+      value = results[stem + pfx]
+      if value != 0
+        if pfx == "s"
+          total = value + miss
+        else
+          total = value
+        end
+        puts "#{stem}-miss-rate%: #{miss * 100.0 / total}"
+        break
+      end
+    }
+  end
 }
 
 cycles = results['cpu-cycles']
 instructions = results['instructions']
 
 if cycles != 0 && instructions != 0
-	puts "ipc: #{instructions.to_f / cycles}"
+  puts "ipc: #{instructions.to_f / cycles}"
 end
 
 itlb_miss = results['iTLB-load-misses']
 
 if itlb_miss != 0 && instructions != 0
-	puts "instructions-per-iTLB-miss: #{instructions.to_f / itlb_miss}"
+  puts "instructions-per-iTLB-miss: #{instructions.to_f / itlb_miss}"
 end

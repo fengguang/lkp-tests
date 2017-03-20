@@ -3,16 +3,16 @@
 require ENV['LKP_SRC'] + "/lib/statistics.rb"
 
 while line = STDIN.gets
-	case line.chomp!
-	when /\s*\d+:\s*(\d+) bytes\s+\d+ times -->\s+([0-9.]+) Mbps in\s+([0-9.]+) usec/
-		if $1.to_i < (8 * 1024)
-			less_8K_usec ||= []
-			less_8K_usec << $3.to_f
-		elsif $1.to_i > (5 * 1024 * 1024)
-			bigger_5M_Mbps ||= []
-			bigger_5M_Mbps << $2.to_f
-		end
-	end
+  case line.chomp!
+  when /\s*\d+:\s*(\d+) bytes\s+\d+ times -->\s+([0-9.]+) Mbps in\s+([0-9.]+) usec/
+    if $1.to_i < (8 * 1024)
+      less_8K_usec ||= []
+      less_8K_usec << $3.to_f
+    elsif $1.to_i > (5 * 1024 * 1024)
+      bigger_5M_Mbps ||= []
+      bigger_5M_Mbps << $2.to_f
+    end
+  end
 end
 
 puts "less_8K_usec.avg: #{less_8K_usec.average}"

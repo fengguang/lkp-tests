@@ -3,32 +3,32 @@
 
 $tag = ""
 while line = STDIN.gets
-	case line
-	when /^time:/
-		puts line
-	when /^Node ([^\s]+), zone\s*([a-zA-Z0-9]+)/
-		$node = $1
-		$zone = $2
-	when /protection:\s*\((.+)\)/
-		vals = $1.split ","
-		vals.each_with_index { |value, idx|
-			puts "node#{$node}.#{$zone}.protection.#{idx}: #{value.tr(" ", "")}"
-		}
-	when /cpu:\s*([0-9]+)/
-		cpu = $1
-		(1..4).each { |i|
-			puts "node#{$node}.#{$zone}.pagesets.cpu#{cpu}.#{$1.tr(" ", "_")}: #{$2}" if STDIN.gets =~ /\s*([a-zA-Z].*):\s*([0-9]+)/
-		}
-		$tag = ""
-	when /pages free\s*([0-9]+)/
-		$tag = "pages"
-		puts "node#{$node}.#{$zone}.pages.free: #{$1}"
-	else
-		vals = line.split
-		if $tag == "pages" && vals.size >= 2
-			puts "node#{$node}.#{$zone}.pages.#{vals[vals.size-2]}: #{vals[vals.size-1]}"
-		else
-			puts "node#{$node}.#{$zone}.#{$1.tr(" ", "_")}: #{$2}" if line =~ /\s*([a-zA-Z].*):\s*([0-9]+)/
-		end
-	end
+  case line
+  when /^time:/
+    puts line
+  when /^Node ([^\s]+), zone\s*([a-zA-Z0-9]+)/
+    $node = $1
+    $zone = $2
+  when /protection:\s*\((.+)\)/
+    vals = $1.split ","
+    vals.each_with_index { |value, idx|
+      puts "node#{$node}.#{$zone}.protection.#{idx}: #{value.tr(" ", "")}"
+    }
+  when /cpu:\s*([0-9]+)/
+    cpu = $1
+    (1..4).each { |i|
+      puts "node#{$node}.#{$zone}.pagesets.cpu#{cpu}.#{$1.tr(" ", "_")}: #{$2}" if STDIN.gets =~ /\s*([a-zA-Z].*):\s*([0-9]+)/
+    }
+    $tag = ""
+  when /pages free\s*([0-9]+)/
+    $tag = "pages"
+    puts "node#{$node}.#{$zone}.pages.free: #{$1}"
+  else
+    vals = line.split
+    if $tag == "pages" && vals.size >= 2
+      puts "node#{$node}.#{$zone}.pages.#{vals[vals.size-2]}: #{vals[vals.size-1]}"
+    else
+      puts "node#{$node}.#{$zone}.#{$1.tr(" ", "_")}: #{$2}" if line =~ /\s*([a-zA-Z].*):\s*([0-9]+)/
+    end
+  end
 end

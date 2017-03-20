@@ -23,59 +23,59 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($0)))
 require "#{LKP_SRC}/lib/dmesg.rb"
 
 if ARGV[0]
-	kmsg_file = ARGV[0]
-	dmesg_file = ARGV[0]
-	RESULT_ROOT = ENV['RESULT_ROOT']
+  kmsg_file = ARGV[0]
+  dmesg_file = ARGV[0]
+  RESULT_ROOT = ENV['RESULT_ROOT']
 elsif ENV['RESULT_ROOT']
-	RESULT_ROOT = ENV['RESULT_ROOT']
-	serial_file = "#{RESULT_ROOT}/dmesg"
-	kmsg_file = "#{RESULT_ROOT}/kmsg"
-	if File.exist? serial_file
-		dmesg_file = serial_file
+  RESULT_ROOT = ENV['RESULT_ROOT']
+  serial_file = "#{RESULT_ROOT}/dmesg"
+  kmsg_file = "#{RESULT_ROOT}/kmsg"
+  if File.exist? serial_file
+    dmesg_file = serial_file
 
-		if File.exist?(kmsg_file) and
-		   File.size(kmsg_file) > 0
-			if File.size(serial_file) == 0
-				$stderr.puts "unexpected 0-sized serial file " + serial_file
-				dmesg_file = kmsg_file
-			end
-		else
-			kmsg_file = dmesg_file
-		end
-	elsif File.exist? kmsg_file
-		dmesg_file = kmsg_file
-	else
-		# disabled due to not applicable for "lkp run";
-		# "last_state.booting" should be enough
-		#
-		# puts "early-boot-hang: 1"
-		exit
-	end
+    if File.exist?(kmsg_file) and
+       File.size(kmsg_file) > 0
+      if File.size(serial_file) == 0
+        $stderr.puts "unexpected 0-sized serial file " + serial_file
+        dmesg_file = kmsg_file
+      end
+    else
+      kmsg_file = dmesg_file
+    end
+  elsif File.exist? kmsg_file
+    dmesg_file = kmsg_file
+  else
+    # disabled due to not applicable for "lkp run";
+    # "last_state.booting" should be enough
+    #
+    # puts "early-boot-hang: 1"
+    exit
+  end
 else
-	exit
+  exit
 end
 
 if not File.exist?(dmesg_file) or File.size(dmesg_file) == 0
-	# puts "early-boot-hang: 1"
-	exit
+  # puts "early-boot-hang: 1"
+  exit
 end
 
 dmesg_lines = fixup_dmesg_file(dmesg_file)
 
 # check possibly misplaced serial log
 def verify_serial_log(dmesg_lines)
-	return unless $PROGRAM_NAME =~ /dmesg/
+  return unless $PROGRAM_NAME =~ /dmesg/
   return if RESULT_ROOT.nil? || RESULT_ROOT.empty?
 
-	dmesg_lines.grep(/RESULT_ROOT=/) { |line|
-		next if line =~ /(^|[0-9]\] )kexec -l | --initrd=| --append=|"$/
-		next unless line =~ / RESULT_ROOT=([A-Za-z0-9.,;_\/+%:@=-]+) /
-		rt = $1
-		next unless Dir.exist? rt # serial console is often not reliable
-		if rt != RESULT_ROOT
-			$stderr.puts "RESULT_ROOT mismatch in dmesg: #{RESULT_ROOT} #{rt}"
-		end
-	}
+  dmesg_lines.grep(/RESULT_ROOT=/) { |line|
+    next if line =~ /(^|[0-9]\] )kexec -l | --initrd=| --append=|"$/
+    next unless line =~ / RESULT_ROOT=([A-Za-z0-9.,;_\/+%:@=-]+) /
+    rt = $1
+    next unless Dir.exist? rt # serial console is often not reliable
+    if rt != RESULT_ROOT
+      $stderr.puts "RESULT_ROOT mismatch in dmesg: #{RESULT_ROOT} #{rt}"
+    end
+  }
 end
 verify_serial_log(dmesg_lines)
 
@@ -84,74 +84,74 @@ error_lines = {}
 error_stamps = {}
 
 if $PROGRAM_NAME =~ /dmesg/
-	lines = dmesg_lines
-	oops_map = grep_crash_head dmesg_file
+  lines = dmesg_lines
+  oops_map = grep_crash_head dmesg_file
 else
-	if kmsg_file == dmesg_file
-		kmsg_lines = dmesg_lines
-		kmsg = kmsg_lines.join "\n"
-	elsif File.exist?(kmsg_file)
-		kmsg = File.read kmsg_file
-		kmsg_lines = kmsg.split("\n")
-	end
+  if kmsg_file == dmesg_file
+    kmsg_lines = dmesg_lines
+    kmsg = kmsg_lines.join "\n"
+  elsif File.exist?(kmsg_file)
+    kmsg = File.read kmsg_file
+    kmsg_lines = kmsg.split("\n")
+  end
 
-	lines = kmsg_lines
-	output = grep_printk_errors kmsg_file, kmsg
+  lines = kmsg_lines
+  output = grep_printk_errors kmsg_file, kmsg
 
-	oops_map = {}
-	output.each_line do |line|
-		oops_map[line] ||= line
-	end
+  oops_map = {}
+  output.each_line do |line|
+    oops_map[line] ||= line
+  end
 end
 
 lines.reverse_each { |line|
-	if line =~ /^(<[0-9]+>|....  :..... : )?\[ *(\d{1,6}\.\d{6})\] /
-		error_stamps['last'] = $2
-		break
-	end
+  if line =~ /^(<[0-9]+>|....  :..... : )?\[ *(\d{1,6}\.\d{6})\] /
+    error_stamps['last'] = $2
+    break
+  end
 }
 
 oops_map.each { |bug_to_bisect, line|
-	line.chomp!
+  line.chomp!
 
-	if line =~ /^(<[0-9]+>|....  :..... : )?\[ *(\d{1,6}\.\d{6})\] /
-		timestamp = $2
-	else
-		timestamp = nil
-	end
+  if line =~ /^(<[0-9]+>|....  :..... : )?\[ *(\d{1,6}\.\d{6})\] /
+    timestamp = $2
+  else
+    timestamp = nil
+  end
 
-	break if line =~ /trinity.* invoked oom-killer:/
-	break if line =~ /trinity.* page allocation stalls for/
+  break if line =~ /trinity.* invoked oom-killer:/
+  break if line =~ /trinity.* page allocation stalls for/
 
-	# print_hex_dump
-	# kern  :alert : [  205.863334] rcu-torture: Free-Block Circulation:  3811 3811 3810 3809 3808 3807 3806 3805 3804 3803 0
-	next if line =~ /\[ *(\d{1,6}\.\d{6})\]\s*(\s[0-9a-f]{2}){16}$/
-	next if line =~ /\[ *(\d{1,6}\.\d{6})\]\s*(\s[0-9a-f]{4}){8}$/
-	next if line =~ /\[ *(\d{1,6}\.\d{6})\]\s*(\s[0-9a-f]{8}){4}$/
+  # print_hex_dump
+  # kern  :alert : [  205.863334] rcu-torture: Free-Block Circulation:  3811 3811 3810 3809 3808 3807 3806 3805 3804 3803 0
+  next if line =~ /\[ *(\d{1,6}\.\d{6})\]\s*(\s[0-9a-f]{2}){16}$/
+  next if line =~ /\[ *(\d{1,6}\.\d{6})\]\s*(\s[0-9a-f]{4}){8}$/
+  next if line =~ /\[ *(\d{1,6}\.\d{6})\]\s*(\s[0-9a-f]{8}){4}$/
 
-	next if line =~ /[^\t\n\0[:print:]]/
-	line.tr! "\0", ''
+  next if line =~ /[^\t\n\0[:print:]]/
+  line.tr! "\0", ''
 
-	error_id, bug_to_bisect = analyze_error_id bug_to_bisect
-	next if error_id.size <= 3
+  error_id, bug_to_bisect = analyze_error_id bug_to_bisect
+  next if error_id.size <= 3
 
-	error_ids[error_id] ||= bug_to_bisect
-	error_lines[error_id] ||= line
-	error_stamps[error_id] ||= timestamp if timestamp
+  error_ids[error_id] ||= bug_to_bisect
+  error_lines[error_id] ||= line
+  error_stamps[error_id] ||= timestamp if timestamp
 }
 
 puts "boot_failures: 1" if $PROGRAM_NAME =~ /dmesg/ and not error_ids.empty?
 
 # This shows each error id only once
 error_ids.each { |error_id, line|
-	puts
-	puts '# ' + line
-	puts error_id + ': 1'
-	puts 'message:' + error_id + ': ' + error_lines[error_id]
-	puts 'pattern:' + error_id + ': ' + line
+  puts
+  puts '# ' + line
+  puts error_id + ': 1'
+  puts 'message:' + error_id + ': ' + error_lines[error_id]
+  puts 'pattern:' + error_id + ': ' + line
 }
 
 puts
 error_stamps.each { |error_id, timestamp|
-	puts "timestamp:#{error_id}: #{timestamp}"
+  puts "timestamp:#{error_id}: #{timestamp}"
 }

@@ -5,10 +5,10 @@ nr_test = 0
 
 while line = STDIN.gets
     case line
-	when /^(test-.*): (PASS|SKIP|FAIL)/
-		nr_test += 1
-		stats << "#{$1}.#{$2.downcase}: 1"
-	end
+  when /^(test-.*): (PASS|SKIP|FAIL)/
+    nr_test += 1
+    stats << "#{$1}.#{$2.downcase}: 1"
+  end
 end
 
 stats.each {|stat| puts stat}

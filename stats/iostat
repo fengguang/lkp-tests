@@ -11,43 +11,43 @@
 require "time"
 
 def normalize_key(key)
-	return key.sub('%', '')
+  return key.sub('%', '')
 end
 
 def extract_avg_cpu(line)
-	# remove heading avg-cpu item
-	title = line.split[1..-1]
+  # remove heading avg-cpu item
+  title = line.split[1..-1]
 
-	return unless line = STDIN.gets
-	data = line.split
-	for i in 0..data.size-1
-		key = normalize_key "cpu.#{title[i]}"
-		puts key + ": " + data[i]
-	end
+  return unless line = STDIN.gets
+  data = line.split
+  for i in 0..data.size-1
+    key = normalize_key "cpu.#{title[i]}"
+    puts key + ": " + data[i]
+  end
 
 end
 
 def extract_dev_stat(line)
-	title = line.split
-	while line = STDIN.gets
-		data = line.split
-		break if  data.size != title.size
+  title = line.split
+  while line = STDIN.gets
+    data = line.split
+    break if  data.size != title.size
 
-		dev = data[0]
-		for i in 1..data.size-1
-			key = normalize_key "#{dev}.#{title[i]}"
-			puts key + ": " + data[i]
-		end
-	end
+    dev = data[0]
+    for i in 1..data.size-1
+      key = normalize_key "#{dev}.#{title[i]}"
+      puts key + ": " + data[i]
+    end
+  end
 end
 
 while line = STDIN.gets
-	if line =~ /^[0-9T:+-]{24}$/	# "2013-04-02T13:58:40+0800", by 'S_TIME_FORMAT=ISO isotat -t'
-		time = line.chomp('\n')
-		puts "time: #{Time.parse(time).to_i}"
-	elsif line =~ /^avg-cpu:/
-		extract_avg_cpu line
-	elsif line =~ /^Device:/
-		extract_dev_stat line
-	end
+  if line =~ /^[0-9T:+-]{24}$/  # "2013-04-02T13:58:40+0800", by 'S_TIME_FORMAT=ISO isotat -t'
+    time = line.chomp('\n')
+    puts "time: #{Time.parse(time).to_i}"
+  elsif line =~ /^avg-cpu:/
+    extract_avg_cpu line
+  elsif line =~ /^Device:/
+    extract_dev_stat line
+  end
 end

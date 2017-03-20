@@ -1,21 +1,21 @@
 #!/usr/bin/env ruby
 
 def show_dmesg_times
-	dmesg = "#{ENV['RESULT_ROOT']}/kmsg"
-	return unless File.exist? dmesg
+  dmesg = "#{ENV['RESULT_ROOT']}/kmsg"
+  return unless File.exist? dmesg
 
-	File.open(dmesg).each do |line|
-		case line
-		when /\[ *(\d+\.\d+)\] Sending DHCP requests/
-			puts 'dhcp: ' + $1
-			return
-		end
-	end
+  File.open(dmesg).each do |line|
+    case line
+    when /\[ *(\d+\.\d+)\] Sending DHCP requests/
+      puts 'dhcp: ' + $1
+      return
+    end
+  end
 end
 show_dmesg_times
 
 if line = STDIN.gets
-	boot, idle = line.split
-	puts 'boot: ' + boot
-	puts 'idle: ' + idle
+  boot, idle = line.split
+  puts 'boot: ' + boot
+  puts 'idle: ' + idle
 end

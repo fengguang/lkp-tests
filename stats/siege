@@ -5,17 +5,17 @@ require ENV['LKP_SRC'] + "/lib/statistics.rb"
 $results = {}
 
 while line = STDIN.gets
-	case line.chomp!
-	when /^(.*):[\t\s]+([\d.]+)( (\S+))?/
-		value = $2
-		unit = '_' + $4 if $4
-		unit ||= ''
-		key = $1.gsub(' ', '_') + unit
-		$results[key] ||= []
-		$results[key] << value.to_f
-	end
+  case line.chomp!
+  when /^(.*):[\t\s]+([\d.]+)( (\S+))?/
+    value = $2
+    unit = '_' + $4 if $4
+    unit ||= ''
+    key = $1.gsub(' ', '_') + unit
+    $results[key] ||= []
+    $results[key] << value.to_f
+  end
 end
 
 $results.each { |k, v|
-	puts "#{k}: #{v.average}"
+  puts "#{k}: #{v.average}"
 }

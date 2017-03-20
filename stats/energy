@@ -4,17 +4,17 @@ time = []
 counts = {}
 
 STDIN.each_line do |line|
-	case line
-	when /^time: (.*)/
-		time << $1
-	when /^(\d+.\d+) Joules power\/(.*)\//
-		counts[$2] = $1
-	end
+  case line
+  when /^time: (.*)/
+    time << $1
+  when /^(\d+.\d+) Joules power\/(.*)\//
+    counts[$2] = $1
+  end
 end
 
 counts.each { |k, v|
-	# Joules to watts calculation formula: P(W) = E(J)/t(s)
-	# To convert the raw count in Watt: W = C * 0.23 / (1e9 * time)
-	watt = v.to_f * 0.23 / (1e9 * (time[1].to_f - time[0].to_f))
-	puts "#{k}: #{watt}"
+  # Joules to watts calculation formula: P(W) = E(J)/t(s)
+  # To convert the raw count in Watt: W = C * 0.23 / (1e9 * time)
+  watt = v.to_f * 0.23 / (1e9 * (time[1].to_f - time[0].to_f))
+  puts "#{k}: #{watt}"
 }

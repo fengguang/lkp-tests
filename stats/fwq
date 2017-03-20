@@ -9,13 +9,13 @@ PDEL = 10
 data = []
 files = Dir["#{RESULT_ROOT}/results/fwq_*_times.dat"]
 files.each { |file|
-	sfdata = File.read(file).split
-	n = sfdata.size
-	ndel = n * PDEL / 100
-	sfdata.slice!(n - ndel, ndel)
-	sfdata.slice!(0, ndel)
-	data.concat(sfdata.map(&:to_i))
-	sfdata = nil
+  sfdata = File.read(file).split
+  n = sfdata.size
+  ndel = n * PDEL / 100
+  sfdata.slice!(n - ndel, ndel)
+  sfdata.slice!(0, ndel)
+  data.concat(sfdata.map(&:to_i))
+  sfdata = nil
 }
 
 n = Noise.new("fwq", data)
