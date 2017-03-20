@@ -172,6 +172,8 @@ job_script=$1
 
 [ -n "$job_script" ] || usage
 
+sed -i 's/\r//' $job_script
+
 create_lkp_home
 export CACHE_DIR=$HOME/.lkp/cache
 
