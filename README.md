@@ -65,6 +65,7 @@ There is however some initial support for:
 - OpenSUSE:
 	- jobs/trinity.yaml
 - Fedora
+- CentOS
 
 As for now, lkp-tests still needs to run as root.
 
