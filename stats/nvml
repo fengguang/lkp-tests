@@ -1,11 +1,15 @@
 #!/usr/bin/env ruby
 
+LKP_SRC ||= ENV['LKP_SRC']
+require "#{LKP_SRC}/lib/string_ext"
+
 stats = []
 test_item = ''
 fs_type = ''
 build_type = ''
 
 while (line = STDIN.gets)
+  line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
   case line
   when %r{^(.+)/TEST[0-9]+: SETUP \(.+/(.+)/(.+)\)$}
     test_item = Regexp.last_match[1]
