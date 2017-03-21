@@ -49,11 +49,11 @@ class IrqAnalysis
     t = (s2.timestamp * 1_000_000).to_i - (s1.timestamp * 1_000_000).to_i
     if s1.type == :softirq_entry
       vec_nr = s1.data['vec']
-      @softirq[vec_nr] = [] if @softirq[vec_nr].nil?
+      @softirq[vec_nr] ||= []
       @softirq[vec_nr] << t
     else
       irq_nr = s1.data['irq']
-      @irq[irq_nr] = [] if @irq[irq_nr].nil?
+      @irq[irq_nr] ||= []
       @irq[irq_nr] << t
     end
   end
@@ -83,7 +83,7 @@ def extract_ftrace
   # interrupt handler will not be migrated so to simply entry/exit
   # pair match, sort these samples according to CPU number
   trace.each do |sample|
-      samples[sample.cpu] = [] if samples[sample.cpu].nil?
+      samples[sample.cpu] ||= []
       samples[sample.cpu] << sample
   end
 
