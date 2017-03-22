@@ -33,8 +33,6 @@ mkdir -p /hugepages
 # has too many errors now
 sed -i 's/hugetlbfstest//' vm/Makefile
 
-# add mpx test as default
-sed -i "s/TARGETS_C_BOTHBITS := /TARGETS_C_BOTHBITS := mpx-mini-test /" x86/Makefile
 
 # make sure the test_bpf.ko path for bpf test is right
 mkdir -p "$linux_selftests_dir/lib" || die
