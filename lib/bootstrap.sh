@@ -263,6 +263,25 @@ install_deb()
 	if [ -s "/opt/deb/keep-deb" ]; then
 		while read -r filename
 		do
+			[ -f /opt/deb/$filename ] || {
+				echo "error: dependent package /opt/deb/$filename is not exist." 1>&2
+				return 1
+			}
+			files="$files /opt/deb/$filename"
+		done < /opt/deb/keep-deb
+
+		[ -n "$files" ] || return 0
+		if dpkg -i $files; then
+			rm $files
+			return 0
+		fi
+
+		# due to gwak pkg including pre-dependency definition, 
+		# gawk dependent libreadline7 install first.
+		# so we generated keep-deb file which contains installation sequence, 
+		# and line by line installation. 
+		while read -r filename
+		do
 			dpkg -i /opt/deb/$filename || {
 				echo "error: dpkg -i /opt/deb/$filename failed." 1>&2
 				return 1
