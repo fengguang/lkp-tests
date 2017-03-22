@@ -1,5 +1,7 @@
 #!/bin/bash
 
+shopt -s nullglob
+
 . $LKP_SRC/lib/install.sh
 . $LKP_SRC/distro/common
 
