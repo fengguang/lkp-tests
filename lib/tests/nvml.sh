@@ -75,6 +75,9 @@ run()
 	# enable remote valgrind test
 	echo "RPMEM_VALGRIND_ENABLED=y" >> testconfig.sh
 
+	# to fix no point to a PMEM device
+	echo "PMEM_FS_DIR_FORCE_PMEM=1" >> testconfig.sh
+
 	while read testcase
 	do
 		# fix working dir not found
