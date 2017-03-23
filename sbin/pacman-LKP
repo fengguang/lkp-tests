@@ -38,7 +38,7 @@ pack_deb() {
 	if have_function post_install; then
 		cat > "$INSTALL_DIR/DEBIAN/postinst" <<-EOF
 		#!/bin/sh
-		. /var/lib/dpkg/info/$pkg_name.INSTALL
+		. /var/lib/dpkg/info/$pkg_name-lkp.INSTALL
 		post_install
 	EOF
 	chmod +x $INSTALL_DIR/DEBIAN/postinst
