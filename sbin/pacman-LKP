@@ -41,6 +41,7 @@ pack_deb() {
 		. /var/lib/dpkg/info/$pkg_name.INSTALL
 		post_install
 	EOF
+	chmod +x $INSTALL_DIR/DEBIAN/postinst
 	fi
 	dpkg-deb --build install
 }
