@@ -2,14 +2,15 @@ require 'spec_helper'
 
 describe 'parse result' do
   context "when result not have keyword 'jited' and 'check'" do
-      it 'returns formatted result' do
-        actual = `echo "[   15.423329] test_bpf: #255 BPF_MAXINSNS: Too many instructions PASS" | #{LKP_SRC}/stats/test_bpf`
-        expect(actual).to include('BPF_MAXINSNS:_Too_many_instructions.pass: 1')
-      end
+    it 'returns formatted result' do
+      actual = `echo "[   15.423329] test_bpf: #255 BPF_MAXINSNS: Too many instructions PASS" | #{LKP_SRC}/stats/test_bpf`
+      expect(actual).to include('BPF_MAXINSNS:_Too_many_instructions.pass: 1')
+    end
   end
+
   context "when result not have keyword 'jited' and 'check'" do
-      it 'returns formatted result' do
-	stdout = <<EOF
+    it 'returns formatted result' do
+      stdout = <<EOF
 [   24.541821] test_bpf: #278 LD_IND halfword positive offset
 [   24.542612] [drm] GPU HANG: ecode 7:0:0x87c3ffff, reason: Hang on render ring, action: reset
 [   24.542612] [drm] GPU hangs can indicate a bug anywhere in the entire gfx stack, including userspace.
@@ -21,8 +22,8 @@ describe 'parse result' do
 [   24.606705] jited:0
 [   24.608842] 11 PASS
 EOF
-        actual = `echo "#{stdout}" | #{LKP_SRC}/stats/test_bpf`
-        expect(actual).to include('LD_IND_halfword_positive_offset.pass: 1')
-      end
+      actual = `echo "#{stdout}" | #{LKP_SRC}/stats/test_bpf`
+      expect(actual).to include('LD_IND_halfword_positive_offset.pass: 1')
+    end
   end
 end
