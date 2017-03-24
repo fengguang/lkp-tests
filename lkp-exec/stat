@@ -39,7 +39,7 @@ opts = OptionParser.new do |opts|
     else
       $stderr.puts "-d #{date}: parameter is unsuitable."
       puts opts
-        exit
+      exit
     end
   end
 

@@ -2,9 +2,9 @@
 
 LKP_SRC ||= ENV['LKP_SRC']
 
-Dir[LKP_SRC + '/lib/*.rb'].each { |lib|
+Dir[LKP_SRC + '/lib/*.rb'].each do |lib|
   require lib
-}
+end
 
 if $PROGRAM_NAME =~ /\/ruby$/
   function = ARGV[0]

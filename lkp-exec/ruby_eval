@@ -4,6 +4,6 @@ LKP_SRC ||= ENV['LKP_SRC']
 
 require "#{LKP_SRC}/lib/#{ARGV[0]}.rb"
 
-ARGV.drop(1).each { |arg|
+ARGV.drop(1).each do |arg|
   eval arg
-}
+end
