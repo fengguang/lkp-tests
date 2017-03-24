@@ -15,93 +15,93 @@ $opt_field = 'time.elapsed_time'
 $opt_pattern = ''
 
 opts = OptionParser.new do |opts|
-	opts.banner = "Usage: lkp stat [options]"
+  opts.banner = "Usage: lkp stat [options]"
 
-	opts.separator ""
-	opts.separator "options:"
+  opts.separator ""
+  opts.separator "options:"
 
-	opts.on("-g GROUP", "--group-by GROUP", "group by GROUP") do |group|
-		$opt_group = group.gsub "/", " + '/' + "
-	end
+  opts.on("-g GROUP", "--group-by GROUP", "group by GROUP") do |group|
+    $opt_group = group.gsub "/", " + '/' + "
+  end
 
-	opts.on("-k KERNEL", "--kernel KERNEL", "kernel branch/commit") do |kernel|
-		$opt_kernel = kernel
-	end
+  opts.on("-k KERNEL", "--kernel KERNEL", "kernel branch/commit") do |kernel|
+    $opt_kernel = kernel
+  end
 
-	opts.on("-p PATTERN", "--pattern PATTERN", "grep RESULT_ROOT with PATTERN") do |pattern|
-		$opt_pattern << " " + pattern
-	end
+  opts.on("-p PATTERN", "--pattern PATTERN", "grep RESULT_ROOT with PATTERN") do |pattern|
+    $opt_pattern << " " + pattern
+  end
 
-	opts.on("-d DATE", "--date DATE", "search latest DATE days's RESULT_ROOT") do |date|
-		case date
-		when /[0-9]+m$/, /[0-9]+w$/, /[0-9]+d$/, /[0-9]+$/
-			$opt_pattern = "  -d #{date}" + $opt_pattern
-		else
-			$stderr.puts "-d #{date}: parameter is unsuitable."
-			puts opts
-		    exit
-		end
-	end
+  opts.on("-d DATE", "--date DATE", "search latest DATE days's RESULT_ROOT") do |date|
+    case date
+    when /[0-9]+m$/, /[0-9]+w$/, /[0-9]+d$/, /[0-9]+$/
+      $opt_pattern = "  -d #{date}" + $opt_pattern
+    else
+      $stderr.puts "-d #{date}: parameter is unsuitable."
+      puts opts
+        exit
+    end
+  end
 
-	opts.on("-f FIELD", "--field FIELD", "stats field name") do |field|
-		$opt_field = field
-	end
+  opts.on("-f FIELD", "--field FIELD", "stats field name") do |field|
+    $opt_field = field
+  end
 
-	opts.on("-r", "--raw-samples", "show raw samples") do
-		$opt_raw = true
-	end
+  opts.on("-r", "--raw-samples", "show raw samples") do
+    $opt_raw = true
+  end
 
-	opts.on_tail("-h", "--help", "show this message") do
-		puts opts
-		exit
-	end
+  opts.on_tail("-h", "--help", "show this message") do
+    puts opts
+    exit
+  end
 end
 
 opts.parse!(ARGV)
 
 unless $opt_kernel.empty?
-	unless sha1_40?($opt_kernel)
-		git = Git.open(project: 'linux')
-		$opt_kernel = git.gcommit($opt_kernel).sha
-	end
+  unless sha1_40?($opt_kernel)
+    git = Git.open(project: 'linux')
+    $opt_kernel = git.gcommit($opt_kernel).sha
+  end
 
-	$opt_pattern << " " + $opt_kernel
+  $opt_pattern << " " + $opt_kernel
 end
 
 _result_roots = `#{LKP_SRC}/lkp-exec/_rt #{$opt_pattern}`.split
 groups = {}
 _result_roots.each { |_rt|
-	__rt = File.dirname _rt
+  __rt = File.dirname _rt
 
-	next unless File.exist? _rt + '/matrix.json'
-	matrix = load_json _rt + '/matrix.json'
-	next unless matrix
-	unless $opt_field =~ /last_state/
-		next if matrix['last_state.is_incomplete_run'] #&& matrix['last_state.is_incomplete_run'].sum == matrix_cols(matrix)
-	end
+  next unless File.exist? _rt + '/matrix.json'
+  matrix = load_json _rt + '/matrix.json'
+  next unless matrix
+  unless $opt_field =~ /last_state/
+    next if matrix['last_state.is_incomplete_run'] #&& matrix['last_state.is_incomplete_run'].sum == matrix_cols(matrix)
+  end
 
-	result_path = ResultPath.new
-	result_path.parse_result_root(_rt)
-	result_path['_rt'] = _rt
-	result_path['__rt'] = __rt
-	result_path['test'] = result_path.test_desc(/commit/, true)
+  result_path = ResultPath.new
+  result_path.parse_result_root(_rt)
+  result_path['_rt'] = _rt
+  result_path['__rt'] = __rt
+  result_path['test'] = result_path.test_desc(/commit/, true)
 
-	group = result_path[$opt_group]
-	groups[group] ||= []
+  group = result_path[$opt_group]
+  groups[group] ||= []
 
-	groups[group].concat samples_fill_missing_zeros(matrix, $opt_field)
+  groups[group].concat samples_fill_missing_zeros(matrix, $opt_field)
 }
 
 printf "%8s %16s %16s %6s%%  %s\n", 'runs', 'sum', 'average', 'stddev', 'case'
 
 groups.each { |k, v|
-	if $opt_raw
-		puts "#{k}: #{v}"
-	else
-		next if v.delete_if {|value| value == 0}.empty?
-		total = v.sum
-		avg = v.average
-		stddev = 100 * v.standard_deviation / v.average
-		printf "%8d %16.2f %16.2f %6d%%  %s\n", v.size, total, avg, stddev, k
-	end
+  if $opt_raw
+    puts "#{k}: #{v}"
+  else
+    next if v.delete_if {|value| value == 0}.empty?
+    total = v.sum
+    avg = v.average
+    stddev = 100 * v.standard_deviation / v.average
+    printf "%8d %16.2f %16.2f %6d%%  %s\n", v.size, total, avg, stddev, k
+  end
 }
