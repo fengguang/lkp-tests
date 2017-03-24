@@ -1,0 +1,9 @@
+url: git://git.kernel.org/pub/scm/linux/kernel/git/pinctrl/samsung.git
+owner:
+- Krzysztof Kozlowski <krzk@kernel.org>
+- Sylwester Nawrocki <s.nawrocki@samsung.com>
+integration_testing_branches: for-next
+subsystems:
+- pinctrl
+- exynos
+notify_build_success_branch: .*
