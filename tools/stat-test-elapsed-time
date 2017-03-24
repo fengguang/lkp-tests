@@ -11,31 +11,31 @@ $opt_kernel = ''
 $opt_date = ''
 
 OptionParser.new do |opts|
-	opts.banner = "Usage: #{File.basename $PROGRAM_NAME} [options]"
+  opts.banner = "Usage: #{File.basename $PROGRAM_NAME} [options]"
 
-	opts.on("-g GROUP", "--group-by GROUP", "group by GROUP") do |group|
-		$opt_group = group
-	end
+  opts.on("-g GROUP", "--group-by GROUP", "group by GROUP") do |group|
+    $opt_group = group
+  end
 
-	opts.on("-k KERNEL", "--kernel KERNEL", "kernel branch/commit") do |kernel|
-		$opt_kernel = kernel
-	end
+  opts.on("-k KERNEL", "--kernel KERNEL", "kernel branch/commit") do |kernel|
+    $opt_kernel = kernel
+  end
 
-	opts.on("-d DATE", "--date DATE", "search latest DATE days's RESULT_ROOT") do |date|
-		case date
-		when /[0-9]+m$/, /[0-9]+w$/, /[0-9]+d$/, /[0-9]+$/
-			$opt_date = date
-		else
-			$stderr.puts "-d #{date}: parameter is unsuitable."
-			puts opts
-			exit
-		end
-	end
+  opts.on("-d DATE", "--date DATE", "search latest DATE days's RESULT_ROOT") do |date|
+    case date
+    when /[0-9]+m$/, /[0-9]+w$/, /[0-9]+d$/, /[0-9]+$/
+      $opt_date = date
+    else
+      $stderr.puts "-d #{date}: parameter is unsuitable."
+      puts opts
+      exit
+    end
+  end
 
-	opts.on("-h", "--help", "Prints this help") do
-		puts opts
-		exit
-	end
+  opts.on("-h", "--help", "Prints this help") do
+    puts opts
+    exit
+  end
 end.parse!
 
 test_specs = Dir["#{LKP_SRC}/jobs/*"].select {|job_file| File.size?(job_file) && job_file.end_with?('.yaml')}
@@ -48,8 +48,8 @@ test_specs = test_specs.select {|test_spec| test_spec['testcase'] && test_spec['
 test_specs = test_specs.uniq {|test_spec| test_spec['testcase']}.sort_by {|test_spec| test_spec['testcase']}
 
 def puts_md_heading(heading)
-	puts heading
-	puts "=" * heading.size
+  puts heading
+  puts "=" * heading.size
 end
 
 cmd = "#{LKP_SRC}/lkp-exec/stat -g #{$opt_group}"
@@ -57,18 +57,18 @@ cmd << " -k " + $opt_kernel unless $opt_kernel.empty?
 cmd << " -d " + $opt_date unless $opt_date.empty?
 
 test_specs.each_with_index do |test_spec, index|
-	test_case = test_spec['testcase']
-	base_cmd = cmd + " -p /#{test_case}/ "
+  test_case = test_spec['testcase']
+  base_cmd = cmd + " -p /#{test_case}/ "
 
-	last_state_is_incomplete_run_cmd = base_cmd + " -f last_state.is_incomplete_run "
-	incomplete_runs = `#{last_state_is_incomplete_run_cmd} | awk '{print $1}' | awk 'BEGIN {sum=0}; {sum = sum+$1} END {print sum}'`.chomp.to_i
+  last_state_is_incomplete_run_cmd = base_cmd + " -f last_state.is_incomplete_run "
+  incomplete_runs = `#{last_state_is_incomplete_run_cmd} | awk '{print $1}' | awk 'BEGIN {sum=0}; {sum = sum+$1} END {print sum}'`.chomp.to_i
 
-	time_elapsed_time_cmd = base_cmd + " -f time.elapsed_time "
-	complete_runs = `#{time_elapsed_time_cmd} | awk '{print $1}' | awk 'BEGIN {sum=0}; {sum = sum+$1} END {print sum}'`.chomp.to_i
+  time_elapsed_time_cmd = base_cmd + " -f time.elapsed_time "
+  complete_runs = `#{time_elapsed_time_cmd} | awk '{print $1}' | awk 'BEGIN {sum=0}; {sum = sum+$1} END {print sum}'`.chomp.to_i
 
-	puts_md_heading "[#{index + 1}] #{test_case} (#{test_spec['category'] || 'benchmark'}) [#{complete_runs}/#{complete_runs + incomplete_runs}]"
+  puts_md_heading "[#{index + 1}] #{test_case} (#{test_spec['category'] || 'benchmark'}) [#{complete_runs}/#{complete_runs + incomplete_runs}]"
 
-	puts time_elapsed_time_cmd
-	puts `#{time_elapsed_time_cmd}`
-	puts
+  puts time_elapsed_time_cmd
+  puts `#{time_elapsed_time_cmd}`
+  puts
 end
