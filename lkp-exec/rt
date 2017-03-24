@@ -64,9 +64,9 @@ fi
 [[ $files ]] || exit 0
 
 case $opt_project in
-    all | ALL  ) projects=$(ls $LKP_SRC/repo/); ;;
-    ""         ) projects="linux"; ;;
-    *          ) projects=$opt_project; ;;
+	all | ALL  ) projects=$(ls $LKP_SRC/repo/); ;;
+	""         ) projects="linux"; ;;
+	*          ) projects=$opt_project; ;;
 esac
 
 patterns="$*"
