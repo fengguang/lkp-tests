@@ -2,6 +2,8 @@
 
 source $LKP_SRC/lib/log.sh
 
+[[ -f /c/kernel-tests/common.sh ]] && source /c/kernel-tests/common.sh
+
 set -o pipefail
 
 program_dir=$(dirname $0)
@@ -102,8 +104,16 @@ check_empty_json()
 		if [[ -f $RESULT_ROOT/last_state ]] && grep -q is_incomplete_run $RESULT_ROOT/last_state; then
 			return 1
 		else
-			log_warn "no generate json file for $stats_group, check $RESULT_ROOT"
-			echo -e "# no json file for $stats_group\nis_incomplete_run: 1" >> $RESULT_ROOT/last_state
+			local commit=$(basename $(dirname $RESULT_ROOT))
+			local result_root_with_tag=$RESULT_ROOT
+
+			[[ "function" = $(type -t linus_release_tag) ]] && {
+				local commit_tag=$(linus_release_tag $commit 2>/dev/null)
+				[[ $commit_tag ]] && result_root_with_tag=${RESULT_ROOT/$commit/$commit_tag}
+			}
+
+			log_warn "no generate json file for $stats_group, check $result_root_with_tag"
+			echo -e "# no json file for $stats_group\nis_incomplete_run: 1" >> $result_root_with_tag/last_state
 			return 1
 		fi
 	fi
