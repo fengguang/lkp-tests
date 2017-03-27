@@ -4,14 +4,15 @@ LKP_SRC ||= ENV['LKP_SRC']
 RESULT_ROOT = ENV['RESULT_ROOT']
 
 require "#{LKP_SRC}/lib/common.rb"
+require_relative '../lib/log'
 
 PDEL = 10
 
 data = []
 files = Dir["#{RESULT_ROOT}/results/ftq_*.dat*"]
 if files.empty?
-  $stderr.puts "can not find any log file at #{RESULT_ROOT}/results/"
-  exit 1
+  log_error "can not find any log file at #{RESULT_ROOT}/results/"
+  exit
 end
 files.each { |file|
   zopen(file) do |f|
