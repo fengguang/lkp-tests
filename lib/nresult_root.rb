@@ -285,7 +285,7 @@ class MResultRootTableSet
 		 'locktorture', 'mce-test',  'otc_ddt', 'piglit', 'pm-qa','nvml-unit-tests',
 		 'qemu', 'rcutorture', 'suspend', 'trinity', 'ndctl', 'nfs-test', 'hwsim', 'idle-inject',
 		 'mdadm-selftests', 'xsave-test', 'nvml', 'test_bpf', 'mce-log', 'perf-sanity-tests',
-		 'update-ucode', 'reboot']
+		 'update-ucode', 'reboot', 'cat']
 	OTHER_TESTCASES =
 		['0day-boot-tests', '0day-kbuild-tests', 'build-dpdk', 'build-nvml',
 		 'build-qemu', 'convert-lkpdoc-to-html', 'convert-lkpdoc-to-html-css',
