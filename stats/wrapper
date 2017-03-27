@@ -1,8 +1,8 @@
 #!/bin/bash
 
 source $LKP_SRC/lib/log.sh
+source $LKP_SRC/lib/git.sh
 
-[[ -f /c/kernel-tests/common.sh ]] && source /c/kernel-tests/common.sh
 
 set -o pipefail
 
@@ -104,13 +104,7 @@ check_empty_json()
 		if [[ -f $RESULT_ROOT/last_state ]] && grep -q is_incomplete_run $RESULT_ROOT/last_state; then
 			return 1
 		else
-			local commit=$(basename $(dirname $RESULT_ROOT))
-			local result_root_with_tag=$RESULT_ROOT
-
-			[[ "function" = $(type -t linus_release_tag) ]] && {
-				local commit_tag=$(linus_release_tag $commit 2>/dev/null)
-				[[ $commit_tag ]] && result_root_with_tag=${RESULT_ROOT/$commit/$commit_tag}
-			}
+			local result_root_with_tag=$(result_root_with_release_tag $RESULT_ROOT)
 
 			log_warn "no generate json file for $stats_group, check $result_root_with_tag"
 			echo -e "# no json file for $stats_group\nis_incomplete_run: 1" >> $result_root_with_tag/last_state
