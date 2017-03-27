@@ -3,6 +3,6 @@ memory: 8G
 nr_cpu: 8
 hdd_partitions:
 swap_partitions:
-rootfs_partition:
+rootfs_partition: /dev/disk/by-id/ata-WDC_WD20EZRX-00D8PB0_WD-WCC4MDUPAHNE-part1
 netconsole_port: 6646
 brand: Intel(R) Core(TM) i7-2600K CPU @ 3.40GHz
