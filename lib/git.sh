@@ -48,3 +48,28 @@ git_clone_update()
 	fi
 }
 
+# only can parse linux commit id
+result_root_with_release_tag()
+{
+	local result_root=$1
+
+	[[ $result_root =~ ^\/result/ ]] || {
+		echo "invalid result_root: $result_root" >&2
+		return 1
+	}
+
+	local commit=$(basename $(dirname $result_root))
+
+	local author=$(git log -n1 --pretty=format:'%cn <%ce>' $commit &> /dev/null)
+
+	if [[ "$author" =~ "Linus Torvalds" ]]; then
+		local commit_tag=$(git tag --points-at $commit | grep -m1 -E -e '^v[34]\.[0-9]+(|-rc[0-9]+)' -e '^v2\.[0-9]+\.[0-9]+(|-rc[0-9]+)')
+
+		[[ $commit_tag ]] && {
+			echo ${result_root/$commit/$commit_tag}
+			return 0
+		}
+	fi
+
+	echo $result_root
+}
