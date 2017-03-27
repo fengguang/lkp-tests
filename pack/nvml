@@ -4,6 +4,9 @@ download()
 {
 	git_clone_update https://github.com/pmem/valgrind.git --branch pmem-3.12 || return
 	git_clone_update https://github.com/pmem/nvml.git || return
+	git_clone_update https://github.com/llvm-mirror/llvm.git --branch release_39 --depth 1 || return
+	git_clone_update https://github.com/llvm-mirror/libcxxabi.git --branch release_39 --depth 1 || return
+	git_clone_update https://github.com/pmem/libcxx.git --branch release_39_pmem --depth 1 || return
 }
 
 build_install_valgrind_pmem()
@@ -23,9 +26,35 @@ build_install_valgrind_pmem()
 	make install || return
 }
 
+# The c++ subtest needs a custom version of the standard library -- libc++.
+# please visit https://github.com/pmem/nvml/blob/master/utils/docker/images/install-libcxx.sh
+# to get more detail info.
+build_install_libcxx()
+{
+	export CC=clang
+	export CXX=clang++
+	local install_path=/usr/local/libcxx
+
+	cp -af /tmp/libcxxabi /tmp/llvm/projects
+	cp -af /tmp/libcxx /tmp/llvm/projects
+
+	mkdir -p /tmp/build/abi
+	mkdir -p /tmp/build/lib
+
+	cd /tmp/build/abi || return
+	cmake -DLLVM_PATH=/tmp/llvm -DCMAKE_INSTALL_PREFIX=$install_path /tmp/llvm/projects/libcxxabi/ || return
+	make install ||return
+
+	cd /tmp/build/lib || return
+	cmake -DLLVM_PATH=/tmp/llvm -DLIBCXX_CXX_ABI=libcxxabi -DLIBCXX_CXX_ABI_INCLUDE_PATHS=/tmp/llvm/projects/libcxxabi/include \
+		-DCMAKE_INSTALL_PREFIX=$install_path -DLIBCXX_CXX_ABI_LIBRARY_PATH=$install_path/lib /tmp/llvm/projects/libcxx || return
+	make install || return
+}
+
 build()
 {
 	build_install_valgrind_pmem || return
+	build_install_libcxx || return
 }
 
 install()
@@ -41,6 +70,8 @@ pack()
 		echo /lkp/benchmarks
 		find /lkp/benchmarks/$BM_NAME
 		find ./usr | sed 's/^.//'
+		echo /usr/local/libcxx
+		find /usr/local/libcxx
 	} |
 	cpio --quiet -o -H newc | gzip -n -9 > /lkp/benchmarks/${BM_NAME}.cgz
 	[[ $arch ]] && mv "/lkp/benchmarks/${BM_NAME}.cgz" "/lkp/benchmarks/${BM_NAME}-${arch}.cgz"
@@ -49,4 +80,6 @@ pack()
 post_cleanup()
 {
 	rm -rf /tmp/valgrind_install
+	rm -rf /tmp/llvm
+	rm -rf /tmp/build
 }
