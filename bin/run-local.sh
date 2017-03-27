@@ -30,7 +30,12 @@ job_script=$1
 job_script=$(readlink -e -v $job_script)
 
 if [ -z $opt_result_root ]; then
-	[ -n "$RESULT_ROOT" ] || usage
+	[ -n "$RESULT_ROOT" ] || {
+		echo "$0 exit due to RESULT_ROOT is not specified, you can use either"
+		echo "\"-o RESULT_ROOT\" or \"export RESULT_ROOT=<result_root>\" to specify it.\n"
+		usage
+	}
+
 	mkdir -p -m 02775 $RESULT_ROOT
 else
 	mkdir -p -m 02775 $opt_result_root
