@@ -3,10 +3,10 @@
 download()
 {
 	git_clone_update https://github.com/pmem/valgrind.git --branch pmem-3.12 || return
-	git_clone_update https://github.com/pmem/nvml.git || return
 	git_clone_update https://github.com/llvm-mirror/llvm.git --branch release_39 --depth 1 || return
 	git_clone_update https://github.com/llvm-mirror/libcxxabi.git --branch release_39 --depth 1 || return
 	git_clone_update https://github.com/pmem/libcxx.git --branch release_39_pmem --depth 1 || return
+	git_clone_update https://github.com/pmem/nvml.git || return
 }
 
 build_install_valgrind_pmem()
