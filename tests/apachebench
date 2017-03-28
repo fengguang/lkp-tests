@@ -15,4 +15,4 @@ log_cmd a2enmod auth_basic authn_core authn_file authz_core authz_host authz_use
 
 log_cmd systemctl restart apache2
 
-log_cmd ab -k -q -t $runtime -n 1000000000000 -c $concurrency $server/
+log_cmd ab -k -q -t $runtime -n 1000000 -c $concurrency $server/
