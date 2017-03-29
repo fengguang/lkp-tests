@@ -80,6 +80,11 @@ run()
 
 	while read testcase
 	do
+		# ignore some test cases
+		local pack_ignore="$BENCHMARK_ROOT/$casename/ignore"
+
+		[[ -s "$pack_ignore" ]] && grep -w -q "$testcase" "$pack_ignore" && continue
+
 		# fix working dir not found
 		for n in {0..3}
 		do
