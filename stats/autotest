@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'yaml'
+require_relative '../lib/log'
 
 RESULT_ROOT = ENV['RESULT_ROOT']
 
@@ -8,7 +9,7 @@ exit unless File.exist?("#{RESULT_ROOT}/results/default/status.json")
 status = YAML.load_file("#{RESULT_ROOT}/results/default/status.json")
 
 if status['operations'].nil? || status['operations'].empty?
-  $stderr.puts 'Test environment is not able'
+  log_error 'Test environment is not enabled'
   exit
 end
 

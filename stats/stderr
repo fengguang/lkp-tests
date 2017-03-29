@@ -3,6 +3,7 @@
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($0)))
 require "#{LKP_SRC}/lib/dmesg.rb"
 require "#{LKP_SRC}/lib/string_ext"
+require_relative '../lib/log'
 
 error_ids = Hash.new
 
@@ -43,5 +44,5 @@ if error_ids.size > 0
 end
 
 if error_ids.size > 100
-  $stderr.puts "WARN: noisy stderr, check #{ENV['RESULT_ROOT']}/stderr"
+  log_warn "noisy stderr, check #{ENV['RESULT_ROOT']}/stderr"
 end

@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require_relative '../lib/log'
+
 while line = STDIN.gets
 	case line.chomp!
 	when /^System Benchmarks Index Score .* ([0-9\.]+)$/
@@ -11,5 +13,5 @@ if score
 	puts 'score: ' + score
 else
 	puts 'incomplete_result: 1'
-	$stderr.puts "unixbench: missing score, check " + ENV['RESULT_ROOT']
+	log_error "unixbench: missing score, check " + ENV['RESULT_ROOT']
 end

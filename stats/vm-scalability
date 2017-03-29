@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require ENV['LKP_SRC'] + "/lib/statistics.rb"
+require_relative '../lib/log'
 
 kbps = []
 throughput = []
@@ -10,7 +11,7 @@ def add_one_sample(kbps, throughput)
   throughput << kbps.sum
   puts "# #{kbps.size} #{kbps.sum}"
   if kbps.size != 1 and (kbps.size & 1) != 0 and not $warned
-    $stderr.puts "stats/vm-scalability: possibly disordered output #{ARGV[0]}"
+    log_warn "stats/vm-scalability: possibly disordered output #{ARGV[0]}"
     $warned = true
   end
 end
@@ -45,7 +46,7 @@ end
 
 printf "throughput: %d\n", throughput.average
 if kbps.empty?
-  $stderr.puts "stats/vm-scalability: incomplete output"
+  log_error "stats/vm-scalability: incomplete output"
   exit
 end
 printf "stddev:     %g\n", stddev

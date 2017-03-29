@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+require_relative '../lib/log'
 
 while (line = STDIN.gets)
   case line.chomp!
@@ -7,6 +8,6 @@ while (line = STDIN.gets)
        /^(.*): +(\d+)$/
     puts $1 + ': ' + $2
   else
-    $stderr.puts "malformed meminfo line: #{line}"
+    log_error "malformed meminfo line: #{line}"
   end
 end

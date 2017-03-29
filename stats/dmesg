@@ -21,6 +21,7 @@
 
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 require "#{LKP_SRC}/lib/dmesg.rb"
+require_relative '../lib/log'
 
 if ARGV[0]
   kmsg_file = ARGV[0]
@@ -35,7 +36,7 @@ elsif ENV['RESULT_ROOT']
 
     if File.size?(kmsg_file)
       if File.size(serial_file).zero?
-        $stderr.puts "unexpected 0-sized serial file #{serial_file}"
+        log_error "unexpected 0-sized serial file #{serial_file}"
         dmesg_file = kmsg_file
       end
     else
@@ -72,7 +73,7 @@ def verify_serial_log(dmesg_lines)
     rt = $1
     next unless Dir.exist? rt # serial console is often not reliable
     if rt != RESULT_ROOT
-      $stderr.puts "RESULT_ROOT mismatch in dmesg: #{RESULT_ROOT} #{rt}"
+      log_error "RESULT_ROOT mismatch in dmesg: #{RESULT_ROOT} #{rt}"
     end
   end
 end

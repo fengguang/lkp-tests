@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require ENV['LKP_SRC'] + "/lib/statistics.rb"
+require_relative '../lib/log'
 
 # skip none-result data
 while line = STDIN.gets
@@ -12,7 +13,7 @@ app_overhead = []
 while line = STDIN.gets
   iteration = line.split
   if iteration.size != 5
-    $stderr.puts "WARNING: unexpected fsmark output: #{line}"
+    log_error "WARNING: unexpected fsmark output: #{line}"
     next
   end
   files_per_sec << iteration[3].to_f

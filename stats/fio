@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'json'
+require_relative '../lib/log'
 
 OPS = ['read', 'write']
 PERCENTILES = ['90.000000', '95.000000', '99.000000']
@@ -8,19 +9,19 @@ PERCENTILES = ['90.000000', '95.000000', '99.000000']
 def parse
   fn = File.join ENV['RESULT_ROOT'], 'fio.output'
   unless File.exist?(fn)
-    $stderr.puts "log file #{fn} does not exist"
+    log_error "log file #{fn} does not exist"
     return
   end
   contents = File.read(fn)
   idx = contents.index('{')
   unless idx
-    $stderr.puts "#{fn}: maybe it is not a json format file"
+    log_error "#{fn}: maybe it is not a json format file"
     return
   end
   contents = contents[idx..-1] # contents should start with '{'
   res = JSON.parse(contents)
   unless res
-    $stderr.puts 'Invalid/empty fio output'
+    log_error 'Invalid/empty fio output'
     return
   end
   res_job = res['jobs'].first

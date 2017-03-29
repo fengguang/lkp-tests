@@ -1,14 +1,15 @@
 #!/usr/bin/env ruby
 
 require 'json'
+require_relative '../lib/log'
 
 begin
   obj = JSON.load STDIN
 rescue JSON::ParserError => e
-  $stderr.puts "error: malformed iperf result"
-  $stderr.puts e.message[0..300]
-  $stderr.puts e.backtrace.join("\n")
-  exit 1
+  log_error "error: malformed iperf result"
+  log_error e.message[0..300]
+  log_error e.backtrace.join("\n")
+  exit
 end
 
 exit if obj['end'].empty?
