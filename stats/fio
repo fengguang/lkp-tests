@@ -1,7 +1,9 @@
 #!/usr/bin/env ruby
 
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+
 require 'json'
-require_relative '../lib/log'
+require "#{LKP_SRC}/lib/log"
 
 OPS = ['read', 'write']
 PERCENTILES = ['90.000000', '95.000000', '99.000000']

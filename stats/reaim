@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 
-require ENV['LKP_SRC'] + "/lib/statistics.rb"
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+
+require "#{LKP_SRC}/lib/statistics.rb"
 
 keys = %w(parent_time child_systime child_utime jobs_per_min
     jobs_per_min_child std_dev_time std_dev_percent jti)

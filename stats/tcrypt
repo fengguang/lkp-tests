@@ -1,7 +1,9 @@
 #!/usr/bin/env ruby
 
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+
 require 'fileutils'
-require ENV['LKP_SRC'] + "/lib/statistics.rb"
+require "#{LKP_SRC}/lib/statistics"
 
 RESULT_ROOT = ENV['RESULT_ROOT']
 $test = ''

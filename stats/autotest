@@ -1,7 +1,9 @@
 #!/usr/bin/env ruby
 
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+
 require 'yaml'
-require_relative '../lib/log'
+require "#{LKP_SRC}/lib/log"
 
 RESULT_ROOT = ENV['RESULT_ROOT']
 

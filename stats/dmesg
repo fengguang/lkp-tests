@@ -20,8 +20,9 @@
 # is >= KERN_WARNING.
 
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
-require "#{LKP_SRC}/lib/dmesg.rb"
-require_relative '../lib/log'
+
+require "#{LKP_SRC}/lib/dmesg"
+require "#{LKP_SRC}/lib/log"
 
 if ARGV[0]
   kmsg_file = ARGV[0]

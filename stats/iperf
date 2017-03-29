@@ -1,7 +1,9 @@
 #!/usr/bin/env ruby
 
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+
 require 'json'
-require_relative '../lib/log'
+require "#{LKP_SRC}/lib/log"
 
 begin
   obj = JSON.load STDIN
