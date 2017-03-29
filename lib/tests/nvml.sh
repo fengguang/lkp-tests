@@ -90,9 +90,9 @@ run()
 			log_cmd chown lkp:lkp -R $BENCHMARK_ROOT/$casename
 			log_cmd chown lkp:lkp -R /tmp
 			[ "$test" = "pmem" ] && log_cmd chown lkp:lkp -R /fs/pmem0
-			log_cmd su lkp -c "./RUNTESTS $testcase  2>&1"
+			log_cmd su lkp -c "./RUNTESTS -f $test $testcase  2>&1"
 		else
-			log_cmd ./RUNTESTS $testcase  2>&1
+			log_cmd ./RUNTESTS -f $test $testcase  2>&1
 		fi  
 	done <<< "$testcases"
 }
