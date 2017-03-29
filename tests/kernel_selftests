@@ -9,21 +9,16 @@
 
 shopt -s nullglob
 
-# linux-headers file is created by 0day system, and located in /usr/src/linux-headers-$kconfig-$commit directory.
-linux_headers_dirs=(/usr/src/linux-headers*)
+check_add_user()
+{
+	[[ "x$1" != "x" ]] || return
 
-[[ $linux_headers_dirs ]] || die "failed to find linux-headers package"
+	grep -q "$1" /etc/passwd && return
 
-linux_headers_dir=${linux_headers_dirs[-1]}
-echo "KERNEL SELFTESTS: linux_headers_dir is $linux_headers_dir"
+	useradd -m -d "/home/$1" -s /bin/bash "$1" || die "create user $1 failed."
+}
 
-# linux-selftests file is created by 0day system, and located in /usr/src/linux-selftests-$kconfig-$commit directory.
-linux_selftests_dir=(/usr/src/linux-selftests-*)
-[[ $linux_selftests_dir ]] || die "failed to find linux-selftests dir"
-
-# headers_install's default location is usr/include which is required by several tests' Makefile
-mkdir -p "$linux_selftests_dir/usr/include" || die
-mount --bind $linux_headers_dir/include $linux_selftests_dir/usr/include || die
+linux_selftests_dir="/tmp/linux"
 
 cd $linux_selftests_dir/tools/testing/selftests || die
 
@@ -33,10 +28,9 @@ mkdir -p /hugepages
 # has too many errors now
 sed -i 's/hugetlbfstest//' vm/Makefile
 
-
 # make sure the test_bpf.ko path for bpf test is right
 mkdir -p "$linux_selftests_dir/lib" || die
-mount --bind /lib/modules/*/kernel/lib $linux_selftests_dir/lib || die
+mount --bind /lib/modules/`uname -r`/kernel/lib $linux_selftests_dir/lib || die
 
 # temporarily workaround compile error on gcc-6
 command -v gcc >/dev/null || ln -sf /usr/bin/gcc-5 /usr/bin/gcc
@@ -49,10 +43,13 @@ for mf in */Makefile; do
 		continue
 	}
 
+	# skip breakpoints when running host hanging dead 
+	[[ $subtest = "breakpoints" ]] && continue
+	# counting 5 update interrupts from reading /dev/rtc0
+	# hanging for a long time and cannot be finished
+	[[ $subtest = "timers" ]] && continue
+
 	[[ $subtest = "powerpc" ]] && continue
-	# skip zram since 0day-kernel-tests always disable CONFIG_ZRAM which is required by zram
-	# for local user, you can enable CONFIG_ZRAM by yourself
-	[[ $subtest = "zram" ]] && continue
 
 	if [[ $subtest = "efivarfs" ]]; then
 		[[ -d "/sys/firmware/efi" ]] || {
@@ -95,9 +92,12 @@ for mf in */Makefile; do
 		fi
 	}
 	echo
-	if [[ "$LKP_LOCAL_RUN" != "1" ]] && [[ "$subtest" = "capabilities" ]]; then
+	if [[ "$subtest" = "capabilities" ]]; then
+		# temporary workaround: add lkp user if not exist.
+		# later will create lkp account per user's agreement.
+		check_add_user lkp
 		# workaround: run capabilities under user lkp
-		log_cmd chown lkp:lkp $subtest -R 2>&1
+		log_cmd chown lkp $subtest -R 2>&1
 		log_cmd su lkp -c "make run_tests -C $subtest 2>&1"
 	else
 		log_cmd make run_tests -C $subtest  2>&1
