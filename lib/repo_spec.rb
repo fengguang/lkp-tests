@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 
 LKP_SRC ||= ENV["LKP_SRC"]
-LKP_CORE_SRC ||= ENV['LKP_CORE_SRC'] || LKP_SRC
 
 require 'yaml'
 require "#{LKP_SRC}/lib/assert"
