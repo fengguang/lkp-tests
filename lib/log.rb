@@ -14,10 +14,10 @@ log_formatter = proc do |severity, datetime, _progname, msg|
   msg.map { |m| "#{datetime} #{severity} -- #{m}\n" }.join
 end
 
-$log = Logger.new(STDOUT)
+$log = Logger.new($stdout)
 $log.formatter = log_formatter
 
-$log_error = Logger.new(STDERR)
+$log_error = Logger.new($stderr)
 $log_error.formatter = log_formatter
 
 # below methods are available
