@@ -51,10 +51,18 @@ build_install_libcxx()
 	make install || return
 }
 
+# Automatically generate ignore file to skip test cases which can not be enabled at present.
+build_ignore_file()
+{
+	cd $source_dir || return
+	git grep "require_node_libfabric" | awk -F '[:/]' '{if (!a[$3]++ && $3 != "unittest") {print $3} }' > ignore
+}
+
 build()
 {
 	build_install_valgrind_pmem || return
 	build_install_libcxx || return
+	build_ignore_file || return
 }
 
 install()
