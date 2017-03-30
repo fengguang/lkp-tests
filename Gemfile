@@ -9,9 +9,9 @@ gem 'colorize'
 gem 'term-ansicolor'
 
 group :test do
-	gem 'rspec'
-	gem 'rubocop'
-	gem 'ci_reporter_rspec'
-	gem 'simplecov'
-	gem 'simplecov-rcov'
+  gem 'rspec'
+  gem 'rubocop'
+  gem 'ci_reporter_rspec'
+  gem 'simplecov'
+  gem 'simplecov-rcov'
 end
