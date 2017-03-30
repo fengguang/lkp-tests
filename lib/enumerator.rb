@@ -3,55 +3,55 @@
 LKP_SRC ||= ENV['LKP_SRC']
 
 module Enumerable
-	def feach(func)
-		block_given? or return enum_for(__method__, func)
+  def feach(func)
+    block_given? or return enum_for(__method__, func)
 
-		each { |*args|
-			func.call(*args)
-			yield *args
-		}
-	end
+    each { |*args|
+      func.call(*args)
+      yield *args
+    }
+  end
 
-	def fmap(func)
-		block_given? or return enum_for(__method__, func)
+  def fmap(func)
+    block_given? or return enum_for(__method__, func)
 
-		each { |*args|
-			yield func.call(*args)
-		}
-	end
+    each { |*args|
+      yield func.call(*args)
+    }
+  end
 
-	def fselect(func, &b)
-		block_given? or return enum_for(__method__, func)
+  def fselect(func, &b)
+    block_given? or return enum_for(__method__, func)
 
-		each { |*args|
-			yield *args if func.call(*args)
-		}
-	end
+    each { |*args|
+      yield *args if func.call(*args)
+    }
+  end
 
-	def fchain(func, &b)
-		block_given? or return enum_for(__method__, func)
+  def fchain(func, &b)
+    block_given? or return enum_for(__method__, func)
 
-		each { |*args|
-			func.call(*args, &b)
-		}
-	end
+    each { |*args|
+      func.call(*args, &b)
+    }
+  end
 end
 
 class EnumeratorCollection
-	include Enumerable
+  include Enumerable
 
-	def initialize(*enums)
-		@enumerators = enums
-	end
+  def initialize(*enums)
+    @enumerators = enums
+  end
 
-	def <<(enum)
-		@enumerators << enum
-		self
-	end
+  def <<(enum)
+    @enumerators << enum
+    self
+  end
 
-	def each(&b)
-		@enumerators.each { |enum|
-			enum.each(&b)
-		}
-	end
+  def each(&b)
+    @enumerators.each { |enum|
+      enum.each(&b)
+    }
+  end
 end

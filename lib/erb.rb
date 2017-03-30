@@ -24,28 +24,28 @@ require "#{LKP_SRC}/lib/unit.rb"
 #   YAML.load will fail and you are probably writing too complex templates
 #
 def expand_erb(template, context_hash = {})
-	return template unless template =~ /^%|<%/
+  return template unless template =~ /^%|<%/
 
-	yaml = template.gsub(/<%.*?%>/m, '').gsub(/^%[^>].*$/, '')
-	job = YAML.load(yaml) || {}
-	job.merge!(context_hash)
-	context = Hashugar.new(job).instance_eval {binding}
+  yaml = template.gsub(/<%.*?%>/m, '').gsub(/^%[^>].*$/, '')
+  job = YAML.load(yaml) || {}
+  job.merge!(context_hash)
+  context = Hashugar.new(job).instance_eval {binding}
 
-	ERB.new(template, nil, '%').result(context)
+  ERB.new(template, nil, '%').result(context)
 end
 
 # support: {{ expression }}
 # make it a block literal to avoid YAML parse errors
 # http://yaml.org/YAML_for_ruby.html#blocks
 def literal_double_braces(yaml)
-	yaml.gsub(/^([^\n]*?[:-]\s+)({{.*?}})/m) do |match|
-		indent = ' ' * ($1.size + 1)
-		$1 + "|\n" + $2.gsub(/^/, indent)
-	end
+  yaml.gsub(/^([^\n]*?[:-]\s+)({{.*?}})/m) do |match|
+    indent = ' ' * ($1.size + 1)
+    $1 + "|\n" + $2.gsub(/^/, indent)
+  end
 end
 
 def expand_expression(job, expr, file)
-	# puts job, expr
-	context = Hashugar.new(job).instance_eval {binding}
-	context.eval(expr, file)
+  # puts job, expr
+  context = Hashugar.new(job).instance_eval {binding}
+  context.eval(expr, file)
 end
