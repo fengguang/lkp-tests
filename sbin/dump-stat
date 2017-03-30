@@ -8,16 +8,17 @@ require "#{LKP_SRC}/lib/bounds.rb"
 require "#{LKP_SRC}/lib/yaml.rb"
 require "#{LKP_SRC}/lib/job.rb"
 require "#{LKP_SRC}/lib/string_ext.rb"
+require "#{LKP_SRC}/lib/log"
 require 'set'
 
 $monitor = ARGV[0]
 
 def warn_stat(msg)
-  $stderr.puts msg
+  log_warn msg
 
   unless $stat_context_showed
     $stat_context_showed = true
-    $stderr.puts "dump-stat: check #{RESULT_ROOT}/#{$monitor}"
+    log_warn "check #{RESULT_ROOT}/#{$monitor}"
   end
 end
 
