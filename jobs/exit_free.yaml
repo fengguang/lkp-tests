@@ -1,0 +1,15 @@
+# this job file is for EX, i.e. the memory size has to be more than 320G
+suite: exit_free
+testcase: exit_free
+
+transparent_hugepage:
+  thp_enabled: never
+
+vmstat:
+perf-profile:
+
+eatmem:
+  size: 320G
+  nonuma: true
+
+exit_free:

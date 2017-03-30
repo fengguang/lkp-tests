@@ -1,0 +1,11 @@
+#!/bin/sh
+
+strace -p `cat $TMP/pid-monitor-eatmem` 2>&1 &
+begin=`date +%s.%N`
+echo "start: $begin"
+kill `cat $TMP/pid-monitor-eatmem`
+wait
+end=`date +%s.%N`
+echo "end: $end"
+time=`echo "$end-$begin" |bc`
+echo "time: $time"
