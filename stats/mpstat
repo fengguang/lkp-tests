@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+
+require 'time'
+
+# Linux 4.4.0-64-generic (wu-Studio-Slim-540s) 	2017-03-29 	_x86_64_	(2 CPU)
+
+# 11:46:50  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle
+# 11:46:52  all    1.03    0.00    0.51    2.57    0.00    0.00    0.00    0.00    0.00   95.89
+# 11:46:54  all    1.52    0.00    0.51    0.51    0.00    0.00    0.00    0.00    0.00   97.47
+
+keys = %w(time cpu.usr% cpu.nice% cpu.sys% cpu.iowait% cpu.irq% cpu.soft% cpu.steal% cpu.guest% cpu.gnice% cpu.idle%)
+
+def show_record(keys, data)
+  data.each_with_index { |v, i| puts "#{keys[i]}: #{v}" unless i.zero? && v !~ /:/ }
+end
+
+line = STDIN.gets
+date = /\d+-\d+-\d+/.match(line)
+
+loop do
+  line = STDIN.gets
+  break unless line
+  next unless line =~ / all /
+  data = line.split
+  time = Time.parse([date, data[0]].join(' ')).to_i
+  data[0] = time
+  data.delete_at(1)
+  show_record keys, data
+end

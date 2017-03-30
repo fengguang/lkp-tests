@@ -1,0 +1,5 @@
+#!/bin/sh
+
+: ${interval:=1}
+
+S_TIME_FORMAT=ISO exec mpstat $interval $count
