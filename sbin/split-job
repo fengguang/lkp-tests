@@ -3,6 +3,7 @@
 LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
 
 require "#{LKP_SRC}/lib/job.rb"
+require "#{LKP_SRC}/lib/log"
 require 'optparse'
 require 'ostruct'
 
@@ -19,7 +20,7 @@ opts = OptionParser.new do |opts|
     if File.directory? path
       $opt_output_path = path
     else
-      $stderr.puts "#{path}: no such directory"
+      log_error "#{path}: no such directory"
       exit
     end
   end
