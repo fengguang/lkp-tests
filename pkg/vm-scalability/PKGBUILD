@@ -1,0 +1,19 @@
+pkgname=vm-scalability
+pkgver=1.0
+pkgrel=0
+arch=('i686' 'x86_64')
+url=""
+license=('GPL2')
+depends=()
+source=("git://git.kernel.org/pub/scm/linux/kernel/git/wfg/${pkgname}.git")
+sha256sums=('SKIP')
+
+build() {
+	cd "${srcdir}/${pkgname}"
+	make all
+}
+
+package() {
+	mkdir -p "${pkgdir}/lkp/benchmarks/${pkgname}"
+	cp -af "${srcdir}/${pkgname}/"* "${pkgdir}/lkp/benchmarks/${pkgname}"
+}
