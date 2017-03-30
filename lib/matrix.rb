@@ -6,6 +6,8 @@ MAX_MATRIX_COLS = 100
 STATS_SOURCE_KEY = 'stats_source'
 
 require 'set'
+require "#{LKP_SRC}/lib/log"
+require "#{LKP_SRC}/lib/error"
 
 def is_event_counter(name)
   $event_counter_prefixes ||= File.read("#{LKP_SRC}/etc/event-counter-prefixes").split
@@ -85,7 +87,7 @@ def create_stats_matrix(result_root)
     next if monitor == 'stats' # stats.json already created?
     next if monitor == 'matrix'
     unless $programs[monitor] or monitor =~ /^ftrace\.|.+\.time$/
-      $stderr.puts "skip unite #{file}: #{monitor} not in #{$programs.keys}"
+      log_warn "skip unite #{file}: #{monitor} not in #{$programs.keys}"
       next
     end
 
@@ -209,7 +211,7 @@ def unite_to(stats, matrix_root, max_cols = nil, delete = false)
       save_matrix_to_csv_file(matrix_root + '/stddev.csv', stddev)
     end
   rescue TypeError
-    $stderr.puts "matrix contains non-number values, move to #{matrix_file}-bad"
+    log_error "matrix contains non-number values, move to #{matrix_file}-bad"
     FileUtils.mv matrix_file, matrix_file + '-bad', :force => true   # never raises exception
   end
   return matrix
@@ -297,7 +299,7 @@ end
 
 def unite_params(result_root)
   if not File.directory? result_root
-    $stderr.puts "#{result_root} is not a directory"
+    log_error "#{result_root} is not a directory"
     return false
   end
 
@@ -331,13 +333,13 @@ def unite_params(result_root)
   begin
     atomic_save_yaml_json params, params_file
   rescue StandardError => e
-    $stderr.puts 'unite_params: ' + e.message
+    dump_exception e, binding
   end
 end
 
 def unite_stats(result_root, delete = false)
   if not File.directory? result_root
-    $stderr.puts "#{result_root} is not a directory"
+    log_error "#{result_root} is not a directory"
     return false
   end
 
