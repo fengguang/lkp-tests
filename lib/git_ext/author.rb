@@ -5,9 +5,9 @@ LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.dirname(File.realpa
 require 'git'
 
 module Git
-	class Author
-		def formatted_name
-			"#{@name} <#{@email}>"
-		end
-	end
+  class Author
+    def formatted_name
+      "#{@name} <#{@email}>"
+    end
+  end
 end

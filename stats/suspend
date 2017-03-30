@@ -5,90 +5,90 @@ $srhash = Hash.new
 $srmaxhash = Hash.new
 $phase="none"
 while line = STDIN.gets
-	line.chomp!
-	case line
-	when /^ *.* \[\d{3}\] .... *(\d{1,6}\.\d{6}): suspend_resume: (.*)\[(\d*)\] (.*)/
+  line.chomp!
+  case line
+  when /^ *.* \[\d{3}\] .... *(\d{1,6}\.\d{6}): suspend_resume: (.*)\[(\d*)\] (.*)/
                 timestamp = $1
-		step = $2
-		id = $3
-		stage = $4
+    step = $2
+    id = $3
+    stage = $4
 
-		next if step == "timekeeping_freeze"
+    next if step == "timekeeping_freeze"
 
-		# use CPU_ON/OFF + cpu_id as the hash key to avoid bogus duplicate
-		if step == "CPU_ON" || step == "CPU_OFF"
-			step = "#{step}_#{id}"
-		end
+    # use CPU_ON/OFF + cpu_id as the hash key to avoid bogus duplicate
+    if step == "CPU_ON" || step == "CPU_OFF"
+      step = "#{step}_#{id}"
+    end
 
-		k="#{step}_#{$cycle}"
+    k="#{step}_#{$cycle}"
 
-		if stage == "begin"
-			$srhash[k]=timestamp
-		else
-			cost=(timestamp.to_f - $srhash[k].to_f)*1000
-			$srhash[k]=cost
-		end
+    if stage == "begin"
+      $srhash[k]=timestamp
+    else
+      cost=(timestamp.to_f - $srhash[k].to_f)*1000
+      $srhash[k]=cost
+    end
 
-		case step
-		when "suspend_enter"
-			if stage == "begin"
-				$srhash["suspend_overall_#{$cycle}"]=timestamp
-			end
-		when "machine_suspend"
-			if stage == "begin"
-				cost=(timestamp.to_f - $srhash["suspend_overall_#{$cycle}"].to_f)*1000
-				$srhash["suspend_overall_#{$cycle}"]=cost.to_i
-			else
-				$srhash["resume_overall_#{$cycle}"]=timestamp
-			end
-		when "thaw_processes"
-			if stage == "end"
-				cost=(timestamp.to_f - $srhash["resume_overall_#{$cycle}"].to_f)*1000
-				$srhash["resume_overall_#{$cycle}"]=cost.to_i
-				$cycle+=1
-			end
-		when /^dpm_(.*)$/
-			if stage == "begin"
-				$phase=$1
-			else
-				$phase="none"
-			end
-		end
-	when /^ *.* \[\d{3}\] .... *(\d{1,6}\.\d{6}): device_pm_callback_start: (.*) (.*), parent: .*$/
-		timestamp=$1
-		bus=$2
-		device=$3
-		id="#{bus}_#{device}".gsub(/ /, '_')
-		k="#{id}_#{$phase}_#{$cycle}"
-		if $srhash.has_key?(k)
-			$srhash[k]=-1
-		else
-			$srhash[k]=timestamp
-		end
-	when /^ *.* \[\d{3}\] .... *(\d{1,6}\.\d{6}): device_pm_callback_end: (.*) (.*), err=(\d?)/
-		timestamp=$1
-		bus=$2
-		device=$3.strip
-		err=$4
-		id="#{bus}_#{device}".gsub(/ /, '_')
-		kmax="#{id}_#{$phase}"
-		k="#{kmax}_#{$cycle}"
-		if $srhash[k] != -1
-			cost=(timestamp.to_f - $srhash[k].to_f)*1000
-			$srhash[k]=cost.to_i
-			$srmaxhash[kmax]=0 if $srmaxhash[kmax] == nil
-			$srmaxhash[kmax]=cost.to_i if $srmaxhash[kmax] < cost.to_i
-		end
+    case step
+    when "suspend_enter"
+      if stage == "begin"
+        $srhash["suspend_overall_#{$cycle}"]=timestamp
+      end
+    when "machine_suspend"
+      if stage == "begin"
+        cost=(timestamp.to_f - $srhash["suspend_overall_#{$cycle}"].to_f)*1000
+        $srhash["suspend_overall_#{$cycle}"]=cost.to_i
+      else
+        $srhash["resume_overall_#{$cycle}"]=timestamp
+      end
+    when "thaw_processes"
+      if stage == "end"
+        cost=(timestamp.to_f - $srhash["resume_overall_#{$cycle}"].to_f)*1000
+        $srhash["resume_overall_#{$cycle}"]=cost.to_i
+        $cycle+=1
+      end
+    when /^dpm_(.*)$/
+      if stage == "begin"
+        $phase=$1
+      else
+        $phase="none"
+      end
+    end
+  when /^ *.* \[\d{3}\] .... *(\d{1,6}\.\d{6}): device_pm_callback_start: (.*) (.*), parent: .*$/
+    timestamp=$1
+    bus=$2
+    device=$3
+    id="#{bus}_#{device}".gsub(/ /, '_')
+    k="#{id}_#{$phase}_#{$cycle}"
+    if $srhash.has_key?(k)
+      $srhash[k]=-1
+    else
+      $srhash[k]=timestamp
+    end
+  when /^ *.* \[\d{3}\] .... *(\d{1,6}\.\d{6}): device_pm_callback_end: (.*) (.*), err=(\d?)/
+    timestamp=$1
+    bus=$2
+    device=$3.strip
+    err=$4
+    id="#{bus}_#{device}".gsub(/ /, '_')
+    kmax="#{id}_#{$phase}"
+    k="#{kmax}_#{$cycle}"
+    if $srhash[k] != -1
+      cost=(timestamp.to_f - $srhash[k].to_f)*1000
+      $srhash[k]=cost.to_i
+      $srmaxhash[kmax]=0 if $srmaxhash[kmax] == nil
+      $srmaxhash[kmax]=cost.to_i if $srmaxhash[kmax] < cost.to_i
+    end
         else
-		next
+    next
         end
 end
 
 $srhash.each do |k,v|
-	case k
-	when /(.*)_\d*/
-		kmax=$1
-		next if $srmaxhash.has_key?(kmax) && $srmaxhash[kmax] < 50
-		puts "#{kmax}: #{v}"
-	end
+  case k
+  when /(.*)_\d*/
+    kmax=$1
+    next if $srmaxhash.has_key?(kmax) && $srmaxhash[kmax] < 50
+    puts "#{kmax}: #{v}"
+  end
 end

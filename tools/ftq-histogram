@@ -8,61 +8,61 @@ PDEL = 10
 OUTPUT_NUM = 20
 
 def read_ftq_data(results_dir)
-	data = []
-	files = Dir["#{results_dir}/ftq_*.dat"]
-	files.each { |file|
-		rdata = File.read(file)
-		n = (rdata =~ /^[^#]/)
-		rdata.slice!(0, n)
-		sfdata = rdata.split
-		rdata = nil
-		sfdata.select!.with_index { |x, i| i.odd? }
-		n = sfdata.size
-		ndel = n * PDEL / 100
-		sfdata.slice!(n - ndel, ndel)
-		sfdata.slice!(0, ndel)
-		data.concat(sfdata.map(&:to_i))
-		sfdata = nil
-	}
-	data
+  data = []
+  files = Dir["#{results_dir}/ftq_*.dat"]
+  files.each { |file|
+    rdata = File.read(file)
+    n = (rdata =~ /^[^#]/)
+    rdata.slice!(0, n)
+    sfdata = rdata.split
+    rdata = nil
+    sfdata.select!.with_index { |x, i| i.odd? }
+    n = sfdata.size
+    ndel = n * PDEL / 100
+    sfdata.slice!(n - ndel, ndel)
+    sfdata.slice!(0, ndel)
+    data.concat(sfdata.map(&:to_i))
+    sfdata = nil
+  }
+  data
 end
 
 def make_histogram(data, levels)
-	samples = data.size
-	mean = data[data.size / 2]
-	start = 0
-	histogram = levels.each_with_index.map { |level, i|
-		lc = mean * level / 100
-		nstart = data.bsearch_index { |n| n >= lc }
-		nstart = data.size unless nstart
-		num = (nstart - start) * 1000000.0 / samples
-		start = nstart
-		slevel = i == 0 ? 0 : levels[i-1]
-		[slevel, level, num]
-	}
-	histogram
+  samples = data.size
+  mean = data[data.size / 2]
+  start = 0
+  histogram = levels.each_with_index.map { |level, i|
+    lc = mean * level / 100
+    nstart = data.bsearch_index { |n| n >= lc }
+    nstart = data.size unless nstart
+    num = (nstart - start) * 1000000.0 / samples
+    start = nstart
+    slevel = i == 0 ? 0 : levels[i-1]
+    [slevel, level, num]
+  }
+  histogram
 end
 
 def print_histogram(histogram, output_num)
-	histogram.sort_by! { |sl, el, n| -n }
-	histogram.first(output_num).each { |slevel, elevel, num|
-		printf "mean.%d-%d%%: %g\n", slevel, elevel, num
-	}
+  histogram.sort_by! { |sl, el, n| -n }
+  histogram.first(output_num).each { |slevel, elevel, num|
+    printf "mean.%d-%d%%: %g\n", slevel, elevel, num
+  }
 end
 
 def histogram_analyze(_rt)
-	data = read_ftq_data("#{_rt}/results")
+  data = read_ftq_data("#{_rt}/results")
 
-	data.sort!
-	mean = data[data.size / 2]
-	max = data.last
+  data.sort!
+  mean = data[data.size / 2]
+  max = data.last
 
-	printf "max: %d\n", max
-	printf "mean: %d\n", mean
+  printf "max: %d\n", max
+  printf "mean: %d\n", mean
 
-	perf_levels = (1..((max-1)*100 + mean)/mean).map { |l| l * 1 }
-	perf_num_levels = make_histogram(data, perf_levels)
-	print_histogram(perf_num_levels, OUTPUT_NUM)
+  perf_levels = (1..((max-1)*100 + mean)/mean).map { |l| l * 1 }
+  perf_num_levels = make_histogram(data, perf_levels)
+  print_histogram(perf_num_levels, OUTPUT_NUM)
 end
 
 histogram_analyze(_rt)

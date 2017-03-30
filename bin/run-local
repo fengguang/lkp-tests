@@ -29,36 +29,36 @@ $opt_result_root = 'result'
 $opt_set_key_value = {}
 
 opts = OptionParser.new do |opts|
-	opts.banner = 'Usage: run-local [--dry-run] [-o RESULT_ROOT] JOBFILE'
+  opts.banner = 'Usage: run-local [--dry-run] [-o RESULT_ROOT] JOBFILE'
 
-	opts.separator ''
-	opts.separator 'options:'
+  opts.separator ''
+  opts.separator 'options:'
 
-	opts.on('-o RESULT_ROOT', '--output RESULT_ROOT', 'link to result directory') do |dir|
-		$opt_result_root = dir
-	end
+  opts.on('-o RESULT_ROOT', '--output RESULT_ROOT', 'link to result directory') do |dir|
+    $opt_result_root = dir
+  end
 
-	opts.on("-s 'KEY: VALUE'", "--set 'KEY: VALUE'", "add YAML hash to job") do |key_value|
-		$opt_set_key_value.merge!(YAML.load key_value)
-	end
+  opts.on("-s 'KEY: VALUE'", "--set 'KEY: VALUE'", "add YAML hash to job") do |key_value|
+    $opt_set_key_value.merge!(YAML.load key_value)
+  end
 
-	opts.on_tail('-h', '--help', 'Show this message') do
-		puts opts
-		exit
-	end
+  opts.on_tail('-h', '--help', 'Show this message') do
+    puts opts
+    exit
+  end
 end
 
 if ARGV == []
-	argv = ['-h']
+  argv = ['-h']
 else
-	argv = ARGV
+  argv = ARGV
 end
 opts.parse!(argv)
 
 jobfile = ARGV[0]
 unless jobfile
-	puts "No jobfile specified"
-	exit 1
+  puts "No jobfile specified"
+  exit 1
 end
 
 # Setup environment for user specified test case
@@ -71,25 +71,25 @@ if argv.size > 0
 end
 
 if !jobfile.index('/') and !File.exist?(jobfile)
-	file = LKP_SRC + '/jobs/' + jobfile
-	jobfile = file if File.exist?(file)
+  file = LKP_SRC + '/jobs/' + jobfile
+  jobfile = file if File.exist?(file)
 end
 
 def create_result_root(_result_root)
-	0.upto(99) do |i|
-		result_root = "#{_result_root}/#{i}"
-		next if Dir.exist? result_root
-		FileUtils.mkdir_p result_root, :mode => 02775
-		return result_root
-	end
-	$stderr.puts "cannot create more result_roots under #{_result_root}"
-	return nil
+  0.upto(99) do |i|
+    result_root = "#{_result_root}/#{i}"
+    next if Dir.exist? result_root
+    FileUtils.mkdir_p result_root, :mode => 02775
+    return result_root
+  end
+  $stderr.puts "cannot create more result_roots under #{_result_root}"
+  return nil
 end
 
 job = Job.new
 job.load(jobfile) rescue (
-	$stderr.puts "#{jobfile} is not a valid jobfile"
-	exit 1
+  $stderr.puts "#{jobfile} is not a valid jobfile"
+  exit 1
 )
 
 HOSTNAME ||= ENV["HOSTNAME"] || `hostname`.chomp
@@ -104,7 +104,7 @@ job['compiler'] ||= File.symlink?('/usr/bin/gcc') ? File.readlink('/usr/bin/gcc'
 job['NO_NETWORK'] = 1
 
 $opt_set_key_value.each { |k, v|
-	job[k] = v
+  job[k] = v
 }
 
 _result_root = job._result_root
@@ -120,7 +120,7 @@ Dir.mkdir TMP
 
 job_script = result_root + '/job.sh'
 File.open(job_script, mode='w', perm=0775) do |file|
-	file.puts jobx.to_shell
+  file.puts jobx.to_shell
 end
 
 system 'killall', '-q', LKP_SRC + '/bin/event/wakeup'

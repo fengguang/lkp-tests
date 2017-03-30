@@ -13,12 +13,12 @@ require 'set'
 $monitor = ARGV[0]
 
 def warn_stat(msg)
-	$stderr.puts msg
+  $stderr.puts msg
 
-	unless $stat_context_showed
-		$stat_context_showed = true
-		$stderr.puts "dump-stat: check #{RESULT_ROOT}/#{$monitor}"
-	end
+  unless $stat_context_showed
+    $stat_context_showed = true
+    $stderr.puts "dump-stat: check #{RESULT_ROOT}/#{$monitor}"
+  end
 end
 
 $result = {}
@@ -27,49 +27,49 @@ record_index = 0
 while line = STDIN.gets
   line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
 
-	next if line[0] == '#'
-	k, _, v = line.partition(': ')
-	next if v.empty?
+  next if line[0] == '#'
+  k, _, v = line.partition(': ')
+  next if v.empty?
 
-	# Line terminator is expected. If not, throw out an error warning.
-	if v.chomp! == nil
-		warn_stat "no line terminator in stats value: #{v}"
-	end
+  # Line terminator is expected. If not, throw out an error warning.
+  if v.chomp! == nil
+    warn_stat "no line terminator in stats value: #{v}"
+  end
 
-	v.strip!
-	if v.empty?
-		warn_stat "empty stat value of #{k}"
-		next
-	end
+  v.strip!
+  if v.empty?
+    warn_stat "empty stat value of #{k}"
+    next
+  end
 
-	next if $monitor =~ /^(dmesg|kmsg)$/ and k =~ /^(message|pattern):/
+  next if $monitor =~ /^(dmesg|kmsg)$/ and k =~ /^(message|pattern):/
 
-	k = $monitor + '.' + k
-	$result[k] ||= []
-	size = $result[k].size
-	if record_index < size
-		record_index = size
-	elsif record_index - size > 0
-		# fill 0 for missing values
-		$result[k].concat ([0] * (record_index - size))
-	end
+  k = $monitor + '.' + k
+  $result[k] ||= []
+  size = $result[k].size
+  if record_index < size
+    record_index = size
+  elsif record_index - size > 0
+    # fill 0 for missing values
+    $result[k].concat ([0] * (record_index - size))
+  end
 
-	if k =~ /[ \t]/
-		$invalid_records.push record_index
-		warn_stat "whitespace in stats name: #{k}"
-	end
-	if v =~ /[^0-9a-fx.-]/
-		$invalid_records.push record_index
-		warn_stat "invalid stats value: #{v}"
-	end
+  if k =~ /[ \t]/
+    $invalid_records.push record_index
+    warn_stat "whitespace in stats name: #{k}"
+  end
+  if v =~ /[^0-9a-fx.-]/
+    $invalid_records.push record_index
+    warn_stat "invalid stats value: #{v}"
+  end
 
-	v = v.index('.') ? v.to_f : v.to_i
-	if not is_valid_stats_range k, v
-		$invalid_records.push record_index
-		puts "outside valid range: #{v} in #{k} #{RESULT_ROOT}"
-	end
+  v = v.index('.') ? v.to_f : v.to_i
+  if not is_valid_stats_range k, v
+    $invalid_records.push record_index
+    puts "outside valid range: #{v} in #{k} #{RESULT_ROOT}"
+  end
 
-	$result[k].push v
+  $result[k].push v
 end
 
 exit if $result.empty?
@@ -80,39 +80,39 @@ min_cols_stat = ''
 max_cols_stat = ''
 zero_stats = []
 $result.each { |k, v|
-	if max_cols < v.size
-		max_cols = v.size
-		max_cols_stat = k
-	end
-	if min_cols > v.size
-		min_cols = v.size
-		min_cols_stat = k
-	end
-	next if v[0] != 0
-	next if v[-1] != 0
-	next if v.sum != 0
-	zero_stats << k
+  if max_cols < v.size
+    max_cols = v.size
+    max_cols_stat = k
+  end
+  if min_cols > v.size
+    min_cols = v.size
+    min_cols_stat = k
+  end
+  next if v[0] != 0
+  next if v[-1] != 0
+  next if v.sum != 0
+  zero_stats << k
 }
 zero_stats.each { |k| $result.delete k }
 
 if $monitor != 'ftrace'
-	# delete invalid number in reverse order
-	$invalid_records.reverse.each { |index|
-		$result.each { |k, v|
-			v.delete_at index
-		}
-	}
+  # delete invalid number in reverse order
+  $invalid_records.reverse.each { |index|
+    $result.each { |k, v|
+      v.delete_at index
+    }
+  }
 end
 
 UNSTRUCTURED_MONITORS = %w(ftrace).to_set
 
 if min_cols < max_cols and not UNSTRUCTURED_MONITORS.include?($monitor)
-	if min_cols == max_cols - 1
-		$result.each { |k, v| v.pop if v.size == max_cols }
-		puts "Last record seems incomplete. Truncated #{RESULT_ROOT}/#{$monitor}.json"
-	else
-		warn_stat "Not a matrix: value size is different - #{min_cols_stat}: #{min_cols} != #{max_cols_stat}: #{max_cols}: #{RESULT_ROOT}/#{$monitor}.json"
-	end
+  if min_cols == max_cols - 1
+    $result.each { |k, v| v.pop if v.size == max_cols }
+    puts "Last record seems incomplete. Truncated #{RESULT_ROOT}/#{$monitor}.json"
+  else
+    warn_stat "Not a matrix: value size is different - #{min_cols_stat}: #{min_cols} != #{max_cols_stat}: #{max_cols}: #{RESULT_ROOT}/#{$monitor}.json"
+  end
 end
 
 exit if $result.empty?

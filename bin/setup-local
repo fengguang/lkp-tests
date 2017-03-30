@@ -16,129 +16,129 @@ require "#{LKP_SRC}/lib/install.rb"
 TMP = LKP_SRC + '/tmp'
 
 if `whoami`.chomp != 'root'
-	puts "Please run as root to install packages"
-	exit 1
+  puts "Please run as root to install packages"
+  exit 1
 end
 
 $opt_hdd = []
 $opt_ssd = []
 
 opts = OptionParser.new do |opts|
-	opts.banner = 'Usage: setup-local [options] <script>/<jobfile>'
+  opts.banner = 'Usage: setup-local [options] <script>/<jobfile>'
 
-	opts.separator ''
-	opts.separator 'options:'
+  opts.separator ''
+  opts.separator 'options:'
 
-	opts.on('--hdd partition', 'HDD partition for IO tests') do |hdd|
-		$opt_hdd << hdd
-	end
+  opts.on('--hdd partition', 'HDD partition for IO tests') do |hdd|
+    $opt_hdd << hdd
+  end
 
-	opts.on('--ssd partition', 'SSD partition for IO tests') do |ssd|
-		$opt_ssd << ssd
-	end
+  opts.on('--ssd partition', 'SSD partition for IO tests') do |ssd|
+    $opt_ssd << ssd
+  end
 
-	opts.on_tail('-h', '--help', 'Show this message') do
-		puts opts
-		exit
-	end
+  opts.on_tail('-h', '--help', 'Show this message') do
+    puts opts
+    exit
+  end
 end
 
 if ARGV == []
-	argv = ['-h']
+  argv = ['-h']
 else
-	argv = ARGV
+  argv = ARGV
 end
 opts.parse!(argv)
 
 scripts = []
 ARGV.each { |arg|
-	if arg =~ /.yaml/
-		job = Job.new
-		job.load(arg)
-		job.each_program(:workload_and_monitors) { |k, v|
-			scripts << k
-		}
-	elsif File.executable? arg
-		scripts << arg.split('/')[-1]
-	end
+  if arg =~ /.yaml/
+    job = Job.new
+    job.load(arg)
+    job.each_program(:workload_and_monitors) { |k, v|
+      scripts << k
+    }
+  elsif File.executable? arg
+    scripts << arg.split('/')[-1]
+  end
 }
 
 if scripts.empty?
-	puts "No valid script or jobfile specified"
-	exit 1
+  puts "No valid script or jobfile specified"
+  exit 1
 end
 scripts.uniq!
 
 def make_wakeup
-	return if File.executable? LKP_SRC + '/bin/event/wakeup'
-	system "cd #{LKP_SRC}/bin/event && make wakeup"
+  return if File.executable? LKP_SRC + '/bin/event/wakeup'
+  system "cd #{LKP_SRC}/bin/event && make wakeup"
 end
 
 def create_lkp_dirs
-	FileUtils.mkdir_p TMP
-	FileUtils.mkdir_p '/lkp/paths'
-	FileUtils.mkdir_p '/lkp/benchmarks'
+  FileUtils.mkdir_p TMP
+  FileUtils.mkdir_p '/lkp/paths'
+  FileUtils.mkdir_p '/lkp/benchmarks'
 end
 
 def create_host_config
-	host_config = LKP_SRC + "/hosts/#{HOSTNAME}"
-	if File.exist? host_config
-		puts "reusing " + host_config
-	else
-		mem_kb = File.open('/proc/meminfo').gets.split[1].to_i
-		mem_gb = mem_kb >> 20
-		mem_gb = (mem_gb + 3) & 0xfffffffc
-		File.open(host_config, mode='w') { |file|
-			file.puts "memory: #{mem_gb}G"
-			file.puts "hdd_partitions: #{$opt_hdd.join ' '}"
-			file.puts "ssd_partitions: #{$opt_ssd.join ' '}"
-		}
-	end
+  host_config = LKP_SRC + "/hosts/#{HOSTNAME}"
+  if File.exist? host_config
+    puts "reusing " + host_config
+  else
+    mem_kb = File.open('/proc/meminfo').gets.split[1].to_i
+    mem_gb = mem_kb >> 20
+    mem_gb = (mem_gb + 3) & 0xfffffffc
+    File.open(host_config, mode='w') { |file|
+      file.puts "memory: #{mem_gb}G"
+      file.puts "hdd_partitions: #{$opt_hdd.join ' '}"
+      file.puts "ssd_partitions: #{$opt_ssd.join ' '}"
+    }
+  end
   host_group_config = LKP_SRC + "/hosts/#{tbox_group(HOSTNAME)}"
   FileUtils.cp(host_config, host_group_config) unless File.exist? host_group_config
 end
 
 def install_packages(script, distro)
-	packages = get_dependency_packages(distro, script)
-	dev_packages = get_dependency_packages(distro, script + '-dev')
-	packages |= dev_packages
-	return if packages.empty?
+  packages = get_dependency_packages(distro, script)
+  dev_packages = get_dependency_packages(distro, script + '-dev')
+  packages |= dev_packages
+  return if packages.empty?
 
-	unless system "#{LKP_SRC}/distro/installer/#{distro}", *packages
-		puts "Cannot install some packages in #{LKP_SRC}/distro/#{distro}/#{script}"
-		exit 1
-	end
+  unless system "#{LKP_SRC}/distro/installer/#{distro}", *packages
+    puts "Cannot install some packages in #{LKP_SRC}/distro/#{distro}/#{script}"
+    exit 1
+  end
 end
 
 def install_benchmarks(script, distro)
-	return unless File.file? "#{LKP_SRC}/pack/#{script}"
+  return unless File.file? "#{LKP_SRC}/pack/#{script}"
 
-	pkg_name = script.gsub(/_/, '-') + '-LKP'
-	arch = `uname -m`.chomp
-	puts "Making #{script} benchmark for #{distro}"
+  pkg_name = script.gsub(/_/, '-') + '-LKP'
+  arch = `uname -m`.chomp
+  puts "Making #{script} benchmark for #{distro}"
 
-	if system "#{LKP_SRC}/sbin/pack -d #{distro} -c #{script}"
-		puts "Installing #{pkg_name}..."
+  if system "#{LKP_SRC}/sbin/pack -d #{distro} -c #{script}"
+    puts "Installing #{pkg_name}..."
 
-		case distro
-		when 'debian','ubuntu'
-			system "dpkg -i /tmp/#{pkg_name}.deb"
-		when 'fedora'
-			system "rpm -ivh --replacepkgs /tmp/#{pkg_name}/RPMS/#{pkg_name}.#{arch}.rpm"
-		else
-			puts "Just make /lkp/benchmarks/#{script}-#{arch}.cgz"
-		end
-	else
-		puts "Making #{pkg_name} failed"
-	end
+    case distro
+    when 'debian','ubuntu'
+      system "dpkg -i /tmp/#{pkg_name}.deb"
+    when 'fedora'
+      system "rpm -ivh --replacepkgs /tmp/#{pkg_name}/RPMS/#{pkg_name}.#{arch}.rpm"
+    else
+      puts "Just make /lkp/benchmarks/#{script}-#{arch}.cgz"
+    end
+  else
+    puts "Making #{pkg_name} failed"
+  end
 end
 
 distroInfo = LKP::DistroInfo.instance
 distro = distroInfo.systemNameL
 
 unless File.executable? "#{LKP_SRC}/distro/installer/#{distro}"
-	puts "Unsupport #{distro} system, cannot install packages."
-	exit 1
+  puts "Unsupport #{distro} system, cannot install packages."
+  exit 1
 end
 
 make_wakeup
@@ -148,7 +148,7 @@ install_packages("lkp", distro)
 install_packages("makepkg", distro)
 
 scripts.each { |script|
-	install_packages(script, distro)
-	install_benchmarks(script, distro)
+  install_packages(script, distro)
+  install_benchmarks(script, distro)
 }
 

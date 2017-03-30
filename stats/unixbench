@@ -5,15 +5,15 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAM
 require "#{LKP_SRC}/lib/log"
 
 while line = STDIN.gets
-	case line.chomp!
-	when /^System Benchmarks Index Score .* ([0-9\.]+)$/
-		score = $1
-	end
+  case line.chomp!
+  when /^System Benchmarks Index Score .* ([0-9\.]+)$/
+    score = $1
+  end
 end
 
 if score
-	puts 'score: ' + score
+  puts 'score: ' + score
 else
-	puts 'incomplete_result: 1'
-	log_error "unixbench: missing score, check " + ENV['RESULT_ROOT']
+  puts 'incomplete_result: 1'
+  log_error "unixbench: missing score, check " + ENV['RESULT_ROOT']
 end

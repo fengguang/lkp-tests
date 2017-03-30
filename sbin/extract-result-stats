@@ -7,28 +7,28 @@ require 'tempfile'
 
 LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
 if ARGV[0]
-	RESULT_ROOT = File.realpath ARGV[0]
-	ENV['RESULT_ROOT'] = RESULT_ROOT
+  RESULT_ROOT = File.realpath ARGV[0]
+  ENV['RESULT_ROOT'] = RESULT_ROOT
 else
-	RESULT_ROOT = ENV['RESULT_ROOT']
+  RESULT_ROOT = ENV['RESULT_ROOT']
 end
 
 Dir.chdir(RESULT_ROOT) or exit
 
 def extract_one(program, result_file)
-	tmp_yaml = Tempfile.new('lkp-stats.' + program + '.')
-	system LKP_SRC + '/stats/' + program, result_file, :in => result_file, :out => tmp_yaml.path
-	system LKP_SRC + "/sbin/dump-stat", result_file, :in => tmp_yaml.path
-	tmp_yaml.close
+  tmp_yaml = Tempfile.new('lkp-stats.' + program + '.')
+  system LKP_SRC + '/stats/' + program, result_file, :in => result_file, :out => tmp_yaml.path
+  system LKP_SRC + "/sbin/dump-stat", result_file, :in => tmp_yaml.path
+  tmp_yaml.close
 end
 
 def extract_files(result_files)
-	result_files.each { |result_file|
-		case result_file
-		when 'time', /.*\.time$/
-			extract_one 'time', result_file
-		end
-	}
+  result_files.each { |result_file|
+    case result_file
+    when 'time', /.*\.time$/
+      extract_one 'time', result_file
+    end
+  }
 end
 
 extract_files Dir['time', '*.time']

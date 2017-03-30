@@ -4,124 +4,124 @@ require 'optparse'
 require 'ostruct'
 require 'set'
 
-LKP_SRC		= ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
-BLACKLIST	= LKP_SRC + '/etc/kmsg-blacklist'
-MIN_MSG_LEN	= 18
-OUTPUT_FILE	= '/lkp/printk-error-messages'
-DIRS_TO_GREP	= 'arch block crypto drivers firmware fs include init ipc kernel lib mm net security sound virt'
-PRINTK_PATTERNS	= %w(
-	KERN_EMERG
-	KERN_ALERT
-	KERN_CRIT
-	KERN_ERR
-	KERN_WARNING
+LKP_SRC   = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
+BLACKLIST = LKP_SRC + '/etc/kmsg-blacklist'
+MIN_MSG_LEN = 18
+OUTPUT_FILE = '/lkp/printk-error-messages'
+DIRS_TO_GREP  = 'arch block crypto drivers firmware fs include init ipc kernel lib mm net security sound virt'
+PRINTK_PATTERNS = %w(
+  KERN_EMERG
+  KERN_ALERT
+  KERN_CRIT
+  KERN_ERR
+  KERN_WARNING
 
-	ML_ERROR
+  ML_ERROR
 
-	WARN
-	WARN_TAINT
-	WARN_ONCE
-	WARN_TAINT_ONCE
+  WARN
+  WARN_TAINT
+  WARN_ONCE
+  WARN_TAINT_ONCE
 
-	RCU_LOCKDEP_WARN
+  RCU_LOCKDEP_WARN
 
-	DRM_ERROR
-	DRM_ERROR_RATELIMITED
+  DRM_ERROR
+  DRM_ERROR_RATELIMITED
 
-	DMCRIT
-	DMERR
-	DMERR_LIMIT
-	DMWARN
-	DMWARN_LIMIT
+  DMCRIT
+  DMERR
+  DMERR_LIMIT
+  DMWARN
+  DMWARN_LIMIT
 
-	pr_emerg
-	pr_alert
-	pr_crit
-	pr_err
-	pr_warn
+  pr_emerg
+  pr_alert
+  pr_crit
+  pr_err
+  pr_warn
 
-	dev_emerg
-	dev_crit
-	dev_alert
-	dev_err
-	dev_warn
+  dev_emerg
+  dev_crit
+  dev_alert
+  dev_err
+  dev_warn
 
-	dev_emerg_ratelimited
-	dev_crit_ratelimited
-	dev_alert_ratelimited
-	dev_err_ratelimited
-	dev_warn_ratelimited
+  dev_emerg_ratelimited
+  dev_crit_ratelimited
+  dev_alert_ratelimited
+  dev_err_ratelimited
+  dev_warn_ratelimited
 
-	netdev_emerg
-	netdev_crit
-	netdev_alert
-	netdev_err
-	netdev_warn
+  netdev_emerg
+  netdev_crit
+  netdev_alert
+  netdev_err
+  netdev_warn
 
-	netif_emerg
-	netif_crit
-	netif_alert
-	netif_err
-	netif_warn
+  netif_emerg
+  netif_crit
+  netif_alert
+  netif_err
+  netif_warn
 
-	v4l_err
-	v4l_warn
-	v4l2_err
-	v4l2_warn
+  v4l_err
+  v4l_warn
+  v4l2_err
+  v4l2_warn
 
-	hid_emerg
-	hid_alert
-	hid_crit
-	hid_err
-	hid_warn
+  hid_emerg
+  hid_alert
+  hid_crit
+  hid_err
+  hid_warn
 
-	xfs_emerg
-	xfs_alert
-	xfs_alert_tag
-	xfs_crit
-	xfs_err
-	xfs_warn
+  xfs_emerg
+  xfs_alert
+  xfs_alert_tag
+  xfs_crit
+  xfs_err
+  xfs_warn
 
-	btrfs_emerg
-	btrfs_alert
-	btrfs_crit
-	btrfs_err
-	btrfs_warn
+  btrfs_emerg
+  btrfs_alert
+  btrfs_crit
+  btrfs_err
+  btrfs_warn
 
-	ext4_error_inode
-	ext4_error_file
-	ext4_error
-	ext4_abort
-	ext4_warning
+  ext4_error_inode
+  ext4_error_file
+  ext4_error
+  ext4_abort
+  ext4_warning
 
-	ntfs_error
-	ntfs_warning
+  ntfs_error
+  ntfs_warning
 
-	jfs_warn
-	jfs_err
+  jfs_warn
+  jfs_err
 
-	ubifs_warn
-	ubifs_err
-	ubifs_errc
+  ubifs_warn
+  ubifs_err
+  ubifs_errc
 ).join '|'
 
 Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
 
 opts = OptionParser.new do |opts|
-	opts.banner = "Usage: update-printk-error-messages [-v] [-h]"
+  opts.banner = "Usage: update-printk-error-messages [-v] [-h]"
 
-	opts.separator ""
-	opts.separator "options:"
+  opts.separator ""
+  opts.separator "options:"
 
-	opts.on("-v", "--verbose") do
-		$opt_verbose = true
-	end
+  opts.on("-v", "--verbose") do
+    $opt_verbose = true
+  end
 
-	opts.on_tail("-h", "--help", "show this message") do
-		puts opts
-		exit
-	end
+  opts.on_tail("-h", "--help", "show this message") do
+    puts opts
+    exit
+  end
 end
 
 opts.parse!(ARGV)
@@ -134,49 +134,49 @@ nr_line_short = 0
 blacklist = File.read(BLACKLIST).split "\n"
 
 `git grep -A1 -E '(#{PRINTK_PATTERNS})' -- #{DIRS_TO_GREP} | grep -o '".*"'`.each_line { |line|
-	line = line[1..-3]
-	next if line =~ /"/
-	line.sub! /\\t/, "\t"
-	lines = line.split "\\n"
-	lines.each { |line|
-		strs = line.split "%"
-		index = 0
-		len = 0
-		strs.each_with_index { |s, i|
-			next if len > s.size
-			len = s.size
-			index = i
-		}
-		str = strs[index]
-		if index > 0
-			str[0] = '' while str =~ /^[-0-9.#*lLzZth]/
-			if str[0] =~ /[iudsxXpPco]/
-				str[0] = ''
-			else
-				$stderr.puts "IGNORE " + line
-			end
-		end
+  line = line[1..-3]
+  next if line =~ /"/
+  line.sub! /\\t/, "\t"
+  lines = line.split "\\n"
+  lines.each { |line|
+    strs = line.split "%"
+    index = 0
+    len = 0
+    strs.each_with_index { |s, i|
+      next if len > s.size
+      len = s.size
+      index = i
+    }
+    str = strs[index]
+    if index > 0
+      str[0] = '' while str =~ /^[-0-9.#*lLzZth]/
+      if str[0] =~ /[iudsxXpPco]/
+        str[0] = ''
+      else
+        $stderr.puts "IGNORE " + line
+      end
+    end
 
-		count[len] ||= 0
-		count[len] += 1
+    count[len] ||= 0
+    count[len] += 1
 
-		if len < MIN_MSG_LEN
-			nr_too_short += 1
-			nr_line_short += 1 if line.size < MIN_MSG_LEN
-			next
-		end
-		next if str.gsub(/[^a-zA-Z]/, '').size <= MIN_MSG_LEN / 2
-		next unless blacklist.grep(str).empty?
-		errids << str
-	}
+    if len < MIN_MSG_LEN
+      nr_too_short += 1
+      nr_line_short += 1 if line.size < MIN_MSG_LEN
+      next
+    end
+    next if str.gsub(/[^a-zA-Z]/, '').size <= MIN_MSG_LEN / 2
+    next unless blacklist.grep(str).empty?
+    errids << str
+  }
 }
 
 File.open(OUTPUT_FILE, mode='w') { |file|
-	file.puts errids.to_a
+  file.puts errids.to_a
 }
 
 count.sort.each { |k, v|
-	puts "#{k}: #{v}"
+  puts "#{k}: #{v}"
 } if $opt_verbose
 
 puts "too short line    count: #{nr_line_short}"

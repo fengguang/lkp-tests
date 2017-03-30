@@ -1,11 +1,11 @@
 #!/usr/bin/env ruby
 
 while line = STDIN.gets
-	case line.chomp!
-	when /^#\(\*\*\)/
-		a, b, c, throughput, rtt, jitter = line.split
-		puts 'throughput: ' + throughput
-		puts 'RTT: ' + rtt
-		puts 'jitter: ' + jitter
-	end
+  case line.chomp!
+  when /^#\(\*\*\)/
+    a, b, c, throughput, rtt, jitter = line.split
+    puts 'throughput: ' + throughput
+    puts 'RTT: ' + rtt
+    puts 'jitter: ' + jitter
+  end
 end

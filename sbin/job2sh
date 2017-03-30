@@ -11,36 +11,36 @@ require 'yaml'
 $opt_file = STDOUT
 
 opts = OptionParser.new do |opts|
-	opts.banner = "Usage: #{$PROGRAM_NAME} [options] job.yaml"
+  opts.banner = "Usage: #{$PROGRAM_NAME} [options] job.yaml"
 
-	opts.separator ''
-	opts.separator 'options:'
+  opts.separator ''
+  opts.separator 'options:'
 
-	opts.on('-o FILE', '--output FILE', 'save shell script to FILE (default: stdout)') do |file|
-		$opt_file = File.open(file, mode='w', perm=0775)
-	end
+  opts.on('-o FILE', '--output FILE', 'save shell script to FILE (default: stdout)') do |file|
+    $opt_file = File.open(file, mode='w', perm=0775)
+  end
 
-	opts.on_tail('-h', '--help', 'Show this message') do
-		puts opts
-		exit
-	end
+  opts.on_tail('-h', '--help', 'Show this message') do
+    puts opts
+    exit
+  end
 
 end
 
 if ARGV == []
-	argv = ['-h']
+  argv = ['-h']
 else
-	argv = ARGV
+  argv = ARGV
 end
 opts.parse!(argv)
 
 begin
-	job = Job2sh.new
-	job.load(ARGV[0])
-	job.expand_params
+  job = Job2sh.new
+  job.load(ARGV[0])
+  job.expand_params
 rescue Job::ParamError => e
-	$stderr.puts "Abandon job: #{e.message}"
-	exit 1
+  $stderr.puts "Abandon job: #{e.message}"
+  exit 1
 end
 
 $opt_file.puts job.to_shell

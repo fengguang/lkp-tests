@@ -8,68 +8,68 @@ require 'ostruct'
 $opt_name_prefix = ''
 
 opts = OptionParser.new do |opts|
-	opts.banner = "Usage: #{$PROGRAM_NAME} [options] YAML-FILE"
+  opts.banner = "Usage: #{$PROGRAM_NAME} [options] YAML-FILE"
 
-	opts.separator ''
-	opts.separator 'options:'
+  opts.separator ''
+  opts.separator 'options:'
 
-	opts.on('--expand', 'Enable "$shell_variable" expansion') do
-		$opt_expand_shell_variable = true
-	end
+  opts.on('--expand', 'Enable "$shell_variable" expansion') do
+    $opt_expand_shell_variable = true
+  end
 
-	opts.on('--array ARRAY', 'Store values to associative array') do |array_name|
-		$opt_assoc_array = array_name
-	end
+  opts.on('--array ARRAY', 'Store values to associative array') do |array_name|
+    $opt_assoc_array = array_name
+  end
 
-	opts.on('--prefix PREFIX', 'Add prefix to variable names') do |prefix|
-		$opt_name_prefix = prefix
-	end
+  opts.on('--prefix PREFIX', 'Add prefix to variable names') do |prefix|
+    $opt_name_prefix = prefix
+  end
 
-	opts.on_tail('-h', '--help', 'Show this message') do
-		puts opts
-		exit
-	end
+  opts.on_tail('-h', '--help', 'Show this message') do
+    puts opts
+    exit
+  end
 
 end
 
 if ARGV == []
-	argv = ['-h']
+  argv = ['-h']
 else
-	argv = ARGV
+  argv = ARGV
 end
 opts.parse!(argv)
 
 def get_simple_value(v)
-	if v.class == Hash
-		return v.keys[0]
-	elsif v.class == Array
-		v.map! { |vv|
-			if vv.class == Hash
-				vv.keys[0]
-			else
-				vv.to_s
-			end
-		}
-		return v.join "\n"
-	else
-		return v.to_s
-	end
+  if v.class == Hash
+    return v.keys[0]
+  elsif v.class == Array
+    v.map! { |vv|
+      if vv.class == Hash
+        vv.keys[0]
+      else
+        vv.to_s
+      end
+    }
+    return v.join "\n"
+  else
+    return v.to_s
+  end
 end
 
 def shell_escape(v)
-	if $opt_expand_shell_variable and v.index('$')
-		'"' + v + '"'
-	else
-		Shellwords.escape(v)
-	end
+  if $opt_expand_shell_variable and v.index('$')
+    '"' + v + '"'
+  else
+    Shellwords.escape(v)
+  end
 end
 
 ARGV.each { |file|
-	vars = YAML.load_file file
-	vars.each { |k, v|
-		next unless String === k
-		var_name = $opt_name_prefix + k.gsub(/[^a-zA-Z0-9_]/, '_').gsub(/^[^a-zA-Z]/, '_')
-		var_name = $opt_assoc_array + '[' + var_name + ']' if $opt_assoc_array
-		STDOUT.write(var_name + '=' + shell_escape(get_simple_value(v)) + "\n")
-	}
+  vars = YAML.load_file file
+  vars.each { |k, v|
+    next unless String === k
+    var_name = $opt_name_prefix + k.gsub(/[^a-zA-Z0-9_]/, '_').gsub(/^[^a-zA-Z]/, '_')
+    var_name = $opt_assoc_array + '[' + var_name + ']' if $opt_assoc_array
+    STDOUT.write(var_name + '=' + shell_escape(get_simple_value(v)) + "\n")
+  }
 }
