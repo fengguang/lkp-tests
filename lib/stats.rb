@@ -13,7 +13,7 @@ require "#{LKP_SRC}/lib/result.rb"
 require "#{LKP_SRC}/lib/bounds.rb"
 require "#{LKP_SRC}/lib/constant.rb"
 require "#{LKP_SRC}/lib/statistics.rb"
-require "#{LKP_SRC}/lib/error.rb"
+require "#{LKP_SRC}/lib/log"
 require "#{LKP_SRC}/lib/tests.rb"
 
 $metric_add_max_latency = IO.read("#{LKP_SRC}/etc/add-max-latency").split("\n")

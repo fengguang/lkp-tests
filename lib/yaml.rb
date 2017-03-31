@@ -3,7 +3,7 @@
 LKP_SRC ||= ENV['LKP_SRC']
 
 require "#{LKP_SRC}/lib/common.rb"
-require "#{LKP_SRC}/lib/error"
+require "#{LKP_SRC}/lib/log"
 require "#{LKP_SRC}/lib/erb"
 require "#{LKP_SRC}/lib/assert"
 require 'fileutils'
