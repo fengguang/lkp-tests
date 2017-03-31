@@ -1,5 +1,12 @@
 #!/bin/bash
 
+log()
+{
+	echo "$(date +'%F %T') INFO -- $*"
+}
+
+alias log_info=log
+
 log_debug()
 {
 	echo "$(date +'%F %T') DEBUG -- $*"
