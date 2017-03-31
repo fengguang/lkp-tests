@@ -84,10 +84,10 @@ libsctp-dev: lksctp-tools-devel
 libsqlite3-dev: sqlite-devel
 libssl-dev: openssl-devel
 libtool-bin: libtool
-libudev-dev: libgudev1-devel
-libudev1: libgudev1
+libudev-dev: systemd-devel
+libudev1: systemd-libs
 linux-tools: perf
-libuuid1: libuuid libuuid-devel
+libuuid1: libuuid
 libx11-xcb-dev: libX11-devel
 linux-libc-dev: 
 linux-libc-dev:i386: 
@@ -116,7 +116,7 @@ ruby-git:
 ruby-gnuplot: 
 sg3-utils: sg3_utils
 tshark: wireshark
-uuid-dev: uuid-devel
+uuid-dev: libuuid-devel
 xfslibs-dev: xfsprogs-devel
 xinit: xorg-x11-xinit
 xutils-dev: imake
@@ -138,4 +138,3 @@ perl-modules-5.22: perl-CPAN
 xorg: 
 ruby-dev: ruby-devel
 libselinux1: 
-uuid-dev: libuuid-devel

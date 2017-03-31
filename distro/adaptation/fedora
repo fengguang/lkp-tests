@@ -26,10 +26,10 @@ libc6-dev: glibc-devel glibc-static
 libpopt0: popt
 libpopt-dev: popt-devel
 python-minimal: python2
-libudev1: libgudev1
-libudev-dev: libgudev1-devel
-libuuid1: libuuid libuuid-devel
-uuid-dev: uuid-devel
+libudev1: systemd-libs
+libudev-dev: systemd-devel
+libuuid1: libuuid
+uuid-dev: libuuid-devel
 libkmod2: kmod-libs
 libkmod-dev: kmod-devel
 autotools-dev: autoconf
@@ -127,4 +127,3 @@ xorg:
 ruby-dev: ruby-devel
 libblkid-dev: libblkid-devel
 libselinux1: 
-uuid-dev: libuuid-devel
