@@ -3,8 +3,6 @@
 source $LKP_SRC/lib/common.sh
 source $LKP_SRC/lib/result.sh
 
-shopt -s nullglob
-
 is_rt()
 {
 	local path=$1
