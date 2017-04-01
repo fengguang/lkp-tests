@@ -5,7 +5,10 @@ log()
 	echo "$(date +'%F %T') INFO -- $*"
 }
 
-alias log_info=log
+log_info()
+{
+	echo "$(date +'%F %T') INFO -- $*"
+}
 
 log_debug()
 {
