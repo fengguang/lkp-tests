@@ -47,6 +47,5 @@ def log_verbose(*args, &block)
 end
 
 def dump_exception(e, _binding = nil)
-  $stderr.puts e.message
-  $stderr.puts e.backtrace.join "\n"
+  log_error e
 end
