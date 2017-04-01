@@ -7,6 +7,7 @@ require "#{LKP_SRC}/lib/common.rb"
 require "#{LKP_SRC}/lib/result.rb"
 require "#{LKP_SRC}/lib/hash.rb"
 require "#{LKP_SRC}/lib/erb.rb"
+require "#{LKP_SRC}/lib/log"
 require 'fileutils'
 require 'yaml'
 require 'json'
@@ -88,13 +89,13 @@ def __create_programs_hash(glob, lkp_src)
     next if File.directory?(path)
     next if path =~ /\.yaml$/
     if not File.executable?(path)
-      $stderr.puts "WARNING: skip non-executable #{path}"
+      log_warn "skip non-executable #{path}"
       next
     end
     file = File.basename(path)
     next if file == 'wrapper'
     if programs.include? file
-      $stderr.puts "Conflict names #{programs[file]} and #{path}"
+      log_error "Conflict names #{programs[file]} and #{path}"
       next
     end
     programs[file] = path
@@ -208,10 +209,10 @@ class Job
         @jobs << hash
       end
     rescue StandardError => e
-      $stderr.puts "#{jobfile}: " + e.message
-      $stderr.puts '-' * 80
-      $stderr.puts yaml
-      $stderr.puts '-' * 80
+      log_error "#{jobfile}: " + e.message
+      log_error '-' * 80
+      log_error yaml
+      log_error '-' * 80
       raise
     end
 
@@ -595,7 +596,7 @@ class Job
         when Hash
           output.merge! o
         else
-          $stderr.puts "confused while mapping param: #{___}"
+          log_error "confused while mapping param: #{___}"
           break 2
         end
         nil
@@ -665,7 +666,7 @@ class Job
         run_filter(h, k, v, file)
       }
     rescue TypeError => e
-      $stderr.puts "#{file}: #{e.message} hash: #{hash}"
+      log_error "#{file}: #{e.message} hash: #{hash}"
       raise
     rescue KeyError # no conclusion due to lack of information
       return nil
