@@ -1,7 +1,7 @@
 #!/bin/sh
-# - size
-# - duration
-# - nonuma
+# - eatmem_size
+# - eatmem_duration
+# - eatmem_nonuma
 
 USEMEM=/lkp/benchmarks/vm-scalability/usemem
 [ -x $USEMEM ] ||
@@ -9,15 +9,15 @@ USEMEM=/lkp/benchmarks/eatmem/usemem
 
 nr_node=$(echo /sys/devices/system/node/node[0-9]* | wc -w)
 
-[ -z "$size" ] && die "eatmem: size required"
-[ -z "$duration" ] && duration=$((3600*24))
+[ -z "$eatmem_size" ] && die "eatmem: eatmem_size required"
+[ -z "$eatmem_duration" ] && eatmem_duration=$((3600*24))
 
-if [ -z "$nonuma" ]; then
+if [ -z "$eatmem_nonuma" ]; then
 	for i in $(seq 0 $((nr_node-1))); do
-		numactl -m $i -N $i $USEMEM $((size/nr_node)) --detach --sleep $duration -p $TMP/eatmem_$i.pid
+		numactl -m $i -N $i $USEMEM $((eatmem_size/nr_node)) --detach --sleep $eatmem_duration -p $TMP/eatmem_$i.pid
 		cat $TMP/eatmem_$i.pid >> $TMP/pid-monitor-eatmem
 		rm $TMP/eatmem_$i.pid
 	done
 else
-	$USEMEM $size --detach --sleep $duration -p $TMP/pid-monitor-eatmem
+	$USEMEM $eatmem_size --detach --sleep $eatmem_duration -p $TMP/pid-monitor-eatmem
 fi
