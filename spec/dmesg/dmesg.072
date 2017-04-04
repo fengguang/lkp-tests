@@ -1,9 +1,9 @@
 boot_failures: 1
 
-# general protection fault: .* SMP
-general_protection_fault:#[##]SMP: 1
-message:general_protection_fault:#[##]SMP: [    0.410012] general protection fault: 0000 [#1] SMP
-pattern:general_protection_fault:#[##]SMP: general protection fault: .* SMP
+# general protection fault:
+general_protection_fault:#[##]: 1
+message:general_protection_fault:#[##]: [    0.410012] general protection fault: 0000 [#1] SMP
+pattern:general_protection_fault:#[##]: general protection fault:
 
 # RIP: .* find_busiest_group+0x
 RIP:find_busiest_group: 1
@@ -16,6 +16,6 @@ message:Kernel_panic-not_syncing:Fatal_exception_in_interrupt: [    0.420007] Ke
 pattern:Kernel_panic-not_syncing:Fatal_exception_in_interrupt: Kernel panic - not syncing: Fatal exception in interrupt
 
 timestamp:last: 0.420007
-timestamp:general_protection_fault:#[##]SMP: 0.410012
+timestamp:general_protection_fault:#[##]: 0.410012
 timestamp:RIP:find_busiest_group: 0.412324
 timestamp:Kernel_panic-not_syncing:Fatal_exception_in_interrupt: 0.420007

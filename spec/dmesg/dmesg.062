@@ -1,9 +1,9 @@
 boot_failures: 1
 
-# general protection fault: .* SMP DEBUG_PAGEALLOC
-general_protection_fault:#[##]SMP_DEBUG_PAGEALLOC: 1
-message:general_protection_fault:#[##]SMP_DEBUG_PAGEALLOC: [    0.615078] general protection fault: 0000 [#1] SMP DEBUG_PAGEALLOC
-pattern:general_protection_fault:#[##]SMP_DEBUG_PAGEALLOC: general protection fault: .* SMP DEBUG_PAGEALLOC
+# general protection fault:
+general_protection_fault:#[##]: 1
+message:general_protection_fault:#[##]: [    0.615078] general protection fault: 0000 [#1] SMP DEBUG_PAGEALLOC
+pattern:general_protection_fault:#[##]: general protection fault:
 
 # RIP: .* find_busiest_group+0x
 RIP:find_busiest_group: 1
@@ -16,6 +16,6 @@ message:Kernel_panic-not_syncing:Fatal_exception_in_interrupt: [    0.639881] Ke
 pattern:Kernel_panic-not_syncing:Fatal_exception_in_interrupt: Kernel panic - not syncing: Fatal exception in interrupt
 
 timestamp:last: 0.639881
-timestamp:general_protection_fault:#[##]SMP_DEBUG_PAGEALLOC: 0.615078
+timestamp:general_protection_fault:#[##]: 0.615078
 timestamp:RIP:find_busiest_group: 0.617543
 timestamp:Kernel_panic-not_syncing:Fatal_exception_in_interrupt: 0.639881

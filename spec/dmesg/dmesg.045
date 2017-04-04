@@ -1,9 +1,9 @@
 boot_failures: 1
 
-# general protection fault: .* PREEMPT DEBUG_PAGEALLOC
-general_protection_fault:#[##]PREEMPT_DEBUG_PAGEALLOC: 1
-message:general_protection_fault:#[##]PREEMPT_DEBUG_PAGEALLOC: [   40.594570] general protection fault: 0000 [#1] PREEMPT DEBUG_PAGEALLOC
-pattern:general_protection_fault:#[##]PREEMPT_DEBUG_PAGEALLOC: general protection fault: .* PREEMPT DEBUG_PAGEALLOC
+# general protection fault:
+general_protection_fault:#[##]: 1
+message:general_protection_fault:#[##]: [   40.594570] general protection fault: 0000 [#1] PREEMPT DEBUG_PAGEALLOC
+pattern:general_protection_fault:#[##]: general protection fault:
 
 # EIP is at native_flush_tlb_global+0x
 EIP_is_at_native_flush_tlb_global: 1
@@ -21,7 +21,7 @@ message:Kernel_panic-not_syncing:Fatal_exception: [   40.711101] Kernel panic - 
 pattern:Kernel_panic-not_syncing:Fatal_exception: Kernel panic - not syncing: Fatal exception
 
 timestamp:last: 40.711101
-timestamp:general_protection_fault:#[##]PREEMPT_DEBUG_PAGEALLOC: 40.594570
+timestamp:general_protection_fault:#[##]: 40.594570
 timestamp:EIP_is_at_native_flush_tlb_global: 40.600933
 timestamp:calltrace:SyS_exit_group: 40.674066
 timestamp:Kernel_panic-not_syncing:Fatal_exception: 40.711101

@@ -5,10 +5,10 @@ BUG:unable_to_handle_kernel: 1
 message:BUG:unable_to_handle_kernel: [   22.723585] BUG: unable to handle kernel NULL pointer dereference at 000000000000043f
 pattern:BUG:unable_to_handle_kernel: BUG: unable to handle kernel
 
-# Oops
-Oops: 1
-message:Oops: [   22.726068] Oops: 0002 [#1] PREEMPT SMP
-pattern:Oops: Oops
+# Oops:
+Oops:#[##]: 1
+message:Oops:#[##]: [   22.726068] Oops: 0002 [#1] PREEMPT SMP
+pattern:Oops:#[##]: Oops:
 
 # RIP: .* setup_udp_tunnel_sock+0x
 RIP:setup_udp_tunnel_sock: 1
@@ -27,7 +27,7 @@ pattern:Kernel_panic-not_syncing:Fatal_exception: Kernel panic - not syncing: Fa
 
 timestamp:last: 22.764232
 timestamp:BUG:unable_to_handle_kernel: 22.723585
-timestamp:Oops: 22.726068
+timestamp:Oops:#[##]: 22.726068
 timestamp:RIP:setup_udp_tunnel_sock: 22.729677
 timestamp:calltrace:rxe_module_init: 22.747932
 timestamp:Kernel_panic-not_syncing:Fatal_exception: 22.764232

@@ -5,11 +5,11 @@ WARNING:at_kernel/sched/core.c:#__might_sleep(): 1
 message:WARNING:at_kernel/sched/core.c:#__might_sleep(): [   17.709231] WARNING: CPU: 1 PID: 356 at kernel/sched/core.c:7497 __might_sleep+0x75/0x80()
 pattern:WARNING:at_kernel/sched/core.c:#__might_sleep(): WARNING:.* at .* __might_sleep+0x
 
-# invalid opcode: .* SMP
-invalid_opcode:#[##]SMP: 1
-message:invalid_opcode:#[##]SMP: [   17.709231] invalid opcode: 0000 [#1] SMP 
-pattern:invalid_opcode:#[##]SMP: invalid opcode: .* SMP
+# invalid opcode:
+invalid_opcode:#[##]: 1
+message:invalid_opcode:#[##]: [   17.709231] invalid opcode: 0000 [#1] SMP 
+pattern:invalid_opcode:#[##]: invalid opcode:
 
 timestamp:last: 17.709231
 timestamp:WARNING:at_kernel/sched/core.c:#__might_sleep(): 17.709231
-timestamp:invalid_opcode:#[##]SMP: 17.709231
+timestamp:invalid_opcode:#[##]: 17.709231
