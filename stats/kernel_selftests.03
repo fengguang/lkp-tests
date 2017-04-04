@@ -1,0 +1,23 @@
+# mqueue
+
+        Test #2b: Time send/recv message, queue full, increasing prio
+:
+                (100000 iterations)
+                Filling queue...done.           0.23502215s
+                Testing...done.
+                Send msg:                       0.48443412s total time
+                                                484 nsec/msg
+                Recv msg:                       0.42612149s total time
+                                                426 nsec/msg
+                Draining queue...done.          0.17199103s
+
+        Test #2c: Time send/recv message, queue full, decreasing prio
+:
+                (100000 iterations)
+                Filling queue...done.           0.23586541s
+                Testing...done.
+                Send msg:                       0.49698382s total time
+                                                496 nsec/msg
+                Recv msg:                       0.42457983s total time
+                                                424 nsec/msg
+                Draining queue...done.          0.17599680s

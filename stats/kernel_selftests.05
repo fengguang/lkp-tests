@@ -1,0 +1,15 @@
+# memory-hotplug pass
+
+make: Entering directory '/usr/src/linux-selftests-x86_64-rhel-7.2-d5adbfcd5f7bcc6fa58a41c5c5ada0e5c826ce2c/tools/testing/selftests/memory-hotplug'
+./mem-on-off-test.sh -r 2 || echo "selftests: memory-hotplug [FAIL]"
+Test scope: 2% hotplug memory
+	 online all hotplug memory in offline state
+	 offline 2% hotplug memory in online state
+	 online all hotplug memory in offline state
+online-offline 49
+online-offline 5
+online-offline 53
+offline-online 49
+offline-online 5
+offline-online 53
+make: Leaving directory '/usr/src/linux-selftests-x86_64-rhel-7.2-d5adbfcd5f7bcc6fa58a41c5c5ada0e5c826ce2c/tools/testing/selftests/memory-hotplug'

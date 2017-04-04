@@ -1,0 +1,5 @@
+futex.futex_requeue_pi.broadcast=0_locked=0_owner=0_timeout=0ns.pass: 1
+futex.futex_requeue_pi.broadcast=1_locked=0_owner=0_timeout=0ns.pass: 1
+futex.futex_requeue_pi_mismatched_ops.pass: 1
+futex.futex_requeue_pi_signal_restart.pass: 1
+total_test: 4

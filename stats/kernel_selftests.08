@@ -1,0 +1,6 @@
+# mount pass
+
+make: Entering directory '/usr/src/linux-selftests-x86_64-rhel-7.2-69973b830859bc6529a7a0468ba0d80ee5117826/tools/testing/selftests/mount'
+gcc -Wall -O2 unprivileged-remount-test.c -o unprivileged-remount-test
+if [ -f /proc/self/uid_map ] ; then ./unprivileged-remount-test ; else echo "WARN: No /proc/self/uid_map exist, test skipped." ; fi
+make: Leaving directory '/usr/src/linux-selftests-x86_64-rhel-7.2-69973b830859bc6529a7a0468ba0d80ee5117826/tools/testing/selftests/mount'

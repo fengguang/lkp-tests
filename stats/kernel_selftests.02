@@ -1,0 +1,8 @@
+# compilation fail
+
+2017-01-30 23:57:13 make run_tests -C x86
+make: Entering directory '/usr/src/linux-selftests-x86_64-rhel-7.2-a121103c922847ba5010819a3f250f1f7fc84ab8/tools/testing/selftests/x86'
+gcc -m64 -o single_step_syscall_64 -O2 -g -std=gnu99 -pthread -Wall  single_step_syscall.c -lrt -ldl
+gcc -m64 -o sysret_ss_attrs_64 -O2 -g -std=gnu99 -pthread -Wall  sysret_ss_attrs.c thunks.S -lrt -ldl
+Makefile:47: recipe for target 'sysret_ss_attrs_64' failed
+make: Leaving directory '/usr/src/linux-selftests-x86_64-rhel-7.2-a121103c922847ba5010819a3f250f1f7fc84ab8/tools/testing/selftests/x86'
