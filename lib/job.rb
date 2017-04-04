@@ -88,6 +88,7 @@ def __create_programs_hash(glob, lkp_src)
   Dir.glob("#{lkp_src}/#{glob}").each { |path|
     next if File.directory?(path)
     next if path =~ /\.yaml$/
+    next if path =~ /\.[0-9]+$/
     if not File.executable?(path)
       log_warn "skip non-executable #{path}"
       next
