@@ -263,7 +263,7 @@ def oops_to_bisect_pattern(line)
       when /([a-zA-Z0-9_]+\+0x)/, /([a-zA-Z0-9_]+=)/
         patterns << $1
         break
-      when /[^a-zA-Z\/:._-]/
+      when /[^a-zA-Z\/:.()!_-]/
         patterns << '.*' if patterns[-1] != '.*'
       else
         patterns << w

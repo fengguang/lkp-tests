@@ -1,9 +1,9 @@
 boot_failures: 1
 
-# Kernel panic - not syncing: Attempted to kill .* exitcode=
+# Kernel panic - not syncing: Attempted to kill init! exitcode=
 Kernel_panic-not_syncing:Attempted_to_kill_init!exitcode=: 1
 message:Kernel_panic-not_syncing:Attempted_to_kill_init!exitcode=: [  834.521552] Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
-pattern:Kernel_panic-not_syncing:Attempted_to_kill_init!exitcode=: Kernel panic - not syncing: Attempted to kill .* exitcode=
+pattern:Kernel_panic-not_syncing:Attempted_to_kill_init!exitcode=: Kernel panic - not syncing: Attempted to kill init! exitcode=
 
 # WARNING:.* at .* __local_bh_enable_ip+0x
 WARNING:at_kernel/softirq.c:#__local_bh_enable_ip: 1

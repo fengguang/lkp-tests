@@ -5,10 +5,10 @@ INFO:suspicious_RCU_usage: 1
 message:INFO:suspicious_RCU_usage: [   59.833983] [ INFO: suspicious RCU usage. ]
 pattern:INFO:suspicious_RCU_usage: INFO: suspicious RCU usage.
 
-# suspicious
+# suspicious rcu_dereference_check() usage!
 arch/x86/include/asm/msr-trace.h:#suspicious_rcu_dereference_check()usage: 1
 message:arch/x86/include/asm/msr-trace.h:#suspicious_rcu_dereference_check()usage: [   59.835844] arch/x86/include/asm/msr-trace.h:47 suspicious rcu_dereference_check() usage!
-pattern:arch/x86/include/asm/msr-trace.h:#suspicious_rcu_dereference_check()usage: suspicious
+pattern:arch/x86/include/asm/msr-trace.h:#suspicious_rcu_dereference_check()usage: suspicious rcu_dereference_check() usage!
 
 timestamp:last: 80.249285
 timestamp:INFO:suspicious_RCU_usage: 59.833983
