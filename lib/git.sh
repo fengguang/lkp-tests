@@ -60,7 +60,7 @@ result_root_with_release_tag()
 
 	local commit=$(basename $(dirname $result_root))
 
-	local author=$(git log -n1 --pretty=format:'%cn <%ce>' $commit &> /dev/null)
+	local author=$(git log -n1 --pretty=format:'%cn <%ce>' $commit 2> /dev/null)
 
 	if [[ "$author" =~ "Linus Torvalds" ]]; then
 		local commit_tag=$(git tag --points-at $commit | grep -m1 -E -e '^v[34]\.[0-9]+(|-rc[0-9]+)' -e '^v2\.[0-9]+\.[0-9]+(|-rc[0-9]+)')
