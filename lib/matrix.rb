@@ -350,6 +350,9 @@ def unite_stats(result_root, delete = false)
   __result_root = File.dirname _result_root
 
   stats = load_create_stats_matrix result_root
+
+  return false if stats.nil?
+
   stats['stats_source'] = result_root + '/stats.json'
 
   unite_to(stats, _result_root, nil, delete)
