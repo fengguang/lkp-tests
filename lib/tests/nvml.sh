@@ -29,8 +29,12 @@ build_env()
 
 	log_cmd cd $BENCHMARK_ROOT/$casename
 
-	log_cmd make EXTRA_CFLAGS=-DUSE_VALGRIND || return
-	log_cmd make EXTRA_CFLAGS=-DUSE_VALGRIND test || return
+	log_cmd export CC=clang
+	log_cmd export CXX=clang++
+
+	# All C++ container tests need customized version of libc --libc++ to compile. So specify the path of libc++ to make.
+	log_cmd make EXTRA_CFLAGS=-DUSE_VALGRIND USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1/ LIBCPP_LIBDIR=/usr/local/libcxx/lib || return
+	log_cmd make EXTRA_CFLAGS=-DUSE_VALGRIND USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1/ LIBCPP_LIBDIR=/usr/local/libcxx/lib test || return
 }
 
 enable_remote_node()
