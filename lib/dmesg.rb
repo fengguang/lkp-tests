@@ -296,13 +296,11 @@ def analyze_error_id(line)
              # new format: "[  122.209638 ] ??? Writer stall state RTWS_STUTTER(8) g62150 c62149 f0x2"
        /(Writer stall state \w*).+ g\d+ c\d+ f/,
        /(BUG: workqueue lockup - pool)/,
-       /(BUG: KASAN: slab-out-of-bounds)/,
        /(rcu_sched kthread starved) for \d+ jiffies/,
        /(Could not create tracefs)/,
        /(used greatest stack depth:)/,
        /([A-Z]+[ a-zA-Z]*): [a-f0-9]{4} \[#[0-9]+\] /,
-       /(BUG: KASan: [a-z ]+) in /,
-       /(BUG: KASAN: use-after-free in)/
+       /(BUG: KASAN: [a-z\-_ ]+) in /
     line = $1
     bug_to_bisect = $1
   when /(BUG: ).* (still has locks held)/,

@@ -1,9 +1,9 @@
 boot_failures: 1
 
-# BUG: KASAN: stack-out-of-bounds in setjmp_pre_handler+0x
-BUG:KASAN:stack-out-of-bounds_in_setjmp_pre_handler_at_addr: 1
-message:BUG:KASAN:stack-out-of-bounds_in_setjmp_pre_handler_at_addr: [   14.931149] BUG: KASAN: stack-out-of-bounds in setjmp_pre_handler+0x165/0x200 at addr ffff880012057cb8
-pattern:BUG:KASAN:stack-out-of-bounds_in_setjmp_pre_handler_at_addr: BUG: KASAN: stack-out-of-bounds in setjmp_pre_handler+0x
+# BUG: KASAN: stack-out-of-bounds
+BUG:KASAN:stack-out-of-bounds: 1
+message:BUG:KASAN:stack-out-of-bounds: [   14.931149] BUG: KASAN: stack-out-of-bounds in setjmp_pre_handler+0x165/0x200 at addr ffff880012057cb8
+pattern:BUG:KASAN:stack-out-of-bounds: BUG: KASAN: stack-out-of-bounds
 
 # init_kprobes+0x
 calltrace:init_kprobes: 1
@@ -11,5 +11,5 @@ message:calltrace:init_kprobes: [   14.954703]  [<ffffffff83d33eb3>] init_kprobe
 pattern:calltrace:init_kprobes: init_kprobes+0x
 
 timestamp:last: 14.966015
-timestamp:BUG:KASAN:stack-out-of-bounds_in_setjmp_pre_handler_at_addr: 14.931149
+timestamp:BUG:KASAN:stack-out-of-bounds: 14.931149
 timestamp:calltrace:init_kprobes: 14.954703
