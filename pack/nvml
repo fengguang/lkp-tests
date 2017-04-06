@@ -57,7 +57,6 @@ build_ignore_file()
 {
 	cd $source_dir || return
 	git grep "require_node_libfabric" | awk -F '[:/]' '{if (!a[$3]++ && $3 != "unittest") {print $3} }' > ignore
-	git grep "require_binary" | awk -F '[:/]' '{if (!a[$3]++ && $3 != "unittest") {print $3} }' >> ignore
 }
 
 # The dax tests need ndctl tool to create dax device.
