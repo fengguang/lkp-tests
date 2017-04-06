@@ -76,6 +76,9 @@ def create_stats_matrix(result_root)
   monitor_files = Dir["#{result_root}/*.{json,json.gz}"]
 
   monitor_files.each { |file|
+
+    next unless File.size?(file)
+
     case file
     when /\.json$/
       monitor = File.basename(file, '.json')
