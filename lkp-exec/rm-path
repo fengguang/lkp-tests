@@ -1,22 +1,22 @@
 #!/bin/bash
 
-source $LKP_SRC/lib/common.sh
-source $LKP_SRC/lib/result.sh
+source "$LKP_SRC/lib/common.sh"
+source "$LKP_SRC/lib/result.sh"
 
 is_rt()
 {
 	local path=$1
-	local bn=$(basename $path)
-	local dn=$(dirname $path)
+	local bn=$(basename "$path")
+	local dn=$(dirname "$path")
 	[[ $bn =~ ^[0-9]{1,5}$ ]] &&
-		[[ -f $path/job.yaml ]] &&
-		[[ -f $dn/stddev.json ]]
+		[[ -f "$path/job.yaml" ]] &&
+		[[ -f "$dn/stddev.json" ]]
 }
 
 check_rt()
 {
 	local path=${1%%/}
-	local dn=$(dirname $path)
+	local dn=$(dirname "$path")
 	grep -q $path/stats.json $dn/matrix.json
 }
 
@@ -24,7 +24,7 @@ remove_index()
 {
 	local path
 	for path; do
-		path=$(abs_path $path)
+		path=$(abs_path "$path")
 		[[ -d "$path" ]] || continue
 		cleanup_path_record_from_result_root "$path"
 	done
@@ -34,7 +34,7 @@ remove_paths()
 {
 	local path
 	for path; do
-		path=$(abs_path $path)
+		path=$(abs_path "$path")
 		[[ -d "$path" ]] || continue
 		echo rm -fr "$path"
 	done
@@ -45,10 +45,10 @@ remove_from_mrtts()
 	local path
 	local dir
 	for path; do
-		path=$(abs_path $path)
+		path=$(abs_path "$path")
 		[[ -d "$path" ]] || continue
 		for dir in $(find $path -type d); do
-			is_mrt $dir && echo $dir
+			is_mrt "$dir" && echo "$dir"
 		done | lkp delete_mrts
 	done
 }
@@ -57,11 +57,11 @@ revert_unite_rt()
 {
 	local path
 	for path; do
-		is_rt $path && check_rt $path &&
-			lkp reprocess -d $path
+		is_rt "$path" && check_rt "$path" &&
+			lkp reprocess -d "$path"
 	done
 	for path; do
-		while is_rt $path && check_rt $path; do
+		while is_rt "$path" && check_rt "$path"; do
 			sleep 10
 		done
 	done
@@ -92,7 +92,7 @@ done
 shift $(($OPTIND-1))
 
 for path; do
-	path=$(abs_path $path)
+	path=$(abs_path "$path")
 	[[ -d "$path" ]] || {
 		echo "The path does not exist: $path" >&2
 		exit 1
