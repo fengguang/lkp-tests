@@ -2,7 +2,7 @@
 
 download()
 {
-	git_clone_update https://github.com/pmem/ndctl
+	git_clone_update https://github.com/pmem/ndctl --branch pending
 }
 
 build()
