@@ -6,6 +6,7 @@ download()
 	git_clone_update https://github.com/llvm-mirror/llvm.git --branch release_39 --depth 1 || return
 	git_clone_update https://github.com/llvm-mirror/libcxxabi.git --branch release_39 --depth 1 || return
 	git_clone_update https://github.com/pmem/libcxx.git --branch release_39_pmem --depth 1 || return
+	git_clone_update https://github.com/pmem/ndctl --branch pending || return
 	git_clone_update https://github.com/pmem/nvml.git || return
 }
 
@@ -59,11 +60,27 @@ build_ignore_file()
 	git grep "require_binary" | awk -F '[:/]' '{if (!a[$3]++ && $3 != "unittest") {print $3} }' >> ignore
 }
 
+# The dax tests need ndctl tool to create dax device.
+# See more details at https://nvdimm.wiki.kernel.org.
+build_install_ndctl()
+{
+	cd /tmp/ndctl || return
+
+	mkdir $BM_ROOT/etc
+	mkdir $BM_ROOT/lib
+
+	./autogen.sh || return
+	./configure CFLAGS='-g -O0' --disable-docs --prefix=$BM_ROOT --sysconfdir=$BM_ROOT/etc --libdir=$BM_ROOT/lib || return
+	make || return
+	make install || return
+}
+
 build()
 {
 	build_install_valgrind_pmem || return
 	build_install_libcxx || return
 	build_ignore_file || return
+	build_install_ndctl || return
 }
 
 install()
