@@ -1,0 +1,44 @@
+#!/bin/sh
+
+# thread mode of mmap* fail to run on lkp-knl-f1 due to severe lock contention
+# on the process wide mm->mmap_sem. The symptom is that the main thread will
+# need too long a time(I gave up waiting after 20 minutes) to even finish
+# creating those threads and during this time, the job is deemed soft timedout.
+
+# contains(string, substring)
+#
+# Returns 0 if the specified string contains the specified substring,
+# otherwise returns 1.
+# http://stackoverflow.com/questions/2829613/how-do-you-tell-if-a-string-contains-another-string-in-unix-shell-scripting
+contains() {
+    string="$1"
+    substring="$2"
+    if [ "${string#*$substring}" != "$string" ]; then
+	    return 0    # $substring is in $string
+    else
+	    return 1    # $substring is not in $string
+    fi
+}
+
+mmap_or_brk() {
+	if contains "$will_it_scale_test" "mmap" || contains "$will_it_scale_test" "brk"; then
+		return 0
+	else
+		return 1
+	fi
+}
+
+thread_mode() {
+	if [ -z "$mode" ]  || [ "$mode" = "both" ] || [ "$mode" = "thread" ]; then
+		return 0
+	else
+		return 1
+	fi
+}
+
+if [ "$testbox" = "lkp-knl-f1" ] && mmap_or_brk && thread_mode; then
+	echo "rm $job_file due to $will_it_scale_test are known to fail on $testbox"
+	exit 1
+fi
+
+exit 0
