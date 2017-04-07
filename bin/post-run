@@ -206,7 +206,7 @@ copy_results
 
 copy_time_files || ps faux --cols 1000 2>/dev/null > $RESULT_ROOT/time-debug || ps > $RESULT_ROOT/time-debug
 
-[ "$kconfig" = "x86_64-rhel_gcov" ] && [ -d /sys/kernel/debug/gcov ] && {
+[ "$kconfig" = "x86_64-rhel_gcov" -o "$kconfig" = "x86_64-rhel-7.2_gcov" ] && [ -d /sys/kernel/debug/gcov ] && {
 	$LKP_SRC/tools/gather-gcov-test $TMP/gcov-test.tar.gz
 	upload_files $TMP/gcov-test.tar.gz
 }
