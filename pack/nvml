@@ -69,7 +69,7 @@ build_install_ndctl()
 	mkdir $BM_ROOT/lib
 
 	./autogen.sh || return
-	./configure CFLAGS='-g -O0' --disable-docs --prefix=$BM_ROOT --sysconfdir=$BM_ROOT/etc --libdir=$BM_ROOT/lib || return
+	./configure CFLAGS='-g -O0' --disable-docs --enable-debug --prefix=$BM_ROOT --sysconfdir=$BM_ROOT/etc --libdir=$BM_ROOT/lib || return
 	make || return
 	make install || return
 }
