@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'stats' do
-  yaml_files = Dir.glob ["#{LKP_SRC}/stats/*.[0-9]*.yaml", "#{LKP_SRC}/spec/dmesg/*.[0-9]*.yaml"]
+  yaml_files = Dir.glob ["#{LKP_SRC}/spec/stats/*.[0-9]*.yaml"]
   yaml_files.each do |yaml_file|
     file = yaml_file.chomp '.yaml'
     it "invariance: #{file}" do
