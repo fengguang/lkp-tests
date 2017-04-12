@@ -5,6 +5,9 @@ category: benchmark
 nr_task: 100%
 
 will-it-scale:
+  mode:
+  - thread
+  - process
   test:
   - brk1
   - dup1
@@ -63,5 +66,8 @@ will-it-scale:
 disable_latency_stats: 1
 
 will-it-scale:
+  mode:
+  - thread
+  - process
   test:
   - context_switch1
