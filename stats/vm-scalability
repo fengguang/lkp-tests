@@ -7,6 +7,7 @@ require "#{LKP_SRC}/lib/log"
 
 kbps = []
 throughput = []
+free_secs = []
 
 def add_one_sample(kbps, throughput)
   return if kbps.empty?
@@ -30,6 +31,8 @@ while line = STDIN.gets
     puts 'migrate_mbps: ' + $1
   when /(\d+) bytes remapped, (\d+) usecs, (\d+) MB.s/
     kbps << $1.to_i / ($2.to_i >> 10)
+  when /(\d+) usecs to free memory/
+    free_secs << $1.to_i / 1000000.0
   when /\.\/case-[a-z-]+/
     add_one_sample kbps, throughput
     kbps.clear
@@ -52,3 +55,4 @@ if kbps.empty?
   exit
 end
 printf "stddev:     %g\n", stddev
+printf "free_time:  %g\n", free_secs.average
