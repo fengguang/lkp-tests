@@ -12,14 +12,11 @@ transparent_hugepage:
   thp_enabled:
     - never
     - always
-  thp_defrag:
-    - never
+  thp_defrag: always
 
 nr_task:
-  - 1
-  - 4
-  - 16
-  - 64
+  - 8
+  - 32
 
 disk: # place holder because setup/swap has to run after setup/disk
 swap:
@@ -31,3 +28,5 @@ vm-scalability:
   test:
     - swap-w-seq
     - swap-w-rand
+    - swap-w-seq-mt
+    - swqp-w-rand-mt
