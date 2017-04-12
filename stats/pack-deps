@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+
+stats_name = 'fail: 1'
+
+while (line = STDIN.gets)
+  case line
+  when /^(package installed to \S+cgz|empty PACKAGE_LIST for unixbench)$/
+    stats_name = 'pass: 1'
+    break
+  end
+end
+
+puts stats_name
