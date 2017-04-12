@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+
+stats_name = 'fail: 1'
+
+while (line = STDIN.gets)
+  case line
+  when /^total size is \S+  speedup is \S+$/
+    stats_name = 'pass: 1'
+    break
+  end
+end
+
+puts stats_name
