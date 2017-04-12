@@ -238,7 +238,7 @@ class Job
     return unless File.exist? hosts_file
     hwconfig = load_yaml(hosts_file, nil)
     @job[source_file_symkey(hosts_file)] = nil
-    @job.merge! hwconfig
+    @job.merge!(hwconfig) { |k, a, b| a } # job's key/value has priority over hwconfig
   end
 
   def include_files
