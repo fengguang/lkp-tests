@@ -36,6 +36,7 @@ remove_paths()
 	for path; do
 		path=$(abs_path "$path")
 		[[ -d "$path" ]] || continue
+		path=$(readlink -e -v "$path")
 		echo rm -fr "$path"
 	done
 }
