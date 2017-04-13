@@ -26,13 +26,17 @@ remove()
 	awk -F'/' '{OFS="/"; NF=NF-2; print}' $temp_file_unsort | sort -u > $temp_file_sort
 
 	local path
+	local stale_links
+
 	while read path
 	do
 		remove_from_mrtts $path
+		stale_links="$stale_links $(find $(dirname "$path") -xtype l)"
 	done < $temp_file_sort
 
 	cat $temp_file_sort | xargs rm -rf
 
+	rm -vf $stale_links
 	rm -f $temp_file_unsort
 	rm -f $temp_file_sort
 }
