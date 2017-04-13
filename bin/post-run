@@ -96,15 +96,6 @@ wait_for_monitors
 sleep 1
 kill_monitors -KILL
 
-PERF_EVENT_DATA=$TMP/perf.data
-[ -s "$PERF_EVENT_DATA" ] && {
-	set_perf_path "/lkp/benchmarks/perf/perf"
-	$perf report --children --header -U -g folded,0.5,callee --sort=dso,symbol -i $PERF_EVENT_DATA |
-	gzip > $RESULT_ROOT/perf-profile.gz && {
-		rm -f $PERF_EVENT_DATA
-	}
-}
-
 PERF_REPORT_SRCLINE_DATA=$TMP/perf-report-srcline.data
 [ -s $PERF_REPORT_SRCLINE_DATA ] && {
 	set_perf_path "/lkp/benchmarks/perf/perf"

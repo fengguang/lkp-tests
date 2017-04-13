@@ -49,9 +49,20 @@ ulimit -n 102400
 . $LKP_SRC/lib/wait.sh
 setup_wait
 
+perf_data=$TMP/perf.data
+
 # WAIT_POST_TEST_CMD will start at the same time with perf
 # the former will wait for (delay+duration) before exit
 # the latter will wait for (delay) before collecting samples
 $perf record -q -ag --realtime=1 -m 256 $opt_freq $opt_period $opt_events \
-	-o $TMP/perf.data -D $((delay * 1000)) -- \
+	-o $perf_data -D $((delay * 1000)) -- \
 	$WAIT_POST_TEST_CMD --timeout $((delay + duration))
+
+cat > "$TMP_RESULT_ROOT/post-run.perf-profile" <<EOF
+[ -s "$perf_data" ] && {
+	$perf report --children --header -U -g folded,0.5,callee --sort=dso,symbol -i $perf_data |
+	gzip > $RESULT_ROOT/perf-profile.gz && {
+		rm -f $perf_data
+	}
+}
+EOF
