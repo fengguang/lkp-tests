@@ -41,6 +41,23 @@ remove_paths()
 	done
 }
 
+remove_stale_links()
+{
+	local path
+	local state_links
+
+	for path; do
+		path=$(abs_path "$path")
+		if is_rt "$path"; then
+			stale_links=$(find $(dirname $(dirname "$path")) -xtype l)
+		elif is_mrt "$path"; then
+			stale_links=$(find $(dirname "$path") -xtype l)
+		fi
+
+		rm -vf "$stale_links"
+	done
+}
+
 remove_from_mrtts()
 {
 	local path
@@ -115,4 +132,5 @@ if [[ $answer = "yes" ]]; then
 	remove_from_mrtts "$@"
 	remove_index "$@"
 	remove_paths "$@" | bash
+	remove_stale_links "$@"
 fi
