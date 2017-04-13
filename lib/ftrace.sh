@@ -168,7 +168,7 @@ ftrace_run()
 	ftrace_stop
 
 	$WAIT_POST_TEST_CMD
-	cat >> "$TMP_RESULT_ROOT/ftrace.postrun" <<EOF
+	cat >> "$TMP_RESULT_ROOT/post-run.ftrace" <<EOF
 #!/bin/sh
 
 if [ -n "$ftrace_cpulist" ]; then

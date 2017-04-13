@@ -114,12 +114,6 @@ PERF_REPORT_SRCLINE_DATA=$TMP/perf-report-srcline.data
 	rm -f $PERF_REPORT_SRCLINE_DATA
 }
 
-FTRACE_MONITOR_POSTRUN="$TMP_RESULT_ROOT/ftrace.postrun"
-[ -f "$FTRACE_MONITOR_POSTRUN" ] && {
-	sh "$FTRACE_MONITOR_POSTRUN"
-	rm "$FTRACE_MONITOR_POSTRUN"
-}
-
 for post_run in $TMP_RESULT_ROOT/post-run.*; do
 	sh "$post_run"
 done
