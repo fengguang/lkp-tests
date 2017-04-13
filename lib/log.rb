@@ -46,6 +46,6 @@ def log_verbose(*args, &block)
   $log.debug(*args, &block)
 end
 
-def dump_exception(e, _binding = nil)
+def log_exception(e, _binding = nil)
   log_error e
 end

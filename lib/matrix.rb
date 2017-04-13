@@ -335,7 +335,7 @@ def unite_params(result_root)
   begin
     atomic_save_yaml_json params, params_file
   rescue StandardError => e
-    dump_exception e, binding
+    log_exception e, binding
   end
 end
 

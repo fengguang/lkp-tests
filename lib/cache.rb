@@ -37,7 +37,7 @@ module Cacheable
         begin
           kclass.cache_fetch(self, method_name, *args)
         rescue StandardError => e
-          dump_exception e, binding
+          log_exception e, binding
           send("#{method_name}_without_cache", *args)
         end
       end
