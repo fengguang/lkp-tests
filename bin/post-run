@@ -96,15 +96,6 @@ wait_for_monitors
 sleep 1
 kill_monitors -KILL
 
-PERF_REPORT_SRCLINE_DATA=$TMP/perf-report-srcline.data
-[ -s $PERF_REPORT_SRCLINE_DATA ] && {
-	set_perf_path "/lkp/benchmarks/perf/perf"
-	$perf report --header -i $PERF_REPORT_SRCLINE_DATA --no-children -f -v \
-	      --stdio --sort sym,srcline -w 10,50,100 --full-source-path |
-	gzip > $RESULT_ROOT/perf-report-srcline.gz &&
-	rm -f $PERF_REPORT_SRCLINE_DATA
-}
-
 for post_run in $TMP_RESULT_ROOT/post-run.*; do
 	sh "$post_run"
 done
