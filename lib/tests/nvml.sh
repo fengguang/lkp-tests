@@ -69,7 +69,7 @@ enable_remote_node()
 run()
 {
 	local casename=$1
-	local user_filter="blk_pool log_pool obj_pool pmempool_rm util_file_create util_file_open"
+	local user_filter="$BENCHMARK_ROOT/$casename/user_filter"
 
 	log_cmd cd $BENCHMARK_ROOT/$casename/src/test
 
@@ -95,7 +95,7 @@ run()
 			log_cmd mkdir -p "/remote/dir$n/test_$testcase" || die "mkdir -p /remote/dir$n/test_testcase failed"
 		done
 
-		if [ "$LKP_LOCAL_RUN" != "1" ] && echo "$user_filter" | grep -q -w "$testcase"; then
+		if [ "$LKP_LOCAL_RUN" != "1" ] && [[ -s "$user_filter" ]] && grep -w -q "$testcase" "$user_filter"; then
 			log_cmd chown lkp:lkp -R $BENCHMARK_ROOT/$casename
 			log_cmd chown lkp:lkp -R /tmp
 			[ "$test" = "pmem" ] && log_cmd chown lkp:lkp -R /fs/pmem0
