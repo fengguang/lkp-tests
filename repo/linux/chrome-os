@@ -1,5 +1,4 @@
 url: https://chromium.googlesource.com/chromiumos/third_party/kernel
-fetch_tags: true
 belongs_to: chrome-os
 whitelist_randconfig: ^(arm|arm64|i386|x86_64)
 whitelist_branch: chromeos-3.8|chromeos-3.10|chromeos-3.14|chromeos-3.18|chromeos-4.4
