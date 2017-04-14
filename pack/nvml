@@ -75,11 +75,19 @@ build_install_ndctl()
 	make install || return
 }
 
+# Auto generate user_filter to enable those tests which do not need run as superuser.
+build_user_filter_file()
+{
+	cd $source_dir || return
+	git grep "require_no_superuser" | awk -F '[:/]' '{if (!a[$3]++ && $3 != "unittest") {print $3} }' > user_filter
+}
+
 build()
 {
 	build_install_valgrind_pmem || return
 	build_install_libcxx || return
 	build_ignore_file || return
+	build_user_filter_file || return
 	build_install_ndctl || return
 }
 
