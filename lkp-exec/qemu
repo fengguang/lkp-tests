@@ -114,11 +114,11 @@ create_job_initrd()
 
 get_qemu_kernel_initrd()
 {
-	local lkp_initrd=
-	local job_initrd=
+	local lkp_initrd
+	local job_initrd
 	local final_initrd=$CACHE_DIR/final_initrd
 	[[ $opt_kernel_image ]] || download_kernel
-	download_initrd
+	lkp_initrd='' job_initrd='' download_initrd
 	local user_lkp_initrd=$1
 	local user_job_initrd=$2
 	cat "$concatenate_initrd" "$user_lkp_initrd" "$user_job_initrd" > "$final_initrd"
