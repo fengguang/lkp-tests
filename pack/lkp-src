@@ -47,7 +47,8 @@ pack()
 				mkdir -p etc/dropbear
 				cp -al root/.ssh/authorized_keys etc/dropbear/
 			}
-		}						&& find *			| $cpio_cmd --append
+			find *			| $cpio_cmd --append
+		}
 		{
 			# restore permission for cleanup
 			cd $tmp_dir/lkp/$LKP_USER/src/rootfs/addon
