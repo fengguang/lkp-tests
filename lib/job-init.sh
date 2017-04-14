@@ -76,7 +76,7 @@ mount_result_root()
 			;;
 	esac
 
-	mountpoint -q $RESULT_MNT
+	is_mount_point "$RESULT_MNT"
 }
 
 setup_result_root()
