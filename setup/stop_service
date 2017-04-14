@@ -1,0 +1,13 @@
+#!/bin/sh
+# - services
+
+[ -z "$services" ] && exit
+
+post_script=$TMP_RESULT_ROOT/post-run.stop_service
+
+for service in $services; do
+	if systemctl is-active "$service" >/dev/null; then
+		systemctl stop "$service"
+		echo "systemctl start $service" >> "$post_script"
+	fi
+done
