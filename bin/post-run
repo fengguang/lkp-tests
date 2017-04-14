@@ -97,7 +97,7 @@ sleep 1
 kill_monitors -KILL
 
 for post_run in $TMP_RESULT_ROOT/post-run.*; do
-	sh "$post_run"
+	[ -f "$post_run" ] && sh "$post_run"
 done
 
 wait_for_pipe()
