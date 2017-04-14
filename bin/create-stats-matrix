@@ -4,8 +4,7 @@ require 'optparse'
 require 'ostruct'
 require 'fileutils'
 
-ENV["LKP_SRC"] ||= File.dirname File.dirname File.realpath $PROGRAM_NAME
-LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 LKP_USER = ENV["USER"] || `whoami`.chomp
 
 require "#{LKP_SRC}/lib/yaml.rb"

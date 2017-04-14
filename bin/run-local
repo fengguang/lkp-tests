@@ -5,8 +5,7 @@ require 'ostruct'
 require 'fileutils'
 require 'shellwords'
 
-ENV["LKP_SRC"] ||= File.dirname File.dirname File.realpath $PROGRAM_NAME
-LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 LKP_USER = ENV["USER"] || `whoami`.chomp
 
 TMP = "/tmp/lkp-#{LKP_USER}"

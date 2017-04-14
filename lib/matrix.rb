@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-LKP_SRC ||= ENV['LKP_SRC']
+LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath(__FILE__)))
 
 MAX_MATRIX_COLS = 100
 STATS_SOURCE_KEY = 'stats_source'

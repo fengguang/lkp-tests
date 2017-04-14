@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-LKP_SRC ||= ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
+LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath(__FILE__)))
 
 GIT_WORK_TREE  ||= ENV['GIT_WORK_TREE'] || ENV['LKP_GIT_WORK_TREE'] || '/c/repo/linux'
 GIT_DIR    ||= ENV['GIT_DIR'] || GIT_WORK_TREE + '/.git'

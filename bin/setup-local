@@ -6,7 +6,7 @@ require 'fileutils'
 
 HOSTNAME = ENV['HOSTNAME'] || `hostname`.chomp
 ENV["LKP_SRC"] ||= File.dirname File.dirname File.realpath $PROGRAM_NAME
-LKP_SRC = ENV["LKP_SRC"]
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
 require "#{LKP_SRC}/lib/yaml.rb"
 require "#{LKP_SRC}/lib/job.rb"

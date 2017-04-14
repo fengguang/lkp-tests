@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby
+LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath(__FILE__)))
+
 module LKP
 
   require "singleton"
-
-  LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
 
   #
   # DistroInfo is singleton, and provide information to distribution information of local system

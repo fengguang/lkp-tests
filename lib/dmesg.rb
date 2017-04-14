@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
-LKP_SRC ||= ENV['LKP_SRC']
+LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath(__FILE__)))
+
 require "#{LKP_SRC}/lib/yaml.rb"
 
 # /c/linux% git grep '"[a-z][a-z_]\+%d"'|grep -o '"[a-z_]\+'|cut -c2-|sort -u

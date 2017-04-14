@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
-LKP_SRC ||= ENV['LKP_SRC']
+LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath(__FILE__)))
+
 require "#{LKP_SRC}/lib/job.rb"
 require 'shellwords'
 

@@ -3,7 +3,8 @@
 require 'erb'
 require 'yaml'
 
-LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(__FILE__))
+LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath(__FILE__)))
+
 require "#{LKP_SRC}/lib/hashugar.rb"
 
 # bring in functions usable for ERB code segments

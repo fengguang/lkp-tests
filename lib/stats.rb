@@ -3,7 +3,7 @@
 MARGIN_SHIFT = 5
 MAX_RATIO = 5
 
-LKP_SRC ||= ENV['LKP_SRC']
+LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath(__FILE__)))
 
 require "set.rb"
 require "#{LKP_SRC}/lib/lkp_git"

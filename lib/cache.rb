@@ -1,4 +1,4 @@
-LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath(__FILE__)))
 
 require "#{LKP_SRC}/lib/log"
 
