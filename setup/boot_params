@@ -9,3 +9,27 @@
 # - bp_maxcpus
 
 # Kernel boot parameters that will impact performance/power
+cmdline=$(cat /proc/cmdline)
+
+check_param()
+{
+	param=$1
+	eval value="\${$param-null_boot_param}"
+	if [ "$value" != "null_boot_param" ]; then
+		param_str="${param#*_}"
+		[ -n "$value" ] && param_str="$param_str=$value"
+		if ! echo "$cmdline" | grep -q "\b$param_str\b"; then
+			echo "Missing parameter: $param_str, actual command line: $cmdline"
+			exit 1
+		fi
+	fi
+}
+
+check_param "bp_mem"
+check_param "bp1_memmap"
+check_param "bp2_memmap"
+check_param "bp3_memmap"
+check_param "bp4_memmap"
+check_param "bp_disable_mtrr_trim"
+check_param "bp_idle"
+check_param "bp_maxcpus"
