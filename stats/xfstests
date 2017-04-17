@@ -20,16 +20,8 @@ def stat_line(line)
 end
 
 while line = STDIN.gets
-  begin
-    stat_line(line)
-  rescue StandardError => e
-    if e.message =~ /invalid byte sequence in US-ASCII/
-      line = line.remediate_invalid_byte_sequence(replace: '_')
-      stat_line(line)
-    else
-      raise e
-    end
-  end
+  line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
+  stat_line(line)
 end
 
 $results['passes'] = $results['ran'] - $results['failures']
