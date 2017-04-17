@@ -1,4 +1,5 @@
 #!/bin/sh
+# - test_memory_size
 
 ## The Linpack Benchmark is a measure of a computer’s floating-point rate of execution. It is
 ## determined by running a computer program that solves a dense system of linear equations.
@@ -9,15 +10,15 @@ cd $BENCHMARK_ROOT/linpack || exit
 . $LKP_SRC/lib/upload.sh
 . $LKP_SRC/lib/unit.sh
 
-export memory_bytes=$(to_byte $memory)
-memory_bytes=$((memory_bytes * 2 / 3))
+if [ -z "$test_memory_size" ]; then
+	test_memory_size=$(($(to_byte $memory) * 2 / 3))
+	max_mem=$((32<<30))
+	[ "$test_memory_size" -gt "$max_mem" ] && test_memory_size=$max_mem
+fi
 
-max_mem=$((32<<30))
-[ "$memory_bytes" -gt "$max_mem" ] && memory_bytes=$max_mem
+dimension=$(echo "sqrt ($test_memory_size * 0.9 / 8)" | bc)
 
-dimension=$(echo "sqrt ($memory_bytes * 0.9 / 8)" | bc)
-
-echo "memory_bytes=$memory_bytes dimension=$dimension"
+echo "test_memory_size=$test_memory_size dimension=$dimension"
 
 cat > lininput_xeon64 <<EOF
 Sample Intel(R) Optimized LINPACK Benchmark data file (lininput_xeon64)
