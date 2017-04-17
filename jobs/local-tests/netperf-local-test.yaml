@@ -1,0 +1,23 @@
+suite: netperf
+testcase: netperf
+category: benchmark
+
+# upto 90% CPU cycles may be used by latency stats
+disable_latency_stats: 1
+
+set_nic_irq_affinity: 1
+
+ip: ipv4
+
+runtime: 30s
+nr_threads: 50%
+
+cluster: cs-localhost
+
+if role server:
+  netserver:
+
+if role client:
+  netperf:
+    test:
+    - TCP_RR

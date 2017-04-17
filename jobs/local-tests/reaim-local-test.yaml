@@ -1,0 +1,10 @@
+suite: reaim
+testcase: reaim
+category: benchmark
+
+runtime: 30s
+nr_task: 50%
+
+reaim:
+  test:
+  - dbase

@@ -1,0 +1,17 @@
+suite: fio-basic
+testcase: fio-basic
+category: benchmark
+
+runtime: 10s
+nr_task: 2
+
+fs: tmpfs
+
+fio-setup-basic:
+  rw: write
+  bs: 4k
+  ioengine: sync
+  test_size: 512M
+  time_based: tb
+
+fio:

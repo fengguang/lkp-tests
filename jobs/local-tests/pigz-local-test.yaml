@@ -1,0 +1,8 @@
+suite: pigz
+testcase: pigz
+category: benchmark
+
+nr_threads: 50%
+
+pigz:
+  blocksize: 512K

@@ -1,0 +1,14 @@
+suite: will-it-scale
+testcase: will-it-scale
+category: benchmark
+
+runtime: 20s
+
+nr_task: 50%
+
+will-it-scale:
+  mode:
+  - thread
+  - process
+  test:
+  - page_fault1
