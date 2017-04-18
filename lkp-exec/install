@@ -206,7 +206,7 @@ build_install_benchmarks() {
 	local script=$1
 	local distro=$2
 
-	[ -x "$LKP_SRC/pack/$script" ] || return
+	[ -x "$LKP_SRC/pack/$script" ] || return 0
 
 	echo "Making $script benchmark for $distro"
 	[ -n "$DRY_RUN" ] && return
