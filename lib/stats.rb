@@ -198,13 +198,10 @@ def matrix_cols(hash_of_array)
 end
 
 def load_release_matrix(matrix_file)
-  begin
-    matrix = load_json matrix_file
-  rescue StandardError
-    matrix = nil
-  end
-
-  return matrix
+  load_json matrix_file
+rescue => e
+  log_exception e, binding
+  nil
 end
 
 def vmlinuz_dir(kconfig, compiler, commit)
@@ -235,9 +232,8 @@ def load_base_matrix(matrix_path, head_matrix, options)
     $git ||= {}
     $git[project] ||= Git.open(project: project, working_dir: ENV['SRC_ROOT'])
     git = $git[project]
-  rescue
-    $stderr.puts "error: Cannot find project #{project} for bisecting"
-    $stderr.puts caller
+  rescue => e
+    log_exception e, binding
     return nil
   end
 
@@ -262,8 +258,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
       is_exact_match = false
     end
     unless version
-      $stderr.puts "Cannot get base RC commit for #{commit}"
-      $stderr.puts caller
+      log_error "Cannot get base RC commit for #{commit}"
       return nil
     end
   end
@@ -282,7 +277,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
 
     # FIXME rli9 after above change, below situation is not reasonable, keep it for debugging purpose now
     unless order
-      $stderr.puts "unknown version #{version} matrix: #{matrix_path} options: #{options}"
+      log_error "unknown version #{version} matrix: #{matrix_path} options: #{options}"
       return nil
     end
   end
@@ -302,6 +297,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
     end
     next unless File.exist? base_matrix_file
 
+    log_debug "base_matrix_file: #{base_matrix_file}"
     rc_matrix = load_release_matrix base_matrix_file
     if rc_matrix
       add_stats_to_matrix(rc_matrix, matrix)
@@ -318,15 +314,15 @@ def load_base_matrix(matrix_path, head_matrix, options)
       head_matrix['last_state.is_incomplete_run'] or
       head_matrix['dmesg.boot_failures'] or
       head_matrix['stderr.has_stderr']
-      puts "compare with release matrix: #{matrix_path} #{tags_merged}" if ENV["LKP_VERBOSE"]
+      log_debug "compare with release matrix: #{matrix_path} #{tags_merged}"
       options['good_commit'] = tags_merged.first
       return matrix
     else
-      puts "release matrix too small: #{matrix_path} #{tags_merged}" if ENV["LKP_VERBOSE"]
+      log_debug "release matrix too small: #{matrix_path} #{tags_merged}"
       return nil
     end
   else
-    puts "found no release matrix: #{matrix_path}" if ENV["LKP_VERBOSE"]
+    log_debug "no release matrix was found: #{matrix_path}"
     return nil
   end
 end
@@ -648,7 +644,7 @@ def matrix_from_stats_files(stats_files, add_source = true)
   stats_files.each { |stats_file|
     stats = load_json stats_file
     unless stats
-      $stderr.puts "WARN: empty or non-exist stats file #{stats_file}"
+      log_warn "empty or non-exist stats file #{stats_file}"
       next
     end
     stats['stats_source'] ||= stats_file if add_source
