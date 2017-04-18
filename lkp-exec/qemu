@@ -227,7 +227,19 @@ fi
 
 # create vm result path
 if [ -z $opt_result_root ]; then
-	vm_result_path="/tmp/vm_test_result/$testcase-$(date '+%F-%T')"
+	# create real result_root layout similar to the one in inn:/result
+	_result_root=$HOME/.lkp/$(dirname $result_root)
+	for i in {0..1000}
+	do
+		vm_result_path=$_result_root/$i
+		[[ -d $vm_result_path ]] || break
+	done
+
+	if [ $i -eq 1000 ]; then
+		echo "!!!Exceed maximum result root number (1000), please delete some old results"
+		exit 1
+	fi
+	echo "result_root: $vm_result_path"
 else
 	vm_result_path=$opt_result_root
 fi
