@@ -10,7 +10,10 @@ cd $BENCHMARK_ROOT/hwsim/tests/hwsim || exit
 . $LKP_SRC/lib/reproduce-log.sh
 
 group_file=$LKP_SRC/pack/hwsim-addon/groups/$group
-[ -f "$group_file" ] || die "can not find group_file: $LKP_SRC/pack/hwsim-addon/groups/$group"
+[ -f "$group_file" ] || {
+	group_file=$BENCHMARK_ROOT/hwsim/$group
+	[ -f "$group_file" ] || die "can not find group_file both in $LKP_SRC/pack/hwsim-addon/groups and $BENCHMARK_ROOT/hwsim"
+}
 
 nm_conf="/etc/NetworkManager/NetworkManager.conf"
 [ -f "$nm_conf" ] && log_eval "cat >> $nm_conf <<EOF
