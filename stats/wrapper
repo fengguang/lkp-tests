@@ -107,7 +107,7 @@ check_empty_json()
 			local result_root_with_tag=$(result_root_with_release_tag $RESULT_ROOT)
 
 			log_warn "no generate json file for $stats_group, check $result_root_with_tag"
-			echo -e "# no json file for $stats_group\nis_incomplete_run: 1" >> $result_root_with_tag/last_state
+			echo -e "# no json file for $stats_group\nis_incomplete_run: 1" >> $RESULT_ROOT/last_state
 			return 1
 		fi
 	fi
