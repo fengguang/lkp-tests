@@ -12,5 +12,7 @@ build()
 
 install()
 {
+	cd $source_dir
+	$LKP_SRC/tools/hwsim-extract-testcase $source_dir/tests/hwsim
 	cp -af $source_dir/* $BM_ROOT
 }
