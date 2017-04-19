@@ -65,13 +65,12 @@ set_env()
 run_test()
 {
 	## Currently, we support the following several format's test item.
+	## Not-run, out-mismatch files are hard to maintain and do not use in the test, so remove them.
 	## With "generic" testcase as an example:
 	## - generic-all
 	## - generic-127
 	## - generic-quick/mid/slow1/slow2
 	## - generic-new
-	## - generic-not-run
-	## - generic-out-mismatch
 
 	local test_dir="$LKP_SRC/pack/xfstests-addon/tests"
 
