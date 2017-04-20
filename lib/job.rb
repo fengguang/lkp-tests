@@ -795,9 +795,9 @@ class JobEval < Job
 end
 
 class << Job
-  def open(jobfile)
+  def open(jobfile, expand_template = false)
     j = new
-    j.load(jobfile) && j
+    j.load(jobfile, expand_template) && j
   end
 end
 
