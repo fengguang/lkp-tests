@@ -1,10 +1,10 @@
 #!/bin/sh
-# = all
-# = localalloc
-# = interleave
-# = membind
-# = cpunodebind
-# = preferred
+# - all
+# - localalloc
+# - interleave
+# - membind
+# - cpunodebind
+# - preferred
 
 opts=
 [ "${all-null}" != null ] && opts="${opts} --all"
