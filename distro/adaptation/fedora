@@ -118,7 +118,7 @@ gcc-4.9: gcc
 gcc-5: gcc
 gcc-6: gcc
 tshark: wireshark
-rt-tests:
+rt-tests: numactl-devel
 hpcc:
 plzip:
 postmark:
