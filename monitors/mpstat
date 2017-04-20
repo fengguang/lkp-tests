@@ -2,4 +2,4 @@
 
 : ${interval:=1}
 
-S_TIME_FORMAT=ISO exec mpstat $interval $count
+LC_ALL=C S_TIME_FORMAT=ISO exec mpstat $interval $count

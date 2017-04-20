@@ -11,7 +11,7 @@ require 'time'
 keys = %w(time cpu.usr% cpu.nice% cpu.sys% cpu.iowait% cpu.irq% cpu.soft% cpu.steal% cpu.guest% cpu.gnice% cpu.idle%)
 
 def show_record(keys, data)
-  data.each_with_index { |v, i| puts "#{keys[i]}: #{v}" unless i.zero? && v !~ /:/ }
+  data.each_with_index { |v, i| puts "#{keys[i]}: #{v}" }
 end
 
 line = STDIN.gets
@@ -22,7 +22,12 @@ loop do
   break unless line
   next unless line =~ / all /
   data = line.split
-  time = Time.parse([date, data[0]].join(' ')).to_i
+  if data[1] != 'all'
+    time = Time.parse([date, data[0], data[1]].join(' ')).to_i
+    data.delete_at(1)
+  else
+    time = Time.parse([date, data[0]].join(' ')).to_i
+  end
   data[0] = time
   data.delete_at(1)
   show_record keys, data
