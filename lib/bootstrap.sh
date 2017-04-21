@@ -260,21 +260,14 @@ install_deb()
 
 	[ -d /opt/deb ] || return 0
 
-	if [ -s "/opt/deb/keep-deb" ]; then
-		while read -r filename
-		do
-			[ -f /opt/deb/$filename ] || {
-				echo "error: dependent package /opt/deb/$filename is not exist." 1>&2
-				return 1
-			}
-			files="$files /opt/deb/$filename"
-		done < /opt/deb/keep-deb
+	# round one, install all debs directly
+	files="$(find /opt/deb -name '*.deb' -type f 2>/dev/null)"
+	[ -n "$files" ] || return
+	echo "install debs round one: dpkg -i $files"
+	dpkg -i $files && return
 
-		[ -n "$files" ] || return 0
-		if dpkg -i $files; then
-			rm $files
-			return 0
-		fi
+	# round two, install all debs one by one accroding to keep-deb which is in sequence
+	if [ -s "/opt/deb/keep-deb" ]; then
 
 		# due to gwak pkg including pre-dependency definition, 
 		# gawk dependent libreadline7 install first.
@@ -282,19 +275,13 @@ install_deb()
 		# and line by line installation. 
 		while read -r filename
 		do
+			echo "install debs round two: dpkg -i /opt/deb/$filename"
 			dpkg -i /opt/deb/$filename || {
 				echo "error: dpkg -i /opt/deb/$filename failed." 1>&2
 				return 1
 			}
 			rm /opt/deb/$filename
 		done < /opt/deb/keep-deb
-	# this part for backward-compatibility to handle old deps which doesn't have keep-deb
-	else
-		files="$(find /opt/deb -name '*.deb' -type f 2>/dev/null)"
-		[ -n "$files" ] || return
-
-		dpkg -i $files || return
-		rm $files
 	fi
 }
 
