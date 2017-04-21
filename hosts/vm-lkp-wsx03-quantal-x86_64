@@ -1,5 +1,0 @@
-model: qemu-system-x86_64 -enable-kvm -cpu Haswell,+smep,+smap
-nr_vm: 32
-nr_cpu: 2
-memory: 512M
-rootfs: quantal-core-x86_64.cgz

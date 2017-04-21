@@ -1,6 +1,0 @@
-model: qemu-system-x86_64 -enable-kvm -cpu IvyBridge
-nr_vm: 32
-nr_cpu: 1
-memory: 420M
-rootfs: yocto-tiny-i386.cgz
-swap_partitions: /dev/vda
