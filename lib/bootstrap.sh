@@ -267,8 +267,8 @@ install_deb()
 	dpkg -i $files && return
 
 	# round two, install all debs one by one accroding to keep-deb which is in sequence
-	if [ -s "/opt/deb/keep-deb" ]; then
-
+	for keepfile in $(ls /opt/deb/keep-deb*)
+	do
 		# due to gwak pkg including pre-dependency definition, 
 		# gawk dependent libreadline7 install first.
 		# so we generated keep-deb file which contains installation sequence, 
@@ -280,9 +280,8 @@ install_deb()
 				echo "error: dpkg -i /opt/deb/$filename failed." 1>&2
 				return 1
 			}
-			rm /opt/deb/$filename
-		done < /opt/deb/keep-deb
-	fi
+		done < $keepfile
+	done
 }
 
 fixup_packages()

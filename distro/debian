@@ -41,7 +41,7 @@ install()
 	#   libreadline7
 	#   libssl1.1
 	#   gawk
-	[ -s "opt/deb/sequence-deb" ] && {
+	[ -s "opt/deb/sequence-deb.$BM_NAME" ] && {
 		deb_files=$(find ./ -name "*.deb" -type f)
 		while read -r deb_pkgname
 		do
@@ -54,12 +54,12 @@ install()
 				#   libreadline7_7.0-1_amd64.deb
 				#   libssl1.1_1.1.0d-2_amd64.deb
 				#   gawk_1%3a4.1.3+dfsg-0.1+b1_amd64.deb
-				echo $(basename $deb_filename) >> opt/deb/keep-deb
+				echo $(basename $deb_filename) >> opt/deb/keep-deb.$BM_NAME
 			else
 				echo "error: $deb_filename is not exist." >&2
 				return 1
 			fi
-		done < opt/deb/sequence-deb
+		done < opt/deb/sequence-deb.$BM_NAME
 	}
 
 	local deb

@@ -52,7 +52,7 @@ do
 	#   libreadline7
 	#   libssl1.1
 	#   gawk
-	echo "$PACKAGE_LIST" | grep -F -f "$LKP_SRC/distro/keep-deb" > opt/deb/sequence-deb
+	echo "$PACKAGE_LIST" | grep -F -f "$LKP_SRC/distro/keep-deb" > opt/deb/sequence-deb.$BM_NAME
 
 	if download "$PACKAGE_LIST"; then
 		install || exit 1
