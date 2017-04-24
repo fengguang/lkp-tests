@@ -106,7 +106,13 @@ cleanup_path_record_from_result_root()
 	dot_temp_file=$(mktemp -p /lkp/.paths/ .tmpXXXXXX)
 	chmod 664 $dot_temp_file || return
 
-	for path_file in $(grep -l "$path" /lkp/paths/????-??-??-* /lkp/paths/.????-??-??-*)
+	if [[ $(find /lkp/paths -name ".????-??-??-*" 2>/dev/null) ]]; then
+		paths=$(grep -l "$path" /lkp/paths/????-??-??-* /lkp/paths/.????-??-??-*)
+	else
+		paths=$(grep -l "$path" /lkp/paths/????-??-??-*)
+	fi
+
+	for path_file in $paths
 	do
 		lockfile-create -q --use-pid --retry 10 --lock-name "$path_file".lock
 
