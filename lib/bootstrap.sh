@@ -257,6 +257,7 @@ install_deb()
 {
 	local files
 	local filename
+	local filter_info="dpkg: warning: files list file for package '.*' missing;"
 
 	[ -d /opt/deb ] || return 0
 
@@ -264,7 +265,8 @@ install_deb()
 	files="$(find /opt/deb -name '*.deb' -type f 2>/dev/null)"
 	[ -n "$files" ] || return
 	echo "install debs round one: dpkg -i $files"
-	dpkg -i $files && return
+	dpkg -i $files 2>/tmp/dpkg_error && return
+	grep -v "$filter_info" /tmp/dpkg_error
 
 	# round two, install all debs one by one accroding to keep-deb which is in sequence
 	for keepfile in $(ls /opt/deb/keep-deb*)
@@ -276,7 +278,8 @@ install_deb()
 		while read -r filename
 		do
 			echo "install debs round two: dpkg -i /opt/deb/$filename"
-			dpkg -i /opt/deb/$filename || {
+			dpkg -i /opt/deb/$filename 2>/tmp/dpkg_error  || {
+				grep -v "$filter_info" /tmp/dpkg_error
 				echo "error: dpkg -i /opt/deb/$filename failed." 1>&2
 				return 1
 			}
