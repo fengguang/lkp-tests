@@ -1,61 +1,51 @@
 #!/usr/bin/env ruby
 
-LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
 require "#{LKP_SRC}/lib/job.rb"
 require "#{LKP_SRC}/lib/log"
 require 'optparse'
 require 'ostruct'
 
-$opt_output_path = '.'
-$opt_set_key_value = {}
+opt_output_path = '.'
+opt_set_key_value = {}
 
-opts = OptionParser.new do |opts|
-  opts.banner = "Usage: split-job [options] jobs..."
+options = OptionParser.new do |opts|
+  opts.banner = 'Usage: split-job [options] jobs...'
 
-  opts.separator ""
-  opts.separator "options:"
+  opts.separator ''
+  opts.separator 'options:'
 
-  opts.on("-o PATH", "--output PATH", "output path") do |path|
+  opts.on('-o PATH', '--output PATH', 'output path') do |path|
     if File.directory? path
-      $opt_output_path = path
+      opt_output_path = path
     else
       log_error "#{path}: no such directory"
       exit
     end
   end
 
-  opts.on("-c CONFIG", "--config CONFIG", "test kernel config") do |kconfig|
-    $opt_kconfig = kconfig
+  opts.on('-c CONFIG', '--config CONFIG', 'test kernel config') { |kconfig| @opt_kconfig = kconfig }
+
+  opts.on('-k COMMIT', '--kernel COMMIT', 'test kernel commit') { |commit| @opt_commit = commit }
+
+  opts.on('-t HOSTNAME', '--test-box HOSTNAME', 'test box') { |testbox| @opt_testbox = testbox }
+
+  opts.on("-s 'KEY: VALUE'", "--set 'KEY: VALUE'", 'add YAML hash to job') do |key_value|
+    opt_set_key_value.merge! YAML.load key_value
   end
 
-  opts.on("-k COMMIT", "--kernel COMMIT", "test kernel commit") do |commit|
-    $opt_commit = commit
-  end
+  opts.on('--any', 'save one single random atom job') { @opt_any = true }
 
-  opts.on("-t HOSTNAME", "--test-box HOSTNAME", "test box") do |testbox|
-    $opt_testbox = testbox
-  end
+  opts.on('--no-defaults', 'do not load the defaults headers') { @opt_no_defaults = true }
 
-  opts.on("-s 'KEY: VALUE'", "--set 'KEY: VALUE'", "add YAML hash to job") do |key_value|
-    $opt_set_key_value.merge!(YAML.load key_value)
-  end
-
-  opts.on("--any", "save one single random atom job") do
-    $opt_any = true
-  end
-
-  opts.on("--no-defaults", "do not load the defaults headers") do
-    $opt_no_defaults = true
-  end
-
-  opts.on_tail("-h", "--help", "show this message") do
+  opts.on_tail('-h', '--help', 'show this message') do
     puts opts
     exit
   end
 end
 
-opts.parse!(ARGV)
+options.parse!(ARGV)
 
 # Example usage:
 #
@@ -65,50 +55,50 @@ opts.parse!(ARGV)
 # containing '=' in file name as key/value pairs. So please use the more
 # formal -s 'key: value' in scripts.
 ARGV.delete_if do |arg|
-        if arg.index '='
-    $opt_set_key_value.merge!(YAML.load arg.sub(/=/, ': '))
-                true
-        else
-                false
-        end
+  if arg.index '='
+    opt_set_key_value.merge! YAML.load arg.sub(/=/, ': ')
+    true
+  else
+    false
+  end
 end
 
-if ARGV.size == 0
-  puts opts
+if ARGV.size.zero?
+  puts options
   exit
 end
 
-$opt_testbox ||= `hostname`.chomp
-$atom_jobs = []
+@opt_testbox ||= `hostname`.chomp
+atom_jobs = []
 
-ARGV.each { |jobfile|
+ARGV.each do |jobfile|
   jobs = Job.new
-  jobs.load(jobfile, true) or next
-  jobs['kconfig'] = $opt_kconfig if $opt_kconfig
-  jobs['commit'] = $opt_commit if $opt_commit
-  jobs['testbox'] = $opt_testbox
-  jobs['tbox_group'] = tbox_group($opt_testbox)
+  jobs.load(jobfile, true) || next
+  jobs['kconfig'] = @opt_kconfig if @opt_kconfig
+  jobs['commit'] = @opt_commit if @opt_commit
+  jobs['testbox'] = @opt_testbox
+  jobs['tbox_group'] = tbox_group(@opt_testbox)
   jobs['node_roles'] = 'server client' if jobs['cluster']
-  jobs[:no_defaults] = true if $opt_no_defaults
-  jobs.overrides = $opt_set_key_value
-  prefix = $opt_output_path + '/' + File.basename(jobfile, '.yaml')
-  jobs.each_jobs { |job|
+  jobs[:no_defaults] = true if @opt_no_defaults
+  jobs.overrides = opt_set_key_value
+  prefix = opt_output_path + '/' + File.basename(jobfile, '.yaml')
+  jobs.each_jobs do |job|
     unit_jobfile = prefix + '-' + job.path_params
     unit_jobfile += '-' + job['commit'] if job['commit']
     unit_jobfile += '-' + rootfs_filename(job['rootfs']) if job['rootfs']
     unit_jobfile += '.yaml'
-    if $opt_any
-      $atom_jobs << [jobfile, unit_jobfile, deepcopy(job)]
+    if @opt_any
+      atom_jobs << [jobfile, unit_jobfile, deepcopy(job)]
     else
       job.save unit_jobfile
       puts "#{jobfile} => #{unit_jobfile}"
     end
-  }
-}
+  end
+end
 
-if $opt_any
-  i = rand($atom_jobs.size)
-  job = $atom_jobs[i]
+if @opt_any
+  i = rand(atom_jobs.size)
+  job = atom_jobs[i]
   job[2].save job[1]
   puts "#{job[0]} => #{job[1]}"
 end
