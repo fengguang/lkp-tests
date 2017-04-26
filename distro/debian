@@ -56,7 +56,7 @@ install()
 				#   gawk_1%3a4.1.3+dfsg-0.1+b1_amd64.deb
 				echo $(basename $deb_filename) >> opt/deb/keep-deb.$BM_NAME
 			else
-				echo "error: $deb_filename is not exist." >&2
+				echo "error: $deb_pkgname is not exist." >&2
 				return 1
 			fi
 		done < opt/deb/sequence-deb.$BM_NAME
