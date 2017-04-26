@@ -269,8 +269,10 @@ install_deb()
 	grep -v "$filter_info" /tmp/dpkg_error
 
 	# round two, install all debs one by one accroding to keep-deb which is in sequence
-	for keepfile in $(ls /opt/deb/keep-deb*)
+	# sort keep-deb.${benchmark} by time, handle the oldest keep-deb.${benchmark} first
+	for keepfile in $(ls -rt /opt/deb/keep-deb*)
 	do
+		echo "handle $keepfile..."
 		# due to gwak pkg including pre-dependency definition, 
 		# gawk dependent libreadline7 install first.
 		# so we generated keep-deb file which contains installation sequence, 
