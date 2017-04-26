@@ -9,10 +9,6 @@ fs:
 
 xfstests:
   test:
-## "not-run" and "output-mismatch" testcase will be remove later, 
-##  now we distinguish them in order to convenient to test and fix them.
   - ext4
-# - ext4-not-run
-# - ext4-output-mismatch
 # - ext4-new
 # - ext4-all

@@ -14,8 +14,6 @@ fs:
 
 xfstests:
   test:
-## "not-run" and "output-mismatch" testcase will be remove later,
-##  now we distinguish them in order to convenient to test and fix them.
   - generic-231
   - generic-299
   - generic-slow1
@@ -25,7 +23,5 @@ xfstests:
   - generic-mid2
   - generic-quick1
   - generic-quick2
-# - generic-not-run
-# - generic-out-mismatch
 # - generic-new
 # - generic-all

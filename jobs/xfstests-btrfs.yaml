@@ -9,11 +9,7 @@ fs:
 
 xfstests:
   test:
-## "not-run" and "output-mismatch" testcase will be remove later, 
-## now we distinguish them in order to convenient to test and fix them.
   - btrfs-mid1
   - btrfs-mid2
-# - btrfs-not-run
-# - btrfs-output-mismatch
 # - btrfs-new
 # - btrfs-all
