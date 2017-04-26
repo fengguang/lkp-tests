@@ -1,130 +1,130 @@
-linux-tools: perf
-xz-utils: xz
-libpcap-dev: libpcap-devel
-ncurses-bin: ncurses
+apache2: httpd
+apt-file:
+autotools-dev: autoconf
+binutils-dev: binutils-devel
+btrfs-tools: btrfs-progs
 build-essential: make automake gcc gcc-c++ kernel-devel rpm-build
 cgroup-bin: libcgroup
-apt-file:
-sg3-utils: sg3_utils
-btrfs-tools: btrfs-progs
-nfs-common: nfs-utils
-nfs-kernel-server: nfs-utils
 dbench=4.0-2: dbench
-libnl-3-200: libnl3
-libnl-genl-3-200: libnl3
-libnl-3-dev: libnl3-devel
-libnl-genl-3-dev: libnl3-devel
-libpcap0.8: libpcap
-libpcap0.8-dev: libpcap-devel
-libdbus-1-dev: dbus-devel
-libssl-dev: openssl-devel
-binutils-dev: binutils-devel
-libiberty-dev: binutils-devel
-libsqlite3-dev: libsqlite3x-devel
+dpkg-dev: dpkg-devel
+freeglut3: freeglut
+fsmark: fs_mark
+gcc-4.9: gcc
+gcc-5: gcc
+gcc-6: gcc
+gfortran: gcc-gfortran
+hpcc:
+initramfs-tools: dracut
 iozone3:
+iproute2: iproute
+klibc-utils:
+libacl1-dev: libacl-devel
+libaio1: libaio libaio-devel
+libaio-dev: libaio-devel
+libaio-dev: libaio-devel
+libarchive-dev: libarchive-devel
+libattr1-dev: libattr-devel
+libaudit-dev: audit-libs-devel
+libblas3: blas
+libblkid-dev: libblkid-devel
+libc6-dbg: glibc-debuginfo
 libc6-dev: glibc-devel glibc-static
-libpopt0: popt
-libpopt-dev: popt-devel
-python-minimal: python2
-libudev1: systemd-libs
-libudev-dev: systemd-devel
-libuuid1: libuuid
-uuid-dev: libuuid-devel
+libc6-dev:i386: glibc-devel.i686 glibc-static.i686
+libcairo2-dev: cairo-devel
+libcap2: libcap
+libcap-dev: libcap-devel
+libcap-ng-dev: libcap-ng-devel
+libc-dev:i386: glibc-devel.i686
+libdbd-mysql-perl: libdbi-dbd-mysql
+libdbi-perl: perl-DBI
+libdbus-1-dev: dbus-devel
+libdrm-dev: libdrm-devel
+libdw-dev: elfutils-devel
+libegl1-mesa-dev: mesa-libEGL-devel
+libelf-dev: elfutils-devel
+libfabric-dev: libfabric-devel
+libfdt-dev: libfdt-devel
+libfuse-dev: fuse-devel
+libgbm-dev: mesa-libgbm-devel
+libgl1-mesa-dev: mesa-libGL-devel
+libgles2-mesa: mesa-libGLES
+libglib2.0-0: glib
+libglib2.0-dev: glib2-devel
+libglu-dev: mesa-libGLU-devel
+libgomp1: libgomp
+libhwloc-dev: hwloc-devel
+libiberty-dev: binutils-devel
+libibverbs-dev: libibverbs-devel
+libibverbs-dev: libibverbs-devel
+libjson-c-dev: json-c-devel
+libklibc-dev:
 libkmod2: kmod-libs
 libkmod-dev: kmod-devel
-autotools-dev: autoconf
+liblzma-dev: xz-devel
+libncurses5-dev: ncurses-devel
+libnl-3-200: libnl3
+libnl-3-dev: libnl3-devel
+libnl-genl-3-200: libnl3
+libnl-genl-3-dev: libnl3-devel
+libnl-route-3-dev: libnl3-devel
+libnuma1: numactl
+libnuma-dev: numactl-devel
 liboop-dev:
+libpcap0.8-dev: libpcap-devel
+libpcap0.8: libpcap
+libpcap-dev: libpcap-devel
+libpciaccess-dev: libpciaccess-devel
+libperl5.20: perl-libs
+libperl5.22: perl
+libpixman-1-dev: pixman-devel
+libpng12-dev: libpng12-devel
+libpopt0: popt
+libpopt-dev: popt-devel
+librdmacm-dev: librdmacm-devel
+librdmacm-dev: librdmacm-devel
+libreadline5: compat-readline5
 libsctp-dev: lksctp-tools-devel
+libselinux1: 
+libsqlite3-dev: libsqlite3x-devel
+libssl1.0.0: openssl-devel
+libssl1.1: openssl-devel
+libssl-dev: openssl-devel
+libtool-bin: libtool
+libudev1: systemd-libs
+libudev-dev: systemd-devel
+libunwind-dev: libunwind-devel
+libuuid1: libuuid
+libuv1-dev: libuv-devel
+libx11-xcb-dev: libX11-devel
+linux-libc-dev:i386: kernel-headers
+linux-libc-dev: kernel-headers
+linux-perf: perf
+linux-tools: perf
+mysql-server: mariadb
+ncurses-bin: ncurses
 netpipe-lam: NetPIPE
 netpipe-mpich2: NetPIPE
 netpipe-openmpi: NetPIPE
 netpipe-pvm: NetPIPE
 netpipe-tcp: NetPIPE
-mysql-server: mariadb
-libnuma1: numactl
-xinit: xorg-x11-xinit
-freeglut3: freeglut
-libglib2.0-0: glib
-libgles2-mesa: mesa-libGLES
-dpkg-dev: dpkg-devel
-libx11-xcb-dev: libX11-devel
-libdrm-dev: libdrm-devel
-xutils-dev: imake
-libibverbs-dev: libibverbs-devel
-librdmacm-dev: librdmacm-devel
-libaio1: libaio libaio-devel
-libaio-dev: libaio-devel
-initramfs-tools: dracut
-klibc-utils:
-apache2: httpd
+nfs-common: nfs-utils
+nfs-kernel-server: nfs-utils
 perl-base: perl
-perl-modules: perl
-libperl5.20: perl-libs
-libhwloc-dev: hwloc-devel
-xfslibs-dev: xfsprogs-devel
-libattr1-dev: libattr-devel
-libacl1-dev: libacl-devel
-libreadline5: compat-readline5
-libtool-bin: libtool
-libnuma-dev: numactl-devel
-libc-dev:i386: glibc-devel.i686
-linux-libc-dev:i386: kernel-headers
-linux-libc-dev: kernel-headers
-libklibc-dev:
-linux-perf: perf
-libc6-dev:i386: glibc-devel.i686 glibc-static.i686
-fsmark: fs_mark
-gfortran: gcc-gfortran
-iproute2: iproute
-libarchive-dev: libarchive-devel
-libblas3: blas
-libcairo2-dev: cairo-devel
-libcap-dev: libcap-devel
-libcap-ng-dev: libcap-ng-devel
-libdbd-mysql-perl: libdbi-dbd-mysql
-libdbi-perl: perl-DBI
-libelf-dev: elfutils-devel
-libfabric-dev: libfabric-devel
-libfdt-dev: libfdt-devel
-libfuse-dev: fuse-devel
-libglib2.0-dev: glib2-devel
-libgomp1: libgomp
-libjson-c-dev: json-c-devel
-libncurses5-dev: ncurses-devel
-libnl-route-3-dev: libnl3-devel
-libperl5.22: perl
-libpixman-1-dev: pixman-devel
-libssl1.0.0: openssl-devel
-libssl1.1: openssl-devel
-libunwind-dev: libunwind-devel
-libuv1-dev: libuv-devel
 perl-modules-5.22: perl
+perl-modules: perl
 pkg-config: pkgconfig
-zlib1g-dev: zlib-devel
-libaio-dev: libaio-devel
-libaudit-dev: audit-libs-devel
-libcap2: libcap
-libdw-dev: elfutils-devel
-libegl1-mesa-dev: mesa-libEGL-devel
-libgbm-dev: mesa-libgbm-devel
-libgl1-mesa-dev: mesa-libGL-devel
-libglu-dev: mesa-libGLU-devel
-libibverbs-dev: libibverbs-devel
-liblzma-dev: xz-devel
-libpciaccess-dev: libpciaccess-devel
-libpng12-dev: libpng12-devel
-librdmacm-dev: librdmacm-devel
-gcc-4.9: gcc
-gcc-5: gcc
-gcc-6: gcc
-tshark: wireshark
-rt-tests: numactl-devel
-hpcc:
 plzip:
 postmark:
-stress-ng:
-xorg:
+python-minimal: python2
+rt-tests: numactl-devel
 ruby-dev: ruby-devel
-libblkid-dev: libblkid-devel
-libselinux1: 
-libc6-dbg: glibc-debuginfo
+sg3-utils: sg3_utils
+stress-ng:
+tshark: wireshark
+uuid-dev: libuuid-devel
+xfslibs-dev: xfsprogs-devel
+xinit: xorg-x11-xinit
+xorg:
+xutils-dev: imake
+xz-utils: xz
+zlib1g-dev: zlib-devel
