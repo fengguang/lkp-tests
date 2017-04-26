@@ -1,5 +1,5 @@
 apache2: httpd
-apt-file: 
+apt-file:
 autotools-dev: autoconf
 binutils-dev: binutils-devel
 btrfs-tools: btrfs-progs
@@ -7,19 +7,18 @@ build-essential: make automake gcc gcc-c++ kernel-devel rpm-build
 cgroup-bin: libcgroup
 dbench=4.0-2: dbench
 dpkg-dev: dpkg-devel
-f2fs-tools: 
+f2fs-tools:
 freeglut3: freeglut
 fsmark: fs_mark
 gcc-4.9: gcc
 gcc-5: gcc
 gcc-6: gcc
 gfortran: gcc-c++
-hpcc: 
-hpcc: 
+hpcc:
 initramfs-tools: dracut
-iozone3: gnuplot* 
+iozone3: gnuplot*
 iproute2: iproute
-klibc-utils: 
+klibc-utils:
 libacl1-dev: libacl-devel
 libaio1: libaio libaio-devel
 libaio-dev: libaio-devel
@@ -31,7 +30,7 @@ libblkid-dev: libblkid-devel
 libc6-dev: glibc-devel glibc-static
 libc6-dev:i386: glibc-devel.i686 glibc-static.i686
 libcairo2-dev: cairo-devel
-libcap2: libcap 
+libcap2: libcap
 libcap-dev: libcap-devel
 libcap-ng-dev: libcap-ng-devel
 libdbd-mysql-perl: perl-DBD-MySQL
@@ -42,7 +41,7 @@ libdw-dev: libdwarf-devel
 libegl1-mesa-dev: mesa-libEGL-devel
 libelf-dev: elfutils-libelf-devel
 libfabric-dev: libfabric-devel
-libfdt-dev: 
+libfdt-dev:
 libfuse-dev: fuse-devel
 libgbm-dev: mesa-libgbm-devel
 libgl1-mesa-dev: mesa-libglapi
@@ -52,13 +51,13 @@ libglib2.0-dev: glib2-devel
 libglu-dev: mesa-libGLU-devel
 libgomp1: libgomp
 libhwloc-dev: hwloc-devel
-libiberty-dev: 
+libiberty-dev:
 libibverbs-dev: libibverbs-devel
 libjson-c-dev: json-c-devel
-libklibc-dev: 
+libklibc-dev:
 libkmod2: kmod-libs
 libkmod-dev: kmod-devel
-liblz-dev: 
+liblz-dev:
 liblzma-dev: xz-devel
 libmount-dev: libmount-devel
 libncurses5-dev: ncurses-devel
@@ -69,7 +68,7 @@ libnl-genl-3-dev: libnl3-devel
 libnl-route-3-dev: libnl3-devel
 libnuma1: numactl
 libnuma-dev: numactl-devel
-liboop-dev: 
+liboop-dev:
 liboop-dev: liboop
 libpcap0.8-dev: libpcap-devel
 libpcap0.8: libpcap
@@ -84,7 +83,7 @@ libpopt-dev: popt-devel
 librdmacm-dev: librdmacm-devel
 libreadline5: readline
 libsctp-dev: lksctp-tools-devel
-libselinux1: 
+libselinux1:
 libsqlite3-dev: sqlite-devel
 libssl1.0.0: openssl-devel
 libssl1.1: openssl-devel
@@ -96,27 +95,26 @@ libunwind-dev: libunwind-devel
 libuuid1: libuuid
 libuv1-dev: libuv-devel
 libx11-xcb-dev: libX11-devel
-linux-libc-dev: 
-linux-libc-dev:i386: 
+linux-libc-dev:
+linux-libc-dev:i386:
 linux-perf: perf
-linux-tools: perf
 linux-tools: perf
 mysql-server: mariadb
 ncurses-bin: ncurses
-netpipe-lam: 
-netpipe-mpich2: 
-netpipe-openmpi: 
-netpipe-pvm: 
-netpipe-tcp: 
+netpipe-lam:
+netpipe-mpich2:
+netpipe-openmpi:
+netpipe-pvm:
+netpipe-tcp:
 nfs-common: nfs-utils
 nfs-kernel-server: nfs-utils
-perl-base: 
+perl-base:
 perl-modules-5.22: perl-CPAN
 perl-modules: perl-CPAN
 pixz: pxz
 pkg-config: pkgconfig
-plzip: 
-postmark: 
+plzip:
+postmark:
 python3-mako: python-pyramid-mako
 python3-markupsafe: python34-markupsafe
 python3-numpy: python34-numpy
@@ -125,16 +123,16 @@ python-minimal: python2
 python-numpy: numpy
 rt-tests: numactl-devel
 ruby-dev: ruby-devel
-ruby-git: 
-ruby-gnuplot: 
+ruby-git:
+ruby-gnuplot:
 sg3-utils: sg3_utils
-stress-ng: 
-trinity: 
+stress-ng:
+trinity:
 tshark: wireshark
 uuid-dev: libuuid-devel
 xfslibs-dev: xfsprogs-devel
 xinit: xorg-x11-xinit
-xorg: 
+xorg:
 xutils-dev: imake
 xz-utils: xz
 zlib1g-dev: zlib-devel

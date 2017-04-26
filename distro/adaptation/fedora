@@ -21,7 +21,6 @@ klibc-utils:
 libacl1-dev: libacl-devel
 libaio1: libaio libaio-devel
 libaio-dev: libaio-devel
-libaio-dev: libaio-devel
 libarchive-dev: libarchive-devel
 libattr1-dev: libattr-devel
 libaudit-dev: audit-libs-devel
@@ -55,7 +54,6 @@ libgomp1: libgomp
 libhwloc-dev: hwloc-devel
 libiberty-dev: binutils-devel
 libibverbs-dev: libibverbs-devel
-libibverbs-dev: libibverbs-devel
 libjson-c-dev: json-c-devel
 libklibc-dev:
 libkmod2: kmod-libs
@@ -81,10 +79,9 @@ libpng12-dev: libpng12-devel
 libpopt0: popt
 libpopt-dev: popt-devel
 librdmacm-dev: librdmacm-devel
-librdmacm-dev: librdmacm-devel
 libreadline5: compat-readline5
 libsctp-dev: lksctp-tools-devel
-libselinux1: 
+libselinux1:
 libsqlite3-dev: libsqlite3x-devel
 libssl1.0.0: openssl-devel
 libssl1.1: openssl-devel
