@@ -35,7 +35,7 @@ do
 
 	packages=$(get_dependency_packages $DISTRO $BM_NAME)
 	PACKAGE_LIST=$(apt-get --simulate --no-install-recommends install $packages |
-			awk '/^Inst / { if (substr($3, 0, 1) != "[") print $2 }')
+			awk '/^Inst / { if (substr($3, 1, 1) != "[") print $2 }')
 
 	echo "original package list for $BM_NAME:" $packages
 
