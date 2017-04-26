@@ -37,6 +37,9 @@ do
 	PACKAGE_LIST=$(apt-get --simulate --no-install-recommends install $packages |
 			awk '/^Inst / { if (substr($3, 1, 1) != "[") print $2 }')
 
+	PACKAGE_VERSION_LIST=$(apt-get --simulate --no-install-recommends install $packages |
+			awk '/^Inst / { if (substr($3, 1, 1) != "[") print $2$3 }' | tr '(' '=')
+
 	echo "original package list for $BM_NAME:" $packages
 
 	[[ $PACKAGE_LIST ]] || {
@@ -54,7 +57,7 @@ do
 	#   gawk
 	echo "$PACKAGE_LIST" | grep -F -f "$LKP_SRC/distro/keep-deb" > opt/deb/sequence-deb.$BM_NAME
 
-	if download "$PACKAGE_LIST"; then
+	if download "$PACKAGE_VERSION_LIST"; then
 		install || exit 1
 		pack
 		echo "$PACKAGE_LIST" > $pack_to/.${BM_NAME}.packages
