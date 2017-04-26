@@ -1,71 +1,71 @@
-ruby-gnuplot: 
-xz-utils: xz
-ncurses-bin: ncurses
+apache2: apache
+apt-file: pkgfile
+autotools-dev: autoconf
+binutils-dev: binutils
 bsdtar:
+btrfs-tools: btrfs-progs
 build-essential: base-devel
 cgroup-bin: libcgroup cgmanager
-apt-file: pkgfile
-sg3-utils: sg3_utils
 dbench=4.0-2: dbench-git
-btrfs-tools: btrfs-progs
-nfs-common: nfs-utils
-nfs-kernel-server: nfs-utils
-libnl-3-200: libnl
-libnl-genl-3-200: libnl
-libpcap0.8: libpcap
-libdbus-1-dev: libdubs
-libssl-dev: openssl
-binutils-dev: binutils
-libnl-3-dev: libnl
-libiberty-dev:
-libnl-genl-3-dev: libnl
-libsqlite3-dev: sqlite
-libpcap0.8-dev: libpcap
+dpkg-dev: dpkg
+freeglut3: freeglut
+initramfs-tools: mkinitcpio
 iozone3: iozone
+klibc-utils:
+libacl1-dev: acl
+libaio1: libaio
+libaio-dev: libaio
+libattr1-dev: attr
 libc6-dev: glibc
+libc-dev:i386:
+libdbus-1-dev: libdubs
+libdrm-dev: libdrm
+libgles2-mesa: mesa
+libglib2.0-0: glib2
+libhwloc-dev: hwloc
+libiberty-dev:
+libibverbs-dev: libibverbs
+libklibc-dev:
+libkmod2: kmod2
+libkmod-dev: kmod2
+libnl-3-200: libnl
+libnl-3-dev: libnl
+libnl-genl-3-200: libnl
+libnl-genl-3-dev: libnl
+libnuma1: numactl
+liboop-dev: liboop
+libpcap0.8-dev: libpcap
+libpcap0.8: libpcap
+libperl5.20:
 libpopt0: popt
 libpopt-dev: popt
-python-minimal: python2
-libudev1: libudev0
-libuuid1: uuid
-libkmod2: kmod2
-autotools-dev: autoconf
-libudev-dev: libudev0
-libkmod-dev: kmod2
-uuid-dev: uuid
-liboop-dev: liboop
+librdmacm-dev: librdmacm
 libsctp-dev: lksctp-tools
+libsqlite3-dev: sqlite
+libssl-dev: openssl
+libudev1: libudev0
+libudev-dev: libudev0
+libuuid1: uuid
+libx11-xcb-dev: libx11
+linux-libc-dev:
+linux-libc-dev:i386:
+mysql-server: mysql
+ncurses-bin: ncurses
 netpipe-lam: netpipe
 netpipe-mpich2: netpipe
 netpipe-openmpi: netpipe
 netpipe-pvm: netpipe
 netpipe-tcp: netpipe
-mysql-server: mysql
-libnuma1: numactl
-xinit: xorg-xinit
-freeglut3: freeglut
-libglib2.0-0: glib2
-libgles2-mesa: mesa
-dpkg-dev: dpkg
-libx11-xcb-dev: libx11
-libdrm-dev: libdrm
-xutils-dev: imake
-qemu-system-x86: qemu
-libibverbs-dev: libibverbs
-librdmacm-dev: librdmacm
-libaio1: libaio
-libaio-dev: libaio
-initramfs-tools: mkinitcpio
-klibc-utils:
-apache2: apache
+nfs-common: nfs-utils
+nfs-kernel-server: nfs-utils
 perl-base:
 perl-modules: perl-module-build
-libperl5.20:
-libhwloc-dev: hwloc
+python-minimal: python2
+qemu-system-x86: qemu
+ruby-gnuplot:
+sg3-utils: sg3_utils
+uuid-dev: uuid
 xfslibs-dev: xfsprogs
-libattr1-dev: attr
-libacl1-dev: acl
-libc-dev:i386:
-linux-libc-dev:
-linux-libc-dev:i386:
-libklibc-dev:
+xinit: xorg-xinit
+xutils-dev: imake
+xz-utils: xz
