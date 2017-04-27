@@ -1,30 +1,31 @@
 #!/usr/bin/env ruby
 
-LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
 require 'optparse'
 require "#{LKP_SRC}/lib/yaml"
 require "#{LKP_SRC}/lib/misc"
 
-$opt_group = '_rt'
-$opt_kernel = ''
-$opt_date = ''
+options = {}
+options[:group] = '_rt'
+options[:kernel] = ''
+options[:date] = ''
 
 OptionParser.new do |opts|
   opts.banner = "Usage: #{File.basename $PROGRAM_NAME} [options]"
 
-  opts.on("-g GROUP", "--group-by GROUP", "group by GROUP") do |group|
-    $opt_group = group
+  opts.on('-g GROUP', '--group-by GROUP', 'group by GROUP') do |group|
+    options[:group] = group
   end
 
-  opts.on("-k KERNEL", "--kernel KERNEL", "kernel branch/commit") do |kernel|
-    $opt_kernel = kernel
+  opts.on('-k KERNEL', '--kernel KERNEL', 'kernel branch/commit') do |kernel|
+    options[:kernel] = kernel
   end
 
-  opts.on("-d DATE", "--date DATE", "search latest DATE days's RESULT_ROOT") do |date|
+  opts.on('-d DATE', '--date DATE', 'search latest DATE days\'s RESULT_ROOT') do |date|
     case date
     when /[0-9]+m$/, /[0-9]+w$/, /[0-9]+d$/, /[0-9]+$/
-      $opt_date = date
+      options[:date] = date
     else
       $stderr.puts "-d #{date}: parameter is unsuitable."
       puts opts
@@ -32,38 +33,38 @@ OptionParser.new do |opts|
     end
   end
 
-  opts.on("-h", "--help", "Prints this help") do
+  opts.on('-h', '--help', 'Prints this help') do
     puts opts
     exit
   end
 end.parse!
 
-test_specs = Dir["#{LKP_SRC}/jobs/*"].select {|job_file| File.size?(job_file) && job_file.end_with?('.yaml')}
-                                     .map {|job_file| load_yaml(job_file, {})}
+test_specs = Dir["#{LKP_SRC}/jobs/*"].select { |job_file| File.size?(job_file) && job_file.end_with?('.yaml') }
+                                     .map { |job_file| load_yaml(job_file, {}) }
 
-test_specs = test_specs.select {|test_spec| test_spec['testcase'] && test_spec['testcase'] !~ /0day|internal/}
-                       .select {|test_spec| test_spec['category'] == 'functional'}
-                       .select {|test_spec| test_spec['rootfs'] !~ /(t100|eywa|rhel)/}
+test_specs = test_specs.reject { |test_spec| test_spec['testcase'] && test_spec['testcase'] =~ /0day|internal/ }
+                       .select { |test_spec| test_spec['category'] == 'functional' }
+                       .reject { |test_spec| test_spec['rootfs'] =~ /(t100|eywa|rhel)/ }
 
-test_specs = test_specs.uniq {|test_spec| test_spec['testcase']}.sort_by {|test_spec| test_spec['testcase']}
+test_specs = test_specs.uniq { |test_spec| test_spec['testcase'] }.sort_by { |test_spec| test_spec['testcase'] }
 
 def puts_md_heading(heading)
   puts heading
-  puts "=" * heading.size
+  puts '=' * heading.size
 end
 
-cmd = "#{LKP_SRC}/lkp-exec/stat -g #{$opt_group}"
-cmd << " -k " + $opt_kernel unless $opt_kernel.empty?
-cmd << " -d " + $opt_date unless $opt_date.empty?
+cmd = "#{LKP_SRC}/lkp-exec/stat -g #{options[:group]}"
+cmd << ' -k ' + options[:kernel] unless options[:kernel].empty?
+cmd << ' -d ' + options[:date] unless options[:date].empty?
 
 test_specs.each_with_index do |test_spec, index|
   test_case = test_spec['testcase']
   base_cmd = cmd + " -p /#{test_case}/ "
 
-  last_state_is_incomplete_run_cmd = base_cmd + " -f last_state.is_incomplete_run "
+  last_state_is_incomplete_run_cmd = base_cmd + ' -f last_state.is_incomplete_run '
   incomplete_runs = `#{last_state_is_incomplete_run_cmd} | awk '{print $1}' | awk 'BEGIN {sum=0}; {sum = sum+$1} END {print sum}'`.chomp.to_i
 
-  time_elapsed_time_cmd = base_cmd + " -f time.elapsed_time "
+  time_elapsed_time_cmd = base_cmd + ' -f time.elapsed_time '
   complete_runs = `#{time_elapsed_time_cmd} | awk '{print $1}' | awk 'BEGIN {sum=0}; {sum = sum+$1} END {print sum}'`.chomp.to_i
 
   puts_md_heading "[#{index + 1}] #{test_case} (#{test_spec['category'] || 'benchmark'}) [#{complete_runs}/#{complete_runs + incomplete_runs}]"
