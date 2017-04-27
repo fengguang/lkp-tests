@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 RESULT_ROOT = ENV['RESULT_ROOT']
-LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
 require "#{LKP_SRC}/lib/statistics.rb"
 require "#{LKP_SRC}/lib/bounds.rb"
@@ -16,26 +16,22 @@ $monitor = ARGV[0]
 def warn_stat(msg)
   log_warn msg
 
-  unless $stat_context_showed
-    $stat_context_showed = true
-    log_warn "check #{RESULT_ROOT}/#{$monitor}"
-  end
+  return if $stat_context_showed
+  $stat_context_showed = true
+  log_warn "check #{RESULT_ROOT}/#{$monitor}"
 end
 
-$result = {}
-$invalid_records = []
+result = {}
+invalid_records = []
 record_index = 0
-while line = STDIN.gets
+while (line = STDIN.gets)
   line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
-
   next if line[0] == '#'
   k, _, v = line.partition(': ')
   next if v.empty?
 
   # Line terminator is expected. If not, throw out an error warning.
-  if v.chomp! == nil
-    warn_stat "no line terminator in stats value: #{v}"
-  end
+  warn_stat "no line terminator in stats value: #{v}" if v.chomp!.nil?
 
   v.strip!
   if v.empty?
@@ -43,80 +39,80 @@ while line = STDIN.gets
     next
   end
 
-  next if $monitor =~ /^(dmesg|kmsg)$/ and k =~ /^(message|pattern):/
+  next if $monitor =~ /^(dmesg|kmsg)$/ && k =~ /^(message|pattern):/
 
   k = $monitor + '.' + k
-  $result[k] ||= []
-  size = $result[k].size
+  result[k] ||= []
+  size = result[k].size
   if record_index < size
     record_index = size
-  elsif record_index - size > 0
+  elsif (record_index - size).positive?
     # fill 0 for missing values
-    $result[k].concat ([0] * (record_index - size))
+    result[k].concat([0] * (record_index - size))
   end
 
   if k =~ /[ \t]/
-    $invalid_records.push record_index
+    invalid_records.push record_index
     warn_stat "whitespace in stats name: #{k}"
   end
   if v =~ /[^0-9a-fx.-]/
-    $invalid_records.push record_index
+    invalid_records.push record_index
     warn_stat "invalid stats value: #{v}"
   end
 
   v = v.index('.') ? v.to_f : v.to_i
-  if not is_valid_stats_range k, v
-    $invalid_records.push record_index
+  unless is_valid_stats_range k, v
+    invalid_records.push record_index
     puts "outside valid range: #{v} in #{k} #{RESULT_ROOT}"
   end
 
-  $result[k].push v
+  result[k].push v
 end
 
-exit if $result.empty?
+exit if result.empty?
 
 max_cols = 0
 min_cols = Float::INFINITY
 min_cols_stat = ''
 max_cols_stat = ''
 zero_stats = []
-$result.each { |k, v|
-  if max_cols < v.size
-    max_cols = v.size
-    max_cols_stat = k
+result.each do |key, val|
+  if max_cols < val.size
+    max_cols = val.size
+    max_cols_stat = key
   end
-  if min_cols > v.size
-    min_cols = v.size
-    min_cols_stat = k
+  if min_cols > val.size
+    min_cols = val.size
+    min_cols_stat = key
   end
-  next if v[0] != 0
-  next if v[-1] != 0
-  next if v.sum != 0
-  zero_stats << k
-}
-zero_stats.each { |k| $result.delete k }
+  next if val[0] != 0
+  next if val[-1] != 0
+  next if val.sum != 0
+  zero_stats << key
+end
+zero_stats.each { |x| result.delete x }
 
 if $monitor != 'ftrace'
   # delete invalid number in reverse order
-  $invalid_records.reverse.each { |index|
-    $result.each { |k, v|
-      v.delete_at index
-    }
-  }
+  invalid_records.reverse.each do |index|
+    result.each do |_k, value|
+      value.delete_at index
+    end
+  end
 end
 
 UNSTRUCTURED_MONITORS = %w(ftrace).to_set
 
-if min_cols < max_cols and not UNSTRUCTURED_MONITORS.include?($monitor)
+if min_cols < max_cols && !UNSTRUCTURED_MONITORS.include?($monitor)
   if min_cols == max_cols - 1
-    $result.each { |k, v| v.pop if v.size == max_cols }
+    result.each { |_k, y| y.pop if y.size == max_cols }
     puts "Last record seems incomplete. Truncated #{RESULT_ROOT}/#{$monitor}.json"
   else
     warn_stat "Not a matrix: value size is different - #{min_cols_stat}: #{min_cols} != #{max_cols_stat}: #{max_cols}: #{RESULT_ROOT}/#{$monitor}.json"
   end
 end
 
-exit if $result.empty?
-exit if $result.values[0].size == 0
-exit if $result.values[-1].size == 0
-save_json($result, "#{RESULT_ROOT}/#{$monitor}.json", compress=($result.size * min_cols > 1000))
+exit if result.empty?
+exit if result.values[0].size.zero?
+exit if result.values[-1].size.zero?
+save_json(result, "#{RESULT_ROOT}/#{$monitor}.json", result.size * min_cols > 1000)
