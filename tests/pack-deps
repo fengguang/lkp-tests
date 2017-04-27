@@ -34,11 +34,17 @@ do
 	check_shared_package $BM_NAME
 
 	packages=$(get_dependency_packages $DISTRO $BM_NAME)
+	# apt-get will have below output
+	#   Inst python-minimal [2.7.11-2] (2.7.13-2 Debian:testing, Debian:unstable [amd64])
+	#   Inst mime-support (3.60 Debian:testing, Debian:unstable [all])
+	#   Inst libsqlite3-0 (3.16.2-3 Debian:testing, Debian:unstable [amd64])
+	# PACKAGE_LIST='python-minimal mime-support libsqlite3-0' 
 	PACKAGE_LIST=$(apt-get --simulate --no-install-recommends install $packages |
-			awk '/^Inst / { if (substr($3, 1, 1) != "[") print $2 }')
+			awk '/^Inst / { print $2 }')
 
+	# PACKAGE_VERSION_LIST='python-minimal=2.7.13-2 mime-support=3.60 libsqlite3-0=3.16.2-3'
 	PACKAGE_VERSION_LIST=$(apt-get --simulate --no-install-recommends install $packages |
-			awk '/^Inst / { if (substr($3, 1, 1) != "[") print $2$3 }' | tr '(' '=')
+			awk '/^Inst / { if (substr($3, 1, 1) != "[") { print $2$3 } else { print $2$4 } }' | tr '(' '=')
 
 	echo "original package list for $BM_NAME:" $packages
 
