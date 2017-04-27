@@ -26,6 +26,7 @@ ENV['BENCHMARK_ROOT'] = '/lkp/benchmarks'
 
 $opt_result_root = 'result'
 $opt_set_key_value = {}
+options = {in_tbox: false}
 
 opts = OptionParser.new do |opts|
   opts.banner = 'Usage: run-local [--dry-run] [-o RESULT_ROOT] JOBFILE'
@@ -39,6 +40,10 @@ opts = OptionParser.new do |opts|
 
   opts.on("-s 'KEY: VALUE'", "--set 'KEY: VALUE'", "add YAML hash to job") do |key_value|
     $opt_set_key_value.merge!(YAML.load key_value)
+  end
+
+  opts.on('-t', '--tbox', 'running in tbox') do
+    options[:in_tbox] = true
   end
 
   opts.on_tail('-h', '--help', 'Show this message') do
@@ -122,10 +127,19 @@ File.open(job_script, mode='w', perm=0775) do |file|
   file.puts jobx.to_shell
 end
 
-system 'killall', '-q', LKP_SRC + '/bin/event/wakeup'
+if options[:in_tbox]
+  # if we don't delete the watchdog step in job.sh,
+  # the run-local will wake up a new monitor
+  # which may impact the monitor from job itself in tbox
+  system 'sed -i "/monitors\/plain\/watchdog/d" ', job_script
+else
+  system 'killall', '-q', LKP_SRC + '/bin/event/wakeup'
+end
 system job_script, 'run_job'
-system LKP_SRC + '/bin/run-with-job', job_script, LKP_SRC + '/bin/post-run'
-system LKP_SRC + '/bin/event/wakeup', 'job-finished'
+unless options[:in_tbox]
+  system LKP_SRC + '/bin/run-with-job', job_script, LKP_SRC + '/bin/post-run'
+  system LKP_SRC + '/bin/event/wakeup', 'job-finished'
+end
 
 job.save result_root + '/job.yaml'
 
