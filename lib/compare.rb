@@ -106,7 +106,7 @@ module Compare
       :filter_stat_keys, :filter_testcase_stat_keys,
       :filter_kpi_stat_keys, :filter_kpi_stat_strict_keys,
       :exclude_stat_keys,
-      :gap,
+      :gap, :more_stats,
       :group_by_stat, :show_empty_group, :compact_show,
       :sort_by_group
 
@@ -299,7 +299,11 @@ module Compare
       ms = deepcopy(matrixes_in)
       m0 = ms[0]
       ms.drop(1).each { |m|
-        changes = _get_changed_stats(m, m0, {'gap' => @comparer.gap})
+        changes = _get_changed_stats(m, m0,
+                                     {
+                                       'gap' => @comparer.gap,
+                                       'more' => @comparer.more_stats,
+                                     })
         if changes
           changed_stat_keys |= changes.keys
         end
@@ -964,9 +968,13 @@ module Compare
         msearch_axes << prev_axes.merge(search_axes)
       }
 
-      p.on('-j <job dir>', 'job-dir <job dir>',
+      p.on('-j <job dir>', '--job-dir <job dir>',
            'Job Directory') { |jd|
         job_dir = jd
+      }
+
+      p.on('-m', '--more', 'more stats as compare result') {
+        options[:more_stats] = true
       }
 
       p.on_tail('-h', '--help', 'Show this message') {

@@ -434,7 +434,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
     next if String === v[-1]
     next if options['perf'] and not is_perf_metric k
     next if is_incomplete_run and k !~ /^(dmesg|last_state|stderr)\./
-    next if k =~ $metrics_blacklist_re
+    next if !options['more'] and k =~ $metrics_blacklist_re
 
     is_failure_stat = is_failure k
     is_latency_stat = is_latency k
