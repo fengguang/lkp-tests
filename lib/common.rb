@@ -118,7 +118,7 @@ def format_number(number)
         '%.4f'
       elsif an < 1000
         '%.2f'
-      elsif an < 100000
+      elsif an < 100000000
         '%.1f'
       else
         '%.4g'
