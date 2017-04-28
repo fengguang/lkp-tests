@@ -10,6 +10,7 @@
 # - bind_cpu
 # - repeat
 # - cpu_delay
+# - sync_free
 
 # The value of "pre_setup" can be 0 or 1.
 # 0 is the default value, means setup by vm-scalability itself.
@@ -22,6 +23,7 @@ log_eval "cd $BENCHMARK_ROOT/vm-scalability" || exit
 [ -n "$runtime" ] || runtime=300
 [ -n "$pre_setup" ] || pre_setup=0
 export SYNC_RW=$sync_rw
+export SYNC_FREE=$sync_free
 
 [ -n "$bind_cpu" ] && [ "$bind_cpu" -eq 0 ] && {
 	# HT share same core normally has cpu number distance: nr_cpu / 2
