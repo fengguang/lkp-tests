@@ -220,7 +220,9 @@ build_install_benchmarks() {
 
 		case $distro in
 		debian|ubuntu)
-			dpkg -i /tmp/$pkg_name.deb ;;
+			dpkg -i /tmp/$pkg_name.deb 2>/tmp/dpkg_error
+			grep -v "dpkg: warning: files list file for package '.*' missing;" /tmp/dpkg_error
+			;;
 		fedora)
 			rpm -ivh --replacepkgs /tmp/$pkg_name/RPMS/$pkg_name.$(uname -m).rpm ;;
 		*)

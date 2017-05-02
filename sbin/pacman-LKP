@@ -116,7 +116,11 @@ upgrade() {
 		case $(distro_pkg_format) in
 			deb)
 				pack_deb "$pkg_name"
-				dpkg -i install.deb || return 1;;
+				dpkg -i install.deb 2>/tmp/dpkg_error || {
+					grep -v "dpkg: warning: files list file for package '.*' missing;" /tmp/dpkg_error
+					return 1
+				}
+				;;
 			rpm)
 				pack_rpm "$pkg_name"
 				rpm -ivh --replacepkgs --force  "install/RPMS/$pkg_name-LKP.rpm" || return 1 ;;
