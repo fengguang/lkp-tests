@@ -1,4 +1,4 @@
-# this job file is for EX, i.e. the memory size has to be more than 320G
+# the memory size has to be more than 100G
 suite: exit_free
 testcase: exit_free
 
@@ -9,7 +9,7 @@ vmstat:
 perf-profile:
 
 eatmem:
-  eatmem_size: 320G
+  eatmem_size: 100G
   eatmem_nonuma: true
 
 exit_free:
