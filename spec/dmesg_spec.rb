@@ -6,7 +6,7 @@ describe 'Dmesg' do
     it 'compresses corrupted low memeory messages' do
       line, bug_to_bisect = analyze_error_id '[   61.268659] Corrupted low memory at ffff880000007b08 (7b08 phys) = 27200c000000000'
       expect(line).to eq 'Corrupted_low_memory_at#(#phys)='
-      expect(bug_to_bisect).to eq 'Corrupted low memory at'
+      expect(bug_to_bisect).to eq 'Corrupted low memory at .* phys)'
     end
 
     it 'compresses nbd messages' do
@@ -14,7 +14,7 @@ describe 'Dmesg' do
        '[   31.971391] ADFS-fs error (device nbd7): adfs_fill_super: unable to read superblock'].each do |line|
         line, bug_to_bisect = analyze_error_id line
         expect(line).to eq 'ADFS-fs_error(device_nbd#):adfs_fill_super:unable_to_read_superblock'
-        expect(bug_to_bisect).to eq 'ADFS-fs error .* adfs_fill_super: unable to read superblock'
+        expect(bug_to_bisect).to eq 'ADFS-fs error (device .* adfs_fill_super: unable to read superblock'
       end
 
       ['[   33.167933] block nbd11: Attempted send on closed socket',
