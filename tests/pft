@@ -1,23 +1,64 @@
 #!/bin/sh
+# - runtime
+# - nr_task
+# - iterations
+# - test_memory_size
 
 ## Page Fault Test
+# This test run in different mode, and the mode is determined by 
+# the combination of parameters. The valid combinations are as
+# follows in which the smaller index has higher priority:
+#  1. iterations
+#  2. nr_task, runtime
+#  3. nr_task, iterations
 
-cd $BENCHMARK_ROOT/pft || exit
+cd "$BENCHMARK_ROOT/pft" || exit
 
-. $LKP_SRC/lib/unit.sh
-. $LKP_SRC/lib/sysinfo.sh
+. "$LKP_SRC/lib/unit.sh"
+. "$LKP_SRC/lib/sysinfo.sh"
+. "$LKP_SRC/lib/reproduce-log.sh"
 
-memory_bytes=$(to_byte $memory)
-pft_mapping_size=$((memory_bytes / 5))
+if [ -z "$test_memory_size" ]; then
+	memory=$(to_byte "$memory")
+	pft_mapping_size=$((memory / 5))
+else
+	pft_mapping_size=$test_memory_size
+fi
 
-setup_threads_to_iterate
+if [ -z "$nr_task" ]; then
+	[ -n "$iterations" ] || {
+		echo "Error: Please specify iterations if nr_task is not specified." >&2
+		exit 1
+	}
 
-for clients in $threads_to_iterate
-do
-	echo Clients: $clients
-	for iteration in $(seq 1 $iterations)
+	setup_threads_to_iterate
+
+	for clients in $threads_to_iterate
 	do
-		echo Iteration: $iteration
-		log_cmd ./pft -m $pft_mapping_size -n $clients -F
+		echo "Clients: $clients"
+		for iteration in $(seq 1 "$iterations")
+		do
+			echo "Iteration: $iteration"
+			log_test ./pft -m "$pft_mapping_size" -n "$clients" -F
+		done
 	done
-done
+elif [ -n "$runtime" ]; then
+	start_time=$(date +%s)
+	while :; do
+		log_test ./pft -m "$pft_mapping_size" -n "$nr_task" -F
+		now=$(date +%s)
+		[ $((now - start_time)) -gt "$runtime" ] && break
+	done
+elif [ -n "$iterations" ]; then
+	for iteration in $(seq 1 "$iterations")
+	do
+		log_test ./pft -m "$pft_mapping_size" -n "$nr_task" -F
+	done
+else
+	echo "Error: Please specify the correct combination of parameters which is shown in following:
+	1. iterations
+	2. nr_task, runtime
+	3. nr_task, iterations" >&2
+	exit 1
+fi
+
