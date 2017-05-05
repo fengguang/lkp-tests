@@ -8,4 +8,4 @@
 set_perf_path "/lkp/benchmarks/perf/perf"
 
 # redirect stderr to stdout, since perf test output logs to stderr
-log_cmd perf test 2>&1
+log_cmd $perf test 2>&1
