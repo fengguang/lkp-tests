@@ -278,7 +278,7 @@ class MResultRootTableSet
      'specjbb2015', 'specpower', 'stutter', 'sunspider', 'tbench', 'tcrypt',
      'thrulay', 'tlbflush', 'unixbench', 'vm-scalability', 'will-it-scale',
      'xfstests', 'chromeswap', 'fio-basic', 'apachebench', 'perf_event_tests', 'swapin',
-     'tpcc','libhugetlbfs', 'mytest', 'ocfs2test', 'exit_free', 'syzkaller']
+     'tpcc','libhugetlbfs', 'mytest', 'ocfs2test', 'exit_free', 'syzkaller', 'perf_test']
   LINUX_TESTCASES =
     ['boot', 'cpu-hotplug', 'ext4-frags', 'ftq', 'ftrace_onoff', 'fwq',
      'galileo', 'irda-kernel', 'kernel_selftests', 'kvm-unit-tests','kvm-unit-tests-qemu',
