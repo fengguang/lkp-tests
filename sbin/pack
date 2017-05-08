@@ -88,7 +88,14 @@ if [[ "$BM_NAME" != "lkp-src" ]]; then
 	mkdir -p $BM_ROOT || exit
 fi
 
-cd /tmp
+# If there exists a patch for the benchmark, delete the tmp file of the
+# benchmark. Then redownload the source code of the benchmark to restore the
+# version of the source code to avoid error in patching.
+BUILD_DIR="/tmp/build-$BM_NAME"
+[[ -f $LKP_SRC/pack/${BM_NAME}.patch ]] && [[ -d $BUILD_DIR ]] && \
+	rm -rf $BUILD_DIR
+mkdir -p $BUILD_DIR
+cd $BUILD_DIR
 download || exit
 cd "$source_dir" || exit
 build || exit
