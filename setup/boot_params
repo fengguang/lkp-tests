@@ -9,7 +9,7 @@
 # - bp_maxcpus
 
 # Kernel boot parameters that will impact performance/power
-cmdline=$(cat /proc/cmdline)
+cmdline=" $(cat /proc/cmdline) "
 
 check_param()
 {
@@ -18,8 +18,8 @@ check_param()
 	if [ "$value" != "null_boot_param" ]; then
 		param_str="${param#*_}"
 		[ -n "$value" ] && param_str="$param_str=$value"
-		if ! echo "$cmdline" | grep -q "\b$param_str\b"; then
-			echo "Missing parameter: $param_str, actual command line: $cmdline"
+		if ! echo "$cmdline" | grep -qF " $param_str "; then
+			echo "Missing parameter: $param_str, actual command line:$cmdline"
 			exit 1
 		fi
 	fi
