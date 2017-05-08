@@ -8,18 +8,19 @@ require "#{LKP_SRC}/lib/log"
 kbps = []
 throughput = []
 free_secs = []
+ret = {}
+ret['warned'] = false
 
-def add_one_sample(kbps, throughput)
+def add_one_sample(kbps, throughput, ret)
   return if kbps.empty?
   throughput << kbps.sum
   puts "# #{kbps.size} #{kbps.sum}"
-  if kbps.size != 1 and (kbps.size & 1) != 0 and not $warned
-    log_warn "stats/vm-scalability: possibly disordered output #{ARGV[0]}"
-    $warned = true
-  end
+  return unless kbps.size != 1 && (kbps.size & 1) != 0 && !ret['warned']
+  log_warn "stats/vm-scalability: possibly disordered output #{ARGV[0]}"
+  ret['warned'] = true
 end
 
-while line = STDIN.gets
+while (line = STDIN.gets)
   case line
   when /^\.*(\d+) bytes \/ (\d+) usecs = (\d+) KB.s/
     kbps << $3.to_i
@@ -32,26 +33,26 @@ while line = STDIN.gets
   when /(\d+) bytes remapped, (\d+) usecs, (\d+) MB.s/
     kbps << $1.to_i / ($2.to_i >> 10)
   when /(\d+) usecs to free memory/
-    free_secs << $1.to_i / 1000000.0
+    free_secs << $1.to_i / 1_000_000.0
   when /\.\/case-[a-z-]+/
-    add_one_sample kbps, throughput
+    add_one_sample(kbps, throughput, ret)
     kbps.clear
   end
 end
 
-add_one_sample kbps, throughput
+add_one_sample(kbps, throughput, ret)
 exit if throughput.empty?
 
 # Relative standard deviation
-if throughput.size > 1
-  stddev = throughput.standard_deviation / throughput.average
-else
-  stddev = kbps.standard_deviation * kbps.size / kbps.average
-end
+stddev = if throughput.size > 1
+           throughput.standard_deviation / throughput.average
+         else
+           kbps.standard_deviation * kbps.size / kbps.average
+         end
 
 printf "throughput: %d\n", throughput.average
 if kbps.empty?
-  log_error "stats/vm-scalability: incomplete output"
+  log_error 'stats/vm-scalability: incomplete output'
   exit
 end
 printf "stddev:     %g\n", stddev

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-while line = STDIN.gets
+while (line = STDIN.gets)
   next if line.index('Command being timed: ')
   key, val = line.split ': '
 
@@ -15,7 +15,9 @@ while line = STDIN.gets
   case key
   when 'elapsed_time'
     times = val.split ':'
-    val = times.inject(0) {|tt, t| tt * 60 + t.to_f}
+    val = times.inject(0) do |tt, t|
+      tt * 60 + t.to_f
+    end
   when 'percent_of_cpu_this_job_got'
     val.chomp!("%\n")
     val = '0' if val == '?'

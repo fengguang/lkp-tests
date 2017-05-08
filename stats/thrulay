@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby
 
-while line = STDIN.gets
+while (line = STDIN.gets)
   case line.chomp!
   when /^#\(\*\*\)/
-    a, b, c, throughput, rtt, jitter = line.split
+    _a, _b, _c, throughput, rtt, jitter = line.split
     puts 'throughput: ' + throughput
     puts 'RTT: ' + rtt
     puts 'jitter: ' + jitter

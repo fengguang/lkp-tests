@@ -4,11 +4,11 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAM
 
 require "#{LKP_SRC}/lib/statistics"
 
-$scalability = []
-$per_process = []
-$per_thread = []
+scalability = []
+per_process = []
+per_thread = []
 
-while line = STDIN.gets
+while (line = STDIN.gets)
   case line.chomp!
   when /^[a-z_,]+$/
     names = line.split ','
@@ -18,9 +18,9 @@ while line = STDIN.gets
     nr_task = values.shift
     next if nr_task == '0'
     linear = values[-1].to_i
-    $scalability << values[0].to_f / linear if linear != 0 and nr_task != '1'
-    $per_process << values[0].to_f / nr_task.to_i
-    $per_thread << values[2].to_f / nr_task.to_i
+    scalability << values[0].to_f / linear if linear != 0 && nr_task != '1'
+    per_process << values[0].to_f / nr_task.to_i
+    per_thread << values[2].to_f / nr_task.to_i
     names.each_with_index do |name, i|
       puts nr_task + '.' + name + ': ' + values[i]
     end
@@ -29,6 +29,6 @@ while line = STDIN.gets
   end
 end
 
-printf "scalability: %f\n", $scalability[-1] unless $scalability.empty?
-printf "per_process_ops: %d\n", $per_process.average unless $per_process.empty?
-printf "per_thread_ops: %d\n", $per_thread.average unless $per_thread.empty?
+printf "scalability: %f\n", scalability[-1] unless scalability.empty?
+printf "per_process_ops: %d\n", per_process.average unless per_process.empty?
+printf "per_thread_ops: %d\n", per_thread.average unless per_thread.empty?

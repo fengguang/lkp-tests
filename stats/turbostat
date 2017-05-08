@@ -1,12 +1,11 @@
 #!/usr/bin/env ruby
 
-while line = STDIN.gets
-  if line =~ /%Busy/
-    titles = line.split
-    values = STDIN.gets.split
-    titles[titles.size - values.size..-1].each_with_index { |title, i|
-      puts title + ': ' + values[i]
-    }
-    exit 0
+while (line = STDIN.gets)
+  next unless line =~ /%Busy/
+  titles = line.split
+  values = STDIN.gets.split
+  titles[titles.size - values.size..-1].each_with_index do |title, i|
+    puts title + ': ' + values[i]
   end
+  exit 0
 end

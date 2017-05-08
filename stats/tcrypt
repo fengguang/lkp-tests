@@ -6,28 +6,29 @@ require 'fileutils'
 require "#{LKP_SRC}/lib/statistics"
 
 RESULT_ROOT = ENV['RESULT_ROOT']
-$test = ''
-$vals = []
+results = {}
+results['test'] = ''
+results['val'] = []
 
 exit unless File.exist?("#{RESULT_ROOT}/kmsg")
 
-def show_one(new_test)
-  printf "%s: %d\n", $test, $vals.average unless $test.empty? or $vals.empty?
-  $test = new_test
-  $vals = []
+def show_one(new_test, results)
+  printf "%s: %d\n", results['test'], results['val'].average unless results['test'].empty? || results['val'].empty?
+  results['test'] = new_test
+  results['val'] = []
 end
 
 File.foreach("#{RESULT_ROOT}/kmsg") do |line|
   case line
   when /testing speed of (.*)$/
-    show_one $1.tr(' ', '.')
+    show_one($1.tr(' ', '.'), results)
   when /\d+ operations in (\d+) seconds \((\d+) bytes\)/
     bps = $2.to_i / $1.to_i
-    $vals << bps
+    results['val'] << bps
   when /\d+ opers\/sec, +(\d+) bytes\/sec/
     bps = $1.to_i
-    $vals << bps
+    results['val'] << bps
   end
 end
 
-show_one ''
+show_one('', results)

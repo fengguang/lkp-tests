@@ -4,14 +4,14 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAM
 
 require "#{LKP_SRC}/lib/string_ext"
 
-$results = Hash.new { |h, k| h[k] = [] }
+results = Hash.new { |h, k| h[k] = [] }
 
-def stat_line(line)
+def stat_line(line, results)
   case line
   when /^(Ran|Failures): (.*)/
-    $results[$1.downcase] += $2.tr('/', '.').split
+    results[$1.downcase] += $2.tr('/', '.').split
   when /^Not run: (.*)/
-    $results['skips'] = $1.tr('/', '.').split
+    results['skips'] = $1.tr('/', '.').split
   when /^_check_generic_filesystem: filesystem on .+ is inconsistent \(see .+\/([a-z]+)\/([0-9]+)\.full\)/
     puts "#{$1}.#{$2}.inconsistent_fs: 1"
   when /^(generic|shared|ext4|xfs|btrfs|udf)\/(\d\d\d)\s+(\d+)s/
@@ -19,14 +19,14 @@ def stat_line(line)
   end
 end
 
-while line = STDIN.gets
+while (line = STDIN.gets)
   line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
-  stat_line(line)
+  stat_line(line, results)
 end
 
-$results['passes'] = $results['ran'] - $results['failures']
+results['passes'] = results['ran'] - results['failures']
 
-$results['passes'].each { |seq| puts "#{seq}.pass: 1" }
-$results['skips'].each { |seq| puts "#{seq}.skip: 1" }
-$results['failures'].each { |seq| puts "#{seq}.fail: 1" }
-puts "total_test: #{$results['ran'].size + $results['skips'].size}"
+results['passes'].each { |seq| puts "#{seq}.pass: 1" }
+results['skips'].each { |seq| puts "#{seq}.skip: 1" }
+results['failures'].each { |seq| puts "#{seq}.fail: 1" }
+puts "total_test: #{results['ran'].size + results['skips'].size}"
