@@ -1,0 +1,73 @@
+suite: will-it-scale
+testcase: will-it-scale
+category: benchmark
+
+nr_task: 50%
+
+will-it-scale:
+  mode:
+  - thread
+  - process
+  test:
+  - brk1
+  - dup1
+  - eventfd1
+  # fallocate1_processes: tests/fallocate1.c:20: testcase: Assertion `fd >= 0' failed.
+  #  - fallocate1
+  - futex1
+  - futex2
+  - futex3
+  - futex4
+  - getppid1
+  - lock1
+  - lseek1
+  - lseek2
+  - malloc1
+  - malloc2
+  - mmap1
+  - mmap2
+  - open1
+  - open2
+  #  - open3
+  - page_fault1
+  - page_fault2
+  - page_fault3
+  - pipe1
+  - poll1
+  - poll2
+  - posix_semaphore1
+  - pread1
+  - pread2
+  - pread3
+  - pthread_mutex1
+  - pthread_mutex2
+  - pwrite1
+  - pwrite2
+  - pwrite3
+  - read1
+  - read2
+  #  - read3
+  #  - read4
+  - readseek1
+  - readseek2
+  - readseek3
+  - sched_yield
+  - signal1
+  - unix1
+  - unlink1
+  - unlink2
+  - write1
+  - writeseek1
+  - writeseek2
+  - writeseek3
+
+---
+# upto 40% CPU cycles may be used by latency stats
+disable_latency_stats: 1
+
+will-it-scale:
+  mode:
+  - thread
+  - process
+  test:
+  - context_switch1
