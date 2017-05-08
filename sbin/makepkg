@@ -1709,9 +1709,10 @@ run_patch_source()
 
 patch_source()
 {
-	cd "${srcdir}/${pkgname}"
-	for patch in $startdir/*.patch; do
-		patch -p1 < "$patch"
+	patches=$(ls $startdir/*.patch 2>/dev/null) || return 0
+	cd "${srcdir}"
+	for patch in $patches; do
+		patch -p0 < "$patch"
 	done
 }
 
