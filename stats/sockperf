@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 sockperf = {}
-while line = STDIN.gets
+while (line = STDIN.gets)
   case line.chomp!
   when /^sockperf: subcommand (.+) (.+)$/
     subcommand = $1
@@ -15,6 +15,4 @@ while line = STDIN.gets
     sockperf[subcommand + '.' + protocol + '.' + 'BandWidth_MBps'] = $1
   end
 end
-sockperf.each { |k, v|
-  puts k + ': ' + v
-}
+sockperf.each { |k, v| puts k + ': ' + v }

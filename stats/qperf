@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 qperf = {}
-while line = STDIN.gets
+while (line = STDIN.gets)
   case line.chomp!
   when /^(.+):$/
     protocol = $1.split('_')[0]
@@ -10,6 +10,4 @@ while line = STDIN.gets
   end
 end
 
-qperf.each { |k, v|
-  puts k + ': ' + v
-}
+qperf.each { |k, v| puts k + ': ' + v }

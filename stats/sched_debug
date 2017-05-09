@@ -4,61 +4,55 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAM
 
 require "#{LKP_SRC}/lib/statistics"
 
+prefix = nil
+no = nil
+@sample = {}
+
 def statistics
-  if $sample
-    $sample.each { |k, v|
-      puts "#{k}.max: #{v.max}"
-      puts "#{k}.min: #{v.min}"
-      puts "#{k}.avg: #{v.average}"
-      puts "#{k}.stddev: #{v.standard_deviation}"
-    }
+  return unless @sample
+  @sample.each do |k, v|
+    puts "#{k}.max: #{v.max}"
+    puts "#{k}.min: #{v.min}"
+    puts "#{k}.avg: #{v.average}"
+    puts "#{k}.stddev: #{v.standard_deviation}"
   end
 end
 
-while line = STDIN.gets
+while (line = STDIN.gets)
   case line
   when /^time:/
     statistics
     puts line
-    $prefix = ""
-    $sample = {}
+    prefix = ''
+    @sample = {}
   when /^Sched Debug Version:/
     next
   when /^\s*(\S+)\s*:\s+([0-9.-]+)/
-    next if $prefix.index ':/autogroup-'
-    key = $prefix + $1
-    if $no && !$no.strip.empty?
-      puts "#{key}.#{$no}: #{$2}"
-      $sample[key] ||= []
-      $sample[key] << $2.to_f
+    next if prefix.index ':/autogroup-'
+    key = prefix + $1
+    if no && !no.strip.empty?
+      puts "#{key}.#{no}: #{$2}"
+      @sample[key] ||= []
+      @sample[key] << $2.to_f
     else
       puts "#{key}: #{$2}"
     end
   when /^runnable tasks:/
     next
-    sub_names = STDIN.gets.split
-    line = STDIN.gets
-    while line = STDIN.gets
-      break unless line =~ /^R?\s*([^\s].+)$/
-      values = $1.split
-      for i in 1..sub_names.size-1
-        # puts "#{values[0]}.#{sub_names[i]}: #{values[i]}"
-      end
-    end
   else
     values = line.split
-    next unless values.size > 0
+    next if values.empty?
     prefix = values[0].tr(',', '')
     case prefix
     when /^(.*)#([0-9]+)$/
-      $prefix = $1
-      $no = $2
+      prefix = $1
+      no = $2
     when /^(.*)\[([0-9]+)\](.*)$/
-      $prefix = $1 + $3
-      $no = $2
+      prefix = $1 + $3
+      no = $2
     else
-      $prefix = prefix
-      $no = nil
+      prefix = prefix
+      no = nil
     end
   end
 end

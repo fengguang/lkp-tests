@@ -4,20 +4,18 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAM
 
 require "#{LKP_SRC}/lib/statistics"
 
-$results = {}
+results = {}
 
-while line = STDIN.gets
+while (line = STDIN.gets)
   case line.chomp!
   when /^(.*):[\t\s]+([\d.]+)( (\S+))?/
     value = $2
     unit = '_' + $4 if $4
     unit ||= ''
-    key = $1.gsub(' ', '_') + unit
-    $results[key] ||= []
-    $results[key] << value.to_f
+    key = $1.tr(' ', '_') + unit
+    results[key] ||= []
+    results[key] << value.to_f
   end
 end
 
-$results.each { |k, v|
-  puts "#{k}: #{v.average}"
-}
+results.each { |k, v| puts "#{k}: #{v.average}" }

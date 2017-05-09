@@ -6,24 +6,28 @@ require "#{LKP_SRC}/lib/dmesg"
 require "#{LKP_SRC}/lib/string_ext"
 require "#{LKP_SRC}/lib/log"
 
-error_ids = Hash.new
+error_ids = {}
 
-$ignore_patterns = []
-Dir["#{LKP_SRC}/etc/ignore-stderr/*"].each { |f|
-  File.open(f).each_line { |line|
-    $ignore_patterns << Regexp.new('^' + line.chomp + '$')
-  }
-}
-
-def should_ignore_stderr(line)
-  $ignore_patterns.any? do |re|
-    # ERR in `match': invalid byte sequence in US-ASCII (ArgumentError)
-    # treat unrecognized line as "can't be ignored"
-    re.match line rescue nil
+@ignore_patterns = []
+Dir["#{LKP_SRC}/etc/ignore-stderr/*"].each do |f|
+  File.open(f).each_line do |line|
+    @ignore_patterns << Regexp.new('^' + line.chomp + '$')
   end
 end
 
-while line = gets
+def should_ignore_stderr(line)
+  @ignore_patterns.any? do |re|
+    # ERR in `match': invalid byte sequence in US-ASCII (ArgumentError)
+    # treat unrecognized line as "can't be ignored"
+    begin
+      re.match line
+    rescue
+      nil
+    end
+  end
+end
+
+while (line = gets)
   next if should_ignore_stderr(line.chomp!)
   # ERR: lib/dmesg.rb:151:in `gsub!': invalid byte sequence in US-ASCII (ArgumentError)
   line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
@@ -34,15 +38,13 @@ while line = gets
   error_ids[id] = line
 end
 
-error_ids.each { |id, line|
-  puts '# ' + line
-  puts id + ': 1'
+error_ids.each do |id_, line_|
+  puts '# ' + line_
+  puts id_ + ': 1'
   puts
-}
-
-if error_ids.size > 0
-  puts 'has_stderr: 1'
 end
+
+puts 'has_stderr: 1' unless error_ids.empty?
 
 if error_ids.size > 100
   log_warn "noisy stderr, check #{ENV['RESULT_ROOT']}/stderr"
