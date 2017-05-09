@@ -7,7 +7,8 @@
 
 . $LKP_SRC/lib/debug.sh
 
-log_cmd modprobe locktorture || die "failed to load locktorture module"
+log_cmd modprobe locktorture ||
+die "failed to load locktorture module, try to enable CONFIG_LOCK_TORTURE_TEST and build locktorture.ko"
 
 log_cmd sleep $runtime
 

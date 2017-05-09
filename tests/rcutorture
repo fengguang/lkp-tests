@@ -6,7 +6,8 @@
 
 . $LKP_SRC/lib/debug.sh
 
-log_cmd modprobe rcutorture || die "failed to load rcutorture module"
+log_cmd modprobe rcutorture ||
+die "failed to load rcutorture module, try to enable CONFIG_RCU_TORTURE_TEST and build rcutorture.ko"
 
 log_cmd sleep $runtime
 
