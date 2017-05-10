@@ -45,8 +45,16 @@ setup_test_env()
 	# add "ocfs2test" user into sudo list
 	echo "ocfs2test ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-	[[ -n "$hdd_partitions" ]] || die "HDD partitions is not exist."
-	partition=${hdd_partitions%% *}
+	# due to the type of disk is not limited. 
+	# here we have to consider getting SSD or HDD partitions.
+	# get SSD partitions firstly, if not get, and then get the HDD partitions.
+	# if both SSD and HDD partitions are not exsit, exit error.
+	if [[ -n "$ssd_partitions" ]]; then
+		partition=${ssd_partitions%% *}
+	else
+		[[ -n "$hdd_partitions" ]] || die "SSD and HDD partitions are not exist."
+		partition=${hdd_partitions%% *}
+	fi
 
 	chmod 755 $partition
 
@@ -55,6 +63,15 @@ setup_test_env()
 	umount $partition 2>/dev/null
 
 	return 0
+}
+
+add_single_cluster()
+{
+    o2cb add-cluster ocfs2single || return
+    o2cb add-node --ip 127.0.0.1 --port 7777 --number 1 ocfs2single `hostname` || return
+    o2cb register-cluster ocfs2single || return
+    o2cb start-heartbeat ocfs2single || return
+    service o2cb load || return
 }
 
 single_node_test()
@@ -70,5 +87,6 @@ single_node_test()
 }
 
 setup_test_env
+add_single_cluster || die "add single cluster to /etc/ocfs2/cluster.conf failed."
 single_node_test
 
