@@ -12,7 +12,6 @@ build()
 	make install-dev
 
 	cd ../xfstests-dev
-	patch_source || return
 	## Currently, ./configure file can't work with "--prefix" option correctly,
 	## so we just use the "make" command to generate the execuable file.
 	make
