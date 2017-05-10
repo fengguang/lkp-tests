@@ -4,7 +4,7 @@
 
 # randconfig kernels may not have CONFIG_NET --
 # serial console has better availability.
-is_virt && exec > /dev/ttyS1
+is_virt && [ -z "$LKP_LOCAL_RUN" ] && exec > /dev/ttyS1
 
 if dmesg --help 2>&1 | grep -q -- --follow; then
 	exec dmesg --follow --decode
