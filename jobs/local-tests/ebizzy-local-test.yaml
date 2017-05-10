@@ -2,6 +2,9 @@ suite: ebizzy
 testcase: ebizzy
 category: benchmark
 
+perf-profile:
+  delay: 1
+
 nr_threads: 100%
 iterations: 1x
 

@@ -2,6 +2,9 @@ suite: kbuild
 testcase: kbuild
 category: benchmark
 
+perf-profile:
+  delay: 1
+
 runtime: 10s
 
 nr_task:

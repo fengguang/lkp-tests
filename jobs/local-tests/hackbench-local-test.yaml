@@ -2,6 +2,9 @@ suite: hackbench
 testcase: hackbench
 category: benchmark
 
+perf-profile:
+  delay: 1
+
 runtime: 20s
 
 disable_latency_stats: 1

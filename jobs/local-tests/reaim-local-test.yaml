@@ -2,6 +2,9 @@ suite: reaim
 testcase: reaim
 category: benchmark
 
+perf-profile:
+  delay: 1
+
 runtime: 30s
 nr_task: 50%
 

@@ -2,6 +2,9 @@ suite: fio-basic
 testcase: fio-basic
 category: benchmark
 
+perf-profile:
+  delay: 1
+
 runtime: 10s
 nr_task: 2
 

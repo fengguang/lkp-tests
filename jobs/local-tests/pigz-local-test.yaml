@@ -2,6 +2,9 @@ suite: pigz
 testcase: pigz
 category: benchmark
 
+perf-profile:
+  delay: 1
+
 nr_threads: 50%
 
 pigz:

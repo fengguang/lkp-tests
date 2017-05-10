@@ -3,6 +3,9 @@ testcase: vm-scalability
 category: benchmark
 
 perf-profile:
+  delay: 1
+
+perf-profile:
 
 eatmem:
   eatmem_size: 4M
