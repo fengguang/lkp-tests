@@ -5,20 +5,20 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAM
 require "#{LKP_SRC}/lib/statistics"
 
 keys = %w(gbyte nr_tests cachelines user_time sys_time elapsed_time
-    faults_per_sec_per_cpu faults_per_sec)
+          faults_per_sec_per_cpu faults_per_sec)
 
-while line = STDIN.gets
+while (line = STDIN.gets)
   case line
   when /^Clients: (\d+)$/
     clients = $1
   when /^Iteration: \d+$/
-    exit 1 unless line = STDIN.gets
-    exit 1 unless line = STDIN.gets
+    exit 1 unless (line = STDIN.gets)
+    exit 1 unless (line = STDIN.gets)
     data = line.split
     exit 1 if data.size != keys.size
-    data.each_with_index { |v, i|
+    data.each_with_index do |v, i|
       puts '# ' + clients + '.' + keys[i] + ': ' + v.chomp('s')
-    }
+    end
     puts keys[-2] + ': ' + data[-2]
   end
 end

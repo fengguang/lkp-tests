@@ -3,20 +3,19 @@
 RESULT_ROOT = ENV['RESULT_ROOT']
 
 nr_test = 0
-Dir["#{RESULT_ROOT}/**/*.csv"].each { |log|
+Dir["#{RESULT_ROOT}/**/*.csv"].each do |log|
   File.readlines(log).each do |line|
-    if line =~ /(^LTP|^DDT)_[a-zA-Z0-9]+\;.+\;.*\;\d?\;\d?\;\d?\;$/
-      nr_test = nr_test + 1
-      result = line.split(';')
-      if result[3] == '1'
-        puts "#{result[0]}.#{result[1]}.pass: 1"
-      elsif result[4] == '1'
-        puts "#{result[0]}.#{result[1]}.fail: 1"
-      elsif result[5] == '1'
-        puts "#{result[0]}.#{result[1]}.block: 1"
-      end
+    next unless line =~ /(^LTP|^DDT)_[a-zA-Z0-9]+\;.+\;.*\;\d?\;\d?\;\d?\;$/
+    nr_test += 1
+    result = line.split(';')
+    if result[3] == '1'
+      puts "#{result[0]}.#{result[1]}.pass: 1"
+    elsif result[4] == '1'
+      puts "#{result[0]}.#{result[1]}.fail: 1"
+    elsif result[5] == '1'
+      puts "#{result[0]}.#{result[1]}.block: 1"
     end
   end
-}
+end
 
 puts "total_test: #{nr_test}"

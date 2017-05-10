@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 test_id = -1
-while line = STDIN.gets
+while (line = STDIN.gets)
   case line.chomp!
   when %r{pts/(\S+)-[0-9.]+ is not installed}
     item = Regexp.last_match[1]

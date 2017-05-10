@@ -3,7 +3,7 @@
 stats = []
 nr_test = 0
 
-while line = STDIN.gets
+while (line = STDIN.gets)
   case line
   when /^(.*): (fail|crash|timeout|warn|dmesg-warn|dmesg-fail|pass|skip)/
     stats_type = $2
@@ -14,5 +14,5 @@ while line = STDIN.gets
   end
 end
 
-stats.uniq.each {|stat| puts stat}
+stats.uniq.each { |stat| puts stat }
 puts "total_test: #{nr_test}"

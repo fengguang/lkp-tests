@@ -1,15 +1,15 @@
 #!/usr/bin/env ruby
 
 stats = {}
-while line = STDIN.gets
+while (line = STDIN.gets)
   case line
   when /^[ ]+\+ \S+\/(\S+)$/
-    item  = $1
+    item = $1
   when /\.\.\.[ ]+([\S\s]+)$/
-    stats[item] = $1.strip.to_s.gsub(' ', '_').downcase
+    stats[item] = $1.strip.to_s.tr(' ', '_').downcase
   end
 end
 
-stats.each { |k, v|
+stats.each do |k, v|
   puts k + '.' + v + ': 1'
-}
+end

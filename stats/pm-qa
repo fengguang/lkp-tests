@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 stats = {}
-while line = STDIN.gets
+while (line = STDIN.gets)
   case line
   when /^### (\w+_\d+):$/
     item = Regexp.last_match[1]
