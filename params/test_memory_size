@@ -1,2 +1,2 @@
 /(\d+)%/	$1.to_i * to_byte(memory) / 100
-/(.*)/		to_byte($1)
+/(\d+[a-zA-Z])/	to_byte($1)
