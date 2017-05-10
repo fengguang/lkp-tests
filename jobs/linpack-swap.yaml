@@ -1,0 +1,8 @@
+suite: linpack
+testcase: linpack
+category: benchmark
+
+linpack:
+  test_memory_size:
+  - 80%
+  - 120%
