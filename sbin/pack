@@ -98,6 +98,7 @@ mkdir -p $BUILD_DIR
 cd $BUILD_DIR
 download || exit
 cd "$source_dir" || exit
+[[ -n "$sync_dest" ]] && commit=$(git rev-parse --short HEAD)
 build || exit
 install || exit
 strip_object_files
@@ -105,8 +106,9 @@ pack_pkg $distro || exit
 
 [[ -n $sync_dest ]] && {
 	date=$(date +"%Y-%m-%d")
-	rsync -av /lkp/benchmarks/${BM_NAME}-${arch}.cgz $sync_dest/${BM_NAME}-${arch}_${date}.cgz
-	ln -sf            ${BM_NAME}-${arch}_${date}.cgz $sync_dest/${BM_NAME}-${arch}.cgz
+	cgz_name="${BM_NAME}-${arch}-${commit}_${date}.cgz"
+	rsync -av "/lkp/benchmarks/${BM_NAME}-${arch}.cgz" "$sync_dest/$cgz_name"
+	ln -sf "$cgz_name" "$sync_dest/${BM_NAME}-${arch}.cgz"
 }
 
 [[ $opt_clean ]] && cleanup
