@@ -9,6 +9,8 @@ download()
 
 	wget -q http://downloads.openfabrics.org/downloads/mpi-selector/mpi-selector-1.0.3.tar.gz || return
 
+	pip download timing || return
+
 	git_clone_update git://oss.oracle.com/git/jlbec/reflink.git || return
 	git_clone_update git://oss.oracle.com/git/ocfs2-test.git || return
 }
@@ -19,6 +21,8 @@ build()
 	dpkg -i ../libc-bin_2.23-0ubuntu3_amd64.deb || return
 	dpkg -i ../libc-dev-bin_2.23-0ubuntu3_amd64.deb || return
 	dpkg -i ../libc6-dev_2.23-0ubuntu3_amd64.deb || return
+
+	cp ../timing* $BM_ROOT || return
 
 	tar -xzvf ../mpi-selector-1.0.3.tar.gz -C ../
 	cd ../mpi-selector-1.0.3

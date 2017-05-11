@@ -1,6 +1,8 @@
 #!/bin/bash
 # - test
 
+shopt -s nullglob
+
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/reproduce-log.sh
 
@@ -37,6 +39,11 @@ setup_test_env()
 	[[ -f $BENCHMARK_ROOT/ocfs2test/reflink ]] || die "can not find reflink file"
 
 	ln -s $BENCHMARK_ROOT/ocfs2test/reflink /usr/local/bin/reflink
+
+	timing=$(ls $BENCHMARK_ROOT/ocfs2test/timing-*.tar.gz)
+	[[ -f $timing ]] || die "can not find timing*.tar.gz file"
+
+	pip install $timing
 
 	# add /sbin to PATH for some ocfs2 command.
 	echo "PATH=$PATH:/sbin" >> $OCFS2TEST_HOME/.bashrc
