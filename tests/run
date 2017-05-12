@@ -1,0 +1,5 @@
+#!/bin/sh
+
+prog=$(basename "$0")
+
+sh "$TMP_RESULT_ROOT/run.$prog"
