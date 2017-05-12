@@ -6,13 +6,12 @@ arch=(i686 x86_64)
 url=https://bitbucket.org/jisooy/pmbench
 license=(GPL)
 depends=()
-source=("https://downloads.sourceforge.net/project/pmbench/pmbench_071_src.tar")
-md5sums=('357e0e98ef4069985fffd68793a1ab4b')
+source=('https://bitbucket.org/jisooy/pmbench.git')
+md5sums=('SKIP')
 
 build()
 {
   cd "${srcdir}"/pmbench
-  sed -i 's/$(CC) -lm -luuid -o $@ $+ $(LFLAGS_LINUX)/$(CC) -o $@ $+ $(LFLAGS_LINUX) -lm -luuid/g' Makefile
   if [[ $CARCH == 'x86_64' ]]; then
     march=64 make pmbench
   else
