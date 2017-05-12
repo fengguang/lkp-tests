@@ -1,13 +1,13 @@
 #!/usr/bin/env ruby
 
 total = {}
-while line = STDIN.gets
-  i, start_addr, end_addr, bytes, type = line.chomp.split ','
+while (line = STDIN.gets)
+  _i, _start_addr, _end_addr, bytes, type = line.chomp.split ','
   next if type.to_s.empty?
   total[type] ||= 0
   total[type] += bytes.to_i
 end
 
-total.each { |type, bytes|
-  printf "%s: %d\n", type.tr(' ', '_'), bytes >> 10
-}
+total.each do |types, byte|
+  printf "%s: %d\n", types.tr(' ', '_'), byte >> 10
+end

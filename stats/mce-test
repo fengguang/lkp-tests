@@ -20,5 +20,5 @@ while (line = STDIN.gets)
   end
 end
 
-stats.each {|stat| puts stat}
+stats.each { |stat| puts stat }
 puts "total_test: #{nr_test}"
