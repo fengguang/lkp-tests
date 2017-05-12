@@ -1,0 +1,34 @@
+#!/bin/sh
+# - scale_factor
+# - runtime
+# - nr_task
+# - transcations
+# - worker_threads
+# - latency_limit
+
+postgres_run()
+{
+	sudo -u postgres "$@"
+}
+
+[ -n "$scale_factor" ] && init_opts="-s $scale_factor"
+
+postgres_run dropdb pgbench_test > /dev/null 2>&1
+postgres_run createdb pgbench_test
+postgres_run pgbench -i $init_opts
+
+if [ -n "$runtime" ]; then
+	run_opts="-T $runtime"
+elif [ -n "$transcations" ]; then
+	run_opts="-t $transcations"
+else
+	run_opts="-T 300"
+fi
+
+[ -n "$nr_task" ] && run_opts="$run_opts -c $nr_task"
+[ -n "$worker_threads" ] && run_opts="$run_opts -j $worker_threads"
+[ -n "$latency_limit" ] && run_opts="$run_opts -L $latency_limit"
+
+cat > "$TMP_RESULT_ROOT"/run.pgbench <<EOF
+sudo -u postgres pgbench -n $run_opts
+EOF
