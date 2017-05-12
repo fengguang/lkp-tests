@@ -278,14 +278,15 @@ class MResultRootTableSet
      'specjbb2015', 'specpower', 'stutter', 'sunspider', 'tbench', 'tcrypt',
      'thrulay', 'tlbflush', 'unixbench', 'vm-scalability', 'will-it-scale',
      'xfstests', 'chromeswap', 'fio-basic', 'apachebench', 'perf_event_tests', 'swapin',
-     'tpcc','libhugetlbfs', 'mytest', 'ocfs2test', 'exit_free', 'syzkaller', 'perf_test']
+     'tpcc', 'mytest', 'exit_free']
   LINUX_TESTCASES =
     ['boot', 'cpu-hotplug', 'ext4-frags', 'ftq', 'ftrace_onoff', 'fwq',
      'galileo', 'irda-kernel', 'kernel_selftests', 'kvm-unit-tests','kvm-unit-tests-qemu',
      'locktorture', 'mce-test',  'otc_ddt', 'piglit', 'pm-qa','nvml-unit-tests',
      'qemu', 'rcutorture', 'suspend', 'trinity', 'ndctl', 'nfs-test', 'hwsim', 'idle-inject',
      'mdadm-selftests', 'xsave-test', 'nvml', 'test_bpf', 'mce-log', 'perf-sanity-tests',
-     'update-ucode', 'reboot', 'cat']
+     'update-ucode', 'reboot', 'cat', 'libhugetlbfs', 'ocfs2test', 'syzkaller',
+     'perf_test']
   OTHER_TESTCASES =
     ['0day-boot-tests', '0day-kbuild-tests', 'build-dpdk', 'build-nvml',
      'build-qemu', 'convert-lkpdoc-to-html', 'convert-lkpdoc-to-html-css',
