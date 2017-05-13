@@ -1,5 +1,7 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git
-integration_testing_branches: fscache
+integration_testing_branches:
+- fscache
+- keys-next
 owner: David Howells <dhowells@redhat.com>
 subsystems:
 - vfs

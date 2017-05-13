@@ -1,5 +1,8 @@
 url: git://linux-arm.org/linux-ld
 owner: Liviu Dudau <Liviu.Dudau@arm.com>
+integration_testing_branches:
+- for-upstream/mali-dp
+- for-upstream/hdlcd
 subsystems:
 - arm64
 - juno
