@@ -18,6 +18,11 @@ parameters:
  timestamp: [rdtsc, rdtscp, perfc]
  cold: [y, n]
  access: [histo, touch]
+ delay: Delay between accesses in clock cycles
+ initialize: [y, n] Initialize memory map with garbage data
+ offset: Specify static page access offset (default random)
+ quiet: [y, n] Don't produce any output until finish
+ ratio: Percentage read/write ratio (0 = write only, 100 = read only; default 50)
 
 results:
  pmbench.latency.ns.average:

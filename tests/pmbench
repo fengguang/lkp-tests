@@ -7,6 +7,13 @@
 # - timestamp
 # - cold
 # - access
+# - delay
+# - initialize
+# - offset
+# - quiet
+# - ratio
+
+. "$LKP_SRC/lib/common.sh"
 
 [ -n "$runtime" ] || runtime=60
 
@@ -19,8 +26,13 @@ set_opt()
 	[ -n "$shape" ] && opt="${opt} -e${shape}"
 	[ -n "$jobs" ] && opt="${opt} -j${jobs}"
 	[ -n "$timestamp" ] && opt="${opt} -t${timestamp}"
-	[[ $cold == 'y' ]] && opt="${opt} -c"
+	parse_bool -q "$cold" && opt="${opt} -c"
 	[ -n "$access" ] && opt="${opt} -a${access}"
+	[ -n "$delay" ] && opt="${opt} -d${delay}"
+	parse_bool -q "$initialize" && opt="${opt} -i"
+	[ -n "$offset" ] && opt="${opt} -o${offset}"
+	parse_bool -q "$quiet" && opt="${opt} -q"
+	[ -n "$ratio" ] && opt="${opt} -r${ratio}"
 }
 
 run_pmbench()

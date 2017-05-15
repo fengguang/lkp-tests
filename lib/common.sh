@@ -26,7 +26,12 @@ query_var_from_yaml()
 	sed -ne "1,\$s/^$key[[:space:]]*:[[:space:]]*\\(.*\\)[[:space:]]*\$/\\1/p" "$yaml_file"
 }
 
-# null string, or string starts with 0 or no are false, otherwise true
+# the followings are false, otherwire true
+# - null string
+# - string starts with 0
+# - no
+# - false
+# - n
 parse_bool()
 {
 	if [ "$1" != "-q" ]; then
@@ -38,6 +43,8 @@ parse_bool()
 	[ -z "$1" ] && { echo $ofalse; return 1; }
 	[ "${1#0}" != "$1" ] && { echo $ofalse; return 1; }
 	[ "${1#no}" != "$1" ] && { echo $ofalse; return 1; }
+	[ "${1#false}" != "$1" ] && { echo $ofalse; return 1; }
+	[ "${1#n}" != "$1" ] && { echo $ofalse; return 1; }
 	echo $otrue; return 0
 }
 
