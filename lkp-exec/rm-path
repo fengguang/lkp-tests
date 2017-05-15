@@ -3,16 +3,6 @@
 source "$LKP_SRC/lib/common.sh"
 source "$LKP_SRC/lib/result.sh"
 
-is_rt()
-{
-	local path=$1
-	local bn=$(basename "$path")
-	local dn=$(dirname "$path")
-	[[ $bn =~ ^[0-9]{1,5}$ ]] &&
-		[[ -f "$path/job.yaml" ]] &&
-		[[ -f "$dn/stddev.json" ]]
-}
-
 check_rt()
 {
 	local path=${1%%/}

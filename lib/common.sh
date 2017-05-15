@@ -59,3 +59,13 @@ expand_cpu_list()
 		fi
 	done
 }
+
+is_rt()
+{
+	local path=$1
+	local bn=$(basename "$path")
+	local dn=$(dirname "$path")
+	[[ $bn =~ ^[0-9]{1,5}$ ]] &&
+		[[ -f "$path/job.yaml" ]] &&
+		[[ -f "$dn/stddev.json" ]]
+}
