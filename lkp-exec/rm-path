@@ -10,6 +10,14 @@ check_rt()
 	grep -q $path/stats.json $dn/matrix.json
 }
 
+# check whether it runs at local by the job.yaml in the result root
+is_local_run()
+{
+       local path=${1%%/}
+
+       is_rt "$path" && grep -q -s "^LKP_LOCAL_RUN: 1" "$path/job.yaml"
+}
+
 remove_index()
 {
 	local path
@@ -65,11 +73,11 @@ revert_unite_rt()
 {
 	local path
 	for path; do
-		is_rt "$path" && check_rt "$path" &&
+		is_rt "$path" && check_rt "$path" && ! is_local_run "$path" &&
 			lkp reprocess -d "$path"
 	done
 	for path; do
-		while is_rt "$path" && check_rt "$path"; do
+		while is_rt "$path" && check_rt "$path" && ! is_local_run "$path"; do
 			sleep 10
 		done
 	done
@@ -79,7 +87,7 @@ usage()
 {
 	cat >&2 <<-EOF
 Usage:
-	lkp $script_name [-y] [-t] <paths>
+	lkp $script_name [-y] <paths>
 Example:
 	lkp $script_name -y /result/xfstests/4HDD-ext4-ext4/lkp-ws02/debian-x86_64-2015-02-07.cgz/x86_64-rhel/gcc-4.9/v4.3/0/
 EOF
@@ -90,10 +98,9 @@ script_name=$(basename $0)
 [[ $# = 0 ]] && usage
 
 opt_y=0
-while getopts "yt" opt; do
+while getopts "y" opt; do
 	case $opt in
 		y ) opt_y=1; ;;
-		t ) opt_local_mode=1; ;;
 		? ) usage; ;;
 	esac
 done
@@ -119,7 +126,7 @@ else
 fi
 
 if [[ $answer = "yes" ]]; then
-	[[ "$opt_local_mode" ]] || revert_unite_rt "$@"
+	revert_unite_rt "$@"
 	remove_from_mrtts "$@"
 	remove_index "$@"
 	remove_paths "$@" | bash

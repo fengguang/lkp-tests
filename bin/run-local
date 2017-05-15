@@ -106,6 +106,7 @@ job['nr_cpu'] ||= `nproc`.to_i
 job['memory'] ||= `grep -w '^memory:' #{LKP_SRC}/hosts/#{HOSTNAME}`.split(' ')[1].chomp
 job['compiler'] ||= File.symlink?('/usr/bin/gcc') ? File.readlink('/usr/bin/gcc') : 'gcc'
 job['NO_NETWORK'] = 1
+job['LKP_LOCAL_RUN'] = 1
 
 $opt_set_key_value.each { |k, v|
   job[k] = v
