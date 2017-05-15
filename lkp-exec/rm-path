@@ -73,9 +73,15 @@ revert_unite_rt()
 {
 	local path
 	for path; do
-		is_rt "$path" && check_rt "$path" && ! is_local_run "$path" &&
-			lkp reprocess -d "$path"
+		if is_rt "$path" && check_rt "$path"; then
+			if is_local_run "$path"; then
+				$LKP_SRC/sbin/unite-stats -d "$path"
+			else
+				lkp reprocess -d "$path"
+			fi
+		fi
 	done
+
 	for path; do
 		while is_rt "$path" && check_rt "$path" && ! is_local_run "$path"; do
 			sleep 10

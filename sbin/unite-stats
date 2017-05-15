@@ -2,6 +2,7 @@
 
 LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
 
+require 'optparse'
 require "#{LKP_SRC}/lib/matrix.rb"
 require "#{LKP_SRC}/lib/statistics.rb"
 require "#{LKP_SRC}/lib/stats.rb"
@@ -11,6 +12,25 @@ require "#{LKP_SRC}/lib/job.rb"
 
 File.umask 0002
 
+delete = false
+
+opts = OptionParser.new do |opt|
+  opt.banner = 'Usage: unite-stats [-d] [RESULT_ROOT]'
+  opt.separator ''
+  opt.separator 'options:'
+
+  opt.on('-d', '--delete', 'Delete this RESULT_ROOT') do
+    delete = true
+  end
+
+  opt.on_tail('-h', '--help', 'Show this message') do
+    puts opt
+    exit
+  end
+end
+
+opts.parse!(ARGV)
+
 result_root = ARGV[0] || ENV["RESULT_ROOT"]
 
-unite_stats result_root
+unite_stats result_root, delete
