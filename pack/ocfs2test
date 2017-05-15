@@ -34,6 +34,7 @@ build()
 	make install || return
 
 	cd ../ocfs2-test
+	patch_source
 	./autogen.sh prefix=/ || return
 	make || return
 }
