@@ -56,4 +56,4 @@ if kbps.empty?
   exit
 end
 printf "stddev:     %g\n", stddev
-printf "free_time:  %g\n", free_secs.average
+printf "free_time:  %g\n", free_secs.average if free_secs.size > 0
