@@ -1,0 +1,5 @@
+(.*)-Wunused(.*)
+\s+static const char libhugetlbfs_version(.*)
+\s+\^~*
+(.*)\.c: In function '(.*)':
+\s+int\s(.*)
