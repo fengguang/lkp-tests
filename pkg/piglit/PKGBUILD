@@ -3,7 +3,7 @@
 
 pkgname=piglit
 _gitname=piglit
-pkgver=r6113.d216a33
+pkgver=r9427.7352f4a98
 pkgrel=1
 pkgdesc="Open-source test suite for OpenGL implementations"
 arch=('i686' 'x86_64')
@@ -14,10 +14,8 @@ makedepends=('git' 'cmake' 'glproto')
 conflicts=('piglit')
 provides=('piglit')
 options=('!emptydirs')
-source=('git://anongit.freedesktop.org/piglit'
-        '10-no-rpath-in-build.patch')
-md5sums=('SKIP'
-         '60a15c6487a04795d65564271c636528')
+source=('git://anongit.freedesktop.org/piglit')
+md5sums=('SKIP')
 
 pkgver() {
   cd $_gitname
@@ -26,7 +24,6 @@ pkgver() {
 
 prepare() {
   cd $_gitname
-  patch -Np1 -i ../10-no-rpath-in-build.patch
 
   find . -type f -name '*.py' | xargs sed -i 's@^#.*python$@#!/usr/bin/python2@'
 }
