@@ -50,18 +50,17 @@ end
 
 def gen_output(mode, i, res)
   if i.zero?
-    puts "#{mode.to_s}.latency.ns.0-256%: #{res}"
+    puts "#{mode}.latency.ns.0-256%: #{res}"
   elsif i == 23
-    puts "#{mode.to_s}.latency.ns.1G-inf%: #{res}"
+    puts "#{mode}.latency.ns.1G-inf%: #{res}"
   else
-    puts "#{mode.to_s}.latency.ns.#{format_power2(i + 7)}-#{format_power2(i + 8)}%: #{res}"
+    puts "#{mode}.latency.ns.#{format_power2(i + 7)}-#{format_power2(i + 8)}%: #{res}"
   end
 end
 
-[[histo_r, sum_r, READ], [histo_w, sum_w, WRITE]].each do |histo, sum, mode|
+[[histo_r, sum_r, READ], [histo_w, sum_w, WRITE]].each do |histo, sum, modes|
   (0..23).each do |i|
     res = histo[i] / sum * 100
-    gen_output(mode, i, res)
+    gen_output(modes, i, res)
   end
 end
-
