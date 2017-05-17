@@ -99,10 +99,4 @@ pack()
 post_cleanup()
 {
 	rm -fr "$source_dir"
-	rm -f /usr/lib/x86_64-linux-gnu/pkgconfig/waffle-1.pc
-	rm -f /usr/bin/wflinfo
-	rm -f /usr/lib/x86_64-linux-gnu/libwaffle-1.so*
-	rm -fr /usr/lib/x86_64-linux-gnu/cmake/Waffle
-	rm -fr /usr/include/waffle-1
-	rm -fr /usr/share/doc/waffle1
 }
