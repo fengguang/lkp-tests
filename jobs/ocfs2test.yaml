@@ -19,7 +19,7 @@ ocfs2test:
     - test-tunefs
     - test-sendfile
     - test-reserve_space
-    - test-backup_super
+    # - test-backup_super # always works on rhel/ol/suse, no need to enable it on debian
     # - test-inline # runs slow (> 1h)
     # - test-xattr # runs slow (> 1h)
     # - test-reflink # runs slow (> 1h)
