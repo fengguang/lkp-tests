@@ -74,6 +74,9 @@ setup_test_env()
 
 add_single_cluster()
 {
+	# remove the existed node to make sure 'add-cluster' work well
+	# we don't care the output and return value
+	o2cb remove-cluster ocfs2single >/dev/null 2>&1
 	o2cb add-cluster ocfs2single || return
 	o2cb add-node --ip 127.0.0.1 --port 7777 --number 1 ocfs2single `hostname` || return
 	o2cb register-cluster ocfs2single || return
