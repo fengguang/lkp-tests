@@ -33,12 +33,12 @@ setup_test_env()
 	# but only testcase buildkernel needs linux-kernel.tar.gz
 	# since we have kernel build already, so ignore buildkernel testcase,
 	# and fake an empty linux-kernel.tar.gz for other testcases can be running.
-	mkdir linux-kernel
+	mkdir -p linux-kernel
 	tar -zcvf $OCFS2TEST_HOME/linux-kernel.tar.gz linux-kernel
 
 	[[ -f $BENCHMARK_ROOT/ocfs2test/reflink ]] || die "can not find reflink file"
 
-	ln -s $BENCHMARK_ROOT/ocfs2test/reflink /usr/local/bin/reflink
+	ln -sf $BENCHMARK_ROOT/ocfs2test/reflink /usr/local/bin/reflink
 
 	timing=$(ls $BENCHMARK_ROOT/ocfs2test/timing-*.tar.gz)
 	[[ -f $timing ]] || die "can not find timing*.tar.gz file"
