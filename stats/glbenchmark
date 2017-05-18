@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-while line = STDIN.gets
+while (line = STDIN.gets)
   case line
   when /\(([0-9]*) fps\)/
     puts 'fps: ' + $1

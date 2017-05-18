@@ -3,21 +3,21 @@
 time = 0.0
 kb = 0
 
-while line = gets
+while (line = gets)
   case line
   when /^Running in .* mode with (\d+) groups using (\d+) file descriptors each \(== (\d+) tasks\)/
-    $tasks = $3.to_i
+    tasks = $3.to_i
   when /^Each sender will pass (\d+) messages of (\d+) bytes/
-    $messages = $1.to_i
-    $bytes = $2.to_i
+    messages = $1.to_i
+    bytes = $2.to_i
   when /^Each sender passed (\d+) messages of (\d+) bytes in average/
-    $messages = $1.to_i
-    $bytes = $2.to_i
+    messages = $1.to_i
+    bytes = $2.to_i
   when /^Time:/
-    name, seconds = line.split
+    _name, seconds = line.split
     time += seconds.to_f
-    kb += $tasks * $messages * $bytes >> 10
+    kb += tasks * messages * bytes >> 10
   end
 end
 
-puts "throughput: #{kb/time}"
+puts "throughput: #{kb / time}"

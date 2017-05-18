@@ -6,13 +6,13 @@ require "#{LKP_SRC}/lib/statistics"
 require "#{LKP_SRC}/lib/log"
 
 # skip none-result data
-while line = STDIN.gets
+while (line = STDIN.gets)
   break if line =~ /^FSUse/
 end
 
 files_per_sec = []
 app_overhead = []
-while line = STDIN.gets
+while (line = STDIN.gets)
   iteration = line.split
   if iteration.size != 5
     log_error "WARNING: unexpected fsmark output: #{line}"
