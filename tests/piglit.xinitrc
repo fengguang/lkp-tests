@@ -32,6 +32,8 @@ fi
 while read testcase
 do
 	start_time=$(date +%s.%N)
+	# recently piglit change the match method, so here we change '/' to '.'
+	testcase=$(echo $testcase | sed 's/\//./g')
 	# using excluding(-x) to avoid running all matching case
 	log_cmd piglit run $tset -t "$testcase" "$tmp_results" -x "${testcase}."
 	end_time=$(date +%s.%N)
