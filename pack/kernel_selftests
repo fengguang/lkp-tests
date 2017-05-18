@@ -17,6 +17,10 @@ build()
 {
 	make allyesconfig		|| return
 	make prepare			|| return
+	# gcc -O2 -g -std=gnu99 -Wall -I../../../../usr/include/    gpio-mockup-chardev.c ../../../gpio/gpio-utils.o ../../../../usr/include/linux/gpio.h  -lmount -I/usr/include/libmount -o gpio-mockup-chardev
+	# gcc: error: ../../../gpio/gpio-utils.o: No such file or directory
+	make -C tools/gpio
+
 	cd tools/testing/selftests	|| return
 	make				|| return
 	# install cpupower command
