@@ -9,13 +9,5 @@ shopt -s nullglob
 
 [[ -x "/lkp/benchmarks/ndctl/bin/ndctl" ]] || die "Can not find executable ndctl file"
 
-# linux-headers file is created by 0day system, and located in /usr/src/linux-headers-$kconfig-$commit directory.
-linux_headers_dirs=(/usr/src/linux-headers*)
-
-[[ $linux_headers_dirs ]] || die "ndctl: fail to find linux-headers package"
-
-linux_headers_dir=${linux_headers_dirs[-1]}
-echo "ndctl: linux_headers_dir is $linux_headers_dir"
-
 LD_LIBRARY_PATH=/lkp/benchmarks/ndctl/lib \
 /lkp/benchmarks/ndctl/bin/ndctl test
