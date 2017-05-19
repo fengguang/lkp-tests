@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-while line = STDIN.gets
+while (line = STDIN.gets)
   case line.chomp!
   when /^\s*\d+\.\d+ MB \/\s+\d+\.\d+ sec =\s+(\d+\.\d+) Mbps/
     puts 'throughput_Mbps: ' + $1

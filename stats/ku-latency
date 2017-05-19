@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-while line = STDIN.gets
+while (line = STDIN.gets)
   case line.chomp!
   when /^Total Average\s+:.*= ([0-9.]+) ([a-z]+)$/
     unit = $2

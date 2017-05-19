@@ -10,7 +10,7 @@ names.shift
 contentions = {}
 lock_stat = {}
 
-while line = STDIN.gets
+while (line = STDIN.gets)
   line.chomp!
   line.sub!(%r{/c/kernel-tests/src/[^/]+/}, '')
   line.sub!(%r{/kbuild/src/[^/]+/}, '')
@@ -18,25 +18,25 @@ while line = STDIN.gets
   when / +(.+): +([0-9.]+ +[0-9.]+ +[0-9.]+ +.*)/
     lock = $1.tr(' ', '')
     values = $2.split
-    values.each_with_index { |value, i|
+    values.each_with_index do |value, i|
       lock_stat[lock + '.' + names[i]] ||= 0
       lock_stat[lock + '.' + names[i]] += names[i] =~ /time/ ? value.to_f : value.to_i
-    }
+    end
   when / +(\d+) +\[<[0-9a-f]+>\] ([a-zA-Z0-9_]+)/
     contentions[$2] ||= 0
     contentions[$2] += $1.to_i
   when /^$/
-    if contentions.size > 0
+    unless contentions.empty?
       lock.chomp! '-R'
-      contentions.each { |key, val|
+      contentions.each do |key, val|
         lock_stat[lock + '.contentions.' + key] ||= 0
         lock_stat[lock + '.contentions.' + key] += val
-      }
+      end
       contentions.clear
     end
   end
 end
 
-lock_stat.each { |k, v|
+lock_stat.each do |k, v|
   puts k + ': ' + v.to_s
-}
+end

@@ -4,10 +4,10 @@ require 'yaml'
 
 RESULT_ROOT = ENV['RESULT_ROOT']
 
-job = YAML.load_file(RESULT_ROOT + "/job.yaml") or exit
+job = YAML.load_file(RESULT_ROOT + '/job.yaml') || exit
 
 kernel_size_file = "#{File.dirname job['kernel']}/kernel_size"
-exit if not File.exist? kernel_size_file
+exit unless File.exist? kernel_size_file
 
 text, data, bss = `tail -n 1 #{kernel_size_file}`.split
 

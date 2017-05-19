@@ -17,11 +17,11 @@ def futex_stat(line, futex, stats)
   when /^\s+Arguments: (.+)/
       futex['argument'] = $1.tr(' ', '_')
   when /^Result\:\s+(PASS|FAIL)/
-    if futex['argument'].nil? || (futex['argument'].include? 'none')
-      stats << "futex.#{futex['subtest']}.#{$1.downcase}: 1"
-    else
-      stats << "futex.#{futex['subtest']}.#{futex['argument']}.#{$1.downcase}: 1"
-    end
+    stats << if futex['argument'] && !(futex['argument'].include? 'none')
+               "futex.#{futex['subtest']}.#{futex['argument']}.#{$1.downcase}: 1"
+             else
+               "futex.#{futex['subtest']}.#{$1.downcase}: 1"
+             end
     futex['argument'] = nil
   end
 end
@@ -45,10 +45,7 @@ def mount_stat(line, mount, stats)
   when /^WARN\: No \/proc\/self\/uid_map exist, test skipped/
     stats << "mount.#{mount['subtest']}.skip: 1"
     mount['subtest'] = nil
-  when /^(MS.+|Default.+) malfunctions/
-    stats << "mount.#{mount['subtest']}.fail: 1"
-    mount['subtest'] = nil
-  when /^Mount flags unexpectedly changed after remount/
+  when /^(MS.+|Default.+) malfunctions/ || /^Mount flags unexpectedly changed after remount/
     stats << "mount.#{mount['subtest']}.fail: 1"
     mount['subtest'] = nil
   when %r{make: Leaving directory .*/(.*)'}
@@ -56,7 +53,7 @@ def mount_stat(line, mount, stats)
   end
 end
 
-def x86_stat(line, x86, stats)
+def x86_stat(line, _x86, stats)
   case line
   when /^processor lacks MPX XSTATE\(s\), can not run MPX tests/
     stats << 'x86.mpx-mini-test_64.skip: 1'

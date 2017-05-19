@@ -1,32 +1,32 @@
 #!/usr/bin/env ruby
 
-$throughput=0
-$line=0
-$index=0
-while line = STDIN.gets
+throughput = 0
+num = 0
+index = 0
+while (line = STDIN.gets)
   case line.chomp!
   when /^bytes.*secs.*10\^6bits/
-    unit='Mbps'
+    unit = 'Mbps'
   when /^bytes.*secs.\s+per sec/
-    unit='tps'
+    unit = 'tps'
   when /^Send\s+Recv\s+/
-    lines=line.split()
-    lines.each_with_index { |word, index|
-      $index = index if word == 'Rate'
-    }
+    lines = line.split
+    lines.each_with_index do |word, v|
+      index = v if word == 'Rate'
+    end
   when /^Size\s+Size\s+/
-    lines=line.split()
-    lines.each_with_index { |word, index|
-      $index = index if word == 'Throughput'
-    }
+    lines = line.split
+    lines.each_with_index do |word, v|
+      index = v if word == 'Throughput'
+    end
   when /\d+\s+\d+\s+\d+\s+\d.*$/
-    data = line.split()
-    $throughput += data[$index].to_f
-    $line += 1
+    data = line.split
+    throughput += data[index].to_f
+    num += 1
   end
 end
 
-exit if $line == 0
+exit if num.zero?
 
-avg_throughput = $throughput/$line;
-puts 'Throughput_' + unit + ': ' + "#{avg_throughput}"
+avg_throughput = throughput / num
+puts 'Throughput_' + unit + ': ' + avg_throughput.to_s
