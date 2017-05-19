@@ -22,6 +22,15 @@ build()
 	make -C tools/gpio
 
 	cd tools/testing/selftests	|| return
+
+	# temporarily workaround compile error on gcc-6
+	[[ "$LKP_LOCAL_RUN" = "1" ]] && {
+		# local user may contain both gcc-5 and gcc-6
+		CC=$(basename $(readlink $(which gcc)))
+		# force to use gcc-5 to build x86
+		[[ "$CC" = "gcc-6" ]] && command -v gcc-5 >/dev/null && sed -i -e '/^include ..\/lib.mk/a CC=gcc-5' x86/Makefile
+	}
+
 	make				|| return
 	# install cpupower command
 	cd ../../power/cpupower		|| return
