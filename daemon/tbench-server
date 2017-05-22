@@ -1,5 +1,7 @@
 #!/bin/sh
 
+. $LKP_SRC/lib/reproduce-log.sh
+
 log_eval "tbench_srv &"
 
 sleep 1
