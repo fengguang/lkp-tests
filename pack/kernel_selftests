@@ -27,6 +27,16 @@ build()
 	# collect2: error: ld returned 1 exit status
 	make -C tools/testing/selftests/memfd fuse_mnt
 
+	# make[1]: Entering directory '/tmp/build-kernel_selftests/linux/tools/testing/selftests/net'
+	# gcc -Wall -Wl,--no-as-needed -O2 -g -I../../../../usr/include/    reuseport_bpf_numa.c  -o /tmp/build-kernel_selftests/linux/tools/testing/selftests/net/reuseport_bpf_numa
+	# /tmp/ccdh6rgH.o: In function `send_from_node':
+	# /tmp/build-kernel_selftests/linux/tools/testing/selftests/net/reuseport_bpf_numa.c:138: undefined reference to `numa_run_on_node'
+	# /tmp/ccdh6rgH.o: In function `main':
+	# /tmp/build-kernel_selftests/linux/tools/testing/selftests/net/reuseport_bpf_numa.c:230: undefined reference to `numa_available'
+	# /tmp/build-kernel_selftests/linux/tools/testing/selftests/net/reuseport_bpf_numa.c:233: undefined reference to `numa_max_node'
+	# collect2: error: ld returned 1 exit status
+	make -C tools/testing/selftests/net reuseport_bpf_numa
+
 	cd tools/testing/selftests	|| return
 
 	# temporarily workaround compile error on gcc-6
