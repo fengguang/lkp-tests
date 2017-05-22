@@ -5,6 +5,7 @@
 # - transcations
 # - worker_threads
 # - latency_limit
+# - max_wal_size
 
 postgres_run()
 {
@@ -21,15 +22,20 @@ init_postgresql()
 	mkdir -p "$data_dir"
 	chown postgres "$data_dir"
 	postgres_run /usr/lib/postgresql/*/bin/initdb  -D "$data_dir"
+	postgresql_conf_file="$data_dir"/postgresql.conf
 	run_dir=/var/run/postgresql
 	mkdir -p "$run_dir"
 	chown postgres "$run_dir"
 	postgres_run /usr/lib/postgresql/*/bin/pg_ctl -D "$data_dir" start
 }
 
-[ -n "$scale_factor" ] && init_opts="-s $scale_factor"
+postgresql_conf_file=$(find /etc/postgresql -name postgresql.conf | head -1)
 
 init_postgresql
+
+[ -n "$max_wal_size" ] && echo "max_wal_size = $max_wal_size" >> $postgresql_conf_file
+
+[ -n "$scale_factor" ] && init_opts="-s $scale_factor"
 
 postgres_run dropdb pgbench_test > /dev/null 2>&1
 postgres_run createdb pgbench_test
