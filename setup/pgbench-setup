@@ -7,9 +7,16 @@
 # - latency_limit
 # - max_wal_size
 
+. $LKP_SRC/lib/reproduce-log.sh
+
 postgres_run()
 {
 	sudo -u postgres "$@"
+}
+
+postgres_run_log()
+{
+	log_cmd sudo -u postgres "$@"
 }
 
 init_postgresql()
@@ -33,13 +40,14 @@ postgresql_conf_file=$(find /etc/postgresql -name postgresql.conf | head -1)
 
 init_postgresql
 
-[ -n "$max_wal_size" ] && echo "max_wal_size = $max_wal_size" >> $postgresql_conf_file
+[ -n "$max_wal_size" ] &&
+	log_eval "echo 'max_wal_size = $max_wal_size' >> $postgresql_conf_file"
 
 [ -n "$scale_factor" ] && init_opts="-s $scale_factor"
 
 postgres_run dropdb pgbench_test > /dev/null 2>&1
-postgres_run createdb pgbench_test
-postgres_run pgbench -i $init_opts 2>&1
+postgres_run_log createdb pgbench_test
+postgres_run_log pgbench -i $init_opts 2>&1
 
 if [ -n "$runtime" ]; then
 	run_opts="-T $runtime"
@@ -54,5 +62,5 @@ fi
 [ -n "$latency_limit" ] && run_opts="$run_opts -L $latency_limit"
 
 cat > "$TMP_RESULT_ROOT"/run.pgbench <<EOF
-sudo -u postgres pgbench -n $run_opts
+log_cmd sudo -u postgres pgbench -n $run_opts
 EOF
