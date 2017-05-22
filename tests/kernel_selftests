@@ -10,7 +10,8 @@
 
 shopt -s nullglob
 
-linux_selftests_dir="/tmp/linux"
+# commit bb5ef9c change build directory to /tmp/build-$BM_NAME/xxx
+linux_selftests_dir="/tmp/build-kernel_selftests/linux"
 
 cd $linux_selftests_dir/tools/testing/selftests || die
 
