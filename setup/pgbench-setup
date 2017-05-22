@@ -21,7 +21,7 @@ init_postgresql()
 	data_dir=/var/lib/postgresql/data
 	mkdir -p "$data_dir"
 	chown postgres "$data_dir"
-	postgres_run /usr/lib/postgresql/*/bin/initdb  -D "$data_dir"
+	postgres_run /usr/lib/postgresql/*/bin/initdb  -D "$data_dir" 2>&1
 	postgresql_conf_file="$data_dir"/postgresql.conf
 	run_dir=/var/run/postgresql
 	mkdir -p "$run_dir"
@@ -39,7 +39,7 @@ init_postgresql
 
 postgres_run dropdb pgbench_test > /dev/null 2>&1
 postgres_run createdb pgbench_test
-postgres_run pgbench -i $init_opts
+postgres_run pgbench -i $init_opts 2>&1
 
 if [ -n "$runtime" ]; then
 	run_opts="-T $runtime"
