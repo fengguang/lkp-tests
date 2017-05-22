@@ -1,0 +1,14 @@
+suite: pgbench
+testcase: pgbench
+category: benchmark
+
+runtime: 300s
+
+nr_task: 50%
+
+pgbench-setup:
+  scale_factor: 1000
+  max_wal_size: 60GB
+  worker_threads: 16
+
+pgbench:
