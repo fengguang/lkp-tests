@@ -21,6 +21,12 @@ build()
 	# gcc: error: ../../../gpio/gpio-utils.o: No such file or directory
 	make -C tools/gpio
 
+	# gcc -D_FILE_OFFSET_BITS=64 -I../../../../include/uapi/ -I../../../../include/ -I../../../../usr/include/    fuse_mnt.c  -o /tmp/build-kernel_selftests/linux/tools/testing/selftests/memfd/fuse_mnt
+	# /tmp/ccW41Bj9.o: In function `main':
+	# fuse_mnt.c:(.text+0x25f): undefined reference to `fuse_main_real'
+	# collect2: error: ld returned 1 exit status
+	make -C tools/testing/selftests/memfd fuse_mnt
+
 	cd tools/testing/selftests	|| return
 
 	# temporarily workaround compile error on gcc-6
