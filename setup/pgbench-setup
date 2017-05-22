@@ -11,7 +11,25 @@ postgres_run()
 	sudo -u postgres "$@"
 }
 
+init_postgresql()
+{
+	grep -q postgres /etc/passwd && return
+
+	adduser --quiet --home /var/lib/postgresql --no-create-home postgres \
+		--system --disabled-password
+	data_dir=/var/lib/postgresql/data
+	mkdir -p "$data_dir"
+	chown postgres "$data_dir"
+	postgres_run /usr/lib/postgresql/*/bin/initdb  -D "$data_dir"
+	run_dir=/var/run/postgresql
+	mkdir -p "$run_dir"
+	chown postgres "$run_dir"
+	postgres_run /usr/lib/postgresql/*/bin/pg_ctl -D "$data_dir" start
+}
+
 [ -n "$scale_factor" ] && init_opts="-s $scale_factor"
+
+init_postgresql
 
 postgres_run dropdb pgbench_test > /dev/null 2>&1
 postgres_run createdb pgbench_test
