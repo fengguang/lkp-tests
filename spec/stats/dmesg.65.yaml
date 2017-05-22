@@ -1,0 +1,9 @@
+boot_failures: 1
+
+# cpu clock throttled
+cpu_clock_throttled: 1
+message:cpu_clock_throttled: [  127.367915] CPU26: Core temperature above threshold, cpu clock throttled (total events = 1)
+pattern:cpu_clock_throttled: cpu clock throttled
+
+timestamp:last: 127.367925
+timestamp:cpu_clock_throttled: 127.367915
