@@ -7,13 +7,15 @@ require "#{LKP_SRC}/lib/log"
 
 kbps = []
 throughput = []
+median = []
 free_secs = []
 ret = {}
 ret['warned'] = false
 
-def add_one_sample(kbps, throughput, ret)
+def add_one_sample(kbps, throughput, median, ret)
   return if kbps.empty?
   throughput << kbps.sum
+  median << kbps[kbps.size / 2]
   puts "# #{kbps.size} #{kbps.sum}"
   return unless kbps.size != 1 && (kbps.size & 1) != 0 && !ret['warned']
   log_warn "stats/vm-scalability: possibly disordered output #{ARGV[0]}"
@@ -35,12 +37,12 @@ while (line = STDIN.gets)
   when /(\d+) usecs to free memory/
     free_secs << $1.to_i / 1_000_000.0
   when /\.\/case-[a-z-]+/
-    add_one_sample(kbps, throughput, ret)
+    add_one_sample(kbps, throughput, median, ret)
     kbps.clear
   end
 end
 
-add_one_sample(kbps, throughput, ret)
+add_one_sample(kbps, throughput, median, ret)
 exit if throughput.empty?
 
 # Relative standard deviation
@@ -50,6 +52,12 @@ stddev = if throughput.size > 1
            kbps.standard_deviation * kbps.size / kbps.average
          end
 
+median_stddev = if median.size > 1
+                  median.standard_deviation / median.average
+                else
+                  0
+                end
+
 printf "throughput: %d\n", throughput.average
 if kbps.empty?
   log_error 'stats/vm-scalability: incomplete output'
@@ -57,3 +65,5 @@ if kbps.empty?
 end
 printf "stddev:     %g\n", stddev
 printf "free_time:  %g\n", free_secs.average unless free_secs.empty?
+printf "median: %d\n", median.average
+printf "median_stddev: %g\n", median_stddev
