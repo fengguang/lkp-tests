@@ -2,11 +2,17 @@
 
 download()
 {
+	git_clone_update https://github.com/bcopeland/wmediumd.git || return
 	git_clone_update git://w1.fi/srv/git/hostap.git
 }
 
 build()
 {
+	cd ../wmediumd || return
+	make || return
+	# binary will be installed into /usr/bin/wmediumd
+	make install || return
+	cd -
 	$RUN_QUIET ./tests/hwsim/build.sh
 }
 
@@ -15,4 +21,19 @@ install()
 	cd $source_dir
 	$LKP_SRC/tools/hwsim-extract-testcase $source_dir/tests/hwsim
 	cp -af $source_dir/* $BM_ROOT
+}
+
+pack()
+{
+	{
+		echo /usr
+		echo /usr/bin
+		echo /usr/bin/wmediumd
+		echo /lkp
+		echo /lkp/benchmarks
+		echo /lkp/benchmarks/$BM_NAME
+		find /lkp/benchmarks/$BM_NAME/*
+	} |
+	cpio --quiet -o -H newc --owner=root.root | gzip -n -9 > /lkp/benchmarks/${BM_NAME}.cgz
+	[[ $arch ]] && mv "/lkp/benchmarks/${BM_NAME}.cgz" "/lkp/benchmarks/${BM_NAME}-${arch}.cgz"
 }
