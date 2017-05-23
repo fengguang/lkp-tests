@@ -15,4 +15,7 @@ log_cmd a2enmod auth_basic authn_core authn_file authz_core authz_host authz_use
 
 log_cmd systemctl restart apache2
 
+# To avoid the follow error: socket: Too many open files (24)
+ulimit -n 102400
+
 log_cmd ab -k -q -t $runtime -n 1000000 -c $concurrency $server/
