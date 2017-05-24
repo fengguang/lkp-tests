@@ -48,8 +48,7 @@ enable_remote_node()
 	for n in {0..3}
 	do
 		echo "NODE[$n]=127.0.0.1" >> testconfig.sh
-		log_cmd mkdir -p "/remote/dir$n" || die "mkdir -p /remote/dir$n failed"
-		echo "NODE_WORKING_DIR[$n]=/remote/dir$n" >> testconfig.sh
+		echo "NODE_WORKING_DIR[$n]=$BENCHMARK_ROOT/$casename/src/test" >> testconfig.sh
 	done
 
 	# enable ssh localhost without password
@@ -90,10 +89,20 @@ run()
 		[[ -s "$pack_ignore" ]] && grep -w -q "$testcase" "$pack_ignore" && continue
 
 		# fix working dir not found
-		for n in {0..3}
-		do
-			log_cmd mkdir -p "/remote/dir$n/test_$testcase" || die "mkdir -p /remote/dir$n/test_testcase failed"
-		done
+		# for remote case(remote_basic for example), more details please refer to the test scripts
+		# 1. ssh into remote host
+		# 2. enter into NODE_WORKING_DIR[$n]/test_$testcase
+		# 3. ./$testcase <=== this binary usually stored at directory $testcase
+		# 4. execute ../ctrld binary
+		# so here we create a link to $testcase and ctrld
+		echo $testcase | grep -q remote && {
+			[[ -e "test_$testcase" ]] || {
+				log_cmd ln -sf $testcase test_$testcase || die "fail to ln -sf $testcase test_$testcase"
+			}
+			[[ -e "ctrld" ]] || {
+				log_cmd ln -sf tools/ctrld/ctrld || die "fail to ln -sf tools/ctrld/ctrld"
+			}
+		}
 
 		if [ "$LKP_LOCAL_RUN" != "1" ] && [[ -s "$user_filter" ]] && grep -w -q "$testcase" "$user_filter"; then
 			log_cmd chown lkp:lkp -R $BENCHMARK_ROOT/$casename
