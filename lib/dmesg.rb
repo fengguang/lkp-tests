@@ -255,6 +255,7 @@ end
 def oops_to_bisect_pattern(line)
     words = line.split
     return '' if words.empty?
+    return line if words.size == 1
     patterns = []
     words.each { |w|
       case w
