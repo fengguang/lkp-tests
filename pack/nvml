@@ -22,7 +22,7 @@ build_install_valgrind_pmem()
 	make install || return
 
 	# install to another directory so that we can pack them easily
-	./configure --prefix=/tmp/valgrind_install/usr/local || return
+	./configure --prefix=$BUILD_DIR/valgrind_install/usr/local || return
 	make || return
 	make install || return
 }
@@ -36,19 +36,19 @@ build_install_libcxx()
 	export CXX=clang++
 	local install_path=/usr/local/libcxx
 
-	cp -af /tmp/libcxxabi /tmp/llvm/projects
-	cp -af /tmp/libcxx /tmp/llvm/projects
+	cp -af $BUILD_DIR/libcxxabi $BUILD_DIR/llvm/projects
+	cp -af $BUILD_DIR/libcxx $BUILD_DIR/llvm/projects
 
-	mkdir -p /tmp/build/abi
-	mkdir -p /tmp/build/lib
+	mkdir -p $BUILD_DIR/build/abi
+	mkdir -p $BUILD_DIR/build/lib
 
-	cd /tmp/build/abi || return
-	cmake -DLLVM_PATH=/tmp/llvm -DCMAKE_INSTALL_PREFIX=$install_path /tmp/llvm/projects/libcxxabi/ || return
+	cd $BUILD_DIR/build/abi || return
+	cmake -DLLVM_PATH=$BUILD_DIR/llvm -DCMAKE_INSTALL_PREFIX=$install_path $BUILD_DIR/llvm/projects/libcxxabi/ || return
 	make install ||return
 
-	cd /tmp/build/lib || return
-	cmake -DLLVM_PATH=/tmp/llvm -DLIBCXX_CXX_ABI=libcxxabi -DLIBCXX_CXX_ABI_INCLUDE_PATHS=/tmp/llvm/projects/libcxxabi/include \
-		-DCMAKE_INSTALL_PREFIX=$install_path -DLIBCXX_CXX_ABI_LIBRARY_PATH=$install_path/lib /tmp/llvm/projects/libcxx || return
+	cd $BUILD_DIR/build/lib || return
+	cmake -DLLVM_PATH=$BUILD_DIR/llvm -DLIBCXX_CXX_ABI=libcxxabi -DLIBCXX_CXX_ABI_INCLUDE_PATHS=$BUILD_DIR/llvm/projects/libcxxabi/include \
+		-DCMAKE_INSTALL_PREFIX=$install_path -DLIBCXX_CXX_ABI_LIBRARY_PATH=$install_path/lib $BUILD_DIR/llvm/projects/libcxx || return
 	make install || return
 }
 
@@ -64,7 +64,7 @@ build_ignore_file()
 # See more details at https://nvdimm.wiki.kernel.org.
 build_install_ndctl()
 {
-	cd /tmp/ndctl || return
+	cd $BUILD_DIR/ndctl || return
 
 	mkdir $BM_ROOT/etc
 	mkdir $BM_ROOT/lib
@@ -98,7 +98,7 @@ install()
 
 pack()
 {
-	cd /tmp/valgrind_install || return
+	cd $BUILD_DIR/valgrind_install || return
 	{
 		echo /lkp
 		echo /lkp/benchmarks
@@ -113,7 +113,7 @@ pack()
 
 post_cleanup()
 {
-	rm -rf /tmp/valgrind_install
-	rm -rf /tmp/llvm
-	rm -rf /tmp/build
+	rm -rf $BUILD_DIR/valgrind_install
+	rm -rf $BUILD_DIR/llvm
+	rm -rf $BUILD_DIR/build
 }
