@@ -1,0 +1,14 @@
+
+# Slab corruption (Tainted: G W ): .* start=
+Slab_corruption(Tainted:G_W):kmalloc-#start=#,len=: 1
+message:Slab_corruption(Tainted:G_W):kmalloc-#start=#,len=: <3>[    2.279788] Slab corruption (Tainted: G        W      ): kmalloc-1024 start=c96b2000, len=1024
+pattern:Slab_corruption(Tainted:G_W):kmalloc-#start=#,len=: Slab corruption (Tainted: G W ): .* start=
+
+# Next obj: start=
+Next_obj:start=#,len=: 1
+message:Next_obj:start=#,len=: <3>[    2.279795] Next obj: start=c96b2400, len=1024
+pattern:Next_obj:start=#,len=: Next obj: start=
+
+timestamp:last: 2.279798
+timestamp:Slab_corruption(Tainted:G_W):kmalloc-#start=#,len=: 2.279788
+timestamp:Next_obj:start=#,len=: 2.279795

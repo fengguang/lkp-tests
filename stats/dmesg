@@ -122,7 +122,7 @@ oops_map.each do |bug_to_bisect, line|
 
   # print_hex_dump
   # kern  :alert : [  205.863334] rcu-torture: Free-Block Circulation:  3811 3811 3810 3809 3808 3807 3806 3805 3804 3803 0
-  next if line =~ /\[ *(\d{1,6}\.\d{6})\]\s*(\s[0-9a-f]{2}){16}$/
+  next if line =~ /(\s[0-9a-f]{2}){16}/
   next if line =~ /\[ *(\d{1,6}\.\d{6})\]\s*(\s[0-9a-f]{4}){8}$/
   next if line =~ /\[ *(\d{1,6}\.\d{6})\]\s*(\s[0-9a-f]{8}){4}$/
 

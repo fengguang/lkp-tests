@@ -1,0 +1,6 @@
+<3>[    2.279788] Slab corruption (Tainted: G        W      ): kmalloc-1024 start=c96b2000, len=1024
+<3>[    2.279791] 010: 6b 6b 6b 6b 0c 24 6b c9 6b 6b 6b 6b 6b 6b 6b 6b  kkkk.$k.kkkkkkkk
+<3>[    2.279793] 0b0: 6b 6b 6b 6b 6b 6b 6b 6b b0 24 6b c9 6b 6b 6b 6b  kkkkkkkk.$k.kkkk
+<3>[    2.279795] Next obj: start=c96b2400, len=1024
+<3>[    2.279796] 000: 00 00 00 00 00 2e 9a cb c0 53 ad cb 0c c0 e6 cc  .........S......
+<3>[    2.279798] 010: 14 20 6b c9 00 78 12 c0 80 3d c3 cc cc 90 ba c1  . k..x...=......
