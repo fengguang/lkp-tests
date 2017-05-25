@@ -4,8 +4,11 @@ stats_name = 'fail: 1'
 
 while (line = STDIN.gets)
   case line
-  when /^(package installed to \S+cgz|empty PACKAGE_LIST for unixbench)$/
+  when /^package installed to \S+cgz$/
     stats_name = 'pass: 1'
+    break
+  when /^empty PACKAGE_LIST for .*$/
+    stats_name = 'skip: 1'
     break
   end
 end
