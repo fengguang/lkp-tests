@@ -84,8 +84,14 @@ run_test()
 		all_tests=$(sed "s:^:${test%-*}/:" $test_dir/$test)
 	else
 		# Now rename $test-broken to $test-ignore wihch is easier to understand.
-		# Use $test-ignore to skip tests which are hard to enable.
-		all_tests=$(cd tests && ls $test/[0-9][0-9][0-9] | grep -v -F -f $test_dir/$test-ignore)
+		# Use $test_dir/$test-ignore and /$BENCHMARK_ROOT/$casename/ignore to skip tests which are hard to enable.
+		pack_ignore="/$BENCHMARK_ROOT/$casename/ignore"
+
+		if [[ -s "$pack_ignore" ]]; then
+			all_tests=$(cd tests && ls $test/[0-9][0-9][0-9] | grep -v -F -f $test_dir/$test-ignore | grep -v -F -f "$pack_ignore")
+		else
+			all_tests=$(cd tests && ls $test/[0-9][0-9][0-9] | grep -v -F -f $test_dir/$test-ignore)
+		fi
 	fi
 
 	log_cmd ./check $all_tests
