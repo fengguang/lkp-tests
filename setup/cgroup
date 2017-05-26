@@ -34,33 +34,47 @@
 
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/cgroup.sh
 
 CGROUP_MNT=/cgroup
-dir=$CGROUP_MNT/$(basename $testcase)/$group
 
 [ -e '/proc/cgroups' ] || die "dir not exist: /proc/cgroups"
 
-# This is the fail safe mount.
-# mount_cgroup() in run-lkp will normally do a better job for us
-[ -f "$CGROUP_MNT/tasks" ] || {
-	subsys=$(awk 'NR > 1 {printf $1 ","}' /proc/cgroups)
-	subsys=${subsys%,}
-	log_cmd mkdir $CGROUP_MNT 2>/dev/null &&
-	log_cmd mount -t cgroup -o $subsys none $CGROUP_MNT
-}
-log_cmd mkdir -p $dir
+# Clear cgroups and subsystem controllers mount point for v1 version
+clear_cgroup
 
+#clear cgroups and subsystem controllers mount point for v2 version
+clear_cgroup2
+
+#Bind each subsystem to an individual hierachy and create an individual control group
+create_cgroup $CGROUP_MNT $testcase
+
+#Tuning parammeter defined in the jobfile
 env | grep -F '_46_' |
 while read line
 do
 	key=${line%%=*}
-	val=${line#*=}
+	val=${line##*=}
 	[ -n "$val" ] || continue
-	[ "${key#*_46_}" != "$key" ] || continue
-	key=$(echo "$key" | sed 's/_46_/./g')
-	[ -f "$dir/$key" ] || continue
+	param=$(echo "$key" | sed 's/_46_/./g')
+	if [ "${key%%_46_*}" == "cpu" -o "${key%%_46_*}" == "cpuacct" ]; then
+		if [ -w "$CGROUP_MNT/cpu,cpuacct/$testcase/$param" ]; then
+			log_eval "echo '$val' > '$CGROUP_MNT/cpu,cpuacct/$testcase/$param'"
+		else
+			echo "Warning: parammeter $param doesn't exist or doesn't have write \
+permission in $CGROUP_MNT/cpu,cpuacct/$testcase/ directory"
+		fi
 
-	log_eval "echo '$val' > '$dir/$key'"
+	elif [ -w "$CGROUP_MNT/${key%%_46_*}/$testcase/$param" ]; then
+		log_eval "echo '$val' > '$CGROUP_MNT/${key%%_46_*}/$testcase/$param'"
+	else
+		echo "Warning: parammeter $param doesn't exist or doesn't have write \
+permission in $CGROUP_MNT/${key%%_46_*}/$testcase/ directory"
+	fi
 done
 
-log_eval "echo $PPID > '$dir/tasks'"
+#Set PPID to cgroup tasks
+for subsys_tasks in $CGROUP_MNT/*/$testcase/tasks
+do
+	log_eval "echo '$PPID' > '$subsys_tasks'"
+done
