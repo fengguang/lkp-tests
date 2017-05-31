@@ -45,7 +45,7 @@ def mount_stat(line, mount, stats)
   when /^WARN\: No \/proc\/self\/uid_map exist, test skipped/
     stats << "mount.#{mount['subtest']}.skip: 1"
     mount['subtest'] = nil
-  when /^(MS.+|Default.+) malfunctions/ || /^Mount flags unexpectedly changed after remount/
+  when /(^(MS.+|Default.+) malfunctions$)|(^Mount flags unexpectedly changed after remount$)/
     stats << "mount.#{mount['subtest']}.fail: 1"
     mount['subtest'] = nil
   when %r{make: Leaving directory .*/(.*)'}
