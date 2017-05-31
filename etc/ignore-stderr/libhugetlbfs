@@ -3,3 +3,7 @@
 \s+\^~*
 (.*)\.c: In function '(.*)':
 \s+int\s(.*)
+/usr/bin/ld: warning: zero_filesize_segment\.ld contains output sections; did you forget -T\?
+mkswap: /var/lib/hugetlbfs/swap/temp/swapfile-13381: insecure permissions 0664, 0600 suggested\.
+hugeadm:WARNING:(.*)
+brk_near_huge: malloc.c:2403: sysmalloc(.*)
