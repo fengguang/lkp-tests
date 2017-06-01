@@ -62,3 +62,27 @@ create_cgroup()
 		log_cmd mkdir -p $CGROUP_MNT/$item/$testcase
 	done
 }
+
+#Bind all the subsystem controllrs to an unified hierachy and create a control group
+create_cgroup2()
+{
+	local CGROUP2_MNT=$1
+	local testcase=$2
+
+	log_cmd mkdir -p $CGROUP2_MNT
+	log_cmd mount -t cgroup2 none $CGROUP2_MNT
+	sub_controllers=$(cat $CGROUP2_MNT/cgroup.controllers)
+
+	for controller in $sub_controllers
+	do
+		log_eval "echo '+$controller' > '$CGROUP2_MNT/cgroup.subtree_control'"
+	done
+
+	log_cmd mkdir -p $CGROUP2_MNT/$testcase
+	sub_controllers=$(cat $CGROUP2_MNT/$testcase/cgroup.controllers)
+
+	for controller in $sub_controllers
+	do
+		log_eval "echo '+$controller' >	'$CGROUP2_MNT/$testcase/cgroup.subtree_control'"
+	done
+}

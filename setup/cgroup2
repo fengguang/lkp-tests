@@ -1,0 +1,43 @@
+#!/bin/sh
+# - memory.high
+# - memory.low
+# - memory.max
+# - memory.swap.max
+# - io.max
+# - io.weight
+# - rdma.max
+
+. $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/cgroup.sh
+
+CGROUP2_MNT=/cgroup2
+
+[ -e '/proc/cgroups' ] || die "dir not exist: /proc/cgroups"
+
+# Clear cgroups and subsystem controllers mount point for v1 version 
+clear_cgroup
+
+#clear cgroups and subsystem controllers mount point for v2 version
+clear_cgroup2
+
+#Bind all the subsystem controller to a unified hierarchy, and create a cgroup
+create_cgroup2 $CGROUP2_MNT $testcase
+
+#Set the parameter defined in the jobfile and enable the cgroup
+env | grep -F '_46_' |
+while read line
+do
+	key=${line%%=*}
+	val=${line##*=}
+	[ -n "$val" ] || continue
+	param=$(echo "$key" | sed 's/_46_/./g')
+	if [ -w "$CGROUP2_MNT/$testcase/$param" ]; then
+		log_eval "echo $val > '$CGROUP2_MNT/$testcase/$param'"
+	else
+		echo "Warning: parammeter $param doesn't exist or doesn't have write \
+permission in $CGROUP2_MNT/$testcase directory"
+	fi
+done
+
+log_eval "echo $PPID > '$CGROUP2_MNT/$testcase/cgroup.procs'"
