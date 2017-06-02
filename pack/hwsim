@@ -28,9 +28,25 @@ build_hwsim_param_long()
 	git grep -B 2 -w 'if not params\['\'long\'] | grep '.*\.py\-def' | awk -F 'def ' '{print $2}' | awk -F'(' '{print $1}' | sed s/test_//g > require_long_param
 }
 
+build_hwsim_require_under_vm()
+{
+	# try to find out the case requiring under vm
+	# root@debian9:/lkp/benchmarks/hwsim/tests/hwsim# git grep -B 2 -w 'require_under_vm'
+	# test_ap_dynamic.py-import hwsim_utils
+	# test_ap_dynamic.py-import hostapd
+	# test_ap_dynamic.py:from utils import alloc_fail, require_under_vm, get_phy
+	# --
+	# test_ap_dynamic.py-def test_ap_iapp(dev, apdev):
+	# test_ap_dynamic.py-    """IAPP and multiple BSSes"""
+	# test_ap_dynamic.py:    require_under_vm()
+	cd $source_dir/tests/hwsim
+	git grep -B 2 -w 'require_under_vm' | grep '\-def ' | grep -v _test | awk -F' test_' '{print $2}' | awk -F'(' '{print $1}' > require_under_vm
+}
+
 install()
 {
 	build_hwsim_param_long
+	build_hwsim_require_under_vm
 	cd $source_dir
 	$LKP_SRC/tools/hwsim-extract-testcase $source_dir/tests/hwsim
 	cp -af $source_dir/* $BM_ROOT
