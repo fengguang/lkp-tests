@@ -27,7 +27,8 @@ log_cmd ./start.sh || die "fail to setup test environment"
 
 while read casename
 do
-	grep -q -w $casename $BENCHMARK_ROOT/hwsim/require_long_param && opt="--long"
+	[ -f $BENCHMARK_ROOT/hwsim/tests/hwsim/require_long_param ] &&
+	grep -q -w $casename $BENCHMARK_ROOT/hwsim/tests/hwsim/require_long_param && opt="--long"
 	log_echo "\
 	./run-tests.py $casename $opt"
 	./run-tests.py $casename $opt 2>&1
