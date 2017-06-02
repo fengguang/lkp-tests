@@ -27,6 +27,9 @@ log_cmd ./start.sh || die "fail to setup test environment"
 
 while read casename
 do
+	[ -f $BENCHMARK_ROOT/hwsim/tests/hwsim/require_under_vm ] &&
+	grep -q -w $casename $BENCHMARK_ROOT/hwsim/tests/hwsim/require_under_vm && continue
+
 	[ -f $BENCHMARK_ROOT/hwsim/tests/hwsim/require_long_param ] &&
 	grep -q -w $casename $BENCHMARK_ROOT/hwsim/tests/hwsim/require_long_param && opt="--long"
 	log_echo "\
