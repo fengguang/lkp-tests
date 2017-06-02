@@ -24,7 +24,7 @@ build_hwsim_param_long()
 	# test_ap_ciphers.py-    """WPA-PSK/TKIP countermeasures (detected by two STAs) [long]"""
 	# test_ap_ciphers.py:    if not params['long']:
 
-	cd $source_dir/test/hwsim
+	cd $source_dir/tests/hwsim
 	git grep -B 2 -w 'if not params\['\'long\'] | grep '.*\.py\-def' | awk -F 'def ' '{print $2}' | awk -F'(' '{print $1}' | sed s/test_//g > require_long_param
 }
 
