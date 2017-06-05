@@ -10,14 +10,22 @@ is_virt && exit 0
 
 . $LKP_SRC/lib/reproduce-log.sh
 
-log_echo "
-for file in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+log_echo '
+for cpu_dir in /sys/devices/system/cpu/cpu[0-9]*
 do
-	echo $scaling_governor > \$file
-done
-"
+	online_file="$cpu_dir"/online
+	[ -f "$online_file" ] && [ "$(cat "$online_file")" -eq 0 ] && continue
 
-for file in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+	file="$cpu_dir"/cpufreq/scaling_governor
+	[ -f "$file" ] && echo "$scaling_governor" > "$file"
+done
+'
+
+for cpu_dir in /sys/devices/system/cpu/cpu[0-9]*
 do
-	echo $scaling_governor > $file
+	online_file="$cpu_dir"/online
+	[ -f "$online_file" ] && [ "$(cat "$online_file")" -eq 0 ] && continue
+
+	file="$cpu_dir"/cpufreq/scaling_governor
+	[ -f "$file" ] && echo "$scaling_governor" > "$file"
 done
