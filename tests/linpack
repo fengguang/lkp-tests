@@ -1,5 +1,6 @@
 #!/bin/sh
 # - test_memory_size
+# - nr_task
 
 ## The Linpack Benchmark is a measure of a computer’s floating-point rate of execution. It is
 ## determined by running a computer program that solves a dense system of linear equations.
@@ -19,6 +20,8 @@ fi
 dimension=$(echo "sqrt ($test_memory_size * 0.9 / 8)" | bc)
 
 echo "test_memory_size=$test_memory_size dimension=$dimension"
+
+[ -n "$nr_task" ] && export MKL_NUM_THREADS="$nr_task"
 
 cat > lininput_xeon64 <<EOF
 Sample Intel(R) Optimized LINPACK Benchmark data file (lininput_xeon64)
