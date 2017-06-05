@@ -1,0 +1,10 @@
+#!/bin/sh
+
+. "$LKP_SRC"/lib/reproduce-log.sh
+
+cat /sys/devices/system/cpu/cpu*/topology/thread_siblings_list |
+	awk -F, '{print $2}' | sort -n | uniq |
+	while read -r p; do
+		[ -n "$p" ] &&
+			log_write_file /sys/devices/system/cpu/cpu"$p"/online 0
+	done
