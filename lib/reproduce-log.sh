@@ -24,3 +24,31 @@ log_test()
 	log_echo "$exec_prefix" "$@"
 	"$@"
 }
+
+# To make it easy to log something like: echo abc > file
+log_write_file()
+{
+	file="$1"
+	shift
+	cmdline=echo
+	for param; do
+		cmdline="$cmdline '$param'"
+	done
+	cmdline="$cmdline > '$file'"
+	log_echo "$cmdline"
+	echo "$@" > "$file"
+}
+
+# To make it easy to log something like: echo abc >> file
+log_append_file()
+{
+	file="$1"
+	shift
+	cmdline=echo
+	for param; do
+		cmdline="$cmdline '$param'"
+	done
+	cmdline="$cmdline >> '$file'"
+	log_echo "$cmdline"
+	echo "$@" >> "$file"
+}
