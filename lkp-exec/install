@@ -232,6 +232,7 @@ build_install_benchmarks() {
 		esac
 	else
 		echo "Making $pkg_name failed"
+		return 1
 	fi
 }
 
@@ -299,6 +300,6 @@ do
 		if ! verify_install "$script"; then
 			makepkg_install_benchmark "$script"
 		fi
-		build_install_benchmarks "$script" $distro
+		build_install_benchmarks "$script" $distro || exit 1
 	done
 done
