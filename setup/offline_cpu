@@ -1,0 +1,13 @@
+#!/bin/sh
+# - offline_cpulist
+
+. "$LKP_SRC"/lib/reproduce-log.sh
+. "$LKP_SRC"/lib/common.sh
+
+: "${offline_cpulist:=$1}"
+
+for p in $(expand_cpu_list "$offline_cpulist"); do
+	online_file=/sys/devices/system/cpu/cpu"$p"/online
+	[ -f "$online_file" ] || continue
+	log_write_file "$online_file" 0
+done
