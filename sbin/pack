@@ -24,7 +24,7 @@ usage()
 
 		Examples:
 		$ pack my_program
-		Output: /tmp/my_program/
+		Output: /tmp/build-my_program/my_program/
 		Output: /lkp/benchmarks/my_program/
 		Output: /lkp/benchmarks/my_program-<default_arch>.cgz
 		Output: inn:/lkp/benchmarks/my_program-<default_arch>.cgz
@@ -35,7 +35,7 @@ usage()
 		Output: inn:/lkp/benchmarks/my_program-my_arch.cgz
 
 		$ pack -d debian my_program
-		Output: /tmp/my_program/
+		Output: /tmp/build-my_program/my_program/
 		Output: /tmp/my-program-LKP/
 		Output: /tmp/my-program-LKP.deb
 		Output: /lkp/benchmarks/my_program/
@@ -79,6 +79,7 @@ check_shared_pack()
 
 BM_ROOT=/lkp/benchmarks/$BM_NAME
 
+source $LKP_SRC/lib/install.sh
 source $LKP_SRC/pack/quiet
 source $LKP_SRC/pack/default
 source $LKP_SRC/pack/$BM_NAME || exit
@@ -91,7 +92,7 @@ fi
 # If there exists a patch for the benchmark, delete the tmp file of the
 # benchmark. Then redownload the source code of the benchmark to restore the
 # version of the source code to avoid error in patching.
-BUILD_DIR="/tmp/build-$BM_NAME"
+BUILD_DIR=$(get_build_dir $BM_NAME)
 [[ -f $LKP_SRC/pack/${BM_NAME}.patch ]] && [[ -d $BUILD_DIR ]] && \
 	rm -rf $BUILD_DIR
 mkdir -p $BUILD_DIR

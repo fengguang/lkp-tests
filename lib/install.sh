@@ -86,3 +86,8 @@ get_dependency_packages()
 
 	adapt_packages | sort | uniq
 }
+
+get_build_dir()
+{
+	echo "/tmp/build-$1"
+}

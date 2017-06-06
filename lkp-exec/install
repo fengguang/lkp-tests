@@ -226,7 +226,7 @@ build_install_benchmarks() {
 			}
 			;;
 		fedora)
-			rpm -ivh --replacepkgs /tmp/$pkg_name/RPMS/$pkg_name.$(uname -m).rpm ;;
+			rpm -ivh --replacepkgs $BUILD_DIR/$pkg_name/RPMS/$pkg_name.$(uname -m).rpm ;;
 		*)
 			echo "Just make /lkp/benchmarks/$script-$(uname -m).cgz" ;;
 		esac
@@ -291,6 +291,7 @@ do
 
 	for script in $scripts
 	do
+		BUILD_DIR=$(get_build_dir $BM_NAME)
 		[ -z "$makepkg_once" ] && [ -d "$LKP_SRC/pkg/$script" ] && ! [ -x "$LKP_SRC/pack/$script" ] && {
 			install_packages "makepkg" $distro
 			makepkg_once=1

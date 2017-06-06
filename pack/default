@@ -67,8 +67,8 @@ pack_deb()
 
 pack_rpm()
 {
-	mkdir -p /tmp/$pkg_name/{BUILD,RPMS,S{OURCE,PEC,RPM}S}
-	cat > /tmp/$pkg_name/SPECS/$pkg_name.spec <<-EOF
+	mkdir -p $BUILD_DIR/$pkg_name/{BUILD,RPMS,S{OURCE,PEC,RPM}S}
+	cat > $BUILD_DIR/$pkg_name/SPECS/$pkg_name.spec <<-EOF
 	Name: $pkg_name
 	Version: 1
 	License: None
@@ -90,14 +90,14 @@ pack_rpm()
 	$BM_ROOT/*
 	EOF
 
-	cat > /tmp/$pkg_name/.rpmmacros <<-EOF
-	%_topdir /tmp/$pkg_name
+	cat > $BUILD_DIR/$pkg_name/.rpmmacros <<-EOF
+	%_topdir $BUILD_DIR/$pkg_name
 	%_rpmfilename %%{NAME}.%%{ARCH}.rpm
 	EOF
 
 	(
-		export HOME=/tmp/$pkg_name
-		rpmbuild -bb --verbose /tmp/$pkg_name/SPECS/$pkg_name.spec
+		export HOME=$BUILD_DIR/$pkg_name
+		rpmbuild -bb --verbose $BUILD_DIR/$pkg_name/SPECS/$pkg_name.spec
 	)
 }
 
@@ -119,6 +119,7 @@ pack_pkg()
 	local pkg_name="${BM_NAME//_/-}-LKP"
 
 	rm -fr "/tmp/$pkg_name"
+	rm -fr "$BUILD_DIR/$pkg_name"
 
 	if [[ "$BM_NAME" != "lkp-src" ]]; then
 		[[  "$(ls -A $BM_ROOT)" ]] || exit
@@ -141,7 +142,7 @@ post_cleanup()
 
 cleanup()
 {
-	[[ $source_package ]] && rm -f  "/tmp/${source_package}"
-	[[ $source_dir     ]] && rm -fr "/tmp/${source_dir}"
+	[[ $source_package ]] && rm -f  "$BUILD_DIR/${source_package}"
+	[[ $source_dir     ]] && rm -fr "$BUILD_DIR/${source_dir}"
 	post_cleanup
 }
