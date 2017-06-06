@@ -1,0 +1,97 @@
+#!/usr/bin/env ruby
+
+LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath(__FILE__)))
+LKP_CORE_SRC ||= ENV['LKP_CORE_SRC'] || LKP_SRC
+
+require "#{LKP_CORE_SRC}/lib/log"
+require 'optparse'
+
+options = Hash.new { |h, k| h[k] = [] }
+
+opts = OptionParser.new do |opt|
+  opt.banner = "Usage: ./#{File.basename $PROGRAM_NAME} [options]  -n GROUP_NUMBER -p ext4_result_path -p xfs_result_path -p btrfs_result_path"
+  opt.on('-n GROUP_NUMBER', '--group-number GROUP_NUMBER', 'number of generic group') do |group_number|
+    options['number'] = group_number.to_i
+  end
+  opt.on('-p RESULT_PATH', '--result-path RESULT_PATH', 'result path of generic-fs-all') do |path|
+    options['paths'] << path
+  end
+  opt.on('-h', '--help', 'Prints this help') do
+    puts opt
+    exit
+  end
+end
+
+opts.parse!(ARGV)
+
+if !ARGV.empty? || options['paths'].size != 3
+  log_error 'Wrong usage'
+  puts opts
+  exit 1
+end
+
+each_test_time = Hash.new { |h, k| h[k] = [] }
+
+def save_each_test_time(each_test_time, test_name, test_time)
+  time = test_time.to_i
+  each_test_time[test_name] << time
+end
+
+def handle_all_tests(result_path, each_test_time)
+  output_file = result_path + '/output'
+
+  unless File.exist? output_file
+    log_error "There is no output file under the #{result_path}"
+    return
+  end
+
+  File.read(output_file).each_line do |line|
+    case line
+    when /generic\/(.*)\s([0-9]+)s/
+      save_each_test_time(each_test_time, $1.rstrip, $2)
+    when /generic\/(.*)\s\[not run\]/
+      save_each_test_time(each_test_time, $1.rstrip, 0)
+    end
+  end
+end
+
+def create_group(group_number, content)
+  File.open("generic-group#{group_number}", 'w') do |file|
+    content.each do |line|
+      file.write "#{line}\n"
+    end
+  end
+end
+
+def generate_group_by_time(group_number, each_test_time)
+  group_number = group_number.to_i
+  each_test_time.each do |test_case, time|
+    # Count time using the max time.
+    each_test_time[test_case] = time.max.to_i
+  end
+
+  group = []
+  time_sum = 0
+  each_test_time.each do |test_case, time|
+    # We want each group run time is about 10m.
+    # So divide them into a new group if total time is over 600s.
+    if time_sum > 600
+      create_group group_number, group
+      group.clear
+      time_sum = 0
+      group_number += 1
+    else
+      time_sum += time.to_i
+      group << test_case
+    end
+  end
+end
+
+def generate_generic_group(group_number, result_paths, each_test_time)
+  result_paths.each do |path|
+    handle_all_tests path, each_test_time
+  end
+  generate_group_by_time group_number, each_test_time
+end
+
+generate_generic_group options['number'], options['paths'], each_test_time
