@@ -116,6 +116,7 @@ create_host_config() {
 memory: ${mem_gb}G
 hdd_partitions: ${hdd_partitions[*]}
 ssd_partitions: ${ssd_partitions[*]}
+local_run: 1
 EOT
 	}
 
