@@ -44,10 +44,17 @@ build_hwsim_require_under_vm()
 	git grep -B 2 -w 'require_under_vm' | grep '\-def ' | grep -v _test | awk -F' test_' '{print $2}' | awk -F'(' '{print $1}' > require_under_vm
 }
 
+build_hwsim_setup_oom()
+{
+	cd $source_dir/tests/hwsim
+	git grep -E -e 'def test.*oom' -e 'def test.*out_of_memory' | awk -F 'test_' '{print $3}'| awk -F '(' '{print $1}' > setup_oom
+}
+
 install()
 {
 	build_hwsim_param_long
 	build_hwsim_require_under_vm
+	build_hwsim_setup_oom
 	cd $source_dir
 	$LKP_SRC/tools/hwsim-extract-testcase $source_dir/tests/hwsim
 	cp -af $source_dir/* $BM_ROOT
