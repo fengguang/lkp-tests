@@ -27,6 +27,10 @@ log_cmd ./start.sh || die "fail to setup test environment"
 
 while read casename
 do
+	# skip cases that want to setup oom environment
+	[ -f $BENCHMARK_ROOT/hwsim/tests/hwsim/setup_oom ] &&
+	grep -q -w $casename $BENCHMARK_ROOT/hwsim/tests/hwsim/setup_oom && continue
+
 	# skip rrm_beacon_req_table_vht at 0Day environment
 	[ "$LKP_LOCAL_RUN" != "1" ] && [ "$casename" = "rrm_beacon_req_table_vht" ] && continue
 
