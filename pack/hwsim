@@ -13,6 +13,7 @@ build()
 	# binary will be installed into /usr/bin/wmediumd
 	make install || return
 	cd -
+	patch_source || return
 	$RUN_QUIET ./tests/hwsim/build.sh
 }
 
