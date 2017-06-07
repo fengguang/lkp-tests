@@ -8,13 +8,13 @@ TIME_DELTA  = YAML.load_file(RESULT_ROOT + '/job.yaml')['time_delta'].to_f
 FMT_DIR     = RESULT_ROOT + '/trace_event/'
 
 KEY_PREFIX_MAPPING = YAML.load_file(File.dirname(__FILE__) + '/../etc/ftrace_key_prefix')
-BDI_DEV_MAPPINGBDI_DEV_MAPPING = YAML.load_file(RESULT_ROOT + '/bdi_dev_mapping') if File.exist? RESULT_ROOT + '/bdi_dev_mapping'
+BDI_DEV_MAPPING = YAML.load_file(RESULT_ROOT + '/bdi_dev_mapping') if File.exist? RESULT_ROOT + '/bdi_dev_mapping'
 
 # A hash to make sure we record one event data only
 # for each event in 1s unit
 records = Hash.new { |h, k| h[k] = {} }
 
-def generate_prefix(event, key_prefix_items)
+def generate_prefix(event, key_prefix_items, record)
   key_prefix = event
   key_prefix_items.each do |key|
     v = record[key]
@@ -33,13 +33,13 @@ def generate_prefix(event, key_prefix_items)
 end
 
 def normlize_record(event, record, key_prefix_items, records)
-  key_prefix = generate_prefix event, key_prefix_items
+  key_prefix = generate_prefix event, key_prefix_items, record
 
   record['time'] = (record['time'].to_f + TIME_DELTA).floor.to_s
   return if records['last_recorded_time'][key_prefix] == record['time']
   records['last_recorded_time'][key_prefix] = record['time']
 
-  records['yaml_files'][key_prefix] ||= File.new(RESULT_ROOT + '/' + "ftrace.#{key_prefix}.yaml", 'w', '0664')
+  records['yaml_files'][key_prefix] ||= File.new(RESULT_ROOT + '/' + "ftrace.#{key_prefix}.yaml", 'w', 0o664)
 
   record.each do |k, v|
     next if key_prefix_items.include? k
@@ -49,7 +49,7 @@ def normlize_record(event, record, key_prefix_items, records)
   end
 end
 
-def normlize_event_data(event, event_data)
+def normlize_event_data(event, event_data, records)
   begin
     key_prefix_items = KEY_PREFIX_MAPPING[event].split(' ')
   rescue StandardError
@@ -78,7 +78,7 @@ end
 # - invoke generated event parser
 # - normlize data generated at above step
 #
-def parse_event(event_fmt)
+def parse_event(event_fmt, records)
   %x[cat #{event_fmt}] =~ /print fmt: "([^"]*)".*$/
   fmt = $1
   return if fmt.nil?
@@ -110,9 +110,9 @@ def parse_event(event_fmt)
   FileUtils.chmod '+x', event_parser
   system event_parser
 
-  normlize_event_data(event, event_parser_out)
+  normlize_event_data(event, event_parser_out, records)
 end
 
 Dir["#{FMT_DIR}/*.fmt"].each do |event_fmt|
-  parse_event event_fmt
+  parse_event event_fmt, records
 end
