@@ -86,7 +86,7 @@ run()
 		# ignore some test cases
 		local pack_ignore="$BENCHMARK_ROOT/$casename/ignore"
 
-		[[ -s "$pack_ignore" ]] && grep -w -q "$testcase" "$pack_ignore" && continue
+		[[ -s "$pack_ignore" ]] && grep -w -q "$testcase" "$pack_ignore" && echo "ignored_by_lkp $testcase" && continue
 
 		# fix working dir not found
 		# for remote case(remote_basic for example), more details please refer to the test scripts

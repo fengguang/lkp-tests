@@ -40,6 +40,8 @@ while (line = STDIN.gets)
     item = Regexp.last_match[1]
     name = Regexp.last_match[2]
     stats << item + '_' + name + '.test_skip: 1'
+  when /^(ignored_by_lkp)\s+(.*)\s+/
+    stats << "#{$2}.#{$1}: 1"
   end
 end
 
