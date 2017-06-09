@@ -80,6 +80,8 @@ def generate_group_by_time(group_number, each_test_time)
       group.clear
       time_sum = 0
       group_number += 1
+      time_sum += time.to_i
+      group << test_case
     else
       time_sum += time.to_i
       group << test_case
