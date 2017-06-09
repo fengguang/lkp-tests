@@ -11,19 +11,19 @@ PERCENTILES = %w(90.000000 95.000000 99.000000).freeze
 fn = File.join ENV['RESULT_ROOT'], 'fio.output'
 unless File.exist?(fn)
   log_error "log file #{fn} does not exist"
-  return
+  exit
 end
 contents = File.read(fn)
 idx = contents.index('{')
 unless idx
   log_error "#{fn}: maybe it is not a json format file"
-  return
+  exit
 end
 contents = contents[idx..-1] # contents should start with '{'
 res = JSON.parse(contents)
 unless res
   log_error 'Invalid/empty fio output'
-  return
+  exit
 end
 res_job = res['jobs'].first
 OPS.each do |ops|
