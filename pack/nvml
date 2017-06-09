@@ -59,6 +59,7 @@ build_ignore_file()
 	git grep "require_node_libfabric" | awk -F '[:/]' '{if (!a[$3]++ && $3 != "unittest") {print $3} }' > ignore
 	git grep "require_dax_devices" | awk -F '[:/]' '{if (!a[$3]++ && $3 != "unittest") {print $3} }' >> ignore
 	echo "vmmalloc_fork" >> ignore
+	echo "pmempool_check" >> ignore
 }
 
 # The dax tests need ndctl tool to create dax device.
