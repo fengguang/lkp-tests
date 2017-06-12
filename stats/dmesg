@@ -23,6 +23,7 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAM
 
 require "#{LKP_SRC}/lib/dmesg"
 require "#{LKP_SRC}/lib/log"
+require "#{LKP_SRC}/lib/string_ext"
 
 if ARGV[0]
   kmsg_file = ARGV[0]
@@ -96,6 +97,7 @@ else
 
   lines = kmsg_lines
   output = grep_printk_errors kmsg_file, kmsg
+  output.replace_invalid_utf8!
 
   oops_map = {}
   output.each_line do |line|
