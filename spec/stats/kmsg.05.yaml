@@ -1,0 +1,8 @@
+
+# lock: .* .magic: .* .owner: .* .owner_cpu:
+lock:#,.magic:#,.owner:____,.owner_cpu: 1
+message:lock:#,.magic:#,.owner:____,.owner_cpu: <0>[   42.964565]  lock: 0xffff880009c31088, .magic: ffff8800, .owner: ____/0, .owner_cpu: 378112
+pattern:lock:#,.magic:#,.owner:____,.owner_cpu: lock: .* .magic: .* .owner: .* .owner_cpu:
+
+timestamp:last: 43.009835
+timestamp:lock:#,.magic:#,.owner:____,.owner_cpu: 42.964565

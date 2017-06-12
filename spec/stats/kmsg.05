@@ -1,0 +1,26 @@
+<0>[   42.962798] BUG: spinlock bad magic on CPU#0, trinity-c0/1747
+<0>[   42.964565]  lock: 0xffff880009c31088, .magic: ffff8800, .owner: ÿÿÿÿ/0, .owner_cpu: 378112
+<4>[   42.969299] CPU: 0 PID: 1747 Comm: trinity-c0 Tainted: G        W       4.11.0-01315-g16b7629 #1
+<4>[   42.971951] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.9.3-20161025_171302-gandalf 04/01/2014
+<4>[   42.974995] Call Trace:
+<4>[   42.975769]  dump_stack+0xf9/0x17d
+<4>[   42.976808]  spin_bug+0xc5/0x110
+<4>[   42.977809]  do_raw_spin_lock+0x5d/0x160
+<4>[   42.979004]  _raw_spin_lock_irq+0x2b/0x30
+<4>[   42.980230]  rwsem_down_read_failed+0x5d/0x1e0
+<4>[   42.981590]  ? _find_next_bit+0xe5/0x100
+<4>[   42.985178]  call_rwsem_down_read_failed+0x18/0x30
+<4>[   42.986627]  ? call_rwsem_down_read_failed+0x18/0x30
+<4>[   42.988148]  down_read+0x2e/0x60
+<4>[   42.989142]  iterate_supers+0x9b/0x1b0
+<4>[   42.990296]  ? sync_fs_one_sb+0x70/0x70
+<4>[   42.991475]  sys_sync+0x3f/0xd0
+<4>[   42.992438]  do_syscall_64+0x11a/0x390
+<4>[   42.993584]  entry_SYSCALL64_slow_path+0x25/0x25
+<4>[   42.994982] RIP: 0033:0x7ff003a526d9
+<4>[   42.996082] RSP: 002b:00007fffb1687828 EFLAGS: 00000246 ORIG_RAX: 00000000000000a2
+<4>[   43.001246] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007ff003a526d9
+<4>[   43.003390] RDX: ffffffffff000010 RSI: ffffffffffffff00 RDI: ffffffffffffff4f
+<4>[   43.005535] RBP: 00000000000000a2 R08: a400000000000000 R09: ffffffffffffff95
+<4>[   43.007692] R10: ffffffffffffff9f R11: 0000000000000246 R12: 0000000000000000
+<4>[   43.009835] R13: 00000000000000a2 R14: 00000000000000a2 R15: ffffffffffffff95
