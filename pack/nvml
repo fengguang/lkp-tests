@@ -60,6 +60,7 @@ build_ignore_file()
 	git grep "require_dax_devices" | awk -F '[:/]' '{if (!a[$3]++ && $3 != "unittest") {print $3} }' >> ignore
 	echo "vmmalloc_fork" >> ignore
 	echo "pmempool_check" >> ignore
+	echo "obj_pmalloc_mt" >> ignore
 }
 
 # The dax tests need ndctl tool to create dax device.
