@@ -104,6 +104,9 @@ run()
 			}
 		}
 
+		# export this env variable to enable obj_tx_a* tests
+		[[ $testcase =~ obj_tx_a ]] && export MALLOC_MMAP_THRESHOLD_=0
+
 		if [ "$LKP_LOCAL_RUN" != "1" ] && [[ -s "$user_filter" ]] && grep -w -q "$testcase" "$user_filter"; then
 			log_cmd chown lkp:lkp -R $BENCHMARK_ROOT/$casename
 			log_cmd chown lkp:lkp -R /tmp
@@ -112,5 +115,8 @@ run()
 		else
 			log_cmd ./RUNTESTS -f $test $testcase  2>&1
 		fi  
+
+		# unset env variable in case it do impact on other tests
+		[[ $testcase =~ obj_tx_a ]] && unset MALLOC_MMAP_THRESHOLD_
 	done <<< "$testcases"
 }
