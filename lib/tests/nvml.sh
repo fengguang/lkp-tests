@@ -81,7 +81,7 @@ run()
 	# to fix no point to a PMEM device
 	echo "PMEM_FS_DIR_FORCE_PMEM=1" >> testconfig.sh
 
-	while read testcase
+	for testcase in $testcases
 	do
 		# ignore some test cases
 		local pack_ignore="$BENCHMARK_ROOT/$casename/ignore"
@@ -118,5 +118,5 @@ run()
 
 		# unset env variable in case it do impact on other tests
 		[[ $testcase =~ obj_tx_a ]] && unset MALLOC_MMAP_THRESHOLD_
-	done <<< "$testcases"
+	done
 }
