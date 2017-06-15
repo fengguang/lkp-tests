@@ -5,7 +5,7 @@ arch=('i686' 'x86_64')
 url=""
 license=('GPL2')
 depends=()
-source=("git://git.kernel.org/pub/scm/linux/kernel/git/wfg/${pkgname}.git")
+source=("https://git.kernel.org/pub/scm/linux/kernel/git/wfg/${pkgname}.git")
 sha256sums=('SKIP')
 
 build() {
