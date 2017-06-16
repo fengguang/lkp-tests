@@ -28,6 +28,14 @@ test: non-pmem
 
 ---
 test: none
+group:
+  - obj
+  - out
+  - pmem
+  - rpmem
+  - rpmemd
+  - util
+  - vmem
 
 ---
 test: pmem
