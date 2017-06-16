@@ -11,6 +11,8 @@ check_param()
 		echo "NON_PMEM_FS_DIR=$tmp_dir" > testconfig.sh
 	elif [[ "$test" = "pmem" ]]; then
 		echo "PMEM_FS_DIR=/fs/pmem0" > testconfig.sh
+	elif [[ "$test" = "none" ]]; then
+		:
 	else
 		die "Parameter \"test\" is wrong"
 	fi
