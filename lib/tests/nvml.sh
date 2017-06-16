@@ -119,4 +119,6 @@ run()
 		# unset env variable in case it do impact on other tests
 		[[ $testcase =~ obj_tx_a ]] && unset MALLOC_MMAP_THRESHOLD_
 	done
+
+	return 0
 }
