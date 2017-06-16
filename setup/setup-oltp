@@ -1,0 +1,52 @@
+#!/bin/sh
+# - runtime
+# - nr_threads
+# - table_size
+
+## OLTP (On-line Transaction Processing) is characterized by a large
+## number of short on-line transactions (INSERT, UPDATE, DELETE).
+## The main emphasis for OLTP systems is put on very fast query
+## processing, maintaining data integrity in multi-access
+## environments and an effectiveness measured by number
+## of transactions per second.
+
+[ -n "$runtime" ] || runtime=600
+[ -n "$table_size" ] && arg_table_size="--oltp-table-size=$table_size"
+
+args="\
+	--mysql-user=root\
+	--mysql-db=mysql\
+	--oltp-read-only=on\
+	--max-requests=0\
+	--num-threads=$nr_threads\
+	--max-time=$runtime\
+	$arg_table_size\
+"
+
+setup_mysql()
+{
+	# datadir in rootfs too small to meet mysql requriments
+	sed -i "s /var/lib/mysql $TMP/mysql g" /etc/mysql/my.cnf
+
+	# /etc/init.d/mysql: ERROR: The partition with /lkp/lkp/src/tmp/mysql is too full! ... failed!
+	mkdir -p $TMP/mysql
+	mount -t tmpfs mysql $TMP/mysql
+
+	cp -a     /var/lib/mysql $TMP/
+
+	/etc/init.d/mysql start
+}
+
+prepare()
+{
+	log_cmd sysbench --test=oltp ${args} prepare
+}
+
+
+setup_mysql
+prepare
+
+cat > "$TMP_RESULT_ROOT"/run.oltp <<EOF
+log_cmd sysbench --test=oltp $args run
+/etc/init.d/mysql stop
+EOF
