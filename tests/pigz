@@ -10,81 +10,71 @@
 
 require 'base64'
 
-$runtime = (ENV['runtime'] || 300).to_i
-$nr_threads = ENV['nr_threads'] || ENV['nr_cpu']
-$blocksize = (ENV['blocksize'] || 128).to_i
-$total_iterations = (ENV['iterations'] || 0).to_i
+runtime = (ENV['runtime'] || 300).to_i
+nr_threads = ENV['nr_threads'] || ENV['nr_cpu']
+blocksize = (ENV['blocksize'] || 128).to_i
+total_iterations = (ENV['iterations'] || 0).to_i
 
 case File.basename($PROGRAM_NAME)
 when /pigz/
-  pigz_threads = "-p #{$nr_threads}" if $nr_threads
-  pigz_threads ||= ""
-  $run_cmd = "pigz -c -b #{$blocksize} #{pigz_threads}"
+  pigz_threads = "-p #{nr_threads}" if nr_threads
+  pigz_threads ||= ''
+  run_cmd = "pigz -c -b #{blocksize} #{pigz_threads}"
 when /pbzip2/
   pbzip2_blocksize = ENV['blocksize'] || 900
   pbzip2_blocksize = "-b#{pbzip2_blocksize.to_i / 100}"
-  pbzip2_threads = "-p#{$nr_threads}" if $nr_threads
-  pbzip2_threads ||= ""
-  $run_cmd = "pbzip2 -c #{pbzip2_blocksize} #{pbzip2_threads}"
+  pbzip2_threads = "-p#{nr_threads}" if nr_threads
+  pbzip2_threads ||= ''
+  run_cmd = "pbzip2 -c #{pbzip2_blocksize} #{pbzip2_threads}"
 when /pixz/
-  pixz_threads = "-p #{$nr_threads}" if $nr_threads
-  pixz_threads ||= ""
-  $run_cmd = "pixz #{pixz_threads}"
+  pixz_threads = "-p #{nr_threads}" if nr_threads
+  pixz_threads ||= ''
+  run_cmd = "pixz #{pixz_threads}"
 when /plzip/
-  plzip_threads = "-n #{$nr_threads}" if $nr_threads
-  plzip_threads ||= ""
-  $run_cmd = "plzip -c #{plzip_threads}"
+  plzip_threads = "-n #{nr_threads}" if nr_threads
+  plzip_threads ||= ''
+  run_cmd = "plzip -c #{plzip_threads}"
 when /pxz/
-  pxz_threads = "-T #{$nr_threads}" if $nr_threads
-  pxz_threads ||= ""
-  $run_cmd = "pxz -c #{pxz_threads}"
+  pxz_threads = "-T #{nr_threads}" if nr_threads
+  pxz_threads ||= ''
+  run_cmd = "pxz -c #{pxz_threads}"
 end
 
-exit unless $run_cmd
-puts "# run_cmd: #{$run_cmd}"
+exit unless run_cmd
+puts "# run_cmd: #{run_cmd}"
 
 F_LINUX_SPECIFIC_BASE = 1024
 F_SETPIPE_SZ = F_LINUX_SPECIFIC_BASE + 7
 
 REPEAT = 5
-MB = (1<<20)
+MB = (1 << 20)
 
-$data = Base64.encode64 Random.new(1234).bytes(MB)
-$iterations = 0
+data = Base64.encode64 Random.new(1234).bytes(MB)
+iterations = 0
 
-def run_once(runtime)
+start_time = Time.now
+1.upto(REPEAT) do
   now = 0
   time = Time.now
-  io = IO.popen("#{$run_cmd} > /dev/null", 'w')
+  io = IO.popen("#{run_cmd} > /dev/null", 'w')
   io.fcntl(F_SETPIPE_SZ, MB)
 
   i = 0
   loop do
-    io.puts $data
+    io.puts data
     i += 1
     now = Time.now
-    if $total_iterations == 0
-      if now - time > runtime
-        break
-      end
-    elsif i == $total_iterations / REPEAT
+    if total_iterations.zero?
+      break if now - time > runtime / REPEAT
+    elsif i == total_iterations / REPEAT
       break
     end
   end
 
   io.close
   puts "# #{i} iterations in #{now - time} seconds"
-  $iterations += i
+  iterations += i
 end
-
-def run_test
-  1.upto(REPEAT) do
-    run_once $runtime / REPEAT
-  end
-end
-
-start_time = Time.now
-run_test
 seconds = Time.now - start_time
 
-puts "throughput: #{MB * $iterations / seconds}"
+puts "throughput: #{MB * iterations / seconds}"
