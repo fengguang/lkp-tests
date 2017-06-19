@@ -9,5 +9,17 @@ shopt -s nullglob
 
 [[ -x "/lkp/benchmarks/ndctl/bin/ndctl" ]] || die "Can not find executable ndctl file"
 
+[[ -d /etc/depmod.d ]] || log_cmd mkdir -p /etc/depmod.d
+cat >/etc/depmod.d/nfdtl.conf <<EOF
+override nfit * extra
+override dax * extra
+override dax_pmem * extra
+override libnvdimm * extra
+override nd_blk * extra
+override nd_btt * extra
+override nd_e820 * extra
+override nd_pmem * extra
+EOF
+
 LD_LIBRARY_PATH=/lkp/benchmarks/ndctl/lib \
 /lkp/benchmarks/ndctl/bin/ndctl test
