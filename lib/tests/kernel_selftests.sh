@@ -16,6 +16,8 @@ prepare_for_test()
 
 	# temporarily workaround compile error on gcc-6
 	command -v gcc >/dev/null || ln -sf /usr/bin/gcc-5 /usr/bin/gcc
+	# fix cc: command not found
+	command -v cc >/dev/null || log_cmd ln -sf /usr/bin/gcc /usr/bin/cc
 }
 
 check_makefile()
