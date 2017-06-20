@@ -23,4 +23,4 @@ fi
 . $LKP_SRC/lib/wait.sh
 setup_wait
 
-exec ./turbostat -v $WAIT_POST_TEST_CMD 2>&1
+exec ./turbostat $WAIT_POST_TEST_CMD -v 2>&1
