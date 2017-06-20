@@ -71,6 +71,7 @@ run()
 {
 	local casename=$1
 	local user_filter="$BENCHMARK_ROOT/$casename/user_filter"
+	local testcase=
 
 	log_cmd cd $BENCHMARK_ROOT/$casename/src/test
 
