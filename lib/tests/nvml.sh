@@ -50,7 +50,7 @@ enable_remote_node()
 	for n in {0..3}
 	do
 		echo "NODE[$n]=127.0.0.1" >> testconfig.sh
-		echo "NODE_WORKING_DIR[$n]=$BENCHMARK_ROOT/$casename/src/test" >> testconfig.sh
+		echo "NODE_WORKING_DIR[$n]=$BENCHMARK_ROOT/$casename/src/testremote" >> testconfig.sh
 	done
 
 	# enable ssh localhost without password
@@ -65,6 +65,7 @@ enable_remote_node()
         expect {
             *(yes/no)* {send -- yes\r;exp_continue;}
         }";
+	log_cmd make sync-remotes FORCE_SYNC_REMOTE=y USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1 LIBCPP_LIBDIR=/usr/local/libcxx/lib || return
 }
 
 run()
@@ -90,22 +91,6 @@ run()
 		local pack_ignore="$BENCHMARK_ROOT/$casename/ignore"
 
 		[[ -s "$pack_ignore" ]] && grep -w -q "$testcase" "$pack_ignore" && echo "ignored_by_lkp $testcase" && continue
-
-		# fix working dir not found
-		# for remote case(remote_basic for example), more details please refer to the test scripts
-		# 1. ssh into remote host
-		# 2. enter into NODE_WORKING_DIR[$n]/test_$testcase
-		# 3. ./$testcase <=== this binary usually stored at directory $testcase
-		# 4. execute ../ctrld binary
-		# so here we create a link to $testcase and ctrld
-		echo $testcase | grep -q remote && {
-			[[ -e "test_$testcase" ]] || {
-				log_cmd ln -sf $testcase test_$testcase || die "fail to ln -sf $testcase test_$testcase"
-			}
-			[[ -e "ctrld" ]] || {
-				log_cmd ln -sf tools/ctrld/ctrld || die "fail to ln -sf tools/ctrld/ctrld"
-			}
-		}
 
 		# export this env variable to enable obj_tx_a* tests
 		[[ $testcase =~ obj_tx_a ]] && export MALLOC_MMAP_THRESHOLD_=0
