@@ -26,6 +26,13 @@ echo $paranoid_value > $perf_event_paranoid
 
 [[ $paranoid_value = $(cat $perf_event_paranoid) ]] || die "write value $paranoid_value to $perf_event_paranoid failed"
 
+unstable_cases="flags_fd_no_group simultaneous_overflow context_switch_user_kernel rdpmc_multiattach openmp_sample"
+
+for unstable in $unstable_cases
+do
+	grep -w -q "$unstable$" ./run_tests.sh && echo "ignored_by_lkp $unstable" && sed -i /$unstable$/d ./run_tests.sh
+done
+
 log_cmd ./run_tests.sh
 exit_value=$?
 
