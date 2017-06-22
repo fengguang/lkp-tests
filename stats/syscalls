@@ -7,6 +7,7 @@ RESULT_ROOT = ENV['RESULT_ROOT']
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
 require "#{LKP_SRC}/lib/noise"
+require "#{LKP_SRC}/lib/log"
 
 time = {}
 syscall_nr = {}
@@ -75,9 +76,14 @@ def parse_syscalls(time)
   process_lines = {}
   lines = if File.exist?("#{RESULT_ROOT}/ftrace.data.xz")
             IO.popen("xzcat #{RESULT_ROOT}/ftrace.data.xz").readlines
-          else
+          elsif File.exist?("#{RESULT_ROOT}/ftrace.data")
             IO.readlines("#{RESULT_ROOT}/ftrace.data")
           end
+
+  if lines.nil?
+    log_error "no ftrace.data or ftrace.data.xz in the #{RESULT_ROOT}"
+    return
+  end
 
   lines.each do |line|
     next if line.include?('CPU') || line.include?('#')
@@ -121,4 +127,5 @@ def show_syscalls_noise(time, syscall_nr, sys_nr)
 end
 
 parse_syscalls time
+exit if time.nil?
 show_syscalls_noise time, syscall_nr, sys_nr
