@@ -180,6 +180,9 @@ setup_crosstool()
 		mn10300)
 			gcc_arch=am33_2.0-linux
 			;;
+		h8300)
+			gcc_arch=h8300-elf
+			;;
 		*)
 			gcc_arch=$ARCH-linux
 			;;
