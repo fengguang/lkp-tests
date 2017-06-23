@@ -4,10 +4,14 @@ LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath(__FILE__))
 
 #         modprobe-2427  [008] ....   242.913825: vmalloc_alloc_area: start=0xffffc90001b07000, end=0xffffc90001b39000
 #            bash-266   [001] ..s. 60321.215759: softirq_entry: vec=1 [action=TIMER]
+#     TIME        CPU  TASK/PID         DURATION                  FUNCTION CALLS
+#      |          |     |    |           |   |                     |   |   |   |
+#    76.094231 |   0)   usemem-842   |               |  /* softirq_entry: vec=1 [action=TIMER] */
 
 class TPSample
   RES_ARG = /([^{\[(=,: \t\n]+)=([^}\])=,: \t\n]+)/
   RE_SAMPLE = /^\s*(.*)-(\d+)\s+\[(\d+)\]\s+\S+\s+([0-9.]+): ([^: ]+): (.*)$/
+  RE_SAMPLE2 = /^\s*([0-9.]+)\s+\|\s+(\d).\s+(.+)-(\d+)\s+\|\s+([0-9.]*).+\|\s+\/\*\s([^: ]+): (.*)\s\*\/.*/
 
   attr_reader :cmd, :pid, :cpu, :timestamp, :type, :raw_data, :data
 
@@ -31,13 +35,23 @@ class TPSample
 
   class << self
     def parse(str)
-      (md = self::RE_SAMPLE.match(str)) || return
-      cmd = md[1]
-      pid = md[2].to_i
-      cpu = md[3].to_i
-      timestamp = md[4].to_f
-      type = md[5].intern
-      raw_data = md[6]
+      case str
+      when self::RE_SAMPLE
+        cmd = $1
+        pid = $2.to_i
+        cpu = $3.to_i
+        timestamp = $4.to_f
+        type = $5.intern
+        raw_data = $6
+      when self::RE_SAMPLE2
+        cmd = $3
+        pid = $4.to_i
+        cpu = $2.to_i
+        timestamp = $1.to_f
+        type = $6.intern
+        raw_data = $7
+      end
+      return if raw_data.nil?
       arg_pair_strs = raw_data.scan self::RES_ARG
       arg_pairs = arg_pair_strs.map do |k, v|
         [k.intern, v]
@@ -121,10 +135,14 @@ end
 
 # usemem-1668   |   0.043 us    |  } /* swap_lock_page_or_retry */
 # <...>-6436   |   0.065 us    |  swap_lock_page_or_retry();
+#     TIME        CPU  TASK/PID         DURATION                  FUNCTION CALLS
+#      |          |     |    |           |   |                     |   |   |   |
+#    76.093718 |   6)   usemem-848   |   11.296 us   |  __do_page_fault();
 
 # Funcgraph Duration sample
 class FGSample
-  RE_SAMPLE = /^\s*(.+)-(\d+)\s*\|\s*([0-9.]+)[us ]*\|[} \/*]*([a-zA-Z0-9_]+)/
+  RE_SAMPLE = /^\s*([^|]+)-(\d+)\s*\|\s*([0-9.]+)[us ]*\|[} \/*]*([a-zA-Z0-9_]+)/
+  RE_SAMPLE2 = /^\s*([0-9.]+)\s+\|\s+(\d).\s+(.+)-(\d+)\s+\|\s+([0-9.]*).+\|[} \/*]*([a-zA-Z0-9_]+)/
 
   attr_reader :cmd, :pid, :duration, :func
 
@@ -137,8 +155,13 @@ class FGSample
 
   class << self
     def parse(str)
-      (md = self::RE_SAMPLE.match(str)) || return
-      new md[1], md[2].to_i, md[3].to_f, md[4].intern
+      case str
+      when self::RE_SAMPLE
+        new $1, $2.to_i, $3.to_f, $4.intern
+      when self::RE_SAMPLE2
+        return if $5.to_f == 0
+        new $3, $4.to_i, $5.to_f, $6.intern
+      end
     end
   end
 end
