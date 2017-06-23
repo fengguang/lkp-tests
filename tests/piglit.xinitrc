@@ -24,6 +24,12 @@ tmp_results="$TMP/piglit-results"
 
 if [ -s "$LKP_SRC/pack/piglit-addon/groups/broken" ]; then
 	testcases=$(grep -F -x -f $BENCHMARK_ROOT/piglit/groups/$tset-all $config_file | grep -F -x -v -f $LKP_SRC/pack/piglit-addon/groups/broken)
+
+	ignored_cases=$(grep -F -x -f $BENCHMARK_ROOT/piglit/groups/$tset-all $config_file | grep -F -x -f $LKP_SRC/pack/piglit-addon/groups/broken)
+	for ignored_case in $ignored_cases
+	do
+		echo "$ignored_case: ignored_by_lkp"
+	done
 else
 	testcases=$(grep -F -x -f $BENCHMARK_ROOT/piglit/groups/$tset-all $config_file)
 fi
