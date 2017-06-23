@@ -1,0 +1,22 @@
+#!/bin/sh
+# - irq
+# - exception
+# - delay
+# - duration
+# - buffer_size_kb
+# - ftrace_options
+
+# for interrupt
+[ "$irq" -eq "1" ] && export events='irq_handler_entry irq_handler_exit softirq_entry softirq_exit'
+
+# for exception
+[ "$exception" -eq "1" ] && export current_tracer='function_graph'
+[ "$exception" -eq "1" ] && export ftrace_filters='__do_page_fault do_divide_error do_overflow do_bounds do_invalid_op do_device_not_available do_double_fault do_coprocessor_segment_overrun do_invalid_TSS do_segment_not_present do_spurious_interrupt_bug do_coprocessor_error do_alignment_check do_simd_coprocessor_error do_debug do_stack_segment do_general_protection'
+[ "$exception" -eq "1" ] && [ -z "$ftrace_options" ] && export ftrace_options="funcgraph-proc nofuncgraph-overhead funcgraph-cpu nooverwrite funcgraph-abstime"
+
+. $LKP_SRC/lib/ftrace.sh
+setup_wait
+
+ftrace_set_params
+
+ftrace_run
