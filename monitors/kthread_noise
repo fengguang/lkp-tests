@@ -1,0 +1,32 @@
+#!/bin/sh
+
+. $LKP_SRC/lib/wait.sh
+
+# find out all kthreads by checking if /proc/$pid/exe is valid
+kthread_pids=""
+
+for i in /proc/*
+do
+	if [ -d $i ]; then
+		readlink $i/exe >/dev/null 2>&1 && continue
+		stat=`cat $i/stat 2>/dev/null`
+		[ $? -eq 0 ] || continue
+		pid=`echo $stat |cut -d " " -f 1`
+		kthread_pids="$kthread_pids $pid"
+	fi
+done
+
+. $LKP_SRC/lib/wait.sh
+setup_wait
+
+wait_post_test
+
+for i in $kthread_pids
+do
+	if [ -d /proc/$i ]; then
+		stat=/proc/$i/stat
+		stat_content=`cat $stat 2>/dev/null`
+		[ $? -eq 0 ] || continue
+		echo $stat_content
+	fi
+done
