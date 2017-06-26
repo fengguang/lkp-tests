@@ -20,6 +20,7 @@ group:
   - rpmem
   - rpmemd
   - set
+  - unicode
   - util
   - vmem
   - vmmalloc
@@ -29,11 +30,15 @@ test: non-pmem
 ---
 test: none
 group:
+  - arch
+  - checksum
   - obj
   - out
   - pmem
   - rpmem
   - rpmemd
+  - scope
+  - traces
   - util
   - vmem
   - pmempool
