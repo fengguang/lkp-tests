@@ -18,6 +18,8 @@ files.each do |file|
   data.concat(sfdata.map(&:to_i))
 end
 
+exit if data.empty?
+
 n = Noise.new('fwq', data)
 n.analyse
 n.log
