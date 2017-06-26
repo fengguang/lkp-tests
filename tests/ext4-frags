@@ -27,18 +27,20 @@ log_cmd mkdir -p $mnt
 
 log_cmd mke2fs -t ext4 -b 1024 -J size=1 -q $partition
 log_cmd mount -t ext2 $partition $mnt 2>/dev/null ||
-log_cmd mount -t ext4 $partition $mnt             || exit
+log_cmd mount -t ext4 $partition $mnt             || die
 log_cmd mkdir $mnt/a
 log_cmd cd $mnt/a
 log_echo "seq 1 210000  | xargs -n 1 fallocate -l 1m"
-seq 1 210000  | xargs -n 1 fallocate -l 1m
+seq 1 210000  | xargs -n 1 fallocate -l 1m || die
 log_echo "seq 1 2 210000  | xargs /bin/rm"
-seq 1 2 210000  | xargs /bin/rm
+seq 1 2 210000  | xargs /bin/rm || die
 log_cmd mkdir $mnt/b
 log_cmd cd $mnt/b
 log_echo "seq 1 103 | xargs -n 1 fallocate -l 1g"
-seq 1 103 | xargs -n 1 fallocate -l 1g
+seq 1 103 | xargs -n 1 fallocate -l 1g || die
 log_cmd cd /
 log_cmd umount $mnt
-log_cmd mount -t ext4 -o commit=10000 $partition $mnt
+log_cmd mount -t ext4 -o commit=10000 $partition $mnt || die
 log_cmd rm -rf $mnt/b
+
+echo "$testcase pass"
