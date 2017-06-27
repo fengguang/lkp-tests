@@ -2,8 +2,6 @@ model: Broadwell-EP
 nr_node: 2
 nr_cpu: 88
 memory: 128G
-nr_ssd_partitions: 1
-ssd_partitions: /dev/nvme0n1p1
 swap_partitions:
 rootfs_partition: /dev/disk/by-id/ata-INTEL_SSDSC2BA800G4_BTHV539600YR800OGN-part1
 brand: Intel(R) Xeon(R) CPU E5-2699 v4 @ 2.20GHz
