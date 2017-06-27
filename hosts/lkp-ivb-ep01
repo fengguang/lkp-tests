@@ -1,7 +1,15 @@
 model: Ivy Bridge-EP
 nr_cpu: 40
 memory: 384G
-hdd_partitions: /dev/disk/by-id/scsi-36b8ca3a0e650e1001f7646080ca3b601-part*
+hdd_partitions: 
+  /dev/disk/by-id/scsi-36b8ca3a0e650e1001f7646080ca3b601-part1
+  /dev/disk/by-id/scsi-36b8ca3a0e650e1001f7646080ca3b601-part2
+  /dev/disk/by-id/scsi-36b8ca3a0e650e1001f7646080ca3b601-part3
+  /dev/disk/by-id/scsi-36b8ca3a0e650e1001f7646080ca3b601-part4
+  /dev/disk/by-id/scsi-36b8ca3a0e650e1001f7646080ca3b601-part5
+  /dev/disk/by-id/scsi-36b8ca3a0e650e1001f7646080ca3b601-part6
+  /dev/disk/by-id/scsi-36b8ca3a0e650e1001f7646080ca3b601-part7
+  /dev/disk/by-id/scsi-36b8ca3a0e650e1001f7646080ca3b601-part8
 swap_partitions:
 rootfs_partition:
 brand: Intel(R) Xeon(R) CPU E5-2690 v2 @ 3.00GHz
