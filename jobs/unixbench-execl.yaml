@@ -1,0 +1,15 @@
+suite: unixbench
+testcase: unixbench
+category: benchmark
+
+runtime: 300s
+
+nr_task:
+  - 1
+  - 100%
+
+unixbench:
+  test: execl
+
+perf-profile:
+  duration: 2
