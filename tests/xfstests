@@ -86,6 +86,11 @@ run_test()
 
 		# Ignore generic-btrfs test cases by generic-btrfs-ignore which call _require_xfs_io_command since only in this case they would fail.
 		if [ "${test%-*}" = "generic" ] && [ -s "$generic_fs_ignore" ]; then
+			ignored_generic_tests=$(sed "s:^:${test%-*}/:" $test_dir/$test | grep -F -f "$generic_fs_ignore")
+			for ignored_test in $ignored_generic_tests
+			do
+				echo "ignored by lkp: $ignored_test"
+			done
 			all_tests=$(sed "s:^:${test%-*}/:" $test_dir/$test | grep -v -F -f "$generic_fs_ignore")
 		else
 			all_tests=$(sed "s:^:${test%-*}/:" $test_dir/$test)
@@ -94,9 +99,19 @@ run_test()
 		# Now rename $test-broken to $test-ignore wihch is easier to understand.
 		# Use $test_dir/$test-ignore and /$BENCHMARK_ROOT/$casename/ignore to skip tests which are hard to enable.
 		pack_ignore="/$BENCHMARK_ROOT/xfstests/ignore"
+		ignored_tests=$(cd tests && ls $test/[0-9][0-9][0-9] | grep -F -f $test_dir/$test-ignore)
+		for ignored_test in $ignored_tests
+		do
+			echo "ignored by lkp: $ignored_test"
+		done
 
 		if [ -s "$pack_ignore" ]; then
 			all_tests=$(cd tests && ls $test/[0-9][0-9][0-9] | grep -v -F -f $test_dir/$test-ignore | grep -v -F -f "$pack_ignore")
+			ignore_pack_tests=$(cd tests && ls $test/[0-9][0-9][0-9] | grep -v -F -f "$pack_ignore")
+			for ignored_test in $ignored_pack_tests
+			do
+				echo "ignored by lkp: $ignored_test"
+			done
 		else
 			all_tests=$(cd tests && ls $test/[0-9][0-9][0-9] | grep -v -F -f $test_dir/$test-ignore)
 		fi
