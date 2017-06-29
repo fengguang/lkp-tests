@@ -86,6 +86,11 @@ run_test()
 	elif [ "${test#*-}" != "$test" ]; then
 
 		generic_fs_ignore="/$BENCHMARK_ROOT/xfstests/generic-$fs-ignore"
+		ignored_tests=$(sed "s:^:${test%-*}/:" $test_dir/$test | grep -v -F -f "$test_ignore")
+		for ignored_test in $ignored_tests
+		do
+			echo "ignored by lkp: $ignored_test"
+		done
 
 		# Ignore generic-btrfs test cases by generic-btrfs-ignore which call _require_xfs_io_command since only in this case they would fail.
 		if [ "${test%-*}" = "generic" ] && [ -s "$generic_fs_ignore" ]; then
