@@ -94,9 +94,9 @@ run_test()
 			do
 				echo "ignored by lkp: $ignored_test"
 			done
-			all_tests=$(sed "s:^:${test%-*}/:" $test_dir/$test | grep -v -F -f "$generic_fs_ignore")
+			all_tests=$(sed "s:^:${test%-*}/:" $test_dir/$test | grep -v -F -f "$test_ignore" | grep -v -F -f "$generic_fs_ignore")
 		else
-			all_tests=$(sed "s:^:${test%-*}/:" $test_dir/$test)
+			all_tests=$(sed "s:^:${test%-*}/:" $test_dir/$test | grep -v -F -f "$test_ignore")
 		fi
 	else
 		# Now rename $test-broken to $test-ignore wihch is easier to understand.
