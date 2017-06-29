@@ -74,6 +74,9 @@ run_test()
 
 	local test_dir="$LKP_SRC/pack/xfstests-addon/tests"
 
+	# the ignore file like xfs-ignore, but $test like xfs-group1, so need to get its prefix.
+	local test_ignore="$test_dir/${test%-*}-ignore"
+
 	if [ "${test#*-}" = "all" ]; then
 		all_tests=$(cd tests && ls ${test%-*}/[0-9][0-9][0-9])
 	elif [ "${test#*-}" = "new" ]; then
@@ -97,23 +100,23 @@ run_test()
 		fi
 	else
 		# Now rename $test-broken to $test-ignore wihch is easier to understand.
-		# Use $test_dir/$test-ignore and /$BENCHMARK_ROOT/$casename/ignore to skip tests which are hard to enable.
+		# Use $test_ignore and $BENCHMARK_ROOT/$casename/ignore to skip tests which are hard to enable.
 		pack_ignore="/$BENCHMARK_ROOT/xfstests/ignore"
-		ignored_tests=$(cd tests && ls $test/[0-9][0-9][0-9] | grep -F -f $test_dir/$test-ignore)
+		ignored_tests=$(cd tests && ls $test/[0-9][0-9][0-9] | grep -F -f "$test_ignore")
 		for ignored_test in $ignored_tests
 		do
 			echo "ignored by lkp: $ignored_test"
 		done
 
 		if [ -s "$pack_ignore" ]; then
-			all_tests=$(cd tests && ls $test/[0-9][0-9][0-9] | grep -v -F -f $test_dir/$test-ignore | grep -v -F -f "$pack_ignore")
+			all_tests=$(cd tests && ls $test/[0-9][0-9][0-9] | grep -v -F -f "$test_ignore" | grep -v -F -f "$pack_ignore")
 			ignore_pack_tests=$(cd tests && ls $test/[0-9][0-9][0-9] | grep -v -F -f "$pack_ignore")
 			for ignored_test in $ignored_pack_tests
 			do
 				echo "ignored by lkp: $ignored_test"
 			done
 		else
-			all_tests=$(cd tests && ls $test/[0-9][0-9][0-9] | grep -v -F -f $test_dir/$test-ignore)
+			all_tests=$(cd tests && ls $test/[0-9][0-9][0-9] | grep -v -F -f "$test_ignore")
 		fi
 	fi
 
