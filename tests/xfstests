@@ -86,7 +86,7 @@ run_test()
 	elif [ "${test#*-}" != "$test" ]; then
 
 		generic_fs_ignore="/$BENCHMARK_ROOT/xfstests/generic-$fs-ignore"
-		ignored_tests=$(sed "s:^:${test%-*}/:" $test_dir/$test | grep -v -F -f "$test_ignore")
+		ignored_tests=$(sed "s:^:${test%-*}/:" $test_dir/$test | grep -F -f "$test_ignore")
 		for ignored_test in $ignored_tests
 		do
 			echo "ignored by lkp: $ignored_test"
@@ -115,7 +115,7 @@ run_test()
 
 		if [ -s "$pack_ignore" ]; then
 			all_tests=$(cd tests && ls $test/[0-9][0-9][0-9] | grep -v -F -f "$test_ignore" | grep -v -F -f "$pack_ignore")
-			ignore_pack_tests=$(cd tests && ls $test/[0-9][0-9][0-9] | grep -v -F -f "$pack_ignore")
+			ignore_pack_tests=$(cd tests && ls $test/[0-9][0-9][0-9] | grep -F -f "$pack_ignore")
 			for ignored_test in $ignored_pack_tests
 			do
 				echo "ignored by lkp: $ignored_test"
