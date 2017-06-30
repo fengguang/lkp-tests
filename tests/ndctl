@@ -22,4 +22,4 @@ override nd_pmem * extra
 EOF
 
 LD_LIBRARY_PATH=/lkp/benchmarks/ndctl/lib \
-/lkp/benchmarks/ndctl/bin/ndctl test
+/lkp/benchmarks/ndctl/bin/ndctl test 2>&1
