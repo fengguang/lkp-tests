@@ -6,13 +6,10 @@ check_param()
 
 	log_cmd cd $BENCHMARK_ROOT/$casename/src/test || die "Can not find $casename/src/test dir"
 
-	if [[ "$test" = "non-pmem" ]]; then
+	if [[ "$test" = "non-pmem" ]] || [[ "$test" = "pmem" ]] || [[ "$test" = "none" ]]; then
 		local tmp_dir=$(mktemp -d)
 		echo "NON_PMEM_FS_DIR=$tmp_dir" > testconfig.sh
-	elif [[ "$test" = "pmem" ]]; then
-		echo "PMEM_FS_DIR=/fs/pmem0" > testconfig.sh
-	elif [[ "$test" = "none" ]]; then
-		:
+		echo "PMEM_FS_DIR=/fs/pmem0" >> testconfig.sh
 	else
 		die "Parameter \"test\" is wrong"
 	fi
