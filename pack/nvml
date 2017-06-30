@@ -63,6 +63,68 @@ build_ignore_file()
 	echo "obj_pmalloc_mt" >> ignore
 }
 
+# Automatically detect and generate new groups for each fs-types
+build_generate_testgroup()
+{
+	cd $source_dir/src/test
+	rm -f group_none group_non-pmem group_pmem group_by_fs_type.yaml
+
+	# 1.find out the groups
+	#   directoy obj_bucket, obj_list, blk_pool,blk_nblock will be treat as two
+	#   groups named obj and blk that we can find at LKP_SRC/job/nvml.yaml
+	# 2.find out the fs-type for each 2. find out the fs-type for each groupgroup
+	#   travel $group/TESTx, it will match one of bellow rule
+	#     a. keyword: require_fs_type none  -> put into fs_type none
+	#     b. keyword: require_fs_type non-pmem -> put into fs_type non-pmem
+	#     c. keyword: require_fs_type pmem -> put into fs_type pmem
+	#     d. keyword: require_fs_type any -> put into fs_type both non-pmem and pmem
+	#     e. no keyword 'require_fs_type' -> put into fs_type both non-pmem and pmem
+	for nvml_case in `ls`
+	do
+		[ -f "$nvml_case/TEST0" ] || continue
+		[ -x "$nvml_case/TEST0" ] || continue
+		cd $nvml_case
+		scripts=`ls -1 TEST* | grep -v -i -e "\.ps1" | sort -V`
+
+		for run_script in $scripts
+		do
+			req_fs=`grep -w "require_fs_type" $run_script` || {
+				echo  $nvml_case >> ../group_pmem
+				echo  $nvml_case >> ../group_non-pmem
+				continue
+			}
+			fs_type=`echo ${req_fs:15}`
+			for type in $fs_type
+			do
+				case "$type"
+				in
+				any)
+					echo $nvml_case >> ../group_pmem
+					echo $nvml_case >> ../group_non-pmem
+					;;
+				non-pmem)
+					echo $nvml_case >>../group_non-pmem
+					;;
+				pmem)
+					echo $nvml_case >>../group_pmem
+					;;
+				none)
+					echo $nvml_case >>../group_none
+					;;
+				esac
+			done
+		done
+		cd - >/dev/null
+	done
+	for type in pmem non-pmem none
+	do
+	    echo "$type:" >> group_by_fs_type.yaml
+	    awk -F '_' '{print $1}' group_$type | sort -u | sed 's/^/  - /g'>> group_by_fs_type.yaml
+	done
+	rm -f group_none group_non-pmem group_pmem
+	return 0
+}
+
 # The dax tests need ndctl tool to create dax device.
 # See more details at https://nvdimm.wiki.kernel.org.
 build_install_ndctl()
@@ -90,6 +152,7 @@ build()
 	build_install_valgrind_pmem || return
 	build_install_libcxx || return
 	build_ignore_file || return
+	build_generate_testgroup || return
 	build_user_filter_file || return
 	build_install_ndctl || return
 }
