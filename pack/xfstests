@@ -25,7 +25,7 @@ build_ignore_file()
 	git grep "_require_xfs_mkfs_without_validation" | grep -v "common/" | awk -F '[:/]' '{print $3}' > ignore
 	git grep _require_xfs_io_command | grep -E "fzero|fcollapse|finsert|fcollapse" | grep generic | awk -F '[:/]' '{print $3}' > generic-btrfs-ignore
 	echo 015 >> generic-btrfs-ignore
-	echo -e "066\n091\n263\n240" >> generic-f2fs-ignore
+	echo -e "066\n091\n263\n240\n102\n103\n204" >> generic-f2fs-ignore
 }
 
 build()
