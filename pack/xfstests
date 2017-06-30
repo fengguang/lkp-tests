@@ -2,12 +2,13 @@
 
 download()
 {
-	git_clone_update git://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git
 	git_clone_update git://oss.sgi.com/xfs/cmds/xfsprogs
+	git_clone_update git://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git
 }
 
 build_install()
 {
+	cd ../xfsprogs || return
 	make || return
 	make install-dev
 
