@@ -36,8 +36,8 @@ class IrqAnalysis
 
     puts "irq_nr: #{@irq_nr}"
     puts "softirq_nr: #{@softirq_nr}"
-    puts "irq_time: #{@irq_time}us"
-    puts "softirq_time: #{@softirq_time}us"
+    puts "irq_time: #{@irq_time}"
+    puts "softirq_time: #{@softirq_time}"
   end
 
   def mismatch(s1, s2)
