@@ -21,3 +21,14 @@ unixbench:
   - fstime
   - fsbuffer
   - fsdisk
+
+---
+
+# execl uses a lot of mmap syscall which will cause perf to record
+# a huge amounts of those events. perf record then will not be able
+# to finish processing the captured perf.data before the test is done.
+perf-profile:
+  duration: 2
+
+unixbench:
+  test: execl
