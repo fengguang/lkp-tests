@@ -50,6 +50,28 @@ group:
 ---
 test: pmem
 
+group:
+  - blk
+  - bttdevice
+  - ex
+  - libpmempool
+  - log
+  - magic
+  - obj
+  - out
+  - pmem
+  - pmemobjcli
+  - pmempool
+  - pmemspoil
+  - remote
+  - rpmem
+  - rpmemd
+  - set
+  - unicode
+  - util
+  - vmem
+  - vmmalloc
+
 disk:
   nr_pmem: 1
 
