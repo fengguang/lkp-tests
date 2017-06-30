@@ -25,14 +25,19 @@ check_param()
 	[[ -n "$testcases" ]] || die "Parameter \"group\" is invalid"
 }
 
+setup_compiler()
+{
+	log_cmd export CC=clang
+	log_cmd export CXX=clang++
+}
+
 build_env()
 {
 	local casename=$1
 
 	log_cmd cd $BENCHMARK_ROOT/$casename
 
-	log_cmd export CC=clang
-	log_cmd export CXX=clang++
+	setup_compiler
 
 	# All C++ container tests need customized version of libc --libc++ to compile. So specify the path of libc++ to make.
 	log_cmd make EXTRA_CFLAGS=-DUSE_VALGRIND USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1/ LIBCPP_LIBDIR=/usr/local/libcxx/lib || return
