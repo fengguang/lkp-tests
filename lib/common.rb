@@ -288,3 +288,13 @@ end
 def delete_file_if_exist(file)
   File.exist?(file) and File.delete(file)
 end
+
+LOCAL_RUN_ENV="LKP_LOCAL_RUN"
+
+def local_run?
+  ENV[LOCAL_RUN_ENV]
+end
+
+def set_local_run
+  ENV[LOCAL_RUN_ENV] = "1"
+end
