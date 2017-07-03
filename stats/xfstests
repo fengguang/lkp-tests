@@ -17,7 +17,7 @@ def stat_line(line, results)
   when /^(generic|shared|ext4|xfs|btrfs|udf)\/(\d\d\d)\s+(\d+)s/
     puts "#{$1}.#{$2}.seconds: #{$3}"
   when /^(ignored by lkp): (.*)/
-    puts "#{$1.tr(' ', '_')}.ignored_by_lkp: 1"
+    puts "#{$2.tr('/', '.')}.ignored_by_lkp: 1"
   end
 end
 
