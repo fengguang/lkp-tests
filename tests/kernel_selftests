@@ -17,19 +17,17 @@ cd $linux_selftests_dir/tools/testing/selftests || die
 
 prepare_for_test
 
+# breakpoints: skip breakpoints when running host hanging dead
+# timers: counting 5 update interrupts from reading /dev/rtc0
+# hanging for a long time and cannot be finished
+skip_filter="breakpoints timers powerpc"
+
 for mf in */Makefile; do
 	subtest=${mf%/Makefile}
 
 	check_makefile $subtest || continue
 
-	# skip breakpoints when running host hanging dead 
-	[[ $subtest = "breakpoints" ]] && continue
-
-	# counting 5 update interrupts from reading /dev/rtc0
-	# hanging for a long time and cannot be finished
-	[[ $subtest = "timers" ]] && continue
-
-	[[ $subtest = "powerpc" ]] && continue
+	subtest_in_skip_filter "$skip_filter" && continue
 
 	if [[ $subtest = "efivarfs" ]]; then
 		prepare_for_efivarfs || continue
