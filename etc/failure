@@ -4,3 +4,4 @@ stderr.*
 .+\..+(fail|crash|timeout|warn|dmesg-warn|dmesg-fail|inconsistent_fs)$
 last_state.*
 lkp-bug.*
+.+\.(error|warn).*
