@@ -96,8 +96,8 @@ while (line = STDIN.gets)
     next unless testname
     # do not count make fail in nr_test, which is for sub test number
     stats << "#{testname}.make_fail: 1"
-  when /^skip (.*) test:/
-    stats << "#{$1}.test_skip: 1"
+  when /^ignored_by_lkp (.*) test/
+    stats << "#{$1}.ignored_by_lkp: 1"
   else
     if testname == 'futex'
       futex_stat(line, tests_stats['futex'], stats)
@@ -116,5 +116,5 @@ unless mqueue_speed.empty?
 end
 
 stats.uniq.each { |stat| puts stat }
-nr_test = stats.count { |k, _v| k !~ /\.make_fail|\.test_skip/ }
+nr_test = stats.count { |k, _v| k !~ /\.make_fail|\.ignored_by_lkp/ }
 puts "total_test: #{nr_test}" if nr_test.nonzero?
