@@ -3,5 +3,5 @@ memory: 320G
 nr_cpu: 80
 nr_hdd_partitions: 0
 hdd_partitions: 
-swap_partitions:
+swap_partitions: LABEL=SWAP
 rootfs_partition: 
