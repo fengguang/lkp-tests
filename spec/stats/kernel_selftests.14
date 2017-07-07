@@ -2,5 +2,5 @@
 
 make: Entering directory '/usr/src/linux-selftests-x86_64-rhel-7.2-d5adbfcd5f7bcc6fa58a41c5c5ada0e5c826ce2c/tools/testing/selftests/sigaltstack'
 gcc -Wall    sas.c   -o sas
-mmap()
+selftests:  sas [FAIL]
 make: Leaving directory '/usr/src/linux-selftests-x86_64-rhel-7.2-d5adbfcd5f7bcc6fa58a41c5c5ada0e5c826ce2c/tools/testing/selftests/sigaltstack'

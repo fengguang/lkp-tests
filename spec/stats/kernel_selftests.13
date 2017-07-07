@@ -1,13 +1,15 @@
 # sigaltstack pass
 
-make: Entering directory '/usr/src/linux-selftests-x86_64-rhel-7.2-d5adbfcd5f7bcc6fa58a41c5c5ada0e5c826ce2c/tools/testing/selftests/sigaltstack'
-gcc -Wall    sas.c   -o sas
-[OK]	Initial sigaltstack state was SS_DISABLE
-[RUN]	signal USR1
-[OK]	sigaltstack is disabled in sighandler
-[RUN]	switched to user ctx
-[RUN]	signal USR2
-[OK]	Stack preserved
-[OK]	sigaltstack is still SS_AUTODISARM after signal
-[OK]	Test passed
-make: Leaving directory '/usr/src/linux-selftests-x86_64-rhel-7.2-d5adbfcd5f7bcc6fa58a41c5c5ada0e5c826ce2c/tools/testing/selftests/sigaltstack'
+make: Entering directory '/usr/src/linux-selftests-x86_64-rhel-7.2-6f7da290413ba713f0cdd9ff1a2a9bb129ef4f6c/tools/testing/selftests/sigaltstack'
+gcc -Wall    sas.c  -o /usr/src/linux-selftests-x86_64-rhel-7.2-6f7da290413ba713f0cdd9ff1a2a9bb129ef4f6c/tools/testing/selftests/sigaltstack/sas
+[OK]    Initial sigaltstack state was SS_DISABLE
+[RUN]   signal USR1
+[OK]    sigaltstack is disabled in sighandler
+[RUN]   switched to user ctx
+[RUN]   signal USR2
+[OK]    Stack preserved
+[OK]    sigaltstack is still SS_AUTODISARM after signal
+[OK]    Test passed
+selftests: sas [PASS]
+/usr/src/linux-selftests-x86_64-rhel-7.2-6f7da290413ba713f0cdd9ff1a2a9bb129ef4f6c/tools/testing/selftests/sigaltstack
+make: Leaving directory '/usr/src/linux-selftests-x86_64-rhel-7.2-6f7da290413ba713f0cdd9ff1a2a9bb129ef4f6c/tools/testing/selftests/sigaltstack'
