@@ -80,11 +80,11 @@ EOF
 test_choice()
 {
 	local file
-	log_cmd cp -af ras "$mount_points" || die "can not find ras dir"
+	log_cmd cp -af "$BENCHMARK_ROOT"/mce-test "$mount_points" || die "can not find mce-test dir"
 	#log_cmd umount /tmp; ln -s /opt/rootfs/tmp /tmp
 	#umount /tmp; rm -rf /tmp
 	#ln -s /opt/rootfs/tmp /tmp
-	cd "$mount_points"/ras
+	cd "$mount_points"/mce-test
 	for i in ${mce_case}; do
 		if grep -q "^$i" "$MCE_SCENARIO_DIR"/*; then
 			grep -h "^$i" "$MCE_SCENARIO_DIR"/* | awk '{print $1" "$2}' >> $MCE_CASELIST
@@ -94,7 +94,7 @@ test_choice()
 			return
 		fi
 	done
-	
+
 	./runmcetest -t $MCE_TMPDIR -s $MCE_SUMDIR -o $MCE_LOGDIR -b $MCE_TOOLDIR -l $MCE_CASELIST -r 1
 	exit_value=$?
 
@@ -104,9 +104,9 @@ test_choice()
 	if [[ $file ]]; then
 		cat "$file"
 	else
-		echo "WARNING: ras test results is not exist."
+		echo "WARNING: mce-test test results is not exist."
 	fi
-	rm -rf "$mount_points"/ras
+	rm -rf "$mount_points"/mce-test
 }
 
 if [ "$mce_case" == "all" ]; then

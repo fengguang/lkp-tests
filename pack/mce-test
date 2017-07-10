@@ -4,7 +4,6 @@ download()
 {
 	git_clone_update https://github.com/linux-test-project/ltp.git
 	git_clone_update https://git.kernel.org/pub/scm/utils/cpu/mce/mce-inject.git
-	git_clone_update git://bee.sh.intel.com:/git/ras.git
 	# keep it in the last to set the effective source_dir
 	git_clone_update https://git.kernel.org/pub/scm/utils/cpu/mce/mce-test.git
 }
@@ -15,9 +14,6 @@ build()
 
 	make
 	make -C ../mce-inject
-
-	cd ../ras
-	./mcetest_build.sh
 }
 
 install()
@@ -30,8 +26,6 @@ install()
 	cp -af ../mce-inject/mce-inject "$BM_ROOT"
 
 	cp -af ../ltp "$BM_ROOT"
-
-	cp -af ../ras "$BM_ROOT"
 }
 
 pack()
