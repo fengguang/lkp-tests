@@ -1,5 +1,5 @@
 #!/bin/bash
-# - test_mode
+# - mce_case
 
 ## The MCE test suite is a collection of tools and test scripts for
 ## testing the Linux RAS related features, including CPU/Memory
@@ -7,33 +7,43 @@
 
 shopt -s nullglob
 
-cd $BENCHMARK_ROOT/mce-test || exit
+[ -n "$mount_points" ] || die "\"mount_points\" is empty"
 
-. $LKP_SRC/lib/upload.sh
-. $LKP_SRC/lib/job.sh
-. $LKP_SRC/lib/debug.sh
+cd "$BENCHMARK_ROOT"/mce-test || exit
+
+. "$LKP_SRC"/lib/upload.sh
+. "$LKP_SRC"/lib/job.sh
+. "$LKP_SRC"/lib/debug.sh
 read_env_vars
 exit_value=0
 
-[[ "$test_mode" ]] || die "parameter \"test_mode\" is empty"
+[[ "$mce_case" ]] || die "parameter \"mce_case\" is empty"
+
+MCE_TOOLDIR=./bin
+MCE_TMPDIR=./work
+MCE_LOGDIR=./results
+MCE_SUMDIR=./summary
+MCE_SCENARIO_DIR=./groups
+MCE_CASELIST=./work/rastest.caselist
 
 test_all()
 {
-	echo > ./work/rastest.caselist <<EOF
+	cat > $MCE_CASELIST <<EOF
 APEI-INJ cases/function/apei-inj/runtest.sh
+EINJ-EXT cases/function/einj-ext/runtest.sh
 ERST-INJ cases/function/erst-inject/runtest.sh
+eMCA cases/function/emca-inj/runtest.sh
 PFA cases/function/pfa/runtest.sh
 HWPOISON-SOFT cases/function/hwpoison/run_soft.sh
 HWPOISON-HARD cases/function/hwpoison/run_hard.sh
 HWPOISON-HUGEPAGE cases/function/hwpoison/run_hugepage.sh
 HWPOISON-HUGEPAGE-OVERCOMMIT cases/function/hwpoison/run_hugepage_overcommit.sh
 HWPOISON-THP cases/function/hwpoison/run_thp.sh
-BSP cases/function/bsp/runtest.sh
 STRESS-HWPOISON-SOFT cases/stress/hwpoison/run_soft.sh
 STRESS-HWPOISON-HARD cases/stress/hwpoison/run_hard.sh
 EOF
 
-	./runmcetest -t ./work -s ./summary -o ./results -b ./bin -l ./work/rastest.caselist -r 1
+	./runmcetest -t $MCE_TMPDIR -s $MCE_SUMDIR -o $MCE_LOGDIR -b $MCE_TOOLDIR -l $MCE_CASELIST -r 1
 
 	[ "$nr_partitions" -ge 1 ] || exit
 	partition=${partitions%% *}
@@ -49,9 +59,9 @@ EOF
 
 	export TERM=linux # to quiet stderr message "TERM environment variable not set."
 
-	umount $partition
-	wipefs -a $partition
-	echo y | ./hwpoison.sh -c /dev/null -t $duration -d $partition -o $BENCHMARK_ROOT/mce-test/ltp -f $fs -L 2>&1
+	umount "$partition"
+	wipefs -a "$partition"
+	echo y | ./hwpoison.sh -c /dev/null -t $duration -d "$partition" -o "$BENCHMARK_ROOT"/mce-test/ltp -f "$fs" -L 2>&1
 	exit_value=$?
 
 	## currently, always can not pass this testing, so disable it temporarily.
@@ -61,29 +71,48 @@ EOF
 	#	exit_value=$?
 	#fi
 
-	upload_files -t results $BENCHMARK_ROOT/mce-test/cases/stress/hwpoison/log \
-		$BENCHMARK_ROOT/mce-test/cases/stress/hwpoison/result
+	upload_files -t results ./log \
+		./result
 
 	rm -fr "$tmp_dir"
 }
 
-test_ras()
+test_choice()
 {
-	cd ras || die "can not find ras dir"
-	./mcetest_exec.sh
+	local file
+	log_cmd cp -af ras "$mount_points" || die "can not find ras dir"
+	#log_cmd umount /tmp; ln -s /opt/rootfs/tmp /tmp
+	#umount /tmp; rm -rf /tmp
+	#ln -s /opt/rootfs/tmp /tmp
+	cd "$mount_points"/ras
+	for i in ${mce_case}; do
+		if grep -q "^$i" "$MCE_SCENARIO_DIR"/*; then
+			grep -h "^$i" "$MCE_SCENARIO_DIR"/* | awk '{print $1" "$2}' >> $MCE_CASELIST
+		else
+			echo "mce test case: $i not found"
+			exit_value=1
+			return
+		fi
+	done
+	
+	./runmcetest -t $MCE_TMPDIR -s $MCE_SUMDIR -o $MCE_LOGDIR -b $MCE_TOOLDIR -l $MCE_CASELIST -r 1
 	exit_value=$?
 
-	file=($BENCHMARK_ROOT/mce-test/ras/summary/*.log)
+	#upload_files -t results  $MCE_LOGDIR/*
+
+	file=($MCE_SUMDIR/*.log)
 	if [[ $file ]]; then
-		cat $file
+		cat "$file"
 	else
 		echo "WARNING: ras test results is not exist."
 	fi
+	rm -rf "$mount_points"/ras
 }
 
-case "$test_mode" in
-	all)	test_all;;
-	ras)	test_ras;;
-esac
+if [ "$mce_case" == "all" ]; then
+	test_all
+else
+	test_choice
+fi
 
 exit $exit_value
