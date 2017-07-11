@@ -4,6 +4,7 @@ category: benchmark
 
 rootfs: inn:/export/debian-full-x86_64
 need_x: true
+timeout: 2h
 
 phoronix-test-suite:
   test:
