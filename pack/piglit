@@ -87,9 +87,7 @@ pack()
 		echo /lkp
 		echo /lkp/benchmarks
 		find /lkp/benchmarks/$BM_NAME
-		echo /usr/lib/x86_64-linux-gnu/libwaffle-1.so
-		echo /usr/lib/x86_64-linux-gnu/libwaffle-1.so.0
-		echo /usr/lib/x86_64-linux-gnu/libwaffle-1.so.0.*
+		find /usr/lib/x86_64-linux-gnu/libwaffle-1.so*
 	} |
 	cpio --quiet -o -H newc | gzip -n -9 > /lkp/benchmarks/${BM_NAME}.cgz
 	[[ $arch ]] && mv "/lkp/benchmarks/${BM_NAME}.cgz" "/lkp/benchmarks/${BM_NAME}-${arch}.cgz"
