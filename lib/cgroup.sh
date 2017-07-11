@@ -35,7 +35,7 @@ clear_cgroup2()
 		cgroups2=$(find $cgroup2_mount -type d | tail -n +2 | tac)
 		for cgroup2 in $cgroups2
 		do
-			rmdir cgroup2
+			rmdir $cgroup2
 		done
 		umount $cgroup2_mount
 	fi
@@ -79,10 +79,4 @@ create_cgroup2()
 	done
 
 	log_cmd mkdir -p $CGROUP2_MNT/$testcase
-	sub_controllers=$(cat $CGROUP2_MNT/$testcase/cgroup.controllers)
-
-	for controller in $sub_controllers
-	do
-		log_eval "echo '+$controller' >	'$CGROUP2_MNT/$testcase/cgroup.subtree_control'"
-	done
 }
