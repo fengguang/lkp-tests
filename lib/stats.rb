@@ -488,7 +488,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
       if is_failure_stat
         if max_a == 0
           has_boot_fix = true if k =~ /^dmesg\./
-          next if k !~ $kill_pattern_whitelist_re
+          next
         end
         # this relies on the fact dmesg.* comes ahead
         # of kmsg.* in etc/default_stats.yaml
