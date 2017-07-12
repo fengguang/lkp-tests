@@ -124,6 +124,10 @@ opts = OptionParser.new do |opts|
     $options['regression-only'] = true
   end
 
+  opts.on('--all-critical', 'show all critical changes') do
+    $options['all-critical'] = true
+  end
+
   opts.on("-D N", "--distance N", "threshold of changes") { |n|
     $options['distance'] = n.to_i
   }

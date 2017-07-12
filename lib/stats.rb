@@ -410,7 +410,7 @@ end
 def __get_changed_stats(a, b, is_incomplete_run, options)
   changed_stats = {}
 
-  if options['regression-only']
+  if options['regression-only'] || options['all-critical']
     has_boot_fix = (b['last_state.booting'] && !a['last_state.booting'])
   else
     has_boot_fix = nil
@@ -484,11 +484,12 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
                is_failure_stat, is_latency_stat,
                k, options)
 
-    if options['regression-only']
+    if options['regression-only'] || options['all-critical']
       if is_failure_stat
         if max_a == 0
           has_boot_fix = true if k =~ /^dmesg\./
-          next
+          next if options['regression-only'] ||
+            (k !~ $kill_pattern_whitelist_re && options['all-critical'])
         end
         # this relies on the fact dmesg.* comes ahead
         # of kmsg.* in etc/default_stats.yaml
