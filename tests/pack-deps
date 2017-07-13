@@ -62,6 +62,7 @@ do
 	#   libssl1.1
 	#   gawk
 	echo "$PACKAGE_LIST" | grep -F -f "$LKP_SRC/distro/keep-deb" > opt/deb/sequence-deb.$BM_NAME
+	echo "$PACKAGE_VERSION_LIST" > opt/deb/${BM_NAME}-deps.packages
 
 	if download "$PACKAGE_VERSION_LIST"; then
 		install || exit 1
