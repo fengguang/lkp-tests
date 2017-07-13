@@ -49,12 +49,17 @@ enable_remote_node()
 
 	# To fix no nodes provide. It takes another machines as remote nodes. We can use 
 	# localhost as remote node but need to do some configs as below.
+	# reference on follow link
+	# https://github.com/pmem/nvml/blob/3ab708efad653aeda0bcbc6b8d2b61d9ba9d5310/utils/docker/configure-tests.sh#L53
 	for n in {0..3}
 	do
 		echo "NODE[$n]=127.0.0.1" >> testconfig.sh
-		echo "NODE_WORKING_DIR[$n]=$BENCHMARK_ROOT/$casename/src/testremote" >> testconfig.sh
+		echo "NODE_WORKING_DIR[$n]=/tmp/node$n" >> testconfig.sh
+		echo "NODE_ADDR[$n]=127.0.0.1" >> testconfig.sh
+		echo "NODE_ENV[$n]=\"PMEM_IS_PMEM_FORCE=1\"" >> testconfig.sh
 	done
 
+	echo "TEST_PROVIDERS=sockets" >> testconfig.sh
 	# enable ssh localhost without password
 	pgrep -l sshd || die "ssh server do not run"
 
