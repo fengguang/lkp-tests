@@ -1,8 +1,5 @@
 model: Ivytown Ivy Bridge-EP
 nr_cpu: 48
 memory: 128G
-nr_hdd_partitions: 3
-hdd_partitions: /dev/disk/by-id/ata-ST2000NM0011*-part1
-rootfs_partition: /dev/disk/by-id/ata-ST2000NM0011_Z1P67EBL-part3
-swap_partitions: /dev/disk/by-id/ata-ST2000NM0011_Z1P67EBL-part2
+swap_partitions: LABEL=SWAP
 brand: Intel(R) Xeon(R) CPU E5-2697 v2 @ 2.70GHz
