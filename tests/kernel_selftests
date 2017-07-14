@@ -21,6 +21,7 @@ prepare_for_test
 # timers: counting 5 update interrupts from reading /dev/rtc0
 # hanging for a long time and cannot be finished
 skip_filter="breakpoints timers powerpc"
+command gcc-5 >/dev/null || skip_filter="x86 $skip_filter"
 
 for mf in */Makefile; do
 	subtest=${mf%/Makefile}
