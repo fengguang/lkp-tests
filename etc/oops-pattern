@@ -9,6 +9,7 @@ BUG .* \(.*\): .*
 Oops: .*
 WARNING: at .*
 WARNING: CPU: [0-9]+ PID: [0-9]+ at .*
+WARNING: possible recursive locking detected
 INFO: .*detected stall.*
 INFO: .* cpu=.*
 INFO: Slab 0x.*
