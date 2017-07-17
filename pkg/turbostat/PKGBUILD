@@ -26,6 +26,6 @@ build() {
 
 package() {
   cd "$srcdir/$pkgname"
-  mkdir -p "$pkgdir/lkp/benchmarks"
-  cp -a turbostat "$pkgdir/lkp/benchmarks/${pkgname}"
+  mkdir -p "$pkgdir/lkp/benchmarks/${pkgname}"
+  cp -a turbostat "$pkgdir/lkp/benchmarks/${pkgname}/${pkgname}"
 }
