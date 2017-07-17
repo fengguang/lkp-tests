@@ -63,7 +63,7 @@ pack_rpm() {
 	%install
 	# create directories where the files will be located
 	# put the files in the relevant directories
-	cp -a $INSTALL_DIR/usr \$RPM_BUILD_ROOT
+	cp -a $INSTALL_DIR/* \$RPM_BUILD_ROOT
 
 	%files
 	%defattr(-,root,root)
