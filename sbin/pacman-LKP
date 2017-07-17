@@ -48,8 +48,8 @@ pack_deb() {
 
 pack_rpm() {
 	local pkg_name=$1
-	mkdir -p $INSTALL_DIR/{BUILD,RPMS,S{OURCE,PEC,RPM}S}
-	cat > "$INSTALL_DIR/SPECS/$pkg_name.spec" <<-EOF
+	mkdir -p $RPM_BUILD_DIR/{BUILD,RPMS,S{OURCE,PEC,RPM}S}
+	cat > "$RPM_BUILD_DIR/SPECS/$pkg_name.spec" <<-EOF
 	Name: $pkg_name-LKP
 	Version: 1
 	License: None
@@ -71,13 +71,13 @@ pack_rpm() {
 
 	EOF
 
-	cat > "$INSTALL_DIR/.rpmmacros" <<-EOF
-	%_topdir $INSTALL_DIR
+	cat > "$RPM_BUILD_DIR/.rpmmacros" <<-EOF
+	%_topdir $RPM_BUILD_DIR
 	%_rpmfilename %%{NAME}.rpm
 	EOF
 
 	if have_function post_install; then
-		cat >> "$INSTALL_DIR/SPECS/$pkg_name.spec" <<-EOF
+		cat >> "$RPM_BUILD_DIR/SPECS/$pkg_name.spec" <<-EOF
 		%post
 		. $SRC_DIR/.install/.INSTALL
 		post_install
@@ -86,8 +86,8 @@ pack_rpm() {
 	fi
 
 	(
-		export HOME=$INSTALL_DIR
-		rpmbuild -bb "$INSTALL_DIR/SPECS/$pkg_name.spec"
+		export HOME=$RPM_BUILD_DIR
+		rpmbuild -bb "$RPM_BUILD_DIR/SPECS/$pkg_name.spec"
 	)
 }
 
@@ -122,8 +122,9 @@ upgrade() {
 				}
 				;;
 			rpm)
+				RPM_BUILD_DIR="$SRC_DIR/rpm_build"
 				pack_rpm "$pkg_name"
-				rpm -ivh --replacepkgs --force  "install/RPMS/$pkg_name-LKP.rpm" || return 1 ;;
+				rpm -ivh --replacepkgs --force  "$RPM_BUILD_DIR/RPMS/$pkg_name-LKP.rpm" || return 1 ;;
 			*)
 				cp -r "$INSTALL_DIR/usr" / || return 1 ;;
 		esac
