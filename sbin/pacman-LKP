@@ -43,7 +43,7 @@ pack_deb() {
 	EOF
 	chmod +x $INSTALL_DIR/DEBIAN/postinst
 	fi
-	dpkg-deb --build install
+	dpkg-deb --build "$pkg_name-lkp"
 }
 
 pack_rpm() {
@@ -106,7 +106,7 @@ upgrade() {
 	local SRC_DIR
 	SRC_DIR=$(pwd)
 	local pkg_name=${SRC_DIR##*/}
-	local INSTALL_DIR=$SRC_DIR/install
+	local INSTALL_DIR="$SRC_DIR/$pkg_name-lkp"
 	[ -d "$INSTALL_DIR" ] || mkdir "$INSTALL_DIR"
 	[ -d "$SRC_DIR/.install" ] || mkdir "$SRC_DIR/.install"
 	tar -zxf "$@" -C "$INSTALL_DIR"
@@ -116,7 +116,7 @@ upgrade() {
 		case $(distro_pkg_format) in
 			deb)
 				pack_deb "$pkg_name"
-				dpkg -i install.deb 2>/tmp/dpkg_error || {
+				dpkg -i "$pkg_name-lkp.deb" 2>/tmp/dpkg_error || {
 					grep -v "dpkg: warning: files list file for package '.*' missing;" /tmp/dpkg_error
 					return 1
 				}
