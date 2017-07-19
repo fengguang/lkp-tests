@@ -6,6 +6,13 @@
 
 start_time=$(date +%s.%N)
 
+# ffmpeg only support max 64 threads
+fixup_ffmpeg()
+{
+	local target=/var/lib/phoronix-test-suite/installed-tests/pts/ffmpeg-2.5.0/ffmpeg
+	grep -q -w 'NUM_CPU_CORES=64' $target || sed "2a[ \$NUM_CPU_CORES -gt 64 ] && export NUM_CPU_CORES=64" -i "$target"
+}
+
 case $test in
 	systester-[0-9]*)
 		# Choose
@@ -14,6 +21,9 @@ case $test in
 		# 3: 4 threads [2+ Cores Recommended]
 		# todo: select different test according to testbox's hardware
 		test_opt="\n1\n2\n3\nn"
+		;;
+	ffmpeg-2.5.0)
+		fixup_ffmpeg
 		;;
 esac
 
