@@ -68,6 +68,8 @@ build_ignored_by_lkp()
 	git grep -B 2 -w 'require_under_vm' .. | grep '\-def ' | grep -v _test | awk -F' test_' '{print $2}' | awk -F'(' '{print $1}' > require_under_vm
 
 	git grep -E -e 'def test.*oom' -e 'def test.*out_of_memory' .. | awk -F 'test_' '{print $3}'| awk -F '(' '{print $1}' > setup_oom
+
+	echo "tdls_chan_switch" > tdls_chan_switch
 }
 
 install()
