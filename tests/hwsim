@@ -28,18 +28,18 @@ log_cmd ./start.sh || die "fail to setup test environment"
 check_ignore_case()
 {
 	local casename=$1
+	local ignored_by_lkp=$BENCHMARK_ROOT/hwsim/tests/hwsim/ignored-by-lkp/
 
 	[ -f $LKP_SRC/pack/hwsim-addon/oom_is_passed ] &&
 	grep -q -w $casename $LKP_SRC/pack/hwsim-addon/oom_is_passed && return 1
 
-	# skip cases that want to setup oom environment
-	([ -f $BENCHMARK_ROOT/hwsim/tests/hwsim/setup_oom ] &&
-	grep -q -w $casename $BENCHMARK_ROOT/hwsim/tests/hwsim/setup_oom) ||
 	# skip rrm_beacon_req_table_vht at 0Day environment
-	([ "$LKP_LOCAL_RUN" != "1" ] && [ "$casename" = "rrm_beacon_req_table_vht" ]) ||
-	# skip require run under vm
-	([ -f $BENCHMARK_ROOT/hwsim/tests/hwsim/require_under_vm ] &&
-	grep -q -w $casename $BENCHMARK_ROOT/hwsim/tests/hwsim/require_under_vm)
+	[ "$LKP_LOCAL_RUN" != "1" ] && [ "$casename" = "rrm_beacon_req_table_vht" ] && return 0
+
+	# skip cases that in ignored_by_lkp
+	[ -d "$ignored_by_lkp" ] && grep -q -w $casename "$ignored_by_lkp"/* && return 0
+
+	return 1
 }
 
 while read casename

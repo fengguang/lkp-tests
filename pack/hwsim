@@ -50,8 +50,12 @@ build_hwsim_param_long()
 	git grep -B 2 -w 'if not params\['\'long\'] | grep '.*\.py\-def' | awk -F 'def ' '{print $2}' | awk -F'(' '{print $1}' | sed s/test_//g > require_long_param
 }
 
-build_hwsim_require_under_vm()
+build_ignored_by_lkp()
 {
+	local ignored_by_lkp=$source_dir/tests/hwsim/ignored-by-lkp/
+	[[ -d $ignored_by_lkp ]] || mkdir $ignored_by_lkp || return
+	cd $ignored_by_lkp
+
 	# try to find out the case requiring under vm
 	# root@debian9:/lkp/benchmarks/hwsim/tests/hwsim# git grep -B 2 -w 'require_under_vm'
 	# test_ap_dynamic.py-import hwsim_utils
@@ -61,21 +65,17 @@ build_hwsim_require_under_vm()
 	# test_ap_dynamic.py-def test_ap_iapp(dev, apdev):
 	# test_ap_dynamic.py-    """IAPP and multiple BSSes"""
 	# test_ap_dynamic.py:    require_under_vm()
-	cd $source_dir/tests/hwsim
-	git grep -B 2 -w 'require_under_vm' | grep '\-def ' | grep -v _test | awk -F' test_' '{print $2}' | awk -F'(' '{print $1}' > require_under_vm
-}
+	git grep -B 2 -w 'require_under_vm' .. | grep '\-def ' | grep -v _test | awk -F' test_' '{print $2}' | awk -F'(' '{print $1}' > require_under_vm
 
-build_hwsim_setup_oom()
-{
-	cd $source_dir/tests/hwsim
-	git grep -E -e 'def test.*oom' -e 'def test.*out_of_memory' | awk -F 'test_' '{print $3}'| awk -F '(' '{print $1}' > setup_oom
+	git grep -E -e 'def test.*oom' -e 'def test.*out_of_memory' .. | awk -F 'test_' '{print $3}'| awk -F '(' '{print $1}' > setup_oom
 }
 
 install()
 {
 	build_hwsim_param_long
-	build_hwsim_require_under_vm
-	build_hwsim_setup_oom
+
+	build_ignored_by_lkp || return
+
 	cd $source_dir
 	$LKP_SRC/tools/hwsim-extract-testcase $source_dir/tests/hwsim
 	cp -af $source_dir/* $BM_ROOT
