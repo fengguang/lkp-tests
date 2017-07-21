@@ -73,6 +73,9 @@ build_ignored_by_lkp()
 	echo "# ignore _lifetime_in_memory_" >> $ignored_by_lkp
 	git grep -E -e 'def test.*lifetime_in_memory' | awk -F 'test_' '{print $3}'| awk -F '(' '{print $1}' >> $ignored_by_lkp
 
+	echo "# ignore _ap_vht160_no_dfs_" >> $ignored_by_lkp
+	git grep -E -e 'def test.ap_vht160_no_dfs' .. | awk -F 'test_' '{print $3}'| awk -F '(' '{print $1}' >> $ignored_by_lkp
+
 	echo "# ignore _tdls_chan_switch_" >> $ignored_by_lkp
 	echo "tdls_chan_switch" >> $ignored_by_lkp
 }
