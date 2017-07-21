@@ -78,6 +78,9 @@ build_ignored_by_lkp()
 
 	echo "# ignore _tdls_chan_switch_" >> $ignored_by_lkp
 	echo "tdls_chan_switch" >> $ignored_by_lkp
+
+	echo "# ignore _autogo_join_auto_go_neg_after_seeing_go_" >> $ignored_by_lkp
+	echo "autogo_join_auto_go_neg_after_seeing_go" >> $ignored_by_lkp
 }
 
 install()
