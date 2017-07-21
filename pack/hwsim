@@ -52,9 +52,8 @@ build_hwsim_param_long()
 
 build_ignored_by_lkp()
 {
-	local ignored_by_lkp=$source_dir/tests/hwsim/ignored-by-lkp/
-	[[ -d $ignored_by_lkp ]] || mkdir $ignored_by_lkp || return
-	cd $ignored_by_lkp
+	local ignored_by_lkp="ignored_by_lkp"
+	cd $source_dir/tests/hwsim
 
 	# try to find out the case requiring under vm
 	# root@debian9:/lkp/benchmarks/hwsim/tests/hwsim# git grep -B 2 -w 'require_under_vm'
@@ -65,11 +64,14 @@ build_ignored_by_lkp()
 	# test_ap_dynamic.py-def test_ap_iapp(dev, apdev):
 	# test_ap_dynamic.py-    """IAPP and multiple BSSes"""
 	# test_ap_dynamic.py:    require_under_vm()
-	git grep -B 2 -w 'require_under_vm' .. | grep '\-def ' | grep -v _test | awk -F' test_' '{print $2}' | awk -F'(' '{print $1}' > require_under_vm
+	echo "# ignore _require_under_vm_" >> $ignored_by_lkp
+	git grep -B 2 -w 'require_under_vm' | grep '\-def ' | grep -v _test | awk -F' test_' '{print $2}' | awk -F'(' '{print $1}' >> $ignored_by_lkp
 
-	git grep -E -e 'def test.*oom' -e 'def test.*out_of_memory' .. | awk -F 'test_' '{print $3}'| awk -F '(' '{print $1}' > setup_oom
+	echo "# ignore _setup_oom_" >> $ignored_by_lkp
+	git grep -E -e 'def test.*oom' -e 'def test.*out_of_memory' | awk -F 'test_' '{print $3}'| awk -F '(' '{print $1}' >> $ignored_by_lkp
 
-	echo "tdls_chan_switch" > tdls_chan_switch
+	echo "# ignore _tdls_chan_switch_" >> $ignored_by_lkp
+	echo "tdls_chan_switch" >> $ignored_by_lkp
 }
 
 install()
