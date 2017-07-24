@@ -276,10 +276,10 @@ install_deb()
 	for keepfile in $(ls -rt /opt/deb/keep-deb*)
 	do
 		echo "handle $keepfile..."
-		# due to gwak pkg including pre-dependency definition, 
+		# due to gwak pkg including pre-dependency definition,
 		# gawk dependent libreadline7 install first.
-		# so we generated keep-deb file which contains installation sequence, 
-		# and line by line installation. 
+		# so we generated keep-deb file which contains installation sequence,
+		# and line by line installation.
 		while read -r filename
 		do
 			echo "install debs round two: dpkg -i --force-depends /opt/deb/$filename"
