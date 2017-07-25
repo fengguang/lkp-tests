@@ -6,6 +6,11 @@
 
 cd $BENCHMARK_ROOT/libhugetlbfs || die "can not cd libhugetlbfs"
 
+resource=$(ls resource-*.tar.gz)
+[ -f $resource ] || die "can not find resource*.tar.gz file"
+
+pip install $resource
+
 log_cmd make || die "make failed"
 
 [ -z $pagesize -o -z $pagenum ] && die "invalid parameter"
