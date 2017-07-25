@@ -67,7 +67,7 @@ setup_test_env()
 
 	[[ -d /mnt/ocfs2 ]] || mkdir -p /mnt/ocfs2
 
-	umount $partition 2>/dev/null
+	umount /mnt/ocfs2 2>/dev/null
 
 	return 0
 }
