@@ -63,6 +63,8 @@ setup_test_env()
 		partition=${hdd_partitions%% *}
 	fi
 
+	partition=$(realpath $partition)
+
 	chmod 755 $partition
 
 	[[ -d /mnt/ocfs2 ]] || mkdir -p /mnt/ocfs2
