@@ -81,6 +81,9 @@ build_ignored_by_lkp()
 
 	echo "# ignore _autogo_join_auto_go_neg_after_seeing_go_" >> $ignored_by_lkp
 	echo "autogo_join_auto_go_neg_after_seeing_go" >> $ignored_by_lkp
+
+	echo "# ignore _rrm_link_measurement_" >> $ignored_by_lkp
+	echo "rrm_link_measurement" >> $ignored_by_lkp
 }
 
 install()
