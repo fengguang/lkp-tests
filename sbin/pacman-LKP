@@ -27,7 +27,7 @@ query() {
 pack_deb() {
 	local pkg_name=$1
 	mkdir -p "$INSTALL_DIR/DEBIAN"
-	[ -f "$SRC_DIR/.install/.INSTALL" ] && mv "$SRC_DIR/.install/.INSTALL" "$SRC_DIR/install/DEBIAN/INSTALL"
+	[ -f "$SRC_DIR/.install/.INSTALL" ] && mv "$SRC_DIR/.install/.INSTALL" "$INSTALL_DIR/DEBIAN/INSTALL"
 	cat > "$INSTALL_DIR/DEBIAN/control" <<-EOF
 	Package: $pkg_name-LKP
 	Version: $(date +%F)
