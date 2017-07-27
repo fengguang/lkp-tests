@@ -23,7 +23,14 @@ EOF"
 
 [ $USER ] || log_eval export USER=root
 
-log_cmd ./start.sh || die "fail to setup test environment"
+require_mcc=$BENCHMARK_ROOT/hwsim/tests/hwsim/require_mcc
+
+add_extra_options()
+{
+	opt=
+	[ -f $BENCHMARK_ROOT/hwsim/tests/hwsim/require_long_param ] &&
+	grep -q -w $casename $BENCHMARK_ROOT/hwsim/tests/hwsim/require_long_param && opt="--long"
+}
 
 check_ignore_case()
 {
@@ -42,15 +49,33 @@ check_ignore_case()
 	return 1
 }
 
+log_cmd ./start.sh || die "fail to setup test environment"
+
 while read casename
 do
 	check_ignore_case $casename && echo "ignored_by_lkp $casename" && continue
 
-	[ -f $BENCHMARK_ROOT/hwsim/tests/hwsim/require_long_param ] &&
-	grep -q -w $casename $BENCHMARK_ROOT/hwsim/tests/hwsim/require_long_param && opt="--long"
+	[ -f $require_mcc ] &&
+	grep -q -w $casename $require_mcc && continue
+	
+	add_extra_options
 	log_echo "\
 	./run-tests.py $casename $opt"
 	./run-tests.py $casename $opt 2>&1
-	opt=
 done < $group_file
+log_cmd ./stop.sh
+
+# test with multi-channels
+[ -f $require_mcc ] || exit 0
+log_cmd ./start.sh channels=4 || die "fail to setup mcc test environment"
+
+grep -wf $group_file $require_mcc | while read casename
+do
+	check_ignore_case $casename && continue
+
+	add_extra_options
+	log_echo "\
+	./run-tests.py $casename $opt"
+	./run-tests.py $casename $opt 2>&1
+done
 log_cmd ./stop.sh

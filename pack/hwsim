@@ -50,6 +50,12 @@ build_hwsim_param_long()
 	git grep -B 2 -w 'if not params\['\'long\'] | grep '.*\.py\-def' | awk -F 'def ' '{print $2}' | awk -F'(' '{print $1}' | sed s/test_//g > require_long_param
 }
 
+build_hwsim_require_mcc()
+{
+    cd $source_dir/tests/hwsim
+    git grep -E -e 'def test.*mcc' | awk -F 'test_' '{print $3}'| awk -F '(' '{print $1}' > require_mcc
+}
+
 build_ignored_by_lkp()
 {
 	local ignored_by_lkp="ignored_by_lkp"
@@ -89,6 +95,7 @@ build_ignored_by_lkp()
 install()
 {
 	build_hwsim_param_long
+	build_hwsim_require_mcc
 
 	build_ignored_by_lkp || return
 
