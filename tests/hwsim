@@ -49,6 +49,8 @@ check_ignore_case()
 	return 1
 }
 
+log_cmd ./build.sh || die "fail to build test environment"
+
 log_cmd ./start.sh || die "fail to setup test environment"
 
 while read casename

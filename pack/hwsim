@@ -34,8 +34,6 @@ build()
 	else
 		echo "Warning: $hostapd_config not exist, failed to set CONFIG_SUITEB192=y"
 	fi
-
-	$RUN_QUIET ./tests/hwsim/build.sh
 }
 
 build_hwsim_param_long()
