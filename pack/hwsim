@@ -72,13 +72,11 @@ build_ignored_by_lkp()
 	git grep -B 2 -w 'require_under_vm' | grep '\-def ' | grep -v _test | awk -F' test_' '{print $2}' | awk -F'(' '{print $1}' >> $ignored_by_lkp
 
 	echo "# ignore _setup_oom_" >> $ignored_by_lkp
-	git grep -E -e 'def test.*oom' -e 'def test.*out_of_memory' | awk -F 'test_' '{print $3}'| awk -F '(' '{print $1}' >> $ignored_by_lkp
+	echo "eap_fast_tlv_nak_oom" >> $ignored_by_lkp
+	echo "fils_sk_hlp_oom" >> $ignored_by_lkp
 
 	echo "# ignore _lifetime_in_memory_" >> $ignored_by_lkp
 	git grep -E -e 'def test.*lifetime_in_memory' | awk -F 'test_' '{print $3}'| awk -F '(' '{print $1}' >> $ignored_by_lkp
-
-	echo "# ignore _ap_vht160_no_dfs_" >> $ignored_by_lkp
-	git grep -E -e 'def test.ap_vht160_no_dfs' .. | awk -F 'test_' '{print $3}'| awk -F '(' '{print $1}' >> $ignored_by_lkp
 
 	echo "# ignore _tdls_chan_switch_" >> $ignored_by_lkp
 	echo "tdls_chan_switch" >> $ignored_by_lkp
