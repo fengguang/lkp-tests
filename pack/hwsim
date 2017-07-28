@@ -71,21 +71,19 @@ build_ignored_by_lkp()
 	echo "# ignore _require_under_vm_" >> $ignored_by_lkp
 	git grep -B 2 -w 'require_under_vm' | grep '\-def ' | grep -v _test | awk -F' test_' '{print $2}' | awk -F'(' '{print $1}' >> $ignored_by_lkp
 
-	echo "# ignore _setup_oom_" >> $ignored_by_lkp
+	echo "# ignore _hostap_not_support_" >> $ignored_by_lkp
 	echo "eap_fast_tlv_nak_oom" >> $ignored_by_lkp
 	echo "fils_sk_hlp_oom" >> $ignored_by_lkp
 
-	echo "# ignore _lifetime_in_memory_" >> $ignored_by_lkp
+	echo "# ignore _hostap_not_support_lifetime_in_memory_" >> $ignored_by_lkp
 	git grep -E -e 'def test.*lifetime_in_memory' | awk -F 'test_' '{print $3}'| awk -F '(' '{print $1}' >> $ignored_by_lkp
 
-	echo "# ignore _tdls_chan_switch_" >> $ignored_by_lkp
+	echo "# ignore _mac80211_hwsim_not_support_" >> $ignored_by_lkp
 	echo "tdls_chan_switch" >> $ignored_by_lkp
-
-	echo "# ignore _autogo_join_auto_go_neg_after_seeing_go_" >> $ignored_by_lkp
-	echo "autogo_join_auto_go_neg_after_seeing_go" >> $ignored_by_lkp
-
-	echo "# ignore _rrm_link_measurement_" >> $ignored_by_lkp
 	echo "rrm_link_measurement" >> $ignored_by_lkp
+
+	echo "# ignore _result_is_not_stable_" >> $ignored_by_lkp
+	echo "autogo_join_auto_go_neg_after_seeing_go" >> $ignored_by_lkp
 }
 
 install()
