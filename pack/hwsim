@@ -84,6 +84,7 @@ build_ignored_by_lkp()
 
 	echo "# ignore _result_is_not_stable_" >> $ignored_by_lkp
 	echo "autogo_join_auto_go_neg_after_seeing_go" >> $ignored_by_lkp
+	echo "ap_vht160" >> $ignored_by_lkp
 }
 
 install()
