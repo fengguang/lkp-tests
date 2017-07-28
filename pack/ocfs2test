@@ -31,6 +31,7 @@ build()
 
 	cd ../ocfs2-test
 	patch_source
+	patch -p1 < $LKP_SRC/pack/ocfs2test02.patch || return
 	./autogen.sh prefix=/ || return
 
 	# include libc6-dev_2.23's header

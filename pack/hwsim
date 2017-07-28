@@ -14,7 +14,26 @@ build()
 	make install || return
 	cd -
 	patch_source || return
-	$RUN_QUIET ./tests/hwsim/build.sh
+
+	# support WPA-EAP-SUITE-B-192, example-wpa_supplicant.config and example-hostapd.config contains support options for build.
+	# hostapd_config_parse_key_mgmt() in hostapd/config_file.c will check "CONFIG_SUITEB192".
+	# if not set "CONFIG_SUITEB192=y", suite_b_192 can not be added into key_mnt.
+
+	# if example-wpa_supplicant.config and example-hostapd.config not exist, it means hostap(git://w1.fi/srv/git/hostap.git)
+	# remove the files, we need to check the option in the new configuration files
+	local wpa_supplicant_config="./tests/hwsim/example-wpa_supplicant.config"
+	local hostapd_config="./tests/hwsim/example-hostapd.config"
+
+	if [[ -f $wpa_supplicant_config ]]; then
+		grep -q -w "CONFIG_SUITEB192=y" $wpa_supplicant_config || echo "CONFIG_SUITEB192=y" >> $wpa_supplicant_config
+	else
+		echo "Warning: $wpa_supplicant_config not exist, failed to set CONFIG_SUITEB192=y"
+	fi
+	if [[ -f $hostapd_config ]]; then
+		grep -q -w "CONFIG_SUITEB192=y" $hostapd_config || echo "CONFIG_SUITEB192=y" >> $hostapd_config
+	else
+		echo "Warning: $hostapd_config not exist, failed to set CONFIG_SUITEB192=y"
+	fi
 }
 
 build_hwsim_param_long()
@@ -29,8 +48,17 @@ build_hwsim_param_long()
 	git grep -B 2 -w 'if not params\['\'long\'] | grep '.*\.py\-def' | awk -F 'def ' '{print $2}' | awk -F'(' '{print $1}' | sed s/test_//g > require_long_param
 }
 
-build_hwsim_require_under_vm()
+build_hwsim_require_mcc()
 {
+    cd $source_dir/tests/hwsim
+    git grep -E -e 'def test.*mcc' | awk -F 'test_' '{print $3}'| awk -F '(' '{print $1}' > require_mcc
+}
+
+build_ignored_by_lkp()
+{
+	local ignored_by_lkp="ignored_by_lkp"
+	cd $source_dir/tests/hwsim
+
 	# try to find out the case requiring under vm
 	# root@debian9:/lkp/benchmarks/hwsim/tests/hwsim# git grep -B 2 -w 'require_under_vm'
 	# test_ap_dynamic.py-import hwsim_utils
@@ -40,21 +68,33 @@ build_hwsim_require_under_vm()
 	# test_ap_dynamic.py-def test_ap_iapp(dev, apdev):
 	# test_ap_dynamic.py-    """IAPP and multiple BSSes"""
 	# test_ap_dynamic.py:    require_under_vm()
-	cd $source_dir/tests/hwsim
-	git grep -B 2 -w 'require_under_vm' | grep '\-def ' | grep -v _test | awk -F' test_' '{print $2}' | awk -F'(' '{print $1}' > require_under_vm
-}
+	echo "# ignore _require_under_vm_" >> $ignored_by_lkp
+	git grep -B 2 -w 'require_under_vm' | grep '\-def ' | grep -v _test | awk -F' test_' '{print $2}' | awk -F'(' '{print $1}' >> $ignored_by_lkp
 
-build_hwsim_setup_oom()
-{
-	cd $source_dir/tests/hwsim
-	git grep -E -e 'def test.*oom' -e 'def test.*out_of_memory' | awk -F 'test_' '{print $3}'| awk -F '(' '{print $1}' > setup_oom
+	echo "# ignore _setup_oom_" >> $ignored_by_lkp
+	echo "eap_fast_tlv_nak_oom" >> $ignored_by_lkp
+	echo "fils_sk_hlp_oom" >> $ignored_by_lkp
+
+	echo "# ignore _lifetime_in_memory_" >> $ignored_by_lkp
+	git grep -E -e 'def test.*lifetime_in_memory' | awk -F 'test_' '{print $3}'| awk -F '(' '{print $1}' >> $ignored_by_lkp
+
+	echo "# ignore _tdls_chan_switch_" >> $ignored_by_lkp
+	echo "tdls_chan_switch" >> $ignored_by_lkp
+
+	echo "# ignore _autogo_join_auto_go_neg_after_seeing_go_" >> $ignored_by_lkp
+	echo "autogo_join_auto_go_neg_after_seeing_go" >> $ignored_by_lkp
+
+	echo "# ignore _rrm_link_measurement_" >> $ignored_by_lkp
+	echo "rrm_link_measurement" >> $ignored_by_lkp
 }
 
 install()
 {
 	build_hwsim_param_long
-	build_hwsim_require_under_vm
-	build_hwsim_setup_oom
+	build_hwsim_require_mcc
+
+	build_ignored_by_lkp || return
+
 	cd $source_dir
 	$LKP_SRC/tools/hwsim-extract-testcase $source_dir/tests/hwsim
 	cp -af $source_dir/* $BM_ROOT

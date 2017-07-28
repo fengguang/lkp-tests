@@ -27,6 +27,8 @@ check_shared_package "$benchmark" && exit
 
 update
 
+apt-get install -yf
+
 [[ "$benchmark" = "all" ]] && benchmark="$(ls $LKP_SRC/distro/depends | grep -v -e '-dev' -e '-whitelist')"
 
 for BM_NAME in $benchmark
@@ -62,6 +64,7 @@ do
 	#   libssl1.1
 	#   gawk
 	echo "$PACKAGE_LIST" | grep -F -f "$LKP_SRC/distro/keep-deb" > opt/deb/sequence-deb.$BM_NAME
+	echo "$PACKAGE_VERSION_LIST" > opt/deb/${BM_NAME}-deps.packages
 
 	if download "$PACKAGE_VERSION_LIST"; then
 		install || exit 1

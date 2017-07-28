@@ -6,6 +6,7 @@
 # - io.max
 # - io.weight
 # - rdma.max
+# - pids.max
 
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh

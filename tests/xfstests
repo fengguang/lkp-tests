@@ -62,6 +62,25 @@ set_env()
 	fi
 }
 
+ignore_and_do_tests()
+{
+    local all_tests_cmd="$1"
+    local ignore_files="$2"
+    for ignore_file in $ignore_files
+    do
+        [ -s "$ignore_file" ] || continue
+        ignored_tests_cmd=${all_tests_cmd}" | grep -F -f $ignore_file"
+        all_tests_cmd=${all_tests_cmd}" | grep -v -F -f $ignore_file"
+    done
+    log_eval $ignored_tests_cmd
+    for ignored_test in $(eval $ignored_tests_cmd)
+    do
+        echo "ignored by lkp: $ignored_test"
+    done
+    log_eval $all_tests_cmd
+    log_cmd ./check $(eval $all_tests_cmd)
+}
+
 run_test()
 {
 	## Currently, we support the following several format's test item.
@@ -78,54 +97,25 @@ run_test()
 	local test_ignore="$test_dir/${test%-*}-ignore"
 
 	if [ "${test#*-}" = "all" ]; then
-		all_tests=$(cd tests && ls ${test%-*}/[0-9][0-9][0-9])
+		all_tests_cmd="cd tests && ls ${test%-*}/[0-9][0-9][0-9]"
+		ignore_and_do_tests "$all_tests_cmd"
 	elif [ "${test#*-}" = "new" ]; then
-		all_tests=$(cd tests && sed "s:^:${test%-*}/:" $test)
+		all_tests_cmd="cd tests && sed \"s:^:${test%-*}/:\" $test"
+		ignore_and_do_tests "$all_tests_cmd"
 	elif [ "${test%[a-z]-[0-9][0-9][0-9]}" != "$test" ]; then
-		all_tests="${test%-*}/${test#*-}"
+		all_tests_cmd="echo ${test%-*}/${test#*-}"
+		ignore_and_do_tests "$all_tests_cmd"
 	elif [ "${test#*-}" != "$test" ]; then
-
 		generic_fs_ignore="/$BENCHMARK_ROOT/xfstests/generic-$fs-ignore"
-		ignored_tests=$(sed "s:^:${test%-*}/:" $test_dir/$test | grep -F -f "$test_ignore")
-		for ignored_test in $ignored_tests
-		do
-			echo "ignored by lkp: $ignored_test"
-		done
-
-		# Ignore generic-btrfs test cases by generic-btrfs-ignore which call _require_xfs_io_command since only in this case they would fail.
-		if [ "${test%-*}" = "generic" ] && [ -s "$generic_fs_ignore" ]; then
-			ignored_generic_tests=$(sed "s:^:${test%-*}/:" $test_dir/$test | grep -F -f "$generic_fs_ignore")
-			for ignored_test in $ignored_generic_tests
-			do
-				echo "ignored by lkp: $ignored_test"
-			done
-			all_tests=$(sed "s:^:${test%-*}/:" $test_dir/$test | grep -v -F -f "$test_ignore" | grep -v -F -f "$generic_fs_ignore")
-		else
-			all_tests=$(sed "s:^:${test%-*}/:" $test_dir/$test | grep -v -F -f "$test_ignore")
-		fi
+		all_tests_cmd="sed \"s:^:${test%-*}/:\" $test_dir/$test"
+		ignore_and_do_tests "$all_tests_cmd" "$test_ignore $generic_fs_ignore"
 	else
 		# Now rename $test-broken to $test-ignore wihch is easier to understand.
 		# Use $test_ignore and $BENCHMARK_ROOT/$casename/ignore to skip tests which are hard to enable.
 		pack_ignore="/$BENCHMARK_ROOT/xfstests/ignore"
-		ignored_tests=$(cd tests && ls $test/[0-9][0-9][0-9] | grep -F -f "$test_ignore")
-		for ignored_test in $ignored_tests
-		do
-			echo "ignored by lkp: $ignored_test"
-		done
-
-		if [ -s "$pack_ignore" ]; then
-			all_tests=$(cd tests && ls $test/[0-9][0-9][0-9] | grep -v -F -f "$test_ignore" | grep -v -F -f "$pack_ignore")
-			ignore_pack_tests=$(cd tests && ls $test/[0-9][0-9][0-9] | grep -F -f "$pack_ignore")
-			for ignored_test in $ignored_pack_tests
-			do
-				echo "ignored by lkp: $ignored_test"
-			done
-		else
-			all_tests=$(cd tests && ls $test/[0-9][0-9][0-9] | grep -v -F -f "$test_ignore")
-		fi
+		all_tests_cmd="cd tests && ls $test/[0-9][0-9][0-9]"
+		ignore_and_do_tests "$all_tests_cmd" "$test_ignore $pack_ignore"
 	fi
-
-	log_cmd ./check $all_tests
 }
 
 export LC_ALL=C

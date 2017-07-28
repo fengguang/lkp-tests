@@ -167,7 +167,7 @@ detect_system()
 		_system_name="Fedora"
 		_system_version="$(GREP_OPTIONS="" \command \grep -Eo '[0-9]+' ${rootfs}/etc/fedora-release | head -n 1)"
 	elif
-		[ -f ${rootfs}/etc/redhat-release ]
+		[ -f ${rootfs}/etc/redhat-release ] && [ ! -f ${rootfs}/etc/oracle-release ]
 	then
 		_system_name="$(
 		GREP_OPTIONS="" \command \grep -Eo 'CentOS|ClearOS|Mageia|PCLinuxOS|Scientific|ROSA Desktop|OpenMandriva' ${rootfs}/etc/redhat-release 2>/dev/null | \command \head -n 1 | \command \sed "s/ //"
@@ -179,6 +179,11 @@ detect_system()
 	then
 		_system_name="CentOS"
 		_system_version="$(GREP_OPTIONS="" \command \grep -Eo '[0-9\.]+' ${rootfs}/etc/centos-release  | \command \awk -F. '{print $1}' | head -n 1)"
+	elif
+		[ -f ${rootfs}/etc/oracle-release ]
+	then
+		_system_name="Oracle"
+		_system_version="$(GREP_OPTIONS="" \command \grep -Eo '[0-9\.]+' ${rootfs}/etc/oracle-release  | \command \awk -F. '{print $1}' | head -n 1)"
 	elif
 		[ -f ${rootfs}/etc/os-release ] &&
 			GREP_OPTIONS="" \command \grep "ID=\"eywa\"" ${rootfs}/etc/os-release >/dev/null

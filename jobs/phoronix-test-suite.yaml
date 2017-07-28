@@ -8,7 +8,7 @@ need_memory: 8G
 
 phoronix-test-suite:
   test:
-  - parboil-1.1.2
+#  - parboil-1.1.2
   - open-porous-media-1.3.1
   - x264-opencl-1.9.0
   - x264-1.9.0
@@ -23,7 +23,6 @@ phoronix-test-suite:
   - system-decompress-bzip2-1.0.2
   - openssl-1.9.0
   - system-decompress-xz-1.0.2
-  - dbench-1.0.0
   - pgbench-1.5.2
   - botan-1.1.0
   - minion-1.4.0

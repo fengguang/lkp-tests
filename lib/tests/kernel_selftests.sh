@@ -15,7 +15,7 @@ prepare_for_test()
 	mount --bind /lib/modules/`uname -r`/kernel/lib $linux_selftests_dir/lib || die
 
 	# temporarily workaround compile error on gcc-6
-	command -v gcc >/dev/null || ln -sf /usr/bin/gcc-5 /usr/bin/gcc
+	command -v gcc-5 >/dev/null && log_cmd ln -sf /usr/bin/gcc-5 /usr/bin/gcc
 	# fix cc: command not found
 	command -v cc >/dev/null || log_cmd ln -sf /usr/bin/gcc /usr/bin/cc
 }
@@ -24,7 +24,7 @@ check_makefile()
 {
 	subtest=$1
 	grep -E -q -m 1 "^TARGETS \+?=  ?$subtest" Makefile || {
-		echo "skip ${subtest} test: not be default compiling/testing target"
+		echo "ignored_by_lkp ${subtest} test: not be default compiling/testing target"
 		return 1
 	}
 }
@@ -32,19 +32,19 @@ check_makefile()
 prepare_for_efivarfs()
 {
 	[[ -d "/sys/firmware/efi" ]] || {
-		echo "skip efivarfs test: /sys/firmware/efi dir does not exist"
+		echo "ignored_by_lkp efivarfs test: /sys/firmware/efi dir does not exist"
 		return 1
 	}
 
 	grep -q -F -w efivarfs /proc/filesystems || modprobe efivarfs || {
-		echo "skip efivarfs test: no efivarfs support, try enable CONFIG_EFIVAR_FS"
+		echo "ignored_by_lkp efivarfs test: no efivarfs support, try enable CONFIG_EFIVAR_FS"
 		return 1
 	}
 	# if efivarfs is built-in, "modprobe efivarfs" always returns 0, but it does not means
 	# efivarfs is supported since this requires some specified hardwares, such as booting from
 	# uefi, so check again
 	log_cmd mount -t efivarfs efivarfs /sys/firmware/efi/efivars || {
-		echo "skip efivarfs test: unable to mount efivarfs to /sys/firmware/efi/efivars"
+		echo "ignored_by_lkp efivarfs test: unable to mount efivarfs to /sys/firmware/efi/efivars"
 		return 1
 	}
 }
@@ -55,7 +55,7 @@ prepare_for_pstore()
 		# in order to create a /dev/pmsg0, we insert a dummy ramoops device
 		modprobe ramoops mem_address=0x8000000 ecc=1 mem_size=1000000 2>&1
 		[[ ! -e /dev/pmsg0 ]] && {
-			echo "skip pstore test: /dev/pmsg0 does not exist"
+			echo "ignored_by_lkp pstore test: /dev/pmsg0 does not exist"
 			return 1
 		}
 	}
@@ -89,9 +89,15 @@ prepare_for_capabilities()
 {
 	# workaround: skip capabilities if lkp user is not exist.
 	grep -q ^lkp: /etc/passwd || {
-		echo "skip capabilities test: lkp user is not exist"
+		echo "ignored_by_lkp capabilities test: lkp user is not exist"
 		return 1
 	}
 	# workaround: run capabilities under user lkp
 	log_cmd chown lkp $subtest -R 2>&1
+}
+
+subtest_in_skip_filter()
+{
+	local filter=$@
+	echo "$filter" | grep -w -q "$subtest" && echo "ignored_by_lkp $subtest test"
 }

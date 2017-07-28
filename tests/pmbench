@@ -12,6 +12,7 @@
 # - offset
 # - quiet
 # - ratio
+# - threshold
 
 . "$LKP_SRC/lib/common.sh"
 
@@ -33,6 +34,7 @@ set_opt()
 	[ -n "$offset" ] && opt="${opt} -o${offset}"
 	parse_bool -q "$quiet" && opt="${opt} -q"
 	[ -n "$ratio" ] && opt="${opt} -r${ratio}"
+	[ -n "$threshold" ] && opt="${opt} -h${threshold}"
 }
 
 run_pmbench()

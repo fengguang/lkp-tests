@@ -23,34 +23,55 @@ EOF"
 
 [ $USER ] || log_eval export USER=root
 
-log_cmd ./start.sh || die "fail to setup test environment"
+require_mcc=$BENCHMARK_ROOT/hwsim/tests/hwsim/require_mcc
+
+add_extra_options()
+{
+	opt=
+	[ -f $BENCHMARK_ROOT/hwsim/tests/hwsim/require_long_param ] &&
+	grep -q -w $casename $BENCHMARK_ROOT/hwsim/tests/hwsim/require_long_param && opt="--long"
+}
 
 check_ignore_case()
 {
 	local casename=$1
+	local ignored_by_lkp=$BENCHMARK_ROOT/hwsim/tests/hwsim/ignored_by_lkp
 
-	[ -f $LKP_SRC/pack/hwsim-addon/oom_is_passed ] &&
-	grep -q -w $casename $LKP_SRC/pack/hwsim-addon/oom_is_passed && return 1
+	# skip cases that in ignored_by_lkp
+	[ -f "$ignored_by_lkp" ] && grep -q -w $casename "$ignored_by_lkp" && return 0
 
-	# skip cases that want to setup oom environment
-	([ -f $BENCHMARK_ROOT/hwsim/tests/hwsim/setup_oom ] &&
-	grep -q -w $casename $BENCHMARK_ROOT/hwsim/tests/hwsim/setup_oom) ||
-	# skip rrm_beacon_req_table_vht at 0Day environment
-	([ "$LKP_LOCAL_RUN" != "1" ] && [ "$casename" = "rrm_beacon_req_table_vht" ]) ||
-	# skip require run under vm
-	([ -f $BENCHMARK_ROOT/hwsim/tests/hwsim/require_under_vm ] &&
-	grep -q -w $casename $BENCHMARK_ROOT/hwsim/tests/hwsim/require_under_vm)
+	return 1
 }
+
+log_cmd ./build.sh || die "fail to build test environment"
+
+log_cmd ./start.sh || die "fail to setup test environment"
 
 while read casename
 do
 	check_ignore_case $casename && echo "ignored_by_lkp $casename" && continue
 
-	[ -f $BENCHMARK_ROOT/hwsim/tests/hwsim/require_long_param ] &&
-	grep -q -w $casename $BENCHMARK_ROOT/hwsim/tests/hwsim/require_long_param && opt="--long"
+	[ -f $require_mcc ] &&
+	grep -q -w $casename $require_mcc && continue
+	
+	add_extra_options
 	log_echo "\
 	./run-tests.py $casename $opt"
 	./run-tests.py $casename $opt 2>&1
-	opt=
 done < $group_file
+log_cmd ./stop.sh
+
+# test with multi-channels
+[ -f $require_mcc ] || exit 0
+log_cmd ./start.sh channels=4 || die "fail to setup mcc test environment"
+
+grep -wf $group_file $require_mcc | while read casename
+do
+	check_ignore_case $casename && continue
+
+	add_extra_options
+	log_echo "\
+	./run-tests.py $casename $opt"
+	./run-tests.py $casename $opt 2>&1
+done
 log_cmd ./stop.sh

@@ -3,5 +3,6 @@
 disk:
   nr_pmem: 1
 
+# applicable to 128G EP system, not for other systems
 boot_params:
-  bp_memmap: 96G!4G
+  bp_memmap: 96G!18G

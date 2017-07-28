@@ -31,7 +31,7 @@ PERF_INDEX_KCONFIG = 'x86_64-rhel'
 ABS_CHANGE_STATS_RE = /^(perf-profile|latency_stats)/
 
 $opt_dimension = 'commit'
-$opt_field = 'vmstat.cpu.sy'
+$opt_field = nil
 $opt_grep  = Array.new
 $opt_vgrep = Array.new
 $options = {'perf-profile' => 5}
@@ -122,6 +122,10 @@ opts = OptionParser.new do |opts|
 
   opts.on('--regression-only', 'show regressions only') do
     $options['regression-only'] = true
+  end
+
+  opts.on('--all-critical', 'show all critical changes') do
+    $options['all-critical'] = true
   end
 
   opts.on("-D N", "--distance N", "threshold of changes") { |n|
@@ -388,6 +392,8 @@ def setup_changed_stats()
     changed_stats = get_changed_stats matrix_file2, matrix_file1, $options
     next unless changed_stats and changed_stats.size > 0
     changed_stats.each { |stat, record|
+      next if $opt_field && stat !~ /#{$opt_field}/
+
       if $opt_save_changes
         result_root = "#{File.dirname matrix_file2}/0"
         result_path = ResultPath.new

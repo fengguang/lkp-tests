@@ -1,7 +1,8 @@
 #!/bin/bash
 
 VERSION="2.7.0"
-WEB_URL="ftp://ftp.netperf.org/netperf/netperf-${VERSION}.tar.gz"
+WEB_URL="ftp://ftp.netperf.org/netperf/netperf-${VERSION}.tar.gz \
+         https://fossies.org/linux/misc/netperf-${VERSION}.tar.gz"
 
 build()
 {

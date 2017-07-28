@@ -1,0 +1,40 @@
+From 7cedc010df3e37c4995af7a3094e89921bdd5045 Mon Sep 17 00:00:00 2001
+From: Li Zhijian <zhijianx.li@intel.com>
+Date: Tue, 25 Jul 2017 13:22:04 +0800
+Subject: [PATCH] programs/mkfs-tests/mkfs-test.sh: don't specify 4M journal
+ size at do_mkfs
+
+from mkfs.ocfs2 source code:
+static unsigned int journal_min_size(uint32_t cluster_size)
+{
+	return (cluster_size << OCFS2_MIN_CLUSTER_TO_JOURNAL_SIZE_SHIFT)
+		+ cluster_size;
+}
+
+it requires the a min joural size, but at this test suite, we will test
+cluster size (4096 ... 524288, 1048576), when we specify cluster size >= 524288
+mkfs.ocfs requires journal size greater than 4M. so here we remove the journal
+size and let mkfs.ocfs calculate it.
+
+Signed-off-by: Li Zhijian <zhijianx.li@intel.com>
+Signed-off-by: Lu Fengqi <lufq.fnst@cn.fujitsu.com>
+---
+ programs/mkfs-tests/mkfs-test.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/programs/mkfs-tests/mkfs-test.sh b/programs/mkfs-tests/mkfs-test.sh
+index 313de1d..1dac68a 100755
+--- a/programs/mkfs-tests/mkfs-test.sh
++++ b/programs/mkfs-tests/mkfs-test.sh
+@@ -108,7 +108,7 @@ do_mkfs() {
+     echo ${MKFS} -b ${B} -C ${C} ${D} ${V} >> ${LOGFILE}
+     echo -n "mkfs ..... " |tee -a ${LOGFILE}
+     echo ${MKFS} -b ${B} -C ${C} ${D} ${V} >> ${O}
+-    ${MKFS} -x -F -b ${B} -C ${C} -N 1 -J size=4M ${D} ${V} >> ${O} 2>&1
++    ${MKFS} -x -F -b ${B} -C ${C} -N 1 ${D} ${V} >> ${O} 2>&1
+     echo "OK" |tee -a ${LOGFILE}
+     echo "" >> ${O}
+ }
+-- 
+2.7.4
+

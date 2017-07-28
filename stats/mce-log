@@ -10,6 +10,8 @@ while (line = STDIN.gets)
     stats[item + '.' + $1] = 'pass'
   when /^(\S+)\.conf: triggers did not trigger as expected:/
     stats[item + '.' + $1] = 'fail'
+  when /^(ignored_by_lkp): (.*)/
+    stats[$2] = $1
   end
 end
 

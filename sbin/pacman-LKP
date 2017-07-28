@@ -27,7 +27,7 @@ query() {
 pack_deb() {
 	local pkg_name=$1
 	mkdir -p "$INSTALL_DIR/DEBIAN"
-	[ -f "$SRC_DIR/.install/.INSTALL" ] && mv "$SRC_DIR/.install/.INSTALL" "$SRC_DIR/install/DEBIAN/INSTALL"
+	[ -f "$SRC_DIR/.install/.INSTALL" ] && mv "$SRC_DIR/.install/.INSTALL" "$INSTALL_DIR/DEBIAN/INSTALL"
 	cat > "$INSTALL_DIR/DEBIAN/control" <<-EOF
 	Package: $pkg_name-LKP
 	Version: $(date +%F)
@@ -43,13 +43,13 @@ pack_deb() {
 	EOF
 	chmod +x $INSTALL_DIR/DEBIAN/postinst
 	fi
-	dpkg-deb --build install
+	dpkg-deb --build "$pkg_name-lkp"
 }
 
 pack_rpm() {
 	local pkg_name=$1
-	mkdir -p $INSTALL_DIR/{BUILD,RPMS,S{OURCE,PEC,RPM}S}
-	cat > "$INSTALL_DIR/SPECS/$pkg_name.spec" <<-EOF
+	mkdir -p $RPM_BUILD_DIR/{BUILD,RPMS,S{OURCE,PEC,RPM}S}
+	cat > "$RPM_BUILD_DIR/SPECS/$pkg_name.spec" <<-EOF
 	Name: $pkg_name-LKP
 	Version: 1
 	License: None
@@ -63,7 +63,7 @@ pack_rpm() {
 	%install
 	# create directories where the files will be located
 	# put the files in the relevant directories
-	cp -a $INSTALL_DIR/usr \$RPM_BUILD_ROOT
+	cp -a $INSTALL_DIR/* \$RPM_BUILD_ROOT
 
 	%files
 	%defattr(-,root,root)
@@ -71,13 +71,13 @@ pack_rpm() {
 
 	EOF
 
-	cat > "$INSTALL_DIR/.rpmmacros" <<-EOF
-	%_topdir $INSTALL_DIR
+	cat > "$RPM_BUILD_DIR/.rpmmacros" <<-EOF
+	%_topdir $RPM_BUILD_DIR
 	%_rpmfilename %%{NAME}.rpm
 	EOF
 
 	if have_function post_install; then
-		cat >> "$INSTALL_DIR/SPECS/$pkg_name.spec" <<-EOF
+		cat >> "$RPM_BUILD_DIR/SPECS/$pkg_name.spec" <<-EOF
 		%post
 		. $SRC_DIR/.install/.INSTALL
 		post_install
@@ -86,8 +86,8 @@ pack_rpm() {
 	fi
 
 	(
-		export HOME=$INSTALL_DIR
-		rpmbuild -bb "$INSTALL_DIR/SPECS/$pkg_name.spec"
+		export HOME=$RPM_BUILD_DIR
+		rpmbuild -bb "$RPM_BUILD_DIR/SPECS/$pkg_name.spec"
 	)
 }
 
@@ -106,7 +106,7 @@ upgrade() {
 	local SRC_DIR
 	SRC_DIR=$(pwd)
 	local pkg_name=${SRC_DIR##*/}
-	local INSTALL_DIR=$SRC_DIR/install
+	local INSTALL_DIR="$SRC_DIR/$pkg_name-lkp"
 	[ -d "$INSTALL_DIR" ] || mkdir "$INSTALL_DIR"
 	[ -d "$SRC_DIR/.install" ] || mkdir "$SRC_DIR/.install"
 	tar -zxf "$@" -C "$INSTALL_DIR"
@@ -116,14 +116,15 @@ upgrade() {
 		case $(distro_pkg_format) in
 			deb)
 				pack_deb "$pkg_name"
-				dpkg -i install.deb 2>/tmp/dpkg_error || {
+				dpkg -i "$pkg_name-lkp.deb" 2>/tmp/dpkg_error || {
 					grep -v "dpkg: warning: files list file for package '.*' missing;" /tmp/dpkg_error
 					return 1
 				}
 				;;
 			rpm)
+				RPM_BUILD_DIR="$SRC_DIR/rpm_build"
 				pack_rpm "$pkg_name"
-				rpm -ivh --replacepkgs --force  "install/RPMS/$pkg_name-LKP.rpm" || return 1 ;;
+				rpm -ivh --replacepkgs --force  "$RPM_BUILD_DIR/RPMS/$pkg_name-LKP.rpm" || return 1 ;;
 			*)
 				cp -r "$INSTALL_DIR/usr" / || return 1 ;;
 		esac

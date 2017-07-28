@@ -17,7 +17,7 @@ do
 	[ -f "$online_file" ] && [ "$(cat "$online_file")" -eq 0 ] && continue
 
 	file="$cpu_dir"/cpufreq/scaling_governor
-	[ -f "$file" ] && echo "$scaling_governor" > "$file"
+	[ -f "$file" ] && echo "'"$scaling_governor"'" > "$file"
 done
 '
 

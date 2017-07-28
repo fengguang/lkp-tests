@@ -15,7 +15,19 @@ touch .depend
 
 # skip test/socket case, because it requires hardware register CMCI support
 # match start with "\t./test socket*"
-sed -i '/.*\.\/test socket*/d' tests/Makefile
+grep -q -w './test socket' tests/Makefile 2>/dev/null && {
+	sed -i '/.*\.\/test socket*/d' tests/Makefile
+	cd tests/socket
+	# root@lkp-u410 /lkp/benchmarks/mce-log/tests/socket# ls *.conf
+	# socket-1.conf  socket-2.conf  socket-memdb.conf
+	for skip in *.conf
+	do
+		skip=${skip%%\.conf}
+		echo "ignored_by_lkp: socket.$skip"
+	done
+	cd $BENCHMARK_ROOT/mce-log
+}
+
 make test
 exit_value=$?
 

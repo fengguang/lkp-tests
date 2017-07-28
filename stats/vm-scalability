@@ -15,6 +15,7 @@ ret['warned'] = false
 def add_one_sample(kbps, throughput, median, ret)
   return if kbps.empty?
   throughput << kbps.sum
+  kbps.sort!
   median << kbps[kbps.size / 2]
   puts "# #{kbps.size} #{kbps.sum}"
   return unless kbps.size != 1 && (kbps.size & 1) != 0 && !ret['warned']

@@ -4,6 +4,7 @@ category: functional
 
 disk:
 - 1HDD
+- 1SSD
 
 need_memory: 2G
 
@@ -14,6 +15,5 @@ fs:
  - ext4
 
 mce-test:
-  test_mode:
+  mce_case:
     - all
-    - ras
