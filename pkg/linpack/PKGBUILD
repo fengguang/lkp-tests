@@ -12,11 +12,11 @@ arch=('i686' 'x86_64')
 pkgdesc='Benchmark based on linear algebra excellent app for stress testing.'
 license=('custom')
 url="http://software.intel.com/en-us/articles/intel-math-kernel-library-linpack-download"
-source=("http://registrationcenter.intel.com/irc_nas/$_number/l_lpk_p_$pkgver.tgz"
+source=("http://registrationcenter.intel.com/irc_nas/3914/l_lpk_p_11.1.2.005.tgz"
 'linpack.conf' 'runme.template')
 install=readme.install
 backup=(etc/linpack.conf)
-sha256sums=('51e98ea54638bed00d0733f68cefaf50205f397e80e7e760265ec09a5ab02c52'
+sha256sums=('00c804e7b8cb31b4d94055b1889df4ab820e077dda0d3767af29f6af9f3c99b2'
             'd7e31c8c7e2648c8fa3c4838d98dfc39b8fadf0f74bdaa4ca52cd38277ec8254'
             '8c880adeee3de6c0e6005e210cea0e01b471219c590e25e824298a25ab0eef31')
 
@@ -30,23 +30,12 @@ build() {
 }
 
 package_linpack() {
-	_path="$srcdir/l_lpk_p_$pkgver/linpack_$_pkgvershort"
+	_path="$srcdir/linpack_11.1.2/benchmarks/linpack"
 
-	if [[ -n "$_installdocs" ]]; then
-		# licenses
-		install -Dm644 "$_path/doc/lpkEULA.txt" "$pkgdir/usr/share/licenses/linpack/lpkEULA.txt"
-		install -Dm644 "$_path/doc/lpksupport.txt" "$pkgdir/usr/share/licenses/linpack/lpksupport.txt"
-		
-		# docs
-		install -d "$pkgdir/usr/share/doc/linpack"
-		cp -r "$_path/doc/mkl_userguide" "$pkgdir/usr/share/doc/linpack"
-	fi
-	
 	#	config files
-	install -Dm755 "$srcdir/linpack_runme_xeon$bit" "$pkgdir/usr/bin/linpack_runme_xeon$bit"
-	install -Dm644 "$srcdir/linpack.conf" "$pkgdir/etc/linpack.conf"
+	install -Dm755 "$_path/runme_xeon$bit" "$pkgdir/lkp/benchmarks/linpack/runme_xeon$bit"
 	
 	# bins
-	install -Dm755 "$_path/benchmarks/linpack/xlinpack_xeon$bit" "$pkgdir/usr/bin/xlinpack_xeon$bit"
-	install -Dm644 "$_path/benchmarks/linpack/xhelp.lpk" "$pkgdir/usr/share/doc/${pkgname}/xhelp.lpk"
+	install -Dm755 "$_path/xlinpack_xeon$bit" "$pkgdir/lkp/benchmarks/linpack/xlinpack_xeon$bit"
+	install -Dm644 "$_path/xhelp.lpk" "$pkgdir/usr/share/doc/${pkgname}/xhelp.lpk"
 }
