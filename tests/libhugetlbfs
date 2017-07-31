@@ -15,6 +15,9 @@ log_cmd make || die "make failed"
 
 [ -z $pagesize -o -z $pagenum ] && die "invalid parameter"
 
+#ignore cases
+sed -i "s/do_test(\"direct\")/#&/" tests/run_tests.py
+
 # in order to config huge pages size and number
 log_cmd obj/hugeadm --add-temp-swap=$pagenum --pool-pages-min $pagesize:$pagenum --hard \
 	|| die "config huge pages size and number failed"
