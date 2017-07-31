@@ -29,5 +29,6 @@ def analyze
     puts "#{func}.max: #{samples[-1]}"
     puts "#{func}.avg: #{samples.average}"
     puts "#{func}.samples: #{samples.size}"
+    puts "#{func}.sum: #{samples.sum}"
   end
 end
