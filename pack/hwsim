@@ -74,6 +74,7 @@ build_ignored_by_lkp()
 	echo "# ignore _hostap_not_support_" >> $ignored_by_lkp
 	echo "eap_fast_tlv_nak_oom" >> $ignored_by_lkp
 	echo "fils_sk_hlp_oom" >> $ignored_by_lkp
+	echo "gas_rand_ta" >> $ignored_by_lkp
 
 	echo "# ignore _hostap_not_support_lifetime_in_memory_" >> $ignored_by_lkp
 	git grep -E -e 'def test.*lifetime_in_memory' | awk -F 'test_' '{print $3}'| awk -F '(' '{print $1}' >> $ignored_by_lkp
