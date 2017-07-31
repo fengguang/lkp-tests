@@ -17,6 +17,8 @@ log_cmd make || die "make failed"
 
 #ignore cases
 sed -i "s/do_test(\"direct\")/#&/" tests/run_tests.py
+echo "ignored by lkp: 32bit.direct"
+echo "ignored by lkp: 64bit.direct"
 
 # in order to config huge pages size and number
 log_cmd obj/hugeadm --add-temp-swap=$pagenum --pool-pages-min $pagesize:$pagenum --hard \

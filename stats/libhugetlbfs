@@ -13,6 +13,9 @@ while (line = STDIN.gets)
   when /(32|64)\)\:\s+/
     ret = "#{$1}bit.#{line.split('(')[0].rstrip.tr('[ .]', '_')}.killed_by_signal".downcase
     result[ret] = 1
+  when /ignored by lkp: (.*)/
+    ret = "#{$1}.ignored_by_lkp"
+    result[ret] = 1
   end
 end
 
