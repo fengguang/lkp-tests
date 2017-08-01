@@ -4,12 +4,15 @@
 # - freq
 # - delay
 # - duration
+# - callgraph
+# - children
+# - inline
 
 . $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/common.sh
 
 set_perf_path "/lkp/benchmarks/perf/perf"
 
-. $LKP_SRC/lib/env.sh
 is_virt && exit 0
 
 default_events()
@@ -26,6 +29,8 @@ default_events()
 : ${events:=$(default_events)}
 : ${duration:=10}
 : ${period:=1000003}
+: ${children:=yes}
+: ${callgraph:=folded,0.5,callee}
 
 if [ -z "$delay" ]; then
 	if [ -n "$runtime" ]; then
@@ -42,6 +47,14 @@ opt_freq="--freq=$freq"
 opt_period="--count=$period"
 
 opt_events="-e $(echo "$events" | sed 's/ / -e /g')"
+
+if parse_bool -q "$children"; then
+	opt_children="--children"
+else
+	opt_children="--no-children"
+fi
+
+[ -n "$inline" ] && opt_inline="--inline"
 
 # perf may consume lots of fd
 ulimit -n 102400
@@ -60,7 +73,7 @@ $perf record -q -ag --realtime=1 -m 256 $opt_freq $opt_period $opt_events \
 
 cat > "$TMP_RESULT_ROOT/post-run.perf-profile" <<EOF
 [ -s "$perf_data" ] && {
-	$perf report --children --header -U -g folded,0.5,callee --sort=dso,symbol -i $perf_data |
+	$perf report $opt_inline $opt_children --header -U -g $callgraph --sort=dso,symbol -i $perf_data |
 	gzip > $RESULT_ROOT/perf-profile.gz && {
 		rm -f $perf_data
 	}
