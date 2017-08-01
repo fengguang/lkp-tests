@@ -31,7 +31,10 @@ end
 cycles = results['cpu-cycles']
 instructions = results['instructions']
 
-puts "ipc: #{instructions.to_f / cycles}" if cycles != 0 && instructions != 0
+if cycles != 0 && instructions != 0
+  puts "ipc: #{instructions.to_f / cycles}"
+  puts "cpi: #{cycles / instructions.to_f}"
+end
 
 itlb_miss = results['iTLB-load-misses']
 
