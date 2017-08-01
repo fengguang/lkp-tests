@@ -74,4 +74,4 @@ opt_events="-e $(echo $events | sed 's/ / -e /g')"
 
 disable_nmi_watchdog
 
-exec $perf stat -a -I 1000 -x' ' $opt_events --log-fd 1 -- $command
+exec $perf stat -a -c -I 1000 -x' ' $opt_events --log-fd 1 -- $command
