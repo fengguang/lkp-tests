@@ -68,6 +68,16 @@ def add_performance_per_watt(stats, matrix)
   matrix['pmeter.performance_per_watt'] = [performance / watt]
 end
 
+def add_path_length(stats, matrix)
+  workloads = stats.select { |s| s.end_with? '.workload' }
+  return if workloads.size != 1
+  instructions = stats['perf-stat.instructions']
+  return unless instructions
+  path_length = instructions.to_f / workloads.values[0]
+  stats['perf-stat.path-length'] = path_length
+  matrix['perf-stat.path-length'] = [path_length]
+end
+
 def create_stats_matrix(result_root)
   stats = {}
   matrix = {}
@@ -112,6 +122,7 @@ def create_stats_matrix(result_root)
   }
 
   add_performance_per_watt(stats, matrix)
+  add_path_length(stats, matrix)
   save_json(stats, result_root + '/stats.json')
   save_json(matrix, result_root + '/matrix.json', compress=true)
   if local_run?
