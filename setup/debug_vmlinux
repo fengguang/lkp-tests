@@ -7,13 +7,15 @@ if [ -z "$vmlinux_file" ]; then
 	exit 1
 fi
 
+modules_dir="/lib/modules/$(uname -r)"
+
+[ -d "$modules_dir/build" ] && exit 0
+
 KBUILD_DIR=/lkp/kbuild
 
 mkdir -p "$KBUILD_DIR"
 
 http_get_file "$vmlinux_file" "$KBUILD_DIR/vmlinux"
-
-modules_dir=/lib/modules/$(uname -r)
 
 mkdir -p "$modules_dir"
 ln -sf "$KBUILD_DIR" "$modules_dir/build"
