@@ -13,7 +13,7 @@ clear_cgroup()
 		do
 			subsys=$(echo $line | awk '{ print $1 }')
 			subsys_mount=$(echo $line | awk '{ print $2 }')
-			if [ $(basename $subsys_mount) == "systemd" ]; then
+			if [ $(basename $subsys_mount) = "systemd" ]; then
 				continue
 			fi
 			cgroups=$(find $subsys_mount -type d | tail -n +2 | tac)
