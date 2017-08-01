@@ -34,6 +34,9 @@ do
 	grep -w -q "$unstable$" ./run_tests.sh && echo "ignored_by_lkp $unstable" && sed -i /$unstable$/d ./run_tests.sh
 done
 
+# eaccess will fail if paranoid_value in [1,2], so run eacces under lkp
+[[ $paranoid_value -gt 0 ]] && sed -i -e 's/\$TESTS_DIR\/error_returns\/eacces/su lkp -c \"\$TESTS_DIR\/error_returns\/eacces\"/g' ./run_tests.sh
+
 log_cmd ./run_tests.sh
 exit_value=$?
 
