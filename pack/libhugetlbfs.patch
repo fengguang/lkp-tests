@@ -1,30 +1,29 @@
-From 43949ce0a24cba791da7731ae9d709b1efc6c7f3 Mon Sep 17 00:00:00 2001
+From 929d168286369751d30779886b7999e2a3d8186c Mon Sep 17 00:00:00 2001
 From: Xiang Dai <xiangx.dai@intel.com>
 Date: Tue, 1 Aug 2017 14:50:06 +0800
 Subject: [PATCH] ignore tests
 
 Signed-off-by: Xiang Dai <xiangx.dai@intel.com>
 ---
- tests/run_tests.py | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ tests/run_tests.py | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
 diff --git a/tests/run_tests.py b/tests/run_tests.py
-index 22e74c8..fe5ae21 100755
+index 22e74c8..680dddc 100755
 --- a/tests/run_tests.py
 +++ b/tests/run_tests.py
-@@ -294,6 +294,21 @@ def check_linkhuge_tests():
+@@ -294,6 +294,20 @@ def check_linkhuge_tests():
              okbits.add(bits)
      return okbits
 
 +def ignore_test(pagesize, bits, cmd, env):
 +    envstr = ''
-+    simple_ignore = ["HUGETLB_ELFMAP=R", "HUGETLB_ELFMAP=W", "HUGETLB_ELFMAP=RW", "direct"]
++    simple_ignore = ["HUGETLB_ELFMAP=R", "HUGETLB_ELFMAP=W", "HUGETLB_ELFMAP=RW", "direct", "xB.linkhuge_nofd (2M: 32)"]
 +    if env:
 +        envstr = ' '.join(['%s=%s' % (k, v) for k, v in env.items()]),
 +    if type(cmd) != types.StringType:
 +        cmd = ' '.join(cmd)
-+    if envstr != '':
-+        cmd = "%s %s" % (envstr, cmd)
++    cmd = "%s %s (%s: %i)" % (envstr, cmd, pretty_page_size(pagesize), bits)
 +    for i, test in enumerate(simple_ignore):
 +        if cmd.find(test) != -1:
 +            print("ignored by lkp")
@@ -34,7 +33,7 @@ index 22e74c8..fe5ae21 100755
  def print_cmd(pagesize, bits, cmd, env):
      if env:
          print ' '.join(['%s=%s' % (k, v) for k, v in env.items()]),
-@@ -318,6 +333,9 @@ def run_test(pagesize, bits, cmd, **env):
+@@ -318,6 +332,9 @@ def run_test(pagesize, bits, cmd, **env):
          return
 
      print_cmd(pagesize, bits, cmd, env)
