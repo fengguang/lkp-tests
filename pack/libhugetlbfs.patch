@@ -18,7 +18,7 @@ index 22e74c8..fe5ae21 100755
 
 +def ignore_test(pagesize, bits, cmd, env):
 +    envstr = ''
-+    simple_ignore = ["HUGETLB_ELFMAP=R", "HUGETLB_ELFMAP=W", "HUGETLB_ELFMAP=RW"]
++    simple_ignore = ["HUGETLB_ELFMAP=R", "HUGETLB_ELFMAP=W", "HUGETLB_ELFMAP=RW", "direct"]
 +    if env:
 +        envstr = ' '.join(['%s=%s' % (k, v) for k, v in env.items()]),
 +    if type(cmd) != types.StringType:
