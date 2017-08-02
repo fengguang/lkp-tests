@@ -18,7 +18,7 @@ index 22e74c8..2f20f73 100755
 
 +def ignore_test(pagesize, bits, cmd, env):
 +    envstr = ''
-+    simple_ignore = ["HUGETLB_ELFMAP=R", "HUGETLB_ELFMAP=W", "HUGETLB_ELFMAP=RW", "direct", "xB.linkhuge_nofd (2M: 32)", "HUGETLB_SHARE=0 xB.linkhuge (2M: 32)", "HUGETLB_SHARE=1 xB.linkhuge (2M: 32)"]
++    simple_ignore = ["HUGETLB_ELFMAP=R", "HUGETLB_ELFMAP=W", "HUGETLB_ELFMAP=RW", "direct", "xB.linkhuge_nofd (2M: 32)", "HUGETLB_SHARE=0 xB.linkhuge (2M: 32)", "HUGETLB_SHARE=1 xB.linkhuge (2M: 32)", "brk_near_huge"]
 +    if env:
 +        envstr = ' '.join(['%s=%s' % (k, v) for k, v in env.items()])
 +    if type(cmd) != types.StringType:
