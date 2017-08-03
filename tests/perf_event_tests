@@ -34,8 +34,21 @@ do
 	grep -w -q "$unstable$" ./run_tests.sh && echo "ignored_by_lkp $unstable" && sed -i /$unstable$/d ./run_tests.sh
 done
 
+fixup_old_platform()
+{
+	# FIXME: Model number: snb: 42, ivb: 58, haswell: 60, skl: 94
+	local haswell=60
+	local ignored="fixed_ctr0"
+	local model=$(lscpu | grep 'Model:' | awk '{print $2}')
+	[[ -z "$model" ]] && return
+	[[ $model -lt $haswell ]] || return
+	grep -w -q "$ignored$" ./run_tests.sh && echo "ignored_by_lkp $ignored" && sed -i /$ignored$/d ./run_tests.sh
+}
+
 # eaccess will fail if paranoid_value in [1,2], so run eacces under lkp
 [[ $paranoid_value -gt 0 ]] && sed -i -e 's/\$TESTS_DIR\/error_returns\/eacces/su lkp -c \"\$TESTS_DIR\/error_returns\/eacces\"/g' ./run_tests.sh
+
+fixup_old_platform
 
 log_cmd ./run_tests.sh
 exit_value=$?
