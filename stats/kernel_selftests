@@ -78,13 +78,13 @@ while (line = STDIN.gets)
       # rli9 FIXME: consider the input has messed text like Entering doesn't match with Leaving
       testname = nil
     end
-  when /^selftests: (.*) .*(PASS|FAIL)/
+  when /^selftests: (.*) .*(\[|\[ )(PASS|FAIL)/
     if testname == 'memory-hotplug'
       memory_hotplug_stat(line, tests_stats['memory-hotplug'], stats)
     elsif testname == 'x86'
       x86_stat(line, tests_stats['x86'], stats)
     else
-      stats << "#{testname}.#{Regexp.last_match[1].strip}.#{Regexp.last_match[2].downcase}: 1"
+      stats << "#{testname}.#{Regexp.last_match[1].strip}.#{Regexp.last_match[3].downcase}: 1"
     end
   when /Test #([1-9].*):/
     mqueue_test = Regexp.last_match[1]
