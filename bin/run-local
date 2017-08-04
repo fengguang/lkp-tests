@@ -11,6 +11,8 @@ LKP_USER = ENV["USER"] || `whoami`.chomp
 TMP = "/tmp/lkp-#{LKP_USER}"
 ENV['TMP'] = TMP
 
+require "#{LKP_SRC}/lib/run-env"
+set_local_run
 require "#{LKP_SRC}/lib/yaml.rb"
 require "#{LKP_SRC}/lib/stats.rb"
 require "#{LKP_SRC}/lib/matrix.rb"
@@ -18,8 +20,6 @@ require "#{LKP_SRC}/lib/job2sh.rb"
 require "#{LKP_SRC}/lib/job.rb"
 require "#{LKP_SRC}/lib/result_root.rb"
 require "#{LKP_SRC}/lib/common.rb"
-
-set_local_run
 
 ENV['PATH'] = ENV['PATH'] + ":#{LKP_SRC}/bin"
 ENV['BENCHMARK_ROOT'] = '/lkp/benchmarks'
