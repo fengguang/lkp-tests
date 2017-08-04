@@ -1710,10 +1710,17 @@ run_patch_source()
 patch_source()
 {
 	patches=$(ls $startdir/*.patch 2>/dev/null) || return 0
+	local dir
 	cd "${srcdir}"
-	for patch in $patches; do
-		patch -p0 < "$patch"
-	done
+	dir=$(find . -maxdepth 1 -mindepth 1 -type d)
+	if [ -d "$dir" ]; then
+		cd $dir
+		for patch in $patches; do
+			patch -p1 < "$patch"
+		done
+	else
+		need_patching=1
+	fi
 }
 
 run_prepare() {
@@ -3860,6 +3867,7 @@ fi
 
 msg "$(gettext "Finished making: %s")" "$pkgbase $basever ($(date))"
 
+[ -z "$need_patching" ] || warning "Some patch may not applied"
 install_package
 
 exit 0 #E_OK
