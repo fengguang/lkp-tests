@@ -13,9 +13,9 @@ tests_stats = Hash.new { |h, k| h[k] = {} }
 def futex_stat(line, futex, stats)
   case line
   when /^(futex.+): /
-      futex['subtest'] = $1
+    futex['subtest'] = $1
   when /^\s+Arguments: (.+)/
-      futex['argument'] = $1.tr(' ', '_')
+    futex['argument'] = $1.tr(' ', '_')
   when /^Result\:\s+(PASS|FAIL)/, /^selftests\:.*(PASS|FAIL)/
     stats << if futex['argument'] && !(futex['argument'].include? 'none')
                "futex.#{futex['subtest']}.#{futex['argument']}.#{$1.downcase}: 1"
