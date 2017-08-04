@@ -1,0 +1,101 @@
+# futex pass
+2017-08-04 08:09:14 make run_tests -C futex
+make: Entering directory '/usr/src/linux-selftests-x86_64-rhel-5771a8c08880cdca3bfb4a3fc6d309d6bba20877/tools/testing/selftests/futex'
+for DIR in functional; do		\
+	BUILD_TARGET=/usr/src/linux-selftests-x86_64-rhel-5771a8c08880cdca3bfb4a3fc6d309d6bba20877/tools/testing/selftests/futex/$DIR;	\
+	mkdir $BUILD_TARGET  -p;	\
+	make OUTPUT=$BUILD_TARGET -C $DIR all;\
+done
+make[1]: Entering directory '/usr/src/linux-selftests-x86_64-rhel-5771a8c08880cdca3bfb4a3fc6d309d6bba20877/tools/testing/selftests/futex/functional'
+gcc  -g -O2 -Wall -D_GNU_SOURCE -pthread -I../include -I../../   -pthread -lrt  futex_wait_timeout.c ../include/futextest.h ../include/atomic.h ../include/logging.h  -o /usr/src/linux-selftests-x86_64-rhel-5771a8c08880cdca3bfb4a3fc6d309d6bba20877/tools/testing/selftests/futex/functional/futex_wait_timeout
+gcc  -g -O2 -Wall -D_GNU_SOURCE -pthread -I../include -I../../   -pthread -lrt  futex_wait_wouldblock.c ../include/futextest.h ../include/atomic.h ../include/logging.h  -o /usr/src/linux-selftests-x86_64-rhel-5771a8c08880cdca3bfb4a3fc6d309d6bba20877/tools/testing/selftests/futex/functional/futex_wait_wouldblock
+gcc  -g -O2 -Wall -D_GNU_SOURCE -pthread -I../include -I../../   -pthread -lrt  futex_requeue_pi.c ../include/futextest.h ../include/atomic.h ../include/logging.h  -o /usr/src/linux-selftests-x86_64-rhel-5771a8c08880cdca3bfb4a3fc6d309d6bba20877/tools/testing/selftests/futex/functional/futex_requeue_pi
+gcc  -g -O2 -Wall -D_GNU_SOURCE -pthread -I../include -I../../   -pthread -lrt  futex_requeue_pi_signal_restart.c ../include/futextest.h ../include/atomic.h ../include/logging.h  -o /usr/src/linux-selftests-x86_64-rhel-5771a8c08880cdca3bfb4a3fc6d309d6bba20877/tools/testing/selftests/futex/functional/futex_requeue_pi_signal_restart
+gcc  -g -O2 -Wall -D_GNU_SOURCE -pthread -I../include -I../../   -pthread -lrt  futex_requeue_pi_mismatched_ops.c ../include/futextest.h ../include/atomic.h ../include/logging.h  -o /usr/src/linux-selftests-x86_64-rhel-5771a8c08880cdca3bfb4a3fc6d309d6bba20877/tools/testing/selftests/futex/functional/futex_requeue_pi_mismatched_ops
+gcc  -g -O2 -Wall -D_GNU_SOURCE -pthread -I../include -I../../   -pthread -lrt  futex_wait_uninitialized_heap.c ../include/futextest.h ../include/atomic.h ../include/logging.h  -o /usr/src/linux-selftests-x86_64-rhel-5771a8c08880cdca3bfb4a3fc6d309d6bba20877/tools/testing/selftests/futex/functional/futex_wait_uninitialized_heap
+gcc  -g -O2 -Wall -D_GNU_SOURCE -pthread -I../include -I../../   -pthread -lrt  futex_wait_private_mapped_file.c ../include/futextest.h ../include/atomic.h ../include/logging.h  -o /usr/src/linux-selftests-x86_64-rhel-5771a8c08880cdca3bfb4a3fc6d309d6bba20877/tools/testing/selftests/futex/functional/futex_wait_private_mapped_file
+make[1]: Leaving directory '/usr/src/linux-selftests-x86_64-rhel-5771a8c08880cdca3bfb4a3fc6d309d6bba20877/tools/testing/selftests/futex/functional'
+tput: No value for $TERM and no -T specified
+tput: No value for $TERM and no -T specified
+
+f
+futex_requeue_pi: Test requeue functionality
+	Arguments: broadcast=0 locked=0 owner=0 timeout=0ns
+selftests: futex-requeue-pi [ PASS]
+futex_requeue_pi: Test requeue functionality
+	Arguments: broadcast=1 locked=0 owner=0 timeout=0ns
+selftests: futex-requeue-pi [ PASS]
+futex_requeue_pi: Test requeue functionality
+	Arguments: broadcast=1 locked=1 owner=0 timeout=0ns
+selftests: futex-requeue-pi [ PASS]
+futex_requeue_pi: Test requeue functionality
+	Arguments: broadcast=1 locked=0 owner=1 timeout=0ns
+selftests: futex-requeue-pi [ PASS]
+futex_requeue_pi: Test requeue functionality
+	Arguments: broadcast=0 locked=1 owner=0 timeout=0ns
+selftests: futex-requeue-pi [ PASS]
+futex_requeue_pi: Test requeue functionality
+	Arguments: broadcast=0 locked=0 owner=1 timeout=0ns
+selftests: futex-requeue-pi [ PASS]
+futex_requeue_pi: Test requeue functionality
+	Arguments: broadcast=1 locked=1 owner=0 timeout=5000ns
+selftests: futex-requeue-pi [ PASS]
+futex_requeue_pi: Test requeue functionality
+	Arguments: broadcast=0 locked=1 owner=0 timeout=5000ns
+selftests: futex-requeue-pi [ PASS]
+futex_requeue_pi: Test requeue functionality
+	Arguments: broadcast=1 locked=1 owner=0 timeout=500000ns
+selftests: futex-requeue-pi [ PASS]
+futex_requeue_pi: Test requeue functionality
+	Arguments: broadcast=0 locked=1 owner=0 timeout=500000ns
+selftests: futex-requeue-pi [ PASS]
+futex_requeue_pi: Test requeue functionality
+	Arguments: broadcast=1 locked=0 owner=0 timeout=5000ns
+selftests: futex-requeue-pi [ PASS]
+futex_requeue_pi: Test requeue functionality
+	Arguments: broadcast=0 locked=0 owner=0 timeout=5000ns
+selftests: futex-requeue-pi [ PASS]
+futex_requeue_pi: Test requeue functionality
+	Arguments: broadcast=1 locked=0 owner=0 timeout=500000ns
+selftests: futex-requeue-pi [ PASS]
+futex_requeue_pi: Test requeue functionality
+	Arguments: broadcast=0 locked=0 owner=0 timeout=500000ns
+selftests: futex-requeue-pi [ PASS]
+futex_requeue_pi: Test requeue functionality
+	Arguments: broadcast=1 locked=0 owner=1 timeout=5000ns
+selftests: futex-requeue-pi [ PASS]
+futex_requeue_pi: Test requeue functionality
+	Arguments: broadcast=0 locked=1 owner=0 timeout=5000ns
+selftests: futex-requeue-pi [ PASS]
+futex_requeue_pi: Test requeue functionality
+	Arguments: broadcast=1 locked=0 owner=1 timeout=500000ns
+selftests: futex-requeue-pi [ PASS]
+futex_requeue_pi: Test requeue functionality
+	Arguments: broadcast=0 locked=1 owner=0 timeout=500000ns
+selftests: futex-requeue-pi [ PASS]
+futex_requeue_pi: Test requeue functionality
+	Arguments: broadcast=1 locked=1 owner=0 timeout=2000000000ns
+selftests: futex-requeue-pi [ PASS]
+futex_requeue_pi: Test requeue functionality
+	Arguments: broadcast=0 locked=1 owner=0 timeout=2000000000ns
+selftests: futex-requeue-pi [ PASS]
+
+futex_requeue_pi_mismatched_ops: Detect mismatched requeue_pi operations
+selftests: futex-requeue-pi-mismatched-ops [ PASS]
+
+futex_requeue_pi_signal_restart: Test signal handling during requeue_pi
+	Arguments: <none>
+selftests: futex-requeue-pi-signal-restart [ PASS]
+
+futex_wait_timeout: Block on a futex and wait for timeout
+	Arguments: timeout=100000ns
+selftests: futex-wait-timeout [ PASS]
+
+futex_wait_wouldblock: Test the unexpected futex value in FUTEX_WAIT
+selftests: futex-wait-wouldblock [ PASS]
+
+futex_wait_uninitialized_heap: Test the uninitialized futex value in FUTEX_WAIT
+selftests: futex-wait-uninitialized-heap [ PASS]
+futex_wait_private_mapped_file: Test the futex value of private file mappings in FUTEX_WAIT
+selftests: futex-wait-private-mapped-file [ PASS]
+make: Leaving directory '/usr/src/linux-selftests-x86_64-rhel-5771a8c08880cdca3bfb4a3fc6d309d6bba20877/tools/testing/selftests/futex'
