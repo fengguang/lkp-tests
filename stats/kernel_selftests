@@ -16,7 +16,7 @@ def futex_stat(line, futex, stats)
       futex['subtest'] = $1
   when /^\s+Arguments: (.+)/
       futex['argument'] = $1.tr(' ', '_')
-  when /^Result\:\s+(PASS|FAIL)/
+  when /^Result\:\s+(PASS|FAIL)/, /^selftests\:.*(PASS|FAIL)/
     stats << if futex['argument'] && !(futex['argument'].include? 'none')
                "futex.#{futex['subtest']}.#{futex['argument']}.#{$1.downcase}: 1"
              else
@@ -79,7 +79,9 @@ while (line = STDIN.gets)
       testname = nil
     end
   when /^selftests: (.*) .*(\[|\[ )(PASS|FAIL)/
-    if testname == 'memory-hotplug'
+    if testname == 'futex'
+      futex_stat(line, tests_stats['futex'], stats)
+    elsif testname == 'memory-hotplug'
       memory_hotplug_stat(line, tests_stats['memory-hotplug'], stats)
     elsif testname == 'x86'
       x86_stat(line, tests_stats['x86'], stats)
