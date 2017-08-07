@@ -6,13 +6,16 @@ download()
 	git_clone_update git://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git
 }
 
-build_install()
+build_install_xfsprogs()
 {
 	cd ../xfsprogs-dev || return
 	make || return
 	make install
 	make install-dev
+}
 
+build_install_xfstests()
+{
 	cd ../xfstests-dev
 	## Currently, ./configure file can't work with "--prefix" option correctly,
 	## so we just use the "make" command to generate the execuable file.
@@ -29,7 +32,8 @@ build_ignore_file()
 
 build()
 {
-	build_install || return
+	build_install_xfsprogs || return
+	build_install_xfstests || return
 	build_ignore_file || return
 }
 
