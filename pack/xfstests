@@ -9,9 +9,13 @@ download()
 build_install_xfsprogs()
 {
 	cd ../xfsprogs-dev || return
+	make configure || return
+	./configure --prefix=$BUILD_DIR/xfsprogs/usr --exec_prefix=$BUILD_DIR/xfsprogs/usr
 	make || return
 	make install
 	make install-dev
+	# xfstests need those file
+	cp -a $BUILD_DIR/xfsprogs/usr/* /usr
 }
 
 build_install_xfstests()
@@ -48,4 +52,17 @@ install()
 	./update-new-cases.sh btrfs
 	./update-new-cases.sh xfs
 	./update-new-cases.sh generic
+}
+
+pack()
+{
+    cd $BUILD_DIR/xfsprogs || return
+    {
+        echo /lkp
+        echo /lkp/benchmarks
+        find /lkp/benchmarks/$BM_NAME
+        find ./usr | sed 's/^.//'
+    } |
+    cpio --quiet -o -H newc | gzip -n -9 > /lkp/benchmarks/${BM_NAME}.cgz
+    [[ $arch ]] && mv "/lkp/benchmarks/${BM_NAME}.cgz" "/lkp/benchmarks/${BM_NAME}-${arch}.cgz"
 }
