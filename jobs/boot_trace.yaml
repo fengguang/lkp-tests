@@ -1,0 +1,15 @@
+suite: boot_trace
+testcase: boot_trace
+
+boot_params:
+  bp_trace_buf_size: 131072K
+  bp_trace_clock: x86-tsc
+  bp_trace_options: nooverwrite,context-info
+  bp_ftrace: function
+  bp_ftrace_filter: smp_init,sched_init_smp,cpu_up,smp_cpus_done,bringup_cpu,sched_cpu_starting,cpuhp_online_idle
+
+cat-file:
+  when: post_test
+  files: /sys/kernel/debug/tracing/trace
+
+sleep: 1
