@@ -278,7 +278,7 @@ class MResultRootTableSet
      'specjbb2015', 'specpower', 'stutter', 'sunspider', 'tbench', 'tcrypt',
      'thrulay', 'tlbflush', 'unixbench', 'vm-scalability', 'will-it-scale',
      'xfstests', 'chromeswap', 'fio-basic', 'apachebench', 'perf_event_tests', 'swapin',
-     'tpcc', 'mytest', 'exit_free', 'pgbench']
+     'tpcc', 'mytest', 'exit_free', 'pgbench', 'boot_trace']
   LINUX_TESTCASES =
     ['boot', 'cpu-hotplug', 'ext4-frags', 'ftq', 'ftrace_onoff', 'fwq',
      'galileo', 'irda-kernel', 'kernel_selftests', 'kvm-unit-tests','kvm-unit-tests-qemu',
