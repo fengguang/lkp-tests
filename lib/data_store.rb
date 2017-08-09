@@ -834,10 +834,10 @@ module DataStore
     FileUtils.rm_rf tbl_path
     layout = Layout.create_new tbl_path
     layout.add_map(Map::NAME => 'default',
-             Map::AXIS_KEYS => ['a', 'b', Map::ALL_OTHERS_KEY],
-             Map::SUPPRESS_LAST => true)
+                   Map::AXIS_KEYS => ['a', 'b', Map::ALL_OTHERS_KEY],
+                   Map::SUPPRESS_LAST => true)
     layout.add_map(Map::NAME => 'c',
-             Map::AXIS_KEYS => ['c'])
+                   Map::AXIS_KEYS => ['c'])
     layout.save
     layout.add_index DateIndex
     layout.add_index(AxisIndex, 'a') { |index|
