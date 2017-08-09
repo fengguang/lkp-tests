@@ -4,6 +4,8 @@ stats_name = 'fail: 1'
 
 while (line = STDIN.gets)
   case line
+  when /^rsync error/
+    break
   when /^total size is \S+  speedup is \S+$/
     stats_name = 'pass: 1'
     break
