@@ -671,8 +671,7 @@ def is_kpi_stat_strict(stat, axes, values = nil)
   $index_perf.include? stat
 end
 
-$kpi_stat_blacklist = Set.new [ 'vm-scalability.stddev',
-  'unixbench.incomplete_result' ]
+$kpi_stat_blacklist = Set.new [ 'vm-scalability.stddev', 'unixbench.incomplete_result' ]
 
 def is_kpi_stat(stat, axes, values = nil)
   return false if $kpi_stat_blacklist.include?(stat)
