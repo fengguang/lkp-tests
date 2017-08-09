@@ -98,9 +98,9 @@ def is_reasonable_perf_change(name, delta, max)
 end
 
 def is_changed_stats(sorted_a, min_a, mean_a, max_a,
-         sorted_b, min_b, mean_b, max_b,
-         is_failure_stat, is_latency_stat,
-         stat, options)
+                     sorted_b, min_b, mean_b, max_b,
+                     is_failure_stat, is_latency_stat,
+                     stat, options)
 
   if options['perf-profile'] and stat =~ /^perf-profile\./
     return  mean_a > options['perf-profile'] ||
@@ -480,9 +480,9 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
     next unless max_a
 
     next unless is_changed_stats(sorted_a, min_a, mean_a, max_a,
-               sorted_b, min_b, mean_b, max_b,
-               is_failure_stat, is_latency_stat,
-               k, options)
+                                 sorted_b, min_b, mean_b, max_b,
+                                 is_failure_stat, is_latency_stat,
+                                 k, options)
 
     if options['regression-only'] || options['all-critical']
       if is_failure_stat

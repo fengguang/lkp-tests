@@ -99,16 +99,16 @@ module Compare
     # following properties are parameters for compare
     prop_reader :stat_calc_funcs
     prop_with :mresult_roots, :compare_axis_keys,
-      :sort_mresult_roots, :dedup_mresult_roots,
-      :use_all_stat_keys, :use_stat_keys,
-      :use_testcase_stat_keys,
-      :include_stat_keys, :include_all_failure_stat_keys,
-      :filter_stat_keys, :filter_testcase_stat_keys,
-      :filter_kpi_stat_keys, :filter_kpi_stat_strict_keys,
-      :exclude_stat_keys,
-      :gap, :more_stats,
-      :group_by_stat, :show_empty_group, :compact_show,
-      :sort_by_group
+              :sort_mresult_roots, :dedup_mresult_roots,
+              :use_all_stat_keys, :use_stat_keys,
+              :use_testcase_stat_keys, :include_stat_keys,
+              :include_all_failure_stat_keys, :filter_stat_keys,
+              :filter_testcase_stat_keys, :filter_kpi_stat_keys,
+              :filter_kpi_stat_strict_keys,
+              :exclude_stat_keys,
+              :gap, :more_stats,
+              :group_by_stat, :show_empty_group, :compact_show,
+              :sort_by_group
 
     private
 
@@ -516,8 +516,8 @@ module Compare
   class GroupResult::MatrixExporter
     include Property
     prop_with :data_types, :data_type, :include_axes, :axes_as_num,
-        :axis_prefix, :sort, :sort_stat_key,
-        :include_runs, :data_type_in_key, :group_result
+              :axis_prefix, :sort, :sort_stat_key,
+              :include_runs, :data_type_in_key, :group_result
     def initialize(group_result = nil)
       @group_result = group_result
       @data_types = [AVGS]
