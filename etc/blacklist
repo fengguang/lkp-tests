@@ -81,6 +81,8 @@
 ^stderr.*write_error
 ^stderr.Illegal_instruction
 ^stderr.curl.*Empty_reply_from_server
+^stderr.No_pmem_device
+^stderr.fio:posix_fallocate_fails:No_space_left_on_device
 ^tcrypt.*
 .*\.total_test
 ^vmstat.cpu
