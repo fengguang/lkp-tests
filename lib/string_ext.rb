@@ -6,9 +6,9 @@ class String
 
   # for converting log lines into "Content-Type: text/plain;" emails
   def plain_text
-    self.gsub(REGEX_ANSI_COLOR, '').
-         tr("\r", "\n").
-         gsub(/[^[:print:]\n]/, '')
+    self.gsub(REGEX_ANSI_COLOR, '')
+        .tr("\r", "\n")
+        .gsub(/[^[:print:]\n]/, '')
   end
 
   def remediate_invalid_byte_sequence(options = {})

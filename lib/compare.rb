@@ -163,9 +163,9 @@ module Compare
         @mresult_roots.uniq!
       end
       grouper = AxesGrouper.new
-      groups = grouper.set_axes_data(@mresult_roots).
-               set_group_axis_keys(@compare_axis_keys).
-               group
+      groups = grouper.set_axes_data(@mresult_roots)
+                      .set_group_axis_keys(@compare_axis_keys)
+                      .group
       groups.map { |g|
         next if g.axes_data.size < 2
         Group.new self, g.axes, g.group_axeses, g.axes_data
@@ -174,8 +174,8 @@ module Compare
 
     def global_common_axes
       grouper = AxesGrouper.new
-      grouper.set_axes_data(@mresult_roots).
-        global_common_axes
+      grouper.set_axes_data(@mresult_roots)
+             .global_common_axes
     end
 
     # stat calc func is a function object with signature:
@@ -874,10 +874,10 @@ module Compare
     }.flatten
     compare_axis_keys = [COMMIT_AXIS_KEY]
     comparer = Comparer.new
-    comparer.set_mresult_roots(_result_roots).
-      set_sort_mresult_roots(false).
-      set_compare_axis_keys(compare_axis_keys).
-      set_params(params)
+    comparer.set_mresult_roots(_result_roots)
+            .set_sort_mresult_roots(false)
+            .set_compare_axis_keys(compare_axis_keys)
+            .set_params(params)
   end
 
   def self.compare_commits(commits, params = nil)
@@ -893,10 +893,10 @@ module Compare
     }.flatten
     compare_axis_keys = [COMMIT_AXIS_KEY]
     comparer = Comparer.new
-    comparer.set_mresult_roots(_rts).
-      set_sort_mresult_roots(false).
-      set_compare_axis_keys(compare_axis_keys).
-      set_params(params)
+    comparer.set_mresult_roots(_rts)
+            .set_sort_mresult_roots(false)
+            .set_compare_axis_keys(compare_axis_keys)
+            .set_params(params)
   end
 
   def self.ncompare_commits(commits, params = nil)
@@ -921,11 +921,11 @@ module Compare
     }
     compare_axis_keys = [COMMIT_AXIS_KEY]
     comparer = Comparer.new
-    comparer.set_mresult_roots(_rts).
-      set_sort_mresult_roots(false).
-      set_compare_axis_keys(compare_axis_keys).
-      set_sort_by_group(true).
-      set_compact_show(true)
+    comparer.set_mresult_roots(_rts)
+            .set_sort_mresult_roots(false)
+            .set_compare_axis_keys(compare_axis_keys)
+            .set_sort_by_group(true)
+            .set_compact_show(true)
     if strict
       comparer.set_filter_kpi_stat_strict_keys(true)
     else
@@ -1018,9 +1018,9 @@ module Compare
   def self.test_compare_commits
     commits = ['f5c0a122800c301eecef93275b0c5d58bb4c15d9', '3a8b36f378060d20062a0918e99fae39ff077bf0']
     comparer = commits_comparer commits
-    comparer.set_compare_axis_keys([COMMIT_AXIS_KEY, 'rwmode']).
-      set_use_all_stats(false).
-      set_group_by_stat(false)
+    comparer.set_compare_axis_keys([COMMIT_AXIS_KEY, 'rwmode'])
+            .set_use_all_stats(false)
+            .set_group_by_stat(false)
 
     pager {
       comparer.compare
@@ -1029,15 +1029,15 @@ module Compare
 
   def self.test_incomplete_run
     _rt = '/result/lkp-sb02/fileio/performance-600s-100%-1HDD-ext4-64G-1024f-seqrd-sync/debian-x86_64-2015-02-07.cgz/x86_64-rhel/'
-    _rts = ['9eccca0843205f87c00404b663188b88eb248051', '06e5801b8cb3fc057d88cb4dc03c0b64b2744cda'].
-           map { |c| MResultRoot.new(_rt + c) }
+    _rts = ['9eccca0843205f87c00404b663188b88eb248051', '06e5801b8cb3fc057d88cb4dc03c0b64b2744cda']
+           .map { |c| MResultRoot.new(_rt + c) }
     _rts.each { |_rt|
       puts "#{_rt.runs}"
     }
     comparer = Comparer.new
-    comparer.set_mresult_roots(_rts).
-      set_compare_axis_keys([COMMIT_AXIS_KEY]).
-      set_use_all_stats(false)
+    comparer.set_mresult_roots(_rts)
+            .set_compare_axis_keys([COMMIT_AXIS_KEY])
+            .set_use_all_stats(false)
     page {
       comparer.compare
     }
@@ -1051,8 +1051,8 @@ module Compare
     ).to_a
     compare_axis_keys = ['load']
     comparer = Comparer.new
-    comparer.set_mresult_roots(_result_roots).
-      set_compare_axis_keys(compare_axis_keys)
+    comparer.set_mresult_roots(_result_roots)
+            .set_compare_axis_keys(compare_axis_keys)
     pager {
       comparer.compare
     }
