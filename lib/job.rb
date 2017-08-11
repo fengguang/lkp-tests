@@ -645,7 +645,6 @@ class Job
   end
 
   def run_filter(hash, key, val, script)
-
     system @filter_env, script, {unsetenv_others: true}
 
     if $?.exitstatus and $?.exitstatus != 0

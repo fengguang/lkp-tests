@@ -65,7 +65,6 @@ end
 # Check whether it looks like a reasonable performance change,
 # to avoid showing unreasonable ones to humans in compare/mplot output.
 def is_reasonable_perf_change(name, delta, max)
-
   $perf_metrics_threshold.each { |k, v|
     next unless name =~ %r{^#{k}$}
     return false if max < v
