@@ -684,6 +684,7 @@ class Job
     end
     true
   end
+
   def axes
     as = {}
     ResultPath::MAXIS_KEYS.each { |k|
