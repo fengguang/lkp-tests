@@ -3,7 +3,6 @@
 REGEX_ANSI_COLOR = /\e\[([0-9;]+m|[mK])/
 
 class String
-
   # for converting log lines into "Content-Type: text/plain;" emails
   def plain_text
     self.gsub(REGEX_ANSI_COLOR, '')

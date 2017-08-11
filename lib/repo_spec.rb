@@ -35,6 +35,5 @@ class RepoSpec
 
       @url_remotes[url]
     end
-
   end
 end

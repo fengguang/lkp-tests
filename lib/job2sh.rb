@@ -70,7 +70,6 @@ def get_program_env(program, env)
 end
 
 class Job2sh < Job
-
   def out_line(line = nil)
     if line == nil
       return if @script_lines[-1] == nil

@@ -175,7 +175,6 @@ class Job
 end
 
 class Job
-
   EXPAND_DIMS = %w(kconfig commit rootfs)
 
   attr_reader :path_scheme
