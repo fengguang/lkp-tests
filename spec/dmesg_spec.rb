@@ -54,5 +54,4 @@ describe 'Dmesg' do
       end
     end
   end
-
 end

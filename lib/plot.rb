@@ -16,7 +16,6 @@ def mmplot(matrix1, matrix2, fields, title_prefix=nil)
   Gnuplot.open do |gnuplot|
   fields.each do |field|
   Gnuplot::Plot.new(gnuplot) do |plot|
-
   ds1 = nil
   ds2 = nil
 
@@ -62,7 +61,6 @@ def mmplot(matrix1, matrix2, fields, title_prefix=nil)
 
   plot.data.push ds1 if ds1
   plot.data.push ds2 if ds2
-
   end
   end
   end

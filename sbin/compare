@@ -152,7 +152,6 @@ opts = OptionParser.new do |opts|
     puts opts
     exit
   end
-
 end
 
 if ARGV == []
@@ -671,7 +670,6 @@ def show_delta(stat, key_g)
   end
 
   $cases.each { |_rt, value|
-
     result_path = ResultPath.new
     result_path.parse_result_root(_rt)
     test = result_path.test_desc $opt_dimension, $dim_not_a_param
