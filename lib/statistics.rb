@@ -4,7 +4,6 @@
 
 # Add methods to Enumerable, which makes them available to Array
 module Enumerable
-
   def sum
     begin
       return self.inject(0) { |acc, i| acc + i }

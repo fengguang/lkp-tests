@@ -2,7 +2,6 @@
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath(__FILE__)))
 
 module LKP
-
   require "singleton"
 
   #
@@ -34,5 +33,4 @@ module LKP
       ].split
     end
   end
-
 end
