@@ -18,7 +18,9 @@ check_param()
 
 	testcases=$(ls -d "$group"_* 2>/dev/null)
 
-	[[ -n "$testcases" ]] || testcases=$(ls -d "$group" 2>/dev/null)
+	# Some testcase is contianed in folder named by $group (such as traces).
+	# Adding it into testcases. We think it's a testcase if there is a TEST0 in the folder.
+	[[ -f "$group/TEST0" ]] && testcases+=" $group"
 	[[ -n "$testcases" ]] || die "Parameter \"group\" is invalid"
 }
 
