@@ -54,7 +54,7 @@ def mmplot(matrix1, matrix2, fields, title_prefix=nil)
   plot.notitle # necessary for updating title
 
   title_prefix += ": " if title_prefix
-  plot.title  format("%s%s", title_prefix, normalized_field)
+  plot.title format("%s%s", title_prefix, normalized_field)
 
   plot.noxtics
   plot.ytics 'nomirror'

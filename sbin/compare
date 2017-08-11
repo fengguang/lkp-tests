@@ -113,7 +113,7 @@ opts = OptionParser.new do |opts|
     $perf_index = load_yaml LKP_SRC + '/etc/index-perf.yaml'
     $power_index  = load_yaml LKP_SRC + '/etc/index-power.yaml'
     $latency_index  = load_yaml LKP_SRC + '/etc/index-latency.yaml'
-    $all_index  = $perf_index.merge($power_index).merge($latency_index).merge($size_index)
+    $all_index = $perf_index.merge($power_index).merge($latency_index).merge($size_index)
   end
 
   opts.on('--ignore-incomplete-run', 'ignore incomplete runs') do

@@ -52,7 +52,7 @@ end
 
 opts.parse!(ARGV)
 
-if ARGV.size  < 1
+if ARGV.size < 1
   puts opts
   exit
 end

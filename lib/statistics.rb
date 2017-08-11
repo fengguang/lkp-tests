@@ -20,7 +20,7 @@ module Enumerable
 
   def sorted
     s = self.sort
-    s.shift while s[0] == -1  # -1 means empty data point
+    s.shift while s[0] == -1 # -1 means empty data point
     s
   end
 

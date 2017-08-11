@@ -162,8 +162,8 @@ class Job2sh < Job
       return false unless pass == :PASS_NEW_SCRIPT
       script_file = $1 + '/' + $2
       script_name = File.basename $2
-      if @cur_func == :run_job  and script_file =~ %r{^(setup|tests|daemon)/} or
-         @cur_func == :extract_stats  and script_file.index('stats/') == 0
+      if @cur_func == :run_job and script_file =~ %r{^(setup|tests|daemon)/} or
+         @cur_func == :extract_stats and script_file.index('stats/') == 0
         @programs[script_name] = LKP_SRC + '/' + script_file
       elsif @cur_func == :run_job and script_file =~ %r{^monitors/}
         @monitors[script_name] = LKP_SRC + '/' + script_file

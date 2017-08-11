@@ -2,9 +2,9 @@
 
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath(__FILE__)))
 
-GIT_WORK_TREE  ||= ENV['GIT_WORK_TREE'] || ENV['LKP_GIT_WORK_TREE'] || '/c/repo/linux'
-GIT_DIR    ||= ENV['GIT_DIR'] || GIT_WORK_TREE + '/.git'
-GIT    ||= "git --work-tree=#{GIT_WORK_TREE} --git-dir=#{GIT_DIR}"
+GIT_WORK_TREE ||= ENV['GIT_WORK_TREE'] || ENV['LKP_GIT_WORK_TREE'] || '/c/repo/linux'
+GIT_DIR ||= ENV['GIT_DIR'] || GIT_WORK_TREE + '/.git'
+GIT ||= "git --work-tree=#{GIT_WORK_TREE} --git-dir=#{GIT_DIR}"
 
 require 'set'
 require 'time'

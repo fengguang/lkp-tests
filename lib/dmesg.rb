@@ -132,7 +132,7 @@ CALLTRACE_PATTERN = /(
   SyS_[a-z0-9_]+
 )\+0x/x
 
-CALLTRACE_IGNORE_PATTERN  = /(
+CALLTRACE_IGNORE_PATTERN = /(
   #{CALLTRACE_COMMON_CONTEXT}
   worker_thread|
   warn_slowpath_.*
@@ -229,11 +229,11 @@ end
 
 def common_error_id(line)
   line = line.chomp
-  line.gsub! /\b[3-9]\.[0-9]+[-a-z0-9.]+/, '#'      # linux version: 3.17.0-next-20141008-g099669ed
-  line.gsub! /\b[1-9][0-9]-[A-Z][a-z]+-[0-9]{4}\b/, '#'   # Date: 28-Dec-2013
-  line.gsub! /\b0x[0-9a-f]+\b/, '#'       # hex number
-  line.gsub! /\b[a-f0-9]{40}\b/, '#'        # SHA-1
-  line.gsub! /\b[0-9][0-9.]*/, '#'        # number
+  line.gsub! /\b[3-9]\.[0-9]+[-a-z0-9.]+/, '#' # linux version: 3.17.0-next-20141008-g099669ed
+  line.gsub! /\b[1-9][0-9]-[A-Z][a-z]+-[0-9]{4}\b/, '#' # Date: 28-Dec-2013
+  line.gsub! /\b0x[0-9a-f]+\b/, '#' # hex number
+  line.gsub! /\b[a-f0-9]{40}\b/, '#' # SHA-1
+  line.gsub! /\b[0-9][0-9.]*/, '#' # number
   line.gsub! /#x\b/, '0x'
   line.gsub! /[\\"$]/, '~'
   line.gsub! /[ \t]/, ' '
@@ -325,7 +325,7 @@ def analyze_error_id(line)
     line = $1
     bug_to_bisect = oops_to_bisect_pattern line
   # printk(KERN_ERR "BUG: Dentry %p{i=%lx,n=%pd} still in use (%d) [unmount of %s %s]\n"
-  when  /(BUG: Dentry ).* (still in use) .* \[unmount of /
+  when /(BUG: Dentry ).* (still in use) .* \[unmount of /
     line = $1 + $2
     bug_to_bisect = $1 + '.* ' + $2
   when /^backtrace:([a-zA-Z0-9_]+)/,
@@ -341,7 +341,7 @@ def analyze_error_id(line)
 
   error_id = line
 
-  error_id.gsub! /\ \]$/, ""          # [ INFO: possible recursive locking detected ]
+  error_id.gsub! /\ \]$/, "" # [ INFO: possible recursive locking detected ]
   error_id.gsub! /\/c\/kernel-tests\/src\/[^\/]+\//, ''
   error_id.gsub! /\/c\/(wfg|yliu)\/[^\/]+\//, ''
   error_id.gsub! /\/lkp\/[^\/]+\/linux[0-9]*\//, ''
@@ -363,8 +363,8 @@ def analyze_error_id(line)
 
   error_id = common_error_id(error_id)
 
-  error_id.gsub! /([a-z]:)[0-9]+\b/, '\1'       # WARNING: at arch/x86/kernel/cpu/perf_event.c:1077 x86_pmu_start+0xaa/0x110()
-  error_id.gsub! /#:\[<#>\]\[<#>\]/, ''       # RIP: 0010:[<ffffffff91906d8d>]  [<ffffffff91906d8d>] validate_chain+0xed/0xe80
+  error_id.gsub! /([a-z]:)[0-9]+\b/, '\1' # WARNING: at arch/x86/kernel/cpu/perf_event.c:1077 x86_pmu_start+0xaa/0x110()
+  error_id.gsub! /#:\[<#>\]\[<#>\]/, '' # RIP: 0010:[<ffffffff91906d8d>]  [<ffffffff91906d8d>] validate_chain+0xed/0xe80
 
   [error_id, bug_to_bisect]
 end

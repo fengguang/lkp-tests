@@ -7,8 +7,8 @@ require "#{LKP_SRC}/lib/lkp_git"
 
 DEFAULT_COMPILER = 'gcc-6'
 
-RESULT_MNT  = '/result'
-RESULT_PATHS  = '/lkp/paths'
+RESULT_MNT = '/result'
+RESULT_PATHS = '/lkp/paths'
 
 def tbox_group(hostname)
   if hostname =~ /.+-\d+$/

@@ -184,8 +184,8 @@ class Job
 
   def initialize(job = {}, defaults = {}, overrides = {})
     @job = job
-    @defaults = defaults  # from auto includes
-    @overrides = overrides  # from command line
+    @defaults = defaults # from auto includes
+    @overrides = overrides # from command line
     @available_programs = {}
   end
 

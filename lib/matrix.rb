@@ -143,7 +143,7 @@ end
 
 def matrix_average(matrix)
   avg = {}
-  matrix.each { |k, v| avg[k] = v.empty? ? 0: v.average  }
+  matrix.each { |k, v| avg[k] = v.empty? ? 0: v.average }
   avg
 end
 
@@ -225,7 +225,7 @@ def unite_to(stats, matrix_root, max_cols = nil, delete = false)
     end
   rescue TypeError
     log_error "matrix contains non-number values, move to #{matrix_file}-bad"
-    FileUtils.mv matrix_file, matrix_file + '-bad', :force => true   # never raises exception
+    FileUtils.mv matrix_file, matrix_file + '-bad', :force => true # never raises exception
   end
   return matrix
 end

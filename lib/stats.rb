@@ -17,14 +17,14 @@ require "#{LKP_SRC}/lib/log"
 require "#{LKP_SRC}/lib/tests.rb"
 
 $metric_add_max_latency = IO.read("#{LKP_SRC}/etc/add-max-latency").split("\n")
-$metric_latency   = IO.read("#{LKP_SRC}/etc/latency").split("\n")
-$metric_failure   = IO.read("#{LKP_SRC}/etc/failure").split("\n")
+$metric_latency = IO.read("#{LKP_SRC}/etc/latency").split("\n")
+$metric_failure = IO.read("#{LKP_SRC}/etc/failure").split("\n")
 $functional_tests = Set.new IO.read("#{LKP_SRC}/etc/functional-tests").split("\n")
 $perf_metrics_threshold = YAML.load_file "#{LKP_SRC}/etc/perf-metrics-threshold.yaml"
-$perf_metrics_prefixes  = File.read("#{LKP_SRC}/etc/perf-metrics-prefixes").split
-$index_perf     = load_yaml "#{LKP_SRC}/etc/index-perf.yaml"
+$perf_metrics_prefixes = File.read("#{LKP_SRC}/etc/perf-metrics-prefixes").split
+$index_perf = load_yaml "#{LKP_SRC}/etc/index-perf.yaml"
 
-$perf_metrics_re  = load_regular_expressions("#{LKP_SRC}/etc/perf-metrics-patterns")
+$perf_metrics_re = load_regular_expressions("#{LKP_SRC}/etc/perf-metrics-patterns")
 $metrics_blacklist_re = load_regular_expressions("#{LKP_SRC}/etc/blacklist")
 $kill_pattern_whitelist_re = load_regular_expressions("#{LKP_SRC}/etc/dmesg-kill-pattern")
 
@@ -103,7 +103,7 @@ def is_changed_stats(sorted_a, min_a, mean_a, max_a,
                      stat, options)
 
   if options['perf-profile'] and stat =~ /^perf-profile\./
-    return  mean_a > options['perf-profile'] ||
+    return mean_a > options['perf-profile'] ||
       mean_b > options['perf-profile']
   end
 
@@ -369,7 +369,7 @@ end
 def sort_remove_margin(array, max_margin=nil)
   return nil if not array
 
-  margin = array.size  >> MARGIN_SHIFT
+  margin = array.size >> MARGIN_SHIFT
   margin = [margin, max_margin].min if max_margin
 
   array = array.sorted
