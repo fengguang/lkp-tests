@@ -23,7 +23,6 @@ class Noise
 
     @data.map! { |d| d - @med }
 
-
     @samples = @data.size
     start = 0
     cycles = 0

@@ -639,7 +639,6 @@ def add_stats_to_matrix(stats, matrix)
   matrix
 end
 
-
 def matrix_from_stats_files(stats_files, add_source = true)
   matrix = {}
   stats_files.each { |stats_file|

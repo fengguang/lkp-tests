@@ -482,7 +482,6 @@ def setup_dims()
     end
   end
 
-
   $opt_dims.each { |dim|
     if $dims[dim]
       puts "#{dim}(#{dim_name(dim)}) already exists in compare list"
