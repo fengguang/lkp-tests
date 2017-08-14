@@ -102,7 +102,7 @@ run_test()
 	elif [ "${test#*-}" = "new" ]; then
 		all_tests_cmd="cd tests && sed \"s:^:${test%-*}/:\" $test"
 		ignore_and_do_tests "$all_tests_cmd"
-	elif [ "${test%[a-z]-[0-9][0-9][0-9]}" != "$test" ]; then
+	elif [ "${test%[a-z4]-[0-9][0-9][0-9]}" != "$test" ]; then
 		all_tests_cmd="echo ${test%-*}/${test#*-}"
 		ignore_and_do_tests "$all_tests_cmd"
 	elif [ "${test#*-}" != "$test" ]; then
