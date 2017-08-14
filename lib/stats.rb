@@ -540,8 +540,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
                          'min_b' => min_b,
                          'max_b' => max_b,
                          'max' => max,
-                         'nr_run' => v.size
-    }
+                         'nr_run' => v.size }
     changed_stats[k].merge! options
   }
 
