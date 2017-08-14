@@ -108,7 +108,7 @@ def create_programs_hash(glob, lkp_src = LKP_SRC)
   cache_key = [glob, lkp_src].join ":"
   $programs_cache ||= {}
   $programs =
-  $programs_cache[cache_key] ||= __create_programs_hash(glob, lkp_src).freeze
+    $programs_cache[cache_key] ||= __create_programs_hash(glob, lkp_src).freeze
 end
 
 def atomic_save_yaml_json(object, file)
@@ -380,23 +380,23 @@ class Job
 
   def available_programs(type)
     @available_programs[type] ||=
-    case type
-    when Array
-      p = {}
-      type.each do |t|
-        p.merge! available_programs(t)
+      case type
+      when Array
+        p = {}
+        type.each do |t|
+          p.merge! available_programs(t)
+        end
+        p
+      when :workload_and_monitors
+        # This is all scripts that run in testbox.
+        # The other stats/* and filters/* run in server.
+        available_programs %i(workload_elements monitors)
+      when :workload_elements
+        # the options of these programs could impact test result
+        available_programs %i(setup tests daemon)
+      else
+        create_programs_hash "#{type}/**/*", lkp_src
       end
-      p
-    when :workload_and_monitors
-      # This is all scripts that run in testbox.
-      # The other stats/* and filters/* run in server.
-      available_programs %i(workload_elements monitors)
-    when :workload_elements
-      # the options of these programs could impact test result
-      available_programs %i(setup tests daemon)
-    else
-      create_programs_hash "#{type}/**/*", lkp_src
-    end
   end
 
   def referenced_programs
