@@ -1,0 +1,29 @@
+#!/bin/bash
+# - agent
+# - server
+# - master_threads
+# - runtime
+
+. "$LKP_SRC/lib/reproduce-log.sh"
+
+: "${server:=localhost}"
+: "${runtime:=300}"
+
+set_opt()
+{
+	opt=
+	[ -n "$agent" ] && opt="${opt} -a ${agent}"
+}
+
+run_mutilate()
+{
+	log_cmd /usr/local/bin/mutilate -T "$master_threads" -s "$server" -t "$runtime" "$opt"
+}
+
+set_opt
+
+run_mutilate
+
+pgrep mutilate | xargs kill -9
+
+kill "$(cat /tmp/memcached.pid)"

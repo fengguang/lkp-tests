@@ -1,0 +1,52 @@
+short_description: >
+ mutilate - memcached load generator
+
+description: >
+ Mutilate is a memcached load generator designed for
+ high request rates, good tail-latency measurements, and realistic
+ request stream generation.
+
+homepage: 
+ https://github.com/leverich/mutilate
+
+parameters:
+ agent: mutilate agent
+ server: memcached server ip address or host name
+ master_threads: number of thread in mutilate master
+ runtime: total runtime the benchmark run
+
+results:
+ mutilate.read.avg:
+ mutilate.read.std:
+ mutilate.read.min:
+ mutilate.read.5th:
+ mutilate.read.10th:
+ mutilate.read.90th:
+ mutilate.read.95th:
+ mutilate.read.99th:
+ mutilate.update.avg:
+ mutilate.update.std:
+ mutilate.update.min:
+ mutilate.update.5th:
+ mutilate.update.10th:
+ mutilate.update.90th:
+ mutilate.update.95th:
+ mutilate.update.99th:
+ mutilate.op_q.avg:
+ mutilate.op_q.min:
+ mutilate.op_q.5th:
+ mutilate.op_q.10th:
+ mutilate.op_q.90th:
+ mutilate.op_q.95th:
+ mutilate.op_q.99th:
+ mutilate.totalqps:
+ mutilate.totalqps.total:
+ mutilate.totalqps.time:
+ mutilate.skipped.num:
+ mutilate.skipped.percent:
+ mutilate.misses.num:
+ mutilate.misses.percent:
+ mutilate.rx.bytes:
+ mutilate.rx.speed:
+ mutilate.tx.bytes:
+ mutilate.tx.speed:

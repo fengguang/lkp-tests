@@ -1,0 +1,21 @@
+pkgname=mutilate
+pkgver=0.1
+pkgrel=1
+pkgdesc="a memcached load generator designed for high request rates, good tail-latency measurements, and realistic request stream generation."
+arch=(i686 x86_64)
+url="https://github.com/leverich/mutilate"
+license=(BSD 3-clause "New" or "Revised" License)
+depends=(scons libevent-dev gengetopt libzmq-dev memcached)
+source=('https://github.com/leverich/mutilate.git')
+md5sums=('SKIP')
+
+build()
+{
+	cd "$srcdir/mutilate"
+	scons
+}
+
+package()
+{
+	install -D "$srcdir/$pkgname/mutilate" "$pkgdir/usr/local/bin/mutilate"
+}
