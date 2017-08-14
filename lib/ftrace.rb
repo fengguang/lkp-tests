@@ -180,3 +180,42 @@ class FGTrace
     end
   end
 end
+
+# Func example:
+#  swapper/0-1     [000] ....  90515845662: cpu_up <-smp_init
+
+class FuncSample
+  RE_SAMPLE = /^\s*([^\s]+)-(\d+)\s+\[(\d+)\]\s+([^\s]+)\s+([0-9.]+)\s*:\s*(.+)\s*<-(.+)\s*/
+
+  attr_reader :task, :pid, :cpu, :timestamp, :func, :callerfunc
+
+  def initialize(task, pid, cpu, timestamp, func, callerfunc)
+    @task = task
+    @pid = pid
+    @cpu = cpu
+    @timestamp = timestamp
+    @func = func
+    @callerfunc = callerfunc
+  end
+
+  class << self
+    def parse(str)
+      # taskname, pid, cpuID, timestamp, func, callerfunc
+      FuncSample.new($1, $2.to_i, $3.to_i, $5.to_f, $6.strip.intern, $7.strip) if str =~ self::RE_SAMPLE
+    end
+  end
+end
+
+class FuncTrace
+  def initialize(file)
+    @file = file
+  end
+
+  def each
+    block_given? || (return enum_for(__method__))
+    @file.each_line do |line|
+      (sample = FuncSample.parse(line)) || next
+      yield sample
+    end
+  end
+end
