@@ -11,7 +11,7 @@ PLOT_SIZE_X = 80
 PLOT_SIZE_Y = 20
 NR_PLOT = 1
 
-def mmplot(matrix1, matrix2, fields, title_prefix=nil)
+def mmplot(matrix1, matrix2, fields, title_prefix = nil)
   files = []
   Gnuplot.open do |gnuplot|
     fields.each do |field|
@@ -67,7 +67,7 @@ def mmplot(matrix1, matrix2, fields, title_prefix=nil)
   files
 end
 
-def mmsplot(matrixes1, matrixes2, fields, title_prefix=nil)
+def mmsplot(matrixes1, matrixes2, fields, title_prefix = nil)
   m1 = merge_matrixes(matrixes1)
   m2 = merge_matrixes(matrixes2)
   mmplot(m1, m2, fields, title_prefix)

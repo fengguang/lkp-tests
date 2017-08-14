@@ -115,7 +115,7 @@ class ResultPath < Hash
     keys.map {|key| self[key]}.compact.join '/'
   end
 
-  def parse_test_desc(desc, dim='commit', dim_not_a_param=true)
+  def parse_test_desc(desc, dim = 'commit', dim_not_a_param = true)
     values = desc.split('/')
     keys = test_desc_keys dim, dim_not_a_param
     kv = {}

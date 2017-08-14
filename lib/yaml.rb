@@ -37,7 +37,7 @@ def load_yaml(file, template_context = nil)
   result
 end
 
-def load_yaml_with_flock(file, timeout=nil)
+def load_yaml_with_flock(file, timeout = nil)
   lock_file = file + '.lock'
 
   if timeout
@@ -157,7 +157,7 @@ def dot_file(path)
   File.dirname(path) + '/.' + File.basename(path)
 end
 
-def save_yaml(object, file, compress=false)
+def save_yaml(object, file, compress = false)
   temp_file = dot_file(file) + "-#{$$}"
   File.open(temp_file, mode='w') { |f|
     f.write(YAML.dump(object))
@@ -170,7 +170,7 @@ def save_yaml(object, file, compress=false)
   end
 end
 
-def save_yaml_with_flock(object, file, timeout=nil, compress=false)
+def save_yaml_with_flock(object, file, timeout = nil, compress = false)
   lock_file = file + '.lock'
 
   if timeout
@@ -222,7 +222,7 @@ def load_json(file, cache = false)
   end
 end
 
-def save_json(object, file, compress=false)
+def save_json(object, file, compress = false)
   temp_file = dot_file(file) + "-#{$$}"
   File.open(temp_file, mode='w') { |file|
     file.write(JSON.pretty_generate(object, :allow_nan => true))

@@ -492,7 +492,7 @@ def setup_dims()
   }
 end
 
-def show_one_diff(stat, dim, v0, v, v0_stddev, v_stddev, is_float, is_exp, is_fail=false)
+def show_one_diff(stat, dim, v0, v, v0_stddev, v_stddev, is_float, is_exp, is_fail = false)
   if dim == $first_dim
     buf = ''
   else

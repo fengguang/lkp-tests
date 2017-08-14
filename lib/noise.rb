@@ -5,7 +5,7 @@ NOISE_LEVELS = [100, 75, 50, 25, 5, 2]
 SCALE = 100000
 
 class Noise
-  def initialize str, data, scale=SCALE
+  def initialize(str, data, scale = SCALE)
     @data = data
     @min = @max = @med = @samples = 0
     @noise_levels = []

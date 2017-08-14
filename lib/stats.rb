@@ -365,7 +365,7 @@ def should_add_max_latency(stats_field)
   return false
 end
 
-def sort_remove_margin(array, max_margin=nil)
+def sort_remove_margin(array, max_margin = nil)
   return nil if not array
 
   margin = array.size >> MARGIN_SHIFT
