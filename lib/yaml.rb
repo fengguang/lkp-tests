@@ -209,7 +209,7 @@ def load_json(file, cache = false)
       tempfile = file + "-bad"
       $stderr.puts "Failed to load JSON file: #{file}"
       $stderr.puts "Kept corrupted JSON file for debugging: #{tempfile}"
-            FileUtils.mv file, tempfile, :force => true
+      FileUtils.mv file, tempfile, :force => true
       raise
     end
     return nil

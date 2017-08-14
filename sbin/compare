@@ -86,7 +86,7 @@ opts = OptionParser.new do |opts|
     $opt_vgrep.push Regexp.new(expand_possible_commit(pattern))
   end
 
-    opts.on('-p', '--plot', 'plot bar graph') do
+  opts.on('-p', '--plot', 'plot bar graph') do
     $opt_plot = true
   end
 
