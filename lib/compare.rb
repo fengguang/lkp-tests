@@ -148,7 +148,7 @@ module Compare
           }
           @mresult_roots.sort_by! { |_rt|
             axes = _rt.axes
-            keys_values.map { |k, values |
+            keys_values.map { |k, values|
               values.index(axes[k]) || -1
             }
           }
@@ -410,7 +410,7 @@ module Compare
       cms = complete_matrixes ms
       aruns = runs ms
       cruns = complete_runs cms
-      changed_stat_keys(ms).each {| stat_key|
+      changed_stat_keys(ms).each { |stat_key|
         failure = is_failure stat_key
         tms = failure ? ms : cms
         truns = failure ? aruns : cruns
