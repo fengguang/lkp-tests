@@ -84,8 +84,8 @@ def extract_ftrace
   # interrupt handler will not be migrated so to simply entry/exit
   # pair match, sort these samples according to CPU number
   trace.each do |sample|
-      samples[sample.cpu] ||= []
-      samples[sample.cpu] << sample
+    samples[sample.cpu] ||= []
+    samples[sample.cpu] << sample
   end
 
   samples_array = []

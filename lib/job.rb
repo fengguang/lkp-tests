@@ -569,7 +569,7 @@ class Job
 
   def param_files
     @param_files ||= begin
-    maps = {}
+      maps = {}
     ruby_scripts = {}
     misc_scripts = {}
     Dir["#{lkp_src}/params/*",

@@ -253,27 +253,27 @@ end
 =end
 
 def oops_to_bisect_pattern(line)
-    words = line.split
-    return '' if words.empty?
-    return line if words.size == 1
-    patterns = []
-    words.each { |w|
-      case w
-      when /([a-zA-Z0-9_]+)\.(isra|constprop|part)\.[0-9]+\+0x/
-        patterns << $1
-        break
-      when /([a-zA-Z0-9_]+\+0x)/, /([a-zA-Z0-9_]+=)/
-        patterns << $1
-        break
-      when /[^a-zA-Z\/:.()!_-]/
-        patterns << '.*' if patterns[-1] != '.*'
-      else
-        patterns << w
-      end
-    }
-    patterns.shift while patterns[0] == '.*'
-    patterns.pop   if patterns[-1] == '.*'
-    patterns.join(' ')
+  words = line.split
+  return '' if words.empty?
+  return line if words.size == 1
+  patterns = []
+  words.each { |w|
+    case w
+    when /([a-zA-Z0-9_]+)\.(isra|constprop|part)\.[0-9]+\+0x/
+      patterns << $1
+      break
+    when /([a-zA-Z0-9_]+\+0x)/, /([a-zA-Z0-9_]+=)/
+      patterns << $1
+      break
+    when /[^a-zA-Z\/:.()!_-]/
+      patterns << '.*' if patterns[-1] != '.*'
+    else
+      patterns << w
+    end
+  }
+  patterns.shift while patterns[0] == '.*'
+  patterns.pop   if patterns[-1] == '.*'
+  patterns.join(' ')
 end
 
 def analyze_error_id(line)
@@ -409,11 +409,11 @@ def get_crash_stats(dmesg_file)
 end
 
 def get_content(dmesg_file)
-    if dmesg_file =~ /\.xz$/
-      `xz -d -k #{dmesg_file} --stdout`
-    else
-      File.read(dmesg_file)
-    end
+  if dmesg_file =~ /\.xz$/
+    `xz -d -k #{dmesg_file} --stdout`
+  else
+    File.read(dmesg_file)
+  end
 end
 
 CALLTRACE_LIMIT_LEN = 100

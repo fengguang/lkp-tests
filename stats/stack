@@ -9,12 +9,12 @@ def parse
   funcs = []
 
   add_result = lambda do
-      unless funcs.empty?
-        funcs = funcs.slice(0, MAX_STACK_DEPTH)
-        results[cmd] ||= Hash.new(0)
-        results[cmd][funcs.join('.')] += 1
-        funcs = []
-      end
+    unless funcs.empty?
+      funcs = funcs.slice(0, MAX_STACK_DEPTH)
+      results[cmd] ||= Hash.new(0)
+      results[cmd][funcs.join('.')] += 1
+      funcs = []
+    end
   end
 
   $stdin.each_line do |line|

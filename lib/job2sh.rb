@@ -58,7 +58,7 @@ def get_program_env(program, env)
       case v
       when Hash
         v.each { |kk, vv|
-        program_env[kk] = vv
+          program_env[kk] = vv
         }
       else
         program_env[k] = v

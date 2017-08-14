@@ -27,15 +27,15 @@ params['eventcounters'] = %w(NFSIOS_INODEREVALIDATE NFSIOS_DENTRYREVALIDATE NFSI
                              NFSIOS_SILLYRENAME NFSIOS_SHORTREAD NFSIOS_SHORTWRITE NFSIOS_DELAY NFSIOS_PNFS_READ NFSIOS_PNFS_WRITE)
 
 def print_values(path, line)
-    while (line = STDIN.gets)
-      break if line.split.size <= 0
-      case line
-      when /\s*([\w]+):\s*([0-9]+)$/
-        puts '#{path}.#{$1}: #{$2}'
-      when /\s*([a-zA-Z]+):\s*(udp|tcp)?\s*([\s0-9]+)$/
-        print($1, $2, path, $3.split, params)
-      end
+  while (line = STDIN.gets)
+    break if line.split.size <= 0
+    case line
+    when /\s*([\w]+):\s*([0-9]+)$/
+      puts '#{path}.#{$1}: #{$2}'
+    when /\s*([a-zA-Z]+):\s*(udp|tcp)?\s*([\s0-9]+)$/
+      print($1, $2, path, $3.split, params)
     end
+  end
 end
 
 def check_params(type, values, params)

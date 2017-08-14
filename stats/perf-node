@@ -14,9 +14,9 @@ node_local_load_ratio = if (sum['node-loads'] + sum['node-load-misses']).nonzero
                         end
 
 node_local_store_ratio = if (sum['node-stores'] + sum['node-store-misses']).nonzero?
-                          (100 * sum['node-stores']) / (sum['node-stores'] + sum['node-store-misses'])
+                           (100 * sum['node-stores']) / (sum['node-stores'] + sum['node-store-misses'])
                          else
-                          -1
+                           -1
                          end
 
 puts "node-loads: #{sum['node-loads']}"
