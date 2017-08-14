@@ -395,7 +395,7 @@ def filter_incomplete_run(hash)
   }
   delete_index_list.reverse!
 
-  hash.each { |k,v|
+  hash.each { |k, v|
     delete_index_list.each { |index|
       v.delete_at(index)
     }
