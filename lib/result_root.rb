@@ -121,7 +121,7 @@ class ResultRootCollection
     files.each { |fn|
       File.open(fn) { |f|
         f.readlines.reverse!.each { |rtp|
-        #f.readlines.each { |rtp|
+        # f.readlines.each { |rtp|
           rtp = rtp.strip
           next if ! File.exists? rtp
           yield ResultRoot.new rtp
