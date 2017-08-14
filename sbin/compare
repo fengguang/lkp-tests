@@ -595,7 +595,7 @@ def get_v_and_stddev(value, dim, is_fail)
 end
 
 def show_header(is_fail)
-  puts '---------------------------' if ! $group_by_test
+  puts '---------------------------' if !$group_by_test
   nr_headers = $dims.length - 1
   if is_fail
     # (ABS_WIDTH + ERR_WIDTH)   (2 + REL_WIDTH + ABS_WIDTH + ERR_WIDTH)
@@ -630,7 +630,7 @@ def show_delta(stat, key_g)
   return if $cases.empty?
   $cases = Hash[$cases.sort]
 
-  if ! $group_by_test
+  if !$group_by_test
     $dims.each { |dim, name|
       width = (dim == $first_dim ? ABS_WIDTH + ERR_WIDTH : REL_WIDTH + ABS_WIDTH + ERR_WIDTH)
       printf "%#{width}s  ", name[0..(width-1)]
@@ -665,7 +665,7 @@ def show_delta(stat, key_g)
   }
 
   if $header_shown[is_fail]
-    puts if ! $group_by_test
+    puts if !$group_by_test
   end
 
   $cases.each { |_rt, value|
@@ -714,7 +714,7 @@ def show_delta(stat, key_g)
     }
   end
 
-  if ! $group_by_test
+  if !$group_by_test
     v0 = $sum[$first_dim]
     v0_stddev = $stddev[$first_dim]
     $sum.each { |dim, v|
