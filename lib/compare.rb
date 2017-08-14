@@ -564,7 +564,7 @@ module Compare
       cas_keys = cas[0].keys
       if @sort
         sort_key = @sort_stat_key ||
-             @axis_prefix + cas_keys[0]
+                   @axis_prefix + cas_keys[0]
       end
       axis_converter = lambda { |axis_key|
         if @axes_as_num && (@axes_as_num == true ||

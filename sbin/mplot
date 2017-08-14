@@ -55,8 +55,8 @@ def stats_with_most_variation(matrix)
     next unless is_reasonable_perf_change(field, max, max)
     next if min == max
     next if sorted[0] == values[0] and
-      sorted[-1] == values[-1] and
-      sorted[size/2] == values[size/2]
+            sorted[-1] == values[-1] and
+            sorted[size/2] == values[size/2]
     stats[field] = (max - min) / mean
   end
   Hash[stats.sort{ |a, b| b[1] <=> a[1] }]

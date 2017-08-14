@@ -311,7 +311,7 @@ class Job
       load_one = lambda do |f|
         break unless i[k][f]
         break if @file_loaded.include?(k) and
-           @file_loaded[k].include?(f)
+                 @file_loaded[k].include?(f)
 
         break unless load_one_defaults(i[k][f], job)
 
@@ -536,7 +536,7 @@ class Job
 
   def set_default_params
     return if @job['kconfig'] and
-        @job['compiler']
+              @job['compiler']
 
     @job[comment_to_symbol 'default params'] = nil
 
@@ -569,25 +569,25 @@ class Job
 
   def param_files
     @param_files ||= begin
-      maps = {}
-    ruby_scripts = {}
-    misc_scripts = {}
-    Dir["#{lkp_src}/params/*",
-        "#{lkp_src}/filters/*"].map do |f|
-      name = File.basename f
-      case name
-      when /(.*)\.rb$/
-        ruby_scripts[$1] = f
-      else
-        if File.executable? f
-          misc_scripts[name] = f
-        else
-          maps[name] = f
-        end
-      end
-    end
-    [maps, ruby_scripts, misc_scripts]
-    end
+                       maps = {}
+                       ruby_scripts = {}
+                       misc_scripts = {}
+                       Dir["#{lkp_src}/params/*",
+                           "#{lkp_src}/filters/*"].map do |f|
+                         name = File.basename f
+                         case name
+                         when /(.*)\.rb$/
+                           ruby_scripts[$1] = f
+                         else
+                           if File.executable? f
+                             misc_scripts[name] = f
+                           else
+                             maps[name] = f
+                           end
+                         end
+                       end
+                       [maps, ruby_scripts, misc_scripts]
+                     end
   end
 
   def map_param(hash, key, val, rule_file)

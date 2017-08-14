@@ -103,7 +103,7 @@ def is_changed_stats(sorted_a, min_a, mean_a, max_a,
 
   if options['perf-profile'] and stat =~ /^perf-profile\./
     return mean_a > options['perf-profile'] ||
-      mean_b > options['perf-profile']
+           mean_b > options['perf-profile']
   end
 
   if is_failure_stat
@@ -309,10 +309,10 @@ def load_base_matrix(matrix_path, head_matrix, options)
 
   if matrix.size > 0
     if cols >= 3 or
-      (cols >= 1 and is_functional_test rp['testcase']) or
-      head_matrix['last_state.is_incomplete_run'] or
-      head_matrix['dmesg.boot_failures'] or
-      head_matrix['stderr.has_stderr']
+       (cols >= 1 and is_functional_test rp['testcase']) or
+       head_matrix['last_state.is_incomplete_run'] or
+       head_matrix['dmesg.boot_failures'] or
+       head_matrix['stderr.has_stderr']
       log_debug "compare with release matrix: #{matrix_path} #{tags_merged}"
       options['good_commit'] = tags_merged.first
       return matrix
@@ -456,8 +456,8 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
 
     # newly added monitors don't have values to compare in the base matrix
     next unless b[k] or
-      is_failure_stat or
-      (k =~ /^(lock_stat|perf-profile|latency_stats)\./ and b_monitors[$1])
+                is_failure_stat or
+                (k =~ /^(lock_stat|perf-profile|latency_stats)\./ and b_monitors[$1])
 
     b_k = b[k] || [0] * cols_b
     while b_k.size < cols_b
@@ -488,7 +488,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
         if max_a == 0
           has_boot_fix = true if k =~ /^dmesg\./
           next if options['regression-only'] ||
-            (k !~ $kill_pattern_whitelist_re && options['all-critical'])
+                  (k !~ $kill_pattern_whitelist_re && options['all-critical'])
         end
         # this relies on the fact dmesg.* comes ahead
         # of kmsg.* in etc/default_stats.yaml
@@ -585,7 +585,7 @@ end
 
 def _get_changed_stats(a, b, options)
   is_incomplete_run = a['last_state.is_incomplete_run'] ||
-        b['last_state.is_incomplete_run']
+                      b['last_state.is_incomplete_run']
 
   if is_incomplete_run and options['ignore-incomplete-run']
     changed_stats = {}
