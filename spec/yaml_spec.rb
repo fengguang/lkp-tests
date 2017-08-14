@@ -7,7 +7,7 @@ describe 'load_yaml_with_flock' do
 
   before(:example) do
     File.open(TEST_YAML_FILE, 'w') do |f|
-         f.write("key1: value1\nkey2: value2\n")
+      f.write("key1: value1\nkey2: value2\n")
     end
   end
 
