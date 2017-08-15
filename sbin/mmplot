@@ -52,7 +52,7 @@ end
 
 opts.parse!(ARGV)
 
-if ARGV.size < 1
+if ARGV.empty?
   puts opts
   exit
 end
@@ -75,7 +75,7 @@ if ARGV[0]
   changed_fields = ARGV
 else
   changed_stats = get_changed_stats path1, path2, $options
-  exit unless changed_stats and changed_stats.size > 0
+  exit unless changed_stats && !changed_stats.empty?
   changed_fields = changed_stats.keys
 end
 

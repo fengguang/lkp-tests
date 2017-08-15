@@ -307,7 +307,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
     end
   }
 
-  if matrix.size > 0
+  if !matrix.empty?
     if cols >= 3 or
        (cols >= 1 and is_functional_test rp['testcase']) or
        head_matrix['last_state.is_incomplete_run'] or

@@ -653,15 +653,15 @@ module Compare
   def self.calc_avg_stddev(stat)
     return if stat[FAILURE]
     vs = stat[VALUES]
-    stat[AVGS] = vs.map { |v| v && v.size > 0 ? v.average : 0 }
+    stat[AVGS] = vs.map { |v| v && !v.empty? ? v.average : 0 }
     stat[STDDEVS] = vs.map { |v| v && v.size > 1 ? v.standard_deviation : -1 }
   end
 
   def self.calc_min_max(stat)
     return if stat[FAILURE]
     vs = stat[VALUES]
-    stat[MIN] = vs.map { |v| v && v.size > 0 ? v.min : 0 }
-    stat[MAX] = vs.map { |v| v && v.size > 0 ? v.max : 0 }
+    stat[MIN] = vs.map { |v| v && !v.empty? ? v.min : 0 }
+    stat[MAX] = vs.map { |v| v && !v.empty? ? v.max : 0 }
   end
 
   def self.use_absolute_changes?(key)

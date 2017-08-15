@@ -302,11 +302,9 @@ def add_result_root(result_root)
   return unless $_result_root_saved.add? _result_root
 
   $longest_dims.each { |dim|
-    if dim.size == 0
+    if dim.empty?
       key = _result_root
-      if $_result_root_tuple[key].size > 0
-        $_result_root_tuple[key] << _result_root
-      end
+      $_result_root_tuple[key] << _result_root unless $_result_root_tuple[key].empty?
       return
     elsif _result_root.index(dim)
       key = _result_root.sub(/-?#{dim}-?/, '')
@@ -389,7 +387,7 @@ def setup_changed_stats()
       next
     end
     changed_stats = get_changed_stats matrix_file2, matrix_file1, $options
-    next unless changed_stats and changed_stats.size > 0
+    next unless changed_stats && !changed_stats.empty?
     changed_stats.each { |stat, record|
       next if $opt_field && stat !~ /#{$opt_field}/
 

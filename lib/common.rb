@@ -142,7 +142,7 @@ def ensure_dir(dir)
 end
 
 def split_path(path)
-  path.split('/').select { |c| c && c.size != 0 }
+  path.split('/').select { |c| c && !c.empty? }
 end
 
 def canonicalize_path(path, dir = nil)

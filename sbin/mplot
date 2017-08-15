@@ -33,7 +33,7 @@ end
 
 opts.parse!(ARGV)
 
-if ARGV.size == 0
+if ARGV.empty?
   puts opts
   exit
 end

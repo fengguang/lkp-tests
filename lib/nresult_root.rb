@@ -87,7 +87,7 @@ module CMResultRoot
     job1 = path(JOB_FILE1)
     return job1 if File.exist? job1
     jobs = glob(JOB_GLOB)
-    jobs[0] if jobs.size != 0
+    jobs[0] unless jobs.empty?
   end
 
   def job
