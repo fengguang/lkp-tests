@@ -18,12 +18,12 @@ module LKP
   #
   class DistroInfo
     include Singleton
-    attr_reader :systemName, :systemNameL, :systemVersion, :systemArch
+    attr_reader :systemname, :systemnamel, :systemversion, :systemarch
 
     def initialize(rootfs = '/')
       path_to_script = "#{LKP_SRC}/lib/detect-system.sh"
 
-      @systemName, @systemNameL, @systemVersion, @systemArch = %x[
+      @systemname, @systemnamel, @systemversion, @systemarch = %x[
         . #{path_to_script}
         detect_system #{rootfs}
         echo $_system_name

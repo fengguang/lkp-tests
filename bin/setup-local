@@ -133,8 +133,8 @@ def install_benchmarks(script, distro)
   end
 end
 
-distroInfo = LKP::DistroInfo.instance
-distro = distroInfo.systemNameL
+distroinfo = LKP::DistroInfo.instance
+distro = distroinfo.systemnamel
 
 unless File.executable? "#{LKP_SRC}/distro/installer/#{distro}"
   puts "Unsupport #{distro} system, cannot install packages."
