@@ -30,7 +30,7 @@ def expand_erb(template, context_hash = {})
   yaml = template.gsub(/<%.*?%>/m, '').gsub(/^%[^>].*$/, '')
   job = YAML.load(yaml) || {}
   job.merge!(context_hash)
-  context = Hashugar.new(job).instance_eval {binding}
+  context = Hashugar.new(job).instance_eval { binding }
 
   ERB.new(template, nil, '%').result(context)
 end
@@ -47,6 +47,6 @@ end
 
 def expand_expression(job, expr, file)
   # puts job, expr
-  context = Hashugar.new(job).instance_eval {binding}
+  context = Hashugar.new(job).instance_eval { binding }
   context.eval(expr, file)
 end

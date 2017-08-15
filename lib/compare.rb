@@ -442,7 +442,7 @@ module Compare
         yield stat
       }
     rescue StandardError
-      $stderr.puts "Error while comparing: #{mresult_roots.map { |_rt| _rt.to_s}.join ' '}"
+      $stderr.puts "Error while comparing: #{mresult_roots.map { |_rt| _rt.to_s }.join ' '}"
       raise
     end
 
@@ -586,7 +586,7 @@ module Compare
                 @axes_as_num.index(axis_key))
           return method(:string_to_num)
         else
-          return ->x{x}
+          return ->x { x }
         end
       }
 

@@ -8,7 +8,7 @@ module Git
   class Base
     include Cacheable
 
-    cache_method :gcommit, ->(obj) {obj.object_id}
+    cache_method :gcommit, ->(obj) { obj.object_id }
   end
 end
 
@@ -17,7 +17,7 @@ module Git
     class Commit
       include Cacheable
 
-      cache_method :last_release_tag, ->(obj) {obj.to_s}
+      cache_method :last_release_tag, ->(obj) { obj.to_s }
     end
   end
 end

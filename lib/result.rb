@@ -101,10 +101,10 @@ class ResultPath < Hash
     dim = /^#{dim}$/ if dim.instance_of? String
 
     keys = ['testcase'] + path_scheme
-    keys.delete_if {|key| key =~ dim} if dim_not_a_param
+    keys.delete_if { |key| key =~ dim } if dim_not_a_param
 
     default_removal_pattern = /compiler|^rootfs$|^kconfig$/
-    keys.delete_if {|key| key =~ default_removal_pattern && key !~ dim}
+    keys.delete_if { |key| key =~ default_removal_pattern && key !~ dim }
 
     keys
   end
@@ -112,7 +112,7 @@ class ResultPath < Hash
   def test_desc(dim, dim_not_a_param)
     keys = test_desc_keys(dim, dim_not_a_param)
 
-    keys.map {|key| self[key]}.compact.join '/'
+    keys.map { |key| self[key] }.compact.join '/'
   end
 
   def parse_test_desc(desc, dim = 'commit', dim_not_a_param = true)
@@ -148,7 +148,7 @@ class ResultPath < Hash
 
   class << self
     def maxis_keys(test_case)
-      PATH_SCHEME[test_case].reject {|key| key == 'run'}
+      PATH_SCHEME[test_case].reject { |key| key == 'run' }
     end
 
     #
@@ -156,7 +156,7 @@ class ResultPath < Hash
     # FIXME rli9 refactor MResultRootCollection to embrace different maxis keys
     #
     def grep(test_case, options = {})
-      pattern = [RESULT_MNT, test_case, PATH_SCHEME[test_case].map {|key| options[key] || '.*'}].flatten.join('/')
+      pattern = [RESULT_MNT, test_case, PATH_SCHEME[test_case].map { |key| options[key] || '.*' }].flatten.join('/')
 
       cmdline = "grep -he '#{pattern}' /lkp/paths/????-??-??-* | sed -e 's#[0-9]\\+/$##' | sort | uniq"
       `#{cmdline}`

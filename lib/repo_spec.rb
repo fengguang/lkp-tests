@@ -29,8 +29,8 @@ class RepoSpec
   class << self
     def url_to_remote(url)
       unless @url_remotes
-        names = Dir[File.join(ROOT_DIR, '*', '*')].map {|file| File.basename file}.reject {|name| name == 'DEFAULTS'}
-        @url_remotes = Hash[names.map {|name| [self.new(name)['url'], name]}]
+        names = Dir[File.join(ROOT_DIR, '*', '*')].map { |file| File.basename file }.reject { |name| name == 'DEFAULTS' }
+        @url_remotes = Hash[names.map { |name| [self.new(name)['url'], name] }]
       end
 
       @url_remotes[url]
