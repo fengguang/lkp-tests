@@ -1,0 +1,27 @@
+#!/bin/bash
+
+PHORONIX="phoronix-test-suite.tar.gz"
+
+download()
+{
+	local site=http://phoronix-test-suite.com/releases/
+	local name
+	name=$(curl -sk $site | grep -oP "phoronix-test-suite.*?\.tar\.gz" | tail -1)
+	[ $name ] || return
+	curl -k $site$name -o $PHORONIX || return
+}
+
+install()
+{
+	[ -f $PHORONIX ] || return
+	tar zxf $PHORONIX || return
+	local current_dir=$(pwd)
+	cd phoronix-test-suite
+	sh install-sh || return
+	cd $current_dir
+}
+
+pack()
+{
+	:
+}
