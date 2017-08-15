@@ -11,6 +11,12 @@ require "#{LKP_SRC}/lib/tests.rb"
 require "#{LKP_SRC}/lib/axis.rb"
 require "#{LKP_SRC}/lib/result_root.rb"
 
+# How many components in the stat sort key
+$stat_sort_key_number = {
+  "perf-profile" => 2,
+  "latency_stats" => 2,
+}
+
 class AxesGrouper
   include Property
   prop_with :group_axis_keys, :axes_data
@@ -672,6 +678,15 @@ module Compare
     compare_result.sort_by! { |gd| -gd.score }
   end
 
+  def self.stat_sort_key(key, base)
+    number = $stat_sort_key_number[base]
+    if number
+      key.split('.')[0, number].join "."
+    else
+      key
+    end
+  end
+
   def self.sort_stats(stat_enum)
     stats = stat_enum.to_a
     stat_base_map = {}
@@ -687,7 +702,13 @@ module Compare
         stat_base_map[test] = 0
       end
     }
-    stats.sort_by! { |stat| [stat_base_map[stat[STAT_BASE]], stat[STAT_KEY]] }
+    stats.sort_by! do |stat|
+      [
+        stat_base_map[stat[STAT_BASE]],
+        stat_sort_key(stat[STAT_KEY], stat[STAT_BASE]),
+        stat[CHANGES],
+      ]
+    end
     stats.each
   end
 
