@@ -22,21 +22,21 @@ def mmplot(matrix1, matrix2, fields, title_prefix = nil)
         # HEAD/BAD samples
         if matrix1[field]
           x = 1.upto(matrix1[field].size).collect { |v| v }
-          Gnuplot::DataSet.new( [x, matrix1[field]] ) { |ds|
+          Gnuplot::DataSet.new([x, matrix1[field]]) do |ds|
             ds.with = "points pt 15 lt 0"
             ds.notitle
             ds1 = ds
-          }
+          end
         end
 
         # BASE/GOOD samples
         if matrix2[field]
           xx = 1.upto(matrix2[field].size).collect { |v| v }
-          Gnuplot::DataSet.new( [xx, matrix2[field]] ) { |ds|
+          Gnuplot::DataSet.new([xx, matrix2[field]]) do |ds|
             ds.with = "linespoints pt -22 lt 0"
             ds.notitle
             ds2 = ds
-          }
+          end
         end
 
         return if ds1 == nil and ds2 == nil
@@ -202,7 +202,7 @@ class MatrixPlotter < MatrixPlotterBase
         values = @matrix[field]
         next if values.max == values.min
         normalized_field = field.tr('^a-zA-Z0-9_.:+=-', '_')
-        Gnuplot::Plot.new( gp ) do |p|
+        Gnuplot::Plot.new(gp) do |p|
           if @output_prefix
             file = @output_prefix + normalized_field
             setup_output p, file

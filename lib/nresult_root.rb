@@ -494,7 +494,7 @@ module ResultStddev
     source_str = DataStore::Layout.axes_to_string(axes)
     idx = sources.index source_str
     delete_col(data, idx) if idx
-    delete_col(data, 0 ) if sources.size >= DATA_NR_MAX
+    delete_col(data, 0) if sources.size >= DATA_NR_MAX
 
     avg_stddev.each { |k, v|
       unless data[k]
