@@ -21,6 +21,8 @@ fixup_open_porous_media()
 	sed -i 's/nice mpirun -np/nice mpirun --allow-run-as-root -np/' "$target"
 }
 
+echo "phoronix-test-suite try to connect to the Internet, if use http proxy, please run 'phoronix-test-suite network-setup'"
+
 mkdir -p $environment_directory
 phoronix-test-suite user-config-set EnvironmentDirectory=$environment_directory
 
