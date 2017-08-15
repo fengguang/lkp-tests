@@ -26,6 +26,14 @@ echo "phoronix-test-suite try to connect to the Internet, if use http proxy, ple
 mkdir -p $environment_directory
 phoronix-test-suite user-config-set EnvironmentDirectory=$environment_directory
 
+test_installed=`phoronix-test-suite info $test | grep "Test Installed" | awk '{print $3}'`
+[ "$test_installed" = "Yes" ] || {
+	echo "Installing $test ..."
+	echo "Please make sure phoronix-test-suite can connect to the Internet."
+	phoronix-test-suite install-dependencies $test || die "install $test dependencies failed"
+	phoronix-test-suite batch-install $test || die "batch-install $test failed"
+}
+
 case $test in
 	systester-[0-9]*)
 		# Choose
