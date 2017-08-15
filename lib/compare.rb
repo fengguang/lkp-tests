@@ -121,7 +121,7 @@ module Compare
               :filter_testcase_stat_keys, :filter_kpi_stat_keys,
               :filter_kpi_stat_strict_keys,
               :exclude_stat_keys,
-              :gap, :more_stats,
+              :gap, :more_stats, :perf_profile_threshold,
               :group_by_stat, :show_empty_group, :compact_show,
               :sort_by_group
 
@@ -132,6 +132,7 @@ module Compare
       @sort_mresult_roots = true
       @dedup_mresult_roots = true
       @gap = nil
+      @perf_profile_threshold = 5
       set_params params
       @stat_calc_funcs = [Compare.method(:calc_stat_change)]
     end
@@ -318,6 +319,7 @@ module Compare
                                      {
                                        'gap' => @comparer.gap,
                                        'more' => @comparer.more_stats,
+                                       'perf-profile' => @comparer.perf_profile_threshold,
                                      })
         if changes
           changed_stat_keys |= changes.keys
@@ -1024,6 +1026,10 @@ module Compare
       p.on('-m', '--more', 'more stats as compare result') {
         options[:more_stats] = true
       }
+
+      p.on('-p <value>', '--perf-profile-threshold=<value>', 'perf-profile compare threshold') do |val|
+        options[:perf_profile_threshold] = val.to_f
+      end
 
       p.on_tail('-h', '--help', 'Show this message') {
         puts p
