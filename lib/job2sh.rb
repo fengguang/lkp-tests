@@ -8,11 +8,11 @@ require 'shellwords'
 TMP ||= ENV['TMP'] || '/tmp'
 
 SHELL_BLOCK_KEYWORDS = {
-  'if'    => [ 'then', 'fi' ],
-  'for'   => [ 'do', 'done' ],
-  'while'   => [ 'do', 'done' ],
-  'until'   => [ 'do', 'done' ],
-  'function'  => [ '{', '}' ],
+  'if' => ['then', 'fi'],
+  'for' => ['do', 'done'],
+  'while' => ['do', 'done'],
+  'until' => ['do', 'done'],
+  'function' => ['{', '}']
 }
 
 def valid_shell_variable?(key)
@@ -104,9 +104,9 @@ class Job2sh < Job
     program_dir = File.dirname(program_path)
     wrapper = program_dir + '/wrapper'
     if File.executable?(wrapper)
-      cmd = [ wrapper, program, *args ]
+      cmd = [wrapper, program, *args]
     else
-      cmd = [ program_path, *args ]
+      cmd = [program_path, *args]
     end
 
     cmd.first.gsub!(LKP_SRC, '$LKP_SRC')

@@ -89,7 +89,7 @@ def search_file_in_paths(file, relative_to = nil, search_paths = nil)
     return file
   end
 
-  search_paths ||= [ File.dirname(File.dirname(__FILE__)) ]
+  search_paths ||= [File.dirname(File.dirname(__FILE__))]
   search_paths.unshift(relative_to)
 
   search_paths.each do |search_path|

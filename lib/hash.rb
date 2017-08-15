@@ -57,12 +57,12 @@ def merge_accumulative(a, b)
   else
     case b
     when Array
-      a = [ a ].concat b
+      a = [a].concat b
     when Hash
       b[a] ||= nil
       a = b
     else
-      a = [ a, b ]
+      a = [a, b]
     end
   end
 

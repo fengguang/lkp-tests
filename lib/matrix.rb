@@ -339,7 +339,7 @@ def unite_params(result_root)
         params[k] << v
       end
     else
-      params[k] = [ v ]
+      params[k] = [v]
     end
   }
 
