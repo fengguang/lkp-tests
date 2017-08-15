@@ -13,8 +13,31 @@ download()
 	$cmd
 }
 
+get_kernel_version()
+{
+	# format: X.Y.Z-...
+	local version=$(uname -r)
+
+	# format: X.Y.Z
+	local a=${version%%-*}
+
+	# format: X.Y
+	local b=${a%.*}
+
+	echo "v"$b
+}
+
 build()
 {
+	if [[ -d .git ]]; then
+		local installed_version=$(get_kernel_version)
+		git tag | grep -x $installed_version || die "can not bring the download kernel version into correspondence with the installed kernel"
+		echo "switch to version $installed_version ..."
+		git checkout -b "test-"$installed_version $installed_version
+	else
+		echo "please make sure the version of current kernel is $installed_version"
+	fi
+
 	make allyesconfig		|| return
 	make prepare			|| return
 	# gcc -O2 -g -std=gnu99 -Wall -I../../../../usr/include/    gpio-mockup-chardev.c ../../../gpio/gpio-utils.o ../../../../usr/include/linux/gpio.h  -lmount -I/usr/include/libmount -o gpio-mockup-chardev
