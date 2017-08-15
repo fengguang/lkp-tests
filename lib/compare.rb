@@ -1104,7 +1104,7 @@ module Compare
     _result_roots = MResultRootCollection.new(
       COMMIT_AXIS_KEY => '39a8804455fb23f09157341d3ba7db6d7ae6ee76',
       'tbox_group' => 'grantley',
-      'test' => 'ram_copy',
+      'test' => 'ram_copy'
     ).to_a
     compare_axis_keys = ['load']
     comparer = Comparer.new
