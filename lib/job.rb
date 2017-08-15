@@ -813,7 +813,7 @@ end
 def each_job_in_dir(dir)
   return enum_for(__method__, dir) unless block_given?
 
-  proc_jobfile = ->jobfile{
+  proc_jobfile = ->jobfile {
     j = Job.open jobfile
     j['jobfile'] = jobfile
     yield j

@@ -59,7 +59,7 @@ def stats_with_most_variation(matrix)
             sorted[size/2] == values[size/2]
     stats[field] = (max - min) / mean
   end
-  Hash[stats.sort{ |a, b| b[1] <=> a[1] }]
+  Hash[stats.sort { |a, b| b[1] <=> a[1] }]
 end
 
 $matrix = load_json ARGV[0]
