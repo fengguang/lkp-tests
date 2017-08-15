@@ -778,8 +778,8 @@ module Compare
       end
       printf "%#{ABS_WIDTH}#{fmt}", avg
       stddev = stddevs[i]
-      if stddev
-        stddev = 100 * stddev / avg if avg != 0
+      stddev = 100 * stddev / avg if avg != 0
+      if stddev > 2
         printf " ±%#{ERR_WIDTH-3}d%%", stddev
       else
         printf " " * ERR_WIDTH
