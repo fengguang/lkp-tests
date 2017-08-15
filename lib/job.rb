@@ -821,4 +821,3 @@ def each_job_in_dir(dir)
 
   Dir.glob(File.join(dir, "**/*.yaml")).each(&proc_jobfile)
 end
-

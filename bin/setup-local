@@ -151,4 +151,3 @@ scripts.each { |script|
   install_packages(script, distro)
   install_benchmarks(script, distro)
 }
-

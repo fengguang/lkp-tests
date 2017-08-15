@@ -29,4 +29,3 @@ def is_valid_stats_range(stats_field, num)
 
   return true
 end
-

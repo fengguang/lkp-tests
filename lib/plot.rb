@@ -278,4 +278,3 @@ def mplot(matrix, stats, x_stat_key = nil)
   end
   p.(matrix, stats, x_stat_key)
 end
-

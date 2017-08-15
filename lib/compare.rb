@@ -1115,4 +1115,3 @@ module Compare
     }
   end
 end
-
