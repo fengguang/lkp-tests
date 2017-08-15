@@ -33,9 +33,7 @@ end
 def matrix_fill_missing_zeros(matrix)
   cols = matrix['stats_source'].size
   matrix.each { |k, v|
-    while v.size < cols
-      v << 0
-    end
+    v << 0 while v.size < cols
   }
   return matrix
 end

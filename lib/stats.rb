@@ -460,12 +460,8 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
                 (k =~ /^(lock_stat|perf-profile|latency_stats)\./ and b_monitors[$1])
 
     b_k = b[k] || [0] * cols_b
-    while b_k.size < cols_b
-      b_k << 0
-    end
-    while v.size < cols_a
-      v << 0
-    end
+    b_k << 0 while b_k.size < cols_b
+    v << 0 while v.size < cols_a
 
     sorted_b = sort_remove_margin b_k, max_margin
     min_b, mean_b, max_b = get_min_mean_max sorted_b
@@ -627,9 +623,7 @@ def add_stats_to_matrix(stats, matrix)
   matrix.each { |k, v| columns = v.size if columns < v.size }
   stats.each { |k, v|
     matrix[k] ||= []
-    while matrix[k].size < columns
-      matrix[k] << 0
-    end
+    matrix[k] << 0 while matrix[k].size < columns
     if Array === v
       matrix[k].concat v
     else
@@ -656,9 +650,7 @@ end
 def samples_fill_missing_zeros(matrix, key)
   size = matrix_cols matrix
   samples = matrix[key] || [0] * size
-  while samples.size < size
-    samples << 0
-  end
+  samples << 0 while samples.size < size
   return samples
 end
 
