@@ -513,9 +513,11 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
     y = 0 if y < 0
     ratio = MAX_RATIO if ratio > MAX_RATIO
 
-    next unless ratio > 1.01 # time.elapsed_time only has 0.01s precision
-    next unless ratio > 1.1 or is_perf_metric(k)
-    next unless is_reasonable_perf_change(k, delta, max)
+    unless options['perf-profile'] && k =~ /^perf-profile\./
+      next unless ratio > 1.01 # time.elapsed_time only has 0.01s precision
+      next unless ratio > 1.1 or is_perf_metric(k)
+      next unless is_reasonable_perf_change(k, delta, max)
+    end
 
     interval_a = "[ %-10.5g - %-10.5g ]" % [ min_a, max_a ]
     interval_b = "[ %-10.5g - %-10.5g ]" % [ min_b, max_b ]
