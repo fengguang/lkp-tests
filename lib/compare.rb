@@ -18,11 +18,10 @@ $stat_sort_key_number = {
   "latency_stats" => 2,
 }
 
-$stat_absolute_changes = Set.new(
-  [
-    "perf-profile",
-  ]
-)
+$stat_absolute_changes = [
+  /^perf-profile/,
+  /%$/,
+]
 
 class AxesGrouper
   include Property
@@ -665,12 +664,16 @@ module Compare
     stat[MAX] = vs.map { |v| v && v.size > 0 ? v.max : 0 }
   end
 
+  def self.use_absolute_changes?(key)
+    $stat_absolute_changes.any? { |p| key =~ p }
+  end
+
   def self.calc_perf_change(stat)
     return if stat[FAILURE]
-    base = stat_key_base stat[STAT_KEY]
+    key = stat[STAT_KEY]
     avgs = stat[AVGS]
     avg0 = avgs[0]
-    if $stat_absolute_changes.include? base
+    if use_absolute_changes? key
       stat[CHANGES] = avgs.drop(1).map { |avg|
         avg - avg0
       }
