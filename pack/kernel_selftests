@@ -8,6 +8,13 @@ download()
 
 	[[ -d /c/linux ]] && local opt_ref="--reference /c/linux"
 
+	echo "Downloading kernel from git.kernel.org ..."
+
+	echo "If the kernel has been download into the computer, you can copy it to $(pwd)/${source_dir}"
+	echo "As far as possible, please keep the version of source code same with the installed kernel."
+	echo "If you want test a specfied version, you can download the code first, build and install it,"
+	echo "then restart the machine using the new kernel. Lastly, you can start to test it."
+
 	local cmd="git clone -q $opt_ref https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git"
 	$cmd && return
 	$cmd
