@@ -178,6 +178,7 @@ class Job
   EXPAND_DIMS = %w(kconfig commit rootfs)
 
   attr_reader :path_scheme
+  attr_reader :referenced_programs
   attr_accessor :overrides
   attr_accessor :defaults
 
@@ -397,10 +398,6 @@ class Job
       else
         create_programs_hash "#{type}/**/*", lkp_src
       end
-  end
-
-  def referenced_programs
-    @referenced_programs
   end
 
   def init_program_options

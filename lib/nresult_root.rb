@@ -263,6 +263,8 @@ class << LinuxMResultRootTable
 end
 
 class MResultRootTableSet
+  attr_reader :linux_perf_table
+
   LINUX_PERF_TABLE = 'linux_perf'
   LINUX_TABLE = 'linux'
   OTHER_TABLE = 'other'
@@ -325,10 +327,6 @@ class MResultRootTableSet
 
   def tables()
     [@linux_perf_table, @linux_table, @other_table]
-  end
-
-  def linux_perf_table
-    @linux_perf_table
   end
 
   def axes_to_table(axes)
