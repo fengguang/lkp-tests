@@ -3,6 +3,7 @@
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath(__FILE__)))
 
 require 'optparse'
+require 'set'
 
 require "#{LKP_SRC}/lib/common.rb"
 require "#{LKP_SRC}/lib/enumerator.rb"
@@ -16,6 +17,12 @@ $stat_sort_key_number = {
   "perf-profile" => 2,
   "latency_stats" => 2,
 }
+
+$stat_absolute_changes = Set.new(
+  [
+    "perf-profile",
+  ]
+)
 
 class AxesGrouper
   include Property
@@ -96,6 +103,7 @@ module Compare
   STDDEVS = :stddevs
   FAILS = :fails
   CHANGES = :changes
+  ABS_CHANGES = :abs_changes
 
   RUNS_STAT_KEY = 'runs'
   COMPLETE_RUNS_STAT_KEY = 'runs.complete'
@@ -657,11 +665,19 @@ module Compare
 
   def self.calc_perf_change(stat)
     return if stat[FAILURE]
+    base = stat_key_base stat[STAT_KEY]
     avgs = stat[AVGS]
     avg0 = avgs[0]
-    stat[CHANGES] = avgs.drop(1).map { |avg|
-      100.0 * (avg - avg0) / avg0
-    }
+    if $stat_absolute_changes.include? base
+      stat[CHANGES] = avgs.drop(1).map { |avg|
+        avg - avg0
+      }
+      stat[ABS_CHANGES] = true
+    else
+      stat[CHANGES] = avgs.drop(1).map { |avg|
+        100.0 * (avg - avg0) / avg0
+      }
+    end
   end
 
   def self.calc_stat_change(stat)
@@ -716,10 +732,15 @@ module Compare
     return unless stat[FAILURE]
     fails = stat[FAILS]
     changes = stat[CHANGES]
+    abs_changes = stat[ABS_CHANGES]
     runs = stat[RUNS]
     fails.each_with_index { |f, i|
       unless i == 0
-        printf "%#{REL_WIDTH}.0f%% ", changes[i-1]
+        if abs_changes
+          printf "%#{REL_WIDTH}.0f  ", changes[i-1]
+        else
+          printf "%#{REL_WIDTH}.0f%% ", changes[i-1]
+        end
       end
       if f == 0
         printf "%#{ABS_WIDTH+1}s", ' '
@@ -735,11 +756,16 @@ module Compare
     avgs = stat[AVGS]
     stddevs = stat[STDDEVS]
     changes = stat[CHANGES]
+    abs_changes = stat[ABS_CHANGES]
     avgs.each_with_index { |avg, i|
       unless i == 0
         p = changes[i-1]
         fmt = p.abs < 100000 ? '.1f' : '.2g'
-        printf "%+#{REL_WIDTH}#{fmt}%% ", p
+        if abs_changes
+          printf "%+#{REL_WIDTH}#{fmt}  ", p
+        else
+          printf "%+#{REL_WIDTH}#{fmt}%% ", p
+        end
       end
       if avg.abs < 1000
         fmt = '.2f'
