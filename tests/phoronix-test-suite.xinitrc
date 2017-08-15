@@ -5,20 +5,24 @@
 ## See 'tests/phoronix-test-suite'.
 
 start_time=$(date +%s.%N)
+environment_directory="/var/lib/phoronix-test-suite/installed-tests/"
 
 # ffmpeg only support max 64 threads
 fixup_ffmpeg()
 {
-	local target=/var/lib/phoronix-test-suite/installed-tests/pts/ffmpeg-2.5.0/ffmpeg
+	local target=${environment_directory}/pts/ffmpeg-2.5.0/ffmpeg
 	grep -q -w 'NUM_CPU_CORES=64' $target || sed "2a[ \$NUM_CPU_CORES -gt 64 ] && export NUM_CPU_CORES=64" -i "$target"
 }
 
 # add --allow-run-as-root to open-porous-media-1.3.1
 fixup_open_porous_media()
 {
-	local target=/var/lib/phoronix-test-suite/installed-tests/pts/open-porous-media-1.3.1/open-porous-media
+	local target=${environment_directory}/pts/open-porous-media-1.3.1/open-porous-media
 	sed -i 's/nice mpirun -np/nice mpirun --allow-run-as-root -np/' "$target"
 }
+
+mkdir -p $environment_directory
+phoronix-test-suite user-config-set EnvironmentDirectory=$environment_directory
 
 case $test in
 	systester-[0-9]*)
