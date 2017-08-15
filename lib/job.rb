@@ -548,7 +548,7 @@ class Job
         if v and v != ''
           path += "#{k}=#{v[0..30]}"
         else
-          path += "#{k}"
+          path += k.to_s
         end
         path += '-'
         next
@@ -704,9 +704,9 @@ class Job
     end
     each_param { |k, v, option_type|
       if option_type == '='
-        as[k] = "#{v}"
+        as[k] = v.to_s
       else
-        as[k] = "#{v}" if v
+        as[k] = v.to_s if v
       end
     }
     as

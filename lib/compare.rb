@@ -1089,7 +1089,7 @@ module Compare
     _rts = ['9eccca0843205f87c00404b663188b88eb248051', '06e5801b8cb3fc057d88cb4dc03c0b64b2744cda']
            .map { |c| MResultRoot.new(_rt + c) }
     _rts.each { |_rt|
-      puts "#{_rt.runs}"
+      puts _rt.runs.to_s
     }
     comparer = Comparer.new
     comparer.set_mresult_roots(_rts)

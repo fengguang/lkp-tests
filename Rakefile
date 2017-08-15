@@ -22,7 +22,7 @@ end
 #   - rake rubocop file="lib/**/*.rb": check all lib files
 
 RSpec::Core::RakeTask.new do |t|
-  ENV['LKP_SRC'] ||= File.expand_path "#{File.dirname(__FILE__)}"
+  ENV['LKP_SRC'] ||= File.expand_path File.dirname(__FILE__).to_s
 
   puts "PWD = #{Dir.pwd}"
   puts "ENV['LKP_SRC'] = #{ENV['LKP_SRC']}"

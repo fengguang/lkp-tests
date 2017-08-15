@@ -697,7 +697,7 @@ def show_delta(stat, key_g)
       end
     }
     if $group_by_test
-      puts "#{$opt_field}"
+      puts $opt_field.to_s
     else
       if Dir.exist?(GIT_WORK_TREE)
         git = Git.open(project: $project, working_dir: GIT_WORK_TREE)

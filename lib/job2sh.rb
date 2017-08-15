@@ -190,7 +190,7 @@ class Job2sh < Job
       return false unless pass == :PASS_RUN_COMMANDS
       shell_block = $1
       exec_line
-      exec_line tabs + "#{key}"
+      exec_line tabs + key.to_s
       exec_line tabs + SHELL_BLOCK_KEYWORDS[shell_block][0]
       parse_hash(ancestors + [key], val)
       exec_line tabs + SHELL_BLOCK_KEYWORDS[shell_block][1]
