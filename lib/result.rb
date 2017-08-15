@@ -24,7 +24,7 @@ def is_tbox_group(hostname)
 end
 
 class ResultPath < Hash
-  MAXIS_KEYS = ['tbox_group', 'testcase', 'path_params', 'rootfs', 'kconfig', 'compiler', 'commit'].freeze
+  MAXIS_KEYS = %w[tbox_group testcase path_params rootfs kconfig compiler commit].freeze
   AXIS_KEYS = (MAXIS_KEYS + ['run']).freeze
 
   PATH_SCHEME = {

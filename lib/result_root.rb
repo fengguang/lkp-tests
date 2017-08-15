@@ -53,7 +53,7 @@ class ResultRoot < CResultRoot
   def calc_desc
     m = {}
     j = job
-    ['queue', 'job_state'].each { |k|
+    %w[queue job_state].each { |k|
       m[k] = j[k]
     }
     m['create_time'] = rt_create_time_from_job j
