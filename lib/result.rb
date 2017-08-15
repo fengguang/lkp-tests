@@ -28,18 +28,18 @@ class ResultPath < Hash
   AXIS_KEYS = (MAXIS_KEYS + ['run']).freeze
 
   PATH_SCHEME = {
-    'legacy'  => %w[ testcase path_params rootfs kconfig commit run ],
-    'default' => %w[ path_params tbox_group rootfs kconfig compiler commit run ],
-    'health-stats'  => %w[ path_params run ],
-    'lkp-bug' => %w[ path_params run ],
-    'hwinfo'  => %w[ tbox_group run ],
-    'build-dpdk'  => %w[ rootfs dpdk_config commit dpdk_compiler dpdk_commit run ],
-    'dpdk-dts'    => %w[ rootfs dpdk_config dpdk_compiler dpdk_commit run ],
-    'build-qemu'  => %w[ qemu_config qemu_commit run ],
-    'build-nvml'    => %w[ nvml_commit run],
-    'kvm-unit-tests-qemu' => %w[ path_params tbox_group rootfs kconfig compiler commit qemu_config qemu_commit run ],
-    'nvml-unit-tests' => %w[ path_params tbox_group rootfs kconfig compiler commit nvml_commit run ],
-    'mbtest' => %w[ path_params tbox_group rootfs kconfig compiler commit mbt_commit run ],
+    'legacy' => %w[testcase path_params rootfs kconfig commit run],
+    'default' => %w[path_params tbox_group rootfs kconfig compiler commit run],
+    'health-stats' => %w[path_params run],
+    'lkp-bug' => %w[path_params run],
+    'hwinfo' => %w[tbox_group run],
+    'build-dpdk' => %w[rootfs dpdk_config commit dpdk_compiler dpdk_commit run],
+    'dpdk-dts' => %w[rootfs dpdk_config dpdk_compiler dpdk_commit run],
+    'build-qemu' => %w[qemu_config qemu_commit run],
+    'build-nvml' => %w[nvml_commit run],
+    'kvm-unit-tests-qemu' => %w[path_params tbox_group rootfs kconfig compiler commit qemu_config qemu_commit run],
+    'nvml-unit-tests' => %w[path_params tbox_group rootfs kconfig compiler commit nvml_commit run],
+    'mbtest' => %w[path_params tbox_group rootfs kconfig compiler commit mbt_commit run]
   }
 
   def path_scheme
