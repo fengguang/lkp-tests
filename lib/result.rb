@@ -119,9 +119,9 @@ class ResultPath < Hash
     values = desc.split('/')
     keys = test_desc_keys dim, dim_not_a_param
     kv = {}
-    keys.each.with_index { |k, i|
+    keys.each.with_index do |k, i|
       kv[k] = values[i]
-    }
+    end
     kv
   end
 

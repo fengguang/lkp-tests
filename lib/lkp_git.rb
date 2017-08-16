@@ -93,7 +93,7 @@ def __last_linus_release_tag(commit)
 
   version = patch_level = sub_level = rc = nil
 
-  `#{GIT} show #{commit}:Makefile`.each_line { |line|
+  `#{GIT} show #{commit}:Makefile`.each_line do |line|
     case line
     when /VERSION *= *(\d+)/
       version = $1.to_i
@@ -106,7 +106,7 @@ def __last_linus_release_tag(commit)
     else
       break
     end
-  }
+  end
 
   if version and version >= 3
     tag = "v#{version}.#{patch_level}"
@@ -163,13 +163,13 @@ end
 
 def get_tags(pattern, committer)
   tags = []
-  `#{GIT} tag -l`.each_line { |tag|
+  `#{GIT} tag -l`.each_line do |tag|
     tag.chomp!
     next unless pattern.match(tag)
     # disabled: too slow and lots of git lead to OOM
     # next unless committer == nil or committer == git_committer_name(tag)
     tags << tag
-  }
+  end
   tags
 end
 

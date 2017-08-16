@@ -43,10 +43,10 @@ end
 
 def axes_gcommit(axes)
   naxes = {}
-  axes.each { |k, v|
+  axes.each do |k, v|
     k, v = axis_gcommit(k, v)
     naxes[k] = v
-  }
+  end
   naxes
 end
 

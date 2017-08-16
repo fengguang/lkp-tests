@@ -54,16 +54,16 @@ def get_program_env(program, env)
   when Fixnum, Float
     args = env.to_s
   when Hash
-    env.each { |k, v|
+    env.each do |k, v|
       case v
       when Hash
-        v.each { |kk, vv|
+        v.each do |kk, vv|
           program_env[kk] = vv
-        }
+        end
       else
         program_env[k] = v
       end
-    }
+    end
   end
 
   return program_env, args
@@ -133,9 +133,9 @@ class Job2sh < Job
       command << 'env' unless program_env.empty?
     end
 
-    program_env.each { |k, v|
+    program_env.each do |k, v|
       command << shell_encode_keyword(k) + "=" + shell_escape_expand(v)
-    }
+    end
 
     command.concat cmd
 
@@ -181,9 +181,9 @@ class Job2sh < Job
       exec_line
       exec_line tabs + "#{func_name}()"
       exec_line tabs + SHELL_BLOCK_KEYWORDS[shell_block][0]
-      val.each_line { |l|
+      val.each_line do |l|
         exec_line "\t" + tabs + l
-      }
+      end
       exec_line tabs + SHELL_BLOCK_KEYWORDS[shell_block][1]
       return :action_new_function
     elsif Hash === val and key =~ /^(if|for|while|until)\s/

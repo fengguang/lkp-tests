@@ -46,9 +46,9 @@ $perf_metrics_prefixes.concat $test_prefixes
 def __is_perf_metric(name)
   return true if name =~ $perf_metrics_re
 
-  $perf_metrics_prefixes.each { |prefix|
+  $perf_metrics_prefixes.each do |prefix|
     return true if name.index(prefix) == 0
-  }
+  end
 
   return false
 end
@@ -65,12 +65,12 @@ end
 # Check whether it looks like a reasonable performance change,
 # to avoid showing unreasonable ones to humans in compare/mplot output.
 def is_reasonable_perf_change(name, delta, max)
-  $perf_metrics_threshold.each { |k, v|
+  $perf_metrics_threshold.each do |k, v|
     next unless name =~ %r{^#{k}$}
     return false if max < v
     return false if delta < v / 2 and v.class == Fixnum
     return true
-  }
+  end
 
   case name
   when /^iostat/
@@ -171,17 +171,17 @@ def stat_relevance(record)
 end
 
 def sort_stats(stat_records)
-  stat_records.keys.sort_by { |stat|
+  stat_records.keys.sort_by do |stat|
     order1 = 0
     order2 = 0.0
-    stat_records[stat].each { |record|
+    stat_records[stat].each do |record|
       key = stat_relevance(record)
       order1 = key[0]
       order2 += key[1]
-    }
+    end
     order2 /= $stat_records[stat].size
     - order1 - order2
-  }
+  end
 end
 
 def matrix_cols(hash_of_array)
@@ -282,7 +282,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
   end
 
   cols = 0
-  git.release_tags_with_order.each { |tag, o|
+  git.release_tags_with_order.each do |tag, o|
     next if o >  order
     next if o == order and is_exact_match
     next if is_exact_match and tag =~ /^#{version}-rc[0-9]+$/
@@ -305,7 +305,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
       break if tags_merged.size >= 3 and cols >= 20
       break if tag =~ /-rc1$/ and cols >= 3
     end
-  }
+  end
 
   if !matrix.empty?
     if cols >= 3 or
@@ -388,18 +388,18 @@ def filter_incomplete_run(hash)
   return unless is_incomplete_runs
 
   delete_index_list = []
-  is_incomplete_runs.each_with_index { |val, index|
+  is_incomplete_runs.each_with_index do |val, index|
     if val == 1
       delete_index_list << index
     end
-  }
+  end
   delete_index_list.reverse!
 
-  hash.each { |k, v|
-    delete_index_list.each { |index|
+  hash.each do |k, v|
+    delete_index_list.each do |index|
       v.delete_at(index)
-    }
-  }
+    end
+  end
 
   hash.delete 'last_state.is_incomplete_run'
 end
@@ -429,7 +429,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
 
   b.keys.each { |k| a[k] = [0] * cols_a unless a.include?(k) }
 
-  a.each { |k, v|
+  a.each do |k, v|
     next if String === v[-1]
     next if options['perf'] and not is_perf_metric k
     next if is_incomplete_run and k !~ /^(dmesg|last_state|stderr)\./
@@ -540,7 +540,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
                          'max' => max,
                          'nr_run' => v.size }
     changed_stats[k].merge! options
-  }
+  end
 
   return changed_stats
 end
@@ -621,7 +621,7 @@ end
 def add_stats_to_matrix(stats, matrix)
   columns = 0
   matrix.each { |k, v| columns = v.size if columns < v.size }
-  stats.each { |k, v|
+  stats.each do |k, v|
     matrix[k] ||= []
     matrix[k] << 0 while matrix[k].size < columns
     if Array === v
@@ -629,13 +629,13 @@ def add_stats_to_matrix(stats, matrix)
     else
       matrix[k] << v
     end
-  }
+  end
   matrix
 end
 
 def matrix_from_stats_files(stats_files, add_source = true)
   matrix = {}
-  stats_files.each { |stats_file|
+  stats_files.each do |stats_file|
     stats = load_json stats_file
     unless stats
       log_warn "empty or non-exist stats file #{stats_file}"
@@ -643,7 +643,7 @@ def matrix_from_stats_files(stats_files, add_source = true)
     end
     stats['stats_source'] ||= stats_file if add_source
     matrix = add_stats_to_matrix(stats, matrix)
-  }
+  end
   matrix
 end
 

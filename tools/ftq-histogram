@@ -10,7 +10,7 @@ OUTPUT_NUM = 20
 def read_ftq_data(results_dir)
   data = []
   files = Dir["#{results_dir}/ftq_*.dat"]
-  files.each { |file|
+  files.each do |file|
     rdata = File.read(file)
     n = (rdata =~ /^[^#]/)
     rdata.slice!(0, n)
@@ -23,7 +23,7 @@ def read_ftq_data(results_dir)
     sfdata.slice!(0, ndel)
     data.concat(sfdata.map(&:to_i))
     sfdata = nil
-  }
+  end
   data
 end
 
@@ -31,7 +31,7 @@ def make_histogram(data, levels)
   samples = data.size
   mean = data[data.size / 2]
   start = 0
-  histogram = levels.each_with_index.map { |level, i|
+  histogram = levels.each_with_index.map do |level, i|
     lc = mean * level / 100
     nstart = data.bsearch_index { |n| n >= lc }
     nstart = data.size unless nstart
@@ -39,15 +39,15 @@ def make_histogram(data, levels)
     start = nstart
     slevel = i == 0 ? 0 : levels[i - 1]
     [slevel, level, num]
-  }
+  end
   histogram
 end
 
 def print_histogram(histogram, output_num)
   histogram.sort_by! { |sl, el, n| -n }
-  histogram.first(output_num).each { |slevel, elevel, num|
+  histogram.first(output_num).each do |slevel, elevel, num|
     printf "mean.%d-%d%%: %g\n", slevel, elevel, num
-  }
+  end
 end
 
 def histogram_analyze(_rt)

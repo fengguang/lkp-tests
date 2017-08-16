@@ -53,9 +53,9 @@ class ResultRoot < CResultRoot
   def calc_desc
     m = {}
     j = job
-    %w[queue job_state].each { |k|
+    %w[queue job_state].each do |k|
       m[k] = j[k]
-    }
+    end
     m['create_time'] = rt_create_time_from_job j
     m
   end
@@ -118,16 +118,16 @@ class ResultRootCollection
     files = Dir[File.join INDEX_DIR, date_glob + '-*']
     files.sort!
     files.reverse!
-    files.each { |fn|
-      File.open(fn) { |f|
-        f.readlines.reverse!.each { |rtp|
+    files.each do |fn|
+      File.open(fn) do |f|
+        f.readlines.reverse!.each do |rtp|
         # f.readlines.each { |rtp|
           rtp = rtp.strip
           next if !File.exists? rtp
           yield ResultRoot.new rtp
-        }
-      }
-    }
+        end
+      end
+    end
   end
 end
 
@@ -206,9 +206,9 @@ class MResultRoot
   end
 
   def result_roots
-    result_root_paths.map { |p|
+    result_root_paths.map do |p|
       ResultRoot.new p
-    }
+    end
   end
 
   def collection
@@ -231,11 +231,11 @@ class MResultRoot
   end
 
   def completions
-    open(COMPLETIONS_FILE, "r") { |f|
-      f.each_line.map { |line|
+    open(COMPLETIONS_FILE, "r") do |f|
+      f.each_line.map do |line|
         Completion.new line
-      }.sort_by { |cmp| -cmp.time.to_i }
-    }
+      end.sort_by { |cmp| -cmp.time.to_i }
+    end
   rescue Errno::ENOENT
     []
   end
@@ -271,10 +271,10 @@ end
 class MResultRootCollection
   def initialize(conditions = {})
     cond = deepcopy(conditions)
-    ResultPath::MAXIS_KEYS.each { |f|
+    ResultPath::MAXIS_KEYS.each do |f|
       set_prop f, conditions[f]
       cond.delete f
-    }
+    end
     @other_conditions = cond
   end
 
@@ -285,9 +285,9 @@ class MResultRootCollection
 
   def pattern
     result_path = ResultPath.new
-    ResultPath::MAXIS_KEYS.each { |k|
+    ResultPath::MAXIS_KEYS.each do |k|
       result_path[k] = get_prop(k) || '.*'
-    }
+    end
     result_path._result_root
   end
 
@@ -295,19 +295,19 @@ class MResultRootCollection
     block_given? or return enum_for(__method__)
 
     cmdline = "grep -he '#{pattern}' /lkp/paths/????-??-??-*"
-    @other_conditions.values.each { |ocond|
+    @other_conditions.values.each do |ocond|
       cmdline += " | grep -e '#{ocond}'"
-    }
+    end
     cmdline += " | sed -e 's#[0-9]\\+/$##' | sort | uniq"
-    IO.popen(cmdline) { |io|
-      io.each_line { |_rtp|
+    IO.popen(cmdline) do |io|
+      io.each_line do |_rtp|
         _rtp = _rtp.strip
         if MResultRoot.valid? _rtp
           yield MResultRoot.new _rtp.strip
         end
-      }
+      end
       Process.waitpid io.pid
-    }
+    end
   end
 
   def select(field, value)
@@ -322,14 +322,14 @@ class MResultRootCollection
   end
 
   def unselect(*fields)
-    fields.each { |f|
+    fields.each do |f|
       f = f.to_s
       if ResultPath::MAXIS_KEYS.index f
         set_prop(f, nil)
       else
         @other_conditions.delete f
       end
-    }
+    end
     self
   end
 end
@@ -341,9 +341,9 @@ def convert_one_mresult_root(_rt)
     false
   else
     n.create_storage_link(_rt.path)
-    n.update_desc { |desc|
+    n.update_desc do |desc|
       desc.update(_rt.desc)
-    }
+    end
     n.index(true)
     true
   end
@@ -360,11 +360,11 @@ def convert_all_mresult_root(date_from_in = nil, date_to_in = nil)
   n = 0
   while date <= date_to
     rtc.set_date(date)
-    rtc.each { |rt|
+    rtc.each do |rt|
       n += 1
       _rt = rt._result_root
       convert_one_mresult_root(_rt) and puts "#{n}: #{_rt}"
-    }
+    end
     date += ONE_DAY
   end
 end

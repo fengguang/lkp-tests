@@ -107,9 +107,9 @@ job['compiler'] ||= File.symlink?('/usr/bin/gcc') ? File.readlink('/usr/bin/gcc'
 job['NO_NETWORK'] = 1
 job['LKP_LOCAL_RUN'] = 1
 
-$opt_set_key_value.each { |k, v|
+$opt_set_key_value.each do |k, v|
   job[k] = v
-}
+end
 
 _result_root = job._result_root
 result_root = create_result_root(_result_root) or exit

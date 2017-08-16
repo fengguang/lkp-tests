@@ -23,12 +23,12 @@ def extract_one(program, result_file)
 end
 
 def extract_files(result_files)
-  result_files.each { |result_file|
+  result_files.each do |result_file|
     case result_file
     when 'time', /.*\.time$/
       extract_one 'time', result_file
     end
-  }
+  end
 end
 
 extract_files Dir['time', '*.time']

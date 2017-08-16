@@ -23,21 +23,21 @@ opts = OptionParser.new do |opts|
   opts.separator ""
   opts.separator "options:"
 
-  opts.on("-d N", "--distance N", "threshold of changes") { |n|
+  opts.on("-d N", "--distance N", "threshold of changes") do |n|
     $options['distance'] = n.to_i
-  }
+  end
 
-  opts.on("-p", "--perf", "show performance changes only") {
+  opts.on("-p", "--perf", "show performance changes only") do
     $options['perf'] = true
-  }
+  end
 
-  opts.on("-r N", "--resize N", "resize first matrix") { |n|
+  opts.on("-r N", "--resize N", "resize first matrix") do |n|
     $options['resize'] = n.to_i
-  }
+  end
 
-  opts.on("-v N", "--variance N", "show variance changes larger than N times") { |n|
+  opts.on("-v N", "--variance N", "show variance changes larger than N times") do |n|
     $options['variance'] = n.to_i
-  }
+  end
 
   opts.on("-o DIR", "--output DIR", "output dir") do |dir|
     Dir.mkdir dir unless File.directory? dir

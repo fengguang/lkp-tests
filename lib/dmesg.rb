@@ -102,11 +102,11 @@ def fixup_dmesg_file(dmesg_file)
   tmpfile = Tempfile.new '.fixup-dmesg-', File.dirname(dmesg_file)
   dmesg_lines = []
   File.open(dmesg_file, 'rb') do |f|
-    f.each_line { |line|
+    f.each_line do |line|
       line = fixup_dmesg(line)
       dmesg_lines << line
       tmpfile.puts line
-    }
+    end
   end
   tmpfile.chmod 0664
   tmpfile.close
@@ -257,7 +257,7 @@ def oops_to_bisect_pattern(line)
   return '' if words.empty?
   return line if words.size == 1
   patterns = []
-  words.each { |w|
+  words.each do |w|
     case w
     when /([a-zA-Z0-9_]+)\.(isra|constprop|part)\.[0-9]+\+0x/
       patterns << $1
@@ -270,7 +270,7 @@ def oops_to_bisect_pattern(line)
     else
       patterns << w
     end
-  }
+  end
   patterns.shift while patterns[0] == '.*'
   patterns.pop   if patterns[-1] == '.*'
   patterns.join(' ')
@@ -380,7 +380,7 @@ def get_crash_stats(dmesg_file)
   oops_map = {}
   id = ''
   new_error_id = false
-  boot_error_ids.each_line { |line|
+  boot_error_ids.each_line do |line|
     line.chomp!
     if line =~ /^# /
       new_error_id = true
@@ -399,7 +399,7 @@ def get_crash_stats(dmesg_file)
       #
       oops_map[id] = line.split(': ')[1..-1].join(': ')
     end
-  }
+  end
 
   if uncompressed_dmesg
     FileUtils.rm uncompressed_dmesg

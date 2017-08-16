@@ -46,10 +46,10 @@ class CResultRoot
   end
 
   def dmesg_file
-    DMESG_FILES.each { |fn|
+    DMESG_FILES.each do |fn|
       ffn = path fn
       return ffn if File.exist? ffn
-    }
+    end
     nil
   end
 
@@ -72,10 +72,10 @@ module CMResultRoot
   REPRODUCE_GLOB = '[0-9]*/reproduce.sh'
 
   def dmesgs
-    DMESG_GLOBS.each { |g|
+    DMESG_GLOBS.each do |g|
       dmesgs = glob(g)
       return dmesgs unless dmesgs.empty?
-    }
+    end
     []
   end
 
@@ -100,9 +100,9 @@ module CMResultRoot
   end
 
   def result_root_paths
-    glob(JOB_GLOB).map { |jfn|
+    glob(JOB_GLOB).map do |jfn|
       File.dirname jfn
-    }
+    end
   end
 
   def complete_matrix(m = nil)
@@ -126,9 +126,9 @@ module CMResultRoot
   end
 
   def result_roots_with_stat(stat)
-    result_roots.select { |rt|
+    result_roots.select do |rt|
       (m = rt.matrix) && m[stat]
-    }
+    end
   end
 
   def kpi_avg_stddev
@@ -137,16 +137,16 @@ module CMResultRoot
       return nil
     end
     avg_stddev = {}
-    cm.each { |k, v|
+    cm.each do |k, v|
       next unless is_kpi_stat(k, axes, [v])
       avg_stddev[k] = [v.average, v.standard_deviation]
-    }
+    end
     avg_stddev
   end
 
-  ResultPath::MAXIS_KEYS.each { |k|
+  ResultPath::MAXIS_KEYS.each do |k|
     define_method(k.intern) { @axes[k] }
-  }
+  end
 end
 
 class NResultRoot < CResultRoot
@@ -160,9 +160,9 @@ class NMResultRoot < DataStore::Node
   end
 
   def result_roots
-    result_root_paths.map { |p|
+    result_root_paths.map do |p|
       NResultRoot.new p
-    }
+    end
   end
 
   def collection
@@ -255,9 +255,9 @@ end
 class << LinuxMResultRootTable
   def create_layout(name, force = false)
     layout = super
-    layout.add_index(DataStore::AxisIndex, "commit") { |index|
+    layout.add_index(DataStore::AxisIndex, "commit") do |index|
       index.set_axis_keys ["commit"]
-    } if layout
+    end if layout
     layout
   end
 end
@@ -308,15 +308,15 @@ class MResultRootTableSet
     }
 
     @testcase_map = {}
-    LINUX_PERF_TESTCASES.each { |c|
+    LINUX_PERF_TESTCASES.each do |c|
       @testcase_map[c] = @linux_perf_table
-    }
-    LINUX_TESTCASES.each { |c|
+    end
+    LINUX_TESTCASES.each do |c|
       @testcase_map[c] = @linux_table
-    }
-    OTHER_TESTCASES.each { |c|
+    end
+    OTHER_TESTCASES.each do |c|
       @testcase_map[c] = @other_table
-    }
+    end
   end
 
   def testcase_to_table(testcase)
@@ -368,9 +368,9 @@ end
 class NMResultRootCollection
   def initialize(conditions = {})
     @conditions = {}
-    conditions.each { |k, v|
+    conditions.each do |k, v|
       @conditions[k] = v.to_s
-    }
+    end
     @date = nil
     @exact = false
   end
@@ -408,31 +408,31 @@ class NMResultRootCollection
       tbl = mrt_table_set.testcase_to_table testcase
       table_each.(tbl)
     else
-      mrt_table_set.tables.each { |tbl|
+      mrt_table_set.tables.each do |tbl|
         table_each.(tbl)
-      }
+      end
     end
   end
 end
 
 def nmresult_root_collections_for_axis(_rt, axis_key, values)
   axes = _rt.axes
-  values.map { |v|
+  values.map do |v|
     c = NMResultRootCollection.new axes
     c.set(axis_key, v.to_s).set_exact(true)
-  }
+  end
 end
 
 def nresult_root_fsck
   col = NMResultRootCollection.new
-  col.each { |mrt|
+  col.each do |mrt|
     puts mrt.path
     if Dir.exist?(mrt.path)
       yield(mrt) if block_given?
     else
       mrt.delete
     end
-  }
+  end
 end
 
 module ResultStddev
@@ -455,15 +455,15 @@ module ResultStddev
 
   def delete_col(data, col)
     dkeys = []
-    data.each { |k, vs|
+    data.each do |k, vs|
       vs.delete_at col
       if vs.compact.empty?
         dkeys << k
       end
-    }
-    dkeys.each { |k|
+    end
+    dkeys.each do |k|
       data.delete k
-    }
+    end
   end
 
   def save(_rt)
@@ -494,19 +494,19 @@ module ResultStddev
     delete_col(data, idx) if idx
     delete_col(data, 0) if sources.size >= DATA_NR_MAX
 
-    avg_stddev.each { |k, v|
+    avg_stddev.each do |k, v|
       unless data[k]
         data[k] = [nil] * sources.size
       end
       data[k] << v
-    }
+    end
     sources << source_str
     data[SOURCE_KEY] = sources
-    data.each { |k, vs|
+    data.each do |k, vs|
       if vs.size < sources.size
         vs << nil
       end
-    }
+    end
 
     save_json data, path
   end
@@ -522,11 +522,11 @@ module ResultStddev
     data = load(axes)
     return nil unless data && !data.empty?
     data.delete SOURCE_KEY
-    data.each { |k, vs|
+    data.each do |k, vs|
       vs.compact!
       avgs, stddevs = vs.first.zip(*vs.drop(1))
       data[k] = [avgs.average, stddevs.average]
-    }
+    end
     data
   end
 end

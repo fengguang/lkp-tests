@@ -41,13 +41,13 @@ def load_yaml_with_flock(file, timeout = nil)
   lock_file = file + '.lock'
 
   if timeout
-    with_flock_timeout(lock_file, timeout) {
+    with_flock_timeout(lock_file, timeout) do
       load_yaml file
-    }
+    end
   else
-    with_flock(lock_file) {
+    with_flock(lock_file) do
       load_yaml file
-    }
+    end
   end
 end
 
@@ -174,13 +174,13 @@ def save_yaml_with_flock(object, file, timeout = nil, compress = false)
   lock_file = file + '.lock'
 
   if timeout
-    with_flock_timeout(lock_file, timeout) {
+    with_flock_timeout(lock_file, timeout) do
       save_yaml object, file, compress
-    }
+    end
   else
-    with_flock(lock_file) {
+    with_flock(lock_file) do
       save_yaml object, file, compress
-    }
+    end
   end
 end
 

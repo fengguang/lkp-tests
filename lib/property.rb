@@ -7,7 +7,7 @@ class Module
 
   def prop_accessor(*props)
     attr_reader *props
-    props.each { |prop|
+    props.each do |prop|
       class_eval %Q{
 def #{prop}_set?
   instance_variable_defined? :"@#{prop}"
@@ -23,12 +23,12 @@ def unset_#{prop}
   self
 end
       }
-    }
+    end
   end
 
   def prop_with(*props)
     prop_accessor *props
-    props.each { |prop|
+    props.each do |prop|
       class_eval %Q{
 def with_#{prop}(*values)
   set = #{prop}_set?
@@ -46,7 +46,7 @@ ensure
   end
 end
       }
-    }
+    end
   end
 end
 
@@ -72,23 +72,23 @@ module Property
   end
 
   def set_prop(*prop_val_list)
-    prop_val_list.each_slice(2) { |prop, val|
+    prop_val_list.each_slice(2) do |prop, val|
       check_prop_for_set prop
-    }
+    end
 
-    prop_val_list.each_slice(2) { |prop, val|
+    prop_val_list.each_slice(2) do |prop, val|
       send :"set_#{prop}", val
-    }
+    end
   end
 
   def unset_props(*props)
-    props.each { |prop|
+    props.each do |prop|
       check_prop_for_unset prop
-    }
+    end
 
-    props.each { |prop|
+    props.each do |prop|
       send :"unset_#{prop}"
-    }
+    end
   end
 
   def with_prop(prop, *values, &b)

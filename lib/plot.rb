@@ -128,22 +128,22 @@ class MMatrixPlotter < MatrixPlotterBase
   end
 
   def check_lines
-    @lines.each { |matrix, y_stat_key, line_title|
+    @lines.each do |matrix, y_stat_key, line_title|
       return true if check_line(matrix[y_stat_key])
-    }
+    end
     return false
   end
 
   def plot
     return unless check_lines
-    Gnuplot.open { |gp|
-      Gnuplot::Plot.new(gp) { |p|
+    Gnuplot.open do |gp|
+      Gnuplot::Plot.new(gp) do |p|
         setup_output(p, @output_file_name)
         p.title @title if @title
         p.ytics 'nomirror'
 
         y_min, y_max = nil
-        @lines.each { |matrix, y_stat_key, line_title|
+        @lines.each do |matrix, y_stat_key, line_title|
           values = matrix[y_stat_key]
           next if !check_line(values)
 
@@ -158,7 +158,7 @@ class MMatrixPlotter < MatrixPlotterBase
             data = [values]
             p.noxtics
           end
-          p.data << Gnuplot::DataSet.new(data) { |ds|
+          p.data << Gnuplot::DataSet.new(data) do |ds|
             if @output_file_name
               ds.with = "linespoints pt 5"
             else
@@ -172,8 +172,8 @@ class MMatrixPlotter < MatrixPlotterBase
             else
               ds.notitle
             end
-          }
-        }
+          end
+        end
         y_size = y_max - y_min
         y_size = y_min if y_size == 0
         y_min -= y_size * @y_margin
@@ -181,8 +181,8 @@ class MMatrixPlotter < MatrixPlotterBase
         y_min = @y_range[0] || y_min
         y_max = @y_range[1] || y_max
         p.yrange "[#{y_min}:#{y_max}]"
-      }
-    }
+      end
+    end
   end
 end
 
@@ -251,13 +251,13 @@ class MatrixPlotter < MatrixPlotterBase
   end
 
   def call(matrix_in = nil, y_stat_keys_in = nil, x_stat_key_in = nil)
-    with_matrix(matrix_in || matrix) {
-      with_x_stat_key(x_stat_key_in || x_stat_key) {
-        with_y_stat_keys(y_stat_keys_in || y_stat_keys) {
+    with_matrix(matrix_in || matrix) do
+      with_x_stat_key(x_stat_key_in || x_stat_key) do
+        with_y_stat_keys(y_stat_keys_in || y_stat_keys) do
           plot
-        }
-      }
-    }
+        end
+      end
+    end
   end
 end
 

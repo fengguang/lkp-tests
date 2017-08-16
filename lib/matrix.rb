@@ -11,9 +11,9 @@ require "#{LKP_SRC}/lib/run-env"
 
 def is_event_counter(name)
   $event_counter_prefixes ||= File.read("#{LKP_SRC}/etc/event-counter-prefixes").split
-  $event_counter_prefixes.each { |prefix|
+  $event_counter_prefixes.each do |prefix|
     return true if name.index(prefix) == 0
-  }
+  end
   return false
 end
 
@@ -24,17 +24,17 @@ end
 
 def max_cols(matrix)
   cols = 0
-  matrix.each { |k, v|
+  matrix.each do |k, v|
     cols = v.size if cols < v.size
-  }
+  end
   return cols
 end
 
 def matrix_fill_missing_zeros(matrix)
   cols = matrix['stats_source'].size
-  matrix.each { |k, v|
+  matrix.each do |k, v|
     v << 0 while v.size < cols
-  }
+  end
   return matrix
 end
 
@@ -46,7 +46,7 @@ def add_performance_per_watt(stats, matrix)
   return unless kpi_stats
 
   performance = 0
-  kpi_stats.each { |stat, weight|
+  kpi_stats.each do |stat, weight|
     next if stat == 'boot-time.dhcp'
     next if stat == 'boot-time.boot'
     next if stat.index 'iostat.' and not stats['dd.startup_time']
@@ -59,7 +59,7 @@ def add_performance_per_watt(stats, matrix)
       end
       performance += value * weight
     end
-  }
+  end
 
   return unless performance > 0
 
@@ -84,7 +84,7 @@ def create_stats_matrix(result_root)
   create_programs_hash "stats/**/*"
   monitor_files = Dir["#{result_root}/*.{json,json.gz}"]
 
-  monitor_files.each { |file|
+  monitor_files.each do |file|
     next unless File.size?(file)
 
     case file
@@ -103,7 +103,7 @@ def create_stats_matrix(result_root)
 
     monitor_stats = load_json file
     sample_size = max_cols(monitor_stats)
-    monitor_stats.each { |k, v|
+    monitor_stats.each do |k, v|
       next if k == "#{monitor}.time"
       if v.size == 1
         stats[k] = v[0]
@@ -115,9 +115,9 @@ def create_stats_matrix(result_root)
         stats[k] = v.sum / sample_size
       end
       stats[k + '.max'] = v.max if should_add_max_latency k
-    }
+    end
     matrix.merge! monitor_stats
-  }
+  end
 
   add_performance_per_watt(stats, matrix)
   add_path_length(stats, matrix)
@@ -165,26 +165,26 @@ def shrink_matrix(matrix, max_cols)
   n = matrix['stats_source'].size - max_cols
   if n > 1
     empty_keys = []
-    matrix.each { |k, v|
+    matrix.each do |k, v|
       v.shift n
       empty_keys << k if v.empty?
-    }
+    end
     empty_keys.each { |k| matrix.delete k }
   end
 end
 
 def matrix_delete_col(matrix, col)
-  matrix.each { |k, v|
+  matrix.each do |k, v|
     v.delete_at col
-  }
+  end
 end
 
 def unite_remove_blacklist_stats(matrix)
   # sched_debug per-cpu stats usually change a lot among multiple running,
   # still keep statistic stats such as avg, min, max, stddev, etc.
-  matrix.reject { |k, v|
+  matrix.reject do |k, v|
     k =~ /^sched_debug.*\.[0-9]+$/
-  }
+  end
 end
 
 def unite_to(stats, matrix_root, max_cols = nil, delete = false)
@@ -236,16 +236,16 @@ def save_paths(result_root, user)
   # to avoid confusing between .../1 and .../11, etc. when search/remove, etc.
   result_root += '/' unless result_root.end_with?('/')
 
-  File.open(paths_file, "a") { |f|
+  File.open(paths_file, "a") do |f|
     f.puts(result_root)
-  }
+  end
 end
 
 def merge_matrixes(matrixes)
   mresult = {}
-  matrixes.each { |m|
+  matrixes.each do |m|
     add_stats_to_matrix(m, mresult)
-  }
+  end
   mresult
 end
 
@@ -269,43 +269,43 @@ end
 def sort_matrix(matrix, key)
   key_index = matrix.keys.index key
   t = matrix.values.transpose
-  t.sort_by! { |vs|
+  t.sort_by! do |vs|
     vs[key_index]
-  }
+  end
   values = t.transpose
   m = {}
-  matrix.keys.each_with_index { |k, i|
+  matrix.keys.each_with_index do |k, i|
     m[k] = values[i]
-  }
+  end
   m
 end
 
 def save_matrix_as_csv(file, matrix, sep = ' ', header = true, fill = -1)
   fill && cols = matrix.map { |k, v| v.size }.max
-  matrix.each { |k, vs|
+  matrix.each do |k, vs|
     vs = Array vs
     fill && vs += [fill] * (cols - vs.size)
     fields = [k] + vs.map(&:to_s)
     file.puts fields.join(sep)
-  }
+  end
 end
 
 def save_matrix_to_csv_file(file_name, matrix, sep = ',', header = true)
-  File.open(file_name, "w") { |f|
+  File.open(file_name, "w") do |f|
     save_matrix_as_csv(f, matrix, sep, header, nil)
-  }
+  end
 end
 
 def print_matrix(matrix)
   ks = matrix.map { |k, vs| k.size }.max
-  matrix.each { |k, vs|
+  matrix.each do |k, vs|
     printf "%-#{ks}s ", k
-    vs.each { |v|
+    vs.each do |v|
       s = format_number(v)
       printf "%-12s", s
-    }
+    end
     puts
-  }
+  end
 end
 
 def unite_params(result_root)
@@ -331,7 +331,7 @@ def unite_params(result_root)
   job = Job.new
   job.load(result_root + '/job.yaml') rescue return
 
-  job.each_param { |k, v, option_type|
+  job.each_param do |k, v, option_type|
     if params[k]
       if not params[k].include? v
         params[k] << v
@@ -339,7 +339,7 @@ def unite_params(result_root)
     else
       params[k] = [v]
     end
-  }
+  end
 
   begin
     atomic_save_yaml_json params, params_file

@@ -51,17 +51,17 @@ end
 opts.parse!(argv)
 
 scripts = []
-ARGV.each { |arg|
+ARGV.each do |arg|
   if arg =~ /.yaml/
     job = Job.new
     job.load(arg)
-    job.each_program(:workload_and_monitors) { |k, v|
+    job.each_program(:workload_and_monitors) do |k, v|
       scripts << k
-    }
+    end
   elsif File.executable? arg
     scripts << arg.split('/')[-1]
   end
-}
+end
 
 if scripts.empty?
   puts "No valid script or jobfile specified"
@@ -88,11 +88,11 @@ def create_host_config
     mem_kb = File.open('/proc/meminfo').gets.split[1].to_i
     mem_gb = mem_kb >> 20
     mem_gb = (mem_gb + 3) & 0xfffffffc
-    File.open(host_config, mode = 'w') { |file|
+    File.open(host_config, mode = 'w') do |file|
       file.puts "memory: #{mem_gb}G"
       file.puts "hdd_partitions: #{$opt_hdd.join ' '}"
       file.puts "ssd_partitions: #{$opt_ssd.join ' '}"
-    }
+    end
   end
   host_group_config = LKP_SRC + "/hosts/#{tbox_group(HOSTNAME)}"
   FileUtils.cp(host_config, host_group_config) unless File.exist? host_group_config
@@ -147,7 +147,7 @@ create_host_config
 install_packages("lkp", distro)
 install_packages("makepkg", distro)
 
-scripts.each { |script|
+scripts.each do |script|
   install_packages(script, distro)
   install_benchmarks(script, distro)
-}
+end

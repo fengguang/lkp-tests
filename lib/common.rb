@@ -17,12 +17,12 @@ end
 # Take a look at class Commit for usage
 module AddCachedMethod
   def add_cached_method(method_name, prefix = 'cached_')
-    define_method("#{prefix}#{method_name}") { |key, *args|
+    define_method("#{prefix}#{method_name}") do |key, *args|
       @__cache_for_add_cached_method__ ||= {}
       cache = @__cache_for_add_cached_method__
       mkey = [method_name, key]
       cache[mkey] or cache[mkey] = send(method_name, *args)
-    }
+    end
   end
 end
 
@@ -37,10 +37,10 @@ def with_set_globals(*var_val_list)
   yield
 ensure
   if ovals
-    var_vals.zip(ovals).map { |var_val, oval|
+    var_vals.zip(ovals).map do |var_val, oval|
       var, val = var_val
       eval("#{var} = oval")
-    }
+    end
   end
 end
 
@@ -53,21 +53,21 @@ def ensure_array(obj)
 end
 
 def array_add!(arr_dst, arr_src)
-  0.upto(arr_dst.size - 1) { |i|
+  0.upto(arr_dst.size - 1) do |i|
     arr_dst[i] += arr_src[i]
-  }
+  end
 end
 
 # Array "-" + "uniq!" with block to calculate key
 def array_subtract(arr1, arr2, &blk_key)
   if blk_key
     harr = {}
-    arr1.each { |e|
+    arr1.each do |e|
       harr[blk_key.(e)] = e
-    }
-    arr2.each { |e|
+    end
+    arr2.each do |e|
       harr.delete blk_key.(e)
-    }
+    end
     harr.values
   else
     arr1 - arr2
@@ -80,11 +80,11 @@ end
 
 def array_diff_index(arr1, arr2)
   s = [arr1.size, arr2.size].min
-  (0...s).each { |i|
+  (0...s).each do |i|
     if arr1[i] != arr2[i]
       return i
     end
-  }
+  end
   s
 end
 
@@ -178,9 +178,9 @@ module DirObject
   end
 
   def run_in(cmd)
-    chdir {
+    chdir do
       system cmd
-    }
+    end
   end
 
   def bash
@@ -200,25 +200,25 @@ end
 
 def pager(&b)
   pager_prog = ENV['PAGER'] || "/usr/bin/less"
-  IO.popen(pager_prog, "w") { |io|
+  IO.popen(pager_prog, "w") do |io|
     redirect_to io, &b
-  }
+  end
 end
 
 def redirect_to_file(*args, &b)
   if args.empty?
     args = ['stdout.txt', 'w']
   end
-  File.open(*args) { |f|
+  File.open(*args) do |f|
     redirect_to f, &b
-  }
+  end
 end
 
 def redirect_to_string(&b)
-  StringIO.open("", "w") { |so|
+  StringIO.open("", "w") do |so|
     redirect_to so, &b
     so.string
-  }
+  end
 end
 
 def monitor_file(file, history = 10)

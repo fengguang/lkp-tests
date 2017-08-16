@@ -31,20 +31,20 @@ def expand_shell_var(env, o)
     f.close
   elsif s.index('/dev/disk/')
     files = {}
-    s.split.each { |f|
+    s.split.each do |f|
       Dir.glob(f).each { |d| files[File.realpath d] = d }
-    }
-    s = files.keys.sort_by { |dev|
+    end
+    s = files.keys.sort_by do |dev|
       dev =~ /(\d+)$/
       $1.to_i
-    }.join ' '
+    end.join ' '
   end
   return s
 end
 
 def expand_toplevel_vars(env, hash)
   vars = {}
-  hash.each { |key, val|
+  hash.each do |key, val|
     next unless String === key
     case val
     when Hash
@@ -56,7 +56,7 @@ def expand_toplevel_vars(env, hash)
     else
       vars[key] = expand_shell_var(env, val)
     end
-  }
+  end
   return vars
 end
 
@@ -70,22 +70,22 @@ def string_or_hash_key(h)
 end
 
 def for_each_in(ah, set, pk = nil)
-  ah.each { |k, v|
+  ah.each do |k, v|
     if set.include?(k)
       yield pk, ah, k, v
     end
     if Hash === v
-      for_each_in(v, set, k) { |pk, h, k, v|
+      for_each_in(v, set, k) do |pk, h, k, v|
         yield pk, h, k, v
-      }
+      end
     end
-  }
+  end
 end
 
 # programs[script] = full/path/to/script
 def __create_programs_hash(glob, lkp_src)
   programs = {}
-  Dir.glob("#{lkp_src}/#{glob}").each { |path|
+  Dir.glob("#{lkp_src}/#{glob}").each do |path|
     next if File.directory?(path)
     next if path =~ /\.yaml$/
     next if path =~ /\.[0-9]+$/
@@ -100,7 +100,7 @@ def __create_programs_hash(glob, lkp_src)
       next
     end
     programs[file] = path
-  }
+  end
   programs
 end
 
@@ -258,10 +258,10 @@ class Job
       key = File.basename d
       @include_files[key] = {}
       Dir["#{lkp_src}/include/#{key}",
-          "#{lkp_src}/include/#{key}/*"].each { |f|
-        next if File.directory? f
-        @include_files[key][File.basename(f)] = f
-      }
+          "#{lkp_src}/include/#{key}/*"].each do |f|
+            next if File.directory? f
+            @include_files[key][File.basename(f)] = f
+          end
     end
     @include_files
   end
@@ -300,9 +300,9 @@ class Job
     revise_hash(job, deepcopy(@job2), true)
     revise_hash(job, deepcopy(@overrides), true)
     job['___'] = nil
-    expand_each_in(job, @dims_to_expand) { |h, k, v|
+    expand_each_in(job, @dims_to_expand) do |h, k, v|
       h.delete(k) if Array === v
-    }
+    end
     @jobx = job
     expand_params(false)
     @jobx = nil
@@ -323,11 +323,11 @@ class Job
       if @referenced_programs.include?(k) and i.include? k
         next if load_one[k] != nil
         if Hash === v
-          v.each { |kk, vv|
+          v.each do |kk, vv|
             next unless @referenced_programs[k].include? kk
             job['___'] = vv
             load_one[kk]
-          }
+          end
         end
       end
       next unless String === v
@@ -407,15 +407,15 @@ class Job
       'ucode' => '=',
     }
     programs = available_programs(:workload_elements)
-    for_each_in(@job, programs) { |pk, h, k, v|
+    for_each_in(@job, programs) do |pk, h, k, v|
       options = `#{LKP_SRC}/bin/program-options #{programs[k]}`.split("\n")
       @referenced_programs[k] = {}
-      options.each { |line|
+      options.each do |line|
         type, name = line.split
         @program_options[name] = type
         @referenced_programs[k][name] = nil
-      }
-    }
+      end
+    end
   end
 
   def each_job_init
@@ -426,20 +426,20 @@ class Job
   end
 
   def expand_each_in(ah, set)
-    ah.each { |k, v|
+    ah.each do |k, v|
       if set.include?(k) or (String === v and v =~ /{{(.*)}}/m)
         yield ah, k, v
       end
       if Hash === v
-        expand_each_in(v, set) { |h, k, v|
+        expand_each_in(v, set) do |h, k, v|
           yield h, k, v
-        }
+        end
       end
-    }
+    end
   end
 
   def each_job
-    expand_each_in(@job, @dims_to_expand) { |h, k, v|
+    expand_each_in(@job, @dims_to_expand) do |h, k, v|
       if String === v and v =~ /^(.*){{(.*)}}(.*)$/m
         head = $1.lstrip
         tail = $3.chomp.rstrip
@@ -454,14 +454,14 @@ class Job
         h[k] = v
         return
       elsif Array === v
-        v.each { |vv|
+        v.each do |vv|
           h[k] = vv
           each_job { |job| yield job }
-        }
+        end
         h[k] = v
         return
       end
-    }
+    end
     job = deepcopy self
     job.load_defaults false
     job.delete :no_defaults
@@ -510,7 +510,7 @@ class Job
     #     option2: param2
     #
     monitors = available_programs(:monitors)
-    for_each_in(@job, set) { |pk, h, k, v|
+    for_each_in(@job, set) do |pk, h, k, v|
       next if Hash === v
 
       # skip monitor options which happen to have the same
@@ -518,13 +518,13 @@ class Job
       next if pk and monitors.include? pk
 
       yield k, v, @program_options[k]
-    }
+    end
   end
 
   def each_program(type)
-    for_each_in(@job, available_programs(type)) { |pk, h, k, v|
+    for_each_in(@job, available_programs(type)) do |pk, h, k, v|
       yield k, v
-    }
+    end
   end
 
   def each(&block)
@@ -543,7 +543,7 @@ class Job
 
   def path_params
     path = ''
-    each_param { |k, v, option_type|
+    each_param do |k, v, option_type|
       if option_type == '='
         if v and v != ''
           path += "#{k}=#{v[0..30]}"
@@ -556,7 +556,7 @@ class Job
       next unless v
       path += v.to_s[0..30]
       path += '-'
-    }
+    end
     if path.empty?
       return 'defaults'
     else
@@ -622,10 +622,10 @@ class Job
     job_env = {}
     for_each_in(job, available_programs(:workload_elements)) do |pk, h, program, env|
       if env.is_a? Hash
-        env.each { |key, val|
+        env.each do |key, val|
           key = "#{program}_#{key}".gsub(/[^a-zA-Z0-9_]/, '_')
           job_env[key] = val.to_s
-        }
+        end
       else
         job_env[program] = env.to_s
       end
@@ -654,23 +654,23 @@ class Job
     begin
       hash = nil
       file = nil
-      for_each_in(@jobx, maps.keys.to_set) { |pk, h, k, v|
+      for_each_in(@jobx, maps.keys.to_set) do |pk, h, k, v|
         hash = h
         file = maps[k]
         map_param(h, k, v, file)
-      }
+      end
       return true unless run_scripts
-      for_each_in(@jobx, ruby_scripts.keys.to_set) { |pk, h, k, v|
+      for_each_in(@jobx, ruby_scripts.keys.to_set) do |pk, h, k, v|
         hash = h
         file = ruby_scripts[k]
         evaluate_param(h, k, v, file)
-      }
+      end
       @filter_env = top_env(@jobx).merge(job_env(@jobx))
-      for_each_in(@jobx, misc_scripts.keys.to_set) { |pk, h, k, v|
+      for_each_in(@jobx, misc_scripts.keys.to_set) do |pk, h, k, v|
         hash = h
         file = misc_scripts[k]
         run_filter(h, k, v, file)
-      }
+      end
     rescue TypeError => e
       log_error "#{file}: #{e.message} hash: #{hash}"
       raise
@@ -682,10 +682,10 @@ class Job
 
   def axes
     as = {}
-    ResultPath::MAXIS_KEYS.each { |k|
+    ResultPath::MAXIS_KEYS.each do |k|
       next if k == 'path_params'
       as[k] = @job[k] if @job.has_key? k
-    }
+    end
 
     ## TODO: remove the following lines when we need not
     ## these default processing in the future
@@ -702,20 +702,20 @@ class Job
     if as.has_key? 'rootfs'
       as['rootfs'] = rootfs_filename as['rootfs']
     end
-    each_param { |k, v, option_type|
+    each_param do |k, v, option_type|
       if option_type == '='
         as[k] = v.to_s
       else
         as[k] = v.to_s if v
       end
-    }
+    end
     as
   end
 
   def each_commit
     block_given? or return enum_for(__method__)
 
-    @job.each { |key, val|
+    @job.each do |key, val|
       case key
       when 'commit'
         yield val, @job['branch'], 'linux'
@@ -725,7 +725,7 @@ class Job
         project = key.sub /_commit$/, ''
         yield val, @job["#{project}_branch"], project
       end
-    }
+    end
   end
 
   # TODO: reimplement with axes

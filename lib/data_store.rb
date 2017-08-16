@@ -12,9 +12,9 @@ module DataStore
 
   def self.normalize_axes(axes)
     naxes = {}
-    axes.each { |k, v|
+    axes.each do |k, v|
       naxes[k.to_s] = v.to_s
-    }
+    end
     naxes
   end
 
@@ -33,16 +33,16 @@ module DataStore
     end
 
     def from_data(params)
-      PROPS.each { |k|
+      PROPS.each do |k|
         set_prop k, params[k]
-      }
+      end
     end
 
     def to_data
       params = {}
-      PROPS.each { |k|
+      PROPS.each do |k|
         params[k] = get_prop k
-      }
+      end
     end
   end
 
@@ -77,9 +77,9 @@ module DataStore
 
     def from_data(elayout)
       @maps = []
-      elayout[MAPS].each { |em|
+      elayout[MAPS].each do |em|
         add_map(em)
-      }
+      end
       @compress_matrix = elayout[COMPRESS_MATRIX]
     end
 
@@ -126,24 +126,24 @@ module DataStore
 
     def calc_all_others_map_value(axes, axes_keys)
       as = deepcopy(axes)
-      axes_keys.each { |k|
+      axes_keys.each do |k|
         next if k == Map::ALL_OTHERS_KEY
         as.delete k
-      }
-      as.each.map { |k, v|
+      end
+      as.each.map do |k, v|
         "#{k}=#{v}"
-      }.sort!.join('-')
+      end.sort!.join('-')
     end
 
     def calc_map_dir(map, node)
       axes = node.axes
-      map_values = map.axis_keys.map { |k|
+      map_values = map.axis_keys.map do |k|
         if k == Map::ALL_OTHERS_KEY
           calc_all_others_map_value axes, map.axis_keys
         else
           axes.fetch(k, '_').to_s
         end
-      }
+      end
       map_dir(map, map_values)
     end
 
@@ -169,15 +169,15 @@ module DataStore
     end
 
     def map(node)
-      @maps.each { |m|
+      @maps.each do |m|
         make_map(m, node)
-      }
+      end
     end
 
     def unmap(node)
-      @maps.each { |m|
+      @maps.each do |m|
         delete_map(m, node)
-      }
+      end
     end
 
     # index
@@ -203,14 +203,14 @@ module DataStore
 
     def load_indexes
       indexes = []
-      glob(INDEX_GLOB) { |dir|
+      glob(INDEX_GLOB) do |dir|
         if Dir.exist?(dir)
           cls_name, name = parse_index_path dir
           if cls = get_the_const(cls_name)
             indexes << cls.new(dir)
           end
         end
-      }
+      end
       indexes
     end
 
@@ -259,18 +259,18 @@ module DataStore
     end
 
     def axes_to_string(axes)
-      axes.each.map { |k, v|
+      axes.each.map do |k, v|
         "#{k}=#{v}"
-      }.sort!.join('/')
+      end.sort!.join('/')
     end
 
     def axes_from_string(str)
       as = {}
       kvs = str.split '/'
-      kvs.each { |kv|
+      kvs.each do |kv|
         k, v = kv.split '='
         as[k] = v
-      }
+      end
       as
     end
 
@@ -328,16 +328,16 @@ module DataStore
       k0, v0 = cond_arr[0]
       grep_cmdline = "grep -F -e '#{k0}=#{v0}'"
       ext_grep_cmdline = ""
-      cond_arr.drop(1).each { |k, v|
+      cond_arr.drop(1).each do |k, v|
         ext_grep_cmdline += " | grep -F -e '#{k}=#{v}'"
-      }
+      end
 
-      files.each { |ifn|
-        `#{grep_cmdline} #{ifn} #{ext_grep_cmdline}`.lines.reverse!.each { |line|
+      files.each do |ifn|
+        `#{grep_cmdline} #{ifn} #{ext_grep_cmdline}`.lines.reverse!.each do |line|
           line = line.strip
           yield line unless line.empty?
-        }
-      }
+        end
+      end
     end
   end
 
@@ -353,22 +353,22 @@ module DataStore
     end
 
     def index(node)
-      with_index_lock {
-        File.open(index_file(node.create_time), "a") { |f|
+      with_index_lock do
+        File.open(index_file(node.create_time), "a") do |f|
           str = Layout.axes_to_string node.axes
           f.write "#{str}\n"
-        }
-      }
+        end
+      end
     end
 
     def delete(node)
-      with_index_lock {
+      with_index_lock do
         str = Layout.axes_to_string node.axes
         ifns = index_files node.create_time
-        ifns.each { |ifn|
+        ifns.each do |ifn|
           delete_str str, ifn
-        }
-      }
+        end
+      end
     end
 
     def index_files(date = nil)
@@ -388,14 +388,14 @@ module DataStore
     end
 
     def each_for_all
-      index_files.each { |ifn|
-        File.open(ifn) { |f|
-          f.readlines.reverse!.each { |line|
+      index_files.each do |ifn|
+        File.open(ifn) do |f|
+          f.readlines.reverse!.each do |line|
             line = line.strip
             yield line unless line.empty?
-          }
-        }
-      }
+          end
+        end
+      end
     end
 
     def each(conditions, date = nil, &blk)
@@ -447,12 +447,12 @@ module DataStore
       axes = node.axes
       ifn = index_file axes
       return unless ifn
-      with_index_lock {
-        File.open(ifn, "a") { |f|
+      with_index_lock do
+        File.open(ifn, "a") do |f|
           str = Layout.axes_to_string axes
           f.write "#{str}\n"
-        }
-      }
+        end
+      end
     end
 
     def delete(node)
@@ -548,18 +548,18 @@ module DataStore
 
     def save_matrix(m)
       mkdir_p @path
-      with_flock(path(LOCK_FILE)) {
+      with_flock(path(LOCK_FILE)) do
         __save_matrix m
-      }
+      end
     end
 
     def update_matrix
       mkdir_p @path
-      with_flock(path(LOCK_FILE)) {
+      with_flock(path(LOCK_FILE)) do
         m = matrix
         yield m
         __save_matrix m
-      }
+      end
     end
 
     def desc
@@ -575,18 +575,18 @@ module DataStore
 
     def save_desc(d)
       mkdir_p @path
-      with_flock(path(LOCK_FILE)) {
+      with_flock(path(LOCK_FILE)) do
         __save_desc d
-      }
+      end
     end
 
     def update_desc
       mkdir_p @path
-      with_flock(path(LOCK_FILE)) {
+      with_flock(path(LOCK_FILE)) do
         d = desc
         yield d if block_given?
         __save_desc d
-      }
+      end
     end
 
     def create_storage_link(src)
@@ -616,9 +616,9 @@ module DataStore
       indexed = File.exists? indexed_file
       return if indexed
 
-      update_desc { |d|
+      update_desc do |d|
         d[CREATE_TIME] ||= calc_create_time
-      }
+      end
 
       FileUtils.touch path(START_INDEX_FILE)
       @table.index_node(self)
@@ -639,7 +639,7 @@ module DataStore
       d = desc
       m = matrix
 
-      m.each { |k, v|
+      m.each do |k, v|
         stat = {
           AXES => as,
           DESC => d,
@@ -647,7 +647,7 @@ module DataStore
           STAT_VALUE => v,
         }
         yield stat
-      }
+      end
     end
 
     def collection
@@ -700,9 +700,9 @@ module DataStore
     def initialize(table, conditions = {})
       @table = table
       @conditions = {}
-      conditions.each { |k, v|
+      conditions.each do |k, v|
         @conditions[k] = v.to_s
-      }
+      end
       @date = nil
       @exact = false
     end
@@ -736,18 +736,18 @@ module DataStore
       end
 
       index = @table.find_best_index @conditions
-      index.each(@conditions, @date) { |axes_str|
+      index.each(@conditions, @date) do |axes_str|
         node = @table.open_node_from_axes_str(axes_str)
         yield node
-      }
+      end
     end
 
     def each_stat(&b)
       block_given? or return enum_for(__method__)
 
-      each { |n|
+      each do |n|
         n.each(&b)
-      }
+      end
     end
   end
 
@@ -782,23 +782,23 @@ module DataStore
 
     def index_node(node)
       @layout.map(node)
-      @indexes.each { |idx|
+      @indexes.each do |idx|
         idx.index node
-      }
+      end
     end
 
     def unindex_node(node)
       @layout.unmap(node)
-      @indexes.each { |idx|
+      @indexes.each do |idx|
         idx.delete node
-      }
+      end
     end
 
     def find_best_index(conditions)
       indexes = @indexes.dup
-      indexes.sort_by! { |idx|
+      indexes.sort_by! do |idx|
         idx.score(conditions)
-      }
+      end
       indexes.last
     end
 
@@ -840,29 +840,29 @@ module DataStore
                    Map::AXIS_KEYS => ['c'])
     layout.save
     layout.add_index DateIndex
-    layout.add_index(AxisIndex, 'a') { |index|
+    layout.add_index(AxisIndex, 'a') do |index|
       index.set_axis_keys ['a']
-    }
+    end
     tbl = Table.open tbl_path
-    0.upto(3) { |a|
-      'h'.upto('k') { |b|
+    0.upto(3) do |a|
+      'h'.upto('k') do |b|
         n = tbl.new_node({'a' => a, 'b' => b, 'c' => 2})
         m = n.matrix
         m['s1'] = [1, 2, 3]
         m['s2'] = [4, a, b]
         n.save_matrix m
         n.index
-      }
-    }
+      end
+    end
     puts "all nodes:"
-    tbl.collection.each { |n|
+    tbl.collection.each do |n|
       puts "  node: #{n.axes}: #{n.matrix}"
-    }
+    end
     puts "collection: 'b' => 'i'"
     coll = Collection.new tbl, 'b' => 'i'
-    coll.each_stat { |s|
+    coll.each_stat do |s|
       puts "  stat: #{s}"
-    }
+    end
     tbl
   end
 end

@@ -26,22 +26,22 @@ class Noise
     @samples = @data.size
     start = 0
     cycles = 0
-    @noise_levels = NOISE_LEVELS.each_with_index.map { |level, i|
+    @noise_levels = NOISE_LEVELS.each_with_index.map do |level, i|
       lnt = @med * level / 100
       nstart = @data.find_index { |n| n < lnt }
       nstart ||= @samples
       (start...nstart).each { |di| cycles += @data[di] }
       start = nstart
       [level, cycles]
-    }
+    end
   end
 
   def log
     printf "%s.max: %d\n", @str, @max
     printf "%s.min: %d\n", @str, @min
     printf "%s.med: %d\n", @str, @med
-    @noise_levels.each { |level, mc|
+    @noise_levels.each do |level, mc|
       printf "%s.noise.%d%%: %d\n", @str, level, mc * @scale / @samples
-    }
+    end
   end
 end

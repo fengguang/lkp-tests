@@ -128,25 +128,25 @@ opts = OptionParser.new do |opts|
     $options['all-critical'] = true
   end
 
-  opts.on("-D N", "--distance N", "threshold of changes") { |n|
+  opts.on("-D N", "--distance N", "threshold of changes") do |n|
     $options['distance'] = n.to_i
-  }
+  end
 
-  opts.on("-P", "--perf", "show performance changes only") {
+  opts.on("-P", "--perf", "show performance changes only") do
     $options['perf'] = true
-  }
+  end
 
-  opts.on("-r N", "--resize N", "resize first matrix") { |n|
+  opts.on("-r N", "--resize N", "resize first matrix") do |n|
     $options['resize'] = n.to_i
-  }
+  end
 
-  opts.on("-v N", "--variance N", "show variance changes larger than N times") { |n|
+  opts.on("-v N", "--variance N", "show variance changes larger than N times") do |n|
     $options['variance'] = n.to_i
-  }
+  end
 
-  opts.on("--no-hide-noises", "do not hide noisy results") {
+  opts.on("--no-hide-noises", "do not hide noisy results") do
     $opt_no_hide_noises = true
-  }
+  end
 
   opts.on_tail('-h', '--help', 'Show this message') do
     puts opts
@@ -182,20 +182,20 @@ def plot_bar(dims, cases)
       plot.style "data histograms"
       plot.xtics "nomirror rotate by -45"
       plot.terminal "dumb nofeed"
-      dims.each { |dim, name|
+      dims.each do |dim, name|
         y = []
-        cases.each { |key, value|
+        cases.each do |key, value|
           if value[dim]
             y.push value[dim]
           else
             y.push 0
           end
-        }
+        end
         plot.data << Gnuplot::DataSet.new([x, y]) do |ds|
           ds.using = "2:xtic(1)"
           ds.title = name
         end
-      }
+      end
     end
   end
 end
@@ -227,9 +227,9 @@ def get_json_field(file, key, is_rt)
   if is_rt
     # convert stats.json data structure to that of matrix.json
     nmatrix = {}
-    matrix.each { |k, v|
+    matrix.each do |k, v|
       nmatrix[k] = [v]
-    }
+    end
   else
     nmatrix = matrix
   end
@@ -301,7 +301,7 @@ def add_result_root(result_root)
   end
   return unless $_result_root_saved.add? _result_root
 
-  $longest_dims.each { |dim|
+  $longest_dims.each do |dim|
     if dim.empty?
       key = _result_root
       $_result_root_tuple[key] << _result_root unless $_result_root_tuple[key].empty?
@@ -311,7 +311,7 @@ def add_result_root(result_root)
       $_result_root_tuple[key] << _result_root
       return
     end
-  }
+  end
 end
 
 def setup_test_group(_result_root)
@@ -345,7 +345,7 @@ def get_valid_average(matrix, key)
 end
 
 def setup_changed_stats()
-  $_result_root_tuple.each { |k, v|
+  $_result_root_tuple.each do |k, v|
     matrix_file1 = v[0] + '/matrix.json'
     matrix_file2 = v[-1] + '/matrix.json'
     next unless File.exist? matrix_file1
@@ -353,7 +353,7 @@ def setup_changed_stats()
     if $opt_index
       matrix1 = load_json matrix_file1, true
       matrix2 = load_json matrix_file2, true
-      $all_index.each { |stat, weight|
+      $all_index.each do |stat, weight|
         if stat.index 'iostat.'
           next unless k =~ /\/(dd-write)\//
         end
@@ -383,12 +383,12 @@ def setup_changed_stats()
           $base_gm[type] -= weight * Math.log(avg2)
           $head_gm[type] -= weight * Math.log(avg1)
         end
-      }
+      end
       next
     end
     changed_stats = get_changed_stats matrix_file2, matrix_file1, $options
     next unless changed_stats && !changed_stats.empty?
-    changed_stats.each { |stat, record|
+    changed_stats.each do |stat, record|
       next if $opt_field && stat !~ /#{$opt_field}/
 
       if $opt_save_changes
@@ -409,18 +409,18 @@ def setup_changed_stats()
       end
       $changed_stats[stat][k] = v
       $stat_records[stat] << record
-    }
+    end
     setup_test_group v[0]
     setup_test_group v[-1]
-  }
+  end
 end
 
 def show_one_stat(stat)
   $opt_field = stat
   _result_root_tuple = $changed_stats[stat]
-  _result_root_tuple.each { |k, v|
+  _result_root_tuple.each do |k, v|
     v.each { |_result_root| add_stats _result_root }
-  }
+  end
 end
 
 def setup_dims()
@@ -465,14 +465,14 @@ def setup_dims()
     [
       [$opt_dims[0], $opt_dims[1]],
       [$opt_dims[1], $opt_dims[0]],
-    ].each { |dim|
+    ].each do |dim|
       system "#{GIT} merge-base --is-ancestor #{dim[0]} #{dim[1]}"
       if $?.exitstatus == 0
         $opt_dims = dim
         commit_is_ancestor = true
         break
       end
-    }
+    end
 
     if not commit_is_ancestor
       puts "error: #{$opt_dims[0]} and #{$opt_dims[1]} not in acestor relation; comparation between them makes no sense"
@@ -480,14 +480,14 @@ def setup_dims()
     end
   end
 
-  $opt_dims.each { |dim|
+  $opt_dims.each do |dim|
     if $dims[dim]
       puts "#{dim}(#{dim_name(dim)}) already exists in compare list"
       next
     end
     $dims[dim] = dim_name(dim)
     $first_dim ||= dim
-  }
+  end
 end
 
 def show_one_diff(stat, dim, v0, v, v0_stddev, v_stddev, is_float, is_exp, is_fail = false)
@@ -560,16 +560,16 @@ def show_test_group(key)
   puts key
   puts
 
-  $dims.each { |dim, name|
+  $dims.each do |dim, name|
     width = (dim == $first_dim ? ABS_WIDTH + ERR_WIDTH : REL_WIDTH + ABS_WIDTH + ERR_WIDTH)
     printf "%#{width}s  ", name[0..(width - 1)]
-  }
+  end
 
   puts
-  $dims.keys.each { |dim|
+  $dims.keys.each do |dim|
     width = (dim == $first_dim ? ABS_WIDTH + ERR_WIDTH : REL_WIDTH + ABS_WIDTH + ERR_WIDTH)
     printf '-' * width + '  '
-  }
+  end
   puts
 end
 
@@ -610,29 +610,29 @@ end
 def show_delta(stat, key_g)
   is_fail = is_failure stat
 
-  $cases.delete_if { |_rt, value|
+  $cases.delete_if do |_rt, value|
     next true if value.size < 2
     next false if is_fail
     next false if is_latency stat
     next false if $opt_no_hide_noises
     noisy = false
-    value.each { |k, v|
+    value.each do |k, v|
       next unless Array === v and v.size > 1
       if v.standard_deviation.abs > v.average.abs / 2 or v.average < 0
         noisy = true
         break
       end
-    }
+    end
     noisy
-  }
+  end
   return if $cases.empty?
   $cases = Hash[$cases.sort]
 
   if !$group_by_test
-    $dims.each { |dim, name|
+    $dims.each do |dim, name|
       width = (dim == $first_dim ? ABS_WIDTH + ERR_WIDTH : REL_WIDTH + ABS_WIDTH + ERR_WIDTH)
       printf "%#{width}s  ", name[0..(width - 1)]
-    }
+    end
 
     if $header_shown[is_fail]
       puts
@@ -640,17 +640,17 @@ def show_delta(stat, key_g)
       puts 'testcase/testparams/testbox'
     end
 
-    $dims.keys.each { |dim|
+    $dims.keys.each do |dim|
       width = (dim == $first_dim ? ABS_WIDTH + ERR_WIDTH : REL_WIDTH + ABS_WIDTH + ERR_WIDTH)
       printf '-' * width + '  '
-    }
+    end
 
   end
 
   is_float = false
   is_exp   = false
-  $cases.each { |_rt, value|
-    value.each { |k, v|
+  $cases.each do |_rt, value|
+    value.each do |k, v|
       case v
       when Array
         v.each { |vv| is_float = true if vv.abs < 100 and vv != 0 and Float === vv }
@@ -659,14 +659,14 @@ def show_delta(stat, key_g)
         is_float = true if v.abs < 100 and v != 0 and Float === v
         is_exp   = true if v.abs >= 100000000
       end
-    }
-  }
+    end
+  end
 
   if $header_shown[is_fail]
     puts if !$group_by_test
   end
 
-  $cases.each { |_rt, value|
+  $cases.each do |_rt, value|
     result_path = ResultPath.new
     result_path.parse_result_root(_rt)
     test = result_path.test_desc $opt_dimension, $dim_not_a_param
@@ -678,7 +678,7 @@ def show_delta(stat, key_g)
     show_header(is_fail) unless $header_shown[is_fail]
 
     v0, v0_stddev = get_v_and_stddev value, $first_dim, is_fail
-    $dims.each { |dim, v|
+    $dims.each do |dim, v|
       v, v_stddev = get_v_and_stddev value, dim, is_fail
 
       show_one_diff stat, dim, v0, v, v0_stddev, v_stddev, is_float, is_exp, is_fail
@@ -693,7 +693,7 @@ def show_delta(stat, key_g)
       else
         $stddev[dim] = nil
       end
-    }
+    end
     if $group_by_test
       puts $opt_field.to_s
     else
@@ -704,20 +704,20 @@ def show_delta(stat, key_g)
       test = result_path.test_desc $opt_dimension, $dim_not_a_param
       puts test
     end
-  }
+  end
 
   unless is_fail
-    $sum.each { |k, v|
+    $sum.each do |k, v|
       $sum[k] = Math.exp($sum[k] / $cases.length)
-    }
+    end
   end
 
   if !$group_by_test
     v0 = $sum[$first_dim]
     v0_stddev = $stddev[$first_dim]
-    $sum.each { |dim, v|
+    $sum.each do |dim, v|
       show_one_diff stat, dim, v0, v, v0_stddev, $stddev[dim], is_float, is_exp, is_fail
-    }
+    end
     if is_fail
       puts "TOTAL #{$opt_field}"
     else
@@ -727,12 +727,12 @@ def show_delta(stat, key_g)
 end
 
 def call_mmplot
-  $cases.each { |_rt, value|
+  $cases.each do |_rt, value|
     file = _rt + '/matrix.json'
     matrix1 = load_json file, true
     matrix2 = load_json file.sub($opt_dims[0], $opt_dims[1]), true
     mmplot(matrix2, matrix1, [$opt_field], File.dirname(File.dirname(_rt)))
-  }
+  end
 end
 
 def show_one_index(type)
@@ -750,22 +750,22 @@ def setup_stats_priority(stats)
   tests = Dir["#{LKP_SRC}/tests/**/*"].map { |d| File.basename (d) }
   tests.sort!
 
-  tests.reverse_each { |x|
+  tests.reverse_each do |x|
     all_stats.unshift x if all_stats.delete x
-  }
+  end
 
   stats_num = {}
-  stats.each { |x|
+  stats.each do |x|
     k = x.split('.')[0]
     next if tests.include?(k)
     stats_num[k] ||= 0
     stats_num[k] += 1
-  }
+  end
 
   sorted_keys = stats_num.keys.sort_by { |x| stats_num[x] }
-  sorted_keys.each { |x|
+  sorted_keys.each do |x|
     all_stats.push x if all_stats.delete x
-  }
+  end
 
   # convert the array to a hash with array index as values
   $stats_priority = Hash[all_stats.map.with_index.to_a]
@@ -827,20 +827,20 @@ if $opt_all or $opt_index
   end
 
   if $group_by_test
-    $tests.each { |key|
+    $tests.each do |key|
       show_test_group key
-      stats.each { |stat|
+      stats.each do |stat|
         show_one_stat stat
         show_delta stat, key
         call_mmplot if $opt_plot
         $cases.clear
         $sum.clear
         $stddev.clear
-      }
+      end
       puts unless $tests.empty?
-    }
+    end
   else
-    stats.each { |stat|
+    stats.each do |stat|
       show_one_stat stat
       show_delta stat, nil
       call_mmplot if $opt_plot
@@ -848,7 +848,7 @@ if $opt_all or $opt_index
       $cases.clear
       $sum.clear
       $stddev.clear
-    }
+    end
   end
 else
   ARGV.each { |path| add_stats path }

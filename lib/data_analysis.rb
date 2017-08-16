@@ -6,11 +6,11 @@ require "#{LKP_SRC}/lib/statistics.rb"
 require "#{LKP_SRC}/lib/common.rb"
 
 def auto_range(max_level = 6, min_level = 0)
-  (min_level..max_level).map { |ul|
-    (1..9).map { |l|
+  (min_level..max_level).map do |ul|
+    (1..9).map do |l|
       l * (10**ul)
-    }
-  }.flatten + [10**(max_level + 1)]
+    end
+  end.flatten + [10**(max_level + 1)]
 end
 
 def histogram(data, range = nil, params = {})
@@ -20,7 +20,7 @@ def histogram(data, range = nil, params = {})
   range ||= auto_range
   total = data.size
   start = 0
-  hist = range.map { |lc|
+  hist = range.map do |lc|
     next nil if start >= total
     nstart = data.index { |l| l >= lc } || total
     num = if accumulate
@@ -30,7 +30,7 @@ def histogram(data, range = nil, params = {})
           end
     start = nstart
     num
-  }.compact
+  end.compact
   if start < data.size
     hist += [data.size - start]
   else
@@ -47,14 +47,14 @@ end
 TIME_UNITS = ['u', 'm', '']
 
 def format_time(val, unit = 'u')
-  (TIME_UNITS.index(unit)...TIME_UNITS.size).each { |ui|
+  (TIME_UNITS.index(unit)...TIME_UNITS.size).each do |ui|
     u = TIME_UNITS[ui]
     if val < 1000 || ui == TIME_UNITS.size - 1
       return format_number(val) + u + 's'
     else
       val /= 1000.0
     end
-  }
+  end
 end
 
 def print_histogram(range, hist, params = {})
@@ -73,7 +73,7 @@ def print_histogram(range, hist, params = {})
   }
 
   prev = 0
-  range.each_with_index { |lc, i|
+  range.each_with_index do |lc, i|
     if with_range
       printf "%s-", format_level.(prev)
     end
@@ -81,7 +81,7 @@ def print_histogram(range, hist, params = {})
            format_number(hist[i]), format_to_plot.(i + 1))
     prev = lc
     printf "\n"
-  }
+  end
   if !no_extra && hist.size > range.size
     printf("%s+\t%s%s\n", format_level.(range[-1]),
            format_number(hist[-1]), format_to_plot.(range.size + 1))
@@ -89,7 +89,7 @@ def print_histogram(range, hist, params = {})
 end
 
 def percentile(data, points = [90, 95, 99])
-  points.map { |p|
+  points.map do |p|
     [p, data[data.size * 0.01 * p]]
-  }
+  end
 end

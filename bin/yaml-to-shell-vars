@@ -42,13 +42,13 @@ def get_simple_value(v)
   if v.class == Hash
     return v.keys[0]
   elsif v.class == Array
-    v.map! { |vv|
+    v.map! do |vv|
       if vv.class == Hash
         vv.keys[0]
       else
         vv.to_s
       end
-    }
+    end
     return v.join "\n"
   else
     return v.to_s
@@ -63,12 +63,12 @@ def shell_escape(v)
   end
 end
 
-ARGV.each { |file|
+ARGV.each do |file|
   vars = YAML.load_file file
-  vars.each { |k, v|
+  vars.each do |k, v|
     next unless String === k
     var_name = $opt_name_prefix + k.gsub(/[^a-zA-Z0-9_]/, '_').gsub(/^[^a-zA-Z]/, '_')
     var_name = $opt_assoc_array + '[' + var_name + ']' if $opt_assoc_array
     STDOUT.write(var_name + '=' + shell_escape(get_simple_value(v)) + "\n")
-  }
-}
+  end
+end

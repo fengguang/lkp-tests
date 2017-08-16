@@ -70,7 +70,7 @@ end
 
 _result_roots = `#{LKP_SRC}/lkp-exec/_rt #{$opt_pattern}`.split
 groups = {}
-_result_roots.each { |_rt|
+_result_roots.each do |_rt|
   __rt = File.dirname _rt
 
   next unless File.exist? _rt + '/matrix.json'
@@ -90,11 +90,11 @@ _result_roots.each { |_rt|
   groups[group] ||= []
 
   groups[group].concat samples_fill_missing_zeros(matrix, $opt_field)
-}
+end
 
 printf "%8s %16s %16s %6s%%  %s\n", 'runs', 'sum', 'average', 'stddev', 'case'
 
-groups.each { |k, v|
+groups.each do |k, v|
   if $opt_raw
     puts "#{k}: #{v}"
   else
@@ -104,4 +104,4 @@ groups.each { |k, v|
     stddev = 100 * v.standard_deviation / v.average
     printf "%8d %16.2f %16.2f %6d%%  %s\n", v.size, total, avg, stddev, k
   end
-}
+end

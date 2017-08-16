@@ -39,22 +39,22 @@ class AxesGrouper
 
   def group
     map = {}
-    @axes_data.each { |d|
+    @axes_data.each do |d|
       as = calc_common_axes d.axes
       as.freeze
       map[as] ||= AxesGroup.new self, as
       map[as].add_axes_datum d
-    }
+    end
     groups = map.values
     groups
   end
 
   def global_common_axes
     as = deepcopy(@axes_data.first.axes)
-    @axes_data.drop(1).each { |ad|
+    @axes_data.drop(1).each do |ad|
       ad_as = ad.axes
       as.select! { |k, v| v && v == ad_as[k] }
-    }
+    end
     as
   end
 end
@@ -74,9 +74,9 @@ class AxesGroup
 
   def group_axeses
     group_axis_keys = @grouper.group_axis_keys
-    @axes_data.map { |d|
+    @axes_data.map do |d|
       d.axes.select { |k, v| group_axis_keys.index k }
-    }
+    end
   end
 end
 
@@ -146,26 +146,26 @@ module Compare
     def do_sort_mresult_roots
       return if @mresult_roots.empty?
       if sort_mresult_roots
-        skeys = @compare_axis_keys.map { |k|
+        skeys = @compare_axis_keys.map do |k|
           git = axis_key_git(k)
           if git
             [k, git]
           end
-        }
+        end
         skeys.compact!
         unless skeys.empty?
-          keys_values = skeys.map { |k, git|
+          keys_values = skeys.map do |k, git|
             values = @mresult_roots.map { |_rt| _rt.axes[k] }
             values.compact!
             values.uniq!
             [k, commits_to_string(git.sort_commits(values))]
-          }
-          @mresult_roots.sort_by! { |_rt|
+          end
+          @mresult_roots.sort_by! do |_rt|
             axes = _rt.axes
-            keys_values.map { |k, values|
+            keys_values.map do |k, values|
               values.index(axes[k]) || -1
-            }
-          }
+            end
+          end
         end
       else
         @mresult_roots
@@ -181,10 +181,10 @@ module Compare
       groups = grouper.set_axes_data(@mresult_roots)
                       .set_group_axis_keys(@compare_axis_keys)
                       .group
-      groups.map { |g|
+      groups.map do |g|
         next if g.axes_data.size < 2
         Group.new self, g.axes, g.group_axeses, g.axes_data
-      }.compact
+      end.compact
     end
 
     def global_common_axes
@@ -202,17 +202,17 @@ module Compare
     def each_changed_stat(&b)
       block_given? or return enum_for(__method__)
 
-      compare_groups.each { |g|
+      compare_groups.each do |g|
         g.each_changed_stat(&b)
-      }
+      end
     end
 
     def do_compare
-      compare_groups.map { |g|
+      compare_groups.map do |g|
         stat_enum = g.each_changed_stat
         stat_enum = Compare.sort_stats stat_enum
         GroupResult.new g, stat_enum
-      }
+      end
     end
 
     def show_compare_result(compare_result)
@@ -284,9 +284,9 @@ module Compare
 
     def complete_matrixes(ms = nil)
       ms ||= matrixes
-      mresult_roots.zip(ms).map { |_rt, m|
+      mresult_roots.zip(ms).map do |_rt, m|
         _rt.complete_matrix m
-      }
+      end
     end
 
     def runs(ms = nil)
@@ -301,9 +301,9 @@ module Compare
 
     def get_all_stat_keys
       stat_keys = []
-      matrixes.each { |m|
+      matrixes.each do |m|
         stat_keys |= m.keys
-      }
+      end
       stat_keys.delete 'stats_source'
       stat_keys
     end
@@ -313,7 +313,7 @@ module Compare
       changed_stat_keys = []
       ms = deepcopy(matrixes_in)
       m0 = ms[0]
-      ms.drop(1).each { |m|
+      ms.drop(1).each do |m|
         changes = _get_changed_stats(m, m0,
                                      {
                                        'gap' => @comparer.gap,
@@ -323,15 +323,15 @@ module Compare
         if changes
           changed_stat_keys |= changes.keys
         end
-      }
+      end
       changed_stat_keys
     end
 
     def do_filter_stat_keys(stats, filters)
-      filters.map { |sre|
+      filters.map do |sre|
         re = Regexp.new(sre)
         stats.select { |stat_key| re.match stat_key }
-      }.flatten
+      end.flatten
     end
 
     def get_include_stat_keys
@@ -349,10 +349,10 @@ module Compare
     def exclude_stat_keys(stats)
       excludes = @comparer.exclude_stat_keys
       return stats unless excludes && !excludes.empty?
-      excludes.each { |sre|
+      excludes.each do |sre|
         re = Regexp.new(sre)
         stats.reject! { |stat_key| re.match stat_key }
-      }
+      end
       stats
     end
 
@@ -362,10 +362,10 @@ module Compare
     end
 
     def do_filter_testcase_stat_keys(stats)
-      stats.select { |k|
+      stats.select do |k|
         base, _, remainder = k.partition('.')
         all_tests_set.include?(base) && !remainder.start_with?('time.')
-      }
+      end
     end
 
     def get_testcase_stat_keys
@@ -377,15 +377,15 @@ module Compare
     end
 
     def filter_kpi_stat_keys(stats, matrixes_in)
-      stats.select { |k|
+      stats.select do |k|
         is_kpi_stat(k, axes, matrixes_in.map { |m| m[k] })
-      }
+      end
     end
 
     def filter_kpi_stat_strict_keys(stats, matrixes_in)
-      stats.select { |k|
+      stats.select do |k|
         is_kpi_stat_strict(k, axes, matrixes_in.map { |m| m[k] })
-      }
+      end
     end
 
     def calc_changed_stat_keys(matrixes_in)
@@ -425,7 +425,7 @@ module Compare
       cms = complete_matrixes ms
       aruns = runs ms
       cruns = complete_runs cms
-      changed_stat_keys(ms).each { |stat_key|
+      changed_stat_keys(ms).each do |stat_key|
         failure = is_failure stat_key
         tms = failure ? ms : cms
         truns = failure ? aruns : cruns
@@ -436,11 +436,11 @@ module Compare
           VALUES => tms.map { |m| m[stat_key] },
           RUNS => truns
         }
-        calc_funcs.each { |calc_func|
+        calc_funcs.each do |calc_func|
           calc_func.(stat)
-        }
+        end
         yield stat
-      }
+      end
     rescue StandardError
       $stderr.puts "Error while comparing: #{mresult_roots.map { |_rt| _rt.to_s }.join ' '}"
       raise
@@ -458,9 +458,9 @@ module Compare
     class << self
       def from_data(data)
         comparer = Comparer.from_data data[:comparer]
-        _rts = data[:mresult_roots].map { |_rtd|
+        _rts = data[:mresult_roots].map do |_rtd|
           NMResultRoot.from_data _rtd
-        }
+        end
         comparer.set_mresult_roots _rts
         new comparer, data[:axes], data[:compare_axeses], _rts
       end
@@ -480,9 +480,9 @@ module Compare
     end
 
     def axes_string(sep1 = '-', sep2 = '=')
-      common_axes.map { |k, v|
+      common_axes.map do |k, v|
         "#{k}#{sep2}#{v}"
-      }.join sep1
+      end.join sep1
     end
 
     def axes_value_string(sep = '-')
@@ -498,15 +498,15 @@ module Compare
     end
 
     def score
-      stat_enum.map { |s|
+      stat_enum.map do |s|
         s[CHANGES].map { |c| c.abs }.max || 0
-      }.max || 0
+      end.max || 0
     end
 
     def stats
-      stat_enum.map { |s|
+      stat_enum.map do |s|
         s[STAT_KEY]
-      }
+      end
     end
 
     def show
@@ -554,17 +554,17 @@ module Compare
 
     def matrix
       m = {}
-      @group_result.stat_enum.each { |stat|
+      @group_result.stat_enum.each do |stat|
         stat_key = stat[STAT_KEY]
         if @data_types.size == 1 && !@data_type_in_key
           m[stat_key] = stat[@data_types.first]
         else
-          @data_types.each { |dt|
+          @data_types.each do |dt|
             key = GroupResult::MatrixExporter.key_with_data_type(stat_key, dt)
             m[key] = stat[dt]
-          }
+          end
         end
-      }
+      end
       if @include_runs
         g = @group_result.group
         m[RUNS_STAT_KEY] = g.runs
@@ -591,12 +591,12 @@ module Compare
       }
 
       m = {}
-      cas_keys.each { |axis_key|
+      cas_keys.each do |axis_key|
         conv = axis_converter.(axis_key)
-        m[@axis_prefix + axis_key] = cas.map { |as|
+        m[@axis_prefix + axis_key] = cas.map do |as|
           conv.(as[axis_key])
-        }
-      }
+        end
+      end
       m.merge!(matrix)
       m = sort_matrix(m, sort_key) if @sort
       m
@@ -620,11 +620,11 @@ module Compare
   ## Stat load/store functions
 
   def self.stats_to_data(stats)
-    stats.map { |stat|
+    stats.map do |stat|
       ns = stat.clone
       ns.delete GROUP
       ns
-    }
+    end
   end
 
   def self.stats_from_data(stats, group)
@@ -635,9 +635,9 @@ module Compare
 
   def self.calc_failure_fail(stat)
     return unless stat[FAILURE]
-    stat[FAILS] = stat[VALUES].map { |v|
+    stat[FAILS] = stat[VALUES].map do |v|
       v ? v.sum : 0
-    }
+    end
   end
 
   def self.calc_failure_change(stat)
@@ -645,9 +645,9 @@ module Compare
     fs = stat[FAILS]
     runs = stat[RUNS]
     reproduce0 = fs[0].to_f / runs[0]
-    stat[CHANGES] = fs.drop(1).each_with_index.map { |f, i|
+    stat[CHANGES] = fs.drop(1).each_with_index.map do |f, i|
       100 * (f.to_f / runs[i] - reproduce0)
-    }
+    end
   end
 
   def self.calc_avg_stddev(stat)
@@ -674,14 +674,14 @@ module Compare
     avgs = stat[AVGS]
     avg0 = avgs[0]
     if use_absolute_changes? key
-      stat[CHANGES] = avgs.drop(1).map { |avg|
+      stat[CHANGES] = avgs.drop(1).map do |avg|
         avg - avg0
-      }
+      end
       stat[ABS_CHANGES] = true
     else
-      stat[CHANGES] = avgs.drop(1).map { |avg|
+      stat[CHANGES] = avgs.drop(1).map do |avg|
         100.0 * (avg - avg0) / avg0
-      }
+      end
     end
   end
 
@@ -711,18 +711,18 @@ module Compare
   def self.sort_stats(stat_enum)
     stats = stat_enum.to_a
     stat_base_map = {}
-    stats.each { |stat|
+    stats.each do |stat|
       base = stat_key_base stat[STAT_KEY]
       stat[STAT_BASE] = base
       stat_base_map[base] ||= stat[FAILURE] ? -10000 : 0
       stat_base_map[base] += 1
-    }
-    all_tests_set.each { |test|
+    end
+    all_tests_set.each do |test|
       c = stat_base_map[test]
       if c and c > 0
         stat_base_map[test] = 0
       end
-    }
+    end
     stats.sort_by! do |stat|
       [
         stat_base_map[stat[STAT_BASE]],
@@ -739,7 +739,7 @@ module Compare
     changes = stat[CHANGES]
     abs_changes = stat[ABS_CHANGES]
     runs = stat[RUNS]
-    fails.each_with_index { |f, i|
+    fails.each_with_index do |f, i|
       unless i == 0
         if abs_changes
           printf "%#{REL_WIDTH}.0f  ", changes[i - 1]
@@ -753,7 +753,7 @@ module Compare
         printf "%#{ABS_WIDTH + 1}d", f
       end
       printf ":%-#{ERR_WIDTH - 2}d", runs[i]
-    }
+    end
   end
 
   def self.show_perf_change(stat)
@@ -762,7 +762,7 @@ module Compare
     stddevs = stat[STDDEVS]
     changes = stat[CHANGES]
     abs_changes = stat[ABS_CHANGES]
-    avgs.each_with_index { |avg, i|
+    avgs.each_with_index do |avg, i|
       unless i == 0
         p = changes[i - 1]
         fmt = p.abs < 100000 ? '.1f' : '.2g'
@@ -787,7 +787,7 @@ module Compare
       else
         printf " " * ERR_WIDTH
       end
-    }
+    end
   end
 
   def self.show_stat(stat)
@@ -796,37 +796,37 @@ module Compare
 
   def self.axes_format(axes)
     naxes = {}
-    axes.each { |k, v|
+    axes.each do |k, v|
       nk, nv = axis_format k, v
       naxes[nk] = nv
-    }
+    end
     naxes
   end
 
   def self.show_group_header(group)
     common_axes = axes_format group.axes
-    compare_axeses = group.compare_axeses.map { |axes|
+    compare_axeses = group.compare_axeses.map do |axes|
       axes_format axes
-    }
+    end
     puts "========================================================================================="
     printf "%s:\n", common_axes.keys.join('/')
     printf "  %s\n\n", common_axes.values.join('/')
     printf "%s: \n", compare_axeses[0].keys.join('/')
-    compare_axeses.each { |compare_axes|
+    compare_axeses.each do |compare_axes|
       printf "  %s\n", compare_axes.values.join('/')
-    }
+    end
     puts
     first_width = ABS_WIDTH + ERR_WIDTH
     width = first_width + REL_WIDTH
     printf "%#{first_width}s ", compare_axeses[0].values.join('/')[0...first_width]
-    compare_axeses.drop(1).each { |compare_axes|
+    compare_axeses.drop(1).each do |compare_axes|
       printf "%#{width}s ", compare_axes.values.join('/')[0...width]
-    }
+    end
     puts
     printf "-" * first_width + ' '
-    compare_axeses.drop(1).size.times {
+    compare_axeses.drop(1).size.times do
       printf "-" * width + ' '
-    }
+    end
     puts
   end
 
@@ -865,56 +865,56 @@ module Compare
 
     unless failure.empty?
       show_failure_header(nr_header) unless compact_show
-      failure.each { |stat|
+      failure.each do |stat|
         show_failure_change stat
         show_stat stat
-      }
+      end
     end
 
     unless perf.empty?
       show_perf_header(nr_header) unless compact_show
-      perf.each { |stat|
+      perf.each do |stat|
         show_perf_change stat
         show_stat stat
-      }
+      end
     end
 
     puts
   end
 
   def self.show_by_group(compare_result)
-    compare_result.each { |gd|
+    compare_result.each do |gd|
       show_group gd.group, gd.stat_enum
-    }
+    end
   end
 
   def self.group_by_stat(stat_enum)
     stat_map = {}
-    stat_enum.each { |stat|
+    stat_enum.each do |stat|
       key = stat[STAT_KEY]
       stat_map[key] ||= []
       stat_map[key] << stat
-    }
+    end
     stat_map
   end
 
   def self.show_by_stats(compare_result)
-    stat_enums = compare_result.map { |d|
+    stat_enums = compare_result.map do |d|
       sort_stats d.stat_enum
-    }
+    end
     stat_enum = EnumeratorCollection.new(*stat_enums)
     stat_map = group_by_stat(stat_enum)
-    stat_map.each { |stat_key, stats|
+    stat_map.each do |stat_key, stats|
       puts "#{stat_key}:"
-      stats.each { |stat|
+      stats.each do |stat|
         if stat[FAILURE]
           show_failure_change stat
         else
           show_perf_change stat
         end
         printf "  %s\n", stat[GROUP].axes.values.join('/')
-      }
-    }
+      end
+    end
   end
 
   ## Helper functions
@@ -922,9 +922,9 @@ module Compare
   def self.commits_comparer(commits, params = nil)
     git = axis_key_git COMMIT_AXIS_KEY
     commits = git.sort_commits commits
-    _result_roots = commits.map { |c|
+    _result_roots = commits.map do |c|
       MResultRootCollection.new(COMMIT_AXIS_KEY => c.to_s).to_a
-    }.flatten
+    end.flatten
     compare_axis_keys = [COMMIT_AXIS_KEY]
     comparer = Comparer.new
     comparer.set_mresult_roots(_result_roots)
@@ -941,9 +941,9 @@ module Compare
   def self.ncommits_comparer(commits, params = nil)
     git = axis_key_git COMMIT_AXIS_KEY
     commits = git.sort_commits commits
-    _rts = commits.map { |c|
+    _rts = commits.map do |c|
       NMResultRootCollection.new(COMMIT_AXIS_KEY => c.to_s).to_a
-    }.flatten
+    end.flatten
     compare_axis_keys = [COMMIT_AXIS_KEY]
     comparer = Comparer.new
     comparer.set_mresult_roots(_rts)
@@ -961,17 +961,17 @@ module Compare
     ignored_testcases = Set.new ['xfstests', 'autotest', 'phoronix-test-suite']
     git = axis_key_git COMMIT_AXIS_KEY
     commits = git.sort_commits commits
-    _rts = commits.map { |c|
+    _rts = commits.map do |c|
       DataStore::Collection.new(mrt_table_set.linux_perf_table, 'commit' => c.to_s).to_a
-    }.flatten
-    _rts.select! { |_rt|
+    end.flatten
+    _rts.select! do |_rt|
       axes = _rt.axes
       testcase = axes[TESTCASE_AXIS_KEY]
       next false if ignored_testcases.member?(testcase)
       tbox = axes[TBOX_GROUP_AXIS_KEY]
       next false if tbox.start_with? 'vm-'
       true
-    }
+    end
     compare_axis_keys = [COMMIT_AXIS_KEY]
     comparer = Comparer.new
     comparer.set_mresult_roots(_rts)
@@ -1005,58 +1005,58 @@ module Compare
 
       p.on('-c <compare_axis_keys>',
            '--compare-axis-keys <compare_axis_keys>',
-           'Compare Axis keys') { |compare_axis_keys|
+           'Compare Axis keys') do |compare_axis_keys|
         options[:compare_axis_keys] = compare_axis_keys.split(',')
-      }
+      end
 
       p.on('-s <search-axes>', '--search <search-axes>',
-           'Search Axes') { |search_axes|
+           'Search Axes') do |search_axes|
         msearch_axes << DataStore::Layout.axes_from_string(search_axes)
-      }
+      end
 
       p.on('-o <search-axes>', '--override-search <search-axes>',
-           'Search Axes') { |search_axes|
+           'Search Axes') do |search_axes|
         search_axes = DataStore::Layout.axes_from_string(search_axes)
         prev_axes = msearch_axes[-1] || {}
         msearch_axes << prev_axes.merge(search_axes)
-      }
+      end
 
       p.on('-j <job dir>', '--job-dir <job dir>',
-           'Job Directory') { |jd|
+           'Job Directory') do |jd|
         job_dir = jd
-      }
+      end
 
-      p.on('-m', '--more', 'more stats as compare result') {
+      p.on('-m', '--more', 'more stats as compare result') do
         options[:more_stats] = true
-      }
+      end
 
       p.on('-p <value>', '--perf-profile-threshold=<value>', 'perf-profile compare threshold') do |val|
         options[:perf_profile_threshold] = val.to_f
       end
 
-      p.on_tail('-h', '--help', 'Show this message') {
+      p.on_tail('-h', '--help', 'Show this message') do
         puts p
         return nil
-      }
+      end
     end
     argv = ['-h'] if argv.empty?
     argv = parser.parse(argv)
 
     if job_dir
-      _rts = each_job_in_dir(job_dir).map { |job|
+      _rts = each_job_in_dir(job_dir).map do |job|
         mrt_table_set.open_node job.axes
-      }
+      end
       _rts.select! { |_rt| _rt.exist? }
     else
       if msearch_axes.empty?
-        msearch_axes = argv.map { |c|
+        msearch_axes = argv.map do |c|
           { COMMIT_AXIS_KEY => c.to_s }
-        }
+        end
       end
-      _rts = msearch_axes.map { |axes|
+      _rts = msearch_axes.map do |axes|
         axes = axes_gcommit axes
         NMResultRootCollection.new(axes).to_a
-      }.flatten
+      end.flatten
     end
     options[:mresult_roots] = _rts
     options
@@ -1079,25 +1079,25 @@ module Compare
             .set_use_all_stats(false)
             .set_group_by_stat(false)
 
-    pager {
+    pager do
       comparer.compare
-    }
+    end
   end
 
   def self.test_incomplete_run
     _rt = '/result/lkp-sb02/fileio/performance-600s-100%-1HDD-ext4-64G-1024f-seqrd-sync/debian-x86_64-2015-02-07.cgz/x86_64-rhel/'
     _rts = %w[9eccca0843205f87c00404b663188b88eb248051 06e5801b8cb3fc057d88cb4dc03c0b64b2744cda]
            .map { |c| MResultRoot.new(_rt + c) }
-    _rts.each { |_rt|
+    _rts.each do |_rt|
       puts _rt.runs.to_s
-    }
+    end
     comparer = Comparer.new
     comparer.set_mresult_roots(_rts)
             .set_compare_axis_keys([COMMIT_AXIS_KEY])
             .set_use_all_stats(false)
-    page {
+    page do
       comparer.compare
-    }
+    end
   end
 
   def self.test_compare_aim7
@@ -1110,8 +1110,8 @@ module Compare
     comparer = Comparer.new
     comparer.set_mresult_roots(_result_roots)
             .set_compare_axis_keys(compare_axis_keys)
-    pager {
+    pager do
       comparer.compare
-    }
+    end
   end
 end
