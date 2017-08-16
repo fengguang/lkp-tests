@@ -50,14 +50,14 @@ check_unstable_cases()
 	platform_is_before_haswell && unstable_cases="$ivb_unstable"
 	for unstable in $unstable_cases
 	do
-		grep -w -q "$unstable$" ./run_tests.sh && echo "ignored_by_lkp $unstable" && sed -i /$unstable$/d ./run_tests.sh
+		grep -w -q "$unstable$" ./run_tests.sh && sed -i /$unstable$/d ./run_tests.sh && echo "ignored_by_lkp $unstable"
 	done
 }
 
 fixup_old_platform()
 {
 	local ignored="fixed_ctr0"
-	platform_is_before_haswell && grep -w -q "$ignored$" ./run_tests.sh && echo "ignored_by_lkp $ignored" && sed -i /$ignored$/d ./run_tests.sh
+	platform_is_before_haswell && grep -w -q "$ignored$" ./run_tests.sh && sed -i /$ignored$/d ./run_tests.sh && echo "ignored_by_lkp $ignored"
 }
 
 # eaccess will fail if paranoid_value in [1,2], so run eacces under lkp
