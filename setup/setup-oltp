@@ -25,6 +25,7 @@ args="\
 
 setup_mysql()
 {
+	ln -s /etc/mysql/mysql.cnf /etc/mysql/my.cnf
 	# datadir in rootfs too small to meet mysql requriments
 	sed -i "s /var/lib/mysql $TMP/mysql g" /etc/mysql/my.cnf
 
