@@ -10,6 +10,12 @@
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/upload.sh
 
+setup_test_environment()
+{
+	# fix "SKIP pmu (/proc/sys/kernel/nmi_watchdog not equal to 0)"
+	echo 0 > /proc/sys/kernel/nmi_watchdog
+}
+
 cd $BENCHMARK_ROOT/kvm-unit-tests || exit
 
 [ -c '/dev/kvm' ] || {
@@ -29,6 +35,8 @@ else
 		exit 1
 	fi
 fi
+
+setup_test_environment || die "failed to setup test environment"
 
 log_cmd ./run_tests.sh || {
 	exit_code=$?
