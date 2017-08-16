@@ -186,7 +186,7 @@ module DataStore
       dir = File.basename dir
       n = dir.index "-"
       if n
-        [dir[0, n], dir[n+1...dir.size]]
+        [dir[0, n], dir[n + 1...dir.size]]
       else
         [dir, nil]
       end

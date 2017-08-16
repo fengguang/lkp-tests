@@ -8,7 +8,7 @@ LKP_SRC   = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_N
 BLACKLIST = LKP_SRC + '/etc/kmsg-blacklist'
 MIN_MSG_LEN = 18
 OUTPUT_FILE = '/lkp/printk-error-messages'
-DIRS_TO_GREP  = 'arch block crypto drivers firmware fs include init ipc kernel lib mm net security sound virt'
+DIRS_TO_GREP = 'arch block crypto drivers firmware fs include init ipc kernel lib mm net security sound virt'
 PRINTK_PATTERNS = %w(
   KERN_EMERG
   KERN_ALERT
@@ -171,9 +171,9 @@ blacklist = File.read(BLACKLIST).split "\n"
   }
 }
 
-File.open(OUTPUT_FILE, mode='w') { |file|
+File.open(OUTPUT_FILE, mode = 'w') do |file|
   file.puts errids.to_a
-}
+end
 
 count.sort.each { |k, v|
   puts "#{k}: #{v}"

@@ -138,8 +138,8 @@ CALLTRACE_IGNORE_PATTERN = /(
   warn_slowpath_.*
 )\+0x/x
 
-OOM1='invoked oom-killer: gfp_mask='
-OOM2='Out of memory and no killable processes...'
+OOM1 = 'invoked oom-killer: gfp_mask='
+OOM2 = 'Out of memory and no killable processes...'
 
 def grep_crash_head(dmesg_file)
   if dmesg_file =~ /\.xz$/

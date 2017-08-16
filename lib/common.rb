@@ -270,19 +270,19 @@ def mkdir_p(dir, mode = 02775)
 end
 
 def with_flock(lock_file)
-  File.open(lock_file, File::RDWR|File::CREAT, 0664) { |f|
+  File.open(lock_file, File::RDWR | File::CREAT, 0664) do |f|
     f.flock(File::LOCK_EX)
     yield
-  }
+  end
 end
 
 def with_flock_timeout(lock_file, timeout)
-  File.open(lock_file, File::RDWR|File::CREAT, 0664) { |f|
-    Timeout::timeout(timeout) {
+  File.open(lock_file, File::RDWR | File::CREAT, 0664) do |f|
+    Timeout::timeout(timeout) do
       f.flock(File::LOCK_EX)
-    }
+    end
     yield
-  }
+  end
 end
 
 def delete_file_if_exist(file)

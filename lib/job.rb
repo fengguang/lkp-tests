@@ -113,7 +113,7 @@ end
 
 def atomic_save_yaml_json(object, file)
   temp_file = file + "-#{$$}"
-  File.open(temp_file, mode='w') { |file|
+  File.open(temp_file, mode = 'w') do |file|
     if temp_file.index('.json')
       lines = JSON.pretty_generate(object, :allow_nan => true)
     else
@@ -123,7 +123,7 @@ def atomic_save_yaml_json(object, file)
       lines.gsub!(/^\? :#(.*)\n: $/, "\n#\\1")
     end
     file.write(lines)
-  }
+  end
   FileUtils.mv temp_file, file, :force => true
 end
 

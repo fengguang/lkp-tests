@@ -28,7 +28,7 @@ module Enumerable
     if s.size <= 2
       [s.average, s]
     else
-      [s[s.size/2], s]
+      [s[s.size / 2], s]
     end
   end
 

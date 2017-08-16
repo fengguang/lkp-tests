@@ -742,17 +742,17 @@ module Compare
     fails.each_with_index { |f, i|
       unless i == 0
         if abs_changes
-          printf "%#{REL_WIDTH}.0f  ", changes[i-1]
+          printf "%#{REL_WIDTH}.0f  ", changes[i - 1]
         else
-          printf "%#{REL_WIDTH}.0f%% ", changes[i-1]
+          printf "%#{REL_WIDTH}.0f%% ", changes[i - 1]
         end
       end
       if f == 0
-        printf "%#{ABS_WIDTH+1}s", ' '
+        printf "%#{ABS_WIDTH + 1}s", ' '
       else
-        printf "%#{ABS_WIDTH+1}d", f
+        printf "%#{ABS_WIDTH + 1}d", f
       end
-      printf ":%-#{ERR_WIDTH-2}d", runs[i]
+      printf ":%-#{ERR_WIDTH - 2}d", runs[i]
     }
   end
 
@@ -764,7 +764,7 @@ module Compare
     abs_changes = stat[ABS_CHANGES]
     avgs.each_with_index { |avg, i|
       unless i == 0
-        p = changes[i-1]
+        p = changes[i - 1]
         fmt = p.abs < 100000 ? '.1f' : '.2g'
         if abs_changes
           printf "%+#{REL_WIDTH}#{fmt}  ", p
@@ -783,7 +783,7 @@ module Compare
       stddev = stddevs[i]
       stddev = 100 * stddev / avg if avg != 0
       if stddev > 2
-        printf " ±%#{ERR_WIDTH-3}d%%", stddev
+        printf " ±%#{ERR_WIDTH - 3}d%%", stddev
       else
         printf " " * ERR_WIDTH
       end

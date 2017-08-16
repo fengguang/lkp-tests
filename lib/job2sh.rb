@@ -246,7 +246,7 @@ class Job2sh < Job
     @monitors = available_programs(:monitors)
     @setups   = available_programs(:setup)
     @programs = available_programs(:workload_elements)
-    job = (@jobx||@job).clone # a shallow copy so that delete_if won't impact @job
+    job = (@jobx || @job).clone # a shallow copy so that delete_if won't impact @job
     job.delete_if { |key, val| parse_one([], key, val, :PASS_EXPORT_ENV) }
     out_line
     out_line "\t[ -n \"$LKP_SRC\" ] ||"

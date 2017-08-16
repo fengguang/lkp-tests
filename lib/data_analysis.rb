@@ -8,9 +8,9 @@ require "#{LKP_SRC}/lib/common.rb"
 def auto_range(max_level = 6, min_level = 0)
   (min_level..max_level).map { |ul|
     (1..9).map { |l|
-      l * (10 ** ul)
+      l * (10**ul)
     }
-  }.flatten + [10 ** (max_level + 1)]
+  }.flatten + [10**(max_level + 1)]
 end
 
 def histogram(data, range = nil, params = {})
@@ -78,7 +78,7 @@ def print_histogram(range, hist, params = {})
       printf "%s-", format_level.(prev)
     end
     printf("%s\t%s%s", format_level.(lc),
-           format_number(hist[i]), format_to_plot.(i+1))
+           format_number(hist[i]), format_to_plot.(i + 1))
     prev = lc
     printf "\n"
   }

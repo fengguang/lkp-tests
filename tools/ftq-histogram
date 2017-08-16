@@ -37,7 +37,7 @@ def make_histogram(data, levels)
     nstart = data.size unless nstart
     num = (nstart - start) * 1000000.0 / samples
     start = nstart
-    slevel = i == 0 ? 0 : levels[i-1]
+    slevel = i == 0 ? 0 : levels[i - 1]
     [slevel, level, num]
   }
   histogram
@@ -60,7 +60,7 @@ def histogram_analyze(_rt)
   printf "max: %d\n", max
   printf "mean: %d\n", mean
 
-  perf_levels = (1..((max-1)*100 + mean)/mean).map { |l| l * 1 }
+  perf_levels = (1..((max - 1) * 100 + mean) / mean).map { |l| l * 1 }
   perf_num_levels = make_histogram(data, perf_levels)
   print_histogram(perf_num_levels, OUTPUT_NUM)
 end

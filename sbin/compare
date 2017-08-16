@@ -111,8 +111,8 @@ opts = OptionParser.new do |opts|
     $opt_index  = true
     $size_index = load_yaml LKP_SRC + '/etc/index-size.yaml'
     $perf_index = load_yaml LKP_SRC + '/etc/index-perf.yaml'
-    $power_index  = load_yaml LKP_SRC + '/etc/index-power.yaml'
-    $latency_index  = load_yaml LKP_SRC + '/etc/index-latency.yaml'
+    $power_index = load_yaml LKP_SRC + '/etc/index-power.yaml'
+    $latency_index = load_yaml LKP_SRC + '/etc/index-latency.yaml'
     $all_index = $perf_index.merge($power_index).merge($latency_index).merge($size_index)
   end
 
@@ -495,22 +495,22 @@ def show_one_diff(stat, dim, v0, v, v0_stddev, v_stddev, is_float, is_exp, is_fa
     buf = ''
   else
     if is_fail
-      p = 100 * ((v.to_f/v_stddev) - (v0.to_f/v0_stddev))
+      p = 100 * ((v.to_f / v_stddev) - (v0.to_f / v0_stddev))
     elsif v0 != 0
       p = 100.0 * (v - v0) / v0
     else
       p = 0
     end
     if is_fail
-      buf = sprintf "%#{REL_WIDTH-2}.0f%% ", p
+      buf = sprintf "%#{REL_WIDTH - 2}.0f%% ", p
     elsif stat =~ ABS_CHANGE_STATS_RE
-      buf = sprintf "%#{REL_WIDTH-1}.0g ", v - v0
+      buf = sprintf "%#{REL_WIDTH - 1}.0g ", v - v0
     elsif p.abs < 3
       buf = sprintf ' ' * REL_WIDTH
     elsif p.abs < 100000
-      buf = sprintf "%#{REL_WIDTH-2}.0f%% ", p
+      buf = sprintf "%#{REL_WIDTH - 2}.0f%% ", p
     else
-      buf = sprintf "%#{REL_WIDTH-2}.0g%% ", p
+      buf = sprintf "%#{REL_WIDTH - 2}.0g%% ", p
     end
 
     if p.abs >= 50 and $colorful
@@ -528,9 +528,9 @@ def show_one_diff(stat, dim, v0, v, v0_stddev, v_stddev, is_float, is_exp, is_fa
     buf += sprintf "%#{ABS_WIDTH}.2f", v
   elsif is_fail
     if v == 0
-      buf += sprintf "%#{ABS_WIDTH+1}s", ' '
+      buf += sprintf "%#{ABS_WIDTH + 1}s", ' '
     else
-      buf += sprintf "%#{ABS_WIDTH+1}d", v
+      buf += sprintf "%#{ABS_WIDTH + 1}d", v
     end
   else
     buf += sprintf "%#{ABS_WIDTH}d", v
@@ -538,11 +538,11 @@ def show_one_diff(stat, dim, v0, v, v0_stddev, v_stddev, is_float, is_exp, is_fa
 
   if v_stddev
     if is_fail
-      buf += sprintf ":%-#{ERR_WIDTH-2}d", v_stddev
+      buf += sprintf ":%-#{ERR_WIDTH - 2}d", v_stddev
     else
       v_stddev = 100 * v_stddev / v if v != 0
       if v_stddev > 3
-        buf += sprintf " ±%#{ERR_WIDTH-3}d%%", v_stddev
+        buf += sprintf " ±%#{ERR_WIDTH - 3}d%%", v_stddev
       else
         buf += ' ' * ERR_WIDTH
       end
@@ -562,7 +562,7 @@ def show_test_group(key)
 
   $dims.each { |dim, name|
     width = (dim == $first_dim ? ABS_WIDTH + ERR_WIDTH : REL_WIDTH + ABS_WIDTH + ERR_WIDTH)
-    printf "%#{width}s  ", name[0..(width-1)]
+    printf "%#{width}s  ", name[0..(width - 1)]
   }
 
   puts
@@ -631,7 +631,7 @@ def show_delta(stat, key_g)
   if !$group_by_test
     $dims.each { |dim, name|
       width = (dim == $first_dim ? ABS_WIDTH + ERR_WIDTH : REL_WIDTH + ABS_WIDTH + ERR_WIDTH)
-      printf "%#{width}s  ", name[0..(width-1)]
+      printf "%#{width}s  ", name[0..(width - 1)]
     }
 
     if $header_shown[is_fail]

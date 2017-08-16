@@ -361,7 +361,7 @@ def convert_all_mresult_root(date_from_in = nil, date_to_in = nil)
   while date <= date_to
     rtc.set_date(date)
     rtc.each { |rt|
-      n+=1
+      n += 1
       _rt = rt._result_root
       convert_one_mresult_root(_rt) and puts "#{n}: #{_rt}"
     }

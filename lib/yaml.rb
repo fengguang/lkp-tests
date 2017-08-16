@@ -159,9 +159,9 @@ end
 
 def save_yaml(object, file, compress = false)
   temp_file = dot_file(file) + "-#{$$}"
-  File.open(temp_file, mode='w') { |f|
+  File.open(temp_file, mode = 'w') do |f|
     f.write(YAML.dump(object))
-  }
+  end
   FileUtils.mv temp_file, file, :force => true
 
   if compress
@@ -224,9 +224,9 @@ end
 
 def save_json(object, file, compress = false)
   temp_file = dot_file(file) + "-#{$$}"
-  File.open(temp_file, mode='w') { |file|
+  File.open(temp_file, mode = 'w') do |file|
     file.write(JSON.pretty_generate(object, :allow_nan => true))
-  }
+  end
   FileUtils.mv temp_file, file, :force => true
 
   if compress

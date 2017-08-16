@@ -122,7 +122,7 @@ def create_stats_matrix(result_root)
   add_performance_per_watt(stats, matrix)
   add_path_length(stats, matrix)
   save_json(stats, result_root + '/stats.json')
-  save_json(matrix, result_root + '/matrix.json', compress=true)
+  save_json(matrix, result_root + '/matrix.json', compress = true)
   if local_run?
     save_matrix_to_csv_file(result_root + '/stats.csv', stats)
     save_matrix_to_csv_file(result_root + '/matrix.csv', matrix)
@@ -141,13 +141,13 @@ end
 
 def matrix_average(matrix)
   avg = {}
-  matrix.each { |k, v| avg[k] = v.empty? ? 0: v.average }
+  matrix.each { |k, v| avg[k] = v.empty? ? 0 : v.average }
   avg
 end
 
 def matrix_stddev(matrix)
   stddev = {}
-  matrix.each { |k, v| stddev[k] = v.empty? ? 0: v.standard_deviation }
+  matrix.each { |k, v| stddev[k] = v.empty? ? 0 : v.standard_deviation }
   stddev
 end
 
