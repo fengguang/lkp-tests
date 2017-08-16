@@ -29,6 +29,20 @@ echo $paranoid_value > $perf_event_paranoid
 unstable_cases="flags_fd_no_group simultaneous_overflow context_switch_user_kernel rdpmc_multiattach openmp_sample
                 check_multiplexing rdpmc_multiattach_papi rdpmc_validation"
 
+# return value
+# 0: < haswell
+# 1: >= haswell
+platform_is_before_haswell()
+{
+	# FIXME: Model number: snb: 42, ivb: 58, haswell: 60, skl: 94
+	local haswell=60
+	local model=$(lscpu | grep 'Model:' | awk '{print $2}')
+	[[ -z "$model" ]] && die "FIXME: unknown platform cpu model number"
+	[[ $model -lt $haswell ]] && return 0
+
+	return 1
+}
+
 for unstable in $unstable_cases
 do
 	grep -w -q "$unstable$" ./run_tests.sh && echo "ignored_by_lkp $unstable" && sed -i /$unstable$/d ./run_tests.sh
@@ -36,13 +50,8 @@ done
 
 fixup_old_platform()
 {
-	# FIXME: Model number: snb: 42, ivb: 58, haswell: 60, skl: 94
-	local haswell=60
 	local ignored="fixed_ctr0"
-	local model=$(lscpu | grep 'Model:' | awk '{print $2}')
-	[[ -z "$model" ]] && return
-	[[ $model -lt $haswell ]] || return
-	grep -w -q "$ignored$" ./run_tests.sh && echo "ignored_by_lkp $ignored" && sed -i /$ignored$/d ./run_tests.sh
+	platform_is_before_haswell && grep -w -q "$ignored$" ./run_tests.sh && echo "ignored_by_lkp $ignored" && sed -i /$ignored$/d ./run_tests.sh
 }
 
 # eaccess will fail if paranoid_value in [1,2], so run eacces under lkp
