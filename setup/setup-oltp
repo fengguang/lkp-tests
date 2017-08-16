@@ -27,13 +27,16 @@ setup_mysql()
 {
 	ln -s /etc/mysql/mysql.cnf /etc/mysql/my.cnf
 	# datadir in rootfs too small to meet mysql requriments
-	sed -i "s /var/lib/mysql $TMP/mysql g" /etc/mysql/my.cnf
+	sed -i "s /var/lib/mysql $TMP/mysql g" /etc/mysql/*.cnf /etc/mysql/*/*.cnf
 
 	# /etc/init.d/mysql: ERROR: The partition with /lkp/lkp/src/tmp/mysql is too full! ... failed!
 	mkdir -p $TMP/mysql
 	mount -t tmpfs mysql $TMP/mysql
 
 	cp -a     /var/lib/mysql $TMP/
+
+	mkdir -p /var/lib/mysql-files
+	/usr/sbin/mysqld --initialize
 
 	/etc/init.d/mysql start
 }
