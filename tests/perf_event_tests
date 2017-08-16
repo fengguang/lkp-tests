@@ -26,8 +26,8 @@ echo $paranoid_value > $perf_event_paranoid
 
 [[ $paranoid_value = $(cat $perf_event_paranoid) ]] || die "write value $paranoid_value to $perf_event_paranoid failed"
 
-unstable_cases="flags_fd_no_group simultaneous_overflow context_switch_user_kernel rdpmc_multiattach openmp_sample
-                check_multiplexing rdpmc_multiattach_papi rdpmc_validation"
+hsw_unstable="rdpmc_attach rdpmc_validation cycles"
+ivb_unstable="overflow_skid openmp_sample rdpmc_validation rdpmc_multiattach"
 
 # return value
 # 0: < haswell
@@ -43,10 +43,16 @@ platform_is_before_haswell()
 	return 1
 }
 
-for unstable in $unstable_cases
-do
-	grep -w -q "$unstable$" ./run_tests.sh && echo "ignored_by_lkp $unstable" && sed -i /$unstable$/d ./run_tests.sh
-done
+check_unstable_cases()
+{
+	local unstable_cases="$hsw_unstable"
+
+	platform_is_before_haswell && unstable_cases="$ivb_unstable"
+	for unstable in $unstable_cases
+	do
+		grep -w -q "$unstable$" ./run_tests.sh && echo "ignored_by_lkp $unstable" && sed -i /$unstable$/d ./run_tests.sh
+	done
+}
 
 fixup_old_platform()
 {
@@ -58,6 +64,8 @@ fixup_old_platform()
 [[ $paranoid_value -gt 0 ]] && sed -i -e 's/\$TESTS_DIR\/error_returns\/eacces/su lkp -c \"\$TESTS_DIR\/error_returns\/eacces\"/g' ./run_tests.sh
 
 fixup_old_platform
+
+check_unstable_cases
 
 log_cmd ./run_tests.sh
 exit_value=$?
