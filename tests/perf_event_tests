@@ -29,6 +29,11 @@ echo $paranoid_value > $perf_event_paranoid
 hsw_unstable="rdpmc_attach rdpmc_validation cycles"
 ivb_unstable="overflow_skid openmp_sample rdpmc_validation rdpmc_multiattach"
 
+# following 2 groups cases seem related to hardware platform,
+# during waiting from community response, mark them as ignored_by_lkp
+hsw_failed="openmp_overflow"
+ivb_failed="fixed_ctr0 simultaneous_group_overflow"
+
 # return value
 # 0: < haswell
 # 1: >= haswell
@@ -54,16 +59,20 @@ check_unstable_cases()
 	done
 }
 
-fixup_old_platform()
+ignore_platform_related_failed_cases()
 {
-	local ignored="fixed_ctr0"
-	platform_is_before_haswell && grep -w -q "$ignored$" ./run_tests.sh && sed -i /$ignored$/d ./run_tests.sh && echo "ignored_by_lkp $ignored"
+	local fails="$hsw_failed"
+	platform_is_before_haswell && fails="$ivb_failed"
+	for ignored in $fails
+	do
+		grep -w -q "$ignored$" ./run_tests.sh && sed -i /$ignored$/d ./run_tests.sh && echo "ignored_by_lkp $ignored"
+	done
 }
 
 # eaccess will fail if paranoid_value in [1,2], so run eacces under lkp
 [[ $paranoid_value -gt 0 ]] && sed -i -e 's/\$TESTS_DIR\/error_returns\/eacces/su lkp -c \"\$TESTS_DIR\/error_returns\/eacces\"/g' ./run_tests.sh
 
-fixup_old_platform
+ignore_platform_related_failed_cases
 
 check_unstable_cases
 
