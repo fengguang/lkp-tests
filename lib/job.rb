@@ -150,7 +150,7 @@ def read_param_map_rules(file)
   prev_rule = nil
   head = nil
   loop do
-    head, rule, lines = lines.partition /^\/(.*?[^\\])\/\s+/
+    head, rule, lines = lines.partition(/^\/(.*?[^\\])\/\s+/)
     head.chomp!
     rules[prev_rule] = head if prev_rule
     break if rule.empty?
@@ -338,7 +338,7 @@ class Job
       prefix = ''
       hit = nil
       loop do
-        a, b, c = c.partition /[:-]/
+        a, b, c = c.partition(/[:-]/)
         prefix += a
         hit = load_one[prefix]
         break if c.empty?
@@ -722,7 +722,7 @@ class Job
       when 'head_commit', 'base_commit'
         nil
       when /_commit$/
-        project = key.sub /_commit$/, ''
+        project = key.sub(/_commit$/, '')
         yield val, @job["#{project}_branch"], project
       end
     end

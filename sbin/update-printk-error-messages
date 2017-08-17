@@ -136,7 +136,7 @@ blacklist = File.read(BLACKLIST).split "\n"
 `git grep -A1 -E '(#{PRINTK_PATTERNS})' -- #{DIRS_TO_GREP} | grep -o '".*"'`.each_line do |line|
   line = line[1..-3]
   next if line =~ /"/
-  line.sub! /\\t/, "\t"
+  line.sub!(/\\t/, "\t")
   lines = line.split "\\n"
   lines.each do |line|
     strs = line.split "%"

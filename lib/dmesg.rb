@@ -229,21 +229,21 @@ end
 
 def common_error_id(line)
   line = line.chomp
-  line.gsub! /\b[3-9]\.[0-9]+[-a-z0-9.]+/, '#' # linux version: 3.17.0-next-20141008-g099669ed
-  line.gsub! /\b[1-9][0-9]-[A-Z][a-z]+-[0-9]{4}\b/, '#' # Date: 28-Dec-2013
-  line.gsub! /\b0x[0-9a-f]+\b/, '#' # hex number
-  line.gsub! /\b[a-f0-9]{40}\b/, '#' # SHA-1
-  line.gsub! /\b[0-9][0-9.]*/, '#' # number
-  line.gsub! /#x\b/, '0x'
-  line.gsub! /[\\"$]/, '~'
-  line.gsub! /[ \t]/, ' '
-  line.gsub! /\ \ +/, ' '
-  line.gsub! /([^a-zA-Z0-9])\ /, '\1'
-  line.gsub! /\ ([^a-zA-Z])/, '\1'
-  line.gsub! /^\ /, ''
-  line.gsub! /\  _/, '_'
-  line.gsub! /\ /, '_'
-  line.gsub! /[-_.,;:#!\[\(]+$/, ''
+  line.gsub!(/\b[3-9]\.[0-9]+[-a-z0-9.]+/, '#') # linux version: 3.17.0-next-20141008-g099669ed
+  line.gsub!(/\b[1-9][0-9]-[A-Z][a-z]+-[0-9]{4}\b/, '#') # Date: 28-Dec-2013
+  line.gsub!(/\b0x[0-9a-f]+\b/, '#') # hex number
+  line.gsub!(/\b[a-f0-9]{40}\b/, '#') # SHA-1
+  line.gsub!(/\b[0-9][0-9.]*/, '#') # number
+  line.gsub!(/#x\b/, '0x')
+  line.gsub!(/[\\"$]/, '~')
+  line.gsub!(/[ \t]/, ' ')
+  line.gsub!(/\ \ +/, ' ')
+  line.gsub!(/([^a-zA-Z0-9])\ /, '\1')
+  line.gsub!(/\ ([^a-zA-Z])/, '\1')
+  line.gsub!(/^\ /, '')
+  line.gsub!(/\  _/, '_')
+  line.gsub!(/\ /, '_')
+  line.gsub!(/[-_.,;:#!\[\(]+$/, '')
   line
 end
 
@@ -340,30 +340,30 @@ def analyze_error_id(line)
 
   error_id = line
 
-  error_id.gsub! /\ \]$/, "" # [ INFO: possible recursive locking detected ]
-  error_id.gsub! /\/c\/kernel-tests\/src\/[^\/]+\//, ''
-  error_id.gsub! /\/c\/(wfg|yliu)\/[^\/]+\//, ''
-  error_id.gsub! /\/lkp\/[^\/]+\/linux[0-9]*\//, ''
-  error_id.gsub! /\/kernel-tests\/linux[0-9]*\//, ''
-  error_id.gsub! /\.(isra|constprop|part)\.[0-9]+/, ''
+  error_id.gsub!(/\ \]$/, '') # [ INFO: possible recursive locking detected ]
+  error_id.gsub!(/\/c\/kernel-tests\/src\/[^\/]+\//, '')
+  error_id.gsub!(/\/c\/(wfg|yliu)\/[^\/]+\//, '')
+  error_id.gsub!(/\/lkp\/[^\/]+\/linux[0-9]*\//, '')
+  error_id.gsub!(/\/kernel-tests\/linux[0-9]*\//, '')
+  error_id.gsub!(/\.(isra|constprop|part)\.[0-9]+/, '')
 
   # [   31.694592] ADFS-fs error (device nbd10): adfs_fill_super: unable to read superblock
   # [   33.147854] block nbd15: Attempted send on closed socket
   # /c/linux-next% git grep -w 'register_blkdev' | grep -o '".*"'
-  error_id.gsub! /\b(bcache|blkext|btt|dasd|drbd|fd|hd|jsfd|lloop|loop|md|mdp|mmc|nbd|nd_blk|nfhd|nullb|nvme|pmem|ramdisk|scm|sd|simdisk|sr|ubd|ubiblock|virtblk|xsysace|zram)\d+/, '\1#'
+  error_id.gsub!(/\b(bcache|blkext|btt|dasd|drbd|fd|hd|jsfd|lloop|loop|md|mdp|mmc|nbd|nd_blk|nfhd|nullb|nvme|pmem|ramdisk|scm|sd|simdisk|sr|ubd|ubiblock|virtblk|xsysace|zram)\d+/, '\1#')
 
   error_id.gsub! LINUX_DEVICE_NAMES_RE, '\1#'
 
-  error_id.gsub! /\b[0-9a-f]{8}\b/, "#"
-  error_id.gsub! /\b[0-9a-f]{16}\b/, "#"
-  error_id.gsub! /(=)[0-9a-f]+\b/, '\1#'
-  error_id.gsub! /[+\/]0x[0-9a-f]+\b/, ''
-  error_id.gsub! /[+\/][0-9a-f]+\b/, ''
+  error_id.gsub!(/\b[0-9a-f]{8}\b/, '#')
+  error_id.gsub!(/\b[0-9a-f]{16}\b/, '#')
+  error_id.gsub!(/(=)[0-9a-f]+\b/, '\1#')
+  error_id.gsub!(/[+\/]0x[0-9a-f]+\b/, '')
+  error_id.gsub!(/[+\/][0-9a-f]+\b/, '')
 
   error_id = common_error_id(error_id)
 
-  error_id.gsub! /([a-z]:)[0-9]+\b/, '\1' # WARNING: at arch/x86/kernel/cpu/perf_event.c:1077 x86_pmu_start+0xaa/0x110()
-  error_id.gsub! /#:\[<#>\]\[<#>\]/, '' # RIP: 0010:[<ffffffff91906d8d>]  [<ffffffff91906d8d>] validate_chain+0xed/0xe80
+  error_id.gsub!(/([a-z]:)[0-9]+\b/, '\1') # WARNING: at arch/x86/kernel/cpu/perf_event.c:1077 x86_pmu_start+0xaa/0x110()
+  error_id.gsub!(/#:\[<#>\]\[<#>\]/, '') # RIP: 0010:[<ffffffff91906d8d>]  [<ffffffff91906d8d>] validate_chain+0xed/0xe80
 
   [error_id, bug_to_bisect]
 end
