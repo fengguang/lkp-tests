@@ -9,6 +9,7 @@
 
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/upload.sh
+. $LKP_SRC/lib/log.sh
 
 casesfile="x86/unittests.cfg"
 
@@ -57,17 +58,41 @@ check_ignored_cases()
 	done
 }
 
+load_kvm_intel_nested()
+{
+	[ -c "/dev/kvm" ] || {
+		modprobe kvm_intel nested=y || {
+			log_error "fail to load kvm_intel with nested=y"
+			return 1
+		}
+	}
+
+	# if nested != 'Y', reload it again
+	local nested=$(cat /sys/module/kvm_intel/parameters/nested)
+
+	[ "$nested" = "N" ] && {
+		# force load kvm_intel with nested=y
+		modprobe -r kvm_intel
+		modprobe kvm_intel nested=y || {
+			log_error "fail to reload kvm_intel with nested=y"
+			return 1
+		}
+	}
+
+	nested=$(cat /sys/module/kvm_intel/parameters/nested)
+	[ "$nested" = "N" ] && log_error "FIXME: vmx related cases may fail due to host unsupport nested virtualization" && return 1
+
+	return 0
+}
+
 setup_test_environment()
 {
 	# fix "SKIP pmu (/proc/sys/kernel/nmi_watchdog not equal to 0)"
-	echo 0 > /proc/sys/kernel/nmi_watchdog
+	echo 0 > /proc/sys/kernel/nmi_watchdog || return
+	load_kvm_intel_nested || return
 }
 
 cd $BENCHMARK_ROOT/kvm-unit-tests || exit
-
-[ -c '/dev/kvm' ] || {
-	modprobe kvm_intel || die "failed to insert kvm_intel module"
-}
 
 # Debian/Fedora/Ubuntu use /usr/bin/qemu-system-x86_64 as QEMU Emulator.
 # RHEL use /usr/libexec/qemu-kvm as QEMU Emulator.
