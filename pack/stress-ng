@@ -1,8 +1,21 @@
-#!/bin/sh
-# - testtime
-# - class
+#!/bin/bash
 
-[ -n "$testtime" ] || testtime=1
+NAME=stress-ng
+VERSION=0.08.03
+WEB_URL="http://kernel.ubuntu.com/~cking/tarballs/stress-ng/${NAME}-${VERSION}.tar.gz"
+download()
+{
+	wget -O ${BM_NAME} $WEB_URL
+}
 
-stress-ng --class $class --sequential $nr_cpu --timeout $testtime --times --verify --metrics-brief 2>&1
+build()
+{
+	tar -zxf ${BM_NAME}
+	cd ${NAME}-${VERSION}
+	make
+}
 
+install()
+{
+	make install
+}
