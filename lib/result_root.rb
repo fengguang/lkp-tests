@@ -123,7 +123,7 @@ class ResultRootCollection
         f.readlines.reverse!.each do |rtp|
         # f.readlines.each { |rtp|
           rtp = rtp.strip
-          next if !File.exists? rtp
+          next if !File.exist? rtp
           yield ResultRoot.new rtp
         end
       end
@@ -202,7 +202,7 @@ class MResultRoot
 
     rp[commit_axis_key] = commit
     _rtp = rp._result_root
-    MResultRoot.new _rtp if File.exists? _rtp
+    MResultRoot.new _rtp if File.exist? _rtp
   end
 
   def result_roots
@@ -258,8 +258,8 @@ end
 
 class << MResultRoot
   def valid?(path)
-    return true if File.exists? File.join(path, self::JOB_FILE1)
-    return false if !File.exists? path
+    return true if File.exist? File.join(path, self::JOB_FILE1)
+    return false if !File.exist? path
     return Dir[File.join path, self::JOB_GLOB].first
   end
 

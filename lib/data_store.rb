@@ -374,7 +374,7 @@ module DataStore
     def index_files(date = nil)
       if date
         fn = index_file date
-        if File.exists? fn
+        if File.exist? fn
           [fn]
         else
           []
@@ -564,7 +564,7 @@ module DataStore
 
     def desc
       desc_file = path(DESC_FILE)
-      if File.exists? desc_file
+      if File.exist? desc_file
         d = load_yaml desc_file
       else
         d = {}
@@ -613,7 +613,7 @@ module DataStore
     def index(force = false)
       indexed_file = path(INDEXED_FILE)
       FileUtils.rm_f(indexed_file) if force
-      indexed = File.exists? indexed_file
+      indexed = File.exist? indexed_file
       return if indexed
 
       update_desc do |d|
