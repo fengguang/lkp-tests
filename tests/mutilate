@@ -24,6 +24,6 @@ set_opt
 
 run_mutilate
 
-pgrep mutilate | xargs kill -9
-
 kill "$(cat /tmp/memcached.pid)"
+
+pgrep mutilate | xargs kill -9
