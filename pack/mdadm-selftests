@@ -9,7 +9,6 @@ build()
 {
 	# make failed when using gcc-7, no error with using gcc-6.
 	sed -i "s/CWFLAGS = -Wall -Werror/CWFLAGS = -Wall/" Makefile
-	sed -i "s/^test: mdadm mdmon test_stripe swap_super raid6check/test: mdadm mdmon test_stripe swap_super/"  Makefile
 	make test
 }
 
