@@ -1,0 +1,15 @@
+suite: mutilate
+testcase: mutilate
+category: benchmark
+
+mutilate-setup:
+  agent_threads: 25%
+  memcached_memsize: 80%
+  use_hugetlbfs:
+    - 1
+    - 0
+
+mutilate:
+  server: localhost
+  master_threads: 75%
+  agent: localhost
