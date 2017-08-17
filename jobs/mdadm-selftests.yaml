@@ -2,6 +2,8 @@ suite: mdadm-selftests
 testcase: mdadm-selftests
 category: functional
 
+disk: 1HDD
+
 mdadm-selftests:
   test_prefix:
   - '00'

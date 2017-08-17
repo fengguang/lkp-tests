@@ -7,6 +7,21 @@ cd $BENCHMARK_ROOT/mdadm-selftests || exit 1
 
 . $LKP_SRC/lib/upload.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/reproduce-log.sh
+
+mount_partition()
+{
+	[ $nr_partitions -ge 1 ] || return
+
+	local partition=${partitions%% *}
+	local mnt=/var/tmp
+
+	log_cmd mkdir -p $mnt
+	log_cmd mke2fs -t ext3 -b 1024 -J size=1 -q $partition || return
+	log_cmd mount -t ext3 $partition $mnt || return
+}
+
+mount_partition || die "mount partition failed"
 
 [ -n "$test_prefix" ] || die "test_prefix is emtpy"
 
