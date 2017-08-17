@@ -281,7 +281,7 @@ class MResultRootCollection
   include Property
   include Enumerable
 
-  prop_with *ResultPath::MAXIS_KEYS
+  prop_with(*ResultPath::MAXIS_KEYS)
 
   def pattern
     result_path = ResultPath.new

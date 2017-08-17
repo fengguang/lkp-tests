@@ -8,7 +8,7 @@ module Enumerable
 
     each do |*args|
       func.call(*args)
-      yield *args
+      yield(*args)
     end
   end
 
@@ -24,7 +24,7 @@ module Enumerable
     block_given? or return enum_for(__method__, func)
 
     each do |*args|
-      yield *args if func.call(*args)
+      yield(*args) if func.call(*args)
     end
   end
 

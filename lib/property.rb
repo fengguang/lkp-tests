@@ -6,7 +6,7 @@ class Module
   alias prop_reader attr_reader
 
   def prop_accessor(*props)
-    attr_reader *props
+    attr_reader(*props)
     props.each do |prop|
       class_eval %Q{
 def #{prop}_set?
@@ -27,7 +27,7 @@ end
   end
 
   def prop_with(*props)
-    prop_accessor *props
+    prop_accessor(*props)
     props.each do |prop|
       class_eval %Q{
 def with_#{prop}(*values)

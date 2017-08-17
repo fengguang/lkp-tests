@@ -26,7 +26,7 @@ module DataStore
     ALL_OTHERS_KEY = :__all_others__
 
     include Property
-    prop_accessor *PROPS
+    prop_accessor(*PROPS)
 
     def initialize(params)
       from_data params
