@@ -118,7 +118,8 @@ def is_changed_stats(sorted_a, min_a, mean_a, max_a,
       return false if max_a < 2 * options['distance'] * max_b
       return false if mean_a < options['distance'] * max_b
       return true
-    elsif gap = options['gap']
+    elsif options['gap']
+      gap = options['gap']
       return true if min_b > max_a and (min_b - max_a) > (mean_b - mean_a) * gap
       return true if min_a > max_b and (min_a - max_b) > (mean_a - mean_b) * gap
     else
@@ -145,7 +146,8 @@ def is_changed_stats(sorted_a, min_a, mean_a, max_a,
     end
     return true if min_b > max_a and (min_b - max_a) > (mean_b - mean_a) / 2
     return true if min_a > max_b and (min_a - max_b) > (mean_a - mean_b) / 2
-  elsif gap = options['gap']
+  elsif options['gap']
+    gap = options['gap']
     return true if min_b > max_a and (min_b - max_a) > (mean_b - mean_a) * gap
     return true if min_a > max_b and (min_a - max_b) > (mean_a - mean_b) * gap
   else
@@ -189,8 +191,8 @@ def matrix_cols(hash_of_array)
     0
   elsif hash_of_array.empty?
     0
-  elsif a = hash_of_array['stats_source']
-    a.size
+  elsif hash_of_array['stats_source']
+    hash_of_array['stats_source'].size
   else
     [hash_of_array.values[0].size, hash_of_array.values[-1].size].max
   end

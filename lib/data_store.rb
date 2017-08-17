@@ -206,9 +206,8 @@ module DataStore
       glob(INDEX_GLOB) do |dir|
         if Dir.exist?(dir)
           cls_name, name = parse_index_path dir
-          if cls = get_the_const(cls_name)
-            indexes << cls.new(dir)
-          end
+          cls = get_the_const(cls_name)
+          indexes << cls.new(dir) if cls
         end
       end
       indexes
@@ -595,7 +594,8 @@ module DataStore
     end
 
     def calc_create_time
-      if files = Dir[path('*')]
+      files = Dir[path('*')]
+      if files
         return files.map { |f| File.mtime f }.sort!.first
       else
         Time.now
