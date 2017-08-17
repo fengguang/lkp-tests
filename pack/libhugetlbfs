@@ -1,7 +1,6 @@
 #!/bin/bash
 download()
 {
-	pip download resource
 	git_clone_update https://github.com/libhugetlbfs/libhugetlbfs.git
 }
 
