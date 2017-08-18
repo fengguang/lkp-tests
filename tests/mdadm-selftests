@@ -49,6 +49,8 @@ run_test()
 	cp /var/tmp/log $res_dir
 }
 
+make install || die "make install failed"
+
 for testcase in $(cd tests && ls ${test_prefix}*); do
 	run_test
 done
