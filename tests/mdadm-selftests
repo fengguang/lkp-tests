@@ -35,8 +35,8 @@ modprobe loop
 
 run_test()
 {
-	# sub-case "11" typicall need to cost ~15m.
-	if [ "$test_prefix" = "11" ]; then
+	# sub-case "11","19" typicall need to cost ~15m.
+	if [ "$test_prefix" = "11" -o "$test_prefix" = "19" ]; then
 		timeout 20m ./test "--tests=$testcase"
 	else
 		timeout 5m ./test "--tests=$testcase"
