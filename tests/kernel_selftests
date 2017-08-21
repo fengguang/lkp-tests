@@ -25,7 +25,7 @@ command gcc-5 >/dev/null || skip_filter="x86 $skip_filter"
 for mf in */Makefile; do
 	subtest=${mf%/Makefile}
 
-	check_makefile $subtest || continue
+	check_makefile $subtest || log_cmd make TARGETS=$subtest 2>&1
 
 	subtest_in_skip_filter "$skip_filter" && continue
 

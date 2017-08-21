@@ -24,7 +24,7 @@ check_makefile()
 {
 	subtest=$1
 	grep -E -q -m 1 "^TARGETS \+?=  ?$subtest" Makefile || {
-		echo "ignored_by_lkp ${subtest} test: not be default compiling/testing target"
+		echo "${subtest} test: not in Makefile"
 		return 1
 	}
 }
