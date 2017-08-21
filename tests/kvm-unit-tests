@@ -9,7 +9,6 @@
 
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/upload.sh
-. $LKP_SRC/lib/log.sh
 
 casesfile="x86/unittests.cfg"
 
@@ -62,7 +61,7 @@ load_kvm_intel_nested()
 {
 	[ -c "/dev/kvm" ] || {
 		modprobe kvm_intel nested=y || {
-			log_error "fail to load kvm_intel with nested=y"
+			echo "fail to load kvm_intel with nested=y"
 			return 1
 		}
 	}
@@ -74,13 +73,13 @@ load_kvm_intel_nested()
 		# force load kvm_intel with nested=y
 		modprobe -r kvm_intel
 		modprobe kvm_intel nested=y || {
-			log_error "fail to reload kvm_intel with nested=y"
+			echo "fail to reload kvm_intel with nested=y"
 			return 1
 		}
 	}
 
 	nested=$(cat /sys/module/kvm_intel/parameters/nested)
-	[ "$nested" = "N" ] && log_error "FIXME: vmx related cases may fail due to host unsupport nested virtualization" && return 1
+	[ "$nested" = "N" ] && echo "FIXME: vmx related cases may fail due to host unsupport nested virtualization" && return 1
 
 	return 0
 }
