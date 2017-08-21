@@ -183,7 +183,9 @@ makepkg_install_packages() {
 
 makepkg_install_benchmark() {
 	local pkg=$1
-	makepkg_install "$pkg" || echo "Install $pkg failed"
+	if grep "$pkg::" "$LKP_SRC/distro/adaptation-pkg/$distro"; then
+		makepkg_install "$pkg" || echo "Install $pkg failed"
+	fi
 }
 
 install_packages() {
