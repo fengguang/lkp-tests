@@ -290,7 +290,7 @@ class MResultRootTableSet
      'update-ucode', 'reboot', 'cat', 'libhugetlbfs', 'ocfs2test', 'syzkaller',
      'perf_test', 'stress-ng']
   OTHER_TESTCASES =
-    ['0day-boot-tests', '0day-kbuild-tests', 'build-dpdk', 'build-nvml',
+    ['0day-boot-tests', '0day-kbuild-tests', 'build-dpdk', 'build-sof', 'build-nvml',
      'build-qemu', 'convert-lkpdoc-to-html', 'convert-lkpdoc-to-html-css',
      'health-stats', 'hwinfo', 'internal-lkp-service', 'ipmi-setup',
      'lkp-bug', 'lkp-install-run', 'lkp-services', 'lkp-src', 'pack',
