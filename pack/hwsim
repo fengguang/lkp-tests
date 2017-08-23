@@ -86,6 +86,10 @@ build_ignored_by_lkp()
 	echo "# ignore _result_is_not_stable_" >> $ignored_by_lkp
 	echo "autogo_join_auto_go_neg_after_seeing_go" >> $ignored_by_lkp
 	echo "ap_vht160" >> $ignored_by_lkp
+	echo "p2ps_service_discovery_multiple_queries" >> $ignored_by_lkp
+	echo "pmksa_cache_preauth_vlan_used_per_sta_vif" >> $ignored_by_lkp
+	echo "p2ps_channel_active_go_and_station_different_mcc" >> $ignored_by_lkp
+	echo "rfkill_p2p_discovery_p2p_dev" >> $ignored_by_lkp
 }
 
 install()
