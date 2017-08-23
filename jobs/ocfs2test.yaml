@@ -16,7 +16,7 @@ ocfs2test:
     - test-mmaptruncate
     - test-mkfs
     # - test-buildkernel # we have kernel build already, ignore
-    - test-tunefs
+    # - test-tunefs # need a huge memory (up to 130GB at lkp-hsw-ep2)
     - test-sendfile
     - test-reserve_space
     # - test-backup_super # always works on rhel/ol/suse, no need to enable it on debian
