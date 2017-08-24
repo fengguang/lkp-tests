@@ -88,10 +88,9 @@ def fixup_dmesg(line)
   line.sub!(/\.(isra|constprop|part)\.[0-9]+\+0x/, '+0x')
 
   # break up mixed messages
-  case line
-  when /^<[0-9]>/
-  when /^(kern  |user  |daemon):......: /
-  when /(.+)(\[ *[0-9]{1,6}\.[0-9]{6}\] .*)/
+  if line =~ /^<[0-9]>|^(kern  |user  |daemon):......: /
+    line = line
+  elsif line =~ /(.+)(\[ *[0-9]{1,6}\.[0-9]{6}\] .*)/
     line = $1 + "\n" + $2
   end
 
