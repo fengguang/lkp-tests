@@ -3,7 +3,7 @@ LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath(__FILE__))
 require 'set'
 
 def get_all_tests
-  tests = Dir["#{LKP_SRC}/{tests,daemon}/**/*"].map { |d| File.basename (d) }
+  tests = Dir["#{LKP_SRC}/{tests,daemon}/**/*"].map { |d| File.basename(d) }
   tests.delete 'wrapper'
   tests.sort!
   tests
