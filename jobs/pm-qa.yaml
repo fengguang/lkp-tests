@@ -1,6 +1,7 @@
 suite: pm-qa
 testcase: pm-qa
 category: functional
+kernel_cmdline: intel_pstate=passive
 
 pm-qa:
   test:
