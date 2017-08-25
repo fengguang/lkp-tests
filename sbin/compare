@@ -290,8 +290,8 @@ def add_stats(path)
 end
 
 def add_result_root(result_root)
-  $opt_grep.each  { |re| return if result_root !~ re }
-  $opt_vgrep.each { |re| return if result_root =~ re }
+  $opt_grep.each  { |re| return nil if result_root !~ re }
+  $opt_vgrep.each { |re| return nil if result_root =~ re }
 
   begin
     _result_root = File.dirname result_root
@@ -305,11 +305,11 @@ def add_result_root(result_root)
     if dim.empty?
       key = _result_root
       $_result_root_tuple[key] << _result_root unless $_result_root_tuple[key].empty?
-      return
+      return nil
     elsif _result_root.index(dim)
       key = _result_root.sub(/-?#{dim}-?/, '')
       $_result_root_tuple[key] << _result_root
-      return
+      return nil
     end
   end
 end
