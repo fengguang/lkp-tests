@@ -26,13 +26,13 @@ def expand_one
   for_each($testcase) do |k, v|
     next unless k == 'params'
     last_item = ''
-    for_each(v) { |kk, vv| last_item = kk }
+    for_each(v) { |kk, _vv| last_item = kk }
     for_each(v) do |kk, vv|
       if (vv.class == Array or vv.class == Hash) and vv.size > 1
         copy = deepcopy(vv)
-        for_each(copy) do |kkk, vvv|
+        for_each(copy) do |kkk, _vvv|
           restore(vv, copy)
-          vv.keep_if { |a, b| a == kkk }
+          vv.keep_if { |a, _b| a == kkk }
           expand_one
         end
         restore(vv, copy)

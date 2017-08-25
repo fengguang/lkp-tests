@@ -75,7 +75,7 @@ class AxesGroup
   def group_axeses
     group_axis_keys = @grouper.group_axis_keys
     @axes_data.map do |d|
-      d.axes.select { |k, v| group_axis_keys.index k }
+      d.axes.select { |k, _v| group_axis_keys.index k }
     end
   end
 end

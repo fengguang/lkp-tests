@@ -184,7 +184,7 @@ def plot_bar(dims, cases)
       plot.terminal "dumb nofeed"
       dims.each do |dim, name|
         y = []
-        cases.each do |key, value|
+        cases.each do |_key, value|
           if value[dim]
             y.push value[dim]
           else
@@ -330,7 +330,7 @@ def setup_result_root_hash()
       add_result_root result_root
     end
   end
-  $_result_root_tuple.delete_if { |k, v| v.size <= 1 }
+  $_result_root_tuple.delete_if { |_k, v| v.size <= 1 }
   puts "tests: #{$_result_root_tuple.size}\n"
 end
 
@@ -418,7 +418,7 @@ end
 def show_one_stat(stat)
   $opt_field = stat
   _result_root_tuple = $changed_stats[stat]
-  _result_root_tuple.each do |k, v|
+  _result_root_tuple.each do |_k, v|
     v.each { |_result_root| add_stats _result_root }
   end
 end
@@ -616,7 +616,7 @@ def show_delta(stat, key_g)
     next false if is_latency stat
     next false if $opt_no_hide_noises
     noisy = false
-    value.each do |k, v|
+    value.each do |_k, v|
       next unless Array === v and v.size > 1
       if v.standard_deviation.abs > v.average.abs / 2 or v.average < 0
         noisy = true
@@ -650,7 +650,7 @@ def show_delta(stat, key_g)
   is_float = false
   is_exp   = false
   $cases.each do |_rt, value|
-    value.each do |k, v|
+    value.each do |_k, v|
       case v
       when Array
         v.each { |vv| is_float = true if vv.abs < 100 and vv != 0 and Float === vv }
@@ -707,7 +707,7 @@ def show_delta(stat, key_g)
   end
 
   unless is_fail
-    $sum.each do |k, v|
+    $sum.each do |k, _v|
       $sum[k] = Math.exp($sum[k] / $cases.length)
     end
   end
@@ -727,7 +727,7 @@ def show_delta(stat, key_g)
 end
 
 def call_mmplot
-  $cases.each do |_rt, value|
+  $cases.each do |_rt, _value|
     file = _rt + '/matrix.json'
     matrix1 = load_json file, true
     matrix2 = load_json file.sub($opt_dims[0], $opt_dims[1]), true

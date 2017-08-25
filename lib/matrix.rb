@@ -24,7 +24,7 @@ end
 
 def max_cols(matrix)
   cols = 0
-  matrix.each do |k, v|
+  matrix.each do |_k, v|
     cols = v.size if cols < v.size
   end
   return cols
@@ -32,7 +32,7 @@ end
 
 def matrix_fill_missing_zeros(matrix)
   cols = matrix['stats_source'].size
-  matrix.each do |k, v|
+  matrix.each do |_k, v|
     v << 0 while v.size < cols
   end
   return matrix
@@ -174,7 +174,7 @@ def shrink_matrix(matrix, max_cols)
 end
 
 def matrix_delete_col(matrix, col)
-  matrix.each do |k, v|
+  matrix.each do |_k, v|
     v.delete_at col
   end
 end
@@ -182,7 +182,7 @@ end
 def unite_remove_blacklist_stats(matrix)
   # sched_debug per-cpu stats usually change a lot among multiple running,
   # still keep statistic stats such as avg, min, max, stddev, etc.
-  matrix.reject do |k, v|
+  matrix.reject do |k, _v|
     k =~ /^sched_debug.*\.[0-9]+$/
   end
 end
@@ -281,7 +281,7 @@ def sort_matrix(matrix, key)
 end
 
 def save_matrix_as_csv(file, matrix, sep = ' ', header = true, fill = -1)
-  fill && cols = matrix.map { |k, v| v.size }.max
+  fill && cols = matrix.map { |_k, v| v.size }.max
   matrix.each do |k, vs|
     vs = Array vs
     fill && vs += [fill] * (cols - vs.size)
@@ -297,7 +297,7 @@ def save_matrix_to_csv_file(file_name, matrix, sep = ',', header = true)
 end
 
 def print_matrix(matrix)
-  ks = matrix.map { |k, vs| k.size }.max
+  ks = matrix.map { |k, _vs| k.size }.max
   matrix.each do |k, vs|
     printf "%-#{ks}s ", k
     vs.each do |v|
@@ -331,7 +331,7 @@ def unite_params(result_root)
   job = Job.new
   job.load(result_root + '/job.yaml') rescue return
 
-  job.each_param do |k, v, option_type|
+  job.each_param do |k, v, _option_type|
     if params[k]
       if not params[k].include? v
         params[k] << v

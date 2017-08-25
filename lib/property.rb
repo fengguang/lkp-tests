@@ -72,7 +72,7 @@ module Property
   end
 
   def set_prop(*prop_val_list)
-    prop_val_list.each_slice(2) do |prop, val|
+    prop_val_list.each_slice(2) do |prop, _val|
       check_prop_for_set prop
     end
 

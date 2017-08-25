@@ -26,7 +26,7 @@ class Noise
     @samples = @data.size
     start = 0
     cycles = 0
-    @noise_levels = NOISE_LEVELS.each_with_index.map do |level, i|
+    @noise_levels = NOISE_LEVELS.each_with_index.map do |level, _i|
       lnt = @med * level / 100
       nstart = @data.find_index { |n| n < lnt }
       nstart ||= @samples

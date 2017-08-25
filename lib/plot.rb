@@ -128,7 +128,7 @@ class MMatrixPlotter < MatrixPlotterBase
   end
 
   def check_lines
-    @lines.each do |matrix, y_stat_key, line_title|
+    @lines.each do |matrix, y_stat_key, _line_title|
       return true if check_line(matrix[y_stat_key])
     end
     return false

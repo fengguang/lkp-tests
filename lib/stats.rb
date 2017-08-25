@@ -397,7 +397,7 @@ def filter_incomplete_run(hash)
   end
   delete_index_list.reverse!
 
-  hash.each do |k, v|
+  hash.each do |_k, v|
     delete_index_list.each do |index|
       v.delete_at(index)
     end
@@ -622,7 +622,7 @@ end
 
 def add_stats_to_matrix(stats, matrix)
   columns = 0
-  matrix.each { |k, v| columns = v.size if columns < v.size }
+  matrix.each { |_k, v| columns = v.size if columns < v.size }
   stats.each do |k, v|
     matrix[k] ||= []
     matrix[k] << 0 while matrix[k].size < columns

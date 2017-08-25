@@ -55,7 +55,7 @@ ARGV.each do |arg|
   if arg =~ /.yaml/
     job = Job.new
     job.load(arg)
-    job.each_program(:workload_and_monitors) do |k, v|
+    job.each_program(:workload_and_monitors) do |k, _v|
       scripts << k
     end
   elsif File.executable? arg

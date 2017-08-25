@@ -248,7 +248,7 @@ class Job
     return unless File.exist? hosts_file
     hwconfig = load_yaml(hosts_file, nil)
     @job[source_file_symkey(hosts_file)] = nil
-    @job.merge!(hwconfig) { |k, a, b| a } # job's key/value has priority over hwconfig
+    @job.merge!(hwconfig) { |_k, a, _b| a } # job's key/value has priority over hwconfig
   end
 
   def include_files
@@ -306,7 +306,7 @@ class Job
     @jobx = job
     expand_params(false)
     @jobx = nil
-    for_each_in(job, i.keys) do |pk, h, k, v|
+    for_each_in(job, i.keys) do |_pk, _h, k, v|
       job['___'] = v
 
       load_one = lambda do |f|
@@ -407,7 +407,7 @@ class Job
       'ucode' => '=',
     }
     programs = available_programs(:workload_elements)
-    for_each_in(@job, programs) do |pk, h, k, v|
+    for_each_in(@job, programs) do |_pk, _h, k, _v|
       options = `#{LKP_SRC}/bin/program-options #{programs[k]}`.split("\n")
       @referenced_programs[k] = {}
       options.each do |line|
@@ -510,7 +510,7 @@ class Job
     #     option2: param2
     #
     monitors = available_programs(:monitors)
-    for_each_in(@job, set) do |pk, h, k, v|
+    for_each_in(@job, set) do |pk, _h, k, v|
       next if Hash === v
 
       # skip monitor options which happen to have the same
@@ -522,7 +522,7 @@ class Job
   end
 
   def each_program(type)
-    for_each_in(@job, available_programs(type)) do |pk, h, k, v|
+    for_each_in(@job, available_programs(type)) do |_pk, _h, k, v|
       yield k, v
     end
   end
@@ -593,7 +593,7 @@ class Job
     output = nil
     rules = read_param_map_rules(rule_file)
     rules.each do |pattern, expression|
-      val.sub!(pattern) do |s|
+      val.sub!(pattern) do |_s|
         # puts s, pattern, expression
         job = JobEval.new @jobx
         o = job.instance_eval(expression)
@@ -620,7 +620,7 @@ class Job
 
   def job_env(job)
     job_env = {}
-    for_each_in(job, available_programs(:workload_elements)) do |pk, h, program, env|
+    for_each_in(job, available_programs(:workload_elements)) do |_pk, _h, program, env|
       if env.is_a? Hash
         env.each do |key, val|
           key = "#{program}_#{key}".gsub(/[^a-zA-Z0-9_]/, '_')
@@ -654,19 +654,19 @@ class Job
     begin
       hash = nil
       file = nil
-      for_each_in(@jobx, maps.keys.to_set) do |pk, h, k, v|
+      for_each_in(@jobx, maps.keys.to_set) do |_pk, h, k, v|
         hash = h
         file = maps[k]
         map_param(h, k, v, file)
       end
       return true unless run_scripts
-      for_each_in(@jobx, ruby_scripts.keys.to_set) do |pk, h, k, v|
+      for_each_in(@jobx, ruby_scripts.keys.to_set) do |_pk, h, k, v|
         hash = h
         file = ruby_scripts[k]
         evaluate_param(h, k, v, file)
       end
       @filter_env = top_env(@jobx).merge(job_env(@jobx))
-      for_each_in(@jobx, misc_scripts.keys.to_set) do |pk, h, k, v|
+      for_each_in(@jobx, misc_scripts.keys.to_set) do |_pk, h, k, v|
         hash = h
         file = misc_scripts[k]
         run_filter(h, k, v, file)

@@ -16,7 +16,7 @@ def read_ftq_data(results_dir)
     rdata.slice!(0, n)
     sfdata = rdata.split
     rdata = nil
-    sfdata.select!.with_index { |x, i| i.odd? }
+    sfdata.select!.with_index { |_x, i| i.odd? }
     n = sfdata.size
     ndel = n * PDEL / 100
     sfdata.slice!(n - ndel, ndel)
@@ -44,7 +44,7 @@ def make_histogram(data, levels)
 end
 
 def print_histogram(histogram, output_num)
-  histogram.sort_by! { |sl, el, n| -n }
+  histogram.sort_by! { |_sl, _el, n| -n }
   histogram.first(output_num).each do |slevel, elevel, num|
     printf "mean.%d-%d%%: %g\n", slevel, elevel, num
   end

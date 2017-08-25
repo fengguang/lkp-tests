@@ -502,7 +502,7 @@ module ResultStddev
     end
     sources << source_str
     data[SOURCE_KEY] = sources
-    data.each do |k, vs|
+    data.each do |_k, vs|
       if vs.size < sources.size
         vs << nil
       end
