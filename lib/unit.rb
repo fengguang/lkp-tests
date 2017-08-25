@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 def to_seconds(time_spec)
-  return time_spec if Fixnum === time_spec
+  return time_spec if Integer === time_spec
   return time_spec if Float === time_spec
 
   n = time_spec.to_i

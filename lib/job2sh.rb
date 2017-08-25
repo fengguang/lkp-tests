@@ -29,7 +29,7 @@ def shell_escape_expand(val)
   case val
   when nil, ''
     return ''
-  when Fixnum
+  when Integer
     return val.to_s
   when /^[-a-zA-Z0-9~!@#%^&*()_+=;:.,<>\/?|\t "]+$/, Time
     return "'#{val}'"
@@ -51,7 +51,7 @@ def get_program_env(program, env)
   case env
   when String
     args = Shellwords.shellsplit(env).map { |s| shell_escape_expand(s) }
-  when Fixnum, Float
+  when Integer, Float
     args = env.to_s
   when Hash
     env.each do |k, v|

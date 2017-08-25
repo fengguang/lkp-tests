@@ -68,7 +68,7 @@ def is_reasonable_perf_change(name, delta, max)
   $perf_metrics_threshold.each do |k, v|
     next unless name =~ %r{^#{k}$}
     return false if max < v
-    return false if delta < v / 2 and v.class == Fixnum
+    return false if delta < v / 2 and v.class == Integer
     return true
   end
 
@@ -135,7 +135,7 @@ def is_changed_stats(sorted_a, min_a, mean_a, max_a,
     return true if len_a * mean_b > options['variance'] * len_b * mean_a
     return true if len_b * mean_a > options['variance'] * len_a * mean_b
   elsif options['distance']
-    if Fixnum === max_a and (min_a - max_b == 1 or min_b - max_a == 1)
+    if Integer === max_a and (min_a - max_b == 1 or min_b - max_a == 1)
       return false
     end
     if sorted_a.size < 3 or sorted_b.size < 3
