@@ -9,6 +9,9 @@ build()
 {
 	# make failed when using gcc-7, no error with using gcc-6.
 	sed -i "s/CWFLAGS = -Wall -Werror/CWFLAGS = -Wall/" Makefile
+
+	patch_source || return
+
 	make test
 }
 
