@@ -108,7 +108,7 @@ PRINTK_PATTERNS = %w(
 Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
 
-opts = OptionParser.new do |opts|
+OptionParser.new do |opts|
   opts.banner = "Usage: update-printk-error-messages [-v] [-h]"
 
   opts.separator ""
@@ -122,9 +122,7 @@ opts = OptionParser.new do |opts|
     puts opts
     exit
   end
-end
-
-opts.parse!(ARGV)
+end.parse!
 
 errids = Set.new
 count = Hash.new

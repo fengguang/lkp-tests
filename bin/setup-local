@@ -23,7 +23,7 @@ end
 $opt_hdd = []
 $opt_ssd = []
 
-opts = OptionParser.new do |opts|
+opt_parser = OptionParser.new do |opts|
   opts.banner = 'Usage: setup-local [options] <script>/<jobfile>'
 
   opts.separator ''
@@ -48,7 +48,7 @@ if ARGV == []
 else
   argv = ARGV
 end
-opts.parse!(argv)
+opt_parser.parse!(argv)
 
 scripts = []
 ARGV.each do |arg|

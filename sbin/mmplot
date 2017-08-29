@@ -11,7 +11,7 @@ require "#{LKP_SRC}/lib/plot.rb"
 
 $options = {}
 
-opts = OptionParser.new do |opts|
+opt_parser = OptionParser.new do |opts|
   opts.banner = "Usage: mmplot matrix1.json matrix2.json [stat_fields...] [OPTION...]"
   opts.separator ""
   opts.separator "Example:"
@@ -50,10 +50,10 @@ opts = OptionParser.new do |opts|
   end
 end
 
-opts.parse!(ARGV)
+opt_parser.parse!(ARGV)
 
 if ARGV.empty?
-  puts opts
+  puts opt_parser
   exit
 end
 

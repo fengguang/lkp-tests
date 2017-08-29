@@ -14,7 +14,7 @@ $opt_kernel = ''
 $opt_field = 'time.elapsed_time'
 $opt_pattern = ''
 
-opts = OptionParser.new do |opts|
+opt_parser = OptionParser.new do |opts|
   opts.banner = "Usage: lkp stat [options]"
 
   opts.separator ""
@@ -57,7 +57,7 @@ opts = OptionParser.new do |opts|
   end
 end
 
-opts.parse!(ARGV)
+opt_parser.parse!(ARGV)
 
 unless $opt_kernel.empty?
   unless sha1_40?($opt_kernel)

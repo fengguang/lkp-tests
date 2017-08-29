@@ -53,7 +53,7 @@ def expand_possible_commit(s)
   return git.gcommit(s).sha
 end
 
-opts = OptionParser.new do |opts|
+opt_parser = OptionParser.new do |opts|
   opts.banner = 'Usage: compare [options] RESULT_ROOT...'
 
   opts.separator ''
@@ -159,7 +159,7 @@ if ARGV == []
 else
   argv = ARGV
 end
-opts.parse!(argv)
+opt_parser.parse!(argv)
 
 $dim_not_a_param = $opt_dimension =~ /^(testbox|rootfs|kconfig|.*commit|run)$/
 

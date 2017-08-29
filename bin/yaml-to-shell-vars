@@ -7,7 +7,7 @@ require 'ostruct'
 
 $opt_name_prefix = ''
 
-opts = OptionParser.new do |opts|
+opt_parser = OptionParser.new do |opts|
   opts.banner = "Usage: #{$PROGRAM_NAME} [options] YAML-FILE"
 
   opts.separator ''
@@ -36,7 +36,7 @@ if ARGV == []
 else
   argv = ARGV
 end
-opts.parse!(argv)
+opt_parser.parse!(argv)
 
 def get_simple_value(v)
   if v.class == Hash

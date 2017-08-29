@@ -28,7 +28,7 @@ $opt_result_root = 'result'
 $opt_set_key_value = {}
 options = {in_tbox: false}
 
-opts = OptionParser.new do |opts|
+opt_parser = OptionParser.new do |opts|
   opts.banner = 'Usage: run-local [--dry-run] [-o RESULT_ROOT] JOBFILE'
 
   opts.separator ''
@@ -57,7 +57,7 @@ if ARGV == []
 else
   argv = ARGV
 end
-opts.parse!(argv)
+opt_parser.parse!(argv)
 
 jobfile = ARGV[0]
 unless jobfile
