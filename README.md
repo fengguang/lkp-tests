@@ -16,7 +16,9 @@
 ```
 	# browse and select a job you want to run, for example, jobs/hackbench.yaml
 	ls lkp-tests/jobs
-	lkp install lkp-tests/jobs/hackbench.yaml
+	
+	# install the common dependencies for lkp
+	lkp install
 ```
 
 ## Run one atomic job
@@ -32,6 +34,9 @@
 	# jobs/hackbench.yaml => ./hackbench-50%-process-socket.yaml
 	# jobs/hackbench.yaml => ./hackbench-50%-threads-pipe.yaml
 	# jobs/hackbench.yaml => ./hackbench-50%-threads-socket.yaml
+
+	# install the remaining dependencies for the splited job
+	lkp install ./hackbench-50%-threads-socket.yaml
 
 	lkp run ./hackbench-50%-threads-socket.yaml
 ```

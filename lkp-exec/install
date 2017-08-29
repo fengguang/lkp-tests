@@ -14,12 +14,13 @@ script_name=$(basename $0)
 TMP="$LKP_SRC/tmp"
 
 usage() {
-	echo "Usage: lkp $script_name [options] <script>/<jobfile>"
+	echo "Usage: lkp $script_name [options] [<script>/<jobfile>]"
 	echo "options: "
 	echo "--hdd partition: HDD partition for IO tests"
 	echo "--ssd partition: SSD partition for IO tests"
 	echo "--dry-run: preview changes will made testbox by install"
 	echo "--china: install gem packages from the mirror in China"
+	echo "--help: show this message"
 }
 
 hdd_index=1
@@ -28,6 +29,10 @@ ssd_index=1
 while [ $# -gt 0 ]
 do
 	case "$1" in
+		--help)
+		usage
+		exit
+		;;
 		--hdd)
 		hdd_partitions[$hdd_index]=$2
 		hdd_index=$((hdd_index+1))
@@ -238,11 +243,6 @@ build_install_benchmarks() {
 		echo "Making $pkg_name failed"
 		return 1
 	fi
-}
-
-[ $# -eq 0 ] && {
-	usage
-	exit
 }
 
 . $LKP_SRC/lib/install.sh
