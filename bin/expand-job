@@ -13,7 +13,7 @@ $testcase = YAML.load_file(ARGV[0])
 def add_keyval(ah, k, v)
   if ah.class == Hash
     ah[k] = v
-  elsif ah.class == Array and ah[0].class == Hash
+  elsif ah.class == Array && ah[0].class == Hash
     h = {}
     h[k] = v
     ah.push(h)
@@ -28,7 +28,7 @@ def expand_one
     last_item = ''
     for_each(v) { |kk, _vv| last_item = kk }
     for_each(v) do |kk, vv|
-      if (vv.class == Array or vv.class == Hash) and vv.size > 1
+      if (vv.class == Array || vv.class == Hash) && vv.size > 1
         copy = deepcopy(vv)
         for_each(copy) do |kkk, _vvv|
           restore(vv, copy)

@@ -13,7 +13,7 @@ else
   RESULT_ROOT = ENV['RESULT_ROOT']
 end
 
-Dir.chdir(RESULT_ROOT) or exit
+exit unless Dir.chdir(RESULT_ROOT)
 
 def extract_one(program, result_file)
   tmp_yaml = Tempfile.new('lkp-stats.' + program + '.')

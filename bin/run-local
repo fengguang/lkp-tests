@@ -73,7 +73,7 @@ end
 
 ENV["MY_TEST_CMDLINE"] = Shellwords.join ARGV.drop(1) unless argv.empty?
 
-if !jobfile.index('/') and !File.exist?(jobfile)
+if !jobfile.index('/') && !File.exist?(jobfile)
   file = LKP_SRC + '/jobs/' + jobfile
   jobfile = file if File.exist?(file)
 end
@@ -112,12 +112,13 @@ $opt_set_key_value.each do |k, v|
 end
 
 _result_root = job._result_root
-result_root = create_result_root(_result_root) or exit
+result_root = create_result_root(_result_root)
+exit unless result_root
 ENV['RESULT_ROOT'] = result_root
 ENV['TMP_RESULT_ROOT'] = result_root
 
 jobx = Job2sh.new(job.to_hash)
-jobx.expand_params or exit
+exit unless jobx.expand_params
 
 FileUtils.rm_rf TMP
 Dir.mkdir TMP

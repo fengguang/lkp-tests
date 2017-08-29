@@ -252,7 +252,7 @@ def add_stats(path)
     return
   end
   field_value = get_json_field(stats_json, $opt_field, is_rt)
-  if field_value == nil or field_value == ''
+  if field_value == nil || field_value == ''
     # $stderr.puts "#{stats_json}: no such field: #{$opt_field}"
     field_value = 0
   end
@@ -340,7 +340,7 @@ def get_valid_average(matrix, key)
   return nil if samples.include? 0
   return nil if samples.size < matrix_cols(matrix)
   avg = matrix[key].average
-  return nil if not $opt_no_hide_noises and matrix[key].standard_deviation > avg / 2
+  return nil if !$opt_no_hide_noises && matrix[key].standard_deviation > avg / 2
   avg
 end
 
@@ -432,7 +432,7 @@ def setup_dims()
     end
 
     $opt_dims = ARGV.map { |v| git ? git.gcommit(v).sha : v }
-    if ARGV.size == 1 and git
+    if ARGV.size == 1 && git
       if ARGV[0].index('/') # looks like a branch? compare its BASE_RC..HEAD
         tag = git.gcommit($opt_dims[0]).base_rc_tag
         $opt_dims.unshift git.gcommit(tag).sha
@@ -446,7 +446,7 @@ def setup_dims()
     $longest_dims = $opt_dims
   else
     $opt_dims = ARGV
-    $opt_dims.unshift PERF_INDEX_KCONFIG if ARGV.size == 1 and $opt_index
+    $opt_dims.unshift PERF_INDEX_KCONFIG if ARGV.size == 1 && $opt_index
     $longest_dims = $opt_dims.sort { |a, b| b.length <=> a.length }
   end
 
@@ -513,13 +513,13 @@ def show_one_diff(stat, dim, v0, v, v0_stddev, v_stddev, is_float, is_exp, is_fa
       buf = sprintf "%#{REL_WIDTH - 2}.0g%% ", p
     end
 
-    if p.abs >= 50 and $colorful
+    if p.abs >= 50 && $colorful
       buf = Term::ANSIColor.intense_red(buf)
     end
   end
 
   if is_exp
-    if is_float == false and v.abs < 100000000
+    if is_float == false && v.abs < 100000000
       buf += sprintf "%#{ABS_WIDTH}d", v
     else
       buf += sprintf "%#{ABS_WIDTH}.4g", v
@@ -617,8 +617,8 @@ def show_delta(stat, key_g)
     next false if $opt_no_hide_noises
     noisy = false
     value.each do |_k, v|
-      next unless Array === v and v.size > 1
-      if v.standard_deviation.abs > v.average.abs / 2 or v.average < 0
+      next unless Array === v && v.size > 1
+      if v.standard_deviation.abs > v.average.abs / 2 || v.average < 0
         noisy = true
         break
       end
@@ -653,10 +653,10 @@ def show_delta(stat, key_g)
     value.each do |_k, v|
       case v
       when Array
-        v.each { |vv| is_float = true if vv.abs < 100 and vv != 0 and Float === vv }
+        v.each { |vv| is_float = true if vv.abs < 100 && vv != 0 && Float === vv }
         v.each { |vv| is_exp   = true if vv.abs >= 100000000 }
       else
-        is_float = true if v.abs < 100 and v != 0 and Float === v
+        is_float = true if v.abs < 100 && v != 0 && Float === v
         is_exp   = true if v.abs >= 100000000
       end
     end
@@ -688,7 +688,7 @@ def show_delta(stat, key_g)
         $sum[dim] += Math.log(v) if v > 0
       end
 
-      if v_stddev and is_fail
+      if v_stddev && is_fail
         $stddev[dim] += v_stddev if $stddev[dim]
       else
         $stddev[dim] = nil
@@ -789,7 +789,7 @@ def sort_stats(stats)
 
     if x =~ ABS_CHANGE_STATS_RE
       [stat_priority(fields[0]), fields[1], abs_change]
-    elsif fields.size >= 3 and not fields[1] =~ /^node\d+$/
+    elsif fields.size >= 3 && !fields[1] =~ /^node\d+$/
       # when a monitor can be broken into sub-groups of stats
       # under which values can be logically compared
       [stat_priority(fields[0]), fields[1], rel_change]
@@ -799,7 +799,7 @@ def sort_stats(stats)
   end
 end
 
-if $opt_all or $opt_index
+if $opt_all || $opt_index
   setup_project
   setup_dims
   setup_result_root_hash
