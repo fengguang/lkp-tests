@@ -63,7 +63,7 @@ def load_yaml_merge(files)
       $stderr.puts "#{e.class.name}: #{e.message.split("\n").first}: #{file}"
     end
   end
-  return all
+  all
 end
 
 def load_yaml_tail(file)
@@ -72,7 +72,7 @@ def load_yaml_tail(file)
   rescue Psych::SyntaxError => e
     $stderr.puts "#{file}: " + e.message
   end
-  return nil
+  nil
 end
 
 def search_file_in_paths(file, relative_to = nil, search_paths = nil)
@@ -98,7 +98,7 @@ def search_file_in_paths(file, relative_to = nil, search_paths = nil)
       return path
     end
   end
-  return nil
+  nil
 end
 
 def yaml_merge_included_files(yaml, relative_to, search_paths = nil)
@@ -212,13 +212,13 @@ def load_json(file, cache = false)
       FileUtils.mv file, tempfile, :force => true
       raise
     end
-    return nil
+    nil
   elsif File.exist? file.sub(/\.json(\.gz)?$/, ".yaml")
-    return load_yaml file.sub(/\.json(\.gz)?$/, ".yaml")
+    load_yaml file.sub(/\.json(\.gz)?$/, ".yaml")
   else
     $stderr.puts "JSON/YAML file not exist: '#{file}'"
     $stderr.puts caller
-    return nil
+    nil
   end
 end
 

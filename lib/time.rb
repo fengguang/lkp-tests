@@ -3,5 +3,5 @@ def time(method, *args)
   ret = send(method, *args)
   puts "#{(Time.now - start_time).round(1)}s on invoking #{method}, #{args}"
 
-  return ret
+  ret
 end

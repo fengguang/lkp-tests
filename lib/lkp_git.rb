@@ -21,7 +21,7 @@ end
 def git_committer_name(commit)
   $__committer_name_cache ||= {}
   $__committer_name_cache[commit] ||= __git_committer_name(commit)
-  return $__committer_name_cache[commit]
+  $__committer_name_cache[commit]
 end
 
 def __git_parents(commit)
@@ -31,7 +31,7 @@ end
 def git_parents(commit)
   $__parents_cache ||= {}
   $__parents_cache[commit] ||= __git_parents(commit)
-  return $__parents_cache[commit]
+  $__parents_cache[commit]
 end
 
 def __git_patchid(commit)
@@ -42,7 +42,7 @@ def git_patchid(commit)
   $__patchid_cache ||= {}
   patch_id = __git_patchid(commit)
   $__patchid_cache[commit] ||= patch_id unless patch_id.empty?
-  return $__patchid_cache[commit]
+  $__patchid_cache[commit]
 end
 
 def is_linus_commit(commit)
@@ -56,7 +56,7 @@ def git_commit(commit)
   return $__git_commit_cache[commit] if $__git_commit_cache.include?(commit)
   sha1_commit = `#{GIT} rev-list -n1 #{commit}`.chomp
   $__git_commit_cache[commit] = sha1_commit unless sha1_commit.empty?
-  return sha1_commit
+  sha1_commit
 end
 
 def __commit_tag(commit)
@@ -64,13 +64,13 @@ def __commit_tag(commit)
   tags.each do |tag|
     return tag if linus_tags.include? tag
   end
-  return tags[0]
+  tags[0]
 end
 
 def commit_tag(commit)
   $__commit_tag_cache ||= {}
   return $__commit_tag_cache[commit] if $__commit_tag_cache.include?(commit)
-  return $__commit_tag_cache[commit] = __commit_tag(commit)
+  $__commit_tag_cache[commit] = __commit_tag(commit)
 end
 
 def linus_release_tag(commit)
@@ -119,13 +119,13 @@ def __last_linus_release_tag(commit)
   end
 
   tag += "-rc#{rc}" if rc and rc > 0
-  return [tag, false]
+  [tag, false]
 end
 
 def last_linus_release_tag(commit)
   $__last_linus_tag_cache ||= {}
   $__last_linus_tag_cache[commit] ||= __last_linus_release_tag(commit)
-  return $__last_linus_tag_cache[commit]
+  $__last_linus_tag_cache[commit]
 end
 
 def compare_version(aa, bb)
@@ -150,7 +150,7 @@ def compare_version(aa, bb)
       return -direction
     end
   end
-  return 0
+  0
 end
 
 def sort_tags(pattern, tags)
@@ -189,13 +189,13 @@ end
 
 def linus_tags()
   $__linus_tags_cache ||= __linus_tags
-  return $__linus_tags_cache
+  $__linus_tags_cache
 end
 
 def base_rc_tag(commit)
   commit += '~' if is_linus_commit(commit)
   version, is_exact_match = last_linus_release_tag commit
-  return version
+  version
 end
 
 def load_remotes

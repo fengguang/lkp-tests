@@ -14,7 +14,7 @@ module Enumerable
   end
 
   def average
-    return self.sum / self.length.to_f
+    self.sum / self.length.to_f
   end
 
   def sorted
@@ -35,10 +35,10 @@ module Enumerable
   def sample_variance
     avg = self.average
     sum = self.inject(0) { |acc, i| acc + (i - avg)**2 }
-    return 1 / self.length.to_f * sum
+    1 / self.length.to_f * sum
   end
 
   def standard_deviation
-    return Math.sqrt(self.sample_variance)
+    Math.sqrt(self.sample_variance)
   end
 end

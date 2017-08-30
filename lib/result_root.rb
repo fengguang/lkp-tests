@@ -260,7 +260,7 @@ class << MResultRoot
   def valid?(path)
     return true if File.exist? File.join(path, self::JOB_FILE1)
     return false if !File.exist? path
-    return Dir[File.join path, self::JOB_GLOB].first
+    Dir[File.join path, self::JOB_GLOB].first
   end
 
   def from_nmresult_root(nmresult_root)

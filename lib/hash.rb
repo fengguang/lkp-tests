@@ -66,7 +66,7 @@ def merge_accumulative(a, b)
     end
   end
 
-  return a
+  a
 end
 
 # "overwrite_top_keys = true" will have the same semantics with

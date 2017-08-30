@@ -94,7 +94,7 @@ def fixup_dmesg(line)
     line = $1 + "\n" + $2
   end
 
-  return line
+  line
 end
 
 def fixup_dmesg_file(dmesg_file)
@@ -110,7 +110,7 @@ def fixup_dmesg_file(dmesg_file)
   tmpfile.chmod 0664
   tmpfile.close
   FileUtils.mv tmpfile.path, dmesg_file, :force => true
-  return dmesg_lines
+  dmesg_lines
 end
 
 # "grep -B1 | grep -v" to get the functions called by them,
@@ -195,7 +195,7 @@ def grep_crash_head(dmesg_file)
     $stderr.puts "oops pattern mismatch: #{line}"
   end
 
-  return oops_map
+  oops_map
 end
 
 def grep_printk_errors(kmsg_file, kmsg)

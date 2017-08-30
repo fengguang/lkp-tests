@@ -124,14 +124,14 @@ class MMatrixPlotter < MatrixPlotterBase
   end
 
   def check_line(values)
-    return values.max != 0 || values.min != 0
+    values.max != 0 || values.min != 0
   end
 
   def check_lines
     @lines.each do |matrix, y_stat_key, _line_title|
       return true if check_line(matrix[y_stat_key])
     end
-    return false
+    false
   end
 
   def plot

@@ -40,7 +40,7 @@ opt_parser.parse!(argv)
 
 def get_simple_value(v)
   if v.class == Hash
-    return v.keys[0]
+    v.keys[0]
   elsif v.class == Array
     v.map! do |vv|
       if vv.class == Hash
@@ -49,9 +49,9 @@ def get_simple_value(v)
         vv.to_s
       end
     end
-    return v.join "\n"
+    v.join "\n"
   else
-    return v.to_s
+    v.to_s
   end
 end
 

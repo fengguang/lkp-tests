@@ -50,7 +50,7 @@ def expand_possible_commit(s)
 
   git = Git.open(project: 'linux', working_dir: ENV['SRC_ROOT'])
   return s unless git.commit_exist? s
-  return git.gcommit(s).sha
+  git.gcommit(s).sha
 end
 
 opt_parser = OptionParser.new do |opts|
@@ -204,14 +204,14 @@ def dim_name(dim)
   case $opt_dimension
   when 'commit'
     tag = Git.open(project: $project, working_dir: GIT_WORK_TREE).gcommit(dim).interested_tag if Dir.exist?(GIT_WORK_TREE)
-    return tag || dim[0..(REL_WIDTH + ABS_WIDTH + ERR_WIDTH)]
+    tag || dim[0..(REL_WIDTH + ABS_WIDTH + ERR_WIDTH)]
   when /_commit$/
     # FIXME rli9 duplicated code below, need refactoring
     tag = Git.open(project: $project, working_dir: GIT_WORK_TREE).gcommit(dim).interested_tag if Dir.exist?(GIT_WORK_TREE)
 
     tag || dim[0..(REL_WIDTH + ABS_WIDTH + ERR_WIDTH)]
   else
-    return dim
+    dim
   end
 end
 
@@ -772,7 +772,7 @@ def setup_stats_priority(stats)
 end
 
 def stat_priority(stat)
-  return $stats_priority[stat] ? $stats_priority[stat] : 0
+  $stats_priority[stat] ? $stats_priority[stat] : 0
 end
 
 def sort_stats(stats)

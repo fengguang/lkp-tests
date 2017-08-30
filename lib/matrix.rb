@@ -14,7 +14,7 @@ def is_event_counter(name)
   $event_counter_prefixes.each do |prefix|
     return true if name.index(prefix) == 0
   end
-  return false
+  false
 end
 
 def is_independent_counter(name)
@@ -27,7 +27,7 @@ def max_cols(matrix)
   matrix.each do |_k, v|
     cols = v.size if cols < v.size
   end
-  return cols
+  cols
 end
 
 def matrix_fill_missing_zeros(matrix)
@@ -35,7 +35,7 @@ def matrix_fill_missing_zeros(matrix)
   matrix.each do |_k, v|
     v << 0 while v.size < cols
   end
-  return matrix
+  matrix
 end
 
 def add_performance_per_watt(stats, matrix)
@@ -127,7 +127,7 @@ def create_stats_matrix(result_root)
     save_matrix_to_csv_file(result_root + '/stats.csv', stats)
     save_matrix_to_csv_file(result_root + '/matrix.csv', matrix)
   end
-  return stats
+  stats
 end
 
 def load_create_stats_matrix(result_root)
@@ -158,7 +158,7 @@ def load_matrix_file(matrix_file)
   rescue StandardError
     return nil
   end
-  return matrix
+  matrix
 end
 
 def shrink_matrix(matrix, max_cols)
@@ -225,7 +225,7 @@ def unite_to(stats, matrix_root, max_cols = nil, delete = false)
     log_error "matrix contains non-number values, move to #{matrix_file}-bad"
     FileUtils.mv matrix_file, matrix_file + '-bad', :force => true # never raises exception
   end
-  return matrix
+  matrix
 end
 
 # serves as locate db
@@ -371,5 +371,5 @@ def unite_stats(result_root, delete = false)
   rescue StandardError
   end
 
-  return true
+  true
 end

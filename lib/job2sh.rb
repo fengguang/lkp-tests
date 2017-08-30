@@ -210,7 +210,7 @@ class Job2sh < Job
       shell_export_env(tabs, key, val)
       return :action_export_env
     end
-    return nil
+    nil
   end
 
   def parse_hash(ancestors, hash)

@@ -72,7 +72,7 @@ class ResultPath < Hash
     end
 
     # for rt and _rt
-    return ps.size == ndirs || ps.size == ndirs + 1
+    ps.size == ndirs || ps.size == ndirs + 1
   end
 
   def assemble_result_root(skip_keys = nil)

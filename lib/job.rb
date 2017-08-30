@@ -39,7 +39,7 @@ def expand_shell_var(env, o)
       $1.to_i
     end.join ' '
   end
-  return s
+  s
 end
 
 def expand_toplevel_vars(env, hash)
@@ -57,15 +57,15 @@ def expand_toplevel_vars(env, hash)
       vars[key] = expand_shell_var(env, val)
     end
   end
-  return vars
+  vars
 end
 
 def string_or_hash_key(h)
   if h.class == Hash
     # assert h.size == 1
-    return h.keys[0]
+    h.keys[0]
   else
-    return h
+    h
   end
 end
 
@@ -280,7 +280,7 @@ class Job
       @defaults[source_file_symkey(file)] = nil
       revise_hash(@defaults, defaults, true)
     end
-    return true
+    true
   end
 
   def load_defaults(first_time = true)

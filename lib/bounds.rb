@@ -27,5 +27,5 @@ def is_valid_stats_range(stats_field, num)
     end
   end
 
-  return true
+  true
 end

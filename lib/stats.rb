@@ -38,7 +38,7 @@ def test_prefixes()
   tests.push 'dmesg'
   tests.push 'stderr'
   tests.push 'last_state'
-  return tests.map { |test| test + '.' }
+  tests.map { |test| test + '.' }
 end
 $test_prefixes = test_prefixes
 $perf_metrics_prefixes.concat $test_prefixes
@@ -50,7 +50,7 @@ def __is_perf_metric(name)
     return true if name.index(prefix) == 0
   end
 
-  return false
+  false
 end
 
 def is_perf_metric(name)
@@ -93,7 +93,7 @@ def is_reasonable_perf_change(name, delta, max)
   when /^interrupts/, /^softirqs/
     return max > 10000
   end
-  return true
+  true
 end
 
 def is_changed_stats(sorted_a, min_a, mean_a, max_a,
@@ -154,7 +154,7 @@ def is_changed_stats(sorted_a, min_a, mean_a, max_a,
     return true if min_b > mean_a and mean_b > max_a
     return true if min_a > mean_b and mean_a > max_b
   end
-  return false
+  false
 end
 
 # sort key for reporting all changed stats
@@ -169,7 +169,7 @@ def stat_relevance(record)
   else
     relevance = 10
   end
-  return [relevance, [record['ratio'], 5].min]
+  [relevance, [record['ratio'], 5].min]
 end
 
 def sort_stats(stat_records)
@@ -332,7 +332,7 @@ def __is_failure(stats_field)
   return false if stats_field.index('.time.')
   return false if stats_field.index('.timestamp.')
   $metric_failure.each { |pattern| return true if stats_field =~ %r{^#{pattern}} }
-  return false
+  false
 end
 
 def is_failure(stats_field)
@@ -346,7 +346,7 @@ end
 
 def __is_latency(stats_field)
   $metric_latency.each { |pattern| return true if stats_field =~ %r{^#{pattern}} }
-  return false
+  false
 end
 
 def is_latency(stats_field)
@@ -364,7 +364,7 @@ end
 
 def should_add_max_latency(stats_field)
   $metric_add_max_latency.each { |pattern| return true if stats_field =~ %r{^#{pattern}$} }
-  return false
+  false
 end
 
 def sort_remove_margin(array, max_margin = nil)
@@ -544,7 +544,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
     changed_stats[k].merge! options
   end
 
-  return changed_stats
+  changed_stats
 end
 
 def load_matrices_to_compare(matrix_path1, matrix_path2, options = {})
@@ -560,7 +560,7 @@ def load_matrices_to_compare(matrix_path1, matrix_path2, options = {})
     log_exception(e, binding)
     return [nil, nil]
   end
-  return [a, b]
+  [a, b]
 end
 
 def find_changed_stats(matrix_path, options)
@@ -653,7 +653,7 @@ def samples_fill_missing_zeros(matrix, key)
   size = matrix_cols matrix
   samples = matrix[key] || [0] * size
   samples << 0 while samples.size < size
-  return samples
+  samples
 end
 
 def stat_key_base(stat)
