@@ -1,6 +1,8 @@
 suite: boot_trace
 testcase: boot_trace
 
+kmsg:
+
 boot_params:
   bp_trace_buf_size: 131072K
   bp_trace_clock: x86-tsc
