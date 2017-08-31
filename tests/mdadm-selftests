@@ -33,6 +33,16 @@ modprobe raid456
 
 modprobe loop
 
+check_ignored_cases()
+{
+	local casename=$1
+	local ignored_by_lkp=$LKP_SRC/pack/mdadm-selftests-addon/ignored_by_lkp
+
+	# skip cases that in ignored_by_lkp
+	[ -f "$ignored_by_lkp" ] || return
+	grep -q -w $casename "$ignored_by_lkp"
+}
+
 run_test()
 {
 	# sub-case "11","19" typicall need to cost ~15m.
@@ -52,6 +62,8 @@ run_test()
 make install || die "make install failed"
 
 for testcase in $(cd tests && ls ${test_prefix}*); do
+	check_ignore_case $testcase && echo "ignored_by_lkp $testcase" && continue
+
 	# some testcases may need to wait for the environment to get ready.
 	# "make install" will install udev rules, sleep is required.
 	# "run_test" could create/delete loop devices, sleep is required.
