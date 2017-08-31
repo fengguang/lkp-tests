@@ -52,6 +52,11 @@ run_test()
 make install || die "make install failed"
 
 for testcase in $(cd tests && ls ${test_prefix}*); do
+	# some testcases may need to wait for the environment to get ready.
+	# "make install" will install udev rules, sleep is required.
+	# "run_test" could create/delete loop devices, sleep is required.
+	sleep 5
+
 	run_test
 done
 
