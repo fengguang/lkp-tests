@@ -14,8 +14,8 @@ require "#{LKP_SRC}/lib/result_root.rb"
 
 # How many components in the stat sort key
 $stat_sort_key_number = {
-  "perf-profile" => 2,
-  "latency_stats" => 2,
+  'perf-profile' => 2,
+  'latency_stats' => 2,
 }
 
 $stat_absolute_changes = [
@@ -538,7 +538,7 @@ module Compare
       @group_result = group_result
       @data_types = [AVGS]
       @axes_as_num = true
-      @axis_prefix = ""
+      @axis_prefix = ''
       @sort = true
       @data_type_in_key = false
     end
@@ -702,7 +702,7 @@ module Compare
   def self.stat_sort_key(key, base)
     number = $stat_sort_key_number[base]
     if number
-      key.split('.')[0, number].join "."
+      key.split('.')[0, number].join '.'
     else
       key
     end
@@ -783,7 +783,7 @@ module Compare
       if stddev > 2
         printf " ±%#{ERR_WIDTH - 3}d%%", stddev
       else
-        printf " " * ERR_WIDTH
+        printf ' ' * ERR_WIDTH
       end
     end
   end
@@ -806,7 +806,7 @@ module Compare
     compare_axeses = group.compare_axeses.map do |axes|
       axes_format axes
     end
-    puts "========================================================================================="
+    puts '========================================================================================='
     printf "%s:\n", common_axes.keys.join('/')
     printf "  %s\n\n", common_axes.values.join('/')
     printf "%s: \n", compare_axeses[0].keys.join('/')
@@ -821,16 +821,16 @@ module Compare
       printf "%#{width}s ", compare_axes.values.join('/')[0...width]
     end
     puts
-    printf "-" * first_width + ' '
+    printf '-' * first_width + ' '
     compare_axeses.drop(1).size.times do
-      printf "-" * width + ' '
+      printf '-' * width + ' '
     end
     puts
   end
 
   def self.compact_show_group_header(group)
     common_axes = group.axes
-    puts common_axes.map { |k, v| "#{k}=#{v}" }.join("/")
+    puts common_axes.map { |k, v| "#{k}=#{v}" }.join('/')
   end
 
   def self.show_perf_header(n = 1)

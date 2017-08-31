@@ -5,7 +5,7 @@ MAX_RATIO = 5
 
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath(__FILE__)))
 
-require "set.rb"
+require 'set.rb'
 require "#{LKP_SRC}/lib/lkp_git"
 require "#{LKP_SRC}/lib/git-update.rb" if File.exist?("#{LKP_SRC}/lib/git-update.rb")
 require "#{LKP_SRC}/lib/yaml.rb"
@@ -249,7 +249,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
   if project == 'linux' && !version
     kconfig = rp['kconfig']
     compiler = rp['compiler']
-    context_file = vmlinuz_dir(kconfig, compiler, commit) + "/context.yaml"
+    context_file = vmlinuz_dir(kconfig, compiler, commit) + '/context.yaml'
     version = nil
     if File.exist? context_file
       context = YAML.load_file context_file
@@ -515,9 +515,9 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
       next unless is_reasonable_perf_change(k, delta, max)
     end
 
-    interval_a = "[ %-10.5g - %-10.5g ]" % [min_a, max_a]
-    interval_b = "[ %-10.5g - %-10.5g ]" % [min_b, max_b]
-    interval = interval_a + " -- " + interval_b
+    interval_a = '[ %-10.5g - %-10.5g ]' % [min_a, max_a]
+    interval_b = '[ %-10.5g - %-10.5g ]' % [min_b, max_b]
+    interval = interval_a + ' -- ' + interval_b
 
     changed_stats[k] = { 'stat' => k,
                          'interval' => interval,
@@ -671,10 +671,10 @@ def is_kpi_stat(stat, axes, values = nil)
 end
 
 def kpi_stat_direction(stat_name, stat_change_percentage)
-  change_direction = "improvement"
+  change_direction = 'improvement'
 
   if $index_perf[stat_name] && $index_perf[stat_name] * stat_change_percentage < 0
-    change_direction = "regression"
+    change_direction = 'regression'
   end
   change_direction
 end

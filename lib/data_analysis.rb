@@ -69,13 +69,13 @@ def print_histogram(range, hist, params = {})
   }
 
   format_to_plot = ->n {
-    to_plot ? "\t" + format_number(n) : ""
+    to_plot ? "\t" + format_number(n) : ''
   }
 
   prev = 0
   range.each_with_index do |lc, i|
     if with_range
-      printf "%s-", format_level.(prev)
+      printf '%s-', format_level.(prev)
     end
     printf("%s\t%s%s", format_level.(lc),
            format_number(hist[i]), format_to_plot.(i + 1))

@@ -1,6 +1,6 @@
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath(__FILE__)))
 
-require "time"
+require 'time'
 
 require "#{LKP_SRC}/lib/common.rb"
 require "#{LKP_SRC}/lib/property.rb"
@@ -231,7 +231,7 @@ class MResultRoot
   end
 
   def completions
-    open(COMPLETIONS_FILE, "r") do |f|
+    open(COMPLETIONS_FILE, 'r') do |f|
       f.each_line.map do |line|
         Completion.new line
       end.sort_by { |cmp| -cmp.time.to_i }
@@ -242,7 +242,7 @@ class MResultRoot
 
   def calc_create_time
     (job_file && rt_create_time_from_job(job)) ||
-      glob("*").map { |f| File.mtime f }.min
+      glob('*').map { |f| File.mtime f }.min
   end
 
   def calc_desc

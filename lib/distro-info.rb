@@ -2,7 +2,7 @@
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath(__FILE__)))
 
 module LKP
-  require "singleton"
+  require 'singleton'
 
   #
   # DistroInfo is singleton, and provide information to distribution information of local system

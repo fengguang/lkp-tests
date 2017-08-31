@@ -105,7 +105,7 @@ def __create_programs_hash(glob, lkp_src)
 end
 
 def create_programs_hash(glob, lkp_src = LKP_SRC)
-  cache_key = [glob, lkp_src].join ":"
+  cache_key = [glob, lkp_src].join ':'
   $programs_cache ||= {}
   $programs =
     $programs_cache[cache_key] ||= __create_programs_hash(glob, lkp_src).freeze
@@ -816,5 +816,5 @@ def each_job_in_dir(dir)
     yield j
   }
 
-  Dir.glob(File.join(dir, "**/*.yaml")).each(&proc_jobfile)
+  Dir.glob(File.join(dir, '**/*.yaml')).each(&proc_jobfile)
 end

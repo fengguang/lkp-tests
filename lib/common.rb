@@ -2,10 +2,10 @@ LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath(__FILE__))
 
 ## common utilities
 
-require "timeout"
-require "pathname"
-require "fileutils"
-require "stringio"
+require 'timeout'
+require 'pathname'
+require 'fileutils'
+require 'stringio'
 require "#{LKP_SRC}/lib/array_ext"
 
 LKP_DATA_DIR = '/lkp/data'
@@ -199,8 +199,8 @@ ensure
 end
 
 def pager(&b)
-  pager_prog = ENV['PAGER'] || "/usr/bin/less"
-  IO.popen(pager_prog, "w") do |io|
+  pager_prog = ENV['PAGER'] || '/usr/bin/less'
+  IO.popen(pager_prog, 'w') do |io|
     redirect_to io, &b
   end
 end
@@ -215,18 +215,18 @@ def redirect_to_file(*args, &b)
 end
 
 def redirect_to_string(&b)
-  StringIO.open("", "w") do |so|
+  StringIO.open('', 'w') do |so|
     redirect_to so, &b
     so.string
   end
 end
 
 def monitor_file(file, history = 10)
-  system "tail", "-f", "-n", history.to_s, file
+  system 'tail', '-f', '-n', history.to_s, file
 end
 
-def zopen(fn, mode = "r", &blk)
-  fn.sub!(/(\.xz|\.gz)$/, "")
+def zopen(fn, mode = 'r', &blk)
+  fn.sub!(/(\.xz|\.gz)$/, '')
   if File.exist?(fn)
     File.open(fn, mode, &blk)
   elsif File.exist?(fn + '.xz')
@@ -261,7 +261,7 @@ def make_relative_symlink(src, dst)
   src_comps = split_path(src)
   dst_comps = split_path(dst)
   src_comps, dst_comps = remove_common_head(src_comps, dst_comps)
-  rsrc = File.join([".."] * (dst_comps.size - 1) + src_comps)
+  rsrc = File.join(['..'] * (dst_comps.size - 1) + src_comps)
   File.symlink(rsrc, dst)
 end
 

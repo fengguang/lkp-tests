@@ -81,7 +81,7 @@ def create_stats_matrix(result_root)
   stats = {}
   matrix = {}
 
-  create_programs_hash "stats/**/*"
+  create_programs_hash 'stats/**/*'
   monitor_files = Dir["#{result_root}/*.{json,json.gz}"]
 
   monitor_files.each do |file|
@@ -230,13 +230,13 @@ end
 
 # serves as locate db
 def save_paths(result_root, user)
-  FileUtils.mkdir_p "/lkp/paths"
+  FileUtils.mkdir_p '/lkp/paths'
   paths_file = "/lkp/paths/#{Time.now.strftime('%F')}-#{user}"
 
   # to avoid confusing between .../1 and .../11, etc. when search/remove, etc.
   result_root += '/' unless result_root.end_with?('/')
 
-  File.open(paths_file, "a") do |f|
+  File.open(paths_file, 'a') do |f|
     f.puts(result_root)
   end
 end
@@ -291,7 +291,7 @@ def save_matrix_as_csv(file, matrix, sep = ' ', header = true, fill = -1)
 end
 
 def save_matrix_to_csv_file(file_name, matrix, sep = ',', header = true)
-  File.open(file_name, "w") do |f|
+  File.open(file_name, 'w') do |f|
     save_matrix_as_csv(f, matrix, sep, header, nil)
   end
 end
@@ -302,7 +302,7 @@ def print_matrix(matrix)
     printf "%-#{ks}s ", k
     vs.each do |v|
       s = format_number(v)
-      printf "%-12s", s
+      printf '%-12s', s
     end
     puts
   end

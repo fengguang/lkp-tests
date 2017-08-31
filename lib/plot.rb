@@ -2,7 +2,7 @@
 
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath(__FILE__)))
 
-require "gnuplot"
+require 'gnuplot'
 require "#{LKP_SRC}/lib/common.rb"
 require "#{LKP_SRC}/lib/property.rb"
 require "#{LKP_SRC}/lib/matrix.rb"
@@ -23,7 +23,7 @@ def mmplot(matrix1, matrix2, fields, title_prefix = nil)
         if matrix1[field]
           x = 1.upto(matrix1[field].size).collect { |v| v }
           Gnuplot::DataSet.new([x, matrix1[field]]) do |ds|
-            ds.with = "points pt 15 lt 0"
+            ds.with = 'points pt 15 lt 0'
             ds.notitle
             ds1 = ds
           end
@@ -33,7 +33,7 @@ def mmplot(matrix1, matrix2, fields, title_prefix = nil)
         if matrix2[field]
           xx = 1.upto(matrix2[field].size).collect { |v| v }
           Gnuplot::DataSet.new([xx, matrix2[field]]) do |ds|
-            ds.with = "linespoints pt -22 lt 0"
+            ds.with = 'linespoints pt -22 lt 0'
             ds.notitle
             ds2 = ds
           end
@@ -43,7 +43,7 @@ def mmplot(matrix1, matrix2, fields, title_prefix = nil)
 
         normalized_field = field.tr('^a-zA-Z0-9_.:+=-', '_')
         if $opt_output_path
-          plot.terminal "png"
+          plot.terminal 'png'
           file = "#{$opt_output_path}/#{normalized_field}.png"
           plot.output file
           files << file
@@ -53,8 +53,8 @@ def mmplot(matrix1, matrix2, fields, title_prefix = nil)
 
         plot.notitle # necessary for updating title
 
-        title_prefix += ": " if title_prefix
-        plot.title format("%s%s", title_prefix, normalized_field)
+        title_prefix += ': ' if title_prefix
+        plot.title format('%s%s', title_prefix, normalized_field)
 
         plot.noxtics
         plot.ytics 'nomirror'
@@ -87,19 +87,19 @@ class MatrixPlotterBase
     if file_name
       case file_name
       when /eps/
-        plot.terminal "eps size %d,%d fontscale 1" % @inch_size
+        plot.terminal 'eps size %d,%d fontscale 1' % @inch_size
         unless file_name.end_with? '.eps'
           file_name += '.eps'
         end
       else
-        plot.terminal "png size %d,%d" % @pixel_size
+        plot.terminal 'png size %d,%d' % @pixel_size
         unless file_name.end_with? '.png'
           file_name += '.png'
         end
       end
       plot.output file_name
     else
-      plot.terminal "dumb nofeed size %d,%d" % @char_size
+      plot.terminal 'dumb nofeed size %d,%d' % @char_size
     end
   end
 end
@@ -160,12 +160,12 @@ class MMatrixPlotter < MatrixPlotterBase
           end
           p.data << Gnuplot::DataSet.new(data) do |ds|
             if @output_file_name
-              ds.with = "linespoints pt 5"
+              ds.with = 'linespoints pt 5'
             else
-              ds.with = "linespoints pt 15 lt 0"
+              ds.with = 'linespoints pt 15 lt 0'
             end
             if @x_as_label
-              ds.using = "2:xticlabels(1)"
+              ds.using = '2:xticlabels(1)'
             end
             if line_title
               ds.title = line_title
@@ -208,7 +208,7 @@ class MatrixPlotter < MatrixPlotterBase
             setup_output p, file
           else
             if np % @nr_plot == 0
-              p.terminal "dumb nofeed size %d,%d" % @char_size
+              p.terminal 'dumb nofeed size %d,%d' % @char_size
               p.multiplot "layout 1,#{@nr_plot}"
             end
             np += 1
@@ -224,9 +224,9 @@ class MatrixPlotter < MatrixPlotterBase
 
           p.notitle # necessary for updating title
           if var
-            p.title format("%s%s (var %.2f)", @title_prefix, normalized_field, var)
+            p.title format('%s%s (var %.2f)', @title_prefix, normalized_field, var)
           else
-            p.title format("%s%s", @title_prefix, normalized_field)
+            p.title format('%s%s', @title_prefix, normalized_field)
           end
 
           if @x_stat_key
@@ -239,9 +239,9 @@ class MatrixPlotter < MatrixPlotterBase
 
           p.data << Gnuplot::DataSet.new(data) do |ds|
             if @output_prefix
-              ds.with = "linespoints pt 5"
+              ds.with = 'linespoints pt 5'
             else
-              ds.with = "linespoints pt 15 lt 0"
+              ds.with = 'linespoints pt 15 lt 0'
             end
             ds.notitle
           end

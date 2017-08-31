@@ -88,7 +88,7 @@ class Job2sh < Job
   end
 
   def shell_header
-    out_line "#!/bin/sh"
+    out_line '#!/bin/sh'
     out_line
   end
 
@@ -134,7 +134,7 @@ class Job2sh < Job
     end
 
     program_env.each do |k, v|
-      command << shell_encode_keyword(k) + "=" + shell_escape_expand(v)
+      command << shell_encode_keyword(k) + '=' + shell_escape_expand(v)
     end
 
     command.concat cmd
@@ -200,7 +200,7 @@ class Job2sh < Job
       exec_line
       func_name = key.tr('^a-zA-Z0-9_', '_')
       exec_line tabs + "#{func_name}()"
-      exec_line tabs + "{"
+      exec_line tabs + '{'
       parse_hash(ancestors + [key], val)
       exec_line tabs + "}\n"
       exec_line tabs + "#{func_name} &"
@@ -241,8 +241,8 @@ class Job2sh < Job
 
     @cur_func = :run_job
 
-    out_line "export_top_env()"
-    out_line "{"
+    out_line 'export_top_env()'
+    out_line '{'
     @monitors = available_programs(:monitors)
     @setups   = available_programs(:setup)
     @programs = available_programs(:workload_elements)
@@ -253,8 +253,8 @@ class Job2sh < Job
     out_line "\texport LKP_SRC=/lkp/${user:-lkp}/src"
     out_line "}\n\n"
 
-    out_line "run_job()"
-    out_line "{"
+    out_line 'run_job()'
+    out_line '{'
     out_line
     out_line "\techo $$ > $TMP/run-job.pid"
     out_line
@@ -268,8 +268,8 @@ class Job2sh < Job
     out_line "}\n\n"
 
     @cur_func = :extract_stats
-    out_line "extract_stats()"
-    out_line "{"
+    out_line 'extract_stats()'
+    out_line '{'
     @monitors = {}
     @programs = available_programs(:stats)
     parse_hash [], job

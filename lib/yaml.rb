@@ -206,15 +206,15 @@ def load_json(file, cache = false)
     rescue SignalException
       raise
     rescue StandardError
-      tempfile = file + "-bad"
+      tempfile = file + '-bad'
       $stderr.puts "Failed to load JSON file: #{file}"
       $stderr.puts "Kept corrupted JSON file for debugging: #{tempfile}"
       FileUtils.mv file, tempfile, :force => true
       raise
     end
     nil
-  elsif File.exist? file.sub(/\.json(\.gz)?$/, ".yaml")
-    load_yaml file.sub(/\.json(\.gz)?$/, ".yaml")
+  elsif File.exist? file.sub(/\.json(\.gz)?$/, '.yaml')
+    load_yaml file.sub(/\.json(\.gz)?$/, '.yaml')
   else
     $stderr.puts "JSON/YAML file not exist: '#{file}'"
     $stderr.puts caller
@@ -241,7 +241,7 @@ def try_load_json(path)
   elsif path =~ /.json$/
     if File.file? path + '.gz'
       load_json(path + '.gz')
-    elsif File.file? path.sub(/\.json$/, ".yaml")
+    elsif File.file? path.sub(/\.json$/, '.yaml')
       load_json(path)
     end
   end

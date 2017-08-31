@@ -1,7 +1,7 @@
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath(__FILE__)))
 
-require "digest/sha1"
-require "fileutils"
+require 'digest/sha1'
+require 'fileutils'
 
 require "#{LKP_SRC}/lib/common.rb"
 require "#{LKP_SRC}/lib/property.rb"
@@ -184,7 +184,7 @@ module DataStore
 
     def parse_index_path(dir)
       dir = File.basename dir
-      n = dir.index "-"
+      n = dir.index '-'
       if n
         [dir[0, n], dir[n + 1...dir.size]]
       else
@@ -194,7 +194,7 @@ module DataStore
 
     def cons_index_path(cls, name)
       base = if name && !name.empty?
-               [cls.name, name].join "-"
+               [cls.name, name].join '-'
              else
                cls.name
              end
@@ -319,14 +319,14 @@ module DataStore
   module IndexFile
     def delete_str(str, file)
       str = Regexp.escape str
-      system "sed", "-i", "-re", "\\?#{str}?d", file
+      system 'sed', '-i', '-re', "\\?#{str}?d", file
     end
 
     def grep(conditions, files)
       cond_arr = conditions.to_a
       k0, v0 = cond_arr[0]
       grep_cmdline = "grep -F -e '#{k0}=#{v0}'"
-      ext_grep_cmdline = ""
+      ext_grep_cmdline = ''
       cond_arr.drop(1).each do |k, v|
         ext_grep_cmdline += " | grep -F -e '#{k}=#{v}'"
       end
@@ -353,7 +353,7 @@ module DataStore
 
     def index(node)
       with_index_lock do
-        File.open(index_file(node.create_time), "a") do |f|
+        File.open(index_file(node.create_time), 'a') do |f|
           str = Layout.axes_to_string node.axes
           f.write "#{str}\n"
         end
@@ -447,7 +447,7 @@ module DataStore
       ifn = index_file axes
       return unless ifn
       with_index_lock do
-        File.open(ifn, "a") do |f|
+        File.open(ifn, 'a') do |f|
           str = Layout.axes_to_string axes
           f.write "#{str}\n"
         end
@@ -854,7 +854,7 @@ module DataStore
         n.index
       end
     end
-    puts "all nodes:"
+    puts 'all nodes:'
     tbl.collection.each do |n|
       puts "  node: #{n.axes}: #{n.matrix}"
     end

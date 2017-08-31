@@ -8,8 +8,8 @@ require "#{LKP_SRC}/lib/yaml.rb"
 LINUX_DEVICE_NAMES = IO.read("#{LKP_SRC}/etc/linux-device-names").split("\n")
 LINUX_DEVICE_NAMES_RE = /\b(#{LINUX_DEVICE_NAMES.join('|')})\d+/
 
-require "fileutils"
-require "tempfile"
+require 'fileutils'
+require 'tempfile'
 
 # dmesg can be below forms
 # [    0.298729] Last level iTLB entries: 4KB 512, 2MB 7, 4MB 7
@@ -164,7 +164,7 @@ def grep_crash_head(dmesg_file)
     break if has_oom
     break if line =~ CALLTRACE_IGNORE_PATTERN
     break unless line =~ />\] ([a-zA-Z0-9_.]+)\+0x[0-9a-fx\/]+/
-    oops_map["calltrace:" + $1] ||= line
+    oops_map['calltrace:' + $1] ||= line
   end
 
   raw_oops.each_line do |line|
@@ -199,7 +199,7 @@ def grep_crash_head(dmesg_file)
 end
 
 def grep_printk_errors(kmsg_file, kmsg)
-  return '' if ENV.fetch('RESULT_ROOT', "").index '/trinity/'
+  return '' if ENV.fetch('RESULT_ROOT', '').index '/trinity/'
   return '' unless File.exist?('/lkp/printk-error-messages')
 
   if kmsg_file =~ /\.xz$/
@@ -311,7 +311,7 @@ def analyze_error_id(line)
   when /WARNING:.* at .* ([a-zA-Z.0-9_]+\+0x)/
     bug_to_bisect = 'WARNING:.* at .* ' + $1.sub(/\.(isra|constprop|part)\.[0-9]+\+0x/, '')
     line =~ /(at .*)/
-    line = "WARNING: " + $1
+    line = 'WARNING: ' + $1
   when /(Kernel panic - not syncing: No working init found.)  Try passing init= option to kernel. /,
        /(Kernel panic - not syncing: No init found.)  Try passing init= option to kernel. /
     line = $1
@@ -332,7 +332,7 @@ def analyze_error_id(line)
   when /Corrupted low memory at/
     # [   61.268659] Corrupted low memory at ffff880000007b08 (7b08 phys) = 27200c000000000
     bug_to_bisect = oops_to_bisect_pattern line
-    line = line.sub(/\b[0-9a-f]+\b phys/, "# phys").sub(/= \b[0-9a-f]+\b/, "= #")
+    line = line.sub(/\b[0-9a-f]+\b phys/, '# phys').sub(/= \b[0-9a-f]+\b/, '= #')
   else
     bug_to_bisect = oops_to_bisect_pattern line
   end
@@ -427,7 +427,7 @@ def get_crash_calltraces(dmesg_file)
   dmesg_content.each_line do |line|
     if line =~ / BUG: | WARNING: | INFO: | UBSAN: | kernel BUG at /
       in_calltrace = true
-      calltraces[index] ||= ""
+      calltraces[index] ||= ''
       calltraces[index] << line
       line_count = 1
     elsif line.index('---[ end trace ') && in_calltrace
