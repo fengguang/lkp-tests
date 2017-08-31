@@ -372,9 +372,8 @@ class Job
   end
 
   def lkp_src
-    dir = '/lkp/' + @job['user'] + '/src'
-    if String === @job['user'] && Dir.exist?(dir)
-      dir
+    if String === @job['user'] && Dir.exist?('/lkp/' + @job['user'] + '/src')
+      '/lkp/' + @job['user'] + '/src'
     else
       LKP_SRC
     end
