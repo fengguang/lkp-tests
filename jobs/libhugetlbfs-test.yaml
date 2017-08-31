@@ -1,8 +1,8 @@
-suite: libhugetlbfs
-testcase: libhugetlbfs
+suite: libhugetlbfs-test
+testcase: libhugetlbfs-test
 category: functional
 
-libhugetlbfs:
+libhugetlbfs-test:
   pagesize:
   - 2MB
   pagenum:
