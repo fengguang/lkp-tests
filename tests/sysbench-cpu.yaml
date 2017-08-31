@@ -1,0 +1,26 @@
+short_description: >
+ sysbench-cpu is a subtest of SysBench benchmark suite to measure
+ cpu performance.
+
+description: >
+ The cpu is one of the most simple benchmarks in SysBench. In this
+ mode each request consists in calculation of prime numbers up to a
+ value specified by the --cpu-max-primes option. All calculations
+ are performed using 64-bit integers.
+
+homepage: https://github.com/akopytov/sysbench
+
+parameters:
+ nr_threads:
+ cpu_max_prime: upper limit for primes generator
+
+results:
+ sysbench-cpu.workload:
+ sysbench-cpu.latency_ms.max:
+ sysbench-cpu.latency_ms.min:
+ sysbench-cpu.latency_ms.avg:
+ sysbench-cpu.latency_ms.95th:
+ sysbench-cpu.events/thread.avg:
+ sysbench-cpu.events/thread.stddev:
+ sysbench-cpu.runtime/thread.avg:
+ sysbench-cpu.runtime/thread.stddev:

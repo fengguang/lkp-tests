@@ -1,0 +1,35 @@
+short_description: >
+ sysbench-threads is a subtest of SysBench benchmark suite to measure
+ schedular performance.
+
+description: >
+ This test mode was written to benchmark scheduler performance, more
+ specifically the cases when a scheduler has a large number of
+ threads competing for some set of mutexes.
+
+ SysBench creates a specified number of threads and a specified
+ number of mutexes. Then each thread starts running the requests
+ consisting of locking the mutex, yielding the CPU, so the thread is
+ placed in the run queue by the scheduler, then unlocking the mutex
+ when the thread is rescheduled back to execution. For each request,
+ the above actions are run several times in a loop, so the more
+ iterations is performed, the more concurrency is placed on each
+ mutex.
+
+homepage: https://github.com/akopytov/sysbench
+
+parameters:
+ nr_threads:
+ thread_yields: number of yields to do per request
+ thread_locks:  number of locks per thread
+
+results:
+ sysbench-threads.workload:
+ sysbench-threads.latency_ms.max:
+ sysbench-threads.latency_ms.min:
+ sysbench-threads.latency_ms.avg:
+ sysbench-threads.latency_ms.95th:
+ sysbench-threads.events/thread.avg:
+ sysbench-threads.events/thread.stddev:
+ sysbench-threads.runtime/thread.avg:
+ sysbench-threads.runtime/thread.stddev:

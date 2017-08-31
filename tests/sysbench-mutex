@@ -1,0 +1,24 @@
+#!/bin/sh
+# - runtime
+# - nr_threads
+# - mutex_num
+# - mutex_locks
+# - mutex_loops
+
+. "$LKP_SRC/lib/reproduce-log.sh"
+
+: "${runtime:=600}"
+: "${nr_threads:=1}"
+: "${mutex_num:=4096}"
+: "${mutex_locks:=50000}"
+: "${mutex_loops:=10000}"
+
+args="\
+ --num-threads=$nr_threads\
+ --max-time=$runtime\
+ --test=mutex\
+ --mutex-num=$mutex_num\
+ --mutex-locks=$mutex_locks\
+ --mutex-loops=$mutex_loops\
+"
+log_cmd sysbench $args run

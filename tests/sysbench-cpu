@@ -1,0 +1,18 @@
+#!/bin/sh
+# - runtime
+# - cpu_max_prime
+# - nr_threads
+
+. "$LKP_SRC/lib/reproduce-log.sh"
+
+: "${runtime:=600}"
+: "${nr_threads:=1}"
+: "${cpu_max_prime:=10000}"
+
+args="\
+ --num-threads=$nr_threads\
+ --max-time=$runtime\
+ --test=cpu\
+ --cpu-max-prime=$cpu_max_prime\
+"
+log_cmd sysbench $args run

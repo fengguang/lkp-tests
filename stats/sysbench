@@ -1,0 +1,28 @@
+#!/usr/bin/env ruby
+
+LKP_SRC ||= ENV['LKP_SRC']
+
+$stdin.each_line do |line|
+  case line
+  when /Operations performed:\s+\d+\s+\(([0-9.]+)\s+.+\)/
+    puts 'throughput_ops/s: ' + $1
+  when /.+\s+transferred\s+\(([0-9.]+)\s+.+\)/
+    puts 'throughput_MB/s: ' + $1
+  when /total number of events:\s+(\d+)/
+    puts 'workload: ' + $1
+  when /min:\s+([0-9.]+)ms/
+    puts 'latency_ms.min: ' + $1
+  when /avg:\s+([0-9.]+)ms/
+    puts 'latency_ms.avg: ' + $1
+  when /max:\s+([0-9.]+)ms/
+    puts 'latency_ms.max: ' + $1
+  when /approx.+:\s+([0-9.]+)ms/
+    puts 'latency_ms.95th: ' + $1
+  when /events\s+\(avg\/stddev\):\s+([0-9.]+)\/([0-9.]+)/
+    puts 'events/thread.avg: ' + $1
+    puts 'events/thread.stddev: ' + $2
+  when /execution time.+:\s+([0-9.]+)\/([0-9.]+)/
+    puts 'runtime/thread.avg: ' + $1
+    puts 'runtime/thread.stddev: ' + $2
+  end
+end

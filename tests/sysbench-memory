@@ -1,0 +1,33 @@
+#!/bin/sh
+# - runtime
+# - nr_threads
+# - mem_blk_size
+# - mem_total_size
+# - mem_scope
+# - mem_hugetlb
+# - mem_opt
+# - mem_access_mode
+
+. "$LKP_SRC/lib/reproduce-log.sh"
+
+: "${runtime:=600}"
+: "${nr_threads:=1}"
+: "${mem_blk_size:=1K}"
+: "${mem_total_size:=100G}"
+: "${mem_scope:=global}"
+: "${mem_hugetlb:=off}"
+: "${mem_opt:=write}"
+: "${mem_access_mode:=seq}"
+
+args="\
+ --num-threads=$nr_threads\
+ --max-time=$runtime\
+ --test=memory\
+ --memory-block-size=$mem_blk_size\
+ --memory-total-size=$mem_total_size\
+ --memory-scope=$mem_scope\
+ --memory-hugetlb=$mem_hugetlb\
+ --memory-oper=$mem_opt\
+ --memory-access-mode=$mem_access_mode\
+"
+log_cmd sysbench $args run
