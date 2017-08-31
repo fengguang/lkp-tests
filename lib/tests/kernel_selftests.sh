@@ -29,6 +29,16 @@ check_makefile()
 	}
 }
 
+check_ignore_case()
+{
+	local casename=$1
+
+	# the test of filesystems waits for the events from file, it will not never stop.
+	[ $casename = "filesystems" ] && return
+
+	return 1
+}
+
 prepare_for_efivarfs()
 {
 	[[ -d "/sys/firmware/efi" ]] || {
