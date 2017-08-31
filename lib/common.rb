@@ -21,7 +21,7 @@ module AddCachedMethod
       @__cache_for_add_cached_method__ ||= {}
       cache = @__cache_for_add_cached_method__
       mkey = [method_name, key]
-      cache[mkey] or cache[mkey] = send(method_name, *args)
+      cache[mkey] = send(method_name, *args) unless cache[mkey]
     end
   end
 end
@@ -286,5 +286,5 @@ def with_flock_timeout(lock_file, timeout)
 end
 
 def delete_file_if_exist(file)
-  File.exist?(file) and File.delete(file)
+  File.delete(file) if File.exist?(file)
 end

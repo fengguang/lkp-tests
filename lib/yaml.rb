@@ -188,11 +188,11 @@ $json_cache = {}
 $json_mtime = {}
 
 def load_json(file, cache = false)
-  if (file =~ /.json(\.gz)?$/ and File.exist? file) or
-     (file =~ /.json$/ and File.exist? file + '.gz' and file += '.gz')
+  file += '.gz' if file =~ /.json$/ && File.exist?(file + '.gz')
+  if file =~ /.json(\.gz)?$/ && File.exist?(file)
     begin
       mtime = File.mtime(file)
-      unless $json_cache[file] and $json_mtime[file] == mtime
+      unless $json_cache[file] && $json_mtime[file] == mtime
         if file =~ /\.json$/
           obj = JSON.load File.read(file)
         else

@@ -200,7 +200,7 @@ module Compare
     end
 
     def each_changed_stat(&b)
-      block_given? or return enum_for(__method__)
+      return enum_for(__method__) unless block_given?
 
       compare_groups.each do |g|
         g.each_changed_stat(&b)
@@ -418,7 +418,7 @@ module Compare
     end
 
     def each_changed_stat
-      block_given? or return enum_for(__method__)
+      return enum_for(__method__) unless block_given?
 
       calc_funcs = @comparer.stat_calc_funcs
       ms = matrixes
@@ -719,9 +719,7 @@ module Compare
     end
     all_tests_set.each do |test|
       c = stat_base_map[test]
-      if c and c > 0
-        stat_base_map[test] = 0
-      end
+      stat_base_map[test] = 0 if c && c > 0
     end
     stats.sort_by! do |stat|
       [

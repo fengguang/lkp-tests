@@ -10,10 +10,10 @@ def lookup_hash(hash, path, create_missing = false)
   loop do
     k = keys.shift
     v = hash[k]
-    if create_missing and v == nil
+    if create_missing && v == nil
       v = hash[k] = keys.empty? ? nil : Hash.new
     end
-    if Hash === v and not keys.empty?
+    if Hash === v && !keys.empty?
       parent = hash
       pkey = k
       hash = v
@@ -78,8 +78,8 @@ def revise_hash(original, revisions, overwrite_top_keys = true)
   revisions ||= {}
 
   original.merge!(revisions) do |key, oldval, newval|
-    if key[-1] == '+' or
-       key[-1] == '-' or
+    if key[-1] == '+' ||
+       key[-1] == '-' ||
        is_accumulative_key(key)
       merge_accumulative(oldval, newval)
     else
@@ -112,9 +112,7 @@ def revise_hash(original, revisions, overwrite_top_keys = true)
           hash[key] = nil if hash[key].empty?
         else
           hash.delete key
-          if hash.empty? and parent.object_id != hash.object_id
-            parent[pkey] = nil
-          end
+          parent[pkey] = nil if hash.empty? && parent.object_id != hash.object_id
         end
       end
       next false
@@ -128,7 +126,7 @@ def revise_hash(original, revisions, overwrite_top_keys = true)
     next true unless k.index('.')
 
     parent, pkey, hash, key, keys = lookup_hash(original, k, true)
-    hash[key] = v if overwrite_top_keys or hash.object_id != original.object_id or hash[key] == nil
+    hash[key] = v if overwrite_top_keys || hash.object_id != original.object_id || hash[key] == nil
     if hash.object_id != original.object_id
       next false
     else

@@ -40,7 +40,7 @@ end
 
 def add_performance_per_watt(stats, matrix)
   watt = stats['pmeter.Average_Active_Power']
-  return unless watt and watt > 0
+  return unless watt && watt > 0
 
   kpi_stats = load_yaml("#{LKP_SRC}/etc/index-perf.yaml")
   return unless kpi_stats
@@ -49,7 +49,7 @@ def add_performance_per_watt(stats, matrix)
   kpi_stats.each do |stat, weight|
     next if stat == 'boot-time.dhcp'
     next if stat == 'boot-time.boot'
-    next if stat.index 'iostat.' and not stats['dd.startup_time']
+    next if stat.index 'iostat.' && !stats['dd.startup_time']
 
     value = stats[stat]
     if (value)
@@ -96,7 +96,7 @@ def create_stats_matrix(result_root)
 
     next if monitor == 'stats' # stats.json already created?
     next if monitor == 'matrix'
-    unless $programs[monitor] or monitor =~ /^ftrace\.|.+\.time$/
+    unless $programs[monitor] || monitor =~ /^ftrace\.|.+\.time$/
       log_warn "skip unite #{file}: #{monitor} not in #{$programs.keys}"
       next
     end
@@ -261,7 +261,7 @@ def check_warn_test_error(matrix, result_root)
     samples = matrix[errid]
     next unless samples
     next unless samples.last(10).sum == 10
-    next if errid == 'last_state.is_incomplete_run' and matrix['dmesg.boot_failures']
+    next if errid == 'last_state.is_incomplete_run' && matrix['dmesg.boot_failures']
     # $stderr.puts "The last 10 results all failed, check: #{errid} #{result_root}"
   end
 end
@@ -320,7 +320,7 @@ def unite_params(result_root)
   params_file = result_path.params_file
   params_root = File.dirname params_file
 
-  if File.exist? params_file and Time.now - File.ctime(params_root) > 3600
+  if File.exist?(params_file) && Time.now - File.ctime(params_root) > 3600
     # no need to update params
     return true
   end

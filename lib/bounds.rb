@@ -22,7 +22,7 @@ def is_valid_stats_range(stats_field, num)
       if stats_field =~ %r{^#{k}$}
         min = v[0]
         max = v[1]
-        return false if num < min or num > max
+        return false if num < min || num > max
       end
     end
   end

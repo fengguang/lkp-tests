@@ -112,7 +112,7 @@ class ResultRootCollection
   end
 
   def each
-    block_given? or return enum_for(__method__)
+    return enum_for(__method__) unless block_given?
 
     date_glob = @date_glob || DATE_GLOB
     files = Dir[File.join INDEX_DIR, date_glob + '-*']
@@ -292,7 +292,7 @@ class MResultRootCollection
   end
 
   def each
-    block_given? or return enum_for(__method__)
+    return enum_for(__method__) unless block_given?
 
     cmdline = "grep -he '#{pattern}' /lkp/paths/????-??-??-*"
     @other_conditions.values.each do |ocond|
@@ -363,7 +363,7 @@ def convert_all_mresult_root(date_from_in = nil, date_to_in = nil)
     rtc.each do |rt|
       n += 1
       _rt = rt._result_root
-      convert_one_mresult_root(_rt) and puts "#{n}: #{_rt}"
+      puts "#{n}: #{_rt}" if convert_one_mresult_root(_rt)
     end
     date += ONE_DAY
   end

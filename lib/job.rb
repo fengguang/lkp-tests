@@ -229,7 +229,7 @@ class Job
 
     @job = Hash.new
     unless @jobs.first['job_origin']
-      if File.symlink?(jobfile) and
+      if File.symlink?(jobfile) &&
          File.readlink(jobfile) =~ %r|^../../../(.*)|
         @job[comment_to_symbol $1] = nil
       else
@@ -276,7 +276,7 @@ class Job
     rescue KeyError
       return false
     end
-    if Hash === defaults and not defaults.empty?
+    if Hash === defaults && !defaults.empty?
       @defaults[source_file_symkey(file)] = nil
       revise_hash(@defaults, defaults, true)
     end
@@ -311,7 +311,7 @@ class Job
 
       load_one = lambda do |f|
         break unless i[k][f]
-        break if @file_loaded.include?(k) and
+        break if @file_loaded.include?(k) &&
                  @file_loaded[k].include?(f)
 
         break unless load_one_defaults(i[k][f], job)
@@ -320,7 +320,7 @@ class Job
         @file_loaded[k][f] = true
       end
 
-      if @referenced_programs.include?(k) and i.include? k
+      if @referenced_programs.include?(k) && i.include?(k)
         next if load_one[k] != nil
         if Hash === v
           v.each do |kk, vv|
@@ -372,7 +372,8 @@ class Job
   end
 
   def lkp_src
-    if String === @job['user'] and Dir.exist?(dir = '/lkp/' + @job['user'] + '/src')
+    dir = '/lkp/' + @job['user'] + '/src'
+    if String === @job['user'] && Dir.exist?(dir)
       dir
     else
       LKP_SRC
@@ -427,7 +428,7 @@ class Job
 
   def expand_each_in(ah, set)
     ah.each do |k, v|
-      if set.include?(k) or (String === v and v =~ /{{(.*)}}/m)
+      if set.include?(k) || (String === v && v =~ /{{(.*)}}/m)
         yield ah, k, v
       end
       if Hash === v
@@ -440,12 +441,12 @@ class Job
 
   def each_job
     expand_each_in(@job, @dims_to_expand) do |h, k, v|
-      if String === v and v =~ /^(.*){{(.*)}}(.*)$/m
+      if String === v && v =~ /^(.*){{(.*)}}(.*)$/m
         head = $1.lstrip
         tail = $3.chomp.rstrip
         expr = expand_expression(@job, $2, k)
         return if expr == nil
-        if head.empty? and tail.empty?
+        if head.empty? && tail.empty?
           h[k] = expr
         else
           h[k] = "#{head}#{expr}#{tail}"
@@ -515,7 +516,7 @@ class Job
 
       # skip monitor options which happen to have the same
       # name with referenced :workload_elements programs
-      next if pk and monitors.include? pk
+      next if pk && monitors.include?(pk)
 
       yield k, v, @program_options[k]
     end
@@ -532,7 +533,7 @@ class Job
   end
 
   def set_default_params
-    return if @job['kconfig'] and
+    return if @job['kconfig'] &&
               @job['compiler']
 
     @job[comment_to_symbol 'default params'] = nil
@@ -545,7 +546,7 @@ class Job
     path = ''
     each_param do |k, v, option_type|
       if option_type == '='
-        if v and v != ''
+        if v && v != ''
           path += "#{k}=#{v[0..30]}"
         else
           path += k.to_s
@@ -643,7 +644,7 @@ class Job
   def run_filter(hash, key, val, script)
     system @filter_env, script, {unsetenv_others: true}
 
-    if $?.exitstatus and $?.exitstatus != 0
+    if $?.exitstatus && $?.exitstatus != 0
       raise Job::ParamError, "#{script}: exitstatus #{$?.exitstatus}"
     end
   end
@@ -713,7 +714,7 @@ class Job
   end
 
   def each_commit
-    block_given? or return enum_for(__method__)
+    return enum_for(__method__) unless block_given?
 
     @job.each do |key, val|
       case key

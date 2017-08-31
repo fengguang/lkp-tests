@@ -19,7 +19,7 @@ def tbox_group(hostname)
 end
 
 def is_tbox_group(hostname)
-  return nil unless String === hostname and not hostname.empty?
+  return nil unless String === hostname && !hostname.empty?
   Dir[LKP_SRC + '/hosts/' + hostname][0]
 end
 
@@ -54,7 +54,7 @@ class ResultPath < Hash
     ps = path_scheme()
 
     # for backwards compatibilty
-    if is_tbox_group(self['testcase']) and not is_tbox_group(dirs[1])
+    if is_tbox_group(self['testcase']) && !is_tbox_group(dirs[1])
       self['tbox_group'] = self['testcase']
       ps = PATH_SCHEME['legacy']
     end
@@ -82,7 +82,7 @@ class ResultPath < Hash
     ]
 
     path_scheme.each do |key|
-      next if skip_keys and skip_keys.include? key
+      next if skip_keys && skip_keys.include?(key)
       dirs << self[key]
     end
 

@@ -44,7 +44,7 @@ def get_program_env(program, env)
   program_env = {}
   args = []
 
-  if env == nil or @cur_func == :extract_stats
+  if env == nil || @cur_func == :extract_stats
     return program_env, args
   end
 
@@ -122,7 +122,7 @@ class Job2sh < Job
       # - 'cpufreq_governor' will be defined in one include
       #    and redefined in another to be empty
       # They all mean to cancel running the setup script.
-      return if program_env.empty? and args.empty? and
+      return if program_env.empty? && args.empty? &&
                 program =~ /^(fs2|cpufreq_governor)$/
     when %r{/daemon$}
       command << 'start_daemon'
@@ -139,13 +139,13 @@ class Job2sh < Job
 
     command.concat cmd
 
-    exec_line unless command.first == 'run_monitor' and @script_lines[-1] =~ /run_monitor/
+    exec_line unless command.first == 'run_monitor' && @script_lines[-1] =~ /run_monitor/
     out_line tabs + command.join(' ')
   end
 
   def parse_one(ancestors, key, val, pass)
     tabs = indent(ancestors)
-    if @programs.include?(key) or (key =~ /^(call|command|source)\s/ and @cur_func == :run_job)
+    if @programs.include?(key) || (key =~ /^(call|command|source)\s/ && @cur_func == :run_job)
       if @setups.include?(key)
         return false unless pass == :PASS_RUN_SETUP
       else
@@ -157,14 +157,14 @@ class Job2sh < Job
       return false unless pass == :PASS_RUN_MONITORS
       shell_run_program(tabs, key, val)
       return :action_run_monitor
-    elsif String === val and key =~ %r{^script\s+(monitors|setup|tests|daemon|stats)/([-a-zA-Z0-9_/]+)$}
+    elsif String === val && key =~ %r{^script\s+(monitors|setup|tests|daemon|stats)/([-a-zA-Z0-9_/]+)$}
       return false unless pass == :PASS_NEW_SCRIPT
       script_file = $1 + '/' + $2
       script_name = File.basename $2
-      if @cur_func == :run_job and script_file =~ %r{^(setup|tests|daemon)/} or
-         @cur_func == :extract_stats and script_file.index('stats/') == 0
+      if @cur_func == :run_job && script_file =~ %r{^(setup|tests|daemon)/} ||
+         @cur_func == :extract_stats && script_file.index('stats/') == 0
         @programs[script_name] = LKP_SRC + '/' + script_file
-      elsif @cur_func == :run_job and script_file =~ %r{^monitors/}
+      elsif @cur_func == :run_job && script_file =~ %r{^monitors/}
         @monitors[script_name] = LKP_SRC + '/' + script_file
       end
       exec_line
@@ -174,7 +174,7 @@ class Job2sh < Job
       exec_line tabs + "chmod +x $LKP_SRC/#{script_file}"
       exec_line
       return :action_new_script
-    elsif String === val and key =~ /^(function)\s+([a-zA-Z_]+[a-zA-Z_0-9]*)$/
+    elsif String === val && key =~ /^(function)\s+([a-zA-Z_]+[a-zA-Z_0-9]*)$/
       return false unless pass == :PASS_NEW_SCRIPT
       shell_block = $1
       func_name = $2
@@ -186,7 +186,7 @@ class Job2sh < Job
       end
       exec_line tabs + SHELL_BLOCK_KEYWORDS[shell_block][1]
       return :action_new_function
-    elsif Hash === val and key =~ /^(if|for|while|until)\s/
+    elsif Hash === val && key =~ /^(if|for|while|until)\s/
       return false unless pass == :PASS_RUN_COMMANDS
       shell_block = $1
       exec_line
@@ -221,7 +221,7 @@ class Job2sh < Job
     # run monitors after setup:
     # monitors/iostat etc. depends on ENV variables by setup scripts
     hash.each { |key, val| parse_one(ancestors, key, val, :PASS_RUN_MONITORS) }
-    hash.each { |key, val| parse_one(ancestors, key, val, :PASS_RUN_COMMANDS) == :action_background_function and nr_bg += 1 }
+    hash.each { |key, val| nr_bg += 1 if parse_one(ancestors, key, val, :PASS_RUN_COMMANDS) == :action_background_function }
 
     # Disabled -- this will wait for the background monitors
     # started by run_monitor, while the monitors will wait for

@@ -398,7 +398,7 @@ module DataStore
     end
 
     def each(conditions, date = nil, &blk)
-      block_given? or return enum_for(__method__)
+      return enum_for(__method__) unless block_given?
 
       if conditions.empty?
         each_for_all(&blk)
@@ -428,7 +428,7 @@ module DataStore
 
     def score(conditions)
       v = conditions[@axis_keys.first]
-      if v and !v.empty?
+      if v && !v.empty?
         100
       else
         0
@@ -463,7 +463,7 @@ module DataStore
     end
 
     def each(conditions, date = nil, &blk)
-      block_given? or return enum_for(__method__)
+      return enum_for(__method__) unless block_given?
 
       ifn = index_file conditions
       return unless ifn
@@ -633,7 +633,7 @@ module DataStore
     end
 
     def each
-      block_given? or return enum_for(__method__)
+      return enum_for(__method__) unless block_given?
 
       as = @axes
       d = desc
@@ -725,7 +725,7 @@ module DataStore
     end
 
     def each
-      block_given? or return enum_for(__method__)
+      return enum_for(__method__) unless block_given?
 
       if @exact
         node = @table.open_node @conditions
@@ -743,7 +743,7 @@ module DataStore
     end
 
     def each_stat(&b)
-      block_given? or return enum_for(__method__)
+      return enum_for(__method__) unless block_given?
 
       each do |n|
         n.each(&b)

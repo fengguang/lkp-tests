@@ -395,7 +395,7 @@ class NMResultRootCollection
   end
 
   def each(&b)
-    block_given? or return enum_for(__method__)
+    return enum_for(__method__) unless block_given?
 
     table_each = ->tbl {
       col = DataStore::Collection.new tbl, @conditions

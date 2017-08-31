@@ -108,7 +108,7 @@ def __last_linus_release_tag(commit)
     end
   end
 
-  if version and version >= 3
+  if version && version >= 3
     tag = "v#{version}.#{patch_level}"
   elsif version == 2
     tag = "v2.#{patch_level}.#{sub_level}"
@@ -118,7 +118,7 @@ def __last_linus_release_tag(commit)
     return nil
   end
 
-  tag += "-rc#{rc}" if rc and rc > 0
+  tag += "-rc#{rc}" if rc && rc > 0
   [tag, false]
 end
 
@@ -138,15 +138,15 @@ def compare_version(aa, bb)
     else
       direction = 1
     end
-    if aaa and bbb
+    if aaa && bbb
       unless name =~ /str|name/
         aaa = aaa.to_i
         bbb = bbb.to_i
       end
       return aaa <=> bbb
-    elsif aaa and !bbb
+    elsif aaa && !bbb
       return direction
-    elsif !aaa and bbb
+    elsif !aaa && bbb
       return -direction
     end
   end

@@ -68,7 +68,7 @@ def is_reasonable_perf_change(name, delta, max)
   $perf_metrics_threshold.each do |k, v|
     next unless name =~ %r{^#{k}$}
     return false if max < v
-    return false if delta < v / 2 and v.class == Integer
+    return false if delta < v / 2 && v.class == Integer
     return true
   end
 
@@ -101,7 +101,7 @@ def is_changed_stats(sorted_a, min_a, mean_a, max_a,
                      is_failure_stat, is_latency_stat,
                      stat, options)
 
-  if options['perf-profile'] and stat =~ /^perf-profile\./
+  if options['perf-profile'] && stat =~ /^perf-profile\./
     return mean_a > options['perf-profile'] ||
            mean_b > options['perf-profile']
   end
@@ -113,15 +113,15 @@ def is_changed_stats(sorted_a, min_a, mean_a, max_a,
   if is_latency_stat
     if options['distance']
       # auto start bisect only for big regression
-      return false if sorted_b.size <= 3 and sorted_a.size <= 3
-      return false if sorted_b.size <= 3 and min_a < 2 * options['distance'] * max_b
+      return false if sorted_b.size <= 3 && sorted_a.size <= 3
+      return false if sorted_b.size <= 3 && min_a < 2 * options['distance'] * max_b
       return false if max_a < 2 * options['distance'] * max_b
       return false if mean_a < options['distance'] * max_b
       return true
     elsif options['gap']
       gap = options['gap']
-      return true if min_b > max_a and (min_b - max_a) > (mean_b - mean_a) * gap
-      return true if min_a > max_b and (min_a - max_b) > (mean_a - mean_b) * gap
+      return true if min_b > max_a && (min_b - max_a) > (mean_b - mean_a) * gap
+      return true if min_a > max_b && (min_a - max_b) > (mean_a - mean_b) * gap
     else
       return true if max_a > 3 * max_b
       return true if max_b > 3 * max_a
@@ -135,24 +135,22 @@ def is_changed_stats(sorted_a, min_a, mean_a, max_a,
     return true if len_a * mean_b > options['variance'] * len_b * mean_a
     return true if len_b * mean_a > options['variance'] * len_a * mean_b
   elsif options['distance']
-    if Integer === max_a and (min_a - max_b == 1 or min_b - max_a == 1)
-      return false
-    end
-    if sorted_a.size < 3 or sorted_b.size < 3
+    return false if Integer === max_a && (min_a - max_b == 1 || min_b - max_a == 1)
+    if sorted_a.size < 3 || sorted_b.size < 3
       min_gap = [len_a, len_b].max * options['distance']
       return true if min_b - max_a > min_gap
       return true if min_a - max_b > min_gap
       return false
     end
-    return true if min_b > max_a and (min_b - max_a) > (mean_b - mean_a) / 2
-    return true if min_a > max_b and (min_a - max_b) > (mean_a - mean_b) / 2
+    return true if min_b > max_a && (min_b - max_a) > (mean_b - mean_a) / 2
+    return true if min_a > max_b && (min_a - max_b) > (mean_a - mean_b) / 2
   elsif options['gap']
     gap = options['gap']
-    return true if min_b > max_a and (min_b - max_a) > (mean_b - mean_a) * gap
-    return true if min_a > max_b and (min_a - max_b) > (mean_a - mean_b) * gap
+    return true if min_b > max_a && (min_b - max_a) > (mean_b - mean_a) * gap
+    return true if min_a > max_b && (min_a - max_b) > (mean_a - mean_b) * gap
   else
-    return true if min_b > mean_a and mean_b > max_a
-    return true if min_a > mean_b and mean_a > max_b
+    return true if min_b > mean_a && mean_b > max_a
+    return true if min_a > mean_b && mean_a > max_b
   end
   false
 end
@@ -248,7 +246,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
   end
 
   # FIXME: remove it later; or move it somewhere in future
-  if project == 'linux' and not version
+  if project == 'linux' && !version
     kconfig = rp['kconfig']
     compiler = rp['compiler']
     context_file = vmlinuz_dir(kconfig, compiler, commit) + "/context.yaml"
@@ -286,9 +284,9 @@ def load_base_matrix(matrix_path, head_matrix, options)
   cols = 0
   git.release_tags_with_order.each do |tag, o|
     next if o >  order
-    next if o == order and is_exact_match
-    next if is_exact_match and tag =~ /^#{version}-rc[0-9]+$/
-    break if tag =~ /\.[0-9]+$/ and tags_merged.size >= 2 and cols >= 10
+    next if o == order && is_exact_match
+    next if is_exact_match && tag =~ /^#{version}-rc[0-9]+$/
+    break if tag =~ /\.[0-9]+$/ && tags_merged.size >= 2 && cols >= 10
 
     rp[axis] = tag
     base_matrix_file = rp._result_root + '/matrix.json'
@@ -304,16 +302,16 @@ def load_base_matrix(matrix_path, head_matrix, options)
       add_stats_to_matrix(rc_matrix, matrix)
       tags_merged << tag
       cols += matrix['stats_source'].size
-      break if tags_merged.size >= 3 and cols >= 20
-      break if tag =~ /-rc1$/ and cols >= 3
+      break if tags_merged.size >= 3 && cols >= 20
+      break if tag =~ /-rc1$/ && cols >= 3
     end
   end
 
   if !matrix.empty?
-    if cols >= 3 or
-       (cols >= 1 and is_functional_test rp['testcase']) or
-       head_matrix['last_state.is_incomplete_run'] or
-       head_matrix['dmesg.boot_failures'] or
+    if cols >= 3 ||
+       (cols >= 1 && is_functional_test(rp['testcase'])) ||
+       head_matrix['last_state.is_incomplete_run'] ||
+       head_matrix['dmesg.boot_failures'] ||
        head_matrix['stderr.has_stderr']
       log_debug "compare with release matrix: #{matrix_path} #{tags_merged}"
       options['good_commit'] = tags_merged.first
@@ -423,7 +421,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
   cols_b = matrix_cols b
 
   if options['variance']
-    return nil if cols_a < 10 or cols_b < 10
+    return nil if cols_a < 10 || cols_b < 10
   end
 
   b_monitors = {}
@@ -433,13 +431,13 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
 
   a.each do |k, v|
     next if String === v[-1]
-    next if options['perf'] and not is_perf_metric k
-    next if is_incomplete_run and k !~ /^(dmesg|last_state|stderr)\./
-    next if !options['more'] and k =~ $metrics_blacklist_re
+    next if options['perf'] && !is_perf_metric(k)
+    next if is_incomplete_run && k !~ /^(dmesg|last_state|stderr)\./
+    next if !options['more'] && k =~ $metrics_blacklist_re
 
     is_failure_stat = is_failure k
     is_latency_stat = is_latency k
-    if is_failure_stat or is_latency_stat
+    if is_failure_stat || is_latency_stat
       max_margin = 0
     else
       max_margin = 3
@@ -448,18 +446,18 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
     unless is_failure_stat
       # for none-failure stats field, we need asure that
       # at least one matrix has 3 samples.
-      next if cols_a < 3 and cols_b < 3
+      next if cols_a < 3 && cols_b < 3
 
       # virtual hosts are dynamic and noisy
       next if options['tbox_group'] =~ /^vh-/
       # VM boxes' memory stats are still good
-      next if options['tbox_group'] =~ /^vm-/ and !options['is_perf_test_vm'] and is_memory_change k
+      next if options['tbox_group'] =~ /^vm-/ && !options['is_perf_test_vm'] && is_memory_change(k)
     end
 
     # newly added monitors don't have values to compare in the base matrix
-    next unless b[k] or
-                is_failure_stat or
-                (k =~ /^(lock_stat|perf-profile|latency_stats)\./ and b_monitors[$1])
+    next unless b[k] ||
+                is_failure_stat ||
+                (k =~ /^(lock_stat|perf-profile|latency_stats)\./ && b_monitors[$1])
 
     b_k = b[k] || [0] * cols_b
     b_k << 0 while b_k.size < cols_b
@@ -469,9 +467,9 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
     min_b, mean_b, max_b = get_min_mean_max sorted_b
     next unless max_b
 
-    v.pop(v.size - resize) if resize and v.size > resize
+    v.pop(v.size - resize) if resize && v.size > resize
 
-    max_margin = 1 if b_k.size <= 3 and max_margin > 1
+    max_margin = 1 if b_k.size <= 3 && max_margin > 1
     sorted_a = sort_remove_margin v, max_margin
     min_a, mean_a, max_a = get_min_mean_max sorted_a
     next unless max_a
@@ -490,14 +488,14 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
         end
         # this relies on the fact dmesg.* comes ahead
         # of kmsg.* in etc/default_stats.yaml
-        next if has_boot_fix and k =~ /^kmsg\./
+        next if has_boot_fix && k =~ /^kmsg\./
       end
     end
 
     max = [max_b, max_a].max
     x = max_a - min_a
     z = max_b - min_b
-    x = z if sorted_a.size <= 2 and x < z
+    x = z if sorted_a.size <= 2 && x < z
     ratio = MAX_RATIO
     if mean_a > mean_b
       y = min_a - max_b
@@ -513,7 +511,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
 
     unless options['perf-profile'] && k =~ /^perf-profile\./
       next unless ratio > 1.01 # time.elapsed_time only has 0.01s precision
-      next unless ratio > 1.1 or is_perf_metric(k)
+      next unless ratio > 1.1 || is_perf_metric(k)
       next unless is_reasonable_perf_change(k, delta, max)
     end
 
@@ -587,7 +585,7 @@ def _get_changed_stats(a, b, options)
   is_incomplete_run = a['last_state.is_incomplete_run'] ||
                       b['last_state.is_incomplete_run']
 
-  if is_incomplete_run and options['ignore-incomplete-run']
+  if is_incomplete_run && options['ignore-incomplete-run']
     changed_stats = {}
   else
     changed_stats = __get_changed_stats(a, b, is_incomplete_run, options)
@@ -610,12 +608,12 @@ def _get_changed_stats(a, b, options)
 end
 
 def get_changed_stats(matrix_path1, matrix_path2 = nil, options = {})
-  unless matrix_path2 or options['bisect_axis']
+  unless matrix_path2 || options['bisect_axis']
     return find_changed_stats(matrix_path1, options)
   end
 
   a, b = load_matrices_to_compare matrix_path1, matrix_path2, options
-  return nil if a == nil or b == nil
+  return nil if a == nil || b == nil
 
   _get_changed_stats(a, b, options)
 end

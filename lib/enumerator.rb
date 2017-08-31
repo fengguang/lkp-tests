@@ -4,7 +4,7 @@ LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath(__FILE__))
 
 module Enumerable
   def feach(func)
-    block_given? or return enum_for(__method__, func)
+    return enum_for(__method__, func) unless block_given?
 
     each do |*args|
       func.call(*args)
@@ -13,7 +13,7 @@ module Enumerable
   end
 
   def fmap(func)
-    block_given? or return enum_for(__method__, func)
+    return enum_for(__method__, func) unless block_given?
 
     each do |*args|
       yield func.call(*args)
@@ -21,7 +21,7 @@ module Enumerable
   end
 
   def fselect(func, &b)
-    block_given? or return enum_for(__method__, func)
+    return enum_for(__method__, func) unless block_given?
 
     each do |*args|
       yield(*args) if func.call(*args)
@@ -29,7 +29,7 @@ module Enumerable
   end
 
   def fchain(func, &b)
-    block_given? or return enum_for(__method__, func)
+    return enum_for(__method__, func) unless block_given?
 
     each do |*args|
       func.call(*args, &b)
