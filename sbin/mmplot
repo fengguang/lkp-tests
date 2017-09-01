@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
 
 require 'yaml'
 require 'optparse'
@@ -12,39 +12,39 @@ require "#{LKP_SRC}/lib/plot.rb"
 $options = {}
 
 opt_parser = OptionParser.new do |opts|
-  opts.banner = "Usage: mmplot matrix1.json matrix2.json [stat_fields...] [OPTION...]"
-  opts.separator ""
-  opts.separator "Example:"
-  opts.separator ""
+  opts.banner = 'Usage: mmplot matrix1.json matrix2.json [stat_fields...] [OPTION...]'
+  opts.separator ''
+  opts.separator 'Example:'
+  opts.separator ''
   opts.separator 'mmplot  /result/fat/dd-write/1HDD-JBOD-cfq-btrfs-100dd/x86_64-rhel/v3.10/matrix.json  \
   /result/fat/dd-write/1HDD-JBOD-cfq-btrfs-100dd/x86_64-rhel/matrix.json    \
   vmstat.system.in vmstat.cpu.sy perf-stat.node-stores interrupts.CPU0.LOC'
 
-  opts.separator ""
-  opts.separator "options:"
+  opts.separator ''
+  opts.separator 'options:'
 
-  opts.on("-d N", "--distance N", "threshold of changes") do |n|
+  opts.on('-d N', '--distance N', 'threshold of changes') do |n|
     $options['distance'] = n.to_i
   end
 
-  opts.on("-p", "--perf", "show performance changes only") do
+  opts.on('-p', '--perf', 'show performance changes only') do
     $options['perf'] = true
   end
 
-  opts.on("-r N", "--resize N", "resize first matrix") do |n|
+  opts.on('-r N', '--resize N', 'resize first matrix') do |n|
     $options['resize'] = n.to_i
   end
 
-  opts.on("-v N", "--variance N", "show variance changes larger than N times") do |n|
+  opts.on('-v N', '--variance N', 'show variance changes larger than N times') do |n|
     $options['variance'] = n.to_i
   end
 
-  opts.on("-o DIR", "--output DIR", "output dir") do |dir|
+  opts.on('-o DIR', '--output DIR', 'output dir') do |dir|
     Dir.mkdir dir unless File.directory? dir
     $opt_output_path = dir
   end
 
-  opts.on_tail("-h", "--help", "show help message") do
+  opts.on_tail('-h', '--help', 'show help message') do
     puts opts
     exit
   end

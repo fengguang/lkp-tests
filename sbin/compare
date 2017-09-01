@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 
-Signal.trap("INT") { exit! }
+Signal.trap('INT') { exit! }
 
-LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
 
 require "#{LKP_SRC}/lib/lkp_git"
 require "#{LKP_SRC}/lib/yaml.rb"
@@ -128,23 +128,23 @@ opt_parser = OptionParser.new do |opts|
     $options['all-critical'] = true
   end
 
-  opts.on("-D N", "--distance N", "threshold of changes") do |n|
+  opts.on('-D N', '--distance N', 'threshold of changes') do |n|
     $options['distance'] = n.to_i
   end
 
-  opts.on("-P", "--perf", "show performance changes only") do
+  opts.on('-P', '--perf', 'show performance changes only') do
     $options['perf'] = true
   end
 
-  opts.on("-r N", "--resize N", "resize first matrix") do |n|
+  opts.on('-r N', '--resize N', 'resize first matrix') do |n|
     $options['resize'] = n.to_i
   end
 
-  opts.on("-v N", "--variance N", "show variance changes larger than N times") do |n|
+  opts.on('-v N', '--variance N', 'show variance changes larger than N times') do |n|
     $options['variance'] = n.to_i
   end
 
-  opts.on("--no-hide-noises", "do not hide noisy results") do
+  opts.on('--no-hide-noises', 'do not hide noisy results') do
     $opt_no_hide_noises = true
   end
 
@@ -179,9 +179,9 @@ def plot_bar(dims, cases)
   x = cases.keys
   Gnuplot.open do |gp|
     Gnuplot::Plot.new(gp) do |plot|
-      plot.style "data histograms"
-      plot.xtics "nomirror rotate by -45"
-      plot.terminal "dumb nofeed"
+      plot.style 'data histograms'
+      plot.xtics 'nomirror rotate by -45'
+      plot.terminal 'dumb nofeed'
       dims.each do |dim, name|
         y = []
         cases.each do |_key, value|
@@ -192,7 +192,7 @@ def plot_bar(dims, cases)
           end
         end
         plot.data << Gnuplot::DataSet.new([x, y]) do |ds|
-          ds.using = "2:xtic(1)"
+          ds.using = '2:xtic(1)'
           ds.title = name
         end
       end
@@ -326,7 +326,7 @@ def setup_result_root_hash()
   $opt_dims.each do |dim|
     `grep -h -r -F -e '#{dim}' #{RESULT_PATHS}`.each_line do |result_root|
       result_root.chomp!
-      result_root.chomp! "/"
+      result_root.chomp! '/'
       add_result_root result_root
     end
   end
@@ -452,12 +452,12 @@ def setup_dims()
 
   if $opt_save_changes
     if $opt_dimension !~ /^(.*_)?commit$/
-      puts "error: -s/--save-changes works only with commit comapre"
+      puts 'error: -s/--save-changes works only with commit comapre'
       exit 1
     end
 
     if $opt_dims.size != 2
-      puts "error: -s/--save-changes works only with 2 commits"
+      puts 'error: -s/--save-changes works only with 2 commits'
       exit 1
     end
 

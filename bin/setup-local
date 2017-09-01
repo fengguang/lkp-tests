@@ -5,7 +5,7 @@ require 'ostruct'
 require 'fileutils'
 
 HOSTNAME = ENV['HOSTNAME'] || `hostname`.chomp
-ENV["LKP_SRC"] ||= File.dirname File.dirname File.realpath $PROGRAM_NAME
+ENV['LKP_SRC'] ||= File.dirname File.dirname File.realpath $PROGRAM_NAME
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
 require "#{LKP_SRC}/lib/yaml.rb"
@@ -16,7 +16,7 @@ require "#{LKP_SRC}/lib/install.rb"
 TMP = LKP_SRC + '/tmp'
 
 if `whoami`.chomp != 'root'
-  puts "Please run as root to install packages"
+  puts 'Please run as root to install packages'
   exit 1
 end
 
@@ -64,7 +64,7 @@ ARGV.each do |arg|
 end
 
 if scripts.empty?
-  puts "No valid script or jobfile specified"
+  puts 'No valid script or jobfile specified'
   exit 1
 end
 scripts.uniq!
@@ -83,7 +83,7 @@ end
 def create_host_config
   host_config = LKP_SRC + "/hosts/#{HOSTNAME}"
   if File.exist? host_config
-    puts "reusing " + host_config
+    puts 'reusing ' + host_config
   else
     mem_kb = File.open('/proc/meminfo').gets.split[1].to_i
     mem_gb = mem_kb >> 20
@@ -144,8 +144,8 @@ end
 make_wakeup
 create_lkp_dirs
 create_host_config
-install_packages("lkp", distro)
-install_packages("makepkg", distro)
+install_packages('lkp', distro)
+install_packages('makepkg', distro)
 
 scripts.each do |script|
   install_packages(script, distro)

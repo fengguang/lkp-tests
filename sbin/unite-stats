@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
 
 require 'optparse'
 require "#{LKP_SRC}/lib/matrix.rb"
@@ -31,6 +31,6 @@ end
 
 opts.parse!(ARGV)
 
-result_root = ARGV[0] || ENV["RESULT_ROOT"]
+result_root = ARGV[0] || ENV['RESULT_ROOT']
 
 unite_stats result_root, delete

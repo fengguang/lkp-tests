@@ -5,13 +5,13 @@ require 'pp'
 
 obj = YAML.load_file(ARGV[0])
 
-puts "RUBY OBJECT"
+puts 'RUBY OBJECT'
 pp obj
 
 puts
-puts "YAML"
+puts 'YAML'
 puts YAML.dump(obj)
 
 puts
-puts "JSON"
+puts 'JSON'
 puts YAML.to_json(obj)

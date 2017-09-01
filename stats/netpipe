@@ -19,7 +19,7 @@ while (line = STDIN.gets)
 end
 
 if less_8k_usec.nil? || bigger_5m_mbps.nil?
-  log_error "no less_8k_usec or bigger_5m_mbps in the STDIN"
+  log_error 'no less_8k_usec or bigger_5m_mbps in the STDIN'
   exit
 end
 puts "less_8K_usec.avg: #{less_8k_usec.average}"

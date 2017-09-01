@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 
-LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
 
-require "gnuplot"
+require 'gnuplot'
 require 'optparse'
 require "#{LKP_SRC}/lib/statistics.rb"
 require "#{LKP_SRC}/lib/stats.rb"
@@ -10,22 +10,22 @@ require "#{LKP_SRC}/lib/yaml.rb"
 require "#{LKP_SRC}/lib/plot.rb"
 
 opt_parser = OptionParser.new do |opts|
-  opts.banner = "Usage: mplot matrix.json [stat_fields...] [OPTION...]"
-  opts.separator ""
-  opts.separator "Example:"
-  opts.separator ""
+  opts.banner = 'Usage: mplot matrix.json [stat_fields...] [OPTION...]'
+  opts.separator ''
+  opts.separator 'Example:'
+  opts.separator ''
 
-  opts.separator "mplot /result/fat/dd-write/1HDD-JBOD-cfq-btrfs-100dd/x86_64-rhel/matrix.json"
-  opts.separator "mplot /result/fat/dd-write/1HDD-JBOD-cfq-btrfs-100dd/x86_64-rhel/matrix.json vmstat.system.in"
-  opts.separator ""
-  opts.separator "options:"
+  opts.separator 'mplot /result/fat/dd-write/1HDD-JBOD-cfq-btrfs-100dd/x86_64-rhel/matrix.json'
+  opts.separator 'mplot /result/fat/dd-write/1HDD-JBOD-cfq-btrfs-100dd/x86_64-rhel/matrix.json vmstat.system.in'
+  opts.separator ''
+  opts.separator 'options:'
 
-  opts.on("-o DIR", "--output DIR", "output dir") do |dir|
+  opts.on('-o DIR', '--output DIR', 'output dir') do |dir|
     Dir.mkdir dir unless File.directory? dir
     $opt_output_path = dir
   end
 
-  opts.on_tail("-h", "--help", "show help message") do
+  opts.on_tail('-h', '--help', 'show help message') do
     puts opts
     exit
   end

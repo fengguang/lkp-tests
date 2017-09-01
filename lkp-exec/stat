@@ -15,24 +15,24 @@ $opt_field = 'time.elapsed_time'
 $opt_pattern = ''
 
 opt_parser = OptionParser.new do |opts|
-  opts.banner = "Usage: lkp stat [options]"
+  opts.banner = 'Usage: lkp stat [options]'
 
-  opts.separator ""
-  opts.separator "options:"
+  opts.separator ''
+  opts.separator 'options:'
 
-  opts.on("-g GROUP", "--group-by GROUP", "group by GROUP") do |group|
-    $opt_group = group.gsub "/", " + '/' + "
+  opts.on('-g GROUP', '--group-by GROUP', 'group by GROUP') do |group|
+    $opt_group = group.gsub '/', " + '/' + "
   end
 
-  opts.on("-k KERNEL", "--kernel KERNEL", "kernel branch/commit") do |kernel|
+  opts.on('-k KERNEL', '--kernel KERNEL', 'kernel branch/commit') do |kernel|
     $opt_kernel = kernel
   end
 
-  opts.on("-p PATTERN", "--pattern PATTERN", "grep RESULT_ROOT with PATTERN") do |pattern|
-    $opt_pattern << " " + pattern
+  opts.on('-p PATTERN', '--pattern PATTERN', 'grep RESULT_ROOT with PATTERN') do |pattern|
+    $opt_pattern << ' ' + pattern
   end
 
-  opts.on("-d DATE", "--date DATE", "search latest DATE days's RESULT_ROOT") do |date|
+  opts.on('-d DATE', '--date DATE', "search latest DATE days's RESULT_ROOT") do |date|
     case date
     when /[0-9]+m$/, /[0-9]+w$/, /[0-9]+d$/, /[0-9]+$/
       $opt_pattern = "  -d #{date}" + $opt_pattern
@@ -43,15 +43,15 @@ opt_parser = OptionParser.new do |opts|
     end
   end
 
-  opts.on("-f FIELD", "--field FIELD", "stats field name") do |field|
+  opts.on('-f FIELD', '--field FIELD', 'stats field name') do |field|
     $opt_field = field
   end
 
-  opts.on("-r", "--raw-samples", "show raw samples") do
+  opts.on('-r', '--raw-samples', 'show raw samples') do
     $opt_raw = true
   end
 
-  opts.on_tail("-h", "--help", "show this message") do
+  opts.on_tail('-h', '--help', 'show this message') do
     puts opts
     exit
   end
@@ -65,7 +65,7 @@ unless $opt_kernel.empty?
     $opt_kernel = git.gcommit($opt_kernel).sha
   end
 
-  $opt_pattern << " " + $opt_kernel
+  $opt_pattern << ' ' + $opt_kernel
 end
 
 _result_roots = `#{LKP_SRC}/lkp-exec/_rt #{$opt_pattern}`.split

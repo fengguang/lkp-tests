@@ -15,7 +15,7 @@ else
 end
 
 def escape_argument(arg)
-  arg = arg.gsub("'", "\\'").gsub("\\", "\\\\")
+  arg = arg.gsub("'", "\\'").gsub('\\', '\\\\')
   "'#{arg}'"
 end
 

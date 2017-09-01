@@ -4,7 +4,7 @@ require 'optparse'
 require 'ostruct'
 require 'set'
 
-LKP_SRC   = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
+LKP_SRC   = ENV['LKP_SRC'] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
 BLACKLIST = LKP_SRC + '/etc/kmsg-blacklist'
 MIN_MSG_LEN = 18
 OUTPUT_FILE = '/lkp/printk-error-messages'
@@ -109,16 +109,16 @@ Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
 
 OptionParser.new do |opts|
-  opts.banner = "Usage: update-printk-error-messages [-v] [-h]"
+  opts.banner = 'Usage: update-printk-error-messages [-v] [-h]'
 
-  opts.separator ""
-  opts.separator "options:"
+  opts.separator ''
+  opts.separator 'options:'
 
-  opts.on("-v", "--verbose") do
+  opts.on('-v', '--verbose') do
     $opt_verbose = true
   end
 
-  opts.on_tail("-h", "--help", "show this message") do
+  opts.on_tail('-h', '--help', 'show this message') do
     puts opts
     exit
   end
@@ -135,9 +135,9 @@ blacklist = File.read(BLACKLIST).split "\n"
   line = line[1..-3]
   next if line =~ /"/
   line.sub!(/\\t/, "\t")
-  lines = line.split "\\n"
+  lines = line.split '\\n'
   lines.each do |line|
-    strs = line.split "%"
+    strs = line.split '%'
     index = 0
     len = 0
     strs.each_with_index do |s, i|
@@ -151,7 +151,7 @@ blacklist = File.read(BLACKLIST).split "\n"
       if str[0] =~ /[iudsxXpPco]/
         str[0] = ''
       else
-        $stderr.puts "IGNORE " + line
+        $stderr.puts 'IGNORE ' + line
       end
     end
 

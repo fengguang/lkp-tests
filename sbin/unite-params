@@ -2,11 +2,11 @@
 
 MAX_COLS = 100
 
-LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
 
 require "#{LKP_SRC}/lib/job.rb"
 require "#{LKP_SRC}/lib/matrix.rb"
 
-result_root = ARGV[0] || ENV["RESULT_ROOT"]
+result_root = ARGV[0] || ENV['RESULT_ROOT']
 
 unite_params result_root
