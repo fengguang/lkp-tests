@@ -4,7 +4,7 @@
 
 . $LKP_SRC/lib/debug.sh
 
-cd $BENCHMARK_ROOT/libhugetlbfs || die "can not cd libhugetlbfs"
+cd $BENCHMARK_ROOT/libhugetlbfs-test || die "can not cd libhugetlbfs-test"
 
 log_cmd make || die "make failed"
 
