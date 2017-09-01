@@ -226,23 +226,36 @@ installed in the test OS.  The package includes all information that
 we need to run netperf benchmarks, such as netserver and netperf
 binaries.
 
-A script is needed to generate the package. Below is a sample. It
-downloads the source code and build it. ANd the pack system will
-generate the package.
+The method used to install additional packages is using the makepkg
+from Arch Linux, which is a script to automate the building of
+packages. A script named PKGBUILD is needed to use this script.
+PKGBUILD files of some packages can be download from 
+[AUR](https://aur.archlinux.org/).
+
+Below is a sample. It downloads the source code and build it. And the
+makepkg system will generate the package.
 
 ```bash
-#!/bin/bash
+pkgname=netperf
+pkgver=2.7.0
+pkgrel=0
+arch=('i686' 'x86_64')
+source=("https://fossies.org/linux/misc/netperf-$pkgver.tar.gz")
+md5sums=('96e38fcb4ad17770b291bfe58b35e13b')
 
-VERSION="2.6.0"
-WEB_URL="ftp://ftp.netperf.org/netperf/netperf-${VERSION}.tar.gz"
-CONFIGURE_FLAGS="--prefix=$BM_ROOT --enable-demo --enable-unixdomain --enable-sctp --enable-dccp --enable-burst"
 build()
 {
-    cd "$source_dir"
+    cd "$srcdir/$pkgname-$pkgver"
     cp /usr/share/misc/config.{guess,sub} .
     ./configure $CONFIGURE_FLAGS
     make
 }
+
+package() {
+    cd "$srcdir/$pkgname-$pkgver"
+    make DESTDIR="$pkgdir/" install
+}
+
 ```
 
 
@@ -250,10 +263,13 @@ build()
 
 Give an example to explain how to add one testcase, take hwsim as example:
 
-1) add one pack script and relevant dependency package config
-	pack/hwsim
+1) add one PKGBUILD script and relevant dependency package config
+	pkg/hwsim/PKGBUILD
 	distro/depends/hwsim
 	distro/depends/hwsim-dev
+
+   add the package adaptation "hwsim:: " to the adaptation-pkg files:
+	distro/adaptation-pkg/$distribution
 
 2) add one test script
 	tests/hwsim
