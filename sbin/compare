@@ -427,8 +427,8 @@ def setup_dims()
   if $opt_dimension =~ /^(.*_)?commit$/
     git = Git.open(project: $project, working_dir: GIT_WORK_TREE) if Dir.exist?(GIT_WORK_TREE)
     unless git
-      puts "info: \"export LKP_GIT_WORK_TREE=/path/to/project/git/repo/\" to enable parsing non-sha1 commit names." if ARGV.any? { |v| not sha1_40?(v) }
-      puts "info: \"export LKP_GIT_WORK_TREE=/path/to/project/git/repo/\" to enable guessing what to compare." if ARGV.size == 1
+      puts 'info: "export LKP_GIT_WORK_TREE=/path/to/project/git/repo/" to enable parsing non-sha1 commit names.' if ARGV.any? { |v| not sha1_40?(v) }
+      puts 'info: "export LKP_GIT_WORK_TREE=/path/to/project/git/repo/" to enable guessing what to compare.' if ARGV.size == 1
     end
 
     $opt_dims = ARGV.map { |v| git ? git.gcommit(v).sha : v }
