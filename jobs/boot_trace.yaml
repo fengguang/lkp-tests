@@ -2,6 +2,7 @@ suite: boot_trace
 testcase: boot_trace
 
 kmsg:
+turbostat:
 
 boot_params:
   bp_trace_buf_size: 131072K
