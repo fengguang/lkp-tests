@@ -39,7 +39,8 @@ class ResultPath < Hash
     'build-nvml' => %w[nvml_commit run],
     'kvm-unit-tests-qemu' => %w[path_params tbox_group rootfs kconfig compiler commit qemu_config qemu_commit run],
     'nvml-unit-tests' => %w[path_params tbox_group rootfs kconfig compiler commit nvml_commit run],
-    'mbtest' => %w[path_params tbox_group rootfs kconfig compiler commit mbt_commit run]
+    'mbtest' => %w[path_params tbox_group rootfs kconfig compiler commit mbt_commit run],
+    'sof_test' => %w[path_params tbox_group rootfs kconfig compiler commit sof_commit run]
   }
 
   def path_scheme
