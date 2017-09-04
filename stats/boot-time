@@ -4,10 +4,17 @@ def show_dmesg_times
   dmesg = "#{ENV['RESULT_ROOT']}/kmsg"
   return unless File.exist? dmesg
 
+  dhcp = false
+
   File.open(dmesg).each do |line|
     case line
     when /\[ *(\d+\.\d+)\] Sending DHCP requests/
-      puts 'dhcp: ' + $1
+      unless dhcp
+        puts 'dhcp: ' + $1
+        dhcp = true
+      end
+    when /\[ *(\d+\.\d+)\] Freeing unused kernel memory:/
+      puts 'kernel_boot: ' + $1
       break
     end
   end
