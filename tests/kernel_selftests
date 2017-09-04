@@ -25,7 +25,7 @@ command gcc-5 >/dev/null || skip_filter="x86 $skip_filter"
 for mf in */Makefile; do
 	subtest=${mf%/Makefile}
 
-	check_ignore_case $subtest && echo "ignored_by_lkp $subtest" && continue
+	check_ignore_case $subtest && echo "ignored_by_lkp $subtest test" && continue
 
 	check_makefile $subtest || log_cmd make TARGETS=$subtest 2>&1
 
