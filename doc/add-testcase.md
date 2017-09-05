@@ -258,6 +258,50 @@ package() {
 
 ```
 
+## add depends
+
+The installation of package netperf may depends on some packages.
+To have these depends installed first, add these names to the files:
+
+	distro/depends/netperf
+	distro/depends/netperf-dev
+
+The file netperf is the packages needed to run netperf test, and 
+netperf-dev is the development packages needed to build netperf.
+
+Theses packages could be provided by distribution or built by makepkg.
+The package names on Debian are used as the base and they will be
+adapted for other distributions and makepkg.
+
+for example on Debian
+
+```
+libsctp-dev
+gcc-4.9
+```
+
+If on different distributions the dependency names are different, for
+example on Debian it is $pkgname but on the distribution $distro it is
+$adapted_pkg, then add the line to the file distro/adaptation/$distro:
+
+```
+$pkgname: $adapted_pkgname
+```
+
+To install netperf with the PKGBUILD on desired distribution $distro, 
+add the package name to the distro/adaptation-pkg/$distro:
+
+```
+netperf:: 
+```
+
+If the package name installed by PKGBUILD is also needs to be adapted,
+use this line instead:
+
+```
+netperf: $adapted_pkgname
+```
+
 
 ## Example
 
