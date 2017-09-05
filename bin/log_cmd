@@ -4,4 +4,4 @@ date=$(date +'%F %T')
 echo "$date $@"
 echo "$@" >> $TMP_RESULT_ROOT/reproduce.sh
 
-exec /bin/sh -c "$@"
+exec "$@"
