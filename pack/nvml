@@ -61,6 +61,30 @@ build_ignore_file()
 	echo "vmmalloc_fork" >> ignore
 	echo "pmempool_check" >> ignore
 	echo "obj_pmalloc_mt" >> ignore
+
+	# ignore single case instead of the whole directory
+
+	# nvml$ git grep "^require_tty" src/test
+	# src/test/ex_libpmemobj/TEST15:require_tty
+	# src/test/ex_libpmemobj/TEST16:require_tty
+	# src/test/ex_libpmemobj_cpp/TEST1:require_tty
+	single_cases=$(git grep "^require_tty" src/test | awk -F':' '{print $1}' | sed 's/src\/test\///')
+
+	mkdir -p ignore_single_cases_dir
+
+	# do backup, move the ignored binary file into ignore_single_cases_dir, and rename it like:
+	# nvml$ ls ignore_signal_cases_dir
+	# ex_libpmemobj_cpp_TEST1  ex_libpmemobj_TEST15  ex_libpmemobj_TEST16
+	#
+	# nvml$ echo $single_cases
+	# ex_libpmemobj/TEST15 ex_libpmemobj/TEST16 ex_libpmemobj_cpp/TEST1
+	for s in $single_cases
+	do
+		mv src/test/$s ignore_single_cases_dir/$(echo $s | tr / _)
+	done
+
+	echo "# require tty" >> ignore_single_cases
+	echo "$single_cases" >> ignore_single_cases
 }
 
 # Automatically detect and generate new groups for each fs-types
