@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Homepage: http://www.cs.virginia.edu/stream/ref.html
+WEB_URL="http://www.cs.virginia.edu/stream/FTP/Code/stream.c"
+
+download()
+{
+	mkdir -p "$BM_NAME" || return
+	cd "$BM_NAME" || return
+	wget -t 3 -T 3 --no-clobber $WEB_URL
+}
+
+build()
+{
+	gcc -O stream.c -o stream
+}
+
+install()
+{
+	cp -af stream ${BM_ROOT}
+}
