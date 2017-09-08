@@ -77,6 +77,25 @@ enable_remote_node()
 	log_cmd make sync-remotes FORCE_SYNC_REMOTE=y USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1 LIBCPP_LIBDIR=/usr/local/libcxx/lib || return
 }
 
+check_ignore_single_case()
+{
+	local testcase=$1
+	# nvml$ cat ignore_single_cases
+	# # require tty
+	# ex_libpmemobj/TEST15
+	# ex_libpmemobj/TEST16
+	# ex_libpmemobj_cpp/TEST1
+	local pack_single_ignore="$BENCHMARK_ROOT/$casename/ignore_single_cases"
+
+	[ -s "$pack_single_ignore" ] || return
+
+	for s in $(cat $pack_single_ignore | grep -v '^#')
+	do
+		echo $s | grep -w -q "$testcase" &&
+		echo "ignored_by_lkp $s" | tr / .
+	done
+}
+
 run()
 {
 	local casename=$1
@@ -100,6 +119,8 @@ run()
 		local pack_ignore="$BENCHMARK_ROOT/$casename/ignore"
 
 		[[ -s "$pack_ignore" ]] && grep -w -q "$testcase" "$pack_ignore" && echo "ignored_by_lkp $testcase" && continue
+
+		check_ignore_single_case $testcase
 
 		# export this env variable to enable obj_tx_a* tests
 		[[ $testcase =~ obj_tx_a ]] && export MALLOC_MMAP_THRESHOLD_=0
