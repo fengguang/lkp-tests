@@ -4,10 +4,11 @@ LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath(__FILE__))
 
 require 'set'
 require "#{LKP_SRC}/lib/lkp_git"
+require "#{LKP_SRC}/lib/run-env"
 
 DEFAULT_COMPILER = 'gcc-6'
 
-RESULT_MNT = '/result'
+RESULT_MNT = "#{result_prefix}/result".freeze
 RESULT_PATHS = '/lkp/paths'
 
 def tbox_group(hostname)
@@ -48,7 +49,7 @@ class ResultPath < Hash
   end
 
   def parse_result_root(rt)
-    dirs = rt.sub(/\/result\d*/, '').split('/')
+    dirs = rt.sub(/#{RESULT_MNT}\d*/, '').split('/')
     dirs.shift if dirs[0] == ''
 
     self['testcase'] = dirs.shift

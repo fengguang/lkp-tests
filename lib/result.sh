@@ -1,6 +1,8 @@
 #!/bin/bash
 
-export RESULT_MNT='/result'
+. $LKP_SRC/lib/run-env.sh
+
+export RESULT_MNT="$(result_prefix)/result"
 export RESULT_PATHS='/lkp/paths'
 
 set_tbox_group()
