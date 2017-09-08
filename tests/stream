@@ -8,4 +8,6 @@ log_cmd cd $BENCHMARK_ROOT/$testcase || die "can not enter $BENCHMARK_ROOT/$test
 
 log_cmd export OMP_NUM_THREADS=$nr_threads
 
+log_cmd gcc -O stream.c -o stream || die "failed to compile stream"
+
 log_cmd ./stream

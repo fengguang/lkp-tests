@@ -12,10 +12,10 @@ download()
 
 build()
 {
-	gcc -O stream.c -o stream
+	:
 }
 
 install()
 {
-	cp -af stream ${BM_ROOT}
+	cp -af stream.c ${BM_ROOT}
 }
