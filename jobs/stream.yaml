@@ -8,3 +8,9 @@ nr_threads:
 - 25%
 
 stream:
+  array_size:
+  - 10000000 # 0.2GB
+  - 50000000 # 1GB
+  omp:
+  - true
+  - false
