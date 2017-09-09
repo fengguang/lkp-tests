@@ -36,6 +36,7 @@ do
 	check_shared_package $BM_NAME
 
 	packages=$(get_dependency_packages $DISTRO $BM_NAME)
+	apt-get --simulate --no-install-recommends install $packages || die "Failed to apt-get install $packages"
 	# apt-get will have below output
 	#   Inst python-minimal [2.7.11-2] (2.7.13-2 Debian:testing, Debian:unstable [amd64])
 	#   Inst mime-support (3.60 Debian:testing, Debian:unstable [all])
