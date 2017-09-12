@@ -15,6 +15,11 @@ $2 ~ /succeeded/ {
 	printf("%s.pass: 1\n", substr($1, 7))
 }
 
+$2 ~ /ignored_by_lkp/ {
+       nr_test += 1
+       printf("%s.ignored_by_lkp: 1\n", $1)
+}
+
 END {
 	printf("total_test: %d\n", nr_test)
 }

@@ -62,7 +62,7 @@ run_test()
 make install || die "make install failed"
 
 for testcase in $(cd tests && ls ${test_prefix}*); do
-	check_ignore_case $testcase && echo "ignored_by_lkp $testcase" && continue
+	check_ignored_cases $testcase && echo "${testcase}... ignored_by_lkp" && continue
 
 	# some testcases may need to wait for the environment to get ready.
 	# "make install" will install udev rules, sleep is required.
