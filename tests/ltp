@@ -30,6 +30,12 @@ fs_readonly)
 	umount $big_dev
 	big_dev_opt="-Z $fs -z $big_dev"
 	;;
+fs_ext4)
+	[ -z "$partitions" ] && exit
+	big_dev="${partitions%% *}"
+	umount $big_dev
+	big_dev_opt="-z $big_dev"
+	;;
 esac
 
 log_cmd ./runltp -f $test $big_dev_opt || exit
