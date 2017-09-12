@@ -28,6 +28,8 @@ MCE_CASELIST=./work/rastest.caselist
 
 test_all()
 {
+	local file
+
 	cat > $MCE_CASELIST <<EOF
 APEI-INJ cases/function/apei-inj/runtest.sh
 EINJ-EXT cases/function/einj-ext/runtest.sh
@@ -44,6 +46,13 @@ STRESS-HWPOISON-HARD cases/stress/hwpoison/run_hard.sh
 EOF
 
 	./runmcetest -t $MCE_TMPDIR -s $MCE_SUMDIR -o $MCE_LOGDIR -b $MCE_TOOLDIR -l $MCE_CASELIST -r 1
+
+	file=($MCE_SUMDIR/*.log)
+	if [[ $file ]]; then
+		cat "$file"
+	else
+		echo "WARNING: mce-test test results is not exist."
+	fi
 
 	[ "$nr_partitions" -ge 1 ] || exit
 	partition=${partitions%% *}
@@ -80,7 +89,7 @@ EOF
 test_choice()
 {
 	local file
-	log_cmd cp -af "$BENCHMARK_ROOT"/mce-test "$mount_points" || die "can not find mce-test dir"
+	log_cmd cp -af "$BENCHMARK_ROOT"/mce-test "$mount_points"
 	#log_cmd umount /tmp; ln -s /opt/rootfs/tmp /tmp
 	#umount /tmp; rm -rf /tmp
 	#ln -s /opt/rootfs/tmp /tmp
