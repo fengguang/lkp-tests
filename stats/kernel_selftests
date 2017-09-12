@@ -55,11 +55,17 @@ end
 
 def x86_stat(line, _x86, stats)
   case line
-  when /^processor lacks MPX XSTATE\(s\), can not run MPX tests/
-    stats << 'x86.mpx-mini-test_64.skip: 1'
+  when /can not run MPX tests/
+    @pmx = 'skip'
   when /^selftests: (.*) .*(PASS|FAIL)/
-    return if $1 == 'mpx-mini-test_64' && (stats.include? 'x86.mpx-mini-test_64.skip: 1')
-    stats << "x86.#{$1}.#{$2.downcase}: 1"
+    test_name = $1
+    result = $2
+    if test_name =~ /mpx-mini-test/ && @pmx
+      stats << "x86.#{test_name}.#{@pmx}: 1"
+    else
+      stats << "x86.#{test_name}.#{result.downcase}: 1"
+      @pmx = nil
+    end
   end
 end
 
