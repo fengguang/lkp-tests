@@ -18,16 +18,19 @@ workaround_env()
 }
 workaround_env
 
-if [ "$test" = 'dio' ]; then
+case "$test" in
+dio)
 	[ -z "$mount_points" ] && exit
 	export TMPDIR="${mount_points%% *}"
-elif [ "$test" = 'fs_readonly' ]; then
+	;;
+fs_readonly)
 	[ -z "$fs" ] && exit
 	[ -z "$partitions" ] && exit
 	big_dev="${partitions%% *}"
 	umount $big_dev
 	big_dev_opt="-Z $fs -z $big_dev"
-fi
+	;;
+esac
 
 log_cmd ./runltp -f $test $big_dev_opt || exit
 
