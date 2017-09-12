@@ -30,6 +30,9 @@ test_all()
 {
 	local file
 
+	log_cmd cp -af "$BENCHMARK_ROOT"/mce-test "$mount_points"
+	cd "$mount_points"/mce-test
+
 	cat > $MCE_CASELIST <<EOF
 APEI-INJ cases/function/apei-inj/runtest.sh
 EINJ-EXT cases/function/einj-ext/runtest.sh
@@ -53,7 +56,9 @@ EOF
 	else
 		echo "WARNING: mce-test test results is not exist."
 	fi
+	rm -rf "$mount_points"/mce-test
 
+	cd "$BENCHMARK_ROOT"/mce-test
 	[ "$nr_partitions" -ge 1 ] || exit
 	partition=${partitions%% *}
 
@@ -90,9 +95,6 @@ test_choice()
 {
 	local file
 	log_cmd cp -af "$BENCHMARK_ROOT"/mce-test "$mount_points"
-	#log_cmd umount /tmp; ln -s /opt/rootfs/tmp /tmp
-	#umount /tmp; rm -rf /tmp
-	#ln -s /opt/rootfs/tmp /tmp
 	cd "$mount_points"/mce-test
 	for i in ${mce_case}; do
 		if grep -q "^$i" "$MCE_SCENARIO_DIR"/*; then
