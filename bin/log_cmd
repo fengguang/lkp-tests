@@ -2,6 +2,13 @@
 
 date=$(date +'%F %T')
 echo "$date $@"
-echo "$@" >> $TMP_RESULT_ROOT/reproduce.sh
 
-exec "$@"
+args=''
+for i in "$@"; do
+    i=$(echo "$i" | sed 's/\\/\\\\/g' | sed 's/\"/\\\"/g')
+    args="$args \"${i}\""
+done
+
+echo "$args" >> $TMP_RESULT_ROOT/reproduce.sh
+
+exec /bin/sh -c "$args"
