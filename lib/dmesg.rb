@@ -143,10 +143,10 @@ OOM2 = 'Out of memory and no killable processes...'
 def grep_crash_head(dmesg_file)
   if dmesg_file =~ /\.xz$/
     grep = 'xzgrep'
-    cat = 'xzcat'
+    # cat = 'xzcat'
   else
     grep = 'grep'
-    cat = 'cat'
+    # cat = 'cat'
   end
 
   raw_oops = %x[ #{grep} -a -E -e \\\\+0x -f #{LKP_SRC}/etc/oops-pattern #{dmesg_file} |

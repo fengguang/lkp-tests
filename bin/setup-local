@@ -88,7 +88,7 @@ def create_host_config
     mem_kb = File.open('/proc/meminfo').gets.split[1].to_i
     mem_gb = mem_kb >> 20
     mem_gb = (mem_gb + 3) & 0xfffffffc
-    File.open(host_config, mode = 'w') do |file|
+    File.open(host_config, 'w') do |file|
       file.puts "memory: #{mem_gb}G"
       file.puts "hdd_partitions: #{$opt_hdd.join ' '}"
       file.puts "ssd_partitions: #{$opt_ssd.join ' '}"

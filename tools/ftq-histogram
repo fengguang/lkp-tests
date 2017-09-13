@@ -15,14 +15,12 @@ def read_ftq_data(results_dir)
     n = (rdata =~ /^[^#]/)
     rdata.slice!(0, n)
     sfdata = rdata.split
-    rdata = nil
     sfdata.select!.with_index { |_x, i| i.odd? }
     n = sfdata.size
     ndel = n * PDEL / 100
     sfdata.slice!(n - ndel, ndel)
     sfdata.slice!(0, ndel)
     data.concat(sfdata.map(&:to_i))
-    sfdata = nil
   end
   data
 end

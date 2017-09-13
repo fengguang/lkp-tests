@@ -17,7 +17,7 @@ end
 def expand_yaml_template(yaml, file, context_hash = {})
   yaml = yaml_merge_included_files(yaml, File.dirname(file))
   yaml = literal_double_braces(yaml)
-  yaml = expand_erb(yaml, context_hash)
+  expand_erb(yaml, context_hash)
 end
 
 # template_context should be nil or Hash
@@ -27,7 +27,7 @@ def load_yaml(file, template_context = nil)
 
   begin
     result = YAML.load yaml
-  rescue Psych::SyntaxError => e
+  rescue Psych::SyntaxError
     $stderr.puts "failed to parse file #{file}"
     raise
   end
@@ -133,7 +133,7 @@ class WTMP
     def load(content)
       # FIXME rli9 YAML.load returns false under certain error like empty content
       YAML.load content
-    rescue Psych::SyntaxError => e
+    rescue Psych::SyntaxError
       # FIXME rli9 only do below gsub when error is control characters error
       # error can be below which is caused by server crash, and try to remove non-printable characters to resolve
       #   Psych::SyntaxError: (<unknown>): control characters are not allowed at line 1 column 1
@@ -159,7 +159,7 @@ end
 
 def save_yaml(object, file, compress = false)
   temp_file = dot_file(file) + "-#{$$}"
-  File.open(temp_file, mode = 'w') do |f|
+  File.open(temp_file, 'w') do |f|
     f.write(YAML.dump(object))
   end
   FileUtils.mv temp_file, file, :force => true
@@ -224,7 +224,7 @@ end
 
 def save_json(object, file, compress = false)
   temp_file = dot_file(file) + "-#{$$}"
-  File.open(temp_file, mode = 'w') do |file|
+  File.open(temp_file, 'w') do |file|
     file.write(JSON.pretty_generate(object, :allow_nan => true))
   end
   FileUtils.mv temp_file, file, :force => true
@@ -284,5 +284,5 @@ end
 def load_regular_expressions(file, options = {})
   pattern = File.read(file).split("\n")
   spec  = "#{options[:prefix]}(#{pattern.join('|')})#{options[:suffix]}"
-  regex = Regexp.new spec
+  Regexp.new spec
 end

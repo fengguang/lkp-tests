@@ -410,7 +410,7 @@ module Compare
       if @comparer.filter_kpi_stat_strict_keys
         stat_keys = filter_kpi_stat_strict_keys stat_keys, matrixes_in
       end
-      stat_keys = exclude_stat_keys stat_keys
+      exclude_stat_keys stat_keys
     end
 
     def changed_stat_keys(matrixes_in = nil)

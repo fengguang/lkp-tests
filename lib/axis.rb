@@ -14,7 +14,7 @@ end
 def axis_key_git(axis_key)
   project = axis_key_project(axis_key)
   if project
-    git = Git.open(project: project, may_not_exist: true)
+    Git.open(project: project, may_not_exist: true)
   end
 end
 
