@@ -194,7 +194,7 @@ end
 
 def base_rc_tag(commit)
   commit += '~' if is_linus_commit(commit)
-  version, is_exact_match = last_linus_release_tag commit
+  version, _is_exact_match = last_linus_release_tag commit
   version
 end
 

@@ -205,7 +205,7 @@ module DataStore
       indexes = []
       glob(INDEX_GLOB) do |dir|
         if Dir.exist?(dir)
-          cls_name, name = parse_index_path dir
+          cls_name, _name = parse_index_path dir
           cls = get_the_const(cls_name)
           indexes << cls.new(dir) if cls
         end

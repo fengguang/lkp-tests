@@ -118,14 +118,14 @@ def revise_hash(original, revisions, overwrite_top_keys = true)
       next false
     elsif k[-1] == '+'
       kk = k.chomp '+'
-      parent, pkey, hash, key, keys = lookup_hash(original, kk, true)
+      _parent, _pkey, hash, key, _keys = lookup_hash(original, kk, true)
       hash[key] = merge_accumulative(hash[key], v)
       next false
     end
 
     next true unless k.index('.')
 
-    parent, pkey, hash, key, keys = lookup_hash(original, k, true)
+    _parent, _pkey, hash, key, _keys = lookup_hash(original, k, true)
     hash[key] = v if overwrite_top_keys || hash.object_id != original.object_id || hash[key] == nil
     if hash.object_id != original.object_id
       next false
