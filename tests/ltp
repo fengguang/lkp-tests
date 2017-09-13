@@ -15,6 +15,16 @@ workaround_env()
 	# > netns_childns.sh: 38: .: cmdlib.sh: not found
 	[ "$(cmd_path bash)" = '/bin/bash' ] && [ $(readlink -e /bin/sh) != '/bin/bash' ] &&
 	ln -fs bash /bin/sh
+
+	# install mkisofs which is linked to genisoimage
+	command -v mkisofs || {
+		genisoimage=$(command -v genisoimage)
+		if [ -n "$genisoimage" ]; then
+			log_cmd ln -sf "$genisoimage" /usr/bin/mkisofs
+		else
+			echo "can not install mkisofs"
+		fi
+	}
 }
 workaround_env
 
