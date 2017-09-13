@@ -658,13 +658,13 @@ def stat_key_base(stat)
   stat.partition('.').first
 end
 
-def is_kpi_stat_strict(stat, axes, values = nil)
+def is_kpi_stat_strict(stat, _axes, _values = nil)
   $index_perf.include? stat
 end
 
 $kpi_stat_blacklist = Set.new ['vm-scalability.stddev', 'unixbench.incomplete_result']
 
-def is_kpi_stat(stat, axes, values = nil)
+def is_kpi_stat(stat, _axes, _values = nil)
   return false if $kpi_stat_blacklist.include?(stat)
   base, _, remainder = stat.partition('.')
   all_tests_set.include?(base) && !remainder.start_with?('time.')

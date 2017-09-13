@@ -280,7 +280,7 @@ def sort_matrix(matrix, key)
   m
 end
 
-def save_matrix_as_csv(file, matrix, sep = ' ', header = true, fill = -1)
+def save_matrix_as_csv(file, matrix, sep = ' ', _header = true, fill = -1)
   fill && cols = matrix.map { |_k, v| v.size }.max
   matrix.each do |k, vs|
     vs = Array vs

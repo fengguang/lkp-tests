@@ -20,7 +20,7 @@ module Enumerable
     end
   end
 
-  def fselect(func, &b)
+  def fselect(func, &_b)
     return enum_for(__method__, func) unless block_given?
 
     each do |*args|

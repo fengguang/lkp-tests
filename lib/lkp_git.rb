@@ -161,7 +161,7 @@ def sort_tags(pattern, tags)
   end
 end
 
-def get_tags(pattern, committer)
+def get_tags(pattern, _committer)
   tags = []
   `#{GIT} tag -l`.each_line do |tag|
     tag.chomp!

@@ -612,7 +612,7 @@ class Job
     hash[key] = replace_symbol_keys(output) if output
   end
 
-  def evaluate_param(hash, key, val, script)
+  def evaluate_param(hash, _key, val, script)
     hash = @jobx.merge({___: val})
     expr = File.read script
     expand_expression(hash, expr, script)
@@ -640,7 +640,7 @@ class Job
     top_env
   end
 
-  def run_filter(hash, key, val, script)
+  def run_filter(_hash, _key, _val, script)
     system @filter_env, script, {unsetenv_others: true}
 
     if $?.exitstatus && $?.exitstatus != 0
@@ -787,7 +787,7 @@ class Job
 end
 
 class JobEval < Job
-  def method_missing(method, *args, &block)
+  def method_missing(method, *args, &_block)
     job = @job
     method = method.to_s
     if method.chomp!('=')

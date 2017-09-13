@@ -40,7 +40,7 @@ def shell_escape_expand(val)
   end
 end
 
-def get_program_env(program, env)
+def get_program_env(_program, env)
   program_env = {}
   args = []
 

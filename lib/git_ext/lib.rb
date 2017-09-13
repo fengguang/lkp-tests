@@ -7,7 +7,7 @@ require "#{LKP_SRC}/lib/string_ext"
 
 module Git
   class Lib
-    def command_lines(cmd, opts = [], chdir = true, redirect = '')
+    def command_lines(cmd, opts = [], chdir = true, _redirect = '')
       command_lines = command(cmd, opts, chdir)
 
       # to deal with "GIT error: cat-file ["commit", "9f86262dcc573ca195488de9ec6e4d6d74288ad3"]: invalid byte sequence in US-ASCII"

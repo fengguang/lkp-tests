@@ -343,7 +343,7 @@ module DataStore
   class DateIndex < Index
     include IndexFile
 
-    def score(conditions)
+    def score(_conditions)
       10
     end
 
@@ -462,7 +462,7 @@ module DataStore
       delete_str str, ifn
     end
 
-    def each(conditions, date = nil, &blk)
+    def each(conditions, _date = nil, &blk)
       return enum_for(__method__) unless block_given?
 
       ifn = index_file conditions
@@ -714,7 +714,7 @@ module DataStore
       self
     end
 
-    def unset(key, value)
+    def unset(key, _value)
       @conditions.delete key
       self
     end
