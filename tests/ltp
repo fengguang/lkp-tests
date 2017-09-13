@@ -9,6 +9,8 @@ cd $BENCHMARK_ROOT/ltp || exit
 . $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/upload.sh
 
+export PATH=/lkp/benchmarks/ltp/bin:$PATH
+
 workaround_env()
 {
 	# some LTP sh scripts actually need bash. Fixes
