@@ -1,0 +1,8 @@
+suite: ltp
+testcase: ltp
+category: functional
+
+disk: 1SSD
+ltp:
+  test:
+  - fs_ext4
