@@ -119,4 +119,4 @@ log_cmd fs_mark \
 	-S $sync_method \
 	-s $filesize
 
-log_cmd umount $test_dir
+umount $test_dir >/dev/null
