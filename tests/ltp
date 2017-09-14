@@ -45,7 +45,6 @@ fs_readonly)
 fs_ext4)
 	[ -z "$partitions" ] && exit
 	big_dev="${partitions%% *}"
-	umount $big_dev
 	big_dev_opt="-z $big_dev"
 	;;
 esac
