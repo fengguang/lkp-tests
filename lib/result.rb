@@ -38,6 +38,7 @@ class ResultPath < Hash
     'dpdk-dts' => %w[rootfs dpdk_config dpdk_compiler dpdk_commit run],
     'build-qemu' => %w[qemu_config qemu_commit run],
     'build-nvml' => %w[nvml_commit run],
+    'build-acpica' => %w[acpica_commit test run],
     'kvm-unit-tests-qemu' => %w[path_params tbox_group rootfs kconfig compiler commit qemu_config qemu_commit run],
     'nvml-unit-tests' => %w[path_params tbox_group rootfs kconfig compiler commit nvml_commit run],
     'mbtest' => %w[path_params tbox_group rootfs kconfig compiler commit mbt_commit run],
