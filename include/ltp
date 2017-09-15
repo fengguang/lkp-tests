@@ -1,1 +1,5 @@
-need_kconfig: CONFIG_BLK_DEV_LOOP
+need_kconfig:
+- CONFIG_BLK_DEV_LOOP
+- CONFIG_CAN=m
+- CONFIG_CAN_RAW=m
+- CONFIG_CAN_VCAN=m
