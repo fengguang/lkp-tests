@@ -11,6 +11,22 @@ cd $BENCHMARK_ROOT/ltp || exit
 
 export PATH=/lkp/benchmarks/ltp/bin:$PATH
 
+check_ignored_cases()
+{
+    test=$1
+    local ignored_by_lkp=$LKP_SRC/pack/ltp-addon/ignored_by_lkp
+
+    for i in $(cat "$ignored_by_lkp" | grep -v '^#' | grep -w ^$test)
+    do
+        ignore=$(echo $i | awk -F: '{print $2}')
+        sed -i "s/^${ignore}/#${ignore}/g" runtest/${test}
+        echo "<<<test_start>>>"
+        echo "tag=${ignore}"
+        echo "${ignore} 0 ignored_by_lkp"
+        echo "<<<test_end>>>"
+    done
+}
+
 workaround_env()
 {
 	# some LTP sh scripts actually need bash. Fixes
@@ -56,6 +72,7 @@ fs_ext4)
 	;;
 esac
 
+check_ignored_cases $test
 log_cmd ./runltp -f $test $big_dev_opt || exit
 
 exit_value=$?
