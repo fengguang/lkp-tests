@@ -57,7 +57,8 @@ ltp:
 # Stress test groups, but will not take too long time
   - fs
   - fsx
-  - io_cd
+# io_cd requires special peripheral(/dev/cdrom and media)
+#  - io_cd
   - ltplite
   - net_stress.appl
   - stress.part2
