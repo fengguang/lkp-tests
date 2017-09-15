@@ -31,6 +31,9 @@ workaround_env()
 workaround_env
 
 case "$test" in
+cpuhotplug)
+	mkdir -p /usr/src/linux/
+	;;
 dio)
 	[ -z "$mount_points" ] && exit
 	export TMPDIR="${mount_points%% *}"
