@@ -31,6 +31,10 @@ workaround_env()
 workaround_env
 
 case "$test" in
+admin_tools)
+	# set TMP=/tmp for new user
+	echo "TMP=/tmp" >> /etc/skel/.profile
+	;;
 cpuhotplug)
 	mkdir -p /usr/src/linux/
 	;;
