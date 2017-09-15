@@ -2,3 +2,5 @@
 crashme:f00f
 # su01 want to get USER's password
 admin_tools:su01
+# Cause OOM, deactivate it temporarily.
+syscalls:madvise06
