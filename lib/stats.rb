@@ -446,7 +446,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
     unless is_failure_stat
       # for none-failure stats field, we need asure that
       # at least one matrix has 3 samples.
-      next if cols_a < 3 && cols_b < 3
+      next if cols_a < 3 && cols_b < 3 && !options['whole']
 
       # virtual hosts are dynamic and noisy
       next if options['tbox_group'] =~ /^vh-/
