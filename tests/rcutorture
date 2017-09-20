@@ -1,12 +1,20 @@
 #!/bin/sh
 # - runtime
+# - test
 
 ## creates an rcutorture kernel module that can be loaded to
 ## run a torture test.
 
 . $LKP_SRC/lib/debug.sh
 
-log_cmd modprobe rcutorture ||
+args=""
+case "$test" in
+cpuhotplug)
+        args=${args}" onoff_interval=3 onoff_holdoff=30"
+        ;;
+esac
+
+log_cmd modprobe rcutorture $args ||
 die "failed to load rcutorture module, try to enable CONFIG_RCU_TORTURE_TEST and build rcutorture.ko"
 
 log_cmd sleep $runtime

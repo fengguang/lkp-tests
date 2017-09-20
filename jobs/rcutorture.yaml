@@ -5,3 +5,6 @@ category: functional
 runtime: 300s
 
 rcutorture:
+  test:
+  - default
+  - cpuhotplug
