@@ -1,0 +1,178 @@
+2017-09-20 12:15:15 make run_tests -C futex
+make: Entering directory '/usr/src/linux-selftests-x86_64-rhel-7.2-2bd6bf03f4c1c59381d62c61d03f6cc3fe71f66e/tools/testing/selftests/futex'
+for DIR in functional; do		\
+	BUILD_TARGET=/usr/src/linux-selftests-x86_64-rhel-7.2-2bd6bf03f4c1c59381d62c61d03f6cc3fe71f66e/tools/testing/selftests/futex/$DIR;	\
+	mkdir $BUILD_TARGET  -p;	\
+	make OUTPUT=$BUILD_TARGET -C $DIR all;\
+done
+make[1]: Entering directory '/usr/src/linux-selftests-x86_64-rhel-7.2-2bd6bf03f4c1c59381d62c61d03f6cc3fe71f66e/tools/testing/selftests/futex/functional'
+gcc  -g -O2 -Wall -D_GNU_SOURCE -pthread -I../include -I../../   -pthread -lrt  futex_wait_timeout.c ../include/futextest.h ../include/atomic.h ../include/logging.h  -o /usr/src/linux-selftests-x86_64-rhel-7.2-2bd6bf03f4c1c59381d62c61d03f6cc3fe71f66e/tools/testing/selftests/futex/functional/futex_wait_timeout
+gcc  -g -O2 -Wall -D_GNU_SOURCE -pthread -I../include -I../../   -pthread -lrt  futex_wait_wouldblock.c ../include/futextest.h ../include/atomic.h ../include/logging.h  -o /usr/src/linux-selftests-x86_64-rhel-7.2-2bd6bf03f4c1c59381d62c61d03f6cc3fe71f66e/tools/testing/selftests/futex/functional/futex_wait_wouldblock
+gcc  -g -O2 -Wall -D_GNU_SOURCE -pthread -I../include -I../../   -pthread -lrt  futex_requeue_pi.c ../include/futextest.h ../include/atomic.h ../include/logging.h  -o /usr/src/linux-selftests-x86_64-rhel-7.2-2bd6bf03f4c1c59381d62c61d03f6cc3fe71f66e/tools/testing/selftests/futex/functional/futex_requeue_pi
+gcc  -g -O2 -Wall -D_GNU_SOURCE -pthread -I../include -I../../   -pthread -lrt  futex_requeue_pi_signal_restart.c ../include/futextest.h ../include/atomic.h ../include/logging.h  -o /usr/src/linux-selftests-x86_64-rhel-7.2-2bd6bf03f4c1c59381d62c61d03f6cc3fe71f66e/tools/testing/selftests/futex/functional/futex_requeue_pi_signal_restart
+gcc  -g -O2 -Wall -D_GNU_SOURCE -pthread -I../include -I../../   -pthread -lrt  futex_requeue_pi_mismatched_ops.c ../include/futextest.h ../include/atomic.h ../include/logging.h  -o /usr/src/linux-selftests-x86_64-rhel-7.2-2bd6bf03f4c1c59381d62c61d03f6cc3fe71f66e/tools/testing/selftests/futex/functional/futex_requeue_pi_mismatched_ops
+gcc  -g -O2 -Wall -D_GNU_SOURCE -pthread -I../include -I../../   -pthread -lrt  futex_wait_uninitialized_heap.c ../include/futextest.h ../include/atomic.h ../include/logging.h  -o /usr/src/linux-selftests-x86_64-rhel-7.2-2bd6bf03f4c1c59381d62c61d03f6cc3fe71f66e/tools/testing/selftests/futex/functional/futex_wait_uninitialized_heap
+gcc  -g -O2 -Wall -D_GNU_SOURCE -pthread -I../include -I../../   -pthread -lrt  futex_wait_private_mapped_file.c ../include/futextest.h ../include/atomic.h ../include/logging.h  -o /usr/src/linux-selftests-x86_64-rhel-7.2-2bd6bf03f4c1c59381d62c61d03f6cc3fe71f66e/tools/testing/selftests/futex/functional/futex_wait_private_mapped_file
+make[1]: Leaving directory '/usr/src/linux-selftests-x86_64-rhel-7.2-2bd6bf03f4c1c59381d62c61d03f6cc3fe71f66e/tools/testing/selftests/futex/functional'
+/usr/src/linux-selftests-x86_64-rhel-7.2-2bd6bf03f4c1c59381d62c61d03f6cc3fe71f66e/tools/testing/selftests/futex/run.sh
+tput: No value for $TERM and no -T specified
+tput: No value for $TERM and no -T specified
+
+TAP version 13
+# futex_requeue_pi: Test requeue functionality
+# 	Arguments: broadcast=0 locked=0 owner=0 timeout=0ns
+ok 1 futex-requeue-pi
+Pass 1 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+1..1
+TAP version 13
+# futex_requeue_pi: Test requeue functionality
+# 	Arguments: broadcast=1 locked=0 owner=0 timeout=0ns
+ok 1 futex-requeue-pi
+Pass 1 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+1..1
+TAP version 13
+# futex_requeue_pi: Test requeue functionality
+# 	Arguments: broadcast=1 locked=1 owner=0 timeout=0ns
+ok 1 futex-requeue-pi
+Pass 1 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+1..1
+TAP version 13
+# futex_requeue_pi: Test requeue functionality
+# 	Arguments: broadcast=1 locked=0 owner=1 timeout=0ns
+ok 1 futex-requeue-pi
+Pass 1 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+1..1
+TAP version 13
+# futex_requeue_pi: Test requeue functionality
+# 	Arguments: broadcast=0 locked=1 owner=0 timeout=0ns
+ok 1 futex-requeue-pi
+Pass 1 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+1..1
+TAP version 13
+# futex_requeue_pi: Test requeue functionality
+# 	Arguments: broadcast=0 locked=0 owner=1 timeout=0ns
+ok 1 futex-requeue-pi
+Pass 1 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+1..1
+TAP version 13
+# futex_requeue_pi: Test requeue functionality
+# 	Arguments: broadcast=1 locked=1 owner=0 timeout=5000ns
+ok 1 futex-requeue-pi
+Pass 1 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+1..1
+TAP version 13
+# futex_requeue_pi: Test requeue functionality
+# 	Arguments: broadcast=0 locked=1 owner=0 timeout=5000ns
+ok 1 futex-requeue-pi
+Pass 1 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+1..1
+TAP version 13
+# futex_requeue_pi: Test requeue functionality
+# 	Arguments: broadcast=1 locked=1 owner=0 timeout=500000ns
+ok 1 futex-requeue-pi
+Pass 1 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+1..1
+TAP version 13
+# futex_requeue_pi: Test requeue functionality
+# 	Arguments: broadcast=0 locked=1 owner=0 timeout=500000ns
+ok 1 futex-requeue-pi
+Pass 1 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+1..1
+TAP version 13
+# futex_requeue_pi: Test requeue functionality
+# 	Arguments: broadcast=1 locked=0 owner=0 timeout=5000ns
+ok 1 futex-requeue-pi
+Pass 1 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+1..1
+TAP version 13
+# futex_requeue_pi: Test requeue functionality
+# 	Arguments: broadcast=0 locked=0 owner=0 timeout=5000ns
+ok 1 futex-requeue-pi
+Pass 1 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+1..1
+TAP version 13
+# futex_requeue_pi: Test requeue functionality
+# 	Arguments: broadcast=1 locked=0 owner=0 timeout=500000ns
+ok 1 futex-requeue-pi
+Pass 1 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+1..1
+TAP version 13
+# futex_requeue_pi: Test requeue functionality
+# 	Arguments: broadcast=0 locked=0 owner=0 timeout=500000ns
+ok 1 futex-requeue-pi
+Pass 1 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+1..1
+TAP version 13
+# futex_requeue_pi: Test requeue functionality
+# 	Arguments: broadcast=1 locked=0 owner=1 timeout=5000ns
+ok 1 futex-requeue-pi
+Pass 1 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+1..1
+TAP version 13
+# futex_requeue_pi: Test requeue functionality
+# 	Arguments: broadcast=0 locked=1 owner=0 timeout=5000ns
+ok 1 futex-requeue-pi
+Pass 1 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+1..1
+TAP version 13
+# futex_requeue_pi: Test requeue functionality
+# 	Arguments: broadcast=1 locked=0 owner=1 timeout=500000ns
+ok 1 futex-requeue-pi
+Pass 1 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+1..1
+TAP version 13
+# futex_requeue_pi: Test requeue functionality
+# 	Arguments: broadcast=0 locked=1 owner=0 timeout=500000ns
+ok 1 futex-requeue-pi
+Pass 1 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+1..1
+TAP version 13
+# futex_requeue_pi: Test requeue functionality
+# 	Arguments: broadcast=1 locked=1 owner=0 timeout=2000000000ns
+ok 1 futex-requeue-pi
+Pass 1 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+1..1
+TAP version 13
+# futex_requeue_pi: Test requeue functionality
+# 	Arguments: broadcast=0 locked=1 owner=0 timeout=2000000000ns
+ok 1 futex-requeue-pi
+Pass 1 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+1..1
+
+TAP version 13
+# futex_requeue_pi_mismatched_ops: Detect mismatched requeue_pi operations
+ok 1 futex-requeue-pi-mismatched-ops
+Pass 1 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+1..1
+
+TAP version 13
+# futex_requeue_pi_signal_restart: Test signal handling during requeue_pi
+# 	Arguments: <none>
+ok 1 futex-requeue-pi-signal-restart
+Pass 1 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+1..1
+
+TAP version 13
+# futex_wait_timeout: Block on a futex and wait for timeout
+# 	Arguments: timeout=100000ns
+ok 1 futex-wait-timeout
+Pass 1 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+1..1
+
+TAP version 13
+# futex_wait_wouldblock: Test the unexpected futex value in FUTEX_WAIT
+ok 1 futex-wait-wouldblock
+Pass 1 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+1..1
+
+TAP version 13
+# futex_wait_uninitialized_heap: Test the uninitialized futex value in FUTEX_WAIT
+ok 1 futex-wait-uninitialized-heap
+Pass 1 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+1..1
+TAP version 13
+# futex_wait_private_mapped_file: Test the futex value of private file mappings in FUTEX_WAIT
+ok 1 futex-wait-private-mapped-file
+Pass 1 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+1..1
+make: Leaving directory '/usr/src/linux-selftests-x86_64-rhel-7.2-2bd6bf03f4c1c59381d62c61d03f6cc3fe71f66e/tools/testing/selftests/futex'
