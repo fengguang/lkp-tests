@@ -50,6 +50,8 @@ case "$test" in
 admin_tools)
 	# set TMP=/tmp for new user
 	echo "TMP=/tmp" >> /etc/skel/.profile
+	# the cron.allow in debian is "/etc/cron.allow", same as redhat
+	grep -q debian /etc/os-release && export MACHTYPE=x86_64-redhat-linux
 	;;
 cpuhotplug)
 	mkdir -p /usr/src/linux/
