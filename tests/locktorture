@@ -1,5 +1,6 @@
 #!/bin/sh
 # - runtime
+# - test
 
 ## The tests periodically output status messages via printk(),
 ## which can be examined via the dmesg (perhaps grepping for "torture")
@@ -7,9 +8,18 @@
 
 . $LKP_SRC/lib/debug.sh
 
-log_cmd modprobe locktorture ||
+args=""
+case "$test" in
+cpuhotplug)
+        args=${args}" onoff_interval=3 onoff_holdoff=30"
+        ;;
+esac
+
+log_cmd modprobe locktorture $args ||
 die "failed to load locktorture module, try to enable CONFIG_LOCK_TORTURE_TEST and build locktorture.ko"
 
 log_cmd sleep $runtime
 
 log_cmd rmmod locktorture
+
+dmesg | grep torture:
