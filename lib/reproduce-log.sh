@@ -19,6 +19,12 @@ log_cmd()
 	"$@"
 }
 
+log_bg_cmd()
+{
+	log_echo "$@ &"
+	"$@" &
+}
+
 log_test()
 {
 	log_echo "$exec_prefix" "$@"
