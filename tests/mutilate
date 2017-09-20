@@ -1,29 +1,44 @@
 #!/bin/bash
-# - agent
-# - server
 # - master_threads
+# - agent_threads
 # - runtime
 
 . "$LKP_SRC/lib/reproduce-log.sh"
 
-: "${server:=localhost}"
 : "${runtime:=300}"
+
+[ -n "$direct_server_ips" ] && server=$direct_server_ips
+[ -z "$server" ] && {
+	if [ "$ip" = 'ipv6' ]; then
+		server=::1
+	else
+		server=127.0.0.1
+	fi
+}
+server=${server%% *}
+
 
 set_opt()
 {
 	opt=
-	[ -n "$agent" ] && opt="${opt} -a ${agent}"
+	[ -n "$agent_threads" ] && opt="${opt} -a localhost"
+}
+
+run_agent()
+{
+	if [ -n "$agent_threads" ] && [ "$agent_threads" -ne "0" ]; then
+		log_bg_cmd mutilate -T "$agent_threads" -A
+		agent_pid=$!
+	fi
 }
 
 run_mutilate()
 {
-	log_cmd /usr/local/bin/mutilate -T "$master_threads" -s "$server" -t "$runtime" "$opt"
+	log_cmd mutilate -T "$master_threads" -s "$server" -t "$runtime" "$opt"
 }
 
 set_opt
-
+run_agent
 run_mutilate
 
-kill "$(cat /tmp/memcached.pid)"
-
-pgrep mutilate | xargs kill -9
+[ -n "$agent_pid" ] && kill "$agent_pid"
