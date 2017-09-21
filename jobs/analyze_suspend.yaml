@@ -1,0 +1,14 @@
+suite: analyze_suspend
+testcase: analyze_suspend
+category: functional
+kernel_cmdline: "initcall_debug log_buf_len=4M no_console_suspend ignore_loglevel"
+
+runtime: 300s
+option: -dev
+multi: 10
+rtcwake: 30
+
+analyze_suspend:
+  mode:
+  - mem
+  - freeze

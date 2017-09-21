@@ -283,7 +283,7 @@ class MResultRootTableSet
      'tpcc', 'mytest', 'exit_free', 'pgbench', 'boot_trace', 'sysbench-cpu',
      'sysbench-memory', 'sysbench-threads', 'sysbench-mutex', 'stream']
   LINUX_TESTCASES =
-    ['boot', 'cpu-hotplug', 'ext4-frags', 'ftq', 'ftrace_onoff', 'fwq',
+    ['analyze_suspend', 'boot', 'cpu-hotplug', 'ext4-frags', 'ftq', 'ftrace_onoff', 'fwq',
      'galileo', 'irda-kernel', 'kernel_selftests', 'kvm-unit-tests', 'kvm-unit-tests-qemu',
      'locktorture', 'mce-test', 'otc_ddt', 'piglit', 'pm-qa', 'nvml-unit-tests',
      'qemu', 'rcutorture', 'suspend', 'trinity', 'ndctl', 'nfs-test', 'hwsim', 'idle-inject',

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+download()
+{
+	git_clone_update https://github.com/01org/pm-graph.git
+}
+
+install()
+{
+	cp -a analyze_suspend.py $BM_ROOT
+}

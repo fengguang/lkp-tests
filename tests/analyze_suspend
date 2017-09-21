@@ -1,0 +1,30 @@
+#!/bin/bash
+# - mode
+# - runtime
+# - option (none/-f/-dev)
+# - multi
+# - rtcwake
+
+. $LKP_SRC/lib/upload.sh
+
+export PATH=/lkp/benchmarks/analyze_suspend:$PATH
+
+echo options: mode: $mode, runtime: $runtime, rtcwake: $rtcwake, multi: $multi, option: $option
+options=""
+[ -n "$mode" ] || mode='freeze'
+[ -n "$runtime" ] || runtime=600
+[ -n "$rtcwake" ] || rtcwake=30
+if [ -z "$multi" ]
+then
+	options="-m $mode $option -rtcwake $rtcwake"
+else
+	options="-m $mode $option -multi $multi $rtcwake"
+fi
+
+echo analyze_suspend test started
+echo Command: analyze_suspend.py $options
+analyze_suspend.py $options
+
+upload_files -t result ./suspend-*
+
+echo analyze_suspend test done
