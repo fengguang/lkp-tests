@@ -111,3 +111,11 @@ subtest_in_skip_filter()
 	local filter=$@
 	echo "$filter" | grep -w -q "$subtest" && echo "ignored_by_lkp $subtest test"
 }
+
+fixup_memfd()
+{
+	# before v4.13-rc1, we need to compile fuse_mnt first
+	# check whether there is target "fuse_mnt" at Makefile
+	grep -wq '^fuse_mnt:' $subtest/Makefile || return 0
+	make fuse_mnt -C $subtest
+}
