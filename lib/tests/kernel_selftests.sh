@@ -114,6 +114,11 @@ subtest_in_skip_filter()
 
 fixup_memfd()
 {
+	# at v4.14-rc1, it introduces run_tests.sh, which doesn't have execute permission
+	# here is to fix the permission
+	[[ -f $subtest/run_tests.sh ]] && {
+		[[ -x $subtest/run_tests.sh ]] || chmod +x $subtest/run_tests.sh
+	}
 	# before v4.13-rc1, we need to compile fuse_mnt first
 	# check whether there is target "fuse_mnt" at Makefile
 	grep -wq '^fuse_mnt:' $subtest/Makefile || return 0
