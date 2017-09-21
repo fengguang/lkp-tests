@@ -6,6 +6,7 @@ require 'shellwords'
 describe 'log_cmd' do
   let(:log_cmd) { "#{LKP_SRC}/bin/log_cmd " }
   before(:all) do
+    @pwd = Dir.pwd
     @tmp_dir = Dir.mktmpdir
     FileUtils.chmod 'go+rwx', @tmp_dir
     Dir.chdir(@tmp_dir)
@@ -50,5 +51,6 @@ describe 'log_cmd' do
 
   after(:all) do
     Dir.delete(@tmp_dir)
+    Dir.chdir(@pwd)
   end
 end
