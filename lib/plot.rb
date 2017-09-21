@@ -11,6 +11,14 @@ PLOT_SIZE_X = 80
 PLOT_SIZE_Y = 20
 NR_PLOT = 1
 
+module Gnuplot
+  # fallback to v2.4.1 to avoid circular dependency and potential dead lock
+  def self.open(persist = true)
+    cmd = Gnuplot.gnuplot(persist) or raise 'gnuplot not found'
+    IO.popen(cmd, 'w') { |io| yield io }
+  end
+end
+
 def mmplot(matrix1, matrix2, fields, title_prefix = nil)
   files = []
   Gnuplot.open do |gnuplot|
