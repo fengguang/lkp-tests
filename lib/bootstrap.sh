@@ -382,6 +382,7 @@ tbox_cant_kexec()
 
 	# following tbox are buggy while using kexec to boot
 	[ "${HOSTNAME#*lkp-g5}"		!= "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-ivb-toshiba1}"	!= "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-glk01}"	!= "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-bxt01}"	!= "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-denverton2}"	!= "$HOSTNAME" ] && return 0
