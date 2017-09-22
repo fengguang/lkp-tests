@@ -33,6 +33,8 @@ then
 	LKP_DEFAULT_KERNEL=$cur_kernel
 	LKP_GRUB_DEFAULT="Advanced options for Ubuntu>Ubuntu, with Linux $LKP_DEFAULT_KERNEL"
 	echo $LKP_DEFAULT_KERNEL > $LKP_DIR/LKP_DEFAULT_KERNEL
+	# Make sure LKP_DEFAULT_KERNEL is loaded after Job finished
+	sed -i "/GRUB_DEFAULT=/s#.*#GRUB_DEFAULT=\"$LKP_GRUB_DEFAULT\"#" /etc/default/grub
 else
 	LKP_DEFAULT_KERNEL=$(cat $LKP_DIR/LKP_DEFAULT_KERNEL)
 	LKP_GRUB_DEFAULT="Advanced options for Ubuntu>Ubuntu, with Linux $LKP_DEFAULT_KERNEL"
@@ -188,9 +190,6 @@ fi
 
 	cp $LKP_JOB_DIR/$initrd /boot/
 	cp $LKP_JOB_DIR/$kernel /boot/
-
-	# Make sure LKP_DEFAULT_KERNEL is loaded after Job finished
-	sed -i "/GRUB_DEFAULT=/s#.*#GRUB_DEFAULT=\"$LKP_GRUB_DEFAULT\"#" /etc/default/grub
 
 	# Reboot to LKP job kernel next time
 	grub-reboot "Advanced options for Ubuntu>Ubuntu, with Linux $version"
