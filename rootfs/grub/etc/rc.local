@@ -57,15 +57,22 @@ fi
 	network="down"
 	while [ $network = "down" ]
 	do
-		interface=$(ip -o route | grep  default | awk '{print $NF}')
-		if [ "$interface" = "" ] || [ ! -d /sys/class/net/$interface ]
-		then 
+		for interface in $(ls /sys/class/net/)
+		do
+			ip -o route | grep default | grep $interface > /dev/null
+			[ $? -eq 0 ] || continue
+			network=$interface
+			break
+		done
+
+		if [ ! -d /sys/class/net/$network ]
+		then
+			network="down"
 			lkp_log "network down, try again after 10 seconds ..."
 			sleep 10
 		else
-			network="up"			
-			mac=$(cat /sys/class/net/$interface/address)
-			lkp_log "network up. (Interface: $interface, Mac: $mac)"
+			mac=$(cat /sys/class/net/$network/address)
+			lkp_log "network up. (Interface: $network, Mac: $mac)"
 			LKP_CONFIG_FILE="ipxe.cgi?mac=$mac&lkp_wtmp"
 			#LKP_CONFIG_FILE="gpxelinux.cgi?mac=$mac&lkp_wtmp"
 			LKP_CONFIG_URL=$LKP_SERVER/~lkp/cgi-bin/$LKP_CONFIG_FILE
