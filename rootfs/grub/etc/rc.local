@@ -50,6 +50,8 @@ else
 	echo "This is in LKP Default kernel"
 fi
 
+cat /proc/cmdline | grep "lkp_grub=off" > /dev/null
+[ $? -eq 0 ] && exit 0
 
 (
 	lkp_log()
@@ -205,8 +207,9 @@ fi
 	lkp_log ""
 	lkp_log ""
 	# we have a chance to stop rebooting after boot in case there are some problems
-	sleep 100
-	reboot
+
+	cat /proc/cmdline | grep "lkp_grub=noreboot" > /dev/null
+	[ $? -eq 0 ] || reboot
 )&
 
 exit 0
