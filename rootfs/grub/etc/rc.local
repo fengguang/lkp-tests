@@ -13,8 +13,6 @@
 
 LKP_SERVER=http://192.168.1.1
 
-LKP_DEFAULT_KERNEL="4.4.0-62-generic"
-
 #####################################################################
 # None of below needs to be changed, when setting up a new test box #
 #####################################################################
@@ -24,11 +22,21 @@ LKP_JOB_DIR=$LKP_DIR/job
 LKP_PJOB_DIR=$LKP_DIR/pjob
 LKP_LOG_FILE=$LKP_DIR/log
 
-LKP_GRUB_DEFAULT="Advanced options for Ubuntu>Ubuntu, with Linux $LKP_DEFAULT_KERNEL"
-
 echo "In /etc/rc.local"
 
+[ ! -d $LKP_DIR ] && mkdir -p $LKP_DIR
+
 cur_kernel=$(uname -r)
+
+if [ ! -f $LKP_DIR/LKP_DEFAULT_KERNEL ]
+then
+	LKP_DEFAULT_KERNEL=$cur_kernel
+	LKP_GRUB_DEFAULT="Advanced options for Ubuntu>Ubuntu, with Linux $LKP_DEFAULT_KERNEL"
+	echo $LKP_DEFAULT_KERNEL > $LKP_DIR/LKP_DEFAULT_KERNEL
+else
+	LKP_DEFAULT_KERNEL=$(cat $LKP_DIR/LKP_DEFAULT_KERNEL)
+	LKP_GRUB_DEFAULT="Advanced options for Ubuntu>Ubuntu, with Linux $LKP_DEFAULT_KERNEL"
+fi
 
 echo "current kernel: $cur_kernel, default kernel: $LKP_DEFAULT_KERNEL"
 
@@ -40,8 +48,6 @@ else
 	echo "This is in LKP Default kernel"
 fi
 
-
-[ ! -d $LKP_DIR ] && mkdir -p $LKP_DIR
 
 (
 	lkp_log()
