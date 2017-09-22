@@ -199,7 +199,7 @@ cat /proc/cmdline | grep "lkp_grub=off" > /dev/null
 	update-grub
 
 	# Override the grub default kernel parameters to Job kernel parameters
-	sed -i "/vmlinuz-$version/s#.*#		linux	/boot/vmlinuz-$version $option#" /boot/grub/grub.cfg
+	sed -i "/vmlinuz-$version /s#.*#		linux	/boot/vmlinuz-$version $option#" /boot/grub/grub.cfg
 
 	lkp_log ""
 	lkp_log "Rebooting to $version"
