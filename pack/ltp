@@ -82,3 +82,8 @@ install()
     cd ../numactl || exit
     install_numactl || exit
 }
+
+strip_object_files()
+{
+    :
+}
