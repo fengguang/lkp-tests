@@ -2,14 +2,17 @@ suite: mutilate
 testcase: mutilate
 category: benchmark
 
-mutilate-setup:
-  agent_threads: 25%
-  memcached_memsize: 80%
-  use_hugetlbfs:
-    - 1
-    - 0
+cluster: cs-localhost
 
-mutilate:
-  server: localhost
-  master_threads: 75%
-  agent: localhost
+if role server:
+  memcached-setup:
+    memcached_memsize: 80%
+    use_hugetlbfs:
+      - 1
+      - 0
+
+if role client:
+  mutilate:
+    master_threads: 75%
+    agent_threads: 25%
+    runtime: 300
