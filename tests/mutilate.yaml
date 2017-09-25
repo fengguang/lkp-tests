@@ -10,9 +10,8 @@ homepage:
  https://github.com/leverich/mutilate
 
 parameters:
- agent: mutilate agent
- server: memcached server ip address or host name
  master_threads: number of thread in mutilate master
+ agent_threads: number of thread in mutilate agent
  runtime: total runtime the benchmark run
 
 results:
