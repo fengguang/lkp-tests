@@ -9,7 +9,14 @@ BUG .* \(.*\): .*
 Oops: .*
 WARNING: at .*
 WARNING: CPU: [0-9]+ PID: [0-9]+ at .*
-WARNING: possible recursive locking detected
+WARNING: .*!$
+WARNING: .* lock.*
+WARNING: .* detected$
+WARNING: chain_key collision
+WARNING: suspicious RCU usage
+WARNING: kernel stack
+WARNING: dead process
+WARNING: workqueue cpumask:
 INFO: .*detected stall.*
 INFO: .* cpu=.*
 INFO: Slab 0x.*
