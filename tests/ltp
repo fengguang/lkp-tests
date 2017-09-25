@@ -72,10 +72,18 @@ fs_ext4)
 	big_dev="${partitions%% *}"
 	big_dev_opt="-z $big_dev"
 	;;
+ltp-aiodio.part4)
+	[ -z "$partitions" ] && exit
+	ltp_partition="${partitions%% *}"
+	mount_point=/fs/$(basename $ltp_partition)
+
+	mkdir -p $mount_point/tmpdir || exit
+	tmpdir_opt="-d $mount_point/tmpdir"
+	;;
 esac
 
 check_ignored_cases $test
-log_cmd ./runltp -f $test $big_dev_opt || exit
+log_cmd ./runltp -f $test $big_dev_opt $tmpdir_opt || exit
 
 exit_value=$?
 
