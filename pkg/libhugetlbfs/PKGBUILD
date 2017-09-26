@@ -1,0 +1,31 @@
+pkgname=libhugetlbfs
+pkgver=2.19
+pkgrel=1
+pkgdesc='interacts with the Linux hugetlbfs to make large pages available to applications in a transparent manner.'
+url='https://github.com/libhugetlbfs/libhugetlbfs'
+arch=(i686 x86_64)
+license=(GPL)
+source=(https://github.com/libhugetlbfs/libhugetlbfs.git)
+md5sums=('SKIP')
+
+_options='BUILDTYPE=NATIVEONLY'
+if [ "$CARCH" = "x86_64" ]; then
+  _options="$_options LIB32= LIB64=lib"
+else
+  _options="$_options LIB32=lib LIB64="
+fi
+
+build() {
+  cd libhugetlbfs
+  make $_options
+}
+
+check() {
+  cd libhugetlbfs
+  make $_options check
+}
+
+package() {
+  cd libhugetlbfs
+  make DESTDIR="$pkgdir" PREFIX=/usr install $_options
+}
