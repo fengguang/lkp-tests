@@ -344,7 +344,7 @@ class Job
         prefix += b
       end
 
-      load_one['OTHERS'] if hit == nil
+      load_one['OTHERS'] if hit.nil?
       load_one['ALL']
     end
 
@@ -442,7 +442,7 @@ class Job
         head = $1.lstrip
         tail = $3.chomp.rstrip
         expr = expand_expression(@job, $2, k)
-        return if expr == nil
+        return if expr.nil?
         if head.empty? && tail.empty?
           h[k] = expr
         else

@@ -68,8 +68,8 @@ else
 end
 
 matrix1, matrix2 = load_matrices_to_compare path1, path2
-exit if matrix1 == nil
-exit if matrix2 == nil
+exit if matrix1.nil?
+exit if matrix2.nil?
 
 if ARGV[0]
   changed_fields = ARGV

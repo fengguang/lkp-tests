@@ -10,7 +10,7 @@ def lookup_hash(hash, path, create_missing = false)
   loop do
     k = keys.shift
     v = hash[k]
-    if create_missing && v == nil
+    if create_missing && v.nil?
       v = hash[k] = keys.empty? ? nil : Hash.new
     end
     if Hash === v && !keys.empty?
@@ -126,7 +126,7 @@ def revise_hash(original, revisions, overwrite_top_keys = true)
     next true unless k.index('.')
 
     _parent, _pkey, hash, key, _keys = lookup_hash(original, k, true)
-    hash[key] = v if overwrite_top_keys || hash.object_id != original.object_id || hash[key] == nil
+    hash[key] = v if overwrite_top_keys || hash.object_id != original.object_id || hash[key].nil?
     if hash.object_id != original.object_id
       next false
     else

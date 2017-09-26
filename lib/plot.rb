@@ -39,7 +39,7 @@ def mmplot(matrix1, matrix2, fields, title_prefix = nil)
           end
         end
 
-        return nil if ds1 == nil && ds2 == nil
+        return nil if ds1.nil? && ds2.nil?
 
         normalized_field = field.tr('^a-zA-Z0-9_.:+=-', '_')
         if $opt_output_path

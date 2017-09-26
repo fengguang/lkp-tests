@@ -44,7 +44,7 @@ def get_program_env(_program, env)
   program_env = {}
   args = []
 
-  if env == nil || @cur_func == :extract_stats
+  if env.nil? || @cur_func == :extract_stats
     return program_env, args
   end
 
@@ -71,8 +71,8 @@ end
 
 class Job2sh < Job
   def out_line(line = nil)
-    if line == nil
-      return if @script_lines[-1] == nil
+    if line.nil?
+      return if @script_lines[-1].nil?
       return if @script_lines[-1] =~ /^[\s{]*$/
       return if @script_lines[-1] =~ /^\s*(then|do)$/
     end

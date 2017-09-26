@@ -256,7 +256,7 @@ def add_stats(path)
     return
   end
   field_value = get_json_field(stats_json, $opt_field, is_rt)
-  if field_value == nil || field_value == ''
+  if field_value.nil? || field_value == ''
     # $stderr.puts "#{stats_json}: no such field: #{$opt_field}"
     field_value = 0
   end

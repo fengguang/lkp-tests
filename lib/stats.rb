@@ -185,7 +185,7 @@ def sort_stats(stat_records)
 end
 
 def matrix_cols(hash_of_array)
-  if hash_of_array == nil
+  if hash_of_array.nil?
     0
   elsif hash_of_array.empty?
     0
@@ -612,7 +612,7 @@ def get_changed_stats(matrix_path1, matrix_path2 = nil, options = {})
   end
 
   a, b = load_matrices_to_compare matrix_path1, matrix_path2, options
-  return nil if a == nil || b == nil
+  return nil if a.nil? || b.nil?
 
   _get_changed_stats(a, b, options)
 end
