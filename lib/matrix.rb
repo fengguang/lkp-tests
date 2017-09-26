@@ -12,7 +12,7 @@ require "#{LKP_SRC}/lib/run-env"
 def is_event_counter(name)
   $event_counter_prefixes ||= File.read("#{LKP_SRC}/etc/event-counter-prefixes").split
   $event_counter_prefixes.each do |prefix|
-    return true if name.index(prefix) == 0
+    return true if name.index(prefix).zero?
   end
   false
 end

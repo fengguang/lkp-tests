@@ -738,14 +738,14 @@ module Compare
     abs_changes = stat[ABS_CHANGES]
     runs = stat[RUNS]
     fails.each_with_index do |f, i|
-      unless i == 0
+      unless i.zero?
         if abs_changes
           printf "%#{REL_WIDTH}.0f  ", changes[i - 1]
         else
           printf "%#{REL_WIDTH}.0f%% ", changes[i - 1]
         end
       end
-      if f == 0
+      if f.zero?
         printf "%#{ABS_WIDTH + 1}s", ' '
       else
         printf "%#{ABS_WIDTH + 1}d", f
@@ -761,7 +761,7 @@ module Compare
     changes = stat[CHANGES]
     abs_changes = stat[ABS_CHANGES]
     avgs.each_with_index do |avg, i|
-      unless i == 0
+      unless i.zero?
         p = changes[i - 1]
         fmt = p.abs < 100000 ? '.1f' : '.2g'
         if abs_changes

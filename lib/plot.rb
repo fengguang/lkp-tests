@@ -175,7 +175,7 @@ class MMatrixPlotter < MatrixPlotterBase
           end
         end
         y_size = y_max - y_min
-        y_size = y_min if y_size == 0
+        y_size = y_min if y_size.zero?
         y_min -= y_size * @y_margin
         y_max += y_size * @y_margin
         y_min = @y_range[0] || y_min
@@ -207,7 +207,7 @@ class MatrixPlotter < MatrixPlotterBase
             file = @output_prefix + normalized_field
             setup_output p, file
           else
-            if np % @nr_plot == 0
+            if (np % @nr_plot).zero?
               p.terminal 'dumb nofeed size %d,%d' % @char_size
               p.multiplot "layout 1,#{@nr_plot}"
             end

@@ -47,7 +47,7 @@ def __is_perf_metric(name)
   return true if name =~ $perf_metrics_re
 
   $perf_metrics_prefixes.each do |prefix|
-    return true if name.index(prefix) == 0
+    return true if name.index(prefix).zero?
   end
 
   false
@@ -480,7 +480,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
 
     if options['regression-only'] || options['all-critical']
       if is_failure_stat
-        if max_a == 0
+        if max_a.zero?
           has_boot_fix = true if k =~ /^dmesg\./
           next if options['regression-only'] ||
                   (k !~ $kill_pattern_whitelist_re && options['all-critical'])

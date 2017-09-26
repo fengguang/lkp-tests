@@ -32,7 +32,7 @@ class IrqAnalysis
       @softirq_time += array.inject(0, :+)
     end
 
-    return if @irq_nr == 0 && @softirq_nr == 0
+    return if @irq_nr.zero? && @softirq_nr.zero?
 
     puts "irq_nr: #{@irq_nr}"
     puts "softirq_nr: #{@softirq_nr}"

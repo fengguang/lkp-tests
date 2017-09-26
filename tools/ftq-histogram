@@ -35,7 +35,7 @@ def make_histogram(data, levels)
     nstart = data.size unless nstart
     num = (nstart - start) * 1000000.0 / samples
     start = nstart
-    slevel = i == 0 ? 0 : levels[i - 1]
+    slevel = i.zero? ? 0 : levels[i - 1]
     [slevel, level, num]
   end
   histogram

@@ -47,7 +47,7 @@ def stats_with_most_variation(matrix)
     next unless is_perf_metric field
 
     mean, sorted = values.mean_sorted
-    next if mean == 0
+    next if mean.zero?
     size = sorted.size
     margin = size >> MARGIN_SHIFT
     min = sorted[margin]

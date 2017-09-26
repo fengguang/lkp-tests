@@ -471,7 +471,7 @@ def setup_dims()
       [$opt_dims[1], $opt_dims[0]],
     ].each do |dim|
       system "#{GIT} merge-base --is-ancestor #{dim[0]} #{dim[1]}"
-      next unless $?.exitstatus == 0
+      next unless $?.exitstatus.zero?
       $opt_dims = dim
       commit_is_ancestor = true
       break
@@ -530,7 +530,7 @@ def show_one_diff(stat, dim, v0, v, v0_stddev, v_stddev, is_float, is_exp, is_fa
   elsif is_float
     buf += sprintf "%#{ABS_WIDTH}.2f", v
   elsif is_fail
-    if v == 0
+    if v.zero?
       buf += sprintf "%#{ABS_WIDTH + 1}s", ' '
     else
       buf += sprintf "%#{ABS_WIDTH + 1}d", v

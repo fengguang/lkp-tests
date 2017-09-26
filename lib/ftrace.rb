@@ -159,7 +159,7 @@ class FGSample
       when self::RE_SAMPLE
         new $1, $2.to_i, $3.to_f, $4.intern
       when self::RE_SAMPLE2
-        return if $5.to_f == 0
+        return if $5.to_f.zero?
         new $3, $4.to_i, $5.to_f, $6.intern
       end
     end
