@@ -13,3 +13,7 @@ ima:ima04
 numa:move_pages08
 # i386 only
 quickhit:f00f
+# need disable kernel config (CONFIG_SCHED_MC CONFIG_SCHED_SMT)
+power_management_tests:runpwtests01
+power_management_tests:runpwtests02
+power_management_tests:runpwtests03
