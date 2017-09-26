@@ -320,7 +320,7 @@ class Job
       end
 
       if @referenced_programs.include?(k) && i.include?(k)
-        next if load_one[k] != nil
+        next unless load_one[k].nil?
         if Hash === v
           v.each do |kk, vv|
             next unless @referenced_programs[k].include? kk
