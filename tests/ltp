@@ -80,6 +80,10 @@ ltp-aiodio.part4)
 	mkdir -p $mount_point/tmpdir || exit
 	tmpdir_opt="-d $mount_point/tmpdir"
 	;;
+net.ipv6_lib)
+	iface=$(ifconfig -s | awk '{print $1}' | grep ^eth | head -1)
+	[ -n "$iface" ] && export LHOST_IFACES=$iface
+	;;
 esac
 
 check_ignored_cases $test
