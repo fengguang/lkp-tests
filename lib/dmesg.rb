@@ -393,11 +393,10 @@ def get_crash_stats(dmesg_file)
       next
     end
 
-    if line =~ /^message:/
-      # message:WARNING:at_kernel/locking/lockdep.c:#lock_release: [   11.858566 ] WARNING: CPU: 0 PID: 11 at kernel/locking/lockdep.c:3536 lock_release+0x179/0x3b7
-      #
-      oops_map[id] = line.split(': ')[1..-1].join(': ')
-    end
+    next unless line =~ /^message:/
+    # message:WARNING:at_kernel/locking/lockdep.c:#lock_release: [   11.858566 ] WARNING: CPU: 0 PID: 11 at kernel/locking/lockdep.c:3536 lock_release+0x179/0x3b7
+    #
+    oops_map[id] = line.split(': ')[1..-1].join(': ')
   end
 
   if uncompressed_dmesg

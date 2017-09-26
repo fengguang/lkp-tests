@@ -19,11 +19,10 @@ def is_valid_stats_range(stats_field, num)
 
   if stats_range
     stats_range.each do |k, v|
-      if stats_field =~ %r{^#{k}$}
-        min = v[0]
-        max = v[1]
-        return false if num < min || num > max
-      end
+      next unless stats_field =~ %r{^#{k}$}
+      min = v[0]
+      max = v[1]
+      return false if num < min || num > max
     end
   end
 

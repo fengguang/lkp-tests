@@ -298,13 +298,12 @@ def load_base_matrix(matrix_path, head_matrix, options)
 
     log_debug "base_matrix_file: #{base_matrix_file}"
     rc_matrix = load_release_matrix base_matrix_file
-    if rc_matrix
-      add_stats_to_matrix(rc_matrix, matrix)
-      tags_merged << tag
-      cols += matrix['stats_source'].size
-      break if tags_merged.size >= 3 && cols >= 20
-      break if tag =~ /-rc1$/ && cols >= 3
-    end
+    next unless rc_matrix
+    add_stats_to_matrix(rc_matrix, matrix)
+    tags_merged << tag
+    cols += matrix['stats_source'].size
+    break if tags_merged.size >= 3 && cols >= 20
+    break if tag =~ /-rc1$/ && cols >= 3
   end
 
   if !matrix.empty?

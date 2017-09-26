@@ -52,13 +52,12 @@ def add_performance_per_watt(stats, matrix)
     next if stat.index('iostat.') && !stats['dd.startup_time']
 
     value = stats[stat]
-    if (value)
-      if (weight < 0)
-        value = 1 / value
-        weight = -weight
-      end
-      performance += value * weight
+    next unless (value)
+    if (weight < 0)
+      value = 1 / value
+      weight = -weight
     end
+    performance += value * weight
   end
 
   return unless performance > 0

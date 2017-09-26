@@ -74,10 +74,9 @@ def for_each_in(ah, set, pk = nil)
     if set.include?(k)
       yield pk, ah, k, v
     end
-    if Hash === v
-      for_each_in(v, set, k) do |pk, h, k, v|
-        yield pk, h, k, v
-      end
+    next unless Hash === v
+    for_each_in(v, set, k) do |pk, h, k, v|
+      yield pk, h, k, v
     end
   end
 end
@@ -430,10 +429,9 @@ class Job
       if set.include?(k) || (String === v && v =~ /{{(.*)}}/m)
         yield ah, k, v
       end
-      if Hash === v
-        expand_each_in(v, set) do |h, k, v|
-          yield h, k, v
-        end
+      next unless Hash === v
+      expand_each_in(v, set) do |h, k, v|
+        yield h, k, v
       end
     end
   end
