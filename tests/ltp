@@ -83,6 +83,8 @@ ltp-aiodio.part4)
 net.ipv6_lib)
 	iface=$(ifconfig -s | awk '{print $1}' | grep ^eth | head -1)
 	[ -n "$iface" ] && export LHOST_IFACES=$iface
+	sed -i "1s/^/::1 ${HOSTNAME}\n/" /etc/hosts
+	sed -i "1s/^/127.0.0.1 ${HOSTNAME}\n/" /etc/hosts
 	;;
 esac
 
