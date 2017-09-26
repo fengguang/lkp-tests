@@ -10,7 +10,7 @@ require "#{LKP_SRC}/lib/yaml.rb"
 require "#{LKP_SRC}/lib/lkp_git"
 require "#{LKP_SRC}/lib/job.rb"
 
-File.umask 0002
+File.umask 0o002
 
 delete = false
 

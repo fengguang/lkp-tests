@@ -107,7 +107,7 @@ def fixup_dmesg_file(dmesg_file)
       tmpfile.puts line
     end
   end
-  tmpfile.chmod 0664
+  tmpfile.chmod 0o664
   tmpfile.close
   FileUtils.mv tmpfile.path, dmesg_file, :force => true
   dmesg_lines
