@@ -309,7 +309,7 @@ def print_matrix(matrix)
 end
 
 def unite_params(result_root)
-  if not File.directory? result_root
+  unless File.directory? result_root
     log_error "#{result_root} is not a directory"
     return false
   end
@@ -333,7 +333,7 @@ def unite_params(result_root)
 
   job.each_param do |k, v, _option_type|
     if params[k]
-      if not params[k].include? v
+      unless params[k].include? v
         params[k] << v
       end
     else
@@ -349,7 +349,7 @@ def unite_params(result_root)
 end
 
 def unite_stats(result_root, delete = false)
-  if not File.directory? result_root
+  unless File.directory? result_root
     log_error "#{result_root} is not a directory"
     return false
   end

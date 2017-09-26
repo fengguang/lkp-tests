@@ -37,7 +37,7 @@ def histogram(data, range = nil, params = {})
     range = range.slice(0, hist.size)
   end
 
-  if !no_percent
+  unless no_percent
     hist = hist.map { |n| n * 100.0 / total }
   end
 

@@ -276,7 +276,7 @@ def add_stats(path)
     return unless dim
   end
 
-  if not $dims.has_key?(dim)
+  unless $dims.has_key?(dim)
     $dims[dim] = dim_name(dim)
     $first_dim ||= dim
   end
@@ -431,7 +431,7 @@ def setup_dims()
   if $opt_dimension =~ /^(.*_)?commit$/
     git = Git.open(project: $project, working_dir: GIT_WORK_TREE) if Dir.exist?(GIT_WORK_TREE)
     unless git
-      puts 'info: "export LKP_GIT_WORK_TREE=/path/to/project/git/repo/" to enable parsing non-sha1 commit names.' if ARGV.any? { |v| not sha1_40?(v) }
+      puts 'info: "export LKP_GIT_WORK_TREE=/path/to/project/git/repo/" to enable parsing non-sha1 commit names.' if ARGV.any? { |v| !sha1_40?(v) }
       puts 'info: "export LKP_GIT_WORK_TREE=/path/to/project/git/repo/" to enable guessing what to compare.' if ARGV.size == 1
     end
 
@@ -478,7 +478,7 @@ def setup_dims()
       end
     end
 
-    if not commit_is_ancestor
+    unless commit_is_ancestor
       puts "error: #{$opt_dims[0]} and #{$opt_dims[1]} not in acestor relation; comparation between them makes no sense"
       exit 1
     end
@@ -597,7 +597,7 @@ def get_v_and_stddev(value, dim, is_fail)
 end
 
 def show_header(is_fail)
-  puts '---------------------------' if !$group_by_test
+  puts '---------------------------' unless $group_by_test
   nr_headers = $dims.length - 1
   if is_fail
     # (ABS_WIDTH + ERR_WIDTH)   (2 + REL_WIDTH + ABS_WIDTH + ERR_WIDTH)
@@ -632,7 +632,7 @@ def show_delta(stat, key_g)
   return if $cases.empty?
   $cases = Hash[$cases.sort]
 
-  if !$group_by_test
+  unless $group_by_test
     $dims.each do |dim, name|
       width = (dim == $first_dim ? ABS_WIDTH + ERR_WIDTH : REL_WIDTH + ABS_WIDTH + ERR_WIDTH)
       printf "%#{width}s  ", name[0..(width - 1)]
@@ -667,7 +667,7 @@ def show_delta(stat, key_g)
   end
 
   if $header_shown[is_fail]
-    puts if !$group_by_test
+    puts unless $group_by_test
   end
 
   $cases.each do |_rt, value|
@@ -716,7 +716,7 @@ def show_delta(stat, key_g)
     end
   end
 
-  if !$group_by_test
+  unless $group_by_test
     v0 = $sum[$first_dim]
     v0_stddev = $stddev[$first_dim]
     $sum.each do |dim, v|

@@ -145,7 +145,7 @@ class MMatrixPlotter < MatrixPlotterBase
         y_min, y_max = nil
         @lines.each do |matrix, y_stat_key, line_title|
           values = matrix[y_stat_key]
-          next if !check_line(values)
+          next unless check_line(values)
 
           max = values.max
           min = values.min
