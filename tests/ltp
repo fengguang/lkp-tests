@@ -86,6 +86,10 @@ net.ipv6_lib)
 	sed -i "1s/^/::1 ${HOSTNAME}\n/" /etc/hosts
 	sed -i "1s/^/127.0.0.1 ${HOSTNAME}\n/" /etc/hosts
 	;;
+net.rpc)
+	systemctl start openbsd-inetd || exit
+	cp netkit-rusers/bin/rup /usr/bin/
+	;;
 esac
 
 check_ignored_cases $test
