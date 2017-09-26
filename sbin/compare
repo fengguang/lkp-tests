@@ -510,7 +510,7 @@ def show_one_diff(stat, dim, v0, v, v0_stddev, v_stddev, is_float, is_exp, is_fa
       buf = sprintf "%#{REL_WIDTH - 1}.0g ", v - v0
     elsif p.abs < 3
       buf = sprintf ' ' * REL_WIDTH
-    elsif p.abs < 100000
+    elsif p.abs < 100_000
       buf = sprintf "%#{REL_WIDTH - 2}.0f%% ", p
     else
       buf = sprintf "%#{REL_WIDTH - 2}.0g%% ", p
@@ -522,7 +522,7 @@ def show_one_diff(stat, dim, v0, v, v0_stddev, v_stddev, is_float, is_exp, is_fa
   end
 
   if is_exp
-    if is_float == false && v.abs < 100000000
+    if is_float == false && v.abs < 100_000_000
       buf += sprintf "%#{ABS_WIDTH}d", v
     else
       buf += sprintf "%#{ABS_WIDTH}.4g", v
@@ -657,10 +657,10 @@ def show_delta(stat, key_g)
       case v
       when Array
         v.each { |vv| is_float = true if vv.abs < 100 && vv != 0 && Float === vv }
-        v.each { |vv| is_exp   = true if vv.abs >= 100000000 }
+        v.each { |vv| is_exp   = true if vv.abs >= 100_000_000 }
       else
         is_float = true if v.abs < 100 && v != 0 && Float === v
-        is_exp   = true if v.abs >= 100000000
+        is_exp   = true if v.abs >= 100_000_000
       end
     end
   end

@@ -82,16 +82,16 @@ def is_reasonable_perf_change(name, delta, max)
   when /^lock_stat/
     case name
     when 'waittime-total'
-      return delta > 10000
+      return delta > 10_000
     when 'holdtime-total'
-      return delta > 100000
+      return delta > 100_000
     when /time/
-      return delta > 1000
+      return delta > 1_000
     else
-      return delta > 10000
+      return delta > 10_000
     end
   when /^interrupts/, /^softirqs/
-    return max > 10000
+    return max > 10_000
   end
   true
 end

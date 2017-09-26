@@ -2,7 +2,7 @@
 
 NOISE_LEVELS = [100, 75, 50, 25, 5, 2]
 
-SCALE = 100000
+SCALE = 100_000
 
 class Noise
   def initialize(str, data, scale = SCALE)

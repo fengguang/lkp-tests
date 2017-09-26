@@ -33,7 +33,7 @@ def make_histogram(data, levels)
     lc = mean * level / 100
     nstart = data.bsearch_index { |n| n >= lc }
     nstart = data.size unless nstart
-    num = (nstart - start) * 1000000.0 / samples
+    num = (nstart - start) * 1_000_000.0 / samples
     start = nstart
     slevel = i.zero? ? 0 : levels[i - 1]
     [slevel, level, num]

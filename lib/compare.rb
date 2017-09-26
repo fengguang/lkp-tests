@@ -714,7 +714,7 @@ module Compare
     stats.each do |stat|
       base = stat_key_base stat[STAT_KEY]
       stat[STAT_BASE] = base
-      stat_base_map[base] ||= stat[FAILURE] ? -10000 : 0
+      stat_base_map[base] ||= stat[FAILURE] ? -10_000 : 0
       stat_base_map[base] += 1
     end
     all_tests_set.each do |test|
@@ -763,7 +763,7 @@ module Compare
     avgs.each_with_index do |avg, i|
       unless i.zero?
         p = changes[i - 1]
-        fmt = p.abs < 100000 ? '.1f' : '.2g'
+        fmt = p.abs < 100_000 ? '.1f' : '.2g'
         if abs_changes
           printf "%+#{REL_WIDTH}#{fmt}  ", p
         else
@@ -772,7 +772,7 @@ module Compare
       end
       if avg.abs < 1000
         fmt = '.2f'
-      elsif avg.abs > 100000000
+      elsif avg.abs > 100_000_000
         fmt = '.4g'
       else
         fmt = 'd'
