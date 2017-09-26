@@ -4,3 +4,6 @@ crashme:f00f
 admin_tools:su01
 # Cause OOM, deactivate it temporarily.
 syscalls:madvise06
+# Require tbox enable TPM at BIOS which may lock the server bios and other devices
+ima:ima01
+ima:ima03
