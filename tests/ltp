@@ -72,7 +72,7 @@ fs_ext4)
 	big_dev="${partitions%% *}"
 	big_dev_opt="-z $big_dev"
 	;;
-ltp-aiodio.part4|ltplite)
+ltp-aiodio.part[24]|ltplite)
 	[ -z "$partitions" ] && exit
 	ltp_partition="${partitions%% *}"
 	mount_point=/fs/$(basename $ltp_partition)
