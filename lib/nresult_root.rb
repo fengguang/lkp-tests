@@ -281,7 +281,8 @@ class MResultRootTableSet
      'thrulay', 'tlbflush', 'unixbench', 'vm-scalability', 'will-it-scale',
      'xfstests', 'chromeswap', 'fio-basic', 'apachebench', 'perf_event_tests', 'swapin',
      'tpcc', 'mytest', 'exit_free', 'pgbench', 'boot_trace', 'sysbench-cpu',
-     'sysbench-memory', 'sysbench-threads', 'sysbench-mutex', 'stream']
+     'sysbench-memory', 'sysbench-threads', 'sysbench-mutex', 'stream',
+     'perf-bench-futex']
   LINUX_TESTCASES =
     ['analyze_suspend', 'boot', 'cpu-hotplug', 'ext4-frags', 'ftq', 'ftrace_onoff', 'fwq',
      'galileo', 'irda-kernel', 'kernel_selftests', 'kvm-unit-tests', 'kvm-unit-tests-qemu',
