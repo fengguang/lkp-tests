@@ -20,3 +20,5 @@ power_management_tests:runpwtests03
 # need build extra modules
 modules:delete_module01
 modules:delete_module03
+# not suittable to recent kernel
+hyperthreading:ht_interrupt
