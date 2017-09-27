@@ -1,0 +1,17 @@
+suite: perf-bench-futex
+testcase: perf-bench-futex
+category: benchmark
+
+runtime: 300s
+nr_task: 100%
+
+perf-bench-futex:
+  test:
+  - hash
+  - wake
+  - wake-parallel
+  - requeue
+  - lock-pi
+  shared:
+  - shared
+  -

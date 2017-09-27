@@ -9,7 +9,11 @@
 # - nrequeue
 # - multi
 
+. $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/common.sh
+. $LKP_SRC/lib/reproduce-log.sh
+
+set_perf_path "/lkp/benchmarks/perf/perf"
 
 [ -n "$test" ] || {
 	echo "test must be specified!" >&2
@@ -19,13 +23,13 @@
 [ -n "$runtime" ] && ( [ "$test" = "hash" ] || [ "$test" = "lock-pi" ]) &&
 	opts="$opts --runtime $runtime"
 [ -n "$nr_task" ] && opts="$opts --threads $nr_task"
-parse_bool "$shared"  && opts="$opts --shared"
+parse_bool -q "$shared"  && opts="$opts --shared"
 [ -n "$futexes" ] && [ "$test" = "hash" ] && opts="$opts --futexes $futexes"
 [ -n "$nwakes" ] && [ "$test" = "wake" ] && opts="$opts --nwakes $nwakes"
 [ -n "$nwakers" ] && [ "$test" = "wake-parallel" ] &&
 	opts="$opts --nwakers $nwakers"
 [ -n "$nrequeue" ] && [ "$test" = "requeue" ] &&
 	opts="$opts --nrequeue $nrequeue"
-parse_bool "$multi" && [ "$test" = "lock-pi" ] && opts="$opts --multi"
+parse_bool -q "$multi" && [ "$test" = "lock-pi" ] && opts="$opts --multi"
 
-log_cmd perf bench futex "$test" $opts
+log_cmd "$perf" bench futex "$test" $opts
