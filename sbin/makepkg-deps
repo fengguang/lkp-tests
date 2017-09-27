@@ -1,0 +1,49 @@
+#!/bin/bash
+
+[[ $LKP_SRC ]] || export LKP_SRC="$(dirname $(dirname $(readlink -e -v $0)))"
+
+rootfs=$1
+BM_NAME=$2
+
+[[ $BM_NAME ]] || {
+	echo Usage: $0 rootfs BM_NAME
+	exit 1
+}
+
+umask 002
+
+DISTRO=${rootfs%%-*}
+. $LKP_SRC/distro/$DISTRO
+
+pack_to=/osimage/deps/$rootfs
+mkdir -p "$pack_to"
+work_dir=$(mktemp -d /tmp/pack-deps-$BM_NAME-XXXXXXXXX)
+
+build_depends_pkg() {
+	local script=$1
+	local packages="$(get_dependency_packages ${DISTRO} ${script} pkg)"
+	local dev_packages="$(get_dependency_packages ${DISTRO} ${script}-dev pkg)"
+	packages="$(echo $packages $dev_packages | tr '\n' ' ')"
+	[ -n "$packages" ] && [ "$packages" != " " ] || return
+	for pkg in $packages; do
+		pkg_dir="$LKP_SRC/pkg/$pkg"
+		if [ -d "$pkg_dir" ]; then
+			(
+				cd "$pkg_dir" && \
+				PACMAN="$LKP_SRC/sbin/pacman-LKP" "$LKP_SRC/sbin/makepkg" --noarchive --config "$LKP_SRC/etc/makepkg.conf" --skippgpcheck
+				cp -rf "$pkg_dir/pkg/$pkg"/* "$work_dir"
+				rm -rf "$pkg_dir/"{src,pkg}
+			)
+		fi
+	done
+}
+
+cd $work_dir
+deps=$(get_dependency_packages $DISTRO $BM_NAME)
+[ -n "$deps" ] && [ "$deps" != " " ] && {
+	download $(get_dependency_packages $DISTRO $BM_NAME) || exit
+	install
+}
+
+build_depends_pkg $BM_NAME
+pack
