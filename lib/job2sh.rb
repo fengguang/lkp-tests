@@ -162,7 +162,7 @@ class Job2sh < Job
       script_file = $1 + '/' + $2
       script_name = File.basename $2
       if @cur_func == :run_job && script_file =~ %r{^(setup|tests|daemon)/} ||
-         @cur_func == :extract_stats && script_file.index('stats/').zero?
+         @cur_func == :extract_stats && script_file.index('stats/') == 0
         @programs[script_name] = LKP_SRC + '/' + script_file
       elsif @cur_func == :run_job && script_file =~ %r{^monitors/}
         @monitors[script_name] = LKP_SRC + '/' + script_file

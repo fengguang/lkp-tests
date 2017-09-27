@@ -47,7 +47,7 @@ def __is_perf_metric(name)
   return true if name =~ $perf_metrics_re
 
   $perf_metrics_prefixes.each do |prefix|
-    return true if name.index(prefix).zero?
+    return true if name.index(prefix) == 0
   end
 
   false
