@@ -408,10 +408,10 @@ class NMResultRootCollection
     testcase = @conditions[TESTCASE_AXIS_KEY]
     if testcase
       tbl = mrt_table_set.testcase_to_table testcase
-      table_each.(tbl)
+      table_each.call(tbl)
     else
       mrt_table_set.tables.each do |tbl|
-        table_each.(tbl)
+        table_each.call(tbl)
       end
     end
   end

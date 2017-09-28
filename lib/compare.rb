@@ -437,7 +437,7 @@ module Compare
           RUNS => truns
         }
         calc_funcs.each do |calc_func|
-          calc_func.(stat)
+          calc_func.call(stat)
         end
         yield stat
       end
@@ -592,9 +592,9 @@ module Compare
 
       m = {}
       cas_keys.each do |axis_key|
-        conv = axis_converter.(axis_key)
+        conv = axis_converter.call(axis_key)
         m[@axis_prefix + axis_key] = cas.map do |as|
-          conv.(as[axis_key])
+          conv.call(as[axis_key])
         end
       end
       m.merge!(matrix)

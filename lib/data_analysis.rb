@@ -75,16 +75,16 @@ def print_histogram(range, hist, params = {})
   prev = 0
   range.each_with_index do |lc, i|
     if with_range
-      printf '%s-', format_level.(prev)
+      printf '%s-', format_level.call(prev)
     end
-    printf("%s\t%s%s", format_level.(lc),
-           format_number(hist[i]), format_to_plot.(i + 1))
+    printf("%s\t%s%s", format_level.call(lc),
+           format_number(hist[i]), format_to_plot.call(i + 1))
     prev = lc
     printf "\n"
   end
   if !no_extra && hist.size > range.size
-    printf("%s+\t%s%s\n", format_level.(range[-1]),
-           format_number(hist[-1]), format_to_plot.(range.size + 1))
+    printf("%s+\t%s%s\n", format_level.call(range[-1]),
+           format_number(hist[-1]), format_to_plot.call(range.size + 1))
   end
 end
 

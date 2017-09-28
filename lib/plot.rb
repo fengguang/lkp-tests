@@ -276,5 +276,5 @@ def mplot(matrix, stats, x_stat_key = nil)
   if $opt_output_path
     p.set_output_prefix ensure_dir($opt_output_path)
   end
-  p.(matrix, stats, x_stat_key)
+  p.call(matrix, stats, x_stat_key)
 end

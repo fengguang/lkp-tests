@@ -63,10 +63,10 @@ def array_subtract(arr1, arr2, &blk_key)
   if blk_key
     harr = {}
     arr1.each do |e|
-      harr[blk_key.(e)] = e
+      harr[blk_key.call(e)] = e
     end
     arr2.each do |e|
-      harr.delete blk_key.(e)
+      harr.delete blk_key.call(e)
     end
     harr.values
   else
