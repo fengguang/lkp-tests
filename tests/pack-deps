@@ -25,6 +25,14 @@ pack_to=$DEPS_MNT/$rootfs
 
 check_shared_package "$benchmark" && exit
 
+add_jessie_mirror()
+{
+	# echo "deb http://mirrors.163.com/debian jessie main" >> /etc/apt/sources.list
+	echo "deb http://linux-ftp.sh.intel.com/pub/mirrors/debian jessie main" >> /etc/apt/sources.list
+}
+
+[ "$DISTRO" = "debian" ] && add_jessie_mirror
+
 update
 
 apt-get install -yf
