@@ -16,7 +16,7 @@ while (line = STDIN.gets)
     next if step == 'timekeeping_freeze'
 
     # use CPU_ON/OFF + cpu_id as the hash key to avoid bogus duplicate
-    step = "#{step}_#{id}" if step == 'CPU_ON' || step == 'CPU_OFF'
+    step = "#{step}_#{id}" if %w(CPU_ON CPU_OFF).include? step
 
     k = "#{step}_#{cycle}"
 
