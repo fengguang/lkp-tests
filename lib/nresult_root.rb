@@ -401,11 +401,11 @@ class NMResultRootCollection
   def each(&b)
     return enum_for(__method__) unless block_given?
 
-    table_each = ->tbl {
+    table_each = lambda do |tbl|
       col = DataStore::Collection.new tbl, @conditions
       col.set_date(@date).set_exact(@exact)
       col.each(&b)
-    }
+    end
 
     testcase = @conditions[TESTCASE_AXIS_KEY]
     if testcase

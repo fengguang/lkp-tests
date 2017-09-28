@@ -64,13 +64,9 @@ def print_histogram(range, hist, params = {})
   to_plot = params[:to_plot]
   no_extra = params[:no_extra]
 
-  format_level = ->l {
-    as_time ? format_time(l, unit) : format_number(l)
-  }
+  format_level = ->(l) { as_time ? format_time(l, unit) : format_number(l) }
 
-  format_to_plot = ->n {
-    to_plot ? "\t" + format_number(n) : ''
-  }
+  format_to_plot = ->(n) { to_plot ? "\t" + format_number(n) : '' }
 
   prev = 0
   range.each_with_index do |lc, i|
