@@ -153,7 +153,7 @@ user = ENV['USER']
 save_paths(result_root, user)
 system(LKP_SRC + '/sbin/unite-params', result_root)
 
-MResultRootTableSet.create_tables_layout()
+MResultRootTableSet.create_tables_layout
 convert_mrt(_result_root)
 
 FileUtils.rm_f($opt_result_root)

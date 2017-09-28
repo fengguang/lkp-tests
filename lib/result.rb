@@ -55,7 +55,7 @@ class ResultPath < Hash
     dirs.shift if dirs[0] == ''
 
     self['testcase'] = dirs.shift
-    ps = path_scheme()
+    ps = path_scheme
 
     # for backwards compatibilty
     if is_tbox_group(self['testcase']) && !is_tbox_group(dirs[1])
