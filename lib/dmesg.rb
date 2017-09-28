@@ -124,7 +124,7 @@ CALLTRACE_COMMON_CONTEXT = "
   kernel_thread|
   process_one_work|
   notifier_call_chain|
-"
+".freeze
 
 CALLTRACE_PATTERN = /(
   #{CALLTRACE_COMMON_CONTEXT}
@@ -137,8 +137,8 @@ CALLTRACE_IGNORE_PATTERN = /(
   warn_slowpath_.*
 )\+0x/x
 
-OOM1 = 'invoked oom-killer: gfp_mask='
-OOM2 = 'Out of memory and no killable processes...'
+OOM1 = 'invoked oom-killer: gfp_mask='.freeze
+OOM2 = 'Out of memory and no killable processes...'.freeze
 
 def grep_crash_head(dmesg_file)
   if dmesg_file =~ /\.xz$/

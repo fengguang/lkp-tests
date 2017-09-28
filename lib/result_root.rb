@@ -18,7 +18,7 @@ def rt_create_time_from_job(job)
 end
 
 class ResultRoot < CResultRoot
-  JOB_FILE = 'job.yaml'
+  JOB_FILE = 'job.yaml'.freeze
 
   include Property
   prop_reader :axes
@@ -80,7 +80,7 @@ end
 
 # Minimal implementation just for convert to general data store
 class ResultRootCollection
-  INDEX_DIR = '/lkp/paths'
+  INDEX_DIR = '/lkp/paths'.freeze
 
   include Enumerable
 
@@ -150,8 +150,8 @@ end
 # M here stands for multiple runs
 # _rt or mrt may be used as variable name
 class MResultRoot
-  COMPLETIONS_FILE = 'completions'
-  MATRIX = 'matrix.json'
+  COMPLETIONS_FILE = 'completions'.freeze
+  MATRIX = 'matrix.json'.freeze
 
   def initialize(path)
     @path = path

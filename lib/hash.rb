@@ -29,7 +29,7 @@ ACCUMULATIVE_KEYS = %w(
     mail_to
     build_mail_cc
     constraints
-)
+).freeze
 def is_accumulative_key(k)
   return true if ACCUMULATIVE_KEYS.include? k
   return true if k =~ /^need_/

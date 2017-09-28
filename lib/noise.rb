@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 
-NOISE_LEVELS = [100, 75, 50, 25, 5, 2]
+NOISE_LEVELS = [100, 75, 50, 25, 5, 2].freeze
 
 SCALE = 100_000
 

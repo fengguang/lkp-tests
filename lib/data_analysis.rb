@@ -44,7 +44,7 @@ def histogram(data, range = nil, params = {})
   [range, hist]
 end
 
-TIME_UNITS = ['u', 'm', '']
+TIME_UNITS = ['u', 'm', ''].freeze
 
 def format_time(val, unit = 'u')
   (TIME_UNITS.index(unit)...TIME_UNITS.size).each do |ui|

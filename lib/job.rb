@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath(__FILE__)))
-LKP_SERVER ||= 'inn'
+LKP_SERVER ||= 'inn'.freeze
 
 require "#{LKP_SRC}/lib/common.rb"
 require "#{LKP_SRC}/lib/result.rb"
@@ -174,7 +174,7 @@ class Job
 end
 
 class Job
-  EXPAND_DIMS = %w(kconfig commit rootfs)
+  EXPAND_DIMS = %w(kconfig commit rootfs).freeze
 
   attr_reader :path_scheme
   attr_reader :referenced_programs

@@ -20,11 +20,11 @@ ERR_UNKNOWN=127    # Unknown error
 ## Other
 ##
 
-KERNEL_ROOT='/pkg/linux'
+KERNEL_ROOT='/pkg/linux'.freeze
 
-BOOT_TEST_CASE='boot'
-DMESG_BOOT_FAILURES_STAT_KEY='dmesg.boot_failures'
+BOOT_TEST_CASE='boot'.freeze
+DMESG_BOOT_FAILURES_STAT_KEY='dmesg.boot_failures'.freeze
 
-TESTCASE_AXIS_KEY='testcase'
-COMMIT_AXIS_KEY='commit'
-TBOX_GROUP_AXIS_KEY='tbox_group'
+TESTCASE_AXIS_KEY='testcase'.freeze
+COMMIT_AXIS_KEY='commit'.freeze
+TBOX_GROUP_AXIS_KEY='tbox_group'.freeze

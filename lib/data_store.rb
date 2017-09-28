@@ -8,7 +8,7 @@ require "#{LKP_SRC}/lib/property.rb"
 require "#{LKP_SRC}/lib/yaml.rb"
 
 module DataStore
-  CREATE_TIME = 'create_time'
+  CREATE_TIME = 'create_time'.freeze
 
   def self.normalize_axes(axes)
     naxes = {}
@@ -22,7 +22,7 @@ module DataStore
     NAME = :name
     AXIS_KEYS = :axis_keys
     SUPPRESS_LAST = :suppress_last
-    PROPS = [NAME, AXIS_KEYS, SUPPRESS_LAST]
+    PROPS = [NAME, AXIS_KEYS, SUPPRESS_LAST].freeze
     ALL_OTHERS_KEY = :__all_others__
 
     include Property
@@ -284,7 +284,7 @@ module DataStore
 
   class Index
     LOCK_FILE = '.lock'.freeze
-    CONFIG_FILE = 'index.yaml'
+    CONFIG_FILE = 'index.yaml'.freeze
 
     include DirObject
 
@@ -480,10 +480,10 @@ module DataStore
     STAT_KEY = :key
     STAT_VALUE = :value
 
-    DESC_FILE = 'desc.yaml'
-    START_INDEX_FILE = '.start_index'
-    INDEXED_FILE = '.indexed'
-    LOCK_FILE = '.lock'
+    DESC_FILE = 'desc.yaml'.freeze
+    START_INDEX_FILE = '.start_index'.freeze
+    INDEXED_FILE = '.indexed'.freeze
+    LOCK_FILE = '.lock'.freeze
 
     include DirObject
     prop_reader :table, :axes

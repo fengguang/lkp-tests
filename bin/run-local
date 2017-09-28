@@ -8,7 +8,7 @@ require 'shellwords'
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 LKP_USER = ENV['USER'] || `whoami`.chomp
 
-TMP = "/tmp/lkp-#{LKP_USER}"
+TMP = "/tmp/lkp-#{LKP_USER}".freeze
 ENV['TMP'] = TMP
 
 require "#{LKP_SRC}/lib/run-env"

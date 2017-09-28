@@ -7,8 +7,8 @@ require 'set'
 LKP_SRC   = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 BLACKLIST = LKP_SRC + '/etc/kmsg-blacklist'
 MIN_MSG_LEN = 18
-OUTPUT_FILE = '/lkp/printk-error-messages'
-DIRS_TO_GREP = 'arch block crypto drivers firmware fs include init ipc kernel lib mm net security sound virt'
+OUTPUT_FILE = '/lkp/printk-error-messages'.freeze
+DIRS_TO_GREP = 'arch block crypto drivers firmware fs include init ipc kernel lib mm net security sound virt'.freeze
 PRINTK_PATTERNS = %w(
   KERN_EMERG
   KERN_ALERT

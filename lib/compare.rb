@@ -104,9 +104,9 @@ module Compare
   CHANGES = :changes
   ABS_CHANGES = :abs_changes
 
-  RUNS_STAT_KEY = 'runs'
-  COMPLETE_RUNS_STAT_KEY = 'runs.complete'
-  RUNS_STAT_KEYS = [RUNS_STAT_KEY, COMPLETE_RUNS_STAT_KEY]
+  RUNS_STAT_KEY = 'runs'.freeze
+  COMPLETE_RUNS_STAT_KEY = 'runs.complete'.freeze
+  RUNS_STAT_KEYS = [RUNS_STAT_KEY, COMPLETE_RUNS_STAT_KEY].freeze
 
   class Comparer
     include Property

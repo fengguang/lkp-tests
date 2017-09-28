@@ -13,7 +13,7 @@ SHELL_BLOCK_KEYWORDS = {
   'while' => ['do', 'done'],
   'until' => ['do', 'done'],
   'function' => ['{', '}']
-}
+}.freeze
 
 def valid_shell_variable?(key)
   key =~ /^[a-zA-Z_]+[a-zA-Z0-9_]*$/

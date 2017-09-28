@@ -6,10 +6,10 @@ require 'set'
 require "#{LKP_SRC}/lib/lkp_git"
 require "#{LKP_SRC}/lib/run-env"
 
-DEFAULT_COMPILER = 'gcc-6'
+DEFAULT_COMPILER = 'gcc-6'.freeze
 
 RESULT_MNT = "#{result_prefix}/result".freeze
-RESULT_PATHS = '/lkp/paths'
+RESULT_PATHS = '/lkp/paths'.freeze
 
 def tbox_group(hostname)
   if hostname =~ /.+-\d+$/
@@ -44,7 +44,7 @@ class ResultPath < Hash
     'nvml-unit-tests' => %w[path_params tbox_group rootfs kconfig compiler commit nvml_commit run],
     'mbtest' => %w[path_params tbox_group rootfs kconfig compiler commit mbt_commit run],
     'sof_test' => %w[path_params tbox_group rootfs kconfig compiler commit sof_commit run]
-  }
+  }.freeze
 
   def path_scheme
     PATH_SCHEME[self['testcase']] || PATH_SCHEME['default']

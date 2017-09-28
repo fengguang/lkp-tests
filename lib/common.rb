@@ -8,7 +8,7 @@ require 'fileutils'
 require 'stringio'
 require "#{LKP_SRC}/lib/array_ext"
 
-LKP_DATA_DIR = '/lkp/data'
+LKP_DATA_DIR = '/lkp/data'.freeze
 
 def deepcopy(o)
   Marshal.load(Marshal.dump(o))

@@ -13,10 +13,10 @@ require "#{LKP_SRC}/lib/matrix.rb"
 # to share code between original ResultRoot and NResultRoot
 class CResultRoot
   # TODO: remove .dmesg after we convert all .dmesg to dmesg
-  DMESG_FILES = ['dmesg.xz', 'dmesg', '.dmesg', 'kmsg.xz', 'kmsg']
-  DMESG_JSON_FILE = 'dmesg.json'
-  KMSG_JSON_FILE = 'kmsg.json'
-  MATRIX_FILE = 'matrix.json'
+  DMESG_FILES = ['dmesg.xz', 'dmesg', '.dmesg', 'kmsg.xz', 'kmsg'].freeze
+  DMESG_JSON_FILE = 'dmesg.json'.freeze
+  KMSG_JSON_FILE = 'kmsg.json'.freeze
+  MATRIX_FILE = 'matrix.json'.freeze
 
   include DirObject
 
@@ -66,10 +66,10 @@ end
 #   to share code between original MResultRoot and NMResultRoot
 module CMResultRoot
   DMESG_GLOBS = CResultRoot::DMESG_FILES.map { |g| "[0-9]*/#{g}" }
-  DMESG_JSON_GLOB = '[0-9]*/dmesg.json'
-  JOB_GLOB = '[0-9]*/job.yaml'
-  JOB_FILE1 = 'job.yaml'
-  REPRODUCE_GLOB = '[0-9]*/reproduce.sh'
+  DMESG_JSON_GLOB = '[0-9]*/dmesg.json'.freeze
+  JOB_GLOB = '[0-9]*/job.yaml'.freeze
+  JOB_FILE1 = 'job.yaml'.freeze
+  REPRODUCE_GLOB = '[0-9]*/reproduce.sh'.freeze
 
   def dmesgs
     DMESG_GLOBS.each do |g|
@@ -267,9 +267,9 @@ end
 class MResultRootTableSet
   attr_reader :linux_perf_table
 
-  LINUX_PERF_TABLE = 'linux_perf'
-  LINUX_TABLE = 'linux'
-  OTHER_TABLE = 'other'
+  LINUX_PERF_TABLE = 'linux_perf'.freeze
+  LINUX_TABLE = 'linux'.freeze
+  OTHER_TABLE = 'other'.freeze
   LINUX_PERF_TESTCASES =
     ['aim7', 'aim9', 'angrybirds', 'autotest', 'blogbench', 'dbench',
      'dd-write', 'ebizzy', 'fileio', 'fishtank', 'fsmark', 'glbenchmark',
@@ -284,7 +284,7 @@ class MResultRootTableSet
      'xfstests', 'chromeswap', 'fio-basic', 'apachebench', 'perf_event_tests', 'swapin',
      'tpcc', 'mytest', 'exit_free', 'pgbench', 'boot_trace', 'sysbench-cpu',
      'sysbench-memory', 'sysbench-threads', 'sysbench-mutex', 'stream',
-     'perf-bench-futex']
+     'perf-bench-futex'].freeze
   LINUX_TESTCASES =
     ['analyze_suspend', 'boot', 'cpu-hotplug', 'ext4-frags', 'ftq', 'ftrace_onoff', 'fwq',
      'galileo', 'irda-kernel', 'kernel_selftests', 'kvm-unit-tests', 'kvm-unit-tests-qemu',
@@ -292,13 +292,13 @@ class MResultRootTableSet
      'qemu', 'rcutorture', 'suspend', 'trinity', 'ndctl', 'nfs-test', 'hwsim', 'idle-inject',
      'mdadm-selftests', 'xsave-test', 'nvml', 'test_bpf', 'mce-log', 'perf-sanity-tests',
      'update-ucode', 'reboot', 'cat', 'libhugetlbfs-test', 'ocfs2test', 'syzkaller',
-     'perf_test', 'stress-ng', 'sof_test']
+     'perf_test', 'stress-ng', 'sof_test'].freeze
   OTHER_TESTCASES =
     ['0day-boot-tests', '0day-kbuild-tests', 'build-dpdk', 'build-sof', 'sof_test', 'build-nvml',
      'build-qemu', 'convert-lkpdoc-to-html', 'convert-lkpdoc-to-html-css',
      'health-stats', 'hwinfo', 'internal-lkp-service', 'ipmi-setup',
      'lkp-bug', 'lkp-install-run', 'lkp-services', 'lkp-src', 'pack',
-     'pack-deps', 'borrow', 'dpdk-dts', 'mbtest', 'build-acpica']
+     'pack-deps', 'borrow', 'dpdk-dts', 'mbtest', 'build-acpica'].freeze
 
   def initialize
     @linux_perf_table = LinuxMResultRootTable.open(LINUX_PERF_TABLE)
@@ -440,8 +440,8 @@ def nresult_root_fsck
 end
 
 module ResultStddev
-  BASE_DIR = File.join(LKP_DATA_DIR, 'result_stddev')
-  SOURCE_KEY = 'stat_source'
+  BASE_DIR = File.join(LKP_DATA_DIR, 'result_stddev').freeze
+  SOURCE_KEY = 'stat_source'.freeze
   DATA_NR_MAX = 5
 
   module_function

@@ -30,7 +30,7 @@ SIZE_UNITS = {
   G:  30,
   M:  20,
   K:  10
-}
+}.freeze
 def to_byte(size_spec)
   return size_spec unless String === size_spec
 
