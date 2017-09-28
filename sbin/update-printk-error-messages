@@ -173,9 +173,11 @@ File.open(OUTPUT_FILE, mode = 'w') do |file|
   file.puts errids.to_a
 end
 
-count.sort.each do |k, v|
-  puts "#{k}: #{v}"
-end if $opt_verbose
+if $opt_verbose
+  count.sort.each do |k, v|
+    puts "#{k}: #{v}"
+  end
+end
 
 puts "too short line    count: #{nr_line_short}"
 puts "too short message count: #{nr_too_short}"
