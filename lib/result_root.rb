@@ -232,9 +232,9 @@ class MResultRoot
 
   def completions
     open(COMPLETIONS_FILE, 'r') do |f|
-      f.each_line.map do |line|
-        Completion.new line
-      end.sort_by { |cmp| -cmp.time.to_i }
+      f.each_line
+       .map { |line| Completion.new line }
+       .sort_by { |cmp| -cmp.time.to_i }
     end
   rescue Errno::ENOENT
     []
