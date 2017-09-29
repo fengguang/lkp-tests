@@ -45,8 +45,8 @@ check_ignored_cases()
 
 run_test()
 {
-	# sub-case "11","19" typicall need to cost more time.
-	if [ "$test_prefix" = "11" -o "$test_prefix" = "19" ]; then
+	# sub-case "01","11","19" typicall need to cost more time.
+	if [ "$test_prefix" = "01" -o "$test_prefix" = "11" -o "$test_prefix" = "19" ]; then
 		timeout 30m ./test "--tests=$testcase"
 	else
 		timeout 5m ./test "--tests=$testcase"
