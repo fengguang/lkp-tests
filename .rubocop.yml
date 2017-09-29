@@ -1,5 +1,7 @@
 AllCops:
   TargetRubyVersion: 2.0
+  Exclude:
+    - 'lib/constant-shared.rb'
 
 Style/Documentation:
   Enabled: false
@@ -9,10 +11,6 @@ Style/FrozenStringLiteralComment:
 
 Layout/IndentArray:
   Enabled: false
-
-Layout/SpaceAroundOperators:
-  Exclude:
-    - 'lib/constant-shared.rb'
 
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: false
