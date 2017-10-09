@@ -14,6 +14,7 @@ require "#{LKP_SRC}/lib/git_ext/lib"
 require "#{LKP_SRC}/lib/git_ext/author"
 require "#{LKP_SRC}/lib/git_ext/cache"
 require "#{LKP_SRC}/lib/constant"
+require "#{LKP_SRC}/lib/run-env"
 
 module Git
   class << self
@@ -32,7 +33,7 @@ module Git
     def init(options = {})
       assert(options[:project], "Git.init: options[:project] can't be #{options[:project].inspect}")
 
-      working_dir = options[:working_dir] || "#{GIT_ROOT_DIR}/#{options[:project]}"
+      working_dir = options[:working_dir] || "#{git_root_dir}/#{options[:project]}"
 
       Git.orig_init(working_dir, options)
     end
@@ -44,7 +45,7 @@ module Git
     def open(options = {})
       assert(options[:project], "Git.open: options[:project] can't be #{options[:project].inspect}")
 
-      working_dir = options[:working_dir] || "#{GIT_ROOT_DIR}/#{options[:project]}"
+      working_dir = options[:working_dir] || "#{git_root_dir}/#{options[:project]}"
 
       return nil if options[:may_not_exist] && !Dir.exist?(working_dir)
 
