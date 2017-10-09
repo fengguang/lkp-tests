@@ -13,7 +13,6 @@ build()
 	# binary will be installed into /usr/bin/wmediumd
 	make install || return
 	cd -
-	patch_source || return
 
 	# support WPA-EAP-SUITE-B-192, example-wpa_supplicant.config and example-hostapd.config contains support options for build.
 	# hostapd_config_parse_key_mgmt() in hostapd/config_file.c will check "CONFIG_SUITEB192".
