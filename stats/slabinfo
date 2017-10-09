@@ -1,5 +1,9 @@
 #!/usr/bin/env ruby
 
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+
+require "#{LKP_SRC}/lib/log"
+
 sub_names = nil
 STDIN.each_line do |line|
   case line
@@ -12,6 +16,10 @@ STDIN.each_line do |line|
     sub_names.shift
     sub_names.shift
   else
+    if sub_names.nil?
+      log_warn "can't parse slabinfo"
+      exit 1
+    end
     values = line.split
     name = values.shift
     next if values.size != sub_names.size
