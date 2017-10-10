@@ -110,10 +110,8 @@ module CMResultRoot
     if m['last_state.is_incomplete_run']
       m = deepcopy(m)
       filter_incomplete_run m
-      m
-    else
-      m
     end
+    m
   end
 
   def runs(m = nil)
@@ -209,10 +207,8 @@ class MMResultRoot
     if m['last_state.is_incomplete_run']
       m = deepcopy(m)
       filter_incomplete_run m
-      m
-    else
-      m
     end
+    m
   end
 
   def axes
