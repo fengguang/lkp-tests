@@ -41,11 +41,10 @@ build_rusers()
 	local branch=$(git branch -a | grep /c | tail -1 | awk -F/ '{print $NF}')
 	git checkout "$branch" || return
 
-	local version=$(grep ^Version: SPECS/rusers.spec | awk '{print $2}')
-	export version=$version
+	RUSERS_VERSION=$(grep ^Version: SPECS/rusers.spec | awk '{print $2}')
 
 	local source=$(grep ^Source: SPECS/rusers.spec | awk '{print $2}')
-	local url=$(echo $source | sed s/"%{version}"/${version}/g)
+	local url=$(echo $source | sed s/"%{version}"/${RUSERS_VERSION}/g)
 	curl -k "$url" -o netkit-rusers.tar.gz
 
 	tar zxf netkit-rusers.tar.gz
@@ -56,7 +55,7 @@ build_rusers()
 		patch -f -p0 < SOURCES/$p
 	done
 
-	cd netkit-rusers-$version
+	cd netkit-rusers-$RUSERS_VERSION
 	./configure --prefix=$BM_ROOT/netkit-rusers
 	cd rup
 	make || return
@@ -82,7 +81,7 @@ build_numactl()
 install_rusers()
 {
 	mkdir -p $BM_ROOT/netkit-rusers/{bin,man/man1}
-	cd netkit-rusers-$version/rup
+	cd netkit-rusers-$RUSERS_VERSION/rup
 	make install 2> /dev/null
 }
 
