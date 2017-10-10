@@ -703,8 +703,8 @@ class Job
     each_param do |k, v, option_type|
       if option_type == '='
         as[k] = v.to_s
-      else
-        as[k] = v.to_s if v
+      elsif v
+        as[k] = v.to_s
       end
     end
     as

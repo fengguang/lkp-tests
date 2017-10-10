@@ -687,8 +687,8 @@ def show_delta(stat, key_g)
       show_one_diff stat, dim, v0, v, v0_stddev, v_stddev, is_float, is_exp, is_fail
       if is_fail
         $sum[dim] += v
-      else
-        $sum[dim] += Math.log(v) if v > 0
+      elsif v > 0
+        $sum[dim] += Math.log(v)
       end
 
       if v_stddev && is_fail
