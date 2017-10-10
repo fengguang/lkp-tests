@@ -44,7 +44,9 @@ ltp:
   - rpc_tests
   - sched
   - securebits
-  - smack
+# need CONFIG_SECURITY_SMACK=y, meanwhile CONFIG_SECURITY_SELINUX should not be set
+# in x86_64-rhel-7.2, it is just the opposite
+#  - smack
   - syscalls_part1
   - syscalls_part2
   - syscalls_part3
