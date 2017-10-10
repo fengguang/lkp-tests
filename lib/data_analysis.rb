@@ -37,9 +37,7 @@ def histogram(data, range = nil, params = {})
     range = range.slice(0, hist.size)
   end
 
-  unless no_percent
-    hist = hist.map { |n| n * 100.0 / total }
-  end
+  hist = hist.map { |n| n * 100.0 / total } unless no_percent
 
   [range, hist]
 end
@@ -70,9 +68,7 @@ def print_histogram(range, hist, params = {})
 
   prev = 0
   range.each_with_index do |lc, i|
-    if with_range
-      printf '%s-', format_level.call(prev)
-    end
+    printf '%s-', format_level.call(prev) if with_range
     printf("%s\t%s%s", format_level.call(lc),
            format_number(hist[i]), format_to_plot.call(i + 1))
     prev = lc

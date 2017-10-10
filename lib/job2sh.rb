@@ -44,9 +44,7 @@ def get_program_env(_program, env)
   program_env = {}
   args = []
 
-  if env.nil? || @cur_func == :extract_stats
-    return program_env, args
-  end
+  return program_env, args if env.nil? || @cur_func == :extract_stats
 
   case env
   when String

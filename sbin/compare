@@ -516,9 +516,7 @@ def show_one_diff(stat, dim, v0, v, v0_stddev, v_stddev, is_float, is_exp, is_fa
       buf = sprintf "%#{REL_WIDTH - 2}.0g%% ", p
     end
 
-    if p.abs >= 50 && $colorful
-      buf = Term::ANSIColor.intense_red(buf)
-    end
+    buf = Term::ANSIColor.intense_red(buf) if p.abs >= 50 && $colorful
   end
 
   if is_exp

@@ -81,9 +81,7 @@ end
 def array_diff_index(arr1, arr2)
   s = [arr1.size, arr2.size].min
   (0...s).each do |i|
-    if arr1[i] != arr2[i]
-      return i
-    end
+    return i if arr1[i] != arr2[i]
   end
   s
 end
@@ -206,9 +204,7 @@ def pager(&b)
 end
 
 def redirect_to_file(*args, &b)
-  if args.empty?
-    args = ['stdout.txt', 'w']
-  end
+  args = ['stdout.txt', 'w'] if args.empty?
   File.open(*args) do |f|
     redirect_to f, &b
   end
@@ -254,9 +250,7 @@ end
 ## File system
 
 def make_relative_symlink(src, dst)
-  if File.directory? dst
-    dst = File.join(dst, File.basename(src))
-  end
+  dst = File.join(dst, File.basename(src)) if File.directory? dst
   return if File.exist? dst
   src_comps = split_path(src)
   dst_comps = split_path(dst)

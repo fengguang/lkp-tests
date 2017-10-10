@@ -131,9 +131,7 @@ module CMResultRoot
 
   def kpi_avg_stddev
     cm = complete_matrix
-    if matrix_cols(cm) < 3
-      return nil
-    end
+    return nil if matrix_cols(cm) < 3
     avg_stddev = {}
     cm.each do |k, v|
       next unless is_kpi_stat(k, axes, [v])
@@ -457,9 +455,7 @@ module ResultStddev
     dkeys = []
     data.each do |k, vs|
       vs.delete_at col
-      if vs.compact.empty?
-        dkeys << k
-      end
+      dkeys << k if vs.compact.empty?
     end
     dkeys.each do |k|
       data.delete k
@@ -495,17 +491,13 @@ module ResultStddev
     delete_col(data, 0) if sources.size >= DATA_NR_MAX
 
     avg_stddev.each do |k, v|
-      unless data[k]
-        data[k] = [nil] * sources.size
-      end
+      data[k] = [nil] * sources.size unless data[k]
       data[k] << v
     end
     sources << source_str
     data[SOURCE_KEY] = sources
     data.each do |_k, vs|
-      if vs.size < sources.size
-        vs << nil
-      end
+      vs << nil if vs.size < sources.size
     end
 
     save_json data, path

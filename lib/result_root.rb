@@ -302,9 +302,7 @@ class MResultRootCollection
     IO.popen(cmdline) do |io|
       io.each_line do |_rtp|
         _rtp = _rtp.strip
-        if MResultRoot.valid? _rtp
-          yield MResultRoot.new _rtp.strip
-        end
+        yield MResultRoot.new _rtp.strip if MResultRoot.valid? _rtp
       end
       Process.waitpid io.pid
     end

@@ -729,9 +729,7 @@ module DataStore
 
       if @exact
         node = @table.open_node @conditions
-        if node.exist?
-          yield node
-        end
+        yield node if node.exist?
         return
       end
 

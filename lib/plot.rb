@@ -96,14 +96,10 @@ class MatrixPlotterBase
       case file_name
       when /eps/
         plot.terminal 'eps size %d,%d fontscale 1' % @inch_size
-        unless file_name.end_with? '.eps'
-          file_name += '.eps'
-        end
+        file_name += '.eps' unless file_name.end_with? '.eps'
       else
         plot.terminal 'png size %d,%d' % @pixel_size
-        unless file_name.end_with? '.png'
-          file_name += '.png'
-        end
+        file_name += '.png' unless file_name.end_with? '.png'
       end
       plot.output file_name
     else
@@ -172,9 +168,7 @@ class MMatrixPlotter < MatrixPlotterBase
             else
               ds.with = 'linespoints pt 15 lt 0'
             end
-            if @x_as_label
-              ds.using = '2:xticlabels(1)'
-            end
+            ds.using = '2:xticlabels(1)' if @x_as_label
             if line_title
               ds.title = line_title
             else
@@ -281,8 +275,6 @@ end
 
 def mplot(matrix, stats, x_stat_key = nil)
   p = MatrixPlotter.new
-  if $opt_output_path
-    p.set_output_prefix ensure_dir($opt_output_path)
-  end
+  p.set_output_prefix ensure_dir($opt_output_path) if $opt_output_path
   p.call(matrix, stats, x_stat_key)
 end

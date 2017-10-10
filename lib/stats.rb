@@ -106,9 +106,7 @@ def is_changed_stats(sorted_a, min_a, mean_a, max_a,
            mean_b > options['perf-profile']
   end
 
-  if is_failure_stat
-    return max_a != max_b
-  end
+  return max_a != max_b if is_failure_stat
 
   if is_latency_stat
     if options['distance']
@@ -388,9 +386,7 @@ def filter_incomplete_run(hash)
 
   delete_index_list = []
   is_incomplete_runs.each_with_index do |val, index|
-    if val == 1
-      delete_index_list << index
-    end
+    delete_index_list << index if val == 1
   end
   delete_index_list.reverse!
 

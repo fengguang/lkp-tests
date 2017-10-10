@@ -214,9 +214,7 @@ def load_remotes
     repo_info['suite']    ||= project + '-ci'
     repo_info['testcase'] ||= project + '-ci'
 
-    if repo_info['project'] == remote
-      repo_info['upstream'] = true
-    end
+    repo_info['upstream'] = true if repo_info['project'] == remote
 
     if repo_info['upstream']
       repo_info['fetch_tags']         = true

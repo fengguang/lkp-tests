@@ -177,9 +177,7 @@ def grep_crash_head(dmesg_file)
 
     # Call Trace:
     if line.index '+0x'
-      if line.index ' ? '
-        next
-      end
+      next if line.index ' ? '
 
       if line =~ CALLTRACE_PATTERN
         add_one_calltrace[prev_line] unless line.index('SyS_')
@@ -399,9 +397,7 @@ def get_crash_stats(dmesg_file)
     oops_map[id] = line.split(': ')[1..-1].join(': ')
   end
 
-  if uncompressed_dmesg
-    FileUtils.rm uncompressed_dmesg
-  end
+  FileUtils.rm uncompressed_dmesg if uncompressed_dmesg
 
   oops_map
 end

@@ -94,9 +94,7 @@ def search_file_in_paths(file, relative_to = nil, search_paths = nil)
 
   search_paths.each do |search_path|
     path = File.join(search_path, file)
-    if File.exist? path
-      return path
-    end
+    return path if File.exist? path
   end
   nil
 end

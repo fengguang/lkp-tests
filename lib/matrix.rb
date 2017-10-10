@@ -199,17 +199,13 @@ def unite_to(stats, matrix_root, max_cols = nil, delete = false)
     matrix = {}
   end
 
-  unless delete
-    matrix = add_stats_to_matrix(stats, matrix)
-  end
+  matrix = add_stats_to_matrix(stats, matrix) unless delete
   shrink_matrix(matrix, max_cols) if max_cols
 
   matrix = unite_remove_blacklist_stats(matrix)
   save_json(matrix, matrix_file)
   matrix = matrix_fill_missing_zeros(matrix)
-  if local_run?
-    save_matrix_to_csv_file(matrix_root + '/matrix.csv', matrix)
-  end
+  save_matrix_to_csv_file(matrix_root + '/matrix.csv', matrix) if local_run?
   matrix.delete 'stats_source'
   begin
     avg = matrix_average(matrix)
@@ -332,9 +328,7 @@ def unite_params(result_root)
 
   job.each_param do |k, v, _option_type|
     if params[k]
-      unless params[k].include? v
-        params[k] << v
-      end
+      params[k] << v unless params[k].include? v
     else
       params[k] = [v]
     end

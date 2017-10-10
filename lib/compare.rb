@@ -148,9 +148,7 @@ module Compare
       if sort_mresult_roots
         skeys = @compare_axis_keys.map do |k|
           git = axis_key_git(k)
-          if git
-            [k, git]
-          end
+          [k, git] if git
         end
         skeys.compact!
         unless skeys.empty?
@@ -174,9 +172,7 @@ module Compare
 
     def compare_groups
       do_sort_mresult_roots
-      if dedup_mresult_roots
-        @mresult_roots.uniq!
-      end
+      @mresult_roots.uniq! if dedup_mresult_roots
       grouper = AxesGrouper.new
       groups = grouper.set_axes_data(@mresult_roots)
                       .set_group_axis_keys(@compare_axis_keys)
@@ -232,9 +228,7 @@ module Compare
     # - show compare result: show_compare_result
     def compare
       result = do_compare
-      if sort_by_group
-        result = Compare.sort_group result
-      end
+      result = Compare.sort_group result if sort_by_group
       show_compare_result result
     end
 
@@ -320,9 +314,7 @@ module Compare
                                        'more' => @comparer.more_stats,
                                        'perf-profile' => @comparer.perf_profile_threshold,
                                      })
-        if changes
-          changed_stat_keys |= changes.keys
-        end
+        changed_stat_keys |= changes.keys if changes
       end
       changed_stat_keys
     end
@@ -850,9 +842,7 @@ module Compare
 
     failure, perf = stat_enum.partition { |stat| stat[FAILURE] }
 
-    if failure.empty? && perf.empty? && !group.comparer.show_empty_group
-      return
-    end
+    return if failure.empty? && perf.empty? && !group.comparer.show_empty_group
 
     if compact_show
       compact_show_group_header group

@@ -67,6 +67,4 @@ $___ = Array(___)
 check_arch_constraints
 
 kconfig_lines = read_kconfig_lines
-if kconfig_lines
-  check_all(kconfig_lines)
-end
+check_all(kconfig_lines) if kconfig_lines

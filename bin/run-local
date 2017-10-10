@@ -67,9 +67,7 @@ end
 
 # Setup environment for user specified test case
 argv = ARGV.drop(1)
-if argv[0] == '--'
-  argv = argv.drop(1)
-end
+argv = argv.drop(1) if argv[0] == '--'
 
 ENV['MY_TEST_CMDLINE'] = Shellwords.join ARGV.drop(1) unless argv.empty?
 

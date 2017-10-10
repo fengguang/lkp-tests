@@ -71,9 +71,7 @@ end
 
 def for_each_in(ah, set, pk = nil)
   ah.each do |k, v|
-    if set.include?(k)
-      yield pk, ah, k, v
-    end
+    yield pk, ah, k, v if set.include?(k)
     next unless Hash === v
     for_each_in(v, set, k) do |pk, h, k, v|
       yield pk, h, k, v
@@ -210,9 +208,7 @@ class Job
     yaml.gsub!(/\n\n#([! ][-a-zA-Z0-9 !|\/?@<>.,_+=%~]+)$/, "\n:#\\1: ")
 
     begin
-      if expand_template
-        yaml = expand_yaml_template(yaml, jobfile)
-      end
+      yaml = expand_yaml_template(yaml, jobfile) if expand_template
 
       @jobs = []
       YAML.load_stream(yaml) do |hash|
@@ -426,9 +422,7 @@ class Job
 
   def expand_each_in(ah, set)
     ah.each do |k, v|
-      if set.include?(k) || (String === v && v =~ /{{(.*)}}/m)
-        yield ah, k, v
-      end
+      yield ah, k, v if set.include?(k) || (String === v && v =~ /{{(.*)}}/m)
       next unless Hash === v
       expand_each_in(v, set) do |h, k, v|
         yield h, k, v
@@ -690,16 +684,10 @@ class Job
     rtp = ResultPath.new
     rtp['testcase'] = @job['testcase']
     path_scheme = rtp.path_scheme
-    if path_scheme.include? 'rootfs'
-      as['rootfs'] ||= 'debian-x86_64.cgz'
-    end
-    if path_scheme.include? 'compiler'
-      as['compiler'] ||= DEFAULT_COMPILER
-    end
+    as['rootfs'] ||= 'debian-x86_64.cgz' if path_scheme.include? 'rootfs'
+    as['compiler'] ||= DEFAULT_COMPILER if path_scheme.include? 'compiler'
 
-    if as.has_key? 'rootfs'
-      as['rootfs'] = rootfs_filename as['rootfs']
-    end
+    as['rootfs'] = rootfs_filename as['rootfs'] if as.has_key? 'rootfs'
     each_param do |k, v, option_type|
       if option_type == '='
         as[k] = v.to_s
