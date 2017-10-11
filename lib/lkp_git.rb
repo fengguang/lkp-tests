@@ -82,8 +82,6 @@ def linus_release_tag(commit)
   case tag
   when /^v[34]\.\d+(-rc\d+)?$/, /^v2\.\d+\.\d+(-rc\d)?$/
     tag
-  else
-    nil
   end
 end
 
