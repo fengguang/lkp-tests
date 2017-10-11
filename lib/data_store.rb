@@ -304,8 +304,7 @@ module DataStore
       save_yaml data, path(CONFIG_FILE)
     end
 
-    def from_data(data)
-    end
+    def from_data(data); end
 
     def to_data
       {}
