@@ -1,0 +1,5 @@
+model: qemu-system-i386 -enable-kvm -cpu Haswell,+smep,+smap
+nr_vm: 64
+nr_cpu: 1
+memory: 360M
+rootfs: quantal-core-i386.cgz
