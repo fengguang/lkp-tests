@@ -112,7 +112,7 @@ def atomic_save_yaml_json(object, file)
   temp_file = file + "-#{$$}"
   File.open(temp_file, 'w') do |file|
     if temp_file.index('.json')
-      lines = JSON.pretty_generate(object, :allow_nan => true)
+      lines = JSON.pretty_generate(object, allow_nan: true)
     else
       lines = YAML.dump(object)
       # create comment lines from symbols
@@ -121,7 +121,7 @@ def atomic_save_yaml_json(object, file)
     end
     file.write(lines)
   end
-  FileUtils.mv temp_file, file, :force => true
+  FileUtils.mv temp_file, file, force: true
 end
 
 def rootfs_filename(rootfs)

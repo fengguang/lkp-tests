@@ -260,7 +260,7 @@ def make_relative_symlink(src, dst)
 end
 
 def mkdir_p(dir, mode = 0o2775)
-  FileUtils.mkdir_p dir, :mode => mode
+  FileUtils.mkdir_p dir, mode: mode
 end
 
 def with_flock(lock_file)

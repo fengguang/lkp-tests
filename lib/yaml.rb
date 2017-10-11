@@ -158,11 +158,11 @@ def save_yaml(object, file, compress = false)
   File.open(temp_file, 'w') do |f|
     f.write(YAML.dump(object))
   end
-  FileUtils.mv temp_file, file, :force => true
+  FileUtils.mv temp_file, file, force: true
 
   return unless compress
 
-  FileUtils.rm "#{file}.gz", :force => true
+  FileUtils.rm "#{file}.gz", force: true
   compress_file(file)
 end
 
@@ -205,7 +205,7 @@ def load_json(file, cache = false)
       tempfile = file + '-bad'
       $stderr.puts "Failed to load JSON file: #{file}"
       $stderr.puts "Kept corrupted JSON file for debugging: #{tempfile}"
-      FileUtils.mv file, tempfile, :force => true
+      FileUtils.mv file, tempfile, force: true
       raise
     end
     nil
@@ -221,13 +221,13 @@ end
 def save_json(object, file, compress = false)
   temp_file = dot_file(file) + "-#{$$}"
   File.open(temp_file, 'w') do |file|
-    file.write(JSON.pretty_generate(object, :allow_nan => true))
+    file.write(JSON.pretty_generate(object, allow_nan: true))
   end
-  FileUtils.mv temp_file, file, :force => true
+  FileUtils.mv temp_file, file, force: true
 
   return unless compress
 
-  FileUtils.rm "#{file}.gz", :force => true
+  FileUtils.rm "#{file}.gz", force: true
   compress_file(file)
 end
 
