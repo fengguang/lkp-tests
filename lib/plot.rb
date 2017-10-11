@@ -14,7 +14,7 @@ NR_PLOT = 1
 module Gnuplot
   # fallback to v2.4.1 to avoid circular dependency and potential dead lock
   def self.open(persist = true)
-    cmd = Gnuplot.gnuplot(persist) or raise 'gnuplot not found'
+    (cmd = Gnuplot.gnuplot(persist)) || raise('gnuplot not found')
     IO.popen(cmd, 'w') { |io| yield io }
   end
 end
