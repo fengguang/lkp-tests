@@ -11,7 +11,7 @@ def lookup_hash(hash, path, create_missing = false)
     k = keys.shift
     v = hash[k]
     if create_missing && v.nil?
-      v = hash[k] = keys.empty? ? nil : Hash.new
+      v = hash[k] = keys.empty? ? nil : {}
     end
     return parent, pkey, hash, k, keys unless Hash === v && !keys.empty?
 

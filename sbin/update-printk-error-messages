@@ -125,7 +125,7 @@ OptionParser.new do |opts|
 end.parse!
 
 errids = Set.new
-count = Hash.new
+count = {}
 nr_too_short = 0
 nr_line_short = 0
 

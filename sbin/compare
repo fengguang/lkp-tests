@@ -32,8 +32,8 @@ ABS_CHANGE_STATS_RE = /^(perf-profile|latency_stats)/
 
 $opt_dimension = 'commit'
 $opt_field = nil
-$opt_grep  = Array.new
-$opt_vgrep = Array.new
+$opt_grep  = []
+$opt_vgrep = []
 $options = {'perf-profile' => 5}
 
 $project = 'linux'
@@ -172,8 +172,8 @@ $stat_records       = Hash.new { |hash, key| hash[key] = [] }
 $_result_root_tuple = Hash.new { |hash, key| hash[key] = [] }
 $_result_root_saved = Set.new
 
-$dims = Hash.new
-$cases = Hash.new
+$dims = {}
+$cases = {}
 $tests = Set.new
 $sum = Hash.new { |hash, key| hash[key] = 0 }
 $stddev = Hash.new { |hash, key| hash[key] = 0 }

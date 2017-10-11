@@ -263,7 +263,7 @@ def __commit_name(commit)
   name + ' ' + git_commit_subject(commit)[0..59]
 end
 
-$__commit_name_cache = Hash.new
+$__commit_name_cache = {}
 def commit_name(commit)
   $__commit_name_cache[commit] ||= __commit_name(commit)
 end

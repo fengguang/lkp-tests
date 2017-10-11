@@ -11,11 +11,11 @@ require "#{LKP_SRC}/lib/data_analysis.rb"
 PERCT_POINTS = (5..9).map { |n| n * 10 } + [95, 99]
 
 def analyze
-  functions_samples = Hash.new
+  functions_samples = {}
   zopen("#{RESULT_ROOT}/ftrace.data") do |f|
     trace = FGTrace.new(f)
     trace.each do |s|
-      functions_samples[s.func] ||= Array.new
+      functions_samples[s.func] ||= []
       functions_samples[s.func] << s.duration
     end
   end

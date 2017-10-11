@@ -222,7 +222,7 @@ class Job
       raise
     end
 
-    @job = Hash.new
+    @job = {}
     unless @jobs.first['job_origin']
       if File.symlink?(jobfile) &&
          File.readlink(jobfile) =~ %r|^../../../(.*)|
@@ -285,9 +285,9 @@ class Job
     end
 
     if first_time
-      @file_loaded = Hash.new
+      @file_loaded = {}
     else
-      @file_loaded ||= Hash.new
+      @file_loaded ||= {}
     end
 
     i = include_files
@@ -626,7 +626,7 @@ class Job
   end
 
   def top_env(job)
-    top_env = expand_toplevel_vars Hash.new, job
+    top_env = expand_toplevel_vars({}, job)
     top_env['LKP_SRC'] = lkp_src
     top_env['job_file'] = job['job_file'] || @jobfile
     top_env
