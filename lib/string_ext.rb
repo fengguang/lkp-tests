@@ -21,7 +21,7 @@ class String
     self.encode!('UTF-8', 'UTF-8', invalid: :replace, undef: :replace, replace: to)
   end
 
-  def strip_nonprintable_characters()
+  def strip_nonprintable_characters
     self.gsub(/[^[:print:]]/, '')
   end
 end

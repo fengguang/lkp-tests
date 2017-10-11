@@ -219,7 +219,7 @@ def dim_name(dim)
   end
 end
 
-def setup_project()
+def setup_project
   return unless $opt_dimension =~ /_commit$/
 
   $project = $opt_dimension.sub(/_.*$/, '')
@@ -325,7 +325,7 @@ def setup_test_group(_result_root)
   $tests.add test
 end
 
-def setup_result_root_hash()
+def setup_result_root_hash
   ENV['LC_ALL'] = 'C'
   $opt_dims.each do |dim|
     `grep -h -r -F -e '#{dim}' #{RESULT_PATHS}`.each_line do |result_root|
@@ -348,7 +348,7 @@ def get_valid_average(matrix, key)
   avg
 end
 
-def setup_changed_stats()
+def setup_changed_stats
   $_result_root_tuple.each do |k, v|
     matrix_file1 = v[0] + '/matrix.json'
     matrix_file2 = v[-1] + '/matrix.json'
@@ -427,7 +427,7 @@ def show_one_stat(stat)
   end
 end
 
-def setup_dims()
+def setup_dims
   if $opt_dimension =~ /^(.*_)?commit$/
     git = Git.open(project: $project, working_dir: GIT_WORK_TREE) if Dir.exist?(GIT_WORK_TREE)
     unless git

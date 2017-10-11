@@ -293,12 +293,12 @@ module DataStore
       load_config unless create_new
     end
 
-    def load_config()
+    def load_config
       data = load_yaml path(CONFIG_FILE)
       from_data data
     end
 
-    def save_config()
+    def save_config
       data = to_data
       mkdir_p path
       save_yaml data, path(CONFIG_FILE)
@@ -307,7 +307,7 @@ module DataStore
     def from_data(data)
     end
 
-    def to_data()
+    def to_data
       {}
     end
 

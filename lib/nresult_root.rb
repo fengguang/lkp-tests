@@ -323,7 +323,7 @@ class MResultRootTableSet
     tbl
   end
 
-  def tables()
+  def tables
     [@linux_perf_table, @linux_table, @other_table]
   end
 
@@ -359,7 +359,7 @@ class MResultRootTableSet
   end
 end
 
-def mrt_table_set()
+def mrt_table_set
   $mrt_table_set ||= MResultRootTableSet.new
 end
 

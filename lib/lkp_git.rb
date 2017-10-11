@@ -177,7 +177,7 @@ end
 
 # => ["v3.11-rc6", "v3.11-rc5", "v3.11-rc4", "v3.11-rc3", "v3.11-rc2", "v3.11-rc1",
 #     "v3.10", "v3.10-rc7", "v3.10-rc6", ..., "v2.6.12-rc3", "v2.6.12-rc2", "v2.6.11"]
-def __linus_tags()
+def __linus_tags
   $remotes ||= load_remotes
   pattern = Regexp.new '^' + Array($remotes['linus']['release_tag_pattern']).join('$|^') + '$'
   tags = get_tags(pattern, $remotes['linus']['release_tag_committer'])
@@ -189,7 +189,7 @@ def __linus_tags()
   tags_order
 end
 
-def linus_tags()
+def linus_tags
   $__linus_tags_cache ||= __linus_tags
   $__linus_tags_cache
 end

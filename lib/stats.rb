@@ -29,7 +29,7 @@ $metrics_blacklist_re = load_regular_expressions("#{LKP_SRC}/etc/blacklist")
 $kill_pattern_whitelist_re = load_regular_expressions("#{LKP_SRC}/etc/dmesg-kill-pattern")
 
 # => ["tcrypt.", "hackbench.", "dd.", "xfstests.", "aim7.", ..., "oltp.", "fileio.", "dmesg."]
-def test_prefixes()
+def test_prefixes
   stats = Dir["#{LKP_SRC}/stats/**/*"].map { |path| File.basename path }
   tests = Dir["#{LKP_SRC}/{tests,daemon}/**/*"].map { |path| File.basename path }
   tests = stats & tests
