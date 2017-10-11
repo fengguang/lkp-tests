@@ -104,10 +104,10 @@ def install_packages(script, distro)
   packages |= dev_packages
   return if packages.empty?
 
-  unless system "#{LKP_SRC}/distro/installer/#{distro}", *packages
-    puts "Cannot install some packages in #{LKP_SRC}/distro/#{distro}/#{script}"
-    exit 1
-  end
+  return if system "#{LKP_SRC}/distro/installer/#{distro}", *packages
+
+  puts "Cannot install some packages in #{LKP_SRC}/distro/#{distro}/#{script}"
+  exit 1
 end
 
 def install_benchmarks(script, distro)

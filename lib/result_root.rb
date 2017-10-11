@@ -376,9 +376,7 @@ def delete_mrt(_rt_path)
   mrtts = mrt_table_set
   _rt = MResultRoot.new(_rt_path)
   n = mrtts.open_node(_rt.axes)
-  if File.exist? n.path
-    n.delete
-  end
+  n.delete if File.exist? n.path
 end
 
 def save_mrt_result_stddev(_rt_path)

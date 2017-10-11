@@ -13,9 +13,9 @@ end
 
 def axis_key_git(axis_key)
   project = axis_key_project(axis_key)
-  if project
-    Git.open(project: project, may_not_exist: true)
-  end
+  return unless project
+
+  Git.open(project: project, may_not_exist: true)
 end
 
 def axis_format(axis_key, value)

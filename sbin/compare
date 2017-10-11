@@ -220,10 +220,10 @@ def dim_name(dim)
 end
 
 def setup_project()
-  if $opt_dimension =~ /_commit$/
-    $project = $opt_dimension.sub(/_.*$/, '')
-    $opt_dimension = 'commit'
-  end
+  return unless $opt_dimension =~ /_commit$/
+
+  $project = $opt_dimension.sub(/_.*$/, '')
+  $opt_dimension = 'commit'
 end
 
 def get_json_field(file, key, is_rt)
@@ -713,17 +713,17 @@ def show_delta(stat, key_g)
     end
   end
 
-  unless $group_by_test
-    v0 = $sum[$first_dim]
-    v0_stddev = $stddev[$first_dim]
-    $sum.each do |dim, v|
-      show_one_diff stat, dim, v0, v, v0_stddev, $stddev[dim], is_float, is_exp, is_fail
-    end
-    if is_fail
-      puts "TOTAL #{$opt_field}"
-    else
-      puts "GEO-MEAN #{$opt_field}"
-    end
+  next if $group_by_test
+
+  v0 = $sum[$first_dim]
+  v0_stddev = $stddev[$first_dim]
+  $sum.each do |dim, v|
+    show_one_diff stat, dim, v0, v, v0_stddev, $stddev[dim], is_float, is_exp, is_fail
+  end
+  if is_fail
+    puts "TOTAL #{$opt_field}"
+  else
+    puts "GEO-MEAN #{$opt_field}"
   end
 end
 

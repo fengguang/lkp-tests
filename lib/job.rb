@@ -550,9 +550,9 @@ class Job
       path += '-'
     end
     if path.empty?
-      return 'defaults'
+      'defaults'
     else
-      return path.chomp('-').tr('^-a-zA-Z0-9+=:.%', '_')
+      path.chomp('-').tr('^-a-zA-Z0-9+=:.%', '_')
     end
   end
 
@@ -635,9 +635,7 @@ class Job
   def run_filter(_hash, _key, _val, script)
     system @filter_env, script, {unsetenv_others: true}
 
-    if $?.exitstatus && $?.exitstatus != 0
-      raise Job::ParamError, "#{script}: exitstatus #{$?.exitstatus}"
-    end
+    raise Job::ParamError, "#{script}: exitstatus #{$?.exitstatus}" if $?.exitstatus && $?.exitstatus != 0
   end
 
   def expand_params(run_scripts = true)

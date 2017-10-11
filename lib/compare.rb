@@ -1052,10 +1052,10 @@ module Compare
 
   def self.compare(argv)
     options = parse_argv argv
-    if options
-      comparer = Comparer.new options
-      comparer.compare
-    end
+    return unless options
+
+    comparer = Comparer.new options
+    comparer.compare
   end
 
   ## Test functions

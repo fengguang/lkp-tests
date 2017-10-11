@@ -13,14 +13,11 @@ def lookup_hash(hash, path, create_missing = false)
     if create_missing && v.nil?
       v = hash[k] = keys.empty? ? nil : Hash.new
     end
-    if Hash === v && !keys.empty?
-      parent = hash
-      pkey = k
-      hash = v
-      next
-    else
-      return parent, pkey, hash, k, keys
-    end
+    return parent, pkey, hash, k, keys unless Hash === v && !keys.empty?
+
+    parent = hash
+    pkey = k
+    hash = v
   end
 end
 

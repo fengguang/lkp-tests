@@ -47,11 +47,9 @@ TIME_UNITS = ['u', 'm', ''].freeze
 def format_time(val, unit = 'u')
   (TIME_UNITS.index(unit)...TIME_UNITS.size).each do |ui|
     u = TIME_UNITS[ui]
-    if val < 1000 || ui == TIME_UNITS.size - 1
-      return format_number(val) + u + 's'
-    else
-      val /= 1000.0
-    end
+    return format_number(val) + u + 's' if val < 1000 || ui == TIME_UNITS.size - 1
+
+    val /= 1000.0
   end
 end
 
@@ -74,10 +72,10 @@ def print_histogram(range, hist, params = {})
     prev = lc
     printf "\n"
   end
-  if !no_extra && hist.size > range.size
-    printf("%s+\t%s%s\n", format_level.call(range[-1]),
-           format_number(hist[-1]), format_to_plot.call(range.size + 1))
-  end
+  return unless (!no_extra && hist.size > range.size)
+
+  printf("%s+\t%s%s\n", format_level.call(range[-1]),
+         format_number(hist[-1]), format_to_plot.call(range.size + 1))
 end
 
 def percentile(data, points = [90, 95, 99])

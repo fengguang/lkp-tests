@@ -437,9 +437,9 @@ module DataStore
 
     def index_file(axes)
       bn = axes[@axis_keys.first]
-      if bn
-        path bn
-      end
+      return unless bn
+
+      path bn
     end
 
     def index(node)
@@ -596,7 +596,7 @@ module DataStore
     def calc_create_time
       files = Dir[path('*')]
       if files
-        return files.map { |f| File.mtime f }.sort!.first
+        files.map { |f| File.mtime f }.sort!.first if files
       else
         Time.now
       end

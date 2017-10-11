@@ -225,10 +225,10 @@ class Job2sh < Job
     # started by run_monitor, while the monitors will wait for
     # wakup events signaled in post-run after run_job, which leads
     # to circular waits.
-    if nr_bg > 0
+    # if nr_bg > 0
       # exec_line
       # exec_line indent(ancestors) + "wait"
-    end
+    # end
   end
 
   def to_shell

@@ -162,14 +162,14 @@ end
 
 def shrink_matrix(matrix, max_cols)
   n = matrix['stats_source'].size - max_cols
-  if n > 1
-    empty_keys = []
-    matrix.each do |k, v|
-      v.shift n
-      empty_keys << k if v.empty?
-    end
-    empty_keys.each { |k| matrix.delete k }
+  return unless n > 1
+
+  empty_keys = []
+  matrix.each do |k, v|
+    v.shift n
+    empty_keys << k if v.empty?
   end
+  empty_keys.each { |k| matrix.delete k }
 end
 
 def matrix_delete_col(matrix, col)

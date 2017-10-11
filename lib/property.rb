@@ -54,15 +54,11 @@ module Property
   private
 
   def check_prop_for_set(prop)
-    unless respond_to? :"set_#{prop}", true
-      raise "Property: '#{prop}' isn't settable!"
-    end
+    raise "Property: '#{prop}' isn't settable!" unless respond_to? :"set_#{prop}", true
   end
 
   def check_prop_for_unset(prop)
-    unless respond_to? :"unset_#{prop}", true
-      raise "Property: '#{prop}' isn't unsettable!"
-    end
+    raise "Property: '#{prop}' isn't unsettable!" unless respond_to? :"unset_#{prop}", true
   end
 
   public

@@ -104,21 +104,19 @@ def yaml_merge_included_files(yaml, relative_to, search_paths = nil)
     prefix = $1
     file = $2.chomp
     path = search_file_in_paths file, relative_to, search_paths
-    if path
-      to_merge = File.read path
-      indent = prefix.tr '^ ', ' '
-      indented = [prefix]
-      to_merge.split("\n").each do |line|
-        if line =~ /^%([!%]*)$/
-          indented << '%' + indent + line[1..-1]
-        else
-          indented << indent + line
-        end
+    raise "Included yaml file not found: '#{file}'" unless path
+
+    to_merge = File.read path
+    indent = prefix.tr '^ ', ' '
+    indented = [prefix]
+    to_merge.split("\n").each do |line|
+      if line =~ /^%([!%]*)$/
+        indented << '%' + indent + line[1..-1]
+      else
+        indented << indent + line
       end
-      indented.join("\n")
-    else
-      raise "Included yaml file not found: '#{file}'"
     end
+    indented.join("\n")
   end
 end
 
@@ -162,10 +160,10 @@ def save_yaml(object, file, compress = false)
   end
   FileUtils.mv temp_file, file, :force => true
 
-  if compress
-    FileUtils.rm "#{file}.gz", :force => true
-    compress_file(file)
-  end
+  return unless compress
+
+  FileUtils.rm "#{file}.gz", :force => true
+  compress_file(file)
 end
 
 def save_yaml_with_flock(object, file, timeout = nil, compress = false)
@@ -227,10 +225,10 @@ def save_json(object, file, compress = false)
   end
   FileUtils.mv temp_file, file, :force => true
 
-  if compress
-    FileUtils.rm "#{file}.gz", :force => true
-    compress_file(file)
-  end
+  return unless compress
+
+  FileUtils.rm "#{file}.gz", :force => true
+  compress_file(file)
 end
 
 def try_load_json(path)
