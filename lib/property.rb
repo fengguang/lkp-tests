@@ -8,7 +8,7 @@ class Module
   def prop_accessor(*props)
     attr_reader(*props)
     props.each do |prop|
-      class_eval %Q{
+      class_eval %{
 def #{prop}_set?
   instance_variable_defined? :"@#{prop}"
 end
@@ -29,7 +29,7 @@ end
   def prop_with(*props)
     prop_accessor(*props)
     props.each do |prop|
-      class_eval %Q{
+      class_eval %{
 def with_#{prop}(*values)
   set = #{prop}_set?
   oval = self.#{prop} if set
