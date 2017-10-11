@@ -713,7 +713,7 @@ def show_delta(stat, key_g)
     end
   end
 
-  next if $group_by_test
+  return if $group_by_test
 
   v0 = $sum[$first_dim]
   v0_stddev = $stddev[$first_dim]
