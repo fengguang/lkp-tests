@@ -95,15 +95,15 @@ class MatrixPlotterBase
     if file_name
       case file_name
       when /eps/
-        plot.terminal 'eps size %d,%d fontscale 1' % @inch_size
+        plot.terminal format('eps size %d,%d fontscale 1', @inch_size)
         file_name += '.eps' unless file_name.end_with? '.eps'
       else
-        plot.terminal 'png size %d,%d' % @pixel_size
+        plot.terminal format('png size %d,%d', @pixel_size)
         file_name += '.png' unless file_name.end_with? '.png'
       end
       plot.output file_name
     else
-      plot.terminal 'dumb nofeed size %d,%d' % @char_size
+      plot.terminal format('dumb nofeed size %d,%d', @char_size)
     end
   end
 end
@@ -210,7 +210,7 @@ class MatrixPlotter < MatrixPlotterBase
             setup_output p, file
           else
             if (np % @nr_plot).zero?
-              p.terminal 'dumb nofeed size %d,%d' % @char_size
+              p.terminal format('dumb nofeed size %d,%d', @char_size)
               p.multiplot "layout 1,#{@nr_plot}"
             end
             np += 1
