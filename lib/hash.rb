@@ -49,7 +49,7 @@ def merge_accumulative(a, b)
     when Hash
       a.update(b)
     else
-      a.update({ b => nil })
+      a.update(b => nil)
     end
   else
     case b

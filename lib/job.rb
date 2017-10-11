@@ -605,7 +605,7 @@ class Job
   end
 
   def evaluate_param(hash, _key, val, script)
-    hash = @jobx.merge({___: val})
+    hash = @jobx.merge(___: val)
     expr = File.read script
     expand_expression(hash, expr, script)
   end
@@ -633,7 +633,7 @@ class Job
   end
 
   def run_filter(_hash, _key, _val, script)
-    system @filter_env, script, {unsetenv_others: true}
+    system @filter_env, script, unsetenv_others: true
 
     raise Job::ParamError, "#{script}: exitstatus #{$?.exitstatus}" if $?.exitstatus && $?.exitstatus != 0
   end

@@ -844,7 +844,7 @@ module DataStore
     tbl = Table.open tbl_path
     0.upto(3) do |a|
       'h'.upto('k') do |b|
-        n = tbl.new_node({'a' => a, 'b' => b, 'c' => 2})
+        n = tbl.new_node('a' => a, 'b' => b, 'c' => 2)
         m = n.matrix
         m['s1'] = [1, 2, 3]
         m['s2'] = [4, a, b]

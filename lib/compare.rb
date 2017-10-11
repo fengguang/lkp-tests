@@ -309,11 +309,9 @@ module Compare
       m0 = ms[0]
       ms.drop(1).each do |m|
         changes = _get_changed_stats(m, m0,
-                                     {
                                        'gap' => @comparer.gap,
                                        'more' => @comparer.more_stats,
-                                       'perf-profile' => @comparer.perf_profile_threshold,
-                                     })
+                                       'perf-profile' => @comparer.perf_profile_threshold)
         changed_stat_keys |= changes.keys if changes
       end
       changed_stat_keys
