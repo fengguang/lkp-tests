@@ -59,7 +59,6 @@ ltp:
   - fsx
 # io_cd requires special peripheral(/dev/cdrom and media)
 #  - io_cd
-  - net_stress.appl
   - stress.part2
 # Stress tests groups, will take too long time, close them for now
 # 5 hours 43 mins

@@ -1,0 +1,9 @@
+suite: ltp
+testcase: ltp
+category: functional
+
+need_memory: 8G
+
+ltp:
+  test:
+  - net_stress.appl
