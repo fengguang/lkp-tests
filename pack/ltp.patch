@@ -1,0 +1,13 @@
+diff --git a/testcases/network/stress/ftp/ftp-download-stress b/testcases/network/stress/ftp/ftp-download-stress
+index e1f3a8c..612a5eb 100644
+--- a/testcases/network/stress/ftp/ftp-download-stress
++++ b/testcases/network/stress/ftp/ftp-download-stress
+@@ -59,7 +59,7 @@ setup()
+ 	local ip_opt="-olisten=YES -olisten_ipv6=NO"
+ 	[ $TST_IPV6 ] && ip_opt="-olisten=NO -olisten_ipv6=YES"
+ 
+-	vsftpd $ip_opt -oanonymous_enable=YES vsftpd.conf
++	vsftpd $ip_opt -oanonymous_enable=YES vsftpd.conf &
+ }
+ 
+ test01()
