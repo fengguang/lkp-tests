@@ -29,11 +29,24 @@ run_one()
 	return $ret_value
 }
 
+check_ignored_by_lkp()
+{
+	local test=$1
+	local ignored_by_lkp=$LKP_SRC/pack/pm-qa-addon/ignored_by_lkp
+
+	for ignore in $(cat $ignored_by_lkp | grep -v ^#)
+	do
+		[ -f "$test/$ignore".sh ] && mv $test/$ignore.sh $test/$ignore.sh.bak && echo "$ignore: ignored_by_lkp"
+	done
+}
+
 if [ "$test" = 'all' ]; then
 	for i in cpufreq cpuhotplug cputopology cpuidle thermal
 	do
+		check_ignored_by_lkp $i
 		run_one $i
 	done
 else
+	check_ignored_by_lkp $test
 	run_one $test
 fi
