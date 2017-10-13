@@ -2,6 +2,7 @@
 
 download()
 {
+	git_clone_update https://github.com/glmark2/glmark2.git || return
 	git_clone_update git://git.linaro.org/power/pm-qa.git
 }
 
@@ -9,4 +10,8 @@ install()
 {
 	make -C cpuidle cpuidle_killer
 	cp -af $source_dir/* $BM_ROOT
+	cd ../glmark2
+	./waf configure --prefix=$BM_ROOT/glmark2 --with-flavors=x11-gl || return
+	./waf || return
+	./waf install || return
 }

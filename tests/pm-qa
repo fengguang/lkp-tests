@@ -7,6 +7,8 @@ cd $BENCHMARK_ROOT/pm-qa || exit
 
 . $LKP_SRC/lib/upload.sh
 
+[ -e "/usr/bin/glmark2" ] || ln -sf /lkp/benchmarks/pm-qa/glmark2/bin/glmark2 /usr/bin/glmark2
+
 run_one()
 {
 	local testcase=$1
