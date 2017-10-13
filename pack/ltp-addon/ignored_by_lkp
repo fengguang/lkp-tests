@@ -22,7 +22,7 @@ modules:delete_module01
 modules:delete_module03
 # not suittable to recent kernel
 hyperthreading:ht_interrupt
-# i386 only
+# x86_64 can not support 16-bit syscall
 syscalls_part1:chown01_16
 syscalls_part1:chown02_16
 syscalls_part1:chown03_16
@@ -39,5 +39,9 @@ syscalls_part1:geteuid01_16
 syscalls_part1:geteuid02_16
 syscalls_part1:getgid01_16
 syscalls_part2:getgid03_16
+syscalls_part4:setuid01_16
+syscalls_part4:setuid02_16
+syscalls_part4:setuid03_16
+syscalls_part4:setuid04_16
 # x86_64 can not support it
 syscalls_part4:ssetmask01
