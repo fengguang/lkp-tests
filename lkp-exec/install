@@ -173,7 +173,7 @@ makepkg_install_packages() {
 	local script=$1
 	local distro=$2
 
-	local packages dev_packages
+	local packages dev_packages pkg
 	packages="$(get_dependency_packages ${distro} ${script} pkg)"
 	dev_packages="$(get_dependency_packages ${distro} ${script}-dev pkg)"
 	packages="$(echo $packages $dev_packages | tr '\n' ' ')"
@@ -181,6 +181,8 @@ makepkg_install_packages() {
 
 	for pkg in $packages; do
 		if ! verify_install $pkg; then
+			install_packages "$pkg" "$distro"
+			makepkg_install_packages "$pkg" "$distro"
 			makepkg_install "$pkg" || echo "Install $pkg failed"
 		fi
 	done
