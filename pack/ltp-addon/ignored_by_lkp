@@ -45,3 +45,17 @@ syscalls_part4:setuid03_16
 syscalls_part4:setuid04_16
 # x86_64 can not support it
 syscalls_part4:ssetmask01
+# waiting community's response
+mm:mmapstress08
+# take too long time, add need memory > 8G
+net_stress.appl:ssh4-stress
+net_stress.appl:ssh6-stress
+# need about 15min for each test, there is no enough time left to test them
+net_stress.appl:ftp4-upload-stress
+net_stress.appl:ftp6-upload-stress
+# only support kernel version < v2.6.25
+syscalls_part3:ptrace03
+# only support Blackfin(DSP microprocessor)
+syscalls_part3:ptrace04
+# __NR_readdir not supported on x86
+syscalls_part3:readdir21
