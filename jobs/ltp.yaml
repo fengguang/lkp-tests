@@ -39,7 +39,8 @@ ltp:
   - numa
   - pipes
   - power_management_tests
-  - power_management_tests_exclusive
+# System is not a multi socket & multi core & hyper-threaded, there is no proper test environment
+#  - power_management_tests_exclusive
   - pty
   - quickhit
   - rpc_tests
