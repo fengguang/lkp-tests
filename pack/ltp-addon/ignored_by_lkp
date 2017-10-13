@@ -39,3 +39,5 @@ syscalls_part1:geteuid01_16
 syscalls_part1:geteuid02_16
 syscalls_part1:getgid01_16
 syscalls_part2:getgid03_16
+# x86_64 can not support it
+syscalls_part4:ssetmask01
