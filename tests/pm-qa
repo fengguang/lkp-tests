@@ -5,6 +5,10 @@ if [ "$test" = "all" ] || [ "$test" = "thermal" ]; then
 	mkdir -p		/tmp/.X11-unix
 	chmod 1777		/tmp/.X11-unix
 	chown root:root		/tmp/.X11-unix
+
+	# testsuit(get_os()) will check this file.
+	# if it exists, it take OS as ubuntu/debian, otherwise it take it as android
+	touch $BENCHMARK_ROOT/pm-qa/thermal/"\system\build.prop"
 	xinit $LKP_SRC/tests/pm-qa.xinitrc -- $LKP_SRC/tests/piglit.xserverrc
 else
 	$LKP_SRC/tests/pm-qa.xinitrc
