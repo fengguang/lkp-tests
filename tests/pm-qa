@@ -6,6 +6,10 @@ if [ "$test" = "all" ] || [ "$test" = "thermal" ]; then
 	chmod 1777		/tmp/.X11-unix
 	chown root:root		/tmp/.X11-unix
 
+	# have a delay after start cpu_heat to make sure cpu_heat have been started when cpu is very busy
+	[ -e $BENCHMARK_ROOT/pm-qa/thermal/thermal_03.sh ] && sed -i -e '/\$CPU_HEAT_BIN/a sleep 3' $BENCHMARK_ROOT/pm-qa/thermal/thermal_03.sh
+	[ -e $BENCHMARK_ROOT/pm-qa/thermal/thermal_06.sh ] && sed -i -e '/\$CPU_HEAT_BIN/a sleep 3' $BENCHMARK_ROOT/pm-qa/thermal/thermal_06.sh
+
 	# testsuit(get_os()) will check this file.
 	# if it exists, it take OS as ubuntu/debian, otherwise it take it as android
 	touch $BENCHMARK_ROOT/pm-qa/thermal/"\system\build.prop"
