@@ -92,3 +92,27 @@ get_build_dir()
 {
 	echo "/tmp/build-$1"
 }
+
+build_depends_pkg() {
+	local script=$1
+	local dest=$2
+	local pkg
+	local pkg_dir
+
+	local packages="$(get_dependency_packages ${DISTRO} ${script} pkg)"
+	local dev_packages="$(get_dependency_packages ${DISTRO} ${script}-dev pkg)"
+	packages="$(echo $packages $dev_packages | tr '\n' ' ')"
+	[ -n "$packages" ] && [ "$packages" != " " ] || return
+		echo asdfasdf
+	for pkg in $packages; do
+		pkg_dir="$LKP_SRC/pkg/$pkg"
+		if [ -d "$pkg_dir" ]; then
+			(
+				cd "$pkg_dir" && \
+				PACMAN="$LKP_SRC/sbin/pacman-LKP" "$LKP_SRC/sbin/makepkg" --noarchive --config "$LKP_SRC/etc/makepkg.conf" --skippgpcheck
+				cp -rf "$pkg_dir/pkg/$pkg"/* "$dest"
+				rm -rf "$pkg_dir/"{src,pkg}
+			)
+		fi
+	done
+}
