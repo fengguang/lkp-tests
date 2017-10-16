@@ -1,5 +1,8 @@
 # i386 only
 crashme:f00f
+syscalls_part2:modify_ldt01
+syscalls_part2:modify_ldt02
+syscalls_part2:modify_ldt03
 # su01 want to get USER's password
 admin_tools:su01
 # Cause OOM, deactivate it temporarily.
@@ -11,6 +14,7 @@ ima:ima03
 ima:ima04
 # only support kernel version < v2.6.29
 numa:move_pages08
+syscalls_part2:move_pages08
 # i386 only
 quickhit:f00f
 # need disable kernel config (CONFIG_SCHED_MC CONFIG_SCHED_SMT)
@@ -39,6 +43,8 @@ syscalls_part1:geteuid01_16
 syscalls_part1:geteuid02_16
 syscalls_part1:getgid01_16
 syscalls_part2:getgid03_16
+syscalls_part2:getgroups01_16
+syscalls_part2:getgroups03_16
 syscalls_part4:setuid01_16
 syscalls_part4:setuid02_16
 syscalls_part4:setuid03_16
@@ -59,3 +65,7 @@ syscalls_part3:ptrace03
 syscalls_part3:ptrace04
 # __NR_readdir not supported on x86
 syscalls_part3:readdir21
+# only support kernel version < v2.6.9
+syscalls_part2:munlockall02
+# not works when compiled as 64-bit application
+syscalls_part2:msgrcv08
