@@ -1,5 +1,3 @@
-# coding: utf-8
-
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
 require 'optparse'
