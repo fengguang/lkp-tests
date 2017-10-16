@@ -24,7 +24,12 @@ fi
 echo analyze_suspend test started
 echo Command: analyze_suspend.py $options
 analyze_suspend.py $options
+if [ $? -eq 0 ]
+then
+	echo analyze_suspend test done
+else
+	echo analyze_suspend test failed
+fi
 
 upload_files -t result ./suspend-*
 
-echo analyze_suspend test done
