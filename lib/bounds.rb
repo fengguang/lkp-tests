@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath(__FILE__)))
+LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
 def is_valid_stats_range(stats_field, num)
   monitor = stats_field.split('.')[0]

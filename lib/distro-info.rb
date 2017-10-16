@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath(__FILE__)))
+LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
 module LKP
   require 'singleton'

@@ -1,6 +1,6 @@
 # coding: utf-8
 
-LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath(__FILE__)))
+LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
 require 'optparse'
 require 'set'

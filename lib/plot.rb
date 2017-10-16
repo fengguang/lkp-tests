@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath(__FILE__)))
+LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
 require 'gnuplot'
 require "#{LKP_SRC}/lib/common.rb"
