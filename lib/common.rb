@@ -272,7 +272,7 @@ end
 
 def with_flock_timeout(lock_file, timeout)
   File.open(lock_file, File::RDWR | File::CREAT, 0o664) do |f|
-    Timeout::timeout(timeout) do
+    Timeout.timeout(timeout) do
       f.flock(File::LOCK_EX)
     end
     yield
