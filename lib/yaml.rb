@@ -110,11 +110,11 @@ def yaml_merge_included_files(yaml, relative_to, search_paths = nil)
     indent = prefix.tr '^ ', ' '
     indented = [prefix]
     to_merge.split("\n").each do |line|
-      if line =~ /^%([!%]*)$/
-        indented << '%' + indent + line[1..-1]
-      else
-        indented << indent + line
-      end
+      indented << if line =~ /^%([!%]*)$/
+                    '%' + indent + line[1..-1]
+                  else
+                    indent + line
+                  end
     end
     indented.join("\n")
   end
@@ -189,11 +189,11 @@ def load_json(file, cache = false)
     begin
       mtime = File.mtime(file)
       unless $json_cache[file] && $json_mtime[file] == mtime
-        if file =~ /\.json$/
-          obj = JSON.load File.read(file)
-        else
-          obj = JSON.load `zcat #{file}`
-        end
+        obj = if file =~ /\.json$/
+                JSON.load File.read(file)
+              else
+                JSON.load `zcat #{file}`
+              end
         return obj unless cache
         $json_cache[file] = obj
         $json_mtime[file] = mtime

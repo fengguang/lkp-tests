@@ -101,11 +101,11 @@ class Job2sh < Job
     args = [] if program_path.index('/stats/')
     program_dir = File.dirname(program_path)
     wrapper = program_dir + '/wrapper'
-    if File.executable?(wrapper)
-      cmd = [wrapper, program, *args]
-    else
-      cmd = [program_path, *args]
-    end
+    cmd = if File.executable?(wrapper)
+            [wrapper, program, *args]
+          else
+            [program_path, *args]
+          end
 
     cmd.first.gsub!(LKP_SRC, '$LKP_SRC')
     cmd.first.gsub!(lkp_src, '$LKP_SRC')

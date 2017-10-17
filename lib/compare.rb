@@ -377,15 +377,15 @@ module Compare
     end
 
     def calc_changed_stat_keys(matrixes_in)
-      if @comparer.use_all_stat_keys
-        stat_keys = get_all_stat_keys
-      elsif @comparer.use_stat_keys
-        stat_keys = @comparer.use_stat_keys
-      elsif @comparer.use_testcase_stat_keys
-        stat_keys = get_testcase_stat_keys
-      else
-        stat_keys = _calc_changed_stat_keys(matrixes_in)
-      end
+      stat_keys = if @comparer.use_all_stat_keys
+                    get_all_stat_keys
+                  elsif @comparer.use_stat_keys
+                    @comparer.use_stat_keys
+                  elsif @comparer.use_testcase_stat_keys
+                    get_testcase_stat_keys
+                  else
+                    _calc_changed_stat_keys(matrixes_in)
+                  end
       stat_keys |= get_include_stat_keys
       stat_keys |= get_include_all_failure_stat_keys
       stat_keys = filter_stat_keys stat_keys
@@ -758,13 +758,13 @@ module Compare
           printf "%+#{REL_WIDTH}#{fmt}%% ", p
         end
       end
-      if avg.abs < 1000
-        fmt = '.2f'
-      elsif avg.abs > 100_000_000
-        fmt = '.4g'
-      else
-        fmt = 'd'
-      end
+      fmt = if avg.abs < 1000
+              '.2f'
+            elsif avg.abs > 100_000_000
+              '.4g'
+            else
+              'd'
+            end
       printf "%#{ABS_WIDTH}#{fmt}", avg
       stddev = stddevs[i]
       stddev = 100 * stddev / avg if avg != 0

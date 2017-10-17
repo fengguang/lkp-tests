@@ -141,13 +141,13 @@ OOM1 = 'invoked oom-killer: gfp_mask='.freeze
 OOM2 = 'Out of memory and no killable processes...'.freeze
 
 def grep_crash_head(dmesg_file)
-  if dmesg_file =~ /\.xz$/
-    grep = 'xzgrep'
-    # cat = 'xzcat'
-  else
-    grep = 'grep'
-    # cat = 'cat'
-  end
+  grep = if dmesg_file =~ /\.xz$/
+           'xzgrep'
+           # cat = 'xzcat'
+         else
+           'grep'
+           # cat = 'cat'
+         end
 
   raw_oops = %x[ #{grep} -a -E -e \\\\+0x -f #{LKP_SRC}/etc/oops-pattern #{dmesg_file} |
        grep -v -E -f #{LKP_SRC}/etc/oops-pattern-ignore ]
@@ -200,11 +200,11 @@ def grep_printk_errors(kmsg_file, kmsg)
   return '' if ENV.fetch('RESULT_ROOT', '').index '/trinity/'
   return '' unless File.exist?('/lkp/printk-error-messages')
 
-  if kmsg_file =~ /\.xz$/
-    grep = 'xzgrep'
-  else
-    grep = 'grep'
-  end
+  grep = if kmsg_file =~ /\.xz$/
+           'xzgrep'
+         else
+           'grep'
+         end
 
   if kmsg_file =~ /\bkmsg\b/
     # the kmsg file is dumped inside the running kernel

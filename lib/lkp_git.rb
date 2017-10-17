@@ -133,11 +133,11 @@ def compare_version(aa, bb)
     aaa = aa[name]
     bbb = bb[name]
     next if aaa == bbb
-    if name =~ /prerelease/
-      direction = -1
-    else
-      direction = 1
-    end
+    direction = if name =~ /prerelease/
+                  -1
+                else
+                  1
+                end
     if aaa && bbb
       unless name =~ /str|name/
         aaa = aaa.to_i

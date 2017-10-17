@@ -90,21 +90,21 @@ def revise_hash(original, revisions, overwrite_top_keys = true)
 
   all_keys.delete_if do |k|
     next true unless k.is_a?(String)
-    if org_keys.include? k
-      v = original[k]
-    else
-      v = revisions[k]
-    end
+    v = if org_keys.include? k
+          original[k]
+        else
+          revisions[k]
+        end
     if k[-1] == '-'
       kk = k[0..-2]
       parent, pkey, hash, key, keys = lookup_hash(original, kk)
       if hash.include? key
         if v
-          if v.is_a? Hash
-            keys = v.keys
-          else
-            keys = Array(v)
-          end
+          keys = if v.is_a? Hash
+                   v.keys
+                 else
+                   Array(v)
+                 end
           keys.each { |k| hash[key].delete k }
           hash[key] = nil if hash[key].empty?
         else

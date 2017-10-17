@@ -439,11 +439,11 @@ class Job
         tail = $3.chomp.rstrip
         expr = expand_expression(@job, $2, k)
         return if expr.nil?
-        if head.empty? && tail.empty?
-          h[k] = expr
-        else
-          h[k] = "#{head}#{expr}#{tail}"
-        end
+        h[k] = if head.empty? && tail.empty?
+                 expr
+               else
+                 "#{head}#{expr}#{tail}"
+               end
         each_job { |job| yield job }
         h[k] = v
         return
@@ -539,11 +539,11 @@ class Job
     path = ''
     each_param do |k, v, option_type|
       if option_type == '='
-        if v && v != ''
-          path += "#{k}=#{v[0..30]}"
-        else
-          path += k.to_s
-        end
+        path += if v && v != ''
+                  "#{k}=#{v[0..30]}"
+                else
+                  k.to_s
+                end
         path += '-'
         next
       end

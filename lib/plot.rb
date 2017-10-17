@@ -163,11 +163,11 @@ class MMatrixPlotter < MatrixPlotterBase
             p.noxtics
           end
           p.data << Gnuplot::DataSet.new(data) do |ds|
-            if @output_file_name
-              ds.with = 'linespoints pt 5'
-            else
-              ds.with = 'linespoints pt 15 lt 0'
-            end
+            ds.with = if @output_file_name
+                        'linespoints pt 5'
+                      else
+                        'linespoints pt 15 lt 0'
+                      end
             ds.using = '2:xticlabels(1)' if @x_as_label
             if line_title
               ds.title = line_title
@@ -240,11 +240,11 @@ class MatrixPlotter < MatrixPlotterBase
           p.ytics 'nomirror'
 
           p.data << Gnuplot::DataSet.new(data) do |ds|
-            if @output_prefix
-              ds.with = 'linespoints pt 5'
-            else
-              ds.with = 'linespoints pt 15 lt 0'
-            end
+            ds.with = if @output_prefix
+                        'linespoints pt 5'
+                      else
+                        'linespoints pt 15 lt 0'
+                      end
             ds.notitle
           end
         end

@@ -156,15 +156,15 @@ end
 # sort key for reporting all changed stats
 def stat_relevance(record)
   stat = record['stat']
-  if stat[0..9] == 'lock_stat.'
-    relevance = 5
-  elsif $test_prefixes.include? stat.sub(/\..*/, '.')
-    relevance = 100
-  elsif is_perf_metric(stat)
-    relevance = 1
-  else
-    relevance = 10
-  end
+  relevance = if stat[0..9] == 'lock_stat.'
+                5
+              elsif $test_prefixes.include? stat.sub(/\..*/, '.')
+                100
+              elsif is_perf_metric(stat)
+                1
+              else
+                10
+              end
   [relevance, [record['ratio'], 5].min]
 end
 
@@ -404,11 +404,9 @@ end
 def __get_changed_stats(a, b, is_incomplete_run, options)
   changed_stats = {}
 
-  if options['regression-only'] || options['all-critical']
-    has_boot_fix = (b['last_state.booting'] && !a['last_state.booting'])
-  else
-    has_boot_fix = nil
-  end
+  has_boot_fix = if options['regression-only'] || options['all-critical']
+                   (b['last_state.booting'] && !a['last_state.booting'])
+                 end
 
   resize = options['resize']
 
@@ -432,11 +430,11 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
 
     is_failure_stat = is_failure k
     is_latency_stat = is_latency k
-    if is_failure_stat || is_latency_stat
-      max_margin = 0
-    else
-      max_margin = 3
-    end
+    max_margin = if is_failure_stat || is_latency_stat
+                   0
+                 else
+                   3
+                 end
 
     unless is_failure_stat
       # for none-failure stats field, we need asure that
@@ -544,11 +542,11 @@ def load_matrices_to_compare(matrix_path1, matrix_path2, options = {})
   begin
     a = search_load_json matrix_path1
     return [nil, nil] unless a
-    if matrix_path2
-      b = search_load_json matrix_path2
-    else
-      b = load_base_matrix matrix_path1, a, options
-    end
+    b = if matrix_path2
+          search_load_json matrix_path2
+        else
+          load_base_matrix matrix_path1, a, options
+         end
   rescue StandardError => e
     log_exception(e, binding)
     return [nil, nil]

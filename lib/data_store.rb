@@ -160,11 +160,11 @@ module DataStore
 
     def delete_map(map, node)
       mdir = calc_map_dir map, node
-      if map.suppress_last
-        mpath = mdir
-      else
-        mpath = File.join mdir, Layout.axes_hash(node.axes)
-      end
+      mpath = if map.suppress_last
+                mdir
+              else
+                File.join mdir, Layout.axes_hash(node.axes)
+              end
       FileUtils.rm_f(mpath)
     end
 
@@ -562,11 +562,11 @@ module DataStore
 
     def desc
       desc_file = path(DESC_FILE)
-      if File.exist? desc_file
-        d = load_yaml desc_file
-      else
-        d = {}
-      end
+      d = if File.exist? desc_file
+            load_yaml desc_file
+          else
+            {}
+          end
       d[AXES] = @axes
       d
     end

@@ -104,15 +104,15 @@ def create_stats_matrix(result_root)
     sample_size = max_cols(monitor_stats)
     monitor_stats.each do |k, v|
       next if k == "#{monitor}.time"
-      if v.size == 1
-        stats[k] = v[0]
-      elsif is_independent_counter k
-        stats[k] = v.sum
-      elsif is_event_counter k
-        stats[k] = v[-1] - v[0]
-      else
-        stats[k] = v.sum / sample_size
-      end
+      stats[k] = if v.size == 1
+                   v[0]
+                 elsif is_independent_counter k
+                   v.sum
+                 elsif is_event_counter k
+                   v[-1] - v[0]
+                 else
+                   v.sum / sample_size
+                 end
       stats[k + '.max'] = v.max if should_add_max_latency k
     end
     matrix.merge! monitor_stats

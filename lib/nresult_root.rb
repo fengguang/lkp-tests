@@ -478,11 +478,11 @@ module ResultStddev
     dir, file = ResultStddev.path axes
     FileUtils.mkdir_p dir
     path = File.join(dir, file)
-    if File.exist? path
-      data = load_json(path)
-    else
-      data = {}
-    end
+    data = if File.exist? path
+             load_json(path)
+           else
+             {}
+           end
 
     sources = data[SOURCE_KEY] || []
     source_str = DataStore::Layout.axes_to_string(axes)

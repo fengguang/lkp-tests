@@ -31,11 +31,11 @@ opt_parser = OptionParser.new do |opts|
   end
 end
 
-if ARGV == []
-  argv = ['-h']
-else
-  argv = ARGV
-end
+argv = if ARGV == []
+         ['-h']
+       else
+         ARGV
+       end
 opt_parser.parse!(argv)
 
 def get_simple_value(v)

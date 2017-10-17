@@ -156,11 +156,11 @@ opt_parser = OptionParser.new do |opts|
   end
 end
 
-if ARGV == []
-  argv = ['-h']
-else
-  argv = ARGV
-end
+argv = if ARGV == []
+         ['-h']
+       else
+         ARGV
+       end
 opt_parser.parse!(argv)
 
 $dim_not_a_param = $opt_dimension =~ /^(testbox|rootfs|kconfig|.*commit|run)$/
@@ -243,11 +243,11 @@ def add_stats(path)
   $opt_vgrep.each { |re| return false if path =~ re }
 
   is_rt = File.basename(path) =~ /^[0-9]{1,3}$/
-  if is_rt
-    stats_json = path + '/stats.json'
-  else
-    stats_json = path + '/matrix.json'
-  end
+  stats_json = if is_rt
+                 path + '/stats.json'
+               else
+                 path + '/matrix.json'
+               end
   unless File.exist? stats_json
     # No need for a warning here.
     # $stderr.puts stats_json + ' does not exist'
@@ -364,15 +364,15 @@ def setup_changed_stats
         avg2 = get_valid_average matrix2, stat
         next unless avg2
         $changed_stats[stat][k] = v
-        if $size_index[stat]
-          type = 'size'
-        elsif $perf_index[stat]
-          type = 'perf'
-        elsif $power_index[stat]
-          type = 'power'
-        else
-          type = 'latency'
-        end
+        type = if $size_index[stat]
+                 'size'
+               elsif $perf_index[stat]
+                 'perf'
+               elsif $power_index[stat]
+                 'power'
+               else
+                 'latency'
+               end
         $nr_gm[type] ||= 0
         $base_gm[type] ||= 0
         $head_gm[type] ||= 0
@@ -495,56 +495,56 @@ def show_one_diff(stat, dim, v0, v, v0_stddev, v_stddev, is_float, is_exp, is_fa
   if dim == $first_dim
     buf = ''
   else
-    if is_fail
-      p = 100 * ((v.to_f / v_stddev) - (v0.to_f / v0_stddev))
-    elsif v0 != 0
-      p = 100.0 * (v - v0) / v0
-    else
-      p = 0
-    end
-    if is_fail
-      buf = sprintf "%#{REL_WIDTH - 2}.0f%% ", p
-    elsif stat =~ ABS_CHANGE_STATS_RE
-      buf = sprintf "%#{REL_WIDTH - 1}.0g ", v - v0
-    elsif p.abs < 3
-      buf = sprintf ' ' * REL_WIDTH
-    elsif p.abs < 100_000
-      buf = sprintf "%#{REL_WIDTH - 2}.0f%% ", p
-    else
-      buf = sprintf "%#{REL_WIDTH - 2}.0g%% ", p
-    end
+    p = if is_fail
+          100 * ((v.to_f / v_stddev) - (v0.to_f / v0_stddev))
+        elsif v0 != 0
+          100.0 * (v - v0) / v0
+        else
+          0
+        end
+    buf = if is_fail
+            sprintf "%#{REL_WIDTH - 2}.0f%% ", p
+          elsif stat =~ ABS_CHANGE_STATS_RE
+            sprintf "%#{REL_WIDTH - 1}.0g ", v - v0
+          elsif p.abs < 3
+            sprintf ' ' * REL_WIDTH
+          elsif p.abs < 100_000
+            sprintf "%#{REL_WIDTH - 2}.0f%% ", p
+          else
+            sprintf "%#{REL_WIDTH - 2}.0g%% ", p
+          end
 
     buf = Term::ANSIColor.intense_red(buf) if p.abs >= 50 && $colorful
   end
 
-  if is_exp
-    if is_float == false && v.abs < 100_000_000
-      buf += sprintf "%#{ABS_WIDTH}d", v
-    else
-      buf += sprintf "%#{ABS_WIDTH}.4g", v
-    end
-  elsif is_float
-    buf += sprintf "%#{ABS_WIDTH}.2f", v
-  elsif is_fail
-    if v.zero?
-      buf += sprintf "%#{ABS_WIDTH + 1}s", ' '
-    else
-      buf += sprintf "%#{ABS_WIDTH + 1}d", v
-    end
-  else
-    buf += sprintf "%#{ABS_WIDTH}d", v
-  end
+  buf += if is_exp
+           if is_float == false && v.abs < 100_000_000
+             sprintf "%#{ABS_WIDTH}d", v
+           else
+             sprintf "%#{ABS_WIDTH}.4g", v
+           end
+         elsif is_float
+           sprintf "%#{ABS_WIDTH}.2f", v
+         elsif is_fail
+           if v.zero?
+             sprintf "%#{ABS_WIDTH + 1}s", ' '
+           else
+             sprintf "%#{ABS_WIDTH + 1}d", v
+           end
+         else
+           sprintf "%#{ABS_WIDTH}d", v
+         end
 
   if v_stddev
     if is_fail
       buf += sprintf ":%-#{ERR_WIDTH - 2}d", v_stddev
     else
       v_stddev = 100 * v_stddev / v if v != 0
-      if v_stddev > 3
-        buf += sprintf " ±%#{ERR_WIDTH - 3}d%%", v_stddev
-      else
-        buf += ' ' * ERR_WIDTH
-      end
+      buf += if v_stddev > 3
+               sprintf " ±%#{ERR_WIDTH - 3}d%%", v_stddev
+             else
+               ' ' * ERR_WIDTH
+             end
     end
   else
     buf += ' ' * ERR_WIDTH
