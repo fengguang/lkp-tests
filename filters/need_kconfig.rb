@@ -23,12 +23,12 @@ end
 
 def check_all(kconfig_lines)
   $___.each do |e|
-    unless check_kconfig(kconfig_lines, e)
-      # need_kconfig
-      raise Job::ParamError, "kconfig not satisfied: #{e}" unless __FILE__ =~ /suggest_kconfig/
+    next if check_kconfig(kconfig_lines, e)
 
-      puts "suggest kconfig: #{e}"
-    end
+    # need_kconfig
+    raise Job::ParamError, "kconfig not satisfied: #{e}" unless __FILE__ =~ /suggest_kconfig/
+
+    puts "suggest kconfig: #{e}"
   end
 end
 
