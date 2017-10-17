@@ -42,7 +42,7 @@ end
 def stats_with_most_variation(matrix)
   stats = {}
   matrix.each do |field, values|
-    next if String === values[-1]
+    next if values[-1].is_a?(String)
     next if field =~ /\.time$/
     next unless is_perf_metric field
 

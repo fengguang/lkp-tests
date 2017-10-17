@@ -24,7 +24,7 @@ def shell_encode_keyword(key)
 end
 
 def shell_escape_expand(val)
-  val = val.join "\n" if Array === val
+  val = val.join "\n" if val.is_a?(Array)
 
   case val
   when nil, ''
@@ -155,7 +155,7 @@ class Job2sh < Job
       return false unless pass == :PASS_RUN_MONITORS
       shell_run_program(tabs, key, val)
       return :action_run_monitor
-    elsif String === val && key =~ %r{^script\s+(monitors|setup|tests|daemon|stats)/([-a-zA-Z0-9_/]+)$}
+    elsif val.is_a?(String) && key =~ %r{^script\s+(monitors|setup|tests|daemon|stats)/([-a-zA-Z0-9_/]+)$}
       return false unless pass == :PASS_NEW_SCRIPT
       script_file = $1 + '/' + $2
       script_name = File.basename $2
@@ -172,7 +172,7 @@ class Job2sh < Job
       exec_line tabs + "chmod +x $LKP_SRC/#{script_file}"
       exec_line
       return :action_new_script
-    elsif String === val && key =~ /^(function)\s+([a-zA-Z_]+[a-zA-Z_0-9]*)$/
+    elsif val.is_a?(String) && key =~ /^(function)\s+([a-zA-Z_]+[a-zA-Z_0-9]*)$/
       return false unless pass == :PASS_NEW_SCRIPT
       shell_block = $1
       func_name = $2
@@ -184,7 +184,7 @@ class Job2sh < Job
       end
       exec_line tabs + SHELL_BLOCK_KEYWORDS[shell_block][1]
       return :action_new_function
-    elsif Hash === val && key =~ /^(if|for|while|until)\s/
+    elsif val.is_a?(Hash) && key =~ /^(if|for|while|until)\s/
       return false unless pass == :PASS_RUN_COMMANDS
       shell_block = $1
       exec_line
@@ -193,7 +193,7 @@ class Job2sh < Job
       parse_hash(ancestors + [key], val)
       exec_line tabs + SHELL_BLOCK_KEYWORDS[shell_block][1]
       return :action_control_block
-    elsif Hash === val
+    elsif val.is_a?(Hash)
       return false unless pass == :PASS_RUN_COMMANDS
       exec_line
       func_name = key.tr('^a-zA-Z0-9_', '_')

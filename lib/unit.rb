@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 
 def to_seconds(time_spec)
-  return time_spec if Integer === time_spec
-  return time_spec if Float === time_spec
+  return time_spec if time_spec.is_a?(Integer)
+  return time_spec if time_spec.is_a?(Float)
 
   n = time_spec.to_i
 
@@ -32,7 +32,7 @@ SIZE_UNITS = {
   K:  10
 }.freeze
 def to_byte(size_spec)
-  return size_spec unless String === size_spec
+  return size_spec unless size_spec.is_a?(String)
 
   unit = size_spec.sub(/^\d+/, '').upcase.chomp('B')
   shift = SIZE_UNITS[unit.to_sym]

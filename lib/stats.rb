@@ -133,7 +133,7 @@ def is_changed_stats(sorted_a, min_a, mean_a, max_a,
     return true if len_a * mean_b > options['variance'] * len_b * mean_a
     return true if len_b * mean_a > options['variance'] * len_a * mean_b
   elsif options['distance']
-    return false if Integer === max_a && (min_a - max_b == 1 || min_b - max_a == 1)
+    return false if max_a.is_a?(Interger) && (min_a - max_b == 1 || min_b - max_a == 1)
     if sorted_a.size < 3 || sorted_b.size < 3
       min_gap = [len_a, len_b].max * options['distance']
       return true if min_b - max_a > min_gap
@@ -425,7 +425,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
   b.keys.each { |k| a[k] = [0] * cols_a unless a.include?(k) }
 
   a.each do |k, v|
-    next if String === v[-1]
+    next if v[-1].is_a?(String)
     next if options['perf'] && !is_perf_metric(k)
     next if is_incomplete_run && k !~ /^(dmesg|last_state|stderr)\./
     next if !options['more'] && k =~ $metrics_blacklist_re
@@ -619,7 +619,7 @@ def add_stats_to_matrix(stats, matrix)
   stats.each do |k, v|
     matrix[k] ||= []
     matrix[k] << 0 while matrix[k].size < columns
-    if Array === v
+    if v.is_a?(Array)
       matrix[k].concat v
     else
       matrix[k] << v

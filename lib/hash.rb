@@ -13,7 +13,7 @@ def lookup_hash(hash, path, create_missing = false)
     if create_missing && v.nil?
       v = hash[k] = keys.empty? ? nil : {}
     end
-    return parent, pkey, hash, k, keys unless Hash === v && !keys.empty?
+    return parent, pkey, hash, k, keys unless v.is_a?(Hash) && !keys.empty?
 
     parent = hash
     pkey = k
@@ -89,7 +89,7 @@ def revise_hash(original, revisions, overwrite_top_keys = true)
   all_keys = org_keys + rev_keys
 
   all_keys.delete_if do |k|
-    next true unless String === k
+    next true unless k.is_a?(String)
     if org_keys.include? k
       v = original[k]
     else

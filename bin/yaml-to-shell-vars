@@ -66,7 +66,7 @@ end
 ARGV.each do |file|
   vars = YAML.load_file file
   vars.each do |k, v|
-    next unless String === k
+    next unless k.is_a?(String)
     var_name = $opt_name_prefix + k.gsub(/[^a-zA-Z0-9_]/, '_').gsub(/^[^a-zA-Z]/, '_')
     var_name = $opt_assoc_array + '[' + var_name + ']' if $opt_assoc_array
     STDOUT.write(var_name + '=' + shell_escape(get_simple_value(v)) + "\n")

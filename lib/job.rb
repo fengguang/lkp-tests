@@ -45,7 +45,7 @@ end
 def expand_toplevel_vars(env, hash)
   vars = {}
   hash.each do |key, val|
-    next unless String === key
+    next unless key.is_a?(String)
     case val
     when Hash
       next
@@ -72,7 +72,8 @@ end
 def for_each_in(ah, set, pk = nil)
   ah.each do |k, v|
     yield pk, ah, k, v if set.include?(k)
-    next unless Hash === v
+    next unless v.is_a?(Hash)
+
     for_each_in(v, set, k) do |pk, h, k, v|
       yield pk, h, k, v
     end
@@ -133,7 +134,8 @@ def comment_to_symbol(str)
 end
 
 def replace_symbol_keys(hash)
-  return hash unless Hash === hash
+  return hash unless hash.is_a?(Hash)
+
   sh = {}
   hash.each do |k, v|
     sh[k.to_s] = v
@@ -271,7 +273,7 @@ class Job
     rescue KeyError
       return false
     end
-    if Hash === defaults && !defaults.empty?
+    if defaults.is_a?(Hash) && !defaults.empty?
       @defaults[source_file_symkey(file)] = nil
       revise_hash(@defaults, defaults, true)
     end
@@ -296,7 +298,7 @@ class Job
     revise_hash(job, deepcopy(@overrides), true)
     job['___'] = nil
     expand_each_in(job, @dims_to_expand) do |h, k, v|
-      h.delete(k) if Array === v
+      h.delete(k) if v.is_a?(Array)
     end
     @jobx = job
     expand_params(false)
@@ -317,7 +319,7 @@ class Job
 
       if @referenced_programs.include?(k) && i.include?(k)
         next unless load_one[k].nil?
-        if Hash === v
+        if v.is_a?(Hash)
           v.each do |kk, vv|
             next unless @referenced_programs[k].include? kk
             job['___'] = vv
@@ -325,7 +327,7 @@ class Job
           end
         end
       end
-      next unless String === v
+      next unless v.is_a?(String)
 
       # For testbox vm-lkp-wsx01-4G,
       # try "vm", "vm-lkp", "vm-lkp-wsx01", "vm-lkp-wsx01-4G" in turn.
@@ -367,7 +369,7 @@ class Job
   end
 
   def lkp_src
-    if String === @job['user'] && Dir.exist?('/lkp/' + @job['user'] + '/src')
+    if @job['user'].is_a?(String) && Dir.exist?('/lkp/' + @job['user'] + '/src')
       '/lkp/' + @job['user'] + '/src'
     else
       LKP_SRC
@@ -422,8 +424,8 @@ class Job
 
   def expand_each_in(ah, set)
     ah.each do |k, v|
-      yield ah, k, v if set.include?(k) || (String === v && v =~ /{{(.*)}}/m)
-      next unless Hash === v
+      yield ah, k, v if set.include?(k) || (v.is_a?(String) && v =~ /{{(.*)}}/m)
+      next unless v.is_a?(Hash)
       expand_each_in(v, set) do |h, k, v|
         yield h, k, v
       end
@@ -432,7 +434,7 @@ class Job
 
   def each_job
     expand_each_in(@job, @dims_to_expand) do |h, k, v|
-      if String === v && v =~ /^(.*){{(.*)}}(.*)$/m
+      if v.is_a?(String) && v =~ /^(.*){{(.*)}}(.*)$/m
         head = $1.lstrip
         tail = $3.chomp.rstrip
         expr = expand_expression(@job, $2, k)
@@ -445,7 +447,7 @@ class Job
         each_job { |job| yield job }
         h[k] = v
         return
-      elsif Array === v
+      elsif v.is_a?(Array)
         v.each do |vv|
           h[k] = vv
           each_job { |job| yield job }
@@ -503,7 +505,7 @@ class Job
     #
     monitors = available_programs(:monitors)
     for_each_in(@job, set) do |pk, _h, k, v|
-      next if Hash === v
+      next if v.is_a?(Hash)
 
       # skip monitor options which happen to have the same
       # name with referenced :workload_elements programs
@@ -580,7 +582,7 @@ class Job
   end
 
   def map_param(hash, key, val, rule_file)
-    return unless String === val
+    return unless val.is_a?(String)
     ___ = val.dup # for reference by expressions
     output = nil
     rules = read_param_map_rules(rule_file)
