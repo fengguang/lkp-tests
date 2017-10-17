@@ -208,7 +208,7 @@ def dim_name(dim)
     tag = Git.open(project: $project, working_dir: GIT_WORK_TREE).gcommit(dim).interested_tag if Dir.exist?(GIT_WORK_TREE)
     tag || dim[0..(REL_WIDTH + ABS_WIDTH + ERR_WIDTH)]
   when /_commit$/
-    # FIXME rli9 duplicated code below, need refactoring
+    # FIXME: rli9 duplicated code below, need refactoring
     tag = Git.open(project: $project, working_dir: GIT_WORK_TREE).gcommit(dim).interested_tag if Dir.exist?(GIT_WORK_TREE)
 
     tag || dim[0..(REL_WIDTH + ABS_WIDTH + ERR_WIDTH)]

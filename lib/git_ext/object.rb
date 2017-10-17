@@ -25,7 +25,7 @@ module Git
         message.split("\n").first
       end
 
-      # FIXME rli9 need a better name, or remove the function if not common
+      # FIXME: rli9 need a better name, or remove the function if not common
       def name
         interested_tag || sha
       end

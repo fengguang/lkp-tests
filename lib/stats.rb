@@ -272,7 +272,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
     version, is_exact_match = git.gcommit(commit).last_release_tag
     order = git.release_tag_order(version)
 
-    # FIXME rli9 after above change, below situation is not reasonable, keep it for debugging purpose now
+    # FIXME: rli9 after above change, below situation is not reasonable, keep it for debugging purpose now
     unless order
       log_error "unknown version #{version} matrix: #{matrix_path} options: #{options}"
       return nil
