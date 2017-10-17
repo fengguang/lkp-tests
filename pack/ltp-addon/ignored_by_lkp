@@ -76,3 +76,5 @@ syscalls_part2:munlockall02
 syscalls_part2:msgrcv08
 # system doesn't support it
 ltplite:fcntl06
+# not works when compiled as 64-bit application
+ltplite:msgrcv08
