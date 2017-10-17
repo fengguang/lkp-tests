@@ -517,90 +517,92 @@ module Compare
     end
   end
 
-  class GroupResult::MatrixExporter
-    include Property
-    prop_with :data_types, :data_type, :include_axes, :axes_as_num,
-              :axis_prefix, :sort, :sort_stat_key,
-              :include_runs, :data_type_in_key, :group_result
-    def initialize(group_result = nil)
-      @group_result = group_result
-      @data_types = [AVGS]
-      @axes_as_num = true
-      @axis_prefix = ''
-      @sort = true
-      @data_type_in_key = false
-    end
+  class GroupResult
+    class MatrixExporter
+      include Property
+      prop_with :data_types, :data_type, :include_axes, :axes_as_num,
+                :axis_prefix, :sort, :sort_stat_key,
+                :include_runs, :data_type_in_key, :group_result
+      def initialize(group_result = nil)
+        @group_result = group_result
+        @data_types = [AVGS]
+        @axes_as_num = true
+        @axis_prefix = ''
+        @sort = true
+        @data_type_in_key = false
+      end
 
-    def data_type
-      @data_types.first
-    end
+      def data_type
+        @data_types.first
+      end
 
-    def set_data_type(dt)
-      @data_types[0] = dt
-      self
-    end
+      def set_data_type(dt)
+        @data_types[0] = dt
+        self
+      end
 
-    def matrix
-      m = {}
-      @group_result.stat_enum.each do |stat|
-        stat_key = stat[STAT_KEY]
-        if @data_types.size == 1 && !@data_type_in_key
-          m[stat_key] = stat[@data_types.first]
-        else
-          @data_types.each do |dt|
-            key = GroupResult::MatrixExporter.key_with_data_type(stat_key, dt)
-            m[key] = stat[dt]
+      def matrix
+        m = {}
+        @group_result.stat_enum.each do |stat|
+          stat_key = stat[STAT_KEY]
+          if @data_types.size == 1 && !@data_type_in_key
+            m[stat_key] = stat[@data_types.first]
+          else
+            @data_types.each do |dt|
+              key = GroupResult::MatrixExporter.key_with_data_type(stat_key, dt)
+              m[key] = stat[dt]
+            end
           end
         end
+        if @include_runs
+          g = @group_result.group
+          m[RUNS_STAT_KEY] = g.runs
+          m[COMPLETE_RUNS_STAT_KEY] = g.complete_runs
+        end
+        m
       end
-      if @include_runs
-        g = @group_result.group
-        m[RUNS_STAT_KEY] = g.runs
-        m[COMPLETE_RUNS_STAT_KEY] = g.complete_runs
-      end
-      m
-    end
 
-    def matrix_with_axes
-      cas = @group_result.compare_axeses
-      cas = cas.map { |as| Compare.axes_format as }
-      cas_keys = cas[0].keys
-      if @sort
-        sort_key = @sort_stat_key ||
-                   @axis_prefix + cas_keys[0]
+      def matrix_with_axes
+        cas = @group_result.compare_axeses
+        cas = cas.map { |as| Compare.axes_format as }
+        cas_keys = cas[0].keys
+        if @sort
+          sort_key = @sort_stat_key ||
+                     @axis_prefix + cas_keys[0]
+        end
+        axis_converter = lambda { |axis_key|
+          if @axes_as_num && (@axes_as_num == true ||
+                  @axes_as_num.index(axis_key))
+            return method(:string_to_num)
+          else
+            return ->x { x }
+          end
+        }
+
+        m = {}
+        cas_keys.each do |axis_key|
+          conv = axis_converter.call(axis_key)
+          m[@axis_prefix + axis_key] = cas.map do |as|
+            conv.call(as[axis_key])
+          end
+        end
+        m.merge!(matrix)
+        m = sort_matrix(m, sort_key) if @sort
+        m
       end
-      axis_converter = lambda { |axis_key|
-        if @axes_as_num && (@axes_as_num == true ||
-                @axes_as_num.index(axis_key))
-          return method(:string_to_num)
+
+      def call
+        if @include_axes
+          matrix_with_axes
         else
-          return ->x { x }
-        end
-      }
-
-      m = {}
-      cas_keys.each do |axis_key|
-        conv = axis_converter.call(axis_key)
-        m[@axis_prefix + axis_key] = cas.map do |as|
-          conv.call(as[axis_key])
+          matrix
         end
       end
-      m.merge!(matrix)
-      m = sort_matrix(m, sort_key) if @sort
-      m
-    end
 
-    def call
-      if @include_axes
-        matrix_with_axes
-      else
-        matrix
-      end
-    end
-
-    class << self
-      def key_with_data_type(key, data_type)
-        "#{key}.#{data_type}"
+      class << self
+        def key_with_data_type(key, data_type)
+          "#{key}.#{data_type}"
+        end
       end
     end
   end
