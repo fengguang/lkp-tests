@@ -88,3 +88,5 @@ syscalls_part1:fcntl06
 syscalls_part1:fcntl06_64
 # not works when compiled as 64-bit application
 ltplite:msgrcv08
+# for current kernel, subdir limit is not availiable for all fs
+syscalls_part2:linkat02
