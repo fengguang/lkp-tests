@@ -14,6 +14,7 @@ read_kernel_cmdline_vars_from_append()
 		[ "$i" != "${i#tbox_initrd=}" ]		&& export "$i"
 		[ "$i" != "${i#linux_headers_initrd=}" ]	&& export "$i"
 		[ "$i" != "${i#audio_sof_initrd=}" ]	&& export "$i"
+		[ "$i" != "${i#syzkaller_initrd=}" ]	&& export "$i"
 		[ "$i" != "${i#linux_selftests_initrd=}" ]	&& export "$i"
 		[ "$i" != "${i#linux_perf_initrd=}" ]	&& export "$i"
 	done
@@ -40,7 +41,7 @@ download_initrd()
 
 	echo "downloading initrds ..."
 	set_job_state "wget_initrd"
-	for _initrd in $(echo $initrd $tbox_initrd $job_initrd $lkp_initrd $bm_initrd $modules_initrd $linux_headers_initrd $audio_sof_initrd $linux_selftests_initrd $linux_perf_initrd | tr , ' ')
+	for _initrd in $(echo $initrd $tbox_initrd $job_initrd $lkp_initrd $bm_initrd $modules_initrd $linux_headers_initrd $audio_sof_initrd $syzkaller_initrd $linux_selftests_initrd $linux_perf_initrd | tr , ' ')
 	do
 		_initrd=$(echo $_initrd | sed 's/^\///')
 		local file=$CACHE_DIR/$_initrd
