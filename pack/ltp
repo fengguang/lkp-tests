@@ -64,7 +64,9 @@ build_rusers()
 
 build_ltp()
 {
-	patch_source ltp.patch
+	patch_source ltp.patch || return
+	patch -p1 < $LKP_SRC/pack/ltp-addon/v2-0001-shmctl-enable-subtest-SHM_LOCK-SHM_UNLOCK-only-if.patch || return
+
 	split_syscalls
 	make autotools
 	./configure --prefix=$BM_ROOT
