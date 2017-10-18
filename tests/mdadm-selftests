@@ -45,12 +45,15 @@ check_ignored_cases()
 
 run_test()
 {
-	# sub-case "01","11","19" typicall need to cost more time.
-	if [ "$test_prefix" = "01" -o "$test_prefix" = "11" -o "$test_prefix" = "19" ]; then
-		timeout 30m ./test "--tests=$testcase"
-	else
-		timeout 5m ./test "--tests=$testcase"
-	fi
+	# sub-case "01","07","11","19" typicall need to cost more time.
+	local prefix=""
+	case $test_prefix in
+		01|07|11|19) prefix="timeout 30m"
+		;;
+		*) prefix="timeout 5m"
+		;;
+	esac
+	$prefix ./test "--tests=$testcase"
 
 	[ $? -eq 124 ] && echo "$testcase TIMEOUT"
 
@@ -59,7 +62,10 @@ run_test()
 	cp /var/tmp/log $res_dir
 }
 
-make install || die "make install failed"
+# The udev rule (/lib/udev/rules.d/64-md-raid-assembly.rules) will make sub-case "07" fail
+if [ "$test_prefix" != "07" ]; then
+	make install || die "make install failed"
+fi
 
 for testcase in $(cd tests && ls ${test_prefix}*); do
 	check_ignored_cases $testcase && echo "${testcase}... ignored_by_lkp" && continue
