@@ -133,7 +133,7 @@ def is_changed_stats(sorted_a, min_a, mean_a, max_a,
     return true if len_a * mean_b > options['variance'] * len_b * mean_a
     return true if len_b * mean_a > options['variance'] * len_a * mean_b
   elsif options['distance']
-    return false if max_a.is_a?(Interger) && (min_a - max_b == 1 || min_b - max_a == 1)
+    return false if max_a.is_a?(Integer) && (min_a - max_b == 1 || min_b - max_a == 1)
     if sorted_a.size < 3 || sorted_b.size < 3
       min_gap = [len_a, len_b].max * options['distance']
       return true if min_b - max_a > min_gap
