@@ -85,6 +85,8 @@
 ^stderr.*write_error
 ^tcrypt.*
 .*\.total_test
+.*\.total_pass
+.*\.total_fail
 ^vmstat.cpu
 ^will-it-scale.[0-9]
 ^zoneinfo.*
