@@ -71,8 +71,13 @@ net_stress.appl:ftp6-upload-stress
 syscalls_part3:ptrace03
 # only support Blackfin(DSP microprocessor)
 syscalls_part3:ptrace04
-# __NR_readdir not supported on x86
+# __NR_readdir not supported on x86_64
 syscalls_part3:readdir21
+ltplite:readdir21
+# only support kernel version is 2.6.25 or below
+ltplite:ptrace03
+syscalls_part1:adjtimex02
+ltplite:adjtimex02
 # only support kernel version < v2.6.9
 syscalls_part2:munlockall02
 # not works when compiled as 64-bit application
