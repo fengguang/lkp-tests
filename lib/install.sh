@@ -103,7 +103,6 @@ build_depends_pkg() {
 	local dev_packages="$(get_dependency_packages ${DISTRO} ${script}-dev pkg)"
 	packages="$(echo $packages $dev_packages | tr '\n' ' ')"
 	[ -n "$packages" ] && [ "$packages" != " " ] || return
-		echo asdfasdf
 	for pkg in $packages; do
 		pkg_dir="$LKP_SRC/pkg/$pkg"
 		if [ -d "$pkg_dir" ]; then
