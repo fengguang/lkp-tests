@@ -4,6 +4,7 @@ shopt -s nullglob
 
 . $LKP_SRC/lib/install.sh
 . $LKP_SRC/distro/common
+. $LKP_SRC/lib/debug.sh
 
 update()
 {
@@ -114,4 +115,36 @@ pack()
 			$pack_to/${BM_NAME}.cgz		|| return
 
 	echo package installed to $pack_to/${BM_NAME}.cgz
+}
+
+resolve_depends()
+{
+	local deps=$1
+
+	apt-get --simulate --no-install-recommends install $deps || die "Failed to apt-get install $deps"
+	# apt-get will have below output
+	#   Inst python-minimal [2.7.11-2] (2.7.13-2 Debian:testing, Debian:unstable [amd64])
+	#   Inst mime-support (3.60 Debian:testing, Debian:unstable [all])
+	#   Inst libsqlite3-0 (3.16.2-3 Debian:testing, Debian:unstable [amd64])
+	# PACKAGE_LIST='python-minimal mime-support libsqlite3-0'
+	PACKAGE_LIST=$(apt-get --simulate --no-install-recommends install $deps |
+				awk '/^Inst / { print $2 }')
+
+	# PACKAGE_VERSION_LIST='python-minimal=2.7.13-2 mime-support=3.60 libsqlite3-0=3.16.2-3'
+	PACKAGE_VERSION_LIST=$(apt-get --simulate --no-install-recommends install $deps |
+			awk '/^Inst / { if (substr($3, 1, 1) != "[") { print $2$3 } else { print $2$4 } }' | tr '(' '=')
+}
+
+save_package_deps_info()
+{
+	local benchmark=$1
+	local deps=$2
+
+	mkdir -p opt/deb
+	# sequence-deb content looks like:
+	#   libreadline7
+	#   libssl1.1
+	#   gawk
+	echo "$PACKAGE_LIST" | grep -F -f "$LKP_SRC/distro/keep-deb" > "opt/deb/sequence-deb.$benchmark"
+	echo "$PACKAGE_VERSION_LIST" > "opt/deb/${benchmark}-deps.packages"
 }
