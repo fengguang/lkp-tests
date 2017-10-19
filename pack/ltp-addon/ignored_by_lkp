@@ -90,3 +90,7 @@ syscalls_part1:fcntl06_64
 ltplite:msgrcv08
 # for current kernel, subdir limit is not availiable for all fs
 syscalls_part2:linkat02
+# __NR_bdflush not supported on x86_64
+syscalls_part1:bdflush01
+# __NR_cacheflush not supported on x86_64
+syscalls_part1:cacheflush01
