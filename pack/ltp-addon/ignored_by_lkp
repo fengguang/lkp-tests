@@ -80,6 +80,7 @@ syscalls_part1:adjtimex02
 ltplite:adjtimex02
 # only support kernel version < v2.6.9
 syscalls_part2:munlockall02
+ltplite:munlockall02
 # not works when compiled as 64-bit application
 syscalls_part2:msgrcv08
 # system doesn't support it
@@ -94,3 +95,10 @@ syscalls_part2:linkat02
 syscalls_part1:bdflush01
 # __NR_cacheflush not supported on x86_64
 syscalls_part1:cacheflush01
+# not for linux
+ltplite:rmdir05
+# __NR_sysctl is not supported on x86_64
+ltplite:sysctl01
+ltplite:sysctl03
+ltplite:sysctl04
+ltplite:sysctl05
