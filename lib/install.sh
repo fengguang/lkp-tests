@@ -104,6 +104,7 @@ build_depends_pkg() {
 	packages="$(echo $packages $dev_packages | tr '\n' ' ')"
 	[ -n "$packages" ] && [ "$packages" != " " ] || return
 	for pkg in $packages; do
+		build_depends_pkg $pkg $dest
 		pkg_dir="$LKP_SRC/pkg/$pkg"
 		if [ -d "$pkg_dir" ]; then
 			(
