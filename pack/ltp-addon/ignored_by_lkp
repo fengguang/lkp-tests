@@ -108,3 +108,8 @@ syscalls_part3:set_thread_area01
 syscalls_part3:sgetmask01
 # only support on powerpc
 syscalls_part4:switch01
+# __NR_sysctl not supported on x86_64
+syscalls_part4:sysctl01
+syscalls_part4:sysctl03
+syscalls_part4:sysctl04
+syscalls_part4:sysctl05
