@@ -86,8 +86,18 @@ fs_ext4)
 	big_dev_opt="-z $big_dev"
 	;;
 
-ltp-aiodio.part[24]|syscalls_part[1234])
+ltp-aiodio.part[24]|syscalls_part[123])
 	specify_tmpdir || exit
+	;;
+syscalls_part4)
+	specify_tmpdir || exit
+	echo "#\$SystemLogSocketName /run/systemd/journal/syslog" > /etc/rsyslog.d/listen.conf
+	systemctl restart rsyslog || exit
+	[ -f /var/log/maillog ] || {
+		touch /var/log/maillog && chmod 600 /var/log/maillog
+	}
+	[ -e /dev/log ] && rm /dev/log
+	ln -s /run/systemd/journal/dev-log /dev/log
 	;;
 ltplite)
 	specify_tmpdir || exit
