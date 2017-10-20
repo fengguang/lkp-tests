@@ -106,6 +106,8 @@ ltplite:sysctl05
 syscalls_part3:set_thread_area01
 # __NR_ssetmask not supported on x86_64
 syscalls_part3:sgetmask01
+# no proper fs for the test
+syscalls_part3:rename11
 # only support on powerpc
 syscalls_part4:switch01
 # __NR_sysctl not supported on x86_64
