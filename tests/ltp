@@ -70,6 +70,10 @@ cpuhotplug)
 	mkdir -p /usr/src/linux/
 	;;
 commands)
+	sed -i "/#/d" /etc/shells
+	sed -i "/\[Unit\]/a\StartLimitIntervalSec=0" /lib/systemd/system/sssd.service
+	systemctl daemon-reload || exit
+	systemctl restart sssd || exit
 	[ -f "/etc/nscd.conf" ] && {
 		# using sssd and nscd both can result in unexpected behavior, disable some configs here
 		a=$(cat /etc/nscd.conf | grep -n "enable-cache.*passwd" | cut -d: -f1)
