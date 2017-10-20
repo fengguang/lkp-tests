@@ -1,3 +1,8 @@
+# x86_64 can not support 16-bit syscall
+syscalls_part1:_16$:regex
+syscalls_part2:_16$:regex
+syscalls_part3:_16$:regex
+syscalls_part4:_16$:regex
 # i386 only
 crashme:f00f
 syscalls_part2:modify_ldt01
@@ -29,68 +34,6 @@ modules:delete_module01
 modules:delete_module03
 # not suittable to recent kernel
 hyperthreading:ht_interrupt
-# x86_64 can not support 16-bit syscall
-syscalls_part1:chown01_16
-syscalls_part1:chown02_16
-syscalls_part1:chown03_16
-syscalls_part1:chown04_16
-syscalls_part1:chown05_16
-syscalls_part1:fchown01_16
-syscalls_part1:fchown02_16
-syscalls_part1:fchown03_16
-syscalls_part1:fchown04_16
-syscalls_part1:fchown05_16
-syscalls_part1:getegid01_16
-syscalls_part1:getegid02_16
-syscalls_part1:geteuid01_16
-syscalls_part1:geteuid02_16
-syscalls_part1:getgid01_16
-syscalls_part2:getgid03_16
-syscalls_part2:getgroups01_16
-syscalls_part2:getgroups03_16
-syscalls_part2:getuid01_16
-syscalls_part2:getuid03_16
-syscalls_part2:lchown01_16
-syscalls_part2:lchown02_16
-syscalls_part2:lchown03_16
-syscalls_part3:setfsgid01_16
-syscalls_part3:setfsgid02_16
-syscalls_part3:setfsgid03_16
-syscalls_part3:setfsuid01_16
-syscalls_part3:setfsuid02_16
-syscalls_part3:setfsuid03_16
-syscalls_part3:setfsuid04_16
-syscalls_part3:setgid01_16
-syscalls_part3:setgid02_16
-syscalls_part3:setgid03_16
-syscalls_part3:setgroups01_16
-syscalls_part3:setgroups02_16
-syscalls_part3:setgroups03_16
-syscalls_part3:setgroups04_16
-syscalls_part3:setregid01_16
-syscalls_part3:setregid02_16
-syscalls_part3:setregid03_16
-syscalls_part3:setregid04_16
-syscalls_part3:setresgid01_16
-syscalls_part3:setresgid02_16
-syscalls_part3:setresgid03_16
-syscalls_part3:setresgid04_16
-syscalls_part3:setresuid01_16
-syscalls_part3:setresuid02_16
-syscalls_part3:setresuid03_16
-syscalls_part3:setresuid04_16
-syscalls_part3:setresuid05_16
-syscalls_part3:setreuid01_16
-syscalls_part3:setreuid02_16
-syscalls_part3:setreuid03_16
-syscalls_part3:setreuid04_16
-syscalls_part3:setreuid05_16
-syscalls_part3:setreuid06_16
-syscalls_part3:setreuid07_16
-syscalls_part4:setuid01_16
-syscalls_part4:setuid02_16
-syscalls_part4:setuid03_16
-syscalls_part4:setuid04_16
 # x86_64 can not support it
 syscalls_part4:ssetmask01
 # waiting community's response
