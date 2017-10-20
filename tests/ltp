@@ -86,7 +86,7 @@ fs_ext4)
 	big_dev_opt="-z $big_dev"
 	;;
 
-ltp-aiodio.part[24]|syscalls_part[124])
+ltp-aiodio.part[24]|syscalls_part[1234])
 	specify_tmpdir || exit
 	;;
 ltplite)
