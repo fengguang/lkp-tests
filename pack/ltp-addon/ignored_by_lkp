@@ -102,3 +102,9 @@ ltplite:sysctl01
 ltplite:sysctl03
 ltplite:sysctl04
 ltplite:sysctl05
+# set_thread_area not supported on x86_64
+syscalls_part3:set_thread_area01
+# __NR_ssetmask not supported on x86_64
+syscalls_part3:sgetmask01
+# only support on powerpc
+syscalls_part4:switch01
