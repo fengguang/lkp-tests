@@ -9,6 +9,7 @@ require "#{LKP_SRC}/lib/stats.rb"
 require "#{LKP_SRC}/lib/tests.rb"
 require "#{LKP_SRC}/lib/axis.rb"
 require "#{LKP_SRC}/lib/result_root.rb"
+require "#{LKP_SRC}/lib/log"
 
 # How many components in the stat sort key
 $stat_sort_key_number = {
@@ -204,8 +205,13 @@ module Compare
     def do_compare
       compare_groups.map do |g|
         stat_enum = g.each_changed_stat
-        stat_enum = Compare.sort_stats stat_enum
-        GroupResult.new g, stat_enum
+        begin
+          stat_enum = Compare.sort_stats stat_enum
+          GroupResult.new g, stat_enum
+        rescue StandardError => e
+          log_exception e, binding
+          nil
+        end
       end
     end
 
