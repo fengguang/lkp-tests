@@ -2,7 +2,7 @@ short_description: >
  The fsmark is a file system benchmark to test synchronous write
  workloads, for example, mail servers workload.
 
-description: >
+description: |
  The fsmark benchmark tests synchronous write workloads. It can vary
  the number of files, directory depth, etc. It has detailed timings
  for creates, writes, unlinks, close and fsyncs that make it good for

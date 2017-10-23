@@ -2,7 +2,7 @@ short_description: >
  sysbench-mutex is a subtest of SysBench benchmark suite to measure
  performance of mutex implementation.
 
-description: >
+description: |
  This test mode was written to emulate a situation when all threads
  run concurrently most of the time, acquiring the mutex lock only
  for a short period of time (incrementing a global variable).

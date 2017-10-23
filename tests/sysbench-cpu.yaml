@@ -2,7 +2,7 @@ short_description: >
  sysbench-cpu is a subtest of SysBench benchmark suite to measure
  cpu performance.
 
-description: >
+description: |
  The cpu is one of the most simple benchmarks in SysBench. In this
  mode each request consists in calculation of prime numbers up to a
  value specified by the --cpu-max-primes option. All calculations

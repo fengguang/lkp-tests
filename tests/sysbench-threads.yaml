@@ -2,7 +2,7 @@ short_description: >
  sysbench-threads is a subtest of SysBench benchmark suite to measure
  schedular performance.
 
-description: >
+description: |
  This test mode was written to benchmark scheduler performance, more
  specifically the cases when a scheduler has a large number of
  threads competing for some set of mutexes.

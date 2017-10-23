@@ -1,7 +1,7 @@
 short_description: >
  rcutorture is rcutorture kernel module load/unload test.
 
-description: >
+description: |
  The CONFIG_RCU_TORTURE_TEST config option is available for all RCU
  implementations.  It creates an rcutorture kernel module that can
  be loaded to run a torture test.  The test periodically outputs

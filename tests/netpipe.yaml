@@ -3,7 +3,7 @@ short_description: >
  the best of ttcp and netperf and visually represents the network
  performance under a variety of conditions.
 
-description: >
+description: |
  NetPIPE uses a simple series of ping-pong tests over a range of message sizes
  to provide a complete measure of the performance of a network. It bounces
  messages of increasing size between two processes, whether across a network or

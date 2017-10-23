@@ -2,7 +2,7 @@ short_description: >
  qperf measures bandwidth and latency between two nodes. It can work over
  TCP/IP as well as the RDMA transports.
 
-description: >
+description: |
  qperf measures bandwidth and latency between two nodes. It can work over
  TCP/IP as well as the RDMA transports. On one of the nodes, qperf is typically
  run with no arguments designating it the server node. One may then run qperf

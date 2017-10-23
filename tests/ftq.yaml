@@ -2,7 +2,7 @@ short_description: >
  The FTQ benchmarks measure hardware and software interference or 'noise' on a
  node from the applications perspective.
 
-description: >
+description: |
  FTQ is a simple benchmark that probes interference within a system. It does so
  as follows.  For a given sampling period (say, 1ms), we would like to know how
  many units of work can be achieved by a user application.  The unit of work is

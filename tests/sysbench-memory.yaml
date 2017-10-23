@@ -2,7 +2,7 @@ short_description: >
  sysbench-memory is a subtest of SysBench benchmark suite to measure 
  memory performance.
 
-description: >
+description: |
  Sysbench memory benchmark will allocate a memory buffer and then read
  or write from it, each time for the size of a pointer(32bit or 64bit)
  until the total buffer size has been read from or written to. This is
@@ -15,10 +15,10 @@ parameters:
  nr_threads: 
  mem_blk_size:                 size of memory block for test
  mem_total_size:               total size of data to transfer
- mem_scope: [global, local]    memory access scope
- mem_hugetlb: [on, off]        allocate memory from HugeTLB pool
- mem_opt: [read, write, none]  type of memory operations
- mem_access_mode: [seq, rnd]   memory access mode
+ mem_scope: (global, local)    memory access scope
+ mem_hugetlb: (on, off)        allocate memory from HugeTLB pool
+ mem_opt: (read, write, none)  type of memory operations
+ mem_access_mode: (seq, rnd)   memory access mode
 
 results:
  sysbench-memory.throughput_ops/s:

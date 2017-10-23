@@ -2,7 +2,7 @@ short_description: >
  The motivation behind this suite is to exercise functions and regions of the
  mm/ of the Linux kernel which are of interest to us.
 
-description: >
+description: |
  The motivation behind this suite is to exercise functions and regions of the
  mm/ of the Linux kernel which are of interest to us. There are many more
  regions which have not been covered by the test cases.
@@ -12,9 +12,9 @@ description: >
  upwards. GCOV gives a per line execution count for the source files. The
  supporting tool versions that were used in the development of the suite are
 
- gcov   - 4.6.3
- gcc    - 4.6.3
- Kernel - 3.4
+ - gcov   - 4.6.3
+ - gcc    - 4.6.3
+ - Kernel - 3.4
 
  The test kernel needs to be configured with the following options set
 
@@ -43,7 +43,7 @@ description: >
  else. They can be extended suitably as per need.
 
  Some cases like case-migration, case-mbind etc need a numa setup. This was
- achieved using the numa=fake=<value>. The value is the number of nodes to be
+ achieved using the numa=fake=\<value\>. The value is the number of nodes to be
  emulated. The suite was tested with value = 2, which is the minimum value for
  inter-core page migration. passed as a kernel boot option. Those cases that
  require the numa setup need to be linked with -lnuma flag and the libnuma has
@@ -51,8 +51,8 @@ description: >
  taken from the numactl documentation and slightly modified. They have been
  found to work on a 2 node numa-emulated machine.
 
- cases which require the sysfs parameters to be using echo <value> >
- sysfs_parameter set may need tweaking based on the system configuration. The
+ cases which require the sysfs parameters to be using `echo <value> >
+ sysfs_parameter` set may need tweaking based on the system configuration. The
  default values used in the case scripts may not scale well when systems
  parameters are scaled. For example, for systems with higher memory, the
  /sys/kernel/mm/transparent_hugepage/khugepaged/pages_to_scan may be needed to

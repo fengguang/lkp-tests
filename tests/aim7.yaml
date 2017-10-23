@@ -2,7 +2,7 @@ short_description: >
  AIM7 is a traditional UNIX system level benchmark suite which is used to
  test and measure the performance of multiuser system.
 
-description: >
+description: |
  AIM7 is a program written in C that forks many processes called
  tasks, each of which concurrently runs in random order a set of
  subtests called jobs. There are 53 kinds of jobs, each of which

@@ -3,7 +3,7 @@ short_description: >
  acquire the lock and hold it for specific amount of time, thus simulating
  different critical region behaviors.
 
-description: >
+description: |
  The CONFIG LOCK_TORTURE_TEST config option provides a kernel module that runs
  torture tests on core kernel locking primitives. The kernel module,
  'locktorture', may be built after the fact on the running kernel to be tested,
