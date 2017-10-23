@@ -1,0 +1,73 @@
+#!/usr/bin/env ruby
+
+require 'yaml'
+require 'erb'
+
+# class used to store parameter
+class ItemDesc
+  attr_reader :name, :choices, :desc
+
+  def initialize(k, v)
+    @name = k
+    return unless v
+    case v
+    when String
+      @desc = v
+    when Hash
+      parse_hash v
+    end
+  end
+
+  def parse_hash(v)
+    @desc = v['description']
+    case v['choices']
+    when Array
+      @choices = v['choices'].map { |e| [e, nil] }.to_h
+    when Hash
+      @choices = v['choices']
+    end
+  end
+end
+
+def yaml2md(fname)
+  data = YAML.load_file(fname)
+  if data['parameters']
+    data['parameters'] = data['parameters'].map { |k, v| ItemDesc.new(k, v) }
+  end
+  if data['results']
+    data['results'] = data['results'].map { |k, v| ItemDesc.new(k, v) }
+  end
+
+  ERB.new('
+# <%= File.basename(fname, ".yaml") %>
+
+<%= data["short_description"] -%>
+
+### Description
+
+<%= data["description"] %>
+
+### Homepage
+
+[<%= data["homepage"] %>](<%= data["homepage"] %>)
+
+### Parameters
+<% if data["parameters"] %><% data["parameters"].each do |e| %>
+- __<%= e.name %>__ <% if e.desc %>  : <%= e.desc %><% end -%>
+<%if e.choices %><%for c in e.choices %>
+    - <%= c[0] -%><% if c[1] %> : <%= c[1] -%> <% end -%>
+<% end %><% end %><% end %><% end %>
+
+### Results
+<% if data["results"] %><% data["results"].each do |e| %>
+- __<%= e.name %>__ <% unless e.desc.nil? %>: <%= e.desc %><% end -%>
+<% end %><% end %>
+
+', nil, '-').result binding
+end
+
+if ARGV.length == 1
+  puts yaml2md(ARGV[0])
+else
+  puts Dir['tests/*.yaml'].reduce('') { |s, x| s << yaml2md(x) }
+end
