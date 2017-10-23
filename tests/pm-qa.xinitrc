@@ -43,7 +43,7 @@ check_ignored_by_lkp()
 # remove the noise module
 # this module will create /sys/devices/virtual/thermal/thermal_zone2 dir, but it will not create
 # file: /sys/devices/virtual/thermal/thermal_zone2/mode which is expected by the tests
-rmmod x86_pkg_temp_thermal
+rmmod x86_pkg_temp_thermal 2>/dev/null
 
 if [ "$test" = 'all' ]; then
 	for i in cpufreq cpuhotplug cputopology cpuidle thermal
