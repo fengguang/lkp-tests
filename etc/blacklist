@@ -40,14 +40,7 @@
 ^kmsg.tsc:Fast_TSC_calibration_failed
 ^kmsg.tsc:HPET/PMTIMER_calibration_failed
 ^kmsg.tsc:Unable_to_calibrate_against_PIT
-^last_state.booting
-^last_state.build-*
-^last_state.error_mount
-^last_state.error_umounted
-^last_state.*.exit_code.*
-^last_state.exit_fail
-^last_state.failed
-^last_state.running
+^last_state.*
 ^latency_stats.*cifs.*
 ^lkp-install-run.*
 ^max_iostat.
@@ -83,6 +76,11 @@
 ^stderr.socket:Too_many_open_files
 ^stderr.some_monitors_do_not_quit_in_time
 ^stderr.*write_error
+^stderr.failed_to_checkout_sof_commit
+^stderr./lkp/jiawang6/src/.*
+^stderr.fatal:reference_is_not_a_tree
+^stderr.configure.*
+^stderr.src/arch/xtensa/.*
 ^tcrypt.*
 .*\.total_test
 .*\.total_pass
