@@ -25,6 +25,7 @@ MCE_LOGDIR=./results
 MCE_SUMDIR=./summary
 MCE_SCENARIO_DIR=./groups
 MCE_CASELIST=./work/rastest.caselist
+export MCE_TEST_SKIP=s3_s4_test
 
 test_all()
 {
