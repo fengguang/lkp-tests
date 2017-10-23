@@ -102,7 +102,10 @@ build_depends_pkg() {
 	local packages="$(get_dependency_packages ${DISTRO} ${script} pkg)"
 	local dev_packages="$(get_dependency_packages ${DISTRO} ${script}-dev pkg)"
 	packages="$(echo $packages $dev_packages | tr '\n' ' ')"
-	[ -n "$packages" ] && [ "$packages" != " " ] || return
+	if [ -z "$packages" ] || [ "$packages" = " " ]; then
+		return
+	fi
+	
 	for pkg in $packages; do
 		build_depends_pkg $pkg $dest
 		pkg_dir="$LKP_SRC/pkg/$pkg"
