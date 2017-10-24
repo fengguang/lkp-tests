@@ -3,6 +3,9 @@
 # - concurrency
 
 . $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/apache.sh
+
+set_apache_name
 
 [ -n "$direct_server_ips" ] && server=$direct_server_ips
 [ -z "$server" ] && server=127.0.0.1
@@ -11,9 +14,9 @@ server=${server%% *}
 [ -n "$runtime" ] || runtime=300
 [ -n "$concurrency" ] || concurrency=1000
 
-log_cmd a2enmod auth_basic authn_core authn_file authz_core authz_host authz_user access_compat
+log_cmd enable_apache_mod auth_basic authn_core authn_file authz_core authz_host authz_user access_compat
 
-log_cmd systemctl restart apache2
+log_cmd systemctl restart "$APACHE_NAME"
 
 # To avoid the follow error: socket: Too many open files (24)
 ulimit -n 102400
