@@ -25,7 +25,7 @@ set_apache_name()
 	fi
 }
 
-set_apache_dir()
+set_apache_path()
 {
 	if [ -z "$APACHE_MODDIR" ]; then
 		if apache_debian_style; then
@@ -35,18 +35,18 @@ set_apache_dir()
 		fi
 	fi
 
-	if [ -z "$APACHE_CONFDIR" ]; then
+	if [ -z "$APACHE_CONF" ]; then
 		if apache_debian_style; then
-			APACHE_CONFDIR='/etc/apache2/apache2.conf'
+			APACHE_CONF='/etc/apache2/apache2.conf'
 		else
-			APACHE_CONFDIR='/etc/httpd/conf/httpd.conf'
+			APACHE_CONF='/etc/httpd/conf/httpd.conf'
 		fi
 	fi
 }
 
 enable_httpd_mod()
 {
-	set_apache_dir
+	set_apache_path
 
 	for mod in "$@"
 	do
@@ -56,7 +56,7 @@ enable_httpd_mod()
 
 disable_httpd_mod()
 {
-	set_apache_dir
+	set_apache_path
 
 	for mod in "$@"
 	do
@@ -66,7 +66,7 @@ disable_httpd_mod()
 
 restore_apache_mod()
 {
-	set_apache_dir
+	set_apache_path
 
 	if [ -d "$APACHE_MODDIR"/backup ]; then
 		rm -f "$APACHE_MODDIR"/*conf "$APACHE_MODDIR"/*load
@@ -77,7 +77,7 @@ restore_apache_mod()
 
 backup_apache_mod()
 {
-	set_apache_dir
+	set_apache_path
 
 	if apache_debian_style; then
 		MODFILE="$APACHE_MODDIR/*conf $APACHE_MODDIR/*load"
