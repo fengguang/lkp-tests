@@ -139,12 +139,6 @@ mount_fs() {
 	done
 }
 
-umount_fs() {
-	for mt in /nfs/* /fs/*; do
-		mountpoint -q $mt && umount $mt
-	done
-}
-
 if is_btrfs_raid_levels; then
 	bdevs="${partitions%% *}"
 else
@@ -152,8 +146,6 @@ else
 fi
 
 fs_options
-
-umount_fs
 
 case $fs in
 	nfs)
@@ -177,6 +169,19 @@ case $fs in
 		mount_fs
 		;;
 esac
+
+cat > "$TMP_RESULT_ROOT/post-run.fs" <<EOF
+
+#!/bin/sh
+
+umount_fs() {
+	for mt in /nfs/* /fs/*; do
+		mountpoint -q \$mt && umount \$mt
+	done
+}
+
+umount_fs
+EOF
 
 cat >> $TMP/env.yaml <<EOF
 
