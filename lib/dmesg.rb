@@ -239,7 +239,7 @@ def common_error_id(line)
   line.gsub!(/\ ([^a-zA-Z])/, '\1')
   line.gsub!(/^\ /, '')
   line.gsub!(/\  _/, '_')
-  line.gsub!(/\ /, '_')
+  line.tr!(' ', '_')
   line.gsub!(/[-_.,;:#!\[\(]+$/, '')
   line
 end

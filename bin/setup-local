@@ -113,7 +113,7 @@ end
 def install_benchmarks(script, distro)
   return unless File.file? "#{LKP_SRC}/pack/#{script}"
 
-  pkg_name = script.gsub(/_/, '-') + '-LKP'
+  pkg_name = script.tr('_', '-') + '-LKP'
   arch = `uname -m`.chomp
   puts "Making #{script} benchmark for #{distro}"
 
