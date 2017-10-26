@@ -53,7 +53,7 @@ def add_performance_per_watt(stats, matrix)
 
     value = stats[stat]
     next unless value
-    if (weight < 0)
+    if weight < 0
       value = 1 / value
       weight = -weight
     end
