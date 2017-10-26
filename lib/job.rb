@@ -13,6 +13,7 @@ require 'yaml'
 require 'json'
 require 'set'
 require 'pp'
+require 'English'
 
 def restore(ah, copy)
   if ah.class == Hash
@@ -110,7 +111,7 @@ def create_programs_hash(glob, lkp_src = LKP_SRC)
 end
 
 def atomic_save_yaml_json(object, file)
-  temp_file = file + "-#{$$}"
+  temp_file = file + "-#{$PROCESS_ID}"
   File.open(temp_file, 'w') do |file|
     if temp_file.index('.json')
       lines = JSON.pretty_generate(object, allow_nan: true)
@@ -637,7 +638,7 @@ class Job
   def run_filter(_hash, _key, _val, script)
     system @filter_env, script, unsetenv_others: true
 
-    raise Job::ParamError, "#{script}: exitstatus #{$?.exitstatus}" if $?.exitstatus && $?.exitstatus != 0
+    raise Job::ParamError, "#{script}: exitstatus #{$CHILD_STATUS.exitstatus}" if $CHILD_STATUS.exitstatus && $CHILD_STATUS.exitstatus != 0
   end
 
   def expand_params(run_scripts = true)

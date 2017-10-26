@@ -9,6 +9,7 @@ require "#{LKP_SRC}/lib/assert"
 require 'fileutils'
 require 'yaml'
 require 'json'
+require 'English'
 
 def compress_file(file)
   system "gzip #{file} < /dev/null"
@@ -154,7 +155,7 @@ def dot_file(path)
 end
 
 def save_yaml(object, file, compress = false)
-  temp_file = dot_file(file) + "-#{$$}"
+  temp_file = dot_file(file) + "-#{$PROCESS_ID}"
   File.open(temp_file, 'w') do |f|
     f.write(YAML.dump(object))
   end
@@ -219,7 +220,7 @@ def load_json(file, cache = false)
 end
 
 def save_json(object, file, compress = false)
-  temp_file = dot_file(file) + "-#{$$}"
+  temp_file = dot_file(file) + "-#{$PROCESS_ID}"
   File.open(temp_file, 'w') do |file|
     file.write(JSON.pretty_generate(object, allow_nan: true))
   end
