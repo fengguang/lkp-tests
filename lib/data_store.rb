@@ -232,12 +232,12 @@ module DataStore
 
     def open(path)
       path = canonicalize_path path
-      self.cached_new path, path
+      cached_new path, path
     end
 
     def create_new(path)
       path = canonicalize_path path
-      self.cached_new path, path, true
+      cached_new path, path, true
     end
 
     def exist?(path)

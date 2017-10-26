@@ -140,7 +140,7 @@ class ResultPath < Hash
   def each_commit
     return enum_for(__method__) unless block_given?
 
-    self.path_scheme.each do |axis|
+    path_scheme.each do |axis|
       case axis
       when 'commit'
         yield 'linux', axis

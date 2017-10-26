@@ -6,7 +6,7 @@
 module Enumerable
   def sum
     begin
-      return self.inject(0) { |acc, i| acc + i }
+      return inject(0) { |acc, i| acc + i }
     rescue TypeError
       $stderr.puts self
       raise
@@ -14,17 +14,17 @@ module Enumerable
   end
 
   def average
-    self.sum / self.length.to_f
+    sum / length.to_f
   end
 
   def sorted
-    s = self.sort
+    s = sort
     s.shift while s[0] == -1 # -1 means empty data point
     s
   end
 
   def mean_sorted
-    s = self.sorted
+    s = sorted
     if s.size <= 2
       [s.average, s]
     else
@@ -33,12 +33,12 @@ module Enumerable
   end
 
   def sample_variance
-    avg = self.average
-    sum = self.inject(0) { |acc, i| acc + (i - avg)**2 }
-    1 / self.length.to_f * sum
+    avg = average
+    sum = inject(0) { |acc, i| acc + (i - avg)**2 }
+    1 / length.to_f * sum
   end
 
   def standard_deviation
-    Math.sqrt(self.sample_variance)
+    Math.sqrt(sample_variance)
   end
 end

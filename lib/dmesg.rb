@@ -29,8 +29,8 @@ class DmesgTimestamp
   end
 
   def <=>(other)
-    return 0 unless self.valid? || other.valid?
-    return -1 unless self.valid?
+    return 0 unless valid? || other.valid?
+    return -1 unless valid?
     return 1 unless other.valid?
 
     @timestamp.to_f <=> other.timestamp.to_f

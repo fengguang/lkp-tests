@@ -8,6 +8,6 @@ class Array
   end
 
   def sum
-    self.inject(0) { |sum, i| sum + i }
+    inject(0) { |sum, i| sum + i }
   end
 end
