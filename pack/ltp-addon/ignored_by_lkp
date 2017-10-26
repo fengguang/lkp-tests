@@ -92,3 +92,8 @@ syscalls_part4:sysctl01
 syscalls_part4:sysctl03
 syscalls_part4:sysctl04
 syscalls_part4:sysctl05
+# caused by the defect of ltp itself, where a "no such file or directory" error occured
+ltp-aiodio.part4:DOR000
+ltp-aiodio.part4:DOR001
+ltp-aiodio.part4:DOR002
+ltp-aiodio.part4:DOR003
