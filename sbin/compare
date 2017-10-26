@@ -266,7 +266,7 @@ def add_stats(path)
     dim = result_path[$opt_dimension]
   else
     $params ||= YAML.load_file result_path.params_file
-    return unless $params.has_key? $opt_dimension
+    return unless $params.key? $opt_dimension
     path_params = result_path['path_params'].partition Regexp.new '\b-?(' + $params[$opt_dimension].join('|') + ')-?\b'
     dim = path_params[1]
     dim[0] = '' if dim[0] == '-'
@@ -274,7 +274,7 @@ def add_stats(path)
     return unless dim
   end
 
-  unless $dims.has_key?(dim)
+  unless $dims.key?(dim)
     $dims[dim] = dim_name(dim)
     $first_dim ||= dim
   end
@@ -284,7 +284,7 @@ def add_stats(path)
     result_path['path_params'] = path_params[0] + $first_dim + path_params[2]
   end
   _rt = result_path._result_root
-  if !$cases.has_key?(_rt)
+  if !$cases.key?(_rt)
     $cases[_rt] = { dim => field_value }
   else
     $cases[_rt][dim] = field_value

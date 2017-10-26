@@ -676,7 +676,7 @@ class Job
     as = {}
     ResultPath::MAXIS_KEYS.each do |k|
       next if k == 'path_params'
-      as[k] = @job[k] if @job.has_key? k
+      as[k] = @job[k] if @job.key? k
     end
 
     ## TODO: remove the following lines when we need not
@@ -687,7 +687,7 @@ class Job
     as['rootfs'] ||= 'debian-x86_64.cgz' if path_scheme.include? 'rootfs'
     as['compiler'] ||= DEFAULT_COMPILER if path_scheme.include? 'compiler'
 
-    as['rootfs'] = rootfs_filename as['rootfs'] if as.has_key? 'rootfs'
+    as['rootfs'] = rootfs_filename as['rootfs'] if as.key? 'rootfs'
     each_param do |k, v, option_type|
       if option_type == '='
         as[k] = v.to_s

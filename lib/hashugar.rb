@@ -55,7 +55,7 @@ class Hashugar
   end
 
   def respond_to?(key, _include_all = false)
-    super(key) || @table.has_key?(stringify(key))
+    super(key) || @table.key?(stringify(key))
   end
 
   def each(&block)
