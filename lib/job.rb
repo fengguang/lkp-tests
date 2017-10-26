@@ -204,7 +204,7 @@ class Job
         log_error "reload #{jobfile} succeed"
       end
     end
-    raise ArgumentError.new("empty jobfile #{jobfile}") if yaml.empty?
+    raise ArgumentError, "empty jobfile #{jobfile}" if yaml.empty?
 
     # keep comment lines as symbols
     yaml.gsub!(/\n\n#([! ][-a-zA-Z0-9 !|\/?@<>.,_+=%~]+)$/, "\n:#\\1: ")
