@@ -5,12 +5,10 @@
 # Add methods to Enumerable, which makes them available to Array
 module Enumerable
   def sum
-    begin
-      return inject(0) { |acc, i| acc + i }
-    rescue TypeError
-      $stderr.puts self
-      raise
-    end
+    return inject(0) { |acc, i| acc + i }
+  rescue TypeError
+    $stderr.puts self
+    raise
   end
 
   def average
