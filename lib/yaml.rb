@@ -279,6 +279,6 @@ end
 
 def load_regular_expressions(file, options = {})
   pattern = File.read(file).split("\n")
-  spec  = "#{options[:prefix]}(#{pattern.join('|')})#{options[:suffix]}"
+  spec = "#{options[:prefix]}(#{pattern.join('|')})#{options[:suffix]}"
   Regexp.new spec
 end
