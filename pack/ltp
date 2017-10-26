@@ -2,9 +2,9 @@
 
 download()
 {
-	git_clone_update https://git.centos.org/r/rpms/rusers.git
-	git_clone_update https://github.com/PeterHuewe/tpm-emulator.git
-	git_clone_update https://github.com/ianw/numactl.git
+	git_clone_update https://git.centos.org/r/rpms/rusers.git || return
+	git_clone_update https://github.com/PeterHuewe/tpm-emulator.git || return
+	git_clone_update https://github.com/ianw/numactl.git || return
 	git_clone_update https://github.com/linux-test-project/ltp.git
 }
 
@@ -72,7 +72,8 @@ build_tpm_emulator()
 	mkdir build && cd build
 	cmake ..
 	make || return
-	make install && make package
+	make install || return
+	make package || return
 	cd ..
 }
 
