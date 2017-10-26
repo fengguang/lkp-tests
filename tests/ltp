@@ -146,6 +146,8 @@ tpm_tools)
 	killall tcsd > /dev/null 2>&1
 	tcsd -e -f > /dev/null 2>&1 &
 	sleep 5
+	export LTPROOT=${PWD}
+	export LTPBIN=$LTPROOT/testcases/bin
 	export OWN_PWD="HELLO1"
 	export NEW_OWN_PWD="HELLO2"
 	export SRK_PWD="HELLO3"
