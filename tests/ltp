@@ -134,6 +134,8 @@ fs_ext4)
 	big_dev_opt="-z $big_dev"
 	;;
 tpm_tools)
+	[ $USER ] || USER=root
+	rm -rf /var/lib/opencryptoki/tpm/$USER
 	cd tpm-emulater
 	find . -maxdepth 1 -type d -name "TPM_Emulator*" -exec rm -rf {} \;
 	unzip $(ls TPM_Emulator*.zip | head -1)
