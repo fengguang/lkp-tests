@@ -581,7 +581,7 @@ module Compare
                   @axes_as_num.index(axis_key))
             return method(:string_to_num)
           else
-            return ->x { x }
+            return ->(x) { x }
           end
         }
 
