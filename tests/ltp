@@ -133,7 +133,18 @@ fs_ext4)
 	big_dev="${partitions%% *}"
 	big_dev_opt="-z $big_dev"
 	;;
-
+tpm_tools)
+	cd tpm-emulater
+	find . -maxdepth 1 -type d -name "TPM_Emulator*" -exec rm -rf {} \;
+	unzip $(ls TPM_Emulator*.zip | head -1)
+	rsync -av $(ls -l . | awk '/^d/ {print $NF}' | head -1)"/" /
+	cd ..
+	killall tpmd > /dev/null 2>&1
+	tpmd -f -d clear > /dev/null 2>&1 &
+	killall tcsd > /dev/null 2>&1
+	tcsd -e -f > /dev/null 2>&1 &
+	sleep 5
+	;;
 ltp-aiodio.part[24]|syscalls_part[123])
 	specify_tmpdir || exit
 	;;

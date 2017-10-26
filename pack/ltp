@@ -3,6 +3,7 @@
 download()
 {
 	git_clone_update https://git.centos.org/r/rpms/rusers.git
+	git_clone_update https://github.com/PeterHuewe/tpm-emulator.git
 	git_clone_update https://github.com/ianw/numactl.git
 	git_clone_update https://github.com/linux-test-project/ltp.git
 }
@@ -62,6 +63,19 @@ build_rusers()
 	cd ../../
 }
 
+build_tpm_emulator()
+{
+	# remove Werror to use gcc-7
+	sed -i "s/-Werror//g" CMakeLists.txt
+	# don't build kernel module
+	sed -i "s/add_subdirectory(tpmd_dev)/#add_subdirectory(tpmd_dev)/g" CMakeLists.txt
+	mkdir build && cd build
+	cmake ..
+	make || return
+	make install && make package
+	cd ..
+}
+
 build_ltp()
 {
 	patch_source ltp.patch || return
@@ -87,6 +101,12 @@ install_rusers()
 	make install 2> /dev/null
 }
 
+install_tpm_emulator()
+{
+	mkdir -p $BM_ROOT/tpm-emulater
+	cp build/*.zip $BM_ROOT/tpm-emulater
+}
+
 install_ltp()
 {
 	make install
@@ -105,6 +125,9 @@ build()
 {
 	build_ltp || exit
 
+	cd ../tpm-emulator || exit
+	build_tpm_emulator || exit
+
 	cd ../numactl || exit
 	build_numactl || exit
 
@@ -116,6 +139,9 @@ install()
 {
 	cd ../ltp || exit
 	install_ltp || exit
+
+	cd ../tpm-emulator || exit
+	install_tpm_emulator || exit
 
 	cd ../numactl || exit
 	install_numactl || exit
