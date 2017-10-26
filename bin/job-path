@@ -5,6 +5,10 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAM
 require "#{LKP_SRC}/lib/job.rb"
 
 job = Job.new
-job.load(ARGV[0]) rescue exit
+begin
+  job.load(ARGV[0])
+rescue
+  exit
+end
 
 puts job['testcase'] + '/' + job.path_params

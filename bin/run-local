@@ -88,10 +88,12 @@ def create_result_root(_result_root)
 end
 
 job = Job.new
-job.load(jobfile) rescue (
+begin
+  job.load(jobfile)
+rescue
   $stderr.puts "#{jobfile} is not a valid jobfile"
   exit 1
-)
+end
 
 HOSTNAME ||= ENV['HOSTNAME'] || `hostname`.chomp
 job['testbox'] = HOSTNAME

@@ -324,7 +324,11 @@ def unite_params(result_root)
   params = YAML.load_file(params_file) if File.exist? params_file
 
   job = Job.new
-  job.load(result_root + '/job.yaml') rescue return
+  begin
+    job.load(result_root + '/job.yaml')
+  rescue
+    return
+  end
 
   job.each_param do |k, v, _option_type|
     if params[k]
