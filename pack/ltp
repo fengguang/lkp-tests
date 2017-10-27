@@ -81,6 +81,8 @@ build_ltp()
 {
 	patch_source ltp.patch || return
 	patch -p1 < $LKP_SRC/pack/ltp-addon/v2-0001-shmctl-enable-subtest-SHM_LOCK-SHM_UNLOCK-only-if.patch || return
+	# fix ltplite:rwtest01-04
+	patch -p1 < $LKP_SRC/pack/ltp-addon/0001-Specify-TMPDIR-for-rwtest01-04.patch || return
 
 	split_syscalls
 	make autotools
