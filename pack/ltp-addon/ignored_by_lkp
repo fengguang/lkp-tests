@@ -89,6 +89,7 @@ syscalls_part3:rename11
 syscalls_part4:switch01
 # the test result is always block
 syscalls_part4:sysconf01
+ltplite:sysconf01
 # __NR_sysctl not supported on x86_64
 syscalls_part4:sysctl01
 syscalls_part4:sysctl03
