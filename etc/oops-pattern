@@ -22,7 +22,6 @@ INFO: .* cpu=.*
 INFO: Slab 0x.*
 INFO: Object 0x.*
 INFO: 0x.*. First byte 0x.*
-\[ *[0-9.]+\] INFO: .*
 \[ INFO: [^i].* \]
 [^ ]*\.[ch]:[0-9]+ .*!$
 inconsistent \{.*\} -> \{.*\} usage\.
@@ -75,6 +74,4 @@ sysctl table check failed:
 sysctl link missing during unregister: 
 Mem-Info:
 warn_alloc_failed\+0x
-ACPI Error: .*
 kobject .*: (tried to .*|invalid kobject pointer!|must have a ktype to be initialized properly!)
-cpu clock throttled
