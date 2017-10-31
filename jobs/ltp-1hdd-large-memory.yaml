@@ -1,0 +1,14 @@
+suite: ltp
+testcase: ltp
+category: functional
+
+disk: 1HDD
+fs:
+- ext4
+- xfs
+- btrfs
+need_memory: 8G
+
+ltp:
+  test:
+  - ltplite
