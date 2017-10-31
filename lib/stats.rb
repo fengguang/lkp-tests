@@ -508,8 +508,8 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
       next unless is_reasonable_perf_change(k, delta, max)
     end
 
-    interval_a = '[ %-10.5g - %-10.5g ]' % [min_a, max_a]
-    interval_b = '[ %-10.5g - %-10.5g ]' % [min_b, max_b]
+    interval_a = format('[ %-10.5g - %-10.5g ]', min_a, max_a)
+    interval_b = format('[ %-10.5g - %-10.5g ]', min_b, max_b)
     interval = interval_a + ' -- ' + interval_b
 
     changed_stats[k] = { 'stat' => k,

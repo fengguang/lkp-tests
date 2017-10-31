@@ -121,7 +121,7 @@ def format_number(number)
       else
         '%.4g'
       end
-    s = fmt % [number]
+    s = format(fmt, number)
     # Remove trailing 0
     if fmt[-1] == 'f'
       s.gsub(/\.?0+$/, '')
