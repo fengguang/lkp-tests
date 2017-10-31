@@ -44,7 +44,7 @@ ltp:
 #  - power_management_tests_exclusive
   - pty
   - quickhit
-  - rpc_tests
+  - net.rpc_tests
   - sched
   - securebits
 # need CONFIG_SECURITY_SMACK=y, meanwhile CONFIG_SECURITY_SELINUX should not be set
