@@ -51,7 +51,7 @@ ltp:
 # in x86_64-rhel-7.2, it is just the opposite
 #  - smack
   - timers
-  - tirpc_tests
+  - net.tirpc_tests
   - tpm_tools
 # Stress test groups, but will not take too long time
   - fs
