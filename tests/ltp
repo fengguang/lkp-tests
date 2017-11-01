@@ -153,8 +153,16 @@ tpm_tools)
 	export P11_USER_PWD="HELLO7"
 	export NEW_P11_USER_PWD="HELLO8"
 	;;
-ltp-aiodio.part[24]|syscalls_part[123]|dio)
+ltp-aiodio.part[24]|syscalls_part[13]|dio)
 	specify_tmpdir || exit
+	;;
+syscalls_part2)
+	specify_tmpdir || exit
+	relatime=$(mount | grep /tmp | grep relatime)
+	noatime=$(mount | grep /tmp | grep noatime)
+	if [ "$relatime" != "" ] || [ "$noatime" != "" ]; then
+		mount -o remount,strictatime /tmp
+	fi
 	;;
 syscalls_part4)
 	specify_tmpdir || exit
@@ -195,6 +203,11 @@ exit_value=$?
 
 [ "$test" = "commands" ] && {
      recover_configfile || exit
+}
+
+[ "$test" = "syscalls_part2" ] && {
+	[ "$relatime" != "" ] && mount -o remount,relatime /tmp
+	[ "$noatime" != "" ] && mount -o remount,noatime /tmp
 }
 
 upload_files -t results $BENCHMARK_ROOT/ltp/results/* \
