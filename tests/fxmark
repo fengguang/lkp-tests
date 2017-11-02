@@ -1,0 +1,40 @@
+#!/bin/bash
+# - media
+# - fstype
+# - directio
+# - test
+
+. $LKP_SRC/lib/debug.sh
+
+cd $BENCHMARK_ROOT/$testcase || die "can not enter $BENCHMARK_ROOT/$testcase"
+
+# fxmark can not be run until we change the source to fit the target machine
+# TODO: suupport more media type: ssd,nvme,me
+setup_config()
+{
+	partition="${partitions%% *}"
+	sed -i "s#HDDDEV.*=.*#HDDDEV = \"$partition\"#" bin/run-fxmark.py
+	sed -i "/    confirm_media_path()/i\    run_config = [(Runner.CORE_FINE_GRAIN, PerfMon.LEVEL_LOW, (\"$media\", \"$fstype\", \"$test\", \"*\", \"$directio\")),]"  bin/run-fxmark.py
+}
+
+do_backup()
+{
+	cp ./bin/run-fxmark.py ./bin/run-fxmark.py.bak
+}
+
+do_recover()
+{
+	cp ./bin/run-fxmark.py.bak ./bin/run-fxmark.py
+}
+
+run()
+{
+	echo -e "Y\nY" | ./bin/run-fxmark.py
+}
+do_backup
+
+setup_config
+
+run
+
+do_recover

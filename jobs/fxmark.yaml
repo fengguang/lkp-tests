@@ -1,0 +1,44 @@
+# Homepage: https://github.com/sslab-gatech/fxmark
+
+suite: fxmark
+testcase: fxmark
+category: benchmark
+
+disk:
+- 1HDD
+
+fxmark:
+ test:
+  - DWAL
+  - DWOL
+  - DWOM
+  - DWSL
+  - MWRL
+  - MWRM
+  - MWCL
+  - MWCM
+  - MWUM
+  - MWUL
+  - DWTL
+  - filebench_varmail
+  - filebench_oltp
+  - filebench_fileserver
+  - dbench_client
+  - MRPL
+  - MRPM
+  - MRPH
+  - MRDM
+  - MRDL
+  - DRBH
+  - DRBM
+  - DRBL
+ media: hdd
+ fstype:
+  - ext4
+  - ext4_no_jnl
+  - xfs
+  - btrfs
+  - f2fs
+ directio:
+  - bufferedio
+  - directio
