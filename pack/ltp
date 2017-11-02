@@ -86,6 +86,8 @@ build_ltp()
 	# fix ltplite:brk01
 	patch -p1 < $LKP_SRC/pack/ltp-addon/0001-syscalls-brk-change-to-unsigned-long-for-incr.patch || return
 	patch -p1 < $LKP_SRC/pack/ltp-addon/0002-syscalls-brk-limit-the-largest-requesting-memory.patch || return
+	# fix commond:ar01
+	patch -p1 < $LKP_SRC/pack/ltp-addon/ar_fail.patch || return
 
 	split_syscalls
 	make autotools
