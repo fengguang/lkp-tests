@@ -22,3 +22,9 @@ ltp:
   - syscalls_part2
   - syscalls_part3
   - syscalls_part4
+
+---
+need_memory: 8G
+ltp:
+  test:
+  - ltplite
