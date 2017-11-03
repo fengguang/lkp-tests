@@ -4,9 +4,6 @@ suite: fxmark
 testcase: fxmark
 category: benchmark
 
-disk:
-- 1HDD
-
 fxmark:
  test:
   - DWAL
@@ -32,7 +29,6 @@ fxmark:
   - DRBH
   - DRBM
   - DRBL
- media: hdd
  fstype:
   - ext4
   - ext4_no_jnl
