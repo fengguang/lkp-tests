@@ -57,6 +57,8 @@ module Git
 
       git_base.lib.command_lines('show', "#{commit_sha}:Makefile").each do |line|
         case line
+        when /^#/
+          next
         when /VERSION *= *(\d+)/
           version = $1.to_i
         when /PATCHLEVEL *= *(\d+)/
