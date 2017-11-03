@@ -27,7 +27,7 @@ echo $paranoid_value > $perf_event_paranoid
 [[ $paranoid_value = $(cat $perf_event_paranoid) ]] || die "write value $paranoid_value to $perf_event_paranoid failed"
 
 hsw_unstable="rdpmc_attach rdpmc_validation cycles"
-ivb_unstable="overflow_skid openmp_sample rdpmc_validation rdpmc_multiattach"
+ivb_unstable="overflow_skid openmp_sample rdpmc_validation rdpmc_multiattach rdpmc_multiattach_papi"
 
 # following 2 groups cases seem related to hardware platform,
 # during waiting from community response, mark them as ignored_by_lkp
