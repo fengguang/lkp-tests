@@ -9,7 +9,7 @@
 cd $BENCHMARK_ROOT/$testcase || die "can not enter $BENCHMARK_ROOT/$testcase"
 
 # fxmark can not be run until we change the source to fit the target machine
-# TODO: suupport more media type: ssd,nvme,me
+# TODO: support more media type: ssd,nvme,mem
 setup_config()
 {
 	partition="${partitions%% *}"
