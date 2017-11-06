@@ -20,6 +20,7 @@ boot_init
 
 # when to not reboot is a policy issue, which can be refined later.
 # here just serves as an example only.
+# FIXME: need to consider more factors, such as cmdline, boot_parameter
 job_does_not_need_reboot()
 {
 	grep -q "^do_not_reboot: 1$" $job && {
@@ -28,7 +29,7 @@ job_does_not_need_reboot()
 	}
 
 	grep -q "^do_not_reboot_for_same_kernel: 1$" $job &&
-	is_same_kernel_and_rootfs && is_same_testcase && {
+	is_same_kernel_and_rootfs && is_same_testcase && is_same_bp_memmap && {
 		echo "LKP: [do_not_reboot_for_same_kernel] start a new job without rebooting"
 		return 0
 	}

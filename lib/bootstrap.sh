@@ -514,6 +514,16 @@ is_same_testcase()
 	[ "$current_testcase" = "$next_testcase" ]
 }
 
+is_same_bp_memmap()
+{
+	local next_bp_memmap=$(awk '/bp_memmap:/{print $2}' $job)
+	# $ awk -F'memmap=' '{print $2}' /proc/cmdline | awk '{print $1}'
+	# 32G!4G
+	local current_memmap=$(awk -F'memmap=' '{print $2}' /proc/cmdline | awk '{print $1}')
+
+	[ "$next_bp_memmap" = "$current_memmap" ]
+}
+
 setup_env()
 {
 	[ "$result_service" != "${result_service#9p/}" ] &&
