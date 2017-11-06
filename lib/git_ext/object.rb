@@ -14,7 +14,7 @@ module Git
         # this is to convert non sha1 40 such as tag name to corresponding commit sha
         # otherwise Object::AbstractObject uses @base.lib.revparse(@objectish) to get sha
         # which sometimes is not as expected when we give a tag name
-        self.objectish = @base.lib.command('rev-list', ['-1', objectish]) unless sha1_40?(objectish)
+        self.objectish = @base.command('rev-list', ['-1', objectish]) unless sha1_40?(objectish)
       end
 
       def project
@@ -39,7 +39,7 @@ module Git
       end
 
       def show(content)
-        @base.lib.command_lines('show', "#{sha}:#{content}")
+        @base.command_lines('show', "#{sha}:#{content}")
       end
 
       def interested_tag
@@ -62,11 +62,11 @@ module Git
       def last_release_tag
         return [release_tag, true] if release_tag
 
-        case @base.project
+        case project
         when 'linux'
-          Git.linux_last_release_tag_strategy(@base, sha)
+          @base.linux_last_release_tag_strategy(sha)
         else
-          last_release_sha = @base.lib.command("rev-list --first-parent #{sha} | grep -m1 -Fx \"#{@base.release_shas.join("\n")}\"").chomp
+          last_release_sha = @base.command("rev-list --first-parent #{sha} | grep -m1 -Fx \"#{@base.release_shas.join("\n")}\"").chomp
 
           last_release_sha.empty? ? nil : [@base.release_shas2tags[last_release_sha], false]
         end
@@ -74,7 +74,7 @@ module Git
 
       def base_rc_tag
         # rli9 FIXME: bad smell here to distinguish linux by case/when
-        commit = case @base.project
+        commit = case project
                  when 'linux'
                    @base.gcommit("#{sha}~") if committer.name == 'Linus Torvalds'
                  end
@@ -165,7 +165,7 @@ module Git
 
     class Tag
       def commit
-        @base.gcommit(@base.lib.command('rev-list', ['-1', @name]))
+        @base.gcommit(@base.command('rev-list', ['-1', @name]))
       end
     end
   end

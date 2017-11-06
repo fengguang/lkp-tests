@@ -52,40 +52,6 @@ module Git
       Git.orig_open(working_dir, options)
     end
 
-    def linux_last_release_tag_strategy(git_base, commit_sha)
-      version = patch_level = sub_level = rc = nil
-
-      git_base.lib.command_lines('show', "#{commit_sha}:Makefile").each do |line|
-        case line
-        when /^#/
-          next
-        when /VERSION *= *(\d+)/
-          version = $1.to_i
-        when /PATCHLEVEL *= *(\d+)/
-          patch_level = $1.to_i
-        when /SUBLEVEL *= *(\d+)/
-          sub_level = $1.to_i
-        when /EXTRAVERSION *= *-rc(\d+)/
-          rc = $1.to_i
-        else
-          break
-        end
-      end
-
-      if version && version >= 2
-        tag = "v#{version}.#{patch_level}"
-        tag += ".#{sub_level}" if version == 2
-        tag += "-rc#{rc}" if rc && rc > 0
-
-        [tag, false]
-      else
-        $stderr.puts "Not a kernel tree? Check #{git_base.repo}"
-        $stderr.puts caller.join "\n"
-
-        nil
-      end
-    end
-
     # rli9 FIXME: remove ENV usage
     # load remotes information from config files
     #

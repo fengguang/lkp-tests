@@ -42,6 +42,40 @@ module Git
       !command('branch', ['--list', '-a', pattern]).empty?
     end
 
+    def linux_last_release_tag_strategy(commit_sha)
+      version = patch_level = sub_level = rc = nil
+
+      command_lines('show', "#{commit_sha}:Makefile").each do |line|
+        case line
+        when /^#/
+          next
+        when /VERSION *= *(\d+)/
+          version = $1.to_i
+        when /PATCHLEVEL *= *(\d+)/
+          patch_level = $1.to_i
+        when /SUBLEVEL *= *(\d+)/
+          sub_level = $1.to_i
+        when /EXTRAVERSION *= *-rc(\d+)/
+          rc = $1.to_i
+        else
+          break
+        end
+      end
+
+      if version && version >= 2
+        tag = "v#{version}.#{patch_level}"
+        tag += ".#{sub_level}" if version == 2
+        tag += "-rc#{rc}" if rc && rc > 0
+
+        [tag, false]
+      else
+        $stderr.puts "Not a kernel tree? Check #{repo}"
+        $stderr.puts caller.join "\n"
+
+        nil
+      end
+    end
+
     def __commit2tag
       hash = {}
       command('show-ref', ['--tags']).each_line do |line|
@@ -75,22 +109,17 @@ module Git
       @@head2branch = __head2branch
     end
 
-    def release_tags
-      unless @release_tags
-        $remotes ||= load_remotes
-        pattern = Regexp.new '^' + Array(project_defaults['release_tag_pattern']).join('$|^') + '$'
-        @release_tags = tag_names.select { |tag_name| pattern.match(tag_name) }
-      end
+    def release_tag_pattern
+      @release_tag_pattern ||= Regexp.new '^' + Array(project_defaults['release_tag_pattern']).join('$|^') + '$'
+    end
 
-      @release_tags
+    def release_tags
+      @release_tags ||= tag_names.select { |tag_name| release_tag_pattern.match(tag_name) }
     end
 
     def release_tags_with_order
       unless @release_tags_with_order
-        $remotes ||= load_remotes
-        pattern = Regexp.new '^' + Array(project_defaults['release_tag_pattern']).join('$|^') + '$'
-
-        tags = sort_tags(pattern, release_tags)
+        tags = sort_tags(release_tag_pattern, release_tags)
         @release_tags_with_order = Hash[tags.map.with_index { |tag, i| [tag, -i] }]
       end
 
