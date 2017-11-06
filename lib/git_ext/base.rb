@@ -13,11 +13,13 @@ module Git
     def initialize(options = {})
       orig_initialize(options)
       @project = options[:project]
+      @remote = options[:remote] || @project
     end
 
-    def project_defaults
+    def project_spec
       $remotes ||= load_remotes
-      $remotes[@project] || $remotes['internal-' + @project]
+
+      $remotes[@remote] || $remotes['internal-' + @remote]
     end
 
     # add tag_names because Base::tags is slow to obtain all tag objects
@@ -110,7 +112,7 @@ module Git
     end
 
     def release_tag_pattern
-      @release_tag_pattern ||= Regexp.new '^' + Array(project_defaults['release_tag_pattern']).join('$|^') + '$'
+      @release_tag_pattern ||= Regexp.new '^' + Array(project_spec['release_tag_pattern']).join('$|^') + '$'
     end
 
     def release_tags

@@ -25,9 +25,10 @@ module Git
     #    :working_dir => 'work_tree_dir', mandatory parameter
     #    :repository  => '/path/to/alt_git_dir', default is '/working_dir/.git'
     #    :index       => '/path/to/alt_index_file', default is '/working_dir/.git/index'
+    #    :remote      => 'remote_name', default is nil
     #
     # example
-    #    Git.init({project: 'dpdk',working_dir: '/c/repo/dpdk'})
+    #    Git.init(project: 'dpdk', working_dir: '/c/repo/dpdk')
     #
     alias orig_init init
     def init(options = {})
