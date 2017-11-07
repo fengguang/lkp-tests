@@ -95,6 +95,8 @@ def __last_linus_release_tag(commit)
 
   `#{GIT} show #{commit}:Makefile`.each_line do |line|
     case line
+    when /^#/
+      next
     when /VERSION *= *(\d+)/
       version = $1.to_i
     when /PATCHLEVEL *= *(\d+)/
