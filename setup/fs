@@ -78,7 +78,7 @@ start_nfsd()
 
 	log_cmd /etc/init.d/rpcbind start
 	log_cmd /etc/init.d/nfs-common start
-	log_cmd /etc/init.d/nfs-kernel-server start || {
+	log_cmd systemctl restart nfs-server || {
 		systemctl status nfs-kernel-server.service
 		cat /etc/exports
 		exit 1
