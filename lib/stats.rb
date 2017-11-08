@@ -227,7 +227,9 @@ def load_base_matrix(matrix_path, head_matrix, options)
 
   begin
     $git ||= {}
-    $git[project] ||= Git.open(project: project)
+    remote = options['branch'].split('/')[0] if options['branch']
+    log_debug "remote is #{remote}"
+    $git[project] ||= Git.open(project: project, remote: remote)
     git = $git[project]
   rescue => e
     log_exception e, binding
