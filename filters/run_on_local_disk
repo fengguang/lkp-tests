@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# check if testbox has rootfs_partition to run the job
+
+if [[ "$run_on_local_disk" == "yes" || "$run_on_local_disk" == "true" ]]; then
+	if [[ -z "$rootfs_partition" ]]; then
+		echo "rm $job_file due to no rootfs_partition"
+		echo "run_on_local_disk needs rootfs_partition"
+		exit 1
+	fi
+fi
+
+exit 0
