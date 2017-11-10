@@ -51,6 +51,10 @@ mount_result_root()
 	is_mount_point $RESULT_MNT && return 0
 
 	case $result_service in
+		tmpfs)
+			result_fs=tmpfs
+			mount -t tmpfs result $RESULT_MNT || return
+			;;
 		*:*)
 			result_fs=nfs
 			mount.nfs $result_service $RESULT_MNT || return
