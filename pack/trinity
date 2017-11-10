@@ -1,0 +1,24 @@
+#!/bin/bash
+
+download()
+{
+	git_clone_update https://github.com/kernelslacker/trinity.git
+}
+
+install()
+{
+	# binary file will be installed into /bin/trinity
+	make install
+	# touch a fake file so that pack() can be called later
+	touch /lkp/benchmarks/$BM_NAME/empty
+}
+
+pack()
+{
+	{
+		echo /bin
+		echo /bin/trinity
+	} |
+	cpio --quiet -o -H newc --owner=root.root | gzip -n -9 > /lkp/benchmarks/${BM_NAME}.cgz
+	[[ $arch ]] && mv "/lkp/benchmarks/${BM_NAME}.cgz" "/lkp/benchmarks/${BM_NAME}-${arch}.cgz"
+}
