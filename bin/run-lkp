@@ -28,7 +28,14 @@ mount_cgroup
 
 echo run-job $job
 set_job_state 'running'
-job_script=${job%.yaml}.sh
+
+if [ ${job%.yaml} != $job ]; then
+	job_script=${job%.yaml}.sh
+else
+	job_script=$job
+	chmod +x $job
+fi
+
 if [ -x "$job_script" ]; then
 	$LKP_DEBUG_PREFIX $job_script run_job
 	last_state_file=$RESULT_ROOT/last_state
