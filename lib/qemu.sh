@@ -5,8 +5,8 @@ cleanup_qemu_drives()
 	rm -f $VDISK_ROOT/initrd-$vm_name
 
 	[[ $persistent_storage ]] || {
-		rm -f $VDISK_ROOT/disk[0-9]-$vm_name
-		rm -f $VDISK_ROOT/disk[0-9][0-9]-$vm_name
+		rm -f $VDISK_ROOT/disk-$vm_name-[0-9]
+		rm -f $VDISK_ROOT/disk-$vm_name-[0-9][0-9]
 	}
 }
 
@@ -37,12 +37,14 @@ setup_qemu_drives()
 
 	(( VDISK_NUM )) || return 0
 
+	QEMU_IMG_SIZES=()
+
 	local i
 	local disk_names=(vd{a..z})
 	[[ $qemu_img ]] && string_to_associative_array qemu_img array_qemu_img
 	for ((i = 0; i < VDISK_NUM; i++))
 	do
-		local disk=$VDISK_ROOT/disk$i-$vm_name
+		local disk=$VDISK_ROOT/disk-$vm_name-$i
 		local size=256G
 
 		[[ $qemu_img ]] && {
@@ -50,6 +52,8 @@ setup_qemu_drives()
 			[[ $qemu_img_option =~ ^([0-9]+[MGT])$ ]]	&& size=$qemu_img_option
 			[[ $qemu_img_option =~ ^/dev/.*$ ]]		&& disk=$qemu_img_option
 		}
+
+		QEMU_IMG_SIZES+=($size)
 
 		[[ -e $disk ]] ||
 		qemu-img create -f qcow2 $disk $size || {
