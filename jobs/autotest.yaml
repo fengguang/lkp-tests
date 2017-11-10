@@ -107,10 +107,18 @@ autotest:
   # - tbench
   # - tiobench # ld returned 1 exit status: undefined reference to 'crc32'
   # - tracing_microbenchmark # Permission denied: '/sys/kernel/debug/tracing/tracing_enabled'
-  - tsc
   # - unixbench5
   # - uptime
   # - virt
   - wb_kupdate
   # - xfstests
   # - xmtest # Connecting to xm-test.xensource.com (xm-test.xensource.com)|220.250.64.225|:80... failed: Connection refused.
+
+---
+category: functional
+kernel_cmdline: maxcpus=16
+
+autotest:
+  test:
+  - tsc
+
