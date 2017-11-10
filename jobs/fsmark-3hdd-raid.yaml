@@ -31,8 +31,17 @@ fs:
 fsmark.test_size: 130G
 
 ---
+md:
+- BRAID0
+- BRAID5
+- BRAID6
+fs: btrfs
+
+---
 nr_threads: 64
-md: RAID5
+md:
+- RAID5
+- BRAID5
 fs: btrfs
 
 fsmark.test_size: 130G

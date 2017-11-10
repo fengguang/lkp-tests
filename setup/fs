@@ -48,6 +48,8 @@ fs_options() {
 is_btrfs_raid_levels() {
 	[ "$fs" = 'btrfs' ] && [ "$raid_level" = 'braid0' -o \
 				 "$raid_level" = 'braid1' -o \
+				 "$raid_level" = 'braid5' -o \
+				 "$raid_level" = 'braid6' -o \
 				 "$raid_level" = 'braid10' ]
 }
 
