@@ -47,16 +47,19 @@ read_kernel_cmdline_vars
 # The job file is contained in the initrd -- no need to download it here.
 
 [ -n "$job" ] || job=$(echo /lkp/scheduled/*/*.yaml) # in case CONFIG_PROC_FS is not set
-[ -e "$job" -o -e ${job%.yaml}.sh ] || {
-	echo $job does not exist, quit from LKP
+
+if [ ${job%.yaml} != $job ]; then
+	job_script=${job%.yaml}.sh
+else
+	job_script=$job
+fi
+
+[ -e "$job_script" ] || {
+	echo $job_script does not exist, quit from LKP
 	exit 0 # to work with non-LKP boots
 }
 
-if [ "$job" != "${job%.sh}" ]; then
-	. $job
-else
-	. ${job%.yaml}.sh
-fi
+. $job_script
 export_top_env
 
 : ${user:=lkp}
