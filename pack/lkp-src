@@ -14,7 +14,16 @@ download()
 
 build()
 {
-	make -C $LKP_SRC/bin/event
+	make -C $LKP_SRC/bin/event || {
+		local ret=$?
+
+		[[ $ARCH = 'i386' && $(arch) = 'x86_64' ]] && {
+			local gcc_ver=$(gcc -dumpversion)
+			echo Try: apt-get install lib32gcc-${gcc_ver%%.*}-dev
+		}
+
+		return $ret
+	}
 }
 
 install()
