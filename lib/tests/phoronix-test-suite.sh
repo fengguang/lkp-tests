@@ -45,6 +45,15 @@ fixup_nginx()
 	sleep 5
 }
 
+# change to use dash to bullet
+fixup_bullet()
+{
+	[[ -n "$environment_directory" ]] || return
+	phoronix-test-suite force-install pts/bullet-1.2.2
+	local target=${environment_directory}/pts/bullet-1.2.2/bullet
+	sed -i 's,#!/bin/sh,#!/bin/dash,' "$target"
+}
+
 run_test()
 {
 	local test=$1
@@ -68,6 +77,9 @@ run_test()
 			;;
 		npb-1.2.4)
 			fixup_npb
+			;;
+		bullet-1.2.2)
+			fixup_bullet
 			;;
 		open-porous-media-1.3.1)
 			fixup_open_porous_media
