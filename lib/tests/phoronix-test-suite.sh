@@ -20,6 +20,14 @@ fixup_open_porous_media()
 	sed -i 's/nice mpirun -np/nice mpirun --allow-run-as-root -np/' "$target"
 }
 
+# add --allow-run-as-root to lammps
+fixup_lammps()
+{
+	[[ -n "$environment_directory" ]] || return
+	local target=${environment_directory}/pts/lammps-1.0.1/lammps
+	sed -i 's/mpirun -np/mpirun --allow-run-as-root -np/' "$target"
+}
+
 run_test()
 {
 	local test=$1
@@ -34,6 +42,9 @@ run_test()
 			;;
 		ffmpeg-2.5.0)
 			fixup_ffmpeg
+			;;
+		lammps-1.0.1)
+			fixup_lammps
 			;;
 		open-porous-media-1.3.1)
 			fixup_open_porous_media
