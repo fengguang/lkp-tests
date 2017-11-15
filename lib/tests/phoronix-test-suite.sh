@@ -20,6 +20,25 @@ fixup_open_porous_media()
 	sed -i 's/nice mpirun -np/nice mpirun --allow-run-as-root -np/' "$target"
 }
 
+# rebuild hpcc and add --allow-run-as-root to hpcc
+# the test needs more than 2 hours
+fixup_hpcc()
+{
+	[[ -n "$environment_directory" ]] || return
+
+	[ -d "/usr/lib/x86_64-linux-gnu/openmpi" ] && {
+		export MPI_PATH=/usr/lib/x86_64-linux-gnu/openmpi
+		export MPI_INCLUDE=/usr/lib/x86_64-linux-gnu/openmpi/include
+		export MPI_LIBS=/usr/lib/x86_64-linux-gnu/openmpi/lib/libmpi.so
+		export MPI_CC=/usr/bin/mpicc.openmpi
+		export MPI_VERSION=`$MPI_CC -showme:version 2>&1 | grep MPI | cut -d "(" -f1  | cut -d ":" -f2`
+		phoronix-test-suite force-install pts/hpcc-1.2.1
+	}
+
+	local target=${environment_directory}/pts/hpcc-1.2.1/hpcc
+	sed -i 's/mpirun -np/mpirun --allow-run-as-root -np/' "$target"
+}
+
 # add --allow-run-as-root to lammps
 fixup_lammps()
 {
@@ -112,6 +131,9 @@ run_test()
 			;;
 		fio-1.8.2)
 			fixup_fio
+			;;
+		hpcc-1.2.1)
+			fixup_hpcc
 			;;
 		open-porous-media-1.3.1)
 			fixup_open_porous_media
