@@ -45,6 +45,28 @@ fixup_nginx()
 	sleep 5
 }
 
+# default to test 1m
+fixup_fio()
+{
+	[[ -n "$environment_directory" ]] || return
+	mount_partition || die "mount partition failed"
+	mount --bind $mnt ${environment_directory}/pts/fio-1.8.2/ || die "failed to mount fio directory"
+
+	phoronix-test-suite force-install pts/fio-1.8.2
+	local target=${environment_directory}/pts/fio-1.8.2/fio-run
+	sed -i 's,#!/bin/sh,#!/bin/dash,' "$target"
+
+	# Choose
+	# 1: Sequential Write
+	# 2: Libaio
+	# 3: Test All Options
+	# 4: Test All Options
+	# 5: 1MB
+	# 6: Default Test Directory
+	# 7: Test All Options
+	test_opt="\n4\n3\n3\n3\n9\n1\n3\nn"
+}
+
 # change to use dash to bullet
 fixup_bullet()
 {
@@ -87,6 +109,9 @@ run_test()
 			;;
 		bullet-1.2.2)
 			fixup_bullet
+			;;
+		fio-1.8.2)
+			fixup_fio
 			;;
 		open-porous-media-1.3.1)
 			fixup_open_porous_media
