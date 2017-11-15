@@ -66,6 +66,13 @@ run_test()
 			# todo: select different test according to testbox's hardware
 			test_opt="\n1\n2\n3\nn"
 			;;
+		iozone-1.9.0)
+			# Choose
+			# 1: 1MB
+			# 2: 2GB
+			# 3: Test All Options
+			test_opt="\n3\n2\n3\nn"
+			;;
 		nginx-1.1.0)
 			fixup_nginx
                         ;;
