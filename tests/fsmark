@@ -34,6 +34,7 @@ mkdir -p $BENCHMARK_ROOT
 cd $BENCHMARK_ROOT || exit
 
 . $LKP_SRC/lib/unit.sh
+. $LKP_SRC/lib/reproduce-log.sh
 
 # NOTE: support 1 disk test only so far
 test_dir=${mount_points%% *}
