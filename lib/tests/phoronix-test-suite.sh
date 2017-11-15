@@ -36,6 +36,15 @@ fixup_npb()
 	sed -i 's/mpiexec -np/mpiexec --allow-run-as-root -np/' "$target"
 }
 
+# start nginx and disable ipv6
+fixup_nginx()
+{
+	[[ -n "$environment_directory" ]] || return
+	sed -i 's/^::1/#::1/' /etc/hosts
+	${environment_directory}/pts/nginx-1.1.0/nginx_/sbin/nginx
+	sleep 5
+}
+
 run_test()
 {
 	local test=$1
@@ -48,6 +57,9 @@ run_test()
 			# todo: select different test according to testbox's hardware
 			test_opt="\n1\n2\n3\nn"
 			;;
+		nginx-1.1.0)
+			fixup_nginx
+                        ;;
 		ffmpeg-2.5.0)
 			fixup_ffmpeg
 			;;
