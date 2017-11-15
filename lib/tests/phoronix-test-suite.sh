@@ -28,6 +28,14 @@ fixup_lammps()
 	sed -i 's/mpirun -np/mpirun --allow-run-as-root -np/' "$target"
 }
 
+# add --allow-run-as-root to npb
+fixup_npb()
+{
+	[[ -n "$environment_directory" ]] || return
+	local target=${environment_directory}/pts/npb-1.2.4/npb
+	sed -i 's/mpiexec -np/mpiexec --allow-run-as-root -np/' "$target"
+}
+
 run_test()
 {
 	local test=$1
@@ -45,6 +53,9 @@ run_test()
 			;;
 		lammps-1.0.1)
 			fixup_lammps
+			;;
+		npb-1.2.4)
+			fixup_npb
 			;;
 		open-porous-media-1.3.1)
 			fixup_open_porous_media
