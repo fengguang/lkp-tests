@@ -5,7 +5,8 @@ echo "$date $@"
 
 args=''
 for i in "$@"; do
-    i=$(echo "$i" | sed 's/\\/\\\\/g' | sed 's/\"/\\\"/g')
+    # insert a space to avoid conflicting with reserve parameters of echo , such as '-n'
+    i=$(echo " $i" | sed 's/^ //' | sed 's/\\/\\\\/g' | sed 's/\"/\\\"/g')
     args="$args \"${i}\""
 done
 
