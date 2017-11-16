@@ -58,15 +58,16 @@ check_nr_pmem()
 	[ "$nr_pmem" -gt "$max_pmem" ] && nr_pmem=$max_pmem
 }
 
-wait_disks
-
 [ -z "$nr_hdd" ] && nr_hdd=0
 [ -z "$nr_ssd" ] && nr_ssd=0
 [ -z "$nr_pmem" ] && nr_pmem=0
 
-[ "$nr_ssd" -gt "$max_ssd" ] && nr_ssd=$max_ssd
-[ "$nr_hdd" -gt "$max_hdd" ] && nr_hdd=$max_hdd
-
+[ $((nr_hdd + nr_ssd)) -gt 0 ] && {
+	# TODO: wait ssd and hdd on demand
+	wait_disks
+	[ "$nr_ssd" -gt "$max_ssd" ] && nr_ssd=$max_ssd
+	[ "$nr_hdd" -gt "$max_hdd" ] && nr_hdd=$max_hdd
+}
 
 if [ -n "$nr_hdd" -a "$nr_hdd" != 0 ]; then
 	nr_partitions=$nr_hdd
