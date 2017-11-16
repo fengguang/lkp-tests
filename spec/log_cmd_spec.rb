@@ -44,6 +44,11 @@ describe 'log_cmd' do
     Dir.delete('"a b"')
   end
 
+  it 'parses echo reserve parameter' do
+    was_good = system(log_cmd + 'ls -n')
+    expect(was_good).to be(true)
+  end
+
   it 'execute built-in command' do
     was_good = system(log_cmd + 'cd .')
     expect(was_good).to be(true)
