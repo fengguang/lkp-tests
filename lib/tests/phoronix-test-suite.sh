@@ -115,28 +115,28 @@ run_test()
 			test_opt="\n3\n2\n3\nn"
 			;;
 		nginx-1.1.0)
-			fixup_nginx
+			fixup_nginx || die "failed to fixup test nginx"
                         ;;
 		ffmpeg-2.5.0)
-			fixup_ffmpeg
+			fixup_ffmpeg || die "failed to fixup test ffmpeg"
 			;;
 		lammps-1.0.1)
-			fixup_lammps
+			fixup_lammps || die "failed to fixup test lammps"
 			;;
 		npb-1.2.4)
-			fixup_npb
+			fixup_npb || die "failed to fixup test npb"
 			;;
 		bullet-1.2.2)
-			fixup_bullet
+			fixup_bullet || die "failed to fixup test bullet"
 			;;
 		fio-1.8.2)
-			fixup_fio
+			fixup_fio || die "failed to fixup test fio"
 			;;
 		hpcc-1.2.1)
-			fixup_hpcc
+			fixup_hpcc || die "failed to fixup test hpcc"
 			;;
 		open-porous-media-1.3.1)
-			fixup_open_porous_media
+			fixup_open_porous_media || die "failed to fixup test open-porous-media"
 			;;
 	esac
 
