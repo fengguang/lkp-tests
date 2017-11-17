@@ -1,0 +1,16 @@
+url: https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next.git
+integration_testing_branches: master
+owner:
+- Alexei Starovoitov <ast@kernel.org>
+- Daniel Borkmann <daniel@iogearbox.net>
+subsystems:
+- bpf
+- bpf_jit
+- ebpf
+- cls_bpf
+- act_bpf
+- pkt_sched
+- samples
+- tracing
+notify_build_success_branch: .*
+build_mail_to: BPF build status <bpf@iogearbox.net>
