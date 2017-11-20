@@ -7,6 +7,8 @@ def puts_vals(tag, node, zone, line)
   vals = line.split
   if tag == 'pages' && vals.size >= 2
     puts "node#{node}.#{zone}.pages.#{vals[vals.size - 2]}: #{vals[vals.size - 1]}"
+  elsif tag == 'node' && vals.size >= 2
+    puts "node#{node}.#{vals[vals.size - 2]}: #{vals[vals.size - 1]}"
   elsif line =~ /\s*([a-zA-Z].*):\s*([0-9]+)/
     puts "node#{node}.#{zone}.#{$1.tr(' ', '_')}: #{$2}"
   end
@@ -33,6 +35,8 @@ while (line = STDIN.gets)
   when /pages free\s*([0-9]+)/
     tag = 'pages'
     puts "node#{node}.#{zone}.pages.free: #{$1}"
+  when /per-node/
+    tag = 'node'
   else
     puts_vals(tag, node, zone, line)
   end
