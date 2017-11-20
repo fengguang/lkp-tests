@@ -51,6 +51,7 @@ clean_job_resource
 
 end_time=$(date '+%s')
 
+set_job_state 'postrun'
 $LKP_SRC/bin/post-run
 
 [ "$result_fs" = 'cifs' -o "$result_fs" = 'virtfs' ] || {
