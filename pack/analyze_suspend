@@ -7,5 +7,5 @@ download()
 
 install()
 {
-	cp -a analyze_suspend.py $BM_ROOT
+	cp -af * $BM_ROOT
 }
