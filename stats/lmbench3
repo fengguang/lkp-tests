@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+while (line = STDIN.gets)
+	case line
+	when /^Simple syscall:.+microseconds$/
+		puts 'Simple.syscall: ' + line.split[2]
+	when /^Simple read:.+microseconds$/
+		puts 'Simple.read: ' + line.split[2]
+	when /^Simple write:.+microseconds$/
+		puts 'Simple.write: ' + line.split[2]
+	when /^Simple stat:.+microseconds$/
+		puts 'Simple.stat: ' + line.split[2]
+	when /^Simple fstat:.+microseconds$/
+		puts 'Simple.fstat: ' + line.split[2]
+	when /^Simple open\/close:.+microseconds$/
+		puts 'Simple.open2close: ' + line.split[2]
+	end
+end

@@ -1,0 +1,185 @@
+#!/bin/sh
+# - nr_threads
+# - test_memory_size
+# - mode
+# - test
+
+## lmbench is a suite of simple, portable, ANSI/C microbenchmarks for
+## UNIX/POSIX. In general, it measures two key features: latency and
+## bandwidth. lmbench is intended to give system developers insight into basic
+## costs of key operations. Supports-
+##
+## Bandwidth benchmarks
+##   Cached file read
+##   Memory copy (bcopy)
+##   Memory read
+##   Memory write
+##   Pipe
+##   TCP
+## Latency benchmarks
+##   Context switching.
+##   Networking: connection establishment, pipe, TCP, UDP, and RPC hot potato
+##   File system creates and deletes.
+##   Process creation.
+##   Signal handling
+##   System call overhead
+##   Memory read latency
+## Miscellanious
+##   Processor clock rate calculation
+
+test_memory_size=$(($test_memory_size/1024/1024))
+
+. $LKP_SRC/lib/reproduce-log.sh
+
+# Run lmbench3 benchmark suit with all/hardware/os/development mode
+# All mode: run all of the testcases
+# Hardware mode: run a set of the hardware related testcases
+# OS mode: run a set of the OS related testcases
+# Development mode: run the pre-defined testcases
+# Allow sheduler to place job
+# Measure memory latency with a 128 byte stride
+# Skip file system latency test
+# Skip the disk tests
+# Disable remote network latency/throuput test
+# Use system detected CPU mhz for testing
+# Use /var/tmp to store file as well as create and delete a large number of
+# small files,
+# Use /dev/tty to display output status information,
+# Disable to send the test result to remote database
+run_lmbench3_all()
+{
+	log_eval "
+	(
+		echo $nr_threads
+		echo 1
+		echo $test_memory_size
+		echo all
+		echo yes
+		echo yes
+		echo
+		echo
+		echo
+		echo
+		echo
+		echo no
+	) | make results "
+	wait
+}
+
+run_lmbench3_hardware()
+{
+	log_eval "
+	(
+		echo $nr_threads
+		echo 1
+		echo $test_memory_size
+		echo hardware
+		echo yes
+		echo yes
+		echo
+		echo
+		echo
+		echo
+		echo
+		echo no
+	) | make results "
+	wait
+}
+
+run_lmbench3_os()
+{
+	log_eval "
+	(
+		echo $nr_threads
+		echo 1
+		echo $test_memory_size
+		echo os
+		echo yes
+		echo
+		echo
+		echo
+		echo
+		echo no
+	) | make results "
+}
+
+run_lmbench3_development()
+{
+	local SYSCALL=no
+	local SELECT=no
+	local PROC=no
+	local CTX=no
+	local PAGEFAULT=no
+	local FILE=no
+	local MMAP=no
+	local PIPE=no
+	local UNIX=no
+	local UDP=no
+	local TCP=no
+	local CONNECT=no
+	local RPC=no
+	local HTTP=no
+	local BCOPY=no
+	local MEM=no
+	local OPS=no
+
+	eval $test=yes
+
+	log_eval "
+	(
+		echo $nr_threads
+		echo 1
+		echo $test_memory_size
+		echo development
+
+		echo $SYSCALL
+		echo $SELECT
+		echo $PROC
+		echo $CTX
+		echo $PAGEFAULT
+		echo $FILE
+		echo $MMAP
+		echo $PIPE
+		echo $UNIX
+		echo $UDP
+		echo $TCP
+		echo $CONNECT
+		echo $RPC
+		echo $HTTP
+		echo $BCOPY
+		echo $MEM
+		echo $OPS
+
+		echo yes
+		echo
+		echo
+		echo
+		echo
+		echo no
+	) | make results "
+
+	wait
+}
+
+show_result()
+{
+	cat results/x86_64-linux-gnu/$testbox.0 || {
+	echo "no test result found"
+	exit -1
+	}
+}
+
+cd $BENCHMARK_ROOT/lmbench3 || {
+	echo "ERROR: lmbench benchmark has not been installed yet"
+	exit -1
+}
+
+case "$mode" in
+	'all') run_lmbench3_all ;;
+	'hardware') run_lmbench3_hardware ;;
+	'os') run_lmbench3_os ;;
+	'development') run_lmbench3_development ;;
+	*) echo "invalid running mode:$mode in lmbench3" && exit -1
+	esac
+
+show_result

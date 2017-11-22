@@ -1,0 +1,41 @@
+suite: lmbench3
+testcase: lmbench3
+category: benchmark
+
+nr_threads:
+- 1
+- 50%
+- 100%
+
+test_memory_size: 50%
+
+lmbench3:
+  mode: all
+
+---
+lmbench3:
+  mode: hardware
+
+---
+lmbench3:
+  mode: os
+
+---
+lmbench3:
+  mode: development
+  test:
+  - SYSCALL
+  - SELECT
+  - PROC
+  - CTX
+  - PAGEFAULT
+  - FILE
+  - MMAP
+  - PIPE
+  - UNIX
+  - UDP
+  - TCP
+  - CONNECT
+  - BCOPY
+  - MEM
+  - OPS

@@ -1,0 +1,54 @@
+description: 
+    lmbench is a suite of simple, portable, ANSI/C microbenchmarks for
+    UNIX/POSIX. In general, it measures two key features (latency and
+    bandwidth). lmbench is intended to give system developers insight
+    into basic costs of key operations. 
+    - Bandwidth benchmarks
+       1) Cached file read,
+       2) Memory copy (bcopy),
+       3) Memory read,
+       4) Memory write,
+       5) Pipe,
+       6) TCP.
+    - Latency benchmarks
+       1) Context switching,
+       2) Networking connection establishment, pipe, TCP, UDP, and RPC hot
+       potato,
+       3) File system creates and deletes,
+       4) Process creation,
+       5) Signal handling,
+       6) System call overhead,
+       7) Memory read latency.
+    - Miscellanious
+       1) Processor clock rate calculation
+
+homepage: "http://www.bitmover.com/lmbench/"
+
+parameters:
+    nr_threads: "if you are running on an MP machanie and you want to try 
+        running multiple copies of lmbench in parallel, you can specify
+        how many here [default 1]"
+    test_memory_size: "memory size used for this test, The bigger the
+        range, the more accurate the results, but larger sizes take
+        somewhat longer to run the benchmark. Suggest to use 50% of total 
+        memory size"
+    mode: "all|hardware|os|develoment, choose development mode for
+        running selected benchmarks"
+    test:
+        syscall:
+        select:
+        proc:
+        ctx:
+        pagefault:
+        file:
+        mmap:
+        pipe:
+        unix:
+        udp:
+        tcp:
+        connect:
+        rpc:
+        http:
+        bcopy:
+        mem:
+        ops:
