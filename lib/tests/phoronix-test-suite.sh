@@ -149,6 +149,9 @@ run_test()
 		crafty-1.3.1)
 			fixup_crafty || die "failed to fixup crafty"
 			;;
+		glmark2-1.1.0|openarena-1.5.3|gputest-1.3.1|supertuxkart-1.3.0)
+			export DISPLAY=:0
+			;;
 	esac
 
 	export PTS_SILENT_MODE=1
