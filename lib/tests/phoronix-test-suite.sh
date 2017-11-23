@@ -95,6 +95,14 @@ fixup_bullet()
 	sed -i 's,#!/bin/sh,#!/bin/dash,' "$target"
 }
 
+# add bookpath option
+fixup_crafty()
+{
+	[[ -n "$environment_directory" ]] || return
+	local target=${environment_directory}/pts/crafty-1.3.1/crafty
+	sed -i 's,crafty $@,crafty bookpath=/usr/share/crafty/ $@,' "$target"
+}
+
 run_test()
 {
 	local test=$1
@@ -137,6 +145,9 @@ run_test()
 			;;
 		open-porous-media-1.3.1)
 			fixup_open_porous_media || die "failed to fixup test open-porous-media"
+			;;
+		crafty-1.3.1)
+			fixup_crafty || die "failed to fixup crafty"
 			;;
 	esac
 
