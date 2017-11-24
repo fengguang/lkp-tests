@@ -20,16 +20,5 @@ mkdir -p "$pack_to"
 work_dir=$(mktemp -d /tmp/pack-deps-$BM_NAME-XXXXXXXXX)
 
 cd $work_dir
-
-deps=$(get_dependency_packages $DISTRO $BM_NAME)
-resolve_depends $deps
-echo "original package list for $BM_NAME:" $deps
-
-save_package_deps_info $BM_NAME $deps
-[[ $PACKAGE_LIST ]] && {
-	download "$PACKAGE_VERSION_LIST" || exit
-	install
-}
-
 build_depends_pkg $BM_NAME "$work_dir"
 pack

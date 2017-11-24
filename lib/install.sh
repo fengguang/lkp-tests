@@ -94,25 +94,58 @@ get_build_dir()
 }
 
 build_depends_pkg() {
+	if [ "$1" = '-i' ]; then
+		# in recursion install the package with -i option
+		local INSTALL='-i'
+		shift
+	else
+		# only pack the package
+		local INSTALL='--noarchive'
+	fi
 	local script=$1
 	local dest=$2
 	local pkg
 	local pkg_dir
 
-	local packages="$(get_dependency_packages ${DISTRO} ${script} pkg)"
-	local dev_packages="$(get_dependency_packages ${DISTRO} ${script}-dev pkg)"
+	if [ -z "$BM_NAME" ]; then
+		BM_NAME="$script"
+		export BM_NAME
+	fi
+
+	local packages=$(get_dependency_packages $DISTRO $script)
+	local dev_packages="$(get_dependency_packages ${DISTRO} ${script}-dev)"
+	local debs="$(echo $packages $dev_packages | tr '\n' ' ')"
+	resolve_depends "$debs"
+	if [ -n "$PACKAGE_VERSION_LIST" ]; then
+		(
+			cd "$dest"
+			download "$PACKAGE_VERSION_LIST"
+			# the distribution's dependencies will be packed with the makepkg dependencies.
+			install || exit 1
+			save_package_deps_info $BM_NAME
+			echo "$PACKAGE_LIST" >> $pack_to/.${BM_NAME}.packages
+		)
+	fi
+	# install the dependencies to build pkg
+	if [ "$INSTALL" = '-i' ] && [ -n "$debs" ] && [ "$debs" != ' ' ]; then
+		$LKP_SRC/distro/installer/$DISTRO $debs
+	fi
+
+	packages="$(get_dependency_packages ${DISTRO} ${script} pkg)"
+	dev_packages="$(get_dependency_packages ${DISTRO} ${script}-dev pkg)"
 	packages="$(echo $packages $dev_packages | tr '\n' ' ')"
 	if [ -z "$packages" ] || [ "$packages" = " " ]; then
 		return
 	fi
 	
 	for pkg in $packages; do
-		build_depends_pkg $pkg $dest
+		# pack and install dependencies of pkg
+		build_depends_pkg -i $pkg "$dest"
 		pkg_dir="$LKP_SRC/pkg/$pkg"
 		if [ -d "$pkg_dir" ]; then
 			(
 				cd "$pkg_dir" && \
-				PACMAN="$LKP_SRC/sbin/pacman-LKP" "$LKP_SRC/sbin/makepkg" --noarchive --config "$LKP_SRC/etc/makepkg.conf" --skippgpcheck
+				PACMAN="$LKP_SRC/sbin/pacman-LKP" "$LKP_SRC/sbin/makepkg" $INSTALL --config "$LKP_SRC/etc/makepkg.conf" --skippgpcheck
 				cp -rf "$pkg_dir/pkg/$pkg"/* "$dest"
 				rm -rf "$pkg_dir/"{src,pkg}
 			)
