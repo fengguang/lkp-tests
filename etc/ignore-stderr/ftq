@@ -1,5 +1,5 @@
-Start \d+ end \d+ elapsed \d+
-cyclestart \d+ cycleend \d+ elapsed \d+
-Avg Cycles\(ticks\) per ns. is \d*.\d+; nspercycle is \d*.\d+
-Pre-computed ticks per ns: \d*.\d+
-Sample frequency is \d*.\d+
+Start [[:digit:]]+ end [[:digit:]]+ elapsed [[:digit:]]+
+cyclestart [[:digit:]]+ cycleend [[:digit:]]+ elapsed [[:digit:]]+
+Avg Cycles\(ticks\) per ns. is [[:digit:]]*.[[:digit:]]+; nspercycle is [[:digit:]]*.[[:digit:]]+
+Pre-computed ticks per ns: [[:digit:]]*.[[:digit:]]+
+Sample frequency is [[:digit:]]*.[[:digit:]]+
