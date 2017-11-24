@@ -34,6 +34,12 @@ download_kernel()
 	}
 }
 
+initrd_is_correct()
+{
+	local file=$1
+	gzip -dc $file | cpio -t >/dev/null
+}
+
 download_initrd()
 {
 	local _initrd
@@ -50,6 +56,12 @@ download_initrd()
 			echo Failed to download $_initrd
 			exit 1
 		}
+		initrd_is_correct $file || {
+			set_job_state "initrd_broken"
+			echo $_initrd is broken
+			return 1
+		}
+
 		initrds="${initrds}$file "
 	done
 
@@ -66,7 +78,7 @@ download_initrd()
 
 kexec_to_next_job()
 {
-	local kernel append acpi_rsdp
+	local kernel append acpi_rsdp download_initrd_ret
 	kernel=$(awk  '/^KERNEL / { print $2; exit }' $NEXT_JOB)
 	append=$(grep -m1 '^APPEND ' $NEXT_JOB | sed 's/^APPEND //')
 	rm -f /tmp/initrd-* /tmp/modules.cgz
@@ -85,6 +97,7 @@ kexec_to_next_job()
 
 	download_kernel
 	download_initrd
+	download_initrd_ret=$?
 
 	set_job_state "booting"
 
@@ -98,6 +111,9 @@ kexec_to_next_job()
 	dmesg --human --decode --color=always | gzip >	"/$LKP_SERVER/$RESULT_ROOT/pre-dmesg.gz" &&
 	chown lkp.lkp					"/$LKP_SERVER/$RESULT_ROOT/pre-dmesg.gz" &&
 	sync
+
+	# store dmesg to disk and reboot
+	[ $download_initrd_ret -ne 0 ] && sleep 119 && reboot
 
 	kexec --noefi -l $kernel_file $initrd_option --append="$append"
 
