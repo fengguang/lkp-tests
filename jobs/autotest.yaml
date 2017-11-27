@@ -83,7 +83,7 @@ autotest:
   # - parallel_dd
   # - perfmon # build error
   - pktgen
-  - posixtest
+  # - posixtest # cost more than 1h
   # - profiler_sync # Not a test case
   # - profiler_test # AutotestError: No oprofile avaiable
   # - qemu_iotests # Miss cmds qemu-img or qemu-io
