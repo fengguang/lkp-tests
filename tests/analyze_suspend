@@ -21,6 +21,32 @@ else
 	options="-m $mode $option -multi $multi $rtcwake"
 fi
 
+# use -gzip and -skiphtml to reduce the memory usage
+options="$options -gzip -skiphtml"
+
+
+################################################################################
+# To avoid OOM, before setting ftrace buffer size, we need to reserve memory for
+# 1. analyze_suspend processing
+# 2. saving result files because we're using ramdisk
+################################################################################
+
+total_mem=$(cat /proc/meminfo | grep MemFree | awk '{print $2}')
+# reserve 400M for processing
+process_mem=$((400 * 1024))
+
+case $options in
+	*" -f "*) result_mem=$((100 * 1024));;
+	*" -dev "*) result_mem=$((1 * 1024));;
+	*) result_mem=512;;
+esac
+
+[ -z $multi ] || result_mem=$(($result_mem * $multi))
+
+ftrace_mem=$(($total_mem - $process_mem - $result_mem))
+options="$options -bufsize $ftrace_mem"
+################################################################################
+
 echo analyze_suspend test started
 echo Command: analyze_suspend.py $options
 analyze_suspend.py $options
@@ -32,4 +58,3 @@ else
 fi
 
 upload_files -t result ./suspend-*
-
