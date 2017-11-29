@@ -14,12 +14,10 @@ options=""
 [ -n "$mode" ] || mode='freeze'
 [ -n "$runtime" ] || runtime=600
 [ -n "$rtcwake" ] || rtcwake=30
-if [ -z "$multi" ]
-then
-	options="-m $mode $option -rtcwake $rtcwake"
-else
-	options="-m $mode $option -multi $multi $rtcwake"
-fi
+
+options="-m $mode $option -rtcwake $rtcwake"
+
+[ -z "$multi" ] || options="$options -multi $multi 10"
 
 # use -gzip and -skiphtml to reduce the memory usage
 options="$options -gzip -skiphtml"
