@@ -129,6 +129,12 @@ run_test()
 			test_opt="\n6\n1\nn"
 			export DISPLAY=:0
 			;;
+		urbanterror-1.2.1)
+			# Choose
+			# 1: 800 x 600
+			test_opt="\n1\nn"
+			export DISPLAY=:0
+			;;
 		nginx-1.1.0)
 			fixup_nginx || die "failed to fixup test nginx"
                         ;;
