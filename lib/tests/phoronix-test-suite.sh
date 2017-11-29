@@ -122,6 +122,13 @@ run_test()
 			# 3: Test All Options
 			test_opt="\n3\n2\n3\nn"
 			;;
+		ut2004-demo-1.2.0)
+			# Choose
+			# 1: ONS-Torlan Botmatch
+			# 2: 800 x 600
+			test_opt="\n6\n1\nn"
+			export DISPLAY=:0
+			;;
 		nginx-1.1.0)
 			fixup_nginx || die "failed to fixup test nginx"
                         ;;
