@@ -1,3 +1,6 @@
+# Avoid using nfs during test which may block suspend
+avoid_nfs: 1
+
 need_kconfig:
 - CONFIG_PM_DEBUG=y
 - CONFIG_PM_SLEEP_DEBUG=y
