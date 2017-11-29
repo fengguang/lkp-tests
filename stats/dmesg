@@ -119,8 +119,11 @@ oops_map.each do |bug_to_bisect, line|
     timestamp = $2
   end
 
-  break if line =~ /trinity.* invoked oom-killer:/
-  break if line =~ /trinity.* page allocation stalls for/
+  if line.index('trinity')
+    break if line.index('invoked oom-killer:')
+    break if line.index('page allocation stalls for')
+    break if line.index('tried to map')
+  end
 
   # print_hex_dump
   # kern  :alert : [  205.863334] rcu-torture: Free-Block Circulation:  3811 3811 3810 3809 3808 3807 3806 3805 3804 3803 0
