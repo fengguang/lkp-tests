@@ -16,6 +16,8 @@
 ## 4)  The use of the mount option commit=10000 to test what happens when
 ## the journal is full (without using a nice, fast device such as RAID array
 ## or without burning write cycles on an expensive flash device.)
+##
+## https://patchwork.kernel.org/patch/1333461/
 
 . $LKP_SRC/lib/reproduce-log.sh
 
