@@ -1,0 +1,60 @@
+#!/bin/sh
+# - option
+# - cpu
+# - filter_begin
+# - filter_end
+# - delay
+# - duration
+
+. $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/common.sh
+
+set_perf_path "/lkp/benchmarks/perf/perf"
+
+is_virt && exit 0
+[ -z "$filter_begin" ] && exit 1
+[ -z "$filter_end" ] && exit 1
+
+[ -z "$option" ] && option="cyc_thresh=5,cyc=1,noretcomp=1"
+
+if [ -z "$cpu" ]; then
+	opt_cpu="-a"
+else
+	opt_cpu="-C $cpu"
+fi
+
+if [ -z "$delay" ]; then
+	if [ -n "$runtime" ]; then
+		delay=$((runtime / 2))
+	else
+		delay=100
+	fi
+fi
+
+: ${duration:=5}
+
+. $LKP_SRC/lib/wait.sh
+setup_wait
+
+# since both perf-profile and perf-pt uses perf record, I guess they
+# shouldn't be running at the same time. So better use different name
+# for the output. Also, make sure the delay+duration doesn't overlap
+# with perf profile's.
+perf_data=$TMP/perf-pt.data
+
+# WAIT_POST_TEST_CMD will start at the same time with perf
+# the former will wait for (delay+duration) before exit
+# the latter will wait for (delay) before collecting samples
+$perf record -q $opt_cpu -e intel_pt/$option/k --filter "filter $filter_begin / $filter_end" -o $perf_data -D $((delay * 1000)) -- \
+	$WAIT_POST_TEST_CMD --timeout $((delay + duration))
+
+# The generated perf-pt.gz can be further analysed with tools/pt-call-summary.py
+# written by Andi Kleen to give a summary of function call numbers and durations, etc.
+cat > "$TMP_RESULT_ROOT/post-run.perf-pt" <<EOF
+[ -s "$perf_data" ] && {
+	$perf script --ns --itrace=cr -F cpu,ip,time,sym,flags,addr,symoff -i $perf_data |
+	gzip > $RESULT_ROOT/perf-pt.gz && {
+		rm -f $perf_data
+	}
+}
+EOF
