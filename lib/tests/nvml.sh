@@ -43,6 +43,20 @@ build_env()
 	log_cmd make EXTRA_CFLAGS=-DUSE_VALGRIND USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1/ LIBCPP_LIBDIR=/usr/local/libcxx/lib test || return
 }
 
+can_skip_copy_source()
+{
+	[ "$LKP_LOCAL_RUN" != "1" ] &&
+	[ "$do_not_reboot_for_same_kernel" = "1" ] &&
+	[ "$testcase" = "nvml-unit-tests" ] &&
+	[ -f $BENCHMARK_ROOT/$testcase/lkp_skip_copy.$nvml_commit ]
+}
+
+can_skip_sync_remote()
+{
+	can_skip_copy_source &&
+	[ -f $BENCHMARK_ROOT/$testcase/skip_sync_remote.$nvml_commit ]
+}
+
 enable_remote_node()
 {
 	local casename=$1
@@ -74,7 +88,18 @@ enable_remote_node()
         expect {
             *(yes/no)* {send -- yes\r;exp_continue;}
         }";
-	log_cmd make sync-remotes FORCE_SYNC_REMOTE=y USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1 LIBCPP_LIBDIR=/usr/local/libcxx/lib || return
+
+	if can_skip_sync_remote; then
+		echo "skip make sync_remotes"
+	else
+		log_cmd make sync-remotes FORCE_SYNC_REMOTE=y USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1 LIBCPP_LIBDIR=/usr/local/libcxx/lib || return
+		can_skip_copy_source && {
+			log_cmd rm $BENCHMARK_ROOT/$testcase/skip_sync_remote.* 2>/dev/null
+			log_cmd touch $BENCHMARK_ROOT/$testcase/skip_sync_remote.$nvml_commit
+		}
+	fi
+
+	return 0
 }
 
 check_ignore_single_case()
