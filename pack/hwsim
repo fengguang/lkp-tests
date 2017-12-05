@@ -77,6 +77,12 @@ build_ignored_by_lkp()
 
 	echo "# ignore _hostap_not_test_" >> $ignored_by_lkp
 	echo "wmediumd_path_rann" >> $ignored_by_lkp
+	echo "ap_beacon_rate_ht" >> $ignored_by_lkp
+	echo "ap_beacon_rate_ht2" >> $ignored_by_lkp
+	echo "ap_beacon_rate_legacy" >> $ignored_by_lkp
+	echo "ap_beacon_rate_legacy2" >> $ignored_by_lkp
+	echo "ap_beacon_rate_vht" >> $ignored_by_lkp
+	echo "ap_cipher_tkip_countermeasures_sta2" >> $ignored_by_lkp
 
 	echo "# ignore _hostap_not_support_lifetime_in_memory_" >> $ignored_by_lkp
 	git grep -E -e 'def test.*lifetime_in_memory' | awk -F 'test_' '{print $3}'| awk -F '(' '{print $1}' >> $ignored_by_lkp
