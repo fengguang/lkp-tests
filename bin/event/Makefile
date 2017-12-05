@@ -1,13 +1,13 @@
 PROG = wakeup
 OBJECTS = wakeup.o
 CFLAGS :=
+LDFLAGS += -static
 
 KLCC_PATH = $(shell which klcc 2>/dev/null)
 ifeq ($(KLCC_PATH),)
 	CC = gcc
 else
 	CC = klcc
-	LDFLAGS = -static
 endif
 ifeq ($(ARCH),i386)
 	CFLAGS += -m32
