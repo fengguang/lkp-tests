@@ -1,0 +1,14 @@
+suite: sysbench-memory
+testcase: sysbench-memory
+category: benchmark
+
+runtime: 300s
+nr_threads: 100%
+
+sysbench-memory:
+  mem_blk_size: 1K
+  mem_total_size: 100G
+  mem_scope: global
+  mem_hugetlb: off
+  mem_opt: write
+  mem_access_mode: seq

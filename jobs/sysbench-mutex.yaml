@@ -1,0 +1,11 @@
+suite: sysbench-mutex
+testcase: sysbench-mutex
+category: benchmark
+
+runtime: 300s
+nr_threads: 100%
+
+sysbench-mutex:
+  mutex_num: 4096
+  mutex_locks: 50000
+  mutex_loops: 10000

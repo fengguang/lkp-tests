@@ -1,0 +1,9 @@
+suite: sysbench-cpu
+testcase: sysbench-cpu
+category: benchmark
+
+runtime: 300s
+nr_threads: 100%
+
+sysbench-cpu:
+  cpu_max_prime: 20000
