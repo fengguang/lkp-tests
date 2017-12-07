@@ -14,6 +14,9 @@ server=${server%% *}
 [ -n "$runtime" ] || runtime=300
 [ -n "$concurrency" ] || concurrency=1000
 
+# avoid apr_socket_recv: Connection reset by peer (104)
+log_cmd sysctl -w net.ipv4.tcp_syncookies=0
+
 log_cmd enable_apache_mod auth_basic authn_core authn_file authz_core authz_host authz_user access_compat
 
 log_cmd systemctl restart "$APACHE_NAME"
