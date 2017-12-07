@@ -5,6 +5,9 @@ category: benchmark
 perf-profile:
   delay: 30
 
-iterations: 20x
+runtime: 300s
+nr_task:
+ - 50%
+ - 100%
 
 pft:
