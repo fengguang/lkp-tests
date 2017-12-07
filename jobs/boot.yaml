@@ -5,8 +5,6 @@ boot-slabinfo:
 boot-meminfo:
 memmap:
 
-kernel_cmdline: rcuperf.shutdown=0
-
 # stats
 boot-memory: # depends on memmap and boot-meminfo stats
 boot-time:
