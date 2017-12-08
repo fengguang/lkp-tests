@@ -69,6 +69,11 @@ build_ignored_by_lkp()
 	# test_ap_dynamic.py:    require_under_vm()
 	echo "# ignore _require_under_vm_" >> $ignored_by_lkp
 	git grep -B 2 -w 'require_under_vm' | grep '\-def ' | grep -v _test | awk -F' test_' '{print $2}' | awk -F'(' '{print $1}' >> $ignored_by_lkp
+	special_case=$(git grep -B 2 -w 'require_under_vm' | grep '\-def ' | grep _test | awk -F'-def ' '{print $2}' | awk -F'(' '{print $1}')
+	for s in $special_case
+	do
+		git grep -B 2 -w "$s" | grep '\-def ' | grep -v _test | awk -F' test_' '{print $2}' | awk -F'(' '{print $1}' >> $ignored_by_lkp
+	done
 
 	echo "# ignore _hostap_not_support_" >> $ignored_by_lkp
 	echo "eap_fast_tlv_nak_oom" >> $ignored_by_lkp
