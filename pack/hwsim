@@ -88,6 +88,20 @@ build_ignored_by_lkp()
 	echo "ap_beacon_rate_legacy2" >> $ignored_by_lkp
 	echo "ap_beacon_rate_vht" >> $ignored_by_lkp
 	echo "ap_cipher_tkip_countermeasures_sta2" >> $ignored_by_lkp
+	echo "ap_wpa2_eap_tls_intermediate_ca_ocsp_multi" >> $ignored_by_lkp
+	echo "ap_wpa2_eap_tls_intermediate_ca_ocsp_multi_missing_resp" >> $ignored_by_lkp
+	echo "ap_wpa2_eap_tls_ocsp_multi" >> $ignored_by_lkp
+	echo "ap_wpa2_eap_tls_ocsp_multi_revoked" >> $ignored_by_lkp
+	echo "dbus_tdls_channel_switch" >> $ignored_by_lkp
+	echo "dpp_config_dpp_gen_secp521r1_secp521r1" >> $ignored_by_lkp
+	echo "dpp_config_dpp_override_secp384r1" >> $ignored_by_lkp
+	echo "dpp_config_fragmentation" >> $ignored_by_lkp
+	echo "dpp_pkex" >> $ignored_by_lkp
+	echo "dpp_pkex_bp256" >> $ignored_by_lkp
+	echo "dpp_qr_code_auth_responder_configurator" >> $ignored_by_lkp
+	echo "dpp_qr_code_curve_secp384r1" >> $ignored_by_lkp
+	echo "dpp_gas_timeout" >> $ignored_by_lkp
+	echo "dpp_hostapd_configurator" >> $ignored_by_lkp
 
 	echo "# ignore _hostap_not_support_lifetime_in_memory_" >> $ignored_by_lkp
 	git grep -E -e 'def test.*lifetime_in_memory' | awk -F 'test_' '{print $3}'| awk -F '(' '{print $1}' >> $ignored_by_lkp
