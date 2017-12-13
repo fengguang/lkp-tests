@@ -122,6 +122,7 @@ build_ignored_by_lkp()
 	echo "p2ps_channel_active_go_and_station_different_mcc" >> $ignored_by_lkp
 	echo "rfkill_p2p_discovery_p2p_dev" >> $ignored_by_lkp
 	echo "scan_only" >> $ignored_by_lkp
+	echo "discovery_pd_retries" >> $ignored_by_lkp
 }
 
 install()
