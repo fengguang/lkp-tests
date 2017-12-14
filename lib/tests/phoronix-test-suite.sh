@@ -128,6 +128,27 @@ fixup_gluxmark()
 	test_opt="\n2\n1\n1\nn"
 }
 
+fixup_jgfxbat()
+{
+	[[ -n "$environment_directory" ]] || return
+	local target=${environment_directory}/pts/jgfxbat-1.1.0
+
+	# fix the result format
+	sed -i s/PASS/" Result: 1"/ $target/jgfxbat
+	sed -i s/FAIL/" Result: 0"/ $target/jgfxbat
+	local results_definition=${environment_directory}/../test-profiles/pts/jgfxbat-1.1.0/results-definition.xml
+	[[ -f "$results_definition" ]] || return
+	sed -i s/"#_RESULT_#"/"Result: #_RESULT_#"/ $results_definition
+
+	# fix the Jaca2Demo test
+	sed -i '/run_Java2Demo()/asleep 10' $target/runbat.sh
+
+	# select the java version
+	update-java-alternatives -s java-1.6.0-openjdk-amd64
+
+	export DISPLAY=:0
+}
+
 run_test()
 {
 	local test=$1
@@ -206,6 +227,9 @@ run_test()
 			;;
 		gluxmark-1.1.1)
 			fixup_gluxmark || die "failed to fixup gluxmark"
+			;;
+		jgfxbat-1.1.0)
+			fixup_jgfxbat || die "failed to fixup jgfxbat"
 			;;
 		glmark2-1.1.0|openarena-1.5.3|gputest-1.3.1|supertuxkart-1.3.0|tesseract-1.1.0|unigine-heaven-1.6.2|unigine-valley-1.1.4)
 			export DISPLAY=:0
