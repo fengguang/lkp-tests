@@ -190,6 +190,12 @@ run_test()
 	if [ "$test_opt" ]; then
 		echo -e "$test_opt" | log_cmd phoronix-test-suite run $test
 	else
-		echo n | log_cmd phoronix-test-suite default-run $test
+		/usr/bin/expect <<-EOF
+			spawn phoronix-test-suite default-run $test
+			expect {
+				"Would you like to save these test results" { send "n\r"; exp_continue }
+				default { exp_continue }
+			}
+		EOF
 	fi
 }
