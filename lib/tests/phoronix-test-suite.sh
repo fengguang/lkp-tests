@@ -146,6 +146,14 @@ run_test()
 			test_opt="\n1\nn"
 			export DISPLAY=:0
 			;;
+		nexuiz-1.6.1)
+			# Choose
+			# 1: 800 x 600
+			# 2: Test All Options
+			# 3: Test All Options
+			test_opt="\n1\n3\n3\nn"
+			export DISPLAY=:0
+			;;
 		nginx-1.1.0)
 			fixup_nginx || die "failed to fixup test nginx"
                         ;;
