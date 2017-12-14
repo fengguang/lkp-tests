@@ -114,6 +114,20 @@ fixup_unvanquished()
 	export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libasound.so.2
 }
 
+fixup_gluxmark()
+{
+	[[ -n "$environment_directory" ]] || return
+	local target=${environment_directory}/pts/gluxmark-1.1.1
+	export LD_LIBRARY_PATH=${target}/gluxMark2.2_src/libs
+	export MESA_GL_VERSION_OVERRIDE=3.0
+	export DISPLAY=:0
+	# Choose
+	# 1: Windowed
+	# 2: 800 x 600
+	# 3: Fill-Rate
+	test_opt="\n2\n1\n1\nn"
+}
+
 run_test()
 {
 	local test=$1
@@ -189,6 +203,9 @@ run_test()
 			;;
 		unvanquished-1.5.0)
 			fixup_unvanquished || die "failed to fixup unvanquished"
+			;;
+		gluxmark-1.1.1)
+			fixup_gluxmark || die "failed to fixup gluxmark"
 			;;
 		glmark2-1.1.0|openarena-1.5.3|gputest-1.3.1|supertuxkart-1.3.0|tesseract-1.1.0|unigine-heaven-1.6.2|unigine-valley-1.1.4)
 			export DISPLAY=:0
