@@ -154,6 +154,12 @@ run_test()
 			test_opt="\n1\n3\n3\nn"
 			export DISPLAY=:0
 			;;
+		video-cpu-usage-1.2.1)
+			# Choose
+			# 1: OS X CoreVideo
+			test_opt="\n5\na\nb\nc\nn"
+			export DISPLAY=:0
+			;;
 		nginx-1.1.0)
 			fixup_nginx || die "failed to fixup test nginx"
                         ;;
