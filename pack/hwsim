@@ -109,6 +109,7 @@ build_ignored_by_lkp()
 	echo "# ignore _mac80211_hwsim_not_support_" >> $ignored_by_lkp
 	echo "tdls_chan_switch" >> $ignored_by_lkp
 	echo "rrm_link_measurement" >> $ignored_by_lkp
+	echo "rrm_link_measurement_oom" >> $ignored_by_lkp	
 
 	echo "# ignore _result_is_not_stable_" >> $ignored_by_lkp
 	echo "autogo_join_auto_go_neg_after_seeing_go" >> $ignored_by_lkp
