@@ -1,0 +1,53 @@
+#!/bin/bash
+# - mode
+# - rtcwake
+# - iterations
+# - runtime
+
+[ -n "$mode" ] || mode='freeze'
+[ -n "$iterations" ] || iterations=1
+[ -n "$rtcwake" ] || rtcwake=15
+
+if [ -z "$runtime" ]
+then
+	runtime=$(( $iterations * 60))
+fi
+
+rtcwake_file=/sys/class/rtc/rtc0/wakealarm
+
+echo "SUSPEND RESUME TEST STARTED"
+
+if [ "$mode" = "mem" ]
+then
+	if [ -f "/sys/power/mem_sleep" ]
+	then
+		echo deep > /sys/power/mem_sleep
+		if [ $? -ne 0 ]
+		then
+			echo "mem sleep not supported. avaliable mem sleep type: $(cat /sys/power/mem_sleep)"
+			exit 1
+		fi
+	fi
+fi
+
+for i in $(seq $iterations)
+do
+	echo "Suspend to $mode $i/$iterations:"
+	echo "+$rtcwake" > $rtcwake_file
+	if [ $? -ne 0 ]
+	then
+		echo failed to set rtcwake
+		exit 1
+	fi
+	echo $mode > /sys/power/state
+	if [ $? -ne 0 ]
+	then
+		echo "Failed"
+		exit 1
+	fi
+	sleep 10
+	echo "Done"
+done
+
+echo "SUSPEND RESUME TEST SUCCESS"
+exit 0
