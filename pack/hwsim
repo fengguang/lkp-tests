@@ -102,6 +102,7 @@ build_ignored_by_lkp()
 	echo "dpp_qr_code_curve_secp384r1" >> $ignored_by_lkp
 	echo "dpp_gas_timeout" >> $ignored_by_lkp
 	echo "dpp_hostapd_configurator" >> $ignored_by_lkp
+	git grep -E -e 'def test.*sigma_dut' | awk -F 'test_' '{print $3}'| awk -F '(' '{print $1}' >> $ignored_by_lkp
 
 	echo "# ignore _hostap_not_support_lifetime_in_memory_" >> $ignored_by_lkp
 	git grep -E -e 'def test.*lifetime_in_memory' | awk -F 'test_' '{print $3}'| awk -F '(' '{print $1}' >> $ignored_by_lkp
