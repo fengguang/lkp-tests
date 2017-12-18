@@ -109,7 +109,7 @@ build_depends_pkg() {
 
 	if [ -z "$BM_NAME" ]; then
 		BM_NAME="$script"
-		export BM_NAME
+		unset_bmname=1
 	fi
 
 	local packages=$(get_dependency_packages $DISTRO $script)
@@ -156,4 +156,9 @@ build_depends_pkg() {
 			)
 		fi
 	done
+
+	if [ "$BM_NAME" = "$script" ] && [ -n "$unset_bmname" ]; then
+		unset BM_NAME
+		unset unset_bmname
+	fi
 }
