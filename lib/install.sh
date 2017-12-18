@@ -135,7 +135,12 @@ build_depends_pkg() {
 	dev_packages="$(get_dependency_packages ${DISTRO} ${script}-dev pkg)"
 	packages="$(echo $packages $dev_packages | tr '\n' ' ')"
 	if [ -z "$packages" ] || [ "$packages" = " " ]; then
-		return
+		if [ "$BM_NAME" = "$script" ] && [ -z "$PACKAGE_LIST" ]; then
+			echo "empty deps for $BM_NAME"
+			return 1
+		else
+			return
+		fi
 	fi
 	
 	for pkg in $packages; do
