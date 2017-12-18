@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+
+passed = 0
+skiped = 0
+cnt = 0
+
+while (line = STDIN.gets)
+  case line
+  when /^package installed to \S+cgz$/
+    pass += 1
+  when /^empty deps for .*$/
+    skip += 1
+  when /^Packing deps of .*$/
+    cnt += 1
+  end
+end
+
+puts "pass: #{passed}"
+puts "skip: #{skiped}"
+puts "fail: #{cnt-passed-skiped}"

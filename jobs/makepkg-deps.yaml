@@ -1,0 +1,10 @@
+suite: makepkg-deps
+testcase: makepkg-deps
+
+branch: linus/master
+commit: v4.8
+
+rootfs:
+- debian-x86_64.cgz
+
+makepkg-deps:
