@@ -64,21 +64,21 @@ set_env()
 
 ignore_and_do_tests()
 {
-    local all_tests_cmd="$1"
-    local ignore_files="$2"
-    for ignore_file in $ignore_files
-    do
-        [ -s "$ignore_file" ] || continue
-        ignored_tests_cmd=${all_tests_cmd}" | grep -F -f $ignore_file"
-        all_tests_cmd=${all_tests_cmd}" | grep -v -F -f $ignore_file"
-    done
-    log_eval $ignored_tests_cmd
-    for ignored_test in $(eval $ignored_tests_cmd)
-    do
-        echo "ignored by lkp: $ignored_test"
-    done
-    log_eval $all_tests_cmd
-    log_cmd ./check $(eval $all_tests_cmd)
+	local all_tests_cmd="$1"
+	local ignore_files="$2"
+	for ignore_file in $ignore_files
+	do
+		[ -s "$ignore_file" ] || continue
+		ignored_tests_cmd=${all_tests_cmd}" | grep -F -f $ignore_file"
+		all_tests_cmd=${all_tests_cmd}" | grep -v -F -f $ignore_file"
+	done
+	log_eval $ignored_tests_cmd
+	for ignored_test in $(eval $ignored_tests_cmd)
+	do
+		echo "ignored by lkp: $ignored_test"
+	done
+	log_eval $all_tests_cmd
+	log_cmd ./check $(eval $all_tests_cmd)
 }
 
 run_test()
