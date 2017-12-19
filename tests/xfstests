@@ -95,6 +95,8 @@ run_test()
 
 	# the ignore file like xfs-ignore, but $test like xfs-group1, so need to get its prefix.
 	local test_ignore="$test_dir/${test%-*}-ignore"
+	# /$BENCHMARK_ROOT/xfstests/${test%-*}-ignore is built from upstream blacklist
+	test_ignore="$test_ignore /$BENCHMARK_ROOT/xfstests/${test%-*}-ignore"
 
 	if [ "${test#*-}" = "all" ]; then
 		all_tests_cmd="cd tests && ls ${test%-*}/[0-9][0-9][0-9]"
