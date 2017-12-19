@@ -267,8 +267,8 @@ install_deb()
 	# pack-deps have packed all depencecy packages into /osimage/deps/xxx/benchmark.cgz,
 	# but it does not update dpkg database which will make dpkg misunderstand we have not
 	# solved the dependent relationship, so here we ignore the dependency errors
-	echo "install debs round one: dpkg -i --force-depends $files"
-	dpkg -i --force-depends $files 2>/tmp/dpkg_error && return
+	echo "install debs round one: dpkg -i --force-confdef --force-depends $files"
+	dpkg -i --force-confdef --force-depends $files 2>/tmp/dpkg_error && return
 	grep -v "$filter_info" /tmp/dpkg_error
 
 	# round two, install all debs one by one accroding to keep-deb which is in sequence
@@ -282,8 +282,8 @@ install_deb()
 		# and line by line installation.
 		while read -r filename
 		do
-			echo "install debs round two: dpkg -i --force-depends /opt/deb/$filename"
-			dpkg -i --force-depends /opt/deb/$filename 2>/tmp/dpkg_error || {
+			echo "install debs round two: dpkg -i --force-confdef --force-depends /opt/deb/$filename"
+			dpkg -i --force-confdef --force-depends /opt/deb/$filename 2>/tmp/dpkg_error || {
 				grep -v "$filter_info" /tmp/dpkg_error
 				echo "error: dpkg -i /opt/deb/$filename failed." 1>&2
 				return 1
