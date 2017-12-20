@@ -255,6 +255,6 @@ run_test()
 				"Would you like to save these test results" { send "n\r"; exp_continue }
 				default { exp_continue }
 			}
-		EOF
+	EOF
 	fi
 }
