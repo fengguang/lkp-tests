@@ -39,6 +39,11 @@ check_ignore_case()
 	return 1
 }
 
+prepare_for_net()
+{
+	ulimit -l 10240
+}
+
 prepare_for_efivarfs()
 {
 	[[ -d "/sys/firmware/efi" ]] || {

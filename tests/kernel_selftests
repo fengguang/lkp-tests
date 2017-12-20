@@ -43,6 +43,10 @@ for mf in */Makefile; do
 		prepare_for_firmware || continue
 	fi
 
+	if [[ "$subtest" = "net" ]]; then
+		prepare_for_net || continue
+	fi
+
 	echo
 	if [[ "$subtest" = "capabilities" ]]; then
 		prepare_for_capabilities || continue
