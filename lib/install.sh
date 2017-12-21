@@ -139,7 +139,7 @@ build_depends_pkg() {
 			echo "empty deps for $BM_NAME"
 			return 1
 		else
-			return
+			return 0
 		fi
 	fi
 	
