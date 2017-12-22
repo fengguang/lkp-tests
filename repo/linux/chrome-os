@@ -5,7 +5,7 @@ whitelist_branch: chromeos-4.4|chromeos-4.14
 blacklist_branch: .*
 customconfig: customconfig
 notify_build_success_branch: .*
-build_mail_to: cros-kernel-buildreports@googlegroups.com
+build_success_mail_to: cros-kernel-buildreports@googlegroups.com
 mail_to: cros-kernel-buildreports@googlegroups.com
 too_old_relative_commit_date: month|year|^[4-9]+ weeks
 test_old_branches: .*

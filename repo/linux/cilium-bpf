@@ -1,7 +1,7 @@
 url: https://github.com/cilium/linux.git
 owner: Daniel Borkmann <daniel@iogearbox.net>
 notify_build_success_branch: .*
-build_mail_cc:
+build_success_mail_cc:
 - Daniel Borkmann <daniel@iogearbox.net>
 mail_cc:
 - Daniel Borkmann <daniel@iogearbox.net>

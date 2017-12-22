@@ -83,7 +83,7 @@ These top level keys are accumulative everywhere:
 
 	mail_cc
 	mail_to
-	build_mail_cc
+	build_success_mail_cc
 	constraints
 	need_*
 
