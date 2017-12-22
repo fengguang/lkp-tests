@@ -3,6 +3,7 @@
 # - rtcwake
 # - iterations
 # - runtime
+# - pm_test
 
 [ -n "$mode" ] || mode='freeze'
 [ -n "$iterations" ] || iterations=1
@@ -30,14 +31,40 @@ then
 	fi
 fi
 
+if [ ! -z "$pm_test" ]
+then
+	echo "pm_test set to $pm_test"
+	echo $pm_test > /sys/power/pm_test
+	if [ $? -ne 0 ]
+	then
+		echo failed to set pm_test
+		exit 1
+	fi
+	[ "none" = "$pm_test" ] && pm_test=""
+fi
+
+if [ "$mode" = "disk" ]
+then
+	echo "test_resume for hibernation is enabled"
+	echo test_resume > /sys/power/disk
+	if [ $? -ne 0 ]
+	then
+		echo failed to set test_resume
+		exit 1
+	fi
+fi
+
 for i in $(seq $iterations)
 do
 	echo "Suspend to $mode $i/$iterations:"
-	echo "+$rtcwake" > $rtcwake_file
-	if [ $? -ne 0 ]
+	if [[ ( -z "$pm_test" ) && ( "$mode" != "disk" ) ]]
 	then
-		echo failed to set rtcwake
-		exit 1
+		echo "+$rtcwake" > $rtcwake_file
+		if [ $? -ne 0 ]
+		then
+			echo failed to set rtcwake
+			exit 1
+		fi
 	fi
 	echo $mode > /sys/power/state
 	if [ $? -ne 0 ]

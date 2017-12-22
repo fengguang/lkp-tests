@@ -7,6 +7,7 @@ suspend_stress:
   mode:
   - mem
   - freeze
+  - disk
 
 iterations: 10
 runtime:
