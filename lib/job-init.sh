@@ -101,6 +101,7 @@ setup_result_root()
 	}
 
 	RESULT_PREFIX=/$LKP_SERVER
+	export RESULT_PREFIX
 	export RESULT_ROOT=$RESULT_PREFIX$RESULT_ROOT
 	export RESULT_MNT=$RESULT_PREFIX/result
 
