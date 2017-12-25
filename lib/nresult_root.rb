@@ -283,7 +283,7 @@ class MResultRootTableSet
     ['analyze_suspend', 'boot', 'cpu-hotplug', 'ext4-frags', 'ftq', 'ftrace_onoff', 'fwq',
      'galileo', 'irda-kernel', 'kernel_selftests', 'kvm-unit-tests', 'kvm-unit-tests-qemu',
      'locktorture', 'mce-test', 'otc_ddt', 'piglit', 'pm-qa', 'nvml-unit-tests',
-     'qemu', 'rcutorture', 'suspend', 'trinity', 'ndctl', 'nfs-test', 'hwsim', 'idle-inject',
+     'qemu', 'rcutorture', 'suspend', 'suspend_stress', 'trinity', 'ndctl', 'nfs-test', 'hwsim', 'idle-inject',
      'mdadm-selftests', 'xsave-test', 'nvml', 'test_bpf', 'mce-log', 'perf-sanity-tests',
      'update-ucode', 'reboot', 'cat', 'libhugetlbfs-test', 'ocfs2test', 'syzkaller',
      'perf_test', 'stress-ng', 'sof_test', 'fxmark', 'kvm-kernel-boot-test', 'bkc_ddt'].freeze
