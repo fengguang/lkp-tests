@@ -17,11 +17,6 @@ conflicts=('f2fs-tools')
 source=("git://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs-tools.git")
 md5sums=('SKIP')
 
-pkgver() {
-  cd $_gitname
-  git describe --all | sed 's:tags/::;s/v//;s/-/./g'
-}
-
 build() {
   cd $_gitname
   autoreconf -fi
