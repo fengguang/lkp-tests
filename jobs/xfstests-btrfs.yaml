@@ -11,6 +11,7 @@ xfstests:
   test:
   - btrfs-mid1
   - btrfs-mid2
-  - btrfs-130
+# it's a known issue, refer to xfstests-dev commit: fb26a0cf
+#  - btrfs-130
 # - btrfs-new
 # - btrfs-all
