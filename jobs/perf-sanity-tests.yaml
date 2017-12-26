@@ -5,4 +5,6 @@ category: functional
 perf-sanity-tests:
   perf_compiler:
     - gcc
-    - clang
+    # disable clang since compiling errors with clang
+    # if upstream fix the compiling issue, re-enable it
+    # - clang
