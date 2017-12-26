@@ -33,16 +33,6 @@ describe ResultPath do
         expect(result_path['dpdk_config']).to eq 'x86_64-native-linuxapp-gcc'
         expect(result_path['dpdk_compiler']).to eq 'gcc-4.9'
         expect(result_path['dpdk_commit']).to eq '60c5c5692107abf4157d48493aa2dec01f6b97cc'
-
-        expect(result_path.parse_result_root("#{RESULT_MNT}/lkp-a03/hwinfo/performance-1/debian-x86_64.cgz/x86_64-rhel/0df1f2487d2f0d04703f142813d53615d62a1da4/")).to be true
-        expect(result_path.parse_result_root("#{RESULT_MNT}/lkp-a03/hwinfo/performance-1/debian-x86_64.cgz/x86_64-rhel/0df1f2487d2f0d04703f142813d53615d62a1da4")).to be true
-        expect(result_path['testcase']).to eq 'hwinfo'
-        expect(result_path['path_params']).to eq 'performance-1'
-        expect(result_path['tbox_group']).to eq 'lkp-a03'
-        expect(result_path['rootfs']).to eq 'debian-x86_64.cgz'
-        expect(result_path['kconfig']).to eq 'x86_64-rhel'
-        expect(result_path['compiler']).to eq 'gcc-4.9'
-        expect(result_path['commit']).to eq '0df1f2487d2f0d04703f142813d53615d62a1da4'
       end
     end
 
@@ -52,9 +42,6 @@ describe ResultPath do
         expect(result_path.parse_result_root("#{RESULT_MNT}/aim7/performance-2000-fork_test/brickland3/debian-x86_64-2015-02-07.cgz/x86_64-rhel/gcc-4.9/0f57d86787d8b1076ea8f9cbdddda2a46d534a2")).to be false
         expect(result_path.parse_result_root("#{RESULT_MNT}/aim7/performance-2000-fork_test/brickland3/debian-x86_64-2015-02-07.cgz/x86_64-rhel/gcc-4.9/")).to be false
         expect(result_path.parse_result_root("#{RESULT_MNT}/aim7/performance-2000-fork_test/brickland3/debian-x86_64-2015-02-07.cgz/x86_64-rhel/gcc-4.9")).to be false
-        expect(result_path.parse_result_root("#{RESULT_MNT}/lkp-a03/hwinfo/performance-1/debian-x86_64.cgz/x86_64-rhel/0df1f2487d2f0d04703f142813d53615d62a1da")).to be false
-        expect(result_path.parse_result_root("#{RESULT_MNT}/lkp-a03/hwinfo/performance-1/debian-x86_64.cgz/x86_64-rhel/")).to be false
-        expect(result_path.parse_result_root("#{RESULT_MNT}/lkp-a03/hwinfo/performance-1/debian-x86_64.cgz/x86_64-rhel")).to be false
 
         expect(result_path.parse_result_root("#{RESULT_MNT}/build-qemu/a58047f7fbb055677e45c9a7d65ba40fbfad4b92/")).to be false
 
