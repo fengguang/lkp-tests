@@ -3,3 +3,6 @@ testcase: perf-sanity-tests
 category: functional
 
 perf-sanity-tests:
+  perf_compiler:
+    - gcc
+    - clang
