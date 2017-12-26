@@ -29,7 +29,6 @@ class ResultPath < Hash
   AXIS_KEYS = (MAXIS_KEYS + ['run']).freeze
 
   PATH_SCHEME = {
-    'legacy' => %w[testcase path_params rootfs kconfig commit run],
     'default' => %w[path_params tbox_group rootfs kconfig compiler commit run],
     'health-stats' => %w[path_params run],
     'lkp-bug' => %w[path_params run],
@@ -57,12 +56,6 @@ class ResultPath < Hash
 
     self['testcase'] = dirs.shift
     ps = path_scheme
-
-    # for backwards compatibilty
-    if is_tbox_group(self['testcase']) && !is_tbox_group(dirs[1])
-      self['tbox_group'] = self['testcase']
-      ps = PATH_SCHEME['legacy']
-    end
 
     ndirs = dirs.size
     ps.each do |key|
