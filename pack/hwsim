@@ -79,6 +79,8 @@ build_ignored_by_lkp()
 	echo "eap_fast_tlv_nak_oom" >> $ignored_by_lkp
 	echo "fils_sk_hlp_oom" >> $ignored_by_lkp
 	echo "gas_rand_ta" >> $ignored_by_lkp
+	echo "proxyarp_open_ipv6" >> $ignored_by_lkp
+	echo "proxyarp_open_ebtables_ipv6" >> $ignored_by_lkp
 
 	echo "# ignore _hostap_not_test_" >> $ignored_by_lkp
 	echo "wmediumd_path_rann" >> $ignored_by_lkp
