@@ -1,0 +1,31 @@
+#!/bin/sh
+# - test
+# - nr_task
+# - samples
+
+cd $BENCHMARK_ROOT/libMicro || exit
+
+case $test in
+	"fast")
+		cp bench bench_fast
+		sed -ie "/OPTS=/c OPTS=\"-E -C $samples -L -S -T $nr_task\"" bench_fast
+		grep -w -f fast.list bench > fastlist
+		sed -ie '/getpid/,$d' bench_fast
+		cat fastlist >> bench_fast
+		echo "." >> bench_fast
+		chmod 755 bench_fast
+		./bench_fast
+		;;
+	"all")
+		cp bench bench_all
+		sed -ie "/OPTS=/c OPTS=\"-E -C $samples -L -S -T $nr_task\"" bench_all
+		chmod 755 bench_all
+		./bench_all
+		;;
+	*)
+		cp bench bench_single
+		sed -ie "/OPTS=/c OPTS=\"-E -C $samples -L -S -T $nr_task\"" bench_single
+		chmod 755 bench_single
+		./bench_single $test
+		;;
+esac

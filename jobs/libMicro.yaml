@@ -1,0 +1,16 @@
+suite: libMicro
+testcase: libMicro
+category: benchmark
+
+test:
+- fast
+- all
+
+nr_task:
+- 1
+- 100%
+
+libMicro:
+  samples:
+  - 10000
+  - 100000

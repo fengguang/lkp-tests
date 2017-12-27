@@ -1,0 +1,369 @@
+short_description: >
+ A portable set of microbenchmarks focused on the syscall and system
+ library interfaces.
+
+description: |
+ Originally made open source in 2005 by Bart Smaalders and Phil Harman
+ of Sun Microsystems (1) as part of their "if Linux is faster it's a
+ Solaris bug" campaign. The code mostly "just works" but has atrophied
+ slightly over the years.
+ 
+ This is a fork by Ryan Zezeski, not be confused with Peter Portante's
+ "fork" (2), which has seen no development. Starting source pulled
+ from the java.net projects page (3). My intentions are to squash bugs,
+ add missing syscalls, and make sure this works on as many platforms as
+ possible. I also plan to document everything—extensively.
+
+ (1) https://blogs.oracle.com/barts/entry/libmicro_opensourced
+
+ (2) https://github.com/portante/libMicro
+
+ (3) https://java.net/projects/libmicro
+
+homepage: https://github.com/rzezeski/libMicro
+
+parameters:
+  test:
+    - fast
+    - all
+    - getpid
+    - getenv
+    - clock_gettime
+    - gettimeofday
+    - log
+    - exp
+    - lrand48
+    - memset
+    - memrand
+    - cachetocache
+    - isatty
+    - malloc
+    - close
+    - memcpy
+    - strcpy
+    - strlen
+    - strchr
+    - strcmp
+    - strcasecmp
+    - strtol
+    - getcontext
+    - setcontext
+    - mutex
+    - longjmp
+    - siglongjmp
+    - getrusage
+    - times
+    - time
+    - localtime_r
+    - strftime
+    - mktime
+    - cascade_mutex
+    - cascade_cond
+    - cascade_lockf
+    - cascade_flock
+    - cascade_fcntl
+    - file_lock
+    - getsockname
+    - getpeername
+    - chdir
+    - realpath
+    - stat
+    - fcntl
+    - fcntl_ndelay
+    - lseek
+    - open
+    - dup
+    - socket
+    - socketpair
+    - setsockopt
+    - bind
+    - listen
+    - connection
+    - poll
+    - select
+    - semop
+    - sigaction
+    - signal
+    - sigprocmask
+    - pthread_create
+    - fork
+    - exit
+    - exec
+    - system
+    - recurse
+    - read
+    - write
+    - writev
+    - pread
+    - pwrite
+    - mmap
+    - munmap
+    - connection
+    - mprotect
+    - pipe
+    - close_tcp
+  nr_task:
+  samples:
+
+results:
+ libMicro.getpid:
+ libMicro.getenv:
+ libMicro.getenvT2:
+ libMicro.clock_MONOTONIC:
+ libMicro.clock_PROCESS:
+ libMicro.clock_REALTIME:
+ libMicro.clock_THREAD:
+ libMicro.gettimeofday:
+ libMicro.log:
+ libMicro.exp:
+ libMicro.lrand48:
+ libMicro.memset_10:
+ libMicro.memset_256:
+ libMicro.memset_256_u:
+ libMicro.memset_1k:
+ libMicro.memset_4k:
+ libMicro.memset_4k_uc:
+ libMicro.memset_10k:
+ libMicro.memset_1m:
+ libMicro.memset_10m:
+ libMicro.memsetP2_10m:
+ libMicro.memrand:
+ libMicro.isatty_yes:
+ libMicro.isatty_no:
+ libMicro.malloc_10:
+ libMicro.malloc_100:
+ libMicro.malloc_1k:
+ libMicro.malloc_10k:
+ libMicro.malloc_100k:
+ libMicro.mallocT2_10:
+ libMicro.mallocT2_100:
+ libMicro.mallocT2_1k:
+ libMicro.mallocT2_10k:
+ libMicro.mallocT2_100k:
+ libMicro.close_bad:
+ libMicro.close_tmp:
+ libMicro.close_usr:
+ libMicro.close_zero:
+ libMicro.memcpy_10:
+ libMicro.memcpy_1k:
+ libMicro.memcpy_10k:
+ libMicro.memcpy_1m:
+ libMicro.memcpy_10m:
+ libMicro.strcpy_10:
+ libMicro.strcpy_1k:
+ libMicro.strlen_10:
+ libMicro.strlen_1k:
+ libMicro.strchr_10:
+ libMicro.strchr_1k:
+ libMicro.strcmp_10:
+ libMicro.strcmp_1k:
+ libMicro.scasecmp_10:
+ libMicro.scasecmp_1k:
+ libMicro.strtol:
+ libMicro.getcontext:
+ libMicro.setcontext:
+ libMicro.mutex_st:
+ libMicro.mutex_mt:
+ libMicro.mutex_T2:
+ libMicro.longjmp:
+ libMicro.siglongjmp:
+ libMicro.getrusage:
+ libMicro.times:
+ libMicro.time:
+ libMicro.localtime_r:
+ libMicro.strftime:
+ libMicro.mktime:
+ libMicro.mktimeT2:
+ libMicro.c_mutex_1:
+ libMicro.c_mutex_10:
+ libMicro.c_mutex_200:
+ libMicro.c_cond_1:
+ libMicro.c_cond_10:
+ libMicro.c_cond_200:
+ libMicro.c_lockf_1:
+ libMicro.c_lockf_10:
+ libMicro.c_lockf_200:
+ libMicro.c_flock:
+ libMicro.c_flock_10:
+ libMicro.c_flock_200:
+ libMicro.c_fcntl_1:
+ libMicro.c_fcntl_10:
+ libMicro.c_fcntl_200:
+ libMicro.file_lock:
+ libMicro.getsockname:
+ libMicro.getpeername:
+ libMicro.chdir_tmp:
+ libMicro.chdir_usr:
+ libMicro.chgetwd_tmp:
+ libMicro.chgetwd_usr:
+ libMicro.realpath_tmp:
+ libMicro.realpath_usr:
+ libMicro.stat_tmp:
+ libMicro.stat_usr:
+ libMicro.fcntl_tmp:
+ libMicro.fcntl_usr:
+ libMicro.fcntl_ndelay:
+ libMicro.lseek_t8k:
+ libMicro.lseek_u8k:
+ libMicro.open_tmp:
+ libMicro.open_usr:
+ libMicro.open_zero:
+ libMicro.dup:
+ libMicro.socket_u:
+ libMicro.socket_i:
+ libMicro.socketpair:
+ libMicro.setsockopt:
+ libMicro.bind:
+ libMicro.listen:
+ libMicro.connection:
+ libMicro.poll_10:
+ libMicro.poll_100:
+ libMicro.poll_1000:
+ libMicro.poll_w10:
+ libMicro.poll_w100:
+ libMicro.poll_w1000:
+ libMicro.select_10:
+ libMicro.select_100:
+ libMicro.select_1000:
+ libMicro.select_w10:
+ libMicro.select_w100:
+ libMicro.select_w1000:
+ libMicro.semop:
+ libMicro.sigaction:
+ libMicro.signal:
+ libMicro.sigprocmask:
+ libMicro.pthread:
+ libMicro.fork_10:
+ libMicro.fork_100:
+ libMicro.fork_1000:
+ libMicro.exit_10:
+ libMicro.exit_100:
+ libMicro.exit_1000:
+ libMicro.exit_10_nolibc:
+ libMicro.exec:
+ libMicro.system:
+ libMicro.recurse:
+ libMicro.read_t1k:
+ libMicro.read_t10k:
+ libMicro.read_t100k:
+ libMicro.read_u1k:
+ libMicro.read_u10k:
+ libMicro.read_u100k:
+ libMicro.read_z1k:
+ libMicro.read_z10k:
+ libMicro.read_z100k:
+ libMicro.read_zw100k:
+ libMicro.write_t1k:
+ libMicro.write_t10k:
+ libMicro.write_t100k:
+ libMicro.write_u1k:
+ libMicro.write_u10k:
+ libMicro.write_u100k:
+ libMicro.write_n1k:
+ libMicro.write_n10k:
+ libMicro.write_n100k:
+ libMicro.writev_t1k:
+ libMicro.writev_t10k:
+ libMicro.writev_t100k:
+ libMicro.writev_u1k:
+ libMicro.writev_u10k:
+ libMicro.writev_u100k:
+ libMicro.writev_n1k:
+ libMicro.writev_n10k:
+ libMicro.writev_n100k:
+ libMicro.pread_t1k:
+ libMicro.pread_t10k:
+ libMicro.pread_t100k:
+ libMicro.pread_u1k:
+ libMicro.pread_u10k:
+ libMicro.pread_u100k:
+ libMicro.pread_z1k:
+ libMicro.pread_z10k:
+ libMicro.pread_z100k:
+ libMicro.pread_zw100k:
+ libMicro.pwrite_t1k:
+ libMicro.pwrite_t10k:
+ libMicro.pwrite_t100k:
+ libMicro.pwrite_u1k:
+ libMicro.pwrite_u10k:
+ libMicro.pwrite_u100k:
+ libMicro.pwrite_n1k:
+ libMicro.pwrite_n10k:
+ libMicro.pwrite_n100k:
+ libMicro.mmap_z8k:
+ libMicro.mmap_z128k:
+ libMicro.mmap_t8k:
+ libMicro.mmap_t128k:
+ libMicro.mmap_u8k:
+ libMicro.mmap_u128k:
+ libMicro.mmap_a8k:
+ libMicro.mmap_a128k:
+ libMicro.mmap_rz8k: 
+ libMicro.mmap_rz128k:
+ libMicro.mmap_rt8k:
+ libMicro.mmap_rt128k:
+ libMicro.mmap_ru8k:
+ libMicro.mmap_ru128k:
+ libMicro.mmap_ra8k:
+ libMicro.mmap_ra128k:
+ libMicro.mmap_wz8k:
+ libMicro.mmap_wz128k:
+ libMicro.mmap_wt8k:
+ libMicro.mmap_wt128k:
+ libMicro.mmap_wu8k:
+ libMicro.mmap_wu128k:
+ libMicro.mmap_wa8k:
+ libMicro.mmap_wa128k:
+ libMicro.unmap_z8k:
+ libMicro.unmap_z128k:
+ libMicro.unmap_t8k:
+ libMicro.unmap_t128k:
+ libMicro.unmap_u8k:
+ libMicro.unmap_u128k:
+ libMicro.unmap_a8k:
+ libMicro.unmap_a128k:
+ libMicro.unmap_rz8k:
+ libMicro.unmap_rz128k:
+ libMicro.unmap_rt8k:
+ libMicro.unmap_rt128k:
+ libMicro.unmap_ru8k:
+ libMicro.unmap_ru128k:
+ libMicro.unmap_ra8k:
+ libMicro.unmap_ra128k:
+ libMicro.conn_connect:
+ libMicro.unmap_wz8k:
+ libMicro.unmap_wz128k:
+ libMicro.unmap_wt8k:
+ libMicro.unmap_wt128k:
+ libMicro.unmap_wu8k:
+ libMicro.unmap_wu128k:
+ libMicro.unmap_wa8k:
+ libMicro.unmap_wa128k:
+ libMicro.mprot_z8k:
+ libMicro.mprot_z128k:
+ libMicro.mprot_wz8k:
+ libMicro.mprot_wz128k:
+ libMicro.mprot_twz8k:
+ libMicro.mprot_tw128k:
+ libMicro.mprot_tw4m:
+ libMicro.pipe_pst1:
+ libMicro.pipe_pmt1:
+ libMicro.pipe_pmp1:
+ libMicro.pipe_pst4k:
+ libMicro.pipe_pmt4k:
+ libMicro.pipe_pmp4k:
+ libMicro.pipe_sst1:
+ libMicro.pipe_smt1:
+ libMicro.pipe_smp1:
+ libMicro.pipe_sst4k:
+ libMicro.pipe_smt4k:
+ libMicro.pipe_smp4k:
+ libMicro.pipe_tst1:
+ libMicro.pipe_tmt1:
+ libMicro.pipe_tmp1:
+ libMicro.pipe_tst4k:
+ libMicro.pipe_tmt4k:
+ libMicro.pipe_tmp4k:
+ libMicro.conn_accept:
+ libMicro.close_tcp:
+ libMicro.total_elasped_time:

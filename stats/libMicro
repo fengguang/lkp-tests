@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+
+time = 0
+protocol = ' '
+libMicro = {}
+
+$stdin.each_line do |line|
+  case line
+  when %r(bin/)
+    protocol = line.split[10].to_s
+  when /elasped/
+    libMicro[protocol] = line.split[3].to_s
+    time = time + line.split[3].to_f
+  end
+end
+
+libMicro.each do |k, v|
+  puts k + ': ' + v
+end
+
+puts 'total_elasped_time: ' + time.to_s

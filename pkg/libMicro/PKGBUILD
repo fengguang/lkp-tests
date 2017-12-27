@@ -1,0 +1,20 @@
+pkgname=libMicro
+pkgver=1.0
+pkgrel=1
+pkgdesc="A portable set of microbenchmarks focused on the syscall and system library interfaces."
+arch=('i686' 'x86_64')
+url="https://github.com/rzezeski/libMicro"
+license=('CDDL')
+source=("https://github.com/rzezeski/libMicro.git" 'list.patch')
+md5sums=('SKIP' 'SKIP')
+
+
+build() {
+	cd "$srcdir/$pkgname"
+	CFLAGS="" make
+}
+
+package() {
+	mkdir -p "$pkgdir/lkp/benchmarks/libMicro"
+	cp -r "$srcdir/$pkgname/"* "$pkgdir/lkp/benchmarks/libMicro"
+}
