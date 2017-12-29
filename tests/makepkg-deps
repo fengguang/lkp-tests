@@ -13,7 +13,9 @@ DISTRO=${rootfs%%-*}
 
 DEPS_MNT=/osimage/deps
 mkdir -p "$DEPS_MNT"
-# mount $LKP_SERVER:$DEPS_MNT $DEPS_MNT || die "Failed to run mount"
+if [ -n "$LKP_SERVER" ]; then
+	mount $LKP_SERVER:$DEPS_MNT $DEPS_MNT || die "Failed to run mount"
+fi
 
 umask 002
 
