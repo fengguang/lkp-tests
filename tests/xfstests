@@ -81,6 +81,12 @@ ignore_and_do_tests()
 
 run_test()
 {
+	# clear filesystem in partition
+	for dev in ${partitions#* }
+	do
+		dd if=/dev/zero bs=512 count=512 of=$dev
+	done
+
 	## Currently, we support the following several format's test item.
 	## Not-run, out-mismatch files are hard to maintain and do not use in the test, so remove them.
 	## With "generic" testcase as an example:
