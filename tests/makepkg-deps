@@ -8,7 +8,6 @@
 [ -n "$benchmark" ] || die "benchmark is empty"
 
 DISTRO=${rootfs%%-*}
-export DISTRO
 
 . $LKP_SRC/distro/${DISTRO}
 
