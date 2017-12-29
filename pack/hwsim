@@ -127,6 +127,10 @@ build_ignored_by_lkp()
 	echo "rfkill_p2p_discovery_p2p_dev" >> $ignored_by_lkp
 	echo "scan_only" >> $ignored_by_lkp
 	echo "discovery_pd_retries" >> $ignored_by_lkp
+
+	echo "# ignore _wait_for_the_reply_of_community" >> $ignored_by_lkp
+	echo "ap_config_reload" >> $ignored_by_lkp
+	echo "ap_config_reload_file" >> $ignored_by_lkp
 }
 
 install()
