@@ -2,6 +2,7 @@
 
 download()
 {
+	git_clone_update git://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs-tools.git
 	git_clone_update git://git.kernel.org/pub/scm/fs/xfs/xfsprogs-dev.git
 	git_clone_update git://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git
 }
@@ -17,12 +18,12 @@ build_install_xfsprogs()
 {
 	cd ../xfsprogs-dev || return
 	make configure || return
-	./configure --prefix=$BUILD_DIR/xfsprogs/usr --exec_prefix=$BUILD_DIR/xfsprogs/usr
+	./configure --prefix=$BUILD_DIR/pack/usr --exec_prefix=$BUILD_DIR/pack/usr
 	make || return
 	make install
 	make install-dev
 	# xfstests need those file
-	cp -a $BUILD_DIR/xfsprogs/usr/* /usr
+	cp -a $BUILD_DIR/pack/usr/* /usr
 }
 
 build_install_xfstests()
@@ -31,6 +32,16 @@ build_install_xfstests()
 	## Currently, ./configure file can't work with "--prefix" option correctly,
 	## so we just use the "make" command to generate the execuable file.
 	make
+}
+
+build_install_f2fs_tools()
+{
+	cd ../f2fs-tools || return
+	./autogen.sh || return
+	./configure || return
+	make || return
+	make install || return
+	make install DESTDIR=$BUILD_DIR/pack
 }
 
 # Automatically generate ignore file to skip test cases which can not be enabled at present.
@@ -47,6 +58,7 @@ build()
 {
 	build_install_xfsprogs || return
 	build_install_xfstests || return
+	build_install_f2fs_tools || return
 	build_ignore_file || return
 }
 
@@ -65,7 +77,7 @@ install()
 
 pack()
 {
-    cd $BUILD_DIR/xfsprogs || return
+    cd $BUILD_DIR/pack || return
     {
         echo /lkp
         echo /lkp/benchmarks
