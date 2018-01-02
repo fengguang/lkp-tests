@@ -227,7 +227,14 @@ def load_base_matrix(matrix_path, head_matrix, options)
 
   begin
     $git ||= {}
-    remote = options['branch'].split('/')[0] if options['branch']
+    axis_branch_name =
+      if axis == 'commit'
+        options['branch']
+      else
+        options[axis.sub('commit', 'branch')]
+      end
+    remote = axis_branch_name.split('/')[0] if axis_branch_name
+
     log_debug "remote is #{remote}"
     $git[project] ||= Git.open(project: project, remote: remote)
     git = $git[project]
