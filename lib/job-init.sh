@@ -57,7 +57,7 @@ mount_result_root()
 			;;
 		*:*)
 			result_fs=nfs
-			mount.nfs $result_service $RESULT_MNT || return
+			mount.nfs -o vers=3 $result_service $RESULT_MNT || return
 			;;
 		//*/*)
 			result_fs=cifs
