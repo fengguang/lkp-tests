@@ -19,7 +19,7 @@
 ^dmesg.INFO:NMI_handler.*took_too_long_to_run:
 ^dmesg.INFO:rcu_sched_detected_stalls_on_CPUs/tasks:
 ^dmesg.INFO:Stall_ended_before_state_dump_start
-^dmesg.Kernel_panic-not_syncing:Out_of_memory_and_no_killable_processes
+^dmesg.Kernel_panic-not_syncing:Out_of_memory.*
 ^dmesg.Mem-Info
 ^dmesg.invoked_oom-killer:gfp_mask=0x
 ^dmesg.timestamp:.*
