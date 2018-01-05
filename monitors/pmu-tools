@@ -4,6 +4,7 @@
 # - command
 
 . $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/debug.sh
 is_virt && die "Don't run pmu-tools on virtual machine"
 
 # pmu-tools runs on top of Linux perf
