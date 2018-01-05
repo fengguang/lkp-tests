@@ -139,10 +139,10 @@ class WTMP
       YAML.load(content.gsub(/[[[:cntrl:]]&&[^\n]]/, ''))
     end
 
-    def load_tail(file)
+    def load_tail(file, lines = 100)
       return nil unless File.exist? file
 
-      tail = %x[tail -n 100 #{file}]
+      tail = %x[tail -n #{lines} #{file}]
       load(tail)
     rescue StandardError => e
       $stderr.puts "#{file}: " + e.message
