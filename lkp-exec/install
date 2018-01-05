@@ -303,6 +303,11 @@ do
 	for script in $scripts
 	do
 		BUILD_DIR=$(get_build_dir $BM_NAME)
+		[ -L "$LKP_SRC/pack/$script" ] && {
+			real_script=$(readlink "$LKP_SRC/pack/$script")
+			script=$(basename "$real_script")
+		}
+
 		[ -z "$makepkg_once" ] && [ -d "$LKP_SRC/pkg/$script" ] && ! [ -x "$LKP_SRC/pack/$script" ] && {
 			install_packages "makepkg" $distro
 			makepkg_once=1
