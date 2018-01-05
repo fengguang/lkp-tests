@@ -253,6 +253,7 @@ run_test()
 			spawn phoronix-test-suite default-run $test
 			expect {
 				"Would you like to save these test results" { send "n\r"; exp_continue }
+				eof { }
 				default { exp_continue }
 			}
 	EOF
