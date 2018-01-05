@@ -2,6 +2,8 @@ suite: hwsim
 testcase: hwsim
 category: functional
 
+need_memory: 4G
+
 hwsim:
   group:
     - hwsim-00
