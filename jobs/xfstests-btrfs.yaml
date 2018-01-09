@@ -9,6 +9,7 @@ fs:
 
 xfstests:
   test:
+  - btrfs-group1
   - btrfs-mid1
   - btrfs-mid2
 # it's a known issue, refer to xfstests-dev commit: fb26a0cf
