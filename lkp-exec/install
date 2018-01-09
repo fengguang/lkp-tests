@@ -16,6 +16,7 @@ TMP="$LKP_SRC/tmp"
 usage() {
 	echo "Usage: lkp $script_name [options] [<script>/<jobfile>]"
 	echo "options: "
+	echo "-f|--force: force to install testsuites"
 	echo "--hdd partition: HDD partition for IO tests"
 	echo "--ssd partition: SSD partition for IO tests"
 	echo "--dry-run: preview changes will made testbox by install"
@@ -48,6 +49,9 @@ do
 		;;
 		--china)
 		CHINA=0
+		;;
+		--force|-f)
+		install_opt="-f"
 		;;
 		*)
 		break
@@ -221,6 +225,7 @@ install_packages() {
 build_install_benchmarks() {
 	local script=$1
 	local distro=$2
+	local force_install=$3
 
 	[ -x "$LKP_SRC/pack/$script" ] || return 0
 
@@ -230,7 +235,7 @@ build_install_benchmarks() {
 	local pkg_name
 	pkg_name=$(printf '%s-LKP\n' "$script" | sed 's/_/-/g')
 
-	$LKP_SRC/sbin/pack -d $distro -c $script
+	$LKP_SRC/sbin/pack -d $distro -c $force_install $script
 	if [ $? -eq 0 ]; then
 		echo "Installing $pkg_name"
 
@@ -317,6 +322,6 @@ do
 		if ! verify_install "$script"; then
 			makepkg_install_benchmark "$script"
 		fi
-		build_install_benchmarks "$script" $distro || exit 1
+		build_install_benchmarks "$script" $distro $install_opt || exit 1
 	done
 done
