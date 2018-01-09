@@ -381,16 +381,22 @@ tbox_cant_kexec()
 	is_virt && return 0
 
 	# following tbox are buggy while using kexec to boot
-	[ "${HOSTNAME#*lkp-g5}"		!= "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-ivb-toshiba1}"	!= "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-glk01}"	!= "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-bxt01}"	!= "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-denverton2}"	!= "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-ivb-d02}"	!= "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-kbl-lenovo1}"	!= "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-sklu-lenovo1}"	!= "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-skl-d01}"	!= "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-minnow01}"	!= "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-bxt01}"      != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-cfl-s01}"    != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-denverton2}" != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-g5}"         != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-glk01}"      != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-glk02}"      != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-ivb-d02}"    != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-ivb-toshiba1}"       != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-kbl-lenovo1}"        != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-kblr01}"     != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-kbls01}"     != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-kbly01}"     != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-minnow01}"   != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-skl-d01}"    != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-sklu-lenovo1}"       != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-skly01}"     != "$HOSTNAME" ] && return 0
 
 	[ -x '/sbin/kexec' ] || return 0
 
