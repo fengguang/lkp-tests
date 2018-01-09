@@ -6,7 +6,10 @@ download()
 
 build()
 {
-	patch_source
+	[ "$distro" = "centos" ] && {
+		patch -p1 < $LKP_SRC/pack/${BM_NAME}-addon/0001-tests-hugetests.h-fix-compile-errors-under-centos.patch || return
+	}
+	patch_source || return
 }
 
 install()

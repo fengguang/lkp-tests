@@ -1,0 +1,54 @@
+From 842d88c82eced01891f6afea006eea4870ff35ea Mon Sep 17 00:00:00 2001
+From: Li Zhijian <zhijianx.li@intel.com>
+Date: Tue, 9 Jan 2018 01:36:16 -0500
+Subject: [PATCH] tests/hugetests.h: fix compile errors under centos
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+[root@centos-lkp libhugetlbfs-test]# lkp run ./libhugetlbfs-test-2MB-64.yaml
+2018-01-09 01:33:02 make
+	 CC32 obj32/fallocate_basic.o
+	 LD32 (lib test) obj32/fallocate_basic
+	 CC32 obj32/fallocate_align.o
+fallocate_align.c: In function ‘main’:
+fallocate_align.c:76:22: error: ‘FALLOC_FL_PUNCH_HOLE’ undeclared (first use in this function)
+  err = fallocate(fd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
+                      ^
+fallocate_align.c:76:22: note: each undeclared identifier is reported only once for each function it appears in
+fallocate_align.c:76:45: error: ‘FALLOC_FL_KEEP_SIZE’ undeclared (first use in this function)
+  err = fallocate(fd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
+                                             ^
+make[1]: *** [obj32/fallocate_align.o] Error 1
+make: *** [tests/all] Error 2
+make failed
+  /home/lizhijian/lkp-tests/lib/debug.sh:7: die
+  /home/lizhijian/lkp-tests/tests/libhugetlbfs-test:9: main
+  :0:
+
+Signed-off-by: Li Zhijian <zhijianx.li@intel.com>
+---
+ tests/hugetests.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/tests/hugetests.h b/tests/hugetests.h
+index 8b1d8d9..60ea31e 100644
+--- a/tests/hugetests.h
++++ b/tests/hugetests.h
+@@ -26,6 +26,13 @@
+ #include "libhugetlbfs_privutils.h"
+ #include "libhugetlbfs_testprobes.h"
+ 
++#ifndef FALLOC_FL_PUNCH_HOLE
++#define FALLOC_FL_PUNCH_HOLE 2
++#endif
++#ifndef FALLOC_FL_KEEP_SIZE
++#define FALLOC_FL_KEEP_SIZE 1
++#endif
++
+ #define DEBUG
+ 
+ /* Test return codes */
+-- 
+1.8.3.1
+
