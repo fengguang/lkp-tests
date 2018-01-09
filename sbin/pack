@@ -11,14 +11,14 @@ usage()
 		Based on lkp-tests/pack/default, a script is named after an external program, and overrides default implementation of download(), build(), and install() functions.
 		The script named after an external program works in conjunction with $0
 
-		Usage: $0 [-a <arch>] [-c] [-d <distro>] <BM_NAME>
+		Usage: $0 [-a <arch>] [-c] [-f] [-d <distro>] <BM_NAME>
 
 		[-a <arch>]       Optional parameter: specific architecture of <BM_NAME>, used as suffixe in .cgz file name, overrides default value.
 		[-c]              Optional parameter: work environment is cleaned up after execution.
 		[-d <distro>]     Optional parameter: If specified, will generates customized installation in .deb/.rpm format (default is .cgz format) for <BM_NAME> - simplifies later installation on debian systems.
 		[-s <dest>]       Optional parameter: If specified, will sync generated package to destination given.
 		<BM_NAME>         Mandatory parameter: generates customized installation package for <BM_NAME>, default architecture of the compiling machine is used as suffixe in .cgz file name
-
+		[-f]              Optional parameter: force to build benchmark, if this mode is not specified, we will skip this packing if we have packed it before (check whether /lkb/benchmark/BM_NAME is empty or not)
 		Note:
 		[-a <arch>] and [-d <distro>] optional parameters do not work together, and <arch> cannot be used as suffixe in .deb file name.
 
@@ -44,13 +44,14 @@ usage()
 	exit 1
 }
 
-while getopts "a:cd:s:" opt
+while getopts "a:cfd:s:" opt
 do
 	case $opt in
 	a ) arch="$OPTARG" ;;
 	c ) opt_clean=true ;;
 	d ) distro="$OPTARG" ;;
 	s ) sync_dest="$OPTARG" ;;
+	f ) force_mode=true ;;
 	? ) usage ;;
 	esac
 done
@@ -58,6 +59,11 @@ done
 shift $(($OPTIND-1))
 BM_NAME=$1
 [[ $BM_NAME ]] || usage
+
+[[ ! $force_mode ]] && ls /lkp/benchmarks/$BM_NAME/* &>/dev/null && {
+	echo "$BM_NAME is already installed into /lkp/benchmarks/$BM_NAME, skip this packing"
+	exit 0
+}
 
 [[ $arch ]] || arch=`uname -m`
 
