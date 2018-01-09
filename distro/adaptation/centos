@@ -19,6 +19,7 @@ initramfs-tools: dracut
 iozone3: gnuplot*
 iproute2: iproute
 klibc-utils:
+lib32gcc-7-dev: libgcc.686
 libacl1-dev: libacl-devel
 libaio1: libaio libaio-devel
 libaio-dev: libaio-devel
