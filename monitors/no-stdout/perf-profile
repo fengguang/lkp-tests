@@ -75,7 +75,8 @@ cat > "$TMP_RESULT_ROOT/post-run.perf-profile" <<EOF
 [ -s "$perf_data" ] && {
 	$perf report $opt_inline $opt_children --header -U -g $callgraph --sort=dso,symbol -i $perf_data |
 	gzip > $RESULT_ROOT/perf-profile.gz && {
-		rm -f $perf_data
+		cp $perf_data $RESULT_ROOT
+		cp /proc/kallsyms $RESULT_ROOT
 	}
 }
 EOF
