@@ -14,6 +14,7 @@ download()
 
 build()
 {
+	export PATH=/usr/lib64/openmpi/bin:$PATH
 	cp ../timing* $BM_ROOT || return
 
 	tar -xzvf ../mpi-selector-1.0.3.tar.gz -C ../
