@@ -16,7 +16,7 @@ EOF
 case_dir=$1
 [[ "$case_dir" ]] ||  usage
 
-funcs=$(grep "def test_" -rh $case_dir/test_*.py) || usage
+funcs=$(grep "^def test_" -rh $case_dir/test_*.py) || usage
 
 tmpfile=$(mktemp /tmp/hwsim-extract-testcase-XXXXXX)
 tmpfile_uniq=$(mktemp /tmp/hwsim-extract-testcase-uniq-XXXXXX)
