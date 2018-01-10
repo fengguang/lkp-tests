@@ -1,11 +1,13 @@
 apache2: httpd
 apt-file:
 autotools-dev: autoconf
+bind9: bind
 binutils-dev: binutils-devel
 btrfs-tools: btrfs-progs
 build-essential: make automake gcc gcc-c++ kernel-devel rpm-build
 cgroup-bin: libcgroup
 dbench=4.0-2: dbench
+dnsutils: bind-utils
 dpkg-dev: dpkg-devel
 e2fslibs-dev: e2fsprogs-devel
 f2fs-tools:
@@ -15,6 +17,7 @@ gcc-4.9: gcc
 gcc-5: gcc
 gcc-6: gcc
 gfortran: gcc-c++
+heirloom-mailx: mailx
 hpcc:
 initramfs-tools: dracut
 iozone3: gnuplot*
@@ -54,6 +57,7 @@ libgles2-mesa: mesa-libGLES
 libglib2.0-0: glib
 libglib2.0-dev: glib2-devel
 libglu-dev: mesa-libGLU-devel
+libgmp-dev: gmp-devel
 libgomp1: libgomp
 libhwloc-dev: hwloc-devel
 libiberty-dev:
@@ -98,6 +102,7 @@ libsqlite3-dev: sqlite-devel
 libssl1.0.0: openssl-devel
 libssl1.1: openssl-devel
 libssl-dev: openssl-devel
+libtirpc-dev: libtirpc-devel
 libtool-bin: libtool
 libudev1: systemd-libs
 libudev-dev: systemd-devel
@@ -122,6 +127,7 @@ netpipe-tcp:
 nfs-common: nfs-utils
 nfs-kernel-server: nfs-utils
 ocfs2-tools-dev: ocfs2-tools-devel
+openbsd-inetd: xinetd
 perl-base:
 perl-modules-5.22: perl-CPAN
 perl-modules: perl-CPAN
@@ -136,14 +142,17 @@ python3-six: python34-six
 python-minimal: python2
 python-numpy: numpy
 python-openssl: pyOpenSSL
+rstatd: rusers-server
 rt-tests: numactl-devel
 ruby-dev: ruby-devel
 ruby-git:
 ruby-gnuplot:
+rusersd: rusers-server rusers
 sg3-utils: sg3_utils
 stress-ng:
 trinity:
 tshark: wireshark
+update-inetd: xinetd
 uuid-dev: libuuid-devel
 wireless-regdb: crda
 wpasupplicant: wpa_supplicant
