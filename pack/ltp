@@ -2,7 +2,9 @@
 
 download()
 {
-	git_clone_update https://git.centos.org/r/rpms/rusers.git || return
+	[ "$distro" != "centos" ] && {
+		git_clone_update https://git.centos.org/r/rpms/rusers.git || return
+	}
 	git_clone_update https://github.com/PeterHuewe/tpm-emulator.git || return
 	git_clone_update https://github.com/ianw/numactl.git || return
 	git_clone_update https://github.com/linux-test-project/ltp.git
@@ -141,8 +143,11 @@ build()
 	cd ../numactl || exit
 	build_numactl || exit
 
-	cd ../rusers || exit
-	build_rusers || exit
+	[ "$distro" != "centos" ] && {
+		cd ../rusers || exit
+		build_rusers || exit
+	}
+	return 0
 }
 
 install()
@@ -156,8 +161,11 @@ install()
 	cd ../numactl || exit
 	install_numactl || exit
 
-	cd ../rusers || exit
-	install_rusers || exit
+	[ "$distro" != "centos" ] && {
+		cd ../rusers || exit
+		install_rusers || exit
+	}
+	return 0
 }
 
 strip_object_files()
