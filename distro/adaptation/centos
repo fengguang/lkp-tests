@@ -7,6 +7,7 @@ build-essential: make automake gcc gcc-c++ kernel-devel rpm-build
 cgroup-bin: libcgroup
 dbench=4.0-2: dbench
 dpkg-dev: dpkg-devel
+e2fslibs-dev: e2fsprogs-devel
 f2fs-tools:
 freeglut3: freeglut
 fsmark: fs_mark
@@ -75,6 +76,8 @@ libnuma1: numactl
 libnuma-dev: numactl-devel
 liboop-dev:
 liboop-dev: liboop
+libopenmpi2: openmpi
+libopenmpi-dev: openmpi-devel
 libpcap0.8-dev: libpcap-devel
 libpcap0.8: libpcap
 libpcap-dev: libpcap-devel
@@ -110,6 +113,7 @@ linux-perf: perf
 linux-tools: perf
 mysql-server: mariadb
 ncurses-bin: ncurses
+netcat-openbsd: nmap-ncat
 netpipe-lam:
 netpipe-mpich2:
 netpipe-openmpi:
@@ -117,6 +121,7 @@ netpipe-pvm:
 netpipe-tcp:
 nfs-common: nfs-utils
 nfs-kernel-server: nfs-utils
+ocfs2-tools-dev: ocfs2-tools-devel
 perl-base:
 perl-modules-5.22: perl-CPAN
 perl-modules: perl-CPAN
