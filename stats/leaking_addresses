@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+
+results = {}
+
+while (line = STDIN.gets)
+  case line
+  when /^\[ +([\d\.]+)\](.*)/
+    results['dmesg.' + $2.sub!(/\b(0x)?ffff[[:xdigit:]]{12}\b/, '').delete(' ')] = 1
+  when /^\[\d+ ([^\]]+)\](.*)/
+    results['proc.' + $1 + '.' + $2.sub!(/\b(0x)?ffff[[:xdigit:]]{12}\b/, '').delete(' ')] = 1
+  end
+end
+
+if results.empty?
+  results['result.pass'] = 1
+else
+  results['result.fail'] = 1
+end
+
+results.each do |k, v|
+  puts "#{k}: #{v}"
+end

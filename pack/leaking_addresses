@@ -1,0 +1,31 @@
+#!/bin/bash
+
+download()
+{
+	curl -sf https://raw.githubusercontent.com/torvalds/linux/master/scripts/leaking_addresses.pl -o leaking_addresses.pl || return
+	chmod +x leaking_addresses.pl
+}
+
+build()
+{
+	# get the last commit of leaking_addresses.pl
+	local info=$(curl -sf https://api.github.com/repos/torvalds/linux/commits\?path\=scripts/leaking_addresses.pl\&per_page\=1 || return)
+	local long_commit=$(echo $info | jq '.[0].sha' | tr -d '"')
+	commit=${long_commit:0:7}
+}
+
+install()
+{
+	cp -af ./* $BM_ROOT/
+}
+
+pack()
+{
+	{
+		echo /lkp
+		echo /lkp/benchmarks
+		find /lkp/benchmarks/$BM_NAME
+	} |
+	cpio --quiet -o -H newc | gzip -n -9 > /lkp/benchmarks/${BM_NAME}.cgz
+	[[ $arch ]] && mv "/lkp/benchmarks/${BM_NAME}.cgz" "/lkp/benchmarks/${BM_NAME}-${arch}.cgz"
+}

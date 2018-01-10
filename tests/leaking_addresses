@@ -1,0 +1,22 @@
+#!/bin/sh
+
+. $LKP_SRC/lib/upload.sh
+. $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/reproduce-log.sh
+
+cd $BENCHMARK_ROOT/leaking_addresses || die "can not enter $BENCHMARK_ROOT/leaking_addresses"
+
+run_test()
+{
+	mkdir result
+	log_cmd ./leaking_addresses.pl --output-raw result/scan.out
+	log_cmd ./leaking_addresses.pl --input-raw result/scan.out --squash-by-filename | tee result/scan.result
+}
+
+run_test
+
+exit_value=$?
+
+upload_files -t results result/*
+
+exit $exit_value
