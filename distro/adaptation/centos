@@ -34,6 +34,7 @@ libcairo2-dev: cairo-devel
 libcap2: libcap
 libcap-dev: libcap-devel
 libcap-ng-dev: libcap-ng-devel
+libconfig-dev: libconfig-devel
 libdbd-mysql-perl: perl-DBD-MySQL
 libdbi-perl: perl-DBI
 libdbus-1-dev: dbus-devel
@@ -41,6 +42,8 @@ libdrm-dev: libdrm-devel
 libdw-dev: libdwarf-devel
 libegl1-mesa-dev: mesa-libEGL-devel
 libelf-dev: elfutils-libelf-devel
+libevent-2.1-6: libevent
+libevent-dev: libevent-devel
 libfabric-dev: libfabric-devel
 libfdt-dev:
 libfuse-dev: fuse-devel
@@ -127,6 +130,7 @@ python3-numpy: python34-numpy
 python3-six: python34-six
 python-minimal: python2
 python-numpy: numpy
+python-openssl: pyOpenSSL
 rt-tests: numactl-devel
 ruby-dev: ruby-devel
 ruby-git:
@@ -136,6 +140,8 @@ stress-ng:
 trinity:
 tshark: wireshark
 uuid-dev: libuuid-devel
+wireless-regdb: crda
+wpasupplicant: wpa_supplicant
 xfslibs-dev: xfsprogs-devel
 xinit: xorg-x11-xinit
 xorg:
