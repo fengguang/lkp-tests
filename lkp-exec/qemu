@@ -208,7 +208,7 @@ create_lkp_src_initrd()
 	lkp_initrd=$CACHE_DIR/lkp-$arch-$src_sig.cgz
 	[[ -f $lkp_initrd ]] || {
 		LKP_USER=$user \
-		$LKP_SRC/sbin/pack -a $arch lkp-src
+		$LKP_SRC/sbin/pack -f -a $arch lkp-src
 		mv $CACHE_DIR/lkp-$arch.cgz $lkp_initrd
 	}
 }
