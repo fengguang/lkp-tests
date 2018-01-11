@@ -58,6 +58,12 @@ set_env()
 		log_eval export SCRATCH_LOGDEV=$SCRATCH_LOGDEV
 	fi
 
+	[ "$test" = "xfs-131" ] && {
+		log_eval export USE_EXTERNAL="yes"
+		log_eval export SCRATCH_RTDEV="$SCRATCH_LOGDEV"
+		log_eval export MKFS_OPTIONS="-mreflink=1"
+		log_eval unset SCRATCH_LOGDEV
+	}
 	[ "$test" = "xfs-233" ] && log_eval export MKFS_OPTIONS="-mrmapbt=1"
 	[ "$test" = "xfs-244" ] && log_eval export MKFS_OPTIONS="-mcrc=0"
 }
