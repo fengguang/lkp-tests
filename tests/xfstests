@@ -57,6 +57,8 @@ set_env()
 		SCRATCH_LOGDEV=${SCRATCH_LOGDEV%% *}
 		log_eval export SCRATCH_LOGDEV=$SCRATCH_LOGDEV
 	fi
+
+	[ "$test" = "xfs-233" ] && log_eval export MKFS_OPTIONS="-mrmapbt=1"
 }
 
 ignore_and_do_tests()
