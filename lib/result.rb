@@ -43,7 +43,7 @@ class ResultPath < Hash
     'nvml-unit-tests' => %w[path_params tbox_group rootfs kconfig compiler commit nvml_commit run],
     'mbtest' => %w[path_params tbox_group rootfs kconfig compiler commit mbt_commit run],
     'sof_test' => %w[path_params tbox_group rootfs kconfig compiler commit sof_commit run],
-    'kvm-kernel-boot-test' => %w[path_params tbox_group rootfs kconfig compiler commit qemu_config qemu_commit guest_linux run]
+    'kvm-kernel-boot-test' => %w[path_params tbox_group rootfs kconfig compiler commit qemu_config qemu_commit linux_commit run]
   }.freeze
 
   def path_scheme
