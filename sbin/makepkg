@@ -2256,8 +2256,9 @@ create_package() {
 
 	# LKP specific feature
 	if [[ $PKGEXT = ".cgz" ]]; then
-		mkdir -p /pkg/${pkgname}/${fullver}
-		find . | cpio -o -H newc --owner=root.root | gzip -n -9 > /pkg/${pkgname}/${fullver}/$(basename $pkg_file)
+		CGZDEST=${CGZDEST:-/osimage/pkg/makepkg/${pkgname}-${fullver}.cgz}
+		mkdir -p $(dirname $CGZDEST)
+		find . | cpio -o -H newc --owner=root.root | gzip -n -9 > ${CGZDEST}
 		return
 	fi
 
