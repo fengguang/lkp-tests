@@ -1,0 +1,21 @@
+suite: xfstests
+testcase: xfstests
+category: functional
+
+boot_params:
+  bp1_memmap: 4G!8G
+  bp2_memmap: 4G!16G
+
+disk: 2pmem
+
+timeout: 2h
+
+fs:
+- ext4
+- xfs
+- btrfs
+- f2fs
+
+xfstests:
+  test:
+  - generic-413
