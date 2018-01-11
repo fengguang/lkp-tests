@@ -292,7 +292,7 @@ class MResultRootTableSet
      'build-qemu', 'convert-lkpdoc-to-html', 'convert-lkpdoc-to-html-css',
      'health-stats', 'hwinfo', 'internal-lkp-service', 'ipmi-setup',
      'lkp-bug', 'lkp-install-run', 'lkp-services', 'lkp-src', 'pack',
-     'pack-deps', 'makepkg-deps', 'borrow', 'dpdk-dts', 'mbtest', 'build-acpica'].freeze
+     'pack-deps', 'makepkg', 'makepkg-deps', 'borrow', 'dpdk-dts', 'mbtest', 'build-acpica'].freeze
 
   def initialize
     @linux_perf_table = LinuxMResultRootTable.open(LINUX_PERF_TABLE)
