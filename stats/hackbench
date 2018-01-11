@@ -1,7 +1,10 @@
 #!/usr/bin/env ruby
 
+# hackbench.workload is defined as the total messages for all
+# processes/threads
 time = 0.0
 kb = 0
+workload = 0
 
 while (line = gets)
   case line
@@ -17,7 +20,9 @@ while (line = gets)
     _name, seconds = line.split
     time += seconds.to_f
     kb += tasks * messages * bytes >> 10
+    workload += tasks * messages
   end
 end
 
 puts "throughput: #{kb / time}"
+puts "workload: #{workload}"
