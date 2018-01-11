@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+# the workload of kbuild is defined as the iteration number
 iterations = 0
 runtime = 0
 $stdin.each_line do |line|
@@ -10,4 +11,5 @@ end
 if iterations != 0
   buildtime_per_iteration = runtime / iterations
   puts "buildtime_per_iteration: #{buildtime_per_iteration}"
+  puts "workload: #{iterations}"
 end
