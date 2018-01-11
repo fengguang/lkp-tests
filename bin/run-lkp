@@ -11,6 +11,7 @@ export job=$job_file
 . $LKP_SRC/lib/http.sh
 . $LKP_SRC/lib/mount.sh
 . $LKP_SRC/lib/job-init.sh
+. $LKP_SRC/lib/ucode.sh
 
 export BENCHMARK_ROOT=/lkp/benchmarks
 export CGROUP_MNT=/cgroup
@@ -28,6 +29,11 @@ mount_cgroup
 
 echo run-job $job
 set_job_state 'running'
+
+if ! is_ucode_version_matched; then
+	echo "microcode is not matched, skip testing..."
+	exit 1
+fi
 
 if [ ${job%.yaml} != $job ]; then
 	job_script=${job%.yaml}.sh
