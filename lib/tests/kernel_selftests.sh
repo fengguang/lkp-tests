@@ -129,3 +129,9 @@ fixup_memfd()
 	grep -wq '^fuse_mnt:' $subtest/Makefile || return 0
 	make fuse_mnt -C $subtest
 }
+
+prepare_for_bpf()
+{
+	make -C ../../../tools/bpf || return
+	make install -C ../../../tools/bpf || return
+}
