@@ -14,7 +14,6 @@ fs:
 
 xfstests:
   test:
-  - generic-231
   - generic-299
   - generic-slow1
   - generic-slow2
@@ -30,3 +29,14 @@ xfstests:
   - generic-group5
 # - generic-new
 # - generic-all
+
+---
+
+fs:
+- ext4
+- xfs
+- btrfs
+
+xfstests:
+  test:
+  - generic-231
