@@ -1,0 +1,18 @@
+pkgname=schbench
+pkgver=1.0
+pkgrel=0
+pkgdesc="A benchmark to measure schedule latency."
+arch=('i686' 'x86_64')
+license=('GPL')
+source=("https://git.kernel.org/pub/scm/linux/kernel/git/mason/schbench.git")
+md5sums=('SKIP')
+
+build() {
+	cd "$srcdir/$pkgname"
+	CFLAGS="" make
+}
+
+package() {
+	mkdir -p "$pkgdir/lkp/benchmarks/schbench"
+	cp -r "$srcdir/$pkgname/"* "$pkgdir/lkp/benchmarks/schbench"
+}

@@ -1,0 +1,11 @@
+#!/bin/sh
+# - message_threads
+# - worker_threads
+# - runtime
+# - sleeptime_us
+# - cputime_us
+
+cd $BENCHMARK_ROOT/schbench || exit
+
+# the source code print the output to stderr, here redirection stderr to stdout
+log_cmd ./schbench -m $message_threads -t $worker_threads -r $runtime -s $sleeptime_us -c $cputime_us 2>&1
