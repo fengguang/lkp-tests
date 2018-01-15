@@ -32,6 +32,20 @@ split_syscalls()
 	echo "Splitting syscalls to syscalls_part1, ..., syscalls_part$i"
 }
 
+rearrange_dio()
+{
+	cd ./runtest || return
+	[ -f "dio" ] || return
+
+	sed -e "s/^#.*//g" dio | awk '{if (length !=0) print $0}' >> diocase || return
+	sed -n "1,20p" diocase >> dio-00 || return
+	sed -n "21,25p" diocase >> dio-01 || return
+	sed -n "26,28p" diocase >> dio-02 || return
+	sed -n "29,\$p" diocase >> dio-03 || return
+	rm diocase || return
+	cd ..
+}
+
 patch_source()
 {
 	local patch=$LKP_SRC/pack/$1
@@ -89,6 +103,7 @@ build_ltp()
 	patch -p1 < $LKP_SRC/pack/ltp-addon/ar_fail.patch || return
 
 	split_syscalls
+	rearrange_dio || return
 	make autotools
 	./configure --prefix=$BM_ROOT
 	make

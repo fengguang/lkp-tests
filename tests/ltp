@@ -153,7 +153,7 @@ tpm_tools)
 	export P11_USER_PWD="HELLO7"
 	export NEW_P11_USER_PWD="HELLO8"
 	;;
-ltp-aiodio.part[24]|syscalls_part[13]|dio)
+ltp-aiodio.part[24]|syscalls_part[13]|dio-0*)
 	specify_tmpdir || exit
 	;;
 syscalls_part2)

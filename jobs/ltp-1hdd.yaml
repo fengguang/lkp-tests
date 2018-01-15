@@ -10,7 +10,10 @@ fs:
 
 ltp:
   test:
-  - dio
+  - dio-00
+  - dio-01
+  - dio-02
+  - dio-03
   - fs_readonly
   - fs
   - fs_bind
