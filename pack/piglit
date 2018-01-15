@@ -21,11 +21,13 @@ build()
 	# apt-get install libglu1-mesa-dev python3-dev
 
 	local ncpu=$(nproc)
+	local wayland=1
 
+	[ "$distro" = "centos" ] && wayland=0
 	cd ../waffle || return
 	cmake	-Dwaffle_has_glx=1	\
 		-Dwaffle_has_x11_egl=1	\
-		-Dwaffle_has_wayland=1	\
+		-Dwaffle_has_wayland=$wayland	\
 		-Dwaffle_has_gbm=1	\
 		-DCMAKE_INSTALL_PREFIX=/usr || return
 	make || return
