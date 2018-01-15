@@ -6,6 +6,7 @@ binutils-dev: binutils-devel
 btrfs-tools: btrfs-progs
 build-essential: make automake gcc gcc-c++ kernel-devel rpm-build
 cgroup-bin: libcgroup
+cmake: cmake cmake3
 dbench=4.0-2: dbench
 dnsutils: bind-utils
 dpkg-dev: dpkg-devel
