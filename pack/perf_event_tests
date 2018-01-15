@@ -5,6 +5,17 @@ download()
 	git_clone_update git://github.com/deater/perf_event_tests
 }
 
+build()
+{
+	[ "$distro" = "centos" ] && {
+		# gcc   rdpmc_pthreads.o rdpmc_lib.o ../../lib/libhelper.a /lib/libpthread.so   -o rdpmc_pthreads
+		# /usr/bin/ld: skipping incompatible /lib/libpthread.so.0 when searching for /lib/libpthread.so.0
+		sed -i 's/-lpthread//' tests/rdpmc/Makefile
+		sed -i 's/LDFLAGS +=/LDFLAGS += -lpthread/' tests/rdpmc/Makefile
+	}
+	make
+}
+
 install()
 {
 	cp -a * $BM_ROOT/ || exit
