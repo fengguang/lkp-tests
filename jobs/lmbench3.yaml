@@ -2,6 +2,8 @@ suite: lmbench3
 testcase: lmbench3
 category: benchmark
 
+timeout: 2h
+
 nr_threads:
 - 1
 - 50%
