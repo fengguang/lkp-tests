@@ -191,6 +191,8 @@ build_user_filter_file()
 
 build()
 {
+	[ "$distro" = "centos" ] && sed -i 's/CXXFLAGS += -Wno-unknown-attributes/CXXFLAGS += -Wno-ignored-attributes/' ./src/benchmarks/Makefile
+
 	build_install_valgrind_pmem || return
 	build_install_libcxx || return
 	build_install_libfabric || return
