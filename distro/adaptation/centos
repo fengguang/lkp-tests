@@ -87,7 +87,9 @@ libopenmpi-dev: openmpi-devel
 libpcap0.8-dev: libpcap-devel
 libpcap0.8: libpcap
 libpcap-dev: libpcap-devel
+libpci3: pciutils
 libpciaccess-dev: libpciaccess-devel
+libpci-dev: pciutils-devel
 libperl5.20: perl-libs
 libperl5.22: perl-libs
 libpixman-1-dev: pixman-devel
@@ -99,6 +101,7 @@ libpopt-dev: popt-devel
 libprocps-dev: procps-ng-devel
 librdmacm-dev: librdmacm-devel
 libreadline5: readline
+libreadline-dev: readline-devel
 libsctp-dev: lksctp-tools-devel
 libselinux1:
 libsqlite3-dev: sqlite-devel
@@ -144,6 +147,7 @@ postmark:
 python3-mako: python-pyramid-mako
 python3-markupsafe: python34-markupsafe
 python3-numpy: python34-numpy
+python3: python34
 python3-six: python34-six
 python-minimal: python2
 python-numpy: numpy
