@@ -95,6 +95,7 @@ libpng16-16: libpng
 libpng-dev: libpng-devel
 libpopt0: popt
 libpopt-dev: popt-devel
+libprocps-dev: procps-ng-devel
 librdmacm-dev: librdmacm-devel
 libreadline5: readline
 libsctp-dev: lksctp-tools-devel
@@ -111,8 +112,10 @@ libunwind8: libunwind
 libunwind-dev: libunwind-devel
 libuuid1: libuuid
 libuv1-dev: libuv-devel
+libwaffle-dev: waffle-devel
 libx11-dev: libX11-devel
 libx11-xcb-dev: libX11-devel
+libxkbcommon-dev: libxkbcommon-devel
 linux-libc-dev:
 linux-libc-dev:i386:
 linux-perf: perf
