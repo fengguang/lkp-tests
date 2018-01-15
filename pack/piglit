@@ -42,7 +42,8 @@ build()
 
 
 	cd ../intel-gpu-tools || return
-	./autogen.sh || return
+	[ "$distro" = "centos" ] && local opts="--disable-amdgpu"
+	./autogen.sh $opts || return
 	make || return
 	find_delete_files
 }
