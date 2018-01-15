@@ -51,6 +51,9 @@ build_install_libcxx()
 	export CXX=clang++
 	local install_path=/usr/local/libcxx
 
+	CMAKE=cmake
+	[ "$distro" = "centos" ] && CMAKE=cmake3
+
 	cp -af $BUILD_DIR/libcxxabi $BUILD_DIR/llvm/projects
 	cp -af $BUILD_DIR/libcxx $BUILD_DIR/llvm/projects
 
@@ -58,11 +61,11 @@ build_install_libcxx()
 	mkdir -p $BUILD_DIR/build/lib
 
 	cd $BUILD_DIR/build/abi || return
-	cmake -DLLVM_PATH=$BUILD_DIR/llvm -DCMAKE_INSTALL_PREFIX=$install_path $BUILD_DIR/llvm/projects/libcxxabi/ || return
+	$CMAKE -DLLVM_PATH=$BUILD_DIR/llvm -DCMAKE_INSTALL_PREFIX=$install_path $BUILD_DIR/llvm/projects/libcxxabi/ || return
 	make install ||return
 
 	cd $BUILD_DIR/build/lib || return
-	cmake -DLLVM_PATH=$BUILD_DIR/llvm -DLIBCXX_CXX_ABI=libcxxabi -DLIBCXX_CXX_ABI_INCLUDE_PATHS=$BUILD_DIR/llvm/projects/libcxxabi/include \
+	$CMAKE -DLLVM_PATH=$BUILD_DIR/llvm -DLIBCXX_CXX_ABI=libcxxabi -DLIBCXX_CXX_ABI_INCLUDE_PATHS=$BUILD_DIR/llvm/projects/libcxxabi/include \
 		-DCMAKE_INSTALL_PREFIX=$install_path -DLIBCXX_CXX_ABI_LIBRARY_PATH=$install_path/lib $BUILD_DIR/llvm/projects/libcxx || return
 	make install || return
 }
