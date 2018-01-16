@@ -1,4 +1,6 @@
 #!/usr/bin/env ruby
+# unixbench.workload is defined as the total operations in unixbench for
+# all processes/threads
 
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
@@ -6,13 +8,30 @@ require "#{LKP_SRC}/lib/log"
 
 while (line = STDIN.gets)
   case line.chomp!
+  when /^Benchmark Run: .+ (\d+):(\d+):(\d+) - (\d+):(\d+):(\d+)$/
+# We only care about the difference value between end time and start time
+	  start_time = Time.new(2018, 1, 1, $1, $2, $3).to_i
+	  end_time = Time.new(2018, 1, 1, $4, $5, $6).to_i
+	  if end_time > start_time
+		  duration = end_time - start_time
+	  else
+		  duration = end_time + 3600 * 24 - start_time  # date overflow
+	  end
+  when /^System Benchmarks Partial Index .* INDEX$/
+	  line = STDIN.gets
+	  if line.chomp!
+		  lines = line.split
+		  throughput = lines[-2].to_f
+	  end
   when /^System Benchmarks Index Score .* ([0-9\.]+)$/
     score = $1
   end
 end
 
+workload = duration * throughput
 if score
   puts 'score: ' + score
+  puts 'workload: ' + workload.to_s
 else
   puts 'incomplete_result: 1'
   log_error 'unixbench: missing score, check ' + ENV['RESULT_ROOT']
