@@ -34,7 +34,6 @@ split_syscalls()
 
 rearrange_dio()
 {
-	cd ./runtest || return
 	[ -f "dio" ] || return
 
 	sed -e "s/^#.*//g" dio | awk '{if (length !=0) print $0}' >> diocase || return
@@ -43,6 +42,19 @@ rearrange_dio()
 	sed -n "26,28p" diocase >> dio-02 || return
 	sed -n "29,\$p" diocase >> dio-03 || return
 	rm diocase || return
+}
+
+rearrange_case()
+{
+	cd ./runtest || return
+
+	# re-arrange the case dio
+	rearrange_dio || return
+
+	# re-arrange the case fs_readonly
+	[ -f "fs_readonly" ] || return
+	split -d -l15 fs_readonly fs_readonly- || return
+
 	cd ..
 }
 
@@ -103,7 +115,7 @@ build_ltp()
 	patch -p1 < $LKP_SRC/pack/ltp-addon/ar_fail.patch || return
 
 	split_syscalls
-	rearrange_dio || return
+	rearrange_case || return
 	make autotools
 	./configure --prefix=$BM_ROOT
 	make

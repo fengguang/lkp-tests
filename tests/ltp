@@ -117,7 +117,7 @@ commands)
         CONFIG_FILE="/etc/postfix/main.cf"
         make_configfile || exit
         ;;
-fs_readonly)
+fs_readonly-0*)
 	[ -z "$fs" ] && exit
 	[ -z "$partitions" ] && exit
 	big_dev="${partitions%% *}"
