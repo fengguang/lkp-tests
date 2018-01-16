@@ -27,9 +27,29 @@ pack_to=$DEPS_MNT/$rootfs
 
 check_shared_package "$benchmark" && exit
 
+dpkg --add-architecture i386
 update
 
-apt-get install -yf
+apt_install_depends()
+{
+	local script
+	local bm="$1"
+	local scripts=$(find $LKP_SRC/distro/depends/ -name "$bm" -o -name "${bm}.[0-9]")
+
+	apt-get install -yf
+	for script in $scripts
+	do
+		script=$(basename $script)
+		packages=$(get_dependency_packages debian $script)
+
+		[ -z "$packages" ] && continue
+
+		echo install packages for $script: $packages
+		apt-get -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold install -y $packages
+	done
+}
+
+apt_install_depends lkp-dev
 
 [[ "$benchmark" = "all" ]] && benchmark="$(ls $LKP_SRC/distro/depends | grep -v -e '-dev' -e '-whitelist')"
 
