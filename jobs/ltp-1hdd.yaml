@@ -18,7 +18,6 @@ ltp:
   - fs_readonly-01
   - fs_readonly-02
   - fs_readonly-03
-  - fs
   - fs_bind
   - fs_perms_simple
   - fsx
@@ -34,3 +33,4 @@ need_memory: 8G
 ltp:
   test:
   - ltplite
+  - fs
