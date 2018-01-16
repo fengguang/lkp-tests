@@ -108,10 +108,10 @@ run_lmbench3_development()
 	local SYSCALL=no
 	local SELECT=no
 	local PROC=no
-	local CTX=no
 	local PAGEFAULT=no
 	local FILE=no
 	local MMAP=no
+	local CTX=no
 	local PIPE=no
 	local UNIX=no
 	local UDP=no
@@ -135,10 +135,10 @@ run_lmbench3_development()
 		echo $SYSCALL
 		echo $SELECT
 		echo $PROC
-		echo $CTX
 		echo $PAGEFAULT
 		echo $FILE
 		echo $MMAP
+		echo $CTX
 		echo $PIPE
 		echo $UNIX
 		echo $UDP
@@ -154,7 +154,7 @@ run_lmbench3_development()
 		echo
 		echo
 		echo
-		echo
+		[ $nr_threads -eq 1 ] && echo
 		echo no
 	) | make results "
 
