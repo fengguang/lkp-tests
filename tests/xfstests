@@ -53,6 +53,7 @@ set_env()
 	export PATH="/bin/":$PATH
 
 	if [ "$fs" = xfs ] && [ "$nr_partitions" -ge 3 ]; then
+		log_eval export USE_EXTERNAL=yes
 		SCRATCH_LOGDEV=${partitions#* }
 		SCRATCH_LOGDEV=${SCRATCH_LOGDEV%% *}
 		log_eval export SCRATCH_LOGDEV=$SCRATCH_LOGDEV
