@@ -46,4 +46,5 @@ if unit == 'Mbps'
 end
 avg_throughput = throughput / num
 puts 'Throughput_' + unit + ': ' + avg_throughput.to_s
+puts 'Throughput_total_' + unit + ': ' + throughput.to_s
 puts 'workload: ' + workload.to_s
