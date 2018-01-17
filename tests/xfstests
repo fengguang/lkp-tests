@@ -56,7 +56,10 @@ set_env()
 		log_eval export USE_EXTERNAL=yes
 		SCRATCH_LOGDEV=${partitions#* }
 		SCRATCH_LOGDEV=${SCRATCH_LOGDEV%% *}
-		log_eval export SCRATCH_LOGDEV=$SCRATCH_LOGDEV
+		# create a 100M partition for log, avoid
+		# log size 67108864 blocks too large, maximum size is 1048576 blocks
+		printf "n\np\n1\n\n+100M\nw\n" | fdisk $SCRATCH_LOGDEV
+		log_eval export SCRATCH_LOGDEV="$SCRATCH_LOGDEV"1
 	fi
 
 	[ "$test" = "xfs-131" ] && {
