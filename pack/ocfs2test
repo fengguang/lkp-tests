@@ -33,9 +33,9 @@ build()
 
 	[ "$distro" != "centos" ] && {
 		# include libc6-dev_2.23's header
-		mkdir ../extract
+		mkdir extract
 		# FIXME: use source code instead so that non-debian distro can work well
-		dpkg -X ../libc6-dev_2.23-0ubuntu3_amd64.deb ../extract || return
+		dpkg -X ../libc6-dev_2.23-0ubuntu3_amd64.deb extract || return
 		sed -i -e '/^CFLAGS =/a\CFLAGS += -I..\/..\/extract\/usr\/include\/x86_64-linux-gnu -I..\/..\/extract\/usr\/include' programs/xattr_tests/Makefile
 		sed -i -e '/^CFLAGS =/a\CFLAGS += -I..\/..\/extract\/usr\/include\/x86_64-linux-gnu -I..\/..\/extract\/usr\/include' programs/directio_test/Makefile
 		sed -i -e '/^CFLAGS =/a\CFLAGS += -I..\/..\/extract\/usr\/include\/x86_64-linux-gnu -I..\/..\/extract\/usr\/include' programs/discontig_bg_test/Makefile
