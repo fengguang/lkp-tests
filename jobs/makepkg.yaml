@@ -1,10 +1,7 @@
-suite: make-package
-testcase: make-package
+suite: makepkg
+testcase: makepkg
 category: benchmark
 
 rootfs: debian-x86_64.cgz
 
-make-package:
-  pkgname:
-  - gcc
-  - ebizzy
+makepkg:

@@ -1,4 +1,5 @@
 #!/bin/bash
+# - rootfs
 # - pkgname
 
 ## makepkg is a script that automates the building of packages; it can download and validate source files,
@@ -6,12 +7,73 @@
 ## make customizations, generate meta-info, and package everything together.
 ## See: https://wiki.archlinux.org/index.php/Makepkg
 
-cd $LKP_SRC/pkg/$pkgname || exit
+. $LKP_SRC/lib/debug.sh
+
+[ -n "$rootfs" ] || die "rootfs is empty"
+
+DISTRO=${rootfs%%-*}
+
+. $LKP_SRC/distro/${DISTRO}
+. $LKP_SRC/lib/install.sh
+
+cd $LKP_SRC/pkg/$pkgname || die "pkg is empty"
+
+pack_to=$(basename $rootfs)
+PKG_MNT=/osimage/pkg
+mkdir -p "$PKG_MNT"
 
 [ -n "$LKP_SERVER" ] && {
-	mount $LKP_SERVER:/pkg /pkg || exit
+	mount $LKP_SERVER:$PKG_MNT $PKG_MNT || die "Failed to run mount"
 }
 
-sudo -E -u lkp \
-	PACMAN=true BUILDDIR=$TMP PKGEXT=.cgz \
+export DEBIAN_FRONTEND=noninteractive
+
+dpkg --add-architecture i386
+
+update
+
+apt_install_depends()
+{
+	local script
+	local bm="$1"
+	local scripts=$(find $LKP_SRC/distro/depends/ -name "$bm" -o -name "${bm}.[0-9]")
+
+	apt-get install -yf
+	for script in $scripts
+	do
+		script=$(basename $script)
+		packages=$(get_dependency_packages debian $script)
+
+		[ -z "$packages" ] && continue
+
+		echo install packages for $script: $packages
+		apt-get -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold install -y $packages
+	done
+}
+
+get_pkg_info()
+{
+	var=$1
+	pkg_dir=${2:-.}
+	(
+		. $pkg_dir/PKGBUILD
+		eval echo '$'$var
+	)
+}
+
+apt_install_depends lkp-dev
+
+[[ $arch ]] || arch=`uname -m`
+
+build_depends_pkg -i $pkgname $TMP
+
+echo $LKP_SRC/sbin/makepkg --config $LKP_SRC/etc/makepkg.conf
+sync_dest="$PKG_MNT/$pack_to"
+date=$(date +"%Y-%m-%d")
+pkgver=$(get_pkg_info pkgver)
+pkgrel=$(get_pkg_info pkgrel)
+cgz_name="${pkgname}-${arch}-${pkgver:-0}-${pkgrel:-0}_${date}.cgz"
+PACMAN=true BUILDDIR=$TMP PKGEXT=.cgz CGZDEST="$sync_dest/$cgz_name" \
 	$LKP_SRC/sbin/makepkg --config $LKP_SRC/etc/makepkg.conf
+
+ln -sf "$cgz_name" "$sync_dest/${pkgname}-${arch}.cgz"
