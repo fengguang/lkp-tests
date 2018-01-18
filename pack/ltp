@@ -59,6 +59,10 @@ rearrange_case()
 	sed -e "s/^#.*//g" ltplite | awk '{if (length !=0) print $0}' > ltplitecase || return
 	split -d -l200 ltplitecase ltplite- || return
 
+	# re-arrange the case fs
+	sed -e "s/^#.*//g" fs | awk '{if (length !=0) print $0}' > fscase || return
+	split -d -l20 fscase fs- || return
+
 	cd ..
 }
 
