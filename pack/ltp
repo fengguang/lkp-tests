@@ -55,6 +55,10 @@ rearrange_case()
 	[ -f "fs_readonly" ] || return
 	split -d -l15 fs_readonly fs_readonly- || return
 
+	# re-arrange the case ltplite
+	sed -e "s/^#.*//g" ltplite | awk '{if (length !=0) print $0}' > ltplitecase || return
+	split -d -l200 ltplitecase ltplite- || return
+
 	cd ..
 }
 
