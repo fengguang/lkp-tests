@@ -89,7 +89,7 @@ recover_configfile()
 workaround_env
 
 case "$test" in
-admin_tools)
+admin_tools-0*)
 	# set TMP=/tmp for new user
 	echo "TMP=/tmp" >> /etc/skel/.profile
 	# the cron.allow in debian is "/etc/cron.allow", same as redhat
