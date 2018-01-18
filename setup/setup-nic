@@ -31,14 +31,23 @@
 [ -n "$dev" ] || exit 0
 
 if [ -n "$int_coalescence" ]; then
-  if [ -n "$rx_usec" -a "$rx_usec" != 0 ] &&
-     [ -n "$rx_framesz" -a "$rx_framesz" != 0 ]; then
-      ethtool -C $dev adaptive-rx on rx-usecs $rx_usec rx-frames $rx_framesz
-  fi
-  if [ -n "$tx_usec" -a "$tx_usec" != 0 ] &&
-     [ -n "$tx_framesz" -a "$tx_framesz" != 0 ]; then
-      ethtool -C $dev adaptive-tx on tx-usecs $tx_usec tx-frames $tx_framwsz
-  fi
+  # Some NICs(X710 series) require to disable the
+  # adaptive rx/tx before changing any values.
+  ethtool -C $dev adaptive-rx off
+  ethtool -C $dev adaptive-tx off
+fi
+
+[ -n "$rx_usec" -a "$rx_usec" != 0 ] && ethtool -C $dev rx-usecs $rx_usec
+
+[ -n "$tx_usec" -a "$tx_usec" != 0 ] && ethtool -C $dev tx-usecs $tx_usec
+
+[ -n "$rx_framesz" -a "$rx_framesz" != 0 ] && ethtool -C $dev rx-framesz $rx_framesz
+
+[ -n "$tx_framesz" -a "$tx_framesz" != 0 ] && ethtool -C $dev tx-framesz $tx_framesz
+
+if [ -n "$int_coalescence" ]; then
+  ethtool -C $dev adaptive-rx on
+  ethtool -C $dev adaptive-tx on
 fi
 
 if [ -n "$flow_control" ]; then
