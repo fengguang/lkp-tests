@@ -1,6 +1,7 @@
 model: Haswell-EP
 nr_cpu: 56
 memory: 256G
+hdd_partitions: /dev/disk/by-id/scsi-36b083fe0cfc0d1001f7658010d19fb9c-part1
 ssd_partitions:
 swap_partitions:
 rootfs_partition:
