@@ -98,7 +98,9 @@ groups.each do |k, v|
   if $opt_raw
     puts "#{k}: #{v}"
   else
-    next if v.delete_if { |value| value.zero? }.empty?
+    v = v.reject(&:zero?) unless $opt_field =~ /last_state/
+    next if v.empty? || v.sum.zero?
+
     total = v.sum
     avg = v.average
     stddev = 100 * v.standard_deviation / v.average
