@@ -45,10 +45,10 @@ check_ignored_cases()
 
 run_test()
 {
-	# sub-case "01","07","11","19" typicall need to cost more time.
+	# sub-case "01raid","07","11","19" typicall need to cost more time.
 	local prefix=""
 	case $test_prefix in
-		01|07|11|19) prefix="timeout 30m"
+		01raid|07|11|19) prefix="timeout 30m"
 		;;
 		*) prefix="timeout 5m"
 		;;
