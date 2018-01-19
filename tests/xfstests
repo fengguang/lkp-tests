@@ -72,7 +72,7 @@ set_env()
 		log_eval export SCRATCH_LOGDEV="$SCRATCH_LOGDEV"1
 	}
 
-	[ "$test" = "xfs-131" ] && {
+	[ "$test" = "xfs-external" ] && {
 		log_eval export USE_EXTERNAL="yes"
 		log_eval export SCRATCH_RTDEV="$SCRATCH_LOGDEV"
 		log_eval export MKFS_OPTIONS="-mreflink=1"
