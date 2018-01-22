@@ -113,7 +113,14 @@ wait_other_nodes()
 		ip addr add $ip/24 dev $device
 		ip link set $device up
 		if [ -n "$set_nic_irq_affinity" ]; then
-			$LKP_SRC/bin/set_nic_irq_affinity all $device
+			if [ "$set_nic_irq_affinity" = "1" ]; then
+				$LKP_SRC/bin/set_nic_irq_affinity all $device || return
+			elif [ "$set_nic_irq_affinity" = "2" ]; then
+				$LKP_SRC/bin/set_nic_irq_affinity local $device || return
+			else
+				echo "Invalid nic irq setting mode, quit..."
+				return 1
+			fi
 		fi
 		idx=$((idx + 1))
 	done
