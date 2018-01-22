@@ -24,9 +24,11 @@ check_ignored_cases()
 		cat runtest/$test | awk '{print $1}' | grep -G "$regex" | awk -v prefix=$test":" '$0=prefix$0' >> ./ignored_by_lkp
 	done
 
-	for i in $(cat ./ignored_by_lkp | grep -v '^#' | grep -w ^$test | awk -F: 'NF == 2')
+	orig_test=$(echo "$test" | sed 's/-[0-9]\{2\}$//')
+	for i in $(cat ./ignored_by_lkp | grep -v '^#' | grep -w ^$orig_test | awk -F: 'NF == 2')
 	do
 		ignore=$(echo $i | awk -F: '{print $2}')
+		grep -q "^${ignore}" runtest/${test} || continue
 		sed -i "s/^${ignore}/#${ignore}/g" runtest/${test}
 		echo "<<<test_start>>>"
 		echo "tag=${ignore}"
