@@ -30,7 +30,7 @@ mount_cgroup
 echo run-job $job
 set_job_state 'running'
 
-if ! is_ucode_version_matched; then
+if ! is_ucode_version_matched "$testbox"; then
 	echo "microcode is not matched, skip testing..."
 	exit 1
 fi
