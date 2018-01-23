@@ -128,6 +128,7 @@ build_ignored_by_lkp()
 	echo "scan_only" >> $ignored_by_lkp
 	echo "discovery_pd_retries" >> $ignored_by_lkp
 	echo "rrm_beacon_req_table_rsne" >> $ignored_by_lkp
+	echo "p2p_service_discovery_external" >> $ignored_by_lkp
 
 	echo "# ignore _wait_for_the_reply_of_community" >> $ignored_by_lkp
 	echo "ap_config_reload" >> $ignored_by_lkp
