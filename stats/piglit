@@ -9,8 +9,6 @@ while (line = STDIN.gets)
     stats_type = $2
     stats << $1.tr(' /', '_.') + ".#{stats_type}: 1"
     nr_test += 1
-  when /\.seconds: [0-9.]+$/
-    stats << line.tr('/', '.')
   end
 end
 
