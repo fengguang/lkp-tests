@@ -3,10 +3,11 @@ testcase: suspend_stress
 category: functional
 kernel_cmdline: "initcall_debug log_buf_len=4M no_console_suspend ignore_loglevel"
 
+swap:
+
 suspend_stress:
   mode:
-  - mem
-  - freeze
+  - disk
 
 iterations: 10
 runtime:
