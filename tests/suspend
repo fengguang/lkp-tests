@@ -11,7 +11,7 @@
 [ -n "$runtime" ] || runtime=600
 [ -n "$iterations" ] || iterations=10
 
-wakeup_interval=30
+wakeup_interval=60
 
 trace_dir=/sys/kernel/debug/tracing
 event_dir=/sys/kernel/debug/tracing/events/power
