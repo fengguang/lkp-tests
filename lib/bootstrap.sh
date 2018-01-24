@@ -376,26 +376,39 @@ netconsole_init()
 	modprobe netconsole netconsole=@/,$netconsole_port@$netconsole_server/ 2>/dev/null
 }
 
+tbox_use_lkp_ipxe()
+{
+	[ "${HOSTNAME#*lkp-ivb-toshiba1}"       != "$HOSTNAME" ] && return 1
+	[ "${HOSTNAME#*lkp-kbl-lenovo1}"        != "$HOSTNAME" ] && return 1
+	[ "${HOSTNAME#*lkp-skl-d01}"    != "$HOSTNAME" ] && return 1
+	return 0
+}
+
+tbox_use_lkp_grub()
+{
+	[ "${HOSTNAME#*lkp-bxt01}"      != "$HOSTNAME" ] && return 1
+	[ "${HOSTNAME#*lkp-glk01}"      != "$HOSTNAME" ] && return 1
+	[ "${HOSTNAME#*lkp-kbly01}"     != "$HOSTNAME" ] && return 1
+	[ "${HOSTNAME#*lkp-kblr01}"     != "$HOSTNAME" ] && return 1
+	[ "${HOSTNAME#*lkp-kbls01}"     != "$HOSTNAME" ] && return 1
+	[ "${HOSTNAME#*lkp-cfl-s01}"    != "$HOSTNAME" ] && return 1
+	[ "${HOSTNAME#*lkp-sklu-lenovo1}"       != "$HOSTNAME" ] && return 1
+	return 0
+}
+
 tbox_cant_kexec()
 {
 	is_virt && return 0
 
+	tbox_use_lkp_ipxe && return 0
+	tbox_use_lkp_grub && return 0
+
 	# following tbox are buggy while using kexec to boot
-	[ "${HOSTNAME#*lkp-bxt01}"      != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-cfl-s01}"    != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-denverton2}" != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-g5}"         != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-glk01}"      != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-glk02}"      != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-ivb-d02}"    != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-ivb-toshiba1}"       != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-kbl-lenovo1}"        != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-kblr01}"     != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-kbls01}"     != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-kbly01}"     != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-minnow01}"   != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-skl-d01}"    != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-sklu-lenovo1}"       != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-skly01}"     != "$HOSTNAME" ] && return 0
 
 	[ -x '/sbin/kexec' ] || return 0
