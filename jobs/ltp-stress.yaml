@@ -1,0 +1,35 @@
+suite: ltp
+testcase: ltp
+category: functional
+
+ltp:
+  test:
+  - stress.part2
+# Stress tests groups, will take too long time, close them for now
+# 5 hours 43 mins
+#  - controllers
+# 1 hour 30 mins
+#  - net.features
+# 4 hours 2 mins
+#  - net_stress.broken_ip
+# 6 hours 39 mins
+#  - net_stress.interface
+# 1 hour 30 mins
+#  - stress.part1
+# more than 8 hours
+#  - stress.part3
+# Stress test groups, all cases fail or CONF, or fail to get test results
+#  - ltp-aio-stress.part1
+#  - ltp-aio-stress.part2
+#  - net.nfs
+#  - net_stress.ipsec_icmp
+#  - net_stress.ipsec_tcp
+#  - net_stress.ipsec_udp
+#  - net_stress.multicast
+#  - net_stress.route
+
+---
+need_memory: 8G
+ltp:
+  test:
+  - net_stress.appl
