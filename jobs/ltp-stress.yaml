@@ -2,6 +2,8 @@ suite: ltp
 testcase: ltp
 category: functional
 
+runtime: 4h
+
 ltp:
   test:
   - stress.part2
@@ -9,15 +11,15 @@ ltp:
 # 5 hours 43 mins
 #  - controllers
 # 1 hour 30 mins
-#  - net.features
+  - net.features
 # 4 hours 2 mins
-#  - net_stress.broken_ip
+  - net_stress.broken_ip
 # 6 hours 39 mins
-#  - net_stress.interface
+  - net_stress.interface
 # 1 hour 30 mins
-#  - stress.part1
+  - stress.part1
 # more than 8 hours
-#  - stress.part3
+  - stress.part3
 # Stress test groups, all cases fail or CONF, or fail to get test results
 #  - ltp-aio-stress.part1
 #  - ltp-aio-stress.part2
