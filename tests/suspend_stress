@@ -7,11 +7,11 @@
 
 [ -n "$mode" ] || mode='freeze'
 [ -n "$iterations" ] || iterations=1
-[ -n "$rtcwake" ] || rtcwake=15
+[ -n "$rtcwake" ] || rtcwake=60
 
 if [ -z "$runtime" ]
 then
-	runtime=$(( $iterations * 60))
+	runtime=$(( $iterations * 120))
 fi
 
 rtcwake_file=/sys/class/rtc/rtc0/wakealarm
