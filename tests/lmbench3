@@ -59,8 +59,11 @@ run_lmbench3_all()
 		echo
 		echo
 		echo
-		echo
-		echo
+		[ $nr_threads -eq 1 ] &&
+		{
+			echo
+			echo
+		}
 		echo no
 	) | make results "
 	wait
@@ -79,8 +82,11 @@ run_lmbench3_hardware()
 		echo
 		echo
 		echo
-		echo
-		echo
+		[ $nr_threads -eq 1 ] &&
+		{
+			echo
+			echo
+		}
 		echo no
 	) | make results "
 	wait
@@ -98,7 +104,7 @@ run_lmbench3_os()
 		echo
 		echo
 		echo
-		echo
+		[ $nr_threads -eq 1 ] && echo
 		echo no
 	) | make results "
 }
