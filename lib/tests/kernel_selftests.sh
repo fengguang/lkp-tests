@@ -42,6 +42,7 @@ check_ignore_case()
 prepare_for_net()
 {
 	ulimit -l 10240
+	modprobe fou
 }
 
 prepare_for_efivarfs()
