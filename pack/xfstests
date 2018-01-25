@@ -17,6 +17,7 @@ build_upstream_ext4_blacklist()
 build_install_xfsprogs()
 {
 	cd ../xfsprogs-dev || return
+	cp -r ../xfsprogs-dev  /lkp/benchmarks/$BM_NAME/xfsprogs-dev
 	make configure || return
 	./configure --prefix=$BUILD_DIR/pack/usr --exec_prefix=$BUILD_DIR/pack/usr
 	make || return

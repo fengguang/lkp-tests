@@ -72,6 +72,14 @@ set_env()
 		log_eval export SCRATCH_LOGDEV="$SCRATCH_LOGDEV"1
 	}
 
+	[ "$test" = "xfs-437" ] && {
+		echo "LC_ALL=en_US.UTF-8" >> /etc/environment
+		echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+		echo "LANG=en_US.UTF-8" > /etc/locale.conf
+		locale-gen en_US.UTF-8
+		log_eval export WORKAREA="$BENCHMARK_ROOT/xfstests/xfsprogs-dev"
+	}
+
 	[ "$test" = "xfs-external" ] && {
 		log_eval export USE_EXTERNAL="yes"
 		log_eval export SCRATCH_RTDEV="$SCRATCH_LOGDEV"
