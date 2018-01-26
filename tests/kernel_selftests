@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# - group
 ## The kernel contains a set of "self tests" under the tools/testing/selftests/
 ## directory. These are intended to be small unit tests to exercise individual
 ## code paths in the kernel.
@@ -22,7 +22,9 @@ prepare_for_test
 skip_filter="timers powerpc"
 command gcc-5 >/dev/null || skip_filter="x86 $skip_filter"
 
-for mf in */Makefile; do
+prepare_for_selftest
+
+for mf in [$selftest]*/Makefile; do
 	subtest=${mf%/Makefile}
 
 	check_ignore_case $subtest && echo "ignored_by_lkp $subtest test" && continue
