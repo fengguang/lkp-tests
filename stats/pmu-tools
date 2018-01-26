@@ -2,10 +2,19 @@
 
 results = Hash.new(0)
 
+# Example output
+#    290.690747746 777209  mem_load_uops_l3_miss_retired_remote_dram 89128748143 100.00
+#    324.224668698 7928832 Bytes llc_misses.mem_read 8005538025 100.00
+
 STDIN.each_line do |line|
-  _, value, key = line.split
-  next unless value =~ /^\d+$/
-  results[key] += value.to_i
+  if line =~ /\d+.\d+\s+(\d+)\s+(\S+)\s+(\S+)/
+    if $2 == "Bytes"
+      key = "#{$3}_#{$2}"
+    else
+      key = $2
+    end
+    results[key] += $1.to_i
+  end
 end
 
 results.each do |key, value|
