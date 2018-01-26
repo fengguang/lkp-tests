@@ -86,6 +86,7 @@ set_env()
 		log_eval export MKFS_OPTIONS="-mreflink=1"
 		log_eval unset SCRATCH_LOGDEV
 	}
+	[ "$test" = "xfs-reflink_rmapbt" ] && log_eval export MKFS_OPTIONS="\"-mreflink=1 -mrmapbt=1\""
 	[ "$test" = "xfs-reflink" ] && log_eval export MKFS_OPTIONS="-mreflink=1"
 	[ "$test" = "xfs-rmapbt" ] && log_eval export MKFS_OPTIONS="-mrmapbt=1"
 	[ "$test" = "xfs-244" ] && log_eval export MKFS_OPTIONS="-mcrc=0"
