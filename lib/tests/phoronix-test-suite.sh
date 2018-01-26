@@ -231,7 +231,13 @@ run_test()
 		jgfxbat-1.1.0)
 			fixup_jgfxbat || die "failed to fixup jgfxbat"
 			;;
-		glmark2-1.1.0|openarena-1.5.3|gputest-1.3.1|supertuxkart-1.3.0|tesseract-1.1.0|unigine-heaven-1.6.2|unigine-valley-1.1.4)
+		unigine-heaven-1.6.2)
+			export DISPLAY=:0
+			# resolutino: 800X600
+			# full screen
+			test_opt="\n1\n1\nn"
+			;;
+		glmark2-1.1.0|openarena-1.5.3|gputest-1.3.1|supertuxkart-1.3.0|tesseract-1.1.0|unigine-valley-1.1.4)
 			export DISPLAY=:0
 			;;
 	esac
