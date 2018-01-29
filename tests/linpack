@@ -12,7 +12,7 @@ cd $BENCHMARK_ROOT/linpack || exit
 . $LKP_SRC/lib/unit.sh
 
 if [ -z "$test_memory_size" ]; then
-	test_memory_size=$(($(to_byte $memory) * 2 / 3))
+	test_memory_size=$(($(to_byte $memory) / 2))
 	max_mem=$((32<<30))
 	[ "$test_memory_size" -gt "$max_mem" ] && test_memory_size=$max_mem
 fi
