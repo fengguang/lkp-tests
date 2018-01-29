@@ -42,7 +42,6 @@ append=(
 	vga=normal
 	root=/dev/ram0
 	rcupdate.rcu_cpu_stall_timeout=100
-	rcuperf.shutdown=0
 	drbd.minor_count=8
 	rw
 

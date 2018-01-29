@@ -224,7 +224,7 @@ job_initrd_dir=${job_file%/*}
 if [ -n "$bootloader_append" ]; then
 	bootloader_append=$(echo "$bootloader_append" | tr '\n' ' ')
 else
-	bootloader_append="root=/dev/ram0 job=$job_file user=$user  ARCH=x86_64 kconfig=x86_64-rhel commit=051d101ddcd268a7429d6892c089c1c0858df20b branch=linux-devel/devel-hourly-2015033109 max_uptime=1247 RESULT_ROOT=$result_root earlyprintk=ttyS0,115200 rd.udev.log-priority=err systemd.log_target=journal systemd.log_level=warning debug apic=debug sysrq_always_enabled rcupdate.rcu_cpu_stall_timeout=100 panic=-1 softlockup_panic=1 nmi_watchdog=panic oops=panic load_ramdisk=2 prompt_ramdisk=0 rcuperf.shutdown=0 console=ttyS0,115200 console=tty0 vga=normal rw"
+	bootloader_append="root=/dev/ram0 job=$job_file user=$user  ARCH=x86_64 kconfig=x86_64-rhel commit=051d101ddcd268a7429d6892c089c1c0858df20b branch=linux-devel/devel-hourly-2015033109 max_uptime=1247 RESULT_ROOT=$result_root earlyprintk=ttyS0,115200 rd.udev.log-priority=err systemd.log_target=journal systemd.log_level=warning debug apic=debug sysrq_always_enabled rcupdate.rcu_cpu_stall_timeout=100 panic=-1 softlockup_panic=1 nmi_watchdog=panic oops=panic load_ramdisk=2 prompt_ramdisk=0 console=ttyS0,115200 console=tty0 vga=normal rw"
 fi
 
 # create vm result path
