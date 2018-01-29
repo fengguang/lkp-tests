@@ -64,6 +64,10 @@ build_install_libcxx()
 	$CMAKE -DLLVM_PATH=$BUILD_DIR/llvm -DCMAKE_INSTALL_PREFIX=$install_path $BUILD_DIR/llvm/projects/libcxxabi/ || return
 	make install ||return
 
+	# xlocale.h was removed since libc6-de 2.26: https://sourceware.org/glibc/wiki/Release/2.26#Removal_of_.27xlocale.h.27
+	# here touch a fake header to avoid compiling error.
+	[ -f /usr/include/xlocale.h ] || touch $BUILD_DIR/llvm/projects/libcxx/include/xlocale.h
+
 	cd $BUILD_DIR/build/lib || return
 	$CMAKE -DLLVM_PATH=$BUILD_DIR/llvm -DLIBCXX_CXX_ABI=libcxxabi -DLIBCXX_CXX_ABI_INCLUDE_PATHS=$BUILD_DIR/llvm/projects/libcxxabi/include \
 		-DCMAKE_INSTALL_PREFIX=$install_path -DLIBCXX_CXX_ABI_LIBRARY_PATH=$install_path/lib $BUILD_DIR/llvm/projects/libcxx || return
