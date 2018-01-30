@@ -70,6 +70,13 @@ rearrange_case()
 	sed -e "s/^#.*//g" crashme | awk '{if (length !=0) print $0}' > crashmecase || return
 	split -d -l2 crashmecase crashme- || return
 
+	# re-arrange the case net_stress.appl
+	grep "http4" net_stress.appl > net_stress.appl-00 || return
+	grep "http6" net_stress.appl > net_stress.appl-01 || return
+	grep "ftp4-download" net_stress.appl > net_stress.appl-02 || return
+	grep "ftp6-download" net_stress.appl > net_stress.appl-03 || return
+	cat net_stress.appl | grep -v "http[4|6]" | grep -v "ftp[4|6]-download" > net_stress.appl-04 || return
+
 	cd ..
 }
 

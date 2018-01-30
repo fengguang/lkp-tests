@@ -203,7 +203,7 @@ net.rpc)
 	systemctl start openbsd-inetd || exit
 	cp netkit-rusers/bin/rup /usr/bin/
 	;;
-net_stress.appl)
+net_stress.appl-0*)
         [ -d /srv/ftp ] && export FTP_DOWNLOAD_DIR=/srv/ftp
         sed -i '/\/usr\/sbin\/named {/a\\/tmp\/** rw,' /etc/apparmor.d/usr.sbin.named || exit
         systemctl start bind9 || exit
