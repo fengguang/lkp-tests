@@ -3,7 +3,7 @@
 # - pattern
 # - mapsize
 # - shape
-# - nr_tasks
+# - nr_task
 # - timestamp
 # - cold
 # - access
@@ -25,7 +25,7 @@ set_opt()
 	[ -n "$setsize" ] && opt="${opt} -s${setsize}"
 	[ -n "$pattern" ] && opt="${opt} -p${pattern}"
 	[ -n "$shape" ] && opt="${opt} -e${shape}"
-	[ -n "$nr_tasks" ] && opt="${opt} -j${nr_tasks}"
+	[ -n "$nr_task" ] && opt="${opt} -j${nr_task}"
 	[ -n "$timestamp" ] && opt="${opt} -t${timestamp}"
 	parse_bool -q "$cold" && opt="${opt} -c"
 	[ -n "$access" ] && opt="${opt} -a${access}"
