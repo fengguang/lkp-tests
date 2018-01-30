@@ -8,6 +8,32 @@
 
 cd $BENCHMARK_ROOT/$testcase || die "can not enter $BENCHMARK_ROOT/$testcase"
 
+# create a small virtual block device to speed up the test
+setup_test_block()
+{
+	dev=$partition
+
+	echo "$fstype" | grep -q -e "^ext" -e "^f2fs" || local mkfs_opts="-f"
+	umount $dev 2>/dev/null
+	mkfs -t ${fstype%%_*} -q $mkfs_opts $dev || return
+
+	mkdir -p /fs/$dev
+	mount $dev /fs/$dev || return
+
+	dd if=/dev/zero of=/fs/$dev/test_block bs=100M count=1 || return
+	losetup /dev/loop0 /fs/$dev/test_block || return
+
+	partition=/dev/loop0
+}
+
+umount_test_block()
+{
+	[ "$dev" ] && {
+		losetup -d /dev/loop0
+		umount $dev
+	}
+}
+
 # fxmark can not be run until we change the source to fit the target machine
 # TODO: support more media type: nvme,mem
 # after setup_config, the changes are like:
@@ -30,6 +56,10 @@ setup_config()
 {
 	partition="${partitions%% *}"
 	[ "$partition" ] || return
+
+	[ "$test" = "MWUM" -o "$test" = "MWUL" ] && {
+		setup_test_block || return
+	}
 
 	sed -i "/    confirm_media_path()/i\\
     Runner.HDDDEV = \"$partition\"\n\
@@ -58,4 +88,5 @@ setup_config || die "failed to setup configuration"
 
 run
 
+umount_test_block
 do_recover
