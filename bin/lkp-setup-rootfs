@@ -37,6 +37,11 @@ job_does_not_need_reboot()
 	return 1
 }
 
+job_force_reboot()
+{
+	grep -q "^force_reboot: \+1$" $job
+}
+
 start_reboot_watchdog()
 {
 	[ -n "$boot_timeout" ] || return
@@ -49,7 +54,7 @@ while true; do
 	echo $LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp
 	$LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp $job
 
-	tbox_cant_kexec && {
+	if tbox_cant_kexec || job_force_reboot; then
 		echo "LKP: rebooting"
 
 		# Avoid get stuck in yocto minimal rootfs.
@@ -64,7 +69,7 @@ while true; do
 
 		start_reboot_watchdog
 		reboot 2>/dev/null && exit
-	}
+	fi
 
 	if [ -n "$LKP_DEBUG" ]; then
 		# To debug what left from last run
