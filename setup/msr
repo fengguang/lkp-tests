@@ -1,0 +1,31 @@
+#!/bin/sh
+# - msr
+# - msrval
+# - not_check_msr
+# - not_restore_msr
+
+. $LKP_SRC/lib/common.sh
+. $LKP_SRC/lib/debug.sh
+
+modprobe msr > /dev/null 2>&1
+
+[ -n "$msr" ] && {
+	parse_bool -q "$not_restore_msr" || {
+		oval=$(rdmsr -c "$msr")
+		restore="$restore
+wrmsr -a '$msr' '$oval'
+"
+	}
+	log_cmd wrmsr -a "$msr" "$msrval" || exit
+	parse_bool -q "$not_check_msr" || {
+		val=$(rdmsr -c "$msr")
+		[ "$val" = "$msrval" ] || \
+			die "Fail to write $msrval to MSR $msr, get $val"
+	}
+}
+
+parse_bool -q "$not_restore_msr" || cat > "$TMP_RESULT_ROOT/post-run.msr" <<EOF
+$restore
+EOF
+
+exit 0
