@@ -92,6 +92,8 @@ setup_qemu_netdev()
 
 	qemu_netdev_option="-device e1000,netdev=net0 "
 	qemu_netdev_option+="-netdev user,id=net0"
-	[[ $opt_ssh ]] &&
-	qemu_netdev_option+=",hostfwd=tcp::$opt_ssh-:22"
+	[[ $opt_ssh ]] && {
+		lsof -Pi :$opt_ssh -sTCP:LISTEN > /dev/null && sleep 5
+		qemu_netdev_option+=",hostfwd=tcp::$opt_ssh-:22"
+	}
 }
