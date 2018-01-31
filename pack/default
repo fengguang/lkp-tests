@@ -125,7 +125,7 @@ pack_pkg()
 	rm -fr "$BUILD_DIR/$pkg_name"
 
 	if [[ "$BM_NAME" != "lkp-src" ]]; then
-		[[  "$(ls -A $BM_ROOT)" ]] || exit
+		[[  "$(ls -A $BM_ROOT)" ]] || return 0
 	fi
 
 	case $distro in
