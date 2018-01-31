@@ -189,6 +189,7 @@ makepkg_install_packages() {
 	[ -n "$packages" ] && [ "$packages" != " " ] || return
 
 	for pkg in $packages; do
+		[ "$pkg" = "$script" ] && continue
 		if ! verify_install $pkg; then
 			install_packages "$pkg" "$distro"
 			makepkg_install_packages "$pkg" "$distro"
