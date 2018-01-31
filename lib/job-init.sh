@@ -141,7 +141,8 @@ wait_on_manual_check()
 		elif ! has_cmd 'users'; then
 			break
 		# t100 has XWindow auto login
-		elif [ "$HOSTNAME" = 't100' ]; then
+		# lkp-minnow01 has root user on its local rootfs
+		elif [ "$HOSTNAME" = 't100' ] || [ "$HOSTNAME" = 'lkp-minnow01' ]; then
 			local users="$(users)"
 			[ "${users#* }" != "$users" ] || break
 		else
