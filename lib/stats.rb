@@ -101,7 +101,8 @@ def is_changed_stats(sorted_a, min_a, mean_a, max_a,
                      is_failure_stat, is_latency_stat,
                      stat, options)
 
-  if options['perf-profile'] && stat =~ /^perf-profile\./
+  if options['perf-profile'] && stat =~ /^perf-profile\./ && options['perf-profile'].is_a?(mean_a.class)
+    log_err "#{options['result_root']}: options['perf-profile'] is a Fixnum"
     return mean_a > options['perf-profile'] ||
            mean_b > options['perf-profile']
   end
