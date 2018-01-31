@@ -7,6 +7,6 @@ nr_threads: 100%
 
 mysql-setup:
 setup-oltp:
+  table_size: 1000000
 
 oltp:
-  table_size: 1000000
