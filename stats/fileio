@@ -7,6 +7,14 @@ require "#{LKP_SRC}/lib/string_ext"
 while (line = STDIN.gets)
   line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
   case line
+#    read/write requests:                 180926452 (603084.78 per sec.)
+  when /read\/write requests:\s+ (\d+)\s+\(([\d.]+) per sec.\)/
+    puts 'rw_requests: ' + $1
+    puts 'rw_requests/s: ' + $2
+#    transactions:                        12923318 (43077.48 per sec.)
+  when /transactions:\s+(\d+)\s+\(([\d.]+) per sec.\)/
+    puts 'transactions: ' + $1
+    puts 'transactions/s: ' + $2
   when /read\/write requests:\s+ (\d+)/
     puts 'rw_requets: ' + $1
   when /transactions:\s+ (\d+)/
@@ -17,7 +25,17 @@ while (line = STDIN.gets)
     puts 'request_latency_max_ms: ' + $1
   when /min:\s+(.*)ms/
     puts 'request_latency_min_ms: ' + $1
+  when /avg:\s+(.*)ms/
+    puts 'request_latency_avg_ms: ' + $1
   when /approx.  95 percentile:\s+(.*)ms/
     puts 'request_latency_95%_ms: ' + $1
+#    events (avg/stddev):           146855.8864/311.47
+  when /events \(avg\/stddev\):\s+([\d.]+)\/([\d.]+)/
+    stddev = $2.to_f * 100 / $1.to_f
+    puts "thread_events_stddev%: #{stddev}"
+#    execution time (avg/stddev):   299.1985/0.00
+  when /execution time \(avg\/stddev\):\s+([\d.]+)\/([\d.]+)/
+    stddev = $2.to_f * 100 / $1.to_f
+    puts "thread_time_stddev%: #{stddev}"
   end
 end
