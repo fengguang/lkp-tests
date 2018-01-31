@@ -134,6 +134,8 @@ build_ignored_by_lkp()
 	echo "wnm_bss_tm_scan_not_needed" >> $ignored_by_lkp
 	echo "grpform_no_5ghz_add_cli3" >> $ignored_by_lkp
 	echo "grpform_no_5ghz_world_roaming" >> $ignored_by_lkp
+	echo "p2ps_connect_adv_go_persistent" >> $ignored_by_lkp
+	echo "owe_transition_mode_open_only_ap" >> $ignored_by_lkp
 
 	echo "# ignore _wait_for_the_reply_of_community" >> $ignored_by_lkp
 	echo "ap_config_reload" >> $ignored_by_lkp
