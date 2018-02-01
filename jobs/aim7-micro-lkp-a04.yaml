@@ -4,12 +4,17 @@ category: benchmark
 
 aim7:
   test:
+  - disk_rr
+  load: 300
+
+---
+aim7:
+  test:
   - brk_test
   - exec_test
   - add_double
   - sort_rtns_1
   - shell_rtns_1
-  - disk_rr
   - disk_rw
   - string_rtns
   - page_test
