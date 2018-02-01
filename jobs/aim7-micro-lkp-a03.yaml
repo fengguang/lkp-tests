@@ -23,8 +23,13 @@ aim7:
 ---
 aim7:
   test:
-  - add_float
   - creat-clo
+  load: 400
+
+---
+aim7:
+  test:
+  - add_float
   - disk_cp
   - mem_rtns_1
   load: 600
