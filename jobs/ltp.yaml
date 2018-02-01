@@ -59,6 +59,7 @@ ltp:
 # Stress test groups, but will not take too long time
   - fs
   - fsx
+  - cve
 # io_cd requires special peripheral(/dev/cdrom and media)
 #  - io_cd
 # Ignore floppy tests
