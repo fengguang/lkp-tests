@@ -45,7 +45,7 @@ apt_install_depends()
 		[ -z "$packages" ] && continue
 
 		echo install packages for $script: $packages
-		apt-get -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold install -y $packages
+		LC_ALL="C" apt-get -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold install -y $packages
 	done
 }
 
