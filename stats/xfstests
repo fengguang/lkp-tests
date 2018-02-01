@@ -14,8 +14,6 @@ def stat_line(line, results)
     results['skips'] = $1.tr('/', '.').split
   when /^_check_generic_filesystem: filesystem on .+ is inconsistent \(see .+\/([a-z]+)\/([0-9]+)\.full\)/
     puts "#{$1}.#{$2}.inconsistent_fs: 1"
-  when /^(generic|shared|ext4|xfs|btrfs|udf)\/(\d\d\d)\s+(\d+)s/
-    puts "#{$1}.#{$2}.seconds: #{$3}"
   when /^(ignored by lkp): (.*)/
     puts "#{$2.tr('/', '.')}.ignored_by_lkp: 1"
   end
@@ -31,4 +29,3 @@ results['passes'] = results['ran'] - results['failures']
 results['passes'].each { |seq| puts "#{seq}.pass: 1" }
 results['skips'].each { |seq| puts "#{seq}.skip: 1" }
 results['failures'].each { |seq| puts "#{seq}.fail: 1" }
-puts "total_test: #{results['ran'].size + results['skips'].size}"
