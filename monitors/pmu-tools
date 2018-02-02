@@ -19,10 +19,15 @@ ocperf=$BENCHMARK_ROOT/pmu-tools/ocperf.py
 # https://download.01.org/perfmon to $XDG_HOME_CACHE/pmu-events at
 # first run. But test machine may not have external network
 # connection. So we will pre-downloaded CPU map files into
-# $BENCHMARK_ROOT and use it here.
+# $BENCHMARK_ROOT and copy it to user's cache directory.
 #
 
-export XDG_CACHE_HOME=$BENCHMARK_ROOT
+[ -n "$HOME" ] || export HOME=/root
+
+[ -d "$HOME/.cache/pmu-events" ] || {
+	mkdir -p "$HOME/.cache"
+	cp -af "$BENCHMARK_ROOT/pmu-tools/pmu-events" "$HOME/.cache"
+}
 
 # perf may consume lots of fd
 ulimit -n 102400
