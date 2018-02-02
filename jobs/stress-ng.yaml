@@ -16,9 +16,15 @@ stress-ng:
   - io
   - memory
   - network
-  - os
   - pipe
   - scheduler
   - security 
-  - vm
 
+---
+testtime:
+- 1s
+
+stress-ng:
+  class:
+  - os
+  - vm
