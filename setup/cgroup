@@ -57,7 +57,7 @@ do
 	val=${line##*=}
 	[ -n "$val" ] || continue
 	param=$(echo "$key" | sed 's/_46_/./g')
-	if [ "${key%%_46_*}" == "cpu" -o "${key%%_46_*}" == "cpuacct" ]; then
+	if [ "${key%%_46_*}" = "cpu" -o "${key%%_46_*}" = "cpuacct" ]; then
 		if [ -w "$CGROUP_MNT/cpu,cpuacct/$testcase/$param" ]; then
 			log_eval "echo '$val' > '$CGROUP_MNT/cpu,cpuacct/$testcase/$param'"
 		else

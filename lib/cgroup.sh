@@ -51,7 +51,7 @@ create_cgroup()
 
 	for item in $subsys
 	do
-		[ "$item" == "cpu" -o "$item" == "cpuacct" ] && {
+		[ "$item" = "cpu" -o "$item" = "cpuacct" ] && {
 			log_cmd mkdir -p $CGROUP_MNT/cpu,cpuacct 2>/dev/null
 			log_cmd mount -t cgroup -o cpu,cpuacct cpu,cpuacct $CGROUP_MNT/cpu,cpuacct 2>/dev/null
 			log_cmd mkdir -p $CGROUP_MNT/cpu,cpuacct/$testcase
