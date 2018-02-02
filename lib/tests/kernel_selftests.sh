@@ -139,9 +139,9 @@ prepare_for_bpf()
 
 prepare_for_selftest()
 {
-        if [ "$test"="kselftests-00" ]; then
+        if [ "$group"="kselftests-00" ]; then
                 selftest=a-s
-        elif [ "$test"="kselftests-01" ]; then
+        elif [ "$group"="kselftests-01" ]; then
                 selftest=t-z
         fi
 }
