@@ -1,8 +1,10 @@
 #!/bin/sh
 # - testtime
 # - class
+# - nr_threads
 
 [ -n "$testtime" ] || testtime=1
 
-stress-ng --class $class --sequential $nr_cpu --timeout $testtime --times --verify --metrics-brief 2>&1
+[ "$class" = "memory" ] && stress_opts="-x stack"
+stress-ng --class $class $stress_opts --sequential $nr_threads --timeout $testtime --times --verify --metrics-brief 2>&1
 
