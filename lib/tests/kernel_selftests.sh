@@ -139,9 +139,15 @@ prepare_for_bpf()
 
 prepare_for_selftest()
 {
-        if [ "$group"="kselftests-00" ]; then
-                selftest=a-s
-        elif [ "$group"="kselftests-01" ]; then
+        if [ "$group" = "kselftests-00" ]; then
+                # bpf is slow
+                selftest=a-b
+        elif [ "$group" = "kselftests-01" ]; then
+                selftest=c-l
+        elif [ "$group" = "kselftests-02" ]; then
+                # m* is slow
+                selftest=m-s
+        elif [ "$group" = "kselftests-03" ]; then
                 selftest=t-z
         fi
 }

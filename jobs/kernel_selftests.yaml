@@ -7,5 +7,7 @@ kernel_selftests:
   group:
     - kselftests-00
     - kselftests-01
+    - kselftests-02
+    - kselftests-03
 # never register ERST as pstore backend
 kernel_cmdline: erst_disable
