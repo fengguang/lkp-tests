@@ -23,6 +23,8 @@
 ^dmesg.Mem-Info
 ^dmesg.invoked_oom-killer:gfp_mask=0x
 ^dmesg.timestamp:.*
+^dmesg..*/lkp/
+^dmesg..*-detected_stall_on_CPUINFO
 ^internal-lkp-service.*
 ^interrupts.(?!CAL:).*
 ^interrupts.CPU
@@ -82,6 +84,7 @@
 ^stderr.fatal:reference_is_not_a_tree
 ^stderr.configure.*
 ^stderr.src/arch/xtensa/.*
+^stderr.grep.+last_state:No_such_file_or_directory
 ^tcrypt.*
 ^syzkaller.*
 .*\.total_test
