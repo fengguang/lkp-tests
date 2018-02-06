@@ -139,6 +139,7 @@ build_ignored_by_lkp()
 	echo "ap_wpa2_eap_aka_prime_sql" >> $ignored_by_lkp
 	echo "ap_wpa2_psk_ext_retry_msg_3" >> $ignored_by_lkp
 	echo "ap_wps_er_multi_add_enrollee" >> $ignored_by_lkp
+	echo "dpp_ap_config_p384_p384" >> $ignored_by_lkp
 
 	echo "# ignore _wait_for_the_reply_of_community" >> $ignored_by_lkp
 	echo "ap_config_reload" >> $ignored_by_lkp
