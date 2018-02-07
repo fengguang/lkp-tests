@@ -2,21 +2,47 @@
 
 LKP_SRC ||= ENV['LKP_SRC']
 
+# sysbench 1.0.12 (using bundled LuaJIT 2.1.0-beta2)
+# Running the test with following options:
+# Number of threads: 1
+# Initializing random number generator from current time
+# Running memory speed test with the following options:
+#   block size: 1KiB
+#   total size: 1024MiB
+#   operation: write
+#   scope: global
+# Initializing worker threads...
+# Threads started!
+# Total operations: 1048576 (3875949.22 per second)
+# 1024.00 MiB transferred (3785.11 MiB/sec)
+# General statistics:
+#     total time:                          0.2671s
+#     total number of events:              1048576
+# Latency (ms):
+#          min:                                  0.00
+#          avg:                                  0.00
+#          max:                                  0.01
+#          95th percentile:                      0.00
+#          sum:                                121.17
+# Threads fairness:
+#     events (avg/stddev):           1048576.0000/0.00
+#     execution time (avg/stddev):   0.1212/0.00
+
 $stdin.each_line do |line|
   case line
-  when /Operations performed:\s+\d+\s+\(([0-9.]+)\s+.+\)/
+  when /Total operations:\s+\d+\s+\(([0-9.]+)\s+.+\)/
     puts 'throughput_ops/s: ' + $1
   when /.+\s+transferred\s+\(([0-9.]+)\s+.+\)/
     puts 'throughput_MB/s: ' + $1
   when /total number of events:\s+(\d+)/
     puts 'workload: ' + $1
-  when /min:\s+([0-9.]+)ms/
+  when /min:\s+([0-9.]+)/
     puts 'latency_ms.min: ' + $1
-  when /avg:\s+([0-9.]+)ms/
+  when /avg:\s+([0-9.]+)/
     puts 'latency_ms.avg: ' + $1
-  when /max:\s+([0-9.]+)ms/
+  when /max:\s+([0-9.]+)/
     puts 'latency_ms.max: ' + $1
-  when /approx.+:\s+([0-9.]+)ms/
+  when /95th percentile:\s+([0-9.]+)/
     puts 'latency_ms.95th: ' + $1
   when /events\s+\(avg\/stddev\):\s+([0-9.]+)\/([0-9.]+)/
     puts 'events/thread.avg: ' + $1
