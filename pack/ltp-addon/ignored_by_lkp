@@ -103,3 +103,6 @@ ltp-aiodio.part4:DOR003
 # need two physical machine as server and client
 net.tirpc_tests:tirpc_rpc_broadcast
 net.tirpc_tests:tirpc_rpc_broadcast_exp
+# need keyserv
+net.tirpc_tests:tirpc_authdes_create
+net.tirpc_tests:tirpc_authdes_seccreate
