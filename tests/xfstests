@@ -91,6 +91,11 @@ set_env()
 	[ "$test" = "xfs-rmapbt" ] && log_eval export MKFS_OPTIONS="-mrmapbt=1"
 	[ "$test" = "xfs-244" ] && log_eval export MKFS_OPTIONS="-mcrc=0"
 	[ "$test" = "xfs-132" ] && (mkfs.xfs -f -mreflink=1 $TEST_DEV || die "mkfs.xfs test_dev failed")
+
+	[ "$test" = "generic-387" ] && {
+		printf "n\np\n1\n\n+1G\nw\n" | fdisk $SCRATCH_DEV
+		log_eval export SCRATCH_DEV="$SCRATCH_DEV"1
+	}
 }
 
 ignore_and_do_tests()
