@@ -48,6 +48,8 @@ set_env()
 		log_eval export SCRATCH_DEV=${partitions##* }
 	fi
 
+	[ "$fs" = f2fs ] && log_eval export MKFS_OPTIONS="-f"
+
 	## We could use the "pack-deps" job to generate the relevant dependency package with cgz format,
 	## but sometimes the dependency package have a different layout with the original package.
 	## For examle:
