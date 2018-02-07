@@ -100,3 +100,6 @@ ltp-aiodio.part4:DOR000
 ltp-aiodio.part4:DOR001
 ltp-aiodio.part4:DOR002
 ltp-aiodio.part4:DOR003
+# need two physical machine as server and client
+net.tirpc_tests:tirpc_rpc_broadcast
+net.tirpc_tests:tirpc_rpc_broadcast_exp
