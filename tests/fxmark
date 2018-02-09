@@ -61,6 +61,11 @@ setup_config()
 		setup_test_block || return
 	}
 
+	# install the filebench command
+	[[ "$test" =~ "filebench" ]] && {
+		ln -s $BENCHMARK_ROOT/$testcase/filebench/bin/filebench /usr/bin/filebench
+	}
+
 	sed -i "/    confirm_media_path()/i\\
     Runner.HDDDEV = \"$partition\"\n\
     Runner.SSDDEV = \"$partition\"\n\

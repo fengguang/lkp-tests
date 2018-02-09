@@ -2,9 +2,26 @@
 
 download()
 {
+	git_clone_update https://github.com/filebench/filebench.git
 	git_clone_update https://github.com/sslab-gatech/fxmark.git
 }
 
+build()
+{
+	make || return
+
+	cd ../filebench || return
+	git checkout 1.4.9.1 || return
+	libtoolize || return
+	aclocal || return
+	autoheader || return
+	automake --add-missing || return
+	autoconf || return
+	./configure --prefix $BM_ROOT/filebench || return
+	make || return
+	make install || return
+	cd -
+}
 install()
 {
 	cp -af $source_dir/* $BM_ROOT/
