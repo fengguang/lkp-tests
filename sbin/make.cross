@@ -171,6 +171,12 @@ setup_crosstool()
 		openrisc)
 			gcc_arch=or1k-linux
 			;;
+		riscv)
+			# The RISC-V toolchains can generate both 32-bit and
+			# 64-bit binaries, so there's no reason to bother with
+			# the 32-bit toolchain if you don't care about libc.
+			gcc_arch=riscv64-linux
+			;;
 		s390)
 			gcc_arch=s390x-linux
 			;;
