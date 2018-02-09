@@ -70,16 +70,23 @@ setup_config()
     Runner.HDDDEV = \"$partition\"\n\
     Runner.SSDDEV = \"$partition\"\n\
     run_config = [(Runner.CORE_FINE_GRAIN, PerfMon.LEVEL_LOW, (\"$media\", \"$fstype\", \"$test\", \"*\", \"$directio\")),]"  bin/run-fxmark.py
+
+	sed -i "/    (opts, args) = parser.parse_args()/i\\
+    parser.add_option(\"--directio\", help=\"directio\")" bin/run-*bench.py
 }
 
 do_backup()
 {
 	cp ./bin/run-fxmark.py ./bin/run-fxmark.py.bak
+	cp ./bin/run-dbench.py ./bin/run-dbench.py.bak
+	cp ./bin/run-filebench.py ./bin/run-filebench.py.bak
 }
 
 do_recover()
 {
 	cp ./bin/run-fxmark.py.bak ./bin/run-fxmark.py
+	cp ./bin/run-dbench.py.bak ./bin/run-dbench.py
+	cp ./bin/run-filebench.py.bak ./bin/run-filebench.py
 }
 
 run()
