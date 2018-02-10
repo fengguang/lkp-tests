@@ -56,8 +56,16 @@ mount_result_root()
 			mount -t tmpfs result $RESULT_MNT || return
 			;;
 		*:*)
+			local repeat=10
 			result_fs=nfs
-			mount.nfs -o vers=3 $result_service $RESULT_MNT || return
+			for i in $(seq $repeat)
+			do
+				echo "mount.nfs: try $i time..."
+				mount.nfs -o vers=3 $result_service $RESULT_MNT && return
+				sleep 3
+			done
+			echo "mount nfs for $result_service failed"
+			return 1
 			;;
 		//*/*)
 			result_fs=cifs
