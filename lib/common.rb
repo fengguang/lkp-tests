@@ -21,7 +21,7 @@ module AddCachedMethod
       @__cache_for_add_cached_method__ ||= {}
       cache = @__cache_for_add_cached_method__
       mkey = [method_name, key]
-      cache[mkey] = send(method_name, *args) unless cache[mkey]
+      cache[mkey] ||= send(method_name, *args)
     end
   end
 end
