@@ -29,7 +29,7 @@ check_ignored_cases()
 	do
 		ignore=$(echo $i | awk -F: '{print $2}')
 		grep -q "^${ignore}" runtest/${test} || continue
-		sed -i "s/^${ignore}/#${ignore}/g" runtest/${test}
+		sed -i "s/^${ignore} /#${ignore} /g" runtest/${test}
 		echo "<<<test_start>>>"
 		echo "tag=${ignore}"
 		echo "${ignore} 0 ignored_by_lkp"
