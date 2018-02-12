@@ -106,3 +106,5 @@ net.tirpc_tests:tirpc_rpc_broadcast_exp
 # need keyserv
 net.tirpc_tests:tirpc_authdes_create
 net.tirpc_tests:tirpc_authdes_seccreate
+# bug in ltp
+net.rpc_tests:rpc_clnt_broadcast
