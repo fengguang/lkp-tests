@@ -156,10 +156,12 @@ run_test()
 		systester-[0-9]*)
 			# Choose
 			# 1: Gauss-Legendre algorithm [Recommended.]
-			# 2: 16 Million Digits [This Test could take a while to finish.]
+			# 1: 4 Million Digits [This Test could take a while to finish.]
 			# 3: 4 threads [2+ Cores Recommended]
 			# todo: select different test according to testbox's hardware
-			test_opt="\n1\n2\n3\nn"
+			export TOTAL_LOOP_TIME=1
+			export TOTAL_LOOP_COUNT=1
+			test_opt="\n1\n1\n3\nn"
 			;;
 		iozone-1.9.0)
 			# Choose
