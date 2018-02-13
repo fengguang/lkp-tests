@@ -151,7 +151,7 @@ build_ignored_by_lkp()
 	echo "dpp_proto_auth_req_invalid_i_proto_key" >> $ignored_by_lkp
 	echo "dpp_proto_auth_resp_invalid_r_proto_key" >> $ignored_by_lkp
 	echo "dpp_proto_pkex_exchange_req_invalid_encrypted_key" >> $ignored_by_lkp
-	echo "dpp_proto_auth_resp_invalid_r_proto_key" >> $ignored_by_lkp
+	echo "dpp_proto_pkex_cr_req_invalid_bootstrap_key" >> $ignored_by_lkp
 	echo "dpp_proto_pkex_cr_resp_invalid_bootstrap_key" >> $ignored_by_lkp
 	echo "dpp_proto_pkex_exchange_resp_invalid_encrypted_key" >> $ignored_by_lkp
 }
