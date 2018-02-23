@@ -10,6 +10,7 @@ check_param()
 		local tmp_dir=$(mktemp -d)
 		echo "NON_PMEM_FS_DIR=$tmp_dir" > testconfig.sh
 		echo "PMEM_FS_DIR=/fs/pmem0" >> testconfig.sh
+		mkdir -p /fs/pmem0
 	else
 		die "Parameter \"test\" is wrong"
 	fi
