@@ -378,22 +378,22 @@ netconsole_init()
 
 tbox_use_lkp_ipxe()
 {
-	[ "${HOSTNAME#*lkp-ivb-toshiba1}"       != "$HOSTNAME" ] && return 1
-	[ "${HOSTNAME#*lkp-kbl-lenovo1}"        != "$HOSTNAME" ] && return 1
-	[ "${HOSTNAME#*lkp-skl-d01}"    != "$HOSTNAME" ] && return 1
-	return 0
+	[ "${HOSTNAME#*lkp-ivb-toshiba1}"       != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-kbl-lenovo1}"        != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-skl-d01}"    != "$HOSTNAME" ] && return 0
+	return 1
 }
 
 tbox_use_lkp_grub()
 {
-	[ "${HOSTNAME#*lkp-bxt01}"      != "$HOSTNAME" ] && return 1
-	[ "${HOSTNAME#*lkp-glk01}"      != "$HOSTNAME" ] && return 1
-	[ "${HOSTNAME#*lkp-kbly01}"     != "$HOSTNAME" ] && return 1
-	[ "${HOSTNAME#*lkp-kblr01}"     != "$HOSTNAME" ] && return 1
-	[ "${HOSTNAME#*lkp-kbls01}"     != "$HOSTNAME" ] && return 1
-	[ "${HOSTNAME#*lkp-cfl-s01}"    != "$HOSTNAME" ] && return 1
-	[ "${HOSTNAME#*lkp-sklu-lenovo1}"       != "$HOSTNAME" ] && return 1
-	return 0
+	[ "${HOSTNAME#*lkp-bxt01}"      != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-glk01}"      != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-kbly01}"     != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-kblr01}"     != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-kbls01}"     != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-cfl-s01}"    != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-sklu-lenovo1}"       != "$HOSTNAME" ] && return 0
+	return 1
 }
 
 tbox_cant_kexec()
