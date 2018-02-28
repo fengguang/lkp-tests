@@ -1,8 +1,8 @@
 model: Haswell-EP
 nr_cpu: 72
 memory: 128G
-nr_ssd_partitions: 
-ssd_partitions: 
+nr_ssd_partitions: 1 
+ssd_partitions: /dev/nvme0n1p1
 swap_partitions:
 rootfs_partition:
 brand: Intel(R) Xeon(R) CPU E5-2699 v3 @ 2.30GHz
