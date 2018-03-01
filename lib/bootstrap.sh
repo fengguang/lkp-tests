@@ -379,6 +379,7 @@ netconsole_init()
 tbox_use_lkp_ipxe()
 {
 	[ "${HOSTNAME#*lkp-ivb-toshiba1}"       != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-bxtm-lenovo1}"       != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-kbl-lenovo1}"        != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-skl-d01}"    != "$HOSTNAME" ] && return 0
 	return 1
