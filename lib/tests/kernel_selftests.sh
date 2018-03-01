@@ -155,4 +155,23 @@ prepare_for_selftest()
 fixup_vm()
 {
 	sed -i 's/.\/va_128TBswitch/echo [ignored_by_lkp] #.\/va_128TBswitch/' vm/run_vmtests
+
+	# we need to adjust two value in vm/run_vmtests accroding to the nr_cpu
+	# 1) needmem=262144, in Byte
+	# 2) ./userfaultfd hugetlb *128* 32, we call it memory here, in MB
+	# For 1) it indicates the memory size we need to reserve for 2), it should be 2 * memory
+	# For 2) looking to the userfaultfd.c, we found that it requires the second (128 in above) parameter (memory) to meet
+	# memory >= huge_pagesize * nr_cpus, more details you can refer to userfaultfd.c
+	# in 0Day, huge_pagesize is 2M by default
+	# currently, test case have a fixed memory=128, so if testbox nr_cpu > 64, this case will fail.
+	# for example:
+	# 64 < nr_cpu <= 128, memory=128*2, needmem=memory*2
+	# 128 < nr_cpu < (128 + 64), memory=128*3, needmem=memory*2
+	[ $nr_cpu -gt 64 ] && {
+		local memory=$((nr_cpu/64+1))
+		memory=$((memory*128))
+		sed -i "s#./userfaultfd hugetlb 128 32#./userfaultfd hugetlb $memory 32#" vm/run_vmtests
+		memory=$((memory*1024*2))
+		sed -i "s#needmem=262144#needmem=$memory#" vm/run_vmtests
+	}
 }
