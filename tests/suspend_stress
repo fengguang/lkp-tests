@@ -1,10 +1,10 @@
 #!/bin/bash
 # - mode
-# - rtcwake
+# - rtcwake	(dont show)
 # - iterations
-# - runtime
-# - pm_test
-# - idle
+# - runtime	(dont show)
+# - pm_test	(dont show)
+# - idle	(dont show)
 
 [ -n "$mode" ] || mode='freeze'
 [ -n "$iterations" ] || iterations=1
