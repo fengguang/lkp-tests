@@ -394,6 +394,7 @@ tbox_use_lkp_grub()
 	[ "${HOSTNAME#*lkp-kbls01}"     != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-cfl-s01}"    != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-sklu-lenovo1}"       != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-bdwy-lenovo1}"       != "$HOSTNAME" ] && return 0
 	return 1
 }
 
