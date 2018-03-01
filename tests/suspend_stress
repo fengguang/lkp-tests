@@ -4,10 +4,12 @@
 # - iterations
 # - runtime
 # - pm_test
+# - idle
 
 [ -n "$mode" ] || mode='freeze'
 [ -n "$iterations" ] || iterations=1
 [ -n "$rtcwake" ] || rtcwake=60
+[ -n "$idle" ] || idle=10
 
 if [ -z "$runtime" ]
 then
@@ -72,8 +74,9 @@ do
 		echo "Failed"
 		exit 1
 	fi
-	sleep 10
 	echo "Done"
+	echo "Sleep for $idle seconds"
+	sleep $idle
 done
 
 echo "SUSPEND RESUME TEST SUCCESS"
