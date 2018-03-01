@@ -78,7 +78,7 @@ def vm_stat(line, _vm, stats)
   case line
   when /^*running (.*)/
     @vm_subname = $1.strip.tr(' ', '_')
-  when /^\[(PASS|FAIL)\]/
+  when /^\[(PASS|FAIL|ignored_by_lkp)\]/
     stats << "vm.#{@vm_subname}.#{$1.downcase}: 1" if @vm_subname
     @vm_subname = nil
   end

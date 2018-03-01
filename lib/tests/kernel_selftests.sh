@@ -151,3 +151,8 @@ prepare_for_selftest()
                 selftest=t-z
         fi
 }
+
+fixup_vm()
+{
+	sed -i 's/.\/va_128TBswitch/echo [ignored_by_lkp] #.\/va_128TBswitch/' vm/run_vmtests
+}
