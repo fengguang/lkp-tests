@@ -74,6 +74,16 @@ def x86_stat(line, _x86, stats)
   end
 end
 
+def vm_stat(line, _vm, stats)
+  case line
+  when /^*running (.*)/
+    @vm_subname = $1.strip.tr(' ', '_')
+  when /^\[(PASS|FAIL)\]/
+    stats << "vm.#{@vm_subname}.#{$1.downcase}: 1" if @vm_subname
+    @vm_subname = nil
+  end
+end
+
 while (line = STDIN.gets)
   line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
 
@@ -96,6 +106,8 @@ while (line = STDIN.gets)
       memory_hotplug_stat(line, tests_stats['memory-hotplug'], stats)
     elsif testname == 'x86'
       x86_stat(line, tests_stats['x86'], stats)
+    elsif testname == 'vm'
+      vm_stat(line, tests_stats['vm'], stats)
     else
       stats << "#{testname}.#{Regexp.last_match[1].strip}.#{Regexp.last_match[3].downcase}: 1"
     end
@@ -120,6 +132,8 @@ while (line = STDIN.gets)
       mount_stat(line, tests_stats['mount'], stats)
     elsif testname == 'x86'
       x86_stat(line, tests_stats['x86'], stats)
+    elsif testname == 'vm'
+      vm_stat(line, tests_stats['vm'], stats)
     end
   end
 end
