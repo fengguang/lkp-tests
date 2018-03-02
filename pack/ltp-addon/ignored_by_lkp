@@ -108,3 +108,5 @@ net.tirpc_tests:tirpc_authdes_create
 net.tirpc_tests:tirpc_authdes_seccreate
 # bug in ltp
 net.rpc_tests:rpc_clnt_broadcast
+#__NR_mmap2 not supported on x86_64
+cve:cve-2011-2496
