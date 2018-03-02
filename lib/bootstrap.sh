@@ -516,6 +516,8 @@ is_same_kernel_and_rootfs()
 			[ -n "$run_on_local_disk" ] && return 1
 		fi
 
+		is_same_cmdline || return 1
+
 		local next_rootfs=$(awk '/^rootfs: /{print $2}' $job)
 		[ -n "$next_rootfs" ] || {
 			echo "ERROR: no rootfs in the job file: $job"
@@ -544,6 +546,14 @@ is_same_bp_memmap()
 	local current_memmap=$(awk -F'memmap=' '{print $2}' /proc/cmdline | awk '{print $1}')
 
 	[ "$next_bp_memmap" = "$current_memmap" ]
+}
+
+is_same_cmdline()
+{
+	local current_kernel_cmdline=$kernel_cmdline
+	local next_kernel_cmdline=$(awk '/kernel_cmdline:/{print $2}' $job)
+
+	[ "$current_kernel_cmdline" = "$next_kernel_cmdline" ]
 }
 
 setup_env()
