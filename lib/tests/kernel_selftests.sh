@@ -174,4 +174,6 @@ fixup_vm()
 		memory=$((memory*1024*2))
 		sed -i "s#needmem=262144#needmem=$memory#" vm/run_vmtests
 	}
+
+	sed -i 's/.\/compaction_test/echo [ignored_by_lkp] #.\/compaction_test/' vm/run_vmtests
 }
