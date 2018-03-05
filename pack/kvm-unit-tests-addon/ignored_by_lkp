@@ -12,3 +12,7 @@ vmx_controls
 
 # always skip since qemu v2.6.0-1738-g217f1b4
 vmx_test_vmx_feature_control
+
+# the FBC is: 0367f205a3b7c0efe774634eef1f4697c79a4132
+# 0Day have reported it: https://lists.01.org/pipermail/lkp/2017-December/007914.html
+vmx_instruction_intercept
