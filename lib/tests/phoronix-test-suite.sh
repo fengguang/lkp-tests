@@ -90,7 +90,6 @@ fixup_fio()
 fixup_bullet()
 {
 	[[ -n "$environment_directory" ]] || return
-	phoronix-test-suite force-install pts/bullet-1.2.2
 	local target=${environment_directory}/pts/bullet-1.2.2/bullet
 	sed -i 's,#!/bin/sh,#!/bin/dash,' "$target"
 }
