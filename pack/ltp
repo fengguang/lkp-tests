@@ -148,6 +148,8 @@ build_ltp()
 	patch -p1 < $LKP_SRC/pack/ltp-addon/0001-Specify-TMPDIR-for-rwtest01-04.patch || return
 	# fix commond:ar01
 	patch -p1 < $LKP_SRC/pack/ltp-addon/ar_fail.patch || return
+	# fix hyperthreading:smt_smp_affinity
+	patch -p1 < $LKP_SRC/pack/ltp-addon/smt_smp_affinity.patch || return
 
 	split_syscalls
 	rearrange_case || return
