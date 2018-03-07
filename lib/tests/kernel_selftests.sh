@@ -177,3 +177,19 @@ fixup_vm()
 
 	sed -i 's/.\/compaction_test/echo [ignored_by_lkp] #.\/compaction_test/' vm/run_vmtests
 }
+
+platform_is_skylake()
+{
+	# FIXME: Model number: snb: 42, ivb: 58, haswell: 60, skl: [85, 94]
+	local model=$(lscpu | grep 'Model:' | awk '{print $2}')
+	[[ -z "$model" ]] && die "FIXME: unknown platform cpu model number"
+	[[ $model -ge 85 ]] && [[ $model -le 94 ]]
+}
+
+fixup_breakpoints()
+{
+	platform_is_skylake && grep -qw step_after_suspend_test breakpoints/Makefile && {
+		sed -i 's/step_after_suspend_test//' breakpoints/Makefile
+		echo "ignored_by_lkp breakpoints.step_after_suspend_test test"
+	}
+}
