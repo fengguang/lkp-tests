@@ -16,6 +16,12 @@ echo   PATH=$PATH
 
 . $LKP_SRC/lib/bootstrap.sh
 
+# https://stackoverflow.com/questions/19100708/mongodb-mongorestore-failure-localefacet-s-create-c-locale-name-not-valid
+# To fix:
+# terminate called after throwing an instance of 'std::runtime_error'
+#  what():  locale::facet::_S_create_c_locale name not valid
+[ -z "$LC_ALL" ] && export LC_ALL=C.UTF-8
+
 boot_init
 
 # when to not reboot is a policy issue, which can be refined later.
