@@ -381,6 +381,9 @@ tbox_use_lkp_ipxe()
 	[ "${HOSTNAME#*lkp-ivb-toshiba1}"       != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-bxtm-lenovo1}"       != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-bytm-lenovo1}"       != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-bdw-nuc1}"       != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-skl-nuc1}"       != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-bdwu-lenovo1}"       != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-kbl-lenovo1}"        != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-skl-d01}"    != "$HOSTNAME" ] && return 0
 	return 1
