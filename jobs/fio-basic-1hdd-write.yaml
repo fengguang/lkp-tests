@@ -6,7 +6,6 @@ runtime: 300s
 
 disk: 1HDD
 fs:
-- ext4
 - btrfs
 - xfs
 
@@ -22,6 +21,11 @@ fio-setup-basic:
   ioengine: sync
 
 fio:
+
+---
+runtime: 20m
+fs: ext4
+test_size: 32G
 
 ---
 fio-setup-basic:
