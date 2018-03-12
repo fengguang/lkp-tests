@@ -1,5 +1,9 @@
 #!/usr/bin/env ruby
 
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.reapath($PROGRAM_NAME)))
+
+require "#{LKP_SRC}/lib/string_ext"
+
 stats = []
 nr_test = 0
 success_test = 0
@@ -7,6 +11,8 @@ fail_test = 0
 is_divided = false
 
 while (line = STDIN.gets)
+  line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
+
   case line
   when /test_bpf: #[0-9]+ (.+) jited:.+ PASS$/
     type = $1.tr(' ', '_')
