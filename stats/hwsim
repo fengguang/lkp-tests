@@ -1,8 +1,14 @@
 #!/usr/bin/env ruby
 
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.reapath($PROGRAM_NAME)))
+
+require "#{LKP_SRC}/lib/string_ext"
+
 results = {}
 
 while (line = STDIN.gets)
+  line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
+
   case line
     # The output is as below:
     # PASS ap_hs20_network_preference 0.562706 2017-04-25 14:22:28.575753
