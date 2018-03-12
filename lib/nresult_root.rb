@@ -286,7 +286,7 @@ class MResultRootTableSet
      'qemu', 'rcutorture', 'suspend', 'trinity', 'ndctl', 'nfs-test', 'hwsim', 'idle-inject',
      'mdadm-selftests', 'xsave-test', 'nvml', 'test_bpf', 'mce-log', 'perf-sanity-tests',
      'update-ucode', 'reboot', 'cat', 'libhugetlbfs-test', 'ocfs2test', 'syzkaller',
-     'perf_test', 'stress-ng', 'sof_test', 'fxmark'].freeze
+     'perf_test', 'stress-ng', 'sof_test', 'fxmark', 'criu'].freeze
   OTHER_TESTCASES =
     ['0day-boot-tests', '0day-kbuild-tests', 'build-dpdk', 'build-sof', 'sof_test', 'build-nvml',
      'build-qemu', 'convert-lkpdoc-to-html', 'convert-lkpdoc-to-html-css',
