@@ -196,6 +196,7 @@ setup_hosts()
 		cp /etc/hosts $tmpfs_hosts
 	fi
 	echo "127.0.0.1 $HOSTNAME.sh.intel.com  $HOSTNAME" >> $tmpfs_hosts
+	echo "::1 $HOSTNAME.sh.intel.com  $HOSTNAME" >> $tmpfs_hosts
 	ln -fs $tmpfs_hosts /etc/hosts
 }
 
