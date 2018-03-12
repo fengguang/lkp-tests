@@ -65,7 +65,7 @@ module Git
         if project == 'linux' && !@base.project_spec['use_customized_release_tag_pattern']
           @base.linux_last_release_tag_strategy(sha)
         else
-          last_release_sha = @base.command("rev-list --first-parent #{sha} | grep -m1 -Fx \"#{@base.release_shas.join("\n")}\"").chomp
+          last_release_sha = @base.command("rev-list #{sha} | grep -m1 -Fx \"#{@base.release_shas.join("\n")}\"").chomp
 
           last_release_sha.empty? ? nil : [@base.release_shas2tags[last_release_sha], false]
         end
