@@ -1,0 +1,470 @@
+#!/bin/bash
+
+if [ "$USER" != "root" ]; then
+	echo "You must be root to run the script!"
+	exit 2
+fi
+
+normalize()
+{
+	echo "$*" | tr '();./ ' '______' | sed 's/_*\(.*\)/\1/'
+}
+
+echoe()
+{
+	stdbuf -oL echo "$@" 1>&2
+}
+
+die()
+{
+	echoe "$@"
+	exit 1
+}
+
+TRACING=/sys/kernel/debug/tracing
+
+ftrace_get()
+{
+	local target=$1
+	cat "$TRACING/$target"
+}
+
+ftrace_set()
+{
+	local target=$1
+	shift
+	stdbuf -oL echo "$@" > "$TRACING/$target"
+}
+
+undo_ftrace_set()
+{
+	local target=$1
+	shift
+	undos="stdbuf -oL echo \"$*\" > \"$TRACING/$target\"
+$undos"
+}
+
+run_undos()
+{
+	[ -n "$undos" ] && eval "$undos"
+	undos=
+}
+
+setup_undo()
+{
+	trap run_undos EXIT
+}
+
+cancel_undo()
+{
+	trap - EXIT
+}
+
+UNDO_FILE="${TMP:-/tmp}/ftrace.undo"
+
+save_undos()
+{
+	echo "$undos" > "$UNDO_FILE"
+}
+
+OPTIONS_DIR="$TRACING/options"
+
+list_options()
+{
+	if [ "$1" = "-v" ]; then
+		(cd "$OPTIONS_DIR" || exit; grep . ./*)
+	else
+		ls "$OPTIONS_DIR"
+	fi
+}
+
+check_options()
+{
+	local opt
+
+	for opt in "$@"; do
+		[ -f "$OPTIONS_DIR/$opt" ] ||
+			die "Error: Invalid ftrace option: $opt!"
+	done
+}
+
+enable_options()
+{
+	local opt
+
+	for opt in "$@"; do
+		ftrace_set "options/$opt" 1
+	done
+}
+
+disable_options()
+{
+	local opt
+
+	for opt in "$@"; do
+		ftrace_set "options/$opt" 0
+	done
+}
+
+save_options()
+{
+	local opt
+	local v
+
+	for opt in "$@"; do
+		v=$(ftrace_get "options/$opt")
+		undo_ftrace_set "options/$opt" "$v"
+	done
+}
+
+FAVAIL_FUNCS="$TRACING/available_filter_functions"
+
+list_functions()
+{
+	cat "$FAVAIL_FUNCS"
+}
+
+check_functions()
+{
+	local func
+
+	for func in "$@"; do
+		if ! grep -q -x -F "$func" "$FAVAIL_FUNCS"; then
+			echoe "Function: $func isn't available"
+			cs=$(grep -F "$func" "$FAVAIL_FUNCS")
+			if [ "$?" -eq 0 ]; then
+				echoe "Do you mean:"
+				echoe "$cs"
+			fi
+			exit 1
+		fi
+	done
+}
+
+search_function()
+{
+	grep "$@" "$FAVAIL_FUNCS"
+}
+
+set_function_target()
+{
+	local tracer=$1
+	case "$tracer" in
+		function)
+			function_target=set_ftrace_filter
+			notrace_target=set_ftrace_notrace
+			;;
+		function_graph)
+			function_target=set_graph_function
+			notrace_target=set_graph_notrace
+			;;
+		*)
+			die "Invalid tracer to set function: $1!"
+			;;
+	esac
+}
+
+set_functions()
+{
+	ftrace_set "$function_target" "$@"
+}
+
+do_save_functions()
+{
+	local target=$1
+	sfuncs=$(ftrace_get "$target")
+	sfuncs=$(echo $sfuncs)
+	# Deal with #### all functions enabled ####, etc
+	if [ "${sfuncs####}" != "$sfuncs" ]; then
+		undo_ftrace_set "$target"
+	else
+		undo_ftrace_set "$target" "$sfuncs"
+	fi
+}
+
+save_functions()
+{
+	do_save_functions $function_target
+}
+
+set_notraces()
+{
+	ftrace_set "$notrace_target" "$@"
+}
+save_notraces()
+{
+	do_save_functions $notrace_target
+}
+
+check_tracer()
+{
+	grep -qw "$1" $TRACING/available_tracers
+}
+
+list_tracers()
+{
+	ftrace_get available_tracers
+}
+
+set_tracer()
+{
+	ftrace_set current_tracer "$1"
+}
+
+save_tracer()
+{
+	local tracer;
+
+	tracer=$(ftrace_get current_tracer)
+	undo_ftrace_set current_tracer "$tracer"
+}
+
+start_trace()
+{
+	ftrace_set tracing_on 1
+	undo_ftrace_set tracing_on 0
+}
+
+do_ftrace_on()
+{
+	check_tracer "$tracer"
+	check_functions $functions
+	check_functions $notraces
+	check_options $enable_options
+	check_options $disable_options
+
+	setup_undo
+
+	save_tracer
+	set_tracer "$tracer"
+	set_function_target "$tracer"
+	save_functions
+	set_functions $functions
+	save_notraces
+	set_notraces $notraces
+	save_options $enable_options $disable_options
+	enable_options $enable_options
+	disable_options $disable_options
+
+	ftrace_set trace
+	start_trace
+}
+
+parse_on_args()
+{
+	nr_arg=$#
+	local more=y
+
+	while [ "$more" = y ]; do
+		case $1 in
+			-f | --function)
+				functions="$functions $2"
+				shift 2
+				;;
+			-n | --notrace)
+				notraces="$notraces $2"
+				shift 2
+				;;
+			-t | --tracer)
+				tracer="$2"
+				shift 2
+				;;
+			-g | --function_graph)
+				tracer=function_graph
+				shift
+				;;
+			-o | --enable-option)
+				enable_options="$enable_options $2"
+				shift 2
+				;;
+			-O | --disable-option)
+				disable_options="$disable_options $2"
+				shift 2
+				;;
+			-s | --enable-stack-trace)
+				enable_options="$enable_options func_stack_trace"
+				shift
+				;;
+			-S | --disable-stack-trace)
+				disable_options="$disable_options func_stack_trace"
+				shift
+				;;
+			*)
+				more=n
+				;;
+		esac
+	done
+
+	nr_arg=$((nr_arg - $#))
+}
+
+ftrace_on()
+{
+	parse_on_args "$@"
+	[ "$nr_arg" -eq $# ] || usage
+	do_ftrace_on
+}
+
+ftrace_off()
+{
+	ftrace_set tracing_on 0
+}
+
+ftrace_restore()
+{
+	[ -f "$UNDO_FILE" ] || die "No undo file ($UNDO_FILE) to restore!"
+	bash "$UNDO_FILE"
+	rm -f "$UNDO_FILE"
+}
+
+parse_run_args()
+{
+	nr_arg=$#
+	local more=y
+
+	while [ "$more" = y ]; do
+		case $1 in
+			-p | --output)
+				output="$2"
+				shift 2
+				;;
+			*)
+				more=n
+				;;
+		esac
+	done
+
+	nr_arg=$((nr_arg - $#))
+}
+
+ftrace_run()
+{
+	parse_on_args "$@"
+	shift "$nr_arg"
+	parse_run_args "$@"
+	shift "$nr_arg"
+	[ "$1" = "--" ] || usage
+	shift
+
+	: ${output:=$(normalize "$@").trace}
+
+	do_ftrace_on
+	"$@"
+	ftrace_off
+	ftrace_get trace > $output
+}
+
+ftrace_trace()
+{
+	ftrace_get trace
+}
+
+ftrace_cmd()
+{
+	(cd "$TRACING" || exit; "$@")
+}
+
+usage()
+{
+	local program
+	program=$(basename "$0")
+	cat <<EOF
+Usage: $program <cmd> [options]
+
+Available commands and their options:
+
+list-tracers | lt: list available ftrace tracers
+
+list-options | lo: list ftrace options
+	-v: list options and their current value
+
+available-functions | af: list available functions
+
+grep-function | gf: grep in available functions
+	Most grep options are acceptable
+
+off: turn off the ftrace
+
+restore: restore the ftrace setting to original state saved
+
+trace: dump the trace to stdout
+
+cmd: run a command in tracing file system
+
+on: turn on the ftrace
+	-f | --function <function>: specify function to trace, multiple
+		functions could be specified via using this option
+		multiple times
+	-n | --notrace <function>: specify function not to trace
+	-t | --tracer <tracer>: specify tracer, default is function
+	-g | --function_graph: shortcut to specify function_graph tracer
+	-o | --enable-option <option>: enable a ftrace option, multiple
+		options could be enabled via using this option multiple
+		times
+	-O | --disable-option <option>: disable a ftrace option
+	-s | --enable-stack-trace: shortcut to enable func_stack_trace option
+	-S | --disable-stack-trace: shortcut to disable func_stack_trace option
+
+run: run a command line with ftrace on and output the trace to a file
+	run [on options] [run options] -- <command line>
+	all on options are applicable to run, run options are,
+	-p | --output <file>: file name to save trace, default is generated
+		from <command line>
+EOF
+	exit 1
+}
+
+main()
+{
+	tracer=function
+
+	cmd="$1"
+	case "$cmd" in
+		list-tracers | lt)
+			list_tracers
+			;;
+		list-options | lo)
+			shift
+			list_options "$@"
+			;;
+		available-functions | af)
+			list_available_functions
+			;;
+		grep-function | gf)
+			shift
+			search_function "$@"
+			;;
+		on)
+			shift
+			ftrace_on "$@"
+			save_undos
+			cancel_undo
+			;;
+		off)
+			ftrace_off
+			;;
+		run)
+			shift
+			ftrace_run "$@"
+			;;
+		restore)
+			ftrace_restore
+			;;
+		trace)
+			ftrace_trace
+			;;
+		cmd)
+			shift
+			ftrace_cmd "$@"
+			;;
+		*)
+			if which $1 > /dev/null; then
+				ftrace_cmd "$@"
+			else
+				usage
+			fi
+			;;
+	esac
+}
+
+main "$@"
