@@ -256,6 +256,18 @@ set_events()
 	done
 }
 
+KPROBE_EVENTS="kprobe_events"
+
+save_kprobes()
+{
+	undo_ftrace_set "$KPROBE_EVENTS" $(ftrace_get "$KPROBE_EVENTS")
+}
+
+set_kprobes()
+{
+	ftrace_set "$KPROBE_EVENTS" "$kprobes"
+}
+
 check_tracer()
 {
 	grep -qw "$1" $TRACING/available_tracers
@@ -287,6 +299,12 @@ start_trace()
 
 do_ftrace_on()
 {
+	# kprobes must be set firstly, otherwise, checking events will fail
+	[ -n "kprobes" ] && {
+		save_kprobes
+		set_kprobes
+	}
+
 	check_tracer "$tracer"
 	[ -n "$functions" ] && check_functions $functions
 	[ -n "$notraces" ] && check_functions $notraces
@@ -348,6 +366,11 @@ parse_on_args()
 				;;
 			-e | --events)
 				events="$events $2"
+				shift 2
+				;;
+			-k | --kprobe)
+				kprobes="$kprobes
+$2"
 				shift 2
 				;;
 			-o | --enable-option)
@@ -482,6 +505,25 @@ on: turn on the ftrace
 	-g | --function_graph: shortcut to specify function_graph tracer
 	-e | --events <event>: specify trace event, multiple events could
 		be specified via using this option multiple times
+	-k | --kprobe <kprobe>: specify kprobe event definiation, multiple
+		events could be specified via using this option multiple
+		times.  The format of event definition is as follow,
+
+		Set a probe:
+		  p[:[GRP/]EVENT] [MOD:]SYM[+offs]|MEMADDR [FETCHARGS]
+
+		Set a return probe:
+		  r[MAXACTIVE][:[GRP/]EVENT] [MOD:]SYM[+0] [FETCHARGS]
+
+		Clear a probe:
+		  -:[GRP/]EVENT
+
+		FETCHARGS:
+		  %REG, @ADDR, @SYM[+|-offs], $stackN, $stack, $retval, $comm,
+		  +|-offs(FETCHARG), NAME=FETCHARG,
+		  FETCHARG:TYPE (u8/u16/u32/u64/s8/s16/s32/s64), (x8/x16/x32/x64),
+		  "string" and bitfield
+
 	-o | --enable-option <option>: enable a ftrace option, multiple
 		options could be enabled via using this option multiple
 		times
