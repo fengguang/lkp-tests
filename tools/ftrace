@@ -196,6 +196,66 @@ save_notraces()
 	do_save_functions $notrace_target
 }
 
+EVENTS_ROOT="$TRACING/events"
+
+check_events()
+{
+	local event
+	local nevent=""
+
+	for event in $events; do
+		if [ -f "$EVENTS_ROOT/$event/enable" ]; then
+			nevents="$nevents $event"
+			continue
+		fi
+		ce=$(cd "$EVENTS_ROOT" && ls -d */"$event")
+		nce=$(echo $ce | wc -l)
+		if [ "$nce" -gt 1 ]; then
+			echoe "Invalid event: $event, Do you mean:"
+			echoe "$ce"
+			exit 1
+		elif [ "$nce" -eq 1 ] && [ -f "$EVENTS_ROOT/$ce/enable" ]; then
+			nevents="$nevents $ce"
+		else
+			echoe "Invalid event: $event"
+			exit 1
+		fi
+	done
+	events="$nevents"
+}
+
+list_events()
+{
+	(cd "$EVENTS_ROOT" && find -maxdepth 2 -mindepth 2 -type d -printf '%P\n')
+}
+
+search_event()
+{
+	list_events | grep "$@"
+}
+
+save_events()
+{
+	local event
+	local target
+	local ov
+
+	target="events/$event/enable"
+	for event in "$@"; do
+		ov=$(ftrace_get "$target")
+		undo_ftrace_set "$target" "$ov"
+	done
+}
+
+set_events()
+{
+	local event
+
+	for event in "$@"; do
+		ftrace_set "events/$event/enable" 1
+	done
+}
+
 check_tracer()
 {
 	grep -qw "$1" $TRACING/available_tracers
@@ -228,23 +288,36 @@ start_trace()
 do_ftrace_on()
 {
 	check_tracer "$tracer"
-	check_functions $functions
-	check_functions $notraces
-	check_options $enable_options
-	check_options $disable_options
+	[ -n "$functions" ] && check_functions $functions
+	[ -n "$notraces" ] && check_functions $notraces
+	[ -n "$enable_options" ] && check_options $enable_options
+	[ -n "$disable_options" ] && check_options $disable_options
+	[ -n "$events" ] && check_events
 
 	setup_undo
 
 	save_tracer
 	set_tracer "$tracer"
-	set_function_target "$tracer"
-	save_functions
-	set_functions $functions
-	save_notraces
-	set_notraces $notraces
-	save_options $enable_options $disable_options
-	enable_options $enable_options
-	disable_options $disable_options
+	if [ -n "$functions" ] || [ -n "$notraces" ]; then
+		set_function_target "$tracer"
+	fi
+	[ -n "$functions" ] && {
+		save_functions
+		set_functions $functions
+	}
+	[ -n "$notraces" ] && {
+		save_notraces
+		set_notraces $notraces
+	}
+	if [ -n "$enable_options" ] || [ -n "$disable_options" ]; then
+		save_options $enable_options $disable_options
+	fi
+	[ -n "$enable_options" ] && enable_options $enable_options
+	[ -n "$disable_options" ] && disable_options $disable_options
+	[ -n "$events" ] && {
+		save_events $events
+		set_events $events
+	}
 
 	ftrace_set trace
 	start_trace
@@ -272,6 +345,10 @@ parse_on_args()
 			-g | --function_graph)
 				tracer=function_graph
 				shift
+				;;
+			-e | --events)
+				events="$events $2"
+				shift 2
 				;;
 			-o | --enable-option)
 				enable_options="$enable_options $2"
@@ -380,7 +457,12 @@ list-options | lo: list ftrace options
 
 available-functions | af: list available functions
 
-grep-function | gf: grep in available functions
+grep-function | gf <pattern> : grep in available functions
+	Most grep options are acceptable
+
+list-events | le: list trace events
+
+gind-events | ge <pattern>: grep in all trace events
 	Most grep options are acceptable
 
 off: turn off the ftrace
@@ -398,6 +480,8 @@ on: turn on the ftrace
 	-n | --notrace <function>: specify function not to trace
 	-t | --tracer <tracer>: specify tracer, default is function
 	-g | --function_graph: shortcut to specify function_graph tracer
+	-e | --events <event>: specify trace event, multiple events could
+		be specified via using this option multiple times
 	-o | --enable-option <option>: enable a ftrace option, multiple
 		options could be enabled via using this option multiple
 		times
@@ -433,6 +517,13 @@ main()
 		grep-function | gf)
 			shift
 			search_function "$@"
+			;;
+		list-events | le)
+			list_events
+			;;
+		gind-event | ge)
+			shift
+			search_event "$@"
 			;;
 		on)
 			shift
