@@ -24,6 +24,20 @@ fio-setup-basic:
 fio:
 
 ---
+fs:
+- btrfs
+- xfs
+fio-setup-basic:
+  rw: randwrite
+  bs:
+  - 4k
+  - 4M
+  ioengine: sync
+
+---
+runtime: 20m
+fs: ext4
+test_size: 32G
 fio-setup-basic:
   rw: randwrite
   bs:
