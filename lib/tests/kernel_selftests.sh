@@ -18,6 +18,10 @@ prepare_for_test()
 	command -v gcc-5 >/dev/null && log_cmd ln -sf /usr/bin/gcc-5 /usr/bin/gcc
 	# fix cc: command not found
 	command -v cc >/dev/null || log_cmd ln -sf /usr/bin/gcc /usr/bin/cc
+	# fix bpf: /bin/sh: clang: command not found
+	# fix bpf: /bin/sh: line 2: llc: command not found
+	command -v clang >/dev/null || log_cmd ln -sf /usr/bin/clang-7 /usr/bin/clang
+	command -v llc >/dev/null || log_cmd ln -sf /usr/bin/llc-7 /usr/bin/llc
 }
 
 check_makefile()
