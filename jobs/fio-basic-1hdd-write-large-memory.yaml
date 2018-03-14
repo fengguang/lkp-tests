@@ -1,0 +1,26 @@
+suite: fio-basic
+testcase: fio-basic
+category: benchmark
+
+runtime: 20m
+
+need_memory: 6G
+
+disk: 1HDD
+fs:
+- xfs
+
+nr_task:
+- 1
+- 100%
+
+test_size: 32G
+
+fio-setup-basic:
+  rw: randwrite
+  bs:
+  - 4k
+  - 4M
+  ioengine: sync
+
+fio:
