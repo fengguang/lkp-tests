@@ -96,6 +96,7 @@ set_env()
 
 	if [ "$fs" = xfs ] && [ "${test%?}" = "generic-group" ]; then
 		mkfs.xfs -f -mreflink=1 $TEST_DEV || die "mkfs.xfs test_dev failed"
+		log_eval export MKFS_OPTIONS="-mreflink=1"
 	fi
 
 	[ "$test" = "generic-387" ] && {
