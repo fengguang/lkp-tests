@@ -4,6 +4,7 @@
 # - option (dontshow)
 # - multi
 # - rtcwake (dont show)
+# - idle (dont show)
 
 . $LKP_SRC/lib/upload.sh
 
@@ -14,10 +15,11 @@ options=""
 [ -n "$mode" ] || mode='freeze'
 [ -n "$runtime" ] || runtime=600
 [ -n "$rtcwake" ] || rtcwake=30
+[ -n "$idle" ] || idle=5
 
 options="-m $mode $option -rtcwake $rtcwake"
 
-[ -z "$multi" ] || options="$options -multi $multi 10"
+[ -z "$multi" ] || options="$options -multi $multi $idle"
 
 # use -gzip and -skiphtml to reduce the memory usage
 options="$options -gzip -skiphtml"
