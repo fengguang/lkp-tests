@@ -58,6 +58,16 @@ can_skip_sync_remote()
 	[ -f $BENCHMARK_ROOT/$testcase/skip_sync_remote.$nvml_commit ]
 }
 
+# make[1]: *** No rule to make target '../../../src/../src/debug/libpmem/memcpy_nt_avx512f_clflush.o', needed by 'pmem_has_auto_flush'. Stop.
+fixup_sync_remote()
+{
+	local casename=$1
+	log_cmd cd $BENCHMARK_ROOT/$casename/src || return
+	log_cmd make EXTRA_CFLAGS=-DUSE_VALGRIND USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1/ LIBCPP_LIBDIR=/usr/local/libcxx/lib -C libpmem DEBUG=1 || return
+	log_cmd make EXTRA_CFLAGS=-DUSE_VALGRIND USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1/ LIBCPP_LIBDIR=/usr/local/libcxx/lib -C libpmem DEBUG=0 || return
+	log_cmd cd -
+}
+
 enable_remote_node()
 {
 	local casename=$1
@@ -93,6 +103,7 @@ enable_remote_node()
 	if can_skip_sync_remote; then
 		echo "skip make sync_remotes"
 	else
+		fixup_sync_remote $casename || return
 		log_cmd make sync-remotes FORCE_SYNC_REMOTE=y USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1 LIBCPP_LIBDIR=/usr/local/libcxx/lib || return
 		can_skip_copy_source && {
 			log_cmd rm $BENCHMARK_ROOT/$testcase/skip_sync_remote.* 2>/dev/null
