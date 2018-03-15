@@ -111,6 +111,13 @@ set_env()
 		log_eval export LOGWRITES_DEV="$LOGWRITES_DEV"
 		[ "$fs" = "xfs" ] && log_eval export MKFS_OPTIONS="-mreflink=1"
 	fi
+
+	if [ "$test" = "generic-470" ] && [ "$nr_partitions" -ge 3 ]; then
+		LOGWRITES_DEV=${partitions#* }
+		LOGWRITES_DEV=${LOGWRITES_DEV%% *}
+		log_eval export LOGWRITES_DEV="$LOGWRITES_DEV"
+		[ "$fs" = "xfs" ] && unset MKFS_OPTIONS
+	fi
 }
 
 ignore_and_do_tests()

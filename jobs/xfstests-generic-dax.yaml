@@ -4,9 +4,12 @@ category: functional
 
 boot_params:
   bp1_memmap: 4G!8G
-  bp2_memmap: 4G!16G
+  bp2_memmap: 4G!10G
+  bp3_memmap: 4G!16G
+  bp4_memmap: 4G!22G
 
-disk: 2pmem
+disk:
+  nr_pmem: 4
 
 timeout: 2h
 
@@ -19,3 +22,4 @@ fs:
 xfstests:
   test:
   - generic-dax
+  - generic-470
