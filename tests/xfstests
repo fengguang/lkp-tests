@@ -103,6 +103,14 @@ set_env()
 		printf "n\np\n1\n\n+1G\nw\n" | fdisk $SCRATCH_DEV
 		log_eval export SCRATCH_DEV="$SCRATCH_DEV"1
 	}
+
+	# need at least 3 partitions for TEST_DEV, SCRATCH_DEV and LOGWRITES_DEV
+	if [ "$test" = "generic-logwrites" ] && [ "$nr_partitions" -ge 3 ]; then
+		LOGWRITES_DEV=${partitions#* }
+		LOGWRITES_DEV=${LOGWRITES_DEV%% *}
+		log_eval export LOGWRITES_DEV="$LOGWRITES_DEV"
+		[ "$fs" = "xfs" ] && log_eval export MKFS_OPTIONS="-mreflink=1"
+	fi
 }
 
 ignore_and_do_tests()
