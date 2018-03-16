@@ -143,7 +143,11 @@ fixup_jgfxbat()
 	sed -i '/run_Java2Demo()/asleep 10' $target/runbat.sh
 
 	# select the java version
-	update-java-alternatives -s java-1.6.0-openjdk-amd64
+	# drop debug message to avoid unexpected stderr
+	update-java-alternatives -s java-1.6.0-openjdk-amd64 &>/dev/null || {
+		echo "failed to update-java-alternatives -s java-1.6.0-openjdk-amd64"
+		return 1
+	}
 
 	export DISPLAY=:0
 }
