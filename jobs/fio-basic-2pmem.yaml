@@ -5,8 +5,8 @@ category: benchmark
 debug-setup: tune
 
 boot_params:
-  bp1_memmap: 104G!26G
-  bp2_memmap: 104G!154G
+  bp1_memmap: 104G!4G
+  bp2_memmap: 104G!132G
 
 disk: 2pmem
 fs:
