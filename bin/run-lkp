@@ -32,6 +32,7 @@ set_job_state 'running'
 
 if ! is_ucode_version_matched "$testbox"; then
 	echo "microcode is not matched, skip testing..."
+	set_job_state 'microcode_is_not_matched'
 	exit 1
 fi
 
