@@ -139,8 +139,8 @@ fixup_jgfxbat()
 	[[ -f "$results_definition" ]] || return
 	sed -i s/"#_RESULT_#"/"Result: #_RESULT_#"/ $results_definition
 
-	# fix the Jaca2Demo test
-	sed -i '/run_Java2Demo()/asleep 10' $target/runbat.sh
+	# disable the Jaca2Demo test due to unstable
+	sed -i 's/^run_Java2Demo$/#run_Java2Demo/' $target/runbat.sh
 
 	# select the java version
 	# drop debug message to avoid unexpected stderr
