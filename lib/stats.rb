@@ -40,8 +40,14 @@ def test_prefixes
   tests.push 'last_state'
   tests.map { |test| test + '.' }
 end
+
+def is_functional_test(testcase)
+  return true if testcase =~ /^build-/
+  $functional_tests.include? testcase
+end
+
 $test_prefixes = test_prefixes
-$perf_metrics_prefixes.concat $test_prefixes
+$perf_metrics_prefixes.concat $test_prefixes.reject { |test| is_functional_test(test[0..-2]) }
 
 def __is_perf_metric(name)
   return true if name =~ $perf_metrics_re
@@ -203,11 +209,6 @@ end
 
 def vmlinuz_dir(kconfig, compiler, commit)
   "#{KERNEL_ROOT}/#{kconfig}/#{compiler}/#{commit}"
-end
-
-def is_functional_test(testcase)
-  return true if testcase =~ /^build-/
-  $functional_tests.include? testcase
 end
 
 def load_base_matrix(matrix_path, head_matrix, options)
