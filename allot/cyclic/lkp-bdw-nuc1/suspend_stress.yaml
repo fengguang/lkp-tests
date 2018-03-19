@@ -1,0 +1,14 @@
+suite: suspend_stress
+testcase: suspend_stress
+category: functional
+kernel_cmdline: "initcall_debug log_buf_len=4M no_console_suspend ignore_loglevel"
+
+suspend_stress:
+  mode:
+  - mem
+  - freeze
+
+iterations: 10
+runtime:
+rtcwake:
+idle:
