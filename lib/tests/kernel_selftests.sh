@@ -73,7 +73,10 @@ prepare_for_pstore()
 {
 	[[ -e /dev/pmsg0 ]] || {
 		# in order to create a /dev/pmsg0, we insert a dummy ramoops device
-		modprobe ramoops mem_address=0x8000000 ecc=1 mem_size=1000000 2>&1
+		# Previously, the expected device(/dev/pmsg0) isn't created on skylake(Sandy Bridge is fine) when we specify ecc=1
+		# So we chagne ecc=0 instead, that's good to both skylake and sand bridge.
+		# NOTE: the root cause is not clear
+		modprobe ramoops mem_address=0x8000000 ecc=0 mem_size=1000000 2>&1
 		[[ -e /dev/pmsg0 ]] || {
 			echo "ignored_by_lkp pstore test: /dev/pmsg0 does not exist"
 			return 1
