@@ -71,10 +71,10 @@ prepare_for_efivarfs()
 
 prepare_for_pstore()
 {
-	[[ ! -e /dev/pmsg0 ]] && { 
+	[[ -e /dev/pmsg0 ]] || {
 		# in order to create a /dev/pmsg0, we insert a dummy ramoops device
 		modprobe ramoops mem_address=0x8000000 ecc=1 mem_size=1000000 2>&1
-		[[ ! -e /dev/pmsg0 ]] && {
+		[[ -e /dev/pmsg0 ]] || {
 			echo "ignored_by_lkp pstore test: /dev/pmsg0 does not exist"
 			return 1
 		}
