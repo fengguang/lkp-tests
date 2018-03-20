@@ -31,7 +31,13 @@ add_jessie_mirror()
 	echo "deb http://linux-ftp.sh.intel.com/pub/mirrors/debian jessie main" >> /etc/apt/sources.list
 }
 
-[ "$DISTRO" = "debian" ] && add_jessie_mirror
+[ "$DISTRO" = "debian" ] && {
+	add_jessie_mirror
+	# fix the problem:
+	# debconf: unable to initialize frontend: Dialog
+	# debconf: (TERM is not set, so the dialog frontend is not usable.)
+	export DEBIAN_FRONTEND=noninteractive
+}
 
 update
 
