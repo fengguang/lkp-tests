@@ -6,7 +6,19 @@ cd $BENCHMARK_ROOT/stutter || exit
 . $LKP_SRC/lib/unit.sh
 . $LKP_SRC/lib/reproduce-log.sh
 
-log_eval export MEMTOTAL_BYTES=$(to_byte $memory)
+set_memtotal_bytes()
+{
+	local default_memory_bytes=$(to_byte "8G")
+	local memory_bytes=$(to_byte $memory)
+	# limit the memory to speed up the test
+	if [ $memory_bytes -gt $default_memory_bytes ]; then
+		memory_bytes=$default_memory_bytes
+	fi
+	log_eval export MEMTOTAL_BYTES=$memory_bytes
+}
+
+set_memtotal_bytes
+
 log_eval export ITERATIONS=$iterations
 log_eval export LOGDIR_RESULTS=$RESULT_ROOT/log_result
 
