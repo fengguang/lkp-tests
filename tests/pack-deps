@@ -75,6 +75,11 @@ do
 	echo "$PACKAGE_LIST" | grep -F -f "$LKP_SRC/distro/keep-deb" > opt/deb/sequence-deb.$BM_NAME
 	echo "$PACKAGE_VERSION_LIST" > opt/deb/${BM_NAME}-deps.packages
 
+	# Fix the warning 'W: Download is performed unsandboxed as root as file...' in newest APT versions
+	if id "_apt" >/dev/null 2>&1; then
+		chown _apt .
+	fi
+
 	if download "$PACKAGE_VERSION_LIST"; then
 		install || exit 1
 		pack
