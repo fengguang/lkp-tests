@@ -1,6 +1,6 @@
-From c419cdbda8461c135b28c61fb3457388f7e17b87 Mon Sep 17 00:00:00 2001
-From: leishaoting <leist.fnst@cn.fujitsu.com>
-Date: Thu, 26 Oct 2017 09:59:58 +0800
+From a156d3029b1ec6f21175896798cb26743f6a77b6 Mon Sep 17 00:00:00 2001
+From: lst <lst@localhost.localdomain>
+Date: Mon, 19 Mar 2018 01:42:52 -0400
 Subject: [PATCH] Specify $TMPDIR for rwtest01-04
 
 In the code of runtest/ltplite we should specify $TMPDIR for rwtest01-04 just like runtest/fs.
@@ -19,10 +19,10 @@ Signed-off-by: Li Zhijian <lizhijian@cn.fujitsu.com>
  1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/runtest/ltplite b/runtest/ltplite
-index 5418495..978204c 100644
+index 15dc0c2..01ff7e7 100644
 --- a/runtest/ltplite
 +++ b/runtest/ltplite
-@@ -1111,10 +1111,10 @@ gf27 growfiles -W gf27 -b -D 0 -w -g 8b -C 1 -b -i 1000 -u gfsparse-1-$$
+@@ -1107,10 +1107,10 @@ gf27 growfiles -W gf27 -b -D 0 -w -g 8b -C 1 -b -i 1000 -u gfsparse-1-$$
  #gf28 growfiles -W gf28 -b -D 0 -w -g 16b -C 1 -b -i 1000 -u gfsparse-2-$$
  #gf29 growfiles -W gf29 -b -D 0 -r 1-4096 -R 0-33554432 -i 0 -L 60 -C 1 -u gfsparse-3-$$
  gf30 growfiles -W gf30 -D 0 -b -i 0 -L 60 -u -B 1000b -e 1 -o O_RDWR,O_CREAT,O_SYNC -g 20480 -T 10 -t 20480 gf-sync-$$
@@ -38,5 +38,5 @@ index 5418495..978204c 100644
  
  
 -- 
-2.7.4
+1.8.3.1
 
