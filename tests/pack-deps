@@ -8,6 +8,7 @@
 [ -n "$benchmark" ] || die "benchmark is empty"
 
 DISTRO=${rootfs%%-*}
+DISTRO=${DISTRO##*/}
 
 . $LKP_SRC/distro/${DISTRO}
 
@@ -17,7 +18,7 @@ mount $LKP_SERVER:$DEPS_MNT $DEPS_MNT || die "Failed to run mount"
 
 umask 002
 
-pack_to=$DEPS_MNT/$rootfs
+pack_to=$DEPS_MNT/$(basename $rootfs)
 [[ -d "$pack_to" ]] || {
 	mkdir "$pack_to"
 	chown .lkp "$pack_to"
