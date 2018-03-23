@@ -1,6 +1,7 @@
 # the memory size has to be more than 100G
 suite: exit_free
 testcase: exit_free
+category: benchmark
 
 transparent_hugepage:
   thp_enabled: never
