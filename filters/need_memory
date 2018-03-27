@@ -4,6 +4,18 @@
 
 source $LKP_SRC/lib/unit.sh
 
+# if need_memory=100% and nr_cpu is 64
+# it means it needs 64G memory at least
+[[ $need_memory =~ %$ ]] && {
+	[[ -n "$nr_cpu" && $nr_cpu -ge 1 ]] || {
+		echo "nr_cpu is not correct at hosts/$testbox"
+		exit 1
+	}
+
+	ratio=${need_memory%\%*}
+	need_memory=$((nr_cpu * ratio / 100))G
+}
+
 need_memory_mb=$(to_mb $need_memory)
 memory_mb=$(to_mb $memory)
 
