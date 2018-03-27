@@ -26,16 +26,19 @@ fixup_hpcc()
 {
 	[[ -n "$environment_directory" ]] || return
 
-	[ -d "/usr/lib/x86_64-linux-gnu/openmpi" ] && {
-		export MPI_PATH=/usr/lib/x86_64-linux-gnu/openmpi
-		export MPI_INCLUDE=/usr/lib/x86_64-linux-gnu/openmpi/include
-		export MPI_LIBS=/usr/lib/x86_64-linux-gnu/openmpi/lib/libmpi.so
+	local test=$1
+	local mpdir="/usr/lib/x86_64-linux-gnu/openmpi"
+	# check mpdir in Make file to make sure the test binary is built with right library
+	[ -d "$mpdir" ] && [ "$(grep MPdir ${environment_directory}/pts/${test}/hpcc-*/hpl/Make.pts | awk '{print $NF}')" != "$mpdir" ] && {
+		export MPI_PATH=$mpdir
+		export MPI_INCLUDE=$mpdir/include
+		export MPI_LIBS=$mpdir/lib/libmpi.so
 		export MPI_CC=/usr/bin/mpicc.openmpi
 		export MPI_VERSION=`$MPI_CC -showme:version 2>&1 | grep MPI | cut -d "(" -f1  | cut -d ":" -f2`
-		phoronix-test-suite force-install pts/hpcc-1.2.1
+		phoronix-test-suite force-install pts/$test
 	}
 
-	local target=${environment_directory}/pts/hpcc-1.2.1/hpcc
+	local target=${environment_directory}/pts/${test}/hpcc
 	sed -i 's/mpirun -np/mpirun --allow-run-as-root -np/' "$target"
 }
 
@@ -226,8 +229,8 @@ run_test()
 		fio-1.8.2)
 			fixup_fio || die "failed to fixup test fio"
 			;;
-		hpcc-1.2.1)
-			fixup_hpcc || die "failed to fixup test hpcc"
+		hpcc-*)
+			fixup_hpcc $test || die "failed to fixup test hpcc"
 			;;
 		open-porous-media-1.3.1)
 			fixup_open_porous_media || die "failed to fixup test open-porous-media"
