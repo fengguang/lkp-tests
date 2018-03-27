@@ -71,12 +71,19 @@ fixup_nginx()
 fixup_fio()
 {
 	[[ -n "$environment_directory" ]] || return
-	mount_partition || die "mount partition failed"
-	mount --bind $mnt ${environment_directory}/pts/fio-1.8.2/ || die "failed to mount fio directory"
+	local test=$1
+	local target=${environment_directory}/pts/${test}/fio-run
 
-	phoronix-test-suite force-install pts/fio-1.8.2
-	local target=${environment_directory}/pts/fio-1.8.2/fio-run
+	# create virtual disk
+	local test_disk="/tmp/test_fio.img"
+	local test_dir="/media/test_fio"
+	fallocate -l 100M $test_disk || return
+	mkfs -t ext4 $test_disk || return
+	mkdir $test_dir || return
+	mount -t auto -o loop $test_disk $test_dir ||return
+
 	sed -i 's,#!/bin/sh,#!/bin/dash,' "$target"
+	sed -i "s#\$DIRECTORY_TO_TEST#directory=${test_dir}#" "$target"
 
 	# Choose
 	# 1: Sequential Write
@@ -226,8 +233,8 @@ run_test()
 		bullet-1.2.2)
 			fixup_bullet || die "failed to fixup test bullet"
 			;;
-		fio-1.8.2)
-			fixup_fio || die "failed to fixup test fio"
+		fio-*)
+			fixup_fio $test || die "failed to fixup test fio"
 			;;
 		hpcc-*)
 			fixup_hpcc $test || die "failed to fixup test hpcc"
