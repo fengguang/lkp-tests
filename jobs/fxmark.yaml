@@ -4,6 +4,9 @@ suite: fxmark
 testcase: fxmark
 category: benchmark
 
+disk: 1HDD
+media: hdd
+
 fxmark:
  test:
   - DWAL
@@ -38,3 +41,7 @@ fxmark:
  directio:
   - bufferedio
   - directio
+
+---
+disk: 1SSD
+media: ssd
