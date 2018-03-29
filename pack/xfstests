@@ -3,7 +3,7 @@
 download()
 {
 	git_clone_update git://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs-tools.git
-	git_clone_update git://git.kernel.org/pub/scm/fs/xfs/xfsprogs-dev.git
+	git_clone_update git://git.kernel.org/pub/scm/fs/xfs/xfsprogs-dev.git --branch for-next
 	git_clone_update git://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git
 }
 
