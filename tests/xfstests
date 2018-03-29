@@ -66,6 +66,11 @@ set_env()
 		log_eval export SCRATCH_LOGDEV="$SCRATCH_LOGDEV"
 	fi
 
+	[ "${test%%-*}" = "xfs" ] && {
+		log_eval export SCRATCH_XFS_LIST_METADATA_FIELDS=u3.sfdir3.hdr.parent.i4
+		log_eval export SCRATCH_XFS_LIST_FUZZ_VERBS=random
+	}
+
 	[ "$test" = "xfs-275" ] && {
 		log_eval export USE_EXTERNAL=yes
 		# create a 100M partition for log, avoid
