@@ -71,6 +71,10 @@ set_env()
 		log_eval export SCRATCH_XFS_LIST_FUZZ_VERBS=random
 	}
 
+	[ "$test" = "xfs-no_bug_assert" ] && {
+		[ -f /sys/fs/xfs/debug/bug_on_assert ] && echo 0 > /sys/fs/xfs/debug/bug_on_assert
+	}
+
 	[ "$test" = "xfs-275" ] && {
 		log_eval export USE_EXTERNAL=yes
 		# create a 100M partition for log, avoid
