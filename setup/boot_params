@@ -7,6 +7,7 @@
 # - bp_disable_mtrr_trim
 # - bp_idle
 # - bp_maxcpus
+# - bp_intel_iommu
 
 # Kernel boot parameters that will impact performance/power
 cmdline=" $(cat /proc/cmdline) "
@@ -33,3 +34,4 @@ check_param "bp4_memmap"
 check_param "bp_disable_mtrr_trim"
 check_param "bp_idle"
 check_param "bp_maxcpus"
+check_param "bp_intel_iommu"
