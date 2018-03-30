@@ -15,11 +15,11 @@ require "#{LKP_SRC}/lib/constant.rb"
 require "#{LKP_SRC}/lib/statistics.rb"
 require "#{LKP_SRC}/lib/log"
 require "#{LKP_SRC}/lib/tests.rb"
+require "#{LKP_SRC}/lib/nresult_root"
 
 $metric_add_max_latency = IO.read("#{LKP_SRC}/etc/add-max-latency").split("\n")
 $metric_latency = IO.read("#{LKP_SRC}/etc/latency").split("\n")
 $metric_failure = IO.read("#{LKP_SRC}/etc/failure").split("\n")
-$functional_tests = Set.new IO.read("#{LKP_SRC}/etc/functional-tests").split("\n")
 $perf_metrics_threshold = YAML.load_file "#{LKP_SRC}/etc/perf-metrics-threshold.yaml"
 $perf_metrics_prefixes = File.read("#{LKP_SRC}/etc/perf-metrics-prefixes").split
 $index_perf = load_yaml "#{LKP_SRC}/etc/index-perf.yaml"
@@ -42,8 +42,7 @@ def test_prefixes
 end
 
 def is_functional_test(testcase)
-  return true if testcase =~ /^build-/
-  $functional_tests.include? testcase
+  MResultRootTableSet::LINUX_TESTCASES.index testcase
 end
 
 $test_prefixes = test_prefixes
