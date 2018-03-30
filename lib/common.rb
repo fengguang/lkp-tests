@@ -7,6 +7,7 @@ require 'pathname'
 require 'fileutils'
 require 'stringio'
 require "#{LKP_SRC}/lib/array_ext"
+require 'English'
 
 LKP_DATA_DIR = '/lkp/data'.freeze
 
@@ -232,6 +233,33 @@ def zopen(fn, mode = 'r', &blk)
   else
     raise "File doesn't exist: #{fn}"
   end
+end
+
+def copy_and_decompress(src_fullpath, dst)
+  src_fullpath.sub!(/(\.xz|\.gz|\.bz2)$/, '')
+
+  if Dir.exist? dst
+    fn = File.basename(src_fullpath, '.*')
+    dst = File.join(dst, fn)
+  end
+
+  if File.exist?(src_fullpath)
+    %x(cp #{src_file} #{dst})
+  elsif File.exist?(src_fullpath + '.gz')
+    src_fullpath += '.gz'
+    %x(gzip -cd #{src_fullpath} > #{dst})
+  elsif File.exist?(src_fullpath + '.bz2')
+    src_fullpath += '.bz2'
+    %x(bzip2 -cd #{src_fullpath} > #{dst})
+  elsif File.exist?(src_fullpath + '.xz')
+    src_fullpath += '.xz'
+    %x(xz -cd #{src_fullpath} > #{dst})
+  else
+    warn "File doesn't exist: #{src_fullpath}"
+    return false
+  end
+
+  $CHILD_STATUS.success?
 end
 
 ## Date and time
