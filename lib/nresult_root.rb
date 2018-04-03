@@ -3,7 +3,6 @@ LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 require "#{LKP_SRC}/lib/common.rb"
 require "#{LKP_SRC}/lib/property.rb"
 require "#{LKP_SRC}/lib/yaml.rb"
-require "#{LKP_SRC}/lib/stats.rb"
 require "#{LKP_SRC}/lib/job.rb"
 require "#{LKP_SRC}/lib/result.rb"
 require "#{LKP_SRC}/lib/data_store.rb"
