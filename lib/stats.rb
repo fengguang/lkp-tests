@@ -45,8 +45,12 @@ def is_functional_test(testcase)
   MResultRootTableSet::LINUX_TESTCASES.index testcase
 end
 
+def other_test?(testcase)
+  MResultRootTableSet::OTHER_TESTCASES.index testcase
+end
+
 $test_prefixes = test_prefixes
-$perf_metrics_prefixes.concat $test_prefixes.reject { |test| is_functional_test(test[0..-2]) }
+$perf_metrics_prefixes.concat($test_prefixes.reject { |test| is_functional_test(test[0..-2]) || other_test?(test[0..-2]) })
 
 def __is_perf_metric(name)
   return true if name =~ $perf_metrics_re
