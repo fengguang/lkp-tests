@@ -5,6 +5,7 @@
 . $LKP_SRC/lib/qemu.sh
 . $LKP_SRC/lib/unit.sh
 . $LKP_SRC/lib/job-init.sh
+. $LKP_SRC/lib/lkp_cmd.sh
 
 script_name=$(basename $0)
 
@@ -182,6 +183,7 @@ job_script=$1
 
 sed -i 's/\r//' $job_script
 
+create_lkp_user
 create_lkp_home
 export CACHE_DIR=$HOME/.lkp/cache
 
