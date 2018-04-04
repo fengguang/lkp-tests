@@ -1,5 +1,6 @@
 suite: rsync-rootfs
 testcase: rsync-rootfs
 
-source:
-- inn:/export/debian-full-x86_64
+source: inn:/export/debian-full-x86_64
+
+rsync-rootfs:
