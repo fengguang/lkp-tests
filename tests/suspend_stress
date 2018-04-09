@@ -61,6 +61,7 @@ do
 	echo "Suspend to $mode $i/$iterations:"
 	if [[ ( -z "$pm_test" ) && ( "$mode" != "disk" ) ]]
 	then
+		echo 0 > $rtcwake_file
 		echo "+$rtcwake" > $rtcwake_file
 		if [ $? -ne 0 ]
 		then
