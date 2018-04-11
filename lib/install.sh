@@ -99,6 +99,45 @@ get_build_dir()
 	echo "/tmp/build-$1"
 }
 
+download_distro_depends() {
+	local script=$1
+	local dest=$2
+	local pkg
+	local pkg_dir
+
+	if [ -z "$BM_NAME" ]; then
+		BM_NAME="$script"
+		unset_bmname=1
+	fi
+
+	local debs=$(get_dependency_packages $DISTRO $script)
+	resolve_depends "$debs"
+	if [ -n "$PACKAGE_VERSION_LIST" ]; then
+		(
+			cd "$dest"
+			download "$PACKAGE_VERSION_LIST"
+			save_package_deps_info $BM_NAME
+			echo "$PACKAGE_LIST" >> $pack_to/.${BM_NAME}.packages
+		)
+	fi
+	# install the dependencies to build pkg
+	$LKP_SRC/distro/installer/$DISTRO $debs
+
+	local packages="$(get_dependency_packages ${DISTRO} ${script} pkg)"
+	if [ -z "$packages" ] || [ "$packages" = " " ]; then
+			return 0
+	fi
+
+	for pkg in $packages; do
+		download_distro_depends $pkg "$dest"
+	done
+
+	if [ "$BM_NAME" = "$script" ] && [ -n "$unset_bmname" ]; then
+		unset BM_NAME
+		unset unset_bmname
+	fi
+}
+
 build_depends_pkg() {
 	if [ "$1" = '-i' ]; then
 		# in recursion install the package with -i option
@@ -118,27 +157,12 @@ build_depends_pkg() {
 		unset_bmname=1
 	fi
 
-	local packages=$(get_dependency_packages $DISTRO $script)
-	local dev_packages="$(get_dependency_packages ${DISTRO} ${script}-dev)"
-	local debs="$(echo $packages $dev_packages | tr '\n' ' ')"
-	resolve_depends "$debs"
-	if [ -n "$PACKAGE_VERSION_LIST" ]; then
-		(
-			cd "$dest"
-			download "$PACKAGE_VERSION_LIST"
-			# the distribution's dependencies will be packed with the makepkg dependencies.
-			install || exit 1
-			save_package_deps_info $BM_NAME
-			echo "$PACKAGE_LIST" >> $pack_to/.${BM_NAME}.packages
-		)
-	fi
-	# install the dependencies to build pkg
-	if [ "$INSTALL" = '-i' ] && [ -n "$debs" ] && [ "$debs" != ' ' ]; then
-		$LKP_SRC/distro/installer/$DISTRO $debs
-	fi
+	local debs=$(get_dependency_packages $DISTRO ${script}-dev)
+	# install the dev dependencies to build pkg
+	$LKP_SRC/distro/installer/$DISTRO $debs
 
-	packages="$(get_dependency_packages ${DISTRO} ${script} pkg)"
-	dev_packages="$(get_dependency_packages ${DISTRO} ${script}-dev pkg)"
+	local packages="$(get_dependency_packages ${DISTRO} ${script} pkg)"
+	local dev_packages="$(get_dependency_packages ${DISTRO} ${script}-dev pkg)"
 	packages="$(echo $packages $dev_packages | tr '\n' ' ')"
 	if [ -z "$packages" ] || [ "$packages" = " " ]; then
 		if [ "$BM_NAME" = "$script" ] && [ -z "$PACKAGE_LIST" ]; then

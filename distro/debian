@@ -151,3 +151,21 @@ save_package_deps_info()
 	[ -n "$PACKAGE_VERSION_LIST" ] && \
 		echo "$PACKAGE_VERSION_LIST" >> "opt/deb/${benchmark}-deps.packages"
 }
+
+install_distro_depends()
+{
+	local script
+	local bm="$1"
+	local scripts=$(find $LKP_SRC/distro/depends/ -name "$bm" -o -name "${bm}.[0-9]")
+
+	for script in $scripts
+	do
+		script=$(basename $script)
+		packages=$(get_dependency_packages debian $script)
+
+		[ -z "$packages" ] && continue
+
+		echo install packages for $script: $packages
+		LC_ALL="C" apt-get -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold install -y $packages
+	done
+}

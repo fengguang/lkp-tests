@@ -29,27 +29,7 @@ check_shared_package "$benchmark" && exit
 
 dpkg --add-architecture i386
 update
-
-apt_install_depends()
-{
-	local script
-	local bm="$1"
-	local scripts=$(find $LKP_SRC/distro/depends/ -name "$bm" -o -name "${bm}.[0-9]")
-
-	apt-get install -yf
-	for script in $scripts
-	do
-		script=$(basename $script)
-		packages=$(get_dependency_packages debian $script)
-
-		[ -z "$packages" ] && continue
-
-		echo install packages for $script: $packages
-		LC_ALL="C" apt-get -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold install -y $packages
-	done
-}
-
-apt_install_depends lkp-dev
+apt-get install -yf
 
 [[ "$benchmark" = "all" ]] && benchmark="$(ls $LKP_SRC/distro/depends | grep -v -e '-dev' -e '-whitelist')"
 
@@ -61,6 +41,8 @@ do
 	work_dir=$(mktemp -d /tmp/makepkg-deps-$BM_NAME-XXXXXXXX)
 	cd $work_dir
 
+	download_distro_depends $BM_NAME "$work_dir"
+	[ -n "$LKP_SERVER" ] && install_distro_depends lkp-dev
 	build_depends_pkg $BM_NAME "$work_dir" && pack
 
 	rm -fr "$work_dir"
