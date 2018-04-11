@@ -16,7 +16,7 @@ while (line = STDIN.gets)
     puts "#{test_name}.#{test_id}.#{unit}: #{value}"
   when /Final: ([0-9.]+) (.*)/
     value = Regexp.last_match[1]
-    test_id += 1 if value == "1"
+    test_id += 1 if value == '1'
     puts "#{test_name}.#{test_id}.Final: #{value}"
   when /The following tests failed to properly run:/
     puts "#{test_name}.fail: 1"
