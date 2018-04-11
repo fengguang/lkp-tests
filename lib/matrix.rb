@@ -190,7 +190,7 @@ def unite_to(stats, matrix_root, max_cols = nil, delete = false)
   matrix_file = matrix_root + '/matrix.json'
 
   matrix = load_matrix_file(matrix_root + '/matrix.json')
-  matrix = load_matrix_file(matrix_root + '/matrix.yaml') unless matrix
+  matrix ||= load_matrix_file(matrix_root + '/matrix.yaml')
 
   if matrix
     dup_col = matrix[STATS_SOURCE_KEY].index stats[STATS_SOURCE_KEY]

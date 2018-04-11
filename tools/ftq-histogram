@@ -32,7 +32,7 @@ def make_histogram(data, levels)
   histogram = levels.each_with_index.map do |level, i|
     lc = mean * level / 100
     nstart = data.bsearch_index { |n| n >= lc }
-    nstart = data.size unless nstart
+    nstart ||= data.size
     num = (nstart - start) * 1_000_000.0 / samples
     start = nstart
     slevel = i.zero? ? 0 : levels[i - 1]
