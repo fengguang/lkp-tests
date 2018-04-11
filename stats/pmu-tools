@@ -8,11 +8,11 @@ results = Hash.new(0)
 
 STDIN.each_line do |line|
   if line =~ /\d+.\d+\s+(\d+)\s+(\S+)\s+(\S+)/
-    if $2 == "Bytes"
-      key = "#{$3}_#{$2}"
-    else
-      key = $2
-    end
+    key = if $2 == "Bytes"
+            "#{$3}_#{$2}"
+          else
+            $2
+          end
     results[key] += $1.to_i
   end
 end
