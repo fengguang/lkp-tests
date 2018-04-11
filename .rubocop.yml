@@ -50,3 +50,9 @@ Metrics/BlockLength:
     - 'Rakefile'
     - '**/*.rake'
     - 'spec/**/*.rb'
+
+Style/NumericPredicate:
+  Exclude:
+    - 'lib/job2sh.rb'
+    - 'lib/matrix.rb'
+    - 'lib/stats.rb'
