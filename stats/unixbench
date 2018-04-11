@@ -10,19 +10,19 @@ while (line = STDIN.gets)
   case line.chomp!
   when /^Benchmark Run: .+ (\d+):(\d+):(\d+) - (\d+):(\d+):(\d+)$/
 # We only care about the difference value between end time and start time
-	  start_time = Time.new(2018, 1, 1, $1, $2, $3).to_i
-	  end_time = Time.new(2018, 1, 1, $4, $5, $6).to_i
-	  duration = if end_time > start_time
+    start_time = Time.new(2018, 1, 1, $1, $2, $3).to_i
+    end_time = Time.new(2018, 1, 1, $4, $5, $6).to_i
+    duration = if end_time > start_time
                  end_time - start_time
                else
                  end_time + 3600 * 24 - start_time  # date overflo
                end
   when /^System Benchmarks Partial Index .* INDEX$/
-	  line = STDIN.gets
-	  if line.chomp!
-		  lines = line.split
-		  throughput = lines[-2].to_f
-	  end
+    line = STDIN.gets
+    if line.chomp!
+      lines = line.split
+      throughput = lines[-2].to_f
+    end
   when /^System Benchmarks Index Score .* ([0-9\.]+)$/
     score = $1
   end
