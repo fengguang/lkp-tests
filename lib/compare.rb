@@ -715,7 +715,7 @@ module Compare
     end
     all_tests_set.each do |test|
       c = stat_base_map[test]
-      stat_base_map[test] = 0 if c && c > 0
+      stat_base_map[test] = 0 if c && c.positive?
     end
     stats.sort_by! do |stat|
       [

@@ -40,7 +40,7 @@ end
 
 def add_performance_per_watt(stats, matrix)
   watt = stats['pmeter.Average_Active_Power']
-  return unless watt && watt > 0
+  return unless watt && watt.positive?
 
   kpi_stats = load_yaml("#{LKP_SRC}/etc/index-perf.yaml")
   return unless kpi_stats
@@ -53,14 +53,14 @@ def add_performance_per_watt(stats, matrix)
 
     value = stats[stat]
     next unless value
-    if weight < 0
+    if weight.negative?
       value = 1 / value
       weight = -weight
     end
     performance += value * weight
   end
 
-  return unless performance > 0
+  return unless performance.positive?
 
   stats['pmeter.performance_per_watt'] = performance / watt
   matrix['pmeter.performance_per_watt'] = [performance / watt]

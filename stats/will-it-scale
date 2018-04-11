@@ -37,4 +37,4 @@ end
 printf "scalability: %f\n", scalability[-1] unless scalability.empty?
 printf "per_process_ops: %d\n", per_process.average unless per_process.empty?
 printf "per_thread_ops: %d\n", per_thread.average unless per_thread.empty?
-printf "workload: %d\n", workload unless workload == 0
+printf "workload: %d\n", workload unless workload.zero?

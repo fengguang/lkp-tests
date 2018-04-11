@@ -506,13 +506,13 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
     if mean_a > mean_b
       y = min_a - max_b
       delta = mean_a - mean_b
-      ratio = mean_a.to_f / mean_b if mean_b > 0
+      ratio = mean_a.to_f / mean_b if mean_b.positive?
     else
       y = min_b - max_a
       delta = mean_b - mean_a
-      ratio = mean_b.to_f / mean_a if mean_a > 0
+      ratio = mean_b.to_f / mean_a if mean_a.positive?
     end
-    y = 0 if y < 0
+    y = 0 if y.negative?
     ratio = MAX_RATIO if ratio > MAX_RATIO
 
     unless options['perf-profile'] && k =~ /^perf-profile\./
@@ -679,7 +679,7 @@ end
 def kpi_stat_direction(stat_name, stat_change_percentage)
   change_direction = 'improvement'
 
-  if $index_perf[stat_name] && $index_perf[stat_name] * stat_change_percentage < 0
+  if $index_perf[stat_name] && ($index_perf[stat_name] * stat_change_percentage).negative?
     change_direction = 'regression'
   end
   change_direction

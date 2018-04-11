@@ -46,7 +46,7 @@ while (line = STDIN.gets)
   size = result[k].size
   if record_index < size
     record_index = size
-  elsif record_index - size > 0
+  elsif (record_index - size).positive?
     # fill 0 for missing values
     result[k].concat([0] * (record_index - size))
   end
