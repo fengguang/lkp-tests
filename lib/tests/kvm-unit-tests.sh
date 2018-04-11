@@ -85,8 +85,13 @@ load_kvm_intel_nested()
 setup_test_environment()
 {
 	# fix "SKIP pmu (/proc/sys/kernel/nmi_watchdog not equal to 0)"
-	echo 0 > /proc/sys/kernel/nmi_watchdog || return
-	load_kvm_intel_nested || return
+	[ "$(cat /proc/sys/kernel/nmi_watchdog)" != "0" ] && {
+		echo 0 > /proc/sys/kernel/nmi_watchdog || return
+	}
+	[ -z "$(virt-what)" ] && {
+		load_kvm_intel_nested || return
+	}
+	return 0
 }
 
 run_tests()
