@@ -7,14 +7,13 @@ results = Hash.new(0)
 #    324.224668698 7928832 Bytes llc_misses.mem_read 8005538025 100.00
 
 STDIN.each_line do |line|
-  if line =~ /\d+.\d+\s+(\d+)\s+(\S+)\s+(\S+)/
-    key = if $2 == "Bytes"
-            "#{$3}_#{$2}"
-          else
-            $2
-          end
-    results[key] += $1.to_i
-  end
+  next unless line =~ /\d+.\d+\s+(\d+)\s+(\S+)\s+(\S+)/
+  key = if $2 == "Bytes"
+          "#{$3}_#{$2}"
+        else
+          $2
+        end
+  results[key] += $1.to_i
 end
 
 results.each do |key, value|
