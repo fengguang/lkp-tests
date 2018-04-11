@@ -10,7 +10,7 @@ $stdin.each_line do |line|
     protocol = line.split[10].to_s
   when /elasped/
     libMicro[protocol] = line.split[3].to_s
-    time = time + line.split[3].to_f
+    time += line.split[3].to_f
   end
 end
 
