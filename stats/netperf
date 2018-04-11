@@ -41,9 +41,7 @@ end
 exit if num.zero?
 
 workload = throughput * time
-if unit == 'Mbps'
-	workload = workload * 10**6 / 8.0 / pkt_size
-end
+workload = workload * 10**6 / 8.0 / pkt_size if unit == 'Mbps'
 avg_throughput = throughput / num
 puts 'Throughput_' + unit + ': ' + avg_throughput.to_s
 puts 'Throughput_total_' + unit + ': ' + throughput.to_s
