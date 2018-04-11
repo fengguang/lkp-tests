@@ -64,7 +64,7 @@ def get_program_env(_program, env)
     end
   end
 
-  return program_env, args
+  [program_env, args]
 end
 
 class Job2sh < Job

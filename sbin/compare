@@ -591,7 +591,7 @@ def get_v_and_stddev(value, dim, is_fail)
     v_stddev = 1
   end
 
-  return v, v_stddev
+  [v, v_stddev]
 end
 
 def show_header(is_fail)
