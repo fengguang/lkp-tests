@@ -469,7 +469,7 @@ def setup_dims
     commit_is_ancestor = false
     [
       [$opt_dims[0], $opt_dims[1]],
-      [$opt_dims[1], $opt_dims[0]],
+      [$opt_dims[1], $opt_dims[0]]
     ].each do |dim|
       system "#{GIT} merge-base --is-ancestor #{dim[0]} #{dim[1]}"
       next unless $CHILD_STATUS.exitstatus.zero?

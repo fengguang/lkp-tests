@@ -86,7 +86,7 @@ module DataStore
     def to_data
       {
         MAPS => @maps.map { |m| m.to_data },
-        COMPRESS_MATRIX => @comparess_matrix,
+        COMPRESS_MATRIX => @comparess_matrix
       }
     end
 
@@ -643,7 +643,7 @@ module DataStore
           AXES => as,
           DESC => d,
           STAT_KEY => k,
-          STAT_VALUE => v,
+          STAT_VALUE => v
         }
         yield stat
       end

@@ -14,12 +14,12 @@ require "#{LKP_SRC}/lib/log"
 # How many components in the stat sort key
 $stat_sort_key_number = {
   'perf-profile' => 2,
-  'latency_stats' => 2,
+  'latency_stats' => 2
 }
 
 $stat_absolute_changes = [
   /^perf-profile/,
-  /%$/,
+  /%$/
 ]
 
 class AxesGrouper
@@ -251,7 +251,7 @@ module Compare
         group_by_stat: @group_by_stat,
         show_empty_group: @show_empty_group,
         compact_show: @compact_show,
-        sort_by_group: @sort_by_group,
+        sort_by_group: @sort_by_group
       }
     end
 
@@ -445,7 +445,7 @@ module Compare
         comparer: @comparer.to_data,
         axes: @axes,
         mresult_roots: @mresult_roots.map { |_rt| _rt.to_data },
-        compare_axeses: @compare_axeses,
+        compare_axeses: @compare_axeses
       }
     end
 
@@ -721,7 +721,7 @@ module Compare
       [
         stat_base_map[stat[STAT_BASE]],
         stat_sort_key(stat[STAT_KEY], stat[STAT_BASE]),
-        stat[CHANGES],
+        stat[CHANGES]
       ]
     end
     stats.each
@@ -985,7 +985,7 @@ module Compare
 
   def self.parse_argv(argv)
     options = {
-      compare_axis_keys: [COMMIT_AXIS_KEY],
+      compare_axis_keys: [COMMIT_AXIS_KEY]
     }
     msearch_axes = []
     job_dir = nil

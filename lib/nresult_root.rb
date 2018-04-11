@@ -302,7 +302,7 @@ class MResultRootTableSet
     @table_map = {
       LINUX_PERF_TABLE => @linux_perf_table,
       LINUX_TABLE => @linux_table,
-      OTHER_TABLE => @other_table,
+      OTHER_TABLE => @other_table
     }
 
     @testcase_map = {}

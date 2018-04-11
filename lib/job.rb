@@ -402,7 +402,7 @@ class Job
     @referenced_programs = {}
     @program_options = {
       'cluster' => '-',
-      'ucode' => '=',
+      'ucode' => '='
     }
     programs = available_programs(:workload_elements)
     for_each_in(@job, programs) do |_pk, _h, k, _v|
