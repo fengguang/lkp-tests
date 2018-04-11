@@ -54,6 +54,8 @@ else
 fi
 
 [ $ftrace_mem -gt $fmem ] && ftrace_mem=$fmem
+# in case we get negative value for ftrace_mem
+[ $ftrace_mem -lt 0 ] && ftrace_mem=$fmem
 
 options="$options -bufsize $ftrace_mem"
 ################################################################################
