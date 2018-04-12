@@ -14,11 +14,11 @@ while (line = STDIN.gets)
   when /^bytes.*secs.\s+per sec/
     unit = 'tps'
   when /^Socket.*Elapsed.*/
-	lines = line.split
-	lines.each_with_index do |word, v|
-	  pkt_index = v if word == 'Message'
-	  time_index = v if word == 'Elapsed'
-	end
+   lines = line.split
+   lines.each_with_index do |word, v|
+     pkt_index = v if word == 'Message'
+     time_index = v if word == 'Elapsed'
+   end
   when /^Send\s+Recv\s+/
     lines = line.split
     lines.each_with_index do |word, v|

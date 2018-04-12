@@ -15,12 +15,12 @@ workload = 0
 while (line = STDIN.gets)
   case line
   when /^\S+ \S+ .\/reaim\s+-s(\d+)\s+-e(\d+)\s+-i(\d+).*-r(\d+).*-j(\d+)$/
-	  ($1.to_i..$2.to_i).step($3.to_i) do |v|
-		  jobs += v * $5.to_f
-	  end
-	  jobs *= $4.to_f
-	  workload += jobs
-	  jobs = 0
+    ($1.to_i..$2.to_i).step($3.to_i) do |v|
+      jobs += v * $5.to_f
+    end
+    jobs *= $4.to_f
+    workload += jobs
+    jobs = 0
   when /^[ \d.]+$/
     data = line.split
     data[1..-1].each_with_index do |v, i|
