@@ -15,7 +15,7 @@ while (line = STDIN.gets)
     duration = if end_time > start_time
                  end_time - start_time
                else
-                 end_time + 3600 * 24 - start_time  # date overflo
+                 end_time + 3600 * 24 - start_time # date overflo
                end
   when /^System Benchmarks Partial Index .* INDEX$/
     line = STDIN.gets
