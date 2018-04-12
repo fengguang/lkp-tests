@@ -31,7 +31,7 @@ def print_values(path, line)
     break if line.split.size <= 0
     case line
     when /\s*([\w]+):\s*([0-9]+)$/
-      puts '#{path}.#{$1}: #{$2}'
+      puts "#{path}.#{$1}: #{$2}"
     when /\s*([a-zA-Z]+):\s*(udp|tcp)?\s*([\s0-9]+)$/
       print($1, $2, path, $3.split, params)
     end
