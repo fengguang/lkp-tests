@@ -244,7 +244,7 @@ def merge_matrixes(matrixes)
   mresult
 end
 
-def check_warn_test_error(matrix, result_root)
+def check_warn_test_error(matrix, _result_root)
   ids = %w(
       last_state.is_incomplete_run
       last_state.exit_fail
