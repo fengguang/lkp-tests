@@ -205,7 +205,7 @@ end
 
 def load_release_matrix(matrix_file)
   load_json matrix_file
-rescue => e
+rescue StandardError => e
   log_exception e, binding
   nil
 end
@@ -242,7 +242,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
     log_debug "remote is #{remote}"
     $git[project] ||= Git.open(project: project, remote: remote)
     git = $git[project]
-  rescue => e
+  rescue StandardError => e
     log_exception e, binding
     return nil
   end

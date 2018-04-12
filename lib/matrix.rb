@@ -326,7 +326,7 @@ def unite_params(result_root)
   job = Job.new
   begin
     job.load(result_root + '/job.yaml')
-  rescue
+  rescue StandardError
     return
   end
 

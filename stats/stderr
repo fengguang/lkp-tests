@@ -21,7 +21,7 @@ def should_ignore_stderr(line)
     # treat unrecognized line as "can't be ignored"
     begin
       re.match line
-    rescue
+    rescue StandardError
       nil
     end
   end

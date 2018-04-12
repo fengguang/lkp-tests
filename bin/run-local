@@ -90,7 +90,7 @@ end
 job = Job.new
 begin
   job.load(jobfile)
-rescue
+rescue StandardError
   $stderr.puts "#{jobfile} is not a valid jobfile"
   exit 1
 end

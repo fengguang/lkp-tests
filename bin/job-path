@@ -7,7 +7,7 @@ require "#{LKP_SRC}/lib/job.rb"
 job = Job.new
 begin
   job.load(ARGV[0])
-rescue
+rescue StandardError
   exit
 end
 

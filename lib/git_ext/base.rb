@@ -30,7 +30,7 @@ module Git
 
     def commit_exist?(commit)
       command('rev-list', ['-1', commit])
-    rescue
+    rescue StandardError
       false
     else
       true
