@@ -121,7 +121,7 @@ def create_stats_matrix(result_root)
   add_performance_per_watt(stats, matrix)
   add_path_length(stats, matrix)
   save_json(stats, result_root + '/stats.json')
-  save_json(matrix, result_root + '/matrix.json', compress = true)
+  save_json(matrix, result_root + '/matrix.json', true)
   if local_run?
     save_matrix_to_csv_file(result_root + '/stats.csv', stats)
     save_matrix_to_csv_file(result_root + '/matrix.csv', matrix)

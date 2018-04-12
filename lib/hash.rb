@@ -97,7 +97,7 @@ def revise_hash(original, revisions, overwrite_top_keys = true)
         end
     if k[-1] == '-'
       kk = k[0..-2]
-      parent, pkey, hash, key, keys = lookup_hash(original, kk)
+      parent, pkey, hash, key, _keys = lookup_hash(original, kk)
       if hash.include? key
         if v
           keys = if v.is_a? Hash

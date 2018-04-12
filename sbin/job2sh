@@ -18,7 +18,7 @@ opt_parser = OptionParser.new do |opts|
   opts.separator 'options:'
 
   opts.on('-o FILE', '--output FILE', 'save shell script to FILE (default: stdout)') do |file|
-    $opt_file = File.open(file, mode = 'w', perm = 0o775)
+    $opt_file = File.open(file, 'w', 0o775)
   end
 
   opts.on_tail('-h', '--help', 'Show this message') do

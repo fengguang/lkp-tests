@@ -169,7 +169,7 @@ blacklist = File.read(BLACKLIST).split "\n"
   end
 end
 
-File.open(OUTPUT_FILE, mode = 'w') do |file|
+File.open(OUTPUT_FILE, 'w') do |file|
   file.puts errids.to_a
 end
 

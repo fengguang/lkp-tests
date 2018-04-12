@@ -39,7 +39,7 @@ def with_set_globals(*var_val_list)
 ensure
   if ovals
     var_vals.zip(ovals).map do |var_val, _oval|
-      var, val = var_val
+      var, _val = var_val
       eval("#{var} = oval")
     end
   end
