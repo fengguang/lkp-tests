@@ -559,7 +559,7 @@ def load_matrices_to_compare(matrix_path1, matrix_path2, options = {})
           search_load_json matrix_path2
         else
           load_base_matrix matrix_path1, a, options
-         end
+        end
   rescue StandardError => e
     log_exception(e, binding)
     return [nil, nil]
