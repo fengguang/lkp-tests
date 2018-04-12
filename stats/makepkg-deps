@@ -17,4 +17,4 @@ end
 
 puts "pass: #{passed}"
 puts "skip: #{skiped}"
-puts "fail: #{cnt-passed-skiped}"
+puts "fail: #{cnt - passed - skiped}"
