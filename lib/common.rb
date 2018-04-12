@@ -33,12 +33,12 @@ end
 
 def with_set_globals(*var_val_list)
   var_vals = var_val_list.each_slice(2).to_a
-  ovals = var_vals.map { |var, val| eval(var.to_s) }
-  var_vals.each { |var, val| eval "#{var} = val" }
+  ovals = var_vals.map { |var, _val| eval(var.to_s) }
+  var_vals.each { |var, _val| eval "#{var} = val" }
   yield
 ensure
   if ovals
-    var_vals.zip(ovals).map do |var_val, oval|
+    var_vals.zip(ovals).map do |var_val, _oval|
       var, val = var_val
       eval("#{var} = oval")
     end

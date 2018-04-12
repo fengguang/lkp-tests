@@ -145,7 +145,7 @@ opt_parser = OptionParser.new do |opts|
     $options['variance'] = n.to_i
   end
 
-  opts.on('-w', '--whole', 'show whole changes no matter the number of result root') do |n|
+  opts.on('-w', '--whole', 'show whole changes no matter the number of result root') do |_n|
     $options['whole'] = true
   end
 
