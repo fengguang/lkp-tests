@@ -32,6 +32,16 @@ EOF
 	exit 1
 }
 
+validate_options()
+{
+	local job_script=$1
+	if grep -q "need_modules=true" "$job_script"; then
+		[[ ! $opt_modules ]] && echo "kernel module is required, please specify it with '-m'" && return 1
+	fi
+
+	return 0
+}
+
 create_lkp_home()
 {
 	[[ -e $HOME/.lkp ]] && return
@@ -184,6 +194,8 @@ job_script=$1
 [ -n "$job_script" ] || usage
 
 sed -i 's/\r//' $job_script
+
+validate_options $job_script || exit 1
 
 create_lkp_user
 create_lkp_home
