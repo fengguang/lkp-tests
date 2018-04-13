@@ -365,7 +365,8 @@ def unite_stats(result_root, delete = false)
   begin
     __matrix = unite_to(stats, __result_root, 100, delete)
     check_warn_test_error __matrix, result_root
-  rescue StandardError
+  rescue StandardError => e
+    log_warn e.formatted_headline
   end
 
   true
