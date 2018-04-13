@@ -26,7 +26,7 @@ query_var_from_yaml()
 	sed -ne "1,\$s/^$key[[:space:]]*:[[:space:]]*\\(.*\\)[[:space:]]*\$/\\1/p" "$yaml_file"
 }
 
-# the followings are false, otherwire true
+# the followings are false, otherwise true
 # - null string
 # - string starts with 0
 # - no
