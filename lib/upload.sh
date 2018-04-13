@@ -136,6 +136,7 @@ upload_files_copy()
 	for file
 	do
 		[ -s "$file" ] || continue
+		[ "$LKP_LOCAL_RUN" = "1" ] && chmod ug+w "$file"
 		$copy "$file" $RESULT_ROOT/ || {
 			ls -l "$@" $RESULT_ROOT 2>&1
 			ret=$?
