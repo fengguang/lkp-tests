@@ -60,31 +60,31 @@ download_extract()
 	sudo tar Jxf $file -C $GCC_INSTALL_PATH
 }
 
+download_cross_compiler()
+{
+	local URL="$1"
+
+	echo "lftp -c mirror $URL $GCC_INSTALL_PATH"
+	lftp -c "mirror $URL $GCC_INSTALL_PATH"
+}
+
 install_crosstool()
 {
-	local URL=https://cdn.kernel.org/pub/tools/crosstool/files/bin
+	local URL='https://download.01.org/0day-ci/cross-compiler'
 	local list=/tmp/crosstool-files
 
 	[[ -s $list ]] || {
-		local os_bit="$(getconf LONG_BIT)"
-
-		if [[ $os_bit = 32 ]]; then
-			local os_arch=i686
-		else
-			local os_arch=x86_64
-		fi
-
-		lftp -c "open $URL && find $os_arch > $list" || exit
+		lftp -c "open $URL && find -d 3 > $list" || exit
 	}
 
 	local file
-	file=$(grep "${gcc_arch}.*\.tar\.xz" $list | tail -1)
+	file=$(grep "${gcc_arch}" $list | tail -1)
 	[[ $file ]] || {
 		echo "Cannot find $gcc_arch under $URL check $list"
 		exit 1
 	}
 
-	download_extract "$URL/$file"
+	download_cross_compiler "$URL/$file"
 }
 
 install_linaro()
