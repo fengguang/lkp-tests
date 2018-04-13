@@ -8,7 +8,7 @@ mount_cgroup()
 	}
 
 	awk 'NR > 1 {print "\\s\\+" $1 "\\."}' /proc/cgroups > $TMP/availble-cgroup_subsys
-	cgroup_subsys=$(grep -o -f $TMP/availble-cgroup_subsys $job)
+	[ -f "$job" ] && cgroup_subsys=$(grep -o -f $TMP/availble-cgroup_subsys $job)
 	[ -n "$cgroup_subsys" ] || return
 	cgroup_subsys=$(echo $cgroup_subsys | sed -e 's/\. /,/g' -e 's/\.$//')
 	log_cmd mkdir -p $CGROUP_MNT
