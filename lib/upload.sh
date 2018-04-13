@@ -116,7 +116,7 @@ upload_files_copy()
 
 	mkdir -p $RESULT_ROOT
 
-	[ "$LKP_LOCAL_RUN" != "1" ] && {
+	if [ "$LKP_LOCAL_RUN" != "1" ]; then
 		[ -n "$target_directory" ] && {
 			chown -R lkp.lkp $RESULT_ROOT
 			chmod -R g+w $RESULT_ROOT
@@ -124,7 +124,11 @@ upload_files_copy()
 
 		chown -R lkp.lkp "$@"
 		chmod -R ug+w "$@"
-	}
+
+		local copy="cp -a"
+	else
+		local copy="cp"
+	fi
 
 	local file
 	local ret=0
@@ -132,7 +136,7 @@ upload_files_copy()
 	for file
 	do
 		[ -s "$file" ] || continue
-		cp -a "$file" $RESULT_ROOT/ || {
+		$copy "$file" $RESULT_ROOT/ || {
 			ls -l "$@" $RESULT_ROOT 2>&1
 			ret=$?
 		}

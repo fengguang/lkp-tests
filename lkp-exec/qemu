@@ -194,6 +194,7 @@ job_script=$1
 [ -n "$job_script" ] || usage
 
 sed -i 's/\r//' $job_script
+sed -i 's/LKP_SERVER=.*$/LKP_LOCAL_RUN=1/g' $job_script
 
 validate_options $job_script || exit 1
 
