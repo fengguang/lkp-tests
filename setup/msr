@@ -1,31 +1,72 @@
 #!/bin/sh
+# - turbo
+# - check_msr
+# - restore_msr
 # - msr
 # - msrval
-# - not_check_msr
-# - not_restore_msr
 
+. $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/common.sh
 . $LKP_SRC/lib/debug.sh
 
+: "${check_msr:=y}"
+: "${restore_msr:=y}"
+
 modprobe msr > /dev/null 2>&1
 
-[ -n "$msr" ] && {
-	parse_bool -q "$not_restore_msr" || {
-		oval=$(rdmsr -c "$msr")
-		restore="$restore
-wrmsr -a '$msr' '$oval'
-"
-	}
-	log_cmd wrmsr -a "$msr" "$msrval" || exit
-	parse_bool -q "$not_check_msr" || {
-		val=$(rdmsr -c "$msr")
-		[ "$val" = "$msrval" ] || \
-			die "Fail to write $msrval to MSR $msr, get $val"
-	}
+sanity_check()
+{
+	[ -c /dev/cpu/0/msr ] || die "/dev/cpu/0/msr not available"
 }
 
-parse_bool -q "$not_restore_msr" || cat > "$TMP_RESULT_ROOT/post-run.msr" <<EOF
-$restore
-EOF
+restore_msr()
+{
+	local reg=$1
 
+	oval=$(rdmsr -c "$reg")
+	cat >> "$TMP_RESULT_ROOT/post-run.msr" <<EOF
+wrmsr -a "$reg" "$oval"
+EOF
+}
+
+check_msr()
+{
+	local reg=$1
+	local wrval=$2
+
+	rdval=$(rdmsr -c "$reg")
+	[ "$rdval" = "$wrval" ] || die "Fail to write $wrval to MSR $reg, get $rdval"
+}
+
+setup_msr()
+{
+	reg=$1
+	regval=$2
+
+	parse_bool -q "$restore_msr" && restore_msr "$reg"
+	log_cmd wrmsr -a "$reg" "$regval" || exit
+	parse_bool -q "$check_msr" && check_msr "$reg" "$regval"
+}
+
+setup_turbo()
+{
+	if parse_bool -q "$1"; then
+		# enable turbo
+		local reg="0x1a0"
+		local regval="0x850089"
+	else
+		# disable turbo
+		local reg="0x1a0"
+		local regval="0x4000850089"
+	fi
+
+	setup_msr "$reg" "$regval"
+}
+
+sanity_check
+# Ignore setup if the environment variable is not defined
+[ -n "$turbo" ] && setup_turbo "$turbo"
+# For debug/test purpose, we also provide to use msr and msrval directly
+# to configure CPU msr
+[ -n "$msr" -a -n "$msrval" ] && setup_msr "$msr" "$msrval"
 exit 0
