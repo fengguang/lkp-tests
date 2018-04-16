@@ -148,6 +148,7 @@ build_ignored_by_lkp()
 	echo "dpp_proto_stop_at_pkex_exchange_resp" >> $ignored_by_lkp
 	echo "dpp_qr_code_auth_broadcast" >> $ignored_by_lkp
 	echo "dpp_qr_code_auth_neg_chan" >> $ignored_by_lkp
+	echo "dpp_pkex_test_vector" >> $ignored_by_lkp
 	echo "wnm_bss_tm_country_us" >> $ignored_by_lkp
 	echo "scan" >> $ignored_by_lkp
 	echo "scan_setband" >> $ignored_by_lkp
