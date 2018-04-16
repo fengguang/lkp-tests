@@ -2,6 +2,8 @@ suite: ltp
 testcase: ltp
 category: functional
 
+need_modules: true
+
 disk: 1SSD
 ltp:
   test:
