@@ -33,6 +33,3 @@ else
 fi
 
 log_cmd ./runtest.py $test $duration $mode $threads_to_iterate
-
-# wait monitor/irq_exception_noise complete
-log_cmd sleep 60
