@@ -60,17 +60,9 @@ download_extract()
 	sudo tar Jxf $file -C $GCC_INSTALL_PATH
 }
 
-download_cross_compiler()
-{
-	local URL="$1"
-
-	echo "lftp -c mirror $URL $GCC_INSTALL_PATH"
-	lftp -c "mirror $URL $GCC_INSTALL_PATH"
-}
-
 install_crosstool()
 {
-	local URL='https://download.01.org/0day-ci/cross-compiler'
+	local URL='https://download.01.org/0day-ci/cross-package'
 	local list=/tmp/crosstool-files
 
 	[[ -s $list ]] || {
@@ -84,7 +76,7 @@ install_crosstool()
 		exit 1
 	}
 
-	download_cross_compiler "$URL/$file"
+	download_extract "$URL/$file"
 }
 
 install_linaro()
