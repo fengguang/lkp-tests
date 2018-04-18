@@ -34,12 +34,21 @@ EOF
 	exit 1
 }
 
+get_job_env()
+{
+	[[ $1 ]] || return
+	[[ $2 ]] || return
+	job_script=$(realpath $1) env=$2 bash -c 'source $job_script && export_top_env > /dev/null 2>&1 && eval echo \$$env'
+}
+
 validate_options()
 {
 	local job_script=$1
-	if grep -q "need_modules=true" "$job_script"; then
+	local need_module
+	need_module="$(get_job_env $job_script 'need_modules')" || return
+	[[ "$need_module" = "true" ]] && {
 		[[ ! $opt_modules ]] && echo "kernel module is required, please specify it with '-m'" && return 1
-	fi
+	}
 
 	return 0
 }
