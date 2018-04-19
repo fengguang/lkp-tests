@@ -2,6 +2,8 @@ suite: mdadm-selftests
 testcase: mdadm-selftests
 category: functional
 
+need_modules: true
+
 disk: 1HDD
 
 mdadm-selftests:
