@@ -16,6 +16,14 @@ mount_partition()
 	local partition=${partitions%% *}
 	local mnt=/var/tmp
 
+	local char="$(echo -n $partition | tail -c 1)"
+	case $char in
+	[!0-9])
+		printf "n\np\n1\n\n+5G\nw\n" | fdisk $partition || return
+		partition=$partition"1"
+		;;
+	esac
+
 	log_cmd mkdir -p $mnt
 	log_cmd mke2fs -t ext3 -b 1024 -J size=1 -q $partition || return
 	log_cmd mount -t ext3 $partition $mnt || return
