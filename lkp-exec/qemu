@@ -213,8 +213,8 @@ create_lkp_user
 create_lkp_home
 export CACHE_DIR=$HOME/.lkp/cache
 
-replace_script_partition_val $job_script
 . $job_script export_top_env
+replace_script_partition_val $job_script
 
 if [[ $opt_modules ]]; then
 	modules_initrd=$opt_modules
@@ -337,3 +337,4 @@ setup_qemu_netdev
 setup_vdisk_root
 setup_qemu_drives
 run_kvm $job_script
+cleanup_qemu_drives
