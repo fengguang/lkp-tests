@@ -1,0 +1,28 @@
+#!/bin/bash
+
+download()
+{
+	git_clone_update https://github.com/osandov/blktests.git
+}
+
+build()
+{
+	cd ../blktests
+	make
+}
+
+install()
+{
+	cp -af ./* $BM_ROOT/
+}
+
+pack()
+{
+    {
+        echo /lkp
+        echo /lkp/benchmarks
+        find /lkp/benchmarks/$BM_NAME
+    } |
+    cpio --quiet -o -H newc | gzip -n -9 > /lkp/benchmarks/${BM_NAME}.cgz
+    [[ $arch ]] && mv "/lkp/benchmarks/${BM_NAME}.cgz" "/lkp/benchmarks/${BM_NAME}-${arch}.cgz"
+}

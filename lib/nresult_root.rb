@@ -280,7 +280,7 @@ class MResultRootTableSet
      'perf-bench-futex', 'mutilate', 'lmbench3', 'libMicro', 'schbench',
      'pmbench'].freeze
   LINUX_TESTCASES =
-    ['analyze_suspend', 'boot', 'cpu-hotplug', 'ext4-frags', 'ftq', 'ftrace_onoff', 'fwq',
+    ['analyze_suspend', 'boot', 'blktests', 'cpu-hotplug', 'ext4-frags', 'ftq', 'ftrace_onoff', 'fwq',
      'galileo', 'irda-kernel', 'kernel_selftests', 'kvm-unit-tests', 'kvm-unit-tests-qemu',
      'leaking_addresses', 'locktorture', 'mce-test', 'otc_ddt', 'piglit', 'pm-qa', 'nvml-unit-tests',
      'qemu', 'rcutorture', 'suspend', 'suspend_stress', 'trinity', 'ndctl', 'nfs-test', 'hwsim', 'idle-inject',

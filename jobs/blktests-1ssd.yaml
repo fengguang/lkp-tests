@@ -1,0 +1,9 @@
+suite: blktests
+testcase: blktests
+category: functional
+
+disk: 1SSD
+
+blktests:
+  test:
+  - nvme-group1
