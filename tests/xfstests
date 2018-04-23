@@ -7,6 +7,7 @@
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/upload.sh
 . $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/tests/common.sh
 
 [ "$nr_partitions" -lt 2 ] && die "$nr_partitions -lt 2"
 cd $BENCHMARK_ROOT/xfstests || die "fail to cd $BENCHMARK_ROOT/xfstests"
@@ -129,26 +130,6 @@ set_env()
 	fi
 }
 
-ignore_and_do_tests()
-{
-	local all_tests_cmd="$1"
-
-	[ "$2" ] && cat $2 2>/dev/null | sort | uniq > merged_ignored_files
-
-	[ -s "merged_ignored_files" ] && {
-		ignored_tests_cmd=${all_tests_cmd}" | grep -F -f merged_ignored_files"
-		all_tests_cmd=${all_tests_cmd}" | grep -v -F -f merged_ignored_files"
-
-		log_eval $ignored_tests_cmd
-		for ignored_test in $(eval $ignored_tests_cmd)
-		do
-			echo "ignored by lkp: $ignored_test"
-		done
-	}
-	log_eval $all_tests_cmd
-	log_cmd ./check $(eval $all_tests_cmd)
-}
-
 run_test()
 {
 	## Currently, we support the following several format's test item.
@@ -166,26 +147,40 @@ run_test()
 	# /$BENCHMARK_ROOT/xfstests/${test%-*}-ignore is built from upstream blacklist
 	test_ignore="$test_ignore /$BENCHMARK_ROOT/xfstests/${test%-*}-ignore"
 
+	local ignored_tests
+	local ignored_tests_cmd
+	local all_tests
+	local all_tests_cmd
+
 	if [ "${test#*-}" = "all" ]; then
 		all_tests_cmd="cd tests && ls ${test%-*}/[0-9][0-9][0-9]"
-		ignore_and_do_tests "$all_tests_cmd"
+		get_ignored_and_worked_tests "$all_tests_cmd"
 	elif [ "${test#*-}" = "new" ]; then
 		all_tests_cmd="cd tests && sed \"s:^:${test%-*}/:\" $test"
-		ignore_and_do_tests "$all_tests_cmd"
+		get_ignored_and_worked_tests "$all_tests_cmd"
 	elif [ "${test%[a-z4]-[0-9][0-9][0-9]}" != "$test" ]; then
 		all_tests_cmd="echo ${test%-*}/${test#*-}"
-		ignore_and_do_tests "$all_tests_cmd"
+		get_ignored_and_worked_tests "$all_tests_cmd"
 	elif [ "${test#*-}" != "$test" ]; then
 		generic_fs_ignore="$test_dir/${test%-*}-$fs-ignore /$BENCHMARK_ROOT/xfstests/generic-$fs-ignore"
 		all_tests_cmd="sed \"s:^:${test%-*}/:\" $test_dir/$test"
-		ignore_and_do_tests "$all_tests_cmd" "$test_ignore $generic_fs_ignore"
+		get_ignored_and_worked_tests "$all_tests_cmd" "$test_ignore $generic_fs_ignore"
 	else
 		# Now rename $test-broken to $test-ignore wihch is easier to understand.
 		# Use $test_ignore and $BENCHMARK_ROOT/$casename/ignore to skip tests which are hard to enable.
 		pack_ignore="/$BENCHMARK_ROOT/xfstests/ignore"
 		all_tests_cmd="cd tests && ls $test/[0-9][0-9][0-9]"
-		ignore_and_do_tests "$all_tests_cmd" "$test_ignore $pack_ignore"
+		get_ignored_and_worked_tests "$all_tests_cmd" "$test_ignore $pack_ignore"
 	fi
+
+	[ -n "$ignored_tests_cmd" ] && log_eval $ignored_tests_cmd
+	for ignored_test in $ignored_tests
+	do
+		echo "ignored by lkp: $ignored_test"
+	done
+
+	[ -n "$all_tests_cmd" ] && log_eval $all_tests_cmd
+	log_cmd ./check $all_tests
 }
 
 export LC_ALL=C
