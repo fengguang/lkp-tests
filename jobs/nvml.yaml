@@ -76,5 +76,7 @@ fs: ext4
 
 mount_option: dax
 
+need_memory: 36G
+
 boot_params:
   bp_memmap: 32G!4G
