@@ -48,6 +48,11 @@ job_force_reboot()
 	grep -q "^force_reboot: \+1$" $job
 }
 
+reboot_for_next_job()
+{
+	grep -q "^reboot_for_next_job: \+1$" $job
+}
+
 start_reboot_watchdog()
 {
 	[ -n "$boot_timeout" ] || return
@@ -86,8 +91,12 @@ while true; do
 		lsmod
 	fi
 
+	reboot_for_next_job
+	need_reboot=$?
+
 	next_job
 	rsync_rootfs
+	[ "$need_reboot" -eq 0 ] && break
 	job_does_not_need_reboot || break
 done
 
