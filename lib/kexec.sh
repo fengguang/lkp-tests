@@ -1,7 +1,18 @@
 #!/bin/sh
 
+# clear the initrds exported by last job
+unset_last_initrd_vars()
+{
+	for last_initrd in $(env | grep "initrd=" | awk -F'=' '{print $1}')
+	do
+		unset $last_initrd
+	done
+}
+
 read_kernel_cmdline_vars_from_append()
 {
+	unset_last_initrd_vars
+
 	for i in $1
 	do
 		[ "$i" != "${i#job=}" ]			&& export "$i"
