@@ -110,6 +110,10 @@ set_env()
 	fi
 
 	[ "$test" = "generic-387" ] && {
+		[ -n "$SCRATCH_DEV_POOL" ] && {
+			SCRATCH_DEV=${SCRATCH_DEV_POOL##* }
+			log_eval unset SCRATCH_DEV_POOL
+		}
 		printf "n\np\n1\n\n+1G\nw\n" | fdisk $SCRATCH_DEV
 		log_eval export SCRATCH_DEV="$SCRATCH_DEV"1
 	}
