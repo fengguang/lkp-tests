@@ -29,7 +29,7 @@ ACCUMULATIVE_KEYS = %w(
 ).freeze
 def is_accumulative_key(k)
   return true if ACCUMULATIVE_KEYS.include? k
-  return true if k =~ /^need_/
+  return true if k =~ /^need_/ && k !~ /^need_(memory|cpu)$/
   false
 end
 
