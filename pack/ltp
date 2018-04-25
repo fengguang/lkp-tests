@@ -70,6 +70,10 @@ rearrange_case()
 	sed -e "s/^#.*//g" crashme | awk '{if (length !=0) print $0}' > crashmecase || return
 	split -d -l2 crashmecase crashme- || return
 
+	# re-arrange the case mm
+	grep -e oom -e min_free_kbytes mm > mm-00 || return
+	cat mm | grep -v oom | grep -v min_free_kbytes > mm-01 || return
+
 	# re-arrange the case net_stress.appl
 	grep "http4" net_stress.appl > net_stress.appl-00 || return
 	grep "http6" net_stress.appl > net_stress.appl-01 || return

@@ -1,7 +1,10 @@
 #!/bin/sh
+# - ignored
 
 . $LKP_SRC/lib/wait.sh
 . $LKP_SRC/lib/env.sh
+
+[ "$ignored" = "1" ] && exit 0
 
 setup_wait
 

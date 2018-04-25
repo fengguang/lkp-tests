@@ -144,6 +144,9 @@ fs_ext4)
 	big_dev="${partitions%% *}"
 	big_dev_opt="-z $big_dev"
 	;;
+mm-00)
+	sysctl -w vm.oom_kill_allocating_task=1
+	;;
 tpm_tools)
 	[ $USER ] || USER=root
 	rm -rf /var/lib/opencryptoki/tpm/$USER
@@ -218,6 +221,10 @@ exit_value=$?
 
 [ "$test" = "commands" ] && {
      recover_configfile || exit
+}
+
+[ "$test" = "mm-00" ] && {
+     dmesg -C || exit
 }
 
 [ "$test" = "syscalls_part2" ] && {

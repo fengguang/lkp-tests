@@ -34,7 +34,7 @@ ltp:
 #  - lvm.part1
 #  - lvm.part2
   - math
-  - mm
+  - mm-01
   - modules
   - net.ipv6_lib
   - net.rpc
@@ -82,3 +82,11 @@ reboot_for_next_job: 1
 ltp:
   test:
   - crashme-02
+
+---
+oom-killer:
+  ignored: 1
+
+ltp:
+  test:
+  - mm-00
