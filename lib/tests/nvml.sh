@@ -165,7 +165,7 @@ run()
 		if [ "$LKP_LOCAL_RUN" != "1" ] && [[ -s "$user_filter" ]] && grep -w -q "$testcase" "$user_filter"; then
 			log_cmd chown lkp:lkp -R $BENCHMARK_ROOT/$casename
 			log_cmd chown lkp:lkp -R /tmp
-			[ "$test" = "pmem" ] && log_cmd chown lkp:lkp -R /fs/pmem0
+			log_cmd chown lkp:lkp -R /fs/pmem0
 			log_cmd su lkp -c "./RUNTESTS -f $test $testcase  2>&1"
 		else
 			log_cmd ./RUNTESTS -f $test $testcase  2>&1
