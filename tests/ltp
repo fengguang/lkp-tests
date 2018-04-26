@@ -147,6 +147,12 @@ fs_ext4)
 mm-00)
 	sysctl -w vm.oom_kill_allocating_task=1
 	;;
+mm-01)
+	[ -z "$partitions" ] && exit
+	swap_partition="${partitions%% *}"
+	mkswap $swap_partition
+	swapon $swap_partition
+	;;
 tpm_tools)
 	[ $USER ] || USER=root
 	rm -rf /var/lib/opencryptoki/tpm/$USER
