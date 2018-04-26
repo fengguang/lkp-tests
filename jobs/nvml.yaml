@@ -27,6 +27,7 @@ group:
   - vmmalloc
 
 test: non-pmem
+need_memory: 8G
 
 ---
 test: none
