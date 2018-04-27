@@ -6,12 +6,17 @@ aim7:
   test:
   - misc_rtns_1
   - dgram_pipe
+  - stream_pipe
+  - tcp_test
+  - udp_test
+  load: 1000
+
+---
+aim7:
+  test:
   - new_raph
   - num_rtns_1
   - pipe_cpy
   # create_shared_memory(): can't create semaphore, pausing...
   # - shared_memory
-  - stream_pipe
-  - tcp_test
-  - udp_test
   load: 4000
