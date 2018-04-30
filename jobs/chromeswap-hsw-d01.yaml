@@ -1,7 +1,7 @@
 <<: jobs/chromeswap.yaml
 
 boot_params:
-  bp_memmap: 4G!4G
+  bp_memmap: 1G!7G
 
 disk:
   nr_pmem: 1
