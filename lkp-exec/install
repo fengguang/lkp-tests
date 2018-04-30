@@ -191,13 +191,14 @@ install_packages() {
 
 	local packages="$(get_dependency_packages ${distro} ${script})"
 	local dev_packages="$(get_dependency_packages ${distro} ${script}-dev)"
-	packages="$(echo $packages $dev_packages | tr '\n' ' ')"
-	[ -n "$packages" -a "$packages" != " " ] || return
+	local generic_packages="$(echo $packages $dev_packages | tr '\n' ' ')"
+	[ -n "$generic_packages" -a "$generic_packages" != " " ] || return
 
-	echo "Use: $LKP_SRC/distro/installer/$distro install $packages"
+	[ "$distro" = "debian" ] && remove_packages_repository
+	echo "Use: $LKP_SRC/distro/installer/$distro install $generic_packages"
 	[ -n "$DRY_RUN" ] && return
 
-	$LKP_SRC/distro/installer/$distro $packages || {
+	$LKP_SRC/distro/installer/$distro $generic_packages || {
 		echo "Cannot install some packages in $LKP_SRC/distro/depends/${script}"
 		exit 1
 	}

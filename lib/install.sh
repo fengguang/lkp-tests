@@ -79,6 +79,11 @@ remove_packages_version()
 	generic_packages=$(echo $generic_packages | sed 's/=.*//')
 }
 
+remove_packages_repository()
+{
+	generic_packages=$(echo $generic_packages | sed 's#/[^=]*##')
+}
+
 get_dependency_packages()
 {
 	local distro=$1
@@ -89,7 +94,7 @@ get_dependency_packages()
 	[ -f "$base_file" ] || return
 
 	local generic_packages="$(sed 's/#.*//' "$base_file")"
-	[ "$distro" != "debian" ] && remove_packages_version
+	[ "$distro" != "debian" ] && remove_packages_version && remove_packages_repository
 
 	adapt_packages | sort | uniq
 }
