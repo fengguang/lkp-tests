@@ -46,6 +46,7 @@ if role client:
 
 ---
 runtime: 300s
+need_memory: 2G
 
 if role client:
   netperf:
