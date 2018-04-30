@@ -82,11 +82,12 @@ build()
 	cd ../../power/cpupower		|| return
 	make 				|| return
 	make install			|| return
+	cd ../../..
 }
 
 install()
 {
-	cp -af * $BM_ROOT
+	cp -af tools/testing/selftests $BM_ROOT/selftests
 }
 
 pack()
