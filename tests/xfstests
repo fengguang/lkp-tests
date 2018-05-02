@@ -19,6 +19,22 @@ check_add_user()
 	useradd "$1" || echo "$(basename $0): useradd $1 failed" 1>&2
 }
 
+create_virtual_disk()
+{
+	dd if=/dev/zero of=raw.img bs=1M count=$1 || return
+	mkfs -t $fs raw.img || return
+	losetup /dev/loop0 raw.img || return
+}
+
+# check whether the machine is partitioned already
+is_disc_partitioned()
+{
+	# eg. if not partition yet, $partitions=/dev/vdb /dev/vdc /dev/vdd
+	# otherwise, $partitions=/dev/sda5 /dev/sda6 /dev/sda7 /dev/sda8
+	sed_result=$(echo "$partitions" | sed -n '/[0-9]$/p')
+	[ -n "$sed_result" ]
+}
+
 set_env()
 {
 	# "fsgqa" user is required in some of xfstests, thus check if such user
@@ -80,8 +96,14 @@ set_env()
 		log_eval export USE_EXTERNAL=yes
 		# create a 100M partition for log, avoid
 		# log size 67108864 blocks too large, maximum size is 1048576 blocks
-		printf "n\np\n1\n\n+100M\nw\n" | fdisk $SCRATCH_LOGDEV
-		log_eval export SCRATCH_LOGDEV="$SCRATCH_LOGDEV"1
+		# if had partition already, create a virtual disk for log
+		if is_disc_partitioned; then
+			create_virtual_disk 100 || die "fail to create a virtual disk for log"
+			log_eval export SCRATCH_LOGDEV="/dev/loop0"
+		else
+			printf "n\np\n1\n\n+100M\nw\n" | fdisk $SCRATCH_LOGDEV
+			log_eval export SCRATCH_LOGDEV="$SCRATCH_LOGDEV"1
+		fi
 	}
 
 	[ "$test" = "xfs-437" ] && {
@@ -114,8 +136,13 @@ set_env()
 			SCRATCH_DEV=${SCRATCH_DEV_POOL##* }
 			log_eval unset SCRATCH_DEV_POOL
 		}
-		printf "n\np\n1\n\n+1G\nw\n" | fdisk $SCRATCH_DEV
-		log_eval export SCRATCH_DEV="$SCRATCH_DEV"1
+		if is_disc_partitioned; then
+			create_virtual_disk 1M || die "fail to create a virtual disk for log"
+			log_eval export SCRATCH_DEV="/dev/loop0"
+                else
+			printf "n\np\n1\n\n+1G\nw\n" | fdisk $SCRATCH_DEV
+			log_eval export SCRATCH_DEV="$SCRATCH_DEV"1
+		fi
 	}
 
 	# need at least 3 partitions for TEST_DEV, SCRATCH_DEV and LOGWRITES_DEV
@@ -194,5 +221,7 @@ set_env
 run_test
 exit_value=$?
 
+# umonut the virtual disk
+is_disc_partitioned && losetup -d /dev/loop0
 upload_files -t results $BENCHMARK_ROOT/xfstests/results/*
 exit $exit_value
