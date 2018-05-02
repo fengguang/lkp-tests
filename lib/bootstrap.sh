@@ -463,10 +463,9 @@ next_job()
 	LKP_USER=${pxe_user:-lkp}
 
 	__next_job || {
-		local secs=300
+		local secs=120
 		while true; do
 			sleep $secs || exit # killed by reboot
-			secs=$(( secs + 300 ))
 			__next_job && break
 		done
 	}
