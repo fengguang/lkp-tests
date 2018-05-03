@@ -16,5 +16,5 @@ get_ignored_and_worked_tests()
 		ignored_tests=$(eval $ignored_tests_cmd)
 	}
 	all_tests=$(eval $all_tests_cmd)
-	[ -f merged_ignored_files ] && rm merged_ignored_files > /dev/null 2&>1
+	[ -f merged_ignored_files ] && rm merged_ignored_files > /dev/null 2>&1
 }
