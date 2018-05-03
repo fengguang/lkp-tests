@@ -6,6 +6,8 @@
 # - pm_test	(dont show)
 # - idle	(dont show)
 
+. $LKP_SRC/lib/http.sh
+
 [ -n "$mode" ] || mode='freeze'
 [ -n "$iterations" ] || iterations=1
 [ -n "$rtcwake" ] || rtcwake=60
@@ -59,6 +61,7 @@ fi
 for i in $(seq $iterations)
 do
 	echo "Suspend to $mode $i/$iterations:"
+	set_job_state "suspending"
 	if [[ ( -z "$pm_test" ) && ( "$mode" != "disk" ) ]]
 	then
 		echo 0 > $rtcwake_file
