@@ -19,7 +19,13 @@ stress-ng:
   - network
   - pipe
   - scheduler
-  - security 
+
+---
+kernel_cmdline: "apparmor=1 security=apparmor"
+
+stress-ng:
+  class:
+  - security
 
 ---
 testtime:
