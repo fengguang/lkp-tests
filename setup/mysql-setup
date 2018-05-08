@@ -11,6 +11,8 @@ setup_mysql()
 skip-grant-tables
 EOF
 
+	# FATAL: error 1040: Too many connections
+	set_max_connections
 	# /etc/init.d/mysql: ERROR: The partition with /lkp/lkp/src/tmp/mysql is too full! ... failed!
 	mkdir -p $TMP/mysql
 	mount -t tmpfs mysql $TMP/mysql
@@ -21,6 +23,14 @@ EOF
 	/usr/sbin/mysqld --initialize
 
 	/etc/init.d/mysql start
+}
+
+set_max_connections()
+{
+	# mysql default max_connections is 100
+	local max_conn=100
+	[ $nr_threads -gt 100 ] && max_conn=$((nr_threads * 2))
+	echo max_connections=$max_conn >> /etc/mysql/mysql.conf.d/mysqld.cnf
 }
 
 setup_mysql
