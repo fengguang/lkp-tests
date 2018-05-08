@@ -15,7 +15,6 @@ require "#{LKP_SRC}/lib/constant.rb"
 require "#{LKP_SRC}/lib/statistics.rb"
 require "#{LKP_SRC}/lib/log"
 require "#{LKP_SRC}/lib/tests.rb"
-require "#{LKP_SRC}/lib/nresult_root"
 
 $metric_add_max_latency = IO.read("#{LKP_SRC}/etc/add-max-latency").split("\n")
 $metric_latency = IO.read("#{LKP_SRC}/etc/latency").split("\n")
@@ -27,6 +26,39 @@ $index_perf = load_yaml "#{LKP_SRC}/etc/index-perf.yaml"
 $perf_metrics_re = load_regular_expressions("#{LKP_SRC}/etc/perf-metrics-patterns")
 $metrics_blacklist_re = load_regular_expressions("#{LKP_SRC}/etc/blacklist")
 $kill_pattern_whitelist_re = load_regular_expressions("#{LKP_SRC}/etc/dmesg-kill-pattern")
+
+class LinuxTestcasesTableSet
+  LINUX_PERF_TESTCASES =
+    ['aim7', 'aim9', 'angrybirds', 'autotest', 'blogbench', 'dbench',
+     'dd-write', 'ebizzy', 'fileio', 'fishtank', 'fsmark', 'glbenchmark',
+     'hackbench', 'hpcc', 'idle', 'iozone', 'iperf', 'jsbenchmark', 'kbuild',
+     'ku-latency', 'linpack', 'ltp', 'mlc', 'nepim', 'netperf', 'netpipe',
+     'nuttcp', 'octane', 'oltp', 'openarena', 'packetdrill', 'pbzip2',
+     'perf-bench-numa-mem', 'perf-bench-sched-pipe', 'pft',
+     'phoronix-test-suite', 'pigz', 'pixz', 'plzip', 'postmark', 'pxz', 'qperf',
+     'reaim', 'sdf', 'siege', 'sockperf', 'speccpu', 'specjbb2013',
+     'specjbb2015', 'specpower', 'stutter', 'sunspider', 'tbench', 'tcrypt',
+     'thrulay', 'tlbflush', 'unixbench', 'vm-scalability', 'will-it-scale',
+     'xfstests', 'chromeswap', 'fio-basic', 'apachebench', 'perf_event_tests', 'swapin',
+     'tpcc', 'mytest', 'exit_free', 'pgbench', 'boot_trace', 'sysbench-cpu',
+     'sysbench-memory', 'sysbench-threads', 'sysbench-mutex', 'stream',
+     'perf-bench-futex', 'mutilate', 'lmbench3', 'libMicro', 'schbench',
+     'pmbench'].freeze
+  LINUX_TESTCASES =
+    ['analyze_suspend', 'boot', 'blktests', 'cpu-hotplug', 'ext4-frags', 'ftq', 'ftrace_onoff', 'fwq',
+     'galileo', 'irda-kernel', 'kernel_selftests', 'kvm-unit-tests', 'kvm-unit-tests-qemu',
+     'leaking_addresses', 'locktorture', 'mce-test', 'otc_ddt', 'piglit', 'pm-qa', 'nvml-unit-tests',
+     'qemu', 'rcutorture', 'suspend', 'suspend_stress', 'trinity', 'ndctl', 'nfs-test', 'hwsim', 'idle-inject',
+     'mdadm-selftests', 'xsave-test', 'nvml', 'test_bpf', 'mce-log', 'perf-sanity-tests', 'build-perf_test',
+     'update-ucode', 'reboot', 'cat', 'libhugetlbfs-test', 'ocfs2test', 'syzkaller', 'perf-unit-test',
+     'perf_test', 'stress-ng', 'sof_test', 'fxmark', 'kvm-kernel-boot-test', 'bkc_ddt', 'bpf_offload'].freeze
+  OTHER_TESTCASES =
+    ['0day-boot-tests', '0day-kbuild-tests', 'build-dpdk', 'build-sof', 'sof_test', 'build-nvml',
+     'build-qemu', 'convert-lkpdoc-to-html', 'convert-lkpdoc-to-html-css',
+     'health-stats', 'hwinfo', 'internal-lkp-service', 'ipmi-setup',
+     'lkp-bug', 'lkp-install-run', 'lkp-services', 'lkp-src', 'pack',
+     'pack-deps', 'makepkg', 'makepkg-deps', 'borrow', 'dpdk-dts', 'mbtest', 'build-acpica'].freeze
+end
 
 # => ["tcrypt.", "hackbench.", "dd.", "xfstests.", "aim7.", ..., "oltp.", "fileio.", "dmesg."]
 def test_prefixes
@@ -42,11 +74,11 @@ def test_prefixes
 end
 
 def is_functional_test(testcase)
-  MResultRootTableSet::LINUX_TESTCASES.index testcase
+  LinuxTestcasesTableSet::LINUX_TESTCASES.index testcase
 end
 
 def other_test?(testcase)
-  MResultRootTableSet::OTHER_TESTCASES.index testcase
+  LinuxTestcasesTableSet::OTHER_TESTCASES.index testcase
 end
 
 $test_prefixes = test_prefixes
