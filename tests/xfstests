@@ -204,13 +204,13 @@ run_test()
 		get_ignored_and_worked_tests "$all_tests_cmd" "$test_ignore $pack_ignore"
 	fi
 
-	[ -n "$ignored_tests_cmd" ] && log_eval $ignored_tests_cmd
+	[ -n "$ignored_tests_cmd" ] && log_echo $ignored_tests_cmd
 	for ignored_test in $ignored_tests
 	do
 		echo "ignored by lkp: $ignored_test"
 	done
 
-	[ -n "$all_tests_cmd" ] && log_eval $all_tests_cmd
+	[ -n "$all_tests_cmd" ] && log_echo $all_tests_cmd
 	log_cmd ./check $all_tests
 }
 
