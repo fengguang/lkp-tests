@@ -5,6 +5,11 @@ support_rapl()
 	[[ $model =~ (Sandy Bridge|Ivy Bridge|Haswell|Broadwell|Skylake|Cannonlake) ]]
 }
 
+(( nr_threads == 0 )) && {
+	echo "nr_threads becomes 0, rm $job_file"
+	exit 2
+}
+
 [[ "$nr_threads" =~ %$ ]] || exit 0
 nr_threads=${nr_threads%%%}
 nr_threads=${nr_threads%%.} # bash cannot handle float numbers
