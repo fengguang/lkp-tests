@@ -9,10 +9,15 @@
 
 . $LKP_SRC/lib/reproduce-log.sh
 
+get_time_ms()
+{
+	echo $(($(date +%s%N)/1000000))
+}
+
 : ${runtime:=600}
 [ -n "$bs" ] && opt_bs="bs=$bs"
 
-t=$(date +%s)
+t=$(get_time_ms)
 
 files=
 pid=
@@ -32,19 +37,20 @@ done
 ps aux | grep dd
 echo $pid > $TMP/pid-dd
 
-tt=$(date +%s)
+tt=$(get_time_ms)
 startup_time=$((tt - t))
-echo "startup_time: $startup_time"
+echo "startup_time_ms: $startup_time"
+startup_time_s=$((startup_time / 1000))
 
-log_cmd sleep $((runtime > startup_time ? runtime - startup_time : 0))
+log_cmd sleep $((runtime > startup_time_s ? runtime - startup_time_s : 0))
 
-t=$(date +%s)
+t=$(get_time_ms)
 pkill -9 --exact dd --pidfile $TMP/pid-dd
 log_echo killall -9 dd
 pkill -9 --exact dd --pidfile $TMP/pid-dd
 pkill -9 --exact dd --pidfile $TMP/pid-dd
-tt=$(date +%s)
-echo "kill_time: $((tt - t))"
+tt=$(get_time_ms)
+echo "kill_time_ms: $((tt - t))"
 
 chown lkp.lkp $TMP/pid-dd
 mv $TMP/pid-dd  $RESULT_ROOT/pid
@@ -52,5 +58,5 @@ ls -li $files > $RESULT_ROOT/ls-files
 truncate --size=0 $files
 rm -f $files
 
-t=$(date +%s)
-echo "rm_time: $((t - tt))"
+t=$(get_time_ms)
+echo "rm_time_ms: $((t - tt))"
