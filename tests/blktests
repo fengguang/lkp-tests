@@ -36,13 +36,13 @@ run_test()
 		all_tests="$test"
 	fi
 
-	[ -n "$ignored_tests_cmd" ] && log_eval $ignored_tests_cmd
+	[ -n "$ignored_tests_cmd" ] && log_echo $ignored_tests_cmd
 	for ignored_test in $ignored_tests
 	do
 		echo "$ignored_test [ignored by lkp]"
 	done
 
-	[ -n "$all_tests_cmd" ] && log_eval $all_tests_cmd
+	[ -n "$all_tests_cmd" ] && log_echo $all_tests_cmd
 	log_cmd ./check $all_tests
 }
 
