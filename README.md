@@ -62,7 +62,6 @@ To run your own benchmarks that are not part of lkp-tests, you can use mytest jo
 Most test cases should install/run well in
 
 - Debian sid
-- Ubuntu 14.04
 - Archlinux
 
 There is however some initial support for:
