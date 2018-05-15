@@ -1,0 +1,22 @@
+suite: vm-scalability
+testcase: vm-scalability
+category: benchmark
+
+perf-profile:
+
+runtime: 300s
+
+size: 512G
+
+vm-scalability:
+  test:
+  - anon-cow-rand-hugetlb
+  - anon-w-rand-hugetlb
+
+---
+size: 8T
+
+vm-scalability:
+  test:
+  - anon-cow-seq-hugetlb
+  - anon-w-seq-hugetlb
