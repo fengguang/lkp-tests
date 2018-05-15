@@ -6,7 +6,6 @@ disk: 1HDD
 
 blktests:
   test:
-  - block-group1
   - loop-group1
   - nbd-group1
   - scsi-group1
