@@ -204,6 +204,7 @@ class MatrixPlotter < MatrixPlotterBase
         values = @matrix[field]
         next if values.max == values.min
         normalized_field = field.tr('^a-zA-Z0-9_.:+=-', '_')
+        field_title = normalized_field.gsub('_', '\_')
         Gnuplot::Plot.new(gp) do |p|
           if @output_prefix
             file = @output_prefix + normalized_field
@@ -226,9 +227,9 @@ class MatrixPlotter < MatrixPlotterBase
 
           p.notitle # necessary for updating title
           if var
-            p.title format('%s%s (var %.2f)', @title_prefix, normalized_field, var)
+            p.title format("'%s%s (var %.2f)'", @title_prefix, field_title, var)
           else
-            p.title format('%s%s', @title_prefix, normalized_field)
+            p.title format("'%s%s'", @title_prefix, field_title)
           end
 
           if @x_stat_key
