@@ -14,7 +14,16 @@ cd $BENCHMARK_ROOT/blktests || die "fail to cd $BENCHMARK_ROOT/blktests"
 
 set_env()
 {
-	echo "TEST_DEVS=${partitions%% *}" > config
+	local partition
+	case "$test" in
+	nbd-group*)
+		partition=""
+		;;
+	*)
+		partition=${partitions%% *}
+		;;
+	esac
+	[ -n "$partition" ] && echo "TEST_DEVS=$partition" > config
 }
 
 run_test()
