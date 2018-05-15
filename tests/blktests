@@ -16,7 +16,7 @@ set_env()
 {
 	local partition
 	case "$test" in
-	nbd-group*)
+	nbd-group*|loop-group*)
 		partition=""
 		;;
 	*)
