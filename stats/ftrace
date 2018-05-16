@@ -110,7 +110,7 @@ def parse_event(event_fmt, records)
   end
 
   FileUtils.chmod '+x', event_parser
-  system event_parser
+  system "/bin/bash #{event_parser}"
 
   normlize_event_data(event, event_parser_out, records)
 end
