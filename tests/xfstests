@@ -24,6 +24,7 @@ create_virtual_disk()
 	dd if=/dev/zero of=raw.img bs=1M count=$1 || return
 	mkfs -t $fs raw.img || return
 	losetup /dev/loop0 raw.img || return
+	has_virtual_disk=true
 }
 
 # check whether the machine is partitioned already
@@ -216,12 +217,14 @@ run_test()
 
 export LC_ALL=C
 export LANG=C
+# whether has created the virtual disk
+has_virtual_disk=false
 read_env_vars
 set_env
 run_test
 exit_value=$?
 
 # umonut the virtual disk
-is_disc_partitioned && losetup -d /dev/loop0
+[ "$has_virtual_disk" = true ] && losetup -d /dev/loop0
 upload_files -t results $BENCHMARK_ROOT/xfstests/results/*
 exit $exit_value
