@@ -60,9 +60,55 @@ fi
 options="$options -bufsize $ftrace_mem"
 ################################################################################
 
+cmd="echo $mode > /sys/power/state && echo date1: $(date) && upload_files -t result ./suspend-* && echo date2: $(date) && set_job_state \"Suspending\""
+
+f_script=./analyze_suspend_script.sh
+f_log=./test.log
+f_ite=./iteration
+
+echo $mode: runtime: $runtime, rtcwake: $rtcwake, multi: $multi, option: $option, ftrace_mem: $ftrace_mem >> $f_log
+echo test started at: $(date +%F) $(date +%T) >> $f_log
+echo 1 > $f_ite
+
+cat > $f_script <<EOF
+#!/bin/bash
+
+. $LKP_SRC/lib/upload.sh
+. $LKP_SRC/lib/http.sh
+
+mode=$mode
+rtcwake=$rtcwake
+i=\$(cat $f_ite)
+
+echo ----------------------------------- >> $f_log
+echo \$(date +%T): suspending \(\$i/$multi\) >> $f_log
+
+set_job_state "suspending (\$i/$multi)"
+upload_files -t result $f_log
+
+echo 0 > /sys/class/rtc/rtc0/wakealarm
+echo +$rtcwake > /sys/class/rtc/rtc0/wakealarm
+echo $mode > /sys/power/state
+
+echo \$(date +%T): uploading test result ... >> $f_log
+upload_files -t result ./suspend-*
+upload_files -t result $f_log
+echo \$(date +%T): done >> $f_log
+i=\$((i + 1))
+echo \$i > $f_ite
+EOF
+
 echo analyze_suspend test started
-echo Command: analyze_suspend.py $options
-analyze_suspend.py $options
+upload_files -t result $f_script
+echo test script:
+echo -----------------------------------
+cat $f_script
+echo -----------------------------------
+echo
+echo Command: analyze_suspend.py $options -cmd "sh $f_script"
+echo Command: analyze_suspend.py $options -cmd "sh $f_script" > $f_log
+echo
+analyze_suspend.py $options -cmd "sh $f_script"
 if [ $? -eq 0 ]
 then
 	echo analyze_suspend test done
@@ -70,4 +116,5 @@ else
 	echo analyze_suspend test failed
 fi
 
+upload_files -t result $f_log
 upload_files -t result ./suspend-*
