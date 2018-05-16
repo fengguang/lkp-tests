@@ -61,7 +61,7 @@ fi
 for i in $(seq $iterations)
 do
 	echo "Suspend to $mode $i/$iterations:"
-	set_job_state "suspending"
+	set_job_state "suspending ($i/$iterations)"
 	if [[ ( -z "$pm_test" ) && ( "$mode" != "disk" ) ]]
 	then
 		echo 0 > $rtcwake_file
