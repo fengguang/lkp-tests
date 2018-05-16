@@ -3,6 +3,7 @@
 
 ## blktests is a test framework for the Linux kernel block layer and storage stack.
 
+. $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/job.sh
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/upload.sh
@@ -18,6 +19,10 @@ set_env()
 	case "$test" in
 	nbd-group*|loop-group*)
 		partition=""
+		;;
+	scsi-group*)
+		partition=${partitions%% *}
+		is_virt && partition=$(echo "$partition" | sed 's/[0-9]*$//g')
 		;;
 	*)
 		partition=${partitions%% *}

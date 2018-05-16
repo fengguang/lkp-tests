@@ -2,7 +2,8 @@ suite: blktests
 testcase: blktests
 category: functional
 
+disk: 1HDD
+
 blktests:
   test:
-  - loop-group1
-  - nbd-group1
+  - scsi-group1
