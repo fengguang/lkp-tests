@@ -69,6 +69,9 @@ do
 		if [ $? -ne 0 ]
 		then
 			echo failed to set rtcwake
+			ls /sys/class/
+			ls /sys/class/rtc/
+			ls -l /sys/class/rtc/rtc0/
 			exit 1
 		fi
 	fi
