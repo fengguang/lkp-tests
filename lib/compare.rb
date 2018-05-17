@@ -1,3 +1,4 @@
+# coding: utf-8
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
 require 'optparse'
@@ -1024,6 +1025,10 @@ module Compare
 
       p.on('-p <value>', '--perf-profile-threshold=<value>', 'perf-profile compare threshold') do |val|
         options[:perf_profile_threshold] = val.to_f
+      end
+
+      p.on('-a', '--all', 'compare all stats') do
+        options[:use_all_stat_keys] = true
       end
 
       p.on_tail('-h', '--help', 'Show this message') do
