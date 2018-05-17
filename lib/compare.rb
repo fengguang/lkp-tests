@@ -1031,6 +1031,10 @@ module Compare
         options[:use_all_stat_keys] = true
       end
 
+      p.on('-k', '--kpi', 'compare kpi stats only') do
+        options[:filter_kpi_stat_keys] = true
+      end
+
       p.on_tail('-h', '--help', 'Show this message') do
         puts p
         return nil
