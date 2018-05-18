@@ -24,4 +24,10 @@ class String
   def strip_nonprintable_characters
     gsub(/[^[:print:]]/, '')
   end
+
+  def numeric?
+    !Float(self).nil?
+  rescue StandardError
+    false
+  end
 end
