@@ -4,6 +4,11 @@ BEGIN { FS="=" }
 
 /Begin of Summary section/, /End of Summary section/ {
 	if (/=/) {
-		print $1": "$2
+		# transform the results
+		# VersionRelease=f --> VersionRelease_f: 1
+		if(match($2, /^[a-zA-Z]$/) > 0)
+			print $1"_"$2": 1"
+		else
+			print $1": "$2
 	}
 }
