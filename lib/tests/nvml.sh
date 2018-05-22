@@ -143,6 +143,7 @@ run()
 
 	# to fix SKIP: C++11 required
 	log_cmd export CXX=g++
+	log_cmd ln -sf /usr/local/bin/ndctl /usr/bin/ndctl
 
 	# enable remote valgrind test
 	echo "RPMEM_VALGRIND_ENABLED=y" >> testconfig.sh
