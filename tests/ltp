@@ -180,6 +180,9 @@ tpm_tools)
 ltp-aiodio.part[24]|syscalls_part[13]|dio-0*)
 	specify_tmpdir || exit
 	;;
+stress.part3)
+	groupadd nobody || exit
+	;;
 syscalls_part2)
 	specify_tmpdir || exit
 	relatime=$(mount | grep /tmp | grep relatime)
