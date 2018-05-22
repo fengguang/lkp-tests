@@ -89,6 +89,30 @@ upload_files -t result $f_log
 echo 0 > /sys/class/rtc/rtc0/wakealarm
 echo +$rtcwake > /sys/class/rtc/rtc0/wakealarm
 echo $mode > /sys/power/state
+echo \$(date +%T): resume back! >> $f_log
+
+retry=10
+while true
+do
+	ping -c 1 -W 1 inn > /dev/null
+	[ $? -eq 0 ] && break
+	echo \$(date +%T): network not ready >> $f_log
+	retry=$(($retry - 1))
+	[ $retry -eq 0 ] && break
+done
+
+# restart network if network is not back in 10 seconds
+if [ $retry -eq 0 ]
+then
+	$LKP_SRC/bin/run-ipconfig
+	ping -c 1 -W 1 inn > /dev/null
+	if [ $? -ne 0 ] 
+	then
+		echo network down
+		exit 1
+	fi
+	echo network recovered by run-ipconfig
+fi
 
 echo \$(date +%T): uploading test result ... >> $f_log
 upload_files -t result ./suspend-*
