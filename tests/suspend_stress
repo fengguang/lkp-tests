@@ -7,6 +7,7 @@
 # - idle	(dont show)
 
 . $LKP_SRC/lib/http.sh
+. $LKP_SRC/lib/upload.sh
 
 [ -n "$mode" ] || mode='freeze'
 [ -n "$iterations" ] || iterations=1
@@ -19,6 +20,9 @@ then
 fi
 
 rtcwake_file=/sys/class/rtc/rtc0/wakealarm
+
+log_file=./log
+dmesg_file=./dmesg.log
 
 echo "SUSPEND RESUME TEST STARTED"
 
@@ -61,6 +65,7 @@ fi
 for i in $(seq $iterations)
 do
 	echo "Suspend to $mode $i/$iterations:"
+	echo "Suspend to $mode $i/$iterations:" >> $log_file
 
 	retry=10
 	while true
@@ -68,6 +73,7 @@ do
 		ping -c 1 -W 1 inn > /dev/null
 		[ $? -eq 0 ] && break
 		echo network not ready
+		echo network not ready >> $log_file
 		retry=$(($retry - 1))
 		[ $retry -eq 0 ] && break
 	done
@@ -80,9 +86,11 @@ do
 		if [ $? -ne 0 ]
 		then
 			echo network down
+			echo network down >> $log_file
 			exit 1
 		fi
 		echo network recovered by run-ipconfig
+		echo network recovered by run-ipconfig >> $log_file
 	fi
 
 	set_job_state "suspending ($i/$iterations)"
@@ -99,6 +107,11 @@ do
 			exit 1
 		fi
 	fi
+
+	dmesg > $dmesg_file
+	upload_files -t result $log_file
+	upload_files -t result $dmesg_file
+
 	echo $mode > /sys/power/state
 	if [ $? -ne 0 ]
 	then
@@ -106,6 +119,7 @@ do
 		exit 1
 	fi
 	echo "Done"
+	echo "Done" >> $log_file
 	echo "Sleep for $idle seconds"
 	sleep $idle
 done
