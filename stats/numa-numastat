@@ -8,6 +8,8 @@ STDIN.each_line do |line|
     puts line
   when /^node:/
     _node, nr = line.split
+  when /^ (\d+)$/
+    puts "node#{nr}: #{$1}"
   else
     key, value = line.split
     puts "node#{nr}.#{key}: #{value}"
