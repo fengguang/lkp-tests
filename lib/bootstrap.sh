@@ -419,6 +419,7 @@ tbox_cant_kexec()
 	[ "${HOSTNAME#*lkp-ivb-d02}"    != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-minnow01}"   != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-skly01}"     != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-gp-audio-1}" != "$HOSTNAME" ] && return 0
 
 	[ -x '/sbin/kexec' ] || return 0
 
