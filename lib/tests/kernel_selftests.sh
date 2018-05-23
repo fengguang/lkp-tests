@@ -240,3 +240,50 @@ fixup_breakpoints()
 		echo "ignored_by_lkp breakpoints.step_after_suspend_test test"
 	}
 }
+
+build_tools()
+{
+
+	make allyesconfig		|| return
+	make prepare			|| return
+	# install cpupower command
+	cd tools/power/cpupower		|| return
+	make 				|| return
+	make install			|| return
+	cd ../../..
+}
+
+install_selftests()
+{
+	install_selftests
+	local header_dir="/tmp/linux-headers"
+
+	mkdir -p $header_dir
+	make headers_install INSTALL_HDR_PATH=$header_dir
+
+	mkdir -p $BM_ROOT/usr/include
+	cp -af $header_dir/include/* $BM_ROOT/usr/include
+
+	mkdir -p $BM_ROOT/tools/include/uapi/asm
+	cp -af $header_dir/include/asm/* $BM_ROOT/tools/include/uapi/asm
+
+	mkdir -p $BM_ROOT/tools/testing/selftests
+	cp -af tools/testing/selftests/* $BM_ROOT/tools/testing/selftests
+}
+
+pack_selftests()
+{
+	{
+		echo /usr
+		echo /usr/lib
+		find /usr/lib/libcpupower.*
+		echo /usr/bin
+		echo /usr/bin/cpupower
+		echo /lkp
+		echo /lkp/benchmarks
+		echo /lkp/benchmarks/$BM_NAME
+		find /lkp/benchmarks/$BM_NAME/*
+	} |
+	cpio --quiet -o -H newc | gzip -n -9 > /lkp/benchmarks/${BM_NAME}.cgz
+	[[ $arch ]] && mv "/lkp/benchmarks/${BM_NAME}.cgz" "/lkp/benchmarks/${BM_NAME}-${arch}.cgz"
+}

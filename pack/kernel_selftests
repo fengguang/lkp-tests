@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. $LKP_SRC/lib/tests/kernel_selftests.sh
+
 download()
 {
 	source_dir="linux"
@@ -45,47 +47,17 @@ build()
 		echo "please make sure the version of current kernel is $installed_version"
 	fi
 
-	make allyesconfig		|| return
-	make prepare			|| return
-	# install cpupower command
-	cd ../../power/cpupower		|| return
-	make 				|| return
-	make install			|| return
-	cd ../../..
+	build_tools
 }
 
 install()
 {
-	local header_dir="/tmp/linux-headers"
-
-	mkdir -p $header_dir
-	make headers_install INSTALL_HDR_PATH=$header_dir
-
-	mkdir -p $BM_ROOT/usr/include
-	cp -af $header_dir/include/* $BM_ROOT/usr/include
-
-	mkdir -p $BM_ROOT/tools/include/uapi/asm
-	cp -af $header_dir/include/asm/* $BM_ROOT/tools/include/uapi/asm
-
-	mkdir -p $BM_ROOT/tools/testing/selftests
-	cp -af tools/testing/selftests/* $BM_ROOT/tools/testing/selftests
+	install_selftests
 }
 
 pack()
 {
-	{
-		echo /usr
-		echo /usr/lib
-		find /usr/lib/libcpupower.*
-		echo /usr/bin
-		echo /usr/bin/cpupower
-		echo /lkp
-		echo /lkp/benchmarks
-		echo /lkp/benchmarks/$BM_NAME
-		find /lkp/benchmarks/$BM_NAME/*
-	} |
-	cpio --quiet -o -H newc | gzip -n -9 > /lkp/benchmarks/${BM_NAME}.cgz
-	[[ $arch ]] && mv "/lkp/benchmarks/${BM_NAME}.cgz" "/lkp/benchmarks/${BM_NAME}-${arch}.cgz"
+	pack_selftests
 }
 
 # when running in local, need to keep linux repo for testing
