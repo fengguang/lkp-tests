@@ -12,9 +12,12 @@ shopt -s nullglob
 
 # commit bb5ef9c change build directory to /tmp/build-$BM_NAME/xxx
 linux_selftests_dir="/tmp/build-kernel_selftests/linux"
-
-cd $linux_selftests_dir || die
-build_selftests
+if [ -d "$linux_selftests_dir" ]; then
+	cd $linux_selftests_dir
+	build_selftests
+else
+	linux_selftests_dir="/lkp/benchmarks/kernel_selftests"
+fi
 
 cd $linux_selftests_dir/tools/testing/selftests || die
 
