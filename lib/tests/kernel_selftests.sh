@@ -2,6 +2,42 @@
 
 . $LKP_SRC/lib/debug.sh
 
+build_selftests()
+{
+	# gcc -O2 -g -std=gnu99 -Wall -I../../../../usr/include/    gpio-mockup-chardev.c ../../../gpio/gpio-utils.o ../../../../usr/include/linux/gpio.h  -lmount -I/usr/include/libmount -o gpio-mockup-chardev
+	# gcc: error: ../../../gpio/gpio-utils.o: No such file or directory
+	make -C tools/gpio
+
+	# gcc -D_FILE_OFFSET_BITS=64 -I../../../../include/uapi/ -I../../../../include/ -I../../../../usr/include/    fuse_mnt.c  -o /tmp/build-kernel_selftests/linux/tools/testing/selftests/memfd/fuse_mnt
+	# /tmp/ccW41Bj9.o: In function `main':
+	# fuse_mnt.c:(.text+0x25f): undefined reference to `fuse_main_real'
+	# collect2: error: ld returned 1 exit status
+	make -C tools/testing/selftests/memfd fuse_mnt
+
+	# make[1]: Entering directory '/tmp/build-kernel_selftests/linux/tools/testing/selftests/net'
+	# gcc -Wall -Wl,--no-as-needed -O2 -g -I../../../../usr/include/    reuseport_bpf_numa.c  -o /tmp/build-kernel_selftests/linux/tools/testing/selftests/net/reuseport_bpf_numa
+	# /tmp/ccdh6rgH.o: In function `send_from_node':
+	# /tmp/build-kernel_selftests/linux/tools/testing/selftests/net/reuseport_bpf_numa.c:138: undefined reference to `numa_run_on_node'
+	# /tmp/ccdh6rgH.o: In function `main':
+	# /tmp/build-kernel_selftests/linux/tools/testing/selftests/net/reuseport_bpf_numa.c:230: undefined reference to `numa_available'
+	# /tmp/build-kernel_selftests/linux/tools/testing/selftests/net/reuseport_bpf_numa.c:233: undefined reference to `numa_max_node'
+	# collect2: error: ld returned 1 exit status
+	make -C tools/testing/selftests/net reuseport_bpf_numa
+
+	cd tools/testing/selftests	|| return
+
+	# temporarily workaround compile error on gcc-6
+	[[ "$LKP_LOCAL_RUN" = "1" ]] && {
+		# local user may contain both gcc-5 and gcc-6
+		CC=$(basename $(readlink $(which gcc)))
+		# force to use gcc-5 to build x86
+		[[ "$CC" = "gcc-6" ]] && command -v gcc-5 >/dev/null && sed -i -e '/^include ..\/lib.mk/a CC=gcc-5' x86/Makefile
+	}
+
+	make				|| return
+	cd ../../..
+}
+
 prepare_for_test()
 {
 	# workaround hugetlbfstest.c open_file() error
@@ -12,7 +48,11 @@ prepare_for_test()
 
 	# make sure the test_bpf.ko path for bpf test is right
 	mkdir -p "$linux_selftests_dir/lib" || die
-	mount --bind /lib/modules/`uname -r`/kernel/lib $linux_selftests_dir/lib || die
+	if [[ "$LKP_LOCAL_RUN" = "1" ]]; then
+		cp -r /lib/modules/`uname -r`/kernel/lib/* $linux_selftests_dir/lib
+	else
+		mount --bind /lib/modules/`uname -r`/kernel/lib $linux_selftests_dir/lib || die
+	fi
 
 	# temporarily workaround compile error on gcc-6
 	command -v gcc-5 >/dev/null && log_cmd ln -sf /usr/bin/gcc-5 /usr/bin/gcc
