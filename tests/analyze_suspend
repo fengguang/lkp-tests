@@ -114,7 +114,21 @@ then
 fi
 
 echo \$(date +%T): uploading test result ... >> $f_log
-upload_files -t result ./suspend-*
+
+f_result=\$(ls ./ | grep "suspend-")
+if [ ! -z \$f_result ]
+then
+	upload_files -t result ./\$f_result
+
+	# delete previous result to save disk space
+	f_list=\$(ls -t ./\$f_result)
+	echo file list: \$f_list
+
+	f_pre=\$(echo \$f_list | awk '{ print \$2 }')
+
+	[ -z \$f_pre ] || echo removing previous result \$f_pre
+	[ -z \$f_pre ] || rm -rf ./\$f_result/\$f_pre
+fi
 upload_files -t result $f_log
 echo \$(date +%T): done >> $f_log
 ite=\$((ite + 1))
