@@ -56,7 +56,19 @@ build()
 
 install()
 {
-	cp -af tools/testing/selftests $BM_ROOT/selftests
+	local header_dir="/tmp/linux-headers"
+
+	mkdir -p $header_dir
+	make headers_install INSTALL_HDR_PATH=$header_dir
+
+	mkdir -p $BM_ROOT/usr/include
+	cp -af $header_dir/include/* $BM_ROOT/usr/include
+
+	mkdir -p $BM_ROOT/tools/include/uapi/asm
+	cp -af $header_dir/include/asm/* $BM_ROOT/tools/include/uapi/asm
+
+	mkdir -p $BM_ROOT/tools/testing/selftests
+	cp -af tools/testing/selftests/* $BM_ROOT/tools/testing/selftests
 }
 
 pack()
