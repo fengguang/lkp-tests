@@ -1,7 +1,7 @@
 (.*)-Wunused(.*)
 \s+static const char libhugetlbfs_version(.*)
 \s+\^~*
-(.*)\.c: In function '(.*)':
+.+\.c: In function .+:
 \s+int\s(.*)
 /usr/bin/ld: warning: zero_filesize_segment\.ld contains output sections; did you forget -T\?
 mkswap: /var/lib/hugetlbfs/swap/temp/swapfile-(.*): insecure permissions 0664, 0600 suggested\.
