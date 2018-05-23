@@ -76,18 +76,17 @@ cat > $f_script <<EOF
 . $LKP_SRC/lib/upload.sh
 . $LKP_SRC/lib/http.sh
 
-mode=$mode
-rtcwake=$rtcwake
-i=\$(cat $f_ite)
+ite=\$(cat $f_ite)
 
-echo ----------------------------------- >> $f_log
-echo \$(date +%T): suspending \(\$i/$multi\) >> $f_log
+echo \$(date +%T): suspending \(\$ite/$multi\) >> $f_log
 
-set_job_state "suspending (\$i/$multi)"
+set_job_state "suspending (\$ite/$multi)"
 upload_files -t result $f_log
 
+#reset rtc wake
 echo 0 > /sys/class/rtc/rtc0/wakealarm
 echo +$rtcwake > /sys/class/rtc/rtc0/wakealarm
+
 echo $mode > /sys/power/state
 echo \$(date +%T): resume back! >> $f_log
 
@@ -95,18 +94,18 @@ retry=10
 while true
 do
 	ping -c 1 -W 1 inn > /dev/null
-	[ $? -eq 0 ] && break
+	[ \$? -eq 0 ] && break
 	echo \$(date +%T): network not ready >> $f_log
-	retry=$(($retry - 1))
-	[ $retry -eq 0 ] && break
+	retry=\$((retry - 1))
+	[ \$retry -eq 0 ] && break
 done
 
 # restart network if network is not back in 10 seconds
-if [ $retry -eq 0 ]
+if [ \$retry -eq 0 ]
 then
 	$LKP_SRC/bin/run-ipconfig
 	ping -c 1 -W 1 inn > /dev/null
-	if [ $? -ne 0 ] 
+	if [ \$? -ne 0 ]
 	then
 		echo network down
 		exit 1
@@ -118,8 +117,8 @@ echo \$(date +%T): uploading test result ... >> $f_log
 upload_files -t result ./suspend-*
 upload_files -t result $f_log
 echo \$(date +%T): done >> $f_log
-i=\$((i + 1))
-echo \$i > $f_ite
+ite=\$((ite + 1))
+echo \$ite > $f_ite
 EOF
 
 echo analyze_suspend test started
