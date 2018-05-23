@@ -287,3 +287,57 @@ pack_selftests()
 	cpio --quiet -o -H newc | gzip -n -9 > /lkp/benchmarks/${BM_NAME}.cgz
 	[[ $arch ]] && mv "/lkp/benchmarks/${BM_NAME}.cgz" "/lkp/benchmarks/${BM_NAME}-${arch}.cgz"
 }
+
+run_tests()
+{
+	local selftest=$1
+	for mf in [$selftest]*/Makefile; do
+		subtest=${mf%/Makefile}
+
+		[[ "$subtest" = "breakpoints" ]] && fixup_breakpoints
+
+		check_ignore_case $subtest && echo "ignored_by_lkp $subtest test" && continue
+
+		check_makefile $subtest || log_cmd make TARGETS=$subtest 2>&1
+
+		subtest_in_skip_filter "$skip_filter" && continue
+
+		if [[ $subtest = "bpf" ]]; then
+			# some sh scripts actually need bash
+			# ./test_libbpf.sh: 9: ./test_libbpf.sh: 0: not found
+			[ "$(cmd_path bash)" = '/bin/bash' ] && [ $(readlink -e /bin/sh) != '/bin/bash' ] &&
+				ln -fs bash /bin/sh
+		fi
+
+		if [[ $subtest = "efivarfs" ]]; then
+			prepare_for_efivarfs || continue
+		fi
+
+		if [[ "$subtest" = "pstore" ]]; then
+			prepare_for_pstore || continue
+		fi
+
+		if [[ "$subtest" = "firmware" ]]; then
+			prepare_for_firmware || continue
+		fi
+
+		if [[ "$subtest" = "net" ]]; then
+			prepare_for_net || continue
+		fi
+
+		[[ "$subtest" = "memfd" ]] && fixup_memfd
+		[[ "$subtest" = "vm" ]] && fixup_vm
+
+		echo
+		if [[ "$subtest" = "capabilities" ]]; then
+			prepare_for_capabilities || continue
+			log_cmd su lkp -c "make run_tests -C $subtest 2>&1"
+		else
+			log_cmd make run_tests -C $subtest  2>&1
+		fi
+
+		if [[ "$subtest" = "firmware" ]]; then
+			cleanup_for_firmware
+		fi
+	done
+}
