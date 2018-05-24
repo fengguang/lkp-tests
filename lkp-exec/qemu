@@ -22,7 +22,7 @@ options:
 	-p  VDISK_PATH			specify vdisk path
 	-k  bzImage			specify bzImage as kernel image
 	-m  modules.cgz			specify kernel modules
-	-e				use external network (download from github)
+	-e				use external network (download from 01.org)
 
 Note:
 This script uses qemu to start a VM to run LKP test-job.
@@ -191,7 +191,7 @@ do
 		p ) opt_vdiskpath="$OPTARG" ;;
 		k ) opt_kernel_image="$OPTARG" ;;
 		m ) opt_modules="$OPTARG" ;;
-		e ) HTTP_PREFIX=https://github.com/0day-ci/lkp-qemu/raw/master ;;
+		e ) HTTP_PREFIX=https://download.01.org/0day-ci/lkp-qemu ;;
 		? ) usage ;;
 	esac
 done
@@ -288,7 +288,7 @@ elif grep -q intel.com /etc/resolv.conf; then
 	LKP_SERVER=bee.sh.intel.com
 else
 	LKP_SERVER=
-	HTTP_PREFIX=https://github.com/0day-ci/lkp-qemu/raw/master
+	HTTP_PREFIX=https://download.01.org/0day-ci/lkp-qemu
 fi
 
 [ -d $CACHE_DIR ] || mkdir $CACHE_DIR
