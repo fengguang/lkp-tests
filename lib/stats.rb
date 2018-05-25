@@ -82,7 +82,12 @@ def other_test?(testcase)
 end
 
 $test_prefixes = test_prefixes
-$perf_metrics_prefixes.concat($test_prefixes.reject { |test| is_functional_test(test[0..-2]) || other_test?(test[0..-2]) })
+additional_perf_metrics_prefixes = $test_prefixes.reject do |test|
+  test_name = test[0..-2]
+  is_functional_test(test_name) || other_test?(test_name) || %w(kmsg dmesg stderr last_state).include?(test_name)
+end
+
+$perf_metrics_prefixes.concat(additional_perf_metrics_prefixes)
 
 def __is_perf_metric(name)
   return true if name =~ $perf_metrics_re
