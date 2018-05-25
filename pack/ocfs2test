@@ -6,8 +6,6 @@ download()
 
 	wget -q http://downloads.openfabrics.org/downloads/mpi-selector/mpi-selector-1.0.3.tar.gz || return
 
-	pip download timing || return
-
 	git_clone_update git://oss.oracle.com/git/jlbec/reflink.git || return
 	git_clone_update git://oss.oracle.com/git/ocfs2-test.git || return
 }
@@ -15,7 +13,7 @@ download()
 build()
 {
 	export PATH=/usr/lib64/openmpi/bin:$PATH
-	cp ../timing* $BM_ROOT || return
+	cp $LKP_SRC/pack/ocfs2test-addon/timing-0.0.1.tar.gz $BM_ROOT || return
 
 	tar -xzvf ../mpi-selector-1.0.3.tar.gz -C ../
 	cd ../mpi-selector-1.0.3
