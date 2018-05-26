@@ -7,7 +7,7 @@ check_param()
 	log_cmd cd $BENCHMARK_ROOT/$casename/src/test || die "Can not find $casename/src/test dir"
 
 	if [[ "$test" = "non-pmem" ]] || [[ "$test" = "pmem" ]] || [[ "$test" = "none" ]]; then
-		local tmp_dir=$(mktemp -d)
+		tmp_dir=$(mktemp -d)
 		echo "NON_PMEM_FS_DIR=$tmp_dir" > testconfig.sh
 		echo "PMEM_FS_DIR=/fs/pmem0" >> testconfig.sh
 		mkdir -p /fs/pmem0
@@ -135,6 +135,22 @@ check_ignore_single_case()
 	done
 }
 
+setup_mount_loop_dev()
+{
+	[[ -d "$tmp_dir" ]] || return
+	truncate --size 200M /tmp/loop-file
+	losetup loop0 /tmp/loop-file
+	mkfs.ext4 /dev/loop0 &>/dev/null
+	mount /dev/loop0 $tmp_dir
+}
+
+umount_loop_dev()
+{
+	[[ -d "$tmp_dir" ]] || return
+	umount $tmp_dir
+	losetup -d /dev/loop0
+}
+
 run()
 {
 	local casename=$1
@@ -162,6 +178,9 @@ run()
 
 		check_ignore_single_case $testcase
 
+		# fix util_extent/TEST0: SKIP file system tmpfs (ext4 required)
+		[[ "$testcase" = "util_extent" ]] && [[ "$test" = "non-pmem" ]] && setup_mount_loop_dev
+
 		# export this env variable to enable obj_tx_a* tests
 		[[ $testcase =~ obj_tx_a ]] && export MALLOC_MMAP_THRESHOLD_=0
 
@@ -176,6 +195,7 @@ run()
 
 		# unset env variable in case it do impact on other tests
 		[[ $testcase =~ obj_tx_a ]] && unset MALLOC_MMAP_THRESHOLD_
+		[[ "$testcase" = "util_extent" ]] && [[ "$test" = "non-pmem" ]] && umount_loop_dev
 	done
 
 	return 0
