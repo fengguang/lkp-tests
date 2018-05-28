@@ -11,6 +11,73 @@ syscalls_part2:modify_ldt03
 ltplite:modify_ldt01
 ltplite:modify_ldt02
 ltplite:modify_ldt03
+stress.part3:modify_ldt01
+stress.part3:modify_ldt02
+stress.part3:modify_ldt03
+# su01 want to get USER's password
+admin_tools:su01
+# Cause OOM, deactivate it temporarily.
+syscalls:madvise06
+# Require tbox enable TPM at BIOS which may lock the server bios and other devices
+ima:ima01
+ima:ima03
+# waiting community's response
+ima:ima04
+# only support kernel version < v2.6.29
+numa:move_pages08
+syscalls_part2:move_pages08
+# i386 only
+quickhit:f00f
+# need disable kernel config (CONFIG_SCHED_MC CONFIG_SCHED_SMT)
+power_management_tests:runpwtests01
+power_management_tests:runpwtests02
+power_management_tests:runpwtests03
+# need build extra modules
+modules:delete_module01
+modules:delete_module03
+# su01 want to get USER's password
+admin_tools:su01
+# Cause OOM, deactivate it temporarily.
+syscalls:madvise06
+# Require tbox enable TPM at BIOS which may lock the server bios and other devices
+ima:ima01
+ima:ima03
+# waiting community's response
+ima:ima04
+# only support kernel version < v2.6.29
+numa:move_pages08
+syscalls_part2:move_pages08
+# i386 only
+quickhit:f00f
+# need disable kernel config (CONFIG_SCHED_MC CONFIG_SCHED_SMT)
+power_management_tests:runpwtests01
+power_management_tests:runpwtests02
+power_management_tests:runpwtests03
+# need build extra modules
+modules:delete_module01
+modules:delete_module03
+stress.part3:modify_ldt01
+# su01 want to get USER's password
+admin_tools:su01
+# Cause OOM, deactivate it temporarily.
+syscalls:madvise06
+# Require tbox enable TPM at BIOS which may lock the server bios and other devices
+ima:ima01
+ima:ima03
+# waiting community's response
+ima:ima04
+# only support kernel version < v2.6.29
+numa:move_pages08
+syscalls_part2:move_pages08
+# i386 only
+quickhit:f00f
+# need disable kernel config (CONFIG_SCHED_MC CONFIG_SCHED_SMT)
+power_management_tests:runpwtests01
+power_management_tests:runpwtests02
+power_management_tests:runpwtests03
+# need build extra modules
+modules:delete_module01
+modules:delete_module03
 # su01 want to get USER's password
 admin_tools:su01
 # Cause OOM, deactivate it temporarily.
