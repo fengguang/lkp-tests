@@ -126,6 +126,7 @@ stress.part3:adjtimex02
 # only support kernel version < v2.6.9
 syscalls_part2:munlockall02
 ltplite:munlockall02
+stress.part3:munlockall02
 # not works when compiled as 64-bit application
 syscalls_part2:msgrcv08
 # system doesn't support it
