@@ -255,7 +255,6 @@ build_tools()
 
 install_selftests()
 {
-	install_selftests
 	local header_dir="/tmp/linux-headers"
 
 	mkdir -p $header_dir
