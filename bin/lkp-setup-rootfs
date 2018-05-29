@@ -22,6 +22,11 @@ echo   PATH=$PATH
 #  what():  locale::facet::_S_create_c_locale name not valid
 [ -z "$LC_ALL" ] && locale -a 2>/dev/null | grep -qw C.UTF-8 && export LC_ALL=C.UTF-8
 
+# disable oom killing entirely for the task
+cat > /proc/$$/oom_score_adj <<EOF
+-1000
+EOF
+
 boot_init
 
 # when to not reboot is a policy issue, which can be refined later.

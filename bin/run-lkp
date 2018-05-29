@@ -43,7 +43,17 @@ else
 	chmod +x $job
 fi
 
+# set subprocess oom_score_adj to 0 (default value)
+cat > /proc/$$/oom_score_adj <<EOF
+0
+EOF
+
 if [ -x "$job_script" ]; then
+	# disable oom killing entirely for run-lkp
+	# sleep a while to make sure run_job starts earlier than setting oom_score_adj
+	sh -c "sleep 3 && cat > /proc/$$/oom_score_adj <<EOF
+	-1000
+EOF" &
 	$LKP_DEBUG_PREFIX $job_script run_job
 	last_state_file=$RESULT_ROOT/last_state
 	[ -f "$last_state_file" ] &&
