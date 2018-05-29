@@ -676,6 +676,10 @@ module Compare
       end
       stat[ABS_CHANGES] = true
     else
+      # To avoid divide 0 problem
+      if avg0 == 0
+        avg0 = 1e-100
+      end
       stat[CHANGES] = avgs.drop(1).map do |avg|
         100.0 * (avg - avg0) / avg0
       end
