@@ -1,5 +1,6 @@
 #!/bin/sh
 # - turbo
+# - hw_prefetcher
 # - check_msr
 # - restore_msr
 # - msr
@@ -63,9 +64,20 @@ setup_turbo()
 	setup_msr "$reg" "$regval"
 }
 
+setup_hw_prefetcher()
+{
+	# According to https://software.intel.com/en-us/articles/disclosure-of-hw-prefetcher-control-on-some-intel-processors
+	if parse_bool -q "$1"; then
+		setup_msr 0x1a4 0x0
+	else
+		setup_msr 0x1a4 0xf
+	fi
+}
+
 sanity_check
 # Ignore setup if the environment variable is not defined
 [ -n "$turbo" ] && setup_turbo "$turbo"
+[ -n "$hw_prefetcher" ] && setup_hw_prefetcher "$hw_prefetcher"
 # For debug/test purpose, we also provide to use msr and msrval directly
 # to configure CPU msr
 [ -n "$msr" -a -n "$msrval" ] && setup_msr "$msr" "$msrval"
