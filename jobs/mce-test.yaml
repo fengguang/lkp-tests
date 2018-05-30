@@ -8,6 +8,8 @@ disk:
 
 need_memory: 2G
 
+need_modules: true
+
 fs:
 ## btrfs/ext4 filesystem can not pass any testing currently, disable it temporarily.
 # - btrfs
