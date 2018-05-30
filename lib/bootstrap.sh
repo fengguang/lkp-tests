@@ -417,7 +417,8 @@ tbox_cant_kexec()
 	[ "${HOSTNAME#*lkp-g5}"         != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-glk02}"      != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-ivb-d02}"    != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-minnow01}"   != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-minnow-audio-1}" != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-minnow-audio-2}" != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-skly01}"     != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-gp-audio-1}" != "$HOSTNAME" ] && return 0
 
