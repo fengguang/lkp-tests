@@ -16,6 +16,7 @@ echo   PATH=$PATH
 
 . $LKP_SRC/lib/bootstrap.sh
 . $LKP_SRC/lib/http.sh
+. $LKP_SRC/lib/reboot.sh
 
 # https://stackoverflow.com/questions/19100708/mongodb-mongorestore-failure-localefacet-s-create-c-locale-name-not-valid
 # To fix:
@@ -85,7 +86,7 @@ while true; do
 		}
 
 		start_reboot_watchdog
-		reboot 2>/dev/null && exit
+		reboot_tbox 2>/dev/null && exit
 	fi
 
 	if [ -n "$LKP_DEBUG" ]; then
