@@ -15,6 +15,7 @@ export PATH=$PATH:$LKP_SRC/bin
 echo   PATH=$PATH
 
 . $LKP_SRC/lib/bootstrap.sh
+. $LKP_SRC/lib/http.sh
 
 # https://stackoverflow.com/questions/19100708/mongodb-mongorestore-failure-localefacet-s-create-c-locale-name-not-valid
 # To fix:
@@ -72,7 +73,7 @@ while true; do
 
 	if tbox_cant_kexec || job_force_reboot; then
 		echo "LKP: rebooting"
-
+		set_job_state 'rebooting'
 		# Avoid get stuck in yocto minimal rootfs.
 		# LKP: rebooting
 		# [    8.124081] LKP: rebooting
@@ -105,4 +106,5 @@ while true; do
 	job_does_not_need_reboot || break
 done
 
+set_job_state 'kexec_to_next_job'
 $LKP_SRC/bin/kexec-lkp ${pxe_user:-lkp} $NEXT_JOB
