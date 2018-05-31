@@ -61,6 +61,14 @@ set_job_state()
 	jobfile_append_var "job_state=$1"
 }
 
+set_tbox_wtmp()
+{
+	local tbox_state="$1"
+	[ -n "$tbox_state" ] || return
+
+	http_get_cgi "cgi-bin/lkp-wtmp?tbox_name=$HOSTNAME&tbox_state=$tbox_state"
+}
+
 ####################################################
 
 http_escape_request()
