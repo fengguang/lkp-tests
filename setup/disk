@@ -32,12 +32,12 @@ check_nr_partitions()
 		return 1
 	}
 
-	[ -n "$nr_hdd_partitions" ] && [ -z "$hdd_partitions" ] && {
+	[ "$nr_hdd_partitions" -gt 0 ] && [ -z "$hdd_partitions" ] && {
 		echo "Invalid hdd disk configuration, please check host file!" >&2
 		return 1
 	}
 
-	[ -n "$nr_ssd_partitions" ] && [ -z "$ssd_partitions" ] && {
+	[ "$nr_ssd_partitions" -gt 0 ] && [ -z "$ssd_partitions" ] && {
 		echo "Invalid ssd disk configuration, please check host file!" >&2
 		return 1
 	}
