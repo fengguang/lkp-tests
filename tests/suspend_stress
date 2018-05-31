@@ -5,6 +5,7 @@
 # - runtime	(dont show)
 # - pm_test	(dont show)
 # - idle	(dont show)
+# - debug	(dont show)
 
 . $LKP_SRC/lib/http.sh
 . $LKP_SRC/lib/upload.sh
@@ -87,13 +88,20 @@ do
 		then
 			echo network down
 			echo network down >> $log_file
+			[ -n $debug ] && sleep 72000
 			exit 1
 		fi
 		echo network recovered by run-ipconfig
 		echo network recovered by run-ipconfig >> $log_file
 	fi
 
-	set_job_state "suspending ($i/$iterations)"
+	if [ -n $debug ]
+	then
+		set_job_state "suspending_debug ($i/$iterations)"
+	else
+		set_job_state "suspending ($i/$iterations)"
+	fi
+
 	if [[ ( -z "$pm_test" ) && ( "$mode" != "disk" ) ]]
 	then
 		echo 0 > $rtcwake_file

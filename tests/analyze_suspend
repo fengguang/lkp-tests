@@ -5,6 +5,7 @@
 # - multi
 # - rtcwake (dont show)
 # - idle (dont show)
+# - debug (dont show)
 
 . $LKP_SRC/lib/upload.sh
 . $LKP_SRC/lib/http.sh
@@ -67,7 +68,12 @@ echo analyze_suspend test started
 for ite in $(seq $multi)
 do
 	echo $(date +%T): suspending \($ite/$multi\) >> $f_log
-	set_job_state "suspending ($ite/$multi)"
+	if [ -n "debug" ]
+	then
+		set_job_state "suspending_debug ($ite/$multi)"
+	else
+		set_job_state "suspending ($ite/$multi)"
+	fi
 	upload_files -t result $f_log
 
 	#commands to supend and resume
@@ -94,6 +100,7 @@ do
 		if [ $? -ne 0 ]
 		then
 			echo network down >> $f_log
+			[ -n $debug ] && sleep 72000
 			exit 1
 		fi
 		echo network recovered by $LKP_SRC/bin/run-ipconfig >> $f_log
