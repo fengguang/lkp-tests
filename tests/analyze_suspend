@@ -7,19 +7,19 @@
 # - idle (dont show)
 
 . $LKP_SRC/lib/upload.sh
+. $LKP_SRC/lib/http.sh
 
 export PATH=/lkp/benchmarks/analyze_suspend:$PATH
 
 echo options: mode: $mode, runtime: $runtime, rtcwake: $rtcwake, multi: $multi, option: $option
 options=""
 [ -n "$mode" ] || mode='freeze'
+[ -n "$multi" ] || mutli=1
 [ -n "$runtime" ] || runtime=600
 [ -n "$rtcwake" ] || rtcwake=30
-[ -n "$idle" ] || idle=5
+[ -n "$idle" ] || idle=0
 
 options="-m $mode $option -rtcwake $rtcwake"
-
-[ -z "$multi" ] || options="$options -multi $multi $idle"
 
 # use -gzip and -skiphtml to reduce the memory usage
 options="$options -gzip -skiphtml"
@@ -36,12 +36,10 @@ total_mem=$(cat /proc/meminfo | grep MemFree | awk '{print $2}')
 process_mem=$((400 * 1024))
 
 case $options in
-	*" -f "*) result_mem=$((100 * 1024));;
-	*" -dev "*) result_mem=$((1 * 1024));;
-	*) result_mem=512;;
+	*" -f "*) result_mem=$((500 * 1024));;
+	*" -dev "*) result_mem=$((50 * 1024));;
+	*) result_mem=$((5 * 1024));;
 esac
-
-[ -z $multi ] || result_mem=$(($result_mem * $multi))
 
 ftrace_mem=$(($total_mem - $process_mem - $result_mem))
 
@@ -60,98 +58,61 @@ fi
 options="$options -bufsize $ftrace_mem"
 ################################################################################
 
-cmd="echo $mode > /sys/power/state && echo date1: $(date) && upload_files -t result ./suspend-* && echo date2: $(date) && set_job_state \"Suspending\""
-
-f_script=./analyze_suspend_script.sh
 f_log=./test.log
-f_ite=./iteration
 
-echo $mode: runtime: $runtime, rtcwake: $rtcwake, multi: $multi, option: $option, ftrace_mem: $ftrace_mem >> $f_log
-echo test started at: $(date +%F) $(date +%T) >> $f_log
-echo 1 > $f_ite
+echo options: $options >> $f_log
+echo analyze_suspend test started at: $(date +%F) $(date +%T) >> $f_log
+echo analyze_suspend test started
 
-cat > $f_script <<EOF
-#!/bin/bash
-
-. $LKP_SRC/lib/upload.sh
-. $LKP_SRC/lib/http.sh
-
-ite=\$(cat $f_ite)
-
-echo \$(date +%T): suspending \(\$ite/$multi\) >> $f_log
-
-set_job_state "suspending (\$ite/$multi)"
-upload_files -t result $f_log
-
-#reset rtc wake
-echo 0 > /sys/class/rtc/rtc0/wakealarm
-echo +$rtcwake > /sys/class/rtc/rtc0/wakealarm
-
-echo $mode > /sys/power/state
-echo \$(date +%T): resume back! >> $f_log
-
-retry=10
-while true
+for ite in $(seq $multi)
 do
-	ping -c 1 -W 1 inn > /dev/null
-	[ \$? -eq 0 ] && break
-	echo \$(date +%T): network not ready >> $f_log
-	retry=\$((retry - 1))
-	[ \$retry -eq 0 ] && break
+	echo $(date +%T): suspending \($ite/$multi\) >> $f_log
+	set_job_state "suspending ($ite/$multi)"
+	upload_files -t result $f_log
+
+	#commands to supend and resume
+	analyze_suspend.py $options
+	[ $? -ne 0 ] && exit 1
+	echo $(date +%T): resume back! >> $f_log
+
+	#check network status
+	retry=30
+	while true
+	do
+		ping -c 1 -W 1 inn > /dev/null
+		[ $? -eq 0 ] && break
+		echo $(date +%T): network not ready >> $f_log
+		retry=$((retry - 1))
+		[ $retry -eq 0 ] && break
+	done
+
+	# restart network if network is not back in 30 seconds
+	if [ $retry -eq 0 ]
+	then
+		$LKP_SRC/bin/run-ipconfig
+		ping -c 1 -W 1 inn > /dev/null
+		if [ $? -ne 0 ]
+		then
+			echo network down >> $f_log
+			exit 1
+		fi
+		echo network recovered by $LKP_SRC/bin/run-ipconfig >> $f_log
+	fi
+
+
+	#upload and delete previous test results to save ramdisk space
+	f_result=$(ls ./ | grep "suspend-")
+	if [ ! -z $f_result ]
+	then
+		echo $(date +%T): uploading test result $f_result ... >> $f_log
+		upload_files -t result $f_result
+		rm -rf $f_result
+		echo $(date +%T): done ... >> $f_log
+	fi
+	sleep $idle
 done
 
-# restart network if network is not back in 10 seconds
-if [ \$retry -eq 0 ]
-then
-	$LKP_SRC/bin/run-ipconfig
-	ping -c 1 -W 1 inn > /dev/null
-	if [ \$? -ne 0 ]
-	then
-		echo network down
-		exit 1
-	fi
-	echo network recovered by run-ipconfig
-fi
-
-echo \$(date +%T): uploading test result ... >> $f_log
-
-f_result=\$(ls ./ | grep "suspend-")
-if [ ! -z \$f_result ]
-then
-	upload_files -t result ./\$f_result
-
-	# delete previous result to save disk space
-	f_list=\$(ls -t ./\$f_result)
-	echo file list: \$f_list
-
-	f_pre=\$(echo \$f_list | awk '{ print \$2 }')
-
-	[ -z \$f_pre ] || echo removing previous result \$f_pre
-	[ -z \$f_pre ] || rm -rf ./\$f_result/\$f_pre
-fi
-upload_files -t result $f_log
-echo \$(date +%T): done >> $f_log
-ite=\$((ite + 1))
-echo \$ite > $f_ite
-EOF
-
-echo analyze_suspend test started
-upload_files -t result $f_script
-echo test script:
-echo -----------------------------------
-cat $f_script
-echo -----------------------------------
-echo
-echo Command: analyze_suspend.py $options -cmd "sh $f_script"
-echo Command: analyze_suspend.py $options -cmd "sh $f_script" > $f_log
-echo
-analyze_suspend.py $options -cmd "sh $f_script"
-if [ $? -eq 0 ]
-then
-	echo analyze_suspend test done
-else
-	echo analyze_suspend test failed
-fi
+echo analyze_suspend test done
 
 upload_files -t result $f_log
 upload_files -t result ./suspend-*
