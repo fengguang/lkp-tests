@@ -74,7 +74,7 @@ while true; do
 
 	if tbox_cant_kexec || job_force_reboot; then
 		echo "LKP: rebooting"
-		set_job_state 'rebooting'
+		set_tbox_wtmp 'rebooting'
 		# Avoid get stuck in yocto minimal rootfs.
 		# LKP: rebooting
 		# [    8.124081] LKP: rebooting
@@ -107,5 +107,5 @@ while true; do
 	job_does_not_need_reboot || break
 done
 
-set_job_state 'kexec_to_next_job'
+set_tbox_wtmp 'kexec_to_next_job'
 $LKP_SRC/bin/kexec-lkp ${pxe_user:-lkp} $NEXT_JOB
