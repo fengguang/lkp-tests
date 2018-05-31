@@ -19,7 +19,7 @@ options=""
 [ -n "$rtcwake" ] || rtcwake=30
 [ -n "$idle" ] || idle=0
 
-options="-m $mode $option -rtcwake $rtcwake"
+options="-m $mode $option -rtcwake $rtcwake -display on -sync"
 
 # use -gzip and -skiphtml to reduce the memory usage
 options="$options -gzip -skiphtml"
