@@ -6,6 +6,7 @@ while (line = STDIN.gets)
   values = STDIN.gets.split
   titles[titles.size - values.size..-1].each_with_index do |title, i|
     next if values[i].include? '*'
+    next if values[i] == '-'
     puts title + ': ' + values[i]
   end
   exit 0
