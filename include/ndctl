@@ -1,4 +1,3 @@
-rootfs: debian-x86_64-2017-02-07.cgz
 need_kconfig:
 - CONFIG_LIBNVDIMM=m
 - CONFIG_BLK_DEV_PMEM=m
