@@ -36,32 +36,40 @@ check_msr()
 	local wrval=$2
 
 	rdval=$(rdmsr -c "$reg")
-	[ "$rdval" = "$wrval" ] || die "Fail to write $wrval to MSR $reg, get $rdval"
+	# Use arithmetic comparison to eliminate the difference of binary,
+	# octal, decimal and hex
+	((rdval == wrval)) || die "Fail to write $wrval to MSR $reg, get $rdval"
 }
 
+# msr tool does not support to set a bit for a register, we have to 1) read
+# the value of the register,2) modify the bits at the special postion, 3)
+# write the modified value back to the register
 setup_msr()
 {
 	reg=$1
-	regval=$2
+	mask=$2
+	val=$3
 
+	rdval=$(rdmsr -c "$reg")
+	newval=$(((rdval & ~mask) | (val & mask)))
 	parse_bool -q "$restore_msr" && restore_msr "$reg"
-	log_cmd wrmsr -a "$reg" "$regval" || exit
-	parse_bool -q "$check_msr" && check_msr "$reg" "$regval"
+	log_cmd wrmsr -a "$reg" "$newval" || exit
+	parse_bool -q "$check_msr" && check_msr "$reg" "$newval"
 }
 
 setup_turbo()
 {
+	# According to https://software.intel.com/sites/default/files/managed/
+	# 39/c5/325462-sdm-vol-1-2abcd-3abcd.pdf, p4437, Table 2-7
+	mask=$((1 << 38))
 	if parse_bool -q "$1"; then
-		# enable turbo
-		local reg="0x1a0"
-		local regval="0x850089"
+		# Enable turbo, set 0 to bit 38
+		val=0
 	else
-		# disable turbo
-		local reg="0x1a0"
-		local regval="0x4000850089"
+		# disable turbo, set 1 to bit 38
+		val=$((1 << 38))
 	fi
-
-	setup_msr "$reg" "$regval"
+	setup_msr 0x1a0 $mask $val
 }
 
 setup_hw_prefetcher()
