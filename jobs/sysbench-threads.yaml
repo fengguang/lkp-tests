@@ -2,6 +2,8 @@ suite: sysbench-threads
 testcase: sysbench-threads
 category: benchmark
 
+rootfs: debian-x86_64-2016-08-31.cgz
+
 runtime: 300s
 nr_threads: 100%
 

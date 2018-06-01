@@ -2,6 +2,8 @@ suite: mutilate
 testcase: mutilate
 category: benchmark
 
+rootfs: debian-x86_64-2016-08-31.cgz
+
 cluster: cs-localhost
 
 if role server:

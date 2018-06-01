@@ -2,6 +2,8 @@ suite: netperf
 testcase: netperf
 category: benchmark
 
+rootfs: debian-x86_64-2016-08-31.cgz
+
 # upto 90% CPU cycles may be used by latency stats
 disable_latency_stats: 1
 
