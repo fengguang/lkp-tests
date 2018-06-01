@@ -2,6 +2,8 @@ suite: kernel_selftests
 testcase: kernel_selftests
 category: functional
 
+rootfs: debian-x86_64-2016-08-31.cgz
+
 need_cpu: 2
 kernel_selftests:
   group:
