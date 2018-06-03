@@ -88,14 +88,14 @@ do
 		then
 			echo network down
 			echo network down >> $log_file
-			[ -n $debug ] && sleep 72000
+			[ -n "$debug" ] && sleep 72000
 			exit 1
 		fi
 		echo network recovered by run-ipconfig
 		echo network recovered by run-ipconfig >> $log_file
 	fi
 
-	if [ -n $debug ]
+	if [ -n "$debug" ]
 	then
 		set_job_state "suspending_debug ($i/$iterations)"
 	else

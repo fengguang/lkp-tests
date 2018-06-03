@@ -100,7 +100,7 @@ do
 		if [ $? -ne 0 ]
 		then
 			echo network down >> $f_log
-			[ -n $debug ] && sleep 72000
+			[ -n "$debug" ] && sleep 72000
 			exit 1
 		fi
 		echo network recovered by $LKP_SRC/bin/run-ipconfig >> $f_log
