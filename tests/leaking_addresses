@@ -6,6 +6,11 @@
 
 cd $BENCHMARK_ROOT/leaking_addresses || die "can not enter $BENCHMARK_ROOT/leaking_addresses"
 
+# set timeout=30s to fix the issue
+# timed out parsing: /sys/kernel/debug/regmap/hdaudioC0D3-hdaudio/range
+# timed out parsing: /sys/kernel/debug/regmap/hdaudioC0D0-hdaudio/range
+sed -i "s/TIMEOUT = 10/TIMEOUT = 30/g" leaking_addresses.pl
+
 run_test()
 {
 	mkdir result
