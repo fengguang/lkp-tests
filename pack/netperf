@@ -1,11 +1,18 @@
 #!/bin/bash
 
 VERSION="2.7.0"
-WEB_URL="ftp://ftp.netperf.org/netperf/netperf-${VERSION}.tar.gz \
-         https://fossies.org/linux/misc/netperf-${VERSION}.tar.gz"
+WEB_URL="https://github.com/HewlettPackard/netperf/archive/netperf-${VERSION}.tar.gz"
+
+download()
+{
+	wget $WEB_URL
+}
 
 build()
 {
+	tar vxf netperf-${VERSION}.tar.gz
+	cd netperf-netperf-${VERSION}
+
 	local configure_flags=(
 				--prefix=$BM_ROOT
 				--enable-demo
