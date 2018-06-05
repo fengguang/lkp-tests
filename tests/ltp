@@ -181,6 +181,7 @@ ltp-aiodio.part[24]|syscalls_part[13]|dio-0*)
 	specify_tmpdir || exit
 	;;
 stress.part3)
+	specify_tmpdir || exit
 	groupadd nobody || exit
 	;;
 syscalls_part2)
