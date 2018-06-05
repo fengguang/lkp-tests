@@ -76,9 +76,9 @@ setup_hw_prefetcher()
 {
 	# According to https://software.intel.com/en-us/articles/disclosure-of-hw-prefetcher-control-on-some-intel-processors
 	if parse_bool -q "$1"; then
-		setup_msr 0x1a4 0x0
+		setup_msr 0x1a4 0xf 0x0
 	else
-		setup_msr 0x1a4 0xf
+		setup_msr 0x1a4 0xf 0xf
 	fi
 }
 
