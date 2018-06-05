@@ -22,6 +22,6 @@ build()
 				--enable-burst
 	)
 
-	./configure "${configure_flags[@]}"
+	CFLAGS="-std=gnu89" ./configure "${configure_flags[@]}"
 	make
 }
