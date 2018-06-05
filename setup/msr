@@ -83,6 +83,8 @@ setup_hw_prefetcher()
 	fi
 }
 
+[ -z "$force_reboot" ] && die "Must set 'force_reboot: 1' to use setup/msr"
+
 sanity_check
 # Ignore setup if the environment variable is not defined
 [ -n "$turbo" ] && setup_turbo "$turbo"
