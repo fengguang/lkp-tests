@@ -120,6 +120,7 @@ syscalls_part3:ptrace04
 # __NR_readdir not supported on x86_64
 syscalls_part3:readdir21
 ltplite:readdir21
+stress.part3:readdir21
 # only support kernel version is 2.6.25 or below
 # adjtimex(2) fails with errno set to EINVAL if an attempt is  made  to set buf.offset to a value < 512000L
 # (This test case will be executed only if the kernel version is 2.6.25 or below)
