@@ -168,6 +168,8 @@ syscalls_part3:set_thread_area01
 syscalls_part3:sgetmask01
 # no proper fs for the test
 syscalls_part3:rename11
+# EMLINK test is not appropriate
+stress.part3:rename11
 # only support on powerpc
 syscalls_part4:switch01
 # the test result is always block
