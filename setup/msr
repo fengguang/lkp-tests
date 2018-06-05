@@ -39,7 +39,7 @@ check_msr()
 	rdval=$(rdmsr -c "$reg")
 	# Use arithmetic comparison to eliminate the difference of binary,
 	# octal, decimal and hex
-	((rdval == wrval)) || die "Fail to write $wrval to MSR $reg, get $rdval"
+	[ $((rdval == wrval)) -ne 0 ] || die "Fail to write $wrval to MSR $reg, get $rdval"
 }
 
 # msr tool does not support to set a bit for a register, we have to 1) read
