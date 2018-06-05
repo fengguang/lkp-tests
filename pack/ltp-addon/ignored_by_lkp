@@ -113,6 +113,8 @@ net_stress.appl:ftp4-upload-stress
 net_stress.appl:ftp6-upload-stress
 # only support kernel version < v2.6.25
 syscalls_part3:ptrace03
+# since Linux 2.6.26, it's allowed to trace init, so just skip this test case
+stress.part3:ptrace03
 # only support Blackfin(DSP microprocessor)
 syscalls_part3:ptrace04
 # __NR_readdir not supported on x86_64
