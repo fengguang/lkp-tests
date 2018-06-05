@@ -106,7 +106,7 @@ mkdir -p $BUILD_DIR
 cd $BUILD_DIR
 download || exit
 cd "$source_dir" || exit
-[[ -n "$sync_dest" ]] && commit=$(git rev-parse --short HEAD)
+[[ -n "$sync_dest" ]] && commit=$(git rev-parse --short HEAD 2>/dev/null)
 build || exit
 install || exit
 strip_object_files
