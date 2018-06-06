@@ -51,13 +51,18 @@ install_packages()
 download_extract()
 {
 	local URL="$1"
+	local file="$(basename $URL)"
+	local dir="$(basename $(dirname $URL))"
+
+	mkdir -p $dir || return
+	cd $dir
 
 	echo lftpget -c $URL
-	     lftpget -c $URL
+	     lftpget -c $URL || return
+	cd ..
 
-	local file="$(basename $URL)"
-	echo tar Jxf $file -C $GCC_INSTALL_PATH
-	sudo tar Jxf $file -C $GCC_INSTALL_PATH
+	echo tar Jxf $dir/$file -C $GCC_INSTALL_PATH
+	sudo tar Jxf $dir/$file -C $GCC_INSTALL_PATH
 }
 
 install_crosstool()
@@ -77,7 +82,10 @@ install_crosstool()
 		exit 1
 	}
 
-	download_extract "$URL/$file"
+	download_extract "$URL/$file" || {
+		echo "Failed to download $URL/$file"
+		exit 1
+	}
 }
 
 install_linaro()
