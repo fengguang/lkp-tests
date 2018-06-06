@@ -12,10 +12,14 @@
 # - cd obj-i386; make.cross
 # - export ARCH=i386; make.cross
 #
+# With particular GCC_VERSION:
+# - GCC_VERSION=7.2.0 make.cross ARCH=arm
+#
 # Copyright (c) 2014, Intel Corporation.
 # Author: Fengguang Wu <fengguang.wu@intel.com>
 # Credit: Tony Breeds <tony@bakeyournoodle.com> for crosstool
 
+GCC_VERSION=${GCC_VERSION:-""}
 GCC_INSTALL_PATH=/opt
 
 if [[ ! "$0" =~ 'make.cross' && "$0" =~ make\.([a-z0-9_]+) ]]; then
@@ -76,9 +80,13 @@ install_crosstool()
 
 	local file
 	local gcc_arch_pattern=$(echo "${gcc_arch}" | sed 's/*/.*/g')
-	file=$(grep "${gcc_arch_pattern}" $list | tail -1)
+	if [[ $GCC_VERSION ]]; then
+		file=$(grep "${gcc_arch_pattern}" $list | grep "${GCC_VERSION}" | tail -1)
+	else
+		file=$(grep "${gcc_arch_pattern}" $list | tail -1)
+	fi
 	[[ $file ]] || {
-		echo "Cannot find $gcc_arch under $URL check $list"
+		echo "Cannot find $gcc_arch_pattern under $URL check $list"
 		exit 1
 	}
 
@@ -187,10 +195,10 @@ setup_crosstool()
 	esac
 
 	if [[ $gcc_arch ]]; then
-		gcc_exec=($GCC_INSTALL_PATH/gcc-*/${gcc_arch}/bin/${gcc_arch}-gcc)
+		gcc_exec=($GCC_INSTALL_PATH/gcc-${GCC_VERSION}*/${gcc_arch}/bin/${gcc_arch}-gcc)
 		[[ -x $gcc_exec ]] || install_cross_compiler
 
-		gcc_exec=($GCC_INSTALL_PATH/gcc-*/${gcc_arch}/bin/${gcc_arch}-gcc)
+		gcc_exec=($GCC_INSTALL_PATH/gcc-${GCC_VERSION}*/${gcc_arch}/bin/${gcc_arch}-gcc)
 		[[ -x $gcc_exec ]] || {
 			echo "No cross compiler for $ARCH"
 			exit
