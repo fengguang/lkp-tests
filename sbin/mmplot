@@ -31,6 +31,10 @@ opt_parser = OptionParser.new do |opts|
     $options['perf'] = true
   end
 
+  opts.on('-c', '--concise', 'skip non-important changes') do
+    $options['concise'] = true
+  end
+
   opts.on('-r N', '--resize N', 'resize first matrix') do |n|
     $options['resize'] = n.to_i
   end
@@ -79,5 +83,5 @@ else
   changed_fields = changed_stats.keys
 end
 
-changed_fields.reject! { |stat| is_failure(stat) || is_latency(stat) }
+changed_fields.reject! { |stat| is_failure(stat) || blacklist_bisect_stat?(stat) } if $options['concise']
 mmplot(matrix1, matrix2, changed_fields)
