@@ -68,7 +68,7 @@ echo analyze_suspend test started
 for ite in $(seq $multi)
 do
 	echo $(date +%T): suspending \($ite/$multi\) >> $f_log
-	if [ -n "debug" ]
+	if [ -n "$debug" ]
 	then
 		set_job_state "suspending_debug ($ite/$multi)"
 	else
