@@ -33,18 +33,18 @@ class ResultPath < Hash
     'health-stats' => %w[path_params run],
     'lkp-bug' => %w[path_params run],
     'hwinfo' => %w[tbox_group run],
-    'build-dpdk' => %w[tbox_group rootfs dpdk_config commit dpdk_compiler dpdk_commit run],
+    'build-dpdk' => %w[rootfs dpdk_config commit dpdk_compiler dpdk_commit run],
     'dpdk-dts' => %w[rootfs dpdk_config dpdk_compiler dpdk_commit run],
-    'build-qemu' => %w[tbox_group qemu_config qemu_commit run],
-    'build-nvml' => %w[tbox_group nvml_commit run],
-    'build-acpica' => %w[tbox_group acpica_commit test run],
-    'build-sof' => %w[tbox_group sof_config sof_commit soft_commit run],
+    'build-qemu' => %w[qemu_config qemu_commit run],
+    'build-nvml' => %w[nvml_commit run],
+    'build-acpica' => %w[acpica_commit test run],
+    'build-sof' => %w[sof_config sof_commit soft_commit run],
     'kvm-unit-tests-qemu' => %w[path_params tbox_group rootfs kconfig compiler commit qemu_config qemu_commit run],
     'nvml-unit-tests' => %w[path_params tbox_group rootfs kconfig compiler commit nvml_commit run],
     'mbtest' => %w[path_params tbox_group rootfs kconfig compiler commit mbt_commit run],
     'sof_test' => %w[path_params tbox_group rootfs kconfig compiler commit sof_commit soft_commit run],
-    'kvm-kernel-boot-test' => %w[path_params tbox_group kconfig commit qemu_config qemu_commit linux_commit run],
-    'build-perf_test' => %w[tbox_group perf_test_commit run]
+    'kvm-kernel-boot-test' => %w[tbox_group kconfig commit qemu_config qemu_commit linux_commit run],
+    'build-perf_test' => %w[perf_test_commit run]
   }.freeze
 
   def path_scheme
