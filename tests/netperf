@@ -4,6 +4,7 @@
 # - ip
 # - test
 # - send_size
+# - socket_buffer_size
 
 ## Netperf is a benchmark that can be use to measure various aspect of
 ## networking performance. The primary foci are bulk (aka unidirectional)
@@ -17,7 +18,12 @@ export PATH=$BENCHMARK_ROOT/netperf/bin:$PATH
 [ "${test#*SCTP}" != "$test" ] && log_cmd modprobe sctp 2>/dev/null
 sleep 1
 
-[ -n "$send_size" ] && test_options="-- -m $send_size"
+[ -n "$send_size" ] && send_size="-m $send_size"
+[ -n "$socket_buffer_size" ] && socket_buffer_size="-s $socket_buffer_size -S $socket_buffer_size"
+
+if [ -n "$send_size" ] || [ -n "$socket_buffer_size" ]; then
+    test_options="-- $send_size $socket_buffer_size"
+fi
 
 [ -n "$direct_server_ips" ] && server=$direct_server_ips
 [ -z "$server" ] && {
