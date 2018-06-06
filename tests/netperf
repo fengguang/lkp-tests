@@ -35,7 +35,7 @@ opt_ip=
 
 for i in $(seq $nr_threads)
 do
-	log_eval "netperf $opt_ip -t $test -c -C -l $runtime $test_options -H $server &"
+	log_eval "netperf $opt_ip -H $server -t $test -c -C -l $runtime $test_options &"
 done
 
 log_eval wait
