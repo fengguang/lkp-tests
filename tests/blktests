@@ -20,6 +20,10 @@ set_env()
 	nbd-group*|loop-group*)
 		partition=""
 		;;
+	nvme-005)
+		modprobe -r nvme
+		partition=""
+		;;
 	scsi-group*)
 		partition=${partitions%% *}
 		is_virt && partition=$(echo "$partition" | sed 's/[0-9]*$//g')
