@@ -2,8 +2,6 @@ suite: libhugetlbfs-test
 testcase: libhugetlbfs-test
 category: functional
 
-rootfs: debian-x86_64-2016-08-31.cgz
-
 libhugetlbfs-test:
   pagesize:
   - 2MB
