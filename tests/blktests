@@ -10,7 +10,6 @@
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/tests/common.sh
 
-[ -z "$nr_partitions" -o "$nr_partitions" -lt 1 ] && die "no disk partitions found, nr_partitions is 0"
 cd $BENCHMARK_ROOT/blktests || die "fail to cd $BENCHMARK_ROOT/blktests"
 
 set_env()
