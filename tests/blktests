@@ -84,5 +84,5 @@ set_env
 run_test
 exit_value=$?
 
-upload_files -t results $BENCHMARK_ROOT/blktests/results/*
+upload_files -t results $blktest_dir/blktests/results/*
 exit $exit_value
