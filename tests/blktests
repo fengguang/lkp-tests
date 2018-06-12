@@ -15,10 +15,12 @@ cd $BENCHMARK_ROOT/blktests || die "fail to cd $BENCHMARK_ROOT/blktests"
 
 install_blktests()
 {
-	[ "$blktests_commit" ] || return
+	local BLKTEST_REPO="https://github.com/osandov/blktests.git"
+	[ "$LKP_LOCAL_RUN" != "1" ] && BLKTEST_REPO="git://gitmirror/blktests"
 
+	[ "$blktests_commit" ] || return
 	cd $blktest_dir
-	git clone https://github.com/osandov/blktests.git 2>&1 || return
+	git clone $BLKTEST_REPO 2>&1 || return
 	cd $blktest_dir/blktests
 	git checkout -f $blktests_commit 2>&1 || return
 
