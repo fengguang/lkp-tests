@@ -10,7 +10,20 @@
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/tests/common.sh
 
+blktest_dir=$BENCHMARK_ROOT/blktests
 cd $BENCHMARK_ROOT/blktests || die "fail to cd $BENCHMARK_ROOT/blktests"
+
+install_blktests()
+{
+	[ "$blktests_commit" ] || return
+
+	cd $blktest_dir
+	git clone https://github.com/osandov/blktests.git 2>&1 || return
+	cd $blktest_dir/blktests
+	git checkout -f $blktests_commit 2>&1 || return
+
+	make
+}
 
 set_env()
 {
@@ -63,6 +76,7 @@ run_test()
 	log_cmd ./check $all_tests
 }
 
+install_blktests || die
 read_env_vars
 set_env
 run_test
