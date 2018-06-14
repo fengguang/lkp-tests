@@ -160,6 +160,22 @@ set_env()
 		log_eval export LOGWRITES_DEV="$LOGWRITES_DEV"
 		[ "$fs" = "xfs" ] && unset MKFS_OPTIONS
 	fi
+
+        [ "$test" = "ext4-029" ] && {
+		log_eval export USE_EXTERNAL=yes
+
+		# create a 100M partition for log, avoid test cost too much time
+		# if had partition already, create a virtual disk for log
+		if is_disc_partitioned; then
+			create_virtual_disk 100 || die "fail to create a virtual disk for log"
+			log_eval export SCRATCH_LOGDEV="/dev/loop0"
+		else
+			SCRATCH_LOGDEV=${partitions#* }
+			SCRATCH_LOGDEV=${SCRATCH_LOGDEV%% *}
+			printf "n\np\n1\n\n+100M\nw\n" | fdisk $SCRATCH_LOGDEV
+			log_eval export SCRATCH_LOGDEV="$SCRATCH_LOGDEV"1
+		fi
+	}
 }
 
 run_test()
