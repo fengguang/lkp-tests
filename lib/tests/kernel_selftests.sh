@@ -1,5 +1,6 @@
 #!/bin/bash
 
+. $LKP_SRC/env.sh
 . $LKP_SRC/lib/debug.sh
 
 build_selftests()
@@ -241,6 +242,14 @@ fixup_breakpoints()
 	}
 }
 
+fixup_x86()
+{
+	is_virt && grep -qw mov_ss_trap x86/Makefile && {
+		sed -i 's/mov_ss_trap//' x86/Makefile
+		echo "ignored_by_lkp x86.mov_ss_trap test"
+	}
+}
+
 build_tools()
 {
 
@@ -326,6 +335,7 @@ run_tests()
 
 		[[ "$subtest" = "memfd" ]] && fixup_memfd
 		[[ "$subtest" = "vm" ]] && fixup_vm
+		[[ "$subtest" = "x86" ]] && fixup_x86
 
 		echo
 		if [[ "$subtest" = "capabilities" ]]; then
