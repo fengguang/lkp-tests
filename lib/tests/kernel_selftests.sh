@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. $LKP_SRC/env.sh
+. $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/debug.sh
 
 build_selftests()
