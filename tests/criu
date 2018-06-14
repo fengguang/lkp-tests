@@ -1,0 +1,8 @@
+#!/bin/bash -x
+
+. $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/reproduce-log.sh
+
+cd $BENCHMARK_ROOT/criu/test || die "Cannot find CRIU dir"
+
+python zdtm.py run -a

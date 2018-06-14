@@ -1,0 +1,23 @@
+#!/usr/bin/awk -f
+
+BEGIN {
+	nr_test = 0
+}
+
+/====== Run [0-9a-zA-Z_/]* in / {
+	flav = $5
+	tname = $3
+	nr_test += 1
+}
+
+/PASS/ {
+	printf("%s/%s.pass: 1\n", flav, tname)
+}
+
+/FAIL at/ {
+	printf("%s/%s.fail: 1\n", flav, tname)
+}
+
+END {
+	printf("total_test: %d\n", nr_test)
+}

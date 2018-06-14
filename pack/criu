@@ -1,0 +1,13 @@
+#!/bin/bash
+
+CONFIGURE_FLAGS="--arch=$arch"
+
+download()
+{
+	git_clone_update https://github.com/checkpoint-restore/criu
+}
+
+install()
+{
+	cp -af $source_dir/* $BM_ROOT/
+}
