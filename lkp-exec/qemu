@@ -331,6 +331,12 @@ run_kvm()
 	"${KVM_COMMAND[@]}"
 }
 
+# lkp qemu alway log guest to stdout
+setup_qemu_console()
+{
+	qemu_console_option="-display none -monitor null -serial stdio"
+}
+
 get_qemu_kernel_initrd $lkp_initrd $job_initrd
 setup_qemu_console
 setup_qemu_netdev
