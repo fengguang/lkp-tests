@@ -56,7 +56,7 @@ class LinuxTestcasesTableSet
     ['0day-boot-tests', '0day-kbuild-tests', 'build-dpdk', 'build-sof', 'sof_test', 'build-nvml',
      'build-qemu', 'convert-lkpdoc-to-html', 'convert-lkpdoc-to-html-css',
      'health-stats', 'hwinfo', 'internal-lkp-service', 'ipmi-setup',
-     'lkp-bug', 'lkp-install-run', 'lkp-services', 'lkp-src', 'pack',
+     'lkp-bug', 'lkp-install-run', 'lkp-services', 'lkp-src', 'pack', 'lkp-qemu',
      'pack-deps', 'makepkg', 'makepkg-deps', 'borrow', 'dpdk-dts', 'mbtest', 'build-acpica'].freeze
 end
 
