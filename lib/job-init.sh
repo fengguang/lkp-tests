@@ -127,8 +127,10 @@ setup_result_root()
 	}
 
 	# check emptiness except for files: dmesg pre-dmesg
-	ls $RESULT_ROOT | grep -v -q -F dmesg &&
-	echo "RESULT_ROOT not empty: $(ls -l $RESULT_ROOT)" >&2
+	if [ "$result_fs" != "tmpfs" ]; then
+		ls $RESULT_ROOT | grep -v -q -F dmesg &&
+		echo "RESULT_ROOT not empty: $(ls -l $RESULT_ROOT)" >&2
+	fi
 
 	return 0
 }
