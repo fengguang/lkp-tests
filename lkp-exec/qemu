@@ -48,6 +48,7 @@ validate_options()
 	need_module="$(get_job_env $job_script 'need_modules')" || return
 	[[ "$need_module" = "true" ]] && {
 		[[ ! $opt_modules ]] && echo "kernel module is required, please specify it with '-m'" && return 1
+		[[ ! -e $opt_modules ]] && echo "$opt_modules is not existed" && return 1
 	}
 
 	return 0

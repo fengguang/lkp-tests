@@ -51,6 +51,21 @@ initrd_is_correct()
 	gzip -dc $file | cpio -t >/dev/null
 }
 
+# for lkp qemu, it will set LKP_LOCAL_RUN=1
+use_local_modules_initrds()
+{
+	[ "$LKP_LOCAL_RUN" = "1" ] && [ "$modules_initrd" ] && {
+		# lkp qemu will create a link to modules.cgz under $CACHE_DIR
+		# ls -al /root/.lkp/cache/modules.cgz
+		# lrwxrwxrwx 1 root root 21 Jun 19 08:13 /root/.lkp/cache/modules.cgz -> /lkp-qemu/modules.cgz
+		local local_modules=$CACHE_DIR/$(basename $modules_initrd)
+		[ -e $local_modules ] || return
+		initrds="$local_modules "
+		echo "use local modules: $local_modules"
+		unset modules_initrd
+	}
+}
+
 download_initrd()
 {
 	local _initrd
@@ -58,6 +73,9 @@ download_initrd()
 
 	echo "downloading initrds ..."
 	set_job_state "wget_initrd"
+
+	use_local_modules_initrds
+
 	for _initrd in $(echo $initrd $tbox_initrd $job_initrd $lkp_initrd $bm_initrd $modules_initrd $linux_headers_initrd $audio_sof_initrd $syzkaller_initrd $linux_selftests_initrd $linux_perf_initrd | tr , ' ')
 	do
 		_initrd=$(echo $_initrd | sed 's/^\///')
