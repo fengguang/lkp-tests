@@ -256,6 +256,19 @@ def vmlinuz_dir(kconfig, compiler, commit)
   "#{KERNEL_ROOT}/#{kconfig}/#{compiler}/#{commit}"
 end
 
+def load_base_matrix_for_notag_project(git, rp, axis)
+  base_commit = git.first_sha
+  log_debug "#{git.project} doesn't have tag, use its first commit #{base_commit} as base commit"
+
+  rp[axis] = base_commit
+  base_matrix_file = rp._result_root + '/matrix.json'
+  unless File.exist? base_matrix_file
+    log_error "#{base_matrix_file} doesn't exist."
+    return nil
+  end
+  load_release_matrix(base_matrix_file)
+end
+
 def load_base_matrix(matrix_path, head_matrix, options)
   matrix_path = File.realpath matrix_path
   matrix_path = File.dirname matrix_path if File.file? matrix_path
@@ -288,6 +301,8 @@ def load_base_matrix(matrix_path, head_matrix, options)
     log_exception e, binding
     return nil
   end
+
+  return load_base_matrix_for_notag_project(git, rp, axis) if git.tag_names.empty?
 
   begin
     return nil unless git.commit_exist? commit
