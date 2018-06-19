@@ -177,6 +177,10 @@ module Git
       scommits.map { |sc| gcommit sc }
     end
 
+    def first_sha
+      command('rev-list --reverse HEAD |head -1')
+    end
+
     def command(cmd, opts = [], chdir = true, redirect = '', &block)
       lib.command(cmd, opts, chdir, redirect, &block)
     end
