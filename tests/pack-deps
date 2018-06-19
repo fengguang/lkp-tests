@@ -1,5 +1,6 @@
 #!/bin/bash
 # - benchmark
+# - pack_arch
 
 . $LKP_SRC/lib/debug.sh
 
@@ -44,6 +45,12 @@ update
 apt-get install -yf
 
 [[ "$benchmark" = "all" ]] && benchmark="$(ls $LKP_SRC/distro/depends | grep -v -e '-dev' -e '-whitelist')"
+
+[ "$pack_arch" = "i386" ] && {
+	dpkg --add-architecture i386
+	update
+	apt -y --allow-remove-essential --fix-broken install -o=APT::Architecture="i386"
+}
 
 for BM_NAME in $benchmark
 do
