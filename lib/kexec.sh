@@ -62,15 +62,11 @@ download_initrd()
 	do
 		_initrd=$(echo $_initrd | sed 's/^\///')
 		local file=$CACHE_DIR/$_initrd
-		if [ -e $file ]; then
-			echo "skip downloading $file"
-		else
-			http_get_newer "$_initrd" $file || {
-				set_job_state "wget_initrd_fail"
-				echo Failed to download $_initrd
-				exit 1
-			}
-		fi
+		http_get_newer "$_initrd" $file || {
+			set_job_state "wget_initrd_fail"
+			echo Failed to download $_initrd
+			exit 1
+		}
 		initrd_is_correct $file || {
 			set_job_state "initrd_broken"
 			echo $_initrd is broken
