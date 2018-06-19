@@ -1,0 +1,6 @@
+W: Can't drop privileges for downloading as file '/tmp/.*.deb' couldn't be accessed by user '_apt'. - pkgAcquire::Run \(13: Permission denied\)
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+Extracting templates from packages: .*
+ERROR: ld.so: object '/usr/lib/x86_64-linux-gnu/coreutils/libstdbuf.so' from LD_PRELOAD cannot be preloaded \(cannot open shared object file\): ignored.
+W: APT had planned for dpkg to do more than it reported back .*
+.*Affected packages: apt:i386 gnupg-agent:i386 openssl:i386 perl:i386
