@@ -30,7 +30,8 @@ mount_cgroup
 echo run-job $job
 set_job_state 'running'
 
-if ! is_ucode_version_matched "$testbox"; then
+echo "target ucode: $ucode"
+if [ -n "$ucode" ] && ! is_same_as_current_ucode_version "$ucode"; then
 	echo "microcode is not matched, skip testing..."
 	set_job_state 'microcode_is_not_matched'
 	exit 1
