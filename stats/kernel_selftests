@@ -33,7 +33,7 @@ end
 
 def memory_hotplug_stat(line, memory_hotplug, stats)
   case line
-  when /^\.\/(.+\.sh).+selftests: memory-hotplug/
+  when /selftests: memory-hotplug: (.+\.sh)/
     memory_hotplug['subtest'] = $1
   when /^*selftests: memory-hotplug \[FAIL\]/
     stats << "memory-hotplug.#{memory_hotplug['subtest']}.fail: 1"
@@ -43,26 +43,11 @@ def memory_hotplug_stat(line, memory_hotplug, stats)
   end
 end
 
-def mount_stat(line, mount, stats)
-  case line
-  when %r{if .* then ./(.*) ; else echo}
-    mount['subtest'] = $1
-  when /^WARN\: No \/proc\/self\/uid_map exist, test skipped/
-    stats << "mount.#{mount['subtest']}.skip: 1"
-    mount['subtest'] = nil
-  when /(^(MS.+|Default.+) malfunctions$)|(^Mount flags unexpectedly changed after remount$)/
-    stats << "mount.#{mount['subtest']}.fail: 1"
-    mount['subtest'] = nil
-  when %r{make: Leaving directory .*/(.*)'}
-    stats << "mount.#{mount['subtest']}.pass: 1" if mount['subtest']
-  end
-end
-
 def x86_stat(line, _x86, stats)
   case line
   when /can not run MPX tests/
     @pmx = 'skip'
-  when /^*selftests: (.*) .*(PASS|FAIL)/
+  when /^*selftests: x86: (.*) .*(PASS|FAIL)/
     test_name = $1.strip
     result = $2
     if test_name =~ /mpx-mini-test/ && @pmx
@@ -93,13 +78,11 @@ while (line = STDIN.gets)
   when %r{make: Leaving directory .*/(.*)'}
     if testname == 'memory-hotplug'
       memory_hotplug_stat(line, tests_stats['memory-hotplug'], stats)
-    elsif testname == 'mount'
-      mount_stat(line, tests_stats['mount'], stats)
     else
       # rli9 FIXME: consider the input has messed text like Entering doesn't match with Leaving
       testname = nil
     end
-  when /^*selftests: (.*) .*(\[|\[ )(PASS|FAIL)/
+  when /^*selftests: .*: (.*) .*(\[|\[ )(PASS|FAIL)/
     if testname == 'futex'
       futex_stat(line, tests_stats['futex'], stats)
     elsif testname == 'memory-hotplug'
@@ -128,8 +111,6 @@ while (line = STDIN.gets)
       futex_stat(line, tests_stats['futex'], stats)
     elsif testname == 'memory-hotplug'
       memory_hotplug_stat(line, tests_stats['memory-hotplug'], stats)
-    elsif testname == 'mount'
-      mount_stat(line, tests_stats['mount'], stats)
     elsif testname == 'x86'
       x86_stat(line, tests_stats['x86'], stats)
     elsif testname == 'vm'
