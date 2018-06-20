@@ -138,7 +138,7 @@ set_env()
 			log_eval unset SCRATCH_DEV_POOL
 		}
 		if is_disc_partitioned; then
-			create_virtual_disk 1M || die "fail to create a virtual disk for log"
+			create_virtual_disk 1k || die "fail to create a virtual disk for log"
 			log_eval export SCRATCH_DEV="/dev/loop0"
                 else
 			printf "n\np\n1\n\n+1G\nw\n" | fdisk $SCRATCH_DEV
