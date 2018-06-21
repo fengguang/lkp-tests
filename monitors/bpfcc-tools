@@ -1,5 +1,6 @@
 #!/bin/sh
 # - tool
+# - tool_arguments
 
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
@@ -37,7 +38,7 @@ signal.signal(signal.SIGINT, on_int)
 import $tool
 EOF
 
-ARCH=x86 python run-bpf.py &
+ARCH=x86 python run-bpf.py $tool_arguments &
 
 pid=$!
 
