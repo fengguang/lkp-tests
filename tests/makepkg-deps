@@ -43,7 +43,11 @@ do
 
 	download_distro_depends $BM_NAME "$work_dir"
 	[ -n "$LKP_SERVER" ] && install_distro_depends lkp-dev
-	build_depends_pkg $BM_NAME "$work_dir" && pack
+	(
+		proxy_file=$LKP_SRC/etc/proxy
+		[ -f "$proxy_file" ] && source "$proxy_file"
+		build_depends_pkg $BM_NAME "$work_dir" && pack
+	)
 
 	rm -fr "$work_dir"
 done
