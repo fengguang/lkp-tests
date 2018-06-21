@@ -1,0 +1,46 @@
+#!/bin/sh
+# - tool
+
+. $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/wait.sh
+. $LKP_SRC/lib/run-env.sh
+
+: "${tool:=$1}"
+[ -z "$tool" ] && die "No tool specified"
+
+setup_wait
+
+local_run || {
+	linux_headers_dir=$(ls -d /usr/src/linux-headers*)
+	[ -z "$linux_headers_dir" ] && die "failed to find linux-headers package"
+	build_link="/lib/modules/$(uname -r)/build"
+	ln -sf "$linux_headers_dir" "$build_link"
+}
+
+tools_dir=/usr/share/bcc/tools/
+
+[ -f "$tools_dir/$tool" ] || die "No such tool: $tool"
+
+cd "$TMP" || die "Failed to goto temporary directory"
+
+cp "$tools_dir/$tool" "$tool.py"
+
+cat > run-bpf.py <<EOF
+import signal
+
+def on_term(*args):
+    exit()
+
+signal.signal(signal.SIGTERM, on_term)
+
+import $tool
+EOF
+
+ARCH=x86 python run-bpf.py &
+
+pid=$!
+
+wait_post_test
+
+kill "$pid"
