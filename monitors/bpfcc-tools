@@ -29,10 +29,10 @@ cp "$tools_dir/$tool" "$tool.py"
 cat > run-bpf.py <<EOF
 import signal
 
-def on_term(*args):
-    exit()
+def on_int(*args):
+    raise KeyboardInterrupt()
 
-signal.signal(signal.SIGTERM, on_term)
+signal.signal(signal.SIGINT, on_int)
 
 import $tool
 EOF
@@ -43,4 +43,4 @@ pid=$!
 
 wait_post_test
 
-kill "$pid"
+kill -INT "$pid"
