@@ -46,8 +46,10 @@ do
 	(
 		proxy_file=$LKP_SRC/etc/proxy
 		[ -f "$proxy_file" ] && source "$proxy_file"
-		build_depends_pkg $BM_NAME "$work_dir" && pack
+		build_depends_pkg $BM_NAME "$work_dir"
 	)
+
+	[ $(ls $work_dir | wc -l) -ne 0 ] && pack
 
 	rm -fr "$work_dir"
 done
