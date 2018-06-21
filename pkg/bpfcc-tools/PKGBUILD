@@ -1,0 +1,23 @@
+pkgname=bpfcc-tools
+pkgver=git
+pkgrel=1
+pkgdesc="BCC is a toolkit for creating efficient kernel tracing and manipulation programs, and includes several useful tools and examples."
+arch=(i686 x86_64)
+url="https://github.com/iovisor/bcc"
+license=(Apache License)
+depends=('')
+source=('https://github.com/iovisor/bcc.git')
+md5sums=('SKIP')
+
+build()
+{
+    mkdir bcc/build; cd bcc/build
+    cmake .. -DCMAKE_INSTALL_PREFIX=/usr
+    make
+}
+
+package()
+{
+    cd bcc/build
+    make DESTDIR="$pkgdir/" install
+}
