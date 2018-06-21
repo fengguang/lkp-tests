@@ -3,6 +3,7 @@
 # - benchmark
 
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/misc-base.sh
 
 [ -n "$rootfs" ] || die "rootfs is empty"
 [ -n "$benchmark" ] || die "benchmark is empty"
@@ -44,8 +45,7 @@ do
 	download_distro_depends $BM_NAME "$work_dir"
 	[ -n "$LKP_SERVER" ] && install_distro_depends lkp-dev
 	(
-		proxy_file=$LKP_SRC/etc/proxy
-		[ -f "$proxy_file" ] && source "$proxy_file"
+		setup_proxy
 		build_depends_pkg $BM_NAME "$work_dir"
 	)
 

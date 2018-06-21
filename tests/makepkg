@@ -8,6 +8,7 @@
 ## See: https://wiki.archlinux.org/index.php/Makepkg
 
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/misc-base.sh
 
 [ -n "$rootfs" ] || die "rootfs is empty"
 
@@ -74,8 +75,7 @@ pkgver=$(get_pkg_info pkgver)
 pkgrel=$(get_pkg_info pkgrel)
 cgz_name="${benchmark}-${arch}-${pkgver:-0}-${pkgrel:-0}_${date}.cgz"
 
-proxy_file=$LKP_SRC/etc/proxy
-[ -f "$proxy_file" ] && source "$proxy_file"
+setup_proxy
 
 PACMAN=true BUILDDIR=$TMP PKGEXT=.cgz CGZDEST="$sync_dest/$cgz_name" \
 	$LKP_SRC/sbin/makepkg --config $LKP_SRC/etc/makepkg.conf
