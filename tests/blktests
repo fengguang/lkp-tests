@@ -13,6 +13,27 @@
 blktest_dir=$BENCHMARK_ROOT/blktests
 cd $BENCHMARK_ROOT/blktests || die "fail to cd $BENCHMARK_ROOT/blktests"
 
+arrange_group()
+{
+	ls tests/${test%-*}/ | grep -P '^\d+$' > tests/$test
+	case "$test" in
+	block-group1)
+		sed -i "9,\$d" tests/$test || return
+		;;
+	block-group2)
+		sed -i "1,8d" tests/$test || return
+		;;
+	nvme-005)
+		echo "005" > tests/$test || return
+		;;
+	nvme-group1)
+		sed -i "/^005$/d" tests/$test || return
+		;;
+	*)
+		;;
+	esac
+}
+
 install_blktests()
 {
 	local BLKTEST_REPO="https://github.com/osandov/blktests.git"
@@ -24,7 +45,9 @@ install_blktests()
 	cd $blktest_dir/blktests
 	git checkout -f $blktests_commit 2>&1 || return
 
-	make
+	make || return
+	# run the test as group
+	arrange_group
 }
 
 set_env()
@@ -51,8 +74,8 @@ set_env()
 
 run_test()
 {
-	local test_dir="$LKP_SRC/pack/blktests-addon/tests"
-	local test_ignore="$test_dir/${test%-*}-ignore"
+	local test_dir="$blktest_dir/blktests/tests"
+	local test_ignore="$LKP_SRC/pack/blktests-addon/tests/${test%-*}-ignore"
 	local ignored_tests
 	local ignored_tests_cmd
 	local all_tests
