@@ -33,7 +33,7 @@ OPS.each do |ops|
   puts "#{ops}_bw_MBps: #{res['bw'].to_f / 1024}"
   puts "#{ops}_iops: #{res['iops']}"
   workload += res['total_ios'].to_i
-  res_clat = res['clat']
+  res_clat = res['clat'] || res['clat_ns']
   res_clat_percentiles = res_clat['percentile']
   puts "#{ops}_clat_mean_us: #{res_clat['mean']}"
   puts "#{ops}_clat_stddev: #{res_clat['stddev']}"
@@ -43,7 +43,7 @@ OPS.each do |ops|
     sp.chomp!('.')
     puts "#{ops}_clat_#{sp}%_us: #{res_clat_percentiles[p]}"
   end
-  res_slat = res['slat']
+  res_slat = res['slat'] || res['slat_ns']
   puts "#{ops}_slat_mean_us: #{res_slat['mean']}"
   puts "#{ops}_slat_stddev: #{res_slat['stddev']}"
 end
