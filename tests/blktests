@@ -15,6 +15,8 @@ cd $BENCHMARK_ROOT/blktests || die "fail to cd $BENCHMARK_ROOT/blktests"
 
 arrange_group()
 {
+	[ "$test" = "other" ] && return
+
 	ls tests/${test%-*}/ | grep -P '^\d+$' > tests/$test
 	case "$test" in
 	block-group1)
@@ -48,6 +50,17 @@ install_blktests()
 	make || return
 	# run the test as group
 	arrange_group
+}
+
+has_new_test()
+{
+	ls tests > tests/$test || return
+	# if has any other test suite besides these known tests, write into file: other
+	known_test="block\|loop\|meta\|nbd\|nvme\|scsi\|other"
+	sed -i "/\<\($known_test\)\>/d" tests/$test || return
+	[ -s tests/$test ] && return
+	# if don't have new test suite, exit
+	echo "check new test: no [ignored by lkp]" && return 1
 }
 
 set_env()
@@ -87,6 +100,8 @@ run_test()
 	elif [ "${test#*-}" != "$test" ]; then # group tests
 		all_tests_cmd="sed \"s:^:${test%-*}/:\" $test_dir/$test"
 		get_ignored_and_worked_tests "$all_tests_cmd" "$test_ignore"
+	elif [ "$test" = "other" ]; then #group other
+		all_tests=$(cat $test_dir/$test)
 	else
 		all_tests="$test"
 	fi
@@ -102,6 +117,10 @@ run_test()
 }
 
 install_blktests || die
+[ "$test" = "other" ] && {
+	# if don't have new test suite, exit
+	has_new_test || exit
+}
 read_env_vars
 set_env
 run_test
