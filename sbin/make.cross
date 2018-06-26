@@ -143,6 +143,23 @@ install_cross_compiler()
 	fi
 }
 
+setup_compiler_for_xtensa()
+{
+	local variant
+
+	variant=$(grep -s -h '^CONFIG_XTENSA_VARIANT_CUSTOM_NAME=' .config |
+		  head -n1 |
+		  cut -f2 -d'"')
+
+	if [[ "$variant" = 'fsf' ]]; then
+		gcc_arch=$ARCH-linux
+	elif [[ $variant ]]; then
+		gcc_arch=xtensa-${variant}-elf
+	else
+		gcc_arch=$ARCH-linux
+	fi
+}
+
 setup_crosstool()
 {
 	local gcc_arch
@@ -188,6 +205,9 @@ setup_crosstool()
 			;;
 		mn10300)
 			gcc_arch=am33_2.0-linux
+			;;
+		xtensa)
+			setup_compiler_for_xtensa
 			;;
 		*)
 			gcc_arch=$ARCH-linux
