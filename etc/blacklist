@@ -19,6 +19,7 @@
 ^dmesg.BUG:Bad_page_map_in_process_usemem_pte
 ^dmesg.BUG:Dentry.*i=.*n=.*
 ^dmesg.calltrace
+^dmesg..*cpu_clock_throttled.*
 ^dmesg..*-detected_stall_on_CPUINFO
 ^dmesg.INFO:NMI_handler.*took_too_long_to_run:
 ^dmesg.INFO:rcu_sched_detected_stalls_on_CPUs/tasks:
