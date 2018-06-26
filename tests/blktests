@@ -119,7 +119,7 @@ run_test()
 install_blktests || die
 [ "$test" = "other" ] && {
 	# if don't have new test suite, exit
-	has_new_test || exit
+	has_new_test || exit 0
 }
 read_env_vars
 set_env
