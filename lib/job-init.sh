@@ -8,11 +8,16 @@ mount_cgroup()
 	}
 
 	awk 'NR > 1 {print "\\s\\+" $1 "\\."}' /proc/cgroups > $TMP/availble-cgroup_subsys
-	[ -f "$job" ] && cgroup_subsys=$(grep -o -f $TMP/availble-cgroup_subsys $job)
+	[ -f "$job" ] && cgroup_subsys=$(grep -o -f $TMP/availble-cgroup_subsys $job| sort | uniq)
 	[ -n "$cgroup_subsys" ] || return
-	cgroup_subsys=$(echo $cgroup_subsys | sed -e 's/\. /,/g' -e 's/\.$//')
+	cgroup_subsys=$(echo $cgroup_subsys | sed -e 's/\. / /g' -e 's/\.$/ /')
 	log_cmd mkdir -p $CGROUP_MNT
-	log_cmd mount -t cgroup -o $cgroup_subsys none $CGROUP_MNT
+	#Bind each subsystem to an individual hierachy 
+	for item in $cgroup_subsys
+	do
+		log_cmd mkdir -p $CGROUP_MNT/$item
+		log_cmd mount -t cgroup -o $item $item $CGROUP_MNT/$item
+	done
 }
 
 validate_result_root()
