@@ -190,6 +190,11 @@ detect_system()
 	then
 		_system_name="Eywa"
 		_system_version="$(grep 'VERSION_ID=' ${rootfs}/etc/os-release | cut -d '=' -f 2)"
+	elif
+		has_cmd hostnamectl
+	then
+		_system_name=$(hostnamectl status | grep 'Operating System' | awk '{print $3}')
+		[ "$_system_name" = "Clear" ] && _system_version=$(swupd info | head -1 | awk '{print $3}')
 	else
 		detect_libc_version $rootfs
 	fi
