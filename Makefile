@@ -1,4 +1,5 @@
 install:
+	mkdir -p /usr/local/bin/
 	ln -sf $(shell pwd)/bin/lkp /usr/local/bin/lkp
 
 .PHONY: doc
