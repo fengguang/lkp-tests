@@ -87,7 +87,7 @@ check_shared_pack()
 BM_ROOT=/lkp/benchmarks/$BM_NAME
 
 source $LKP_SRC/lib/install.sh
-source $LKP_SRC/pack/quiet
+[ "$quiet_run" = "false" ] || source $LKP_SRC/pack/quiet
 source $LKP_SRC/pack/default
 source $LKP_SRC/pack/$BM_NAME || exit
 
