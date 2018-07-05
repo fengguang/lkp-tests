@@ -86,6 +86,11 @@ check_ignore_case()
 
 prepare_for_net()
 {
+	# at v4.18-rc1, it introduces fib_tests.sh, which doesn't have execute permission
+	# here is to fix the permission
+	[[ -f $subtest/fib_tests.sh ]] && {
+		[[ -x $subtest/fib_tests.sh ]] || chmod +x $subtest/fib_tests.sh
+	}
 	ulimit -l 10240
 	modprobe fou
 }
