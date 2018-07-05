@@ -29,7 +29,12 @@ cat > /proc/$$/oom_score_adj <<EOF
 -1000
 EOF
 
-boot_init
+boot_init || {
+	echo "LKP: rebooting due to boot init failure"
+	set_tbox_wtmp 'rebooting'
+	start_reboot_watchdog
+	reboot_tbox 2>/dev/null && exit 1
+}
 
 # when to not reboot is a policy issue, which can be refined later.
 # here just serves as an example only.
