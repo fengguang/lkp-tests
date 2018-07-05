@@ -41,6 +41,7 @@ build_selftests()
 
 prepare_for_test()
 {
+	export PATH=/lkp/benchmarks/kernel_selftests/kernel_selftests/iproute2-next/sbin:$PATH
 	# workaround hugetlbfstest.c open_file() error
 	mkdir -p /hugepages
 
