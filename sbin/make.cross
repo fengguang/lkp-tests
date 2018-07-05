@@ -197,6 +197,9 @@ setup_crosstool()
 		openrisc)
 			gcc_arch=or1k-linux
 			;;
+		riscv)
+			gcc_arch=riscv64-linux
+			;;
 		s390)
 			gcc_arch=s390x-linux
 			;;
