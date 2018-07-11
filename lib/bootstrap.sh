@@ -337,9 +337,31 @@ cleanup_pkg_cache()
 	find "$pkg_cache" \( -type f -mtime +7 -delete \) -or \( -type d -ctime +7 -empty -delete \)
 }
 
+wait_load_disk()
+{
+	# set the max time of wait is 30s
+	for i in $(seq 30)
+	do
+		# eg: /dev/disk/by-id/ata-WDC_WD1002FAEX-00Z3A0_WD-WCATRC577623-part2
+		ls $rootfs_partition >/dev/null 2>&1 && return
+		# eg: LABEL=LKP-ROOTFS
+		blkid | grep -q ${rootfs_partition#*=} && return
+		sleep 1
+	done
+
+	return 1
+}
+
 mount_rootfs()
 {
 	if [ -n "$rootfs_partition" ]; then
+		# wait for the machine to load the disk
+		wait_load_disk || {
+			# skipping following test if disk can't be load
+			echo "can't load the disk $rootfs_partition, skip testing..."
+			set_job_state 'load_disk_fail'
+			return 1
+		}
 		ROOTFS_DIR=/opt/rootfs
 		mkdir -p $ROOTFS_DIR
 		mount $rootfs_partition $ROOTFS_DIR || {
@@ -596,7 +618,7 @@ boot_init()
 	run_ntpdate
 
 	mount_debugfs
-	mount_rootfs
+	mount_rootfs || return
 
 	netconsole_init
 }
