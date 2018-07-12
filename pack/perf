@@ -15,7 +15,9 @@ download()
 build()
 {
 	cd tools/perf
-	make
+
+	[ "$distro" = "clear" ] && ln -sf /usr/bin/ld.gold $BUILD_DIR/ld
+	PATH=$BUILD_DIR:$PATH make
 }
 
 install()
