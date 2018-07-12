@@ -42,6 +42,8 @@ run_hackbench()
 	local hackbench_path
 	if [ -f /usr/bin/hackbench ]; then
 		hackbench_path=/usr/bin/hackbench
+	elif [ -f /lkp/benchmarks/hackbench/usr/local/bin/hackbench ]; then
+		hackbench_path=/lkp/benchmarks/hackbench/usr/local/bin/hackbench
 	else
 		hackbench_path=/usr/local/bin/hackbench
 	fi
