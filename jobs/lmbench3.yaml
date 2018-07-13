@@ -2,42 +2,48 @@ suite: lmbench3
 testcase: lmbench3
 category: benchmark
 
-timeout: 2h
+timeout: 30m
 
+test_memory_size: 50%
+
+# Test mdoe all,hardware,os were commented temporally,since it will take very long time
+# more than 2 hours on test machine lkp-bdw-ep4.
+# lmbench3:
+#   - mode: all
+#   - mode: hardware
+#   - mode: os
+
+#---
 nr_threads:
 - 1
 - 50%
 - 100%
-
-test_memory_size: 50%
-
-lmbench3:
-  mode: all
-
----
-lmbench3:
-  mode: hardware
-
----
-lmbench3:
-  mode: os
-
----
 lmbench3:
   mode: development
   test:
-  - SYSCALL
   - SELECT
   - PROC
   - PAGEFAULT
-  - FILE
   - MMAP
-  - CTX
   - PIPE
   - UNIX
-  - UDP
   - TCP
   - CONNECT
-  - BCOPY
-  - MEM
   - OPS
+
+---
+nr_threads:
+- 1
+lmbench3:
+  mode: development
+  test:
+# Case SYSCALL,FILE,CTX,BCOPY will take very long time when nr_threads set as 50% or 100%
+# May take 30mins ~ 1hour on lkp-bdw-ep4,so only test nr_threads as 1 for these cases.
+  - SYSCALL
+  - FILE
+  - CTX
+  - BCOPY
+# Case UDP can get test result when nr_threads=1, if nr_threads set as 50%,100%, can't get correct result, showing "Recv timed out".
+  - UDP
+# MEM is about cache and memory latency related case, it will take more than 2 hours on test machine lkp-bdw-ep4.
+  # - MEM
