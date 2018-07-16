@@ -239,11 +239,24 @@ class Job
     @jobfile = jobfile
   end
 
+  def delete_old_hosts_info
+    return if @job['old_tbox_group'].nil?
+    old_hosts_file = "#{lkp_src}/hosts/#{@job['old_tbox_group']}"
+    old_hwconfig = load_yaml(old_hosts_file, nil)
+    old_hwconfig.each_key { |k| @job.delete k }
+    @job.delete 'old_tbox_group'
+  end
+
   def load_hosts_config
-    return if @job.include? :no_defaults
+    return if @job.include? :no_defaults && @job['old_tbox_group'].nil?
+    if @job['old_tbox_group'] == @job['tbox_group']
+      @job.delete 'old_tbox_group'
+      return
+    end
     return unless @job.include? 'tbox_group'
     hosts_file = "#{lkp_src}/hosts/#{@job['tbox_group']}"
     return unless File.exist? hosts_file
+    delete_old_hosts_info
     hwconfig = load_yaml(hosts_file, nil)
     @job[source_file_symkey(hosts_file)] = nil
     @job.merge!(hwconfig) { |_k, a, _b| a } # job's key/value has priority over hwconfig
