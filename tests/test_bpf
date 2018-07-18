@@ -18,7 +18,7 @@ fi
 # there are mainly two reasons for "sleep 5" is here:
 # - extent runtime
 # - give a buffer time so that relevant info be fully written to dmesg
-sleep 5
+sleep 10
 
 dmesg | tail -1000
 
