@@ -18,7 +18,6 @@ stress-ng:
   - io
   - network
   - pipe
-  - scheduler
 
 ---
 kernel_cmdline: "apparmor=1 security=apparmor"
@@ -35,6 +34,7 @@ stress-ng:
   class:
   - os
   - vm
+  - scheduler
 
 ---
 nr_threads: 75%
