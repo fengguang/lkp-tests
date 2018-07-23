@@ -56,7 +56,8 @@ pack()
 				mkdir -p etc/dropbear
 				cp -al root/.ssh/authorized_keys etc/dropbear/
 			}
-			find *			| $cpio_cmd --append
+			# don't override /lib, it could be a soft link to usr/lib at some distro(clear is known)
+			find * | grep -v -e ^lib$ -e ^/lib$ | $cpio_cmd --append
 		}
 		{
 			# restore permission for cleanup
