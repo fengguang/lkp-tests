@@ -18,6 +18,8 @@ stress-ng:
   - io
   - network
   - pipe
+##most stressors could run as root except exec and spawn, classify exec and spawn into exec_spawn, run exec_spawn as lkp.
+  - exec_spawn
 
 ---
 kernel_cmdline: "apparmor=1 security=apparmor"

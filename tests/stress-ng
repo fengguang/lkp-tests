@@ -6,5 +6,11 @@
 [ -n "$testtime" ] || testtime=1
 
 [ "$class" = "memory" ] && stress_opts="-x stack"
-stress-ng --class $class $stress_opts --sequential $nr_threads --timeout $testtime --times --verify --metrics-brief 2>&1
+## most stressors could run as root except exec and spawn, classify exec and spawn into exec_spawn, run it as lkp.
+## when we run stress-ng as root, use option --exclude to ignore spawn and exec.
+if [ "$class" = "exec_spawn" ]; then
+	su lkp -c "stress-ng --exec $nr_threads --spawn $nr_threads --timeout $testtime --times --verify --metrics-brief 2>&1"
+else
+	stress-ng --class $class $stress_opts --sequential $nr_threads --timeout $testtime --times --verify --metrics-brief --exclude spawn,exec 2>&1
+fi
 
