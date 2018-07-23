@@ -157,7 +157,7 @@ wait_on_manual_check()
 			break
 		# t100 has XWindow auto login
 		# sof-minniow-1 and sof-minnow-2 has root user on its local rootfs
-		elif [ "$HOSTNAME" = 't100' ] || [ "$HOSTNAME" = 'sof-minnow-1' ] || [ "$HOSTNAME" = 'sof-minnow-2']; then
+		elif [ "$HOSTNAME" = 't100' ] || [ "$HOSTNAME" = 'sof-minnow-1' ] || [ "$HOSTNAME" = 'sof-minnow-2' ]; then
 			local users="$(users)"
 			[ "${users#* }" != "$users" ] || break
 		else
