@@ -2,8 +2,6 @@ suite: will-it-scale
 testcase: will-it-scale
 category: benchmark
 
-rootfs: debian-x86_64-2016-08-31.cgz
-
 will-it-scale:
   test:
   - brk1
