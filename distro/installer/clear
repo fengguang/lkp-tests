@@ -2,5 +2,5 @@
 
 for i in $*
 do
-	swupd bundle-add $i
+	swupd bundle-list | grep -qw "^$i$" || swupd bundle-add $i
 done
