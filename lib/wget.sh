@@ -13,8 +13,12 @@ setup_wget()
 
 	local wget_help="$($http_client_cmd --help 2>&1)"
 
-	[ "$wget_help" != "${wget_help#*--local-encoding}" ] &&
-	http_client_cmd="$http_client_cmd --local-encoding=UTF-8"
+	[ "$wget_help" != "${wget_help#*--local-encoding}" ] && {
+		local iri_not_support="This version does not have support for IRIs"
+		# $ /usr/bin/wget --local-encoding=UTF-8 /tmp/abcde
+		# This version does not have support for IRIs
+		$http_client_cmd --local-encoding=UTF-8 /tmp/abcde 2>&1 | grep -qF "$iri_not_support" || http_client_cmd="$http_client_cmd --local-encoding=UTF-8"
+	}
 
 	[ "$wget_help" != "${wget_help#*--retry-connrefused}" ] &&
 	http_client_cmd="$http_client_cmd --retry-connrefused --waitretry 1000 --tries 1000"
