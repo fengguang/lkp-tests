@@ -1,0 +1,41 @@
+#!/bin/bash
+
+shopt -s nullglob
+
+. $LKP_SRC/lib/install.sh
+. $LKP_SRC/distro/common
+. $LKP_SRC/lib/debug.sh
+
+swupd_install_depends()
+{
+	local script
+	local bm="$1"
+	local scripts=$(find $LKP_SRC/distro/depends/ -name "$bm" -o -name "${bm}.[0-9]")
+
+	for script in $scripts
+	do
+		script=$(basename $script)
+		packages=$(get_dependency_packages $DISTRO $script)
+
+		[ -z "$packages" ] && continue
+
+		echo install packages for $script: $packages
+
+		$LKP_SRC/distro/installer/clear $packages
+	done
+}
+
+pack_benchmark()
+{
+	swupd_install_depends lkp-dev
+
+	for BM_NAME in $benchmark
+	do
+		swupd_install_depends $BM_NAME-dev || continue
+		echo $LKP_SRC/sbin/pack -f -c -s $PKG_MNT/$pack_to $BM_NAME
+		(
+			setup_proxy
+			$LKP_SRC/sbin/pack -f -c -s $PKG_MNT/$pack_to $BM_NAME
+		)
+	done
+}
