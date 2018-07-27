@@ -169,3 +169,48 @@ install_distro_depends()
 		LC_ALL="C" apt-get -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold install -y $packages
 	done
 }
+
+apt_install_depends()
+{
+	local script
+	local bm="$1"
+	local scripts=$(find $LKP_SRC/distro/depends/ -name "$bm" -o -name "${bm}.[0-9]")
+
+	apt-get install -yf
+	for script in $scripts
+	do
+		script=$(basename $script)
+		packages=$(get_dependency_packages $DISTRO $script)
+
+		[ -z "$packages" ] && continue
+
+		echo install packages for $script: $packages
+
+		# chronic is provided by deps/pack.cgz, but nfs rootfs + run_on_local_disk environment,
+		# deps/pack.cgz will not be merged into the runtime rootfs currently.
+		if has_cmd chronic; then
+			chronic apt-get -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold install -y $packages
+		else
+			apt-get -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold install -y $packages
+		fi
+	done
+}
+
+pack_benchmark()
+{
+	export DEBIAN_FRONTEND=noninteractive
+	dpkg --add-architecture i386
+	update
+	apt_install_depends lkp-dev
+
+	# Process each benchmark
+	for BM_NAME in $benchmark
+	do
+		apt_install_depends $BM_NAME-dev || continue
+		echo $LKP_SRC/sbin/pack -f -c -s $PKG_MNT/$pack_to $BM_NAME
+		(
+			setup_proxy
+			$LKP_SRC/sbin/pack -f -c -s $PKG_MNT/$pack_to $BM_NAME
+		)
+	done
+}
