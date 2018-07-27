@@ -15,3 +15,9 @@ log_cmd obj/hugeadm --add-temp-swap=$pagenum --pool-pages-min $pagesize:$pagenum
 	|| die "config huge pages size and number failed"
 
 log_cmd make check
+
+# replace the full-width characters with half-width to avoid the stderr.json
+# eg.
+# before sed: shmoverride_unlinked.c: In function ‘local_read_meminfo’:
+# after sed: shmoverride_unlinked.c: In function 'local_read_meminfo':
+[ -s $TMP/stderr ] && sed -i "s/‘\|’/'/g" $TMP/stderr
