@@ -67,6 +67,7 @@ mount_result_root()
 			do
 				echo "mount.nfs: try $i time..."
 				mount.nfs -o vers=3 $result_service $RESULT_MNT && return
+				mount.nfs -o vers=3,nolock $result_service $RESULT_MNT && return
 				sleep 3
 			done
 			echo "mount nfs for $result_service failed"
