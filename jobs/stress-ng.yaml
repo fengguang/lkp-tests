@@ -36,7 +36,6 @@ stress-ng:
   class:
   - os
   - vm
-  - scheduler
 
 ---
 nr_threads: 75%
@@ -47,3 +46,16 @@ testtime:
 stress-ng:
   class:
   - memory
+
+---
+nr_threads: 25%
+
+sysctl:
+- sc_pid_max: 4194304
+
+testtime:
+- 30s
+
+stress-ng:
+  class:
+  - scheduler
