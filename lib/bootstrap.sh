@@ -622,5 +622,7 @@ boot_init()
 	mount_debugfs
 	mount_rootfs || return
 
+	# don't init netconsole at local run
+	[ "$LKP_LOCAL_RUN" = "1" ] && return
 	netconsole_init
 }
