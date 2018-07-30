@@ -26,7 +26,7 @@ show_deps_list()
 
 show_pack_list()
 {
-	find  $LKP_SRC/pack -type -f | sed 's:.*/::' |
+	find  $LKP_SRC/pack -type f | sed 's:.*/::' |
 	grep -x -F -f <(find $LKP_SRC/{monitors,setup,tests,daemon} -type f -or -type l|sed 's:.*/::') |
 	grep -v -e '^0day-'
 }
