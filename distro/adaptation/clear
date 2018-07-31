@@ -1,36 +1,563 @@
-gawk: os-core
-kmod: os-core
-time: os-core
+acl:
+acpica-tools:
+acpidump:
+aha:
+alsa-utils:
+apache2:
+apt-file:
+at:
+attr:
+autoconf:
+autoconf-archive:
 automake: c-basic
-bison: c-basic
-bsdtar: os-core-update
-build-essential: c-basic
-bzip2: os-core-update
-fakeroot:
-ca-certificates: dev-utils-dev
-flex: c-basic
-gcc: c-basic
-libc6-dev: dev-utils-dev
-libklibc-dev: dev-utils-dev
-libtool: dev-utils-dev
-linux-libc-dev: dev-utils-dev
-make: c-basic
-rsync: dev-utils
-ruby: ruby-basic
-ruby-dev: ruby-basic
-wget: network-basic
-sysstat: performance-tools
-linux-perf: performance-tools
-libc6-dev:i386: dev-utils-dev
-linux-libc-dev:i386: dev-utils-dev
+autopoint:
+autotools-dev:
+bc:
+bind9:
 binutils: c-basic
 binutils-dev: c-basic
-libaudit: dev-utils-dev
+binutils/stable:
+bison: c-basic
+blktrace:
+boxes:
+bridge-utils:
+bsdtar: os-core-update
+btrfs-progs:
+btrfs-tools:
+build-essential: c-basic
+bzip2: os-core-update
+ca-certificates: dev-utils-dev
+cgroup-bin:
+cifs-utils:
+clang:
+clang-3.9:
+clang-3.9-dev:
+clang-7:
+cmake:
+cpio:
+cpp:
+cpp-6:
+cpuid:
+crda:
+cron:
+curl:
+daemon:
+daemontools:
+dbench:
+debhelper:
+debootstrap:
+dh-autoreconf:
+dh-strip-nondeterminism:
+dmidecode:
+dnsutils:
+docbook-xml:
+docbook-xsl:
+dos2unix:
+dosfstools:
+doxygen:
+dpkg-dev:
+dump:
+e2fslibs-dev:
+e2fsprogs:
+ebtables:
+elfutils:
+ethtool:
+expect:
+f2fs-tools:
+fakeroot:
+file:
+fio:
+flex:
+flex: c-basic
+fontconfig:
+fontconfig-config:
+fonts-dejavu-core:
+freeglut3:
+freeipmi-bmc-watchdog:
+freeipmi-tools:
+fsmark:
+ftp:
+fuse:
+g++-6:
+g++:
+ganglia-monitor:
+gawk:
+gawk: os-core
+gcc-6:
+gcc-6-multilib:
+gcc: c-basic
+gcc-multilib:
+gdb:
+gengetopt:
+genisoimage:
+gettext:
+gettext-base:
+gfortran:
+git:
+glibc-doc:
+gnu-efi:
+gnupg:
+gperf:
+graphviz:
+grml-debootstrap:
+groff-base:
+gzip:
+hdparm:
+heirloom-mailx:
+help2man:
+hpcc:
+hwinfo:
+i2c-tools:
+iasl:
+indent:
+info2man:
+initramfs-tools:
+initramfs-tools-core:i386:
+inotify-tools:
+intltool-debian:
+inxi:
+iperf:
+iperf3:
+ipmitool:
+iproute2:
+iw:
+jfsutils:
+jq:
+kexec-tools:
+klibc-utils:
+klibc-utils:i386:
+kmod:
+kmod: os-core
+less:
+lftp:
+libacl1-dev:
+libaio1:
+libaio-dev:
+libann0:
+libapache2-mpm-itk:
+libarchive-dev:
+libarchive-zip-perl:
+libasan2:
+libasan3:
+libasound2:
+libasound2-data:
+libasound2-dev:
+libatomic1:
+libattr1-dev:
 libaudit-dev: dev-utils-dev
+libaudit: dev-utils-dev
+libblas3:
+libblkid-dev:
+libboost-filesystem-dev:
+libc6:
+libc6-dbg:
+libc6-dev: dev-utils-dev
+libc6-dev:i386: dev-utils-dev
+libc6-dev-i386/unstable:
+libc6-dev/unstable:
+libc6-dev-x32/unstable:
+libc6-i386:
+libc6/unstable:
+libcairo2:
+libcairo2-dev:
+libcap2:
+libcap2-bin:
+libcap-dev:
+libcap-ng-dev:
+libc-bin:
+libc-bin/unstable:
+libcc1-0:
+libc-dev-bin:
+libcdt5:
+libcgraph6:
+libcilkrts5:
+libcilkrts5/unstable:
+libc-l10n:
+libclang1-3.9:
+libclang-dev:
+libconfig-dev:
+libcroco3:
+libdatrie1:
+libdbd-mysql-perl:
+libdbi-perl:
+libdbus-1-dev:
+libdpkg-perl:
+libdrm-dev:
+libdrm-dev/unstable:
 libdw-dev: dev-utils-dev
+libedit-dev:
+libegl1-mesa-dev:
+libelf1:
+libelf-dev:
+libevent-2.0-5:
+libevent-2.1-6:
+libevent-dev:
+libfabric1:
+libfabric-dev:
+libfdt1:
+libfdt-dev:
+libffi-dev:
+libfftw3-bin:
+libfftw3-dev:
+libfftw3-double3:
+libfftw3-long3:
+libfftw3-quad3:
+libfftw3-single3:
+libfile-stripnondeterminism-perl:
+libfontconfig1:
+libfreetype6:
+libfuse-dev:
+libgbm-dev:
+libgcc-6-dev:
+libgcc-7-dev/unstable:
+libgd3:
+libgdbm3:
+libgdbm-dev:
+libgl1-mesa-dev:
+libgles2-mesa:
+libglib2.0-0:
+libglib2.0-dev:
+libglu-dev:
+libgmp-dev:
+libgomp1:
+libgpm2:
+libgpm-dev:
+libgraphite2-3:
+libgts-0.7-5:
+libgvc6:
+libgvpr2:
+libharfbuzz0b:
+libhugetlbfs:
+libhugetlbfs-bin:
+libhugetlbfs-dev:
+libhwloc-dev:
 libiberty-dev: dev-utils-dev
+libibverbs1:
+libibverbs-dev:
+libice6:
+libicu57:
+libipa-hbac0:
+libisl15:
+libitm1:
+libjbig0:
+libjpeg62-turbo:
+libjpeg-dev:
+libjson-c-dev:
+libklibc-dev: dev-utils-dev
+libkmod2:
+libkmod-dev:
+libldb1:
+libllvm3.9:
+liblsan0:
+liblsan0/unstable:
+libltdl7:
 liblzma-dev: dev-utils-dev
+libmagic1:
+libmagic-mgc:
+libmariadbclient-dev:
+libmount-dev:
+libmpc3:
+libmpx2:
+libmpx2/unstable:
+libncurses5-dev:
+libncursesw5-dev:
+libnl-3-dev:
+libnl-genl-3-dev:
+libnl-route-3-dev:
+libnpth0:
+libnpth0-dev:
+libnss-sss:
+libnuma1:
 libnuma-dev: dev-utils-dev
+libobjc-7-dev/unstable:
+liboop4:
+liboop-dev:
+libopencryptoki0:
+libopenmpi2:
+libopenmpi-dev:
+libpango-1.0-0:
+libpangocairo-1.0-0:
+libpangoft2-1.0-0:
+libpathplan4:
+libpcap0.8-dev:
+libpcap-dev:
+libpci3:
+libpciaccess-dev:
+libpci-dev:
+libperl5.24:
+libperl5.26:
+libpipeline1:
+libpixman-1-0:
+libpixman-1-dev:
+libpng16-16:
+libpng-dev:
+libpopt0:
+libpopt-dev:
+libprocps-dev:
+libprotobuf-dev:
+libquadmath0:
+libquadmath0/unstable:
+librdmacm1:
+librdmacm-dev:
+libreadline5:
+libreadline-dev:
+libsamplerate0:
+libsamplerate0-dev:
+libsctp1:
+libsctp-dev:
+libsdl1.2debian:
+libselinux1:
+libsm6:
+libsmbclient:
+libsqlite3-dev:
+libssl1.0.0:
+libssl1.0-dev:
+libssl1.1:
+libssl-dev:
+libsss-idmap0:
+libsss-simpleifp0:
+libstdc++-6-dev:
+libstdc++6/unstable:
+libstdc++-7-dev/unstable:
+libthai0:
+libthai-data:
+libtiff5:
+libtimedate-perl:
+libtinfo-dev:
+libtirpc1:
+libtirpc-dev:
+libtool:
+libtool-bin:
+libtool: dev-utils-dev
+libtsan0:
+libtsan0/unstable:
+libubsan0:
+libubsan0/unstable:
+libudev1:
+libudev-dev:
+libunistring0:
+libunwind8:
 libunwind-dev: dev-utils-dev
-zlib1g-dev: dev-utils-dev
+libuuid1:
+libuv1-dev:
+libwaffle-dev:
+libwbclient0:
+libwebp6:
+libx11-6:
+libx11-data:
+libx11-dev:
+libx11-xcb-dev:
+libxau6:
+libxaw7:
+libxcb1:
+libxcb-render0:
+libxcb-shm0:
+libxdmcp6:
+libxdot4:
+libxext6:
+libxkbcommon-dev:
+libxml2:
+libxml2-dev:
+libxml2-utils:
+libxmu6:
+libxpm4:
+libxrender1:
+libxslt1.1:
+libxt6:
+libzmq3-dev:
+libzmq5:
+linux-base:
+linux-libc-dev: dev-utils-dev
+linux-libc-dev:i386: dev-utils-dev
+linux-libc-dev/unstable:
+linux-perf: performance-tools
+lksctp-tools:
+llvm-3.9:
+llvm-3.9-dev:
+llvm-7:
+llvm-dev:
+locales:
+lockfile-progs:
+lsof:
+lsscsi:
+lvm2:
+lxc:
+m4:
+make: c-basic
+man:
+man-db:
+manpages-dev:
+mcelog:
+mdadm:
+memcached:
+minicom:
+moreutils:
+msr-tools:
+mutt:
+mysql-server:
+nasm:
+nbd-client:
+nbd-server:
+ncurses-bin:
+netcat-openbsd:
+netpipe-lam:
+netpipe-mpich2:
+netpipe-openmpi:
+netpipe-pvm:
+netpipe-tcp:
+net-tools:
+nfs-common:
+nfs-kernel-server:
+nilfs-tools:
+nscd:
+ntpdate:
+numactl:
+nvme-cli:
+ocfs2-tools:
+ocfs2-tools-dev:
+openbsd-inetd:
+opencryptoki:
+openmpi-bin:
+openssl:
+pandoc:
+parallel:
+parted:
+patch:
+pbzip2:
+pciutils:
+perl:
+perl-base:
+perl-modules-5.24:
+perl-modules-5.26:
+php-cli:
+php-xml:
+pigz:
+pixz:
+pkg-config:
+plzip:
+po-debconf:
+postfix:
+postgresql:
+postgresql-contrib:
+postmark:
+protobuf-compiler:
+psmisc:
+pulseaudio:
+pxz:
+python:
+python3:
+python3-colorama:
+python3-mako:
+python3-markupsafe:
+python3-numpy:
+python3-six:
+python-crypto:
+python-csvkit:
+python-dbus:
+python-dev:
+python-gobject:
+python-minimal:
+python-netifaces:
+python-numpy:
+python-openssl:
+python-pip:
+python-pkg-resources:
+python-pyrad:
+python: python3-basic
+python-setuptools:
+python-simplejson:
+python-six:
+python-sss:
+python-wheel:
+qemu:
+qemu-system-x86:
+qemu-utils:
+quota:
+reiserfsprogs:
+rpcbind:
+rstatd:
+rsync: dev-utils
+rsyslog:
 rt-tests: performance-tools
+ruby2.3-dev:
+ruby-bunny:
+ruby-colorize:
+ruby-dev: ruby-basic
+ruby-facets:
+ruby-git:
+ruby-gnuplot:
+ruby-mail:
+ruby: ruby-basic
+ruby-serialport:
+ruby-sinatra:
+ruby-term-ansicolor:
+ruby-text-table:
+runit:
+rusers:
+rusersd:
+samba-libs:
+scons:
+screen:
+sed:
+sg3-utils:
+sgml-base:
+sgml-data:
+siege:
+socat:
+ssh:
+sssd:
+sssd-ad:
+sssd-ad-common:
+sssd-common:
+sssd-dbus:
+sssd-ipa:
+sssd-krb5:
+sssd-krb5-common:
+sssd-ldap:
+sssd-proxy:
+sssd-tools:
+strace:
+stress-ng:
+sudo:
+sysbench:
+sysstat: performance-tools
+systemd:
+systemtap-sdt-dev:
+tcl:
+tcpdump:
+texinfo:
+thin-provisioning-tools:
+time:
+time: os-core
+tk:
+tpm-tools:
+trousers:
+tshark:
+udev:
+udhcpc:
+unzip:
+update-inetd:
+usbutils:
+uuid-dev:
+uuid-runtime:
+vim:
+virt-what:
+vsftpd:
+watchdog:
+wget: network-basic
+winpdb:
+wireless-regdb:
+wireshark-common:
+wpasupplicant:
+x11-common:
+xfsdump:
+xfsprogs:
+xinit:
+xml-core:
+xmlto:
+xorg:
+xsltproc:
+xutils-dev:
+zlib1g:
+zlib1g-dev: dev-utils-dev
+zsh:
