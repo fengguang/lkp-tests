@@ -27,20 +27,20 @@ btrfs-tools:
 build-essential: c-basic
 bzip2: os-core-update
 ca-certificates: dev-utils-dev
-cgroup-bin:
-cifs-utils:
-clang:
-clang-3.9:
-clang-3.9-dev:
-clang-7:
-cmake:
-cpio:
-cpp:
-cpp-6:
-cpuid:
-crda:
+cgroup-bin: os-core-dev
+cifs-utils: storage-utils
+clang: dev-utils
+clang-3.9: dev-utils
+clang-3.9-dev: dev-utils-dev
+clang-7: dev-utils
+cmake: dev-utils
+cpio: dev-utils
+cpp: dev-utils
+cpp-6: dev-utils
+cpuid: sysadmin-basic
+crda: dev-utils
 cron:
-curl:
+curl: os-core-dev
 daemon:
 daemontools:
 dbench:
@@ -48,21 +48,21 @@ debhelper:
 debootstrap:
 dh-autoreconf:
 dh-strip-nondeterminism:
-dmidecode:
-dnsutils:
-docbook-xml:
-docbook-xsl:
-dos2unix:
-dosfstools:
-doxygen:
+dmidecode: sysadmin-basic
+dnsutils: network-basic
+docbook-xml: dev-utils
+docbook-xsl: dev-utils
+dos2unix: sysadmin-basic
+dosfstools: storage-utils
+doxygen: os-core-dev
 dpkg-dev:
 dump:
-e2fslibs-dev:
-e2fsprogs:
-ebtables:
-elfutils:
-ethtool:
-expect:
+e2fslibs-dev: os-core-dev
+e2fsprogs: os-installer
+ebtables: network-basic
+elfutils: os-core-dev
+ethtool: network-basic
+expect: os-core-dev
 f2fs-tools:
 fakeroot:
 file:
