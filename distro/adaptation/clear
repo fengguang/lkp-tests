@@ -107,26 +107,25 @@ hpcc:
 hwinfo:
 i2c-tools:
 iasl:
-indent:
+indent: c-basic
 info2man:
-initramfs-tools:
-initramfs-tools-core:i386:
-inotify-tools:
+initramfs-tools: sysadmin-basic
+initramfs-tools-core:i386: sysadmin-basic
+inotify-tools: inotify-tools
 intltool-debian:
 inxi:
-iperf:
-iperf3:
-ipmitool:
-iproute2:
-iw:
+iperf: sysadmin-basic
+iperf3: sysadmin-basic
+ipmitool: sysadmin-basic
+iproute2: network-basic
+iw: network-basic
 jfsutils:
-jq:
-kexec-tools:
+jq: jq
+kexec-tools: os-cloudguest-azure
 klibc-utils:
 klibc-utils:i386:
-kmod:
 kmod: os-core
-less:
+less: os-core
 lftp:
 libacl1-dev:
 libaio1:
