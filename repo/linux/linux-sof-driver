@@ -1,0 +1,12 @@
+url: https://github.com/thesofproject/linux
+owner: Bossart, Pierre-louis <pierre-louis.bossart@intel.com>
+fetch_tags: true
+upstream: true
+build_success_mail_cc:
+- sof-ci-monitor@eclists.intel.com
+mail_cc:
+- sof-ci-monitor@eclists.intel.com
+use_customized_release_tag_pattern: true
+release_tag_pattern: sof-v(?<major>[0-9])\.(?<minor>\d+)\.?(?<micro>\d+)?(-rc(?<prerelease>\d+))?
+no_touch_config: true
+git_weight: 300
