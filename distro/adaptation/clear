@@ -65,46 +65,44 @@ ethtool: network-basic
 expect: os-core-dev
 f2fs-tools:
 fakeroot:
-file:
-fio:
-flex:
+file: os-core-dev
+fio: fio
 flex: c-basic
-fontconfig:
-fontconfig-config:
+fontconfig: dev-utils-dev
+fontconfig-config: dev-utils-dev
 fonts-dejavu-core:
-freeglut3:
-freeipmi-bmc-watchdog:
-freeipmi-tools:
+freeglut3: qt-basic-dev
+freeipmi-bmc-watchdog: sysadmin-hostmgmt
+freeipmi-tools: sysadmin-hostmgmt
 fsmark:
-ftp:
-fuse:
-g++-6:
-g++:
+ftp: network-basic
+fuse: storage-utils-dev
+g++-6: c-basic
+g++: c-basic
 ganglia-monitor:
-gawk:
 gawk: os-core
-gcc-6:
-gcc-6-multilib:
+gcc-6: c-basic
+gcc-6-multilib: dev-utils-dev
 gcc: c-basic
-gcc-multilib:
-gdb:
+gcc-multilib: dev-utils-dev
+gdb: gdb
 gengetopt:
 genisoimage:
-gettext:
-gettext-base:
-gfortran:
-git:
+gettext: os-core-dev
+gettext-base: os-core-dev
+gfortran: os-core-dev
+git: git
 glibc-doc:
-gnu-efi:
-gnupg:
-gperf:
-graphviz:
+gnu-efi: os-core-dev
+gnupg: desktop-apps
+gperf: os-core-dev
+graphviz: os-core-dev
 grml-debootstrap:
-groff-base:
-gzip:
-hdparm:
-heirloom-mailx:
-help2man:
+groff-base: dev-utils
+gzip: os-core-update
+hdparm: sysadmin-basic
+heirloom-mailx: mail-utils
+help2man: dev-utils-dev
 hpcc:
 hwinfo:
 i2c-tools:
