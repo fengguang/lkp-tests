@@ -1,28 +1,28 @@
-acl:
-acpica-tools:
-acpidump:
+acl: os-core-dev
+acpica-tools: sysadmin-basic
+acpidump: sysadmin-basic
 aha:
-alsa-utils:
-apache2:
+alsa-utils: os-utils-gui
+apache2: httpd
 apt-file:
-at:
-attr:
-autoconf:
+at: os-cloudguest-azure
+attr: dev-utils
+autoconf: c-basic
 autoconf-archive:
 automake: c-basic
-autopoint:
-autotools-dev:
-bc:
+autopoint: os-core-dev
+autotools-dev: dev-utils-dev
+bc: dev-utils-dev
 bind9:
 binutils: c-basic
 binutils-dev: c-basic
-binutils/stable:
+binutils/stable: c-basic
 bison: c-basic
-blktrace:
+blktrace: performance-tools
 boxes:
-bridge-utils:
+bridge-utils: network-basic
 bsdtar: os-core-update
-btrfs-progs:
+btrfs-progs: dev-utils-dev
 btrfs-tools:
 build-essential: c-basic
 bzip2: os-core-update
