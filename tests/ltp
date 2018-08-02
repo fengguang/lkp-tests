@@ -101,34 +101,6 @@ cpuhotplug)
 	mkdir -p /usr/src/linux/
 	;;
 commands)
-	sed -i "/#/d" /etc/shells
-	sed -i "/\[Unit\]/a\StartLimitIntervalSec=0" /lib/systemd/system/sssd.service
-	cat <<EOF > /etc/sssd/sssd.conf
-[sssd]
-config_file_version = 2
-services = nss, pam
-domains = LOCAL
-
-[nss]
-
-[pam]
-
-[domain/LOCAL]
-id_provider = local
-EOF
-	systemctl daemon-reload || exit
-	systemctl restart sssd || exit
-	[ -f "/etc/nscd.conf" ] && {
-		# using sssd and nscd both can result in unexpected behavior, disable some configs here
-		a=$(cat /etc/nscd.conf | grep -n "enable-cache.*passwd" | cut -d: -f1)
-		b=$(cat /etc/nscd.conf | grep -n "enable-cache.*group" | cut -d: -f1)
-		c=$(cat /etc/nscd.conf | grep -n "enable-cache.*netgroup" | cut -d: -f1)
-		for line in $a $b $c
-		do
-			sed -i "$line s/yes/no/" /etc/nscd.conf
-		done
-		systemctl restart nscd || exit
-	}
         CONFIG_FILE="/etc/postfix/main.cf"
         make_configfile || exit
         ;;
