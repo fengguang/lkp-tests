@@ -183,46 +183,46 @@ libdrm-dev: libva-utils
 libdrm-dev/unstable: libva-utils
 libdw-dev: dev-utils-dev
 libedit-dev:
-libegl1-mesa-dev:
-libelf1:
-libelf-dev:
-libevent-2.0-5:
-libevent-2.1-6:
-libevent-dev:
+libegl1-mesa-dev: dev-utils-dev
+libelf1: dev-utils-dev
+libelf-dev: dev-utils-dev
+libevent-2.0-5: dev-utils-dev
+libevent-2.1-6: dev-utils-dev
+libevent-dev: dev-utils-dev
 libfabric1:
 libfabric-dev:
-libfdt1:
-libfdt-dev:
-libffi-dev:
-libfftw3-bin:
-libfftw3-dev:
-libfftw3-double3:
-libfftw3-long3:
-libfftw3-quad3:
-libfftw3-single3:
-libfile-stripnondeterminism-perl:
-libfontconfig1:
-libfreetype6:
-libfuse-dev:
-libgbm-dev:
-libgcc-6-dev:
-libgcc-7-dev/unstable:
-libgd3:
-libgdbm3:
-libgdbm-dev:
-libgl1-mesa-dev:
-libgles2-mesa:
-libglib2.0-0:
-libglib2.0-dev:
-libglu-dev:
-libgmp-dev:
-libgomp1:
-libgpm2:
-libgpm-dev:
+libfdt1: dtc
+libfdt-dev: dtc
+libffi-dev: dev-utils-dev
+libfftw3-bin: qt-basic-dev
+libfftw3-dev: qt-basic-dev
+libfftw3-double3: qt-basic-dev
+libfftw3-long3: qt-basic-dev
+libfftw3-quad3: qt-basic-dev
+libfftw3-single3: qt-basic-dev
+libfile-stripnondeterminism-perl: perl-extras
+libfontconfig1: dev-utils-dev
+libfreetype6: dev-utils-dev
+libfuse-dev: storage-utils-dev
+libgbm-dev: dev-utils-dev
+libgcc-6-dev: dev-utils-dev
+libgcc-7-dev/unstable: dev-utils-dev
+libgd3: stream-server
+libgdbm3: sysadmin-basic-dev
+libgdbm-dev: sysadmin-basic-dev
+libgl1-mesa-dev: dev-utils-dev
+libgles2-mesa: dev-utils-dev
+libglib2.0-0: os-core-dev
+libglib2.0-dev: os-core-dev
+libglu-dev: qt-basic-dev
+libgmp-dev: os-core-dev
+libgomp1: os-core-dev
+libgpm2: os-core-dev
+libgpm-dev: os-core-dev
 libgraphite2-3:
 libgts-0.7-5:
-libgvc6:
-libgvpr2:
+libgvc6: os-core-dev
+libgvpr2: os-core-dev
 libharfbuzz0b:
 libhugetlbfs:
 libhugetlbfs-bin:
