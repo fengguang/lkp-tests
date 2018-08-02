@@ -316,53 +316,52 @@ libsss-simpleifp0:
 libstdc++-6-dev: os-core-dev
 libstdc++6/unstable: os-core
 libstdc++-7-dev/unstable: os-core-dev
-libthai0:
+libthai0: storage-utils-dev
 libthai-data:
-libtiff5:
-libtimedate-perl:
-libtinfo-dev:
-libtirpc1:
-libtirpc-dev:
-libtool:
-libtool-bin:
+libtiff5: storage-utils-dev
+libtimedate-perl: perl-extras
+libtinfo-dev: os-core-dev
+libtirpc1: storage-utils-dev
+libtirpc-dev: storage-utils-dev
 libtool: dev-utils-dev
-libtsan0:
-libtsan0/unstable:
-libubsan0:
-libubsan0/unstable:
-libudev1:
-libudev-dev:
-libunistring0:
-libunwind8:
+libtool-bin: os-core-dev
+libtsan0: os-core-dev
+libtsan0/unstable: os-core-dev
+libubsan0: os-core-dev
+libubsan0/unstable: os-core-dev
+libudev1: os-core-dev
+libudev-dev: os-core-dev
+libunistring0: os-core-dev
+libunwind8: os-core-dev
 libunwind-dev: dev-utils-dev
-libuuid1:
+libuuid1: os-core-dev
 libuv1-dev:
 libwaffle-dev:
-libwbclient0:
-libwebp6:
-libx11-6:
-libx11-data:
-libx11-dev:
-libx11-xcb-dev:
-libxau6:
+libwbclient0: storage-utils-dev
+libwebp6: network-basic-dev
+libx11-6: os-core-dev
+libx11-data: os-core-dev
+libx11-dev: os-core-dev
+libx11-xcb-dev: os-core-dev
+libxau6: libX11client
 libxaw7:
-libxcb1:
-libxcb-render0:
-libxcb-shm0:
-libxdmcp6:
-libxdot4:
-libxext6:
-libxkbcommon-dev:
-libxml2:
-libxml2-dev:
-libxml2-utils:
-libxmu6:
-libxpm4:
-libxrender1:
-libxslt1.1:
-libxt6:
+libxcb1: os-core-dev
+libxcb-render0: os-core-dev
+libxcb-shm0: os-core-dev
+libxdmcp6: os-core-dev
+libxdot4: os-core-dev
+libxext6: os-core-dev
+libxkbcommon-dev: dev-utils-dev
+libxml2: dev-utils
+libxml2-dev: dev-utils-dev
+libxml2-utils: dev-utils
+libxmu6: x11-tools
+libxpm4: texlive
+libxrender1: dev-utils-dev
+libxslt1.1: dev-utils-dev
+libxt6: x11-tools
 libzmq3-dev:
-libzmq5:
+libzmq5: python-data-science
 linux-base:
 linux-libc-dev: dev-utils-dev
 linux-libc-dev:i386: dev-utils-dev
