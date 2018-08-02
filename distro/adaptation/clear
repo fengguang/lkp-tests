@@ -223,48 +223,48 @@ libgraphite2-3:
 libgts-0.7-5:
 libgvc6: os-core-dev
 libgvpr2: os-core-dev
-libharfbuzz0b:
+libharfbuzz0b: dev-utils-dev
 libhugetlbfs:
 libhugetlbfs-bin:
 libhugetlbfs-dev:
-libhwloc-dev:
+libhwloc-dev:dev-utils-dev
 libiberty-dev: dev-utils-dev
-libibverbs1:
-libibverbs-dev:
-libice6:
-libicu57:
+libibverbs1: storage-utils
+libibverbs-dev: storage-utils-dev
+libice6: os-core-dev
+libicu57: dev-utils-dev
 libipa-hbac0:
 libisl15:
-libitm1:
+libitm1: os-core-dev
 libjbig0:
-libjpeg62-turbo:
-libjpeg-dev:
-libjson-c-dev:
+libjpeg62-turbo: dev-utils-dev
+libjpeg-dev: dev-utils-dev
+libjson-c-dev: os-core-dev
 libklibc-dev: dev-utils-dev
-libkmod2:
-libkmod-dev:
-libldb1:
+libkmod2: os-core-dev
+libkmod-dev: os-core-dev
+libldb1: storage-utils
 libllvm3.9:
-liblsan0:
-liblsan0/unstable:
-libltdl7:
+liblsan0: os-core-dev
+liblsan0/unstable: os-core-dev
+libltdl7: os-core-dev
 liblzma-dev: dev-utils-dev
-libmagic1:
-libmagic-mgc:
+libmagic1: os-core-dev
+libmagic-mgc: os-core-dev
 libmariadbclient-dev:
-libmount-dev:
-libmpc3:
-libmpx2:
-libmpx2/unstable:
-libncurses5-dev:
-libncursesw5-dev:
-libnl-3-dev:
-libnl-genl-3-dev:
-libnl-route-3-dev:
-libnpth0:
-libnpth0-dev:
-libnss-sss:
-libnuma1:
+libmount-dev: os-core-dev
+libmpc3: os-core-dev
+libmpx2: dev-utils-dev
+libmpx2/unstable: dev-utils-dev
+libncurses5-dev: os-core-dev
+libncursesw5-dev: os-core-dev
+libnl-3-dev: network-basic-dev
+libnl-genl-3-dev: network-basic-dev
+libnl-route-3-dev: network-basic-dev
+libnpth0: storage-utils-dev
+libnpth0-dev: storage-utils-dev
+libnss-sss: os-core-dev
+libnuma1: dev-utils-dev
 libnuma-dev: dev-utils-dev
 libobjc-7-dev/unstable:
 liboop4:
