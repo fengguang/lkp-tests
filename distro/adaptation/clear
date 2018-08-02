@@ -127,60 +127,60 @@ klibc-utils:i386:
 kmod: os-core
 less: os-core
 lftp:
-libacl1-dev:
-libaio1:
-libaio-dev:
+libacl1-dev: os-core
+libaio1: os-core-dev
+libaio-dev: storage-utils-dev
 libann0:
 libapache2-mpm-itk:
-libarchive-dev:
+libarchive-dev: os-core-update-dev
 libarchive-zip-perl:
-libasan2:
-libasan3:
-libasound2:
-libasound2-data:
-libasound2-dev:
-libatomic1:
-libattr1-dev:
+libasan2: os-core-dev
+libasan3: os-core-dev
+libasound2: storage-utils-dev
+libasound2-data: storage-utils-dev
+libasound2-dev: storage-utils-dev
+libatomic1: os-core-dev
+libattr1-dev: os-core-dev
 libaudit-dev: dev-utils-dev
 libaudit: dev-utils-dev
-libblas3:
-libblkid-dev:
+libblas3: big-data-basic
+libblkid-dev: os-core-dev
 libboost-filesystem-dev:
-libc6:
+libc6: dev-utils-dev
 libc6-dbg:
 libc6-dev: dev-utils-dev
 libc6-dev:i386: dev-utils-dev
-libc6-dev-i386/unstable:
-libc6-dev/unstable:
-libc6-dev-x32/unstable:
-libc6-i386:
-libc6/unstable:
-libcairo2:
-libcairo2-dev:
-libcap2:
-libcap2-bin:
-libcap-dev:
-libcap-ng-dev:
-libc-bin:
-libc-bin/unstable:
-libcc1-0:
-libc-dev-bin:
-libcdt5:
-libcgraph6:
+libc6-dev-i386/unstable: dev-utils-dev
+libc6-dev/unstable: dev-utils-dev
+libc6-dev-x32/unstable: dev-utils-dev
+libc6-i386: dev-utils-dev
+libc6/unstable: dev-utils-dev
+libcairo2:dev-utils-dev
+libcairo2-dev: dev-utils-dev
+libcap2: dev-utils-dev
+libcap2-bin: sysadmin-basic
+libcap-dev: dev-utils-dev
+libcap-ng-dev: dev-utils-dev
+libc-bin: dev-utils-dev
+libc-bin/unstable: dev-utils-dev
+libcc1-0: os-core-dev
+libc-dev-bin: dev-utils-dev
+libcdt5: os-core-dev
+libcgraph6: os-core-dev
 libcilkrts5:
 libcilkrts5/unstable:
-libc-l10n:
-libclang1-3.9:
-libclang-dev:
-libconfig-dev:
-libcroco3:
-libdatrie1:
+libc-l10n: os-core-dev
+libclang1-3.9: dev-utils-dev
+libclang-dev: dev-utils-dev
+libconfig-dev: performance-tools
+libcroco3: os-core-dev
+libdatrie1: storage-utils-dev
 libdbd-mysql-perl:
-libdbi-perl:
-libdbus-1-dev:
+libdbi-perl: perl-basic
+libdbus-1-dev: os-core-dev
 libdpkg-perl:
-libdrm-dev:
-libdrm-dev/unstable:
+libdrm-dev: libva-utils
+libdrm-dev/unstable: libva-utils
 libdw-dev: dev-utils-dev
 libedit-dev:
 libegl1-mesa-dev:
