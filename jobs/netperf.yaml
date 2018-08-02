@@ -25,7 +25,6 @@ if role server:
 if role client:
   netperf:
     test:
-    - TCP_SENDFILE
     - TCP_RR
     - TCP_CRR # needs tuning, tests more kernel than driver
     # netperf: send_omni: send_data failed: Connection refused
@@ -62,3 +61,11 @@ if role client:
   netperf:
     test:
     - UDP_STREAM
+
+---
+# TCP_SENDFILE: set send_size: 5K to avoid sendfile: No space left on device
+if role client:
+  netperf:
+    send_size: 5K
+    test:
+    - TCP_SENDFILE
