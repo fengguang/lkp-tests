@@ -270,52 +270,52 @@ libobjc-7-dev/unstable:
 liboop4:
 liboop-dev:
 libopencryptoki0:
-libopenmpi2:
-libopenmpi-dev:
-libpango-1.0-0:
-libpangocairo-1.0-0:
-libpangoft2-1.0-0:
-libpathplan4:
-libpcap0.8-dev:
-libpcap-dev:
-libpci3:
-libpciaccess-dev:
-libpci-dev:
-libperl5.24:
-libperl5.26:
-libpipeline1:
-libpixman-1-0:
-libpixman-1-dev:
-libpng16-16:
-libpng-dev:
-libpopt0:
-libpopt-dev:
-libprocps-dev:
-libprotobuf-dev:
-libquadmath0:
-libquadmath0/unstable:
-librdmacm1:
-librdmacm-dev:
-libreadline5:
-libreadline-dev:
-libsamplerate0:
-libsamplerate0-dev:
+libopenmpi2: dev-utils-dev
+libopenmpi-dev: dev-utils-dev
+libpango-1.0-0: storage-utils-dev
+libpangocairo-1.0-0: storage-utils-dev
+libpangoft2-1.0-0: storage-utils-dev
+libpathplan4: os-core-dev
+libpcap0.8-dev: network-basic-dev
+libpcap-dev: network-basic-dev
+libpci3: sysadmin-basic
+libpciaccess-dev: dev-utils-dev
+libpci-dev: sysadmin-basic-dev
+libperl5.24: perl-basic
+libperl5.26: perl-basic
+libpipeline1: dev-utils-dev
+libpixman-1-0: dev-utils-dev
+libpixman-1-dev: dev-utils-dev
+libpng16-16: dev-utils-dev
+libpng-dev: dev-utils-dev
+libpopt0: dev-utils
+libpopt-dev: dev-utils
+libprocps-dev: os-core-dev
+libprotobuf-dev: network-basic-dev
+libquadmath0: os-core-dev
+libquadmath0/unstable: os-core-dev
+librdmacm1: network-basic
+librdmacm-dev: network-basic-dev
+libreadline5: os-core
+libreadline-dev: os-core-dev
+libsamplerate0: qt-basic-dev
+libsamplerate0-dev: qt-basic-dev
 libsctp1:
 libsctp-dev:
-libsdl1.2debian:
+libsdl1.2debian: stream-server
 libselinux1:
-libsm6:
-libsmbclient:
-libsqlite3-dev:
-libssl1.0.0:
-libssl1.0-dev:
-libssl1.1:
-libssl-dev:
+libsm6: os-core-dev
+libsmbclient: os-core-dev
+libsqlite3-dev: dev-utils-dev
+libssl1.0.0: os-core
+libssl1.0-dev: os-core
+libssl1.1: os-core
+libssl-dev: os-core-dev
 libsss-idmap0:
 libsss-simpleifp0:
-libstdc++-6-dev:
-libstdc++6/unstable:
-libstdc++-7-dev/unstable:
+libstdc++-6-dev: os-core-dev
+libstdc++6/unstable: os-core
+libstdc++-7-dev/unstable: os-core-dev
 libthai0:
 libthai-data:
 libtiff5:
