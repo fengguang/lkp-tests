@@ -242,6 +242,7 @@ class Job
   def delete_old_hosts_info
     return if @job['old_tbox_group'].nil?
     old_hosts_file = "#{lkp_src}/hosts/#{@job['old_tbox_group']}"
+    return unless File.exist? old_hosts_file
     old_hwconfig = load_yaml(old_hosts_file, nil)
     old_hwconfig.each_key { |k| @job.delete k }
     @job.delete 'old_tbox_group'
