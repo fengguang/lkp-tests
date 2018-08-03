@@ -379,7 +379,7 @@ def setup_changed_stats
         $nr_gm[type] ||= 0
         $base_gm[type] ||= 0
         $head_gm[type] ||= 0
-        if weight.positive?
+        if weight > 0
           $nr_gm[type] += weight
           $base_gm[type] += weight * Math.log(avg1)
           $head_gm[type] += weight * Math.log(avg2)
@@ -620,7 +620,7 @@ def show_delta(stat, key_g)
     noisy = false
     value.each do |_k, v|
       next unless v.is_a?(Array) && v.size > 1
-      if v.standard_deviation.abs > v.average.abs / 2 || v.average.negative?
+      if v.standard_deviation.abs > v.average.abs / 2 || v.average < 0
         noisy = true
         break
       end
@@ -686,7 +686,7 @@ def show_delta(stat, key_g)
       show_one_diff stat, dim, v0, v, v0_stddev, v_stddev, is_float, is_exp, is_fail
       if is_fail
         $sum[dim] += v
-      elsif v.positive?
+      elsif v > 0
         $sum[dim] += Math.log(v)
       end
 
