@@ -518,32 +518,31 @@ sysbench:
 sysstat: performance-tools
 systemd: os-core
 systemtap-sdt-dev:
-tcl:
-tcpdump:
-texinfo:
-thin-provisioning-tools:
-time:
-time: os-core
-tk:
+tcl: tcl-basic
+tcpdump: network-basic
+texinfo: os-core-dev
+thin-provisioning-tools: storage-utils
+time: sysadmin-basic
+tk: dev-utils-dev
 tpm-tools:
 trousers:
-tshark:
-udev:
+tshark: wireshark
+udev: os-core
 udhcpc:
-unzip:
+unzip: sysadmin-basic
 update-inetd:
-usbutils:
-uuid-dev:
-uuid-runtime:
-vim:
+usbutils: sysadmin-basic
+uuid-dev: os-core-dev
+uuid-runtime: os-core
+vim: vim
 virt-what:
 vsftpd:
 watchdog:
 wget: network-basic
 winpdb:
-wireless-regdb:
-wireshark-common:
-wpasupplicant:
+wireless-regdb: wpa_supplicant
+wireshark-common: wireshark
+wpasupplicant: wpa_supplicant
 x11-common:
 xfsdump:
 xfsprogs:
