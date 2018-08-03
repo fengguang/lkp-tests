@@ -241,7 +241,7 @@ Use run-local command to run a test job.
 
 ```
 	# ./bin/run-local -h
-	Usage: run-local [--dry-run] [-o RESULT_ROOT] JOBFILE
+	Usage: run-local [-o RESULT_ROOT] JOBFILE
 	...
 ```
 

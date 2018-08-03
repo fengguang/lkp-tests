@@ -8,7 +8,7 @@ export BENCHMARK_ROOT=/lkp/benchmarks
 usage()
 {
 	cat <<EOF
-Usage: run-local [--dry-run] [-o RESULT_ROOT] JOB_SCRIPT
+Usage: run-local [-o RESULT_ROOT] JOB_SCRIPT
 
 options:
     -o  RESULT_ROOT         dir for storing all results

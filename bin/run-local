@@ -31,7 +31,7 @@ $opt_set_key_value = {}
 options = {in_tbox: false}
 
 opt_parser = OptionParser.new do |opts|
-  opts.banner = 'Usage: run-local [--dry-run] [-o RESULT_ROOT] JOBFILE'
+  opts.banner = 'Usage: run-local [-o RESULT_ROOT] JOBFILE'
 
   opts.separator ''
   opts.separator 'options:'
