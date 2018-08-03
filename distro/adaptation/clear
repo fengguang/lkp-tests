@@ -544,14 +544,14 @@ wireless-regdb: wpa_supplicant
 wireshark-common: wireshark
 wpasupplicant: wpa_supplicant
 x11-common:
-xfsdump:
-xfsprogs:
-xinit:
+xfsdump: storage-utils
+xfsprogs: storage-utils
+xinit: xfce4-desktop
 xml-core:
-xmlto:
-xorg:
-xsltproc:
-xutils-dev:
-zlib1g:
-zlib1g-dev: dev-utils-dev
-zsh:
+xmlto: os-core-dev
+xorg: desktop
+xsltproc: dev-utils
+xutils-dev: os-clr-on-clr-dev
+zlib1g: os-core-dev
+zlib1g-dev: os-core-dev
+zsh: zsh
