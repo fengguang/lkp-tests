@@ -469,12 +469,12 @@ qemu-system-x86: kvm-host
 qemu-utils: kvm-host
 quota:
 reiserfsprogs:
-rpcbind:
+rpcbind:storage-utils
 rstatd:
 rsync: dev-utils
 rsyslog:
 rt-tests: performance-tools
-ruby2.3-dev:
+ruby2.3-dev: ruby-basic
 ruby-bunny:
 ruby-colorize:
 ruby-dev: ruby-basic
@@ -490,16 +490,16 @@ ruby-text-table:
 runit:
 rusers:
 rusersd:
-samba-libs:
-scons:
-screen:
-sed:
+samba-libs: storage-utils
+scons: qt-basic-dev
+screen: sysadmin-basic
+sed: os-core
 sg3-utils:
 sgml-base:
 sgml-data:
-siege:
-socat:
-ssh:
+siege: performance-tools
+socat: sysadmin-basic
+ssh: openssh-server
 sssd:
 sssd-ad:
 sssd-ad-common:
@@ -511,12 +511,12 @@ sssd-krb5-common:
 sssd-ldap:
 sssd-proxy:
 sssd-tools:
-strace:
-stress-ng:
-sudo:
+strace: sysadmin-basic
+stress-ng: dev-utils
+sudo: sudo
 sysbench:
 sysstat: performance-tools
-systemd:
+systemd: os-core
 systemtap-sdt-dev:
 tcl:
 tcpdump:
