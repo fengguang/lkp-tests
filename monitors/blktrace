@@ -1,0 +1,14 @@
+#!/bin/sh
+# - device
+# - delay
+# - duration
+
+[ -n "$device" ] || exit 0
+[ -n "$duration" ] || exit 0
+
+. $LKP_SRC/lib/wait.sh
+setup_wait
+
+[ -n "$delay" ] && $WAIT_POST_TEST_CMD --timeout $delay
+
+blktrace -d $device -w $duration -D $RESULT_ROOT/blktrace_raw
