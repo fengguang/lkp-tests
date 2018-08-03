@@ -362,53 +362,53 @@ libxslt1.1: dev-utils-dev
 libxt6: x11-tools
 libzmq3-dev:
 libzmq5: python-data-science
-linux-base:
+linux-base: linux-tools
 linux-libc-dev: dev-utils-dev
 linux-libc-dev:i386: dev-utils-dev
-linux-libc-dev/unstable:
-linux-perf: performance-tools
+linux-libc-dev/unstable: dev-utils-dev
+linux-perf: linux-tools
 lksctp-tools:
-llvm-3.9:
-llvm-3.9-dev:
-llvm-7:
-llvm-dev:
-locales:
+llvm-3.9: dev-utils
+llvm-3.9-dev: dev-utils-dev
+llvm-7: dev-utils
+llvm-dev: dev-utils-dev
+locales: sysadmin-basic
 lockfile-progs:
-lsof:
+lsof: sysadmin-basic
 lsscsi:
-lvm2:
+lvm2: storage-utils
 lxc:
-m4:
+m4: os-core-dev
 make: c-basic
-man:
-man-db:
-manpages-dev:
-mcelog:
-mdadm:
+man: sysadmin-basic
+man-db: sysadmin-basic
+manpages-dev: sysadmin-basic
+mcelog: kernel-lts
+mdadm: storage-utils
 memcached:
-minicom:
+minicom: sysadmin-basic
 moreutils:
-msr-tools:
-mutt:
-mysql-server:
-nasm:
+msr-tools: performance-tools
+mutt: mail-utils
+mysql-server: dev-utils-dev
+nasm: qt-basic-dev
 nbd-client:
 nbd-server:
-ncurses-bin:
-netcat-openbsd:
+ncurses-bin: sysadmin-basic
+netcat-openbsd: network-basic
 netpipe-lam:
 netpipe-mpich2:
 netpipe-openmpi:
 netpipe-pvm:
 netpipe-tcp:
-net-tools:
-nfs-common:
-nfs-kernel-server:
+net-tools: network-basic
+nfs-common: storage-utils
+nfs-kernel-server: storage-utils
 nilfs-tools:
 nscd:
 ntpdate:
-numactl:
-nvme-cli:
+numactl: sysadmin-basic
+nvme-cli: storage-utils
 ocfs2-tools:
 ocfs2-tools-dev:
 openbsd-inetd:
