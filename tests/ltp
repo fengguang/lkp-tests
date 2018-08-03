@@ -67,27 +67,6 @@ specify_tmpdir()
 	return 0
 }
 
-make_configfile()
-{
-       [ -f "$CONFIG_FILE" ] || return
-       cp $CONFIG_FILE $CONFIG_FILE.ltpback
-       grep -q "default_transport = error" $CONFIG_FILE || {
-           echo "default_transport = error" >> $CONFIG_FILE
-           /etc/init.d/postfix reload || return
-           sleep 2
-           systemctl restart postfix || return
-           sleep 3
-       }
-      
-       return 0
-}
-
-recover_configfile()
-{
-      [ -f "$CONFIG_FILE" ] || return
-      cp $CONFIG_FILE.ltpback $CONFIG_FILE
-}
-
 workaround_env
 
 case "$test" in
@@ -100,10 +79,6 @@ admin_tools-0*)
 cpuhotplug)
 	mkdir -p /usr/src/linux/
 	;;
-commands)
-        CONFIG_FILE="/etc/postfix/main.cf"
-        make_configfile || exit
-        ;;
 fs_readonly-0*)
 	[ -z "$fs" ] && exit
 	[ -z "$partitions" ] && exit
@@ -200,10 +175,6 @@ check_ignored_cases $test
 log_cmd ./runltp -f $test $big_dev_opt $tmpdir_opt || exit
 
 exit_value=$?
-
-[ "$test" = "commands" ] && {
-     recover_configfile || exit
-}
 
 [ "$test" = "mm-00" ] && {
      dmesg -C || exit
