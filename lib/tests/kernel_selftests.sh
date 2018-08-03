@@ -317,6 +317,9 @@ run_tests()
 		subtest_in_skip_filter "$skip_filter" && continue
 
 		if [[ $subtest = "bpf" ]]; then
+			## ths test needs special device /dev/lircN
+			sed -i 's/test_lirc_mode2_user//' bpf/Makefile
+			echo "ignored_by_lkp bpf.test_lirc_mode2_user test"
 			# some sh scripts actually need bash
 			# ./test_libbpf.sh: 9: ./test_libbpf.sh: 0: not found
 			[ "$(cmd_path bash)" = '/bin/bash' ] && [ $(readlink -e /bin/sh) != '/bin/bash' ] &&
