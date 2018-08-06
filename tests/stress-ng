@@ -6,6 +6,7 @@
 [ -n "$testtime" ] || testtime=1
 
 [ "$class" = "memory" ] && stress_opts="-x stack"
+[ "$class" = "os" ] && stress_opts="--minimize"
 ## most stressors could run as root except exec and spawn, classify exec and spawn into exec_spawn, run it as lkp.
 ## when we run stress-ng as root, use option --exclude to ignore spawn and exec.
 if [ "$class" = "exec_spawn" ]; then
