@@ -7,5 +7,10 @@
 
 cd $BENCHMARK_ROOT/schbench || exit
 
+: ${worker_threads:=16}
+: ${runtime:=300}
+: ${sleeptime_us:=30000}
+: ${cputime_us:=30000}
+
 # the source code print the output to stderr, here redirection stderr to stdout
 log_cmd ./schbench -m $message_threads -t $worker_threads -r $runtime -s $sleeptime_us -c $cputime_us 2>&1
