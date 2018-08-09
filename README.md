@@ -63,13 +63,13 @@ Most test cases should install/run well in
 
 - Debian sid
 - Archlinux
+- CentOS7
 
 There is however some initial support for:
 
 - OpenSUSE:
 	- jobs/trinity.yaml
 - Fedora
-- CentOS
 - Clear Linux(>=22640)
 
 As for now, lkp-tests still needs to run as root.
