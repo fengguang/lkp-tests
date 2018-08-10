@@ -1,0 +1,21 @@
+#!/bin/bash
+
+download()
+{
+	git_clone_update https://github.com/akopytov/sysbench || return
+}
+
+build()
+{
+	git checkout 0.4 || return
+	./autogen.sh
+	./configure
+	make
+}
+
+install()
+{
+	export DESTDIR=$BM_ROOT/sysbench
+	make install
+	cp -af $source_dir/* $BM_ROOT/sysbench
+}

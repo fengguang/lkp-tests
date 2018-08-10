@@ -12,6 +12,7 @@
 
 [ -n "$runtime" ] || runtime=600
 [ -n "$table_size" ] && arg_table_size="--oltp-table-size=$table_size"
+export PATH=$BENCHMARK_ROOT/$testcase/sysbench/usr/local/bin:$PATH
 
 args="\
 	--mysql-user=root\
