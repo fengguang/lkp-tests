@@ -1,0 +1,15 @@
+suite: build-ceph
+testcase: build-ceph
+category: functional
+
+timeout: 6000
+need_memory: 8G
+testbox: vm-lkp-nex04-8G
+
+branch: linus/master
+commit: v4.17
+
+ceph_branch: ceph/master
+ceph_commit: HEAD
+
+build-ceph:

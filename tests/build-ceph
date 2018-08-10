@@ -1,0 +1,98 @@
+#!/bin/bash
+# - ceph_commit
+# ceph_branch
+
+## Ceph is a unified, distributed storage system designed for excellent performance, reliability and scalability.
+## Home page: https://ceph.com/
+
+shopt -s nullglob
+
+. $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/build.sh
+. $LKP_SRC/lib/mount.sh
+. $LKP_SRC/lib/git.sh
+. $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/upload.sh
+
+[[ "$ceph_commit" ]] || die "ceph_commit is empty"
+
+export HOME=/root
+CEPH_SRC=/build/ceph/src
+
+[[ $ceph_branch ]] ||
+ceph_branch='ceph/master'
+ceph_remote=${ceph_branch%%/*}
+
+CEPH_IMAGE_DIR="/pkg/ceph/$ceph_commit"
+
+ceph_submodule_mirror()
+{
+	git config --file .gitmodules --get-regexp url |
+	while read key url
+	do
+		repo=$(basename $key .url)
+		repo=${repo#submodule.}
+		if [[ $repo = 'lua' ]]; then
+			repo=lua-cmake
+		elif [[ $url =~ '/ceph/' && ! $repo =~ ^(ceph-|blkin|dmclock) ]]; then
+			repo=ceph.$repo
+		fi
+		log_cmd git config $key git://gitmirror/$repo
+	done
+}
+
+mount_dirs()
+{
+	check_mount ceph-src $CEPH_SRC -t tmpfs
+
+	if [[ $LKP_SERVER ]]; then
+		check_mount $LKP_SERVER:/pkg /pkg || die "failed to mount $LKP_SERVER:/pkg"
+	fi
+}
+
+prepare_src()
+{
+	rm -fr "$CEPH_SRC" 2>/dev/null
+	git_clone_update git://gitmirror/$ceph_remote $CEPH_SRC || die "failed clone ceph tree $ceph_remote"
+
+	cd "$CEPH_SRC"
+	log_cmd git checkout -q $ceph_commit || die "failed to checkout ceph commit $ceph_commit"
+
+	ceph_submodule_mirror
+
+	timeout 60m git submodule update --init --recursive
+}
+
+do_cmake()
+{
+	./do_cmake.sh
+	cd build
+	make
+	make_exit_status=$?
+	build_complete $make_exit_status
+	cd $CEPH_SRC
+	git reset --hard
+}
+
+create_image()
+{
+	[[ $make_exit_status = 0 ]] || return
+
+	[[ -d "$CEPH_IMAGE_DIR" ]] || mkdir -p "$CEPH_IMAGE_DIR"
+	# TODO: copy image for runtime tests
+}
+
+upload_logs()
+{
+	# "/build/ceph/src/build/CMakeFiles/CMakeOutput.log"
+	# "/build/ceph/src/build/CMakeFiles/CMakeError.log"
+	upload_files $CEPH_SRC/build/CMakeFiles/CMake*.log
+}
+
+mount_dirs
+prepare_src
+do_cmake
+create_image
+upload_logs
+
+exit $make_exit_status
