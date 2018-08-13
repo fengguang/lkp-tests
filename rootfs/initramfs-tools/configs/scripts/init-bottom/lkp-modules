@@ -47,3 +47,5 @@ mount_overlayfs
 copy_dir /lib/modules
 copy_dir /lib/firmware
 copy_dir /lkp
+# header, linux perf and kselftests
+copy_dir /usr/src
