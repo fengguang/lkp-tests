@@ -446,7 +446,6 @@ tbox_cant_kexec()
 	[ "${HOSTNAME#*sof-gp-1}" != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*sof-gp-2}" != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*sof-up-1}" != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-denverton3}" != "$HOSTNAME" ] && return 0
 
 	[ -x '/sbin/kexec' ] || return 0
 
