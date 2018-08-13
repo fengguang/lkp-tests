@@ -437,7 +437,6 @@ tbox_cant_kexec()
 	tbox_use_lkp_grub && return 0
 
 	# following tbox are buggy while using kexec to boot
-	[ "${HOSTNAME#*lkp-denverton2}" != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-g5}"         != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-glk02}"      != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-ivb-d02}"    != "$HOSTNAME" ] && return 0
@@ -448,7 +447,6 @@ tbox_cant_kexec()
 	[ "${HOSTNAME#*sof-gp-2}" != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*sof-up-1}" != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-denverton3}" != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-denverton2}" != "$HOSTNAME" ] && return 0
 
 	[ -x '/sbin/kexec' ] || return 0
 
