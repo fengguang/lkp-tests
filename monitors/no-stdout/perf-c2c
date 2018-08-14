@@ -33,14 +33,13 @@ setup_wait
 
 perf_c2c_data=$TMP/perf_c2c.data
 
-$perf c2c record -ag "$opt_event" "$opt_mode" "$opt_eldlat" -o \
+$perf c2c record -ag $opt_event $opt_mode $opt_eldlat -o \
 	$perf_c2c_data -D $((delay * 1000)) -- \
 	$WAIT_POST_TEST_CMD --timeout $((delay + duration))
 
 cat > "$TMP_RESULT_ROOT/post-run.perf-c2c" <<EOF
 [ -s "$perf_c2c_data" ] && {
-	$perf c2c report -NN -i $perf_c2c_data --stats | gzip >	$RESULT_ROOT/perf-c2c.gz
-	&& {
+	$perf c2c report -NN -i $perf_c2c_data --stats | gzip >	$RESULT_ROOT/perf-c2c.gz && {
 		cp $perf_c2c_data $RESULT_ROOT
 		cp /proc/kallsyms $RESULT_ROOT
 	}
