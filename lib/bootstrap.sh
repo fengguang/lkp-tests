@@ -594,6 +594,17 @@ setup_env()
 	export VM_VIRTFS=1
 }
 
+is_clearlinux()
+{
+	[ -f /usr/lib/os-release ] && grep -qw "Clear Linux" /usr/lib/os-release
+}
+
+add_nfs_default_options()
+{
+	echo "[ NFSMount_Global_Options ]" >>/etc/nfsmount.conf
+	echo "  nolock=True" >>/etc/nfsmount.conf
+}
+
 # initiation at boot stage; should be invoked once for
 # each fresh boot.
 boot_init()
@@ -617,6 +628,9 @@ boot_init()
 	run_ntpdate
 
 	mount_debugfs
+
+	is_clearlinux && add_nfs_default_options
+
 	mount_rootfs || return
 
 	# don't init netconsole at local run
