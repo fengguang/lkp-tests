@@ -1,13 +1,16 @@
 #!/usr/bin/env ruby
 
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+
 require 'optparse'
 require 'ostruct'
 require 'set'
+require 'fileutils'
+require "#{LKP_SRC}/lib/constant"
 
-LKP_SRC   = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 BLACKLIST = LKP_SRC + '/etc/kmsg-blacklist'
 MIN_MSG_LEN = 18
-OUTPUT_FILE = '/lkp/printk-error-messages'.freeze
+OUTPUT_FILE = "#{LKP_USER_GENERATED_DIR}/printk-error-messages".freeze
 DIRS_TO_GREP = 'arch block crypto drivers firmware fs include init ipc kernel lib mm net security sound virt'.freeze
 PRINTK_PATTERNS = %w(
   KERN_EMERG
@@ -168,6 +171,8 @@ blacklist = File.read(BLACKLIST).split "\n"
     errids << str
   end
 end
+
+FileUtils.mkdir_p(LKP_USER_GENERATED_DIR)
 
 File.open(OUTPUT_FILE, 'w') do |file|
   file.puts errids.to_a

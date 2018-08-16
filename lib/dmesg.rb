@@ -3,6 +3,7 @@
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
 require "#{LKP_SRC}/lib/yaml.rb"
+require "#{LKP_SRC}/lib/constant"
 
 # /c/linux% git grep '"[a-z][a-z_]\+%d"'|grep -o '"[a-z_]\+'|cut -c2-|sort -u
 LINUX_DEVICE_NAMES = IO.read("#{LKP_SRC}/etc/linux-device-names").split("\n")
@@ -198,7 +199,7 @@ end
 
 def grep_printk_errors(kmsg_file, kmsg)
   return '' if ENV.fetch('RESULT_ROOT', '').index '/trinity/'
-  return '' unless File.exist?('/lkp/printk-error-messages')
+  return '' unless File.exist?("#{LKP_USER_GENERATED_DIR}/printk-error-messages")
 
   grep = if kmsg_file =~ /\.xz$/
            'xzgrep'
@@ -214,7 +215,7 @@ def grep_printk_errors(kmsg_file, kmsg)
       grep -a -v -F -f #{LKP_SRC}/etc/kmsg-blacklist`
   else
     # the dmesg file is from serial console
-    oops = `#{grep} -a -F -f /lkp/printk-error-messages #{kmsg_file} |
+    oops = `#{grep} -a -F -f #{LKP_USER_GENERATED_DIR}/printk-error-messages #{kmsg_file} |
       grep -a -v -E -f #{LKP_SRC}/etc/oops-pattern |
       grep -a -v -F -f #{LKP_SRC}/etc/kmsg-blacklist`
     oops += `grep -a -E -f #{LKP_SRC}/etc/ext4-crit-pattern #{kmsg_file}` if kmsg.index 'EXT4-fs ('

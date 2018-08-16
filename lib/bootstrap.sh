@@ -118,7 +118,7 @@ setup_network()
 	local err_msg='IP-Config: Auto-configuration of network failed'
 	dmesg | grep -q -F "$err_msg" || {
 		# Include $err_msg in the error message so that it matches
-		# /lkp/printk-error-messages
+		# /lkp/lkp/printk-error-messages
 		# and be detected as a dmesg error. Add some prefix/sufix
 		# to slightly distinguish it from kernel DHCP failure message.
 		echo "!!! $err_msg !!!" >&2
