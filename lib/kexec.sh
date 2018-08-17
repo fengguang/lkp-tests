@@ -60,9 +60,9 @@ use_local_modules_initrds()
 		# lrwxrwxrwx 1 root root 21 Jun 19 08:13 /root/.lkp/cache/modules.cgz -> /lkp-qemu/modules.cgz
 		local local_modules=$CACHE_DIR/$(basename $modules_initrd)
 		[ -e $local_modules ] || return
-		initrds="$local_modules "
 		echo "use local modules: $local_modules"
 		unset modules_initrd
+		local_modules_initrd=$local_modules
 	}
 }
 
@@ -70,6 +70,7 @@ download_initrd()
 {
 	local _initrd
 	local initrds
+	local local_modules_initrd
 
 	echo "downloading initrds ..."
 	set_job_state "wget_initrd"
@@ -93,6 +94,9 @@ download_initrd()
 
 		initrds="${initrds}$file "
 	done
+
+	# modules can not be the first, must be behind initrd
+	initrds="${initrds} $local_modules_initrd"
 
 	[ -n "$initrds" ] && {
 		[ $# != 0 ] && initrds="${initrds}$*"
