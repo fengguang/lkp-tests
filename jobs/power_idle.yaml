@@ -1,0 +1,20 @@
+suite: power_idle
+testcase: power_idle
+category: benchmark
+
+# These monitors will not wake up from time to time,
+# so it's perfectly OK to include them here.
+turbostat:
+thermal:
+  interval: 30
+
+idle_sleep:
+
+services:
+   pmeter_server:
+
+stop_daemons:
+
+runtime: 10m
+
+sleep:
