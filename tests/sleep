@@ -2,5 +2,6 @@
 # - runtime
 
 ## delay for a specified amount of time
-
+echo sleep started
 exec sleep ${1:-$runtime}
+echo sleep finished
