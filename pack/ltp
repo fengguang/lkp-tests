@@ -2,7 +2,7 @@
 
 download()
 {
-	[ "$distro" != "centos" ] && {
+	[ "$distro" = "debian" ] && {
 		git_clone_update https://git.centos.org/r/rpms/rusers.git || return
 	}
 	git_clone_update https://github.com/PeterHuewe/tpm-emulator.git || return
@@ -217,7 +217,7 @@ build()
 	cd ../numactl || exit
 	build_numactl || exit
 
-	[ "$distro" != "centos" ] && {
+	[ "$distro" = "debian" ] && {
 		cd ../rusers || exit
 		build_rusers || exit
 	}
@@ -235,7 +235,7 @@ install()
 	cd ../numactl || exit
 	install_numactl || exit
 
-	[ "$distro" != "centos" ] && {
+	[ "$distro" = "debian" ] && {
 		cd ../rusers || exit
 		install_rusers || exit
 	}
