@@ -32,10 +32,10 @@ pack_benchmark()
 	for BM_NAME in $benchmark
 	do
 		swupd_install_depends $BM_NAME-dev || continue
-		echo $LKP_SRC/sbin/pack -f -c -s $PKG_MNT/$pack_to $BM_NAME
+		echo $LKP_SRC/sbin/pack -d $DISTRO -f -c -s $PKG_MNT/$pack_to $BM_NAME
 		(
 			setup_proxy
-			$LKP_SRC/sbin/pack -f -c -s $PKG_MNT/$pack_to $BM_NAME
+			$LKP_SRC/sbin/pack -d $DISTRO -f -c -s $PKG_MNT/$pack_to $BM_NAME
 		)
 	done
 }
