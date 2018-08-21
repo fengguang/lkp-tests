@@ -265,6 +265,14 @@ install_deb()
 	# round one, install all debs directly
 	files="$(find /opt/deb -name '*.deb' -type f 2>/dev/null)"
 	[ -n "$files" ] || return
+
+	# fix the issue when install mysql
+	# ERROR: There's not enough space in /var/lib/mysql/
+	echo $files | grep -q "mysql" && {
+		mkdir -p /tmp/lib/mysql /var/lib/mysql
+		mount --bind /tmp/lib/mysql /var/lib/mysql
+	}
+
 	# pack-deps have packed all depencecy packages into /osimage/deps/xxx/benchmark.cgz,
 	# but it does not update dpkg database which will make dpkg misunderstand we have not
 	# solved the dependent relationship, so here we ignore the dependency errors
