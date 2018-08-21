@@ -2,11 +2,12 @@
 
 setup_mysql()
 {
-	ln -s /etc/mysql/mysql.cnf /etc/mysql/my.cnf
+	[ -s /etc/mysql/my.cnf ] && rm /etc/mysql/my.cnf
+	ln -s /etc/mysql/conf.d/mysql.cnf /etc/mysql/my.cnf
 	# datadir in rootfs too small to meet mysql requriments
 	sed -i "s /var/lib/mysql $TMP/mysql g" /etc/mysql/*.cnf /etc/mysql/*conf.d/*.cnf
 
-	cat > /etc/mysql/mysql.conf.d/skip-grant-tables.cnf <<EOF
+	cat > /etc/mysql/conf.d/skip-grant-tables.cnf <<EOF
 [mysqld]
 skip-grant-tables
 EOF
@@ -30,7 +31,7 @@ set_max_connections()
 	# mysql default max_connections is 100
 	local max_conn=100
 	[ $nr_threads -gt 100 ] && max_conn=$((nr_threads * 2))
-	echo max_connections=$max_conn >> /etc/mysql/mysql.conf.d/mysqld.cnf
+	echo max_connections=$max_conn >> /etc/mysql/conf.d/mysqldump.cnf
 }
 
 setup_mysql
