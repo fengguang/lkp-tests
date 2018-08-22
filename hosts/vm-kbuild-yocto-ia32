@@ -1,6 +1,7 @@
-model: qemu-system-x86_64 -enable-kvm -cpu Westmere
-nr_vm: 32
+model: qemu-system-x86_64 -enable-kvm -cpu SandyBridge
+nr_vm: 60
 nr_cpu: 1
-memory: 512M
+memory: 256M
 rootfs: yocto-tiny-i386.cgz
-swap_partitions: /dev/vda
+hdd_partitions: /dev/vda
+swap_partitions: /dev/vdb

@@ -1,0 +1,7 @@
+model: qemu-system-x86_64 -enable-kvm
+nr_vm: 64
+nr_cpu: 1
+memory: 256M
+rootfs: openwrt-i386.cgz
+hdd_partitions: /dev/vda
+swap_partitions: /dev/vdb

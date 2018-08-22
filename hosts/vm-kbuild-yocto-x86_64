@@ -1,6 +1,0 @@
-model: qemu-system-x86_64 -enable-kvm -cpu SandyBridge
-nr_vm: 64
-nr_cpu: 1
-memory: 512M
-rootfs: yocto-minimal-x86_64.cgz
-swap_partitions: /dev/vda

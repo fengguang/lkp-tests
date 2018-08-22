@@ -1,0 +1,7 @@
+model: Sandy Bridge-EP
+nr_cpu: 32
+memory: 192G
+hdd_partitions: /dev/disk/by-id/ata-ST1000DM003-*-part1
+nr_hdd_partitions: 7
+swap_partitions: LABEL=SWAP
+rootfs_partition: LABEL=LKP-ROOTFS
