@@ -455,7 +455,8 @@ tbox_cant_kexec()
 	[ "${HOSTNAME#*sof-gp-2}" != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*sof-up-1}" != "$HOSTNAME" ] && return 0
 
-	[ -x '/sbin/kexec' ] || return 0
+	has_cmd kexec || return 0
+	has_cmd cpio || return 0
 
 	return 1
 }
