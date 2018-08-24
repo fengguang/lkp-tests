@@ -110,7 +110,13 @@ cd "$source_dir" || exit
 build || exit
 install || exit
 strip_object_files
-pack_pkg $distro || exit
+
+if [[ "$LKP_LOCAL_RUN" != "1" ]]; then
+	# for 0Day
+	pack_pkg || exit
+else
+	pack_pkg $distro || exit
+fi
 
 [[ -n $sync_dest ]] && {
 	date=$(date +"%Y-%m-%d")
