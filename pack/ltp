@@ -160,7 +160,7 @@ build_ltp()
 	split_syscalls
 	rearrange_case || return
 	make autotools
-	./configure --prefix=$BM_ROOT
+	./configure --prefix=$1
 	make || return
 
 	# fix rpc test cases, linking to libtirpc-dev will make the tests failed in debian
@@ -194,10 +194,10 @@ install_tpm_emulator()
 install_ltp()
 {
 	make install
-	cp testcases/commands/tpm-tools/tpmtoken/tpmtoken_import/tpmtoken_import_openssl.cnf $BM_ROOT/testcases/bin/
-	cp testcases/commands/tpm-tools/tpmtoken/tpmtoken_protect/tpmtoken_protect_data.txt  $BM_ROOT/testcases/bin/
+	cp testcases/commands/tpm-tools/tpmtoken/tpmtoken_import/tpmtoken_import_openssl.cnf $1/testcases/bin/
+	cp testcases/commands/tpm-tools/tpmtoken/tpmtoken_protect/tpmtoken_protect_data.txt  $1/testcases/bin/
 	grep -v -w -f $LKP_SRC/pack/ltp-black-list \
-	runtest/syscalls > $BM_ROOT/runtest/syscalls
+	runtest/syscalls > $1/runtest/syscalls
 }
 
 install_numactl()
@@ -209,7 +209,7 @@ install_numactl()
 
 build()
 {
-	build_ltp || exit
+	build_ltp $BM_ROOT || exit
 
 	cd ../tpm-emulator || exit
 	build_tpm_emulator || exit
@@ -227,7 +227,7 @@ build()
 install()
 {
 	cd ../ltp || exit
-	install_ltp || exit
+	install_ltp $BM_ROOT || exit
 
 	cd ../tpm-emulator || exit
 	install_tpm_emulator || exit
