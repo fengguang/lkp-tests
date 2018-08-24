@@ -46,6 +46,7 @@ class ResultPath < Hash
     'sof_test' => %w[path_params tbox_group rootfs kconfig compiler commit sof_commit soft_commit run],
     'kvm-kernel-boot-test' => %w[tbox_group kconfig commit qemu_config qemu_commit linux_commit run],
     'blktests' => %w[path_params tbox_group rootfs kconfig compiler commit blktests_commit run],
+    'ltp' => %w[path_params tbox_group rootfs kconfig compiler commit ltp_commit run],
     'build-perf_test' => %w[perf_test_commit run],
     'perf_test' => %w[path_params tbox_group rootfs kconfig compiler commit perf_test_commit run]
   }.freeze
