@@ -2,6 +2,9 @@ suite: ltp
 testcase: ltp
 category: functional
 
+ltp_commit: HEAD
+ltp_branch: ltp/master
+
 need_modules: true
 need_memory: 4G
 

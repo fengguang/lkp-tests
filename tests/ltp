@@ -4,12 +4,34 @@
 ## The LTP testsuite contains a collection of tools for
 ## testing the Linux kernel and related features.
 
-cd $BENCHMARK_ROOT/ltp || exit
+ltp_dir=$BENCHMARK_ROOT/ltp
+ltp_src=$ltp_dir/ltp_src
+ltp_install=$ltp_dir/ltp
+
+cd $ltp_dir || exit
 
 . $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/upload.sh
+. $LKP_SRC/lib/tests/ltp.sh
 
-export PATH=/lkp/benchmarks/ltp/bin:$PATH
+export PATH=$ltp_install/bin:$PATH
+
+install_tests()
+{
+	local LTP_REPO="https://github.com/linux-test-project/ltp.git"
+	[ "$LKP_LOCAL_RUN" != "1" ] && LTP_REPO="git://gitmirror/ltp"
+
+	[ "$ltp_commit" ] || return
+	# clone code here
+	mkdir $ltp_src
+	cd $ltp_src
+	git clone $LTP_REPO 2>&1 || return
+	cd $ltp_src/ltp
+	git checkout -f $ltp_commit 2>&1 || return
+
+	build_ltp $ltp_install >/dev/null 2>&1 || return
+	install_ltp $ltp_install >/dev/null 2>&1 || return
+}
 
 check_ignored_cases()
 {
@@ -67,6 +89,8 @@ specify_tmpdir()
 	return 0
 }
 
+install_tests || exit
+cd $ltp_install || exit
 workaround_env
 
 case "$test" in
@@ -185,7 +209,7 @@ exit_value=$?
 	[ "$noatime" != "" ] && mount -o remount,noatime /tmp
 }
 
-upload_files -t results $BENCHMARK_ROOT/ltp/results/* \
-	$BENCHMARK_ROOT/ltp/output
+upload_files -t results $ltp_install/results/* \
+	$ltp_install/output
 
 exit $exit_value
