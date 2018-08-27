@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # for packages with same dependencies, force the update instead of generating link
 # due to schedule stage will auto detect symbolic link, so no need generate new link
@@ -26,8 +26,11 @@ show_deps_list()
 
 show_pack_list()
 {
+	local tmp_input="$(mktemp /tmp/lkp-tmpinput-XXXXXXXXX)"
+	cat $(find $LKP_SRC/{monitors,setup,tests,daemon} -type f -or -type l|sed 's:.*/::') >$tmp_input
 	find  $LKP_SRC/pack -type f | sed 's:.*/::' |
-	grep -x -F -f <(find $LKP_SRC/{monitors,setup,tests,daemon} -type f -or -type l|sed 's:.*/::') |
+	grep -x -F -f <$tmp_input |
 	grep -v -e '^0day-'
+	rm $tmp_input &>/dev/null
 }
 
