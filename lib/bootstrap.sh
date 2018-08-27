@@ -301,8 +301,31 @@ install_deb()
 	done
 }
 
+try_get_and_set_distro()
+{
+	[ -n "$DISTRO" ] && return
+
+	local rootfs=$(grep "rootfs:" $job | cut -d: -f2 | sed 's/ //g')
+	DISTRO=${rootfs%%-*}
+	DISTRO=${DISTRO##*/}
+}
+
+try_install_runtime_depends()
+{
+	[ "$LKP_LOCAL_RUN" = "1" ] && return
+
+	# 0Day only
+	try_get_and_set_distro || return
+	[ -f $LKP_SRC/distro/$DISTRO ] || return
+
+	. $LKP_SRC/distro/$DISTRO
+	install_runtime_depends $job
+}
+
 fixup_packages()
 {
+	try_install_runtime_depends
+
 	install_deb
 
 	has_cmd ldconfig &&
