@@ -39,3 +39,16 @@ pack_benchmark()
 		)
 	done
 }
+
+install_runtime_depends()
+{
+	local scripts=
+	local job=$1
+
+	parse_yaml $job
+
+	for script in $scripts
+	do
+		swupd_install_depends $script
+	done
+}
