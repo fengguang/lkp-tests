@@ -315,6 +315,7 @@ try_install_runtime_depends()
 	[ "$LKP_LOCAL_RUN" = "1" ] && return
 
 	# 0Day only
+	[ "$require_install_depends" != "1" ] && return
 	try_get_and_set_distro || return
 	[ -f $LKP_SRC/distro/$DISTRO ] || return
 
