@@ -46,6 +46,7 @@ install_runtime_depends()
 	local job=$1
 
 	parse_yaml $job
+	swupd_install_depends lkp
 
 	for script in $scripts
 	do
