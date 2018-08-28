@@ -198,3 +198,13 @@ net.rpc_tests:rpc_clnt_broadcast
 #__NR_mmap2 not supported on x86_64
 cve:cve-2011-2496
 mm:vma03
+#below sctp6_ipsec tests stuck since v4.18-rc1, wait community to fix 
+net_stress.ipsec_sctp:sctp6_ipsec_vti04
+net_stress.ipsec_sctp:sctp6_ipsec_vti05
+net_stress.ipsec_sctp:sctp6_ipsec_vti06
+net_stress.ipsec_sctp:sctp6_ipsec_vti07
+net_stress.ipsec_sctp:sctp6_ipsec_vti08
+net_stress.ipsec_sctp:sctp6_ipsec_vti09
+net_stress.ipsec_sctp:sctp6_ipsec_vti10
+net_stress.ipsec_sctp:sctp6_ipsec_vti11
+net_stress.ipsec_sctp:sctp6_ipsec_vti12
