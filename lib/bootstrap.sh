@@ -320,7 +320,7 @@ try_install_runtime_depends()
 	[ -f $LKP_SRC/distro/$DISTRO ] || return
 
 	. $LKP_SRC/distro/$DISTRO
-	install_runtime_depends $job
+	install_runtime_depends $job 2>&1 | grep -v "Out of memory"
 }
 
 fixup_packages()
