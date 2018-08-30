@@ -59,14 +59,31 @@ fixup_preinstall()
 	:
 }
 
+resolve_uninstalled_bundles()
+{
+	for b in $1
+	do
+		[ "$b" = "os-core" ] && continue
+		[ -f $tmpdir/Manifest.$b ] && continue
+		cp -a $(ls -t /var/lib/swupd/*/Manifest.$b | head -1) $tmpdir/
+
+		uninstalled_atomic_bundles="$uninstalled_atomic_bundles $b"
+
+		# some bundles include other bundles
+		include_bundles=$(cat $tmpdir/Manifest.$b | grep ^includes: | awk -F'^includes:' '{print $2}')
+		resolve_uninstalled_bundles "$include_bundles"
+	done
+}
+
 list_bundles_files()
 {
-	cp -a $(ls -t /var/lib/swupd/*/Manifest.$p | head -1) $tmpdir/
-
-	while read a b c f
+	for d in $uninstalled_atomic_bundles
 	do
-		[ -n "$f" ] && echo $f >>$tmpdir/$p.list
-	done <$tmpdir/Manifest.$p
+		while read a b c f
+		do
+			[ -n "$f" ] && echo $f >>$tmpdir/$d.list
+		done <$tmpdir/Manifest.$d
+	done
 }
 
 pack_bundles_files()
@@ -87,9 +104,14 @@ pack_bundles_files()
 	echo package installed to $pack_to/${BM_NAME}.cgz
 }
 
+# 1. install all un-installed bundles and record it to uninstalled_bundles
+# 2. list atomic bundles by searching uninstalled_bundles recursively
+# 3. list files for each atomic bundle and pack it
 pack_benchmark_deps()
 {
 	local date=$(date +"%Y-%m-%d")
+	local uninstalled_bundles=
+	local uninstalled_atomic_bundles=
 
 	for BM_NAME in $benchmark
 	do
@@ -102,8 +124,14 @@ pack_benchmark_deps()
 			swupd bundle-list | grep -qw "^$p$" && continue
 			$LKP_SRC/distro/installer/clear $p 2>&1 | grep -v "Out of memory"
 
-			list_bundles_files
+			uninstalled_bundles="$uninstalled_bundles $p"
 		done
+
+		echo "uninstalled bundles: $uninstalled_bundles"
+		resolve_uninstalled_bundles "$uninstalled_bundles"
+
+		echo "uninstalled_atomic_bundles: $uninstalled_atomic_bundles"
+		list_bundles_files
 
 		pack_bundles_files || return
 	done
