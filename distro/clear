@@ -75,9 +75,28 @@ resolve_uninstalled_bundles()
 	done
 }
 
+# delta = to_pack - installed
+delta_bundles()
+{
+	local installed_bundles=$1
+	local to_pack=$2
+	local delta=
+
+	for i in $to_pack
+	do
+		grep -qw "^$i$" $installed_bundles || delta="$delta $i"
+	done
+
+	echo $delta
+}
+
 list_bundles_files()
 {
-	for d in $uninstalled_atomic_bundles
+	local delta=$(delta_bundles $installed_bundles_file "$uninstalled_atomic_bundles")
+
+	echo "Actually pack bundles: $delta"
+
+	for d in $delta
 	do
 		while read a b c f
 		do
@@ -110,8 +129,11 @@ pack_bundles_files()
 pack_benchmark_deps()
 {
 	local date=$(date +"%Y-%m-%d")
+	local installed_bundles_file=$(mktemp /tmp/pack-deps-installed-bundles-XXXXXXXX)
 	local uninstalled_bundles=
 	local uninstalled_atomic_bundles=
+
+	swupd bundle-list >$installed_bundles_file
 
 	for BM_NAME in $benchmark
 	do
