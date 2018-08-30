@@ -53,3 +53,58 @@ install_runtime_depends()
 		swupd_install_depends $script
 	done
 }
+
+fixup_preinstall()
+{
+	:
+}
+
+list_bundles_files()
+{
+	cp -a $(ls -t /var/lib/swupd/*/Manifest.$p | head -1) $tmpdir/
+
+	while read a b c f
+	do
+		[ -n "$f" ] && echo $f >>$tmpdir/$p.list
+	done <$tmpdir/Manifest.$p
+}
+
+pack_bundles_files()
+{
+	# allow empty
+	ls $tmpdir | grep -q "\.list$" >/dev/null || {
+		echo "empty PACKAGE_LIST for $BM_NAME"
+		return 0
+	}
+
+	cat $tmpdir/*.list | sort | uniq |
+		cpio --quiet -o -H newc --owner=root.root |
+		gzip -n -9 >$pack_to/${BM_NAME}_$date.cgz || return
+
+	ln -sf ${BM_NAME}_$date.cgz $pack_to/${BM_NAME}.cgz || return
+	chown .lkp $pack_to/${BM_NAME}_$date.cgz $pack_to/${BM_NAME}.cgz || return
+
+	echo package installed to $pack_to/${BM_NAME}.cgz
+}
+
+pack_benchmark_deps()
+{
+	local date=$(date +"%Y-%m-%d")
+
+	for BM_NAME in $benchmark
+	do
+		local tmpdir=$(mktemp -d /tmp/pack-deps-$BM_NAME-XXXXXXXX)
+
+		check_shared_package $BM_NAME
+		packages=$(echo $(get_dependency_packages $DISTRO $BM_NAME))
+		for p in $packages
+		do
+			swupd bundle-list | grep -qw "^$p$" && continue
+			$LKP_SRC/distro/installer/clear $p 2>&1 | grep -v "Out of memory"
+
+			list_bundles_files
+		done
+
+		pack_bundles_files || return
+	done
+}
