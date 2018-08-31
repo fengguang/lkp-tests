@@ -90,11 +90,24 @@ delta_bundles()
 	echo $delta
 }
 
+# if /usr/share/clear/bundles/xxx is removed,
+# swupd bundle-list cannot detect this bundle
+fixup_benchmark()
+{
+	[ "$BM_NAME" = "pack-deps" ] || return
+	for d in $delta
+	do
+		rm -rf /usr/share/clear/bundles/$d
+	done
+}
+
 list_bundles_files()
 {
 	local delta=$(delta_bundles $installed_bundles_file "$uninstalled_atomic_bundles")
 
 	echo "Actually pack bundles: $delta"
+
+	fixup_benchmark
 
 	for d in $delta
 	do
