@@ -487,7 +487,7 @@ tbox_cant_kexec()
 
 download_job()
 {
-	job="$(grep -o 'job=[^ ]*.yaml' $NEXT_JOB | awk -F '=' '{print $2}')"
+	job="$(grep -o 'job=[^ ]*.yaml' $NEXT_JOB | awk -F 'job=' '{print $2}')"
 	local job_cgz=${job%.yaml}.cgz
 
 	# TODO: escape is necessary. We might also need download some extra cgz
