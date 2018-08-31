@@ -100,7 +100,7 @@ list_bundles_files()
 	do
 		while read a b c f
 		do
-			[ -n "$f" ] && echo $f >>$tmpdir/$d.list
+			[ -n "$f" ] && [ -e "$f" ] && echo "$f" >>$tmpdir/$d.list
 		done <$tmpdir/Manifest.$d
 	done
 }
