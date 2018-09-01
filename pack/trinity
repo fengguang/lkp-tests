@@ -26,8 +26,7 @@ install()
 {
 	# binary file will be installed into /bin/trinity
 	make install
-	# touch a fake file so that pack() can be called later
-	touch /lkp/benchmarks/$BM_NAME/empty
+	INSTALL_PREFIX=/lkp/benchmarks/$BM_NAME make install
 }
 
 pack()
@@ -35,6 +34,9 @@ pack()
 	{
 		echo /bin
 		echo /bin/trinity
+		echo /lkp
+		echo /lkp/benchmarks
+		find /lkp/benchmarks/$BM_NAME
 	} |
 	cpio --quiet -o -H newc --owner=root.root | gzip -n -9 > /lkp/benchmarks/${BM_NAME}.cgz
 	[[ $arch ]] && mv "/lkp/benchmarks/${BM_NAME}.cgz" "/lkp/benchmarks/${BM_NAME}-${arch}.cgz"

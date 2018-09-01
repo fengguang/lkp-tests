@@ -23,6 +23,15 @@ set +m
 
 cmd="trinity -q -q -l off -s $seed -x get_robust_list -x remap_file_pages -N 999999999"
 
+has_cmd trinity || {
+	 [ -x /lkp/benchmarks/trinity/bin/trinity ] && ln -sf /lkp/benchmarks/trinity/bin/trinity /bin/trinity
+}
+
+has_cmd trinity || {
+	echo "trinity is not installed" >&2
+	exit 1
+}
+
 cd /tmp
 if chroot --help 2>&1 | grep -q -- --userspec; then
 	groupadd nogroup 2>&1 # for clearlinux
