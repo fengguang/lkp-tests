@@ -24,7 +24,12 @@ pack_to=$DEPS_MNT/$(basename $rootfs)
 	chown .lkp "$pack_to"
 }
 
-check_shared_package "$benchmark" && exit
+check_shared_package "$benchmark" && {
+	ln -sf $BM_NAME.cgz $pack_to/$benchmark.cgz
+	echo "create symlink for shared package: $benchmark -> $BM_NAME"
+
+	exit 0
+}
 
 fixup_distro_mirror
 
