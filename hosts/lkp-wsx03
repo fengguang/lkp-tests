@@ -4,5 +4,5 @@ nr_node: 4
 nr_cpu: 80
 nr_hdd_partitions: 0
 hdd_partitions: 
-swap_partitions:
-rootfs_partition: 
+swap_partitions: LABEL=SWAP
+rootfs_partition: LABEL=LKP-ROOTFS
