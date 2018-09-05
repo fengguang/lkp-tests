@@ -5,6 +5,6 @@ memory: 256G
 hdd_partitions: /dev/disk/by-id/scsi-36b083fe0cfc0d1002308aa410f0b4da7-part1
 ssd_partitions:
 swap_partitions:
-rootfs_partition:
+rootfs_partition: LABEL=LKP-ROOTFS
 brand: Intel(R) Xeon(R) CPU E5-2695 v3 @ 2.30GHz
 ucode: "0x3d"
