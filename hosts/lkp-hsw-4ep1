@@ -3,5 +3,5 @@ nr_node: 4
 nr_cpu: 128
 memory: 512G
 hdd_partitions:
-swap_partitions:
-rootfs_partition:
+swap_partitions: LABEL=SWAP
+rootfs_partition: LABEL=LKP-ROOTFS
