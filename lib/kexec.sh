@@ -82,11 +82,13 @@ download_initrd()
 		_initrd=$(echo $_initrd | sed 's/^\///')
 		local file=$CACHE_DIR/$_initrd
 		http_get_newer "$_initrd" $file || {
+			rm -f $file
 			set_job_state "wget_initrd_fail"
 			echo Failed to download $_initrd
 			exit 1
 		}
 		initrd_is_correct $file || {
+			rm -f $file && echo "remove the the broken initrd: $file"
 			set_job_state "initrd_broken"
 			echo $_initrd is broken
 			return 1
