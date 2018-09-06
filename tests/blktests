@@ -82,6 +82,8 @@ set_env()
 		partition=${partitions%% *}
 		;;
 	esac
+	mkdir -p /mnt/$test
+	log_cmd mount $partition /mnt/$test
 	[ -n "$partition" ] && echo "TEST_DEVS=$partition" > config
 }
 
@@ -113,7 +115,7 @@ run_test()
 	done
 
 	[ -n "$all_tests_cmd" ] && log_echo $all_tests_cmd
-	log_cmd ./check $all_tests
+	log_cmd ./check -o /mnt/$test $all_tests
 }
 
 install_blktests || die
