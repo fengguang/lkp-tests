@@ -129,9 +129,12 @@ create_job_initrd()
 	(
 		cd $CACHE_DIR || exit
 		{
-			echo lkp
-			echo lkp/scheduled
-			echo ${job_initrd_dir#/}
+			local dir=
+			for d in $(echo $job_initrd_dir | tr '/' ' ')
+			do
+				dir="$dir""$d"/
+				echo $dir
+			done
 			find ${job_initrd_dir#/}/*
 		} | cpio -o -H newc -F $archive.cpio
 		gzip -n -9 $archive.cpio
