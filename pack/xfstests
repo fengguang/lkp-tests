@@ -24,7 +24,12 @@ build_install_xfsprogs()
 	make install
 	make install-dev
 	# xfstests need those file
-	cp -a $BUILD_DIR/pack/usr/* /usr
+	if [ -L "/usr/sbin" ]; then
+		cp -a `ls $BUILD_DIR/pack/usr/* | grep -v sbin` /usr
+		cp -a $BUILD_DIR/pack/usr/sbin/* /usr/bin
+	else
+		cp -a $BUILD_DIR/pack/usr/* /usr
+	fi
 }
 
 build_install_xfstests()
