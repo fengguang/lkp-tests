@@ -1,9 +1,0 @@
-#!/bin/bash
-
-WEB_URL="http://www.bitmover.com/lmbench/lmbench3.tar.gz"
-source_dir="lmbench3"
-
-install()
-{
-	cp -af ../$source_dir/* $BM_ROOT
-}
