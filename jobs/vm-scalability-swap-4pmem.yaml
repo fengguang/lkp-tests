@@ -9,6 +9,8 @@ boot_params:
   bp3_memmap: 24G!66G
   bp4_memmap: 24G!90G
 
+need_memory: 128G
+
 swap:
   priority: 1
 
