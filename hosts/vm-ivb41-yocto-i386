@@ -1,5 +1,5 @@
 model: qemu-system-i386 -enable-kvm -cpu SandyBridge
-nr_vm: 60
+nr_vm: 32
 nr_cpu: 1
 memory: 256M
 rootfs: yocto-tiny-i386.cgz
