@@ -31,9 +31,8 @@ ltp:
   - input
   - io
   - ipc
-# caused by the defect of ltp itself, where a "no such file or directory" error occured
-#  - ltp-aiodio.part1
-#  - ltp-aiodio.part3
+  - ltp-aiodio.part1
+  - ltp-aiodio.part3
 # Cause OOM, require at least 32GB memory
 #  - lvm.part1
 #  - lvm.part2
@@ -68,17 +67,16 @@ ltp:
 #  - io_cd
 # Ignore floppy tests
 #  - io_floppy
-# No results groups
-#  - dio
-#  - fs_bind
-#  - fs_readonly
-#  - kernel_misc
-#  - net.ipv6
-#  - net.multicast
-#  - net.tcp_cmds
-#  - scsi_debug.part1
-#  - syscalls-ipc
-#  - tracing
+  - dio
+  - fs_bind
+  - fs_readonly
+  - kernel_misc
+  - net.ipv6
+  - net.multicast
+  - net.tcp_cmds
+  - scsi_debug.part1
+  - syscalls-ipc
+  - tracing
 
 ---
 reboot_for_next_job: 1
