@@ -81,7 +81,7 @@ remove_packages_version()
 
 remove_packages_repository()
 {
-	generic_packages=$(echo $generic_packages | sed 's#/[^=]*##')
+	generic_packages=$(echo $generic_packages | sed 's#/[^= ]*##g')
 }
 
 get_dependency_packages()
