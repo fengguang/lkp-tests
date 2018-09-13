@@ -6,6 +6,9 @@
 # - worker_threads
 # - latency_limit
 # - max_wal_size
+# - wal_compression
+# - checkpoint_timeout
+# - checkpoint_completion_target
 
 . $LKP_SRC/lib/reproduce-log.sh
 
