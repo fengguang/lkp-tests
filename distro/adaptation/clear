@@ -351,7 +351,7 @@ libxcb-shm0: os-core-dev
 libxdmcp6: os-core-dev
 libxdot4: os-core-dev
 libxext6: os-core-dev
-libxkbcommon-dev: dev-utils-dev
+libxkbcommon-dev: qt-basic-dev
 libxml2: dev-utils
 libxml2-dev: dev-utils-dev
 libxml2-utils: dev-utils
@@ -445,7 +445,7 @@ python3: python3-basic
 python3-colorama: python-extras
 python3-mako: python-extras
 python3-markupsafe:
-python3-numpy:
+python3-numpy: python-extras
 python3-six:
 python-crypto:
 python-csvkit:
