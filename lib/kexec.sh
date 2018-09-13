@@ -45,10 +45,44 @@ download_kernel()
 	}
 }
 
+# if no rootfs_partition, mark it as modified
+# FIXME: hard code isn't a good choice
+is_local_cache()
+{
+	[ "$CACHE_DIR" = "/opt/rootfs/tmp" ]
+}
+
+initrd_is_modified()
+{
+	local file=$1
+	local md5sumfile=$file.md5sum
+	local new_md5sum
+
+	is_local_cache || return 0
+
+	new_md5sum="$(md5sum $file)"
+
+	[ -f $md5sumfile ] || return 0
+	[ -n "$new_md5sum" -a "$(cat $md5sumfile)" = "$new_md5sum" ] && {
+		echo "$file isn't modified"
+		return 1
+	}
+
+	return 0
+}
+
 initrd_is_correct()
 {
 	local file=$1
+
+	initrd_is_modified $file || return 0
 	gzip -dc $file | cpio -t >/dev/null
+	ret=$?
+
+	# update md5sum only when it's correct
+	[ $ret -eq 0 ] && is_local_cache && md5sum $file >$file.md5sum
+
+	return $ret
 }
 
 # for lkp qemu, it will set LKP_LOCAL_RUN=1
