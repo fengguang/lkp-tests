@@ -82,9 +82,12 @@ set_env()
 		partition=${partitions%% *}
 		;;
 	esac
+
 	mkdir -p /mnt/$test
-	log_cmd mount $partition /mnt/$test
-	[ -n "$partition" ] && echo "TEST_DEVS=$partition" > config
+	if [ -n "$partition" ]; then
+		echo "TEST_DEVS=$partition" > config
+		log_cmd mount $partition /mnt/$test
+	fi
 }
 
 run_test()
