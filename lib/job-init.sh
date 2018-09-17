@@ -86,6 +86,8 @@ mount_result_root()
 			export TMP_RESULT_ROOT=$RESULT_ROOT
 			mkdir -p $TMP
 			mount -t 9p -o trans=virtio $result_service $RESULT_MNT  -oversion=9p2000.L,posixacl,cache=loose
+			# for embedded rootfs(yocto) which cannot support 9p filesystem when use lkp-qemu
+			[ $? -ne 0 ] && [ "$LKP_LOCAL_RUN" = "1" ] && return 0
 			;;
 		*)
 			echo "unknown result_service $result_service" >&2
