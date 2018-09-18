@@ -30,7 +30,11 @@ def parse_time(date, line)
 end
 
 first_line = STDIN.gets
-date = /\d+-\d+-\d+/.match(first_line)
+
+date = first_line.split[3]
+date = /\d+-\d+-\d+/.match(date)
+exit 1 if date.nil?
+
 max_usage = 0
 max_record = nil
 
