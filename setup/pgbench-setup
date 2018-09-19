@@ -26,8 +26,7 @@ init_postgresql()
 {
 	grep -q postgres /etc/passwd && return
 
-	adduser --quiet --home /var/lib/postgresql --no-create-home postgres \
-		--system --disabled-password
+	useradd --home-dir /var/lib/postgresql --no-create-home --no-user-group --gid nogroup --system postgres
 	data_dir=/var/lib/postgresql/data
 	mkdir -p "$data_dir"
 	chown postgres "$data_dir"
