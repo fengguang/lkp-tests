@@ -662,10 +662,7 @@ boot_init()
 
 	mount_debugfs
 
-	is_clearlinux && {
-		systemctl stop systemd-networkd
-		add_nfs_default_options
-	}
+	is_clearlinux && add_nfs_default_options
 
 	mount_rootfs || return
 
