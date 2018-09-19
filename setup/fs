@@ -20,7 +20,7 @@ def_mkfs=
 fs_options() {
 	case $fs in
 	xfs)
-		def_mount="-o nobarrier,inode64"
+		def_mount="-o inode64"
 		[ "${raid_level#*raid}" != "$raid_level" ] && [ "$nr_partitions" -gt 1 ] && {
 			def_mount="${def_mount},logbsize=262144"
 			def_mkfs="-f -d agcount=$nr_partitions"
