@@ -1,8 +1,5 @@
 suite: power_idle
 testcase: power_idle
-category: benchmark
-
-idle_sleep: 300
 
 # These monitors will not wake up from time to time,
 # so it's perfectly OK to include them here.
@@ -10,13 +7,15 @@ turbostat:
 thermal:
   interval: 30
 
-idle_sleep:
+sleep_after_boot:
+  sleep_time: 600
 
 services:
    pmeter_server:
 
 stop_daemons:
 
-runtime: 20m
+runtime: 30m
 
-sleep:
+idle:
+  idle_time: 600
