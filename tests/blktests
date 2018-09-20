@@ -83,10 +83,9 @@ set_env()
 		;;
 	esac
 
-	mkdir -p /mnt/$test
 	if [ -n "$partition" ]; then
 		echo "TEST_DEVS=$partition" > config
-		log_cmd mount $partition /mnt/$test
+		[ "$test" = "nvme-group1" ] && log_cmd mkdir -p /mnt/$test && log_cmd mount $partition /mnt/$test
 	fi
 }
 
@@ -118,7 +117,11 @@ run_test()
 	done
 
 	[ -n "$all_tests_cmd" ] && log_echo $all_tests_cmd
-	log_cmd ./check -o /mnt/$test $all_tests
+	if [ "$test" = "nvme-group1" ]; then
+		log_cmd ./check -o /mnt/$test $all_tests
+	else
+		log_cmd ./check $all_tests
+	fi
 }
 
 install_blktests || die
