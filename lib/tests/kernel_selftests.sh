@@ -342,6 +342,10 @@ run_tests()
 			prepare_for_net || continue
 		fi
 
+		if [[ "$subtest" = "sysctl" ]]; then
+			lsmod | grep -q test_sysctl || modprobe test_sysctl
+		fi
+
 		[[ "$subtest" = "memfd" ]] && fixup_memfd
 		[[ "$subtest" = "vm" ]] && fixup_vm
 		[[ "$subtest" = "x86" ]] && fixup_x86
