@@ -60,6 +60,7 @@ end
 
 [[histo_r, sum_r, READ], [histo_w, sum_w, WRITE]].each do |histo, sum, modes|
   (0..23).each do |i|
+    next if sum == 0.0
     res = histo[i] / sum * 100
     gen_output(modes, i, res)
   end
