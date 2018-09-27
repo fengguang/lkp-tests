@@ -21,7 +21,7 @@ EOF
 	cp -a     /var/lib/mysql $TMP/
 
 	mkdir -p /var/lib/mysql-files
-	/usr/sbin/mysqld --initialize
+	/usr/sbin/mysqld --initialize --user=root --datadir=/var/lib/mysql-files --explicit_defaults_for_timestamp
 
 	/etc/init.d/mysql start
 }
