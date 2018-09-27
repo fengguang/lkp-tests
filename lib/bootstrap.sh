@@ -422,13 +422,16 @@ show_default_gateway()
 
 netconsole_init()
 {
+	# don't init netconsole at local run
+	[ "$LKP_LOCAL_RUN" = "1" ] && return
+
 	[ -z "$netconsole_port" ] && return
 	[ -n "$NO_NETWORK" ] && return
 
 	# use default gateway as netconsole server
 	netconsole_server=$(show_default_gateway)
 	[ -n "$netconsole_server" ] || return
-	modprobe netconsole netconsole=@/,$netconsole_port@$netconsole_server/ 2>/dev/null
+	modprobe netconsole netconsole=@/,$netconsole_port@$netconsole_server/
 }
 
 tbox_use_lkp_ipxe()
@@ -664,9 +667,7 @@ boot_init()
 
 	is_clearlinux && add_nfs_default_options
 
-	mount_rootfs || return
-
-	# don't init netconsole at local run
-	[ "$LKP_LOCAL_RUN" = "1" ] && return
 	netconsole_init
+
+	mount_rootfs
 }
