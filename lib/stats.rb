@@ -499,7 +499,12 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
     next if is_incomplete_run && k !~ /^(dmesg|last_state|stderr)\./
     next if !options['more'] && k =~ $metrics_blacklist_re
 
-    is_failure_stat = is_failure k
+    is_failure_stat = if options['force_' + k]
+                        true
+                      else
+                        is_failure k
+                      end
+
     is_latency_stat = is_latency k
     max_margin = if is_failure_stat || is_latency_stat
                    0
