@@ -5,7 +5,7 @@
 # - mem_total_size
 # - mem_scope
 # - mem_hugetlb
-# - mem_opt
+# - mem_operation
 # - mem_access_mode
 
 . "$LKP_SRC/lib/reproduce-log.sh"
@@ -27,7 +27,7 @@ args="\
  --memory-total-size=$mem_total_size\
  --memory-scope=$mem_scope\
  --memory-hugetlb=$mem_hugetlb\
- --memory-oper=$mem_opt\
+ --memory-oper=$mem_operation\
  --memory-access-mode=$mem_access_mode\
 "
 log_cmd sysbench $args run

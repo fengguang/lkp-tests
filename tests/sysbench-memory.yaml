@@ -17,7 +17,7 @@ parameters:
  mem_total_size:               total size of data to transfer
  mem_scope: (global, local)    memory access scope
  mem_hugetlb: (on, off)        allocate memory from HugeTLB pool
- mem_opt: (read, write, none)  type of memory operations
+ mem_operation: (read, write, none)  type of memory operations
  mem_access_mode: (seq, rnd)   memory access mode
 
 results:

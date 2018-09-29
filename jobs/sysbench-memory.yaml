@@ -10,5 +10,5 @@ sysbench-memory:
   mem_total_size: 100G
   mem_scope: global
   mem_hugetlb: off
-  mem_opt: write
+  mem_operation: write
   mem_access_mode: seq
