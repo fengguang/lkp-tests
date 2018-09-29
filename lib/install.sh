@@ -162,9 +162,13 @@ build_depends_pkg() {
 		unset_bmname=1
 	fi
 
-	local debs=$(get_dependency_packages $DISTRO ${script}-dev)
-	# install the dev dependencies to build pkg
-	$LKP_SRC/distro/installer/$DISTRO $debs
+	# install the dependencies (including -dev ones) to build pkg
+	local debs=$(get_dependency_packages $DISTRO ${script})
+	local dev_debs=$(get_dependency_packages $DISTRO ${script}-dev)
+	debs="$(echo $debs $dev_debs | tr '\n' ' ')"
+	if [ -n "$debs" ] && [ "$debs" != " " ]; then
+		$LKP_SRC/distro/installer/$DISTRO $debs
+	fi
 
 	local packages="$(get_dependency_packages ${DISTRO} ${script} pkg)"
 	local dev_packages="$(get_dependency_packages ${DISTRO} ${script}-dev pkg)"
