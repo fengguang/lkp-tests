@@ -61,7 +61,7 @@ echo $$ >> $TMP/pid-monitor-$monitor
 $LKP_SRC/bin/event/wait 'activate-monitor'
 
 has_cmd stdbuf &&
-stdbuf='stdbuf -o0 -e0'
+stdbuf='stdbuf -oL -e0'
 
 exec $stdbuf $monitor_dir/$monitor "$@" > $fifo
 
