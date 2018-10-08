@@ -124,12 +124,9 @@ upload_files_copy()
 
 		chown -R lkp.lkp "$@"
 		chmod -R ug+w "$@"
-
-		local copy="cp -a"
-	else
-		local copy="cp"
 	fi
 
+	local copy="cp -a"
 	local file
 	local ret=0
 
