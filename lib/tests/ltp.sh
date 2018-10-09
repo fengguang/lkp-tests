@@ -53,9 +53,6 @@ rearrange_case()
 	sed -e "s/^#.*//g" fs | awk '{if (length !=0) print $0}' > fscase || return
 	split -d -l20 fscase fs- || return
 
-	# re-arrange the case admin_tools
-	split -d -l5 admin_tools admin_tools- || return
-
 	# re-arrange the case crashme
 	sed -e "s/^#.*//g" crashme | awk '{if (length !=0) print $0}' > crashmecase || return
 	split -d -l2 crashmecase crashme- || return
