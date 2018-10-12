@@ -134,5 +134,5 @@ set_env
 run_test
 exit_value=$?
 
-[ -d result ] && upload_files -t results $blktest_dir/blktests/results/*
+[ -d results ] && upload_files -t results $blktest_dir/blktests/results/*
 exit $exit_value
