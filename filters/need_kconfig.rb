@@ -9,7 +9,7 @@ end
 
 def check_kconfig(kconfig_lines, line)
   case line
-  when /^(CONFIG_[A-Z0-9_])+=n/
+  when /^(CONFIG_[A-Z0-9_]+)=n/
     name = $1
     kconfig_lines.index("# #{name} is not set") ||
       kconfig_lines !~ /^#{name}=[ym]/
