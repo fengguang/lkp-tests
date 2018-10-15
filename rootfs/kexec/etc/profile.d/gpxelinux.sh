@@ -1,9 +1,9 @@
 #!/bin/bash
 
-[[ $SSH_CLIENT ]] && return
+[[ $SSH_CLIENT ]] && exit
 
 if [ -f /tmp/gpxelinux-runonce ]; then
-	return
+	exit
 else
 	touch /tmp/gpxelinux-runonce
 fi
