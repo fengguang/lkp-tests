@@ -131,7 +131,7 @@ tpm_tools)
 	find . -maxdepth 1 -type d -name "TPM_Emulator*" -exec rm -rf {} \;
 	unzip $(ls TPM_Emulator*.zip | head -1)
 	rsync -av $(ls -l . | awk '/^d/ {print $NF}' | head -1)"/" /
-	cd ..
+	cd ../ltp
 	killall tpmd > /dev/null 2>&1
 	tpmd -f -d clear > /dev/null 2>&1 &
 	killall tcsd > /dev/null 2>&1
