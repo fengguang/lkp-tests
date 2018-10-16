@@ -2,6 +2,7 @@ suite: rcutorture
 testcase: rcutorture
 category: functional
 
+need_memory: 512M
 runtime: 300s
 
 kernel_cmdline: rcutorture.fwd_progress=0
