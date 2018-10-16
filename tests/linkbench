@@ -1,0 +1,11 @@
+#!/bin/sh
+# - nr_task
+# - duration
+
+cd "$BENCHMARK_ROOT/linkbench" || exit
+duration=${duration%%s}
+
+./bin/linkbench 2>&1 \
+-c config/MyConfig.properties -D host=localhost -D user=linkbench -D password=mypassword -D requesters="$nr_task" \
+-c config/LinkConfigMysql.properties -D maxtime="$duration" \
+-r

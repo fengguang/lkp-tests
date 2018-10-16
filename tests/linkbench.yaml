@@ -1,0 +1,44 @@
+short_description: >
+A database benchmark developed to evaluate database performance for workloads 
+similar to those of Facebook's production MySQL deployment. 
+
+homepage: https://github.com/facebookarchive/linkbench
+
+parameters:
+  nr_task:
+  requestes: number of requests per thread
+
+results:
+  linkbench.requests:
+  linkbench.time:
+  linkbench.requests/s:
+  linkbench.ADD_NODE.count:
+  linkbench.ADD_NODE.max:
+  linkbench.ADD_NODE.mean:
+  inkbench.UPDATE_NODE.count:
+  linkbench.UPDATE_NODE.max:
+  linkbench.UPDATE_NODE.mean:
+  linkbench.DELETE_NODE.count:
+  linkbench.DELETE_NODE.max:
+  linkbench.DELETE_NODE.mean:
+  linkbench.GET_NODE.count:
+  linkbench.GET_NODE.max:
+  linkbench.GET_NODE.mean:
+  linkbench.ADD_LINK.count:
+  linkbench.ADD_LINK.max:
+  linkbench.ADD_LINK.mean:
+  linkbench.DELETE_LINK.count:
+  linkbench.DELETE_LINK.max:
+  linkbench.DELETE_LINK.mean:
+  linkbench.UPDATE_LINK.count:
+  linkbench.UPDATE_LINK.max:
+  linkbench.UPDATE_LINK.mean:
+  linkbench.COUNT_LINK.count:
+  linkbench.COUNT_LINK.max:
+  linkbench.COUNT_LINK.mean:
+  linkbench.MULTIGET_LINK.count:
+  linkbench.MULTIGET_LINK.max:
+  linkbench.MULTIGET_LINK.mean:
+  linkbench.GET_LINKS_LIST.count:
+  linkbench.GET_LINKS_LIST.max:
+  linkbench.GET_LINKS_LIST.mean:

@@ -1,0 +1,8 @@
+suite: linkbench
+testcase: linkbench
+category: benchmark
+
+nr_task: 100%
+setup-linkbench:
+linkbench:
+  duration: 300s
