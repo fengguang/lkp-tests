@@ -125,7 +125,7 @@ create_job_initrd()
 	mkdir -p $CACHE_DIR/$job_initrd_dir
 	cp $job_script $job_sh
 	chmod +x $job_sh
-	archive=$CACHE_DIR/${job_file%.yaml}-$job_sig
+	local archive=$CACHE_DIR/job
 	(
 		cd $CACHE_DIR || exit
 		{
@@ -138,7 +138,7 @@ create_job_initrd()
 			find ${job_initrd_dir#/}/*
 		} | cpio -o -H newc -F $archive.cpio
 		gzip -n -9 $archive.cpio
-		mv -f $archive.cpio.gz $archive.cgz
+		mv -f $archive.cpio.gz $job_initrd
 	)
 }
 
