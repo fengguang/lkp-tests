@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+
+LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
+
+require "#{LKP_SRC}/lib/yaml"
+require "#{LKP_SRC}/lib/matrix"
+
+def matrix2csv(matrix_file, csv_file)
+  matrix = load_json(matrix_file)
+  save_matrix_to_csv_file(csv_file, matrix)
+end
+
+def usage
+  printf "Usage: #{File.basename($PROGRAM_NAME)} <matrix file> [<csv file>]\n"
+end
+
+def file_name_json2csv(json_file)
+  if json_file =~ /(.*)\.json(?:\.gz|.bz2|.xz)?/
+    $1 + ".csv"
+  else
+    json_file
+  end
+end
+
+def main
+  if ARGV.length == 0
+    usage
+    exit 1
+  end
+  matrix_file = ARGV[0]
+  csv_file = ARGV[1] || file_name_json2csv(matrix_file)
+  matrix2csv(matrix_file, csv_file)
+end
+
+main
