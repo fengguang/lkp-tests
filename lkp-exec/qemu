@@ -297,6 +297,7 @@ fi
 
 [ -d $CACHE_DIR ] || mkdir $CACHE_DIR
 LKP_USER="lkp"
+: ${QEMU_MODEL:='qemu-system-x86_64'}
 
 run_kvm()
 {
@@ -313,11 +314,10 @@ run_kvm()
 		testsuite="$(get_job_env $job_script 'suite')" || return
 		[[ "$need_mem_mb" -gt "${mem_mb: : -1}" ]] && echo "Warning: test suite $testsuite needs memory: ${need_mem_mb}Mb, actual memory: ${mem_mb: : -1}Mb"
 	}
-	model='qemu-system-x86_64 -enable-kvm'
 	netdev_option="-device e1000,netdev=net0 "
 	netdev_option+="-netdev user,id=net0"
 	KVM_COMMAND=(
-		$model
+		$QEMU_MODEL -enable-kvm
 		-fsdev local,id=test_dev,path=$vm_result_path,security_model=none -device virtio-9p-pci,fsdev=test_dev,mount_tag=$mount_tag
 		-kernel ${opt_kernel_image:-$kernel_file}
 		-append "$bootloader_append ip=dhcp result_service=$mount_tag"
