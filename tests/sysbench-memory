@@ -7,6 +7,8 @@
 # - mem_hugetlb
 # - mem_operation
 # - mem_access_mode
+# - rand_type
+# - rand_pareto_h
 
 . "$LKP_SRC/lib/reproduce-log.sh"
 
@@ -30,4 +32,8 @@ args="\
  --memory-oper=$mem_operation \
  --memory-access-mode=$mem_access_mode \
 "
+
+[ -n "$rand_type" ] && args="$args --rand-type=$rand_type"
+[ -n "$rand_pareto_h" ] && args="$args --rand-pareto-h=$rand_pareto_h"
+
 log_cmd sysbench $args run
