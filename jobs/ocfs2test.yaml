@@ -6,7 +6,7 @@ category: functional
 # Both HDD and SSD are OK.
 # If you want to use HDD, change 1SSD to 1HDD.
 disk:
-- 1SSD
+- 1HDD
 
 size: 200G
 
@@ -14,7 +14,8 @@ ocfs2test:
   test:
     - test-quick
     - test-mmaptruncate
-    - test-mkfs
+    # can't run on vm, move it to ocfs2test-mkfs.yaml
+    # - test-mkfs
     # - test-buildkernel # we have kernel build already, ignore
     # - test-tunefs # need a huge memory (up to 130GB at lkp-hsw-ep2)
     - test-sendfile
