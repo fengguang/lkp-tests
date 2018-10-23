@@ -2,6 +2,8 @@ suite: perf-sanity-tests
 testcase: perf-sanity-tests
 category: functional
 
+need_memory: 4G
+
 perf-sanity-tests:
   perf_compiler:
     - gcc
