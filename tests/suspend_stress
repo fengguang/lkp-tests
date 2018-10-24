@@ -4,7 +4,7 @@
 # - iterations
 # - runtime	(dont show)
 # - pm_test	(dont show)
-# - idle	(dont show)
+# - idle_time	(dont show)
 # - debug	(dont show)
 
 . $LKP_SRC/lib/http.sh
@@ -13,7 +13,7 @@
 [ -n "$mode" ] || mode='freeze'
 [ -n "$iterations" ] || iterations=1
 [ -n "$rtcwake" ] || rtcwake=60
-[ -n "$idle" ] || idle=10
+[ -n "$idle_time" ] || idle_time=10
 
 if [ -z "$runtime" ]
 then
@@ -128,8 +128,8 @@ do
 	fi
 	echo "Done"
 	echo "Done" >> $log_file
-	echo "Sleep for $idle seconds"
-	sleep $idle
+	echo "Sleep for $idle_time seconds"
+	sleep $idle_time
 done
 
 echo "SUSPEND RESUME TEST SUCCESS"

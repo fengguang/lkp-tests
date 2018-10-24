@@ -4,7 +4,7 @@
 # - option (dontshow)
 # - multi
 # - rtcwake (dont show)
-# - idle (dont show)
+# - idle_time (dont show)
 # - debug (dont show)
 
 . $LKP_SRC/lib/upload.sh
@@ -18,7 +18,7 @@ options=""
 [ -n "$multi" ] || mutli=1
 [ -n "$runtime" ] || runtime=600
 [ -n "$rtcwake" ] || rtcwake=30
-[ -n "$idle" ] || idle=0
+[ -n "$idle_time" ] || idle_time=0
 
 options="-m $mode $option -rtcwake $rtcwake -sync"
 
@@ -118,7 +118,7 @@ do
 		rm -rf $f_result
 		echo $(date +%T): done ... >> $f_log
 	fi
-	sleep $idle
+	sleep $idle_time
 done
 
 echo analyze_suspend test done
