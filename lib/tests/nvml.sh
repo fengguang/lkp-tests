@@ -170,6 +170,7 @@ run()
 	# to fix no point to a PMEM device
 	echo "PMEM_FS_DIR_FORCE_PMEM=1" >> testconfig.sh
 
+	[ "$test" = "pmem" ] && echo "PMEM_FS_DIR_FORCE_PMEM=2" >> testconfig.sh
 	for testcase in $testcases
 	do
 		# ignore some test cases
