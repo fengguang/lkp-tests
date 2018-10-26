@@ -157,6 +157,7 @@ pack_benchmark_deps()
 		for p in $packages
 		do
 			swupd bundle-list | grep -qw "^$p$" && continue
+			swupd bundle-list -a | grep -qw "^$p$" || return
 			$LKP_SRC/distro/installer/clear $p 2>&1 | grep -v "Out of memory"
 
 			uninstalled_bundles="$uninstalled_bundles $p"
