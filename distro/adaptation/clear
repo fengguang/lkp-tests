@@ -12,6 +12,7 @@ autoconf-archive:
 automake: c-basic
 autopoint: os-core-dev
 autotools-dev: dev-utils-dev
+bash-completion: os-core
 bc: bc
 bind9:
 binutils: c-basic
@@ -127,6 +128,7 @@ klibc-utils:i386:
 kmod: os-core
 less: os-core
 lftp:
+libmariadbclient18:
 libacl1-dev: os-core
 libaio1: os-core-dev
 libaio-dev: storage-utils-dev
