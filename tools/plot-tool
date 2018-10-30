@@ -11,6 +11,7 @@ require "#{LKP_SRC}/lib/plot.rb"
 
 $opt_output_path = "output.png"
 $x_stat_key = nil
+$x_relative = false
 
 opt_parser = OptionParser.new do |opts|
   opts.banner = 'Usage: mplot matrix.json stat_field [matrix.json stat_filed]... [OPTION...]'
@@ -28,6 +29,10 @@ opt_parser = OptionParser.new do |opts|
 
   opts.on('-x KEY', '--x-stat-key KEY', 'x axis stat key name') do |key|
     $x_stat_key = key
+  end
+
+  opts.on('-r', '--relative-x', 'x axis relative to the first element') do
+    $x_relative = true;
   end
 
   opts.on_tail('-h', '--help', 'show help message') do
@@ -49,6 +54,13 @@ def plot_it(matrix_stat_arr)
   lines = []
   matrix_stat_arr.each_slice(2) do |matrix_fn, stat|
     matrix = load_json matrix_fn
+    if $x_relative
+      rel_x = "rel-#{$x_stat_key}"
+      xs = matrix[$x_stat_key]
+      x0 = xs.first
+      matrix[rel_x] = xs.map { |xi| xi - x0 }
+      plotter.set_x_stat_key(rel_x)
+    end
     lines << [matrix, stat, stat.gsub('_', '\_')]
   end
   plotter.set_output_file_name($opt_output_path).
