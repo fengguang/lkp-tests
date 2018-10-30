@@ -1,7 +1,20 @@
 #!/bin/bash
 
-VERSION="0.53"
-WEB_URL="http://download.savannah.gnu.org/releases/${BM_NAME}/${BM_NAME}-${VERSION}.tar.gz"
+download()
+{
+	VERSION="0.53"
+	WEB_URL="https://download.savannah.gnu.org/releases/${BM_NAME}/${BM_NAME}-${VERSION}.tar.gz"
+	# enlarge the timeout value
+	# the default value: 3s is too short to access this url
+	# pack/default:         wget -t 3 -T 3
+	# -t,  --tries=NUMBER              set number of retries to NUMBER (0 unlimits)
+	# -T,  --timeout=SECONDS           set all timeout values to SECONDS
+	wget -t 5 -T 10 ${WEB_URL} || return
+	[[ $source_package ]] || source_package=$(basename $WEB_URL)
+	[[ $source_dir     ]] || source_dir=${source_package%%.tar.*}
+	[[ -d $source_dir ]] ||
+	tar xf "$source_package"
+}
 
 build()
 {
