@@ -118,7 +118,7 @@ class MMatrixPlotter < MatrixPlotterBase
   end
 
   prop_with :output_file_name, :title
-  prop_with :x_stat_key, :x_as_label, :lines
+  prop_with :x_stat_key, :x_as_label, :xtics, :lines
   prop_with :y_margin, :y_range
 
   # shortcut for one line figure
@@ -160,7 +160,7 @@ class MMatrixPlotter < MatrixPlotterBase
             data = [matrix[@x_stat_key], values]
           else
             data = [values]
-            p.noxtics
+            p.noxtics unless @xtics
           end
           p.data << Gnuplot::DataSet.new(data) do |ds|
             ds.with = if @output_file_name
