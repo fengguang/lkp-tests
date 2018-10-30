@@ -317,6 +317,10 @@ run_tests()
 		subtest_in_skip_filter "$skip_filter" && continue
 
 		if [[ $subtest = "bpf" ]]; then
+			type ping6 && {
+				sed -i 's/if ping -6/if ping6/g' bpf/test_skb_cgroup_id.sh 2>/dev/null
+				sed -i 's/ping -${1}/ping${1%4}/g' bpf/test_sock_addr.sh 2>/dev/null
+			}
 			## ths test needs special device /dev/lircN
 			sed -i 's/test_lirc_mode2_user//' bpf/Makefile
 			echo "ignored_by_lkp bpf.test_lirc_mode2_user test"
