@@ -6,17 +6,16 @@ results = Hash.new(0)
 #    290.690747746 777209  mem_load_uops_l3_miss_retired_remote_dram 89128748143 100.00
 #    324.224668698 7928832 Bytes llc_misses.mem_read 8005538025 100.00
 
-STDIN.each_line do |line|
+$stdin.each_line do |line|
   next unless line =~ /\d+.\d+\s+(\d+)\s+(\S+)\s+(\S+)/
-  key = if $2 == 'Bytes'
-          "#{$3}_#{$2}"
-        else
-          $2
-        end
-  results[key] += $1.to_i
-end
-
-results.each do |key, value|
+  fields = line.split
+  if fields[2] == 'Bytes'
+    fields[2] = "#{fields[3]}_#{fields[2]}"
+    fields.delete_at 3
+  end
+  _, value, key, _, percent = fields
+  value = value.to_i * 100.0 / percent.to_f
+  results[key] += value
   puts "#{key}: #{value}"
 end
 
