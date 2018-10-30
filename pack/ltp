@@ -8,7 +8,7 @@ download()
 		git_clone_update https://git.centos.org/r/rpms/rusers.git || return
 	}
 	git_clone_update https://github.com/PeterHuewe/tpm-emulator.git || return
-	git_clone_update https://github.com/ianw/numactl.git || return
+	git_clone_update https://github.com/numactl/numactl.git || return
 	git_clone_update https://github.com/linux-test-project/ltp.git
 }
 
@@ -54,7 +54,7 @@ build_tpm_emulator()
 
 build_numactl()
 {
-	autoreconf
+	autoreconf -f -i
 	./configure --prefix=$BM_ROOT/testcases/bin/numactl
 	make
 }
