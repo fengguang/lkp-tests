@@ -18,8 +18,11 @@ def is_event_counter(name)
 end
 
 def is_independent_counter(name)
-  $independent_counters ||= Set.new File.read("#{LKP_SRC}/etc/independent-counters").split
-  $independent_counters.include? name
+  $independent_counter_prefixes ||= File.read("#{LKP_SRC}/etc/independent-counter-prefixes").split
+  $independent_counter_prefixes.each do |prefix|
+    return true if name.index(prefix) == 0
+  end
+  false
 end
 
 def max_cols(matrix)
