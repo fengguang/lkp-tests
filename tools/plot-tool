@@ -12,6 +12,7 @@ require "#{LKP_SRC}/lib/plot.rb"
 $opt_output_path = "output.png"
 $x_stat_key = nil
 $x_relative = false
+$xtics = false
 
 opt_parser = OptionParser.new do |opts|
   opts.banner = 'Usage: mplot matrix.json stat_field [matrix.json stat_filed]... [OPTION...]'
@@ -35,6 +36,10 @@ opt_parser = OptionParser.new do |opts|
     $x_relative = true;
   end
 
+  opts.on('--xtics', 'draw x tics') do
+    $xtics = true;
+  end
+
   opts.on_tail('-h', '--help', 'show help message') do
     puts opts
     exit
@@ -50,7 +55,8 @@ end
 
 def plot_it(matrix_stat_arr)
   plotter = MMatrixPlotter.new
-  plotter.set_x_stat_key($x_stat_key)
+  plotter.set_x_stat_key($x_stat_key).
+    set_xtics($xtics)
   lines = []
   matrix_stat_arr.each_slice(2) do |matrix_fn, stat|
     matrix = load_json matrix_fn
