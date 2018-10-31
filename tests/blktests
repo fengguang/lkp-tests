@@ -56,7 +56,7 @@ has_new_test()
 {
 	ls tests > tests/$test || return
 	# if has any other test suite besides these known tests, write into file: other
-	known_test="block\|loop\|meta\|nbd\|nvme\|scsi\|srp\|other"
+	known_test="block\|loop\|meta\|nvmeof-mp\|nbd\|nvme\|scsi\|srp\|other"
 	sed -i "/\<\($known_test\)\>/d" tests/$test || return
 	[ -s tests/$test ] && return
 	# if don't have new test suite, exit
