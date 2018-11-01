@@ -21,6 +21,7 @@ while (line = STDIN.gets)
   when /The following tests failed to properly run:/
     puts "#{test_name}.fail: 1"
   when /idle-([0-9.]+)seconds/
-    puts line.split[1].to_s
+    # idle-1.1.0.seconds: 36.055191180
+    puts line
   end
 end
