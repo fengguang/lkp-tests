@@ -82,6 +82,17 @@ check_ignore_case()
 	# the test of filesystems waits for the events from file, it will not never stop.
 	[ $casename = "filesystems" ] && return
 
+	# cgroup controllers can only be mounted in one hierarchy (v1 or v2).
+	# If a controller mounted on a legacy v1, then it won't show up in cgroup2.
+	# the v1 controllers are automatically mounted under /sys/fs/cgroup.
+	# systemd automatically creates such mount points. mount_cgroup dosen't work.
+	# not all controllers (like memory) become available even after unmounting all v1 cgroup filesystems.
+	# To avoid this behavior, boot with the systemd.unified_cgroup_hierarchy=1.
+	# then test cgroup could run, but the test will trigger out OOM (OOM is expected)
+	# e.g test_memcg_oom_group_parent_events.
+	# it disables swapping and tries to allocate anonymous memory up to OOM.
+	# when the test triggers out OOM, lkp determines it as failure.
+	[ $casename = "cgroup" ] && return
 	return 1
 }
 
