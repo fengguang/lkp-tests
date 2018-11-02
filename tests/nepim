@@ -19,5 +19,5 @@ server=${server%% *}
 [ -z "$opt_addr" ] && opt_addr=$server
 
 cd $BENCHMARK_ROOT/nepim || exit
-
+export LD_LIBRARY_PATH=/usr/local/oop/lib:$LD_LIBRARY_PATH
 log_cmd ./nepim -c $opt_addr -d $opt_udp -a $runtime $opt_streams 2>&1

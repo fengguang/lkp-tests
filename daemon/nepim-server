@@ -2,5 +2,6 @@
 
 cd $BENCHMARK_ROOT/nepim || exit
 
+export LD_LIBRARY_PATH=/usr/local/oop/lib:$LD_LIBRARY_PATH
 log_cmd ./nepim >/dev/null 2>&1 &
 sleep 1
