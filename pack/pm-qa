@@ -10,6 +10,9 @@ install()
 {
 	make -C cpuidle cpuidle_killer
 	cp -af $source_dir/* $BM_ROOT
+
+	[ "$distro" = "clear" ] && return
+
 	cd ../glmark2
 
 	# https://unix.stackexchange.com/questions/265668/g-doesnt-recognize-standard-14-std-c14
