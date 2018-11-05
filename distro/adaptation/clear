@@ -64,8 +64,8 @@ ebtables: network-basic
 elfutils: os-core-dev
 ethtool: network-basic
 expect: os-core-dev
-f2fs-tools:
-fakeroot:
+f2fs-tools: os-testsuite-0day
+fakeroot: os-testsuite-0day
 file: os-core-dev
 fio: fio
 flex: c-basic
@@ -106,14 +106,14 @@ heirloom-mailx: mail-utils
 help2man: dev-utils-dev
 hpcc:
 hwinfo:
-i2c-tools:
-iasl:
+i2c-tools: os-testsuite-0day
+iasl: os-testsuite-0day
 indent: c-basic
 info2man:
 initramfs-tools: sysadmin-basic
 initramfs-tools-core:i386: sysadmin-basic
 inotify-tools: inotify-tools
-intltool-debian:
+intltool-debian: os-testsuite-0day
 inxi:
 iperf: sysadmin-basic
 iperf3: sysadmin-basic
@@ -221,7 +221,7 @@ libgmp-dev: os-core-dev
 libgomp1: os-core-dev
 libgpm2: os-core-dev
 libgpm-dev: os-core-dev
-libgraphite2-3:
+libgraphite2-3: os-testsuite-0day
 libgts-0.7-5:
 libgvc6: os-core-dev
 libgvpr2: os-core-dev
@@ -246,14 +246,14 @@ libklibc-dev: dev-utils-dev
 libkmod2: os-core-dev
 libkmod-dev: os-core-dev
 libldb1: storage-utils
-libllvm3.9:
+libllvm3.9: os-testsuite-0day
 liblsan0: os-core-dev
 liblsan0/unstable: os-core-dev
 libltdl7: os-core-dev
 liblzma-dev: dev-utils-dev
 libmagic1: os-core-dev
 libmagic-mgc: os-core-dev
-libmariadbclient-dev:
+libmariadbclient-dev: os-testsuite-0day
 libmount-dev: os-core-dev
 libmpc3: os-core-dev
 libmpx2: dev-utils-dev
@@ -346,7 +346,7 @@ libx11-data: os-core-dev
 libx11-dev: os-core-dev
 libx11-xcb-dev: os-core-dev
 libxau6: libX11client
-libxaw7:
+libxaw7: os-testsuite-0day
 libxcb1: os-core-dev
 libxcb-render0: os-core-dev
 libxcb-shm0: os-core-dev
@@ -387,9 +387,9 @@ man-db: sysadmin-basic
 manpages-dev: sysadmin-basic
 mcelog: kernel-lts
 mdadm: storage-utils
-memcached:
+memcached: os-testsuite-0day
 minicom: sysadmin-basic
-moreutils:
+moreutils: os-testsuite-0day
 msr-tools: performance-tools
 mutt: mail-utils
 mysql-server: dev-utils-dev
@@ -417,7 +417,7 @@ openbsd-inetd:
 opencryptoki:
 openmpi-bin: dev-utils-dev
 openssl: openssl
-pandoc:
+pandoc: os-testsuite-0day
 parallel: sysadmin-basic
 parted: storage-utils
 patch: patch
@@ -477,18 +477,18 @@ rsync: dev-utils
 rsyslog:
 rt-tests: performance-tools
 ruby2.3-dev: ruby-basic
-ruby-bunny:
-ruby-colorize:
+ruby-bunny: os-testsuite-0day
+ruby-colorize: os-testsuite-0day
 ruby-dev: ruby-basic
-ruby-facets:
-ruby-git:
-ruby-gnuplot:
-ruby-mail:
+ruby-facets: os-testsuite-0day
+ruby-git: os-testsuite-0day
+ruby-gnuplot: os-testsuite-0day
+ruby-mail: os-testsuite-0day
 ruby: ruby-basic
-ruby-serialport:
-ruby-sinatra:
-ruby-term-ansicolor:
-ruby-text-table:
+ruby-serialport: os-testsuite-0day
+ruby-sinatra: os-testsuite-0day
+ruby-term-ansicolor: os-testsuite-0day
+ruby-text-table: os-testsuite-0day
 runit:
 rusers:
 rusersd:
