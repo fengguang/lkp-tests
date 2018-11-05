@@ -120,6 +120,7 @@ list_bundles_files()
 
 pack_bundles_files()
 {
+	local date=$(date +"%Y-%m-%d")
 	# allow empty
 	ls $tmpdir | grep -q "\.list$" >/dev/null || {
 		echo "empty PACKAGE_LIST for $BM_NAME"
@@ -141,7 +142,6 @@ pack_bundles_files()
 # 3. list files for each atomic bundle and pack it
 pack_benchmark_deps()
 {
-	local date=$(date +"%Y-%m-%d")
 	local installed_bundles_file=$(mktemp /tmp/pack-deps-installed-bundles-XXXXXXXX)
 	local uninstalled_bundles=
 	local uninstalled_atomic_bundles=
