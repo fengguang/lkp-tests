@@ -76,7 +76,7 @@ adapt_packages()
 
 remove_packages_version()
 {
-	generic_packages=$(echo $generic_packages | sed 's/=.*//')
+	generic_packages=$(echo $generic_packages | sed 's/=[^ ]*//g')
 }
 
 remove_packages_repository()
