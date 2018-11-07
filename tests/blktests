@@ -87,6 +87,9 @@ set_env()
 		echo "TEST_DEVS=$partition" > config
 		[ "$test" = "nvme-group1" ] && log_cmd mkdir -p /mnt/$test && log_cmd mount $partition /mnt/$test
 	fi
+
+       # fix the issue: losetup: cannot find an unused loop device
+       lsmod | grep -q loop || modprobe loop
 }
 
 run_test()
