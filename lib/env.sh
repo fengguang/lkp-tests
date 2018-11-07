@@ -88,3 +88,8 @@ disable_nmi_watchdog()
 	test -e  /proc/sys/kernel/nmi_watchdog &&
 	echo 0 > /proc/sys/kernel/nmi_watchdog
 }
+
+is_clearlinux()
+{
+	[ -f /usr/lib/os-release ] && grep -qw "Clear Linux" /usr/lib/os-release
+}
