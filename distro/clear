@@ -106,6 +106,7 @@ list_bundles_files()
 	local delta=$(delta_bundles $installed_bundles_file "$uninstalled_atomic_bundles")
 
 	echo "Actually pack bundles: $delta"
+	echo "$delta" >$pack_to/.${BM_NAME}.bundles
 
 	fixup_benchmark
 
