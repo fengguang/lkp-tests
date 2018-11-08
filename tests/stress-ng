@@ -12,6 +12,6 @@
 if [ "$class" = "exec_spawn" ]; then
 	su lkp -c "stress-ng --exec $nr_threads --spawn $nr_threads --timeout $testtime --times --verify --metrics-brief 2>&1"
 else
-	stress-ng --class $class $stress_opts --sequential $nr_threads --timeout $testtime --times --verify --metrics-brief --exclude spawn,exec$exlucde_stress 2>&1
+	stress-ng --sequential $nr_threads --class $class $stress_opts --timeout $testtime --times --verify --metrics-brief --exclude spawn,exec$exlucde_stress 2>&1
 fi
 
