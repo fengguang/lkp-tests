@@ -35,7 +35,7 @@ class ResultPath < Hash
     'hwinfo' => %w[tbox_group run],
     'build-dpdk' => %w[rootfs dpdk_config commit dpdk_compiler dpdk_commit run],
     'dpdk-dts' => %w[rootfs dpdk_config dpdk_compiler dpdk_commit run],
-    'build-qemu' => %w[qemu_config qemu_commit run],
+    'build-qemu' => %w[rootfs qemu_config qemu_commit run],
     'build-nvml' => %w[nvml_commit run],
     'build-ltp' => %w[ltp_commit run],
     'build-acpica' => %w[acpica_commit test run],
