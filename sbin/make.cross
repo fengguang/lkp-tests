@@ -252,12 +252,14 @@ if [ -d obj-$ARCH ]; then
 	O=KBUILD_OUTPUT=obj-$ARCH
 fi
 
+[[ -f arch/$ARCH/boot/dts/Makefile ]] && make_dts="CONFIG_OF_ALL_DTBS=y CONFIG_DTC=y"
+
 [[ -f .make-env ]] && source ./.make-env
 
 if [[ -d source && -L source ]]; then
-	echo make -C source O=$PWD $opt_arch $opt_cross $subarch $opt_jobs "$@"
-	exec make -C source O=$PWD $opt_arch $opt_cross $subarch $opt_jobs "$@"
+	echo make -C source O=$PWD $make_dts $opt_arch $opt_cross $subarch $opt_jobs "$@"
+	exec make -C source O=$PWD $make_dts $opt_arch $opt_cross $subarch $opt_jobs "$@"
 else
-	echo make $O $opt_arch $opt_cross $subarch $opt_jobs "$@"
-	exec make $O $opt_arch $opt_cross $subarch $opt_jobs "$@"
+	echo make $O $make_dts $opt_arch $opt_cross $subarch $opt_jobs "$@"
+	exec make $O $make_dts $opt_arch $opt_cross $subarch $opt_jobs "$@"
 fi
