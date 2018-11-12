@@ -9,6 +9,8 @@
 
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/misc-base.sh
+. $LKP_SRC/distro/clear
+. $LKP_SRC/lib/env.sh
 
 [ -n "$rootfs" ] || die "rootfs is empty"
 
@@ -62,7 +64,11 @@ get_pkg_info()
 	)
 }
 
-apt_install_depends lkp-dev
+if is_clearlinux; then
+	log_cmd swupd_install_depends lkp-dev
+else
+	log_cmd apt_install_depends lkp-dev
+fi
 
 [[ $arch ]] || arch=`uname -m`
 
