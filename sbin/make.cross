@@ -20,7 +20,7 @@
 # Credit: Tony Breeds <tony@bakeyournoodle.com> for crosstool
 
 GCC_VERSION=${GCC_VERSION:-""}
-GCC_INSTALL_PATH=/opt
+GCC_INSTALL_PATH="$HOME/0day"
 
 if [[ ! "$0" =~ 'make.cross' && "$0" =~ make\.([a-z0-9_]+) ]]; then
 	export ARCH="${BASH_REMATCH[1]}"
@@ -42,13 +42,8 @@ shopt -s nullglob
 install_packages()
 {
 	[[ ! -x /usr/bin/xz || ! -x /usr/bin/lftp ]] && {
-		if [[ -x /usr/bin/apt-get ]]; then
-			echo apt-get install xz-utils lftp
-			sudo apt-get install xz-utils lftp
-		else
-			echo Please install: xz-utils lftp
-			exit 1
-		fi
+		echo Please install: xz-utils lftp
+		exit 1
 	}
 }
 
@@ -65,8 +60,15 @@ download_extract()
 	     lftpget -c $URL || return
 	cd ..
 
+	mkdir -p $GCC_INSTALL_PATH || return
+
+	[[ -w "$GCC_INSTALL_PATH" ]] || {
+		echo "Can't use $GCC_INSTALL_PATH as gcc install path, please choose a different GCC_INSTALL_PATH"
+		exit 1
+	}
+
 	echo tar Jxf $dir/$file -C $GCC_INSTALL_PATH
-	sudo tar Jxf $dir/$file -C $GCC_INSTALL_PATH
+	tar Jxf $dir/$file -C $GCC_INSTALL_PATH
 }
 
 install_crosstool()
@@ -108,9 +110,9 @@ install_linaro()
 	local cross_gcc_version=${cross_gcc_version##*-}
 
 	echo mkdir -p $GCC_INSTALL_PATH/gcc-$cross_gcc_version
-	sudo mkdir -p $GCC_INSTALL_PATH/gcc-$cross_gcc_version
+	mkdir -p $GCC_INSTALL_PATH/gcc-$cross_gcc_version || return
 	echo mv $dir  $GCC_INSTALL_PATH/gcc-$cross_gcc_version/$gcc_arch
-	sudo mv $dir  $GCC_INSTALL_PATH/gcc-$cross_gcc_version/$gcc_arch
+	mv $dir  $GCC_INSTALL_PATH/gcc-$cross_gcc_version/$gcc_arch
 }
 
 install_cross_compiler()
