@@ -18,10 +18,11 @@ describe ResultPath do
         expect(result_path['compiler']).to eq 'gcc-4.9'
         expect(result_path['commit']).to eq '0f57d86787d8b1076ea8f9cbdddda2a46d534a27'
 
-        expect(result_path.parse_result_root("#{RESULT_MNT}/build-qemu/x86_64-softmmu/a58047f7fbb055677e45c9a7d65ba40fbfad4b92/2")).to be true
-        expect(result_path.parse_result_root("#{RESULT_MNT}/build-qemu/x86_64-softmmu/a58047f7fbb055677e45c9a7d65ba40fbfad4b92/")).to be true
-        expect(result_path.parse_result_root("#{RESULT_MNT}/build-qemu/x86_64-softmmu/a58047f7fbb055677e45c9a7d65ba40fbfad4b92")).to be true
+        expect(result_path.parse_result_root("#{RESULT_MNT}/build-qemu/clear-ota-25590-x86_64-2018-10-18.cgz/x86_64-softmmu/a58047f7fbb055677e45c9a7d65ba40fbfad4b92/2")).to be true
+        expect(result_path.parse_result_root("#{RESULT_MNT}/build-qemu/debian-x86_64-2018-04-03.cgz/x86_64-softmmu/a58047f7fbb055677e45c9a7d65ba40fbfad4b92/")).to be true
+        expect(result_path.parse_result_root("#{RESULT_MNT}/build-qemu/debian-x86_64-2018-04-03.cgz/x86_64-softmmu/a58047f7fbb055677e45c9a7d65ba40fbfad4b92")).to be true
         expect(result_path['testcase']).to eq 'build-qemu'
+        expect(result_path['rootfs']).to eq 'debian-x86_64-2018-04-03.cgz'
         expect(result_path['qemu_config']).to eq 'x86_64-softmmu'
         expect(result_path['qemu_commit']).to eq 'a58047f7fbb055677e45c9a7d65ba40fbfad4b92'
 
@@ -103,7 +104,7 @@ describe ResultPath do
     end
 
     it 'handles qemu path' do
-      expect(described_class.maxis_keys('build-qemu').size).to eq 2
+      expect(described_class.maxis_keys('build-qemu').size).to eq 3
     end
   end
 end
