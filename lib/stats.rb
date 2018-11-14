@@ -741,10 +741,12 @@ def is_kpi_stat(stat, _axes, _values = nil)
 end
 
 def kpi_stat_direction(stat_name, stat_change_percentage)
-  change_direction = 'improvement'
-
-  if $index_perf[stat_name] && $index_perf[stat_name] * stat_change_percentage < 0
-    change_direction = 'regression'
-  end
+  change_direction = if !$index_perf[stat_name]
+                       'undefined'
+                     elsif $index_perf[stat_name] * stat_change_percentage < 0
+                       'regression'
+                     else
+                       'improvement'
+                     end
   change_direction
 end
