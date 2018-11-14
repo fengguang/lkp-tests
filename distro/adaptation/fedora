@@ -12,6 +12,7 @@ fsmark: fs_mark
 gcc-4.9: gcc
 gcc-5: gcc
 gcc-6: gcc
+gcc-multilib: libgcc.i686
 gfortran: gcc-gfortran
 hpcc:
 initramfs-tools: dracut
@@ -114,6 +115,7 @@ pkg-config: pkgconfig
 plzip:
 postmark:
 python-minimal: python2
+python-pkg-resources: python-setuptools
 rt-tests: numactl-devel
 ruby-dev: ruby-devel
 sg3-utils: sg3_utils
