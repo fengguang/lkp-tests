@@ -34,6 +34,7 @@ mkdir -p $BENCHMARK_ROOT
 cd $BENCHMARK_ROOT || exit
 
 . $LKP_SRC/lib/unit.sh
+. $LKP_SRC/lib/env.sh
 
 # NOTE: support 1 disk test only so far
 test_dir=${mount_points%% *}
@@ -101,6 +102,8 @@ calc_nr_file()
 }
 
 calc_nr_file
+
+is_clearlinux && export PATH="$PATH:$BENCHMARK_ROOT/fsmark"
 
 nr_directories=${nr_directories%d}
 nr_files_per_directory=${nr_files_per_directory%fpd}
