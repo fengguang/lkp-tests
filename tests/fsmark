@@ -103,7 +103,7 @@ calc_nr_file()
 
 calc_nr_file
 
-is_clearlinux && export PATH="$PATH:$BENCHMARK_ROOT/fsmark"
+export PATH="$PATH:$BENCHMARK_ROOT/fsmark"
 
 nr_directories=${nr_directories%d}
 nr_files_per_directory=${nr_files_per_directory%fpd}
