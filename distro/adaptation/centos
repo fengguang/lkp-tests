@@ -24,7 +24,7 @@ initramfs-tools: dracut
 iozone3: gnuplot*
 iproute2: iproute
 klibc-utils:
-gcc-multilib: libgcc.686
+gcc-multilib: libgcc.i686
 libacl1-dev: libacl-devel
 libaio1: libaio libaio-devel
 libaio-dev: libaio-devel
@@ -154,6 +154,7 @@ python-minimal: python2
 python-numpy: numpy
 python-numpy: numpy
 python-openssl: pyOpenSSL
+python-pkg-resources: python-setuptools
 rstatd: rusers-server
 rt-tests: numactl-devel
 ruby-dev: ruby-devel
