@@ -16,6 +16,7 @@ sync_distro_sources()
 		else
 			yum update
 		fi ;;
+	redhat) yum update ;;
 	archlinux) yaourt -Sy ;;
 	opensuse)
 		zypper update ;;
