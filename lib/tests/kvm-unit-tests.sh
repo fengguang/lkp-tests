@@ -17,6 +17,8 @@
 # 12
 # 13 [hyperv_connections]
 # 14 ...
+. $LKP_SRC/lib/env.sh
+
 remove_case()
 {
 	local to_be_removed=$1
@@ -88,9 +90,7 @@ setup_test_environment()
 	[ "$(cat /proc/sys/kernel/nmi_watchdog)" != "0" ] && {
 		echo 0 > /proc/sys/kernel/nmi_watchdog || return
 	}
-	[ -z "$(virt-what)" ] && {
-		load_kvm_intel_nested || return
-	}
+	is_virt || load_kvm_intel_nested || return
 	return 0
 }
 
