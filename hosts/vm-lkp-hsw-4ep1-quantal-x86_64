@@ -3,3 +3,5 @@ nr_vm: 32
 nr_cpu: 2
 memory: 768M
 rootfs: quantal-core-x86_64.cgz
+hdd_partitions: /dev/vda
+swap_partitions: /dev/vdb
