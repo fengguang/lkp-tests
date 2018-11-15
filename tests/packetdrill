@@ -12,7 +12,7 @@ lsmod | grep -q tun || modprobe tun
 for f in $(find . -name "*.pkt" ! -name "*diag-ipv6*" | sort); do
 	echo "Running $f ..."
 	ip tcp_metrics flush all > /dev/null 2>&1
-	log_cmd ./gtests/net/packetdrill/packetdrill $f
+	log_cmd ./gtests/net/packetdrill/packetdrill $f 2>&1
 	return_value=$?
 	if [ $return_value -eq 0 ]; then
 		echo "$f pass"
