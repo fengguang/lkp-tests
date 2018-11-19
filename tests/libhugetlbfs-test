@@ -1,11 +1,17 @@
 #!/bin/sh
 # - pagesize
 
+. $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/debug.sh
 
 cd $BENCHMARK_ROOT/libhugetlbfs-test || die "can not cd libhugetlbfs-test"
 
-log_cmd make || die "make failed"
+is_clearlinux && {
+	make_opt="PREFIX=/usr LIB32=lib32 LIB64=lib64 CFLAGS=-fPIC"
+	sed -i 's#/usr/bin/env python#/usr/bin/env python2#g' tests/run_tests.py
+}
+
+log_cmd make $make_opt || die "make failed"
 
 [ -z $pagesize ] && die "invalid parameter"
 
@@ -13,7 +19,7 @@ log_cmd make || die "make failed"
 log_cmd obj/hugeadm --add-temp-swap=32 --pool-pages-min $pagesize:32 --hard \
 	|| die "config huge pages size and number failed"
 
-log_cmd make check
+log_cmd make $make_opt check
 
 # replace the full-width characters with half-width to avoid the stderr.json
 # eg.
