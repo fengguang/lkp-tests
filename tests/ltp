@@ -173,10 +173,6 @@ syscalls_part4)
 	[ -e /dev/log ] && rm /dev/log
 	ln -s /run/systemd/journal/dev-log /dev/log
 	;;
-ltplite-0*)
-	specify_tmpdir || exit
-	[ "$fs" = "ext4" ] && tune2fs -O ^dir_nlink $ltp_partition
-	;;
 net.ipv6_lib)
 	iface=$(ifconfig -s | awk '{print $1}' | grep ^eth | head -1)
 	[ -n "$iface" ] && export LHOST_IFACES=$iface

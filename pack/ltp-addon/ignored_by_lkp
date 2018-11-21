@@ -8,9 +8,6 @@ crashme:f00f
 syscalls_part2:modify_ldt01
 syscalls_part2:modify_ldt02
 syscalls_part2:modify_ldt03
-ltplite:modify_ldt01
-ltplite:modify_ldt02
-ltplite:modify_ldt03
 stress.part3:modify_ldt01
 stress.part3:modify_ldt02
 stress.part3:modify_ldt03
@@ -55,14 +52,11 @@ stress.part3:ptrace03
 syscalls_part3:ptrace04
 # __NR_readdir not supported on x86_64
 syscalls_part3:readdir21
-ltplite:readdir21
 stress.part3:readdir21
 # only support kernel version is 2.6.25 or below
 # adjtimex(2) fails with errno set to EINVAL if an attempt is  made  to set buf.offset to a value < 512000L
 # (This test case will be executed only if the kernel version is 2.6.25 or below)
-ltplite:ptrace03
 syscalls_part1:adjtimex02
-ltplite:adjtimex02
 stress.part3:adjtimex02
 # only support kernel version < v2.6.9
 # For munlockall():
@@ -70,7 +64,6 @@ stress.part3:adjtimex02
 # (Linux 2.6.8 and earlier) The caller was not privileged (CAP_IPC_LOCK)
 # setpriority(0, 1, -2) as unprivileged user fails as expected: EPERM
 syscalls_part2:munlockall02
-ltplite:munlockall02
 stress.part3:munlockall02
 # not works when compiled as 64-bit application
 syscalls_part2:msgrcv08
@@ -79,25 +72,15 @@ syscalls_part2:msgrcv08
 # but this facility seems to be present in other standard flavours of Unix
 # Currently this program has all the testing done under "#ifdef LINUX_FILE_REGION_LOCK"
 # when Linux implements the regions locking then, this testcase should be recompiled accordingly with the "ifdef" removed.
-ltplite:fcntl06
 syscalls_part1:fcntl06
 syscalls_part1:fcntl06_64
 stress.part3:fcntl06
-# not works when compiled as 64-bit application
-ltplite:msgrcv08
 # for current kernel, subdir limit is not availiable for all fs
 syscalls_part2:linkat02
 # __NR_bdflush not supported on x86_64
 syscalls_part1:bdflush01
 # __NR_cacheflush not supported on x86_64
 syscalls_part1:cacheflush01
-# not for linux
-ltplite:rmdir05
-# __NR_sysctl is not supported on x86_64
-ltplite:sysctl01
-ltplite:sysctl03
-ltplite:sysctl04
-ltplite:sysctl05
 # set_thread_area not supported on x86_64
 syscalls_part3:set_thread_area01
 # __NR_ssetmask not supported on x86_64
@@ -110,7 +93,6 @@ stress.part3:rename11
 syscalls_part4:switch01
 # the test result is always block
 syscalls_part4:sysconf01
-ltplite:sysconf01
 # sysconf01 not supported on x86_64 
 stress.part3:sysconf01
 # __NR_sysctl not supported on x86_64
