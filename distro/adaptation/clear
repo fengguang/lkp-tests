@@ -8,7 +8,7 @@ apt-file:
 at: os-cloudguest-azure
 attr: dev-utils
 autoconf: c-basic
-autoconf-archive:
+autoconf-archive: c-basic
 automake: c-basic
 autopoint: os-core-dev
 autotools-dev: dev-utils-dev
@@ -319,7 +319,7 @@ libstdc++-6-dev: os-core-dev
 libstdc++6/unstable: os-core
 libstdc++-7-dev/unstable: os-core-dev
 libthai0: storage-utils-dev
-libthai-data:
+libthai-data: weston-extras
 libtiff5: storage-utils-dev
 libtimedate-perl: perl-extras
 libtinfo-dev: os-core-dev
@@ -446,26 +446,26 @@ python: python-basic
 python3: python3-basic
 python3-colorama: python-extras
 python3-mako: python-extras
-python3-markupsafe:
+python3-markupsafe: python-extras
 python3-numpy: python-extras
-python3-six:
-python-crypto:
+python3-six: python-extras
+python-crypto: python-basic-dev
 python-csvkit:
-python-dbus:
+python-dbus: python2-basic
 python-dev: python-basic-dev
-python-gobject:
+python-gobject: python2-basic
 python-minimal: python-basic
 python-netifaces:
 python-numpy: python2-basic
-python-openssl:
-python-pip:
+python-openssl: python2-basic
+python-pip: python2-basic
 python-pkg-resources:
 python-pyrad:
-python-setuptools:
-python-simplejson:
-python-six:
+python-setuptools: python2-basic
+python-simplejson: python-extras
+python-six: python2-basic
 python-sss:
-python-wheel:
+python-wheel: python2-basic
 qemu: kvm-host
 qemu-system-x86: kvm-host
 qemu-utils: kvm-host
@@ -496,7 +496,7 @@ samba-libs: storage-utils
 scons: qt-basic-dev
 screen: sysadmin-basic
 sed: os-core
-sg3-utils:
+sg3-utils: os-testsuite-0day
 sgml-base:
 sgml-data:
 siege: performance-tools
@@ -539,7 +539,7 @@ uuid-runtime: os-core
 vim: vim
 virt-what:
 vsftpd:
-watchdog:
+watchdog: sysadmin-hostmgmt
 wget: network-basic
 winpdb:
 wireless-regdb: wpa_supplicant
