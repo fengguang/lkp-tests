@@ -30,6 +30,7 @@ class ResultPath < Hash
 
   PATH_SCHEME = {
     'default' => %w[path_params tbox_group rootfs kconfig compiler commit run],
+    'kvm:default' => %w[path_params tbox_group rootfs kconfig compiler commit qemu_config qemu_commit linux_commit run],
     'health-stats' => %w[path_params run],
     'lkp-bug' => %w[path_params run],
     'hwinfo' => %w[tbox_group run],
@@ -53,7 +54,11 @@ class ResultPath < Hash
   }.freeze
 
   def path_scheme
-    PATH_SCHEME[self['testcase']] || PATH_SCHEME['default']
+    if self['testcase'] =~ /^kvm:/
+      PATH_SCHEME[self['testcase']] || PATH_SCHEME['kvm:default']
+    else
+      PATH_SCHEME[self['testcase']] || PATH_SCHEME['default']
+    end
   end
 
   def parse_result_root(rt)
