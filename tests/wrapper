@@ -28,4 +28,5 @@ echo $! >> $TMP/.pid-pipes
 	fi
 }
 
+export testcase=${testcase#kvm:}
 exec $time_prefix $exec_prefix $program_dir/$program "$@" > $fifo
