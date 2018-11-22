@@ -15,3 +15,7 @@ segments=${segments%s}
 cd $BENCHMARK_ROOT/bust_shm_exit || exit
 
 log_cmd timeout $runtime ./bust_shm_exit $segments $nr_threads
+
+exit_code=$?
+
+[ $exit_code -eq 124 ] && echo "bust_shm_exit test done" && exit 0
