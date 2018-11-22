@@ -292,6 +292,7 @@ class MResultRootTableSet
   end
 
   def testcase_to_table(testcase)
+    testcase = testcase.sub(/^kvm:/, '')
     tbl = @testcase_map[testcase]
     raise "Unknow testcase: #{testcase}" unless tbl
     tbl
