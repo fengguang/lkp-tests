@@ -86,6 +86,7 @@ warn_empty_stats()
 check_empty_json()
 {
 	local testcase=$(echo $RESULT_ROOT | cut -f3 -d"/")
+	testcase=${testcase#kvm:}
 
 	[[ $testcase = '0day-boot-tests' ]] && return
 	[[ $testcase = '0day-kbuild-tests' ]] && return
