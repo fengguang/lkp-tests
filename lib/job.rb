@@ -219,9 +219,6 @@ class Job
       end
     rescue StandardError => e
       log_error "#{jobfile}: " + e.message
-      log_error '-' * 80
-      log_error yaml
-      log_error '-' * 80
       raise
     end
 
