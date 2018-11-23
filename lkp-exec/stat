@@ -51,6 +51,10 @@ opt_parser = OptionParser.new do |opts|
     $opt_raw = true
   end
 
+  opts.on('-q queue', '--queue queue', 'queue') do |queue|
+    $opt_pattern = " -q #{queue}" + $opt_pattern
+  end
+
   opts.on_tail('-h', '--help', 'show this message') do
     puts opts
     exit
