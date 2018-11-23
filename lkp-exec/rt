@@ -27,12 +27,13 @@ EOF
 
 [[ $# = 0 ]] && usage
 
-while getopts "f:d:p:" opt
+while getopts "f:d:p:q:" opt
 do
 	case $opt in
 		f ) opt_file="$OPTARG"; ;;
 		d ) opt_date="$OPTARG"; ;;
 		p ) opt_project="$OPTARG"; ;;
+		q ) opt_queue="$OPTARG"; ;;
 		? ) usage >&2; ;;
 	esac
 done
@@ -43,23 +44,24 @@ shift $(($OPTIND-1))
 [[ $opt_date =~ [0-9]+w$ ]] && opt_date=$((${opt_date%w} * 7))
 [[ $opt_date =~ [0-9]+m$ ]] && opt_date=$((${opt_date%m} * 30))
 
+opt_queue="$opt_queue*"
+
 if [[ $opt_date ]]; then
 	files=()
 	for d in 0 $(seq $opt_date)
 	do
 		day=$(date +%F -d "$d days ago")
-
 		if [[ $script_name =~ ^_ ]]; then
-			files+=(/lkp/paths/$day-* /lkp/paths/.$day-*)
+			files+=(/lkp/paths/$day-$opt_queue /lkp/paths/.$day-$opt_queue)
 		else
-			files+=(/lkp/paths/$day-*)
+			files+=(/lkp/paths/$day-$opt_queue)
 		fi
 	done
 else
 	if [[ $script_name =~ ^_ ]]; then
-		files=(/lkp/paths/????-??-??-* /lkp/paths/.????-??-??-*)
+		files=(/lkp/paths/????-??-??-$opt_queue /lkp/paths/.????-??-??-$opt_queue)
 	else
-		files=(/lkp/paths/????-??-??-*)
+		files=(/lkp/paths/????-??-??-$opt_queue)
 	fi
 fi
 
