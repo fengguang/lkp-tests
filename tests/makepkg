@@ -21,6 +21,8 @@ DISTRO=${rootfs%%-*}
 
 cd $LKP_SRC/pkg/$benchmark || die "pkg is empty"
 
+is_clearlinux && ln -sf $BENCHMARK_ROOT/makepkg/bin/fakeroot /usr/bin/fakeroot
+
 pack_to=$(basename $rootfs)
 PKG_MNT=/osimage/pkg
 mkdir -p "$PKG_MNT"
