@@ -1,0 +1,24 @@
+#!/bin/bash
+
+download()
+{
+	git_clone_update git://github.com/mackyle/fakeroot || return
+}
+
+build()
+{
+	cd ../fakeroot
+	patch -p1 < $LKP_SRC/pack/makepkg_fakeroot.patch
+	libtoolize || return
+	aclocal || return
+	autoconf || return
+	autoheader || return
+	automake --add-missing || return
+	./configure --prefix $BM_ROOT || return
+	make || return
+}
+
+install()
+{
+	make install || return
+}
