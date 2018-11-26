@@ -3,3 +3,26 @@ diff -ruN lmbench3/SCCS/s.ChangeSet lmbench3-mp/SCCS/s.ChangeSet
 +++ lmbench3-mp/SCCS/s.ChangeSet	2017-11-10 10:31:25.421825890 +0800
 @@ -0,0 +1 @@
 +
+--- lmbench3/src/disk.c	2012-08-10 13:14:59.265021638 -0400
++++ lmbench3/src/disk.c	2012-08-10 13:14:23.208552508 -0400
+@@ -288,14 +288,6 @@
+ int
+ seekto(int fd, uint64 off)
+ {
+-#ifdef	__linux__
+-	extern	loff_t llseek(int, loff_t, int);
+-
+-	if (llseek(fd, (loff_t)off, SEEK_SET) == (loff_t)-1) {
+-		return(-1);
+-	}
+-	return (0);
+-#else
+	uint64	here = 0;
+
+	lseek(fd, 0, 0);
+@@ -306,5 +298,4 @@
+	assert((uint64)(off - here) <= (uint64)BIGSEEK);
+	if (lseek(fd, (int)(off - here), SEEK_CUR) == -1) return (-1);
+	return (0);
+-#endif
+ }
