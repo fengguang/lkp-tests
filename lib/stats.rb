@@ -263,7 +263,7 @@ def load_base_matrix_for_notag_project(git, rp, axis)
   rp[axis] = base_commit
   base_matrix_file = rp._result_root + '/matrix.json'
   unless File.exist? base_matrix_file
-    log_error "#{base_matrix_file} doesn't exist."
+    log_warn "#{base_matrix_file} doesn't exist."
     return nil
   end
   load_release_matrix(base_matrix_file)
