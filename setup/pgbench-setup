@@ -11,6 +11,7 @@
 # - checkpoint_completion_target
 
 . $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/env.sh
 
 postgres_run()
 {
@@ -30,12 +31,16 @@ init_postgresql()
 	data_dir=/var/lib/postgresql/data
 	mkdir -p "$data_dir"
 	chown postgres "$data_dir"
-	postgres_run /usr/lib/postgresql/*/bin/initdb  -D "$data_dir" 2>&1
+
+	bin_dir=/usr/lib/postgresql/*/bin
+	is_clearlinux && bin_dir=/usr/bin
+
+	postgres_run $bin_dir/initdb  -D "$data_dir" 2>&1
 	postgresql_conf_file="$data_dir"/postgresql.conf
 	run_dir=/var/run/postgresql
 	mkdir -p "$run_dir"
 	chown postgres "$run_dir"
-	postgres_run /usr/lib/postgresql/*/bin/pg_ctl -D "$data_dir" start
+	postgres_run $bin_dir/pg_ctl -D "$data_dir" start
 }
 
 postgresql_conf_file=$(find /etc/postgresql -name postgresql.conf | head -1)
