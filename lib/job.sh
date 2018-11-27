@@ -244,15 +244,29 @@ start_daemon()
 	wait_clients_finish
 }
 
+run_lkp_on_vmm()
+{
+	[ -x $LKP_SRC/tests/lkp-run-on-qemu ] || {
+		echo "Run on vmm isn't implemented, abort"
+		return 1
+	}
+
+	$LKP_SRC/tests/lkp-run-on-qemu ${job%.yaml}.sh
+}
+
 run_test()
 {
-	# wait other nodes may block until watchdog timeout,
-	# it should be able to killed by watchdog
-	echo $$ >> $TMP/pid-run-tests
+	if need_run_on_vmm; then
+		run_lkp_on_vmm
+	else
+		# wait other nodes may block until watchdog timeout,
+		# it should be able to killed by watchdog
+		echo $$ >> $TMP/pid-run-tests
 
-	wait_other_nodes 'test'
-	wakeup_pre_test
-	run_program test "$@"
-	sync_cluster_state 'finished'
+		wait_other_nodes 'test'
+		wakeup_pre_test
+		run_program test "$@"
+		sync_cluster_state 'finished'
+	fi
 }
 

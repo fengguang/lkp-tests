@@ -93,3 +93,10 @@ is_clearlinux()
 {
 	[ -f /usr/lib/os-release ] && grep -qw "Clear Linux" /usr/lib/os-release
 }
+
+need_run_on_vmm()
+{
+	# lkp qemu will set LKP_LOCAL_RUN=1
+	[ "$LKP_LOCAL_RUN" = 1 ] && return 1
+	echo "$testcase" | grep -q "^kvm:"
+}
