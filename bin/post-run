@@ -207,4 +207,21 @@ upload_files	$TMP/env.yaml
 [ -s $TMP/program_list ] &&
 upload_files	$TMP/program_list
 
+upload_qemu_results()
+{
+	# result_root: /root/.lkp//result/kvm:stream/100%-10000000-true-performance/lkp-skl-4sp1/debian-x86_64-2018-04-03.cgz/x86_64-rhel-7.2/gcc-7/84df9525b0c27f3ebc2ebb1864fa62a97fdedb7d/x86_64-softmmu/d3c2bbb166f8cd840a3f4efec31d55485f1360ed/84df9525b0c27f3ebc2ebb1864fa62a97fdedb7d/0
+	local guest_rt=$(grep 'result_root: ' $TMP/stdout | awk -F'result_root: ' '{print $2}')
+	[ -f "$guest_rt/output" ] || return
+	upload_files -t guest_result $guest_rt
+
+	mkdir -p /tmp/host_rt
+	# backup host log to host_rt
+	cp -arf $TMP_RESULT_ROOT/* /tmp/host_rt
+	[ "$RESULT_ROOT" = "$TMP_RESULT_ROOT" ] || cp -arf $RESULT_ROOT/* /tmp/host_rt
+	upload_files -t host_result /tmp/host_rt/*
+	upload_files $guest_rt/*  # override the origin results
+}
+
+need_run_on_vmm && upload_qemu_results
+
 exit 0
