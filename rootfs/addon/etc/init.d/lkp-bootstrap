@@ -18,8 +18,8 @@
 mkdir -p /var/lock
 mkdir /var/lock/lkp-bootstrap.lock || sleep 333.3
 
-if [ -s /var/run/lkp-bootstrap.pid ]; then
-	pid=$(cat /var/run/lkp-bootstrap.pid)
+if [ -s /lkp/run/lkp-bootstrap.pid ]; then
+	pid=$(cat /lkp/run/lkp-bootstrap.pid)
 	[ -d /proc/$pid ] && exit
 	# the previous lkp-bootstrap init.d script failed to restart the machine
 	echo "LKP bootstrap: first run may failed, retry rebooting"
@@ -80,5 +80,5 @@ set +m
 	reboot
 ) &
 
-mkdir -p /var/run
-echo $! > /var/run/lkp-bootstrap.pid
+mkdir -p /lkp/run
+echo $! > /lkp/run/lkp-bootstrap.pid
