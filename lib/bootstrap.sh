@@ -153,10 +153,21 @@ add_lkp_user()
 	fi
 }
 
+clearlinux_timesync()
+{
+	echo "[Time]" >/etc/systemd/timesyncd.conf
+	echo "NTP=inn" >>/etc/systemd/timesyncd.conf
+	timedatectl set-ntp false
+	timedatectl set-ntp true
+	hwclock -w
+}
+
 run_ntpdate()
 {
 	[ -z "$NO_NETWORK" ] || return
 	[ "$LKP_SERVER" = inn ] || return
+	is_clearlinux && clearlinux_timesync && return
+
 	[ -x '/usr/sbin/ntpdate' ] || return
 
 	local hour="$(date +%H)"
