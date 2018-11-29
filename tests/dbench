@@ -8,9 +8,13 @@
 ##
 ## Homepage: https://dbench.samba.org/
 
+. $LKP_SRC/lib/env.sh
+
 run_dbench()
 {
-	log_cmd dbench $nr_threads -c /usr/share/dbench/client.txt
+	client_dir=/usr/share/dbench
+	is_clearlinux && client_dir=/usr/local/share
+	log_cmd dbench $nr_threads -c $client_dir/client.txt
 }
 
 run_dbench
