@@ -433,6 +433,7 @@ extract_file() {
 	local ret=0
 	msg2 "$(gettext "Extracting %s with %s")" "$file" "$cmd"
 	if [[ $cmd = "bsdtar" ]]; then
+		type bsdtar >/dev/null 2>&1 || cmd="tar"
 		$cmd -xf "$file" || ret=$?
 	else
 		rm -f -- "${file%.*}"
