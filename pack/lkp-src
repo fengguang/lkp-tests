@@ -7,6 +7,8 @@ LKP_USER=${LKP_USER:-$USER}
 [[ $OWNER ]] || OWNER="root:lkp"
 OWNER_OPT="--owner $OWNER"
 
+. $LKP_SRC/lib/env.sh
+
 download()
 {
 	tmp_dir=/tmp/lkp_initrd-$USER
@@ -14,6 +16,12 @@ download()
 
 build()
 {
+	has_cmd make || {
+		echo "Cannot find the make binary. Please try to install it."
+		# return code 127 which means command not found
+		return 127
+	}
+
 	make -C $LKP_SRC/bin/event || {
 		local ret=$?
 
