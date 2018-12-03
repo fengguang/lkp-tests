@@ -189,8 +189,8 @@ libedit-dev:
 libegl1-mesa-dev: dev-utils-dev
 libelf1: dev-utils-dev
 libelf-dev: dev-utils-dev
-libevent-2.0-5: dev-utils-dev
-libevent-2.1-6: dev-utils-dev
+libevent-2.0-5: tmux
+libevent-2.1-6: tmux
 libevent-dev: dev-utils-dev
 libfabric1:
 libfabric-dev:
@@ -364,7 +364,7 @@ libxrender1: dev-utils-dev
 libxslt1.1: dev-utils-dev
 libxt6: gimp
 libzmq3-dev:
-libzmq5: python-data-science
+libzmq5: software-testing
 linux-base: linux-tools
 linux-libc-dev: dev-utils-dev
 linux-libc-dev:i386: dev-utils-dev
