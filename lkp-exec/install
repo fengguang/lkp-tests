@@ -22,6 +22,7 @@ usage() {
 	echo "--ssd partition: SSD partition for IO tests"
 	echo "--dry-run: preview changes will made testbox by install"
 	echo "--china: install gem packages from the mirror in China"
+	echo "--skip-base: skip to install base support"
 	echo "--help: show this message"
 }
 
@@ -53,6 +54,9 @@ do
 		;;
 		--force|-f)
 		FORCE_MODE=true
+		;;
+		--skip-base)
+		SKIP_BASE=true
 		;;
 		*)
 		break
@@ -229,6 +233,27 @@ build_install_benchmarks() {
 	fi
 }
 
+install_base_support()
+{
+	install_packages "lkp" "$distro"
+
+	if [ -n "$CHINA" ]; then
+		gem install bundler --clear-sources -s https://gems.ruby-china.org/
+		bundle_install_china
+	else
+		(
+			cd $LKP_SRC
+			gem install bundler
+			bundle install
+		)
+	fi
+
+	make_wakeup
+	create_lkp_user
+	create_lkp_dirs
+	create_host_config
+}
+
 . $LKP_SRC/lib/install.sh
 
 detect_system
@@ -244,23 +269,7 @@ export DISTRO
 
 export LKP_LOCAL_RUN=1
 
-install_packages "lkp" "$distro"
-
-if [ -n "$CHINA" ]; then
-	gem install bundler --clear-sources -s https://gems.ruby-china.org/
-	bundle_install_china
-else
-	(
-		cd $LKP_SRC
-		gem install bundler
-		bundle install
-	)
-fi
-
-make_wakeup
-create_lkp_user
-create_lkp_dirs
-create_host_config
+[ -n "$SKIP_BASE" ] || install_base_support
 
 for filename in "$@"
 do
