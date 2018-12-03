@@ -52,7 +52,7 @@ do
 		CHINA=0
 		;;
 		--force|-f)
-		install_opt="-f"
+		FORCE_MODE=true
 		;;
 		*)
 		break
@@ -118,11 +118,14 @@ bundle_install_china() {
 
 makepkg_install() {
 	local pkg=$1
+	local force_opt=
+
+	[ -n "$FORCE_MODE" ] && force_opt="-f"
 	if [ -d "$LKP_SRC/pkg/$pkg" ]; then
 		(
 			cd "$LKP_SRC/pkg/$pkg" && \
 			PACMAN="$LKP_SRC/sbin/pacman-LKP" BUILDDIR="$LKP_SRC/tmp-pkg" \
-			"$LKP_SRC/sbin/makepkg" --config "$LKP_SRC/etc/makepkg.conf" -s -i --skippgpcheck
+			"$LKP_SRC/sbin/makepkg" --config "$LKP_SRC/etc/makepkg.conf" -s -i --skippgpcheck "$force_opt"
 		)
 	else
 		return 0
@@ -288,9 +291,10 @@ do
 		}
 		install_packages "$script" $distro
 		makepkg_install_packages "$script" $distro
-		if ! verify_install "$script"; then
+		if [ -n "$FORCE_MODE" ] || ! verify_install "$script"; then
 			makepkg_install_benchmark "$script"
 		fi
+		[ -n "$FORCE_MODE" ] && install_opt="-f"
 		build_install_benchmarks "$script" $distro $install_opt || exit 1
 	done
 done
