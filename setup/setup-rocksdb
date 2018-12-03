@@ -1,0 +1,10 @@
+#!/bin/sh
+# - benchmarks
+
+DB_BENCH=/usr/share/rocksdb/tools/db_bench
+
+"$DB_BENCH" --benchmarks="fillseq"
+
+cat > "$TMP_RESULT_ROOT"/run.rocksdb <<EOF
+$DB_BENCH --use_existing_db --benchmarks="$benchmarks"
+EOF

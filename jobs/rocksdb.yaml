@@ -1,0 +1,11 @@
+suite: rocksdb
+testcase: rocksdb
+category: noise-benchmark
+
+runtime: 300s
+nr_task: 100%
+
+setup-rocksdb:
+  benchmarks: readrandom
+
+rocksdb:
