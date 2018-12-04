@@ -1,0 +1,16 @@
+suite: cassandra
+testcase: cassandra
+category: benchmark
+
+nr_task: 100%
+
+cluster: cs-localhost
+
+if role server:
+  cassandra-server:
+
+if role client:
+  cassandra:
+    duration: 300s
+    insert: 3
+    simple1: 1

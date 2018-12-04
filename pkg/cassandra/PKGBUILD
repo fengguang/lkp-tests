@@ -1,0 +1,20 @@
+pkgname=cassandra
+pkgver=3.11.3
+pkgrel=0
+pkgdesc="The Apache Cassandra database is the right choice when you need scalability and high availability without compromising performance."
+arch=('i686' 'x86_64')
+url="http://cassandra.apache.org/"
+license=(Apache)
+source=('http://mirrors.shu.edu.cn/apache/cassandra/3.11.3/apache-cassandra-3.11.3-bin.tar.gz')
+md5sums=('SKIP')
+
+build()
+{
+    tar -xvf apache-cassandra-3.11.3-bin.tar.gz
+}
+
+package()
+{
+    mkdir -p "$pkgdir/lkp/benchmarks/cassandra"
+    cp -af "$srcdir/apache-cassandra-3.11.3/"* "$pkgdir/lkp/benchmarks/cassandra/"
+}

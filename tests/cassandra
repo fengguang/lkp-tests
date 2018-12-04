@@ -1,0 +1,27 @@
+#!/bin/sh
+# - nr_threads
+# - duration
+# - insert
+# - simple1
+
+: ${nr_threads:=1}
+: ${duration:=300}
+: ${insert:=0}
+: ${simple1:=0}
+
+. $LKP_SRC/lib/reproduce-log.sh
+
+cd "$BENCHMARK_ROOT"/cassandra || {
+       echo "ERROR: cassandra database has not been installed yet"
+       exit -1
+}
+
+# Cassandra server usually takes about 15 seconds to launch successfully.
+# Here waiting for 25 seconds to ensure the daemon can be launched successfully before the client tries to connect it.
+
+echo "waiting for 25 seconds for launching cassandra server..."
+sleep 25
+
+database="$BENCHMARK_ROOT"/cassandra/tools/cqlstress-example.yaml
+
+log_test ./tools/bin/cassandra-stress user profile="$database" ops\(insert="$insert",simple1="$simple1"\) duration="$duration" -rate threads="$nr_threads"
