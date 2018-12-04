@@ -122,6 +122,7 @@ download_distro_depends() {
 		(
 			cd "$dest"
 			download "$PACKAGE_VERSION_LIST"
+			install
 			save_package_deps_info $BM_NAME
 			echo "$PACKAGE_LIST" >> $pack_to/.${BM_NAME}.packages
 		)
