@@ -69,7 +69,7 @@ get_pkg_info()
 if is_clearlinux; then
 	log_cmd swupd_install_depends lkp-dev
 else
-	log_cmd apt_install_depends lkp-dev
+	apt_install_depends lkp-dev
 fi
 
 [[ $arch ]] || arch=`uname -m`
