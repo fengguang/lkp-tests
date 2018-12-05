@@ -324,8 +324,31 @@ Give an example to explain how to add one testcase, take hwsim as example:
 4) add one job file
 	jobs/hwsim.yaml
 
-5) add hwsim to MResultRootTableSet
-	lib/nresult_root.rb
+5) add hwsim to LinuxTestcasesTableSet
+	lib/stats.rb
+
+6) commands to debug the new test case
+	cd lkp-tests
+	make install
+
+	# install the common dependencies for lkp
+	lkp install
+
+	lkp split-job lkp-tests/jobs/hwsim.yaml
+	# output is:
+	# lkp-tests/jobs/hwsim.yaml => ./hwsim-hwsim-00.yaml
+
+	# install the remaining dependencies for the splited job
+	lkp install ./hwsim-hwsim-00.yaml
+	# when second time run the command, the pkg will not build again,
+	# to build the pkg again, you need add flag "-f", it may build
+	# all monitors
+	lkp install -f ./hwsim-hwsim-00.yaml
+	# or you can run the following command, it only builds the test
+	# case itself
+	lkp install -f lkp-tests/tests/hwsim
+
+	lkp run ./hwsim-hwsim-00.yaml
 
 NOTE:
 
