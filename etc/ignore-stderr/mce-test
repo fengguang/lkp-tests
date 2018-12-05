@@ -1,0 +1,7 @@
+Usage: grep \[OPTION\]... PATTERN \[FILE\]...
+Try 'grep --help' for more information.
+./helpers.sh: line .* Bus error .*./tkillpoison
+msync expect error: .*
+hole msync expect error: .*
+./cases/function/hwpoison/run_hugepage.sh: line .* Bus error .*./thugetlb .*
+./hwpoison.sh: line .*: \$g_tty: ambiguous redirect
