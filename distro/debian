@@ -11,6 +11,11 @@ update()
 	apt-get update
 }
 
+add_i386_package()
+{
+	dpkg --add-architecture i386
+}
+
 download()
 {
 	echo apt-get download $*
