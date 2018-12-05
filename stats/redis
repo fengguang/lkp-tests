@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+
+$stdin.each_line do |line|
+  case line
+  when /^PING_INLINE: (\d+) requests per second/
+    puts "PING_INLINE: #{$1}"
+  when /^PING_BULK: (\d+) requests per second/
+    puts "PING_BULK: #{$1}"
+  when /^SET: (\d+) requests per second/
+    puts "SET: #{$1}"
+  when /^GET: (\d+) requests per second/
+    puts "GET: #{$1}"
+  when /^INCR: (\d+) requests per second/
+    puts "INCR: #{$1}"
+  when /^LPUSH: (\d+) requests per second/
+    puts "LPUSH: #{$1}"
+  when /^RPUSH: (\d+) requests per second/
+    puts "RPUSH: #{$1}"
+  when /^LPOP: (\d+) requests per second/
+    puts "LPOP: #{$1}"
+  when /^RPOP: (\d+) requests per second/
+    puts "RPOP: #{$1}"
+  when /^SADD: (\d+) requests per second/
+    puts "SADD: #{$1}"
+  when /^SPOP: (\d+) requests per second/
+    puts "SPOP: #{$1}"
+  when /^LPUSH (needed to benchmark LRANGE): (\d+) requests per second/
+    puts "LPUSH_LRANGE: #{$1}"
+  when /^LRANGE_100 (first 100 elements): (\d+) requests per second/
+    puts "LRANGE_100: #{$1}"
+  when /^LRANGE_300 (first 300 elements): (\d+) requests per second/
+    puts "LRANGE_300: #{$1}"
+  when /^LRANGE_500 (first 450 elements): (\d+) requests per second/
+    puts "LRANGE_500: #{$1}"
+  when /^LRANGE_600 (first 600 elements): (\d+) requests per second/
+    puts "LRANGE_600: #{$1}"
+  when /^MSET (10 keys): (\d+) requests per second/
+    puts "MSET: #{$1}"
+  end
+end

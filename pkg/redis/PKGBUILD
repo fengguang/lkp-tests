@@ -1,0 +1,20 @@
+pkgname=redis
+pkgver=5.0.2
+pkgrel=0
+arch=('i686' 'x86_64')
+url="https://redis.io"
+license=('BSD')
+depends=()
+source=("http://download.redis.io/releases/redis-$pkgver.tar.gz")
+sha256sums=('SKIP')
+
+build() {
+	cd "${srcdir}/$pkgname-$pkgver"
+	make
+}
+
+package() {
+	mkdir -p "${pkgdir}/lkp/benchmarks/${pkgname}"
+	cd "$srcdir/$pkgname-$pkgver"
+	make PREFIX="${pkgdir}/lkp/benchmarks/${pkgname}" install
+}

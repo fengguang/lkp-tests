@@ -1,0 +1,12 @@
+suite: redis
+testcase: redis
+category: benchmark
+
+
+runtime: 300s
+nr_threads: 100%
+
+redis:
+  data_size : 3
+  n_client  : 100
+  requests  : 100000
