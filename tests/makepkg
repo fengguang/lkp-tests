@@ -9,7 +9,6 @@
 
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/misc-base.sh
-. $LKP_SRC/distro/clear
 . $LKP_SRC/lib/env.sh
 
 [ -n "$rootfs" ] || die "rootfs is empty"
@@ -33,7 +32,7 @@ mkdir -p "$PKG_MNT"
 
 export DEBIAN_FRONTEND=noninteractive
 
-dpkg --add-architecture i386
+add_i386_package
 
 update
 
@@ -67,7 +66,7 @@ get_pkg_info()
 }
 
 if is_clearlinux; then
-	log_cmd swupd_install_depends lkp-dev
+	swupd_install_depends lkp-dev
 else
 	apt_install_depends lkp-dev
 fi
