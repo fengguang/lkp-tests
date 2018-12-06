@@ -1,1 +1,24 @@
-proc-vmstat
+#!/usr/bin/env ruby
+
+mtotal = nil
+munit = nil
+mfree = []
+
+STDIN.each_line do |line|
+  case line
+  when /^time:/
+    puts line
+  else
+    key, value, unit = line.split
+    key = key.chomp(':')
+    puts "#{key}: #{value}"
+    mtotal ||= value if key == 'MemTotal'
+    if key == 'MemFree'
+      mfree << value
+      munit ||= unit
+      puts "Memused: #{mtotal.to_i - value.to_i}"
+    end
+  end
+end
+
+puts "max_used_#{munit}: #{mtotal.to_i - mfree.min.to_i}"
