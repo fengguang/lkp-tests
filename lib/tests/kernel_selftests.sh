@@ -147,7 +147,7 @@ prepare_for_firmware()
 	# As this case suggested, some distro(suse/debian) udev may have /lib/udev/rules.d/50-firmware.rules
 	# which contains "SUBSYSTEM==firmware, ACTION==add, ATTR{loading}=-1", it will
 	# immediately cancel all fallback requests, so here we remove it and restore after this case
-
+	[ -e /lib/udev/rules.d/50-firmware.rules ] || return 0
 	log_cmd mv /lib/udev/rules.d/50-firmware.rules . && {
 		# udev have many rules located at /lib/udev/rules.d/, once those rules are changed
 		# we need to restart udev service to reload the latest rules.
