@@ -6,7 +6,13 @@ category: benchmark
 runtime: 300s
 nr_threads: 100%
 
-redis:
-  data_size : 3
-  n_client  : 100
-  requests  : 100000
+cluster: cs-localhost
+
+if role server:
+  redis-server:
+
+if role client:
+  redis:
+    data_size : 3
+    n_client  : 100
+    requests  : 100000

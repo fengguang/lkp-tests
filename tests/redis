@@ -16,7 +16,5 @@
 . $LKP_SRC/lib/reproduce-log.sh
 
 export PATH=$BENCHMARK_ROOT/redis/bin:$PATH
-# start redis-server
-redis-server
 
 log_test redis-benchmark -d $data_size -c $n_client -n $requests -q

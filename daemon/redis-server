@@ -1,0 +1,7 @@
+#!/bin/sh
+
+. $LKP_SRC/lib/reproduce-log.sh
+
+redis_server=$BENCHMARK_ROOT/redis/bin/redis-server
+# start redis server
+log_eval "$redis_server &"
