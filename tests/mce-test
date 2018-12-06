@@ -27,6 +27,14 @@ MCE_SCENARIO_DIR=./groups
 MCE_CASELIST=./work/rastest.caselist
 export MCE_TEST_SKIP=s3_s4_test
 
+create_edac_ref()
+{
+	# generate reference result file for EDAC
+	pushd cases/function/edac
+	./edac.sh &>/dev/null
+	popd
+}
+
 test_all()
 {
 	local file
@@ -40,6 +48,7 @@ EINJ-EXT cases/function/einj-ext/runtest.sh
 ERST-INJ cases/function/erst-inject/runtest.sh
 eMCA cases/function/emca-inj/runtest.sh
 PFA cases/function/pfa/runtest.sh
+EDAC cases/function/edac/runtest.sh
 HWPOISON-SOFT cases/function/hwpoison/run_soft.sh
 HWPOISON-HARD cases/function/hwpoison/run_hard.sh
 HWPOISON-HUGEPAGE cases/function/hwpoison/run_hugepage.sh
@@ -48,7 +57,9 @@ HWPOISON-THP cases/function/hwpoison/run_thp.sh
 STRESS-HWPOISON-SOFT cases/stress/hwpoison/run_soft.sh
 STRESS-HWPOISON-HARD cases/stress/hwpoison/run_hard.sh
 EOF
-
+	if grep -q EDAC $MCE_CASELIST; then
+		create_edac_ref
+	fi
 	./runmcetest -t $MCE_TMPDIR -s $MCE_SUMDIR -o $MCE_LOGDIR -b $MCE_TOOLDIR -l $MCE_CASELIST -r 1
 
 	file=($MCE_SUMDIR/*.log)
@@ -107,6 +118,9 @@ test_choice()
 		fi
 	done
 
+	if grep -q EDAC $MCE_CASELIST; then
+		create_edac_ref
+	fi
 	./runmcetest -t $MCE_TMPDIR -s $MCE_SUMDIR -o $MCE_LOGDIR -b $MCE_TOOLDIR -l $MCE_CASELIST -r 1
 	exit_value=$?
 
