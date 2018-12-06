@@ -11,7 +11,6 @@ runtime: 4h
 
 ltp:
   test:
-  - stress.part2
 # Stress tests groups, will take too long time, close them for now
 # 5 hours 43 mins
 #  - controllers
@@ -21,8 +20,6 @@ ltp:
   - net_stress.broken_ip
 # 6 hours 39 mins
   - net_stress.interface
-# 1 hour 30 mins
-  - stress.part1
 # more than 8 hours
   - net_stress.ipsec_dccp
   - net_stress.ipsec_sctp

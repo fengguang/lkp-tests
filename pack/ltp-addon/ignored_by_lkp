@@ -8,9 +8,6 @@ crashme:f00f
 syscalls_part2:modify_ldt01
 syscalls_part2:modify_ldt02
 syscalls_part2:modify_ldt03
-stress.part3:modify_ldt01
-stress.part3:modify_ldt02
-stress.part3:modify_ldt03
 # su01 want to get USER's password
 admin_tools:su01
 # Cause OOM, deactivate it temporarily.
@@ -46,25 +43,20 @@ net_stress.appl:ftp4-upload-stress
 net_stress.appl:ftp6-upload-stress
 # only support kernel version < v2.6.25
 syscalls_part3:ptrace03
-# since Linux 2.6.26, it's allowed to trace init, so just skip this test case
-stress.part3:ptrace03
 # only support Blackfin(DSP microprocessor)
 syscalls_part3:ptrace04
 # __NR_readdir not supported on x86_64
 syscalls_part3:readdir21
-stress.part3:readdir21
 # only support kernel version is 2.6.25 or below
 # adjtimex(2) fails with errno set to EINVAL if an attempt is  made  to set buf.offset to a value < 512000L
 # (This test case will be executed only if the kernel version is 2.6.25 or below)
 syscalls_part1:adjtimex02
-stress.part3:adjtimex02
 # only support kernel version < v2.6.9
 # For munlockall():
 # EPERM
 # (Linux 2.6.8 and earlier) The caller was not privileged (CAP_IPC_LOCK)
 # setpriority(0, 1, -2) as unprivileged user fails as expected: EPERM
 syscalls_part2:munlockall02
-stress.part3:munlockall02
 # not works when compiled as 64-bit application
 syscalls_part2:msgrcv08
 # system doesn't support it
@@ -74,7 +66,6 @@ syscalls_part2:msgrcv08
 # when Linux implements the regions locking then, this testcase should be recompiled accordingly with the "ifdef" removed.
 syscalls_part1:fcntl06
 syscalls_part1:fcntl06_64
-stress.part3:fcntl06
 # for current kernel, subdir limit is not availiable for all fs
 syscalls_part2:linkat02
 # __NR_bdflush not supported on x86_64
@@ -87,14 +78,10 @@ syscalls_part3:set_thread_area01
 syscalls_part3:sgetmask01
 # no proper fs for the test
 syscalls_part3:rename11
-# EMLINK test is not appropriate
-stress.part3:rename11
 # only support on powerpc
 syscalls_part4:switch01
 # the test result is always block
 syscalls_part4:sysconf01
-# sysconf01 not supported on x86_64 
-stress.part3:sysconf01
 # __NR_sysctl not supported on x86_64
 syscalls_part4:sysctl01
 syscalls_part4:sysctl03
