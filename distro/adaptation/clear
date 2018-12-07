@@ -175,12 +175,12 @@ libcilkrts5/unstable:
 libc-l10n: os-core-dev
 libclang1-3.9: dev-utils-dev
 libclang-dev: dev-utils-dev
-libconfig-dev: desktop-dev
+libconfig-dev: sysadmin-remote
 libcroco3: os-core-dev
 libdatrie1: storage-utils-dev
 libdbd-mysql-perl:
 libdbi-perl: perl-basic
-libdbus-1-dev: os-core-dev
+libdbus-1-dev: os-core
 libdpkg-perl:
 libdrm-dev: libva-utils
 libdrm-dev/unstable: libva-utils
@@ -231,7 +231,7 @@ libhugetlbfs:
 libhugetlbfs-bin:
 libhugetlbfs-dev:
 libhwloc-dev: dev-utils-dev
-libiberty-dev: dev-utils-dev
+libiberty-dev: c-basic-legacy
 libibverbs1: storage-utils
 libibverbs-dev: storage-utils-dev
 libice6: os-core-dev
@@ -261,8 +261,8 @@ libmpx2: dev-utils-dev
 libmpx2/unstable: dev-utils-dev
 libncurses5-dev: os-core-dev
 libncursesw5-dev: os-core-dev
-libnl-3-dev: network-basic-dev
-libnl-genl-3-dev: network-basic-dev
+libnl-3-dev: storage-utils
+libnl-genl-3-dev: storage-utils
 libnl-route-3-dev: network-basic-dev
 libnpth0: storage-utils-dev
 libnpth0-dev: storage-utils-dev
@@ -309,11 +309,11 @@ libsdl1.2debian: stream-server
 libselinux1:
 libsm6: os-core-dev
 libsmbclient: os-core-dev
-libsqlite3-dev: dev-utils-dev
+libsqlite3-dev: linux-tools
 libssl1.0.0: os-core
 libssl1.0-dev: os-core
 libssl1.1: os-core
-libssl-dev: os-core-dev
+libssl-dev: os-core-update
 libsss-idmap0:
 libsss-simpleifp0:
 libstdc++-6-dev: os-core-dev
