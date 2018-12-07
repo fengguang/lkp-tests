@@ -8,7 +8,7 @@
 # parameter, but easy to add more remote-rootfs format support
 # in future if we need.
 
-# eg: inn:/export/debian-full-x86_64
+# eg: inn:/osimage/debian-full-x86_64
 source=$1
 [ -z "${source}" ] && {
 	echo "Parameter is empty."
