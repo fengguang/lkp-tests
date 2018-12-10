@@ -40,6 +40,8 @@ build_env()
 
 	setup_compiler
 
+	# ./check_max_mmap.sh: line 44: /build/nvml/src/src/test/tools/anonymous_mmap/../../testconfig.sh: No such file or directory
+	log_cmd cp src/test/testconfig.sh.example src/test/testconfig.sh
 	# All C++ container tests need customized version of libc --libc++ to compile. So specify the path of libc++ to make.
 	log_cmd make EXTRA_CFLAGS="-DPAGE_SIZE=4096 -DUSE_VALGRIND" USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1/ LIBCPP_LIBDIR=/usr/local/libcxx/lib || return
 	log_cmd make EXTRA_CFLAGS="-DPAGE_SIZE=4096 -DUSE_VALGRIND" USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1/ LIBCPP_LIBDIR=/usr/local/libcxx/lib test || return
