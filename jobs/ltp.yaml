@@ -10,8 +10,6 @@ need_memory: 4G
 
 ltp:
   test:
-  - admin_tools-00
-  - admin_tools-01
   - can
   - cap_bounds
   - commands
@@ -37,13 +35,11 @@ ltp:
 #  - lvm.part1
 #  - lvm.part2
   - math
-  - modules
   - net.ipv6_lib
   - net.rpc
   - net.sctp
   - nptl
   - numa
-  - pipes
   - power_management_tests
 # System is not a multi socket & multi core & hyper-threaded, there is no proper test environment
 #  - power_management_tests_exclusive
