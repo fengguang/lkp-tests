@@ -3,10 +3,23 @@
 # - class
 # - nr_threads
 
+[ $nr_partitions -ge 1 ] || exit
+partition=${partitions%% *}
+
+mount_dev()
+{
+	local mnt=/mnt/stress-ng
+	log_cmd mkdir -p $mnt
+	log_cmd mount $partition $mnt 2>/dev/null
+	cd $mnt
+}
+
 [ -n "$testtime" ] || testtime=1
 
 [ "$class" = "memory" ] && stress_opts="--minimize" && exlucde_stress=",stack"
 [ "$class" = "os" ] && stress_opts="--minimize"
+[ "$class" = "filesystem" ] && mount_dev
+
 ## most stressors could run as root except exec and spawn, classify exec and spawn into exec_spawn, run it as lkp.
 ## when we run stress-ng as root, use option --exclude to ignore spawn and exec.
 if [ "$class" = "exec_spawn" ]; then
