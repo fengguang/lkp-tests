@@ -15,13 +15,21 @@ stress-ng:
   - cpu-cache
   - cpu
   - device
-  - filesystem
   - interrupt
   - io
   - network
   - pipe
 ##most stressors could run as root except exec and spawn, classify exec and spawn into exec_spawn, run exec_spawn as lkp.
   - exec_spawn
+---
+nr_threads: 10%
+
+fs:
+- btrfs
+
+stress-ng:
+  class:
+  - filesystem
 
 ---
 kernel_cmdline: "apparmor=1 security=apparmor"
