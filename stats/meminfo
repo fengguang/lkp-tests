@@ -2,7 +2,7 @@
 
 mtotal = nil
 munit = nil
-mfree = []
+mused = []
 
 STDIN.each_line do |line|
   case line
@@ -12,13 +12,14 @@ STDIN.each_line do |line|
     key, value, unit = line.split
     key = key.chomp(':')
     puts "#{key}: #{value}"
+    value = value.to_i
     mtotal ||= value if key == 'MemTotal'
     if key == 'MemFree'
-      mfree << value
+      mused << mtotal - value
       munit ||= unit
-      puts "Memused: #{mtotal.to_i - value.to_i}"
+      puts "Memused: #{mused.last}"
     end
   end
 end
 
-puts "max_used_#{munit}: #{mtotal.to_i - mfree.min.to_i}"
+puts "max_used_#{munit}: #{mused.max}"
