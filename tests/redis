@@ -1,9 +1,10 @@
 #!/bin/sh
-# - seq
-# - nr_threads
+# - test
 # - data_size
 # - n_client
 # - requests
+# - n_pipeline
+# - key_len
 
 ## Redis is an open source (BSD licensed), in-memory data structure store,
 ## used as a database, cache and message broker. It supports data structures
@@ -17,4 +18,4 @@
 
 export PATH=$BENCHMARK_ROOT/redis/bin:$PATH
 
-log_test redis-benchmark -d $data_size -c $n_client -n $requests -q
+log_test redis-benchmark -t $test -d $data_size -c $n_client -n $requests -P $n_pipeline -r $key_len -q

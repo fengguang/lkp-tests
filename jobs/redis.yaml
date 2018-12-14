@@ -2,8 +2,6 @@ suite: redis
 testcase: redis
 category: benchmark
 
-
-runtime: 300s
 nr_threads: 100%
 
 cluster: cs-localhost
@@ -13,6 +11,9 @@ if role server:
 
 if role client:
   redis:
-    data_size : 3
-    n_client  : 100
-    requests  : 100000
+    test: set,get
+    data_size: 1024
+    n_client: 5
+    requests: 21000000
+    n_pipeline: 3
+    key_len: 21000000
