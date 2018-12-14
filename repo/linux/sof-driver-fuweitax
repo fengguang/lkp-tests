@@ -9,5 +9,4 @@ mail_cc:
 use_customized_release_tag_pattern: true
 release_tag_pattern: sof-v(?<major>[0-9])\.(?<minor>\d+)\.?(?<micro>\d+)?(-rc(?<prerelease>\d+))?
 no_touch_config: true
-git_weight: 300
 belongs_to: sof
