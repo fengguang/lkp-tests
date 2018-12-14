@@ -115,11 +115,13 @@ class MMatrixPlotter < MatrixPlotterBase
     @lines = []
     @y_margin = 0.1
     @y_range = [nil, nil]
+    @plot_type = 'multi_lines'
   end
 
   prop_with :output_file_name, :title
   prop_with :x_stat_key, :x_as_label, :xtics, :lines
   prop_with :y_margin, :y_range
+  prop_with :plot_type
 
   # shortcut for one line figure
   def set_line(matrix, y_stat_key, line_title = nil)
@@ -138,7 +140,7 @@ class MMatrixPlotter < MatrixPlotterBase
     false
   end
 
-  def plot
+  def plot_multi_lines
     return unless check_lines
     Gnuplot.open do |gp|
       Gnuplot::Plot.new(gp) do |p|
@@ -185,6 +187,65 @@ class MMatrixPlotter < MatrixPlotterBase
         p.yrange "[#{y_min}:#{y_max}]"
       end
     end
+  end
+
+  def plot_error_bars
+    return unless check_lines
+    Gnuplot.open do |gp|
+      Gnuplot::Plot.new(gp) do |p|
+        setup_output(p, @output_file_name)
+        p.title @title if @title
+        p.ytics 'nomirror'
+
+        y_max = nil
+        x_stat = []
+        y_stat = []
+        y_stat_max = []
+        z_stat = []
+        @lines.each do |matrix, y_stat_key, _line_title|
+          values = matrix[y_stat_key]
+          next unless check_line(values)
+
+          case y_stat_key
+          when /avgs/
+            y_stat = values
+            x_stat = matrix[@x_stat_key]
+          when /max/
+            y_stat_max = values
+          end
+
+          max = values.max
+          y_max = y_max ? [max, y_max].max : max
+        end
+        y_base = y_stat[0].to_f
+        y_stat.collect! { |v| format('%.2f', v.to_f / y_base * 100) }
+        y_stat_max.collect! { |v| format('%.2f', v.to_f / y_base * 100) }
+        if y_stat.size == y_stat_max.size
+          z_stat = (1..y_stat.size).collect { |i| format('%.2f', y_stat_max[i - 1].to_f - y_stat[i - 1].to_f) }
+        end
+
+        xtics_stat = x_stat.collect.with_index { |x, i| format('"%s" %d', x, i + 1) }.join(', ')
+        p.xtics "(#{xtics_stat})"
+        x_stat = (1..x_stat.size).to_a
+        p.data = [
+          Gnuplot::DataSet.new([x_stat, y_stat, z_stat]) do |ds|
+            ds.with = 'errorb'
+            ds.notitle
+          end,
+          Gnuplot::DataSet.new([x_stat, y_stat, z_stat]) do |ds|
+            ds.with = 'linespoints'
+            ds.notitle
+          end
+        ]
+        y_max = (y_max / y_base * 100 * 1.2).round
+        p.yrange "[0:#{y_max}]"
+      end
+    end
+  end
+
+  def plot
+    method_name = "plot_#{@plot_type}"
+    public_send(method_name) if respond_to? method_name
   end
 end
 
