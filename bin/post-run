@@ -74,8 +74,8 @@ kill_monitors()
 		for pid in $pids
 		do
 			[ -d /proc/$pid ] || continue
-			explain_kill $pids
-			/bin/kill $signal $pids ||
+			explain_kill $pid
+			/bin/kill $signal $pid ||
 			echo "failed to kill monitor ${pidfile##*/pid-monitor-}" >&2
 		done
 	done
