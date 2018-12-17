@@ -1,0 +1,22 @@
+pkgname=mongodb
+pkgver=4.0.4
+pkgrel=0
+arch=('i686' 'x86_64')
+url="https://www.mongodb.com/"
+pkgdesc="A high-performance, open source, schema-free document-oriented database"
+license=('AGPL3')
+depends=()
+source=("https://downloads.mongodb.com/linux/${pkgname}-linux-x86_64-enterprise-debian92-${pkgver}.tgz")
+sha256sums=('SKIP')
+
+build() {
+	cd "${srcdir}"
+        tar -xvf "${pkgname}-linux-x86_64-enterprise-ubuntu1604-${pkgver}.tgz"
+}
+
+package() {
+	mkdir -p "${pkgdir}/lkp/benchmarks/${pkgname}"
+	cp  -a "$srcdir/${pkgname}-linux-x86_64-enterprise-debian92-$pkgver" "${pkgdir}/lkp/benchmarks/${pkgname}"
+	cd "${pkgdir}/lkp/benchmarks/${pkgname}"
+	ln -sf ${pkgname}-linux-x86_64-enterprise-ubuntu1604-${pkgver}  ${pkgname}
+}

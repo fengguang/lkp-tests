@@ -1,0 +1,28 @@
+#!/bin/sh
+
+mkdir -p $TMP/mongodb/dbdir
+
+cat > $TMP_RESULT_ROOT/mongod.conf <<EOF
+# for documentation of all options, see:
+# http://docs.mongodb.org/manual/reference/configuration-options/
+
+# Where and how to store data.
+storage:
+  dbPath: $TMP/mongodb/dbdir
+  journal:
+    enabled: true
+#  engine:
+#  mmapv1:
+#  wiredTiger:
+
+# where to write logging data.
+systemLog:
+  destination: file
+  logAppend: true
+  path: $TMP/mongodb/dbdir/mongod.log
+
+# network interfaces
+net:
+  port: 27017
+#  bindIp: 127.0.0.1
+EOF

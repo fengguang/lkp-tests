@@ -1,0 +1,28 @@
+suite: ycsb
+testcase: ycsb
+category: benchmark
+
+runtime: 300s
+nr_threads: 100%
+
+setup-mongodb:
+
+setup-ycsb:
+  ip_addr: 127.0.0.1
+  n_recordcount: 80878041
+  n_operationcount: 10000000
+  is_readallfields: true
+  n_readproportion: 1
+  n_updateproportion: 0
+  n_scanproportion: 0
+  n_insertproportion: 0
+  c_requestdistribution: uniform
+  nr_task: 32
+
+cluster: cs-localhost
+
+if role server:
+  mongodb-server:
+
+if role client:
+  ycsb:

@@ -1,0 +1,22 @@
+pkgname=ycsb
+pkgver=0.15.0
+pkgrel=0
+arch=('i686' 'x86_64')
+url="https://github.com/brianfrankcooper/YCSB"
+pkgdesc="Yahoo! Cloud Serving Benchmark"
+license=('Apache License 2.0')
+depends=()
+source=("https://github.com/brianfrankcooper/YCSB/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+sha256sums=('SKIP')
+
+build() {
+	cd "${srcdir}"
+	tar -xvf "${pkgname}-${pkgver}.tar.gz"
+}
+
+package() {
+	mkdir -p "${pkgdir}/lkp/benchmarks/${pkgname}"
+	cp -a "${srcdir}/${pkgname}-${pkgver}" "${pkgdir}/lkp/benchmarks/${pkgname}"
+	cd "${pkgdir}/lkp/benchmarks/${pkgname}"
+	ln -sf "${pkgname}-${pkgver}" "${pkgname}"
+}

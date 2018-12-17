@@ -1,0 +1,96 @@
+#!/usr/bin/env ruby
+
+$stdin.each_line do |line|
+  case line
+  when /OVERALL\W, RunTime.ms., (\d+)$/
+    puts "runtime: #{$1}"
+  when /OVERALL\W, Throughput.ops.sec., (\d+).(\d+)$/
+    puts "throughput: #{$1}.#{$2}"
+  when /TOTAL_GCS_G1_Young_Generation\W, Count, (\d+)$/
+    puts "gcs_g1: #{$1}"
+  when /TOTAL_GC_TIME_G1_Young_Generation\W, Time.ms., (\d+)$/
+    puts "gc_time_g1: #{$1}"
+  when /TOTAL_GC_TIME_%_G1_Young_Generation\W, Time.%., (\d+).(\d+)$/
+    puts "gc_time_%: #{$1}.#{$2}"
+  when /TOTAL_GCS_G1_Old_Generation\W, Count, (\d+)$/
+    puts "gcs_g1_old: #{$1}"
+  when /TOTAL_GC_TIME_G1_Old_Generation\W, Time.ms., (\d+)$/
+    puts "gc_time_g1_old: #{$1}"
+  when /TOTAL_GC_TIME_%_G1_Old_Generation\W, Time.%., (\d+).(\d+)$/
+    puts "gc_time_%_old: #{$1}.#{$2}"
+  when /TOTAL_GCs\W, Count, (\d+)$/
+    puts "total_gcs: #{$1}"
+  when /TOTAL_GC_TIME\W, Time.ms., (\d+)$/
+    puts "total_gc_time: #{$1}"
+  when /TOTAL_GC_TIME_%\W, Time.%., (\d+).(\d+)$/
+    puts "total_gc_time_%: #{$1}.#{$2}"
+  when /READ\W, Operations, (\d+)$/
+    puts "read_operations: #{$1}"
+  when /READ\W, AverageLatency.us., (\d+).(\d+)$/
+    puts "read_averagelatency: #{$1}.#{$2}"
+  when /READ\W, MinLatency.us., (\d+)$/
+    puts "read_minlatency: #{$1}"
+  when /READ\W, MaxLatency.us., (\d+)$/
+    puts "read_maxlatency: #{$1}"
+  when /READ\W, 95thPercentileLatency.us., (\d+)$/
+    puts "read_95%latency: #{$1}"
+  when /READ\W, 99thPercentileLatency.us., (\d+)$/
+    puts "read_99%latency: #{$1}"
+  when /READ\W, Return=OK, (\d+)$/
+    puts "read_return_ok: #{$1}"
+  when /READ\W, Return=NOT_FOUND, (\d+)$/
+    puts "read_return_notfound: #{$1}"
+  when /CLEANUP\W, Operations, (\d+)$/
+    puts "cleanup_operations: #{$1}"
+  when /CLEANUP\W, AverageLatency.us., (\d+).(\d+)$/
+    puts "cleanup_averagelatency: #{$1}.#{$2}"
+  when /CLEANUP\W, MinLatency.us., (\d+)$/
+    puts "cleanup_minlatency: #{$1}"
+  when /CLEANUP\W, MaxLatency.us., (\d+)$/
+    puts "cleanup_maxlatency: #{$1}"
+  when /CLEANUP\W, 95thPercentileLatency.us., (\d+)$/
+    puts "cleanup_95%latency: #{$1}"
+  when /CLEANUP\W, 99thPercentileLatency.us., (\d+)$/
+    puts "cleanup_99%latency: #{$1}"
+  when /READ-FAILED\W, Operations, (\d+)$/
+    puts "read_failed_operations: #{$1}"
+  when /READ-FAILED\W, AverageLatency.us., (\d+).(\d+)$/
+    puts "read_failed_averagelatency: #{$1}.#{$2}"
+  when /READ-FAILED\W, MinLatency.us., (\d+)$/
+    puts "read_failed_minlatency: #{$1}"
+  when /READ-FAILED\W, MaxLatency.us., (\d+)$/
+    puts "read_failed_maxlatency: #{$1}"
+  when /READ-FAILED\W, 95thPercentileLatency.us., (\d+)$/
+    puts "read_failed_95%latency: #{$1}"
+  when /READ-FAILED\W, 99thPercentileLatency.us., (\d+)$/
+    puts "read_failed_99%latency: #{$1}"
+  when /INSERT\W, Operations, (\d+)$/
+    puts "insert_operations: #{$1}"
+  when /INSERT\W, AverageLatency.us., (\d+).(\d+)$/
+    puts "insert_averagelatency: #{$1}.#{$2}"
+  when /INSERT\W, MinLatency.us., (\d+)$/
+    puts "insert_minlatency: #{$1}"
+  when /INSERT\W, MaxLatency.us., (\d+)$/
+    puts "insert_maxlatency: #{$1}"
+  when /INSERT\W, 95thPercentileLatency.us., (\d+)$/
+    puts "insert_95%latency: #{$1}"
+  when /INSERT\W, 99thPercentileLatency.us., (\d+)$/
+    puts "insert_99%latency: #{$1}"
+  when /INSERT\W, Return=OK, (\d+)$/
+    puts "insert_return_ok: #{$1}"
+  when /INSERT\W, Return=ERROR, (\d+)$/
+    puts "insert_return_error: #{$1}"
+  when /INSERT-FAILED\W, Operations, (\d+)$/
+    puts "insert_failed_operations: #{$1}"
+  when /INSERT-FAILED\W, AverageLatency.us., (\d+).(\d+)$/
+    puts "insert_failed_averagelatency: #{$1}.#{$2}"
+  when /INSERT-FAILED\W, MinLatency.us., (\d+)$/
+    puts "insert_failed_minlatency: #{$1}"
+  when /INSERT-FAILED\W, MaxLatency.us., (\d+)$/
+    puts "insert_failed_maxlatency: #{$1}"
+  when /INSERT-FAILED\W, 95thPercentileLatency.us., (\d+)$/
+    puts "insert_failed_95%latency: #{$1}"
+  when /INSERT-FAILED\W, 99thPercentileLatency.us., (\d+)$/
+    puts "insert_failed_99%latency: #{$1}"
+  end
+end
