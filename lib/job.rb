@@ -247,10 +247,6 @@ class Job
 
   def load_hosts_config
     return if @job.include? :no_defaults && @job['old_tbox_group'].nil?
-    if @job['old_tbox_group'] == @job['tbox_group']
-      @job.delete 'old_tbox_group'
-      return
-    end
     return unless @job.include? 'tbox_group'
     hosts_file = "#{lkp_src}/hosts/#{@job['tbox_group']}"
     return unless File.exist? hosts_file
