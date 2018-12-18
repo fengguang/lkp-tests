@@ -187,6 +187,7 @@
 # - sc_vfs_cache_pressure
 # - sc_watermark_scale_factor
 # - sc_zone_reclaim_mode
+# - sc_somaxconn
 
 . $LKP_SRC/lib/reproduce-log.sh
 
@@ -378,5 +379,6 @@
 [ -n "$sc_vfs_cache_pressure" ] && log_eval "echo '$sc_vfs_cache_pressure' > '/proc/sys/vm/vfs_cache_pressure'"
 [ -n "$sc_watermark_scale_factor" ] && log_eval "echo '$sc_watermark_scale_factor' > '/proc/sys/vm/watermark_scale_factor'"
 [ -n "$sc_zone_reclaim_mode" ] && log_eval "echo '$sc_zone_reclaim_mode' > '/proc/sys/vm/zone_reclaim_mode'"
+[ -n "$sc_somaxconn" ] && log_eval "echo '$sc_somaxconn' > '/proc/sys/net/core/somaxconn'"
 
 exit 0

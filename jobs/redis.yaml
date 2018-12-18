@@ -4,6 +4,14 @@ category: benchmark
 
 nr_threads: 100%
 
+sysctl:
+  sc_overcommit_memory: 1
+  sc_somaxconn: 65535
+
+transparent_hugepage:
+  thp_enabled: never
+  thp_defrag: never
+
 cluster: cs-localhost
 
 if role server:
