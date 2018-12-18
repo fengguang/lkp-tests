@@ -11,7 +11,7 @@ sha256sums=('SKIP')
 
 build() {
 	cd "${srcdir}"
-        tar -xvf "${pkgname}-linux-x86_64-enterprise-ubuntu1604-${pkgver}.tgz"
+	tar -xvf "${pkgname}-linux-x86_64-enterprise-ubuntu1604-${pkgver}.tgz"
 }
 
 package() {
