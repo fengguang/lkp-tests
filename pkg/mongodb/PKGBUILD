@@ -11,12 +11,12 @@ sha256sums=('SKIP')
 
 build() {
 	cd "${srcdir}"
-	tar -xvf "${pkgname}-linux-x86_64-enterprise-ubuntu1604-${pkgver}.tgz"
+	tar -xvf "${pkgname}-linux-x86_64-enterprise-debian92-${pkgver}.tgz"
 }
 
 package() {
 	mkdir -p "${pkgdir}/lkp/benchmarks/${pkgname}"
 	cp  -a "$srcdir/${pkgname}-linux-x86_64-enterprise-debian92-$pkgver" "${pkgdir}/lkp/benchmarks/${pkgname}"
 	cd "${pkgdir}/lkp/benchmarks/${pkgname}"
-	ln -sf ${pkgname}-linux-x86_64-enterprise-ubuntu1604-${pkgver}  ${pkgname}
+	ln -sf ${pkgname}-linux-x86_64-enterprise-debian92-${pkgver}  ${pkgname}
 }
