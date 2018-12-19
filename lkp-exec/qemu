@@ -216,6 +216,7 @@ validate_options $job_script || exit 1
 create_lkp_user
 create_lkp_home
 export CACHE_DIR=$HOME/.lkp/cache
+mkdir -p $CACHE_DIR
 
 . $job_script export_top_env
 replace_script_partition_val $job_script
@@ -245,7 +246,11 @@ create_lkp_src_initrd()
 	lkp_initrd=$CACHE_DIR/lkp-$arch-$src_sig.cgz
 	[[ -f $lkp_initrd ]] || {
 		LKP_USER=$user \
-		$LKP_SRC/sbin/pack -f -a $arch lkp-src || exit
+		$LKP_SRC/sbin/pack -f -a $arch lkp-src
+		[[ -f $CACHE_DIR/lkp-$arch.cgz ]] || {
+			echo "Failed to pack: $CACHE_DIR/lkp-$arch.cgz"
+			exit 1
+		}
 		mv $CACHE_DIR/lkp-$arch.cgz $lkp_initrd
 	}
 }
@@ -295,7 +300,6 @@ else
 	HTTP_PREFIX=https://download.01.org/0day-ci/lkp-qemu
 fi
 
-[ -d $CACHE_DIR ] || mkdir $CACHE_DIR
 LKP_USER="lkp"
 : ${QEMU_MODEL:='qemu-system-x86_64'}
 
