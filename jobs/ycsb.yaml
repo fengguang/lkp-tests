@@ -22,7 +22,7 @@ setup-ycsb:
 cluster: cs-localhost
 
 if role server:
-  mongodb-server:
+  mongodb:
 
 if role client:
   ycsb:
