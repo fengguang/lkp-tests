@@ -8,6 +8,7 @@
 . $LKP_SRC/lib/upload.sh
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/tests/common.sh
+. $LKP_SRC/lib/env.sh
 
 [ "$nr_partitions" -lt 2 ] && die "$nr_partitions -lt 2"
 cd $BENCHMARK_ROOT/xfstests || die "fail to cd $BENCHMARK_ROOT/xfstests"
@@ -16,7 +17,20 @@ check_add_user()
 {
 	[ "x$1" != "x" ] || return
 	grep -q -w "$1" /etc/passwd && return
-	useradd "$1" || echo "$(basename $0): useradd $1 failed" 1>&2
+	# 123456-fsgqa is a invalid user name on Clear, useradd doesn't work
+	useradd "$1" >/dev/null 2>&1 || {
+		if is_clearlinux; then
+			mkdir /home/$1
+			echo "$1:x:666" >> /etc/group
+			echo "$1:x:666:666::/home/$1:/bin/bash" >> /etc/passwd
+			# avoid error "su: Authentication service cannot retrieve authentication info"
+			echo "$1:!:17884::::::" >> /etc/shadow
+			chown -R $1:$1 /home/$1
+			chmod -R go= /home/$1
+		else
+			echo "$(basename $0): useradd $1 failed" 1>&2
+		fi
+	}
 }
 
 create_virtual_disk()
