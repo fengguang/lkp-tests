@@ -2,7 +2,7 @@
 
 . $LKP_SRC/lib/reproduce-log.sh
 
-mongodb_server=$BENCHMARK_ROOT/mongodb/mongodb/bin/mongod
+mongodb_server=$BENCHMARK_ROOT/mongodb/bin/mongod
 
 # start mongodb server
 log_eval "$mongodb_server --dbpath=${TMP}/mongodb/dbdir/ --config ${TMP_RESULT_ROOT}/mongod.conf &"
