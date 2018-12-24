@@ -16,6 +16,7 @@ cluster: cs-localhost
 
 if role server:
   redis-server:
+    nr_task: 5
 
 if role client:
   redis:
@@ -25,3 +26,4 @@ if role client:
     requests: 21000000
     n_pipeline: 3
     key_len: 21000000
+    nr_task: 5

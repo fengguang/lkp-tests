@@ -1,7 +1,15 @@
 #!/bin/sh
-
+# - nr_task
 . $LKP_SRC/lib/reproduce-log.sh
 
 redis_server=$BENCHMARK_ROOT/redis/bin/redis-server
 # start redis server
-log_eval "$redis_server &"
+for i in $(seq 1 "${nr_task}")
+do
+	port=$((6379+$i))
+	log_eval "$redis_server --port $port &"
+done
+
+cat > $TMP_RESULT_ROOT/post-run.redis <<EOF
+/bin/kill -9 $(ps -ef | grep $redis_server | grep -v grep | awk '{print $2}')
+EOF

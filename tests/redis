@@ -5,6 +5,7 @@
 # - requests
 # - n_pipeline
 # - key_len
+# - nr_task
 
 ## Redis is an open source (BSD licensed), in-memory data structure store,
 ## used as a database, cache and message broker. It supports data structures
@@ -17,5 +18,9 @@
 . $LKP_SRC/lib/reproduce-log.sh
 
 export PATH=$BENCHMARK_ROOT/redis/bin:$PATH
-
-log_test redis-benchmark -t $test -d $data_size -c $n_client -n $requests -P $n_pipeline -r $key_len -q
+for i in $(seq 1 "${nr_task}")
+do
+	port=$((6379+$i))
+	log_test redis-benchmark -t $test -d $data_size -c $n_client -n $requests -P $n_pipeline -r $key_len -p $port -q&
+done
+wait

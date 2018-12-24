@@ -1,15 +1,22 @@
 #!/usr/bin/env ruby
-
+set_sum = 0
+set_num = 0
+set_avg = 0
+get_sum = 0
+get_num = 0
+get_avg = 0
 $stdin.each_line do |line|
   case line
   when /PING_INLINE: (\d+).(\d+) requests per second$/
     puts "PING_INLINE: #{$1}.#{$2}"
   when /PING_BULK: (\d+).(\d+) requests per second$/
     puts "PING_BULK: #{$1}.#{$2}"
-  when /\WSET: (\d+).(\d+) requests per second$/
-    puts "SET: #{$1}.#{$2}"
-  when /GET: (\d+).(\d+) requests per second$/
-    puts "GET: #{$1}.#{$2}"
+  when /\WSET: (\d+\.\d+) requests per second$/
+    set_sum += $1.to_f
+    set_num += 1
+  when /GET: (\d+\.\d+) requests per second$/
+    get_sum += $1.to_f
+    get_num += 1
   when /INCR: (\d+).(\d+) requests per second$/
     puts "INCR: #{$1}.#{$2}"
   when /LPUSH: (\d+).(\d+) requests per second$/
@@ -40,3 +47,9 @@ $stdin.each_line do |line|
     puts "MSET: #{$1}.#{$2}"
   end
 end
+set_avg = set_sum/set_num
+get_avg = get_sum/get_num
+puts "SET_TOTAL: #{set_sum}"
+puts "GET_TOTAL: #{get_sum}"
+puts "SET_AVG: #{set_avg}"
+puts "GET_AVG: #{get_avg}"
