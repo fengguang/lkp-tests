@@ -21,6 +21,6 @@ export PATH=$BENCHMARK_ROOT/redis/bin:$PATH
 for i in $(seq 1 "${nr_task}")
 do
 	port=$((6379+$i))
-	log_test redis-benchmark -t $test -d $data_size -c $n_client -n $requests -P $n_pipeline -r $key_len -p $port -q&
+	log_test redis-benchmark -t $test -d $data_size -c $n_client -n $requests -P $n_pipeline -r $key_len -p $port&
 done
 wait
