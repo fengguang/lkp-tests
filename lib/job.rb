@@ -551,8 +551,12 @@ class Job
   end
 
   def path_params
+    sorted_params = []
+    each_param { |k, v, option_type| sorted_params << [k, v, option_type] }
+    sorted_params = sorted_params.sort_by { |k, _v, _option_type| k }
+
     path = ''
-    each_param do |k, v, option_type|
+    sorted_params.each do |k, v, option_type|
       if option_type == '='
         path += if v && v != ''
                   "#{k}=#{v[0..30]}"
