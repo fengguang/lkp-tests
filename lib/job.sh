@@ -233,7 +233,15 @@ start_daemon()
 	# will be killed by watchdog when timeout
 	echo $$ >> $TMP/pid-start-daemon
 
-	run_program daemon "$@"
+	# If cs-localhost mode, the pid of daemon is recorded and will be used
+	# to kill it in bin/post-run when the task is finished
+	if [ "$cluster" = "cs-localhost" ]; then
+		local daemon=${@##*/}
+		run_monitor "$@"
+		echo $! >> $TMP/pid-monitor-$daemon
+	else
+		run_program daemon "$@"
+	fi
 
 	sync_cluster_state 'finished'
 	# If failed to start the daemon above, the job will abort.
