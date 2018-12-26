@@ -211,7 +211,7 @@ run_program()
 	check_exit_code $?
 }
 
-run_monitor()
+run_program_in_background()
 {
 	local program=$(record_program "$@")
 
@@ -220,6 +220,11 @@ run_monitor()
 	else
 		"$@" &
 	fi
+}
+
+run_monitor()
+{
+	run_program_in_background "$@"
 }
 
 run_setup()
@@ -237,8 +242,8 @@ start_daemon()
 	# to kill it in bin/post-run when the task is finished
 	if [ "$cluster" = "cs-localhost" ]; then
 		local daemon=${@##*/}
-		run_monitor "$@"
-		echo $! >> $TMP/pid-monitor-$daemon
+		run_program_in_background "$@"
+		echo $! >> $TMP/pid-bg-proc-$daemon
 	else
 		run_program daemon "$@"
 	fi

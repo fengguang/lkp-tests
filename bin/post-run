@@ -27,12 +27,12 @@ any_pid_alive()
 	fi
 }
 
-wait_for_monitors()
+wait_for_bg_procs()
 {
-	local pidfile=$TMP/.pid-wait-monitors
+	local pidfile="$TMP/.pid-wait-bg-procs"
 	[ -s "$pidfile" ] || return 0
 
-	echo wait for background monitors: $(cat $pidfile $TMP/.name-wait-monitors)
+	echo wait for background processes: $(cat $pidfile $TMP/.name-wait-bg-procs)
 
 	for i in 1 2 3 4 5
 	do
@@ -41,25 +41,25 @@ wait_for_monitors()
 		return $i
 	done
 
-	echo "some monitors do not quit in time" >&2
+	echo "some processes do not quit in time" >&2
 	if [ -n "$is_busybox_ps" ]; then
 		ps
 	else
 		ps axho pid | grep -Fxf $pidfile | xargs ps u
 		ps faux
-	fi > $TMP_RESULT_ROOT/monitors-debug
+	fi > $TMP_RESULT_ROOT/bg-procs-debug
 
 	return $i
 }
 
-kill_monitors()
+kill_bg_procs()
 {
 	local signal=$1
-	local wait_pidfile="$TMP/.pid-wait-monitors"
+	local wait_pidfile="$TMP/.pid-wait-bg-procs"
 	local pids
 	local pid
 
-	for pidfile in $TMP/pid-monitor-*
+	for pidfile in $TMP/pid-bg-proc-*
 	do
 		[ -s "$pidfile" ] || continue
 
@@ -76,25 +76,25 @@ kill_monitors()
 			[ -d /proc/$pid ] || continue
 			explain_kill $pid
 			/bin/kill $signal $pid ||
-			echo "failed to kill monitor ${pidfile##*/pid-monitor-}" >&2
+			echo "failed to kill background process	${pidfile##*/pid-bg-proc--}" >&2
 		done
 	done
 }
 
-# There are 2 kind of monitor termination mechanisms:
-# 1) some smart monitors run setup_wait() and wait for the below post-test event
-#    => $TMP/.pid-wait-monitors
+# There are 2 kind of background process termination mechanisms:
+# 1) some smart monitors/daemons run setup_wait() and wait for the below post-test event
+#    => $TMP/.pid-wait-bg-proc
 $LKP_SRC/bin/event/wakeup activate-monitor
 $LKP_SRC/bin/event/wakeup post-test
 touch $TMP/post-run
 sleep 1
-# 2) most simple monitors run until being killed
-#    => $TMP/pid-monitor-*
-kill_monitors -TERM
+# 2) most simple background processes run until being killed
+#    => $TMP/pid-bg-proc-*
+kill_bg_procs -TERM
 
-wait_for_monitors
+wait_for_bg_procs
 sleep 1
-kill_monitors -KILL
+kill_bg_procs -KILL
 
 for post_run in $TMP_RESULT_ROOT/post-run.*; do
 	[ -f "$post_run" ] && sh "$post_run"

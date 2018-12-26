@@ -15,9 +15,9 @@ nr_node=$(echo /sys/devices/system/node/node[0-9]* | wc -w)
 if [ -z "$eatmem_nonuma" ]; then
 	for i in $(seq 0 $((nr_node-1))); do
 		numactl -m $i -N $i $USEMEM $((eatmem_size/nr_node)) --detach --sleep $eatmem_duration -p $TMP/eatmem_$i.pid
-		cat $TMP/eatmem_$i.pid >> $TMP/pid-monitor-eatmem
+		cat $TMP/eatmem_$i.pid >> $TMP/pid-bg-proc-eatmem
 		rm $TMP/eatmem_$i.pid
 	done
 else
-	$USEMEM $eatmem_size --detach --sleep $eatmem_duration -p $TMP/pid-monitor-eatmem
+	$USEMEM $eatmem_size --detach --sleep $eatmem_duration -p $TMP/pid-bg-proc-eatmem
 fi

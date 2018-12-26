@@ -29,8 +29,8 @@ wait_timeout()
 
 setup_wait()
 {
-	echo $$ >> $TMP/.pid-wait-monitors
-	echo ${0##*/} >> $TMP/.name-wait-monitors
+	echo $$ >> $TMP/.pid-wait-bg-procs
+	echo ${0##*/} >> $TMP/.name-wait-bg-procs
 }
 
 explain_kill()

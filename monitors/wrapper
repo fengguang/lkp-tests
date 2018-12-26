@@ -55,7 +55,7 @@ echo $! >> $TMP/.pid-pipes
 
 # Save pid to be killed when the tests complete.
 # gzip/cat will auto quit when the FIFO writer is killed.
-echo $$ >> $TMP/pid-monitor-$monitor
+echo $$ >> $TMP/pid-bg-proc-$monitor
 
 # Some setup scripts take time and we don't want to profile them.
 $LKP_SRC/bin/event/wait 'activate-monitor'
