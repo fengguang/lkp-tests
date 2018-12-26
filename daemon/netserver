@@ -2,10 +2,12 @@
 # - ip
 
 export PATH=$BENCHMARK_ROOT/netperf/bin:$PATH
+. $LKP_SRC/lib/reproduce-log.sh
 
 opt_ip=
 [ "$ip" = 'ipv4' ] && opt_ip='-4'
 [ "$ip" = 'ipv6' ] && opt_ip='-6'
 
 # start netserver
-log_cmd netserver $opt_ip
+log_echo netserver $opt_ip -D
+exec netserver $opt_ip -D

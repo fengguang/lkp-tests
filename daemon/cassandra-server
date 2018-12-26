@@ -3,5 +3,9 @@
 . $LKP_SRC/lib/reproduce-log.sh
 
 cassandra_server=$BENCHMARK_ROOT/cassandra/bin/cassandra
+
+# log command
+log_echo $cassandra_server -f -R
+
 # start cassandra server
-log_eval "$cassandra_server -f -R &"
+exec $cassandra_server -f -R
