@@ -36,4 +36,4 @@ args="\
 [ -n "$rand_type" ] && args="$args --rand-type=$rand_type"
 [ -n "$rand_pareto_h" ] && args="$args --rand-pareto-h=$rand_pareto_h"
 
-log_cmd sysbench $args run
+log_test sysbench $args run
