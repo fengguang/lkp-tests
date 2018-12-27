@@ -2,6 +2,8 @@
 
 test_id = -1
 while (line = STDIN.gets)
+  # remove color control info
+  line.gsub!(/.\[1;(\d+)m|.\[0m/, '')
   case line.chomp!
   when %r{pts/(\S+)-[0-9.]+ is not installed}
     item = Regexp.last_match[1]
