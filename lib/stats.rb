@@ -58,7 +58,8 @@ class LinuxTestcasesTableSet
      'build-qemu', 'convert-lkpdoc-to-html', 'convert-lkpdoc-to-html-css',
      'health-stats', 'hwinfo', 'internal-lkp-service', 'ipmi-setup',
      'lkp-bug', 'lkp-install-run', 'lkp-services', 'lkp-src', 'pack', 'lkp-qemu',
-     'pack-deps', 'makepkg', 'makepkg-deps', 'borrow', 'dpdk-dts', 'mbtest', 'build-acpica', 'build-ltp'].freeze
+     'pack-deps', 'makepkg', 'makepkg-deps', 'borrow', 'dpdk-dts', 'mbtest', 'build-acpica', 'build-ltp',
+     'bust_shm_exit'].freeze
 end
 
 # => ["tcrypt.", "hackbench.", "dd.", "xfstests.", "aim7.", ..., "oltp.", "fileio.", "dmesg."]
