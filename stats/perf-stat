@@ -3,6 +3,38 @@
 $results = Hash.new(0)
 $results_interval = Hash.new(0)
 
+def calc_addon_keys(results, prefix)
+  results.each do |key, miss|
+    next unless key =~ /(.*)-misses/
+    stem = $1
+    ['s', '-references', '-instructions'].each do |pfx|
+      value = results[stem + pfx]
+      next if value.zero?
+      total = if pfx == 's'
+                value + miss
+              else
+                value
+              end
+      puts "#{prefix}#{stem}-miss-rate%: #{miss * 100.0 / total}"
+      break
+    end
+  end
+
+  cycles = results['cpu-cycles']
+  instructions = results['instructions']
+
+  if cycles != 0 && instructions != 0
+    puts "#{prefix}ipc: #{instructions.to_f / cycles}"
+    puts "#{prefix}cpi: #{cycles / instructions.to_f}"
+  end
+
+  itlb_miss = results['iTLB-load-misses']
+
+  if itlb_miss != 0 && instructions != 0
+    puts "#{prefix}instructions-per-iTLB-miss: #{instructions.to_f / itlb_miss}"
+  end
+end
+
 def output_interval(time)
   return if $results_interval.empty?
   puts "time: #{time}"
@@ -10,6 +42,7 @@ def output_interval(time)
     puts "#{key}: #{value}"
     $results[key] += value
   end
+  calc_addon_keys($results_interval, "")
   $results_interval.clear
 end
 
@@ -22,81 +55,57 @@ end
 #    3.004126313 S0 8 319801680  cpu-cycles 8006470194 100.00
 #    3.004126313 S0 8 170196182  instructions 8007548409 100.00 0.50 insn per cycle
 
-time = 0
+def parse
+  time = 0
 
-$stdin.each_line do |line|
-  next unless line =~ /\d+.\d+\s+(\d+)\s+(\S+)\s+(\S+)/
-  stime, *fields = line.split
+  $stdin.each_line do |line|
+    next unless line =~ /\d+.\d+\s+(\d+)\s+(\S+)\s+(\S+)/
+    stime, *fields = line.split
 
-  prev_time = time
-  time = stime.to_f
-  # time different > 10ms, new output
-  if time - prev_time > 0.01
-    output_interval prev_time
+    prev_time = time
+    time = stime.to_f
+    # time different > 10ms, new output
+    if time - prev_time > 0.01
+      output_interval prev_time
+    end
+    socket = nil
+    unit = nil
+    socket_key = nil
+
+    # per-socket mode
+    #    S0 8 321055743  cpu-cycles 8012766737 100.00
+    if fields[0][0] == 'S'
+      socket = fields[0]
+      fields.delete_at 1
+      fields.delete_at 0
+    end
+
+    # for unit
+    # 7928832 Bytes llc_misses.mem_read 8005538025 100.00
+    if fields[1] == 'Bytes'
+      unit = fields[1]
+      fields.delete_at 1
+    end
+
+    # 777209 mem_load_uops_l3_miss_retired_remote_dram 89128748143 100.00
+    value, key = fields
+    value = value.to_f
+
+    key = "#{key}_#{unit}" if unit
+    socket_key = "#{socket}.#{key}" if socket
+
+    $results_interval[key] += value
+    $results_interval[socket_key] += value if socket_key
   end
-  socket = nil
-  unit = nil
-  socket_key = nil
 
-  # per-socket mode
-  #    S0 8 321055743  cpu-cycles 8012766737 100.00
-  if fields[0][0] == 'S'
-    socket = fields[0]
-    fields.delete_at 1
-    fields.delete_at 0
-  end
-
-  # for unit
-  # 7928832 Bytes llc_misses.mem_read 8005538025 100.00
-  if fields[1] == 'Bytes'
-    unit = fields[1]
-    fields.delete_at 1
-  end
-
-  # 777209 mem_load_uops_l3_miss_retired_remote_dram 89128748143 100.00
-  value, key = fields
-  value = value.to_f
-
-  key = "#{key}_#{unit}" if unit
-  socket_key = "#{socket}.#{key}" if socket
-
-  $results_interval[key] += value
-  $results_interval[socket_key] += value if socket_key
+  # skip the last record, because the interval hasn't run out
 end
 
-# skip the last record, because the interval hasn't run out
+parse
 
 $results.each do |key, value|
   # output total value
   puts "total.#{key}: #{value}"
 end
 
-$results.each do |key, miss|
-  next unless key =~ /(.*)-misses/
-  stem = $1
-  ['s', '-references', '-instructions'].each do |pfx|
-    value = $results[stem + pfx]
-    next if value.zero?
-    total = if pfx == 's'
-              value + miss
-            else
-              value
-            end
-    puts "total.#{stem}-miss-rate%: #{miss * 100.0 / total}"
-    break
-  end
-end
-
-cycles = $results['cpu-cycles']
-instructions = $results['instructions']
-
-if cycles != 0 && instructions != 0
-  puts "total.ipc: #{instructions.to_f / cycles}"
-  puts "total.cpi: #{cycles / instructions.to_f}"
-end
-
-itlb_miss = $results['iTLB-load-misses']
-
-if itlb_miss != 0 && instructions != 0
-  puts "total.instructions-per-iTLB-miss: #{instructions.to_f / itlb_miss}"
-end
+calc_addon_keys($results, "total.")
