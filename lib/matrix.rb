@@ -72,11 +72,11 @@ end
 def add_path_length(stats, matrix)
   workloads = stats.select { |s| s.end_with? '.workload' }
   return if workloads.size != 1
-  instructions = stats['perf-stat.instructions']
+  instructions = stats['perf-stat.total.instructions']
   return unless instructions
   path_length = instructions.to_f / workloads.values[0]
-  stats['perf-stat.path-length'] = path_length
-  matrix['perf-stat.path-length'] = [path_length]
+  stats['perf-stat.total.path-length'] = path_length
+  matrix['perf-stat.total.path-length'] = [path_length]
 end
 
 def create_stats_matrix(result_root)

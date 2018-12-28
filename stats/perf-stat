@@ -2,14 +2,27 @@
 
 results = Hash.new(0)
 
-STDIN.each_line do |line|
-  _, value, key = line.split
-  next unless value =~ /^\d+$/
-  results[key] += value.to_i
+# Example output
+#    290.690747746 777209  mem_load_uops_l3_miss_retired_remote_dram 89128748143 100.00
+#    324.224668698 7928832 Bytes llc_misses.mem_read 8005538025 100.00
+
+$stdin.each_line do |line|
+  next unless line =~ /\d+.\d+\s+(\d+)\s+(\S+)\s+(\S+)/
+  fields = line.split
+  if fields[2] == 'Bytes'
+    fields[2] = "#{fields[3]}_#{fields[2]}"
+    fields.delete_at 3
+  end
+  _, value, key, _, percent = fields
+  value = value.to_i * 100.0 / percent.to_f
+  results[key] += value
+  # output value for each interval
+  puts "#{key}: #{value}"
 end
 
 results.each do |key, value|
-  puts "#{key}: #{value}"
+  # output total value
+  puts "total.#{key}: #{value}"
 end
 
 results.each do |key, miss|
@@ -23,7 +36,7 @@ results.each do |key, miss|
             else
               value
             end
-    puts "#{stem}-miss-rate%: #{miss * 100.0 / total}"
+    puts "total.#{stem}-miss-rate%: #{miss * 100.0 / total}"
     break
   end
 end
@@ -32,12 +45,12 @@ cycles = results['cpu-cycles']
 instructions = results['instructions']
 
 if cycles != 0 && instructions != 0
-  puts "ipc: #{instructions.to_f / cycles}"
-  puts "cpi: #{cycles / instructions.to_f}"
+  puts "total.ipc: #{instructions.to_f / cycles}"
+  puts "total.cpi: #{cycles / instructions.to_f}"
 end
 
 itlb_miss = results['iTLB-load-misses']
 
 if itlb_miss != 0 && instructions != 0
-  puts "instructions-per-iTLB-miss: #{instructions.to_f / itlb_miss}"
+  puts "total.instructions-per-iTLB-miss: #{instructions.to_f / itlb_miss}"
 end
