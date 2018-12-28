@@ -1,35 +1,81 @@
 #!/usr/bin/env ruby
 
-results = Hash.new(0)
+$results = Hash.new(0)
+$results_interval = Hash.new(0)
+
+def output_interval(time)
+  return if $results_interval.empty?
+  puts "time: #{time}"
+  $results_interval.each do |key, value|
+    puts "#{key}: #{value}"
+    $results[key] += value
+  end
+  $results_interval.clear
+end
 
 # Example output
 #    290.690747746 777209  mem_load_uops_l3_miss_retired_remote_dram 89128748143 100.00
 #    324.224668698 7928832 Bytes llc_misses.mem_read 8005538025 100.00
 
+#    2.003151490 S0 8 321055743  cpu-cycles 8012766737 100.00
+#    2.003151490 S0 8 161761287  instructions 8011773256 100.00 0.47 insn per cycle
+#    3.004126313 S0 8 319801680  cpu-cycles 8006470194 100.00
+#    3.004126313 S0 8 170196182  instructions 8007548409 100.00 0.50 insn per cycle
+
+time = 0
+
 $stdin.each_line do |line|
   next unless line =~ /\d+.\d+\s+(\d+)\s+(\S+)\s+(\S+)/
-  fields = line.split
-  if fields[2] == 'Bytes'
-    fields[2] = "#{fields[3]}_#{fields[2]}"
-    fields.delete_at 3
+  stime, *fields = line.split
+
+  prev_time = time
+  time = stime.to_f
+  # time different > 10ms, new output
+  if time - prev_time > 0.01
+    output_interval prev_time
   end
-  _, value, key, _, percent = fields
-  value = value.to_i * 100.0 / percent.to_f
-  results[key] += value
-  # output value for each interval
-  puts "#{key}: #{value}"
+  socket = nil
+  unit = nil
+  socket_key = nil
+
+  # per-socket mode
+  #    S0 8 321055743  cpu-cycles 8012766737 100.00
+  if fields[0][0] == 'S'
+    socket = fields[0]
+    fields.delete_at 1
+    fields.delete_at 0
+  end
+
+  # for unit
+  # 7928832 Bytes llc_misses.mem_read 8005538025 100.00
+  if fields[1] == 'Bytes'
+    unit = fields[1]
+    fields.delete_at 1
+  end
+
+  # 777209 mem_load_uops_l3_miss_retired_remote_dram 89128748143 100.00
+  value, key = fields
+  value = value.to_f
+
+  key = "#{key}_#{unit}" if unit
+  socket_key = "#{socket}.#{key}" if socket
+
+  $results_interval[key] += value
+  $results_interval[socket_key] += value if socket_key
 end
 
-results.each do |key, value|
+# skip the last record, because the interval hasn't run out
+
+$results.each do |key, value|
   # output total value
   puts "total.#{key}: #{value}"
 end
 
-results.each do |key, miss|
+$results.each do |key, miss|
   next unless key =~ /(.*)-misses/
   stem = $1
   ['s', '-references', '-instructions'].each do |pfx|
-    value = results[stem + pfx]
+    value = $results[stem + pfx]
     next if value.zero?
     total = if pfx == 's'
               value + miss
@@ -41,15 +87,15 @@ results.each do |key, miss|
   end
 end
 
-cycles = results['cpu-cycles']
-instructions = results['instructions']
+cycles = $results['cpu-cycles']
+instructions = $results['instructions']
 
 if cycles != 0 && instructions != 0
   puts "total.ipc: #{instructions.to_f / cycles}"
   puts "total.cpi: #{cycles / instructions.to_f}"
 end
 
-itlb_miss = results['iTLB-load-misses']
+itlb_miss = $results['iTLB-load-misses']
 
 if itlb_miss != 0 && instructions != 0
   puts "total.instructions-per-iTLB-miss: #{instructions.to_f / itlb_miss}"
