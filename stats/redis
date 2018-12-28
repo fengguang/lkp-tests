@@ -6,10 +6,18 @@ get_sum = 0
 get_num = 0
 get_avg = 0
 is_set = true
-set_1ms = 100
-set_2ms = 100
-get_1ms = 100
-get_2ms = 100
+set_1ms = 0
+set_1ms_sum = 0
+set_1ms_num = 0
+set_2ms = 0
+set_2ms_sum = 0
+set_2ms_num =0
+get_1ms = 0
+get_1ms_sum = 0
+get_1ms_num = 0
+get_2ms = 0
+get_2ms_sum = 0
+get_2ms_num = 0
 $stdin.each_line do |line|
   case line
   when /PING_INLINE: (\d+).(\d+) requests per second$/
@@ -30,23 +38,19 @@ $stdin.each_line do |line|
     end
   when /^(\d+\.\d+)% <= 1 milliseconds$/
     if is_set
-      if $1.to_f < set_1ms
-        set_1ms = $1.to_f
-      end
+      set_1ms_sum += $1.to_f
+      set_1ms_num += 1
     else
-      if $1.to_f < get_1ms
-        get_1ms = $1.to_f
-      end
+      get_1ms_sum += $1.to_f
+      get_1ms_num += 1
     end
   when /^(\d+\.\d+)% <= 2 milliseconds$/
     if is_set
-      if $1.to_f < set_2ms
-        set_2ms = $1.to_f
-      end
+      set_2ms_sum += $1.to_f
+      set_2ms_num += 1
     else
-      if $1.to_f < get_2ms
-        get_2ms = $1.to_f
-      end
+      get_2ms_sum += $1.to_f
+      get_2ms_num += 1
     end
   when /\WSET: (\d+\.\d+) requests per second$/
     set_sum += $1.to_f
@@ -86,6 +90,10 @@ $stdin.each_line do |line|
 end
 set_avg = set_sum/set_num
 get_avg = get_sum/get_num
+set_1ms = set_1ms_sum/set_1ms_num
+set_2ms = set_2ms_sum/set_2ms_num
+get_1ms = get_1ms_sum/get_1ms_num
+get_2ms = get_2ms_sum/get_2ms_num
 puts "set_total_throughput_rps: #{set_sum}"
 puts "get_total_throughput_rps: #{get_sum}"
 puts "set_avg_throughput_rps: #{set_avg}"
