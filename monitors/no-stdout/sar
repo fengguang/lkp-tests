@@ -1,0 +1,34 @@
+#!/bin/sh
+# - activity
+# - interval
+# - count
+
+. $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/common.sh
+. $LKP_SRC/lib/wait.sh
+
+sadc="/lkp/benchmarks/sysstat/usr/local/lib/sa/sadc"
+sadf="/lkp/benchmarks/sysstat/usr/local/bin/sadf"
+
+: ${activity:=ALL}
+: ${interval:=1}
+
+sar_data="$TMP_RESULT_ROOT"/sar.data
+
+[ -x $sadc ] || {
+	echo "sadc is not installed." >&2
+	exit 1
+}
+
+cat > "$TMP_RESULT_ROOT/post-run.sar" <<EOF
+[ -s "$sar_data" ] && {
+	$sadf -jU "$sar_data" -- -A | gzip > "$RESULT_ROOT"/sar.gz
+}
+EOF
+
+# User can specify the activity, interval, and count for performance data collection in job file.
+# If a user specifies the $interval and $count, sadc command samples system data a specified
+# number of times (count) at a specified interval measured in seconds (interval). If not, the
+# data will be collected during the whole life cycle of benchmark as default.
+
+exec "$sadc" -S "$activity" "$interval" $count "$sar_data"

@@ -1,0 +1,108 @@
+#!/usr/bin/env ruby
+
+require 'time'
+require 'json'
+
+RESULT_ROOT = ENV['RESULT_ROOT']
+
+# The below is part of the sar json file, read it then parse it into hash data.
+# {"sysstat": {
+#   "hosts": [
+#     {
+#       "nodename": "haiyan",
+#       "sysname": "Linux",
+#       "release": "4.19.0-rc4",
+#       "machine": "x86_64",
+#       "number-of-cpus": 4,
+#       "file-date": "2018-12-25",
+#       "file-utc-time": "01:08:02",
+#       "statistics": [
+#           {
+#           "timestamp": {"date": "2018-12-25", "time": "01:08:03", "utc": 1, "interval": 1},
+#           ...
+#           "cpu-load": [
+#             {"cpu": "all", "usr": 3.06, "nice": 0.00, "sys": 5.87, "iowait":
+#             0.26, "steal": 0.00, "irq": 0.00, "soft": 0.00, "guest": 0.00, "gnice": 0.00, "idle": 90.82},
+#           ... ]
+#           "interrupts": [
+#                   {"intr": "sum", "value": 8911.00},
+#                   {"intr": "0", "value": 0.00},
+#                   {"intr": "1", "value": 0.00},
+#           ... ]
+#           "network": {
+#              "net-dev": [
+#                {"iface": "lo", "rxpck": 0.00, "txpck": 0.00, "rxkB": 0.00, "txkB": 0.00, "rxcmp": 0.00, ...}
+#                {...} ... ],
+#              "net-nfs": {"call": 0.00, "retrans": 0.00, "read": 0.00, "write": 0.00, "access": 0.00, "getatt": 0.00},
+#           "swap-pages": {"pswpin": 0.00, "pswpout": 0.00},
+
+# Need get below 3 type of values from "statistics" and save them in results, display them for every timestamp.
+# 1. For "cpu-load", "interrupts", it's value is array type, and the array data includes hash data.
+# 2. For "network", it's value has both array type and hash type, every hash's value include another hash data.
+# 3. For "swap-pages", it's value only have one hash.
+
+exit unless File.exist?("#{RESULT_ROOT}/sar")
+sar_json = File.read("#{RESULT_ROOT}/sar")
+sar_hash = JSON.parse(sar_json)
+results = Hash.new
+
+# Every array data includes some hash type data.
+# Such as: "cpu-load" => [{"cpu" => "all", "usr" => 3.06, "nice" => 0.00, "sys" => 5.87,... }, {...}, ...]
+
+def get_array_result(prefix, array, results)
+  array.each { |item|
+    if item.class == Hash
+      key_0, value_0 = item.first
+      item.each_key do |k_|
+        next if k_ == key_0
+        key = "#{prefix}.#{value_0}.#{k_}"
+        key = "#{key}%" if prefix == "cpu-load"
+        results[key] = item[k_]
+      end
+    end
+  }
+end
+
+# Such as the hash: "swap-pages" => {"pswpin" => 0.00, "pswpout" => 0.00}.
+def get_hash_result(prefix, hash, results)
+  hash.each do |k, v|
+    key = "#{prefix}.#{k}"
+    results[key] = v
+  end
+end
+
+def display_result(hash)
+  hash.each do |key, value|
+    next if "#{key}".empty?
+    # some key's values are not numeric, skip it.
+    next if key =~ /product|idprod|maxpower|idvendor|manufact/
+    # display key and value format as below:
+    # "cpu-load.all.usr%: 3.06"
+    # "net-dev.lo.rxpck: 0.00"
+    puts "#{key}: #{value}"
+  end
+end
+
+sar_hash['sysstat']['hosts'][0]['statistics'].each { |item|
+  item.each do |k, v|
+    if v.class == Array
+      get_array_result k, v, results
+    elsif v.class == Hash
+      v.each do |k_, v_|
+        if v_.class == Array
+          get_array_result k_, v_, results
+        elsif v_.class == Hash
+          get_hash_result k_, v_, results
+        else
+          if k == "timestamp"
+            timestamp = Time.parse([v['data'], v['time']].join(' ')).to_i
+            results["timestamp"] = timestamp
+          else
+            results["#{k}.#{k_}"] = v_
+          end
+        end
+      end
+    end
+  end
+  display_result results
+}

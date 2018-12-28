@@ -1,0 +1,20 @@
+pkgname=sar
+pkgver=git
+pkgrel=1
+pkgdesc="System performance tools for the Linux operating system, contains various utilities, common to many commercial Unixes, to monitor system performance and usage activity.Includes four groups of monitoring tools (sar / sadc / sadf, iostat / tapestat / cifsiostat, mpstat, pidstat)."
+arch=('i686' 'x86_64')
+url="https://github.com/sysstat/sysstat"
+license=('GPL')
+source=("https://github.com/sysstat/sysstat.git")
+md5sums=('SKIP')
+
+build() {
+	cd "$srcdir/sysstat"
+	./configure
+	make
+}
+
+package() {
+	cd "$srcdir/sysstat"
+	make DESTDIR=$pkgdir/lkp/benchmarks/sysstat install
+}
