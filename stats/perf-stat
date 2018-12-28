@@ -39,10 +39,10 @@ def output_interval(time)
   return if $results_interval.empty?
   puts "time: #{time}"
   $results_interval.each do |key, value|
-    puts "#{key}: #{value}"
+    puts "i.#{key}: #{value}"
     $results[key] += value
   end
-  calc_addon_keys($results_interval, "")
+  calc_addon_keys($results_interval, "i.")
   $results_interval.clear
 end
 
@@ -108,4 +108,4 @@ $results.each do |key, value|
   puts "total.#{key}: #{value}"
 end
 
-calc_addon_keys($results, "total.")
+calc_addon_keys($results, "overall.")

@@ -75,8 +75,8 @@ def add_path_length(stats, matrix)
   instructions = stats['perf-stat.total.instructions']
   return unless instructions
   path_length = instructions.to_f / workloads.values[0]
-  stats['perf-stat.total.path-length'] = path_length
-  matrix['perf-stat.total.path-length'] = [path_length]
+  stats['perf-stat.overall.path-length'] = path_length
+  matrix['perf-stat.overall.path-length'] = [path_length]
 end
 
 def create_stats_matrix(result_root)
