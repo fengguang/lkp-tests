@@ -3,8 +3,10 @@
 # - revents
 # - time
 # - command
+# - per_socket
 
 . $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/common.sh
 . $LKP_SRC/lib/debug.sh
 
 set_perf_path "/lkp/benchmarks/perf/perf"
@@ -72,6 +74,8 @@ opt_events="-e $(echo $events | sed 's/ / -e /g')"
 	command="$WAIT_POST_TEST_CMD --timeout $time"
 }
 
+parse_bool -q "$per_socket" && opts="$opts --per-socket"
+
 disable_nmi_watchdog
 
-exec $perf stat -a -c -I 1000 -x' ' $opt_events --log-fd 1 -- $command
+exec $perf stat -a -c -I 1000 -x' ' $opt_events --log-fd 1 $opts -- $command
