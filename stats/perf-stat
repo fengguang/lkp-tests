@@ -2,21 +2,31 @@
 
 $results = Hash.new(0)
 $results_interval = Hash.new(0)
+$run_time = 0
 
-def calc_addon_keys(results, prefix)
-  results.each do |key, miss|
-    next unless key =~ /(.*)-misses/
-    stem = $1
-    ['s', '-references', '-instructions'].each do |pfx|
-      value = results[stem + pfx]
-      next if value.zero?
-      total = if pfx == 's'
-                value + miss
-              else
-                value
-              end
-      puts "#{prefix}#{stem}-miss-rate%: #{miss * 100.0 / total}"
-      break
+def calc_addon_keys(results, interval, prefix)
+  results.each do |key, value|
+    case key
+    when /(.*)-misses/
+      stem = $1
+      ['s', '-references', '-instructions'].each do |pfx|
+        avalue = results[stem + pfx]
+        next if avalue.zero?
+        total = if pfx == 's'
+                  avalue + value
+                else
+                  avalue
+                end
+        puts "#{prefix}#{stem}-miss-rate%: #{value * 100.0 / total}"
+        break
+      end
+    when /(.*)_INSERTS/
+      stem = $1
+      occupancy = results[stem + '_OCCUPANCY']
+      if occupancy != 0
+        puts "#{prefix}#{stem}_LATENCY: #{occupancy / value}"
+      end
+      puts "#{prefix}#{stem}_MBps: #{value.to_f * 64 / 1024 / 1024 / interval}"
     end
   end
 
@@ -35,14 +45,14 @@ def calc_addon_keys(results, prefix)
   end
 end
 
-def output_interval(time)
+def output_interval(prev_time, time)
   return if $results_interval.empty?
   puts "time: #{time}"
   $results_interval.each do |key, value|
     puts "i.#{key}: #{value}"
     $results[key] += value
   end
-  calc_addon_keys($results_interval, "i.")
+  calc_addon_keys($results_interval, time - prev_time, "i.")
   $results_interval.clear
 end
 
@@ -56,6 +66,8 @@ end
 #    3.004126313 S0 8 170196182  instructions 8007548409 100.00 0.50 insn per cycle
 
 def parse
+  prev_prev_time = 0
+  prev_time = 0
   time = 0
 
   $stdin.each_line do |line|
@@ -66,7 +78,8 @@ def parse
     time = stime.to_f
     # time different > 10ms, new output
     if time - prev_time > 0.01
-      output_interval prev_time
+      output_interval(prev_prev_time, prev_time)
+      prev_prev_time = prev_time
     end
     socket = nil
     unit = nil
@@ -91,12 +104,20 @@ def parse
     value, key = fields
     value = value.to_f
 
+    i_imc = key.index "_IMC"
+    if i_imc
+      key = key[0,i_imc]
+    end
+
     key = "#{key}_#{unit}" if unit
     socket_key = "#{socket}.#{key}" if socket
 
     $results_interval[key] += value
     $results_interval[socket_key] += value if socket_key
   end
+
+  # total time
+  $run_time = prev_time
 
   # skip the last record, because the interval hasn't run out
 end
@@ -108,4 +129,4 @@ $results.each do |key, value|
   puts "total.#{key}: #{value}"
 end
 
-calc_addon_keys($results, "overall.")
+calc_addon_keys($results, $run_time, "overall.")
