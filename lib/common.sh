@@ -34,18 +34,18 @@ query_var_from_yaml()
 # - n
 parse_bool()
 {
-	if [ "$1" != "-q" ]; then
-		otrue=1
-		ofalse=0
-	else
+	if [ "$1" == "-q" ]; then
+		echo_bool=true
 		shift
+	else
+		echo_bool=echo
 	fi
-	[ -z "$1" ] && { echo $ofalse; return 1; }
-	[ "${1#0}" != "$1" ] && { echo $ofalse; return 1; }
-	[ "${1#no}" != "$1" ] && { echo $ofalse; return 1; }
-	[ "${1#false}" != "$1" ] && { echo $ofalse; return 1; }
-	[ "${1#n}" != "$1" ] && { echo $ofalse; return 1; }
-	echo $otrue; return 0
+	[ -z "$1" ] && { $echo_bool 0; return 1; }
+	[ "${1#0}" != "$1" ] && { $echo_bool 0; return 1; }
+	[ "${1#no}" != "$1" ] && { $echo_bool 0; return 1; }
+	[ "${1#false}" != "$1" ] && { $echo_bool 0; return 1; }
+	[ "${1#n}" != "$1" ] && { $echo_bool 0; return 1; }
+	$echo_bool 1; return 0
 }
 
 expand_cpu_list()
