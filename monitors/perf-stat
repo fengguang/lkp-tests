@@ -4,10 +4,13 @@
 # - duration
 # - command
 # - per_socket
+# - interval_ms
 
 . $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/common.sh
 . $LKP_SRC/lib/debug.sh
+
+: ${interval_ms:=1000}
 
 set_perf_path "/lkp/benchmarks/perf/perf"
 export perf
@@ -81,4 +84,4 @@ parse_bool -q "$per_socket" && opts="$opts --per-socket"
 
 disable_nmi_watchdog
 
-exec $perf stat -a -c -I 1000 -x' ' $opt_events --log-fd 1 $opts -- $command
+exec $perf stat -a -c -I "$interval_ms" -x' ' $opt_events --log-fd 1 $opts -- $command
