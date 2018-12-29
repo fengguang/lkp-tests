@@ -23,7 +23,7 @@ if [[ $# -eq 0 ]]; then
 	done
 
 	# set defaults
-	[[ $path_prefix ]] || path_prefix='http://bee.sh.intel.com/~lkp/'
+	[[ $path_prefix ]] || path_prefix='http://0day.sh.intel.com/~lkp/'
 	[[ $config_file ]] || {
 		config_file='cgi-bin/gpxelinux.cgi?hostname='$(hostname)'&mac=${mac}&ip=${ip}&gateway=${gateway}&netmask=${netmask}'
 	}

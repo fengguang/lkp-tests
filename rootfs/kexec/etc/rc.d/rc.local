@@ -35,7 +35,7 @@ do
 done
 
 if [[ -z $path_prefix ]]; then
-	path_prefix='http://bee.sh.intel.com/~lkp/'
+	path_prefix='http://0day.sh.intel.com/~lkp/'
 fi
 SERVER=${path_prefix##*://}
 SERVER=${SERVER%%/*}

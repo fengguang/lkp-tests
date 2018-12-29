@@ -45,7 +45,7 @@ append=(
 	drbd.minor_count=8
 	rw
 
-	path_prefix='http://bee.sh.intel.com/~lkp/'
+	path_prefix='http://0day.sh.intel.com/~lkp/'
 	hostname=$hostname
 )
 
