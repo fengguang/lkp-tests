@@ -4,6 +4,9 @@ category: benchmark
 
 nr_threads: 100%
 
+numactl:
+  all: 1
+
 sysctl:
   sc_overcommit_memory: 1
   sc_somaxconn: 65535
@@ -14,16 +17,18 @@ transparent_hugepage:
 
 cluster: cs-localhost
 
+enable_numa_bind: 1
+
+nr_task: 4
+
 if role server:
   redis-server:
-    nr_task: 5
 
 if role client:
   redis:
     test: set,get
     data_size: 1024
     n_client: 5
-    requests: 21000000
+    requests: 17000000
     n_pipeline: 3
-    key_len: 21000000
-    nr_task: 5
+    key_len: 17000000
