@@ -294,6 +294,30 @@ def save_matrix_to_csv_file(file_name, matrix, sep = ',', header = true)
   end
 end
 
+def read_matrix_from_csv_file(file_name)
+  matrix = {}
+  return {} unless file_name
+  return {} unless File.exist? file_name
+
+  convert = lambda do |input|
+    %i[Integer Float].each do |m|
+      begin
+        return send(m, input)
+      rescue StandardError
+        next
+      end
+    end
+    input
+  end
+
+  File.readlines(file_name).each do |line|
+    values = line.split()
+    key = values.shift
+    matrix[key] = values.map { |v| convert[v] }
+  end
+  matrix
+end
+
 def print_matrix(matrix)
   ks = matrix.map { |k, _vs| k.size }.max
   matrix.each do |k, vs|
