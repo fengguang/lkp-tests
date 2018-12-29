@@ -52,4 +52,4 @@ exit 99
 
 disable_nmi_watchdog
 
-exec $ocperf stat -a -I 1000 -x' ' $opt_events --log-fd 1 -- $command
+exec $ocperf stat -a -c -I 1000 -x' ' $opt_events --log-fd 1 -- $command
