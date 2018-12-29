@@ -294,7 +294,7 @@ if [[ $HTTP_PREFIX ]]; then
 elif [[ $HOSTNAME = inn ]]; then
 	LKP_SERVER=inn
 elif grep -q intel.com /etc/resolv.conf; then
-	LKP_SERVER=bee.sh.intel.com
+	LKP_SERVER=0day.sh.intel.com
 else
 	LKP_SERVER=
 	HTTP_PREFIX=https://download.01.org/0day-ci/lkp-qemu
