@@ -1,7 +1,7 @@
 #!/bin/sh
 # - events
 # - revents
-# - time
+# - duration
 # - command
 # - per_socket
 
@@ -69,10 +69,13 @@ opt_events="-e $(echo $events | sed 's/ / -e /g')"
 
 . $LKP_SRC/lib/wait.sh
 
-[ -n "$time" ] && {
-	setup_wait
-	command="$WAIT_POST_TEST_CMD --timeout $time"
-}
+setup_wait
+
+if [ -n "$duration" ]; then
+	command="$WAIT_POST_TEST_CMD --timeout $duration"
+else
+	command="$WAIT_POST_TEST_CMD"
+fi
 
 parse_bool -q "$per_socket" && opts="$opts --per-socket"
 
