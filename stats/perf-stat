@@ -71,7 +71,7 @@ def parse
   time = 0
 
   $stdin.each_line do |line|
-    next unless line =~ /\d+.\d+\s+(\d+)\s+(\S+)\s+(\S+)/
+    next unless line =~ /^\s*\d+\.\d+\s+/
     stime, *fields = line.split
 
     prev_time = time
