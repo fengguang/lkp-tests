@@ -34,11 +34,11 @@ query_var_from_yaml()
 # - n
 parse_bool()
 {
-	if [ "$1" == "-q" ]; then
+	if [ "$1" != "-q" ]; then
+		echo_bool=echo
+	else
 		echo_bool=true
 		shift
-	else
-		echo_bool=echo
 	fi
 	[ -z "$1" ] && { $echo_bool 0; return 1; }
 	[ "${1#0}" != "$1" ] && { $echo_bool 0; return 1; }
