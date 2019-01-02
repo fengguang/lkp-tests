@@ -8,6 +8,8 @@ nvml_branch: nvml/master
 nvml_commit: HEAD
 
 nvml:
+test: pmem
+
 group:
   - blk
   - bttdevice
@@ -33,19 +35,14 @@ group:
   - vmem
   - vmmalloc
 
-test: non-pmem
+disk:
+  nr_pmem: 1
 
----
-test: none
-group:
-  - arch
-  - checksum
-  - obj
-  - out
-  - pmem
-  - rpmem
-  - rpmemd
-  - scope
-  - traces
-  - util
-  - vmem
+fs: ext4
+
+mount_option: dax
+
+need_memory: 36G
+
+boot_params:
+  bp_memmap: 32G!4G
