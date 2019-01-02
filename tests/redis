@@ -6,7 +6,7 @@
 # - n_pipeline
 # - key_len
 # - nr_task
-# - enable_numa_bind
+# - cpu_node_bind
 
 ## Redis is an open source (BSD licensed), in-memory data structure store,
 ## used as a database, cache and message broker. It supports data structures
@@ -17,13 +17,17 @@
 ## to the Apache's ab utility)
 
 . $LKP_SRC/lib/reproduce-log.sh
-. $LKP_SRC/lib/common.sh
 export PATH=$BENCHMARK_ROOT/redis/bin:$PATH
 for i in $(seq 1 "${nr_task}")
 do
 	port=$((6379+$i))
-	if parse_bool -q "$enable_numa_bind"; then
-		bind=$(($i%2))
+
+	if [ -n "$cpu_node_bind" ]; then
+		if [ "$cpu_node_bind" = "even" ]; then
+			bind=$(($i%2))
+		else
+			bind=$cpu_node_bind
+		fi
 		numa_bind="numactl --cpunodebind=$bind --"
 	fi
 	log_test $numa_bind redis-benchmark -t $test -d $data_size -c $n_client -n $requests -P $n_pipeline -r $key_len -p $port&

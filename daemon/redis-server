@@ -1,16 +1,19 @@
 #!/bin/sh
 # - nr_task
-# - enable_numa_bind
+# - cpu_node_bind
 . $LKP_SRC/lib/reproduce-log.sh
-. $LKP_SRC/lib/common.sh
 bg_pids=""
 redis_server=$BENCHMARK_ROOT/redis/bin/redis-server
 # start redis server
 for i in $(seq 1 "${nr_task}")
 do
 	port=$((6379+$i))
-	if parse_bool -q "$enable_numa_bind"; then
-		bind=$(($i%2))
+	if [ -n "$cpu_node_bind" ]; then
+		if [ "$cpu_node_bind" = "even" ]; then
+			bind=$(($i%2))
+		else
+			bind=$cpu_node_bind
+		fi
 		numa_bind="numactl --cpunodebind=$bind --"
 	fi
 	log_eval "$numa_bind $redis_server --port $port &"

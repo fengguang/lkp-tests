@@ -17,7 +17,7 @@ transparent_hugepage:
 
 cluster: cs-localhost
 
-enable_numa_bind: 1
+cpu_node_bind: even
 
 nr_task: 4
 
