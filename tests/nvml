@@ -6,10 +6,38 @@
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/tests/nvml.sh
 
-check_param "$testcase"
+nvml_dir=$BENCHMARK_ROOT/nvml
+cd $nvml_dir || die "fail to cd $nvml_dir"
 
-build_env "$testcase" || die "build env failed"
+# enable the nvml to use ndctl
+log_cmd export NDCTL_ENABLE=y
 
-enable_remote_node "$testcase"
+# avoid tools/pmemdetect/pmemdetect.static-nondebug: error while loading shared libraries
+ldconfig /usr/local/lib/libndctl.so.6
 
-run "$testcase"
+install_tests()
+{
+	local NVML_REPO="https://github.com/pmem/nvml.git"
+	[ "$LKP_LOCAL_RUN" != "1" ] && NVML_REPO="git://gitmirror/nvml"
+
+	[ "$nvml_commit" ] || return
+
+	git clone $NVML_REPO 2>&1 || return
+	cd $nvml_dir/nvml || return
+	git checkout -f $nvml_commit 2>&1 || return
+
+	source_dir="$nvml_dir/nvml"
+	build_ignore_file || return
+	build_generate_testgroup || return
+	build_user_filter_file || return
+}
+
+install_tests || die "install nvml failed"
+
+check_param "nvml/$testcase"
+
+build_env "nvml/$testcase" || die "build env failed"
+
+enable_remote_node "nvml/$testcase"
+
+run "nvml/$testcase"
