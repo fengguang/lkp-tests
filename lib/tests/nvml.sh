@@ -51,7 +51,7 @@ can_skip_copy_source()
 {
 	[ "$LKP_LOCAL_RUN" != "1" ] &&
 	[ "$do_not_reboot_for_same_kernel" = "1" ] &&
-	[ "$testcase" = "nvml-unit-tests" ] &&
+	[ "$testcase" = "nvml" ] &&
 	[ -f $BENCHMARK_ROOT/$testcase/lkp_skip_copy.$nvml_commit ]
 }
 
