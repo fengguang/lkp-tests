@@ -74,103 +74,6 @@ build_install_libcxx()
 	make install || return
 }
 
-# Automatically generate ignore file to skip test cases which can not be enabled at present.
-build_ignore_file()
-{
-	cd $source_dir || return
-	git grep "require_node_libfabric" | awk -F '[:/]' '{if (!a[$3]++ && $3 != "unittest") {print $3} }' > ignore
-	git grep "require_dax_devices" | awk -F '[:/]' '{if (!a[$3]++ && $3 != "unittest") {print $3} }' >> ignore
-	echo "vmmalloc_fork" >> ignore
-	echo "pmempool_check" >> ignore
-	echo "obj_pmalloc_mt" >> ignore
-
-	# ignore single case instead of the whole directory
-
-	# nvml$ git grep "^require_tty" src/test
-	# src/test/ex_libpmemobj/TEST15:require_tty
-	# src/test/ex_libpmemobj/TEST16:require_tty
-	# src/test/ex_libpmemobj_cpp/TEST1:require_tty
-	single_cases=$(git grep "^require_tty" src/test | awk -F':' '{print $1}' | sed 's/src\/test\///')
-
-	mkdir -p ignore_single_cases_dir
-
-	# do backup, move the ignored binary file into ignore_single_cases_dir, and rename it like:
-	# nvml$ ls ignore_signal_cases_dir
-	# ex_libpmemobj_cpp_TEST1  ex_libpmemobj_TEST15  ex_libpmemobj_TEST16
-	#
-	# nvml$ echo $single_cases
-	# ex_libpmemobj/TEST15 ex_libpmemobj/TEST16 ex_libpmemobj_cpp/TEST1
-	for s in $single_cases
-	do
-		mv src/test/$s ignore_single_cases_dir/$(echo $s | tr / _)
-	done
-
-	echo "# require tty" >> ignore_single_cases
-	echo "$single_cases" >> ignore_single_cases
-}
-
-# Automatically detect and generate new groups for each fs-types
-build_generate_testgroup()
-{
-	cd $source_dir/src/test
-	rm -f group_none group_non-pmem group_pmem group_by_fs_type.yaml
-
-	# 1.find out the groups
-	#   directoy obj_bucket, obj_list, blk_pool,blk_nblock will be treat as two
-	#   groups named obj and blk that we can find at LKP_SRC/job/nvml.yaml
-	# 2.find out the fs-type for each 2. find out the fs-type for each groupgroup
-	#   travel $group/TESTx, it will match one of bellow rule
-	#     a. keyword: require_fs_type none  -> put into fs_type none
-	#     b. keyword: require_fs_type non-pmem -> put into fs_type non-pmem
-	#     c. keyword: require_fs_type pmem -> put into fs_type pmem
-	#     d. keyword: require_fs_type any -> put into fs_type both non-pmem and pmem
-	#     e. no keyword 'require_fs_type' -> put into fs_type both non-pmem and pmem
-	for nvml_case in `ls`
-	do
-		[ -f "$nvml_case/TEST0" ] || continue
-		[ -x "$nvml_case/TEST0" ] || continue
-		cd $nvml_case
-		scripts=`ls -1 TEST* | grep -v -i -e "\.ps1" | sort -V`
-
-		for run_script in $scripts
-		do
-			req_fs=`grep -w "require_fs_type" $run_script` || {
-				echo  $nvml_case >> ../group_pmem
-				echo  $nvml_case >> ../group_non-pmem
-				continue
-			}
-			fs_type=`echo ${req_fs:15}`
-			for type in $fs_type
-			do
-				case "$type"
-				in
-				any)
-					echo $nvml_case >> ../group_pmem
-					echo $nvml_case >> ../group_non-pmem
-					;;
-				non-pmem)
-					echo $nvml_case >>../group_non-pmem
-					;;
-				pmem)
-					echo $nvml_case >>../group_pmem
-					;;
-				none)
-					echo $nvml_case >>../group_none
-					;;
-				esac
-			done
-		done
-		cd - >/dev/null
-	done
-	for type in pmem non-pmem none
-	do
-	    echo "$type:" >> group_by_fs_type.yaml
-	    awk -F '_' '{print $1}' group_$type | sort -u | sed 's/^/  - /g'>> group_by_fs_type.yaml
-	done
-	rm -f group_none group_non-pmem group_pmem
-	return 0
-}
-
 # The dax tests need ndctl tool to create dax device.
 # See more details at https://nvdimm.wiki.kernel.org.
 build_install_ndctl()
@@ -189,13 +92,6 @@ build_install_ndctl()
 	make install || return
 }
 
-# Auto generate user_filter to enable those tests which do not need run as superuser.
-build_user_filter_file()
-{
-	cd $source_dir || return
-	git grep "require_no_superuser" | awk -F '[:/]' '{if (!a[$3]++ && $3 != "unittest") {print $3} }' > user_filter
-}
-
 build()
 {
 	[ "$distro" = "centos" ] && sed -i 's/CXXFLAGS += -Wno-unknown-attributes/CXXFLAGS += -Wno-ignored-attributes/' ./src/benchmarks/Makefile
@@ -203,9 +99,6 @@ build()
 	build_install_valgrind_pmem || return
 	build_install_libcxx || return
 	build_install_libfabric || return
-	build_ignore_file || return
-	build_generate_testgroup || return
-	build_user_filter_file || return
 	build_install_ndctl || return
 }
 
