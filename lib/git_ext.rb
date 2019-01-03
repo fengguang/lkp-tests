@@ -5,7 +5,7 @@ LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 require 'set'
 require 'time'
 require 'git'
-require "#{LKP_SRC}/lib/yaml.rb"
+require "#{LKP_SRC}/lib/yaml"
 require "#{LKP_SRC}/lib/cache"
 require "#{LKP_SRC}/lib/assert"
 require "#{LKP_SRC}/lib/git_ext/base"

@@ -4,12 +4,12 @@ LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 require 'optparse'
 require 'set'
 
-require "#{LKP_SRC}/lib/common.rb"
-require "#{LKP_SRC}/lib/enumerator.rb"
-require "#{LKP_SRC}/lib/stats.rb"
-require "#{LKP_SRC}/lib/tests.rb"
-require "#{LKP_SRC}/lib/axis.rb"
-require "#{LKP_SRC}/lib/result_root.rb"
+require "#{LKP_SRC}/lib/common"
+require "#{LKP_SRC}/lib/enumerator"
+require "#{LKP_SRC}/lib/stats"
+require "#{LKP_SRC}/lib/tests"
+require "#{LKP_SRC}/lib/axis"
+require "#{LKP_SRC}/lib/result_root"
 require "#{LKP_SRC}/lib/log"
 
 # How many components in the stat sort key

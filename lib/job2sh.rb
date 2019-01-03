@@ -2,7 +2,7 @@
 
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
-require "#{LKP_SRC}/lib/job.rb"
+require "#{LKP_SRC}/lib/job"
 require 'shellwords'
 
 TMP ||= ENV['TMP'] || '/tmp'

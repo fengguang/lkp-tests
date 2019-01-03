@@ -10,7 +10,7 @@ GIT ||= "git --work-tree=#{GIT_WORK_TREE} --git-dir=#{GIT_DIR}".freeze
 
 require 'set'
 require 'time'
-require "#{LKP_SRC}/lib/yaml.rb"
+require "#{LKP_SRC}/lib/yaml"
 require "#{LKP_SRC}/lib/cache"
 require "#{LKP_SRC}/lib/assert"
 require "#{LKP_SRC}/lib/git_ext"

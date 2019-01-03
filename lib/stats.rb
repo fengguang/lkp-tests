@@ -5,16 +5,16 @@ MAX_RATIO = 5
 
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
-require 'set.rb'
+require 'set'
 require "#{LKP_SRC}/lib/lkp_git"
-require "#{LKP_SRC}/lib/git-update.rb" if File.exist?("#{LKP_SRC}/lib/git-update.rb")
-require "#{LKP_SRC}/lib/yaml.rb"
-require "#{LKP_SRC}/lib/result.rb"
-require "#{LKP_SRC}/lib/bounds.rb"
-require "#{LKP_SRC}/lib/constant.rb"
-require "#{LKP_SRC}/lib/statistics.rb"
+require "#{LKP_SRC}/lib/git-update" if File.exist?("#{LKP_SRC}/lib/git-update.rb")
+require "#{LKP_SRC}/lib/yaml"
+require "#{LKP_SRC}/lib/result"
+require "#{LKP_SRC}/lib/bounds"
+require "#{LKP_SRC}/lib/constant"
+require "#{LKP_SRC}/lib/statistics"
 require "#{LKP_SRC}/lib/log"
-require "#{LKP_SRC}/lib/tests.rb"
+require "#{LKP_SRC}/lib/tests"
 
 $metric_add_max_latency = IO.read("#{LKP_SRC}/etc/add-max-latency").split("\n")
 $metric_latency = IO.read("#{LKP_SRC}/etc/latency").split("\n")

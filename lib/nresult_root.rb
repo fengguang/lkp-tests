@@ -1,12 +1,12 @@
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
-require "#{LKP_SRC}/lib/common.rb"
-require "#{LKP_SRC}/lib/property.rb"
-require "#{LKP_SRC}/lib/yaml.rb"
-require "#{LKP_SRC}/lib/job.rb"
-require "#{LKP_SRC}/lib/result.rb"
-require "#{LKP_SRC}/lib/data_store.rb"
-require "#{LKP_SRC}/lib/matrix.rb"
+require "#{LKP_SRC}/lib/common"
+require "#{LKP_SRC}/lib/property"
+require "#{LKP_SRC}/lib/yaml"
+require "#{LKP_SRC}/lib/job"
+require "#{LKP_SRC}/lib/result"
+require "#{LKP_SRC}/lib/data_store"
+require "#{LKP_SRC}/lib/matrix"
 require "#{LKP_SRC}/lib/stats"
 
 # Common Result Root

@@ -1,6 +1,6 @@
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
-require "#{LKP_SRC}/lib/common.rb"
+require "#{LKP_SRC}/lib/common"
 
 class Module
   alias prop_reader attr_reader

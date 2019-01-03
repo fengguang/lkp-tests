@@ -2,8 +2,8 @@
 
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
-require "#{LKP_SRC}/lib/statistics.rb"
-require "#{LKP_SRC}/lib/common.rb"
+require "#{LKP_SRC}/lib/statistics"
+require "#{LKP_SRC}/lib/common"
 
 def auto_range(max_level = 6, min_level = 0)
   (min_level..max_level).map do |ul|

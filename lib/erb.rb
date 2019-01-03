@@ -5,10 +5,10 @@ require 'yaml'
 
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
-require "#{LKP_SRC}/lib/hashugar.rb"
+require "#{LKP_SRC}/lib/hashugar"
 
 # bring in functions usable for ERB code segments
-require "#{LKP_SRC}/lib/unit.rb"
+require "#{LKP_SRC}/lib/unit"
 
 # Support references to variables (with real values) defined in the same job.
 #

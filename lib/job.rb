@@ -3,10 +3,10 @@
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 LKP_SERVER ||= 'inn'.freeze
 
-require "#{LKP_SRC}/lib/common.rb"
-require "#{LKP_SRC}/lib/result.rb"
-require "#{LKP_SRC}/lib/hash.rb"
-require "#{LKP_SRC}/lib/erb.rb"
+require "#{LKP_SRC}/lib/common"
+require "#{LKP_SRC}/lib/result"
+require "#{LKP_SRC}/lib/hash"
+require "#{LKP_SRC}/lib/erb"
 require "#{LKP_SRC}/lib/log"
 require 'fileutils'
 require 'yaml'
