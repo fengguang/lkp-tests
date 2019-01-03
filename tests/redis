@@ -18,6 +18,9 @@
 
 . $LKP_SRC/lib/reproduce-log.sh
 export PATH=$BENCHMARK_ROOT/redis/bin:$PATH
+redis_dir=$TMP/redis/
+rm -rf $redis_dir
+mkdir -p $redis_dir
 for i in $(seq 1 "${nr_task}")
 do
 	port=$((6379+$i))
@@ -30,6 +33,9 @@ do
 		fi
 		numa_bind="numactl --cpunodebind=$bind --"
 	fi
-	log_test $numa_bind redis-benchmark -t $test -d $data_size -c $n_client -n $requests -P $n_pipeline -r $key_len -p $port&
+	log_test $numa_bind redis-benchmark -t $test -d $data_size -c $n_client -n $requests -P $n_pipeline -r $key_len -p $port > $redis_dir/redis.$i &
 done
+
 wait
+
+cat $redis_dir/redis.*
