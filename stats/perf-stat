@@ -30,13 +30,18 @@ def calc_addon_keys(results_sum, results_nr, interval, interval_nr, prefix)
           puts "#{prefix}#{stem}instructions-per-iTLB-miss: #{instructions / itlb_miss}"
         end
       end
-    when /(.*)_INSERTS/
-      stem = $1
-      occupancy = results_sum[stem + '_OCCUPANCY']
-      if occupancy != 0
-        puts "#{prefix}#{stem}_LATENCY: #{occupancy / value}"
+    when /(.*)UNC_M_(.*)_INSERTS/
+      stem1 = $1
+      stem2 = $2
+      stem = "#{stem1}UNC_M_#{stem2}"
+      occupancy = results_sum[stem1 + "UNC_M_" + stem2 + '_OCCUPANCY']
+      ticks_key = stem1 + 'UNC_M_CLOCKTICKS'
+      ticks_sum = results_sum[ticks_key]
+      ticks_nr = results_nr[ticks_key].to_f
+      if occupancy != 0 && ticks_sum != 0
+        puts "#{prefix}#{stem}_latency_ns: #{occupancy / value / (ticks_sum / (ticks_nr / interval_nr)) * 1e+9 * interval}"
       end
-      puts "#{prefix}#{stem}_MBps: #{value.to_f * 64 / 1024 / 1024 / interval}"
+      puts "#{prefix}#{stem}_throughput_MBps: #{value.to_f * 64 / 1024 / 1024 / interval}"
     when /(.*)cpu-cycles/
       stem = $1
       instructions = results_sum[stem + 'instructions']
