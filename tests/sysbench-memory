@@ -1,5 +1,6 @@
 #!/bin/sh
 # - runtime
+# - nr_processes
 # - nr_threads
 # - mem_blk_size
 # - mem_total_size
@@ -13,6 +14,7 @@
 . "$LKP_SRC/lib/reproduce-log.sh"
 
 : "${runtime:=600}"
+: "${nr_processes:=1}"
 : "${nr_threads:=1}"
 : "${mem_blk_size:=1K}"
 : "${mem_total_size:=100G}"
@@ -36,4 +38,14 @@ args="\
 [ -n "$rand_type" ] && args="$args --rand-type=$rand_type"
 [ -n "$rand_pareto_h" ] && args="$args --rand-pareto-h=$rand_pareto_h"
 
-log_test sysbench $args run
+sb_tmp_dir="$TMP/sysbench-memory"
+rm -rf "$sb_tmp_dir"
+mkdir -p "$sb_tmp_dir"
+for i in $(seq 1 $nr_processes); do
+	log_echo "$exec_prefix sysbench $args run > $sb_tmp_dir/sysbench-memory.$i &"
+	sysbench $args run > "$sb_tmp_dir/sysbench-memory.$i" &
+done
+
+wait
+
+cat "$sb_tmp_dir"/sysbench-memory.*
