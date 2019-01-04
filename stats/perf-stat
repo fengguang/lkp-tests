@@ -1,16 +1,16 @@
 #!/usr/bin/env ruby
 
-$results = Hash.new(0)
-$results_interval = Hash.new(0)
+$results_sum = Hash.new(0)
+$interval_results_sum = Hash.new(0)
 $run_time = 0
 
-def calc_addon_keys(results, interval, prefix)
-  results.each do |key, value|
+def calc_addon_keys(results_sum, interval, prefix)
+  results_sum.each do |key, value|
     case key
     when /(.*)-misses/
       stem = $1
       ['s', '-references', '-instructions'].each do |pfx|
-        avalue = results[stem + pfx]
+        avalue = results_sum[stem + pfx]
         next if avalue.zero?
         total = if pfx == 's'
                   avalue + value
@@ -22,21 +22,21 @@ def calc_addon_keys(results, interval, prefix)
       end
       if key =~ /(.*)iTLB-load-misses/
         stem = $1
-        instructions = results[stem + 'instructions']
+        instructions = results_sum[stem + 'instructions']
         if ! instructions.zero?
           puts "#{prefix}#{stem}instructions-per-iTLB-miss: #{instructions / itlb_miss}"
         end
       end
     when /(.*)_INSERTS/
       stem = $1
-      occupancy = results[stem + '_OCCUPANCY']
+      occupancy = results_sum[stem + '_OCCUPANCY']
       if occupancy != 0
         puts "#{prefix}#{stem}_LATENCY: #{occupancy / value}"
       end
       puts "#{prefix}#{stem}_MBps: #{value.to_f * 64 / 1024 / 1024 / interval}"
     when /(.*)cpu-cycles/
       stem = $1
-      instructions = results[stem + 'instructions']
+      instructions = results_sum[stem + 'instructions']
       if ! instructions.zero?
         puts "#{prefix}#{stem}ipc: #{instructions / value}"
         puts "#{prefix}#{stem}cpi: #{value / instructions}"
@@ -46,14 +46,14 @@ def calc_addon_keys(results, interval, prefix)
 end
 
 def output_interval(prev_time, time)
-  return if $results_interval.empty?
+  return if $interval_results_sum.empty?
   puts "time: #{time}"
-  $results_interval.each do |key, value|
+  $interval_results_sum.each do |key, value|
     puts "i.#{key}: #{value}"
-    $results[key] += value
+    $results_sum[key] += value
   end
-  calc_addon_keys($results_interval, time - prev_time, "i.")
-  $results_interval.clear
+  calc_addon_keys($interval_results_sum, time - prev_time, "i.")
+  $interval_results_sum.clear
 end
 
 # Example output
@@ -112,8 +112,8 @@ def parse
     key = "#{key}_#{unit}" if unit
     socket_key = "#{socket}.#{key}" if socket
 
-    $results_interval[key] += value
-    $results_interval[socket_key] += value if socket_key
+    $interval_results_sum[key] += value
+    $interval_results_sum[socket_key] += value if socket_key
   end
 
   # total time
@@ -124,9 +124,9 @@ end
 
 parse
 
-$results.each do |key, value|
+$results_sum.each do |key, value|
   # output total value
   puts "total.#{key}: #{value}"
 end
 
-calc_addon_keys($results, $run_time, "overall.")
+calc_addon_keys($results_sum, $run_time, "overall.")
