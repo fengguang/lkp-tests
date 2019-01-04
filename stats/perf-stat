@@ -20,6 +20,13 @@ def calc_addon_keys(results, interval, prefix)
         puts "#{prefix}#{stem}-miss-rate%: #{value * 100.0 / total}"
         break
       end
+      if key =~ /(.*)iTLB-load-misses/
+        stem = $1
+        instructions = results[stem + 'instructions']
+        if ! instructions.zero?
+          puts "#{prefix}#{stem}instructions-per-iTLB-miss: #{instructions / itlb_miss}"
+        end
+      end
     when /(.*)_INSERTS/
       stem = $1
       occupancy = results[stem + '_OCCUPANCY']
@@ -27,21 +34,14 @@ def calc_addon_keys(results, interval, prefix)
         puts "#{prefix}#{stem}_LATENCY: #{occupancy / value}"
       end
       puts "#{prefix}#{stem}_MBps: #{value.to_f * 64 / 1024 / 1024 / interval}"
+    when /(.*)cpu-cycles/
+      stem = $1
+      instructions = results[stem + 'instructions']
+      if ! instructions.zero?
+        puts "#{prefix}#{stem}ipc: #{instructions / value}"
+        puts "#{prefix}#{stem}cpi: #{value / instructions}"
+      end
     end
-  end
-
-  cycles = results['cpu-cycles']
-  instructions = results['instructions']
-
-  if cycles != 0 && instructions != 0
-    puts "#{prefix}ipc: #{instructions.to_f / cycles}"
-    puts "#{prefix}cpi: #{cycles / instructions.to_f}"
-  end
-
-  itlb_miss = results['iTLB-load-misses']
-
-  if itlb_miss != 0 && instructions != 0
-    puts "#{prefix}instructions-per-iTLB-miss: #{instructions.to_f / itlb_miss}"
   end
 end
 
