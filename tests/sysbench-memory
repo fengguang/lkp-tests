@@ -2,6 +2,7 @@
 # - runtime
 # - nr_processes
 # - nr_threads
+# - cpu_node_bind
 # - mem_blk_size
 # - mem_total_size
 # - mem_scope
@@ -42,8 +43,16 @@ sb_tmp_dir="$TMP/sysbench-memory"
 rm -rf "$sb_tmp_dir"
 mkdir -p "$sb_tmp_dir"
 for i in $(seq 1 $nr_processes); do
-	log_echo "$exec_prefix sysbench $args run > $sb_tmp_dir/sysbench-memory.$i &"
-	sysbench $args run > "$sb_tmp_dir/sysbench-memory.$i" &
+	if [ -n "$cpu_node_bind" ]; then
+		if [ "$cpu_node_bind" = "even" ]; then
+			bind=$((i%nr_node))
+		else
+			bind=$cpu_node_bind
+		fi
+		numa_bind="numactl --cpunodebind=$bind --"
+	fi
+	log_echo "$exec_prefix $numa_bind sysbench $args run > $sb_tmp_dir/sysbench-memory.$i &"
+	$numa_bind sysbench $args run > "$sb_tmp_dir/sysbench-memory.$i" &
 done
 
 wait
