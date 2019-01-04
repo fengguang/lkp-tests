@@ -30,6 +30,12 @@ def calc_addon_keys(results_sum, results_nr, interval, interval_nr, prefix)
           puts "#{prefix}#{stem}instructions-per-iTLB-miss: #{instructions / itlb_miss}"
         end
       end
+    when /(.*)cache-references/
+      stem = $1
+      instructions = results_sum[stem + 'instructions']
+      if !instructions.zero?
+        puts "#{prefix}#{stem}MPKI: #{value / instructions * 1000}"
+      end
     when /(.*)UNC_M_(.*)_INSERTS/
       stem1 = $1
       stem2 = $2
