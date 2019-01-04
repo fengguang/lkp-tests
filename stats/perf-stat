@@ -1,10 +1,13 @@
 #!/usr/bin/env ruby
 
 $results_sum = Hash.new(0)
+$results_nr = Hash.new(0)
 $interval_results_sum = Hash.new(0)
+$interval_results_nr = Hash.new(0)
+$interval_nr = 0
 $run_time = 0
 
-def calc_addon_keys(results_sum, interval, prefix)
+def calc_addon_keys(results_sum, results_nr, interval, interval_nr, prefix)
   results_sum.each do |key, value|
     case key
     when /(.*)-misses/
@@ -51,9 +54,13 @@ def output_interval(prev_time, time)
   $interval_results_sum.each do |key, value|
     puts "i.#{key}: #{value}"
     $results_sum[key] += value
+    $results_nr[key] += $interval_results_nr[key]
   end
-  calc_addon_keys($interval_results_sum, time - prev_time, "i.")
+  $interval_nr += 1
+  calc_addon_keys($interval_results_sum, $interval_results_nr,
+                  time - prev_time, 1, "i.")
   $interval_results_sum.clear
+  $interval_results_nr.clear
 end
 
 # Example output
@@ -113,7 +120,11 @@ def parse
     socket_key = "#{socket}.#{key}" if socket
 
     $interval_results_sum[key] += value
-    $interval_results_sum[socket_key] += value if socket_key
+    $interval_results_nr[key] += 1
+    if socket_key
+      $interval_results_sum[socket_key] += value
+      $interval_results_nr[socket_key] += 1
+    end
   end
 
   # total time
@@ -129,4 +140,4 @@ $results_sum.each do |key, value|
   puts "total.#{key}: #{value}"
 end
 
-calc_addon_keys($results_sum, $run_time, "overall.")
+calc_addon_keys($results_sum, $results_nr, $run_time, $interval_nr, "overall.")
