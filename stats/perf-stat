@@ -27,7 +27,7 @@ def calc_addon_keys(results_sum, results_nr, interval, interval_nr, prefix)
         stem = $1
         instructions = results_sum[stem + 'instructions']
         if ! instructions.zero?
-          puts "#{prefix}#{stem}instructions-per-iTLB-miss: #{instructions / itlb_miss}"
+          puts "#{prefix}#{stem}instructions-per-iTLB-miss: #{instructions / value}"
         end
       end
     when /(.*)cache-references/
