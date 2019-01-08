@@ -29,6 +29,12 @@
 
 test_memory_size=$(($test_memory_size/1024/1024))
 
+# The bigger test memory range, the more accurate the results, but larger sizes
+# take somewhat longer to run the benchmark.
+# If test memory size greater than 10GB, bcopy test may take more than 30mins.
+# So limit the the maximum test memory size to 10GB.
+[ "$test_memory_size" -gt 10240 ] && test_memory_size=10240
+
 . $LKP_SRC/lib/reproduce-log.sh
 
 # Run lmbench3 benchmark suit with all/hardware/os/development mode
