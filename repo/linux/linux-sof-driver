@@ -11,3 +11,6 @@ release_tag_pattern: sof-v(?<major>[0-9])\.(?<minor>\d+)\.?(?<micro>\d+)?(-rc(?<
 no_touch_config: true
 git_weight: 300
 belongs_to: sof
+blacklist_stat:
+- "error: 'struct snd_soc_acpi_mach' has no member named 'mach_params'"
+- "error: 'dai_links' undeclared; did you mean 'dai_link'?"
