@@ -18,6 +18,13 @@ get_1ms_num = 0
 get_2ms = 0
 get_2ms_sum = 0
 get_2ms_num = 0
+set_time = 0
+set_time_sum = 0
+set_time_num = 0
+get_time = 0
+get_time_sum = 0
+get_time_num = 0
+
 $stdin.each_line do |line|
   case line
   when /PING_INLINE: (\d+).(\d+) requests per second$/
@@ -35,6 +42,14 @@ $stdin.each_line do |line|
     else
       get_sum += $1.to_f
       get_num += 1
+    end
+  when /requests completed in (\d+\.\d+) seconds$/
+    if is_set
+      set_time_sum += $1.to_f
+      set_time_num += 1
+    else
+      get_time_sum += $1.to_f
+      get_time_num += 1
     end
   when /^(\d+\.\d+)% <= 1 milliseconds$/
     if is_set
@@ -90,14 +105,20 @@ $stdin.each_line do |line|
 end
 set_avg = set_sum/set_num
 get_avg = get_sum/get_num
+set_time = set_time_sum/set_time_num
+get_time = get_time_sum/get_time_num
 set_1ms = set_1ms_sum/set_1ms_num
 set_2ms = set_2ms_sum/set_2ms_num
 get_1ms = get_1ms_sum/get_1ms_num
 get_2ms = get_2ms_sum/get_2ms_num
 puts "set_total_throughput_rps: #{set_sum}"
 puts "get_total_throughput_rps: #{get_sum}"
+puts "set_total_time_sec: #{set_time_sum}"
+puts "get_total_time_sec: #{get_time_sum}"
 puts "set_avg_throughput_rps: #{set_avg}"
 puts "get_avg_throughput_rps: #{get_avg}"
+puts "set_avg_time_sec: #{set_time}"
+puts "get_avg_time_sec: #{get_time}"
 puts "set_latency_1ms%: #{set_1ms}"
 puts "set_latency_2ms%: #{set_2ms}"
 puts "get_latency_1ms%: #{get_1ms}"
