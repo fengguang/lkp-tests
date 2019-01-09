@@ -144,6 +144,11 @@ def is_reasonable_perf_change(name, delta, max)
   true
 end
 
+def blacklist_auto_report_author?(author)
+  auto_report_author_blacklist_re = load_regular_expressions("#{LKP_SRC}/etc/auto-report-author-blacklist")
+  stat =~ auto_report_author_blacklist_re
+end
+
 def blacklist_auto_report_stat?(stat)
   auto_report_blacklist_re = load_regular_expressions("#{LKP_SRC}/etc/auto-report-blacklist")
   stat =~ auto_report_blacklist_re
