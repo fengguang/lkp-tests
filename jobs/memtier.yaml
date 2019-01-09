@@ -1,0 +1,35 @@
+suite: memtier
+testcase: memtier
+category: benchmark
+
+sysctl:
+  sc_overcommit_memory: 1
+  sc_somaxconn: 65535
+
+transparent_hugepage:
+  thp_enabled: never
+  thp_defrag: never
+
+numactl:
+  all: 1
+
+cluster: cs-localhost
+
+cpu_node_bind: even
+
+if role server:
+  redis-server:
+    nr_task: 4
+
+if role client:
+  memtier:
+    n_ratio: "1:4"
+    data_size: 1024
+    requests: 70000000
+    key_pattern: "G:G"
+    key_min: 1
+    key_max: 70000001
+    nr_threads: 1
+    n_client: 3
+    n_pipeline: 64
+    nr_processes: 4
