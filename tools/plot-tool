@@ -73,7 +73,7 @@ def plot_it(matrix_stat_arr)
       matrix[rel_x] = xs.map { |xi| xi - x0 }
       plotter.set_x_stat_key(rel_x)
     end
-    lines << [matrix, stat, stat.gsub('_', '\_')]
+    lines << [matrix, stat, stat]
   end
   plotter.set_output_file_name($opt_output_path).
     set_lines(lines).
