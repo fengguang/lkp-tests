@@ -142,7 +142,7 @@ tpm_tools)
 	export P11_USER_PWD="HELLO7"
 	export NEW_P11_USER_PWD="HELLO8"
 	;;
-ltp-aiodio.part[24]|syscalls_part[13]|dio-0*)
+ltp-aiodio.part[24]|syscalls_part[14]|dio-0*)
 	specify_tmpdir || exit
 	;;
 syscalls_part2)
@@ -153,7 +153,7 @@ syscalls_part2)
 		mount -o remount,strictatime /tmp
 	fi
 	;;
-syscalls_part4)
+syscalls_part5)
 	specify_tmpdir || exit
 	echo "#\$SystemLogSocketName /run/systemd/journal/syslog" > /etc/rsyslog.d/listen.conf
 	systemctl restart rsyslog || exit
