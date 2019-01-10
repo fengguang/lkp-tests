@@ -9,9 +9,18 @@ split_syscalls()
 
 	i=1
 	n=1
+	test_num=""
 	cat $cmdfile | sed -e '/^$/ d' -e 's/^[ ,\t]*//' -e '/^#/ d' | while read line
 	do
-		if [ $n -gt 300 ];then
+		if [ "$i" = "2" ]; then
+			test_num=250
+		elif [ "$i" = "3" ]; then
+			test_num=50
+		else
+			test_num=300
+		fi
+
+		if [ $n -gt $test_num ];then
 			i=$(($i+1))
 			n=1
 		fi
