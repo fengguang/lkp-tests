@@ -1,16 +1,16 @@
 #!/bin/sh
-# - nr_task
+# - nr_processes
 # - cpu_node_bind
 . $LKP_SRC/lib/reproduce-log.sh
 bg_pids=""
 redis_server=$BENCHMARK_ROOT/redis/bin/redis-server
 # start redis server
-for i in $(seq 1 "${nr_task}")
+for i in $(seq 1 "${nr_processes}")
 do
 	port=$((6379+$i))
 	if [ -n "$cpu_node_bind" ]; then
 		if [ "$cpu_node_bind" = "even" ]; then
-			bind=$(($i%2))
+			bind=$(($i%nr_node))
 		else
 			bind=$cpu_node_bind
 		fi

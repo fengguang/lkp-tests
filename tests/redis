@@ -5,7 +5,7 @@
 # - requests
 # - n_pipeline
 # - key_len
-# - nr_task
+# - nr_processes
 # - cpu_node_bind
 
 ## Redis is an open source (BSD licensed), in-memory data structure store,
@@ -21,13 +21,13 @@ export PATH=$BENCHMARK_ROOT/redis/bin:$PATH
 redis_dir=$TMP/redis/
 rm -rf $redis_dir
 mkdir -p $redis_dir
-for i in $(seq 1 "${nr_task}")
+for i in $(seq 1 "${nr_processes}")
 do
 	port=$((6379+$i))
 
 	if [ -n "$cpu_node_bind" ]; then
 		if [ "$cpu_node_bind" = "even" ]; then
-			bind=$(($i%2))
+			bind=$(($i%nr_node))
 		else
 			bind=$cpu_node_bind
 		fi

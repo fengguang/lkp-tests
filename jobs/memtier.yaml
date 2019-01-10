@@ -17,9 +17,10 @@ cluster: cs-localhost
 
 cpu_node_bind: even
 
+nr_processes: 4
+
 if role server:
   redis-server:
-    nr_task: 4
 
 if role client:
   memtier:
@@ -32,4 +33,3 @@ if role client:
     nr_threads: 1
     n_client: 3
     n_pipeline: 64
-    nr_processes: 4

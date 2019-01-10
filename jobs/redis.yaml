@@ -19,7 +19,7 @@ cluster: cs-localhost
 
 cpu_node_bind: even
 
-nr_task: 4
+nr_processes: 4
 
 if role server:
   redis-server:
