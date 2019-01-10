@@ -67,15 +67,16 @@ end
 
 def output_interval(prev_time, time)
   return if $interval_results_sum.empty?
+  interval = time - prev_time
   puts "time: #{time}"
   $interval_results_sum.each do |key, value|
-    puts "i.#{key}: #{value}"
+    puts "i.#{key}: #{value / interval}"
     $results_sum[key] += value
     $results_nr[key] += $interval_results_nr[key]
   end
   $interval_nr += 1
   calc_addon_keys($interval_results_sum, $interval_results_nr,
-                  time - prev_time, 1, "i.")
+                  interval, 1, "i.")
   $interval_results_sum.clear
   $interval_results_nr.clear
 end
@@ -153,8 +154,14 @@ end
 parse
 
 $results_sum.each do |key, value|
-  # output total value
-  puts "total.#{key}: #{value}"
+  # output per-second value
+  puts "ps.#{key}: #{value / $run_time}"
+end
+
+instructions = $results_sum['instructions']
+if ! instructions.zero?
+  # to calc path-length
+  puts "total.instructions: #{instructions}"
 end
 
 calc_addon_keys($results_sum, $results_nr, $run_time, $interval_nr, "overall.")
