@@ -149,6 +149,10 @@ def canonicalize_path(path, dir = nil)
   Pathname.new(abs_path).cleanpath.to_s
 end
 
+def path_escape(path)
+  path.tr('/', '_')
+end
+
 module DirObject
   def to_s
     @path
