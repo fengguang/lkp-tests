@@ -95,10 +95,10 @@ class MatrixPlotterBase
     if file_name
       case file_name
       when /eps/
-        plot.terminal format('eps size %d,%d fontscale 1', @inch_size[0], @inch_size[1])
+        plot.terminal format('eps noenhanced size %d,%d fontscale 1', @inch_size[0], @inch_size[1])
         file_name += '.eps' unless file_name.end_with? '.eps'
       else
-        plot.terminal format('png size %d,%d', @pixel_size[0], @pixel_size[1])
+        plot.terminal format('png noenhanced size %d,%d', @pixel_size[0], @pixel_size[1])
         file_name += '.png' unless file_name.end_with? '.png'
       end
       plot.output file_name
@@ -265,7 +265,7 @@ class MatrixPlotter < MatrixPlotterBase
         values = @matrix[field]
         next if values.max == values.min
         normalized_field = field.tr('^a-zA-Z0-9_.:+=-', '_')
-        field_title = normalized_field.gsub('_', '\_')
+        field_title = normalized_field
         Gnuplot::Plot.new(gp) do |p|
           if @output_prefix
             file = @output_prefix + normalized_field
