@@ -29,6 +29,12 @@ def calc_addon_keys(results_sum, results_nr, interval, interval_nr, prefix)
         if ! instructions.zero?
           puts "#{prefix}#{stem}instructions-per-iTLB-miss: #{instructions / value}"
         end
+      elsif key =~ /(.*)cache-misses/
+        stem = $1
+        cycles = results_sum[stem + 'cpu-cycles']
+        if !cycles.zero?
+          puts "#{prefix}#{stem}cycles-between-cache-misses: #{cycles / value}"
+        end
       end
     when /(.*)cache-references/
       stem = $1
