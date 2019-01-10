@@ -1,7 +1,12 @@
 #!/bin/sh
+# - delay
 
 : ${interval:=1}
 
 [ -n "$cpus" ] && opt_cpu="-P $cpus"
+
+. $LKP_SRC/lib/wait.sh
+
+[ -n "$delay" ] && $WAIT_POST_TEST_CMD --timeout "$delay"
 
 LC_ALL=C S_TIME_FORMAT=ISO exec mpstat $opt_cpu $interval $count
