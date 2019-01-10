@@ -1,7 +1,8 @@
 #!/bin/sh
 # - events
 # - revents
-# - time
+# - delay
+# - duration
 # - command
 # - per_socket
 # - interval_ms
@@ -11,6 +12,8 @@
 . $LKP_SRC/lib/debug.sh
 
 : ${interval_ms:=1000}
+: ${delay:=0}
+: ${duration:=0}
 
 set_perf_path "/lkp/benchmarks/perf/perf"
 export perf
@@ -72,13 +75,18 @@ opt_events="-e $(echo $events | sed 's/ / -e /g')"
 
 . $LKP_SRC/lib/wait.sh
 
-[ -n "$time" ] && {
-	setup_wait
-	command="$WAIT_POST_TEST_CMD --timeout $time"
-}
+setup_wait
 
 parse_bool -q "$per_socket" && opts="$opts --per-socket"
 
 disable_nmi_watchdog
 
-exec $perf stat -a -c -I "$interval_ms" -x' ' $opt_events --log-fd 1 $opts -- $command
+$perf stat -a -c -I "$interval_ms" -x' ' $opt_events --log-fd 1 $opts -D $((delay * 1000)) -- $WAIT_POST_TEST_CMD &
+
+pid=$!
+
+[ "$duration" -gt 0 ] && wait_opts="--timeout $((delay + duration))"
+
+$WAIT_POST_TEST_CMD $wait_opts
+
+kill $pid
