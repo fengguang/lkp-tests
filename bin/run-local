@@ -15,13 +15,13 @@ ENV['TMP'] = TMP
 
 require "#{LKP_SRC}/lib/run-env"
 set_local_run
-require "#{LKP_SRC}/lib/yaml.rb"
-require "#{LKP_SRC}/lib/stats.rb"
-require "#{LKP_SRC}/lib/matrix.rb"
-require "#{LKP_SRC}/lib/job2sh.rb"
-require "#{LKP_SRC}/lib/job.rb"
-require "#{LKP_SRC}/lib/result_root.rb"
-require "#{LKP_SRC}/lib/common.rb"
+require "#{LKP_SRC}/lib/yaml"
+require "#{LKP_SRC}/lib/stats"
+require "#{LKP_SRC}/lib/matrix"
+require "#{LKP_SRC}/lib/job2sh"
+require "#{LKP_SRC}/lib/job"
+require "#{LKP_SRC}/lib/result_root"
+require "#{LKP_SRC}/lib/common"
 
 ENV['PATH'] = ENV['PATH'] + ":#{LKP_SRC}/bin"
 ENV['BENCHMARK_ROOT'] = '/lkp/benchmarks'
