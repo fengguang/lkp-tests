@@ -115,12 +115,13 @@ class MMatrixPlotter < MatrixPlotterBase
     @lines = []
     @y_margin = 0.1
     @y_range = [nil, nil]
+    @x_range = [nil, nil]
     @plot_type = 'multi_lines'
   end
 
   prop_with :output_file_name, :title
   prop_with :x_stat_key, :x_as_label, :xtics, :lines
-  prop_with :y_margin, :y_range
+  prop_with :y_margin, :y_range, :x_range
   prop_with :plot_type
 
   # shortcut for one line figure
@@ -130,7 +131,7 @@ class MMatrixPlotter < MatrixPlotterBase
   end
 
   def check_line(values)
-    values.max != 0 || values.min != 0
+    values && (values.max != 0 || values.min != 0)
   end
 
   def check_lines
@@ -148,9 +149,12 @@ class MMatrixPlotter < MatrixPlotterBase
         p.title @title if @title
         p.ytics 'nomirror'
 
+        x_start = @x_range[0] || 0
+        x_len = @x_range[1] ? @x_range[1] - x_start : nil
         y_min, y_max = nil
         @lines.each do |matrix, y_stat_key, line_title|
-          values = matrix[y_stat_key]
+          values_all = matrix[y_stat_key]
+          values = values_all && values_all[x_start, x_len || values_all.length]
           next unless check_line(values)
 
           max = values.max
@@ -159,7 +163,9 @@ class MMatrixPlotter < MatrixPlotterBase
           y_max = y_max ? [max, y_max].max : max
 
           if @x_stat_key
-            data = [matrix[@x_stat_key], values]
+            xs_all = matrix[@x_stat_key]
+            xs = xs_all[x_start, x_len || xs_all.length]
+            data = [xs, values]
           else
             data = [values]
             p.noxtics unless @xtics
