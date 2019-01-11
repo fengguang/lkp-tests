@@ -2,8 +2,8 @@
 
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
-require "#{LKP_SRC}/lib/job2sh.rb"
-require "#{LKP_SRC}/lib/job.rb"
+require "#{LKP_SRC}/lib/job2sh"
+require "#{LKP_SRC}/lib/job"
 require "#{LKP_SRC}/lib/log"
 require 'optparse'
 require 'ostruct'
