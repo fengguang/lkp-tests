@@ -3,6 +3,7 @@
 . $LKP_SRC/lib/mount.sh
 . $LKP_SRC/lib/http.sh
 . $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/reboot.sh
 
 # borrowed from linux/tools/testing/selftests/rcutorture/doc/initrd.txt
 # Author: Paul E. McKenney <paulmck@linux.vnet.ibm.com>
@@ -509,6 +510,13 @@ download_job()
 	(cd /; gzip -dc /tmp/next-job.cgz | cpio -id)
 }
 
+__reboot_bad_next_job()
+{
+	set_tbox_wtmp 'rebooting_bad_next_job'
+	sleep 1
+	reboot_tbox 2>/dev/null && exit
+}
+
 __next_job()
 {
 	NEXT_JOB="/tmp/next-job-$LKP_USER"
@@ -537,6 +545,7 @@ next_job()
 	LKP_USER=${pxe_user:-lkp}
 
 	__next_job || {
+		[ "$LKP_USER" != "lkp" ] && __reboot_bad_next_job
 		local secs=120
 		while true; do
 			sleep $secs || exit # killed by reboot
