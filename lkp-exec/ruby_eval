@@ -2,7 +2,7 @@
 
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
-require "#{LKP_SRC}/lib/#{ARGV[0]}.rb"
+require "#{LKP_SRC}/lib/#{ARGV[0]}"
 
 ARGV.drop(1).each do |arg|
   eval arg
