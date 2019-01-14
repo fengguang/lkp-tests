@@ -25,6 +25,14 @@ def is_independent_counter(name)
   false
 end
 
+def ignore_part(name)
+  $ignore_part_prefixes ||= File.read("#{LKP_SRC}/etc/ignore-part-prefixes").split
+  $ignore_part_prefixes.each do |prefix|
+    return true if name.start_with?(prefix) == 0
+  end
+  false
+end
+
 def max_cols(matrix)
   cols = 0
   matrix.each do |_k, v|
@@ -85,6 +93,9 @@ def create_stats_matrix(result_root)
 
   create_programs_hash 'stats/**/*'
   monitor_files = Dir["#{result_root}/*.{json,json.gz}"]
+  job = Job.open("#{result_root}/job.yaml")
+  stats_part_begin = job['stats_part_begin'].to_f
+  stats_part_end = job['stats_part_end'].to_f
 
   monitor_files.each do |file|
     next unless File.size?(file)
@@ -105,8 +116,32 @@ def create_stats_matrix(result_root)
 
     monitor_stats = load_json file
     sample_size = max_cols(monitor_stats)
+
+    i_stats_part_begin = 0
+    stats_part_len = sample_size
+    tv = monitor_stats["#{monitor}.time"]
+    # ignore non-sequence and start/end results
+    if tv && tv.size > 2
+      tv0 = tv[0]
+      # make it relative time
+      if tv0 > 2 && (stats_part_begin != 0 || stats_part_end != 0)
+        tv = tv.map { |v| v - tv0 }
+      end
+      if stats_part_begin != 0
+        i_stats_part_begin = tv.find_index { |v| v >= stats_part_begin } || sample_size
+      end
+      if stats_part_end != 0
+        i_end = tv.find_index { |v| v >= stats_part_end } || sample_size
+        stats_part_len = i_end - i_stats_part_begin
+      end
+    end
+
     monitor_stats.each do |k, v|
       next if k == "#{monitor}.time"
+      if ! ignore_part k
+        v = v[i_stats_part_begin, stats_part_len]
+      end
+      next if !v || v.empty?
       stats[k] = if v.size == 1
                    v[0]
                  elsif is_independent_counter k
@@ -114,7 +149,7 @@ def create_stats_matrix(result_root)
                  elsif is_event_counter k
                    v[-1] - v[0]
                  else
-                   v.sum / sample_size
+                   v.sum / stats_part_len
                  end
       stats[k + '.max'] = v.max if should_add_max_latency k
     end
