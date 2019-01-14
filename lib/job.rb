@@ -821,5 +821,5 @@ def each_job_in_dir(dir)
     yield j
   end
 
-  Dir.glob(File.join(dir, '**/job.yaml')).each(&proc_jobfile)
+  Dir.glob(File.join(dir, '**/*.yaml')).each(&proc_jobfile)
 end
