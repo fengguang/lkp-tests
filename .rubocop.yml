@@ -49,6 +49,15 @@ Metrics/BlockLength:
     - '**/*.rake'
     - 'spec/**/*.rb'
 
+Style/GlobalVars:
+  Enabled: false
+
+Lint/UnderscorePrefixedVariableName:
+  Enabled: false
+
+Performance/Caller:
+  Enabled: false
+
 Style/NumericPredicate:
   Exclude:
     - 'lib/job2sh.rb'
