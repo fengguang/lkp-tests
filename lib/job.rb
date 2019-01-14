@@ -812,8 +812,8 @@ class << Job
   end
 end
 
-def each_job_in_dir(dir)
-  return enum_for(__method__, dir) unless block_given?
+def each_job_in_dir(dir, job_name = '*.yaml')
+  return enum_for(__method__, dir, job_name) unless block_given?
 
   proc_jobfile = lambda do |jobfile|
     j = Job.open jobfile
@@ -821,5 +821,5 @@ def each_job_in_dir(dir)
     yield j
   end
 
-  Dir.glob(File.join(dir, '**/*.yaml')).each(&proc_jobfile)
+  Dir.glob(File.join(dir, '**', job_name)).each(&proc_jobfile)
 end
