@@ -7,6 +7,9 @@ $interval_results_nr = Hash.new(0)
 $interval_nr = 0
 $run_time = 0
 
+$stats_begin_time = ENV['stats_part_begin'].to_f
+$stats_end_time = ENV['stats_part_end'].to_f
+
 def calc_addon_keys(results_sum, results_nr, interval, interval_nr, prefix)
   results_sum.each do |key, value|
     case key
@@ -71,12 +74,33 @@ def output_interval(prev_time, time)
   puts "time: #{time}"
   $interval_results_sum.each do |key, value|
     puts "i.#{key}: #{value / interval}"
-    $results_sum[key] += value
-    $results_nr[key] += $interval_results_nr[key]
   end
-  $interval_nr += 1
   calc_addon_keys($interval_results_sum, $interval_results_nr,
                   interval, 1, "i.")
+
+  ignore = false
+  if time <= $stats_begin_time
+    ignore = true
+  elsif prev_time <= $stats_begin_time
+    # update $stats_begin_time to real start time
+    $stats_begin_time = prev_time
+  end
+
+  if !ignore && $stats_end_time != 0 && time > $stats_end_time
+    if prev_time <= $stats_end_time
+      $stats_end_time = prev_time
+    end
+    ignore = true
+  end
+
+  if !ignore
+    $interval_results_sum.each do |key, value|
+      $results_sum[key] += value
+      $results_nr[key] += $interval_results_nr[key]
+    end
+    $interval_nr += 1
+  end
+
   $interval_results_sum.clear
   $interval_results_nr.clear
 end
@@ -146,7 +170,8 @@ def parse
   end
 
   # total time
-  $run_time = prev_time
+  end_time = $stats_end_time == 0 ? prev_time : $stats_end_time
+  $run_time = end_time - $stats_begin_time
 
   # skip the last record, because the interval hasn't run out
 end
