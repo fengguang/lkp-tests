@@ -1,0 +1,12 @@
+#!/bin/sh
+# - part_name
+
+# Calculate statistics for only part of the result.  The part is
+# specified via varaibles
+#
+# - stats_part_begin
+# - stats_part_end
+#
+# Both are seconds from the start of the test.  The above variables
+# are not used as parameters, because sometimes, the time will be
+# different for different runs of the test.
