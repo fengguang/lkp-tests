@@ -210,51 +210,73 @@ class MMatrixPlotter < MatrixPlotterBase
     Gnuplot.open do |gp|
       Gnuplot::Plot.new(gp) do |p|
         setup_output(p, @output_file_name)
-        p.title @title if @title
-        p.ytics 'nomirror'
+        p.title "'#{@title}' noenhanced font ',24'" if @title
+        p.ytics 'nomirror font ",24"'
+        p.y2tics 'nomirror font ",24"'
 
         y_max = nil
+        y_min = nil
         x_stat = []
         y_stat = []
         y_stat_max = []
+        y_stat_min = []
         z_stat = []
         @lines.each do |matrix, y_stat_key, _line_title|
           values = matrix[y_stat_key]
           next unless check_line(values)
+          values.map!(&:to_f)
 
           case y_stat_key
-          when /avgs/
-            y_stat = values
+          when /min$/
+            y_stat_min = values
             x_stat = matrix[@x_stat_key]
-          when /max/
+          when /max$/
             y_stat_max = values
           end
 
           max = values.max
+          min = values.min
+          y_min = y_min ? [min, y_min].min : min
           y_max = y_max ? [max, y_max].max : max
         end
-        y_base = y_stat[0].to_f
-        y_stat.collect! { |v| format('%.2f', v.to_f / y_base * 100) }
-        y_stat_max.collect! { |v| format('%.2f', v.to_f / y_base * 100) }
+
+        y_stat = (1..y_stat_max.size).map { |i| (y_stat_max[i - 1] + y_stat_min[i - 1]) / 2 }
+        y_base = if y_stat.size > 2
+                   y_stat[-2]
+                 else
+                   y_stat[0]
+                 end
+
+        y_stat.map! { |v| (v / y_base * 100).round(2) }
+        y_stat_max.map! { |v| (v / y_base * 100).round(2) }
         if y_stat.size == y_stat_max.size
-          z_stat = (1..y_stat.size).collect { |i| format('%.2f', y_stat_max[i - 1].to_f - y_stat[i - 1].to_f) }
+          z_stat = (1..y_stat.size).map { |i| (y_stat_max[i - 1] - y_stat[i - 1]).round(2) }
         end
 
-        xtics_stat = x_stat.collect.with_index { |x, i| format('"%s" %d', x, i + 1) }.join(', ')
-        p.xtics "(#{xtics_stat})"
+        xtics_stat = x_stat.map.with_index { |x, i| format('"%s" %d', x, i + 1) }.join(', ')
+        p.xtics "(#{xtics_stat}) font ',24' offset 0,-0.5"
         x_stat = (1..x_stat.size).to_a
+        p.xrange "[0.9:#{x_stat.size + 0.1}]"
+
+        ref_line_stat = Array.new(x_stat.size, 100)
         p.data = [
           Gnuplot::DataSet.new([x_stat, y_stat, z_stat]) do |ds|
             ds.with = 'errorb'
             ds.notitle
           end,
-          Gnuplot::DataSet.new([x_stat, y_stat, z_stat]) do |ds|
+          Gnuplot::DataSet.new([x_stat, y_stat]) do |ds|
             ds.with = 'linespoints'
+            ds.notitle
+          end,
+          Gnuplot::DataSet.new([x_stat, ref_line_stat]) do |ds|
+            ds.with = "lines lt '-'"
             ds.notitle
           end
         ]
-        y_max = (y_max / y_base * 100 * 1.2).round
-        p.yrange "[0:#{y_max}]"
+        y_max = (y_max / y_base * 100 + 5).round
+        y_min = (y_min / y_base * 100 - 5).round
+        p.yrange "[#{y_min}:#{y_max}]"
+        p.y2range "[#{y_min}:#{y_max}]"
       end
     end
   end
