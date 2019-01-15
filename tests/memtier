@@ -31,7 +31,7 @@ do
                 fi
                 numa_bind="numactl --cpunodebind=$bind --"
         fi
-	log_test $numa_bind memtier_benchmark --ratio=$n_ratio -d $data_size -n $requests --key-pattern=$key_pattern --key-minimum=$key_min --key-maximum=$key_max --threads=$nr_threads --pipeline=$n_pipeline -c $n_client --hide-histogram -p $port  > $memtier_dir/memtier.$i &
+	log_test $numa_bind memtier_benchmark --ratio=$n_ratio -d $data_size -n $requests --key-pattern=$key_pattern --key-minimum=$key_min --key-maximum=$key_max --threads=$nr_threads --pipeline=$n_pipeline -c $n_client -p $port > $memtier_dir/memtier.$i &
 done
 wait
 

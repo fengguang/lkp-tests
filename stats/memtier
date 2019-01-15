@@ -7,6 +7,31 @@
 # Gets         5822.89       867.78      4955.10      0.40700      1088.00
 # Waits           0.00          ---          ---      0.00000          ---
 # Totals       7278.61       867.78      4955.10      0.41000      2610.72
+#Request Latency Distribution
+#Type     <= msec         Percent
+#------------------------------------------------------------------------
+#SET       0.260        87.07
+#SET       0.270        89.46
+#SET       0.280        92.75
+#SET       0.290        95.86
+#SET       0.300        97.88
+#SET       0.310        98.79
+#SET       0.320        99.13
+#SET       0.330        99.28
+#SET       0.340        99.40
+#SET       0.350        99.51
+#SET       0.360        99.62
+#GET       0.250        85.06
+#GET       0.260        87.07
+#GET       0.270        89.46
+#GET       0.280        92.75
+#GET       0.290        95.86
+#GET       0.300        97.88
+#GET       0.310        98.79
+#GET       0.320        99.13
+#GET       0.330        99.28
+#GET       0.340        99.40
+
 
 $histo_sets_sum = Array.new(6,0)
 $histo_sets_num = Array.new(6,0)
@@ -16,6 +41,39 @@ $histo_waits_sum = Array.new(6,0)
 $histo_waits_num = Array.new(6,0)
 $histo_totals_sum = Array.new(6,0)
 $histo_totals_num = Array.new(6,0)
+$histo_set_latency = Array.new(3,0)
+$histo_get_latency = Array.new(3,0)
+$histo_set_percent = Array.new(3,0)
+$histo_get_percent = Array.new(3,0)
+$histo_set_percent_num = Array.new(3,0)
+$histo_get_percent_num = Array.new(3,0)
+$histo_set_flag = Array.new(3,false)
+$histo_get_flag = Array.new(3,false)
+$target_percent=[90,95,99.9]
+
+def memtier_flag_reset(line,flag)
+  (0..2).each do |i|
+    flag[i] = false
+  end
+end
+
+def memtier_latency(line,histo_latency,histo_percent,histo_percent_num,percent,flag)
+  data = line.split
+  (0..2).each do |i|
+    if histo_latency[i] == 0
+      if data[2].to_f >= percent[i]
+        histo_latency[i] = data[1].to_f
+	histo_percent[i] += data[2].to_f
+	histo_percent_num[i] += 1
+	flag[i] = true
+      end
+    elsif data[1].to_f == histo_latency[i] && flag[i] == false
+      histo_percent[i] +=  data[2].to_f
+      histo_percent_num[i] += 1
+      flag[i] = true
+    end
+  end
+end
 
 def extract_memtier(line,histo_sum,histo_num)
   data = line.split
@@ -34,28 +92,42 @@ while (line = STDIN.gets)
     extract_memtier(line,$histo_waits_sum,$histo_waits_num)
   elsif line =~ /^Totals/
     extract_memtier(line,$histo_totals_sum,$histo_totals_num)
+  elsif line =~ /^Request Latency Distribution/
+    memtier_flag_reset(line,$histo_set_flag)
+    memtier_flag_reset(line,$histo_get_flag)
+  elsif line =~ /^SET/
+    memtier_latency(line,$histo_set_latency,$histo_set_percent,$histo_set_percent_num,$target_percent,$histo_set_flag)
+  elsif line =~ /^GET/
+    memtier_latency(line,$histo_get_latency,$histo_get_percent,$histo_get_percent_num,$target_percent,$histo_get_flag)
   end
 end
 
 def gen_output_sum(type,histo_sum)
-  puts "#{type}_ops_sum: #{histo_sum[1]}"
-  puts "#{type}_hits_sum: #{histo_sum[2]}"
-  puts "#{type}_misses_sum: #{histo_sum[3]}"
-  puts "#{type}_latency_sum: #{histo_sum[4]}"
-  puts "#{type}_kbs_sum: #{histo_sum[5]}"
+  puts "total_#{type}_ops/s: #{histo_sum[1]}"
+  puts "total_#{type}_hits/s: #{histo_sum[2]}"
+  puts "total_#{type}_misses/s: #{histo_sum[3]}"
+  puts "total_#{type}_latency_ms: #{histo_sum[4]}"
+  puts "total_#{type}_kb/s: #{histo_sum[5]}"
 end
 
 def gen_output_avg(type,histo_sum, histo_num)
   avg_tmp=histo_sum[1]/histo_num[1]
-  puts "#{type}_ops_avg: #{avg_tmp}"
+  puts "avg_#{type}_ops/s: #{avg_tmp}"
   avg_tmp=histo_sum[2]/histo_num[2]
-  puts "#{type}_hits_avg: #{avg_tmp}"
+  puts "avg_#{type}_hits/s: #{avg_tmp}"
   avg_tmp=histo_sum[3]/histo_num[3]
-  puts "#{type}_misses_avg: #{avg_tmp}"
+  puts "avg_#{type}_misses/s: #{avg_tmp}"
   avg_tmp=histo_sum[4]/histo_num[4]
-  puts "#{type}_latency_avg: #{avg_tmp}"
+  puts "avg_#{type}_latency_ms: #{avg_tmp}"
   avg_tmp=histo_sum[5]/histo_num[5]
-  puts "#{type}_kbs_avg: #{avg_tmp}"
+  puts "avg_#{type}_kb/s: #{avg_tmp}"
+end
+
+def gen_latency(type,histo_latency,histo_percent,histo_percent_num)
+  (0..2).each do |i|
+    avg_percent= histo_percent[i]/histo_percent_num[i]
+    puts "#{type}_latency_<#{histo_latency[i]}ms_%: #{avg_percent}"
+  end
 end
 
 gen_output_sum("sets",$histo_sets_sum)
@@ -66,3 +138,5 @@ gen_output_avg("sets",$histo_sets_sum,$histo_sets_num)
 gen_output_avg("gets",$histo_gets_sum,$histo_gets_num)
 gen_output_avg("waits",$histo_waits_sum,$histo_waits_num)
 gen_output_avg("totals",$histo_totals_sum,$histo_totals_num)
+gen_latency("set",$histo_set_latency,$histo_set_percent,$histo_set_percent_num)
+gen_latency("get",$histo_get_latency,$histo_get_percent,$histo_get_percent_num)
