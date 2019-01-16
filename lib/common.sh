@@ -73,6 +73,16 @@ cpu_list_ref()
 	echo $cpu_list | cut -d ' ' -f $((n+1))
 }
 
+# if str starts with prefix, output remaining part, otherwise output empty string
+remove_prefix()
+{
+	str=$1
+	prefix=$2
+
+	stem=${str#"$prefix"}
+	[ "$str" != "$stem" ] && echo -n "$stem"
+}
+
 is_rt()
 {
 	local path=$1
