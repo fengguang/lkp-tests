@@ -60,6 +60,19 @@ expand_cpu_list()
 	done
 }
 
+cpu_list_count()
+{
+	cpu_list=$1
+	echo $cpu_list | wc -w
+}
+
+cpu_list_ref()
+{
+	cpu_list=$1
+	n=$2
+	echo $cpu_list | cut -d ' ' -f $((n+1))
+}
+
 is_rt()
 {
 	local path=$1
