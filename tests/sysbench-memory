@@ -3,6 +3,7 @@
 # - nr_processes
 # - nr_threads
 # - cpu_node_bind
+# - mem_node_bind
 # - mem_blk_size
 # - mem_total_size
 # - mem_scope
@@ -13,6 +14,7 @@
 # - rand_pareto_h
 
 . "$LKP_SRC/lib/reproduce-log.sh"
+. "$LKP_SRC/lib/numactl.sh"
 
 : "${runtime:=600}"
 : "${nr_processes:=1}"
@@ -42,15 +44,11 @@ args="\
 sb_tmp_dir="$TMP/sysbench-memory"
 rm -rf "$sb_tmp_dir"
 mkdir -p "$sb_tmp_dir"
+
+parse_numa_node_binding "$cpu_node_bind" "$mem_node_bind"
+
 for i in $(seq 1 $nr_processes); do
-	if [ -n "$cpu_node_bind" ]; then
-		if [ "$cpu_node_bind" = "even" ]; then
-			bind=$((i%nr_node))
-		else
-			bind=$cpu_node_bind
-		fi
-		numa_bind="numactl --cpunodebind=$bind --"
-	fi
+	numa_bind=$(numa_node_binding "$i")
 	log_echo "$exec_prefix $numa_bind sysbench $args run > $sb_tmp_dir/sysbench-memory.$i &"
 	$numa_bind sysbench $args run > "$sb_tmp_dir/sysbench-memory.$i" &
 done
