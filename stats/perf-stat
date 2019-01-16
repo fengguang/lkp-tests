@@ -10,6 +10,8 @@ $run_time = 0
 $stats_begin_time = ENV['stats_part_begin'].to_f
 $stats_end_time = ENV['stats_part_end'].to_f
 
+$latency_prev = Hash.new(0)
+
 def calc_addon_keys(results_sum, results_nr, interval, interval_nr, prefix)
   results_sum.each do |key, value|
     case key
@@ -49,12 +51,21 @@ def calc_addon_keys(results_sum, results_nr, interval, interval_nr, prefix)
       stem1 = $1
       stem2 = $2
       stem = "#{stem1}UNC_M_#{stem2}"
-      occupancy = results_sum[stem1 + "UNC_M_" + stem2 + '_OCCUPANCY']
+      occupancy_key = stem1 + "UNC_M_" + stem2 + '_OCCUPANCY'
+      occupancy = results_sum[occupancy_key]
       ticks_key = stem1 + 'UNC_M_CLOCKTICKS'
       ticks_sum = results_sum[ticks_key]
       ticks_nr = results_nr[ticks_key].to_f
-      if occupancy != 0 && ticks_sum != 0
-        puts "#{prefix}#{stem}_latency_ns: #{occupancy / value / (ticks_sum / (ticks_nr / interval_nr)) * 1e+9 * interval}"
+      if results_sum.has_key?(occupancy_key) && ticks_sum != 0
+        # Need to deal with _INSERTSS == 0
+        latency_key = "#{prefix}#{stem}_latency_ns"
+        if value != 0
+          latency = occupancy / value / (ticks_sum / (ticks_nr / interval_nr)) * 1e+9 * interval
+        else
+          latency = $latency_prev[latency_key]
+        end
+        $latency_prev[latency_key] = latency
+        puts "#{latency_key}: #{latency}"
       end
       puts "#{prefix}#{stem}_throughput_MBps: #{value.to_f * 64 / 1024 / 1024 / interval}"
     when /(.*)cpu-cycles/
