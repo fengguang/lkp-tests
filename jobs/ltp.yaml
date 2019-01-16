@@ -79,11 +79,3 @@ reboot_for_next_job: 1
 ltp:
   test:
   - crashme-02
-
----
-oom-killer:
-  ignored: 1
-
-ltp:
-  test:
-  - mm-00
