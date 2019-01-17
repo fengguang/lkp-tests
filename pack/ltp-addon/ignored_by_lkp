@@ -1,108 +1,16 @@
-# x86_64 can not support 16-bit syscall
-syscalls_part1:_16$:regex
-syscalls_part2:_16$:regex
-syscalls_part4:_16$:regex
-syscalls_part5:_16$:regex
-# i386 only
-crashme:f00f
-syscalls_part2:modify_ldt01
-syscalls_part2:modify_ldt02
-syscalls_part2:modify_ldt03
-# su01 want to get USER's password
-admin_tools:su01
 # Cause OOM, deactivate it temporarily.
 syscalls:madvise06
-# Require tbox enable TPM at BIOS which may lock the server bios and other devices
-ima:ima01
-ima:ima03
-# waiting community's response
-ima:ima04
-# only support kernel version < v2.6.29
-numa:move_pages08
-syscalls_part2:move_pages08
-# i386 only
-quickhit:f00f
-# need disable kernel config (CONFIG_SCHED_MC CONFIG_SCHED_SMT)
-power_management_tests:runpwtests01
-power_management_tests:runpwtests02
-power_management_tests:runpwtests03
-# need build extra modules
-modules:delete_module01
-modules:delete_module03
-# not suittable to recent kernel
-hyperthreading:ht_interrupt
-# x86_64 can not support it
-syscalls_part5:ssetmask01
-# waiting community's response
-mm:mmapstress08
 # take too long time, add need memory > 8G
 net_stress.appl:ssh4-stress
 net_stress.appl:ssh6-stress
 # need about 15min for each test, there is no enough time left to test them
 net_stress.appl:ftp4-upload-stress
 net_stress.appl:ftp6-upload-stress
-# only support kernel version < v2.6.25
-syscalls_part4:ptrace03
-# only support Blackfin(DSP microprocessor)
-syscalls_part4:ptrace04
-# __NR_readdir not supported on x86_64
-syscalls_part4:readdir21
-# only support kernel version is 2.6.25 or below
-# adjtimex(2) fails with errno set to EINVAL if an attempt is  made  to set buf.offset to a value < 512000L
-# (This test case will be executed only if the kernel version is 2.6.25 or below)
-syscalls_part1:adjtimex02
-# only support kernel version < v2.6.9
-# For munlockall():
-# EPERM
-# (Linux 2.6.8 and earlier) The caller was not privileged (CAP_IPC_LOCK)
-# setpriority(0, 1, -2) as unprivileged user fails as expected: EPERM
-syscalls_part2:munlockall02
-# not works when compiled as 64-bit application
-syscalls_part3:msgrcv08
-# system doesn't support it
-# Currently Linux kernel doesn't implement R_GETLK/R_SETLK facility
-# but this facility seems to be present in other standard flavours of Unix
-# Currently this program has all the testing done under "#ifdef LINUX_FILE_REGION_LOCK"
-# when Linux implements the regions locking then, this testcase should be recompiled accordingly with the "ifdef" removed.
-syscalls_part1:fcntl06
-syscalls_part1:fcntl06_64
-# for current kernel, subdir limit is not availiable for all fs
-syscalls_part2:linkat02
-# __NR_bdflush not supported on x86_64
-syscalls_part1:bdflush01
-# __NR_cacheflush not supported on x86_64
-syscalls_part1:cacheflush01
-# set_thread_area not supported on x86_64
-syscalls_part4:set_thread_area01
-# __NR_ssetmask not supported on x86_64
-syscalls_part4:sgetmask01
-# no proper fs for the test
-syscalls_part4:rename11
-# only support on powerpc
-syscalls_part5:switch01
 # the test result is always block
 syscalls_part5:sysconf01
-# __NR_sysctl not supported on x86_64
-syscalls_part5:sysctl01
-syscalls_part5:sysctl03
-syscalls_part5:sysctl04
-syscalls_part5:sysctl05
-# caused by the defect of ltp itself, where a "no such file or directory" error occured
-ltp-aiodio.part4:DOR000
-ltp-aiodio.part4:DOR001
-ltp-aiodio.part4:DOR002
-ltp-aiodio.part4:DOR003
 # need two physical machine as server and client
 net.tirpc_tests:tirpc_rpc_broadcast
 net.tirpc_tests:tirpc_rpc_broadcast_exp
-# need keyserv
-net.tirpc_tests:tirpc_authdes_create
-net.tirpc_tests:tirpc_authdes_seccreate
-# bug in ltp
-net.rpc_tests:rpc_clnt_broadcast
-#__NR_mmap2 not supported on x86_64
-cve:cve-2011-2496
-mm:vma03
 #below sctp6_ipsec tests stuck since v4.18-rc1, wait community to fix 
 net_stress.ipsec_sctp:sctp6_ipsec_vti04
 net_stress.ipsec_sctp:sctp6_ipsec_vti05
