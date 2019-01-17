@@ -4,6 +4,21 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAM
 
 require "#{LKP_SRC}/lib/string_ext"
 
+def get_largest_bandwidth()
+  file_size = bandwidth = 0
+  $stdin.each_line do |line|
+    break if line.chomp.empty?
+
+    temp_size = line.split(' ')[0].to_f
+    temp_bandwidth = line.split(' ')[1].to_f
+    if temp_size > file_size
+      file_size = temp_size
+      bandwidth = temp_bandwidth
+    end
+  end
+  return bandwidth
+end
+
 while (line = STDIN.gets)
   line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
   case line
@@ -111,5 +126,55 @@ while (line = STDIN.gets)
     puts "TCP.socket.bandwidth.64B.MB/sec: #{$1}"
   when socket_bandwidth && /^10.485760 (\d+.\d+) MB\/sec$/
     puts "TCP.socket.bandwidth.10MB.MB/sec: #{$1}"
+
+  # Extract CONNECT test result:
+  # TCP/IP connection cost to localhost: 19.1327 microseconds
+  when /^TC\/IP connection cost to localhost: (\d+.\d+) microseconds/
+    puts "CONNECT.localhost.latency.us: #{$1}"
+
+  # Extract BCOPY test result:
+  # bcopy test outputs some test results,but only get the last largest result from the last line.
+  # According to lmbench3 source script "getsummary" to extract the four items test result:
+  # libc bcopy unaligned, unrolled bcopy unaligned, Memory read bandwidth, Memory write bandwidth.
+
+  # "libc bcopy unaligned"
+  # 0.000512 39318.87
+  # 0.001024 43561.22
+  # 0.002048 48679.99
+  # 0.004096 49481.95
+  # 0.008192 52732.95
+  # ...
+  when /^"libc bcopy unaligned$/
+    puts "BCOPY.libc.bandwidth.MB/sec: #{get_largest_bandwidth}"
+
+  # "unrolled bcopy unaligned
+  # 0.000512 13442.67
+  # 0.001024 13699.91
+  # 0.002048 13853.59
+  # 0.004096 13955.43
+  # 0.008192 13872.00
+  # 0.016384 12921.17
+  # ...
+  when /^"unrolled bcopy unaligned$/
+    puts "BCOPY.unrolled.bandwidth.MB/sec: #{get_largest_bandwidth}"
+
+  # Memory read bandwidth
+  # 0.000512 16353.73
+  # 0.001024 16577.89
+  # 0.002048 16752.28
+  # 0.004096 16822.85
+  # 0.008192 16834.82
+  # ...
+  when /^Memory read bandwidth$/
+    puts "BCOPY.memory_read.bandwidth.MB/sec: #{get_largest_bandwidth}"
+
+  # Memory write bandwidth
+  # 0.000512 13964.88
+  # 0.001024 13954.19
+  # 0.002048 13975.07
+  # 0.004096 13950.82
+  # ...
+  when /^Memory write bandwidth$/
+    puts "BCOPY.memory_write.bandwidth.MB/sec: #{get_largest_bandwidth}"
   end
 end
