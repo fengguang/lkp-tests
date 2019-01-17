@@ -10,27 +10,25 @@
 # - n_client
 # - n_pipeline
 # - cpu_node_bind
+# - mem_node_bind
 
 ## memtier_benchmark is a command line utility developed by Redis Labs
 ## (formerly Garantia Data Ltd.) for load generation and bechmarking
 ## NoSQL key-value databases
 
 . $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/numactl.sh
 memtier_dir=$TMP/redis/
 rm -rf $memtier_dir
 mkdir -p $memtier_dir
 export PATH=$BENCHMARK_ROOT/memtier_benchmark/:$PATH
+
+parse_numa_node_binding "$cpu_node_bind" "$mem_node_bind"
+
 for i in $(seq 1 "${nr_processes}")
 do
 	port=$((6379+$i))
-        if [ -n "$cpu_node_bind" ]; then
-                if [ "$cpu_node_bind" = "even" ]; then
-                        bind=$(($i%nr_node))
-                else
-                        bind=$cpu_node_bind
-                fi
-                numa_bind="numactl --cpunodebind=$bind --"
-        fi
+	numa_bind=$(numa_node_binding "$i")
 	log_test $numa_bind memtier_benchmark --ratio=$n_ratio -d $data_size -n $requests --key-pattern=$key_pattern --key-minimum=$key_min --key-maximum=$key_max --threads=$nr_threads --pipeline=$n_pipeline -c $n_client -p $port > $memtier_dir/memtier.$i &
 done
 wait
