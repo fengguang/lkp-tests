@@ -52,7 +52,7 @@ __node_binding()
 
 	case "$__node_binding_mode" in
 		none)
-			true
+			__binding=
 			;;
 		even)
 			__binding=$((__seq_no%nr_node))
