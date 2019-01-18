@@ -1,11 +1,5 @@
 # Cause OOM, deactivate it temporarily.
 syscalls:madvise06
-# take too long time, add need memory > 8G
-net_stress.appl:ssh4-stress
-net_stress.appl:ssh6-stress
-# need about 15min for each test, there is no enough time left to test them
-net_stress.appl:ftp4-upload-stress
-net_stress.appl:ftp6-upload-stress
 # the test result is always block
 syscalls_part5:sysconf01
 # need two physical machine as server and client
