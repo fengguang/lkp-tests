@@ -15,7 +15,7 @@ __parse_node_binding()
 		__node_binding_mode="even"
 		return
 	fi
-	__even_nodes=$(remove_prefix "$__config" even=)
+	__even_nodes=$(remove_prefix "$__config" even%)
 	if [ -n "$__even_nodes" ]; then
 		__node_binding_mode="even-list"
 		__even_nodes=$(expand_cpu_list "$__even_nodes")
