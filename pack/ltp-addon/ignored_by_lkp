@@ -1,7 +1,5 @@
 # Cause OOM, deactivate it temporarily.
 syscalls:madvise06
-# the test result is always block
-syscalls_part5:sysconf01
 # need two physical machine as server and client
 net.tirpc_tests:tirpc_rpc_broadcast
 net.tirpc_tests:tirpc_rpc_broadcast_exp
