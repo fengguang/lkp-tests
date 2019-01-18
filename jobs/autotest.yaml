@@ -1,28 +1,13 @@
 suite: autotest
 testcase: autotest
-category: benchmark
-
-need_memory: 8G
-
-autotest:
-  test:
-  - compilebench
-  # - docker # /usr/bin/docker: No such file or directory
-  # - iosched_bugs # make: *** [dirty] Error1: undefined reference to 'rdtsc'
-  # - isic # make: *** [all-recursive] Error1: undefined reference to 'libnet_getgre_length'
-  - monotonic_time
-  - pi_tests
-  # - systemtap # simple systemtap test failed, kernel debuginfo package may be missing. Checking "/lib/modules/4.3.0/build/.config" failed with error: No such file or direcotry
-  # - unixbench # duplicate to jobs/unixbench.yaml
-
----
 category: functional
+
+need_memory: 2G
 
 autotest:
   test:
   # - aborttest
   # - aio_dio_bugs # open dio failed: 22
-  - aiostress
   # - asynctest # run time too short
   # - autotest_regression
   # - barriertest  # autotest self test
@@ -56,7 +41,6 @@ autotest:
   # - fsdev # KeyError: '4.3.0'
   - fsfuzzer
   # - fs_mark
-  - fsstress
   - fsx
   # - hackbench
   # - hwclock
@@ -115,10 +99,15 @@ autotest:
   # - xmtest # Connecting to xm-test.xensource.com (xm-test.xensource.com)|220.250.64.225|:80... failed: Connection refused.
 
 ---
-category: functional
 kernel_cmdline: maxcpus=16
 
 autotest:
   test:
   - tsc
 
+---
+need_memory: 3G
+
+autotest:
+  test:
+  - aiostress

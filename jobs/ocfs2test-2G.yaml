@@ -10,9 +10,10 @@ disk:
 
 size: 200G
 
+need_memory: 2G
+
 ocfs2test:
   test:
-    - test-quick
     - test-mmaptruncate
     # can't run on vm, move it to ocfs2test-mkfs.yaml
     # - test-mkfs

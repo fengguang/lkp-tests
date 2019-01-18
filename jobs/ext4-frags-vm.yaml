@@ -1,5 +1,7 @@
 <<: jobs/ext4-frags.yaml
 
+need_memory: 2G
+
 nr_1Mfiles: 100000
 nr_1Gfiles: 50
 

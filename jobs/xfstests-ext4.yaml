@@ -2,6 +2,8 @@ suite: xfstests
 testcase: xfstests
 category: functional
 
+need_memory: 2G
+
 disk: 4HDD
 
 fs:

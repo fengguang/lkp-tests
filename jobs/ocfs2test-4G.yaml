@@ -1,0 +1,17 @@
+suite: ocfs2test
+testcase: ocfs2test
+category: functional
+
+# Note, the type of disk is not limited. 
+# Both HDD and SSD are OK.
+# If you want to use HDD, change 1SSD to 1HDD.
+disk:
+- 1HDD
+
+size: 200G
+
+need_memory: 4G
+
+ocfs2test:
+  test:
+    - test-quick

@@ -7,9 +7,10 @@ branch: linus/master
 nvml_branch: nvml/master
 nvml_commit: HEAD
 
+need_memory: 4G
+
 nvml:
 group:
-  - blk
   - bttdevice
   - compat
   - cto
@@ -22,15 +23,12 @@ group:
   - out
   - pmem
   - pmemobjcli
-  - pmempool
   - pmemspoil
   - remote
   - rpmem
   - rpmemd
   - set
   - unicode
-  - util
-  - vmem
   - vmmalloc
 
 test: non-pmem
@@ -47,5 +45,15 @@ group:
   - rpmemd
   - scope
   - traces
+  - util
+  - vmem
+
+---
+need_memory: 5G
+
+test: non-pmem
+group:
+  - blk
+  - pmempool
   - util
   - vmem

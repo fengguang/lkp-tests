@@ -1,0 +1,26 @@
+suite: xfstests
+testcase: xfstests
+category: functional
+
+need_memory: 4G
+
+disk: 4HDD
+
+fs:
+- xfs
+
+xfstests:
+  test:
+  - xfs-rmapbt
+  - xfs-reflink
+  - xfs-083
+  - xfs-slow1
+  - xfs-mid1
+  - xfs-mid2
+  - xfs-mid3
+  - xfs-mid4
+  - xfs-quick2
+  - xfs-group1
+  - xfs-group2
+# - xfs-new
+# - xfs-all

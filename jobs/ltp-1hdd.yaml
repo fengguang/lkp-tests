@@ -7,6 +7,8 @@ need_modules: true
 ltp_commit: HEAD
 ltp_branch: ltp/master
 
+need_memory: 4G
+
 disk: 1HDD
 fs:
 - ext4

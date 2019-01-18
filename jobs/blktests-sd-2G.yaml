@@ -7,10 +7,8 @@ blktests_branch: blktests/master
 
 need_memory: 2G
 
+disk: 1HDD
+
 blktests:
   test:
-  - loop-group1
-  - nbd-group1
-  - srp-group1
-  # - nvmeof-mp-group1 # incompatible with CONFIG_NVME_MULTIPATH
-  - other
+  - scsi-group1

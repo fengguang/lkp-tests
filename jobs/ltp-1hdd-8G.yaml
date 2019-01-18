@@ -17,6 +17,11 @@ need_memory: 8G
 ltp:
   test:
   - fs-00
+
+---
+need_memory: 5G
+ltp:
+  test:
   - fs-01
   - fs-02
   - fs-03

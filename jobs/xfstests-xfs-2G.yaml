@@ -2,6 +2,8 @@ suite: xfstests
 testcase: xfstests
 category: functional
 
+need_memory: 2G
+
 disk: 4HDD
 
 fs:
@@ -10,24 +12,13 @@ fs:
 xfstests:
   test:
   - xfs-external
-  - xfs-rmapbt
-  - xfs-reflink
   - xfs-reflink_rmapbt
-  - xfs-083
   - xfs-132
   - xfs-244
   - xfs-275
   - xfs-437
-  - xfs-slow1
   - xfs-slow2
-  - xfs-mid1
-  - xfs-mid2
-  - xfs-mid3
-  - xfs-mid4
   - xfs-quick1
-  - xfs-quick2
-  - xfs-group1
-  - xfs-group2
   - xfs-group3
   - xfs-group4
   - xfs-group5

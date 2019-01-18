@@ -2,6 +2,8 @@ suite: test_bpf
 testcase: test_bpf
 category: functional
 
+need_memory: 2G
+
 test_bpf:
   test:
   - jit

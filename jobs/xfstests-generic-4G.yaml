@@ -1,0 +1,31 @@
+suite: xfstests
+testcase: xfstests
+category: functional
+
+need_memory: 4G
+
+disk: 4HDD
+
+timeout: 2h
+
+fs:
+- ext4
+- xfs
+- btrfs
+- f2fs
+
+xfstests:
+  test:
+#  - generic-127 # execution time is nearly 1h
+  - generic-mid1
+  - generic-mid2
+  - generic-quick2
+  - generic-group1
+  - generic-group2
+  - generic-group3
+  - generic-group4
+  - generic-group5
+  - generic-group6
+  - generic-group7
+# - generic-new
+# - generic-all

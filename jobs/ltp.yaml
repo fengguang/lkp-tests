@@ -57,7 +57,6 @@ ltp:
 # Stress test groups, but will not take too long time
   - fs
   - fsx
-  - cve
   - crypto
 # io_cd requires special peripheral(/dev/cdrom and media)
 #  - io_cd
@@ -70,12 +69,12 @@ ltp:
   - net.ipv6
   - net.multicast
   - net.tcp_cmds
+
+---
+need_memory: 5G
+ltp:
+  test:
+  - cve
   - scsi_debug.part1
   - syscalls-ipc
   - tracing
-
----
-reboot_for_next_job: 1
-ltp:
-  test:
-  - crashme-02

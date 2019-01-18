@@ -5,9 +5,10 @@ category: functional
 blktests_commit: HEAD
 blktests_branch: blktests/master
 
+need_memory: 4G
+
 disk: 1HDD
 
 blktests:
   test:
-  - scsi-group1
   - block-group2
