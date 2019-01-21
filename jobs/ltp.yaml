@@ -55,7 +55,6 @@ ltp:
   - net.tirpc_tests
   - tpm_tools
 # Stress test groups, but will not take too long time
-  - fs
   - fsx
   - crypto
 # io_cd requires special peripheral(/dev/cdrom and media)
