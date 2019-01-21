@@ -4,6 +4,8 @@
 
 source $LKP_SRC/lib/unit.sh
 
+[[ "$rootfs" =~ ^debian-x86_64 ]] || [[ "$rootfs" =~ ^clear ]] || exit 0
+
 # if need_memory=100% and nr_cpu is 64
 # it means it needs 64G memory at least
 [[ $need_memory =~ %$ ]] && {
