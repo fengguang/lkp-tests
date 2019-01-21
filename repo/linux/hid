@@ -1,16 +1,2 @@
-url: https://git.kernel.org/pub/scm/linux/kernel/git/jikos/hid.git
-integration_testing_branches: for-next
-mail_cc:
-- linux-input@vger.kernel.org
-- linux-usb@vger.kernel.org
-owner: Jiri Kosina <jkosina@suse.cz>
-subsystems:
-- hid
-- wacom
-- sony
-- hid-lg4ff
-- logitech-hidpp
-- rmi
-- i2c-hid
-- usbhid
-
+url: https://git.kernel.org/pub/scm/linux/kernel/git/hid/hid.git
+owner: Benjamin Tissoires <benjamin.tissoires@redhat.com>
