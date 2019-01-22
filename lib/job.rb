@@ -253,7 +253,7 @@ class Job
   end
 
   def load_hosts_config
-    return if @job.include? :no_defaults && @job['old_tbox_group'].nil?
+    return if @job.include?(:no_defaults) && @job['old_tbox_group'].nil?
     return unless @job.include? 'tbox_group'
     hosts_file = "#{lkp_src}/hosts/#{@job['tbox_group']}"
     return unless File.exist? hosts_file
