@@ -72,7 +72,7 @@ end
 
 def display_result(hash)
   hash.each do |key, value|
-    next if "#{key}".empty?
+    next if key.to_s.empty?
     # some key's values are not numeric, skip it.
     next if key =~ /product|idprod|maxpower|idvendor|manufact/
     # display key and value format as below:
