@@ -56,7 +56,7 @@ def calc_addon_keys(results_sum, results_nr, interval, interval_nr, prefix)
       ticks_key = stem1 + 'UNC_M_CLOCKTICKS'
       ticks_sum = results_sum[ticks_key]
       ticks_nr = results_nr[ticks_key].to_f
-      if results_sum.has_key?(occupancy_key) && ticks_sum != 0
+      if results_sum.key?(occupancy_key) && ticks_sum != 0
         # Need to deal with _INSERTSS == 0
         latency_key = "#{prefix}#{stem}_latency_ns"
         if value != 0
