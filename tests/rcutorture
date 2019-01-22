@@ -1,6 +1,7 @@
 #!/bin/sh
 # - runtime
 # - test
+# - torture_type
 
 ## creates an rcutorture kernel module that can be loaded to
 ## run a torture test.
@@ -13,6 +14,8 @@ cpuhotplug)
         args=${args}" onoff_interval=3 onoff_holdoff=30"
         ;;
 esac
+
+[ ! -z "$torture_type" ] && args=${args}" torture_type=$torture_type"
 
 log_cmd modprobe rcutorture $args ||
 die "failed to load rcutorture module, try to enable CONFIG_RCU_TORTURE_TEST and build rcutorture.ko"

@@ -11,3 +11,10 @@ rcutorture:
   test:
   - default
   - cpuhotplug
+  torture_type:
+  - rcu
+  - busted
+  - srcu
+  - srcud
+  - busted_srcud
+  - tasks
