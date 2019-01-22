@@ -62,7 +62,6 @@ def yaml2md(fname)
 <% if data["results"] %><% data["results"].each do |e| %>
 - __<%= e.name %>__ <% unless e.desc.nil? %>: <%= e.desc %><% end -%>
 <% end %><% end %>
-
 ', nil, '-').result binding
 end
 
