@@ -48,7 +48,7 @@ $histo_set_percent_num = Array.new(3, 0)
 $histo_get_percent_num = Array.new(3, 0)
 $histo_set_flag = Array.new(3, false)
 $histo_get_flag = Array.new(3, false)
-$target_percent=[90, 95, 99.9]
+$target_percent = [90, 95, 99.9]
 
 def memtier_flag_reset(line, flag)
   (0..2).each do |i|
@@ -110,21 +110,21 @@ def gen_output_sum(type, histo_sum)
 end
 
 def gen_output_avg(type, histo_sum, histo_num)
-  avg_tmp=histo_sum[1]/histo_num[1]
+  avg_tmp = histo_sum[1] / histo_num[1]
   puts "avg_#{type}_ops/s: #{avg_tmp}"
-  avg_tmp=histo_sum[2]/histo_num[2]
+  avg_tmp = histo_sum[2] / histo_num[2]
   puts "avg_#{type}_hits/s: #{avg_tmp}"
-  avg_tmp=histo_sum[3]/histo_num[3]
+  avg_tmp = histo_sum[3] / histo_num[3]
   puts "avg_#{type}_misses/s: #{avg_tmp}"
-  avg_tmp=histo_sum[4]/histo_num[4]
+  avg_tmp = histo_sum[4] / histo_num[4]
   puts "avg_#{type}_latency_ms: #{avg_tmp}"
-  avg_tmp=histo_sum[5]/histo_num[5]
+  avg_tmp = histo_sum[5] / histo_num[5]
   puts "avg_#{type}_kb/s: #{avg_tmp}"
 end
 
 def gen_latency(type, histo_latency, histo_percent, histo_percent_num)
   (0..2).each do |i|
-    avg_percent= histo_percent[i]/histo_percent_num[i]
+    avg_percent = histo_percent[i] / histo_percent_num[i]
     puts "#{type}_latency_<#{histo_latency[i]}ms_%: #{avg_percent}"
   end
 end
