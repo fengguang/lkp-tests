@@ -24,7 +24,6 @@ if role client:
   netperf:
     test:
     - TCP_RR
-    - TCP_CRR # needs tuning, tests more kernel than driver
     # netperf: send_omni: send_data failed: Connection refused
     - UDP_RR
     - SCTP_RR
