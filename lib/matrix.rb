@@ -346,7 +346,7 @@ def read_matrix_from_csv_file(file_name)
   end
 
   File.readlines(file_name).each do |line|
-    values = line.split()
+    values = line.split
     key = values.shift
     matrix[key] = values.map { |v| convert[v] }
   end

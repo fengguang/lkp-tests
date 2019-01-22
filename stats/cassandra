@@ -30,7 +30,7 @@ $stdin.each_line do |line|
     subops = $2
     subops.split(',').each do |item|
       key = item.split(':')[0].lstrip
-      value = item.split()[1]
+      value = item.split[1]
       puts "Op.#{key}.rate: #{value}"
     end
   end
