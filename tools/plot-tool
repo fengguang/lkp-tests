@@ -35,15 +35,15 @@ opt_parser = OptionParser.new do |opts|
   end
 
   opts.on('-r', '--relative-x', 'x axis relative to the first element') do
-    $x_relative = true;
+    $x_relative = true
   end
 
   opts.on('--xtics', 'draw x tics') do
-    $xtics = true;
+    $xtics = true
   end
 
   opts.on('--y-min YMIN', 'The y range minimum') do |ymin|
-    $y_min = ymin;
+    $y_min = ymin
   end
 
   opts.on('--x-range RANGE', 'The x range') do |range|
