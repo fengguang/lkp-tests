@@ -31,7 +31,7 @@ def calc_addon_keys(results_sum, results_nr, interval, interval_nr, prefix)
       if key =~ /(.*)iTLB-load-misses/
         stem = $1
         instructions = results_sum[stem + 'instructions']
-        if ! instructions.zero?
+        if !instructions.zero?
           puts "#{prefix}#{stem}instructions-per-iTLB-miss: #{instructions / value}"
         end
       elsif key =~ /(.*)cache-misses/
@@ -71,7 +71,7 @@ def calc_addon_keys(results_sum, results_nr, interval, interval_nr, prefix)
     when /(.*)cpu-cycles/
       stem = $1
       instructions = results_sum[stem + 'instructions']
-      if ! instructions.zero?
+      if !instructions.zero?
         puts "#{prefix}#{stem}ipc: #{instructions / value}"
         puts "#{prefix}#{stem}cpi: #{value / instructions}"
       end
@@ -195,7 +195,7 @@ $results_sum.each do |key, value|
 end
 
 instructions = $results_sum['instructions']
-if ! instructions.zero?
+if !instructions.zero?
   # to calc path-length
   puts "total.instructions: #{instructions}"
 end

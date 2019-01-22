@@ -138,7 +138,7 @@ def create_stats_matrix(result_root)
 
     monitor_stats.each do |k, v|
       next if k == "#{monitor}.time"
-      if ! ignore_part k
+      if !ignore_part k
         v = v[i_stats_part_begin, stats_part_len]
       end
       next if !v || v.empty?
