@@ -18,7 +18,7 @@ $stdin.each_line do |line|
     puts 'latency_99.9%_us: ' + line.split[1]
   when /min/
     line = line.gsub(/,/, ' ')
-      puts 'latency_' + line.split[0].gsub(/=/, '_us: ')
-      puts 'latency_' + line.split[1].gsub(/=/, '_us: ')
+    puts 'latency_' + line.split[0].gsub(/=/, '_us: ')
+    puts 'latency_' + line.split[1].gsub(/=/, '_us: ')
   end
 end

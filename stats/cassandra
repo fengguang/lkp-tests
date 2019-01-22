@@ -27,11 +27,11 @@ $stdin.each_line do |line|
   # Parse the entry beginning with "Op rate"
   when /^Op rate\s+:\s+(\d+) op\/s\s+\[(.+)\]$/
         puts "Op.rate: #{$1}"
-       subops = $2
-       subops.split(",").each do |item|
-               key = item.split(":")[0].lstrip
-               value = item.split()[1]
-               puts "Op.#{key}.rate: #{value}"
-       end
+        subops = $2
+        subops.split(",").each do |item|
+                key = item.split(":")[0].lstrip
+                value = item.split()[1]
+                puts "Op.#{key}.rate: #{value}"
+        end
   end
 end
