@@ -28,7 +28,7 @@ end
 def ignore_part(name)
   $ignore_part_prefixes ||= File.read("#{LKP_SRC}/etc/ignore-part-prefixes").split
   $ignore_part_prefixes.each do |prefix|
-    return true if name.start_with?(prefix) == 0
+    return true if name.start_with?(prefix)
   end
   false
 end
