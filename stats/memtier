@@ -62,9 +62,9 @@ def memtier_latency(line, histo_latency, histo_percent, histo_percent_num, perce
     if histo_latency[i] == 0
       if data[2].to_f >= percent[i]
         histo_latency[i] = data[1].to_f
-	       histo_percent[i] += data[2].to_f
-	       histo_percent_num[i] += 1
-	       flag[i] = true
+         histo_percent[i] += data[2].to_f
+         histo_percent_num[i] += 1
+         flag[i] = true
       end
     elsif data[1].to_f == histo_latency[i] && flag[i] == false
       histo_percent[i] +=  data[2].to_f
