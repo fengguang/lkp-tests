@@ -33,31 +33,31 @@
 #GET       0.340        99.40
 
 
-$histo_sets_sum = Array.new(6,0)
-$histo_sets_num = Array.new(6,0)
-$histo_gets_sum = Array.new(6,0)
-$histo_gets_num = Array.new(6,0)
-$histo_waits_sum = Array.new(6,0)
-$histo_waits_num = Array.new(6,0)
-$histo_totals_sum = Array.new(6,0)
-$histo_totals_num = Array.new(6,0)
-$histo_set_latency = Array.new(3,0)
-$histo_get_latency = Array.new(3,0)
-$histo_set_percent = Array.new(3,0)
-$histo_get_percent = Array.new(3,0)
-$histo_set_percent_num = Array.new(3,0)
-$histo_get_percent_num = Array.new(3,0)
-$histo_set_flag = Array.new(3,false)
-$histo_get_flag = Array.new(3,false)
-$target_percent=[90,95,99.9]
+$histo_sets_sum = Array.new(6, 0)
+$histo_sets_num = Array.new(6, 0)
+$histo_gets_sum = Array.new(6, 0)
+$histo_gets_num = Array.new(6, 0)
+$histo_waits_sum = Array.new(6, 0)
+$histo_waits_num = Array.new(6, 0)
+$histo_totals_sum = Array.new(6, 0)
+$histo_totals_num = Array.new(6, 0)
+$histo_set_latency = Array.new(3, 0)
+$histo_get_latency = Array.new(3, 0)
+$histo_set_percent = Array.new(3, 0)
+$histo_get_percent = Array.new(3, 0)
+$histo_set_percent_num = Array.new(3, 0)
+$histo_get_percent_num = Array.new(3, 0)
+$histo_set_flag = Array.new(3, false)
+$histo_get_flag = Array.new(3, false)
+$target_percent=[90, 95, 99.9]
 
-def memtier_flag_reset(line,flag)
+def memtier_flag_reset(line, flag)
   (0..2).each do |i|
     flag[i] = false
   end
 end
 
-def memtier_latency(line,histo_latency,histo_percent,histo_percent_num,percent,flag)
+def memtier_latency(line, histo_latency, histo_percent, histo_percent_num, percent, flag)
   data = line.split
   (0..2).each do |i|
     if histo_latency[i] == 0
@@ -75,7 +75,7 @@ def memtier_latency(line,histo_latency,histo_percent,histo_percent_num,percent,f
   end
 end
 
-def extract_memtier(line,histo_sum,histo_num)
+def extract_memtier(line, histo_sum, histo_num)
   data = line.split
   (1..data.size - 1).each do |i|
     histo_sum[i] += data[i].to_f
@@ -85,24 +85,24 @@ end
 
 while (line = STDIN.gets)
   if line =~ /^Sets/
-    extract_memtier(line,$histo_sets_sum,$histo_sets_num)
+    extract_memtier(line, $histo_sets_sum, $histo_sets_num)
   elsif line =~ /^Gets/
-    extract_memtier(line,$histo_gets_sum,$histo_gets_num)
+    extract_memtier(line, $histo_gets_sum, $histo_gets_num)
   elsif line =~ /^Waits/
-    extract_memtier(line,$histo_waits_sum,$histo_waits_num)
+    extract_memtier(line, $histo_waits_sum, $histo_waits_num)
   elsif line =~ /^Totals/
-    extract_memtier(line,$histo_totals_sum,$histo_totals_num)
+    extract_memtier(line, $histo_totals_sum, $histo_totals_num)
   elsif line =~ /^Request Latency Distribution/
-    memtier_flag_reset(line,$histo_set_flag)
-    memtier_flag_reset(line,$histo_get_flag)
+    memtier_flag_reset(line, $histo_set_flag)
+    memtier_flag_reset(line, $histo_get_flag)
   elsif line =~ /^SET/
-    memtier_latency(line,$histo_set_latency,$histo_set_percent,$histo_set_percent_num,$target_percent,$histo_set_flag)
+    memtier_latency(line, $histo_set_latency, $histo_set_percent, $histo_set_percent_num, $target_percent, $histo_set_flag)
   elsif line =~ /^GET/
-    memtier_latency(line,$histo_get_latency,$histo_get_percent,$histo_get_percent_num,$target_percent,$histo_get_flag)
+    memtier_latency(line, $histo_get_latency, $histo_get_percent, $histo_get_percent_num, $target_percent, $histo_get_flag)
   end
 end
 
-def gen_output_sum(type,histo_sum)
+def gen_output_sum(type, histo_sum)
   puts "total_#{type}_ops/s: #{histo_sum[1]}"
   puts "total_#{type}_hits/s: #{histo_sum[2]}"
   puts "total_#{type}_misses/s: #{histo_sum[3]}"
@@ -110,7 +110,7 @@ def gen_output_sum(type,histo_sum)
   puts "total_#{type}_kb/s: #{histo_sum[5]}"
 end
 
-def gen_output_avg(type,histo_sum, histo_num)
+def gen_output_avg(type, histo_sum, histo_num)
   avg_tmp=histo_sum[1]/histo_num[1]
   puts "avg_#{type}_ops/s: #{avg_tmp}"
   avg_tmp=histo_sum[2]/histo_num[2]
@@ -123,20 +123,20 @@ def gen_output_avg(type,histo_sum, histo_num)
   puts "avg_#{type}_kb/s: #{avg_tmp}"
 end
 
-def gen_latency(type,histo_latency,histo_percent,histo_percent_num)
+def gen_latency(type, histo_latency, histo_percent, histo_percent_num)
   (0..2).each do |i|
     avg_percent= histo_percent[i]/histo_percent_num[i]
     puts "#{type}_latency_<#{histo_latency[i]}ms_%: #{avg_percent}"
   end
 end
 
-gen_output_sum("sets",$histo_sets_sum)
-gen_output_sum("gets",$histo_gets_sum)
-gen_output_sum("waits",$histo_waits_sum)
-gen_output_sum("totals",$histo_totals_sum)
-gen_output_avg("sets",$histo_sets_sum,$histo_sets_num)
-gen_output_avg("gets",$histo_gets_sum,$histo_gets_num)
-gen_output_avg("waits",$histo_waits_sum,$histo_waits_num)
-gen_output_avg("totals",$histo_totals_sum,$histo_totals_num)
-gen_latency("set",$histo_set_latency,$histo_set_percent,$histo_set_percent_num)
-gen_latency("get",$histo_get_latency,$histo_get_percent,$histo_get_percent_num)
+gen_output_sum("sets", $histo_sets_sum)
+gen_output_sum("gets", $histo_gets_sum)
+gen_output_sum("waits", $histo_waits_sum)
+gen_output_sum("totals", $histo_totals_sum)
+gen_output_avg("sets", $histo_sets_sum, $histo_sets_num)
+gen_output_avg("gets", $histo_gets_sum, $histo_gets_num)
+gen_output_avg("waits", $histo_waits_sum, $histo_waits_num)
+gen_output_avg("totals", $histo_totals_sum, $histo_totals_num)
+gen_latency("set", $histo_set_latency, $histo_set_percent, $histo_set_percent_num)
+gen_latency("get", $histo_get_latency, $histo_get_percent, $histo_get_percent_num)

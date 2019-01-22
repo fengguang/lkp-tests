@@ -166,7 +166,7 @@ def parse
 
     i_imc = key.index "_IMC"
     if i_imc
-      key = key[0,i_imc]
+      key = key[0, i_imc]
     end
 
     key = "#{key}_#{unit}" if unit
