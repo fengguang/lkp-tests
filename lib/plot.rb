@@ -98,12 +98,12 @@ class MatrixPlotterBase
         plot.terminal format('eps noenhanced size %d,%d fontscale 1', @inch_size[0], @inch_size[1])
         file_name += '.eps' unless file_name.end_with? '.eps'
       when /\.plt$/
-        plot.terminal "qt noenhanced persist"
+        plot.terminal 'qt noenhanced persist'
       else
         plot.terminal format('png noenhanced size %d,%d', @pixel_size[0], @pixel_size[1])
         file_name += '.png' unless file_name.end_with? '.png'
       end
-      plot.output(file_name) unless file_name.end_with?(".plt")
+      plot.output(file_name) unless file_name.end_with?('.plt')
     else
       plot.terminal format('dumb nofeed size %d,%d', @char_size[0], @char_size[1])
     end
@@ -111,7 +111,7 @@ class MatrixPlotterBase
 
   def open_gnuplot(file_name = nil, &blk)
     if file_name && file_name.end_with?('.plt')
-      File.open(file_name, "w", &blk)
+      File.open(file_name, 'w', &blk)
     else
       Gnuplot.open(&blk)
     end

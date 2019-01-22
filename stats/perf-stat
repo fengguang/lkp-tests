@@ -51,7 +51,7 @@ def calc_addon_keys(results_sum, results_nr, interval, interval_nr, prefix)
       stem1 = $1
       stem2 = $2
       stem = "#{stem1}UNC_M_#{stem2}"
-      occupancy_key = stem1 + "UNC_M_" + stem2 + '_OCCUPANCY'
+      occupancy_key = stem1 + 'UNC_M_' + stem2 + '_OCCUPANCY'
       occupancy = results_sum[occupancy_key]
       ticks_key = stem1 + 'UNC_M_CLOCKTICKS'
       ticks_sum = results_sum[ticks_key]
@@ -87,7 +87,7 @@ def output_interval(prev_time, time)
     puts "i.#{key}: #{value / interval}"
   end
   calc_addon_keys($interval_results_sum, $interval_results_nr,
-                  interval, 1, "i.")
+                  interval, 1, 'i.')
 
   ignore = false
   if time <= $stats_begin_time
@@ -164,7 +164,7 @@ def parse
     value, key = fields
     value = value.to_f
 
-    i_imc = key.index "_IMC"
+    i_imc = key.index '_IMC'
     if i_imc
       key = key[0, i_imc]
     end
@@ -200,4 +200,4 @@ if !instructions.zero?
   puts "total.instructions: #{instructions}"
 end
 
-calc_addon_keys($results_sum, $results_nr, $run_time, $interval_nr, "overall.")
+calc_addon_keys($results_sum, $results_nr, $run_time, $interval_nr, 'overall.')

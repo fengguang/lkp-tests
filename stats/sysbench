@@ -41,25 +41,25 @@ end
 $stdin.each_line do |line|
   case line
   when /Total operations:\s+\d+\s+\(([0-9.]+)\s+.+\)/
-    add_result($results_total, "throughput_ops/s", $1.to_f)
+    add_result($results_total, 'throughput_ops/s', $1.to_f)
   when /.+\s+transferred\s+\(([0-9.]+)\s+.+\)/
-    add_result($results_total, "throughput_MB/s", $1.to_f)
+    add_result($results_total, 'throughput_MB/s', $1.to_f)
   when /total number of events:\s+(\d+)/
-    add_result($results_total, "workload", $1.to_f)
+    add_result($results_total, 'workload', $1.to_f)
   when /min:\s+([0-9.]+)/
-    add_result($results_min, "latency_ms.min", $1.to_f)
+    add_result($results_min, 'latency_ms.min', $1.to_f)
   when /avg:\s+([0-9.]+)/
-    add_result($results_avg, "latency_ms.avg", $1.to_f)
+    add_result($results_avg, 'latency_ms.avg', $1.to_f)
   when /max:\s+([0-9.]+)/
-    add_result($results_max, "latency_ms.max", $1.to_f)
+    add_result($results_max, 'latency_ms.max', $1.to_f)
   when /95th percentile:\s+([0-9.]+)/
-    add_result($results_avg, "latency_ms.95th", $1.to_f)
+    add_result($results_avg, 'latency_ms.95th', $1.to_f)
   when /events\s+\(avg\/stddev\):\s+([0-9.]+)\/([0-9.]+)/
-    add_result($results_avg, "events/thread.avg", $1.to_f)
-    add_result($results_avg, "events/thread.stddev", $2.to_f)
+    add_result($results_avg, 'events/thread.avg', $1.to_f)
+    add_result($results_avg, 'events/thread.stddev', $2.to_f)
   when /execution time.+:\s+([0-9.]+)\/([0-9.]+)/
-    add_result($results_avg, "runtime/thread.avg", $1.to_f)
-    add_result($results_avg, "runtime/thread.stddev", $2.to_f)
+    add_result($results_avg, 'runtime/thread.avg', $1.to_f)
+    add_result($results_avg, 'runtime/thread.stddev', $2.to_f)
   end
 end
 
