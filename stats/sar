@@ -92,13 +92,11 @@ sar_hash['sysstat']['hosts'][0]['statistics'].each do |item|
           get_array_result k_, v_, results
         elsif v_.class == Hash
           get_hash_result k_, v_, results
+        elsif k == 'timestamp'
+          timestamp = Time.parse([v['data'], v['time']].join(' ')).to_i
+          results['timestamp'] = timestamp
         else
-          if k == 'timestamp'
-            timestamp = Time.parse([v['data'], v['time']].join(' ')).to_i
-            results['timestamp'] = timestamp
-          else
-            results["#{k}.#{k_}"] = v_
-          end
+          results["#{k}.#{k_}"] = v_
         end
       end
     end
