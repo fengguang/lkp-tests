@@ -245,10 +245,8 @@ def common_error_id(line)
   line
 end
 
-=begin
-# <4>[  256.557393] [ INFO: possible circular locking dependency detected ]
- INFO_possible_circular_locking_dependency_detected: 1
-=end
+# # <4>[  256.557393] [ INFO: possible circular locking dependency detected ]
+#  INFO_possible_circular_locking_dependency_detected: 1
 
 def oops_to_bisect_pattern(line)
   words = line.split
