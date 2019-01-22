@@ -66,9 +66,9 @@ end
 def plot_it(matrix_stat_arr)
   plotter = MMatrixPlotter.new
   plotter.set_x_stat_key($x_stat_key)
-    .set_xtics($xtics)
-    .set_y_range([$y_min, nil])
-    .set_x_range($x_range)
+         .set_xtics($xtics)
+         .set_y_range([$y_min, nil])
+         .set_x_range($x_range)
   lines = []
   matrix_stat_arr.each_slice(2) do |matrix_fn, stat|
     matrix = load_json matrix_fn
@@ -82,8 +82,8 @@ def plot_it(matrix_stat_arr)
     lines << [matrix, stat, stat]
   end
   plotter.set_output_file_name($opt_output_path)
-    .set_lines(lines)
-    .plot
+         .set_lines(lines)
+         .plot
 end
 
 plot_it(ARGV)
