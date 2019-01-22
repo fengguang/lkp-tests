@@ -95,7 +95,7 @@ zero_stats.each { |x| result.delete x }
 
 if monitor != 'ftrace'
   # delete invalid number in reverse order
-  invalid_records.reverse.each do |index|
+  invalid_records.reverse_each do |index|
     result.each do |_k, value|
       value.delete_at index
     end
