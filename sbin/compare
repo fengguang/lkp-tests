@@ -774,7 +774,7 @@ def setup_stats_priority(stats)
 end
 
 def stat_priority(stat)
-  $stats_priority[stat] ? $stats_priority[stat] : 0
+  $stats_priority[stat] || 0
 end
 
 def sort_stats(stats)
