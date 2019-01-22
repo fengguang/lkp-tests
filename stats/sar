@@ -44,7 +44,7 @@ RESULT_ROOT = ENV['RESULT_ROOT']
 exit unless File.exist?("#{RESULT_ROOT}/sar")
 sar_json = File.read("#{RESULT_ROOT}/sar")
 sar_hash = JSON.parse(sar_json)
-results = Hash.new
+results = {}
 
 # Every array data includes some hash type data.
 # Such as: "cpu-load" => [{"cpu" => "all", "usr" => 3.06, "nice" => 0.00, "sys" => 5.87,... }, {...}, ...]
