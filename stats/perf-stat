@@ -31,20 +31,20 @@ def calc_addon_keys(results_sum, results_nr, interval, interval_nr, prefix)
       if key =~ /(.*)iTLB-load-misses/
         stem = $1
         instructions = results_sum[stem + 'instructions']
-        if !instructions.zero?
+        unless instructions.zero?
           puts "#{prefix}#{stem}instructions-per-iTLB-miss: #{instructions / value}"
         end
       elsif key =~ /(.*)cache-misses/
         stem = $1
         cycles = results_sum[stem + 'cpu-cycles']
-        if !cycles.zero?
+        unless cycles.zero?
           puts "#{prefix}#{stem}cycles-between-cache-misses: #{cycles / value}"
         end
       end
     when /(.*)cache-references/
       stem = $1
       instructions = results_sum[stem + 'instructions']
-      if !instructions.zero?
+      unless instructions.zero?
         puts "#{prefix}#{stem}MPKI: #{value / instructions * 1000}"
       end
     when /(.*)UNC_M_(.*)_INSERTS/
@@ -71,7 +71,7 @@ def calc_addon_keys(results_sum, results_nr, interval, interval_nr, prefix)
     when /(.*)cpu-cycles/
       stem = $1
       instructions = results_sum[stem + 'instructions']
-      if !instructions.zero?
+      unless instructions.zero?
         puts "#{prefix}#{stem}ipc: #{instructions / value}"
         puts "#{prefix}#{stem}cpi: #{value / instructions}"
       end
@@ -104,7 +104,7 @@ def output_interval(prev_time, time)
     ignore = true
   end
 
-  if !ignore
+  unless ignore
     $interval_results_sum.each do |key, value|
       $results_sum[key] += value
       $results_nr[key] += $interval_results_nr[key]
@@ -195,7 +195,7 @@ $results_sum.each do |key, value|
 end
 
 instructions = $results_sum['instructions']
-if !instructions.zero?
+unless instructions.zero?
   # to calc path-length
   puts "total.instructions: #{instructions}"
 end
