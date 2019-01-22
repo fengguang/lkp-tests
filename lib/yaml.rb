@@ -27,7 +27,7 @@ def load_yaml(file, template_context = nil)
   yaml = expand_yaml_template(yaml, file, template_context) if template_context
 
   begin
-    result = YAML.load yaml
+    result = YAML.safe_load yaml
   rescue Psych::SyntaxError
     $stderr.puts "failed to parse file #{file}"
     raise
@@ -69,7 +69,7 @@ end
 
 def load_yaml_tail(file)
   begin
-    return YAML.load %x[tail -n 100 #{file}]
+    return YAML.safe_load %x[tail -n 100 #{file}]
   rescue Psych::SyntaxError => e
     $stderr.puts "#{file}: " + e.message
   end
@@ -129,14 +129,14 @@ class WTMP
   class << self
     def load(content)
       # FIXME: rli9 YAML.load returns false under certain error like empty content
-      YAML.load content
+      YAML.safe_load content
     rescue Psych::SyntaxError
       # FIXME: rli9 only do below gsub when error is control characters error
       # error can be below which is caused by server crash, and try to remove non-printable characters to resolve
       #   Psych::SyntaxError: (<unknown>): control characters are not allowed at line 1 column 1
 
       # remvoe all cntrl but keep \n
-      YAML.load(content.gsub(/[[[:cntrl:]]&&[^\n]]/, ''))
+      YAML.safe_load(content.gsub(/[[[:cntrl:]]&&[^\n]]/, ''))
     end
 
     def load_tail(file, lines = 100)

@@ -28,7 +28,7 @@ def expand_erb(template, context_hash = {})
   return template unless template =~ /^%|<%/
 
   yaml = template.gsub(/<%.*?%>/m, '').gsub(/^%[^>].*$/, '')
-  job = YAML.load(yaml) || {}
+  job = YAML.safe_load(yaml) || {}
   job.merge!(context_hash)
   context = Hashugar.new(job).instance_eval { binding }
 
