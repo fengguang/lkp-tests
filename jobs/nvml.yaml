@@ -7,7 +7,7 @@ branch: linus/master
 nvml_branch: nvml/master
 nvml_commit: HEAD
 
-need_memory: 4G
+need_memory: 3G
 
 nvml:
 group:
@@ -49,7 +49,7 @@ group:
   - vmem
 
 ---
-need_memory: 5G
+need_memory: 4G
 
 test: non-pmem
 group:

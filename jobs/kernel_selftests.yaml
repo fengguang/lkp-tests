@@ -5,7 +5,7 @@ category: functional
 # NOET: need_memory might be different for different rootfs
 # Currently, these value came from the meminfo.max_used_kB during runtime
 # on debian rootfs
-need_memory: 3G
+need_memory: 2G
 need_cpu: 2
 kernel_selftests:
   group:

@@ -13,13 +13,13 @@ fs:
 - xfs
 - btrfs
 
-need_memory: 8G
+need_memory: 7G
 ltp:
   test:
   - fs-00
 
 ---
-need_memory: 5G
+need_memory: 4G
 ltp:
   test:
   - fs-01
