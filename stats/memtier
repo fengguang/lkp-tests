@@ -50,7 +50,7 @@ $histo_set_flag = Array.new(3, false)
 $histo_get_flag = Array.new(3, false)
 $target_percent = [90, 95, 99.9]
 
-def memtier_flag_reset(line, flag)
+def memtier_flag_reset(_line, flag)
   (0..2).each do |i|
     flag[i] = false
   end
@@ -59,7 +59,7 @@ end
 def memtier_latency(line, histo_latency, histo_percent, histo_percent_num, percent, flag)
   data = line.split
   (0..2).each do |i|
-    if histo_latency[i] == 0
+    if histo_latency[i].zero?
       if data[2].to_f >= percent[i]
         histo_latency[i] = data[1].to_f
         histo_percent[i] += data[2].to_f
