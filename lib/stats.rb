@@ -146,7 +146,7 @@ end
 
 def blacklist_auto_report_author?(author)
   auto_report_author_blacklist_re = load_regular_expressions("#{LKP_SRC}/etc/auto-report-author-blacklist")
-  stat =~ auto_report_author_blacklist_re
+  author =~ auto_report_author_blacklist_re
 end
 
 def blacklist_auto_report_stat?(stat)
