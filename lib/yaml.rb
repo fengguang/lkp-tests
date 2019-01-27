@@ -27,7 +27,7 @@ def load_yaml(file, template_context = nil)
   yaml = expand_yaml_template(yaml, file, template_context) if template_context
 
   begin
-    result = YAML.safe_load yaml
+    result = YAML.load yaml
   rescue Psych::SyntaxError
     $stderr.puts "failed to parse file #{file}"
     raise
