@@ -32,7 +32,7 @@ options = OptionParser.new do |opts|
   opts.on('-t HOSTNAME', '--test-box HOSTNAME', 'test box') { |testbox| @opt_testbox = testbox }
 
   opts.on("-s 'KEY: VALUE'", "--set 'KEY: VALUE'", 'add YAML hash to job') do |key_value|
-    opt_set_key_value.merge! YAML.safe_load key_value
+    opt_set_key_value.merge! YAML.load key_value
   end
 
   opts.on('--any', 'save one single random atom job') { @opt_any = true }
@@ -56,7 +56,7 @@ options.parse!(ARGV)
 # formal -s 'key: value' in scripts.
 ARGV.delete_if do |arg|
   if arg.index '='
-    opt_set_key_value.merge! YAML.safe_load arg.sub(/=/, ': ')
+    opt_set_key_value.merge! YAML.load arg.sub(/=/, ': ')
     true
   else
     false
