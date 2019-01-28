@@ -76,6 +76,14 @@ ignore_platform_related_failed_cases
 
 check_unstable_cases
 
+# ./ioctl_10_query_bpf
+# Testing PERF_EVENT_IOC_SET_BPF ioctl.
+# Creating a kprobe tracepoint event
+# Cannot open /sys/kernel/tracing/kprobe_events!
+# You may want to: mount -t tracefs nodev /sys/kernel/tracing
+# Testing PERF_EVENT_IOC_QUERY_BPF ioctl...
+mount -t tracefs nodev /sys/kernel/tracing
+
 log_cmd ./run_tests.sh
 exit_value=$?
 
