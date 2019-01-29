@@ -21,8 +21,6 @@ boot_params:
   bp3_memmap: 120G!258G
   bp4_memmap: 120G!386G
 
-need_memory: 512G
-
 disk:
   ssd_partitions:
   nr_pmem: 4
