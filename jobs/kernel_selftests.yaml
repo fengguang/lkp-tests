@@ -16,7 +16,7 @@ kernel_selftests:
 kernel_cmdline: erst_disable
 
 ---
-need_memory: 4G
+need_memory: 3G
 kernel_selftests:
   group:
     - kselftests-02
