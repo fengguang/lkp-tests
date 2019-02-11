@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+
 set_sum = 0
 set_num = 0
 set_avg = 0
@@ -6,24 +7,18 @@ get_sum = 0
 get_num = 0
 get_avg = 0
 is_set = true
-set_1ms = 0
-set_1ms_sum = 0
-set_1ms_num = 0
-set_2ms = 0
-set_2ms_sum = 0
-set_2ms_num = 0
-get_1ms = 0
-get_1ms_sum = 0
-get_1ms_num = 0
-get_2ms = 0
-get_2ms_sum = 0
-get_2ms_num = 0
+set_latencies = []
+get_latencies = []
+proc_set_latencies = nil
+proc_get_latencies = nil
 set_time = 0
 set_time_sum = 0
 set_time_num = 0
 get_time = 0
 get_time_sum = 0
 get_time_num = 0
+
+$latency_threshold = 99.9
 
 $stdin.each_line do |line|
   case line
@@ -33,15 +28,19 @@ $stdin.each_line do |line|
     puts "PING_BULK: #{$1}.#{$2}"
   when /====== SET ======$/
     is_set = true
+    proc_set_latencies = []
   when /====== GET ======$/
     is_set = false
+    proc_get_latencies = []
   when /^(\d+\.\d+) requests per second$/
     if is_set
       set_sum += $1.to_f
       set_num += 1
+      set_latencies << proc_set_latencies
     else
       get_sum += $1.to_f
       get_num += 1
+      get_latencies << proc_get_latencies
     end
   when /requests completed in (\d+\.\d+) seconds$/
     if is_set
@@ -51,28 +50,13 @@ $stdin.each_line do |line|
       get_time_sum += $1.to_f
       get_time_num += 1
     end
-  when /^(\d+\.\d+)% <= 1 milliseconds$/
+  when /^(\d+\.\d+)% <= (\d+) milliseconds$/
+    ms = $2.to_i
     if is_set
-      set_1ms_sum += $1.to_f
-      set_1ms_num += 1
+      proc_set_latencies[ms] = $1.to_f
     else
-      get_1ms_sum += $1.to_f
-      get_1ms_num += 1
+      proc_get_latencies[ms] = $1.to_f
     end
-  when /^(\d+\.\d+)% <= 2 milliseconds$/
-    if is_set
-      set_2ms_sum += $1.to_f
-      set_2ms_num += 1
-    else
-      get_2ms_sum += $1.to_f
-      get_2ms_num += 1
-    end
-  when /\WSET: (\d+\.\d+) requests per second$/
-    set_sum += $1.to_f
-    set_num += 1
-  when /GET: (\d+\.\d+) requests per second$/
-    get_sum += $1.to_f
-    get_num += 1
   when /INCR: (\d+).(\d+) requests per second$/
     puts "INCR: #{$1}.#{$2}"
   when /LPUSH: (\d+).(\d+) requests per second$/
@@ -107,10 +91,6 @@ set_avg = set_sum / set_num
 get_avg = get_sum / get_num
 set_time = set_time_sum / set_time_num
 get_time = get_time_sum / get_time_num
-set_1ms = set_1ms_sum / set_1ms_num
-set_2ms = set_2ms_sum / set_2ms_num
-get_1ms = get_1ms_sum / get_1ms_num
-get_2ms = get_2ms_sum / get_2ms_num
 puts "set_total_throughput_rps: #{set_sum}"
 puts "get_total_throughput_rps: #{get_sum}"
 puts "set_total_time_sec: #{set_time_sum}"
@@ -119,7 +99,32 @@ puts "set_avg_throughput_rps: #{set_avg}"
 puts "get_avg_throughput_rps: #{get_avg}"
 puts "set_avg_time_sec: #{set_time}"
 puts "get_avg_time_sec: #{get_time}"
-puts "set_latency_1ms%: #{set_1ms}"
-puts "set_latency_2ms%: #{set_2ms}"
-puts "get_latency_1ms%: #{get_1ms}"
-puts "get_latency_2ms%: #{get_2ms}"
+
+def normalize_latencies(latencies)
+  maxcol = latencies.map { |p| p.size }.max
+  latencies.each do |proc_latencies|
+    prev = 0
+    (0...maxcol).map do |i|
+      percent = proc_latencies[i]
+      percent = prev unless percent
+      prev = percent
+      proc_latencies[i] = percent
+    end
+  end
+end
+
+def show_latencies(latencies, name)
+  latencies.transpose.each_with_index do |ps, i|
+    sum = ps.inject(0, :+)
+    next unless sum != 0
+    avg = sum.to_f / ps.length
+    puts "#{name}_latency_#{i}ms%: #{avg}"
+    break if avg > $latency_threshold
+  end
+end
+
+normalize_latencies(set_latencies)
+normalize_latencies(get_latencies)
+
+show_latencies(set_latencies, "set")
+show_latencies(get_latencies, "get")
