@@ -29,6 +29,6 @@ if role client:
     test: set,get
     data_size: 1024
     n_client: 5
-    requests: 17000000
+    requests: 68000000
     n_pipeline: 3
-    key_len: 17000000
+    key_len: 68000000
