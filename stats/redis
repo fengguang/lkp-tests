@@ -18,7 +18,8 @@ get_time = 0
 get_time_sum = 0
 get_time_num = 0
 
-$latency_threshold = 99.9
+PERCENTILE_STRS = ["90", "95", "99", "99.9"]
+PERCENTILES = PERCENTILE_STRS.map { |ps| ps.to_f }
 
 $stdin.each_line do |line|
   case line
@@ -114,12 +115,17 @@ def normalize_latencies(latencies)
 end
 
 def show_latencies(latencies, name)
+  pi = 0
   latencies.transpose.each_with_index do |ps, i|
     sum = ps.inject(0, :+)
     next unless sum != 0
     avg = sum.to_f / ps.length
     puts "#{name}_latency_#{i}ms%: #{avg}"
-    break if avg > $latency_threshold
+    while pi < PERCENTILES.length && avg > PERCENTILES[pi]
+      puts "#{name}_latency_#{PERCENTILE_STRS[pi]}%_ms: #{i}"
+      pi += 1
+    end
+    break if avg > PERCENTILES[-1]
   end
 end
 
