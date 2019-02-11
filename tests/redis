@@ -17,22 +17,24 @@
 ## done by N clients at the same time sending M total queries (it is similar
 ## to the Apache's ab utility)
 
-. $LKP_SRC/lib/reproduce-log.sh
-. $LKP_SRC/lib/numactl.sh
-export PATH=$BENCHMARK_ROOT/redis/bin:$PATH
-redis_dir=$TMP/redis/
-rm -rf $redis_dir
-mkdir -p $redis_dir
+. "$LKP_SRC"/lib/reproduce-log.sh
+. "$LKP_SRC"/lib/numactl.sh
+
+export PATH="$BENCHMARK_ROOT/redis/bin:$PATH"
+
+redis_dir="$TMP"/redis/
+rm -rf "$redis_dir"
+mkdir -p "$redis_dir"
 
 parse_numa_node_binding "$cpu_node_bind" "$mem_node_bind"
 
-for i in $(seq 1 "${nr_processes}")
+for i in $(seq 1 "$nr_processes")
 do
-	port=$((6379+$i))
+	port=$((6379+i))
 	numa_bind=$(numa_node_binding "$i")
-	log_test $numa_bind redis-benchmark -t $test -d $data_size -c $n_client -n $requests -P $n_pipeline -r $key_len -p $port > $redis_dir/redis.$i &
+	log_test $numa_bind redis-benchmark -t "$test" -d "$data_size" -c "$n_client" -n "$requests" -P "$n_pipeline" -r "$key_len" -p "$port" > "$redis_dir/redis.$i" &
 done
 
 wait
 
-cat $redis_dir/redis.*
+cat "$redis_dir"/redis.*
