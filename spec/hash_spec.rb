@@ -123,8 +123,8 @@ expects = [
 describe 'hash lookup/revise' do
   expects.each do |e|
     it e[0] do
-      expect(revise_hash(revise_hash({}, YAML.safe_load(e[1])), YAML.safe_load(e[2]))).to eq e[3]
-      expect(revise_hash(YAML.safe_load(e[1]), YAML.safe_load(e[2]))).to eq e[3]
+      expect(revise_hash(revise_hash({}, YAML.load(e[1])), YAML.load(e[2]))).to eq e[3]
+      expect(revise_hash(YAML.load(e[1]), YAML.load(e[2]))).to eq e[3]
     end
   end
 end

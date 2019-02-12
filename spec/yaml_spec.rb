@@ -91,7 +91,7 @@ contents: &borrow-1d
                           <<: *borrow-1d
 EOF
   yaml = yaml_merge_included_files(YAML_MERGE_SPEC, File.dirname(__FILE__))
-  expects = YAML.safe_load(yaml)
+  expects = YAML.load(yaml)
   expects.each do |k, v|
     next unless k.instance_of?(Symbol)
     next unless v.instance_of?(Array) && v.size >= 2
