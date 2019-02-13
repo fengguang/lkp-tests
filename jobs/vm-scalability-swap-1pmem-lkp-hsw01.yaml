@@ -12,8 +12,6 @@ swap:
 boot_params:
   bp_memmap: 32G!18G
 
-need_memory: 64G
-
 vm-scalability:
   test:
   - anon-r-rand
