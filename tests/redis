@@ -3,6 +3,7 @@
 # - data_size
 # - n_client
 # - requests
+# - requests_multiple
 # - n_pipeline
 # - key_len
 # - nr_processes
@@ -23,11 +24,14 @@
 export PATH="$BENCHMARK_ROOT/redis/bin:$PATH"
 
 : "${nr_processes:=1}"
+: "${requests_multiple:=1}"
 
 [ -n "key_len" ] || {
 	echo "$(basename $0) key_len must be specified!\n";
 	exit 1
 }
+
+[ -z "$requests" ] && requests=$((key_len * requests_multiple))
 
 proc_key_len=$((key_len/nr_processes))
 proc_requests=$((requests/nr_processes))
