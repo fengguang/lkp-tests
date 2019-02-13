@@ -77,9 +77,12 @@ groups = {}
 _result_roots.each do |_rt|
   __rt = File.dirname _rt
 
-  next unless File.exist? _rt + '/matrix.json'
-  matrix = load_json _rt + '/matrix.json'
+  matrix_path = _rt + '/matrix.json'
+  next unless File.size? matrix_path
+
+  matrix = load_json matrix_path
   next unless matrix
+
   unless $opt_field =~ /last_state/
     next if matrix['last_state.is_incomplete_run'] && matrix['last_state.is_incomplete_run'].sum == matrix_cols(matrix)
   end
