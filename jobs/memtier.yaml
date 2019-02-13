@@ -26,10 +26,8 @@ if role client:
   memtier:
     n_ratio: "1:4"
     data_size: 1024
-    requests: 70000000
+    requests: 260000000
     key_pattern: "G:G"
-    key_min: 1
-    key_max: 70000001
-    nr_threads: 1
+    key_max: 260000001
     n_client: 3
     n_pipeline: 64
