@@ -528,11 +528,13 @@ __next_job()
 	http_get_cgi "cgi-bin/gpxelinux.cgi?hostname=${HOSTNAME}&mac=$mac&${last_kernel}${manual_reboot}lkp_wtmp" \
 		$NEXT_JOB || {
 		echo "cannot get next job" 1>&2
+		set_tbox_wtmp 'cannot_get_next_job'
 		return 1
 	}
 
 	grep -q "^KERNEL " $NEXT_JOB || {
 		echo "no KERNEL found" 1>&2
+		set_tbox_wtmp 'no_kernel_found'
 		cat $NEXT_JOB
 		return 1
 	}
