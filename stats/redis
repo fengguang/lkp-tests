@@ -18,8 +18,8 @@ get_time = 0
 get_time_sum = 0
 get_time_num = 0
 
-PERCENTILE_STRS = ["90", "95", "99", "99.9"]
-PERCENTILES = PERCENTILE_STRS.map { |ps| ps.to_f }
+PERCENTILE_STRS = ['90', '95', '99', '99.9'].freeze
+PERCENTILES = PERCENTILE_STRS.map(&:to_f)
 
 $stdin.each_line do |line|
   case line
@@ -102,12 +102,12 @@ puts "set_avg_time_sec: #{set_time}"
 puts "get_avg_time_sec: #{get_time}"
 
 def normalize_latencies(latencies)
-  maxcol = latencies.map { |p| p.size }.max
+  maxcol = latencies.map(&:size).max
   latencies.each do |proc_latencies|
     prev = 0
     (0...maxcol).map do |i|
       percent = proc_latencies[i]
-      percent = prev unless percent
+      percent ||= prev
       prev = percent
       proc_latencies[i] = percent
     end
@@ -132,5 +132,5 @@ end
 normalize_latencies(set_latencies)
 normalize_latencies(get_latencies)
 
-show_latencies(set_latencies, "set")
-show_latencies(get_latencies, "get")
+show_latencies(set_latencies, 'set')
+show_latencies(get_latencies, 'get')
