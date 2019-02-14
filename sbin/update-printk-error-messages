@@ -154,7 +154,7 @@ blacklist = File.read(BLACKLIST).split "\n"
       if str[0] =~ /[iudsxXpPco]/
         str[0] = ''
       else
-        $stderr.puts 'IGNORE ' + line
+        warn 'IGNORE ' + line
       end
     end
 
