@@ -71,8 +71,8 @@ module Git
 
         [tag, false]
       else
-        $stderr.puts "Not a kernel tree? Check #{repo}"
-        $stderr.puts caller.join "\n"
+        warn "Not a kernel tree? Check #{repo}"
+        warn caller.join "\n"
 
         nil
       end
