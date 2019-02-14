@@ -5,9 +5,9 @@
 # Add methods to Enumerable, which makes them available to Array
 module Enumerable
   def sum
-    return inject(0) { |acc, i| acc + i }
+    inject(0) { |acc, i| acc + i }
   rescue TypeError
-    $stderr.puts self
+    warn self
     raise
   end
 
