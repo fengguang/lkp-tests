@@ -85,7 +85,7 @@ def create_result_root(_result_root)
     FileUtils.mkdir_p result_root, mode: 0o2775
     return result_root
   end
-  $stderr.puts "cannot create more result_roots under #{_result_root}"
+  warn "cannot create more result_roots under #{_result_root}"
   nil
 end
 
@@ -93,7 +93,7 @@ job = Job.new
 begin
   job.load(jobfile)
 rescue StandardError
-  $stderr.puts "#{jobfile} is not a valid jobfile"
+  warn "#{jobfile} is not a valid jobfile"
   exit 1
 end
 
