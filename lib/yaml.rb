@@ -29,7 +29,7 @@ def load_yaml(file, template_context = nil)
   begin
     result = YAML.load yaml
   rescue Psych::SyntaxError
-    $stderr.puts "failed to parse file #{file}"
+    warn "failed to parse file #{file}"
     raise
   end
 
@@ -61,7 +61,7 @@ def load_yaml_merge(files)
       yaml = load_yaml(file)
       all.update(yaml)
     rescue StandardError => e
-      $stderr.puts "#{e.class.name}: #{e.message.split("\n").first}: #{file}"
+      warn "#{e.class.name}: #{e.message.split("\n").first}: #{file}"
     end
   end
   all
@@ -71,7 +71,7 @@ def load_yaml_tail(file)
   begin
     return YAML.load %x[tail -n 100 #{file}]
   rescue Psych::SyntaxError => e
-    $stderr.puts "#{file}: " + e.message
+    warn "#{file}: " + e.message
   end
   nil
 end
@@ -145,7 +145,7 @@ class WTMP
       tail = %x[tail -n #{lines} #{file}]
       load(tail)
     rescue StandardError => e
-      $stderr.puts "#{file}: " + e.message
+      warn "#{file}: " + e.message
     end
   end
 end
@@ -204,8 +204,8 @@ def load_json(file, cache = false)
       raise
     rescue StandardError
       tempfile = file + '-bad'
-      $stderr.puts "Failed to load JSON file: #{file}"
-      $stderr.puts "Kept corrupted JSON file for debugging: #{tempfile}"
+      warn "Failed to load JSON file: #{file}"
+      warn "Kept corrupted JSON file for debugging: #{tempfile}"
       FileUtils.mv file, tempfile, force: true
       raise
     end
@@ -213,8 +213,8 @@ def load_json(file, cache = false)
   elsif File.exist? file.sub(/\.json(\.gz)?$/, '.yaml')
     load_yaml file.sub(/\.json(\.gz)?$/, '.yaml')
   else
-    $stderr.puts "JSON/YAML file not exist: '#{file}'"
-    $stderr.puts caller
+    warn "JSON/YAML file not exist: '#{file}'"
+    warn caller
     nil
   end
 end
@@ -275,7 +275,7 @@ end
 def search_json(path)
   search_load_json path
 rescue JSONFileNotExistError
-  return false
+  false
 end
 
 def load_regular_expressions(file, options = {})
