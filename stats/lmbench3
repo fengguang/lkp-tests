@@ -4,7 +4,7 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAM
 
 require "#{LKP_SRC}/lib/string_ext"
 
-def get_largest_bandwidth()
+def get_largest_bandwidth
   file_size = bandwidth = 0
   $stdin.each_line do |line|
     break if line.chomp.empty?
@@ -16,7 +16,7 @@ def get_largest_bandwidth()
       bandwidth = temp_bandwidth
     end
   end
-  return bandwidth
+  bandwidth
 end
 
 while (line = STDIN.gets)
