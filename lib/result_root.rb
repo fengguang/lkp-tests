@@ -231,7 +231,7 @@ class MResultRoot
   end
 
   def completions
-    File.open(COMPLETIONS_FILE, 'r') do |f|
+    open(COMPLETIONS_FILE, 'r') do |f|
       f.each_line
        .map { |line| Completion.new line }
        .sort_by { |cmp| -cmp.time.to_i }
