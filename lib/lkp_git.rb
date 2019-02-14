@@ -115,8 +115,8 @@ def __last_linus_release_tag(commit)
   elsif version == 2
     tag = "v2.#{patch_level}.#{sub_level}"
   else
-    $stderr.puts "Not a kernel tree? check #{GIT_WORK_TREE}"
-    $stderr.puts caller.join "\n"
+    warn "Not a kernel tree? check #{GIT_WORK_TREE}"
+    warn caller.join "\n"
     return nil
   end
 
@@ -223,7 +223,7 @@ def load_remotes
     end
 
     if remotes[remote]
-      $stderr.puts "conflict repo name in different projects: #{remote}"
+      warn "conflict repo name in different projects: #{remote}"
     end
 
     remotes[remote] = repo_info
