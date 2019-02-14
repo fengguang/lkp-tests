@@ -59,11 +59,11 @@ def calc_addon_keys(results_sum, results_nr, interval, interval_nr, prefix)
       if results_sum.key?(occupancy_key) && ticks_sum != 0
         # Need to deal with _INSERTSS == 0
         latency_key = "#{prefix}#{stem}_latency_ns"
-        if value != 0
-          latency = occupancy / value / (ticks_sum / (ticks_nr / interval_nr)) * 1e+9 * interval
-        else
-          latency = $latency_prev[latency_key]
-        end
+        latency = if value != 0
+                    occupancy / value / (ticks_sum / (ticks_nr / interval_nr)) * 1e+9 * interval
+                  else
+                    $latency_prev[latency_key]
+                  end
         $latency_prev[latency_key] = latency
         puts "#{latency_key}: #{latency}"
       end
@@ -98,9 +98,7 @@ def output_interval(prev_time, time)
   end
 
   if !ignore && $stats_end_time != 0 && time > $stats_end_time
-    if prev_time <= $stats_end_time
-      $stats_end_time = prev_time
-    end
+    $stats_end_time = prev_time if prev_time <= $stats_end_time
     ignore = true
   end
 
@@ -165,9 +163,7 @@ def parse
     value = value.to_f
 
     i_imc = key.index '_IMC'
-    if i_imc
-      key = key[0, i_imc]
-    end
+    key = key[0, i_imc] if i_imc
 
     key = "#{key}_#{unit}" if unit
     socket_key = "#{socket}.#{key}" if socket
