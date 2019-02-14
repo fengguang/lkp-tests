@@ -12,5 +12,6 @@ blktests:
   - loop-group1
   - nbd-group1
   - srp-group1
+  - zbd-group1
   # - nvmeof-mp-group1 # incompatible with CONFIG_NVME_MULTIPATH
   - other
