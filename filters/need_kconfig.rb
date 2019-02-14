@@ -16,7 +16,7 @@ def check_kconfig(kconfig_lines, line)
   when /^(CONFIG_[A-Z0-9_]+=[ym])/, /^(CONFIG_[A-Z0-9_]+)/, /^(CONFIG_[A-Z0-9_]+=[0-9]+)/
     kconfig_lines =~ /^#{$1}/
   else
-    $stderr.puts "unknown kconfig option: #{line}"
+    warn "unknown kconfig option: #{line}"
     true
   end
 end
