@@ -37,7 +37,7 @@ opt_parser = OptionParser.new do |opts|
     when /[0-9]+m$/, /[0-9]+w$/, /[0-9]+d$/, /[0-9]+$/
       $opt_pattern = "  -d #{date}" + $opt_pattern
     else
-      $stderr.puts "-d #{date}: parameter is unsuitable."
+      warn "-d #{date}: parameter is unsuitable."
       puts opts
       exit
     end
