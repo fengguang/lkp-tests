@@ -38,6 +38,7 @@
 ^iostat.*.util
 ^iostat.vd.*
 ^kmsg.APIC_calibration_not_consistent_with_PM-Timer:#ms_instead_of#ms
+^kmsg.bucket.*
 ^kmsg.Command_line:*
 ^(kmsg|dmesg).genirq:Flags_mismatch_irq##\(serial\)vs.#\(goldfish_pdev_bus\)
 ^kmsg.Kernel_command_line
