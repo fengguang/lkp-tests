@@ -47,7 +47,7 @@ opt_parser = OptionParser.new do |opts|
   end
 
   opts.on('--x-range RANGE', 'The x range') do |range|
-    $x_range = range.split(',').map { |s| s.to_i }
+    $x_range = range.split(',').map(&:to_i)
   end
 
   opts.on_tail('-h', '--help', 'show help message') do
