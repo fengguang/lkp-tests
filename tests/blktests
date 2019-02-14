@@ -56,7 +56,7 @@ has_new_test()
 {
 	ls tests > tests/$test || return
 	# if has any other test suite besides these known tests, write into file: other
-	known_test="block\|loop\|meta\|nvmeof-mp\|nbd\|nvme\|scsi\|srp\|other"
+	known_test="block\|loop\|meta\|nvmeof-mp\|nbd\|nvme\|scsi\|srp\|zbd\|other"
 	sed -i "/\<\($known_test\)\>/d" tests/$test || return
 	[ -s tests/$test ] && return
 	# if don't have new test suite, exit
@@ -90,6 +90,9 @@ set_env()
 
        # fix the issue: losetup: cannot find an unused loop device
        lsmod | grep -q loop || modprobe loop
+
+	# fix blkzone is not available
+	ln -sf $blktest_dir/util-linux/blkzone /usr/bin/blkzone
 }
 
 run_test()
