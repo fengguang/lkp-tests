@@ -85,7 +85,7 @@ module DataStore
 
     def to_data
       {
-        MAPS => @maps.map { |m| m.to_data },
+        MAPS => @maps.map(&:to_data),
         COMPRESS_MATRIX => @comparess_matrix
       }
     end
