@@ -191,7 +191,7 @@ def grep_crash_head(dmesg_file)
       next
     end
 
-    $stderr.puts "oops pattern mismatch: #{line}"
+    warn "oops pattern mismatch: #{line}"
   end
 
   oops_map
