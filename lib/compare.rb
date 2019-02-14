@@ -80,7 +80,7 @@ class AxesGroup
 end
 
 def commits_to_string(commits)
-  commits.map { |c| c.to_s }
+  commits.map(&:to_s)
 end
 
 module Compare
@@ -436,7 +436,7 @@ module Compare
         yield stat
       end
     rescue StandardError
-      $stderr.puts "Error while comparing: #{mresult_roots.map { |_rt| _rt.to_s }.join ' '}"
+      warn "Error while comparing: #{mresult_roots.map(&:to_s).join ' '}"
       raise
     end
 
@@ -444,7 +444,7 @@ module Compare
       {
         comparer: @comparer.to_data,
         axes: @axes,
-        mresult_roots: @mresult_roots.map { |_rt| _rt.to_data },
+        mresult_roots: @mresult_roots.map(&:to_data),
         compare_axeses: @compare_axeses
       }
     end
@@ -493,7 +493,7 @@ module Compare
 
     def score
       stat_enum.map do |s|
-        s[CHANGES].map { |c| c.abs }.max || 0
+        s[CHANGES].map(&:abs).max || 0
       end.max || 0
     end
 
@@ -676,9 +676,7 @@ module Compare
       stat[ABS_CHANGES] = true
     else
       # To avoid divide 0 problem
-      if avg0 == 0
-        avg0 = 1e-100
-      end
+      avg0 = 1e-100 if avg0.zero?
       stat[CHANGES] = avgs.drop(1).map do |avg|
         100.0 * (avg - avg0) / avg0
       end
@@ -1050,7 +1048,7 @@ module Compare
       _rts = each_job_in_dir(job_dir).map do |job|
         mrt_table_set.open_node job.axes
       end
-      _rts.select! { |_rt| _rt.exist? }
+      _rts.select!(&:exist?)
     else
       if msearch_axes.empty?
         msearch_axes = argv.map do |c|
