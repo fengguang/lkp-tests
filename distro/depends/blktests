@@ -1,5 +1,5 @@
 gawk
-fio=2.16-1
+fio/unstable
 libssl-dev
 blktrace
 parted
@@ -12,6 +12,12 @@ pciutils
 git
 make
 gcc
-libc6-dev
+libc6/unstable
+libc6-dev/unstable
 build-essential
 linux-libc-dev/unstable
+init-system-helpers/unstable
+libgfapi0
+libgfrpc0
+libglusterfs0
+libgfxdr0
