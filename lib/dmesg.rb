@@ -330,6 +330,10 @@ def analyze_error_id(line)
     # [   61.268659] Corrupted low memory at ffff880000007b08 (7b08 phys) = 27200c000000000
     bug_to_bisect = oops_to_bisect_pattern line
     line = line.sub(/\b[0-9a-f]+\b phys/, '# phys').sub(/= \b[0-9a-f]+\b/, '= #')
+  when /kobject \([0-9a-f]+\): tried to init an initialized object/
+    # [  512.848747] kobject (ca296866): tried to init an initialized object, something is seriously wrong.
+    bug_to_bisect = oops_to_bisect_pattern line
+    line = line.sub(/kobject \([0-9a-f]+\)/, 'kobject (#)')
   else
     bug_to_bisect = oops_to_bisect_pattern line
   end
