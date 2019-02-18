@@ -50,12 +50,13 @@ parse_numa_node_binding "$cpu_node_bind" "$mem_node_bind"
 
 if [ -n "$preload" ]; then
 	begin=$(date +%s.%N)
-        preload_requests=$((proc_requests*2))
+	preload_requests=$((key_max * 2))
+	preload_proc_requests=$((preload_requests/nr_processes))
 	for i in $(seq 1 "${nr_processes}")
 	do
 		port=$((6379+i))
 		numa_bind=$(numa_node_binding "$i")
-		log_test $numa_bind memtier_benchmark $opt --ratio="100:1" -n $preload_requests --key-pattern="R:R" -p $port > /dev/null &
+		log_test $numa_bind memtier_benchmark $opt --ratio="100:1" -n $preload_proc_requests --key-pattern="R:R" -p $port > /dev/null &
 	done
 	wait
 	end=$(date +%s.%N)
