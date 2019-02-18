@@ -3,10 +3,14 @@
 create_lkp_user() {
 	grep -q ^lkp: /etc/passwd && return
 
-	echo -n "Do you agree to create lkp users for testing? [N/y]"
+	echo -n "Do you agree to create lkp users for testing? [Y/n] "
 	read input
 	case $input in
-		Y|y)
+		N|n)
+			echo "error: lkp user is required to run lkp tests"
+			exit 1
+		;;
+		*)
 			useradd -m -s /bin/bash lkp
 			if [ $? -eq 0 ]; then
 				echo "Create lkp user successfully."
@@ -14,9 +18,6 @@ create_lkp_user() {
 				echo "Create lkp user failed."
 				exit 1
 			fi
-		;;
-		*)
-			echo "Skip to create user steps."
 		;;
 	esac
 }
