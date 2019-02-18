@@ -3,7 +3,7 @@
 . $LKP_SRC/lib/reproduce-log.sh
 
 #Clear cgroups and subsystem controllers mount point for v1 version
-clear_cgroup() 
+clear_cgroup()
 {
 	cgmounts=$(grep ' cgroup ' /proc/mounts)
 
@@ -79,4 +79,45 @@ create_cgroup2()
 	done
 
 	log_cmd mkdir -p $CGROUP2_MNT/$testcase
+}
+
+#According to
+#https://github.com/torvalds/linux/blob/master/Documentation
+#/cgroup-v1/cgroups.txt, to remove a task from its current
+#cgroup you must move it into a new cgroup (possibly the
+#root cgroup) by writing to the new cgroup's tasks file.
+#Thus we leverage this idea to reset the cpuset of current
+#task by moving current task to the root dir of each cgroup.cpuset,
+#so that current task(and its descendant) are allowed to migrate
+#among all online CPUs.
+reset_current_cpuset()
+{
+	cgmounts=$(grep ' cgroup ' /proc/mounts)
+
+	if [ -n "$cgmounts" ]; then
+		echo "$cgmounts" |
+		while read line
+		do
+			subsys_mount=$(echo $line | awk '{ print $1 }')
+			# find the cpuset subsystem
+			# grep ' cgroup ' /proc/mounts |  awk '{ print $1 }'
+			# cgroup
+			# cpuset
+			# cpu,cpuacct
+			# blkio
+			# memory
+			# devices
+			# freezer
+			# net_cls
+			# perf_event
+			# net_prio
+			# hugetlb
+			# pids
+			# rdma
+			if [ $subsys_mount = "cpuset" ]; then
+				subsys_mount_dir=$(echo $line | awk '{ print $2 }')
+				echo $$ > $subsys_mount_dir/tasks
+			fi
+		done
+	fi
 }

@@ -1,5 +1,7 @@
 #!/bin/sh
 
+. $LKP_SRC/lib/cgroup.sh
+
 # skip if cpu doesn't have msr
 grep flags /proc/cpuinfo|grep -q ' msr ' || exit 0
 
@@ -16,6 +18,8 @@ if [ ! -c /dev/cpu/0/msr ]; then
 		exit
 	fi
 fi
+
+reset_current_cpuset
 
 [ $# -ge 1 ] && exec ./turbostat "$@" 2>&1
 
