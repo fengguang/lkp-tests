@@ -348,6 +348,11 @@ def analyze_error_id(line)
     # [    9.170529 ] Bad pagetable: 0009 [#2] PTI
     bug_to_bisect = oops_to_bisect_pattern line
     line = line.sub(/Bad pagetable: [0-9a-f]+ \[#/, 'Bad pagetable: # [#')
+  when /(INFO: Slab 0x\(____ptrval____\) objects=.*fp=0x).* (flags=.*)/
+    # [   16.160017 ] INFO: Slab 0x(____ptrval____) objects=23 used=23 fp=0x          (null) flags=0x10201
+    # [   12.344185 ] INFO: Slab 0x(____ptrval____) objects=22 used=11 fp=0x(____ptrval____) flags=0x10201
+    bug_to_bisect = oops_to_bisect_pattern line
+    line = $1 + "(#) " + $2
   else
     bug_to_bisect = oops_to_bisect_pattern line
   end
