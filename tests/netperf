@@ -42,14 +42,19 @@ opt_ip=
 [ "$ip" = 'ipv4' ] && opt_ip='-4'
 [ "$ip" = 'ipv6' ] && opt_ip='-6'
 
-[ -n "$delay" ] && $WAIT_POST_TEST_CMD --timeout "$delay"
+run_netperf()
+{
+	[ -n "$delay" ] && $WAIT_POST_TEST_CMD --timeout "$delay"
 
-for i in $(seq $nr_threads)
-do
-	log_eval "netperf $opt_ip -H $server -t $test -c -C -l $runtime $test_options &"
-done
+	for i in $(seq $nr_threads)
+	do
+		log_eval "netperf $opt_ip -H $server -t $test -c -C -l $runtime $test_options &"
+	done
 
-log_eval wait
+	log_eval wait
+}
+
+run_netperf
 
 # Comments from Jesse Brandeburg <jesse.brandeburg@intel.com>
 # -P0 -- -r 64k -b 10
