@@ -154,11 +154,6 @@ def blacklist_auto_report_stat?(stat)
   stat =~ auto_report_blacklist_re
 end
 
-def blacklist_bisect_stat?(stat)
-  bisect_blacklist_re = load_regular_expressions("#{LKP_SRC}/etc/bisect-blacklist")
-  stat =~ bisect_blacklist_re
-end
-
 def is_changed_stats(sorted_a, min_a, mean_a, max_a,
                      sorted_b, min_b, mean_b, max_b,
                      is_failure_stat, is_latency_stat,

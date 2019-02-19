@@ -83,5 +83,7 @@ else
   changed_fields = changed_stats.keys
 end
 
-changed_fields.reject! { |stat| is_failure(stat) || blacklist_bisect_stat?(stat) } if $options['concise']
+blacklist_re = load_regular_expressions("#{LKP_SRC}/etc/blacklist")
+
+changed_fields.reject! { |stat| is_failure(stat) || stat =~ blacklist_re } if $options['concise']
 mmplot(matrix1, matrix2, changed_fields)
