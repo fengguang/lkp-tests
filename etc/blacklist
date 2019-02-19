@@ -81,7 +81,7 @@
 ^stderr.ls:cannot_access.*
 ^stderr.make.*Error
 ^stderr.make_perf_failed
-^stderr.modprobe:ERROR:../libkmod/libkmod.c:#kmod_search_moddep()could_not_open_moddep_file
+^stderr.modprobe:ERROR:../libkmod/libkmod.c:#kmod_search_moddep\(\)could_not_open_moddep_file
 ^stderr.No_pmem_device
 ^stderr.pmeter_server_does_not_start_correctly
 ^stderr.*scripts/aim_..sh:not_found
