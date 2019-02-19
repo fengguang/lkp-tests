@@ -336,6 +336,12 @@ def analyze_error_id(line)
     # [   36.605689] kobject ((____ptrval____)): tried to init an initialized object, something is seriously wrong.
     bug_to_bisect = oops_to_bisect_pattern line
     line = line.sub(/kobject \(([0-9a-f]+|\(_*ptrval_*\))\)/, 'kobject (#)')
+  when /BUG: Bad rss-counter state mm:([0-9a-f]+|\(_*ptrval_*\)) idx:/
+    # [   70.951419 ] BUG: Bad rss-counter state mm:(____ptrval____) idx:1 val:4
+    # [ 2841.215571 ] BUG: Bad rss-counter state mm:000000000fb13173 idx:1 val:-1
+    # [   11.380524 ] BUG: Bad rss-counter state mm:(ptrval) idx:1 val:1
+    bug_to_bisect = oops_to_bisect_pattern line
+    line = line.sub(/BUG: Bad rss-counter state mm:([0-9a-f]+|\(_*ptrval_*\)) idx:/, 'BUG: Bad rss-counter state mm:# idx:')
   else
     bug_to_bisect = oops_to_bisect_pattern line
   end
