@@ -5,6 +5,7 @@
 # - test
 # - send_size
 # - socket_buffer_size
+# - delay
 
 ## Netperf is a benchmark that can be use to measure various aspect of
 ## networking performance. The primary foci are bulk (aka unidirectional)
@@ -12,6 +13,8 @@
 ## or UDP and the Berkeley Sockets interface.
 
 . $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/wait.sh
+setup_wait
 
 export PATH=$BENCHMARK_ROOT/netperf/bin:$PATH
 
@@ -38,6 +41,8 @@ server=${server%% *}
 opt_ip=
 [ "$ip" = 'ipv4' ] && opt_ip='-4'
 [ "$ip" = 'ipv6' ] && opt_ip='-6'
+
+[ -n "$delay" ] && $WAIT_POST_TEST_CMD --timeout "$delay"
 
 for i in $(seq $nr_threads)
 do
