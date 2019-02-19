@@ -342,6 +342,12 @@ def analyze_error_id(line)
     # [   11.380524 ] BUG: Bad rss-counter state mm:(ptrval) idx:1 val:1
     bug_to_bisect = oops_to_bisect_pattern line
     line = line.sub(/BUG: Bad rss-counter state mm:([0-9a-f]+|\(_*ptrval_*\)) idx:/, 'BUG: Bad rss-counter state mm:# idx:')
+  when /Bad pagetable: [0-9a-f]+ \[#/
+    # [   29.493015 ] Bad pagetable: 000f [#1] PTI
+    # [    9.167214 ] Bad pagetable: 001d [#1] PTI
+    # [    9.170529 ] Bad pagetable: 0009 [#2] PTI
+    bug_to_bisect = oops_to_bisect_pattern line
+    line = line.sub(/Bad pagetable: [0-9a-f]+ \[#/, 'Bad pagetable: # [#')
   else
     bug_to_bisect = oops_to_bisect_pattern line
   end
