@@ -25,6 +25,8 @@
 ^dmesg.INFO:rcu_sched_detected_stalls_on_CPUs/tasks:
 ^dmesg.INFO:Stall_ended_before_state_dump_start
 ^dmesg.invoked_oom-killer:gfp_mask=0x
+^dmesg.kobject\(.+#\):tried_to_init_an_initialized_object
+^dmesg.kobject\(\(_+ptrval_+\)\):tried_to_init_an_initialized_object
 ^dmesg.Kernel_panic-not_syncing:Out_of_memory.*
 ^dmesg..*/lkp/
 ^dmesg.Mem-Info
