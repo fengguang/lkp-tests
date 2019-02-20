@@ -6,6 +6,7 @@
 # - send_size
 # - socket_buffer_size
 # - delay
+# - iterations
 
 ## Netperf is a benchmark that can be use to measure various aspect of
 ## networking performance. The primary foci are bulk (aka unidirectional)
@@ -54,7 +55,19 @@ run_netperf()
 	log_eval wait
 }
 
-run_netperf
+run_for_iterations()
+{
+	for i in $(seq 1 $iterations); do
+		echo "Iterations: $i"
+		run_netperf
+	done
+}
+
+if [ -n "$iterations" ]; then
+	run_for_iterations
+else
+	run_netperf
+fi
 
 # Comments from Jesse Brandeburg <jesse.brandeburg@intel.com>
 # -P0 -- -r 64k -b 10
