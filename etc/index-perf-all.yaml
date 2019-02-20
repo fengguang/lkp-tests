@@ -135,3 +135,36 @@ vm-scalability.workload: 1
 will-it-scale.per_process_ops: 1
 will-it-scale.per_thread_ops: 1
 will-it-scale.workload: 1
+
+chromeswap.throughput_swap_0.25_exponential_cycles_per_second: -1
+chromeswap.throughput_swap_0.50_exponential_cycles_per_second: -1
+chromeswap.throughput_swap_0.75_exponential_cycles_per_second: -1
+chromeswap.throughput_swap_0.25_uniform_cycles_per_second: -1
+chromeswap.throughput_swap_0.50_uniform_cycles_per_second: -1
+chromeswap.throughput_swap_0.75_uniform_cycles_per_second: -1
+chromeswap.throughput_swap_0.25_sequential_cycles_per_second: -1
+chromeswap.throughput_swap_0.50_sequential_cycles_per_second: -1
+chromeswap.throughput_swap_0.75_sequential_cycles_per_second: -1
+
+dd.startup_time_ms: -1
+dd.kill_time_ms: -1
+
+exit_free.duration: -1
+
+ku-latency.total_average_us: -1
+
+lmbench3.AF_UNIX.sock.stream.bandwidth.MB/sec: 1
+
+netpipe.less_8K_usec.avg: -1
+netpipe.bigger_5M_Mbps.avg: 1
+
+pgbench.transactions: 1
+
+plzip.throughput: 1
+
+pxz.throughput: 1
+
+stream.copy_bandwidth_MBps: 1
+stream.scale_bandwidth_MBps: 1
+stream.add_bandwidth_MBps: 1
+stream.triad_bandwidth_MBps: 1
