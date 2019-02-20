@@ -187,3 +187,37 @@ oltp.rw_requests/s: 1
 apachebench.requests_per_second: 1
 
 postmark.transactions: 1
+
+tcrypt.async.ecb(arc4).(ecb(arc4)-generic).encryption: 1
+tcrypt.async.ecb(cast5).(ecb-cast5-avx).encryption: 1
+tcrypt.async.ecb(cast5).(ecb-cast5-avx).decryption: 1
+tcrypt.async.cbc(cast5).(cbc-cast5-avx).encryption: 1
+tcrypt.async.cbc(cast5).(cbc-cast5-avx).decryption: 1
+tcrypt.async.ctr(cast5).(ctr-cast5-avx).encryption: 1
+tcrypt.async.ctr(cast5).(ctr-cast5-avx).decryption: 1
+tcrypt.async.ecb(cast6).(ecb-cast6-avx).encryption: 1
+tcrypt.async.ecb(cast6).(ecb-cast6-avx).decryption: 1
+tcrypt.async.cbc(cast6).(cbc-cast6-avx).encryption: 1
+tcrypt.async.cbc(cast6).(cbc-cast6-avx).decryption: 1
+tcrypt.async.ctr(cast6).(ctr-cast6-avx).encryption: 1
+tcrypt.async.ctr(cast6).(ctr-cast6-avx).decryption: 1
+tcrypt.async.lrw(cast6).(lrw(ecb-cast6-avx)).encryption: 1
+tcrypt.async.lrw(cast6).(lrw(ecb-cast6-avx)).decryption: 1
+tcrypt.async.xts(cast6).(xts-cast6-avx).encryption: 1
+tcrypt.async.xts(cast6).(xts-cast6-avx).decryption: 1
+tcrypt.async.ecb(camellia).(ecb-camellia-asm).encryption: 1
+tcrypt.async.ecb(camellia).(ecb-camellia-aesni-avx2).decryption: 1
+tcrypt.async.cbc(camellia).(cbc-camellia-aesni-avx2).encryption: 1
+tcrypt.async.cbc(camellia).(cbc-camellia-aesni-avx2).decryption: 1
+tcrypt.async.ctr(camellia).(ctr-camellia-aesni-avx2).encryption: 1
+tcrypt.async.ctr(camellia).(ctr-camellia-aesni-avx2).decryption: 1
+tcrypt.async.lrw(camellia).(lrw(ecb-camellia-aesni-avx2)).encryption: 1
+tcrypt.async.lrw(camellia).(lrw(ecb-camellia-aesni-avx2)).decryption: 1
+tcrypt.async.xts(camellia).(xts-camellia-aesni-avx2).encryption: 1
+tcrypt.async.xts(camellia).(xts-camellia-aesni-avx2).decryption: 1
+tcrypt.async.ecb(blowfish).(ecb-blowfish-asm).encryption: 1
+tcrypt.async.ecb(blowfish).(ecb-blowfish-asm).decryption: 1
+tcrypt.async.cbc(blowfish).(cbc-blowfish-asm).encryption: 1
+tcrypt.async.cbc(blowfish).(cbc-blowfish-asm).decryption: 1
+tcrypt.async.ctr(blowfish).(ctr-blowfish-asm).encryption: 1
+tcrypt.async.ctr(blowfish).(ctr-blowfish-asm).decryption: 1
