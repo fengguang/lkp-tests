@@ -1,0 +1,137 @@
+aim9.add_double.ops_per_sec: 1
+aim9.add_float.ops_per_sec: 1
+aim9.add_int.ops_per_sec: 1
+aim9.add_long.ops_per_sec: 1
+aim9.add_short.ops_per_sec: 1
+aim9.array_rtns.ops_per_sec: 1
+aim9.brk_test.ops_per_sec: 1
+aim9.creat-clo.ops_per_sec: 1
+aim9.dgram_pipe.ops_per_sec: 1
+aim9.dir_rtns_1.ops_per_sec: 1
+aim9.disk_cp.ops_per_sec: 1
+aim9.disk_rd.ops_per_sec: 1
+aim9.disk_rr.ops_per_sec: 1
+aim9.disk_rw.ops_per_sec: 1
+aim9.disk_src.ops_per_sec: 1
+aim9.disk_wrt.ops_per_sec: 1
+aim9.div_double.ops_per_sec: 1
+aim9.div_float.ops_per_sec: 1
+aim9.div_int.ops_per_sec: 1
+aim9.div_long.ops_per_sec: 1
+aim9.div_short.ops_per_sec: 1
+aim9.exec_test.ops_per_sec: 1
+aim9.fifo_test.ops_per_sec: 1
+aim9.fork_test.ops_per_sec: 1
+aim9.fun_cal15.ops_per_sec: 1
+aim9.fun_cal1.ops_per_sec: 1
+aim9.fun_cal2.ops_per_sec: 1
+aim9.fun_cal.ops_per_sec: 1
+aim9.jmp_test.ops_per_sec: 1
+aim9.link_test.ops_per_sec: 1
+aim9.matrix_rtns.ops_per_sec: 1
+aim9.mem_rtns_1.ops_per_sec: 1
+aim9.mem_rtns_2.ops_per_sec: 1
+aim9.misc_rtns_1.ops_per_sec: 1
+aim9.mul_double.ops_per_sec: 1
+aim9.mul_float.ops_per_sec: 1
+aim9.mul_int.ops_per_sec: 1
+aim9.mul_long.ops_per_sec: 1
+aim9.mul_short.ops_per_sec: 1
+aim9.new_raph.ops_per_sec: 1
+aim9.num_rtns_1.ops_per_sec: 1
+aim9.page_test.ops_per_sec: 1
+aim9.pipe_cpy.ops_per_sec: 1
+aim9.ram_copy.ops_per_sec: 1
+aim9.series_1.ops_per_sec: 1
+aim9.shared_memory.ops_per_sec: 1
+aim9.shell_rtns_1.ops_per_sec: 1
+aim9.shell_rtns_2.ops_per_sec: 1
+aim9.shell_rtns_3.ops_per_sec: 1
+aim9.sieve.ops_per_sec: 1
+aim9.signal_test.ops_per_sec: 1
+aim9.sort_rtns_1.ops_per_sec: 1
+aim9.stream_pipe.ops_per_sec: 1
+aim9.string_rtns.ops_per_sec: 1
+aim9.sync_disk_cp.ops_per_sec: 1
+aim9.sync_disk_rw.ops_per_sec: 1
+aim9.sync_disk_wrt.ops_per_sec: 1
+aim9.tcp_test.ops_per_sec: 1
+aim9.trig_rtns.ops_per_sec: 1
+aim9.udp_test.ops_per_sec: 1
+
+blogbench.write_score: 1
+blogbench.read_score: 1
+
+boot-time.boot: -1
+boot-time.dhcp: -1
+
+dbench.throughput-MB/sec: 1
+dbench.max_latency: -1
+
+ebizzy.throughput: 1
+ebizzy.throughput.per_thread.min: 1
+ebizzy.throughput.per_thread.max: 1
+
+fileio.requests_per_sec: 1
+fileio.request_latency_avg_ms: -1
+fileio.request_latency_max_ms: -1
+fileio.request_latency_95%_ms: -1
+
+fsmark.files_per_sec: 1
+fsmark.app_overhead: 1
+
+ftq.max: 1
+ftq.mean: 1
+
+ftrace_onoff.ops: 1
+
+fwq.fwq.max: 1
+fwq.fwq.min: 1
+fwq.fwq.med: 1
+
+hackbench.throughput: 1
+hackbench.workload: 1
+
+kbuild.buildtime_per_iteration: -1
+
+linpack.GFlops: 1
+
+netperf.Throughput_Mbps: 1
+netperf.Throughput_total_Mbps: 1
+netperf.workload: 1
+
+nuttcp.throughput_Mbps: 1
+
+pbzip2.throughput: 1
+
+perf-bench-sched-pipe.ops_per_sec: 1
+
+pft.faults_per_sec_per_cpu: 1
+
+pigz.throughput: 1
+
+pixz.throughput: 1
+
+tbench.throughput-MB/sec: 1
+tbench.max_latency: -1
+
+thrulay.throughput: 1
+thrulay.RTT: -1
+thrulay.jitter: -1
+
+tlbflush.munmap_ms: -1
+tlbflush.munmap_ns_time: -1
+tlbflush.mem_acc_time_thread_ms: -1
+tlbflush.mem_acc_cost_ns_time: -1
+
+unixbench.score: 1
+unixbench.workload: 1
+
+vm-scalability.throughput: 1
+vm-scalability.free_time: -1
+vm-scalability.median: 1
+vm-scalability.workload: 1
+
+will-it-scale.per_process_ops: 1
+will-it-scale.per_thread_ops: 1
+will-it-scale.workload: 1
