@@ -21,7 +21,7 @@ $metric_latency = IO.read("#{LKP_SRC}/etc/latency").split("\n")
 $metric_failure = IO.read("#{LKP_SRC}/etc/failure").split("\n")
 $perf_metrics_threshold = YAML.load_file "#{LKP_SRC}/etc/perf-metrics-threshold.yaml"
 $perf_metrics_prefixes = File.read("#{LKP_SRC}/etc/perf-metrics-prefixes").split
-$index_perf = load_yaml "#{LKP_SRC}/etc/index-perf.yaml"
+$index_perf = load_yaml "#{LKP_SRC}/etc/index-perf-all.yaml"
 
 $perf_metrics_re = load_regular_expressions("#{LKP_SRC}/etc/perf-metrics-patterns")
 $metrics_blacklist_re = load_regular_expressions("#{LKP_SRC}/etc/blacklist")

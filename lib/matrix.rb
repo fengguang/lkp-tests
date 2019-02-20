@@ -53,7 +53,7 @@ def add_performance_per_watt(stats, matrix)
   watt = stats['pmeter.Average_Active_Power']
   return unless watt && watt > 0
 
-  kpi_stats = load_yaml("#{LKP_SRC}/etc/index-perf.yaml")
+  kpi_stats = load_yaml("#{LKP_SRC}/etc/index-perf-all.yaml")
   return unless kpi_stats
 
   performance = 0
