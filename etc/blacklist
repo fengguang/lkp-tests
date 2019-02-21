@@ -126,3 +126,6 @@
 ^vmstat.cpu
 ^will-it-scale.[0-9]
 ^zoneinfo.*
+^dmesg.INFO:Slab0x\(____ptrval____\)objects=#used=#fp=0x\((null|____ptrval____)\)flags=
+^dmesg.BUG:Bad_rss-counter_state_mm:\((ptrval|____ptrval____)\)idx:#val
+^dmesg.Bad_pagetable:#.\[##\]
