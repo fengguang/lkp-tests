@@ -24,7 +24,7 @@ fs2:
 
 fsmark:
   filesize: 4M
-  test_size: 40G
+  test_size: {{ (nr_threads == '64t' && fs == 'btrfs') ? '24G' : '40G' }}
   sync_method:
   - NoSync
   - fsyncBeforeClose
