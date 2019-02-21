@@ -1,22 +1,8 @@
 suite: autotest
 testcase: autotest
-category: benchmark
+category: functional
 
 need_memory: 7G
-
-autotest:
-  test:
-  - compilebench
-  # - docker # /usr/bin/docker: No such file or directory
-  # - iosched_bugs # make: *** [dirty] Error1: undefined reference to 'rdtsc'
-  # - isic # make: *** [all-recursive] Error1: undefined reference to 'libnet_getgre_length'
-  - monotonic_time
-  - pi_tests
-  # - systemtap # simple systemtap test failed, kernel debuginfo package may be missing. Checking "/lib/modules/4.3.0/build/.config" failed with error: No such file or direcotry
-  # - unixbench # duplicate to jobs/unixbench.yaml
-
----
-category: functional
 
 autotest:
   test:
