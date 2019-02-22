@@ -2,9 +2,11 @@ model: Ivy Bridge-EP
 nr_node: 2
 nr_cpu: 48
 memory: 64G
-nr_hdd_partitions: 1
-hdd_partitions: /dev/disk/by-id/ata-WDC_WD1003FBYZ-010FB0_WD-WCAW36795753-part1
-swap_partitions: /dev/disk/by-id/ata-WDC_WD1003FBYZ-010FB0_WD-WCAW36795753-part2
+nr_hdd_partitions: 2
+hdd_partitions:
+  /dev/disk/by-id/ata-WDC_WD1003FBYZ-010FB0_WD-WCAW36795753-part1
+  /dev/disk/by-id/ata-WDC_WD1003FBYZ-010FB0_WD-WCAW36795753-part2
 rootfs_partition: /dev/disk/by-id/ata-WDC_WD1003FBYZ-010FB0_WD-WCAW36795753-part3
 netconsole_port: 6644
+ucode: "0x42d"
 brand: Intel(R) Xeon(R) CPU E5-2697 v2 @ 2.70GHz
