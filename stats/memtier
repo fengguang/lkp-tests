@@ -119,7 +119,10 @@ end
 def gen_output_miss_rate(type, histo_sum, histo_num)
   avg_hits = histo_sum[2] / histo_num[2]
   avg_misses = histo_sum[3] / histo_num[3]
-  miss_rate = 100 * avg_misses / (avg_hits + avg_misses)
+  avg_total = avg_hits + avg_misses
+  return unless avg_total != 0
+
+  miss_rate = 100 * avg_misses / avg_total
   puts "#{type}_miss_rate_%: #{miss_rate}"
 end
 
