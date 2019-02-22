@@ -1,9 +1,0 @@
-model: Nehalem-EX
-memory: 224G
-nr_node: 4
-nr_cpu: 64
-nr_socket: 4
-swap_partitions: LABEL=SWAP                                                      
-rootfs_partition: LABEL=LKP-ROOTFS  
-
-brand: Intel(R) Xeon(R) CPU X7560 @ 2.27GHz
