@@ -227,6 +227,9 @@ run_test()
 	elif [ "${test%[a-z4]-[0-9][0-9][0-9]}" != "$test" ]; then
 		all_tests_cmd="echo ${test%-*}/${test#*-}"
 		get_ignored_and_worked_tests "$all_tests_cmd"
+	elif [ "${test%-*}" = "$fs" ]; then
+		all_tests_cmd="sed \"s:^:${test%-*}/:\" $test_dir/$test"
+		get_ignored_and_worked_tests "$all_tests_cmd" "$test_ignore"
 	elif [ "${test#*-}" != "$test" ]; then
 		generic_fs_ignore="$test_dir/${test%-*}-$fs-ignore /$BENCHMARK_ROOT/xfstests/generic-$fs-ignore"
 		all_tests_cmd="sed \"s:^:${test%-*}/:\" $test_dir/$test"
