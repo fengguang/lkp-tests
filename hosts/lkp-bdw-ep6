@@ -1,0 +1,7 @@
+model: Broadwell-EP
+nr_node: 2
+nr_cpu: 88
+memory: 128G
+rootfs_partition: LABEL=LKP-ROOTFS
+brand: Intel(R) Xeon(R) CPU E5-2699 v4 @ 2.20GHz
+ucode: "0xb00002e"
