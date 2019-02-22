@@ -72,8 +72,13 @@ Starting new kernel
 drm: drm_edid_block_valid
 Raw EDID:
 ACPI: Invalid BIOS MADT, disabling ACPI
+ACPI BIOS Error (bug): AE_AML_BUFFER_LIMIT, Field
 ACPI: Error parsing LAPIC address override entry
 ACPI: Error parsing LAPIC NMI entry
+ACPI Error: No handler for Region
+ACPI Error: Region IPMI (ID=7) has no handler
+ACPI Error: Method parse/execution failed
+ACPI Error: AE_NOT_EXIST, Evaluating _PMC
 ACPI: No IRQ available for PCI Interrupt Link 
 ACPI: PCI Interrupt Link 
 ACPI needs to be enabled for this driver to work!
