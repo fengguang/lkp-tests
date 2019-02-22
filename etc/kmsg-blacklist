@@ -159,3 +159,18 @@ tasks:  End-test grace-period state:
 Failure/close-call rcutorture reader segments:
  bucket[
 \[ *[CT][0-9]*\]
+bcma-pci-bridge 0000:01:00.0: bus0: No SPROM available
+db_root: cannot open: /etc/target
+e cgroup1: Unknown subsys name '__DEVEL__sane_behavior'
+find.*bit:.*ns,.*iterations
+gpio_winbond: not an our chip
+mce: [Hardware Error]:
+parport_pc parport_pc.*: Unable to set coherent dma mask: disabling DMA
+power_meter ACPI000D:00: Ignoring unsafe software power cap!
+pstore: crypto_comp_decompress failed
+pstore: decompression failed:
+Spectre V2 : Spectre mitigation: kernel not compiled with retpoline; no mitigation available!
+tcrypt: failed to load transform for cfb(aes)
+tpm tpm0: A TPM error (.*) occurred attempting to determine the timeouts
+tpm tpm0: tpm_try_transmit: tpm_send: error
+urandom_read: .* callbacks suppressed
