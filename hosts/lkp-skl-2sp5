@@ -1,0 +1,7 @@
+model: Skylake
+nr_node: 2
+nr_cpu: 112
+memory: 128G
+swap_partitions:
+rootfs_partition: LABEL=LKP-ROOTFS
+kernel_cmdline_hw: acpi_rsdp=0x6c515014
