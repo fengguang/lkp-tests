@@ -1,0 +1,26 @@
+#!/bin/sh
+# - clear
+# - schemata
+
+. $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/resctrl.sh
+
+RESCTRL_MNT=/resctrl
+
+if [ ! -n "$schemata" ]; then
+	echo "schemata not specified" >&2
+	exit 1
+fi
+
+#force umount the resctrl filesystem first
+if [ -n "$clear" ] && [ "$clear" = "1" ]; then
+	clear_resctrl
+fi
+
+#Set up resctrl directory
+create_resctrl "$RESCTRL_MNT" "$testcase"
+
+log_eval "echo $schemata > $RESCTRL_MNT/$testcase/schemata"
+
+#Set PPID to resctrl tasks
+log_eval "echo '$PPID' > $RESCTRL_MNT/$testcase/tasks"
