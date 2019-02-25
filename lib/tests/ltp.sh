@@ -78,6 +78,10 @@ rearrange_case()
 	cat syscalls-ipc-case | grep -v "msgstress04" > syscalls-ipc-00
 	cat syscalls-ipc-case | grep "msgstress04" > syscalls-ipc-01
 
+	# re-arrange the case scsi_debug.part1
+	sed -e "s/^#.*//g" scsi_debug.part1 | awk '{if (length !=0) print $0}' > scsi_debug.part1-case || return
+	split -d -l90 scsi_debug.part1-case scsi_debug.part1- || return
+
 	cd ..
 }
 

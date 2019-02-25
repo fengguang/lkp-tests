@@ -74,7 +74,8 @@ need_memory: 4G
 ltp:
   test:
   - cve
-  - scsi_debug.part1
+  - scsi_debug.part1-00
+  - scsi_debug.part1-01
   - syscalls-ipc-00
   - syscalls-ipc-01
   - tracing
