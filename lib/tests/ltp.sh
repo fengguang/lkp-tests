@@ -73,6 +73,11 @@ rearrange_case()
 	grep "ftp6-download" net_stress.appl > net_stress.appl-03 || return
 	cat net_stress.appl | grep -v "http[4|6]" | grep -v "ftp[4|6]-download" > net_stress.appl-04 || return
 
+	# re-arrange the case syscalls-ipc
+	sed -e "s/^#.*//g" syscalls-ipc | awk '{if (length !=0) print $0}' > syscalls-ipc-case || return
+	cat syscalls-ipc-case | grep -v "msgstress04" > syscalls-ipc-00
+	cat syscalls-ipc-case | grep "msgstress04" > syscalls-ipc-01
+
 	cd ..
 }
 
