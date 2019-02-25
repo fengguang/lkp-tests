@@ -279,6 +279,7 @@ end
 def load_base_matrix(matrix_path, head_matrix, options)
   matrix_path = File.realpath matrix_path
   matrix_path = File.dirname matrix_path if File.file? matrix_path
+  log_debug "matrix_path is #{matrix_path}"
 
   rp = ResultPath.new
   rp.parse_result_root matrix_path
