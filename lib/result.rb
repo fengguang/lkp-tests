@@ -38,6 +38,7 @@ class ResultPath < Hash
     'dpdk-dts' => %w[rootfs dpdk_config dpdk_compiler dpdk_commit run],
     'build-qemu' => %w[rootfs qemu_config qemu_commit run],
     'build-llvm_project' => %w[rootfs llvm_project_commit run],
+    'deploy-clang' => %w[rootfs llvm_project_commit run],
     'build-nvml' => %w[rootfs nvml_commit run],
     'build-ltp' => %w[rootfs ltp_commit run],
     'build-acpica' => %w[acpica_commit test run],
