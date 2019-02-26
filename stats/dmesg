@@ -136,6 +136,7 @@ oops_map.each do |bug_to_bisect, line|
 
   error_id, bug_to_bisect = analyze_error_id bug_to_bisect
   next if error_id.size <= 3
+  next if bug_to_bisect.empty?
 
   error_ids[error_id] ||= bug_to_bisect
   error_lines[error_id] ||= line
