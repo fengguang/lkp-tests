@@ -1,0 +1,48 @@
+#!/bin/sh
+# - type
+# - event
+# - ldlat
+# - delay
+# - duration
+
+. $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/common.sh
+
+set_perf_path "/lkp/benchmarks/perf/perf"
+
+is_virt && exit 0
+
+: ${duration:=10}
+: ${ldlat:=50}
+
+if [ -z "$delay" ]; then
+	if [ -n "$runtime" ]; then
+		delay=$((runtime / 2))
+	else
+		delay=100
+	fi
+fi
+
+[ -n "$type" ] && opt_type="-t ${type}"
+[ -n "$event" ] && opt_event="-e $event"
+[ -n "$ldlat" ] && opt_event="--ldlat $ldlat"
+
+. $LKP_SRC/lib/wait.sh
+setup_wait
+
+perf_mem_data=$TMP_RESULT_ROOT/perf-mem.data
+
+# WAIT_POST_TEST_CMD will start at the same time with perf
+# the former will wait for (delay+duration) before exit
+# the latter will wait for (delay) before collecting samples
+
+$perf mem record -a $opt_type $opt_event $opt_ldlat \
+	-o $perf_mem_data --delay $((delay * 1000)) -- \
+	$WAIT_POST_TEST_CMD --timeout $((delay + duration))
+
+cat > "$TMP_RESULT_ROOT/post-run.perf-mem" <<EOF
+[ -s "$perf_mem_data" ] && {
+	$perf mem report --header -i $perf_mem_data --stdio -F sample,local_weight,mem |
+	gzip > $TMP_RESULT_ROOT/perf-mem.gz
+}
+EOF
