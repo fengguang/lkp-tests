@@ -1,3 +1,4 @@
+aim7.jobs-per-min: 1
 aim9.add_double.ops_per_sec: 1
 aim9.add_float.ops_per_sec: 1
 aim9.add_int.ops_per_sec: 1
@@ -58,170 +59,109 @@ aim9.sync_disk_wrt.ops_per_sec: 1
 aim9.tcp_test.ops_per_sec: 1
 aim9.trig_rtns.ops_per_sec: 1
 aim9.udp_test.ops_per_sec: 1
-
-blogbench.write_score: 1
+apachebench.requests_per_second: 1
 blogbench.read_score: 1
-
+blogbench.write_score: 1
 boot-time.boot: -1
 boot-time.dhcp: -1
-
-dbench.throughput-MB/sec: 1
+chromeswap.throughput_swap_0.25_exponential_cycles_per_second: -1
+chromeswap.throughput_swap_0.25_sequential_cycles_per_second: -1
+chromeswap.throughput_swap_0.25_uniform_cycles_per_second: -1
+chromeswap.throughput_swap_0.50_exponential_cycles_per_second: -1
+chromeswap.throughput_swap_0.50_sequential_cycles_per_second: -1
+chromeswap.throughput_swap_0.50_uniform_cycles_per_second: -1
+chromeswap.throughput_swap_0.75_exponential_cycles_per_second: -1
+chromeswap.throughput_swap_0.75_sequential_cycles_per_second: -1
+chromeswap.throughput_swap_0.75_uniform_cycles_per_second: -1
 dbench.max_latency: -1
-
+dbench.throughput-MB/sec: 1
+dd.kill_time_ms: -1
+dd.startup_time_ms: -1
 ebizzy.throughput: 1
-ebizzy.throughput.per_thread.min: 1
 ebizzy.throughput.per_thread.max: 1
-
-fileio.requests_per_sec: 1
+ebizzy.throughput.per_thread.min: 1
+exit_free.duration: -1
+fileio.request_latency_95%_ms: -1
 fileio.request_latency_avg_ms: -1
 fileio.request_latency_max_ms: -1
-fileio.request_latency_95%_ms: -1
-
-fsmark.files_per_sec: 1
+fileio.requests_per_sec: 1
+fio.read_bw_MBps: 1
+fio.write_bw_MBps: 1
 fsmark.app_overhead: 1
-
+fsmark.files_per_sec: 1
 ftq.max: 1
 ftq.mean: 1
-
 ftrace_onoff.ops: 1
-
 fwq.fwq.max: 1
-fwq.fwq.min: 1
 fwq.fwq.med: 1
-
+fwq.fwq.min: 1
+fxmark.hdd_btrfs_DWAL_1_directio.works/sec: 1
+fxmark.hdd_btrfs_DWAL_2_directio.works/sec: 1
+fxmark.hdd_btrfs_DWOL_1_directio.works/sec: 1
+fxmark.hdd_btrfs_DWOL_2_directio.works/sec: 1
+fxmark.hdd_btrfs_DWOM_1_directio.works/sec: 1
+fxmark.hdd_btrfs_DWOM_2_directio.works/sec: 1
+fxmark.hdd_ext4_DRBM_1_directio.works/sec: 1
+fxmark.hdd_ext4_DRBM_2_directio.works/sec: 1
+fxmark.hdd_ext4_DWAL_1_directio.works/sec: 1
+fxmark.hdd_ext4_DWAL_2_directio.works/sec: 1
+fxmark.hdd_ext4_DWOL_1_directio.works/sec: 1
+fxmark.hdd_ext4_DWOL_2_directio.works/sec: 1
+fxmark.hdd_ext4_DWOM_1_directio.works/sec: 1
+fxmark.hdd_ext4_DWOM_2_directio.works/sec: 1
+fxmark.hdd_ext4_DWSL_1_directio.works/sec: 1
+fxmark.hdd_ext4_DWSL_2_directio.works/sec: 1
+fxmark.hdd_ext4_no_jnl_DWAL_1_directio.works/sec: 1
+fxmark.hdd_ext4_no_jnl_DWAL_2_directio.works/sec: 1
+fxmark.hdd_ext4_no_jnl_DWOL_1_directio.works/sec: 1
+fxmark.hdd_ext4_no_jnl_DWOL_2_directio.works/sec: 1
+fxmark.hdd_ext4_no_jnl_DWOM_1_directio.works/sec: 1
+fxmark.hdd_ext4_no_jnl_DWOM_2_directio.works/sec: 1
+fxmark.hdd_ext4_no_jnl_DWSL_1_directio.works/sec: 1
+fxmark.hdd_ext4_no_jnl_DWSL_2_directio.works/sec: 1
+fxmark.hdd_ext4_no_jnl_MWRL_1_directio.works/sec: 1
+fxmark.hdd_ext4_no_jnl_MWRL_2_directio.works/sec: 1
+fxmark.hdd_f2fs_DWAL_1_directio.works/sec: 1
+fxmark.hdd_f2fs_DWAL_2_directio.works/sec: 1
+fxmark.hdd_f2fs_DWOL_1_directio.works/sec: 1
+fxmark.hdd_f2fs_DWOL_2_directio.works/sec: 1
+fxmark.hdd_f2fs_DWOM_1_directio.works/sec: 1
+fxmark.hdd_f2fs_DWOM_2_directio.works/sec: 1
+fxmark.hdd_xfs_DWAL_1_directio.works/sec: 1
+fxmark.hdd_xfs_DWAL_2_directio.works/sec: 1
+fxmark.hdd_xfs_DWOL_1_directio.works/sec: 1
+fxmark.hdd_xfs_DWOL_2_directio.works/sec: 1
+fxmark.hdd_xfs_DWOM_1_directio.works/sec: 1
+fxmark.hdd_xfs_DWOM_2_directio.works/sec: 1
+fxmark.ssd_ext4_no_jnl_DRBH_1_directio.works/sec: 1
+fxmark.ssd_ext4_no_jnl_DRBH_2_directio.works/sec: 1
 hackbench.throughput: 1
 hackbench.workload: 1
-
+hpcc.HPL_Tflops: 1
+hpcc.PTRANS_GBs: 1
 kbuild.buildtime_per_iteration: -1
-
+ku-latency.total_average_us: -1
 linpack.GFlops: 1
-
+lmbench3.AF_UNIX.sock.stream.bandwidth.MB/sec: 1
+mutilate.rx.speed: 1
+mutilate.tx.speed: 1
+nepim.tcp.avg.kbps_in: 1
+nepim.tcp.avg.kbps_out: 1
+nepim.udp.avg.kbps_in: 1
+nepim.udp.avg.kbps_out: 1
 netperf.Throughput_Mbps: 1
 netperf.Throughput_total_Mbps: 1
 netperf.workload: 1
-
-nuttcp.throughput_Mbps: 1
-
-pbzip2.throughput: 1
-
-perf-bench-sched-pipe.ops_per_sec: 1
-
-pft.faults_per_sec_per_cpu: 1
-
-pigz.throughput: 1
-
-pixz.throughput: 1
-
-tbench.throughput-MB/sec: 1
-tbench.max_latency: -1
-
-thrulay.throughput: 1
-thrulay.RTT: -1
-thrulay.jitter: -1
-
-tlbflush.munmap_ms: -1
-tlbflush.munmap_ns_time: -1
-tlbflush.mem_acc_time_thread_ms: -1
-tlbflush.mem_acc_cost_ns_time: -1
-
-unixbench.score: 1
-unixbench.workload: 1
-
-vm-scalability.throughput: 1
-vm-scalability.free_time: -1
-vm-scalability.median: 1
-vm-scalability.workload: 1
-
-will-it-scale.per_process_ops: 1
-will-it-scale.per_thread_ops: 1
-will-it-scale.workload: 1
-
-chromeswap.throughput_swap_0.25_exponential_cycles_per_second: -1
-chromeswap.throughput_swap_0.50_exponential_cycles_per_second: -1
-chromeswap.throughput_swap_0.75_exponential_cycles_per_second: -1
-chromeswap.throughput_swap_0.25_uniform_cycles_per_second: -1
-chromeswap.throughput_swap_0.50_uniform_cycles_per_second: -1
-chromeswap.throughput_swap_0.75_uniform_cycles_per_second: -1
-chromeswap.throughput_swap_0.25_sequential_cycles_per_second: -1
-chromeswap.throughput_swap_0.50_sequential_cycles_per_second: -1
-chromeswap.throughput_swap_0.75_sequential_cycles_per_second: -1
-
-dd.startup_time_ms: -1
-dd.kill_time_ms: -1
-
-exit_free.duration: -1
-
-ku-latency.total_average_us: -1
-
-lmbench3.AF_UNIX.sock.stream.bandwidth.MB/sec: 1
-
-netpipe.less_8K_usec.avg: -1
 netpipe.bigger_5M_Mbps.avg: 1
-
-pgbench.transactions: 1
-
-plzip.throughput: 1
-
-pxz.throughput: 1
-
-stream.copy_bandwidth_MBps: 1
-stream.scale_bandwidth_MBps: 1
-stream.add_bandwidth_MBps: 1
-stream.triad_bandwidth_MBps: 1
-
-aim7.jobs-per-min: 1
-
-reaim.jobs_per_min: 1
-
-fio.read_bw_MBps: 1
-fio.write_bw_MBps: 1
-
-perf-bench-numa-mem.GB_sec_thread: 1
-
-mutilate.rx.speed: 1
-mutilate.tx.speed: 1
-
-oltp.transactions/s: 1
+netpipe.less_8K_usec.avg: -1
+nuttcp.throughput_Mbps: 1
 oltp.rw_requests/s: 1
-
-apachebench.requests_per_second: 1
-
-postmark.transactions: 1
-
-tcrypt.async.ecb(arc4).(ecb(arc4)-generic).encryption: 1
-tcrypt.async.ecb(cast5).(ecb-cast5-avx).encryption: 1
-tcrypt.async.ecb(cast5).(ecb-cast5-avx).decryption: 1
-tcrypt.async.cbc(cast5).(cbc-cast5-avx).encryption: 1
-tcrypt.async.cbc(cast5).(cbc-cast5-avx).decryption: 1
-tcrypt.async.ctr(cast5).(ctr-cast5-avx).encryption: 1
-tcrypt.async.ctr(cast5).(ctr-cast5-avx).decryption: 1
-tcrypt.async.ecb(cast6).(ecb-cast6-avx).encryption: 1
-tcrypt.async.ecb(cast6).(ecb-cast6-avx).decryption: 1
-tcrypt.async.cbc(cast6).(cbc-cast6-avx).encryption: 1
-tcrypt.async.cbc(cast6).(cbc-cast6-avx).decryption: 1
-tcrypt.async.ctr(cast6).(ctr-cast6-avx).encryption: 1
-tcrypt.async.ctr(cast6).(ctr-cast6-avx).decryption: 1
-tcrypt.async.lrw(cast6).(lrw(ecb-cast6-avx)).encryption: 1
-tcrypt.async.lrw(cast6).(lrw(ecb-cast6-avx)).decryption: 1
-tcrypt.async.xts(cast6).(xts-cast6-avx).encryption: 1
-tcrypt.async.xts(cast6).(xts-cast6-avx).decryption: 1
-tcrypt.async.ecb(camellia).(ecb-camellia-asm).encryption: 1
-tcrypt.async.ecb(camellia).(ecb-camellia-aesni-avx2).decryption: 1
-tcrypt.async.cbc(camellia).(cbc-camellia-aesni-avx2).encryption: 1
-tcrypt.async.cbc(camellia).(cbc-camellia-aesni-avx2).decryption: 1
-tcrypt.async.ctr(camellia).(ctr-camellia-aesni-avx2).encryption: 1
-tcrypt.async.ctr(camellia).(ctr-camellia-aesni-avx2).decryption: 1
-tcrypt.async.lrw(camellia).(lrw(ecb-camellia-aesni-avx2)).encryption: 1
-tcrypt.async.lrw(camellia).(lrw(ecb-camellia-aesni-avx2)).decryption: 1
-tcrypt.async.xts(camellia).(xts-camellia-aesni-avx2).encryption: 1
-tcrypt.async.xts(camellia).(xts-camellia-aesni-avx2).decryption: 1
-tcrypt.async.ecb(blowfish).(ecb-blowfish-asm).encryption: 1
-tcrypt.async.ecb(blowfish).(ecb-blowfish-asm).decryption: 1
-tcrypt.async.cbc(blowfish).(cbc-blowfish-asm).encryption: 1
-tcrypt.async.cbc(blowfish).(cbc-blowfish-asm).decryption: 1
-tcrypt.async.ctr(blowfish).(ctr-blowfish-asm).encryption: 1
-tcrypt.async.ctr(blowfish).(ctr-blowfish-asm).decryption: 1
-
+oltp.transactions/s: 1
+pbzip2.throughput: 1
+perf-bench-numa-mem.GB_sec_thread: 1
+perf-bench-sched-pipe.ops_per_sec: 1
+pft.faults_per_sec_per_cpu: 1
+pgbench.transactions: 1
 phoronix-test-suite.aio-stress.0.mb_s: 1
 phoronix-test-suite.aobench.0.seconds: -1
 phoronix-test-suite.apache.0.requests_per_second: 1
@@ -251,8 +191,8 @@ phoronix-test-suite.compress-pbzip2.0.seconds: -1
 phoronix-test-suite.compress-rar.0.seconds: -1
 phoronix-test-suite.compress-xz.0.seconds: -1
 phoronix-test-suite.compress-zstd.0.seconds: -1
-phoronix-test-suite.crafty.0.seconds: -1
 phoronix-test-suite.crafty.0.nodes_per_second: -1
+phoronix-test-suite.crafty.0.seconds: -1
 phoronix-test-suite.c-ray.0.seconds: -1
 phoronix-test-suite.cyclictest.0.ms_average: -1
 phoronix-test-suite.cython-bench.0.seconds: -1
@@ -282,60 +222,32 @@ phoronix-test-suite.fio.5.mb_s: 1
 phoronix-test-suite.fio.6.iops: 1
 phoronix-test-suite.fio.7.mb_s: 1
 phoronix-test-suite.gcrypt.0.microseconds: -1
+phoronix-test-suite.glmark2.0.score: 1
 phoronix-test-suite.graphics-magick.0.iterations_per_minute: 1
+phoronix-test-suite.gtkperf.0.seconds: -1
 phoronix-test-suite.himeno.0.mflops: 1
 phoronix-test-suite.hpcg.0.gflop_s: 1
 phoronix-test-suite.idle-1.1.0.seconds: -1
 phoronix-test-suite.iozone.0.mb_s: 1
 phoronix-test-suite.iozone.1.mb_s: 1
+phoronix-test-suite.j2dbench.0.units_per_second: 1
 phoronix-test-suite.java-scimark2.0.mflops: 1
 phoronix-test-suite.john-the-ripper.0.real_c_s: 1
+phoronix-test-suite.jxrendermark.0.operations_per_second: 1
 phoronix-test-suite.lammps.0.loop_time: -1
 phoronix-test-suite.mafft.0.seconds: -1
 phoronix-test-suite.mencoder.0.seconds: -1
 phoronix-test-suite.minion.0.seconds: -1
 phoronix-test-suite.mrbayes.0.seconds: -1
-phoronix-test-suite.nginx.0.requests_per_second: 1
-phoronix-test-suite.noise-level.0.activity_level: 1
-phoronix-test-suite.open-porous-media.0.seconds: -1
-phoronix-test-suite.openssl.0.signs_per_second: 1
-phoronix-test-suite.phpbench.0.score: 1
-phoronix-test-suite.postmark.0.tps: 1
-phoronix-test-suite.primesieve.0.seconds: -1
-phoronix-test-suite.pybench.0.milliseconds: -1
-phoronix-test-suite.rbenchmark.0.seconds: -1
-phoronix-test-suite.sample-program.0.seconds: -1
-phoronix-test-suite.scimark2.0.mflops: 1
-phoronix-test-suite.smallpt.0.seconds: -1
-phoronix-test-suite.stockfish.0.ms: -1
-phoronix-test-suite.sudokut.0.seconds: -1
-phoronix-test-suite.sunflow.0.seconds: -1
-phoronix-test-suite.system-decompress-bzip2.0.seconds: -1
-phoronix-test-suite.system-decompress-xz.0.seconds: -1
-phoronix-test-suite.system-libxml2.0.ms: -1
-phoronix-test-suite.systester.0.seconds: -1
-phoronix-test-suite.tachyon.0.seconds: -1
-phoronix-test-suite.tiobench.0.mb_s: 1
-phoronix-test-suite.glmark2.0.score: 1
-phoronix-test-suite.gtkperf.0.seconds: -1
-phoronix-test-suite.j2dbench.0.units_per_second: 1
-phoronix-test-suite.jxrendermark.0.operations_per_second: 1
 phoronix-test-suite.nexuiz.0.frames_per_second: 1
 phoronix-test-suite.nexuiz.1.frames_per_second: 1
 phoronix-test-suite.nexuiz.2.frames_per_second: 1
 phoronix-test-suite.nexuiz.3.frames_per_second: 1
+phoronix-test-suite.nginx.0.requests_per_second: 1
+phoronix-test-suite.noise-level.0.activity_level: 1
 phoronix-test-suite.openarena.0.frames_per_second: 1
-phoronix-test-suite.qgears2.0.frames_per_second: 1
-phoronix-test-suite.render-bench.0.seconds: -1
-phoronix-test-suite.supertuxkart.0.frames_per_second: 1
-phoronix-test-suite.tesseract.0.frames_per_second: 1
-phoronix-test-suite.urbanterror.0.frames_per_second: 1
-phoronix-test-suite.ut2004-demo.0.frames_per_second: 1
-phoronix-test-suite.x11perf.0.operations___second: 1
-phoronix-test-suite.ttsiod-renderer.0.fps: 1
-phoronix-test-suite.unpack-linux.0.seconds: -1
-phoronix-test-suite.x264.0.frames_per_second: 1
-phoronix-test-suite.x264-opencl.0.frames_per_second: 1
+phoronix-test-suite.open-porous-media.0.seconds: -1
+phoronix-test-suite.openssl.0.signs_per_second: 1
 phoronix-test-suite.optcarrot.0.fps: 1
 phoronix-test-suite.osbench.0.ns_per_event: 1
 phoronix-test-suite.parboil.0.seconds: -1
@@ -343,25 +255,60 @@ phoronix-test-suite.perl-benchmark.0.seconds: -1
 phoronix-test-suite.perl-benchmark.1.seconds: -1
 phoronix-test-suite.php.0.seconds: -1
 phoronix-test-suite.php.1.seconds: -1
+phoronix-test-suite.phpbench.0.score: 1
+phoronix-test-suite.postmark.0.tps: 1
 phoronix-test-suite.povray.0.seconds: -1
+phoronix-test-suite.primesieve.0.seconds: -1
 phoronix-test-suite.psstop.0.kb: 1
+phoronix-test-suite.pybench.0.milliseconds: -1
+phoronix-test-suite.qgears2.0.frames_per_second: 1
 phoronix-test-suite.radiance.0.seconds: -1
 phoronix-test-suite.radiance.1.seconds: -1
+phoronix-test-suite.rbenchmark.0.seconds: -1
+phoronix-test-suite.render-bench.0.seconds: -1
+phoronix-test-suite.sample-program.0.seconds: -1
 phoronix-test-suite.schbench.0.usec,_99.9th_latency_percentile: -1
 phoronix-test-suite.scikit-learn.0.seconds: -1
+phoronix-test-suite.scimark2.0.mflops: 1
+phoronix-test-suite.smallpt.0.seconds: -1
 phoronix-test-suite.sockperf.0.messages_per_second: 1
+phoronix-test-suite.stockfish.0.ms: -1
 phoronix-test-suite.stress-ng.0.bogo_ops_s: 1
+phoronix-test-suite.sudokut.0.seconds: -1
+phoronix-test-suite.sunflow.0.seconds: -1
+phoronix-test-suite.supertuxkart.0.frames_per_second: 1
 phoronix-test-suite.swet.0.operations_per_second: 1
 phoronix-test-suite.sysbench.0.events_per_second: 1
 phoronix-test-suite.sysbench.1.events_per_second: 1
 phoronix-test-suite.systemd-boot-total.0.ms: -1
+phoronix-test-suite.system-decompress-bzip2.0.seconds: -1
+phoronix-test-suite.system-decompress-xz.0.seconds: -1
+phoronix-test-suite.system-libxml2.0.ms: -1
+phoronix-test-suite.systester.0.seconds: -1
+phoronix-test-suite.tachyon.0.seconds: -1
+phoronix-test-suite.tesseract.0.frames_per_second: 1
+phoronix-test-suite.tiobench.0.mb_s: 1
 phoronix-test-suite.tjbench.0.megapixels_sec: 1
+phoronix-test-suite.ttsiod-renderer.0.fps: 1
+phoronix-test-suite.unpack-linux.0.seconds: -1
+phoronix-test-suite.urbanterror.0.frames_per_second: 1
+phoronix-test-suite.ut2004-demo.0.frames_per_second: 1
+phoronix-test-suite.x11perf.0.operations___second: 1
+phoronix-test-suite.x264.0.frames_per_second: 1
+phoronix-test-suite.x264-opencl.0.frames_per_second: 1
 phoronix-test-suite.x265.0.frames_per_second: 1
 phoronix-test-suite.xsbench.0.lookups_s: 1
-
-hpcc.HPL_Tflops: 1
-hpcc.PTRANS_GBs: 1
-
+pigz.throughput: 1
+pixz.throughput: 1
+plzip.throughput: 1
+pmbench.latency.ns.average: -1
+postmark.transactions: 1
+pxz.throughput: 1
+reaim.jobs_per_min: 1
+stream.add_bandwidth_MBps: 1
+stream.copy_bandwidth_MBps: 1
+stream.scale_bandwidth_MBps: 1
+stream.triad_bandwidth_MBps: 1
 stress-ng.access.ops_per_sec: 1
 stress-ng.af-alg.ops_per_sec: 1
 stress-ng.affinity.ops_per_sec: 1
@@ -374,51 +321,54 @@ stress-ng.dccp.ops_per_sec: 1
 stress-ng.dev.ops_per_sec: 1
 stress-ng.exec.ops_per_sec: 1
 stress-ng.fifo.ops_per_sec: 1
-
-fxmark.hdd_btrfs_DWAL_2_directio.works/sec: 1
-fxmark.hdd_btrfs_DWAL_1_directio.works/sec: 1
-fxmark.hdd_btrfs_DWOL_2_directio.works/sec: 1
-fxmark.hdd_btrfs_DWOL_1_directio.works/sec: 1
-fxmark.hdd_btrfs_DWOM_2_directio.works/sec: 1
-fxmark.hdd_btrfs_DWOM_1_directio.works/sec: 1
-fxmark.hdd_ext4_DRBM_2_directio.works/sec: 1
-fxmark.hdd_ext4_DRBM_1_directio.works/sec: 1
-fxmark.hdd_ext4_DWAL_2_directio.works/sec: 1
-fxmark.hdd_ext4_DWAL_1_directio.works/sec: 1
-fxmark.hdd_ext4_DWOL_2_directio.works/sec: 1
-fxmark.hdd_ext4_DWOL_1_directio.works/sec: 1
-fxmark.hdd_ext4_DWOM_2_directio.works/sec: 1
-fxmark.hdd_ext4_DWOM_1_directio.works/sec: 1
-fxmark.hdd_ext4_DWSL_2_directio.works/sec: 1
-fxmark.hdd_ext4_DWSL_1_directio.works/sec: 1
-fxmark.hdd_ext4_no_jnl_DWAL_2_directio.works/sec: 1
-fxmark.hdd_ext4_no_jnl_DWAL_1_directio.works/sec: 1
-fxmark.hdd_ext4_no_jnl_DWOL_2_directio.works/sec: 1
-fxmark.hdd_ext4_no_jnl_DWOL_1_directio.works/sec: 1
-fxmark.hdd_ext4_no_jnl_DWOM_2_directio.works/sec: 1
-fxmark.hdd_ext4_no_jnl_DWOM_1_directio.works/sec: 1
-fxmark.hdd_ext4_no_jnl_DWSL_2_directio.works/sec: 1
-fxmark.hdd_ext4_no_jnl_DWSL_1_directio.works/sec: 1
-fxmark.hdd_ext4_no_jnl_MWRL_2_directio.works/sec: 1
-fxmark.hdd_ext4_no_jnl_MWRL_1_directio.works/sec: 1
-fxmark.hdd_f2fs_DWAL_2_directio.works/sec: 1
-fxmark.hdd_f2fs_DWAL_1_directio.works/sec: 1
-fxmark.hdd_f2fs_DWOL_2_directio.works/sec: 1
-fxmark.hdd_f2fs_DWOL_1_directio.works/sec: 1
-fxmark.hdd_f2fs_DWOM_2_directio.works/sec: 1
-fxmark.hdd_f2fs_DWOM_1_directio.works/sec: 1
-fxmark.hdd_xfs_DWAL_2_directio.works/sec: 1
-fxmark.hdd_xfs_DWAL_1_directio.works/sec: 1
-fxmark.hdd_xfs_DWOL_2_directio.works/sec: 1
-fxmark.hdd_xfs_DWOL_1_directio.works/sec: 1
-fxmark.hdd_xfs_DWOM_2_directio.works/sec: 1
-fxmark.hdd_xfs_DWOM_1_directio.works/sec: 1
-fxmark.ssd_ext4_no_jnl_DRBH_2_directio.works/sec: 1
-fxmark.ssd_ext4_no_jnl_DRBH_1_directio.works/sec: 1
-
-nepim.tcp.avg.kbps_in: 1
-nepim.tcp.avg.kbps_out: 1
-nepim.udp.avg.kbps_in: 1
-nepim.udp.avg.kbps_out: 1
-
-pmbench.latency.ns.average: -1
+tbench.max_latency: -1
+tbench.throughput-MB/sec: 1
+tcrypt.async.cbc(blowfish).(cbc-blowfish-asm).decryption: 1
+tcrypt.async.cbc(blowfish).(cbc-blowfish-asm).encryption: 1
+tcrypt.async.cbc(camellia).(cbc-camellia-aesni-avx2).decryption: 1
+tcrypt.async.cbc(camellia).(cbc-camellia-aesni-avx2).encryption: 1
+tcrypt.async.cbc(cast5).(cbc-cast5-avx).decryption: 1
+tcrypt.async.cbc(cast5).(cbc-cast5-avx).encryption: 1
+tcrypt.async.cbc(cast6).(cbc-cast6-avx).decryption: 1
+tcrypt.async.cbc(cast6).(cbc-cast6-avx).encryption: 1
+tcrypt.async.ctr(blowfish).(ctr-blowfish-asm).decryption: 1
+tcrypt.async.ctr(blowfish).(ctr-blowfish-asm).encryption: 1
+tcrypt.async.ctr(camellia).(ctr-camellia-aesni-avx2).decryption: 1
+tcrypt.async.ctr(camellia).(ctr-camellia-aesni-avx2).encryption: 1
+tcrypt.async.ctr(cast5).(ctr-cast5-avx).decryption: 1
+tcrypt.async.ctr(cast5).(ctr-cast5-avx).encryption: 1
+tcrypt.async.ctr(cast6).(ctr-cast6-avx).decryption: 1
+tcrypt.async.ctr(cast6).(ctr-cast6-avx).encryption: 1
+tcrypt.async.ecb(arc4).(ecb(arc4)-generic).encryption: 1
+tcrypt.async.ecb(blowfish).(ecb-blowfish-asm).decryption: 1
+tcrypt.async.ecb(blowfish).(ecb-blowfish-asm).encryption: 1
+tcrypt.async.ecb(camellia).(ecb-camellia-aesni-avx2).decryption: 1
+tcrypt.async.ecb(camellia).(ecb-camellia-asm).encryption: 1
+tcrypt.async.ecb(cast5).(ecb-cast5-avx).decryption: 1
+tcrypt.async.ecb(cast5).(ecb-cast5-avx).encryption: 1
+tcrypt.async.ecb(cast6).(ecb-cast6-avx).decryption: 1
+tcrypt.async.ecb(cast6).(ecb-cast6-avx).encryption: 1
+tcrypt.async.lrw(camellia).(lrw(ecb-camellia-aesni-avx2)).decryption: 1
+tcrypt.async.lrw(camellia).(lrw(ecb-camellia-aesni-avx2)).encryption: 1
+tcrypt.async.lrw(cast6).(lrw(ecb-cast6-avx)).decryption: 1
+tcrypt.async.lrw(cast6).(lrw(ecb-cast6-avx)).encryption: 1
+tcrypt.async.xts(camellia).(xts-camellia-aesni-avx2).decryption: 1
+tcrypt.async.xts(camellia).(xts-camellia-aesni-avx2).encryption: 1
+tcrypt.async.xts(cast6).(xts-cast6-avx).decryption: 1
+tcrypt.async.xts(cast6).(xts-cast6-avx).encryption: 1
+thrulay.jitter: -1
+thrulay.RTT: -1
+thrulay.throughput: 1
+tlbflush.mem_acc_cost_ns_time: -1
+tlbflush.mem_acc_time_thread_ms: -1
+tlbflush.munmap_ms: -1
+tlbflush.munmap_ns_time: -1
+unixbench.score: 1
+unixbench.workload: 1
+vm-scalability.free_time: -1
+vm-scalability.median: 1
+vm-scalability.throughput: 1
+vm-scalability.workload: 1
+will-it-scale.per_process_ops: 1
+will-it-scale.per_thread_ops: 1
+will-it-scale.workload: 1
