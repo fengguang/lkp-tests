@@ -9,7 +9,7 @@ setup_wget()
 	# etc. options
 	[ -L "$wget" ] && return 1
 
-	http_client_cmd="$wget -q"
+	http_client_cmd="$wget -q --timeout=1800 --tries=1"
 
 	local wget_help="$($http_client_cmd --help 2>&1)"
 
@@ -19,9 +19,6 @@ setup_wget()
 		# This version does not have support for IRIs
 		$http_client_cmd --local-encoding=UTF-8 /tmp/abcde 2>&1 | grep -qF "$iri_not_support" || http_client_cmd="$http_client_cmd --local-encoding=UTF-8"
 	}
-
-	[ "$wget_help" != "${wget_help#*--retry-connrefused}" ] &&
-	http_client_cmd="$http_client_cmd --retry-connrefused --waitretry 1000 --tries 1000"
 
 	return 0
 }
