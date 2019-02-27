@@ -813,7 +813,7 @@ module Compare
     end
     puts
     first_width = ABS_WIDTH + ERR_WIDTH
-    width = first_width + REL_WIDTH
+    width = first_width + REL_WIDTH + 1
     printf "%#{first_width}s ", compare_axeses[0].values.join('/')[0...first_width]
     compare_axeses.drop(1).each do |compare_axes|
       printf "%#{width}s ", compare_axes.values.join('/')[0...width]
