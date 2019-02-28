@@ -12,6 +12,8 @@ kernel_selftests:
     - kselftests-00
     - kselftests-01
     - kselftests-03
+    # kselftests-04 just run sub test rseq
+    - kselftests-04
 # never register ERST as pstore backend
 kernel_cmdline: erst_disable
 

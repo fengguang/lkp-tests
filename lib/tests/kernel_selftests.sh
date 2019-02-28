@@ -214,6 +214,8 @@ prepare_for_selftest()
                 selftest=m-s
         elif [ "$group" = "kselftests-03" ]; then
                 selftest=t-z
+        elif [ "$group" = "kselftests-04" ]; then
+                selftest=rseq
         fi
 }
 
@@ -316,8 +318,18 @@ pack_selftests()
 run_tests()
 {
 	local selftest=$1
+
+	# rseq costs about 25mins, run it alone.
+	if [[ "$selftest" = "rseq" ]]; then
+		log_cmd make run_tests -C $selftest 2>&1
+		exit $?
+	fi
+
 	for mf in [$selftest]*/Makefile; do
 		subtest=${mf%/Makefile}
+
+		# rseq costs about 25mins, don't run rseq in kselftests-02.
+		[[ "$subtest" = "rseq" ]] && continue
 
 		[[ "$subtest" = "breakpoints" ]] && fixup_breakpoints
 
