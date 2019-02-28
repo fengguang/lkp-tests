@@ -3,40 +3,39 @@ testcase: phoronix-test-suite
 category: benchmark
 
 need_x: true
-timeout: 2h
 
 phoronix-test-suite:
   test:
-  - etqw-1.1.0
-  - glmark2-1.0.2
+  # - etqw-1.1.0 # miss required files
+  - glmark2-1.1.0
   - gluxmark-1.1.1
-  - gputest-1.3.0
+  - gputest-1.3.1
   - gtkperf-1.2.1
-  - j2dbench-1.1.0
+  - j2dbench-1.1.1
   - jgfxbat-1.1.0
-  - jxrendermark-1.2.0
+  - jxrendermark-1.2.4
   - nexuiz-1.6.1
   - openarena-1.5.3
-  - prey-1.1.2
+  # - prey-1.1.2 # download files from stream
   - qgears2-1.0.1
   - render-bench-1.1.2
-  - smokin-guns-1.2.2
+  # - smokin-guns-1.2.2 # need 32bit libs (libjpeg62:i386 etc), runtime > 1h
   - supertuxkart-1.3.0
   - tesseract-1.1.0
-  - tf2-1.0.2
-  - tremulous-1.1.0
+  # - tf2-1.2.2 # download files from stream
+  # - tremulous-1.1.0 # need 32bit libs (libjpeg62:i386 etc)
   - unigine-heaven-1.6.2
-  - unigine-sanctuary-1.6.2
-  - unigine-tropics-1.6.2
+  # - unigine-sanctuary-1.6.3 # need 32bit libs (libjpeg62:i386 etc)
+  # - unigine-tropics-1.6.3 # need 32bit libs (libjpeg62:i386 etc)
   - unigine-valley-1.1.4
+  - viennacl-1.0.0
   - unvanquished-1.5.0
   - urbanterror-1.2.1
   - ut2004-demo-1.2.0
-  - vdrift-1.2.0
+  # - vdrift-1.2.0 # build with old g++ (g++-3.4)
   - video-cpu-usage-1.2.1
-  - viennacl-1.0.0
-  - warsow-1.5.1
+  # - warsow-1.5.1 # wait for newer version
   - x11perf-1.1.1
-    #- xonotic-1.4.0 # runtime too long [more than 5 Hours]
-  - xplane9-1.3.0
-  - etqw-demo-iqc-1.0.0
+  # - xonotic-1.4.0 # runtime > 5h
+  # - xplane9-1.3.1 # need 32bit libs (libjpeg62:i386 etc)
+  # - etqw-demo-iqc-1.0.0 # need 32bit libs (libjpeg62:i386 etc)
