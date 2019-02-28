@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# check if testbox has enough memory for bp_memmap
+
+source $LKP_SRC/lib/unit.sh
+
+reserve_memory=$(echo $boot_params_bp_memmap | awk -F '!' '{print $1}' | awk -F 'G' '{print $1}')
+start_memory=$(echo $boot_params_bp_memmap | awk -F '!' '{print $2}' | awk -F 'G' '{print $1}')
+boot_need_memory=$(( reserve_memory + start_memory ))
+memory_gb=$(to_gb $memory)
+
+if (( boot_need_memory > memory_gb )); then
+	echo "rm $job_file due to not enough memory"
+	echo "need: $boot_need_memory G, has: $memory_gb G"
+	exit 1
+fi
+
+exit 0
