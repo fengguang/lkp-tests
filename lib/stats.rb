@@ -25,6 +25,7 @@ $index_perf = load_yaml "#{LKP_SRC}/etc/index-perf-all.yaml"
 
 $perf_metrics_re = load_regular_expressions("#{LKP_SRC}/etc/perf-metrics-patterns")
 $metrics_blacklist_re = load_regular_expressions("#{LKP_SRC}/etc/blacklist")
+$report_whitelist_re = load_regular_expressions("#{LKP_SRC}/etc/report-whitelist")
 $kill_pattern_whitelist_re = load_regular_expressions("#{LKP_SRC}/etc/dmesg-kill-pattern")
 
 class LinuxTestcasesTableSet
@@ -505,7 +506,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
     next if v[-1].is_a?(String)
     next if options['perf'] && !is_perf_metric(k)
     next if is_incomplete_run && k !~ /^(dmesg|last_state|stderr)\./
-    next if !options['more'] && k =~ $metrics_blacklist_re
+    next if !options['more'] && k =~ $metrics_blacklist_re && k !~ $report_whitelist_re
 
     is_failure_stat = if options['force_' + k]
                         true
