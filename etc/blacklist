@@ -151,3 +151,4 @@
 ^kmsg.tpm_tpm#:tpm_try_transmit:tpm_send:error
 ^kmsg.urandom_read:#callbacks_suppressed
 ^kmsg.(C|T)[0-9]{1,5}\]
+^rcutorture.cpuhotplug-.*\.rcu_hotplug
