@@ -4,7 +4,7 @@ LKP_USER ||= ENV['LKP_USER'] || ENV['USER'] || `whoami`.chomp
 
 require "#{LKP_SRC}/lib/run-env"
 
-DEVEL_HOURLY_KCONFIGS = %w(x86_64-rhel-7.2).freeze
+DEVEL_HOURLY_KCONFIGS = %w(x86_64-rhel-7.6).freeze
 GIT_ROOT_DIR = git_root_dir
 
 TESTCASE_AXIS_KEY = 'testcase'.freeze
