@@ -2,3 +2,5 @@ url: https://github.com/alexandrebelloni/linux
 owner: Alexandre Belloni <alexandre.belloni@free-electrons.com>
 notify_build_success_branch: .*
 test_old_branches: .*
+private_report_branch: .*
+public_report_branch: rtc-*

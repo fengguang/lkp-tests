@@ -8,3 +8,5 @@ subsystems:
 - dt
 - rtc
 - clk
+private_report_branch: .*
+public_report_branch: rtc-*
