@@ -2,8 +2,8 @@ model: Skylake-SP
 nr_node: 2
 nr_cpu: 72
 memory: 128G
-nr_ssd_partitions:
-ssd_partitions:
+nr_ssd_partitions: 4
+ssd_partitions: wwn-0x55cd2e404b689173-part*
 rootfs_partition: LABEL=LKP-ROOTFS
 kernel_cmdline_hw: acpi_rsdp=0x6c030014
 brand: Intel(R) Xeon(R) Gold 6139 CPU @ 2.30GHz
