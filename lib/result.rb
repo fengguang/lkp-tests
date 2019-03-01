@@ -6,7 +6,7 @@ require 'set'
 require "#{LKP_SRC}/lib/lkp_git"
 require "#{LKP_SRC}/lib/run-env"
 
-DEFAULT_COMPILER = 'gcc-7'.freeze
+DEFAULT_COMPILER = 'gcc-8'.freeze
 
 RESULT_MNT = "#{result_prefix}/result".freeze
 RESULT_PATHS = '/lkp/paths'.freeze
