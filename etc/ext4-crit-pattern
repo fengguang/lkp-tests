@@ -1,11 +1,11 @@
-pa .*: logic .*, phys. .*, len .*
-inode #.*: block .*: comm .*: .*
-inode #.*: comm .*: .*
+at logical offset .* with max blocks .*
 block .*: comm .*: path .*: .*
 comm .*: path .*: .*
-free_blocks=.*
 dirty_blocks=.*
+free_blocks=.*
+inode #.*: block .*: comm .*: .*
+inode #.*: comm .*: .*
 i_reserved_meta_blocks=.*
-at logical offset .* with max blocks .* 
 .*: jbd2_start: 
 .* pages, ino .*; err .*
+pa .*: logic .*, phys. .*, len .*
