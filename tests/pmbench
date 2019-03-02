@@ -21,8 +21,11 @@
 set_opt()
 {
 	opt=
-	[ -n "$mapsize" ] && opt="${opt} -m$(($mapsize/1024/1024))"
-	[ -n "$setsize" ] && opt="${opt} -s${setsize}"
+	if [ -n "$setsize" ]; then
+		opt="${opt} -s$((setsize/1024/1024))"
+		[ -z "$mapsize" ] && mapsize="$setsize"
+	fi
+	[ -n "$mapsize" ] && opt="${opt} -m$((mapsize/1024/1024))"
 	[ -n "$pattern" ] && opt="${opt} -p${pattern}"
 	[ -n "$shape" ] && opt="${opt} -e${shape}"
 	[ -n "$nr_task" ] && opt="${opt} -j${nr_task}"
