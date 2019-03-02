@@ -59,11 +59,21 @@ def gen_output(mode, i, res)
   end
 end
 
-[[histo_r, sum_r, READ], [histo_w, sum_w, WRITE]].each do |histo, sum, modes|
+percentile_strs = ["90", "95", "99"]
+percentiles = percentile_strs.map { |ps| ps.to_f }
+
+[[histo_r, sum_r, READ], [histo_w, sum_w, WRITE]].each do |histo, sum, mode|
+  pi = 0
+  hist_cum = 0
   (0..23).each do |i|
     next if sum == 0.0
     res = histo[i] / sum * 100
-    gen_output(modes, i, res)
+    gen_output(mode, i, res)
+    hist_cum += res
+    while pi < percentiles.length && hist_cum >= percentiles[pi]
+      puts "#{mode}.latency.#{percentile_strs[pi]}%.ns: #{2 ** (i+8)}"
+      pi += 1
+    end
   end
 end
 
