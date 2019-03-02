@@ -3,6 +3,7 @@
 # - pattern
 # - mapsize
 # - shape
+# - nr_processes
 # - nr_threads
 # - timestamp
 # - cold
@@ -15,8 +16,10 @@
 # - threshold
 
 . "$LKP_SRC/lib/common.sh"
+. "$LKP_SRC/lib/reproduce-log.sh"
 
-[ -n "$runtime" ] || runtime=60
+: "${runtime:=300}"
+: "${nr_processes:=1}"
 
 set_opt()
 {
@@ -40,11 +43,17 @@ set_opt()
 	[ -n "$threshold" ] && opt="${opt} -h${threshold}"
 }
 
-run_pmbench()
-{
-	log_cmd /usr/local/bin/pmbench $opt $runtime
-}
-
 set_opt
 
-run_pmbench
+pmb_tmp_dir="$TMP/pmbench"
+rm -rf "$pmb_tmp_dir"
+mkdir -p "$pmb_tmp_dir"
+
+for i in $(seq 1 $nr_processes); do
+	log_echo "$exec_prefix /usr/local/bin/pmbench $opt $runtime > $pmb_tmp_dir/pmbench.$i &"
+	/usr/local/bin/pmbench $opt $runtime > "$pmb_tmp_dir/pmbench.$i" &
+done
+
+wait
+
+cat "$pmb_tmp_dir"/pmbench.*

@@ -1,25 +1,26 @@
 #!/usr/bin/env ruby
 
 res = 0.0
-histo_r = Array.new(24)
-histo_w = Array.new(24)
+histo_r = Array.new(24, 0)
+histo_w = Array.new(24, 0)
+latencies = []
+throughput = 0
 sum_r = 0.0
 sum_w = 0.0
 mode = nil
 READ = :read
 WRITE = :write
 
-loop do
-  line = STDIN.gets
-  break unless line
+$stdin.each_line do |line|
   case line
-  when /^Read/
+  when /^Read:/
     mode = READ
-  when /^Write/
+  when /^Write:/
     mode = WRITE
   when /^  Page latency during benchmark \(inc. gen\): (\d+\.\d+) us \(\d+ clks\)/
-    latency = $1
-    puts "latency.ns.average: #{latency}"
+    latencies << $1.to_f
+  when / Benchmark done - took (\d+\.\d+) sec for (\d+) page access/
+    throughput += $2.to_f / $1.to_f
   when /^2\^\((\d+),(\d+)\) ns: (\d+)/
     end_n = $2.to_i
     cnt = $3.to_i
@@ -30,10 +31,10 @@ loop do
         end
     if mode == READ
       sum_r += cnt
-      histo_r[p] = cnt
+      histo_r[p] += cnt
     else
       sum_w += cnt
-      histo_w[p] = cnt
+      histo_w[p] += cnt
     end
   end
 end
@@ -65,3 +66,9 @@ end
     gen_output(modes, i, res)
   end
 end
+
+if ! latencies.empty?
+  latency_avg = latencies.reduce(:+) / latencies.length
+  puts "latency.ns.average: #{latency_avg * 1000}"
+end
+puts "throughput.aps: #{throughput}"
