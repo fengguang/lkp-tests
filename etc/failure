@@ -1,9 +1,9 @@
 dmesg.*
-kmsg.*
-stderr.*
+.+\.(error|warn).*
 .+\..+(fail|crash|timeout|warn|dmesg-warn|dmesg-fail|inconsistent_fs)$
+.+killed_by.*
+kmsg.*
 last_state.*
 lkp-bug.*
-.+\.(error|warn).*
-.+killed_by.*
 .+rcu_hotplug.*
+stderr.*
