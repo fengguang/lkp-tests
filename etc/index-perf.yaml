@@ -1,5 +1,4 @@
 aim7.jobs-per-min: 1
-
 aim9.add_double.ops_per_sec: 1
 aim9.add_float.ops_per_sec: 1
 aim9.add_int.ops_per_sec: 1
@@ -60,21 +59,14 @@ aim9.sync_disk_wrt.ops_per_sec: 1
 aim9.tcp_test.ops_per_sec: 1
 aim9.trig_rtns.ops_per_sec: 1
 aim9.udp_test.ops_per_sec: 1
-
 apachebench.requests_per_second: 1
-
 blogbench.read_score: 1
 blogbench.write_score: 1
-
 boot-time.boot: -1
 boot-time.dhcp: -1
-
 dbench.throughput-MB/sec: 1
-
 ebizzy.throughput: 1
-
 fileio.requests_per_sec: 1
-
 fio.read_bw_MBps: 1
 fio.read_clat_90%_us: -1
 fio.read_clat_95%_us: -1
@@ -89,76 +81,47 @@ fio.write_clat_99%_us: -1
 fio.write_clat_mean_us: -1
 fio.write_iops: 1
 fio.write_slat_mean_us: -1
-
 fsmark.files_per_sec: 1
-
 ftq.counts: 1
-
 ftrace_onoff.ops: 1
-
 fwq.counts: 1
-
 glbenchmark.fps: 1
-
 hackbench.throughput: 1
-
 iostat.avg.wkB/s: 1
 iostat.md0.wkB/s: 1
-
 iozone.average_KBps: 1
-
 iperf.tcp.receiver.bps: 1
 iperf.tcp.sender.bps: 1
 iperf.udp.bps: 1
-
 kbuild.build-time: -1
 kbuild.time.elapsed_time: -1
-
 linpack.GFlops: 1
-
 nepim.tcp.avg.kbps_in: 0.5
 nepim.tcp.avg.kbps_out: 0.5
 nepim.udp.avg.kbps_in: 0.5
 nepim.udp.avg.kbps_out: 0.5
-
 netperf.Throughput_Mbps: 1
 netperf.Throughput_tps: 1
-
 nuttcp.throughput_Mbps: 1
-
 pbzip2.throughput: 1
-
 perf-bench-numa-mem.GB_sec_total: 1
-
 perf-bench-sched-pipe.ops_per_sec: 1
-
 pft.faults_per_sec_per_cpu: 1
-
 pigz.throughput: 1
-
 pixz.throughput: 1
-
 qperf.sctp.bw: 1
 qperf.tcp.bw: 1
 qperf.udp.recv_bw: 1
 qperf.udp.send_bw: 1
-
 reaim.jobs_per_min: 1
-
 sockperf.throughput.TCP.BandWidth_MBps: 1
 sockperf.throughput.UDP.BandWidth_MBps: 1
-
 tbench.throughput-MB/sec: 1
-
 thrulay.throughput: 1
-
 tlbflush.mem_acc_cost_ns_time: -1
-
 unixbench.score: 1
-
 vm-scalability.migrate_mbps: 1
 vm-scalability.throughput: 1
-
 will-it-scale.per_process_ops: 1
 will-it-scale.per_thread_ops: 1
 will-it-scale.scalability: 1
