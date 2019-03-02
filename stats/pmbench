@@ -5,6 +5,7 @@ histo_r = Array.new(24, 0)
 histo_w = Array.new(24, 0)
 latencies = []
 throughput = 0
+init_times = []
 sum_r = 0.0
 sum_w = 0.0
 mode = nil
@@ -21,6 +22,8 @@ $stdin.each_line do |line|
     latencies << $1.to_f
   when / Benchmark done - took (\d+\.\d+) sec for (\d+) page access/
     throughput += $2.to_f / $1.to_f
+  when /nitialization took (\d+\.\d+) ms/
+    init_times << $1.to_f / 1000
   when /^2\^\((\d+),(\d+)\) ns: (\d+)/
     end_n = $2.to_i
     cnt = $3.to_i
@@ -82,3 +85,7 @@ if ! latencies.empty?
   puts "latency.ns.average: #{latency_avg * 1000}"
 end
 puts "throughput.aps: #{throughput}"
+if ! init_times.empty?
+  init_time_avg = init_times.reduce(:+) / init_times.length
+  puts "init_time.avg: #{init_time_avg}"
+end
