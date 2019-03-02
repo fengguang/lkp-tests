@@ -17,8 +17,8 @@ ino ptr = 0x.*, ino bp = 0x.*, ino .*
 Internal error .* at line .* of file .*.  Caller 0x.*
 metadata I/O error: block 0x.* .* error .* numblks .*
 NULL dquot in .*.
-start_block: .* start_off: .* 
 .* Shutting down filesystem
+start_block: .* start_off: .*
   tail_cycle = .*, tail_bytes = .*
 total extents = .*, nblocks = .*, ptr 0x.*
 Trying to replay bad \(0\) inode di_next_unlinked field.
