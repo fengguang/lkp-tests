@@ -382,6 +382,10 @@ def unite_params(result_root)
 
   params = {}
   params = YAML.load_file(params_file) if File.exist? params_file
+  unless params.instance_of? Hash
+    log_warn "failed to parse file #{params_file}"
+    params = {}
+  end
 
   job = Job.new
   begin
