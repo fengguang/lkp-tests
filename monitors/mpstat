@@ -1,12 +1,33 @@
 #!/bin/sh
 # - delay
+# - interval
+# - count
+# - nodes
+# - cpus
+# - per_node
+
+. $LKP_SRC/lib/wait.sh
+. $LKP_SRC/lib/common.sh
+
+mpstat="/lkp/benchmarks/sysstat/usr/local/bin/mpstat"
 
 : ${interval:=1}
 
-[ -n "$cpus" ] && opt_cpu="-P $cpus"
+if parse_bool -q "$per_node"; then
+	opt_node="-n"
+	[ -n "$nodes" ] && opt_node="-N $nodes"
+elif [ -n "$cpus" ]; then
+	opt_cpu="-P $cpus"
+fi
 
-. $LKP_SRC/lib/wait.sh
+setup_wait
 
 [ -n "$delay" ] && $WAIT_POST_TEST_CMD --timeout "$delay"
 
-LC_ALL=C S_TIME_FORMAT=ISO exec mpstat $opt_cpu $interval $count
+LC_ALL=C S_TIME_FORMAT=ISO $mpstat $opt_node $opt_cpu -o JSON $interval $count&
+
+pid=$!
+
+$WAIT_POST_TEST_CMD
+
+kill -INT "$pid"

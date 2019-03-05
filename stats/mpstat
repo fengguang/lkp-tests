@@ -1,65 +1,115 @@
 #!/usr/bin/env ruby
 
 require 'time'
+require 'json'
 
-# Linux 4.4.0-83-generic (wu-Studio-Slim-540s)    2017-08-23      _x86_64_        (2 CPU)
+RESULT_ROOT = ENV['RESULT_ROOT']
 
-# 16:51:28     CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle
-# 16:51:29     all    1.51    0.00   51.26    0.00    0.00    0.00    0.00    0.00    0.00   47.24
-# 16:51:29       0    0.00    0.00  100.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-# 16:51:29       1    3.03    0.00    1.01    0.00    0.00    0.00    0.00    0.00    0.00   95.96
+# The below is an example of mpstat output, read it then parse it into hash data.
+# {"sysstat": {
+#   "hosts": [
+#     {
+#       "nodename": "haiyan",
+#       "sysname": "Linux",
+#       "release": "4.19.0",
+#       "machine": "x86_64",
+#       "number-of-cpus": 4,
+#       "date": "2019-02-25",
+#       "statistics": [
+#           {
+#             "timestamp": "15:56:25",
+#             "cpu-load": [
+#                         {cpu": "-1", "usr": 25.32, "nice": 0.00, "sys": 0.25 ...},
+#                         {"cpu": "0", "usr": 100.00, "nice": 0.00, "sys": 0.00 ...},
+#                          ...],
+#              "node-load": [
+#                      {"node": "all", "usr": 25.32, "nice": 0.00, "sys": 0.25,
+#                                "iowait": 0.00, "irq": 0.00, "soft": 0.00 ...},
+#                      {"node": "0", "usr": 25.32, "nice": 0.00, "sys": 0.25,
+#                       "iowait": 0.00, "irq": 0.00, "soft": 0.00, "steal": 0.00 ...}
+#                       ...]
+#            {
+#              "timestamp": "15:56:26",
+#              "cpu-load": [ ...]
+#               ...
+#             },
 
-keys = %w(time cpu.usr% cpu.nice% cpu.sys% cpu.iowait% cpu.irq% cpu.soft% cpu.steal% cpu.guest% cpu.gnice% cpu.idle%)
-keys_max = %w(cpu.usr.max% cpu.nice.max% cpu.sys.max% cpu.iowait.max% cpu.irq.max% cpu.soft.max% cpu.steal.max% cpu.guest.max% cpu.gnice.max% cpu.idle.max%)
-
-def show_record(keys, data)
-  data.each_with_index { |v, i| puts "#{keys[i]}: #{v}" }
+mpstat_json = File.read("#{RESULT_ROOT}/mpstat")
+begin
+  mpstat_hash = JSON.parse(mpstat_json)
+# If mpstat file tailed with string "},", it is not complete json format, need to delete ","
+# and complete the json format.
+rescue JSON::ParserError
+  File.open("#{RESULT_ROOT}/mpstat", 'r+') do |io|
+    io.seek(-2, IO::SEEK_END)
+    io.truncate(io.pos)
+    io.puts "\n\t\t\t\]\n\t\t\}\n\t\]\n\}\}\n"
+  end
+  mpstat_json = File.read("#{RESULT_ROOT}/mpstat")
+  mpstat_hash = JSON.parse(mpstat_json)
 end
 
-def parse_time(date, line)
-  data = line.split
-  if line =~ / (AM|PM) /
-    time = Time.parse([date, data[0], data[1]].join(' ')).to_i
-    data.delete_at(1)
-  else
-    time = Time.parse([date, data[0]].join(' ')).to_i
-  end
-  data[0] = data[1]
-  data[1] = time
-  data
-end
+results = {}
+# Every array data includes some hash type data.
+# Such as: "cpu-load" => [{"cpu" => "all", "usr" => 3.06,
+#                        "nice" => 0.00, "sys" => 5.87, ... }, {...}, ...]
+def get_array_result(prefix, array, results)
+  array.each do |item|
+    next unless item.class == Hash
 
-first_line = STDIN.gets
+    key0, value0 = item.first
+    item.each_key do |k_|
+      next if k_ == key0
 
-date = first_line.split[3]
-date = /\d+-\d+-\d+/.match(date)
-exit 1 if date.nil?
-
-max_usage = 0
-max_record = nil
-
-STDIN.each_line do |line|
-  if line =~ /Average: / && max_record
-    show_record keys_max, max_record
-    max_record = nil
-    break
-  end
-  next unless line =~ /^\d+:\d+:\d+ +(AM|PM)? +(all|\d+) /
-  data = parse_time(date, line)
-  if data[0] == 'all'
-    if max_record
-      show_record keys_max, max_record
-      max_usage = 0
-      max_record = nil
+      key = case prefix
+            when /node-load/
+              "node.#{value0}.#{k_}%"
+            when /cpu-load/
+              "cpu.#{value0}.#{k_}%"
+            else
+              "#{prefix}.#{value0}.#{k_}"
+            end
+      results[key] = item[k_]
     end
-    show_record keys, data.drop(1)
-  else
-    usage = data[2].to_f + data[4].to_f
-    if usage > max_usage
-      max_usage = usage
-      max_record = data.drop(2)
-    end
   end
 end
 
-show_record keys_max, max_record if max_record
+def get_hash_result(prefix, hash, results)
+  hash.each do |k, v|
+    key = "#{prefix}.#{k}"
+    results[key] = v
+  end
+end
+
+def display_result(hash)
+  hash.each do |key, value|
+    next if key.to_s.empty?
+
+    # display key and value as below format:
+    # "cpu.all.usr%: 3.06"
+    puts "#{key}: #{value}"
+  end
+end
+
+data = mpstat_hash['sysstat']['hosts'][0]['date']
+mpstat_hash['sysstat']['hosts'][0]['statistics'].each do |item|
+  item.each do |k, v|
+    if v.class == Array
+      get_array_result k, v, results
+    elsif v.class == Hash
+      v.each do |k_, v_|
+        if v_.class == Array
+          get_array_result k_, v_, results
+        elsif v_.class == Hash
+          get_hash_result k_, v_, results
+        else
+          results["#{k}.#{k_}"] = v_
+        end
+      end
+    elsif k == 'timestamp'
+      timestamp = Time.parse([data, v].join(' ')).to_i
+      results['timestamp'] = timestamp
+    end
+  end
+  display_result results
+end
