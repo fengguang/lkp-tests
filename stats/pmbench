@@ -62,8 +62,8 @@ def gen_output(mode, i, res)
   end
 end
 
-percentile_strs = ["90", "95", "99"]
-percentiles = percentile_strs.map { |ps| ps.to_f }
+percentile_strs = %w(90 95 99)
+percentiles = percentile_strs.map(&:to_f)
 
 [[histo_r, sum_r, READ], [histo_w, sum_w, WRITE]].each do |histo, sum, mode|
   pi = 0
@@ -74,18 +74,20 @@ percentiles = percentile_strs.map { |ps| ps.to_f }
     gen_output(mode, i, res)
     hist_cum += res
     while pi < percentiles.length && hist_cum >= percentiles[pi]
-      puts "#{mode}.latency.#{percentile_strs[pi]}%.ns: #{2 ** (i+8)}"
+      puts "#{mode}.latency.#{percentile_strs[pi]}%.ns: #{2 ** (i + 8)}"
       pi += 1
     end
   end
 end
 
-if ! latencies.empty?
+unless latencies.empty?
   latency_avg = latencies.reduce(:+) / latencies.length
   puts "latency.ns.average: #{latency_avg * 1000}"
 end
+
 puts "throughput.aps: #{throughput}"
-if ! init_times.empty?
+
+unless init_times.empty?
   init_time_avg = init_times.reduce(:+) / init_times.length
   puts "init_time.avg: #{init_time_avg}"
 end
