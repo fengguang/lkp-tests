@@ -47,7 +47,7 @@ def git_patchid(commit)
   $__patchid_cache[commit]
 end
 
-def is_linus_commit(commit)
+def linus_commit?(commit)
   git_committer_name(commit) == 'Linus Torvalds'
 end
 
@@ -76,7 +76,7 @@ def commit_tag(commit)
 end
 
 def linus_release_tag(commit)
-  return nil unless is_linus_commit(commit)
+  return nil unless linus_commit?(commit)
 
   tag = commit_tag(commit)
   case tag
@@ -195,7 +195,7 @@ def linus_tags
 end
 
 def base_rc_tag(commit)
-  commit += '~' if is_linus_commit(commit)
+  commit += '~' if linus_commit?(commit)
   version, _is_exact_match = last_linus_release_tag commit
   version
 end
