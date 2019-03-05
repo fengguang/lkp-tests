@@ -19,7 +19,7 @@ def tbox_group(hostname)
   end
 end
 
-def is_tbox_group(hostname)
+def tbox_group?(hostname)
   return nil unless hostname.is_a?(String) && !hostname.empty?
   Dir[LKP_SRC + '/hosts/' + hostname][0]
 end
