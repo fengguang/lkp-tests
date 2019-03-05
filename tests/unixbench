@@ -18,6 +18,8 @@ export LANG=C
 # Each iteration in UnixBench is about 10 seconds
 iteration=$(( runtime / 10 ))
 
+[ $test = "shell8" ] && iteration=1
+
 [ -n "$nr_task" ] && other_params="-c $nr_task"
 
 cd UnixBench
