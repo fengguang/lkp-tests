@@ -78,37 +78,35 @@ module Git
       end
     end
 
-    def __commit2tag
-      hash = {}
+    def commits_tags
+      # rli9 FIXME: consider to move cache logic to caller
+      return @commits_tags if @commits_tags && @commits_tags_timestamp && Time.now - @commits_tags_timestamp < 600
+
+      @commits_tags_timestamp = Time.now
+
+      @commits_tags = {}
       command('show-ref', ['--tags']).each_line do |line|
         commit, tag = line.split ' refs/tags/'
-        hash[commit] = tag.chomp
+        @commits_tags[commit] = tag.chomp
       end
-      hash
+
+      @commits_tags
     end
 
-    @@commit2tag_ts = nil
-    def commit2tag
-      return @@commit2tag if @@commit2tag_ts && Time.now - @@commit2tag_ts < 600
-      @@commit2tag_ts = Time.now
-      @@commit2tag = __commit2tag
-    end
+    def heads_branches
+      return @heads_branches if @heads_branches && @heads_branches_timestamp && Time.now - @heads_branches_timestamp < 600
 
-    def __head2branch
-      hash = {}
+      @heads_branches_timestamp = Time.now
+
+      @heads_branches = {}
       command('show-ref').each_line do |line|
         commit, branch = line.split ' refs/remotes/'
         next if branch.nil?
-        hash[commit] = branch.chomp
-      end
-      hash
-    end
 
-    @@head2branch_ts = nil
-    def head2branch
-      return @@head2branch if @@head2branch_ts && Time.now - @@head2branch_ts < 600
-      @@head2branch_ts = Time.now
-      @@head2branch = __head2branch
+        @heads_branches[commit] = branch.chomp
+      end
+
+      @heads_branches
     end
 
     def release_tag_pattern
