@@ -27,7 +27,7 @@ ACCUMULATIVE_KEYS = %w(
     build_success_mail_cc
     constraints
 ).freeze
-def is_accumulative_key(k)
+def accumulative_key?(k)
   return true if ACCUMULATIVE_KEYS.include? k
   return true if k =~ /^need_/ && k !~ /^need_(memory|cpu)$/
   false
@@ -77,7 +77,7 @@ def revise_hash(original, revisions, overwrite_top_keys = true)
   original.merge!(revisions) do |key, oldval, newval|
     if key[-1] == '+' ||
        key[-1] == '-' ||
-       is_accumulative_key(key)
+       accumulative_key?(key)
       merge_accumulative(oldval, newval)
     else
       overwrite_top_keys ? newval : oldval
