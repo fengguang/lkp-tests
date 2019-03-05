@@ -4,8 +4,10 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAM
 
 require "#{LKP_SRC}/lib/string_ext"
 
-def get_largest_bandwidth
-  file_size = bandwidth = 0
+def largest_bandwidth
+  file_size = 0
+  bandwidth = 0
+
   $stdin.each_line do |line|
     break if line.chomp.empty?
 
@@ -145,7 +147,7 @@ while (line = STDIN.gets)
   # 0.008192 52732.95
   # ...
   when /^"libc bcopy unaligned$/
-    puts "BCOPY.libc.bandwidth.MB/sec: #{get_largest_bandwidth}"
+    puts "BCOPY.libc.bandwidth.MB/sec: #{largest_bandwidth}"
 
   # "unrolled bcopy unaligned
   # 0.000512 13442.67
@@ -156,7 +158,7 @@ while (line = STDIN.gets)
   # 0.016384 12921.17
   # ...
   when /^"unrolled bcopy unaligned$/
-    puts "BCOPY.unrolled.bandwidth.MB/sec: #{get_largest_bandwidth}"
+    puts "BCOPY.unrolled.bandwidth.MB/sec: #{largest_bandwidth}"
 
   # Memory read bandwidth
   # 0.000512 16353.73
@@ -166,7 +168,7 @@ while (line = STDIN.gets)
   # 0.008192 16834.82
   # ...
   when /^Memory read bandwidth$/
-    puts "BCOPY.memory_read.bandwidth.MB/sec: #{get_largest_bandwidth}"
+    puts "BCOPY.memory_read.bandwidth.MB/sec: #{largest_bandwidth}"
 
   # Memory write bandwidth
   # 0.000512 13964.88
@@ -175,6 +177,6 @@ while (line = STDIN.gets)
   # 0.004096 13950.82
   # ...
   when /^Memory write bandwidth$/
-    puts "BCOPY.memory_write.bandwidth.MB/sec: #{get_largest_bandwidth}"
+    puts "BCOPY.memory_write.bandwidth.MB/sec: #{largest_bandwidth}"
   end
 end
