@@ -52,9 +52,9 @@ end
 
 # These are not used by other code in the repo,
 # however handy for interactive debug sessions.
-def linux_commit(c)
+def linux_commit(commit)
   git = Git.open(project: 'linux')
-  git.gcommit(c)
+  git.gcommit(commit)
 end
 
 def linux_commits(*commits)
