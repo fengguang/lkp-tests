@@ -62,7 +62,7 @@ while (line = STDIN.gets)
   end
 
   v = v.index('.') ? v.to_f : v.to_i
-  unless is_valid_stats_range k, v
+  unless valid_stats_range? k, v
     invalid_records.push record_index
     puts "outside valid range: #{v} in #{k} #{RESULT_ROOT}"
   end

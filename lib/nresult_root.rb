@@ -134,7 +134,7 @@ module CMResultRoot
     return nil if matrix_cols(cm) < 3
     avg_stddev = {}
     cm.each do |k, v|
-      next unless is_kpi_stat(k, axes, [v])
+      next unless kpi_stat?(k, axes, [v])
       avg_stddev[k] = [v.average, v.standard_deviation]
     end
     avg_stddev

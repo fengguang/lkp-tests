@@ -43,7 +43,7 @@ class LinuxTestcasesTableSet
      'xfstests', 'chromeswap', 'fio-basic', 'apachebench', 'perf_event_tests', 'swapin',
      'tpcc', 'mytest', 'exit_free', 'pgbench', 'boot_trace', 'sysbench-cpu',
      'sysbench-memory', 'sysbench-threads', 'sysbench-mutex', 'stream',
-     'perf-bench-futex', 'mutilate', 'lmbench3', 'libMicro', 'schbench',
+     'perf-bench-futex', 'mutilate', 'lmbench3', 'lib_micro', 'schbench',
      'pmbench', 'linkbench', 'rocksdb', 'cassandra', 'redis', 'power_idle',
      'mongodb', 'ycsb', 'memtier'].freeze
   LINUX_TESTCASES =
@@ -76,7 +76,7 @@ def test_prefixes
   tests.map { |test| test + '.' }
 end
 
-def is_functional_test(testcase)
+def functional_test?(testcase)
   LinuxTestcasesTableSet::LINUX_TESTCASES.index testcase
 end
 
@@ -87,7 +87,7 @@ end
 $test_prefixes = test_prefixes
 additional_perf_metrics_prefixes = $test_prefixes.reject do |test|
   test_name = test[0..-2]
-  is_functional_test(test_name) || other_test?(test_name) || %w(kmsg dmesg stderr last_state).include?(test_name)
+  functional_test?(test_name) || other_test?(test_name) || %w(kmsg dmesg stderr last_state).include?(test_name)
 end
 
 $perf_metrics_prefixes.concat(additional_perf_metrics_prefixes)
@@ -102,7 +102,7 @@ def __is_perf_metric(name)
   false
 end
 
-def is_perf_metric(name)
+def perf_metric?(name)
   $__is_perf_metric_cache ||= {}
   if $__is_perf_metric_cache.include? name
     $__is_perf_metric_cache[name]
@@ -113,7 +113,7 @@ end
 
 # Check whether it looks like a reasonable performance change,
 # to avoid showing unreasonable ones to humans in compare/mplot output.
-def is_reasonable_perf_change(name, delta, max)
+def reasonable_perf_change?(name, delta, max)
   $perf_metrics_threshold.each do |k, v|
     next unless name =~ %r{^#{k}$}
     return false if max < v
@@ -155,7 +155,7 @@ def blacklist_auto_report_stat?(stat)
   stat =~ auto_report_blacklist_re
 end
 
-def is_changed_stats(sorted_a, min_a, mean_a, max_a,
+def changed_stats?(sorted_a, min_a, mean_a, max_a,
                      sorted_b, min_b, mean_b, max_b,
                      is_failure_stat, is_latency_stat,
                      stat, options)
@@ -219,7 +219,7 @@ def stat_relevance(record)
                 5
               elsif $test_prefixes.include? stat.sub(/\..*/, '.')
                 100
-              elsif is_perf_metric(stat)
+              elsif perf_metric?(stat)
                 1
               else
                 10
@@ -385,7 +385,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
 
   if !matrix.empty?
     if cols >= 3 ||
-       (cols >= 1 && is_functional_test(rp['testcase'])) ||
+       (cols >= 1 && functional_test?(rp['testcase'])) ||
        head_matrix['last_state.is_incomplete_run'] ||
        head_matrix['dmesg.boot_failures'] ||
        head_matrix['stderr.has_stderr']
@@ -433,7 +433,7 @@ def is_latency(stats_field)
   end
 end
 
-def is_memory_change(stats_field)
+def memory_change?(stats_field)
   stats_field =~ /^(boot-meminfo|boot-memory|proc-vmstat|numa-vmstat|meminfo|memmap|numa-meminfo)\./
 end
 
@@ -504,7 +504,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
 
   a.each do |k, v|
     next if v[-1].is_a?(String)
-    next if options['perf'] && !is_perf_metric(k)
+    next if options['perf'] && !perf_metric?(k)
     next if is_incomplete_run && k !~ /^(dmesg|last_state|stderr)\./
     next if !options['more'] && k =~ $metrics_blacklist_re && k !~ $report_whitelist_re
 
@@ -529,7 +529,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
       # virtual hosts are dynamic and noisy
       next if options['tbox_group'] =~ /^vh-/
       # VM boxes' memory stats are still good
-      next if options['tbox_group'] =~ /^vm-/ && !options['is_perf_test_vm'] && is_memory_change(k)
+      next if options['tbox_group'] =~ /^vm-/ && !options['is_perf_test_vm'] && memory_change?(k)
     end
 
     # newly added monitors don't have values to compare in the base matrix
@@ -552,7 +552,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
     min_a, mean_a, max_a = get_min_mean_max sorted_a
     next unless max_a
 
-    next unless is_changed_stats(sorted_a, min_a, mean_a, max_a,
+    next unless changed_stats?(sorted_a, min_a, mean_a, max_a,
                                  sorted_b, min_b, mean_b, max_b,
                                  is_failure_stat, is_latency_stat,
                                  k, options)
@@ -589,8 +589,8 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
 
     unless options['perf-profile'] && k =~ /^perf-profile\./
       next unless ratio > 1.01 # time.elapsed_time only has 0.01s precision
-      next unless ratio > 1.1 || is_perf_metric(k)
-      next unless is_reasonable_perf_change(k, delta, max)
+      next unless ratio > 1.1 || perf_metric?(k)
+      next unless reasonable_perf_change?(k, delta, max)
     end
 
     interval_a = format('[ %-10.5g - %-10.5g ]', min_a, max_a)
@@ -737,13 +737,13 @@ def stat_key_base(stat)
   stat.partition('.').first
 end
 
-def is_kpi_stat_strict(stat, _axes, _values = nil)
+def strict_kpi_stat?(stat, _axes, _values = nil)
   $index_perf.include? stat
 end
 
 $kpi_stat_blacklist = Set.new ['vm-scalability.stddev', 'unixbench.incomplete_result']
 
-def is_kpi_stat(stat, _axes, _values = nil)
+def kpi_stat?(stat, _axes, _values = nil)
   return false if $kpi_stat_blacklist.include?(stat)
   base, _, remainder = stat.partition('.')
   all_tests_set.include?(base) && !remainder.start_with?('time.')

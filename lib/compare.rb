@@ -372,13 +372,13 @@ module Compare
 
     def filter_kpi_stat_keys(stats, matrixes_in)
       stats.select do |k|
-        is_kpi_stat(k, axes, matrixes_in.map { |m| m[k] })
+        kpi_stat?(k, axes, matrixes_in.map { |m| m[k] })
       end
     end
 
     def filter_kpi_stat_strict_keys(stats, matrixes_in)
       stats.select do |k|
-        is_kpi_stat_strict(k, axes, matrixes_in.map { |m| m[k] })
+        strict_kpi_stat?(k, axes, matrixes_in.map { |m| m[k] })
       end
     end
 
