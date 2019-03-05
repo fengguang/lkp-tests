@@ -11,7 +11,7 @@ iterations = 0
 while (line = STDIN.gets)
   case line.chomp!
   when /^Iterations/
-	iterations += 1
+    iterations += 1
   when /^bytes.*secs.*10\^6bits/
     unit = 'Mbps'
   when /^bytes.*secs.\s+per sec/
@@ -47,9 +47,9 @@ avg_throughput = throughput / num
 
 # We only cares for the average total throughput/workload
 # within each iteration.
-if iterations > 0
-	throughput = throughput / iterations
-end
+
+throughput = throughput / iterations if iterations > 0
+
 workload = throughput * time
 workload = workload * 10**6 / 8.0 / pkt_size if unit == 'Mbps'
 puts 'Throughput_' + unit + ': ' + avg_throughput.to_s
