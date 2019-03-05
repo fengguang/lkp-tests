@@ -1,5 +1,5 @@
-suite: libMicro
-testcase: libMicro
+suite: lib-micro
+testcase: lib-micro
 category: benchmark
 
 test:
@@ -10,7 +10,7 @@ nr_task:
 - 1
 - 100%
 
-libMicro:
+lib-micro:
   samples:
   - 10000
   - 100000

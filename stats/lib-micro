@@ -2,19 +2,19 @@
 
 time = 0
 protocol = ' '
-libMicro = {}
+lib_micro = {}
 
 $stdin.each_line do |line|
   case line
   when %r(bin/)
     protocol = line.split[10].to_s
   when /elasped/
-    libMicro[protocol] = line.split[3].to_s
+    lib_micro[protocol] = line.split[3].to_s
     time += line.split[3].to_f
   end
 end
 
-libMicro.each do |k, v|
+lib_micro.each do |k, v|
   puts k + ': ' + v
 end
 
