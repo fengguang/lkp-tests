@@ -114,61 +114,6 @@ build_ignored_by_lkp()
 	echo "rrm_link_measurement" >> $ignored_by_lkp
 	echo "rrm_link_measurement_oom" >> $ignored_by_lkp	
 
-	echo "# ignore _result_is_not_stable_" >> $ignored_by_lkp
-	echo "autogo_join_auto_go_neg_after_seeing_go" >> $ignored_by_lkp
-	echo "ap_vht160" >> $ignored_by_lkp
-	echo "ap_wpa2_eap_eke_server_oom" >> $ignored_by_lkp
-	echo "ap_wpa2_eap_eke_serverid_nai" >> $ignored_by_lkp
-	echo "ap_wpa2_eap_in_bridge" >> $ignored_by_lkp
-	echo "fst_session_oom" >> $ignored_by_lkp
-	echo "p2ps_service_discovery_multiple_queries" >> $ignored_by_lkp
-	echo "pmksa_cache_preauth_vlan_used_per_sta_vif" >> $ignored_by_lkp
-	echo "p2ps_channel_active_go_and_station_different_mcc" >> $ignored_by_lkp
-	echo "rfkill_p2p_discovery_p2p_dev" >> $ignored_by_lkp
-	echo "scan_only" >> $ignored_by_lkp
-	echo "discovery_pd_retries" >> $ignored_by_lkp
-	echo "rrm_beacon_req_table_rsne" >> $ignored_by_lkp
-	echo "p2p_service_discovery_external" >> $ignored_by_lkp
-	echo "wnm_bss_tm_scan_needed" >> $ignored_by_lkp
-	echo "wnm_bss_tm_scan_needed_e4" >> $ignored_by_lkp
-	echo "wnm_bss_tm_scan_not_needed" >> $ignored_by_lkp
-	echo "grpform_no_5ghz_add_cli3" >> $ignored_by_lkp
-	echo "grpform_no_5ghz_world_roaming" >> $ignored_by_lkp
-	echo "p2ps_connect_adv_go_persistent" >> $ignored_by_lkp
-	echo "owe_transition_mode_open_only_ap" >> $ignored_by_lkp
-	echo "ap_wpa2_eap_aka_prime_sql" >> $ignored_by_lkp
-	echo "ap_wpa2_psk_ext_retry_msg_3" >> $ignored_by_lkp
-	echo "ap_wps_er_multi_add_enrollee" >> $ignored_by_lkp
-	echo "dpp_ap_config_p384_p384" >> $ignored_by_lkp
-	echo "owe_transition_mode_multi_bss" >> $ignored_by_lkp
-	echo "dpp_auth_resp_retries" >> $ignored_by_lkp
-	echo "dpp_pkex_hostapd_initiator" >> $ignored_by_lkp
-	echo "dpp_proto_stop_at_auth_resp" >> $ignored_by_lkp
-	echo "dpp_proto_stop_at_pkex_cr_resp" >> $ignored_by_lkp
-	echo "dpp_proto_stop_at_pkex_exchange_resp" >> $ignored_by_lkp
-	echo "dpp_qr_code_auth_broadcast" >> $ignored_by_lkp
-	echo "dpp_qr_code_auth_neg_chan" >> $ignored_by_lkp
-	echo "dpp_pkex_test_vector" >> $ignored_by_lkp
-	echo "wnm_bss_tm_country_us" >> $ignored_by_lkp
-	echo "scan" >> $ignored_by_lkp
-	echo "scan_setband" >> $ignored_by_lkp
-	echo "rfkill_autogo" >> $ignored_by_lkp
-	echo "discovery_while_cli_p2p_dev" >> $ignored_by_lkp
-	echo "discovery_while_go" >> $ignored_by_lkp
-	echo "dpp_config_dpp_gen_expired_key" >> $ignored_by_lkp
-	echo "dpp_config_dpp_gen_expiry" >> $ignored_by_lkp
-	echo "dpp_config_dpp_gen_prime256v1_secp384r1" >> $ignored_by_lkp
-	echo "dpp_config_dpp_override_prime256v1" >> $ignored_by_lkp
-	echo "dpp_config_legacy_gen_psk" >> $ignored_by_lkp
-	echo "dpp_config_legacy_psk_hex" >> $ignored_by_lkp
-	echo "dpp_own_config_ap" >> $ignored_by_lkp
-	echo "dpp_config_override_objects" >> $ignored_by_lkp
-
-	echo "# ignore _wait_for_the_reply_of_community" >> $ignored_by_lkp
-	echo "ap_config_reload" >> $ignored_by_lkp
-	echo "ap_config_reload_file" >> $ignored_by_lkp
-	echo "eap_fast_proto_phase2" >> $ignored_by_lkp
-
 	echo "# ignore _need_lower_version_of_libssl-dev" >> $ignored_by_lkp
 	echo "dpp_proto_auth_req_invalid_i_proto_key" >> $ignored_by_lkp
 	echo "dpp_proto_auth_resp_invalid_r_proto_key" >> $ignored_by_lkp
