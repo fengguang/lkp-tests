@@ -6,6 +6,7 @@ MAX_RATIO = 5
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
 require 'set'
+require 'timeout'
 require "#{LKP_SRC}/lib/lkp_git"
 require "#{LKP_SRC}/lib/git-update" if File.exist?("#{LKP_SRC}/lib/git-update.rb")
 require "#{LKP_SRC}/lib/yaml"
@@ -359,6 +360,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
   end
 
   cols = 0
+  log_debug "finding base_matrix_file..."
   git.release_tags_with_order.each do |tag, o|
     next if o >  order
     next if o == order && is_exact_match
@@ -368,7 +370,12 @@ def load_base_matrix(matrix_path, head_matrix, options)
     rp[axis] = tag
     base_matrix_file = rp._result_root + '/matrix.json'
     unless File.exist? base_matrix_file
-      rp[axis] = git.release_tags2shas[tag]
+      begin
+        Timeout.timeout(600) { rp[axis] = git.release_tags2shas[tag] }
+      rescue Timeout::Error
+        log_error "git release_tags2shas timeout"
+        break
+      end
       base_matrix_file = rp._result_root + '/matrix.json'
     end
     next unless File.exist? base_matrix_file
