@@ -312,12 +312,18 @@ def load_base_matrix(matrix_path, head_matrix, options)
     return nil
   end
 
+  log_debug "tag_names: #{git.tag_names.size}"
   return load_base_matrix_for_notag_project(git, rp, axis) if git.tag_names.empty?
 
+  log_debug "commit: #{commit}"
   begin
     return nil unless git.commit_exist? commit
-    version, is_exact_match = git.gcommit(commit).last_release_tag
+    version = nil
+    is_exact_match = false
+    Timeout.timeout(600) { version, is_exact_match = git.gcommit(commit).last_release_tag }
     puts "project: #{project}, version: #{version}, is exact match: #{is_exact_match}" if ENV['LKP_VERBOSE']
+  rescue Timeout::Error
+    log_error "git last_release_tag timeout"
   rescue StandardError => e
     log_exception e, binding
     return nil
