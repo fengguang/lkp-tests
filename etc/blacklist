@@ -8,12 +8,11 @@
 ^boot-slabinfo.
 ^boot-time.
 ^buddyinfo.*
-^build-dpdk.build-dpdk.fail
-^build-dpdk.time.*
-^build-qemu.time.*
-^build-sof.dmesg.*
-^build-sof.kmsg.*
-^build-sof.stderr.*
+^build-.+\.build-.+\fail
+^build-.+\.dmesg.*
+^build-.+\.kmsg.*
+^build-.+\.stderr.*
+^build-.+\.time.*
 ^cpuidle.
 ^DDT.*\.pass
 ^diskstats.*
