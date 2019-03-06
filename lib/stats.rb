@@ -317,9 +317,13 @@ def load_base_matrix(matrix_path, head_matrix, options)
 
   log_debug "commit: #{commit}"
   begin
-    return nil unless git.commit_exist? commit
+    unless git.commit_exist? commit
+      log_debug "commit #{commit} not exist"
+      return nil
+    end
     version = nil
     is_exact_match = false
+    log_debug "start to calulate last_release_tag..."
     Timeout.timeout(600) { version, is_exact_match = git.gcommit(commit).last_release_tag }
     puts "project: #{project}, version: #{version}, is exact match: #{is_exact_match}" if ENV['LKP_VERBOSE']
   rescue Timeout::Error
@@ -329,6 +333,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
     return nil
   end
 
+  log_debug "parse context..."
   # FIXME: remove it later; or move it somewhere in future
   if project == 'linux' && !version
     kconfig = rp['kconfig']
