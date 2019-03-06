@@ -37,6 +37,7 @@
 ^dmesg..*/lkp/
 ^dmesg.Mem-Info
 ^dmesg.timestamp:.*
+.*\.ignored_by_lkp
 ^internal-lkp-service.*
 ^interrupts.
 ^interrupts.(?!CAL:).*
