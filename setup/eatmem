@@ -2,22 +2,23 @@
 # - eatmem_size
 # - eatmem_duration
 # - eatmem_nonuma
+# - mem_node_bind
+
+. "$LKP_SRC/lib/debug.sh"
+. "$LKP_SRC/lib/numactl.sh"
 
 USEMEM=/lkp/benchmarks/vm-scalability/usemem
 [ -x $USEMEM ] ||
 USEMEM=/lkp/benchmarks/eatmem/usemem
 
-nr_node=$(echo /sys/devices/system/node/node[0-9]* | wc -w)
+parse_numa_node_binding "$cpu_node_bind" "$mem_node_bind"
 
 [ -z "$eatmem_size" ] && die "eatmem: eatmem_size required"
 [ -z "$eatmem_duration" ] && eatmem_duration=$((3600*24))
 
-if [ -z "$eatmem_nonuma" ]; then
-	for i in $(seq 0 $((nr_node-1))); do
-		numactl -m $i -N $i $USEMEM $((eatmem_size/nr_node)) --detach --sleep $eatmem_duration -p $TMP/eatmem_$i.pid
-		cat $TMP/eatmem_$i.pid >> $TMP/pid-bg-proc-eatmem
-		rm $TMP/eatmem_$i.pid
-	done
-else
-	$USEMEM $eatmem_size --detach --sleep $eatmem_duration -p $TMP/pid-bg-proc-eatmem
-fi
+for i in $(seq 0 $((nr_node-1))); do
+	numa_bind=$(numa_node_binding "$i")
+	log_cmd $numa_bind $USEMEM $((eatmem_size/nr_node)) --detach --sleep $eatmem_duration -p $TMP/eatmem_$i.pid --mlock --prefault
+	cat $TMP/eatmem_$i.pid >> $TMP/pid-bg-proc-eatmem
+	rm $TMP/eatmem_$i.pid
+done
