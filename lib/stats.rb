@@ -6,7 +6,6 @@ MAX_RATIO = 5
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
 require 'set'
-require 'timeout'
 require "#{LKP_SRC}/lib/lkp_git"
 require "#{LKP_SRC}/lib/git-update" if File.exist?("#{LKP_SRC}/lib/git-update.rb")
 require "#{LKP_SRC}/lib/yaml"
@@ -312,28 +311,17 @@ def load_base_matrix(matrix_path, head_matrix, options)
     return nil
   end
 
-  log_debug "tag_names: #{git.tag_names.size}"
   return load_base_matrix_for_notag_project(git, rp, axis) if git.tag_names.empty?
 
-  log_debug "commit: #{commit}"
   begin
-    unless git.commit_exist? commit
-      log_debug "commit #{commit} not exist"
-      return nil
-    end
-    version = nil
-    is_exact_match = false
-    log_debug "start to calulate last_release_tag..."
-    Timeout.timeout(600) { version, is_exact_match = git.gcommit(commit).last_release_tag }
+    return nil unless git.commit_exist? commit
+    version, is_exact_match = git.gcommit(commit).last_release_tag
     puts "project: #{project}, version: #{version}, is exact match: #{is_exact_match}" if ENV['LKP_VERBOSE']
-  rescue Timeout::Error
-    log_error "git last_release_tag timeout"
   rescue StandardError => e
     log_exception e, binding
     return nil
   end
 
-  log_debug "parse context..."
   # FIXME: remove it later; or move it somewhere in future
   if project == 'linux' && !version
     kconfig = rp['kconfig']
@@ -351,35 +339,26 @@ def load_base_matrix(matrix_path, head_matrix, options)
     end
   end
 
-  log_debug "version is #{version}"
-  order = nil
-  begin
-    Timeout.timeout(600) {
-      order = git.release_tag_order(version)
-      unless order
-        # ERR unknown version v4.3 matrix
-        # b/c git repo like /c/repo/linux on inn keeps changing, it is possible
-        # that git object is cached in an older time, and v4.3 commit 6a13feb9c82803e2b815eca72fa7a9f5561d7861 appears later.
-        # - git.gcommit(6a13feb9c82803e2b815eca72fa7a9f5561d7861).last_release_tag returns [v4.3, false]
-        # - git.release_tag_order(v4.3) returns nil
-        # refresh the cache to invalidate previous git object
-        git = $git[project] = Git.open(project: project)
-        version, is_exact_match = git.gcommit(commit).last_release_tag
-        order = git.release_tag_order(version)
+  order = git.release_tag_order(version)
+  unless order
+    # ERR unknown version v4.3 matrix
+    # b/c git repo like /c/repo/linux on inn keeps changing, it is possible
+    # that git object is cached in an older time, and v4.3 commit 6a13feb9c82803e2b815eca72fa7a9f5561d7861 appears later.
+    # - git.gcommit(6a13feb9c82803e2b815eca72fa7a9f5561d7861).last_release_tag returns [v4.3, false]
+    # - git.release_tag_order(v4.3) returns nil
+    # refresh the cache to invalidate previous git object
+    git = $git[project] = Git.open(project: project)
+    version, is_exact_match = git.gcommit(commit).last_release_tag
+    order = git.release_tag_order(version)
 
-        # FIXME: rli9 after above change, below situation is not reasonable, keep it for debugging purpose now
-        unless order
-          log_error "unknown version #{version} matrix: #{matrix_path} options: #{options}"
-          return nil
-        end
-      end
-    }
-  rescue Timeout::Error
-    log_error "git release_tag_order timeout"
+    # FIXME: rli9 after above change, below situation is not reasonable, keep it for debugging purpose now
+    unless order
+      log_error "unknown version #{version} matrix: #{matrix_path} options: #{options}"
+      return nil
+    end
   end
 
   cols = 0
-  log_debug "finding base_matrix_file..."
   git.release_tags_with_order.each do |tag, o|
     next if o >  order
     next if o == order && is_exact_match
@@ -389,12 +368,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
     rp[axis] = tag
     base_matrix_file = rp._result_root + '/matrix.json'
     unless File.exist? base_matrix_file
-      begin
-        Timeout.timeout(600) { rp[axis] = git.release_tags2shas[tag] }
-      rescue Timeout::Error
-        log_error "git release_tags2shas timeout"
-        break
-      end
+      rp[axis] = git.release_tags2shas[tag]
       base_matrix_file = rp._result_root + '/matrix.json'
     end
     next unless File.exist? base_matrix_file
