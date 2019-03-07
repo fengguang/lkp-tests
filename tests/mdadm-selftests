@@ -63,10 +63,6 @@ run_test()
 		*) prefix="timeout 5m"
 		;;
 	esac
-
-	# to avoid INFO: task mdadm:3234 blocked for more than 120 seconds.
-	echo 0 > /proc/sys/kernel/hung_task_timeout_secs
-
 	$prefix ./test "--tests=$testcase"
 
 	[ $? -eq 124 ] && echo "$testcase TIMEOUT"
