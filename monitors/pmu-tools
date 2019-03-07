@@ -39,6 +39,8 @@ fi
 
 opt_events="-e $(echo $events | sed 's/ / -e /g')"
 
+[ "$run" = 0 ] && exit 0
+
 $ocperf stat $opt_events --log-fd 1 true 2>&1 |
 grep 'invalid or unsupported event' &&
 exit 99
