@@ -76,10 +76,8 @@ class ResultPath < Hash
     end
 
     if ps.include?('commit')
-      unless self['commit'] && sha1_40?(self['commit'])
-        # $stderr.puts "ResultPath parse error for #{rt}"
-        return false
-      end
+      # $stderr.puts "ResultPath parse error for #{rt}"
+      each_commit { |_type, commit| return false unless self[commit] && sha1_40?(self[commit]) }
     end
 
     # for rt and _rt
