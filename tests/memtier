@@ -6,6 +6,7 @@
 # - requests
 # - requests_multiple
 # - key_pattern
+# - preload_key_pattern
 # - key_min
 # - key_max
 # - nr_threads
@@ -29,6 +30,7 @@ export PATH=$BENCHMARK_ROOT/memtier_benchmark/:$PATH
 : "${nr_threads:=1}"
 : "${key_min:=1}"
 : "${requests_multiple:=1}"
+: "${preload_key_pattern:="R:R"}"
 
 [ -n "$key_max" ] || {
 	echo "$(basename $0) key_max must be specified!\n";
@@ -56,7 +58,7 @@ if [ -n "$preload" ]; then
 	do
 		port=$((6379+i))
 		numa_bind=$(numa_node_binding "$i")
-		log_test $numa_bind memtier_benchmark $opt --ratio="100:1" -n $preload_proc_requests --key-pattern="R:R" -p $port > /dev/null &
+		log_test $numa_bind memtier_benchmark $opt --ratio="100:1" -n $preload_proc_requests --key-pattern=$preload_key_pattern -p $port > /dev/null &
 	done
 	wait
 	end=$(date +%s.%N)
