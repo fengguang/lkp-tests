@@ -3,8 +3,6 @@
 require 'time'
 require 'json'
 
-RESULT_ROOT = ENV['RESULT_ROOT']
-
 # The below is an example of mpstat output, read it then parse it into hash data.
 # {"sysstat": {
 #   "hosts": [
@@ -34,18 +32,25 @@ RESULT_ROOT = ENV['RESULT_ROOT']
 #               ...
 #             },
 
-mpstat_json = File.read("#{RESULT_ROOT}/mpstat")
+if ARGV[0]
+  mpstat = ARGV[0]
+elsif ENV['RESULT_ROOT']
+  RESULT_ROOT = ENV['RESULT_ROOT']
+  mpstat = "#{RESULT_ROOT}/mpstat"
+end
+
+mpstat_json = File.read(mpstat)
 begin
   mpstat_hash = JSON.parse(mpstat_json)
 # If mpstat file tailed with string "},", it is not complete json format, need to delete ","
 # and complete the json format.
 rescue JSON::ParserError
-  File.open("#{RESULT_ROOT}/mpstat", 'r+') do |io|
+  File.open(mpstat, 'r+') do |io|
     io.seek(-2, IO::SEEK_END)
     io.truncate(io.pos)
     io.puts "\n\t\t\t\]\n\t\t\}\n\t\]\n\}\}\n"
   end
-  mpstat_json = File.read("#{RESULT_ROOT}/mpstat")
+  mpstat_json = File.read(mpstat)
   mpstat_hash = JSON.parse(mpstat_json)
 end
 
