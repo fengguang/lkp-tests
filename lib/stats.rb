@@ -317,9 +317,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
     return nil unless git.commit_exist? commit
     version = nil
     is_exact_match = false
-    # It seems that last_release_tag will be catching the exception that Timeout#timeout throws,
-    # rescue Timeout::Error doesn't work for it.
-    Timeout.timeout(300) { version, is_exact_match = git.gcommit(commit).last_release_tag }
+    version, is_exact_match = git.gcommit(commit).last_release_tag
     puts "project: #{project}, version: #{version}, is exact match: #{is_exact_match}" if ENV['LKP_VERBOSE']
   rescue StandardError => e
     log_exception e, binding
@@ -634,8 +632,11 @@ def load_matrices_to_compare(matrix_path1, matrix_path2, options = {})
     b = if matrix_path2
           search_load_json matrix_path2
         else
-          load_base_matrix matrix_path1, a, options
+          Timeout.timeout(300) { load_base_matrix matrix_path1, a, options }
         end
+  rescue Timeout::Error
+    log_error "load_base_matrix timeout"
+    return [nil, nil]
   rescue StandardError => e
     log_exception(e, binding)
     return [nil, nil]
