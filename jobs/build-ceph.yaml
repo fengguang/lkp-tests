@@ -3,7 +3,7 @@ testcase: build-ceph
 
 timeout: 6000
 need_memory: 8G
-testbox: vm-snb-8G
+testbox: lkp-opteron1
 
 branch: linus/master
 commit: v4.17
