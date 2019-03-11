@@ -69,10 +69,10 @@ sysctl table check failed:
 Unknown interrupt or fault at:
 warn_alloc_failed\+0x
 WARNING: .*!$
-WARNING: .*/0x
 WARNING: at .*
 WARNING: chain_key collision
 WARNING: CPU: [0-9]+ PID: [0-9]+ at .*
+WARNING: .*/0x
 WARNING: dead process
 WARNING: .* detected$
 WARNING: kernel stack
