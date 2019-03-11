@@ -1,0 +1,67 @@
+short_description: >
+  memtier_benchmark is a command line utility developed by Redis Labs
+  (formerly Garantia Data Ltd.) for load generation and bechmarking NoSQL
+  key-value databases.
+
+description: |
+  memtier_benchmark is a command line utility developed by Redis Labs
+  (formerly Garantia Data Ltd.) for load generation and bechmarking NoSQL
+  key-value databases. It offers the following:
+
+    * Support for both Redis and Memcache protocols (text and binary)
+    * Multi-threaded multi-client execution
+    * Multiple configuration options, including:
+    * Read:Write ratio
+    * Random and sequential key name pattern policies
+    * Random or ranged key expiration
+    * Redis cluster
+    * ...and much more
+
+homepage: https://github.com/RedisLabs/memtier_benchmark
+
+parameters:
+  n_ratio:
+  data_size:
+  requests:
+  key_pattern:
+  key_max:
+  n_client:
+  n_pipeline:
+
+results:
+  memtier.preload_duration:
+  memtier.total_sets_ops/s:
+  memtier.total_sets_latency_ms:
+  memtier.total_sets_kb/s:
+  memtier.total_gets_ops/s:
+  memtier.total_gets_hits/s:
+  memtier.total_gets_misses/s:
+  memtier.total_gets_latency_ms:
+  memtier.total_gets_kb/s:
+  memtier.total_totals_ops/s:
+  memtier.total_totals_hits/s:
+  memtier.total_totals_misses/s:
+  memtier.total_totals_latency_ms:
+  memtier.total_totals_kb/s:
+  memtier.avg_sets_ops/s:
+  memtier.avg_sets_latency_ms:
+  memtier.avg_sets_kb/s:
+  memtier.avg_gets_ops/s:
+  memtier.avg_gets_hits/s:
+  memtier.avg_gets_misses/s:
+  memtier.avg_gets_latency_ms:
+  memtier.avg_gets_kb/s:
+  memtier.gets_miss_rate_%:
+  memtier.avg_totals_ops/s:
+  memtier.avg_totals_hits/s:
+  memtier.avg_totals_misses/s:
+  memtier.avg_totals_latency_ms:
+  memtier.avg_totals_kb/s:
+  memtier.set_latency_90%_ms:
+  memtier.set_latency_95%_ms:
+  memtier.set_latency_99%_ms:
+  memtier.set_latency_99.9%_ms:
+  memtier.get_latency_90%_ms:
+  memtier.get_latency_95%_ms:
+  memtier.get_latency_99%_ms:
+  memtier.get_latency_99.9%_ms:
