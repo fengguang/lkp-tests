@@ -1,0 +1,93 @@
+short_description: >
+  Redis benchmark is the utility to check the performance of Redis by
+  running commands done by N clients at the same time sending M total
+  queries (it is similar to the Apache's ab utility).
+
+description: |
+  Redis benchmark is the utility to check the performance of Redis by
+  running commands done by N clients at the same time sending M total
+  queries (it is similar to the Apache's ab utility).
+
+  * The following options are supported:
+    Usage: redis-benchmark [-h <host>] [-p <port>] [-c <clients>] [-n <requests]> [-k <boolean>]
+
+     -h <hostname>      Server hostname (default 127.0.0.1)
+     -p <port>          Server port (default 6379)
+     -s <socket>        Server socket (overrides host and port)
+     -a <password>      Password for Redis Auth
+     -c <clients>       Number of parallel connections (default 50)
+     -n <requests>      Total number of requests (default 100000)
+     -d <size>          Data size of SET/GET value in bytes (default 2)
+     --dbnum <db>       SELECT the specified db number (default 0)
+     -k <boolean>       1=keep alive 0=reconnect (default 1)
+     -r <keyspacelen>   Use random keys for SET/GET/INCR, random values for SADD
+      Using this option the benchmark will expand the string __rand_int__
+      inside an argument with a 12 digits number in the specified range
+      from 0 to keyspacelen-1. The substitution changes every time a command
+      is executed. Default tests use this to hit random keys in the
+      specified range.
+     -P <numreq>        Pipeline <numreq> requests. Default 1 (no pipeline).
+     -q                 Quiet. Just show query/sec values
+     --csv              Output in CSV format
+     -l                 Loop. Run the tests forever
+     -t <tests>         Only run the comma separated list of tests. The test
+                        names are the same as the ones produced as output.
+     -I                 Idle mode. Just open N idle connections and wait.
+
+  You need to have a running Redis instance before launching the benchmark.
+    A typical example would be:
+    redis-benchmark -q -n 100000
+
+  The redis-benchmark program is a quick and useful way to get some figures and
+  evaluate the performance of a Redis instance on a given hardware. However, by
+  default, it does not represent the maximum throughput a Redis instance can sustain.
+  Actually, by using pipelining and a fast client (hiredis), it is fairly easy to
+  write a program generating more throughput than redis-benchmark. The default
+  behavior of redis-benchmark is to achieve throughput by exploiting concurrency
+  only (i.e. it creates several connections to the server).
+  It does not use pipelining or any parallelism at all (one pending query per
+  connection at most, and no multi-threading), if not explicitly enabled via the
+  -P parameter. So in some way using redis-benchmark and, triggering, for example,
+  a BGSAVE operation in the background at the same time, will provide the user with
+  numbers more near to the worst case than to the best case.
+
+  To run a benchmark using pipelining mode (and achieve higher throughput), you
+  need to explicitly use the -P option. Please note that it is still a realistic
+  behavior since a lot of Redis based applications actively use pipelining to
+  improve performance. However you should use a pipeline size that is more or less
+  the average pipeline length you'll be able to use in your application in order
+  to get realistic numbers.
+
+  Finally, the benchmark should apply the same operations, and work in the same
+  way with the multiple data stores you want to compare. It is absolutely pointless
+  to compare the result of redis-benchmark to the result of another benchmark
+  program and extrapolate.
+
+homepage: https://redis.io/topics/benchmarks
+
+parameters:
+  test:
+  data_size:
+  n_client:
+  requests:
+  n_pipeline:
+  key_len:
+
+results:
+  redis.set_total_throughput_rps:
+  redis.get_total_throughput_rps:
+  redis.set_avg_throughput_rps:
+  redis.get_avg_throughput_rps:
+  redis.set_latency_1ms%:
+  redis.set_latency_2ms%:
+  redis.set_latency_3ms%:
+  redis.set_latency_90%_ms:
+  redis.set_latency_95%_ms:
+  redis.set_latency_99%_ms:
+  redis.set_latency_99.9%_ms:
+  redis.get_latency_0ms%":
+  redis.get_latency_1ms%":
+  redis.get_latency_90%_ms:
+  redis.get_latency_95%_ms:
+  redis.get_latency_99%_ms:
+  redis.get_latency_99.9%_ms:
