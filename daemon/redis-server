@@ -2,14 +2,19 @@
 # - nr_processes
 # - cpu_node_bind
 # - mem_node_bind
+# - redis_cpu_node_bind
+# - redis_mem_node_bind
 
 . $LKP_SRC/lib/reproduce-log.sh
 . "$LKP_SRC"/lib/numactl.sh
 
+: "${redis_cpu_node_bind:=$cpu_node_bind}"
+: "${redis_mem_node_bind:=$mem_node_bind}"
+
 bg_pids=""
 redis_server=$BENCHMARK_ROOT/redis/bin/redis-server
 
-parse_numa_node_binding "$cpu_node_bind" "$mem_node_bind"
+parse_numa_node_binding "$redis_cpu_node_bind" "$redis_mem_node_bind"
 
 # start redis server
 for i in $(seq 1 "${nr_processes}"); do
