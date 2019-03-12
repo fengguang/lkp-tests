@@ -152,6 +152,7 @@
 ^stderr.*:Connection_reset_by_peer
 ^stderr.curl.*Empty_reply_from_server
 ^stderr.disk_number.*
+^stderr.Error_on#events_is_too_high
 ^stderr.failed_to_checkout_sof_commit
 ^stderr.*Failed_to_fetch_http
 ^stderr.fail_to_setup_test_environment
