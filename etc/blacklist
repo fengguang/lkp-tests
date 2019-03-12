@@ -165,6 +165,7 @@
 ^stderr.Invalid_number_of_requests
 ^stderr.Killed
 ^stderr./lkp/.*
+^stderr.lost_connection
 ^stderr.ls:cannot_access.*
 ^stderr.make.*Error
 ^stderr.make_perf_failed
@@ -177,6 +178,7 @@
 ^stderr.socket:Too_many_open_files
 ^stderr.some_monitors_do_not_quit_in_time
 ^stderr.src/arch/xtensa/.*
+^stderr.Timeout,server#not_responding
 ^stderr.*write_error
 ^syzkaller.*
 ^tcrypt.*
