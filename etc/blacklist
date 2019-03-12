@@ -155,6 +155,7 @@
 ^stderr.Error_on#events_is_too_high
 ^stderr.failed_to_checkout_sof_commit
 ^stderr.*Failed_to_fetch_http
+^stderr.failed_to_mmap_with#\(Cannot_allocate_memory\)
 ^stderr.fail_to_setup_test_environment
 ^stderr.fatal:reference_is_not_a_tree
 ^stderr.fio:posix_fallocate_fails:No_space_left_on_device
