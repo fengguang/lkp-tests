@@ -154,6 +154,7 @@
 ^stderr.disk_number.*
 ^stderr.Error_on#events_is_too_high
 ^stderr.failed_to_checkout_sof_commit
+^stderr.Failed_to_connect_to_hostapd-wpa_ctrl_open:No_such_file_or_directory
 ^stderr.*Failed_to_fetch_http
 ^stderr.failed_to_mmap_with#\(Cannot_allocate_memory\)
 ^stderr.fail_to_setup_test_environment
