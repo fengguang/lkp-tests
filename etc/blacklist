@@ -186,6 +186,7 @@
 ^stderr.users_on_this_machine
 ^stderr.*write_error
 ^stderr.xinit:error_while_loading_shared_libraries:libX11.so.#:cannot_open_shared_object_file:No_such_file_or_directory
+^stderr.zero-sized_data\(perf.data\),nothing_to_do
 ^syzkaller.*
 ^tcrypt.*
 ^time.
