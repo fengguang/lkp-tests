@@ -182,6 +182,7 @@
 ^stderr.swapon:cannot_open/dev/disk/by-id/.*:No_such_file_or_directory
 ^stderr.Testing_over
 ^stderr.Timeout,server#not_responding
+^stderr.Unexpected_error:Inappropriate_ioctl_for_device
 ^stderr.users_on_this_machine
 ^stderr.*write_error
 ^stderr.xinit:error_while_loading_shared_libraries:libX11.so.#:cannot_open_shared_object_file:No_such_file_or_directory
