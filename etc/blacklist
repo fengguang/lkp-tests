@@ -179,6 +179,7 @@
 ^stderr.socket:Too_many_open_files
 ^stderr.some_monitors_do_not_quit_in_time
 ^stderr.src/arch/xtensa/.*
+^stderr.swapon:cannot_open/dev/disk/by-id/.*:No_such_file_or_directory
 ^stderr.Testing_over
 ^stderr.Timeout,server#not_responding
 ^stderr.users_on_this_machine
