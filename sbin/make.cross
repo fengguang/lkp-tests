@@ -20,7 +20,7 @@
 # Credit: Tony Breeds <tony@bakeyournoodle.com> for crosstool
 
 GCC_VERSION=${GCC_VERSION:-""}
-GCC_INSTALL_PATH="$HOME/0day"
+GCC_INSTALL_PATH=${GCC_INSTALL_PATH:-"$HOME/0day"}
 
 if [[ ! "$0" =~ 'make.cross' && "$0" =~ make\.([a-z0-9_]+) ]]; then
 	export ARCH="${BASH_REMATCH[1]}"
