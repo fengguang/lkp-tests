@@ -5,7 +5,9 @@ category: functional
 branch: linus/master
 
 nvml_branch: nvml/master
-nvml_commit: HEAD
+nvml_commit:
+- HEAD
+- BASE
 
 need_memory: 3G
 
