@@ -2,7 +2,9 @@ suite: ltp
 testcase: ltp
 category: functional
 
-ltp_commit: HEAD
+ltp_commit:
+- HEAD
+- BASE
 ltp_branch: ltp/master
 
 need_modules: true

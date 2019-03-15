@@ -4,7 +4,9 @@ category: functional
 
 need_modules: true
 
-ltp_commit: HEAD
+ltp_commit:
+- HEAD
+- BASE
 ltp_branch: ltp/master
 
 runtime: 4h
