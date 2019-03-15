@@ -353,3 +353,51 @@ Give an example to explain how to add one testcase, take hwsim as example:
 NOTE:
 
 The test case run time should be about 300s~600s.
+
+
+# How to add rspec tests for a new testcase stats script
+
+RSpec is a unit test framework for the Ruby programming language. RSpec is a Behavior driven
+development tool. Tests written in RSpec focus on the "behavior" of an application being tested.
+RSpec does not put emphasis on, how the application works but instead on how it behaves, in other
+words, what the application actually does.
+
+In order to test the ruby scripts under "lkp-tests/stats/", we've created spec file `spec/stats_spec.rb`,
+we also need to create example input file and expected output file under
+"lkp-tests/spec/stats/". Then run rspec test to check it's result. If it's result not showing
+failure, that means the testcase stats script can output result as examples expected.
+
+An example to explain how to add rspec test for stats/mpstat:
+
+1. Check code stats/mpstat, make it have a choice to get input data by calling argument
+   `ARGV[0]` or variable `$stdin`. Such as the following lines from stats/mpstat:
+```ruby
+    if ARGV[0]
+      mpstat = ARGV[0]
+    elsif ENV['RESULT_ROOT']
+      RESULT_ROOT = ENV['RESULT_ROOT']
+      mpstat = "#{RESULT_ROOT}/mpstat"
+    end
+```
+
+2. Prepare file `mpstat.01` and `mpstat.01.yaml` under lkp-tests/spec/stat.
+
+   File `lkp-tests/spec/stat/mpstat.01` is typical raw data example that need to be handled by "stats/mpstat" as input.
+
+   File `lkp-tests/spec/stat/mpstat.01.yaml` is some data output by executing "stats/mpstat mpstat".
+   If the script have several types of raw data, then can create several example files named in order, such as
+   `mpstat.01`,`mpstat.02` in "lkp-tests/spec/stat".
+
+3. Run rspec test by command:
+```bash
+    cd lkp-tests
+    rake spec spec=stats
+```
+
+4. Check rspec test result. If have any failure reported in results, then need to check
+code "stats/mpstat" and spec examples file under "lkp-tests/spec/stat", and do some deep analysis.
+
+   The following result indicate the rspec test is pass.
+```
+   Finished in 0.00821 seconds (files took 0.10604 seconds to load) 11 examples, 0 failures
+```
