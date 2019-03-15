@@ -175,7 +175,7 @@ class Job
 end
 
 class Job
-  EXPAND_DIMS = %w(kconfig commit rootfs).freeze
+  EXPAND_DIMS = %w(kconfig commit rootfs ltp_commit nvml_commit blktests_commit qemu_commit perf_test_commit linux_commit).freeze
 
   attr_reader :path_scheme
   attr_reader :referenced_programs
