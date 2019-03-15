@@ -59,6 +59,7 @@ for i in $(seq 1 $nr_processes); do
 	numa_bind=$(numa_node_binding "$i")
 	log_echo "$exec_prefix $numa_bind /usr/local/bin/pmbench $opt $runtime > $pmb_tmp_dir/pmbench.$i &"
 	$numa_bind /usr/local/bin/pmbench $opt $runtime > "$pmb_tmp_dir/pmbench.$i" &
+	echo $! >> $TMP/pid-tests
 done
 
 wait
