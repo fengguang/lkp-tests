@@ -2,7 +2,9 @@ suite: blktests
 testcase: blktests
 category: functional
 
-blktests_commit: HEAD
+blktests_commit:
+- HEAD
+- BASE
 blktests_branch: blktests/master
 
 need_memory: 3G
