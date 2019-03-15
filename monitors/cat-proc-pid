@@ -1,0 +1,40 @@
+#!/bin/sh
+# - file
+# - proc_name
+# - delay
+# - oneshot
+# - interval
+
+: "${interval:=1}"
+
+if [ -z "$file" ]; then
+	file=$(basename "$0")
+	file=${file#proc-}
+fi
+
+[ -f /proc/1/"$file" ] || exit
+
+. "$LKP_SRC"/lib/wait.sh
+setup_wait
+
+[ -n "$delay" ] && wait_timeout "$delay"
+
+get_pids()
+{
+	if [ -n "$proc_name" ]; then
+		pgrep -x "$proc_name"
+	else
+		cat "$TMP"/pid-tests
+	fi
+}
+
+while true; do
+	echo time: "$(date +%s.%N)"
+	for pid in $(get_pids); do
+		[ -d /proc/"$pid" ] || continue
+		echo "proc: ${pid}, $(cat /proc/$pid/comm)"
+		cat "/proc/$pid/$file"
+	done
+	[ -n "$oneshot" ] && exit 0
+	wait_timeout "$interval"
+done
