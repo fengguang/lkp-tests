@@ -2,6 +2,7 @@
 
 require 'time'
 require 'json'
+require 'fileutils'
 
 # The below is an example of mpstat output, read it then parse it into hash data.
 # {"sysstat": {
@@ -42,15 +43,26 @@ end
 mpstat_json = File.read(mpstat)
 begin
   mpstat_hash = JSON.parse(mpstat_json)
-# If mpstat file tailed with string "},", it is not complete json format, need to delete ","
-# and complete the json format.
+# The mpstat file may meet 2 kinds of uncomplete format:
+# If mpstat file end with string "},", need to delete "," , then complete json format.
+# If mpstat file end with "}", need to complete the missing string
+# "\n\t\t\t\]\n\t\t\}\n\t\]\n\}\}\n".
 rescue JSON::ParserError
-  File.open(mpstat, 'r+') do |io|
+  FileUtils.cp(mpstat, 'mpstat_update')
+  File.open('mpstat_update', 'r+') do |io|
     io.seek(-2, IO::SEEK_END)
-    io.truncate(io.pos)
-    io.puts "\n\t\t\t\]\n\t\t\}\n\t\]\n\}\}\n"
+    str = io.gets
+    if str == ",\n"
+      io.seek(-2, IO::SEEK_END)
+      io.truncate(io.pos)
+      io.puts "\n\t\t\t\]\n\t\t\}\n\t\]\n\}\}\n"
+    elsif str == "\t\}"
+      io.seek(0, IO::SEEK_END)
+      io.puts "\n\t\t\t\]\n\t\t\}\n\t\]\n\}\}\n"
+    end
   end
-  mpstat_json = File.read(mpstat)
+  mpstat_json = File.read('mpstat_update')
+  File.delete('mpstat_update')
   mpstat_hash = JSON.parse(mpstat_json)
 end
 
