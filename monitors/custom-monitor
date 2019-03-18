@@ -1,0 +1,19 @@
+#!/bin/sh
+# - cmdline
+# - delay
+# - oneshot
+# - interval
+
+: "${interval:=1}"
+
+. "$LKP_SRC"/lib/wait.sh
+setup_wait
+
+[ -n "$delay" ] && wait_timeout "$delay"
+
+while true; do
+	echo time: "$(date +%s.%N)"
+	$cmdline
+	[ -n "$oneshot" ] && exit 0
+	wait_timeout "$interval"
+done
