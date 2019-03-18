@@ -98,32 +98,11 @@ install_crosstool()
 	}
 }
 
-install_linaro()
-{
-	local URL='http://releases.linaro.org/archive/14.08/components/toolchain/binaries'
-	local file='gcc-linaro-aarch64-linux-gnu-4.9-2014.08_linux.tar.xz'
-
-	download_extract "$URL/$file"
-
-	local dir="$GCC_INSTALL_PATH/$(basename $file .tar.xz)"
-	local cross_gcc_version=($dir/bin/${gcc_arch}-gcc-*.*.*)
-	local cross_gcc_version=${cross_gcc_version##*-}
-
-	echo mkdir -p $GCC_INSTALL_PATH/gcc-$cross_gcc_version
-	mkdir -p $GCC_INSTALL_PATH/gcc-$cross_gcc_version || return
-	echo mv $dir  $GCC_INSTALL_PATH/gcc-$cross_gcc_version/$gcc_arch
-	mv $dir  $GCC_INSTALL_PATH/gcc-$cross_gcc_version/$gcc_arch
-}
-
 install_cross_compiler()
 {
 	install_packages
 
-	if [[ $gcc_arch =~ 'aarch64' ]]; then
-		install_linaro
-	else
-		install_crosstool
-	fi
+	install_crosstool
 }
 
 setup_compiler_for_xtensa()
@@ -159,7 +138,7 @@ setup_crosstool()
 			gcc_arch=arm-*linux-gnueabi
 			;;
 		arm64)
-			gcc_arch=aarch64-linux-gnu
+			gcc_arch=aarch64-linux*
 			;;
 		powerpc)
 			gcc_arch=powerpc64-linux
