@@ -37,7 +37,8 @@ for i do
 	i=${i/\$\{netmask\}/$(my_netmask)}
 
 	[[ -f /tmp/wget-ok ]] && quiet="-nv"
-	wget $quiet -nc -P $(dirname /tmp/$i) $path_prefix/$i
+	echo "Download: $path_prefix/$i to /tmp/$i"
+	$WGET_CMD $quiet -nc -P $(dirname /tmp/$i) $path_prefix/$i
 	[[ $? -ne 0 ]] && continue
 	touch /tmp/wget-ok
 
