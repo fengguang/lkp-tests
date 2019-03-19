@@ -191,6 +191,7 @@
 ^stderr.Testing_over
 ^stderr.Timeout,server#not_responding
 ^stderr.Traceback\(most_recent_call_last\)
+^stderr.+unable_to_open/dev/sd[a-z]+[0-9]+:Device_or_resource_busy
 ^stderr.Unexpected_error:Inappropriate_ioctl_for_device
 ^stderr.users_on_this_machine
 ^stderr.wflinfo_utility_not_found
