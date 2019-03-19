@@ -146,7 +146,6 @@
 ^slabinfo.
 ^softirqs.
 ^softirqs.CPU
-^stderr.AssertionError
 ^stderr.*:cannot_create_regular_file.*:File_exists
 ^stderr.Can_not_find_perf_command
 ^stderr.configure.*
@@ -163,7 +162,6 @@
 ^stderr.fatal:reference_is_not_a_tree
 ^stderr.find:.*:No_such_file_or_directory
 ^stderr.fio:posix_fallocate_fails:No_space_left_on_device
-^stderr.func\(*args,**kwargs\)
 ^stderr.grep.+last_state:No_such_file_or_directory
 ^stderr.has_stderr
 ^stderr.Illegal_instruction
@@ -173,7 +171,6 @@
 ^stderr./lkp/.*
 ^stderr.lost_connection
 ^stderr.ls:cannot_access.*
-^stderr.main\(\)
 ^stderr.make.*Error
 ^stderr.make_perf_failed
 ^stderr.modprobe:ERROR:../libkmod/libkmod.c:#kmod_search_moddep\(\)could_not_open_moddep_file
@@ -187,13 +184,10 @@
 ^stderr.some_monitors_do_not_quit_in_time
 ^stderr.src/arch/xtensa/.*
 ^stderr.swapon:cannot_open/dev/disk/by-id/.*:No_such_file_or_directory
-^stderr.sys.exit\(runner\(args\)\)
 ^stderr.Testing_over
 ^stderr.Timeout,server#not_responding
-^stderr.Traceback\(most_recent_call_last\)
 ^stderr.Unexpected_error:Inappropriate_ioctl_for_device
 ^stderr.users_on_this_machine
-^stderr.wflinfo_utility_not_found
 ^stderr.*write_error
 ^stderr.xinit:error_while_loading_shared_libraries:libX11.so.#:cannot_open_shared_object_file:No_such_file_or_directory
 ^stderr.zero-sized_data\(perf.data\),nothing_to_do
