@@ -1,1 +1,5 @@
 modprobe: ERROR: could not insert 'test_bpf': Invalid argument
+jit_disasm.c: In function ‘disasm_print_insn’:
+jit_disasm.c:[0-9]+:[0-9]+: warning: assignment discards ‘const’ qualifier from pointer target type [-Wdiscarded-qualifiers]
+\s+info.disassembler_options = disassembler_options;
+\s+\^
