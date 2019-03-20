@@ -7,4 +7,5 @@ ssd_partitions: /dev/disk/by-id/ata-INTEL_SSDSC2BA400G4_BTHV634503HY400NGN-part1
 swap_partitions:
 rootfs_partition: LABEL=LKP-ROOTFS
 brand: Intel(R) Xeon(R) CPU E7-8890 v3 @ 2.50GHz
-ucode: "0x12"
+ucode: "0x13"
+rootfs: debian-x86_64-2019-03-19.cgz
