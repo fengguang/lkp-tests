@@ -1,0 +1,59 @@
+#!/bin/sh
+# - level
+# - cpu
+# - core
+# - sleep
+# - interval
+
+# parameter interpretation:
+# level: option sets the maximum level to measure.
+# cpu: the number of cups.
+# core: limit output to cores. Comma list of Sx-Cx-Tx.
+# sleep: with XXX being the number of seconds to measure for a given time.
+# interval: measure every ms instead of only once.
+# --n0-desc: do not print event descriptions.
+
+. $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/debug.sh
+is_virt && die "Don't run pmu-tools on virtual machine"
+
+# pmu-tools runs on top of Linux perf
+set_perf_path "$BENCHMARK_ROOT/pmu-tools/perf"
+export PATH=$BENCHMARK_ROOT/pmu-tools:$PATH
+
+toplev=$BENCHMARK_ROOT/pmu-tools/toplev.py
+[ -x "$toplev" ] || die "Can't find pmu-tools"
+
+# pmu-tools needs to download CPU map file from
+# https://download.01.org/perfmon to $XDG_HOME_CACHE/pmu-events at
+# first run. But test machine may not have external network
+# connection. So we will pre-downloaded CPU map files into
+# $BENCHMARK_ROOT and copy it to user's cache directory.
+
+[ -n "$HOME" ] || export HOME=/root
+
+[ -d "$HOME/.cache/pmu-events" ] || {
+    mkdir -p "$HOME/.cache"
+    cp -af "$BENCHMARK_ROOT/pmu-tools/pmu-events" "$HOME/.cache"
+}
+
+# perf may consume lots of fd
+ulimit -n 102400
+
+: "${level:=1}"
+: "${sleep:=10}"
+: "${interval:=100}"
+
+set_opt()
+{
+    opt=
+    [ -n "$cpu" ] && opt="${opt} --cpu ${cpu}"
+    [ -n "$core" ] && opt="${opt} --core ${core}"
+}
+
+set_opt
+
+disable_nmi_watchdog
+
+toplev_csv="$TMP_RESULT_ROOT"/toplev.csv
+exec $toplev -l$level --no-desc $opt sleep $sleep -I $interval -x, -o $toplev_csv 2>&1
