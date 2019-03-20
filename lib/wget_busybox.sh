@@ -2,11 +2,8 @@
 
 setup_wget_busybox()
 {
-	local busybox
-
-	busybox=$(cmd_path busybox) || return
-
-	http_client_cmd="$busybox wget -q"
+	wget=$(cmd_path wget)
+	http_client_cmd="$wget -q"
 }
 
 [ -n "$http_client_cmd" ] || setup_wget_busybox || return
