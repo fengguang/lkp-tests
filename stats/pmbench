@@ -3,6 +3,8 @@
 res = 0.0
 histo_r = Array.new(24, 0)
 histo_w = Array.new(24, 0)
+histo_details_r = []
+histo_details_w = []
 latencies = []
 throughput = 0
 init_times = []
@@ -24,6 +26,27 @@ $stdin.each_line do |line|
     throughput += $2.to_f / $1.to_f
   when /nitialization took (\d+\.\d+) ms/
     init_times << $1.to_f / 1000
+  when /^2\^\((\d+),(\d+)\) ns: (\d+)  \[(.*)\]/
+    end_n = $2.to_i
+    cnt = $3.to_i
+    p = end_n - 8
+    data = $4.split(', ')
+    data.each_with_index do |v, i|
+      if mode == READ
+        histo_details_r[p] ||= []
+        histo_details_r[p][i] = v.to_i
+      else
+        histo_details_w[p] ||= []
+        histo_details_w[p][i] = v.to_i
+      end
+    end
+    if mode == READ
+      sum_r += cnt
+      histo_r[p] += cnt
+    else
+      sum_w += cnt
+      histo_w[p] += cnt
+    end
   when /^2\^\((\d+),(\d+)\) ns: (\d+)/
     end_n = $2.to_i
     cnt = $3.to_i
@@ -65,17 +88,29 @@ end
 percentile_strs = %w(90 95 99)
 percentiles = percentile_strs.map(&:to_f)
 
-[[histo_r, sum_r, READ], [histo_w, sum_w, WRITE]].each do |histo, sum, mode|
+[[histo_r, histo_details_r, sum_r, READ], [histo_w, histo_details_w, sum_w, WRITE]].each do |histo, histo_details, sum, mode|
   pi = 0
   hist_cum = 0
   (0..23).each do |i|
     next if sum == 0.0
+
     res = histo[i] / sum * 100
     gen_output(mode, i, res)
-    hist_cum += res
-    while pi < percentiles.length && hist_cum >= percentiles[pi]
-      puts "#{mode}.latency.#{percentile_strs[pi]}%.ns: #{2 ** (i + 8)}"
-      pi += 1
+    if histo_details[i]
+      histo_details[i].each_with_index do |v, j|
+        res = v / sum * 100
+        hist_cum += res
+        while pi < percentiles.length && hist_cum >= percentiles[pi]
+          puts "#{mode}.latency.#{percentile_strs[pi]}%.ns: #{2 ** (i + 8) + j * 2 ** (i + 4)}"
+          pi += 1
+        end
+      end
+    else
+      hist_cum += res
+      while pi < percentiles.length && hist_cum >= percentiles[pi]
+        puts "#{mode}.latency.#{percentile_strs[pi]}%.ns: #{2 ** (i + 8)}"
+        pi += 1
+      end
     end
   end
 end
