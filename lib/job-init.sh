@@ -1,3 +1,5 @@
+. $LKP_SRC/lib/upload.sh
+
 mount_cgroup()
 {
 	[ -f "$CGROUP_MNT/tasks" ] && return
@@ -47,6 +49,7 @@ setup_result_service()
 
 	supports_netfs 'nfs'	&& result_service=$LKP_SERVER:/result	&& return
 	supports_netfs 'cifs'	&& result_service=//$LKP_SERVER/result	&& return
+	has_cmd rsync && is_local_server && result_service=rsync://$LKP_SERVER/result && return
 
 	return 1
 }
@@ -59,6 +62,10 @@ mount_result_root()
 		tmpfs)
 			result_fs=tmpfs
 			mount -t tmpfs result $RESULT_MNT || return
+			;;
+		rsync://*/*)
+			result_fs=rsync
+			return
 			;;
 		*:*)
 			local repeat=10
