@@ -16,23 +16,19 @@ source $LKP_SRC/lib/unit.sh
 	need_memory=$((nr_cpu * ratio / 100))G
 }
 
-# check if testbox has enough memory to boot with specified rootfs and kconfig
+need_memory_mb=$(to_mb $need_memory)
 
-initrd_need_memory=0
+# get available memory(mb)
+# liuyd@lkp-boy:~$ free -m
+#               total        used        free      shared  buff/cache   available
+# Mem:          16051        2251       12407          17        1391       13487
+# Swap:          2045           0        2045
 
-# size of rootfs debian-x86_64-2018-04-03 is near 300M
-[[ "$rootfs" =~ ^debian-x86_64 ]] && initrd_need_memory=300
+available_memory_mb=$(free -m | sed -n "2, 1p" | awk '{print $7}')
 
-# for modules.cgz, modules size of x86_64-rhel-7.2 is near 700M
-[[ "$kconfig" =~ ^x86_64-rhel ]] && initrd_need_memory=$((initrd_need_memory + 700))
-
-runtime_need_memory=$(to_mb $need_memory)
-total_need_memory=$((runtime_need_memory + initrd_need_memory))
-memory_mb=$(to_mb $memory)
-
-if (( total_need_memory > memory_mb )); then
+if ((need_memory_mb > available_memory_mb)); then
 	echo "rm $job_file due to not enough memory"
-	echo "need: $total_need_memory MB, has: $memory_mb MB"
+	echo "need: $need_memory_mb MB, has: $available_memory_mb MB"
 	exit 1
 fi
 
