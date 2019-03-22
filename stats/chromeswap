@@ -1,5 +1,8 @@
 #!/usr/bin/env ruby
 
 STDIN.each_line do |line|
-  puts line if line.include? 'throughput'
+  case line
+  when /^throughput_swap_(.*)_(cycles_per_second.*)/
+    puts "throughput_swap_#{$2}"
+  end
 end
