@@ -2,6 +2,7 @@
 
 . $LKP_SRC/lib/result.sh
 . $LKP_SRC/lib/lkp_cmd.sh
+. $LKP_SRC/lib/env.sh
 
 if ! [ $(id -u) = 0 ]; then
 	echo "This script must be run as root" 1>&2
@@ -93,8 +94,10 @@ create_host_config() {
 
 		local mem_kb="$(grep MemTotal /proc/meminfo | awk '{print $2}')"
 		local mem_gb="$(((mem_kb)/1024/1024))"
+		local nr_cpu=$(nproc)
 
 		cat <<EOT >> $host_config
+nr_cpu: $nr_cpu
 memory: ${mem_gb}G
 hdd_partitions: ${hdd_partitions[*]}
 ssd_partitions: ${ssd_partitions[*]}
