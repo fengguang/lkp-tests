@@ -15,14 +15,11 @@ if status['operations'].nil? || status['operations'].empty?
   exit
 end
 
-nr_test = 0
 status['operations'].each do |op|
   if op['status_code'] == 'GOOD'
     puts "#{op['subdir']}.pass: 1"
   else
     puts "#{op['subdir']}.fail: 1"
   end
-  nr_test += 1
 end
 
-puts "total_test: #{nr_test}"
