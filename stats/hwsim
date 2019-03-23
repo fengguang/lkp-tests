@@ -20,8 +20,6 @@ while (line = STDIN.gets)
   end
 end
 
-results['total_test'] = results.size
-
 results.each do |k, v|
   puts "#{k}: #{v}"
 end
