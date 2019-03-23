@@ -5,7 +5,6 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.reapath($PROGRAM_NAME
 require "#{LKP_SRC}/lib/string_ext"
 
 stats = []
-nr_test = 0
 success_test = 0
 fail_test = 0
 is_divided = false
@@ -17,35 +16,27 @@ while (line = STDIN.gets)
   when /test_bpf: #[0-9]+ (.+) jited:.+ PASS$/
     type = $1.tr(' ', '_')
     stats << type + '.pass: 1'
-    nr_test += 1
   when /test_bpf: #[0-9]+ (.+) jited:.+ FAIL/
     type = $1.tr(' ', '_')
     stats << type + '.fail: 1'
-    nr_test += 1
   when /test_bpf: #[0-9]+ check: (.+) PASS$/
     type = $1.tr(' ', '_')
     stats << 'check:_' + type + '.pass: 1'
-    nr_test += 1
   when /test_bpf: #[0-9]+ check: (.+) FAIL/
     type = $1.tr(' ', '_')
     stats << 'check:_' + type + '.fail: 1'
-    nr_test += 1
   when /test_bpf: #[0-9]+ (.+) PASS$/
     type = $1.tr(' ', '_')
     stats << type + '.pass: 1'
-    nr_test += 1
   when /test_bpf: #[0-9]+ (.+) FAIL/
     type = $1.tr(' ', '_')
     stats << type + '.fail: 1'
-    nr_test += 1
   when /test_bpf: #[0-9]+ check: (.+)/
     type = 'check:_' + $1.strip.tr(' ', '_')
     is_divided = true
-    nr_test += 1
   when /test_bpf: #[0-9]+ (.+)/
     type = $1.strip.tr(' ', '_')
     is_divided = true
-    nr_test += 1
   when /test_bpf: Summary: ([0-9]+) PASSED, ([0-9]+) FAILED, \[.+ JIT'ed\]$/
     success_test = $1
     fail_test = $2
@@ -58,6 +49,5 @@ while (line = STDIN.gets)
 end
 
 stats.each { |stat| puts stat }
-puts "total_test: #{nr_test}"
 puts "success_test: #{success_test}"
 puts "fail_test: #{fail_test}"
