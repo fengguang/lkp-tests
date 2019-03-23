@@ -147,4 +147,3 @@ end
 
 stats.uniq.each { |stat| puts stat }
 nr_test = stats.count { |k, _v| k !~ /\.make_fail|\.ignored_by_lkp/ }
-puts "total_test: #{nr_test}" if nr_test.nonzero?
