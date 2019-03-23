@@ -311,6 +311,8 @@
 ^stderr.zero-sized_data\(perf.data\),nothing_to_do
 ^syzkaller.*
 ^tcrypt.*
+^test_bpf\.fail_test
+^test_bpf\.success_test
 ^time.
 .*\.total_fail
 .*\.total_pass
