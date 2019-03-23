@@ -46,4 +46,3 @@ while (line = STDIN.gets)
 end
 
 stats.uniq.each { |stat| puts stat }
-puts "total_test: #{stats.uniq.size}" if stats.uniq.size.nonzero?
