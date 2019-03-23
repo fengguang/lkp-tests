@@ -18,4 +18,3 @@ end
 stats.each do |k, v|
   puts k + '.' + v + ': 1'
 end
-puts 'total_test: ' + stats.size.to_s
