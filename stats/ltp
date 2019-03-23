@@ -1,7 +1,6 @@
 #!/usr/bin/awk -f
 
 BEGIN {
-	nr_test = 0
 	rst_tignore = rst_tpass = rst_tfail = rst_tconf = 0
 }
 
@@ -59,11 +58,7 @@ $2 ~ /[0-9]*/ && $3 ~ /TCONF/ {
 		printf("%s.pass: 1\n", tc_name)
 	}
 
-	nr_test += 1
 	tc_name = "unknown"
 	rst_tignore = rst_tpass = rst_tfail = rst_tconf = 0
 }
 
-END {
-	printf("total_test: %d\n", nr_test)
-}
