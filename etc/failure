@@ -1,6 +1,7 @@
 dmesg.*
-.+\.(error|warn).*
-.+\..+(fail|crash|timeout|warn|dmesg-warn|dmesg-fail|inconsistent_fs)$
+.+\.(error|warn|fail).*
+.+\..+(fail|crash|crashed|timeout|warn|dmesg-warn|dmesg-fail|inconsistent_fs)$
+.+\..+(make_fail|test_make_fail)
 .+killed_by.*
 kmsg.*
 last_state.*
