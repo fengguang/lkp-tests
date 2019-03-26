@@ -137,7 +137,6 @@ fxmark.ssd_ext4_no_jnl_DRBH_1_directio.works/sec: 1
 fxmark.ssd_ext4_no_jnl_DRBH_2_directio.works/sec: 1
 glbenchmark.fps: 1
 hackbench.throughput: 1
-hackbench.workload: 1
 hpcc.HPL_Tflops: 1
 hpcc.PTRANS_GBs: 1
 iostat.avg.wkB/s: 1
@@ -158,7 +157,6 @@ nepim.udp.avg.kbps_in: 1
 nepim.udp.avg.kbps_out: 1
 netperf.Throughput_Mbps: 1
 netperf.Throughput_total_Mbps: 1
-netperf.workload: 1
 netpipe.bigger_5M_Mbps.avg: 1
 netpipe.less_8K_usec.avg: -1
 nuttcp.throughput_Mbps: 1
@@ -397,10 +395,7 @@ tlbflush.mem_acc_time_thread_ms: -1
 tlbflush.munmap_ms: -1
 tlbflush.munmap_ns_time: -1
 unixbench.score: 1
-unixbench.workload: 1
 vm-scalability.median: 1
 vm-scalability.throughput: 1
-vm-scalability.workload: 1
 will-it-scale.per_process_ops: 1
 will-it-scale.per_thread_ops: 1
-will-it-scale.workload: 1
