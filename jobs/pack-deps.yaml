@@ -2,8 +2,7 @@ suite: pack-deps
 testcase: pack-deps
 
 branch: linus/master
-commit: v4.8
-compiler: gcc-6
+commit: BASE
 testbox: lkp-opteron1
 
 pack_arch: x86_64
