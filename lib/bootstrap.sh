@@ -157,7 +157,7 @@ add_lkp_user()
 clearlinux_timesync()
 {
 	echo "[Time]" >/etc/systemd/timesyncd.conf
-	echo "NTP=inn" >>/etc/systemd/timesyncd.conf
+	echo "NTP=internal-lkp-server" >>/etc/systemd/timesyncd.conf
 	timedatectl set-ntp false
 	timedatectl set-ntp true
 	hwclock -w
