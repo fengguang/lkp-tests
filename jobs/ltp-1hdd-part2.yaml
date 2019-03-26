@@ -19,6 +19,7 @@ need_memory: 7G
 ltp:
   test:
   - fs-00
+  - ltp-aiodio.part2
 
 ---
 need_memory: 4G
