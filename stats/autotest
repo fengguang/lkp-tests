@@ -23,3 +23,9 @@ status['operations'].each do |op|
   end
 end
 
+exit unless File.exist?("#{RESULT_ROOT}/results/default/compilebench/results/keyval")
+File.open("#{RESULT_ROOT}/results/default/compilebench/results/keyval", 'r') do |f|
+  f.each_line do |line|
+    puts 'compilebench.' + line.gsub(/{perf}=/, ': ')
+  end
+end
