@@ -4,8 +4,8 @@ dmesg.*
 .+killed_by.*
 kmsg.*
 last_state.*
-leaking_addresses.dmesg.*
-leaking_addresses.proc.*
+leaking_addresses.dmesg.(?!R).*
+leaking_addresses.proc.(?!blacklist|netlink|vmallocinfo)(?!.*:0000000)
 lkp-bug.*
 .+\..+(make_fail|test_make_fail)
 .+rcu_hotplug.*
