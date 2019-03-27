@@ -717,7 +717,7 @@ def add_stats_to_matrix(stats, matrix)
   matrix
 end
 
-def matrix_from_stats_files(stats_files, add_source = true)
+def matrix_from_stats_files(stats_files, add_source = true, stats_field = nil)
   matrix = {}
   stats_files.each do |stats_file|
     stats = load_json stats_file
@@ -725,6 +725,8 @@ def matrix_from_stats_files(stats_files, add_source = true)
       log_warn "empty or non-exist stats file #{stats_file}"
       next
     end
+
+    stats = stats.select { |k, _v| k == stats_field || k == 'stats_source' } if stats_field
     stats['stats_source'] ||= stats_file if add_source
     matrix = add_stats_to_matrix(stats, matrix)
   end
