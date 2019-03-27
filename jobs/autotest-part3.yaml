@@ -9,6 +9,5 @@ autotest:
   - compilebench
   # - iosched_bugs # make: *** [dirty] Error1: undefined reference to 'rdtsc'
   # - isic # make: *** [all-recursive] Error1: undefined reference to 'libnet_getgre_length'
-  - pi_tests
   # - systemtap # simple systemtap test failed, kernel debuginfo package may be missing. Checking "/lib/modules/4.3.0/build/.config" failed with error: No such file or direcotry
   # - unixbench # duplicate to jobs/unixbench.yaml
