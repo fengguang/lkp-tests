@@ -1,0 +1,19 @@
+suite: xfstests
+testcase: xfstests
+category: functional
+
+need_memory: 2G
+
+disk: 4HDD
+
+timeout: 2h
+
+fs:
+- ext4
+- xfs
+- btrfs
+- f2fs
+
+xfstests:
+  test:
+  - generic-299
