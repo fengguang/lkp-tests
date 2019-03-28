@@ -18,7 +18,7 @@ setup_test_block()
 	mkfs -t ${fstype%%_*} -q $mkfs_opts $dev || return
 
 	mkdir -p /fs/$dev
-	mount $dev /fs/$dev || return
+	mount -t ${fstype%%_*} $dev /fs/$dev || return
 
 	dd if=/dev/zero of=/fs/$dev/test_block bs=100M count=1 || return
 	losetup /dev/loop0 /fs/$dev/test_block || return
