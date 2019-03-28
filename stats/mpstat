@@ -63,7 +63,12 @@ rescue JSON::ParserError
   end
   mpstat_json = File.read('mpstat_update')
   File.delete('mpstat_update')
-  mpstat_hash = JSON.parse(mpstat_json)
+
+  begin
+    mpstat_hash = JSON.parse(mpstat_json)
+  rescue JSON::ParserError
+    exit 1
+  end
 end
 
 results = {}
