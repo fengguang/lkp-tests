@@ -71,15 +71,7 @@ blogbench.read_score: 1
 blogbench.write_score: 1
 boot-time.boot: -1
 boot-time.dhcp: -1
-chromeswap.throughput_swap_0.25_exponential_cycles_per_second: -1
-chromeswap.throughput_swap_0.25_sequential_cycles_per_second: -1
-chromeswap.throughput_swap_0.25_uniform_cycles_per_second: -1
-chromeswap.throughput_swap_0.50_exponential_cycles_per_second: -1
-chromeswap.throughput_swap_0.50_sequential_cycles_per_second: -1
-chromeswap.throughput_swap_0.50_uniform_cycles_per_second: -1
-chromeswap.throughput_swap_0.75_exponential_cycles_per_second: -1
-chromeswap.throughput_swap_0.75_sequential_cycles_per_second: -1
-chromeswap.throughput_swap_0.75_uniform_cycles_per_second: -1
+chromeswap.throughput_swap_cycles_per_second: -1
 dbench.max_latency: -1
 dbench.throughput-MB/sec: 1
 dd.kill_time_ms: -1
