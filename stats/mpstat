@@ -1,8 +1,10 @@
 #!/usr/bin/env ruby
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
 require 'time'
 require 'json'
 require 'fileutils'
+require "#{LKP_SRC}/lib/log"
 
 # The below is an example of mpstat output, read it then parse it into hash data.
 # {"sysstat": {
@@ -67,7 +69,8 @@ rescue JSON::ParserError
   begin
     mpstat_hash = JSON.parse(mpstat_json)
   rescue JSON::ParserError
-    exit 1
+    log_error "fail to parse #{mpstat}"
+    exit
   end
 end
 

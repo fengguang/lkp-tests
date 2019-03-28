@@ -9,5 +9,5 @@ while (line = STDIN.gets)
     next if values[i] == '-'
     puts title + ': ' + values[i]
   end
-  exit 0
+  exit
 end

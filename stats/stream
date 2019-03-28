@@ -18,7 +18,7 @@ while (line = STDIN.gets)
   when /(Copy|Scale|Add|Triad)/
     if unit.nil?
       log_error 'can not get unit'
-      exit 1
+      exit
     end
     stats["#{$1.downcase}_bandwidth_#{unit}"] = line.split[1]
   end
