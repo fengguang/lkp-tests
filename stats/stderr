@@ -11,11 +11,13 @@ error_ids = {}
 @ignore_patterns = []
 Dir["#{LKP_SRC}/etc/ignore-stderr/*"].each do |f|
   File.open(f).each_line do |line|
+    line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
     @ignore_patterns << Regexp.new('^' + line.chomp + '$')
   end
 end
 
 def should_ignore_stderr(line)
+  line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
   @ignore_patterns.any? do |re|
     # ERR in `match': invalid byte sequence in US-ASCII (ArgumentError)
     # treat unrecognized line as "can't be ignored"
