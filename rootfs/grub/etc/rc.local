@@ -22,6 +22,8 @@ LKP_JOB_DIR=$LKP_DIR/job
 LKP_PJOB_DIR=$LKP_DIR/pjob
 LKP_LOG_FILE=$LKP_DIR/log
 
+WGET_CMD="wget -q --timeout=1800 --tries=1"
+
 echo "In /etc/rc.local"
 
 [ ! -d $LKP_DIR ] && mkdir -p $LKP_DIR
@@ -117,7 +119,7 @@ cat /proc/cmdline | grep "lkp_grub=off" > /dev/null
 			rm -rf $LKP_JOB_DIR/*
 
 			# Get Job configuration
-			wget --directory-prefix="$LKP_JOB_DIR/" $LKP_CONFIG_URL
+			$WGET_CMD --directory-prefix="$LKP_JOB_DIR/" $LKP_CONFIG_URL
 			if [ $? -ne 0 ]
 			then
 				lkp_log "Failed to get job config file from $LKP_CONFIG_URL"
@@ -167,7 +169,7 @@ cat /proc/cmdline | grep "lkp_grub=off" > /dev/null
 
 		#Install next Job
 		lkp_log "Getting Job kernel from $wkernel"
-		wget --directory-prefix="$LKP_JOB_DIR/" $wkernel > /dev/null
+		$WGET_CMD --directory-prefix="$LKP_JOB_DIR/" $wkernel > /dev/null
 		if [ $? -ne 0 ]
 		then
 			lkp_log "Failed to get kernel from $wkernel"
@@ -175,7 +177,7 @@ cat /proc/cmdline | grep "lkp_grub=off" > /dev/null
 		fi
 
 		lkp_log "Getting Job initrd from $winitrd"
-		wget --directory-prefix="$LKP_JOB_DIR/" $winitrd > /dev/null
+		$WGET_CMD --directory-prefix="$LKP_JOB_DIR/" $winitrd > /dev/null
 		if [ $? -ne 0 ]
 		then
 			lkp_log "Failed to get initrd from $winitrd"
