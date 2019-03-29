@@ -25,6 +25,7 @@ get_pids()
 		pgrep -x "$proc_name"
 	else
 		cat "$TMP"/pid-tests
+		[ -f "$TMP"/pid-daemons ] && cat "$TMP/pid-daemons"
 	fi
 }
 
