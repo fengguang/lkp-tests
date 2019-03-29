@@ -107,7 +107,9 @@ cat /proc/cmdline | grep "lkp_grub=off" > /dev/null
 
 	# Install New Job
 
-	retry=100
+	# reboot after 4 hours
+	reboot_timeout=$(($(date +%s) + 14400))
+
 	while true
 	do
 		mkdir -p $LKP_JOB_DIR
@@ -117,6 +119,9 @@ cat /proc/cmdline | grep "lkp_grub=off" > /dev/null
 		while $get_config
 		do
 			rm -rf $LKP_JOB_DIR/*
+
+			# reboot after 4 hours
+			[ $(date +%s) -ge $reboot_timeout ] && reboot
 
 			# Get Job configuration
 			$WGET_CMD --directory-prefix="$LKP_JOB_DIR/" $LKP_CONFIG_URL
