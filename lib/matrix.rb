@@ -129,6 +129,7 @@ def create_stats_matrix(result_root)
       end
       if stats_part_begin != 0
         i_stats_part_begin = tv.find_index { |v| v >= stats_part_begin } || sample_size
+        stats_part_len -= i_stats_part_begin
       end
       if stats_part_end != 0
         i_end = tv.find_index { |v| v >= stats_part_end } || sample_size
