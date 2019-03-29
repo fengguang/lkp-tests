@@ -183,6 +183,15 @@ fixup_systester()
 	export TOTAL_LOOP_COUNT=1
 }
 
+fixup_mcperf()
+{
+	[[ -n "$environment_directory" ]] || return
+	local test=$1
+	local target=${environment_directory}/pts/${test}/mcperf
+	useradd -m -s /bin/bash memcached_test 2>/dev/null
+	sed -i 's#^./memcached -d$#su memcached_test -c "./memcached -d"#' $target
+}
+
 run_test()
 {
 	local test=$1
@@ -230,9 +239,12 @@ run_test()
 			test_opt="\n5\na\nb\nc\nn"
 			export DISPLAY=:0
 			;;
+		mcperf-*)
+			fixup_mcperf $test || die "failed to fixup test mcperf"
+			;;
 		nginx-*)
 			fixup_nginx $test || die "failed to fixup test nginx"
-                        ;;
+			;;
 		ffmpeg-*)
 			fixup_ffmpeg $test || die "failed to fixup test ffmpeg"
 			;;
