@@ -81,7 +81,8 @@ parse_bool -q "$per_socket" && opts="$opts --per-socket"
 
 disable_nmi_watchdog
 
-$perf stat -a -c -I "$interval_ms" -x' ' $opt_events --log-fd 1 $opts -D $((delay * 1000)) -- $WAIT_POST_TEST_CMD &
+# since 75998bb263 ("perf stat: Fix --no-scale"), -c is removed
+$perf stat -a --scale -I "$interval_ms" -x' ' $opt_events --log-fd 1 $opts -D $((delay * 1000)) -- $WAIT_POST_TEST_CMD &
 
 pid=$!
 
