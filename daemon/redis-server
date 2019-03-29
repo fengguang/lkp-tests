@@ -24,6 +24,8 @@ for i in $(seq 1 "${nr_processes}"); do
 	bg_pids="$bg_pids $!"
 done
 
+echo "$bg_pids" > "$TMP"/pid-daemons
+
 cat > $TMP_RESULT_ROOT/post-run.redis <<EOF
 /bin/kill -9 $bg_pids
 EOF
