@@ -1,1 +1,6 @@
 url: https://github.com/alibaba/cloud-kernel.git
+mail_cc: aliyunlinux2-dev@linux.alibaba.com
+notify_build_success_branch: .*
+build_success_mail_cc: aliyunlinux2-dev@linux.alibaba.com
+test_old_branches: .*
+
