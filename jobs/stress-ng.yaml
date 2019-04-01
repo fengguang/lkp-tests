@@ -48,8 +48,6 @@ stress-ng:
   - vm
 
 ---
-nr_threads: 50%
-
 testtime:
 - 5s
 
@@ -58,8 +56,6 @@ stress-ng:
   - memory
 
 ---
-nr_threads: 25%
-
 sysctl:
 - sc_pid_max: 4194304
 
