@@ -3,9 +3,6 @@
 # - class
 # - nr_threads
 
-[ $nr_partitions -ge 1 ] || exit
-partition=${partitions%% *}
-
 mount_dev()
 {
 	local mnt=/mnt/stress-ng
@@ -14,17 +11,65 @@ mount_dev()
 	cd $mnt
 }
 
-[ -n "$testtime" ] || testtime=1
+## some options are universal, put them in universal_setting
+set_for_universal()
+{
+	[ $nr_partitions -ge 1 ] || exit
+	partition=${partitions%% *}
+	[ -n "$testtime" ] || testtime=1
 
-[ "$class" = "memory" ] && stress_opts="--minimize" && exlucde_stress=",stack"
-[ "$class" = "os" ] && stress_opts="--minimize"
-[ "$class" = "filesystem" ] && mount_dev
+	default_option="
+		--timeout $testtime \
+		--times \
+		--verify \
+		--metrics-brief
+	"
 
-## most stressors could run as root except exec and spawn, classify exec and spawn into exec_spawn, run it as lkp.
-## when we run stress-ng as root, use option --exclude to ignore spawn and exec.
-if [ "$class" = "exec_spawn" ]; then
-	su lkp -c "stress-ng --exec $nr_threads --spawn $nr_threads --timeout $testtime --times --verify --metrics-brief 2>&1"
-else
-	stress-ng --sequential $nr_threads --class $class $stress_opts --timeout $testtime --times --verify --metrics-brief --exclude spawn,exec$exlucde_stress 2>&1
-fi
+	## stressors spawn exec can't run as root
+	## all classes need to exclud them except class exec_spawn
+	default_exclude="spawn,exec"
+}
 
+# some class need special settinf
+set_for_class()
+{
+	case "$class" in
+	"memory")
+		stress_opts="--minimize"
+		exclude_stress=",stack"
+		;;
+	"os")
+		stress_opts="--minimize"
+		;;
+	"filesystem")
+		mount_dev
+		;;
+	*)
+		;;
+	esac
+}
+
+run_test()
+{
+	## most stressors could run as root except exec and spawn,
+	## classify exec and spawn into exec_spawn, run it as lkp.
+	## run other stress-ng as root
+	## use option --exclude to ignore spawn and exec.
+	[ "$class" = "exec_spawn" ] && {
+		su lkp -c "stress-ng --exec $nr_threads --spawn $nr_threads --timeout $testtime --times --verify --metrics-brief 2>&1"
+		return
+	}
+
+	log_cmd stress-ng \
+		$default_option \
+		--sequential $nr_threads \
+		--class $class $stress_opts \
+		--exclude $default_exclude$exclude_stress 2>&1
+}
+
+set_for_universal
+set_for_class
+run_test
+exit_value=$?
+
+exit $exit_value
