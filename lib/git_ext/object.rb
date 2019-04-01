@@ -163,6 +163,28 @@ module Git
         tags = tags.drop_while { |tag| tag != base }.drop(1)
         tags.find { |tag| reachable_from?(tag) }
       end
+
+      def relative_commit_date
+        @base.lib.command("log -n1 --format=format:'%cr' #{sha}")
+      end
+
+      def prev_official_release
+        @base.gcommit(prev_official_release_tag)
+      end
+
+      def last_release
+        @base.gcommit(last_release_tag.first)
+      end
+
+      alias committed_release last_release
+
+      def merged_release
+        merged_by && @base.gcommit(merged_by)
+      end
+
+      def abbr
+        release_tag || sha[0..9]
+      end
     end
 
     class Tag
