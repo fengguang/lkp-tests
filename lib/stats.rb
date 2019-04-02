@@ -407,8 +407,9 @@ end
 def __is_failure(stats_field)
   return false if stats_field.index('.time.')
   return false if stats_field.index('.timestamp.')
-  return false if $perf_metrics_prefixes.any? { |prefix| stats_field.index(prefix) == 0 }
   $metric_failure.each { |pattern| return true if stats_field =~ %r{^#{pattern}} }
+  return false if $perf_metrics_prefixes.any? { |prefix| stats_field.index(prefix) == 0 }
+
   false
 end
 
