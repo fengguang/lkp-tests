@@ -1,12 +1,25 @@
 #!/bin/sh
+# - mongodb_cpu_node_bind
+# - mongodb_mem_node_bind
+# - nr_processes
 
-. $LKP_SRC/lib/reproduce-log.sh
+. "$LKP_SRC/lib/reproduce-log.sh"
+. "$LKP_SRC/lib/numactl.sh"
 
-mongodb_server=$BENCHMARK_ROOT/mongodb/bin/mongod
+bg_pids=""
+mongodb_server="$BENCHMARK_ROOT/mongodb/bin/mongod"
+
+parse_numa_node_binding "$mongodb_cpu_node_bind" "$mongodb_mem_node_bind"
 
 # start mongodb server
-log_eval "$mongodb_server --dbpath=${TMP}/mongodb/dbdir/ --config ${TMP_RESULT_ROOT}/mongod.conf &"
+for i in $(seq 1 "$nr_processes")
+do
+	port=$((27016+i))
+	numa_bind=$(numa_node_binding "$i")
+	log_eval "$numa_bind $mongodb_server --port $port --dbpath=${TMP}/mongodb/dbdir_$i/ --config ${TMP_RESULT_ROOT}/mongod.conf.$i &"
+	bg_pids="$bg_pids $!"
+done
 
-cat > $TMP_RESULT_ROOT/post-run.mongodb <<EOF
-/bin/kill -9 $(ps -ef | grep $mongodb_server | grep -v grep | awk '{print $2}')
+cat > "$TMP_RESULT_ROOT/post-run.mongodb" <<EOF
+/bin/kill -15 $bg_pids
 EOF

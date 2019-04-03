@@ -1,4 +1,5 @@
 #!/bin/sh
+# - nr_processes
 # - ip_addr
 # - n_recordcount
 # - n_operationcount
@@ -8,7 +9,10 @@
 # - n_scanproportion
 # - n_insertproportion
 # - c_requestdistribution
-# - nr_task
+# - ycsb_cpu_node_bind
+# - ycsb_mem_node_bind
+# - nr_threads
+
 
 ##The Yahoo! Cloud Serving Benchmark (YCSB) is an open-source
 ##specification and program suite for evaluating retrieval and
@@ -16,11 +20,17 @@
 ##used to compare relative performance of NoSQL database
 ##management systems.
 
-cat > "$TMP_RESULT_ROOT"/configfile_mongodb <<EOF
-mongodb.url=mongodb://${ip_addr}:27017
+: "${nr_processes:=1}"
+
+for i in $(seq 1 "$nr_processes")
+do
+	port=$((27016 + i))
+	cat > "$TMP_RESULT_ROOT/configfile_mongodb.$i" <<EOF
+mongodb.url=mongodb://${ip_addr}:$port
 mongodb.database=ycsbdb
 mongodb.writeConcern=none
 EOF
+done
 
 cat > "$TMP_RESULT_ROOT"/workload_mongodb <<EOF
 recordcount=${n_recordcount}
@@ -37,19 +47,35 @@ insertproportion=${n_insertproportion}
 requestdistribution=${c_requestdistribution}
 EOF
 
-args="\
-run mongodb \
--P $TMP_RESULT_ROOT/workload_mongodb \
--P $TMP_RESULT_ROOT/configfile_mongodb \
--s \
--threads $nr_task \
-"
-
 cat > "$TMP_RESULT_ROOT"/run.ycsb <<EOF
+. "$LKP_SRC"/lib/reproduce-log.sh
+. "$LKP_SRC"/lib/numactl.sh
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
 export JRE_HOME=${JAVA_HOME}/jre
 export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
 export PATH=${JAVA_HOME}/bin:$PATH
 export PATH=$BENCHMARK_ROOT/ycsb/ycsb/bin:$PATH
-log_test ycsb $args
+
+ycsb_dir="$TMP"/ycsb/
+rm -rf "\$ycsb_dir"
+mkdir -p "\$ycsb_dir"
+
+parse_numa_node_binding "$ycsb_cpu_node_bind" "$ycsb_mem_node_bind"
+
+for i in \$(seq 1 "$nr_processes")
+do
+        args="\
+        run mongodb \
+        -P $TMP_RESULT_ROOT/workload_mongodb \
+        -P $TMP_RESULT_ROOT/configfile_mongodb.\$i \
+        -s \
+        -threads $nr_threads \
+        "
+        numa_bind=\$(numa_node_binding "\$i")
+        log_test \$numa_bind ycsb \$args > "\$ycsb_dir"/ycsb.\$i &
+done
+
+wait
+
+cat "\$ycsb_dir"/ycsb.*
 EOF

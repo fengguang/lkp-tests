@@ -1,96 +1,113 @@
 #!/usr/bin/env ruby
 
+$results_total = {}
+
+def add_result(results, key, val)
+  results[key] ||= []
+  results[key] << val
+end
+
 $stdin.each_line do |line|
   case line
   when /OVERALL\W, RunTime.ms., (\d+)$/
-    puts "runtime: #{$1}"
-  when /OVERALL\W, Throughput.ops.sec., (\d+).(\d+)$/
-    puts "throughput: #{$1}.#{$2}"
+    add_result($results_total, 'runtime', $1.to_f)
+  when /OVERALL\W, Throughput.ops.sec., (\d+\.\d+)$/
+    add_result($results_total, 'throughput_ops/s', $1.to_f)
   when /TOTAL_GCS_G1_Young_Generation\W, Count, (\d+)$/
-    puts "gcs_g1: #{$1}"
+    add_result($results_total, 'gcs_g1', $1.to_f)
   when /TOTAL_GC_TIME_G1_Young_Generation\W, Time.ms., (\d+)$/
-    puts "gc_time_g1: #{$1}"
-  when /TOTAL_GC_TIME_%_G1_Young_Generation\W, Time.%., (\d+).(\d+)$/
-    puts "gc_time_%: #{$1}.#{$2}"
+    add_result($results_total, 'gc_time_g1', $1.to_f)
+  when /TOTAL_GC_TIME_%_G1_Young_Generation\W, Time.%., (\d+\.\d+)$/
+    add_result($results_total, 'gc_time_%', $1.to_f)
   when /TOTAL_GCS_G1_Old_Generation\W, Count, (\d+)$/
-    puts "gcs_g1_old: #{$1}"
+    add_result($results_total, 'gcs_g1_old', $1.to_f)
   when /TOTAL_GC_TIME_G1_Old_Generation\W, Time.ms., (\d+)$/
-    puts "gc_time_g1_old: #{$1}"
-  when /TOTAL_GC_TIME_%_G1_Old_Generation\W, Time.%., (\d+).(\d+)$/
-    puts "gc_time_%_old: #{$1}.#{$2}"
+    add_result($results_total, 'gc_time_g1_old', $1.to_f)
+  when /TOTAL_GC_TIME_%_G1_Old_Generation\W, Time.%., (\d+\.\d+)$/
+    add_result($results_total, 'gc_time_%_old', $1.to_f)
   when /TOTAL_GCs\W, Count, (\d+)$/
-    puts "total_gcs: #{$1}"
+    add_result($results_total, 'total_gcs', $1.to_f)
   when /TOTAL_GC_TIME\W, Time.ms., (\d+)$/
-    puts "total_gc_time: #{$1}"
-  when /TOTAL_GC_TIME_%\W, Time.%., (\d+).(\d+)$/
-    puts "total_gc_time_%: #{$1}.#{$2}"
+    add_result($results_total, 'total_gc_time', $1.to_f)
+  when /TOTAL_GC_TIME_%\W, Time.%., (\d+\.\d+)$/
+    add_result($results_total, 'total_gc_time_%', $1.to_f)
   when /READ\W, Operations, (\d+)$/
-    puts "read_operations: #{$1}"
-  when /READ\W, AverageLatency.us., (\d+).(\d+)$/
-    puts "read_averagelatency: #{$1}.#{$2}"
+    add_result($results_total, 'read_operations', $1.to_f)
+  when /READ\W, AverageLatency.us., (\d+\.\d+)$/
+    add_result($results_total, 'read_averagelatency', $1.to_f)
   when /READ\W, MinLatency.us., (\d+)$/
-    puts "read_minlatency: #{$1}"
+    add_result($results_total, 'read_minlatency', $1.to_f)
   when /READ\W, MaxLatency.us., (\d+)$/
-    puts "read_maxlatency: #{$1}"
+    add_result($results_total, 'read_maxlatency', $1.to_f)
   when /READ\W, 95thPercentileLatency.us., (\d+)$/
-    puts "read_95%latency: #{$1}"
+    add_result($results_total, 'read_95%latency', $1.to_f)
   when /READ\W, 99thPercentileLatency.us., (\d+)$/
-    puts "read_99%latency: #{$1}"
+    add_result($results_total, 'read_99%latency', $1.to_f)
   when /READ\W, Return=OK, (\d+)$/
-    puts "read_return_ok: #{$1}"
+    add_result($results_total, 'read_return_ok', $1.to_f)
   when /READ\W, Return=NOT_FOUND, (\d+)$/
-    puts "read_return_notfound: #{$1}"
+    add_result($results_total, 'read_return_notfound', $1.to_f)
   when /CLEANUP\W, Operations, (\d+)$/
-    puts "cleanup_operations: #{$1}"
-  when /CLEANUP\W, AverageLatency.us., (\d+).(\d+)$/
-    puts "cleanup_averagelatency: #{$1}.#{$2}"
+    add_result($results_total, 'cleanup_operations', $1.to_f)
+  when /CLEANUP\W, AverageLatency.us., (\d+\.\d+)$/
+    add_result($results_total, 'cleanup_averagelatency', $1.to_f)
   when /CLEANUP\W, MinLatency.us., (\d+)$/
-    puts "cleanup_minlatency: #{$1}"
+    add_result($results_total, 'cleanup_minlatency', $1.to_f)
   when /CLEANUP\W, MaxLatency.us., (\d+)$/
-    puts "cleanup_maxlatency: #{$1}"
+    add_result($results_total, 'cleanup_maxlatency', $1.to_f)
   when /CLEANUP\W, 95thPercentileLatency.us., (\d+)$/
-    puts "cleanup_95%latency: #{$1}"
+    add_result($results_total, 'cleanup_95%latency', $1.to_f)
   when /CLEANUP\W, 99thPercentileLatency.us., (\d+)$/
-    puts "cleanup_99%latency: #{$1}"
+    add_result($results_total, 'cleanup_99%latency', $1.to_f)
   when /READ-FAILED\W, Operations, (\d+)$/
-    puts "read_failed_operations: #{$1}"
-  when /READ-FAILED\W, AverageLatency.us., (\d+).(\d+)$/
-    puts "read_failed_averagelatency: #{$1}.#{$2}"
+    add_result($results_total, 'read_failed_operations', $1.to_f)
+  when /READ-FAILED\W, AverageLatency.us., (\d+\.\d+)$/
+    add_result($results_total, 'read_failed_averagelatency', $1.to_f)
   when /READ-FAILED\W, MinLatency.us., (\d+)$/
-    puts "read_failed_minlatency: #{$1}"
+    add_result($results_total, 'read_failed_minlatency', $1.to_f)
   when /READ-FAILED\W, MaxLatency.us., (\d+)$/
-    puts "read_failed_maxlatency: #{$1}"
+    add_result($results_total, 'read_failed_maxlatency', $1.to_f)
   when /READ-FAILED\W, 95thPercentileLatency.us., (\d+)$/
-    puts "read_failed_95%latency: #{$1}"
+    add_result($results_total, 'read_failed_95%latency', $1.to_f)
   when /READ-FAILED\W, 99thPercentileLatency.us., (\d+)$/
-    puts "read_failed_99%latency: #{$1}"
+    add_result($results_total, 'read_failed_99%latency', $1.to_f)
   when /INSERT\W, Operations, (\d+)$/
-    puts "insert_operations: #{$1}"
-  when /INSERT\W, AverageLatency.us., (\d+).(\d+)$/
-    puts "insert_averagelatency: #{$1}.#{$2}"
+    add_result($results_total, 'insert_operations', $1.to_f)
+  when /INSERT\W, AverageLatency.us., (\d+\.\d+)$/
+    add_result($results_total, 'insert_averagelatency', $1.to_f)
   when /INSERT\W, MinLatency.us., (\d+)$/
-    puts "insert_minlatency: #{$1}"
+    add_result($results_total, 'insert_minlatency', $1.to_f)
   when /INSERT\W, MaxLatency.us., (\d+)$/
-    puts "insert_maxlatency: #{$1}"
+    add_result($results_total, 'insert_maxlatency', $1.to_f)
   when /INSERT\W, 95thPercentileLatency.us., (\d+)$/
-    puts "insert_95%latency: #{$1}"
+    add_result($results_total, 'insert_95%latency', $1.to_f)
   when /INSERT\W, 99thPercentileLatency.us., (\d+)$/
-    puts "insert_99%latency: #{$1}"
+    add_result($results_total, 'insert_99%latency', $1.to_f)
   when /INSERT\W, Return=OK, (\d+)$/
-    puts "insert_return_ok: #{$1}"
+    add_result($results_total, 'insert_return_ok', $1.to_f)
   when /INSERT\W, Return=ERROR, (\d+)$/
-    puts "insert_return_error: #{$1}"
+    add_result($results_total, 'insert_return_error', $1.to_f)
   when /INSERT-FAILED\W, Operations, (\d+)$/
+    add_result($results_total, 'insert_failed_operations', $1.to_f)
     puts "insert_failed_operations: #{$1}"
-  when /INSERT-FAILED\W, AverageLatency.us., (\d+).(\d+)$/
-    puts "insert_failed_averagelatency: #{$1}.#{$2}"
+  when /INSERT-FAILED\W, AverageLatency.us., (\d+\.\d+)$/
+    add_result($results_total, 'insert_failed_averagelatency', $1.to_f)
   when /INSERT-FAILED\W, MinLatency.us., (\d+)$/
+    add_result($results_total, 'insert_failed_minlatency', $1.to_f)
     puts "insert_failed_minlatency: #{$1}"
   when /INSERT-FAILED\W, MaxLatency.us., (\d+)$/
-    puts "insert_failed_maxlatency: #{$1}"
+    add_result($results_total, 'insert_failed_maxlatency', $1.to_f)
   when /INSERT-FAILED\W, 95thPercentileLatency.us., (\d+)$/
-    puts "insert_failed_95%latency: #{$1}"
+    add_result($results_total, 'insert_failed_95%latency', $1.to_f)
   when /INSERT-FAILED\W, 99thPercentileLatency.us., (\d+)$/
-    puts "insert_failed_99%latency: #{$1}"
+    add_result($results_total, 'insert_failed_99%latency', $1.to_f)
   end
+end
+
+$results_total.each do |key, vals|
+  puts "total_#{key}: #{vals.inject(0.0, :+)}"
+end
+
+$results_total.each do |key, vals|
+  puts "avg_#{key}: #{vals.inject(0.0, :+) / vals.length}"
 end
