@@ -14,9 +14,7 @@ spec/glsl-1.10/compiler/expressions/postincrement-ivec3-non-lvalue-for-out-param
 spec/glsl-1.30/compiler/built-in-functions/abs-int.vert
 spec/glsl-1.30/execution/built-in-functions/fs-op-assign-lshift-ivec3-uint
 spec/glsl-4.00/compiler/built-in-functions/op-mult-dmat2x4-dmat4x2.vert
-spec/arb_copy_image/arb_copy_image-targetsgl_texture_3d323217gl_texture_2d_array3216151112553214139
 spec/glsl-4.30/execution/built-in-functions/cs-op-assign-bitor-uvec3-uint
-spec/ext_framebuffer_multisample/blit-multiple-render-targets16
 spec/glsl-1.50/compiler/built-in-functions/op-mult-vec2-mat2.geom
 spec/glsl-1.20/compiler/built-in-functions/exp2-vec4.frag
 spec/glsl-1.10/execution/built-in-functions/vs-op-eq-bool-bool-using-if
@@ -43,7 +41,6 @@ spec/glsl-1.20/execution/vs-outerproduct-const-mat4-ivec
 spec/glsl-1.30/execution/built-in-functions/fs-op-bitand-neg-int-int
 spec/glsl-4.30/execution/built-in-functions/cs-op-div-large-uint-uint
 spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-op-mult-dmat4x2-dmat2x4
-spec/arb_texture_float/multisample-formats8gl_arb_texture_float
 shaders/glsl-mat-attribute
 spec/glsl-1.20/compiler/built-in-functions/op-mult-mat4x2-mat3x4.vert
 spec/glsl-4.00/compiler/built-in-functions/transpose-dmat2x3.vert
