@@ -21,7 +21,9 @@ diskstats:
 nfsstat:
 cpuidle:
 cpufreq-stats:
+% if job['arch'] =~ /x86|i*86/
 turbostat:
+% end
 sched_debug:
 perf-stat:
 mpstat:
