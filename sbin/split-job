@@ -77,6 +77,7 @@ ARGV.each do |jobfile|
   jobs['kconfig'] = @opt_kconfig if @opt_kconfig
   jobs['commit'] = @opt_commit if @opt_commit
   jobs['testbox'] = @opt_testbox
+  jobs['arch'] ||= `uname -m`.chomp
   jobs['tbox_group'] = tbox_group(@opt_testbox)
   jobs['node_roles'] = 'server client' if jobs['cluster']
   jobs[:no_defaults] = true if @opt_no_defaults
