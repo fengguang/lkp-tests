@@ -208,13 +208,9 @@ parse_yaml() {
 	local s='[[:space:]]*'
 	local w='[a-zA-Z0-9_-]*'
 	local tmp_filter="$(mktemp /tmp/lkp-install-XXXXXXXXX)"
-	local category_file=
-	local category=$(grep -w '^category' $1 | awk -F':' '{print $2}' | tr -d ' ')
-
-	[ "$category" ] && [ -e $LKP_SRC/include/category/$category ] && category_file=$LKP_SRC/include/category/$category
 
 	ls -LR $LKP_SRC/setup $LKP_SRC/monitors $LKP_SRC/tests $LKP_SRC/daemon > $tmp_filter
-	scripts=$(cat $category_file $1 | sed -ne "s|^\($s\):|\1|" \
+	scripts=$(cat $1 | sed -ne "s|^\($s\):|\1|" \
 	         -e "s|^\($s\)\($w\)$s:$s[\"']\(.*\)[\"']$s\$|\2|p" \
 	         -e "s|^\($s\)\($w\)$s:$s\(.*\)$s\$|\2|p" | grep -x -F -f \
 	         $tmp_filter | grep -v -e ':$' -e '^$' | sort -u)
