@@ -42,6 +42,16 @@ elsif ENV['RESULT_ROOT']
   mpstat = "#{RESULT_ROOT}/mpstat"
 end
 
+# Read the first line of mpstat, check if it is the old format.
+# "Linux 5.0.0-rc4 (ivb44) \t2019-02-23 \t_x86_64_\t(48 CPU)\n"
+File.open(mpstat) do |file|
+  header = file.gets
+  if header =~ /Linux\s+\d+\.\d+\.\d+-.* \(.*\) \t\d+-\d+-\d+ \t_.*_.*_\t\(\d+ CPU\)/
+    log_error "Mpstat is not JSON format, skip to parse #{mpstat}."
+    exit
+  end
+end
+
 mpstat_json = File.read(mpstat)
 begin
   mpstat_hash = JSON.parse(mpstat_json)
@@ -63,13 +73,12 @@ rescue JSON::ParserError
       io.puts "\n\t\t\t\]\n\t\t\}\n\t\]\n\}\}\n"
     end
   end
-  mpstat_json = File.read('mpstat_update')
-  File.delete('mpstat_update')
 
   begin
+    mpstat_json = File.read('mpstat_update')
     mpstat_hash = JSON.parse(mpstat_json)
-  rescue JSON::ParserError
-    log_error "fail to parse #{mpstat}"
+  rescue JSON::ParserError => e
+    log_error "Fail to parse #{mpstat}: #{e}"
     exit
   end
 end
