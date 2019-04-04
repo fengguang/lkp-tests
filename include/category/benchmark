@@ -26,6 +26,6 @@ sched_debug:
 perf-stat:
 mpstat:
 
-% unless ___['nr_vm'] and ___['nr_vm'] > 1
+% unless job['nr_vm'] and job['nr_vm'] > 1
 perf-profile:
 % end
