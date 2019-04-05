@@ -85,7 +85,9 @@ fileio.request_latency_avg_ms: -1
 fileio.request_latency_max_ms: -1
 fileio.requests_per_sec: 1
 fio.read_bw_MBps: 1
+fio.read_iops: 1
 fio.write_bw_MBps: 1
+fio.write_iops: 1
 fsmark.app_overhead: 1
 fsmark.files_per_sec: 1
 ftq.max: 1
@@ -124,6 +126,7 @@ oltp.rw_requests/s: 1
 oltp.transactions/s: 1
 pbzip2.throughput: 1
 perf-bench-numa-mem.GB_sec_thread: 1
+perf-bench-numa-mem.GB_sec_total: 1
 perf-bench-sched-pipe.ops_per_sec: 1
 pft.faults_per_sec_per_cpu: 1
 pgbench.transactions: 1
@@ -359,3 +362,4 @@ vm-scalability.median: 1
 vm-scalability.throughput: 1
 will-it-scale.per_process_ops: 1
 will-it-scale.per_thread_ops: 1
+will-it-scale.scalability: 1
