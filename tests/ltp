@@ -93,109 +93,118 @@ install_tests || exit
 cd $ltp_install || exit
 workaround_env
 
-case "$test" in
-cpuhotplug)
-	mkdir -p /usr/src/linux/
-	;;
-fs_readonly-0*)
-	[ -z "$fs" ] && exit
-	[ -z "$partitions" ] && exit
-	big_dev="${partitions%% *}"
-	umount $big_dev
-	big_dev_opt="-Z $fs -z $big_dev"
-	;;
-fs_ext4)
-	[ -z "$partitions" ] && exit
-	big_dev="${partitions%% *}"
-	big_dev_opt="-z $big_dev"
-	# match logic of check_ignored_cases
-	sed -i "s/\t/ /g" $ltp_install/runtest/fs_ext4
-	;;
-mm-00)
-	sysctl -w vm.oom_kill_allocating_task=1
-	;;
-mm-01)
-	[ -z "$partitions" ] && exit
-	swap_partition="${partitions%% *}"
-	mkswap $swap_partition 2>&1 || exit 1
-	swapon $swap_partition
-	;;
-tpm_tools)
-	[ $USER ] || USER=root
-	rm -rf /var/lib/opencryptoki/tpm/$USER
-	cd tpm-emulater
-	find . -maxdepth 1 -type d -name "TPM_Emulator*" -exec rm -rf {} \;
-	unzip $(ls TPM_Emulator*.zip | head -1)
-	rsync -av $(ls -l . | awk '/^d/ {print $NF}' | head -1)"/" /
-	cd ../ltp
-	killall tpmd > /dev/null 2>&1
-	tpmd -f -d clear > /dev/null 2>&1 &
-	killall tcsd > /dev/null 2>&1
-	tcsd -e -f > /dev/null 2>&1 &
-	sleep 5
-	export LTPROOT=${PWD}
-	export LTPBIN=$LTPROOT/testcases/bin
-	export OWN_PWD="HELLO1"
-	export NEW_OWN_PWD="HELLO2"
-	export SRK_PWD="HELLO3"
-	export NEW_SRK_PWD="HELLO4"
-	export P11_SO_PWD="HELLO5"
-	export NEW_P11_SO_PWD="HELLO6"
-	export P11_USER_PWD="HELLO7"
-	export NEW_P11_USER_PWD="HELLO8"
-	;;
-ltp-aiodio.part[24]|syscalls_part[14]|dio-0*)
-	specify_tmpdir || exit
-	;;
-syscalls_part2)
-	specify_tmpdir || exit
-	relatime=$(mount | grep /tmp | grep relatime)
-	noatime=$(mount | grep /tmp | grep noatime)
-	if [ "$relatime" != "" ] || [ "$noatime" != "" ]; then
-		mount -o remount,strictatime /tmp
-	fi
-	;;
-syscalls_part5)
-	specify_tmpdir || exit
-	echo "#\$SystemLogSocketName /run/systemd/journal/syslog" > /etc/rsyslog.d/listen.conf
-	systemctl restart rsyslog || exit
-	[ -f /var/log/maillog ] || {
-		touch /var/log/maillog && chmod 600 /var/log/maillog
-	}
-	[ -e /dev/log ] && rm /dev/log
-	ln -s /run/systemd/journal/dev-log /dev/log
-	;;
-net.ipv6_lib)
-	iface=$(ifconfig -s | awk '{print $1}' | grep ^eth | head -1)
-	[ -n "$iface" ] && export LHOST_IFACES=$iface
-	sed -i "1s/^/::1 ${HOSTNAME}\n/" /etc/hosts
-	sed -i "1s/^/127.0.0.1 ${HOSTNAME}\n/" /etc/hosts
-	;;
-net.rpc)
-	systemctl start openbsd-inetd || exit
-	cp netkit-rusers/bin/rup /usr/bin/
-	;;
-net_stress.appl-0*)
-        [ -d /srv/ftp ] && export FTP_DOWNLOAD_DIR=/srv/ftp
-        sed -i '/\/usr\/sbin\/named {/a\\/tmp\/** rw,' /etc/apparmor.d/usr.sbin.named || exit
-        systemctl start bind9 || exit
-        systemctl list-units | grep -wq apparmor.service && (systemctl reload-or-restart apparmor || exit)
-        ;;
-esac
+test_setting()
+{
+	case "$test" in
+	cpuhotplug)
+		mkdir -p /usr/src/linux/
+		;;
+	fs_readonly-0*)
+		[ -z "$fs" ] && exit
+		[ -z "$partitions" ] && exit
+		big_dev="${partitions%% *}"
+		umount $big_dev
+		big_dev_opt="-Z $fs -z $big_dev"
+		;;
+	fs_ext4)
+		[ -z "$partitions" ] && exit
+		big_dev="${partitions%% *}"
+		big_dev_opt="-z $big_dev"
+		# match logic of check_ignored_cases
+		sed -i "s/\t/ /g" $ltp_install/runtest/fs_ext4
+		;;
+	mm-00)
+		sysctl -w vm.oom_kill_allocating_task=1
+		;;
+	mm-01)
+		[ -z "$partitions" ] && exit
+		swap_partition="${partitions%% *}"
+		mkswap $swap_partition 2>&1 || exit 1
+		swapon $swap_partition
+		;;
+	tpm_tools)
+		[ $USER ] || USER=root
+		rm -rf /var/lib/opencryptoki/tpm/$USER
+		cd tpm-emulater
+		find . -maxdepth 1 -type d -name "TPM_Emulator*" -exec rm -rf {} \;
+		unzip $(ls TPM_Emulator*.zip | head -1)
+		rsync -av $(ls -l . | awk '/^d/ {print $NF}' | head -1)"/" /
+		cd ../ltp
+		killall tpmd > /dev/null 2>&1
+		tpmd -f -d clear > /dev/null 2>&1 &
+		killall tcsd > /dev/null 2>&1
+		tcsd -e -f > /dev/null 2>&1 &
+		sleep 5
+		export LTPROOT=${PWD}
+		export LTPBIN=$LTPROOT/testcases/bin
+		export OWN_PWD="HELLO1"
+		export NEW_OWN_PWD="HELLO2"
+		export SRK_PWD="HELLO3"
+		export NEW_SRK_PWD="HELLO4"
+		export P11_SO_PWD="HELLO5"
+		export NEW_P11_SO_PWD="HELLO6"
+		export P11_USER_PWD="HELLO7"
+		export NEW_P11_USER_PWD="HELLO8"
+		;;
+	ltp-aiodio.part[24]|syscalls_part[14]|dio-0*)
+		specify_tmpdir || exit
+		;;
+	syscalls_part2)
+		specify_tmpdir || exit
+		relatime=$(mount | grep /tmp | grep relatime)
+		noatime=$(mount | grep /tmp | grep noatime)
+		if [ "$relatime" != "" ] || [ "$noatime" != "" ]; then
+			mount -o remount,strictatime /tmp
+		fi
+		;;
+	syscalls_part5)
+		specify_tmpdir || exit
+		echo "#\$SystemLogSocketName /run/systemd/journal/syslog" > /etc/rsyslog.d/listen.conf
+		systemctl restart rsyslog || exit
+		[ -f /var/log/maillog ] || {
+			touch /var/log/maillog && chmod 600 /var/log/maillog
+		}
+		[ -e /dev/log ] && rm /dev/log
+		ln -s /run/systemd/journal/dev-log /dev/log
+		;;
+	net.ipv6_lib)
+		iface=$(ifconfig -s | awk '{print $1}' | grep ^eth | head -1)
+		[ -n "$iface" ] && export LHOST_IFACES=$iface
+		sed -i "1s/^/::1 ${HOSTNAME}\n/" /etc/hosts
+		sed -i "1s/^/127.0.0.1 ${HOSTNAME}\n/" /etc/hosts
+		;;
+	net.rpc)
+		systemctl start openbsd-inetd || exit
+		cp netkit-rusers/bin/rup /usr/bin/
+		;;
+	net_stress.appl-0*)
+		[ -d /srv/ftp ] && export FTP_DOWNLOAD_DIR=/srv/ftp
+		sed -i '/\/usr\/sbin\/named {/a\\/tmp\/** rw,' /etc/apparmor.d/usr.sbin.named || exit
+		systemctl start bind9 || exit
+		systemctl list-units | grep -wq apparmor.service && (systemctl reload-or-restart apparmor || exit)
+		;;
+	esac
+}
 
+clean_up()
+{
+	[ "$test" = "mm-00" ] && {
+		dmesg -C || exit
+	}
+
+	[ "$test" = "syscalls_part2" ] && {
+		[ "$relatime" != "" ] && mount -o remount,relatime /tmp
+		[ "$noatime" != "" ] && mount -o remount,noatime /tmp
+	}
+}
+
+test_setting
 check_ignored_cases $test
 log_cmd ./runltp -f $test $big_dev_opt $tmpdir_opt || exit
 
 exit_value=$?
 
-[ "$test" = "mm-00" ] && {
-     dmesg -C || exit
-}
-
-[ "$test" = "syscalls_part2" ] && {
-	[ "$relatime" != "" ] && mount -o remount,relatime /tmp
-	[ "$noatime" != "" ] && mount -o remount,noatime /tmp
-}
+clean_up
 
 upload_files -t results $ltp_install/results/* \
 	$ltp_install/output
