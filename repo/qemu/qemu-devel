@@ -1,3 +1,4 @@
 url: git://git.qemu.org/qemu.git
 fetch_tags: true
 blacklist_branch: master|revert-
+no_merge_branch: revert-.*
