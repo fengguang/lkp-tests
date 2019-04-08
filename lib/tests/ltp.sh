@@ -225,7 +225,7 @@ test_setting()
 	tpm_tools)
 		[ $USER ] || USER=root
 		rm -rf /var/lib/opencryptoki/tpm/$USER
-		cd tpm-emulater
+		cd $ltp_dir/tpm-emulater
 		find . -maxdepth 1 -type d -name "TPM_Emulator*" -exec rm -rf {} \;
 		unzip $(ls TPM_Emulator*.zip | head -1)
 		rsync -av $(ls -l . | awk '/^d/ {print $NF}' | head -1)"/" /
@@ -275,7 +275,7 @@ test_setting()
 		;;
 	net.rpc)
 		systemctl start openbsd-inetd || exit
-		cp netkit-rusers/bin/rup /usr/bin/
+		cp $ltp_dir/netkit-rusers/bin/rup /usr/bin/
 		;;
 	net_stress.appl-0*)
 		[ -d /srv/ftp ] && export FTP_DOWNLOAD_DIR=/srv/ftp
