@@ -1,7 +1,8 @@
-url: git://git.infradead.org/users/pcmoore/audit
+url: https://git.kernel.org/pub/scm/linux/kernel/git/pcmoore/audit.git
 integration_testing_branches: next
+git_am_branch: next
 mail_cc: linux-audit@redhat.com
-owner: Paul Moore <pmoore@redhat.com>
+owner: Paul Moore <paul@paul-moore.com>
 subsystems:
 - audit
 - lsm
