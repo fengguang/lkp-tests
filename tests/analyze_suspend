@@ -10,7 +10,7 @@
 . $LKP_SRC/lib/upload.sh
 . $LKP_SRC/lib/http.sh
 
-export PATH=/lkp/benchmarks/analyze_suspend:$PATH
+export PATH=/lkp/benchmarks/nalyze_suspend:$PATH
 
 echo options: mode: $mode, runtime: $runtime, rtcwake: $rtcwake, multi: $multi, option: $option
 options=""
@@ -80,9 +80,12 @@ do
 	upload_files -t result $f_log
 
 	#commands to supend and resume
+	echo $(date +%T): analyze_suspend.py $options
+	echo $(date +%T): analyze_suspend.py $options >> $f_log
 	analyze_suspend.py $options
-	[ $? -ne 0 ] && exit 1
-	echo $(date +%T): resume back! >> $f_log
+#	[ $? -ne 0 ] && exit 1
+	echo $(date +%T): resume back, return value $? !
+	echo $(date +%T): resume back, return value $? ! >> $f_log
 
 	#check network status
 	retry=30
