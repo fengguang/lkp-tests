@@ -33,7 +33,7 @@ class LinuxTestcasesTableSet
     ['aim7', 'aim9', 'angrybirds', 'autotest', 'blogbench', 'dbench',
      'dd-write', 'ebizzy', 'fileio', 'fishtank', 'fsmark', 'glbenchmark',
      'hackbench', 'hpcc', 'idle', 'iozone', 'iperf', 'jsbenchmark', 'kbuild',
-     'ku-latency', 'linpack', 'ltp', 'mlc', 'nepim', 'netperf', 'netpipe',
+     'ku-latency', 'linpack', 'mlc', 'nepim', 'netperf', 'netpipe',
      'nuttcp', 'octane', 'oltp', 'openarena', 'packetdrill', 'pbzip2',
      'perf-bench-numa-mem', 'perf-bench-sched-pipe', 'pft',
      'phoronix-test-suite', 'pigz', 'pixz', 'plzip', 'postmark', 'pxz', 'qperf',
@@ -49,7 +49,7 @@ class LinuxTestcasesTableSet
   LINUX_TESTCASES =
     ['analyze_suspend', 'boot', 'blktests', 'cpu-hotplug', 'ext4-frags', 'ftq', 'ftrace_onoff', 'fwq',
      'galileo', 'irda-kernel', 'kernel_selftests', 'kvm-unit-tests', 'kvm-unit-tests-qemu',
-     'leaking_addresses', 'locktorture', 'mce-test', 'otc_ddt', 'piglit', 'pm-qa', 'nvml',
+     'leaking_addresses', 'locktorture', 'ltp', 'mce-test', 'otc_ddt', 'piglit', 'pm-qa', 'nvml',
      'qemu', 'rcutorture', 'suspend', 'suspend_stress', 'trinity', 'ndctl', 'nfs-test', 'hwsim', 'idle-inject',
      'mdadm-selftests', 'xsave-test', 'nvml', 'test_bpf', 'mce-log', 'perf-sanity-tests', 'build-perf_test',
      'update-ucode', 'reboot', 'cat', 'libhugetlbfs-test', 'ocfs2test', 'syzkaller',
