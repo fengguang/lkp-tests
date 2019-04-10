@@ -255,7 +255,6 @@ leaking_addresses.total_number
 ^numa-meminfo.
 ^numa-numastat.
 ^numa-vmstat.
-^numa-vmstat.
 ^pagetypeinfo.*
 ^pagetypeinfo.page_block_order
 ^pagetypeinfo.pages_per_block
@@ -275,7 +274,7 @@ leaking_addresses.total_number
 ^stderr.Can_not_find_perf_command
 ^stderr.configure.*
 ^stderr.*:Connection_reset_by_peer
-^stderr.Could_not_find_file_spec
+^stderr.Could_not_find_file_
 ^stderr.curl.*Empty_reply_from_server
 ^stderr.disk_number.*
 ^stderr.Error_on#events_is_too_high
