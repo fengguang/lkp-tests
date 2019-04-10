@@ -1,3 +1,4 @@
+
 aim7.jobs-per-min: 1
 aim9.add_double.ops_per_sec: 1
 aim9.add_float.ops_per_sec: 1
@@ -148,6 +149,14 @@ kernel_selftests.mqueue.nsec_per_msg: -1
 ku-latency.total_average_us: -1
 linpack.GFlops: 1
 lmbench3.AF_UNIX.sock.stream.bandwidth.MB/sec: 1
+lmbench3.BCOPY.libc.bandwidth.MB/sec: 1
+lmbench3.BCOPY.memory_read.bandwidth.MB/sec: 1
+lmbench3.BCOPY.memory_write.bandwidth.MB/sec: 1
+lmbench3.BCOPY.unrolled.bandwidth.MB/sec: 1
+lmbench3.FILE.read.bandwidth.MB/sec: 1
+lmbench3.PIPE.bandwidth.MB/sec: 1
+lmbench3.TCP.socket.bandwidth.10MB.MB/sec: 1
+lmbench3.TCP.socket.bandwidth.64B.MB/sec: 1
 mutilate.rx.speed: 1
 mutilate.tx.speed: 1
 nepim.tcp.avg.kbps_in: 1
