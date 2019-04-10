@@ -13,6 +13,10 @@ apachebench.max_latency.98%: -0.1
 apachebench.max_latency.99%: -0.1
 dbench.max_latency: -0.1
 fileio.request_latency_95%_ms: -0.2
+fileio.request_latency_95%_ms: -0.2
+fileio.request_latency_avg_ms: -0.2
+fileio.request_latency_max_ms: -0.2
+fileio.request_latency_min_ms: -0.2
 ftq.stddev: -0.1
 fwq.stddev: -0.1
 iostat.avg.r_await: -0.1
