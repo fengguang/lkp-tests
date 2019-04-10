@@ -30,17 +30,17 @@ $kill_pattern_whitelist_re = load_regular_expressions("#{LKP_SRC}/etc/dmesg-kill
 
 class LinuxTestcasesTableSet
   LINUX_PERF_TESTCASES =
-    ['aim7', 'aim9', 'angrybirds', 'autotest', 'blogbench', 'dbench',
+    ['aim7', 'aim9', 'angrybirds', 'blogbench', 'dbench',
      'dd-write', 'ebizzy', 'fileio', 'fishtank', 'fsmark', 'glbenchmark',
      'hackbench', 'hpcc', 'idle', 'iozone', 'iperf', 'jsbenchmark', 'kbuild',
      'ku-latency', 'linpack', 'mlc', 'nepim', 'netperf', 'netpipe',
-     'nuttcp', 'octane', 'oltp', 'openarena', 'packetdrill', 'pbzip2',
+     'nuttcp', 'octane', 'oltp', 'openarena', 'pbzip2',
      'perf-bench-numa-mem', 'perf-bench-sched-pipe', 'pft',
      'phoronix-test-suite', 'pigz', 'pixz', 'plzip', 'postmark', 'pxz', 'qperf',
      'reaim', 'sdf', 'siege', 'sockperf', 'speccpu', 'specjbb2013',
      'specjbb2015', 'specpower', 'stutter', 'sunspider', 'tbench', 'tcrypt',
      'thrulay', 'tlbflush', 'unixbench', 'vm-scalability', 'will-it-scale',
-     'xfstests', 'chromeswap', 'fio-basic', 'apachebench', 'perf_event_tests', 'swapin',
+     'chromeswap', 'fio-basic', 'apachebench', 'perf_event_tests', 'swapin',
      'tpcc', 'mytest', 'exit_free', 'pgbench', 'boot_trace', 'sysbench-cpu',
      'sysbench-memory', 'sysbench-threads', 'sysbench-mutex', 'stream',
      'perf-bench-futex', 'mutilate', 'lmbench3', 'lib_micro', 'schbench',
@@ -53,7 +53,8 @@ class LinuxTestcasesTableSet
      'qemu', 'rcutorture', 'suspend', 'suspend_stress', 'trinity', 'ndctl', 'nfs-test', 'hwsim', 'idle-inject',
      'mdadm-selftests', 'xsave-test', 'nvml', 'test_bpf', 'mce-log', 'perf-sanity-tests', 'build-perf_test',
      'update-ucode', 'reboot', 'cat', 'libhugetlbfs-test', 'ocfs2test', 'syzkaller',
-     'perf_test', 'stress-ng', 'sof_test', 'fxmark', 'kvm-kernel-boot-test', 'bkc_ddt', 'bpf_offload'].freeze
+     'perf_test', 'stress-ng', 'sof_test', 'fxmark', 'kvm-kernel-boot-test', 'bkc_ddt', 'bpf_offload',
+     'xfstests', 'autotest', 'packetdrill'].freeze
   OTHER_TESTCASES =
     ['0day-boot-tests', '0day-kbuild-tests', 'build-dpdk', 'build-sof', 'sof_test', 'build-nvml',
      'build-qemu', 'convert-lkpdoc-to-html', 'convert-lkpdoc-to-html-css',
