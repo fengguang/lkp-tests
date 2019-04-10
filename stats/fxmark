@@ -23,7 +23,7 @@ while (line = STDIN.gets)
     datas = datas.split
     i = 0
     subname.each do |s|
-      s == 'works/sec' ? stats['works_per_sec'] = datas[i] : stats["#{name}.#{s}"] = datas[i]
+      stats["#{name}.#{s}"] = datas[i]
       i += 1
     end
   end
