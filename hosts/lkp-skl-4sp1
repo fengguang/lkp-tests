@@ -4,6 +4,7 @@ nr_cpu: 192
 memory: 256G
 nr_ssd_partitions: 1
 ssd_partitions: /dev/disk/by-id/ata-INTEL_SSDSC2BA400G4_BTHV634503K8400NGN-part1
+hdd_partitions: /dev/disk/by-id/ata-FUJITSU_MHY2120BH_K410T7A2A3W1-part1
 swap_partitions: 
 rootfs_partition: LABEL=LKP-ROOTFS
 kernel_cmdline_hw: acpi_rsdp=0x69252014
