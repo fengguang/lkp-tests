@@ -303,6 +303,7 @@ leaking_addresses.total_number
 ^stderr.make.*Error
 ^stderr.make_perf_failed
 ^stderr.modprobe:ERROR:../libkmod/libkmod.c:#kmod_search_moddep\(\)could_not_open_moddep_file
+^stderr.rsync:change_dir__tmp_lkp_piglit-results_failed:No_such_file_or_directory
 ^stderr.No_pmem_device
 ^stderr.(perf:)?Segmentation_fault
 ^stderr.pmeter_server_does_not_start_correctly
