@@ -10,7 +10,7 @@
 . $LKP_SRC/lib/upload.sh
 . $LKP_SRC/lib/http.sh
 
-export PATH=/lkp/benchmarks/nalyze_suspend:$PATH
+export PATH=/lkp/benchmarks/analyze_suspend:$PATH
 
 echo options: mode: $mode, runtime: $runtime, rtcwake: $rtcwake, multi: $multi, option: $option
 options=""
