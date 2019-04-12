@@ -3,6 +3,7 @@ owner: Bossart, Pierre-louis <pierre-louis.bossart@intel.com>
 fetch_tags: true
 fetch_pull_request: true
 notify_build_success_branch: .*
+mail_recipient: intel.com
 build_success_mail_cc:
 - sof-ci-monitor@eclists.intel.com
 mail_cc:
