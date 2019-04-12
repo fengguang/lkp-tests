@@ -39,11 +39,10 @@ while read testcase
 do
 	start_time=$(date +%s.%N)
 	# Check if the path specified by the test exists.
-	case_path="/lkp/benchmarks/piglit/lib/piglit/generated_tests/"$testcase
-	[ -e $case_path ] || {
+	casename=${testcase##*/}
+	if [ $(find /lkp/benchmarks/piglit -name "*$casename" | wc -l) -eq "0" ]; then
 		echo "Could not find file $testcase, it may cause the piglit to crash." >&2
-		continue
-	}
+	fi
 	# recently piglit change the match method, so here we change '/' to '.'
 	testcase=$(echo $testcase | sed 's/\//./g')
 	# using excluding(-x) to avoid running all matching case
