@@ -246,7 +246,7 @@ test_setting()
 		export P11_USER_PWD="HELLO7"
 		export NEW_P11_USER_PWD="HELLO8"
 		;;
-	ltp-aiodio.part[24]|syscalls_part[14]|dio-0*)
+	ltp-aiodio.part[24]|syscalls_part[14]|dio-0*|io)
 		specify_tmpdir || exit
 		;;
 	syscalls_part2)
