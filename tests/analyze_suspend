@@ -73,9 +73,9 @@ do
 	echo $(date +%T): suspending \($ite/$multi\) >> $f_log
 	if [ -n "$debug" ]
 	then
-		set_job_state "suspending_debug ($ite/$multi)"
+		set_job_state "suspending_debug-$ite/$multi)"
 	else
-		set_job_state "suspending ($ite/$multi)"
+		set_job_state "suspending-$ite/$multi)"
 	fi
 	upload_files -t result $f_log
 

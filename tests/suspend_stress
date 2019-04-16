@@ -97,9 +97,9 @@ do
 
 	if [ -n "$debug" ]
 	then
-		set_job_state "suspending_debug ($i/$iterations)"
+		set_job_state "suspending_debug-$i/$iterations"
 	else
-		set_job_state "suspending ($i/$iterations)"
+		set_job_state "suspending-$i/$iterations"
 	fi
 
 	if [[ ( -z "$pm_test" ) && ( "$mode" != "disk" ) ]]
