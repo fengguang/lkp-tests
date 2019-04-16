@@ -2,6 +2,7 @@ url: https://git.kernel.org/pub/scm/linux/kernel/git/vgupta/arc.git
 integration_testing_branches:
 - for-next
 - for-curr
+blacklist_branch: topic-event-logger
 owner: Vineet Gupta <vgupta@synopsys.com>
 subsystems:
 - arc
