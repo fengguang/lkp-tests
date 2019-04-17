@@ -853,6 +853,10 @@ if $opt_all || $opt_index
     end
   end
 else
+  unless $opt_field
+    puts 'error: no field found, please use -f/--field'
+    exit 1
+  end
   ARGV.each { |path| add_stats path }
   show_delta $opt_field, nil
   plot_bar $dims, $cases if $opt_plot
