@@ -39,7 +39,11 @@ modprobe raid1
 modprobe raid10
 modprobe raid456
 
-modprobe loop
+# fix: losetup: /dev/loop13: failed to use device: No such device
+# the test needs 14 loop devices /dev/loopN (N: from 0 to 13)
+# kconfig such as v5.1-rc4, the default value of max_loop is 8
+modprobe -r loop
+modprobe loop max_loop=14 || die "failed to modprobe loop"
 
 check_ignored_cases()
 {
