@@ -32,4 +32,6 @@ else
 	setup_params
 fi
 
+ulimit -n 65536
+
 log_cmd python2 ./runtest.py $test $duration $mode $threads_to_iterate
