@@ -39,7 +39,5 @@ fxmark:
     - btrfs
     - f2fs
   directio:
-    # run_config of bufferedio is different from other tests, it will run all media, fstype. that costs a lot of time
-    # run_config = [(Runner.CORE_COARSE_GRAIN, PerfMon.LEVEL_PERF_RECORD, ("*", "*", "*", "*", "bufferedio")),]
-    # - bufferedio
+    - bufferedio
     - directio
