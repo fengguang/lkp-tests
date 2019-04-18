@@ -14,7 +14,8 @@ need_memory: 1G
 
 ocfs2test:
   test:
-    - test-mmaptruncate
+    # execution time is longer than 1h in 1/10 runs, disable it
+    # - test-mmaptruncate
     # can't run on vm, move it to ocfs2test-mkfs.yaml
     # - test-mkfs
     # - test-buildkernel # we have kernel build already, ignore
