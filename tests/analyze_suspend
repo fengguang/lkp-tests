@@ -68,6 +68,10 @@ echo options: $options >> $f_log
 echo analyze_suspend test started at: $(date +%F) $(date +%T) >> $f_log
 echo analyze_suspend test started
 
+#No INCOMPLETE for analyze_suspend test, not complete is a FAILURE
+touch analyze_suspend
+uploadfiles analyze_suspend
+
 for ite in $(seq $multi)
 do
 	echo $(date +%T): suspending \($ite/$multi\) >> $f_log
