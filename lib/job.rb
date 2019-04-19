@@ -677,7 +677,7 @@ class Job
         evaluate_param(h, k, v, file)
       end
       @filter_env = top_env(@jobx).merge(job_env(@jobx))
-      for_each_in(@jobx, misc_scripts.keys.to_set) do |_pk, h, k, v|
+      for_each_in(top_env(@jobx), misc_scripts.keys.to_set) do |_pk, h, k, v|
         hash = h
         file = misc_scripts[k]
         run_filter(h, k, v, file)
