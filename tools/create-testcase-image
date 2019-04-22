@@ -2,7 +2,7 @@
 
 [[ -n "$LKP_SRC" ]] || LKP_SRC=$(dirname $(dirname $(readlink -e -v $0)))
 
-LKP_SERVER=inn
+LKP_SERVER=internal-lkp-server
 LKP_CGI_PORT=80
 LKP_USER=lkp
 
