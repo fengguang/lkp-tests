@@ -75,7 +75,7 @@ do
 	retry=10
 	while true
 	do
-		ping -c 1 -W 1 inn > /dev/null
+		ping -c 1 -W 1 internal-lkp-server > /dev/null
 		[ $? -eq 0 ] && break
 		echo network not ready
 		echo network not ready >> $log_file
@@ -87,7 +87,7 @@ do
 	if [ $retry -eq 0 ]
 	then
 		$LKP_SRC/bin/run-ipconfig
-		ping -c 1 -W 1 inn > /dev/null
+		ping -c 1 -W 1 internal-lkp-server > /dev/null
 		if [ $? -ne 0 ]
 		then
 			echo network down
