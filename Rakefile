@@ -1,12 +1,8 @@
 require 'rubygems'
-require 'bundler/setup' unless `hostname`.chomp == 'inn'
+require 'bundler/setup'
 require 'rspec/core/rake_task'
 require 'fileutils'
-begin
-  require 'rubocop/rake_task'
-rescue LoadError => e
-  puts e.to_s
-end
+require 'rubocop/rake_task'
 
 # SPEC
 #
