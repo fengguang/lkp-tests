@@ -28,7 +28,7 @@ options="-m $mode $option -rtcwake $rtcwake -sync"
 # use -gzip and -skiphtml to reduce the memory usage
 options="$options -gzip -skiphtml"
 # skip udelay kprobe to reduce data
-options="$options –skipkprobe udelay"
+options="$options -skipkprobe udelay"
 
 ################################################################################
 # To avoid OOM, before setting ftrace buffer size, we need to reserve memory for
