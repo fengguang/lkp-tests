@@ -16,6 +16,8 @@ def stat_line(line, results)
     puts "#{$1}.#{$2}.inconsistent_fs: 1"
   when /^(ignored by lkp): (.*)/
     puts "#{$2.tr('/', '.')}.ignored_by_lkp: 1"
+  when /^(generic|ext4|xfs|btrfs)\/(\d\d\d)\s+(\d+)s/
+    results['passes'] += $2.tr('/', '.').split
   end
 end
 
@@ -23,8 +25,6 @@ while (line = STDIN.gets)
   line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
   stat_line(line, results)
 end
-
-results['passes'] = results['ran'] - results['failures']
 
 results['passes'].each { |seq| puts "#{seq}.pass: 1" }
 results['skips'].each { |seq| puts "#{seq}.skip: 1" }
