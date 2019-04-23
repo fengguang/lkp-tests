@@ -64,6 +64,7 @@ options="$options -bufsize $ftrace_mem"
 ################################################################################
 
 f_log=./test.log
+f_dmesg=./dmesg.log
 
 echo options: $options >> $f_log
 echo analyze_suspend test started at: $(date +%F) $(date +%T) >> $f_log
@@ -71,23 +72,6 @@ echo analyze_suspend test started
 
 for ite in $(seq $multi)
 do
-	echo $(date +%T): suspending \($ite/$multi\) >> $f_log
-	if [ -n "$debug" ]
-	then
-		set_job_state "suspending_debug-$ite/$multi"
-	else
-		set_job_state "suspending-$ite/$multi"
-	fi
-	upload_files -t result $f_log
-
-	#commands to supend and resume
-	echo $(date +%T): analyze_suspend.py $options
-	echo $(date +%T): analyze_suspend.py $options >> $f_log
-	analyze_suspend.py $options
-#	[ $? -ne 0 ] && exit 1
-	echo $(date +%T): resume back, return value $? !
-	echo $(date +%T): resume back, return value $? ! >> $f_log
-
 	#check network status
 	retry=30
 	while true
@@ -113,6 +97,18 @@ do
 		echo network recovered by $LKP_SRC/bin/run-ipconfig >> $f_log
 	fi
 
+	echo $(date +%T): suspending-$ite/$multi >> $f_log
+	if [ -n "$debug" ]
+	then
+		set_job_state "suspending_debug-$ite/$multi"
+	else
+		set_job_state "suspending-$ite/$multi"
+	fi
+
+	#upload log files in case system crashes
+	dmesg > $f_dmesg
+	upload_files -t result $f_log
+	upload_files -t result $f_dmesg
 
 	#upload and delete previous test results to save ramdisk space
 	f_result=$(ls ./ | grep "suspend-")
@@ -123,6 +119,15 @@ do
 		rm -rf $f_result
 		echo $(date +%T): done ... >> $f_log
 	fi
+
+	#commands to supend and resume
+	echo $(date +%T): analyze_suspend.py $options
+	echo $(date +%T): analyze_suspend.py $options >> $f_log
+	analyze_suspend.py $options
+#	[ $? -ne 0 ] && exit 1
+	echo $(date +%T): resume back, return value $? !
+	echo $(date +%T): resume back, return value $? ! >> $f_log
+
 	sleep $idle_time
 done
 
