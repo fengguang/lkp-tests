@@ -24,6 +24,7 @@ rtcwake_file=/sys/class/rtc/rtc0/wakealarm
 
 log_file=./log
 dmesg_file=./dmesg.log
+f_lkp_output=./suspend_stress
 
 echo "SUSPEND RESUME TEST STARTED"
 
@@ -119,6 +120,9 @@ do
 	dmesg > $dmesg_file
 	upload_files -t result $log_file
 	upload_files -t result $dmesg_file
+	#make sure test either PASS or FAIL, no INCOMPLETE
+	echo "test started" > $f_lkp_output
+	upload_files $f_lkp_output
 
 	echo $mode > /sys/power/state
 	if [ $? -ne 0 ]
@@ -132,5 +136,6 @@ do
 	sleep $idle_time
 done
 
+rm $f_lkp_output
 echo "SUSPEND RESUME TEST SUCCESS"
 exit 0
