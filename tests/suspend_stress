@@ -63,10 +63,6 @@ then
 	fi
 fi
 
-#No INCOMPLETE for suspend stress test, not complete is a FAILURE
-touch suspend_stress
-uploadfiles suspend_stress
-
 for i in $(seq $iterations)
 do
 	echo "Suspend to $mode $i/$iterations:"
