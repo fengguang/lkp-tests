@@ -6,20 +6,20 @@ need_memory: 1G
 
 autotest:
   test:
-  # - aborttest
-  # - aio_dio_bugs # open dio failed: 22
-  # - asynctest # run time too short
+  - aborttest
+  - aio_dio_bugs
+  - asynctest
   # - autotest_regression
   # - barriertest  # autotest self test
-  # - bash_shared_mapping # killed unexpectedly
-  # - bonnie # killed unexpectedlyi: bonnie++ invoke oom-killer: gfp_mask=0x200d2, order=0, oom_score_adj=0
-  # - btreplay # NameError: invalid file /lkp/benchmarks/autotest/client/tests/btreplay/blktrace-git-latest.tar.gz to cat to command tar xvf - 2>/dev/null
-  # - cgroup # Device or resource busy: '/sys/fs/cgroup/memory/cgroup-nXGuwX/
-  # - cgroup_tests # OSError: [Errno 2] No such file or directory: '/cgroup/memory'
+  - bash_shared_mapping
+  - bonnie
+  - btreplay
+  - cgroup
+  - cgroup_tests
   - connectathon
-  # - cpuflags # cp: cannot stat '/lkp/benchmarks/autotest/client/tests/virt/shared/deps/test_cpu_flags/*': No such file or directory
+  - cpuflags
   # - cpu_hotplug # cost about 1 hour, terminated
-  # - ctcs # ld returned 1 exit status: undefined reference to 'permute', 'quictSort', 'verify', 'heapSort'...etc
+  - ctcs
   - cyclictest
   # - dacapo # URLError: <urlopen error [Errno 111] Connection refused>
   # - dbench
@@ -35,65 +35,65 @@ autotest:
   # - error_test_error
   # - error_test_fail
   # - error_test_na
-  # - ffsb # kernel_oops: ffsb invoked oom-killer: gfp_mask=0x200d2, order=0, oom_score_adj=0
+  - ffsb
   # - fio
-  # - flail # incomplete run
-  # - fsdev # KeyError: '4.3.0'
+  - flail
+  - fsdev
   - fsfuzzer
   # - fs_mark
   - fsx
   # - hackbench
-  # - hwclock
-  # - interbench # incomplete run
+  - hwclock
+  - interbench # incomplete run
   # - iozone
   # - iperf
-  # - ipv6connect # kernel_oops: Out of memory: Kill process 2476 (systemd-cgroups) score 0 or sarifice child
-  # - kernbench
+  - ipv6connect
+  - kernbench
   # - kernelbuild
-  # - kernelinstall
+  - kernelinstall
   # - libhugetlbfs # make error: expected expression before 'restrict'; too few arguments to funciton '__buildin_strncpy'...etc
-  # - libvirt_tck
-  # - libvirt_test_api
+  - libvirt_tck
+  - libvirt_test_api
   - linus_stress
-  # - linux-tools/crontab # Test failed: allow_cron
-  # - linux-tools/pax # Test failed: copy
+  - linux-tools/crontab
+  - linux-tools/pax
   # - lmbench # killed unexpectedly, kernel_oops: proc-vmstat invoked oom-killer
   # - ltp
-  # - lvsetup # incomplete run
-  # - memory_api # ld returned 1 exit status: undefined reference to 'waitnext'
+  - lvsetup
+  - memory_api
   # - netperf2
   # - netpipe
-  # - npb # NPB3.3-OMP/bin/bt.S: No such file or directory
-  # - parallel_dd
-  # - perfmon # build error
+  - npb
+  - parallel_dd
+  - perfmon # build error
   - pktgen
   # - posixtest # cost more than 1h
   # - profiler_sync # Not a test case
-  # - profiler_test # AutotestError: No oprofile avaiable
-  # - qemu_iotests # Miss cmds qemu-img or qemu-io
+  - profiler_test
+  - qemu_iotests
   - reaim
   - real_time_tests
   # - regression
   - rmaptest
   - rtc
-  # - rttester # No such file or directory: '/sys/devices/system/rttest/rttest/rttest0/command'
+  - rttester
   - scrashme
-  # - scsi_testsuite # TestFail: Disk not found, cannot execute tests
+  - scsi_testsuite
   # - selftest
   - signaltest
-  # - sleeptest
-  # - smatch
-  # - sparse
-  # - spew # make [common.o] Error 1: 'memcpy'/'strrchr'/'strerror'/'strsignal' was not declared in this scope
+  - sleeptest
+  - smatch
+  - sparse
+  - spew
   # - stress # stress: FAIL: [2957] (238) invalid hdd byte value: 0
-  # - synctest # FAIL: sync not interrupted
+  - synctest
   # - sysbench
   # - tbench
-  # - tiobench # ld returned 1 exit status: undefined reference to 'crc32'
-  # - tracing_microbenchmark # Permission denied: '/sys/kernel/debug/tracing/tracing_enabled'
+  - tiobench
+  - tracing_microbenchmark
   # - unixbench5
-  # - uptime
-  # - virt
+  - uptime
+  - virt
   - wb_kupdate
   # - xfstests
   # - xmtest # Connecting to xm-test.xensource.com (xm-test.xensource.com)|220.250.64.225|:80... failed: Connection refused.
