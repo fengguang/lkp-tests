@@ -20,7 +20,7 @@ spec/glsl-1.50/execution/interface-vs-unnamed-to-fs-unnamed
 spec/glsl-1.20/compiler/built-in-functions/op-add-mat4-mat4.vert
 spec/arb_vertex_program/vp-two-constants
 spec/glsl-4.30/execution/built-in-functions/cs-op-selection-bool-vec2-vec2
-spec/ext_transform_feedback/api-errorsuseprogstage_noactive
+spec/ext_transform_feedback/api-errors.useprogstage_noactive
 spec/arb_texture_query_lod/compiler/built-in-functions/texturequerylod-usampler1d.frag
 spec/!opengl1.1/scissor-polygon
 spec/arb_shading_language_420pack/compiler/illegal-aggregate-initializer-matrix-too-many-columns.frag
@@ -51,11 +51,11 @@ spec/arb_explicit_attrib_location/1.10/compiler/layout-05.vert
 glslparsertest/shaders/extension8.v110.frag
 spec/glsl-1.30/execution/built-in-functions/fs-sinh-float
 spec/arb_copy_buffer/negative-bounds
-spec/!opengl1.2/texwrap3dbordercolor
+spec/!opengl.1.2/texwrap.3d.bordercolor
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-neg-ivec2
 spec/glsl-1.30/compiler/built-in-functions/op-bitor-neg-uvec4-uvec4.frag
 glslparsertest/glsl2/loop-04.vert
-spec/glsl-1.20/execution/tex-miplevel-selectiongl2:texture()cube
+spec/glsl-1.20/execution/tex-miplevel-selection.gl2:texture().cube
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-neg-ivec4
 spec/ext_transform_feedback/points-large
 spec/arb_explicit_attrib_location/1.20/preprocessor/define.vert
@@ -74,7 +74,7 @@ spec/arb_enhanced_layouts/linker/explicit-offsets/intrastage-ubo-different-offse
 spec/arb_shader_atomic_counters/buffer-binding
 spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-op-add-dmat2x4-dmat2x4
 spec/ext_framebuffer_object/fbo-stencil-gl_stencil_index8-drawpixels
-spec/arb_gpu_shader_fp64/varying-packing/simpledmat2x3separate
+spec/arb_gpu_shader_fp64/varying-packing/simple.dmat2x3.separate
 spec/glsl-1.50/compiler/built-in-functions/op-bitxor-not-abs-int-ivec4.geom
 spec/ext_framebuffer_multisample/blit-mismatched-sizes
 spec/arb_shader_image_load_store/compiler/declaration-format-qualifier-2d-ms-float.vert

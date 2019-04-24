@@ -13,8 +13,8 @@ spec/arb_texture_gather/texturegatheroffset/vs-rg-none-int-2d
 spec/arb_enhanced_layouts/compiler/compile-time-constants/invalid-types/bool.vert
 spec/glsl-4.00/compiler/built-in-functions/op-mult-dmat3x4-dmat2x3.geom
 spec/glsl-4.30/execution/built-in-functions/cs-op-add-mat4x3-mat4x3
-spec/ext_texture_compression_s3tc/getteximage-targetscubes3tc
-spec/glsl-1.30/execution/tex-miplevel-selectiontextureprojlodoffset1d_projvec4
+spec/ext_texture_compression_s3tc/getteximage-targets.cube.s3tc
+spec/glsl-1.30/execution/tex-miplevel-selection.textureprojlodoffset.1d_projvec4
 spec/glsl-1.30/execution/built-in-functions/fs-roundeven-float
 spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-floor-double
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-div-dvec3-dvec3.frag
@@ -43,7 +43,7 @@ spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-op-div-dmat4x3-double
 spec/arb_shader_image_load_store/compiler/declaration-format-qualifier-1d-array-float.vert
 spec/glsl-4.00/compiler/built-in-functions/matrixcompmult-dmat2x3-dmat2x3.frag
 spec/arb_texture_gather/texturegatheroffset/vs-rgba-green-int-2d
-spec/arb_gpu_shader_fp64/varying-packing/simpledmat4arrays_of_arrays
+spec/arb_gpu_shader_fp64/varying-packing/simple.dmat4.arrays_of_arrays
 spec/arb_shader_image_load_store/compiler/expression-assignment-8.vert
 spec/glsl-1.30/compiler/built-in-functions/op-neg-uvec2.frag
 asmparsertest/arbfp1.0/size_specifier-63.txt
@@ -62,7 +62,7 @@ spec/glsl-1.50/execution/built-in-functions/gs-op-neg-mat3x4
 shaders/glsl-vs-deadcode-2
 spec/glsl-4.00/compiler/built-in-functions/matrixcompmult-dmat2-dmat2.geom
 shaders/glsl-fs-fragcoord
-spec/glsl-1.10/execution/varying-packing/simplevec2arrays_of_arrays
+spec/glsl-1.10/execution/varying-packing/simple.vec2.arrays_of_arrays
 spec/arb_texture_gather/texturegatheroffset/vs-r-none-unorm-2d
 spec/glsl-1.50/compiler/built-in-functions/op-bitxor-neg-abs-ivec4-int.geom
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-add-vec2-vec2
@@ -79,7 +79,7 @@ spec/glsl-1.30/linker/interpolation-qualifiers/noperspective-gl_backcolor-flat-g
 spec/glsl-4.30/execution/built-in-functions/cs-op-assign-div-ivec4-ivec4
 spec/glsl-1.20/compiler/built-in-functions/distance-float-float.frag
 spec/glsl-4.30/execution/built-in-functions/cs-lessthan-vec3-vec3
-glx/glx_arb_create_context_profile/invalidprofile
+glx/glx_arb_create_context_profile/invalid.profile
 spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-smoothstep-double-double-dvec2
 spec/arb_texture_gather/texturegatheroffset/fs-rgba-alpha-unorm-2darray
 spec/glsl-4.30/execution/built-in-functions/cs-op-bitor-not-abs-int-int
@@ -91,10 +91,10 @@ spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-smoothstep-double-doubl
 spec/glsl-1.30/execution/built-in-functions/fs-max-uvec4-uvec4
 spec/arb_texture_gather/texturegather/fs-r-one-unorm-cubearray
 spec/glsl-1.30/execution/built-in-functions/fs-op-assign-mod-ivec4-int
-spec/!opengl1.1/polygon-mode-offset
+spec/!opengl.1.1/polygon-mode-offset
 spec/glsl-1.20/compiler/built-in-functions/op-add-ivec3-ivec3.frag
 spec/arb_copy_buffer/negative-bound-zero
 spec/arb_texture_gather/texturegatheroffset/fs-rg-red-unorm-2d
 spec/glsl-1.30/execution/built-in-functions/vs-op-lshift-int-int
-spec/arb_internalformat_query/bufferover-runchecks
+spec/arb_internalformat_query/buffer.over-run.checks
 spec/glsl-1.20/compiler/built-in-functions/op-uplus-mat4x3.frag

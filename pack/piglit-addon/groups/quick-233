@@ -17,7 +17,7 @@ spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-bitor-ivec4-int
 spec/arb_texture_gather/texturegatheroffset/vs-rg-green-int-2darray
 spec/arb_shader_image_load_store/compiler/builtin-data-argument-mismatch-atomic-min-1d.vert
 spec/arb_gpu_shader5/texturegather/fs-rgba-0-float-cubearray
-spec/oes_texture_float/oes_texture_floatlinear
+spec/oes_texture_float/oes_texture_float.linear
 spec/glsl-1.30/execution/built-in-functions/vs-op-assign-rshift-ivec4-int
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-ge-uint-uint-using-if
 spec/glsl-4.30/execution/built-in-functions/cs-op-bitor-not-abs-ivec4-int
@@ -28,7 +28,7 @@ spec/arb_shader_image_load_store/compiler/expression-arithmetic-3.frag
 spec/glsl-1.10/execution/variable-indexing/vs-varying-array-mat3-index-wr
 spec/glsl-1.50/execution/built-in-functions/gs-op-sub-mat2-float
 spec/arb_shader_image_load_store/compiler/expression-logical-3.vert
-spec/ext_transform_feedback/output-typeivec2[2]
+spec/ext_transform_feedback/output-type.ivec2[2]
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-abs-ivec3
 spec/glsl-4.00/compiler/built-in-functions/mix-dvec3-dvec3-bvec3.geom
 spec/glsl-1.10/execution/built-in-functions/fs-op-div-mat3-mat3
@@ -57,7 +57,7 @@ spec/glsl-1.50/compiler/built-in-functions/roundeven-float.geom
 spec/arb_explicit_attrib_location/1.20/compiler/layout-08.frag
 spec/glsl-es-1.00/linker/glsl-no-glposition
 spec/glsl-1.10/compiler/void/void-assignment.vert
-spec/ext_framebuffer_multisample/accuracy16depth_resolvesmalldepthstencil
+spec/ext_framebuffer_multisample/accuracy.16.depth_resolve.small.depthstencil
 spec/arb_gpu_shader5/texturegatheroffsets/vs-rgba-1-unorm-2d
 spec/arb_enhanced_layouts/compiler/compile-time-constants/binding-shader-storage-buffer-object.frag
 spec/glsl-1.10/execution/variable-indexing/vs-temp-mat2-wr
@@ -96,5 +96,5 @@ spec/arb_gpu_shader5/texturegather/fs-rgba-1-uint-cube
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-bitor-abs-neg-ivec4-int
 spec/glsl-1.20/compiler/built-in-functions/matrixcompmult-mat3-mat3.vert
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/reflect-dvec3-dvec3.vert
-spec/ext_transform_feedback/tessellationquad_stripflat_last
+spec/ext_transform_feedback/tessellation.quad_strip.flat_last
 spec/arb_gpu_shader5/texturegatheroffset/fs-rgba-1-int-2d

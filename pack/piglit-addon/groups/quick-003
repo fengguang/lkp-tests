@@ -51,16 +51,16 @@ spec/arb_texture_gather/texturegather/fs-rgb-blue-uint-cubearray
 spec/arb_explicit_attrib_location/1.10/compiler/layout-11.frag
 shaders/glsl-fwidth
 spec/glsl-1.20/execution/built-in-functions/fs-outerproduct-vec3-vec2
-spec/!opengl4.4/tex-errors
+spec/!opengl.4.4/tex-errors
 spec/glsl-1.20/compiler/built-in-functions/reflect-vec3-vec3.frag
 spec/glsl-4.00/compiler/built-in-functions/op-div-double-dvec4.frag
 shaders/glsl-const-builtin-abs
 spec/glsl-1.50/compiler/built-in-functions/op-mult-ivec3-ivec3.geom
 spec/arb_gpu_shader5/texturegatheroffset/fs-r-0-unorm-2d
-glx/glx_arb_create_context/invalidrendertype
+glx/glx_arb_create_context/invalid.render.type
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-lshift-int-int
 spec/arb_texture_query_lod/compiler/built-in-functions/texturequerylod-isampler1darray.frag
-spec/ext_framebuffer_multisample/point-smooth32
+spec/ext_framebuffer_multisample/point-smooth.32
 spec/glsl-4.30/execution/built-in-functions/cs-op-assign-sub-mat2x4-float
 spec/arb_arrays_of_arrays/compiler/initializer-var-array-array.vert
 spec/glsl-1.50/compiler/built-in-functions/op-div-vec4-vec4.geom
@@ -68,7 +68,7 @@ spec/arb_gpu_shader5/texturegatheroffset/fs-rgba-1-uint-2darray
 spec/glsl-1.50/execution/built-in-functions/gs-clamp-ivec2-ivec2-ivec2
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitand-ivec4-ivec4
 spec/oes_standard_derivatives/compiler/fwidth-vec4.vert
-spec/ext_framebuffer_multisample/polygon-smooth16
+spec/ext_framebuffer_multisample/polygon-smooth.16
 spec/glsl-1.30/compiler/built-in-functions/op-bitor-not-uvec2-uint.frag
 spec/glsl-1.30/compiler/reserved/template.frag
 spec/glsl-1.30/linker/interpolation-qualifiers/unused-noperspective-gl_backcolor-unused-smooth-gl_color
@@ -93,7 +93,7 @@ shaders/glsl-mat-110
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/equal-dvec2-dvec2.geom
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-div-double-dmat2x4.vert
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-bitor-not-abs-ivec3-int
-spec/glsl-1.30/execution/tex-miplevel-selectiontextureproj2drect_projvec4
+spec/glsl-1.30/execution/tex-miplevel-selection.textureproj.2drect_projvec4
 spec/glsl-1.50/compiler/built-in-functions/equal-vec2-vec2.geom
 spec/arb_gpu_shader5/texturegather/vs-rgba-0-int-2darray
 spec/glsl-4.00/execution/built-in-functions/vs-op-div-dmat2-double

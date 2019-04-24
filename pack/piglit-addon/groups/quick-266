@@ -4,7 +4,7 @@ spec/glsl-1.20/compiler/built-in-functions/op-div-float-float.vert
 spec/glsl-4.30/execution/built-in-functions/cs-max-vec4-vec4
 spec/glsl-4.30/execution/built-in-functions/cs-op-bitxor-not-ivec3-int
 spec/glsl-1.40/execution/texturesize/vs-texturesize-usampler1darray
-spec/ext_texture_compression_latc/texwrapformatsbordercolor-swizzled
+spec/ext_texture_compression_latc/texwrap.formats.bordercolor-swizzled
 spec/glsl-4.30/execution/built-in-functions/cs-op-assign-div-ivec2-ivec2
 spec/glsl-1.50/compiler/built-in-functions/op-bitor-not-abs-ivec3-ivec3.geom
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-mult-dmat3x4-dmat3.frag
@@ -17,9 +17,9 @@ spec/arb_separate_shader_objects/compiler/1.50/define.frag
 spec/glsl-4.00/compiler/built-in-functions/lessthan-dvec4-dvec4.vert
 spec/glsl-1.30/execution/built-in-functions/fs-op-bitand-abs-not-ivec2-ivec2
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/smoothstep-double-double-dvec3.vert
-spec/glsl-1.50/glsl-1.50-gs-output-layout-qualifierstriangles_adjacency
+spec/glsl-1.50/glsl-1.50-gs-output-layout-qualifiers.triangles_adjacency
 spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-op-mult-dmat3x2-dmat3
-spec/arb_texture_float/multisample-formats4gl_arb_texture_float
+spec/arb_texture_float/multisample-formats.4.gl_arb_texture_float
 spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-op-mult-dmat2x3-dmat3x2
 spec/glsl-1.30/execution/interpolation/interpolation-smooth-gl_backsecondarycolor-flat-vertex
 spec/glsl-1.30/compiler/built-in-functions/op-bitxor-neg-abs-ivec3-int.frag
@@ -31,7 +31,7 @@ spec/glsl-1.30/compiler/switch-statement/switch-expression-in-int.vert
 spec/glsl-4.00/compiler/built-in-functions/inverse-dmat4.frag
 spec/glsl-1.20/compiler/structure-and-array-operations/array-positive.vert
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitor-not-ivec4-int
-spec/ext_transform_feedback/tessellationpolygonsmooth
+spec/ext_transform_feedback/tessellation.polygon.smooth
 spec/arb_gpu_shader5/texturegather/fs-rgba-0-uint-2drect
 shaders/glsl-fs-loop-nested
 spec/glsl-1.10/compiler/expressions/postdecrement-ivec3-non-lvalue-for-out-parameter.vert
@@ -39,7 +39,7 @@ spec/arb_gpu_shader_fp64/compiler/built-in-functions/round-double.vert
 spec/arb_gpu_shader5/texturegatheroffset/vs-rgb-1-float-2d-const
 spec/arb_shader_image_load_store/compiler/builtin-address-argument-mismatch-atomic-max-2d-array.frag
 spec/arb_uniform_buffer_object/compiler/layout-std140-non-uniform.frag
-spec/glsl-1.30/execution/tex-miplevel-selectiontextureprojgradoffset2dshadow
+spec/glsl-1.30/execution/tex-miplevel-selection.textureprojgradoffset.2dshadow
 spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-op-mult-dmat2x3-double
 spec/glsl-1.10/execution/built-in-functions/fs-op-selection-bool-mat4-mat4
 spec/glsl-1.50/compiler/built-in-functions/op-bitor-abs-not-int-int.geom
@@ -52,7 +52,7 @@ spec/glsl-1.50/execution/built-in-functions/gs-op-mult-mat3x4-vec3
 spec/arb_gpu_shader_fp64/execution/vs-out-fs-in-double-2
 spec/glsl-4.00/execution/built-in-functions/fs-transpose-dmat4x3
 spec/glsl-1.10/execution/built-in-functions/vs-op-sub-mat2-float
-spec/arb_framebuffer_object/fbo-drawbuffers-nonegldrawpixels
+spec/arb_framebuffer_object/fbo-drawbuffers-none.gldrawpixels
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitor-abs-neg-int-int
 spec/arb_shading_language_420pack/compiler/illegal-aggregate-initializer-vec-too-many-elements.frag
 asmparsertest/arbfp1.0/size_specifier-82.txt
@@ -68,7 +68,7 @@ spec/ext_framebuffer_object/fbo-stencil-gl_stencil_index16-copypixels
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-add-double-dmat4.frag
 spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-op-mult-dmat3x2-dmat4x3
 spec/glsl-1.10/execution/variable-indexing/vs-varying-array-mat2-col-row-rd
-spec/glsl-1.50/execution/geometry/primitive-id-restartgl_triangle_strip_adjacencyffs
+spec/glsl-1.50/execution/geometry/primitive-id-restart.gl_triangle_strip_adjacency.ffs
 spec/glsl-4.00/compiler/built-in-functions/sqrt-dvec3.vert
 spec/glsl-3.30/execution/built-in-functions/vs-floatbitstouint
 spec/glsl-1.20/compiler/built-in-functions/outerproduct-mat4x4.vert
@@ -77,7 +77,7 @@ spec/glsl-1.50/execution/built-in-functions/gs-op-assign-mult-uvec4-uvec4
 spec/arb_shader_image_load_store/unused
 spec/glsl-1.50/execution/built-in-functions/gs-op-rshift-int-int
 spec/glsl-1.20/compiler/built-in-functions/transpose-mat3x2.frag
-spec/ext_framebuffer_multisample/no-color32depth-computedcombined
+spec/ext_framebuffer_multisample/no-color.32.depth-computed.combined
 spec/arb_timer_query/timestamp-get
 spec/glsl-1.30/execution/texelfetch/fs-texelfetch-isampler2darray-swizzle
 spec/glsl-1.20/execution/variable-indexing/fs-temp-array-mat2-index-row-wr

@@ -5,7 +5,7 @@ spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-length-dvec4
 spec/glsl-4.00/execution/built-in-functions/vs-op-mult-dvec4-dmat2x4
 spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-length-dvec2
 spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-length-dvec3
-spec/arb_buffer_storage/bufferstorage-persistent_gles3readcoherentclient-storage
+spec/arb_buffer_storage/bufferstorage-persistent_gles3.readcoherentclient-storage
 spec/glsl-1.20/execution/variable-indexing/fs-temp-array-mat3-row-wr
 spec/glsl-es-3.00/execution/sanity
 spec/amd_shader_trinary_minmax/execution/built-in-functions/fs-min3-ivec3-ivec3-ivec3
@@ -19,7 +19,7 @@ spec/glsl-1.20/compiler/built-in-functions/op-add-mat2-mat2.frag
 spec/arb_shader_bit_encoding/execution/built-in-functions/fs-uintbitstofloat
 glslparsertest/glsl2/condition-05.vert
 spec/arb_enhanced_layouts/compiler/component-layout/overlap-double.vert
-spec/arb_gpu_shader_fp64/varying-packing/simpledvec3separate
+spec/arb_gpu_shader_fp64/varying-packing/simple.dvec3.separate
 asmparsertest/arbfp1.0/size_specifier-53.txt
 spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-op-div-dmat4x3-dmat4x3
 spec/arb_framebuffer_srgb/blittexturesrgb_to_linearscaledenabled
@@ -38,11 +38,11 @@ spec/arb_gpu_shader5/texturegatheroffset/vs-rg-0-uint-2darray-const
 spec/glsl-4.00/execution/built-in-functions/gs-max-dvec4-dvec4
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-add-double-dvec3.vert
 spec/glsl-1.50/execution/built-in-functions/gs-reflect-float-float
-spec/ext_framebuffer_multisample_blit_scaled/blit-scaledsamples=2withgl_texture_2d_multisample_array
+spec/ext_framebuffer_multisample_blit_scaled/blit-scaled.samples=2.with.gl_texture_2d_multisample_array
 spec/glsl-1.30/execution/interpolation/interpolation-smooth-gl_frontcolor-smooth-none
 spec/arb_texture_gather/texturegather/vs-rg-zero-float-2d
 spec/arb_gpu_shader5/texturegather/vs-r-0-float-2d
-spec/3dfx_texture_compression_fxt1/invalidformats
+spec/3dfx_texture_compression_fxt1/invalid.formats
 spec/glsl-1.10/execution/variable-indexing/fs-varying-array-mat2-col-row-rd
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/smoothstep-double-double-dvec3.geom
 spec/glsl-4.00/compiler/built-in-functions/op-sub-dmat2-double.vert
@@ -61,7 +61,7 @@ spec/glsl-1.10/execution/variable-indexing/fs-varying-mat3-row-rd
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-ne-mat4x3-mat4x3
 spec/arb_depth_buffer_float/fbo-depth-gl_depth_component32f-tex1d
 asmparsertest/arbfp1.0/size_specifier-18.txt
-spec/ext_framebuffer_multisample/no-color2stencilsingle
+spec/ext_framebuffer_multisample/no-color.2.stencil.single
 spec/glsl-4.30/execution/built-in-functions/cs-lessthan-vec4-vec4
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-mult-dmat3-dmat2x3.frag
 spec/arb_gpu_shader5/texturegatheroffset/vs-rgba-3-int-2d-const

@@ -32,13 +32,13 @@ spec/glsl-1.20/execution/built-in-functions/fs-op-div-mat3x2-mat3x2
 spec/glsl-1.20/compiler/built-in-functions/op-uplus-mat3x2.vert
 spec/glsl-1.10/execution/vs-inner-loop-modifies-outer-loop-var
 spec/arb_vertex_program/vp-arl-constant-array-huge-offset
-spec/arb_gpu_shader_fp64/varying-packing/simpledvec2separate
-spec/ext_framebuffer_multisample/accuracy8colorlinear
+spec/arb_gpu_shader_fp64/varying-packing/simple.dvec2.separate
+spec/ext_framebuffer_multisample/accuracy.8.color.linear
 spec/glsl-1.30/compiler/built-in-functions/op-bitor-uvec2-uint.vert
 spec/glsl-1.30/compiler/built-in-functions/op-lshift-ivec2-uvec2.frag
 spec/glsl-1.10/execution/variable-indexing/fs-varying-mat4-row-rd
 spec/arb_gpu_shader5/texturegatheroffsets/vs-rgba-1-int-2drect
-spec/ext_transform_feedback/structsarray-struct-whole-arrayrun
+spec/ext_transform_feedback/structs.array-struct-whole-array.run
 spec/glsl-1.20/compiler/built-in-functions/op-mult-float-mat4x3.vert
 spec/glsl-4.00/compiler/built-in-functions/op-sub-dvec3-dvec3.vert
 spec/arb_shader_image_load_store/minmax
@@ -72,7 +72,7 @@ spec/glsl-4.30/execution/built-in-functions/cs-atan-vec3
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-sub-float-mat2
 spec/glsl-4.30/execution/built-in-functions/cs-atan-vec2
 spec/glsl-1.50/execution/built-in-functions/gs-greaterthanequal-ivec2-ivec2
-spec/arb_texture_buffer_object/formats(fs,3.1core)
+spec/arb_texture_buffer_object/formats.(fs,.3.1.core)
 spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-op-sub-dmat2-dmat2
 spec/glsl-1.50/compiler/built-in-functions/op-div-float-mat4x3.geom
 spec/glsl-4.00/execution/built-in-functions/fs-clamp-dvec3-dvec3-dvec3
@@ -82,7 +82,7 @@ spec/glsl-1.50/compiler/built-in-functions/cosh-vec3.geom
 shaders/glsl-fs-loop-continue
 spec/glsl-3.30/execution/built-in-functions/vs-uintbitstofloat
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-bitxor-not-uvec3-uint
-spec/!opengl1.1/texwrap1d
+spec/!opengl.1.1/texwrap.1d
 spec/glsl-1.10/execution/built-in-functions/fs-op-add-vec2-float
 spec/glsl-es-1.00/compiler/structure-and-array-operations/embedded-struct-01.vert
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-bitxor-abs-not-ivec4-int
@@ -96,5 +96,5 @@ spec/glsl-1.30/execution/built-in-functions/fs-op-assign-mod-ivec3-int
 spec/arb_gpu_shader5/texturegatheroffset/vs-rgba-3-int-2drect
 spec/arb_shader_precision/gs-op-add-vec3-vec3
 spec/glsl-1.30/compiler/built-in-functions/tanh-vec4.frag
-spec/arb_texture_compression_bptc/texwrapformats
+spec/arb_texture_compression_bptc/texwrap.formats
 spec/arb_gpu_shader5/texturegatheroffset/fs-rgb-2-float-2d-const

@@ -4,8 +4,8 @@ spec/glsl-1.30/compiler/reserved/image1darrayshadow.frag
 spec/glsl-4.00/compiler/built-in-functions/mod-dvec4-dvec4.vert
 spec/glsl-1.30/execution/built-in-functions/vs-trunc-vec4
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-bitxor-uint-uvec3
-spec/ext_transform_feedback2/glgentransformfeedbacksnamesonly
-spec/glsl-1.10/execution/varying-packing/simplefloatarray
+spec/ext_transform_feedback2/glgentransformfeedbacks.names.only
+spec/glsl-1.10/execution/varying-packing/simple.float.array
 spec/glsl-1.30/execution/built-in-functions/fs-op-bitor-not-abs-ivec3-ivec3
 spec/glsl-1.30/execution/built-in-functions/vs-trunc-vec3
 spec/glsl-1.30/compiler/storage-qualifiers/struct-member-varying.frag
@@ -76,10 +76,10 @@ spec/arb_explicit_attrib_location/1.20/compiler/out-04.vert
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/smoothstep-dvec3-dvec3-dvec3.vert
 spec/arb_texture_gather/texturegatheroffset/vs-rgb-none-float-2d
 spec/glsl-1.20/compiler/built-in-functions/max-vec3-float.frag
-spec/ext_framebuffer_multisample/int-draw-buffers-alpha-to-coverage32
+spec/ext_framebuffer_multisample/int-draw-buffers-alpha-to-coverage.32
 spec/glsl-1.50/execution/texturesize/gs-texturesize-isampler1darray
 spec/glsl-1.30/compiler/precision-qualifiers/default-precision-int-01.frag
-spec/glsl-1.50/execution/geometry/primitive-typesgl_triangle_strip
+spec/glsl-1.50/execution/geometry/primitive-types.gl_triangle_strip
 glslparsertest/shaders/ternaryop.frag
 spec/glsl-4.30/execution/built-in-functions/cs-op-assign-mult-mat2x4-float
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/inverse-dmat4.vert

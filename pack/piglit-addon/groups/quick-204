@@ -38,7 +38,7 @@ spec/arb_gpu_shader_fp64/compiler/built-in-functions/inverse-dmat3.frag
 spec/arb_texture_gather/texturegatheroffset/vs-rgba-alpha-unorm-2darray
 spec/glsl-1.20/compiler/built-in-functions/outerproduct-vec3-vec3.vert
 spec/glsl-1.10/execution/built-in-functions/fs-op-assign-sub-ivec2-int
-spec/glsl-1.20/execution/tex-miplevel-selectiongl2:textureproj1dshadow
+spec/glsl-1.20/execution/tex-miplevel-selection.gl2:textureproj.1dshadow
 spec/glsl-4.30/execution/built-in-functions/cs-op-bitand-int-ivec2
 spec/arb_gpu_shader5/texturegather/fs-r-0-unorm-cube
 spec/arb_shader_image_load_store/compiler/builtin-address-argument-mismatch-atomic-max-2d-ms-array.vert
@@ -63,7 +63,7 @@ spec/glsl-4.00/compiler/built-in-functions/lessthanequal-dvec2-dvec2.frag
 spec/glsl-1.20/compiler/built-in-functions/op-ne-mat4x2-mat4x2.vert
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-atan-vec3
 spec/arb_gpu_shader5/texturegatheroffset/vs-rgb-2-int-2darray-const
-spec/!opengl3.2/layered-rendering/framebuffertexture-buffer-textures
+spec/!opengl.3.2/layered-rendering/framebuffertexture-buffer-textures
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-atan-vec2
 spec/glsl-1.10/execution/built-in-functions/vs-op-mult-mat2-float
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-atan-vec4
@@ -76,10 +76,10 @@ spec/glsl-4.30/execution/built-in-functions/cs-op-bitxor-neg-uvec2-uvec2
 spec/glsl-1.30/compiler/built-in-functions/clamp-uvec2-uvec2-uvec2.vert
 spec/glsl-4.00/compiler/built-in-functions/sign-dvec3.frag
 spec/glsl-1.10/execution/built-in-functions/vs-op-ne-float-float
-spec/!opengles3.0/oes_compressed_etc2_texture-miptree_gles3r11
+spec/!opengl.es.3.0/oes_compressed_etc2_texture-miptree_gles3.r11
 spec/glsl-1.50/execution/built-in-functions/gs-op-selection-bool-bvec3-bvec3
 spec/glsl-4.30/execution/built-in-functions/cs-transpose-mat3x4
-spec/!opengl3.2/glsl-resource-not-bound2d
+spec/!opengl.3.2/glsl-resource-not-bound.2d
 spec/glsl-1.50/execution/built-in-functions/gs-op-assign-mult-mat2-float
 spec/arb_texture_gather/texturegatheroffset/fs-rgb-blue-uint-2d
 spec/glsl-4.00/execution/built-in-functions/fs-mix-dvec2-dvec2-double

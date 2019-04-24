@@ -70,7 +70,7 @@ spec/glsl-es-3.00/execution/built-in-functions/vs-unpacksnorm2x16
 spec/glsl-4.30/execution/built-in-functions/cs-op-assign-div-mat3-mat3
 spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-op-mult-dvec4-dmat2x4
 spec/glsl-1.50/compiler/built-in-functions/distance-vec4-vec4.geom
-spec/ext_framebuffer_multisample/accuracy16srgbsmalllinear
+spec/ext_framebuffer_multisample/accuracy.16.srgb.smalllinear
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitxor-uint-uvec4
 spec/arb_shader_precision/gs-op-assign-add-vec4-vec4
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/inversesqrt-dvec4.vert
@@ -78,8 +78,8 @@ spec/glsl-1.10/execution/built-in-functions/fs-op-le-int-int-using-if
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitxor-uint-uvec2
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-bitand-abs-not-ivec4-ivec4
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitxor-uint-uvec3
-spec/glsl-1.10/execution/varying-packing/simplevec3separate
-shaders/point-vertex-idgl_vertexiddivisor
+spec/glsl-1.10/execution/varying-packing/simple.vec3.separate
+shaders/point-vertex-id.gl_vertexiddivisor
 spec/glsl-1.50/execution/built-in-functions/gs-op-bitxor-not-abs-ivec4-int
 spec/glsl-1.40/compiler/gl_vertexid.vert
 spec/glsl-1.50/compiler/built-in-functions/op-sub-float-mat2.geom

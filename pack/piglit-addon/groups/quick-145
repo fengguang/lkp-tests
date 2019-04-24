@@ -8,7 +8,7 @@ spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-abs-double
 spec/glsl-1.30/execution/interpolation/interpolation-noperspective-gl_frontsecondarycolor-flat-none
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-sub-mat4x2-float
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-sub-int-ivec4
-spec/ext_texture_array/fbo-depth-arrayfs-writes-depth
+spec/ext_texture_array/fbo-depth-array.fs-writes-depth
 spec/arb_shader_image_load_store/compiler/early-fragment-tests-out.frag
 spec/amd_shader_trinary_minmax/execution/max3-basic
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-assign-sub-ivec2-int
@@ -40,7 +40,7 @@ spec/glsl-1.50/execution/built-in-functions/gs-exp2-vec2
 asmparsertest/arbvp1.0/bra-03.txt
 spec/arb_texture_gather/texturegatheroffset/vs-rgba-none-unorm-2d
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-acos-float
-spec/glsl-1.20/execution/tex-miplevel-selectiongl2:texture(bias)1dshadow
+spec/glsl-1.20/execution/tex-miplevel-selection.gl2:texture(bias).1dshadow
 spec/glsl-1.50/execution/built-in-functions/gs-transpose-mat2x4
 spec/glsl-1.20/compiler/built-in-functions/op-mult-vec4-float.frag
 spec/glsl-1.50/execution/built-in-functions/gs-exp2-vec3
@@ -49,12 +49,12 @@ spec/glsl-1.10/compiler/samplers/inout.frag
 spec/glsl-1.10/execution/built-in-functions/fs-op-add-mat2-mat2
 spec/arb_shader_image_load_store/compiler/declaration-allowed-1d-array.vert
 spec/arb_gpu_shader5/texturegather/vs-rgba-0-float-cubearray
-spec/!opengl2.0/vertex-program-two-sideenabledfrontfront2back2
+spec/!opengl.2.0/vertex-program-two-side.enabled.front.front2back2
 spec/arb_shader_image_load_store/compiler/call-argument-type-2d-ms.vert
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/matrixcompmult-dmat2x4-dmat2x4.vert
 spec/arb_shader_image_load_store/compiler/declaration-global-in.vert
 spec/glsl-es-1.00/compiler/precision-qualifiers/default-precision-int-01.frag
-spec/ext_transform_feedback/output-typeivec3[2]
+spec/ext_transform_feedback/output-type.ivec3[2]
 spec/arb_shader_storage_buffer_object/compiler/layout-std430-non-shader-storage.frag
 spec/glsl-1.30/execution/texturesize/fs-texturesize-usampler1d
 spec/ext_texture_snorm/fbo-clear-formats
@@ -80,7 +80,7 @@ spec/glsl-1.50/execution/built-in-functions/gs-op-bitor-neg-abs-ivec4-int
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/outerproduct-dvec3-dvec4.geom
 spec/glsl-1.20/compiler/built-in-functions/op-ne-int-int.vert
 spec/glsl-4.30/execution/built-in-functions/cs-op-bitxor-neg-abs-ivec4-int
-spec/ext_transform_feedback/structsstruct-array-elemgetinterface
+spec/ext_transform_feedback/structs.struct-array-elem.get.interface
 spec/glsl-4.00/compiler/built-in-functions/op-add-dmat3x4-dmat3x4.frag
 shaders/glsl-const-builtin-refract
 spec/glsl-1.30/execution/built-in-functions/vs-op-complement-ivec3

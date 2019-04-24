@@ -1,4 +1,4 @@
-spec/arb_es3_compatibility/oes_compressed_etc2_texture-miptreergb8compat
+spec/arb_es3_compatibility/oes_compressed_etc2_texture-miptree.rgb8.compat
 spec/arb_tessellation_shader/execution/sanity
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-mult-vec2-mat4x2
 spec/glsl-1.50/compiler/built-in-functions/lessthanequal-vec3-vec3.geom
@@ -36,9 +36,9 @@ spec/glsl-1.30/execution/built-in-functions/vs-op-bitand-int-int
 spec/arb_texture_stencil8/fbo-stencil-blit
 spec/glsl-4.00/compiler/built-in-functions/op-mult-dvec4-dmat4.geom
 spec/glsl-1.50/execution/built-in-functions/gs-equal-uvec3-uvec3
-spec/arb_gpu_shader_fp64/varying-packing/simpledmat4x2array
+spec/arb_gpu_shader_fp64/varying-packing/simple.dmat4x2.array
 spec/arb_texture_gather/texturegatheroffset/fs-rgb-none-unorm-2d
-spec/ext_framebuffer_multisample/accuracy6depth_resolve
+spec/ext_framebuffer_multisample/accuracy.6.depth_resolve
 spec/glsl-1.50/execution/built-in-functions/gs-op-bitand-not-abs-ivec4-int
 spec/ext_framebuffer_object/fbo-nostencil-test
 spec/glsl-1.20/execution/variable-indexing/vs-temp-array-mat3-col-wr
@@ -55,7 +55,7 @@ spec/glsl-1.50/compiler/built-in-functions/clamp-ivec2-int-int.geom
 spec/arb_shader_image_load_store/compiler/declaration-initializer.frag
 spec/glsl-1.50/execution/built-in-functions/gs-op-ne-uvec3-uvec3-using-if
 spec/glsl-1.10/compiler/arithmetic-operators/modulus-00.frag
-spec/glsl-1.10/execution/varying-packing/simpleivec4separate
+spec/glsl-1.10/execution/varying-packing/simple.ivec4.separate
 spec/arb_color_buffer_float/gl_rgba8-drawpixels
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-ne-vec4-vec4-using-if
 spec/glsl-1.50/execution/built-in-functions/gs-op-assign-rshift-int-uint
@@ -71,7 +71,7 @@ spec/glsl-1.50/compiler/vs-redeclares-pervertex-out-before-other-global-redeclar
 spec/glsl-1.20/compiler/built-in-functions/op-add-mat3-mat3.frag
 spec/arb_gpu_shader5/texturegather/fs-rg-0-uint-2darray
 spec/amd_shader_trinary_minmax/execution/built-in-functions/tcs-min3-vec2-vec2-vec2
-spec/ext_framebuffer_multisample/accuracy32stencil_resolvedepthstencil
+spec/ext_framebuffer_multisample/accuracy.32.stencil_resolve.depthstencil
 shaders/glsl-const-builtin-normalize
 spec/arb_texture_gather/texturegatheroffset/vs-rgb-none-unorm-2darray
 spec/glsl-1.20/compiler/built-in-functions/lessthan-ivec4-ivec4.frag
@@ -79,16 +79,16 @@ spec/glsl-1.50/execution/built-in-functions/gs-op-assign-bitand-int-int
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-mult-dmat2x3-dvec2.vert
 spec/glsl-1.50/execution/texelfetch/gs-texelfetch-usampler1darray
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-div-double-dvec2.vert
-spec/ext_texture_compression_rgtc/compressedteximagegl_compressed_red_rgtc1_ext
+spec/ext_texture_compression_rgtc/compressedteximage.gl_compressed_red_rgtc1_ext
 spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-equal-dvec2-dvec2
 spec/glsl-1.20/compiler/built-in-functions/op-div-mat3x2-mat3x2.vert
 spec/glsl-4.30/execution/built-in-functions/cs-op-assign-sub-mat3x2-float
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-bitxor-abs-not-int-ivec4
-spec/arb_shader_texture_lod/execution/tex-miplevel-selection*projlod1dshadow
+spec/arb_shader_texture_lod/execution/tex-miplevel-selection.*projlod.1dshadow
 spec/glsl-1.30/compiler/qualifiers/out-bvec4-prohibited.vert
 spec/glsl-1.30/compiler/built-in-functions/op-bitand-uvec2-uvec2.vert
 spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-greaterthanequal-dvec2-dvec2
-spec/ext_framebuffer_multisample/upsample16color
+spec/ext_framebuffer_multisample/upsample.16.color
 spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-mix-dvec3-dvec3-dvec3
 spec/glsl-1.30/execution/built-in-functions/fs-op-assign-bitand-ivec4-int
 spec/glsl-1.50/execution/built-in-functions/gs-op-assign-div-mat3x2-mat3x2

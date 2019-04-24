@@ -2,7 +2,7 @@ spec/glsl-1.20/compiler/built-in-functions/outerproduct-bvec2.vert
 spec/glsl-1.30/execution/built-in-functions/vs-op-assign-mult-uvec2-uvec2
 spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-op-mult-dmat4x2-dmat3x4
 spec/glsl-1.50/execution/built-in-functions/gs-op-sub-float-mat2x3
-spec/ext_framebuffer_multisample/no-color6depthseparate
+spec/ext_framebuffer_multisample/no-color.6.depth.separate
 spec/glsl-1.50/execution/built-in-functions/gs-op-sub-float-mat2x4
 spec/glsl-1.30/compiler/built-in-functions/clamp-uvec3-uint-uint.frag
 spec/glsl-1.50/execution/built-in-functions/gs-clamp-ivec4-int-int
@@ -12,7 +12,7 @@ spec/arb_shader_image_load_store/compiler/expression-assignment-10.frag
 spec/arb_texture_gather/texturegatheroffset/fs-rgba-red-uint-2darray
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/matrixcompmult-dmat3x2-dmat3x2.geom
 glslparsertest/glsl2/pragma-04.vert
-spec/glsl-1.30/execution/tex-miplevel-selectiontextureoffset2dshadow
+spec/glsl-1.30/execution/tex-miplevel-selection.textureoffset.2dshadow
 spec/glsl-1.30/preprocessor/reserved/double-underscore-03.frag
 spec/glsl-1.10/execution/built-in-functions/fs-op-xor-bool-bool-using-if
 spec/arb_gpu_shader5/texturegatheroffsets/vs-rgb-0-int-2darray
@@ -39,7 +39,7 @@ spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-eq-vec4-vec4
 spec/glsl-1.50/compiler/built-in-functions/op-lshift-int-int.geom
 spec/arb_fragment_program_shadow/txp-shadow2d
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-add-double-dmat3x2.frag
-spec/!opengl3.2/layered-rendering/gl-layer-render-storage
+spec/!opengl.3.2/layered-rendering/gl-layer-render-storage
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-assign-rshift-uvec4-uvec4
 spec/glsl-4.00/execution/built-in-functions/fs-lessthanequal-dvec4-dvec4
 asmparsertest/arbfp1.0/size_specifier-56.txt
@@ -59,7 +59,7 @@ spec/glsl-4.00/execution/built-in-functions/fs-max-dvec2-dvec2
 spec/glsl-1.10/execution/built-in-functions/fs-notequal-bvec4-bvec4
 spec/glsl-4.30/execution/built-in-functions/cs-op-bitand-ivec2-ivec2
 spec/glsl-1.20/execution/uniform-initializer/fs-bool-array
-spec/ext_transform_feedback/structsarray-structgetinterface
+spec/ext_transform_feedback/structs.array-struct.get.interface
 spec/arb_texture_gather/texturegather/fs-rg-zero-float-cubearray
 spec/arb_explicit_attrib_location/1.20/compiler/layout-01.frag
 spec/glsl-1.50/execution/built-in-functions/gs-clamp-int-int-int
@@ -82,7 +82,7 @@ spec/glsl-1.10/execution/built-in-functions/fs-log-float
 spec/glsl-1.30/compiler/built-in-functions/op-bitand-not-uvec2-uint.vert
 spec/arb_texture_gather/texturegather/vs-rgba-one-int-cube
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-div-double-dmat4x3.vert
-spec/glsl-1.30/execution/tex-miplevel-selectiontextureprojoffset1d
+spec/glsl-1.30/execution/tex-miplevel-selection.textureprojoffset.1d
 spec/arb_uniform_buffer_object/minmax
 spec/glsl-1.30/compiler/built-in-functions/op-mult-uint-uvec4.frag
 spec/glsl-1.40/execution/texturesize/vs-texturesize-isampler3d
@@ -90,7 +90,7 @@ spec/ext_framebuffer_multisample/negative-max-samples
 spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-ceil-double
 spec/arb_enhanced_layouts/compiler/compile-time-constants/invalid-types/vec4.vert
 spec/glsl-1.20/compiler/built-in-functions/op-selection-bool-vec3-vec3.vert
-spec/!opengl3.2/layered-rendering/clear-color-all-typescube_mapsingle_level
+spec/!opengl.3.2/layered-rendering/clear-color-all-typescube_mapsingle_level
 spec/arb_texture_gather/texturegatheroffset/fs-rgb-one-int-2darray
 spec/amd_shader_trinary_minmax/compiler/built-in-functions/max3-ivec2-ivec2-ivec2.geom
 spec/glsl-4.00/compiler/built-in-functions/texturequerylod-sampler3d.frag

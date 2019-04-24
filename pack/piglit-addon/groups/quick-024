@@ -5,7 +5,7 @@ spec/glsl-1.30/compiler/built-in-functions/op-rshift-uint-uint.vert
 spec/glsl-1.20/compiler/built-in-functions/exp-float.frag
 spec/glsl-4.00/compiler/built-in-functions/smoothstep-dvec3-dvec3-dvec3.geom
 spec/arb_clear_texture/arb_clear_texture-base-formats
-spec/!opengl3.2/layered-rendering/gl-layer-not-layered
+spec/!opengl.3.2/layered-rendering/gl-layer-not-layered
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-rshift-uvec2-int
 spec/arb_tessellation_shader/compiler/barrier-func.tesc
 spec/glsl-1.10/execution/built-in-functions/vs-smoothstep-float-float-vec3
@@ -33,7 +33,7 @@ spec/arb_texture_gather/texturegatheroffset/fs-rgb-one-uint-2darray
 spec/arb_draw_instanced/compiler/instanceidarb-disabled.frag
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-assign-mult-vec3-mat3
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/trunc-dvec3.vert
-spec/glsl-1.20/execution/tex-miplevel-selectiongl2:textureproj(bias)2d_projvec4
+spec/glsl-1.20/execution/tex-miplevel-selection.gl2:textureproj(bias).2d_projvec4
 spec/glsl-1.30/execution/built-in-functions/vs-trunc-float
 spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-mod-double-double
 spec/glsl-1.20/compiler/built-in-functions/op-div-mat3-float.vert
@@ -90,7 +90,7 @@ spec/glsl-1.50/compiler/built-in-functions/op-bitand-neg-uint-uvec3.geom
 glslparsertest/shaders/fragmentonly1.vert
 spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-greaterthan-dvec3-dvec3
 spec/ext_transform_feedback/query-primitives_generated-bufferrange-discard
-spec/!opengl1.4/tex-miplevel-selection
+spec/!opengl.1.4/tex-miplevel-selection
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-mult-dmat4-dmat3x4.vert
 spec/glsl-4.00/compiler/built-in-functions/min-dvec4-dvec4.vert
 spec/glsl-1.10/execution/variable-indexing/fs-temp-array-mat2-col-row-rd

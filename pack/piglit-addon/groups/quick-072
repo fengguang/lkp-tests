@@ -12,7 +12,7 @@ spec/glsl-1.30/compiler/built-in-functions/clamp-ivec3-ivec3-ivec3.frag
 asmparsertest/arbvp1.0/txd-11.txt
 spec/glsl-4.00/compiler/built-in-functions/floor-dvec2.geom
 glslparsertest/glsl2/pragma-06.vert
-fast_color_clear/fcc-read-after-clearcopyrb
+fast_color_clear/fcc-read-after-clear.copy.rb
 spec/arb_enhanced_layouts/compiler/component-layout/type-mismatch-unsigned-float.vert
 spec/glsl-1.10/execution/built-in-functions/fs-op-ne-vec4-vec4-using-if
 spec/arb_texture_multisample/texelfetch/4-gs-sampler2dms
@@ -24,7 +24,7 @@ spec/glsl-1.30/execution/built-in-functions/vs-op-bitxor-ivec4-ivec4
 spec/arb_gpu_shader5/texturegather/vs-r-0-int-2darray
 spec/glsl-1.30/compiler/built-in-functions/op-bitor-not-abs-int-ivec4.vert
 glslparsertest/glsl2/implicit-conversion-02.vert
-spec/ext_framebuffer_multisample/accuracy8srgbsmalldepthstencil
+spec/ext_framebuffer_multisample/accuracy.8.srgb.small.depthstencil
 spec/glsl-1.50/execution/built-in-functions/gs-op-bitor-uvec2-uvec2
 spec/arb_framebuffer_srgb/fbo-fast-clear
 spec/glsl-4.00/compiler/built-in-functions/max-dvec3-dvec3.geom
@@ -70,7 +70,7 @@ spec/glsl-1.20/compiler/structure-and-array-operations/embedded-struct-02.vert
 spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-round-dvec2
 spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-round-dvec4
 spec/glsl-1.10/execution/built-in-functions/fs-min-vec3-vec3
-spec/ext_transform_feedback/tessellationquad_stripsmooth
+spec/ext_transform_feedback/tessellation.quad_strip.smooth
 spec/glsl-1.50/compiler/layout-out-order-irrelevant.geom
 spec/glsl-4.00/execution/built-in-functions/fs-op-sub-dmat3-dmat3
 spec/glsl-4.30/execution/built-in-functions/cs-op-mod-uvec3-uint
@@ -88,7 +88,7 @@ spec/arb_gpu_shader5/compiler/builtin-functions/vs-gather-comp-int-samplers.vert
 spec/arb_shader_image_load_store/compiler/builtin-address-argument-mismatch-atomic-xor-2d-array.frag
 spec/glsl-1.50/compiler/built-in-functions/outerproduct-vec2-vec4.geom
 spec/glsl-4.00/execution/built-in-functions/gs-op-sub-dvec3-dvec3
-spec/ext_transform_feedback/tessellationquad_stripmonochrome
+spec/ext_transform_feedback/tessellation.quad_strip.monochrome
 spec/glsl-1.10/compiler/expressions/postincrement-float-non-lvalue-for-assignment.vert
 spec/glsl-1.50/uniform_buffer/gs-basic
 spec/arb_texture_gather/texturegather/fs-rgba-one-int-cubearray

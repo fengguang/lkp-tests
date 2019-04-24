@@ -1,8 +1,8 @@
 spec/glsl-4.00/compiler/built-in-functions/floor-double.frag
 spec/amd_shader_trinary_minmax/execution/built-in-functions/vs-max3-float-float-float
 spec/glsl-1.30/compiler/built-in-functions/op-bitxor-neg-abs-ivec4-ivec4.frag
-spec/glsl-1.30/execution/tex-miplevel-selectiontextureproj2drectshadow
-spec/ext_framebuffer_multisample/unaligned-blit6colordownsample
+spec/glsl-1.30/execution/tex-miplevel-selection.textureproj.2drectshadow
+spec/ext_framebuffer_multisample/unaligned-blit.6.color.downsample
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-bitand-neg-uint-uvec2
 spec/glsl-1.20/compiler/built-in-functions/op-eq-vec2-vec2.vert
 spec/arb_texture_gather/texturegather/fs-rg-red-float-cube
@@ -22,8 +22,8 @@ spec/glsl-1.20/compiler/built-in-functions/op-mult-vec3-float.frag
 spec/glsl-4.00/execution/built-in-functions/fs-op-mult-double-dmat3x4
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-mult-double-dvec3.frag
 spec/glsl-1.30/compiler/built-in-functions/op-bitxor-uvec4-uint.vert
-spec/!opengl2.0/vertex-program-two-side
-spec/arb_gpu_shader_fp64/varying-packing/simpledmat3x2arrays_of_arrays
+spec/!opengl.2.0/vertex-program-two-side
+spec/arb_gpu_shader_fp64/varying-packing/simple.dmat3x2.arrays_of_arrays
 spec/glsl-1.50/execution/built-in-functions/gs-op-bitand-neg-abs-ivec2-ivec2
 spec/glsl-1.50/compiler/built-in-functions/op-bitxor-not-ivec4-ivec4.geom
 spec/glsl-4.00/execution/built-in-functions/gs-mod-dvec3-double
@@ -70,12 +70,12 @@ glslparsertest/glsl2/implicit-conversion-01.vert
 spec/glsl-1.50/compiler/built-in-functions/op-bitxor-not-abs-ivec2-ivec2.geom
 spec/glsl-1.30/execution/built-in-functions/fs-op-lshift-uvec3-uint
 shaders/glsl-uniform-linking-1
-spec/glsl-1.10/execution/varying-packing/simplemat2x4separate
+spec/glsl-1.10/execution/varying-packing/simple.mat2x4.separate
 spec/arb_gpu_shader5/texturegatheroffsets/vs-r-0-float-2d
 spec/amd_shader_trinary_minmax/compiler/built-in-functions/mid3-float-float-float.geom
 spec/glsl-4.00/execution/built-in-functions/gs-op-mult-dvec3-dvec3
-spec/glsl-1.50/execution/geometry/tri-strip-ordering-with-prim-restartgl_triangle_stripother
-spec/ext_texture_compression_s3tc/texwrapformatsbordercolor-swizzled
+spec/glsl-1.50/execution/geometry/tri-strip-ordering-with-prim-restart.gl_triangle_strip.other
+spec/ext_texture_compression_s3tc/texwrap.formats.bordercolor-swizzled
 spec/glsl-1.20/execution/built-in-functions/vs-op-assign-mult-mat2x4-mat2
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-bitand-abs-neg-ivec4-int
 spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-op-div-dvec3-double

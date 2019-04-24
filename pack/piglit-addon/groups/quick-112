@@ -1,9 +1,9 @@
 spec/arb_texture_gather/texturegather/vs-rgb-red-unorm-2darray
 spec/glsl-1.20/compiler/built-in-functions/refract-vec3-vec3-float.frag
-spec/ext_texture_array/fbo-depth-arraydepth-layered-clear
+spec/ext_texture_array/fbo-depth-array.depth-layered-clear
 spec/arb_shader_precision/gs-op-mult-float-float
 asmparsertest/arbvp1.0/numbers-07.txt
-spec/ext_framebuffer_multisample/clear2color
+spec/ext_framebuffer_multisample/clear.2.color
 spec/glsl-1.30/compiler/storage-qualifiers/struct-member-in.frag
 spec/arb_texture_gather/texturegather/vs-r-zero-unorm-cube
 spec/glsl-1.30/execution/fs-isnan-vec2
@@ -60,7 +60,7 @@ spec/glsl-4.00/execution/built-in-functions/fs-op-sub-double-double
 spec/glsl-1.30/execution/built-in-functions/vs-op-lshift-uvec4-ivec4
 spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-op-div-double-dmat2x3
 spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-max-dvec2-double
-spec/ext_framebuffer_multisample/accuracyall_samplesstencil_draw
+spec/ext_framebuffer_multisample/accuracy.all_samples.stencil_draw
 shaders/glsl-vs-vectorize-between-basic-blocks-loop
 spec/amd_shader_trinary_minmax/execution/built-in-functions/vs-min3-vec3-vec3-vec3
 spec/glsl-1.30/execution/built-in-functions/vs-op-lshift-ivec3-ivec3

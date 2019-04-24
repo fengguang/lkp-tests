@@ -8,7 +8,7 @@ spec/glsl-4.30/execution/built-in-functions/cs-all-bvec4-using-if
 spec/glsl-1.50/compiler/built-in-functions/outerproduct-vec2-vec2.geom
 spec/arb_explicit_attrib_location/1.10/compiler/in-02.vert
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitxor-int-int
-spec/!opengl1.1/triangle-guardband-viewport
+spec/!opengl.1.1/triangle-guardband-viewport
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-eq-bvec2-bvec2
 spec/glsl-1.20/execution/built-in-functions/vs-op-add-mat4x2-mat4x2
 spec/glsl-1.40/uniform_buffer/fs-floats
@@ -73,9 +73,9 @@ spec/glsl-1.50/compiler/built-in-functions/op-bitxor-neg-abs-ivec2-ivec2.geom
 spec/glsl-1.50/execution/built-in-functions/gs-op-eq-mat3x2-mat3x2-using-if
 spec/glsl-1.50/compiler/built-in-functions/op-add-uvec4-uvec4.geom
 spec/arb_framebuffer_srgb/blittexturelinearscaleddisabled
-spec/arb_copy_image/arb_copy_image-formats--samples=2
-spec/arb_copy_image/arb_copy_image-formats--samples=4
-spec/arb_copy_image/arb_copy_image-formats--samples=8
+spec/arb_copy_image/arb_copy_image-formats.--samples=2
+spec/arb_copy_image/arb_copy_image-formats.--samples=4
+spec/arb_copy_image/arb_copy_image-formats.--samples=8
 spec/glsl-1.20/compiler/structure-and-array-operations/array-logical-or.vert
 spec/arb_shader_image_load_store/compiler/builtin-address-argument-mismatch-store-2d-ms.vert
 spec/glsl-4.30/execution/built-in-functions/cs-op-bitor-neg-ivec4-int

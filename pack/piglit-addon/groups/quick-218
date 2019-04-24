@@ -58,7 +58,7 @@ spec/glsl-4.00/execution/built-in-functions/fs-trunc-dvec3
 spec/glsl-1.10/execution/variable-indexing/fs-temp-mat3-col-rd
 spec/glsl-4.30/execution/built-in-functions/cs-op-bitor-not-int-int
 glslparsertest/glsl2/function-01.vert
-spec/glsl-1.30/execution/tex-miplevel-selectiontextureproj(bias)1d_projvec4
+spec/glsl-1.30/execution/tex-miplevel-selection.textureproj(bias).1d_projvec4
 spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-roundeven-double
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-ne-vec2-vec2
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-mix-vec2-vec2-float
@@ -95,6 +95,6 @@ shaders/glsl-array-bounds-11
 shaders/glsl-array-bounds-12
 spec/glsl-1.50/execution/built-in-functions/gs-op-bitxor-neg-ivec3-ivec3
 spec/amd_shader_trinary_minmax/compiler/built-in-functions/min3-vec4-vec4-vec4.vert
-spec/ext_framebuffer_multisample/alpha-to-one-single-sample-buffer32
+spec/ext_framebuffer_multisample/alpha-to-one-single-sample-buffer.32
 spec/glsl-1.20/compiler/built-in-functions/clamp-vec4-float-float.frag
-spec/ext_framebuffer_multisample/no-color4depth-computedseparate
+spec/ext_framebuffer_multisample/no-color.4.depth-computed.separate

@@ -16,7 +16,7 @@ spec/arb_shader_image_load_store/compiler/builtin-address-argument-mismatch-atom
 spec/glsl-1.10/execution/built-in-functions/vs-matrixcompmult-mat2-mat2
 spec/glsl-4.00/execution/built-in-functions/vs-op-sub-dmat4-double
 spec/glsl-1.20/compiler/built-in-functions/notequal-ivec2-ivec2.frag
-spec/ext_framebuffer_multisample/accuracy6srgbsmalllinear
+spec/ext_framebuffer_multisample/accuracy.6.srgbsmalllinear
 spec/glsl-1.50/compiler/built-in-functions/sign-float.geom
 spec/glsl-1.30/compiler/built-in-functions/op-lshift-ivec4-uvec4.frag
 spec/glsl-1.20/compiler/built-in-functions/op-mult-ivec2-int.frag
@@ -30,16 +30,16 @@ spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-determinant-dmat4
 spec/arb_shader_texture_lod/compiler/tex_grad-texture1dproj-1d-vec4.frag
 spec/glsl-1.30/execution/built-in-functions/vs-op-assign-bitand-ivec2-int
 spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-determinant-dmat2
-spec/ext_transform_feedback/output-typeivec3
+spec/ext_transform_feedback/output-type.ivec3
 spec/glsl-1.40/compiler/gl_backcolor.vert
-spec/ext_transform_feedback/output-typeivec4
+spec/ext_transform_feedback/output-type.ivec4
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-assign-lshift-uint-uint
 spec/arb_shader_image_load_store/compiler/expression-binary-6.frag
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-max-vec2-float
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-round-vec3
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-bitand-neg-ivec3-int
 asmparsertest/arbvp1.0/rsq.txt
-spec/ext_transform_feedback/output-typeivec2
+spec/ext_transform_feedback/output-type.ivec2
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/mod-dvec4-double.vert
 spec/glsl-1.20/compiler/built-in-functions/log-vec3.vert
 spec/glsl-1.30/compiler/built-in-functions/op-bitor-not-int-ivec4.vert
@@ -55,7 +55,7 @@ spec/arb_explicit_attrib_location/1.10/compiler/out-04.vert
 spec/glsl-4.00/compiler/built-in-functions/op-sub-dmat3x2-double.frag
 spec/glsl-4.30/execution/built-in-functions/cs-op-add-mat4x2-mat4x2
 spec/glsl-1.30/execution/built-in-functions/vs-op-add-uvec3-uvec3
-spec/ext_framebuffer_multisample/alpha-to-one-single-sample-buffer16
+spec/ext_framebuffer_multisample/alpha-to-one-single-sample-buffer.16
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-roundeven-vec4
 spec/glsl-1.50/compiler/profiles/version-150-core-profile.frag
 spec/glsl-4.00/execution/built-in-functions/gs-op-mult-dmat3x4-dmat2x3

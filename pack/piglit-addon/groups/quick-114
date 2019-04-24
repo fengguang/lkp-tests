@@ -5,8 +5,8 @@ spec/arb_gpu_shader_fp64/compiler/built-in-functions/transpose-dmat4.vert
 spec/amd_shader_trinary_minmax/execution/built-in-functions/vs-min3-ivec3-ivec3-ivec3
 spec/glsl-4.30/execution/built-in-functions/cs-op-assign-add-mat4x2-mat4x2
 spec/arb_texture_gather/texturegather/fs-rgb-red-uint-2darray
-spec/oes_texture_float/oes_texture_floathalflinear
-spec/ext_transform_feedback/tessellationpointssmooth
+spec/oes_texture_float/oes_texture_float.halflinear
+spec/ext_transform_feedback/tessellation.points.smooth
 spec/glsl-1.50/execution/geometry/clip-distance-in-bulk-read
 asmparsertest/arbvp1.0/ex2.txt
 spec/glsl-1.20/execution/built-in-functions/fs-op-add-mat4x2-mat4x2
@@ -28,10 +28,10 @@ spec/ext_shader_integer_mix/execution/fs-mix-ivec4
 spec/glsl-1.20/compiler/built-in-functions/cross-vec3-vec3.vert
 spec/arb_texture_gather/texturegather/vs-rgb-one-int-2d
 spec/glsl-1.20/compiler/structure-and-array-operations/array-ctor-implicit-conversion-bvec4-ivec4.vert
-spec/glsl-1.30/execution/tex-miplevel-selectiontextureprojgrad2drect
+spec/glsl-1.30/execution/tex-miplevel-selection.textureprojgrad.2drect
 spec/glsl-1.30/execution/built-in-functions/fs-op-bitand-uvec2-uvec2
 spec/ext_framebuffer_object/fbo-generatemipmap-npot
-spec/ext_transform_feedback/structsarray-struct-array-structrun-no-fsinterface
+spec/ext_transform_feedback/structs.array-struct-array-struct.run-no-fs.interface
 spec/arb_shader_precision/vs-op-add-float-vec3
 spec/arb_gpu_shader5/texturegather/fs-rgba-1-uint-2drect
 spec/arb_shader_image_load_store/compiler/builtin-address-argument-mismatch-atomic-add-2d.vert
@@ -39,7 +39,7 @@ spec/glsl-1.30/execution/built-in-functions/fs-op-lshift-ivec2-ivec2
 spec/glsl-1.50/compiler/built-in-functions/op-bitand-neg-uvec4-uint.geom
 spec/glsl-1.20/compiler/built-in-functions/op-add-float-mat3x4.vert
 spec/glsl-1.20/compiler/built-in-functions/greaterthan-vec4-vec4.frag
-spec/arb_texture_rectangle/tex-miplevel-selectiongl2:textureproj2drect
+spec/arb_texture_rectangle/tex-miplevel-selection.gl2:textureproj.2drect
 spec/arb_shader_precision/vs-op-add-float-vec2
 spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-inversesqrt-double
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-mult-dmat4x3-double.frag
@@ -60,7 +60,7 @@ shaders/glsl-array-bounds-04
 spec/arb_shader_image_load_store/compiler/call-argument-type-2d-array.frag
 spec/glsl-4.00/execution/built-in-functions/vs-transpose-dmat4
 spec/glsl-1.20/compiler/built-in-functions/op-sub-float-mat4x2.frag
-spec/ext_framebuffer_multisample/upsample4depth
+spec/ext_framebuffer_multisample/upsample.4.depth
 spec/glsl-4.00/execution/built-in-functions/vs-transpose-dmat3
 spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-op-div-double-dvec3
 spec/glsl-1.50/compiler/built-in-functions/op-uplus-int.geom
@@ -85,7 +85,7 @@ spec/glsl-4.00/execution/built-in-functions/vs-trunc-dvec3
 spec/glsl-4.00/compiler/built-in-functions/op-mult-dmat2x3-double.vert
 spec/glsl-1.50/execution/built-in-functions/gs-op-assign-rshift-uvec2-uvec2
 spec/glsl-1.10/execution/built-in-functions/fs-mix-vec3-vec3-vec3
-spec/glsl-1.10/execution/varying-packing/simplemat2separate
+spec/glsl-1.10/execution/varying-packing/simple.mat2.separate
 spec/glsl-1.30/compiler/constant-expressions/uint-01.vert
 spec/glsl-4.00/execution/built-in-functions/vs-trunc-dvec2
 spec/glsl-1.10/execution/variable-indexing/vs-temp-array-mat2-index-col-rd

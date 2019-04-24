@@ -12,7 +12,7 @@ spec/glsl-1.30/compiler/keywords/flat.frag
 spec/glsl-1.30/execution/built-in-functions/fs-op-bitand-uint-uint
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/refract-dvec2-dvec2-double.geom
 spec/glsl-1.30/execution/vs-multiply-const-uvec4
-spec/arb_direct_state_access/gettextureimage-formatsinit-by-rendering
+spec/arb_direct_state_access/gettextureimage-formats.init-by-rendering
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-sub-uvec2-uint
 spec/glsl-1.10/execution/built-in-functions/fs-op-eq-int-int
 spec/glsl-1.50/execution/built-in-functions/gs-op-assign-div-mat4x3-mat4x3
@@ -30,7 +30,7 @@ spec/arb_shader_image_load_store/compiler/expression-conversion-2.vert
 asmparsertest/arbvp1.0/txl-06.txt
 spec/glsl-4.00/compiler/built-in-functions/cross-dvec3-dvec3.frag
 spec/glsl-4.30/execution/built-in-functions/cs-op-bitand-abs-not-int-int
-spec/arb_gpu_shader5/arb_gpu_shader5-interpolateatsample-differentuniform
+spec/arb_gpu_shader5/arb_gpu_shader5-interpolateatsample-different.uniform
 spec/glsl-4.00/compiler/built-in-functions/mix-dvec2-dvec2-bvec2.geom
 spec/glsl-4.00/compiler/built-in-functions/normalize-dvec4.vert
 spec/arb_tessellation_shader/execution/tes-input/tes-input-mat4x2_2
@@ -46,11 +46,11 @@ spec/glsl-4.00/execution/built-in-functions/vs-abs-dvec4
 spec/glsl-1.20/execution/built-in-functions/fs-op-div-mat3x2-float
 spec/glsl-1.20/compiler/built-in-functions/outerproduct-vec4-vec2.frag
 spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-op-sub-dmat3x4-double
-spec/ext_framebuffer_multisample/clear4depth
+spec/ext_framebuffer_multisample/clear.4.depth
 glslparsertest/glsl2/redeclaration-02.vert
-spec/ext_transform_feedback/api-errorsuseprogstage_active
+spec/ext_transform_feedback/api-errors.useprogstage_active
 spec/arb_gpu_shader5/texturegatheroffset/fs-rg-1-float-2drect
-spec/ext_transform_feedback/get-buffer-statebuffer_start
+spec/ext_transform_feedback/get-buffer-state.buffer_start
 spec/glsl-1.50/execution/texturesize/gs-texturesize-usamplerbuffer
 spec/glsl-1.30/linker/interpolation-qualifiers/unused-default-gl_frontsecondarycolor-unused-smooth-gl_secondarycolor
 spec/glsl-1.10/execution/built-in-functions/fs-op-ne-int-int
@@ -67,7 +67,7 @@ spec/arb_gpu_shader5/execution/built-in-functions/vs-imulextended
 asmparsertest/arbvp1.0/pow.txt
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/cross-dvec3-dvec3.frag
 spec/glsl-1.20/compiler/built-in-functions/step-float-float.vert
-spec/arb_shader_texture_lod/execution/tex-miplevel-selection*projgradarb1d_projvec4
+spec/arb_shader_texture_lod/execution/tex-miplevel-selection.*projgradarb.1d_projvec4
 spec/arb_gpu_shader5/texturegatheroffset/vs-r-0-float-2d
 spec/arb_texture_gather/texturegather/vs-rg-none-float-2d
 spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-op-sub-dvec4-double
@@ -80,7 +80,7 @@ spec/glsl-4.30/execution/built-in-functions/cs-tanh-vec2
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-add-uvec3-uint
 spec/glsl-1.50/compiler/built-in-functions/sin-float.geom
 spec/arb_framebuffer_object/fbo-generatemipmap-3d
-spec/ext_packed_float/multisample-fast-cleargl_ext_packed_float
+spec/ext_packed_float/multisample-fast-clear.gl_ext_packed_float
 spec/glsl-4.30/execution/built-in-functions/cs-tanh-vec4
 spec/glsl-1.50/execution/unsized-in-unnamed-interface-block-multiple
 spec/glsl-1.50/execution/texturesize/gs-texturesize-sampler2dshadow
@@ -92,9 +92,9 @@ spec/glsl-4.00/compiler/built-in-functions/op-mult-dmat4x2-dmat3x4.frag
 spec/arb_gpu_shader5/texturegather/fs-rgba-2-int-2drect
 spec/arb_texture_gather/texturegatheroffset/fs-r-zero-uint-2d
 spec/glsl-1.50/execution/built-in-functions/gs-op-assign-div-uvec4-uvec4
-spec/ext_framebuffer_multisample/no-color8stencilseparate
+spec/ext_framebuffer_multisample/no-color.8.stencil.separate
 spec/arb_explicit_attrib_location/1.20/compiler/in-01.vert
 spec/glsl-1.10/execution/built-in-functions/vs-reflect-vec4-vec4
 spec/glsl-1.30/compiler/built-in-functions/op-bitor-not-ivec3-int.vert
 spec/glsl-1.10/execution/built-in-functions/vs-op-assign-sub-ivec3-int
-spec/glsl-1.20/execution/tex-miplevel-selectiongl2:textureproj(bias)1d_projvec4
+spec/glsl-1.20/execution/tex-miplevel-selection.gl2:textureproj(bias).1d_projvec4

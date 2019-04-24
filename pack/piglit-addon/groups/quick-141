@@ -16,7 +16,7 @@ spec/ext_framebuffer_multisample/alpha-coverage-no-draw-buffer-zero8
 spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-matrixcompmult-dmat3x4-dmat3x4
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-div-ivec4-ivec4
 spec/glsl-1.50/compiler/built-in-functions/op-bitxor-not-ivec2-int.geom
-spec/ext_framebuffer_multisample/interpolation0centroid-edges
+spec/ext_framebuffer_multisample/interpolation.0.centroid-edges
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-mult-dvec2-dmat4x2.vert
 spec/ext_framebuffer_multisample/alpha-coverage-no-draw-buffer-zero4
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitand-not-int-ivec4
@@ -26,9 +26,9 @@ spec/arb_tessellation_shader/execution/built-in-functions/tcs-mix-vec4-vec4-bvec
 spec/glsl-1.10/execution/built-in-functions/fs-op-selection-bool-bvec4-bvec4
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitand-not-int-ivec3
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitand-not-int-ivec2
-spec/glsl-1.50/execution/geometry/primitive-id-restartgl_linesother
+spec/glsl-1.50/execution/geometry/primitive-id-restart.gl_lines.other
 spec/glsl-4.30/execution/built-in-functions/cs-op-sub-mat4x2-float
-spec/ext_framebuffer_multisample/multisample-blit8colorlinear
+spec/ext_framebuffer_multisample/multisample-blit.8.color.linear
 spec/glsl-4.00/execution/built-in-functions/fs-op-div-dmat3-double
 spec/arb_gpu_shader5/texturegather/vs-rgb-2-float-cube
 spec/glsl-es-3.00/compiler/array-length-is-signed-int.vert
@@ -66,11 +66,11 @@ spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-round-dvec4
 spec/glsl-4.30/execution/built-in-functions/cs-op-assign-sub-uvec2-uint
 spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-op-sub-dmat4x3-double
 spec/arb_texture_gather/texturegather/vs-rg-red-uint-cube
-spec/arb_framebuffer_object/fbo-scissor-blitfbo
-spec/glsl-1.30/execution/texelfetchfssampler3d1x129x9-98x129x9
+spec/arb_framebuffer_object/fbo-scissor-blit.fbo
+spec/glsl-1.30/execution/texelfetch.fs.sampler3d.1x129x9-98x129x9
 spec/arb_occlusion_query/occlusion_query_meta_save
 spec/glsl-1.20/execution/built-in-functions/vs-op-selection-bool-mat2x3-mat2x3
-spec/!opengles3.0/oes_compressed_etc2_texture-miptree_gles3rg11
+spec/!opengl.es.3.0/oes_compressed_etc2_texture-miptree_gles3.rg11
 spec/arb_texture_multisample/texelfetch/4-fs-usampler2dms
 asmparsertest/arbvp1.0/numbers-02.txt
 spec/arb_shader_image_load_store/compiler/builtin-address-argument-mismatch-atomic-and-2d.frag

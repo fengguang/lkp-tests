@@ -7,10 +7,10 @@ spec/arb_gpu_shader5/execution/built-in-functions/vs-imulextended-only-msb
 spec/arb_texture_query_levels/execution/vs-baselevel
 spec/arb_gpu_shader5/texturegatheroffsets/vs-rgb-0-unorm-2drect
 shaders/glsl-fs-if-nested-loop
-spec/ext_framebuffer_multisample/accuracyall_samplessrgb
+spec/ext_framebuffer_multisample/accuracy.all_samples.srgb
 spec/arb_geometry_shader4/linker/2darray-bounds-and-sizes-check
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-assign-div-mat2-float
-spec/glsl-1.30/execution/tex-miplevel-selectiontexture(bias)1darray
+spec/glsl-1.30/execution/tex-miplevel-selection.texture(bias).1darray
 spec/glsl-1.30/compiler/built-in-functions/op-bitxor-neg-uint-uvec3.vert
 spec/glsl-1.10/execution/variable-indexing/fs-varying-array-mat4-index-row-rd
 spec/arb_fragment_program_shadow/tex-shadow1d
@@ -21,7 +21,7 @@ spec/arb_color_buffer_float/gl_rgba8_snorm-drawpixels
 spec/glsl-1.50/compiler/built-in-functions/op-bitxor-not-uvec3-uvec3.geom
 spec/glsl-1.50/compiler/interface-blocks-containing-unsized-arrays.frag
 asmparsertest/arbfp1.0/size_specifier-78.txt
-spec/arb_depth_texture/texwrapformatsbordercolor
+spec/arb_depth_texture/texwrap.formats.bordercolor
 spec/arb_gpu_shader5/texturegather/vs-rg-1-float-2darray
 spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-op-mult-double-double
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/step-double-dvec2.frag
@@ -46,7 +46,7 @@ spec/glsl-1.30/compiler/keywords/mat4x2.frag
 spec/glsl-1.30/execution/built-in-functions/fs-op-rshift-uint-uint
 spec/arb_shader_precision/vs-op-mult-vec3-float
 spec/glsl-1.50/execution/built-in-functions/gs-op-sub-vec2-float
-spec/ext_framebuffer_multisample/accuracy32depth_drawsmall
+spec/ext_framebuffer_multisample/accuracy.32.depth_draw.small
 spec/arb_tessellation_shader/compiler/custom-out-length-2.tesc
 spec/glsl-1.20/compiler/built-in-functions/op-sub-float-vec3.vert
 asmparsertest/arbvp1.0/tex-05.txt
@@ -55,11 +55,11 @@ spec/glsl-1.30/execution/fs-increment-uint
 spec/glsl-4.30/execution/built-in-functions/cs-op-assign-div-vec2-vec2
 glslparsertest/glsl2/bit-logic-01.frag
 spec/glsl-1.20/compiler/built-in-functions/op-mult-vec4-mat3x4.frag
-spec/!opengles2.0/multiple-shader-objects_gles2
+spec/!opengl.es.2.0/multiple-shader-objects_gles2
 spec/glsl-1.20/execution/built-in-functions/fs-op-mult-mat4-mat3x4
 spec/arb_gpu_shader5/texturegather/fs-rgb-0-uint-cubearray
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/mix-double-double-bool.geom
-spec/ext_texture_array/fbo-depth-arraystencil-clear
+spec/ext_texture_array/fbo-depth-array.stencil-clear
 spec/glsl-1.20/compiler/built-in-functions/op-mult-float-mat2.vert
 spec/glsl-4.30/execution/built-in-functions/cs-any-bvec4-using-if
 spec/glsl-1.30/compiler/reserved/unsigned.frag
@@ -68,7 +68,7 @@ spec/glsl-1.20/compiler/built-in-functions/op-selection-bool-mat4-mat4.frag
 spec/glsl-1.10/compiler/expressions/preincrement-int-non-lvalue-for-out-parameter.vert
 spec/glsl-1.20/compiler/built-in-functions/op-selection-bool-int-int.vert
 spec/glsl-es-1.00/compiler/precision-qualifiers/precision-int-01.frag
-spec/ext_framebuffer_multisample/accuracy16stencil_resolvesmalldepthstencil
+spec/ext_framebuffer_multisample/accuracy.16.stencil_resolvesmalldepthstencil
 spec/glsl-1.30/compiler/basic-types/assign-implicit-conversion-ivec2-uvec2.vert
 spec/glsl-1.20/execution/vs-outerproduct-const-mat2-ivec
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-assign-sub-ivec3-int
@@ -82,7 +82,7 @@ spec/glsl-1.50/execution/built-in-functions/gs-op-ne-mat2x4-mat2x4
 spec/glsl-1.50/execution/built-in-functions/gs-op-assign-mult-vec4-vec4
 spec/glsl-1.10/execution/built-in-functions/fs-op-mult-int-int
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-lessthan-vec4-vec4
-spec/glsl-1.50/execution/geometry/end-primitive0
+spec/glsl-1.50/execution/geometry/end-primitive.0
 spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-sqrt-double
 spec/glsl-1.50/compiler/built-in-functions/greaterthanequal-uvec3-uvec3.geom
 spec/glsl-1.20/compiler/built-in-functions/op-selection-bool-vec2-vec2.vert
@@ -92,9 +92,9 @@ spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-assign-bitor-iv
 spec/glsl-1.10/execution/built-in-functions/vs-op-sub-vec4-float
 spec/arb_tessellation_shader/execution/tcs-input/tcs-input-ivec2_2
 spec/arb_shader_storage_buffer_object/getintegeri_v
-spec/ext_transform_feedback/generatemipmapbuffer
+spec/ext_transform_feedback/generatemipmap.buffer
 spec/arb_arrays_of_arrays/execution/sampler/fs-struct-non-const-index-sampler-non-const-index
-spec/!opengl3.2/layered-rendering/clear-color-all-types1d_arraysingle_level
+spec/!opengl.3.2/layered-rendering/clear-color-all-types.1d_array.single_level
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-mult-dmat2x4-double.vert
 spec/glsl-1.30/execution/built-in-functions/fs-min-ivec2-int
 spec/arb_explicit_attrib_location/1.10/compiler/layout-07.vert

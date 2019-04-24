@@ -38,7 +38,7 @@ spec/glsl-1.10/execution/built-in-functions/vs-op-div-vec4-vec4
 spec/glsl-4.00/compiler/built-in-functions/greaterthan-dvec4-dvec4.vert
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-assign-bitand-uvec2-uint
 spec/glsl-4.00/compiler/built-in-functions/op-div-dmat4x3-double.vert
-spec/amd_pinned_memory/map-bufferdecrement-offset
+spec/amd_pinned_memory/map-buffer.decrement-offset
 spec/arb_shader_texture_lod/compiler/tex_grad-shadow2drectproj-2drectshadow-vec4.vert
 spec/glsl-1.30/compiler/basic-types/int-literal-size-ok-02.frag
 spec/glsl-4.30/execution/built-in-functions/cs-lessthan-uvec2-uvec2
@@ -80,13 +80,13 @@ spec/glsl-1.20/compiler/built-in-functions/mod-vec2-float.frag
 spec/glsl-1.10/execution/samplers/glsl-fs-shadow1dproj-bias
 spec/arb_texture_gather/texturegatheroffset/vs-rgba-green-uint-2d
 spec/glsl-1.20/compiler/structure-and-array-operations/array-size-ivec4.vert
-spec/arb_geometry_shader4/arb_geometry_shader4-program-parameter-vertices-out1
+spec/arb_geometry_shader4/arb_geometry_shader4-program-parameter-vertices-out.1
 spec/glsl-1.30/execution/built-in-functions/fs-op-mod-int-ivec2
 spec/arb_tessellation_shader/execution/variable-indexing/tcs-input-array-vec3-index-rd
 spec/glsl-1.20/compiler/built-in-functions/op-sub-ivec4-ivec4.vert
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitand-neg-uvec2-uint
 spec/arb_gpu_shader5/texturegather/vs-rg-1-uint-cubearray
-spec/glsl-1.10/execution/varying-packing/simpleivec2separate
+spec/glsl-1.10/execution/varying-packing/simple.ivec2.separate
 spec/arb_tessellation_shader/execution/tcs-input/tcs-input-mat3x4_2
 spec/glsl-1.20/execution/built-in-functions/vs-op-mult-mat4x3-float
 spec/glsl-4.00/compiler/built-in-functions/op-mult-dmat4x3-double.vert

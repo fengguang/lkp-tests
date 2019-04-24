@@ -2,8 +2,8 @@ spec/glsl-4.00/execution/built-in-functions/fs-matrixcompmult-dmat3-dmat3
 spec/glsl-1.30/execution/built-in-functions/fs-clamp-uint-uint-uint
 spec/glsl-1.50/compiler/input-arrays-float.vert
 spec/arb_es2_compatibility/fbo-blending-formats
-spec/ext_framebuffer_multisample/accuracy6stencil_draw
-spec/ext_framebuffer_multisample/unaligned-blit16stencilupsample
+spec/ext_framebuffer_multisample/accuracy.6.stencil_draw
+spec/ext_framebuffer_multisample/unaligned-blit.16.stencil.upsample
 glx/glx-window-life
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-assign-sub-vec3-float
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-sub-mat2x3-mat2x3
@@ -11,7 +11,7 @@ spec/glsl-1.20/execution/variable-indexing/vs-uniform-array-mat2-index-row-rd
 spec/arb_arrays_of_arrays/execution/sampler/vs-non-const-index
 spec/arb_gpu_shader5/texturegather/vs-rgba-1-uint-cube
 spec/arb_shader_image_load_store/compiler/early-fragment-tests-in-var.frag
-spec/ext_framebuffer_multisample/accuracy4depth_drawdepthstencil
+spec/ext_framebuffer_multisample/accuracy.4.depth_draw.depthstencil
 spec/arb_gpu_shader5/texturegather/fs-rgb-0-unorm-cubearray
 spec/glsl-1.30/compiler/interpolation-qualifiers/vs-flat-int-03.vert
 spec/glsl-4.30/execution/built-in-functions/cs-op-mult-vec3-float
@@ -36,7 +36,7 @@ spec/arb_color_buffer_float/gl_rgba16f-readpixels
 spec/glsl-4.30/execution/built-in-functions/cs-op-sub-int-ivec2
 spec/glsl-1.50/execution/built-in-functions/gs-op-assign-bitor-ivec4-ivec4
 spec/glsl-4.30/execution/built-in-functions/cs-op-assign-add-mat4-mat4
-spec/ext_framebuffer_multisample/clear8color
+spec/ext_framebuffer_multisample/clear.8.color
 spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-op-add-dvec4-dvec4
 glslparsertest/glsl2/gst-gl-texture-interp.frag
 shaders/glsl-precision-110
@@ -92,7 +92,7 @@ spec/glsl-es-1.00/compiler/global-initializer/from-constant.frag
 spec/glsl-es-3.00/compiler/interpolation-qualifiers/nonflat-int-array.frag
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-sub-dmat3-double.geom
 shaders/glsl-vs-int-attrib
-spec/glsl-1.30/execution/tex-miplevel-selectiontextureoffset2drect
+spec/glsl-1.30/execution/tex-miplevel-selection.textureoffset.2drect
 spec/glsl-4.00/compiler/built-in-functions/texturequerylod-isampler2d.vert
 spec/glsl-1.30/execution/built-in-functions/fs-op-assign-lshift-uvec4-uint
 spec/arb_shader_precision/fs-op-assign-mult-vec3-vec3

@@ -8,7 +8,7 @@ spec/arb_texture_view/copytexsubimage-layers
 spec/amd_shader_trinary_minmax/execution/built-in-functions/fs-mid3-int-int-int
 spec/glsl-1.20/execution/variable-indexing/fs-uniform-array-mat2-col-rd
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitxor-neg-ivec4-int
-spec/glsl-1.30/execution/tex-miplevel-selectiontextureproj(bias)3d
+spec/glsl-1.30/execution/tex-miplevel-selection.textureproj(bias).3d
 spec/glsl-1.10/execution/built-in-functions/fs-any-bvec2-using-if
 spec/arb_gpu_shader5/texturegatheroffsets/vs-rgba-1-float-2darray
 spec/glsl-1.10/execution/built-in-functions/fs-reflect-float-float
@@ -47,7 +47,7 @@ spec/arb_gpu_shader_fp64/compiler/built-in-functions/smoothstep-double-double-dv
 spec/glsl-1.20/execution/variable-indexing/vs-uniform-mat3-rd
 spec/arb_texture_gather/texturegather/fs-rg-one-uint-2darray
 spec/arb_texture_gather/texturegatheroffset/fs-rgba-alpha-int-2darray
-spec/arb_copy_image/arb_copy_image-targetsgl_texture_rectangle32321gl_texture_rectangle32161111205701491
+spec/arb_copy_image/arb_copy_image-targets.gl_texture_rectangle.32.32.1.gl_texture_rectangle.32.16.1.11.12.0.5.7.0.14.9.1
 spec/glsl-1.10/execution/variable-indexing/fs-temp-array-mat3-col-rd
 spec/glsl-1.30/compiler/built-in-functions/trunc-float.frag
 spec/glsl-1.20/compiler/built-in-functions/op-div-float-mat3.frag
@@ -76,7 +76,7 @@ spec/glsl-1.30/linker/interpolation-qualifiers/noperspective-gl_backcolor-smooth
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-add-dmat2-dmat2.frag
 asmparsertest/arbvp1.0/cos-01.txt
 spec/arb_gpu_shader5/texturegatheroffsets/fs-r-0-int-2d
-spec/arb_texture_rg/multisample-formats16gl_arb_texture_rg
+spec/arb_texture_rg/multisample-formats.16.gl_arb_texture_rg
 spec/glsl-4.30/execution/built-in-functions/cs-op-assign-add-mat2-mat2
 spec/glsl-1.50/execution/gs-redeclares-pervertex-out-only
 spec/glsl-4.30/execution/built-in-functions/cs-op-mult-vec2-mat4x2

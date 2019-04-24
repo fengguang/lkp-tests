@@ -7,7 +7,7 @@ spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-op-div-dvec2-dvec2
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/roundeven-double.frag
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/refract-double-double-double.frag
 spec/arb_tessellation_shader/execution/tcs-input/tcs-input-mat2
-spec/ext_framebuffer_multisample/clip-and-scissor-blit32downsample
+spec/ext_framebuffer_multisample/clip-and-scissor-blit.32.downsample
 spec/arb_tessellation_shader/execution/tcs-input/tcs-input-mat4
 spec/glsl-es-1.00/compiler/precision-qualifiers/precision-vs-highp-01.vert
 spec/arb_tessellation_shader/execution/tcs-input/tcs-input-mat3
@@ -16,7 +16,7 @@ spec/glsl-1.50/compiler/built-in-functions/op-bitand-neg-abs-int-int.geom
 spec/glsl-4.00/execution/built-in-functions/gs-op-div-dmat2x4-dmat2x4
 spec/arb_vertex_attrib_64bit/check-explicit-location
 spec/arb_texture_gather/texturegather/fs-rgb-one-int-cube
-glx/glx_arb_create_context/currentwithnoframebuffer
+glx/glx_arb_create_context/current.with.no.framebuffer
 asmparsertest/arbvp1.0/add.txt
 spec/glsl-1.10/execution/built-in-functions/fs-op-not-bool-using-if
 spec/arb_enhanced_layouts/linker/explicit-offsets/interstage-ssbo-different-offset-across-shaders
@@ -37,13 +37,13 @@ spec/glsl-1.50/compiler/built-in-functions/op-sub-vec4-vec4.geom
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-div-double-dmat4.geom
 spec/glsl-4.30/execution/built-in-functions/cs-op-assign-lshift-uvec2-uint
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-le-int-int
-spec/ext_framebuffer_multisample/accuracy8depth_drawdepthstencil
+spec/ext_framebuffer_multisample/accuracy.8.depth_drawdepthstencil
 spec/arb_arrays_of_arrays/compiler/constructor-three-dimensions.vert
 shaders/glsl-vs-array-redeclaration
 spec/glsl-1.20/compiler/built-in-functions/transpose-mat3x4.vert
 spec/arb_gpu_shader5/texturegather/fs-rgba-0-float-2drect
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/round-dvec4.geom
-spec/ext_framebuffer_multisample/unaligned-blit2colordownsample
+spec/ext_framebuffer_multisample/unaligned-blit.2.color.downsample
 spec/glsl-4.30/execution/built-in-functions/cs-matrixcompmult-mat4x2-mat4x2
 spec/glsl-1.30/execution/texturesize/fs-texturesize-sampler2darrayshadow
 spec/glsl-1.10/compiler/expressions/postdecrement-vec4-non-lvalue-for-assignment.vert
@@ -86,10 +86,10 @@ spec/glsl-1.10/execution/built-in-functions/fs-op-assign-add-mat2-float
 spec/glsl-1.30/compiler/built-in-functions/op-bitand-not-abs-ivec4-int.frag
 spec/glsl-1.30/execution/built-in-functions/fs-clamp-uvec2-uint-uint
 spec/glsl-1.30/execution/built-in-functions/fs-op-lshift-ivec4-int
-shaders/point-vertex-idgl_vertexid
+shaders/point-vertex-id.gl_vertexid
 spec/glsl-1.20/compiler/built-in-functions/op-div-ivec3-int.vert
 spec/glsl-4.30/execution/built-in-functions/cs-op-bitor-neg-int-ivec2
-spec/!opengl2.0/gl-2.0-edgeflag
+spec/!opengl.2.0/gl-2.0-edgeflag
 spec/glsl-4.30/execution/built-in-functions/cs-op-mult-mat2x4-vec2
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-div-dvec2-double.frag
 spec/glsl-4.30/execution/built-in-functions/cs-op-bitor-neg-int-ivec3

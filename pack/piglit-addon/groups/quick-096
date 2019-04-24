@@ -30,13 +30,13 @@ spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-op-sub-double-dmat3x4
 spec/glsl-1.50/execution/built-in-functions/gs-op-mod-uint-uvec2
 spec/glsl-1.50/compiler/built-in-functions/log2-vec4.geom
 spec/glsl-1.50/execution/built-in-functions/gs-op-mod-uint-uvec4
-spec/glsl-1.50/execution/geometry/primitive-typesgl_triangle_fan
+spec/glsl-1.50/execution/geometry/primitive-types.gl_triangle_fan
 glslparsertest/glsl2/const-vec-scalar-01.frag
 spec/glsl-1.10/execution/built-in-functions/vs-abs-vec4
 spec/glsl-1.20/compiler/built-in-functions/op-mult-mat4x3-mat4.vert
 spec/glsl-4.00/execution/built-in-functions/fs-ceil-dvec4
 spec/glsl-1.10/execution/built-in-functions/vs-abs-vec2
-spec/ext_framebuffer_multisample/accuracy16srgbsmalldepthstencil
+spec/ext_framebuffer_multisample/accuracy.16.srgb.smalldepthstencil
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitand-uint-uvec4
 spec/glsl-4.30/execution/built-in-functions/cs-op-ne-mat2x3-mat2x3-using-if
 spec/glsl-4.00/execution/built-in-functions/fs-ceil-dvec2
@@ -56,7 +56,7 @@ spec/glsl-1.30/compiler/built-in-functions/op-lshift-ivec3-uint.frag
 spec/glsl-1.20/compiler/built-in-functions/op-sub-float-mat2x3.vert
 spec/glsl-1.20/execution/fs-outerproduct-const-mat2x4-ivec
 spec/arb_texture_gather/texturegather/vs-rg-green-uint-cube
-spec/!opengl1.2/getteximage-targets3d
+spec/!opengl.1.2/getteximage-targets.3d
 spec/arb_shader_subroutine/linker/shared-namespace.vert
 spec/arb_gpu_shader5/texturegather/fs-rg-0-uint-2drect
 spec/glsl-1.30/execution/built-in-functions/vs-op-assign-rshift-ivec2-ivec2
@@ -69,7 +69,7 @@ spec/glsl-4.00/compiler/built-in-functions/refract-dvec2-dvec2-double.geom
 spec/arb_texture_multisample/texelfetch/32-fs-sampler2dms
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-uplus-uvec2
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-uplus-uvec4
-spec/!opengl3.2/layered-rendering/blit
+spec/!opengl.3.2/layered-rendering/blit
 spec/glsl-1.30/execution/built-in-functions/fs-op-bitand-neg-abs-int-ivec2
 spec/glsl-1.30/execution/built-in-functions/fs-op-bitand-neg-abs-int-ivec3
 spec/glsl-1.50/compiler/built-in-functions/op-mult-vec4-mat3x4.geom
@@ -94,7 +94,7 @@ spec/glsl-4.30/execution/built-in-functions/cs-op-bitand-not-int-ivec3
 shaders/sso-uniforms-01
 spec/glsl-1.20/compiler/built-in-functions/atan-vec4.vert
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitand-neg-int-ivec3
-shaders/point-vertex-idgl_vertexidgl_instanceiddivisor
+shaders/point-vertex-id.gl_vertexidgl_instanceiddivisor
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitand-neg-int-ivec4
 spec/glsl-4.00/compiler/built-in-functions/notequal-dvec4-dvec4.frag
-spec/arb_texture_rectangle/tex-miplevel-selectiongl2:texture()2drect
+spec/arb_texture_rectangle/tex-miplevel-selection.gl2:texture().2drect

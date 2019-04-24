@@ -1,6 +1,6 @@
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-add-dmat4x3-dmat4x3.vert
-spec/!opengl2.0/vertex-program-two-sideenabledbackfront2
-spec/!opengl3.0/required-renderbuffer-attachment-formats
+spec/!opengl.2.0/vertex-program-two-side.enabled.back.front2
+spec/!opengl.3.0/required-renderbuffer-attachment-formats
 spec/glsl-1.30/execution/built-in-functions/vs-op-assign-rshift-uint-uint
 spec/amd_shader_trinary_minmax/execution/built-in-functions/vs-min3-vec4-vec4-vec4
 spec/glsl-4.00/compiler/built-in-functions/op-add-double-dmat2x3.geom
@@ -18,7 +18,7 @@ spec/glsl-1.20/compiler/built-in-functions/step-vec3-vec3.frag
 spec/glsl-4.00/compiler/built-in-functions/round-dvec2.frag
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/transpose-dmat3x2.geom
 spec/glsl-4.00/compiler/built-in-functions/op-add-double-dmat3x4.vert
-spec/ext_framebuffer_multisample/upsample2colorlinear
+spec/ext_framebuffer_multisample/upsample.2.color.linear
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-div-dmat4-dmat4.vert
 spec/glsl-1.50/compiler/built-in-functions/op-div-vec3-vec3.geom
 spec/glsl-1.30/compiler/built-in-functions/op-bitand-neg-uvec3-uint.frag
@@ -27,7 +27,7 @@ spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-op-add-dmat3-double
 spec/glsl-es-3.00/execution/varying-struct-basic
 spec/glsl-4.30/execution/built-in-functions/cs-op-assign-rshift-uint-int
 spec/arb_uniform_buffer_object/row-major-matrix-inside-array-of-struct
-spec/ext_transform_feedback/api-errorsbind_offset_active
+spec/ext_transform_feedback/api-errors.bind_offset_active
 spec/arb_texture_gather/texturegather/vs-rgba-one-unorm-2d
 glslparsertest/glsl2/precision-02.vert
 spec/glsl-1.50/execution/built-in-functions/gs-notequal-vec2-vec2
@@ -88,7 +88,7 @@ spec/glsl-1.50/compiler/built-in-functions/outerproduct-vec4-vec4.geom
 spec/glsl-1.50/compiler/built-in-functions/op-bitor-ivec3-int.geom
 spec/arb_framebuffer_srgb/blittexturelinearsingle_sampledenabled
 spec/glsl-1.10/execution/built-in-functions/vs-exp-vec3
-spec/glsl-1.30/execution/tex-miplevel-selectiontexture(bias)1dshadow
+spec/glsl-1.30/execution/tex-miplevel-selection.texture(bias).1dshadow
 spec/glsl-1.10/execution/built-in-functions/vs-exp-vec2
 spec/glsl-4.00/compiler/built-in-functions/op-div-double-dvec4.vert
 spec/glsl-1.30/compiler/built-in-functions/op-eq-uvec3-uvec3.vert

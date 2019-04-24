@@ -23,7 +23,7 @@ spec/glsl-4.30/execution/built-in-functions/cs-op-sub-vec4-vec4
 asmparsertest/arbvp1.0/txf-11.txt
 spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-op-div-double-dmat3x2
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-div-dmat2-dmat2.geom
-spec/glsl-1.50/execution/geometry/end-primitive130
+spec/glsl-1.50/execution/geometry/end-primitive.130
 spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-op-div-double-dmat2x4
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/min-dvec3-double.vert
 shaders/glsl-deadcode-self-assign
@@ -32,13 +32,13 @@ spec/glsl-1.10/execution/built-in-functions/vs-clamp-vec2-vec2-vec2
 spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-op-div-double-dmat2x3
 spec/glsl-1.50/compiler/built-in-functions/op-lshift-uvec4-ivec4.geom
 spec/glsl-1.10/execution/built-in-functions/vs-faceforward-vec2-vec2-vec2
-spec/arb_texture_rg/multisample-formats4gl_arb_texture_rg
+spec/arb_texture_rg/multisample-formats.4.gl_arb_texture_rg
 spec/glsl-1.50/compiler/layout-vs-no-input.vert
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-mult-dmat3-double.vert
-glx/glx_arb_create_context/color-indexrendertypewith3.0
+glx/glx_arb_create_context/color-index.render.type.with.3.0
 spec/glsl-4.30/execution/built-in-functions/cs-op-rshift-ivec2-uint
 spec/arb_texture_gather/texturegather/fs-rgba-green-uint-2darray
-spec/glsl-1.50/execution/geometry/primitive-id-restartgl_pointsffs
+spec/glsl-1.50/execution/geometry/primitive-id-restart.gl_points.ffs
 spec/glsl-1.30/compiler/built-in-functions/op-uplus-uvec3.vert
 spec/glsl-4.00/compiler/built-in-functions/faceforward-double-double-double.frag
 spec/glsl-1.50/execution/built-in-functions/gs-op-lshift-ivec3-uvec3
@@ -81,7 +81,7 @@ spec/glsl-1.30/execution/built-in-functions/vs-op-lshift-uvec4-uvec4
 spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-op-sub-double-dvec4
 spec/glsl-4.00/execution/built-in-functions/vs-op-add-dmat2-dmat2
 spec/glsl-1.30/execution/built-in-functions/fs-op-assign-lshift-uvec2-int
-spec/glsl-1.30/execution/tex-miplevel-selectiontextureoffset(bias)2darray
+spec/glsl-1.30/execution/tex-miplevel-selection.textureoffset(bias).2darray
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/transpose-dmat3x4.vert
 spec/arb_shader_texture_image_samples/texturesamples/gs-sampler2dms-2
 spec/glsl-1.50/execution/built-in-functions/gs-op-bitxor-abs-not-int-ivec4
@@ -96,5 +96,5 @@ spec/glsl-1.40/compiler/gl_frontmaterial.frag
 spec/glsl-1.10/execution/built-in-functions/fs-all-bvec3-using-if
 spec/arb_shader_precision/vs-radians-vec2
 spec/arb_gpu_shader5/texturegatheroffsets/fs-rgba-3-float-2darray
-spec/ext_framebuffer_multisample/accuracy32colorsmalldepthstencil
+spec/ext_framebuffer_multisample/accuracy.32.color.small.depthstencil
 spec/amd_shader_trinary_minmax/compiler/built-in-functions/min3-uvec3-uvec3-uvec3.geom

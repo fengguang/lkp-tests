@@ -3,12 +3,12 @@ spec/arb_gpu_shader5/texturegatheroffset/fs-rgba-1-unorm-2d-const
 spec/arb_fragment_program_shadow/tex-shadow2d
 spec/glsl-4.30/execution/built-in-functions/cs-op-bitor-neg-abs-ivec2-ivec2
 spec/glsl-1.30/execution/built-in-functions/vs-op-assign-mod-ivec4-ivec4
-spec/ext_framebuffer_multisample/accuracy2stencil_drawsmalldepthstencil
+spec/ext_framebuffer_multisample/accuracy.2.stencil_draw.smalldepthstencil
 shaders/glsl-fs-mov-masked
 spec/ext_transform_feedback/immediate-reuse-uniform-buffer
-spec/glsl-1.10/execution/varying-packing/simplemat3separate
-spec/glsl-1.30/execution/tex-miplevel-selectiontextureoffset(bias)1dshadow
-spec/ext_transform_feedback/structsarray-structget
+spec/glsl-1.10/execution/varying-packing/simple.mat3.separate
+spec/glsl-1.30/execution/tex-miplevel-selection.textureoffset(bias).1dshadow
+spec/ext_transform_feedback/structs.array-struct.get
 spec/glsl-1.30/execution/built-in-functions/fs-op-bitor-not-uint-uvec4
 spec/glsl-1.30/execution/built-in-functions/fs-op-bitor-not-uint-uvec3
 spec/glsl-1.30/execution/built-in-functions/fs-op-bitor-not-uint-uvec2
@@ -19,7 +19,7 @@ shaders/glsl-function-prototype
 spec/glsl-1.20/compiler/built-in-functions/op-selection-bool-float-float.frag
 spec/ext_polygon_offset_clamp/ext_polygon_offset_clamp-draw
 asmparsertest/arbvp1.0/txl-16.txt
-spec/ext_framebuffer_multisample/sample-alpha-to-coverage2color
+spec/ext_framebuffer_multisample/sample-alpha-to-coverage.2.color
 spec/arb_shader_image_load_store/compiler/builtin-address-argument-mismatch-atomic-min-2d.vert
 spec/glsl-1.30/execution/built-in-functions/fs-op-bitor-neg-ivec3-ivec3
 spec/glsl-1.10/execution/built-in-functions/vs-op-add-ivec4-int
@@ -32,7 +32,7 @@ spec/glsl-4.00/execution/built-in-functions/vs-equal-dvec4-dvec4
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-assign-mod-ivec2-ivec2
 spec/glsl-1.30/compiler/keywords/mediump.frag
 spec/arb_texture_gather/texturegather/vs-rg-red-int-cube
-spec/ext_framebuffer_multisample/clear16depth
+spec/ext_framebuffer_multisample/clear.16.depth
 spec/glsl-1.50/execution/built-in-functions/gs-op-mult-mat3x2-float
 spec/glsl-4.00/compiler/built-in-functions/clamp-dvec4-double-double.vert
 spec/glsl-1.10/execution/built-in-functions/fs-mod-vec4-float
@@ -43,7 +43,7 @@ spec/glsl-4.30/execution/built-in-functions/cs-op-bitxor-abs-neg-int-ivec3
 spec/glsl-4.30/execution/built-in-functions/cs-op-bitxor-abs-neg-int-ivec4
 spec/arb_shader_texture_lod/compiler/tex_grad-shadow2drect-2drectshadow-vec3.vert
 spec/glsl-4.30/execution/built-in-functions/cs-op-bitxor-abs-neg-int-ivec2
-spec/glsl-1.30/execution/texelfetchfssampler1darray281x1-281x281
+spec/glsl-1.30/execution/texelfetch.fs.sampler1darray.281x1-281x281
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/normalize-double.geom
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-ne-mat4x2-mat4x2
 spec/glsl-1.20/compiler/built-in-functions/min-vec3-float.vert
@@ -51,7 +51,7 @@ spec/glsl-1.20/execution/variable-indexing/vs-temp-array-mat3-row-wr
 spec/glsl-4.00/execution/built-in-functions/fs-floor-double
 spec/arb_gpu_shader5/texturegatheroffsets/fs-rgba-1-uint-2drect
 spec/arb_shader_image_load_store/compiler/builtin-qualifier-mismatch-readonly-store-1d.frag
-spec/arb_texture_compression_bptc/fbo-generatemipmap-formatsunorm
+spec/arb_texture_compression_bptc/fbo-generatemipmap-formats.unorm
 spec/arb_shader_image_load_store/compiler/builtin-address-argument-mismatch-atomic-add-1d-array.frag
 spec/glsl-1.30/compiler/built-in-functions/op-lt-uint-uint.vert
 spec/glsl-4.00/execution/built-in-functions/fs-op-add-double-dmat3x4
@@ -90,11 +90,11 @@ fast_color_clear/all-colors
 spec/glsl-4.00/execution/built-in-functions/fs-op-div-dmat2x4-double
 spec/glsl-1.20/execution/built-in-functions/fs-op-add-float-mat4x3
 asmparsertest/arbfp1.0/condition_code-01.txt
-spec/ext_framebuffer_multisample/accuracyall_samplescolorlinear
+spec/ext_framebuffer_multisample/accuracy.all_samples.colorlinear
 spec/arb_texture_gather/texturegatheroffset/vs-rgba-red-unorm-2darray
 spec/glsl-1.30/compiler/interpolation-qualifiers/smooth-varying-01.frag
 spec/arb_gpu_shader5/texturegather/vs-rgb-0-uint-cube
 spec/ext_framebuffer_object/fbo-fast-clear
 spec/glsl-4.30/execution/built-in-functions/cs-roundeven-float
 spec/arb_arrays_of_arrays/compiler/initializer-three-dimensions.vert
-spec/ext_framebuffer_multisample/unaligned-blit6stencilmsaa
+spec/ext_framebuffer_multisample/unaligned-blit.6.stencil.msaa

@@ -37,7 +37,7 @@ spec/glsl-1.30/execution/built-in-functions/fs-op-assign-mult-uvec4-uint
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-mult-dmat3x4-double.vert
 spec/glsl-1.10/execution/built-in-functions/vs-op-gt-float-float-using-if
 spec/glsl-4.30/execution/built-in-functions/cs-op-assign-add-ivec2-ivec2
-spec/arb_shader_texture_lod/execution/tex-miplevel-selection*lod1dshadow
+spec/arb_shader_texture_lod/execution/tex-miplevel-selection.*lod.1dshadow
 spec/glsl-1.20/compiler/qualifiers/fn-out-array-allowed.frag
 spec/glsl-1.50/execution/built-in-functions/gs-op-assign-mult-ivec2-ivec2
 spec/amd_shader_trinary_minmax/execution/built-in-functions/gs-min3-int-int-int
@@ -50,9 +50,9 @@ spec/glsl-4.00/execution/built-in-functions/vs-op-sub-double-dmat2x4
 glslparsertest/glsl2/bit-logic-assign-02.frag
 spec/glsl-1.30/compiler/built-in-functions/op-bitor-neg-uint-uint.frag
 spec/glsl-4.30/execution/built-in-functions/cs-op-assign-mult-vec3-float
-glx/glx-visuals-stencil-pixmap
+glx/glx-visuals-stencil.-pixmap
 shaders/glsl-fs-copy-propagation-texcoords-2
-spec/arb_shader_texture_lod/execution/tex-miplevel-selection*gradarb2drect
+spec/arb_shader_texture_lod/execution/tex-miplevel-selection.*gradarb.2drect
 spec/glsl-4.00/execution/built-in-functions/vs-op-sub-double-dmat2x3
 shaders/glsl-fs-copy-propagation-texcoords-1
 spec/glsl-1.10/execution/built-in-functions/vs-dot-vec3-vec3
@@ -76,11 +76,11 @@ spec/glsl-1.30/execution/built-in-functions/vs-op-bitor-uint-uvec3
 spec/glsl-1.10/execution/built-in-functions/fs-op-assign-div-ivec4-int
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitor-uint-uvec2
 spec/glsl-1.30/execution/built-in-functions/vs-op-div-large-uint-uint
-spec/glsl-1.20/execution/tex-miplevel-selectiongl2:texture(bias)3d
+spec/glsl-1.20/execution/tex-miplevel-selection.gl2:texture(bias).3d
 spec/glsl-1.50/execution/built-in-functions/gs-op-bitor-neg-ivec3-ivec3
 spec/glsl-es-1.00/compiler/global-initializer/from-global.vert
 spec/glsl-1.30/compiler/built-in-functions/op-bitor-neg-int-ivec3.vert
-spec/glsl-1.10/execution/varying-packing/simplemat2x3array
+spec/glsl-1.10/execution/varying-packing/simple.mat2x3.array
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-equal-bvec4-bvec4
 spec/arb_gpu_shader5/texturegatheroffsets/vs-rgba-2-uint-2d
 spec/glsl-1.10/execution/built-in-functions/vs-greaterthan-ivec2-ivec2
@@ -95,6 +95,6 @@ spec/glsl-1.30/compiler/built-in-functions/op-bitand-abs-not-ivec2-ivec2.frag
 spec/glsl-3.30/execution/built-in-functions/vs-intbitstofloat-neg
 spec/glsl-4.00/execution/built-in-functions/fs-mod-dvec3-dvec3
 spec/glsl-4.00/execution/built-in-functions/gs-mod-dvec4-dvec4
-spec/arb_texture_stencil8/texwrapformatsbordercolor
+spec/arb_texture_stencil8/texwrap.formatsbordercolor
 spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-op-sub-dmat2x3-double
-spec/!opengl3.2/layered-rendering/clear-color-all-typescube_mapmipmapped
+spec/!opengl.3.2/layered-rendering/clear-color-all-typescube_mapmipmapped

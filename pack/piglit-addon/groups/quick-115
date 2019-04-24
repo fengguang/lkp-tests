@@ -1,4 +1,4 @@
-spec/ext_framebuffer_multisample/no-color16depth-computedseparate
+spec/ext_framebuffer_multisample/no-color.16.depth-computed.separate
 spec/glsl-4.00/compiler/built-in-functions/transpose-dmat3x4.geom
 spec/glsl-1.10/execution/built-in-functions/fs-op-div-vec3-float
 spec/glsl-1.20/execution/built-in-functions/vs-op-mult-mat4x3-vec4
@@ -27,7 +27,7 @@ spec/glsl-4.00/compiler/built-in-functions/texturequerylod-usampler3d.vert
 spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-reflect-dvec3-dvec3
 spec/glsl-1.50/compiler/built-in-functions/clamp-uvec3-uvec3-uvec3.geom
 spec/glsl-1.20/compiler/built-in-functions/op-ne-bvec3-bvec3.vert
-spec/ext_framebuffer_multisample/draw-buffers-alpha-to-one16
+spec/ext_framebuffer_multisample/draw-buffers-alpha-to-one.16
 spec/glsl-1.10/compiler/expressions/predecrement-vec2-non-lvalue-for-out-parameter.frag
 spec/glsl-1.20/execution/fs-vec4-const-array-indirect-access-048-elements
 spec/glsl-1.30/execution/built-in-functions/fs-op-assign-rshift-ivec2-ivec2
@@ -39,7 +39,7 @@ spec/arb_texture_gather/texturegatheroffset/fs-rg-red-int-2darray
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-mod-int-ivec3
 spec/glsl-1.30/compiler/precision-qualifiers/precision-float-01.frag
 spec/glsl-1.10/execution/built-in-functions/vs-op-add-vec4-vec4
-spec/ext_framebuffer_multisample/accuracy4srgbsmalldepthstencillinear
+spec/ext_framebuffer_multisample/accuracy.4.srgb.smalldepthstencillinear
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-mod-int-ivec4
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-mod-int-ivec2
 spec/glsl-1.20/compiler/built-in-functions/mix-vec4-vec4-vec4.frag
@@ -55,7 +55,7 @@ spec/arb_shader_image_load_store/compiler/expression-binary-3.frag
 spec/glsl-4.00/execution/built-in-functions/gs-op-add-dmat3x2-double
 spec/glsl-4.00/execution/built-in-functions/gs-abs-dvec3
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-add-uvec3-uvec3
-spec/arb_texture_float/multisample-fast-cleargl_arb_texture_float
+spec/arb_texture_float/multisample-fast-clear.gl_arb_texture_float
 spec/glsl-4.00/execution/built-in-functions/gs-abs-dvec4
 spec/arb_shader_precision/fs-op-assign-sub-vec3-float
 spec/glsl-1.30/linker/interpolation-qualifiers/unused-noperspective-gl_frontcolor-unused-flat-gl_color
@@ -79,8 +79,8 @@ spec/arb_texture_gather/texturegather/fs-rgba-green-float-cube
 spec/glsl-4.00/execution/built-in-functions/fs-op-div-double-dvec4
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitxor-uvec3-uint
 spec/arb_gpu_shader5/execution/built-in-functions/vs-fma
-spec/ext_framebuffer_multisample/unaligned-blit32depthupsample
-spec/glsl-1.10/execution/varying-packing/simplemat3x4separate
+spec/ext_framebuffer_multisample/unaligned-blit.32.depth.upsample
+spec/glsl-1.10/execution/varying-packing/simple.mat3x4.separate
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitand-neg-abs-ivec4-int
 spec/glsl-4.00/execution/built-in-functions/fs-op-div-double-dvec3
 spec/glsl-1.50/execution/unsized-in-named-interface-block
@@ -92,7 +92,7 @@ spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-assign-div-uint
 spec/glsl-4.00/compiler/built-in-functions/op-div-dvec3-double.frag
 spec/arb_framebuffer_srgb/blitrenderbuffersrgb_to_linearsingle_sampleddisabled
 spec/glsl-1.50/execution/built-in-functions/gs-op-assign-lshift-uint-int
-spec/glsl-1.30/built-inconstants
+spec/glsl-1.30/built-in.constants
 spec/arb_texture_gather/texturegatheroffset/vs-rgba-green-unorm-2darray
 spec/arb_shader_precision/gs-op-div-vec2-float
 spec/arb_arrays_of_arrays/compiler/function-parameter-declaration-array-var-array.vert

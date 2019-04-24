@@ -55,10 +55,10 @@ spec/amd_shader_trinary_minmax/compiler/built-in-functions/min3-uint-uint-uint.v
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/lessthanequal-dvec2-dvec2.vert
 spec/arb_texture_multisample/texelfetch/8-vs-isampler2dms
 spec/glsl-1.20/compiler/built-in-functions/lessthanequal-vec4-vec4.vert
-spec/ext_framebuffer_multisample/interpolation6non-centroid-disabled
+spec/ext_framebuffer_multisample/interpolation.6.non-centroid-disabled
 spec/arb_multisample/beginend
 spec/glsl-1.20/compiler/built-in-functions/sqrt-vec4.vert
-spec/glsl-1.30/execution/tex-miplevel-selectiontextureproj(bias)2d
+spec/glsl-1.30/execution/tex-miplevel-selection.textureproj(bias).2d
 spec/glsl-1.50/execution/built-in-functions/gs-op-div-uvec2-uvec2
 spec/amd_shader_trinary_minmax/execution/built-in-functions/vs-min3-int-int-int
 spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-op-mult-dvec2-dmat3x2
@@ -97,4 +97,4 @@ spec/arb_texture_gather/texturegather/vs-rg-one-unorm-cubearray
 spec/glsl-1.20/execution/built-in-functions/vs-op-mult-mat2-mat3x2
 spec/glsl-1.20/compiler/built-in-functions/op-neg-mat2.vert
 spec/arb_shader_image_load_store/compiler/builtin-address-argument-mismatch-atomic-or-2d-rect.vert
-spec/ext_framebuffer_multisample/accuracy4stencil_resolvedepthstencil
+spec/ext_framebuffer_multisample/accuracy.4.stencil_resolve.depthstencil

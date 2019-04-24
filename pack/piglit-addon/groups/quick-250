@@ -15,7 +15,7 @@ spec/amd_shader_trinary_minmax/compiler/built-in-functions/mid3-vec2-vec2-vec2.g
 spec/glsl-1.50/compiler/built-in-functions/lessthan-vec4-vec4.geom
 spec/glsl-4.30/execution/built-in-functions/cs-op-div-vec2-float
 spec/glsl-4.00/compiler/built-in-functions/outerproduct-dvec3-dvec3.vert
-spec/ext_framebuffer_multisample/multisample-blit2colorlinear
+spec/ext_framebuffer_multisample/multisample-blit.2.color.linear
 spec/arb_arrays_of_arrays/compiler/function-parameter-unsized.vert
 spec/glsl-4.00/compiler/built-in-functions/faceforward-dvec4-dvec4-dvec4.frag
 shaders/glsl-fs-texture2dproj-2
@@ -44,7 +44,7 @@ spec/glsl-1.10/execution/glsl-render-after-bad-attach
 spec/glsl-1.20/compiler/structure-and-array-operations/array-assign-implicit-conversion-ivec2-bvec2.vert
 spec/arb_texture_gather/texturegather/vs-rgba-alpha-float-cube
 spec/glsl-1.50/execution/built-in-functions/gs-op-div-vec3-float
-spec/ext_transform_feedback/api-errorsinterleaved_no_varyings
+spec/ext_transform_feedback/api-errors.interleaved_no_varyings
 spec/glsl-4.00/compiler/built-in-functions/op-sub-dvec3-double.frag
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-selection-bool-mat3x2-mat3x2
 spec/arb_texture_gather/texturegather/vs-rgb-one-uint-cubearray
@@ -59,7 +59,7 @@ spec/glsl-1.50/compiler/built-in-functions/mix-vec4-vec4-vec4.geom
 spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-op-add-double-dmat3x4
 spec/glsl-1.30/compiler/built-in-functions/op-bitand-neg-uint-uvec4.frag
 spec/glsl-4.30/execution/built-in-functions/cs-op-add-mat4x2-float
-spec/ext_framebuffer_multisample/multisample-blit32depth
+spec/ext_framebuffer_multisample/multisample-blit.32.depth
 spec/arb_shader_image_load_store/compiler/builtin-address-argument-mismatch-atomic-max-2d.vert
 spec/glsl-1.20/compiler/built-in-functions/op-sub-float-vec2.frag
 spec/glsl-1.20/compiler/built-in-functions/op-div-mat2-float.vert
@@ -71,12 +71,12 @@ spec/glsl-1.50/compiler/built-in-functions/op-rshift-uvec2-ivec2.geom
 spec/glsl-4.00/compiler/built-in-functions/transpose-dmat2x3.geom
 spec/arb_framebuffer_srgb/blitrenderbuffersrgbmsaaenabled
 spec/glsl-1.20/compiler/built-in-functions/outerproduct-mat4x3.vert
-spec/ext_transform_feedback/structsarray-struct-array-elemget
+spec/ext_transform_feedback/structs.array-struct-array-elem.get
 spec/glsl-1.50/execution/built-in-functions/gs-op-assign-lshift-uvec2-uvec2
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-sub-dmat2x4-dmat2x4.frag
-spec/arb_es3_compatibility/oes_compressed_etc2_texture-miptreergb8-punchthrough-alpha1compat
+spec/arb_es3_compatibility/oes_compressed_etc2_texture-miptree.rgb8-punchthrough-alpha1.compat
 spec/glsl-4.00/compiler/built-in-functions/op-mult-dmat3x4-dmat3.geom
-spec/ext_framebuffer_multisample/accuracyall_samplesstencil_drawsmall
+spec/ext_framebuffer_multisample/accuracy.all_samples.stencil_drawsmall
 spec/glsl-1.20/execution/built-in-functions/fs-op-assign-mult-mat3x4-float
 spec/ext_framebuffer_object/fbo-drawbuffers-maxtargets
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/clamp-dvec3-dvec3-dvec3.geom

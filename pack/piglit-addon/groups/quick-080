@@ -7,11 +7,11 @@ spec/glsl-1.50/compiler/output-struct.geom
 spec/arb_texture_gather/texturegather/vs-rgba-none-float-cube
 spec/glsl-1.20/compiler/built-in-functions/transpose-mat2x3.frag
 spec/arb_framebuffer_srgb/blittexturesrgbdownsampledisabled
-spec/arb_texture_buffer_object/formats(vs,arb)
+spec/arb_texture_buffer_object/formats.(vs,.arb)
 spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-sign-dvec4
 spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-sign-dvec3
 spec/glsl-1.20/compiler/built-in-functions/refract-vec4-vec4-float.vert
-spec/glsl-1.30/execution/tex-miplevel-selectiontexture()1darray
+spec/glsl-1.30/execution/tex-miplevel-selection.texture().1darray
 spec/glsl-1.30/compiler/built-in-functions/op-bitand-neg-uvec2-uvec2.frag
 spec/glsl-1.20/compiler/built-in-functions/sign-vec3.vert
 spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-sign-dvec2
@@ -29,7 +29,7 @@ spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-faceforward-dvec3-dvec3
 spec/glsl-1.30/execution/texelfetch/fs-texelfetch-usampler2darray-swizzle
 spec/glsl-3.30/execution/built-in-functions/fs-floatbitstouint-abs
 spec/glsl-1.30/execution/built-in-functions/fs-op-bitand-neg-abs-ivec3-ivec3
-spec/ext_framebuffer_multisample/accuracy6srgbsmalldepthstencillinear
+spec/ext_framebuffer_multisample/accuracy.6.srgb.small.depthstencillinear
 spec/glsl-4.00/compiler/built-in-functions/ceil-dvec2.vert
 spec/glsl-1.20/compiler/built-in-functions/op-sub-mat2x3-mat2x3.vert
 spec/glsl-1.30/compiler/built-in-functions/op-bitor-int-ivec3.frag
@@ -46,7 +46,7 @@ spec/arb_shader_atomic_counters/multiple-defs
 spec/glsl-1.30/compiler/keywords/mat3x2.frag
 spec/glsl-1.30/compiler/built-in-functions/op-bitand-not-uvec3-uvec3.vert
 spec/glsl-1.50/compiler/built-in-functions/ceil-vec3.geom
-spec/arb_gpu_shader_fp64/varying-packing/simpledoublearray
+spec/arb_gpu_shader_fp64/varying-packing/simple.double.array
 spec/glsl-1.50/execution/built-in-functions/gs-op-eq-bvec4-bvec4
 spec/glsl-1.50/compiler/built-in-functions/op-rshift-ivec2-uvec2.geom
 spec/glsl-4.30/execution/built-in-functions/cs-mod-vec4-float
@@ -68,7 +68,7 @@ spec/glsl-1.30/execution/texelfetchoffset/fs-texelfetch-isampler2d
 spec/arb_compute_shader/linker/mix_compute_and_non_compute
 spec/amd_shader_trinary_minmax/execution/built-in-functions/fs-max3-uvec2-uvec2-uvec2
 spec/glsl-1.50/compiler/built-in-functions/op-ge-int-int.geom
-spec/ext_framebuffer_multisample/interpolation32non-centroid-disabled
+spec/ext_framebuffer_multisample/interpolation.32.non-centroid-disabled
 spec/glsl-1.30/compiler/built-in-functions/op-lshift-uvec3-int.frag
 spec/glsl-4.00/compiler/built-in-functions/op-mult-dmat2x3-dmat2.frag
 spec/glsl-1.50/execution/built-in-functions/gs-op-add-mat3x2-mat3x2

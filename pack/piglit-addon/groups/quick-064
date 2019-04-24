@@ -2,7 +2,7 @@ spec/glsl-1.10/compiler/storage-qualfiers/static-write-multitexcoord0.vert
 spec/arb_texture_gather/texturegather/fs-rg-one-unorm-2d
 spec/glsl-4.00/compiler/built-in-functions/texturequerylod-sampler2d.frag
 spec/arb_shader_image_load_store/compiler/builtin-address-argument-mismatch-atomic-xor-3d.frag
-spec/ext_transform_feedback/tessellationtriangle_stripflat_last
+spec/ext_transform_feedback/tessellation.triangle_strip.flat_last
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/step-double-dvec3.vert
 spec/glsl-1.20/execution/variable-indexing/vs-temp-array-mat2-index-col-wr
 spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-op-mult-double-dmat3x2
@@ -54,7 +54,7 @@ spec/glsl-4.00/execution/built-in-functions/fs-op-sub-double-dvec2
 spec/glsl-4.00/execution/built-in-functions/fs-op-sub-double-dvec4
 spec/glsl-4.30/execution/built-in-functions/cs-clamp-ivec2-int-int
 asmparsertest/arbfp1.0/result-09.txt
-spec/arb_texture_rectangle/texwraprectproj
+spec/arb_texture_rectangle/texwrap.rect.proj
 spec/glsl-1.50/execution/built-in-functions/gs-outerproduct-vec3-vec2
 spec/glsl-1.30/compiler/built-in-functions/greaterthan-uvec3-uvec3.frag
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/dot-dvec3-dvec3.vert
@@ -79,13 +79,13 @@ spec/glsl-1.20/execution/built-in-functions/vs-outerproduct-vec2-vec3
 spec/glsl-1.20/execution/built-in-functions/vs-outerproduct-vec2-vec4
 spec/arb_texture_gather/texturegatheroffset/vs-rgba-none-uint-2d
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitxor-not-ivec4-int
-spec/arb_texture_compression/gl_texture_internal_formatquery
+spec/arb_texture_compression/gl_texture_internal_format.query
 spec/arb_gpu_shader5/texturegatheroffsets/fs-r-none-shadow-2d
 spec/glsl-4.00/compiler/built-in-functions/op-mult-dmat2-dmat2.geom
 spec/glsl-1.30/compiler/built-in-functions/op-bitxor-not-ivec3-ivec3.vert
 spec/glsl-4.30/execution/built-in-functions/cs-round-float
 spec/arb_texture_gather/texturegather/vs-rgb-none-uint-2darray
-spec/ext_framebuffer_multisample/alpha-blending-after-rendering16
+spec/ext_framebuffer_multisample/alpha-blending-after-rendering.16
 spec/arb_gpu_shader5/texturegatheroffset/fs-rgba-0-unorm-2drect-const
 spec/glsl-1.20/compiler/built-in-functions/op-eq-bvec4-bvec4.vert
 spec/glsl-1.50/linker/skip-stage-uniform-block-array-size-mismatch
@@ -96,5 +96,5 @@ spec/arb_gpu_shader_fp64/compiler/built-in-functions/max-dvec4-dvec4.vert
 spec/arb_enhanced_layouts/compiler/explicit-offsets/ssbo-integral-constant-expression-offset.vert
 spec/glsl-1.50/execution/built-in-functions/gs-op-bitxor-neg-ivec4-int
 spec/glsl-4.30/execution/built-in-functions/cs-op-bitor-ivec3-int
-spec/ext_framebuffer_multisample/accuracy6stencil_drawsmall
+spec/ext_framebuffer_multisample/accuracy.6.stencil_drawsmall
 spec/arb_gpu_shader5/texturegatheroffset/fs-rgb-1-int-2darray-const

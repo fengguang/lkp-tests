@@ -16,7 +16,7 @@ spec/glsl-4.00/execution/built-in-functions/gs-min-dvec3-double
 spec/arb_shading_language_420pack/compiler/length-scalar.frag
 spec/glsl-1.10/execution/built-in-functions/vs-op-ne-bvec2-bvec2-using-if
 spec/glsl-4.00/compiler/built-in-functions/op-div-dvec4-double.frag
-spec/ext_framebuffer_multisample/interpolation32centroid-deriv-disabled
+spec/ext_framebuffer_multisample/interpolation.32.centroid-deriv-disabled
 spec/glsl-1.50/execution/built-in-functions/gs-ceil-vec3
 spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-clamp-dvec2-double-double
 spec/arb_gpu_shader5/texturegather/vs-rg-1-unorm-cubearray
@@ -40,7 +40,7 @@ spec/glsl-1.10/execution/built-in-functions/vs-op-eq-mat3-mat3-using-if
 shaders/glsl-vs-vec4-indexing-temp-src-in-nested-loop-outer
 spec/glsl-1.50/compiler/built-in-functions/degrees-float.geom
 spec/glsl-1.10/execution/built-in-functions/fs-op-mult-mat2-float
-spec/ext_framebuffer_multisample/accuracy6srgbsmall
+spec/ext_framebuffer_multisample/accuracy.6.srgbsmall
 spec/glsl-1.50/execution/built-in-functions/gs-trunc-vec3
 spec/glsl-1.50/execution/built-in-functions/gs-trunc-vec4
 spec/arb_texture_gather/texturegatheroffset/fs-rg-none-unorm-2d
@@ -50,7 +50,7 @@ spec/glsl-1.50/compiler/built-in-functions/op-rshift-uvec4-uvec4.geom
 spec/arb_explicit_attrib_location/1.10/preprocessor/define.frag
 spec/glsl-1.20/compiler/built-in-functions/op-mult-mat4-vec4.vert
 spec/glsl-1.20/compiler/built-in-functions/greaterthanequal-ivec2-ivec2.frag
-spec/ext_framebuffer_multisample/accuracy16depth_resolvedepthstencil
+spec/ext_framebuffer_multisample/accuracy.16.depth_resolve.depthstencil
 spec/glsl-1.20/execution/variable-indexing/fs-varying-array-mat4-col-row-rd
 spec/arb_tessellation_shader/execution/tcs-input/tcs-input-ivec2
 spec/arb_tessellation_shader/execution/tcs-input/tcs-input-ivec4
@@ -65,13 +65,13 @@ spec/glsl-1.20/compiler/built-in-functions/op-add-float-mat4x2.frag
 spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-transpose-dmat4x2
 spec/glsl-4.00/execution/built-in-functions/gs-smoothstep-dvec3-dvec3-dvec3
 spec/glsl-4.00/compiler/built-in-functions/outerproduct-dvec2-dvec2.geom
-spec/ext_framebuffer_multisample/point-smooth4
+spec/ext_framebuffer_multisample/point-smooth.4
 spec/arb_shader_precision/gs-op-sub-vec3-vec3
-spec/ext_framebuffer_multisample/point-smooth8
-spec/ext_framebuffer_multisample/point-smooth6
+spec/ext_framebuffer_multisample/point-smooth.8
+spec/ext_framebuffer_multisample/point-smooth.6
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitor-not-abs-ivec4-ivec4
 spec/glsl-1.50/execution/unsized-in-named-interface-block-multiple
-spec/ext_framebuffer_multisample/point-smooth2
+spec/ext_framebuffer_multisample/point-smooth.2
 spec/arb_gpu_shader5/texturegather/vs-rgb-0-int-2drect
 spec/glsl-1.10/execution/built-in-functions/fs-op-eq-vec4-vec4
 spec/glsl-1.50/execution/built-in-functions/gs-pow-vec3-vec3
@@ -81,7 +81,7 @@ spec/glsl-1.50/execution/built-in-functions/gs-degrees-vec4
 spec/glsl-1.50/execution/built-in-functions/gs-degrees-vec2
 spec/glsl-4.00/execution/built-in-functions/gs-op-add-double-double
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-assign-sub-mat3x2-mat3x2
-spec/ext_framebuffer_multisample/multisample-blit4stencil
+spec/ext_framebuffer_multisample/multisample-blit.4.stencil
 spec/glsl-1.50/execution/built-in-functions/gs-degrees-vec3
 spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-op-mult-double-dmat2x3
 spec/glsl-4.00/execution/built-in-functions/fs-op-div-dmat4-double

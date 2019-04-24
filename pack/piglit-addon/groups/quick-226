@@ -1,6 +1,6 @@
 asmparsertest/arbvp1.0/txb-08.txt
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-ne-bvec4-bvec4-using-if
-spec/arb_texture_rg/multisample-formats16gl_arb_texture_rg-float
+spec/arb_texture_rg/multisample-formats.16.gl_arb_texture_rg-float
 spec/glsl-1.50/compiler/built-in-functions/op-mult-float-mat2x3.geom
 spec/glsl-1.50/compiler/built-in-functions/op-bitxor-neg-abs-int-ivec4.geom
 spec/glsl-4.30/execution/built-in-functions/cs-op-mult-mat3x4-mat2x3
@@ -18,7 +18,7 @@ spec/glsl-1.50/execution/built-in-functions/gs-op-assign-div-int-int
 spec/glsl-1.30/compiler/built-in-functions/op-lshift-int-uint.frag
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-div-dmat4-double.geom
 spec/glsl-1.30/linker/interpolation-qualifiers/smooth-gl_backcolor-default-gl_color
-spec/ext_framebuffer_multisample/accuracy4colorsmalldepthstencillinear
+spec/ext_framebuffer_multisample/accuracy.4.color.small.depthstencil.linear
 spec/glsl-1.20/compiler/built-in-functions/op-uplus-ivec4.vert
 spec/glsl-1.10/execution/built-in-functions/vs-op-selection-bool-bool-bool-using-if
 spec/glsl-1.30/linker/interpolation-qualifiers/unused-noperspective-gl_frontcolor-unused-default-gl_color
@@ -29,9 +29,9 @@ spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-assign-rshift-i
 spec/glsl-1.10/execution/fs-equal-of-expression
 spec/glsl-4.00/execution/built-in-functions/fs-op-mult-double-dmat2x3
 spec/glsl-1.20/compiler/built-in-functions/op-ne-bvec4-bvec4.frag
-spec/!opengl3.2/layered-rendering/readpixels
+spec/!opengl.3.2/layered-rendering/readpixels
 spec/glsl-1.30/execution/built-in-functions/fs-op-assign-mult-uvec4-uvec4
-spec/glsl-1.30/execution/tex-miplevel-selectiontextureproj(bias)2dshadow
+spec/glsl-1.30/execution/tex-miplevel-selection.textureproj(bias).2dshadow
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-bitxor-abs-not-ivec2-int
 spec/arb_gpu_shader5/texturegatheroffset/fs-rgba-0-unorm-2darray-const
 spec/glsl-1.40/execution/glsl-fs-shadow2drectproj
@@ -41,7 +41,7 @@ spec/glsl-1.10/execution/built-in-functions/fs-max-vec2-float
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/fract-dvec3.vert
 spec/glsl-4.00/compiler/built-in-functions/op-add-dvec4-dvec4.vert
 spec/glsl-1.30/compiler/built-in-functions/round-vec2.frag
-spec/ext_framebuffer_multisample/accuracy6colordepthstencillinear
+spec/ext_framebuffer_multisample/accuracy.6.color.depthstencil.linear
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-faceforward-vec3-vec3-vec3
 spec/glsl-1.30/compiler/built-in-functions/op-bitand-not-abs-ivec3-ivec3.vert
 spec/glsl-1.30/execution/built-in-functions/vs-sinh-vec2
@@ -54,7 +54,7 @@ spec/arb_texture_gather/texturegather/vs-rgb-red-float-cubearray
 spec/glsl-1.50/execution/built-in-functions/gs-normalize-vec3
 spec/glsl-1.50/execution/built-in-functions/gs-normalize-vec2
 spec/glsl-1.10/execution/built-in-functions/fs-max-vec2-vec2
-spec/ext_transform_feedback/structsarray-struct-array-structerrorinterface
+spec/ext_transform_feedback/structs.array-struct-array-struct.errorinterface
 spec/glsl-1.50/compiler/interface-blocks-name-reused-globally-2.vert
 spec/glsl-1.30/compiler/reserved/dvec4.frag
 spec/arb_shader_image_load_store/compiler/builtin-address-argument-mismatch-atomic-max-1d.vert
@@ -92,8 +92,8 @@ spec/glsl-1.40/compiler/reserved/usampler2drect.frag
 spec/arb_arrays_of_arrays/compiler/outofbounds-access-var-array-array.vert
 spec/glsl-1.30/compiler/built-in-functions/round-vec4.vert
 spec/glsl-1.30/execution/built-in-functions/fs-tanh-vec3
-spec/arb_texture_rg/multisample-formats6gl_arb_texture_rg-int
-spec/glsl-es-1.00/built-inconstants
+spec/arb_texture_rg/multisample-formats.6.gl_arb_texture_rg-int
+spec/glsl-es-1.00/built-in.constants
 spec/glsl-4.00/execution/built-in-functions/vs-op-add-dmat3x4-double
 glslparsertest/glsl2/sampler-06.frag
 spec/glsl-1.30/compiler/built-in-functions/op-bitand-uint-uint.vert

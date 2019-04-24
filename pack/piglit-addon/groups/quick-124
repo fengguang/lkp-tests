@@ -1,8 +1,8 @@
-spec/ext_framebuffer_multisample/no-color8stencilsingle
+spec/ext_framebuffer_multisample/no-color.8.stencil.single
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-uplus-mat4x2
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-uplus-mat4x3
 spec/glsl-1.50/compiler/built-in-functions/op-selection-bool-float-float.geom
-spec/arb_shader_texture_lod/execution/tex-miplevel-selection*projgradarb1d
+spec/arb_shader_texture_lod/execution/tex-miplevel-selection.*projgradarb.1d
 spec/glsl-1.50/execution/built-in-functions/gs-op-bitand-uvec3-uint
 spec/glsl-4.00/execution/built-in-functions/vs-refract-dvec2-dvec2-double
 spec/glsl-1.20/execution/built-in-functions/vs-op-sub-mat2x3-float
@@ -31,7 +31,7 @@ spec/glsl-4.30/execution/built-in-functions/cs-op-assign-rshift-uvec2-ivec2
 spec/arb_arrays_of_arrays/compiler/length-var-array-array.vert
 spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-max-dvec3-dvec3
 spec/arb_shader_image_load_store/compiler/builtin-address-argument-mismatch-atomic-exchange-2d.frag
-spec/!opengl3.2/layered-rendering/framebuffertexture
+spec/!opengl.3.2/layered-rendering/framebuffertexture
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/abs-double.vert
 spec/arb_fragment_coord_conventions/fp-arb-fragment-coord-conventions-none
 spec/glsl-1.20/compiler/built-in-functions/op-eq-int-int.frag
@@ -61,13 +61,13 @@ spec/glsl-1.50/execution/built-in-functions/gs-op-assign-mult-uvec3-uint
 spec/arb_texture_multisample/texturesize/fs-texturesize-sampler2dms
 spec/glsl-4.00/compiler/built-in-functions/op-mult-dmat4x3-dmat2x4.vert
 spec/glsl-4.30/execution/built-in-functions/cs-op-mult-mat3-mat2x3
-spec/!opengl2.0/attribs
+spec/!opengl.2.0/attribs
 spec/glsl-1.30/execution/built-in-functions/vs-max-ivec2-ivec2
 spec/glsl-1.40/compiler/gl_instanceid.vert
 spec/glsl-1.30/execution/interpolation/interpolation-smooth-gl_frontsecondarycolor-flat-none
 spec/glsl-1.20/execution/variable-indexing/vs-varying-array-mat3-index-row-wr
 spec/glsl-4.30/execution/built-in-functions/cs-lessthanequal-ivec4-ivec4
-spec/glsl-1.30/execution/clipping/clip-plane-transformationpos
+spec/glsl-1.30/execution/clipping/clip-plane-transformation.pos
 spec/glsl-4.00/compiler/built-in-functions/op-div-dmat3-dmat3.geom
 spec/glsl-1.10/compiler/expressions/postincrement-ivec4-non-lvalue-for-out-parameter.vert
 spec/arb_texture_gather/texturegatheroffset/vs-rgb-one-float-2darray
@@ -78,7 +78,7 @@ spec/ext_framebuffer_object/fbo-stencil-gl_stencil_index1-clear
 spec/glsl-1.30/execution/built-in-functions/fs-op-sub-uvec4-uvec4
 spec/glsl-1.20/compiler/built-in-functions/op-mult-mat4x3-mat4.frag
 spec/arb_texture_gather/texturegather/vs-rg-green-uint-2d
-spec/glsl-1.50/execution/geometry/primitive-typesgl_line_strip_adjacency
+spec/glsl-1.50/execution/geometry/primitive-types.gl_line_strip_adjacency
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-bitor-not-abs-ivec4-ivec4
 spec/arb_gpu_shader5/texturegatheroffsets/vs-rgba-3-int-2darray
 spec/glsl-1.10/execution/built-in-functions/vs-op-ne-bool-bool-using-if

@@ -28,12 +28,12 @@ spec/arb_explicit_attrib_location/1.20/compiler/layout-01.vert
 spec/glsl-1.10/execution/built-in-functions/fs-op-neg-vec3
 spec/glsl-1.20/compiler/built-in-functions/op-div-mat2x3-mat2x3.vert
 spec/glsl-4.30/execution/built-in-functions/cs-op-eq-mat4-mat4
-spec/glsl-1.30/execution/tex-miplevel-selectiontextureprojgradoffset2drectshadow
+spec/glsl-1.30/execution/tex-miplevel-selection.textureprojgradoffset.2drectshadow
 spec/arb_shader_image_load_store/compiler/expression-assignment-3.vert
 spec/arb_gpu_shader5/texturegatheroffsets/fs-rgb-0-uint-2darray
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/inverse-dmat4.geom
 spec/glsl-1.10/execution/built-in-functions/fs-op-neg-vec4
-spec/arb_depth_buffer_float/texwrapformats
+spec/arb_depth_buffer_float/texwrap.formats
 spec/glsl-1.20/compiler/built-in-functions/cos-vec2.vert
 spec/glsl-4.30/execution/built-in-functions/cs-outerproduct-vec2-vec2
 spec/glsl-4.00/execution/built-in-functions/vs-op-div-double-dvec4
@@ -41,10 +41,10 @@ spec/glsl-4.00/execution/built-in-functions/vs-op-div-double-dvec2
 spec/glsl-1.30/compiler/keywords/mat4x4.frag
 spec/glsl-4.00/execution/built-in-functions/vs-op-div-double-dvec3
 spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-op-add-dmat4x2-double
-spec/glsl-1.50/execution/geometry/primitive-typesgl_line_loop
+spec/glsl-1.50/execution/geometry/primitive-types.gl_line_loop
 spec/glsl-1.20/compiler/built-in-functions/op-div-int-ivec2.vert
 spec/arb_texture_gather/texturegather/vs-rg-green-uint-cubearray
-spec/glsl-1.10/execution/varying-packing/simplemat4arrays_of_arrays
+spec/glsl-1.10/execution/varying-packing/simple.mat4.arrays_of_arrays
 spec/glsl-4.00/compiler/built-in-functions/transpose-dmat2.frag
 spec/arb_gpu_shader5/compiler/precise-qualifier/precise-02.vert
 spec/arb_shader_texture_lod/compiler/tex_grad-texture1d-1d-float.frag

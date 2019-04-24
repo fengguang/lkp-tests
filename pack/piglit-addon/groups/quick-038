@@ -66,7 +66,7 @@ spec/glsl-1.30/execution/vertexid-drawarrays
 spec/glsl-1.30/compiler/built-in-functions/op-lshift-uvec4-int.frag
 glslparsertest/glsl2/implicit-conversion-09.vert
 spec/oes_standard_derivatives/compiler/fwidth-float.frag
-spec/ext_texture_compression_s3tc/compressedteximagegl_compressed_srgb_alpha_s3tc_dxt5_ext
+spec/ext_texture_compression_s3tc/compressedteximage.gl_compressed_srgb_alpha_s3tc_dxt5_ext
 spec/glsl-4.00/compiler/built-in-functions/mix-dvec3-dvec3-double.vert
 spec/glsl-1.50/execution/built-in-functions/gs-op-sub-mat4-mat4
 spec/arb_shading_language_packing/execution/built-in-functions/const-packhalf2x16
@@ -81,7 +81,7 @@ spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-sub-double-dmat4x3.geom
 spec/glsl-1.50/compiler/interface-blocks-basic.vert
 spec/glsl-4.00/execution/built-in-functions/vs-round-dvec3
 spec/glsl-1.20/compiler/built-in-functions/not-bvec2.vert
-spec/ext_framebuffer_multisample/no-color16depthseparate
+spec/ext_framebuffer_multisample/no-color.16.depth.separate
 spec/arb_depth_buffer_float/fbo-depthstencil-gl_depth32f_stencil8-drawpixels-24_8
 spec/glsl-1.50/execution/texelfetchoffset/gs-usampler2drect
 spec/glsl-1.50/compiler/built-in-functions/op-ne-float-float.geom
@@ -92,9 +92,9 @@ spec/glsl-1.50/execution/built-in-functions/gs-op-assign-sub-mat3x4-float
 spec/glsl-1.30/compiler/built-in-functions/op-bitor-not-uvec3-uint.vert
 spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-const-ldexp-double
 spec/arb_gpu_shader5/execution/sampler_array_indexing/fs-nonzero-base
-spec/glsl-1.30/execution/tex-miplevel-selectiontextureoffset2d
+spec/glsl-1.30/execution/tex-miplevel-selection.textureoffset.2d
 spec/glsl-es-3.00/compiler/aux-storage-precision.frag
 spec/glsl-4.00/execution/built-in-functions/vs-matrixcompmult-dmat2x4-dmat2x4
-spec/ext_framebuffer_multisample/draw-buffers-alpha-to-one2
-spec/ext_framebuffer_multisample/draw-buffers-alpha-to-one4
+spec/ext_framebuffer_multisample/draw-buffers-alpha-to-one.2
+spec/ext_framebuffer_multisample/draw-buffers-alpha-to-one.4
 spec/arb_gpu_shader5/execution/sampler_array_indexing/vs-struct-nonconst-sampler-const

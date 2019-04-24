@@ -15,7 +15,7 @@ spec/arb_texture_gather/texturegather/fs-rgba-zero-float-cubearray
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-div-dmat2-dmat2.frag
 spec/arb_gpu_shader5/texturegather/vs-rgba-3-int-2darray
 spec/glsl-1.20/compiler/built-in-functions/op-add-vec4-vec4.frag
-spec/ext_texture_snorm/multisample-formats6gl_ext_texture_snorm
+spec/ext_texture_snorm/multisample-formats.6.gl_ext_texture_snorm
 spec/arb_shader_storage_buffer_object/compiler/member-invalid-binding-qualifier.frag
 spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-mix-double-double-bool
 spec/glsl-1.50/compiler/built-in-functions/op-bitor-neg-abs-int-ivec3.geom
@@ -29,7 +29,7 @@ spec/glsl-4.00/execution/built-in-functions/vs-max-dvec3-double
 spec/glsl-4.00/execution/built-in-functions/gs-op-div-dvec4-double
 spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-op-add-dmat4x2-double
 spec/glsl-1.20/execution/built-in-functions/vs-op-neg-mat3x4
-spec/ext_framebuffer_multisample/alpha-to-one-dual-src-blend16
+spec/ext_framebuffer_multisample/alpha-to-one-dual-src-blend.16
 spec/glsl-1.30/execution/built-in-functions/vs-cosh-float
 spec/glsl-1.50/compiler/built-in-functions/op-eq-bool-bool.geom
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-assign-lshift-uvec3-uint
@@ -53,7 +53,7 @@ spec/glsl-1.30/execution/built-in-functions/vs-op-bitor-not-uvec2-uint
 spec/arb_uniform_buffer_object/maxuniformblocksize/vs
 spec/glsl-1.20/execution/built-in-functions/vs-op-add-float-mat2x4
 spec/glsl-4.30/execution/built-in-functions/cs-op-assign-bitxor-ivec3-int
-spec/glsl-1.50/execution/geometry/primitive-id-restartgl_lines_adjacencyffs
+spec/glsl-1.50/execution/geometry/primitive-id-restart.gl_lines_adjacency.ffs
 spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-transpose-dmat2x3
 spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-greaterthanequal-dvec4-dvec4
 spec/amd_conservative_depth/glsl-1.30/compiler/late-redeclaration-01.frag
@@ -64,7 +64,7 @@ spec/glsl-1.20/execution/built-in-functions/vs-op-add-float-mat2x3
 spec/glsl-1.30/compiler/built-in-functions/lessthanequal-uvec4-uvec4.vert
 spec/arb_texture_multisample/arb_texture_multisample-teximage-2d-multisample
 spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-transpose-dmat2x4
-spec/ext_framebuffer_multisample/accuracy6srgb
+spec/ext_framebuffer_multisample/accuracy.6.srgb
 spec/glsl-1.30/compiler/storage-qualifiers/static-write-centroid-in-01.frag
 spec/arb_texture_gather/texturegather/vs-r-one-unorm-cubearray
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-mult-dmat4-dmat3x4.frag

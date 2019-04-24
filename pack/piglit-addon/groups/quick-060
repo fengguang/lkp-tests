@@ -12,10 +12,10 @@ spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-assign-sub-uvec
 spec/glsl-1.50/execution/built-in-functions/gs-op-assign-lshift-uvec4-uint
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-normalize-float
 spec/glsl-1.50/execution/built-in-functions/gs-op-assign-add-mat2x4-float
-spec/glsl-1.50/execution/geometry/primitive-id-restartgl_linesffs
+spec/glsl-1.50/execution/geometry/primitive-id-restart.gl_lines.ffs
 asmparsertest/arbfp1.0/size_specifier-09.txt
 spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-matrixcompmult-dmat4-dmat4
-spec/glsl-1.30/execution/tex-miplevel-selectiontexturelodoffset1dshadow
+spec/glsl-1.30/execution/tex-miplevel-selection.texturelodoffset.1dshadow
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-mult-double-dmat2x4.frag
 spec/glsl-1.10/linker/override-builtin-const-07
 spec/arb_shader_image_load_store/compiler/builtin-qualifier-mismatch-writeonly-atomic-min-1d.frag
@@ -27,7 +27,7 @@ spec/glsl-1.50/execution/built-in-functions/gs-op-assign-add-mat3x4-mat3x4
 spec/glsl-1.30/compiler/built-in-functions/asinh-vec4.vert
 spec/glsl-1.30/compiler/built-in-functions/op-bitxor-not-ivec3-int.vert
 spec/glsl-1.30/compiler/built-in-functions/op-bitand-not-uvec3-uint.vert
-spec/ext_framebuffer_multisample/unaligned-blit2depthmsaa
+spec/ext_framebuffer_multisample/unaligned-blit.2.depth.msaa
 spec/arb_separate_shader_objects/compiler/1.10/layout-location.vert
 spec/glsl-1.50/execution/built-in-functions/gs-asinh-float
 spec/arb_texture_gather/texturegatheroffset/vs-rgb-green-int-2d
@@ -51,9 +51,9 @@ spec/glsl-1.30/execution/built-in-functions/vs-op-bitor-not-uint-uvec4
 spec/glsl-4.00/execution/built-in-functions/vs-op-mult-dvec3-double
 spec/glsl-4.00/execution/built-in-functions/fs-op-add-dvec3-dvec3
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitor-not-uint-uvec2
-spec/arb_texture_compression_bptc/compressedteximagegl_compressed_rgba_bptc_unorm
+spec/arb_texture_compression_bptc/compressedteximage.gl_compressed_rgba_bptc_unorm
 spec/glsl-1.20/execution/fs-notequal-const-of-const-vec3
-spec/ext_packed_float/texwrapformatsoffset
+spec/ext_packed_float/texwrap.formatsoffset
 spec/glsl-1.20/compiler/built-in-functions/floor-vec3.vert
 spec/glsl-1.10/execution/built-in-functions/vs-op-assign-div-mat3-mat3
 spec/arb_gpu_shader5/texturegather/fs-rgba-3-uint-cube
@@ -72,7 +72,7 @@ spec/glsl-4.00/execution/built-in-functions/gs-smoothstep-dvec2-dvec2-dvec2
 spec/glsl-es-3.00/compiler/invariant_all.frag
 spec/glsl-4.30/execution/built-in-functions/cs-op-add-uvec3-uvec3
 spec/glsl-4.00/compiler/built-in-functions/op-div-double-dmat4x3.frag
-spec/!opengl2.0/gl-2.0-vertex-const-attr
+spec/!opengl.2.0/gl-2.0-vertex-const-attr
 glslparsertest/glsl2/attribute-07.vert
 spec/glsl-1.50/compiler/gs-redeclares-pervertex-in-with-incorrect-name.geom
 spec/glsl-1.30/execution/built-in-functions/vs-op-rshift-uvec4-ivec4
@@ -85,7 +85,7 @@ spec/arb_texture_gather/texturegather/vs-rgb-green-float-cubearray
 spec/glsl-1.20/compiler/built-in-functions/op-mult-float-mat4x2.frag
 spec/glsl-1.20/compiler/built-in-functions/op-mult-mat4x2-mat4.vert
 spec/glsl-es-3.00/compiler/undef-__file__.vert
-spec/ext_framebuffer_multisample/interpolation4centroid-deriv
+spec/ext_framebuffer_multisample/interpolation.4.centroid-deriv
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitxor-abs-not-int-int
 spec/glsl-1.30/compiler/built-in-functions/roundeven-vec2.frag
 spec/arb_tessellation_shader/execution/variable-indexing/tcs-output-array-vec3-index-wr
@@ -94,7 +94,7 @@ spec/glsl-1.30/execution/built-in-functions/fs-op-add-uvec3-uint
 asmparsertest/arbfp1.0/size_specifier-59.txt
 spec/glsl-4.00/execution/built-in-functions/vs-op-add-dmat2x4-double
 spec/glsl-1.50/compiler/layout-global-only.vert
-spec/ext_transform_feedback/tessellationline_loopsmooth
+spec/ext_transform_feedback/tessellation.line_loop.smooth
 spec/glsl-4.00/compiler/built-in-functions/matrixcompmult-dmat4-dmat4.vert
 spec/glsl-1.30/compiler/built-in-functions/min-uvec3-uvec3.frag
 spec/glsl-1.20/compiler/built-in-functions/op-mult-mat3x2-mat4x3.vert

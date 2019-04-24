@@ -42,7 +42,7 @@ spec/glsl-4.00/execution/built-in-functions/fs-outerproduct-dvec2-dvec2
 spec/glsl-4.00/execution/built-in-functions/fs-outerproduct-dvec2-dvec3
 spec/glsl-1.30/compiler/built-in-functions/clamp-uvec3-uvec3-uvec3.frag
 spec/glsl-1.10/execution/built-in-functions/fs-op-ne-ivec4-ivec4-using-if
-spec/arb_texture_rg/multisample-formats16gl_arb_texture_rg-int
+spec/arb_texture_rg/multisample-formats.16.gl_arb_texture_rg-int
 asmparsertest/arbfp1.0/ddx-01.txt
 spec/glsl-1.20/compiler/built-in-functions/op-sub-vec4-vec4.vert
 spec/glsl-1.30/execution/texelfetchoffset/vs-texelfetch-sampler1d
@@ -51,10 +51,10 @@ spec/arb_framebuffer_srgb/blitrenderbuffersrgb_to_lineardownsampledisabled
 spec/arb_shader_bit_encoding/execution/built-in-functions/fs-floatbitstouint-abs
 spec/glsl-1.20/compiler/built-in-functions/faceforward-vec2-vec2-vec2.frag
 spec/glsl-1.30/compiler/built-in-functions/op-bitxor-not-abs-ivec4-ivec4.vert
-spec/ext_transform_feedback/output-typemat4[2]
+spec/ext_transform_feedback/output-type.mat4[2]
 spec/glsl-1.10/compiler/expressions/postdecrement-vec2-non-lvalue-for-assignment.frag
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-lshift-ivec2-uvec2
-spec/ext_framebuffer_multisample/accuracy16srgb
+spec/ext_framebuffer_multisample/accuracy.16.srgb
 spec/glsl-1.50/execution/built-in-functions/gs-op-sub-mat3x2-mat3x2
 spec/glsl-1.10/execution/built-in-functions/fs-max-vec3-vec3
 spec/arb_texture_query_levels/compiler/builtin-functions-float-samplers.frag
@@ -68,7 +68,7 @@ spec/arb_gpu_shader5/texturegather/fs-rgba-3-int-2darray
 spec/amd_shader_trinary_minmax/execution/built-in-functions/vs-max3-int-int-int
 spec/glsl-1.20/execution/built-in-functions/fs-matrixcompmult-mat4x3-mat4x3
 spec/arb_gpu_shader5/texturegatheroffsets/fs-rgb-2-uint-2d
-spec/arb_gpu_shader_fp64/varying-packing/simpledmat4array
+spec/arb_gpu_shader_fp64/varying-packing/simple.dmat4.array
 spec/arb_enhanced_layouts/compiler/compile-time-constants/stream.geom
 spec/arb_gpu_shader5/texturegather/vs-rgba-2-float-cube
 spec/glsl-es-3.00/linker/interface-blocks-member-type-mismatch
@@ -88,7 +88,7 @@ spec/arb_gpu_shader5/texturegatheroffset/vs-rgb-0-float-2drect
 spec/glsl-4.00/compiler/built-in-functions/op-sub-double-dmat3x4.frag
 spec/glsl-4.00/compiler/built-in-functions/op-add-double-dmat3.frag
 spec/arb_gpu_shader5/texturegatheroffsets/fs-rgb-0-int-2drect
-spec/arb_texture_stencil8/texwrapformats
+spec/arb_texture_stencil8/texwrap.formats
 spec/glsl-4.30/execution/built-in-functions/cs-op-bitor-neg-abs-ivec2-int
 spec/glsl-1.50/compiler/built-in-functions/op-mult-uint-uvec3.geom
 spec/glsl-1.20/compiler/built-in-functions/transpose-mat2x4.vert
@@ -96,5 +96,5 @@ shaders/glsl-derivs-sign
 spec/arb_shader_precision/vs-op-add-vec3-vec3
 spec/arb_shader_image_load_store/compiler/builtin-address-argument-mismatch-atomic-max-2d.frag
 spec/amd_shader_trinary_minmax/compiler/built-in-functions/mid3-int-int-int.geom
-spec/ext_framebuffer_multisample/no-color32depthsingle
+spec/ext_framebuffer_multisample/no-color.32.depth.single
 spec/glsl-1.30/compiler/built-in-functions/op-bitxor-neg-abs-int-ivec3.vert

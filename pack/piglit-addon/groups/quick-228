@@ -8,7 +8,7 @@ spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-mod-ivec4-ivec4
 spec/glsl-1.10/execution/built-in-functions/vs-op-assign-div-int-int
 spec/arb_framebuffer_srgb/blitrenderbuffersrgbscaledenabled
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-mult-dmat4-double.frag
-spec/arb_gpu_shader_fp64/varying-packing/simpledmat3separate
+spec/arb_gpu_shader_fp64/varying-packing/simple.dmat3.separate
 spec/arb_texture_gather/texturegather/fs-r-zero-float-2d
 spec/glsl-4.30/execution/built-in-functions/cs-op-assign-sub-uint-uint
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitxor-ivec3-ivec3
@@ -25,7 +25,7 @@ spec/glsl-1.30/execution/built-in-functions/vs-op-bitor-not-abs-int-ivec2
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitor-not-abs-int-ivec4
 spec/glsl-1.30/compiler/built-in-functions/op-mod-uvec2-uint.frag
 spec/glsl-1.10/execution/fs-bool-less-compare-false
-spec/ext_framebuffer_multisample/accuracy6stencil_drawsmalldepthstencil
+spec/ext_framebuffer_multisample/accuracy.6.stencil_drawsmalldepthstencil
 spec/glsl-4.30/execution/built-in-functions/cs-op-assign-mult-uint-uint
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-selection-bool-mat2-mat2
 spec/arb_color_buffer_float/gl_rgba32f-readpixels
@@ -57,7 +57,7 @@ spec/glsl-4.30/execution/built-in-functions/cs-op-mult-ivec4-int
 spec/glsl-1.30/linker/interpolation-qualifiers/unused-flat-gl_frontsecondarycolor-unused-noperspective-gl_secondarycolor
 spec/glsl-4.00/execution/built-in-functions/fs-op-sub-dmat2-dmat2
 spec/glsl-1.30/compiler/built-in-functions/op-bitor-neg-abs-int-ivec2.frag
-spec/ext_texture_array/fbo-depth-arraystencil-layered-clear
+spec/ext_texture_array/fbo-depth-array.stencil-layered-clear
 spec/arb_texture_gather/texturegather/vs-r-one-uint-cube
 spec/glsl-1.40/uniform_buffer/fs-struct-copy-complicated
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-selection-bool-ivec4-ivec4
@@ -69,11 +69,11 @@ spec/glsl-1.50/compiler/built-in-functions/op-bitand-neg-uvec2-uvec2.geom
 spec/arb_texture_gather/texturegather/fs-rgba-alpha-int-cubearray
 spec/glsl-1.50/linker/intrastage-pervertex-in-redeclaration-mismatch
 spec/arb_shader_image_load_store/compiler/builtin-address-argument-mismatch-atomic-exchange-2d-ms-array.frag
-spec/arb_texture_rg/multisample-formats8gl_arb_texture_rg-int
+spec/arb_texture_rg/multisample-formats.8.gl_arb_texture_rg-int
 spec/arb_gpu_shader5/texturegatheroffsets/fs-rgb-1-int-2drect
 spec/glsl-1.30/execution/texturesize/fs-texturesize-sampler1dshadow
 spec/glsl-1.30/linker/interpolation-qualifiers/flat-gl_backcolor-noperspective-gl_frontcolor
-spec/!opengl2.0/gl-2.0-two-sided-stencil
+spec/!opengl.2.0/gl-2.0-two-sided-stencil
 shaders/glsl-fs-log
 spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-clamp-dvec2-dvec2-dvec2
 spec/glsl-1.10/execution/built-in-functions/fs-op-le-int-int
@@ -87,7 +87,7 @@ spec/arb_gpu_shader_fp64/compiler/built-in-functions/floor-dvec4.vert
 spec/glsl-1.30/execution/built-in-functions/fs-op-bitor-not-abs-ivec4-ivec4
 spec/glsl-4.00/compiler/built-in-functions/op-sub-dvec4-double.frag
 spec/glsl-4.30/execution/built-in-functions/cs-clamp-float-float-float
-spec/ext_framebuffer_multisample/clip-and-scissor-blit8msaa
+spec/ext_framebuffer_multisample/clip-and-scissor-blit.8.msaa
 shaders/glsl-bindattriblocation
 spec/glsl-1.50/execution/built-in-functions/gs-op-uplus-mat4x2
 spec/glsl-1.50/execution/built-in-functions/gs-op-uplus-mat4x3

@@ -14,7 +14,7 @@ spec/glsl-1.50/compiler/built-in-functions/op-div-mat4x3-mat4x3.geom
 spec/glsl-1.20/compiler/built-in-functions/sin-vec3.vert
 spec/glsl-1.30/compiler/built-in-functions/op-bitxor-int-ivec4.vert
 spec/glsl-4.00/execution/built-in-functions/gs-step-dvec2-dvec2
-spec/arb_texture_rg/multisample-formats6gl_arb_texture_rg-float
+spec/arb_texture_rg/multisample-formats.6.gl_arb_texture_rg-float
 spec/glsl-4.00/compiler/built-in-functions/matrixcompmult-dmat4-dmat4.frag
 spec/arb_gpu_shader5/compiler/overloads-03.vert
 spec/arb_uniform_buffer_object/getactiveuniformblockname
@@ -28,14 +28,14 @@ spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-bitand-neg-int-
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-mult-dmat2-dvec2.frag
 spec/arb_shading_language_packing/execution/built-in-functions/fs-packunorm2x16
 spec/arb_texture_gather/texturegather/vs-rgba-alpha-unorm-2darray
-spec/ext_transform_feedback/structsarray-structrun-no-fs
+spec/ext_transform_feedback/structs.array-struct.run-no-fs
 spec/glsl-1.10/execution/built-in-functions/vs-op-assign-add-mat3-mat3
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitxor-not-uvec2-uint
 spec/glsl-4.30/execution/built-in-functions/cs-min-uint-uint
 spec/glsl-1.10/execution/built-in-functions/fs-sqrt-vec4
 spec/glsl-4.00/execution/built-in-functions/vs-ceil-double
 spec/glsl-1.30/compiler/built-in-functions/lessthan-uvec3-uvec3.frag
-spec/!opengl1.0/gl-1.0-drawpixels-color-index
+spec/!opengl.1.0/gl-1.0-drawpixels-color-index
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-add-dvec2-dvec2.vert
 spec/arb_shader_image_load_store/compiler/builtin-address-argument-mismatch-atomic-and-buffer.vert
 spec/glsl-1.30/execution/built-in-functions/fs-op-assign-mod-uvec2-uvec2
@@ -47,7 +47,7 @@ spec/glsl-1.20/compiler/built-in-functions/transpose-mat4.vert
 spec/arb_shader_image_load_store/compiler/expression-conversion-1.frag
 spec/glsl-1.30/execution/built-in-functions/fs-op-assign-rshift-uint-uint
 spec/glsl-1.10/compiler/global-initializer/from-global.vert
-spec/glsl-1.50/execution/geometry/primitive-typesgl_triangles
+spec/glsl-1.50/execution/geometry/primitive-types.gl_triangles
 spec/glsl-1.20/compiler/built-in-functions/op-mult-ivec4-ivec4.vert
 spec/arb_enhanced_layouts/compiler/component-layout/overflow-double.vert
 glslparsertest/glsl2/array-04.vert
@@ -97,4 +97,4 @@ spec/arb_tessellation_shader/execution/built-in-functions/tcs-transpose-mat2x4
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-transpose-mat2x3
 spec/glsl-1.30/compiler/built-in-functions/op-bitor-neg-uvec2-uvec2.frag
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-atan-float
-spec/ext_transform_feedback/output-typeuvec4[2]-no-subscript
+spec/ext_transform_feedback/output-type.uvec4[2]-no-subscript

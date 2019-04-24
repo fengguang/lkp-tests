@@ -55,14 +55,14 @@ spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-add-double-dmat4x2.geom
 spec/arb_texture_gather/texturegather/fs-rgb-none-float-2d
 spec/glsl-1.10/execution/built-in-functions/fs-inversesqrt-float
 spec/glsl-1.50/execution/built-in-functions/gs-op-assign-add-int-int
-spec/ext_transform_feedback/structsarray-struct-whole-arrayrun-no-fsinterface
+spec/ext_transform_feedback/structs.array-struct-whole-array.run-no-fs.interface
 spec/glsl-1.30/compiler/built-in-functions/op-bitor-abs-not-int-ivec2.frag
 spec/glsl-1.10/compiler/expressions/preincrement-vec3-non-lvalue-for-assignment.frag
 spec/glsl-4.30/execution/built-in-functions/cs-op-eq-mat3x2-mat3x2
 spec/glsl-1.20/execution/uniform-initializer/vs-bool-set-by-other-stage
 spec/glsl-1.30/execution/built-in-functions/fs-min-uvec3-uvec3
 spec/glsl-1.50/compiler/built-in-functions/op-bitand-abs-neg-int-ivec2.geom
-spec/ext_packed_depth_stencil/texwrapformatsbordercolor-swizzled
+spec/ext_packed_depth_stencil/texwrap.formats.bordercolor-swizzled
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/greaterthan-dvec3-dvec3.vert
 spec/arb_shader_bit_encoding/execution/built-in-functions/vs-intbitstofloat-neg_abs
 spec/amd_shader_trinary_minmax/execution/built-in-functions/vs-min3-vec2-vec2-vec2
@@ -86,7 +86,7 @@ spec/glsl-4.00/compiler/built-in-functions/op-sub-dvec2-dvec2.geom
 spec/glsl-1.30/compiler/built-in-functions/op-lshift-ivec3-ivec3.frag
 spec/glsl-4.30/execution/built-in-functions/cs-atanh-float
 spec/glsl-4.00/compiler/built-in-functions/op-mult-dmat2x3-dmat3x2.frag
-spec/glsl-1.20/execution/tex-miplevel-selectiongl2:textureproj(bias)2d
+spec/glsl-1.20/execution/tex-miplevel-selection.gl2:textureproj(bias).2d
 spec/glsl-1.10/execution/built-in-functions/fs-min-vec3-float
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-ne-vec2-vec2-using-if
 spec/arb_gpu_shader5/texturegather/fs-rgba-0-unorm-2drect

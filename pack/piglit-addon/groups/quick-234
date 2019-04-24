@@ -1,4 +1,4 @@
-spec/arb_gpu_shader_fp64/varying-packing/simpledvec4arrays_of_arrays
+spec/arb_gpu_shader_fp64/varying-packing/simple.dvec4.arrays_of_arrays
 spec/glsl-4.30/execution/built-in-functions/cs-op-ne-vec4-vec4
 spec/glsl-1.30/compiler/built-in-functions/op-bitor-abs-not-ivec4-int.vert
 spec/glsl-1.30/compiler/built-in-functions/op-bitor-not-uint-uvec3.frag
@@ -24,9 +24,9 @@ spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-sub-dmat4-double.vert
 spec/glsl-1.30/execution/built-in-functions/vs-op-div-uint-uint
 spec/glsl-es-3.00/compiler/const-initializer/from-sequence-in-function.frag
 spec/glsl-1.30/compiler/built-in-functions/op-bitand-not-ivec4-ivec4.frag
-spec/ext_framebuffer_multisample/accuracy8depth_resolve
+spec/ext_framebuffer_multisample/accuracy.8.depth_resolve
 spec/arb_gpu_shader5/texturegather/vs-rg-0-float-2darray
-spec/!opengl1.4/gl-1.4-polygon-offset
+spec/!opengl.1.4/gl-1.4-polygon-offset
 spec/glsl-1.30/execution/built-in-functions/vs-op-assign-rshift-ivec4-ivec4
 shaders/glsl-algebraic-not-notequals
 spec/arb_gpu_shader5/texturegatheroffsets/vs-rgba-3-float-2darray
@@ -36,14 +36,14 @@ spec/arb_texture_gather/texturegatheroffset/vs-rgba-green-int-2darray
 spec/glsl-4.30/execution/built-in-functions/cs-op-bitor-not-abs-ivec4-ivec4
 spec/glsl-4.00/execution/built-in-functions/fs-greaterthanequal-dvec2-dvec2
 spec/glsl-1.50/compiler/built-in-functions/length-vec3.geom
-spec/arb_texture_rectangle/tex-miplevel-selectiongl2:textureproj2drectshadow
+spec/arb_texture_rectangle/tex-miplevel-selection.gl2:textureproj.2drectshadow
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-sub-dmat2x4-double.frag
 spec/glsl-1.30/execution/built-in-functions/vs-max-ivec4-ivec4
 spec/glsl-1.50/execution/built-in-functions/gs-op-add-vec3-vec3
 spec/glsl-4.30/execution/built-in-functions/cs-op-bitor-abs-not-ivec3-ivec3
 spec/glsl-1.50/execution/built-in-functions/gs-op-mult-mat3-vec3
 spec/glsl-1.40/compiler/gl_secondarycolor.vert
-spec/!opengl3.3/required-texture-attachment-formats
+spec/!opengl.3.3/required-texture-attachment-formats
 spec/arb_texture_gather/texturegather/fs-r-one-float-cube
 spec/glsl-1.20/compiler/built-in-functions/op-add-vec2-vec2.vert
 spec/glsl-1.20/compiler/built-in-functions/smoothstep-float-float-float.vert
@@ -77,7 +77,7 @@ spec/arb_gpu_shader5/texturegatheroffset/fs-rgba-1-float-2drect-const
 spec/arb_texture_gather/texturegatheroffset/fs-rgba-blue-unorm-2darray
 spec/arb_tessellation_shader/execution/tes-input/tes-input-mat3_2
 spec/arb_texture_gather/texturegather/fs-rg-red-float-2d
-spec/ext_framebuffer_multisample/clear32depth
+spec/ext_framebuffer_multisample/clear.32.depth
 spec/glsl-1.30/compiler/built-in-functions/op-bitxor-neg-abs-int-ivec3.frag
 spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-op-sub-dmat3x2-dmat3x2
 spec/glsl-1.30/execution/built-in-functions/fs-op-lshift-ivec2-uint

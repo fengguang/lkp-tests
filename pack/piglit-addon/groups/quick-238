@@ -10,8 +10,8 @@ spec/glsl-4.30/execution/built-in-functions/cs-op-assign-div-mat2-float
 spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-op-mult-dmat3x2-dmat2x3
 spec/glsl-4.30/execution/built-in-functions/cs-op-lshift-uvec2-ivec2
 spec/glsl-4.00/execution/built-in-functions/gs-op-mult-dmat4x3-dmat4
-spec/ext_framebuffer_multisample/draw-buffers-alpha-to-one8
-spec/ext_texture_array/fbo-depth-arraydepth-draw
+spec/ext_framebuffer_multisample/draw-buffers-alpha-to-one.8
+spec/ext_texture_array/fbo-depth-array.depth-draw
 spec/glsl-1.50/execution/built-in-functions/gs-op-bitand-neg-ivec4-ivec4
 spec/glsl-4.30/execution/built-in-functions/cs-op-assign-rshift-ivec4-uvec4
 spec/arb_tessellation_shader/execution/barrier-patch
@@ -43,7 +43,7 @@ spec/glsl-1.10/execution/variable-indexing/vs-temp-array-mat2-index-col-row-rd
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-sub-uint-uvec2
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-neg-uvec4
 spec/arb_gpu_shader5/texturegatheroffsets/vs-rg-0-uint-2drect
-spec/arb_copy_image/arb_copy_image-targetsgl_texture_2d_array323215gl_texture_3d321618115259714711
+spec/arb_copy_image/arb_copy_image-targets.gl_texture_2d_array.32.32.15.gl_texture_3d.32.16.18.11.5.2.5.9.7.14.7.11
 spec/arb_texture_gather/texturegather/fs-rgb-blue-float-2darray
 shaders/glsl-link-empty-prog-02
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-sub-uint-uvec3
@@ -72,7 +72,7 @@ spec/glsl-1.50/compiler/built-in-functions/op-mod-ivec2-int.geom
 spec/glsl-1.20/execution/built-in-functions/fs-op-mult-mat2x3-float
 spec/arb_texture_gather/texturegather/vs-rgb-one-unorm-cubearray
 spec/glsl-1.20/compiler/built-in-functions/normalize-vec4.vert
-spec/ext_transform_feedback/structsarray-struct-whole-arrayget
+spec/ext_transform_feedback/structs.array-struct-whole-array.get
 spec/glsl-4.00/execution/built-in-functions/fs-matrixcompmult-dmat2-dmat2
 spec/glsl-4.30/execution/built-in-functions/cs-op-eq-mat2x4-mat2x4
 spec/arb_texture_query_lod/compiler/built-in-functions/texturequerylod-sampler2dshadow.vert
@@ -80,7 +80,7 @@ spec/glsl-1.20/execution/variable-indexing/vs-uniform-array-mat3-rd
 glslparsertest/glsl2/constructor-04.vert
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/matrixcompmult-dmat3-dmat3.frag
 spec/glsl-1.20/compiler/arithmetic-operators/modulus-00.frag
-spec/ext_texture_compression_s3tc/compressedteximagegl_compressed_srgb_alpha_s3tc_dxt1_ext
+spec/ext_texture_compression_s3tc/compressedteximage.gl_compressed_srgb_alpha_s3tc_dxt1_ext
 spec/arb_texture_gather/texturegather/fs-rgba-one-int-2darray
 spec/arb_gpu_shader5/texturegatheroffsets/vs-rg-1-int-2drect
 spec/glsl-4.00/compiler/built-in-functions/op-div-dmat2x3-dmat2x3.geom
@@ -92,7 +92,7 @@ spec/arb_shader_precision/fs-op-sub-vec2-vec2
 spec/arb_shader_image_load_store/compiler/builtin-address-argument-mismatch-atomic-add-2d-array.frag
 glslparsertest/shaders/version3.v110.frag
 spec/arb_gpu_shader5/texturegatheroffset/vs-rgb-2-float-2darray
-spec/!opengl1.4/tex-miplevel-selection-lod-bias
+spec/!opengl.1.4/tex-miplevel-selection-lod-bias
 spec/arb_gpu_shader5/texturegather/vs-rgb-1-float-2darray
 spec/glsl-1.20/compiler/built-in-functions/op-uplus-vec4.vert
 spec/glsl-1.20/execution/built-in-functions/fs-op-mult-vec3-mat4x3

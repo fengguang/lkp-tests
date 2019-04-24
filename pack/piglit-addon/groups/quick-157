@@ -18,9 +18,9 @@ shaders/glsl-vs-vec4-indexing-temp-src-in-nested-loop-inner
 spec/glsl-1.50/execution/built-in-functions/gs-max-ivec4-ivec4
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/max-dvec2-double.geom
 spec/glsl-4.30/execution/built-in-functions/cs-op-bitand-neg-ivec2-ivec2
-spec/arb_texture_float/multisample-formats2gl_arb_texture_float
+spec/arb_texture_float/multisample-formats.2.gl_arb_texture_float
 spec/arb_gpu_shader5/texturegatheroffset/fs-rgb-2-float-2d
-spec/!opengl1.1/getteximage-targets2d
+spec/!opengl.1.1/getteximage-targets.2d
 spec/glsl-1.30/execution/interpolation/interpolation-smooth-gl_frontcolor-smooth-vertex
 spec/glsl-1.30/compiler/switch-statement/switch-nested-switch.vert
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/round-dvec4.frag
@@ -30,7 +30,7 @@ shaders/glsl-const-builtin-any
 spec/glsl-1.30/compiler/keywords/sampler2dshadow.frag
 spec/glsl-3.30/execution/built-in-functions/fs-floatbitstoint-abs
 spec/glsl-4.00/compiler/built-in-functions/op-sub-dvec2-double.geom
-spec/arb_vertex_buffer_object/vbo-subdata-manydrawarrays
+spec/arb_vertex_buffer_object/vbo-subdata-many.drawarrays
 spec/glsl-1.10/compiler/qualifiers/out-02.vert
 spec/glsl-1.20/compiler/built-in-functions/op-and-bool-bool.vert
 asmparsertest/arbvp1.0/arl-02.txt
@@ -69,7 +69,7 @@ spec/arb_framebuffer_srgb/blitrenderbuffersrgbdownsampledisabled
 spec/arb_clear_texture/arb_clear_texture-float
 spec/glsl-1.30/linker/interpolation-qualifiers/unused-gl_frontsecondarycolor-flat-gl_secondarycolor
 spec/glsl-1.30/execution/vs-isinf-vec3
-spec/ext_framebuffer_multisample/no-color8stencilcombined
+spec/ext_framebuffer_multisample/no-color.8.stencil.combined
 spec/glsl-1.50/execution/built-in-functions/gs-op-lshift-uint-int
 spec/ext_packed_depth_stencil/fbo-depth-gl_depth24_stencil8-clear
 spec/glsl-1.30/execution/built-in-functions/vs-op-assign-bitxor-uvec4-uint

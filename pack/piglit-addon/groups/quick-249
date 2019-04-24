@@ -21,7 +21,7 @@ spec/glsl-1.10/execution/built-in-functions/vs-distance-vec3-vec3
 spec/ext_transform_feedback/discard-api
 spec/glsl-1.40/execution/built-in-functions/vs-inverse-mat3
 spec/glsl-1.40/execution/built-in-functions/vs-inverse-mat2
-spec/ext_framebuffer_multisample/accuracy32depth_resolvesmalldepthstencil
+spec/ext_framebuffer_multisample/accuracy.32.depth_resolve.smalldepthstencil
 spec/amd_shader_trinary_minmax/execution/built-in-functions/vs-max3-ivec2-ivec2-ivec2
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-sub-dmat4-double.frag
 spec/glsl-1.50/compiler/built-in-functions/fract-float.geom
@@ -32,14 +32,14 @@ spec/arb_tessellation_shader/compiler/gl_out-indexing-writemask.tesc
 spec/glsl-1.50/execution/built-in-functions/gs-notequal-vec3-vec3
 spec/glsl-1.50/compiler/built-in-functions/op-bitand-uint-uvec3.geom
 spec/glsl-1.30/compiler/built-in-functions/op-bitor-not-ivec4-int.vert
-spec/glsl-1.10/execution/varying-packing/simpleuintarray
+spec/glsl-1.10/execution/varying-packing/simple.uint.array
 spec/glsl-1.10/execution/variable-indexing/vs-temp-array-mat4-col-wr
-spec/ext_framebuffer_multisample/accuracy4srgbdepthstencillinear
+spec/ext_framebuffer_multisample/accuracy.4.srgbdepthstencillinear
 spec/glsl-1.10/execution/built-in-functions/vs-notequal-vec2-vec2
-spec/glsl-1.30/execution/tex-miplevel-selectiontexturegrad1d
+spec/glsl-1.30/execution/tex-miplevel-selection.texturegrad.1d
 spec/ext_framebuffer_object/fbo-bind-renderbuffer
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-ne-mat2x3-mat2x3-using-if
-spec/!opengl3.2/layered-rendering/clear-color-all-types2d_arraymipmapped
+spec/!opengl.3.2/layered-rendering/clear-color-all-types.2d_array.mipmapped
 spec/glsl-1.30/compiler/reserved/image3d.frag
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-assign-add-vec4-float
 glslparsertest/glsl2/xreal-lighting-d-omni.vert
@@ -59,7 +59,7 @@ spec/glsl-1.30/linker/interpolation-qualifiers/smooth-gl_frontsecondarycolor-def
 spec/arb_texture_multisample/texelfetch/8-vs-usampler2dmsarray
 spec/glsl-1.30/compiler/built-in-functions/op-div-uint-uvec4.frag
 spec/ext_framebuffer_object/fbo-drawbuffers-blend-add
-spec/ext_framebuffer_multisample/clip-and-scissor-blit16normal
+spec/ext_framebuffer_multisample/clip-and-scissor-blit.16.normal
 spec/glsl-1.20/compiler/structure-and-array-operations/array-of-array-function-parameter-definition.frag
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-assign-mult-mat4x2-mat4
 spec/glsl-1.10/execution/variable-indexing/vs-output-array-float-index-wr
@@ -76,7 +76,7 @@ spec/glsl-1.50/execution/geometry/max-input-components
 spec/glsl-4.00/execution/built-in-functions/gs-op-add-dvec3-dvec3
 spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-op-div-double-dmat4x3
 spec/glsl-1.30/compiler/structure-and-array-operations/array-index-as-uint-02.frag
-spec/ext_transform_feedback/output-typefloat[2]-no-subscript
+spec/ext_transform_feedback/output-type.float[2]-no-subscript
 spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-op-div-double-dmat4x2
 spec/glsl-1.30/compiler/reserved/image2d.frag
 spec/arb_texture_gather/texturegatheroffset/vs-rgb-green-int-2darray
@@ -94,7 +94,7 @@ spec/arb_texture_multisample/texelfetch/4-fs-sampler2dms
 spec/arb_tessellation_shader/execution/tes-input/tes-input-patch-ivec2_2
 spec/arb_texture_gather/texturegather/fs-rgba-green-int-2d
 spec/arb_texture_gather/texturegather/fs-rg-red-int-2darray
-spec/!opengl2.0/vertex-program-two-sideenabledback2
+spec/!opengl.2.0/vertex-program-two-side.enabled.back2
 spec/glsl-4.00/execution/built-in-functions/fs-op-mult-dmat3x2-dvec3
 spec/arb_gpu_shader5/texturegatheroffsets/fs-rgba-3-uint-2darray
 spec/glsl-1.10/execution/vs-vector-indexing-kills-all-channels

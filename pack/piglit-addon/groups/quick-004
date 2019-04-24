@@ -18,7 +18,7 @@ spec/glsl-1.30/compiler/built-in-functions/op-bitxor-neg-uvec2-uint.frag
 spec/glsl-4.00/execution/built-in-functions/gs-step-dvec3-dvec3
 spec/arb_explicit_attrib_location/1.20/compiler/in-01.frag
 spec/glsl-1.10/execution/variable-indexing/vs-uniform-array-mat4-index-row-rd
-spec/ext_framebuffer_multisample/clip-and-scissor-blit2upsample
+spec/ext_framebuffer_multisample/clip-and-scissor-blit.2.upsample
 asmparsertest/arbfp1.0/size_specifier-66.txt
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-div-dmat3-double.vert
 spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-op-mult-double-dmat3x2
@@ -41,7 +41,7 @@ spec/arb_shader_texture_lod/compiler/tex_grad-shadow1dproj-1dshadow-vec4.frag
 spec/glsl-1.30/execution/built-in-functions/fs-op-add-uint-uvec2
 spec/glsl-1.20/compiler/assignment-operators/assign-array-allowed.frag
 spec/glsl-1.50/compiler/built-in-functions/op-mod-ivec3-int.geom
-spec/glsl-1.10/execution/varying-packing/simplemat2x3separate
+spec/glsl-1.10/execution/varying-packing/simple.mat2x3.separate
 spec/glsl-1.30/execution/built-in-functions/fs-op-add-uint-uvec3
 spec/arb_transform_feedback3/gl_nextbuffer-gl_nextbuffer
 spec/glsl-1.50/compiler/built-in-functions/op-bitand-not-uvec4-uint.geom
@@ -50,7 +50,7 @@ glslparsertest/glsl2/function-10.vert
 spec/glsl-1.20/compiler/built-in-functions/transpose-mat3.frag
 spec/arb_texture_gather/texturegatheroffset/fs-rg-red-float-2darray
 spec/glsl-1.30/execution/built-in-functions/fs-min-uint-uint
-spec/arb_es3_compatibility/oes_compressed_etc2_texture-miptreer11core
+spec/arb_es3_compatibility/oes_compressed_etc2_texture-miptree.r11.core
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-mult-double-dvec2.vert
 spec/glsl-4.30/execution/built-in-functions/cs-op-add-float-mat4x2
 spec/glsl-1.40/compiler/gl_lightsource.frag
@@ -94,7 +94,7 @@ asmparsertest/arbvp1.0/min.txt
 spec/arb_texture_gather/texturegather/vs-rgb-zero-uint-2d
 spec/glsl-4.30/execution/built-in-functions/cs-op-sub-float-mat2x4
 spec/glsl-4.30/execution/built-in-functions/cs-op-sub-mat2-float
-spec/arb_texture_cube_map/getteximage-targetscube
+spec/arb_texture_cube_map/getteximage-targets.cube
 spec/glsl-1.50/execution/built-in-functions/gs-fract-float
 spec/glsl-1.20/compiler/built-in-functions/smoothstep-vec2-vec2-vec2.vert
 spec/amd_shader_trinary_minmax/execution/built-in-functions/cs-mid3-uvec2-uvec2-uvec2

@@ -25,7 +25,7 @@ spec/glsl-1.10/compiler/void/void-logical_xor.vert
 spec/glsl-1.30/compiler/switch-statement/switch-case-in-int.vert
 spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-reflect-dvec3-dvec3
 asmparsertest/arbvp1.0/txf-13.txt
-spec/ext_texture_integer/multisample-formats4gl_ext_texture_integer
+spec/ext_texture_integer/multisample-formats.4.gl_ext_texture_integer
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/step-double-dvec2.vert
 spec/glsl-1.50/compiler/built-in-functions/op-eq-int-int.geom
 spec/glsl-es-1.00/compiler/precision-qualifiers/precision-float-03.frag
@@ -34,7 +34,7 @@ spec/glsl-4.30/execution/built-in-functions/cs-op-assign-div-uvec3-uint
 spec/glsl-es-3.00/compiler/uniform_block/interface-name-array-access-without-index.vert
 spec/arb_texture_gather/texturegather/vs-rg-zero-int-cube
 spec/arb_tessellation_shader/execution/variable-indexing/tcs-patch-output-array-vec2-index-wr
-spec/glsl-1.30/execution/tex-miplevel-selectiontexturegradoffset2d
+spec/glsl-1.30/execution/tex-miplevel-selection.texturegradoffset.2d
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-assign-sub-vec4-vec4
 spec/glsl-1.20/execution/variable-indexing/vs-varying-array-mat4-index-wr
 spec/arb_texture_gather/texturegather/fs-rgb-zero-uint-2d
@@ -68,7 +68,7 @@ spec/arb_texture_gather/texturegather/vs-rgba-alpha-uint-2d
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-div-dmat3-double.geom
 spec/arb_gpu_shader5/texturegather/fs-rgb-0-float-cubearray
 spec/glsl-4.00/execution/built-in-functions/fs-max-dvec4-dvec4
-spec/!opengl1.1/getteximage-targets1d
+spec/!opengl.1.1/getteximage-targets.1d
 spec/glsl-1.50/compiler/built-in-functions/mod-vec3-vec3.geom
 spec/glsl-4.30/execution/built-in-functions/cs-op-assign-bitor-uvec4-uvec4
 spec/arb_tessellation_shader/execution/tcs-input-read-simple
@@ -91,7 +91,7 @@ spec/glsl-1.30/compiler/interpolation-qualifiers/vs-flat-int-05.vert
 spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-op-mult-dvec2-double
 spec/arb_shading_language_420pack/compiler/illegal-aggregate-initializer-array-dereference-out-of-bounds-implicitly-sized.frag
 spec/glsl-4.00/compiler/built-in-functions/inversesqrt-dvec3.vert
-spec/ext_framebuffer_multisample/upsample2color
+spec/ext_framebuffer_multisample/upsample.2.color
 spec/glsl-1.50/compiler/built-in-functions/op-sub-float-mat2x3.geom
 spec/glsl-1.20/execution/built-in-functions/vs-op-mult-mat3x4-float
 spec/arb_shader_precision/fs-op-assign-add-vec2-vec2

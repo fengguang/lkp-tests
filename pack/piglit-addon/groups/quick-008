@@ -10,7 +10,7 @@ spec/glsl-1.10/compiler/storage-qualfiers/static-write-front-facing.frag
 spec/glsl-4.00/compiler/built-in-functions/op-mult-dmat4-dmat3x4.frag
 asmparsertest/arbvp1.0/astack-06.txt
 spec/arb_shader_texture_lod/compiler/tex_grad-texture2dproj-2d-vec4.frag
-spec/glsl-1.10/execution/varying-packing/simpleivec3arrays_of_arrays
+spec/glsl-1.10/execution/varying-packing/simple.ivec3.arrays_of_arrays
 spec/glsl-4.30/execution/built-in-functions/cs-op-assign-rshift-uvec3-int
 spec/glsl-4.30/execution/built-in-functions/cs-op-assign-lshift-int-int
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/step-dvec2-dvec2.frag
@@ -18,12 +18,12 @@ spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-uplus-mat3x2
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-uplus-mat3x4
 spec/arb_gpu_shader5/texturegatheroffset/fs-rgba-0-uint-2darray-const
 spec/glsl-1.50/compiler/built-in-functions/notequal-bvec4-bvec4.geom
-spec/ext_framebuffer_multisample/unaligned-blit16colordownsample
-spec/glsl-1.50/glsl-1.50-gs-input-layout-qualifierstriangles_adjacency
+spec/ext_framebuffer_multisample/unaligned-blit.16.color.downsample
+spec/glsl-1.50/glsl-1.50-gs-input-layout-qualifiers.triangles_adjacency
 spec/glsl-1.50/compiler/built-in-functions/max-vec3-float.geom
 spec/arb_occlusion_query/occlusion_query_meta_fragments
 spec/glsl-1.30/execution/built-in-functions/fs-op-assign-div-uvec2-uint
-spec/ext_framebuffer_multisample/multisample-blit2depth
+spec/ext_framebuffer_multisample/multisample-blit.2.depth
 spec/glsl-1.50/compiler/built-in-functions/op-neg-ivec4.geom
 spec/glsl-1.20/compiler/built-in-functions/op-eq-mat2x4-mat2x4.frag
 spec/glsl-es-1.00/compiler/precision-qualifiers/precision-function-param-01.frag
@@ -33,7 +33,7 @@ spec/glsl-1.20/compiler/built-in-functions/op-ne-mat2x4-mat2x4.vert
 asmparsertest/arbvp1.0/clipdistance-01.txt
 spec/glsl-4.30/execution/built-in-functions/cs-op-bitand-uvec3-uint
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-rshift-ivec4-ivec4
-spec/glsl-1.50/glsl-1.50-gs-input-layout-qualifierstriangles
+spec/glsl-1.50/glsl-1.50-gs-input-layout-qualifiers.triangles
 spec/glsl-1.20/compiler/built-in-functions/op-div-float-mat3x4.vert
 spec/glsl-1.30/compiler/built-in-functions/acosh-vec2.frag
 spec/arb_framebuffer_object/fbo-incomplete-texture-01
@@ -51,7 +51,7 @@ spec/glsl-4.00/execution/built-in-functions/gs-mix-dvec3-dvec3-dvec3
 spec/glsl-1.50/compiler/built-in-functions/op-bitxor-not-ivec3-int.geom
 spec/arb_arrays_of_arrays/compiler/initialization-invalid.vert
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-assign-mult-mat4x3-float
-spec/!opengl3.2/layered-rendering/clear-color
+spec/!opengl.3.2/layered-rendering/clear-color
 spec/arb_shader_precision/fs-pow-float-float
 spec/glsl-1.50/execution/texturesize/gs-texturesize-sampler2darray
 spec/glsl-1.30/compiler/built-in-functions/op-bitor-neg-abs-ivec4-ivec4.vert

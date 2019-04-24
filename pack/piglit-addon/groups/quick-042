@@ -5,13 +5,13 @@ shaders/glsl-algebraic-div-one-2
 spec/arb_texture_gather/texturegather/fs-rg-green-float-cube
 spec/glsl-1.50/compiler/built-in-functions/op-bitxor-uvec2-uint.geom
 spec/glsl-1.50/execution/built-in-functions/gs-op-bitor-neg-ivec3-int
-spec/glsl-1.30/execution/tex-miplevel-selectiontextureprojgrad3d
-spec/ext_framebuffer_multisample/interpolation8centroid-deriv-disabled
+spec/glsl-1.30/execution/tex-miplevel-selection.textureprojgrad.3d
+spec/ext_framebuffer_multisample/interpolation.8.centroid-deriv-disabled
 spec/glsl-1.30/compiler/built-in-functions/op-bitand-uint-uvec4.frag
 spec/glsl-1.20/compiler/built-in-functions/op-sub-int-int.vert
 spec/glsl-1.10/execution/variable-indexing/fs-uniform-array-mat3-index-rd
 spec/arb_texture_gather/texturegather/vs-rg-none-int-cube
-spec/arb_copy_image/arb_copy_image-targetsgl_texture_2d_array323215gl_texture_2d_array321615111255721499
+spec/arb_copy_image/arb_copy_image-targets.gl_texture_2d_array.32.32.15.gl_texture_2d_array.32.16.15.11.12.5.5.7.2.14.9.9
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-assign-bitor-uint-uint
 spec/glsl-1.20/execution/built-in-functions/fs-op-mult-mat3x2-float
 spec/glsl-1.10/execution/built-in-functions/vs-op-gt-int-int-using-if
@@ -96,5 +96,5 @@ spec/glsl-4.30/execution/built-in-functions/cs-op-mult-mat2x3-vec2
 spec/glsl-1.40/execution/glsl-fs-shadow2drect
 spec/glsl-1.10/execution/built-in-functions/vs-op-assign-mult-mat4-mat4
 spec/arb_gpu_shader5/texturegatheroffsets/fs-rgb-2-int-2drect
-spec/glsl-1.10/execution/varying-packing/simplemat4x2separate
+spec/glsl-1.10/execution/varying-packing/simple.mat4x2.separate
 glslparsertest/glsl2/redeclaration-16.vert

@@ -10,7 +10,7 @@ spec/glsl-1.50/compiler/built-in-functions/op-bitxor-abs-not-int-ivec3.geom
 spec/amd_shader_trinary_minmax/execution/built-in-functions/gs-mid3-vec2-vec2-vec2
 spec/glsl-4.00/execution/built-in-functions/gs-op-mult-double-dvec2
 spec/arb_shader_image_load_store/compiler/builtin-address-argument-mismatch-load-cube-array.vert
-spec/!opengl3.2/layered-rendering/gl-layer-render
+spec/!opengl.3.2/layered-rendering/gl-layer-render
 spec/glsl-1.10/execution/built-in-functions/vs-op-mult-ivec3-ivec3
 spec/glsl-4.00/compiler/built-in-functions/greaterthanequal-dvec4-dvec4.vert
 spec/arb_arrays_of_arrays/execution/atomic_counters/vs-simple-inc-dec-read
@@ -20,7 +20,7 @@ spec/arb_transform_feedback3/gl_skipcomponents4
 spec/glsl-1.10/execution/built-in-functions/fs-exp-vec3
 spec/glsl-1.10/execution/built-in-functions/vs-max-vec2-vec2
 spec/arb_transform_feedback3/gl_skipcomponents2
-spec/arb_shader_texture_lod/execution/tex-miplevel-selection*projgradarb2d
+spec/arb_shader_texture_lod/execution/tex-miplevel-selection.*projgradarb.2d
 spec/arb_transform_feedback3/gl_skipcomponents3
 spec/glsl-1.20/execution/built-in-functions/vs-op-assign-sub-mat3x4-float
 spec/arb_shader_image_load_store/compiler/declaration-allowed-1d.frag
@@ -77,7 +77,7 @@ spec/glsl-1.30/compiler/built-in-functions/op-lshift-ivec3-uvec3.frag
 spec/ext_texture_array/maxlayers
 spec/glsl-1.20/compiler/built-in-functions/op-mult-ivec3-ivec3.vert
 spec/arb_shader_texture_image_samples/texturesamples/fs-usampler2dmsarray-2
-spec/glsl-1.20/execution/tex-miplevel-selectiongl2:texture(bias)1d
+spec/glsl-1.20/execution/tex-miplevel-selection.gl2:texture(bias).1d
 spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-transpose-dmat3x2
 spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-transpose-dmat3x4
 glslparsertest/glsl2/gst-gl-glass.frag

@@ -1,4 +1,4 @@
-spec/ext_framebuffer_multisample/unaligned-blit8depthmsaa
+spec/ext_framebuffer_multisample/unaligned-blit.8.depth.msaa
 spec/glsl-4.00/compiler/built-in-functions/outerproduct-dvec4-dvec3.vert
 spec/arb_explicit_uniform_location/linker/overlap-array-loc
 spec/arb_gpu_shader5/texturegatheroffset/vs-rgba-2-int-2drect
@@ -19,10 +19,10 @@ spec/glsl-1.50/execution/built-in-functions/gs-op-assign-mult-mat4-mat4
 spec/amd_shader_trinary_minmax/execution/built-in-functions/tcs-max3-vec2-vec2-vec2
 spec/glsl-4.30/execution/built-in-functions/cs-op-eq-float-float
 spec/glsl-1.10/execution/built-in-functions/fs-op-mult-ivec3-int
-spec/!opengl3.2/layered-rendering/clear-color-all-types3dsingle_level
+spec/!opengl.3.2/layered-rendering/clear-color-all-types.3d.single_level
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitor-abs-neg-ivec2-int
 spec/glsl-es-3.00/compiler/interpolation-qualifiers/varying-struct-nonflat-uint.frag
-spec/ext_texture_compression_s3tc/compressedteximagegl_compressed_srgb_alpha_s3tc_dxt3_ext
+spec/ext_texture_compression_s3tc/compressedteximage.gl_compressed_srgb_alpha_s3tc_dxt3_ext
 spec/ext_transform_feedback/position-readback-bufferbase-discard
 spec/glsl-1.50/compiler/built-in-functions/op-sub-mat4x3-float.geom
 spec/glsl-1.10/execution/variable-indexing/fs-uniform-mat4-row-rd
@@ -46,7 +46,7 @@ spec/glsl-1.50/execution/built-in-functions/gs-op-bitand-abs-not-ivec3-int
 spec/arb_gpu_shader5/texturegatheroffset/vs-rgb-0-int-2darray-const
 spec/arb_direct_state_access/textures-storage
 shaders/glsllinkarray-of-struct-of-array
-spec/ext_framebuffer_multisample/accuracy4stencil_drawsmalldepthstencil
+spec/ext_framebuffer_multisample/accuracy.4.stencil_draw.small.depthstencil
 shaders/glsl-algebraic-logicand-true-2
 spec/glsl-1.50/execution/built-in-functions/gs-op-bitor-neg-ivec2-ivec2
 spec/glsl-1.10/compiler/expressions/invalid-logic-not-04.vert
@@ -78,7 +78,7 @@ glslparsertest/glsl2/invariant-07.vert
 spec/glsl-1.30/execution/built-in-functions/fs-op-bitxor-neg-abs-ivec4-int
 spec/arb_texture_gather/texturegather/fs-r-red-int-2d
 spec/glsl-4.00/execution/built-in-functions/gs-op-add-dmat4-double
-spec/ext_texture_compression_rgtc/compressedteximagegl_compressed_red_green_rgtc2_ext
+spec/ext_texture_compression_rgtc/compressedteximage.gl_compressed_red_green_rgtc2_ext
 spec/arb_texture_gather/texturegather/vs-rg-one-uint-2d
 spec/arb_tessellation_shader/execution/tcs-input-read-nonconst-interface-builtin
 spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-min-dvec2-dvec2

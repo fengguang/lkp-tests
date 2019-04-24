@@ -18,12 +18,12 @@ spec/glsl-1.30/compiler/interpolation-qualifiers/fs-secondarycolor-interpolation
 spec/glsl-4.00/execution/built-in-functions/gs-inversesqrt-double
 spec/arb_gpu_shader5/texturegatheroffset/vs-rgb-0-int-2drect-const
 spec/glsl-1.30/compiler/built-in-functions/op-lshift-uvec2-ivec2.vert
-spec/arb_framebuffer_object/framebuffer-blit-levelsreadstencil
+spec/arb_framebuffer_object/framebuffer-blit-levels.read.stencil
 spec/glsl-es-3.00/execution/built-in-functions/fs-packhalf2x16
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-lshift-ivec4-int
 spec/glsl-4.00/compiler/built-in-functions/op-div-dmat3-double.frag
 spec/glsl-1.50/execution/built-in-functions/gs-op-bitxor-not-abs-int-ivec2
-spec/ext_framebuffer_multisample/accuracy32stencil_resolvesmalldepthstencil
+spec/ext_framebuffer_multisample/accuracy.32.stencil_resolve.small.depthstencil
 spec/arb_depth_buffer_float/fbo-depth-gl_depth32f_stencil8-copypixels
 spec/glsl-1.20/execution/uniform-initializer/vs-int
 spec/glsl-1.30/execution/built-in-functions/vs-op-assign-bitand-uvec2-uvec2
@@ -39,7 +39,7 @@ spec/glsl-1.10/execution/variable-indexing/fs-uniform-array-mat4-index-rd
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-bitor-not-abs-int-int
 spec/glsl-1.30/linker/interpolation-qualifiers/unused-flat-gl_frontcolor-unused-noperspective-gl_color
 spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-op-add-double-dmat4x2
-spec/glsl-1.10/execution/varying-packing/simpleuintarrays_of_arrays
+spec/glsl-1.10/execution/varying-packing/simple.uint.arrays_of_arrays
 spec/arb_arrays_of_arrays/compiler/initialization-invalid4.vert
 spec/glsl-1.50/execution/geometry/triangle-strip-orientation
 spec/glsl-1.10/execution/built-in-functions/vs-op-eq-vec2-vec2-using-if
@@ -74,8 +74,8 @@ spec/glsl-1.30/compiler/built-in-functions/op-bitor-neg-uint-uvec2.frag
 spec/glsl-1.10/execution/variable-indexing/vs-uniform-array-mat4-index-col-row-rd
 spec/arb_gpu_shader5/texturegather/vs-rgba-2-uint-2drect
 spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-op-sub-dmat2-dmat2
-spec/glsl-1.20/execution/tex-miplevel-selectiongl2:textureproj(bias)1dshadow
-spec/ext_transform_feedback/structsarray-struct-array-structrun-no-fs
+spec/glsl-1.20/execution/tex-miplevel-selection.gl2:textureproj(bias).1dshadow
+spec/ext_transform_feedback/structs.array-struct-array-struct.run-no-fs
 spec/arb_tessellation_shader/compiler/no-input-layout.tese
 spec/glsl-4.00/compiler/built-in-functions/op-mult-dmat3-dmat2x3.geom
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/notequal-dvec2-dvec2.vert

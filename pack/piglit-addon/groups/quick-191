@@ -1,6 +1,6 @@
 spec/glsl-4.30/execution/built-in-functions/cs-op-bitand-neg-int-ivec4
 spec/glsl-4.30/execution/built-in-functions/cs-op-bitand-neg-int-ivec2
-spec/arb_copy_image/arb_copy_image-targetsgl_texture_3d323217gl_texture_cube_map161661151592573
+spec/arb_copy_image/arb_copy_image-targets.gl_texture_3d.32.32.17.gl_texture_cube_map.16.16.6.11.5.1.5.9.2.5.7.3
 spec/glsl-1.50/compiler/built-in-functions/op-bitxor-neg-abs-ivec4-ivec4.geom
 spec/glsl-1.10/execution/variable-indexing/vs-varying-mat4-rd
 spec/glsl-1.30/compiler/switch-statement/switch-case-fallthrough.vert
@@ -10,11 +10,11 @@ spec/arb_gpu_shader5/texturegatheroffset/vs-rg-0-int-2drect-const
 spec/glsl-4.00/execution/built-in-functions/fs-op-add-dvec2-dvec2
 spec/glsl-1.50/execution/texturesize/gs-texturesize-isampler1d
 spec/glsl-4.00/compiler/built-in-functions/mix-dvec2-dvec2-bvec2.frag
-spec/glsl-1.30/execution/tex-miplevel-selectiontextureprojgradoffset2d
+spec/glsl-1.30/execution/tex-miplevel-selection.textureprojgradoffset.2d
 spec/glsl-1.30/compiler/order-of-qualification/order-of-qualification-04.vert
 spec/glsl-1.10/execution/built-in-functions/fs-op-uplus-ivec4
 spec/glsl-1.30/execution/built-in-functions/fs-op-bitand-neg-abs-ivec2-int
-spec/ext_framebuffer_multisample/accuracy8depth_resolvesmalldepthstencil
+spec/ext_framebuffer_multisample/accuracy.8.depth_resolve.smalldepthstencil
 spec/glsl-4.00/execution/built-in-functions/gs-mix-dvec4-dvec4-dvec4
 asmparsertest/arbvp1.0/txq-08.txt
 spec/glsl-1.50/compiler/built-in-functions/lessthan-vec3-vec3.geom
@@ -38,7 +38,7 @@ spec/arb_tessellation_shader/execution/variable-indexing/tcs-output-array-float-
 spec/glsl-1.30/execution/built-in-functions/fs-op-bitor-not-uvec2-uvec2
 spec/glsl-4.00/compiler/built-in-functions/op-mult-dmat2-dmat3x2.frag
 spec/glsl-1.50/compiler/built-in-functions/op-bitand-not-uvec3-uint.geom
-spec/ext_framebuffer_multisample/accuracyall_samplescolorsmalldepthstencillinear
+spec/ext_framebuffer_multisample/accuracy.all_samples.colorsmalldepthstencillinear
 spec/arb_gpu_shader5/compiler/builtin-functions/fs-gatheroffsets.frag
 spec/arb_texture_gather/texturegather/fs-r-zero-unorm-cube
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-trunc-float
@@ -50,7 +50,7 @@ spec/glsl-1.50/execution/built-in-functions/gs-notequal-bvec4-bvec4
 spec/glsl-1.50/compiler/built-in-functions/op-selection-bool-uint-uint.geom
 spec/arb_arrays_of_arrays/compiler/redeclaration2.vert
 spec/arb_arrays_of_arrays/compiler/subroutine.vert
-spec/ext_framebuffer_multisample/accuracy2srgbsmalllinear
+spec/ext_framebuffer_multisample/accuracy.2.srgbsmalllinear
 spec/arb_gpu_shader5/texturegatheroffset/fs-rgba-3-int-2drect
 spec/glsl-1.30/compiler/built-in-functions/min-ivec3-ivec3.vert
 spec/glsl-4.00/execution/built-in-functions/gs-distance-dvec2-dvec2
@@ -58,7 +58,7 @@ shaders/glsl-const-builtin-sqrt
 spec/glsl-1.50/execution/built-in-functions/gs-op-assign-div-uvec3-uint
 spec/arb_gpu_shader5/texturegather/vs-rgba-0-uint-2d
 spec/arb_gpu_shader5/texturegatheroffset/fs-rg-0-unorm-2darray-const
-spec/ext_framebuffer_multisample/upsample16colorlinear
+spec/ext_framebuffer_multisample/upsample.16.color.linear
 glslparsertest/glsl2/draw_buffers-01.frag
 spec/glsl-1.30/compiler/keywords/sampler2darrayshadow.frag
 spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-refract-dvec4-dvec4-double

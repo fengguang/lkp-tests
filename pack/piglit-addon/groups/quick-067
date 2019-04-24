@@ -5,14 +5,14 @@ spec/glsl-1.20/execution/uniform-initializer/fs-structure
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-bitor-not-uint-uvec3
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-bitor-not-uint-uvec2
 spec/arb_direct_state_access/bind-texture-unit
-glx/glx_arb_create_context/forward-compatibleflagwithpre-3.0
+glx/glx_arb_create_context/forward-compatible.flag.with.pre-3.0
 spec/glsl-1.30/compiler/built-in-functions/op-bitand-uint-uvec3.frag
-spec/ext_framebuffer_multisample/sample-coverage4inverted
+spec/ext_framebuffer_multisample/sample-coverage.4.inverted
 spec/amd_shader_trinary_minmax/execution/built-in-functions/tcs-min3-vec4-vec4-vec4
 spec/glsl-1.20/compiler/built-in-functions/exp-vec2.frag
-spec/glsl-1.30/execution/tex-miplevel-selectiontextureprojlodoffset2d
+spec/glsl-1.30/execution/tex-miplevel-selection.textureprojlodoffset.2d
 spec/glsl-4.30/execution/built-in-functions/cs-op-assign-sub-ivec3-int
-spec/arb_texture_multisample/texelfetchfssampler2dmsarray498x1x9-98x129x9
+spec/arb_texture_multisample/texelfetch.fs.sampler2dmsarray.4.98x1x9-98x129x9
 spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-matrixcompmult-dmat3x2-dmat3x2
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-mult-mat2x3-mat2
 spec/glsl-1.30/compiler/reserved/dvec2.frag
@@ -39,7 +39,7 @@ spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-assign-div-uvec
 spec/glsl-1.50/compiler/built-in-functions/pow-float-float.geom
 spec/arb_shader_image_load_store/compiler/builtin-address-argument-mismatch-atomic-exchange-3d.frag
 spec/glsl-1.30/compiler/built-in-functions/equal-uvec3-uvec3.frag
-spec/ati_texture_compression_3dc/texwrapformats
+spec/ati_texture_compression_3dc/texwrap.formats
 spec/glsl-1.10/execution/built-in-functions/vs-any-bvec3
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-bitxor-not-uvec2-uint
 spec/glsl-1.10/execution/built-in-functions/fs-op-assign-mult-vec4-vec4
@@ -76,7 +76,7 @@ spec/arb_gpu_shader_fp64/compiler/built-in-functions/mod-dvec3-double.geom
 spec/glsl-1.20/compiler/built-in-functions/op-sub-float-float.vert
 spec/arb_gpu_shader5/arb_gpu_shader5-minmax
 spec/arb_gpu_shader5/texturegatheroffsets/fs-rgba-3-unorm-2d
-spec/arb_depth_buffer_float/texwrapformatsoffset
+spec/arb_depth_buffer_float/texwrap.formats.offset
 spec/glsl-1.50/compiler/built-in-functions/op-ne-vec3-vec3.geom
 spec/arb_gpu_shader5/texturegatheroffset/fs-rgb-0-int-2drect
 spec/glsl-1.30/execution/interpolation/interpolation-smooth-gl_frontsecondarycolor-smooth-distance
@@ -90,7 +90,7 @@ spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-bitxor-not-ivec
 spec/arb_gpu_shader5/texturegather/fs-rgb-0-unorm-2d
 spec/glsl-4.30/execution/built-in-functions/cs-op-assign-rshift-uvec2-uvec2
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-add-dmat4x3-dmat4x3.geom
-spec/ext_framebuffer_multisample/blit-flipped8x
+spec/ext_framebuffer_multisample/blit-flipped.8.x
 spec/arb_gpu_shader5/execution/built-in-functions/fs-ldexp
 spec/arb_uniform_buffer_object/example_from_spec
 spec/glsl-4.30/execution/built-in-functions/cs-op-rshift-ivec3-ivec3

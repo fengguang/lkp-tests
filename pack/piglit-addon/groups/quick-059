@@ -32,10 +32,10 @@ spec/glsl-1.10/execution/built-in-functions/fs-op-assign-add-vec4-vec4
 spec/glsl-1.50/execution/built-in-functions/gs-op-bitxor-neg-abs-ivec3-int
 spec/glsl-1.50/execution/built-in-functions/gs-op-add-mat4x3-float
 spec/glsl-1.50/execution/built-in-functions/gs-mix-vec3-vec3-vec3
-spec/arb_map_buffer_range/map_invalidate_range_bitdecrement-offset
+spec/arb_map_buffer_range/map_invalidate_range_bit.decrement-offset
 spec/arb_shader_atomic_counters/compiler/expression-disallowed-3.frag
 spec/glsl-1.30/execution/vs-texturesize-compare
-spec/!opengl1.1/texwrap2d
+spec/!opengl.1.1/texwrap.2d
 spec/glsl-1.50/execution/fragcoord-layout-qualifiers-matching-case-3
 spec/arb_gpu_shader5/compiler/correct-multiple-layout-qualifier-invocations.geom
 spec/glsl-1.50/execution/fragcoord-layout-qualifiers-matching-case-1
@@ -50,12 +50,12 @@ spec/glsl-1.50/execution/built-in-functions/gs-all-bvec3
 spec/glsl-1.30/compiler/storage-qualifiers/static-write-in-01.frag
 spec/glsl-1.50/execution/built-in-functions/gs-all-bvec4
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/refract-dvec4-dvec4-double.frag
-spec/ext_framebuffer_multisample/multisample-blit16colorlinear
+spec/ext_framebuffer_multisample/multisample-blit.16.color.linear
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-sign-vec4
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-sign-vec2
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-sign-vec3
 spec/glsl-1.50/compiler/built-in-functions/greaterthan-ivec4-ivec4.geom
-spec/!opengles2.0/fbo_discard_gles2
+spec/!opengl.es.2.0/fbo_discard_gles2
 spec/glsl-1.30/compiler/built-in-functions/op-mod-ivec4-ivec4.frag
 spec/arb_texture_gather/texturegather/fs-rgb-red-float-2d
 spec/arb_texture_multisample/texelfetch/32-fs-usampler2dmsarray
@@ -68,7 +68,7 @@ spec/glsl-1.30/compiler/void/void-and_assign.vert
 spec/glsl-4.00/compiler/built-in-functions/greaterthanequal-dvec4-dvec4.geom
 spec/glsl-1.30/execution/built-in-functions/vs-min-uvec3-uvec3
 spec/glsl-1.30/compiler/built-in-functions/op-bitand-abs-not-ivec2-int.vert
-spec/glsl-1.30/execution/tex-miplevel-selectiontexture()cubearrayshadow
+spec/glsl-1.30/execution/tex-miplevel-selection.texture().cubearrayshadow
 spec/arb_shader_atomic_counters/compiler/declaration-arg-out.frag
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-bitxor-abs-not-int-int
 spec/glsl-1.50/execution/built-in-functions/gs-op-add-float-mat4x3
@@ -95,6 +95,6 @@ spec/glsl-4.30/execution/built-in-functions/cs-acos-vec4
 spec/glsl-4.30/execution/built-in-functions/cs-fract-float
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-mult-double-dmat3x2.frag
 spec/glsl-1.50/execution/built-in-functions/gs-op-bitor-not-uvec3-uint
-spec/ext_framebuffer_multisample/accuracyall_samplesstencil_drawdepthstencil
+spec/ext_framebuffer_multisample/accuracy.all_samples.stencil_draw.depthstencil
 asmparsertest/arbvp1.0/cos-02.txt
 spec/arb_compute_shader/api_errors

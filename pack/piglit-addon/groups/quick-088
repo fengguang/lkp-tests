@@ -15,8 +15,8 @@ spec/glsl-4.30/execution/built-in-functions/cs-op-assign-add-mat4-float
 spec/arb_gpu_shader5/texturegatheroffset/vs-rgba-0-uint-2darray
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/matrixcompmult-dmat4-dmat4.geom
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitand-ivec3-int
-spec/ext_transform_feedback/output-typeivec3[2]-no-subscript
-spec/glsl-1.10/execution/clipping/clip-plane-transformationclipvert_pos
+spec/ext_transform_feedback/output-type.ivec3[2]-no-subscript
+spec/glsl-1.10/execution/clipping/clip-plane-transformation.clipvert_pos
 spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-op-mult-dmat4-dmat2x4
 spec/glsl-1.30/compiler/clipping/clip-distance-implicit-access-max.vert
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-bitor-neg-abs-ivec4-ivec4
@@ -38,7 +38,7 @@ spec/ext_framebuffer_object/fbo-nodepth-test
 spec/glsl-1.10/execution/built-in-functions/fs-op-assign-add-mat4-mat4
 spec/glsl-1.10/compiler/expressions/postincrement-vec2-non-lvalue-for-assignment.frag
 spec/glsl-1.50/execution/built-in-functions/gs-op-assign-add-mat3x4-float
-spec/!opengl2.0/vertex-program-two-sideenabledfront2back2
+spec/!opengl.2.0/vertex-program-two-side.enabled.front2back2
 spec/glsl-1.20/compiler/built-in-functions/op-div-mat4x2-float.vert
 spec/glsl-1.30/compiler/built-in-functions/op-lshift-uvec4-uvec4.vert
 spec/glsl-4.30/execution/built-in-functions/cs-op-bitxor-uint-uint
@@ -54,7 +54,7 @@ spec/arb_texture_gather/texturegather/fs-r-one-unorm-2darray
 spec/glsl-1.50/execution/built-in-functions/gs-op-mult-uint-uvec3
 spec/glsl-1.30/execution/built-in-functions/vs-op-lshift-ivec3-uint
 spec/glsl-1.50/execution/built-in-functions/gs-op-mult-uint-uvec2
-spec/arb_texture_rg/multisample-formats6gl_arb_texture_rg
+spec/arb_texture_rg/multisample-formats.6.gl_arb_texture_rg
 spec/arb_texture_gather/texturegatheroffset/vs-rgba-zero-unorm-2d
 spec/glsl-1.50/execution/built-in-functions/gs-op-mult-uint-uvec4
 spec/glsl-1.30/execution/texelfetchoffset/fs-texelfetch-usampler3d
@@ -67,10 +67,10 @@ glslparsertest/glsl2/draw_buffers-05.vert
 spec/arb_gpu_shader5/texturegatheroffset/vs-rgba-1-int-2d-const
 spec/glsl-1.50/compiler/built-in-functions/not-bvec3.geom
 spec/glsl-es-3.00/compiler/array-sized-by-sequence-in-parenthesis.vert
-spec/!opengl3.2/layered-rendering/gl-layer
+spec/!opengl.3.2/layered-rendering/gl-layer
 spec/glsl-1.50/execution/built-in-functions/gs-op-ne-mat3x2-mat3x2-using-if
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-mult-dmat2-dmat3x2.vert
-spec/arb_copy_image/arb_copy_image-targetsgl_texture_cube_map32326gl_texture_1d3211112335001411
+spec/arb_copy_image/arb_copy_image-targets.gl_texture_cube_map.32.32.6.gl_texture_1d.32.1.1.11.23.3.5.0.0.14.1.1
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-asin-vec4
 spec/amd_shader_trinary_minmax/compiler/built-in-functions/max3-vec2-vec2-vec2.geom
 spec/glsl-1.30/execution/built-in-functions/fs-op-assign-bitand-ivec2-int
@@ -81,13 +81,13 @@ spec/glsl-4.00/compiler/built-in-functions/equal-dvec4-dvec4.vert
 spec/glsl-1.10/execution/built-in-functions/vs-op-assign-add-mat3-float
 spec/arb_vertex_attrib_64bit/execution/vs-test-attrib-location
 shaders/glsl-array-uniform
-spec/ext_framebuffer_multisample/accuracy8stencil_resolvesmall
+spec/ext_framebuffer_multisample/accuracy.8.stencil_resolve.small
 spec/glsl-4.00/compiler/built-in-functions/op-sub-dmat4x2-dmat4x2.frag
 spec/arb_shader_precision/fs-op-mult-float-vec2
 spec/glsl-1.20/execution/uniform-initializer/fs-mat3-array
 spec/arb_shader_precision/fs-op-mult-float-vec4
 spec/glsl-1.30/compiler/qualifiers/out-bool-prohibited.vert
-spec/arb_copy_image/arb_copy_image-targetsgl_texture_2d32321gl_texture_cube_map_array32321811505971471
+spec/arb_copy_image/arb_copy_image-targets.gl_texture_2d.32.32.1.gl_texture_cube_map_array.32.32.18.11.5.0.5.9.7.14.7.1
 shaders/glsl-fs-fragcoord-zw-ortho
 spec/arb_shader_precision/fs-op-mult-float-vec3
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-sub-vec2-float

@@ -26,7 +26,7 @@ spec/glsl-1.20/compiler/built-in-functions/greaterthan-ivec2-ivec2.vert
 spec/arb_texture_gather/texturegather/fs-rg-one-unorm-cubearray
 spec/arb_framebuffer_srgb/blittexturelinear_to_srgbmsaaenabled
 spec/glsl-1.10/execution/variable-indexing/vs-varying-mat3-row-wr
-spec/ext_framebuffer_multisample/no-color32depth-computedseparate
+spec/ext_framebuffer_multisample/no-color.32.depth-computed.separate
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-mult-dvec4-double.geom
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/determinant-dmat3.geom
 spec/glsl-1.50/execution/built-in-functions/gs-op-assign-add-vec2-float
@@ -36,7 +36,7 @@ spec/arb_texture_gather/texturegather/fs-rgb-none-uint-2darray
 spec/glsl-1.20/compiler/built-in-functions/op-selection-bool-ivec4-ivec4.frag
 glslparsertest/shaders/struct6.frag
 glslparsertest/shaders/array3.frag
-spec/ext_framebuffer_multisample/accuracy4srgblinear
+spec/ext_framebuffer_multisample/accuracy.4.srgblinear
 spec/glsl-4.00/compiler/built-in-functions/op-add-double-dmat4.vert
 spec/arb_shader_precision/gs-op-div-float-vec3
 spec/glsl-1.20/compiler/built-in-functions/op-neg-mat3x4.vert
@@ -55,7 +55,7 @@ spec/glsl-4.00/compiler/built-in-functions/transpose-dmat3x2.vert
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-add-uint-uint
 asmparsertest/arbvp1.0/txb-10.txt
 spec/glsl-1.30/execution/built-in-functions/fs-op-assign-bitxor-uvec3-uint
-spec/ext_transform_feedback/output-typemat2[2]
+spec/ext_transform_feedback/output-type.mat2[2]
 spec/arb_shader_image_load_store/compiler/builtin-address-argument-mismatch-store-cube.vert
 spec/glsl-1.20/execution/variable-indexing/fs-varying-mat4-rd
 spec/glsl-4.00/compiler/built-in-functions/matrixcompmult-dmat2x3-dmat2x3.vert
@@ -67,13 +67,13 @@ spec/arb_texture_gather/texturegatheroffset/vs-rgba-one-unorm-2darray
 spec/glsl-1.50/compiler/gs-input-sizing-layout-inconsistent-with-later-length-blocks.geom
 spec/glsl-1.30/compiler/reserved/typedef.frag
 spec/glsl-1.30/linker/interpolation-qualifiers/default-gl_backsecondarycolor-noperspective-gl_frontsecondarycolor
-spec/!opengl3.2/gl_vertexidusedwithglmultidrawelementsbasevertex
+spec/!opengl.3.2/gl_vertexid.used.with.glmultidrawelementsbasevertex
 spec/glsl-1.50/execution/built-in-functions/gs-op-assign-bitand-uvec4-uint
 spec/glsl-4.30/execution/built-in-functions/cs-equal-uvec3-uvec3
 spec/glsl-4.00/compiler/built-in-functions/transpose-dmat2.vert
 spec/glsl-1.50/execution/built-in-functions/gs-outerproduct-vec4-vec2
 spec/arb_gpu_shader5/texturegatheroffset/fs-rgb-1-unorm-2drect
-spec/!opengl3.2/layered-rendering/framebuffer-layered-attachments
+spec/!opengl.3.2/layered-rendering/framebuffer-layered-attachments
 spec/glsl-1.50/execution/built-in-functions/gs-outerproduct-vec4-vec4
 spec/amd_shader_trinary_minmax/execution/built-in-functions/gs-max3-uint-uint-uint
 spec/glsl-1.30/compiler/built-in-functions/op-sub-uvec2-uvec2.frag

@@ -26,7 +26,7 @@ spec/arb_gpu_shader5/texturegather/vs-rgba-2-uint-cubearray
 spec/arb_copy_buffer/targets
 spec/glsl-4.30/execution/built-in-functions/cs-op-bitand-int-ivec3
 spec/arb_direct_state_access/texture-buffer
-spec/ext_texture_srgb/multisample-formats16gl_ext_texture_srgb
+spec/ext_texture_srgb/multisample-formats.16.gl_ext_texture_srgb
 spec/glsl-1.10/linker/override-builtin-const-01
 spec/glsl-1.10/linker/override-builtin-const-04
 spec/arb_gpu_shader5/texturegatheroffsets/vs-rgba-3-unorm-2darray
@@ -49,7 +49,7 @@ glslparsertest/glsl2/matrix-09.vert
 spec/glsl-1.20/compiler/built-in-functions/op-mult-float-vec2.vert
 spec/arb_texture_gather/texturegatheroffset/fs-rgb-red-int-2d
 shaders/glsl-fs-vec4-mat2
-spec/arb_map_buffer_range/map_invalidate_buffer_bitincrement-offset
+spec/arb_map_buffer_range/map_invalidate_buffer_bit.increment-offset
 spec/arb_shader_precision/gs-op-assign-mult-vec2-float
 spec/glsl-1.50/compiler/built-in-functions/op-bitand-not-abs-int-ivec2.geom
 spec/glsl-4.00/execution/built-in-functions/gs-op-div-dmat2-double
@@ -58,7 +58,7 @@ glslparsertest/glsl2/invariant-03.vert
 spec/arb_shader_precision/fs-pow-vec2-vec2
 spec/arb_tessellation_shader/compiler/custom-block-out-indexing-const.tesc
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitxor-neg-ivec2-ivec2
-spec/ext_framebuffer_multisample/accuracy8stencil_resolve
+spec/ext_framebuffer_multisample/accuracy.8.stencil_resolve
 spec/arb_arrays_of_arrays/compiler/uniform-unsized-array-array-var.vert
 spec/glsl-1.10/execution/built-in-functions/vs-step-float-vec2
 spec/glsl-1.10/execution/built-in-functions/vs-step-float-vec3
@@ -82,14 +82,14 @@ spec/glsl-4.00/compiler/built-in-functions/op-add-double-dvec2.vert
 spec/glsl-4.00/execution/built-in-functions/gs-op-div-dmat3x2-double
 spec/glsl-1.20/compiler/structure-and-array-operations/array-ctor-implicit-conversion-float-bool.vert
 spec/glsl-1.20/compiler/built-in-functions/log-vec2.vert
-spec/ext_framebuffer_multisample/accuracy6depth_resolvesmall
-spec/arb_texture_stencil8/texwrapformatsoffset
+spec/ext_framebuffer_multisample/accuracy.6.depth_resolve.small
+spec/arb_texture_stencil8/texwrap.formatsoffset
 spec/glsl-1.20/compiler/built-in-functions/op-mult-vec2-vec2.frag
 spec/arb_gpu_shader5/texturegatheroffset/fs-rgb-2-int-2drect
 spec/arb_shader_precision/gs-op-assign-div-vec3-float
 spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-op-mult-dmat4x3-dmat3x4
 spec/arb_tessellation_shader/execution/tcs-tes-vertex
-spec/ext_framebuffer_multisample/clear8depth
+spec/ext_framebuffer_multisample/clear.8.depth
 spec/glsl-1.50/compiler/built-in-functions/op-mult-mat3x4-mat2x3.geom
 spec/arb_gpu_shader5/texturegather/vs-rgb-0-float-2drect
 spec/arb_texture_gather/texturegather/fs-rg-none-unorm-cube

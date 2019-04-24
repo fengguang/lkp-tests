@@ -6,7 +6,7 @@ spec/glsl-1.30/execution/fs-discard-exit-3
 spec/glsl-1.30/execution/fs-discard-exit-2
 spec/glsl-1.50/compiler/built-in-functions/op-ne-mat4x2-mat4x2.geom
 spec/arb_gpu_shader5/execution/sampler_array_indexing/fs-simple
-spec/!opengl2.0/vertex-program-two-sidebackfront2
+spec/!opengl.2.0/vertex-program-two-side.back.front2
 spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-op-mult-dvec4-double
 spec/arb_gpu_shader5/texturegatheroffset/vs-rgba-2-float-2darray
 spec/arb_gpu_shader5/texturegatheroffsets/vs-rgb-1-unorm-2drect
@@ -22,7 +22,7 @@ spec/glsl-1.10/execution/built-in-functions/fs-op-mult-vec3-mat3
 spec/arb_tessellation_shader/execution/tes-input/tes-input-patch-uint
 spec/glsl-1.20/execution/variable-indexing/vs-varying-mat2-col-row-rd
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/clamp-double-double-double.frag
-spec/glsl-1.30/execution/tex-miplevel-selectiontextureprojlodoffset2dshadow
+spec/glsl-1.30/execution/tex-miplevel-selection.textureprojlodoffset.2dshadow
 spec/glsl-1.10/execution/variable-indexing/fs-temp-array-mat2-row-wr
 spec/arb_shader_image_load_store/compiler/expression-conversion-3.vert
 spec/amd_shader_trinary_minmax/execution/built-in-functions/vs-mid3-vec2-vec2-vec2
@@ -43,9 +43,9 @@ spec/glsl-4.30/execution/built-in-functions/cs-op-bitxor-not-abs-ivec2-int
 spec/glsl-1.20/execution/built-in-functions/vs-op-mult-float-mat4x2
 spec/glsl-1.20/execution/built-in-functions/vs-op-mult-float-mat4x3
 spec/glsl-4.00/execution/built-in-functions/fs-op-mult-dmat2-dmat2
-spec/ext_texture_compression_s3tc/compressedteximagegl_compressed_rgb_s3tc_dxt1_ext
+spec/ext_texture_compression_s3tc/compressedteximage.gl_compressed_rgb_s3tc_dxt1_ext
 spec/arb_explicit_attrib_location/1.10/compiler/layout-05.frag
-spec/arb_geometry_shader4/arb_geometry_shader4-ignore-adjacent-verticesindexedgl_lines_adjacency
+spec/arb_geometry_shader4/arb_geometry_shader4-ignore-adjacent-vertices.indexed.gl_lines_adjacency
 spec/ext_packed_float/getteximage-invalid-format-for-packed-type
 spec/glsl-1.30/linker/interpolation-qualifiers/unused-flat-gl_frontsecondarycolor-unused-smooth-gl_secondarycolor
 spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-op-mult-dmat4-dmat3x4
@@ -57,7 +57,7 @@ spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-add-int-ivec2
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-add-int-ivec4
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-add-int-ivec3
 spec/glsl-1.30/execution/built-in-functions/fs-op-bitor-ivec2-int
-spec/arb_copy_image/arb_copy_image-targetsgl_texture_2d32321gl_texture_2d32161111205701491
+spec/arb_copy_image/arb_copy_image-targets.gl_texture_2d.32.32.1.gl_texture_2d.32.16.1.11.12.0.5.7.0.14.9.1
 spec/glsl-4.00/compiler/built-in-functions/greaterthan-dvec3-dvec3.vert
 spec/arb_gpu_shader5/execution/built-in-functions/fs-floatbitstouint-neg
 spec/arb_shader_image_load_store/compiler/declaration-allowed-1d-array.frag
@@ -69,7 +69,7 @@ spec/glsl-1.50/execution/built-in-functions/gs-op-or-bool-bool
 spec/glsl-1.50/compiler/incorrect-out-layout-qualifiers-with-variable-declarations.geom
 spec/glsl-1.20/compiler/built-in-functions/op-add-mat4-mat4.frag
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-sub-ivec3-ivec3
-spec/arb_gpu_shader_fp64/varying-packing/simpledmat3x4separate
+spec/arb_gpu_shader_fp64/varying-packing/simple.dmat3x4.separate
 spec/glsl-4.30/execution/built-in-functions/cs-op-div-ivec4-int
 spec/glsl-1.30/linker/interpolation-qualifiers/noperspective-gl_backsecondarycolor-unused-gl_secondarycolor
 spec/arb_arrays_of_arrays/compiler/initializer-struct-field-array-var-array2.vert
@@ -93,7 +93,7 @@ spec/arb_texture_gather/texturegather/vs-rg-red-int-cubearray
 spec/arb_shader_image_load_store/compiler/builtin-address-argument-mismatch-atomic-min-2d-array.vert
 spec/glsl-1.30/compiler/built-in-functions/clamp-ivec2-ivec2-ivec2.vert
 spec/glsl-4.30/execution/built-in-functions/cs-op-bitor-neg-ivec2-ivec2
-spec/arb_shading_language_420pack/built-inconstants
+spec/arb_shading_language_420pack/built-in.constants
 spec/glsl-1.10/execution/variable-indexing/vs-temp-array-mat3-index-col-rd
 spec/glsl-1.50/compiler/built-in-functions/op-mult-mat4x2-mat2x4.geom
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-bitor-abs-not-ivec4-ivec4

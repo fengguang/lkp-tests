@@ -20,7 +20,7 @@ spec/glsl-4.00/compiler/built-in-functions/op-sub-dmat3x2-dmat3x2.frag
 spec/glsl-1.20/compiler/built-in-functions/sqrt-vec2.frag
 spec/glsl-1.30/execution/built-in-functions/vs-op-assign-bitxor-int-int
 spec/glsl-4.00/compiler/built-in-functions/op-div-double-dmat2.geom
-spec/ext_framebuffer_multisample/interpolation4centroid-disabled
+spec/ext_framebuffer_multisample/interpolation.4.centroid-disabled
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/trunc-dvec3.geom
 spec/glsl-4.30/execution/built-in-functions/cs-op-assign-add-mat3-mat3
 spec/glsl-4.30/execution/built-in-functions/cs-op-add-vec2-vec2
@@ -28,9 +28,9 @@ spec/glsl-1.10/execution/built-in-functions/fs-op-assign-add-mat3-float
 spec/glsl-1.50/execution/built-in-functions/gs-op-bitor-uvec3-uint
 spec/glsl-1.20/compiler/structure-and-array-operations/array-size-with-side-effect.vert
 spec/glsl-4.00/compiler/built-in-functions/op-sub-dvec3-dvec3.frag
-spec/!opengl1.0/gl-1.0-no-op-paths
+spec/!opengl.1.0/gl-1.0-no-op-paths
 spec/glsl-1.30/execution/built-in-functions/fs-op-assign-bitand-uvec3-uint
-spec/ext_framebuffer_multisample/accuracy2stencil_resolvesmalldepthstencil
+spec/ext_framebuffer_multisample/accuracy.2.stencil_resolvesmalldepthstencil
 spec/glsl-1.10/execution/variable-indexing/fs-uniform-array-mat2-index-row-rd
 spec/glsl-1.30/execution/built-in-functions/fs-op-lshift-uvec2-uint
 spec/glsl-1.20/execution/variable-indexing/vs-temp-array-mat3-rd
@@ -78,7 +78,7 @@ spec/glsl-1.30/compiler/reserved/double.frag
 spec/arb_sync/getsynciv-errors
 spec/glsl-4.30/execution/built-in-functions/cs-op-bitor-abs-neg-ivec3-int
 spec/glsl-1.50/execution/built-in-functions/gs-op-assign-add-mat3x2-float
-shaders/point-vertex-idgl_instanceiddivisor
+shaders/point-vertex-id.gl_instanceiddivisor
 spec/glsl-1.30/execution/built-in-functions/vs-op-assign-add-uvec2-uvec2
 spec/arb_geometry_shader4/compiler/arb_shader_texture_lod.geom
 spec/glsl-4.00/compiler/built-in-functions/notequal-dvec3-dvec3.vert
@@ -90,7 +90,7 @@ spec/glsl-1.30/compiler/basic-types/assign-implicit-conversion-ivec3-uvec3.vert
 spec/glsl-4.00/compiler/built-in-functions/op-mult-double-double.frag
 spec/arb_tessellation_shader/execution/tcs-input/tcs-input-mat2x3_2
 spec/glsl-1.30/compiler/built-in-functions/op-add-uint-uvec4.vert
-spec/ext_transform_feedback/structsstruct-structerrorinterface
+spec/ext_transform_feedback/structs.struct-struct.errorinterface
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-add-dvec4-double.vert
 asmparsertest/arbvp1.0/alias-02.txt
 glslparsertest/glsl2/draw_buffers-07.vert

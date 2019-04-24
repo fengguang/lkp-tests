@@ -37,7 +37,7 @@ shaders/glsl-fs-discard-02
 shaders/glsl-fs-discard-03
 shaders/glsl-fs-discard-01
 spec/glsl-4.00/compiler/built-in-functions/texturequerylod-usampler2darray.vert
-spec/ext_framebuffer_multisample/clip-and-scissor-blit8upsample
+spec/ext_framebuffer_multisample/clip-and-scissor-blit.8.upsample
 spec/glsl-1.30/compiler/built-in-functions/op-uplus-uvec2.frag
 glslparsertest/glsl2/defined-01.vert
 spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-step-dvec4-dvec4
@@ -55,15 +55,15 @@ spec/glsl-1.30/execution/vertexid-beginend
 spec/arb_gpu_shader5/texturegatheroffsets/vs-rgba-2-unorm-2d
 spec/glsl-1.50/execution/built-in-functions/gs-op-bitand-not-uint-uint
 spec/amd_shader_trinary_minmax/execution/built-in-functions/gs-min3-float-float-float
-spec/ext_framebuffer_multisample/alpha-to-one-dual-src-blend2
-spec/ext_framebuffer_multisample/alpha-to-one-dual-src-blend6
+spec/ext_framebuffer_multisample/alpha-to-one-dual-src-blend.2
+spec/ext_framebuffer_multisample/alpha-to-one-dual-src-blend.6
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-div-dmat3x4-dmat3x4.geom
-spec/ext_framebuffer_multisample/alpha-to-one-dual-src-blend4
+spec/ext_framebuffer_multisample/alpha-to-one-dual-src-blend.4
 spec/glsl-4.30/execution/built-in-functions/cs-op-bitor-abs-not-ivec2-int
 spec/arb_uniform_buffer_object/getuniformlocation
 spec/glsl-1.20/compiler/qualifiers/in-01.vert
 spec/glsl-1.10/execution/variable-indexing/fs-uniform-mat3-rd
-spec/ext_framebuffer_multisample/alpha-to-one-dual-src-blend8
+spec/ext_framebuffer_multisample/alpha-to-one-dual-src-blend.8
 spec/glsl-1.30/compiler/built-in-functions/asinh-vec2.frag
 spec/arb_gpu_shader5/texturegatheroffsets/vs-rgb-0-uint-2darray
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/smoothstep-double-double-dvec4.vert
@@ -74,7 +74,7 @@ spec/arb_texture_gather/texturegather/vs-r-none-float-cube
 spec/arb_texture_gather/texturegatheroffset/vs-rgb-blue-unorm-2darray
 spec/ext_framebuffer_object/fbo-generatemipmap-nonsquare
 spec/arb_shader_image_load_store/compiler/builtin-address-argument-mismatch-load-1d-array.vert
-spec/ext_transform_feedback/orderelementspoints
+spec/ext_transform_feedback/order.elements.points
 spec/arb_shader_texture_image_samples/texturesamples/gs-sampler2dms-8
 spec/arb_texture_buffer_object/fetch-outside-bounds
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-div-float-mat3x4
@@ -92,7 +92,7 @@ spec/arb_shader_image_load_store/compiler/declaration-argument-out.frag
 spec/glsl-4.30/execution/built-in-functions/cs-op-sub-mat3x4-float
 spec/glsl-1.10/execution/built-in-functions/fs-op-add-vec4-float
 spec/glsl-1.30/execution/built-in-functions/vs-op-lshift-uvec3-ivec3
-spec/!opengl1.1/line-flat-clip-color
+spec/!opengl.1.1/line-flat-clip-color
 spec/glsl-4.00/execution/built-in-functions/vs-min-dvec2-dvec2
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/lessthanequal-dvec3-dvec3.frag
 spec/glsl-1.50/execution/built-in-functions/gs-op-add-vec4-vec4

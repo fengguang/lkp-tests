@@ -12,7 +12,7 @@ spec/arb_shader_stencil_export/amd-undefined.frag
 spec/glsl-1.30/execution/built-in-functions/fs-op-bitand-abs-not-ivec3-ivec3
 spec/nv_conditional_render/begin-zero
 spec/arb_shader_image_load_store/compiler/builtin-constants.vert
-spec/ext_transform_feedback/intervening-readprims_writtenuse_gs
+spec/ext_transform_feedback/intervening-read.prims_written.use_gs
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/inversesqrt-dvec2.vert
 spec/glsl-4.00/compiler/built-in-functions/op-div-dvec3-dvec3.vert
 spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-op-mult-dmat2-dmat3x2
@@ -26,7 +26,7 @@ spec/glsl-1.30/compiler/interpolation-qualifiers/nonflat-int-array.frag
 spec/glsl-1.50/execution/built-in-functions/gs-op-bitor-neg-abs-ivec3-ivec3
 spec/glsl-1.30/execution/vs-modf-vec2
 shaders/glsllinkmismatchedinvariant
-spec/ext_framebuffer_multisample/accuracy8srgblinear
+spec/ext_framebuffer_multisample/accuracy.8.srgb.linear
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitand-ivec4-int
 spec/glsl-1.30/execution/vs-modf-vec4
 spec/glsl-1.20/compiler/built-in-functions/matrixcompmult-mat2x3-mat2x3.frag
@@ -36,7 +36,7 @@ spec/glsl-1.50/execution/built-in-functions/gs-op-bitxor-ivec2-int
 spec/glsl-1.20/compiler/built-in-functions/lessthan-ivec3-ivec3.vert
 spec/arb_shader_image_load_store/compiler/builtin-address-argument-mismatch-atomic-exchange-2d-ms.frag
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/abs-dvec3.frag
-spec/ext_framebuffer_multisample/accuracy16depth_draw
+spec/ext_framebuffer_multisample/accuracy.16.depth_draw
 spec/glsl-1.30/execution/interpolation/interpolation-none-gl_frontsecondarycolor-smooth-distance
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-matrixcompmult-mat3x4-mat3x4
 shaders/glsl-fs-texturelod-01
@@ -44,8 +44,8 @@ spec/glsl-1.30/execution/built-in-functions/fs-op-mult-uvec4-uint
 spec/glsl-es-3.00/compiler/interpolation-qualifiers/nonflat-ivec4.vert
 spec/arb_texture_buffer_range/dlist
 spec/glsl-1.20/compiler/built-in-functions/matrixcompmult-mat3-mat3.frag
-spec/glsl-1.30/execution/tex-miplevel-selectiontextureoffset(bias)2d
-spec/glsl-1.30/execution/tex-miplevel-selectiontexture()1dshadow
+spec/glsl-1.30/execution/tex-miplevel-selection.textureoffset(bias).2d
+spec/glsl-1.30/execution/tex-miplevel-selection.texture().1dshadow
 glslparsertest/glsl2/bit-logic-assign-03.frag
 spec/arb_texture_multisample/texelfetch/2-fs-usampler2dmsarray
 asmparsertest/arbvp1.0/txf-08.txt
@@ -53,7 +53,7 @@ spec/glsl-4.00/compiler/built-in-functions/op-div-dmat3x4-double.vert
 spec/glsl-1.30/linker/interpolation-qualifiers/unused-smooth-gl_backsecondarycolor-unused-flat-gl_secondarycolor
 spec/arb_fragment_program/fp-dst-aliasing-2
 spec/arb_fragment_program/fp-dst-aliasing-1
-spec/ext_transform_feedback/api-errorsbind_pipeline
+spec/ext_transform_feedback/api-errors.bind_pipeline
 spec/arb_gpu_shader5/texturegather/fs-rg-0-int-2d
 spec/glsl-1.30/execution/built-in-functions/fs-op-rshift-uvec3-int
 spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-op-mult-dmat2-dmat3x2
@@ -62,7 +62,7 @@ spec/arb_shader_atomic_counters/fragment-discard
 spec/glsl-1.50/compiler/built-in-functions/max-ivec2-int.geom
 spec/glsl-1.50/execution/built-in-functions/gs-op-assign-mult-int-int
 spec/glsl-1.30/execution/clipping/vs-clip-distance-out-param
-spec/ext_framebuffer_multisample/accuracy32stencil_resolve
+spec/ext_framebuffer_multisample/accuracy.32.stencil_resolve
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-notequal-ivec2-ivec2
 asmparsertest/arbvp1.0/output-02.txt
 spec/arb_arrays_of_arrays/compiler/constructor-array-var-array.vert
@@ -74,9 +74,9 @@ spec/ext_framebuffer_object/fbo-generatemipmap-swizzle
 spec/glsl-4.00/execution/built-in-functions/vs-mod-dvec3-double
 spec/glsl-1.10/execution/built-in-functions/vs-op-assign-add-ivec4-int
 spec/glsl-4.00/compiler/built-in-functions/floor-dvec3.vert
-spec/ext_framebuffer_multisample/clip-and-scissor-blit6upsample
+spec/ext_framebuffer_multisample/clip-and-scissor-blit.6.upsample
 spec/glsl-4.00/execution/built-in-functions/vs-op-add-dmat3x2-double
-spec/arb_texture_rectangle/tex-miplevel-selectiongl2:texture()2drectshadow
+spec/arb_texture_rectangle/tex-miplevel-selection.gl2:texture().2drectshadow
 spec/arb_arrays_of_arrays/compiler/glsl-4.20-basic-types.frag
 spec/arb_shader_image_load_store/compiler/declaration-argument-out.vert
 spec/arb_shader_precision/fs-log-vec2

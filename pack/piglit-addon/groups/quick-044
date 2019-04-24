@@ -34,7 +34,7 @@ spec/arb_explicit_attrib_location/1.10/compiler/out-01.vert
 spec/glsl-4.30/execution/built-in-functions/cs-clamp-uvec3-uint-uint
 spec/glsl-1.50/compiler/built-in-functions/op-mult-mat2x3-mat2.geom
 asmparsertest/arbvp1.0/tex-17.txt
-spec/glsl-1.30/execution/tex-miplevel-selectiontextureoffset2drectshadow
+spec/glsl-1.30/execution/tex-miplevel-selection.textureoffset.2drectshadow
 spec/glsl-1.50/compiler/built-in-functions/op-mult-mat3x4-float.geom
 spec/arb_shader_image_load_store/compiler/builtin-address-argument-mismatch-atomic-and-2d-ms-array.vert
 spec/arb_arrays_of_arrays/compiler/gs-input-sizing-inconsistent-invalid.geom
@@ -57,7 +57,7 @@ spec/glsl-1.30/linker/interpolation-qualifiers/unused-gl_frontcolor-flat-gl_colo
 spec/glsl-1.10/execution/built-in-functions/vs-all-bvec4
 spec/glsl-1.50/execution/built-in-functions/gs-pow-vec4-vec4
 spec/glsl-1.30/execution/built-in-functions/vs-mix-float-float-bool
-spec/ext_framebuffer_multisample/unaligned-blit2depthdownsample
+spec/ext_framebuffer_multisample/unaligned-blit.2.depth.downsample
 spec/glsl-1.50/compiler/built-in-functions/op-mult-vec2-mat4x2.geom
 spec/glsl-4.00/execution/built-in-functions/vs-op-div-double-dmat4
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-mod-vec4-float
@@ -66,12 +66,12 @@ spec/glsl-1.30/compiler/built-in-functions/sign-ivec2.vert
 spec/glsl-1.20/compiler/built-in-functions/notequal-vec4-vec4.frag
 spec/glsl-4.00/execution/built-in-functions/vs-op-div-double-dmat2
 spec/glsl-4.00/execution/built-in-functions/vs-op-div-double-dmat3
-spec/ext_texture_snorm/multisample-formats4gl_ext_texture_snorm
+spec/ext_texture_snorm/multisample-formats.4.gl_ext_texture_snorm
 spec/arb_framebuffer_srgb/blittexturelinearscaledenabled
 spec/glsl-1.30/execution/built-in-functions/fs-op-bitand-neg-abs-int-int
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-assign-mult-mat2-float
 glslparsertest/shaders/parser10.frag
-spec/ext_framebuffer_multisample/accuracy6depth_draw
+spec/ext_framebuffer_multisample/accuracy.6.depth_draw
 spec/arb_geometry_shader4/linker/input-overrun-triangles-adjacency
 spec/glsl-1.20/compiler/built-in-functions/op-sub-mat4x2-mat4x2.frag
 spec/glsl-4.00/compiler/built-in-functions/inverse-dmat2.vert
@@ -87,7 +87,7 @@ spec/glsl-4.30/execution/built-in-functions/cs-sqrt-vec4
 spec/amd_shader_trinary_minmax/execution/built-in-functions/tcs-mid3-uint-uint-uint
 spec/glsl-1.20/compiler/built-in-functions/op-sub-mat2-mat2.frag
 spec/glsl-1.50/compiler/interface-blocks-containing-unsized-arrays.vert
-spec/!opengl3.2/layered-rendering/clear-color-all-types3dmipmapped
+spec/!opengl.3.2/layered-rendering/clear-color-all-types.3d.mipmapped
 shaders/glsl-algebraic-logicor-true-2
 spec/glsl-1.50/compiler/built-in-functions/op-bitor-not-ivec3-ivec3.geom
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-bitxor-abs-neg-int-ivec4

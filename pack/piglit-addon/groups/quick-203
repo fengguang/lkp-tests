@@ -8,9 +8,9 @@ spec/glsl-1.20/execution/built-in-functions/fs-op-eq-mat2x3-mat2x3
 spec/glsl-1.20/compiler/built-in-functions/op-mult-float-vec3.frag
 spec/glsl-1.50/execution/built-in-functions/gs-matrixcompmult-mat2x3-mat2x3
 spec/glsl-1.30/compiler/built-in-functions/op-bitxor-ivec3-int.frag
-spec/arb_gpu_shader_fp64/varying-packing/simpledvec2array
+spec/arb_gpu_shader_fp64/varying-packing/simple.dvec2.array
 spec/glsl-4.30/execution/built-in-functions/cs-op-div-uvec3-uint
-spec/ext_transform_feedback/structsstruct-structget
+spec/ext_transform_feedback/structs.struct-struct.get
 spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-reflect-dvec4-dvec4
 spec/glsl-1.50/execution/built-in-functions/gs-op-assign-sub-vec3-float
 spec/arb_arrays_of_arrays/compiler/initializer-array-array-var.vert
@@ -46,7 +46,7 @@ spec/glsl-1.20/compiler/built-in-functions/normalize-vec3.frag
 spec/glsl-1.50/execution/built-in-functions/gs-op-div-mat2-mat2
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-mult-mat2-vec2
 spec/glsl-1.30/compiler/interpolation-qualifiers/local-smooth-01.frag
-spec/ext_transform_feedback/structsarray-struct-array-structerror
+spec/ext_transform_feedback/structs.array-struct-array-struct.error
 spec/glsl-1.30/execution/built-in-functions/fs-op-rshift-ivec3-uvec3
 spec/glsl-1.20/compiler/built-in-functions/mix-vec2-vec2-float.frag
 spec/glsl-1.10/compiler/struct/structure-and-field-have-same-name.vert
@@ -65,7 +65,7 @@ spec/glsl-4.30/execution/built-in-functions/cs-op-bitor-uvec4-uint
 spec/glsl-1.10/compiler/expressions/preincrement-vec4-non-lvalue-for-out-parameter.frag
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-sub-double-dmat4x2.frag
 spec/glsl-1.50/execution/built-in-functions/gs-cos-float
-spec/ext_framebuffer_multisample/interpolation8centroid-deriv
+spec/ext_framebuffer_multisample/interpolation.8.centroid-deriv
 spec/glsl-1.30/execution/built-in-functions/fs-op-bitand-uvec4-uvec4
 asmparsertest/arbvp1.0/reserved_word-01.txt
 spec/arb_gpu_shader5/texturegather/vs-rgba-1-int-cubearray
@@ -78,7 +78,7 @@ spec/arb_texture_gather/texturegather/vs-r-zero-float-cubearray
 spec/glsl-4.30/execution/built-in-functions/cs-op-ne-ivec3-ivec3-using-if
 spec/glsl-1.20/execution/fs-outerproduct-mat4-ivec
 spec/glsl-4.30/execution/built-in-functions/cs-op-mult-mat2-vec2
-spec/glsl-1.30/execution/tex-miplevel-selectiontexturelodoffset1d
+spec/glsl-1.30/execution/tex-miplevel-selection.texturelodoffset.1d
 shaders/glsl-const-builtin-outerproduct
 spec/glsl-1.20/execution/built-in-functions/fs-op-add-mat4x3-mat4x3
 spec/arb_texture_gather/texturegatheroffset/fs-rgb-red-uint-2d

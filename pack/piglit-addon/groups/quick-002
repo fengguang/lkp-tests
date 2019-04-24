@@ -29,8 +29,8 @@ spec/glsl-1.30/execution/built-in-functions/fs-asinh-float
 spec/ext_transform_feedback/interleaved-attribs
 spec/glsl-1.20/compiler/built-in-functions/op-neg-ivec2.frag
 spec/arb_gpu_shader5/texturegatheroffsets/vs-rgb-2-int-2darray
-spec/ext_texture_compression_rgtc/texwrapformatsbordercolor-swizzled
-spec/ext_framebuffer_multisample/unaligned-blit16colormsaa
+spec/ext_texture_compression_rgtc/texwrap.formats.bordercolor-swizzled
+spec/ext_framebuffer_multisample/unaligned-blit.16.color.msaa
 spec/glsl-1.10/execution/built-in-functions/vs-op-assign-mult-int-int
 spec/glsl-1.10/execution/variable-indexing/fs-temp-array-mat2-rd
 spec/arb_texture_query_lod/compiler/built-in-functions/texturequerylod-isampler2d.frag
@@ -91,7 +91,7 @@ spec/glsl-1.30/execution/interpolation/interpolation-flat-gl_backsecondarycolor-
 spec/glsl-4.00/compiler/built-in-functions/inverse-dmat2.geom
 spec/arb_texture_gather/texturegather/fs-rgb-none-int-2d
 spec/glsl-1.10/execution/variable-indexing/fs-uniform-array-mat3-index-row-rd
-spec/arb_copy_image/arb_copy_image-targetsgl_texture_2d32321gl_texture_3d32161811505971471
+spec/arb_copy_image/arb_copy_image-targets.gl_texture_2d.32.32.1.gl_texture_3d.32.16.18.11.5.0.5.9.7.14.7.1
 spec/glsl-1.10/compiler/expressions/preincrement-vec3-non-lvalue-for-out-parameter.vert
 spec/glsl-1.30/execution/built-in-functions/vs-op-assign-bitxor-ivec3-ivec3
 asmparsertest/arbfp1.0/precision_hint-02.txt

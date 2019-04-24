@@ -7,7 +7,7 @@ spec/glsl-1.10/execution/built-in-functions/fs-op-sub-float-mat4
 spec/glsl-4.00/compiler/built-in-functions/matrixcompmult-dmat2x4-dmat2x4.vert
 spec/glsl-1.10/execution/built-in-functions/fs-op-sub-float-mat3
 spec/glsl-4.30/execution/built-in-functions/cs-op-bitor-not-abs-ivec2-int
-spec/glsl-1.30/execution/tex-miplevel-selectiontexturelod1darrayshadow
+spec/glsl-1.30/execution/tex-miplevel-selection.texturelod.1darrayshadow
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitand-neg-ivec2-int
 spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-matrixcompmult-dmat3x4-dmat3x4
 spec/glsl-1.20/compiler/built-in-functions/exp2-vec4.vert
@@ -16,7 +16,7 @@ spec/glsl-1.50/compiler/built-in-functions/notequal-ivec3-ivec3.geom
 spec/glsl-4.00/compiler/built-in-functions/op-sub-double-dvec2.geom
 spec/glsl-1.30/execution/built-in-functions/vs-asinh-vec3
 spec/arb_shader_bit_encoding/execution/built-in-functions/fs-intbitstofloat
-spec/glsl-1.30/execution/tex-miplevel-selectiontexture(bias)1darrayshadow
+spec/glsl-1.30/execution/tex-miplevel-selection.texture(bias).1darrayshadow
 spec/glsl-4.30/execution/built-in-functions/cs-acos-float
 shaders/glsl-algebraic-add-sub-1
 spec/arb_gpu_shader5/compiler/sample-qualifier/fs-sample-centroid-disallowed.frag
@@ -25,7 +25,7 @@ spec/arb_framebuffer_srgb/blittexturesrgb_to_linearsingle_sampledenabled
 spec/glsl-4.30/execution/built-in-functions/cs-op-sub-uvec3-uint
 spec/glsl-1.20/compiler/built-in-functions/outerproduct-vec4-vec4.frag
 spec/glsl-1.30/compiler/built-in-functions/op-rshift-uvec2-ivec2.frag
-spec/ext_transform_feedback/change-sizerange-grow
+spec/ext_transform_feedback/change-size.range-grow
 spec/arb_shader_image_load_store/compiler/builtin-address-argument-mismatch-atomic-xor-2d.frag
 spec/glsl-1.20/compiler/built-in-functions/normalize-vec2.frag
 spec/arb_shader_texture_lod/execution/glsl-fs-shadow2dgradarb-09
@@ -66,13 +66,13 @@ spec/arb_texture_gather/texturegatheroffset/vs-rgba-one-uint-2darray
 spec/glsl-1.50/compiler/built-in-functions/op-add-mat3x2-mat3x2.geom
 spec/glsl-4.00/execution/built-in-functions/gs-op-div-double-dmat3x2
 spec/glsl-1.50/compiler/built-in-functions/op-mult-uvec3-uvec3.geom
-spec/ext_framebuffer_multisample/upsample16stencil
+spec/ext_framebuffer_multisample/upsample.16.stencil
 spec/arb_depth_texture/fbo-depth-gl_depth_component24-clear
 spec/glsl-4.00/execution/built-in-functions/gs-op-div-double-dmat3x4
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-greaterthan-uvec3-uvec3
 spec/arb_shading_language_packing/execution/built-in-functions/const-unpackunorm4x8
 asmparsertest/arbvp1.0/tex-06.txt
-spec/ext_framebuffer_multisample_blit_scaled/blit-scaledsamples=8withgl_texture_2d_multisample_array
+spec/ext_framebuffer_multisample_blit_scaled/blit-scaled.samples=8withgl_texture_2d_multisample_array
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitor-neg-uvec2-uvec2
 spec/glsl-1.50/execution/built-in-functions/gs-op-div-uvec3-uint
 spec/glsl-4.00/compiler/built-in-functions/op-add-dmat4x3-dmat4x3.geom
@@ -90,7 +90,7 @@ spec/arb_texture_gather/texturegatheroffset/vs-r-red-unorm-2darray
 spec/glsl-1.10/execution/fs-saturate-pow
 spec/glsl-1.20/execution/built-in-functions/vs-op-add-float-mat4x3
 spec/glsl-1.10/execution/built-in-functions/vs-op-mult-vec2-mat2
-spec/arb_gpu_shader_fp64/varying-packing/simpledmat2arrays_of_arrays
+spec/arb_gpu_shader_fp64/varying-packing/simple.dmat2.arrays_of_arrays
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-div-uint-uvec4
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-assign-div-mat2-mat2
 spec/glsl-1.30/execution/built-in-functions/vs-op-assign-lshift-ivec4-int

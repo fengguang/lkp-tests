@@ -16,7 +16,7 @@ spec/arb_gpu_shader5/texturegather/fs-rg-0-unorm-cube
 spec/arb_gpu_shader5/texturegather/vs-rgba-3-uint-2d
 spec/glsl-1.10/compiler/void/void-array_subscript.vert
 spec/arb_uniform_buffer_object/getuniformindices
-spec/ext_framebuffer_multisample/alpha-blendingslow_cc
+spec/ext_framebuffer_multisample/alpha-blending.slow_cc
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-assign-bitand-uvec2-uvec2
 spec/glsl-4.00/execution/built-in-functions/gs-op-sub-dmat4x3-double
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-ne-mat3x4-mat3x4-using-if
@@ -47,12 +47,12 @@ spec/glsl-1.30/compiler/built-in-functions/op-complement-ivec2.frag
 spec/glsl-1.10/execution/interpolation/interpolation-none-gl_backcolor-smooth-none
 spec/arb_shader_image_load_store/compiler/expression-assignment-6.vert
 spec/glsl-1.50/compiler/gs-redeclares-pervertex-out-after-other-global-redeclaration.geom
-spec/arb_separate_shader_objects/rendezvousbylocation(5stages)
+spec/arb_separate_shader_objects/rendezvous.by.location.(5.stages)
 spec/glsl-1.50/compiler/built-in-functions/greaterthanequal-vec3-vec3.geom
-glx/glx_arb_create_context/nullattributelist
-spec/glsl-1.20/execution/tex-miplevel-selectiongl2:textureproj(bias)2dshadow
+glx/glx_arb_create_context/null.attribute.list
+spec/glsl-1.20/execution/tex-miplevel-selection.gl2:textureproj(bias).2dshadow
 spec/arb_clear_buffer_object/arb_clear_buffer_object-unaligned
-spec/!opengl2.0/vertex-program-two-sidebackfront2back2
+spec/!opengl.2.0/vertex-program-two-side.back.front2.back2
 spec/arb_texture_gather/texturegatheroffset/vs-rgb-blue-unorm-2d
 spec/amd_shader_trinary_minmax/execution/built-in-functions/vs-mid3-uvec2-uvec2-uvec2
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-sub-dmat2x4-double.geom
@@ -74,9 +74,9 @@ spec/arb_shader_image_load_store/compiler/builtin-address-argument-mismatch-atom
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-sub-mat3x2-mat3x2
 spec/arb_texture_gather/texturegather/vs-rg-one-float-cubearray
 spec/glsl-1.30/execution/built-in-functions/vs-op-sub-uint-uint
-spec/ext_framebuffer_multisample/alpha-blending-after-rendering32
+spec/ext_framebuffer_multisample/alpha-blending-after-rendering.32
 spec/glsl-4.00/execution/built-in-functions/fs-outerproduct-dvec3-dvec3
-spec/ext_framebuffer_multisample/unaligned-blit4depthupsample
+spec/ext_framebuffer_multisample/unaligned-blit.4.depth.upsample
 spec/glsl-4.00/execution/built-in-functions/fs-outerproduct-dvec3-dvec2
 spec/glsl-1.30/execution/texturesize/vs-texturesize-sampler2darrayshadow
 spec/glsl-1.50/execution/built-in-functions/gs-op-gt-int-int-using-if

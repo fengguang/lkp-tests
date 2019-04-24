@@ -34,7 +34,7 @@ spec/glsl-1.10/execution/built-in-functions/vs-normalize-float
 spec/glsl-1.50/execution/built-in-functions/gs-op-mult-mat4x2-float
 spec/arb_texture_gather/texturegather/vs-rgba-alpha-unorm-2d
 spec/glsl-4.30/execution/built-in-functions/cs-mix-vec4-vec4-vec4
-spec/glsl-1.50/glsl-1.50-gs-input-layout-qualifierspoints
+spec/glsl-1.50/glsl-1.50-gs-input-layout-qualifiers.points
 spec/glsl-1.10/execution/built-in-functions/vs-op-selection-bool-bvec4-bvec4
 spec/arb_shading_language_420pack/execution/implicit-return-type-conversion
 spec/glsl-1.40/execution/tf-no-position
@@ -61,9 +61,9 @@ spec/arb_gpu_shader5/texturegather/fs-rgba-0-float-2darray
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-bitxor-abs-neg-ivec4-ivec4
 spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-op-sub-dvec2-double
 spec/glsl-1.30/execution/built-in-functions/vs-op-ne-uint-uint
-spec/!opengl3.2/layered-rendering/clear-color-all-types2d_arraysingle_level
+spec/!opengl.3.2/layered-rendering/clear-color-all-types.2d_array.single_level
 spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-op-mult-dmat4x2-double
-spec/ext_framebuffer_multisample/polygon-stipple32
+spec/ext_framebuffer_multisample/polygon-stipple.32
 spec/glsl-1.50/compiler/built-in-functions/sign-int.geom
 spec/glsl-4.30/execution/built-in-functions/cs-op-bitxor-not-abs-int-int
 spec/arb_fragment_program_shadow/txp-shadow2drect
@@ -71,7 +71,7 @@ spec/glsl-1.50/execution/built-in-functions/gs-min-vec3-vec3
 spec/glsl-4.30/execution/built-in-functions/cs-op-mult-mat4-mat3x4
 spec/arb_texture_gather/texturegather/fs-rgb-red-float-2darray
 spec/glsl-1.20/compiler/structure-and-array-operations/array-size-vec3.vert
-spec/!opengl1.0/gl-1.0-edgeflag-const
+spec/!opengl.1.0/gl-1.0-edgeflag-const
 spec/glsl-1.50/execution/built-in-functions/gs-op-sub-mat2x4-float
 spec/glsl-1.20/compiler/built-in-functions/op-mult-vec2-mat3x2.frag
 glslparsertest/glsl2/if-01.vert

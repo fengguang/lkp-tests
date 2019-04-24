@@ -16,7 +16,7 @@ spec/glsl-1.50/execution/built-in-functions/gs-op-div-mat4-float
 spec/glsl-1.20/compiler/built-in-functions/op-div-ivec2-int.frag
 spec/arb_shader_image_load_store/restrict
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-sub-dmat4-dmat4.vert
-spec/arb_separate_shader_objects/rendezvousbyname
+spec/arb_separate_shader_objects/rendezvous.by.name
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitxor-not-uint-uvec2
 spec/glsl-1.10/execution/built-in-functions/fs-sign-vec2
 spec/glsl-1.10/execution/built-in-functions/fs-op-eq-bvec3-bvec3-using-if
@@ -25,7 +25,7 @@ spec/arb_texture_gather/texturegather/vs-rgb-zero-unorm-cubearray
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitxor-not-uint-uvec3
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitxor-not-uint-uvec4
 spec/glsl-1.50/compiler/built-in-functions/greaterthanequal-ivec2-ivec2.geom
-spec/ext_framebuffer_multisample/line-smooth32
+spec/ext_framebuffer_multisample/line-smooth.32
 spec/glsl-1.50/execution/built-in-functions/gs-op-bitand-not-int-int
 spec/glsl-1.20/execution/uniform-initializer/fs-float-set-by-api
 spec/glsl-1.30/execution/interpolation/interpolation-flat-gl_frontsecondarycolor-smooth-vertex
@@ -63,8 +63,8 @@ spec/arb_gpu_shader5/texturegatheroffset/vs-rgba-0-float-2drect-const
 spec/glsl-1.10/execution/built-in-functions/vs-op-div-float-vec3
 spec/glsl-1.10/execution/built-in-functions/vs-op-div-float-vec4
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-assign-div-int-int
-spec/ext_texture_compression_rgtc/invalidformats
-spec/glsl-1.50/execution/geometry/tri-strip-ordering-with-prim-restartgl_triangle_stripffs
+spec/ext_texture_compression_rgtc/invalid.formats
+spec/glsl-1.50/execution/geometry/tri-strip-ordering-with-prim-restart.gl_triangle_strip.ffs
 spec/arb_tessellation_shader/execution/tcs-input/tcs-input-vec4_2
 spec/glsl-1.30/compiler/built-in-functions/atanh-float.frag
 spec/glsl-1.10/execution/built-in-functions/vs-op-div-float-vec2
@@ -75,9 +75,9 @@ spec/glsl-4.00/compiler/built-in-functions/op-sub-double-dmat2.vert
 spec/arb_gpu_shader5/texturegather/vs-rgb-0-int-2darray
 spec/glsl-1.20/execution/fs-array-deref-then-write
 spec/arb_texture_multisample/texelfetch/6-fs-sampler2dmsarray
-spec/arb_texture_rg/texwrapformats-float
+spec/arb_texture_rg/texwrap.formats-float
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitor-int-int
-spec/ext_texture_snorm/texwrapformatsbordercolor-swizzled
+spec/ext_texture_snorm/texwrap.formats.bordercolor-swizzled
 spec/glsl-4.30/execution/built-in-functions/cs-reflect-vec4-vec4
 spec/arb_gpu_shader5/texturegatheroffset/fs-rgba-3-uint-2d
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-mult-dmat2x3-dmat2.vert
@@ -85,7 +85,7 @@ spec/glsl-es-3.00/compiler/interpolation-qualifiers/nonflat-uint.vert
 spec/glsl-1.20/compiler/built-in-functions/cos-vec2.frag
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/floor-double.geom
 spec/glsl-1.50/execution/texturesize/gs-texturesize-sampler2darrayshadow
-spec/ext_framebuffer_multisample/accuracyall_samplesstencil_resolvedepthstencil
+spec/ext_framebuffer_multisample/accuracy.all_samples.stencil_resolve.depthstencil
 spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-op-add-dvec4-double
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-eq-vec3-vec3-using-if
 spec/arb_shader_image_load_store/compiler/expression-conversion-4.frag

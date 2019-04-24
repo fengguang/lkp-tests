@@ -1,7 +1,7 @@
 spec/arb_shader_precision/gs-op-assign-mult-vec3-vec3
 spec/glsl-1.10/execution/built-in-functions/fs-op-ne-mat2-mat2-using-if
 spec/arb_framebuffer_object/fbo-deriv
-spec/ext_packed_float/texwrapformats
+spec/ext_packed_float/texwrap.formats
 spec/glsl-1.50/compiler/built-in-functions/clamp-uvec4-uvec4-uvec4.geom
 spec/glsl-4.00/execution/built-in-functions/gs-notequal-dvec2-dvec2
 spec/glsl-1.30/linker/interpolation-qualifiers/unused-noperspective-gl_frontcolor-unused-smooth-gl_color
@@ -44,7 +44,7 @@ spec/glsl-1.20/compiler/built-in-functions/op-mult-mat4x2-mat2x4.frag
 spec/glsl-1.50/compiler/input-arrays-int.vert
 spec/glsl-1.30/compiler/built-in-functions/op-bitand-not-abs-ivec3-int.vert
 spec/glsl-1.30/execution/built-in-functions/vs-op-assign-mod-uvec3-uint
-spec/arb_es2_compatibility/fboblitfrommissingattachment(es2completenessrules)
+spec/arb_es2_compatibility/fbo.blit.from.missing.attachment.(es2.completeness.rules)
 spec/glsl-1.20/execution/variable-indexing/vs-varying-array-mat2-index-wr
 spec/glsl-1.50/compiler/built-in-functions/op-rshift-uint-uint.geom
 spec/arb_shader_image_load_store/compiler/builtin-address-argument-mismatch-store-buffer.vert

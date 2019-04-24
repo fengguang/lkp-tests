@@ -13,7 +13,7 @@ spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-floor-dvec4
 spec/arb_gpu_shader5/texturegatheroffset/fs-rgba-0-int-2d-const
 spec/glsl-1.20/execution/built-in-functions/fs-op-sub-mat2x4-float
 spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-op-mult-dmat2x3-dmat4x2
-spec/ext_framebuffer_multisample/draw-buffers-alpha-to-coverage32
+spec/ext_framebuffer_multisample/draw-buffers-alpha-to-coverage.32
 spec/glsl-1.50/compiler/built-in-functions/op-bitxor-neg-uvec4-uint.geom
 spec/glsl-1.20/execution/built-in-functions/fs-op-assign-div-mat3x4-mat3x4
 spec/arb_texture_gather/texturegatheroffset/vs-rgba-alpha-int-2d
@@ -34,7 +34,7 @@ spec/arb_gpu_shader_fp64/execution/built-in-functions/vs-dot-dvec4-dvec4
 spec/arb_shader_image_load_store/compiler/expression-assignment-9.vert
 glslparsertest/glsl2/gst-gl-bumper.vert
 spec/glsl-1.40/execution/texturesize/vs-texturesize-usamplercube
-spec/ext_framebuffer_multisample/accuracy2srgbsmalldepthstencil
+spec/ext_framebuffer_multisample/accuracy.2.srgbsmalldepthstencil
 spec/arb_draw_instanced/compiler/instanceidarb-enabled.vert
 asmparsertest/arbvp1.0/txf-18.txt
 glslparsertest/glsl2/invariant-08.vert
@@ -77,7 +77,7 @@ spec/glsl-4.00/compiler/built-in-functions/op-add-dmat2x3-double.geom
 spec/glsl-1.50/linker/invariant-qualifier-everywhere-vs-gs-inconsistency
 spec/glsl-4.30/execution/built-in-functions/cs-op-bitand-not-ivec4-int
 glslparsertest/shaders/struct2.frag
-spec/ext_framebuffer_multisample_blit_scaled/blit-scaledsamples=32
+spec/ext_framebuffer_multisample_blit_scaled/blit-scaled.samples=32
 spec/glsl-4.00/compiler/built-in-functions/transpose-dmat3.vert
 spec/glsl-1.10/execution/built-in-functions/fs-op-ne-vec2-vec2-using-if
 spec/glsl-1.30/compiler/built-in-functions/op-bitxor-neg-int-ivec4.frag

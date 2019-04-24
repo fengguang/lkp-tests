@@ -1,4 +1,4 @@
-spec/ext_framebuffer_multisample/accuracyall_samplesdepth_drawsmall
+spec/ext_framebuffer_multisample/accuracy.all_samples.depth_draw.small
 spec/arb_tessellation_shader/execution/tes-input/tes-input-int_2
 spec/glsl-1.30/execution/built-in-functions/fs-op-bitxor-abs-not-int-int
 spec/glsl-1.30/compiler/built-in-functions/op-neg-uvec4.frag
@@ -7,7 +7,7 @@ spec/glsl-1.30/compiler/built-in-functions/op-bitor-not-ivec3-int.frag
 spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-op-mult-dmat2-dmat3x2
 spec/glsl-1.30/compiler/reserved/row_major.frag
 spec/arb_shader_image_load_store/compiler/builtin-address-argument-mismatch-atomic-add-2d-ms-array.frag
-spec/arb_framebuffer_object/fbo-drawbuffers-nonegl_fragdata
+spec/arb_framebuffer_object/fbo-drawbuffers-none.gl_fragdata
 spec/ext_texture_compression_s3tc/s3tc-errors
 spec/glsl-es-1.00/compiler/version-macro.frag
 shaders/glsl-fs-ivec4-mat3
@@ -36,13 +36,13 @@ spec/arb_gpu_shader5/compiler/builtin-functions/fs-gatheroffset-shadow-samplers.
 spec/glsl-1.10/execution/built-in-functions/vs-distance-vec4-vec4
 asmparsertest/arbvp1.0/arl-01.txt
 spec/glsl-1.50/compiler/built-in-functions/op-eq-bvec4-bvec4.geom
-spec/arb_copy_image/arb_copy_image-targetsgl_texture_2d32321gl_texture_rectangle32161111205701491
+spec/arb_copy_image/arb_copy_image-targets.gl_texture_2d.32.32.1.gl_texture_rectangle.32.16.1.11.12.0.5.7.0.14.9.1
 spec/glsl-1.50/execution/built-in-functions/gs-op-mult-ivec4-ivec4
 spec/ext_framebuffer_multisample/enable-flag
 spec/glsl-1.50/compiler/built-in-functions/op-bitand-not-int-ivec3.geom
 spec/glsl-1.30/execution/built-in-functions/fs-op-lt-uint-uint-using-if
 spec/arb_texture_gather/texturegather/fs-rgba-alpha-unorm-2darray
-spec/ext_framebuffer_multisample/clear32stencil
+spec/ext_framebuffer_multisample/clear.32.stencil
 spec/glsl-4.00/compiler/built-in-functions/op-sub-dmat2x4-double.geom
 spec/arb_tessellation_shader/execution/tes-input/tes-input-uvec4_2
 spec/arb_texture_gather/texturegather/fs-r-zero-uint-cube

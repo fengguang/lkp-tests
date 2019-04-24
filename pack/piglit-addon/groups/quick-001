@@ -16,13 +16,13 @@ spec/glsl-1.30/compiler/built-in-functions/min-ivec4-ivec4.vert
 spec/arb_explicit_attrib_location/1.20/preprocessor/define.frag
 spec/arb_tessellation_shader/execution/tes-input/tes-input-patch-mat3x2
 spec/glsl-1.10/execution/variable-indexing/vs-temp-mat3-col-row-rd
-shaders/version-mixingvs-gs
+shaders/version-mixing.vs-gs
 spec/arb_enhanced_layouts/compiler/component-layout/no-location.vert
 spec/glsl-1.30/compiler/keywords/case.frag
 spec/glsl-1.30/execution/built-in-functions/fs-acosh-vec2
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/outerproduct-dvec3-dvec3.frag
-spec/glsl-1.30/execution/tex-miplevel-selectiontexturelodoffset2dshadow
-spec/arb_copy_image/arb_copy_image-targetsgl_texture_rectangle32321gl_texture_1d3211112305001411
+spec/glsl-1.30/execution/tex-miplevel-selection.texturelodoffset.2dshadow
+spec/arb_copy_image/arb_copy_image-targets.gl_texture_rectangle.32.32.1.gl_texture_1d.32.1.1.11.23.0.5.0.0.14.1.1
 spec/glsl-1.30/execution/built-in-functions/fs-acosh-vec3
 spec/arb_explicit_attrib_location/1.20/compiler/layout-02.vert
 spec/arb_texture_gather/texturegather/vs-rgba-blue-unorm-cube
@@ -33,7 +33,7 @@ spec/glsl-1.30/compiler/keywords/bvec4.frag
 spec/glsl-1.10/execution/built-in-functions/fs-degrees-vec3
 spec/glsl-1.50/execution/built-in-functions/gs-step-vec2-vec2
 spec/glsl-1.10/execution/built-in-functions/fs-degrees-vec4
-spec/!opengl3.2/get-integer-64v
+spec/!opengl.3.2/get-integer-64v
 spec/glsl-1.20/compiler/built-in-functions/max-vec2-float.frag
 spec/arb_vertex_program/vp-arl-constant-array-huge-offset-neg
 spec/arb_shader_image_load_store/compiler/builtin-address-argument-mismatch-load-buffer.frag
@@ -56,7 +56,7 @@ spec/glsl-4.00/compiler/built-in-functions/length-dvec3.vert
 spec/glsl-4.00/execution/built-in-functions/fs-op-sub-dmat2x3-double
 spec/glsl-1.20/compiler/built-in-functions/min-vec2-vec2.vert
 spec/glsl-1.50/execution/built-in-functions/fs-determinant-mat2
-spec/ext_transform_feedback/output-typeuvec3[2]-no-subscript
+spec/ext_transform_feedback/output-type.uvec3[2]-no-subscript
 spec/glsl-1.10/execution/built-in-functions/vs-op-selection-bool-ivec4-ivec4
 spec/glsl-1.30/execution/built-in-functions/vs-op-assign-lshift-uvec4-int
 spec/glsl-1.30/compiler/reserved/common.frag
@@ -69,7 +69,7 @@ spec/glsl-4.00/compiler/built-in-functions/op-mult-dmat2-dmat4x2.vert
 spec/glsl-1.20/compiler/built-in-functions/op-selection-bool-mat3-mat3.vert
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-bitxor-not-int-int
 spec/arb_texture_gather/texturegather/fs-r-one-int-2darray
-spec/arb_buffer_storage/bufferstorage-persistent_gles3drawcoherentclient-storage
+spec/arb_buffer_storage/bufferstorage-persistent_gles3.draw.coherent.client-storage
 spec/glsl-1.50/execution/built-in-functions/gs-op-bitxor-not-uint-uvec4
 spec/glsl-1.50/execution/built-in-functions/gs-op-bitxor-not-uint-uvec3
 spec/arb_gpu_shader_fp64/execution/built-in-functions/gs-op-div-dvec2-double
@@ -80,8 +80,8 @@ spec/arb_tessellation_shader/execution/built-in-functions/tcs-smoothstep-float-f
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-smoothstep-float-float-vec3
 spec/arb_fragment_program/texturing/tex-2d
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-smoothstep-float-float-vec4
-spec/glsl-1.30/execution/texelfetchfssampler2d1x281-501x281
-spec/glsl-1.30/execution/tex-miplevel-selectiontexturegrad2d
+spec/glsl-1.30/execution/texelfetch.fs.sampler2d.1x281-501x281
+spec/glsl-1.30/execution/tex-miplevel-selection.texturegrad.2d
 spec/glsl-1.50/execution/texelfetchoffset/gs-texelfetch-isampler1d
 spec/glsl-1.30/execution/built-in-functions/fs-op-sub-uvec3-uvec3
 spec/glsl-1.50/compiler/built-in-functions/cos-vec2.geom

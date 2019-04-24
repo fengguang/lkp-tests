@@ -5,8 +5,8 @@ spec/glsl-1.10/compiler/qualifiers/invariant-01.vert
 spec/glsl-1.50/execution/built-in-functions/gs-log-vec4
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-assign-div-ivec2-int
 spec/glsl-1.50/execution/built-in-functions/gs-op-eq-vec4-vec4
-spec/arb_separate_shader_objects/activesamplerconflict
-spec/ext_transform_feedback/change-sizebase-shrink
+spec/arb_separate_shader_objects/active.sampler.conflict
+spec/ext_transform_feedback/change-size.base-shrink
 spec/glsl-1.50/execution/built-in-functions/gs-log-vec2
 spec/arb_gpu_shader_fp64/execution/built-in-functions/fs-mix-dvec3-dvec3-dvec3
 spec/arb_gpu_shader5/texturegather/fs-rgba-2-int-cubearray
@@ -38,8 +38,8 @@ spec/arb_texture_multisample/texelfetch/16-fs-sampler2dms
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/distance-dvec3-dvec3.frag
 spec/arb_shader_image_load_store/compiler/declaration-format-qualifier-3d-int.frag
 spec/arb_texture_gather/texturegather/fs-r-red-unorm-2darray
-spec/!opengl3.0/clearbuffer-mixed-format
-shaders/zero-tex-coordbias
+spec/!opengl.3.0/clearbuffer-mixed-format
+shaders/zero-tex-coord.bias
 spec/arb_shader_image_load_store/compiler/builtin-qualifier-mismatch-readonly-atomic-and-1d.frag
 spec/glsl-4.00/execution/built-in-functions/vs-min-double-double
 glslparsertest/shaders/preprocess6.frag
@@ -60,7 +60,7 @@ spec/arb_explicit_uniform_location/preprocessor/define.frag
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-div-dmat3x4-dmat3x4.vert
 spec/glsl-1.20/execution/built-in-functions/fs-transpose-mat2x3
 spec/arb_gpu_shader5/texturegather/vs-rgba-3-float-2darray
-spec/!opengl1.0/gl-1.0-beginend-coverage
+spec/!opengl.1.0/gl-1.0-beginend-coverage
 spec/glsl-1.30/compiler/built-in-functions/op-rshift-ivec2-uint.vert
 spec/glsl-1.20/compiler/built-in-functions/op-ne-mat3x2-mat3x2.frag
 spec/glsl-1.30/compiler/built-in-functions/abs-int.frag
@@ -81,11 +81,11 @@ spec/arb_framebuffer_srgb/blitrenderbuffersrgbscaleddisabled
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/op-sub-dvec2-dvec2.frag
 spec/arb_es2_compatibility/fbo-fast-clear
 shaders/glsl-link-bug30552
-spec/ext_framebuffer_multisample/blit-flipped32y
+spec/ext_framebuffer_multisample/blit-flipped.32.y
 spec/glsl-4.00/compiler/built-in-functions/smoothstep-double-double-dvec3.frag
 spec/glsl-1.10/execution/variable-indexing/vs-temp-array-mat2-col-rd
-spec/ext_framebuffer_multisample/blit-flipped32x
-spec/glsl-1.30/execution/tex-miplevel-selectiontextureproj(bias)1dshadow
+spec/ext_framebuffer_multisample/blit-flipped.32.x
+spec/glsl-1.30/execution/tex-miplevel-selection.textureproj(bias).1dshadow
 spec/glsl-1.30/execution/built-in-functions/fs-op-bitor-neg-uvec2-uvec2
 spec/glsl-4.00/compiler/built-in-functions/step-double-dvec4.geom
 spec/glsl-1.10/execution/built-in-functions/fs-op-selection-bool-ivec2-ivec2

@@ -5,7 +5,7 @@ spec/glsl-1.50/compiler/built-in-functions/op-mult-int-ivec3.geom
 spec/glsl-1.20/compiler/built-in-functions/op-eq-bvec3-bvec3.frag
 glslparsertest/glsl2/bit-not-05.frag
 spec/glsl-1.50/compiler/built-in-functions/op-mod-ivec2-ivec2.geom
-glx/glx_arb_create_context_es2_profile/indirectrenderinges2profile
+glx/glx_arb_create_context_es2_profile/indirect.rendering.es2.profile
 spec/glsl-1.10/compiler/expressions/preincrement-vec2-non-lvalue-for-assignment.vert
 spec/arb_texture_rg/fbo-rg-gl_r16
 spec/glsl-1.20/execution/fs-outerproduct-mat4x2-ivec
@@ -18,9 +18,9 @@ spec/arb_shader_precision/gs-log-vec2
 spec/glsl-1.50/execution/built-in-functions/gs-op-bitand-not-ivec2-ivec2
 spec/glsl-4.30/execution/built-in-functions/cs-op-assign-bitxor-ivec3-ivec3
 spec/arb_gpu_shader5/texturegatheroffset/vs-rgba-1-int-2drect-const
-spec/ext_transform_feedback/output-typeint
+spec/ext_transform_feedback/output-type.int
 spec/arb_gpu_shader5/execution/built-in-functions/vs-findlsb
-spec/arb_geometry_shader4/arb_geometry_shader4-ignore-adjacent-verticesgl_triangle_strip_adjacency
+spec/arb_geometry_shader4/arb_geometry_shader4-ignore-adjacent-vertices..gl_triangle_strip_adjacency
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-div-mat4x3-mat4x3
 spec/glsl-1.50/linker/interface-vs-array-to-gs-array-sized
 spec/glsl-1.30/compiler/precision-qualifiers/default-precision-vec-01.frag
@@ -45,7 +45,7 @@ spec/glsl-1.10/execution/built-in-functions/fs-op-neg-ivec3
 spec/arb_texture_gather/texturegather/vs-rg-red-unorm-cubearray
 spec/glsl-1.10/execution/built-in-functions/fs-op-neg-ivec2
 spec/arb_tessellation_shader/execution/built-in-functions/tcs-op-bitxor-neg-ivec4-ivec4
-spec/ext_texture_array/fbo-generatemipmap-arrayrgb9_e5
+spec/ext_texture_array/fbo-generatemipmap-array.rgb9_e5
 spec/glsl-1.20/compiler/built-in-functions/op-sub-vec2-vec2.frag
 spec/glsl-1.10/execution/built-in-functions/vs-op-eq-vec4-vec4-using-if
 spec/arb_gpu_shader_fp64/compiler/built-in-functions/equal-dvec4-dvec4.frag
@@ -96,5 +96,5 @@ spec/glsl-1.30/execution/interpolation/interpolation-flat-other-flat-distance
 spec/arb_shader_image_load_store/compiler/builtin-address-argument-mismatch-atomic-min-2d-array.frag
 spec/glsl-1.30/execution/built-in-functions/vs-op-bitor-ivec2-int
 spec/glsl-1.10/execution/built-in-functions/fs-any-bvec4-using-if
-spec/glsl-1.50/execution/geometry/end-primitive34
-spec/glsl-1.50/execution/geometry/end-primitive32
+spec/glsl-1.50/execution/geometry/end-primitive.34
+spec/glsl-1.50/execution/geometry/end-primitive.32
