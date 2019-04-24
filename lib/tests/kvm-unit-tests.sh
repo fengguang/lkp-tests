@@ -36,19 +36,9 @@ remove_case()
 	fi
 }
 
-cpu_support_pku()
-{
-	lscpu | grep -qw pku
-}
-
 check_ignored_cases()
 {
 	local ignored_by_lkp=$LKP_SRC/pack/"$testcase"-addon/ignored_by_lkp
-
-	cpu_support_pku || {
-		remove_case "pku" && echo "ignored_by_lkp: pku"
-	}
-
 	[ -f "$ignored_by_lkp" ] || return
 
 	for ignore in $(cat $ignored_by_lkp | grep -v '^#')
