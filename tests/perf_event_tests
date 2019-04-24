@@ -26,55 +26,8 @@ echo $paranoid_value > $perf_event_paranoid
 
 [[ $paranoid_value = $(cat $perf_event_paranoid) ]] || die "write value $paranoid_value to $perf_event_paranoid failed"
 
-hsw_unstable="rdpmc_attach rdpmc_validation cycles"
-ivb_unstable="overflow_skid rdpmc_validation rdpmc_multiattach rdpmc_multiattach_papi"
-
-# following 2 groups cases seem related to hardware platform,
-# during waiting from community response, mark them as ignored_by_lkp
-hsw_failed="openmp_overflow openmp_sample"
-ivb_failed="fixed_ctr0 simultaneous_group_overflow openmp_sample"
-
-# return value
-# 0: < haswell
-# 1: >= haswell
-platform_is_before_haswell()
-{
-	# FIXME: Model number: snb: 42, ivb: 58, haswell: 60, skl: 94
-	local haswell=60
-	local model=$(lscpu | grep 'Model:' | awk '{print $2}')
-	[[ -z "$model" ]] && die "FIXME: unknown platform cpu model number"
-	[[ $model -lt $haswell ]] && return 0
-
-	return 1
-}
-
-check_unstable_cases()
-{
-	local unstable_cases="$hsw_unstable"
-
-	platform_is_before_haswell && unstable_cases="$ivb_unstable"
-	for unstable in $unstable_cases
-	do
-		grep -w -q "$unstable$" ./run_tests.sh && sed -i /$unstable$/d ./run_tests.sh && echo "ignored_by_lkp $unstable"
-	done
-}
-
-ignore_platform_related_failed_cases()
-{
-	local fails="$hsw_failed"
-	platform_is_before_haswell && fails="$ivb_failed"
-	for ignored in $fails
-	do
-		grep -w -q "$ignored$" ./run_tests.sh && sed -i /$ignored$/d ./run_tests.sh && echo "ignored_by_lkp $ignored"
-	done
-}
-
 # eaccess will fail if paranoid_value in [1,2], so run eacces under lkp
 [[ $paranoid_value -gt 0 ]] && sed -i -e 's/\$TESTS_DIR\/error_returns\/eacces/script -qc \"su lkp -c \\\"\$TESTS_DIR\/error_returns\/eacces\\\" | grep . --color=never\"/g' ./run_tests.sh
-
-ignore_platform_related_failed_cases
-
-check_unstable_cases
 
 # ./ioctl_10_query_bpf
 # Testing PERF_EVENT_IOC_SET_BPF ioctl.
