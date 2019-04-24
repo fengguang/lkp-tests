@@ -3,7 +3,7 @@
 ## Getting started
 
 ```
-	git clone https://github.com/01org/lkp-tests.git
+	git clone https://github.com/intel/lkp-tests.git
 
 	cd lkp-tests
 	make install
