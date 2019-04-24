@@ -119,25 +119,6 @@ enable_remote_node()
 	return 0
 }
 
-check_ignore_single_case()
-{
-	local testcase=$1
-	# nvml$ cat ignore_single_cases
-	# # require tty
-	# ex_libpmemobj/TEST15
-	# ex_libpmemobj/TEST16
-	# ex_libpmemobj_cpp/TEST1
-	local pack_single_ignore="$BENCHMARK_ROOT/$casename/ignore_single_cases"
-
-	[ -s "$pack_single_ignore" ] || return
-
-	for s in $(cat $pack_single_ignore | grep -v '^#')
-	do
-		echo $s | grep -w -q "$testcase" &&
-		echo "ignored_by_lkp $s" | tr / .
-	done
-}
-
 setup_mount_loop_dev()
 {
 	[[ -d "$tmp_dir" ]] || return
@@ -175,13 +156,6 @@ run()
 	[ "$test" = "pmem" ] && echo "PMEM_FS_DIR_FORCE_PMEM=2" >> testconfig.sh
 	for testcase in $testcases
 	do
-		# ignore some test cases
-		local pack_ignore="$BENCHMARK_ROOT/$casename/ignore"
-
-		[[ -s "$pack_ignore" ]] && grep -w -q "$testcase" "$pack_ignore" && echo "ignored_by_lkp $testcase" && continue
-
-		check_ignore_single_case $testcase
-
 		# fix util_extent/TEST0: SKIP file system tmpfs (ext4 required)
 		[[ "$testcase" = "util_extent" ]] && [[ "$test" = "non-pmem" ]] && setup_mount_loop_dev
 
@@ -203,41 +177,6 @@ run()
 	done
 
 	return 0
-}
-
-# Automatically generate ignore file to skip test cases which can not be enabled at present.
-build_ignore_file()
-{
-	cd $source_dir || return
-	git grep "require_node_libfabric" | awk -F '[:/]' '{if (!a[$3]++ && $3 != "unittest") {print $3} }' > ignore
-	git grep "require_dax_devices" | awk -F '[:/]' '{if (!a[$3]++ && $3 != "unittest") {print $3} }' >> ignore
-	echo "vmmalloc_fork" >> ignore
-	echo "pmempool_check" >> ignore
-	echo "obj_pmalloc_mt" >> ignore
-
-	# ignore single case instead of the whole directory
-
-	# nvml$ git grep "^require_tty" src/test
-	# src/test/ex_libpmemobj/TEST15:require_tty
-	# src/test/ex_libpmemobj/TEST16:require_tty
-	# src/test/ex_libpmemobj_cpp/TEST1:require_tty
-	single_cases=$(git grep "^require_tty" src/test | awk -F':' '{print $1}' | sed 's/src\/test\///')
-
-	mkdir -p ignore_single_cases_dir
-
-	# do backup, move the ignored binary file into ignore_single_cases_dir, and rename it like:
-	# nvml$ ls ignore_signal_cases_dir
-	# ex_libpmemobj_cpp_TEST1  ex_libpmemobj_TEST15  ex_libpmemobj_TEST16
-	#
-	# nvml$ echo $single_cases
-	# ex_libpmemobj/TEST15 ex_libpmemobj/TEST16 ex_libpmemobj_cpp/TEST1
-	for s in $single_cases
-	do
-		mv src/test/$s ignore_single_cases_dir/$(echo $s | tr / _)
-	done
-
-	echo "# require tty" >> ignore_single_cases
-	echo "$single_cases" >> ignore_single_cases
 }
 
 # Automatically detect and generate new groups for each fs-types

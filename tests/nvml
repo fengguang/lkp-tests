@@ -27,7 +27,6 @@ install_tests()
 	git checkout -f $nvml_commit 2>&1 || return
 
 	source_dir="$nvml_dir/nvml"
-	build_ignore_file || return
 	build_generate_testgroup || return
 	build_user_filter_file || return
 }
