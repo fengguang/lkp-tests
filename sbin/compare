@@ -612,6 +612,13 @@ end
 def show_delta(stat, key_g)
   is_fail = is_failure stat
 
+  dims = []
+  $cases.values.each { |v| dims += v.keys }
+  if dims.uniq.size == 1
+    puts "error: same dim #{dims.first} used, please use -d/--dimension"
+    exit 1
+  end
+
   $cases.delete_if do |_rt, value|
     next true if value.size < 2
     next false if is_fail
