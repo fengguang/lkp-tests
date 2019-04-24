@@ -1,22 +1,12 @@
 #!/bin/bash
 
-qemu_vdisk_is_clean()
-{
-	md5sum -c "$1".md5 >/dev/null 2>&1
-}
-
 cleanup_qemu_drives()
 {
-	local check_dirty=$1
-
 	rm -f $VDISK_ROOT/initrd-$vm_name
 
 	[[ $persistent_storage ]] || {
-		local disks=$(ls $VDISK_ROOT/disk-$vm_name-[0-9] $VDISK_ROOT/disk-$vm_name-[0-9][0-9])
-		for disk in $disks
-		do
-			[[ "$check_dirty" = "1" ]] && qemu_vdisk_is_clean $disk || rm -rf $disk $disk.md5
-		done
+		rm -f $VDISK_ROOT/disk-$vm_name-[0-9]
+		rm -f $VDISK_ROOT/disk-$vm_name-[0-9][0-9]
 	}
 }
 
@@ -65,12 +55,10 @@ setup_qemu_drives()
 
 		QEMU_IMG_SIZES+=($size)
 
-		[[ -e $disk ]] || {
-			qemu-img create -f qcow2 $disk $size || {
-				echo "init $disk failed"
-				return 1
-			}
-			md5sum $disk >$disk.md5
+		[[ -e $disk ]] ||
+		qemu-img create -f qcow2 $disk $size || {
+			echo "init $disk failed"
+			return 1
 		}
 
 		case $disk_type in
