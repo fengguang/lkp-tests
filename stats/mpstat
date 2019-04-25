@@ -141,8 +141,8 @@ mpstat_hash['sysstat']['hosts'][0]['statistics'].each do |item|
         end
       end
     elsif k == 'timestamp'
-      timestamp = Time.parse([data, v].join(' ')).to_i
-      results['timestamp'] = timestamp
+      time = Time.parse([data, v].join(' ')).to_i
+      results['time'] = time
     end
   end
   display_result results
