@@ -22,6 +22,11 @@ fi
 
 tmp_results="$TMP/piglit-results"
 
+while read errorcase
+do
+  echo "The wrong test $errorcase will cause the piglit to crash and will not be run" >&2
+done < <(grep -F -x -v -f $BENCHMARK_ROOT/piglit/groups/$tset-all $config_file)
+
 if [ -s "$LKP_SRC/pack/piglit-addon/groups/ignored_by_lkp" ]; then
 	testcases=$(grep -F -x -f $BENCHMARK_ROOT/piglit/groups/$tset-all $config_file | grep -F -x -v -f $LKP_SRC/pack/piglit-addon/groups/ignored_by_lkp)
 

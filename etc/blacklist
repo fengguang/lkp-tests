@@ -316,6 +316,7 @@ leaking_addresses.total_number
 ^stderr.swapon:cannot_open/dev/disk/by-id/.*:No_such_file_or_directory
 ^stderr.sys.exit\(runner\(args\)\)
 ^stderr.Testing_over
+^stderr.The_wrong_test*
 ^stderr.Timeout,server#not_responding
 ^stderr.Traceback\(most_recent_call_last\)
 ^stderr.+unable_to_open/dev/sd[a-z]+[0-9]+:Device_or_resource_busy
