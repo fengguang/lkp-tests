@@ -60,7 +60,8 @@ while (line = STDIN.gets)
     cur_event = $'.tr(':', '-').tr('\'', '')
 
   # 93.48%    93.48%  [kernel.kallsyms]   [k] clear_page_c_e
-  when /^\s*(\d+\.\d+)%\s+(\d+\.\d+)%\s+\S+\s+\S+\s+(\S+)\s*$/
+  # 96.02%     0.20%  [kernel.kallsyms]   [k] entry_SYSCALL_64_after_hwframe      -      -
+  when /^\s*(\d+\.\d+)%\s+(\d+\.\d+)%\s+\S+\s+\S+\s+(\S+)(\s+\S+\s+\S+)?\s*$/
 
     symbol = fixup_symbol_name $3
     results['children.' + "#{cur_event}.#{symbol}"] += $1.to_f

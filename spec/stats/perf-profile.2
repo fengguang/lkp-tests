@@ -1,0 +1,956 @@
+# ========
+# captured on    : Fri Apr 19 23:45:21 2019
+# header version : 1
+# data offset    : 1768
+# data size      : 140498624
+# feat offset    : 140500392
+# hostname : lkp-bdw-ep3b
+# os release : 5.0.0
+# perf version : 5.1.rc5.g6d906f
+# arch : x86_64
+# nrcpus online : 88
+# nrcpus avail : 88
+# cpudesc : Intel(R) Xeon(R) CPU E5-2699 v4 @ 2.20GHz
+# cpuid : GenuineIntel,6,79,1
+# total memory : 65853900 kB
+# cmdline : /lkp/benchmarks/perf/perf record -q -ag --realtime=1 -m 256 --count=1000003 -e cycles:pp -o /tmp/lkp/perf.data -D 100000 -- /lkp/feng/src/bin/event/wait post-test --timeout 110
+# event : name = cycles:pp, , id = { 2380, 2381, 2382, 2383, 2384, 2385, 2386, 2387, 2388, 2389, 2390, 2391, 2392, 2393, 2394, 2395, 2396, 2397, 2398, 2399, 2400, 2401, 2402, 2403, 2404, 2405, 2406, 2407, 2408, 2409, 2410, 2411, 2412, 2413, 2414, 2415, 2416, 2417, 2418, 2419, 2420, 2421, 2422, 2423, 2424, 2425, 2426, 2427, 2428, 2429, 2430, 2431, 2432, 2433, 2434, 2435, 2436, 2437, 2438, 2439, 2440, 2441, 2442, 2443, 2444, 2445, 2446, 2447, 2448, 2449, 2450, 2451, 2452, 2453, 2454, 2455, 2456, 2457, 2458, 2459, 2460, 2461, 2462, 2463, 2464, 2465, 2466, 2467 }, size = 112, { sample_period, sample_freq } = 1000003, sample_type = IP|TID|TIME|CALLCHAIN|ID|CPU, read_format = ID, disabled = 1, inherit = 1, precise_ip = 2, sample_id_all = 1, exclude_guest = 1
+# event : name = dummy:HG, , id = { 2468, 2469, 2470, 2471, 2472, 2473, 2474, 2475, 2476, 2477, 2478, 2479, 2480, 2481, 2482, 2483, 2484, 2485, 2486, 2487, 2488, 2489, 2490, 2491, 2492, 2493, 2494, 2495, 2496, 2497, 2498, 2499, 2500, 2501, 2502, 2503, 2504, 2505, 2506, 2507, 2508, 2509, 2510, 2511, 2512, 2513, 2514, 2515, 2516, 2517, 2518, 2519, 2520, 2521, 2522, 2523, 2524, 2525, 2526, 2527, 2528, 2529, 2530, 2531, 2532, 2533, 2534, 2535, 2536, 2537, 2538, 2539, 2540, 2541, 2542, 2543, 2544, 2545, 2546, 2547, 2548, 2549, 2550, 2551, 2552, 2553, 2554, 2555 }, type = 1, size = 112, config = 0x9, { sample_period, sample_freq } = 1000003, sample_type = IP|TID|TIME|CALLCHAIN|ID|CPU, read_format = ID, disabled = 1, inherit = 1, mmap = 1, comm = 1, enable_on_exec = 1, task = 1, sample_id_all = 1, mmap2 = 1, comm_exec = 1
+# CPU_TOPOLOGY info available, use -I to display
+# NUMA_TOPOLOGY info available, use -I to display
+# pmu mappings: intel_pt = 8, software = 1, uncore_imc_5 = 21, uncore_cbox_15 = 38, uncore_sbox_2 = 48, uncore_cbox_8 = 31, uncore_cbox_13 = 36, uncore_r2pcie = 15, uncore_sbox_0 = 46, uncore_qpi_1 = 12, uncore_cbox_6 = 29, uncore_cbox_21 = 44, uncore_imc_1 = 19, power = 10, uncore_cbox_11 = 34, uncore_cbox_4 = 27, uprobe = 7, cpu = 4, uncore_r3qpi_0 = 13, cstate_core = 50, uncore_cbox_2 = 25, uncore_cbox_18 = 41, breakpoint = 5, uncore_ha_0 = 16, uncore_cbox_0 = 23, uncore_cbox_16 = 39, tracepoint = 2, uncore_sbox_3 = 49, uncore_cbox_9 = 32, cstate_pkg = 51, uncore_imc_4 = 20, uncore_cbox_14 = 37, uncore_ubox = 22, uncore_sbox_1 = 47, uncore_cbox_7 = 30, uncore_cbox_12 = 35, kprobe = 6, uncore_qpi_0 = 11, uncore_cbox_5 = 28, uncore_cbox_20 = 43, uncore_imc_0 = 18, uncore_cbox_10 = 33, uncore_pcu = 45, uncore_r3qpi_1 = 14, msr = 9, uncore_cbox_3 = 26, uncore_cbox_19 = 42, uncore_ha_1 = 17, uncore_cbox_1 = 24, uncore_cbox_17 = 40
+# CACHE info available, use -I to display
+# time of first sample : 145.470021
+# time of last sample : 155.477675
+# sample duration :  10007.654 ms
+# MEM_TOPOLOGY info available, use -I to display
+# missing features: TRACING_DATA BRANCH_STACK GROUP_DESC AUXTRACE STAT CLOCKID DIR_FORMAT
+# ========
+#
+#
+# Total Lost Samples: 0
+#
+# Samples: 629K of event 'cycles:pp'
+# Event count (approx.): 629229887684
+#
+# Children      Self  Shared Object       Symbol                                            IPC   [IPC Coverage]
+# ........  ........  ..................  ................................................  ....................
+#
+    96.02%     0.20%  [kernel.kallsyms]   [k] entry_SYSCALL_64_after_hwframe                -      -
+73.23% entry_SYSCALL_64_after_hwframe
+12.70% entry_SYSCALL_64_after_hwframe;__GI___libc_write
+9.97% entry_SYSCALL_64_after_hwframe;__GI___libc_read
+    95.84%     0.28%  [kernel.kallsyms]   [k] do_syscall_64                                 -      -
+73.11% do_syscall_64;entry_SYSCALL_64_after_hwframe
+12.68% do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_write
+9.95% do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_read
+    77.17%     0.06%  [kernel.kallsyms]   [k] __wake_up_common_lock                         -      -
+35.26% __wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe
+23.64% __wake_up_common_lock;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe
+10.68% __wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_write
+7.57% __wake_up_common_lock;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_read
+    73.96%    73.95%  [kernel.kallsyms]   [k] native_queued_spin_lock_slowpath              -      -
+23.50% native_queued_spin_lock_slowpath;_raw_spin_lock_irqsave;__account_scheduler_latency;enqueue_entity;enqueue_task_fair;ttwu_do_activate;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe
+18.99% native_queued_spin_lock_slowpath;_raw_spin_lock_irqsave;__account_scheduler_latency;enqueue_entity;enqueue_task_fair;ttwu_do_activate;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe
+7.05% native_queued_spin_lock_slowpath;_raw_spin_lock_irqsave;__account_scheduler_latency;enqueue_entity;enqueue_task_fair;ttwu_do_activate;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_write
+6.08% native_queued_spin_lock_slowpath;_raw_spin_lock_irqsave;__account_scheduler_latency;enqueue_entity;enqueue_task_fair;ttwu_do_activate;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_read
+4.75% native_queued_spin_lock_slowpath;_raw_spin_lock_irqsave;__wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe
+3.01% native_queued_spin_lock_slowpath;_raw_spin_lock;__schedule;schedule;pipe_wait;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe
+2.93% native_queued_spin_lock_slowpath;_raw_spin_lock;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe
+1.50% native_queued_spin_lock_slowpath;_raw_spin_lock_irqsave;__wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_write
+1.43% native_queued_spin_lock_slowpath;_raw_spin_lock;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe
+1.03% native_queued_spin_lock_slowpath;_raw_spin_lock_irqsave;prepare_to_wait;pipe_wait;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe
+0.87% native_queued_spin_lock_slowpath;_raw_spin_lock;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_write
+0.85% native_queued_spin_lock_slowpath;_raw_spin_lock;__schedule;schedule;pipe_wait;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_read
+    70.18%     0.15%  [kernel.kallsyms]   [k] __wake_up_common                              -      -
+30.19% __wake_up_common;__wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe
+23.39% __wake_up_common;__wake_up_common_lock;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe
+9.10% __wake_up_common;__wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_write
+7.49% __wake_up_common;__wake_up_common_lock;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_read
+    70.04%     0.03%  [kernel.kallsyms]   [k] autoremove_wake_function                      -      -
+30.10% autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe
+23.37% autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe
+9.07% autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_write
+7.49% autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_read
+    69.93%     0.14%  [kernel.kallsyms]   [k] try_to_wake_up                                -      -
+30.07% try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe
+23.31% try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe
+9.06% try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_write
+7.46% try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_read
+    64.14%     0.71%  [kernel.kallsyms]   [k] _raw_spin_lock_irqsave                        -      -
+23.69% _raw_spin_lock_irqsave;__account_scheduler_latency;enqueue_entity;enqueue_task_fair;ttwu_do_activate;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe
+19.13% _raw_spin_lock_irqsave;__account_scheduler_latency;enqueue_entity;enqueue_task_fair;ttwu_do_activate;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe
+7.11% _raw_spin_lock_irqsave;__account_scheduler_latency;enqueue_entity;enqueue_task_fair;ttwu_do_activate;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_write
+6.12% _raw_spin_lock_irqsave;__account_scheduler_latency;enqueue_entity;enqueue_task_fair;ttwu_do_activate;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_read
+4.81% _raw_spin_lock_irqsave;__wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe
+1.51% _raw_spin_lock_irqsave;__wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_write
+1.05% _raw_spin_lock_irqsave;prepare_to_wait;pipe_wait;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe
+    61.23%     0.03%  [kernel.kallsyms]   [k] ttwu_do_activate                              -      -
+25.86% ttwu_do_activate;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe
+20.87% ttwu_do_activate;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe
+7.76% ttwu_do_activate;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_write
+6.70% ttwu_do_activate;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_read
+    61.13%     0.20%  [kernel.kallsyms]   [k] enqueue_task_fair                             -      -
+25.81% enqueue_task_fair;ttwu_do_activate;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe
+20.83% enqueue_task_fair;ttwu_do_activate;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe
+7.75% enqueue_task_fair;ttwu_do_activate;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_write
+6.68% enqueue_task_fair;ttwu_do_activate;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_read
+    60.27%     0.15%  [kernel.kallsyms]   [k] enqueue_entity                                -      -
+25.43% enqueue_entity;enqueue_task_fair;ttwu_do_activate;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe
+20.56% enqueue_entity;enqueue_task_fair;ttwu_do_activate;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe
+7.64% enqueue_entity;enqueue_task_fair;ttwu_do_activate;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_write
+6.59% enqueue_entity;enqueue_task_fair;ttwu_do_activate;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_read
+    59.31%     0.48%  [kernel.kallsyms]   [k] __account_scheduler_latency                   -      -
+25.01% __account_scheduler_latency;enqueue_entity;enqueue_task_fair;ttwu_do_activate;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe
+20.27% __account_scheduler_latency;enqueue_entity;enqueue_task_fair;ttwu_do_activate;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe
+7.50% __account_scheduler_latency;enqueue_entity;enqueue_task_fair;ttwu_do_activate;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_write
+6.49% __account_scheduler_latency;enqueue_entity;enqueue_task_fair;ttwu_do_activate;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_read
+    53.78%     0.08%  [kernel.kallsyms]   [k] ksys_write                                    -      -
+41.18% ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe
+12.58% ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_write
+    53.55%     0.14%  [kernel.kallsyms]   [k] vfs_write                                     -      -
+41.00% vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe
+12.52% vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_write
+    52.62%     0.18%  [kernel.kallsyms]   [k] __vfs_write                                   -      -
+40.29% __vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe
+12.30% __vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_write
+    52.42%     0.27%  [kernel.kallsyms]   [k] pipe_write                                    -      -
+40.14% pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe
+12.25% pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_write
+    41.10%     0.08%  [kernel.kallsyms]   [k] ksys_read                                     -      -
+31.22% ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe
+9.85% ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_read
+    40.83%     0.16%  [kernel.kallsyms]   [k] vfs_read                                      -      -
+31.01% vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe
+9.78% vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_read
+    39.67%     0.15%  [kernel.kallsyms]   [k] __vfs_read                                    -      -
+30.13% __vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe
+9.50% __vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_read
+    39.47%     0.28%  [kernel.kallsyms]   [k] pipe_read                                     -      -
+29.99% pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe
+9.46% pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_read
+    13.14%     0.04%  libpthread-2.24.so  [.] __GI___libc_write                             -      -
+13.12% __GI___libc_write
+    10.65%     0.11%  [kernel.kallsyms]   [k] _raw_spin_lock                                -      -
+3.02% _raw_spin_lock;__schedule;schedule;pipe_wait;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe
+2.95% _raw_spin_lock;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe
+1.45% _raw_spin_lock;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe
+0.88% _raw_spin_lock;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_write
+0.85% _raw_spin_lock;__schedule;schedule;pipe_wait;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_read
+    10.51%     0.11%  libpthread-2.24.so  [.] __GI___libc_read                              -      -
+10.47% __GI___libc_read
+    10.23%     0.11%  [kernel.kallsyms]   [k] pipe_wait                                     -      -
+4.71% pipe_wait;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe
+3.10% pipe_wait;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe
+1.38% pipe_wait;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_read
+1.02% pipe_wait;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_write
+     8.77%     0.09%  [kernel.kallsyms]   [k] schedule                                      -      -
+4.55% schedule;pipe_wait;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe
+1.88% schedule;pipe_wait;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe
+1.33% schedule;pipe_wait;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_read
+0.61% schedule;pipe_wait;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_write
+     8.75%     0.46%  [kernel.kallsyms]   [k] __schedule                                    -      -
+4.51% __schedule;schedule;pipe_wait;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe
+1.84% __schedule;schedule;pipe_wait;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe
+1.32% __schedule;schedule;pipe_wait;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_read
+0.60% __schedule;schedule;pipe_wait;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe;__GI___libc_write
+     2.69%     0.10%  [kernel.kallsyms]   [k] save_stack_trace_tsk                          -      -
+1.15% save_stack_trace_tsk;__account_scheduler_latency;enqueue_entity;enqueue_task_fair;ttwu_do_activate;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe
+0.90% save_stack_trace_tsk;__account_scheduler_latency;enqueue_entity;enqueue_task_fair;ttwu_do_activate;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe
+     2.59%     0.10%  [kernel.kallsyms]   [k] __save_stack_trace                            -      -
+1.09% __save_stack_trace;save_stack_trace_tsk;__account_scheduler_latency;enqueue_entity;enqueue_task_fair;ttwu_do_activate;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe
+0.85% __save_stack_trace;save_stack_trace_tsk;__account_scheduler_latency;enqueue_entity;enqueue_task_fair;ttwu_do_activate;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe
+     2.32%     0.22%  [kernel.kallsyms]   [k] select_task_rq_fair                           -      -
+0.93% select_task_rq_fair;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe
+0.79% select_task_rq_fair;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe
+     2.08%     0.34%  [kernel.kallsyms]   [k] select_idle_sibling                           -      -
+0.78% select_idle_sibling;select_task_rq_fair;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe
+0.71% select_idle_sibling;select_task_rq_fair;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe
+     1.88%     1.06%  [kernel.kallsyms]   [k] unwind_next_frame                             -      -
+0.69% unwind_next_frame;__save_stack_trace;save_stack_trace_tsk;__account_scheduler_latency;enqueue_entity;enqueue_task_fair;ttwu_do_activate;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe
+0.55% unwind_next_frame;__save_stack_trace;save_stack_trace_tsk;__account_scheduler_latency;enqueue_entity;enqueue_task_fair;ttwu_do_activate;try_to_wake_up;autoremove_wake_function;__wake_up_common;__wake_up_common_lock;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe
+     1.48%     0.06%  [kernel.kallsyms]   [k] prepare_to_wait                               -      -
+1.07% prepare_to_wait;pipe_wait;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe
+     1.32%     1.32%  [kernel.kallsyms]   [k] syscall_return_via_sysret                     -      -
+0.87% syscall_return_via_sysret
+     1.28%     0.13%  [kernel.kallsyms]   [k] security_file_permission                      -      -
+0.55% security_file_permission;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe
+     1.26%     1.22%  [kernel.kallsyms]   [k] entry_SYSCALL_64                              -      -
+0.94% entry_SYSCALL_64
+     1.25%     1.24%  [kernel.kallsyms]   [k] copy_user_enhanced_fast_string                -      -
+0.53% copy_user_enhanced_fast_string;copyout;copy_page_to_iter;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe
+     1.24%     0.12%  [kernel.kallsyms]   [k] dequeue_task_fair                             -      -
+     1.18%     1.16%  [kernel.kallsyms]   [k] available_idle_cpu                            -      -
+     1.14%     0.24%  [kernel.kallsyms]   [k] copy_page_to_iter                             -      -
+0.86% copy_page_to_iter;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe
+     1.05%     0.55%  [kernel.kallsyms]   [k] switch_mm_irqs_off                            -      -
+     0.92%     0.19%  [kernel.kallsyms]   [k] copy_page_from_iter                           -      -
+0.69% copy_page_from_iter;pipe_write;__vfs_write;vfs_write;ksys_write;do_syscall_64;entry_SYSCALL_64_after_hwframe
+     0.75%     0.16%  [kernel.kallsyms]   [k] pick_next_task_fair                           -      -
+     0.73%     0.02%  [kernel.kallsyms]   [k] copyout                                       -      -
+0.55% copyout;copy_page_to_iter;pipe_read;__vfs_read;vfs_read;ksys_read;do_syscall_64;entry_SYSCALL_64_after_hwframe
+     0.70%     0.34%  [kernel.kallsyms]   [k] update_curr                                   -      -
+     0.69%     0.42%  [kernel.kallsyms]   [k] selinux_file_permission                       -      -
+     0.60%     0.22%  [kernel.kallsyms]   [k] reweight_entity                               -      -
+     0.59%     0.23%  [kernel.kallsyms]   [k] _raw_spin_unlock_irqrestore                   -      -
+     0.57%     0.02%  [kernel.kallsyms]   [k] copyin                                        -      -
+     0.55%     0.14%  [kernel.kallsyms]   [k] update_load_avg                               -      -
+     0.55%     0.06%  [kernel.kallsyms]   [k] dequeue_entity                                -      -
+     0.54%     0.29%  [kernel.kallsyms]   [k] mutex_lock                                    -      -
+     0.53%     0.52%  [kernel.kallsyms]   [k] mutex_unlock                                  -      -
+     0.50%     0.50%  [kernel.kallsyms]   [k] load_new_mm_cr3                               -      -
+     0.49%     0.48%  [kernel.kallsyms]   [k] __switch_to                                   -      -
+     0.48%     0.45%  [kernel.kallsyms]   [k] __update_load_avg_se                          -      -
+     0.47%     0.00%  [kernel.kallsyms]   [k] apic_timer_interrupt                          -      -
+     0.44%     0.11%  [kernel.kallsyms]   [k] file_has_perm                                 -      -
+     0.44%     0.27%  [kernel.kallsyms]   [k] cpumask_next_wrap                             -      -
+     0.43%     0.01%  [kernel.kallsyms]   [k] smp_apic_timer_interrupt                      -      -
+     0.40%     0.01%  [kernel.kallsyms]   [k] exit_to_usermode_loop                         -      -
+     0.36%     0.09%  [kernel.kallsyms]   [k] set_next_entity                               -      -
+     0.36%     0.04%  [kernel.kallsyms]   [k] __fdget_pos                                   -      -
+     0.36%     0.35%  [kernel.kallsyms]   [k] ___might_sleep                                -      -
+     0.35%     0.35%  [kernel.kallsyms]   [k] update_cfs_group                              -      -
+     0.35%     0.01%  [kernel.kallsyms]   [k] hrtimer_interrupt                             -      -
+     0.34%     0.34%  [kernel.kallsyms]   [k] __orc_find                                    -      -
+     0.34%     0.10%  [kernel.kallsyms]   [k] __unwind_start                                -      -
+     0.33%     0.32%  [kernel.kallsyms]   [k] __fget_light                                  -      -
+     0.32%     0.06%  [kernel.kallsyms]   [k] touch_atime                                   -      -
+     0.30%     0.29%  [kernel.kallsyms]   [k] fsnotify                                      -      -
+     0.29%     0.01%  [kernel.kallsyms]   [k] __hrtimer_run_queues                          -      -
+     0.29%     0.16%  [kernel.kallsyms]   [k] save_stack_address                            -      -
+     0.28%     0.27%  [kernel.kallsyms]   [k] avc_has_perm                                  -      -
+     0.26%     0.25%  [kernel.kallsyms]   [k] orc_find                                      -      -
+     0.26%     0.08%  [kernel.kallsyms]   [k] __inode_security_revalidate                   -      -
+     0.25%     0.23%  [kernel.kallsyms]   [k] __might_sleep                                 -      -
+     0.25%     0.06%  [kernel.kallsyms]   [k] unwind_get_return_address                     -      -
+     0.25%     0.24%  [kernel.kallsyms]   [k] __enqueue_entity                              -      -
+     0.24%     0.00%  [kernel.kallsyms]   [k] tick_sched_timer                              -      -
+     0.23%     0.07%  [kernel.kallsyms]   [k] file_update_time                              -      -
+     0.23%     0.22%  [kernel.kallsyms]   [k] __update_load_avg_cfs_rq                      -      -
+     0.23%     0.19%  [kernel.kallsyms]   [k] find_next_bit                                 -      -
+     0.23%     0.00%  [kernel.kallsyms]   [k] tick_sched_handle                             -      -
+     0.22%     0.00%  [kernel.kallsyms]   [k] update_process_times                          -      -
+     0.22%     0.12%  [kernel.kallsyms]   [k] update_rq_clock.part.73                       -      -
+     0.20%     0.18%  [kernel.kallsyms]   [k] ___perf_sw_event                              -      -
+     0.20%     0.00%  [kernel.kallsyms]   [k] scheduler_tick                                -      -
+     0.19%     0.00%  [kernel.kallsyms]   [k] page_fault                                    -      -
+     0.19%     0.00%  [kernel.kallsyms]   [k] do_page_fault                                 -      -
+     0.19%     0.00%  [kernel.kallsyms]   [k] __do_page_fault                               -      -
+     0.19%     0.05%  [kernel.kallsyms]   [k] __kernel_text_address                         -      -
+     0.19%     0.00%  [kernel.kallsyms]   [k] handle_mm_fault                               -      -
+     0.19%     0.00%  [kernel.kallsyms]   [k] __handle_mm_fault                             -      -
+     0.18%     0.00%  [kernel.kallsyms]   [k] do_numa_page                                  -      -
+     0.18%     0.00%  [kernel.kallsyms]   [k] migrate_misplaced_page                        -      -
+     0.18%     0.00%  [kernel.kallsyms]   [k] migrate_pages                                 -      -
+     0.18%     0.00%  [kernel.kallsyms]   [k] rmap_walk_anon                                -      -
+     0.18%     0.18%  [kernel.kallsyms]   [k] __calc_delta                                  -      -
+     0.18%     0.18%  [kernel.kallsyms]   [k] native_write_msr                              -      -
+     0.17%     0.08%  [kernel.kallsyms]   [k] current_time                                  -      -
+     0.17%     0.17%  [kernel.kallsyms]   [k] __switch_to_asm                               -      -
+     0.16%     0.03%  [kernel.kallsyms]   [k] __might_fault                                 -      -
+     0.16%     0.15%  [kernel.kallsyms]   [k] account_entity_enqueue                        -      -
+     0.16%     0.07%  [kernel.kallsyms]   [k] _cond_resched                                 -      -
+     0.16%     0.14%  [kernel.kallsyms]   [k] __fsnotify_parent                             -      -
+     0.16%     0.07%  [kernel.kallsyms]   [k] finish_task_switch                            -      -
+     0.16%     0.14%  [kernel.kallsyms]   [k] __x86_indirect_thunk_rax                      -      -
+     0.15%     0.01%  [kernel.kallsyms]   [k] ttwu_do_wakeup                                -      -
+     0.15%     0.14%  [kernel.kallsyms]   [k] account_entity_dequeue                        -      -
+     0.15%     0.07%  [kernel.kallsyms]   [k] atime_needs_update                            -      -
+     0.15%     0.02%  [kernel.kallsyms]   [k] sched_clock_cpu                               -      -
+     0.15%     0.14%  [kernel.kallsyms]   [k] __list_del_entry_valid                        -      -
+     0.14%     0.02%  [kernel.kallsyms]   [k] check_preempt_curr                            -      -
+     0.13%     0.11%  [kernel.kallsyms]   [k] page_vma_mapped_walk                          -      -
+     0.13%     0.06%  [kernel.kallsyms]   [k] kernel_text_address                           -      -
+     0.13%     0.01%  [kernel.kallsyms]   [k] sched_clock                                   -      -
+     0.13%     0.13%  [kernel.kallsyms]   [k] cpuacct_charge                                -      -
+     0.12%     0.12%  [kernel.kallsyms]   [k] native_sched_clock                            -      -
+     0.12%     0.09%  [kernel.kallsyms]   [k] check_preempt_wakeup                          -      -
+     0.11%     0.08%  [kernel.kallsyms]   [k] in_sched_functions                            -      -
+     0.11%     0.00%  [kernel.kallsyms]   [k] remove_migration_ptes                         -      -
+     0.11%     0.06%  [kernel.kallsyms]   [k] pick_next_entity                              -      -
+     0.11%     0.04%  [kernel.kallsyms]   [k] generic_update_time                           -      -
+     0.11%     0.00%  [kernel.kallsyms]   [k] secondary_startup_64                          -      -
+     0.11%     0.00%  [kernel.kallsyms]   [k] cpu_startup_entry                             -      -
+     0.11%     0.00%  [kernel.kallsyms]   [k] do_idle                                       -      -
+     0.11%     0.11%  [kernel.kallsyms]   [k] rb_insert_color_cached                        -      -
+     0.11%     0.00%  [kernel.kallsyms]   [k] start_secondary                               -      -
+     0.11%     0.01%  [kernel.kallsyms]   [k] __mutex_lock.isra.7                           -      -
+     0.11%     0.10%  [kernel.kallsyms]   [k] rw_verify_area                                -      -
+     0.11%     0.10%  [kernel.kallsyms]   [k] stack_access_ok                               -      -
+     0.10%     0.09%  [kernel.kallsyms]   [k] rb_erase_cached                               -      -
+     0.10%     0.08%  [kernel.kallsyms]   [k] __x64_sys_read                                -      -
+     0.10%     0.09%  [kernel.kallsyms]   [k] ftrace_graph_ret_addr                         -      -
+     0.09%     0.00%  [kernel.kallsyms]   [k] remove_migration_pte                          -      -
+     0.09%     0.08%  [kernel.kallsyms]   [k] generic_pipe_buf_confirm                      -      -
+     0.08%     0.07%  [kernel.kallsyms]   [k] rcu_all_qs                                    -      -
+     0.08%     0.08%  [kernel.kallsyms]   [k] activate_task                                 -      -
+     0.08%     0.08%  [kernel.kallsyms]   [k] mutex_spin_on_owner                           -      -
+     0.07%     0.07%  [kernel.kallsyms]   [k] cpus_share_cache                              -      -
+     0.07%     0.07%  [kernel.kallsyms]   [k] __sb_start_write                              -      -
+     0.07%     0.00%  [kernel.kallsyms]   [k] try_to_unmap                                  -      -
+     0.07%     0.06%  [kernel.kallsyms]   [k] __x64_sys_write                               -      -
+     0.07%     0.01%  [kernel.kallsyms]   [k] __alloc_pages_nodemask                        -      -
+     0.07%     0.01%  [kernel.kallsyms]   [k] task_tick_fair                                -      -
+     0.07%     0.07%  [kernel.kallsyms]   [k] __x86_indirect_thunk_rdx                      -      -
+     0.07%     0.00%  [kernel.kallsyms]   [k] schedule_idle                                 -      -
+     0.07%     0.06%  [kernel.kallsyms]   [k] update_min_vruntime                           -      -
+     0.07%     0.00%  [kernel.kallsyms]   [k] irq_exit                                      -      -
+     0.06%     0.06%  [kernel.kallsyms]   [k] __mark_inode_dirty                            -      -
+     0.06%     0.06%  [kernel.kallsyms]   [k] ttwu_stat                                     -      -
+     0.06%     0.01%  [kernel.kallsyms]   [k] cpumask_next                                  -      -
+     0.06%     0.01%  [kernel.kallsyms]   [k] __softirqentry_text_start                     -      -
+     0.05%     0.01%  [kernel.kallsyms]   [k] try_to_unmap_one                              -      -
+     0.05%     0.00%  [kernel.kallsyms]   [k] free_unref_page                               -      -
+     0.05%     0.05%  [kernel.kallsyms]   [k] timespec64_trunc                              -      -
+     0.05%     0.02%  [kernel.kallsyms]   [k] put_prev_entity                               -      -
+     0.05%     0.04%  [kernel.kallsyms]   [k] inode_has_perm.isra.33                        -      -
+     0.05%     0.04%  [kernel.kallsyms]   [k] clear_buddies                                 -      -
+     0.05%     0.02%  [kernel.kallsyms]   [k] get_page_from_freelist                        -      -
+     0.05%     0.04%  [kernel.kallsyms]   [k] ktime_get_coarse_real_ts64                    -      -
+     0.04%     0.00%  perf                [.] __strcspn_sse42                               -      -
+     0.04%     0.00%  perf                [.] generic_start_main                            -      -
+     0.04%     0.00%  perf                [.] main                                          -      -
+     0.04%     0.00%  perf                [.] run_builtin                                   -      -
+     0.04%     0.04%  [kernel.kallsyms]   [k] __sb_end_write                                -      -
+     0.04%     0.00%  [kernel.kallsyms]   [k] cpuidle_enter_state                           -      -
+     0.04%     0.04%  [kernel.kallsyms]   [k] anon_pipe_buf_release                         -      -
+     0.04%     0.01%  [kernel.kallsyms]   [k] set_task_cpu                                  -      -
+     0.04%     0.00%  [kernel.kallsyms]   [k] __task_rq_lock                                -      -
+     0.04%     0.04%  [kernel.kallsyms]   [k] __mnt_want_write                              -      -
+     0.04%     0.04%  [kernel.kallsyms]   [k] intel_idle                                    -      -
+     0.04%     0.03%  [kernel.kallsyms]   [k] deactivate_task                               -      -
+     0.04%     0.03%  [kernel.kallsyms]   [k] in_lock_functions                             -      -
+     0.03%     0.03%  [kernel.kallsyms]   [k] native_load_tls                               -      -
+     0.03%     0.03%  [kernel.kallsyms]   [k] __list_add_valid                              -      -
+     0.03%     0.00%  [kernel.kallsyms]   [k] reschedule_interrupt                          -      -
+     0.03%     0.00%  [kernel.kallsyms]   [k] sched_ttwu_pending                            -      -
+     0.03%     0.00%  [kernel.kallsyms]   [k] scheduler_ipi                                 -      -
+     0.03%     0.02%  [kernel.kallsyms]   [k] finish_wait                                   -      -
+     0.03%     0.03%  [kernel.kallsyms]   [k] iov_iter_init                                 -      -
+     0.03%     0.02%  [kernel.kallsyms]   [k] migrate_task_rq_fair                          -      -
+     0.03%     0.03%  [kernel.kallsyms]   [k] __accumulate_pelt_segments                    -      -
+     0.03%     0.00%  libpthread-2.24.so  [.] __libc_wait                                   -      -
+     0.03%     0.00%  [kernel.kallsyms]   [k] __do_sys_wait4                                -      -
+     0.03%     0.00%  [kernel.kallsyms]   [k] kernel_wait4                                  -      -
+     0.03%     0.00%  [kernel.kallsyms]   [k] do_wait                                       -      -
+     0.03%     0.00%  [kernel.kallsyms]   [k] clockevents_program_event                     -      -
+     0.03%     0.01%  [kernel.kallsyms]   [k] perf_mux_hrtimer_handler                      -      -
+     0.03%     0.00%  [kernel.kallsyms]   [k] console_unlock                                -      -
+     0.03%     0.03%  [kernel.kallsyms]   [k] wait_consider_task                            -      -
+     0.03%     0.00%  [kernel.kallsyms]   [k] serial8250_console_write                      -      -
+     0.03%     0.03%  [kernel.kallsyms]   [k] put_task_stack                                -      -
+     0.03%     0.00%  [kernel.kallsyms]   [k] uart_console_write                            -      -
+     0.03%     0.00%  [kernel.kallsyms]   [k] wait_for_xmitr                                -      -
+     0.03%     0.00%  [kernel.kallsyms]   [k] serial8250_console_putchar                    -      -
+     0.03%     0.01%  [kernel.kallsyms]   [k] free_pcppages_bulk                            -      -
+     0.03%     0.00%  [kernel.kallsyms]   [k] ret_from_fork                                 -      -
+     0.03%     0.00%  [kernel.kallsyms]   [k] kthread                                       -      -
+     0.02%     0.02%  [kernel.kallsyms]   [k] __anon_vma_interval_tree_subtree_search       -      -
+     0.02%     0.02%  [kernel.kallsyms]   [k] smp_call_function_single                      -      -
+     0.02%     0.00%  [kernel.kallsyms]   [k] load_balance                                  -      -
+     0.02%     0.00%  perf                [.] cmd_stat                                      -      -
+     0.02%     0.00%  perf                [.] __run_perf_stat                               -      -
+     0.02%     0.00%  perf                [.] process_interval                              -      -
+     0.02%     0.00%  perf                [.] read_counters                                 -      -
+     0.02%     0.00%  perf                [.] perf_evsel__read_counter                      -      -
+     0.02%     0.00%  perf                [.] __read_nocancel                               -      -
+     0.02%     0.02%  [kernel.kallsyms]   [k] __is_insn_slot_addr                           -      -
+     0.02%     0.00%  [kernel.kallsyms]   [k] rebalance_domains                             -      -
+     0.02%     0.00%  [kernel.kallsyms]   [k] __x64_sys_exit_group                          -      -
+     0.02%     0.00%  [kernel.kallsyms]   [k] do_group_exit                                 -      -
+     0.02%     0.00%  [kernel.kallsyms]   [k] do_exit                                       -      -
+     0.02%     0.00%  [kernel.kallsyms]   [k] perf_read                                     -      -
+     0.02%     0.00%  [kernel.kallsyms]   [k] perf_event_read                               -      -
+     0.02%     0.00%  [kernel.kallsyms]   [k] worker_thread                                 -      -
+     0.02%     0.00%  [kernel.kallsyms]   [k] process_one_work                              -      -
+     0.02%     0.02%  [kernel.kallsyms]   [k] native_irq_return_iret                        -      -
+     0.02%     0.02%  [kernel.kallsyms]   [k] kill_fasync                                   -      -
+     0.02%     0.00%  [kernel.kallsyms]   [k] __perf_event_read_value                       -      -
+     0.02%     0.01%  [kernel.kallsyms]   [k] bpf_fd_pass                                   -      -
+     0.02%     0.00%  [kernel.kallsyms]   [k] lapic_next_deadline                           -      -
+     0.02%     0.01%  [kernel.kallsyms]   [k] get_stack_info                                -      -
+     0.02%     0.02%  [kernel.kallsyms]   [k] set_next_buddy                                -      -
+     0.02%     0.01%  [kernel.kallsyms]   [k] is_bpf_text_address                           -      -
+     0.02%     0.00%  [kernel.kallsyms]   [k] irq_work_run_list                             -      -
+     0.02%     0.02%  [kernel.kallsyms]   [k] wakeup_preempt_entity.isra.64                 -      -
+     0.02%     0.00%  [kernel.kallsyms]   [k] mmput                                         -      -
+     0.02%     0.00%  [kernel.kallsyms]   [k] exit_mmap                                     -      -
+     0.02%     0.00%  perf                [.] cmd_record                                    -      -
+     0.02%     0.02%  [kernel.kallsyms]   [k] io_serial_in                                  -      -
+     0.02%     0.02%  [kernel.kallsyms]   [k] update_cfs_rq_h_load                          -      -
+     0.02%     0.01%  [kernel.kallsyms]   [k] task_of                                       -      -
+     0.02%     0.00%  [kernel.kallsyms]   [k] is_ftrace_trampoline                          -      -
+     0.02%     0.00%  [kernel.kallsyms]   [k] irq_work_interrupt                            -      -
+     0.02%     0.00%  [kernel.kallsyms]   [k] smp_irq_work_interrupt                        -      -
+     0.02%     0.00%  [kernel.kallsyms]   [k] irq_work_run                                  -      -
+     0.02%     0.00%  [kernel.kallsyms]   [k] printk                                        -      -
+     0.02%     0.00%  [kernel.kallsyms]   [k] vprintk_emit                                  -      -
+     0.01%     0.01%  [kernel.kallsyms]   [k] free_unref_page_prepare.part.69               -      -
+     0.01%     0.01%  [kernel.kallsyms]   [k] rb_next                                       -      -
+     0.01%     0.01%  [kernel.kallsyms]   [k] check_cfs_rq_runtime                          -      -
+     0.01%     0.01%  [kernel.kallsyms]   [k] osq_lock                                      -      -
+     0.01%     0.00%  perf                [.] record__mmap_read_evlist.constprop.31         -      -
+     0.01%     0.00%  perf                [.] perf_mmap__push                               -      -
+     0.01%     0.00%  perf                [.] record__pushfn                                -      -
+     0.01%     0.00%  perf                [.] __libc_write                                  -      -
+     0.01%     0.01%  [kernel.kallsyms]   [k] perf_exclude_event                            -      -
+     0.01%     0.01%  [kernel.kallsyms]   [k] run_timer_softirq                             -      -
+     0.01%     0.00%  [kernel.kallsyms]   [k] generic_file_write_iter                       -      -
+     0.01%     0.00%  [kernel.kallsyms]   [k] __generic_file_write_iter                     -      -
+     0.01%     0.00%  [kernel.kallsyms]   [k] generic_perform_write                         -      -
+     0.01%     0.01%  [kernel.kallsyms]   [k] ftrace_ops_trampoline                         -      -
+     0.01%     0.00%  [kernel.kallsyms]   [k] is_module_text_address                        -      -
+     0.01%     0.01%  [kernel.kallsyms]   [k] ktime_get                                     -      -
+     0.01%     0.01%  [kernel.kallsyms]   [k] anon_vma_interval_tree_iter_next              -      -
+     0.01%     0.01%  [kernel.kallsyms]   [k] update_rq_clock                               -      -
+     0.01%     0.00%  [kernel.kallsyms]   [k] unmap_vmas                                    -      -
+     0.01%     0.01%  [kernel.kallsyms]   [k] __remove_hrtimer                              -      -
+     0.01%     0.01%  [kernel.kallsyms]   [k] unmap_page_range                              -      -
+     0.01%     0.00%  [kernel.kallsyms]   [k] mga_dirty_update                              -      -
+     0.01%     0.00%  [kernel.kallsyms]   [k] fb_flashcursor                                -      -
+     0.01%     0.00%  [kernel.kallsyms]   [k] bit_cursor                                    -      -
+     0.01%     0.00%  [kernel.kallsyms]   [k] soft_cursor                                   -      -
+     0.01%     0.01%  [kernel.kallsyms]   [k] memcpy_toio                                   -      -
+     0.01%     0.01%  [kernel.kallsyms]   [k] rcu_note_context_switch                       -      -
+     0.01%     0.00%  [kernel.kallsyms]   [k] remove_entity_load_avg                        -      -
+     0.01%     0.00%  [kernel.kallsyms]   [k] run_rebalance_domains                         -      -
+     0.01%     0.00%  [kernel.kallsyms]   [k] update_blocked_averages                       -      -
+     0.01%     0.01%  [kernel.kallsyms]   [k] delay_tsc                                     -      -
+     0.01%     0.01%  [kernel.kallsyms]   [k] read_tsc                                      -      -
+     0.01%     0.01%  [kernel.kallsyms]   [k] __module_text_address                         -      -
+     0.01%     0.00%  [kernel.kallsyms]   [k] rcu_process_callbacks                         -      -
+     0.01%     0.01%  [kernel.kallsyms]   [k] rcu_is_watching                               -      -
+     0.01%     0.01%  [kernel.kallsyms]   [k] queued_write_lock_slowpath                    -      -
+     0.01%     0.01%  [kernel.kallsyms]   [k] __wake_up_sync_key                            -      -
+     0.01%     0.00%  [kernel.kallsyms]   [k] free_unref_page_commit                        -      -
+     0.01%     0.01%  [kernel.kallsyms]   [k] hrtimer_active                                -      -
+     0.01%     0.00%  [kernel.kallsyms]   [k] ktime_get_update_offsets_now                  -      -
+     0.01%     0.01%  [kernel.kallsyms]   [k] default_wake_function                         -      -
+     0.01%     0.00%  [kernel.kallsyms]   [k] alloc_pages_current                           -      -
+     0.01%     0.00%  [kernel.kallsyms]   [k] __intel_pmu_enable_all.constprop.22           -      -
+     0.01%     0.01%  [kernel.kallsyms]   [k] task_tick_numa                                -      -
+     0.01%     0.00%  [kernel.kallsyms]   [k] __x64_sys_execve                              -      -
+     0.01%     0.00%  [kernel.kallsyms]   [k] __do_execve_file.isra.34                      -      -
+     0.01%     0.00%  libc-2.24.so        [.] execve                                        -      -
+     0.01%     0.01%  [kernel.kallsyms]   [k] native_apic_mem_write                         -      -
+     0.01%     0.00%  [kernel.kallsyms]   [k] enqueue_hrtimer                               -      -
+     0.01%     0.01%  [kernel.kallsyms]   [k] perf_event_task_tick                          -      -
+     0.01%     0.00%  [kernel.kallsyms]   [k] timerqueue_add                                -      -
+     0.01%     0.01%  [kernel.kallsyms]   [k] __acct_update_integrals                       -      -
+     0.01%     0.01%  [kernel.kallsyms]   [k] rcu_check_callbacks                           -      -
+     0.01%     0.00%  [kernel.kallsyms]   [k] sched_slice.isra.62                           -      -
+     0.01%     0.01%  [kernel.kallsyms]   [k] bpf_prog_kallsyms_find                        -      -
+     0.01%     0.00%  libc-2.24.so        [.] write                                         -      -
+     0.01%     0.00%  [kernel.kallsyms]   [k] attach_task                                   -      -
+     0.01%     0.00%  [kernel.kallsyms]   [k] account_system_index_time                     -      -
+     0.01%     0.00%  [kernel.kallsyms]   [k] shmem_write_begin                             -      -
+     0.01%     0.00%  [kernel.kallsyms]   [k] shmem_getpage_gfp                             -      -
+     0.01%     0.00%  libc-2.24.so        [.] __libc_fork                                   -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] _raw_spin_lock_irq                            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] _do_fork                                      -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] in_task_stack                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] free_pgtables                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] perf_swevent_event                            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __mnt_drop_write_file                         -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] tick_sched_do_timer                           -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] resched_curr                                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] timerqueue_del                                -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] copy_process.part.30                          -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] interrupt_entry                               -      -
+     0.00%     0.00%  hackbench           [.] write@plt                                     -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] do_wp_page                                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] call_timer_fn                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] wp_page_copy                                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] search_binary_handler                         -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] load_elf_binary                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __module_address                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] swake_up_one                                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] swake_up_locked.part.1                        -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] wake_up_q                                     -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __update_load_avg_blocked_se                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] hrtick_update                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] iov_iter_copy_from_user_atomic                -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] trigger_load_balance                          -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __mnt_want_write_file                         -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __put_page                                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] unlink_anon_vmas                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __x64_sys_mprotect                            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] do_mprotect_pkey                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __mnt_drop_write                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] mprotect_fixup                                -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] alloc_pages_vma                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __queue_work                                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] cpu_load_update                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __hrtimer_get_next_event                      -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] intel_pmu_disable_all                         -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __vma_adjust                                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __split_vma                                   -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] attach_entity_load_avg                        -      -
+     0.00%     0.00%  hackbench           [.] read@plt                                      -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] page_remove_rmap                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] iov_iter_fault_in_readable                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] shmem_alloc_and_acct_page                     -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] copy_page                                     -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] invalid_migration_vma                         -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __hrtimer_next_event_base                     -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __mutex_unlock_slowpath.isra.16               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] start_kernel                                  -      -
+     0.00%     0.00%  libc-2.24.so        [.] read                                          -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] check_pte                                     -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] rb_insert_color                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] note_gp_changes                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __perf_read_group_add                         -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __x64_sys_ioctl                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] do_filp_open                                  -      -
+     0.00%     0.00%  perf                [.] perf_evlist__enable                           -      -
+     0.00%     0.00%  perf                [.] __ioctl                                       -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] ksys_ioctl                                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] do_vfs_ioctl                                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] path_openat                                   -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] perf_ioctl                                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] _perf_ioctl                                   -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] perf_event_for_each_child                     -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] event_function_call                           -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] shmem_alloc_page                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] raise_softirq                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __intel_pmu_disable_all                       -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] flush_old_exec                                -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] seq_read                                      -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] preempt_schedule_common                       -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] tick_program_event                            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __inc_numa_state                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] do_sys_open                                   -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __mod_zone_page_state                         -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] rb_erase                                      -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] run_posix_cpu_timers                          -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] irq_enter                                     -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] timekeeping_advance                           -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] menu_select                                   -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] call_rwsem_wake                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] rwsem_wake                                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] wake_up_klogd_work_func                       -      -
+     0.00%     0.00%  perf                [.] __libc_poll                                   -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] can_migrate_task                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] idle_cpu                                      -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __x64_sys_poll                                -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] do_sys_poll                                   -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] proc_reg_read                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] up_write                                      -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] osq_unlock                                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __page_cache_release                          -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] detach_entity_cfs_rq                          -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] rcu_irq_exit                                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] run_local_timers                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] should_fail_alloc_page                        -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] pagevec_lru_move_fn                           -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] tick_nohz_get_sleep_length                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] x86_pmu_disable                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] ret_from_intr                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] calc_global_load_tick                         -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] error_entry                                   -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] policy_nodemask                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] rcu_irq_enter                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] swapgs_restore_regs_and_return_to_usermode    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] page_mapcount_is_zero                         -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] timekeeping_update                            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] down_write                                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] tick_nohz_next_event                          -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] link_path_walk.part.32                        -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] smpboot_thread_fn                             -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] vm_mmap_pgoff                                 -      -
+     0.00%     0.00%  libc-2.24.so        [.] setlocale                                     -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] find_vma                                      -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] get_task_policy.part.29                       -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] mem_cgroup_uncharge                           -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __tlb_remove_page_size                        -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] free_p4d_range                                -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] find_busiest_group                            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] update_sd_lb_stats                            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] get_next_timer_interrupt                      -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] rwsem_down_write_failed                       -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] shmem_add_to_page_cache                       -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __lru_cache_add                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] call_rwsem_down_write_failed                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] con_scroll                                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] bit_putcs                                     -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] copy_strings.isra.27                          -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] do_mmap                                       -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] fbcon_scroll                                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] fbcon_redraw.isra.20                          -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] fbcon_putcs                                   -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] free_pgd_range                                -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] ksys_mmap_pgoff                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] lf                                            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] mmap_region                                   -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] rcu_gp_kthread                                -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] vt_console_print                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __mod_node_page_state                         -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __pagevec_lru_add_fn                          -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] account_process_tick                          -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] sys_imageblit                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] vma_interval_tree_insert                      -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __note_gp_changes                             -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] shmem_write_end                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] smp_reschedule_interrupt                      -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] total_mapcount                                -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] poll_idle                                     -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] walk_component                                -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] arch_tlb_finish_mmu                           -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] change_protection                             -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] do_anonymous_page                             -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] drm_fb_helper_sys_imageblit                   -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] sched_exec                                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] flush_tlb_mm_range                            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] flush_tlb_func_common.constprop.8             -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] native_flush_tlb_one_user                     -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] mga_imageblit                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] show_stat                                     -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] tlb_finish_mmu                                -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] tlb_flush_mmu_free                            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] _raw_spin_trylock                             -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] account_system_time                           -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] change_p4d_range                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] cpuacct_account_field                         -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] hrtimer_forward                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] propagate_entity_cfs_rq.isra.81               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __next_timer_interrupt                        -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] free_pcp_prepare                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] mem_cgroup_commit_charge                      -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] cpu_load_update_active                        -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] filemap_map_pages                             -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] refresh_cpu_vm_stats                          -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] release_pages                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] alloc_set_pte                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] page_add_new_anon_rmap                        -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] perf_iterate_sb                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __do_munmap                                   -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __get_free_pages                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __get_user_pages                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __put_anon_vma                                -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] clear_all_latency_tracing                     -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] copy_strings_kernel                           -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] get_user_pages_remote                         -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] lookup_fast                                   -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] perf_poll                                     -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] schedule_preempt_disabled                     -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] schedule_timeout                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] setup_arg_pages                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] task_work_run                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] vmstat_update                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] wake_up_new_task                              -      -
+     0.00%     0.00%  libc-2.24.so        [.] _IO_file_open                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] avc_has_perm_noaudit                          -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] default_send_IPI_single_phys                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] irq_work_tick                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] native_smp_send_reschedule                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] rcu_segcblist_ready_cbs                       -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] retint_kernel                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] vma_interval_tree_remove                      -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] kmem_cache_alloc                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] native_iret                                   -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] update_rt_rq_load_avg                         -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] vsnprintf                                     -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] xas_store                                     -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] mem_cgroup_try_charge_delay                   -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __perf_sw_event                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __vm_munmap                                   -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] change_prot_numa                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] cpu_stopper_thread                            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] do_open_execat                                -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] elf_map                                       -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] finish_fault                                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] migration_cpu_stop                            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] move_queued_task                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] perf_event_mmap                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] ptep_clear_flush                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] queue_work_on                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] remove_vma                                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] seq_printf                                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] seq_vprintf                                   -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] task_numa_work                                -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] unlink_file_vma                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] unmap_region                                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] vma_link                                      -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] PageHuge                                      -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __d_lookup_rcu                                -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __get_user_8                                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] acct_collect                                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] clear_page_erms                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] copy_p4d_range                                -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] cpuidle_not_available                         -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] fput                                          -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] io_serial_out                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] iov_iter_advance                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] kmem_cache_free                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] pvclock_gtod_notify                           -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] rcu_accelerate_cbs                            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] set_task_rq_fair                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] sum_vm_events                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] sum_zone_numa_state                           -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] sync_regs                                     -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] tick_nohz_tick_stopped                        -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] update_vsyscall                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] vma_compute_subtree_gap                       -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __check_object_size                           -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __clear_user                                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __d_lookup                                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] alloc_empty_file                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] find_get_entry                                -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] seq_put_decimal_ull_width                     -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] strnlen_user                                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] update_fast_timekeeper                        -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __do_sys_newfstat                             -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __send_signal                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __vma_link_rb                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __x64_sys_close                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __x64_sys_munmap                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] copy_page_range                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] cursor_timer_handler                          -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] dev_attr_show                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] ep_poll_callback                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] poll_freewait                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] find_lock_entry                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __do_fault                                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] free_unref_page_list                          -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] get_user_arg_ptr.isra.24                      -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] khugepaged                                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] lru_add_drain                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] lru_add_drain_cpu                             -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] mm_init                                       -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] mm_release                                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] notifier_call_chain                           -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] open_exec                                     -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] perf_event_task                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] perf_event_task_output                        -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] pgd_alloc                                     -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] prepare_binprm                                -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] prepare_exit_to_usermode                      -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] pte_alloc_one                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] run_ksoftirqd                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] security_bprm_set_creds                       -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] security_inode_permission                     -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] selinux_inode_permission                      -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] shift_arg_pages                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] signal_wake_up_state                          -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] sysfs_kf_seq_show                             -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] vfs_statx_fd                                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] vmstat_start                                  -      -
+     0.00%     0.00%  libc-2.24.so        [.] open64                                        -      -
+     0.00%     0.00%  libc-2.24.so        [.] time                                          -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] PageHeadHuge                                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] ___slab_alloc                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __alloc_file                                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __dequeue_signal                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __fget                                        -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __page_set_anon_rmap                          -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __rb_insert_augmented                         -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __srcu_read_lock                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __x86_indirect_thunk_r10                      -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __vm_enough_memory                            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __x64_sys_newfstat                            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __x86_indirect_thunk_r14                      -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] call_cpuidle                                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] can_stop_idle_tick.isra.15                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] pm_qos_read_value                             -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] _local_bh_enable                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] acct_account_cputime                          -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] acpi_ds_begin_method_execution                -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] anon_vma_interval_tree_remove                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] avc_has_perm_flags                            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] balance_dirty_pages_ratelimited               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] calc_global_load                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] check_stack_object                            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] clear_user                                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] current_in_userns                             -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] d_lookup                                      -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] dec_zone_page_state                           -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] error_exit                                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] event_sched_out.isra.93                       -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] file_free_rcu                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] filp_close                                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] find_first_bit                                -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] find_next_and_bit                             -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] follow_page_mask                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] free_pages_and_swap_cache                     -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] generic_file_llseek_size                      -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] generic_fillattr                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] get_random_u32                                -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] hrtimer_run_queues                            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] init_entity_runnable_average                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] inode_permission                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] is_file_shm_hugepages                         -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] kfree                                         -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] kill_orphaned_pgrp                            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] kstat_irqs                                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] kthread_should_stop                           -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] lockref_put_or_lock                           -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] lru_cache_add_active_or_unevictable           -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] lru_cache_add_anon                            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] mark_page_accessed                            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] mem_cgroup_throttle_swaprate                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] mem_cgroup_try_charge                         -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] memcg_check_events                            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] memcpy_erms                                   -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] native_set_pmd                                -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] next_zone                                     -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] num_to_str                                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] percpu_counter_add_batch                      -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] perf_mmap_fault                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] perf_output_copy                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] perf_output_put_handle                        -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] policy_node                                   -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] profile_tick                                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] rcu_cblist_dequeue                            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] rcu_idle_exit                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] rcu_report_qs_rnp                             -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] rcu_start_this_gp.isra.18                     -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] security_file_mprotect                        -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] security_inode_getattr                        -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] selinux_bprm_set_creds                        -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] selinux_task_alloc                            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] show_map_vma                                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] special_mapping_close                         -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] tick_nohz_idle_enter                          -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] update_group_capacity                         -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] update_irq_load_avg                           -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] uprobe_free_utask                             -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] vdso_fault                                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] xas_create                                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] xas_find                                      -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] xas_load                                      -      -
+     0.00%     0.00%  libc-2.24.so        [.] _IO_file_write                                -      -
+     0.00%     0.00%  libc-2.24.so        [.] _IO_file_xsputn                               -      -
+     0.00%     0.00%  libc-2.24.so        [.] _IO_link_in                                   -      -
+     0.00%     0.00%  libc-2.24.so        [.] __cxa_finalize                                -      -
+     0.00%     0.00%  libc-2.24.so        [.] __sigsetjmp                                   -      -
+     0.00%     0.00%  libc-2.24.so        [.] _IO_vfscanf                                   -      -
+     0.00%     0.00%  libc-2.24.so        [.] _dl_addr                                      -      -
+     0.00%     0.00%  libc-2.24.so        [.] strlen                                        -      -
+     0.00%     0.00%  libc-2.24.so        [.] strnlen                                       -      -
+     0.00%     0.00%  perf                [.] abs_printout                                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] ___pte_free_tlb                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __fput                                        -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __slab_alloc                                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] __x64_sys_rt_sigreturn                        -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] do_sigaltstack.constprop.38                   -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] vma_interval_tree_insert_after                -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] perf_output_begin                             -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] acpi_os_execute_deferred                      -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] acpi_ev_asynch_execute_gpe_method             -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] acpi_ns_evaluate                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] acpi_ps_execute_method                        -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] acpi_ps_parse_aml                             -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] acpi_ds_call_control_method                   -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] add_wait_queue                                -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] anon_vma_clone                                -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] anon_vma_fork                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] arch_align_stack                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] call_function_single_interrupt                -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] cap_bprm_set_creds                            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] count.isra.25.constprop.40                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] cpu_stop_queue_work                           -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] cpuidle_governor_latency_req                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] cpumask_next_and                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] create_elf_tables                             -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] cred_has_capability                           -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] ctx_resched                                   -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] ctx_sched_out                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] devkmsg_read                                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] do_dentry_open                                -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] do_faccessat                                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] do_notify_parent                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] do_send_sig_info                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] do_signal                                     -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] dequeue_signal                                -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] dput                                          -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] drain_zone_pages                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] event_function                                -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] exit_robust_list                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] exit_tasks_rcu_start                          -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] expand_downwards                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] filename_lookup                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] flush_smp_call_function_queue                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] free_ldt_pgtables                             -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] generic_file_mmap                             -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] generic_file_read_iter                        -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] get_signal                                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] getname_flags                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] group_sched_out.part.95                       -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] hrtimer_get_next_event                        -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] it_real_fn                                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] kill_pid_info                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] kstat_irqs_usr                                -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] ksys_lseek                                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] lock_timer_base                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] may_open                                      -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] meminfo_proc_show                             -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] memcpy                                        -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] menu_reflect                                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] move_page_tables                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] next_online_pgdat                             -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] node_read_numastat                            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] node_read_vmstat                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] page_add_file_rmap                            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] path_lookupat                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] perf_event_mmap_output                        -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] perf_output_end                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] perf_pending_event                            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] perf_event_wakeup                             -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] pollwake                                      -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] prepare_exec_creds                            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] prepare_creds                                 -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] rcu_accelerate_cbs_unlocked                   -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] rcu_segcblist_pend_cbs                        -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] remote_function                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] restore_altstack                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] perf_event_fork                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] sched_fork                                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] sched_move_task                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] security_file_open                            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] security_inode_follow_link                    -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] security_mmap_file                            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] security_task_alloc                           -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] security_vm_enough_memory_mm                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] selinux_file_open                             -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] selinux_inode_follow_link                     -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] selinux_mmap_file                             -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] selinux_vm_enough_memory                      -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] show_map                                      -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] simple_getattr                                -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] smp_call_function_single_interrupt            -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] stop_one_cpu                                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] strncpy_from_user                             -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] switch_mm                                     -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] task_numa_fault                               -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] task_rq_lock                                  -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] tick_do_update_jiffies64.part.16              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] trailing_symlink                              -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] up_read                                       -      -
+     0.00%     0.00%  [kernel.kallsyms]   [k] vfs_getattr                                   -      -
+     0.00%     0.00%  libc-2.24.so        [.] _IO_file_close                                -      -
+     0.00%     0.00%  libc-2.24.so        [.] __fxstat64                                    -      -
+     0.00%     0.00%  libc-2.24.so        [.] _exit                                         -      -
+     0.00%     0.00%  libc-2.24.so        [.] close                                         -      -
+     0.00%     0.00%  libc-2.24.so        [.] getenv                                        -      -
+     0.00%     0.00%  libc-2.24.so        [.] lseek64                                       -      -
+     0.00%     0.00%  libc-2.24.so        [.] mmap64                                        -      -
+     0.00%     0.00%  libc-2.24.so        [.] munmap                                        -      -
+     0.00%     0.00%  libc-2.24.so        [.] vsscanf                                       -      -
+     0.00%     0.00%  libc-2.24.so        [.] wait4                                         -      -
+     0.00%     0.00%  perf                [.] start_thread                                  -      -
+     0.00%     0.00%  perf                [.] perf_evlist__poll_thread                      -      -
+     0.00%     0.00%  perf                [.] perf_evlist__print_counters                   -      -
+     0.00%     0.00%  perf                [.] printout.constprop.19                         -      -
+
+
+# Samples: 0  of event 'dummy:HG'
+# Event count (approx.): 0
+#
+# Children      Self  Shared Object  Symbol  IPC   [IPC Coverage]
+# ........  ........  .............  ......  ....................
+#
+
+
+#
+# (Cannot load tips.txt file, please install perf!)
+#
