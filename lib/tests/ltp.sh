@@ -24,8 +24,13 @@ split_syscalls()
 			i=$(($i+1))
 			n=1
 		fi
-		echo "$line" >> "runtest/syscalls_part${i}"
-		n=$(($n+1))
+
+		if [[ "$line" =~ "tgkill" ]];then
+			echo "$line" >> "runtest/syscalls_tgkill"
+		else
+			echo "$line" >> "runtest/syscalls_part${i}"
+			n=$(($n+1))
+		fi
 	done
 
 	echo "Splitting syscalls to syscalls_part1, ..., syscalls_part$i"
