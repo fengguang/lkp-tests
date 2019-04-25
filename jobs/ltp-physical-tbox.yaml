@@ -10,6 +10,12 @@ ltp_branch: ltp/master
 need_modules: true
 need_memory: 4G
 need_physical_tbox: true
+
+ltp:
+  test:
+  - syscalls_tgkill
+
+---
 oom-killer:
   ignored: 1
 
