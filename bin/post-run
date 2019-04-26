@@ -148,10 +148,11 @@ wait_for_pipe()
 	return 1
 }
 
+# program log (such as sleep in boot job) will be uploaded by this function
 copy_results()
 {
 	[ -n "$TMP_RESULT_ROOT" ] || return
-	[ "$TMP_RESULT_ROOT" = "$RESULT_ROOT" ] && return
+	[ "$result_fs" != "raw_upload" ] && [ "$TMP_RESULT_ROOT" = "$RESULT_ROOT" ] && return
 
 	local tmp_results="$(find $TMP_RESULT_ROOT -type f -size +0)"
 	[ -n "$tmp_results" ] || return

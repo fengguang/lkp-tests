@@ -69,7 +69,11 @@ mount_result_root()
 			mount -t tmpfs result $RESULT_MNT || return
 			;;
 		raw_upload)
-			result_fs=raw_upload
+			# it means previous RESULT_ROOT is not a mount point, even
+			# it may does not exist, but the later code will try to access $RESULT_ROOT.
+			# To avoid the access problem, make it be same with TMP_RESLT_ROOT.
+			export RESULT_ROOT=$TMP_RESULT_ROOT
+			export result_fs=raw_upload # so that post-run can read it
 			return
 			;;
 		*:*)
