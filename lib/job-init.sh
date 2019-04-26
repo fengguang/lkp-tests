@@ -42,6 +42,11 @@ supports_netfs()
 	grep -q -w $1 /proc/filesystems
 }
 
+supports_raw_upload()
+{
+	has_cmd lftp || has_cmd curl || has_cmd rsync
+}
+
 setup_result_service()
 {
 	[ -n "$result_service" ] && return
@@ -49,7 +54,7 @@ setup_result_service()
 
 	supports_netfs 'nfs'	&& result_service=$LKP_SERVER:/result	&& return
 	supports_netfs 'cifs'	&& result_service=//$LKP_SERVER/result	&& return
-	has_cmd rsync && is_local_server && result_service=rsync://$LKP_SERVER/result && return
+	supports_raw_upload && result_service=raw_upload && return
 
 	return 1
 }
@@ -63,8 +68,8 @@ mount_result_root()
 			result_fs=tmpfs
 			mount -t tmpfs result $RESULT_MNT || return
 			;;
-		rsync://*/*)
-			result_fs=rsync
+		raw_upload)
+			result_fs=raw_upload
 			return
 			;;
 		*:*)
