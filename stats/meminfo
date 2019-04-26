@@ -7,7 +7,7 @@ mused = []
 STDIN.each_line do |line|
   case line
   when /^time:/
-    puts line
+    puts line.sub(/\.$/, '')
   else
     key, value, unit = line.split
     key = key.chomp(':')
