@@ -332,6 +332,7 @@ leaking_addresses.total_number
 ^stderr.users_on_this_machine
 ^stderr.wflinfo_utility_not_found
 ^stderr.*write_error
+^stderr.Wrong_test_file.*this_will_cause_the_piglit_to_crash
 ^stderr.xinit:error_while_loading_shared_libraries:libX11.so.#:cannot_open_shared_object_file:No_such_file_or_directory
 ^stderr.zero-sized_data\(perf.data\),nothing_to_do
 ^syzkaller.*
