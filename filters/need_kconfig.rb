@@ -1,5 +1,17 @@
 #!/usr/bin/env ruby
 
+require 'yaml'
+
+def read_kernel_version_from_context
+  return nil unless self['kernel']
+
+  context_file = File.expand_path '../context.yaml', kernel
+  return nil unless File.exist? context_file
+
+  context = YAML.load(File.read(context_file))
+  context['rc_tag']
+end
+
 def read_kconfig_lines
   return nil unless self['kernel']
   kconfig_file = File.expand_path '../.config', kernel
@@ -22,13 +34,26 @@ def check_kconfig(kconfig_lines, line)
 end
 
 def check_all(kconfig_lines)
+  kernel_version = read_kernel_version_from_context
   $___.each do |e|
-    next if check_kconfig(kconfig_lines, e)
+    # we use regular expression to redesign include kconfig format, like this:
+    # CONFIG_XXXX=m ~ v(4\.0) # support kernel >=v4.0-rc1 && <=v4.0
+    # CONFIG_YYYY=y ~ v(4\.1[7-9]|4\.20|5\.) # support kernel >=v4.17-rc1
+    # CONFIG_ZZZZ=y ~ v(4\.|5\.0) # support kernel >=v4.0-rc1 && <=v5.0
+    # note: just match kernel version from v4.0 to lastest
+    config, kernel_version_regexp = e.split(' ~ ')
+    if kernel_version && kernel_version_regexp
+      next if kernel_version !~ /#{kernel_version_regexp}/
+    end
+    next if check_kconfig(kconfig_lines, config)
 
     # need_kconfig
-    raise Job::ParamError, "kconfig not satisfied: #{e}" unless __FILE__ =~ /suggest_kconfig/
+    kconfig_error_message = "#{config} is not satisfied"
+    kconfig_error_message = "#{kconfig_error_message} by #{kernel_version}" if kernel_version
+    kconfig_error_message = "#{kconfig_error_message}, it is only satisfied by kernel matching #{kernel_version_regexp} regexp" if kernel_version_regexp
+    raise Job::ParamError, "#{kconfig_error_message}" unless __FILE__ =~ /suggest_kconfig/
 
-    puts "suggest kconfig: #{e}"
+    puts "suggest kconfig: #{config}"
   end
 end
 
