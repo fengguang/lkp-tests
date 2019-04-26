@@ -17,17 +17,17 @@ build()
 
 	tar -xzvf ../mpi-selector-1.0.3.tar.gz -C ../
 	cd ../mpi-selector-1.0.3
-	./configure || return
-	make install || return
+	./configure 2>&1 || return
+	make install 2>&1 || return
 
 	cd ../reflink/
-	./configure || return
-	make install || return
+	./configure 2>&1 || return
+	make install 2>&1 || return
 
 	cd ../ocfs2-test
 	patch_source
 	patch -p1 < $LKP_SRC/pack/ocfs2test02.patch || return
-	./autogen.sh prefix=/ || return
+	./autogen.sh prefix=/ 2>&1 || return
 
 	[ "$distro" != "centos" ] && {
 		# include libc6-dev_2.23's header
@@ -40,12 +40,12 @@ build()
 		sed -i -e '/^INCLUDES =/a\INCLUDES += -I..\/..\/extract\/usr\/include\/x86_64-linux-gnu -I..\/..\/extract\/usr\/include' programs/reflink_tests/Makefile
 	}
 
-	make || return
+	make 2>&1 || return
 }
 
 install()
 {
-	make install DESTDIR=$BM_ROOT/ocfs2 || return
+	make install DESTDIR=$BM_ROOT/ocfs2 2>&1 || return
 
 	cp /usr/local/bin/reflink $BM_ROOT
 }
