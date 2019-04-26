@@ -325,6 +325,7 @@ leaking_addresses.total_number
 ^stderr.The_wrong_test*
 ^stderr.Timeout,server#not_responding
 ^stderr.Traceback\(most_recent_call_last\)
+^stderr.trinity_is_not_installed
 ^stderr.+unable_to_open/dev/sd[a-z]+[0-9]+:Device_or_resource_busy
 ^stderr.Unexpected_error:Inappropriate_ioctl_for_device
 ^stderr../(unix|unlink)[1-2]_(processes|threads):error_while_loading_shared_libraries
