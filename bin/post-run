@@ -183,9 +183,9 @@ copy_time_files()
 	return $ret_copy_time_files
 }
 
-copy_results
-
 copy_time_files || ps faux --cols 1000 2>/dev/null > $RESULT_ROOT/time-debug || ps > $RESULT_ROOT/time-debug
+
+copy_results
 
 [ "$kconfig" = "x86_64-rhel-7.2-gcov" -o "$kconfig" = "x86_64-rhel-7.2-clear-gcov" ] && [ -d /sys/kernel/debug/gcov ] && {
 	$LKP_SRC/tools/gather-gcov-test $TMP/gcov-test.tar.gz
