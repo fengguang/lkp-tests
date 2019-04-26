@@ -153,6 +153,8 @@ upload_files()
 
 	[ $# -ne 0 ] || return
 
+	# NO_NETWORK is empty: means network is avaliable
+	# VM_VIRTFS is empty: means it's not a 9p fs(used by lkp-qemu)
 	if [ -z "$NO_NETWORK$VM_VIRTFS" ]; then
 		if has_cmd rsync && is_local_server; then
 			upload_files_rsync "$@"
@@ -168,10 +170,16 @@ upload_files()
 			upload_files_curl "$@"
 			return
 		fi
+
+		if [ -z "$NO_NETWORK" ]; then
+			# NFS is the last resort -- it seems unreliable, either some
+			# content has not reached NFS server during post processing, or
+			# some files occasionally contain some few '\0' bytes.
+			upload_files_copy "$@"
+			return
+		fi
 	else
-		# NFS is the last resort -- it seems unreliable, either some
-		# content has not reached NFS server during post processing, or
-		# some files occasionally contain some few '\0' bytes.
+		# 9pfs, copy directly
 		upload_files_copy "$@"
 		return
 	fi
