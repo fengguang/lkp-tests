@@ -330,6 +330,7 @@ leaking_addresses.total_number
 ^stderr.Usage:perf_stat
 ^stderr.Usage:sed
 ^stderr.users_on_this_machine
+^stderr./usr/bin/env:.*ruby.*:No_such_file_or_directory
 ^stderr.wflinfo_utility_not_found
 ^stderr.*write_error
 ^stderr../writeseek[1-3]_(processes|threads):error_while_loading_shared_libraries
