@@ -282,6 +282,7 @@ leaking_addresses.total_number
 ^stderr.Error_on#events_is_too_high
 ^stderr.Error:unknown_switch
 ^stderr.event_filter
+^stderr.failed_clone_ltp_tree_ltp
 ^stderr.failed_to_checkout_sof_commit
 ^stderr.Failed_to_connect_to_hostapd-wpa_ctrl_open:No_such_file_or_directory
 ^stderr.*Failed_to_fetch_http
@@ -323,6 +324,7 @@ leaking_addresses.total_number
 ^stderr.sys.exit\(runner\(args\)\)
 ^stderr.Testing_over
 ^stderr.The_wrong_test*
+^stderr.timeout:failed_to_run_command.*git.*:No_such_file_or_directory
 ^stderr.Timeout,server#not_responding
 ^stderr.Traceback\(most_recent_call_last\)
 ^stderr.trinity_is_not_installed
