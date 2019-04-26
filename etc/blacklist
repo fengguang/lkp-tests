@@ -269,6 +269,8 @@ leaking_addresses.total_number
 ^slabinfo.
 ^softirqs.
 ^softirqs.CPU
+^stderr.-(a|A|B|C|D|d|e|G|g|I|i|M|n|o|p|r|S|t|T|v|x),--
+^stderr.--(append|filter|interval|log|metric|no|per|post|pre|scale|smi|table|timeout|topdown)
 ^stderr.AssertionError
 ^stderr.*:cannot_create_regular_file.*:File_exists
 ^stderr.Can_not_find_perf_command
@@ -278,6 +280,8 @@ leaking_addresses.total_number
 ^stderr.curl.*Empty_reply_from_server
 ^stderr.disk_number.*
 ^stderr.Error_on#events_is_too_high
+^stderr.Error:unknown_switch
+^stderr.event_filter
 ^stderr.failed_to_checkout_sof_commit
 ^stderr.Failed_to_connect_to_hostapd-wpa_ctrl_open:No_such_file_or_directory
 ^stderr.*Failed_to_fetch_http
@@ -303,10 +307,12 @@ leaking_addresses.total_number
 ^stderr.make.*Error
 ^stderr.make_perf_failed
 ^stderr.modprobe:ERROR:../libkmod/libkmod.c:#kmod_search_moddep\(\)could_not_open_moddep_file
+^stderr.monitor_specified_metrics_or_metric_groups
 ^stderr.rsync:change_dir__tmp_lkp_piglit-results_failed:No_such_file_or_directory
 ^stderr.No_pmem_device
 ^stderr.(perf:)?Segmentation_fault
 ^stderr.pmeter_server_does_not_start_correctly
+^stderr.print_counts_(at_regular_interval_in_ms|with_custom_separator|for_fixed_number_of_times)
 ^stderr.*scripts/aim_..sh:not_found
 ^stderr.See.*for_details
 ^stderr.sh:echo:I/O_error
