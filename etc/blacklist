@@ -327,6 +327,7 @@ leaking_addresses.total_number
 ^stderr.Traceback\(most_recent_call_last\)
 ^stderr.+unable_to_open/dev/sd[a-z]+[0-9]+:Device_or_resource_busy
 ^stderr.Unexpected_error:Inappropriate_ioctl_for_device
+^stderr../(unix|unlink)[1-2]_(processes|threads):error_while_loading_shared_libraries
 ^stderr.Usage:perf_stat
 ^stderr.Usage:sed
 ^stderr.users_on_this_machine
