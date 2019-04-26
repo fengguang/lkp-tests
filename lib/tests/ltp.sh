@@ -138,8 +138,6 @@ install_ltp()
 	make install
 	cp testcases/commands/tpm-tools/tpmtoken/tpmtoken_import/tpmtoken_import_openssl.cnf $1/testcases/bin/
 	cp testcases/commands/tpm-tools/tpmtoken/tpmtoken_protect/tpmtoken_protect_data.txt  $1/testcases/bin/
-	grep -v -w -f $LKP_SRC/pack/ltp-black-list \
-	runtest/syscalls > $1/runtest/syscalls
 }
 
 check_ignored_cases()
