@@ -10,7 +10,7 @@
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/upload.sh
 
-tset=${group%%-*}
+test=${group%%-*}
 
 if [ "${group#*-}" = "all" ]; then
 	config_file=$BENCHMARK_ROOT/piglit/groups/$group
@@ -25,18 +25,18 @@ tmp_results="$TMP/piglit-results"
 while read errorcase
 do
   echo "The wrong test $errorcase will cause the piglit to crash and will not be run" >&2
-done < <(grep -F -x -v -f $BENCHMARK_ROOT/piglit/groups/$tset-all $config_file)
+done < <(grep -F -x -v -f $BENCHMARK_ROOT/piglit/groups/$test-all $config_file)
 
 if [ -s "$LKP_SRC/pack/piglit-addon/groups/ignored_by_lkp" ]; then
-	testcases=$(grep -F -x -f $BENCHMARK_ROOT/piglit/groups/$tset-all $config_file | grep -F -x -v -f $LKP_SRC/pack/piglit-addon/groups/ignored_by_lkp)
+	testcases=$(grep -F -x -f $BENCHMARK_ROOT/piglit/groups/$test-all $config_file | grep -F -x -v -f $LKP_SRC/pack/piglit-addon/groups/ignored_by_lkp)
 
-	ignored_cases=$(grep -F -x -f $BENCHMARK_ROOT/piglit/groups/$tset-all $config_file | grep -F -x -f $LKP_SRC/pack/piglit-addon/groups/ignored_by_lkp)
+	ignored_cases=$(grep -F -x -f $BENCHMARK_ROOT/piglit/groups/$test-all $config_file | grep -F -x -f $LKP_SRC/pack/piglit-addon/groups/ignored_by_lkp)
 	for ignored_case in $ignored_cases
 	do
 		echo "$ignored_case: ignored_by_lkp"
 	done
 else
-	testcases=$(grep -F -x -f $BENCHMARK_ROOT/piglit/groups/$tset-all $config_file)
+	testcases=$(grep -F -x -f $BENCHMARK_ROOT/piglit/groups/$test-all $config_file)
 fi
 [ -n "$testcases" ] || die "can not get piglit test cases"
 
@@ -46,7 +46,7 @@ do
 	# recently piglit change the match method, so here we change '/' to '.'
 	testcase=$(echo $testcase | sed 's/\//./g')
 	# using excluding(-x) to avoid running all matching case
-	log_cmd piglit run $tset -t "$testcase" "$tmp_results" -x "${testcase}."
+	log_cmd piglit run $test -t "$testcase" "$tmp_results" -x "${testcase}."
 	end_time=$(date +%s.%N)
 	id=$(echo "$testcase" | tr ' ' _).seconds
 	elapsed=$(echo $end_time - $start_time | bc)
