@@ -66,6 +66,32 @@ do
 	shift
 done
 
+validate_parameters()
+{
+    local ret=0
+    for filename in "$@"
+    do
+        if [ -x "$filename" ]; then
+            continue
+        elif [ ${filename##*.} = "yaml" ]; then
+            if [ -f $filename ]; then
+                grep -q '^arch: ' $filename || {
+                    echo "only atomic jobs can be installed" >&2
+                    echo "Please run lkp split-job $filename first" >&2
+                    ret=1
+                }
+            else
+                echo "$0: cannot find file $filename" >&2
+                ret=1
+            fi
+        else
+            echo "$0: skip unknown parameter $filename" >&2
+            ret=1
+        fi
+    done
+    return $ret
+}
+
 make_wakeup() {
 	echo "make -C $LKP_SRC/bin/event"
 	[ -n "$DRY_RUN" ] && return
@@ -272,6 +298,8 @@ export DISTRO
 
 export LKP_LOCAL_RUN=1
 
+validate_parameters $@ || exit 1
+
 [ -n "$SKIP_BASE" ] || install_base_support
 
 for filename in "$@"
@@ -280,18 +308,7 @@ do
 	if [ -x "$filename" ]; then
 		scripts=$(basename $filename)
 	elif [ ${filename##*.} = "yaml" ]; then
-		if [ -f $filename ]; then
-			grep -q '^arch: ' $filename || {
-				echo "only atomic jobs can be installed" >&2
-				echo "Please run lkp split-job $filename first" >&2
-				exit 1
-			}
-			parse_yaml $filename
-		else
-			echo "$0: cannot find file $filename" >&2
-		fi
-	else
-		echo "$0: skip unknown parameter $filename" >&2
+		parse_yaml $filename
 	fi
 
 	for script in $scripts
