@@ -3,7 +3,7 @@ testcase: makepkg-deps
 
 testbox: lkp-opteron1
 branch: linus/master
-commit: CYCLIC_BASE
+commit: RELEASE
 
 rootfs:
 - debian-x86_64.cgz
