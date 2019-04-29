@@ -1,0 +1,16 @@
+---
+
+#! pmbench.yaml
+suite: pmbench
+testcase: pmbench
+category: benchmark
+runtime: 30s
+nr_threads: 100%
+stats_part: beginning
+stats_part_end: 10
+pmbench:
+  mapsize: 75%
+  cold: 1
+job_origin: pmbench.yaml
+testbox: lkp-bdw-ep4
+tbox_group: lkp-bdw-ep4
