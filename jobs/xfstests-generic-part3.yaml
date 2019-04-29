@@ -17,3 +17,14 @@ fs:
 xfstests:
   test:
   - generic-299
+
+---
+
+fs:
+- ext4
+- xfs
+- btrfs
+
+xfstests:
+  test:
+  - generic-231

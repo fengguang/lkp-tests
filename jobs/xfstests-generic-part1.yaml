@@ -31,14 +31,3 @@ xfstests:
   - generic-logwrites
 # - generic-new
 # - generic-all
-
----
-
-fs:
-- ext4
-- xfs
-- btrfs
-
-xfstests:
-  test:
-  - generic-231
