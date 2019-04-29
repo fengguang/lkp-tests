@@ -57,7 +57,13 @@ setup_config()
 	partition="${partitions%% *}"
 	[ "$partition" ] || return
 
-	[ "$test" = "MWUM" -o "$test" = "MWUL" ] && {
+	# some tests create testfiles on host's device, e.g when we run test
+	# DWTL on ivb44, DWTL creates 24 testfiles on /dev/sdb1, each testfile
+	# is 16G. DWTL need a lot of time to finish, it always timeout.
+	# testfile's size is determined by the host device, the default test
+	# device is hdd/ssd in lkp, testfiles's size will be too large.
+	# setup_test_block creates a small device to speed up tests.
+	[ "$test" = "MWUM" -o "$test" = "MWUL" -o "$test" = "DWTL" ] && {
 		setup_test_block || return
 	}
 
