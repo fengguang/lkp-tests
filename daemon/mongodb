@@ -9,6 +9,13 @@
 bg_pids=""
 mongodb_server="$BENCHMARK_ROOT/mongodb/bin/mongod"
 
+if [ -n "$mount_points" ]; then
+	MONGODB_DIR="${mount_points%% *}"
+else
+	echo "Can not get the mount points, exit!" 1>&2
+	exit 1
+fi
+
 parse_numa_node_binding "$mongodb_cpu_node_bind" "$mongodb_mem_node_bind"
 
 # start mongodb server
@@ -16,7 +23,7 @@ for i in $(seq 1 "$nr_processes")
 do
 	port=$((27016+i))
 	numa_bind=$(numa_node_binding "$i")
-	log_eval "$numa_bind $mongodb_server --port $port --dbpath=${TMP}/mongodb/dbdir_$i/ --config ${TMP_RESULT_ROOT}/mongod.conf.$i &"
+	log_eval "$numa_bind $mongodb_server --port $port --dbpath=${MONGODB_DIR}/mongodb/dbdir_$i/ --config ${TMP_RESULT_ROOT}/mongod.conf.$i &"
 	bg_pids="$bg_pids $!"
 done
 

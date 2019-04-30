@@ -1,9 +1,15 @@
 #!/bin/sh
 # - nr_processes
+if [ -n "$mount_points" ]; then
+	MONGODB_DIR="${mount_points%% *}"
+else
+	echo "Can not get the mount points, exit!" 1>&2
+	exit 1
+fi
 
 for i in $(seq 1 "$nr_processes")
 do
-	mkdir -p "$TMP/mongodb/dbdir_$i"
+	mkdir -p "$MONGODB_DIR/mongodb/dbdir_$i"
 	port=$((27016 + i))
 	cat > "$TMP_RESULT_ROOT/mongod.conf.$i" <<EOF
 # for documentation of all options, see:
@@ -11,7 +17,7 @@ do
 
 # Where and how to store data.
 storage:
- dbPath: $TMP/mongodb/dbdir_$i
+ dbPath: $MONGODB_DIR/mongodb/dbdir_$i
  journal:
   enabled: true
 #  engine:
@@ -22,7 +28,7 @@ storage:
 systemLog:
  destination: file
  logAppend: true
- path: $TMP/mongodb/dbdir_$i/mongod.log
+ path: $MONGODB_DIR/mongodb/dbdir_$i/mongod.log
 
 # network interfaces
 net:
