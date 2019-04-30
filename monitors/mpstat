@@ -8,8 +8,15 @@
 
 . $LKP_SRC/lib/wait.sh
 . $LKP_SRC/lib/common.sh
+. $LKP_SRC/lib/env.sh
 
 mpstat="/lkp/benchmarks/sysstat/usr/local/bin/mpstat"
+
+[ -e $mpstat ] || {
+	# clearlinux has not supported makepkg yet.
+	# rollback to the default mpstat
+	is_clearlinux && mpstat="mpstat"
+}
 
 : ${interval:=1}
 
