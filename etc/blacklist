@@ -361,6 +361,7 @@ leaking_addresses.total_number
 ^stderr.grep.+last_state:No_such_file_or_directory
 ^stderr.has_stderr
 ^stderr.Illegal_instruction
+^stderr.\(In_some_cases_useful_info_about_processes_that
 ^stderr.*Invalid_argument
 ^stderr.Invalid_number_of_requests
 ^stderr.Killed
@@ -372,6 +373,7 @@ leaking_addresses.total_number
 ^stderr.make_perf_failed
 ^stderr.modprobe:ERROR:../libkmod/libkmod.c:#kmod_search_moddep\(\)could_not_open_moddep_file
 ^stderr.monitor_specified_metrics_or_metric_groups
+^stderr.mount:you_must_specify_the_filesystem_type
 ^stderr.rsync:change_dir__tmp_lkp_piglit-results_failed:No_such_file_or_directory
 ^stderr.No_pmem_device
 ^stderr.(perf:)?Segmentation_fault
@@ -391,6 +393,8 @@ leaking_addresses.total_number
 ^stderr.Timeout,server#not_responding
 ^stderr.Traceback\(most_recent_call_last\)
 ^stderr.trinity_is_not_installed
+^stderr.umount:/tmp/vm-scalability-tmp:target_is_busy
+^stderr.umount:/tmp/vm-scalability-tmp/vm-scalability:not_mounted
 ^stderr.+unable_to_open/dev/sd[a-z]+[0-9]+:Device_or_resource_busy
 ^stderr.Unexpected_error:Inappropriate_ioctl_for_device
 ^stderr.Unit_nfs-kernel-server.service_could_not_be_found
@@ -398,6 +402,7 @@ leaking_addresses.total_number
 ^stderr.Usage:perf_stat
 ^stderr.Usage:sed
 ^stderr.users_on_this_machine
+^stderr.use_the_device_is_found_by_lsof\(#\)or_fuser\(#\).\)
 ^stderr./usr/bin/env:.*ruby.*:No_such_file_or_directory
 ^stderr.Warning,had_trouble_writing_out_superblocks
 ^stderr.wflinfo_utility_not_found
