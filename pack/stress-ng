@@ -1,8 +1,8 @@
 #!/bin/bash
 
 NAME=stress-ng
-VERSION=0.08.03
-WEB_URL="http://kernel.ubuntu.com/~cking/tarballs/stress-ng/${NAME}-${VERSION}.tar.gz"
+VERSION=0.09.58
+WEB_URL="http://kernel.ubuntu.com/~cking/tarballs/stress-ng/${NAME}-${VERSION}.tar.xz"
 download()
 {
 	wget -O ${BM_NAME} $WEB_URL
@@ -10,7 +10,7 @@ download()
 
 build()
 {
-	tar -zxf ${BM_NAME}
+	tar xvJf ${BM_NAME}
 	cd ${NAME}-${VERSION}
 	make
 }
