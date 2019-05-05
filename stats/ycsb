@@ -101,6 +101,8 @@ $stdin.each_line do |line|
     add_result($results_total, 'insert_failed_95%latency', $1.to_f)
   when /INSERT-FAILED\W, 99thPercentileLatency.us., (\d+)$/
     add_result($results_total, 'insert_failed_99%latency', $1.to_f)
+  when /^preload duration: (\d+\.\d+)$/
+    puts "preload_duration: #{$1}"
   end
 end
 

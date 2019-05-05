@@ -12,6 +12,7 @@
 # - ycsb_cpu_node_bind
 # - ycsb_mem_node_bind
 # - nr_threads
+# - preload
 
 
 ##The Yahoo! Cloud Serving Benchmark (YCSB) is an open-source
@@ -31,6 +32,23 @@ mongodb.database=ycsbdb
 mongodb.writeConcern=none
 EOF
 done
+
+if [ -n "$preload" ]; then
+	cat > "$TMP_RESULT_ROOT"/workload_mongodb_preload <<EOF
+recordcount=${n_recordcount}
+operationcount=${n_operationcount}
+workload=com.yahoo.ycsb.workloads.CoreWorkload
+
+readallfields=${is_readallfields}
+
+readproportion=0
+updateproportion=1
+scanproportion=${n_scanproportion}
+insertproportion=${n_insertproportion}
+
+requestdistribution=uniform
+EOF
+fi
 
 cat > "$TMP_RESULT_ROOT"/workload_mongodb <<EOF
 recordcount=${n_recordcount}
@@ -61,6 +79,26 @@ rm -rf "\$ycsb_dir"
 mkdir -p "\$ycsb_dir"
 
 parse_numa_node_binding "$ycsb_cpu_node_bind" "$ycsb_mem_node_bind"
+
+if [ -n "\$preload" ]; then
+	begin=\$(date +%s.%N)
+	for i in \$(seq 1 "$nr_processes")
+	do
+		args="\
+		load mongodb \
+		-P $TMP_RESULT_ROOT/workload_mongodb_preload \
+		-P $TMP_RESULT_ROOT/configfile_mongodb.\$i \
+		-s \
+		-threads $nr_threads \
+		"
+		numa_bind=\$(numa_node_binding "\$i")
+		log_test \$numa_bind ycsb \$args > /dev/null &
+	done
+	wait
+	end=\$(date +%s.%N)
+	duration=\$(echo "\$end-\$begin" |bc)
+	echo "preload duration: \$duration"
+fi
 
 for i in \$(seq 1 "$nr_processes")
 do
