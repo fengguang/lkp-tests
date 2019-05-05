@@ -388,6 +388,7 @@ leaking_addresses.total_number
 ^stderr.swapon:cannot_open/dev/disk/by-id/.*:No_such_file_or_directory
 ^stderr.sys.exit\(runner\(args\)\)
 ^stderr.Testing_over
+^stderr.The_sys_perf_event_open\(\)syscall_returned_with#\(No_such_device\)for_event
 ^stderr.The_wrong_test*
 ^stderr.timeout:failed_to_run_command.*git.*:No_such_file_or_directory
 ^stderr.Timeout,server#not_responding
