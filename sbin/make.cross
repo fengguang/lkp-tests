@@ -163,7 +163,7 @@ setup_crosstool()
 			gcc_arch=riscv64-linux
 			;;
 		s390)
-			gcc_arch=s390x-linux
+			gcc_arch=s390-linux
 			;;
 		tile|tilegx)
 			gcc_arch=tilegx-linux
