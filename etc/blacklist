@@ -343,6 +343,7 @@ leaking_addresses.total_number
 ^stderr.disk_number.*
 ^stderr.Error_on#events_is_too_high
 ^stderr.Error:unknown_switch
+^stderr.*error_while_loading_shared_libraries.*cannot_open_shared_object_file:No_such_file_or_directory
 ^stderr.event_filter
 ^stderr.failed_clone_ltp_tree_ltp
 ^stderr.failed_to_checkout_sof_commit
