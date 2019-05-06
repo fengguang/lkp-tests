@@ -359,6 +359,7 @@ leaking_addresses.total_number
 ^stderr.failed_to_checkout_sof_commit
 ^stderr.Failed_to_connect_to_hostapd-wpa_ctrl_open:No_such_file_or_directory
 ^stderr.*Failed_to_fetch_http
+^stderr.failed_to_load_locktorture_module,try_to_enable_CONFIG_LOCK_TORTURE_TEST_and_build_locktorture.ko
 ^stderr.failed_to_mmap_with#\(Cannot_allocate_memory\)
 ^stderr.failed_to_prepare_for_bpf
 ^stderr.Failed_to_restart_nfs-server.service:Unit_nfs-server.service_not_found
@@ -385,7 +386,9 @@ leaking_addresses.total_number
 ^stderr.main\(\)
 ^stderr.make.*Error
 ^stderr.make_perf_failed
+^stderr.modprobe:ERROR:could_not_insert'locktorture':(Cannot_allocate_memory|Device_or_resource_busy|Exec_format_error)
 ^stderr.modprobe:ERROR:../libkmod/libkmod.c:#kmod_search_moddep\(\)could_not_open_moddep_file
+^stderr.modprobe:FATAL:Module_locktorture_not_found_in_directory/lib/modules/
 ^stderr.monitor_specified_metrics_or_metric_groups
 ^stderr.mount.nfs:Network_is_unreachable
 ^stderr.mount:you_must_specify_the_filesystem_type
