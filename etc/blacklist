@@ -332,8 +332,10 @@ leaking_addresses.total_number
 ^softirqs.
 ^softirqs.CPU
 ^stderr.-(a|A|B|C|D|d|e|G|g|I|i|M|n|o|p|r|S|t|T|v|x),--
+^stderr.-(aAppend|f_FMT|o_FILE|pPOSIX|vVerbose)
 ^stderr.--(append|filter|interval|log|metric|no|per|post|pre|scale|smi|table|timeout|topdown)
 ^stderr.AssertionError
+^stderr.BusyBox.*multi-call_binary
 ^stderr.*:cannot_create_regular_file.*:File_exists
 ^stderr.Can_not_find_perf_command
 ^stderr.configure.*
@@ -380,9 +382,11 @@ leaking_addresses.total_number
 ^stderr.(perf:)?Segmentation_fault
 ^stderr.pmeter_server_does_not_start_correctly
 ^stderr.print_counts_(at_regular_interval_in_ms|with_custom_separator|for_fixed_number_of_times)
+^stderr.Run_PROG,display_resource_usage_when_it_exits
 ^stderr.*scripts/aim_..sh:not_found
 ^stderr.See.*for_details
 ^stderr.sh:echo:I/O_error
+^stderr.sleep:invalid_number
 ^stderr.socket:Too_many_open_files
 ^stderr.some_monitors_do_not_quit_in_time
 ^stderr.src/arch/xtensa/.*
@@ -403,6 +407,7 @@ leaking_addresses.total_number
 ^stderr../(unix|unlink)[1-2]_(processes|threads):error_while_loading_shared_libraries
 ^stderr.Usage:perf_stat
 ^stderr.Usage:sed
+^stderr.Usage:time\[-vpa\]\[-o_FILE\]PROG_ARGS
 ^stderr.users_on_this_machine
 ^stderr.use_the_device_is_found_by_lsof\(#\)or_fuser\(#\).\)
 ^stderr./usr/bin/env:.*ruby.*:No_such_file_or_directory
