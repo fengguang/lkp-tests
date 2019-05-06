@@ -396,6 +396,7 @@ leaking_addresses.total_number
 ^stderr.return_loader
 ^stderr.rsync:change_dir~/lkp/benchmarks/ltp/ltp/results~failed:No_such_file_or_directory
 ^stderr.rsync:change_dir__tmp_lkp_piglit-results_failed:No_such_file_or_directory
+^stderr.rsync_error:error_in_socket_IO\(code#\)at_clientserver.c
 ^stderr.Run_PROG,display_resource_usage_when_it_exits
 ^stderr.*scripts/aim_..sh:not_found
 ^stderr.sed:can't_read/lkp/benchmarks/ltp/ltp/runtest/fs_ext4:No_such_file_or_directory
