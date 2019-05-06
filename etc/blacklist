@@ -334,7 +334,10 @@ leaking_addresses.total_number
 ^stderr.-(a|A|B|C|D|d|e|G|g|I|i|M|n|o|p|r|S|t|T|v|x),--
 ^stderr.-(aAppend|f_FMT|o_FILE|pPOSIX|vVerbose)
 ^stderr.--(append|filter|interval|log|metric|no|per|post|pre|scale|smi|table|timeout|topdown)
+^stderr.assert_data\['tests'\]
 ^stderr.AssertionError
+^stderr.backend.finalize
+^stderr.binary_file=BZ2File
 ^stderr.BusyBox.*multi-call_binary
 ^stderr.*:cannot_create_regular_file.*:File_exists
 ^stderr.Can_not_find_perf_command
@@ -360,7 +363,9 @@ leaking_addresses.total_number
 ^stderr.fail_to_setup_test_environment
 ^stderr.fatal:reference_is_not_a_tree
 ^stderr.File~./bin/run-fxmark
-^stderr.File~/lkp/benchmarks/piglit/bin
+^stderr.File~/lkp/benchmarks/piglit/(bin|lib)
+^stderr.FileNotFoundError:\[Errno#\]No_such_file_or_directory
+^stderr.File~/usr/lib/python3.#/bz2.py~,line
 ^stderr.find:.*:No_such_file_or_directory
 ^stderr.fio:posix_fallocate_fails:No_space_left_on_device
 ^stderr.func\(\*args,\*\*kwargs\)
@@ -380,6 +385,9 @@ leaking_addresses.total_number
 ^stderr.modprobe:ERROR:../libkmod/libkmod.c:#kmod_search_moddep\(\)could_not_open_moddep_file
 ^stderr.monitor_specified_metrics_or_metric_groups
 ^stderr.mount:you_must_specify_the_filesystem_type
+^stderr.mv:cannot_stat'/tmp/lkp/piglit-results/results.json.bz2':No_such_file_or_directory
+^stderr.results=Results
+^stderr.return_loader
 ^stderr.rsync:change_dir__tmp_lkp_piglit-results_failed:No_such_file_or_directory
 ^stderr.No_pmem_device
 ^stderr.(perf:)?Segmentation_fault
@@ -388,11 +396,13 @@ leaking_addresses.total_number
 ^stderr.Run_PROG,display_resource_usage_when_it_exits
 ^stderr.*scripts/aim_..sh:not_found
 ^stderr.See.*for_details
+^stderr.self._fp=_builtin_open
 ^stderr.sh:echo:I/O_error
 ^stderr.sleep:invalid_number
 ^stderr.socket:Too_many_open_files
 ^stderr.some_monitors_do_not_quit_in_time
 ^stderr.src/arch/xtensa/.*
+^stderr.summary.console
 ^stderr.swapon:cannot_open/dev/disk/by-id/.*:No_such_file_or_directory
 ^stderr.swapon:/dev/.*:read_swap_header_failed
 ^stderr.sys.exit\(runner\(args\)\)
@@ -419,6 +429,7 @@ leaking_addresses.total_number
 ^stderr.Warning,had_trouble_writing_out_superblocks
 ^stderr.W:Download_is_performed_unsandboxed_as_root_as_file.*Permission_denied
 ^stderr.wflinfo_utility_not_found
+^stderr.with_compression.DECOMPRESSORS
 ^stderr.*write_error
 ^stderr../writeseek[1-3]_(processes|threads):error_while_loading_shared_libraries
 ^stderr.Wrong_test_file.*this_will_cause_the_piglit_to_crash
