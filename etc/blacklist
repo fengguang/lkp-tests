@@ -342,7 +342,9 @@ leaking_addresses.total_number
 ^stderr.*:Connection_reset_by_peer
 ^stderr.Could_not_find_file_
 ^stderr.curl.*Empty_reply_from_server
+^stderr.debconf:.*frontend
 ^stderr.disk_number.*
+^stderr.dpkg-preconfigure:unable_to_re-open_stdin
 ^stderr.Error_on#events_is_too_high
 ^stderr.Error:unknown_switch
 ^stderr.*error_while_loading_shared_libraries.*cannot_open_shared_object_file:No_such_file_or_directory
@@ -412,6 +414,7 @@ leaking_addresses.total_number
 ^stderr.use_the_device_is_found_by_lsof\(#\)or_fuser\(#\).\)
 ^stderr./usr/bin/env:.*ruby.*:No_such_file_or_directory
 ^stderr.Warning,had_trouble_writing_out_superblocks
+^stderr.W:Download_is_performed_unsandboxed_as_root_as_file.*Permission_denied
 ^stderr.wflinfo_utility_not_found
 ^stderr.*write_error
 ^stderr../writeseek[1-3]_(processes|threads):error_while_loading_shared_libraries
