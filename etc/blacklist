@@ -396,6 +396,7 @@ leaking_addresses.total_number
 ^stderr.swapon:cannot_open/dev/disk/by-id/.*:No_such_file_or_directory
 ^stderr.swapon:/dev/.*:read_swap_header_failed
 ^stderr.sys.exit\(runner\(args\)\)
+^stderr.tee.*No_space_left_on_device
 ^stderr.Testing_over
 ^stderr.The_sys_perf_event_open\(\)syscall_returned_with#\(No_such_device\)for_event
 ^stderr.The_wrong_test*
