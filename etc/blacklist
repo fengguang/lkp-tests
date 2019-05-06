@@ -386,7 +386,7 @@ leaking_addresses.total_number
 ^stderr.main\(\)
 ^stderr.make.*Error
 ^stderr.make_perf_failed
-^stderr.modprobe:ERROR:could_not_insert'(locktorture|rcutorture)':(Cannot_allocate_memory|Device_or_resource_busy|Exec_format_error)
+^stderr.modprobe:ERROR:could_not_insert'(ipmi_si|locktorture|rcutorture)
 ^stderr.modprobe:ERROR:../libkmod/libkmod.c:#kmod_search_moddep\(\)could_not_open_moddep_file
 ^stderr.modprobe:FATAL:Module_(locktorture|rcutorture)_not_found_in_directory/lib/modules
 ^stderr.monitor_specified_metrics_or_metric_groups
