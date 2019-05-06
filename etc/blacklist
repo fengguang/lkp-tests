@@ -388,6 +388,7 @@ leaking_addresses.total_number
 ^stderr.modprobe:ERROR:../libkmod/libkmod.c:#kmod_search_moddep\(\)could_not_open_moddep_file
 ^stderr.monitor_specified_metrics_or_metric_groups
 ^stderr.mount:you_must_specify_the_filesystem_type
+^stderr.msync_failed_with_error_Input/output_error
 ^stderr.mv:cannot_stat'/tmp/lkp/piglit-results/results.json.bz2':No_such_file_or_directory
 ^stderr.No_pmem_device
 ^stderr.(perf:)?Segmentation_fault
