@@ -345,6 +345,7 @@ leaking_addresses.total_number
 ^stderr.debconf:.*frontend
 ^stderr.disk_number.*
 ^stderr.dpkg-preconfigure:unable_to_re-open_stdin
+^stderr.\[#-#-##:#:#\]\*(ERROR|WARN)\*-
 ^stderr.Error_on#events_is_too_high
 ^stderr.Error:unknown_switch
 ^stderr.*error_while_loading_shared_libraries.*cannot_open_shared_object_file:No_such_file_or_directory
@@ -393,6 +394,7 @@ leaking_addresses.total_number
 ^stderr.some_monitors_do_not_quit_in_time
 ^stderr.src/arch/xtensa/.*
 ^stderr.swapon:cannot_open/dev/disk/by-id/.*:No_such_file_or_directory
+^stderr.swapon:/dev/.*:read_swap_header_failed
 ^stderr.sys.exit\(runner\(args\)\)
 ^stderr.Testing_over
 ^stderr.The_sys_perf_event_open\(\)syscall_returned_with#\(No_such_device\)for_event
