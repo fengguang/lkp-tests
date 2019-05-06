@@ -397,6 +397,7 @@ leaking_addresses.total_number
 ^stderr.*scripts/aim_..sh:not_found
 ^stderr.See.*for_details
 ^stderr.self._fp=_builtin_open
+^stderr.setpci:#:#:#:Capability#not_found
 ^stderr.sh:echo:I/O_error
 ^stderr.sleep:invalid_number
 ^stderr.socket:Too_many_open_files
