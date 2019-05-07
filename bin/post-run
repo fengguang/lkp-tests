@@ -100,6 +100,11 @@ for post_run in $TMP_RESULT_ROOT/post-run.*; do
 	[ -f "$post_run" ] && sh "$post_run"
 done
 
+has_advance_pgrep()
+{
+	has_cmd pgrep && pgrep -h 2>/dev/null | grep -qw -- --pidfile
+}
+
 wait_for_pipe()
 {
 	local i
@@ -112,7 +117,7 @@ wait_for_pipe()
 	for i in $(seq 5)
 	do
 		sleep $i
-		if has_cmd pgrep; then
+		if has_advance_pgrep; then
 			pgrep --pidfile $TMP/.pid-pipes 'tee|cat|gzip' >/dev/null && continue
 		else
 			any_pid_alive $TMP/.pid-pipes && continue
