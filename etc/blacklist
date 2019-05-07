@@ -365,6 +365,7 @@ leaking_addresses.total_number
 ^stderr.failed_to_prepare_for_bpf
 ^stderr.Failed_to_restart_nfs-server.service:Unit_nfs-server.service_not_found
 ^stderr.fail_to_setup_test_environment
+^stderr.FAILURE:MADV_POISON:Device_or_resource_busy
 ^stderr.fatal:reference_is_not_a_tree
 ^stderr.File~./bin/run-fxmark
 ^stderr.File~/lkp/benchmarks/piglit/(bin|lib)
@@ -384,6 +385,7 @@ leaking_addresses.total_number
 ^stderr./lkp/.*
 ^stderr.lost_connection
 ^stderr.ls:cannot_access.*
+^stderr.madvise:Device_or_resource_busy
 ^stderr.main\(\)
 ^stderr.make\[#\]:cc:Command_not_found
 ^stderr.make.*Error
