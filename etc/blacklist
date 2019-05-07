@@ -408,7 +408,7 @@ leaking_addresses.total_number
 ^stderr.print_counts_(at_regular_interval_in_ms|with_custom_separator|for_fixed_number_of_times)
 ^stderr.results=Results
 ^stderr.return_loader
-^stderr.rm:cannot_remove'/tmp/lkp/eatmem_1.pid':No_such_file_or_directory
+^stderr.rm:cannot_remove
 ^stderr.rsync:change_dir~/lkp/benchmarks/ltp/ltp/results~failed:No_such_file_or_directory
 ^stderr.rsync:change_dir__tmp_lkp_piglit-results_failed:No_such_file_or_directory
 ^stderr.rsync_error:error_in_socket_IO\(code#\)at_clientserver.c
