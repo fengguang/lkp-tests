@@ -61,6 +61,7 @@ setup_result_service()
 
 mount_result_root()
 {
+	echo "result_service=$result_service, RESULT_MNT=$RESULT_MNT, RESULT_ROOT=$RESULT_ROOT"
 	is_mount_point $RESULT_MNT && return 0
 
 	case $result_service in
@@ -81,7 +82,7 @@ mount_result_root()
 			result_fs=nfs
 			for i in $(seq $repeat)
 			do
-				echo "mount.nfs: try $i time..."
+				echo "mount.nfs: try $i time... mount.nfs -o vers=3 $result_service $RESULT_MNT"
 				mount.nfs -o vers=3 $result_service $RESULT_MNT && return
 				sleep 3
 			done
@@ -101,7 +102,8 @@ mount_result_root()
 			export RESULT_MNT=$RESULT_ROOT
 			export TMP_RESULT_ROOT=$RESULT_ROOT
 			mkdir -p $TMP
-			mount -t 9p -o trans=virtio $result_service $RESULT_MNT  -oversion=9p2000.L,posixacl,cache=loose
+			echo "mount -t 9p -o trans=virtio $result_service $RESULT_MNT -oversion=9p2000.L,posixacl,cache=loose"
+			mount -t 9p -o trans=virtio $result_service $RESULT_MNT -oversion=9p2000.L,posixacl,cache=loose
 			# for embedded rootfs(yocto) which cannot support 9p filesystem when use lkp-qemu
 			[ $? -ne 0 ] && [ "$LKP_LOCAL_RUN" = "1" ] && return 0
 			;;
