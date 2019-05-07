@@ -42,6 +42,10 @@
 ^dmesg..*/lkp/
 ^dmesg.Mem-Info
 ^dmesg.timestamp:.*
+^dmesg.WARNING:at_net/core/stream.c:#sk_stream_kill_queues
+^dmesg.RIP:sk_stream_kill_queues
+^dmesg.WARNING:at_net/ipv4/af_inet.c:#inet_sock_destruct
+^dmesg.RIP:inet_sock_destruct
 ^hwsim\.ap_cipher_replay_protection_ap_ccmp
 ^hwsim\.ap_cipher_replay_protection_ap_gcmp
 ^hwsim\.ap_ft_roam_rrm
