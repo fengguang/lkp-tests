@@ -342,6 +342,7 @@ leaking_addresses.total_number
 ^stderr.BusyBox.*multi-call_binary
 ^stderr.*:cannot_create_regular_file.*:File_exists
 ^stderr.Can_not_find_perf_command
+^stderr.cat:results/x86_64-linux-gnu/lkp-bdw-ep4.#:No_such_file_or_directory
 ^stderr.cat:/tmp/lkp/eatmem_1.pid:No_such_file_or_directory
 ^stderr.configure.*
 ^stderr.*:Connection_reset_by_peer
@@ -384,6 +385,7 @@ leaking_addresses.total_number
 ^stderr.lost_connection
 ^stderr.ls:cannot_access.*
 ^stderr.main\(\)
+^stderr.make\[#\]:cc:Command_not_found
 ^stderr.make.*Error
 ^stderr.make_perf_failed
 ^stderr.modprobe:ERROR:could_not_insert'(ipmi_si|locktorture|rcutorture)
