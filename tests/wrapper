@@ -22,7 +22,7 @@ echo $! >> $TMP/.pid-pipes
 [ -n "$category" ] && {
 	time_path=$(which time)
 	if [ "x${time_path}" != "x" ];then
-		time_help=$(${time_path} --help)
+		time_help=$(${time_path} --help 2>/dev/null)
 		[ "${time_help#*--output}" != "${time_help}" ] &&
 			time_prefix="${time_path} -v -o $TMP/${program}.time"
 	fi
