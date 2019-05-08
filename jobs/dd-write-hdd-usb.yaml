@@ -13,7 +13,7 @@ runtime: 5m
 
 disk: 2HDD
 md: JBOD
-iosched: cfq
+iosched: kyber
 fs: ext4
 
 nr_threads:

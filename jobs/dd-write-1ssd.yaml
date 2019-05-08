@@ -13,8 +13,8 @@ runtime: 5m
 
 disk: 1SSD
 iosched:
-- cfq
-- deadline
+- kyber
+- mq-deadline
 fs:
 - ext4
 - xfs

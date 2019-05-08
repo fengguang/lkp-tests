@@ -13,7 +13,7 @@ runtime: 5m
 
 disk: 1HDD
 iosched:
-- cfq
+- kyber
 fs:
 - ext4
 - xfs
