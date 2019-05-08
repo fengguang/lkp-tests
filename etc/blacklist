@@ -357,6 +357,7 @@ leaking_addresses.total_number
 ^stderr.disk_number.*
 ^stderr.dpkg-preconfigure:unable_to_re-open_stdin
 ^stderr.\[#-#-##:#:#\]\*(ERROR|WARN)\*-
+^stderr.ERROR:aim9_benchmark_is_not_installed_yet
 ^stderr.Error_on#events_is_too_high
 ^stderr.Error:unknown_switch
 ^stderr.*error_while_loading_shared_libraries.*cannot_open_shared_object_file:No_such_file_or_directory
@@ -390,6 +391,7 @@ leaking_addresses.total_number
 ^stderr.Invalid_number_of_requests
 ^stderr.Killed
 ^stderr./lkp/.*
+^stderr.ln:failed_to_create_symbolic_link.*File_exists
 ^stderr.lost_connection
 ^stderr.ls:cannot_access.*
 ^stderr.madvise:Device_or_resource_busy
