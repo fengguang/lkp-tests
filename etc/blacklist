@@ -392,7 +392,7 @@ leaking_addresses.total_number
 ^stderr.*Invalid_argument
 ^stderr.Invalid_number_of_requests
 ^stderr.Killed
-^stderr.:line#:exec:iostat:not_found
+^stderr.(:)?line#:.*:not_found
 ^stderr.(:)?(line.*|l)(/lkp/|cd).*
 ^stderr./lkp/.*
 ^stderr.ln:failed_to_create_symbolic_link.*File_exists
