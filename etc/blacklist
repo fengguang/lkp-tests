@@ -392,6 +392,8 @@ leaking_addresses.total_number
 ^stderr.*Invalid_argument
 ^stderr.Invalid_number_of_requests
 ^stderr.Killed
+^stderr.len_was-#send_size_was
+^stderr.line$
 ^stderr.(:)?line#:.*:not_found
 ^stderr.(:)?(line.*|l)(/lkp/|cd).*
 ^stderr./lkp/.*
