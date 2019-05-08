@@ -35,6 +35,7 @@
 ^dmesg.INFO:rcu_sched_detected_stalls_on_CPUs/tasks:
 ^dmesg.INFO:Slab0x\(____ptrval____\)objects=#used=#fp=0x\((null|____ptrval____)\)flags=
 ^dmesg.INFO:Stall_ended_before_state_dump_start
+^dmesg.IP-Config:Auto-configuration_of_network_failed
 ^dmesg.invoked_oom-killer:gfp_mask=0x
 ^dmesg.Kernel_panic-not_syncing:Out_of_memory.*
 ^dmesg.kobject\(\(_+ptrval_+\)\):tried_to_init_an_initialized_object
