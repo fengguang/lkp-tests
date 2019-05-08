@@ -73,8 +73,8 @@ set_job_state 'post_run'
 $LKP_SRC/bin/post-run
 
 [ "$result_fs" = 'cifs' -o "$result_fs" = 'virtfs' ] || {
-	chown -R .lkp $RESULT_ROOT
-	chmod -R g+rw $RESULT_ROOT
+	chown -R .lkp $RESULT_ROOT 2>/dev/null
+	chmod -R g+rw $RESULT_ROOT 2>/dev/null
 }
 
 [ -s "$TMP/time_delta" ] && time_delta="time_delta=$(cat $TMP/time_delta)"
