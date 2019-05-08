@@ -393,7 +393,7 @@ leaking_addresses.total_number
 ^stderr.Invalid_number_of_requests
 ^stderr.Killed
 ^stderr.:line#:exec:iostat:not_found
-^stderr.(:)?line.*/lkp/.*
+^stderr.(:)?(line.*|l)(/lkp/|cd).*
 ^stderr./lkp/.*
 ^stderr.ln:failed_to_create_symbolic_link.*File_exists
 ^stderr.lost_connection
@@ -447,6 +447,7 @@ leaking_addresses.total_number
 ^stderr.Timeout,server#not_responding
 ^stderr.Traceback\(most_recent_call_last\)
 ^stderr.trinity_is_not_installed
+^stderr.*turbostat:No_such_file_or_directory
 ^stderr.umount:/tmp/vm-scalability-tmp:target_is_busy
 ^stderr.umount:/tmp/vm-scalability-tmp/vm-scalability:not_mounted
 ^stderr.+unable_to_open/dev/sd[a-z]+[0-9]+:Device_or_resource_busy
