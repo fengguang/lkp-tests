@@ -10,7 +10,6 @@
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/tests/common.sh
 
-blktest_dir=$BENCHMARK_ROOT/blktests
 cd $BENCHMARK_ROOT/blktests || die "fail to cd $BENCHMARK_ROOT/blktests"
 
 arrange_group()
@@ -34,22 +33,6 @@ arrange_group()
 	*)
 		;;
 	esac
-}
-
-install_blktests()
-{
-	local BLKTEST_REPO="https://github.com/osandov/blktests.git"
-	[ "$LKP_LOCAL_RUN" != "1" ] && BLKTEST_REPO="git://gitmirror/blktests"
-
-	[ "$blktests_commit" ] || return
-	cd $blktest_dir
-	git clone $BLKTEST_REPO 2>&1 || return
-	cd $blktest_dir/blktests
-	git checkout -f $blktests_commit 2>&1 || return
-
-	make || return
-	# run the test as group
-	arrange_group
 }
 
 has_new_test()
@@ -97,7 +80,7 @@ set_env()
 
 run_test()
 {
-	local test_dir="$blktest_dir/blktests/tests"
+	local test_dir="$BENCHMARK_ROOT/blktests/tests"
 	local test_ignore="$LKP_SRC/pack/blktests-addon/tests/${test%-*}-ignore"
 	local ignored_tests
 	local ignored_tests_cmd
@@ -130,15 +113,15 @@ run_test()
 	fi
 }
 
-install_blktests || die
 [ "$test" = "other" ] && {
 	# if don't have new test suite, exit
 	has_new_test || exit 0
 }
+arrange_group
 read_env_vars
 set_env
 run_test
 exit_value=$?
 
-[ -d results ] && upload_files -t results $blktest_dir/blktests/results/*
+[ -d results ] && upload_files -t results $BENCHMARK_ROOT/blktests/results/*
 exit $exit_value
