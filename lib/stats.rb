@@ -372,6 +372,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
     base_matrix_file = rp._result_root + '/matrix.json'
     unless File.exist? base_matrix_file
       rp[axis] = git.release_tags2shas[tag]
+      next unless rp[axis]
       base_matrix_file = rp._result_root + '/matrix.json'
     end
     next unless File.exist? base_matrix_file
