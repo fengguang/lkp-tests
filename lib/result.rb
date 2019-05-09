@@ -35,7 +35,6 @@ class ResultPath < Hash
     'lkp-bug' => %w[path_params run],
     'hwinfo' => %w[tbox_group run],
     'build-dpdk' => %w[rootfs dpdk_config commit dpdk_compiler dpdk_commit run],
-    'dpdk-dts' => %w[rootfs dpdk_config dpdk_compiler dpdk_commit run],
     'build-qemu' => %w[rootfs qemu_config qemu_commit run],
     'build-llvm_project' => %w[rootfs llvm_project_commit run],
     'deploy-clang' => %w[rootfs llvm_project_commit run],
@@ -45,8 +44,6 @@ class ResultPath < Hash
     'build-ceph' => %w[ceph_commit run],
     'build-sof' => %w[sof_config sof_commit soft_commit run],
     'kvm-unit-tests-qemu' => %w[path_params tbox_group rootfs kconfig compiler commit qemu_config qemu_commit run],
-    'mbtest' => %w[path_params tbox_group rootfs kconfig compiler commit mbt_commit run],
-    'sof_test' => %w[path_params tbox_group rootfs kconfig compiler commit sof_commit soft_commit run],
     'kvm-kernel-boot-test' => %w[tbox_group kconfig commit qemu_config qemu_commit linux_commit run],
     'build-perf_test' => %w[perf_test_commit run],
   }.freeze
