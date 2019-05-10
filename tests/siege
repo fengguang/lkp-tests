@@ -39,11 +39,12 @@ Here is a bunch of text to bring the page size up to 1K.
 </html>
 EOF
 
-ln -s $apache_dir/mods-available/authz_core.load $apache_dir/mods-enabled/
-ln -s $apache_dir/mods-available/mpm_event.load $apache_dir/mods-enabled/
+[ -e $apache_dir/mods-enabled/authz_core.load ] || ln -s $apache_dir/mods-available/authz_core.load $apache_dir/mods-enabled/
+[ -e $apache_dir/mods-enabled/mpm_event.load ] || ln -s $apache_dir/mods-available/mpm_event.load $apache_dir/mods-enabled/
 
 apachectl -k restart 2>&1
 
+[ $HOME ] || export HOME=/root
 cat > $HOME/.siegerc << EOF
 verbose = false
 quiet = true
