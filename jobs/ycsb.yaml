@@ -7,22 +7,11 @@ numactl:
 
 nr_processes: 2
 
-setup-mongodb:
-
 nr_threads: 32
 
-setup-ycsb:
-  ip_addr: 127.0.0.1
-  n_recordcount: 80878041
-  n_operationcount: 10000000
-  is_readallfields: true
-  n_readproportion: 1
-  n_updateproportion: 0
-  n_scanproportion: 0
-  n_insertproportion: 0
-  c_requestdistribution: uniform
-  ycsb_cpu_node_bind: 0
-  ycsb_mem_node_bind: 0
+disk: 1SSD
+
+fs: ext4
 
 cluster: cs-localhost
 
@@ -33,3 +22,15 @@ if role server:
 
 if role client:
   ycsb:
+    ip_addr: 127.0.0.1
+    n_recordcount: 80878041
+    n_operationcount: 10000000
+    is_readallfields: true
+    n_readproportion: 1
+    n_updateproportion: 0
+    n_scanproportion: 0
+    n_insertproportion: 0
+    c_requestdistribution: uniform
+    ycsb_cpu_node_bind: 0
+    ycsb_mem_node_bind: 0
+    preload: 1
