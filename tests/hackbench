@@ -4,6 +4,7 @@
 # - mode
 # - ipc
 # - iterations
+# - datasize
 
 ## Hackbench  is  both  a benchmark and a stress test for the Linux kernel scheduler.
 ## It's main job is to create a specified number  of  pairs  of schedulable entities
@@ -13,6 +14,9 @@
 [ "$ipc" = 'pipe' ] && ipc_option='--pipe'
 
 [ -n "$runtime" ] || runtime=600
+
+# Default datasize for hackbench is 100
+[ -n "$datasize" ] || datasize=100
 
 set_env()
 {
@@ -47,7 +51,7 @@ run_hackbench()
 	else
 		hackbench_path=/usr/local/bin/hackbench
 	fi
-	log_cmd $hackbench_path -g $nr_threads --$mode $ipc_option -l $loops
+	log_cmd $hackbench_path -g $nr_threads --$mode $ipc_option -l $loops -s $datasize
 }
 
 run_for_time()
