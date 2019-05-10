@@ -12,10 +12,9 @@
 : "${thread_locks:=8}"
 
 args="\
- --num-threads=$nr_threads\
- --max-time=$runtime\
- --test=threads\
+ --threads=$nr_threads\
+ --time=$runtime\
  --thread-yields=$thread_yields\
  --thread-locks=$thread_locks\
 "
-log_cmd sysbench $args run
+log_cmd sysbench $args threads run
