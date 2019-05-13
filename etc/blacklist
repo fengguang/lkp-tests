@@ -412,6 +412,7 @@ leaking_addresses.total_number
 ^stderr.make\[#\]:cc:Command_not_found
 ^stderr.make.*Error
 ^stderr.make_perf_failed
+^stderr.md5sum://mnt/ocfs2/sendfile_verify:No_such_file_or_directory
 ^stderr.mdadm:Error_connecting_monitor_with.*:No_such_file_or_directory
 ^stderr.modprobe:ERROR:could_not_insert'(ipmi_si|locktorture|rcutorture)
 ^stderr.modprobe:ERROR:../libkmod/libkmod.c:#kmod_search_moddep\(\)could_not_open_moddep_file
