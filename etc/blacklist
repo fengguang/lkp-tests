@@ -407,6 +407,7 @@ leaking_addresses.total_number
 ^stderr.ls:cannot_access.*
 ^stderr.\+ls-l/.*
 ^stderr.madvise:Device_or_resource_busy
+^stderr.madvise_SOFT_OFFLINE:Input/output_error
 ^stderr.main\(\)
 ^stderr.make\[#\]:cc:Command_not_found
 ^stderr.make.*Error
