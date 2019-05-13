@@ -463,6 +463,7 @@ leaking_addresses.total_number
 ^stderr.tee.*No_space_left_on_device
 ^stderr.Testing_over
 ^stderr../test:line#:/var/tmp/log:Read-only_file_system
+^stderr.The_file/dev/.*_does_not_exist_and_no_size_was_specified
 ^stderr.The_sys_perf_event_open\(\)syscall_returned_with#\(No_such_device\)for_event
 ^stderr.The_wrong_test*
 ^stderr.timeout:failed_to_run_command.*git.*:No_such_file_or_directory
