@@ -253,6 +253,7 @@ test_setting()
 		specify_tmpdir || exit
 		;;
 	syscalls_part2)
+		export LTP_TIMEOUT_MUL=5
 		specify_tmpdir || exit
 		relatime=$(mount | grep /tmp | grep relatime)
 		noatime=$(mount | grep /tmp | grep noatime)
