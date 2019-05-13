@@ -402,6 +402,7 @@ leaking_addresses.total_number
 ^stderr.\+/lkp/.*
 ^stderr.\+lkplog.*
 ^stderr.ln:failed_to_create_symbolic_link.*File_exists
+^stderr.locale:Cannot_set_LC_ALL_to_default_locale:No_such_file_or_directory
 ^stderr.losetup:.*:failed_to_set_up_loop_device:No_such_file_or_directory
 ^stderr.lost_connection
 ^stderr.ls:cannot_access.*
@@ -430,6 +431,7 @@ leaking_addresses.total_number
 ^stderr.o_such_file_or_directory
 ^stderr.\[perf_record:(Captured_and_wrote|Woken_up)
 ^stderr.(perf:)?Segmentation_fault
+^stderr.perl:warning
 ^stderr.pmeter_server_does_not_start_correctly
 ^stderr.print_counts_(at_regular_interval_in_ms|with_custom_separator|for_fixed_number_of_times)
 ^stderr.results=Results
