@@ -397,6 +397,7 @@ leaking_addresses.total_number
 ^stderr.line$
 ^stderr.(:)?line#:.*:not_found
 ^stderr.(:)?(line.*|l)(/lkp/|cd).*
+^stderr.link_test:Unable_to_unlink_file
 ^stderr./lkp/.*
 ^stderr.\+/lkp/.*
 ^stderr.\+lkplog.*
@@ -443,6 +444,7 @@ leaking_addresses.total_number
 ^stderr.socket:Too_many_open_files
 ^stderr.some_monitors_do_not_quit_in_time
 ^stderr.src/arch/xtensa/.*
+^stderr.stat\(\)in_dsearch\(\):No_such_file_or_directory
 ^stderr.summary.console
 ^stderr.swapon:cannot_open/dev/disk/by-id/.*:No_such_file_or_directory
 ^stderr.swapon:/dev/.*:read_swap_header_failed
