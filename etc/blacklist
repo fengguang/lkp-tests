@@ -398,9 +398,12 @@ leaking_addresses.total_number
 ^stderr.(:)?line#:.*:not_found
 ^stderr.(:)?(line.*|l)(/lkp/|cd).*
 ^stderr./lkp/.*
+^stderr.\+/lkp/.*
+^stderr.\+lkplog.*
 ^stderr.ln:failed_to_create_symbolic_link.*File_exists
 ^stderr.lost_connection
 ^stderr.ls:cannot_access.*
+^stderr.\+ls-l/.*
 ^stderr.madvise:Device_or_resource_busy
 ^stderr.main\(\)
 ^stderr.make\[#\]:cc:Command_not_found
@@ -416,6 +419,7 @@ leaking_addresses.total_number
 ^stderr.mv:cannot_stat'/tmp/lkp/piglit-results/results.json.bz2':No_such_file_or_directory
 ^stderr.No_pmem_device
 ^stderr.o_such_file_or_directory
+^stderr.\[perf_record:(Captured_and_wrote|Woken_up)
 ^stderr.(perf:)?Segmentation_fault
 ^stderr.pmeter_server_does_not_start_correctly
 ^stderr.print_counts_(at_regular_interval_in_ms|with_custom_separator|for_fixed_number_of_times)
@@ -440,6 +444,7 @@ leaking_addresses.total_number
 ^stderr.swapon:cannot_open/dev/disk/by-id/.*:No_such_file_or_directory
 ^stderr.swapon:/dev/.*:read_swap_header_failed
 ^stderr.sys.exit\(runner\(args\)\)
+^stderr.\+take_snapshot
 ^stderr.tar:Error_is_not_recoverable:exiting_now
 ^stderr.tar:/pkg/ltp/.*/.*/ltp.tar.gz:Cannot_open:No_such_file_or_directory
 ^stderr.tee.*No_space_left_on_device
@@ -463,6 +468,7 @@ leaking_addresses.total_number
 ^stderr.users_on_this_machine
 ^stderr.use_the_device_is_found_by_lsof\(#\)or_fuser\(#\).\)
 ^stderr./usr/bin/env:.*ruby.*:No_such_file_or_directory
+^stderr.\+wait_post_test
 ^stderr.Warning,had_trouble_writing_out_superblocks
 ^stderr.WARNING:the--test_option_is_deprecated
 ^stderr.W:Download_is_performed_unsandboxed_as_root_as_file.*Permission_denied
