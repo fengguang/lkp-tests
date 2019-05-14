@@ -433,6 +433,7 @@ leaking_addresses.total_number
 ^stderr.(perf:)?Segmentation_fault
 ^stderr.perl:warning
 ^stderr.pmeter_server_does_not_start_correctly
+^stderr.poll2_threads:.*:testcase:Assertion.*failed
 ^stderr.print_counts_(at_regular_interval_in_ms|with_custom_separator|for_fixed_number_of_times)
 ^stderr.results=Results
 ^stderr.return_loader
