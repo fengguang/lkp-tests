@@ -104,7 +104,7 @@ build()
 
 install()
 {
-	cp -af $source_dir/* $BM_ROOT
+	cp -af $source_dir/. $BM_ROOT
 }
 
 pack()
