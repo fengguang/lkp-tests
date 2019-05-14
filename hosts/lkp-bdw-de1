@@ -7,4 +7,5 @@ swap_partitions:
 rootfs_partition: LABEL=LKP-ROOTFS
 kernel_cmdline_hw: console=ttyS1,115200 console=tty0
 brand: Intel(R) Xeon(R) CPU D-1541 @ 2.10GHz
-ucode: "0x7000013"
+ucode: "0x7000017"
+rootfs: debian-x86_64-2019-05-14.cgz
