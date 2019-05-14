@@ -228,11 +228,11 @@ test_setting()
 	tpm_tools)
 		[ $USER ] || USER=root
 		rm -rf /var/lib/opencryptoki/tpm/$USER
-		cd $ltp_dir/tpm-emulater
+		cd tpm-emulater
 		find . -maxdepth 1 -type d -name "TPM_Emulator*" -exec rm -rf {} \;
 		unzip $(ls TPM_Emulator*.zip | head -1)
 		rsync -av $(ls -l . | awk '/^d/ {print $NF}' | head -1)"/" /
-		cd ../ltp
+		cd ..
 		killall tpmd > /dev/null 2>&1
 		tpmd -f -d clear > /dev/null 2>&1 &
 		killall tcsd > /dev/null 2>&1
