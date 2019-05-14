@@ -279,7 +279,7 @@ test_setting()
 		;;
 	net.rpc)
 		systemctl start openbsd-inetd || exit
-		cp $ltp_dir/netkit-rusers/bin/rup /usr/bin/
+		cp netkit-rusers/bin/rup /usr/bin/
 		;;
 	net_stress.appl-0*)
 		[ -d /srv/ftp ] && export FTP_DOWNLOAD_DIR=/srv/ftp
