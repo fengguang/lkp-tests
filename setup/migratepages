@@ -1,0 +1,26 @@
+#!/bin/sh
+# - from_nodes
+# - to_nodes
+# - proc
+# - delay
+
+if [ -z "$from_nodes" ] || [ -z "$to_nodes" ] || [ -z "$proc" ]; then
+	echo "from_nodes, to_nodes, proc must be specified for migratepages" 1>&2
+	exit 1
+fi
+
+script="$TMP_RESULT_ROOT"/setup_migratepages
+
+cat <<EOF > "$script"
+. $LKP_SRC/lib/wait.sh
+
+setup_wait
+
+\$WAIT_POST_TEST_CMD --timeout $delay
+
+for pid in \$(pgrep "$proc"); do
+	log_cmd migratepages "\$pid" "$from_nodes" "$to_nodes"
+done
+EOF
+
+/bin/sh "$script" &
