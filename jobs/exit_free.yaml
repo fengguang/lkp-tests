@@ -2,6 +2,7 @@
 suite: exit_free
 testcase: exit_free
 category: benchmark
+need_memory: 128G
 
 transparent_hugepage:
   thp_enabled: never
@@ -10,7 +11,7 @@ vmstat:
 perf-profile:
 
 eatmem:
-  eatmem_size: 100G
+  eatmem_size: 80G
   eatmem_nonuma: true
 
 exit_free:
