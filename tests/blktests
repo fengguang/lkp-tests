@@ -106,6 +106,7 @@ run_test()
 	done
 
 	[ -n "$all_tests_cmd" ] && log_echo $all_tests_cmd
+	[ "$test" = "block-004" ] && export TIMEOUT=300
 	if [ "$test" = "nvme-group1" ]; then
 		log_cmd ./check -o /mnt/$test $all_tests
 	else
