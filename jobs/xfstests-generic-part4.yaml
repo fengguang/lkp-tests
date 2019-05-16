@@ -12,9 +12,7 @@ fs:
 - ext4
 - xfs
 - btrfs
-- f2fs
 
 xfstests:
   test:
-  - generic-299
-  - generic-logwrites
+  - generic-231
