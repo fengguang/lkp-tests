@@ -100,6 +100,8 @@ run()
 	echo -e "Y\nY" | ./bin/run-fxmark.py
 }
 
+sleep 5
+
 do_backup
 
 setup_config || die "failed to setup configuration"
