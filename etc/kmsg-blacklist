@@ -190,3 +190,10 @@ validate_scratch_checksum: Please update your BIOS to support active channels
 HFI: Invalid PCI NUMA node. Performance may be affected
 HFI: System BIOS may need to be upgraded
 pciehp .*: Slot(.*): Power fault
+Aborting journal on device
+Buffer I/O error on dev
+Dev .*: unable to read RDB block
+EXT4-fs error (device .*):
+EXT4-fs (.*):
+F2FS-fs (.*):
+jbd2_journal_bmap: journal block not found at offset
