@@ -5,6 +5,7 @@ shopt -s nullglob
 
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/upload.sh
 
 ## test on a single node currently.
 
@@ -99,7 +100,15 @@ single_node_test()
 	find $OCFS2TEST_HOME/ocfs2log -name single_run.log -type f | xargs cat
 }
 
+upload_log()
+{
+	log_file=`find /home -name single_run.log`
+
+	[[ -f "$log_file" ]] && upload_files $log_file
+}
+
 setup_test_env
 add_single_cluster || die "add single cluster to /etc/ocfs2/cluster.conf failed."
 single_node_test
+upload_log
 
