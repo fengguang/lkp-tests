@@ -68,6 +68,15 @@ class ResultPath < Hash
       self[key] = dirs.shift
     end
 
+    if self['path_params']
+      ucode = self['path_params'][/ucode=0x[0-9a-z]*/]
+      self['ucode'] = if ucode
+                        ucode.split('=').last
+                      else
+                        'undefined'
+                      end
+    end
+
     if ps.include?('commit')
       each_commit { |_type, commit| return false unless self[commit] && sha1_40?(self[commit]) }
     end
