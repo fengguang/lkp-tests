@@ -287,6 +287,7 @@ def add_stats(path)
     result_path['path_params'] = path_params[0] + $first_dim + path_params[2]
   end
   _rt = result_path._result_root
+  _rt = _rt.sub(/ucode=0x[0-9a-z]*/, '') if $opt_dimension == 'ucode'
   if !$cases.key?(_rt)
     $cases[_rt] = { dim => field_value }
   else
