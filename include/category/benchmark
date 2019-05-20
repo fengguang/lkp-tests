@@ -31,3 +31,6 @@ mpstat:
 % unless job['nr_vm'] and job['nr_vm'] > 1
 perf-profile:
 % end
+
+need_kconfig:
+ - CONFIG_LATENCYTOP=y
