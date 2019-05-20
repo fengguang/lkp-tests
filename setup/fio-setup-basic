@@ -37,6 +37,8 @@ if [ "$raw_disk" = 1 ]; then
 else
 	storages=$mount_points
 fi
+[ -z "$storages" ] && die "storages is empty, we can't get jobs_per_storage and nr_task_remain"
+
 nr_storages=$(echo $storages | wc -w)
 jobs_per_storage=$((nr_task / nr_storages))
 
