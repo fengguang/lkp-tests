@@ -22,4 +22,3 @@ futex.futex_wait_timeout.timeout=100000ns.pass: 1
 futex.futex_wait_wouldblock.pass: 1
 futex.futex_wait_uninitialized_heap.pass: 1
 futex.futex_wait_private_mapped_file.pass: 1
-total_test: 26
