@@ -1,0 +1,8 @@
+#!/bin/sh
+# - idle_time
+
+## delay for a specified amount of time
+
+echo sleep $idle_time: started
+./turbostate sleep ${1:-$idle_time}
+echo sleep finished
