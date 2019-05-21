@@ -16,7 +16,7 @@ while (line = STDIN.gets)
     test_item = Regexp.last_match[1]
     fs_type = Regexp.last_match[2]
     build_type = Regexp.last_match[3]
-  when %r{^(.+)/(TEST[0-9]+): (PASS|FAIL|SKIP)$}
+  when %r{^(.+)/(TEST[0-9]+): (PASS|FAIL|SKIP)}
     item = Regexp.last_match[1]
     name = Regexp.last_match[2]
     next unless test_item == item
