@@ -23,6 +23,10 @@ arrange_group()
 		;;
 	block-group2)
 		sed -i "1,8d" tests/$test || return
+		sed -i "/^027$/d" tests/$test || return
+		;;
+	block-027)
+		echo "027" > tests/$test || return
 		;;
 	nvme-005)
 		echo "005" > tests/$test || return

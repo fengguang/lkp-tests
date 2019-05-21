@@ -9,3 +9,10 @@ disk: 1HDD
 blktests:
   test:
   - block-group2
+
+---
+kernel_cmdline: "cgroup_no_v1=all"
+
+blktests:
+  test:
+  - block-027
