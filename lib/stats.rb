@@ -158,9 +158,9 @@ def blacklist_auto_report_stat?(stat)
 end
 
 def changed_stats?(sorted_a, min_a, mean_a, max_a,
-                     sorted_b, min_b, mean_b, max_b,
-                     is_failure_stat, is_latency_stat,
-                     stat, options)
+                   sorted_b, min_b, mean_b, max_b,
+                   is_failure_stat, is_latency_stat,
+                   stat, options)
 
   if options['perf-profile'] && stat =~ /^perf-profile\./ && options['perf-profile'].is_a?(mean_a.class)
     return mean_a > options['perf-profile'] ||
