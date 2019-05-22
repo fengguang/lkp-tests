@@ -51,6 +51,7 @@ def expand_possible_commit(s)
 
   git = Git.open(project: 'linux', working_dir: ENV['SRC_ROOT'])
   return s unless git.commit_exist? s
+
   git.gcommit(s).sha
 end
 
@@ -181,6 +182,7 @@ $stddev = Hash.new { |hash, key| hash[key] = 0 }
 
 def plot_bar(dims, cases)
   return unless cases.empty?
+
   x = cases.keys
   Gnuplot.open do |gp|
     Gnuplot::Plot.new(gp) do |plot|
@@ -256,6 +258,7 @@ def add_stats(path)
     # $stderr.puts stats_json + ' does not exist'
     return
   end
+
   field_value = get_json_field(stats_json, $opt_field, is_rt)
   if field_value.nil? || field_value == ''
     # $stderr.puts "#{stats_json}: no such field: #{$opt_field}"
@@ -270,6 +273,7 @@ def add_stats(path)
   else
     $params ||= YAML.load_file result_path.params_file
     return unless $params.key? $opt_dimension
+
     path_params = result_path['path_params'].partition Regexp.new '\b-?(' + $params[$opt_dimension].join('|') + ')-?\b'
     dim = path_params[1]
     dim[0] = '' if dim[0] == '-'
@@ -345,8 +349,10 @@ def get_valid_average(matrix, key)
   return nil unless samples
   return nil if samples.include? 0
   return nil if samples.size < matrix_cols(matrix)
+
   avg = matrix[key].average
   return nil if !$opt_no_hide_noises && matrix[key].standard_deviation > avg / 2
+
   avg
 end
 
@@ -356,6 +362,7 @@ def setup_changed_stats
     matrix_file2 = v[-1] + '/matrix.json'
     next unless File.exist? matrix_file1
     next unless File.exist? matrix_file2
+
     if $opt_index
       matrix1 = load_json matrix_file1, true
       matrix2 = load_json matrix_file2, true
@@ -365,8 +372,10 @@ def setup_changed_stats
         end
         avg1 = get_valid_average matrix1, stat
         next unless avg1
+
         avg2 = get_valid_average matrix2, stat
         next unless avg2
+
         $changed_stats[stat][k] = v
         type = if $size_index[stat]
                  'size'
@@ -394,6 +403,7 @@ def setup_changed_stats
     end
     changed_stats = get_changed_stats matrix_file2, matrix_file1, $options
     next unless changed_stats && !changed_stats.empty?
+
     changed_stats.each do |stat, record|
       next if $opt_field && stat !~ /#{$opt_field}/
 
@@ -474,6 +484,7 @@ def setup_dims
     ].each do |dim|
       system "#{GIT} merge-base --is-ancestor #{dim[0]} #{dim[1]}"
       next unless $CHILD_STATUS.exitstatus.zero?
+
       $opt_dims = dim
       commit_is_ancestor = true
       break
@@ -625,9 +636,11 @@ def show_delta(stat, key_g)
     next false if is_fail
     next false if is_latency stat
     next false if $opt_no_hide_noises
+
     noisy = false
     value.each do |_k, v|
       next unless v.is_a?(Array) && v.size > 1
+
       if v.standard_deviation.abs > v.average.abs / 2 || v.average < 0
         noisy = true
         break
@@ -636,6 +649,7 @@ def show_delta(stat, key_g)
     noisy
   end
   return if $cases.empty?
+
   $cases = Hash[$cases.sort]
 
   unless $group_by_test
@@ -747,6 +761,7 @@ end
 
 def show_one_index(type)
   return unless $nr_gm[type]
+
   $base_gm[type] = Math.exp($base_gm[type] / $nr_gm[type])
   $head_gm[type] = Math.exp($head_gm[type] / $nr_gm[type])
   index = 100 * $head_gm[type] / $base_gm[type]
@@ -768,6 +783,7 @@ def setup_stats_priority(stats)
   stats.each do |x|
     k = x.split('.')[0]
     next if tests.include?(k)
+
     stats_num[k] ||= 0
     stats_num[k] += 1
   end

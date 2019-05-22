@@ -48,6 +48,7 @@ def stats_with_most_variation(matrix)
 
     mean, sorted = values.mean_sorted
     next if mean.zero?
+
     size = sorted.size
     margin = size >> MARGIN_SHIFT
     min = sorted[margin]
@@ -57,6 +58,7 @@ def stats_with_most_variation(matrix)
     next if sorted[0] == values[0] &&
             sorted[-1] == values[-1] &&
             sorted[size / 2] == values[size / 2]
+
     stats[field] = (max - min) / mean
   end
   Hash[stats.sort { |a, b| b[1] <=> a[1] }]

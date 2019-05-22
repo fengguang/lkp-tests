@@ -137,6 +137,7 @@ blacklist = File.read(BLACKLIST).split "\n"
 `git grep -A1 -E '(#{PRINTK_PATTERNS})' -- #{DIRS_TO_GREP} | grep -o '".*"'`.each_line do |line|
   line = line[1..-3]
   next if line =~ /"/
+
   line.sub!(/\\t/, "\t")
   lines = line.split '\\n'
   lines.each do |line|
@@ -145,6 +146,7 @@ blacklist = File.read(BLACKLIST).split "\n"
     len = 0
     strs.each_with_index do |s, i|
       next if len > s.size
+
       len = s.size
       index = i
     end
@@ -168,6 +170,7 @@ blacklist = File.read(BLACKLIST).split "\n"
     end
     next if str.gsub(/[^a-zA-Z]/, '').size <= MIN_MSG_LEN / 2
     next unless blacklist.grep(str).empty?
+
     errids << str
   end
 end

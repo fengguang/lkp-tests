@@ -17,6 +17,7 @@ def warn_stat(msg, monitor)
   log_warn msg
 
   return if $stat_context_showed
+
   $stat_context_showed = true
   log_warn "check #{RESULT_ROOT}/#{monitor}"
 end
@@ -27,6 +28,7 @@ record_index = 0
 while (line = STDIN.gets)
   line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
   next if line[0] == '#'
+
   k, _, v = line.partition(': ')
   next if v.empty?
 
@@ -89,6 +91,7 @@ result.each do |key, val|
   next if val[0] != 0
   next if val[-1] != 0
   next if val.sum != 0
+
   zero_stats << key
 end
 zero_stats.each { |x| result.delete x }
