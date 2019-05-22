@@ -214,9 +214,7 @@ def print_analysis(parser, options)
   end
 
   parser.overall_stat.each_key do |key|
-    unless parser.overall_stat[key].zero?
-      printf("%-35s %-10.1f %s\n", key, parser.overall_stat[key], options[:unit])
-    end
+    printf("%-35s %-10.1f %s\n", key, parser.overall_stat[key], options[:unit]) unless parser.overall_stat[key].zero?
   end
 end
 
