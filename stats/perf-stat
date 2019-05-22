@@ -32,22 +32,16 @@ def calc_addon_keys(results_sum, results_nr, interval, interval_nr, prefix)
       if key =~ /(.*)iTLB-load-misses/
         stem = $1
         instructions = results_sum[stem + 'instructions']
-        unless instructions.zero?
-          puts "#{prefix}#{stem}instructions-per-iTLB-miss: #{instructions / value}"
-        end
+        puts "#{prefix}#{stem}instructions-per-iTLB-miss: #{instructions / value}" unless instructions.zero?
       elsif key =~ /(.*)cache-misses/
         stem = $1
         cycles = results_sum[stem + 'cpu-cycles']
-        unless cycles.zero?
-          puts "#{prefix}#{stem}cycles-between-cache-misses: #{cycles / value}"
-        end
+        puts "#{prefix}#{stem}cycles-between-cache-misses: #{cycles / value}" unless cycles.zero?
       end
     when /(.*)cache-references/
       stem = $1
       instructions = results_sum[stem + 'instructions']
-      unless instructions.zero?
-        puts "#{prefix}#{stem}MPKI: #{value / instructions * 1000}"
-      end
+      puts "#{prefix}#{stem}MPKI: #{value / instructions * 1000}" unless instructions.zero?
     when /(.*)UNC_M_(.*)_INSERTS/
       stem1 = $1
       stem2 = $2

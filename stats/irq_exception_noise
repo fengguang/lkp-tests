@@ -68,9 +68,7 @@ class IrqAnalysis
   def analyze
     @sample_array.each do |sample|
       if @last
-        if sample.type == :softirq_exit || sample.type == :irq_handler_exit
-          process @last, sample
-        end
+        process @last, sample if sample.type == :softirq_exit || sample.type == :irq_handler_exit
         @last = nil
       elsif sample.type == :softirq_entry || sample.type == :irq_handler_entry
         @last = sample
