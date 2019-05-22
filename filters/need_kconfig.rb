@@ -53,7 +53,7 @@ def check_all(kconfig_lines)
     kconfig_error_message = "#{config} is not satisfied"
     kconfig_error_message = "#{kconfig_error_message} by #{kernel_version}" if kernel_version
     kconfig_error_message = "#{kconfig_error_message}, it is only satisfied by kernel matching #{kernel_version_regexp} regexp" if kernel_version_regexp
-    raise Job::ParamError, "#{kconfig_error_message}" unless __FILE__ =~ /suggest_kconfig/
+    raise Job::ParamError, kconfig_error_message.to_s unless __FILE__ =~ /suggest_kconfig/
 
     puts "suggest kconfig: #{config}"
   end
