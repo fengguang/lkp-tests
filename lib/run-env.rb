@@ -7,6 +7,7 @@ require 'yaml'
 def __local_run?
   hostname = `hostname`.chomp
   return false unless File.exist?("#{LKP_SRC}/hosts/#{hostname}")
+
   host_file = YAML.load_file("#{LKP_SRC}/hosts/#{hostname}")
   host_file['local_run'] == 1
 end

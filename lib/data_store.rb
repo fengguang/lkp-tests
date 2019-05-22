@@ -128,6 +128,7 @@ module DataStore
       as = deepcopy(axes)
       axes_keys.each do |k|
         next if k == Map::ALL_OTHERS_KEY
+
         as.delete k
       end
       as.each.map do |k, v|
@@ -216,6 +217,7 @@ module DataStore
     def add_index(cls, name = nil)
       dir = cons_index_path cls, name
       raise "Index already exist: #{dir}" if Dir.exist? dir
+
       index = cls.new(dir, true)
       yield index if block_given?
       index.save_config
@@ -445,6 +447,7 @@ module DataStore
       axes = node.axes
       ifn = index_file axes
       return unless ifn
+
       with_index_lock do
         File.open(ifn, 'a') do |f|
           str = Layout.axes_to_string axes
@@ -457,6 +460,7 @@ module DataStore
       axes = node.axes
       ifn = index_file axes
       return unless ifn
+
       str = Layout.axes_to_string axes
       delete_str str, ifn
     end
@@ -467,6 +471,7 @@ module DataStore
       ifn = index_file conditions
       return unless ifn
       return unless File.exist? ifn
+
       nconds = conditions.dup
       nconds.delete @axis_keys.first
       grep(conditions, [ifn], &blk)

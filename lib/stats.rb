@@ -119,6 +119,7 @@ def reasonable_perf_change?(name, delta, max)
     next unless name =~ %r{^#{k}$}
     return false if max < v
     return false if delta < v / 2 && v.class == Integer
+
     return true
   end
 
@@ -175,6 +176,7 @@ def changed_stats?(sorted_a, min_a, mean_a, max_a,
       return false if sorted_b.size <= 3 && min_a < 2 * options['distance'] * max_b
       return false if max_a < 2 * options['distance'] * max_b
       return false if mean_a < options['distance'] * max_b
+
       return true
     elsif options['gap']
       gap = options['gap']
@@ -183,6 +185,7 @@ def changed_stats?(sorted_a, min_a, mean_a, max_a,
     else
       return true if max_a > 3 * max_b
       return true if max_b > 3 * max_a
+
       return false
     end
   end
@@ -194,10 +197,12 @@ def changed_stats?(sorted_a, min_a, mean_a, max_a,
     return true if len_b * mean_a > options['variance'] * len_a * mean_b
   elsif options['distance']
     return false if max_a.is_a?(Integer) && (min_a - max_b == 1 || min_b - max_a == 1)
+
     if sorted_a.size < 3 || sorted_b.size < 3
       min_gap = [len_a, len_b].max * options['distance']
       return true if min_b - max_a > min_gap
       return true if min_a - max_b > min_gap
+
       return false
     end
     return true if min_b > max_a && (min_b - max_a) > (mean_b - mean_a) / 2
@@ -316,6 +321,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
 
   begin
     return nil unless git.commit_exist? commit
+
     version = nil
     is_exact_match = false
     version, is_exact_match = git.gcommit(commit).last_release_tag
@@ -373,6 +379,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
     unless File.exist? base_matrix_file
       rp[axis] = git.release_tags2shas[tag]
       next unless rp[axis]
+
       base_matrix_file = rp._result_root + '/matrix.json'
     end
     next unless File.exist? base_matrix_file
@@ -380,6 +387,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
     log_debug "base_matrix_file: #{base_matrix_file}"
     rc_matrix = load_release_matrix base_matrix_file
     next unless rc_matrix
+
     add_stats_to_matrix(rc_matrix, matrix)
     tags_merged << tag
     cols += matrix['stats_source'].size
@@ -631,6 +639,7 @@ def load_matrices_to_compare(matrix_path1, matrix_path2, options = {})
   begin
     a = search_load_json matrix_path1
     return [nil, nil] unless a
+
     b = if matrix_path2
           search_load_json matrix_path2
         else
@@ -654,6 +663,7 @@ def find_changed_stats(matrix_path, options)
 
   rp.each_commit do |commit_project, commit_axis|
     next if options['project'] && options['project'] != commit_project
+
     options['bisect_axis'] = commit_axis
     options['bisect_project'] = commit_project
     options['BAD_COMMIT'] = rp[commit_axis]
@@ -754,6 +764,7 @@ $kpi_stat_blacklist = Set.new ['vm-scalability.stddev', 'unixbench.incomplete_re
 
 def kpi_stat?(stat, _axes, _values = nil)
   return false if $kpi_stat_blacklist.include?(stat)
+
   base, _, remainder = stat.partition('.')
   all_tests_set.include?(base) && !remainder.start_with?('time.')
 end

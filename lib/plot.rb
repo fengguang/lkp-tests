@@ -153,6 +153,7 @@ class MMatrixPlotter < MatrixPlotterBase
 
   def plot_multi_lines
     return unless check_lines
+
     open_gnuplot(@output_file_name) do |gp|
       Gnuplot::Plot.new(gp) do |p|
         setup_output(p, @output_file_name)
@@ -207,6 +208,7 @@ class MMatrixPlotter < MatrixPlotterBase
 
   def plot_error_bars
     return unless check_lines
+
     Gnuplot.open do |gp|
       Gnuplot::Plot.new(gp) do |p|
         setup_output(p, @output_file_name)
@@ -224,6 +226,7 @@ class MMatrixPlotter < MatrixPlotterBase
         @lines.each do |matrix, y_stat_key, _line_title|
           values = matrix[y_stat_key]
           next unless check_line(values)
+
           values.map!(&:to_f)
 
           case y_stat_key
@@ -302,6 +305,7 @@ class MatrixPlotter < MatrixPlotterBase
       @y_stat_keys.each do |field, var|
         values = @matrix[field]
         next if values.max == values.min
+
         normalized_field = field.tr('^a-zA-Z0-9_.:+=-', '_')
         field_title = normalized_field
         Gnuplot::Plot.new(gp) do |p|

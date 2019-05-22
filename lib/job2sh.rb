@@ -153,10 +153,12 @@ class Job2sh < Job
       return :action_call_command
     elsif @monitors.include?(key)
       return false unless pass == :PASS_RUN_MONITORS
+
       shell_run_program(tabs, key, val)
       return :action_run_monitor
     elsif val.is_a?(String) && key =~ %r{^script\s+(monitors|setup|tests|daemon|stats)/([-a-zA-Z0-9_/]+)$}
       return false unless pass == :PASS_NEW_SCRIPT
+
       script_file = $1 + '/' + $2
       script_name = File.basename $2
       if @cur_func == :run_job && script_file =~ %r{^(setup|tests|daemon)/} ||
@@ -174,6 +176,7 @@ class Job2sh < Job
       return :action_new_script
     elsif val.is_a?(String) && key =~ /^(function)\s+([a-zA-Z_]+[a-zA-Z_0-9]*)$/
       return false unless pass == :PASS_NEW_SCRIPT
+
       shell_block = $1
       func_name = $2
       exec_line
@@ -186,6 +189,7 @@ class Job2sh < Job
       return :action_new_function
     elsif val.is_a?(Hash) && key =~ /^(if|for|while|until)\s/
       return false unless pass == :PASS_RUN_COMMANDS
+
       shell_block = $1
       exec_line
       exec_line tabs + key.to_s
@@ -195,6 +199,7 @@ class Job2sh < Job
       return :action_control_block
     elsif val.is_a?(Hash)
       return false unless pass == :PASS_RUN_COMMANDS
+
       exec_line
       func_name = key.tr('^a-zA-Z0-9_', '_')
       exec_line tabs + "#{func_name}()"
@@ -205,6 +210,7 @@ class Job2sh < Job
       return :action_background_function
     elsif valid_shell_variable?(key)
       return false unless pass == :PASS_EXPORT_ENV
+
       shell_export_env(tabs, key, val)
       return :action_export_env
     end

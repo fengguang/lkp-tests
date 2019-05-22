@@ -284,6 +284,7 @@ end
 def make_relative_symlink(src, dst)
   dst = File.join(dst, File.basename(src)) if File.directory? dst
   return if File.exist? dst
+
   src_comps = split_path(src)
   dst_comps = split_path(dst)
   src_comps, dst_comps = remove_common_head(src_comps, dst_comps)

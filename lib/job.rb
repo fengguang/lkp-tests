@@ -26,6 +26,7 @@ end
 def expand_shell_var(env, o)
   s = o.to_s
   return s if `hostname`.chomp == LKP_SERVER
+
   if s.index('$')
     f = IO.popen(env, ['/bin/bash', '-c', 'eval echo "' + s + '"'], 'r')
     s = f.read.chomp
@@ -47,6 +48,7 @@ def expand_toplevel_vars(env, hash)
   vars = {}
   hash.each do |key, val|
     next unless key.is_a?(String)
+
     case val
     when Hash
       next
@@ -88,12 +90,14 @@ def __create_programs_hash(glob, lkp_src)
     next if File.directory?(path)
     next if path =~ /\.yaml$/
     next if path =~ /\.[0-9]+$/
+
     unless File.executable?(path)
       log_warn "skip non-executable #{path}"
       next
     end
     file = File.basename(path)
     next if file == 'wrapper'
+
     if programs.include? file
       log_error "Conflict names #{programs[file]} and #{path}"
       next
@@ -154,6 +158,7 @@ def read_param_map_rules(file)
     head.chomp!
     rules[prev_rule] = head if prev_rule
     break if rule.empty?
+
     prev_rule = Regexp.new $1
   end
   rules[prev_rule] = head if prev_rule
@@ -238,6 +243,7 @@ class Job
 
   def delete_old_hosts_info
     return if @job['old_tbox_group'].nil?
+
     old_hosts_file = "#{lkp_src}/hosts/#{@job['old_tbox_group']}"
     if File.exist? old_hosts_file
       old_hwconfig = load_yaml(old_hosts_file, nil)
@@ -248,6 +254,7 @@ class Job
     vm_hosts_files = @job['old_tbox_group'] =~ /^vm-/ ? Dir["#{lkp_src}/etc/vms/*-#{@job['old_tbox_group'].sub('vm-', '')}"] : []
     @job.delete 'old_tbox_group'
     return if vm_hosts_files.empty?
+
     vm_old_hwconfig = load_yaml(vm_hosts_files[0], nil)
     vm_old_hwconfig.each_key { |k| @job.delete k }
   end
@@ -255,8 +262,10 @@ class Job
   def load_hosts_config
     return if @job.include?(:no_defaults) && @job['old_tbox_group'].nil?
     return unless @job.include? 'tbox_group'
+
     hosts_file = "#{lkp_src}/hosts/#{@job['tbox_group']}"
     return unless File.exist? hosts_file
+
     delete_old_hosts_info
     hwconfig = load_yaml(hosts_file, nil)
     @job[source_file_symkey(hosts_file)] = nil
@@ -265,6 +274,7 @@ class Job
 
   def include_files
     return @include_files if @include_files
+
     @include_files = {}
     Dir["#{lkp_src}/include/*"].map do |d|
       key = File.basename d
@@ -272,6 +282,7 @@ class Job
       Dir["#{lkp_src}/include/#{key}",
           "#{lkp_src}/include/#{key}/*"].each do |f|
             next if File.directory? f
+
             @include_files[key][File.basename(f)] = f
           end
     end
@@ -280,6 +291,7 @@ class Job
 
   def load_one_defaults(file, job)
     return nil unless File.exist? file
+
     context_hash = deepcopy(@defaults)
     revise_hash(context_hash, job, true)
     revise_hash(context_hash, @overrides, true)
@@ -334,9 +346,11 @@ class Job
 
       if @referenced_programs.include?(k) && i.include?(k)
         next unless load_one[k].nil?
+
         if v.is_a?(Hash)
           v.each do |kk, vv|
             next unless @referenced_programs[k].include? kk
+
             job['___'] = vv
             load_one[kk]
           end
@@ -354,6 +368,7 @@ class Job
         prefix += a
         hit = load_one[prefix]
         break if c.empty?
+
         prefix += b
       end
 
@@ -369,9 +384,11 @@ class Job
     @defaults = {}
 
     return unless first_time
+
     revise_hash(@job, @job2, true)
 
     return if @overrides.empty?
+
     key = comment_to_symbol('user overrides')
     @job.delete key
     @job[key] = nil
@@ -441,6 +458,7 @@ class Job
     ah.each do |k, v|
       yield ah, k, v if set.include?(k) || (v.is_a?(String) && v =~ /{{(.*)}}/m)
       next unless v.is_a?(Hash)
+
       expand_each_in(v, set) do |h, k, v|
         yield h, k, v
       end
@@ -454,6 +472,7 @@ class Job
         tail = $3.chomp.rstrip
         expr = expand_expression(@job, $2, k)
         return if expr.nil?
+
         h[k] = if head.empty? && tail.empty?
                  expr
                else
@@ -567,6 +586,7 @@ class Job
         next
       end
       next unless v
+
       path += v.to_s[0..30]
       path += '-'
     end
@@ -602,6 +622,7 @@ class Job
 
   def map_param(hash, key, val, rule_file)
     return unless val.is_a?(String)
+
     ___ = val.dup # for reference by expressions
     output = nil
     rules = read_param_map_rules(rule_file)
@@ -671,6 +692,7 @@ class Job
         map_param(h, k, v, file)
       end
       return true unless run_scripts
+
       for_each_in(@jobx, ruby_scripts.keys.to_set) do |_pk, h, k, v|
         hash = h
         file = ruby_scripts[k]
@@ -695,6 +717,7 @@ class Job
     as = {}
     ResultPath::MAXIS_KEYS.each do |k|
       next if k == 'path_params'
+
       as[k] = @job[k] if @job.key? k
     end
 

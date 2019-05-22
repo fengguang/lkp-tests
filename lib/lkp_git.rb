@@ -56,6 +56,7 @@ def git_commit(commit)
 
   $__git_commit_cache ||= {}
   return $__git_commit_cache[commit] if $__git_commit_cache.include?(commit)
+
   sha1_commit = `#{GIT} rev-list -n1 #{commit}`.chomp
   $__git_commit_cache[commit] = sha1_commit unless sha1_commit.empty?
   sha1_commit
@@ -72,6 +73,7 @@ end
 def commit_tag(commit)
   $__commit_tag_cache ||= {}
   return $__commit_tag_cache[commit] if $__commit_tag_cache.include?(commit)
+
   $__commit_tag_cache[commit] = __commit_tag(commit)
 end
 
@@ -135,6 +137,7 @@ def compare_version(aa, bb)
     aaa = aa[name]
     bbb = bb[name]
     next if aaa == bbb
+
     direction = if name =~ /prerelease/
                   -1
                 else
@@ -168,6 +171,7 @@ def get_tags(pattern, _committer)
   `#{GIT} tag -l`.each_line do |tag|
     tag.chomp!
     next unless pattern.match(tag)
+
     # disabled: too slow and lots of git lead to OOM
     # next unless committer == nil or committer == git_committer_name(tag)
     tags << tag
@@ -206,6 +210,7 @@ def load_remotes
   files.each do |file|
     remote = File.basename file
     next if remote == 'DEFAULTS'
+
     defaults = File.dirname(file) + '/DEFAULTS'
     repo_info = load_yaml_merge [defaults, file]
 
@@ -265,6 +270,7 @@ end
 
 def __commit_name(commit)
   return commit unless commit =~ /^[a-f0-9]+$/ || commit =~ /^v\d\.\d+/
+
   name = commit[0..11]
   name + ' ' + git_commit_subject(commit)[0..59]
 end

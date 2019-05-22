@@ -79,6 +79,7 @@ end
 def search_file_in_paths(file, relative_to = nil, search_paths = nil)
   if file[0] == '/'
     return nil unless File.exist? file
+
     return file
   end
 
@@ -87,6 +88,7 @@ def search_file_in_paths(file, relative_to = nil, search_paths = nil)
   if file =~ /^\.\.?\//
     file = File.join(relative_to, file)
     return nil unless File.exist? file
+
     return file
   end
 
@@ -196,6 +198,7 @@ def load_json(file, cache = false)
                 JSON.load `zcat #{file}`
               end
         return obj unless cache
+
         $json_cache[file] = obj
         $json_mtime[file] = mtime
       end

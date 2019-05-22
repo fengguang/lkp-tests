@@ -21,6 +21,7 @@ end
 
 def tbox_group?(hostname)
   return nil unless hostname.is_a?(String) && !hostname.empty?
+
   Dir[LKP_SRC + '/hosts/' + hostname][0]
 end
 
@@ -93,6 +94,7 @@ class ResultPath < Hash
 
     path_scheme.each do |key|
       next if skip_keys && skip_keys.include?(key)
+
       dirs << self[key]
     end
 

@@ -18,6 +18,7 @@ class String
 
   def replace_invalid_utf8!(to = '_')
     return self if valid_encoding?
+
     encode!('UTF-8', 'UTF-8', invalid: :replace, undef: :replace, replace: to)
   end
 

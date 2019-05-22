@@ -86,6 +86,7 @@ module CMResultRoot
   def job_file
     job1 = path(JOB_FILE1)
     return job1 if File.exist? job1
+
     jobs = glob(JOB_GLOB)
     jobs[0] unless jobs.empty?
   end
@@ -117,6 +118,7 @@ module CMResultRoot
   def runs(m = nil)
     m ||= matrix
     return 0, 0 unless m
+
     all_runs = matrix_cols m
     cm = complete_matrix m
     complete_runs = matrix_cols cm
@@ -132,9 +134,11 @@ module CMResultRoot
   def kpi_avg_stddev
     cm = complete_matrix
     return nil if matrix_cols(cm) < 3
+
     avg_stddev = {}
     cm.each do |k, v|
       next unless kpi_stat?(k, axes, [v])
+
       avg_stddev[k] = [v.average, v.standard_deviation]
     end
     avg_stddev
@@ -231,6 +235,7 @@ class << MResultRootTable
   def create_layout(name, force = false)
     dir = table_dir name
     return if !force && DataStore::Layout.exist?(dir)
+
     FileUtils.rm_rf(dir)
     layout = DataStore::Layout.create_new dir
     layout.save
@@ -295,6 +300,7 @@ class MResultRootTableSet
     testcase = testcase.sub(/^kvm:/, '')
     tbl = @testcase_map[testcase]
     raise "Unknow testcase: #{testcase}" unless tbl
+
     tbl
   end
 
@@ -441,12 +447,15 @@ module ResultStddev
     axes = _rt.axes
     commit = axes[COMMIT_AXIS_KEY]
     return unless commit
+
     testcase = axes[TESTCASE_AXIS_KEY]
     return unless MResultRootTableSet::LINUX_PERF_TESTCASES.index testcase
+
     # Only save for release tags
     proj = 'linux'
     git = Git.open(project: proj, working_dir: ENV['SRC_ROOT'])
     return unless git.gcommit(commit).release_tag
+
     avg_stddev = _rt.kpi_avg_stddev
     return unless avg_stddev
 
@@ -482,12 +491,14 @@ module ResultStddev
     dir, file = ResultStddev.path axes
     path = File.join dir, file
     return nil unless File.exist? path
+
     load_json path
   end
 
   def load_values(axes)
     data = load(axes)
     return nil unless data && !data.empty?
+
     data.delete SOURCE_KEY
     data.each do |k, vs|
       vs.compact!

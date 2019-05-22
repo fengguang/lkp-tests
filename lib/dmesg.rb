@@ -165,6 +165,7 @@ def grep_crash_head(dmesg_file)
     break if has_oom
     break if line =~ CALLTRACE_IGNORE_PATTERN
     break unless line =~ />\] ([a-zA-Z0-9_.]+)\+0x[0-9a-fx\/]+/
+
     oops_map['calltrace:' + $1] ||= line
   end
 
@@ -252,6 +253,7 @@ def oops_to_bisect_pattern(line)
   words = line.split
   return '' if words.empty?
   return line if words.size == 1
+
   patterns = []
   words.each do |w|
     case w
@@ -415,6 +417,7 @@ def get_crash_stats(dmesg_file)
     end
 
     next unless line =~ /^message:/
+
     # message:WARNING:at_kernel/locking/lockdep.c:#lock_release: [   11.858566 ] WARNING: CPU: 0 PID: 11 at kernel/locking/lockdep.c:3536 lock_release+0x179/0x3b7
     #
     oops_map[id] = line.split(': ')[1..-1].join(': ')

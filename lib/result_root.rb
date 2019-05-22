@@ -124,6 +124,7 @@ class ResultRootCollection
         # f.readlines.each { |rtp|
           rtp = rtp.strip
           next unless File.exist? rtp
+
           yield ResultRoot.new rtp
         end
       end
@@ -260,6 +261,7 @@ class << MResultRoot
   def valid?(path)
     return true if File.exist? File.join(path, self::JOB_FILE1)
     return false unless File.exist? path
+
     Dir[File.join path, self::JOB_GLOB].first
   end
 

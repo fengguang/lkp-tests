@@ -144,6 +144,7 @@ module Compare
 
     def do_sort_mresult_roots
       return if @mresult_roots.empty?
+
       if sort_mresult_roots
         skeys = @compare_axis_keys.map do |k|
           git = axis_key_git(k)
@@ -178,6 +179,7 @@ module Compare
                       .group
       groups.map do |g|
         next if g.axes_data.size < 2
+
         Group.new self, g.axes, g.group_axeses, g.axes_data
       end.compact
     end
@@ -331,18 +333,21 @@ module Compare
     def get_include_stat_keys
       stat_key_res = @comparer.include_stat_keys
       return [] unless stat_key_res
+
       do_filter_stat_keys get_all_stat_keys, stat_key_res
     end
 
     def filter_stat_keys(stats)
       filters = @comparer.filter_stat_keys
       return stats unless filters && !filter.empty?
+
       do_filter_stat_keys stats, filters
     end
 
     def exclude_stat_keys(stats)
       excludes = @comparer.exclude_stat_keys
       return stats unless excludes && !excludes.empty?
+
       excludes.each do |sre|
         re = Regexp.new(sre)
         stats.reject! { |stat_key| re.match stat_key }
@@ -352,6 +357,7 @@ module Compare
 
     def get_include_all_failure_stat_keys
       return [] unless @comparer.include_all_failure_stat_keys
+
       get_all_stat_keys.select { |stat_key| is_failure stat_key }
     end
 
@@ -631,6 +637,7 @@ module Compare
 
   def self.calc_failure_fail(stat)
     return unless stat[FAILURE]
+
     stat[FAILS] = stat[VALUES].map do |v|
       v ? v.sum : 0
     end
@@ -638,6 +645,7 @@ module Compare
 
   def self.calc_failure_change(stat)
     return unless stat[FAILURE]
+
     fs = stat[FAILS]
     runs = stat[RUNS]
     reproduce0 = fs[0].to_f / runs[0]
@@ -648,6 +656,7 @@ module Compare
 
   def self.calc_avg_stddev(stat)
     return if stat[FAILURE]
+
     vs = stat[VALUES]
     stat[AVGS] = vs.map { |v| v && !v.empty? ? v.average : 0 }
     stat[STDDEVS] = vs.map { |v| v && v.size > 1 ? v.standard_deviation : -1 }
@@ -655,6 +664,7 @@ module Compare
 
   def self.calc_min_max(stat)
     return if stat[FAILURE]
+
     vs = stat[VALUES]
     stat[MIN] = vs.map { |v| v && !v.empty? ? v.min : 0 }
     stat[MAX] = vs.map { |v| v && !v.empty? ? v.max : 0 }
@@ -666,6 +676,7 @@ module Compare
 
   def self.calc_perf_change(stat)
     return if stat[FAILURE]
+
     key = stat[STAT_KEY]
     avgs = stat[AVGS]
     avg0 = avgs[0]
@@ -731,6 +742,7 @@ module Compare
 
   def self.show_failure_change(stat)
     return unless stat[FAILURE]
+
     fails = stat[FAILS]
     changes = stat[CHANGES]
     abs_changes = stat[ABS_CHANGES]
@@ -754,6 +766,7 @@ module Compare
 
   def self.show_perf_change(stat)
     return if stat[FAILURE]
+
     avgs = stat[AVGS]
     stddevs = stat[STDDEVS]
     changes = stat[CHANGES]
@@ -962,8 +975,10 @@ module Compare
       axes = _rt.axes
       testcase = axes[TESTCASE_AXIS_KEY]
       next false if ignored_testcases.member?(testcase)
+
       tbox = axes[TBOX_GROUP_AXIS_KEY]
       next false if tbox.start_with? 'vm-'
+
       true
     end
     compare_axis_keys = [COMMIT_AXIS_KEY]

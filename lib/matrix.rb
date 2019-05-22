@@ -64,6 +64,7 @@ def add_performance_per_watt(stats, matrix)
 
     value = stats[stat]
     next unless value
+
     if weight < 0
       value = 1 / value
       weight = -weight
@@ -80,8 +81,10 @@ end
 def add_path_length(stats, matrix)
   workloads = stats.select { |s| s.end_with? '.workload' }
   return if workloads.size != 1
+
   instructions = stats['perf-stat.total.instructions']
   return unless instructions
+
   path_length = instructions.to_f / workloads.values[0]
   stats['perf-stat.overall.path-length'] = path_length
   matrix['perf-stat.overall.path-length'] = [path_length]
@@ -109,6 +112,7 @@ def create_stats_matrix(result_root)
 
     next if monitor == 'stats' # stats.json already created?
     next if monitor == 'matrix'
+
     unless $programs[monitor] || monitor =~ /^ftrace\.|.+\.time$/
       log_warn "skip unite #{file}: #{monitor} not in #{$programs.keys}"
       next
@@ -139,8 +143,10 @@ def create_stats_matrix(result_root)
 
     monitor_stats.each do |k, v|
       next if k == "#{monitor}.time"
+
       v = v[i_stats_part_begin, stats_part_len] unless ignore_part k
       next if !v || v.empty?
+
       stats[k] = if v.size == 1
                    v[0]
                  elsif independent_counter? k

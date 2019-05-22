@@ -30,6 +30,7 @@ ACCUMULATIVE_KEYS = %w(
 def accumulative_key?(k)
   return true if ACCUMULATIVE_KEYS.include? k
   return true if k =~ /^need_/ && k !~ /^need_(memory|cpu)$/
+
   false
 end
 
@@ -90,6 +91,7 @@ def revise_hash(original, revisions, overwrite_top_keys = true)
 
   all_keys.delete_if do |k|
     next true unless k.is_a?(String)
+
     v = if org_keys.include? k
           original[k]
         else

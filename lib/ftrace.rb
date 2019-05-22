@@ -52,6 +52,7 @@ class TPSample
         raw_data = $7
       end
       return if raw_data.nil?
+
       arg_pair_strs = raw_data.scan self::RES_ARG
       arg_pairs = arg_pair_strs.map do |k, v|
         [k.intern, v]
@@ -160,6 +161,7 @@ class FGSample
         new $1, $2.to_i, $3.to_f, $4.intern
       when self::RE_SAMPLE2
         return if $5.to_f.zero?
+
         new $3, $4.to_i, $5.to_f, $6.intern
       end
     end

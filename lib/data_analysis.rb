@@ -22,6 +22,7 @@ def histogram(data, range = nil, params = {})
   start = 0
   hist = range.map do |lc|
     next nil if start >= total
+
     nstart = data.index { |l| l >= lc } || total
     num = if accumulate
             nstart
