@@ -39,7 +39,7 @@ def parse_process_lines(process_lines, time)
 
     if start
       if b[3] == '->'
-        STDERR.puts 'not a START of syscall\n' + last_line + line if DEBUG
+        warn 'not a START of syscall\n' + last_line + line if DEBUG
         find_next = true
         last_line = line
         next
@@ -50,14 +50,14 @@ def parse_process_lines(process_lines, time)
       start = false
     else
       if b[3] != '->'
-        STDERR.puts 'not a syscall return:\n' + last_line + line if DEBUG
+        warn 'not a syscall return:\n' + last_line + line if DEBUG
         find_next = true
         last_line = line
         next
       end
       syscall2 = b[2]
       if syscall2 != syscall1
-        STDERR.puts 'not the same syscall\n' + last_line + line if DEBUG
+        warn 'not the same syscall\n' + last_line + line if DEBUG
         find_next = true
         last_line = line
         next
