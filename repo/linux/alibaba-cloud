@@ -3,5 +3,6 @@ mail_cc: aliyunlinux2-dev@linux.alibaba.com
 notify_build_success_branch: .*
 build_success_mail_cc: aliyunlinux2-dev@linux.alibaba.com
 test_old_branches: .*
+blacklist_branch: master
 customconfig: alicloud-customedconfig
 belongs_to: ali
