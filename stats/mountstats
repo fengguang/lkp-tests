@@ -29,6 +29,7 @@ params['eventcounters'] = %w(NFSIOS_INODEREVALIDATE NFSIOS_DENTRYREVALIDATE NFSI
 def print_values(path, line)
   while (line = STDIN.gets)
     break if line.split.size <= 0
+
     case line
     when /\s*([\w]+):\s*([0-9]+)$/
       puts "#{path}.#{$1}: #{$2}"
@@ -50,6 +51,7 @@ def check_params(type, values, params)
     used = params['fscachecounters']
   else
     return unless values.size == params['rpcstats'].size
+
     used = params['rpcstats']
   end
   used

@@ -119,6 +119,7 @@ def show_syscalls_noise(time, syscall_nr, sys_nr)
   i = 0
   a.each do |syscall, _nr|
     break if i == 5
+
     n = Noise.new syscall, time[syscall]
     n.analyse
     n.log

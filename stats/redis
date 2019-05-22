@@ -119,6 +119,7 @@ def show_latencies(latencies, name)
   latencies.transpose.each_with_index do |ps, i|
     sum = ps.inject(0, :+)
     next unless sum != 0
+
     avg = sum.to_f / ps.length
     puts "#{name}_latency_#{i}ms%: #{avg}"
     while pi < PERCENTILES.length && avg > PERCENTILES[pi]

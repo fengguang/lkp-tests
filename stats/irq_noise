@@ -41,6 +41,7 @@ class IrqAnalysis
     key = 'irq'
     key = 'vec' if s1.type == :softirq_entry
     return true if s1.data[key] != s2.data[key]
+
     false
   end
 

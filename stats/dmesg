@@ -70,8 +70,10 @@ def verify_serial_log(dmesg_lines)
   dmesg_lines.grep(/RESULT_ROOT=/) do |line|
     next if line =~ /(^|[0-9]\] )kexec -l | --initrd=| --append=|"$/
     next unless line =~ / RESULT_ROOT=([A-Za-z0-9.,;_\/+%:@=-]+) /
+
     rt = $1
     next unless Dir.exist? rt # serial console is often not reliable
+
     if rt != RESULT_ROOT
       log_error "RESULT_ROOT mismatch in dmesg: #{RESULT_ROOT} #{rt}"
     end
@@ -132,6 +134,7 @@ oops_map.each do |bug_to_bisect, line|
   next if line =~ /\[ *(\d{1,6}\.\d{6})\]\s*(\s[0-9a-f]{8}){4}$/
 
   next if line =~ /[^\t\n\0[:print:]]/
+
   line.tr! "\0", ''
 
   error_id, bug_to_bisect = analyze_error_id bug_to_bisect

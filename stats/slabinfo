@@ -26,8 +26,10 @@ STDIN.each_line do |line|
     values = line.split
     name = values.shift
     next if values.size != sub_names.size
+
     values.each_with_index do |value, i|
       next unless sub_names[i][0] == '<'
+
       case sub_names[i]
       when '<active_objs>',
         '<num_objs>',

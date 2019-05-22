@@ -10,6 +10,7 @@ no = nil
 
 def statistics
   return unless @sample
+
   @sample.each do |k, v|
     puts "#{k}.max: #{v.max}"
     puts "#{k}.min: #{v.min}"
@@ -29,6 +30,7 @@ while (line = STDIN.gets)
     next
   when /^\s*(\S+)\s*:\s+([0-9.-]+)/
     next if prefix.index ':/autogroup-'
+
     key = prefix + $1
     if no && !no.strip.empty?
       puts "#{key}.#{no}: #{$2}"
@@ -42,6 +44,7 @@ while (line = STDIN.gets)
   else
     values = line.split
     next if values.empty?
+
     prefix = values[0].tr(',', '')
     case prefix
     when /^(.*)#([0-9]+)$/

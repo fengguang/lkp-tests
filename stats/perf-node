@@ -4,6 +4,7 @@ sum = { 'node-loads' => 0, 'node-load-misses' => 0, 'node-stores' => 0, 'node-st
 STDIN.each_line do |line|
   _time, value, key = line.split
   next unless value =~ /^\d+$/
+
   sum[key] += value.to_i
 end
 

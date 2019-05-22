@@ -11,6 +11,7 @@ STDIN.each_line do |line|
   when /^(Node *\d+, zone *\S+[a-zA-Z ]+) ([0-9 ]+)/
     values = $2.split
     next if values.size != sub_names.size
+
     name = $1.gsub(/, (zone|type)/, '.').tr(' ', '')
     values.each_with_index do |value, i|
       puts name + '.' + sub_names[i] + ': ' + value

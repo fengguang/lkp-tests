@@ -39,6 +39,7 @@ def display(results)
     cmd_result.sort_by! { |r| r[1] }
     cmd_result.reverse_each do |bt, p|
       break if p < THRESHOLD
+
       puts "#{cmd}.#{bt}: #{p}"
     end
   end

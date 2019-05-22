@@ -52,9 +52,11 @@ results = {}
 def get_array_result(prefix, array, results)
   array.each do |item|
     next unless item.class == Hash
+
     key_0, value_0 = item.first
     item.each_key do |k_|
       next if k_ == key_0
+
       key = "#{prefix}.#{value_0}.#{k_}"
       key = "#{key}%" if prefix == 'cpu-load'
       results[key] = item[k_]
@@ -75,6 +77,7 @@ def display_result(hash)
     next if key.to_s.empty?
     # some key's values are not numeric, skip it.
     next if key =~ /product|idprod|maxpower|idvendor|manufact/
+
     # display key and value format as below:
     # "cpu-load.all.usr%: 3.06"
     # "net-dev.lo.rxpck: 0.00"

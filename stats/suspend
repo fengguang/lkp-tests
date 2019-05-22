@@ -84,6 +84,7 @@ srhash.each do |kk, vv|
   when /(.*)_\d*/
     kmax = $1
     next if srmaxhash.key?(kmax) && srmaxhash[kmax] < 50
+
     puts "#{kmax}: #{vv}"
   end
 end

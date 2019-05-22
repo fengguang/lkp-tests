@@ -9,6 +9,7 @@ all_sum = 0
 nr_records = 0
 while (line = STDIN.gets)
   next unless line =~ /^\s*\d+.*\d+$/
+
   data = line.split
   data.each_index do |i|
     if data[i].size > 8

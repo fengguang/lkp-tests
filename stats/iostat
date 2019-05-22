@@ -19,6 +19,7 @@ def extract_avg_cpu(line)
   title = line.split[1..-1]
 
   return unless (line = STDIN.gets)
+
   data = line.split
   (0..data.size - 1).each do |i|
     key = normalize_key "cpu.#{title[i]}"

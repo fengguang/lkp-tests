@@ -2,6 +2,7 @@
 
 while (line = STDIN.gets)
   next if line.index('Command being timed: ')
+
   key, val = line.split ': '
 
   # skip the first line to avoid empty val.

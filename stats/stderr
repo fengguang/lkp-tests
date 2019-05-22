@@ -32,12 +32,14 @@ end
 while (line = gets)
   line.chomp!
   next if should_ignore_stderr(line)
+
   # ERR: lib/dmesg.rb:151:in `gsub!': invalid byte sequence in US-ASCII (ArgumentError)
   line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
   line = line.strip_nonprintable_characters
   id = common_error_id(line)
 
   next if id.size < 3
+
   error_ids[id] = line
 end
 

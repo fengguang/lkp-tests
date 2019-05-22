@@ -24,8 +24,10 @@ def generate_prefix(event, key_prefix_items, record)
 
     if key == 'bdi'
       break unless BDI_DEV_MAPPING
+
       dev = BDI_DEV_MAPPING[v]
       break unless dev
+
       key_prefix += '.' + dev
     else
       key_prefix += '.' + key + '.' + record[key]
@@ -39,6 +41,7 @@ def normlize_record(event, record, key_prefix_items, records)
 
   record['time'] = (record['time'].to_f + TIME_DELTA).floor.to_s
   return if records['last_recorded_time'][key_prefix] == record['time']
+
   records['last_recorded_time'][key_prefix] = record['time']
 
   records['yaml_files'][key_prefix] ||= File.new(RESULT_ROOT + '/' + "ftrace.#{key_prefix}.yaml", 'w', 0o664)
@@ -47,6 +50,7 @@ def normlize_record(event, record, key_prefix_items, records)
     next if key_prefix_items.include? k
     # we store digit only
     next unless v =~ /^-?\d+(\.\d+)?$/
+
     records['yaml_files'][key_prefix].puts "#{k}: #{v}"
   end
 end

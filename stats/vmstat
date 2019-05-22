@@ -26,6 +26,7 @@ end
 
 while (line = STDIN.gets)
   next unless line =~ /[0-9]/
+
   data = line.split
   if data.size == keys.size + 1 # has "date time" in end of line
     time = Time.parse(data.pop(2).join(' ')).to_i

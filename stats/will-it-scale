@@ -20,6 +20,7 @@ while (line = STDIN.gets)
     values = line.split ','
     nr_task = values.shift
     next if nr_task == '0'
+
     linear = values[-1].to_i
     scalability << values[0].to_f / linear if linear != 0 && nr_task != '1'
     per_process << values[0].to_f / nr_task.to_i

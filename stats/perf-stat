@@ -20,6 +20,7 @@ def calc_addon_keys(results_sum, results_nr, interval, interval_nr, prefix)
       ['s', '-references', '-instructions'].each do |pfx|
         avalue = results_sum[stem + pfx]
         next if avalue.zero?
+
         total = if pfx == 's'
                   avalue + value
                 else
@@ -81,6 +82,7 @@ end
 
 def output_interval(prev_time, time)
   return if $interval_results_sum.empty?
+
   interval = time - prev_time
   puts "time: #{time}"
   $interval_results_sum.each do |key, value|
@@ -130,6 +132,7 @@ def parse
 
   $stdin.each_line do |line|
     next unless line =~ /^\s*\d+\.\d+\s+/
+
     stime, *fields = line.split
 
     prev_time = time

@@ -122,6 +122,7 @@ while (line = STDIN.gets)
     mqueue_speed[mqueue_test + '.' + io] = Regexp.last_match[1].to_i
   when /: recipe for target.+failed$/
     next unless testname
+
     # do not count make fail in nr_test, which is for sub test number
     stats << "#{testname}.make_fail: 1"
   when /^ignored_by_lkp (.*) test/
