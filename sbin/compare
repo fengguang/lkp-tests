@@ -29,7 +29,7 @@ PERF_INDEX_KCONFIG = 'x86_64-rhel'.freeze
 # If a monitor contains various stats with the same logical class of values and
 # hence can be compared with each other, it's a good candidate to show and sort
 # by absolute changes.
-ABS_CHANGE_STATS_RE = /^(perf-profile|latency_stats)/
+ABS_CHANGE_STATS_RE = /^(perf-profile|latency_stats)/.freeze
 
 $opt_dimension = 'commit'
 $opt_field = nil
