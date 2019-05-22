@@ -116,6 +116,7 @@ class CpuBootLogParser
 
   def process_cpuhp_online_idle(timestamp, cpu_id)
     return if cpu_id.zero?
+
     unless @apbootinfo_hash.key?(cpu_id)
       puts 'Incomplete boot log of function sched_cpu_starting.'
       return
