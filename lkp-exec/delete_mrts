@@ -8,6 +8,7 @@ def main
   $stdin.each_line do |mrtp|
     mrtp = mrtp.strip
     next unless File.exist? mrtp
+
     delete_mrt mrtp
   end
 end
