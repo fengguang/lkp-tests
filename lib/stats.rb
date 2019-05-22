@@ -637,7 +637,7 @@ def load_matrices_to_compare(matrix_path1, matrix_path2, options = {})
           Timeout.timeout(300) { load_base_matrix matrix_path1, a, options }
         end
   rescue Timeout::Error
-    log_error "load_base_matrix timeout"
+    log_error 'load_base_matrix timeout'
     return [nil, nil]
   rescue StandardError => e
     log_exception(e, binding)
