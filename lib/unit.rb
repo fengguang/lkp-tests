@@ -25,11 +25,11 @@ def to_seconds(time_spec)
 end
 
 SIZE_UNITS = {
-  P:  50,
-  T:  40,
-  G:  30,
-  M:  20,
-  K:  10
+  P: 50,
+  T: 40,
+  G: 30,
+  M: 20,
+  K: 10
 }.freeze
 def to_byte(size_spec)
   return size_spec unless size_spec.is_a?(String)
