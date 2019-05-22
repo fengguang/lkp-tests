@@ -704,9 +704,7 @@ def _get_changed_stats(a, b, options)
 end
 
 def get_changed_stats(matrix_path1, matrix_path2 = nil, options = {})
-  unless matrix_path2 || options['bisect_axis']
-    return find_changed_stats(matrix_path1, options)
-  end
+  return find_changed_stats(matrix_path1, options) unless matrix_path2 || options['bisect_axis']
 
   a, b = load_matrices_to_compare matrix_path1, matrix_path2, options
   return nil if a.nil? || b.nil?

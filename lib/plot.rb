@@ -252,9 +252,7 @@ class MMatrixPlotter < MatrixPlotterBase
 
         y_stat.map! { |v| (v / y_base * 100).round(2) }
         y_stat_max.map! { |v| (v / y_base * 100).round(2) }
-        if y_stat.size == y_stat_max.size
-          z_stat = (1..y_stat.size).map { |i| (y_stat_max[i - 1] - y_stat[i - 1]).round(2) }
-        end
+        z_stat = (1..y_stat.size).map { |i| (y_stat_max[i - 1] - y_stat[i - 1]).round(2) } if y_stat.size == y_stat_max.size
 
         xtics_stat = x_stat.map.with_index { |x, i| format('"%s" %d', x, i + 1) }.join(', ')
         p.xtics "(#{xtics_stat}) font ',24' offset 0,-0.5"

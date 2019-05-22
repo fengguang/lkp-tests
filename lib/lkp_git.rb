@@ -227,9 +227,7 @@ def load_remotes
       repo_info['maintained_files'] ||= '*'
     end
 
-    if remotes[remote]
-      warn "conflict repo name in different projects: #{remote}"
-    end
+    warn "conflict repo name in different projects: #{remote}" if remotes[remote]
 
     remotes[remote] = repo_info
   end

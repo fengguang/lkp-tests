@@ -401,15 +401,9 @@ module Compare
       stat_keys |= get_include_stat_keys
       stat_keys |= get_include_all_failure_stat_keys
       stat_keys = filter_stat_keys stat_keys
-      if @comparer.filter_testcase_stat_keys
-        stat_keys = filter_testcase_stat_keys stat_keys
-      end
-      if @comparer.filter_kpi_stat_keys
-        stat_keys = filter_kpi_stat_keys stat_keys, matrixes_in
-      end
-      if @comparer.filter_kpi_stat_strict_keys
-        stat_keys = filter_kpi_stat_strict_keys stat_keys, matrixes_in
-      end
+      stat_keys = filter_testcase_stat_keys stat_keys if @comparer.filter_testcase_stat_keys
+      stat_keys = filter_kpi_stat_keys stat_keys, matrixes_in if @comparer.filter_kpi_stat_keys
+      stat_keys = filter_kpi_stat_strict_keys stat_keys, matrixes_in if @comparer.filter_kpi_stat_strict_keys
       exclude_stat_keys stat_keys
     end
 

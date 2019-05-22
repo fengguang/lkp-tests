@@ -128,9 +128,7 @@ def create_stats_matrix(result_root)
     if tv && tv.size > 2
       tv0 = tv[0]
       # make it relative time
-      if tv0 > 2 && (stats_part_begin != 0 || stats_part_end != 0)
-        tv = tv.map { |v| v - tv0 }
-      end
+      tv = tv.map { |v| v - tv0 } if tv0 > 2 && (stats_part_begin != 0 || stats_part_end != 0)
       if stats_part_begin != 0
         i_stats_part_begin = tv.find_index { |v| v >= stats_part_begin } || sample_size
         stats_part_len -= i_stats_part_begin
