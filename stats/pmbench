@@ -101,14 +101,14 @@ percentiles = percentile_strs.map(&:to_f)
         res = v / sum * 100
         hist_cum += res
         while pi < percentiles.length && hist_cum >= percentiles[pi]
-          puts "#{mode}.latency.#{percentile_strs[pi]}%.ns: #{2 ** (i + 8) + j * 2 ** (i + 4)}"
+          puts "#{mode}.latency.#{percentile_strs[pi]}%.ns: #{2**(i + 8) + j * 2**(i + 4)}"
           pi += 1
         end
       end
     else
       hist_cum += res
       while pi < percentiles.length && hist_cum >= percentiles[pi]
-        puts "#{mode}.latency.#{percentile_strs[pi]}%.ns: #{2 ** (i + 8)}"
+        puts "#{mode}.latency.#{percentile_strs[pi]}%.ns: #{2**(i + 8)}"
         pi += 1
       end
     end
