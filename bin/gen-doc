@@ -10,6 +10,7 @@ class ItemDesc
   def initialize(k, v)
     @name = k
     return unless v
+
     case v
     when String
       @desc = v

@@ -71,6 +71,7 @@ scripts.uniq!
 
 def make_wakeup
   return if File.executable? LKP_SRC + '/bin/event/wakeup'
+
   system "cd #{LKP_SRC}/bin/event && make wakeup"
 end
 

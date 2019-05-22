@@ -25,6 +25,7 @@ add_keyval($testcase, 'kconfig', DEVEL_HOURLY_KCONFIGS[0])
 def expand_one
   for_each($testcase) do |k, v|
     next unless k == 'params'
+
     last_item = ''
     for_each(v) { |kk, _vv| last_item = kk }
     for_each(v) do |kk, vv|
