@@ -27,7 +27,7 @@ fi
 
 while :
 do
-	echo time: $(date +%s.%N)
+	echo time: $(date +%s)
 	cat /proc/$file
 	wait_timeout $interval
 done
