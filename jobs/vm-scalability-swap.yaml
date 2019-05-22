@@ -27,6 +27,12 @@ perf-profile:
 vm-scalability:
   test:
     - swap-w-seq
-    - swap-w-rand
     - swap-w-seq-mt
     - swap-w-rand-mt
+
+---
+unit_size: 335544320
+
+vm-scalability:
+  test:
+    - swap-w-rand
