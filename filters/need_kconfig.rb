@@ -14,8 +14,10 @@ end
 
 def read_kconfig_lines
   return nil unless self['kernel']
+
   kconfig_file = File.expand_path '../.config', kernel
   return nil unless File.exist? kconfig_file
+
   File.read kconfig_file
 end
 
@@ -71,6 +73,7 @@ def check_arch_constraints
       # - commit=BASE|HEAD|CYCLIC_BASE|CYCLIC_HEAD late binding
       # - know exact commit, however yet to compile the kernel
       raise Job::ParamError, "32bit kernel cannot run 64bit rootfs: '#{kconfig}' '#{rootfs}'" if kconfig =~ /^i386-/
+
       $___ << 'CONFIG_X86_64=y'
     when /-i386/
       $___ << 'CONFIG_IA32_EMULATION=y' if kconfig =~ /^x86_64-/
@@ -81,6 +84,7 @@ def check_arch_constraints
       raise Job::ParamError, "32bit QEMU cannot run 64bit rootfs: '#{model}' '#{rootfs}'"
     when /-i386/
       raise Job::ParamError, "32bit QEMU cannot run 64bit kernel: '#{model}' '#{kconfig}'" if kconfig =~ /^x86_64-/
+
       $___ << 'CONFIG_X86_32=y'
     end
   end
