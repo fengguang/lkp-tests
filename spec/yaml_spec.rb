@@ -95,6 +95,7 @@ EOF
   expects.each do |k, v|
     next unless k.instance_of?(Symbol)
     next unless v.instance_of?(Array) && v.size >= 2
+
     it k.to_s do
       expect(v[0]).to eq v[1]
     end
