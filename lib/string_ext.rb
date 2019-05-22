@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-REGEX_ANSI_COLOR = /\e\[([0-9;]+m|[mK])/
+REGEX_ANSI_COLOR = /\e\[([0-9;]+m|[mK])/.freeze
 
 class String
   # for converting log lines into "Content-Type: text/plain;" emails

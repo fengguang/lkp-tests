@@ -9,9 +9,9 @@ LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 #    76.094231 |   0)   usemem-842   |               |  /* softirq_entry: vec=1 [action=TIMER] */
 
 class TPSample
-  RES_ARG = /([^{\[(=,: \t\n]+)=([^}\])=,: \t\n]+)/
-  RE_SAMPLE = /^\s*(.*)-(\d+)\s+\[(\d+)\]\s+\S+\s+([0-9.]+): ([^: ]+): (.*)$/
-  RE_SAMPLE2 = /^\s*([0-9.]+)\s+\|\s+(\d).\s+(.+)-(\d+)\s+\|\s+([0-9.]*).+\|\s+\/\*\s([^: ]+): (.*)\s\*\/.*/
+  RES_ARG = /([^{\[(=,: \t\n]+)=([^}\])=,: \t\n]+)/.freeze
+  RE_SAMPLE = /^\s*(.*)-(\d+)\s+\[(\d+)\]\s+\S+\s+([0-9.]+): ([^: ]+): (.*)$/.freeze
+  RE_SAMPLE2 = /^\s*([0-9.]+)\s+\|\s+(\d).\s+(.+)-(\d+)\s+\|\s+([0-9.]*).+\|\s+\/\*\s([^: ]+): (.*)\s\*\/.*/.freeze
 
   attr_reader :cmd, :pid, :cpu, :timestamp, :type, :raw_data, :data
 
@@ -64,9 +64,9 @@ class TPSample
 end
 
 class TPEventFormat
-  RE_FMT = /^print fmt: "(.*)", /
-  RE_NAME = /^name: ([^=,: \n]+)/
-  RE_INT_FMT = /^(?:0[xX])?%.*[xud]$/
+  RE_FMT = /^print fmt: "(.*)", /.freeze
+  RE_NAME = /^name: ([^=,: \n]+)/.freeze
+  RE_INT_FMT = /^(?:0[xX])?%.*[xud]$/.freeze
 
   attr_reader :name
 
@@ -142,8 +142,8 @@ end
 
 # Funcgraph Duration sample
 class FGSample
-  RE_SAMPLE = /^\s*([^|]+)-(\d+)\s*\|\s*([0-9.]+)[us ]*\|[} \/*]*([a-zA-Z0-9_]+)/
-  RE_SAMPLE2 = /^\s*([0-9.]+)\s+\|\s+(\d).\s+(.+)-(\d+)\s+\|\s+([0-9.]*).+\|[} \/*]*([a-zA-Z0-9_]+)/
+  RE_SAMPLE = /^\s*([^|]+)-(\d+)\s*\|\s*([0-9.]+)[us ]*\|[} \/*]*([a-zA-Z0-9_]+)/.freeze
+  RE_SAMPLE2 = /^\s*([0-9.]+)\s+\|\s+(\d).\s+(.+)-(\d+)\s+\|\s+([0-9.]*).+\|[} \/*]*([a-zA-Z0-9_]+)/.freeze
 
   attr_reader :cmd, :pid, :duration, :func
 
@@ -187,7 +187,7 @@ end
 #  swapper/0-1     [000] ....  90515845662: cpu_up <-smp_init
 
 class FuncSample
-  RE_SAMPLE = /^\s*([^\s]+)-(\d+)\s+\[(\d+)\]\s+([^\s]+)\s+([0-9.]+)\s*:\s*(.+)\s*<-(.+)\s*/
+  RE_SAMPLE = /^\s*([^\s]+)-(\d+)\s+\[(\d+)\]\s+([^\s]+)\s+([0-9.]+)\s*:\s*(.+)\s*<-(.+)\s*/.freeze
 
   attr_reader :task, :pid, :cpu, :timestamp, :func, :callerfunc
 

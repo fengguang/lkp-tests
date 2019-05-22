@@ -7,7 +7,7 @@ require "#{LKP_SRC}/lib/constant"
 
 # /c/linux% git grep '"[a-z][a-z_]\+%d"'|grep -o '"[a-z_]\+'|cut -c2-|sort -u
 LINUX_DEVICE_NAMES = IO.read("#{LKP_SRC}/etc/linux-device-names").split("\n")
-LINUX_DEVICE_NAMES_RE = /\b(#{LINUX_DEVICE_NAMES.join('|')})\d+/
+LINUX_DEVICE_NAMES_RE = /\b(#{LINUX_DEVICE_NAMES.join('|')})\d+/.freeze
 
 require 'fileutils'
 require 'tempfile'
@@ -130,13 +130,13 @@ CALLTRACE_COMMON_CONTEXT = "
 CALLTRACE_PATTERN = /(
   #{CALLTRACE_COMMON_CONTEXT}
   SyS_[a-z0-9_]+
-)\+0x/x
+)\+0x/x.freeze
 
 CALLTRACE_IGNORE_PATTERN = /(
   #{CALLTRACE_COMMON_CONTEXT}
   worker_thread|
   warn_slowpath_.*
-)\+0x/x
+)\+0x/x.freeze
 
 OOM1 = 'invoked oom-killer: gfp_mask='.freeze
 OOM2 = 'Out of memory and no killable processes...'.freeze
