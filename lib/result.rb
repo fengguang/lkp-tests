@@ -45,7 +45,7 @@ class ResultPath < Hash
     'build-sof' => %w[sof_config sof_commit soft_commit run],
     'kvm-unit-tests-qemu' => %w[path_params tbox_group rootfs kconfig compiler commit qemu_config qemu_commit run],
     'kvm-kernel-boot-test' => %w[tbox_group kconfig commit qemu_config qemu_commit linux_commit run],
-    'build-perf_test' => %w[perf_test_commit run],
+    'build-perf_test' => %w[perf_test_commit run]
   }.freeze
 
   def path_scheme
