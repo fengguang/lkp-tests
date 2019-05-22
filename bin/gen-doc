@@ -32,12 +32,8 @@ end
 
 def yaml2md(fname)
   data = YAML.load_file(fname)
-  if data['parameters']
-    data['parameters'] = data['parameters'].map { |k, v| ItemDesc.new(k, v) }
-  end
-  if data['results']
-    data['results'] = data['results'].map { |k, v| ItemDesc.new(k, v) }
-  end
+  data['parameters'] = data['parameters'].map { |k, v| ItemDesc.new(k, v) } if data['parameters']
+  data['results'] = data['results'].map { |k, v| ItemDesc.new(k, v) } if data['results']
 
   ERB.new('
 # <%= File.basename(fname, ".yaml") %>
