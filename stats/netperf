@@ -48,7 +48,7 @@ avg_throughput = throughput / num
 # We only cares for the average total throughput/workload
 # within each iteration.
 
-throughput = throughput / iterations if iterations > 0
+throughput /= iterations if iterations > 0
 
 workload = throughput * time
 workload = workload * 10**6 / 8.0 / pkt_size if unit == 'Mbps'
