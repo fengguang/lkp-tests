@@ -1,5 +1,5 @@
 AllCops:
-  TargetRubyVersion: 2.2
+  TargetRubyVersion: 2.3
 
 Style/Documentation:
   Enabled: false
@@ -10,7 +10,7 @@ Style/FrozenStringLiteralComment:
 Style/SafeNavigation:
   Enabled: false
 
-Layout/IndentArray:
+Layout/IndentFirstArrayElement:
   Enabled: false
 
 Layout/SpaceInsideHashLiteralBraces:
@@ -55,9 +55,6 @@ Style/GlobalVars:
 Lint/UnderscorePrefixedVariableName:
   Enabled: false
 
-Performance/Caller:
-  Enabled: false
-
 Style/NumericPredicate:
   Exclude:
     - 'lib/job2sh.rb'
@@ -69,4 +66,15 @@ Security/Eval:
 
 Security/JSONLoad:
   Enabled: false
-    
+
+Layout/IndentHeredoc:
+  Enabled: false
+
+Lint/ShadowingOuterLocalVariable:
+  Enabled: false
+
+Style/MissingRespondToMissing:
+  Enabled: false
+
+Security/YAMLLoad:
+  Enabled: false
