@@ -369,6 +369,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
 
   cols = 0
   git.release_tags_with_order.each do |tag, o|
+    break if tag == 'v4.16-rc7' # kbuild doesn't support to build kernel < v4.16
     next if o >  order
     next if o == order && is_exact_match
     next if is_exact_match && tag =~ /^#{version}-rc[0-9]+$/
