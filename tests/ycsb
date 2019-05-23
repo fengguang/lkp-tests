@@ -30,6 +30,9 @@ export PATH=$BENCHMARK_ROOT/ycsb/ycsb/bin:$PATH
 
 : "${nr_processes:=1}"
 
+proc_n_recordcount=$((n_recordcount/nr_processes))
+proc_n_operationcount=$((n_operationcount/nr_processes))
+
 for i in $(seq 1 "$nr_processes")
 do
         port=$((27016 + i))
@@ -42,8 +45,8 @@ done
 
 if [ -n "$preload" ]; then
         cat > "$TMP_RESULT_ROOT"/workload_mongodb_preload <<EOF
-recordcount=${n_recordcount}
-operationcount=${n_operationcount}
+recordcount=${proc_n_recordcount}
+operationcount=${proc_n_operationcount}
 workload=com.yahoo.ycsb.workloads.CoreWorkload
 
 readallfields=${is_readallfields}
@@ -58,8 +61,8 @@ EOF
 fi
 
 cat > "$TMP_RESULT_ROOT"/workload_mongodb <<EOF
-recordcount=${n_recordcount}
-operationcount=${n_operationcount}
+recordcount=${proc_n_recordcount}
+operationcount=${proc_n_operationcount}
 workload=com.yahoo.ycsb.workloads.CoreWorkload
 
 readallfields=${is_readallfields}
