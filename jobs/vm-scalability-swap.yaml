@@ -8,8 +8,6 @@ category: benchmark
 
 runtime: 300
 
-unit_size: 335544320
-
 transparent_hugepage:
   thp_enabled:
     - never
@@ -30,5 +28,11 @@ vm-scalability:
   test:
     - swap-w-seq
     - swap-w-seq-mt
-    - swap-w-rand
     - swap-w-rand-mt
+
+---
+unit_size: 335544320
+
+vm-scalability:
+  test:
+    - swap-w-rand
