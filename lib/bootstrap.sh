@@ -652,11 +652,6 @@ setup_env()
 	export VM_VIRTFS=1
 }
 
-is_clearlinux()
-{
-	[ -f /usr/lib/os-release ] && grep -qw "Clear Linux" /usr/lib/os-release
-}
-
 add_nfs_default_options()
 {
 	echo "[ NFSMount_Global_Options ]" >>/etc/nfsmount.conf
