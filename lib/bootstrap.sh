@@ -687,10 +687,7 @@ boot_init()
 
 	mount_debugfs
 
-	is_clearlinux && {
-		systemctl stop systemd-resolved.service
-		add_nfs_default_options
-	}
+	is_clearlinux && add_nfs_default_options
 
 	netconsole_init
 
