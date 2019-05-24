@@ -116,7 +116,7 @@ setup_compiler_for_xtensa()
 	if [[ "$variant" = 'fsf' ]]; then
 		gcc_arch=$ARCH-linux
 	elif [[ $variant ]]; then
-		gcc_arch=xtensa-${variant}-elf
+		gcc_arch=xtensa-${variant}-linux
 	else
 		gcc_arch=$ARCH-linux
 	fi
