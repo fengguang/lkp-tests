@@ -51,6 +51,7 @@ def expand_toplevel_vars(env, hash)
 
     case val
     when Hash
+      vars[key] = expand_shell_var(env, val) if key == 'disk'
       next
     when nil
       vars[key] = nil
