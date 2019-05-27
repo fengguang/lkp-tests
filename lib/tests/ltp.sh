@@ -214,7 +214,7 @@ test_setting()
 		big_dev="${partitions%% *}"
 		big_dev_opt="-z $big_dev"
 		# match logic of check_ignored_cases
-		sed -i "s/\t/ /g" $ltp_install/runtest/fs_ext4
+		sed -i "s/\t/ /g" runtest/fs_ext4
 		;;
 	mm-00)
 		sysctl -w vm.oom_kill_allocating_task=1
