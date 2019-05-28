@@ -41,7 +41,7 @@ build_selftests()
 
 prepare_for_test()
 {
-	export PATH=/lkp/benchmarks/kernel_selftests/kernel_selftests/iproute2-next/sbin:/usr/lib/llvm-7/bin:$PATH
+	export PATH=/lkp/benchmarks/kernel_selftests/kernel_selftests/iproute2-next/sbin:$PATH
 	# workaround hugetlbfstest.c open_file() error
 	mkdir -p /hugepages
 
@@ -61,9 +61,21 @@ prepare_for_test()
 	# fix cc: command not found
 	command -v cc >/dev/null || log_cmd ln -sf /usr/bin/gcc /usr/bin/cc
 	# fix bpf: /bin/sh: clang: command not found
+	command -v clang >/dev/null || {
+		installed_clang=$(find /usr/bin -name "clang-[0-9]*")
+		log_cmd ln -sf $installed_clang /usr/bin/clang
+	}
 	# fix bpf: /bin/sh: line 2: llc: command not found
-	command -v clang >/dev/null || log_cmd ln -sf /usr/bin/clang-7 /usr/bin/clang
-	command -v llc >/dev/null || log_cmd ln -sf /usr/bin/llc-7 /usr/bin/llc
+	command -v llc >/dev/null || {
+		installed_llc=$(find /usr/bin -name "llc-*")
+		log_cmd ln -sf $installed_llc /usr/bin/llc
+	}
+	# fix bpf /bin/sh: llvm-readelf: command not found
+	command -v llvm-readelf >/dev/null || {
+		llvm=$(find /usr/lib -name "llvm*" -type d)
+		llvm_ver=${llvm##*/}
+		export PATH=$PATH:/usr/lib/$llvm_ver/bin
+	}
 }
 
 check_makefile()
