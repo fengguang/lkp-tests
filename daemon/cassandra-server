@@ -4,6 +4,30 @@
 
 cassandra_server=$BENCHMARK_ROOT/cassandra/bin/cassandra
 
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
+export JRE_HOME=${JAVA_HOME}/jre
+export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
+export PATH=${JAVA_HOME}/bin:$PATH
+
+if [ -n "$mount_points" ]; then
+	path="${mount_points%% *}"
+else
+	echo "Can not get the mount points, exit!" 1>&2
+	exit 1
+fi
+
+cassandra_conf="$BENCHMARK_ROOT/cassandra/conf/cassandra.yaml"
+def_data_dir="/var/lib/cassandra/data"
+new_data_dir="$path/cassandra/data"
+sed -i "s/# data_file_directories:/data_file_directories:/" "$cassandra_conf"
+sed -i "s@^#.*- $def_data_dir@ - $new_data_dir@" "$cassandra_conf"
+
+def_log_dir="/var/lib/cassandra/commitlog"
+new_log_dir="$path/cassandra/commitlog"
+sed -i "s@# commitlog_directory: ${def_log_dir}@commitlog_directory: ${new_log_dir}@" $cassandra_conf
+
+cp $cassandra_conf $TMP_RESULT_ROOT/
+
 # log command
 log_echo $cassandra_server -f -R
 

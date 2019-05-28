@@ -4,6 +4,10 @@ category: benchmark
 
 nr_task: 100%
 
+disk: 1SSD
+
+fs: ext4
+
 cluster: cs-localhost
 
 if role server:
