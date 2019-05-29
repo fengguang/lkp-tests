@@ -123,7 +123,6 @@ do
 			;;
 		kernel)
 			kernel=/tmp/$val
-			params="BOOT_IMAGE=$val"
 			if [[ ! $kernel =~ (menu.c32|.lkrn)$ ]]; then
 				echo "Download: $val to $kernel"
 				$WGET_CMD $path_prefix/$val -nc -P $(dirname $kernel) || exit 1
