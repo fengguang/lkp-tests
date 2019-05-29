@@ -3,6 +3,7 @@ testcase: ltp
 category: functional
 
 need_modules: true
+need_physical_tbox: true
 
 disk: 1SSD
 ltp:
