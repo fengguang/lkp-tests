@@ -54,3 +54,6 @@ need_kconfig:
 - CONFIG_TEST_LIVEPATCH=m ~ v(5\.[1-9]) # support kernel >=v5.1-rc1
 - CONFIG_LIRC=y
 - CONFIG_IR_SHARP_DECODER=m
+- CONFIG_ANDROID=y ~ v(3\.[3-9]|3\.1[0-9]]|4\.|5\.) # support kernel >=v3.3-rc1
+- CONFIG_ION=y ~ v(3\.1[4-9]|4\.|5\.) # support kernel >=v3.14-rc1
+- CONFIG_ION_SYSTEM_HEAP=y ~ v(4\.1[2-9]|4\.20|5\.) # support kernel >= v4.12-rc1
