@@ -12,11 +12,7 @@
 
 test=${group%%-*}
 
-if [ "${group#*-}" = "all" ]; then
-	config_file=$BENCHMARK_ROOT/piglit/groups/$group
-else
-	config_file=$LKP_SRC/pack/piglit-addon/groups/$group
-fi
+config_file=$BENCHMARK_ROOT/piglit/groups/$group
 
 [ -f "$config_file" ] || die "can not find config file: $config_file"
 
