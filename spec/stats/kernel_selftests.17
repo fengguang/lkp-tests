@@ -1,0 +1,14 @@
+2019-06-01 13:57:31 make run_tests -C android
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-cd6c84d8f0cdc911df435bb075ba22ce3c605b07/tools/testing/selftests/android'
+make[1]: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-cd6c84d8f0cdc911df435bb075ba22ce3c605b07/tools/testing/selftests/android/ion'
+make[1]: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-cd6c84d8f0cdc911df435bb075ba22ce3c605b07/tools/testing/selftests/android/ion'
+not ok 1 selftests: android: run.sh # SKIP
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-cd6c84d8f0cdc911df435bb075ba22ce3c605b07/tools/testing/selftests/android'
+
+2019-05-25 14:02:48 make run_tests -C bpf
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-a188339ca5a396acc588e5851ed7e19f66b0ebd9/tools/testing/selftests/bpf'
+make -C ../../../lib/bpf OUTPUT=/usr/src/perf_selftests-x86_64-rhel-7.6-a188339ca5a396acc588e5851ed7e19f66b0ebd9/tools/testing/selftests/bpf/
+make[1]: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-a188339ca5a396acc588e5851ed7e19f66b0ebd9/tools/lib/bpf
+ok 1 selftests: bpf: test_verifier
+not ok 6 selftests: bpf: test_progs
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-a188339ca5a396acc588e5851ed7e19f66b0ebd9/tools/testing/selftests/bpf'
