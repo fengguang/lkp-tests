@@ -352,6 +352,7 @@ run_tests()
 		subtest_in_skip_filter "$skip_filter" && continue
 
 		if [[ $subtest = "bpf" ]]; then
+			prepare_for_bpf
 			type ping6 && {
 				sed -i 's/if ping -6/if ping6/g' bpf/test_skb_cgroup_id.sh 2>/dev/null
 				sed -i 's/ping -${1}/ping${1%4}/g' bpf/test_sock_addr.sh 2>/dev/null
