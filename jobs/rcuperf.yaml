@@ -1,0 +1,13 @@
+suite: rcuperf
+testcase: rcuperf
+category: functional
+
+need_memory: 300MB
+runtime: 300s
+
+rcuperf:
+  perf_type:
+  - rcu
+  - srcu
+  - srcud
+  - tasks

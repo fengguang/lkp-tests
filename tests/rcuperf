@@ -1,0 +1,21 @@
+#!/bin/sh
+# - runtime
+# - perf_type
+
+## creates an rcuperf kernel module that can be loaded to
+## run a torture test.
+
+. $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/reproduce-log.sh
+
+args=""
+[ ! -z "$perf_type" ] && args="$args perf_type=$perf_type"
+
+log_cmd modprobe rcuperf $args ||
+die "failed to load rcuperf module, try to enable CONFIG_RCU_PERF_TEST and build rcuperf.ko"
+
+log_cmd sleep $runtime
+
+log_cmd rmmod rcuperf 2> /dev/null
+
+dmesg | grep perf:
