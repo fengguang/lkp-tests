@@ -11,7 +11,7 @@ autotest:
   - asynctest
   # - autotest_regression
   # - barriertest  # autotest self test
-  - bash_shared_mapping
+  # - bash_shared_mapping # OOM on 32G vm
   - bonnie
   - btreplay
   - cgroup
@@ -35,7 +35,7 @@ autotest:
   # - error_test_error
   # - error_test_fail
   # - error_test_na
-  - ffsb
+  # - ffsb # OOM on 32G vm
   # - fio
   - flail
   - fsdev
@@ -44,7 +44,7 @@ autotest:
   - fsx
   # - hackbench
   - hwclock
-  - interbench # incomplete run
+  # - interbench # incomplete run # OOM on 32G vm
   # - iozone
   # - iperf
   - ipv6connect
