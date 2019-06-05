@@ -4,15 +4,12 @@ category: functional
 
 disk:
 - 1HDD
-- 1SSD
 
 need_memory: 2G
 
 need_modules: true
 
 fs:
- - btrfs
- - xfs
  - ext4
 
 mce-test:
