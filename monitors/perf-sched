@@ -1,0 +1,43 @@
+#!/bin/sh
+# - delay
+# - duration
+# - runtime
+# - perf callchain support
+
+. $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/common.sh
+. $LKP_SRC/lib/debug.sh
+
+set_perf_path "/lkp/benchmarks/perf/perf"
+export perf
+
+is_virt && exit 0
+
+: ${duration:=10}
+
+if [ -z "$delay" ]; then
+	if [ -n "$runtime" ]; then
+		delay=$((runtime / 2))
+	else
+		delay=100
+	fi
+fi
+
+perf_data=$TMP/perf-sched.data
+
+# perf may consume lots of fd
+ulimit -n 102400
+
+rm -rf $perf_data
+. $LKP_SRC/lib/wait.sh
+setup_wait
+
+$perf sched record -g -o $perf_data -D $((delay * 1000)) \
+	-- $WAIT_POST_TEST_CMD --timeout $((delay + duration))
+
+cat > "$TMP_RESULT_ROOT/post-run.perf-sched" <<EOF
+[ -s "$perf_data" ] && {
+	$perf sched latency -i $perf_data | gzip > $TMP_RESULT_ROOT/perf-sched.latency.gz
+	$perf sched timehist -i $perf_data | gzip > $TMP_RESULT_ROOT/perf-sched.timehist.gz
+}
+EOF
