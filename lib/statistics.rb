@@ -3,14 +3,10 @@
 # https://www.bcg.wisc.edu/webteam/support/ruby/standard_deviation
 
 # Add methods to Enumerable, which makes them available to Array
-module Enumerable
-  def sum
-    inject(0) { |acc, i| acc + i }
-  rescue TypeError
-    warn self
-    raise
-  end
 
+require 'active_support/core_ext/enumerable'
+
+module Enumerable
   def average
     sum / length.to_f
   end
