@@ -62,7 +62,9 @@ run_test()
 	case $test_prefix in
 		19) prefix="timeout 60m"
 		;;
-		01raid|07|11) prefix="timeout 30m"
+		01raid|11) prefix="timeout 30m"
+		;;
+		07*) prefix="timeout 15m"
 		;;
 		*) prefix="timeout 5m"
 		;;
