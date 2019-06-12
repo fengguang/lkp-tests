@@ -24,6 +24,10 @@ arrange_group()
 	block-group2)
 		sed -i "1,8d" tests/$test || return
 		sed -i "/^027$/d" tests/$test || return
+		sed -i "/^010$/d" tests/$test || return
+		;;
+	block-010)
+		echo "010" > tests/$test || return
 		;;
 	block-027)
 		echo "027" > tests/$test || return

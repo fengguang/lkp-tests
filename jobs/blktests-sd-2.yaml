@@ -9,6 +9,7 @@ disk: 1HDD
 blktests:
   test:
   - block-group2
+  - block-010
 
 ---
 kernel_cmdline: "cgroup_no_v1=all"
