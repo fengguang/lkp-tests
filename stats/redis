@@ -1,5 +1,9 @@
 #!/usr/bin/env ruby
 
+LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
+
+require "#{LKP_SRC}/lib/array_ext"
+
 set_sum = 0
 set_num = 0
 set_avg = 0
@@ -117,7 +121,7 @@ end
 def show_latencies(latencies, name)
   pi = 0
   latencies.transpose.each_with_index do |ps, i|
-    sum = ps.inject(0, :+)
+    sum = ps.sum
     next unless sum != 0
 
     avg = sum.to_f / ps.length

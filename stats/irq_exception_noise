@@ -25,11 +25,11 @@ class IrqAnalysis
   def produce_result
     @irq.each do |_, array|
       @irq_nr += array.length
-      @irq_time += array.inject(0, :+)
+      @irq_time += array.sum
     end
     @softirq.each do |_, array|
       @softirq_nr += array.length
-      @softirq_time += array.inject(0, :+)
+      @softirq_time += array.sum
     end
 
     return if @irq_nr.zero? && @softirq_nr.zero?
