@@ -217,7 +217,8 @@ test_setting()
 		sed -i "s/\t/ /g" runtest/fs_ext4
 		;;
 	mm-00)
-		sysctl -w vm.oom_kill_allocating_task=1
+		local pid_job="$(cat $TMP/run-job.pid)"
+		echo 0 > /proc/$pid_job/oom_score_adj
 		;;
 	mm-01)
 		[ -z "$partitions" ] && exit
