@@ -40,6 +40,8 @@ build_rusers()
 
 build_tpm_emulator()
 {
+	# the lastest tpm-emulator is currupted so use old one
+	git reset --hard 0f4579e
 	# remove Werror to use gcc-7
 	sed -i "s/-Werror//g" CMakeLists.txt
 	# don't build kernel module
