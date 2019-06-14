@@ -367,7 +367,7 @@ def setup_changed_stats
       matrix1 = load_json matrix_file1, true
       matrix2 = load_json matrix_file2, true
       $all_index.each do |stat, weight|
-        if stat.index 'iostat.'
+        if stat.index 'iostat\.'
           next unless k =~ /\/(dd-write)\//
         end
         avg1 = get_valid_average matrix1, stat

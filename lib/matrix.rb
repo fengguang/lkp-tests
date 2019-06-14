@@ -58,9 +58,10 @@ def add_performance_per_watt(stats, matrix)
 
   performance = 0
   kpi_stats.each do |stat, weight|
-    next if stat == 'boot-time.dhcp'
-    next if stat == 'boot-time.boot'
-    next if stat.index('iostat.') && !stats['dd.startup_time']
+    next if 'boot-time.dhcp' =~ /^{stat}$/
+    next if 'boot-time.boot' =~ /^{stat}$/
+    # stat can be "iostat\..+\.wkB\/s"
+    next if stat.index('iostat\.') && !stats['dd.startup_time']
 
     value = stats[stat]
     next unless value

@@ -756,7 +756,7 @@ def stat_key_base(stat)
 end
 
 def strict_kpi_stat?(stat, _axes, _values = nil)
-  $index_perf.include? stat
+  $index_perf.keys.any? { |i| stat =~ /^#{i}$/ }
 end
 
 $kpi_stat_blacklist = Set.new ['vm-scalability.stddev', 'unixbench.incomplete_result']
@@ -769,9 +769,10 @@ def kpi_stat?(stat, _axes, _values = nil)
 end
 
 def kpi_stat_direction(stat_name, stat_change_percentage)
-  change_direction = if !$index_perf[stat_name]
+  key = $index_perf.keys.find { |i| stat_name =~ /^#{i}$/ }
+  change_direction = if key.nil?
                        'undefined'
-                     elsif $index_perf[stat_name] * stat_change_percentage < 0
+                     elsif $index_perf[key] * stat_change_percentage < 0
                        'regression'
                      else
                        'improvement'
