@@ -2,6 +2,7 @@
 # - test
 
 . $LKP_SRC/lib/upload.sh
+. $LKP_SRC/lib/debug.sh
 
 ## Autotest is a framework for fully automated testing. It is designed
 ## primarily to test the Linux kernel, though it is useful for many
@@ -14,6 +15,17 @@ cd $BENCHMARK_ROOT/autotest || exit
 	[ -x "automake"	] || ln -s automake-* automake
 	[ -x "aclocal"	] || ln -s aclocal-* aclocal
 )
+
+[ "$test" = "cgroup_tests" ] && {
+	cgconfig_script="/usr/share/doc/cgroup-tools/examples/cgconfig"
+	[ -f "$cgconfig_script" ] && {
+		[ -x "$cgconfig_script" ] || chmod +x $cgconfig_script
+		log_cmd cp $cgconfig_script /etc/init.d/
+	}
+
+	log_cmd update-rc.d cgconfig defaults || die "failed toadd service cgconfig"
+	log_cmd service cgconfig restart || die "failed to restart cgconfig"
+}
 
 iface=$(ifconfig -s | awk '{print $1}' | grep ^eth | head -1)
 [ -n "$iface" -a "$iface" != "eth0" ] && sed -i "s/eth='eth0'/eth='$iface'/g" client/tests/pktgen/control
