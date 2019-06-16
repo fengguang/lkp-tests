@@ -15,7 +15,6 @@ autotest:
   - bonnie
   - btreplay
   - cgroup
-  - cgroup_tests
   - connectathon
   - cpuflags
   # - cpu_hotplug # cost about 1 hour, terminated
@@ -111,3 +110,10 @@ need_memory: 3G
 autotest:
   test:
   - aiostress
+
+---
+cgroup:
+
+autotest:
+  test:
+  - cgroup_tests
