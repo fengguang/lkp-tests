@@ -23,6 +23,8 @@ cd $BENCHMARK_ROOT/autotest || exit
 		log_cmd cp $cgconfig_script /etc/init.d/
 	}
 
+	log_cmd cp $LKP_SRC/pack/autotest-addon/cgconfig.conf /etc
+
 	log_cmd update-rc.d cgconfig defaults || die "failed toadd service cgconfig"
 	log_cmd service cgconfig restart || die "failed to restart cgconfig"
 }
