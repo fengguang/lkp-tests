@@ -2,6 +2,9 @@ suite: reaim
 testcase: reaim
 category: benchmark
 
+runtime: 300s
+nr_task: 100
+
 disk: 1HDD
 fs:
 - ext4
