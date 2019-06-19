@@ -83,7 +83,7 @@ set_env()
 	lsmod | grep -q loop || modprobe loop
 
 	# fix blkzone is not available
-	ln -sf $blktest_dir/util-linux/blkzone /usr/bin/blkzone
+	ln -sf $BENCHMARK_ROOT/blktests/util-linux/blkzone /usr/bin/blkzone
 }
 
 run_test()
