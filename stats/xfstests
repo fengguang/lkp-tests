@@ -17,7 +17,8 @@ def stat_line(line, results)
   when /^(ignored by lkp): (.*)/
     puts "#{$2.tr('/', '.')}.ignored_by_lkp: 1"
   when /^(generic|ext4|xfs|btrfs)\/(\d\d\d)\s+(\d+)s/
-    results['passes'] += $2.tr('/', '.').split
+    test = $1 + '.' + $2
+    results['passes'].push test
   end
 end
 
