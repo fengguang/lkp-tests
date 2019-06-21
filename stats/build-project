@@ -1,0 +1,35 @@
+#!/bin/bash
+
+testcase=$(basename $0)
+
+log_msg=$(tail -10 $RESULT_ROOT/$testcase)
+if [[ "$log_msg" =~ "$testcase success" ]]; then
+	echo "${testcase}.pass: 1"
+elif [[ "$log_msg" =~ "$testcase ignored_by_lkp" ]]; then
+	echo "${testcase}.ignored_by_lkp: 1"
+else
+	echo "${testcase}.fail: 1"
+fi
+
+C_ROOT=/c/kernel-tests
+. $C_ROOT/lib/util.sh
+. $C_ROOT/lib/kbuild.sh
+
+if [[ -d $RESULT_ROOT/make-stderr ]]; then
+	cd $RESULT_ROOT/make-stderr
+
+	error_files=(*-*)
+	KBUILD_OUTPUT="/build/[a-z]+/(src|obj)"
+
+	grep_error_lines -h -m1000 "${error_files[@]:0:1000}" |
+	show_unique_lines |
+	sed_build_error_id |
+	show_unique_lines |
+	sed 's/^.*$/error.\0: 1/'
+
+	grep_warning_lines -h "${error_files[@]:0:1000}" |
+	grep -vF -e 'warning: called from here' |
+	sed_build_error_id |
+	show_unique_lines |
+	sed 's/^.*$/warning.\0: 1/'
+fi
