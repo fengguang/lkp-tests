@@ -23,7 +23,7 @@ EOF
 	mkdir -p /var/lib/mysql-files
 	/usr/sbin/mysqld --initialize --user=root --datadir=/var/lib/mysql-files --explicit_defaults_for_timestamp
 
-	/etc/init.d/mysql start
+	/etc/init.d/mysql restart
 }
 
 set_max_connections()
@@ -31,7 +31,8 @@ set_max_connections()
 	# mysql default max_connections is 100
 	local max_conn=100
 	[ $nr_threads -gt 100 ] && max_conn=$((nr_threads * 2))
-	echo max_connections=$max_conn >> /etc/mysql/conf.d/mysqldump.cnf
+	sed -i '1 s/mysql/mysqld/' /etc/mysql/my.cnf
+	echo max_connections=$max_conn >> /etc/mysql/my.cnf
 }
 
 setup_mysql
