@@ -11,8 +11,6 @@ boot_params:
 disk:
   nr_pmem: 4
 
-timeout: 2h
-
 fs:
 - ext4
 - xfs
