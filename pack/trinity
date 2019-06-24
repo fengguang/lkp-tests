@@ -16,7 +16,7 @@ build()
 
 	./configure || return
 	if [ "$gcc_major" -ge 8 ]; then
-		CFLAGS="-Werror=format-overflow=0" make
+		CFLAGS="-Wno-address-of-packed-member -Werror=format-overflow=0" make
 	else
 		make
 	fi
