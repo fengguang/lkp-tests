@@ -4,10 +4,10 @@
 
 download()
 {
-	git_clone_update git://github.com/waffle-gl/waffle
-	git_clone_update git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+	git_clone_update https://github.com/waffle-gl/waffle.git
+	git_clone_update https://anongit.freedesktop.org/git/xorg/app/intel-gpu-tools.git
 	# keep it in the last to set the effective source_dir
-	git_clone_update git://anongit.freedesktop.org/piglit
+	git_clone_update https://anongit.freedesktop.org/git/piglit.git
 }
 
 find_delete_files()

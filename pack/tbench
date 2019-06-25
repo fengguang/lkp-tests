@@ -2,7 +2,7 @@
 
 download()
 {
-	git_clone_update git://git.samba.org/sahlberg/dbench.git
+	git_clone_update https://git.samba.org/sahlberg/dbench.git
 }
 
 build()

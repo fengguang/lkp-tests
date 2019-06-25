@@ -3,7 +3,7 @@
 download()
 {
 	git_clone_update https://github.com/glmark2/glmark2.git || return
-	git_clone_update git://git.linaro.org/power/pm-qa.git
+	git_clone_update https://git.linaro.org/power/pm-qa.git
 }
 
 install()

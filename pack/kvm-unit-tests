@@ -4,7 +4,7 @@ CONFIGURE_FLAGS="--arch=$arch"
 
 download()
 {
-	git_clone_update git://git.kernel.org/pub/scm/virt/kvm/kvm-unit-tests.git
+	git_clone_update https://git.kernel.org/pub/scm/virt/kvm/kvm-unit-tests.git
 }
 
 install()
