@@ -2,7 +2,7 @@
 
 download()
 {
-	git_clone_update git://github.com/deater/perf_event_tests
+	git_clone_update https://github.com/deater/perf_event_tests.git
 }
 
 build()
