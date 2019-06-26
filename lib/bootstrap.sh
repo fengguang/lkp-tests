@@ -682,7 +682,9 @@ boot_init()
 
 	mount_debugfs
 
-	is_clearlinux && add_nfs_default_options
+	if is_clearlinux || is_aliyunos; then
+		add_nfs_default_options
+	fi
 
 	netconsole_init
 
