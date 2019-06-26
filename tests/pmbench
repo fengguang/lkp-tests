@@ -32,7 +32,11 @@ set_opt()
 		opt="${opt} -s$((setsize/1024/1024))"
 		[ -z "$mapsize" ] && mapsize="$setsize"
 	fi
-	[ -n "$mapsize" ] && opt="${opt} -m$((mapsize/1024/1024))"
+	[ -n "$mapsize" ] && {
+		mapsize=$((mapsize/1024/1024))
+		[ "$mapsize" -eq 0 ] && mapsize=256
+		opt="${opt} -m${mapsize}"
+	}
 	[ -n "$pattern" ] && opt="${opt} -p${pattern}"
 	[ -n "$shape" ] && opt="${opt} -e${shape}"
 	[ -n "$nr_threads" ] && opt="${opt} -j${nr_threads}"
