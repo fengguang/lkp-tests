@@ -100,3 +100,8 @@ need_run_on_vmm()
 	[ "$LKP_LOCAL_RUN" = 1 ] && return 1
 	echo "$testcase" | grep -q "^kvm:"
 }
+
+is_aliyunos()
+{
+	[ -f /etc/redhat-release ] && grep -qw "Aliyun Linux" /etc/redhat-release
+}
