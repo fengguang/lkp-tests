@@ -6,6 +6,8 @@ fio\..+\%: -0.1
 ftq\.stddev: -0.1
 fwq\.stddev: -0.1
 iostat\..+\_await: -0.1
+lmbench3\..+\.latency: -0.1
+lmbench3\..+\.latency.ns: -0.1
 lmbench3\..+\.latency.us: -0.1
 oltp\..+\_ms: -0.2
 perf-bench-numa-mem\.secs_latency: -0.1
