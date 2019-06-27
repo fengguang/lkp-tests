@@ -72,12 +72,20 @@ yum_pack()
 	rm -rf $target_dir
 }
 
+cleanup_downloaded_rpms()
+{
+	find /var/ -type f -name "*.rpm" -exec rm -f -- '{}' \;
+}
+
 pack_benchmark_deps()
 {
 	setup_proxy
 
 	for BM_NAME in $benchmark
 	do
+
+		cleanup_downloaded_rpms
+
 		check_shared_package $BM_NAME
 
 		packages=$(echo $(get_dependency_packages $DISTRO $BM_NAME))
