@@ -67,6 +67,8 @@ get_pkg_info()
 
 if is_clearlinux; then
 	swupd_install_depends lkp-dev
+elif is_aliyunos; then
+	yum_install_depends lkp-dev
 else
 	apt_install_depends lkp-dev
 fi
