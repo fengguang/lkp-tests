@@ -67,6 +67,8 @@ yum_pack()
 	chown .lkp $pack_to/${BM_NAME}_$date.cgz $pack_to/${BM_NAME}.cgz || return
 	echo package installed to $pack_to/${BM_NAME}.cgz
 
+	ls $target_dir/*.rpm > $pack_to/.${BM_NAME}.packages
+
 	rm -rf $target_dir
 }
 
