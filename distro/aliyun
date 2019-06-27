@@ -42,7 +42,48 @@ pack_benchmark()
 	done
 }
 
+yum_download()
+{
+	echo yum install --downloadonly $*
+	yum install --downloadonly $*
+}
+
+yum_pack()
+{
+	local target_dir=/opt/rpms
+	local date=$(date +"%Y-%m-%d")
+
+	local downloaded_rpms=$(find /var/ -type f -name "*.rpm")
+
+	[ "$downloaded_rpms" ] || return
+
+	mkdir -p $target_dir
+
+	mv $downloaded_rpms $target_dir
+
+	find $target_dir | cpio --quiet -o -H newc --owner=root.root | gzip -n -9 >$pack_to/${BM_NAME}_$date.cgz
+
+	ln -sf ${BM_NAME}_$date.cgz $pack_to/${BM_NAME}.cgz || return
+	chown .lkp $pack_to/${BM_NAME}_$date.cgz $pack_to/${BM_NAME}.cgz || return
+	echo package installed to $pack_to/${BM_NAME}.cgz
+
+	rm -rf $target_dir
+}
+
 pack_benchmark_deps()
 {
-	:
+	setup_proxy
+
+	for BM_NAME in $benchmark
+	do
+		check_shared_package $BM_NAME
+
+		packages=$(echo $(get_dependency_packages $DISTRO $BM_NAME))
+
+		if yum_download "$packages"; then
+			yum_pack
+		else
+			echo "failed to pack-deps $BM_NAME" >&2
+		fi
+	done
 }
