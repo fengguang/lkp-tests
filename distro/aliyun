@@ -1,0 +1,47 @@
+#!/bin/bash
+
+shopt -s nullglob
+
+. $LKP_SRC/lib/install.sh
+. $LKP_SRC/distro/common
+. $LKP_SRC/lib/debug.sh
+
+yum_install_depends()
+{
+	local script
+	local bm="$1"
+	local scripts=$(find $LKP_SRC/distro/depends/ -name "$bm" -o -name "${bm}.[0-9]")
+
+	for script in $scripts
+	do
+		script=$(basename $script)
+		packages=$(get_dependency_packages $DISTRO $script)
+
+		[ -z "$packages" ] && continue
+
+		echo install packages for $script: $packages
+
+		yum install -y $packages
+	done
+}
+
+pack_benchmark()
+{
+	yum_install_depends lkp-dev
+
+	# Process each benchmark
+	for BM_NAME in $benchmark
+	do
+		yum_install_depends $BM_NAME-dev || continue
+		echo $LKP_SRC/sbin/pack -d $DISTRO -f -c -s $PKG_MNT/$pack_to $BM_NAME
+		(
+			setup_proxy
+			$LKP_SRC/sbin/pack -d $DISTRO -f -c -s $PKG_MNT/$pack_to $BM_NAME
+		)
+	done
+}
+
+pack_benchmark_deps()
+{
+	:
+}
