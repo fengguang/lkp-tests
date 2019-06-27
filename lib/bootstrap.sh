@@ -313,6 +313,13 @@ install_deb()
 	done
 }
 
+install_rpms()
+{
+	[ -d /opt/rpms ] || return
+	echo "install $(ls /opt/rpms/*.rpm)"
+	rpm -ivh --ignoresize /opt/rpms/*.rpm
+}
+
 try_get_and_set_distro()
 {
 	[ -n "$DISTRO" ] && return
@@ -340,6 +347,8 @@ fixup_packages()
 	try_install_runtime_depends
 
 	install_deb
+
+	install_rpms
 
 	has_cmd ldconfig &&
 	ldconfig
