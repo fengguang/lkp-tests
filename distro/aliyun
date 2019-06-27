@@ -27,6 +27,8 @@ yum_install_depends()
 
 pack_benchmark()
 {
+	setup_proxy
+
 	yum_install_depends lkp-dev
 
 	# Process each benchmark
@@ -35,7 +37,6 @@ pack_benchmark()
 		yum_install_depends $BM_NAME-dev || continue
 		echo $LKP_SRC/sbin/pack -d $DISTRO -f -c -s $PKG_MNT/$pack_to $BM_NAME
 		(
-			setup_proxy
 			$LKP_SRC/sbin/pack -d $DISTRO -f -c -s $PKG_MNT/$pack_to $BM_NAME
 		)
 	done
