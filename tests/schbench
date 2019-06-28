@@ -12,5 +12,9 @@ cd $BENCHMARK_ROOT/schbench || exit
 : ${sleeptime_us:=30000}
 : ${cputime_us:=30000}
 
+# to avoid "core dumped", set message_threads to default 2 if message_threads
+# is 0 because message_threads is used as denominator in schbench command.
+[ $message_threads -eq 0 ] && message_threads=2
+
 # the source code print the output to stderr, here redirection stderr to stdout
 log_cmd ./schbench -m $message_threads -t $worker_threads -r $runtime -s $sleeptime_us -c $cputime_us 2>&1
