@@ -14,9 +14,9 @@
 : "${mutex_loops:=10000}"
 
 args="\
- --num-threads=$nr_threads\
- --max-time=$runtime\
- --test=mutex\
+ --threads=$nr_threads\
+ --time=$runtime\
+ mutex\
  --mutex-num=$mutex_num\
  --mutex-locks=$mutex_locks\
  --mutex-loops=$mutex_loops\

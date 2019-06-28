@@ -10,9 +10,9 @@
 : "${cpu_max_prime:=10000}"
 
 args="\
- --num-threads=$nr_threads\
- --max-time=$runtime\
- --test=cpu\
+ --threads=$nr_threads\
+ --time=$runtime\
+ cpu\
  --cpu-max-prime=$cpu_max_prime\
 "
 log_cmd sysbench $args run
