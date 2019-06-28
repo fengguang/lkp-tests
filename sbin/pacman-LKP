@@ -126,10 +126,7 @@ upgrade() {
 				pack_rpm "$pkg_name"
 				rpm -ivh --replacepkgs --force  "$RPM_BUILD_DIR/RPMS/$pkg_name-LKP.rpm" || return 1 ;;
 			*)
-				if [ -e "$INSTALL_DIR/usr" ]; then
-					cp -r "$INSTALL_DIR/usr" / || return 1
-				fi
-				;;
+				cp -r "$INSTALL_DIR"/* / || return 1 ;;
 		esac
 		
 		echo "$pkg_name" >> "$DBFILE"
