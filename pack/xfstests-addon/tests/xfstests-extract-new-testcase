@@ -1,9 +1,8 @@
 #!/usr/bin/env ruby
 
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
-LKP_CORE_SRC ||= ENV['LKP_CORE_SRC'] || LKP_SRC
 
-require "#{LKP_CORE_SRC}/lib/log"
+require "#{LKP_SRC}/lib/log"
 require 'optparse'
 
 options = Hash.new { |h, k| h[k] = [] }
