@@ -29,6 +29,8 @@ build-essential: c-basic
 bzip2: os-core-update
 ca-certificates: dev-utils-dev
 cgroup-bin: os-core-dev
+cgroupfs-mount:
+cgroup-tools:
 cifs-utils: storage-utils
 clang: dev-utils
 clang-3.9: dev-utils
@@ -194,6 +196,7 @@ libelf-dev: dev-utils-dev
 libevent-2.0-5: tmux
 libevent-2.1-6: tmux
 libevent-dev: dev-utils-dev
+libexpat1-dev:
 libfabric1:
 libfabric-dev:
 libfdt1: dtc
@@ -257,6 +260,7 @@ liblzma-dev: dev-utils-dev
 libmagic1: os-core-dev
 libmagic-mgc: os-core-dev
 libmariadbclient-dev: os-testsuite-0day
+libmodule-build-perl:
 libmount-dev: os-core-dev
 libmpc3: os-core-dev
 libmpx2: dev-utils-dev
@@ -402,6 +406,7 @@ nasm: qt-basic-dev
 nbd-client:
 nbd-server:
 ncurses-bin: sysadmin-basic
+needrestart:
 netcat-openbsd: network-basic
 netpipe-lam:
 netpipe-mpich2:
