@@ -14,6 +14,11 @@ cd $BENCHMARK_ROOT/schbench || exit
 
 # to avoid "core dumped", set message_threads to default 2 if message_threads
 # is 0 because message_threads is used as denominator in schbench command.
+# please note that 2 is a default value from schbench command, as below:
+# schbench usage:
+#     -m (--message-threads): number of message threads (def: 2)
+#     ...
+
 [ $message_threads -eq 0 ] && message_threads=2
 
 # the source code print the output to stderr, here redirection stderr to stdout
