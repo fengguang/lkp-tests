@@ -31,7 +31,7 @@ class ResultPath < Hash
 
   PATH_SCHEME = {
     'default' => %w[path_params tbox_group rootfs kconfig compiler commit run],
-    'kvm:default' => %w[path_params tbox_group rootfs kconfig compiler commit qemu_config qemu_commit linux_commit run],
+    'kvm:default' => %w[path_params tbox_group rootfs kconfig compiler commit run],
     'health-stats' => %w[path_params run],
     'lkp-bug' => %w[path_params run],
     'hwinfo' => %w[tbox_group run],
