@@ -36,7 +36,7 @@ cd $BENCHMARK_ROOT/autotest || exit
 iface=$(ifconfig -s | awk '{print $1}' | grep ^eth | head -1)
 [ -n "$iface" -a "$iface" != "eth0" ] && sed -i "s/eth='eth0'/eth='$iface'/g" client/tests/pktgen/control
 
-log_cmd client/autotest-local run $test 2>&1 || exit
+log_cmd python2.7 client/autotest-local run $test 2>&1 || exit
 
 exit_value=$?
 
