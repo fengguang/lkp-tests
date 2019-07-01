@@ -152,6 +152,8 @@ libaudit: dev-utils-dev
 libblas3: big-data-basic
 libblkid-dev: os-core-dev
 libboost-filesystem-dev:
+libbz2-dev:
+libbz2-1.0:
 libc6: dev-utils-dev
 libc6-dbg:
 libc6-dev: dev-utils-dev
@@ -218,6 +220,8 @@ libgcc-7-dev/unstable: dev-utils-dev
 libgd3: stream-server
 libgdbm3: sysadmin-basic-dev
 libgdbm-dev: sysadmin-basic-dev
+libgflags2v5:
+libgflags-dev:
 libgl1-mesa-dev: dev-utils-dev
 libgles2-mesa: dev-utils-dev
 libglib2.0-0: os-core-dev
@@ -257,6 +261,8 @@ liblsan0: os-core-dev
 liblsan0/unstable: os-core-dev
 libltdl7: os-core-dev
 liblzma-dev: dev-utils-dev
+liblz4-1:
+liblz4-dev:
 libmagic1: os-core-dev
 libmagic-mgc: os-core-dev
 libmariadbclient-dev: os-testsuite-0day
@@ -316,6 +322,8 @@ libsdl1.2debian: stream-server
 libselinux1:
 libsm6: os-core-dev
 libsmbclient: os-core-dev
+libsnappy1v5:
+libsnappy-dev:
 libsqlite3-dev: linux-tools
 libssl1.0.0: os-core
 libssl1.0-dev: os-core
