@@ -3,10 +3,10 @@ pkgver=1.4
 pkgrel=0
 pkgdesc="Flat Device Trees manipulation library "
 arch=('i686' 'x86_64')
-url="https://git.kernel.org/cgit/utils/dtc/dtc.git"
+url="https://kernel.googlesource.com/cgit/utils/dtc/dtc.git"
 license=('GPL')
 depends=()
-source=("git://git.kernel.org/pub/scm/utils/dtc/dtc.git")
+source=("https://kernel.googlesource.com/pub/scm/utils/dtc/dtc.git")
 md5sums=('b7b4b691afe1c6cad6c2a1c267611794')
 
 build() {
