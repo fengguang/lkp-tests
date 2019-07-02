@@ -87,6 +87,7 @@ generate_test_groups()
         split quick-all -d -n r/200 -a 3 quick-
         split igt-all -d -n r/300 -a 3 igt-
         grep 'basic' igt-all > igt-basic
+        split igt-basic -d -n r/4 -a 1 igt-basic-
 }
 
 pack()
