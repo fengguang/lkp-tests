@@ -1,0 +1,18 @@
+pkgname=pxz
+pkgver=git
+pkgrel=1
+arch=('i686' 'x86_64')
+url="https://github.com/jnovy/pxz.git"
+license=('GPL')
+source=("https://github.com/jnovy/pxz.git")
+md5sums=('SKIP')
+
+build() {
+	cd "$srcdir/pxz"
+	make
+}
+
+package() {
+	cd "$srcdir/pxz"
+	make DESTDIR=$pkgdir install
+}
