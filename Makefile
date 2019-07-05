@@ -1,6 +1,10 @@
+ifeq ($(TARGET_DIR_BIN), )
+    TARGET_DIR_BIN := /usr/local/bin
+endif
+
 install:
-	mkdir -p /usr/local/bin/
-	ln -sf $(shell pwd)/bin/lkp /usr/local/bin/lkp
+	mkdir -p $(TARGET_DIR_BIN)
+	ln -sf $(shell pwd)/bin/lkp $(TARGET_DIR_BIN)/lkp
 
 .PHONY: doc
 doc:
