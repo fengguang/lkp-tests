@@ -41,6 +41,25 @@
 	lkp run ./hackbench-50%-threads-socket.yaml
 ```
 
+## Run your own disk partitions
+
+Specify disk partitions by defining hdd_partitions/sdd_partitions in host file
+named with local hostname and then lkp split-job will write the disk partitions
+information to split job file automatically.
+
+Please note that disk partitions may be formatted/corrupted to run job.
+
+```
+	echo "hdd_partitions: /dev/sda /dev/sdb" >> lkp-tests/hosts/$(hostname | sed -r 's/-[0-9]+$//g' | sed -r 's/-[0-9]+-/-/g')
+	lkp split-job lkp-tests/jobs/blogbench.yaml
+	# output is:
+	# lkp-tests/jobs/blogbench.yaml => ./blogbench-1HDD-ext4.yaml
+	# lkp-tests/jobs/blogbench.yaml => ./blogbench-1HDD-xfs.yaml
+	# ...
+	lkp install ./blogbench-1HDD-ext4.yaml
+	lkp run ./blogbench-1HDD-ext4.yaml
+```
+
 ## Run your own benchmarks
 
 To run your own benchmarks that are not part of lkp-tests, you can use mytest job.
