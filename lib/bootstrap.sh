@@ -63,6 +63,12 @@ network_ok()
 		[ "$(cat $i/operstate)" = 'up' ]		&& return 0
 		[ "$(cat $i/carrier 2>/dev/null)" = '1' ]	&& return 0
 	done
+
+	is_clearlinux && {
+		# in case of systemd-networkd.service was masked
+		systemctl unmask systemd-networkd.service
+		systemctl start systemd-networkd.service
+	}
 	return 1
 }
 
