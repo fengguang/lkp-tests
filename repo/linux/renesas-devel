@@ -1,0 +1,16 @@
+url: https://kernel.googlesource.com/pub/scm/linux/kernel/git/geert/renesas-devel.git
+owner: Geert Uytterhoeven <geert+renesas@glider.be>
+mail_cc:
+- linux-renesas-soc@vger.kernel.org
+subsystems:
+- serial
+- sh-sci
+- shmobile
+- arm
+- sh-pfc
+- clk
+- pinctrl
+- arm64
+- renesas
+- r8a7795
+notify_build_success_branch: .*
