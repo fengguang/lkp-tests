@@ -49,6 +49,7 @@ pack()
 	local archive=${CACHE_DIR:-/osimage/user/$USER}/lkp-${ARCH}
 	local cpio_cmd="cpio --quiet -o $OWNER_OPT -H newc -F ${archive}.cpio"
 
+	mkdir -p $(dirname $archive)
 	rm -f $archive.cpio
 
 	(
