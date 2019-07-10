@@ -243,7 +243,7 @@ build_install_benchmarks() {
 		case $distro in
 		debian|ubuntu)
 			local deb_pkg=/tmp/$pkg_name.deb
-			[ -f $deb_pkg ] || return
+			[ -f $deb_pkg ] || return 0
 			dpkg -i $deb_pkg 2>/tmp/dpkg_error || {
 				grep -v "dpkg: warning: files list file for package '.*' missing;" /tmp/dpkg_error
 				return 1
