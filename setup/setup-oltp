@@ -11,28 +11,24 @@
 ## of transactions per second.
 
 [ -n "$runtime" ] || runtime=600
-[ -n "$table_size" ] && arg_table_size="--oltp-table-size=$table_size"
+[ -n "$table_size" ] && arg_table_size="--table-size=$table_size"
 export PATH=$BENCHMARK_ROOT/$testcase/sysbench/usr/local/bin:$PATH
 
 args="\
 	--mysql-user=root\
 	--mysql-db=mysql\
-	--oltp-read-only=on\
-	--max-requests=0\
-	--num-threads=$nr_threads\
-	--max-time=$runtime\
+	--events=0\
+	--threads=$nr_threads\
+	--time=$runtime\
 	$arg_table_size\
+	oltp_read_only.lua\
 "
 
-prepare()
-{
-	log_cmd sysbench --test=oltp ${args} prepare
-}
-
-
-prepare
-
 cat > "$TMP_RESULT_ROOT"/run.oltp <<EOF
-log_cmd sysbench --test=oltp $args run
-/etc/init.d/mysql stop
+log_cmd sysbench $args prepare
+log_cmd sysbench $args run
+log_cmd sysbench $args cleanup
+killall -15 mysqld
+sleep 5
+umount $TMP/mysql
 EOF

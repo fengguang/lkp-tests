@@ -3,4 +3,5 @@
 export PATH=$BENCHMARK_ROOT/$testcase/sysbench/usr/local/bin:$PATH
 prog=$(basename "$0")
 
+cd $BENCHMARK_ROOT/$testcase/sysbench/usr/local/share/sysbench
 sh "$TMP_RESULT_ROOT/run.$prog"

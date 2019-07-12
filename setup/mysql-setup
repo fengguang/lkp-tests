@@ -2,37 +2,31 @@
 
 setup_mysql()
 {
-	[ -s /etc/mysql/my.cnf ] && rm /etc/mysql/my.cnf
-	ln -s /etc/mysql/conf.d/mysql.cnf /etc/mysql/my.cnf
+	systemctl stop mariadb.service
+
 	# datadir in rootfs too small to meet mysql requriments
-	sed -i "s /var/lib/mysql $TMP/mysql g" /etc/mysql/*.cnf /etc/mysql/*conf.d/*.cnf
-
-	cat > /etc/mysql/conf.d/skip-grant-tables.cnf <<EOF
-[mysqld]
-skip-grant-tables
-EOF
-
-	# FATAL: error 1040: Too many connections
-	set_max_connections
 	# /etc/init.d/mysql: ERROR: The partition with /lkp/lkp/src/tmp/mysql is too full! ... failed!
 	mkdir -p $TMP/mysql
 	mount -t tmpfs mysql $TMP/mysql
 
-	cp -a     /var/lib/mysql $TMP/
+	# fix "Neither host 'lkp-bdw-ex1' nor 'localhost'
+	# could be looked up with '/usr/sbin/resolveip'"
+	# from mysql_install_db on Debian.
+	[ ! -x /usr/sbin/resolveip ] && \
+	ln -s $(which resolveip) /usr/sbin/resolveip
 
-	mkdir -p /var/lib/mysql-files
-	/usr/sbin/mysqld --initialize --user=root --datadir=/var/lib/mysql-files --explicit_defaults_for_timestamp
+	mysql_install_db --datadir="$TMP/mysql" --user=mysql
 
-	/etc/init.d/mysql restart
-}
-
-set_max_connections()
-{
-	# mysql default max_connections is 100
+	# fix "FATAL: error 1040: Too many connections"
 	local max_conn=100
 	[ $nr_threads -gt 100 ] && max_conn=$((nr_threads * 2))
-	sed -i '1 s/mysql/mysqld/' /etc/mysql/my.cnf
-	echo max_connections=$max_conn >> /etc/mysql/my.cnf
+
+	# /usr/libexec/mysqld is used on RHEL/Centos
+	# /usr/bin/mysql is used on Debian/Ubuntu
+	# /usr/bin/haswell/mysql is used on Clear Linux
+	local exec_mysqld='mysqld'
+	mysqld --version >/dev/null 2>&1 || exec_mysqld='/usr/libexec/mysqld'
+	$exec_mysqld --datadir="$TMP/mysql" --max-connections="$max_conn" --skip-grant-tables --user=mysql &
 }
 
 setup_mysql

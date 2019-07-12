@@ -7,9 +7,10 @@ download()
 
 build()
 {
-	git checkout 0.4 || return
 	./autogen.sh
-	./configure
+	# running sysbench may get "Illegal instruction" error
+	# on some arches so avoid it by --without-gcc-arch
+	./configure --without-gcc-arch
 	make
 }
 
