@@ -311,6 +311,11 @@ do
 		parse_yaml $filename
 	fi
 
+	is_clearlinux && {
+		export PATH=/lkp/benchmarks/makepkg/bin:$PATH
+		scripts="makepkg $scripts"
+	}
+
 	for script in $scripts
 	do
 		BUILD_DIR=$(get_build_dir $BM_NAME)
