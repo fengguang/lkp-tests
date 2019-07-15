@@ -89,4 +89,4 @@ setup_proxy
 PACMAN=true BUILDDIR=$TMP PKGEXT=.cgz CGZDEST="$sync_dest/$cgz_name" \
 	$LKP_SRC/sbin/makepkg --config $LKP_SRC/etc/makepkg.conf
 
-ln -sf "$cgz_name" "$sync_dest/${benchmark}-${arch}.cgz"
+[ -e "$sync_dest/$cgz_name" ] && ln -sf "$cgz_name" "$sync_dest/${benchmark}-${arch}.cgz"
