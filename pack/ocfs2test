@@ -6,8 +6,8 @@ download()
 
 	wget -q http://downloads.openfabrics.org/downloads/mpi-selector/mpi-selector-1.0.3.tar.gz || return
 
-	git_clone_update https://oss.oracle.com/git/jlbec/reflink.git || return
-	git_clone_update https://oss.oracle.com/git/ocfs2-test.git || return
+	git_clone_update https://oss.oracle.com/git/jlbec/reflink.git --branch master || return
+	git_clone_update https://oss.oracle.com/git/ocfs2-test.git --branch master || return
 }
 
 build()
