@@ -181,6 +181,10 @@ distro_install_depends()
 	local bm="$1"
 	local scripts=$(find $LKP_SRC/distro/depends/ -name "$bm" -o -name "${bm}.[0-9]")
 
+	export DEBIAN_FRONTEND=noninteractive
+	add_i386_package
+	update
+
 	apt-get install -yf
 	for script in $scripts
 	do
@@ -203,9 +207,6 @@ distro_install_depends()
 
 pack_benchmark()
 {
-	export DEBIAN_FRONTEND=noninteractive
-	dpkg --add-architecture i386
-	update
 	distro_install_depends lkp-dev
 
 	# Process each benchmark

@@ -30,12 +30,6 @@ mkdir -p "$PKG_MNT"
 	mount $LKP_SERVER:$PKG_MNT $PKG_MNT || die "Failed to run mount"
 }
 
-export DEBIAN_FRONTEND=noninteractive
-
-add_i386_package
-
-update
-
 get_pkg_info()
 {
 	var=$1
