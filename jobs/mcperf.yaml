@@ -1,0 +1,12 @@
+suite: mcperf
+testcase: mcperf
+category: benchmark
+
+mcperf:
+  linger: 0
+  timeout: 5
+  testsize: "u1,16"
+  conn_rate: 1000
+  call_rate: 1000
+  num_calls: 10
+  num_conns: 1000
