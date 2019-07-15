@@ -1,6 +1,7 @@
 #!/bin/sh
 
-# usage: git_clone_update https://github.com/pmem/valgrind.git [dir] [--branch master]
+# When using some options, you must follow the order specified in the usage below.
+# usage: git_clone_update https://github.com/pmem/valgrind.git [dir] [--branch master] [--recursive]
 git_clone_update()
 {
 	local url=$1
@@ -26,6 +27,13 @@ git_clone_update()
 	if [ -d $dir/.git ]; then
 		(
 			cd $dir
+			while [ $# != 0 ]; do
+				if [ "$1" = "--recursive" ]; then
+					git submodule update --init --recursive
+					break
+				fi
+				shift
+			done
 			for retry in 1 2
 			do
 				echo \
