@@ -1,0 +1,25 @@
+#!/bin/sh
+# - linger
+# - timeout
+# - testsize
+# - conn_rate
+# - call_rate
+# - num_calls
+# - num_conns
+
+. $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/reproduce-log.sh
+
+start_memcached()
+{
+	log_cmd systemctl restart memcached || die "failed to restart memcached"
+}
+
+run_test()
+{
+	log_cmd ln -sf $BENCHMARK_ROOT/mcperf/src/mcperf /usr/bin/mcperf
+	log_cmd mcperf -l $linger -t $timeout -r $conn_rate -R $call_rate -N $num_calls -n $num_conns -z $testsize 2>&1
+}
+
+start_memcached
+run_test
