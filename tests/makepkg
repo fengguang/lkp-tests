@@ -36,25 +36,6 @@ add_i386_package
 
 update
 
-apt_install_depends()
-{
-	local script
-	local bm="$1"
-	local scripts=$(find $LKP_SRC/distro/depends/ -name "$bm" -o -name "${bm}.[0-9]")
-
-	apt-get install -yf
-	for script in $scripts
-	do
-		script=$(basename $script)
-		packages=$(get_dependency_packages debian $script)
-
-		[ -z "$packages" ] && continue
-
-		echo install packages for $script: $packages
-		apt-get -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold install -y $packages
-	done
-}
-
 get_pkg_info()
 {
 	var=$1
@@ -65,13 +46,7 @@ get_pkg_info()
 	)
 }
 
-if is_clearlinux; then
-	swupd_install_depends lkp-dev
-elif is_aliyunos; then
-	yum_install_depends lkp-dev
-else
-	apt_install_depends lkp-dev
-fi
+distro_install_depends lkp-dev
 
 [[ $arch ]] || arch=`uname -m`
 

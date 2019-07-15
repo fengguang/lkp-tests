@@ -6,7 +6,7 @@ shopt -s nullglob
 . $LKP_SRC/distro/common
 . $LKP_SRC/lib/debug.sh
 
-swupd_install_depends()
+distro_install_depends()
 {
 	local script
 	local bm="$1"
@@ -27,11 +27,11 @@ swupd_install_depends()
 
 pack_benchmark()
 {
-	swupd_install_depends lkp-dev
+	distro_install_depends lkp-dev
 
 	for BM_NAME in $benchmark
 	do
-		swupd_install_depends $BM_NAME-dev || continue
+		distro_install_depends $BM_NAME-dev || continue
 		echo $LKP_SRC/sbin/pack -d $DISTRO -f -c -s $PKG_MNT/$pack_to $BM_NAME
 		(
 			setup_proxy
@@ -46,11 +46,11 @@ install_runtime_depends()
 	local job=$1
 
 	parse_yaml $job
-	swupd_install_depends lkp
+	distro_install_depends lkp
 
 	for script in $scripts
 	do
-		swupd_install_depends $script
+		distro_install_depends $script
 	done
 }
 
