@@ -22,6 +22,11 @@ build()
 
 	local ncpu=$(nproc)
 	local wayland=1
+	gcc_major=$(gcc -dumpversion | cut -d. -f1)
+
+	if [ "$gcc_major" -ge 8 ]; then
+		export CC=$(which gcc7)
+	fi
 
 	[ "$distro" = "centos" ] && wayland=0
 	cd ../waffle || return
