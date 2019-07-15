@@ -1,0 +1,21 @@
+pkgname=mcperf
+pkgver=0.1.1
+pkgrel=0
+pkgdesc="A tool for measuring memcached server performance"
+arch=('i686' 'x86_64')
+url="https://github.com/twitter-archive/twemperf/"
+license=('GPL')
+source=("https://github.com/twitter-archive/twemperf.git")
+md5sums=('SKIP')
+
+build() {
+	cd "$srcdir/twemperf"
+	autoreconf -fvi
+	CFLAGS="-ggdb3 -O0" ./configure --enable-debug
+	make
+}
+
+package() {
+	mkdir -p "$pkgdir/lkp/benchmarks/mcperf"
+	cp -r "$srcdir/twemperf/"* "$pkgdir/lkp/benchmarks/mcperf"
+}
