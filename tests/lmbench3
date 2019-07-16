@@ -36,6 +36,7 @@ test_memory_size=$(($test_memory_size/1024/1024))
 [ "$test_memory_size" -gt 10240 ] && test_memory_size=10240
 
 . $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/debug.sh
 
 # Run lmbench3 benchmark suit with all/hardware/os/development mode
 # All mode: run all of the testcases
@@ -185,6 +186,8 @@ cd $BENCHMARK_ROOT/lmbench3 || {
 	echo "ERROR: lmbench benchmark has not been installed yet"
 	exit -1
 }
+
+make 2>&1 || die "failed to build lmbench3"
 
 case "$mode" in
 	'all') run_lmbench3_all ;;
