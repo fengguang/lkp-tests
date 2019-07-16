@@ -1,26 +1,26 @@
 pkgname=rocksdb
-pkgver=5.15.10
+pkgver=git
 pkgrel=1
 pkgdesc='Embedded key-value store for fast storage'
 arch=(i686 x86_64)
 url='http://rocksdb.org'
 license=(Apache leveldb)
 depends=()
-source=(https://github.com/facebook/rocksdb/archive/v$pkgver.zip)
+source=(https://github.com/facebook/rocksdb.git)
 md5sums=('SKIP')
 
 prepare() {
-  cd rocksdb-$pkgver
+  cd rocksdb
   sed -e 's/\bpython\b/python2/' -i Makefile
 }
 
 build() {
-  cd rocksdb-$pkgver
+  cd rocksdb
   make release
 }
 
 package() {
-  cd rocksdb-$pkgver
+  cd rocksdb
   install -d "$pkgdir"/usr/share/rocksdb
   rm tools/*.o
   rm tools/*.d
