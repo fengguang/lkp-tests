@@ -97,12 +97,17 @@ generate_test_groups()
 
 pack()
 {
+	local libwaffle_path=/usr/lib/x86_64-linux-gnu/libwaffle-1.so*
+	is_clearlinux && {
+		libwaffle_path=/usr/lib64/libwaffle-1.so*
+	}
+
 	{
 
 		echo /lkp
 		echo /lkp/benchmarks
 		find /lkp/benchmarks/$BM_NAME
-		find /usr/lib/x86_64-linux-gnu/libwaffle-1.so*
+		find $libwaffle_path
 	} |
 	cpio --quiet -o -H newc | gzip -n -9 > /lkp/benchmarks/${BM_NAME}.cgz
 	[[ $arch ]] && mv "/lkp/benchmarks/${BM_NAME}.cgz" "/lkp/benchmarks/${BM_NAME}-${arch}.cgz"
