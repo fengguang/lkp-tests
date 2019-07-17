@@ -1,25 +1,39 @@
 diff --git a/UnixBench/Makefile b/UnixBench/Makefile
-index 880743a..e1243a4 100644
+index 4b1d5f8..5c4e36e 100644
 --- a/UnixBench/Makefile
 +++ b/UnixBench/Makefile
-@@ -86,9 +86,9 @@ OPTON = -O3 -ffast-math
- ## OS detection.  Comment out if gmake syntax not supported by other 'make'.
- OSNAME:=$(shell uname -s)
+@@ -90,16 +90,16 @@ else
+   ## OS detection.  Comment out if gmake syntax not supported by other 'make'. 
+   OSNAME:=$(shell uname -s)
+   ARCH := $(shell uname -p)
+-  ifeq ($(OSNAME),Linux)
+-    # Not all CPU architectures support "-march" or "-march=native".
+-    #   - Supported    : x86, x86_64, ARM, AARCH64, etc..
+-    #   - Not Supported: RISC-V, IBM Power, etc...
+-    ifneq ($(ARCH),$(filter $(ARCH),ppc64 ppc64le))
+-        OPTON += -march=native -mtune=native
+-    else
+-        OPTON += -mcpu=native -mtune=native
+-    endif
+-  endif
++#  ifeq ($(OSNAME),Linux)
++#    # Not all CPU architectures support "-march" or "-march=native".
++#    #   - Supported    : x86, x86_64, ARM, AARCH64, etc..
++#    #   - Not Supported: RISC-V, IBM Power, etc...
++#    ifneq ($(ARCH),$(filter $(ARCH),ppc64 ppc64le))
++#        OPTON += -march=native -mtune=native
++#    else
++#        OPTON += -mcpu=native -mtune=native
++#    endif
++#  endif
  
--ifeq ($(OSNAME),Linux)
--OPTON += -march=native -mtune=native
--endif
-+# ifeq ($(OSNAME),Linux)
-+# OPTON += -march=native -mtune=native
-+# endif
- ifeq ($(OSNAME),Darwin)
- # (adjust flags or comment out this section for older versions of XCode or OS X)
- # (-mmacosx-versin-min= requires at least that version of SDK be installed)
+   ifeq ($(OSNAME),Darwin)
+     # (adjust flags or comment out this section for older versions of XCode or OS X)
 diff --git a/UnixBench/Run b/UnixBench/Run
-index a16a5c9..4af969b 100755
+index b4abd26..1d32b94 100755
 --- a/UnixBench/Run
 +++ b/UnixBench/Run
-@@ -809,7 +809,7 @@ sub getSystemInfo {
+@@ -839,7 +839,7 @@ sub getSystemInfo {
      }
  
      # Get graphics hardware info.
@@ -28,9 +42,9 @@ index a16a5c9..4af969b 100755
  
      # Get system run state, load and usage info.
      $info->{'runlevel'} = getCmdOutput("who -r | awk '{print \$3}'");
-@@ -1823,7 +1823,7 @@ sub main {
-         $tests = $index;
-     }
+@@ -1900,7 +1900,7 @@ sub main {
+     my @creatingDirectories = ( ${TMPDIR}, ${RESULTDIR} );
+     createDirrectoriesIfNotExists(@creatingDirectories);
  
 -    preChecks();
 +    #preChecks();
