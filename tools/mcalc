@@ -1,0 +1,99 @@
+#!/usr/bin/env ruby
+
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+
+require 'optparse'
+require "#{LKP_SRC}/lib/statistics"
+require "#{LKP_SRC}/lib/stats"
+require "#{LKP_SRC}/lib/yaml"
+require "#{LKP_SRC}/lib/matrix"
+
+$opt_parser = OptionParser.new do |opts|
+  opts.banner = "Usage: #{opts.program_name} <matrix.json> [<operations>]"
+  opts.separator ''
+  opts.separator 'Example:'
+  opts.separator ''
+
+  opts.separator "#{opts.program_name} <matrix.json> [<operations>]"
+  opts.separator ''
+  opts.separator 'options:'
+
+  opts.on_tail('-h', '--help', 'show help message') do
+    puts opts
+    exit
+  end
+end
+
+class MatrixCalculator
+  def initialize(matrix_fn)
+    @matrix = load_json matrix_fn
+    @nmatrix = {}
+  end
+
+  def do(&blk)
+    instance_eval(&blk)
+  end
+
+  def _get(*stats)
+    stats.each do |stat|
+      vals = @matrix[stat]
+      next unless vals
+      if block_given?
+        nstat, nvals = yield stat, vals
+      else
+        nstat = stat
+        nvals = vals
+      end
+      @nmatrix[nstat] = nvals
+    end
+  end
+
+  def get(*stats)
+    _get(*stats)
+  end
+
+  def base0(*stats)
+    _get(*stats) do |stat, vals|
+      v0 = vals[0]
+      nvals = vals.map { |vi| vi - v0 }
+      ["base0-#{stat}", nvals]
+    end
+  end
+
+  def diff(*stats)
+    _get(*stats) do |stat, vals|
+      nvals = (1...vals.length).map { |i| vals[i] - vals[i - 1] }
+      ["diff-#{stat}", nvals]
+    end
+  end
+
+  def save(fn)
+    if fn =~ /\.csv$/
+      save_matrix_to_csv_file(fn, @nmatrix)
+    else
+      save_json(@nmatrix, fn)
+    end
+  end
+end
+
+$opt_parser.parse!(ARGV)
+
+def usage
+  puts $opt_parser
+  exit 1
+end
+
+def main
+  if ARGV.length > 2 || ARGV.length < 1
+    usage
+  end
+  mc = MatrixCalculator.new(ARGV.first)
+  if ARGV.length > 1
+    operations = ARGV[1]
+  else
+    operations = $stdin.read
+  end
+  mc.instance_eval operations
+end
+
+main
