@@ -15,6 +15,7 @@ $x_relative = false
 $xtics = false
 $y_min = nil
 $x_range = [nil, nil]
+$opt_diff = nil
 
 opt_parser = OptionParser.new do |opts|
   opts.banner = 'Usage: mplot matrix.json stat_field [matrix.json stat_filed]... [OPTION...]'
@@ -50,6 +51,10 @@ opt_parser = OptionParser.new do |opts|
     $x_range = range.split(',').map(&:to_i)
   end
 
+  opts.on('-d', '--diff', 'draw diff figure') do
+    $opt_diff = true
+  end
+
   opts.on_tail('-h', '--help', 'show help message') do
     puts opts
     exit
@@ -78,6 +83,14 @@ def plot_it(matrix_stat_arr)
       x0 = xs.first
       matrix[rel_x] = xs.map { |xi| xi - x0 }
       plotter.set_x_stat_key(rel_x)
+    end
+    if $opt_diff
+      dstat = "diff-#{stat}"
+      ys = matrix[stat]
+      next unless ys
+      dys = (1...ys.length).map { |i| ys[i] - ys[i - 1] }
+      matrix[dstat] = dys
+      stat = dstat
     end
     lines << [matrix, stat, stat]
   end
