@@ -13,6 +13,9 @@ download()
 
 install()
 {
+	# clearlinux use bundle to install this benchmark
+	[ "$DISTRO" = "clear" ] && return 0
+
 	[ -f $PHORONIX ] || return
 	tar zxf $PHORONIX || return
 	local current_dir=$(pwd)
