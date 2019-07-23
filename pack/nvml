@@ -1,7 +1,14 @@
 #!/bin/bash
 
+. $LKP_SRC/lib/tests/nvml.sh
+
 download()
 {
+	[ "$distro" = "clear" ] && {
+		git_clone_update https://github.com/pmem/nvml.git || return
+		return 0
+	}
+
 	git_clone_update https://github.com/pmem/valgrind.git --branch pmem-3.12 || return
 	git_clone_update https://github.com/llvm-mirror/llvm.git --branch release_39 --depth 1 || return
 	git_clone_update https://github.com/llvm-mirror/libcxxabi.git --branch release_39 --depth 1 || return
@@ -96,6 +103,8 @@ build()
 {
 	[ "$distro" = "centos" ] && sed -i 's/CXXFLAGS += -Wno-unknown-attributes/CXXFLAGS += -Wno-ignored-attributes/' ./src/benchmarks/Makefile
 
+	[ "$distro" = "clear" ] && return
+
 	build_install_valgrind_pmem || return
 	build_install_libcxx || return
 	build_install_libfabric || return
@@ -109,14 +118,17 @@ install()
 
 pack()
 {
+	mkdir -p $BUILD_DIR/valgrind_install
 	cd $BUILD_DIR/valgrind_install || return
 	{
 		echo /lkp
 		echo /lkp/benchmarks
 		find /lkp/benchmarks/$BM_NAME
-		find ./usr | sed 's/^.//'
-		echo /usr/local/libcxx
-		find /usr/local/libcxx
+		is_clearlinux || {
+			find ./usr | sed 's/^.//'
+			echo /usr/local/libcxx
+			find /usr/local/libcxx
+		}
 	} |
 	cpio --quiet -o -H newc | gzip -n -9 > /lkp/benchmarks/${BM_NAME}.cgz
 	[[ $arch ]] && mv "/lkp/benchmarks/${BM_NAME}.cgz" "/lkp/benchmarks/${BM_NAME}-${arch}.cgz"
