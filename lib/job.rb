@@ -813,6 +813,10 @@ class Job
   def to_hash
     @job
   end
+
+  def atomic_job?
+    @job['arch']
+  end
 end
 
 class JobEval < Job
