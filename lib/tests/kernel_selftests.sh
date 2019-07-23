@@ -363,6 +363,9 @@ run_tests()
 			## ths test needs special device /dev/lircN
 			sed -i 's/test_lirc_mode2_user//' bpf/Makefile
 			echo "ignored_by_lkp bpf.test_lirc_mode2_user test"
+			## test_tc_tunnel runs well but hang on perl process
+			sed -i 's/test_tc_tunnel.sh//' bpf/Makefile
+			echo "ignored_by_lkp bpf.test_tc_tunnel.sh test"
 			# some sh scripts actually need bash
 			# ./test_libbpf.sh: 9: ./test_libbpf.sh: 0: not found
 			[ "$(cmd_path bash)" = '/bin/bash' ] && [ $(readlink -e /bin/sh) != '/bin/bash' ] &&
