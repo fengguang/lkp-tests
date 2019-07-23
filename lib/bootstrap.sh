@@ -501,6 +501,12 @@ tbox_cant_kexec()
 	# following tbox are buggy while using kexec to boot
 	[ "${HOSTNAME#*lkp-kboot04}"         != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-glk02}"      != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-cfl-s02}"      != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-mlw01}"      != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-kbly01}"      != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-kblr01}"      != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-whlu01}"      != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-cfl-h01}"      != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-ivb-d02}"    != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*sof-minnow-1}" != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*sof-minnow-2}" != "$HOSTNAME" ] && return 0
