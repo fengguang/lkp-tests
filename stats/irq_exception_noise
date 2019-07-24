@@ -78,8 +78,7 @@ class IrqAnalysis
   end
 end
 
-def extract_ftrace
-  fn = "#{RESULT_ROOT}/ftrace.data.xz"
+def extract_ftrace(fn)
   fmts_dir = "#{RESULT_ROOT}/ftrace_events"
   file = zopen(fn)
   trace = TPTrace.new file, fmts_dir
@@ -102,7 +101,13 @@ def extract_ftrace
   samples_array
 end
 
-irq_analysis = IrqAnalysis.new extract_ftrace
+fn = "#{RESULT_ROOT}/ftrace.data.xz"
+unless File.exist?(fn)
+  log_error "log file #{fn} does not exist"
+  exit
+end
+
+irq_analysis = IrqAnalysis.new(extract_ftrace(fn))
 irq_analysis.analyze
 
 # funcgraph
