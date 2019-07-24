@@ -1,0 +1,61 @@
+#!/bin/sh
+# - mode
+# - nr_pmem
+
+configure()
+{
+	for ns in $(ls -d /sys/bus/nd/devices/namespace*); do
+		bns=$(basename $ns)
+		rmode=$(cat "$ns/mode")
+		rsize=$(cat "$ns/size")
+		[ "$rsize" -eq 0 ] && continue
+		[ "$rmode" = "$mode" ] && continue
+		/lkp/benchmarks/ndctl/bin/ndctl create-namespace --reconfig=$bns \
+						--force --mode="$mode" || exit 1
+	done
+}
+
+probe()
+{
+	case "$mode" in
+		raw|fsdax)
+			parts=$(ls /dev/pmem*)
+			nr_part=$(echo $parts | wc -w)
+			;;
+		dax)
+			parts=$(ls /dev/dax*)
+			nr_part=$(echo $parts | wc -w)
+			;;
+		*)
+			echo "Invalid nvdimm mode: $mode!" >&2
+			exit 1
+			;;
+	esac
+}
+
+check()
+{
+	if [ -z "$nr_part" ] || [ "$nr_part" -eq 0 ]; then
+		echo "No $mode devices found!" >&2
+		exit 1
+	fi
+
+	[ "$nr_part" -lt "$nr_pmem" ] && {
+		echo "No enough $mode devices found: asked $nr_pmem, got $nr_part"
+		exit 1
+	}
+
+	parts=$(echo $parts | cut "-f1-$nr_part" -d' ')
+}
+
+configure
+probe
+check
+
+cat >> $TMP/env.yaml <<EOF
+
+# setup/nvdimm
+nr_partitions: $nr_part
+partitions: $parts
+disk_description: NVDIMM devices
+EOF
