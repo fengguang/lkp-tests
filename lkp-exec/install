@@ -217,7 +217,7 @@ build_install_benchmarks() {
 		case $distro in
 		debian|ubuntu)
 			local deb_pkg=/tmp/$pkg_name.deb
-			[ -f $deb_pkg ] || return
+			[ -f $deb_pkg ] || return 0
 			dpkg -i $deb_pkg 2>/tmp/dpkg_error || {
 				grep -v "dpkg: warning: files list file for package '.*' missing;" /tmp/dpkg_error
 				return 1
@@ -225,7 +225,7 @@ build_install_benchmarks() {
 			;;
 		fedora)
 			local rpm_pkg=$BUILD_DIR/$pkg_name/RPMS/$pkg_name.$(uname -m).rpm
-			[ -f $rpm_pkg ] || return
+			[ -f $rpm_pkg ] || return 0
 			rpm -ivh --replacepkgs $rpm_pkg ;;
 		*)
 			echo "Just make /lkp/benchmarks/$script-$(uname -m).cgz" ;;
