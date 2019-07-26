@@ -7,19 +7,25 @@ require "#{LKP_SRC}/lib/string_ext"
 while (line = STDIN.gets)
   line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
   case line
-  #queries performed:
-  #     read:                            1888138
+  # queries performed:
+  #     read:                            134956458
   #     write:                           0
-  #     other:                           269734
-  #     total:                           2157872
-  # transactions:                        134867 (2247.71 per sec.)
+  #     other:                           19279494
+  #     total:                           154235952
+  # transactions:                        9639747 (16065.20 per sec.)
+  # queries:                             154235952 (257043.25 per sec.)
   when /read:\s+(\d+)/
     puts 'read: ' + $1
   when /write:\s+(\d+)/
     puts 'write: ' + $1
+  when /other:\s+(\d+)/
+    puts 'other: ' + $1
   when /transactions:\s+(\d+)\s+\(([\d.]+) per sec.\)/
     puts 'transactions: ' + $1
     puts 'transactions/s: ' + $2
+  when /queries:\s+(\d+)\s+\(([\d.]+) per sec.\)/
+    puts 'queries: ' + $1
+    puts 'queries/s: ' + $2
   #Latency (ms):
   #     min:                                    0.90
   #     avg:                                    1.78

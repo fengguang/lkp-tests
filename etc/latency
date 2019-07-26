@@ -6,8 +6,8 @@ fileio.request_latency_95%_ms
 fileio.request_latency_max_ms
 iostat\..*\.(await|r_await|w_await|svctm|avgqu-sz)\.max
 latency_stats\..*
-oltp.request_latency_95%_ms
-oltp.request_latency_max_ms
-oltp.request_latency_min_ms
+oltp.latency_95th_ms
+oltp.latency_max_ms
+oltp.latency_min_ms
 tbench.max_latency
 vm-scalability.stddev
