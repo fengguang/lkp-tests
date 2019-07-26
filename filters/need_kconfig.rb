@@ -50,7 +50,7 @@ def check_all(kconfig_lines)
     next if check_kconfig(kconfig_lines, config)
 
     # need_kconfig
-    kconfig_error_message = "#{config} has not been compiled"
+    kconfig_error_message = "#{File.basename __FILE__}: #{config} has not been compiled"
     kconfig_error_message = "#{kconfig_error_message} by #{kernel_version}" if kernel_version
     kconfig_error_message = "#{kconfig_error_message}, it is supported by kernel matching #{kernel_version_regexp} regexp" if kernel_version_regexp
     raise Job::ParamError, kconfig_error_message.to_s unless __FILE__ =~ /suggest_kconfig/
