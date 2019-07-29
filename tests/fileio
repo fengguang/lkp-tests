@@ -21,9 +21,9 @@
 filenum=${filenum%f}
 
 args="
-	--max-requests=0
-	--num-threads=$nr_threads
-	--max-time=$period
+	--events=0
+	--threads=$nr_threads
+	--time=$period
 	--file-test-mode=$rwmode
 	--file-total-size=$size
 	--file-io-mode=$iomode
@@ -32,7 +32,7 @@ args="
 
 prepare()
 {
-	log_cmd sysbench --test=fileio ${args} prepare
+	log_cmd sysbench fileio ${args} prepare
 }
 
 prepare_fallocate()
@@ -52,7 +52,7 @@ run()
 {
 	# permit more files open in system
 	ulimit -n $(($filenum + 2048))
-	log_cmd sysbench --test=fileio ${args} run
+	log_cmd sysbench fileio ${args} run
 }
 
 log_eval cd "$mount_points" || exit

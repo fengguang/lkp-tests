@@ -1,6 +1,6 @@
 dd.kill_time: 10
 dd.startup_time: 10
-fileio.request_latency_95%_ms: 10
+fileio.latency_95th_ms: 10
 interrupts.*: 100
 iostat.*.avgrq-sz: 200
 iostat.*.await: 50

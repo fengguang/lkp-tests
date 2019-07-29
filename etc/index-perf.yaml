@@ -6,7 +6,7 @@ boot-time\.boot: -1
 boot-time\.dhcp: -1
 dbench\.throughput-MB\/sec: 1
 ebizzy\.throughput: 1
-fileio\.requests_per_sec: 1
+fileio\..+_operations\/s: 1
 fio\..+\_us: -1
 fio\..+\_iops: 1
 fio\..+\_MBps: 1
