@@ -18,14 +18,14 @@ build() {
 }
 
 package() {
+    local install_prefix=$pkgdir/lkp/benchmarks/$pkgname
+
     cd "$srcdir/$pkgname-$pkgver"
 
-    mkdir -p "$pkgdir/usr/bin/"
-    mkdir -p "$pkgdir/usr/share/licenses/$pkgname"
-    mkdir -p "$pkgdir/usr/share/$pkgname"
+    mkdir -p "$install_prefix/usr/share/licenses/$pkgname"
+    mkdir -p "$install_prefix/usr/share/$pkgname"
 
-    install -D -m 755 -o root -g root "$pkgname" "$pkgdir/usr/bin/$pkgname"
-    install -D -m 644 -o root -g root "LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
-    install -D -m 644 -o root -g root "README" "$pkgdir/usr/share/$pkgname/README"
-    
+    install -D -m 755 -o root -g root "$pkgname" "$install_prefix/$pkgname"
+    install -D -m 644 -o root -g root "LICENSE" "$install_prefix/usr/share/licenses/$pkgname/LICENSE"
+    install -D -m 644 -o root -g root "README" "$install_prefix/usr/share/$pkgname/README"
 }
