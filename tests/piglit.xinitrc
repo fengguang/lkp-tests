@@ -39,8 +39,9 @@ fi
 while read testcase
 do
 	start_time=$(date +%s.%N)
-	# recently piglit change the match method, so here we change '/' to '.'
-	testcase=$(echo $testcase | sed 's/\//./g')
+	# in order for piglit to correctly identify testcase, change the special characters('/', '[', ']') in testcase to '.'
+	# change spec/ext_transform_feedback/output-type.mat3[2]-no-subscript to spec.ext_transform_feedback.output-type.mat3.2.-no-subscript
+	testcase=$(echo $testcase | tr "/[]" .)
 	# using excluding(-x) to avoid running all matching case
 	log_cmd piglit run $test -t "$testcase" "$tmp_results" -x "${testcase}."
 	end_time=$(date +%s.%N)
