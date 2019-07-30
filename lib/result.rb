@@ -57,7 +57,7 @@ class ResultPath < Hash
     end
   end
 
-  def parse_result_root(rt)
+  def parse_result_root(rt, is_local_run = false)
     dirs = rt.sub(/#{RESULT_MNT}\d*/, '').split('/')
     dirs.shift if dirs[0] == ''
 
@@ -79,7 +79,10 @@ class ResultPath < Hash
     end
 
     if ps.include?('commit')
-      each_commit { |_type, commit| return false unless self[commit] && sha1_40?(self[commit]) }
+      each_commit do |_type, commit|
+        return false unless self[commit]
+        return false if !is_local_run && !sha1_40?(self[commit])
+      end
     end
 
     # for rt and _rt
