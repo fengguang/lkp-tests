@@ -1,5 +1,5 @@
 #!/bin/sh
-# - bp_mem
+# - bp_memmap
 # - bp1_memmap
 # - bp2_memmap
 # - bp3_memmap
@@ -26,7 +26,7 @@ check_param()
 	fi
 }
 
-check_param "bp_mem"
+check_param "bp_memmap"
 check_param "bp1_memmap"
 check_param "bp2_memmap"
 check_param "bp3_memmap"
