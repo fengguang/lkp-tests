@@ -1,0 +1,19 @@
+pkgname=bust_shm_exit
+pkgver=git
+pkgrel=0
+pkgdesc="bust_shm_exit benchmark source for LKP-tests "
+arch=('i686' 'x86_64')
+url="https://github.com/gaowanlong/bust_shm_exit"
+license=('GPL')
+source=("https://github.com/gaowanlong/bust_shm_exit.git")
+md5sums=('SKIP')
+
+build() {
+	cd "$srcdir/$pkgname"
+	gcc -O2 -o bust_shm_exit bust_shm_exit.c -lpthread
+}
+
+package() {
+	mkdir -p "$pkgdir/lkp/benchmarks/bust_shm_exit"
+	cp -r "$srcdir/$pkgname/bust_shm_exit" "$pkgdir/lkp/benchmarks/bust_shm_exit"
+}
