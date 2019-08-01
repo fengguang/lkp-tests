@@ -73,9 +73,9 @@ cleanup_path_record_from_patterns()
 		fi
 	done
 
-	[[ -d "/lkp/.paths/" ]] || mkdir "/lkp/.paths/" || return
-	dot_temp_file=$(mktemp -p /lkp/.paths/ .tmpXXXXXX) || return
-	match_temp_file=$(mktemp -p /lkp/.paths/ .tmpXXXXXX) || return
+	[[ -d "/tmp" ]] || mkdir "/tmp" || return
+	dot_temp_file=$(mktemp -p /tmp lkp-result-cleanup-path.tmpXXXXXX) || return
+	match_temp_file=$(mktemp -p /tmp lkp-result-cleanup-path.tmpXXXXXX) || return
 	chmod 664 $dot_temp_file || return
 
 	for path_file in $(grep -l "$pattern" /lkp/paths/????-??-??-* /lkp/paths/.????-??-??-*)
@@ -104,8 +104,8 @@ cleanup_path_record_from_result_root()
 	path=$(expand_tag_to_commit $path)
 	cmd="/${path//\//\\/}/"
 
-	[[ -d "/lkp/.paths/" ]] || mkdir "/lkp/.paths/" || return
-	dot_temp_file=$(mktemp -p /lkp/.paths/ .tmpXXXXXX)
+	[[ -d "/tmp" ]] || mkdir "/tmp" || return
+	dot_temp_file=$(mktemp -p /tmp lkp-result-cleanup-path.tmpXXXXXX)
 	chmod 664 $dot_temp_file || return
 
 	if [[ $(find /lkp/paths -name ".????-??-??-*" 2>/dev/null) ]]; then
