@@ -186,4 +186,6 @@ fi
 # delete temporarily extracted dmesg above
 [ -f $dmesg_log.xz ] && rm -f $dmesg_log
 
+rm -f $tmpfile
+
 exit 0
