@@ -142,7 +142,7 @@ check_incomplete_run $log
 check_empty_output
 check_binary_output
 
-tmpfile=$(mktemp --tmpdir=/dev/shm lkp-stats.XXXXXXXX)
+tmpfile=$(mktemp --tmpdir=/tmp lkp-stats.XXXXXXXX)
 if [[ -f $log ]]; then
 	$program_dir/$program $log < $log > $tmpfile || { log_error "$program_dir/$program $log < $log  exit code $?, check $tmpfile"; exit 1; }
 else
