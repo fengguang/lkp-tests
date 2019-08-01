@@ -182,7 +182,7 @@ elif [[ $kernel ]]; then
 	# commit 690eaa5320 broke kexec, and it has been merged into kernel v5.1-rc1
 	# so we need to disable kaslr to bypass the trap.
 	kernel_version_major=$(file -bL $kernel | sed 's/.*version //;s/ .*//' | awk -F. '{print $1"."$2}')
-	[[ $kernel_version_major =~ (5.0|5.1) ]] && params="$params nokaslr"
+	[[ $kernel_version_major =~ (5.0|5.1|5.3) ]] && params="$params nokaslr"
 
 	[[ $job ]] && $WGET_CMD $path_prefix/cgi-bin/lkp-jobfile-append-var?job_file=$job&job_state=booting
 	echo kexec -l $kernel --append=\"$params\" $opt_initrd
