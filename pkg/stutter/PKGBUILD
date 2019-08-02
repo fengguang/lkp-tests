@@ -1,0 +1,18 @@
+pkgname=stutter
+pkgver=git
+pkgrel=1
+arch=('i686' 'x86_64')
+url="https://github.com/gaowanlong/stutter.git"
+license=('GPL')
+source=("https://github.com/gaowanlong/stutter.git")
+md5sums=('SKIP')
+
+build() {
+	cd "$srcdir/${pkgname}"
+	make all
+}
+
+package() {
+	mkdir -p "${pkgdir}/lkp/benchmarks"
+	cp -af "$srcdir/${pkgname}" "${pkgdir}/lkp/benchmarks"
+}
