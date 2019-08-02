@@ -1,0 +1,18 @@
+pkgname=pft
+pkgver=git
+pkgrel=1
+arch=('i686' 'x86_64')
+url="https://github.com/gormanm/pft"
+license=('GPL')
+source=("https://github.com/gormanm/pft.git")
+md5sums=('SKIP')
+
+build() {
+	cd "$srcdir/${pkgname}"
+	make pft
+}
+
+package() {
+	mkdir -p "${pkgdir}/lkp/benchmarks/${pkgname}"
+	cp "$srcdir/${pkgname}/pft" "${pkgdir}/lkp/benchmarks/${pkgname}"
+}
