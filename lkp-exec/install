@@ -233,6 +233,11 @@ build_install_benchmarks() {
 	echo "Making $script benchmark for $distro"
 	[ -n "$DRY_RUN" ] && return
 
+	[ "$script" = 'perf' ] && perf -v 2>/dev/null && {
+		echo "perf tool exists, skip building"
+		return 0
+	}
+
 	local pkg_name
 	pkg_name=$(printf '%s-LKP\n' "$script" | sed 's/_/-/g')
 
