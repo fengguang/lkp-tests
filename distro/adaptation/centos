@@ -6,6 +6,7 @@ binutils-dev: binutils-devel
 btrfs-tools: btrfs-progs
 build-essential: make automake gcc gcc-c++ kernel-devel rpm-build
 cgroup-bin: libcgroup
+clang-6.0: clang.x86_64
 cmake: cmake cmake3
 dbench=4.0-2: dbench
 dnsutils: bind-utils
@@ -17,6 +18,7 @@ fsmark: fs_mark
 gcc-4.9: gcc
 gcc-5: gcc
 gcc-6: gcc
+gcc-6-multilib:
 gfortran: gcc-c++
 heirloom-mailx: mailx
 hpcc:
@@ -33,12 +35,16 @@ libattr1-dev: libattr-devel
 libaudit-dev: audit-libs-devel
 libblas3: liblas-libs
 libblkid-dev: libblkid-devel
+libc-bin:
+libc6: glibc.x86_64
 libc6-dev: glibc-devel glibc-static
-libc6-dev:i386: glibc-devel.i686 glibc-static.i686
+libc6-dev-i386: glibc-devel.i686 glibc-static.i686
+libc6-dev-x32:
 libcairo2-dev: cairo-devel
 libcap2: libcap
 libcap-dev: libcap-devel
 libcap-ng-dev: libcap-ng-devel
+libcilkrts5:
 libconfig-dev: libconfig-devel
 libdbd-mysql-perl: perl-DBD-MySQL
 libdbi-perl: perl-DBI
@@ -53,6 +59,7 @@ libfabric-dev: libfabric-devel
 libfdt-dev:
 libffi-dev: libffi-devel
 libfuse-dev: fuse-devel
+libgcc-7-dev:libgcc.x86_64
 libgbm-dev: mesa-libgbm-devel
 libgl1-mesa-dev: mesa-libGL-devel
 libgles2-mesa: mesa-libGLES
@@ -69,10 +76,12 @@ libjson-c-dev: json-c-devel
 libklibc-dev:
 libkmod2: kmod-libs
 libkmod-dev: kmod-devel
+liblsan0:
 liblz-dev:
 liblzma-dev: xz-devel
 libmount-dev: libmount-devel
 libmariadbclient-dev: mysql-devel
+libmpx2:
 libncurses5-dev: ncurses-devel
 libnl-3-200: libnl3
 libnl-3-dev: libnl3-devel
@@ -81,6 +90,7 @@ libnl-genl-3-dev: libnl3-devel
 libnl-route-3-dev: libnl3-devel
 libnuma1: numactl
 libnuma-dev: numactl-devel
+libobjc-7-dev: libobjc.x86_64
 liboop-dev:
 liboop-dev: liboop
 libopenmpi2: openmpi
@@ -100,6 +110,7 @@ libpng-dev: libpng-devel
 libpopt0: popt
 libpopt-dev: popt-devel
 libprocps-dev: procps-ng-devel
+libquadmath0: libquadmath.x86_64
 librdmacm-dev: librdmacm-devel
 libreadline5: readline
 libreadline-dev: readline-devel
@@ -109,8 +120,12 @@ libsqlite3-dev: sqlite-devel
 libssl1.0.0: openssl-devel
 libssl1.1: openssl-devel
 libssl-dev: openssl-devel
+libstdc++6: libstdc++.x86_64
+libstdc++-7-dev: libstdc++-devel.x86_64 libstdc++-static.x86_64
 libtirpc-dev: libtirpc-devel
 libtool-bin: libtool
+libtsan0: libtsan.x86_64
+libubsan0:
 libudev1: systemd-libs
 libudev-dev: systemd-devel
 libunwind8: libunwind
@@ -126,6 +141,7 @@ linux-libc-dev:
 linux-libc-dev:i386:
 linux-perf: perf
 linux-tools: perf
+llvm-6.0: llvm7.0.x86_64
 mysql-server: mariadb
 ncurses-bin: ncurses
 netcat-openbsd: nmap-ncat
@@ -168,6 +184,7 @@ trinity:
 tshark: wireshark
 update-inetd: xinetd
 uuid-dev: libuuid-devel
+uuid-runtime:
 wireless-regdb: crda
 wpasupplicant: wpa_supplicant
 xfslibs-dev: xfsprogs-devel
