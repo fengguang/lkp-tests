@@ -13,9 +13,9 @@
 mpstat="/lkp/benchmarks/sysstat/usr/local/bin/mpstat"
 
 [ -e $mpstat ] || {
-	# clearlinux has not supported makepkg yet.
 	# rollback to the default mpstat
-	is_clearlinux && mpstat="mpstat"
+	has_cmd mpstat || exit
+	mpstat="mpstat"
 }
 
 : ${interval:=1}
