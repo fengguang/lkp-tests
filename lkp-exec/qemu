@@ -220,6 +220,7 @@ mkdir -p $CACHE_DIR
 
 . $job_script export_top_env
 replace_script_partition_val $job_script
+[[ $job_file ]] || job_file=${job_script%.sh}.yaml
 
 if [[ $opt_modules ]]; then
 	modules_initrd=$opt_modules
