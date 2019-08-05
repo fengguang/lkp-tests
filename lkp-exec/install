@@ -146,7 +146,7 @@ bundle_install_china() {
 	trap "rm -rf $tmpdir" EXIT
 	cp $LKP_SRC/Gemfile $tmpdir/Gemfile
 	cp $LKP_SRC/Gemfile.lock $tmpdir/Gemfile.lock
-	(cd $tmpdir; bundle config --local mirror.https://rubygems.org https://gems.ruby-china.org; bundle install)
+	(cd $tmpdir; bundle config --local mirror.https://rubygems.org https://gems.ruby-china.com; bundle install)
 }
 
 makepkg_install() {
@@ -267,7 +267,7 @@ install_base_support()
 	install_packages "lkp" "$distro"
 
 	if [ -n "$CHINA" ]; then
-		gem install bundler --clear-sources -s https://gems.ruby-china.org/
+		gem install bundler --clear-sources -s https://gems.ruby-china.com/
 		bundle_install_china
 	else
 		(
