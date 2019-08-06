@@ -55,30 +55,35 @@ end
 mpstat_json = File.read(mpstat)
 begin
   mpstat_hash = JSON.parse(mpstat_json)
-# The mpstat file may meet 2 kinds of uncomplete format:
-# If mpstat file end with string "},", need to delete "," , then complete json format.
-# If mpstat file end with "}", need to complete the missing string
-# "\n\t\t\t\]\n\t\t\}\n\t\]\n\}\}\n".
 rescue JSON::ParserError
-  FileUtils.cp(mpstat, 'mpstat_update')
-  File.open('mpstat_update', 'r+') do |io|
-    io.seek(-2, IO::SEEK_END)
-    str = io.gets
-    if str == ",\n"
-      io.seek(-2, IO::SEEK_END)
-      io.truncate(io.pos)
-      io.puts "\n\t\t\t\]\n\t\t\}\n\t\]\n\}\}\n"
-    elsif str == "\t\}"
-      io.seek(0, IO::SEEK_END)
-      io.puts "\n\t\t\t\]\n\t\t\}\n\t\]\n\}\}\n"
-    end
-  end
-
+  # The mpstat file may meet 2 kinds of uncomplete format:
+  # If mpstat file end with string "},", need to delete "," , then complete json format.
+  # If mpstat file end with "}", need to complete the missing string
+  # "\n\t\t\t\]\n\t\t\}\n\t\]\n\}\}\n".
   begin
-    mpstat_json = File.read('mpstat_update')
+    mpstat_update = File.join(ENV['RESULT_ROOT'], 'mpstat_update')
+
+    FileUtils.cp(mpstat, mpstat_update)
+    File.open(mpstat_update, 'r+') do |io|
+      io.seek(-2, IO::SEEK_END)
+      str = io.gets
+      if str == ",\n"
+        io.seek(-2, IO::SEEK_END)
+        io.truncate(io.pos)
+        io.puts "\n\t\t\t\]\n\t\t\}\n\t\]\n\}\}\n"
+      elsif str == "\t\}"
+        io.seek(0, IO::SEEK_END)
+        io.puts "\n\t\t\t\]\n\t\t\}\n\t\]\n\}\}\n"
+      end
+    end
+
+    mpstat_json = File.read(mpstat_update)
     mpstat_hash = JSON.parse(mpstat_json)
   rescue JSON::ParserError => e
     log_error "Fail to parse #{mpstat}: #{e}"
+    exit
+  rescue StandardError => e
+    log_error "Fail to handle #{mpstat}: #{e}"
     exit
   end
 end
