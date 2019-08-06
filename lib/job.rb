@@ -251,13 +251,7 @@ class Job
       old_hwconfig.each_key { |k| @job.delete k }
     end
 
-    # addition vm confiurations
-    vm_hosts_files = @job['old_tbox_group'] =~ /^vm-/ ? Dir["#{lkp_src}/etc/vms/*-#{@job['old_tbox_group'].sub('vm-', '')}"] : []
     @job.delete 'old_tbox_group'
-    return if vm_hosts_files.empty?
-
-    vm_old_hwconfig = load_yaml(vm_hosts_files[0], nil)
-    vm_old_hwconfig.each_key { |k| @job.delete k }
   end
 
   def load_hosts_config
