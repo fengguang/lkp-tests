@@ -181,16 +181,6 @@ cleanup_for_firmware()
 	}
 }
 
-prepare_for_capabilities()
-{
-	# workaround: skip capabilities if lkp user is not exist.
-	grep -q ^lkp: /etc/passwd || {
-		echo "ignored_by_lkp capabilities test: lkp user is not exist"
-		return 1
-	}
-	# workaround: run capabilities under user lkp
-	log_cmd chown lkp $subtest -R 2>&1
-}
 
 subtest_in_skip_filter()
 {
@@ -396,13 +386,7 @@ run_tests()
 		[[ "$subtest" = "vm" ]] && fixup_vm
 		[[ "$subtest" = "x86" ]] && fixup_x86
 
-		echo
-		if [[ "$subtest" = "capabilities" ]]; then
-			prepare_for_capabilities || continue
-			log_cmd su lkp -c "make run_tests -C $subtest 2>&1"
-		else
-			log_cmd make run_tests -C $subtest  2>&1
-		fi
+		log_cmd make run_tests -C $subtest  2>&1
 
 		if [[ "$subtest" = "firmware" ]]; then
 			cleanup_for_firmware
