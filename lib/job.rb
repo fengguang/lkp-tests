@@ -242,14 +242,26 @@ class Job
     @jobfile = jobfile
   end
 
+  def delete_keys_from_spec(spec_file)
+    return unless File.exist? spec_file
+
+    spec_file_context = load_yaml(spec_file, nil)
+    spec_file_context.each_key { |k| @job.delete k }
+  end
+
   def delete_old_hosts_info
     return if @job['old_tbox_group'].nil?
 
     old_hosts_file = "#{lkp_src}/hosts/#{@job['old_tbox_group']}"
-    if File.exist? old_hosts_file
-      old_hwconfig = load_yaml(old_hosts_file, nil)
-      old_hwconfig.each_key { |k| @job.delete k }
-    end
+    delete_keys_from_spec(old_hosts_file)
+
+    # delele old include tbox info
+    old_include_file = "#{lkp_src}/include/testbox/#{@job['old_tbox_group']}"
+    delete_keys_from_spec(old_include_file)
+
+    # if old_tbox_group is vm, need delete keys imported from #{lkp_src}/include/testbox/vm
+    vm_include_files = "#{lkp_src}/include/testbox/vm"
+    delete_keys_from_spec(vm_include_files)
 
     @job.delete 'old_tbox_group'
   end
