@@ -68,6 +68,8 @@ mount_result_root()
 		tmpfs)
 			result_fs=tmpfs
 			mount -t tmpfs result $RESULT_MNT || return
+			# result_service=tmpfs, RESULT_MNT=/10.239.97.5/result, RESULT_ROOT=/10.239.97.5/result/boot/1/lkp-hsw-d02/debian-x86_64-2018-04-03.cgz/x86_64-rhel-7.6/gcc-7/1c163f4c7b3f621efff9b28a47abb36f7378d783/16
+			mkdir -p $RESULT_ROOT
 			;;
 		raw_upload)
 			# it means previous RESULT_ROOT is not a mount point, even
