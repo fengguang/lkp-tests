@@ -19,3 +19,4 @@ blacklist_stat:
 - "error: 'struct snd_soc_acpi_mach' has no member named 'mach_params'"
 - "error: 'dai_links' undeclared; did you mean 'dai_link'?"
 no_merge_branch: .*
+custom_worker: sof
