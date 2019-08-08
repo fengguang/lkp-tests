@@ -2,5 +2,7 @@ model: Broadwell-EP
 nr_node: 2
 nr_cpu: 88
 memory: 128G
+nr_hdd_partitions: 4
+hdd_partitions: /dev/disk/by-id/ata-HGST_HTS721010A9E630_JR10006P0NN6GF-part*
 rootfs_partition: LABEL=LKP-ROOTFS
 brand: Intel(R) Xeon(R) CPU E5-2699 v4 @ 2.20GHz
