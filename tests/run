@@ -2,5 +2,4 @@
 
 prog=$(basename "$0")
 
-cd /usr/share/sysbench
 sh "$TMP_RESULT_ROOT/run.$prog"
