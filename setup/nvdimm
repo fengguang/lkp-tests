@@ -2,18 +2,7 @@
 # - mode
 # - nr_pmem
 
-configure()
-{
-	for ns in $(ls -d /sys/bus/nd/devices/namespace*); do
-		bns=$(basename $ns)
-		rmode=$(cat "$ns/mode")
-		rsize=$(cat "$ns/size")
-		[ "$rsize" -eq 0 ] && continue
-		[ "$rmode" = "$mode" ] && continue
-		/lkp/benchmarks/ndctl/bin/ndctl create-namespace --reconfig=$bns \
-						--force --mode="$mode" || exit 1
-	done
-}
+. "$LKP_SRC"/lib/nvdimm.sh
 
 probe()
 {
@@ -48,7 +37,9 @@ check()
 	parts=$(echo $parts | cut "-f1-$nr_part" -d' ')
 }
 
-configure
+: ${mode:=dax}
+
+configure_nvdimm
 probe
 check
 
