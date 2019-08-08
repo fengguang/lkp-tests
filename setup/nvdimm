@@ -9,7 +9,12 @@
 : ${mode:=dax}
 : ${part_type:=-}
 
-probe_devs()
+keep_quiet()
+{
+	[ -n "quiet_mode" ]
+}
+
+__probe_devs()
 {
 	case "$mode" in
 		raw|fsdax)
@@ -17,6 +22,7 @@ probe_devs()
 			;;
 		dax)
 			rdevs=$(ls /dev/dax*)
+			ignore_parts=1
 			;;
 		*)
 			echo "Invalid nvdimm mode: $mode!" >&2
@@ -27,23 +33,64 @@ probe_devs()
 	: ${nr_dev:=$rnr_dev}
 
 	if [ "$rnr_dev" -eq 0 ]; then
-		echo "No $mode devices found!" >&2
-		exit 1
+		keep_quiet || echo "No $mode devices found!" >&2
+		return 1
 	fi
 
 	if [ "$rnr_dev" -lt "$nr_dev" ]; then
-		echo "No enough $mode devices found: asked $nr_dev, got $rnr_dev"
-		exit 1
+		keep_quiet || echo "No enough $mode devices found: asked $nr_dev, got $rnr_dev" >&2
+		return 1
 	fi
 
 	devs=$(echo $rdevs | cut "-f1-$nr_dev" -d' ')
 }
 
+probe_devs()
+{
+	quiet_mode=1
+	for i in $(seq 5); do
+		__probe_devs && return
+		sleep 5
+	done
+
+	quite_mode=
+	__probe_devs
+}
+
+probe_parts()
+{
+	rparts=
+	for dev in $devs; do
+		rparts_d=$(ls "$dev"* | grep "$dev.\+")
+		rparts="$rparts $rparts_d"
+	done
+
+	rnr_part=$(echo $rparts | wc -w)
+
+	if [ -z "$nr_part" ]; then
+		if [ "$rnr_part" -ne 0 ]; then
+			keep_quiet || echo "Cannot delete all partitions: $rparts" >&2
+			return 1
+		fi
+		parts=$devs
+		nr_part=$nr_dev
+		return 0
+	fi
+
+	if [ "$rnr_part" -lt "$nr_part" ]; then
+		keep_quiet || echo "No enough parts found: asked $nr_part, got $rnr_part" >&2
+		return 1
+	fi
+
+	parts=$(echo $rparts | cut "-f1-$nr_part" -d' ')
+}
+
 create_parts()
 {
 	if [ -z "$nr_part" ]; then
-		parts=$devs
-		nr_part=$nr_dev
+		for dev in $devs; do
+			/sbin/sfdisk --delete $dev
+		done
 		return
 	fi
 
@@ -60,22 +107,35 @@ create_parts()
 				echo "- ${size_p}M $part_type"
 			done
 		) | /sbin/sfdisk $dev
-		rparts_d=$(ls "$dev"* | grep "$dev.\+")
-		rparts="$rparts $rparts_d"
 	done
+}
 
-	rnr_part=$(echo $rparts | wc -w)
-	if [ "$rnr_part" -lt "$nr_part" ]; then
-		echo "No enough parts found: asked $nr_part, got $rnr_part"
-		exit 1
-	fi
-
-	parts=$(echo $rparts | cut "-f1-$nr_part" -d' ')
+probe_create_parts()
+{
+	quiet_mode=1
+	for i in $(seq 5); do
+		probe_parts && return
+		sleep 1
+	done
+	create_parts
+	for i in $(seq 5); do
+		probe_parts && return
+		sleep 5
+	done
+	quiet_mode=
+	probe_parts
 }
 
 configure_nvdimm
+
 probe_devs
-create_parts
+
+if [ -n "$ignore_parts" ]; then
+	parts=$devs
+	nr_part=$nr_dev
+else
+	probe_create_parts
+fi
 
 cat >> $TMP/env.yaml <<EOF
 
