@@ -81,3 +81,11 @@ result_root_with_release_tag()
 
 	echo $result_root
 }
+
+remote_branch_exist()
+{
+	local git_repo=$1
+	local remote_branch=$2
+
+	[[ $(git --work-tree=$git_repo --git-dir=$git_repo/.git branch --list -r $remote_branch) ]]
+}
