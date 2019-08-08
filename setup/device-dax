@@ -1,9 +1,9 @@
 #!/bin/sh
 
-for ns in $(ls -d /sys/bus/nd/devices/namespace*); do
-	ns=$(basename $ns)
-	/lkp/benchmarks/ndctl/bin/ndctl create-namespace --reconfig=$ns --force --mode=dax || exit 1
-done
+. "$LKP_SRC"/lib/nvdimm.sh
+
+mode=dax
+configure_nvdimm
 
 daxes=$(ls /dev/dax*)
 nr_daxes=$(echo $daxes | wc -w)
