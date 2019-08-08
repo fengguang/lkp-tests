@@ -4,9 +4,7 @@
 
 is_local_server()
 {
-	[ "$LKP_SERVER" != "${LKP_SERVER#inn}" ] && return
-	[ "$LKP_SERVER" != "${LKP_SERVER#192.168.}" ] && return
-	return 1
+	echo "$LKP_SERVER" | grep -q -E -f $LKP_SRC/etc/trustable-lkp-server
 }
 
 upload_files_rsync()
