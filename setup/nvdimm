@@ -1,47 +1,81 @@
 #!/bin/sh
 # - mode
-# - nr_pmem
+# - nr_dev
+# - nr_part
+# - part_type
 
 . "$LKP_SRC"/lib/nvdimm.sh
 
-probe()
+: ${mode:=dax}
+: ${part_type:=-}
+
+probe_devs()
 {
 	case "$mode" in
 		raw|fsdax)
-			parts=$(ls /dev/pmem*)
-			nr_part=$(echo $parts | wc -w)
+			rdevs=$(ls /dev/pmem* | grep '/dev/pmem[0-9]\+$')
 			;;
 		dax)
-			parts=$(ls /dev/dax*)
-			nr_part=$(echo $parts | wc -w)
+			rdevs=$(ls /dev/dax*)
 			;;
 		*)
 			echo "Invalid nvdimm mode: $mode!" >&2
 			exit 1
 			;;
 	esac
-}
+	rnr_dev=$(echo $rdevs | wc -w)
+	: ${nr_dev:=$rnr_dev}
 
-check()
-{
-	if [ -z "$nr_part" ] || [ "$nr_part" -eq 0 ]; then
+	if [ "$rnr_dev" -eq 0 ]; then
 		echo "No $mode devices found!" >&2
 		exit 1
 	fi
 
-	[ "$nr_part" -lt "$nr_pmem" ] && {
-		echo "No enough $mode devices found: asked $nr_pmem, got $nr_part"
+	if [ "$rnr_dev" -lt "$nr_dev" ]; then
+		echo "No enough $mode devices found: asked $nr_dev, got $rnr_dev"
 		exit 1
-	}
+	fi
 
-	parts=$(echo $parts | cut "-f1-$nr_part" -d' ')
+	devs=$(echo $rdevs | cut "-f1-$nr_dev" -d' ')
 }
 
-: ${mode:=dax}
+create_parts()
+{
+	if [ -z "$nr_part" ]; then
+		parts=$devs
+		nr_part=$nr_dev
+		return
+	fi
+
+	nr_part_d=$((nr_part / nr_dev))
+	for dev in $devs; do
+		bdev=$(basename "$dev")
+		# size in block (512)
+		size_d=$(cat /sys/block/"$bdev"/size)
+		# avoid to use 1M at the begin of the device
+		size_p=$(((size_d - 2048) / nr_part_d / 2 / 1024))
+		(
+			echo "label: gpt"
+			for i in $(seq $nr_part_d); do
+				echo "- ${size_p}M $part_type"
+			done
+		) | /sbin/sfdisk $dev
+		rparts_d=$(ls "$dev"* | grep "$dev.\+")
+		rparts="$rparts $rparts_d"
+	done
+
+	rnr_part=$(echo $rparts | wc -w)
+	if [ "$rnr_part" -lt "$nr_part" ]; then
+		echo "No enough parts found: asked $nr_part, got $rnr_part"
+		exit 1
+	fi
+
+	parts=$(echo $rparts | cut "-f1-$nr_part" -d' ')
+}
 
 configure_nvdimm
-probe
-check
+probe_devs
+create_parts
 
 cat >> $TMP/env.yaml <<EOF
 
