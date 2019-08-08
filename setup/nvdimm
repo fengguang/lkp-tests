@@ -77,12 +77,13 @@ probe_parts()
 		return 0
 	fi
 
-	if [ "$rnr_part" -lt "$nr_part" ]; then
-		keep_quiet || echo "No enough parts found: asked $nr_part, got $rnr_part" >&2
+	if [ "$rnr_part" -ne "$nr_part" ]; then
+		keep_quiet || echo "Partition number not match: asked $nr_part, got $rnr_part: $rparts" >&2
 		return 1
 	fi
 
-	parts=$(echo $rparts | cut "-f1-$nr_part" -d' ')
+	# normalize whitespace
+	parts=$(echo $rparts)
 }
 
 create_parts()
