@@ -60,9 +60,9 @@ if role client:
     - UDP_STREAM
 
 ---
-# TCP_SENDFILE: set send_size: 5K to avoid sendfile: No space left on device
+# TCP_SENDFILE: set send_size: 10K to avoid sendfile: No space left on device
 if role client:
   netperf:
-    send_size: 5K
+    send_size: 10K
     test:
     - TCP_SENDFILE
