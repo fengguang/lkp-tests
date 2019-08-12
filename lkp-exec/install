@@ -255,6 +255,7 @@ build_install_benchmarks() {
 			}
 			;;
 		fedora)
+			BUILD_DIR=$(get_build_dir $script)
 			local rpm_pkg=$BUILD_DIR/$pkg_name/RPMS/$pkg_name.$(uname -m).rpm
 			[ -f $rpm_pkg ] || return
 			rpm -ivh --replacepkgs $rpm_pkg ;;
@@ -323,7 +324,6 @@ do
 
 	for script in $scripts
 	do
-		BUILD_DIR=$(get_build_dir $BM_NAME)
 		[ -L "$LKP_SRC/pack/$script" ] && {
 			real_script=$(readlink "$LKP_SRC/pack/$script")
 			script=$(basename "$real_script")
