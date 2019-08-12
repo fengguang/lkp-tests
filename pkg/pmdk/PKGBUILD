@@ -1,0 +1,21 @@
+pkgname=pmdk
+pkgver=1.6
+pkgrel=1
+pkgdesc="The Persistent Memory Development Kit (PMDK) is a collection of libraries and tools for System Administrators and Application Developers to simplify managing and accessing persistent memory devices."
+arch=(i686 x86_64)
+url="https://github.com/pmem/pmdk"
+license=('Intel')
+depends=('')
+source=("https://github.com/pmem/pmdk/archive/$pkgver.tar.gz")
+md5sums=('SKIP')
+
+build() {
+    cd "$srcdir/$pkgname-$pkgver"
+    export NDCTL_ENABLE=65
+    make
+}
+
+package() {
+    cd "$srcdir/$pkgname-$pkgver"
+    make DESTDIR="$pkgdir" install
+}
