@@ -10,4 +10,9 @@
 
 mb_proc=$(to_mb $mem_proc)
 
+log_cmd numactl --hard || {
+	echo "Test needs available numa"
+	exit 1
+}
+
 log_cmd perf bench numa mem -p $nr_cpu -t $nr_threads -m -0 -P $mb_proc
