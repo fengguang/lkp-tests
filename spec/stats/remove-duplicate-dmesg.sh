@@ -1,5 +1,7 @@
 #!/bin/bash
 
+[[ $LKP_SRC ]] || LKP_SRC=/lkp/lkp/src
+
 all_lines=
 :> all-stats
 :> keep-unique
@@ -8,7 +10,7 @@ all_lines=
 for file in dmesg-*
 do
 	stat=${file/-/.}
-	[[ -s $stat ]] || /lkp/lkp/src/stats/dmesg $file > $stat
+	[[ -s $stat ]] || $LKP_SRC/stats/dmesg $file > $stat
 	[[ -s $stat ]] || {
 		echo $file >> remove-no-stat
 		continue
