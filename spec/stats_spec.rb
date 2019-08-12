@@ -1,7 +1,7 @@
 require 'spec_helper'
 require "#{LKP_SRC}/lib/stats"
 
-describe 'stats', :lkp do
+describe 'stats' do
   describe 'scripts' do
     yaml_files = Dir.glob ["#{LKP_SRC}/spec/stats/*.[0-9]*.yaml"]
     yaml_files.each do |yaml_file|

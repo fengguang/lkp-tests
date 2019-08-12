@@ -3,7 +3,7 @@ require 'fileutils'
 require 'tmpdir'
 require "#{LKP_SRC}/lib/job"
 
-describe 'filter/nr_threads', :lkp do
+describe 'filter/nr_threads' do
   before(:all) do
     @tmp_dir = Dir.mktmpdir(nil, '/tmp')
     FileUtils.chmod 'go+rwx', @tmp_dir
