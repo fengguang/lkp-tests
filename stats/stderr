@@ -40,6 +40,10 @@ while (line = gets)
 
   next if id.size < 3
 
+  # Don't treat the lines starting with
+  # Date/Num/Hex Num/SHA as comments
+  id.gsub!(/^#/, '_#') if line[0] != '#'
+
   error_ids[id] = line
 end
 
