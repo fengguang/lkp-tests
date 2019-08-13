@@ -45,9 +45,6 @@ prepare_for_test()
 	# workaround hugetlbfstest.c open_file() error
 	mkdir -p /hugepages
 
-	# dep nmap provides ncat, link nc to ncat. fix nc: invalid option -- '4'
-	ln -sf /usr/bin/ncat /usr/bin/nc
-
 	# has too many errors now
 	sed -i 's/hugetlbfstest//' vm/Makefile
 
