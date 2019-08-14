@@ -138,6 +138,9 @@ File.open(job_script, 'w', 0o775) do |file|
   file.puts jobx.to_shell
 end
 
+user = ENV['USER']
+save_paths(result_root, user)
+
 system 'killall', '-q', LKP_SRC + '/bin/event/wakeup'
 system job_script, 'run_job'
 system LKP_SRC + '/bin/run-with-job', job_script, LKP_SRC + '/bin/post-run'
@@ -150,8 +153,6 @@ system job_script, 'extract_stats'
 stats = create_stats_matrix ENV['RESULT_ROOT']
 stats['stats_source'] = result_root + '/stats.json'
 unite_to(stats, _result_root)
-user = ENV['USER']
-save_paths(result_root, user)
 system(LKP_SRC + '/sbin/unite-params', result_root)
 
 MResultRootTableSet.create_tables_layout
