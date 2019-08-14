@@ -4,17 +4,17 @@
 ## entire TCP/UDP/IPv4/IPv6 network stacks, from the system call
 ## layer down to the NIC hardware.
 
-cd $BENCHMARK_ROOT/packetdrill || exit
+cd $BENCHMARK_ROOT/packetdrill/gtests/net || exit
 
 # fix the issue: open tun device: No such file or directory
 lsmod | grep -q tun || modprobe tun
 
-for f in $(find . -name "*.pkt" ! -name "*diag-ipv6*" | sort); do
+for f in $(find packetdrill -name "*.pkt" ! -name "*diag-ipv6*" | sort); do
 	echo "Running $f ..."
 	ip tcp_metrics flush all > /dev/null 2>&1
 	# default tolerance_usecs is 4000 us, allow 10 times(4000 us) on LKP
 	opts=$(grep -q -- --tolerance_usecs $f >/dev/null 2>&1 || echo "--tolerance_usecs=40000")
-	log_cmd ./gtests/net/packetdrill/packetdrill $opts $f 2>&1
+	log_cmd packetdrill/packetdrill $opts $f 2>&1
 	return_value=$?
 	if [ $return_value -eq 0 ]; then
 		echo "$f pass"
@@ -22,3 +22,6 @@ for f in $(find . -name "*.pkt" ! -name "*diag-ipv6*" | sort); do
 		echo "$f failed"
 	fi
 done
+
+# Use run_all.py to run tcp tests
+packetdrill/run_all.py -L -l -v tcp

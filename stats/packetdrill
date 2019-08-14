@@ -2,9 +2,14 @@
 
 while (line = STDIN.gets)
   case line.chomp!
-  when /^\.\/(.*)\/(.*).pkt failed/
-    puts $1 + '__' + $2 + '.fail' + ': 1'
-  when /^\.\/(.*)\/(.*).pkt pass/
-    puts $1 + '__' + $2 + '.pass' + ': 1'
+  when /^(.*)\/(.*)\.pkt failed/
+    puts $1 + '_' + $2 + '.fail' + ': 1'
+  when /^(.*)\/(.*)\.pkt pass/
+    puts $1 + '_' + $2 + '.pass' + ': 1'
+  # Match the output of tcp tests
+  when /^FAIL \[(.*)\/(.*)\.pkt \((.*)\)\]/
+    puts $1 + '_' + $2 + '_' + $3 + '.fail' + ': 1'
+  when /^OK   \[(.*)\/(.*)\.pkt \((.*)\)\]/
+    puts $1 + '_' + $2 + '_' + $3 + '.pass' + ': 1'
   end
 end
