@@ -23,5 +23,10 @@ for f in $(find packetdrill -name "*.pkt" ! -name "*diag-ipv6*" | sort); do
 	fi
 done
 
+# Delete non-existent files
+sed -i 's/\..*tcp_fastopen/sysctl -q net.ipv4.tcp_fastopen/g' \
+	tcp/zerocopy/fastopen-server.pkt
+sed -i '/sysctl_restore/d' tcp/zerocopy/fastopen-server.pkt
+
 # Use run_all.py to run tcp tests
 packetdrill/run_all.py -L -l -v tcp
