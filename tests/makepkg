@@ -41,6 +41,7 @@ get_pkg_info()
 }
 
 distro_install_depends lkp-dev
+distro_install_depends ${benchmark}-dev
 
 [[ $arch ]] || arch=`uname -m`
 
