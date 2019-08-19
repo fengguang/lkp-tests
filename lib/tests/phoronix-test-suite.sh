@@ -5,10 +5,10 @@
 # ffmpeg only support max 64 threads
 fixup_ffmpeg()
 {
-	[[ -n "$environment_directory" ]] || return
+	[ -n "$environment_directory" ] || return
 	local test=$1
 	local target=${environment_directory}/pts/${test}/ffmpeg
-	if [[ -z $(grep -w 'NUM_CPU_CORES=64' $target) ]]; then
+	if [ -z $(grep -w 'NUM_CPU_CORES=64' $target) ]; then
 		sed "2a[ \$NUM_CPU_CORES -gt 64 ] && export NUM_CPU_CORES=64" -i "$target"
 	fi
 }
@@ -16,7 +16,7 @@ fixup_ffmpeg()
 # add --allow-run-as-root to open-porous-media-1.3.1
 fixup_open_porous_media()
 {
-	[[ -n "$environment_directory" ]] || return
+	[ -n "$environment_directory" ] || return
 	local test=$1
 	local target=${environment_directory}/pts/${test}/open-porous-media
 	sed -i 's/nice mpirun -np/nice mpirun --allow-run-as-root -np/' "$target"
@@ -26,7 +26,7 @@ fixup_open_porous_media()
 # the test needs more than 2 hours
 fixup_hpcc()
 {
-	[[ -n "$environment_directory" ]] || return
+	[ -n "$environment_directory" ] || return
 
 	local test=$1
 	local mpdir="/usr/lib/x86_64-linux-gnu/openmpi"
@@ -47,7 +47,7 @@ fixup_hpcc()
 # add --allow-run-as-root to lammps
 fixup_lammps()
 {
-	[[ -n "$environment_directory" ]] || return
+	[ -n "$environment_directory" ] || return
 	local test=$1
 	local target=${environment_directory}/pts/${test}/lammps
 	sed -i 's/mpirun -np/mpirun --allow-run-as-root -np/' "$target"
@@ -56,7 +56,7 @@ fixup_lammps()
 # add --allow-run-as-root to npb
 fixup_npb()
 {
-	[[ -n "$environment_directory" ]] || return
+	[ -n "$environment_directory" ] || return
 	local test=$1
 	local target=${environment_directory}/pts/${test}/npb
 	sed -i 's/mpiexec -np/mpiexec --allow-run-as-root -np/' "$target"
@@ -65,7 +65,7 @@ fixup_npb()
 # start nginx and disable ipv6
 fixup_nginx()
 {
-	[[ -n "$environment_directory" ]] || return
+	[ -n "$environment_directory" ] || return
 	local test=$1
 	sed -i 's/^::1/#::1/' /etc/hosts
 	${environment_directory}/pts/${test}/nginx_/sbin/nginx
@@ -75,7 +75,7 @@ fixup_nginx()
 # default to test 1m
 fixup_fio()
 {
-	[[ -n "$environment_directory" ]] || return
+	[ -n "$environment_directory" ] || return
 	local test=$1
 	local target=${environment_directory}/pts/${test}/fio-run
 
@@ -104,7 +104,7 @@ fixup_fio()
 # change to use dash to bullet
 fixup_bullet()
 {
-	[[ -n "$environment_directory" ]] || return
+	[ -n "$environment_directory" ] || return
 	local test=$1
 	local target=${environment_directory}/pts/${test}/bullet
 	sed -i 's,#!/bin/sh,#!/bin/dash,' "$target"
@@ -113,7 +113,7 @@ fixup_bullet()
 # add bookpath option
 fixup_crafty()
 {
-	[[ -n "$environment_directory" ]] || return
+	[ -n "$environment_directory" ] || return
 	local test=$1
 	local target=${environment_directory}/pts/${test}/crafty
 	sed -i 's,crafty $@,crafty bookpath=/usr/share/crafty/ $@,' "$target"
@@ -121,7 +121,7 @@ fixup_crafty()
 
 fixup_unvanquished()
 {
-	[[ -n "$environment_directory" ]] || return
+	[ -n "$environment_directory" ] || return
 	local test=$1
 	local target=${environment_directory}/pts/${test}/unvanquished-game
 	[ -f $target/lib64/librt.so.1 ] && rm $target/lib64/librt.so.1
@@ -133,7 +133,7 @@ fixup_unvanquished()
 
 fixup_gluxmark()
 {
-	[[ -n "$environment_directory" ]] || return
+	[ -n "$environment_directory" ] || return
 	local test=$1
 	local target=${environment_directory}/pts/$test
 	export LD_LIBRARY_PATH=${target}/gluxMark2.2_src/libs
@@ -148,7 +148,7 @@ fixup_gluxmark()
 
 fixup_jgfxbat()
 {
-	[[ -n "$environment_directory" ]] || return
+	[ -n "$environment_directory" ] || return
 	local test=$1
 	local target=${environment_directory}/pts/$test
 
@@ -156,7 +156,7 @@ fixup_jgfxbat()
 	sed -i s/PASS/" Result: 1"/ $target/jgfxbat
 	sed -i s/FAIL/" Result: 0"/ $target/jgfxbat
 	local results_definition=${environment_directory}/../test-profiles/pts/${test}/results-definition.xml
-	[[ -f "$results_definition" ]] || return
+	[ -f "$results_definition" ] || return
 	sed -i s/"#_RESULT_#"/"Result: #_RESULT_#"/ $results_definition
 
 	# disable the Jaca2Demo test due to unstable
@@ -174,7 +174,7 @@ fixup_jgfxbat()
 
 fixup_systester()
 {
-	[[ -n "$environment_directory" ]] || return
+	[ -n "$environment_directory" ] || return
 	local test=$1
 	local target=${environment_directory}/../test-profiles/pts/${test}/results-definition.xml
 	[ -f $target.bak ] || cp $target $target.bak
@@ -185,7 +185,7 @@ fixup_systester()
 
 fixup_mcperf()
 {
-	[[ -n "$environment_directory" ]] || return
+	[ -n "$environment_directory" ] || return
 	local test=$1
 	local target=${environment_directory}/pts/${test}/mcperf
 	useradd -m -s /bin/bash memcached_test 2>/dev/null
