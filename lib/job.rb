@@ -255,16 +255,6 @@ class Job
     old_hosts_file = "#{lkp_src}/hosts/#{@job['old_tbox_group']}"
     delete_keys_from_spec(old_hosts_file)
 
-    # delele old include tbox info
-    old_include_file = "#{lkp_src}/include/testbox/#{@job['old_tbox_group']}"
-    delete_keys_from_spec(old_include_file)
-
-    # if old_tbox_group is vm, need delete keys imported from include/testbox/vm
-    if @job['old_tbox_group'] =~ /(^vm-|.+-vm-)/
-      vm_include_files = "#{lkp_src}/include/testbox/vm"
-      delete_keys_from_spec(vm_include_files)
-    end
-
     @job.delete 'old_tbox_group'
   end
 
