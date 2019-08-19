@@ -83,6 +83,7 @@ cleanup_path_record_from_patterns()
 		awk -v file1="$match_temp_file" -v file2="$dot_temp_file"  "BEGIN {modified=0} $cmd {print >> file1; modified=1; next}; \
 		{print > file2} END {exit 1-modified}" $path_file &&
 		mv -f $dot_temp_file $path_file
+		chowm .lkp $path_file
 
 	done
 
@@ -120,6 +121,7 @@ cleanup_path_record_from_result_root()
 
 		awk "BEGIN {modified=0} $cmd {modified=1;next}; {print} END {exit 1-modified}" $path_file > $dot_temp_file &&
 		mv -f $dot_temp_file $path_file
+		chowm .lkp $path_file
 
 		lockfile-remove --lock-name "$path_file".lock
 	done
