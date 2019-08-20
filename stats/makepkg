@@ -10,11 +10,8 @@ while (line = STDIN.gets)
   line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
 
   case line
-  when /^Makefile.*failed$/
-    break
-  when /^==> Finished making/
+  when /Makepkg finished successfully/
     stats_name = 'pass: 1'
-    break
   end
 end
 
