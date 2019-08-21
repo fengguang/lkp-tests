@@ -47,7 +47,7 @@
 ^dmesg.RIP:sk_stream_kill_queues
 ^dmesg.WARNING:at_net/ipv4/af_inet.c:#inet_sock_destruct
 ^dmesg.RIP:inet_sock_destruct
-^GLib-WARNING**:#:#:#:gmem.c:#:custom_memory_allocation_vtable_not_supported
+^GLib-WARNING\*\*:#:#:#:gmem.c:#:custom_memory_allocation_vtable_not_supported
 ^hwsim\.ap_cipher_replay_protection_ap_ccmp
 ^hwsim\.ap_cipher_replay_protection_ap_gcmp
 ^hwsim\.ap_ft_roam_rrm
