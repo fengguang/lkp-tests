@@ -58,3 +58,4 @@ need_kconfig:
 - CONFIG_ION_SYSTEM_HEAP=y ~ v(4\.1[2-9]|4\.20|5\.) # support kernel >= v4.12-rc1
 - CONFIG_MPLS_ROUTING=m ~ v(4\.[1-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.1-rc1
 - CONFIG_MPLS_IPTUNNEL=m ~ v(4\.[3-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.3-rc1
+- CONFIG_TEST_STRSCPY=m ~ v(5\.2$|5\.[3-9]) # support kernel >= v5.2
