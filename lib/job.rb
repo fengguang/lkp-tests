@@ -258,6 +258,13 @@ class Job
     @job.delete 'old_tbox_group'
   end
 
+  def gather_used_job_keys(host_config)
+    job_keys = []
+    host_config.each_key { |k| job_keys.push k if @job[k] }
+
+    @job['used_job_keys'] = job_keys unless job_keys.empty?
+  end
+
   def load_hosts_config
     return if @job.include?(:no_defaults) && @job['old_tbox_group'].nil?
     return unless @job.include? 'tbox_group'
@@ -267,6 +274,7 @@ class Job
 
     delete_old_hosts_info
     hwconfig = load_yaml(hosts_file, nil)
+    gather_used_job_keys(hwconfig)
     @job[source_file_symkey(hosts_file)] = nil
     @job.merge!(hwconfig) { |_k, a, _b| a } # job's key/value has priority over hwconfig
   end
