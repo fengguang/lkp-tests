@@ -59,4 +59,13 @@ setup_proxy
 PACMAN=true BUILDDIR=$TMP PKGEXT=.cgz CGZDEST="$sync_dest/$cgz_name" \
 	$LKP_SRC/sbin/makepkg --config $LKP_SRC/etc/makepkg.conf
 
-[ -e "$sync_dest/$cgz_name" ] && ln -sf "$cgz_name" "$sync_dest/${benchmark}-${arch}.cgz" && echo "Makepkg finished successfully"
+update_softlink()
+{
+	[ -e "$sync_dest/$cgz_name" ] || return
+
+	ln -sf "$(basename $(realpath $sync_dest/$cgz_name))" "$sync_dest/${benchmark}-${arch}.cgz" || return
+	echo "create package: $(realpath $sync_dest/$cgz_name)"
+	[ -L $sync_dest/$cgz_name ] && rm $sync_dest/$cgz_name
+}
+
+update_softlink && echo "Makepkg finished successfully"
