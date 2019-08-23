@@ -2272,9 +2272,10 @@ create_package() {
 	# LKP specific feature
 	if [[ $PKGEXT = ".cgz" ]]; then
 		CGZDEST=${CGZDEST:-/osimage/pkg/makepkg/${pkgname}-${fullver}.cgz}
-		CGZDEST=$(extend_git_cgz_name $CGZDEST)
-		mkdir -p $(dirname $CGZDEST)
-		find . | cpio -o -H newc --owner=root.root | gzip -n -9 > ${CGZDEST}
+		git_cgz=$(extend_git_cgz_name $CGZDEST)
+		mkdir -p $(dirname $git_cgz)
+		find . | cpio -o -H newc --owner=root.root | gzip -n -9 > ${git_cgz}
+		[ "$git_cgz" = "$CGZDEST" ] || ln -sf $(basename $git_cgz) ${CGZDEST}
 		return
 	fi
 
