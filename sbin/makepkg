@@ -2215,6 +2215,20 @@ write_pkginfo() {
 	done
 }
 
+extend_git_cgz_name() {
+	local dst=$1
+
+	if [ "$pkgver" = "git" ] && ! (( PKGVERFUNC )); then
+		local git_head=$(git --git-dir="$srcdir/$pkgname"/.git rev-parse --short HEAD 2>/dev/null)
+		git_head=${git_head:-git}
+
+		local git_name=$(basename $dst | sed "s/-git-/-$git_head-/")
+		echo $(dirname $dst)/$git_name
+	else
+		echo $dst
+	fi
+}
+
 create_package() {
 	(( NOARCHIVE )) && return
 
@@ -2258,6 +2272,7 @@ create_package() {
 	# LKP specific feature
 	if [[ $PKGEXT = ".cgz" ]]; then
 		CGZDEST=${CGZDEST:-/osimage/pkg/makepkg/${pkgname}-${fullver}.cgz}
+		CGZDEST=$(extend_git_cgz_name $CGZDEST)
 		mkdir -p $(dirname $CGZDEST)
 		find . | cpio -o -H newc --owner=root.root | gzip -n -9 > ${CGZDEST}
 		return
