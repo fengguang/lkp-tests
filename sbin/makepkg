@@ -866,7 +866,7 @@ download_sources() {
 # Automatically update pkgver variable if a pkgver() function is provided
 # Re-sources the PKGBUILD afterwards to allow for other variables that use $pkgver
 update_pkgver() {
-	newpkgver=$(run_function_safe pkgver)
+	newpkgver=$(pkgver)
 	if ! validate_pkgver "$newpkgver"; then
 		error "$(gettext "pkgver() generated an invalid version: %s")" "$newpkgver"
 		exit 1
