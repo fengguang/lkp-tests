@@ -873,6 +873,7 @@ update_pkgver() {
 	fi
 
 	if [[ -n $newpkgver && $newpkgver != "$pkgver" ]]; then
+		export orig_pkgver=$pkgver # export it so that the later fakeroot can see this variable
 		if [[ -f $BUILDFILE && -w $BUILDFILE ]]; then
 			if ! sed --follow-symlinks -i "s:^pkgver=[^ ]*:pkgver=$newpkgver:" "$BUILDFILE"; then
 				error "$(gettext "Failed to update %s from %s to %s")" \
@@ -2217,13 +2218,20 @@ write_pkginfo() {
 
 extend_git_cgz_name() {
 	local dst=$1
+	local pkgver_pattern
+	local orig_pkgver=${orig_pkgver:-$pkgver}
 
-	if [ "$pkgver" = "git" ] && ! (( PKGVERFUNC )); then
-		local git_head=$(git --git-dir="$srcdir/$pkgname"/.git rev-parse --short HEAD 2>/dev/null)
-		git_head=${git_head:-git}
+	# highest priority: pkgver()
+	if (( PKGVERFUNC )); then
+		pkgver_pattern=$pkgver # pkgver=$(pkgver)
+	elif [ "$pkgver" = "git" ]; then
+		pkgver_pattern=$(git --git-dir="$srcdir/$pkgname"/.git rev-parse --short HEAD 2>/dev/null)
+		pkgver_pattern=${pkgver_pattern:-git}
+	fi
 
-		local git_name=$(basename $dst | sed "s/-git-/-$git_head-/")
-		echo $(dirname $dst)/$git_name
+	if [ -n "$pkgver_pattern" ]; then
+		local newname=$(basename $dst | sed "s/-$orig_pkgver-/-$pkgver_pattern-/")
+		echo $(dirname $dst)/$newname
 	else
 		echo $dst
 	fi
