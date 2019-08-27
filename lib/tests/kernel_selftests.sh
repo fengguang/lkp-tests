@@ -105,6 +105,12 @@ check_ignore_case()
 	# it disables swapping and tries to allocate anonymous memory up to OOM.
 	# when the test triggers out OOM, lkp determines it as failure.
 	[ $casename = "cgroup" ] && return
+
+	# test tpm2 need hardware tpm
+	ls "/dev/tpm*" 2>/dev/null || {
+		[ $casename = "tpm2" ] && return
+	}
+
 	return 1
 }
 
