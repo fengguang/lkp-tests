@@ -28,6 +28,8 @@
 ^dmesg.BUG:Bad_page_map_in_process_usemem_pte
 ^dmesg.BUG:Bad_rss-counter_state_mm:\((ptrval|____ptrval____)\)idx:#val
 ^dmesg.BUG:Dentry.*i=.*n=.*
+^dmesg.BUG:soft_lockup-CPU##stuck_for#s
+^dmesg.Kernel_panic-not_syncing:softlockup:hung_tasks
 ^dmesg.calltrace
 ^dmesg..*cpu_clock_throttled.*
 ^dmesg..*-detected_stall_on_CPUINFO

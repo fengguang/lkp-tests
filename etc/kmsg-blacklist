@@ -204,3 +204,5 @@ in_atomic(): [0-9]*, irqs_disabled(): [0-9]*,
 mei_me 0000:00:16.0:
 Memory failure: .*Sending SIGBUS to
 Report any missing HW support to linux-ide@vger.kernel.org
+BUG: soft lockup - CPU
+Kernel panic - not syncing: softlockup: hung tasks
