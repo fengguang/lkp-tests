@@ -24,7 +24,7 @@ build()
 	local wayland=1
 	gcc_major=$(gcc -dumpversion | cut -d. -f1)
 
-	if [ "$gcc_major" -ge 8 ]; then
+	if [[ "$gcc_major" -ge 8 ]]; then
 		export CC=$(which gcc7)
 	fi
 
