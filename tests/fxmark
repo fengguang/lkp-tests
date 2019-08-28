@@ -8,6 +8,8 @@
 
 cd $BENCHMARK_ROOT/$testcase || die "can not enter $BENCHMARK_ROOT/$testcase"
 
+loopdev=$(losetup -f)
+
 # create a small virtual block device to speed up the test
 setup_test_block()
 {
@@ -21,15 +23,15 @@ setup_test_block()
 	mount -t ${fstype%%_*} $dev /fs/$dev || return
 
 	dd if=/dev/zero of=/fs/$dev/test_block bs=100M count=1 || return
-	losetup /dev/loop0 /fs/$dev/test_block || return
+	losetup $loopdev /fs/$dev/test_block || return
 
-	partition=/dev/loop0
+	partition=$loopdev
 }
 
 umount_test_block()
 {
 	[ "$dev" ] && {
-		losetup -d /dev/loop0
+		losetup -d $loopdev
 		umount $dev
 	}
 }
