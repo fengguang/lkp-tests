@@ -224,6 +224,8 @@ prepare_for_selftest()
                 selftest=t-z
         elif [ "$group" = "kselftests-04" ]; then
                 selftest=rseq
+        elif [ "$group" = "kselftests-05" ]; then
+                selftest=livepatch
         fi
 }
 
@@ -333,11 +335,18 @@ run_tests()
 		exit $?
 	fi
 
+	if [[ "$selftest" = "livepatch" ]]; then
+		log_cmd make run_tests -C $selftest 2>&1
+		exit $?
+	fi
+
 	for mf in [$selftest]*/Makefile; do
 		subtest=${mf%/Makefile}
 
 		# rseq costs about 25mins, don't run rseq in kselftests-02.
 		[[ "$subtest" = "rseq" ]] && continue
+
+		[[ "$subtest" = "livepatch" ]] && continue
 
 		[[ "$subtest" = "breakpoints" ]] && fixup_breakpoints
 
