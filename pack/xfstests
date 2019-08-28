@@ -103,12 +103,13 @@ separate_tests()
 	split xfs-new -d -n 30 xfs-group
 	split btrfs-new -d -n 3 btrfs-group
 	split generic-new -d -n 30 generic-group
+	split ext4-new -d -n 1 ext4-group
 }
 
 // Some special tests need to be separated and tested separately
 separate_special_tests()
 {
-	special_tests=("xfs-083" "xfs-275" "xfs-437" "xfs-224" "xfs-132" "xfs-260" "generic-387" "generic-470" "generic-054" "generic-127" "generic-127" "generic-231" "generic-297"  "generic-299" "generic-521")
+	special_tests=("xfs-083" "xfs-275" "xfs-437" "xfs-224" "xfs-132" "xfs-260" "generic-387" "generic-470" "generic-054" "generic-127" "generic-127" "generic-231" "generic-297"  "generic-299" "generic-521" "ext4-009" "ext4-029")
 	for test in ${special_tests[@]}
 	do
 		arrary=(`echo $test | tr '-' ' '`)
@@ -132,7 +133,7 @@ separate_special_tests()
 		echo ${arrary[1]} >> ./${arrary[0]}-logwrites
 	done
 
-	dax_tests=("generic-413" "generic-462")
+	dax_tests=("generic-413" "generic-462" "ext4-030" "ext4-031")
 	for test in ${dax_tests[@]}
 	do
 		arrary=(`echo $test | tr '-' ' '`)
