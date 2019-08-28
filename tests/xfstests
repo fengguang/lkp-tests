@@ -206,7 +206,7 @@ run_test()
 	## - generic-quick/mid/slow1/slow2
 	## - generic-new
 
-	local test_dir="$LKP_SRC/pack/xfstests-addon/tests"
+	local test_dir="/$BENCHMARK_ROOT/xfstests/tests"
 
 	# the ignore file like xfs-ignore, but $test like xfs-group1, so need to get its prefix.
 	local test_ignore="$test_dir/${test%-*}-ignore"
@@ -231,7 +231,7 @@ run_test()
 		all_tests_cmd="sed \"s:^:${test%-*}/:\" $test_dir/$test"
 		get_ignored_and_worked_tests "$all_tests_cmd" "$test_ignore"
 	elif [ "${test#*-}" != "$test" ]; then
-		generic_fs_ignore="$test_dir/${test%-*}-$fs-ignore /$BENCHMARK_ROOT/xfstests/generic-$fs-ignore"
+		generic_fs_ignore="$test_dir/${test%-*}-$fs-ignore /$BENCHMARK_ROOT/xfstests/tests/generic-$fs-ignore"
 		all_tests_cmd="sed \"s:^:${test%-*}/:\" $test_dir/$test"
 		get_ignored_and_worked_tests "$all_tests_cmd" "$test_ignore $generic_fs_ignore"
 	else
