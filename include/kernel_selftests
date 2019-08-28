@@ -60,3 +60,4 @@ need_kconfig:
 - CONFIG_MPLS_IPTUNNEL=m ~ v(4\.[3-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.3-rc1
 - CONFIG_TEST_STRSCPY=m ~ v(5\.2$|5\.[3-9]) # support kernel >= v5.2
 - CONFIG_TEST_BLACKHOLE_DEV=m ~ v(5\.[3-9]) # support kernel >= v5.3-rc1
+- CONFIG_TEST_VMALLOC=m ~ v(5\.[1-9]) # support kernel >= v5.1-rc1
