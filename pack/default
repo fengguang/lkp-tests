@@ -12,7 +12,7 @@ download()
 	pre_download
 	for url in $WEB_URL
 	do
-		wget -t 3 -T 3 --no-clobber $url && break
+		wget -t 3 -T 10 --no-clobber $url && break
 	done
 	[[ $source_package ]] || source_package=$(basename $url)
 	[[ $source_dir     ]] || source_dir=${source_package%%.tar.*}
