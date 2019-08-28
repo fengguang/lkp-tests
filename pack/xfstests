@@ -90,6 +90,37 @@ install()
 	./update-new-cases.sh btrfs
 	./update-new-cases.sh xfs
 	./update-new-cases.sh generic
+
+	separate_tests
+}
+
+// Some files contain too many tests, which are split for easy testing
+separate_tests()
+{
+	cd $BM_ROOT/tests
+	separate_special_tests || return
+
+	split xfs-new -d -n 30 xfs-group
+}
+
+// Some special tests need to be separated and tested separately
+separate_special_tests()
+{
+	special_tests=("xfs-083" "xfs-275" "xfs-437" "xfs-224" "xfs-132" "xfs-260")
+	for test in ${special_tests[@]}
+	do
+		arrary=(`echo $test | tr '-' ' '`)
+		sed -i "/${arrary[1]}/d" ${arrary[0]}-new
+		echo ${arrary[1]} > ./$test
+	done
+
+	no_bug_tests=("xfs-098" "xfs-115" "xfs-439")
+	for test in ${no_bug_tests[@]}
+	do
+		arrary=(`echo $test | tr '-' ' '`)
+		sed -i "/${arrary[1]}/d" ${arrary[0]}-new
+		echo ${arrary[1]} >> ./${arrary[0]}-no_bug_assert
+	done
 }
 
 pack()
