@@ -101,6 +101,7 @@ separate_tests()
 	separate_special_tests || return
 
 	split xfs-new -d -n 30 xfs-group
+	split btrfs-new -d -n 3 btrfs-group
 }
 
 // Some special tests need to be separated and tested separately

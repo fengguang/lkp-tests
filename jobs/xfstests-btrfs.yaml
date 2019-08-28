@@ -11,10 +11,9 @@ fs:
 
 xfstests:
   test:
-  - btrfs-group1
-  - btrfs-group2
-  - btrfs-mid1
-  - btrfs-mid2
+  - btrfs-group00
+  - btrfs-group01
+  - btrfs-group02
 # it's a known issue, refer to xfstests-dev commit: fb26a0cf
 #  - btrfs-130
 # - btrfs-new
