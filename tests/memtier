@@ -1,4 +1,5 @@
 #!/bin/sh
+# - runtime
 # - preload
 # - preload1_percent
 # - nr_processes
@@ -27,10 +28,10 @@ rm -rf "$memtier_dir"
 mkdir -p "$memtier_dir"
 export PATH=$BENCHMARK_ROOT/memtier_benchmark/:$PATH
 
+: "${runtime:=600}"
 : "${nr_processes:=1}"
 : "${nr_threads:=1}"
 : "${key_min:=1}"
-: "${requests_multiple:=1}"
 : "${preload_key_pattern:="R:R"}"
 
 [ -n "$key_max" ] || {
@@ -38,10 +39,7 @@ export PATH=$BENCHMARK_ROOT/memtier_benchmark/:$PATH
 	exit 1
 }
 
-[ -z "$requests" ] && requests=$((key_max * requests_multiple))
-
 proc_key_max=$((key_max/nr_processes))
-proc_requests=$((requests/nr_processes))
 
 opt1="--key-minimum=$key_min --threads=$nr_threads"
 
@@ -50,6 +48,15 @@ opt1="--key-minimum=$key_min --threads=$nr_threads"
 [ -n "$n_pipeline" ] && opt1="$opt1 --pipeline=$n_pipeline"
 
 opt="$opt1 --key-maximum=$proc_key_max"
+
+if [ -n "$requests" ] || [ -n "$requests_multiple" ]; then
+	: "${requests_multiple:=1}"
+	[ -z "$requests" ] && requests=$((key_max * requests_multiple))
+	proc_requests=$((requests/nr_processes))
+	opt_requests="-n $proc_requests"
+else
+	opt_time="--test-time=$runtime"
+fi
 
 parse_numa_node_binding "$cpu_node_bind" "$mem_node_bind"
 
@@ -87,7 +94,7 @@ for i in $(seq 1 "${nr_processes}")
 do
 	port=$((6379+i))
 	numa_bind=$(numa_node_binding "$i")
-	log_test $numa_bind memtier_benchmark $opt --ratio=$n_ratio -n $proc_requests --key-pattern=$key_pattern -p $port > $memtier_dir/memtier.$i &
+	log_test $numa_bind memtier_benchmark $opt $opt_time $opt_requests --ratio=$n_ratio --key-pattern=$key_pattern -p $port > $memtier_dir/memtier.$i &
 done
 wait
 
