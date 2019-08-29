@@ -1,7 +1,7 @@
 #!/bin/sh
 # - runtime
 # - preload
-# - preload1_percent
+# - ppreload_percent
 # - nr_processes
 # - n_ratio
 # - data_size
@@ -62,16 +62,16 @@ parse_numa_node_binding "$cpu_node_bind" "$mem_node_bind"
 
 if [ -n "$preload" ]; then
 	begin=$(date +%s.%N)
-	if [ -n "$preload1_percent" ]; then
-		preload1_key_max=$((key_max * preload1_percent / 100))
-		preload1_proc_key_max=$((preload1_key_max / nr_processes))
-		preload1_requests=$((preload1_key_max * 2))
-		preload1_proc_requests=$((preload1_requests / nr_processes))
+	if [ -n "$ppreload_percent" ]; then
+		ppreload_key_max=$((key_max * ppreload_percent / 100))
+		ppreload_proc_key_max=$((ppreload_key_max / nr_processes))
+		ppreload_requests=$((ppreload_key_max * 2))
+		ppreload_proc_requests=$((ppreload_requests / nr_processes))
 		for i in $(seq 1 "${nr_processes}")
 		do
 			port=$((6379+i))
 			numa_bind=$(numa_node_binding "$i")
-			log_test $numa_bind memtier_benchmark $opt1 --key-maximum=$preload1_proc_key_max --ratio="100:1" -n $preload1_proc_requests --key-pattern=$preload_key_pattern -p $port > /dev/null &
+			log_test $numa_bind memtier_benchmark $opt1 --key-maximum=$ppreload_proc_key_max --ratio="100:1" -n $ppreload_proc_requests --key-pattern=$preload_key_pattern -p $port > /dev/null &
 		done
 		wait
 	fi
