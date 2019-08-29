@@ -1,5 +1,6 @@
 #!/bin/sh
 # - preload
+# - preload1_percent
 # - nr_processes
 # - n_ratio
 # - data_size
@@ -42,16 +43,32 @@ export PATH=$BENCHMARK_ROOT/memtier_benchmark/:$PATH
 proc_key_max=$((key_max/nr_processes))
 proc_requests=$((requests/nr_processes))
 
-opt="--key-minimum=$key_min --key-maximum=$proc_key_max --threads=$nr_threads"
+opt1="--key-minimum=$key_min --threads=$nr_threads"
 
-[ -n "$data_size" ] && opt="$opt -d $data_size"
-[ -n "$n_client" ] && opt="$opt -c $n_client"
-[ -n "$n_pipeline" ] && opt="$opt --pipeline=$n_pipeline"
+[ -n "$data_size" ] && opt1="$opt1 -d $data_size"
+[ -n "$n_client" ] && opt1="$opt1 -c $n_client"
+[ -n "$n_pipeline" ] && opt1="$opt1 --pipeline=$n_pipeline"
+
+opt="$opt1 --key-maximum=$proc_key_max"
 
 parse_numa_node_binding "$cpu_node_bind" "$mem_node_bind"
 
 if [ -n "$preload" ]; then
 	begin=$(date +%s.%N)
+	if [ -n "$preload1_percent" ]; then
+		preload1_key_max=$((key_max * preload1_percent / 100))
+		preload1_proc_key_max=$((preload1_key_max / nr_processes))
+		preload1_requests=$((preload1_key_max * 2))
+		preload1_proc_requests=$((preload1_requests / nr_processes))
+		for i in $(seq 1 "${nr_processes}")
+		do
+			port=$((6379+i))
+			numa_bind=$(numa_node_binding "$i")
+			log_test $numa_bind memtier_benchmark $opt1 --key-maximum=$preload1_proc_key_max --ratio="100:1" -n $preload1_proc_requests --key-pattern=$preload_key_pattern -p $port > /dev/null &
+		done
+		wait
+	fi
+
 	preload_requests=$((key_max * 2))
 	preload_proc_requests=$((preload_requests/nr_processes))
 	for i in $(seq 1 "${nr_processes}")
