@@ -51,7 +51,7 @@ autotest:
   # - kernelbuild
   - kernelinstall
   # - libhugetlbfs # make error: expected expression before 'restrict'; too few arguments to funciton '__buildin_strncpy'...etc
-  - libvirt_tck
+  # - libvirt_tck
   - libvirt_test_api
   - linus_stress
   - linux-tools/crontab
