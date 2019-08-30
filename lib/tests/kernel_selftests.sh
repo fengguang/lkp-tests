@@ -123,6 +123,7 @@ prepare_for_net()
 	}
 	ulimit -l 10240
 	modprobe fou
+	modprobe nf_conntrack_broadcast
 }
 
 prepare_for_efivarfs()
