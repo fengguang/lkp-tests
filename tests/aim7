@@ -58,7 +58,7 @@ run_aim()
 		echo 2
 		echo $load
 		echo 1
-	) | ./multitask -t"
+	) | ./multitask -t &"
 
 	# Run multitask in background and wait for it to avoid the below error
 	# triggered by the kill(0, SIGINT) call in multitask.c
