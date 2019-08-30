@@ -247,32 +247,14 @@ class Job
     spec_file_context.each_key { |k| @job.delete k }
   end
 
-  def delete_old_hosts_info
-    return if @job['old_tbox_group'].nil?
-
-    old_hosts_file = "#{lkp_src}/hosts/#{@job['old_tbox_group']}"
-    delete_keys_from_spec(old_hosts_file)
-
-    @job.delete 'old_tbox_group'
-  end
-
-  def gather_used_job_keys(host_config)
-    job_keys = []
-    host_config.each_key { |k| job_keys.push k if @job[k] }
-
-    @job['used_job_keys'] = job_keys unless job_keys.empty?
-  end
-
   def load_hosts_config
-    return if @job.include?(:no_defaults) && @job['old_tbox_group'].nil?
+    return if @job.include?(:no_defaults)
     return unless @job.include? 'tbox_group'
 
     hosts_file = "#{lkp_src}/hosts/#{@job['tbox_group']}"
     return unless File.exist? hosts_file
 
-    delete_old_hosts_info
     hwconfig = load_yaml(hosts_file, nil)
-    gather_used_job_keys(hwconfig)
     @job[source_file_symkey(hosts_file)] = nil
     @job.merge!(hwconfig) { |_k, a, _b| a } # job's key/value has priority over hwconfig
   end
