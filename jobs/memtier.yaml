@@ -2,6 +2,8 @@ suite: memtier
 testcase: memtier
 category: benchmark
 
+need_memory: 64G
+
 sysctl:
   sc_overcommit_memory: 1
   sc_somaxconn: 65535
