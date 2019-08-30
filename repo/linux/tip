@@ -2,11 +2,11 @@ url: https://kernel.googlesource.com/pub/scm/linux/kernel/git/tip/tip.git
 integration_testing_branches: auto-latest
 mail_cc:
 - linux-kernel@vger.kernel.org
-- tipbuild@zytor.com
+- x86@kernel.org
 owner:
 - Ingo Molnar <mingo@kernel.org>
-- H. Peter Anvin <hpa@zytor.com>
 - Thomas Gleixner <tglx@linutronix.de>
+- Borislav Petkov <bp@suse.de>
 subsystems:
 - x86
 - fpu
@@ -16,4 +16,4 @@ subsystems:
 - locking
 blacklist_branch: auto-.*|tmp-.*|base-.*|test.*|.*-for-linus
 notify_build_success_branch: .*
-build_success_mail_to: tip build status <tipbuild@zytor.com>
+build_success_mail_to: x86-ml <x86@kernel.org>
