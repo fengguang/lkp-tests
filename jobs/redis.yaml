@@ -2,6 +2,8 @@ suite: redis
 testcase: redis
 category: benchmark
 
+need_memory: 62G
+
 nr_threads: 100%
 
 numactl:
