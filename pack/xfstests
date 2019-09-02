@@ -126,7 +126,7 @@ separate_special_tests()
 	done
 
 	logwrites_tests=("generic-455" "generic-457" "generic-482")
-	for test in ${logwrite_tests[@]}
+	for test in ${logwrites_tests[@]}
 	do
 		arrary=(`echo $test | tr '-' ' '`)
 		sed -i "/${arrary[1]}/d" ${arrary[0]}-new
