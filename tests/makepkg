@@ -65,7 +65,8 @@ update_softlink()
 
 	ln -sf "$(basename $(realpath $sync_dest/$cgz_name))" "$sync_dest/${benchmark}-${arch}.cgz" || return
 	echo "create package: $(realpath $sync_dest/$cgz_name)"
-	[ -L $sync_dest/$cgz_name ] && rm $sync_dest/$cgz_name
+	[ -L $sync_dest/$cgz_name ] || return 0
+	rm $sync_dest/$cgz_name
 }
 
 update_softlink && echo "Makepkg finished successfully"
