@@ -34,10 +34,12 @@ $stdin.each_line do |line|
     data.each_with_index do |v, i|
       if mode == READ
         histo_details_r[p] ||= []
-        histo_details_r[p][i] = v.to_i
+        histo_details_r[p][i] ||= 0
+        histo_details_r[p][i] += v.to_i
       else
         histo_details_w[p] ||= []
-        histo_details_w[p][i] = v.to_i
+        histo_details_w[p][i] ||= 0
+        histo_details_w[p][i] += v.to_i
       end
     end
     if mode == READ
