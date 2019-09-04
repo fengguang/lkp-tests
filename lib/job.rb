@@ -92,8 +92,10 @@ def __create_programs_hash(glob, lkp_src)
     next if path =~ /\.yaml$/
     next if path =~ /\.[0-9]+$/
 
-    next unless File.executable?(path)
-
+    unless File.executable?(path)
+      log_warn "skip non-executable #{path}"
+      next
+    end
     file = File.basename(path)
     next if file == 'wrapper'
 
