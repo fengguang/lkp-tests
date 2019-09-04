@@ -1,0 +1,12 @@
+#!/bin/sh
+# - policy
+
+. $LKP_SRC/lib/reproduce-log.sh
+
+if [ ! -n "$policy" ]; then
+	log_echo "pcie aspm policy not specified"
+	exit 1
+fi
+
+#change the pcie aspm policy
+log_eval "echo $policy > /sys/module/pcie_aspm/parameters/policy"
