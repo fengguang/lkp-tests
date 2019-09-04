@@ -105,3 +105,8 @@ is_aliyunos()
 {
 	[ -f /etc/redhat-release ] && grep -qw "Aliyun Linux" /etc/redhat-release
 }
+
+is_docker()
+{
+	[ -f /.dockerenv ]
+}
