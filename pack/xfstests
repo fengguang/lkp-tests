@@ -109,7 +109,7 @@ separate_tests()
 // Some special tests need to be separated and tested separately
 separate_special_tests()
 {
-	special_tests=("xfs-083" "xfs-275" "xfs-437" "xfs-224" "xfs-132" "xfs-260" "generic-387" "generic-470" "generic-054" "generic-127" "generic-127" "generic-231" "generic-297"  "generic-299" "generic-521" "ext4-009" "ext4-029" "btrfs-068")
+	special_tests=("xfs-083" "xfs-275" "xfs-437" "xfs-244" "xfs-132" "xfs-260" "generic-387" "generic-470" "generic-054" "generic-113" "generic-231" "generic-299" "generic-521" "ext4-009" "ext4-029" "btrfs-068")
 	for test in ${special_tests[@]}
 	do
 		arrary=(`echo $test | tr '-' ' '`)
