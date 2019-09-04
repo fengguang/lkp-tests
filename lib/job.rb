@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
-LKP_SERVER ||= 'inn'.freeze
 
+require "#{LKP_SRC}/lib/run-env"
 require "#{LKP_SRC}/lib/common"
 require "#{LKP_SRC}/lib/result"
 require "#{LKP_SRC}/lib/hash"
@@ -25,7 +25,7 @@ end
 
 def expand_shell_var(env, o)
   s = o.to_s
-  return s if `hostname`.chomp == LKP_SERVER
+  return s unless local_run?
 
   if s.index('$')
     f = IO.popen(env, ['/bin/bash', '-c', 'eval echo "' + s + '"'], 'r')
