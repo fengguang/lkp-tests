@@ -36,7 +36,10 @@ def check_kconfig(kconfig_lines, line)
 end
 
 def check_all(kconfig_lines)
+  uncompiled_kconfigs_info = []
+
   kernel_version = read_kernel_version_from_context
+
   $___.each do |e|
     # we use regular expression to redesign include kconfig format, like this:
     # CONFIG_XXXX=m ~ v(4\.0) # support kernel >=v4.0-rc1 && <=v4.0
@@ -49,14 +52,18 @@ def check_all(kconfig_lines)
     end
     next if check_kconfig(kconfig_lines, config)
 
-    # need_kconfig
-    kconfig_error_message = "#{File.basename __FILE__}: #{config} has not been compiled"
-    kconfig_error_message = "#{kconfig_error_message} by this kernel (#{kernel_version} based)" if kernel_version
-    kconfig_error_message = "#{kconfig_error_message}, it is supported by kernel matching #{kernel_version_regexp} regexp" if kernel_version_regexp
-    raise Job::ParamError, kconfig_error_message.to_s unless __FILE__ =~ /suggest_kconfig/
-
-    puts "suggest kconfig: #{config}"
+    kconfig_info = config
+    kconfig_info += " supported by kernel matching #{kernel_version_regexp} regexp" if kernel_version_regexp
+    uncompiled_kconfigs_info.push kconfig_info
   end
+
+  return nil if uncompiled_kconfigs_info.empty?
+
+  kconfigs_error_message = "#{File.basename __FILE__}: #{uncompiled_kconfigs_info.uniq} has not been compiled"
+  kconfigs_error_message += " by this kernel (#{kernel_version} based)" if kernel_version
+  raise Job::ParamError, kconfigs_error_message.to_s unless __FILE__ =~ /suggest_kconfig/
+
+  puts "suggest kconfigs: #{uncompiled_kconfigs_info.uniq}"
 end
 
 def check_arch_constraints
