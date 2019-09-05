@@ -213,21 +213,21 @@ prepare_for_bpf()
 
 prepare_for_selftest()
 {
-        if [ "$group" = "kselftests-00" ]; then
-                # bpf is slow
-                selftest=a-b
-        elif [ "$group" = "kselftests-01" ]; then
-                selftest=c-l
-        elif [ "$group" = "kselftests-02" ]; then
-                # m* is slow
-                selftest=m-s
-        elif [ "$group" = "kselftests-03" ]; then
-                selftest=t-z
-        elif [ "$group" = "kselftests-04" ]; then
-                selftest=rseq
-        elif [ "$group" = "kselftests-05" ]; then
-                selftest=livepatch
-        fi
+	if [ "$group" = "kselftests-00" ]; then
+		# bpf is slow
+		selftest=a-b
+	elif [ "$group" = "kselftests-01" ]; then
+		selftest=c-l
+	elif [ "$group" = "kselftests-02" ]; then
+		# m* is slow
+		selftest=m-s
+	elif [ "$group" = "kselftests-03" ]; then
+		selftest=t-z
+	elif [ "$group" = "kselftests-04" ]; then
+		selftest=rseq
+	elif [ "$group" = "kselftests-05" ]; then
+		selftest=livepatch
+	fi
 }
 
 fixup_vm()
