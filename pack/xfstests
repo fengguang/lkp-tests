@@ -109,36 +109,21 @@ separate_tests()
 // Some special tests need to be separated and tested separately
 separate_special_tests()
 {
-	special_tests=("xfs-083" "xfs-275" "xfs-437" "xfs-244" "xfs-132" "xfs-260" "generic-387" "generic-470" "generic-054" "generic-113" "generic-231" "generic-299" "generic-521" "ext4-009" "ext4-029" "btrfs-068")
-	for test in ${special_tests[@]}
+	# These special tests are written in the relevant files under LKP-SRC/pack/xfstests-addon/tests
+	files=("dax" "logwrites" "no_bug_assert" "special_tests")
+	for file in ${files[@]}
 	do
-		arrary=(`echo $test | tr '-' ' '`)
-		sed -i "/${arrary[1]}/d" ${arrary[0]}-new
-		echo ${arrary[1]} > ./$test
-	done
-
-	no_bug_tests=("xfs-098" "xfs-115" "xfs-439")
-	for test in ${no_bug_tests[@]}
-	do
-		arrary=(`echo $test | tr '-' ' '`)
-		sed -i "/${arrary[1]}/d" ${arrary[0]}-new
-		echo ${arrary[1]} >> ./${arrary[0]}-no_bug_assert
-	done
-
-	logwrites_tests=("generic-455" "generic-457" "generic-482")
-	for test in ${logwrites_tests[@]}
-	do
-		arrary=(`echo $test | tr '-' ' '`)
-		sed -i "/${arrary[1]}/d" ${arrary[0]}-new
-		echo ${arrary[1]} >> ./${arrary[0]}-logwrites
-	done
-
-	dax_tests=("generic-413" "generic-462" "ext4-030" "ext4-031")
-	for test in ${dax_tests[@]}
-	do
-		arrary=(`echo $test | tr '-' ' '`)
-		sed -i "/${arrary[1]}/d" ${arrary[0]}-new
-		echo ${arrary[1]} >> ./${arrary[0]}-dax
+		tests=$(cat $file)
+		for test in ${tests[@]}
+		do
+			arrary=(`echo $test | tr '-' ' '`)
+			sed -i "/${arrary[1]}/d" ${arrary[0]}-new
+			if [[ "$file" == "special_tests" ]]; then
+				echo ${arrary[1]} > ./$test
+			else
+				echo ${arrary[1]} >> ./${arrary[0]}-$file
+			fi
+		done
 	done
 }
 
