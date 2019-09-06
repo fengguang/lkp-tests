@@ -1,16 +1,29 @@
+# detected soft_timeout
 btrfs-068
 ext4-009
+# this test requires a valid $SCRATCH_LOGDEV
 ext4-029
 generic-054
 generic-113
+# runtime > 3000s
 generic-231
+# needs more memory to avoid OOM
 generic-299
+# the test will clear date on partition using dd command, it will takes a long time
 generic-387
+# /dev/mapper/logwrites-test xfs does not support -o dax
 generic-470
+# test is unstable and the average running time is about 400 seconds
 generic-521
+# the filesystem has valuable metadata changes in a log which needs to 11 be replayed
 xfs-083
+# reflink not supported by test filesystem type: xfs
 xfs-132
+# 16 bit project IDs not supported on /dev/vdd
 xfs-244
+# /dev/vdd xfs does not support -o dax
 xfs-260
+# it requires special configurations, which will break some other xfs tests
 xfs-275
+# can't run find-api-violations.sh without WORKAREA set
 xfs-437

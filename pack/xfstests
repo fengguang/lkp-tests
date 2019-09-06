@@ -111,7 +111,7 @@ separate_special_tests()
 {
 	# These special tests are written in the relevant files under LKP-SRC/pack/xfstests-addon/tests
 	files=("dax" "logwrites" "no_bug_assert" "special_tests" "ignored_by_lkp")
-	ignored_tests=$(cat "ignored_by_lkp")
+	ignored_tests=$(cat "ignored_by_lkp" | grep -v "#")
 	for file in ${files[@]}
 	do
 		if [[ "$file" != "ignored_by_lkp" ]]; then
@@ -120,7 +120,7 @@ separate_special_tests()
 				sed -i "/$ignored_test/d" $file
 			done
 		fi
-		tests=$(cat $file)
+		tests=$(cat $file | grep -v "#")
 		for test in ${tests[@]}
 		do
 			arrary=(`echo $test | tr '-' ' '`)
