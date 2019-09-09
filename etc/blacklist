@@ -371,6 +371,8 @@
 ^kmsg.warn_unseeded_randomness:#callbacks_suppressed
 ^kmsg.workqueue:round-robin_CPU_selection_forced,expect_performance_impact
 ^kmsg.Writes:Total:#Max/Min:#Fail
+^kmsg.kvm:host_upgrade_recommended
+^kmsg.smpboot:do_boot_cpu_failed\(-#\)to_wakeup_CPU
 ^last_state.*
 ^latency_stats.
 ^latency_stats.*cifs.*
