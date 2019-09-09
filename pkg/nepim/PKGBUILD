@@ -21,6 +21,8 @@ build()
 
 package()
 {
+  benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+  mkdir -p "$benchmark_path"
   cd nepim-${pkgver}/src
-  install -Dm755 nepim "${pkgdir}"/usr/bin/nepim
+  install -Dm755 nepim "$benchmark_path"
 }
