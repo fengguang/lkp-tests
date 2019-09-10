@@ -105,46 +105,6 @@ get_build_dir()
 	echo "/tmp/build-$1"
 }
 
-download_distro_depends() {
-	local script=$1
-	local dest=$2
-	local pkg
-	local pkg_dir
-
-	if [ -z "$BM_NAME" ]; then
-		BM_NAME="$script"
-		unset_bmname=1
-	fi
-
-	local debs=$(get_dependency_packages $DISTRO $script)
-	resolve_depends "$debs"
-	if [ -n "$PACKAGE_VERSION_LIST" ]; then
-		(
-			cd "$dest"
-			download "$PACKAGE_VERSION_LIST"
-			install
-			save_package_deps_info $BM_NAME
-			echo "$PACKAGE_LIST" >> $pack_to/.${BM_NAME}.packages
-		)
-	fi
-	# install the dependencies to build pkg
-	$LKP_SRC/distro/installer/$DISTRO $debs
-
-	local packages="$(get_dependency_packages ${DISTRO} ${script} pkg)"
-	if [ -z "$packages" ] || [ "$packages" = " " ]; then
-			return 0
-	fi
-
-	for pkg in $packages; do
-		download_distro_depends $pkg "$dest"
-	done
-
-	if [ "$BM_NAME" = "$script" ] && [ -n "$unset_bmname" ]; then
-		unset BM_NAME
-		unset unset_bmname
-	fi
-}
-
 build_depends_pkg() {
 	if [ "$1" = '-i' ]; then
 		# in recursion install the package with -i option

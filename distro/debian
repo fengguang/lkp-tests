@@ -125,19 +125,24 @@ pack()
 resolve_depends()
 {
 	local deps=$1
+	local command
 
-	apt-get --simulate --no-install-recommends install $deps || die "Failed to apt-get install $deps"
+	command="apt-get --simulate --no-install-recommends install $deps"
+	# using "bash -c" to support wildcard in apt-get.
+	# if use wildcard in the package version variable,
+	# apt-get will treat the wildcard as a normal character.
+	bash -c "$command" || die "Failed to apt-get install $deps"
+
 	# apt-get will have below output
 	#   Inst python-minimal [2.7.11-2] (2.7.13-2 Debian:testing, Debian:unstable [amd64])
 	#   Inst mime-support (3.60 Debian:testing, Debian:unstable [all])
 	#   Inst libsqlite3-0 (3.16.2-3 Debian:testing, Debian:unstable [amd64])
 	# PACKAGE_LIST='python-minimal mime-support libsqlite3-0'
-	PACKAGE_LIST=$(apt-get --simulate --no-install-recommends install $deps |
-				awk '/^Inst / { print $2 }')
+	PACKAGE_LIST=$(bash -c "$command" | awk '/^Inst / { print $2 }')
 
 	# PACKAGE_VERSION_LIST='python-minimal=2.7.13-2 mime-support=3.60 libsqlite3-0=3.16.2-3'
-	PACKAGE_VERSION_LIST=$(apt-get --simulate --no-install-recommends install $deps |
-			awk '/^Inst / { if (substr($3, 1, 1) != "[") { print $2$3 } else { print $2$4 } }' | tr '(' '=')
+	PACKAGE_VERSION_LIST=$(bash -c "$command" |
+		awk '/^Inst / { if (substr($3, 1, 1) != "[") { print $2$3 } else { print $2$4 } }' | tr '(' '=')
 }
 
 save_package_deps_info()
@@ -145,16 +150,14 @@ save_package_deps_info()
 	local benchmark=$1
 
 	mkdir -p opt/deb
-	touch "opt/deb/sequence-deb.$benchmark"
-	touch "opt/deb/${benchmark}-deps.packages"
 	# sequence-deb content looks like:
 	#   libreadline7
 	#   libssl1.1
 	#   gawk
 	[ -n "$PACKAGE_LIST" ] && \
-		echo "$PACKAGE_LIST" | grep -F -f "$LKP_SRC/distro/keep-deb" >> "opt/deb/sequence-deb.$benchmark"
+		echo "$PACKAGE_LIST" | grep -F -f "$LKP_SRC/distro/keep-deb" > "opt/deb/sequence-deb.$benchmark"
 	[ -n "$PACKAGE_VERSION_LIST" ] && \
-		echo "$PACKAGE_VERSION_LIST" >> "opt/deb/${benchmark}-deps.packages"
+		echo "$PACKAGE_VERSION_LIST" > "opt/deb/${benchmark}-deps.packages"
 }
 
 install_distro_depends()
@@ -254,22 +257,7 @@ pack_benchmark_deps()
 
 		packages=$(echo $(get_dependency_packages $DISTRO $BM_NAME))
 
-		command="apt-get --simulate --no-install-recommends install $packages"
-		# using "bash -c" to support wildcard in apt-get.
-		# if use wildcard in the package version variable,
-		# apt-get will treat the wildcard as a normal character.
-		bash -c "$command" || die "Failed to apt-get install $packages"
-		# apt-get will have below output
-		#   Inst python-minimal [2.7.11-2] (2.7.13-2 Debian:testing, Debian:unstable [amd64])
-		#   Inst mime-support (3.60 Debian:testing, Debian:unstable [all])
-		#   Inst libsqlite3-0 (3.16.2-3 Debian:testing, Debian:unstable [amd64])
-		# PACKAGE_LIST='python-minimal mime-support libsqlite3-0' 
-		PACKAGE_LIST=$(bash -c "$command" |
-			awk '/^Inst / { print $2 }')
-
-		# PACKAGE_VERSION_LIST='python-minimal=2.7.13-2 mime-support=3.60 libsqlite3-0=3.16.2-3'
-		PACKAGE_VERSION_LIST=$(bash -c "$command" |
-			awk '/^Inst / { if (substr($3, 1, 1) != "[") { print $2$3 } else { print $2$4 } }' | tr '(' '=')
+		resolve_depends $packages
 
 		echo "original package list for $BM_NAME:" $packages
 
@@ -281,13 +269,7 @@ pack_benchmark_deps()
 		work_dir=$(mktemp -d /tmp/pack-deps-$BM_NAME-XXXXXXXX)
 		cd $work_dir
 
-		mkdir -p opt/deb
-		# sequence-deb content looks like:
-		#   libreadline7
-		#   libssl1.1
-		#   gawk
-		echo "$PACKAGE_LIST" | grep -F -f "$LKP_SRC/distro/keep-deb" > opt/deb/sequence-deb.$BM_NAME
-		echo "$PACKAGE_VERSION_LIST" > opt/deb/${BM_NAME}-deps.packages
+		save_package_deps_info $BM_NAME
 
 		# Fix the warning 'W: Download is performed unsandboxed as root as file...' in newest APT versions
 		if id "_apt" >/dev/null 2>&1; then
