@@ -52,6 +52,18 @@ mount_tmpfs()
 	mount -t tmpfs -o mode=1777 tmp /tmp
 }
 
+netdevice_linkup()
+{
+	for ndev in $net_devices
+	do
+		if has_cmd ip; then
+			ip link set $ndev up
+		elif has_cmd ifconfig; then
+			ifconfig $ndev up
+		fi
+	done
+}
+
 network_ok()
 {
 	local i
@@ -65,6 +77,8 @@ network_ok()
 	done
 
 	is_clearlinux && {
+		netdevice_linkup
+
 		# in case of systemd-networkd.service was masked
 		systemctl unmask systemd-networkd.service
 		systemctl start systemd-networkd.service
