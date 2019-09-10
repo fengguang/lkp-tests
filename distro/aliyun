@@ -21,7 +21,10 @@ distro_install_depends()
 
 		echo install packages for $script: $packages
 
-		yum install -y $packages
+		for pkg in $packages
+		do
+			rpm --quiet --query $pkg || yum install -y $pkg
+		done
 	done
 }
 
