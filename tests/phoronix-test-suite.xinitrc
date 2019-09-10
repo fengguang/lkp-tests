@@ -17,6 +17,7 @@ test_installed=`phoronix-test-suite info $test | grep "Test Installed" | awk '{p
 [ "$test_installed" = "Yes" ] || {
 	echo "Installing $test ..."
 	echo "Please make sure phoronix-test-suite can connect to the Internet."
+	fixup_install $test
 	phoronix-test-suite install-dependencies $test || die "install $test dependencies failed"
 	phoronix-test-suite batch-install $test || die "batch-install $test failed"
 }

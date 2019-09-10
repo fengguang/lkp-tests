@@ -195,6 +195,23 @@ fixup_mcperf()
 	test_opt="\n8\nn"
 }
 
+setup_python2()
+{
+	python -V 2>&1 | grep -q "^Python 2" && return
+	ln -sf $(which python2) $(which python) || return
+}
+
+fixup_install()
+{
+	local test=$1
+	case $test in
+	glmark2-*)
+		# python2 is required for installing glmark2
+		setup_python2
+		;;
+	esac
+}
+
 run_test()
 {
 	local test=$1
