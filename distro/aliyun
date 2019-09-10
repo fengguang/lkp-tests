@@ -6,11 +6,21 @@ shopt -s nullglob
 . $LKP_SRC/distro/common
 . $LKP_SRC/lib/debug.sh
 
+support_repo_epel()
+{
+	if ! rpm -q epel-release >/dev/null; then
+		yum install -y epel-release
+		yum makecache fast
+	fi
+}
+
 distro_install_depends()
 {
 	local script
 	local bm="$1"
 	local scripts=$(find $LKP_SRC/distro/depends/ -name "$bm" -o -name "${bm}.[0-9]")
+
+	support_repo_epel
 
 	for script in $scripts
 	do
@@ -47,6 +57,8 @@ pack_benchmark()
 
 yum_download()
 {
+	support_repo_epel
+
 	echo yum install --downloadonly $*
 	yum install --downloadonly $*
 }
