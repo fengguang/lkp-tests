@@ -1,0 +1,13 @@
+pkgname=chromeswap
+pkgver=git
+pkgrel=1
+arch=('i686' 'x86_64')
+url="https://github.com/aaronlu/chromeswap"
+license=('GPL')
+source=("https://github.com/aaronlu/chromeswap.git")
+md5sums=('SKIP')
+
+package() {
+	mkdir -p "${pkgdir}/lkp/benchmarks"
+	cp -af "${srcdir}/${pkgname}" "${pkgdir}/lkp/benchmarks"
+}
