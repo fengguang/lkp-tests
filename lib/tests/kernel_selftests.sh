@@ -397,6 +397,12 @@ run_tests()
 			lsmod | grep -q test_sysctl || modprobe test_sysctl
 		fi
 
+		if [[ "$subtest" = "ir" ]]; then
+			## Ignore RCMM infrared remote controls related tests.
+			sed -i 's/{ RC_PROTO_RCMM/\/\/{ RC_PROTO_RCMM/g' ir/ir_loopback.c
+			echo "ignored_by_lkp ir.ir_loopback_rcmm tests"
+		fi
+
 		[[ "$subtest" = "memfd" ]] && fixup_memfd
 		[[ "$subtest" = "vm" ]] && fixup_vm
 		[[ "$subtest" = "x86" ]] && fixup_x86
