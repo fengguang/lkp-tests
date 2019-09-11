@@ -1,0 +1,14 @@
+pkgname=analyze_suspend
+pkgver=git
+pkgrel=1
+arch=('i686' 'x86_64')
+url="https://github.com/intel/pm-graph.git"
+license=('GPL')
+source=("https://github.com/intel/pm-graph.git")
+md5sums=('SKIP')
+
+package() {
+	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+	mkdir -p "${benchmark_path}"
+	cp -af "${srcdir}/pm-graph/"* "${benchmark_path}"
+}
