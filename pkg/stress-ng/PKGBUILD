@@ -1,13 +1,12 @@
 pkgname=stress-ng
-pkgver=0.05
-pkgrel=23
+pkgver=0.09
+pkgrel=58
 pkgdesc="tool to load and stress a computer"
 arch=('i686' 'x86_64')
 url="http://kernel.ubuntu.com/~cking/stress-ng/"
 license=('GPL')
-depends=()
-source=("http://archive.ubuntu.com/ubuntu/pool/universe/s/$pkgname/${pkgname}_$pkgver.$pkgrel.orig.tar.gz")
-md5sums=('aa83b6bbbb414884412dd9920c0edb8c')
+source=("http://kernel.ubuntu.com/~cking/tarballs/stress-ng/${pkgname}-$pkgver.$pkgrel.tar.xz")
+md5sums=('d482a72654c7029a6a890d680efa174c')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver.$pkgrel"
@@ -16,6 +15,5 @@ build() {
 
 package() {
   cd "$srcdir/$pkgname-$pkgver.$pkgrel"
-  make DESTDIR="$pkgdir/" install 
+  make DESTDIR="$pkgdir" install
 }
-
