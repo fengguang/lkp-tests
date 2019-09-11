@@ -148,6 +148,7 @@ libasound2: storage-utils-dev
 libasound2-data: storage-utils-dev
 libasound2-dev: storage-utils-dev
 libatomic1: os-core-dev
+libattr1: os-core-dev
 libattr1-dev: os-core-dev
 libaudit-dev: dev-utils-dev
 libaudit: dev-utils-dev
@@ -259,6 +260,7 @@ libjson-c-dev: os-core-dev
 libklibc-dev: dev-utils-dev
 libkmod2: os-core-dev
 libkmod-dev: os-core-dev
+libkeyutils1: os-core-dev
 libkeyutils-dev: os-core-dev
 libldb1: storage-utils
 libllvm3.9: os-testsuite-0day
@@ -322,8 +324,8 @@ libreadline5: os-core
 libreadline-dev: os-core-dev
 libsamplerate0: qt-basic-dev
 libsamplerate0-dev: qt-basic-dev
-libsctp1:
-libsctp-dev:
+libsctp1: dev-utils-dev
+libsctp-dev: dev-utils-dev
 libsdl1.2debian: stream-server
 libselinux1:
 libsm6: os-core-dev
@@ -587,3 +589,11 @@ xutils-dev: os-clr-on-clr-dev
 zlib1g: os-core-dev
 zlib1g-dev: os-core-dev
 zsh: zsh
+libapparmor1:
+libapparmor-dev:
+libbsd0:
+libbsd-dev:
+libgcrypt20: devpkg-libgcrypt
+libgcrypt11-dev: devpkg-libgcrypt
+libipsec-mb0:
+libipsec-mb-dev:

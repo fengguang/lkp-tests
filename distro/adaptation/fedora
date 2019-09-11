@@ -20,9 +20,10 @@ iozone3:
 iproute2: iproute
 klibc-utils:
 libacl1-dev: libacl-devel
-libaio1: libaio libaio-devel
+libaio1: libaio
 libaio-dev: libaio-devel
 libarchive-dev: libarchive-devel
+libattr1: libattr
 libattr1-dev: libattr-devel
 libaudit-dev: audit-libs-devel
 libblas3: blas
@@ -82,6 +83,7 @@ libpopt0: popt
 libpopt-dev: popt-devel
 librdmacm-dev: librdmacm-devel
 libreadline5: compat-readline5
+libsctp1: lksctp-tools
 libsctp-dev: lksctp-tools-devel
 libselinux1:
 libsqlite3-dev: libsqlite3x-devel
@@ -127,9 +129,20 @@ xinit: xorg-x11-xinit
 xorg:
 xutils-dev: imake
 xz-utils: xz
+zlib1g: zlib
 zlib1g-dev: zlib-devel
 protobuf-compiler: protobuf
 libprotobuf-dev: protobuf-devel
 openjdk-8-jdk: java-1.8.0-openjdk-devel
 libunwind8: libunwind
 libipc-run-perl: perl-IPC-Run
+libapparmor1:
+libapparmor-dev:
+libbsd0: libbsd
+libbsd-dev: libbsd-devel
+libgcrypt20: libgcrypt
+libgcrypt11-dev: libgcrypt-devel
+libipsec-mb0:
+libipsec-mb-dev:
+libkeyutils1: keyutils-libs
+libkeyutils-dev: keyutils-libs-devel
