@@ -124,7 +124,7 @@ pack()
 
 resolve_depends()
 {
-	local deps=$1
+	local deps=$*
 	local command
 
 	command="apt-get --simulate --no-install-recommends install $deps"
