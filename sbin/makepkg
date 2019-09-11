@@ -545,6 +545,11 @@ extract_bzr() {
 	popd &>/dev/null
 }
 
+update_git_source_dir()
+{
+	[ -n "$git_source_dir" ] || export git_source_dir=$1
+}
+
 download_git() {
 	local netfile=$1
 
@@ -556,6 +561,8 @@ download_git() {
 	local url=$(get_url "$netfile")
 	url=${url#git+}
 	url=${url%%#*}
+
+	update_git_source_dir $repo
 
 	if [[ ! -d "$dir" ]] || dir_is_empty "$dir" ; then
 		msg2 "$(gettext "Cloning %s %s repo...")" "${repo}" "git"
@@ -2225,7 +2232,7 @@ extend_pkgver_cgz_name() {
 	if (( PKGVERFUNC )); then
 		pkgver_pattern=$pkgver # pkgver=$(pkgver)
 	elif [ "$pkgver" = "git" ]; then
-		pkgver_pattern=$(git --git-dir="$srcdir/$pkgname"/.git rev-parse --short HEAD 2>/dev/null)
+		pkgver_pattern=$(git --git-dir="$srcdir"/"$git_source_dir"/.git rev-parse --short HEAD 2>/dev/null)
 		pkgver_pattern=${pkgver_pattern:-git}
 	fi
 
