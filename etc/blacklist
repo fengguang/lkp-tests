@@ -315,6 +315,7 @@
 ^kmsg.EXT4-fs_error\(device_.*\)
 ^kmsg.EXT4-fs\(.*\):
 ^kmsg.XFS\(.*\):
+^kmsg.VFS:Filesystem_freeze_failed
 ^kmsg.Buffer_I/O_error_on_dev_.*,logical_block#,async_page_read
 ^kmsg.cgroup1:Unknown_subsys_name'ns'
 ^kmsg.Dev_.*:unable_to_read_RDB_block
