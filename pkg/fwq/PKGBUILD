@@ -1,0 +1,18 @@
+pkgname=fwq
+pkgver=git
+pkgrel=1
+arch=('i686' 'x86_64')
+url="https://github.com/hying-caritas/fwq"
+license=('GPL')
+source=("https://github.com/hying-caritas/fwq.git")
+md5sums=('SKIP')
+
+build() {
+	cd "$srcdir/fwq"
+	make
+}
+
+package() {
+	mkdir -p "${pkgdir}/lkp/benchmarks/${pkgname}"
+	cp -af "$srcdir/fwq/t_fwq" "${pkgdir}/lkp/benchmarks/${pkgname}"
+}
