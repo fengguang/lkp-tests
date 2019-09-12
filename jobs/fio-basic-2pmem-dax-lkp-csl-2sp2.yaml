@@ -1,0 +1,37 @@
+suite: fio-basic
+testcase: fio-basic
+category: benchmark
+
+ndctl:
+nvdimm:
+  mode: fsdax
+  nr_dev: 2
+
+fs:
+  fs:
+    - ext4
+    - xfs
+  mount_option: dax
+
+runtime: 200s
+
+nr_task: 50%
+
+time_based: tb
+
+fio-setup-basic:
+  rw:
+    - read
+    - write
+    - randread
+    - randwrite
+    - rw
+    - randrw
+  bs:
+    - 4k
+    - 128B
+  ioengine:
+    - libpmem
+  test_size: 200G
+  iodepth: 1
+fio:
