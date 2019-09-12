@@ -1,0 +1,14 @@
+pkgname=pbzip2
+pkgver=1.1
+pkgrel=9
+arch=('i686' 'x86_64')
+url="https://launchpad.net/pbzip2"
+license=('GPL')
+source=("https://launchpad.net/$pkgname/$pkgver/$pkgver.$pkgrel/+download/${pkgname}-$pkgver.$pkgrel.tar.gz")
+md5sums=('39dd4c61d71727681c31879a6c8b60ca')
+
+package()
+{
+	cd "$srcdir/$pkgname-$pkgver.$pkgrel"
+	make PREFIX="$pkgdir" install
+}
