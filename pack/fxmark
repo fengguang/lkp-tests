@@ -8,6 +8,7 @@ download()
 
 build()
 {
+	patch_source || return
 	make || return
 
 	cd ../filebench || return
