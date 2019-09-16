@@ -10,7 +10,7 @@ md5sums=('SKIP')
 build() {
 	cd "$srcdir/pixz"
 	./autogen.sh || return
-	./configure || return
+	./configure --without-manpage || return
 	make
 }
 
