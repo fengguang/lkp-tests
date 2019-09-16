@@ -4,5 +4,6 @@ nr_cpu: 88
 memory: 128G
 nr_hdd_partitions: 4
 hdd_partitions: /dev/disk/by-id/ata-HGST_HTS721010A9E630_JR10006P0NN6GF-part*
+ssd_partitions: /dev/disk/by-id/ata-INTEL_SSDSC2BA800G4_BTHV410402E4800OGN-part1
 rootfs_partition: LABEL=LKP-ROOTFS
 brand: Intel(R) Xeon(R) CPU E5-2699 v4 @ 2.20GHz
