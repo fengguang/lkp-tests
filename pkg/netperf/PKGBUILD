@@ -1,0 +1,30 @@
+pkgname=netperf
+pkgver=2.7
+pkgrel=0
+arch=('i686' 'x86_64')
+url="https://github.com/HewlettPackard/netperf"
+license=('GPL')
+source=("https://github.com/HewlettPackard/netperf/archive/netperf-$pkgver.$pkgrel.tar.gz")
+md5sums=('e0d45b5bca1eee2aef0155de82366202')
+
+build()
+{
+	cd "$srcdir/$pkgname-$pkgname-$pkgver.$pkgrel"
+
+	local configure_flags=(
+				--prefix="$pkgdir/lkp/benchmarks/$pkgname"
+				--enable-demo
+				--enable-unixdomain
+				--enable-sctp
+				--enable-dccp
+				--enable-burst
+	)
+
+	CFLAGS="-std=gnu89" ./configure "${configure_flags[@]}"
+	make
+}
+
+package() {
+	cd "$srcdir/$pkgname-$pkgname-$pkgver.$pkgrel"
+	make install
+}
