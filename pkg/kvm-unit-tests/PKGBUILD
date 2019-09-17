@@ -1,0 +1,13 @@
+pkgname=kvm-unit-tests
+pkgver=git
+pkgrel=1
+arch=('i686' 'x86_64')
+url="https://kernel.googlesource.com/pub/scm/virt/kvm/kvm-unit-tests.git"
+license=('GPL')
+source=("https://kernel.googlesource.com/pub/scm/virt/kvm/kvm-unit-tests.git")
+md5sums=('SKIP')
+
+package() {
+	mkdir -p "${pkgdir}/lkp/benchmarks"
+	cp -af "${srcdir}/${pkgname}" "${pkgdir}/lkp/benchmarks"
+}
