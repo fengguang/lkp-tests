@@ -43,7 +43,7 @@ class LinuxTestcasesTableSet
      'chromeswap', 'fio-basic', 'apachebench', 'perf_event_tests', 'swapin',
      'tpcc', 'mytest', 'exit_free', 'pgbench', 'boot_trace', 'sysbench-cpu',
      'sysbench-memory', 'sysbench-threads', 'sysbench-mutex', 'stream',
-     'perf-bench-futex', 'mutilate', 'lmbench3', 'lib_micro', 'schbench',
+     'perf-bench-futex', 'mutilate', 'lmbench3', 'lib-micro', 'schbench',
      'pmbench', 'linkbench', 'rocksdb', 'cassandra', 'redis', 'power_idle',
      'mongodb', 'ycsb', 'memtier', 'mcperf', 'fio-jbod'].freeze
   LINUX_TESTCASES =
