@@ -11,6 +11,8 @@ md5sums=('SKIP' 'SKIP')
 
 build() {
 	cd "$srcdir/$pkgname"
+	# increase the size of optstr array to avoid buffer overflow error
+	sed -i 's/optstr\[256\]/optstr\[2048\]/g' src/libmicro.c
 	CFLAGS="" make
 }
 
