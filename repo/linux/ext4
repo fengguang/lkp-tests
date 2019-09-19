@@ -2,6 +2,7 @@ url: https://kernel.googlesource.com/pub/scm/linux/kernel/git/tytso/ext4.git
 integration_testing_branches: dev
 mail_cc: linux-ext4@vger.kernel.org
 owner: Theodore Ts'o <tytso@mit.edu>
+notify_build_success_branch: .*
 subsystems:
 - ext4
 - jbd2
