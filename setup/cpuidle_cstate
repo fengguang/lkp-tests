@@ -1,0 +1,38 @@
+#!/bin/sh
+# - max
+
+. $LKP_SRC/lib/reproduce-log.sh
+
+[ -n "$max" ] || exit 0
+
+. $LKP_SRC/lib/env.sh
+
+is_virt && exit 0
+is_docker && exit 0
+
+[ -e /sys/devices/system/cpu/cpu0/cpuidle ] || exit 0
+
+
+cstate_cnt=$(ls /sys/devices/system/cpu/cpu0/cpuidle/* | grep state | awk 'END{print NR}')
+
+for cpu_dir in /sys/devices/system/cpu/cpu[0-9]*
+do
+	online_file="$cpu_dir"/online
+	[ -f "$online_file" ] && [ "$(cat "$online_file")" -eq 0 ] && continue
+
+	cstate_idx=0
+	while [ $cstate_idx -ne $cstate_cnt ]
+	do
+		cstate_disable_file=$cpu_dir"/cpuidle/state"$cstate_idx"/disable"
+		[ -f "$cstate_disable_file" ] || exit 0
+		if [ $cstate_idx -le $max ]
+		then
+			log_echo "enable:"$cstate_disable_file
+			echo 0 > $cstate_disable_file
+		else
+			log_echo "disable:"$cstate_disable_file
+			echo 1 > $cstate_disable_file
+		fi
+		cstate_idx=$(($cstate_idx + 1))
+	done
+done
