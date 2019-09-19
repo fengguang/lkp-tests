@@ -2,3 +2,4 @@ url: https://kernel.googlesource.com/pub/scm/linux/kernel/git/stable/linux-stabl
 fetch_tags: true
 owner: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 test_old_branches: .*
+notify_build_success_branch: .*
