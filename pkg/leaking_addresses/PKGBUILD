@@ -1,0 +1,25 @@
+pkgname=leaking_addresses
+pkgver=4f19048
+pkgrel=1
+arch=('i686' 'x86_64')
+url="https://raw.githubusercontent.com/torvalds/linux/master/scripts/${pkgname}.pl"
+license=('GPL')
+source=("https://raw.githubusercontent.com/torvalds/linux/master/scripts/${pkgname}.pl")
+md5sums=('SKIP')
+
+pkgver()
+{
+	# get the last commit of leaking_addresses.pl
+	local info=$(curl -sf https://api.github.com/repos/torvalds/linux/commits\?path\=scripts/leaking_addresses.pl\&per_page\=1 || return)
+	local long_commit=$(echo $info | jq '.[0].sha' | tr -d '"')
+	echo ${long_commit:0:7}
+}
+
+package()
+{
+	cd $srcdir
+	chmod +x "${pkgname}.pl"
+
+	mkdir -p "${pkgdir}/lkp/benchmarks/${pkgname}"
+	cp -af "${srcdir}"/* "$pkgdir/lkp/benchmarks/${pkgname}"
+}
