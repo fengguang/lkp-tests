@@ -1,5 +1,6 @@
 url: https://github.com/intel/gvt-linux.git
 belongs_to: GVT
+notify_build_success_branch: .*
 build_success_mail_cc:
 - zhenyu.z.wang@intel.com
 - libo.zhu@intel.com

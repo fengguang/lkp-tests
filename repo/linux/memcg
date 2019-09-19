@@ -8,6 +8,7 @@ subsystems:
 - memcg
 - zsmalloc
 - hugetlb
+notify_build_success_branch: .*
 build_success_mail_to: Andrew Morton <akpm@linux-foundation.org>
 mail_cc: linux-mm@kvack.org
 test_old_branches: .*
