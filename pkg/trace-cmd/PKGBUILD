@@ -1,0 +1,14 @@
+pkgname=trace-cmd
+pkgver=git
+pkgrel=1
+arch=('i686' 'x86_64')
+url="https://kernel.googlesource.com/pub/scm/linux/kernel/git/rostedt/trace-cmd.git"
+license=('GPL')
+source=("https://kernel.googlesource.com/pub/scm/linux/kernel/git/rostedt/trace-cmd.git")
+md5sums=('SKIP')
+
+package() {
+	cd "$srcdir/trace-cmd"
+	make prefix="${pkgdir}/lkp/benchmarks/${pkgname}"
+	make prefix="${pkgdir}/lkp/benchmarks/${pkgname}" install
+}
