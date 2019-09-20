@@ -1,0 +1,20 @@
+pkgname=ftq
+pkgver=git
+pkgrel=1
+arch=('i686' 'x86_64')
+url="https://github.com/hying-caritas/ftq"
+license=('GPL')
+source=("https://github.com/hying-caritas/ftq.git")
+md5sums=('SKIP')
+
+build() {
+	cd "$srcdir/ftq"
+	make
+}
+
+package() {
+	mkdir -p "${pkgdir}/lkp/benchmarks/${pkgname}"
+	cd "$srcdir/ftq"
+	find . -type f -executable -name "ftq_*" \
+		-exec cp -af {} "${pkgdir}/lkp/benchmarks/${pkgname}" \;
+}
