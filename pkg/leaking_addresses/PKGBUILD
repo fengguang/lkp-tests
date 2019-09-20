@@ -18,8 +18,7 @@ pkgver()
 package()
 {
 	cd $srcdir
-	chmod +x "${pkgname}.pl"
 
 	mkdir -p "${pkgdir}/lkp/benchmarks/${pkgname}"
-	cp -af "${srcdir}"/* "$pkgdir/lkp/benchmarks/${pkgname}"
+	install -m 755 "${srcdir}"/${pkgname}.pl "$pkgdir/lkp/benchmarks/${pkgname}/"
 }
