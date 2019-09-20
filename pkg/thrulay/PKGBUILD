@@ -1,0 +1,21 @@
+pkgname=thrulay
+pkgver=0.9
+pkgrel=1
+arch=('i686' 'x86_64')
+url="https://sourceforge.net/projects/thrulay"
+license=('GPL')
+source=("http://jaist.dl.sourceforge.net/project/${pkgname}/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+sha256sums=('373d5613dfe371f6b4f48fc853f6c27701b2981ba4100388c9881cb802d1780d')
+
+build()
+{
+	cd "${srcdir}/thrulay-${pkgver}"
+	cp /usr/share/misc/config.{guess,sub} .
+	./configure --prefix="${pkgdir}/lkp/benchmarks/${pkgname}"
+}
+
+package()
+{
+	cd "${srcdir}/thrulay-${pkgver}"
+	make install
+}
