@@ -1,0 +1,13 @@
+pkgname=kbuild
+pkgver=4.9
+pkgrel=1
+arch=('i686' 'x86_64')
+url="https://www.kernel.org/pub/linux/kernel"
+license=('GPL')
+source=("https://www.kernel.org/pub/linux/kernel/v4.x/linux-${pkgver}.tar.xz")
+sha256sums=('029098dcffab74875e086ae970e3828456838da6e0ba22ce3f64ef764f3d7f1a')
+
+package() {
+	mkdir -p "${pkgdir}/lkp/benchmarks/${pkgname}/linux"
+	cp -af "$srcdir/linux-${pkgver}/"* "${pkgdir}/lkp/benchmarks/${pkgname}/linux"
+}
