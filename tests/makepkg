@@ -13,7 +13,7 @@
 
 [ -n "$rootfs" ] || die "rootfs is empty"
 
-DISTRO=${rootfs%%-*}
+export DISTRO=${rootfs%%-*}
 
 . $LKP_SRC/distro/${DISTRO}
 . $LKP_SRC/lib/install.sh
