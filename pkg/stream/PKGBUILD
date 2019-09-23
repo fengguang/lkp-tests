@@ -1,0 +1,13 @@
+pkgname=stream
+pkgver=1
+pkgrel=1
+arch=('i686' 'x86_64')
+url="http://www.cs.virginia.edu/stream"
+license=('GPL')
+source=("http://www.cs.virginia.edu/stream/FTP/Code/stream.c")
+md5sums=('SKIP')
+
+package() {
+	mkdir -p "${pkgdir}/lkp/benchmarks/${pkgname}"
+	cp -af "$srcdir/stream.c" "${pkgdir}/lkp/benchmarks/${pkgname}"
+}
