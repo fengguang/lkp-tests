@@ -1,0 +1,32 @@
+pkgname=blktests
+pkgver=git
+pkgrel=1
+arch=('i686' 'x86_64')
+url="https://github.com/osandov/blktests"
+license=('GPL')
+source=("https://github.com/osandov/blktests.git" "https://github.com/karelzak/util-linux.git")
+md5sums=('SKIP' 'SKIP')
+
+build_util_linux() {
+	cd "${srcdir}/util-linux"
+	./autogen.sh
+	./configure
+	make
+}
+
+build_blktests() {
+	cd "${srcdir}/blktests"
+	make
+}
+
+build() {
+	build_util_linux || return
+	build_blktests || return
+}
+
+package() {
+	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+	mkdir -p "${benchmark_path}"
+	cp -af "$srcdir/blktests/"* "$benchmark_path"
+	cp -af "$srcdir/util-linux" "$benchmark_path"
+}
