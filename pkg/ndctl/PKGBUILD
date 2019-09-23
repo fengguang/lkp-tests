@@ -1,0 +1,24 @@
+pkgname=ndctl
+pkgver=git
+pkgrel=1
+arch=('i686' 'x86_64')
+url="https://github.com/pmem/ndctl"
+license=('GPL')
+source=("https://github.com/pmem/ndctl.git")
+md5sums=('SKIP')
+
+build() {
+	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+
+	cd "$srcdir/${pkgname}"
+	git checkout origin/pending
+	./autogen.sh
+	./configure CFLAGS='-g -O0' --enable-test --disable-docs --prefix=$benchmark_path --sysconfdir=$benchmark_path/etc --libdir=$benchmark_path/lib
+	make
+}
+
+package() {
+	cd "$srcdir/${pkgname}"
+	make install
+	cp -af "$srcdir/${pkgname}/"* "${pkgdir}/lkp/benchmarks/${pkgname}"
+}
