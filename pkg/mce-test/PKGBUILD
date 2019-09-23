@@ -1,0 +1,29 @@
+pkgname=mce-test
+pkgver=git
+pkgrel=1
+url="https://github.com/aegl/mce-test"
+arch=('x86_64' 'i686')
+license=('GPL')
+source=("https://github.com/aegl/mce-test.git" "https://github.com/linux-test-project/ltp.git" "https://kernel.googlesource.com/pub/scm/utils/cpu/mce/mce-inject.git")
+md5sums=('SKIP' 'SKIP' 'SKIP')
+
+build()
+{
+	cd $srcdir/$pkgname
+
+	make
+	make -C ../mce-inject
+}
+
+package()
+{
+	cd $srcdir/$pkgname
+
+	make install || return
+	mkdir -p "${pkgdir}/lkp/benchmarks/${pkgname}"
+	cp -af ./* "${pkgdir}/lkp/benchmarks/${pkgname}"
+
+	make destdir="$pkgdir" install -C ../mce-inject || return
+
+	cp -af ../ltp "${pkgdir}/lkp/benchmarks/${pkgname}"
+}
