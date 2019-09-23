@@ -1,5 +1,6 @@
 # nvdimm functions
 
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/lkp/benchmarks/ndctl/lib/
 configure_nvdimm()
 {
 	for ns in $(ls -d /sys/bus/nd/devices/namespace*); do
