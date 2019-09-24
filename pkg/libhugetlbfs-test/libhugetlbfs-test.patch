@@ -1,27 +1,28 @@
-From 24f04ade869f16497ef6bb4f358dffdc1ee7f852 Mon Sep 17 00:00:00 2001
-From: Xiang Dai <xiangx.dai@intel.com>
-Date: Tue, 1 Aug 2017 14:50:06 +0800
-Subject: [PATCH] ignore tests
+From 14440745c181dfd638b9a57f63ce70759e5dee94 Mon Sep 17 00:00:00 2001
+From: Xiao Yang <xiaox.yang@intel.com>
+Date: Tue, 24 Sep 2019 16:21:50 +0800
+Subject: [PATCH] tests/run_tests.py: ignore tests
 
 Signed-off-by: Xiang Dai <xiangx.dai@intel.com>
+Signed-off-by: Xiao Yang <xiaox.yang@intel.com>
 ---
  tests/run_tests.py | 17 +++++++++++++++++
  1 file changed, 17 insertions(+)
 
 diff --git a/tests/run_tests.py b/tests/run_tests.py
-index 22e74c8..2f20f73 100755
+index 018264d..e1f4a40 100755
 --- a/tests/run_tests.py
 +++ b/tests/run_tests.py
-@@ -294,6 +294,20 @@ def check_linkhuge_tests():
+@@ -309,6 +309,20 @@ def check_linkhuge_tests():
              okbits.add(bits)
      return okbits
-
+ 
 +def ignore_test(pagesize, bits, cmd, env):
 +    envstr = ''
 +    simple_ignore = ["HUGETLB_ELFMAP=R", "HUGETLB_ELFMAP=W", "HUGETLB_ELFMAP=RW", "direct", "xB.linkhuge_nofd (2M: 32)", "HUGETLB_SHARE=0 xB.linkhuge (2M: 32)", "HUGETLB_SHARE=1 xB.linkhuge (2M: 32)", "brk_near_huge"]
 +    if env:
 +        envstr = ' '.join(['%s=%s' % (k, v) for k, v in env.items()])
-+    if type(cmd) != types.StringType:
++    if not isinstance(cmd, str):
 +        cmd = ' '.join(cmd)
 +    cmd = "%s %s (%s: %i)" % (envstr, cmd, pretty_page_size(pagesize), bits)
 +    for i, test in enumerate(simple_ignore):
@@ -32,16 +33,17 @@ index 22e74c8..2f20f73 100755
 +
  def print_cmd(pagesize, bits, cmd, env):
      if env:
-         print ' '.join(['%s=%s' % (k, v) for k, v in env.items()]),
-@@ -318,6 +332,9 @@ def run_test(pagesize, bits, cmd, **env):
+         print(' '.join(['%s=%s' % (k, v) for k, v in env.items()]), end=" ")
+@@ -333,6 +347,9 @@ def run_test(pagesize, bits, cmd, **env):
          return
-
+ 
      print_cmd(pagesize, bits, cmd, env)
 +    if ignore_test(pagesize, bits, cmd, env):
 +        return
 +
      (rc, out) = run_test_prog(bits, pagesize, cmd, **env)
-     print out
+     print(out)
+ 
+-- 
+2.17.1
 
---
-2.9.3
