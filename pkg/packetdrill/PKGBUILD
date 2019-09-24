@@ -1,0 +1,25 @@
+pkgname=packetdrill
+pkgver=git
+pkgrel=1
+url='https://github.com/google/packetdrill'
+arch=('i686' 'x86_64')
+license=('GPL')
+source=('https://github.com/google/packetdrill.git')
+md5sums=('SKIP')
+
+build()
+{
+	cd ${srcdir}/${pkgname}/gtests/net/packetdrill
+
+	sed -i 's/gettid(/packetdrill_gettid(/g' run_system_call.c
+	./configure
+	make
+}
+
+package()
+{
+	cd $srcdir/$pkgname
+
+	mkdir -p "${pkgdir}/lkp/benchmarks/${pkgname}"
+	cp -af ./* "${pkgdir}/lkp/benchmarks/${pkgname}"
+}
