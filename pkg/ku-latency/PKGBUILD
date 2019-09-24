@@ -1,0 +1,16 @@
+pkgname=ku-latency
+pkgver=1
+pkgrel=1
+arch=('i686' 'x86_64')
+url="https://vilimpoc.org/research/ku-latency"
+license=('GPL')
+source=("https://vilimpoc.org/research/ku-latency/send-data.c" "https://vilimpoc.org/research/ku-latency/ku-latency.c")
+md5sums=('SKIP' 'SKIP')
+
+package() {
+	cd $srcdir
+	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+	mkdir -p "${benchmark_path}"
+	gcc -o ${benchmark_path}/ku-latency ku-latency.c -lrt -Wall
+	gcc -o ${benchmark_path}/send-data send-data.c -lrt -Wall
+}
