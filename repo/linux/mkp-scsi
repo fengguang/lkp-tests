@@ -1,6 +1,9 @@
 url: https://kernel.googlesource.com/pub/scm/linux/kernel/git/mkp/scsi.git
 owner: Martin K. Petersen <martin.petersen@oracle.com>
 integration_testing_branches: for-next
+notify_build_success_branch: .*
+whitelist_branch: for-next|queue|fixes
+blacklist_branch: .*
 subsystems:
 - scsi
 - target
