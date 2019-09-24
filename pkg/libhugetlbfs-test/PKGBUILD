@@ -1,0 +1,26 @@
+pkgname=libhugetlbfs-test
+pkgver=git
+pkgrel=1
+pkgdesc='interacts with the Linux hugetlbfs to make large pages available to applications in a transparent manner.'
+url='https://github.com/libhugetlbfs/libhugetlbfs'
+arch=('i686' 'x86_64')
+license=('GPL')
+source=("$pkgname"::"https://github.com/libhugetlbfs/libhugetlbfs.git")
+md5sums=('SKIP')
+
+build()
+{
+	cd $srcdir/$pkgname
+
+	if [ "$DISTRO" = "centos" ]; then
+		patch -p1 < ${startdir}-addon/0001-tests-hugetests.h-fix-compile-errors-under-centos.patch || return
+	fi
+}
+
+package()
+{
+	cd $srcdir
+
+	mkdir -p "${pkgdir}/lkp/benchmarks/${pkgname}"
+	cp -af "$pkgname" "${pkgdir}/lkp/benchmarks/"
+}
