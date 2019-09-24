@@ -1,0 +1,18 @@
+pkgname=autotest
+pkgver=git
+pkgrel=1
+arch=('i686' 'x86_64')
+url="https://github.com/autotest/autotest"
+license=('GPL')
+source=("https://github.com/autotest/autotest.git")
+md5sums=('SKIP')
+
+build() {
+	cd "$srcdir/autotest"
+	git submodule update --init --recursive
+}
+
+package() {
+	mkdir -p "${pkgdir}/lkp/benchmarks"
+	cp -af "$srcdir/autotest" "${pkgdir}/lkp/benchmarks"
+}
