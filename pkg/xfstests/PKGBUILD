@@ -10,7 +10,7 @@ license=('GPL')
 install=xfstests.install
 depends=('xfsprogs' 'openssl' 'libaio')
 makedepends=('git')
-source=("$pkgname"::'https://kernel.googlesource.com/pub/scm/fs/xfs/xfstests-dev.git')
+source=("$pkgname"::'https://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git')
 md5sums=('SKIP') # skip git source checksum
 
 pkgver() {

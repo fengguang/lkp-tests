@@ -14,7 +14,7 @@ license=('GPL')
 depends=('')
 provides=('f2fs-tools')
 conflicts=('f2fs-tools')
-source=("https://kernel.googlesource.com/pub/scm/linux/kernel/git/jaegeuk/f2fs-tools.git")
+source=("https://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs-tools.git")
 md5sums=('SKIP')
 
 build() {
