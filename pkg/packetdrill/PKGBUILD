@@ -13,7 +13,7 @@ build()
 
 	sed -i 's/gettid(/packetdrill_gettid(/g' run_system_call.c
 	./configure
-	make
+	CPPFLAGS="" make
 }
 
 package()
