@@ -1,5 +1,5 @@
 pkgname=mongodb
-pkgver=4.0.4
+pkgver=r4.1.6
 pkgrel=0
 arch=('i686' 'x86_64')
 url="https://www.mongodb.com/"
@@ -11,7 +11,8 @@ sha256sums=('SKIP')
 
 build() {
 	cd "${srcdir}/mongo"
-	pip3 install --user -r etc/pip/dev-requirements.txt
+	git checkout -f r4.1.6
+	pip install --user -r etc/pip/dev-requirements.txt
 	buildscripts/scons.py all --disable-warnings-as-errors -j $(nproc)
 }
 
