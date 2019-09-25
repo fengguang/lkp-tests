@@ -14,7 +14,7 @@ build() {
 	git checkout -f r4.1.6
 	for i in $(seq 1 10)
 	do
-		pip install --user -r etc/pip/dev-requirements.txt && break
+		pip install  -i https://mirrors.aliyun.com/pypi/simple --user -r etc/pip/dev-requirements.txt && break
 	done
 	buildscripts/scons.py all --disable-warnings-as-errors -j $(nproc)
 }
