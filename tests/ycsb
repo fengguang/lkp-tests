@@ -22,7 +22,10 @@
 
 . "$LKP_SRC"/lib/reproduce-log.sh
 . "$LKP_SRC"/lib/numactl.sh
-export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
+. $LKP_SRC/lib/tests/cassandra.sh
+
+setup_java_home
+
 export JRE_HOME=${JAVA_HOME}/jre
 export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
 export PATH=${JAVA_HOME}/bin:$PATH
