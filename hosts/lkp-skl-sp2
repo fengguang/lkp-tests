@@ -1,9 +1,0 @@
-model: Skylake-SP
-nr_node: 1
-nr_cpu: 40
-memory: 64G
-nr_ssd_partitions: 1
-ssd_partitions: /dev/disk/by-id/ata-INTEL_SSDSC2CW240A3_CVCV20430416240CGN-part1
-swap_partitions: LABEL=SWAP
-rootfs_partition: LABEL=LKP-ROOTFS
-kernel_cmdline_hw: acpi_rsdp=0x6b305014
