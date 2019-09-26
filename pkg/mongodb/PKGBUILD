@@ -20,7 +20,14 @@ build() {
 	do
 		$PIP install -i https://mirrors.aliyun.com/pypi/simple --user -r etc/pip/dev-requirements.txt && break
 	done
-	buildscripts/scons.py core --disable-warnings-as-errors -j $(nproc)
+
+	[ "$DISTRO" = "centos" ] && {
+		source $LKP_SRC/distro/$DISTRO
+		install_gcc7
+		build_opts="CC=/opt/rh/devtoolset-7/root/usr/bin/gcc CXX=/opt/rh/devtoolset-7/root/usr/bin/g++"
+	}
+
+	buildscripts/scons.py core --disable-warnings-as-errors -j $(nproc) $build_opts
 }
 
 package() {

@@ -112,3 +112,10 @@ pack_benchmark_deps()
 		fi
 	done
 }
+
+install_gcc7()
+{
+	yum install -y centos-release-scl-rh
+	yum install -y "devtoolset-7-gcc*"
+	source /opt/rh/devtoolset-7/enable
+}
