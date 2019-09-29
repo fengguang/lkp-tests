@@ -11,7 +11,7 @@ build()
 {
 	cd $srcdir/$pkgname
 
-	make
+	CPPFLAGS="" make
 	make -C ../mce-inject
 }
 
