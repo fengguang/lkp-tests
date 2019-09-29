@@ -62,7 +62,12 @@ phoronix-test-suite\.byte\.0\.lps: 1
 phoronix-test-suite\.caffe\.0\.milli-seconds: -1
 phoronix-test-suite\.clomp\.0\.speedup: 1
 phoronix-test-suite\.compress-7zip\.0\.mips: 1
-phoronix-test-suite\.crafty\.0\.nodes_per_second: -1
+phoronix-test-suite\.hint\..+\.quips: 1
+phoronix-test-suite\.mpcbench\.0\.global_score: 1
+phoronix-test-suite\.namd\.0\.days_ns: -1
+phoronix-test-suite\.osbench\.0\.us_per_event: -1
+phoronix-test-suite\.sockperf\.0\.usec: -1
+phoronix-test-suite\..+\.nodes_per_second: 1
 phoronix-test-suite\.ctx-clock\.0\.clocks: -1
 phoronix-test-suite\.cyclictest\.0\.ms_average: -1
 phoronix-test-suite\.dacapobench\.0\.msec: -1
