@@ -49,7 +49,7 @@ stress-ng:
 
 ---
 testtime:
-- 5s
+- 1s
 
 stress-ng:
   class:
@@ -60,7 +60,7 @@ sysctl:
 - sc_pid_max: 4194304
 
 testtime:
-- 5s
+- 1s
 
 stress-ng:
   class:
