@@ -3762,7 +3762,7 @@ if (( INFAKEROOT )); then
 	chmod 755 "$pkgdirbase"
 	if (( ! SPLITPKG )); then
 		pkgdir="$pkgdirbase/$pkgname"
-		mkdir "$pkgdir"
+		[ -d "$pkgdir" ] || mkdir "$pkgdir"
 		if (( PKGFUNC )); then
 			run_package
 		fi
