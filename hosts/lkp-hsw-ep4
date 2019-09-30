@@ -4,7 +4,9 @@ nr_cpu: 72
 memory: 256G
 nr_ssd_partitions: 1 
 hdd_partitions: /dev/disk/by-id/ata-ST2000NM0011_Z1P67EBL-part1
-ssd_partitions: /dev/nvme0n1p1
+ssd_partitions:
+ - /dev/disk/by-id/nvme-INTEL_SSDPECME016T4_CVF87091000C1P6IGN-1-part1
+ - /dev/disk/by-id/nvme-INTEL_SSDPECME016T4_CVF87091000C1P6IGN-2-part1
 swap_partitions:
 rootfs_partition: LABEL=LKP-ROOTFS
 brand: Intel(R) Xeon(R) CPU E5-2699 v3 @ 2.30GHz
