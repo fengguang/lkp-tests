@@ -1,0 +1,51 @@
+suite: memtier
+testcase: memtier
+category: benchmark
+timeout: 4h
+
+force_reboot: 1
+
+online-aep: 2
+
+preload: 1
+
+runtime: 900
+
+sysctl:
+  sc_overcommit_memory: 1
+  sc_somaxconn: 65535
+
+transparent_hugepage:
+  thp_enabled: never
+  thp_defrag: never
+
+numactl:
+  all: 1
+
+mpstat:
+  per_node: 1
+  nodes: ALL
+
+perf-stat:
+  per_socket: 1
+  revents: "uncore_imc_0/event=0x0,umask=0,name=UNC_M_CLOCKTICKS_IMC0/,uncore_imc_1/event=0x0,umask=0,name=UNC_M_CLOCKTICKS_IMC1/,uncore_imc_2/event=0x0,umask=0,name=UNC_M_CLOCKTICKS_IMC2/,uncore_imc_3/event=0x0,umask=0,name=UNC_M_CLOCKTICKS_IMC3/,uncore_imc_4/event=0x0,umask=0,name=UNC_M_CLOCKTICKS_IMC4/,uncore_imc_5/event=0x0,umask=0,name=UNC_M_CLOCKTICKS_IMC5/,{uncore_imc_0/event=0xe3,umask=0,name=UNC_M_PMM_RPQ_INSERTS_IMC0/,uncore_imc_0/event=0xe0,umask=1,name=UNC_M_PMM_RPQ_OCCUPANCY_IMC0/},{uncore_imc_3/event=0xe3,umask=0,name=UNC_M_PMM_RPQ_INSERTS_IMC3/,uncore_imc_3/event=0xe0,umask=1,name=UNC_M_PMM_RPQ_OCCUPANCY_IMC3/},{uncore_imc_0/event=0xe7,umask=0,name=UNC_M_PMM_WPQ_INSERTS_IMC0/,uncore_imc_0/event=0xe4,umask=1,name=UNC_M_PMM_WPQ_OCCUPANCY_IMC0/},{uncore_imc_3/event=0xe7,umask=0,name=UNC_M_PMM_WPQ_INSERTS_IMC3/,uncore_imc_3/event=0xe4,umask=1,name=UNC_M_PMM_WPQ_OCCUPANCY_IMC3/},{uncore_imc_1/event=0x10,umask=0,name=UNC_M_RPQ_INSERTS_IMC1/,uncore_imc_1/event=0x80,umask=0,name=UNC_M_RPQ_OCCUPANCY_IMC1/},{uncore_imc_2/event=0x10,umask=0,name=UNC_M_RPQ_INSERTS_IMC2/,uncore_imc_2/event=0x80,umask=0,name=UNC_M_RPQ_OCCUPANCY_IMC2/},{uncore_imc_4/event=0x10,umask=0,name=UNC_M_RPQ_INSERTS_IMC4/,uncore_imc_4/event=0x80,umask=0,name=UNC_M_RPQ_OCCUPANCY_IMC4/},{uncore_imc_5/event=0x10,umask=0,name=UNC_M_RPQ_INSERTS_IMC5/,uncore_imc_5/event=0x80,umask=0,name=UNC_M_RPQ_OCCUPANCY_IMC5/},{uncore_imc_1/event=0x20,umask=0,name=UNC_M_WPQ_INSERTS_IMC1/,uncore_imc_1/event=0x81,umask=0,name=UNC_M_WPQ_OCCUPANCY_IMC1/},{uncore_imc_2/event=0x20,umask=0,name=UNC_M_WPQ_INSERTS_IMC2/,uncore_imc_2/event=0x81,umask=0,name=UNC_M_WPQ_OCCUPANCY_IMC2/},{uncore_imc_4/event=0x20,umask=0,name=UNC_M_WPQ_INSERTS_IMC4/,uncore_imc_4/event=0x81,umask=0,name=UNC_M_WPQ_OCCUPANCY_IMC4/},{uncore_imc_5/event=0x20,umask=0,name=UNC_M_WPQ_INSERTS_IMC5/,uncore_imc_5/event=0x81,umask=0,name=UNC_M_WPQ_OCCUPANCY_IMC5/}"
+
+nr_processes:
+- 8
+- 24
+
+cluster: cs-localhost
+
+if role server:
+  redis-server:
+    redis_cpu_node_bind: 1
+
+if role client:
+  memtier:
+    n_ratio: "1:4"
+    data_size: 1024
+    key_pattern: "G:G"
+    key_max: 45000000
+    n_client: 3
+    n_pipeline: 64
+    cpu_node_bind: 0
