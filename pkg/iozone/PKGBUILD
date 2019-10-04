@@ -1,6 +1,6 @@
 pkgname=iozone
-pkgver=3_434
-pkgrel=4
+pkgver=3
+pkgrel=479
 pkgdesc="A filesystem benchmark tool"
 arch=('i686' 'x86_64')
 url="http://www.iozone.org/"
@@ -8,18 +8,18 @@ license=('custom')
 depends=('sh')
 optdepends=('gnuplot: for generating graph reports')
 install=$pkgname.install
-source=("http://www.${pkgname}.org/src/current/${pkgname}${pkgver}.tar")
-sha512sums=('75c75a3a59aedc007222d2e6877631d41afd89f1e6702deca3f7e815a6586ad57bcc1ca55f01656bcfa9f733fda74edcc3fe241c7bef143a9aa60527e6865f59')
+source=("http://www.${pkgname}.org/src/current/${pkgname}${pkgver}_${pkgrel}.tar")
+sha512sums=('cf8095dd9c9938fb0c1dc0aefc093a1be147634e8f2ffb2cd3b05409c8d220085816a44fb8821c9c7df8622d23ba1fb5d8342259cdd7fac7d36b1bc1fdc0ded4')
 
 build() {
-	cd "${srcdir}/${pkgname}${pkgver}/src/current"
+	cd "${srcdir}/${pkgname}${pkgver}_${pkgrel}/src/current"
 
 	[[ "${CARCH}" == 'x86_64' ]] && TARGET='-AMD64'
 	make linux${TARGET} CFLAGS="${CFLAGS}"
 }
 
 package() {
-	cd "${srcdir}/${pkgname}${pkgver}/src/current"
+	cd "${srcdir}/${pkgname}${pkgver}_${pkgrel}/src/current"
 
 	_examples=/usr/share/doc/iozone3/examples
 
