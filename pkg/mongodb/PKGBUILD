@@ -25,7 +25,7 @@ build() {
 		$PIP install -i https://mirrors.aliyun.com/pypi/simple --user -r etc/pip/dev-requirements.txt && break
 	done
 
-	[ "$DISTRO" = "centos" ] && {
+	[ "$DISTRO" = "centos" -o "$DISTRO" = "aliyun" ] && {
 		source $LKP_SRC/distro/$DISTRO
 		install_gcc7
 		build_opts="CC=/opt/rh/devtoolset-7/root/usr/bin/gcc CXX=/opt/rh/devtoolset-7/root/usr/bin/g++"
