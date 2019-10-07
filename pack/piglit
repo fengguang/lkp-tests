@@ -89,7 +89,7 @@ generate_test_groups()
 	# In order to avoid errors or test cases that do not exist, update the relevant testcase at pack time
 	# In split testcase, the total number of files is specified so that you don't have to update job.yaml every time
         cd $BM_ROOT/groups || exit
-        split quick-all -d -n r/200 -a 3 quick-
+        split quick-all -d -n r/250 -a 3 quick-
         split igt-all -d -n r/300 -a 3 igt-
         grep 'basic' igt-all > igt-basic
         split igt-basic -d -n r/4 -a 1 igt-basic-
