@@ -16,6 +16,10 @@ build() {
 
 	cd "${srcdir}/mongo"
 	git checkout -f r4.1.6
+
+	# ImportError: 'module' object has no attribute 'check_specifier' on aliyun OS
+	$PIP install setuptools --upgrade
+
 	for i in $(seq 1 10)
 	do
 		$PIP install -i https://mirrors.aliyun.com/pypi/simple --user -r etc/pip/dev-requirements.txt && break
