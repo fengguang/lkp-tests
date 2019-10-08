@@ -26,7 +26,7 @@ build()
 	cd ../$pkgname
 	./autogen.sh prefix=/ 2>&1 || return
 
-	[ "$DISTRO" != "centos" ] && {
+	[ "$DISTRO" = "debian" -o "$DISTRO" = "ubuntu" ] && {
 		# include libc6-dev_2.23's header
 		mkdir extract
 		# FIXME: use source code instead so that non-debian distro can work well
