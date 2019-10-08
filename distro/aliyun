@@ -31,6 +31,9 @@ distro_install_depends()
 
 		echo install packages for $script: $packages
 
+		local ocfs2_tools_name=$(echo "$packages" | grep 'ocfs2-tools')
+		[ -n "$ocfs2_tools_name" ] && install_ocfs2_tools "$ocfs2_tools_name"
+
 		for pkg in $packages
 		do
 			rpm --quiet --query $pkg || yum install -y $pkg
@@ -105,6 +108,9 @@ pack_benchmark_deps()
 
 		packages=$(echo $(get_dependency_packages $DISTRO $BM_NAME))
 
+		local ocfs2_tools_name=$(echo "$packages" | grep 'ocfs2-tools')
+		[ -n "$ocfs2_tools_name" ] && download_ocfs2_tools "$ocfs2_tools_name"
+
 		if yum_download "$packages"; then
 			yum_pack
 		else
@@ -123,4 +129,34 @@ install_gcc7()
 	fi
 	yum install -y "devtoolset-7-gcc*"
 	source /opt/rh/devtoolset-7/enable
+}
+
+download_ocfs2_tools()
+{
+	local pkgs=$1
+
+	mkdir -p /opt/rpms
+	yum install -y wget
+
+	wget -nc -P /opt/rpms https://yum.oracle.com/repo/OracleLinux/OL7/latest/x86_64/getPackage/ocfs2-tools-1.8.6-11.el7.x86_64.rpm
+	# Try to download ocfs2-tools's dependences
+	yum install --downloadonly /opt/rpms/ocfs2-tools-1.8.6-11.el7.x86_64.rpm
+
+	if echo "$pkgs" | grep -q 'ocfs2-tools-devel'; then
+		wget -nc -P /opt/rpms https://yum.oracle.com/repo/OracleLinux/OL7/latest/x86_64/getPackage/ocfs2-tools-devel-1.8.6-11.el7.x86_64.rpm
+		# Try to download ocfs2-tools-devel's dependences
+		yum install --downloadonly /opt/rpms/ocfs2-tools-devel-1.8.6-11.el7.x86_64.rpm
+	fi
+}
+
+install_ocfs2_tools()
+{
+	local pkgs=$1
+
+	download_ocfs2_tools "$pkgs"
+
+	yum install -y /opt/rpms/ocfs2-tools-1.8.6-11.el7.x86_64.rpm
+
+	echo "$pkgs" | grep -q 'ocfs2-tools-devel' && \
+		yum install -y /opt/rpms/ocfs2-tools-devel-1.8.6-11.el7.x86_64.rpm
 }

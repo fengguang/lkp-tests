@@ -217,6 +217,14 @@ install_packages() {
 	echo "Use: $LKP_SRC/distro/installer/$distro install $generic_packages"
 	[ -n "$DRY_RUN" ] && return
 
+	if [ "$distro" = "centos" -o "$distro" = "aliyun" ]; then
+		local ocfs2_tools_name=$(echo "$generic_packages" | grep 'ocfs2-tools')
+		if [ -n "$ocfs2_tools_name" ]; then
+			. $LKP_SRC/distro/$distro
+			install_ocfs2_tools "$ocfs2_tools_name"
+		fi
+	fi
+
 	$LKP_SRC/distro/installer/$distro $generic_packages || {
 		echo "Cannot install some packages in $LKP_SRC/distro/depends/${script}"
 		exit 1
