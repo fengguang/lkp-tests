@@ -11,3 +11,4 @@ locktoture\..+lock_hotplug
 rcutoture\..+rcu_hotplug
 stderr.*
 xfstests\..+(fail|crash|crashed|timeout|warn|dmesg-warn|dmesg-fail|inconsistent_fs)$
+piglit\..+(fail|dmesg-warn|warn|dmesg-fail)$
