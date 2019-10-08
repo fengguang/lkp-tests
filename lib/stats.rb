@@ -6,6 +6,7 @@ MAX_RATIO = 5
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
 require 'set'
+require 'timeout'
 require "#{LKP_SRC}/lib/lkp_git"
 require "#{LKP_SRC}/lib/git-update" if File.exist?("#{LKP_SRC}/lib/git-update.rb")
 require "#{LKP_SRC}/lib/yaml"
@@ -637,22 +638,15 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
 end
 
 def load_matrices_to_compare(matrix_path1, matrix_path2, options = {})
-  begin
-    a = search_load_json matrix_path1
-    return [nil, nil] unless a
+  a = search_load_json matrix_path1
+  return [nil, nil] unless a
 
-    b = if matrix_path2
-          search_load_json matrix_path2
-        else
-          Timeout.timeout(300) { load_base_matrix matrix_path1, a, options }
-        end
-  rescue Timeout::Error
-    log_error 'load_base_matrix timeout'
-    return [nil, nil]
-  rescue StandardError => e
-    log_exception(e, binding)
-    return [nil, nil]
-  end
+  b = if matrix_path2
+        search_load_json matrix_path2
+      else
+        Timeout.timeout(300) { load_base_matrix matrix_path1, a, options }
+      end
+
   [a, b]
 end
 
