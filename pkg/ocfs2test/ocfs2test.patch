@@ -1,0 +1,10 @@
+diff --git a/programs/mkfs-tests/mkfs-test.sh b/programs/mkfs-tests/mkfs-test.sh
+index 313de1d..8b64c04 100755
+--- a/programs/mkfs-tests/mkfs-test.sh
++++ b/programs/mkfs-tests/mkfs-test.sh
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ #
+ # mkfs_test -o <outdir> -d <device>
+ #

@@ -1,0 +1,52 @@
+pkgname=ocfs2test
+pkgver=git
+pkgrel=1
+url='https://oss.oracle.com/projects/ocfs2-test'
+validpgpkeys=('748231EBCBD808A14F5E85D28C004C2F93481F6B')
+arch=('i686' 'x86_64')
+license=('GPL')
+source=('http://kr.archive.ubuntu.com/ubuntu/pool/main/g/glibc/libc6-dev_2.23-0ubuntu3_amd64.deb' 'http://downloads.openfabrics.org/downloads/mpi-selector/mpi-selector-1.0.3.tar.gz' 'git://oss.oracle.com/git/jlbec/reflink.git' "$pkgname"::'git://oss.oracle.com/git/ocfs2-test.git')
+md5sums=('0437b586145b9179837377a979c78364' '33afc8610e3e68fc2575987a751f3f2e' 'SKIP' 'SKIP')
+
+build()
+{
+	cd $srcdir
+
+	export PATH=/usr/lib64/openmpi/bin:$PATH
+
+	tar -xzvf ./mpi-selector-1.0.3.tar.gz -C ./
+	cd ./mpi-selector-1.0.3
+	./configure 2>&1 || return
+	make install 2>&1 || return
+
+	cd ../reflink/
+	./configure 2>&1 || return
+	make install 2>&1 || return
+
+	cd ../$pkgname
+	./autogen.sh prefix=/ 2>&1 || return
+
+	[ "$DISTRO" != "centos" ] && {
+		# include libc6-dev_2.23's header
+		mkdir extract
+		# FIXME: use source code instead so that non-debian distro can work well
+		dpkg -X ../libc6-dev_2.23-0ubuntu3_amd64.deb extract || return
+		sed -i -e '/^CFLAGS =/a\CFLAGS += -I..\/..\/extract\/usr\/include\/x86_64-linux-gnu -I..\/..\/extract\/usr\/include' programs/xattr_tests/Makefile
+		sed -i -e '/^CFLAGS =/a\CFLAGS += -I..\/..\/extract\/usr\/include\/x86_64-linux-gnu -I..\/..\/extract\/usr\/include' programs/directio_test/Makefile
+		sed -i -e '/^CFLAGS =/a\CFLAGS += -I..\/..\/extract\/usr\/include\/x86_64-linux-gnu -I..\/..\/extract\/usr\/include' programs/discontig_bg_test/Makefile
+		sed -i -e '/^INCLUDES =/a\INCLUDES += -I..\/..\/extract\/usr\/include\/x86_64-linux-gnu -I..\/..\/extract\/usr\/include' programs/reflink_tests/Makefile
+	}
+
+	make 2>&1 || return
+}
+
+package()
+{
+	mkdir -p "${pkgdir}/lkp/benchmarks/$pkgname"
+	cp $LKP_SRC/pkg/ocfs2test-addon/timing-0.0.1.tar.gz "${pkgdir}/lkp/benchmarks/$pkgname"
+
+	cd $srcdir/$pkgname
+	make install DESTDIR="${pkgdir}/lkp/benchmarks/$pkgname/ocfs2" 2>&1 || return
+
+	cp /usr/local/bin/reflink "${pkgdir}/lkp/benchmarks/$pkgname"
+}

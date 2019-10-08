@@ -90,7 +90,7 @@ add_single_cluster()
 
 single_node_test()
 {
-	local test_dir="$LKP_SRC/pack/ocfs2test-addon/tests"
+	local test_dir="$LKP_SRC/pkg/ocfs2test-addon/tests"
 	while read -r test_name
 	do
 		su - ocfs2test -c "$OCFS2TEST_HOME/ocfs2/bin/single_run-WIP.sh -k $OCFS2TEST_HOME/linux-kernel.tar.gz \
