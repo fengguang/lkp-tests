@@ -66,7 +66,8 @@ pack()
 				cp -al root/.ssh/authorized_keys etc/dropbear/
 			}
 			# don't override /lib, it could be a soft link to usr/lib at some distro(clear is known)
-			find * | grep -v -e ^lib$ -e ^/lib$ | $cpio_cmd --append
+			# don't override /etc/init.d, it is a soft link to /etc/rc.d/init.d on some distributions(e.g. centos, aliyun)
+			find * | grep -v -e ^lib$ -e ^/lib$ -e ^etc/init.d$ | $cpio_cmd --append
 		}
 		{
 			# restore permission for cleanup
