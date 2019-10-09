@@ -139,14 +139,16 @@ download_ocfs2_tools()
 	yum install -y wget
 
 	wget -nc -P /opt/rpms https://yum.oracle.com/repo/OracleLinux/OL7/latest/x86_64/getPackage/ocfs2-tools-1.8.6-11.el7.x86_64.rpm
-	# Try to download ocfs2-tools's dependences
-	yum install --downloadonly /opt/rpms/ocfs2-tools-1.8.6-11.el7.x86_64.rpm
+
+	local download_pkgs="/opt/rpms/ocfs2-tools-1.8.6-11.el7.x86_64.rpm"
 
 	if echo "$pkgs" | grep -q 'ocfs2-tools-devel'; then
 		wget -nc -P /opt/rpms https://yum.oracle.com/repo/OracleLinux/OL7/latest/x86_64/getPackage/ocfs2-tools-devel-1.8.6-11.el7.x86_64.rpm
-		# Try to download ocfs2-tools-devel's dependences
-		yum install --downloadonly /opt/rpms/ocfs2-tools-devel-1.8.6-11.el7.x86_64.rpm
+		download_pkgs="$download_pkgs /opt/rpms/ocfs2-tools-devel-1.8.6-11.el7.x86_64.rpm"
 	fi
+
+	# Try to download the dependences of ocfs2-tools/ocfs2-tools-devel
+	yum install --downloadonly "$download_pkgs"
 }
 
 install_ocfs2_tools()
