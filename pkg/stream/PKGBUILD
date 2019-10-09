@@ -9,5 +9,5 @@ md5sums=('SKIP')
 
 package() {
 	mkdir -p "${pkgdir}/lkp/benchmarks/${pkgname}"
-	cp -af "$srcdir/stream.c" "${pkgdir}/lkp/benchmarks/${pkgname}"
+	cp "$srcdir/stream.c" "${pkgdir}/lkp/benchmarks/${pkgname}"
 }
