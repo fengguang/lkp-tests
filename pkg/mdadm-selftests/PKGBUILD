@@ -1,0 +1,26 @@
+pkgname=mdadm-selftests
+pkgver=git
+pkgrel=1
+url='https://github.com/neilbrown/mdadm'
+arch=('i686' 'x86_64')
+license=('GPL')
+source=('mdadm-selftests'::'https://github.com/neilbrown/mdadm.git')
+md5sums=('SKIP')
+
+build()
+{
+	cd $srcdir/$pkgname
+
+	# make failed when using gcc-7, no error with using gcc-6.
+	sed -i "s/CWFLAGS = -Wall -Werror/CWFLAGS = -Wall/" Makefile
+
+	make test
+}
+
+package()
+{
+	cd $srcdir/$pkgname
+
+	mkdir -p "${pkgdir}/lkp/benchmarks/${pkgname}"
+	cp -a ./* "${pkgdir}/lkp/benchmarks/${pkgname}"
+}

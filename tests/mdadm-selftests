@@ -48,7 +48,7 @@ modprobe loop max_loop=14 || die "failed to modprobe loop"
 check_ignored_cases()
 {
 	local casename=$1
-	local ignored_by_lkp=$LKP_SRC/pack/mdadm-selftests-addon/ignored_by_lkp
+	local ignored_by_lkp=$LKP_SRC/pkg/mdadm-selftests-addon/ignored_by_lkp
 
 	# skip cases that in ignored_by_lkp
 	[ -f "$ignored_by_lkp" ] || return
