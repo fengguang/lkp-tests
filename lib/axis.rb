@@ -21,7 +21,7 @@ end
 def axis_format(axis_key, value)
   git = axis_key_git(axis_key)
   if git
-    tag = git.gcommit(value).tags.first
+    tag = git.gcommit(value).interested_tag
     if tag
       [axis_key, tag]
     else
