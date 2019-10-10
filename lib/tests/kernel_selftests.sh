@@ -333,6 +333,7 @@ run_tests()
 
 	# rseq costs about 25mins, run it alone.
 	if [[ "$selftest" = "rseq" ]]; then
+		sed -i 's/default_timeout=45/default_timeout=300/' kselftest/runner.sh
 		log_cmd make run_tests -C $selftest 2>&1
 		exit $?
 	fi
