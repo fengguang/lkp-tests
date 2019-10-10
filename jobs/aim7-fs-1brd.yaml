@@ -32,7 +32,13 @@ aim7:
 aim7:
   test:
   - sync_disk_rw
-  load: {{ fs == 'btrfs' ? 10 : 600 }}
+  load: {{
+          case fs
+          when 'btrfs' then 10
+          when 'f2fs'  then 200
+          else              600
+          end
+        }}
 
 ---
 aim7:
