@@ -1,5 +1,5 @@
-model: qemu-system-x86_64 -enable-kvm -cpu SandyBridge
+model: qemu-system-i386 -enable-kvm -cpu SandyBridge
 nr_cpu: 2
-memory: 4G
+memory: 8G
 hdd_partitions: /dev/vda /dev/vdb /dev/vdc /dev/vdd /dev/vde /dev/vdf
 swap_partitions: /dev/vdg
