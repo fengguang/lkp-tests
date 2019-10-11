@@ -1,0 +1,12 @@
+url: https://git.kernel.org/pub/scm/linux/kernel/git/xiang/erofs.git
+owner: Gao Xiang <gaoxiang25@huawei.com>
+integration_testing_branches:
+- dev
+- fixes
+git_am_branch: dev-test
+notify_build_success_branch: .*
+build_success_mail_cc:
+- Xiang Gao <xiang@kernel.org>
+mail_cc:
+- Xiang Gao <xiang@kernel.org>
+- linux-erofs@lists.ozlabs.org
