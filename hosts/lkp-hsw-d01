@@ -2,7 +2,8 @@ model: Haswell
 nr_node: 1
 nr_cpu: 8
 memory: 8G
-hdd_partitions: 
-swap_partitions: 
-rootfs_partition: LABEL=LKP-ROOTFS
+nr_hdd_partitions: 1
+hdd_partitions: /dev/disk/by-id/ata-WDC_WD1002FAEX-00Z3A0_WD-WCATR5433073-part2
+swap_partitions:
+rootfs_partition: /dev/disk/by-id/ata-WDC_WD1002FAEX-00Z3A0_WD-WCATR5433073-part1
 brand: Intel(R) Core(TM) i7-4770 CPU @ 3.40GHz

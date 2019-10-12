@@ -4,6 +4,6 @@ nr_cpu: 72
 memory: 128G
 nr_ssd_partitions: 4
 ssd_partitions: /dev/disk/by-id/ata-INTEL_SSDSC2BG012T4_BTHC428202321P2OGN-part*
-rootfs_partition: LABEL=LKP-ROOTFS
+rootfs_partition: /dev/disk/by-id/ata-INTEL_SSDSC2BB800G4_CVWL34260041800RGN-part1
 kernel_cmdline_hw: acpi_rsdp=0x6c030014
 brand: Intel(R) Xeon(R) Gold 6139 CPU @ 2.30GHz

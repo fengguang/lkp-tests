@@ -2,8 +2,12 @@ model: Nehalem-EP
 nr_node: 2
 nr_cpu: 16
 memory: 48G
+nr_hdd_partitions: 3
 hdd_partitions:
+  /dev/disk/by-id/wwn-0x50015170ed62696d-part1
+  /dev/disk/by-id/wwn-0x50015170ed6268b6-part1
+  /dev/disk/by-id/wwn-0x50015170ed6269c5-part1
 swap_partitions: LABEL=SWAP
-rootfs_partition: LABEL=LKP-ROOTFS
+rootfs_partition: /dev/disk/by-id/wwn-0x55cd2e4123123127-part2
 brand: Intel(R) Xeon(R) CPU X5570 @ 2.93GHz
 kernel_cmdline_hw: console=ttyS1,115200 console=tty0

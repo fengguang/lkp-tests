@@ -2,8 +2,10 @@ model: Ivy Bridge
 nr_node: 1
 nr_cpu: 4
 memory: 8G
-nr_hdd_partitions: 1
-hdd_partitions: /dev/disk/by-id/ata-ST1000DM003-1CH162_Z1DBQSB0-part1
+nr_hdd_partitions: 2
+hdd_partitions:
+ /dev/disk/by-id/ata-ST1000DM003-1CH162_Z1DBQSB0-part1
+ /dev/disk/by-id/ata-ST1000DM003-1CH162_Z1DBQSB0-part2
 swap_partitions: /dev/disk/by-id/ata-ST1000DM003-1CH162_Z1DBQSB0-part3
 rootfs_partition: /dev/disk/by-id/ata-ST1000DM003-1CH162_Z1DBQSB0-part4
 brand: Intel(R) Core(TM) i3-3220 CPU @ 3.30GHz

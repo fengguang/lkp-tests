@@ -4,5 +4,5 @@ nr_cpu: 8
 memory: 16G
 nr_hdd_partitions: 0
 hdd_partitions:
-rootfs_partition: LABEL=LKP-ROOTFS
+rootfs_partition: /dev/disk/by-id/ata-ST1000DM003-1CH162_Z1DARXSK-part1
 brand: Intel(R) Core(TM) i7-3770K CPU @ 3.50GHz

@@ -4,5 +4,5 @@ nr_cpu: 4
 memory: 4G
 nr_hdd_partitions: 0
 hdd_partitions:
-rootfs_partition: LABEL=LKP-ROOTFS
+rootfs_partition: /dev/disk/by-id/ata-ST3320620AS_6QF23A6E-part1
 brand: Intel(R) Core(TM) i3-3220 CPU @ 3.30GHz

@@ -4,5 +4,5 @@ nr_cpu: 4
 memory: 4G
 nr_hdd_partitions: 0
 hdd_partitions:
-rootfs_partition: LABEL=LKP-ROOTFS
+rootfs_partition: /dev/disk/by-id/ata-WDC_WD20EZRX-00D8PB0_WD-WCC4M0KTT6NK-part1
 brand: Intel(R) Core(TM) i3-3220 CPU @ 3.30GHz
