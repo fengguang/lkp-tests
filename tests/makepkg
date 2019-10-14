@@ -12,6 +12,7 @@
 . $LKP_SRC/lib/env.sh
 
 [ -n "$rootfs" ] || die "rootfs is empty"
+[ -n "$benchmark" ] || die "benchmark is empty"
 
 export DISTRO=${rootfs%%-*}
 
