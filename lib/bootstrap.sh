@@ -461,6 +461,15 @@ show_default_gateway()
 	fi
 }
 
+show_default_interface()
+{
+	if has_cmd ip; then
+		ip -4 route list 0/0 | cut -f5 -d' '
+	else
+		route -n | awk '$4 == "UG" {print $8}'
+	fi
+}
+
 netconsole_init()
 {
 	# don't init netconsole at local run
@@ -471,8 +480,11 @@ netconsole_init()
 
 	# use default gateway as netconsole server
 	netconsole_server=$(show_default_gateway)
+	# Select the interface that can access netconsole server
+	netconsole_interface=$(show_default_interface)
 	[ -n "$netconsole_server" ] || return
-	modprobe netconsole netconsole=@/,$netconsole_port@$netconsole_server/
+	# eth0 is default interface if netconsole_interface is null.
+	modprobe netconsole netconsole=@/$netconsole_interface,$netconsole_port@$netconsole_server/
 }
 
 tbox_use_lkp_ipxe()
