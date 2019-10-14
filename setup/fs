@@ -78,8 +78,9 @@ start_nfsd()
 		log_eval "echo '$entry' >> /etc/exports"
 	done
 
-	log_cmd /etc/init.d/rpcbind start
-	log_cmd /etc/init.d/nfs-common start
+	log_cmd systemctl restart rpcbind
+	log_cmd systemctl restart rpc-statd
+	log_cmd systemctl restart nfs-idmapd
 	log_cmd systemctl restart nfs-server || {
 		systemctl status nfs-kernel-server.service
 		cat /etc/exports
