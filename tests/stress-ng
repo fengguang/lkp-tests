@@ -44,6 +44,9 @@ set_for_class()
 	"filesystem")
 		mount_dev
 		;;
+	"vm")
+		cd ${mount_points%% *}
+		;;
 	*)
 		;;
 	esac
