@@ -1,8 +1,6 @@
 suite: makepkg
 testcase: makepkg
 
-rootfs: debian-x86_64.cgz
-
 testbox: lkp-opteron1
 branch: linus/master
 commit: RELEASE
