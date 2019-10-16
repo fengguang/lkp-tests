@@ -21,7 +21,13 @@ fsmark:
   - 8K
   - 5K
   - 9B
-  test_size: 400M
+  test_size: {{
+                case fs
+                when 'ext4' then fs2 == 'nfsv4' ? '50M' : '100M'
+                when 'xfs' then fs2 == 'nfsv4' ? '50M' : '100M'
+                else fs2 == 'nfsv4' ? '200M' : '400M'
+                end
+             }}
   sync_method: fsyncBeforeClose
   nr_directories: 16d
   nr_files_per_directory: 256fpd
