@@ -12,7 +12,7 @@ autotest:
   # - autotest_regression
   # - barriertest  # autotest self test
   # - bash_shared_mapping # OOM on 32G vm
-  - bonnie
+  # - bonnie # compile error
   - btreplay
   - cgroup
   # - connectathon # compile error
