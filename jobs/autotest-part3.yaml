@@ -8,6 +8,6 @@ autotest:
   test:
   - compilebench
   - iosched_bugs
-  - isic
-  - systemtap
+  # - isic # compile error
+  # - systemtap # compile error
   # - unixbench # duplicate to jobs/unixbench.yaml

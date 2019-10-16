@@ -15,10 +15,10 @@ autotest:
   - bonnie
   - btreplay
   - cgroup
-  - connectathon
+  # - connectathon # compile error
   - cpuflags
   # - cpu_hotplug # cost about 1 hour, terminated
-  - ctcs
+  # - ctcs # compile error
   - cyclictest
   # - dacapo # URLError: <urlopen error [Errno 111] Connection refused>
   # - dbench
@@ -59,12 +59,12 @@ autotest:
   # - lmbench # killed unexpectedly, kernel_oops: proc-vmstat invoked oom-killer
   # - ltp
   - lvsetup
-  - memory_api
+  # - memory_api # compile error
   # - netperf2
   # - netpipe
   - npb
   - parallel_dd
-  - perfmon # build error
+  # - perfmon # build error
   - pktgen
   # - posixtest # cost more than 1h
   # - profiler_sync # Not a test case
@@ -83,12 +83,12 @@ autotest:
   - sleeptest
   - smatch
   - sparse
-  - spew
+  # - spew # compile error
   # - stress # stress: FAIL: [2957] (238) invalid hdd byte value: 0
   - synctest
   # - sysbench
   # - tbench
-  - tiobench
+  # - tiobench # compile error
   - tracing_microbenchmark
   # - unixbench5
   # - uptime # soft_timeout on vm-snb and lkp-skl-d01
@@ -97,12 +97,12 @@ autotest:
   # - xfstests
   # - xmtest # Connecting to xm-test.xensource.com (xm-test.xensource.com)|220.250.64.225|:80... failed: Connection refused.
 
----
-kernel_cmdline: maxcpus=16
+#---
+#kernel_cmdline: maxcpus=16
 
-autotest:
-  test:
-  - tsc
+#autotest:
+#  test:
+  # - tsc # compile error
 
 ---
 need_memory: 3G
