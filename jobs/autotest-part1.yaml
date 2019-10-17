@@ -71,7 +71,7 @@ autotest:
   - profiler_test
   - qemu_iotests
   - reaim
-  - real_time_tests
+  # - real_time_tests # [stderr] /usr/bin/ld: i386 architecture of input file `../../lib/libjvmsim.o' is incompatible with i386:x86-64 output
   # - regression
   - rmaptest
   - rtc
