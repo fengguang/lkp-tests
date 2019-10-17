@@ -127,6 +127,11 @@ end
 def install_benchmarks(script, distro)
   return unless File.file? "#{LKP_SRC}/pack/#{script}"
 
+  if File.basename(File.realpath "#{LKP_SRC}/pack/#{script}") == 'perf'
+    `perf -v 2>/dev/null`
+    return if $?.success?
+  end
+
   pkg_name = script.tr('_', '-') + '-LKP'
   arch = `uname -m`.chomp
   puts "Making #{script} benchmark for #{distro}"
