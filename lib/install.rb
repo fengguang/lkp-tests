@@ -25,7 +25,7 @@ def get_dependency_packages(distro, script)
 
   generic_packages = []
   File.read(base_file).each_line do |line|
-    line.sub(/#.*/, '')
+    line = line.sub(/#.*/, '')
     generic_packages.concat line.split
   end
 
