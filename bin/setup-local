@@ -12,6 +12,7 @@ require "#{LKP_SRC}/lib/yaml"
 require "#{LKP_SRC}/lib/job"
 require "#{LKP_SRC}/lib/distro-info"
 require "#{LKP_SRC}/lib/install"
+require "#{LKP_SRC}/lib/common"
 
 TMP = LKP_SRC + '/tmp'
 
@@ -22,6 +23,7 @@ end
 
 $opt_hdd = []
 $opt_ssd = []
+$dryrun = false
 
 opt_parser = OptionParser.new do |opts|
   opts.banner = 'Usage: setup-local [options] <script>/<jobfile>'
@@ -35,6 +37,12 @@ opt_parser = OptionParser.new do |opts|
 
   opts.on('--ssd partition', 'SSD partition for IO tests') do |ssd|
     $opt_ssd << ssd
+  end
+
+  opts.on('-s', '--dry-run', 'Perform a simulation of events') do
+    alias system puts_stdout # only output system commands to stdout
+    alias puts puts_stderr   # redirect logs to stderr to leave stdout to commands
+    $dryrun = true
   end
 
   opts.on_tail('-h', '--help', 'Show this message') do
@@ -70,12 +78,16 @@ end
 scripts.uniq!
 
 def make_wakeup
-  return if File.executable? LKP_SRC + '/bin/event/wakeup'
+  return if !$dryrun && File.executable?(LKP_SRC + '/bin/event/wakeup')
 
   system "cd #{LKP_SRC}/bin/event && make wakeup"
 end
 
 def create_lkp_dirs
+  if $dryrun
+    system "mkdir -p #{TMP} /lkp/paths /lkp/benchmarks"
+    return
+  end
   FileUtils.mkdir_p TMP
   FileUtils.mkdir_p '/lkp/paths'
   FileUtils.mkdir_p '/lkp/benchmarks'
@@ -86,6 +98,7 @@ def create_host_config
   if File.exist? host_config
     puts 'reusing ' + host_config
   else
+    puts 'creating ' + host_config
     mem_kb = File.open('/proc/meminfo').gets.split[1].to_i
     mem_gb = mem_kb >> 20
     mem_gb = (mem_gb + 3) & 0xfffffffc
