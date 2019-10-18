@@ -277,7 +277,7 @@ test_setting()
 	esac
 }
 
-clean_up()
+cleanup_ltp()
 {
 	[ "$test" = "mm-00" ] && {
 		dmesg -C || exit
