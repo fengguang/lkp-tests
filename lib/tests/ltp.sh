@@ -90,13 +90,6 @@ rearrange_case()
 	cd ..
 }
 
-patch_source()
-{
-	local patch=$LKP_SRC/pack/ltp-addon/$1
-	[ -f $patch ] || return 0
-	patch -p1 < $patch
-}
-
 rebuild()
 {
 	[ -d "$1" ] || return
@@ -112,13 +105,6 @@ rebuild()
 
 build_ltp()
 {
-	patch_source ltp.patch || return
-	patch_source v2-0001-shmctl-enable-subtest-SHM_LOCK-SHM_UNLOCK-only-if.patch || return
-	# fix commond:ar01
-	patch_source ar_fail.patch || return
-	# fix hyperthreading:smt_smp_affinity
-	patch_source smt_smp_affinity.patch || return
-
 	split_syscalls
 	rearrange_case || return
 	make autotools
