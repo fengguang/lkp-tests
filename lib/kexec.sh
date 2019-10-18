@@ -168,13 +168,6 @@ kexec_to_next_job()
 	download_initrd
 	download_initrd_ret=$?
 
-	# commit 690eaa5320 broke kexec, and it has been merged into kernel v5.1-rc1
-	# so we need to disable kaslr to bypass the trap.
-	local kernel_version_major=$(file -bL $kernel_file | sed 's/.*version //;s/ .*//' | awk -F. '{print $1"."$2}')
-	[ "$kernel_version_major" = "5.0" ] && append="$append nokaslr"
-	[ "$kernel_version_major" = "5.1" ] && append="$append nokaslr"
-	[ "$kernel_version_major" = "5.3" ] && append="$append nokaslr"
-
 	set_job_state "booting"
 
 	echo "LKP: kexec loading..."
