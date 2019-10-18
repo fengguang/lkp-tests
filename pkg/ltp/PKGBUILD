@@ -1,0 +1,126 @@
+pkgname=ltp
+pkgver=git
+pkgrel=1
+url='https://github.com/linux-test-project/ltp'
+arch=('i686' 'x86_64')
+license=('GPL')
+options=('!strip')
+source=('https://git.centos.org/r/rpms/rusers.git' 'https://github.com/PeterHuewe/tpm-emulator.git' 'https://github.com/numactl/numactl.git' 'https://github.com/linux-test-project/ltp.git')
+md5sums=('SKIP' 'SKIP' 'SKIP' 'SKIP')
+
+. $LKP_SRC/lib/tests/ltp.sh
+
+benchmark_path="lkp/benchmarks/${pkgname}"
+
+build_rusers()
+{
+	local branch=$(git branch -a | grep /c | tail -1 | awk -F/ '{print $NF}')
+	git checkout "$branch" || return
+
+	local rusers_version=$(grep ^Version: SPECS/rusers.spec | awk '{print $2}')
+
+	local source=$(grep ^Source: SPECS/rusers.spec | awk '{print $2}')
+	local url=$(echo $source | sed s/"%{version}"/${rusers_version}/g)
+	curl -k "$url" -o netkit-rusers.tar.gz
+
+	tar zxf netkit-rusers.tar.gz
+
+	for p in $(grep ^Patch SPECS/rusers.spec | awk '{print $2}')
+	do
+		echo "Patching $p ..."
+		patch -f -p0 < SOURCES/$p
+	done
+
+	cd netkit-rusers-$rusers_version
+	./configure --prefix="${benchmark_path}"/netkit-rusers
+	cd rup
+	make || return
+	cd ../../
+}
+
+build_tpm_emulator()
+{
+	# the lastest tpm-emulator is currupted so use old one
+	git reset --hard 0f4579e
+	# remove Werror to use gcc-7
+	sed -i "s/-Werror//g" CMakeLists.txt
+	# don't build kernel module
+	sed -i "s/add_subdirectory(tpmd_dev)/#add_subdirectory(tpmd_dev)/g" CMakeLists.txt
+	mkdir build && cd build
+	cmake ..
+	make || return
+	make install || return
+	make package || return
+	cd ..
+}
+
+build_numactl()
+{
+	autoreconf -f -i
+	./configure --prefix="${benchmark_path}"/testcases/bin/numactl
+	make
+}
+
+install_rusers()
+{
+	mkdir -p "${benchmark_path}"/netkit-rusers/{bin,man/man1}
+
+	local rusers_version=$(grep ^Version: SPECS/rusers.spec | awk '{print $2}')
+	cd netkit-rusers-$rusers_version/rup
+	make install 2> /dev/null
+}
+
+install_tpm_emulator()
+{
+	mkdir -p "${benchmark_path}"/tpm-emulater
+	cp build/*.zip "${benchmark_path}"/tpm-emulater
+}
+
+install_numactl()
+{
+	make install
+	ln -sf "${benchmark_path}"/testcases/bin/numactl/bin/numademo "${benchmark_path}"/testcases/bin/numademo
+	ln -sf "${benchmark_path}"/testcases/bin/numactl/bin/memhog "${benchmark_path}"/testcases/bin/memhog
+}
+
+build()
+{
+	cd $srcdir/$pkgname
+
+	benchmark_path="${pkgdir}/${benchmark_path}"
+
+	build_ltp "${benchmark_path}" || exit
+
+	cd ../tpm-emulator || exit
+	build_tpm_emulator || exit
+
+	cd ../numactl || exit
+	build_numactl || exit
+
+	[ "$DISTRO" = "debian" -o "$DISTRO" = "ubuntu" ] && {
+		cd ../rusers || exit
+		build_rusers || exit
+	}
+	return 0
+}
+
+package()
+{
+	cd $srcdir/$pkgname
+
+	benchmark_path="${pkgdir}/${benchmark_path}"
+
+	install_ltp "${benchmark_path}" || exit
+
+	cd ../tpm-emulator || exit
+	install_tpm_emulator || exit
+
+	cd ../numactl || exit
+	install_numactl || exit
+
+	[ "$DISTRO" = "debian" -o "$DISTRO" = "ubuntu" ] && {
+		cd ../rusers || exit
+		install_rusers || exit
+	}
+	return 0
+}

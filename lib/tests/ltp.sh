@@ -129,7 +129,7 @@ install_ltp()
 check_ignored_cases()
 {
 	test=$1
-	local ignored_by_lkp=$LKP_SRC/pack/ltp-addon/ignored_by_lkp
+	local ignored_by_lkp=$LKP_SRC/pkg/ltp-addon/ignored_by_lkp
 	cp $ignored_by_lkp ./ignored_by_lkp
 
 	# regex match
