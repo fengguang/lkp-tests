@@ -58,7 +58,7 @@ class LinuxTestcasesTableSet
      'xfstests', 'autotest', 'packetdrill'].freeze
   OTHER_TESTCASES =
     ['0day-boot-tests', '0day-kbuild-tests', 'build-dpdk', 'build-sof', 'sof_test', 'build-nvml',
-     'build-qemu', 'convert-lkpdoc-to-html', 'convert-lkpdoc-to-html-css',
+     'build-qemu', 'convert-lkpdoc-to-html', 'convert-lkpdoc-to-html-css', 'rsync-rootfs',
      'health-stats', 'hwinfo', 'internal-lkp-service', 'ipmi-setup', 'debug',
      'lkp-bug', 'lkp-install-run', 'lkp-services', 'lkp-src', 'pack', 'lkp-qemu',
      'pack-deps', 'makepkg', 'makepkg-deps', 'borrow', 'dpdk-dts', 'mbtest', 'build-acpica', 'build-ltp',
