@@ -13,7 +13,7 @@ autotest:
   # - barriertest  # autotest self test
   # - bash_shared_mapping # OOM on 32G vm
   # - bonnie # compile error
-  - btreplay
+  # - btreplay # compile error
   - cgroup
   # - connectathon # compile error
   - cpuflags
