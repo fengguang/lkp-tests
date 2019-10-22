@@ -1,0 +1,10 @@
+suite: autotest
+testcase: autotest
+category: functional
+
+need_memory: 1G
+disk: 1HDD
+
+autotest:
+  test:
+  - parallel_dd

@@ -36,6 +36,14 @@ cd $BENCHMARK_ROOT/autotest || exit
 iface=$(ifconfig -s | awk '{print $1}' | grep ^eth | head -1)
 [ -n "$iface" -a "$iface" != "eth0" ] && sed -i "s/eth='eth0'/eth='$iface'/g" client/tests/pktgen/control
 
+[ "$test" = "parallel_dd" ] && {
+	partition="${partitions%% *}"
+	[ "$partition" ] || die "No disk to run parallel_dd"
+
+	grep -q ^fs client/tests/parallel_dd/control || \
+		sed -i "/^job\.run_test.*/i\fs = job\.filesystem\(\'$partition\', job\.tmpdir\)" client/tests/parallel_dd/control
+}
+
 log_cmd python2.7 client/autotest-local run $test 2>&1 || exit
 
 exit_value=$?
