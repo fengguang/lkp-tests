@@ -62,6 +62,15 @@ fixup_npb()
 	sed -i 's/mpiexec -np/mpiexec --allow-run-as-root -np/' "$target"
 }
 
+# fix issue: sed: -e expression #1, char 16: unterminated `s' command
+fixup_aom_av1()
+{
+	[ -n "$environment_directory" ] || return
+	local test=$1
+	local target=${environment_directory}/pts/${test}/aom-av1
+	sed -i "s,sed $'s,sed 's,g" "$target"
+}
+
 # start nginx and disable ipv6
 fixup_nginx()
 {
@@ -282,6 +291,9 @@ run_test()
 			;;
 		npb-*)
 			fixup_npb $test || die "failed to fixup test npb"
+			;;
+		aom-av1-*)
+			fixup_aom_av1 $test || die "failed to fixup test aom-av1"
 			;;
 		bullet-*)
 			fixup_bullet $test || die "failed to fixup test bullet"
