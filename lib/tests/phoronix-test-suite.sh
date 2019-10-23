@@ -253,6 +253,15 @@ run_test()
 			test_opt="\n1\n3\n3\nn"
 			export DISPLAY=:0
 			;;
+		plaidml-*)
+			# Choose
+			# 1: No
+			# 2: Inference
+			# 3: Mobilenet
+			# 4: OpenCL
+			test_opt="\n2\n2\n1\n2\nn"
+			export DISPLAY=:0
+			;;
 		video-cpu-usage-*)
 			# Choose
 			# 1: OS X CoreVideo
