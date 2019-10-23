@@ -208,6 +208,7 @@ setup_python2()
 {
 	python -V 2>&1 | grep -q "^Python 2" && return
 	ln -sf $(which python2) $(which python) || return
+	ln -sf $(which pip2) $(which pip) || return
 }
 
 fixup_install()
@@ -216,6 +217,10 @@ fixup_install()
 	case $test in
 	glmark2-*)
 		# python2 is required for installing glmark2
+		setup_python2
+		;;
+	numenta-nab-*)
+		# fix issue: No matching distribution found for nupic==1.0.5 (from nab==1.0)
 		setup_python2
 		;;
 	esac
