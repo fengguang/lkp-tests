@@ -193,16 +193,6 @@ end
 
 ## IO redirection
 
-def puts_stdout(*args)
-  $stdout.puts *args.join(' ')
-  return 0
-end
-
-def puts_stderr(*args)
-  $stderr.puts *args.join(' ')
-  return 0
-end
-
 def redirect_to(io)
   saved_stdout = $stdout
   $stdout = io
