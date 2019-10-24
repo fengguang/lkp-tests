@@ -16,7 +16,7 @@ autotest:
   # - btreplay # compile error
   - cgroup
   # - connectathon # compile error
-  - cpuflags
+  # - cpuflags # compile error
   # - cpu_hotplug # cost about 1 hour, terminated
   # - ctcs # compile error
   - cyclictest
