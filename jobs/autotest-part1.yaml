@@ -91,7 +91,7 @@ autotest:
   - tracing_microbenchmark
   # - unixbench5
   # - uptime # soft_timeout on vm-snb and lkp-skl-d01
-  - virt
+  # - virt # compile error
   - wb_kupdate
   # - xfstests
   # - xmtest # Connecting to xm-test.xensource.com (xm-test.xensource.com)|220.250.64.225|:80... failed: Connection refused.
