@@ -211,6 +211,12 @@ setup_python2()
 	ln -sf $(which pip2) $(which pip) || return
 }
 
+setup_python3()
+{
+	python -V 2>&1 | grep -q "^Python 3" && return
+	ln -sf $(which python3) $(which python) || return
+}
+
 fixup_install()
 {
 	local test=$1
@@ -222,6 +228,10 @@ fixup_install()
 	numenta-nab-*)
 		# fix issue: No matching distribution found for nupic==1.0.5 (from nab==1.0)
 		setup_python2
+		;;
+	pymongo-inserts-*)
+		# python3 is required for installing pymongo-inserts
+		setup_python3
 		;;
 	esac
 }
