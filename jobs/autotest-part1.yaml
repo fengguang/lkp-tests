@@ -68,7 +68,7 @@ autotest:
   # - posixtest # cost more than 1h
   # - profiler_sync # Not a test case
   # - profiler_test # compile error
-  - qemu_iotests
+  # - qemu_iotests # compile error
   - reaim
   # - real_time_tests # [stderr] /usr/bin/ld: i386 architecture of input file `../../lib/libjvmsim.o' is incompatible with i386:x86-64 output
   # - regression
