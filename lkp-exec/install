@@ -251,7 +251,7 @@ build_install_benchmarks() {
 			;;
 		fedora)
 			local rpm_pkg=$BUILD_DIR/$pkg_name/RPMS/$pkg_name.$(uname -m).rpm
-			[ -f $rpm_pkg ] || return
+			[ -f $rpm_pkg ] || return 0
 			rpm -ivh --replacepkgs $rpm_pkg ;;
 		*)
 			echo "Just make /lkp/benchmarks/$script-$(uname -m).cgz" ;;
