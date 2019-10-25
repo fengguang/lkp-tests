@@ -352,9 +352,6 @@ run_test()
 	[ -f "$root_access" ] || die "$root_access not exist"
 	sed -i 's,#!/bin/sh,#!/bin/dash,' $root_access
 
-	## this is to avoid to write the tmp "test-results" to disk
-	mount -t tmpfs tmpfs /var/lib/phoronix-test-suite/test-results || die "failed to mount tmpfs"
-
 	if [ "$test_opt" ]; then
 		echo -e "$test_opt" | log_cmd phoronix-test-suite run $test
 	else
