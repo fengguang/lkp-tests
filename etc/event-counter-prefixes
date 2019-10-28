@@ -16,6 +16,10 @@ numa-vmstat.nr_dirtied
 numa-vmstat.nr_vmscan_immediate_reclaim
 numa-vmstat.nr_written
 numa-vmstat.numa_
+proc-vmstat.nr_promoted
+proc-vmstat.nr_promote_fail
+proc-vmstat.nr_promote_ratelimit
+proc-vmstat.nr_promote_isolate_fail
 proc-vmstat.allocstall
 proc-vmstat.compact_
 proc-vmstat.htlb_buddy_alloc_
