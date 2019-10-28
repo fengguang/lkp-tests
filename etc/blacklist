@@ -224,7 +224,6 @@
 ^kmsg.bochs-drm#:#:#:\[drm:drm_fbdev_client_hotplug\[drm_kms_helper\]\]*ERROR*fbdev:Failed_to_setup_generic_emulation
 ^kmsg.bochs-drm#:#:#:\[drm:drm_fbdev_client_hotplug\]*ERROR*fbdev:Failed_to_setup_generic_emulation
 ^kmsg.bochs-drmdrmfb:enable_CONFIG_FB_LITTLE_ENDIAN_to_support_this_framebuffer
-^kmsg.BTRFS_error\(device_.*\):
 ^kmsg.bucket.*
 ^kmsg.Buffer_I/O_error_on_dev_.*,logical_block#,async_page_read
 ^kmsg.(busted|tasks|rcu):End-test_grace-period_state
@@ -252,7 +251,6 @@
 ^kmsg.EFER=#PAT=
 ^kmsg.e_Filesystem_requires_source_device
 ^kmsg.EntryControls=#ExitControls=
-^kmsg.e_Pipe_file_descriptor_not_open
 ^kmsg.EPT_pointer=
 ^kmsg.ES:sel=#,attr=#,limit=#,base=
 ^kmsg.ExceptionBitmap=#PFECmask=#PFECmatch=
@@ -305,11 +303,8 @@
 ^kmsg.nd_region_region#:nmem#:is_locked,failing_probe
 ^kmsg.nouveau#:#:#:disp:ERROR#\[PUSHBUFFER_ERR\]#\[\]chid#mthd#data
 ^kmsg.OF:overlay:WARNING:memory_leak_will_occur_if_overlay_removed,property
-^kmsg.OF:/testcase-data/phandle-tests/consumer
 ^kmsg.Page_cache_invalidation_failure_on_direct_I/O.Possible_data_corruption_due_to_collision_with_buffered_I/O
 ^kmsg.parport#:cannot_grant_exclusive_access_for_device_parkbd
-^kmsg.parport_pc_parport_pc.#:Unable_to_set_coherent_dma_mask:disabling_DMA
-^kmsg.pcengines_apuv2:failed_to_detect_apu_board_via_dmi
 ^kmsg.pciehp#:b1:#:pcie004:Slot\(.*\):Power_fault
 ^kmsg.PinBased=#CPUBased=#SecondaryExec=
 ^kmsg.platform_regulatory.#:Falling_back_to_sysfs_fallback_for:regulatory.db
@@ -335,7 +330,6 @@
 ^kmsg.scsi#:#:#:#:rejecting_I/O_to_dead_device
 ^kmsg.sd#:#:#:#:\[.*\]Optimal_transfer_size#bytes<PAGE_SIZE\(#bytes\)
 ^kmsg.sja1000_isa:insufficient_parameters_supplied
-^kmsg.smpboot:do_boot_cpu_failed\(-#\)to_wakeup_CPU
 ^kmsg.Spectre_V2:Spectre_mitigation:kernel_not_compiled_with_retpoline;no_mitigation_available
 ^kmsg.SS:sel=#,attr=#,limit=#,base=
 ^kmsg.Starting_Bootlog_daemon:bootlogd:cannot_allocate_pseudo_tty:No_such_file_or_directory
@@ -345,8 +339,6 @@
 ^kmsg.test_bitmap:parselist
 ^kmsg.test_stackinit:failures
 ^kmsg.timestamp:.*
-^kmsg.tpm_tpm#:A_TPM_error\(.*\)occurred_attempting_to_determine_the_timeouts
-^kmsg.tpm_tpm#:tpm_try_transmit:tpm_send:error
 ^kmsg.TPR_Threshold=
 ^kmsg.TR:sel=#,attr=#,limit=#,base=
 ^kmsg.tsc:Fast_TSC_calibration_failed
@@ -354,7 +346,6 @@
 ^kmsg.TSC_Offset=
 ^kmsg.tsc:Unable_to_calibrate_against_PIT
 ^kmsg.unregister_netdevice:waiting_for_lo_to_become_free.Usage_count=
-^kmsg.urandom_read:#callbacks_suppressed
 ^kmsg.usb_usb#-port#:Cannot_enable.Maybe_the_USB_cable_is_bad\?
 ^kmsg.veth[0-9]*:Failed_to_cycle_device_veth
 ^kmsg.VFS:Filesystem_freeze_failed
