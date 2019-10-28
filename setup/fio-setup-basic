@@ -10,6 +10,11 @@
 # - fallocate
 # - time_based
 # - raw_disk
+# - invalidate
+# - nr_files
+# - filesize
+# - io_size
+# - file_service_type
 
 . $LKP_SRC/lib/common.sh
 . $LKP_SRC/lib/unit.sh
@@ -27,7 +32,12 @@ size=$((test_size / nr_task))
 : ${iodepth:=32}
 : ${direct:=0}
 : ${fallocate:=posix}
+: ${invalidate:=1}
 : ${nr_task:=1}
+: ${nr_files:=1}
+: ${filesize:=1G}
+: ${io_size:=$size}
+: ${file_service_type:=roundrobin}
 
 direct=$(parse_bool $direct)
 raw_disk=$(parse_bool $raw_disk)
@@ -51,10 +61,14 @@ bs=$bs
 ioengine=$ioengine
 iodepth=$iodepth
 size=$size
+nr_files=$nr_files
+filesize=$filesize
 direct=$direct
 runtime=$runtime
-invalidate=1
+invalidate=$invalidate
 fallocate=$fallocate
+io_size=$io_size
+file_service_type=$file_service_type
 group_reporting
 create_only=1
 "
