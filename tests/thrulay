@@ -13,4 +13,5 @@ export PATH=$BENCHMARK_ROOT/thrulay/sbin:$BENCHMARK_ROOT/thrulay/bin:$PATH
 [ -z "$server" ] && server=127.0.0.1
 server=${server%% *}
 
+export LD_LIBRARY_PATH=/lkp/benchmarks/thrulay/lib:$LD_LIBRARY_PATH
 log_cmd thrulay -t $runtime $server
