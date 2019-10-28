@@ -1,0 +1,53 @@
+force_reboot: 1
+suite: fio-basic
+testcase: fio-basic
+category: benchmark
+
+runtime: 1500s
+nr_task: 4t
+
+numactl:
+  interleave: "0,2"
+
+disk: 1SSD
+fs:
+- ext4
+
+online-aep:
+  enable_promotion: true
+  enable_demotion: true
+  online_size: 4G
+
+fio-setup-basic:
+  rw:
+    - read
+    - write
+  ioengine:
+    - psync
+  test_size: 64G
+  nr_files: 16
+  io_size: 128G
+  file_service_type: gauss
+  invalidate: 0
+  iodepth: 1
+
+pagecache_migration:
+  promotion_percent:
+    - 100
+  promotion_rate_limit:
+    - -1
+    - 800
+    - 400
+    - 200
+  demotion_rate_limit:
+    - 10
+    - 50
+    - 100
+    - 200
+
+cgroup2:
+  memory.high: 8G
+  cpuset.cpus: $(cat /sys/devices/system/node/node0/cpulist)
+  cpuset.mems: "0,2"
+
+fio:
