@@ -41,7 +41,7 @@ build_env()
 	setup_compiler
 
 	# ./check_max_mmap.sh: line 44: /build/nvml/src/src/test/tools/anonymous_mmap/../../testconfig.sh: No such file or directory
-	log_cmd cp src/test/testconfig.sh.example src/test/testconfig.sh
+	[ -f src/test/testconfig.sh ] || log_cmd cp src/test/testconfig.sh.example src/test/testconfig.sh
 	# clear CFLAGS and CXXFLAGS to avoid unknown arguments
 	# clang-8: error: unknown argument: '-ftree-loop-distribute-patterns'
 	# clang-8: error: unknown argument: '-fno-semantic-interposition'
