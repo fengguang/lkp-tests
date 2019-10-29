@@ -16,6 +16,7 @@ require "#{LKP_SRC}/lib/constant"
 require "#{LKP_SRC}/lib/statistics"
 require "#{LKP_SRC}/lib/log"
 require "#{LKP_SRC}/lib/tests"
+require "#{LKP_SRC}/lib/changed_stat"
 
 $metric_add_max_latency = IO.read("#{LKP_SRC}/etc/add-max-latency").split("\n")
 $metric_latency = IO.read("#{LKP_SRC}/etc/latency").split("\n")
@@ -197,25 +198,19 @@ def changed_stats?(sorted_a, min_a, mean_a, max_a,
     return true if len_a * mean_b > options['variance'] * len_b * mean_a
     return true if len_b * mean_a > options['variance'] * len_a * mean_b
   elsif options['distance']
-    return false if max_a.is_a?(Integer) && (min_a - max_b == 1 || min_b - max_a == 1)
+    cs = LKP::ChangedStat.new stat, sorted_a, sorted_b, options
 
-    if sorted_a.size < 3 || sorted_b.size < 3
-      min_gap = [len_a, len_b].max * options['distance']
-      return true if min_b - max_a > min_gap
-      return true if min_a - max_b > min_gap
-
-      return false
-    end
-    return true if min_b > max_a && (min_b - max_a) > (mean_b - mean_a) / 2
-    return true if min_a > max_b && (min_a - max_b) > (mean_a - mean_b) / 2
+    return true if cs.change?
   elsif options['gap']
     gap = options['gap']
     return true if min_b > max_a && (min_b - max_a) > (mean_b - mean_a) * gap
     return true if min_a > max_b && (min_a - max_b) > (mean_a - mean_b) * gap
   else
-    return true if min_b > mean_a && mean_b > max_a
-    return true if min_a > mean_b && mean_a > max_b
+    cs = LKP::ChangedStat.new stat, sorted_a, sorted_b, options
+
+    return true if cs.change?
   end
+
   false
 end
 
