@@ -222,6 +222,13 @@ setup_python3()
 	ln -sf $(which python3) $(which python) || return
 }
 
+fixup_dolfyn_install()
+{
+	local test=$1
+	local target=/var/lib/phoronix-test-suite/test-profiles/pts/${test}/install.sh
+	sed -i "4a sed -i \"s/stop'bug:/stop 'bug:/g\" gmsh2dolfyn.f90" "$target"
+}
+
 fixup_install()
 {
 	local test=$1
@@ -237,6 +244,10 @@ fixup_install()
 	pymongo-inserts-*)
 		# python3 is required for installing pymongo-inserts
 		setup_python3
+		;;
+	dolfyn-*)
+		# fix issue: Error: Blank required in STOP statement near (1)
+		fixup_dolfyn_install $test || die "failed to fixup dolfyn install"
 		;;
 	esac
 }
