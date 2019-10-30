@@ -285,6 +285,11 @@ run_test()
 			test_opt="\n1\nn"
 			export DISPLAY=:0
 			;;
+		hdparm-read-*)
+			# Choose
+			# 1: /dev/sda
+			test_opt="\n1\nn"
+			;;
 		nexuiz-*)
 			# Choose
 			# 1: 800 x 600
