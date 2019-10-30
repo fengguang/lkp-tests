@@ -90,7 +90,7 @@ fi
 [[ -f /tmp/pxelinux-selection.cfg ]] || {
 	job=$(grep -w -o "job=[^ ]\+" /tmp/pxelinux.cfg)
 	job=${job#job=}
-	[[ $job ]] && $WGET_CMD "$path_prefix/cgi-bin/lkp-jobfile-append-var?job_file=$job&job_state=give_back"
+	[[ $job ]] && $WGET_CMD -O /dev/null "$path_prefix/cgi-bin/lkp-jobfile-append-var?job_file=$job&job_state=give_back"
 	exit 0
 }
 
@@ -178,11 +178,11 @@ elif [[ $kernel ]]; then
 	# logged.
 	acpi_rsdp=$(grep -m1 ^ACPI /sys/firmware/efi/systab 2>/dev/null | cut -f2- -d=)
 	[ -n "$acpi_rsdp" ] && params="$params acpi_rsdp=$acpi_rsdp"
-	[[ $job ]] && $WGET_CMD "$path_prefix/cgi-bin/lkp-jobfile-append-var?job_file=$job&last_kernel=$(uname -r)"
-	[[ $job ]] && $WGET_CMD "$path_prefix/cgi-bin/lkp-jobfile-append-var?job_file=$job&job_state=booting"
+	[[ $job ]] && $WGET_CMD -O /dev/null "$path_prefix/cgi-bin/lkp-jobfile-append-var?job_file=$job&last_kernel=$(uname -r)"
+	[[ $job ]] && $WGET_CMD -O /dev/null "$path_prefix/cgi-bin/lkp-jobfile-append-var?job_file=$job&job_state=booting"
 	echo kexec -l $kernel --append=\"$params\" $opt_initrd
 	kexec -l $kernel --append="$params" $opt_initrd
 	kexec -e
-	[[ $job ]] && $WGET_CMD "$path_prefix/cgi-bin/lkp-jobfile-append-var?job_file=$job&job_state=kexec_fail"
+	[[ $job ]] && $WGET_CMD -O /dev/null "$path_prefix/cgi-bin/lkp-jobfile-append-var?job_file=$job&job_state=kexec_fail"
 	# kexec -f $kernel $initrd --command-line="$params"
 fi
