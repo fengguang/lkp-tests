@@ -71,12 +71,17 @@ fixup_aom_av1()
 	sed -i "s,sed $'s,sed 's,g" "$target"
 }
 
-# start nginx and disable ipv6
+# reinstall nginx and disable ipv6 before starting nginx
 fixup_nginx()
 {
 	[ -n "$environment_directory" ] || return
 	local test=$1
+
+	# nginx_/sbin/nginx binary from installed nginx triggers
+	# "Illegal instruction" so reinstall nginx to fix it.
+	phoronix-test-suite force-install $test
 	sed -i 's/^::1/#::1/' /etc/hosts
+
 	${environment_directory}/pts/${test}/nginx_/sbin/nginx
 	sleep 5
 }
