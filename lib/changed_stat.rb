@@ -44,7 +44,7 @@ module LKP
       if options['distance']
         if max_a.is_a?(Integer) && (min_a - max_b == 1 || min_b - max_a == 1)
           log_cause "min_a - max_b == 1 || min_b - max_a == 1"
-          log_verbose "not cs | cs: #{cs}" if options['trace_cause'] == stat
+          log_debug "not cs | cs: #{cs}" if options['trace_cause'] == stat
 
           return false
         end
@@ -55,10 +55,10 @@ module LKP
           min_gap = [len_a, len_b].max * options['distance']
 
           return true if min_b - max_a > min_gap
-          log_verbose "NOT: min_b - max_a > min_gap (#{min_gap})"
+          log_cause "NOT: min_b - max_a > min_gap (#{min_gap})"
 
           return true if min_a - max_b > min_gap
-          log_verbose "NOT: min_a - max_b > min_gap (#{min_gap})"
+          log_cause "NOT: min_a - max_b > min_gap (#{min_gap})"
         else
           return true if min_b > max_a && (min_b - max_a) > (mean_b - mean_a) / 2
           log_cause "NOT: min_b > max_a && (min_b - max_a) > (mean_b - mean_a) / 2"
@@ -74,7 +74,7 @@ module LKP
         log_cause "NOT: min_a > mean_b && mean_a > max_b"
       end
 
-      log_verbose "not cs | cs: #{cs}" if options['trace_cause'] == stat
+      log_debug "not cs | cs: #{cs}" if options['trace_cause'] == stat
       false
     end
 
@@ -89,7 +89,7 @@ module LKP
         cause = cause.gsub(name, "#{name} (#{eval name})")
       end
 
-      log_verbose "not cs | cause: #{cause}"
+      log_debug "not cs | cause: #{cause}"
     end
   end
 end
