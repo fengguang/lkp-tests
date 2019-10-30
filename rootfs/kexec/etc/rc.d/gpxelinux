@@ -179,6 +179,7 @@ elif [[ $kernel ]]; then
 	acpi_rsdp=$(grep -m1 ^ACPI /sys/firmware/efi/systab 2>/dev/null | cut -f2- -d=)
 	[ -n "$acpi_rsdp" ] && params="$params acpi_rsdp=$acpi_rsdp"
 
+	[[ $job ]] && $WGET_CMD "$path_prefix/cgi-bin/lkp-jobfile-append-var?job_file=$job&last_kernel=$(uname -r)"
 	[[ $job ]] && $WGET_CMD $path_prefix/cgi-bin/lkp-jobfile-append-var?job_file=$job&job_state=booting
 	echo kexec -l $kernel --append=\"$params\" $opt_initrd
 	kexec -l $kernel --append="$params" $opt_initrd

@@ -168,6 +168,7 @@ kexec_to_next_job()
 	download_initrd
 	download_initrd_ret=$?
 
+	jobfile_append_var "last_kernel=$(uname -r)"
 	set_job_state "booting"
 
 	echo "LKP: kexec loading..."
