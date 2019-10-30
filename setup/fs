@@ -25,6 +25,7 @@ fs_options() {
 			def_mount="${def_mount},logbsize=262144"
 			def_mkfs="-f -d agcount=$nr_partitions"
 		}
+		ensure_mkfs='-f'
 		;;
 	ext*)
 		ensure_mkfs='-q -F'
