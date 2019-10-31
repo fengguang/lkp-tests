@@ -1,5 +1,6 @@
 #!/bin/bash
 
+. $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/debug.sh
 
 # ffmpeg only support max 64 threads
@@ -369,10 +370,11 @@ run_test()
 	export PTS_SILENT_MODE=1
 	echo PTS_SILENT_MODE=$PTS_SILENT_MODE
 
-	root_access="/usr/share/phoronix-test-suite/pts-core/static/root-access.sh"
-	[ -f "$root_access" ] || die "$root_access not exist"
-	sed -i 's,#!/bin/sh,#!/bin/dash,' $root_access
-
+	is_clearlinux || {
+		root_access="/usr/share/phoronix-test-suite/pts-core/static/root-access.sh"
+		[ -f "$root_access" ] || die "$root_access not exist"
+		sed -i 's,#!/bin/sh,#!/bin/dash,' $root_access
+	}
 	if [ "$test_opt" ]; then
 		echo -e "$test_opt" | log_cmd phoronix-test-suite run $test
 	else
