@@ -397,7 +397,7 @@ leaking_addresses.total_number
 ^softirqs.CPU
 ^stderr.-(a|A|B|C|D|d|e|G|g|I|i|M|n|o|p|r|S|t|T|v|x),--
 ^stderr.-(aAppend|f_FMT|o_FILE|pPOSIX|vVerbose)
-stderr.Aborted
+^stderr.Aborted
 ^stderr.--(append|filter|interval|log|metric|no|per|post|pre|scale|smi|table|timeout|topdown)
 ^stderr.assert_data\['tests'\]
 ^stderr.AssertionError
@@ -415,6 +415,8 @@ stderr.Aborted
 ^stderr.configure.*
 ^stderr.*:Connection_reset_by_peer
 ^stderr.Could_not_find_file_
+^stderr.cpu\d+:
+^stderr.cpu_doesn't_support_resource_control_feature
 ^stderr.curl.*Empty_reply_from_server
 ^stderr.debconf:.*frontend
 ^stderr.disk1.c:No_space_left_on_device
@@ -529,6 +531,7 @@ stderr.:File_exists
 ^stderr.Timeout,server#not_responding
 ^stderr.Traceback\(most_recent_call_last\)
 ^stderr.trinity_is_not_installed
+^stderr.turbostat
 ^stderr.umount:/tmp/vm-scalability-tmp:target_is_busy
 ^stderr.umount:/tmp/vm-scalability-tmp/vm-scalability:not_mounted
 ^stderr.+unable_to_open/dev/sd[a-z]+[0-9]+:Device_or_resource_busy
