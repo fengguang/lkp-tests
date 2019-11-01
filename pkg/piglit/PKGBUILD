@@ -26,7 +26,7 @@ build()
 
         [ "$DISTRO" = "centos" -o "$DISTRO" = "aliyun" ] && wayland=0
         cd ../waffle || return
-        cmake   -Dwaffle_has_glx=1      \
+        cmake3   -Dwaffle_has_glx=1      \
                 -Dwaffle_has_x11_egl=1  \
                 -Dwaffle_has_wayland=$wayland   \
                 -Dwaffle_has_gbm=1      \
@@ -35,7 +35,7 @@ build()
         make install || return
 
         cd ../$pkgname || return
-        cmake -DCMAKE_INSTALL_PREFIX="${benchmark_path}" || return
+        cmake3 -DCMAKE_INSTALL_PREFIX="${benchmark_path}" || return
         make || return
         make install || return
 
