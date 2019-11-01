@@ -23,6 +23,15 @@ fixup_open_porous_media()
 	sed -i 's/nice mpirun -np/nice mpirun --allow-run-as-root -np/' "$target"
 }
 
+# fix issue: libvo/vo_png.c:56:28: error: 'Z_NO_COMPRESSION' undeclared here (not in a function)
+fixup_build_mplayer()
+{
+	[ -n "$environment_directory" ] || return
+	local test=$1
+	local target=$environment_directory/../test-profiles/pts/${test}/pre.sh
+	sed -i 's/--disable-ivtv/--disable-ivtv --disable-png/' "$target"
+}
+
 # rebuild hpcc and add --allow-run-as-root to hpcc
 # the test needs more than 2 hours
 fixup_hpcc()
@@ -319,6 +328,9 @@ run_test()
 			;;
 		nginx-*)
 			fixup_nginx $test || die "failed to fixup test nginx"
+			;;
+		build-mplayer-*)
+			fixup_build_mplayer $test || die "failed to fixup test build-mplayer"
 			;;
 		ffmpeg-*)
 			fixup_ffmpeg $test || die "failed to fixup test ffmpeg"
