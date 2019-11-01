@@ -24,7 +24,7 @@ build()
                 ln -sf $(which gcc7) $(which gcc)
         fi
 
-        [ "$distro" = "centos" ] && wayland=0
+        [ "$DISTRO" = "centos" -o "$DISTRO" = "aliyun" ] && wayland=0
         cd ../waffle || return
         cmake   -Dwaffle_has_glx=1      \
                 -Dwaffle_has_x11_egl=1  \
