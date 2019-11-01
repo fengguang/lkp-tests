@@ -188,8 +188,14 @@ fixup_jgfxbat()
 
 	# select the java version
 	# drop debug message to avoid unexpected stderr
-	update-java-alternatives -s java-1.6.0-openjdk-amd64 &>/dev/null || {
-		echo "failed to update-java-alternatives -s java-1.6.0-openjdk-amd64"
+	local java_openjdk=$(find /usr/lib/jvm -type l -name "java-*-amd64" | xargs basename)
+	[ -z "$java_openjdk" ] && {
+		echo "failed to get java openjdk"
+		return 2
+	}
+
+	update-java-alternatives -s $java_openjdk &>/dev/null || {
+		echo "failed to update-java-alternatives -s ${java_openjdk}"
 		return 1
 	}
 
