@@ -1,0 +1,18 @@
+pkgname=hackbench2
+pkgver=1.0
+pkgrel=1
+arch=('i686' 'x86_64')
+url="http://www.phoronix-test-suite.com"
+license=('GPL')
+source=("http://www.phoronix-test-suite.com/benchmark-files/hackbench-20180115.zip")
+sha256sums=('SKIP')
+
+build() {
+	cd $srcdir
+	gcc hackbench.c -o hackbench2 -lpthread -g -O3
+}
+
+package() {
+	mkdir -p "$pkgdir/lkp/benchmarks/$pkgname/bin"
+	cp -r "$srcdir/$pkgname" "$pkgdir/lkp/benchmarks/$pkgname/bin/"
+}

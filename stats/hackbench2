@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+# hackbench.workload is defined as the total messages for all
+# processes/threads
+time = 0.0
+
+$stdin.each_line do |line|
+  line = line.strip
+  case line
+  when /^Time: (\d+.?\d+)/
+    time = $1.to_f
+  end
+end
+
+puts "time.sec: #{time}"

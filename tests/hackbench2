@@ -1,0 +1,44 @@
+#!/bin/sh
+# - mode
+# - loops
+# - nr_threads
+
+# hackbench tests the Linux scheduler.
+
+[ -n "$nr_threads" ] || nr_threads=32
+[ -n "$loops" ] || loops=50000
+[ -n "$mode" ] || mode=process
+
+
+set_env()
+{
+	# default 40 fds/group
+	fds=40
+	tasks=$((nr_threads * fds))
+
+	# increase permitted open file number
+	ulimit -n $((tasks + 2048))
+
+	def_pid_max=32768
+	[ "$tasks" -gt $((def_pid_max / 2)) ] && {
+		sysctl -w kernel.pid_max=$((tasks * 2))
+		sysctl -w kernel.threads-max=$((tasks * 2))
+		sysctl -w vm.max_map_count=$((tasks * 100))
+	}
+}
+
+run_hackbench()
+{
+	# args: groups number, mode [process/thread], loops
+	if [ -f "/lkp/benchmarks/hackbench2/bin/hackbench2" ]; then
+		hackbench_path="/lkp/benchmarks/hackbench2/bin/hackbench2"
+	else
+		echo "No program hackbench2."
+		exit
+	fi
+
+	[ -n "$hackbench_path" ] && log_cmd $hackbench_path $nr_threads $mode $loops
+}
+
+set_env
+run_hackbench
