@@ -13,6 +13,10 @@ disk: 1SSD
 fs:
 - ext4
 
+drop_caches:
+sysctl: sc_numa_balancing
+transparent_hugepage: thp_enabled
+
 online-aep:
   enable_promotion: true
   enable_demotion: true
