@@ -52,7 +52,7 @@ autotest:
   - kernelinstall
   # - libhugetlbfs # make error: expected expression before 'restrict'; too few arguments to funciton '__buildin_strncpy'...etc
   # - libvirt_tck
-  - libvirt_test_api
+  # - libvirt_test_api # libvirtError: Domain not found: no domain with matching name 'libvirt_test_api'
   - linus_stress
   - linux-tools/crontab
   - linux-tools/pax
