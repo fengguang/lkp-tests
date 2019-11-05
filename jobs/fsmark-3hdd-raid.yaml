@@ -21,14 +21,9 @@ fsmark:
   sync_method: NoSync
 
 ---
-nr_threads: 1
 md: RAID5
-fs:
-- xfs
-- ext4
-- btrfs
 
-fsmark.test_size: 130G
+fsmark.test_size: 70G
 
 ---
 md:
@@ -38,20 +33,3 @@ md:
 fs: btrfs
 
 fsmark.test_size: 130G
----
-nr_threads: 64
-md:
-- RAID5
-- BRAID5
-fs: btrfs
-
-fsmark.test_size: 130G
-
----
-nr_threads: 64
-md: RAID5
-fs:
-- xfs
-- ext4
-
-fsmark.test_size: 70G
