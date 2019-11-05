@@ -8,6 +8,20 @@
 
 . $LKP_SRC/lib/wipefs.sh
 
+for i in 0 1 2 3 4 5; do
+	if [ -e /proc/mdstat ]; then
+		# $ grep '^md.* : \(in\)\?active' /proc/mdstat | cut -f1 -d:
+		# md127
+		active_dev=$(grep '^md.* : \(in\)\?active' /proc/mdstat | cut -f1 -d:)
+		[ "$active_dev" ] && {
+			echo "Current active md dev is: $active_dev"
+			log_cmd mdadm -q --stop /dev/$active_dev
+		}
+	else
+		log_cmd modprobe md
+	fi
+done
+
 check_raid_level()
 {
 	[ "${raid_level#*raid}" != "$raid_level" ] || exit 0
@@ -44,18 +58,6 @@ check_partition_size $partitions
 
 make_md() {
 	for i in 0 1 2 3 4 5; do
-		if [ -e /proc/mdstat ]; then
-			# $ grep '^md.* : \(in\)\?active' /proc/mdstat | cut -f1 -d:
-			# md127 
-			local active_dev=$(grep '^md.* : \(in\)\?active' /proc/mdstat | cut -f1 -d:)
-			[ "$active_dev" ] && {
-				echo "Current active md dev is: $active_dev"
-				log_cmd mdadm -q --stop /dev/$active_dev
-			}
-		else
-			log_cmd modprobe md
-		fi
-
 		destroy_devices
 
 		raid_device=/dev/md$i
