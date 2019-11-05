@@ -67,6 +67,17 @@ check_partition_size() {
 check_partition_size $partitions
 
 make_md() {
+	# With RAID0 since kernel commit c84a137, we cannot create a new multi-zone array for
+	# the disks that are not all same size if we don't specify what layout to use.  So
+	# specify layout by inserting raid0 module with default_layout parameter.
+	# PS:
+	# 1) we can succeed in inserting raid0 module even if default_layout parameter is not supported.
+	# 2) We cannot reproduce the issue when creating a new RAID0 for the disks that are all same size.
+	if [ "$raid_level" = "raid0" ]; then
+		lsmod | grep -q raid0 && modprobe -r raid0
+		modprobe raid0 default_layout=1
+	fi
+
 	for i in 0 1 2 3 4 5; do
 		destroy_devices
 
