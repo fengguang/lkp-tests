@@ -25,7 +25,17 @@ done
 check_raid_level()
 {
 	[ "${raid_level#*raid}" != "$raid_level" ] || exit 0
-	[ "${raid_level#*braid}" != "$raid_level" ] && exit 0
+	[ "${raid_level#*braid}" != "$raid_level" ] && {
+		# Need to create env.yaml when matching braid so that export
+		# raid_level to is_btrfs_raid_levels() in setup/fs
+		cat >> $TMP/env.yaml <<EOF
+
+# setup/md
+# used in setup/fs
+raid_level: $raid_level
+EOF
+		exit 0
+	}
 }
 check_raid_level
 
