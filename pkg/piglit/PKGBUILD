@@ -17,11 +17,11 @@ build()
 	mkdir -p ${benchmark_path}
 
 	local ncpu=$(nproc)
-        gcc_major=$($(which gcc) -dumpversion | cut -d. -f1)
+	gcc_major=$($(which gcc) -dumpversion | cut -d. -f1)
 
-        if [[ "$gcc_major" -ge 8 ]]; then
-                ln -sf $(which gcc7) $(which gcc)
-        fi
+	if [[ "$gcc_major" -ge 8 ]]; then
+		ln -sf $(which gcc7) $(which gcc)
+	fi
 
 	build_waffle || return
 	build_piglit || return
@@ -30,40 +30,40 @@ build()
 
 build_waffle()
 {
-        local wayland=1
-        [ "$DISTRO" = "centos" -o "$DISTRO" = "aliyun" ] && wayland=0
-        cd ../waffle || return
-        cmake3   -Dwaffle_has_glx=1      \
-                -Dwaffle_has_x11_egl=1  \
-                -Dwaffle_has_wayland=$wayland   \
-                -Dwaffle_has_gbm=1      \
-                -DCMAKE_INSTALL_PREFIX=/usr || return
-        make || return
-        make install || return
+	local wayland=1
+	[ "$DISTRO" = "centos" -o "$DISTRO" = "aliyun" ] && wayland=0
+	cd ../waffle || return
+	cmake3   -Dwaffle_has_glx=1      \
+		-Dwaffle_has_x11_egl=1  \
+		-Dwaffle_has_wayland=$wayland   \
+		-Dwaffle_has_gbm=1      \
+		-DCMAKE_INSTALL_PREFIX=/usr || return
+		make || return
+	make install || return
 }
 
 build_piglit()
 {
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-        cd ../$pkgname || return
-        cmake3 -DCMAKE_INSTALL_PREFIX="${benchmark_path}" || return
-        make || return
-        make install || return
+	cd ../$pkgname || return
+	cmake3 -DCMAKE_INSTALL_PREFIX="${benchmark_path}" || return
+	make || return
+	make install || return
 }
 
 build_intel_gpu_tools()
 {
-        cd ../intel-gpu-tools || return
-        [ "$distro" = "centos" ] && local opts="--disable-amdgpu"
-        ./autogen.sh $opts || return
-        make || return
+	cd ../intel-gpu-tools || return
+	[ "$distro" = "centos" ] && local opts="--disable-amdgpu"
+	./autogen.sh $opts || return
+	make || return
 }
 
 create_config()
 {
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
 	touch ${benchmark_path}/piglit.conf
-        cat > "${benchmark_path}/piglit.conf" <<'EOF'
+	cat > "${benchmark_path}/piglit.conf" <<'EOF'
 [igt]
 path=/tmp/lkp/piglit/pkg/piglit/lkp/benchmarks/piglit/lib/piglit/bin/igt
 EOF
@@ -73,29 +73,29 @@ generate_tests()
 {
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
 	cd $benchmark_path || exit
-        mkdir -p groups
+	mkdir -p groups
 
-        local tset
-        for tset in sanity igt all quick
-        do
-                # the output like below:
-                # running: spec/!opengl 1.1/streaming-texture-leak
-                #
-                # using `sed` command may result in some errors, it is due to exist some special character such as "!"
-                bin/piglit run $tset /tmp/piglit-output -d -v | grep 'running:' | sed 's/^running: *//g;s/ *$//g' | tr " " . > groups/$tset-all
-        done
+	local tset
+	for tset in sanity igt all quick
+	do
+		# the output like below:
+		# running: spec/!opengl 1.1/streaming-texture-leak
+		#
+		# using `sed` command may result in some errors, it is due to exist some special character such as "!"
+		bin/piglit run $tset /tmp/piglit-output -d -v | grep 'running:' | sed 's/^running: *//g;s/ *$//g' | tr " " . > groups/$tset-all
+	done
 }
 
 separate_tests()
 {
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-        # In order to avoid errors or test cases that do not exist, update the relevant testcase at pack time
-        # In split testcase, the total number of files is specified so that you don't have to update job.yaml every time
-        cd $benchmark_path/groups || exit
-        split quick-all -d -n r/250 -a 3 quick-
-        split igt-all -d -n r/300 -a 3 igt-
-        grep 'basic' igt-all > igt-basic
-        split igt-basic -d -n r/4 -a 1 igt-basic-
+	# In order to avoid errors or test cases that do not exist, update the relevant testcase at pack time
+	# In split testcase, the total number of files is specified so that you don't have to update job.yaml every time
+	cd $benchmark_path/groups || exit
+	split quick-all -d -n r/250 -a 3 quick-
+	split igt-all -d -n r/300 -a 3 igt-
+	grep 'basic' igt-all > igt-basic
+	split igt-basic -d -n r/4 -a 1 igt-basic-
 }
 
 package()
