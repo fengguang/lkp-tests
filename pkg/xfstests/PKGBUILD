@@ -90,6 +90,12 @@ build()
 
 package()
 {
+	generate_tests || return
+	separate_tests || return
+}
+
+generate_tests()
+{
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
         cp -af $LKP_SRC/pack/${pkgname}-addon/tests/* $benchmark_path/tests
 
@@ -99,8 +105,6 @@ package()
         ./update-new-cases.sh btrfs
         ./update-new-cases.sh xfs
         ./update-new-cases.sh generic
-
-        separate_tests
 }
 
 # Some files contain too many tests, which are split for easy testing

@@ -13,15 +13,28 @@ build()
 
 	export PATH=/usr/lib64/openmpi/bin:$PATH
 
+	build_mpi_selector || return
+	build_reflink || return
+	build_ocfs2test || return
+}
+
+build_mpi_selector()
+{
 	tar -xzvf ./mpi-selector-1.0.3.tar.gz -C ./
 	cd ./mpi-selector-1.0.3
 	./configure 2>&1 || return
 	make install 2>&1 || return
+}
 
+build_reflink()
+{
 	cd ../reflink/
 	./configure 2>&1 || return
 	make install 2>&1 || return
+}
 
+build_ocfs2test()
+{
 	cd ../$pkgname
 	./autogen.sh prefix=/ 2>&1 || return
 
