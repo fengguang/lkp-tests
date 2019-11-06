@@ -49,7 +49,7 @@ autotest:
   - ipv6connect
   - kernbench
   # - kernelbuild
-  - kernelinstall
+  # - kernelinstall # scripts/mod/empty.c:1:0: error: code model kernel does not support PIC mode
   # - libhugetlbfs # make error: expected expression before 'restrict'; too few arguments to funciton '__buildin_strncpy'...etc
   # - libvirt_tck
   # - libvirt_test_api # libvirtError: Domain not found: no domain with matching name 'libvirt_test_api'
