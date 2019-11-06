@@ -2,6 +2,7 @@
 # - testtime
 # - class
 # - nr_threads
+# - test
 
 mount_dev()
 {
@@ -60,6 +61,12 @@ run_test()
 	## classify exec and spawn into exec_spawn, run it as lkp.
 	## run other stress-ng as root
 	## use option --exclude to ignore spawn and exec.
+	[ -n "$test" ] && {
+		test="--$test"
+		log_cmd stress-ng $default_option $test $nr_threads 2>&1
+		return
+	}
+
 	[ "$class" = "exec_spawn" ] && {
 		su lkp -c "stress-ng --exec $nr_threads --spawn $nr_threads --timeout $testtime --times --verify --metrics-brief 2>&1"
 		return
