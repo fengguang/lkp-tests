@@ -25,5 +25,8 @@ while (line = STDIN.gets)
   when /idle-([0-9.]+)seconds/
     # idle-1.1.0.seconds: 36.055191180
     puts line
+  when /smart-([0-9.]+)seconds/
+    # smart-1.0.0.seconds: 7.252623981
+    puts line
   end
 end
