@@ -23,6 +23,21 @@ fixup_open_porous_media()
 	sed -i 's/nice mpirun -np/nice mpirun --allow-run-as-root -np/' "$target"
 }
 
+# fix issue: [NOTICE] Undefined: min_result in pts_test_result_parser:478
+fixup_smart()
+{
+	# root@lkp-csl-2sp8:~# less /usr/share/phoronix-test-suite/pts-core/pts-core.php | grep "pts_define('PTS_VERSION'"
+	# pts_define('PTS_VERSION', '8.8.0');
+	# phoronix_version=8
+	phoronix_version=$(grep "pts_define('PTS_VERSION'" /usr/share/phoronix-test-suite/pts-core/pts-core.php | awk '{print $2}' | awk -F '' '{print $2}')
+	# this issue has been fixed since v9.0.0
+	local target="/usr/share/phoronix-test-suite/pts-core/objects/pts_test_result_parser.php"
+	[ $phoronix_version -ge 9 ] || {
+		sed -i "466a \                        \$min_result\ \=\ null;" "$target"
+		sed -i "467a \                        \$max_result\ \=\ null;" "$target"
+	}
+}
+
 # fix issue: libvo/vo_png.c:56:28: error: 'Z_NO_COMPRESSION' undeclared here (not in a function)
 fixup_build_mplayer()
 {
@@ -316,6 +331,7 @@ run_test()
 			# Choose 1st disk to get smart info
 			# 1: /dev/sda
 			test_opt="\n1\nn"
+			fixup_smart || die "failed to fixup test smart"
 			;;
 		urbanterror-*)
 			# Choose
