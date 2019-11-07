@@ -170,6 +170,17 @@ fixup_gluxmark()
 	test_opt="\n2\n1\n1\nn"
 }
 
+fixup_java_gradle_perf()
+{
+	if [ -d /usr/lib/jvm/java-1.8.0-openjdk ]; then
+		export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
+	elif [ -d /usr/lib/jvm/java-8-openjdk-amd64 ]; then
+		export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+	else
+		echo "ERROR: NO avaliable JAVA_HOME" >&2 && return 1
+	fi
+}
+
 fixup_jgfxbat()
 {
 	[ -n "$environment_directory" ] || return
@@ -379,6 +390,9 @@ run_test()
 			;;
 		jgfxbat-*)
 			fixup_jgfxbat $test || die "failed to fixup jgfxbat"
+			;;
+		java-gradle-perf-*)
+			fixup_java_gradle_perf || die "failed to fixup java-gradle-perf"
 			;;
 		unigine-heaven-*|unigine-valley-*)
 			export DISPLAY=:0
