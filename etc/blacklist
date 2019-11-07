@@ -426,7 +426,7 @@ leaking_addresses.total_number
 ^stderr.disk1.c:No_space_left_on_device
 ^stderr.disk_(cp|src)
 ^stderr.disk_number.*
-^stderr.disk_rr.*(/fs/md0|No_space_left_on_device)
+^stderr.disk_rr.*/fs/md0
 ^stderr.dpkg-preconfigure:unable_to_re-open_stdin
 ^stderr.dsearch\(\):No_such_file_or_directory
 ^stderr.ERROR:aim9_benchmark_is_not_installed_yet
