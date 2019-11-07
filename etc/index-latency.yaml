@@ -9,6 +9,7 @@ iostat\..+\_await: -0.1
 lmbench3\..+\.latency: -0.1
 lmbench3\..+\.latency.ns: -0.1
 lmbench3\..+\.latency.us: -0.1
+memtier\..*_latency_.+: -0.1
 oltp\..+\_ms: -0.2
 perf-bench-numa-mem\.secs_latency: -0.1
 pgbench\.latency_ms: -0.1
