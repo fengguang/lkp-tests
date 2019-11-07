@@ -288,6 +288,12 @@ run_test()
 			# 3: Test All Options
 			test_opt="\n3\n2\n3\nn"
 			;;
+		interbench-*)
+			# Choose
+			# 1: Video
+			# 2: Burn
+			test_opt="\n4\n6\nn"
+			;;
 		ut2004-demo-*)
 			# Choose
 			# 1: ONS-Torlan Botmatch
