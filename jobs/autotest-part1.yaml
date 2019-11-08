@@ -81,7 +81,7 @@ autotest:
   - signaltest
   - sleeptest
   - smatch
-  - sparse
+  # - sparse # AutotestError: Unknown parameter: patches
   # - spew # compile error
   # - stress # stress: FAIL: [2957] (238) invalid hdd byte value: 0
   - synctest
