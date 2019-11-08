@@ -8,7 +8,7 @@ source=("https://www.kernel.org/pub/linux/utils/rt-tests/rt-tests-${pkgver}.tar.
 sha256sums=('SKIP')
 
 package() {
-	mkdir -p "${pkgdir}/lkp/benchmarks/${hackbench}"
+	mkdir -p "${pkgdir}/lkp/benchmarks/${pkgname}"
 	cd "$srcdir/rt-tests-${pkgver}"
-	make install DESTDIR="${pkgdir}/lkp/benchmarks/${hackbench}"
+	make install DESTDIR="${pkgdir}/lkp/benchmarks/${pkgname}"
 }
