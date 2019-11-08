@@ -47,7 +47,7 @@ class LinuxTestcasesTableSet
      'sysbench-memory', 'sysbench-threads', 'sysbench-mutex', 'stream',
      'perf-bench-futex', 'mutilate', 'lmbench3', 'lib-micro', 'schbench',
      'pmbench', 'linkbench', 'rocksdb', 'cassandra', 'redis', 'power_idle',
-     'mongodb', 'ycsb', 'memtier', 'mcperf', 'fio-jbod', 'hackbench2'].freeze
+     'mongodb', 'ycsb', 'memtier', 'mcperf', 'fio-jbod'].freeze
   LINUX_TESTCASES =
     ['analyze_suspend', 'boot', 'blktests', 'cpu-hotplug', 'ext4-frags', 'ftq', 'ftrace_onoff', 'fwq',
      'galileo', 'irda-kernel', 'kernel_selftests', 'kvm-unit-tests', 'kvm-unit-tests-qemu',
