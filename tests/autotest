@@ -33,6 +33,14 @@ cd $BENCHMARK_ROOT/autotest || exit
 	log_cmd service cgconfig restart || die "failed to restart cgconfig"
 }
 
+[ "$test" = "compilebench" ] && {
+	python_version=$(python --version | cut -d' ' -f2 | cut -d. -f1)
+	if [[ "$python_version" -ne 2 ]]; then
+		which python2.7 || die "python2.7 is not existed"
+		ln -sf $(which python2.7) $(which python)
+	fi
+}
+
 iface=$(ifconfig -s | awk '{print $1}' | grep ^eth | head -1)
 [ -n "$iface" -a "$iface" != "eth0" ] && sed -i "s/eth='eth0'/eth='$iface'/g" client/tests/pktgen/control
 
