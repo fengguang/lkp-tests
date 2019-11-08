@@ -23,6 +23,29 @@ fixup_open_porous_media()
 	sed -i 's/nice mpirun -np/nice mpirun --allow-run-as-root -np/' "$target"
 }
 
+# fix issue: supported_sensors array length don't match sensor length
+fixup_idle_power_usage()
+{
+	# sensor:
+	# Array
+	#(
+	# [0] => sys
+	# [1] => power
+	#)
+	# supported_sensors part:
+	#[11] => Array
+	#(
+	# [0] => sys
+	# [1] => power
+	# [2] => sys_power
+	#)
+	local target="/usr/share/phoronix-test-suite/pts-core/objects/pts_test_result_parser.php"
+	sed -i "72a \                        \$new_supported_sensors\ =\ self\:\:\$supported_sensors;" "$target"
+	sed -i "73a \                        foreach\(\$new_supported_sensors\ as\ \&\$v\) unset\(\$v\[2\]\);" "$target"
+	sed -i '75d' "$target"
+	sed -i "74a \                        if\(count\(\$sensor\)\ \!\=\ 2\ \|\|\ \!in_array\(\$sensor\,\ \$new_supported_sensors\)\)" "$target"
+}
+
 # fix issue: [NOTICE] Undefined: min_result in pts_test_result_parser:478
 fixup_smart()
 {
@@ -333,6 +356,12 @@ run_test()
 			test_opt="\n1\nn"
 			fixup_smart || die "failed to fixup test smart"
 			;;
+		idle-power-usage-*)
+			# sleep 1 min
+			# Enter Value: 1
+			test_opt="1\nn"
+			fixup_idle_power_usage || die "failed to fixup test idle-power-usage"
+			;;
 		urbanterror-*)
 			# Choose
 			# 1: 800 x 600
@@ -434,7 +463,9 @@ run_test()
 		[ -f "$root_access" ] || die "$root_access not exist"
 		sed -i 's,#!/bin/sh,#!/bin/dash,' $root_access
 	}
-	if [ "$test_opt" ]; then
+	if [ "$test"=~"idle-power-usage-*" ]; then
+		echo "$test_opt" | log_cmd phoronix-test-suite run $test
+	elif [ "$test_opt" ]; then
 		echo -e "$test_opt" | log_cmd phoronix-test-suite run $test
 	else
 		/usr/bin/expect <<-EOF
