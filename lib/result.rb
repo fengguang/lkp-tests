@@ -71,11 +71,7 @@ class ResultPath < Hash
 
     if self['path_params']
       ucode = self['path_params'][/ucode=0x[0-9a-z]*/]
-      self['ucode'] = if ucode
-                        ucode.split('=').last
-                      else
-                        'undefined'
-                      end
+      self['ucode'] = ucode.split('=').last if ucode
     end
 
     if ps.include?('commit')

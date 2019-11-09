@@ -12,7 +12,7 @@ describe ResultPath do
         expect(result_path.parse_result_root("#{RESULT_MNT}/aim7/performance-2000-fork_test/brickland3/debian-x86_64-2015-02-07.cgz/x86_64-rhel/gcc-4.9/0f57d86787d8b1076ea8f9cbdddda2a46d534a27")).to be true
         expect(result_path['testcase']).to eq 'aim7'
         expect(result_path['path_params']).to eq 'performance-2000-fork_test'
-        expect(result_path['ucode']).to eq 'undefined'
+        expect(result_path['ucode']).to eq nil
         expect(result_path['tbox_group']).to eq 'brickland3'
         expect(result_path['rootfs']).to eq 'debian-x86_64-2015-02-07.cgz'
         expect(result_path['kconfig']).to eq 'x86_64-rhel'
