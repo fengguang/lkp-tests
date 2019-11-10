@@ -26,7 +26,7 @@ if [[ ! "$0" =~ 'make.cross' && "$0" =~ make\.([a-z0-9_]+) ]]; then
 	export ARCH="${BASH_REMATCH[1]}"
 elif [[ "$*" =~ ARCH=([a-z0-9_]+) ]]; then
 	export ARCH="${BASH_REMATCH[1]}"
-elif [[ ${PWD##*-} =~ ^(i386|x86_64|alpha|arm|arm64|avr32|blackfin|c6x|cris|frv|h8300|hexagon|ia64|m32r|m68k|microblaze|mips|mn10300|openrisc|parisc|powerpc|s390|score|sh|sh64|sparc|sparc32|sparc64|tile|tilepro|tilegx|um|unicore32|xtensa)$ ]]; then
+elif [[ ${PWD##*-} =~ ^(i386|x86_64|alpha|arc|arm|arm64|avr32|blackfin|c6x|cris|frv|h8300|hexagon|ia64|m32r|m68k|microblaze|mips|mn10300|openrisc|parisc|powerpc|s390|score|sh|sh64|sparc|sparc32|sparc64|tile|tilepro|tilegx|um|unicore32|xtensa)$ ]]; then
 	export ARCH=${PWD##*-}
 elif [[ ! $ARCH ]]; then
 	export ARCH=x86_64
@@ -130,6 +130,9 @@ setup_crosstool()
 	case $ARCH in
 		i386|x86_64)
 			gcc_arch=
+			;;
+		arc|c6x)
+			gcc_arch=$ARCH-elf
 			;;
 		um)
 			gcc_arch=
