@@ -12,7 +12,7 @@ args=""
 [ ! -z "$perf_type" ] && args="$args perf_type=$perf_type"
 
 log_cmd modprobe rcuperf $args ||
-die "failed to load rcuperf module, try to enable CONFIG_RCU_PERF_TEST and build rcuperf.ko"
+die "failed to load rcuperf module, try to enable CONFIG_RCU_PERF_TEST as module and build rcuperf.ko"
 
 log_cmd sleep $runtime
 
