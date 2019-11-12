@@ -37,7 +37,7 @@ autotest:
   # - ffsb # OOM on 32G vm
   # - fio
   - flail
-  - fsdev
+  # - fsdev # compile error
   - fsfuzzer
   # - fs_mark
   - fsx
