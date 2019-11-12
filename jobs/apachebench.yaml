@@ -17,3 +17,6 @@ if role server:
 
 if role client:
   apachebench:
+
+perf-profile:
+  delay: 2
