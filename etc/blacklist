@@ -393,6 +393,9 @@ leaking_addresses.total_number
 ^numa-meminfo.
 ^numa-numastat.
 ^numa-vmstat.
+^nvml\.compat_incompat_features_TEST0_non-pmem_debug
+^nvml\.pmemobjcli_TEST0_non-pmem_debug
+^nvml\.set_funcs_TEST0_non-pmem_debug
 ^pagetypeinfo.*
 ^pagetypeinfo.page_block_order
 ^pagetypeinfo.pages_per_block
