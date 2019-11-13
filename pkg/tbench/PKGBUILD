@@ -1,0 +1,35 @@
+pkgname=tbench
+pkgver=git
+pkgrel=1
+url='https://git.samba.org/sahlberg/dbench'
+arch=('i686' 'x86_64')
+license=('GPL')
+source=('https://git.samba.org/sahlberg/dbench.git')
+md5sums=('SKIP')
+
+build()
+{
+	cd $srcdir/dbench
+
+	./autogen.sh || return
+	./configure || return
+	# Fix libnfs.c:27:39: error: intptr_t undeclared (first use in this function); did you mean in_port_t?
+	sed -i '/#include "nfs.h/a #include <stdint.h>' libnfs.c
+	make dbench || return
+	make tbench || return
+	make tbench_srv || return
+	make install
+}
+
+package()
+{
+	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+	usr_path="${pkgdir}/usr"
+
+	mkdir -p $benchmark_path
+	mkdir -p $usr_path/local/bin
+
+	cd $srcdir/dbench
+	cp -a dbench tbench tbench_srv $usr_path/local/bin
+	touch $benchmark_path/empty
+}
