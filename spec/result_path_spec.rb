@@ -55,8 +55,6 @@ describe ResultPath do
         expect(result_path.parse_result_root("#{RESULT_MNT}/build-dpdk/0f57d86787d8b1076ea8f9cbdddda2a46d534a27/x86_64-native-linuxapp-gcc/gcc-4.9/60c5c5692107abf4157d48493aa2dec01f6b97cc")).to be false
         expect(result_path.parse_result_root("#{RESULT_MNT}/build-dpdk/x86_64-native-linuxapp-gcc/gcc/60c5c5692107abf4157d48493aa2dec01f6b97cc")).to be false
         expect(result_path.parse_result_root("#{RESULT_MNT}/build-dpdk/x86_64-native-linuxapp-gcc/gcc/60c5c5692107abf4157d48493aa2dec01f6b97cc/0")).to be false
-
-        expect(result_path.parse_result_root("#{RESULT_MNT}/nvml/arch-none-ucode=0x3d/lkp-hsw-ep6/debian-x86_64-2018-04-03.cgz/x86_64-rhel-7.2/gcc-7/8fe28cb58bcb235034b64cbbb7550a8a43fd88be/0")).to be false
       end
     end
   end
