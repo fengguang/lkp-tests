@@ -288,7 +288,7 @@ def analyze_error_id(line)
        /(BUG: scheduling while atomic:)/,
        /(BUG: Bad page map in process)/,
        /(BUG: Bad page state in process)/,
-       /(BUG: soft lockup - CPU#\d+ stuck for \d+s!)/,
+       /(BUG: soft lockup - CPU#\d+ stuck for \d+s!.*)/,
        /(BUG: spinlock .* on CPU#\d+)/,
        /(Out of memory: Kill process) \d+ \(/,
        # old format: "[  122.209638 ] ??? Writer stall state 8 g62150 c62149 f0x2"
