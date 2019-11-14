@@ -1,5 +1,5 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms.git
-owner: Marc Zyngier <marc.zyngier@arm.com>
+owner: Marc Zyngier <maz@kernel.org>
 subsystems:
 - irqchip
 - arm64
@@ -16,4 +16,4 @@ subsystems:
 - acpi
 - of
 mail_cc: linux-arm-kernel@lists.infradead.org
-blacklist_branch: kvm-arm64/vcpu-xarray
+blacklist_branch: .*WIP
