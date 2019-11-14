@@ -6,7 +6,7 @@ require "#{LKP_SRC}/lib/bash"
 
 system_free_mem_gb = Integer(Bash.call("free -g | sed -n '2, 1p' | awk '{print $7}'"))
 
-describe 'filters/need_memory', :lkp do
+describe 'filters/need_memory' do
   before(:all) do
     @tmp_dir = Dir.mktmpdir(nil, '/tmp')
     FileUtils.chmod 'go+rwx', @tmp_dir
