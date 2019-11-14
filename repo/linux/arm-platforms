@@ -16,3 +16,4 @@ subsystems:
 - acpi
 - of
 mail_cc: linux-arm-kernel@lists.infradead.org
+blacklist_branch: kvm-arm64/vcpu-xarray
