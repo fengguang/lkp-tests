@@ -36,7 +36,7 @@ autotest:
   # - error_test_na
   # - ffsb # OOM on 32G vm
   # - fio
-  - flail
+  # - flail # Exception: [Errno 17] File exists
   # - fsdev # compile error
   - fsfuzzer
   # - fs_mark
