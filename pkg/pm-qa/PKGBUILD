@@ -1,0 +1,29 @@
+pkgname=pm-qa
+pkgver=git
+pkgrel=1
+arch=('i686' 'x86_64')
+url="https://git.linaro.org/power/pm-qa.git"
+license=('GPL')
+source=('https://git.linaro.org/power/pm-qa.git' https://github.com/glmark2/glmark2.git)
+sha256sums=('SKIP' 'SKIP')
+
+build()
+{
+	cd ${srcdir}/pm-qa
+	make -C cpuidle cpuidle_killer
+
+	[ "$DISTRO" = "clear" ] && return
+
+	cd ${srcdir}/glmark2
+	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+	mkdir -p $benchmark_path/glmark2
+	[ "$distro" = "centos" ] && sed -i 's/-std=c++14/-std=c++1y/' wscript
+	./waf configure --prefix=$benchmark_path/glmark2 --with-flavors=x11-gl || return
+	./waf || return
+	./waf install || return
+}
+
+package() {
+	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+	cp -af "${srcdir}/${pkgname}/"* $benchmark_path
+}
