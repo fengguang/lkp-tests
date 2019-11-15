@@ -1,0 +1,28 @@
+pkgname=reaim
+pkgver=7.0.1.13
+pkgrel=1
+url='https://sourceforge.net/projects/re-aim-7'
+arch=('i686' 'x86_64')
+license=('GPL')
+source=('https://sourceforge.net/projects/re-aim-7/files/re-aim/7.0.1.13/osdl-aim-7.0.1.13.tar.gz')
+md5sums=('925eb6675ce86cb011699f38468a1fd1')
+
+build()
+{
+	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+	mkdir -p ${benchmark_path}
+	cd $srcdir/osdl-aim-7
+	./bootstrap
+	LDFLAGS=-laio \
+	./configure --prefix=$benchmark_path
+	make
+}
+
+package()
+{
+	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+	cd $srcdir/osdl-aim-7
+	cp -af src/reaim $benchmark_path
+	cp -af data $benchmark_path
+	cp -af scripts $benchmark_path
+}
