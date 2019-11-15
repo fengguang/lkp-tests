@@ -17,7 +17,7 @@ build()
 	cd ${srcdir}/glmark2
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
 	mkdir -p $benchmark_path/glmark2
-	[ "$distro" = "centos" ] && sed -i 's/-std=c++14/-std=c++1y/' wscript
+	[ "$DISTRO" = "centos" -o "$DISTRO" = "aliyun" ] && sed -i 's/-std=c++14/-std=c++1y/' wscript
 	./waf configure --prefix=$benchmark_path/glmark2 --with-flavors=x11-gl || return
 	./waf || return
 	./waf install || return
