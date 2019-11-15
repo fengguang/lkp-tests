@@ -40,6 +40,7 @@ libblkid-dev: libblkid-devel
 libc-bin:
 libc6: glibc.x86_64
 libc6-dev: glibc-devel glibc-static
+libc6-dev:i386: glibc-devel.i686 glibc-static.i686
 libc6-dev-i386: glibc-devel.i686 glibc-static.i686
 libc6-dev-x32:
 libcairo2-dev: cairo-devel
@@ -212,3 +213,4 @@ libkeyutils1: keyutils-libs
 libkeyutils-dev: keyutils-libs-devel
 libbz2-dev: bzip2-devel
 autopoint: gettext-devel
+libipc-run-perl: perl-IPC-Run
