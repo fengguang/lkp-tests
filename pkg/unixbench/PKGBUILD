@@ -1,0 +1,23 @@
+pkgname=unixbench
+pkgver=git
+pkgrel=1
+url='https://github.com/kdlucas/byte-unixbench.git'
+arch=('i686' 'x86_64')
+license=('GPL')
+source=('https://github.com/kdlucas/byte-unixbench.git')
+md5sums=('SKIP')
+
+build()
+{
+	cd $srcdir/byte-unixbench
+	cd UnixBench
+	make
+}
+
+package()
+{
+	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+	mkdir -p $benchmark_path
+	cp -af "$srcdir/byte-unixbench/"* $benchmark_path
+	mkdir $benchmark_path/results
+}
