@@ -143,6 +143,7 @@ do
 					params="$params $param"
 				elif [[ $param =~ ^remote_rootfs= ]]; then
 					remote_rootfs="${param#remote_rootfs=}"
+					params="$params $param"
 				else
 					[[ $param =~ ^job= ]] && export $param
 					params="$params $param"
