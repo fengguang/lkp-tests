@@ -1,0 +1,23 @@
+pkgname=perf
+pkgver=git
+pkgrel=1
+url='https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git'
+arch=('i686' 'x86_64')
+license=('GPL')
+source=('https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git')
+md5sums=('SKIP')
+
+build()
+{
+	cd $srcdir/linux/tools/perf
+
+	[ "$DISTRO" = "clear" ] && ln -sf /usr/bin/ld.gold $BUILD_DIR/ld
+	PATH=$BUILD_DIR:$PATH make
+}
+
+package()
+{
+	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+	mkdir -p $benchmark_path
+	cp -af $srcdir/linux/tools/perf/perf $benchmark_path
+}
