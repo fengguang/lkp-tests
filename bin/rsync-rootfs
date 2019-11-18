@@ -40,7 +40,7 @@ fs_type=$(blkid -o value -s TYPE $dest_partition)
 	mkfs.btrfs $opt_mkfs -L "LKP-ROOTFS" ${dest_partition} || exit
 }
 
-MNT_POINT=$(cat /proc/mounts | grep -w "$dest_partition" | cut -d' ' -f2)
+MNT_POINT=${MNT_POINT:-$(cat /proc/mounts | grep -w "$dest_partition" | cut -d' ' -f2)}
 if [ -z "$MNT_POINT" ];then
 	MNT_POINT="/opt/rootfs"
 	mkdir -p $MNT_POINT || exit
