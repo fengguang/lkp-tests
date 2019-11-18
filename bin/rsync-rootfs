@@ -64,7 +64,12 @@ nfs_mount_rootfs=$MNT_POINT/NFS-${rootfs_name}
 [ -d ${nfs_mount_rootfs} ] || mkdir -p ${nfs_mount_rootfs} || exit
 
 # mount NFS to local and rsync to destination subvolume
-mount -o ro,nolock $source $nfs_mount_rootfs || exit
+if command -v mount.nfs; then
+	NFSMOUNT="mount.nfs"
+else
+	NFSMOUNT="mount"
+fi
+$NFSMOUNT -o ro,nolock $source $nfs_mount_rootfs || exit
 
 # do rsync only when remote rootfs is updated
 diff $nfs_mount_rootfs/etc/rsync-rootfs-version $local_mount_rootfs/etc/rsync-rootfs-version
