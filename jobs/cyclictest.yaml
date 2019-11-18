@@ -1,0 +1,13 @@
+suite: cyclictest
+testcase: cyclictest
+category: benchmark
+
+cyclictest:
+  priority: 90
+  # 0 = CLOCK_MONOTONIC (default)
+  # 1 = CLOCK_REALTIME
+  clock: 0
+  # base interval of thread in us
+  interval: 200
+  histogram: 100
+  loops: 1000000
