@@ -1,80 +1,52 @@
-postmark::
-stress-ng::
-pmbench::
-lmbench3::
-sysbench-cpu::
-sysbench-memory::
-sysbench-mutex::
-sysbench-threads::
-lib-micro::
-schbench::
-mcperf::
-rocksdb::
-redis-server::
-netpipe::
-pixz::
-fileio::
-oltp::
-bust_shm_exit::
-stutter::
-pft::
-pxz::
-bpf_offload::
-fsmark::
-nepim::
-analyze_suspend::
-chromeswap::
-blogbench::
-fwq::
-pbzip2::
-netperf::
-kvm-unit-tests::
-hackbench::
-turbostat::
-sockperf::
-leaking_addresses::
-linpack::
-trace-cmd::
-thrulay::
-kbuild::
-swapin: vm-scalability
-cassandra::
-ftq::
-ndctl::
-perf_event_tests::
-mce-log::
-stream::
-qperf::
-device-dax: ndctl
-nvdimm: ndctl
-mce-test::
-blktests::
-ku-latency::
-libhugetlbfs-test::
-autotest::
-packetdrill::
-mongodb::
-ycsb::
-otc_ddt::
-iozone::
-ocfs2test::
-mdadm-selftests::
-ltp::
-piglit::
-xfstests::
-fxmark::
 aim7::
 aim9::
-hwsim::
-tbench::
-pm-qa::
-reaim::
-unixbench::
-will-it-scale::
+analyze_suspend::
+autotest::
+blktests::
+blogbench::
+bpf_offload::
+bust_shm_exit::
+cassandra::
+chromeswap::
+cyclictest::
 dbench: tbench
+device-dax: ndctl
+fileio::
+fsmark::
+ftq::
+fwq::
+fxmark::
+hackbench::
+hwsim::
+iozone::
+kbuild::
+ku-latency::
+kvm-unit-tests::
+leaking_addresses::
+libhugetlbfs-test::
+lib-micro::
+linpack::
+lmbench3::
+ltp::
+mce-log::
+mce-test::
+mcperf::
+mdadm-selftests::
+mongodb::
+ndctl::
+nepim::
+netperf::
+netpipe::
+nvdimm: ndctl
+ocfs2test::
+oltp::
+otc_ddt::
+packetdrill::
+pbzip2::
 perf::
 perf-bench-futex: perf
 perf-c2c: perf
+perf_event_tests::
 perf-mem: perf
 perf-node: perf
 perf-probe: perf
@@ -83,4 +55,32 @@ perf-record-report: perf
 perf-report-srcline: perf
 perf-sanity-tests: perf
 perf-stat: perf
-cyclictest::
+pft::
+piglit::
+pixz::
+pmbench::
+pm-qa::
+postmark::
+pxz::
+qperf::
+reaim::
+redis-server::
+rocksdb::
+schbench::
+sockperf::
+stream::
+stress-ng::
+stutter::
+swapin: vm-scalability
+sysbench-cpu::
+sysbench-memory::
+sysbench-mutex::
+sysbench-threads::
+tbench::
+thrulay::
+trace-cmd::
+turbostat::
+unixbench::
+will-it-scale::
+xfstests::
+ycsb::

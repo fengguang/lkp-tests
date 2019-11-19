@@ -1,75 +1,54 @@
-postmark:: 
-stress-ng:: 
-trinity:: 
-plzip:: 
-f2fs-tools:: 
-liboop-dev: liboop
-liblz-dev: lzlib
-libfdt-dev:: 
-rt-tests:: 
-lib-micro::
-netpipe-lam: netpipe
-eatmem: vm-scalability
-vm-scalability:: 
-linkbench::
-fileio::
-oltp::
-stutter::
-pft::
-bpf_offload::
-fsmark:
-nepim::
-analyze_suspend::
-chromeswap::
-blogbench::
-fwq::
-pbzip2::
-netperf::
-kvm-unit-tests::
-hackbench::
-turbostat::
-sockperf::
-leaking_addresses::
-linpack::
-trace-cmd::
-thrulay::
-kbuild::
-swapin: vm-scalability
-cassandra::
-ftq::
-ndctl::
-perf_event_tests::
-mce-log::
-stream::
-qperf::
-device-dax: ndctl
-nvdimm: ndctl
-mce-test::
-blktests::
-ku-latency::
-libhugetlbfs-test::
-autotest::
-packetdrill::
-mongodb::
-iozone::
-ocfs2test::
-mdadm-selftests::
-ltp::
-piglit::
-xfstests::
-fxmark::
 aim7::
 aim9::
-hwsim::
-tbench::
-pm-qa::
-reaim::
-will-it-scale::
-unixbench::
+analyze_suspend::
+autotest::
+blktests::
+blogbench::
+bpf_offload::
+cassandra::
+chromeswap::
+cyclictest::
 dbench: tbench
+device-dax: ndctl
+eatmem: vm-scalability
+f2fs-tools:: 
+fileio::
+fsmark:
+ftq::
+fwq::
+fxmark::
+hackbench::
+hwsim::
+iozone::
+kbuild::
+ku-latency::
+kvm-unit-tests::
+leaking_addresses::
+libfdt-dev:: 
+libhugetlbfs-test::
+liblz-dev: lzlib
+lib-micro::
+liboop-dev: liboop
+linkbench::
+linpack::
+ltp::
+mce-log::
+mce-test::
+mdadm-selftests::
+mongodb::
+ndctl::
+nepim::
+netperf::
+netpipe-lam: netpipe
+nvdimm: ndctl
+ocfs2test::
+oltp::
+packetdrill::
+pbzip2::
 perf::
 perf-bench-futex: perf
 perf-c2c: perf
+perf_event_tests::
 perf-mem: perf
 perf-node: perf
 perf-probe: perf
@@ -78,4 +57,25 @@ perf-record-report: perf
 perf-report-srcline: perf
 perf-sanity-tests: perf
 perf-stat: perf
-cyclictest::
+pft::
+piglit::
+plzip:: 
+pm-qa::
+postmark:: 
+qperf::
+reaim::
+rt-tests:: 
+sockperf::
+stream::
+stress-ng:: 
+stutter::
+swapin: vm-scalability
+tbench::
+thrulay::
+trace-cmd::
+trinity:: 
+turbostat::
+unixbench::
+vm-scalability:: 
+will-it-scale::
+xfstests::
