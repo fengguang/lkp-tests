@@ -1,0 +1,88 @@
+From 559cf649d0dbd5df4f8a0de80b3ad53914a9b8f9 Mon Sep 17 00:00:00 2001
+From: Xiao Yang <xiaox.yang@intel.com>
+Date: Tue, 19 Nov 2019 11:07:00 +0800
+Subject: [PATCH] workloads: update workloads using randvar()
+
+filebench commit 623304e has changed the usage of randvar() so update
+workloads using randvar() accordingly.  Fix the following error during
+test:
+--------------------------
+syntax error at 'randvar'
+--------------------------
+
+Signed-off-by: Xiao Yang <xiaox.yang@intel.com>
+---
+ workloads/filemicro_seqwriterandvargam.f |  2 +-
+ workloads/filemicro_seqwriterandvartab.f |  5 +++--
+ workloads/randomfileaccess.f             | 12 ++++++------
+ 3 files changed, 10 insertions(+), 9 deletions(-)
+
+diff --git a/workloads/filemicro_seqwriterandvargam.f b/workloads/filemicro_seqwriterandvargam.f
+index 5a281fc..cc70dc4 100644
+--- a/workloads/filemicro_seqwriterandvargam.f
++++ b/workloads/filemicro_seqwriterandvargam.f
+@@ -33,7 +33,7 @@ set $cached=false
+ set $sync=false
+ set $count=128k
+ 
+-define randvar name=$iosize, type=gamma, min=1k, mean=5632, gamma=1500
++set $iosize = randvar(type=gamma, min=1k, mean=5632, gamma=1500)
+ 
+ define fileset name=bigfileset,path=$dir,size=0,entries=$nthreads,dirwidth=1024,prealloc=100,cached=$cached
+ 
+diff --git a/workloads/filemicro_seqwriterandvartab.f b/workloads/filemicro_seqwriterandvartab.f
+index 80ee555..ce661dc 100644
+--- a/workloads/filemicro_seqwriterandvartab.f
++++ b/workloads/filemicro_seqwriterandvartab.f
+@@ -33,10 +33,11 @@ set $cached=false
+ set $sync=false
+ set $count=128k
+ 
+-define randvar name=$iosize, type=tabular, min=1k, randtable =
++set $iosize = randvar(type=tabular, min=1k, randtable =
+ {{ 80, 1k, 4k},
+  { 15, 4k, 16k},
+- { 05, 16k, 64k}}
++ { 05, 16k, 64k}
++})
+ 
+ define fileset name=bigfileset,path=$dir,size=0,entries=$nthreads,dirwidth=1024,prealloc=100,cached=$cached
+ 
+diff --git a/workloads/randomfileaccess.f b/workloads/randomfileaccess.f
+index c7500b1..8258942 100644
+--- a/workloads/randomfileaccess.f
++++ b/workloads/randomfileaccess.f
+@@ -31,14 +31,14 @@ set $nthreads=5
+ set $nfiles=10000
+ set $sync=false
+ 
+-define randvar name=$wrtiosize, min=512, round=512, type=gamma, mean=16k
++set $wrtiosize = randvar(min=512, round=512, type=gamma, mean=16k)
+ 
+-define randvar name=$rdiosize, type=tabular, min=8k, round=1k, randtable =
++set $rdiosize = randvar(type=tabular, min=8k, round=1k, randtable =
+ {{85,   8k,  8k},
+  {15,   8k, 64k}
+-}
++})
+ 
+-define randvar name=$filesize, type=tabular, min=1k, randtable =
++set $filesize = randvar(type=tabular, min=1k, randtable =
+ {{33,   1k,    1k},
+  {21,   1k,    3k},
+  {13,   3k,    5k},
+@@ -49,9 +49,9 @@ define randvar name=$filesize, type=tabular, min=1k, randtable =
+  {03,  85k,  171k},
+  {02, 171k,  341k},
+  {01, 341k, 1707k}
+-}
++})
+ 
+-define randvar name=$fileidx, type=gamma, min=0, gamma=100
++set $fileidx = randvar(type=gamma, min=0, gamma=100)
+ 
+ define fileset name=bigfileset,path=$dir,size=$filesize,entries=$nfiles,dirwidth=$meandirwidth,prealloc=100,cached=$cached
+ 
+-- 
+2.11.0
+

@@ -1,0 +1,37 @@
+pkgname=filebench
+pkgver=git
+pkgrel=1
+url="https://github.com/filebench/filebench"
+arch=('x86_64' 'i686')
+license=('GPL')
+source=("https://github.com/filebench/filebench.git")
+md5sums=('SKIP')
+
+build() {
+	cd "$srcdir/$pkgname"
+
+	for file in $(ls workloads/*.f); do
+		# Add run command if workload doesn't include run command.  Fix
+		# "Warning: no run command in the WML script!" error during test.
+		grep -q ^run $file || echo -e "\nrun 60" >>$file
+		# Remove obsolete cached attribute because filebench commit 7080d60
+		# has deleted it.  Fix "syntax error at 'cached'" during test.
+		sed -i '/set \$cached=false/d' $file
+		sed -ri 's/(.*),cached=\$cached/\1/g' $file
+	done
+
+	libtoolize || return
+	aclocal || return
+	autoheader || return
+	automake --add-missing || return
+	autoconf || return
+	./configure --prefix "/lkp/benchmarks/${pkgname}" || return
+	make || return
+}
+
+package() {
+	cd "$srcdir/$pkgname"
+	make install || return
+	mkdir -p "${pkgdir}/lkp/benchmarks"
+	cp -af "/lkp/benchmarks/${pkgname}" "${pkgdir}/lkp/benchmarks"
+}

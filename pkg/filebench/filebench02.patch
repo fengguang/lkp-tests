@@ -1,0 +1,163 @@
+From 396b6b3a3b17036d929de1dfa04cb58031b484ea Mon Sep 17 00:00:00 2001
+From: Xiao Yang <xiaox.yang@intel.com>
+Date: Tue, 19 Nov 2019 11:59:24 +0800
+Subject: [PATCH 2/2] workloads: Set quit mode for workloads using finishon*
+ functions
+
+filebench commit 72646db has changed the behavior of finishon* functions
+so set quit mode for workloads using finishon* functions.  Fix the following
+warning during test:
+---------------------------
+WARNING! Run stopped early:
+---------------------------
+
+See the following url for detailed info:
+https://github.com/filebench/filebench/pull/89
+
+Signed-off-by: Xiao Yang <xiaox.yang@intel.com>
+---
+ workloads/filemicro_create.f             | 2 ++
+ workloads/filemicro_createfiles.f        | 2 ++
+ workloads/filemicro_createrand.f         | 2 ++
+ workloads/filemicro_rread.f              | 2 ++
+ workloads/filemicro_rwrite.f             | 2 ++
+ workloads/filemicro_rwritefsync.f        | 2 ++
+ workloads/filemicro_seqwrite.f           | 2 ++
+ workloads/filemicro_seqwriterand.f       | 2 ++
+ workloads/filemicro_seqwriterandvargam.f | 2 ++
+ workloads/filemicro_seqwriterandvartab.f | 2 ++
+ 10 files changed, 20 insertions(+)
+
+diff --git a/workloads/filemicro_create.f b/workloads/filemicro_create.f
+index 2894f45..bd587d3 100644
+--- a/workloads/filemicro_create.f
++++ b/workloads/filemicro_create.f
+@@ -33,6 +33,8 @@ set $iosize=1m
+ set $nthreads=1
+ set $sync=false
+ 
++set mode quit alldone
++
+ define file name=largefile,path=$dir,size=0,prealloc
+ 
+ define process name=filecreater,instances=1
+diff --git a/workloads/filemicro_createfiles.f b/workloads/filemicro_createfiles.f
+index 98615df..66aeadd 100644
+--- a/workloads/filemicro_createfiles.f
++++ b/workloads/filemicro_createfiles.f
+@@ -40,6 +40,8 @@ set $meandirwidth=100000
+ set $nfiles=20000
+ set $nthreads=1
+ 
++set mode quit alldone
++
+ define fileset name=bigfileset,path=$dir,size=$filesize,entries=$nfiles,dirwidth=$meandirwidth,prealloc=50
+ 
+ define process name=filecreate,instances=1
+diff --git a/workloads/filemicro_createrand.f b/workloads/filemicro_createrand.f
+index 8ee3d63..ae5f7d3 100644
+--- a/workloads/filemicro_createrand.f
++++ b/workloads/filemicro_createrand.f
+@@ -36,6 +36,8 @@ set $iters=10
+ set $nthreads=1
+ set $sync=false
+ 
++set mode quit alldone
++
+ define file name=largefile,path=$dir,size=0,prealloc
+ 
+ define process name=filecreater,instances=1
+diff --git a/workloads/filemicro_rread.f b/workloads/filemicro_rread.f
+index f171a62..37d8a13 100644
+--- a/workloads/filemicro_rread.f
++++ b/workloads/filemicro_rread.f
+@@ -35,6 +35,8 @@ set $iosize=2k
+ set $iters=1
+ set $nthreads=1
+ 
++set mode quit alldone
++
+ define file name=bigfile1,path=$dir,size=$filesize,prealloc,reuse,cached=$cached
+ 
+ define process name=filereader,instances=1
+diff --git a/workloads/filemicro_rwrite.f b/workloads/filemicro_rwrite.f
+index 5aa8052..2954f09 100644
+--- a/workloads/filemicro_rwrite.f
++++ b/workloads/filemicro_rwrite.f
+@@ -36,6 +36,8 @@ set $iters=1
+ set $nthreads=1
+ set $sync=false
+ 
++set mode quit alldone
++
+ define file name=bigfile1,path=$dir,size=$filesize,prealloc,reuse,cached=$cached
+ 
+ define process name=filewriter,instances=1
+diff --git a/workloads/filemicro_rwritefsync.f b/workloads/filemicro_rwritefsync.f
+index 915e20a..54be6c7 100644
+--- a/workloads/filemicro_rwritefsync.f
++++ b/workloads/filemicro_rwritefsync.f
+@@ -36,6 +36,8 @@ set $iosize=8k
+ set $iters=16384
+ set $nthreads=1
+ 
++set mode quit alldone
++
+ define file name=bigfile,path=$dir,size=$filesize,prealloc,cached=$cached
+ 
+ define process name=filewriter,instances=1
+diff --git a/workloads/filemicro_seqwrite.f b/workloads/filemicro_seqwrite.f
+index 598100a..0d04875 100644
+--- a/workloads/filemicro_seqwrite.f
++++ b/workloads/filemicro_seqwrite.f
+@@ -35,6 +35,8 @@ set $iosize=1m
+ set $nthreads=1
+ set $sync=false
+ 
++set mode quit alldone
++
+ define file name=bigfile,path=$dir,size=0,prealloc,cached=$cached
+ 
+ define process name=filewriter,instances=1
+diff --git a/workloads/filemicro_seqwriterand.f b/workloads/filemicro_seqwriterand.f
+index edad580..125476d 100644
+--- a/workloads/filemicro_seqwriterand.f
++++ b/workloads/filemicro_seqwriterand.f
+@@ -33,6 +33,8 @@ set $iosize=8k
+ set $nthreads=1
+ set $sync=false
+ 
++set mode quit alldone
++
+ define file name=bigfile,path=$dir,size=0,prealloc,cached=$cached
+ 
+ define process name=filewriter,instances=1
+diff --git a/workloads/filemicro_seqwriterandvargam.f b/workloads/filemicro_seqwriterandvargam.f
+index cc70dc4..6a6ebfc 100644
+--- a/workloads/filemicro_seqwriterandvargam.f
++++ b/workloads/filemicro_seqwriterandvargam.f
+@@ -33,6 +33,8 @@ set $cached=false
+ set $sync=false
+ set $count=128k
+ 
++set mode quit alldone
++
+ set $iosize = randvar(type=gamma, min=1k, mean=5632, gamma=1500)
+ 
+ define fileset name=bigfileset,path=$dir,size=0,entries=$nthreads,dirwidth=1024,prealloc=100,cached=$cached
+diff --git a/workloads/filemicro_seqwriterandvartab.f b/workloads/filemicro_seqwriterandvartab.f
+index ce661dc..ce1f6e2 100644
+--- a/workloads/filemicro_seqwriterandvartab.f
++++ b/workloads/filemicro_seqwriterandvartab.f
+@@ -33,6 +33,8 @@ set $cached=false
+ set $sync=false
+ set $count=128k
+ 
++set mode quit alldone
++
+ set $iosize = randvar(type=tabular, min=1k, randtable =
+ {{ 80, 1k, 4k},
+  { 15, 4k, 16k},
+-- 
+2.11.0
+
