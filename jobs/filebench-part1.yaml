@@ -1,0 +1,38 @@
+suite: filebench
+testcase: filebench
+category: benchmark
+
+disk: 1HDD
+fs:
+ - ext4
+ - xfs
+ - btrfs
+ - f2fs
+
+filebench:
+  test:
+   - copyfiles.f
+   - createfiles.f
+   - fileserver.f
+   - openfiles.f
+   - ratelimcopyfiles.f
+   - randomfileaccess.f
+   - randomread.f
+   - randomrw.f
+   - randomwrite.f
+   - listdirs.f
+   - makedirs.f
+   - removedirs.f
+   - singlestreamreaddirect.f
+   - singlestreamread.f
+   - singlestreamwritedirect.f
+   - singlestreamwrite.f
+   - fivestreamreaddirect.f
+   - fivestreamread.f
+   - fivestreamwritedirect.f
+   - fivestreamwrite.f
+   - varmail.f
+   - cvar_example.f
+   - webproxy.f
+   - webserver.f
+   - netsfs.f

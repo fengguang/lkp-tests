@@ -1,0 +1,25 @@
+#!/bin/sh
+# - test
+
+. $LKP_SRC/lib/reproduce-log.sh
+
+[ "$nr_partitions" -lt 1 ] && die "$nr_partitions -lt 1"
+export PATH=$BENCHMARK_ROOT/filebench/bin:$PATH
+
+# Set randomize_va_space to zero forcely to fix the following kernel error:
+# filebench[10931]: segfault at 557add9616f0 ip 0000557add9616f0 sp 00007f172f321e88 error 14
+# PS: This issue results in test hang.
+[ -f /proc/sys/kernel/randomize_va_space ] && echo 0 >/proc/sys/kernel/randomize_va_space
+
+workloads_dir="$BENCHMARK_ROOT/filebench/share/filebench/workloads"
+[ -f "$workloads_dir/$test" ] || die "cannot find specified $test in $workloads_dir"
+
+# Replace the default /tmp with mount point
+# mount point includes '/' so sed uses '#' as a delimiter
+mntpoint=${mount_points%% *}
+sed -i "s#set \$dir=.*#set \$dir=$mntpoint#g" "$workloads_dir/$test"
+
+log_cmd filebench -f "$workloads_dir/$test"
+
+# Remove all files/directories created by test
+rm -rf $mntpoint/*
