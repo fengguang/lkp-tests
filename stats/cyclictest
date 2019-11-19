@@ -8,6 +8,8 @@ require "#{LKP_SRC}/lib/string_ext"
 while (line = STDIN.gets)
   line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
   case line
+  when /^# Thread/
+    next
   when /^# (\/dev\/cpu_dma_latency) set to (.+)us/
     cpu_dma_latency = $1.downcase
     val = $2
@@ -20,7 +22,5 @@ while (line = STDIN.gets)
     delay_us = $1
     appear_times = $2
     puts "delay_#{delay_us}: #{appear_times}"
-  when /^# Thread/
-    next
   end
 end
