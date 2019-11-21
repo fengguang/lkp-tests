@@ -64,7 +64,7 @@ nfs_mount_rootfs=$MNT_POINT/NFS-${rootfs_name}
 [ -d ${nfs_mount_rootfs} ] || mkdir -p ${nfs_mount_rootfs} || exit
 
 # mount NFS to local and rsync to destination subvolume
-if command -v mount.nfs; then
+if command -v mount.nfs >/dev/null; then
 	NFSMOUNT="mount.nfs"
 else
 	NFSMOUNT="mount"
