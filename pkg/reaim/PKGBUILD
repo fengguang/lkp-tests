@@ -7,6 +7,14 @@ license=('GPL')
 source=('https://sourceforge.net/projects/re-aim-7/files/re-aim/7.0.1.13/osdl-aim-7.0.1.13.tar.gz')
 md5sums=('925eb6675ce86cb011699f38468a1fd1')
 
+patch_source()
+{
+	cd $srcdir
+	tar -xf osdl-aim-7.0.1.13.tar.gz
+	cd $srcdir/osdl-aim-7
+	patch -p1 < "$LKP_SRC/pkg/${pkgname}/${pkgname}.patch"
+}
+
 build()
 {
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
