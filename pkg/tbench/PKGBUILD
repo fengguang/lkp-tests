@@ -28,8 +28,10 @@ package()
 
 	mkdir -p $benchmark_path
 	mkdir -p $usr_path/local/bin
+	mkdir -p $usr_path/local/share
 
 	cd $srcdir/dbench
 	cp -a dbench tbench tbench_srv $usr_path/local/bin
+	cp -a /usr/local/share/client.txt $usr_path/local/share
 	touch $benchmark_path/empty
 }
