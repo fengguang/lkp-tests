@@ -463,7 +463,7 @@ run_test()
 		[ -f "$root_access" ] || die "$root_access not exist"
 		sed -i 's,#!/bin/sh,#!/bin/dash,' $root_access
 	}
-	if [ "$test"=~"idle-power-usage-*" ]; then
+	if echo $test | grep idle-power-usage; then
 		echo "$test_opt" | log_cmd phoronix-test-suite run $test
 	elif [ "$test_opt" ]; then
 		echo -e "$test_opt" | log_cmd phoronix-test-suite run $test
