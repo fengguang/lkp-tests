@@ -11,6 +11,8 @@ build()
 {
 	cd ${srcdir}/pm-qa
 	make -C cpuidle cpuidle_killer
+	cd utils
+	make
 
 	[ "$DISTRO" = "clear" ] && return
 
