@@ -65,6 +65,7 @@ package()
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
 	mkdir -p $benchmark_path
 	cp -af $srcdir/wmediumd/* $benchmark_path
+	cp -af $srcdir/hostap/* $benchmark_path
 	usr_path="${pkgdir}/usr"
 	mkdir -p $usr_path/bin
 	cp /usr/bin/wmediumd $usr_path/bin
