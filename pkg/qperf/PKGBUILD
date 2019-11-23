@@ -29,6 +29,9 @@ build() {
 }
 
 package() {
-  cd "$srcdir/$pkgname-$pkgver"
-  make DESTDIR="$pkgdir/" install
+	cd "$srcdir/$pkgname-$pkgver"
+	make  install
+	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+	mkdir -p ${benchmark_path}
+	cp -a /usr/bin/qperf ${benchmark_path}
 }
