@@ -34,8 +34,8 @@ cd $BENCHMARK_ROOT/autotest || exit
 }
 
 [ "$test" = "compilebench" ] && {
-	python_version=$(python --version | cut -d' ' -f2 | cut -d. -f1)
-	if [[ "$python_version" -ne 2 ]]; then
+	python_version=$(python --version 2>&1 | cut -d' ' -f2 | cut -d. -f1)
+	if [ "$python_version" != 2 ]; then
 		which python2.7 || die "python2.7 is not existed"
 		ln -sf $(which python2.7) $(which python)
 	fi
