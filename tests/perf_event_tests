@@ -1,47 +1,20 @@
-#!/bin/bash
+#!/bin/sh
 # - paranoid
 
 ## perf_event_tests is designed to test trinity for perf
 ## See: https://github.com/deater/perf_event_tests
 
-. $LKP_SRC/lib/debug.sh
-
-[[ "$paranoid" ]] || die "parameter \"paramoid\" is empty"
+. $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/tests/perf_event_tests.sh
 
 cd $BENCHMARK_ROOT/perf_event_tests || die "can not find perf_event_test dir"
 
-perf_event_paranoid="/proc/sys/kernel/perf_event_paranoid"
-
-[[ -e "$perf_event_paranoid" ]] || die "can not find file $perf_event_paranoid"
-paranoid_value_old=`cat $perf_event_paranoid`
-
-case "$paranoid" in
-    not_paranoid_at_all)        paranoid_value=-1 ;;
-    disallow_raw_tracepoint)    paranoid_value=0  ;;
-    disallow_cpu_events)        paranoid_value=1  ;;
-    disallow_kernel_profiling)  paranoid_value=2  ;;
-esac
-
-echo $paranoid_value > $perf_event_paranoid
-
-[[ $paranoid_value = $(cat $perf_event_paranoid) ]] || die "write value $paranoid_value to $perf_event_paranoid failed"
-
-# eaccess will fail if paranoid_value in [1,2], so run eacces under lkp
-[[ $paranoid_value -gt 0 ]] && sed -i -e 's/\$TESTS_DIR\/error_returns\/eacces/script -qc \"su lkp -c \\\"\$TESTS_DIR\/error_returns\/eacces\\\" | grep . --color=never\"/g' ./run_tests.sh
-
-# ./ioctl_10_query_bpf
-# Testing PERF_EVENT_IOC_SET_BPF ioctl.
-# Creating a kprobe tracepoint event
-# Cannot open /sys/kernel/tracing/kprobe_events!
-# You may want to: mount -t tracefs nodev /sys/kernel/tracing
-# Testing PERF_EVENT_IOC_QUERY_BPF ioctl...
-mount -t tracefs nodev /sys/kernel/tracing
+check_elements "$paranoid"
+setup_test_env "$paranoid"
 
 log_cmd ./run_tests.sh
 exit_value=$?
 
-echo $paranoid_value_old > $perf_event_paranoid
-
-[[ $paranoid_value_old = $(cat $perf_event_paranoid) ]] || echo "Warning: write value $paranoid_value_old to $perf_event_paranoid failed"
+cleanup_test_env
 
 exit $exit_value
