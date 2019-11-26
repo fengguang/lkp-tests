@@ -481,7 +481,9 @@
 ^stderr.File~/tmp/code
 ^stderr.File~/usr/lib/python3.#/bz2.py~,line
 ^stderr.find:.*:No_such_file_or_directory
+^stderr.fio:file_hash_not_empty_on_exit
 ^stderr.fio:pid=#,err=#/file:filesetup.c:#,func=fsync,error=Input/output_error
+^stderr.fio:pid=#,got_signal=
 ^stderr.fio:posix_fallocate_fails:No_space_left_on_device
 ^stderr.func\(\*args,\*\*kwargs\)
 ^stderr.grep.+last_state:No_such_file_or_directory
