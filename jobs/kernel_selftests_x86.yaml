@@ -1,0 +1,14 @@
+suite: kernel_selftests
+testcase: kernel_selftests
+category: functional
+
+# NOET: need_memory might be different for different rootfs
+# Currently, these value came from the meminfo.max_used_kB during runtime
+# on debian rootfs
+need_memory: 2G
+need_cpu: 2
+kernel_selftests:
+  group:
+    - kselftests-x86
+# never register ERST as pstore backend
+kernel_cmdline: erst_disable

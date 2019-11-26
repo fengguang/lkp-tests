@@ -222,11 +222,13 @@ prepare_for_selftest()
 		# m* is slow
 		selftest_mfs=$(ls -d [m-s]*/Makefile | grep -v rseq)
 	elif [ "$group" = "kselftests-03" ]; then
-		selftest_mfs=$(ls -d [t-z]*/Makefile)
+		selftest_mfs=$(ls -d [t-z]*/Makefile | grep -v x86)
 	elif [ "$group" = "kselftests-04" ]; then
 		selftest_mfs=$(ls -d rseq/Makefile)
 	elif [ "$group" = "kselftests-05" ]; then
 		selftest_mfs=$(ls -d livepatch/Makefile)
+	elif [ "$group" = "kselftests-x86" ]; then
+		selftest_mfs=$(ls -d x86/Makefile)
 	fi
 }
 
