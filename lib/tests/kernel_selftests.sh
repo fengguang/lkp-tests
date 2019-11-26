@@ -215,18 +215,18 @@ prepare_for_selftest()
 {
 	if [ "$group" = "kselftests-00" ]; then
 		# bpf is slow
-		selftest=a-b
+		selftest_mfs=$(ls -d [a-b]*/Makefile)
 	elif [ "$group" = "kselftests-01" ]; then
-		selftest=c-l
+		selftest_mfs=$(ls -d [c-l]*/Makefile | grep -v livepatch)
 	elif [ "$group" = "kselftests-02" ]; then
 		# m* is slow
-		selftest=m-s
+		selftest_mfs=$(ls -d [m-s]*/Makefile | grep -v rseq)
 	elif [ "$group" = "kselftests-03" ]; then
-		selftest=t-z
+		selftest_mfs=$(ls -d [t-z]*/Makefile)
 	elif [ "$group" = "kselftests-04" ]; then
-		selftest=rseq
+		selftest_mfs=$(ls -d rseq/Makefile)
 	elif [ "$group" = "kselftests-05" ]; then
-		selftest=livepatch
+		selftest_mfs=$(ls -d livepatch/Makefile)
 	fi
 }
 
@@ -329,37 +329,22 @@ pack_selftests()
 
 run_tests()
 {
-	local selftest=$1
+	local selftest_mfs=$1
 
-	# rseq costs about 25mins, run it alone.
-	if [[ "$selftest" = "rseq" ]]; then
-		sed -i 's/default_timeout=45/default_timeout=300/' kselftest/runner.sh
-		log_cmd make run_tests -C $selftest 2>&1
-		exit $?
-	fi
-
-	if [[ "$selftest" = "livepatch" ]]; then
-		log_cmd make run_tests -C $selftest 2>&1
-		exit $?
-	fi
-
-	for mf in [$selftest]*/Makefile; do
+	for mf in $selftest_mfs; do
 		subtest=${mf%/Makefile}
 
-		# rseq costs about 25mins, don't run rseq in kselftests-02.
-		[[ "$subtest" = "rseq" ]] && continue
-
-		[[ "$subtest" = "livepatch" ]] && continue
-
-		[[ "$subtest" = "breakpoints" ]] && fixup_breakpoints
-
 		check_ignore_case $subtest && echo "ignored_by_lkp $subtest test" && continue
+		subtest_in_skip_filter "$skip_filter" && continue
 
 		check_makefile $subtest || log_cmd make TARGETS=$subtest 2>&1
 
-		subtest_in_skip_filter "$skip_filter" && continue
-
-		if [[ $subtest = "bpf" ]]; then
+		if [[ "$subtest" = "breakpoints" ]]; then
+			fixup_breakpoints
+		elif [[ "$subtest" = "rseq" ]]; then
+			# rseq costs about 25mins, run it alone.
+			sed -i 's/default_timeout=45/default_timeout=300/' kselftest/runner.sh
+		elif [[ $subtest = "bpf" ]]; then
 			prepare_for_bpf
 			type ping6 && {
 				sed -i 's/if ping -6/if ping6/g' bpf/test_skb_cgroup_id.sh 2>/dev/null
@@ -377,37 +362,27 @@ run_tests()
 			# ./test_libbpf.sh: 9: ./test_libbpf.sh: 0: not found
 			[ "$(cmd_path bash)" = '/bin/bash' ] && [ $(readlink -e /bin/sh) != '/bin/bash' ] &&
 				ln -fs bash /bin/sh
-		fi
-
-		if [[ $subtest = "efivarfs" ]]; then
+		elif [[ $subtest = "efivarfs" ]]; then
 			prepare_for_efivarfs || continue
-		fi
-
-		if [[ "$subtest" = "pstore" ]]; then
+		elif [[ "$subtest" = "pstore" ]]; then
 			prepare_for_pstore || continue
-		fi
-
-		if [[ "$subtest" = "firmware" ]]; then
+		elif [[ "$subtest" = "firmware" ]]; then
 			prepare_for_firmware || continue
-		fi
-
-		if [[ "$subtest" = "net" ]]; then
+		elif [[ "$subtest" = "net" ]]; then
 			prepare_for_net || continue
-		fi
-
-		if [[ "$subtest" = "sysctl" ]]; then
+		elif [[ "$subtest" = "sysctl" ]]; then
 			lsmod | grep -q test_sysctl || modprobe test_sysctl
-		fi
-
-		if [[ "$subtest" = "ir" ]]; then
+		elif [[ "$subtest" = "ir" ]]; then
 			## Ignore RCMM infrared remote controls related tests.
 			sed -i 's/{ RC_PROTO_RCMM/\/\/{ RC_PROTO_RCMM/g' ir/ir_loopback.c
 			echo "ignored_by_lkp ir.ir_loopback_rcmm tests"
+		elif [[ "$subtest" = "memfd" ]]; then
+			fixup_memfd
+		elif [[ "$subtest" = "vm" ]]; then
+			fixup_vm
+		elif [[ "$subtest" = "x86" ]]; then
+			fixup_x86
 		fi
-
-		[[ "$subtest" = "memfd" ]] && fixup_memfd
-		[[ "$subtest" = "vm" ]] && fixup_vm
-		[[ "$subtest" = "x86" ]] && fixup_x86
 
 		log_cmd make run_tests -C $subtest  2>&1
 

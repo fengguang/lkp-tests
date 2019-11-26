@@ -30,4 +30,4 @@ command gcc-5 >/dev/null || skip_filter="x86 $skip_filter"
 
 prepare_for_selftest
 
-run_tests $selftest
+run_tests $selftest_mfs
