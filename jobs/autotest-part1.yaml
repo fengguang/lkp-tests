@@ -14,7 +14,7 @@ autotest:
   # - bash_shared_mapping # OOM on 32G vm
   # - bonnie # compile error
   # - btreplay # compile error
-  - cgroup
+  # - cgroup # TestError: cg.smoke_test: Process is not a root member
   # - connectathon # compile error
   # - cpuflags # compile error
   # - cpu_hotplug # cost about 1 hour, terminated
