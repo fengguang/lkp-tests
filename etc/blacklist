@@ -421,6 +421,7 @@
 ^stderr.--(append|filter|interval|log|metric|no|per|post|pre|scale|smi|table|timeout|topdown)
 ^stderr.assert_data\['tests'\]
 ^stderr.AssertionError
+^stderr.\[-A\]\[-u\]\[-V\]\[-I\{SUM|CPU|SCPU|ALL\}\]
 ^stderr.backend.finalize
 ^stderr.binary_file=BZ2File
 ^stderr./bin/sh:./runltp:Permission_denied
@@ -522,6 +523,7 @@
 ^stderr.netperf:data_send_error:sendfile:No_space_left_on_device
 ^stderr.No_pmem_device
 ^stderr.No_protocol_specified
+^stderr.Options_are
 ^stderr.o_such_file_or_directory
 ^stderr.\[-P\{<cpu>\[,...\]\|ON\|ALL\}\]
 ^stderr.\[perf_record:(Captured_and_wrote|Woken_up)
@@ -577,6 +579,7 @@
 ^stderr.Unexpected_error:Inappropriate_ioctl_for_device
 ^stderr.Unit_nfs-kernel-server.service_could_not_be_found
 ^stderr../(unix|unlink)[1-2]_(processes|threads):error_while_loading_shared_libraries
+^stderr.Usage:mpstat
 ^stderr.Usage:perf_stat
 ^stderr.Usage:sed
 ^stderr.Usage:time\[-vpa\]\[-o_FILE\]PROG_ARGS
