@@ -350,6 +350,12 @@ run_test()
 			test_opt="\n6\n1\nn"
 			export DISPLAY=:0
 			;;
+		x11perf-*)
+			# Choose
+			# 1: 500px PutImage Square
+			test_opt="\n1\nn"
+			export DISPLAY=:0
+			;;
 		smart-*)
 			# Choose 1st disk to get smart info
 			# 1: /dev/sda
