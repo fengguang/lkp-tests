@@ -267,6 +267,7 @@
 ^kmsg.ES:sel=#,attr=#,limit=#,base=
 ^kmsg.ExceptionBitmap=#PFECmask=#PFECmatch=
 ^kmsg.EXT4-fs\(.*\):
+^kmsg.File:/fs/scratch/file_PID:#Comm:xfs_io
 ^kmsg.File:/fs/vda-diotest_PID:#Comm:dio-invalidate
 ^kmsg.find_next_and_bit:#ns,#iterations
 ^kmsg.Firmware_Bug\]:the_BIOS_has_corrupted_hw-PMU_resources
