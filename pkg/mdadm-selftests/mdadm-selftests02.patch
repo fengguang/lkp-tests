@@ -1,0 +1,51 @@
+From 86edac13ea5bebb19ce14e383a3c944783ae0704 Mon Sep 17 00:00:00 2001
+From: Xiao Yang <ice_yangxiao@163.com>
+Date: Wed, 27 Nov 2019 11:02:36 +0800
+Subject: [PATCH] Manage: Remove the legacy code for md driver prior to 0.90.03
+
+Previous re-add operation only calls ioctl(HOT_ADD_DISK) for array without
+metadata(e.g. mdadm -B/--build) when md driver is less than 0.90.02, but
+commit 091e8e6 breaks the logic and current re-add operation can call
+ioctl(HOT_ADD_DISK) even if md driver is 0.90.03.
+
+This issue is reproduced by 05r1-re-add-nosuper:
+------------------------------------------------
+++ die 'resync or recovery is happening!'
+++ echo -e '\n\tERROR: resync or recovery is happening! \n'
+ERROR: resync or recovery is happening!
+------------------------------------------------
+
+Fixes: 091e8e6("Manage: Remove all references to md_get_version()")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Xiao Yang <ice_yangxiao@163.com>
+---
+ Manage.c | 12 ------------
+ 1 file changed, 12 deletions(-)
+
+diff --git a/Manage.c b/Manage.c
+index 21536f5..ffe55f8 100644
+--- a/Manage.c
++++ b/Manage.c
+@@ -741,18 +741,6 @@ int Manage_add(int fd, int tfd, struct mddev_dev *dv,
+ 		       "       Adding anyway as --force was given.\n",
+ 		       dv->devname, devname);
+ 	}
+-	if (!tst->ss->external && array->major_version == 0) {
+-		if (ioctl(fd, HOT_ADD_DISK, rdev)==0) {
+-			if (verbose >= 0)
+-				pr_err("hot added %s\n",
+-				       dv->devname);
+-			return 1;
+-		}
+-
+-		pr_err("hot add failed for %s: %s\n",
+-		       dv->devname, strerror(errno));
+-		return -1;
+-	}
+ 
+ 	if (array->not_persistent == 0 || tst->ss->external) {
+ 
+-- 
+2.21.0
+
+
