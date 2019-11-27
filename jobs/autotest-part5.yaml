@@ -1,0 +1,9 @@
+suite: autotest
+testcase: autotest
+category: functional
+
+need_memory: 7G
+
+autotest:
+  test:
+  - fsstress
