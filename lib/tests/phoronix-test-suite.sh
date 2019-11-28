@@ -294,6 +294,13 @@ fixup_dolfyn_install()
 	sed -i "4a sed -i \"s/stop'bug:/stop 'bug:/g\" gmsh2dolfyn.f90" "$target"
 }
 
+fixup_tesseract_install()
+{
+	local test=$1
+	local target=/var/lib/phoronix-test-suite/test-profiles/pts/${test}/install.sh
+	sed -i 's,mv bench.so tesseract,mv bench.sh tesseract,' "$target"
+}
+
 fixup_install()
 {
 	local test=$1
@@ -313,6 +320,10 @@ fixup_install()
 	dolfyn-*)
 		# fix issue: Error: Blank required in STOP statement near (1)
 		fixup_dolfyn_install $test || die "failed to fixup dolfyn install"
+		;;
+	tesseract-*)
+		# fix issue: mv: cannot stat 'bench.so': No such file or directory
+		fixup_tesseract_install $test || die "failed to fixup tesseract install"
 		;;
 	esac
 }
