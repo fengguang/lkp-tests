@@ -23,6 +23,11 @@ build()
 		ln -sf $(which gcc7) $(which gcc)
 	fi
 
+	cmake_major="cmake"
+	if [ "$DISTRO" = "aliyun" ]; then
+		cmake_major="cmake3"
+	fi
+
 	build_waffle || return
 	build_piglit || return
 	build_intel_gpu_tools || return
@@ -33,7 +38,7 @@ build_waffle()
 	local wayland=1
 	[ "$DISTRO" = "centos" -o "$DISTRO" = "aliyun" ] && wayland=0
 	cd ../waffle || return
-	cmake3   -Dwaffle_has_glx=1      \
+	$cmake_major -Dwaffle_has_glx=1      \
 		-Dwaffle_has_x11_egl=1  \
 		-Dwaffle_has_wayland=$wayland   \
 		-Dwaffle_has_gbm=1      \
@@ -46,7 +51,7 @@ build_piglit()
 {
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
 	cd ../$pkgname || return
-	cmake3 -DCMAKE_INSTALL_PREFIX="${benchmark_path}" || return
+	$cmake_major -DCMAKE_INSTALL_PREFIX="${benchmark_path}" || return
 	make || return
 	make install || return
 }
