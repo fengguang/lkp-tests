@@ -419,11 +419,16 @@
 ^stderr.-(a|A|B|C|D|d|e|G|g|I|i|M|n|o|p|r|S|t|T|v|x),--
 ^stderr.-(aAppend|f_FMT|o_FILE|pPOSIX|vVerbose)
 ^stderr.Aborted
+^stderr.actual_packet:#F.#:#\(#\)ack
+^stderr.actual_packet:#P.#:#\(#\)ack
+^stderr.actual_packet:#R.#:#\(#\)ack#win#<nop,nop,TS_val#ecr#>
 ^stderr.all_numbers_and_ranges_can_be_made_cpuset-relative_with
 ^stderr.all_ranges_can_be_inverted_with
 ^stderr.--(append|filter|interval|log|metric|no|per|post|pre|scale|smi|table|timeout|topdown)
 ^stderr.assert_data\['tests'\]
 ^stderr.AssertionError
+^stderr.assert_tcpi_ca_state==TCP_CA_Disorder
+^stderr.assert_tcpi_probes==#,tcpi_probes
 ^stderr.\[-A\]\[-u\]\[-V\]\[-I\{SUM|CPU|SCPU|ALL\}\]
 ^stderr.backend.finalize
 ^stderr.binary_file=BZ2File
@@ -433,6 +438,7 @@
 ^stderr.Cache_Allocation_Technology\(CAT\)is_not_supported_by_cpu
 ^stderr.*:cannot_create_regular_file.*:File_exists
 ^stderr.Can_not_find_perf_command
+^stderr.Cannot_get_device_udp-fragmentation-offload_settings:Operation_not_supported
 ^stderr.cannot_remove.*disk_cp(#):cannot_write
 ^stderr.cannot_remove'/fs/md
 ^stderr.cannot_remove.*:No_space_left_on_device
@@ -448,6 +454,8 @@
 ^stderr.cpu_doesn't_support_resource_control_feature
 ^stderr.<cpus>is_a_comma_delimited_list_of_cpu_numbers_or_A-B_ranges_or_all
 ^stderr.curl.*Empty_reply_from_server
+^stderr.cwnd-moderation-disorder-no-moderation.pkt:error_executing_code:'/usr/bin/python'returned_non-zero_status
+^stderr.cwnd-moderation-disorder-no-moderation.pkt:#:error_in_Python_code
 ^stderr.debconf:.*frontend
 ^stderr.disk1.c:No_space_left_on_device
 ^stderr.disk_(cp|src)
@@ -472,6 +480,7 @@
 ^stderr.Failed_to_restart_nfs-server.service:Unit_nfs-server.service_not_found
 ^stderr.fail_to_setup_test_environment
 ^stderr.FAILURE:MADV_POISON:Device_or_resource_busy
+^stderr.fastopen-client.pkt:#:runtime_error_in_sendto_call:Expected_result#but_got
 ^stderr.FATAL:Could_not_load/lib/modules/#/modules.dep:No_such_file_or_directory
 ^stderr.fatal:reference_is_not_a_tree
 ^stderr.File~./bin/run-fxmark
@@ -552,6 +561,10 @@
 ^stderr.(perf:)?Segmentation_fault
 ^stderr.perl:warning
 ^stderr.\[--physcpubind=|-C<cpus>\]\[--cpunodebind=|-N<nodes>\]
+^stderr..*pkt.*error_handling_packet
+^stderr..*pkt.*runtime_error_in_bind_call
+^stderr..*pkt.*runtime_error_in_sendfile_call
+^stderr..*pkt.*timing_error
 ^stderr.pmeter_server_does_not_start_correctly
 ^stderr.poll2_threads:.*:testcase:Assertion.*failed
 ^stderr.print_counts_(at_regular_interval_in_ms|with_custom_separator|for_fixed_number_of_times)
@@ -566,10 +579,14 @@
 ^stderr.rsync_error:error_in_socket_IO\(code#\)at_clientserver.c
 ^stderr.Run_PROG,display_resource_usage_when_it_exits
 ^stderr.-[-rwx]{9}#www-data_lkp
+^stderr.script_packet:#F.#:#\(#\)ack
+^stderr.script_packet:#P.#:#\(#\)ack
+^stderr.script_packet:#R.#:#\(#\)ack#<nop,nop,TS_val#ecr#>
 ^stderr.*scripts/aim_..sh:not_found
 ^stderr.sed:can't_read/lkp/benchmarks/ltp/ltp/runtest/fs_ext4:No_such_file_or_directory
 ^stderr.See.*for_details
 ^stderr.self._fp=_builtin_open
+^stderr.server.pkt:#:runtime_error_in_recvmsg_call:Bad_timestamp
 ^stderr.setpci:#:#:#:Capability#not_found
 ^stderr.sh:echo:I/O_error
 ^stderr.\[--shmid|-I<id>\]--file|-f<tmpfsfile>
@@ -613,6 +630,8 @@
 ^stderr.Usage:time\[-vpa\]\[-o_FILE\]PROG_ARGS
 ^stderr.use--cpunodebind_or--physcpubind_instead
 ^stderr.users_on_this_machine
+^stderr.user-timeout-probe.pkt:error_executing_code:'/usr/bin/python'returned_non-zero_status
+^stderr.user-timeout-probe.pkt:#:error_in_Python_code
 ^stderr.use_the_device_is_found_by_lsof\(#\)or_fuser\(#\).\)
 ^stderr./usr/bin/env:.*ruby.*:No_such_file_or_directory
 ^stderr.\+wait_post_test
