@@ -356,6 +356,12 @@ run_test()
 			test_opt="\n1\nn"
 			export DISPLAY=:0
 			;;
+		tesseract-*)
+			# Choose
+			# 1: 800 x 600
+			test_opt="\n1\nn"
+			export DISPLAY=:0
+			;;
 		smart-*)
 			# Choose 1st disk to get smart info
 			# 1: /dev/sda
