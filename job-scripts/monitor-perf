@@ -1,0 +1,70 @@
+#!/bin/sh
+
+export_top_env()
+{
+	export suite='mytest'
+	export testcase='mytest'
+	export category='benchmark'
+	export job_origin='jobs/mytest.yaml'
+	export testbox=''
+	export arch=''
+	export tbox_group=''
+	export kconfig=''
+	export compiler=''
+	export commit=''
+	export rootfs=''
+	export nr_cpu=
+	export memory=''
+	export NO_NETWORK=1
+	export LKP_LOCAL_RUN=1
+	export result_root_template="/lkp/result/mytest/\$opt_test_name/\$testbox/\$rootfs/\$kconfig/\$compiler/\$commit"
+
+	[ -n "$LKP_SRC" ] ||
+	export LKP_SRC=/lkp/${user:-lkp}/src
+}
+
+run_job()
+{
+	echo $$ > $TMP/run-job.pid
+
+	. $LKP_SRC/lib/http.sh
+	. $LKP_SRC/lib/job.sh
+	. $LKP_SRC/lib/env.sh
+
+	run_monitor $LKP_SRC/monitors/wrapper numa-meminfo
+	run_monitor $LKP_SRC/monitors/wrapper numa-vmstat
+	run_monitor $LKP_SRC/monitors/wrapper slabinfo
+	run_monitor $LKP_SRC/monitors/wrapper zoneinfo
+	run_monitor $LKP_SRC/monitors/wrapper buddyinfo
+	run_monitor $LKP_SRC/monitors/wrapper vmstat
+	run_monitor $LKP_SRC/monitors/wrapper proc-vmstat
+	run_monitor $LKP_SRC/monitors/wrapper meminfo
+	run_monitor $LKP_SRC/monitors/no-stdout/wrapper perf-profile
+
+	run_test $LKP_SRC/tests/wrapper mytest
+}
+
+extract_stats()
+{
+	export stats_part_begin=
+	export stats_part_end=
+
+	$LKP_SRC/stats/wrapper numa-meminfo
+	$LKP_SRC/stats/wrapper numa-vmstat
+	$LKP_SRC/stats/wrapper slabinfo
+	$LKP_SRC/stats/wrapper zoneinfo
+	$LKP_SRC/stats/wrapper buddyinfo
+	$LKP_SRC/stats/wrapper vmstat
+	$LKP_SRC/stats/wrapper proc-vmstat
+	$LKP_SRC/stats/wrapper meminfo
+	$LKP_SRC/stats/wrapper perf-profile
+
+	$LKP_SRC/stats/wrapper time mytest.time
+	$LKP_SRC/stats/wrapper dmesg
+	$LKP_SRC/stats/wrapper kmsg
+	$LKP_SRC/stats/wrapper last_state
+	$LKP_SRC/stats/wrapper stderr
+	$LKP_SRC/stats/wrapper time
+}
+
+"$@"
