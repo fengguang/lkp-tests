@@ -474,6 +474,7 @@
 ^stderr.Failed_to_connect_to_hostapd-wpa_ctrl_open:No_such_file_or_directory
 ^stderr.failed_to_create_symbolic_link
 ^stderr.*Failed_to_fetch_http
+^stderr.failed_to_find_linux-headers_package
 ^stderr.failed_to_load_(locktorture|rcutorture)_module,try_to_enable_CONFIG_(LOCK|RCU)_TORTURE_TEST_and_build_(locktorture|rcutorture).ko
 ^stderr.failed_to_mmap_with#\(Cannot_allocate_memory\)
 ^stderr.failed_to_prepare_for_bpf
