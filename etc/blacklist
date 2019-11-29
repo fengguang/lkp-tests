@@ -531,6 +531,7 @@
 ^stderr.make.*Error
 ^stderr.make_perf_failed
 ^stderr.md5sum://mnt/ocfs2/sendfile_verify:No_such_file_or_directory
+^stderr.mdadm:/dev/loop.*_doesn't_have_bitmap
 ^stderr.mdadm:Error_connecting_monitor_with.*:No_such_file_or_directory
 ^stderr.\[--membind=|-m<nodes>\]\[--localalloc|-l\]command_args
 ^stderr.memory_policy|--dump|-d|--dump-nodes|-D
