@@ -639,7 +639,7 @@ def load_matrices_to_compare(matrix_path1, matrix_path2, options = {})
   b = if matrix_path2
         search_load_json matrix_path2
       else
-        Timeout.timeout(300) { load_base_matrix matrix_path1, a, options }
+        Timeout.timeout(1800) { load_base_matrix matrix_path1, a, options }
       end
 
   [a, b]
