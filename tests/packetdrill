@@ -23,11 +23,6 @@ for f in $(find packetdrill -name "*.pkt" ! -name "*diag-ipv6*" | sort); do
 	fi
 done
 
-# Delete non-existent files
-sed -i 's/\.\..*tcp_fastopen/sysctl -q net.ipv4.tcp_fastopen/g' \
-	tcp/zerocopy/fastopen-server.pkt
-sed -i '/sysctl_restore/d' tcp/zerocopy/fastopen-server.pkt
-
 # Pass --tolerance_usecs=100000 to packetdrill command
 grep -q -- --tolerance_usecs packetdrill/run_all.py || sed -ri \
 's/(--send_omit_free)/\1 --tolerance_usecs=100000/g' packetdrill/run_all.py
