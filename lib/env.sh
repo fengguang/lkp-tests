@@ -3,6 +3,9 @@
 [ -n "$lib_env_load_once" ] && return
 lib_env_load_once=1
 
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/lkp/benchmarks/lib
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/lkp/benchmarks/lib/pkgconfig:/lkp/benchmarks/share/pkgconfig
+
 if command -v command >/dev/null 2>&1; then
 	has_cmd()
 	{
