@@ -301,6 +301,14 @@ fixup_tesseract_install()
 	sed -i 's,mv bench.so tesseract,mv bench.sh tesseract,' "$target"
 }
 
+fixup_gcrypt_install()
+{
+	local test=$1
+	local target=/var/lib/phoronix-test-suite/test-profiles/pts/${test}/install.sh
+	sed -i '5a sed -i \"s,\\$(CPP) _\\$@,\\$(CPP) -P _\\$@,g\" src/Makefile*'  "$target"
+	sed -i "15a sed -i \"s,define G10_MPI_INLINE_DECL  extern __inline__,define G10_MPI_INLINE_DECL  extern inline __attribute__ ((__gnu_inline__)),g\" mpi/mpi-inline.h" "$target"
+}
+
 fixup_install()
 {
 	local test=$1
@@ -324,6 +332,11 @@ fixup_install()
 	tesseract-*)
 		# fix issue: mv: cannot stat 'bench.so': No such file or directory
 		fixup_tesseract_install $test || die "failed to fixup tesseract install"
+		;;
+	gcrypt-*)
+		# fix issue: multiple definition of `_gcry_mpih_add'
+		#	     mkerrcodes.h:133:5: error: expected expression before ',' token
+		fixup_gcrypt_install $test || die "failed to fixup gcrypt install"
 		;;
 	esac
 }
