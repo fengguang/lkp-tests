@@ -465,6 +465,7 @@
 ^stderr.dpkg-preconfigure:unable_to_re-open_stdin
 ^stderr.dsearch\(\):No_such_file_or_directory
 ^stderr.ERROR:aim9_benchmark_is_not_installed_yet
+^stderr.Error:namespace.*:failed_to_enable
 ^stderr.Error_on#events_is_too_high
 ^stderr.Error:unknown_switch
 ^stderr.\[#-#-##:#:#\]\*(ERROR|WARN)\*-
@@ -479,6 +480,7 @@
 ^stderr.failed_to_load_(locktorture|rcutorture)_module,try_to_enable_CONFIG_(LOCK|RCU)_TORTURE_TEST_and_build_(locktorture|rcutorture).ko
 ^stderr.failed_to_mmap_with#\(Cannot_allocate_memory\)
 ^stderr.failed_to_prepare_for_bpf
+^stderr.failed_to_reconfigure_namespace:No_such_device_or_address
 ^stderr.Failed_to_restart_nfs-server.service:Unit_nfs-server.service_not_found
 ^stderr.fail_to_cd/lkp/benchmarks/
 ^stderr.fail_to_setup_test_environment
@@ -512,6 +514,7 @@
 ^stderr.Killed
 ^stderr.<length>can_have_g\(GB\),m\(MB\)or_k\(KB\)suffixes
 ^stderr.len_was-#send_size_was
+^stderr.libndctl:ndctl_pfn_enable:pfn.*:failed_to_enable
 ^stderr.libnuma:Warning:node_argument#is_out_of_range
 ^stderr.line$
 ^stderr.(:)?(line.*|l)(/lkp/|cd).*
