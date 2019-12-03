@@ -93,12 +93,13 @@ fixup_hpcc()
 }
 
 # add --allow-run-as-root to lammps
+# fix issue: There are not enough slots available in the system
 fixup_lammps()
 {
 	[ -n "$environment_directory" ] || return
 	local test=$1
 	local target=${environment_directory}/pts/${test}/lammps
-	sed -i 's/mpirun -np/mpirun --allow-run-as-root -np/' "$target"
+	sed -i 's/mpirun -np/mpirun --allow-run-as-root --oversubscribe -np/' "$target"
 }
 
 # add --allow-run-as-root to npb
