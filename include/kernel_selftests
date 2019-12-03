@@ -1,6 +1,10 @@
 need_kernel_headers: true
 need_kernel_selftests: true
+
 need_kconfig:
+% if ___.group == 'kselftests-x86'
+- CONFIG_X86_INTEL_MPX=y
+% else
 - CONFIG_RUNTIME_TESTING_MENU=y
 - CONFIG_TEST_FIRMWARE
 - CONFIG_TEST_USER_COPY
@@ -46,7 +50,6 @@ need_kconfig:
 - CONFIG_NET_FOU=m
 - CONFIG_NET_FOU_IP_TUNNELS=y
 - CONFIG_MACSEC=y
-- CONFIG_X86_INTEL_MPX=y
 - CONFIG_RC_CORE=m ~ (4\.1[4-9]|4\.20|5\.) # support kernel >=v4.14-rc1
 - CONFIG_RC_DEVICES=y # Depends on: RC_CORE [=m]
 - CONFIG_RC_LOOPBACK # Depends on: RC_DEVICES [=y] && RC_CORE [=m]
@@ -68,3 +71,4 @@ need_kconfig:
 - CONFIG_TEST_BLACKHOLE_DEV=m ~ v(5\.[3-9]) # support kernel >= v5.3-rc1
 - CONFIG_TEST_VMALLOC=m ~ v(5\.[1-9]) # support kernel >= v5.1-rc1
 - CONFIG_IR_IMON_DECODER=m ~ v(4\.1[7-9|4\.20]|5\.) # support kernel >= v4.17-rc1
+% end
