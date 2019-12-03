@@ -310,6 +310,13 @@ fixup_gcrypt_install()
 	sed -i "15a sed -i \"s,define G10_MPI_INLINE_DECL  extern __inline__,define G10_MPI_INLINE_DECL  extern inline __attribute__ ((__gnu_inline__)),g\" mpi/mpi-inline.h" "$target"
 }
 
+fixup_lammps_install()
+{
+	local test=$1
+	local target=/var/lib/phoronix-test-suite/test-profiles/pts/${test}/install.sh
+	sed -i '5a sed -i "s,-I/usr/lib/mpich/include/,-I/usr/lib/x86_64-linux-gnu/mpich/include/,g" MAKE/Makefile.debian Obj_debian/Makefile' "$target"
+}
+
 fixup_install()
 {
 	local test=$1
@@ -338,6 +345,10 @@ fixup_install()
 		# fix issue: multiple definition of `_gcry_mpih_add'
 		#	     mkerrcodes.h:133:5: error: expected expression before ',' token
 		fixup_gcrypt_install $test || die "failed to fixup gcrypt install"
+		;;
+	lammps-*)
+		# fix issue: pointers.h:24:10: fatal error: mpi.h: No such file or directory
+		fixup_lammps_install $test || die "failed to fixup lammps install"
 		;;
 	esac
 }
