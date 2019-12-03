@@ -1,0 +1,27 @@
+pkgname=trinity-static-i386
+pkgver=git
+pkgrel=1
+arch=('i686' 'x86_64')
+url="https://github.com/kernelslacker/trinity"
+license=('GPL')
+source=("https://github.com/kernelslacker/trinity.git")
+md5sums=('SKIP')
+
+build() {
+	export CC="gcc -m32 -static"
+	gcc_major=$($(which gcc) -dumpversion | cut -d. -f1)
+	cd "$srcdir/trinity" || return
+	./configure || return
+	if [[ "$gcc_major" -ge 8 ]]; then
+		CFLAGS="-Wno-address-of-packed-member -Werror=format-overflow=0" make
+	else
+		make
+	fi
+}
+
+package() {
+	cd "$srcdir/trinity" || return
+	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+	mkdir -p $benchmark_path
+	INSTALL_PREFIX=$benchmark_path make install
+}
