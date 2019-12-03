@@ -32,4 +32,4 @@ md:
 - BRAID6
 fs: btrfs
 
-fsmark.test_size: 130G
+fsmark.test_size: {{ md == 'BRAID6' ? '24G' : '130G' }}
