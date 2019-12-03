@@ -1,25 +1,26 @@
-# Maintainer: Boohbah <boohbah at gmail.com>
-
 pkgname=trinity
-pkgver=1.5
+pkgver=git
 pkgrel=1
-pkgdesc="A Linux System call fuzz tester"
 arch=('i686' 'x86_64')
-url="http://codemonkey.org.uk/projects/trinity/"
+url="https://github.com/kernelslacker/trinity"
 license=('GPL')
-source=("http://codemonkey.org.uk/projects/trinity/$pkgname-$pkgver.tar.xz")
-md5sums=('79ed682dd0f31fc4bdef4b77919759fa')
+source=("https://github.com/kernelslacker/trinity.git")
+md5sums=('SKIP')
 
 build() {
-  cd "$pkgname-$pkgver"
-  ./configure.sh
-  make
+	gcc_major=$($(which gcc) -dumpversion | cut -d. -f1)
+	cd "$srcdir/${pkgname}" || return
+	./configure || return
+	if [[ "$gcc_major" -ge 8 ]]; then
+		CFLAGS="-Wno-address-of-packed-member -Werror=format-overflow=0" make
+	else
+		make
+	fi
 }
 
 package() {
-  cd "$pkgname-$pkgver"
-  make DESTDIR="$pkgdir/usr" install
+	cd "$srcdir/${pkgname}" || return
+	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+	mkdir -p $benchmark_path
+	INSTALL_PREFIX=$benchmark_path make install
 }
-
-# vim:set ts=2 sw=2 et:
-
