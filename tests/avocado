@@ -1,0 +1,62 @@
+#!/bin/bash
+# - test_group
+
+. $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/upload.sh
+
+tmp_avocado="/tmp/avocado"
+
+set_conf()
+{
+	local confile="/usr/local/lib/python3.5/dist-packages/avocado/etc/avocado/avocado.conf"
+
+	[ -d "$tmp_avocado/result" ] || log_cmd mkdir -p "$tmp_avocado/result"
+	[ -d "$tmp_avocado/data" ] || log_cmd mkdir -p "$tmp_avocado/data"
+
+	## Set avocado config file, specify those 4 important dir.
+	## After test finished, upload $tmp_avocado to cluster.
+	## $tmp_avocado includes all testting info.
+	log_cmd sed -i "s|base_dir = /var/lib/avocado|base_dir = $tmp_avocado|g" $confile
+	log_cmd sed -i "s|data_dir = /var/lib/avocado/data|data_dir = $tmp_avocado/data|g" $confile
+	## Set test_dir to get all available tests by avocado list.
+	log_cmd sed -i "s|test_dir = /usr/share/doc/avocado/tests|test_dir = $BENCHMARK_ROOT/avocado/examples/tests|g" $confile
+	log_cmd sed -i "s|logs_dir = ~/avocado/job-results|logs_dir = $tmp_avocado/result|g" $confile
+}
+
+get_test()
+{
+	## avocado list will list all available tests
+	log_cmd avocado list >> /tmp/all_tests
+	## There are two type tests: INSTRUMENTED and SIMPLE.
+	## Don't test SIMPLE, all_tests will be splited.
+	log_cmd sed -i "/^SIMPLE/d" /tmp/all_tests
+	## Format all_test.
+	## Before: INSTRUMENTED /lkp/benchmarks/avocado/examples/tests/abort.py:AbortTest.test
+	## After: abort.py:AbortTest.test
+	gawk -F "tests/" '{print $2 > "/tmp/all_test"}' /tmp/all_tests
+}
+
+split_test()
+{
+	## split all tests, each group has 20 tests.
+	## e.g. split -l 20 all_test -d -a 2 group_
+	## get group_00  group_01  group_02
+	log_cmd split -l 20 /tmp/all_test -d -a 2 group_
+}
+
+run_test()
+{
+	run_test=$(cat $test_group)
+	log_cmd avocado run $run_test 2>&1
+}
+
+set_conf || die "Failed to set config file"
+get_test || die "Failed to get all available tests"
+split_test || die "Failed to split tests into test_group"
+run_test
+exit_value=$?
+
+upload_files -t results $tmp_avocado/*
+
+exit $exit_value

@@ -1,0 +1,21 @@
+pkgname=avocado
+pkgver=git
+pkgrel=1
+arch=('i686' 'x86_64')
+url="https://github.com/avocado-framework"
+license=('GPL')
+source=("https://github.com/avocado-framework/avocado.git")
+md5sums=('SKIP')
+
+build() {
+	cd "$srcdir/$pkgname"
+}
+
+package() {
+	cd "$srcdir/$pkgname"
+	make DESTDIR=${pkgdir} install
+	mkdir -p "${pkgdir}/lkp/benchmarks"
+	mkdir -p "${pkgdir}/usr/lib"
+	cp -af "/usr/lib/python3" "${pkgdir}/usr/lib"
+	cp -af "$srcdir/avocado" "${pkgdir}/lkp/benchmarks"
+}

@@ -56,7 +56,7 @@ class LinuxTestcasesTableSet
      'idle-inject', 'mdadm-selftests', 'xsave-test', 'nvml', 'test_bpf', 'mce-log', 'perf-sanity-tests',
      'build-perf_test', 'update-ucode', 'reboot', 'cat', 'libhugetlbfs-test', 'ocfs2test', 'syzkaller',
      'perf_test', 'stress-ng', 'sof_test', 'fxmark', 'kvm-kernel-boot-test', 'bkc_ddt', 'bpf_offload',
-     'xfstests', 'autotest', 'packetdrill'].freeze
+     'xfstests', 'autotest', 'packetdrill', 'avocado'].freeze
   OTHER_TESTCASES =
     ['0day-boot-tests', '0day-kbuild-tests', 'build-dpdk', 'build-sof', 'sof_test', 'build-nvml',
      'build-qemu', 'convert-lkpdoc-to-html', 'convert-lkpdoc-to-html-css', 'rsync-rootfs',
