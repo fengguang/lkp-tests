@@ -17,11 +17,16 @@ build() {
 	else
 		make
 	fi
+
+	make install
 }
 
 package() {
 	cd "$srcdir/trinity" || return
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+	bin_path="${pkgdir}/bin"
 	mkdir -p $benchmark_path
+	mkdir -p $bin_path
+	cp /bin/trinity $bin_path
 	INSTALL_PREFIX=$benchmark_path make install
 }
