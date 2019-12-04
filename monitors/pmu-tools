@@ -2,6 +2,7 @@
 # - events
 # - time
 # - command
+# - list_pmu_events
 
 . $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/debug.sh
@@ -28,6 +29,39 @@ ocperf=$BENCHMARK_ROOT/pmu-tools/ocperf.py
 	mkdir -p "$HOME/.cache"
 	cp -af "$BENCHMARK_ROOT/pmu-tools/pmu-events" "$HOME/.cache"
 }
+
+cpu_info()
+{
+    str=$1
+    grep -E "$str[[:space:]]+:" "/proc/cpuinfo" | uniq | cut -d ':' -f 2
+}
+
+create_links()
+{
+    pmu_dir="$HOME/.cache/pmu-events"
+    cpu_family=$(cpu_info "cpu family")
+    model=$(cpu_info "model")
+    if [ -z "$cpu_family" ] || [ -z "$model" ]; then
+        echo "Can't check cpu family or model from /proc/cpuinfo"
+        exit
+    fi
+    if [ "$cpu_family" -eq 6 ] && [ "$model" -eq 85 ]; then
+        stepping=$(cpu_info "stepping")
+        [ -z "$stepping" ] && exit
+        for f in $pmu_dir/GenuineIntel-6-55-*$stepping*.json; do
+            # remove stepping field from file name.
+            # GenuineIntel-6-55-56789ABCDEF-core.json
+            name=${f##*-}
+            link_name="$pmu_dir/GenuineIntel-6-55-$name"
+            ln -sf "$f" "$link_name"
+        done
+    fi
+}
+
+if [ -n "$list_pmu_events" ]; then
+    create_links
+    python "$BENCHMARK_ROOT/pmu-tools/list-events.py" > "$TMP_RESULT_ROOT/pmu-events-list"
+fi
 
 # perf may consume lots of fd
 ulimit -n 102400
