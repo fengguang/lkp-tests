@@ -544,6 +544,7 @@
 ^stderr.memory_policy\|--dump\|-d\|--dump-nodes\|-D
 ^stderr.memory_policy_is--interleave\|-i,--preferred\|-p,--membind\|-m,--localalloc\|-l
 ^stderr.modprobe:ERROR:../libkmod/libkmod.c:#kmod_search_moddep\(\)could_not_open_moddep_file
+^stderr.modprobe:FATAL:Module_dax_pmem_compat_is_in_use
 ^stderr.modprobe:FATAL:Module_(locktorture|rcutorture)_not_found_in_directory/lib/modules
 ^stderr.monitor_specified_metrics_or_metric_groups
 ^stderr.mount.nfs:Network_is_unreachable
