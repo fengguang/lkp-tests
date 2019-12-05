@@ -477,6 +477,7 @@
 ^stderr.ERROR:aim9_benchmark_is_not_installed_yet
 ^stderr.Error:namespace.*:failed_to_enable
 ^stderr.Error_on#events_is_too_high
+^stderr.Error_opening,size=#Permission_denied
 ^stderr.Error:unknown_switch
 ^stderr.\[#-#-##:#:#\]\*(ERROR|WARN)\*-
 ^stderr.*error_while_loading_shared_libraries.*cannot_open_shared_object_file:No_such_file_or_directory
