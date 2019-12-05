@@ -422,6 +422,7 @@
 ^stderr.actual_packet:#F.#:#\(#\)ack
 ^stderr.actual_packet:#P.#:#\(#\)ack
 ^stderr.actual_packet:#R.#:#\(#\)ack#win#<nop,nop,TS_val#ecr#>
+^stderr.AIM_Multiuser_Benchmark-Suite_VII_Testing_over
 ^stderr.all_numbers_and_ranges_can_be_made_cpuset-relative_with
 ^stderr.all_ranges_can_be_inverted_with
 ^stderr.--(append|filter|interval|log|metric|no|per|post|pre|scale|smi|table|timeout|topdown)
@@ -446,8 +447,11 @@
 ^stderr.cat:can't_open'/tmp/lkp/pid-tests':No_such_file_or_directory
 ^stderr.cat:results/x86_64-linux-gnu/lkp-bdw-ep4.#:No_such_file_or_directory
 ^stderr.cat:/tmp/lkp/eatmem_1.pid:No_such_file_or_directory
+^stderr.Child##::Invalid_argument
+^stderr.Child##::No_space_left_on_device
 ^stderr.Child##::No_such_file_or_directory
 ^stderr.Child_process_called_exit(),status=
+^stderr.Child##::Read-only_file_system
 ^stderr.configure.*
 ^stderr.*:Connection_reset_by_peer
 ^stderr.Could_not_find_file_
@@ -460,9 +464,14 @@
 ^stderr.DAX_initialization_timeout
 ^stderr.debconf:.*frontend
 ^stderr.disk1.c:No_space_left_on_device
+^stderr.disk1.c:No_such_file_or_directory
+^stderr.disk1.c:Read-only_file_system
 ^stderr.disk_(cp|src)
 ^stderr.disk_number.*
 ^stderr.disk_rr.*/fs/md0
+^stderr.disk_rr\(\):No_space_left_on_device
+^stderr.disk_wrt:cannot_(create|write)/fs/md0/tmpb
+^stderr.disk_wrt/fs/md0
 ^stderr.dpkg-preconfigure:unable_to_re-open_stdin
 ^stderr.dsearch\(\):No_such_file_or_directory
 ^stderr.ERROR:aim9_benchmark_is_not_installed_yet
@@ -476,6 +485,7 @@
 ^stderr.failed_to_checkout_sof_commit
 ^stderr.Failed_to_connect_to_hostapd-wpa_ctrl_open:No_such_file_or_directory
 ^stderr.failed_to_create_symbolic_link
+^stderr.Failed_to_execute
 ^stderr.*Failed_to_fetch_http
 ^stderr.failed_to_find_linux-headers_package
 ^stderr.failed_to_load_(locktorture|rcutorture)_module,try_to_enable_CONFIG_(LOCK|RCU)_TORTURE_TEST_and_build_(locktorture|rcutorture).ko
@@ -563,6 +573,7 @@
 ^stderr.<nodes>is_a_comma_delimited_list_of_node_numbers_or_A-B_ranges_or_all
 ^stderr.No_pmem_device
 ^stderr.No_protocol_specified
+^stderr.:No_space_left_on_device
 ^stderr.numactl\[--hardware\|-H\]
 ^stderr.numactl\[--length\|-l<length>\]\[--offset\|-o<offset>\]\[--shmmode\|-M<shmmode>\]
 ^stderr.numactl\[--show\|-s\]
@@ -582,11 +593,16 @@
 ^stderr.poll2_threads:.*:testcase:Assertion.*failed
 ^stderr.print_counts_(at_regular_interval_in_ms|with_custom_separator|for_fixed_number_of_times)
 ^stderr.prog_tests/.*:warning:implicit_declaration_of_function
+^stderr.:Read-only_file_system
 ^stderr.RESULT_ROOT_not_empty:total
 ^stderr.results=Results
 ^stderr.return_loader
 ^stderr.return_writev
 ^stderr.rm:cannot_remove
+^stderr.rm:disk1.c:No_space_left_on_device
+^stderr.rm:disk1.c:Read-only_file_system
+^stderr.rm:disk_cp\(#\):cannot_write/fs/md0/tmpb
+^stderr.rm:disk_wrt:cannot_write/fs/md0/tmpb
 ^stderr.rsync:change_dir~/lkp/benchmarks/ltp/ltp/results~failed:No_such_file_or_directory
 ^stderr.rsync:change_dir__tmp_lkp_piglit-results_failed:No_such_file_or_directory
 ^stderr.rsync_error:error_in_socket_IO\(code#\)at_clientserver.c
