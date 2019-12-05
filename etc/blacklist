@@ -515,6 +515,7 @@
 ^stderr.Killed
 ^stderr.<length>can_have_g\(GB\),m\(MB\)or_k\(KB\)suffixes
 ^stderr.len_was-#send_size_was
+^stderr.libkmod:ERROR../libkmod/libkmod-module.c:#kmod_module_get_holders:could_not_open'/sys/module/(pcc|acpi)_cpufreq/holders':No_such_file_or_directory
 ^stderr.libndctl:ndctl_pfn_enable:pfn.*:failed_to_enable
 ^stderr.libnuma:Warning:node_argument#is_out_of_range
 ^stderr.line$
