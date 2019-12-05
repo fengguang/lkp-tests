@@ -452,6 +452,7 @@
 ^stderr.Child##::No_such_file_or_directory
 ^stderr.Child_process_called_exit(),status=
 ^stderr.Child##::Read-only_file_system
+^stderr.compilation_terminated
 ^stderr.configure.*
 ^stderr.*:Connection_reset_by_peer
 ^stderr.Could_not_find_file_
@@ -521,6 +522,7 @@
 ^stderr.has_stderr
 ^stderr.\[--huge\|-u\]\[--touch\|-T\]
 ^stderr.Illegal_instruction
+^stderr._#include<asm/rwonce.h>
 ^stderr.\(In_some_cases_useful_info_about_processes_that
 ^stderr.Instead_of_a_number_a_node_can_also_be
 ^stderr.Invalid_number_of_requests
