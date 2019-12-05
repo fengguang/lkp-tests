@@ -457,6 +457,7 @@
 ^stderr.curl.*Empty_reply_from_server
 ^stderr.cwnd-moderation-disorder-no-moderation.pkt:error_executing_code:'/usr/bin/python'returned_non-zero_status
 ^stderr.cwnd-moderation-disorder-no-moderation.pkt:#:error_in_Python_code
+^stderr.DAX_initialization_timeout
 ^stderr.debconf:.*frontend
 ^stderr.disk1.c:No_space_left_on_device
 ^stderr.disk_(cp|src)
@@ -543,6 +544,7 @@
 ^stderr.\[--membind=\|-m<nodes>\]\[--localalloc\|-l\]command_args
 ^stderr.memory_policy\|--dump\|-d\|--dump-nodes\|-D
 ^stderr.memory_policy_is--interleave\|-i,--preferred\|-p,--membind\|-m,--localalloc\|-l
+^stderr.modprobe:ERROR:could_not_insert'(nd_e820|dax_pmem|device_dax)':Exec_format_error
 ^stderr.modprobe:ERROR:../libkmod/libkmod.c:#kmod_search_moddep\(\)could_not_open_moddep_file
 ^stderr.modprobe:FATAL:Module_dax_pmem_compat_is_in_use
 ^stderr.modprobe:FATAL:Module_(locktorture|rcutorture)_not_found_in_directory/lib/modules
