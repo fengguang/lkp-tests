@@ -512,7 +512,9 @@
 ^stderr.fio:pid=#,err=#/file:filesetup.c:#,func=fsync,error=Input/output_error
 ^stderr.fio:pid=#,got_signal=
 ^stderr.fio:posix_fallocate_fails:No_space_left_on_device
+^stderr.fopen_failed_to_open:fs_log.txt
 ^stderr.from/lkp/lkp/src/tests/pbzip2:#:in
+^stderr.fs_mark:write_file_write_failed:-#No_space_left_on_device
 ^stderr.func\(\*args,\*\*kwargs\)
 ^stderr.grep.+last_state:No_such_file_or_directory
 ^stderr.grep:runtest/fs_ext4:No_such_file_or_directory
