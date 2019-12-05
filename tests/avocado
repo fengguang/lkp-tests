@@ -47,8 +47,10 @@ split_test()
 
 run_test()
 {
-	run_test=$(cat $test_group)
-	log_cmd avocado run $run_test 2>&1
+	while read line
+	do
+		log_cmd avocado run $line --job-timeout 300 2>&1
+	done < $test_group
 }
 
 set_conf || die "Failed to set config file"
