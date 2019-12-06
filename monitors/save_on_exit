@@ -1,0 +1,14 @@
+#!/bin/sh
+
+. $LKP_SRC/lib/wait.sh
+
+[ "$#" -ne 0 ] || exit 0
+
+setup_wait
+wait_post_test
+
+for file in "$@"; do
+	if [ -f "$file" ]; then
+		cp --preserve=timestamps "$file" $RESULT_ROOT
+	fi
+done
