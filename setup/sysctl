@@ -188,6 +188,8 @@
 # - sc_watermark_scale_factor
 # - sc_zone_reclaim_mode
 # - sc_somaxconn
+# - sc_promotion_ratelimit_mbytes_per_sec
+# - sc_demotion_ratelimit_mbytes_per_sec
 
 . $LKP_SRC/lib/reproduce-log.sh
 
@@ -380,5 +382,7 @@
 [ -n "$sc_watermark_scale_factor" ] && log_eval "echo '$sc_watermark_scale_factor' > '/proc/sys/vm/watermark_scale_factor'"
 [ -n "$sc_zone_reclaim_mode" ] && log_eval "echo '$sc_zone_reclaim_mode' > '/proc/sys/vm/zone_reclaim_mode'"
 [ -n "$sc_somaxconn" ] && log_eval "echo '$sc_somaxconn' > '/proc/sys/net/core/somaxconn'"
+[ -n "$sc_promotion_ratelimit_mbytes_per_sec" ] && log_eval "echo '$sc_promotion_ratelimit_mbytes_per_sec' > '/proc/sys/vm/promotion_ratelimit_mbytes_per_sec'"
+[ -n "$sc_demotion_ratelimit_mbytes_per_sec" ] && log_eval "echo '$sc_demotion_ratelimit_mbytes_per_sec' > '/proc/sys/vm/demotion_ratelimit_mbytes_per_sec'"
 
 exit 0
