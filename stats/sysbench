@@ -46,6 +46,10 @@ $stdin.each_line do |line|
     add_result($results_total, 'throughput_MB/s', $1.to_f)
   when /total number of events:\s+(\d+)/
     add_result($results_total, 'workload', $1.to_f)
+  when /events\/s \(eps\):\s+([0-9.]+)/
+    add_result($results_avg, 'throughput_events/s', $1.to_f)
+  when /time elapsed:\s+([0-9.]+)/
+    add_result($results_avg, 'throughput_time', $1.to_f)
   when /min:\s+([0-9.]+)/
     add_result($results_min, 'latency_ms.min', $1.to_f)
   when /avg:\s+([0-9.]+)/
