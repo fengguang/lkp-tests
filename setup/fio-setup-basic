@@ -15,6 +15,7 @@
 # - filesize
 # - io_size
 # - file_service_type
+# - random_distribution
 
 . $LKP_SRC/lib/common.sh
 . $LKP_SRC/lib/unit.sh
@@ -38,6 +39,7 @@ size=$((test_size / nr_task))
 : ${filesize:=1G}
 : ${io_size:=$size}
 : ${file_service_type:=roundrobin}
+: ${random_distribution:=random}
 
 direct=$(parse_bool $direct)
 raw_disk=$(parse_bool $raw_disk)
@@ -69,6 +71,7 @@ invalidate=$invalidate
 fallocate=$fallocate
 io_size=$io_size
 file_service_type=$file_service_type
+random_distribution=$random_distribution
 group_reporting
 create_only=1
 "
