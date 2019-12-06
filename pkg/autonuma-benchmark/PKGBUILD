@@ -1,0 +1,14 @@
+pkgname=autonuma-benchmark
+pkgver=git
+pkgrel=1
+arch=('i686' 'x86_64')
+url="https://github.com/pholasek/autonuma-benchmark"
+license=('GPL')
+source=("https://github.com/pholasek/autonuma-benchmark.git")
+sha256sums=('SKIP')
+
+package() {
+	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+	mkdir -p "${benchmark_path}"
+	cp -af "$srcdir/${pkgname}/"* "$benchmark_path"
+}

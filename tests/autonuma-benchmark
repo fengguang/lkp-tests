@@ -1,0 +1,36 @@
+#!/bin/sh
+# - test
+
+export PATH=$PATH:/lkp/benchmarks/autonuma-benchmark
+
+ln -sf /usr/bin/gnuplot-qt /usr/bin/gnuplot
+
+# If test is not specified, will test all available tests.
+: ${test:=all}
+case "$test" in
+    "all")
+        option="-A"
+        ;;
+    "numa02_SMT")
+        option="-s"
+        ;;
+    "numa01_THREAD_ALLOC")
+        option="-t"
+        ;;
+    "_HARD_BIND")
+        option="-b"
+        ;;
+    "_INVERSE_BIND")
+        option="-i"
+        ;;
+    "minimal_thread_per_numa")
+        option="-m"
+        ;;
+    *)
+        echo "Invalid test parameter." && exit 1
+        ;;
+esac
+
+cd "/lkp/benchmarks/autonuma-benchmark" || exit
+
+/bin/bash start_bench.sh $option 2>&1

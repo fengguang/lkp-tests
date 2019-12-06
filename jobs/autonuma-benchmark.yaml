@@ -1,0 +1,11 @@
+suite: autonuma-benchmark
+testcase: autonuma-benchmark
+category: benchmark
+
+autonuma-benchmark:
+  test:
+  - numa02_SMT
+  - numa01_THREAD_ALLOC
+  - _HARD_BIND
+  - _INVERSE_BIND
+  - minimal_thread_per_numa
