@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+
+stats = []
+
+while (line = STDIN.gets)
+  case line
+  when /^(.*): (SUCCESS|FAIL|SKIP)/
+    if $2 == 'SUCCESS'
+      stats_type = 'pass'
+    elsif $2 == 'FAIL'
+      stats_type = 'fail'
+    else
+      stats_type = 'skip'
+    end
+    stats << $1.tr(' /', '_.') + ".#{stats_type}: 1"
+  end
+end
+
+stats.uniq.each { |stat| puts stat }

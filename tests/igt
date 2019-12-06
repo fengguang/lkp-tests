@@ -1,0 +1,14 @@
+#!/bin/bash
+# - group
+
+. $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/upload.sh
+
+test_file=$BENCHMARK_ROOT/igt/$group
+
+cd "$BENCHMARK_ROOT/igt" || exit
+
+while read testcase
+do
+	log_cmd build/tests/$testcase 2>&1
+done < $test_file

@@ -1,0 +1,31 @@
+pkgname=igt
+pkgver=git
+pkgrel=1
+arch=('i686' 'x86_64')
+url="https://gitlab.freedesktop.org/drm/igt-gpu-tools"
+license=('GPL')
+source=("https://gitlab.freedesktop.org/drm/igt-gpu-tools.git")
+sha256sums=('SKIP')
+
+build()
+{
+	python3 -m pip install meson
+	python3 -m pip install ninja
+	cd $srcdir/igt-gpu-tools
+	meson build && ninja -C build
+}
+
+separate_test()
+{
+	cd $srcdir/igt-gpu-tools
+	sed -n '2p' build/tests/test-list.txt | tr " " "\n" > all-tests
+	split all-tests -d -n r/10 group_
+}
+
+package()
+{
+	separate_test || return
+	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+	mkdir $benchmark_path
+	cp -af "${srcdir}/igt-gpu-tools/"* $benchmark_path
+}
