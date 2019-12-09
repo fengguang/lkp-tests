@@ -25,10 +25,6 @@ while (line = STDIN.gets)
     unit = $3
     test_object = "#{type}_#{object}"
     $4.gsub(/(\w+) (\d+.\d+)/) { puts "#{test_object}_#{$1}_#{unit}: #{$2}" }
-  when /^Response type:(( \w* \d*){3,})/
-    $1.gsub(/(\w+) (\d+)/) { puts "response_type_#{$1}: #{$2}" }
-  when /^Errors: (.*)/
-    $1.gsub(/(\w+) (\d+)/) { puts "error_#{$1}: #{$2}" }
   when /^Net I\/O: bytes (\d+.\d+) (.*) (\d+.\d+)/
     io_bytes = $1
     io_rate = $3
