@@ -435,6 +435,7 @@
 ^stderr./bin/sh:./runltp:Permission_denied
 ^stderr./bin/sh:#:(thrulay|thrulayd):not_found
 ^stderr.block:PATH_the_node_of_block_device_path
+^stderr.builtin-stat.c:#:#:fatal_error:util/iiostat.h:No_such_file_or_directory
 ^stderr.BusyBox.*multi-call_binary
 ^stderr.Cache_Allocation_Technology\(CAT\)is_not_supported_by_cpu
 ^stderr.*:cannot_create_regular_file.*:File_exists
@@ -534,6 +535,7 @@
 ^stderr.\[--huge\|-u\]\[--touch\|-T\]
 ^stderr.Illegal_instruction
 ^stderr._#include<asm/rwonce.h>
+^stderr._#include~util/iiostat.h~
 ^stderr.\(In_some_cases_useful_info_about_processes_that
 ^stderr.Instead_of_a_number_a_node_can_also_be
 ^stderr.Invalid_number_of_requests
@@ -564,7 +566,9 @@
 ^stderr.main\(\)
 ^stderr.make\[#\]:cc:Command_not_found
 ^stderr.make.*Error
+^stderr.Makefile.config:#:No_libpci_found,show_pci_devices_without_names_in_iiostat_mode,please_install_libpci-dev/pciutils-devel
 ^stderr.make_perf_failed
+^stderr.make\[#\]:***Waiting_for_unfinished_jobs
 ^stderr.md5sum://mnt/ocfs2/sendfile_verify:No_such_file_or_directory
 ^stderr.mdadm:/dev/loop.*_doesn't_have_bitmap
 ^stderr.mdadm:Error_connecting_monitor_with.*:No_such_file_or_directory
@@ -587,6 +591,7 @@
 ^stderr.mount:unknown_filesystem_type
 ^stderr.mount:you_must_specify_the_filesystem_type
 ^stderr.msync_failed_with_error_Input/output_error
+^stderr.mv:cannot_stat'./.builtin-stat.o.tmp':No_such_file_or_directory
 ^stderr.mv:cannot_stat'multiuser.csv':No_such_file_or_directory
 ^stderr.mv:cannot_stat'/tmp/lkp/piglit-results/results.json.bz2':No_such_file_or_directory
 ^stderr.netdev:DEV_the_node_connected_to_network_device_DEV
@@ -600,6 +605,7 @@
 ^stderr.numactl\[--show\|-s\]
 ^stderr.Options_are
 ^stderr.o_such_file_or_directory
+^stderr.Parsed_description_of#helper_function\(s\)
 ^stderr.pci:\[seg:\]bus:dev\[:func\]The_node_of_a_PCI_device
 ^stderr.\[-P\{<cpu>\[,...\]\|ON\|ALL\}\]
 ^stderr.\[perf_record:(Captured_and_wrote|Woken_up)
