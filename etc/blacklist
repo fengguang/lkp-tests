@@ -446,6 +446,7 @@
 ^stderr.cat:can't_open'/tmp/lkp/pid-tests':No_such_file_or_directory
 ^stderr.cat:results/x86_64-linux-gnu/lkp-bdw-ep4.#:No_such_file_or_directory
 ^stderr.cat:/tmp/lkp/eatmem_1.pid:No_such_file_or_directory
+^stderr.Child##::File_exists
 ^stderr.Child##::Invalid_argument
 ^stderr.Child##::No_space_left_on_device
 ^stderr.Child##::No_such_file_or_directory
@@ -473,6 +474,8 @@
 ^stderr.disk_wrt:cannot_(create|write)/fs/md0/tmpb
 ^stderr.disk_wrt/fs/md0
 ^stderr.dpkg-preconfigure:unable_to_re-open_stdin
+^stderr.dsearch\(\):can't_stat'
+^stderr.dsearch\(\):directory'fakeh'is_inaccessable
 ^stderr.dsearch\(\):No_such_file_or_directory
 ^stderr.ERROR:aim9_benchmark_is_not_installed_yet
 ^stderr.Error:namespace.*:failed_to_enable
