@@ -429,6 +429,7 @@
 ^stderr.AssertionError
 ^stderr.assert_tcpi_ca_state==TCP_CA_Disorder
 ^stderr.assert_tcpi_probes==#,tcpi_probes
+^stderr.assert_tcpi_reordering==#,tcpi_reordering
 ^stderr.\[-A\]\[-u\]\[-V\]\[-I\{SUM\|CPU\|SCPU\|ALL\}\]
 ^stderr.backend.finalize
 ^stderr.binary_file=BZ2File
@@ -637,9 +638,12 @@
 ^stderr.Run_PROG,display_resource_usage_when_it_exits
 ^stderr../run_tests.sh:#:./run_tests.sh:/lkp/benchmarks/perf_event_tests/tests/utils/check_paranoid:not_found
 ^stderr.-[-rwx]{9}#www-data_lkp
+^stderr.sack-shift-sacked-#-#-#-#-#-nofack.pkt:error_executing_code:'/usr/bin/python'returned_non-zero_status
+^stderr.sack-shift-sacked-#-#-#-#-#-nofack.pkt:#:error_in_Python_code
 ^stderr.script_packet:#F.#:#\(#\)ack
 ^stderr.script_packet:#P.#:#\(#\)ack
 ^stderr.script_packet:#R.#:#\(#\)ack#<nop,nop,TS_val#ecr#>
+^stderr.script_packet:#S#:#\(#\)<mss#,sackOK,TS_val#ecr#,nop,wscale#>
 ^stderr.*scripts/aim_..sh:not_found
 ^stderr.sed:can't_read_kselftest/runner.sh:No_such_file_or_directory
 ^stderr.sed:can't_read/lkp/benchmarks/ltp/ltp/runtest/fs_ext4:No_such_file_or_directory
