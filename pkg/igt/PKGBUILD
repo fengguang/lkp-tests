@@ -17,8 +17,13 @@ build()
 
 separate_test()
 {
+	ignored_tests=$(cat "$LKP_SRC/pkg/igt/ignored_by_lkp" | grep -v "#")
 	cd $srcdir/igt-gpu-tools
 	sed -n '2p' build/tests/test-list.txt | tr " " "\n" > all-tests
+	for ignored_test in ${ignored_tests[@]}
+	do
+		sed -i "/$ignored_test/d" all-tests
+	done
 	split all-tests -d -n r/10 group_
 }
 

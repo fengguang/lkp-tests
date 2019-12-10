@@ -1,0 +1,13 @@
+# The following tests will always repeat some sub-tests of skip, causing the test to time out and exit.
+i915_hangman
+gem_busy
+i915_suspend
+gem_exec_store
+gem_concurrent_blit
+gem_spin_batch
+gem_exec_basic
+gem_cs_tlb
+perf_pmu
+gem_ctx_switch
+gem_wait
+gem_exec_parallel
