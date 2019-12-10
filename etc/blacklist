@@ -568,6 +568,7 @@
 ^stderr.modprobe:FATAL:Module_(locktorture|rcutorture)_not_found_in_directory/lib/modules
 ^stderr.monitor_specified_metrics_or_metric_groups
 ^stderr.mount.nfs:an_incorrect_mount_option_was_specified
+^stderr.mount.nfs:mount_system_call_failed
 ^stderr.mount.nfs:Network_is_unreachable
 ^stderr.mount.nfs:requested_NFS_version_or_transport_protocol_is_not_supported
 ^stderr.mount_partition_failed
