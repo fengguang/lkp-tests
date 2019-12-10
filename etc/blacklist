@@ -495,6 +495,7 @@
 ^stderr.failed_to_find_linux-headers_package
 ^stderr.failed_to_load_locktorture_module,try_to_enable_CONFIG_LOCK_TORTURE_TEST_as_module_and_build_locktorture.ko
 ^stderr.failed_to_load_(locktorture|rcutorture)_module,try_to_enable_CONFIG_(LOCK|RCU)_TORTURE_TEST_and_build_(locktorture|rcutorture).ko
+^stderr.failed_to_load_rcuperf_module,try_to_enable_CONFIG_RCU_PERF_TEST_as_module_and_build_rcuperf.ko
 ^stderr.failed_to_mmap_with#\(Cannot_allocate_memory\)
 ^stderr.failed_to_prepare_for_bpf
 ^stderr.failed_to_reconfigure_namespace:No_such_device_or_address
@@ -505,6 +506,7 @@
 ^stderr.fastopen-client.pkt:#:runtime_error_in_sendto_call:Expected_result#but_got
 ^stderr.FATAL:Could_not_load/lib/modules/#/modules.dep:No_such_file_or_directory
 ^stderr.FATAL:Error_inserting_locktorture\(/lib/modules/#/kernel/kernel/locking/locktorture.ko\):Device_or_resource_busy
+^stderr.FATAL:Error_inserting_rcuperf\(/lib/modules/#/kernel/kernel/rcu/rcuperf.ko\):Device_or_resource_busy
 ^stderr.fatal:reference_is_not_a_tree
 ^stderr.File~./bin/run-fxmark
 ^stderr.:File_exists
@@ -568,6 +570,7 @@
 ^stderr.memory_policy_is--interleave\|-i,--preferred\|-p,--membind\|-m,--localalloc\|-l
 ^stderr.modprobe:ERROR:could_not_insert'locktorture':
 ^stderr.modprobe:ERROR:could_not_insert'(nd_e820|dax_pmem|device_dax)':Exec_format_error
+^stderr.modprobe:ERROR:could_not_insert'rcuperf':Device_or_resource_busy
 ^stderr.modprobe:ERROR:../libkmod/libkmod.c:#kmod_search_moddep\(\)could_not_open_moddep_file
 ^stderr.modprobe:FATAL:Module_dax_pmem_compat_is_in_use
 ^stderr.modprobe:FATAL:Module_(locktorture|rcutorture)_not_found_in_directory/lib/modules
