@@ -521,6 +521,7 @@
 ^stderr.func\(\*args,\*\*kwargs\)
 ^stderr.grep.+last_state:No_such_file_or_directory
 ^stderr.grep:runtest/fs_ext4:No_such_file_or_directory
+^stderr.grep:tests/./group:No_such_file_or_directory
 ^stderr.has_stderr
 ^stderr.\[--huge\|-u\]\[--touch\|-T\]
 ^stderr.Illegal_instruction
