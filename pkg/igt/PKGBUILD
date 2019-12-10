@@ -31,6 +31,6 @@ package()
 {
 	separate_test || return
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-	mkdir $benchmark_path
+	mkdir -p $benchmark_path
 	cp -af "${srcdir}/igt-gpu-tools/"* $benchmark_path
 }
