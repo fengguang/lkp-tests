@@ -436,6 +436,15 @@
 ^stderr./bin/sh:./runltp:Permission_denied
 ^stderr./bin/sh:#:(thrulay|thrulayd):not_found
 ^stderr.block:PATH_the_node_of_block_device_path
+^stderr.BPF_ALU64_(IMM|REG)\(BPF_(ADD|MOV),BPF_REG_
+^stderr.BPF_EXIT_INSN
+^stderr.BPF_JMP_A\(#\)
+^stderr.BPF_JMP_(IMM|REG)\(BPF_
+^stderr.BPF_LDX_MEM\(BPF_
+^stderr.BPF_MOV64_(IMM|REG)\(BPF_REG_
+^stderr.BPF_RAW_INSN\(BPF_JMP\|BPF_CALL
+^stderr.BPF_ST_MEM\(BPF_B,BPF_REG_2,#,#
+^stderr.BPF_STX_MEM\(BPF_
 ^stderr.builtin-stat.c:#:#:fatal_error:util/iiostat.h:No_such_file_or_directory
 ^stderr.BusyBox.*multi-call_binary
 ^stderr.Cache_Allocation_Technology\(CAT\)is_not_supported_by_cpu
@@ -457,6 +466,7 @@
 ^stderr.compilation_terminated
 ^stderr.configure.*
 ^stderr.*:Connection_reset_by_peer
+^stderr.const_struct_bpf_insn_
 ^stderr.Could_not_find_file_
 ^stderr.cpu\d+:
 ^stderr.cpu_doesn't_support_resource_control_feature
@@ -500,6 +510,7 @@
 ^stderr.failed_to_load_locktorture_module,try_to_enable_CONFIG_LOCK_TORTURE_TEST_as_module_and_build_locktorture.ko
 ^stderr.failed_to_load_(locktorture|rcutorture)_module,try_to_enable_CONFIG_(LOCK|RCU)_TORTURE_TEST_and_build_(locktorture|rcutorture).ko
 ^stderr.failed_to_load_(rcuperf|rcutorture)_module,try_to_enable_CONFIG_RCU_(PERF|TORTURE)_TEST_as_module_and_build_(rcuperf|rcutorture).ko
+^stderr.failed_to_make_bpf
 ^stderr.failed_to_mmap_with#\(Cannot_allocate_memory\)
 ^stderr.failed_to_prepare_for_bpf
 ^stderr.failed_to_reconfigure_namespace:No_such_device_or_address
@@ -529,6 +540,7 @@
 ^stderr.from/lkp/lkp/src/tests/pbzip2:#:in
 ^stderr.fs_mark:write_file_write_failed:-#No_space_left_on_device
 ^stderr.func\(\*args,\*\*kwargs\)
+^stderr..(get|set)_optval=\{#
 ^stderr.grep.+last_state:No_such_file_or_directory
 ^stderr.grep:runtest/fs_ext4:No_such_file_or_directory
 ^stderr.grep:tests/./group:No_such_file_or_directory
@@ -620,6 +632,9 @@
 ^stderr.pmeter_server_does_not_start_correctly
 ^stderr.poll2_threads:.*:testcase:Assertion.*failed
 ^stderr.print_counts_(at_regular_interval_in_ms|with_custom_separator|for_fixed_number_of_times)
+^stderr.prog\[ARRAY_SIZE\(prog\)-#\]=BPF_EXIT_INSN\(\)
+^stderr.prog\[i\]=BPF_ALU64_IMM\(BPF_MOV,BPF_REG_0,#\)
+^stderr.prog_tests/.*c:#:#:(note|warning|error):
 ^stderr.prog_tests/.*:warning:implicit_declaration_of_function
 ^stderr.:Read-only_file_system
 ^stderr.RESULT_ROOT_not_empty:total
@@ -705,6 +720,7 @@
 ^stderr.user-timeout-probe.pkt:#:error_in_Python_code
 ^stderr.use_the_device_is_found_by_lsof\(#\)or_fuser\(#\).\)
 ^stderr./usr/bin/env:.*ruby.*:No_such_file_or_directory
+^stderr./usr/src/perf_selftests-x86_64-rhel-#/tools/testing/selftests/bpf/prog_tests/.*c:#:#:(note|warning|error):
 ^stderr.\+wait_post_test
 ^stderr.Warning,had_trouble_writing_out_superblocks
 ^stderr.WARNING:the--test_option_is_deprecated
