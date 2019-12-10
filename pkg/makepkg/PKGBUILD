@@ -1,0 +1,27 @@
+pkgname=makepkg
+pkgver=git
+pkgrel=1
+arch=('i686' 'x86_64')
+url="https://github.com/mackyle/fakeroot"
+license=('GPL')
+source=("https://github.com/mackyle/fakeroot.git")
+md5sums=('SKIP')
+
+build() {
+	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+	mkdir -p $benchmark_path
+	cd "$srcdir/fakeroot"
+	git checkout macosx-v3.3
+	libtoolize || return
+	aclocal || return
+	autoconf || return
+	autoheader || return
+	automake --add-missing || return
+	./configure --prefix $benchmark_path || return
+	make || return
+	make install
+}
+
+package() {
+	:
+}
