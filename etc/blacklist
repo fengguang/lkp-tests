@@ -482,10 +482,12 @@
 ^stderr.Error:namespace.*:failed_to_enable
 ^stderr.Error_on#events_is_too_high
 ^stderr.Error_opening,size=#Permission_denied
+^stderr.Error!Should_have_values_for_insn_and_cycles
 ^stderr.Error:unknown_switch
 ^stderr.\[#-#-##:#:#\]\*(ERROR|WARN)\*-
 ^stderr.*error_while_loading_shared_libraries.*cannot_open_shared_object_file:No_such_file_or_directory
 ^stderr.event_filter
+^stderr.Event#not_reset_to
 ^stderr.failed_clone_ltp_tree_ltp
 ^stderr.failed_to_checkout_sof_commit
 ^stderr.Failed_to_connect_to_hostapd-wpa_ctrl_open:No_such_file_or_directory
@@ -520,6 +522,7 @@
 ^stderr.fio:pid=#,err=#/file:filesetup.c:#,func=fsync,error=Input/output_error
 ^stderr.fio:pid=#,got_signal=
 ^stderr.fio:posix_fallocate_fails:No_space_left_on_device
+^stderr.Floating_point_exception
 ^stderr.fopen_failed_to_open:fs_log.txt
 ^stderr.from/lkp/lkp/src/tests/pbzip2:#:in
 ^stderr.fs_mark:write_file_write_failed:-#No_space_left_on_device
