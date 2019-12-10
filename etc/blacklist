@@ -478,6 +478,7 @@
 ^stderr.dsearch\(\):directory'fakeh'is_inaccessable
 ^stderr.dsearch\(\):No_such_file_or_directory
 ^stderr.ERROR:aim9_benchmark_is_not_installed_yet
+^stderr.ERROR:Module_locktorture_does_not_exist_in/proc/modules
 ^stderr.Error:namespace.*:failed_to_enable
 ^stderr.Error_on#events_is_too_high
 ^stderr.Error_opening,size=#Permission_denied
@@ -492,6 +493,7 @@
 ^stderr.Failed_to_execute
 ^stderr.*Failed_to_fetch_http
 ^stderr.failed_to_find_linux-headers_package
+^stderr.failed_to_load_locktorture_module,try_to_enable_CONFIG_LOCK_TORTURE_TEST_as_module_and_build_locktorture.ko
 ^stderr.failed_to_load_(locktorture|rcutorture)_module,try_to_enable_CONFIG_(LOCK|RCU)_TORTURE_TEST_and_build_(locktorture|rcutorture).ko
 ^stderr.failed_to_mmap_with#\(Cannot_allocate_memory\)
 ^stderr.failed_to_prepare_for_bpf
@@ -502,6 +504,7 @@
 ^stderr.FAILURE:MADV_POISON:Device_or_resource_busy
 ^stderr.fastopen-client.pkt:#:runtime_error_in_sendto_call:Expected_result#but_got
 ^stderr.FATAL:Could_not_load/lib/modules/#/modules.dep:No_such_file_or_directory
+^stderr.FATAL:Error_inserting_locktorture\(/lib/modules/#/kernel/kernel/locking/locktorture.ko\):Device_or_resource_busy
 ^stderr.fatal:reference_is_not_a_tree
 ^stderr.File~./bin/run-fxmark
 ^stderr.:File_exists
@@ -563,6 +566,7 @@
 ^stderr.\[--membind=\|-m<nodes>\]\[--localalloc\|-l\]command_args
 ^stderr.memory_policy\|--dump\|-d\|--dump-nodes\|-D
 ^stderr.memory_policy_is--interleave\|-i,--preferred\|-p,--membind\|-m,--localalloc\|-l
+^stderr.modprobe:ERROR:could_not_insert'locktorture':
 ^stderr.modprobe:ERROR:could_not_insert'(nd_e820|dax_pmem|device_dax)':Exec_format_error
 ^stderr.modprobe:ERROR:../libkmod/libkmod.c:#kmod_search_moddep\(\)could_not_open_moddep_file
 ^stderr.modprobe:FATAL:Module_dax_pmem_compat_is_in_use
@@ -613,6 +617,7 @@
 ^stderr.rm:disk1.c:Read-only_file_system
 ^stderr.rm:disk_cp\(#\):cannot_write/fs/md0/tmpb
 ^stderr.rm:disk_wrt:cannot_write/fs/md0/tmpb
+^stderr.rmmod:ERROR:Module_locktorture_is_builtin
 ^stderr.rsync:change_dir~/lkp/benchmarks/ltp/ltp/results~failed:No_such_file_or_directory
 ^stderr.rsync:change_dir__tmp_lkp_piglit-results_failed:No_such_file_or_directory
 ^stderr.rsync_error:error_in_socket_IO\(code#\)at_clientserver.c
