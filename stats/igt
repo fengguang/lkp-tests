@@ -4,13 +4,11 @@ stats = []
 
 while (line = STDIN.gets)
   case line
-  when /^(.*): (SUCCESS|FAIL|SKIP)/
+  when /^(.*): (SUCCESS|FAIL)/
     if $2 == 'SUCCESS'
       stats_type = 'pass'
-    elsif $2 == 'FAIL'
-      stats_type = 'fail'
     else
-      stats_type = 'skip'
+      stats_type = 'fail'
     end
     stats << $1.tr(' /', '_.') + ".#{stats_type}: 1"
   end
