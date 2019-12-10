@@ -574,6 +574,7 @@
 ^stderr.modprobe:ERROR:../libkmod/libkmod.c:#kmod_search_moddep\(\)could_not_open_moddep_file
 ^stderr.modprobe:FATAL:Module_dax_pmem_compat_is_in_use
 ^stderr.modprobe:FATAL:Module_(locktorture|rcutorture)_not_found_in_directory/lib/modules
+^stderr.modprobe:FATAL:Module_nfs_not_found
 ^stderr.monitor_specified_metrics_or_metric_groups
 ^stderr.mount.nfs:an_incorrect_mount_option_was_specified
 ^stderr.mount.nfs:mount_system_call_failed
