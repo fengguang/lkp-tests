@@ -263,6 +263,18 @@ fixup_systester()
 	export TOTAL_LOOP_COUNT=1
 }
 
+fixup_network_loopback()
+{
+	[ -n "$environment_directory" ] || return
+	local test=$1
+	local target=${environment_directory}/pts/${test}/network-loopback
+	if is_clearlinux; then
+		sed -i 's,nc -d -l,nc -l,' $target
+	else
+		sed -i 's,nc -d -l,nc -l -p,' $target
+	fi
+}
+
 fixup_mcperf()
 {
 	[ -n "$environment_directory" ] || return
@@ -446,6 +458,9 @@ run_test()
 			;;
 		mcperf-*)
 			fixup_mcperf $test || die "failed to fixup test mcperf"
+			;;
+		network-loopback-*)
+			fixup_network_loopback $test || die "failed to fixup test network-loopback"
 			;;
 		nginx-*)
 			fixup_nginx $test || die "failed to fixup test nginx"
