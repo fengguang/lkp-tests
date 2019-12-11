@@ -581,7 +581,7 @@
 ^stderr.make.*Error
 ^stderr.Makefile.config:#:No_libpci_found,show_pci_devices_without_names_in_iiostat_mode,please_install_libpci-dev/pciutils-devel
 ^stderr.make_perf_failed
-^stderr.make\[#\]:***Waiting_for_unfinished_jobs
+^stderr.make\[#\]:.*Waiting_for_unfinished_jobs
 ^stderr.md5sum://mnt/ocfs2/sendfile_verify:No_such_file_or_directory
 ^stderr.mdadm:/dev/loop.*_doesn't_have_bitmap
 ^stderr.mdadm:Error_connecting_monitor_with.*:No_such_file_or_directory
@@ -678,7 +678,7 @@
 ^stderr.some_monitors_do_not_quit_in_time
 ^stderr.src/arch/xtensa/.*
 ^stderr.stat\(\)in_dsearch\(\):No_such_file_or_directory
-^stderr.stdbuf:failed_to_run_command‘/lkp/lkp/src/monitors/heartbeat’:No_such_file_or_directory
+^stderr.stdbuf:failed_to_run_command./lkp/lkp/src/monitors/heartbeat.:No_such_file_or_directory
 ^stderr.storages_is_empty,we_can't_get_jobs_per_storage_and_nr_task_remain
 ^stderr.\[--strict\|-t\]
 ^stderr.summary.console
