@@ -482,7 +482,6 @@
 ^stderr.disk_(cp|src)
 ^stderr.disk_number.*
 ^stderr.disk_rr.*/fs/md0
-^stderr.disk_rr\(\):No_space_left_on_device
 ^stderr.disk_wrt:cannot_(create|write)/fs/md0/tmpb
 ^stderr.disk_wrt/fs/md0
 ^stderr.dpkg-preconfigure:unable_to_re-open_stdin
