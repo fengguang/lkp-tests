@@ -1,0 +1,22 @@
+pkgname=v4l2
+pkgver=git
+pkgrel=1
+arch=('i686' 'x86_64')
+url="https://git.linuxtv.org//v4l-utils.git/"
+license=('GPL')
+source=("git://linuxtv.org/v4l-utils.git" "https://github.com/umlaeute/v4l2loopback.git")
+md5sums=('SKIP' 'SKIP')
+
+build() {
+	cd "$srcdir/v4l-utils"
+	local newest_stable=$(git describe --tags $(git rev-list --tags --max-count=1))
+	git checkout -B $newest_stable
+	./bootstrap.sh || return
+	./configure --prefix="${pkgdir}/lkp/benchmarks/v4l2" || return
+	make || return
+	make install
+}
+
+package() {
+	cp -af "$srcdir/v4l2loopback" "${pkgdir}/lkp/benchmarks"
+}

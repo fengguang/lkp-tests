@@ -1,0 +1,22 @@
+suite: v4l2
+testcase: v4l2
+category: functional
+
+v4l2:
+  test:
+## /dev/video
+  - device
+##  Below tests need specified hardware, skip them temporarily.
+##  /dev/vbi
+##  - vbi
+##  /dev/radio
+##  - radio
+##  /dev/swradio
+##  - sdr
+##  /dev/v4l-touch
+##  - touch
+##  /dev/v4l-subdev
+##  - subdev
+##  /dev/media
+##  - media
+##  - media-only
