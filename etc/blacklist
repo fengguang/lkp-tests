@@ -233,8 +233,8 @@
 ^kmsg.asix#-#:#eth#:asix_rx_fixup\(\)Bad_Header_Length
 ^kmsg.bcma-pci-bridge#:#:#:bus0:No_SPROM_available
 ^kmsg.Bluetooth:hci#:
-^kmsg.bochs-drm#:#:#:\[drm:drm_fbdev_client_hotplug\[drm_kms_helper\]\]*ERROR*fbdev:Failed_to_setup_generic_emulation
-^kmsg.bochs-drm#:#:#:\[drm:drm_fbdev_client_hotplug\]*ERROR*fbdev:Failed_to_setup_generic_emulation
+^kmsg.bochs-drm#:#:#:\[drm:drm_fbdev_client_hotplug\[drm_kms_helper\]\].*ERROR.*fbdev:Failed_to_setup_generic_emulation
+^kmsg.bochs-drm#:#:#:\[drm:drm_fbdev_client_hotplug\].*ERROR.*fbdev:Failed_to_setup_generic_emulation
 ^kmsg.bochs-drmdrmfb:enable_CONFIG_FB_LITTLE_ENDIAN_to_support_this_framebuffer
 ^kmsg.bucket.*
 ^kmsg.Buffer_I/O_error_on_dev_.*,logical_block#,async_page_read
@@ -242,7 +242,7 @@
 ^kmsg.cc770_isa:insufficient_parameters_supplied
 ^kmsg.cgroup1:Need_name_or_subsystem_set
 ^kmsg.cgroup1:Unknown_subsys_name'ns'
-^kmsg.Command_line:*
+^kmsg.Command_line:.*
 ^kmsg.Control_State\*\*\*
 ^kmsg.cpu#wdt:misc_register_failed
 ^kmsg.CR0:actual=#,shadow=#,gh_mask=
@@ -695,7 +695,7 @@
 ^stderr.The_file/dev/.*_does_not_exist_and_no_size_was_specified
 ^stderr.the_old--cpubind_argument_is_deprecated
 ^stderr.The_sys_perf_event_open\(\)syscall_returned_with#\(No_such_device\)for_event
-^stderr.The_wrong_test*
+^stderr.The_wrong_test.*
 ^stderr.timeout:failed_to_run_command.*git.*:No_such_file_or_directory
 ^stderr.Timeout,server#not_responding
 ^stderr./tools/perf_not_found
