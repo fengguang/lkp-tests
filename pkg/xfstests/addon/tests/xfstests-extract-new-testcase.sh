@@ -50,7 +50,7 @@ generate_fs_group()
 	grep "\[not run\]" "$output" | sort -k 1 | sed 's/'$fs'\///' > data_skip
 	total_time=$(awk '{a+=$2} END {print a}' data_completed)
 	# find max group_number, if not, return 0
-	group_number=$(find "$LKP_SRC/pack/xfstests-addon/tests" -name "$fs-group*" | grep -o "[0-9]*" | sort -n | tail -1)
+	group_number=$(find "$LKP_SRC/pkg/xfstests/addon/tests" -name "$fs-group*" | grep -o "[0-9]*" | sort -n | tail -1)
 	[[ -n "$group_number" ]] || group_number=0
 
 	((group_number=group_number+1))

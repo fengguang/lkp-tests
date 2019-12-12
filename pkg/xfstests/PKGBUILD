@@ -97,7 +97,7 @@ package()
 generate_tests()
 {
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-	cp -af $LKP_SRC/pack/${pkgname}-addon/tests/* $benchmark_path/tests
+	cp -af $LKP_SRC/pkg/${pkgname}/addon/tests/* $benchmark_path/tests
 
 	## generate the new add subcase automatically after every upgrade xfstests
 	cd $benchmark_path/tests

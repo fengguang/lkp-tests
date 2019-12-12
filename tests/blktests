@@ -89,7 +89,7 @@ set_env()
 run_test()
 {
 	local test_dir="$BENCHMARK_ROOT/blktests/tests"
-	local test_ignore="$LKP_SRC/pack/blktests-addon/tests/${test%-*}-ignore"
+	local test_ignore="$LKP_SRC/pkg/blktests/addon/tests/${test%-*}-ignore"
 	local ignored_tests
 	local ignored_tests_cmd
 	local all_tests

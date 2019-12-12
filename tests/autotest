@@ -32,7 +32,7 @@ cd $BENCHMARK_ROOT/autotest || exit
 		sed -i '/#    cgclear/a\    cgclear\n    rm -f "$lockfile" && log_success_msg && return 0' /etc/init.d/cgconfig
 	}
 
-	log_cmd cp $LKP_SRC/pack/autotest-addon/cgconfig.conf /etc
+	log_cmd cp $LKP_SRC/pkg/autotest/addon/cgconfig.conf /etc
 
 	log_cmd update-rc.d cgconfig defaults || die "failed toadd service cgconfig"
 	log_cmd service cgconfig restart || die "failed to restart cgconfig"

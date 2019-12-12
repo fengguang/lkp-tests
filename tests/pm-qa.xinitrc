@@ -32,7 +32,7 @@ run_one()
 check_ignored_by_lkp()
 {
 	local test=$1
-	local ignored_by_lkp=$LKP_SRC/pack/pm-qa-addon/ignored_by_lkp
+	local ignored_by_lkp=$LKP_SRC/pkg/pm-qa/addon/ignored_by_lkp
 
 	for ignore in $(cat $ignored_by_lkp | grep -v ^#)
 	do
