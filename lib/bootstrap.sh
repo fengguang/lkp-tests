@@ -595,9 +595,11 @@ next_job()
 
 	__next_job || {
 		[ "$LKP_USER" != "lkp" ] && __reboot_bad_next_job
-		local secs=120
+
+		local secs=300
 		while true; do
 			sleep $secs || exit # killed by reboot
+			secs=$(( secs + 300 ))
 			__next_job && break
 		done
 	}
