@@ -1,9 +1,0 @@
-#!/bin/bash
-
-VERSION=0.3
-WEB_URL="https://sourceforge.net/projects/$BM_NAME/files/$BM_NAME/${VERSION}/${BM_NAME}-${VERSION}.tar.gz"
-
-install()
-{
-	cp -af $BM_NAME $BM_ROOT
-}
