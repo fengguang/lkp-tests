@@ -69,6 +69,17 @@ fixup_build_mplayer()
 	local target=$environment_directory/../test-profiles/pts/${test}/pre.sh
 	sed -i 's/--disable-ivtv/--disable-ivtv --disable-png/' "$target"
 }
+# fix issue: chown: invalid user: 'mysql:mysql'
+fixup_mysqlslap()
+{
+	[ -n "$environment_directory" ] || return
+	local test=$1
+	local target=$environment_directory/../test-profiles/pts/${test}/pre.sh
+	sed -i '4a groupadd mysql' "$target"
+	sed -i '5a useradd -g mysql mysql' "$target"
+	sed -i '6a chown -R mysql:mysql data' "$target"
+	sed -i '7a chown -R mysql:mysql .data' "$target"
+}
 
 # rebuild hpcc and add --allow-run-as-root to hpcc
 # the test needs more than 2 hours
@@ -467,6 +478,9 @@ run_test()
 			;;
 		build-mplayer-*)
 			fixup_build_mplayer $test || die "failed to fixup test build-mplayer"
+			;;
+		mysqlslap-*)
+			fixup_mysqlslap $test || die "failed to fixup test mysqlslap"
 			;;
 		ffmpeg-*)
 			fixup_ffmpeg $test || die "failed to fixup test ffmpeg"
