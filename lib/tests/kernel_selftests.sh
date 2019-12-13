@@ -331,7 +331,7 @@ pack_selftests()
 
 run_tests()
 {
-	local selftest_mfs=$1
+	local selftest_mfs=$@
 
 	for mf in $selftest_mfs; do
 		subtest=${mf%/Makefile}
