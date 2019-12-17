@@ -122,6 +122,18 @@ fixup_npb()
 	sed -i 's/mpiexec -np/mpiexec --allow-run-as-root -np/' "$target"
 }
 
+# 1) add --allow-run-as-root to mrbayes
+# 2) use the number of cpu cores rather than cpu processors
+fixup_mrbayes()
+{
+	[ -n "$environment_directory" ] || return
+	local test=$1
+	local target=${environment_directory}/pts/${test}/mb
+	sed -i 's/mpiexec -np/mpiexec --allow-run-as-root -np/' "$target"
+	local cores=$(grep "core id" /proc/cpuinfo | sort -u | wc -l)
+	sed -i "s/\$NUM_CPU_CORES/$cores/" "$target"
+}
+
 # fix issue: sed: -e expression #1, char 16: unterminated `s' command
 fixup_aom_av1()
 {
@@ -446,6 +458,9 @@ run_test()
 			;;
 		npb-*)
 			fixup_npb $test || die "failed to fixup test npb"
+			;;
+		mrbayes-*)
+			fixup_mrbayes $test || die "failed to fixup test mrbayes"
 			;;
 		aom-av1-*)
 			fixup_aom_av1 $test || die "failed to fixup test aom-av1"
