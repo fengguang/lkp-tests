@@ -219,38 +219,6 @@ fixup_java_gradle_perf()
 	fi
 }
 
-fixup_jgfxbat()
-{
-	[ -n "$environment_directory" ] || return
-	local test=$1
-	local target=${environment_directory}/pts/$test
-
-	# fix the result format
-	sed -i s/PASS/" Result: 1"/ $target/jgfxbat
-	sed -i s/FAIL/" Result: 0"/ $target/jgfxbat
-	local results_definition=${environment_directory}/../test-profiles/pts/${test}/results-definition.xml
-	[ -f "$results_definition" ] || return
-	sed -i s/"#_RESULT_#"/"Result: #_RESULT_#"/ $results_definition
-
-	# disable the Jaca2Demo test due to unstable
-	sed -i 's/^run_Java2Demo$/#run_Java2Demo/' $target/runbat.sh
-
-	# select the java version
-	# drop debug message to avoid unexpected stderr
-	local java_openjdk=$(find /usr/lib/jvm -type l -name "java-*-amd64" | xargs basename)
-	[ -z "$java_openjdk" ] && {
-		echo "failed to get java openjdk"
-		return 2
-	}
-
-	update-java-alternatives -s $java_openjdk &>/dev/null || {
-		echo "failed to update-java-alternatives -s ${java_openjdk}"
-		return 1
-	}
-
-	export DISPLAY=:0
-}
-
 fixup_systester()
 {
 	[ -n "$environment_directory" ] || return
@@ -499,9 +467,6 @@ run_test()
 			;;
 		gluxmark-*)
 			fixup_gluxmark $test || die "failed to fixup gluxmark"
-			;;
-		jgfxbat-*)
-			fixup_jgfxbat $test || die "failed to fixup jgfxbat"
 			;;
 		java-gradle-perf-*)
 			fixup_java_gradle_perf || die "failed to fixup java-gradle-perf"
