@@ -193,18 +193,6 @@ fixup_crafty()
 	sed -i 's,crafty $@,crafty bookpath=/usr/share/crafty/ $@,' "$target"
 }
 
-fixup_unvanquished()
-{
-	[ -n "$environment_directory" ] || return
-	local test=$1
-	local target=${environment_directory}/pts/${test}/unvanquished-game
-	[ -f $target/lib64/librt.so.1 ] && rm $target/lib64/librt.so.1
-	[ -f $target/lib64/libdrm.so.2 ] && rm $target/lib64/libdrm.so.2
-	[ -f $target/lib64/libstdc++.so.6 ] && rm $target/lib64/libstdc++.so.6
-	export DISPLAY=:0
-	export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libasound.so.2
-}
-
 fixup_gluxmark()
 {
 	[ -n "$environment_directory" ] || return
@@ -508,9 +496,6 @@ run_test()
 			;;
 		crafty-*)
 			fixup_crafty $test || die "failed to fixup crafty"
-			;;
-		unvanquished-*)
-			fixup_unvanquished $test || die "failed to fixup unvanquished"
 			;;
 		gluxmark-*)
 			fixup_gluxmark $test || die "failed to fixup gluxmark"
