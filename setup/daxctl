@@ -1,0 +1,62 @@
+#!/bin/sh
+
+. "$LKP_SRC"/lib/reproduce-log.sh
+. "$LKP_SRC"/lib/nvdimm.sh
+
+export PATH=$PATH:/lkp/benchmarks/bin/
+
+rmmod_retries=10
+wait_initialization_timeout=30
+
+remove_dax_pmem_compat()
+{
+    for i in $(seq $rmmod_retries)
+    do
+        log_cmd modprobe -r dax_pmem_compat && return
+        sleep 10
+    done
+    return 1
+}
+
+wait_initialization()
+{
+    for i in $(seq $wait_initialization_timeout)
+    do
+        [ -f /sys/bus/dax/drivers/device_dax/unbind ] && return
+        sleep 1
+    done
+    return 1
+}
+
+daxctl_list_info()
+{
+    str=$1
+    daxctl list | grep "$str" |cut -d ':' -f 2 | tr -d ',"'
+}
+
+online_aep()
+{
+    mode=dax
+    configure_nvdimm
+    remove_dax_pmem_compat || die "remove dax_pmem_compat fail"
+    log_cmd modprobe dax_pmem
+    wait_initialization || die "DAX initialization timeout"
+    devs=$(daxctl_list_info "chardev")
+    [ -z "$devs" ] && return 1
+    for dev in $devs; do
+        log_cmd daxctl reconfigure-device --mode=system-ram --human "$dev"
+    done
+}
+
+list_device()
+{
+    available_devs=$(daxctl_list_info "chardev")
+    mode=$(daxctl_list_info "mode")
+    if [ -n "$available_devs" ]; then
+        echo "The available dax device: $available_devs"
+        echo "The device mode: $mode"
+    fi
+}
+
+online_aep
+list_device
