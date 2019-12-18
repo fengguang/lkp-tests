@@ -74,4 +74,5 @@ need_kconfig:
 - CONFIG_TEST_BLACKHOLE_DEV=m ~ v(5\.[3-9]) # support kernel >= v5.3-rc1
 - CONFIG_TEST_VMALLOC=m ~ v(5\.[1-9]) # support kernel >= v5.1-rc1
 - CONFIG_IR_IMON_DECODER=m ~ v(4\.1[7-9|4\.20]|5\.) # support kernel >= v4.17-rc1
+- CONFIG_POSIX_TIMERS=y ~ v(4\.1[0-9]|4\.20|5\.) # support kernel >= v4.10-rc1
 % end
