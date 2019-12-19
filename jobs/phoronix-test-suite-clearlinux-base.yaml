@@ -41,9 +41,9 @@ phoronix-test-suite:
   - compress-gzip-1.2.0
   - compress-pbzip2-1.5.0
   - compress-rar-1.1.0
-  - compress-xz-1.0.0
-  - compress-zstd-1.1.0
-  - crafty-1.4.3
+  - compress-xz-1.0.1
+  - compress-zstd-1.1.1
+  - crafty-1.4.4
   - ctx-clock-1.0.0
   - cuda-mini-nbody-1.1.0
   - cyclictest-1.0.0
@@ -55,7 +55,7 @@ phoronix-test-suite:
   - dolfyn-1.0.2
   - ebizzy-1.0.4
   - encode-flac-1.6.0
-  - encode-mp3-1.7.2
+  - encode-mp3-1.7.3
   - encode-wavpack-1.3.0
   - espeak-1.4.0
   - et-1.1.0
@@ -67,8 +67,8 @@ phoronix-test-suite:
   - fftw-1.2.0
   - fhourstones-1.1.2
   - financebench-1.0.0
-  - fio-1.11.4
-  - fs-mark-1.0.1
+  - fio-1.11.5
+  - fs-mark-1.0.2
   - gfxbench-1.0.0
   - git-1.0.2
   - gl-vs-vk-1.0.0
@@ -93,10 +93,10 @@ phoronix-test-suite:
   - java-gradle-perf-1.0.0
   - java-jmh-1.0.0
   - java-scimark2-1.1.2
-  - john-the-ripper-1.6.2
+  - john-the-ripper-1.7.0
   - juliagpu-1.3.1
   - llvm-test-suite-1.0.0
-  - luajit-1.0.1
+  - luajit-1.1.0
   - lulesh-cl-1.0.1
   - luxmark-1.2.0
   - lzbench-1.0.0
@@ -112,13 +112,13 @@ phoronix-test-suite:
   - mrbayes-1.3.2
   - multichase-1.0.2
   - n-queens-1.2.0
-  - namd-1.0.0
+  - namd-1.0.1
   - nero2d-1.1.0
   - netperf-1.0.2
   - network-loopback-1.0.3
   - nginx-1.2.1
   - noise-level-1.1.0
-  - npb-1.3.0
+  - npb-1.3.1
   - numenta-nab-1.0.0
   - numpy-1.0.5
   - octanebench-1.1.2
@@ -130,7 +130,7 @@ phoronix-test-suite:
   - paraview-1.0.2
   - parboil-1.2.1
   - perl-benchmark-1.0.1
-  - pgbench-1.8.6
+  - pgbench-1.8.7
   - php-1.0.0
   - phpbench-1.1.5
   - pjdfstest-1.0.1
@@ -141,7 +141,7 @@ phoronix-test-suite:
   - primesieve-1.6.0
   - psstop-1.0.0
   - pts-self-test-1.0.4
-  - pybench-1.1.2
+  - pybench-1.1.3
   # - pymongo-inserts-1.0.0 # can't install mongodb on clearlinux os
   # - pyopencl-1.0.0 # 3rd party url is N/A
   - qmlbench-1.0.0
@@ -190,6 +190,6 @@ phoronix-test-suite:
   - v-ray-1.0.2
   # - viennacl-1.0.0 # wait for newer version
   - x264-opencl-1.9.0
-  - x265-1.0.0
+  - x265-1.1.0
   - xsbench-1.0.0
   - xsbench-cl-1.0.0
