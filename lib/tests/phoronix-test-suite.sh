@@ -286,6 +286,13 @@ fixup_dolfyn_install()
 	sed -i "4a sed -i \"s/stop'bug:/stop 'bug:/g\" gmsh2dolfyn.f90" "$target"
 }
 
+fixup_apache_siege_install()
+{
+	local test=$1
+	local target=/var/lib/phoronix-test-suite/test-profiles/pts/${test}/install.sh
+	sed -i "31a mkdir \$HOME/.siege" "$target"
+}
+
 fixup_tesseract_install()
 {
 	local test=$1
@@ -331,6 +338,10 @@ fixup_install()
 	tesseract-*)
 		# fix issue: mv: cannot stat 'bench.so': No such file or directory
 		fixup_tesseract_install $test || die "failed to fixup tesseract install"
+		;;
+	apache-siege-*)
+		# fix issue: /var/lib/phoronix-test-suite/installed-tests/pts/apache-siege-1.0.4//.siege/siege.conf: No such file or directory
+		fixup_apache_siege_install $test || die "failed to fixup apache-siege install"
 		;;
 	gcrypt-*)
 		# fix issue: multiple definition of `_gcry_mpih_add'
