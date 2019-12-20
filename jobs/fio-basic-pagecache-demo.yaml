@@ -2,56 +2,61 @@ force_reboot: 1
 suite: fio-basic
 testcase: fio-basic
 category: benchmark
+kernel_cmdline: movable_node
 
 runtime: 1500s
 nr_task: 4t
 
 numactl:
-  interleave: "0,2"
+  interleave: "1,3"
 
 disk: 1SSD
 fs:
 - ext4
 
 drop_caches:
-sysctl: sc_numa_balancing
-transparent_hugepage: thp_enabled
+sysctl:
+  sc_numa_balancing: 0
+  sc_promotion_ratelimit_mbytes_per_sec: -1
+  sc_demotion_ratelimit_mbytes_per_sec: -1
+  sc_hot_threshold_mbytes: 1024
+  sc_cold_threshold_mbytes: 2048
+  sc_drop_threshold_mbytes: 512
 
-online-aep:
-  enable_promotion: true
-  enable_demotion: true
-  online_size: 4G
+transparent_hugepage:
+  thp_enabled: never
+
+migration_path:
+  enable_promotion:
+    - true
+    - false
+  enable_demotion: false
+
+memory-hotplug:
+  nodes: "1 3"
+  node_size: 4G
+  state_op: offline
 
 fio-setup-basic:
   rw:
-    - read
-    - write
+    - randread
+    - randwrite
   ioengine:
     - psync
   test_size: 64G
-  nr_files: 16
+  nr_files: 1
+  filesize: 16G
   io_size: 128G
-  file_service_type: gauss
+  file_service_type: sequential
   invalidate: 0
   iodepth: 1
-
-pagecache_migration:
-  promotion_percent:
-    - 100
-  promotion_rate_limit:
-    - -1
-    - 800
-    - 400
-    - 200
-  demotion_rate_limit:
-    - 10
-    - 50
-    - 100
-    - 200
+  random_distribution: "normal:20"
 
 cgroup2:
   memory.high: 8G
   cpuset.cpus: $(cat /sys/devices/system/node/node0/cpulist)
-  cpuset.mems: "0,2"
+  cpuset.mems: "1,3"
 
 fio:
+
+save_on_exit: /proc/page_access_histogram
