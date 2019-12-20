@@ -381,6 +381,11 @@ run_test()
 			# 2: Burn
 			test_opt="\n4\n6\nn"
 			;;
+		mandelgpu-*)
+			# Choose
+			# 2. GPU
+			test_opt="\n2\nn"
+			;;
 		ut2004-demo-*)
 			# Choose
 			# 1: ONS-Torlan Botmatch
