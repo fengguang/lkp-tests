@@ -50,7 +50,7 @@ class LinuxTestcasesTableSet
      'mongodb', 'ycsb', 'memtier', 'mcperf', 'fio-jbod', 'cyclictest', 'filebench', 'igt',
      'autonuma-benchmark'].freeze
   LINUX_TESTCASES =
-    ['analyze_suspend', 'boot', 'blktests', 'cpu-hotplug', 'ext4-frags', 'ftq', 'ftrace_onoff', 'fwq',
+    ['analyze-suspend', 'boot', 'blktests', 'cpu-hotplug', 'ext4-frags', 'ftq', 'ftrace_onoff', 'fwq',
      'galileo', 'irda-kernel', 'kernel_selftests', 'kvm-unit-tests', 'kvm-unit-tests-qemu',
      'leaking_addresses', 'locktorture', 'ltp', 'mce-test', 'otc_ddt', 'piglit', 'pm-qa', 'nvml',
      'qemu', 'rcuperf', 'rcutorture', 'suspend', 'suspend_stress', 'trinity', 'ndctl', 'nfs-test', 'hwsim',

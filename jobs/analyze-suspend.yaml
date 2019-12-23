@@ -1,9 +1,9 @@
-suite: analyze_suspend
-testcase: analyze_suspend
+suite: analyze-suspend
+testcase: analyze-suspend
 category: functional
 kernel_cmdline: "initcall_debug log_buf_len=4M no_console_suspend ignore_loglevel"
 
-analyze_suspend:
+analyze-suspend:
   mode:
   - mem
   - freeze
