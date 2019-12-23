@@ -68,6 +68,25 @@ check_nr_pmem()
 	[ "$nr_pmem" -gt "$max_pmem" ] && nr_pmem=$max_pmem
 }
 
+partition2disk()
+{
+	local part=$1
+	local pat=
+
+	case "$part" in
+		/dev/nvme*) pat='p[0-9]+';;
+		/dev/disk/by-id/*) pat='-part[0-9]+';;
+		/dev/dm-*|/dev/mapper/*);;
+		# General fallback pattern with /dev/sda1 /dev/loop0, etc.
+		*) pat='[0-9]+';;
+	esac
+	if [ -n "$pat" ]; then
+		echo $part | sed -re "s/$pat$//"
+	else
+		echo $part
+	fi
+}
+
 [ -z "$nr_hdd" ] && nr_hdd=0
 [ -z "$nr_ssd" ] && nr_ssd=0
 [ -z "$nr_pmem" ] && nr_pmem=0
@@ -138,7 +157,13 @@ fi
 [ "${partitions#/dev/disk/by-}" != "$partitions" ] && partitions="$(readlink -e $partitions)"
 
 partitions=$(echo $partitions | cut -f1-$nr_partitions -d' ')
-[ -n "$disks" ] || disks=$(echo $partitions | grep -o '[/a-z]\+' | sort -u | tr '\n' ' ')
+
+if [ -z "$disks" ]; then
+	for part in $partitions; do
+		ret_disk=$(partition2disk $part)
+		[ "${disks#*$ret_disk }" = "$disks" ] && disks="$disks $ret_disk "
+	done
+fi
 
 cat >> $TMP/env.yaml <<EOF
 
