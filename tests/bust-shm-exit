@@ -12,7 +12,7 @@
 
 segments=${segments%s}
 
-cd $BENCHMARK_ROOT/bust_shm_exit || exit
+cd $BENCHMARK_ROOT/bust-shm-exit || exit
 
 log_cmd timeout $runtime ./bust_shm_exit $segments $nr_threads
 

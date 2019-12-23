@@ -64,7 +64,7 @@ class LinuxTestcasesTableSet
      'health-stats', 'hwinfo', 'internal-lkp-service', 'ipmi-setup', 'debug',
      'lkp-bug', 'lkp-install-run', 'lkp-services', 'lkp-src', 'pack', 'lkp-qemu',
      'pack-deps', 'makepkg', 'makepkg-deps', 'borrow', 'dpdk-dts', 'mbtest', 'build-acpica', 'build-ltp',
-     'bust_shm_exit', 'build-llvm_project', 'upgrade-trinity', 'build-0day-crosstools', 'deploy-clang'].freeze
+     'bust-shm-exit', 'build-llvm_project', 'upgrade-trinity', 'build-0day-crosstools', 'deploy-clang'].freeze
 end
 
 # => ["tcrypt.", "hackbench.", "dd.", "xfstests.", "aim7.", ..., "oltp.", "fileio.", "dmesg."]
