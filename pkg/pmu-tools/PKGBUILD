@@ -1,0 +1,33 @@
+pkgname=pmu-tools
+pkgver=git
+pkgrel=1
+pkgdesc="A collection of tools for profile collection and performance analysis on Intel CPUs on top of Linux perf. This uses performance counters in the CPU."
+arch=('i686' 'x86_64')
+url="https://github.com/andikleen/pmu-tools.git"
+license=('GPL2' 'BSD')
+source=("https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git" "https://github.com/andikleen/pmu-tools.git")
+md5sums=('SKIP' 'SKIP')
+
+build_perf() {
+    cd "${srcdir}/linux/tools/perf"
+    PATH=$BUILD_DIR:$PATH make
+}
+
+build_pmu-tools() {
+    cd "${srcdir}/pmu-tools/jevents"
+    make
+}
+
+build() {
+    build_perf || return
+    build_pmu-tools || return
+}
+
+package() {
+    benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+    mkdir -p "${benchmark_path}"
+    cd "${srcdir}/${pkgname}"
+    XDG_CACHE_HOME="$benchmark_path" ./event_download.py -a
+    cp -af "$srcdir/${pkgname}/"* "$benchmark_path"
+    cp -af "$srcdir/linux/tools/perf/perf" "$benchmark_path"
+}
