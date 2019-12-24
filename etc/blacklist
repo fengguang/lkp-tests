@@ -588,6 +588,7 @@
 ^stderr.main\(\)
 ^stderr.make\[#\]:cc:Command_not_found
 ^stderr.make.*Error
+^stderr.Makefile.config:#:No_alternatives_command_found,you_need_to_set_JDIR=to_point_to_the_root_of_your_Java_directory
 ^stderr.Makefile.config:#:No_libpci_found,show_pci_devices_without_names_in_iiostat_mode,please_install_libpci-dev/pciutils-devel
 ^stderr.make_perf_failed
 ^stderr.make\[#\]:.*Waiting_for_unfinished_jobs
