@@ -478,8 +478,6 @@
 ^stderr.cpu_doesn't_support_resource_control_feature
 ^stderr.<cpus>is_a_comma_delimited_list_of_cpu_numbers_or_A-B_ranges_or_all
 ^stderr.curl.*Empty_reply_from_server
-^stderr.cwnd-moderation-disorder-no-moderation.pkt:error_executing_code:'/usr/bin/python'returned_non-zero_status
-^stderr.cwnd-moderation-disorder-no-moderation.pkt:#:error_in_Python_code
 ^stderr.DAX_initialization_timeout
 ^stderr.debconf:.*frontend
 ^stderr.disk1.c:No_space_left_on_device
@@ -636,7 +634,9 @@
 ^stderr.(perf:)?Segmentation_fault
 ^stderr.perl:warning
 ^stderr.\[--physcpubind=\|-C<cpus>\]\[--cpunodebind=\|-N<nodes>\]
+^stderr..*pkt:error_executing_code:'/usr/bin/python'returned_non-zero_status
 ^stderr..*pkt.*error_handling_packet
+^stderr..*pkt:#:error_in_Python_code
 ^stderr..*pkt.*runtime_error_in_(bind|epoll_wait|poll|recvmsg|sendfile|write)_call
 ^stderr..*pkt.*timing_error
 ^stderr.pmeter_server_does_not_start_correctly
@@ -664,8 +664,6 @@
 ^stderr.Run_PROG,display_resource_usage_when_it_exits
 ^stderr../run_tests.sh:#:./run_tests.sh:/lkp/benchmarks/perf_event_tests/tests/utils/check_paranoid:not_found
 ^stderr.-[-rwx]{9}#www-data_lkp
-^stderr.sack-shift-sacked-#-#-#-#-#-nofack.pkt:error_executing_code:'/usr/bin/python'returned_non-zero_status
-^stderr.sack-shift-sacked-#-#-#-#-#-nofack.pkt:#:error_in_Python_code
 ^stderr.script_packet:#F.#:#\(#\)ack
 ^stderr.script_packet:#P.#:#\(#\)ack
 ^stderr.script_packet:#R.#:#\(#\)ack#<nop,nop,TS_val#ecr#>
@@ -729,8 +727,6 @@
 ^stderr.Usage:time\[-vpa\]\[-o_FILE\]PROG_ARGS
 ^stderr.use--cpunodebind_or--physcpubind_instead
 ^stderr.users_on_this_machine
-^stderr.user-timeout-probe.pkt:error_executing_code:'/usr/bin/python'returned_non-zero_status
-^stderr.user-timeout-probe.pkt:#:error_in_Python_code
 ^stderr.use_the_device_is_found_by_lsof\(#\)or_fuser\(#\).\)
 ^stderr./usr/bin/env:.*ruby.*:No_such_file_or_directory
 ^stderr./usr/src/perf_selftests-x86_64-rhel-#/tools/testing/selftests/bpf/prog_tests/.*c:#:#:(note|warning|error):
