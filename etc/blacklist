@@ -427,6 +427,7 @@
 ^stderr.--(append|filter|interval|log|metric|no|per|post|pre|scale|smi|table|timeout|topdown)
 ^stderr.assert_data\['tests'\]
 ^stderr.AssertionError
+^stderr.assert#<=tcpi_busy_time<=#,tcpi_busy_time
 ^stderr.assert_tcpi_ca_state==TCP_CA_Disorder
 ^stderr.assert_tcpi_probes==#,tcpi_probes
 ^stderr.assert_tcpi_reordering==#,tcpi_reordering
@@ -509,6 +510,7 @@
 ^stderr.failed_to_checkout_sof_commit
 ^stderr.Failed_to_connect_to_hostapd-wpa_ctrl_open:No_such_file_or_directory
 ^stderr.failed_to_create_symbolic_link
+^stderr.Failed_to_establish_connection
 ^stderr.Failed_to_execute
 ^stderr.*Failed_to_fetch_http
 ^stderr.failed_to_find_linux-headers_package
@@ -738,6 +740,7 @@
 ^stderr.WARNING:the--test_option_is_deprecated
 ^stderr.W:Download_is_performed_unsandboxed_as_root_as_file.*Permission_denied
 ^stderr.wflinfo_utility_not_found
+^stderr.wget:can't_connect_to_remote_host\(#\):Connection_timed_out
 ^stderr.wget:can't_connect_to_remote_host\(#\):No_route_to_host
 ^stderr.with_compression.DECOMPRESSORS
 ^stderr.*write_error
