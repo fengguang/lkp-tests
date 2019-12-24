@@ -654,11 +654,15 @@
 ^stderr.return_loader
 ^stderr.return_writev
 ^stderr.rm:cannot_remove
+^stderr.rm:.*cannot_remove'/fs/md0/fakeh/usr/.*:Read-only_file_system
 ^stderr.rm:disk1.c:No_space_left_on_device
 ^stderr.rm:disk1.c:Read-only_file_system
 ^stderr.rm:disk_cp\(#\):cannot_write/fs/md0/tmpb
 ^stderr.rm:disk_wrt:cannot_write/fs/md0/tmpb
 ^stderr.rmmod:ERROR:Module_locktorture_is_builtin
+^stderr.rm:.*Read-only_file_system.*cannot_remove'/fs/md0/fakeh/usr/
+^stderr.rm:rm:cannot_remove'/fs/md0/fakeh/usr/
+^stderr.rm:rm::Read-only_file_system:Read-only_file_system
 ^stderr.rsync:change_dir~/lkp/benchmarks/ltp/ltp/results~failed:No_such_file_or_directory
 ^stderr.rsync:change_dir__tmp_lkp_piglit-results_failed:No_such_file_or_directory
 ^stderr.rsync_error:error_in_socket_IO\(code#\)at_clientserver.c
