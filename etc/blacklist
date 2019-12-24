@@ -524,7 +524,6 @@
 ^stderr.fail_to_cd/lkp/benchmarks/
 ^stderr.fail_to_setup_test_environment
 ^stderr.FAILURE:MADV_POISON:Device_or_resource_busy
-^stderr.fastopen-client.pkt:#:runtime_error_in_sendto_call:Expected_result#but_got
 ^stderr.FATAL:Could_not_load/lib/modules/#/modules.dep:No_such_file_or_directory
 ^stderr.FATAL:Error_inserting_locktorture\(/lib/modules/#/kernel/kernel/locking/locktorture.ko\):Device_or_resource_busy
 ^stderr.FATAL:Error_inserting_(rcuperf|rcutorture)\(/lib/modules/#/kernel/kernel/rcu/(rcuperf|rcutorture).ko\):Device_or_resource_busy
@@ -637,7 +636,7 @@
 ^stderr..*pkt:error_executing_code:'/usr/bin/python'returned_non-zero_status
 ^stderr..*pkt.*error_handling_packet
 ^stderr..*pkt:#:error_in_Python_code
-^stderr..*pkt.*runtime_error_in_(bind|epoll_wait|poll|recvmsg|sendfile|write)_call
+^stderr..*pkt.*runtime_error_in_(bind|epoll_wait|poll|recvmsg|sendfile|sendto|write)_call
 ^stderr..*pkt.*timing_error
 ^stderr.pmeter_server_does_not_start_correctly
 ^stderr.poll2_threads:.*:testcase:Assertion.*failed
