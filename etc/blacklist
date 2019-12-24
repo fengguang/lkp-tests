@@ -637,7 +637,7 @@
 ^stderr.perl:warning
 ^stderr.\[--physcpubind=\|-C<cpus>\]\[--cpunodebind=\|-N<nodes>\]
 ^stderr..*pkt.*error_handling_packet
-^stderr..*pkt.*runtime_error_in_(bind|sendfile)_call
+^stderr..*pkt.*runtime_error_in_(bind|epoll_wait|poll|recvmsg|sendfile|write)_call
 ^stderr..*pkt.*timing_error
 ^stderr.pmeter_server_does_not_start_correctly
 ^stderr.poll2_threads:.*:testcase:Assertion.*failed
@@ -675,7 +675,6 @@
 ^stderr.sed:can't_read/lkp/benchmarks/ltp/ltp/runtest/fs_ext4:No_such_file_or_directory
 ^stderr.See.*for_details
 ^stderr.self._fp=_builtin_open
-^stderr.server.pkt:#:runtime_error_in_recvmsg_call:Bad_timestamp
 ^stderr.setpci:#:#:#:Capability#not_found
 ^stderr.sh:cannot_create_temp_file_for_here-document:No_space_left_on_device
 ^stderr.sh:can't_kill_pid#:No_such_process
