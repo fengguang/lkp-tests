@@ -637,8 +637,7 @@
 ^stderr.perl:warning
 ^stderr.\[--physcpubind=\|-C<cpus>\]\[--cpunodebind=\|-N<nodes>\]
 ^stderr..*pkt.*error_handling_packet
-^stderr..*pkt.*runtime_error_in_bind_call
-^stderr..*pkt.*runtime_error_in_sendfile_call
+^stderr..*pkt.*runtime_error_in_(bind|sendfile)_call
 ^stderr..*pkt.*timing_error
 ^stderr.pmeter_server_does_not_start_correctly
 ^stderr.poll2_threads:.*:testcase:Assertion.*failed
