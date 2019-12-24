@@ -68,9 +68,9 @@ create_config()
 {
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
 	touch ${benchmark_path}/piglit.conf
-	cat > "${benchmark_path}/piglit.conf" <<'EOF'
+	cat > "${benchmark_path}/piglit.conf" <<EOF
 [igt]
-path=/tmp/lkp/piglit/pkg/piglit/lkp/benchmarks/piglit/lib/piglit/bin/igt
+path=${benchmark_path}/lib/piglit/bin/igt
 EOF
 }
 
