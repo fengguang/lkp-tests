@@ -286,6 +286,13 @@ fixup_dolfyn_install()
 	sed -i "4a sed -i \"s/stop'bug:/stop 'bug:/g\" gmsh2dolfyn.f90" "$target"
 }
 
+fixup_opm_git_install()
+{
+	local test=$1
+	local target=/var/lib/phoronix-test-suite/test-profiles/pts/${test}/install.sh
+	sed -i "82a git clone --depth 1 https://github.com/OPM/opm-data.git" "$target"
+}
+
 fixup_apache_siege_install()
 {
 	local test=$1
@@ -335,6 +342,10 @@ fixup_install()
 		# fix issue: Error: Blank required in STOP statement near (1)
 		fixup_dolfyn_install $test || die "failed to fixup dolfyn install"
 		;;
+	opm-git-*)
+		# fix issue: git clone opm-data when omega-opm not present
+		fixup_opm_git_install $test || die "failed to fixup opm-git install"
+		;;
 	tesseract-*)
 		# fix issue: mv: cannot stat 'bench.so': No such file or directory
 		fixup_tesseract_install $test || die "failed to fixup tesseract install"
@@ -380,6 +391,12 @@ run_test()
 			# 1: Video
 			# 2: Burn
 			test_opt="\n4\n6\nn"
+			;;
+		opm-git-*)
+			# Choose
+			# 2: Flow MPI Norne
+			# 1: 1
+			test_opt="\n2\n1\nn"
 			;;
 		mandelgpu-*)
 			# Choose
