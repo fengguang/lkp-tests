@@ -445,6 +445,7 @@
 ^stderr.BPF_RAW_INSN\(BPF_JMP\|BPF_CALL
 ^stderr.BPF_ST_MEM\(BPF_B,BPF_REG_2,#,#
 ^stderr.BPF_STX_MEM\(BPF_
+^stderr.build_env_failed
 ^stderr.builtin-stat.c:#:#:fatal_error:util/iiostat.h:No_such_file_or_directory
 ^stderr.BusyBox.*multi-call_binary
 ^stderr.Cache_Allocation_Technology\(CAT\)is_not_supported_by_cpu
@@ -463,6 +464,10 @@
 ^stderr.Child##::No_such_file_or_directory
 ^stderr.Child_process_called_exit\(\),status=
 ^stderr.Child##::Read-only_file_system
+^stderr._#clang
+^stderr.clang:(error|note):
+^stderr.clang_version
+^stderr._#Code_generation
 ^stderr.compilation_terminated
 ^stderr.configure.*
 ^stderr.*:Connection_reset_by_peer
@@ -488,6 +493,7 @@
 ^stderr.dsearch\(\):can't_stat'
 ^stderr.dsearch\(\):directory'fakeh'is_inaccessable
 ^stderr.dsearch\(\):No_such_file_or_directory
+^stderr._#<eof>parser_at_end_of_file
 ^stderr.ERROR:aim9_benchmark_is_not_installed_yet
 ^stderr.ERROR:Module_locktorture_does_not_exist_in/proc/modules
 ^stderr.Error:namespace.*:failed_to_enable
@@ -549,13 +555,16 @@
 ^stderr._#include<asm/rwonce.h>
 ^stderr._#include~util/iiostat.h~
 ^stderr.\(In_some_cases_useful_info_about_processes_that
+^stderr.InstalledDir:/usr/bin
 ^stderr.Instead_of_a_number_a_node_can_also_be
 ^stderr.Invalid_number_of_requests
 ^stderr.ip:HOST_the_node_of_the_network_device_host_routes_through
 ^stderr.Killed
 ^stderr.<length>can_have_g\(GB\),m\(MB\)or_k\(KB\)suffixes
 ^stderr.len_was-#send_size_was
+^stderr._#libc.so
 ^stderr.libkmod:ERROR../libkmod/libkmod-module.c:#kmod_module_get_holders:could_not_open'/sys/module/(pcc|acpi)_cpufreq/holders':No_such_file_or_directory
+^stderr._#libLLVM
 ^stderr.libndctl:ndctl_pfn_enable:pfn.*:failed_to_enable
 ^stderr.libnuma:Warning:node_argument#is_out_of_range
 ^stderr.line$
@@ -649,6 +658,7 @@
 ^stderr.rsync:change_dir~/lkp/benchmarks/ltp/ltp/results~failed:No_such_file_or_directory
 ^stderr.rsync:change_dir__tmp_lkp_piglit-results_failed:No_such_file_or_directory
 ^stderr.rsync_error:error_in_socket_IO\(code#\)at_clientserver.c
+^stderr._#Running_pass
 ^stderr.Run_PROG,display_resource_usage_when_it_exits
 ^stderr../run_tests.sh:#:./run_tests.sh:/lkp/benchmarks/perf_event_tests/tests/utils/check_paranoid:not_found
 ^stderr.-[-rwx]{9}#www-data_lkp
@@ -676,6 +686,7 @@
 ^stderr.socket:Too_many_open_files
 ^stderr.some_monitors_do_not_quit_in_time
 ^stderr.src/arch/xtensa/.*
+^stderr.Stack_dump
 ^stderr.stat\(\)in_dsearch\(\):No_such_file_or_directory
 ^stderr.stdbuf:failed_to_run_command./lkp/lkp/src/monitors/heartbeat.:No_such_file_or_directory
 ^stderr.storages_is_empty,we_can't_get_jobs_per_storage_and_nr_task_remain
@@ -686,6 +697,7 @@
 ^stderr.sys.exit\(runner\(args\)\)
 ^stderr.\+take_snapshot
 ^stderr.tar:Error_is_not_recoverable:exiting_now
+^stderr.Target:x86_64-pc-linux-gnu
 ^stderr.tar:/pkg/ltp/.*/.*/ltp.tar.gz:Cannot_open:No_such_file_or_directory
 ^stderr.tcp_test:Interrupted_system_call
 ^stderr.tee.*No_space_left_on_device
@@ -695,6 +707,7 @@
 ^stderr.the_old--cpubind_argument_is_deprecated
 ^stderr.The_sys_perf_event_open\(\)syscall_returned_with#\(No_such_device\)for_event
 ^stderr.The_wrong_test.*
+^stderr.Thread_model:posix
 ^stderr.timeout:failed_to_run_command.*git.*:No_such_file_or_directory
 ^stderr.Timeout,server#not_responding
 ^stderr./tools/perf_not_found
