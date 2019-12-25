@@ -31,6 +31,7 @@
 ^dmesg.BUG:Dentry.*i=.*n=.*
 ^dmesg.BUG:soft_lockup-CPU##stuck_for#s
 ^dmesg.calltrace
+^dmesg.drm:intel_acpi_device_id_update.*
 ^dmesg..*cpu_clock_throttled.*
 ^dmesg..*-detected_stall_on_CPUINFO
 ^dmesg.INFO:NMI_handler.*took_too_long_to_run:
@@ -319,6 +320,7 @@
 ^kmsg.Page_cache_invalidation_failure_on_direct_I/O.Possible_data_corruption_due_to_collision_with_buffered_I/O
 ^kmsg.parport#:cannot_grant_exclusive_access_for_device_parkbd
 ^kmsg.pciehp#:b1:#:pcie004:Slot\(.*\):Power_fault
+^kmsg.piix4_smbus#:#:#:SMBus_region#already_in_use
 ^kmsg.PinBased=#CPUBased=#SecondaryExec=
 ^kmsg.platform_regulatory.#:Falling_back_to_sysfs_fallback_for:regulatory.db
 ^kmsg.PLE_Gap=#Window=
