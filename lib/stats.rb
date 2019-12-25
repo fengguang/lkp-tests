@@ -42,7 +42,7 @@ class LinuxTestcasesTableSet
      'reaim', 'sdf', 'siege', 'sockperf', 'speccpu', 'specjbb2013',
      'specjbb2015', 'specpower', 'stutter', 'sunspider', 'tbench', 'tcrypt',
      'thrulay', 'tlbflush', 'unixbench', 'vm-scalability', 'will-it-scale',
-     'chromeswap', 'fio-basic', 'apachebench', 'perf_event_tests', 'swapin',
+     'chromeswap', 'fio-basic', 'apachebench', 'perf-event-tests', 'swapin',
      'tpcc', 'mytest', 'exit_free', 'pgbench', 'boot_trace', 'sysbench-cpu',
      'sysbench-memory', 'sysbench-threads', 'sysbench-mutex', 'stream',
      'perf-bench-futex', 'mutilate', 'lmbench3', 'lib-micro', 'schbench',

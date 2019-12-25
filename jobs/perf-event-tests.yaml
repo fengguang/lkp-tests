@@ -1,8 +1,8 @@
-suite: perf_event_tests
-testcase: perf_event_tests
+suite: perf-event-tests
+testcase: perf-event-tests
 category: functional
 
-perf_event_tests:
+perf-event-tests:
   paranoid:
     - not_paranoid_at_all
     - disallow_raw_tracepoint

@@ -1,4 +1,4 @@
-pkgname=perf_event_tests
+pkgname=perf-event-tests
 pkgver=git
 pkgrel=1
 url="https://github.com/deater/perf_event_tests"
@@ -9,7 +9,7 @@ md5sums=('SKIP')
 
 build()
 {
-	cd "$srcdir/$pkgname"
+	cd "$srcdir/perf_event_tests"
 
 	make
 }
@@ -17,5 +17,5 @@ build()
 package()
 {
 	mkdir -p "${pkgdir}/lkp/benchmarks"
-	cp -af "$srcdir/$pkgname" "${pkgdir}/lkp/benchmarks"
+	cp -af "$srcdir/perf_event_tests" "${pkgdir}/lkp/benchmarks"
 }
