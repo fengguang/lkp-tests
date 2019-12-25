@@ -398,7 +398,7 @@ run_test()
 			# 1: 1
 			test_opt="\n2\n1\nn"
 			;;
-		mandelgpu-*)
+		mandel*gpu-*)
 			# Choose
 			# 2. GPU
 			test_opt="\n2\nn"
