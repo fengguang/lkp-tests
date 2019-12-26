@@ -7,6 +7,7 @@ need_memory: 8G
 phoronix-test-suite:
   test:
   - aio-stress-1.1.1
+  - aircrack-ng-1.1.2
   - aobench-1.0.1
   - aom-av1-1.2.0
   - apache-siege-1.0.2
@@ -40,10 +41,12 @@ phoronix-test-suite:
   - compilebench-1.0.2
   - compress-7zip-1.7.0
   - compress-gzip-1.2.0
+  - compress-lzma-1.3.1
   - compress-pbzip2-1.5.0
   - compress-rar-1.1.0
   - compress-xz-1.0.1
   - compress-zstd-1.1.1
+  - cpp-perf-bench-1.0.0
   - crafty-1.4.4
   - ctx-clock-1.0.0
   - cuda-mini-nbody-1.1.0
@@ -55,8 +58,11 @@ phoronix-test-suite:
   - dcraw-1.1.0
   - dolfyn-1.0.2
   - ebizzy-1.0.4
+  - encode-ape-1.3.0
   - encode-flac-1.6.0
   - encode-mp3-1.7.3
+  - encode-ogg-1.4.1
+  - encode-opus-1.0.1
   - encode-wavpack-1.3.0
   - espeak-1.4.0
   - et-1.1.0
@@ -70,6 +76,7 @@ phoronix-test-suite:
   - financebench-1.0.0
   - fio-1.11.5
   - fs-mark-1.0.2
+  - gcrypt-1.0.5
   - gfxbench-1.0.0
   - git-1.0.2
   - gl-vs-vk-1.0.0
@@ -96,6 +103,7 @@ phoronix-test-suite:
   - java-scimark2-1.1.2
   - john-the-ripper-1.7.0
   - juliagpu-1.3.1
+  - lammps-1.0.1
   - llvm-test-suite-1.0.0
   - luajit-1.1.0
   - lulesh-cl-1.0.1
@@ -108,13 +116,17 @@ phoronix-test-suite:
   - mencoder-1.5.0
   - minion-1.5.2
   - mixbench-1.0.0
+  - mpcbench-1.0.1
   - mrbayes-1.3.2
   - multichase-1.0.2
+  - mysqlslap-1.0.6
   - n-queens-1.2.0
   - namd-1.0.1
+  # - namd-cuda-1.0.0 # nvidia video card is needed
   - nero2d-1.1.0
   - netperf-1.0.2
   - network-loopback-1.0.3
+  # - nexuiz-iqc-1.0.0 # this test profile is currently marked Deprecated
   - nginx-1.2.1
   - noise-level-1.1.0
   - npb-1.3.1
@@ -122,8 +134,9 @@ phoronix-test-suite:
   - numpy-1.0.5
   - octanebench-1.1.2
   - opencv-bench-1.0.0
+  # - open-porous-media-1.3.1 # 3rd party url is N/A
   - openssl-1.11.0
-  # - opm-git-1.3.38 # no needed packages(tinyxml-dev lapack)
+  - opm-git-1.3.38
   - optcarrot-1.0.0
   - osbench-1.0.1
   - paraview-1.0.2
@@ -141,7 +154,7 @@ phoronix-test-suite:
   - psstop-1.0.0
   - pts-self-test-1.0.4
   - pybench-1.1.3
-  # - pymongo-inserts-1.0.0 # can't install mongodb on clearlinux os
+  - pymongo-inserts-1.0.0
   # - pyopencl-1.0.0 # 3rd party url is N/A
   - qmlbench-1.0.0
   - quake4-1.1.0
@@ -149,10 +162,13 @@ phoronix-test-suite:
   - ramspeed-1.4.2
   - renaissance-1.0.0
   - rbenchmark-1.0.3
+  - rust-mandel-1.0.0
+  - rust-prime-1.0.0
+  - sample-program-1.1.1
   - schbench-1.0.0
   - scikit-learn-1.0.1
   - scimark2-1.3.2
-  # - serial-loopback-1.0.2 # neet to really plug to serial ports
+  # - serial-loopback-1.0.2 # need to really plug to serial ports
   - shoc-1.1.0
   - smallpt-1.2.0
   - smallpt-gpu-1.3.0
@@ -167,9 +183,13 @@ phoronix-test-suite:
   - stresscpu2-1.0.1
   - sudokut-1.0.0
   - sunflow-1.1.2
+  - svt-av1-1.2.0
+  - svt-hevc-1.0.0
+  - svt-vp9-1.0.0
   - swet-1.0.0
   - sysbench-1.0.0
   - system-decompress-bzip2-1.0.2
+  # - system-decompress-gzip-1.1.0 # 3rd party url is N/A
   - system-decompress-xz-1.0.2
   - system-libxml2-1.0.3
   - systemd-boot-kernel-1.0.1
@@ -188,6 +208,7 @@ phoronix-test-suite:
   - unpack-linux-1.1.1
   - v-ray-1.0.2
   # - viennacl-1.0.0 # wait for newer version
+  - x264-2.5.0
   - x264-opencl-1.9.0
   - x265-1.1.0
   - xsbench-1.0.0

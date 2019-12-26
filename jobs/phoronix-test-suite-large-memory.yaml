@@ -1,9 +1,0 @@
-suite: phoronix-test-suite
-testcase: phoronix-test-suite
-category: benchmark
-
-need_memory: 128G
-
-phoronix-test-suite:
-  test:
-  - dbench-1.0.0
