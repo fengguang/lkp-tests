@@ -386,6 +386,14 @@ run_test()
 			# 3: Test All Options
 			test_opt="\n3\n2\n3\nn"
 			;;
+		pymongo-inserts-*)
+			# no needed package(mongodb) on clear
+			ignored_on_clear=1
+			;;
+		render-bench-*)
+			# no needed package(libimlib2-dev) on clear
+			ignored_on_clear=1
+			;;
 		interbench-*)
 			# Choose
 			# 1: Video
@@ -396,7 +404,9 @@ run_test()
 			# Choose
 			# 2: Flow MPI Norne
 			# 1: 1
+			# no needed packages(tinyxml-dev lapack) on clear
 			test_opt="\n2\n1\nn"
+			ignored_on_clear=1
 			;;
 		mandel*gpu-*)
 			# Choose
@@ -407,20 +417,25 @@ run_test()
 			# Choose
 			# 1: ONS-Torlan Botmatch
 			# 2: 800 x 600
+			# no needed package(libstdc++5) on clear
 			test_opt="\n6\n1\nn"
 			export DISPLAY=:0
+			ignored_on_clear=1
 			;;
 		x11perf-*)
 			# Choose
 			# 1: 500px PutImage Square
+			# no needed package(libxmuu-dev libxrender-dev libxft-dev) on clear
 			test_opt="\n1\nn"
 			export DISPLAY=:0
+			ignored_on_clear=1
 			;;
 		tesseract-*)
 			# Choose
 			# 1: 800 x 600
 			test_opt="\n1\nn"
 			export DISPLAY=:0
+			ignored_on_clear=1
 			;;
 		smart-*)
 			# Choose 1st disk to get smart info
@@ -525,7 +540,7 @@ run_test()
 			# full screen
 			test_opt="\n1\n1\nn"
 			;;
-		glmark2-*|openarena-*|gputest-*|supertuxkart-*|tesseract-*)
+		glmark2-*|openarena-*|gputest-*|supertuxkart-*)
 			export DISPLAY=:0
 			;;
 	esac
@@ -538,6 +553,11 @@ run_test()
 		[ -f "$root_access" ] || die "$root_access not exist"
 		sed -i 's,#!/bin/sh,#!/bin/dash,' $root_access
 	}
+
+	if is_clearlinux && [ "$ignored_on_clear" ]; then
+		echo "${test}... ignored_by_lkp" && return
+	fi
+
 	if echo $test | grep idle-power-usage; then
 		echo "$test_opt" | log_cmd phoronix-test-suite run $test
 	elif [ "$test_opt" ]; then
