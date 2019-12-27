@@ -9,19 +9,20 @@ tmp_avocado="/tmp/avocado"
 
 set_conf()
 {
-	local confile="/usr/local/lib/python3.5/dist-packages/avocado/etc/avocado/avocado.conf"
-
+	local conf_file=""
+	conf_file=$(find /usr/local/lib/ -name "avocado.conf")
+	[ -e "$conf_file" ] || die "Missing config file avocado.conf"
 	[ -d "$tmp_avocado/result" ] || log_cmd mkdir -p "$tmp_avocado/result"
 	[ -d "$tmp_avocado/data" ] || log_cmd mkdir -p "$tmp_avocado/data"
 
 	## Set avocado config file, specify those 4 important dir.
 	## After test finished, upload $tmp_avocado to cluster.
 	## $tmp_avocado includes all testting info.
-	log_cmd sed -i "s|base_dir = /var/lib/avocado|base_dir = $tmp_avocado|g" $confile
-	log_cmd sed -i "s|data_dir = /var/lib/avocado/data|data_dir = $tmp_avocado/data|g" $confile
+	log_cmd sed -i "s|base_dir = /var/lib/avocado|base_dir = $tmp_avocado|g" $conf_file
+	log_cmd sed -i "s|data_dir = /var/lib/avocado/data|data_dir = $tmp_avocado/data|g" $conf_file
 	## Set test_dir to get all available tests by avocado list.
-	log_cmd sed -i "s|test_dir = /usr/share/doc/avocado/tests|test_dir = $BENCHMARK_ROOT/avocado/examples/tests|g" $confile
-	log_cmd sed -i "s|logs_dir = ~/avocado/job-results|logs_dir = $tmp_avocado/result|g" $confile
+	log_cmd sed -i "s|test_dir = /usr/share/doc/avocado/tests|test_dir = $BENCHMARK_ROOT/avocado/examples/tests|g" $conf_file
+	log_cmd sed -i "s|logs_dir = ~/avocado/job-results|logs_dir = $tmp_avocado/result|g" $conf_file
 }
 
 get_test()
