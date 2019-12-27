@@ -139,8 +139,9 @@ vm-scalability\.median: 1
 vm-scalability\.throughput: 1
 will-it-scale\..+\_ops: 1
 will-it-scale\.scalability: 1
-sysbench\-..+\.throughput_events\/s: 1
-sysbench-memory.throughput_MB\/s: 1
+sysbench\-.+\.throughput_MB\/s: 1
+sysbench\-.+\.throughput_events\/s: 1
+sysbench\-.+\.throughput_ops\/s: 1
 idle\.turbostat.Busy% : -1
 power_idle\.turbostat\.Busy% : -1
 power_idle\.turbostat\.Bzy_MHz : -1
