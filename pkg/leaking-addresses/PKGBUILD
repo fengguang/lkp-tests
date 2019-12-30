@@ -1,10 +1,10 @@
-pkgname=leaking_addresses
+pkgname=leaking-addresses
 pkgver=4f19048
 pkgrel=1
 arch=('i686' 'x86_64')
-url="https://raw.githubusercontent.com/torvalds/linux/master/scripts/${pkgname}.pl"
+url="https://raw.githubusercontent.com/torvalds/linux/master/scripts/leaking_addresses.pl"
 license=('GPL')
-source=("https://raw.githubusercontent.com/torvalds/linux/master/scripts/${pkgname}.pl")
+source=("https://raw.githubusercontent.com/torvalds/linux/master/scripts/leaking_addresses.pl")
 md5sums=('SKIP')
 
 pkgver()
@@ -20,5 +20,5 @@ package()
 	cd $srcdir
 
 	mkdir -p "${pkgdir}/lkp/benchmarks/${pkgname}"
-	install -m 755 "${srcdir}"/${pkgname}.pl "$pkgdir/lkp/benchmarks/${pkgname}/"
+	install -m 755 "${srcdir}"/leaking_addresses.pl "$pkgdir/lkp/benchmarks/${pkgname}/"
 }

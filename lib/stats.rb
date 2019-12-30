@@ -52,7 +52,7 @@ class LinuxTestcasesTableSet
   LINUX_TESTCASES =
     ['analyze-suspend', 'boot', 'blktests', 'cpu-hotplug', 'ext4-frags', 'ftq', 'ftrace_onoff', 'fwq',
      'galileo', 'irda-kernel', 'kernel_selftests', 'kvm-unit-tests', 'kvm-unit-tests-qemu',
-     'leaking_addresses', 'locktorture', 'ltp', 'mce-test', 'otc_ddt', 'piglit', 'pm-qa', 'nvml',
+     'leaking-addresses', 'locktorture', 'ltp', 'mce-test', 'otc_ddt', 'piglit', 'pm-qa', 'nvml',
      'qemu', 'rcuperf', 'rcutorture', 'suspend', 'suspend_stress', 'trinity', 'ndctl', 'nfs-test', 'hwsim',
      'idle-inject', 'mdadm-selftests', 'xsave-test', 'nvml', 'test_bpf', 'mce-log', 'perf-sanity-tests',
      'build-perf_test', 'update-ucode', 'reboot', 'cat', 'libhugetlbfs-test', 'ocfs2test', 'syzkaller',

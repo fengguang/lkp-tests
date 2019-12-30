@@ -4,8 +4,8 @@ kernel_selftests\..+(make_fail|test_make_fail)
 .+killed_by.*
 kmsg.*
 last_state.*
-leaking_addresses\.dmesg\.(?!R).*
-leaking_addresses\.proc\.(?!blacklist|netlink|vmallocinfo)(?!.*:0000000)
+leaking-addresses\.dmesg\.(?!R).*
+leaking-addresses\.proc\.(?!blacklist|netlink|vmallocinfo)(?!.*:0000000)
 lkp-bug.*
 locktoture\..+lock_hotplug
 rcutoture\..+rcu_hotplug

@@ -4,7 +4,7 @@
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/reproduce-log.sh
 
-cd $BENCHMARK_ROOT/leaking_addresses || die "can not enter $BENCHMARK_ROOT/leaking_addresses"
+cd $BENCHMARK_ROOT/leaking-addresses || die "can not enter $BENCHMARK_ROOT/leaking-addresses"
 
 # test is easy to trigger error "timed out parsing",
 # adjust the value of TIMEOUT could avoid this issue
