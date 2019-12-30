@@ -313,7 +313,12 @@ module DataStore
     end
 
     def with_index_lock(&blk)
-      with_flock(path(LOCK_FILE), &blk)
+      file = path(LOCK_FILE)
+      begin
+        with_flock_timeout(file, 1800, &blk)
+      rescue Timeout::Error
+        puts "with_index_lock timeout: #{file}"
+      end
     end
   end
 
