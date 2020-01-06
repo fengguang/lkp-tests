@@ -15,3 +15,6 @@ btrfs-tools: btrfs-tools|btrfs-progs
 
 # libmariadbclient18 for reason(1) above since it has been renamed to libmariadb3
 libmariadbclient18: libmariadbclient18|libmariadb3
+
+# which for reason(3) above
+which: debianutils
