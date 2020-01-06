@@ -9,3 +9,6 @@ glmark2:
 
 # bsdtar for reason(1) above since it has been renamed to libarchive-tools
 bsdtar: bsdtar|libarchive-tools
+
+# libmariadbclient18 for reason(1) above since it has been renamed to libmariadb3
+libmariadbclient18: libmariadbclient18|libmariadb3
