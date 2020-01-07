@@ -9,3 +9,15 @@ glmark2:
 
 # bsdtar for reason(1) above since it has been renamed to libarchive-tools
 bsdtar: bsdtar|libarchive-tools
+
+# btrfs-tools for reason(1) above since it has been renamed to btrfs-progs
+btrfs-tools: btrfs-tools|btrfs-progs
+
+# libmariadbclient-dev for reason(1) above since mariadb_config has been moved to libmariadb-dev-compat
+libmariadbclient-dev: libmariadbclient-dev|libmariadb-dev-compat
+
+# libmariadbclient18 for reason(1) above since it has been renamed to libmariadb3
+libmariadbclient18: libmariadbclient18|libmariadb3
+
+# which for reason(3) above
+which: debianutils
