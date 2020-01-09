@@ -7,7 +7,7 @@ require "#{LKP_SRC}/lib/ftrace"
 require "#{LKP_SRC}/lib/common"
 require "#{LKP_SRC}/lib/statistics"
 require "#{LKP_SRC}/lib/data_analysis"
-require "#{LKP_SRC}/lib/ftrace-funcgraph"
+require "#{LKP_SRC}/lib/ftrace_funcgraph"
 
 # Analyze these samples to get how many times irq/softirq happened
 # and how long they take
