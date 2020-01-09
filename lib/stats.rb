@@ -8,7 +8,7 @@ LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 require 'set'
 require 'timeout'
 require "#{LKP_SRC}/lib/lkp_git"
-require "#{LKP_SRC}/lib/git-update" if File.exist?("#{LKP_SRC}/lib/git-update.rb")
+require "#{LKP_SRC}/lib/git_update" if File.exist?("#{LKP_SRC}/lib/git_update.rb")
 require "#{LKP_SRC}/lib/yaml"
 require "#{LKP_SRC}/lib/result"
 require "#{LKP_SRC}/lib/bounds"
