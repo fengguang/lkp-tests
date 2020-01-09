@@ -2,7 +2,7 @@
 
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
-require "#{LKP_SRC}/lib/run-env"
+require "#{LKP_SRC}/lib/run_env"
 require "#{LKP_SRC}/lib/common"
 require "#{LKP_SRC}/lib/result"
 require "#{LKP_SRC}/lib/hash"

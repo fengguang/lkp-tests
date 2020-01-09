@@ -9,7 +9,7 @@ describe 'local run' do
     @tmp_dir = Dir.mktmpdir
     FileUtils.chmod 'go+rwx', @tmp_dir
     @tmp_file = "#{@tmp_dir}/run-env-tmp.rb"
-    FileUtils.cp "#{LKP_SRC}/lib/run-env.rb", @tmp_file
+    FileUtils.cp "#{LKP_SRC}/lib/run_env.rb", @tmp_file
     s = ''
     File.open(@tmp_file, 'r') do |f|
       f.each_line { |l| s += l.gsub(/\#{LKP_SRC}\/hosts\//, "#{@tmp_dir}/") }

@@ -13,7 +13,7 @@ require "#{LKP_SRC}/lib/distro_info"
 TMP = "/tmp/lkp-#{LKP_USER}".freeze
 ENV['TMP'] = TMP
 
-require "#{LKP_SRC}/lib/run-env"
+require "#{LKP_SRC}/lib/run_env"
 set_local_run
 require "#{LKP_SRC}/lib/yaml"
 require "#{LKP_SRC}/lib/stats"

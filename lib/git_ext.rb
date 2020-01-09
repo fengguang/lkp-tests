@@ -14,7 +14,7 @@ require "#{LKP_SRC}/lib/git_ext/lib"
 require "#{LKP_SRC}/lib/git_ext/author"
 require "#{LKP_SRC}/lib/git_ext/cache"
 require "#{LKP_SRC}/lib/constant"
-require "#{LKP_SRC}/lib/run-env"
+require "#{LKP_SRC}/lib/run_env"
 
 module Git
   class << self

@@ -2,7 +2,7 @@
 
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
-require "#{LKP_SRC}/lib/run-env"
+require "#{LKP_SRC}/lib/run_env"
 
 GIT_WORK_TREE ||= ENV['GIT_WORK_TREE'] || ENV['LKP_GIT_WORK_TREE'] || "#{git_root_dir}/linux"
 GIT_DIR ||= ENV['GIT_DIR'] || GIT_WORK_TREE + '/.git'
