@@ -1,7 +1,7 @@
 url: https://chromium.googlesource.com/chromiumos/third_party/kernel
 belongs_to: chrome-os
 whitelist_randconfig: ^(arm|arm64|i386|x86_64)
-whitelist_branch: chromeos-4.4|chromeos-4.14|chromeos-4.19
+whitelist_branch: chromeos-4.4|chromeos-4.14|chromeos-4.19|chromeos-5.4
 blacklist_branch: .*
 customconfig: customconfig
 notify_build_success_branch: .*
