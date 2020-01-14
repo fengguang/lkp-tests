@@ -4,8 +4,6 @@ fetch_tags: true
 fetch_pull_request: true
 notify_build_success_branch: .*
 mail_recipient: intel.com
-build_success_mail_cc:
-- sof-ci-monitor@eclists.intel.com
 mail_cc:
 - sof-ci-monitor@eclists.intel.com
 use_customized_release_tag_pattern: true

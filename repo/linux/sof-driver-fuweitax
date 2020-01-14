@@ -3,8 +3,6 @@ owner: Bossart, Pierre-louis <pierre-louis.bossart@intel.com>
 fetch_tags: true
 fetch_pull_request: true
 notify_build_success_branch: .*
-build_success_mail_cc:
-- fuweix.tang@intel.com
 mail_cc:
 - fuweix.tang@intel.com
 use_customized_release_tag_pattern: true

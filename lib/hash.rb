@@ -22,9 +22,8 @@ def lookup_hash(hash, path, create_missing = false)
 end
 
 ACCUMULATIVE_KEYS = %w(
-    mail_cc
     mail_to
-    build_success_mail_cc
+    mail_cc
     constraints
 ).freeze
 def accumulative_key?(k)

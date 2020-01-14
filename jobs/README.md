@@ -81,9 +81,8 @@ are for incremental revising the preceding part in 3 cases:
 
 These top level keys are accumulative everywhere:
 
-	mail_cc
 	mail_to
-	build_success_mail_cc
+	mail_cc
 	constraints
 	need_*
 

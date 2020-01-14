@@ -1,12 +1,12 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/rdma/rdma.git
 integration_testing_branches: for-next
-mail_cc: linux-rdma@vger.kernel.org
 owner:
 - Doug Ledford <dledford@redhat.com>
 - Jason Gunthorpe <jgg@mellanox.com>
-build_success_mail_cc:
+mail_cc:
 - Doug Ledford <dledford@redhat.com>
 - Jason Gunthorpe <jgg+lists@ziepe.ca>
+- linux-rdma@vger.kernel.org
 notify_build_success_branch: .*
 subsystems:
 - ib
