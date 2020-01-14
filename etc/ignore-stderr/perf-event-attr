@@ -1,0 +1,22 @@
+perf_event_attr:
+  size                             .*
+  { sample_period, sample_freq }   .*
+  sample_type                      IP|TID|TIME|CALLCHAIN|ID|CPU
+  read_format                      ID
+  disabled                         .*
+  inherit                          .*
+  precise_ip                       .*
+  sample_id_all                    .*
+  exclude_guest                    .*
+  type                             .*
+  config                           0x.*
+  mmap                             .*
+  comm                             .*
+  enable_on_exec                   .*
+  task                             .*
+  mmap2                            .*
+  comm_exec                        .*
+  ksymbol                          .*
+  bpf_event                        .*
+  watermark                        .*
+  { wakeup_events, wakeup_watermark } .*
