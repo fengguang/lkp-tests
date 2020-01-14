@@ -11,7 +11,7 @@ else
 	echo "${testcase}.fail: 1"
 fi
 
-C_ROOT=/c/kernel-tests
+[[ $C_ROOT ]] || C_ROOT=/c/kernel-tests
 . $C_ROOT/lib/util.sh
 . $C_ROOT/lib/kbuild.sh
 
