@@ -1,6 +1,4 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/jkirsher/next-queue.git
-mail_cc:
-- intel-wired-lan@lists.osuosl.org
 owner: Jeff Kirsher <jeffrey.t.kirsher@intel.com>
 git_am_branch: dev-queue
 subsystems:
@@ -11,5 +9,6 @@ subsystems:
 - igb
 - e1000
 notify_build_success_branch: .*
-build_success_mail_to: Intel Wired LAN <intel-wired-lan@lists.osuosl.org>
+mail_to: Intel Wired LAN <intel-wired-lan@lists.osuosl.org>
+mail_cc: Intel Wired LAN <intel-wired-lan@lists.osuosl.org>
 belongs_to: NIC
