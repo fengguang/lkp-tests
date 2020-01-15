@@ -10,7 +10,7 @@ require "#{LKP_SRC}/lib/constant"
 
 BLACKLIST = LKP_SRC + '/etc/kmsg-blacklist'
 MIN_MSG_LEN = 18
-OUTPUT_FILE = "#{LKP_USER_GENERATED_DIR}/printk-error-messages".freeze
+OUTPUT_FILE = "#{KTEST_USER_GENERATED_DIR}/printk-error-messages".freeze
 DIRS_TO_GREP = 'arch block crypto drivers firmware fs include init ipc kernel lib mm net security sound virt'.freeze
 PRINTK_PATTERNS = %w(
   KERN_EMERG
@@ -175,7 +175,7 @@ blacklist = File.read(BLACKLIST).split "\n"
   end
 end
 
-FileUtils.mkdir_p(LKP_USER_GENERATED_DIR)
+FileUtils.mkdir_p(KTEST_USER_GENERATED_DIR)
 
 File.open(OUTPUT_FILE, 'w') do |file|
   file.puts errids.to_a

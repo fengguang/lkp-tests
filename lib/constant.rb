@@ -12,4 +12,4 @@ COMMIT_AXIS_KEY = 'commit'.freeze
 TBOX_GROUP_AXIS_KEY = 'tbox_group'.freeze
 
 KERNEL_ROOT = '/pkg/linux'.freeze
-LKP_USER_GENERATED_DIR = "/lkp/#{LKP_USER}/user-generated".freeze
+KTEST_USER_GENERATED_DIR = "/lkp/user-generated".freeze
