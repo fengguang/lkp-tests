@@ -8,6 +8,7 @@ require "#{LKP_SRC}/lib/result"
 require "#{LKP_SRC}/lib/data_store"
 require "#{LKP_SRC}/lib/matrix"
 require "#{LKP_SRC}/lib/stats"
+require "#{LKP_SRC}/lib/constant"
 
 # Common Result Root
 # to share code between original ResultRoot and NResultRoot
@@ -219,7 +220,7 @@ class MMResultRoot
 end
 
 class MResultRootTable < DataStore::Table
-  MRESULT_ROOT_DIR = File.join LKP_DATA_DIR, 'mresult_root'
+  MRESULT_ROOT_DIR = File.join KTEST_DATA_DIR, 'mresult_root'
 
   def initialize(layout)
     super
@@ -415,7 +416,7 @@ def nresult_root_fsck
 end
 
 module ResultStddev
-  BASE_DIR = File.join(LKP_DATA_DIR, 'result_stddev').freeze
+  BASE_DIR = File.join(KTEST_DATA_DIR, 'result_stddev').freeze
   SOURCE_KEY = 'stat_source'.freeze
   DATA_NR_MAX = 5
 
