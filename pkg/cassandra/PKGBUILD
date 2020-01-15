@@ -5,16 +5,16 @@ pkgdesc="The Apache Cassandra database is the right choice when you need scalabi
 arch=('i686' 'x86_64')
 url="http://cassandra.apache.org/"
 license=(Apache)
-source=('http://mirrors.tuna.tsinghua.edu.cn/apache/cassandra/3.11.4/apache-cassandra-3.11.4-bin.tar.gz')
+source=('https://mirrors.tuna.tsinghua.edu.cn/apache/cassandra/3.11.5/apache-cassandra-3.11.5-bin.tar.gz')
 md5sums=('SKIP')
 
 build()
 {
-    tar -xvf apache-cassandra-3.11.4-bin.tar.gz
+    tar -xvf apache-cassandra-3.11.5-bin.tar.gz
 }
 
 package()
 {
     mkdir -p "$pkgdir/lkp/benchmarks/cassandra"
-    cp -af "$srcdir/apache-cassandra-3.11.4/"* "$pkgdir/lkp/benchmarks/cassandra/"
+    cp -af "$srcdir/apache-cassandra-3.11.5/"* "$pkgdir/lkp/benchmarks/cassandra/"
 }
