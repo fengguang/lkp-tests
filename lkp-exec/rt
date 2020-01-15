@@ -3,6 +3,7 @@
 [[ -n "$LKP_SRC" ]] || LKP_SRC=$(dirname $(dirname $(readlink -e -v $0)))
 
 source $LKP_SRC/lib/result.sh
+source $LKP_SRC/lib/constant.sh
 
 shopt -s nullglob
 
@@ -52,16 +53,16 @@ if [[ $opt_date ]]; then
 	do
 		day=$(date +%F -d "$d days ago")
 		if [[ $script_name =~ ^_ ]]; then
-			files+=(/lkp/paths/$day-$opt_queue /lkp/paths/.$day-$opt_queue)
+			files+=($KTEST_PATHS_DIR/$day-$opt_queue $KTEST_PATHS_DIR/.$day-$opt_queue)
 		else
-			files+=(/lkp/paths/$day-$opt_queue)
+			files+=($KTEST_PATHS_DIR/$day-$opt_queue)
 		fi
 	done
 else
 	if [[ $script_name =~ ^_ ]]; then
-		files=(/lkp/paths/????-??-??-$opt_queue /lkp/paths/.????-??-??-$opt_queue)
+		files=($KTEST_PATHS_DIR/????-??-??-$opt_queue $KTEST_PATHS_DIR/.????-??-??-$opt_queue)
 	else
-		files=(/lkp/paths/????-??-??-$opt_queue)
+		files=($KTEST_PATHS_DIR/????-??-??-$opt_queue)
 	fi
 fi
 

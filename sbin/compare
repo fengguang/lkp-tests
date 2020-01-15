@@ -11,6 +11,7 @@ require "#{LKP_SRC}/lib/yaml"
 require "#{LKP_SRC}/lib/plot"
 require "#{LKP_SRC}/lib/stats"
 require "#{LKP_SRC}/lib/result"
+require "#{LKP_SRC}/lib/constant"
 require 'optparse'
 require 'ostruct'
 require 'yaml'
@@ -334,7 +335,7 @@ end
 def setup_result_root_hash
   ENV['LC_ALL'] = 'C'
   $opt_dims.each do |dim|
-    `grep -h -r -F -e '#{dim}' #{RESULT_PATHS}`.each_line do |result_root|
+    `grep -h -r -F -e '#{dim}' #{KTEST_PATHS_DIR}`.each_line do |result_root|
       result_root.chomp!
       result_root.chomp! '/'
       add_result_root result_root

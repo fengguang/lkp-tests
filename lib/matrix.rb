@@ -8,6 +8,7 @@ STATS_SOURCE_KEY = 'stats_source'.freeze
 require 'set'
 require "#{LKP_SRC}/lib/log"
 require "#{LKP_SRC}/lib/run_env"
+require "#{LKP_SRC}/lib/constant"
 
 def event_counter?(name)
   $event_counter_prefixes ||= File.read("#{LKP_SRC}/etc/event-counter-prefixes").split
@@ -267,8 +268,8 @@ end
 
 # serves as locate db
 def save_paths(result_root, user)
-  FileUtils.mkdir_p '/lkp/paths'
-  paths_file = "/lkp/paths/#{Time.now.strftime('%F')}-#{user}"
+  FileUtils.mkdir_p KTEST_PATHS_DIR
+  paths_file = "#{KTEST_PATHS_DIR}/#{Time.now.strftime('%F')}-#{user}"
 
   # to avoid confusing between .../1 and .../11, etc. when search/remove, etc.
   result_root += '/' unless result_root.end_with?('/')

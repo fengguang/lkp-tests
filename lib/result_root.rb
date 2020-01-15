@@ -7,6 +7,7 @@ require "#{LKP_SRC}/lib/property"
 require "#{LKP_SRC}/lib/yaml"
 require "#{LKP_SRC}/lib/result"
 require "#{LKP_SRC}/lib/nresult_root"
+require "#{LKP_SRC}/lib/constant"
 
 def rt_create_time_from_job(job)
   end_time = job['end_time']
@@ -80,8 +81,6 @@ end
 
 # Minimal implementation just for convert to general data store
 class ResultRootCollection
-  INDEX_DIR = '/lkp/paths'.freeze
-
   include Enumerable
 
   def initialize(conditions = {})
@@ -115,7 +114,7 @@ class ResultRootCollection
     return enum_for(__method__) unless block_given?
 
     date_glob = @date_glob || DATE_GLOB
-    files = Dir[File.join INDEX_DIR, date_glob + '-*']
+    files = Dir[File.join KTEST_PATHS_DIR, date_glob + '-*']
     files.sort!
     files.reverse!
     files.each do |fn|
@@ -296,7 +295,7 @@ class MResultRootCollection
   def each
     return enum_for(__method__) unless block_given?
 
-    cmdline = "grep -he '#{pattern}' /lkp/paths/????-??-??-*"
+    cmdline = "grep -he '#{pattern}' #{KTEST_PATHS_DIR}/????-??-??-*"
     @other_conditions.values.each do |ocond|
       cmdline += " | grep -e '#{ocond}'"
     end

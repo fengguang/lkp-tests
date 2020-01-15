@@ -5,11 +5,11 @@ LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 require 'set'
 require "#{LKP_SRC}/lib/lkp_git"
 require "#{LKP_SRC}/lib/run_env"
+require "#{LKP_SRC}/lib/constant"
 
 DEFAULT_COMPILER = 'gcc-7'.freeze
 
 RESULT_MNT = "#{result_prefix}/result".freeze
-RESULT_PATHS = '/lkp/paths'.freeze
 
 def tbox_group(hostname)
   if hostname =~ /.+-\d+$/
@@ -169,7 +169,7 @@ class ResultPath < Hash
     def grep(test_case, options = {})
       pattern = [RESULT_MNT, test_case, PATH_SCHEME[test_case].map { |key| options[key] || '.*' }].flatten.join('/')
 
-      cmdline = "grep -he '#{pattern}' /lkp/paths/????-??-??-* | sed -e 's#[0-9]\\+/$##' | sort | uniq"
+      cmdline = "grep -he '#{pattern}' #{KTEST_PATHS_DIR}/????-??-??-* | sed -e 's#[0-9]\\+/$##' | sort | uniq"
       `#{cmdline}`
     end
   end
