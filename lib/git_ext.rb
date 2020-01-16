@@ -28,7 +28,7 @@ module Git
     #    :remote      => 'remote_name', default is nil
     #
     # example
-    #    Git.init(project: 'dpdk', working_dir: '/c/repo/dpdk')
+    #    Git.init(project: 'dpdk', working_dir: "#{GIT_ROOT_DIR}/dpdk")
     #
     alias orig_init init
     def init(options = {})
