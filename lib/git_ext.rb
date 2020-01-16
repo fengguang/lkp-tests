@@ -34,7 +34,7 @@ module Git
     def init(options = {})
       assert(options[:project], "Git.init: options[:project] can't be #{options[:project].inspect}")
 
-      working_dir = options[:working_dir] || "#{git_root_dir}/#{options[:project]}"
+      working_dir = options[:working_dir] || "#{GIT_ROOT_DIR}/#{options[:project]}"
 
       Git.orig_init(working_dir, options)
     end
@@ -46,7 +46,7 @@ module Git
     def open(options = {})
       assert(options[:project], "Git.open: options[:project] can't be #{options[:project].inspect}")
 
-      working_dir = options[:working_dir] || "#{git_root_dir}/#{options[:project]}"
+      working_dir = options[:working_dir] || "#{GIT_ROOT_DIR}/#{options[:project]}"
 
       return nil if options[:may_not_exist] && !Dir.exist?(working_dir)
 

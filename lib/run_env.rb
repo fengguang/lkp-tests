@@ -21,10 +21,6 @@ def local_run?
   env_is_local == '1'
 end
 
-def git_root_dir
-  ENV['GIT_ROOT_DIR'] ||= local_run? ? '/lkp/repo' : '/c/repo'
-end
-
 def result_prefix
   ENV['RESULT_PREFIX'] ||= local_run? ? '/lkp' : ''
 end

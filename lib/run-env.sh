@@ -33,20 +33,6 @@ result_prefix()
 	echo "$RESULT_PREFIX"
 }
 
-git_root_dir()
-{
-	_git_root_dir=${GIT_ROOT_DIR-null_dir}
-	if [ "$_git_root_dir" = null_dir ]; then
-		if local_run; then
-			GIT_ROOT_DIR=/lkp/repo
-		else
-			GIT_ROOT_DIR=/c/repo
-		fi
-		export GIT_ROOT_DIR
-	fi
-	echo "$GIT_ROOT_DIR"
-}
-
 set_local_run()
 {
 	LKP_LOCAL_RUN=1
