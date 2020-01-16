@@ -3,11 +3,6 @@
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
 require "#{LKP_SRC}/lib/run_env"
-
-GIT_WORK_TREE ||= ENV['GIT_WORK_TREE'] || ENV['LKP_GIT_WORK_TREE'] || "#{GIT_ROOT_DIR}/linux"
-GIT_DIR ||= ENV['GIT_DIR'] || GIT_WORK_TREE + '/.git'
-GIT ||= "git --work-tree=#{GIT_WORK_TREE} --git-dir=#{GIT_DIR}".freeze
-
 require 'set'
 require 'time'
 require "#{LKP_SRC}/lib/yaml"
@@ -15,6 +10,10 @@ require "#{LKP_SRC}/lib/cache"
 require "#{LKP_SRC}/lib/assert"
 require "#{LKP_SRC}/lib/git_ext"
 require "#{LKP_SRC}/lib/constant"
+
+GIT_WORK_TREE ||= ENV['GIT_WORK_TREE'] || ENV['LKP_GIT_WORK_TREE'] || "#{GIT_ROOT_DIR}/linux"
+GIT_DIR ||= ENV['GIT_DIR'] || GIT_WORK_TREE + '/.git'
+GIT ||= "git --work-tree=#{GIT_WORK_TREE} --git-dir=#{GIT_DIR}".freeze
 
 def __git_committer_name(commit)
   `#{GIT} log -n1 --pretty=format:'%cn' #{commit}`.chomp
