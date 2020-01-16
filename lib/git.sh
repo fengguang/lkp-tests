@@ -1,6 +1,4 @@
-#!/bin/bash
-
-. $LKP_SRC/lib/constant.sh
+#!/bin/sh
 
 # When using some options, you must follow the order specified in the usage below.
 # usage: git_clone_update https://github.com/pmem/valgrind.git [dir] [--branch master] [--recursive]
@@ -56,38 +54,4 @@ git_clone_update()
 		$git clone -q "$@" $url $dir 2>&1 ||
 		$git clone -q "$@" $url $dir
 	fi
-}
-
-# only can parse linux commit id
-result_root_with_release_tag()
-{
-	local result_root=$1
-
-	[[ $result_root =~ ^\/result/ ]] || {
-		echo "invalid result_root: $result_root" >&2
-		return 1
-	}
-
-	local commit=$(basename $(dirname $result_root))
-
-	local author=$(git log -n1 --pretty=format:'%cn <%ce>' $commit 2> /dev/null)
-
-	if [[ "$author" =~ "Linus Torvalds" ]]; then
-		local commit_tag=$(git tag --points-at $commit | grep -m1 -E -e '^v[345]\.[0-9]+(|-rc[0-9]+)' -e '^v2\.[0-9]+\.[0-9]+(|-rc[0-9]+)')
-
-		[[ $commit_tag ]] && {
-			echo ${result_root/$commit/$commit_tag}
-			return 0
-		}
-	fi
-
-	echo $result_root
-}
-
-remote_branch_exist()
-{
-	local git_repo=$1
-	local remote_branch=$2
-
-	[[ $(git --work-tree=$git_repo --git-dir=$git_repo/.git branch --list -r $remote_branch) ]]
 }
