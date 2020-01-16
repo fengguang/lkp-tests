@@ -8,6 +8,7 @@ require "#{LKP_SRC}/lib/statistics"
 require "#{LKP_SRC}/lib/stats"
 require "#{LKP_SRC}/lib/yaml"
 require "#{LKP_SRC}/lib/plot"
+require "#{LKP_SRC}/lib/constant"
 
 $opt_output_path = 'output.png'
 $x_stat_key = nil
@@ -23,7 +24,7 @@ opt_parser = OptionParser.new do |opts|
   opts.separator 'Example:'
   opts.separator ''
 
-  opts.separator 'mplot /result/fat/dd-write/1HDD-JBOD-cfq-btrfs-100dd/x86_64-rhel/matrix.json vmstat.system.in'
+  opts.separator "mplot #{RESULT_ROOT_DIR}/fat/dd-write/1HDD-JBOD-cfq-btrfs-100dd/x86_64-rhel/matrix.json vmstat.system.in"
   opts.separator ''
   opts.separator 'options:'
 

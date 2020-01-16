@@ -19,20 +19,6 @@ local_run()
 	[ "$LKP_LOCAL_RUN" = 1 ]
 }
 
-result_prefix()
-{
-	_result_prefix=${RESULT_PREFIX-null_prefix}
-	if [ "$_result_prefix" = null_prefix ]; then
-		if local_run; then
-			RESULT_PREFIX=/lkp
-		else
-			RESULT_PREFIX=
-		fi
-		export RESULT_PREFIX
-	fi
-	echo "$RESULT_PREFIX"
-}
-
 set_local_run()
 {
 	LKP_LOCAL_RUN=1

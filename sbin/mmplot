@@ -8,6 +8,7 @@ require "#{LKP_SRC}/lib/statistics"
 require "#{LKP_SRC}/lib/stats"
 require "#{LKP_SRC}/lib/yaml"
 require "#{LKP_SRC}/lib/plot"
+require "#{LKP_SRC}/lib/constant"
 
 $options = {}
 
@@ -16,9 +17,9 @@ opt_parser = OptionParser.new do |opts|
   opts.separator ''
   opts.separator 'Example:'
   opts.separator ''
-  opts.separator 'mmplot  /result/fat/dd-write/1HDD-JBOD-cfq-btrfs-100dd/x86_64-rhel/v3.10/matrix.json  \
-  /result/fat/dd-write/1HDD-JBOD-cfq-btrfs-100dd/x86_64-rhel/matrix.json    \
-  vmstat.system.in vmstat.cpu.sy perf-stat.node-stores interrupts.CPU0.LOC'
+  opts.separator "mmplot #{RESULT_ROOT_DIR}/fat/dd-write/1HDD-JBOD-cfq-btrfs-100dd/x86_64-rhel/v3.10/matrix.json  \
+  #{RESULT_ROOT_DIR}/fat/dd-write/1HDD-JBOD-cfq-btrfs-100dd/x86_64-rhel/matrix.json    \
+  vmstat.system.in vmstat.cpu.sy perf-stat.node-stores interrupts.CPU0.LOC"
 
   opts.separator ''
   opts.separator 'options:'

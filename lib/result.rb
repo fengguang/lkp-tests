@@ -9,8 +9,6 @@ require "#{LKP_SRC}/lib/constant"
 
 DEFAULT_COMPILER = 'gcc-7'.freeze
 
-RESULT_MNT = "#{result_prefix}/result".freeze
-
 def tbox_group(hostname)
   if hostname =~ /.+-\d+$/
     hostname.sub(/-\d+$/, '').sub(/-\d+-/, '-')
@@ -58,7 +56,7 @@ class ResultPath < Hash
   end
 
   def parse_result_root(rt, is_local_run = false)
-    dirs = rt.sub(/#{RESULT_MNT}\d*/, '').split('/')
+    dirs = rt.sub(/#{RESULT_ROOT_DIR}/, '').split('/')
     dirs.shift if dirs[0] == ''
 
     self['testcase'] = dirs.shift
@@ -87,7 +85,7 @@ class ResultPath < Hash
 
   def assemble_result_root(skip_keys = nil)
     dirs = [
-      RESULT_MNT,
+      RESULT_ROOT_DIR,
       self['testcase']
     ]
 
@@ -138,7 +136,7 @@ class ResultPath < Hash
 
   def params_file
     [
-      RESULT_MNT,
+      RESULT_ROOT_DIR,
       self['testcase'],
       'params.yaml'
     ].join '/'
@@ -167,7 +165,7 @@ class ResultPath < Hash
     # FIXME rli9 refactor MResultRootCollection to embrace different maxis keys
     #
     def grep(test_case, options = {})
-      pattern = [RESULT_MNT, test_case, PATH_SCHEME[test_case].map { |key| options[key] || '.*' }].flatten.join('/')
+      pattern = [RESULT_ROOT_DIR, test_case, PATH_SCHEME[test_case].map { |key| options[key] || '.*' }].flatten.join('/')
 
       cmdline = "grep -he '#{pattern}' #{KTEST_PATHS_DIR}/????-??-??-* | sed -e 's#[0-9]\\+/$##' | sort | uniq"
       `#{cmdline}`

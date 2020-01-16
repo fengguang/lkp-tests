@@ -4,6 +4,7 @@
 
 source "$LKP_SRC/lib/common.sh"
 source "$LKP_SRC/lib/result.sh"
+source "$LKP_SRC/lib/constant.sh"
 
 check_rt()
 {
@@ -97,7 +98,7 @@ usage()
 Usage:
 	lkp $script_name [-y] <paths>
 Example:
-	lkp $script_name -y /result/xfstests/4HDD-ext4-ext4/lkp-ws02/debian-x86_64-2015-02-07.cgz/x86_64-rhel/gcc-4.9/v4.3/0/
+	lkp $script_name -y $RESULT_ROOT_DIR/xfstests/4HDD-ext4-ext4/lkp-ws02/debian-x86_64-2015-02-07.cgz/x86_64-rhel/gcc-4.9/v4.3/0/
 EOF
 	exit 1
 }

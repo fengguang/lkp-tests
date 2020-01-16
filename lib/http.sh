@@ -1,6 +1,7 @@
 #!/bin/sh
 
 . $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/constant.sh
 
 escape_cgi_param()
 {
@@ -151,4 +152,3 @@ http_get_cgi()
 {
 	http_setup_client && http_get_cgi "$@"
 }
-

@@ -10,6 +10,7 @@ require "#{LKP_SRC}/lib/tests"
 require "#{LKP_SRC}/lib/axis"
 require "#{LKP_SRC}/lib/result_root"
 require "#{LKP_SRC}/lib/log"
+require "#{LKP_SRC}/lib/constant"
 
 # How many components in the stat sort key
 $stat_sort_key_number = {
@@ -1096,7 +1097,7 @@ module Compare
   end
 
   def self.test_incomplete_run
-    _rt = '/result/lkp-sb02/fileio/performance-600s-100%-1HDD-ext4-64G-1024f-seqrd-sync/debian-x86_64-2015-02-07.cgz/x86_64-rhel/'
+    _rt = "#{RESULT_ROOT_DIR}/lkp-sb02/fileio/performance-600s-100%-1HDD-ext4-64G-1024f-seqrd-sync/debian-x86_64-2015-02-07.cgz/x86_64-rhel/"
     _rts = %w[9eccca0843205f87c00404b663188b88eb248051 06e5801b8cb3fc057d88cb4dc03c0b64b2744cda]
            .map { |c| MResultRoot.new(_rt + c) }
     _rts.each do |_rt|

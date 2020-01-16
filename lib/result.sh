@@ -3,8 +3,6 @@
 . $LKP_SRC/lib/run-env.sh
 . $LKP_SRC/lib/constant.sh
 
-export RESULT_MNT="$(result_prefix)/result"
-
 set_tbox_group()
 {
 	local tbox=$1

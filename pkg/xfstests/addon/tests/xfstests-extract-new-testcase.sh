@@ -4,6 +4,7 @@
 [[ -n "$LKP_SRC" ]] || LKP_SRC=$(dirname $(dirname $(readlink -e -v $0)))
 
 . "$LKP_SRC/lib/log.sh"
+. "$LKP_SRC/lib/constant.sh"
 
 usage()
 {
@@ -12,7 +13,7 @@ Usage:
 	$0 < fs xfstests-result >
 	$0 generic group_number
 Example:
-	$0 xfs /result/xfstests/4HDD-ext4-ext4-new/snb-drag/debian-x86_64-2016-08-31.cgz/x86_64-rhel-7.2/gcc-6/4f7d029b9bf009fbee76bb10c0c4351a1870d2f3/0/output
+	$0 xfs $RESULT_ROOT_DIR/xfstests/4HDD-ext4-ext4-new/snb-drag/debian-x86_64-2016-08-31.cgz/x86_64-rhel-7.2/gcc-6/4f7d029b9bf009fbee76bb10c0c4351a1870d2f3/0/output
 	$0 generic 1
 EOF
 	exit 1

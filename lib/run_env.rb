@@ -21,10 +21,6 @@ def local_run?
   env_is_local == '1'
 end
 
-def result_prefix
-  ENV['RESULT_PREFIX'] ||= local_run? ? '/lkp' : ''
-end
-
 def set_local_run
   ENV[LOCAL_RUN_ENV] = '1'
 end

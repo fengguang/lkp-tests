@@ -25,59 +25,50 @@ describe 'local run' do
   describe 'local_run' do
     it 'first run without host file or ENV' do
       expect(local_run?).to eq(false)
-      expect(result_prefix).to eq('')
     end
 
     it 'first run with host file with local_run: 1' do
       File.open(@hostfile, 'w') { |file| file.write("local_run: 1\n") }
       expect(local_run?).to eq(true)
-      expect(result_prefix).to eq('/lkp')
     end
 
     it 'first run with host file with local_run: 0' do
       File.open(@hostfile, 'w') { |file| file.write("local_run: 0\n") }
       expect(local_run?).to eq(false)
-      expect(result_prefix).to eq('')
     end
 
     it 'first run with host file without local_run' do
       File.open(@hostfile, 'w') { |file| file.write("hdd_partitions: \nssd_partitions: \n") }
       local_run?
       expect(local_run?).to eq(false)
-      expect(result_prefix).to eq('')
     end
 
     it 'second run without host file or ENV' do
       local_run?
       expect(local_run?).to eq(false)
-      expect(result_prefix).to eq('')
     end
 
     it 'second run with host file with local_run: 1' do
       File.open(@hostfile, 'w') { |file| file.write("local_run: 1\n") }
       local_run?
       expect(local_run?).to eq(true)
-      expect(result_prefix).to eq('/lkp')
     end
 
     it 'second run with host file with local_run: 0' do
       File.open(@hostfile, 'w') { |file| file.write("local_run: 0\n") }
       local_run?
       expect(local_run?).to eq(false)
-      expect(result_prefix).to eq('')
     end
 
     it 'second run with host file without local_run' do
       File.open(@hostfile, 'w') { |file| file.write("hdd_partitions: \nssd_partitions: \n") }
       local_run?
       expect(local_run?).to eq(false)
-      expect(result_prefix).to eq('')
     end
 
     after(:each) do
       FileUtils.rm_f(@hostfile)
       ENV[LOCAL_RUN_ENV] = nil
-      ENV['RESULT_PREFIX'] = nil
     end
   end
 
@@ -88,31 +79,26 @@ describe 'local run' do
 
     it 'first run without host file' do
       expect(local_run?).to eq(false)
-      expect(result_prefix).to eq('')
     end
 
     it 'first run with host file of local_run: 1' do
       File.open(@hostfile, 'w') { |file| file.write("local_run: 1\n") }
       expect(local_run?).to eq(false)
-      expect(result_prefix).to eq('')
     end
 
     it 'first run with host file of local_run: 0' do
       File.open(@hostfile, 'w') { |file| file.write("local_run: 0\n") }
       expect(local_run?).to eq(false)
-      expect(result_prefix).to eq('')
     end
 
     it 'first run with host file without local_run' do
       File.open(@hostfile, 'w') { |file| file.write("hdd_partitions: \nssd_partitions: \n") }
       expect(local_run?).to eq(false)
-      expect(result_prefix).to eq('')
     end
 
     after(:each) do
       FileUtils.rm_f(@hostfile)
       ENV[LOCAL_RUN_ENV] = nil
-      ENV['RESULT_PREFIX'] = nil
     end
   end
 
@@ -123,31 +109,26 @@ describe 'local run' do
 
     it 'first run without host file' do
       expect(local_run?).to eq(true)
-      expect(result_prefix).to eq('/lkp')
     end
 
     it 'first run with host file of local_run: 1' do
       File.open(@hostfile, 'w') { |file| file.write("local_run: 1\n") }
       expect(local_run?).to eq(true)
-      expect(result_prefix).to eq('/lkp')
     end
 
     it 'first run with host file of local_run: 0' do
       File.open(@hostfile, 'w') { |file| file.write("local_run: 0\n") }
       expect(local_run?).to eq(true)
-      expect(result_prefix).to eq('/lkp')
     end
 
     it 'first run with host file without local_run' do
       File.open(@hostfile, 'w') { |file| file.write("hdd_partitions: \nssd_partitions: \n") }
       expect(local_run?).to eq(true)
-      expect(result_prefix).to eq('/lkp')
     end
 
     after(:each) do
       FileUtils.rm_f @hostfile
       ENV[LOCAL_RUN_ENV] = nil
-      ENV['RESULT_PREFIX'] = nil
     end
   end
 

@@ -15,3 +15,4 @@ KERNEL_ROOT = '/pkg/linux'.freeze
 KTEST_USER_GENERATED_DIR = "/lkp/user-generated".freeze
 KTEST_DATA_DIR = '/lkp/data'.freeze
 KTEST_PATHS_DIR = '/lkp/paths'.freeze
+RESULT_ROOT_DIR = "/lkp/result".freeze
