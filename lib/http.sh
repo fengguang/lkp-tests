@@ -1,7 +1,6 @@
 #!/bin/sh
 
 . $LKP_SRC/lib/env.sh
-. $LKP_SRC/lib/constant.sh
 
 escape_cgi_param()
 {

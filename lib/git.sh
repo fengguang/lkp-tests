@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 . $LKP_SRC/lib/constant.sh
 
