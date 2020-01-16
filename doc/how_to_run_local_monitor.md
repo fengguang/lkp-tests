@@ -1,5 +1,5 @@
 # How to run local monitor in a minimal environment
-## Prepare lkp environment (the feature hasn't been merged into the mainline)
+## Prepare lkp environment
 ```
 [root@localhost ~]# dnf install gcc make git -y
 [root@localhost ~]# git clone https://github.com/lkp/lkp-tests.git
