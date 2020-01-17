@@ -439,6 +439,7 @@
 ^stderr./bin/sh:./runltp:Permission_denied
 ^stderr./bin/sh:#:(thrulay|thrulayd):not_found
 ^stderr.block:PATH_the_node_of_block_device_path
+^stderr.bmc-watchdog:ipmi_ctx_find_inband:out_of_memory
 ^stderr.BPF_ALU64_(IMM|REG)\(BPF_(ADD|MOV),BPF_REG_
 ^stderr.BPF_EXIT_INSN
 ^stderr.BPF_JMP_A\(#\)
