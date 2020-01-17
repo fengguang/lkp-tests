@@ -490,6 +490,7 @@
 ^stderr.disk_(cp|src)
 ^stderr.disk_number.*
 ^stderr.disk_rr.*/fs/md0
+^stderr.disk_rw:can't_read/fs/md0/tmpb
 ^stderr.disk_wrt:cannot_(create|write)/fs/md0/tmpb
 ^stderr.disk_wrt/fs/md0
 ^stderr.dpkg-preconfigure:unable_to_re-open_stdin
