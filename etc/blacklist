@@ -31,9 +31,9 @@
 ^dmesg.BUG:Dentry.*i=.*n=.*
 ^dmesg.BUG:soft_lockup-CPU##stuck_for#s
 ^dmesg.calltrace
-^dmesg.drm:intel_acpi_device_id_update.*
 ^dmesg..*cpu_clock_throttled.*
 ^dmesg..*-detected_stall_on_CPUINFO
+^dmesg.drm:intel_acpi_device_id_update.*
 ^dmesg.INFO:NMI_handler.*took_too_long_to_run:
 ^dmesg.INFO:rcu_sched_detected_stalls_on_CPUs/tasks:
 ^dmesg.INFO:Slab0x\(____ptrval____\)objects=#used=#fp=0x\((null|____ptrval____)\)flags=
@@ -589,6 +589,7 @@
 ^stderr.madvise_SOFT_OFFLINE:Input/output_error
 ^stderr.main\(\)
 ^stderr.make\[#\]:cc:Command_not_found
+^stderr.make\[#\]:Circular_.*_dependency_dropped
 ^stderr.make.*Error
 ^stderr.Makefile.config:#:No_alternatives_command_found,you_need_to_set_JDIR=to_point_to_the_root_of_your_Java_directory
 ^stderr.Makefile.config:#:No_libpci_found,show_pci_devices_without_names_in_iiostat_mode,please_install_libpci-dev/pciutils-devel
