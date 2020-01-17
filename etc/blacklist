@@ -745,6 +745,7 @@
 ^stderr./usr/src/perf_selftests-x86_64-rhel-#/tools/testing/selftests/bpf/prog_tests/.*c:#:#:(note|warning|error):
 ^stderr.\+wait_post_test
 ^stderr.Warning,had_trouble_writing_out_superblocks
+^stderr.Warning:Num_of_global_symbols_in.*libbpf-in.o\(#\)does_NOT_match_with_num_of_versioned_symbols_in.*libbpf.so\(#\)
 ^stderr.WARNING:the--test_option_is_deprecated
 ^stderr.W:Download_is_performed_unsandboxed_as_root_as_file.*Permission_denied
 ^stderr.wflinfo_utility_not_found
