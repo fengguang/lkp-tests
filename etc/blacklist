@@ -535,6 +535,7 @@
 ^stderr.FATAL:Could_not_load/lib/modules/#/modules.dep:No_such_file_or_directory
 ^stderr.FATAL:Error_inserting_locktorture\(/lib/modules/#/kernel/kernel/locking/locktorture.ko\):Device_or_resource_busy
 ^stderr.FATAL:Error_inserting_(rcuperf|rcutorture)\(/lib/modules/#/kernel/kernel/rcu/(rcuperf|rcutorture).ko\):Device_or_resource_busy
+^stderr.FATAL:Kernel_does_not_have_unload_support
 ^stderr.fatal:reference_is_not_a_tree
 ^stderr.File~./bin/run-fxmark
 ^stderr.:File_exists
