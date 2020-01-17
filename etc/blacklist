@@ -683,6 +683,7 @@
 ^stderr.*scripts/aim_..sh:not_found
 ^stderr.sed:can't_read_kselftest/runner.sh:No_such_file_or_directory
 ^stderr.sed:can't_read/lkp/benchmarks/ltp/ltp/runtest/fs_ext4:No_such_file_or_directory
+^stderr.sed:couldn't_write#items_to_stdout:Invalid_argument
 ^stderr.See.*for_details
 ^stderr.self._fp=_builtin_open
 ^stderr.setpci:#:#:#:Capability#not_found
