@@ -26,7 +26,7 @@
 [ $nr_partitions -ge 1 ] || exit
 partition=${partitions%% *}
 
-[ -n "$nr_1Mfiles" ] || nr_1Mfiles=210000
+[ -n "$nr_1Mfiles" ] || nr_1Mfiles=21000
 [ -n "$nr_1Gfiles" ] || nr_1Gfiles=103
 
 mnt=/mnt
