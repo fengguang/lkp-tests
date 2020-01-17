@@ -605,7 +605,7 @@
 ^stderr.memory_policy\|--dump\|-d\|--dump-nodes\|-D
 ^stderr.memory_policy_is--interleave\|-i,--preferred\|-p,--membind\|-m,--localalloc\|-l
 ^stderr.modprobe:ERROR:could_not_insert'locktorture':
-^stderr.modprobe:ERROR:could_not_insert'(nd_e820|dax_pmem|device_dax)':Exec_format_error
+^stderr.modprobe:ERROR:could_not_insert'(nd_e820|dax_pmem|device_dax)':(Exec_format_error|Unknown_symbol_in_module)
 ^stderr.modprobe:ERROR:could_not_insert'(rcuperf|rcutorture)':Device_or_resource_busy
 ^stderr.modprobe:ERROR:../libkmod/libkmod.c:#kmod_search_moddep\(\)could_not_open_moddep_file
 ^stderr.modprobe:FATAL:Module_dax_pmem_compat_is_in_use
