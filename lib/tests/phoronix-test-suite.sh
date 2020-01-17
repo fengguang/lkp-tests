@@ -23,6 +23,15 @@ fixup_open_porous_media()
 	sed -i 's/nice mpirun -np/nice mpirun --allow-run-as-root -np/' "$target"
 }
 
+# before test netperf, start netserver firstly
+fixup_netperf()
+{
+	[ -n "$environment_directory" ] || return
+	local test=$1
+	local target=${environment_directory}/pts/${test}/netperf
+	sed -i "2a./src/netserver" "$target"
+}
+
 # fix issue: supported_sensors array length don't match sensor length
 fixup_idle_power_usage()
 {
@@ -483,6 +492,9 @@ run_test()
 			test_opt="\n5\na\nb\nc\nn"
 			export DISPLAY=:0
 			;;
+		netperf-*)
+			fixup_netperf $test || die "failed to fixup test netperf"
+			;;
 		mcperf-*)
 			fixup_mcperf $test || die "failed to fixup test mcperf"
 			;;
@@ -562,6 +574,22 @@ run_test()
 
 	if echo $test | grep idle-power-usage; then
 		echo "$test_opt" | log_cmd phoronix-test-suite run $test
+	elif echo $test | grep netperf; then
+		# Choose
+		# Enter Value: localhost
+		# 5: UDP Request Response
+		# 1: 10 Seconds
+		/usr/bin/expect <<-EOF
+			spawn phoronix-test-suite run $test
+			expect {
+				"Enter Value:" { send "localhost\r"; exp_continue }
+				"Test:" { send "5\r"; exp_continue }
+				"Duration:" { send "1\r"; exp_continue }
+				"Would you like to save these test results" { send "n\r"; exp_continue }
+				eof { }
+				default { exp_continue }
+			}
+		EOF
 	elif [ "$test_opt" ]; then
 		echo -e "$test_opt" | log_cmd phoronix-test-suite run $test
 	else
