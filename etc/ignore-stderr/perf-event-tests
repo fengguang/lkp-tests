@@ -1,0 +1,5 @@
+replay_log.c:.*:.*: warning: passing argument .* of.*parse_open_event.*from incompatible pointer type \[-Wincompatible-pointer-types\]
+  parse_open_event\(line,&orig_fd,&pid,&cpu,&group_fd,&flags,&pe\);
+In file included from replay_log.c:.*:.*:
+parse_log.h:.*:.*: note: expected .*struct perf_event_attr.* but argument is of type .*struct perf_event_attr .*
+Retired instruction count too low
