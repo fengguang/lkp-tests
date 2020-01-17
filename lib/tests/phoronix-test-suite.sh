@@ -514,7 +514,9 @@ run_test()
 			fixup_aom_av1 $test || die "failed to fixup test aom-av1"
 			;;
 		bullet-*)
-			fixup_bullet $test || die "failed to fixup test bullet"
+			is_clearlinux || {
+				fixup_bullet $test || die "failed to fixup test bullet"
+			}
 			;;
 		fio-*)
 			fixup_fio $test || die "failed to fixup test fio"
