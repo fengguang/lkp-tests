@@ -446,9 +446,11 @@
 ^stderr.BPF_JMP_(IMM|REG)\(BPF_
 ^stderr.BPF_LDX_MEM\(BPF_
 ^stderr.BPF_MOV64_(IMM|REG)\(BPF_REG_
+^stderr.BPF_obj_compilation_failed
 ^stderr.BPF_RAW_INSN\(BPF_JMP\|BPF_CALL
 ^stderr.BPF_ST_MEM\(BPF_B,BPF_REG_2,#,#
 ^stderr.BPF_STX_MEM\(BPF_
+^stderr.BPF_TRACE_3\(~fexit/test_pkt_access_subprog3~,test_subprog3
 ^stderr.build_env_failed
 ^stderr.builtin-stat.c:#:#:fatal_error:util/iiostat.h:No_such_file_or_directory
 ^stderr.BusyBox.*multi-call_binary
@@ -557,6 +559,7 @@
 ^stderr.grep:tests/./group:No_such_file_or_directory
 ^stderr.has_stderr
 ^stderr.\[--huge\|-u\]\[--touch\|-T\]
+^stderr.if\(len!=#\|\|ret!=#.val\|\|val!=#\)
 ^stderr.Illegal_instruction
 ^stderr._#include<asm/rwonce.h>
 ^stderr._#include~util/iiostat.h~
@@ -567,6 +570,7 @@
 ^stderr.ip:HOST_the_node_of_the_network_device_host_routes_through
 ^stderr.Killed
 ^stderr.<length>can_have_g\(GB\),m\(MB\)or_k\(KB\)suffixes
+^stderr.len=skb->len
 ^stderr.len_was-#send_size_was
 ^stderr._#libc.so
 ^stderr.libkmod:ERROR../libkmod/libkmod-module.c:#kmod_module_get_holders:could_not_open'/sys/module/(pcc|acpi)_cpufreq/holders':No_such_file_or_directory
@@ -580,6 +584,7 @@
 ^stderr./lkp/.*
 ^stderr.\+/lkp/.*
 ^stderr.\+lkplog.*
+^stderr.llc:error:llc:<stdin>:#:#:error:expected_top-level_entity
 ^stderr.LLVM_ERROR:Unsupported_relocation
 ^stderr.ln:failed_to_create_symbolic_link.*File_exists
 ^stderr.ln:ln:failed_to_create_symbolic_link
@@ -652,6 +657,11 @@
 ^stderr.print_counts_(at_regular_interval_in_ms|with_custom_separator|for_fixed_number_of_times)
 ^stderr.prog\[ARRAY_SIZE\(prog\)-#\]=BPF_EXIT_INSN\(\)
 ^stderr.prog\[i\]=BPF_ALU64_IMM\(BPF_MOV,BPF_REG_0,#\)
+^stderr.progs/fexit_bpf2bpf.c:#:#:error:expected'\)'
+^stderr.progs/fexit_bpf2bpf.c:#:#:error:expected_parameter_declarator
+^stderr.progs/fexit_bpf2bpf.c:#:#:error:use_of_undeclared_identifier.*
+^stderr.progs/fexit_bpf2bpf.c:#:#:note:to_match_this'\('
+^stderr.progs/fexit_bpf2bpf.c:#:#:warning:type_specifier_missing,defaults_to'int'\[-Wimplicit-int\]
 ^stderr.prog_tests/.*c:#:#:(note|warning|error):
 ^stderr.prog_tests/.*:warning:implicit_declaration_of_function
 ^stderr.:Read-only_file_system
@@ -744,6 +754,7 @@
 ^stderr./usr/bin/env:.*ruby.*:No_such_file_or_directory
 ^stderr./usr/src/perf_selftests-x86_64-rhel-#/tools/testing/selftests/bpf/prog_tests/.*c:#:#:(note|warning|error):
 ^stderr.\+wait_post_test
+^stderr._#warning_and#errors_generated
 ^stderr.Warning,had_trouble_writing_out_superblocks
 ^stderr.Warning:Num_of_global_symbols_in.*libbpf-in.o\(#\)does_NOT_match_with_num_of_versioned_symbols_in.*libbpf.so\(#\)
 ^stderr.WARNING:the--test_option_is_deprecated
