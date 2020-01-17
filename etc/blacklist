@@ -476,6 +476,7 @@
 ^stderr.*:Connection_reset_by_peer
 ^stderr.const_struct_bpf_insn_
 ^stderr.Could_not_find_file_
+^stderr.Could_not_set_realtime_priority
 ^stderr.cpu\d+:
 ^stderr.cpu_doesn't_support_resource_control_feature
 ^stderr.<cpus>is_a_comma_delimited_list_of_cpu_numbers_or_A-B_ranges_or_all
