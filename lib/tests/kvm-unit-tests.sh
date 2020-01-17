@@ -38,7 +38,7 @@ remove_case()
 
 check_ignored_cases()
 {
-	local ignored_by_lkp=$LKP_SRC/pack/"$testcase"-addon/ignored_by_lkp
+	local ignored_by_lkp=$LKP_SRC/pkg/"$testcase"/addon/ignored_by_lkp
 	[ -f "$ignored_by_lkp" ] || return
 
 	for ignore in $(cat $ignored_by_lkp | grep -v '^#')
