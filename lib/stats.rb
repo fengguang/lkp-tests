@@ -697,6 +697,11 @@ end
 def get_changed_stats(matrix_path1, matrix_path2 = nil, options = {})
   return find_changed_stats(matrix_path1, options) unless matrix_path2 || options['bisect_axis']
 
+  puts <<~DEBUG if ENV['LKP_VERBOSE']
+    loading matrices to compare:
+      #{matrix_path1}
+      #{matrix_path2}
+  DEBUG
   a, b = load_matrices_to_compare matrix_path1, matrix_path2, options
   return nil if a.nil? || b.nil?
 
