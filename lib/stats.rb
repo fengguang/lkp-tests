@@ -1,8 +1,5 @@
 #!/usr/bin/env ruby
 
-MARGIN_SHIFT = 5
-MAX_RATIO = 5
-
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
 require 'set'
@@ -17,6 +14,9 @@ require "#{LKP_SRC}/lib/statistics"
 require "#{LKP_SRC}/lib/log"
 require "#{LKP_SRC}/lib/tests"
 require "#{LKP_SRC}/lib/changed_stat"
+
+MARGIN_SHIFT = 5
+MAX_RATIO = 5
 
 $metric_add_max_latency = IO.read("#{LKP_SRC}/etc/add-max-latency").split("\n")
 $metric_latency = IO.read("#{LKP_SRC}/etc/latency").split("\n")
