@@ -1,0 +1,17 @@
+# this version specific adaptation contains adaptations for debian 10 only. The common adaptations are still put in debian
+# 1. not exist/valid packages, mark it empty to avoid installing error.
+# 2. exist/valid packages, mark it empty if you don't want to install later.
+# 3. exist/valid packages, but its name needs to be adapted for other distro,
+     mapping to a new package name, then the new package will be install later.
+
+# reason(3)
+bsdtar: libarchive-tools
+
+# reason(3)
+btrfs-tools: btrfs-progs
+
+# reason(3)
+libmariadbclient-dev: libmariadb-dev-compat
+
+# reason(3)
+libmariadbclient18: libmariadb3
