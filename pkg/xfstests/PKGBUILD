@@ -4,8 +4,8 @@ pkgrel=1
 url='https://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git'
 arch=('i686' 'x86_64')
 license=('GPL')
-source=('https://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs-tools.git' 'https://git.kernel.org/pub/scm/fs/xfs/xfsprogs-dev.git' 'https://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git')
-md5sums=('SKIP' 'SKIP' 'SKIP')
+source=('https://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs-tools.git' 'https://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git')
+md5sums=('SKIP' 'SKIP')
 
 build_upstream_ext4_blacklist()
 {
@@ -13,21 +13,6 @@ build_upstream_ext4_blacklist()
 	wget -O ext4-upstream-blacklist https://git.kernel.org/pub/scm/fs/ext2/xfstests-bld.git/plain/kvm-xfstests/test-appliance/files/root/fs/ext4/exclude || return
 	cat ext4-upstream-blacklist | grep -v '^#' | grep 'generic/' | awk -F'/' '{print $2}' >> $benchmark_path/tests/generic-ext4-ignore
 	cat ext4-upstream-blacklist | grep -v '^#' | grep 'ext4/' | awk -F'/' '{print $2}' >> $benchmark_path/tests/ext4-ignore
-}
-
-build_install_xfsprogs()
-{
-	usr_path="${pkgdir}/usr"
-	mkdir -p $usr_path
-	cd ${srcdir}/xfsprogs-dev || return
-	git checkout for-next
-	make configure || return
-	./configure --prefix=$usr_path --exec_prefix=$usr_path
-	make || return
-	make install
-	make install-dev
-	# xfstests need those file
-	rsync -aK $usr_path/* /usr
 }
 
 build_install_xfstests()
@@ -78,7 +63,6 @@ build()
 	mkdir -p ${benchmark_path}
 	mkdir -p ${benchmark_path}/tests
 
-	build_install_xfsprogs || return
 	build_install_xfstests || return
 	build_install_f2fs_tools || return
 	build_ignore_file || return
@@ -94,7 +78,6 @@ package()
 generate_tests()
 {
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-	cp -r $srcdir/xfsprogs-dev  $benchmark_path/xfsprogs-dev
 	cp -af $srcdir/xfstests-dev/* $benchmark_path
 	cp -af $LKP_SRC/pkg/${pkgname}/addon/tests/* $benchmark_path/tests
 	## generate the new add subcase automatically after every upgrade xfstests
