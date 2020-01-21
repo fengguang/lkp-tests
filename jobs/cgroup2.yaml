@@ -7,3 +7,5 @@ cgroup2:
     io.weight:
     rdma.max:
     pids.max: 10000
+
+kernel_cmdline: systemd.unified_cgroup_hierarchy=1
