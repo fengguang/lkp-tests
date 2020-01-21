@@ -35,9 +35,9 @@ clear_cgroup2()
 		cgroups2=$(find $cgroup2_mount -type d | tail -n +2 | tac)
 		for cgroup2 in $cgroups2
 		do
-			rmdir $cgroup2
+			rmdir $cgroup2 2>&1
 		done
-		umount $cgroup2_mount
+		umount $cgroup2_mount 2>&1
 	fi
 }
 
