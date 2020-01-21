@@ -5,6 +5,8 @@
 ## The typical use of fio is to write a job file matching
 ## the I/O load one wants to simulate.
 
+. $LKP_SRC/lib/common.sh
+
 task=$(cat /$TMP_RESULT_ROOT/fio.task)
 
 [ -n "$task" ] || {
@@ -17,14 +19,3 @@ task=$(cat /$TMP_RESULT_ROOT/fio.task)
 log_echo "\
 echo '$task' | fio --output-format=json -"
 echo "$task" | fio --output-format=json - > $TMP_RESULT_ROOT/fio.output
-
-cleanup()
-{
-	mounted=$(cat /$TMP_RESULT_ROOT/fio.task | grep 'directory=' | awk -F'=' '{print $2}')
-	for m in $mounted
-	do
-		log_cmd umount $m
-	done
-}
-
-cleanup
