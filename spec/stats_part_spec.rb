@@ -2,7 +2,7 @@ require 'spec_helper'
 require "#{LKP_SRC}/lib/matrix"
 require "#{LKP_SRC}/lib/job"
 require "#{LKP_SRC}/lib/stats"
-require "#{LKP_SRC}/lib/json"
+require "#{LKP_SRC}/lib/yaml"
 
 describe 'Metrix/create_stats_matrix' do
   result_root = "#{LKP_SRC}/spec/stats_part/result_root"
