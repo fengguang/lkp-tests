@@ -9,12 +9,14 @@
 ## Homepage: https://dbench.samba.org/
 
 . $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/debug.sh
 
 run_dbench()
 {
-	client_dir=/usr/share/dbench
-	is_clearlinux && client_dir=/usr/local/share
-	log_cmd dbench $nr_threads -c $client_dir/client.txt
+	client_file=/usr/local/share/client.txt
+	[ -f "$client_file" ] || client_file=/usr/share/dbench/client.txt
+	[ -f "$client_file" ] || die "can not find client.txt"
+	log_cmd dbench $nr_threads -c $client_file
 }
 
 run_dbench
