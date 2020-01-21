@@ -339,6 +339,11 @@ fixup_install()
 		# python2 is required for installing glmark2
 		setup_python2
 		;;
+	cyclictest-*)
+		# python2 is required for installing cyclictest
+		setup_python2
+		env | grep CFLAGS && unset CFLAGS
+		;;
 	numenta-nab-*)
 		# fix issue: No matching distribution found for nupic==1.0.5 (from nab==1.0)
 		setup_python2
