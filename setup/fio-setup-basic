@@ -16,6 +16,7 @@
 # - io_size
 # - file_service_type
 # - random_distribution
+# - numa_mem_policy
 
 . $LKP_SRC/lib/common.sh
 . $LKP_SRC/lib/unit.sh
@@ -83,6 +84,36 @@ time_based
 "
 fi
 
+parse_numa_mem_policy()
+{
+	if [ -z "$numa_mem_policy" ]; then
+		__numa_mem_policy_setup="none"
+	elif [ "${numa_mem_policy%:even}" != "$numa_mem_policy" ]; then
+		__numa_mem_policy_mode="${numa_mem_policy%:even}"
+		__numa_mem_policy_setup="even"
+	else
+		__numa_mem_polity_setup="orig"
+	fi
+}
+
+__numa_mem_policy()
+{
+	__seq_no=$1
+
+	case "$__numa_mem_policy_setup" in
+		none)
+		;;
+		even)
+			echo "numa_mem_policy=${__numa_mem_policy_mode}:$((__seq_no%nr_node))"
+			;;
+		orig)
+			echo "numa_mem_policy=${numa_mem_policy}"
+			;;
+	esac
+}
+
+parse_numa_mem_policy
+
 no=0
 for storage in $storages; do
 	if [ "$raw_disk" = 1 ]; then
@@ -96,6 +127,7 @@ $create_task
 rw=$rw
 $storage_setup
 numjobs=$jobs_per_storage
+$(__numa_mem_policy $no)
 "
 	no=$((no+1))
 done
