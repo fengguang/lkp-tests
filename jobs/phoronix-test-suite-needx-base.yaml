@@ -7,7 +7,7 @@ timeout: 2h
 
 phoronix-test-suite:
   test:
-  - etqw-1.1.0
+  # - etqw-1.1.0 # has been replaced by newer etqw-demo
   - etqw-demo-1.1.0
   - etqw-demo-iqc-1.0.0
   - geexlab-1.0.0
