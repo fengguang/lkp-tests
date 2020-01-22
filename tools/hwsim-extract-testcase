@@ -28,6 +28,6 @@ do
 done  <<< "$funcs"
 
 sort $tmpfile | uniq > $tmpfile_uniq
-split -d -a2 -l200 $tmpfile_uniq  hwsim-
+split -d -a2 -l100 $tmpfile_uniq  hwsim-
 
 rm $tmpfile $tmpfile_uniq
