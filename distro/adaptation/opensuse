@@ -9,6 +9,7 @@ linux-libc-dev: glibc-devel
 linux-libc-dev: glibc-devel
 linux-libc-dev:i386: glibc-devel-32bit
 linux-perf: perf
+libtirpc: libtirpc3
 # Go get it yourself: https://github.com/schacon/ruby-git
 # We have no package for it yet
 ruby-git:
