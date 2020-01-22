@@ -50,7 +50,7 @@ run_test()
 {
 	while read line
 	do
-		log_cmd avocado run $line --job-timeout 300 2>&1
+		log_cmd avocado run $line --job-timeout 30 2>&1
 	done < $test_group
 }
 
