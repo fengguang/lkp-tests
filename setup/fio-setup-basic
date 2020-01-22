@@ -92,7 +92,7 @@ parse_numa_mem_policy()
 		__numa_mem_policy_mode="${numa_mem_policy%:even}"
 		__numa_mem_policy_setup="even"
 	else
-		__numa_mem_polity_setup="orig"
+		__numa_mem_policy_setup="orig"
 	fi
 }
 
