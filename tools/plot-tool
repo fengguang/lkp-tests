@@ -15,6 +15,7 @@ $x_stat_key = nil
 $x_relative = false
 $xtics = false
 $y_min = nil
+$y_relative = false
 $x_range = [nil, nil]
 $opt_diff = nil
 
@@ -46,6 +47,10 @@ opt_parser = OptionParser.new do |opts|
 
   opts.on('--y-min YMIN', 'The y range minimum') do |ymin|
     $y_min = ymin
+  end
+
+  opts.on('--relative-y', 'y axis relative to the first element') do
+    $y_relative = true
   end
 
   opts.on('--x-range RANGE', 'The x range') do |range|
@@ -92,6 +97,14 @@ def plot_it(matrix_stat_arr)
       dys = (1...ys.length).map { |i| ys[i] - ys[i - 1] }
       matrix[dstat] = dys
       stat = dstat
+    elsif $y_relative
+      rstat = "rel-#{stat}"
+      ys = matrix[stat]
+      next unless ys
+      y0 = ys[0]
+      rys = ys.map { |yi| yi - y0 }
+      matrix[rstat] = rys
+      stat = rstat
     end
     lines << [matrix, stat, stat]
   end
