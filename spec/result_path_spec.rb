@@ -19,16 +19,16 @@ describe ResultPath do
         expect(result_path['compiler']).to eq 'gcc-4.9'
         expect(result_path['commit']).to eq '0f57d86787d8b1076ea8f9cbdddda2a46d534a27'
 
-        expect(result_path.parse_result_root("#{RESULT_ROOT_DIR}/will-it-scale/performance-thread-100%-brk1-ucode=0x20/lkp-ivb-d01/debian-x86_64-2018-04-03.cgz/x86_64-rhel-7.2/gcc-7/8fe28cb58bcb235034b64cbbb7550a8a43fd88be/0")).to be true
+        expect(result_path.parse_result_root("#{RESULT_ROOT_DIR}/will-it-scale/performance-thread-100%-brk1-ucode=0x20/lkp-ivb-d01/debian-x86_64-20180403.cgz/x86_64-rhel-7.2/gcc-7/8fe28cb58bcb235034b64cbbb7550a8a43fd88be/0")).to be true
         expect(result_path['ucode']).to eq '0x20'
-        expect(result_path.parse_result_root("#{RESULT_ROOT_DIR}/hackbench/1600%-process-pipe-ucode=0x20-performance/lkp-ivb-d01/debian-x86_64-2018-04-03.cgz/x86_64-rhel-7.2/gcc-7/017c4be4feb493ba63d51bed02225c136820bdf7")).to be true
+        expect(result_path.parse_result_root("#{RESULT_ROOT_DIR}/hackbench/1600%-process-pipe-ucode=0x20-performance/lkp-ivb-d01/debian-x86_64-20180403.cgz/x86_64-rhel-7.2/gcc-7/017c4be4feb493ba63d51bed02225c136820bdf7")).to be true
         expect(result_path['ucode']).to eq '0x20'
 
         expect(result_path.parse_result_root("#{RESULT_ROOT_DIR}/build-qemu/clear-ota-25590-x86_64-2018-10-18.cgz/x86_64-softmmu/a58047f7fbb055677e45c9a7d65ba40fbfad4b92/2")).to be true
-        expect(result_path.parse_result_root("#{RESULT_ROOT_DIR}/build-qemu/debian-x86_64-2018-04-03.cgz/x86_64-softmmu/a58047f7fbb055677e45c9a7d65ba40fbfad4b92/")).to be true
-        expect(result_path.parse_result_root("#{RESULT_ROOT_DIR}/build-qemu/debian-x86_64-2018-04-03.cgz/x86_64-softmmu/a58047f7fbb055677e45c9a7d65ba40fbfad4b92")).to be true
+        expect(result_path.parse_result_root("#{RESULT_ROOT_DIR}/build-qemu/debian-x86_64-20180403.cgz/x86_64-softmmu/a58047f7fbb055677e45c9a7d65ba40fbfad4b92/")).to be true
+        expect(result_path.parse_result_root("#{RESULT_ROOT_DIR}/build-qemu/debian-x86_64-20180403.cgz/x86_64-softmmu/a58047f7fbb055677e45c9a7d65ba40fbfad4b92")).to be true
         expect(result_path['testcase']).to eq 'build-qemu'
-        expect(result_path['rootfs']).to eq 'debian-x86_64-2018-04-03.cgz'
+        expect(result_path['rootfs']).to eq 'debian-x86_64-20180403.cgz'
         expect(result_path['qemu_config']).to eq 'x86_64-softmmu'
         expect(result_path['qemu_commit']).to eq 'a58047f7fbb055677e45c9a7d65ba40fbfad4b92'
 
