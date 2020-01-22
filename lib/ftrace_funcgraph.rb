@@ -28,6 +28,7 @@ def analyze
     puts "#{func}.min: #{samples[0]}"
     puts "#{func}.max: #{samples[-1]}"
     puts "#{func}.avg: #{samples.average}"
+    puts "#{func}.stddev: #{samples.standard_deviation}"
     puts "#{func}.samples: #{samples.size}"
     puts "#{func}.sum: #{samples.sum}"
   end
