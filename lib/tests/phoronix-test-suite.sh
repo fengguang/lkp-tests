@@ -251,6 +251,15 @@ fixup_systester()
 	export TOTAL_LOOP_COUNT=1
 }
 
+fixup_java_jmh()
+{
+	[ -n "$environment_directory" ] || return
+	local test=$1
+	local target=${environment_directory}/../test-profiles/pts/${test}/results-definition.xml
+	[ -f $target.bak ] || cp $target $target.bak
+	sed -i 's,200, 25,' $target
+}
+
 fixup_network_loopback()
 {
 	[ -n "$environment_directory" ] || return
@@ -392,6 +401,9 @@ run_test()
 			# todo: select different test according to testbox's hardware
 			fixup_systester $test || die "failed to fixup test systester"
 			test_opt="\n1\n1\n3\nn"
+			;;
+		java-jmh-*)
+			fixup_java_jmh $test || die "failed to fixup test java-jmh"
 			;;
 		iozone-*)
 			# Choose
