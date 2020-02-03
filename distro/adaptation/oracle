@@ -85,8 +85,7 @@ libreadline5: readline
 libsctp-dev: lksctp-tools-devel
 libselinux1:
 libsqlite3-dev: sqlite-devel
-libssl1.0.0: openssl-devel
-libssl1.1: openssl-devel
+libssl: openssl-devel
 libssl-dev: openssl-devel
 libtool-bin: libtool
 libudev1: systemd-libs

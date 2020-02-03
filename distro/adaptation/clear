@@ -334,9 +334,8 @@ libsmbclient: os-core-dev
 libsnappy1v5:
 libsnappy-dev:
 libsqlite3-dev: linux-tools
-libssl1.0.0: os-core
-libssl1.0-dev: os-core
-libssl1.1: os-core
+libssl-dev: os-core
+libssl: os-core
 libssl-dev: os-core-update
 libsss-idmap0:
 libsss-simpleifp0:
