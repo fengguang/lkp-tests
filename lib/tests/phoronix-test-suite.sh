@@ -32,6 +32,29 @@ fixup_netperf()
 	sed -i "2a./src/netserver" "$target"
 }
 
+# fix issue: Test Run-Time Too Short
+# before:
+# 6 cat sqlite-insertions.txt | ./sqlite_/bin/sqlite3 benchmark.db
+# 7 cat sqlite-insertions.txt | ./sqlite_/bin/sqlite3 benchmark.db
+# 8 cat sqlite-insertions.txt | ./sqlite_/bin/sqlite3 benchmark.db
+# after:
+# 6  i=1
+# 7  while [ $i -le 20 ]; do
+# 8  	cat sqlite-insertions.txt | ./sqlite_/bin/sqlite3 benchmark.db
+# 9  	i=$(($i+1))
+# 10 done
+fixup_sqlite()
+{
+	[ -n "$environment_directory" ] || return
+	local test=$1
+	local target=${environment_directory}/pts/${test}/sqlite-benchmark
+	sed -i '7,8d' "$target"
+	sed -i '5ai=1' "$target"
+	sed -i "6awhile [ \$i -le 20 ]; do" "$target"
+	sed -i '8ai=\$((\$i+1))' "$target"
+	sed -i '9adone' "$target"
+}
+
 # fix issue: supported_sensors array length don't match sensor length
 fixup_idle_power_usage()
 {
@@ -511,6 +534,9 @@ run_test()
 			;;
 		netperf-*)
 			fixup_netperf $test || die "failed to fixup test netperf"
+			;;
+		sqlite-*)
+			fixup_sqlite $test || die "failed to fixup test $test"
 			;;
 		mcperf-*)
 			fixup_mcperf $test || die "failed to fixup test mcperf"
