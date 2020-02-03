@@ -178,5 +178,9 @@ while (line = STDIN.gets)
   # ...
   when /^Memory write bandwidth$/
     puts "BCOPY.memory_write.bandwidth.MB/sec: #{largest_bandwidth}"
+
+  # Pagefaults on /var/tmp/XXX: 0.2653 microseconds
+  when /^Pagefaults on (.*): (.*) microseconds/
+    puts "Pagefaults.ms: #{$2}"
   end
 end
