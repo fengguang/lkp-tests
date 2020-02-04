@@ -131,7 +131,7 @@ while (line = STDIN.gets)
 
   # Extract CONNECT test result:
   # TCP/IP connection cost to localhost: 19.1327 microseconds
-  when /^TC\/IP connection cost to localhost: (\d+.\d+) microseconds/
+  when /^TCP\/IP connection cost to localhost: (\d+.\d+) microseconds/
     puts "CONNECT.localhost.latency.us: #{$1}"
 
   # Extract BCOPY test result:
