@@ -69,7 +69,7 @@ yum_download()
 yum_pack()
 {
 	local target_dir=/opt/rpms
-	local date=$(date +"%Y-%m-%d")
+	local date=$(date +"%Y%m%d")
 
 	local downloaded_rpms=$(find /var/ -type f -name "*.rpm")
 

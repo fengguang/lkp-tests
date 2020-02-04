@@ -119,7 +119,7 @@ else
 fi
 
 [[ -n $sync_dest ]] && {
-	date=$(date +"%Y-%m-%d")
+	date=$(date +"%Y%m%d")
 	cgz_name="${BM_NAME}-${arch}-${commit}_${date}.cgz"
 	rsync -av "/lkp/benchmarks/${BM_NAME}-${arch}.cgz" "$sync_dest/$cgz_name" || exit
 	[[ "$BM_NAME" != "$LINK_NAME" ]] && {

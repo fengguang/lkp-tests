@@ -99,7 +99,7 @@ fixup_perf()
 
 pack()
 {
-	local date=$(date +"%Y-%m-%d")
+	local date=$(date +"%Y%m%d")
 
 	[[ $(type -t fixup_$BM_NAME) = 'function' ]] && fixup_$BM_NAME
 

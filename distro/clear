@@ -121,7 +121,7 @@ list_bundles_files()
 
 pack_bundles_files()
 {
-	local date=$(date +"%Y-%m-%d")
+	local date=$(date +"%Y%m%d")
 	# allow empty
 	ls $tmpdir | grep -q "\.list$" >/dev/null || {
 		echo "empty PACKAGE_LIST for $BM_NAME"
