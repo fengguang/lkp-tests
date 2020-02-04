@@ -72,7 +72,7 @@ build_depends_pkg -i $benchmark $TMP
 
 echo $LKP_SRC/sbin/makepkg --config $LKP_SRC/etc/makepkg.conf
 sync_dest="$PKG_MNT/$pack_to"
-date=$(date +"%Y-%m-%d")
+date=$(date +"%Y%m%d")
 pkgver=$(get_pkg_info pkgver)
 pkgrel=$(get_pkg_info pkgrel)
 bm_name=$(check_shared_pkg)
