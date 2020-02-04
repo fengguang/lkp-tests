@@ -56,7 +56,7 @@ fixup_sqlite()
 }
 
 # fix issue: supported_sensors array length don't match sensor length
-fixup_idle_power_usage()
+fixup_supported_sensors()
 {
 	# sensor:
 	# Array
@@ -497,7 +497,10 @@ run_test()
 			# sleep 1 min
 			# Enter Value: 1
 			test_opt="1\nn"
-			fixup_idle_power_usage || die "failed to fixup test idle-power-usage"
+			fixup_supported_sensors || die "failed to fixup test $test"
+			;;
+		battery-power-usage-*)
+			fixup_supported_sensors || die "failed to fixup test $test"
 			;;
 		urbanterror-*)
 			# Choose
