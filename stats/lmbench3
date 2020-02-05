@@ -182,5 +182,21 @@ while (line = STDIN.gets)
   # Pagefaults on /var/tmp/XXX: 0.2653 microseconds
   when /^Pagefaults on (.*): (.*) microseconds/
     puts "Pagefaults.ms: #{$2}"
+
+  # "Mmap read bandwidth
+  # 0.000512 275064.12
+  # 0.001024 280518.89
+  # 0.002048 293513.60
+  # ...
+  when /^"Mmap read bandwidth$/
+    puts "MMAP.read.bandwidth.MB/sec: #{largest_bandwidth}"
+
+  # "Mmap read open2close bandwidth
+  # 0.000512 479.98
+  # 0.001024 964.48
+  # 0.002048 1931.69
+  # ...
+  when /^"Mmap read open2close bandwidth$/
+    puts "MMAP.read_open2close.bandwidth.MB/sec: #{largest_bandwidth}"
   end
 end

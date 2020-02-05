@@ -1,0 +1,29 @@
+From 645bcbf0a55cf1d31df4e5c077c67fef09865597 Mon Sep 17 00:00:00 2001
+From: Xiao Yang <yangx.jy@cn.fujitsu.com>
+Date: Wed, 5 Feb 2020 15:02:13 +0800
+Subject: [PATCH] scripts/lmbench: Make MMAP use lmdd to create test file
+
+MMAP cannot create non-existent test file automatically
+so also use lmdd to create test file before running MMAP.
+
+Signed-off-by: Xiao Yang <yangx.jy@cn.fujitsu.com>
+---
+ scripts/lmbench | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/scripts/lmbench b/scripts/lmbench
+index 53ea511..aa71056 100755
+--- a/scripts/lmbench
++++ b/scripts/lmbench
+@@ -178,7 +178,7 @@ fi
+ 
+ rm -f $FILE
+ 
+-if [ X$BENCHMARK_OS = XYES -o X$BENCHMARK_FILE = XYES ]; then
++if [ X$BENCHMARK_OS = XYES -o X$BENCHMARK_FILE = XYES -o X$BENCHMARK_MMAP = XYES ]; then
+ 	# choose one sample bandwidth from the middle of the pack
+ 	sample=`expr $SYNC_MAX / 2`
+ 	i=0
+-- 
+2.21.0
+
