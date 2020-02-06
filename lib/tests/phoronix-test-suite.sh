@@ -55,6 +55,16 @@ fixup_sqlite()
 	sed -i '9adone' "$target"
 }
 
+# reduce run times to avoid soft_timeout
+reduce_runtimes()
+{
+	[ -n "$environment_directory" ] || return
+	local test=$1
+	local target=${environment_directory}/../test-profiles/pts/${test}/test-definition.xml
+	[ -f $target.bak ] || cp $target $target.bak
+	sed -i 's,<TimesToRun>3</TimesToRun>,<TimesToRun>2</TimesToRun>,' "$target"
+}
+
 # fix issue: supported_sensors array length don't match sensor length
 fixup_supported_sensors()
 {
@@ -541,6 +551,9 @@ run_test()
 			;;
 		sqlite-*)
 			fixup_sqlite $test || die "failed to fixup test $test"
+			;;
+		cyclictest-*)
+			reduce_runtimes $test || die "failed to fixup test $test"
 			;;
 		mcperf-*)
 			fixup_mcperf $test || die "failed to fixup test mcperf"
