@@ -23,6 +23,15 @@ fixup_open_porous_media()
 	sed -i 's/nice mpirun -np/nice mpirun --allow-run-as-root -np/' "$target"
 }
 
+# produce big file to /opt/rootfs when test on cluster
+fixup_blogbench()
+{
+	[ -n "$environment_directory" ] || return
+	local test=$1
+	local target=${environment_directory}/pts/${test}/blogbench
+	[ "$LKP_LOCAL_RUN" = "1" ] || sed -i "s,\$HOME,\/opt\/rootfs," "$target"
+}
+
 # before test netperf, start netserver firstly
 fixup_netperf()
 {
@@ -554,6 +563,10 @@ run_test()
 			;;
 		cyclictest-*)
 			reduce_runtimes $test || die "failed to fixup test $test"
+			;;
+		blogbench-*)
+			fixup_blogbench $test || die "failed to fixup test $test"
+			reduce_runtimes $test || die "failed to reduce run times when run $test"
 			;;
 		mcperf-*)
 			fixup_mcperf $test || die "failed to fixup test mcperf"
