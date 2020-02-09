@@ -45,9 +45,6 @@ prepare_for_test()
 	# workaround hugetlbfstest.c open_file() error
 	mkdir -p /hugepages
 
-	# has too many errors now
-	sed -i 's/hugetlbfstest//' vm/Makefile
-
 	# make sure the test_bpf.ko path for bpf test is right
 	mkdir -p "$linux_selftests_dir/lib" || die
 	if [[ "$LKP_LOCAL_RUN" = "1" ]]; then
@@ -114,7 +111,7 @@ check_ignore_case()
 	return 1
 }
 
-prepare_for_net()
+fixup_net()
 {
 	# at v4.18-rc1, it introduces fib_tests.sh, which doesn't have execute permission
 	# here is to fix the permission
@@ -126,7 +123,7 @@ prepare_for_net()
 	modprobe nf_conntrack_broadcast
 }
 
-prepare_for_efivarfs()
+fixup_efivarfs()
 {
 	[[ -d "/sys/firmware/efi" ]] || {
 		echo "ignored_by_lkp efivarfs test: /sys/firmware/efi dir does not exist"
@@ -146,7 +143,7 @@ prepare_for_efivarfs()
 	}
 }
 
-prepare_for_pstore()
+fixup_pstore()
 {
 	[[ -e /dev/pmsg0 ]] || {
 		# in order to create a /dev/pmsg0, we insert a dummy ramoops device
@@ -161,7 +158,7 @@ prepare_for_pstore()
 	}
 }
 
-prepare_for_firmware()
+fixup_firmware()
 {
 	# As this case suggested, some distro(suse/debian) udev may have /lib/udev/rules.d/50-firmware.rules
 	# which contains "SUBSYSTEM==firmware, ACTION==add, ATTR{loading}=-1", it will
@@ -205,10 +202,27 @@ fixup_memfd()
 	make fuse_mnt -C $subtest
 }
 
-prepare_for_bpf()
+fixup_bpf()
 {
 	make -C ../../../tools/bpf || return
 	make install -C ../../../tools/bpf || return
+	type ping6 && {
+		sed -i 's/if ping -6/if ping6/g' bpf/test_skb_cgroup_id.sh 2>/dev/null
+		sed -i 's/ping -${1}/ping${1%4}/g' bpf/test_sock_addr.sh 2>/dev/null
+	}
+	## ths test needs special device /dev/lircN
+	sed -i 's/test_lirc_mode2_user//' bpf/Makefile
+	echo "ignored_by_lkp bpf.test_lirc_mode2_user test"
+	## test_tc_tunnel runs well but hang on perl process
+	sed -i 's/test_tc_tunnel.sh//' bpf/Makefile
+	echo "ignored_by_lkp bpf.test_tc_tunnel.sh test"
+	sed -i 's/test_lwt_seg6local.sh//' bpf/Makefile
+	echo "ignored_by_lkp bpf.test_lwt_seg6local.sh test"
+	# some sh scripts actually need bash
+	# ./test_libbpf.sh: 9: ./test_libbpf.sh: 0: not found
+	[ "$(cmd_path bash)" = '/bin/bash' ] && [ $(readlink -e /bin/sh) != '/bin/bash' ] &&
+		ln -fs bash /bin/sh
+
 }
 
 prepare_for_selftest()
@@ -236,6 +250,9 @@ prepare_for_selftest()
 
 fixup_vm()
 {
+	# has too many errors now
+	sed -i 's/hugetlbfstest//' vm/Makefile
+
 	sed -i 's/.\/va_128TBswitch/echo [ignored_by_lkp] #.\/va_128TBswitch/' vm/run_vmtests
 	sed -i 's/.\/mlock2-tests/echo [ignored_by_lkp] #.\/mlock2-tests/' vm/run_vmtests
 
@@ -349,31 +366,15 @@ run_tests()
 			# rseq costs about 25mins, run it alone.
 			sed -i 's/default_timeout=45/default_timeout=300/' kselftest/runner.sh
 		elif [[ $subtest = "bpf" ]]; then
-			prepare_for_bpf
-			type ping6 && {
-				sed -i 's/if ping -6/if ping6/g' bpf/test_skb_cgroup_id.sh 2>/dev/null
-				sed -i 's/ping -${1}/ping${1%4}/g' bpf/test_sock_addr.sh 2>/dev/null
-			}
-			## ths test needs special device /dev/lircN
-			sed -i 's/test_lirc_mode2_user//' bpf/Makefile
-			echo "ignored_by_lkp bpf.test_lirc_mode2_user test"
-			## test_tc_tunnel runs well but hang on perl process
-			sed -i 's/test_tc_tunnel.sh//' bpf/Makefile
-			echo "ignored_by_lkp bpf.test_tc_tunnel.sh test"
-			sed -i 's/test_lwt_seg6local.sh//' bpf/Makefile
-			echo "ignored_by_lkp bpf.test_lwt_seg6local.sh test"
-			# some sh scripts actually need bash
-			# ./test_libbpf.sh: 9: ./test_libbpf.sh: 0: not found
-			[ "$(cmd_path bash)" = '/bin/bash' ] && [ $(readlink -e /bin/sh) != '/bin/bash' ] &&
-				ln -fs bash /bin/sh
+			fixup_bpf
 		elif [[ $subtest = "efivarfs" ]]; then
-			prepare_for_efivarfs || continue
+			fixup_efivarfs || continue
 		elif [[ "$subtest" = "pstore" ]]; then
-			prepare_for_pstore || continue
+			fixup_pstore || continue
 		elif [[ "$subtest" = "firmware" ]]; then
-			prepare_for_firmware || continue
+			fixup_firmware || continue
 		elif [[ "$subtest" = "net" ]]; then
-			prepare_for_net || continue
+			fixup_net || continue
 		elif [[ "$subtest" = "sysctl" ]]; then
 			lsmod | grep -q test_sysctl || modprobe test_sysctl
 		elif [[ "$subtest" = "ir" ]]; then
