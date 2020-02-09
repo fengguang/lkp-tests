@@ -215,7 +215,7 @@ prepare_for_selftest()
 {
 	if [ "$group" = "kselftests-00" ]; then
 		# bpf is slow
-		selftest_mfs=$(ls -d [a-b]*/Makefile)
+		selftest_mfs=$(ls -d [a-b]*/Makefile | grep -v bpf)
 	elif [ "$group" = "kselftests-01" ]; then
 		selftest_mfs=$(ls -d [c-l]*/Makefile | grep -v livepatch)
 	elif [ "$group" = "kselftests-02" ]; then
@@ -227,6 +227,8 @@ prepare_for_selftest()
 		selftest_mfs=$(ls -d rseq/Makefile)
 	elif [ "$group" = "kselftests-05" ]; then
 		selftest_mfs=$(ls -d livepatch/Makefile)
+	elif [ "$group" = "kselftests-06" ]; then
+		selftest_mfs=$(ls -d bpf/Makefile)
 	elif [ "$group" = "kselftests-x86" ]; then
 		selftest_mfs=$(ls -d x86/Makefile)
 	fi
