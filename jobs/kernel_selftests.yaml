@@ -11,12 +11,9 @@ kernel_selftests:
   group:
     - kselftests-00
     - kselftests-03
-    # kselftests-04 just run sub test rseq
-    - kselftests-04
-    # kselftests-05 just run sub test livepatch
-    - kselftests-05
-    # kselftests-06 just run sub test bpf
-    - kselftests-06
+    - kselftests-bpf
+    - kselftests-livepatch
+    - kselftests-rseq
 # never register ERST as pstore backend
 kernel_cmdline: erst_disable
 
