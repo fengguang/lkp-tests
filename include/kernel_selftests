@@ -3,76 +3,82 @@ need_kernel_selftests: true
 
 need_kconfig:
 % if ___.group == 'kselftests-x86'
+- CONFIG_POSIX_TIMERS=y ~ v(4\.1[0-9]|4\.20|5\.) # support kernel >= v4.10-rc1
 - CONFIG_X86_INTEL_MPX=y
-% else
-- CONFIG_RUNTIME_TESTING_MENU=y
-- CONFIG_TEST_FIRMWARE
-- CONFIG_TEST_USER_COPY
-- CONFIG_MEMORY_NOTIFIER_ERROR_INJECT
-- CONFIG_MEMORY_HOTPLUG_SPARSE=y
-- CONFIG_NOTIFIER_ERROR_INJECTION
-- CONFIG_FTRACE=y
-- CONFIG_TEST_BITMAP
-- CONFIG_TEST_PRINTF
-- CONFIG_TEST_STATIC_KEYS
-- CONFIG_BPF_SYSCALL=y
-- CONFIG_NET_CLS_BPF=m
+% elsif ___.group == 'kselftests-bpf'
 - CONFIG_BPF_EVENTS=y
-- CONFIG_TEST_BPF=m
-- CONFIG_ARCH_HAVE_NMI_SAFE_CMPXCHG=y
-- CONFIG_HIST_TRIGGERS=y
-- CONFIG_EMBEDDED=y
-- CONFIG_GPIOLIB=y
-- CONFIG_GPIO_MOCKUP=y
-- CONFIG_USERFAULTFD=y
-- CONFIG_SYNC_FILE=y
-- CONFIG_SW_SYNC=y
-- CONFIG_MISC_FILESYSTEMS=y
-- CONFIG_PSTORE=y
-- CONFIG_PSTORE_PMSG=y
-- CONFIG_PSTORE_CONSOLE=y
-- CONFIG_PSTORE_RAM=m
-- CONFIG_EXPERT=y
-- CONFIG_CHECKPOINT_RESTORE=y
-- CONFIG_EFI=y
-- CONFIG_EFIVAR_FS # Depends on: EFI [=y]
-- CONFIG_TEST_KMOD=m
-- CONFIG_TEST_LKM=m
-- CONFIG_BLOCK=y
-- CONFIG_XFS_FS=m # Depends on: BLOCK [=y]
-- CONFIG_TUN=m
-- CONFIG_BTRFS_FS=m
-- CONFIG_TEST_SYSCTL=m
 - CONFIG_BPF_STREAM_PARSER=y
+- CONFIG_BPF_SYSCALL=y
 - CONFIG_CGROUP_BPF=y
-- CONFIG_IPV6_MULTIPLE_TABLES=y
-- CONFIG_NET_L3_MASTER_DEV=y
-- CONFIG_IP_ADVANCED_ROUTER=y
-- CONFIG_IP_MULTIPLE_TABLES=y # Depends on: IP_ADVANCED_ROUTER [=y]
-- CONFIG_NET_VRF=y # Depends on: IP_MULTIPLE_TABLES [=y]
-- CONFIG_NET_FOU=m
-- CONFIG_NET_FOU_IP_TUNNELS=y
-- CONFIG_MACSEC=y
-- CONFIG_RC_CORE=m ~ (4\.1[4-9]|4\.20|5\.) # support kernel >=v4.14-rc1
-- CONFIG_RC_DEVICES=y # Depends on: RC_CORE [=m]
-- CONFIG_RC_LOOPBACK # Depends on: RC_DEVICES [=y] && RC_CORE [=m]
 - CONFIG_IPV6_SEG6_LWTUNNEL=y ~ v(4\.1[0-9]|4\.20|5\.) # support kernel >=v4.10-rc1
 - CONFIG_LWTUNNEL=y
-- CONFIG_WW_MUTEX_SELFTEST=m ~ v(4\.1[1-9]|4\.20|5\.) # support kernel >=v4.11-rc1
-- CONFIG_DRM_DEBUG_SELFTEST=m ~ v(4\.1[8-9]|4\.20|5\.) # support kernel >=v4.18-rc1
+- CONFIG_MPLS_IPTUNNEL=m ~ v(4\.[3-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.3-rc1
+- CONFIG_MPLS_ROUTING=m ~ v(4\.[1-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.1-rc1
+- CONFIG_NET_CLS_BPF=m
+- CONFIG_RC_LOOPBACK # Depends on: RC_DEVICES [=y] && RC_CORE [=m]
+- CONFIG_TEST_BPF=m
+% elsif ___.group == 'kselftests-livepatch'
 - CONFIG_TEST_LIVEPATCH=m ~ v(5\.[1-9]) # support kernel >=v5.1-rc1
-- CONFIG_LIRC=y # Depends on: RC_CORE [=m]
-- CONFIG_RC_DECODERS=y # Depends on: RC_CORE [=m]
-- CONFIG_IR_SHARP_DECODER=m # Depends on: RC_DECODERS [=y] && RC_CORE [=m]
+% elsif ___.group == 'kselftests-00'
 - CONFIG_ANDROID=y ~ v(3\.[3-9]|3\.1[0-9]|4\.|5\.) # support kernel >=v3.3-rc1
-- CONFIG_STAGING=y
 - CONFIG_ION=y ~ v(3\.1[4-9]|4\.|5\.) # support kernel >=v3.14-rc1, Depends on: STAGING [=y]
 - CONFIG_ION_SYSTEM_HEAP=y ~ v(4\.1[2-9]|4\.20|5\.) # support kernel >= v4.12-rc1, Depends on: STAGING [=y] && ION [=y]
-- CONFIG_MPLS_ROUTING=m ~ v(4\.[1-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.1-rc1
-- CONFIG_MPLS_IPTUNNEL=m ~ v(4\.[3-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.3-rc1
-- CONFIG_TEST_STRSCPY=m ~ v(5\.2$|5\.[3-9]) # support kernel >= v5.2
-- CONFIG_TEST_BLACKHOLE_DEV=m ~ v(5\.[3-9]) # support kernel >= v5.3-rc1
-- CONFIG_TEST_VMALLOC=m ~ v(5\.[1-9]) # support kernel >= v5.1-rc1
+% elsif ___.group == 'kselftests-01'
+- CONFIG_ARCH_HAVE_NMI_SAFE_CMPXCHG=y
+- CONFIG_CHECKPOINT_RESTORE=y
+- CONFIG_DRM_DEBUG_SELFTEST=m ~ v(4\.1[8-9]|4\.20|5\.) # support kernel >=v4.18-rc1
+- CONFIG_EMBEDDED=y
+- CONFIG_EXPERT=y
+- CONFIG_GPIOLIB=y
+- CONFIG_GPIO_MOCKUP=y
+- CONFIG_HIST_TRIGGERS=y
 - CONFIG_IR_IMON_DECODER=m ~ v(4\.1[7-9]|4\.20|5\.) # support kernel >= v4.17-rc1
-- CONFIG_POSIX_TIMERS=y ~ v(4\.1[0-9]|4\.20|5\.) # support kernel >= v4.10-rc1
+- CONFIG_IR_SHARP_DECODER=m # Depends on: RC_DECODERS [=y] && RC_CORE [=m]
+- CONFIG_LIRC=y # Depends on: RC_CORE [=m]
+- CONFIG_TEST_BITMAP
+- CONFIG_TEST_PRINTF
+- CONFIG_TEST_STRSCPY=m ~ v(5\.2$|5\.[3-9]) # support kernel >= v5.2
+- CONFIG_WW_MUTEX_SELFTEST=m ~ v(4\.1[1-9]|4\.20|5\.) # support kernel >=v4.11-rc1
+% elsif ___.group == 'kselftests-02'
+- CONFIG_IPV6_MULTIPLE_TABLES=y
+- CONFIG_MACSEC=y
+- CONFIG_MISC_FILESYSTEMS=y
+- CONFIG_NET_FOU=m
+- CONFIG_NET_FOU_IP_TUNNELS=y
+- CONFIG_NET_L3_MASTER_DEV=y
+- CONFIG_NET_VRF=y # Depends on: IP_MULTIPLE_TABLES [=y]
+- CONFIG_PSTORE=y
+- CONFIG_PSTORE_CONSOLE=y
+- CONFIG_PSTORE_PMSG=y
+- CONFIG_PSTORE_RAM=m
+- CONFIG_SW_SYNC=y
+- CONFIG_TEST_BLACKHOLE_DEV=m ~ v(5\.[3-9]) # support kernel >= v5.3-rc1
+- CONFIG_TEST_STATIC_KEYS
+- CONFIG_TEST_SYSCTL=m
+% elsif ___.group == 'kselftests-03'
+- CONFIG_TEST_VMALLOC=m ~ v(5\.[1-9]) # support kernel >= v5.1-rc1
+- CONFIG_USERFAULTFD=y
+% else
+- CONFIG_BLOCK=y
+- CONFIG_BTRFS_FS=m
+- CONFIG_EFI=y
+- CONFIG_EFIVAR_FS # Depends on: EFI [=y]
+- CONFIG_FTRACE=y
+- CONFIG_IP_ADVANCED_ROUTER=y
+- CONFIG_IP_MULTIPLE_TABLES=y # Depends on: IP_ADVANCED_ROUTER [=y]
+- CONFIG_MEMORY_HOTPLUG_SPARSE=y
+- CONFIG_MEMORY_NOTIFIER_ERROR_INJECT
+- CONFIG_NOTIFIER_ERROR_INJECTION
+- CONFIG_RC_CORE=m ~ (4\.1[4-9]|4\.20|5\.) # support kernel >=v4.14-rc1
+- CONFIG_RC_DECODERS=y # Depends on: RC_CORE [=m]
+- CONFIG_RC_DEVICES=y # Depends on: RC_CORE [=m]
+- CONFIG_RUNTIME_TESTING_MENU=y
+- CONFIG_STAGING=y
+- CONFIG_SYNC_FILE=y
+- CONFIG_TEST_FIRMWARE
+- CONFIG_TEST_KMOD=m
+- CONFIG_TEST_LKM=m
+- CONFIG_TEST_USER_COPY
+- CONFIG_TUN=m
+- CONFIG_XFS_FS=m # Depends on: BLOCK [=y]
 % end
