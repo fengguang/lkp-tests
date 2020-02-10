@@ -39,6 +39,35 @@ build_selftests()
 	cd ../../..
 }
 
+prepare_test_env()
+{
+	# lkp qemu needs linux-selftests_dir and linux_headers_dir to reproduce kernel_selftests.
+	# when reproduce bug reported by kernel test robot, the downloaded linux-selftests file is stored at /usr/src/linux-selftests
+	linux_selftests_dir=(/usr/src/linux-selftests-*)
+	linux_selftests_dir=$(realpath $linux_selftests_dir)
+	if [[ $linux_selftests_dir ]]; then
+		# when reproduce bug reported by kernel test robot, the downloaded linux-headers file is stored at /usr/src/linux-headers
+		linux_headers_dirs=(/usr/src/linux-headers*)
+
+		[[ $linux_headers_dirs ]] || die "failed to find linux-headers package"
+		linux_headers_dir=${linux_headers_dirs[0]}
+		echo "KERNEL SELFTESTS: linux_headers_dir is $linux_headers_dir"
+
+		# headers_install's default location is usr/include which is required by several tests' Makefile
+		mkdir -p "$linux_selftests_dir/usr/include" || die
+		mount --bind $linux_headers_dir/include $linux_selftests_dir/usr/include || die
+		mkdir -p "$linux_selftests_dir/tools/include/uapi/asm" || die
+		mount --bind $linux_headers_dir/include/asm $linux_selftests_dir/tools/include/uapi/asm || die
+	elif [ -d "/tmp/build-kernel_selftests/linux" ]; then
+		# commit bb5ef9c change build directory to /tmp/build-$BM_NAME/xxx
+		linux_selftests_dir="/tmp/build-kernel_selftests/linux"
+		cd $linux_selftests_dir
+		build_selftests
+	else
+		linux_selftests_dir="/lkp/benchmarks/kernel_selftests"
+	fi
+}
+
 prepare_for_test()
 {
 	export PATH=/lkp/benchmarks/kernel_selftests/kernel_selftests/iproute2-next/sbin:$PATH
