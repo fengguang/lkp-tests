@@ -41,6 +41,16 @@ fixup_netperf()
 	sed -i "2a./src/netserver" "$target"
 }
 
+# before test iperf, start iperf server firstly
+fixup_iperf()
+{
+	[ -n "$environment_directory" ] || return
+	local test=$1
+	local target=${environment_directory}/pts/${test}/iperf
+	sed -i "2a./iperf3 -s -p 12345 &" "$target"
+	sed -i '5apkill iperf3' "$target"
+}
+
 # fix issue: Test Run-Time Too Short
 # before:
 # 6 cat sqlite-insertions.txt | ./sqlite_/bin/sqlite3 benchmark.db
@@ -558,6 +568,9 @@ run_test()
 		netperf-*)
 			fixup_netperf $test || die "failed to fixup test netperf"
 			;;
+		iperf-*)
+			fixup_iperf $test || die "failed to fixup test $test"
+			;;
 		sqlite-*)
 			fixup_sqlite $test || die "failed to fixup test $test"
 			;;
@@ -658,6 +671,25 @@ run_test()
 				"Enter Value:" { send "localhost\r"; exp_continue }
 				"Test:" { send "5\r"; exp_continue }
 				"Duration:" { send "1\r"; exp_continue }
+				"Would you like to save these test results" { send "n\r"; exp_continue }
+				eof { }
+				default { exp_continue }
+			}
+		EOF
+	elif echo $test | grep iperf; then
+		# Choose
+		# Enter Value: localhost
+		# Enter Value: 12345
+		# 1: 10 Seconds
+		# 2: UDP
+		# 1: 1
+		/usr/bin/expect <<-EOF
+			spawn phoronix-test-suite run $test
+			expect {
+				"Enter Value:" { send "localhost\r12345\r"; exp_continue }
+				"Duration:" { send "1\r"; exp_continue }
+				"Test:" { send "2\r"; exp_continue }
+				"Parallel:" { send "1\r"; exp_continue }
 				"Would you like to save these test results" { send "n\r"; exp_continue }
 				eof { }
 				default { exp_continue }
