@@ -177,7 +177,7 @@ phoronix-test-suite:
   # - system-decompress-gzip-1.1.0 # 3rd party url is N/A
   - system-decompress-xz-1.0.2
   - system-libxml2-1.0.3
-  - systemd-boot-kernel-1.0.1
+  # - systemd-boot-kernel-1.0.1 # too old to run, use systemd-boot-total instead
   - systemd-boot-total-1.0.5
   - systemd-boot-userspace-1.0.1
   - systester-1.0.0
