@@ -58,6 +58,8 @@ prepare_test_env()
 		mount --bind $linux_headers_dir/include $linux_selftests_dir/usr/include || die
 		mkdir -p "$linux_selftests_dir/tools/include/uapi/asm" || die
 		mount --bind $linux_headers_dir/include/asm $linux_selftests_dir/tools/include/uapi/asm || die
+		cd $linux_selftests_dir
+		build_selftests
 	elif [ -d "/tmp/build-kernel_selftests/linux" ]; then
 		# commit bb5ef9c change build directory to /tmp/build-$BM_NAME/xxx
 		linux_selftests_dir="/tmp/build-kernel_selftests/linux"
@@ -251,7 +253,6 @@ fixup_bpf()
 	# ./test_libbpf.sh: 9: ./test_libbpf.sh: 0: not found
 	[ "$(cmd_path bash)" = '/bin/bash' ] && [ $(readlink -e /bin/sh) != '/bin/bash' ] &&
 		ln -fs bash /bin/sh
-
 }
 
 prepare_for_selftest()
