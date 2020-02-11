@@ -51,6 +51,31 @@ fixup_iperf()
 	sed -i '5apkill iperf3' "$target"
 }
 
+# fix issue: Bootup is not yet finished (org.freedesktop.systemd1.Manager.FinishTimestampMonotonic=0)
+# before:
+# out, err = subprocess.Popen(["systemd-analyze"], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate(
+# after:
+# import time
+# err = 'err'
+# i = 1
+# while (err != '' and i <= 30):
+#     out, err = subprocess.Popen(["systemd-analyze"], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+#     time.sleep(3)
+#     i += 1
+fixup_systemd_boot_total()
+{
+	[ -n "$environment_directory" ] || return
+	local test=$1
+	local target=${environment_directory}/pts/${test}/systemd-analyze.py
+	sed -i '2aimport time' "$target"
+	sed -i "4aerr = 'err'" "$target"
+	sed -i '5ai = 1' "$target"
+	sed -i "6awhile (err != '' and i <= 30):" "$target"
+	sed -i "8s,^,\    ," "$target"
+	sed -i "8a\    time.sleep(3)" "$target"
+	sed -i "9a\    i += 1" "$target"
+}
+
 # fix issue: Test Run-Time Too Short
 # before:
 # 6 cat sqlite-insertions.txt | ./sqlite_/bin/sqlite3 benchmark.db
@@ -580,6 +605,12 @@ run_test()
 		blogbench-*)
 			fixup_blogbench $test || die "failed to fixup test $test"
 			reduce_runtimes $test || die "failed to reduce run times when run $test"
+			;;
+		systemd-boot-total-*)
+			fixup_systemd_boot_total $test || die "failed to fixup test $test"
+			# Choose
+			# 1: Total 2: Userspace 3: Kernel
+			test_opt="\n1,2,3\nn"
 			;;
 		mcperf-*)
 			fixup_mcperf $test || die "failed to fixup test mcperf"
