@@ -381,6 +381,7 @@ run_tests()
 {
 	local selftest_mfs=$@
 
+	log_cmd sed -i 's/default_timeout=45/default_timeout=300/' kselftest/runner.sh
 	for mf in $selftest_mfs; do
 		subtest=${mf%/Makefile}
 
@@ -391,9 +392,6 @@ run_tests()
 
 		if [[ "$subtest" = "breakpoints" ]]; then
 			fixup_breakpoints
-		elif [[ "$subtest" = "rseq" ]]; then
-			# rseq costs about 25mins, run it alone.
-			sed -i 's/default_timeout=45/default_timeout=300/' kselftest/runner.sh
 		elif [[ $subtest = "bpf" ]]; then
 			fixup_bpf
 		elif [[ $subtest = "efivarfs" ]]; then
