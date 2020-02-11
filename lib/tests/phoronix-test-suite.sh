@@ -517,6 +517,12 @@ run_test()
 			# 2. GPU
 			test_opt="\n2\nn"
 			;;
+		smallpt-gpu-*)
+			# Choose
+			# 2: GPU
+			# 1: Complex
+			test_opt="\n2\n1\nn"
+			;;
 		ut2004-demo-*)
 			# Choose
 			# 1: ONS-Torlan Botmatch
