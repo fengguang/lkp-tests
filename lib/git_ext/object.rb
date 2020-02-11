@@ -34,7 +34,7 @@ module Git
       end
 
       def tags
-        @tags ||= @base.lib.tag('--points-at', sha).split
+        @tags ||= @base.command("tag --points-at #{sha} | grep -v ^error:").split
       end
 
       def parent_shas
