@@ -5,10 +5,6 @@
 
 build_selftests()
 {
-	# gcc -O2 -g -std=gnu99 -Wall -I../../../../usr/include/    gpio-mockup-chardev.c ../../../gpio/gpio-utils.o ../../../../usr/include/linux/gpio.h  -lmount -I/usr/include/libmount -o gpio-mockup-chardev
-	# gcc: error: ../../../gpio/gpio-utils.o: No such file or directory
-	make -C tools/gpio
-
 	cd tools/testing/selftests	|| return
 
 	# temporarily workaround compile error on gcc-6
@@ -42,8 +38,6 @@ prepare_test_env()
 		mount --bind $linux_headers_dir/include $linux_selftests_dir/usr/include || die
 		mkdir -p "$linux_selftests_dir/tools/include/uapi/asm" || die
 		mount --bind $linux_headers_dir/include/asm $linux_selftests_dir/tools/include/uapi/asm || die
-		cd $linux_selftests_dir
-		build_selftests
 	elif [ -d "/tmp/build-kernel_selftests/linux" ]; then
 		# commit bb5ef9c change build directory to /tmp/build-$BM_NAME/xxx
 		linux_selftests_dir="/tmp/build-kernel_selftests/linux"
@@ -188,6 +182,13 @@ fixup_firmware()
 			log_cmd systemctl restart systemd-udevd
 		fi
 	}
+}
+
+fixup_gpio()
+{
+	# gcc -O2 -g -std=gnu99 -Wall -I../../../../usr/include/    gpio-mockup-chardev.c ../../../gpio/gpio-utils.o ../../../../usr/include/linux/gpio.h  -lmount -I/usr/include/libmount -o gpio-mockup-chardev
+	# gcc: error: ../../../gpio/gpio-utils.o: No such file or directory
+	log_cmd make -C ../../../tools/gpio 2>&1 || return
 }
 
 cleanup_for_firmware()
@@ -381,6 +382,8 @@ run_tests()
 			fixup_bpf
 		elif [[ $subtest = "efivarfs" ]]; then
 			fixup_efivarfs || continue
+		elif [[ $subtest = "gpio" ]]; then
+			fixup_gpio || continue
 		elif [[ "$subtest" = "pstore" ]]; then
 			fixup_pstore || continue
 		elif [[ "$subtest" = "firmware" ]]; then
