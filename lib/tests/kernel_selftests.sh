@@ -220,8 +220,8 @@ fixup_memfd()
 
 fixup_bpf()
 {
-	make -C ../../../tools/bpf || return
-	make install -C ../../../tools/bpf || return
+	log_cmd make -C ../../../tools/bpf 2>&1 || return
+	log_cmd make install -C ../../../tools/bpf 2>&1 || return
 	type ping6 && {
 		sed -i 's/if ping -6/if ping6/g' bpf/test_skb_cgroup_id.sh 2>/dev/null
 		sed -i 's/ping -${1}/ping${1%4}/g' bpf/test_sock_addr.sh 2>/dev/null
@@ -379,7 +379,7 @@ run_tests()
 		if [[ "$subtest" = "breakpoints" ]]; then
 			fixup_breakpoints
 		elif [[ $subtest = "bpf" ]]; then
-			fixup_bpf
+			fixup_bpf || die "fixup_bpf failed"
 		elif [[ $subtest = "efivarfs" ]]; then
 			fixup_efivarfs || continue
 		elif [[ $subtest = "gpio" ]]; then
