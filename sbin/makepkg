@@ -1719,16 +1719,22 @@ run_patch_source()
 patch_source()
 {
 	patches=$(ls $startdir/*.patch 2>/dev/null) || return 0
-	local dir
+	local item dir
 	cd "${srcdir}"
-	dir=$(find . -maxdepth 1 -mindepth 1 -type d | grep "$pkgname")
-	if [ -d "$dir" ]; then
-		cd $dir
-		for patch in $patches; do
-			patch -p1 < "$patch"
-		done
+	item=$(find . -maxdepth 1 -mindepth 1 -name "$pkgname")
+	if [ -d "$item" ]; then
+		dir="$item"
+	elif [ -f "$item" ]; then
+		dir=$(dirname $(realpath "$item"))
 	else
 		need_patching=1
+		return
+	fi
+	if [ -n "$dir" ]; then
+		cd "$dir"
+		for patch in "$patches"; do
+			patch -p1 < "$patch"
+		done
 	fi
 }
 
