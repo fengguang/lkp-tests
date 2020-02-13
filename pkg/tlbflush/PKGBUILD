@@ -1,0 +1,27 @@
+pkgname=tlbflush
+pkgver=1
+pkgrel=1
+url='https://marc.info/?l=linux-kernel&m=133727348217113&q=raw'
+arch=('i686' 'x86_64')
+license=('GPL')
+source=("${pkgname}::https://marc.info/?l=linux-kernel&m=133727348217113&q=raw")
+md5sums=('SKIP')
+
+build()
+{
+	cd "$srcdir"
+	[ -f "${pkgname}" ] || return
+	START_LINE=$(grep -n ^---$ "${pkgname}" | cut -f1 -d:)
+	END_LINE=$(grep -n ^--$ "${pkgname}" | cut -f1 -d:)
+	head -$((END_LINE-1)) "${pkgname}" |
+	tail -$((END_LINE-START_LINE-1)) |
+	grep -v "define FILE_SIZE" > "${pkgname}.c"
+	gcc -DFILE_SIZE=$((128*1048576)) -g -O2 "${pkgname}.c" -lpthread -o "${pkgname}"
+}
+
+package()
+{
+	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+	mkdir -p "$benchmark_path"
+	cp -af "$srcdir/${pkgname}" "$benchmark_path"
+}

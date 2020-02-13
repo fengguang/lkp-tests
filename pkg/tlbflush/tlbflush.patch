@@ -1,7 +1,7 @@
 # patch from Mel Gorman's MMTests
---- a/tlbflush.c	2013-12-15 11:05:08.813821030 +0000
-+++ b/tlbflush.c	2013-12-15 11:04:46.504926426 +0000
-@@ -67,13 +67,17 @@
+--- a/tlbflush	2020-02-11 17:14:46.390076242 +0800
++++ b/tlbflush	2020-02-11 05:34:39.774241097 +0800
+@@ -126,14 +126,18 @@ void *accessmm(void *data){
  	char x;
  	int i, k;
  	int randn[PAGE_SIZE];
@@ -18,9 +18,10 @@
 +			break;
  		usleep(1);
 +	}
- 
- 	if (d->rw == 0)
-@@ -180,6 +181,7 @@
+
+	if (d->rw == 0)
+		for (*actimes=0; *threadstart == 1; (*actimes)++)
+@@ -239,6 +243,7 @@ int main(int argc, char *argv[])
  	threadstart = malloc(sizeof(int));
  	*threadstart = 0;
  	data.readp = &p; data.startaddr = startaddr; data.rw = rw; data.loop = l;
@@ -28,4 +29,3 @@
  	for (i=0; i< t; i++)
  		if(pthread_create(&pid[i], NULL, accessmm, &data))
  			perror("pthread create");
-
