@@ -2,7 +2,7 @@
 
 cleanup_qemu_drives()
 {
-	rm -f $VDISK_ROOT/initrd-$vm_name
+	rm -f $VDISK_ROOT/initrd-$vm_name.cgz
 
 	[[ $persistent_storage ]] || {
 		rm -f $VDISK_ROOT/disk-$vm_name-[0-9]
