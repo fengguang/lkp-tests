@@ -1,2 +1,9 @@
 # OOM on 8G vm
 igt/gem_exec_gttfill/basic
+# cause unexpect shutdown on some platforms
+igt/gem_exec_suspend/basic
+igt/gem_exec_suspend/basic-s0
+igt/gem_exec_suspend/basic-s3-devices
+igt/gem_exec_suspend/basic-s3
+igt/gem_exec_suspend/basic-s4-devices
+igt/gem_exec_suspend/basic-s4
