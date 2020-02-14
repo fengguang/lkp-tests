@@ -1,10 +1,10 @@
 pkgname=piglit
 pkgver=git
 pkgrel=1
-url='https://anongit.freedesktop.org/git/piglit'
+url='https://gitlab.freedesktop.org/mesa/piglit'
 arch=('i686' 'x86_64')
 license=('GPL')
-source=('https://github.com/waffle-gl/waffle.git' 'https://anongit.freedesktop.org/git/xorg/app/intel-gpu-tools.git' 'https://anongit.freedesktop.org/git/piglit.git')
+source=('https://github.com/waffle-gl/waffle.git' 'https://gitlab.freedesktop.org/drm/igt-gpu-tools.git' 'https://github.com/mesa3d/piglit.git')
 md5sums=('SKIP' 'SKIP' 'SKIP')
 
 benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
@@ -58,7 +58,7 @@ build_piglit()
 
 build_intel_gpu_tools()
 {
-	cd ../intel-gpu-tools || return
+	cd ../igt-gpu-tools || return
 	[ "$distro" = "centos" ] && local opts="--disable-amdgpu"
 	./autogen.sh $opts || return
 	make || return
@@ -108,7 +108,7 @@ package()
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
 	cd $srcdir/$pkgname
 	mkdir -p $benchmark_patch/lib/piglit/bin/igt
-	mv -T ../intel-gpu-tools $benchmark_path/lib/piglit/bin/igt
+	mv -T ../igt-gpu-tools $benchmark_path/lib/piglit/bin/igt
 	create_config
 	generate_tests
 	separate_tests
