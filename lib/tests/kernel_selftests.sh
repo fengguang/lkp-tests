@@ -122,6 +122,8 @@ check_ignore_case()
 
 fixup_net()
 {
+	sed -i 's/l2tp.sh//' net/Makefile
+	echo "ignored_by_lkp net.l2tp.sh test"
 	# at v4.18-rc1, it introduces fib_tests.sh, which doesn't have execute permission
 	# here is to fix the permission
 	[[ -f $subtest/fib_tests.sh ]] && {
