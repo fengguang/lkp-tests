@@ -55,7 +55,7 @@ libdbd-mysql-perl: perl-DBD-MySQL
 libdbi-perl: perl-DBI
 libdbus-1-dev: dbus-devel
 libdrm-dev: libdrm-devel
-libdw-dev: libdwarf-devel
+libdw-dev: libdwarf-devel --enablerepo=PowerTools
 libegl1-mesa-dev: mesa-libEGL-devel
 libelf-dev: elfutils-libelf-devel
 libevent-2.1-6: libevent
@@ -73,6 +73,7 @@ libglib2.0-dev: glib2-devel
 libglu-dev: mesa-libGLU-devel
 libgmp-dev: gmp-devel
 libgomp1: libgomp
+libgtk2.0-dev: gtk2-devel.x86_64
 libhwloc-dev: hwloc-devel
 libiberty-dev:
 libibverbs-dev: libibverbs-devel
@@ -108,6 +109,7 @@ libpciaccess-dev: libpciaccess-devel
 libpci-dev: pciutils-devel
 libperl5.20: perl-libs
 libperl5.22: perl-libs
+libperl-dev: perl-devel.x86_64
 libpixman-1-dev: pixman-devel
 libpng12-dev: libpng12-devel
 libpng16-16: libpng
@@ -122,6 +124,7 @@ libreadline-dev: readline-devel
 libsctp1: lksctp-tools
 libsctp-dev: lksctp-tools-devel
 libselinux1:
+libslang2-dev:
 libsqlite3-dev: sqlite-devel
 libssl: openssl-devel
 libssl-dev: openssl-devel
@@ -143,6 +146,7 @@ libx11-dev: libX11-devel
 libx11-xcb-dev: libX11-devel
 libxkbcommon-dev: libxkbcommon-devel
 libxml2-dev: libxml2-devel
+libzstd-dev: zlib-devel
 linux-libc-dev:
 linux-libc-dev:i386:
 linux-perf: perf
@@ -167,12 +171,13 @@ pixz: pxz
 pkg-config: pkgconfig
 plzip:
 postmark:
+python: python2
 python3-mako: python-pyramid-mako
 python3-markupsafe: python34-markupsafe
 python3-numpy: python36-numpy
 python3: python34
 python3-six: python36-six
-python-dev: python-devel
+python-dev: platform-python-devel.x86_64
 python-minimal: python2
 python-numpy: numpy
 python-numpy: numpy
@@ -187,6 +192,7 @@ ruby-gnuplot:
 rusersd: rusers-server rusers
 sg3-utils: sg3_utils
 stress-ng: stress-ng
+systemtap-sdt-dev: systemtap-sdt-devel.x86_64
 trinity:
 tshark: wireshark
 update-inetd: xinetd
@@ -204,6 +210,7 @@ zlib1g-dev: zlib-devel
 openjdk-8-jdk: java-1.8.0-openjdk-devel
 libapparmor1:
 libapparmor-dev:
+libbabeltrace-dev:
 libbsd0: libbsd
 libbsd-dev: libbsd-devel
 libgcrypt20: libgcrypt
