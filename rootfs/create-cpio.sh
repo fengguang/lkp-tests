@@ -7,7 +7,7 @@ INITRD_ROOT=/osimage/debian
 
 cd $distro || exit
 
-cpio_file=$distro-$(date +%F).cgz
+cpio_file=$distro-$(date +%Y%m%d).cgz
 
 find . -xdev |
 sed 's,^\./,,' |
