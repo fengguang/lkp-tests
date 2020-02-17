@@ -382,6 +382,13 @@ fixup_dolfyn_install()
 	sed -i "4a sed -i \"s/stop'bug:/stop 'bug:/g\" gmsh2dolfyn.f90" "$target"
 }
 
+fixup_xsbench_cl_install()
+{
+	local test=$1
+	local target=/var/lib/phoronix-test-suite/test-profiles/pts/${test}/install.sh
+	sed -i "4ased -i '1048s,256,64,' XSBench_OCL.c" "$target"
+}
+
 fixup_opm_git_install()
 {
 	local test=$1
@@ -442,6 +449,10 @@ fixup_install()
 	dolfyn-*)
 		# fix issue: Error: Blank required in STOP statement near (1)
 		fixup_dolfyn_install $test || die "failed to fixup dolfyn install"
+		;;
+	xsbench-cl-*)
+		# fix issue: unionized_grid_search: failed to launch kernel with error -54
+		fixup_xsbench_cl_install $test || die "failed to fixup $test install"
 		;;
 	opm-git-*)
 		# fix issue: git clone opm-data when omega-opm not present
