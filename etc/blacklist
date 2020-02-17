@@ -721,6 +721,7 @@
 ^stderr.swapon:/dev/.*:read_swap_header_failed
 ^stderr.sys.exit\(runner\(args\)\)
 ^stderr.\+take_snapshot
+^stderr.\/tmp\/lkp\/.*:In_function`main'
 ^stderr.tar:Error_is_not_recoverable:exiting_now
 ^stderr.Target:x86_64-pc-linux-gnu
 ^stderr.tar:/pkg/ltp/.*/.*/ltp.tar.gz:Cannot_open:No_such_file_or_directory
