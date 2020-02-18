@@ -1,0 +1,14 @@
+suite: phoronix-test-suite
+testcase: phoronix-test-suite
+category: benchmark
+
+need_x: true
+timeout: 2h
+
+phoronix-test-suite:
+  test:
+  - cl-mem-1.0.1
+  - financebench-1.0.0
+  - gl-vs-vk-1.0.0
+  - mixbench-1.0.0
+  - shoc-1.1.0

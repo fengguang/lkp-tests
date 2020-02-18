@@ -9,7 +9,6 @@ phoronix-test-suite:
   test:
   - battery-power-usage-1.0.0
   - cairo-perf-trace-1.0.1
-  - cl-mem-1.0.1
   - cuda-mini-nbody-1.1.0
   - et-1.1.0
   - etlegacy-1.0.0
@@ -17,9 +16,7 @@ phoronix-test-suite:
   - etqw-demo-1.1.0
   - etqw-demo-iqc-1.0.0
   - etxreal-1.0.0
-  - financebench-1.0.0
   - geexlab-1.0.0
-  - gl-vs-vk-1.0.0
   - glmark2-1.1.0
   - gluxmark-1.1.1
   - gputest-1.3.2
@@ -31,7 +28,6 @@ phoronix-test-suite:
   - jxrendermark-1.2.4
   - mandelbulbgpu-1.3.0
   - mandelgpu-1.3.1
-  - mixbench-1.0.0
   - nexuiz-1.6.1
   - octanebench-1.1.2
   - openarena-1.5.5
@@ -40,7 +36,6 @@ phoronix-test-suite:
   - qmlbench-1.0.0
   - quake4-1.1.0
   - render-bench-1.1.2
-  - shoc-1.1.0
   - smallpt-gpu-1.3.0
   # - smokin-guns-1.2.2 # need 32bit libs (libjpeg62:i386 etc), runtime > 1h
   - supertuxkart-1.5.2
