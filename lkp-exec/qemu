@@ -9,7 +9,7 @@
 
 script_name=$(basename $0)
 
-[ -n "$SUDO_USER" ] && HOME=$(eval echo ~$SUDO_USER)
+[ -n "$SUDO_USER" ] && HOME=$(eval "echo ~$SUDO_USER")
 
 usage()
 {
