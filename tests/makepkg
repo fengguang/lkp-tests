@@ -37,7 +37,7 @@ get_pkg_info()
 	pkg_dir=${2:-.}
 	(
 		. $pkg_dir/PKGBUILD
-		eval echo '$'$var
+		eval "echo '$'$var"
 	)
 }
 
