@@ -382,6 +382,16 @@ fixup_dolfyn_install()
 	sed -i "4a sed -i \"s/stop'bug:/stop 'bug:/g\" gmsh2dolfyn.f90" "$target"
 }
 
+fixup_interbench()
+{
+	[ -n "$environment_directory" ] || return
+	local test=$1
+	local target=${environment_directory}/../test-profiles/pts/${test}/install.sh
+	sed -i "4ased -i 's,interbench.read,/opt/rootfs/interbench.read,' interbench.c" "$target"
+	sed -i "5ased -i 's,interbench.read,/opt/rootfs/interbench.read,' Makefile" "$target"
+	phoronix-test-suite force-install $test
+}
+
 fixup_xsbench_cl_install()
 {
 	local test=$1
@@ -510,6 +520,8 @@ run_test()
 			ignored_on_clear=1
 			;;
 		interbench-*)
+			# produce big file to /opt/rootfs when test on cluster
+			[ "$LKP_LOCAL_RUN" = "1" ] || fixup_interbench $test || die "failed to fixup test $test"
 			# Choose
 			# 1: Video
 			# 2: Burn
