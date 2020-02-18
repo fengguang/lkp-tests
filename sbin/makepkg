@@ -1643,7 +1643,7 @@ run_function_safe() {
 
 	run_function "$1"
 
-	eval $restoretrap
+	eval "$restoretrap"
 
 	set +E
 	set +e
