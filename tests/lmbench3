@@ -136,7 +136,7 @@ run_lmbench3_development()
 	local MEM=no
 	local OPS=no
 
-	eval $test=yes
+	eval "$test=yes"
 
 	sed -i '/lat_pagefault -P $SYNC_MAX $FILE/i [ -f $FILE ] || dd if=/dev/zero of=$FILE count=1 bs=1G' bin/x86_64-linux-gnu/lmbench
 	log_eval "
