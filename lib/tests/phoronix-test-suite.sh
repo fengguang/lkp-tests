@@ -563,6 +563,12 @@ run_test()
 			# 2: GPU
 			test_opt="\n2\nn"
 			;;
+		luxmark-*)
+			# Choose
+			# 2: GPU
+			# 3: Hotel
+			test_opt="\n2\n3\nn"
+			;;
 		ut2004-demo-*)
 			# Choose
 			# 1: ONS-Torlan Botmatch
