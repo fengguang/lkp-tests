@@ -23,6 +23,18 @@ fixup_open_porous_media()
 	sed -i 's/nice mpirun -np/nice mpirun --allow-run-as-root -np/' "$target"
 }
 
+# prepare download file beforehand
+# pls download http://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz and put it to
+# phoronix-rootfs/var/lib/phoronix-test-suite/installed-tests/pts/tensorflow-*/cifar10
+fixup_tensorflow()
+{
+	[ -n "$environment_directory" ] || return
+	local test=$1
+	local target=${environment_directory}/pts/${test}/tensorflow
+	sed -i '2amkdir /tmp/cifar10_data' "$target"
+	sed -i '3acp cifar-10-binary.tar.gz /tmp/cifar10_data' "$target"
+}
+
 # produce big file to /opt/rootfs when test on cluster
 fixup_blogbench()
 {
@@ -689,6 +701,9 @@ run_test()
 			;;
 		open-porous-media-*)
 			fixup_open_porous_media $test || die "failed to fixup test open-porous-media"
+			;;
+		tensorflow-*)
+			[ "$LKP_LOCAL_RUN" = "1" ] || fixup_tensorflow $test || die "failed to fixup test $test"
 			;;
 		crafty-*)
 			fixup_crafty $test || die "failed to fixup crafty"
