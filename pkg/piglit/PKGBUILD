@@ -28,6 +28,7 @@ build()
 		cmake_major="cmake3"
 	fi
 
+	ln -snf /usr/bin/python3 /usr/bin/python || return
 	build_waffle || return
 	build_piglit || return
 	build_intel_gpu_tools || return
