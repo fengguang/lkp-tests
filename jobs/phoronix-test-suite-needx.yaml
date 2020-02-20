@@ -7,6 +7,7 @@ timeout: 2h
 
 phoronix-test-suite:
   test:
+  - apitest-1.1.0
   - battery-power-usage-1.0.0
   - cairo-perf-trace-1.0.1
   # - cuda-mini-nbody-1.1.0 # need CUDA compatible hardware
@@ -17,6 +18,7 @@ phoronix-test-suite:
   - etqw-demo-iqc-1.0.0
   - etxreal-1.0.0
   - geexlab-1.0.0
+  - gfxbench-1.0.0
   - glmark2-1.1.0
   - gluxmark-1.1.1
   - gputest-1.3.2
@@ -31,6 +33,7 @@ phoronix-test-suite:
   - nexuiz-1.6.1
   # - octanebench-1.1.2 # need CUDA compatible hardware
   - openarena-1.5.5
+  - paraview-1.0.2
   # - prey-1.1.2 # need to download files from stream
   - qgears2-1.0.1
   - qmlbench-1.0.0
@@ -38,6 +41,7 @@ phoronix-test-suite:
   - render-bench-1.1.2
   - smallpt-gpu-1.3.0
   # - smokin-guns-1.2.2 # need 32bit libs (libjpeg62:i386 etc), runtime > 1h
+  - specviewperf9-1.1.1
   - supertuxkart-1.5.2
   - tesseract-1.1.0
   # - tf2-1.2.3 # download files from stream
