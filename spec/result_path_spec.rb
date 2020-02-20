@@ -24,7 +24,7 @@ describe ResultPath do
         expect(result_path.parse_result_root("#{RESULT_ROOT_DIR}/hackbench/1600%-process-pipe-ucode=0x20-performance/lkp-ivb-d01/debian-x86_64-20180403.cgz/x86_64-rhel-7.2/gcc-7/017c4be4feb493ba63d51bed02225c136820bdf7")).to be true
         expect(result_path['ucode']).to eq '0x20'
 
-        expect(result_path.parse_result_root("#{RESULT_ROOT_DIR}/build-qemu/clear-ota-25590-x86_64-2018-10-18.cgz/x86_64-softmmu/a58047f7fbb055677e45c9a7d65ba40fbfad4b92/2")).to be true
+        expect(result_path.parse_result_root("#{RESULT_ROOT_DIR}/build-qemu/clear-x86_64-ota-25590-20181018.cgz/x86_64-softmmu/a58047f7fbb055677e45c9a7d65ba40fbfad4b92/2")).to be true
         expect(result_path.parse_result_root("#{RESULT_ROOT_DIR}/build-qemu/debian-x86_64-20180403.cgz/x86_64-softmmu/a58047f7fbb055677e45c9a7d65ba40fbfad4b92/")).to be true
         expect(result_path.parse_result_root("#{RESULT_ROOT_DIR}/build-qemu/debian-x86_64-20180403.cgz/x86_64-softmmu/a58047f7fbb055677e45c9a7d65ba40fbfad4b92")).to be true
         expect(result_path['testcase']).to eq 'build-qemu'
