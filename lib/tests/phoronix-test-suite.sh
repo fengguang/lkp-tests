@@ -729,6 +729,10 @@ run_test()
 		glmark2-*|openarena-*|gputest-*|supertuxkart-*)
 			export DISPLAY=:0
 			;;
+		cairo-perf-trace-*)
+			# select Poppler
+			test_opt="\n3\nn"
+			;;
 	esac
 
 	export PTS_SILENT_MODE=1
