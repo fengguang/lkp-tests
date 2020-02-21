@@ -87,7 +87,7 @@ module Git
       @commits_tags = {}
       command('show-ref', ['--tags']).each_line do |line|
         commit, tag = line.split ' refs/tags/'
-        @commits_tags[commit] = tag.chomp
+        @commits_tags[commit] = tag.chomp if tag
       end
 
       @commits_tags
@@ -101,9 +101,7 @@ module Git
       @heads_branches = {}
       command('show-ref').each_line do |line|
         commit, branch = line.split ' refs/remotes/'
-        next if branch.nil?
-
-        @heads_branches[commit] = branch.chomp
+        @heads_branches[commit] = branch.chomp if branch
       end
 
       @heads_branches
