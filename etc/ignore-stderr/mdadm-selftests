@@ -2,3 +2,12 @@ mdadm: stopped /dev/md0
 calling: settle
 losetup: /dev/loop.*: detach failed: No such device or address
 Warning: specified blocksize 1024 is less than device physical sectorsize 4096
+mdadm: This is an md array.  To view a bitmap you need to examine
+mdadm: a member device, not the array.
+mdadm: Reporting bitmap that would be used if this array were used
+mdadm: as a member of some other array
+mdadm: invalid bitmap magic 0x0, the bitmap file appears
+mdadm: to be corrupted or missing.
+mdadm: unknown bitmap version 0, either the bitmap file
+mdadm: is corrupted or you need to upgrade your tools
+
