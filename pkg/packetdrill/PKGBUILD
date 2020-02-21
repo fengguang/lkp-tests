@@ -11,7 +11,6 @@ build()
 {
 	cd ${srcdir}/${pkgname}/gtests/net/packetdrill
 
-	sed -i 's/gettid(/packetdrill_gettid(/g' run_system_call.c
 	./configure
 	CPPFLAGS="" make
 }
