@@ -79,10 +79,7 @@ module Git
     end
 
     def commits_tags
-      # rli9 FIXME: consider to move cache logic to caller
-      return @commits_tags if @commits_tags && @commits_tags_timestamp && Time.now - @commits_tags_timestamp < 600
-
-      @commits_tags_timestamp = Time.now
+      return @commits_tags if @commits_tags
 
       @commits_tags = {}
       command('show-ref', ['--tags']).each_line do |line|
@@ -94,9 +91,7 @@ module Git
     end
 
     def heads_branches
-      return @heads_branches if @heads_branches && @heads_branches_timestamp && Time.now - @heads_branches_timestamp < 600
-
-      @heads_branches_timestamp = Time.now
+      return @heads_branches if @heads_branches
 
       @heads_branches = {}
       command('show-ref').each_line do |line|
