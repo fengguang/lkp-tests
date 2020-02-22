@@ -25,7 +25,7 @@ mount_partition()
 	esac
 
 	log_cmd mkdir -p $mnt
-	log_cmd mke2fs -t ext3 -b 1024 -J size=1 -q $partition || return
+	log_cmd mke2fs -t ext3 -b 4096 -J size=4 -q $partition || return
 	log_cmd mount -t ext3 $partition $mnt || return
 }
 
