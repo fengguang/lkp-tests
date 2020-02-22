@@ -4,7 +4,6 @@ need_kernel_selftests: true
 need_kconfig:
 % if ___.group == 'kselftests-x86'
 - CONFIG_POSIX_TIMERS=y ~ v(4\.1[0-9]|4\.20|5\.) # support kernel >= v4.10-rc1
-- CONFIG_X86_INTEL_MPX=y
 % elsif ___.group == 'kselftests-bpf'
 - CONFIG_BPF_EVENTS=y
 - CONFIG_BPF_STREAM_PARSER=y
