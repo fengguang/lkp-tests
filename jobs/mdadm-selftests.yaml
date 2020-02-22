@@ -27,7 +27,7 @@ mdadm-selftests:
   - '07revert'
   - '09'
   - '10'
-  - '11'
+  #  - '11' # timeout and IO error on VM test box
   - '12'
   - '13'
   - '14'
