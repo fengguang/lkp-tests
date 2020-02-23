@@ -14,3 +14,4 @@ subsystems:
 - tracing
 notify_build_success_branch: .*
 mail_to: BPF build status <bpf@iogearbox.net>
+private_report_branch: .*

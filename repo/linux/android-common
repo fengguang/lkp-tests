@@ -5,3 +5,4 @@ mail_to: cros-kernel-buildreports@googlegroups.com
 mail_cc: Guenter Roeck <groeck@google.com>
 test_old_branches: .*
 blacklist_branch: .*-release|.*-mr.*
+private_report_branch: .*
