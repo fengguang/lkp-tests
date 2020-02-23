@@ -10,7 +10,7 @@ fi
 
 for i in $(</proc/cmdline)
 do
-	[[ $i =~ [a-zA-Z_]+= ]] && eval $i
+	[[ $i =~ [a-zA-Z_]+= ]] && eval "$i"
 done
 
 if [[ -z $path_prefix ]]; then
