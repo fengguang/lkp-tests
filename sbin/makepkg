@@ -1732,7 +1732,7 @@ patch_source()
 	fi
 	if [ -n "$dir" ]; then
 		cd "$dir"
-		for patch in "$patches"; do
+		for patch in $patches; do
 			patch -p1 < "$patch"
 		done
 	fi
