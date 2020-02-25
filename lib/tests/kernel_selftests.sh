@@ -132,6 +132,9 @@ fixup_net()
 	ulimit -l 10240
 	modprobe fou
 	modprobe nf_conntrack_broadcast
+
+	# net/Makefile doesn't include mptcp
+	log_cmd make run_tests -C net/mptcp 2>&1
 }
 
 fixup_efivarfs()
