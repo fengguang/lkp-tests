@@ -61,7 +61,7 @@ rescue JSON::ParserError
   # If mpstat file end with "}", need to complete the missing string
   # "\n\t\t\t\]\n\t\t\}\n\t\]\n\}\}\n".
   begin
-    mpstat_update = File.join(ENV['RESULT_ROOT'] ? ENV['RESULT_ROOT'] : '/tmp', 'mpstat_update')
+    mpstat_update = ENV['RESULT_ROOT'] ? File.join(ENV['RESULT_ROOT'], 'mpstat_update') : "/tmp/mpstat_update-#{ENV['USER']}"
 
     FileUtils.cp(mpstat, mpstat_update)
     File.open(mpstat_update, 'r+') do |io|
@@ -78,6 +78,7 @@ rescue JSON::ParserError
     end
 
     mpstat_json = File.read(mpstat_update)
+    FileUtils.rm_f mpstat_update unless ENV['RESULT_ROOT']
     mpstat_hash = JSON.parse(mpstat_json)
   rescue JSON::ParserError => e
     log_error "Fail to parse #{mpstat}: #{e}"
