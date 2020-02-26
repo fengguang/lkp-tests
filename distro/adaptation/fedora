@@ -32,6 +32,7 @@ libblkid-dev: libblkid-devel
 libc6-dbg: glibc-debuginfo
 libc6-dev: glibc-devel glibc-static
 libc6-dev:i386: glibc-devel.i686 glibc-static.i686
+libc6-dev-x32:
 libcairo2-dev: cairo-devel
 libcap2: libcap
 libcap-dev: libcap-devel
