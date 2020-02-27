@@ -70,7 +70,7 @@ fixup_iperf()
 # import time
 # err = 'err'
 # i = 1
-# while (err != '' and i <= 30):
+# while (err != '' and i <= 200):
 #     out, err = subprocess.Popen(["systemd-analyze"], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
 #     time.sleep(3)
 #     i += 1
@@ -82,7 +82,7 @@ fixup_systemd_boot_total()
 	sed -i '2aimport time' "$target"
 	sed -i "4aerr = 'err'" "$target"
 	sed -i '5ai = 1' "$target"
-	sed -i "6awhile (err != '' and i <= 30):" "$target"
+	sed -i "6awhile (err != '' and i <= 200):" "$target"
 	sed -i "8s,^,\    ," "$target"
 	sed -i "8a\    time.sleep(3)" "$target"
 	sed -i "9a\    i += 1" "$target"
