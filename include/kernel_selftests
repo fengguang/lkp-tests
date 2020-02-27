@@ -58,6 +58,7 @@ need_kconfig:
 - CONFIG_TEST_STATIC_KEYS
 - CONFIG_TEST_SYSCTL=m
 - CONFIG_VETH=m
+- CONFIG_X86_CPU_RESCTRL=y ~ v(5\.0$|5\.[1-9]) # support kernel >= v5.0
 % elsif ___.group == 'kselftests-03'
 - CONFIG_TEST_VMALLOC=m ~ v(5\.[1-9]) # support kernel >= v5.1-rc1
 - CONFIG_USERFAULTFD=y

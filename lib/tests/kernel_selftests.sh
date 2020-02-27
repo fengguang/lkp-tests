@@ -254,7 +254,7 @@ prepare_for_selftest()
 		selftest_mfs=$(ls -d [c-l]*/Makefile | grep -v livepatch)
 	elif [ "$group" = "kselftests-02" ]; then
 		# m* is slow
-		selftest_mfs=$(ls -d [m-s]*/Makefile | grep -v rseq)
+		selftest_mfs=$(ls -d [m-s]*/Makefile | grep -v rseq resctrl)
 	elif [ "$group" = "kselftests-03" ]; then
 		selftest_mfs=$(ls -d [t-z]*/Makefile | grep -v x86)
 	elif [ "$group" = "kselftests-rseq" ]; then
@@ -265,6 +265,8 @@ prepare_for_selftest()
 		selftest_mfs=$(ls -d bpf/Makefile)
 	elif [ "$group" = "kselftests-x86" ]; then
 		selftest_mfs=$(ls -d x86/Makefile)
+	elif [ "$group" = "kselftests-resctrl" ]; then
+		selftest_mfs=$(ls -d resctrl/Makefile)
 	fi
 }
 
@@ -407,6 +409,12 @@ run_tests()
 			fixup_vm
 		elif [[ "$subtest" = "x86" ]]; then
 			fixup_x86
+		elif [[ "$subtest" = "resctrl" ]]; then
+			local rt="not ok"
+			log_cmd resctrl/resctrl_tests 2>&1
+			[[ $? == 0 ]] && rt="ok"
+			echo "$rt 1 selftests: resctrl: resctrl_test"
+			continue
 		fi
 
 		log_cmd make run_tests -C $subtest  2>&1
