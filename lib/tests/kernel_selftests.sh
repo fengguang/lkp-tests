@@ -203,7 +203,6 @@ cleanup_for_firmware()
 	}
 }
 
-
 subtest_in_skip_filter()
 {
 	local filter=$@
@@ -372,6 +371,15 @@ pack_selftests()
 
 run_tests()
 {
+	# zram: skip zram since 0day-kernel-tests always disable CONFIG_ZRAM which is required by zram
+	# for local user, you can enable CONFIG_ZRAM by yourself
+	# media_tests: requires special peripheral and it can not be run with "make run_tests"
+	# watchdog: requires special peripheral
+	# 1. requires /dev/watchdog device, but not all tbox have this device
+	# 2. /dev/watchdog: need support open/ioctl etc file ops, but not all watchdog support it
+	# 3. this test will not complete until issue Ctrl+C to abort it
+	skip_filter="powerpc zram media_tests watchdog"
+
 	local selftest_mfs=$@
 
 	log_cmd sed -i 's/default_timeout=45/default_timeout=300/' kselftest/runner.sh
