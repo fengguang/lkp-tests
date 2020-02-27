@@ -2,7 +2,7 @@ pkgname=tlbflush
 pkgver=1
 pkgrel=1
 url='https://marc.info/?l=linux-kernel&m=133727348217113&q=raw'
-arch=('i686' 'x86_64')
+arch=('i386' 'x86_64')
 license=('GPL')
 source=("${pkgname}::https://marc.info/?l=linux-kernel&m=133727348217113&q=raw")
 md5sums=('SKIP')

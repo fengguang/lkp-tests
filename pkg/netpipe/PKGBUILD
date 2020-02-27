@@ -9,7 +9,7 @@ url="https://fossies.org/linux/privat/old/NetPIPE-3.7.2.tar.gz/"
 depends=()
 optdepends=('tcsh: for nplaunch script')
 source=(https://fossies.org/linux/privat/old/NetPIPE-$pkgver.tar.gz)
-arch=('i686' 'x86_64')
+arch=('i386' 'x86_64')
 license=('GPL')
 sha256sums=('13dac884ff52951636f651c421f5ff4a853218a95aa28a4a852402ee385a2ab8')
 

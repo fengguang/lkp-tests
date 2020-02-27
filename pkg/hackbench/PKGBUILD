@@ -1,7 +1,7 @@
 pkgname=hackbench
 pkgver=1.5
 pkgrel=1
-arch=('i686' 'x86_64')
+arch=('i386' 'x86_64')
 url="https://www.kernel.org/pub/linux/utils/rt-tests"
 license=('GPL')
 source=("https://www.kernel.org/pub/linux/utils/rt-tests/rt-tests-${pkgver}.tar.gz")

@@ -1,7 +1,7 @@
 pkgname=pbzip2
 pkgver=1.1
 pkgrel=9
-arch=('i686' 'x86_64')
+arch=('i386' 'x86_64')
 url="https://launchpad.net/pbzip2"
 license=('GPL')
 source=("https://launchpad.net/$pkgname/$pkgver/$pkgver.$pkgrel/+download/${pkgname}-$pkgver.$pkgrel.tar.gz")

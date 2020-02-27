@@ -1,7 +1,7 @@
 pkgname=leaking-addresses
 pkgver=4f19048
 pkgrel=1
-arch=('i686' 'x86_64')
+arch=('i386' 'x86_64')
 url="https://raw.githubusercontent.com/torvalds/linux/master/scripts/leaking_addresses.pl"
 license=('GPL')
 source=("https://raw.githubusercontent.com/torvalds/linux/master/scripts/leaking_addresses.pl")

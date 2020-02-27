@@ -1,7 +1,7 @@
 pkgname=ku-latency
 pkgver=1
 pkgrel=1
-arch=('i686' 'x86_64')
+arch=('i386' 'x86_64')
 url="https://vilimpoc.org/research/ku-latency"
 license=('GPL')
 source=("https://vilimpoc.org/research/ku-latency/send-data.c" "https://vilimpoc.org/research/ku-latency/ku-latency.c")

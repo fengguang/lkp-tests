@@ -2,7 +2,7 @@ pkgname=nvml
 pkgver=git
 pkgrel=1
 url='https://github.com/pmem/nvml.git'
-arch=('i686' 'x86_64')
+arch=('i386' 'x86_64')
 license=('Intel' 'GPL' 'BSD')
 source=('https://github.com/pmem/valgrind.git'
 	'https://github.com/llvm-mirror/llvm.git'

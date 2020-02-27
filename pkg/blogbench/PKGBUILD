@@ -1,7 +1,7 @@
 pkgname=blogbench
 pkgver=1.1
 pkgrel=1
-arch=('i686' 'x86_64')
+arch=('i386' 'x86_64')
 url="https://blockbench.net/"
 license=('GPL')
 source=("https://download.pureftpd.org/pub/blogbench/blogbench-${pkgver}.tar.gz")

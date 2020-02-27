@@ -9,7 +9,7 @@ pkgver=5.0.0.r137127.3dbfd0b
 _pkgver=5.0
 pkgrel=1
 pkgdesc="The GNU Compiler Collection"
-arch=('i686' 'x86_64')
+arch=('i386' 'x86_64')
 license=('GPL' 'LGPL' 'FDL' 'custom')
 url="http://gcc.gnu.org"
 makedepends=('binutils>=2.25' 'libmpc' 'gcc-ada' 'doxygen')

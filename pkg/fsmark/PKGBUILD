@@ -1,7 +1,7 @@
 pkgname=fsmark
 pkgver=3.3
 pkgrel=1
-arch=('i686' 'x86_64')
+arch=('i386' 'x86_64')
 url="https://sourceforge.net/projects/fsmark"
 license=('GPL')
 source=("https://sourceforge.net/projects/${pkgname}/files/${pkgname}/${pkgver}/fs_mark-${pkgver}.tar.gz")
