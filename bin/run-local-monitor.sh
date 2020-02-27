@@ -5,6 +5,8 @@ export TMP=/tmp/lkp
 export PATH=$PATH:$LKP_SRC/bin
 export BENCHMARK_ROOT=/lkp/benchmarks
 
+. $LKP_SRC/lib/detect-system.sh
+
 usage()
 {
 	cat <<EOF
@@ -22,7 +24,7 @@ set_local_variables()
 	export kconfig=${kconfig:-defconfig}
 	export commit=${commit:-$(uname -r)}
 
-	export arch=$(uname -m)
+	export arch=$(get_system_arch)
 	export compiler=$(grep -o "gcc version [0-9]*" /proc/version | awk '{print "gcc-"$NF}')
 	export compiler=${compiler:-gcc}
 	export rootfs=$(grep -m1 ^ID= /etc/os-release | awk -F= '{print $2}')

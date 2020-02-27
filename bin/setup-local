@@ -121,7 +121,8 @@ def install_benchmarks(script, distro)
   end
 
   pkg_name = script.tr('_', '-') + '-LKP'
-  arch = `uname -m`.chomp
+  distroinfo = LKP::DistroInfo.instance
+  arch = distroinfo.systemarch
   puts "Making #{script} benchmark for #{distro}"
 
   if system "#{LKP_SRC}/sbin/pack -d #{distro} -c #{script}"
