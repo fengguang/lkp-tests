@@ -414,6 +414,13 @@ def unite_params(result_root)
   rescue StandardError => e
     log_exception e, binding
   end
+
+  begin
+    YAML.load_file(params_file)
+  rescue StandardError => e
+    log_warn e.message
+    log_warn "failed to load #{params_file} after save params from #{result_root}/job.yaml"
+  end
 end
 
 def unite_stats(result_root, delete = false)
