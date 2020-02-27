@@ -202,3 +202,9 @@ detect_system()
 	_system_name_lowercase="$(echo ${_system_name} | \command \tr '[A-Z]' '[a-z]')"
 	_system_version=$(printf '%s\n' "$_system_version" | sed 's/[ \/]/_/g')  #${_system_version//[ \/]/_}"
 }
+
+get_system_arch()
+{
+	detect_system_arch
+	echo $_system_arch
+}
