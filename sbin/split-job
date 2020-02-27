@@ -4,6 +4,7 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAM
 
 require "#{LKP_SRC}/lib/job"
 require "#{LKP_SRC}/lib/log"
+require "#{LKP_SRC}/lib/distro_info"
 require 'optparse'
 require 'ostruct'
 
@@ -71,13 +72,15 @@ end
 @opt_testbox ||= `hostname`.chomp
 atom_jobs = []
 
+distroinfo = LKP::DistroInfo.instance
+
 ARGV.each do |jobfile|
   jobs = Job.new
   jobs.load(jobfile, true) || next
   jobs['kconfig'] = @opt_kconfig if @opt_kconfig
   jobs['commit'] = @opt_commit if @opt_commit
   jobs['testbox'] = @opt_testbox
-  jobs['arch'] ||= `uname -m`.chomp
+  jobs['arch'] ||= distroinfo.systemarch
   jobs['tbox_group'] = tbox_group(@opt_testbox)
   jobs['node_roles'] = 'server client' if jobs['cluster']
   jobs[:no_defaults] = true if @opt_no_defaults
