@@ -66,7 +66,7 @@ update_shared_pkg()
 distro_install_depends lkp-dev
 distro_install_depends ${benchmark}-dev
 
-[[ $arch ]] || arch=`uname -m`
+[[ $arch ]] || arch=$(get_system_arch)
 
 build_depends_pkg -i $benchmark $TMP
 
@@ -80,7 +80,7 @@ cgz_name="${bm_name}-${arch}-${pkgver:-0}-${pkgrel:-0}_${date}.cgz"
 
 setup_proxy
 
-PACMAN=true BUILDDIR=$TMP PKGEXT=.cgz CGZDEST="$sync_dest/$cgz_name" \
+PACMAN=true BUILDDIR=$TMP CARCH=$arch PKGEXT=.cgz CGZDEST="$sync_dest/$cgz_name" \
 	$LKP_SRC/sbin/makepkg --config $LKP_SRC/etc/makepkg.conf
 
 update_softlink()

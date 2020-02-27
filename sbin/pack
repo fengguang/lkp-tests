@@ -2,6 +2,8 @@
 
 [[ $LKP_SRC ]] || export LKP_SRC="$(dirname $(dirname $(readlink -e -v $0)))"
 
+. $LKP_SRC/lib/detect-system.sh
+
 usage()
 {
 	cat <<-EOF
@@ -66,7 +68,7 @@ LINK_NAME=$BM_NAME
 	exit 0
 }
 
-[[ $arch ]] || arch=`uname -m`
+[[ $arch ]] || arch=$(get_system_arch)
 
 # for packages with same dependencies, force the update instead of generating link
 # due to schedule stage will auto detect symbolic link, so no need generate new link
