@@ -158,7 +158,7 @@ makepkg_install() {
 	if [ -d "$LKP_SRC/pkg/$pkg" ]; then
 		(
 			cd "$LKP_SRC/pkg/$pkg" && \
-			PACMAN="$LKP_SRC/sbin/pacman-LKP" BUILDDIR="$LKP_SRC/tmp-pkg" \
+			PACMAN="$LKP_SRC/sbin/pacman-LKP" CARCH=$arch BUILDDIR="$LKP_SRC/tmp-pkg" \
 			"$LKP_SRC/sbin/makepkg" --config "$LKP_SRC/etc/makepkg.conf" -s -i --skippgpcheck "$force_opt"
 		)
 	else
@@ -265,11 +265,11 @@ build_install_benchmarks() {
 			;;
 		fedora)
 			BUILD_DIR=$(get_build_dir $script)
-			local rpm_pkg=$BUILD_DIR/$pkg_name/RPMS/$pkg_name.$(uname -m).rpm
+			local rpm_pkg=$BUILD_DIR/$pkg_name/RPMS/$pkg_name.$arch.rpm
 			[ -f $rpm_pkg ] || return
 			rpm -ivh --replacepkgs $rpm_pkg ;;
 		*)
-			echo "Just make /lkp/benchmarks/$script-$(uname -m).cgz" ;;
+			echo "Just make /lkp/benchmarks/$script-$arch.cgz" ;;
 		esac
 	else
 		echo "Making $pkg_name failed"
