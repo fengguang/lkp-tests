@@ -25,7 +25,6 @@ group:
   - rpmemd
   - set
   - unicode
-  - vmmalloc
 
 test: non-pmem
 
@@ -42,7 +41,6 @@ group:
   - scope
   - traces
   - util
-  - vmem
 
 ---
 need_memory: 4G
@@ -52,4 +50,3 @@ group:
   - blk
   - pmempool
   - util
-  - vmem
