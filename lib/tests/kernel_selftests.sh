@@ -249,11 +249,6 @@ prepare_for_selftest()
 	if [ "$group" = "kselftests-00" ]; then
 		# bpf is slow
 		selftest_mfs=$(ls -d [a-b]*/Makefile | grep -v bpf)
-		# due to some low dependency version issues, the latest version of the llvm_project.cgz package cannot be generated in alios.
-		is_aliyunos && {
-			llvm_version=$(echo /usr/bin/llvm-readelf-* | cut -f3 -d "-") || die
-			export PATH=$PATH:/usr/lib64/llvm$llvm_version/bin
-		}
 	elif [ "$group" = "kselftests-01" ]; then
 		selftest_mfs=$(ls -d [c-l]*/Makefile | grep -v livepatch)
 	elif [ "$group" = "kselftests-02" ]; then
