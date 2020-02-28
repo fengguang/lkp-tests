@@ -2,6 +2,7 @@
 
 test_subname = []
 test_id = -1
+is_begin_of_subtest = false
 while (line = STDIN.gets)
   # remove color control info
   line.gsub!(/.\[1;(\d+)m|.\[0m/, '')
@@ -17,10 +18,14 @@ while (line = STDIN.gets)
                             .map { |param| param.split(': ').last.gsub(/\s+/, '') } # ["Furmark", "800x600", "Windowed"]
                             .join('.')                                              # "Furmark.800x600.Windowed"
     end
+    is_begin_of_subtest = true
   when /Average: ([0-9.]+) (.*)/
     value = Regexp.last_match[1]
     unit = Regexp.last_match[2]
-    test_id += 1
+    if is_begin_of_subtest
+      test_id += 1
+      is_begin_of_subtest = false
+    end
     unit = unit.downcase.tr(' ', '_').tr('/', '_')
     if !test_subname.empty?
       puts "#{test_name}.#{test_subname.at(test_id)}.#{unit}: #{value}"
@@ -29,7 +34,10 @@ while (line = STDIN.gets)
     end
   when /Final: ([0-9.]+) (.*)/
     value = Regexp.last_match[1]
-    test_id += 1 if value == '1'
+    if value == '1' && is_begin_of_subtest
+      test_id += 1
+      is_begin_of_subtest = false
+    end
     if !test_subname.empty?
       puts "#{test_name}.#{test_subname.at(test_id)}.Final: #{value}"
     else

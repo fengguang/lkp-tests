@@ -1,0 +1,98 @@
+
+X.Org X Server 1.20.5
+X Protocol Version 11, Revision 0
+Build Operating System: Linux 5.0.10-743.native x86_64 
+Current Operating System: Linux lkp-csl-2sp4 5.5.0 #1 SMP Mon Jan 27 15:31:40 CST 2020 x86_64
+Kernel command line:  ip=::::lkp-csl-2sp4::dhcp root=/dev/disk/by-id/ata-INTEL_SSDSC2BB800G4_CVWL3426000V800RGN-part1 rootflags=subvol=clear-x86_64-phoronix-30140 remote_rootfs=internal-lkp-server:/osimage/clear/clear-x86_64-phoronix-30140 user=carel job=/lkp/jobs/scheduled/lkp-csl-2sp4/phoronix-test-suite-performance-true-paraview-1.0.2-ucode=0x400002c-clear-x86_64-phoronix-30140-d5226fa6dbae0569ee43ecfc08bdcd67-20200221-19138-14a11v8-0.yaml ARCH=x86_64 kconfig=x86_64-rhel-7.2-clear branch=linus/master commit=d5226fa6dbae0569ee43ecfc08bdcd6770fc4755 BOOT_IMAGE=/pkg/linux/x86_64-rhel-7.2-clear/gcc-7/d5226fa6dbae0569ee43ecfc08bdcd6770fc4755/vmlinuz-5.5.0 max_uptime=7200 RESULT_ROOT=/result/phoronix-test-suite/performance-true-paraview-1.0.2-ucode=0x400002c/lkp-csl-2sp4/clear-x86_64-phoronix-30140/x86_64-rhel-7.2-clear/gcc-7/d5226fa6dbae0569ee43ecfc08bdcd6770fc4755/2 LKP_SERVER=inn nokaslr debug apic=debug sysrq_always_enabled rcupdate.rcu_cpu_stall_timeout=100 net.ifnames=0 printk.devkmsg=on panic=-1 softlockup_panic=1 nmi_watchdog=panic oops=panic load_ramdisk=2 prompt_ramdisk=0 drbd.minor_count=8 systemd.log_level=err ignore_loglevel console=tty0 earlyprintk=ttyS0,115200 console=ttyS0,115200 vga=normal rw
+Build Date: 31 May 2019  06:47:02PM
+ 
+Current version of pixman: 0.38.4
+	Before reporting problems, check http://wiki.x.org
+	to make sure that you have the latest version.
+Markers: (--) probed, (**) from config file, (==) default setting,
+	(++) from command line, (!!) notice, (II) informational,
+	(WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+(==) Log file: "/var/log/Xorg.0.log", Time: Fri Feb 21 07:56:39 2020
+(==) Using system config directory "/usr/share/X11/xorg.conf.d"
+pci id for fd 16: 1a03:2000, driver (null)
+(II) modeset(0): Initializing kms color map for depth 24, 8 bpc.
+PTS_SILENT_MODE=1
+spawn phoronix-test-suite default-run paraview-1.0.2
+
+    [1mWould you like to save these test results (Y/n): [0mn
+
+[1;36mParaView 5.4.1:
+    pts/paraview-1.0.2 [Test: Many Spheres - Resolution: 800 x 600][0m
+    Test 1 of 2
+    Estimated Trial Run Count:    3                     
+    Estimated Test Run-Time:      2 Minutes             
+    Estimated Time To Completion: 3 Minutes [07:59 UTC] 
+        Started Run 1 @ 07:56:58
+        Started Run 2 @ 08:05:14
+        Started Run 3 @ 08:13:25
+        Started Run 4 @ 08:21:52 *
+        Started Run 5 @ 08:30:21 *
+        Started Run 6 @ 08:38:35 *
+        Started Run 7 @ 08:46:49 *
+        Started Run 8 @ 08:55:11 *
+        Started Run 9 @ 09:03:19 *
+
+    Test: Many Spheres - Resolution: 800 x 600:
+        [1;32m0.07[0m
+        [1;32m0.07[0m
+        [1;31m0.06[0m
+        [1;31m0.06[0m
+        [1;32m0.07[0m
+        [1;32m0.07[0m
+        [1;32m0.07[0m
+        [1;32m0.07[0m
+        [1;32m0.07[0m
+
+    Average: [1;34m0.07 Frames / Sec[0m
+    Deviation: 6.51%
+    Samples: 9
+
+
+    Test: Many Spheres - Resolution: 800 x 600:
+        6.687
+        6.734
+        6.512
+        [1;31m6.497[0m
+        6.692
+        6.729
+        6.587
+        6.798
+        [1;32m6.86[0m
+
+    Average: [1;34m6.68 MiPolys / Sec[0m
+    Deviation: 1.85%
+    Samples: 9
+
+[1;36mParaView 5.4.1:
+    pts/paraview-1.0.2 [Test: Many Spheres - Resolution: 1024 x 768][0m
+    Test 2 of 2
+    Estimated Trial Run Count:    3                     
+    Estimated Time To Completion: 2 Minutes [09:12 UTC] 
+        Started Run 1 @ 09:11:27
+        Started Run 2 @ 09:19:38
+        Started Run 3 @ 09:28:03
+
+    Test: Many Spheres - Resolution: 1024 x 768:
+        [1;32m0.07[0m
+        [1;32m0.07[0m
+        [1;32m0.07[0m
+
+    Average: [1;34m0.07 Frames / Sec[0m
+    Deviation: 0.00%
+
+
+    Test: Many Spheres - Resolution: 1024 x 768:
+        [1;32m6.791[0m
+        [1;31m6.564[0m
+        6.768
+
+    Average: [1;34m6.71 MiPolys / Sec[0m
+    Deviation: 1.86%
+
+paraview-1.0.2.seconds: 5955.800060072
+(II) modeset(0): Initializing kms color map for depth 24, 8 bpc.

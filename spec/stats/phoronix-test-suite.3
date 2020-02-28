@@ -1,0 +1,115 @@
+PTS_SILENT_MODE=1
+2020-01-17 06:35:23 phoronix-test-suite run systemd-boot-total-1.0.5
+
+
+
+Systemd Total Boot Time:
+    pts/systemd-boot-total-1.0.5
+    System Test Configuration
+        1: Total
+        2: Userspace
+        3: Kernel
+        4: Loader
+        5: Firmware
+        6: Test All Options
+        ** Multiple items can be selected, delimit by a comma. **
+        Test: 
+
+        1: Total
+        2: Userspace
+        3: Kernel
+        4: Loader
+        5: Firmware
+        6: Test All Options
+        ** Multiple items can be selected, delimit by a comma. **
+        Test: 1,2,3
+
+
+Phoronix Test Suite v8.8.1
+System Information
+
+
+  PROCESSOR:          2 x Intel 0000% @ 3.90GHz
+    Core Count:       48                       
+    Thread Count:     96                       
+    Extensions:       SSE 4.2                  
+                      + AVX512_VNNI            
+                      + AVX512CD               
+                      + AVX2                   
+                      + AVX                    
+                      + RDRAND                 
+                      + FSGSBASE               
+    Cache Size:       33792 KB                 
+    Microcode:        0x400002c                
+    Scaling Driver:   intel_pstate performance 
+
+  GRAPHICS:           ASPEED
+    Screen:           1024x768         
+
+  MOTHERBOARD:        Intel S2600WFD
+    BIOS Version:     SE5C620.86B.0D.01.0134.100420181737 
+    Chipset:          Intel Sky Lake-E DMI3 Registers     
+    Network:          2 x Intel X722 for 10GBASE-T        
+
+  MEMORY:             8 x 16384 MB DDR4-2400MT/s Samsung M393A2G40DB1-CRC
+
+  DISK:               800GB INTEL SSDSC2BB80 + 500GB Seagate ST9500620NS + 1200GB INTEL SSDSC2BG01
+    File-System:      overlayfs        
+    Disk Scheduler:   MQ-DEADLINE      
+
+  OPERATING SYSTEM:   Clear Linux OS 30140
+    Kernel:           5.4.0 (x86_64)                                                                       
+    Desktop:          GNOME Shell 3.32.2                                                                   
+    Display Server:   X Server                                                                             
+    Compiler:         GCC 9.1.1 20190701 gcc-9-branch@272838                                               
+                      + Clang 8.0.0                                                                        
+                      + LLVM 8.0.0                                                                         
+    Security:         itlb_multihit: KVM: Mitigation of Split huge pages                                   
+                      + l1tf: Not affected                                                                 
+                      + mds: Not affected                                                                  
+                      + meltdown: Not affected                                                             
+                      + spec_store_bypass: Mitigation of SSB disabled via prctl and seccomp                
+                      + spectre_v1: Mitigation of usercopy/swapgs barriers and __user pointer sanitization 
+                      + spectre_v2: Mitigation of Enhanced IBRS IBPB: conditional RSB filling              
+                      + tsx_async_abort: Mitigation of TSX disabled                                        
+
+    Would you like to save these test results (Y/n): 
+Systemd Total Boot Time:
+    pts/systemd-boot-total-1.0.5 [Test: Total]
+    Test 1 of 3
+    Estimated Trial Run Count:    1                     
+    Estimated Test Run-Time:      1 Minute              
+    Estimated Time To Completion: 2 Minutes [06:36 UTC] 
+        Started Run 1 @ 06:35:27
+
+    Test: Total:
+        24268.6
+
+    Average: 24268.60 ms
+
+Systemd Total Boot Time:
+    pts/systemd-boot-total-1.0.5 [Test: Kernel]
+    Test 2 of 3
+    Estimated Trial Run Count:    1                    
+    Estimated Test Run-Time:      1 Minute             
+    Estimated Time To Completion: 1 Minute [06:37 UTC] 
+        Started Run 1 @ 06:36:31
+
+    Test: Kernel:
+        21180.2
+
+    Average: 21180.20 ms
+
+Systemd Total Boot Time:
+    pts/systemd-boot-total-1.0.5 [Test: Userspace]
+    Test 3 of 3
+    Estimated Trial Run Count:    1                    
+    Estimated Time To Completion: 1 Minute [06:37 UTC] 
+        Started Run 1 @ 06:36:44
+
+    Test: Userspace:
+        3088.4
+
+    Average: 3088.40 ms
+
+systemd-boot-total-1.0.5.seconds: 86.038801786
