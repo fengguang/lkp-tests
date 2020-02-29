@@ -387,6 +387,13 @@ setup_python3()
 	ln -sf $(which python3) $(which python) || return
 }
 
+fixup_ffmpeg_install()
+{
+	local test=$1
+	local target=/var/lib/phoronix-test-suite/test-profiles/pts/${test}/install.sh
+	sed -i "6ased -i '4082,4083d' configure" "$target"
+}
+
 fixup_dolfyn_install()
 {
 	local test=$1
@@ -471,6 +478,10 @@ fixup_install()
 	dolfyn-*)
 		# fix issue: Error: Blank required in STOP statement near (1)
 		fixup_dolfyn_install $test || die "failed to fixup dolfyn install"
+		;;
+	ffmpeg-*)
+		# fix issue: Unable to create temporary directory in /lkp/lkp/src/tmp
+		fixup_ffmpeg_install $test || die "failed to fixup $test install"
 		;;
 	xsbench-cl-*)
 		# fix issue: unionized_grid_search: failed to launch kernel with error -54
