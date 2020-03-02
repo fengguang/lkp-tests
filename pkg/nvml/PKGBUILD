@@ -54,7 +54,7 @@ build_install_libcxx()
 	local install_path=/usr/local/libcxx
 
 	CMAKE=cmake
-	[ "$DISTRO" = "centos" ] && CMAKE=cmake3
+	[ "$DISTRO" = "centos" -o "$DISTRO" = "aliyun" ] && CMAKE=cmake3
 
 	cp -af "${srcdir}/libcxxabi" "${srcdir}/llvm/projects"
 	cp -af "${srcdir}/libcxx" "${srcdir}/llvm/projects"
