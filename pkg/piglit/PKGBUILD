@@ -115,7 +115,7 @@ package()
 	separate_tests
 
 	mkdir -p ${pkgdir}/usr/lib
-	for sofile in /usr/lib/x86_64-linux-gnu/libwaffle-1.so*; do
+	for sofile in /usr/lib/${CARCH}-linux-gnu/libwaffle-1.so*; do
 	  cp $sofile ${pkgdir}/usr/lib
 	done
 }
