@@ -87,12 +87,20 @@ def vm_stat(line, _vm, stats)
   end
 end
 
+def resctrl_stat(line, _resctrl, stats)
+  if line =~ /^not ok (.*)/
+    test_content = $1.strip.tr(': ', '_')
+    stats << "resctrl.resctrl_tests.fail: 1"
+    stats << "resctrl.#{test_content}.fail: 1"
+  end
+end
+
 while (line = STDIN.gets)
   line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
 
   case line
-  when %r{make: Entering directory .*/(.*)'}
-    testname = Regexp.last_match[1]
+  when %r{make(\[\d*\])?: Entering directory .*/(.*)'}
+    testname = Regexp.last_match[2]
   when %r{make: Leaving directory .*/(.*)'}
     if testname == 'memory-hotplug'
       memory_hotplug_stat(line, tests_stats['memory-hotplug'], stats)
@@ -143,11 +151,18 @@ while (line = STDIN.gets)
       x86_stat(line, tests_stats['x86'], stats)
     elsif testname == 'vm'
       vm_stat(line, tests_stats['vm'], stats)
+    elsif testname == 'resctrl'
+      resctrl_stat(line, tests_stats['resctrl'], stats)
     end
   end
 end
 
 stats << "mqueue.nsec_per_msg: #{mqueue_speed.values.average.to_i}" unless mqueue_speed.empty?
 
+if testname == 'resctrl'
+  unless stats.include? "resctrl.resctrl_tests.fail: 1"
+    stats << "resctrl.resctrl_tests.pass: 1"
+  end
+end
 stats.uniq.each { |stat| puts stat }
 nr_test = stats.count { |k, _v| k !~ /\.make_fail|\.ignored_by_lkp/ }

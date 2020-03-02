@@ -1,0 +1,219 @@
+make[1]: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-ff2931ef3ca464d20342c4768985f84c3c1ae6a7'
+make[1]: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-ff2931ef3ca464d20342c4768985f84c3c1ae6a7/tools/testing/selftests/resctrl'
+gcc -g -Wall -c resctrl_val.c cat_test.c cqm_test.c mbm_test.c fill_buf.c resctrl_tests.c cache.c mba_test.c resctrlfs.c
+gcc -g -Wall -o resctrl_tests resctrl_val.o cat_test.o cqm_test.o mbm_test.o fill_buf.o resctrl_tests.o cache.o mba_test.o resctrlfs.o
+make[1]: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-ff2931ef3ca464d20342c4768985f84c3c1ae6a7/tools/testing/selftests/resctrl'
+2020-02-28 11:23:44 resctrl/resctrl_tests
+TAP version 13
+ok kernel supports resctrl filesystem
+ok resctrl mountpoint "/sys/fs/resctrl" exists
+# resctrl filesystem not mounted
+# dmesg: [   35.495234] resctrl: L3 allocation detected
+# dmesg: [   35.505553] resctrl: L3DATA allocation detected
+# dmesg: [   35.519745] resctrl: L3CODE allocation detected
+# dmesg: [   35.519748] resctrl: L3 monitoring detected
+# Starting MBM BW change ...
+ok mounting resctrl to "/sys/fs/resctrl"
+TAP version 13
+ok kernel supports resctrl filesystem
+ok resctrl mountpoint "/sys/fs/resctrl" exists
+# resctrl filesystem not mounted
+# dmesg: [   35.495234] resctrl: L3 allocation detected
+# dmesg: [   35.505553] resctrl: L3DATA allocation detected
+# dmesg: [   35.519745] resctrl: L3CODE allocation detected
+# dmesg: [   35.519748] resctrl: L3 monitoring detected
+# Starting MBM BW change ...
+ok mounting resctrl to "/sys/fs/resctrl"
+# benchmark PID: 10764
+ok writing benchmark parameters to resctrl FS
+# Checking for pass/fail
+not ok MBM: diff within 300%
+# avg_diff: 406
+# Span (MB): 250
+# avg_bw_imc: 10766
+# avg_bw_resc: 11172
+ok MBM: bw change
+# Starting MBA Schemata change ...
+ok mounting resctrl to "/sys/fs/resctrl"
+TAP version 13
+ok kernel supports resctrl filesystem
+ok resctrl mountpoint "/sys/fs/resctrl" exists
+# resctrl filesystem not mounted
+# dmesg: [   35.495234] resctrl: L3 allocation detected
+# dmesg: [   35.505553] resctrl: L3DATA allocation detected
+# dmesg: [   35.519745] resctrl: L3CODE allocation detected
+# dmesg: [   35.519748] resctrl: L3 monitoring detected
+# Starting MBM BW change ...
+ok mounting resctrl to "/sys/fs/resctrl"
+# benchmark PID: 10764
+ok writing benchmark parameters to resctrl FS
+# Checking for pass/fail
+not ok MBM: diff within 300%
+# avg_diff: 406
+# Span (MB): 250
+# avg_bw_imc: 10766
+# avg_bw_resc: 11172
+ok MBM: bw change
+# Starting MBA Schemata change ...
+ok mounting resctrl to "/sys/fs/resctrl"
+# benchmark PID: 10787
+ok writing benchmark parameters to resctrl FS
+ok Write schema "MB:0=100" to resctrl FS
+ok Write schema "MB:0=90" to resctrl FS
+ok Write schema "MB:0=80" to resctrl FS
+ok Write schema "MB:0=70" to resctrl FS
+ok Write schema "MB:0=60" to resctrl FS
+ok Write schema "MB:0=50" to resctrl FS
+ok Write schema "MB:0=40" to resctrl FS
+ok Write schema "MB:0=30" to resctrl FS
+ok Write schema "MB:0=20" to resctrl FS
+ok Write schema "MB:0=10" to resctrl FS
+# Results are displayed in (MB)
+not ok MBA schemata percentage 100 smaller than 300 %
+# avg_diff: 410
+# avg_bw_imc: 11407
+# avg_bw_resc: 11817
+not ok MBA schemata percentage 90 smaller than 300 %
+# avg_diff: 436
+# avg_bw_imc: 11880
+# avg_bw_resc: 12316
+not ok MBA schemata percentage 80 smaller than 300 %
+# avg_diff: 430
+# avg_bw_imc: 11888
+# avg_bw_resc: 12318
+not ok MBA schemata percentage 70 smaller than 300 %
+# avg_diff: 434
+# avg_bw_imc: 11852
+# avg_bw_resc: 12286
+not ok MBA schemata percentage 60 smaller than 300 %
+# avg_diff: 426
+# avg_bw_imc: 11867
+# avg_bw_resc: 12293
+not ok MBA schemata percentage 50 smaller than 300 %
+# avg_diff: 434
+# avg_bw_imc: 11868
+# avg_bw_resc: 12302
+not ok MBA schemata percentage 40 smaller than 300 %
+# avg_diff: 429
+# avg_bw_imc: 11848
+# avg_bw_resc: 12277
+not ok MBA schemata percentage 30 smaller than 300 %
+# avg_diff: 433
+# avg_bw_imc: 11858
+# avg_bw_resc: 12291
+not ok MBA schemata percentage 20 smaller than 300 %
+# avg_diff: 433
+# avg_bw_imc: 11866
+# avg_bw_resc: 12299
+not ok MBA schemata percentage 10 smaller than 300 %
+# avg_diff: 434
+# avg_bw_imc: 11866
+# avg_bw_resc: 12300
+not ok schemata change using MBA # at least one test failed
+ok MBA: schemata change
+# Starting CQM test ...
+ok mounting resctrl to "/sys/fs/resctrl"
+cache size :57671680
+TAP version 13
+ok kernel supports resctrl filesystem
+ok resctrl mountpoint "/sys/fs/resctrl" exists
+# resctrl filesystem not mounted
+# dmesg: [   35.495234] resctrl: L3 allocation detected
+# dmesg: [   35.505553] resctrl: L3DATA allocation detected
+# dmesg: [   35.519745] resctrl: L3CODE allocation detected
+# dmesg: [   35.519748] resctrl: L3 monitoring detected
+# Starting MBM BW change ...
+ok mounting resctrl to "/sys/fs/resctrl"
+# benchmark PID: 10764
+ok writing benchmark parameters to resctrl FS
+# Checking for pass/fail
+not ok MBM: diff within 300%
+# avg_diff: 406
+# Span (MB): 250
+# avg_bw_imc: 10766
+# avg_bw_resc: 11172
+ok MBM: bw change
+# Starting MBA Schemata change ...
+ok mounting resctrl to "/sys/fs/resctrl"
+# benchmark PID: 10787
+ok writing benchmark parameters to resctrl FS
+ok Write schema "MB:0=100" to resctrl FS
+ok Write schema "MB:0=90" to resctrl FS
+ok Write schema "MB:0=80" to resctrl FS
+ok Write schema "MB:0=70" to resctrl FS
+ok Write schema "MB:0=60" to resctrl FS
+ok Write schema "MB:0=50" to resctrl FS
+ok Write schema "MB:0=40" to resctrl FS
+ok Write schema "MB:0=30" to resctrl FS
+ok Write schema "MB:0=20" to resctrl FS
+ok Write schema "MB:0=10" to resctrl FS
+# Results are displayed in (MB)
+not ok MBA schemata percentage 100 smaller than 300 %
+# avg_diff: 410
+# avg_bw_imc: 11407
+# avg_bw_resc: 11817
+not ok MBA schemata percentage 90 smaller than 300 %
+# avg_diff: 436
+# avg_bw_imc: 11880
+# avg_bw_resc: 12316
+not ok MBA schemata percentage 80 smaller than 300 %
+# avg_diff: 430
+# avg_bw_imc: 11888
+# avg_bw_resc: 12318
+not ok MBA schemata percentage 70 smaller than 300 %
+# avg_diff: 434
+# avg_bw_imc: 11852
+# avg_bw_resc: 12286
+not ok MBA schemata percentage 60 smaller than 300 %
+# avg_diff: 426
+# avg_bw_imc: 11867
+# avg_bw_resc: 12293
+not ok MBA schemata percentage 50 smaller than 300 %
+# avg_diff: 434
+# avg_bw_imc: 11868
+# avg_bw_resc: 12302
+not ok MBA schemata percentage 40 smaller than 300 %
+# avg_diff: 429
+# avg_bw_imc: 11848
+# avg_bw_resc: 12277
+not ok MBA schemata percentage 30 smaller than 300 %
+# avg_diff: 433
+# avg_bw_imc: 11858
+# avg_bw_resc: 12291
+not ok MBA schemata percentage 20 smaller than 300 %
+# avg_diff: 433
+# avg_bw_imc: 11866
+# avg_bw_resc: 12299
+not ok MBA schemata percentage 10 smaller than 300 %
+# avg_diff: 434
+# avg_bw_imc: 11866
+# avg_bw_resc: 12300
+not ok schemata change using MBA # at least one test failed
+ok MBA: schemata change
+# Starting CQM test ...
+ok mounting resctrl to "/sys/fs/resctrl"
+cache size :57671680
+# benchmark PID: 10958
+ok writing benchmark parameters to resctrl FS
+# checking for pass/fail
+ok CQM: diff within 2000000, 15%
+# diff: 585728
+# percent diff=4
+# Results are displayed in (Bytes)
+# Number of bits: 5
+# Avg_llc_occu_resc: 15003648
+# llc_occu_exp (span): 14417920
+ok CQM: test
+# Starting CAT test ...
+ok mounting resctrl to "/sys/fs/resctrl"
+cache size :57671680
+ok writing benchmark parameters to resctrl FS
+ok Write schema "L3:0=7fff" to resctrl FS
+# Checking for pass/fail
+not ok CAT: cache miss rate within 4%
+# Percent diff=35
+# Number of bits: 15
+# Avg_llc_perf_miss: 438577
+# Allocated cache lines: 675840
+ok CAT: test
+1..39

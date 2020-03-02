@@ -418,10 +418,7 @@ run_tests()
 		elif [[ "$subtest" = "x86" ]]; then
 			fixup_x86
 		elif [[ "$subtest" = "resctrl" ]]; then
-			local rt="not ok"
 			log_cmd resctrl/resctrl_tests 2>&1
-			[[ $? == 0 ]] && rt="ok"
-			echo "$rt 1 selftests: resctrl: resctrl_test"
 			continue
 		fi
 
