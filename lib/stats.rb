@@ -48,7 +48,7 @@ class LinuxTestcasesTableSet
      'perf-bench-futex', 'mutilate', 'lmbench3', 'lib-micro', 'schbench',
      'pmbench', 'linkbench', 'rocksdb', 'cassandra', 'redis', 'power-idle',
      'mongodb', 'ycsb', 'memtier', 'mcperf', 'fio-jbod', 'cyclictest', 'filebench', 'igt',
-     'autonuma-benchmark'].freeze
+     'autonuma-benchmark', 'adrestia'].freeze
   LINUX_TESTCASES =
     ['analyze-suspend', 'boot', 'blktests', 'cpu-hotplug', 'ext4-frags', 'ftq', 'ftrace_onoff', 'fwq',
      'galileo', 'irda-kernel', 'kernel_selftests', 'kvm-unit-tests', 'kvm-unit-tests-qemu',

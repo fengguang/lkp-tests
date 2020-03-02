@@ -1,0 +1,15 @@
+short_description: >
+  A micro-benchmark to test scheduler load balancer
+
+homepage: https://github.com/mfleming/adrestia
+
+parameters:
+  arrival_rate:     arrival time (microseconds)
+  num_loop:         number of loopsworkers per message thread
+  service_time:     service time (microseconds)
+  num_threads:      thread count
+
+results:
+  adrestia.wakeup_cost_single_us:
+  adrestia.wakeup_cost_periodic_us:
+

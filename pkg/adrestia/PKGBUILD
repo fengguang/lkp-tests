@@ -1,0 +1,18 @@
+pkgname=adrestia
+pkgver=1.0
+pkgrel=0
+pkgdesc="A benchmark to test scheduler load balancer."
+arch=('i386' 'x86_64')
+license=('GPL')
+source=("https://github.com/mfleming/adrestia.git")
+md5sums=('SKIP')
+
+build() {
+	cd "$srcdir/$pkgname"
+	CC=clang CFLAGS="" make
+}
+
+package() {
+	mkdir -p "$pkgdir/lkp/benchmarks/adrestia"
+	cp -r "$srcdir/$pkgname/"* "$pkgdir/lkp/benchmarks/adrestia"
+}

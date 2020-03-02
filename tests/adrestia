@@ -1,0 +1,14 @@
+#!/bin/sh
+# - arrival_rate
+# - num_loop
+# - service_time
+# - num_threads
+
+cd $BENCHMARK_ROOT/adrestia || exit
+
+: ${arrival_rate:=2000}
+: ${num_loop:=200000}
+: ${service_time:=2000}
+: ${num_threads:=1}
+
+log_cmd ./adrestia -a $arrival_rate -l $num_loop -s $service_time -t $num_threads
