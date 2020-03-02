@@ -1,5 +1,5 @@
-suite: power_idle
-testcase: power_idle
+suite: power-idle
+testcase: power-idle
 category: benchmark
 
 # These monitors will not wake up from time to time,
@@ -18,5 +18,5 @@ stop_daemons:
 
 runtime: 30m
 
-power_idle:
+power-idle:
   idle_time: 600

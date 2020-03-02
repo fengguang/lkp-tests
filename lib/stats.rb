@@ -46,7 +46,7 @@ class LinuxTestcasesTableSet
      'tpcc', 'mytest', 'exit_free', 'pgbench', 'boot_trace', 'sysbench-cpu',
      'sysbench-memory', 'sysbench-threads', 'sysbench-mutex', 'stream',
      'perf-bench-futex', 'mutilate', 'lmbench3', 'lib-micro', 'schbench',
-     'pmbench', 'linkbench', 'rocksdb', 'cassandra', 'redis', 'power_idle',
+     'pmbench', 'linkbench', 'rocksdb', 'cassandra', 'redis', 'power-idle',
      'mongodb', 'ycsb', 'memtier', 'mcperf', 'fio-jbod', 'cyclictest', 'filebench', 'igt',
      'autonuma-benchmark'].freeze
   LINUX_TESTCASES =

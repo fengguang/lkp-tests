@@ -156,10 +156,10 @@ sysbench\-.+\.throughput_MB\/s: 1
 sysbench\-.+\.throughput_events\/s: 1
 sysbench\-.+\.throughput_ops\/s: 1
 idle\.turbostat.Busy% : -1
-power_idle\.turbostat\.Busy% : -1
-power_idle\.turbostat\.Bzy_MHz : -1
-power_idle\.turbostat\.PkgTemp : -1
-power_idle\.turbostat\.PkgWatt : -1
+power-idle\.turbostat\.Busy% : -1
+power-idle\.turbostat\.Bzy_MHz : -1
+power-idle\.turbostat\.PkgTemp : -1
+power-idle\.turbostat\.PkgWatt : -1
 autonuma-benchmark\.numa01\.seconds: -1
 autonuma-benchmark\.numa01_HARD_BIND\.seconds: -1
 autonuma-benchmark\.numa01_INVERSE_BIND\.seconds: -1
