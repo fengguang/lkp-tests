@@ -99,8 +99,10 @@ while (line = STDIN.gets)
   line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
 
   case line
-  when %r{make(\[\d*\])?: Entering directory .*/(.*)'}
-    testname = Regexp.last_match[2]
+  when %r{make: Entering directory .*/(.*)'}
+    testname = Regexp.last_match[1]
+  when /^ok kernel supports resctrl filesystem/
+    testname = 'resctrl'
   when %r{make: Leaving directory .*/(.*)'}
     if testname == 'memory-hotplug'
       memory_hotplug_stat(line, tests_stats['memory-hotplug'], stats)
