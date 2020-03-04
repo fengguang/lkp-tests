@@ -17,6 +17,7 @@
 # - file_service_type
 # - random_distribution
 # - numa_mem_policy
+# - pre_read
 
 . $LKP_SRC/lib/common.sh
 . $LKP_SRC/lib/unit.sh
@@ -41,9 +42,11 @@ size=$((test_size / nr_task))
 : ${io_size:=$size}
 : ${file_service_type:=roundrobin}
 : ${random_distribution:=random}
+: ${pre_read:=0}
 
 direct=$(parse_bool $direct)
 raw_disk=$(parse_bool $raw_disk)
+pre_read=$(parse_bool $pre_read)
 
 if [ "$raw_disk" = 1 ]; then
 	storages=$partitions
@@ -75,6 +78,7 @@ file_service_type=$file_service_type
 random_distribution=$random_distribution
 group_reporting
 create_only=1
+pre_read=$pre_read
 "
 
 if parse_bool -q "$time_based"; then
