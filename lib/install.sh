@@ -67,7 +67,7 @@ adapt_packages()
 		fi
 		if [ -n "$mapping" ]; then
 			distro_pkg=$(echo $mapping | awk -F": " '{print $2}')
-			diftro_pkg="^($distro_pkg)$"
+			distro_pkg="^($distro_pkg)$"
 			if [ -n "$distro_pkg" ]; then
 				echo $distro_pkg
 			else
