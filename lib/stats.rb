@@ -27,6 +27,7 @@ $index_perf = load_yaml "#{LKP_SRC}/etc/index-perf-all.yaml"
 
 $perf_metrics_re = load_regular_expressions("#{LKP_SRC}/etc/perf-metrics-patterns")
 $metrics_blacklist_re = load_regular_expressions("#{LKP_SRC}/etc/blacklist")
+$metrics_whitelist_re = load_regular_expressions("#{LKP_SRC}/etc/bisect-whitelist")
 $report_whitelist_re = load_regular_expressions("#{LKP_SRC}/etc/report-whitelist")
 $kill_pattern_whitelist_re = load_regular_expressions("#{LKP_SRC}/etc/dmesg-kill-pattern")
 
@@ -489,6 +490,11 @@ def filter_incomplete_run(hash)
   hash.delete 'last_state.is_incomplete_run'
 end
 
+def bisectable_stat?(stat)
+  return true if stat =~ $metrics_whitelist_re
+  stat !~ $metrics_blacklist_re
+end
+
 # b is the base of compare (eg. rc kernels) and normally have more samples than
 # a (eg. the branch HEADs)
 def __get_changed_stats(a, b, is_incomplete_run, options)
@@ -516,7 +522,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
     next if v[-1].is_a?(String)
     next if options['perf'] && !perf_metric?(k)
     next if is_incomplete_run && k !~ /^(dmesg|last_state|stderr)\./
-    next if !options['more'] && k =~ $metrics_blacklist_re && k !~ $report_whitelist_re
+    next if !options['more'] && !bisectable_stat?(k) && k !~ $report_whitelist_re
 
     is_failure_stat = if options['force_' + k]
                         true
