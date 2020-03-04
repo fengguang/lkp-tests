@@ -13,8 +13,8 @@ module Bash
     def call(command, options = {})
       options[:exitstatus] ||= [0]
 
-      output = `bash -c #{Shellwords.escape(command)} 2>&1`.chomp
-      raise Bash::BashCallError, "#{command}: #{output}" unless options[:exitstatus].include?($CHILD_STATUS.exitstatus)
+      output = `bash -c #{Shellwords.escape(command)}`.chomp
+      raise Bash::BashCallError, command unless options[:exitstatus].include?($CHILD_STATUS.exitstatus)
 
       output
     end
