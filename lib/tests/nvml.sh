@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. $LKP_SRC/lib/env.sh
+
 check_param()
 {
 	local casename=$1
@@ -47,6 +49,11 @@ build_env()
 	# clang-8: error: unknown argument: '-fno-semantic-interposition'
 	CFLAGS=""
 	CXXFLAGS=""
+
+	# To fix the error with aliyun rootfs:
+	# src/common.inc:366: *** Please install libndctl-dev/libndctl-devel >= 63.  Stop.
+	is_aliyunos && log_cmd export PKG_CONFIG_PATH="$PKG_CONFIG_PATH":/usr/local/lib/pkgconfig/
+
 	# All C++ container tests need customized version of libc --libc++ to compile. So specify the path of libc++ to make.
 	log_cmd make EXTRA_CFLAGS="-DPAGE_SIZE=4096 -DUSE_VALGRIND" USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1/ LIBCPP_LIBDIR=/usr/local/libcxx/lib || return
 	log_cmd make EXTRA_CFLAGS="-DPAGE_SIZE=4096 -DUSE_VALGRIND" USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1/ LIBCPP_LIBDIR=/usr/local/libcxx/lib test || return
