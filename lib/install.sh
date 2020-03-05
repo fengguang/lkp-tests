@@ -89,6 +89,26 @@ remove_packages_repository()
 	generic_packages=$(echo $generic_packages | sed 's#/[^= ]*##g')
 }
 
+# ARCH info has been introduced to handle different ARCHs in single depends file.
+# $generic_packages may contains ARCH info such as "liblsan0 (x86_64)"
+# This function remove packages that don't match current system ARCH and
+# also ARCH info itself for packages that match current system ARCH.
+parse_packages_arch()
+{
+	local arch=$(get_system_arch)
+	#remove space between package name and ARCH info
+	#"liblsan0 (x86_64)" => "liblsan0(x86_64)"
+	generic_packages=$(echo $generic_packages | sed 's/ (/(/g')
+
+	#remove ARCH info for packages that match current system ARCH
+	#"liblsan0(x86_64)" ==> "liblsan0" if current system ARCH is x86_64
+	generic_packages=$(echo $generic_packages | sed "s/(${arch})//g")
+
+	#remove packages that don't match currect system ARCH
+	#"liblsan0(i386)" ==> "" if current system ARCH is x86_64
+	generic_packages=$(echo $generic_packages | sed 's/ [^ ]*([^ ]*)//g')
+}
+
 get_dependency_packages()
 {
 	local distro=$1
@@ -99,6 +119,7 @@ get_dependency_packages()
 	[ -f "$base_file" ] || return
 
 	local generic_packages="$(sed 's/#.*//' "$base_file")"
+	parse_packages_arch
 	[ "$distro" != "debian" ] && remove_packages_version && remove_packages_repository
 
 	adapt_packages | sort | uniq
