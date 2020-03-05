@@ -90,7 +90,6 @@ end
 def resctrl_stat(line, _resctrl, stats)
   if line =~ /^not ok (.*)/
     test_content = $1.strip.tr(': ', '_')
-    stats << "resctrl.resctrl_tests.fail: 1"
     stats << "resctrl.#{test_content}.fail: 1"
   end
 end
@@ -160,11 +159,8 @@ while (line = STDIN.gets)
 end
 
 stats << "mqueue.nsec_per_msg: #{mqueue_speed.values.average.to_i}" unless mqueue_speed.empty?
-
 if testname == 'resctrl'
-  unless stats.include? "resctrl.resctrl_tests.fail: 1"
-    stats << "resctrl.resctrl_tests.pass: 1"
-  end
+  stats << "resctrl.resctrl_tests.pass: 1" unless stats.any? { |stat| stat =~ /resctrl\..+\.fail: 1/ }
 end
 stats.uniq.each { |stat| puts stat }
 nr_test = stats.count { |k, _v| k !~ /\.make_fail|\.ignored_by_lkp/ }
