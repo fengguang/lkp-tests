@@ -25,13 +25,12 @@ build_install_xfstests()
 
 build_install_f2fs_tools()
 {
-	usr_path="${pkgdir}/usr"
 	cd ${srcdir}/f2fs-tools || return
 	./autogen.sh || return
 	./configure || return
 	make || return
 	make install || return
-	make install DESTDIR=$usr_path
+	make install DESTDIR="${pkgdir}"
 }
 
 # Automatically generate ignore file to skip test cases which can not be enabled at present.
