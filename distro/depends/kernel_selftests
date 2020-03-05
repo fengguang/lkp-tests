@@ -2,8 +2,8 @@ clang-6.0
 libstdc++-7-dev/unstable
 libgcc-7-dev/unstable
 libobjc-7-dev/unstable
-liblsan0/unstable
-libtsan0/unstable
+liblsan0/unstable (x86_64)
+libtsan0/unstable (x86_64)
 libubsan0/unstable
 libcilkrts5/unstable
 libmpx2/unstable
@@ -13,7 +13,7 @@ gcc-6
 gcc-6-multilib
 libc6-dev/unstable
 libc-bin/unstable
-libc6-dev-i386/unstable
+libc6-dev-i386/unstable (x86_64)
 libc6-dev-x32/unstable
 libc6/unstable
 rsync
@@ -52,3 +52,18 @@ libc-dev-bin/unstable
 nftables
 ebtables
 ipvsadm
+lib64gcc1 (i386)
+lib64gomp1 (i386)
+lib64itm1 (i386)
+lib64atomic1 (i386)
+lib64asan3 (i386)
+lib64ubsan0 (i386)
+lib64cilkrts5 (i386)
+lib64mpx2 (i386)
+lib64quadmath0 (i386)
+libc6-amd64/unstable (i386)
+lib64stdc++6 (i386)
+libclang-common-6.0-dev (i386)
+libc6-dev-amd64/unstable (i386)
+lib64gcc-6-dev (i386)
+libx32gcc-6-dev (i386)
