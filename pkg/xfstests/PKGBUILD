@@ -94,10 +94,11 @@ separate_tests()
 	cd $benchmark_path/tests
 	separate_special_tests || return
 
-	split xfs-new -d -n 30 xfs-group
-	split btrfs-new -d -n 3 btrfs-group
-	split generic-new -d -n 30 generic-group
-	split ext4-new -d -n 1 ext4-group
+	# Option "-n r/N" to avoid splitting lines
+	split xfs-new -d -n r/30 xfs-group
+	split btrfs-new -d -n r/3 btrfs-group
+	split generic-new -d -n r/30 generic-group
+	split ext4-new -d -n r/1 ext4-group
 }
 
 # Some special tests need to be separated and tested separately
