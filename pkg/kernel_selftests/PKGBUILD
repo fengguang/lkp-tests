@@ -1,0 +1,82 @@
+pkgname=kernel_selftests
+pkgver=git
+pkgrel=1
+arch=('i686' 'x86_64')
+url="https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git"
+license=('GPL')
+source=('https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git')
+md5sums=('SKIP')
+
+# Download kernel from git.kernel.org.
+# If the kernel has been download into the computer, you can copy it to ${srcdir}.
+# As far as possible, please keep the version of source code same with the installed kernel.
+# If you want test a specfied version, you can download the code first, build and install it,
+# then restart the machine using the new kernel. Lastly, you can start to test it.
+
+get_kernel_version()
+{
+	# format: X.Y.Z-...
+	local version=$(uname -r)
+	# format: X.Y.Z
+	local a=${version%%-*}
+	# format: X.Y
+	local b=${a%.*}
+	echo "v$b"
+}
+
+build_tools()
+{
+	cd "${srcdir}/linux"
+	if [[ -d .git ]]; then
+		local installed_version="$(get_kernel_version)"
+		git tag | grep -x "${installed_version}" || die "can not bring the download kernel version into correspondence with the installed kernel"
+		echo "switch to version $installed_version ..."
+		git checkout -b "test-${installed_version}" "$installed_version"
+	else
+		echo "please make sure the version of current kernel is $installed_version"
+	fi
+
+	make allyesconfig
+	make prepare
+	# install cpupower command
+	cd tools/power/cpupower
+	make
+	make install
+}
+
+install_selftests()
+{
+	cd "${srcdir}/linux"
+	local header_dir="/tmp/linux-headers"
+
+	mkdir -p "${header_dir}"
+	make headers_install INSTALL_HDR_PATH="${header_dir}"
+
+	mkdir -p "${benchmark_path}/usr/include"
+	cp -af "${header_dir}/include/"* "${benchmark_path}/usr/include"
+
+	mkdir -p "${benchmark_path}/tools/include/uapi/asm"
+	cp -af "${header_dir}/include/asm/"* "${benchmark_path}/tools/include/uapi/asm"
+
+	mkdir -p "${benchmark_path}/tools/testing/selftests"
+	cp -af tools/testing/selftests/* "${benchmark_path}/tools/testing/selftests"
+}
+
+build()
+{
+	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+	mkdir -p "${benchmark_path}"
+	build_tools
+	install_selftests
+}
+
+package()
+{
+	usr_path="${pkgdir}/usr"
+	mkdir -p "${usr_path}/lib"
+	for sofile in /usr/lib/libcpupower.*; do
+		cp "$sofile" "${usr_path}/lib"
+	done
+	mkdir -p "${usr_path}/bin"
+	cp /usr/bin/cpupower "${usr_path}/bin"
+}
