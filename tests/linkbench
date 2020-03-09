@@ -2,6 +2,10 @@
 # - nr_task
 # - duration
 
+. $LKP_SRC/lib/tests/cassandra.sh
+
+setup_java_home
+
 cd "$BENCHMARK_ROOT/linkbench" || exit
 duration=${duration%%s}
 
