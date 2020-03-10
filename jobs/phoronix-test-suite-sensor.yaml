@@ -1,0 +1,9 @@
+suite: phoronix-test-suite
+testcase: phoronix-test-suite
+category: benchmark
+
+need_memory: 8G
+
+phoronix-test-suite:
+  test:
+  - idle-power-usage-1.0.0
