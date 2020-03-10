@@ -43,6 +43,12 @@ pack_deb() {
 	EOF
 	chmod +x $INSTALL_DIR/DEBIAN/postinst
 	fi
+
+	# set dir permission to be exact 0755 (drwxr-xr-x) to avoid error:
+	# dpkg-deb: error: control directory has bad permissions
+	# 2755 (must be >=0755 and <=0775)
+	chmod 0755 "$INSTALL_DIR/DEBIAN"
+	chmod a-s "$INSTALL_DIR/DEBIAN"
 	dpkg-deb --build "$pkg_name-lkp"
 }
 
