@@ -239,6 +239,11 @@ test_setting()
 	ltp-aiodio.part[24]|syscalls_part[14]|dio-0*|io)
 		specify_tmpdir || exit
 		;;
+	syscalls-ipc-01)
+		# avoid soft_timeout by reducing the max number of message
+		# queues to 10000(default is 32000)
+		echo 10000 > /proc/sys/kernel/msgmni
+		;;
 	syscalls_part2)
 		export LTP_TIMEOUT_MUL=5
 		specify_tmpdir || exit
