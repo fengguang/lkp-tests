@@ -24,7 +24,7 @@ rtcwake_file=/sys/class/rtc/rtc0/wakealarm
 
 log_file=./log
 dmesg_file=./dmesg.log
-f_lkp_output=./suspend_stress
+f_lkp_output=./suspend-stress
 
 echo "SUSPEND RESUME TEST STARTED"
 

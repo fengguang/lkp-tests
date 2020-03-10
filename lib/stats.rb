@@ -54,7 +54,7 @@ class LinuxTestcasesTableSet
     ['analyze-suspend', 'boot', 'blktests', 'cpu-hotplug', 'ext4-frags', 'ftq', 'ftrace-onoff', 'fwq',
      'galileo', 'irda-kernel', 'kernel_selftests', 'kvm-unit-tests', 'kvm-unit-tests-qemu',
      'leaking-addresses', 'locktorture', 'ltp', 'mce-test', 'otc_ddt', 'piglit', 'pm-qa', 'nvml',
-     'qemu', 'rcuperf', 'rcutorture', 'suspend', 'suspend_stress', 'trinity', 'ndctl', 'nfs-test', 'hwsim',
+     'qemu', 'rcuperf', 'rcutorture', 'suspend', 'suspend-stress', 'trinity', 'ndctl', 'nfs-test', 'hwsim',
      'idle-inject', 'mdadm-selftests', 'xsave-test', 'nvml', 'test_bpf', 'mce-log', 'perf-sanity-tests',
      'build-perf_test', 'update-ucode', 'reboot', 'cat', 'libhugetlbfs-test', 'ocfs2test', 'syzkaller',
      'perf_test', 'stress-ng', 'sof_test', 'fxmark', 'kvm-kernel-boot-test', 'bkc_ddt', 'bpf_offload',
