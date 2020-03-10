@@ -1,5 +1,5 @@
-suite: kernel_selftests
-testcase: kernel_selftests
+suite: kernel-selftests
+testcase: kernel-selftests
 category: functional
 
 # NOET: need_memory might be different for different rootfs
@@ -7,7 +7,7 @@ category: functional
 # on debian rootfs
 need_memory: 2G
 need_cpu: 2
-kernel_selftests:
+kernel-selftests:
   group:
     - kselftests-00
     - kselftests-03
@@ -19,12 +19,12 @@ kernel_cmdline: erst_disable
 
 ---
 need_memory: 3G
-kernel_selftests:
+kernel-selftests:
   group:
     - kselftests-02
 
 ---
-kernel_selftests:
+kernel-selftests:
   group:
     - kselftests-01
 

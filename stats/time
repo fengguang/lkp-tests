@@ -7,7 +7,7 @@ while (line = STDIN.gets)
 
   # skip the first line to avoid empty val.
   # Command exited with non-zero status 2
-  #   Command being timed: "/lkp/wfg/src/tests/kernel_selftests"
+  #   Command being timed: "/lkp/wfg/src/tests/kernel-selftests"
   #   User time (seconds): 13.70
   #   ...
   next unless val

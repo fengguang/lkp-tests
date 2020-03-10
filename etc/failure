@@ -1,6 +1,6 @@
 dmesg.*
 .+\.(error|warn|fail).*
-kernel_selftests\..+(make_fail|test_make_fail)
+kernel-selftests\..+(make_fail|test_make_fail)
 .+killed_by.*
 kmsg.*
 last_state.*

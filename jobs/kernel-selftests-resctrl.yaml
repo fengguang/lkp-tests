@@ -1,5 +1,5 @@
-suite: kernel_selftests
-testcase: kernel_selftests
+suite: kernel-selftests
+testcase: kernel-selftests
 category: functional
 
 # NOET: need_memory might be different for different rootfs
@@ -7,8 +7,8 @@ category: functional
 # on debian rootfs
 need_memory: 2G
 need_cpu: 2
-kernel_selftests:
+kernel-selftests:
   group:
-    - kselftests-x86
+    - kselftests-resctrl
 # never register ERST as pstore backend
 kernel_cmdline: erst_disable
