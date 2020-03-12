@@ -36,7 +36,7 @@ expand_tag_to_commit()
 
 	[[ "$project" ]] || project="linux"
 
-	[[ "$param" =~ (v[0-9].[0-9]+[_-rc0-9]*) ]] &&
+	[[ "$param" =~ (^v[0-9].[0-9]+[-rc0-9_]*$) ]] &&
 	{
 		git_tag=$BASH_REMATCH
 		git_tag="${git_tag%/*}"
