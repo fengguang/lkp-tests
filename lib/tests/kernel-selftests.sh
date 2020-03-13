@@ -224,8 +224,8 @@ fixup_memfd()
 
 fixup_bpf()
 {
-	log_cmd make -C ../../../tools/bpf 2>&1 || return
-	log_cmd make install -C ../../../tools/bpf 2>&1 || return
+	log_cmd make -C ../../../tools/bpf/bpftool 2>&1 || return
+	log_cmd make install -C ../../../tools/bpf/bpftool 2>&1 || return
 	type ping6 && {
 		sed -i 's/if ping -6/if ping6/g' bpf/test_skb_cgroup_id.sh 2>/dev/null
 		sed -i 's/ping -${1}/ping${1%4}/g' bpf/test_sock_addr.sh 2>/dev/null
@@ -238,6 +238,8 @@ fixup_bpf()
 	echo "ignored_by_lkp bpf.test_tc_tunnel.sh test"
 	sed -i 's/test_lwt_seg6local.sh//' bpf/Makefile
 	echo "ignored_by_lkp bpf.test_lwt_seg6local.sh test"
+	sed -i 's/ runqslower//' bpf/Makefile
+	echo "ignored_by_lkp bpf.runqslower test"
 	# some sh scripts actually need bash
 	# ./test_libbpf.sh: 9: ./test_libbpf.sh: 0: not found
 	[ "$(cmd_path bash)" = '/bin/bash' ] && [ $(readlink -e /bin/sh) != '/bin/bash' ] &&
