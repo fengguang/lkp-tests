@@ -323,6 +323,12 @@ fixup_x86()
 	}
 }
 
+fixup_livepatch()
+{
+	# livepatch check if dmesg meet expected exactly, so disable redirect stdout&stderr to kmsg
+	[[ -s "/tmp/pid-tail-global" ]] && cat /tmp/pid-tail-global | xargs kill -9 && echo "" >/tmp/pid-tail-global
+}
+
 build_tools()
 {
 
@@ -420,6 +426,8 @@ run_tests()
 		elif [[ "$subtest" = "resctrl" ]]; then
 			log_cmd resctrl/resctrl_tests 2>&1
 			continue
+		elif [[ "$subtest" = "livepatch" ]]; then
+			fixup_livepatch
 		fi
 
 		log_cmd make run_tests -C $subtest  2>&1
