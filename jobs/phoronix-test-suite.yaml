@@ -53,6 +53,7 @@ phoronix-test-suite:
   - cyclictest-1.0.0
   - cython-bench-1.0.0
   # - dacapobench-1.0.0 # 3rd party url is N/A
+  - darktable-1.0.4
   - dav1d-1.0.0
   - dbench-1.0.0
   - dcraw-1.1.0
@@ -127,6 +128,7 @@ phoronix-test-suite:
   - numenta-nab-1.0.0
   # - numpy-1.0.5 # run time more than 1h
   - octave-benchmark-1.0.0
+  - oidn-1.1.1
   - opencv-bench-1.0.0
   # - open-porous-media-1.3.1 # 3rd party url is N/A
   - openssl-1.11.0
@@ -134,6 +136,7 @@ phoronix-test-suite:
   - optcarrot-1.0.0
   - osbench-1.0.1
   - parboil-1.2.1
+  - pennant-1.0.1
   - perl-benchmark-1.0.1
   - pgbench-1.8.7
   - php-1.0.0
@@ -151,8 +154,10 @@ phoronix-test-suite:
   # - pyopencl-1.0.0 # 3rd party url is N/A
   - radiance-1.0.0
   - ramspeed-1.4.2
+  - redis-1.2.0
   - renaissance-1.0.0
   - rbenchmark-1.0.3
+  - rodinia-1.2.2
   - rust-mandel-1.0.0
   - rust-prime-1.0.0
   - sample-program-1.1.1
@@ -164,6 +169,7 @@ phoronix-test-suite:
   - smart-1.0.0
   - sockperf-1.0.0
   - sqlite-2.0.1
+  - sqlite-speedtest-1.0.0
   - startup-time-1.3.0
   - stockfish-1.1.1
   - stream-1.3.1
@@ -191,6 +197,7 @@ phoronix-test-suite:
   - tjbench-1.0.2
   - tscp-1.2.1
   - ttsiod-renderer-1.7.0
+  - tungsten-1.0.0
   - unpack-linux-1.1.1
   # - v-ray-1.0.2 # 3rd party url is N/A
   # - viennacl-1.0.0 # wait for newer version
