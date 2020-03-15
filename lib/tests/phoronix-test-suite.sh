@@ -674,7 +674,7 @@ run_test()
 		iperf-*)
 			fixup_iperf $test || die "failed to fixup test $test"
 			;;
-		sqlite-*)
+		sqlite-[0-9]*)
 			fixup_sqlite $test || die "failed to fixup test $test"
 			;;
 		cyclictest-*)
