@@ -744,6 +744,11 @@ run_test()
 			# select Poppler
 			test_opt="\n3\nn"
 			;;
+		clpeak-*)
+			# 7: Kernel Latency
+			# 4: Integer Compute INT # this subtest was disabled on Intel platform
+			test_opt="7\nn"
+			;;
 	esac
 
 	export PTS_SILENT_MODE=1
