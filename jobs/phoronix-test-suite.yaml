@@ -7,7 +7,7 @@ need_memory: 8G
 phoronix-test-suite:
   test:
   - aio-stress-1.1.1
-  - aircrack-ng-1.1.2
+  # - aircrack-ng-1.1.2 # need to connect to internet
   - aobench-1.0.1
   - aom-av1-1.2.0
   - apache-1.7.2
