@@ -22,6 +22,7 @@ need_memory: 3G
 kernel-selftests:
   group:
     - kselftests-02
+    - kselftests-mptcp
 
 ---
 kernel-selftests:

@@ -132,9 +132,6 @@ fixup_net()
 	ulimit -l 10240
 	modprobe fou
 	modprobe nf_conntrack_broadcast
-
-	# net/Makefile doesn't include mptcp
-	log_cmd make run_tests -C net/mptcp 2>&1
 }
 
 fixup_efivarfs()
@@ -268,6 +265,8 @@ prepare_for_selftest()
 		selftest_mfs=$(ls -d x86/Makefile)
 	elif [ "$group" = "kselftests-resctrl" ]; then
 		selftest_mfs=$(ls -d resctrl/Makefile)
+	elif [ "$group" = "kselftests-mptcp" ]; then
+		selftest_mfs=$(ls -d net/mptcp/Makefile)
 	fi
 }
 
