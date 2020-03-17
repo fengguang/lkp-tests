@@ -387,6 +387,13 @@ setup_python3()
 	ln -sf $(which python3) $(which python) || return
 }
 
+fixup_aom_av1_install()
+{
+	local test=$1
+	local target=/var/lib/phoronix-test-suite/test-profiles/pts/${test}/install.sh
+	sed -i "3ased -i 's,64,300,' aom-20190916/aom_util/aom_thread.h" "$target"
+}
+
 fixup_ffmpeg_install()
 {
 	local test=$1
@@ -482,6 +489,10 @@ fixup_install()
 	ffmpeg-*)
 		# fix issue: Unable to create temporary directory in /lkp/lkp/src/tmp
 		fixup_ffmpeg_install $test || die "failed to fixup $test install"
+		;;
+	aom-av1-*)
+		# fix issue: g_threads out of range [..MAX_NUM_THREADS]
+		fixup_aom_av1_install $test || die "failed to fixup $test install"
 		;;
 	xsbench-cl-*)
 		# fix issue: unionized_grid_search: failed to launch kernel with error -54
