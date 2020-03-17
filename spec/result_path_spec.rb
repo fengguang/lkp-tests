@@ -355,6 +355,39 @@ describe ResultPath do
     end
   end
 
+  describe '#parse_test_desc' do
+    it 'handles test desc with dedault param' do
+      result_path = described_class.new
+      result_path['testcase'] = 'xfstests'
+
+      test_desc = result_path.parse_test_desc("xfstests/4HDD-xfs-xfs-group17/vm-snb/e93c9c99a629c61837d5a7fc2120cd2b6c70dbdd")
+      expect(test_desc['path_params']).to eq '4HDD-xfs-xfs-group17'
+      expect(test_desc['tbox_group']).to eq 'vm-snb'
+      expect(result_path['commit']).to eq nil
+    end
+
+    it 'handles test desc with dim_not_a_param=false' do
+      result_path = described_class.new
+      result_path['testcase'] = 'xfstests'
+
+      test_desc = result_path.parse_test_desc("xfstests/4HDD-xfs-xfs-group17/vm-snb/e93c9c99a629c61837d5a7fc2120cd2b6c70dbdd", dim_not_a_param = false)
+      expect(test_desc['path_params']).to eq '4HDD-xfs-xfs-group17'
+      expect(test_desc['tbox_group']).to eq 'vm-snb'
+      expect(test_desc['commit']).to eq 'e93c9c99a629c61837d5a7fc2120cd2b6c70dbdd'
+    end
+
+    it 'handles test desc with dim=dpdk_compiler' do
+      result_path = described_class.new
+      result_path['testcase'] = 'build-dpdk'
+
+      test_desc = result_path.parse_test_desc("build-dpdk/x86_64-native-linuxapp-gcc/0f57d86787d8b1076ea8f9cbdddda2a46d534a27/60c5c5692107abf4157d48493aa2dec01f6b97cc", dim = 'dpdk_compiler')
+      expect(test_desc['dpdk_config']).to eq 'x86_64-native-linuxapp-gcc'
+      expect(test_desc['commit']).to eq '0f57d86787d8b1076ea8f9cbdddda2a46d534a27'
+      expect(test_desc['dpdk_compiler']).to eq nil
+      expect(test_desc['dpdk_commit']).to eq '60c5c5692107abf4157d48493aa2dec01f6b97cc'
+    end
+  end
+
   valid_dpdk_result_root = "#{RESULT_ROOT_DIR}/build-dpdk/dpdk-rootfs/x86_64-native-linuxapp-gcc/0f57d86787d8b1076ea8f9cbdddda2a46d534a27/gcc-4.9/60c5c5692107abf4157d48493aa2dec01f6b97cc/0"
   valid_qemu_result_root = "#{RESULT_ROOT_DIR}/build-qemu/x86_64-softmmu/a58047f7fbb055677e45c9a7d65ba40fbfad4b92/2"
 
