@@ -2,6 +2,8 @@ suite: phoronix-test-suite
 testcase: phoronix-test-suite
 category: benchmark
 
+timeout: 1h
+
 phoronix-test-suite:
   test:
   - clpeak-1.0.1
