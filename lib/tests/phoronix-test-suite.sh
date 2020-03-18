@@ -569,6 +569,10 @@ run_test()
 			test_opt="\n2\n1\nn"
 			ignored_on_clear=1
 			;;
+		numenta-nab-*)
+			# fix issue: SyntaxError: Missing parentheses in call to 'print'.
+			setup_python2
+			;;
 		mandel*gpu-*)
 			# Choose
 			# 2. GPU
