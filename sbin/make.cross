@@ -15,12 +15,16 @@
 # With particular GCC_VERSION:
 # - GCC_VERSION=7.2.0 make.cross ARCH=arm
 #
+# Specify compiler clang (default is gcc):
+# - COMPILER=clang make.cross ARCH=arm64
+#
 # Copyright (c) 2014, Intel Corporation.
 # Author: Fengguang Wu <fengguang.wu@intel.com>
 # Credit: Tony Breeds <tony@bakeyournoodle.com> for crosstool
 
 GCC_VERSION=${GCC_VERSION:-""}
 COMPILER_INSTALL_PATH=${COMPILER_INSTALL_PATH:-"$HOME/0day"}
+COMPILER=${COMPILER:-"gcc"}
 
 if [[ ! "$0" =~ 'make.cross' && "$0" =~ make\.([a-z0-9_]+) ]]; then
 	export ARCH="${BASH_REMATCH[1]}"
@@ -38,6 +42,11 @@ fi
 }
 
 shopt -s nullglob
+
+is_clang_worker()
+{
+	[[ "$COMPILER" =~ "clang" ]]
+}
 
 install_packages()
 {
@@ -71,6 +80,30 @@ download_extract()
 	tar Jxf $dir/$file -C $COMPILER_INSTALL_PATH
 }
 
+install_crosstool_clang()
+{
+	local URL='https://download.01.org/0day-ci/cross-package'
+	local list=/tmp/0day-ci-crosstool-files
+	local file='clang.tar.xz'
+
+	[[ -s $list ]] || {
+		lftp -c "open $URL && find -d 3 > $list" || return
+	}
+
+	file=$(grep $file $list | tail -1)
+	[[ $file ]] || {
+		echo "Cannot find $file under $URL check $list"
+		return 1
+	}
+
+	rm $list
+
+	download_extract "$URL/$file" || {
+		echo "Failed to download $URL/$file"
+		return 1
+	}
+}
+
 install_crosstool_gcc()
 {
 	local URL='https://download.01.org/0day-ci/cross-package'
@@ -100,10 +133,17 @@ install_crosstool_gcc()
 
 install_crosstool()
 {
-	install_crosstool_gcc || {
-		echo "gcc crosstool install failed"
-		return 1
-	}
+	if is_clang_worker; then
+		install_crosstool_clang || {
+			echo "clang crosstool install failed"
+			return 1
+		}
+	else
+		install_crosstool_gcc || {
+			echo "gcc crosstool install failed"
+			return 1
+		}
+	fi
 }
 
 install_cross_compiler()
@@ -210,9 +250,32 @@ setup_crosstool_gcc()
 	fi
 }
 
+
+setup_crosstool_clang()
+{
+	local cross_clang=("$COMPILER_INSTALL_PATH"/clang-latest/bin/clang)
+	[[ -x $cross_clang ]] || install_cross_compiler || {
+		echo "Install clang compiler failed"
+		return 1
+	}
+
+	opt_cross="HOSTCC=$cross_clang CC=$cross_clang"
+	if [[ $ARCH = "arm64" ]]; then
+		opt_cross="$opt_cross CROSS_COMPILE=aarch64-linux-gnu-"
+	elif [[ $ARCH = "arm" ]]; then
+		opt_cross="$opt_cross CROSS_COMPILE=arm-linux-gnueabi-"
+	else
+		opt_cross="$opt_cross CROSS_COMPILE=$ARCH-linux-gnu-"
+	fi
+}
+
 setup_crosstool()
 {
-	setup_crosstool_gcc
+	if is_clang_worker; then
+		setup_crosstool_clang
+	else
+		setup_crosstool_gcc
+	fi
 }
 
 setup_crosstool || {
