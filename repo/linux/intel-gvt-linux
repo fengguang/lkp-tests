@@ -3,7 +3,6 @@ belongs_to: GVT
 notify_build_success_branch: .*
 mail_cc:
 - zhenyu.z.wang@intel.com
-- libo.zhu@intel.com
 - terrence.xu@intel.com
 - intel-gvt-dev@lists.freedesktop.org
 test_old_branches: .*
