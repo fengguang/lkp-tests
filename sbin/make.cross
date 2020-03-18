@@ -239,6 +239,9 @@ setup_crosstool_gcc()
 		mn10300)
 			gcc_arch=am33_2.0-linux
 			;;
+		nds32)
+			gcc_arch=nds32le-linux
+			;;
 		xtensa)
 			setup_compiler_for_xtensa
 			;;
