@@ -20,7 +20,7 @@
 # Credit: Tony Breeds <tony@bakeyournoodle.com> for crosstool
 
 GCC_VERSION=${GCC_VERSION:-""}
-GCC_INSTALL_PATH=${GCC_INSTALL_PATH:-"$HOME/0day"}
+COMPILER_INSTALL_PATH=${COMPILER_INSTALL_PATH:-"$HOME/0day"}
 
 if [[ ! "$0" =~ 'make.cross' && "$0" =~ make\.([a-z0-9_]+) ]]; then
 	export ARCH="${BASH_REMATCH[1]}"
@@ -41,9 +41,9 @@ shopt -s nullglob
 
 install_packages()
 {
-	[[ ! -x /usr/bin/xz || ! -x /usr/bin/lftp ]] && {
+	[[ -x /usr/bin/xz && -x /usr/bin/lftp ]] || {
 		echo Please install: xz-utils lftp
-		exit 1
+		return 1
 	}
 }
 
@@ -60,25 +60,23 @@ download_extract()
 	     lftpget -c $URL || return
 	cd ..
 
-	mkdir -p $GCC_INSTALL_PATH || return
+	mkdir -p $COMPILER_INSTALL_PATH || return
 
-	[[ -w "$GCC_INSTALL_PATH" ]] || {
-		echo "Can't use $GCC_INSTALL_PATH as gcc install path, please choose a different GCC_INSTALL_PATH"
-		exit 1
+	[[ -w "$COMPILER_INSTALL_PATH" ]] || {
+		echo "Can't use $COMPILER_INSTALL_PATH as compiler install path, please choose a different COMPILER_INSTALL_PATH"
+		return 1
 	}
 
-	echo tar Jxf $dir/$file -C $GCC_INSTALL_PATH
-	tar Jxf $dir/$file -C $GCC_INSTALL_PATH
+	echo tar Jxf $dir/$file -C $COMPILER_INSTALL_PATH
+	tar Jxf $dir/$file -C $COMPILER_INSTALL_PATH
 }
 
-install_crosstool()
+install_crosstool_gcc()
 {
 	local URL='https://download.01.org/0day-ci/cross-package'
-	local list=/tmp/crosstool-files
+	local list=/tmp/0day-ci-crosstool-files
 
-	[[ -s $list ]] || {
-		lftp -c "open $URL && find -d 3 > $list" || exit
-	}
+	lftp -c "open $URL && find -d 3 > $list" || return
 
 	local file
 	local gcc_arch_pattern=$(echo "${gcc_arch}" | sed 's/*/.*/g')
@@ -89,20 +87,28 @@ install_crosstool()
 	fi
 	[[ $file ]] || {
 		echo "Cannot find $gcc_arch_pattern under $URL check $list"
-		exit 1
+		return 1
 	}
+
+	rm $list
 
 	download_extract "$URL/$file" || {
 		echo "Failed to download $URL/$file"
-		exit 1
+		return 1
+	}
+}
+
+install_crosstool()
+{
+	install_crosstool_gcc || {
+		echo "gcc crosstool install failed"
+		return 1
 	}
 }
 
 install_cross_compiler()
 {
-	install_packages
-
-	install_crosstool
+	install_packages && install_crosstool
 }
 
 setup_compiler_for_xtensa()
@@ -122,7 +128,7 @@ setup_compiler_for_xtensa()
 	fi
 }
 
-setup_crosstool()
+setup_crosstool_gcc()
 {
 	local gcc_arch
 	local gcc_exec
@@ -183,13 +189,16 @@ setup_crosstool()
 	esac
 
 	if [[ $gcc_arch ]]; then
-		gcc_exec=($GCC_INSTALL_PATH/gcc-${GCC_VERSION}*/${gcc_arch}/bin/${gcc_arch}-gcc)
-		[[ -x $gcc_exec ]] || install_cross_compiler
+		gcc_exec=($COMPILER_INSTALL_PATH/gcc-${GCC_VERSION}*/${gcc_arch}/bin/${gcc_arch}-gcc)
+		[[ -x $gcc_exec ]] || install_cross_compiler || {
+			echo "Install gcc cross compiler failed"
+			return 1
+		}
 
-		gcc_exec=($GCC_INSTALL_PATH/gcc-${GCC_VERSION}*/${gcc_arch}/bin/${gcc_arch}-gcc)
+		gcc_exec=($COMPILER_INSTALL_PATH/gcc-${GCC_VERSION}*/${gcc_arch}/bin/${gcc_arch}-gcc)
 		[[ -x $gcc_exec ]] || {
 			echo "No cross compiler for $ARCH"
-			exit
+			return 1
 		}
 
 		# use highest available version
@@ -201,7 +210,15 @@ setup_crosstool()
 	fi
 }
 
-setup_crosstool
+setup_crosstool()
+{
+	setup_crosstool_gcc
+}
+
+setup_crosstool || {
+	echo "setup_crosstool failed"
+	exit 1
+}
 
 [[ "$*" =~ (-j|--jobs) ]] || {
 	nr_cpu=$(getconf _NPROCESSORS_CONF)
