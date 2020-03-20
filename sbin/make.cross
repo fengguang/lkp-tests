@@ -109,9 +109,7 @@ install_crosstool_clang()
 	local URL='https://download.01.org/0day-ci/cross-package'
 	local list=/tmp/0day-ci-crosstool-files
 	local file='clang.tar.xz'
-	[[ -s $list ]] || {
-		lftp -c "open $URL && find -d 3 > $list" || return
-	}
+	lftp -c "open $URL && find -d 3 > $list" || return
 
 	file=$(grep $file $list | tail -1)
 	[[ $file ]] || {
