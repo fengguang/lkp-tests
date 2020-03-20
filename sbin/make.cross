@@ -80,11 +80,9 @@ download_extract()
 	tar Jxf $dir/$file -C $COMPILER_INSTALL_PATH
 }
 
-install_crosstool_clang()
+# Clang need install cross packages locally
+install_cross_packages()
 {
-	local URL='https://download.01.org/0day-ci/cross-package'
-	local list=/tmp/0day-ci-crosstool-files
-	local file='clang.tar.xz'
 	local cross_packages
 
 	if [[ "$ARCH" == "arm" ]]; then
@@ -104,7 +102,13 @@ install_crosstool_clang()
 		echo "As of now, make.cross only install dpkg packages automatically"
 		echo "Please ensure $ARCH cross tools has been installed"
 	fi
+}
 
+install_crosstool_clang()
+{
+	local URL='https://download.01.org/0day-ci/cross-package'
+	local list=/tmp/0day-ci-crosstool-files
+	local file='clang.tar.xz'
 	[[ -s $list ]] || {
 		lftp -c "open $URL && find -d 3 > $list" || return
 	}
@@ -275,6 +279,8 @@ setup_crosstool_gcc()
 
 setup_crosstool_clang()
 {
+	install_cross_packages
+
 	local cross_clang=("$COMPILER_INSTALL_PATH"/clang-latest/bin/clang)
 	[[ -x $cross_clang ]] || install_cross_compiler || {
 		echo "Install clang compiler failed"
