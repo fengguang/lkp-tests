@@ -47,7 +47,6 @@ adapt_packages()
 	if [ -z "$PKG_TYPE" ]; then
 		distro_ver_file="$LKP_SRC/distro/adaptation/$distro-$_system_version"
 		distro_file="$LKP_SRC/distro/adaptation/$distro"
-		makepkg_distro_file="$LKP_SRC/distro/adaptation-pkg/$distro"
 	else
 		distro_file="$LKP_SRC/distro/adaptation-$PKG_TYPE/$distro"
 	fi
@@ -74,7 +73,7 @@ adapt_packages()
 				[ "$mapping" != "$distro_pkg" ] && [ -n "$distro_pkg" ] && echo $distro_pkg
 			fi
 		else
-			[ -z "$PKG_TYPE" ] && ! adapt_package $pkg $makepkg_distro_file >/dev/null && echo $pkg
+			[ -z "$PKG_TYPE" ] && echo $pkg
 		fi
 	done
 }
