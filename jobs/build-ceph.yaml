@@ -2,7 +2,7 @@ suite: build-ceph
 testcase: build-ceph
 category: build
 
-timeout: 6000
+timeout: 2h
 need_memory: 8G
 testbox: lkp-opteron1
 
