@@ -1,0 +1,19 @@
+#!/bin/bash
+# - group
+
+. $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/tests/vmem.sh
+
+#libvmem and libvmmalloc are a couple of libraries for using persistent memory for malloc-like volatile uses.
+#They have historically been a part of PMDK despite being solely for volatile uses.
+
+cd $BENCHMARK_ROOT/vmem || die "fail to cd $BENCHMARK_ROOT/vmem"
+
+check_vmem_param "$testcase"
+
+setup_compiler
+
+build_vmem_env "$testcase" || die "build env failed"
+
+run_vmem "$testcase"

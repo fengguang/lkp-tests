@@ -1,0 +1,18 @@
+suite: vmem
+testcase: vmem
+category: functional
+
+branch: linus/master
+
+vmem:
+  group:
+    - vmmalloc
+
+---
+nvdimm:
+  mode: dax
+  nr_dev: 1
+
+vmem:
+  group:
+    - vmem
