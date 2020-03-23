@@ -224,6 +224,7 @@ run_program_in_background()
 
 run_monitor()
 {
+	[ "$need_monitors" = "false" ] && return
 	run_program_in_background "$@"
 }
 
