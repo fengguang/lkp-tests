@@ -37,11 +37,13 @@ OPS.each do |ops|
   res_clat_percentiles = res_clat['percentile']
   puts "#{ops}_clat_mean_us: #{res_clat['mean']}"
   puts "#{ops}_clat_stddev: #{res_clat['stddev']}"
-  PERCENTILES.each do |p|
-    sp = p.chomp('0')
-    true while sp.chomp!('0')
-    sp.chomp!('.')
-    puts "#{ops}_clat_#{sp}%_us: #{res_clat_percentiles[p]}"
+  if res_clat_percentiles
+    PERCENTILES.each do |p|
+      sp = p.chomp('0')
+      true while sp.chomp!('0')
+      sp.chomp!('.')
+      puts "#{ops}_clat_#{sp}%_us: #{res_clat_percentiles[p]}"
+    end
   end
   res_slat = res['slat'] || res['slat_ns']
   puts "#{ops}_slat_mean_us: #{res_slat['mean']}"
