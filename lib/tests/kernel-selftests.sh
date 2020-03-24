@@ -431,7 +431,7 @@ run_tests()
 			fixup_livepatch
 		fi
 
-		log_cmd make run_tests -C $subtest  2>&1
+		log_cmd make run_tests -C $subtest  2>&1 || return
 
 		if [[ "$subtest" = "firmware" ]]; then
 			cleanup_for_firmware
