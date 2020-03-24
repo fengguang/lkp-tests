@@ -2,6 +2,7 @@ LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
 require 'English'
 require 'shellwords'
+require 'open3'
 
 # rli9 FIXME: find a way to combine w/ misc
 module Bash
@@ -17,6 +18,13 @@ module Bash
       raise Bash::BashCallError, command unless options[:exitstatus].include?($CHILD_STATUS.exitstatus)
 
       output
+    end
+
+    def call2(command)
+      stdout, stderr, status = Open3.capture3("bash -c #{Shellwords.escape(command)}")
+      raise Bash::BashCallError, "#{command}\n#{stderr}#{stdout}" unless status.success?
+
+      stdout
     end
   end
 end
