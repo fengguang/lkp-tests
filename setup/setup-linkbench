@@ -3,6 +3,23 @@
 . $LKP_SRC/lib/tests/cassandra.sh
 . $LKP_SRC/lib/env.sh
 
+check_mysql_server()
+{
+	retries=10
+	for i in $(seq $retries);
+	do
+		mysqladmin ping | grep alive
+		return_value=$?
+		if [ "$return_value" -eq 1 ]; then
+			sleep 10
+		else
+			return
+		fi
+	done
+	die "mysql server is not available."
+}
+
+check_mysql_server
 setup_java_home
 
 cd "$BENCHMARK_ROOT/linkbench" || exit
