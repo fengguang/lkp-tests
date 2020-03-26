@@ -19,7 +19,11 @@ setup_mysql()
 
 	# fix "FATAL: error 1040: Too many connections"
 	local max_conn=100
-	[ $nr_threads -gt 100 ] && max_conn=$((nr_threads * 2))
+	if [ -n "$nr_threads" ] && [ "$nr_threads" -gt 100 ]; then
+		max_conn=$((nr_threads * 2))
+	elif [ -n "$nr_task" ] && [ "$nr_task" -gt 100 ]; then
+		max_conn=$((nr_task * 2))
+	fi
 
 	# /usr/libexec/mysqld is used on RHEL/Centos
 	# /usr/bin/mysql is used on Debian/Ubuntu
