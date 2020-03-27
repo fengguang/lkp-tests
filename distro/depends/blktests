@@ -4,8 +4,8 @@ libssl-dev
 blktrace
 parted
 nvme-cli
-nbd-server
-nbd-client
+nbd-server/unstable
+nbd-client/unstable
 virt-what
 xfsprogs
 pciutils
@@ -24,3 +24,9 @@ libgfrpc0
 libglusterfs0
 libgfxdr0
 libtirpc3/unstable
+libgnutls30/unstable
+libidn2-0/unstable
+libp11-kit0/unstable
+libtasn1-6/unstable
+libibverbs1/unstable
+librdmacm1/unstable
