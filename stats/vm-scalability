@@ -72,8 +72,8 @@ if kbps.empty?
   log_error 'stats/vm-scalability: incomplete output'
   exit
 end
-printf "stddev%:    %g\n", stddev * 100
+printf "stddev%%:   %g\n", stddev * 100
 printf "free_time:  %g\n", free_secs.average unless free_secs.empty?
 printf "median: %d\n", median.average
-printf "median_stddev%: %g\n", median_stddev * 100
+printf "median_stddev%%: %g\n", median_stddev * 100
 printf "workload: %.2f\n", bytes.to_f / 1024
