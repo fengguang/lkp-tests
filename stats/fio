@@ -10,11 +10,12 @@ workload = 0
 OPS = %w(read write).freeze
 PERCENTILES = %w(90.000000 95.000000 99.000000).freeze
 
-fn = File.join ENV['RESULT_ROOT'], 'fio.output'
-unless File.exist?(fn)
-  log_error "log file #{fn} does not exist"
-  exit
+if ENV['RESULT_ROOT']
+  fn = File.join ENV['RESULT_ROOT'], 'fio.output'
+elsif ARGV[0]
+  fn = ARGV[0]
 end
+
 contents = File.read(fn)
 idx = contents.index('{')
 unless idx
