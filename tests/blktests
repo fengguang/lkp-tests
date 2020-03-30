@@ -121,6 +121,8 @@ run_test()
 		log_cmd mount -t cgroup2 none /sys/fs/cgroup
 	}
 
+	[ "$test" = "srp-group1" ] && systemctl stop multipathd
+
 	if [ "$test" = "nvme-group1" ]; then
 		log_cmd ./check -o /mnt/$test $all_tests
 	else
