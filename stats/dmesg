@@ -112,6 +112,25 @@ lines.reverse_each do |line|
   end
 end
 
+def stat_unittest(unittests)
+  found_unitest = false
+  unittests.each do |line|
+    if line =~ /### dt-test ### start of unittest/
+      found_unitest = true
+      next
+    end
+    next unless found_unitest
+    break if line =~ /### dt-test ### end of unittest - (\d+) passed, (\d+) failed/
+    # ### dt-test ### FAIL of_unittest_overlay_high_level():2475 overlay_base_root not initialized
+    if line =~ /(.*)### dt-test ### FAIL (.*)/
+      e = $2.gsub(/:|\d+/, '').gsub(' ', '_')
+      puts "unittest.#{e}.fail: 1"
+    end
+  end
+end
+
+stat_unittest(lines) if $PROGRAM_NAME =~ /kmsg/
+
 oops_map.each do |bug_to_bisect, line|
   line.chomp!
 
