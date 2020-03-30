@@ -8,7 +8,19 @@ test_file=$BENCHMARK_ROOT/igt/$group
 
 cd "$BENCHMARK_ROOT/igt" || exit
 
+# ~/intel-gpu-tools$ git grep -A1 -B1 -w 77 NEWS
+# NEWS-- compute exitcode first: In the case of running multiple subtests which all
+# NEWS:happen to be skipped, igt_exitcode is 0, but the final exit code will be 77.
+# NEWS-(Chris Wilson)
+
+# our script exit 1 only if all tests are failed(exit code is not either 77 or 0)
+ret=1
 while read testcase
 do
 	log_cmd build/tests/$testcase 2>&1
+	if [ $? -eq 77 ] || [ $? -eq 0 ]; then
+		ret=0
+	fi
 done < $test_file
+
+exit $ret
