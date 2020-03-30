@@ -35,6 +35,8 @@ default_events()
 if [ -z "$delay" ]; then
 	if [ -n "$runtime" ]; then
 		delay=$((runtime / 2))
+	elif [ -n "$testtime" ]; then
+		delay=$((testtime / 2))
 	else
 		delay=100
 	fi
