@@ -63,6 +63,14 @@ fixup_iperf()
 	sed -i '5apkill iperf3' "$target"
 }
 
+fixup_ior()
+{
+	[ -n "$environment_directory" ] || return
+	local test=$1
+	local target=${environment_directory}/pts/${test}/ior
+	sed -i 's/ \$@ / /g' "$target"
+}
+
 # fix issue: Bootup is not yet finished (org.freedesktop.systemd1.Manager.FinishTimestampMonotonic=0)
 # before:
 # out, err = subprocess.Popen(["systemd-analyze"], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate(
@@ -679,6 +687,9 @@ run_test()
 			;;
 		netperf-*)
 			fixup_netperf $test || die "failed to fixup test netperf"
+			;;
+		ior-*)
+			fixup_ior $test || die "failed to fixup test $test"
 			;;
 		iperf-*)
 			fixup_iperf $test || die "failed to fixup test $test"
