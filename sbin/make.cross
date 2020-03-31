@@ -135,9 +135,12 @@ install_crosstool_gcc()
 	local file
 	local gcc_arch_pattern=$(echo "${gcc_arch}" | sed 's/*/.*/g')
 	if [[ $GCC_VERSION ]]; then
-		file=$(grep "${gcc_arch_pattern}" $list | grep "${GCC_VERSION}" | tail -1)
+		# for arch has more than 1 cross tool available, like x86_64-gcc-9.3.0-nolibc_arm-linux-gnueabi.tar.xz
+		# and x86_64-gcc-9.3.0-nolibc_arm-linux-gnueabihf.tar.xz for arm, match "arm-linux-gnueabi." instead of
+		# "arm-linux-gnueabi" to get single tool package which match exactly.
+		file=$(grep "${gcc_arch_pattern}\." $list | grep "${GCC_VERSION}" | tail -1)
 	else
-		file=$(grep "${gcc_arch_pattern}" $list | tail -1)
+		file=$(grep "${gcc_arch_pattern}\." $list | tail -1)
 	fi
 	[[ $file ]] || {
 		echo "Cannot find $gcc_arch_pattern under $URL check $list"
