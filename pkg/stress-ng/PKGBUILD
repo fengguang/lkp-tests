@@ -4,39 +4,16 @@ pkgrel=58
 pkgdesc="tool to load and stress a computer"
 arch=('i386' 'x86_64')
 url="http://kernel.ubuntu.com/~cking/stress-ng/"
-license=('GPL' 'NASM' 'Intel')
-source=("http://kernel.ubuntu.com/~cking/tarballs/stress-ng/${pkgname}-$pkgver.$pkgrel.tar.xz"
-	"https://www.nasm.us/pub/nasm/releasebuilds/2.14.02/nasm-2.14.02.tar.bz2"
-	"https://github.com/intel/intel-ipsec-mb/archive/v0.53.1-dev.tar.gz")
-md5sums=('d482a72654c7029a6a890d680efa174c' 'SKIP' 'SKIP')
-
-build_nasm()
-{
-	cd "${srcdir}/nasm-2.14.02"
-	./configure
-	make
-	make install
-}
-
-build_intel-ipsec-mb()
-{
-	cd "${srcdir}/intel-ipsec-mb-0.53.1-dev"
-	make
-	make install
-}
+license=('GPL')
+source=("http://kernel.ubuntu.com/~cking/tarballs/stress-ng/${pkgname}-$pkgver.$pkgrel.tar.xz")
+md5sums=('d482a72654c7029a6a890d680efa174c')
 
 build() {
-	build_nasm
-	build_intel-ipsec-mb
-	cd "$srcdir/$pkgname-$pkgver.$pkgrel"
-	make
+  cd "$srcdir/$pkgname-$pkgver.$pkgrel"
+  make
 }
 
 package() {
-	mkdir -p "${pkgdir}/usr/include"
-	cp /usr/include/intel-ipsec-mb.h "${pkgdir}/usr/include"
-	mkdir -p "${pkgdir}/usr/lib"
-	cp /usr/lib/libIPSec* "${pkgdir}/usr/lib"
-	cd "${srcdir}/${pkgname}-${pkgver}.${pkgrel}"
-	make DESTDIR="${pkgdir}" install
+  cd "$srcdir/$pkgname-$pkgver.$pkgrel"
+  make DESTDIR="$pkgdir" install
 }
