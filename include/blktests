@@ -12,3 +12,4 @@ need_kconfig:
 - CONFIG_INFINIBAND_USER_ACCESS=m
 - CONFIG_INFINIBAND_ADDR_TRANS=m ~ v(4\.1[7-9]|4\.20|5\.) # support kernel >=v4.17-rc1
 - CONFIG_RDMA_RXE=m ~ v(4\.[8-9]|4\.1[0-9]|4\.20|5\.) # support kernel >=v4.8-rc1
+- CONFIG_RDMA_SIW=m ~ v(5\.[3-9]) # support kernel >=v5.3-rc1
