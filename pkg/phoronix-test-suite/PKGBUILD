@@ -1,0 +1,21 @@
+pkgname=phoronix-test-suite
+pkgver=9
+pkgrel=4.1
+arch=('i386' 'x86_64')
+url="http://phoronix-test-suite.com/releases"
+license=('GPLv3')
+source=("http://phoronix-test-suite.com/releases/${pkgname}-${pkgver}.${pkgrel}.tar.gz")
+md5sums=('7dc8f085701122f031516e03c439d347')
+
+package()
+{
+	# clearlinux use bundle to install this benchmark
+	[ "$DISTRO" = "clear" ] && return 0
+
+	cd "${srcdir}/${pkgname}"
+	sh install-sh
+	mkdir -p "${pkgdir}/usr/bin"
+	cp -af "/usr/bin/${pkgname}" ${pkgdir}/usr/bin
+	mkdir -p "${pkgdir}/usr/share"
+	cp -af "/usr/share/${pkgname}" ${pkgdir}/usr/share
+}
