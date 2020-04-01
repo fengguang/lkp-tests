@@ -28,5 +28,6 @@ kernel-selftests:
 kernel-selftests:
   group:
     - kselftests-01
+    - kselftests-lib
 
 kernel_cmdline: kvm-intel.unrestricted_guest=0
