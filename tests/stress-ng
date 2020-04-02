@@ -41,8 +41,9 @@ set_for_class()
 		;;
 	"os")
 		stress_opts="--minimize"
+		mount_dev
 		;;
-	"filesystem"|"interrupt")
+	"filesystem"|"interrupt"|"io")
 		mount_dev
 		;;
 	"vm")
