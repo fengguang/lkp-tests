@@ -288,7 +288,7 @@ setup_crosstool_clang()
 		return 1
 	}
 
-	local opt_ldd="LD=ld.lld"
+	local opt_ldd="LD=$(dirname $cross_clang)/ld.lld"
 	[[ $ARCH =~ arm ]] &&
 		grep -q 'CONFIG_CPU_BIG_ENDIAN=y' .config && opt_ldd=
 
