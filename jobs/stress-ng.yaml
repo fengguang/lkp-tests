@@ -40,6 +40,8 @@ stress-ng:
   - security
 
 ---
+nr_threads: 10%
+
 fs: ext4
 testtime:
 - 1s
