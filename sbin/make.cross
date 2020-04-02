@@ -288,7 +288,11 @@ setup_crosstool_clang()
 		return 1
 	}
 
-	opt_cross="HOSTCC=$cross_clang CC=$cross_clang"
+	local opt_ldd="LD=ld.lld"
+	[[ $ARCH =~ arm ]] &&
+		grep -q 'CONFIG_CPU_BIG_ENDIAN=y' .config && opt_ldd=
+
+	opt_cross="HOSTCC=$cross_clang CC=$cross_clang $opt_ldd"
 	if [[ $ARCH = "arm64" ]]; then
 		opt_cross="$opt_cross CROSS_COMPILE=aarch64-linux-gnu-"
 	elif [[ $ARCH = "arm" ]]; then
