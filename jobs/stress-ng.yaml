@@ -3,6 +3,7 @@ testcase: stress-ng
 category: benchmark
 
 nr_threads: 100%
+timeout: 30m
 
 disk: 1HDD
 
