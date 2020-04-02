@@ -29,6 +29,9 @@ set_for_universal()
 	## stressors spawn exec can't run as root
 	## all classes need to exclud them except class exec_spawn
 	default_exclude="spawn,exec"
+
+	# Fix stress-ng: error: [36360] process [36390] (stress-ng-swap) aborted early, out of system resources
+	[ $(nproc) -gt 16 ] && default_exclude="$default_exclude,swap"
 }
 
 # some class need special settinf
@@ -48,8 +51,6 @@ set_for_class()
 		;;
 	"vm")
 		cd ${mount_points%% *}
-		# Fix stress-ng: error: [36360] process [36390] (stress-ng-swap) aborted early, out of system resources
-		[ $(nproc) -gt 16 ] && exclude_stress=",swap"
 		;;
 	*)
 		;;
