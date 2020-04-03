@@ -20,8 +20,8 @@ module Bash
       output
     end
 
-    def call2(command)
-      stdout, stderr, status = Open3.capture3("bash -c #{Shellwords.escape(command)}")
+    def call2(*command)
+      stdout, stderr, status = Open3.capture3(*command)
       raise Bash::BashCallError, "#{command}\n#{stderr}#{stdout}" unless status.success?
 
       stdout
