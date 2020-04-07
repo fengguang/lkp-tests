@@ -4,6 +4,7 @@ $results_sum = Hash.new(0)
 $results_nr = Hash.new(0)
 $interval_results_sum = Hash.new(0)
 $interval_results_nr = Hash.new(0)
+$interval_metrics_val = Hash.new(0)
 $interval_nr = 0
 $run_time = 0
 
@@ -86,6 +87,12 @@ def output_interval(prev_time, time)
   calc_addon_keys($interval_results_sum, $interval_results_nr,
                   interval, 1, 'i.')
 
+  if !$interval_metrics_val.empty?
+    $interval_metrics_val.each do |key, value|
+      puts "i.#{key}: #{value}"
+    end
+  end
+
   ignore = false
   if time <= $stats_begin_time
     ignore = true
@@ -109,6 +116,9 @@ def output_interval(prev_time, time)
 
   $interval_results_sum.clear
   $interval_results_nr.clear
+  if !$interval_metrics_val.empty?
+    $interval_metrics_val.clear
+  end
 end
 
 # Example output
@@ -120,10 +130,17 @@ end
 #    3.004126313 S0 8 319801680  cpu-cycles 8006470194 100.00
 #    3.004126313 S0 8 170196182  instructions 8007548409 100.00 0.50 insn per cycle
 
+#    49.047844283 S0 12 76057476  l1d_pend_miss.pending 6003731285 49.98 40.0 Load_Miss_Real_Latency
+#    49.047844283 S0 12 1179644  mem_load_retired.l1_miss 6003731285 49.98
+#    49.047844283 S0 12 836968  mem_load_retired.fb_hit 6003731285 49.98
+#    49.047844283 S0 12 71153346  l1d_pend_miss.pending 6007429971 50.02 1.0 MLP
+#    49.047844283 S0 12 54455898  l1d_pend_miss.pending_cycles 6007429971 50.02
+
 def parse
   prev_prev_time = 0
   prev_time = 0
   time = 0
+  metric_val = 0
 
   $stdin.each_line do |line|
     next unless line =~ /^\s*\d+\.\d+\s+/
@@ -140,6 +157,7 @@ def parse
     socket = nil
     unit = nil
     socket_key = nil
+    metric_key = nil
 
     # per-socket mode
     #    S0 8 321055743  cpu-cycles 8012766737 100.00
@@ -154,6 +172,15 @@ def parse
     if fields[1] == 'Bytes'
       unit = fields[1]
       fields.delete_at 1
+    end
+
+    # for metrics
+    # 49.047844283 S0 12 76057476  l1d_pend_miss.pending 6003731285 49.98 40.0 Load_Miss_Real_Latency
+    if fields[5] != nil
+       metric_key = "metric.#{fields[5]}"
+       metric_key = "#{socket}.#{metric_key}" if socket
+       metric_val = fields[4]
+       metric_val = metric_val.to_f
     end
 
     # 777209 mem_load_uops_l3_miss_retired_remote_dram 89128748143 100.00
@@ -171,6 +198,9 @@ def parse
     if socket_key
       $interval_results_sum[socket_key] += value
       $interval_results_nr[socket_key] += 1
+    end
+    if metric_key
+      $interval_metrics_val[metric_key] += metric_val
     end
   end
 
