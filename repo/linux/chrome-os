@@ -5,11 +5,10 @@ whitelist_branch: chromeos-4.4|chromeos-4.14|chromeos-4.19|chromeos-5.4
 blacklist_branch: .*
 customconfig: customconfig
 notify_build_success_branch: .*
-mail_recipient:
-- chromium.org
+mail_to:
 - cros-kernel-buildreports@googlegroups.com
-mail_to: cros-kernel-buildreports@googlegroups.com
-mail_cc: cros-kernel-buildreports@googlegroups.com
+- Guenter Roeck <groeck@google.com>
 too_old_relative_commit_date: month|year|^[4-9]+ weeks
 test_old_branches: .*
 no_merge_branch: .*
+private_report_branch: .*
