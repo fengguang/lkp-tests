@@ -1,6 +1,6 @@
 # the memory size has to be more than 100G
-suite: exit_free
-testcase: exit_free
+suite: exit-free
+testcase: exit-free
 category: benchmark
 need_memory: 128G
 
@@ -14,4 +14,4 @@ eatmem:
   eatmem_size: 80G
   eatmem_nonuma: true
 
-exit_free:
+exit-free:
