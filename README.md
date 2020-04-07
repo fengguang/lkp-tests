@@ -109,6 +109,9 @@ of the adaptation file.
 You will also want to add a case for your distribution on sync_distro_sources()
 on the file lib/install.sh.
 
+## Extra Documentation
+Refer to https://github.com/intel/lkp-tests/wiki
+
 ## Contributing
 
 1. Fork it
