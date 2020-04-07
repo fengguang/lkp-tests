@@ -789,6 +789,19 @@ run_test()
 	export PTS_SILENT_MODE=1
 	echo PTS_SILENT_MODE=$PTS_SILENT_MODE
 
+	if [ -n "$option_a" ]; then
+		test_opt='\n'
+		for i in {a..j}
+		do
+			eval option=\$option_${i}
+			[ -n "$option" ] || break
+			test_opt="$test_opt$option\n"
+		done
+		# don't save test results when met:
+		# Would you like to save these test results (Y/n):
+		test_opt=${test_opt}n
+	fi
+
 	is_clearlinux || {
 		root_access="/usr/share/phoronix-test-suite/pts-core/static/root-access.sh"
 		[ -f "$root_access" ] || die "$root_access not exist"
