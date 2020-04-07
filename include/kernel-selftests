@@ -9,6 +9,7 @@ need_kconfig:
 - CONFIG_BPF_STREAM_PARSER=y
 - CONFIG_BPF_SYSCALL=y
 - CONFIG_CGROUP_BPF=y
+- CONFIG_DEBUG_INFO_BTF=y ~ v(5\.[2-9]) # support kernel >= v5.2-rc1
 - CONFIG_IPV6_SEG6_LWTUNNEL=y ~ v(4\.1[0-9]|4\.20|5\.) # support kernel >=v4.10-rc1
 - CONFIG_LWTUNNEL=y
 - CONFIG_MPLS_IPTUNNEL=m ~ v(4\.[3-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.3-rc1
