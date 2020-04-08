@@ -122,19 +122,21 @@ def output_interval(prev_time, time)
 end
 
 # Example output
-#    290.690747746 777209  mem_load_uops_l3_miss_retired_remote_dram 89128748143 100.00
-#    324.224668698 7928832 Bytes llc_misses.mem_read 8005538025 100.00
+#     1.000679357,S0,12,170516599,,l1d_pend_miss.pending,8004582139,66.65,80.5,Load_Miss_Real_Latency
+#     1.000679357,S0,12,1202404,,mem_load_retired.l1_miss,8004582139,66.65,,
+#     1.000679357,S0,12,915585,,mem_load_retired.fb_hit,8004582139,66.65,,
+#     1.000679357,S0,12,66085859,,inst_retired.any,8009729165,66.69,7.3,CPI
+#     1.000679357,S0,12,481531770,,cycles,8009729165,66.69,,
+#     1.000679357,S0,12,478629457,,cpu-cycles,8005866225,66.66,,
+#     1.000679357,S0,12,65320043,,instructions,8005866225,66.66,0.14,insn per cycle
 
-#    2.003151490 S0 8 321055743  cpu-cycles 8012766737 100.00
-#    2.003151490 S0 8 161761287  instructions 8011773256 100.00 0.47 insn per cycle
-#    3.004126313 S0 8 319801680  cpu-cycles 8006470194 100.00
-#    3.004126313 S0 8 170196182  instructions 8007548409 100.00 0.50 insn per cycle
-
-#    49.047844283 S0 12 76057476  l1d_pend_miss.pending 6003731285 49.98 40.0 Load_Miss_Real_Latency
-#    49.047844283 S0 12 1179644  mem_load_retired.l1_miss 6003731285 49.98
-#    49.047844283 S0 12 836968  mem_load_retired.fb_hit 6003731285 49.98
-#    49.047844283 S0 12 71153346  l1d_pend_miss.pending 6007429971 50.02 1.0 MLP
-#    49.047844283 S0 12 54455898  l1d_pend_miss.pending_cycles 6007429971 50.02
+#     5.000739365,163913433,,l1d_pend_miss.pending,8001787549,66.67,81.0,Load_Miss_Real_Latency
+#     5.000739365,1197996,,mem_load_retired.l1_miss,8001787549,66.67,,
+#     5.000739365,862693,,mem_load_retired.fb_hit,8001787549,66.67,,
+#     5.000739365,66368209,,inst_retired.any,8000697756,66.66,7.3,CPI
+#     5.000739365,478274162,,cycles,8000697756,66.66,,
+#     5.000739365,478535457,,cpu-cycles,8001495219,66.67,,
+#     5.000739365,69598766,,instructions,8001495219,66.67,0.14,insn per cycle
 
 def parse
   prev_prev_time = 0
@@ -143,9 +145,9 @@ def parse
   metric_val = 0
 
   $stdin.each_line do |line|
-    next unless line =~ /^\s*\d+\.\d+\s+/
+    next unless line =~ /^\s*\d+\.\d+\W+/
 
-    stime, *fields = line.split
+    stime, *fields = line.split(',')
 
     prev_time = time
     time = stime.to_f
@@ -160,7 +162,7 @@ def parse
     metric_key = nil
 
     # per-socket mode
-    #    S0 8 321055743  cpu-cycles 8012766737 100.00
+    # S0,12,1202404,,mem_load_retired.l1_miss,8004582139,66.65,,
     if fields[0][0] == 'S'
       socket = fields[0]
       fields.delete_at 1
@@ -168,19 +170,24 @@ def parse
     end
 
     # for unit
-    # 7928832 Bytes llc_misses.mem_read 8005538025 100.00
+    # 7928832,Bytes,llc_misses.mem_read,8005538025,100.00,,
     if fields[1] == 'Bytes'
       unit = fields[1]
-      fields.delete_at 1
     end
 
+    fields.delete_at 1
     # for metrics
-    # 49.047844283 S0 12 76057476  l1d_pend_miss.pending 6003731285 49.98 40.0 Load_Miss_Real_Latency
+    # 1.000679357,S0,12,170516599,,l1d_pend_miss.pending,8004582139,66.65,80.5,Load_Miss_Real_Latency
     if fields[5] != nil
-       metric_key = "metric.#{fields[5]}"
-       metric_key = "#{socket}.#{metric_key}" if socket
-       metric_val = fields[4]
-       metric_val = metric_val.to_f
+    # For the metric name, Its first char is an uppercase letter
+    # Ignore the test result which is not for metrics
+    # 1.000679357,S0,12,65320043,,instructions,8005866225,66.66,0.14,insn per cycle
+      if fields[5][0] =~ /[A-Z]/
+        metric_key = "metric.#{fields[5].chomp}"
+        metric_key = "#{socket}.#{metric_key}" if socket
+        metric_val = fields[4]
+        metric_val = metric_val.to_f
+      end
     end
 
     # 777209 mem_load_uops_l3_miss_retired_remote_dram 89128748143 100.00
