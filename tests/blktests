@@ -76,7 +76,6 @@ set_env()
 
 	if [ -n "$partition" ]; then
 		echo "TEST_DEVS=$partition" > config
-		[ "$test" = "nvme-group1" ] && log_cmd mkdir -p /mnt/$test && log_cmd mount $partition /mnt/$test
 	fi
 
 	# fix the issue: losetup: cannot find an unused loop device
@@ -123,11 +122,7 @@ run_test()
 
 	[ "$test" = "srp-group1" ] && systemctl stop multipathd
 
-	if [ "$test" = "nvme-group1" ]; then
-		log_cmd ./check -o /mnt/$test $all_tests
-	else
-		log_cmd ./check $all_tests
-	fi
+	log_cmd ./check $all_tests
 }
 
 [ "$test" = "other" ] && {
