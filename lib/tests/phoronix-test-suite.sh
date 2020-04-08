@@ -98,25 +98,14 @@ fixup_systemd_boot_total()
 
 # fix issue: Test Run-Time Too Short
 # before:
-# 6 cat sqlite-insertions.txt | ./sqlite_/bin/sqlite3 benchmark.db
-# 7 cat sqlite-insertions.txt | ./sqlite_/bin/sqlite3 benchmark.db
-# 8 cat sqlite-insertions.txt | ./sqlite_/bin/sqlite3 benchmark.db
+# 141:                            $minimal_test_time = pts_config::read_user_config('PhoronixTestSuite/Options/TestResultValidation/MinimalTestTime', 2);
 # after:
-# 6  i=1
-# 7  while [ $i -le 20 ]; do
-# 8  	cat sqlite-insertions.txt | ./sqlite_/bin/sqlite3 benchmark.db
-# 9  	i=$(($i+1))
-# 10 done
+# 141:                            $minimal_test_time = 0;
 fixup_sqlite()
 {
 	[ -n "$environment_directory" ] || return
-	local test=$1
-	local target=${environment_directory}/pts/${test}/sqlite-benchmark
-	sed -i '7,8d' "$target"
-	sed -i '5ai=1' "$target"
-	sed -i "6awhile [ \$i -le 20 ]; do" "$target"
-	sed -i '8ai=\$((\$i+1))' "$target"
-	sed -i '9adone' "$target"
+	local target=/usr/share/phoronix-test-suite/pts-core/objects/pts_test_result_parser.php
+	sed -i "s,pts_config::read_user_config('PhoronixTestSuite\/Options\/TestResultValidation\/MinimalTestTime'\, 2),0," "$target"
 }
 
 # reduce run times to avoid soft_timeout
