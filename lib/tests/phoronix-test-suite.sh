@@ -63,6 +63,16 @@ fixup_iperf()
 	sed -i '5apkill iperf3' "$target"
 }
 
+# before test nuttcp, start nuttcp server firstly
+fixup_nuttcp()
+{
+	[ -n "$environment_directory" ] || return
+	local test=$1
+	local target=${environment_directory}/pts/${test}/nuttcp
+	sed -i "2a./nuttcp-8.1.4 -S &" "$target"
+	sed -i '5apkill nuttcp-8.1.4' "$target"
+}
+
 fixup_ior()
 {
 	[ -n "$environment_directory" ] || return
@@ -683,6 +693,9 @@ run_test()
 		iperf-*)
 			fixup_iperf $test || die "failed to fixup test $test"
 			;;
+		nuttcp-*)
+			fixup_nuttcp $test || die "failed to fixup test $test"
+			;;
 		sqlite-[0-9]*)
 			fixup_sqlite $test || die "failed to fixup test $test"
 			;;
@@ -833,6 +846,20 @@ run_test()
 				"Duration:" { send "1\r"; exp_continue }
 				"Test:" { send "2\r"; exp_continue }
 				"Parallel:" { send "1\r"; exp_continue }
+				"Would you like to save these test results" { send "n\r"; exp_continue }
+				eof { }
+				default { exp_continue }
+			}
+		EOF
+	elif echo $test | grep nuttcp; then
+		# Choose
+		# 4: Test All Options
+		# Enter Value: 127.0.0.1
+		/usr/bin/expect <<-EOF
+			spawn phoronix-test-suite run $test
+			expect {
+				"Test:" { send "4\r"; exp_continue }
+				"Enter Value:" { send "127.0.0.1\r"; exp_continue }
 				"Would you like to save these test results" { send "n\r"; exp_continue }
 				eof { }
 				default { exp_continue }
