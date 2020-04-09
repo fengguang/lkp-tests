@@ -15,6 +15,21 @@ phoronix-test-suite:
     - apache-siege-1.0.2
     - asmfish-1.1.0
     - blake2-1.2.1
+  - test: blender-1.7.0
+    option_a:
+      - BMW27
+      - Classroom
+      - Fishy Cat
+      - Pabellon Barcelona
+      - Barbershop
+      - Test All Options
+    option_b:
+      - CPU-Only
+      - OpenCL
+      - CUDA
+      - NVIDIA OptiX
+      - Test All Options
+  - test:
     - blogbench-1.1.0
     - bork-1.0.1
     - botan-1.4.0
