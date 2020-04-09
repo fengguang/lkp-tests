@@ -4,3 +4,6 @@ generic-127
 generic-175
 # execution time exceeds 1h
 generic-297
+# current xfsprogs package(i.e v4.9) has a bug
+# of xfs_io command and makes generic/434 hang
+generic-434
