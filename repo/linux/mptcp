@@ -5,6 +5,8 @@ blacklist_branch: .*
 notify_build_success_branch: export
 mail_cc:
 - mptcp@lists.01.org
-owner: Mat Martineau <mathew.j.martineau@linux.intel.com>
+owner:
+- Mat Martineau <mathew.j.martineau@linux.intel.com>
+- Matthieu Baerts <matthieu.baerts@tessares.net>
 subsystems:
 - mptcp
