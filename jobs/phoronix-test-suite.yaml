@@ -48,6 +48,13 @@ phoronix-test-suite:
     - c-ray-1.2.0
     - cachebench-1.1.2
     # - caffe-1.3.3 # wait for newer version
+  - test: cassandra-1.0.3
+    option_a:
+      - Reads
+      - Writes
+      - Mixed 1:1
+      - Mixed 1:3
+  - test:
     - clomp-1.0.0
     - cloverleaf-1.0.0
     - comd-cl-1.0.0
