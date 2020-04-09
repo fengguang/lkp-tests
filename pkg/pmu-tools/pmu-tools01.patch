@@ -1,0 +1,41 @@
+From f220a8c099f76889ec0b30038cac9f16921aedd1 Mon Sep 17 00:00:00 2001
+From: Haiyan Song <haiyanx.song@intel.com>
+Date: Thu, 9 Apr 2020 19:55:56 +0800
+Subject: [PATCH 1/2] Fix toplev.csv parse failure with CSV::MalformedCSVError
+---
+ /usr/lib/ruby/2.3.0/csv.rb:1880:in `block (2 levels) in shift': Unquoted
+ fields do not allow \r or \n (line 6146). (CSV::MalformedCSVError) 	from
+ /usr/lib/ruby/2.3.0/csv.rb:1845:in `each' 	from
+ /usr/lib/ruby/2.3.0/csv.rb:1845:in `block in shift' 	from
+ /usr/lib/ruby/2.3.0/csv.rb:1805:in `loop' 	from
+ /usr/lib/ruby/2.3.0/csv.rb:1805:in `shift' 	from
+ /usr/lib/ruby/2.3.0/csv.rb:1747:in `each' 	from
+ /usr/lib/ruby/2.3.0/csv.rb:1131:in `block in foreach' 	from
+ /usr/lib/ruby/2.3.0/csv.rb:1282:in `open' 	from
+ /usr/lib/ruby/2.3.0/csv.rb:1130:in `foreach'
+---
+
+Signed-off-by: Haiyan Song <haiyanx.song@intel.com>
+---
+ tl_output.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/tl_output.py b/tl_output.py
+index 65c924a..9d798f2 100644
+--- a/tl_output.py
++++ b/tl_output.py
+@@ -126,9 +126,9 @@ class Output:
+     def print_footer_all(self):
+         if self.logfiles:
+            for f in self.logfiles.values():
+-               f.write("# %s\n" % self.version)
++               f.write("# %s" % self.version)
+         else:
+-            self.logf.write("# " + self.version + "\n")
++            self.logf.write("# " + self.version)
+
+ def fmt_below(below):
+     if below:
+--
+2.11.0
+
