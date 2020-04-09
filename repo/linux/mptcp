@@ -2,6 +2,7 @@ url: https://github.com/multipath-tcp/mptcp_net-next.git
 integration_testing_branches: export
 whitelist_branch: export
 blacklist_branch: .*
+notify_build_success_branch: export
 mail_cc:
 - mptcp@lists.01.org
 owner: Mat Martineau <mathew.j.martineau@linux.intel.com>
