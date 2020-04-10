@@ -46,12 +46,15 @@ read_kernel_cmdline_vars
 
 # The job file is contained in the initrd -- no need to download it here.
 
-[ -n "$job" ] || job=$(echo /lkp/jobs/scheduled/*/*.yaml) # in case CONFIG_PROC_FS is not set
+# in case CONFIG_PROC_FS is not set, or job not passed via kernel cmdline
+[ -n "$job" ] || export job=/lkp/scheduled/job.yaml
+[ -e "$job" ] || export job=$(echo /lkp/scheduled/*.yaml)
+[ -e "$job" ] || export job=$(echo /lkp/jobs/scheduled/*/*.yaml)
 
 if [ ${job%.yaml} != $job ]; then
-	job_script=${job%.yaml}.sh
+	export job_script=${job%.yaml}.sh
 else
-	job_script=$job
+	export job_script=$job
 fi
 
 [ -e "$job_script" ] || {
