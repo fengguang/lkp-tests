@@ -235,8 +235,6 @@ fixup_bpf()
 	echo "ignored_by_lkp bpf.test_tc_tunnel.sh test"
 	sed -i 's/test_lwt_seg6local.sh//' bpf/Makefile
 	echo "ignored_by_lkp bpf.test_lwt_seg6local.sh test"
-	sed -i 's/ runqslower//' bpf/Makefile
-	echo "ignored_by_lkp bpf.runqslower test"
 	# some sh scripts actually need bash
 	# ./test_libbpf.sh: 9: ./test_libbpf.sh: 0: not found
 	[ "$(cmd_path bash)" = '/bin/bash' ] && [ $(readlink -e /bin/sh) != '/bin/bash' ] &&
