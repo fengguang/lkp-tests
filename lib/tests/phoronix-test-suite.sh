@@ -488,6 +488,10 @@ fixup_install()
 		setup_python2
 		env | grep CFLAGS && unset CFLAGS
 		;;
+	memtier-benchmark-*)
+		# fix issue: cc: error: x86_64: No such file or directory
+		env | grep ARCH && unset ARCH
+		;;
 	numenta-nab-*)
 		# fix issue: No matching distribution found for nupic==1.0.5 (from nab==1.0)
 		setup_python2
