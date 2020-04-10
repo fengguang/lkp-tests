@@ -121,7 +121,11 @@ def create_stats_matrix(result_root)
     end
 
     monitor_stats = load_json file
-    sample_size = max_cols(monitor_stats)
+    if monitor_stats
+      sample_size = max_cols(monitor_stats)
+    else
+      log_warn "failed to load json: #{file}"
+    end
 
     i_stats_part_begin = 0
     stats_part_len = sample_size
