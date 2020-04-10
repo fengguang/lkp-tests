@@ -439,6 +439,13 @@ fixup_opm_git_install()
 	sed -i "82a git clone --depth 1 https://github.com/OPM/opm-data.git" "$target"
 }
 
+fixup_clpeak_install()
+{
+	local test=$1
+	local target=/var/lib/phoronix-test-suite/test-profiles/pts/${test}/install.sh
+	sed -i "4a sed -i '43a/usr/lib/x86_64-linux-gnu' CMakeLists.txt" "$target"
+}
+
 fixup_apache_siege_install()
 {
 	local test=$1
@@ -491,6 +498,10 @@ fixup_install()
 	memtier-benchmark-*)
 		# fix issue: cc: error: x86_64: No such file or directory
 		env | grep ARCH && unset ARCH
+		;;
+	clpeak-*)
+		# fix issue: Could not find OpenCL include/libs.  Set OPENCL_ROOT to your OpenCL SDK.
+		is_clearlinux || fixup_clpeak_install $test || die "failed to fixup $test install"
 		;;
 	numenta-nab-*)
 		# fix issue: No matching distribution found for nupic==1.0.5 (from nab==1.0)
@@ -788,7 +799,7 @@ run_test()
 		clpeak-*)
 			# 7: Kernel Latency
 			# 4: Integer Compute INT # this subtest was disabled on Intel platform
-			test_opt="7\nn"
+			test_opt="\n7\nn"
 			;;
 	esac
 
