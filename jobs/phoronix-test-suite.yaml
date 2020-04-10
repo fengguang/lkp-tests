@@ -147,7 +147,17 @@ phoronix-test-suite:
     - m-queens-1.1.0
     - mafft-1.5.0
     - mbw-1.0.0
-    - mcperf-1.1.1
+  - test: mcperf-1.1.1
+    option_a:
+      - Get
+      - Set
+      - Delete
+      - Add
+      - Replace
+      - Append
+      - Prepend
+      # - Test All Options
+  - test:
     - memtier-benchmark-1.0.1
     - mencoder-1.5.0
     - minion-1.5.2
