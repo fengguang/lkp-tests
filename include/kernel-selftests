@@ -62,7 +62,7 @@ need_kconfig:
 % elsif ___.group == 'kselftests-03'
 - CONFIG_TEST_VMALLOC=m ~ v(5\.[1-9]) # support kernel >= v5.1-rc1
 - CONFIG_USERFAULTFD=y
-- CONIFG_GUP_BENCHMARK=y ~ (4\.1[5-9]|4\.20|5\.) # v4.15 and later
+- CONIFG_GUP_BENCHMARK=y ~ v(4\.1[5-9]|4\.20|5\.) # v4.15 and later
 % else
 - CONFIG_BLOCK=y
 - CONFIG_BTRFS_FS=m
