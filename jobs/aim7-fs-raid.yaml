@@ -45,7 +45,7 @@ aim7:
           case fs
           when 'btrfs' then 20
           when 'xfs'   then 300
-          when 'f2fs'  then 200
+          when 'f2fs'  then 100
           else              600
           end
         }}
