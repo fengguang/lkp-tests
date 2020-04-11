@@ -84,8 +84,8 @@ mount_result_root()
 			result_fs=nfs
 			for i in $(seq $repeat)
 			do
-				echo "mount.nfs: try $i time... mount.nfs -o vers=3 $result_service $RESULT_MNT"
-				mount.nfs -o vers=3 $result_service $RESULT_MNT && return
+				echo "mount.nfs: try $i time... mount.nfs $result_service $RESULT_MNT"
+				mount.nfs $result_service $RESULT_MNT && return
 				sleep 3
 			done
 			echo "mount nfs for $result_service failed"
