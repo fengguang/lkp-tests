@@ -72,6 +72,8 @@ echo options: $options >> $f_log
 echo analyze_suspend test started at: $(date +%F) $(date +%T) >> $f_log
 echo analyze_suspend test started
 
+sleep $idle_time
+
 for ite in $(seq $multi)
 do
 	#check network status
