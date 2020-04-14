@@ -32,12 +32,6 @@ arrange_group()
 	block-027)
 		echo "027" > tests/$test || return
 		;;
-	nvme-005)
-		echo "005" > tests/$test || return
-		;;
-	nvme-group1)
-		sed -i "/^005$/d" tests/$test || return
-		;;
 	*)
 		;;
 	esac
@@ -59,10 +53,6 @@ set_env()
 	local partition
 	case "$test" in
 	nbd-group*|loop-group*)
-		partition=""
-		;;
-	nvme-005)
-		modprobe -r nvme
 		partition=""
 		;;
 	scsi-group*)
