@@ -1,4 +1,4 @@
-^stderr\.disk_rr\(\):No_space_left_on_device
+^stderr\.disk_r(r|w)\(\):No_space_left_on_device
 ^stderr\.mkfs.xfs:pwrite_failed:Invalid_argument
 ^stderr\.modprobe:ERROR:could_not_insert'tcrypt':Exec_format_error
 ^stderr\.sync_disk_cp.*: cannot create /fs/shm/tmpb
