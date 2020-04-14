@@ -180,6 +180,7 @@ fixup_mysqlslap()
 	[ -n "$environment_directory" ] || return
 	local test=$1
 	local target=$environment_directory/../test-profiles/pts/${test}/pre.sh
+	is_clearlinux && sed -i 's,mysqld_safe --no-defaults,mysqld --user root --log-error=/tmp/log,' "$target"
 	sed -i '4a groupadd mysql' "$target"
 	sed -i '5a useradd -g mysql mysql' "$target"
 	sed -i '6a chown -R mysql:mysql data' "$target"
