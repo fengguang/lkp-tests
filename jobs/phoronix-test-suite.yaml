@@ -291,7 +291,14 @@ phoronix-test-suite:
     - tjbench-1.0.2
     - tscp-1.2.1
     - ttsiod-renderer-1.7.0
-    - tungsten-1.0.0
+  - test: tungsten-1.0.0
+    option_a:
+      - Hair
+      - Water Caustic
+      - Non-Exponential
+      - Volumetric Caustic
+      - Test All Options
+  - test:
     - unpack-linux-1.1.1
     # - v-ray-1.0.2 # 3rd party url is N/A
     # - viennacl-1.0.0 # wait for newer version
