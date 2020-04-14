@@ -140,6 +140,7 @@ set_env
 run_test
 exit_value=$?
 
-[ -d results ] && upload_files -t results $BENCHMARK_ROOT/blktests/results/*
-[ -d results ] && upload_files -t results /mnt/$test/results/*
+[ -d "$BENCHMARK_ROOT/blktests/results" ] && upload_files -t results $BENCHMARK_ROOT/blktests/results/*
+[ -d "/mnt/$test/nodev" ] && upload_files -t results /mnt/$test/nodev/*
+
 exit $exit_value
