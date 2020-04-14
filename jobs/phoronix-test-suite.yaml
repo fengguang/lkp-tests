@@ -188,6 +188,18 @@ phoronix-test-suite:
     - opm-git-1.3.38
     - optcarrot-1.0.0
     - osbench-1.0.1
+  - test: ospray-1.0.3
+    option_a:
+      - Magnetic Reconnection
+      - XFrog Forest
+      - NASA Streamlines
+      - San Miguel
+      # - Test All Options
+    option_b:
+      - SciVis [A fast ray-tracer for scientific visualizations.]
+      - Path Tracer [Supports soft shadows, indirect illumination and realistic materials.]
+      # - Test All Options
+  - test:
     - parboil-1.2.1
     - pennant-1.0.1
     - perl-benchmark-1.0.1
