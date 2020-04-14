@@ -224,6 +224,15 @@ phoronix-test-suite:
     - redis-1.2.0
     - renaissance-1.0.0
     - rbenchmark-1.0.3
+  - test: rocksdb-1.0.2
+    option_a:
+      - Sequential Fill
+      - Random Fill
+      - Random Fill Sync
+      - Random Read
+      - Read While Writing
+      # - Test All Options
+  - test:
     - rodinia-1.2.2
     - rust-prime-1.0.0
     - sample-program-1.1.1
