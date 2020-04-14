@@ -1,5 +1,9 @@
 #!/usr/bin/env ruby
 
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.reapath($PROGRAM_NAME)))
+
+require "#{LKP_SRC}/lib/string_ext"
+
 STDIN.gets
 STDIN.gets
 
@@ -7,6 +11,7 @@ num_objs = 0
 num_pages = 0
 
 while (line = STDIN.gets)
+  line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
   v = line.split
   pagesperslab = v[5].to_i
   num_slabs = v[14].to_i
