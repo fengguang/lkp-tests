@@ -294,6 +294,15 @@ fixup_fio()
 	test_opt="\n4\n3\n3\n3\n9\n1\n3\nn"
 }
 
+# change to use bash to gpu-residency
+fixup_gpu_residency()
+{
+	[ -n "$environment_directory" ] || return
+	local test=$1
+	local target=${environment_directory}/pts/${test}/gpu-residency
+	sed -i 's,#!/bin/sh,#!/bin/bash,' "$target"
+}
+
 # change to use dash to bullet
 fixup_bullet()
 {
@@ -762,6 +771,9 @@ run_test()
 			is_clearlinux || {
 				fixup_bullet $test || die "failed to fixup test bullet"
 			}
+			;;
+		gpu-residency-*)
+			fixup_gpu_residency $test || die "failed to fixup test $test"
 			;;
 		fio-*)
 			fixup_fio $test || die "failed to fixup test fio"
