@@ -23,7 +23,6 @@
 # Credit: Tony Breeds <tony@bakeyournoodle.com> for crosstool
 
 GCC_VERSION=${GCC_VERSION:-""}
-COMPILER_INSTALL_PATH=${COMPILER_INSTALL_PATH:-"$HOME/0day"}
 COMPILER=${COMPILER:-"gcc"}
 
 if [[ ! "$0" =~ 'make.cross' && "$0" =~ make\.([a-z0-9_]+) ]]; then
@@ -46,6 +45,16 @@ shopt -s nullglob
 is_clang_worker()
 {
 	[[ "$COMPILER" =~ "clang" ]]
+}
+
+check_install_path()
+{
+	if [[ $COMPILER_INSTALL_PATH ]]; then
+		echo "Compiler will be installed in $COMPILER_INSTALL_PATH"
+	else
+		return 1
+	fi
+
 }
 
 install_packages()
@@ -283,6 +292,13 @@ setup_crosstool()
 	else
 		setup_crosstool_gcc
 	fi
+}
+
+check_install_path || {
+	echo "Please set COMPILER_INSTALL_PATH to specify compiler install path"
+	echo "E.g. COMPILER_INSTALL_PATH=\$HOME/0day COMPILER=clang make.cross ARCH=x86_64"
+	echo
+	exit 1
 }
 
 setup_crosstool || {
