@@ -239,6 +239,9 @@ fixup_bpf()
 	# ./test_libbpf.sh: 9: ./test_libbpf.sh: 0: not found
 	[ "$(cmd_path bash)" = '/bin/bash' ] && [ $(readlink -e /bin/sh) != '/bin/bash' ] &&
 		ln -fs bash /bin/sh
+
+	local python_version=$(python3 --version)
+	[[ "$python_version" =~ "3.5" ]] && sed -i "s/res)/res.decode('utf-8'))/" bpf/test_bpftool.py
 }
 
 prepare_for_selftest()
