@@ -44,6 +44,21 @@ fixup_blogbench()
 	[ "$LKP_LOCAL_RUN" = "1" ] || sed -i "s,\$HOME,\/opt\/rootfs," "$target"
 }
 
+# 1. increase max startup time
+# 2. we have no sixth option it should be third option, change $6 to $3
+# 3. this subtest will produce big file to BASE_DIR, here produce file to $3/workfiles
+#    At last, remove these files by rm $3/workfiles
+fixup_startup_time()
+{
+	[ -n "$environment_directory" ] || return
+	local test=$1
+	local target=${environment_directory}/pts/${test}/startuptime-run
+	sed -i 's,$6,$3,' "$target"
+	sed -i 's,BASE_DIR=$3,BASE_DIR=$3/workfiles,' "$target"
+	sed -i "33ased -i 's,120,600,' comm_startup_lat.sh" "$target"
+	sed -i '37arm -r $3/workfiles' "$target"
+}
+
 # before test netperf, start netserver firstly
 fixup_netperf()
 {
@@ -711,6 +726,10 @@ run_test()
 			;;
 		netperf-*)
 			fixup_netperf $test || die "failed to fixup test netperf"
+			;;
+		startup-time-*)
+			fixup_startup_time $test || die "failed to fixup test $test"
+			reduce_runtimes $test || die "failed to reduce run times when run $test"
 			;;
 		ior-*)
 			fixup_ior $test || die "failed to fixup test $test"
