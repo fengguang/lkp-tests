@@ -80,30 +80,6 @@ download_extract()
 	tar Jxf $dir/$file -C $COMPILER_INSTALL_PATH
 }
 
-# Clang need install cross packages locally
-install_cross_packages()
-{
-	local cross_packages
-
-	if [[ "$ARCH" == "arm" ]]; then
-		cross_packages='binutils-arm-linux-gnueabi'
-	elif [[ "$ARCH" == "arm64" ]]; then
-		cross_packages='binutils-aarch64-linux-gnu'
-	else
-		cross_packages="binutils-$ARCH-linux-gnu"
-	fi
-
-	if [[ $(which apt-get) ]]; then
-		apt-get install "$cross_packages" || {
-			echo "cross tool $cross_packages install failed"
-			echo "Please ensure $ARCH cross tools has been installed."
-		}
-	else
-		echo "As of now, make.cross only install dpkg packages automatically"
-		echo "Please ensure $ARCH cross tools has been installed"
-	fi
-}
-
 install_crosstool_clang()
 {
 	local URL='https://download.01.org/0day-ci/cross-package'
@@ -277,11 +253,8 @@ setup_crosstool_gcc()
 	fi
 }
 
-
 setup_crosstool_clang()
 {
-	install_cross_packages
-
 	local cross_clang=("$COMPILER_INSTALL_PATH"/clang-latest/bin/clang)
 	[[ -x $cross_clang ]] || install_cross_compiler || {
 		echo "Install clang compiler failed"
