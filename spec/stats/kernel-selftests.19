@@ -1,0 +1,13 @@
+KERNEL SELFTESTS: linux_headers_dir is /usr/src/linux-headers-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e
+2020-04-16 14:39:08 ln -sf /usr/bin/clang
+2020-04-16 14:39:08 ln -sf /usr/bin/llc
+2020-04-16 14:39:08 sed -i s/default_timeout=45/default_timeout=300/ kselftest/runner.sh
+2020-04-16 14:39:08 make run_tests -C cpufreq
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/cpufreq'
+TAP version 13
+1..1
+# selftests: cpufreq: main.sh
+# pid 1342's current affinity mask: ff
+# pid 1342's new affinity mask: 1
+ok 1 selftests: cpufreq: main.sh
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/cpufreq'
