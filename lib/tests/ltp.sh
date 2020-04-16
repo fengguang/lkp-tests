@@ -287,6 +287,10 @@ test_setting()
 		systemctl start bind9 || exit
 		systemctl list-units | grep -wq apparmor.service && (systemctl reload-or-restart apparmor || exit)
 		;;
+	scsi_debug.part1-*)
+		# fix 'Unable to make dir /test/growfiles/XXX' error
+		mkdir -p /test/growfiles
+		;;
 	esac
 }
 
