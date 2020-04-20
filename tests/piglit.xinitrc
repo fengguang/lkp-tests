@@ -41,7 +41,8 @@ do
 	start_time=$(date +%s.%N)
 	# in order for piglit to correctly identify testcase, change the special characters('/', '[', ']') in testcase to '.'
 	# change spec/ext_transform_feedback/output-type.mat3[2]-no-subscript to spec.ext_transform_feedback.output-type.mat3.2.-no-subscript
-	testcase=$(echo $testcase | tr "/[]" .)
+	# change spec/glsl-1.30/execution/tex-miplevel-selection.texture(bias).3d to spec.glsl-1.30.execution.tex-miplevel-selection.texture.bias..3d
+	testcase=$(echo $testcase | tr "/[]()" .)
 	# using excluding(-x) to avoid running all matching case
 	log_cmd piglit run $test -t "$testcase" "$tmp_results" -x "${testcase}."
 	end_time=$(date +%s.%N)
