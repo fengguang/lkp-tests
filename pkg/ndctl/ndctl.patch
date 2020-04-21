@@ -1,0 +1,44 @@
+From 79a9dd7d066dc9a16db7883da1ab951e1196bc4b Mon Sep 17 00:00:00 2001
+From: Xiao Yang <yangx.jy@cn.fujitsu.com>
+Date: Tue, 21 Apr 2020 11:36:49 +0800
+Subject: [PATCH] test/{dsm-fail,parent-uuid}.c: cleanup resource before
+ removing nfit_test module
+
+avoid the following error when removing nfit_test module:
+--------------------------------------------------
+kmod_module_remove_module: could not remove 'nfit_test': Resource temporarily unavailable
+--------------------------------------------------
+
+Signed-off-by: Xiao Yang <yangx.jy@cn.fujitsu.com>
+---
+ test/dsm-fail.c    | 1 +
+ test/parent-uuid.c | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/test/dsm-fail.c b/test/dsm-fail.c
+index b2c51db..632308c 100644
+--- a/test/dsm-fail.c
++++ b/test/dsm-fail.c
+@@ -366,6 +366,7 @@ int test_dsm_fail(int loglevel, struct ndctl_test *test, struct ndctl_ctx *ctx)
+ 	}
+ 
+ 	result = do_test(ctx, test);
++	system("/lkp/benchmarks/bin/ndctl disable-region all");
+ 	kmod_module_remove_module(mod, 0);
+ 
+ 	kmod_unref(kmod_ctx);
+diff --git a/test/parent-uuid.c b/test/parent-uuid.c
+index f41ca2c..6bd3010 100644
+--- a/test/parent-uuid.c
++++ b/test/parent-uuid.c
+@@ -240,6 +240,7 @@ int test_parent_uuid(int loglevel, struct ndctl_test *test, struct ndctl_ctx *ct
+ 	err = do_test(ctx);
+ 	if (err == 0)
+ 		result = EXIT_SUCCESS;
++	system("/lkp/benchmarks/bin/ndctl disable-region all");
+ 	kmod_module_remove_module(mod, 0);
+ 	kmod_unref(kmod_ctx);
+ 	return result;
+-- 
+2.21.0
+
