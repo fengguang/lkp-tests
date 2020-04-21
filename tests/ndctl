@@ -5,21 +5,13 @@
 
 shopt -s nullglob
 
-. $LKP_SRC/lib/debug.sh
-
 [[ -x "/lkp/benchmarks/bin/ndctl" ]] || die "Can not find executable ndctl file"
 
-[[ -d /etc/depmod.d ]] || log_cmd mkdir -p /etc/depmod.d
-cat >/etc/depmod.d/nfdtl.conf <<EOF
-override nfit * extra
-override dax * extra
-override dax_pmem * extra
-override libnvdimm * extra
-override nd_blk * extra
-override nd_btt * extra
-override nd_e820 * extra
-override nd_pmem * extra
-EOF
+#1) check if nfit_test and its dependencies are available on local host
+#2) avoid the following debug output:
+#   could not open '/sys/module/XXX/initstate': No such file or directory
+#   could not open '/sys/module/XXX': No such file or directory
+modprobe nfit_test || die "Can not load nfit_test module and its dependencies"
 
 /lkp/benchmarks/bin/ndctl test 2>&1
 
