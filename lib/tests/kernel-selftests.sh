@@ -244,6 +244,18 @@ fixup_bpf()
 	[[ "$python_version" =~ "3.5" ]] && sed -i "s/res)/res.decode('utf-8'))/" bpf/test_bpftool.py
 }
 
+fixup_kmod()
+{
+	# kmod tests failed on vm due to the following issue.
+	# request_module: modprobe fs-xfs cannot be processed, kmod busy with 50 threads for more than 5 seconds now
+	# MODPROBE_LIMIT decides threads num, reduce it to 10.
+	sed -i 's/MODPROBE_LIMIT=50/MODPROBE_LIMIT=10/' kmod/kmod.sh
+
+	# Although we reduce MODPROBE_LIMIT, but kmod_test_0009 sometimes timeout.
+	# Reduce the number of times we run 0009.
+	sed -i 's/0009\:150\:1/0009\:50\:1/' kmod/kmod.sh
+}
+
 prepare_for_selftest()
 {
 	if [ "$group" = "kselftests-00" ]; then
@@ -439,6 +451,8 @@ run_tests()
 			continue
 		elif [[ "$subtest" = "livepatch" ]]; then
 			fixup_livepatch
+		elif [[ "$subtest" = "kmod" ]]; then
+			fixup_kmod
 		fi
 
 		log_cmd make run_tests -C $subtest  2>&1 || return
