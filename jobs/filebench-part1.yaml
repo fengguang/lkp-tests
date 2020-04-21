@@ -9,7 +9,7 @@ fs:
  - btrfs
  - f2fs
 
-filebench:
+filebench-setup:
   test:
    - copyfiles.f
    - createfiles.f
@@ -36,3 +36,4 @@ filebench:
    - webproxy.f
    - webserver.f
    - netsfs.f
+filebench:

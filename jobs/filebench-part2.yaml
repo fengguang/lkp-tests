@@ -9,7 +9,7 @@ fs:
  - btrfs
  - f2fs
 
-filebench:
+filebench-setup:
   test:
    - filemicro_create.f
    - filemicro_createfiles.f
@@ -26,3 +26,4 @@ filebench:
    - filemicro_seqwriterandvartab.f
    - filemicro_statfile.f
    - filemicro_writefsync.f
+filebench:
