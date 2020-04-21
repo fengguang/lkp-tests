@@ -5,6 +5,7 @@ LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 require "#{LKP_SRC}/lib/run_env"
 require "#{LKP_SRC}/lib/common"
 require "#{LKP_SRC}/lib/result"
+require "#{LKP_SRC}/lib/constant"
 require "#{LKP_SRC}/lib/hash"
 require "#{LKP_SRC}/lib/erb"
 require "#{LKP_SRC}/lib/log"
@@ -565,7 +566,7 @@ class Job
     @job[comment_to_symbol 'default params'] = nil
 
     @job['kconfig']  ||= DEVEL_HOURLY_KCONFIGS[0]
-    @job['compiler'] ||= DEFAULT_COMPILER
+    @job['compiler'] ||= LKP_DEFAULT_COMPILER
   end
 
   def path_params
@@ -726,7 +727,7 @@ class Job
     rtp['testcase'] = @job['testcase']
     path_scheme = rtp.path_scheme
     as['rootfs'] ||= 'debian-x86_64.cgz' if path_scheme.include? 'rootfs'
-    as['compiler'] ||= DEFAULT_COMPILER if path_scheme.include? 'compiler'
+    as['compiler'] ||= LKP_DEFAULT_COMPILER if path_scheme.include? 'compiler'
 
     as['rootfs'] = rootfs_filename as['rootfs'] if as.key? 'rootfs'
     each_param do |k, v, option_type|
