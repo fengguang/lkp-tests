@@ -343,6 +343,13 @@ fixup_x86()
 		sed -i 's/mov_ss_trap//' x86/Makefile
 		echo "ignored_by_lkp x86.mov_ss_trap test"
 	}
+
+	# List cpus that supported SGX
+	# https://ark.intel.com/content/www/us/en/ark/search/featurefilter.html?productType=873&2_SoftwareGuardExtensions=Yes%20with%20Intel%C2%AE%20ME&1_Filter-UseConditions=3906
+	# If cpu support SGX, also need open SGX in bios
+	grep -qw sgx x86/Makefile && {
+		grep -qw sgx /proc/cpuinfo || echo "Current host doesn't support sgx"
+	}
 }
 
 fixup_livepatch()
