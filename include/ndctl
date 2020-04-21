@@ -1,3 +1,4 @@
+need_testing_nvdimm_modules: true
 need_kconfig:
 - CONFIG_LIBNVDIMM=m
 - CONFIG_BLK_DEV_PMEM=m
