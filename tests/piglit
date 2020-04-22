@@ -38,7 +38,7 @@ check_wait_dri
 
 cat > piglit.conf <<EOF
 [igt]
-path=$BENCHMARK_ROOT/piglit/lib/piglit/bin/igt
+path=$BENCHMARK_ROOT/piglit/lib/piglit/bin/igt/build
 EOF
 
 if [ "${group#*igt-}" != "$group" ]; then

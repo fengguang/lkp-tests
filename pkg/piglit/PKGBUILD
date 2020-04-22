@@ -71,7 +71,7 @@ create_config()
 	touch ${benchmark_path}/piglit.conf
 	cat > "${benchmark_path}/piglit.conf" <<EOF
 [igt]
-path=${benchmark_path}/lib/piglit/bin/igt
+path=${benchmark_path}/lib/piglit/bin/igt/build
 EOF
 }
 
