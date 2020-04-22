@@ -122,6 +122,10 @@ check_ignore_case()
 
 fixup_net()
 {
+	# udpgro tests need enable bpf firstly
+	# Missing xdp_dummy helper. Build bpf selftest first
+	log_cmd make -C bpf 2>&1
+
 	sed -i 's/l2tp.sh//' net/Makefile
 	echo "ignored_by_lkp net.l2tp.sh test"
 	# at v4.18-rc1, it introduces fib_tests.sh, which doesn't have execute permission
