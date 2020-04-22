@@ -12,17 +12,14 @@ sudo dnf install ruby rubygems
 gem install git activesupport
 ```
 
-# Common setup
+# Common setup (per-user)
 
 ```bash
-# after running "sudo make install" in README.md
-LKP_SRC=$(dirname $(dirname $(realpath /usr/local/bin/lkp)))
-cat > $LKP_SRC/lkp-env <<EOF
-export LKP_SRC=$LKP_SRC
-EOF
-echo "source $LKP_SRC/lkp-env" >> $HOME/.${SHELL##*/}rc
+git clone https://gitee.com/wu_fengguang/lkp-tests.git
+cd lkp-tests
+echo "export LKP_SRC=$PWD" >> $HOME/.${SHELL##*/}rc
 
-cat > $LKP_SRC/hosts/$(hostname) <<EOF
+cat > hosts/$(hostname) <<EOF
 nr_cpu: $(nproc)
 memory: $(ruby -e 'puts gets.split[1].to_i >> 20' < /proc/meminfo)G
 hdd_partitions:
