@@ -5,6 +5,8 @@
 
 shopt -s nullglob
 
+. $LKP_SRC/lib/debug.sh
+
 [[ -x "/lkp/benchmarks/bin/ndctl" ]] || die "Can not find executable ndctl file"
 
 #1) check if nfit_test and its dependencies are available on local host
