@@ -118,6 +118,9 @@ end
 
 def atomic_save_yaml_json(object, file)
   temp_file = file + "-#{$PROCESS_ID}"
+
+  File.delete(temp_file) if File.exist?(temp_file)
+
   File.open(temp_file, 'w') do |file|
     if temp_file.index('.json')
       lines = JSON.pretty_generate(object, allow_nan: true)
