@@ -1,0 +1,41 @@
+#!/bin/sh
+# - interval
+
+file=$(basename $0)
+file=${file#cgroup-}
+file=$(echo "$file" |  sed -e 's/--/./g')
+
+cgname=$testcase
+
+cgfile1=$(echo $CGROUP_MNT/$cgname*/$file)
+cgfile1=${cgfile1%% *}
+cgfile2=$(echo $CGROUP_MNT/*/$cgname*/$file)
+cgfile2=${cgfile2%% *}
+if [ -f "$cgfile1" ]; then
+	cgdir="$CGROUP_MNT"
+elif [ -f "/$cgfile2" ]; then
+	cgdir=$(dirname $(dirname "$cgfile2"))
+else
+	exit
+fi
+
+if [ -z "$interval" ]; then
+	case $file in
+		*)		interval=1  ;;
+	esac
+fi
+
+. $LKP_SRC/lib/wait.sh
+setup_wait
+
+while :
+do
+	echo time: $(date +%s)
+	cd "$cgdir"
+	for cg in $cgname*; do
+		[ -f "$cg/$file" ] || continue
+		echo "cgroup: $cg"
+		cat "$cg/$file"
+	done
+	wait_timeout $interval
+done
