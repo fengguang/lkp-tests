@@ -3,11 +3,11 @@ require "#{LKP_SRC}/lib/stats"
 
 describe 'stats' do
   describe 'scripts' do
-    yaml_files = Dir.glob ["#{LKP_SRC}/spec/stats/*.[0-9]*.yaml"]
+    yaml_files = Dir.glob ["#{LKP_SRC}/spec/stats/*/[0-9]*.yaml"]
     yaml_files.each do |yaml_file|
       file = yaml_file.chomp '.yaml'
       it "invariance: #{file}" do
-        script = File.basename(file.sub(/\.[0-9]+$/, ''))
+        script = File.basename(File.dirname(file))
         old_stat = File.read yaml_file
         new_stat = if script =~ /^(kmsg|dmesg|mpstat|fio)$/
                      `#{LKP_SRC}/stats/#{script} #{file}`
