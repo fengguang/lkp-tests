@@ -5,6 +5,7 @@
 
 . "$LKP_SRC/lib/reproduce-log.sh"
 . "$LKP_SRC/lib/numactl.sh"
+. "$LKP_SRC/lib/unit.sh"
 
 bg_pids=""
 mongodb_server="$BENCHMARK_ROOT/mongodb/bin/mongod"
@@ -15,6 +16,28 @@ else
 	echo "Can not get the mount points, exit!" 1>&2
 	exit 1
 fi
+
+# it's used for controling how much memory one mongodb comsumes
+# https://docs.mongodb.com/manual/reference/configuration-options/#storage.wiredTiger.engineConfig.cacheSizeGB
+# by default:
+#    Starting in MongoDB 3.4, the default WiredTiger internal cache size is the larger of either:
+#    50% of (RAM - 1 GB), or 256 MB.
+setup_cache_size()
+{
+	local memory_byte=$(to_byte $memory)
+	local nr_node=${nr_node:-1}
+
+	[ "$mongodb_mem_node_bind" ] && {
+		memory_byte=$((memory_byte / nr_node)) # memory per node
+	}
+
+	cache_size_gb=$((memory_byte / 2)) # 50% memory
+	cache_size_gb=$((cache_size_gb / nr_processes)) # memory per mongodb instance
+	cache_size_gb=$(to_gb $cache_size_gb)
+	[ $cache_size_gb -eq 0 ] && cache_size_gb=1
+}
+
+setup_cache_size
 
 for i in $(seq 1 "$nr_processes")
 do
@@ -31,7 +54,9 @@ storage:
   enabled: true
 #  engine:
 #  mmapv1:
-#  wiredTiger:
+ wiredTiger:
+   engineConfig:
+     cacheSizeGB: $cache_size_gb
 
 # where to write logging data.
 systemLog:
