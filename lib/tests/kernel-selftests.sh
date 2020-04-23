@@ -335,6 +335,40 @@ platform_is_skylake_or_snb()
 	([[ $model -ge 85 ]] && [[ $model -le 94 ]]) || [[ $model -eq 42 ]]
 }
 
+cleanup_openat2()
+{
+	umount /mnt/kselftest || return
+	rm -rf /mnt/kselftest || return
+}
+
+fixup_openat2()
+{
+	local original_dir=$(pwd)
+
+	# The default filesystem of testing workdir is none, some flags is not supported
+	# Create a virtual disk and format it with ext4 to run openat2
+	dd if=/dev/zero of=/tmp/raw.img bs=1M count=100 || return
+	mkfs -t ext4 /tmp/raw.img || return
+	[[ -d "/mnt/kselftest" ]] || mkdir -p "/mnt/kselftest" || return
+	mount -t ext4 /tmp/raw.img /mnt/kselftest || return
+	# Build openat2 firstly, just run binary on /mnt/kselftest
+	make -C openat2 >/dev/null || return
+	cp -r openat2 /mnt/kselftest || return
+
+	# Openat2 create testing files on current dir, so we need change working dir.
+	cd /mnt/kselftest/openat2
+	log_cmd ./openat2_test 2>&1
+	# Since we run openat2_test directly, we also need format the output.
+	if [[ "$?" == "0" ]]; then
+		echo "ok 1 selftests: openat2: openat2_test"
+	else
+		echo "not ok 1 selftests: openat2: openat2_test # exit=1"
+	fi
+	cd $original_dir
+
+	cleanup_openat2
+}
+
 fixup_breakpoints()
 {
 	platform_is_skylake_or_snb && grep -qw step_after_suspend_test breakpoints/Makefile && {
@@ -441,6 +475,9 @@ run_tests()
 			fixup_efivarfs || continue
 		elif [[ $subtest = "gpio" ]]; then
 			fixup_gpio || continue
+		elif [[ $subtest = "openat2" ]]; then
+			fixup_openat2
+			continue
 		elif [[ "$subtest" = "pstore" ]]; then
 			fixup_pstore || continue
 		elif [[ "$subtest" = "firmware" ]]; then
