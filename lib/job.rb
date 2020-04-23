@@ -118,11 +118,6 @@ end
 
 def atomic_save_yaml_json(object, file)
   temp_file = file + "-#{$PROCESS_ID}"
-  if File.symlink?(temp_file)
-    realpath = File.readlink(temp_file)
-    log_warn "#{temp_file} already exist, and is symlink of #{realpath}"
-  end
-
   File.open(temp_file, 'w') do |file|
     if temp_file.index('.json')
       lines = JSON.pretty_generate(object, allow_nan: true)
@@ -133,11 +128,6 @@ def atomic_save_yaml_json(object, file)
       lines.gsub!(/^\? :#(.*)\n: $/, "\n#\\1")
     end
     file.write(lines)
-  end
-
-  if File.symlink?(temp_file)
-    realpath = File.readlink(temp_file)
-    log_warn "#{temp_file} is symlink of #{realpath}"
   end
   FileUtils.mv temp_file, file, force: true
 end
