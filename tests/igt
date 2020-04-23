@@ -17,6 +17,9 @@ cd "$BENCHMARK_ROOT/igt" || exit
 ret=1
 while read testcase
 do
+	# OOM since igt commit: 0b0eaa353 ("tests/dumb_buffer: Try to compute the largest possible dumb buffer")
+	# disable it until we get response from community
+	[ "$testcase" = "dumb_buffer" ] && continue
 	log_cmd build/tests/$testcase 2>&1
 	if [ $? -eq 77 ] || [ $? -eq 0 ]; then
 		ret=0
