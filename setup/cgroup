@@ -1,4 +1,6 @@
 #!/bin/sh
+# - cg_count
+# - cg_bind
 # - group
 # - cpu.cfs_period_us
 # - cpu.cfs_quota_us
@@ -32,6 +34,7 @@
 # - blkio.throttle.read_iops_device
 # - blkio.throttle.write_iops_device
 
+. $LKP_SRC/lib/common.sh
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/cgroup.sh
@@ -40,41 +43,65 @@ CGROUP_MNT=/cgroup
 
 [ -e '/proc/cgroups' ] || die "dir not exist: /proc/cgroups"
 
+: "${cg_count:=1}"
+
+if [ -z "$cg_bind"] && [ "$cg_count" -eq 1 ]; then
+	cg_bind=1
+fi
+
 # Clear cgroups and subsystem controllers mount point for v1 version
 clear_cgroup
 
 #clear cgroups and subsystem controllers mount point for v2 version
 clear_cgroup2
 
-#Bind each subsystem to an individual hierachy and create an individual control group
-create_cgroup $CGROUP_MNT $testcase
+create_one_cgroup()
+{
+	cgname=$1
+	#Bind each subsystem to an individual hierachy and create an individual control group
+	create_cgroup "$CGROUP_MNT" "$cgname"
 
-#Tuning parammeter defined in the jobfile
-env | grep -F '_46_' |
-while read line
-do
-	key=${line%%=*}
-	val=${line##*=}
-	[ -n "$val" ] || continue
-	param=$(echo "$key" | sed 's/_46_/./g')
-	if [ "${key%%_46_*}" = "cpu" -o "${key%%_46_*}" = "cpuacct" ]; then
-		if [ -w "$CGROUP_MNT/cpu,cpuacct/$testcase/$param" ]; then
-			log_eval "echo '$val' > '$CGROUP_MNT/cpu,cpuacct/$testcase/$param'"
+	#Tuning parammeter defined in the jobfile
+	env | grep -F '_46_' |
+	while read line
+	do
+		key=${line%%=*}
+		val=${line##*=}
+		[ -n "$val" ] || continue
+		param=$(echo "$key" | sed 's/_46_/./g')
+		if [ "${key%%_46_*}" = "cpu" -o "${key%%_46_*}" = "cpuacct" ]; then
+			if [ -w "$CGROUP_MNT/cpu,cpuacct/$testcase/$param" ]; then
+				log_eval "echo '$val' > '$CGROUP_MNT/cpu,cpuacct/$testcase/$param'"
+			else
+				echo "Warning: parammeter $param doesn't exist or doesn't have write \
+permission in $CGROUP_MNT/cpu,cpuacct/$testcase/ directory"
+			fi
+
+		elif [ -w "$CGROUP_MNT/${key%%_46_*}/$testcase/$param" ]; then
+			log_eval "echo '$val' > '$CGROUP_MNT/${key%%_46_*}/$testcase/$param'"
 		else
 			echo "Warning: parammeter $param doesn't exist or doesn't have write \
-permission in $CGROUP_MNT/cpu,cpuacct/$testcase/ directory"
-		fi
-
-	elif [ -w "$CGROUP_MNT/${key%%_46_*}/$testcase/$param" ]; then
-		log_eval "echo '$val' > '$CGROUP_MNT/${key%%_46_*}/$testcase/$param'"
-	else
-		echo "Warning: parammeter $param doesn't exist or doesn't have write \
 permission in $CGROUP_MNT/${key%%_46_*}/$testcase/ directory"
-	fi
+		fi
+	done
+}
+
+for i in $(seq 1 "$cg_count"); do
+	name="$testcase.$i"
+	create_one_cgroup "$name"
+	cgroup_names="$cgroup_names $name"
 done
 
-#Set PPID to cgroup tasks
-for subsys_tasks in $CGROUP_MNT/*/$testcase/tasks
-do
-	log_eval "echo '$PPID' > '$subsys_tasks'"
-done
+if parse_bool -q "$cg_bind"; then
+	#Set PPID to first cgroup tasks
+	for subsys_tasks in $CGROUP_MNT/*/$testcase.1/tasks; do
+		log_eval "echo '$PPID' > '$subsys_tasks'"
+	done
+fi
+
+cat >> $TMP/env.yaml <<EOF
+
+# setup/cgroup
+CGROUP_MNT=$CGROUP_MNT
+cgroups: $cgroup_names
+EOF
