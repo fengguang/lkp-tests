@@ -6,6 +6,7 @@
 . $LKP_SRC/lib/debug.sh
 
 export PATH=$BENCHMARK_ROOT/piglit/bin:$PATH
+export LD_LIBRARY_PATH=$BENCHMARK_ROOT/piglit/lib/piglit/lib:$LD_LIBRARY_PATH
 
 dri_exist()
 {
