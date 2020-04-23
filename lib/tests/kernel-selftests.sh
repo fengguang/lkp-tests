@@ -271,7 +271,7 @@ prepare_for_selftest()
 		selftest_mfs=$(ls -d [c-l]*/Makefile | grep -v -e livepatch -e lib -e cpufreq -e kvm)
 	elif [ "$group" = "kselftests-02" ]; then
 		# m* is slow
-		selftest_mfs=$(ls -d [m-s]*/Makefile | grep -v -e rseq -e resctrl)
+		selftest_mfs=$(ls -d [m-s]*/Makefile | grep -v -w -e rseq -e resctrl -e net)
 	elif [ "$group" = "kselftests-03" ]; then
 		selftest_mfs=$(ls -d [t-z]*/Makefile | grep -v x86)
 	elif [ "$group" = "kselftests-rseq" ]; then
@@ -292,6 +292,8 @@ prepare_for_selftest()
 		selftest_mfs=$(ls -d cpufreq/Makefile)
 	elif [ "$group" = "kselftests-kvm" ]; then
 		selftest_mfs=$(ls -d kvm/Makefile)
+	elif [ "$group" = "kselftests-net" ]; then
+		selftest_mfs=$(ls -d net/Makefile)
 	fi
 }
 
