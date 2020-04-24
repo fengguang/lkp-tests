@@ -69,7 +69,7 @@ clean_job_resource
 end_time=$(date '+%s')
 
 set_job_state 'post_run'
-$LKP_SRC/bin/post-run
+$LKP_DEBUG_PREFIX $LKP_SRC/bin/post-run
 
 [ "$result_fs" = 'cifs' -o "$result_fs" = 'virtfs' ] || {
 	chown -R .lkp $RESULT_ROOT 2>/dev/null
@@ -106,3 +106,4 @@ fi
 
 sync
 job_done
+sleep 1  # hopefully help debug messages show up in serial output
