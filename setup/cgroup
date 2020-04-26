@@ -102,6 +102,7 @@ fi
 cat >> $TMP/env.yaml <<EOF
 
 # setup/cgroup
-CGROUP_MNT=$CGROUP_MNT
+CGROUP_MNT: $CGROUP_MNT
+cgroup_ver: 1
 cgroups: $cgroup_names
 EOF
