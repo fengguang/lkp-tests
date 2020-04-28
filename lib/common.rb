@@ -277,6 +277,12 @@ def date_of_time(t)
   Time.new t.year, t.month, t.day
 end
 
+# https://github.com/rails/rails/pull/31462/files
+def tmpname
+  t = Time.now.strftime('%Y%m%d')
+  "#{t}-#{$PROCESS_ID}-#{rand(0x100000000).to_s(36)}"
+end
+
 ## File system
 
 def make_relative_symlink(src, dst)
