@@ -173,6 +173,12 @@ fixup_pstore()
 	}
 }
 
+fixup_ftrace()
+{
+	# FIX: sh: echo: I/O error
+	sed -i 's/bin\/sh/bin\/bash/' ftrace/ftracetest
+}
+
 fixup_firmware()
 {
 	# As this case suggested, some distro(suse/debian) udev may have /lib/udev/rules.d/50-firmware.rules
@@ -501,6 +507,8 @@ run_tests()
 			continue
 		elif [[ "$subtest" = "livepatch" ]]; then
 			fixup_livepatch
+		elif [[ "$subtest" = "ftrace" ]]; then
+			fixup_ftrace
 		elif [[ "$subtest" = "kmod" ]]; then
 			fixup_kmod
 		fi
