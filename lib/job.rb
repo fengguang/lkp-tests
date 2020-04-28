@@ -117,7 +117,7 @@ def create_programs_hash(glob, lkp_src = LKP_SRC)
 end
 
 def atomic_save_yaml_json(object, file)
-  temp_file = file + "-#{$PROCESS_ID}"
+  temp_file = file + "-#{tmpname}"
   File.open(temp_file, 'w') do |file|
     if temp_file.index('.json')
       lines = JSON.pretty_generate(object, allow_nan: true)

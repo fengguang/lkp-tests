@@ -157,7 +157,7 @@ def dot_file(path)
 end
 
 def save_yaml(object, file, compress = false)
-  temp_file = dot_file(file) + "-#{$PROCESS_ID}"
+  temp_file = dot_file(file) + "-#{tmpname}"
   File.open(temp_file, 'w') do |f|
     f.write(YAML.dump(object))
   end
@@ -223,7 +223,7 @@ def load_json(file, cache = false)
 end
 
 def save_json(object, file, compress = false)
-  temp_file = dot_file(file) + "-#{$PROCESS_ID}"
+  temp_file = dot_file(file) + "-#{tmpname}"
   File.open(temp_file, 'w') do |file|
     file.write(JSON.pretty_generate(object, allow_nan: true))
   end
