@@ -36,7 +36,10 @@ reset_broken_ipmi()
 #
 trigger_post_process()
 {
-	http_get_cgi "cgi-bin/lkp-post-run?job_file="$(escape_cgi_param "$job")
+	local query_str=job_file=$(escape_cgi_param "$job")
+	query_str="${query_str}&$(escape_cgi_param "job_id=$id")"
+
+	http_get_cgi "cgi-bin/lkp-post-run?$query_str"
 
 	reset_broken_ipmi
 }
@@ -49,6 +52,7 @@ jobfile_append_var()
 	[ -z "$*" ] && LOG_ERROR "no paramter specified at $FUNCTION" && return
 
 	local query_str=job_file=$(escape_cgi_param "$job")
+	query_str="${query_str}&$(escape_cgi_param "job_id=$id")"
 	for assignment in "$@"; do
 		query_str="${query_str}&$(escape_cgi_param "$assignment")"
 	done
