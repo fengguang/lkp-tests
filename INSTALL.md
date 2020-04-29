@@ -1,29 +1,25 @@
+system wide setup
+=================
 
-# debian packages
+## debian
 
-```bash
-sudo apt-get install ruby-git ruby-activesupport
-```
+	sudo apt-get install ruby-git ruby-activesupport
 
-# openEuler packages
+## openEuler
 
-```bash
-sudo dnf install ruby rubygems
-gem install git activesupport
-```
+	sudo dnf install ruby rubygems
+	gem install git activesupport
 
-# Common setup (per-user)
+per-user setup
+==============
 
-```bash
-git clone https://gitee.com/wu_fengguang/lkp-tests.git
-cd lkp-tests
-echo "export LKP_SRC=$PWD" >> $HOME/.${SHELL##*/}rc
+	git clone https://gitee.com/wu_fengguang/lkp-tests.git
+	cd lkp-tests
+	echo "export LKP_SRC=$PWD" >> $HOME/.${SHELL##*/}rc
 
-cat > hosts/$(hostname) <<EOF
-nr_cpu: $(nproc)
-memory: $(ruby -e 'puts gets.split[1].to_i >> 20' < /proc/meminfo)G
-hdd_partitions:
-ssd_partitions:
-EOF
-
-```
+	cat > hosts/$(hostname) <<-EOF
+	nr_cpu: $(nproc)
+	memory: $(ruby -e 'puts gets.split[1].to_i >> 20' < /proc/meminfo)G
+	hdd_partitions:
+	ssd_partitions:
+	EOF
