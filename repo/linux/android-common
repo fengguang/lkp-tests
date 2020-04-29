@@ -5,3 +5,4 @@ mail_to: cros-kernel-buildreports@googlegroups.com
 test_old_branches: .*
 blacklist_branch: .*-release|.*-mr.*
 blacklist_arch: powperpc
+whitelist_arch: x86_64|i386|arm|arm64
