@@ -396,6 +396,10 @@ fixup_x86()
 	grep -qw sgx x86/Makefile && {
 		grep -qw sgx /proc/cpuinfo || echo "Current host doesn't support sgx"
 	}
+
+	# Fix error /usr/bin/ld: /tmp/lkp/cc6bx6aX.o: relocation R_X86_64_32S against `.text' can not be used when making a shared object; recompile with -fPIC
+	# https://www.spinics.net/lists/stable/msg229853.html
+	grep -qw '-no-pie' x86/Makefile || sed -i '/^CFLAGS/ s/$/ -no-pie/' x86/Makefile
 }
 
 fixup_livepatch()
