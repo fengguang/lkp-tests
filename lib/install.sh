@@ -105,7 +105,7 @@ parse_packages_arch()
 
 	#remove packages that don't match currect system ARCH
 	#"liblsan0(i386)" ==> "" if current system ARCH is x86_64
-	generic_packages=$(echo $generic_packages | sed 's/ [^ ]*([^ ]*)//g')
+	generic_packages=$(echo $generic_packages | sed 's/[^ ]*([^ ]*)//g')
 }
 
 get_dependency_packages()
