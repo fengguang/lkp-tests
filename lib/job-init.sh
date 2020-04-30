@@ -153,6 +153,7 @@ setup_result_root()
 		return 1
 	}
 
+	mkdir -p $RESULT_ROOT
 	# check emptiness except for files: dmesg pre-dmesg
 	if [ "$result_fs" != "tmpfs" ]; then
 		ls $RESULT_ROOT | grep -v -q -F dmesg &&
