@@ -1,0 +1,51 @@
+#!/usr/bin/env crystal
+
+LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+
+require "#{LKP_SRC}/lib/string_ext"
+
+stats = []
+test_item = ""
+fs_type = ""
+build_type = ""
+
+while (line = STDIN.gets)
+  line = line.remediate_invalid_byte_sequence(replace: "_") unless line.valid_encoding?
+  case line
+  when %r{^(.+)/TEST[0-9]+: SETUP \(.+/(.+)/(.+)\)$}
+    test_item = Regexp.last_match[1]
+    fs_type = Regexp.last_match[2]
+    build_type = Regexp.last_match[3]
+  when %r{^(.+)/(TEST[0-9]+): (PASS|FAIL|SKIP)}
+    item = Regexp.last_match[1]
+    name = Regexp.last_match[2]
+    next unless test_item == item
+
+    stats << item + "_" + name + "_" + fs_type + "_" + build_type + "." + Regexp.last_match[3].downcase + ": 1"
+  when %r{RUNTESTS: stopping: (.+)/(TEST[0-9]+) failed}
+    item = Regexp.last_match[1]
+    name = Regexp.last_match[2]
+    if line =~ /FS=(.+) BUILD=(.+)/
+      test_item = item
+      fs_type = $1
+      build_type = $2
+    end
+    next unless test_item == item
+
+    stats << item + "_" + name + "_" + fs_type + "_" + build_type + ".fail: 1"
+  when %r{RUNTESTS: stopping: (.+)/(TEST[0-9]+) timed out}
+    item = Regexp.last_match[1]
+    name = Regexp.last_match[2]
+    next unless test_item == item
+
+    stats << item + "_" + name + "_" + fs_type + "_" + build_type + ".timeout: 1"
+  when %r{^(.+)/(TEST[0-9]+): SKIP}
+    item = Regexp.last_match[1]
+    name = Regexp.last_match[2]
+    stats << item + "_" + name + ".test_skip: 1"
+  when /^(ignored_by_lkp)\s+(.*)\s+/
+    stats << "#{$2}.#{$1}: 1"
+  end
+end
+
+stats.uniq.each { |stat| puts stat }

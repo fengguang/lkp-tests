@@ -44,7 +44,7 @@ end
 while (line = STDIN.gets)
   if line =~ /^[0-9T:+-]{24}$/ # "2013-04-02T13:58:40+0800", by 'S_TIME_FORMAT=ISO isotat -t'
     time = line.chomp('\n')
-    #puts "time: #{Time.parse(time).to_i}"
+    puts "time: #{Time.parse(time).to_i}"
   elsif line =~ /^avg-cpu:/
     extract_avg_cpu line
   elsif line =~ /^Device:/

@@ -12,7 +12,6 @@ iterations = 0
 unit = ""
 time = 0.0
 while (line = STDIN.gets)
-  line = line.chomp
   case line
   when /^Iterations/
     iterations += 1
