@@ -2,7 +2,6 @@
 
 RESULT_ROOT = ENV["RESULT_ROOT"]
 
-LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname(File.realpath(PROGRAM_NAME)))
 require "../../lib/ftrace"
 require "../../lib/common"
 

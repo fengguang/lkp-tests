@@ -19,7 +19,6 @@
 # on kmsg and falls back to dmesg) to catch 50000+ printk messages whose level
 # is >= KERN_WARNING.
 
-LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname(File.realpath(PROGRAM_NAME)))
 
 require "../../lib/dmesg"
 require "../../lib/log"

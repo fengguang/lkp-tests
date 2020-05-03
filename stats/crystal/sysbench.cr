@@ -1,6 +1,5 @@
 #!/usr/bin/env crystal
 
-LKP_SRC ||= ENV["LKP_SRC"]
 
 # sysbench 1.0.12 (using bundled LuaJIT 2.1.0-beta2)
 # Running the test with following options:

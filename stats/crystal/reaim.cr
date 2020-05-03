@@ -2,7 +2,6 @@
 
 # reaim.workload is defined as the total number of jobs for all
 # processes/threads
-LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname(File.realpath(PROGRAM_NAME)))
 
 require "../../lib/statistics"
 

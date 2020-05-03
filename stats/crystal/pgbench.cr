@@ -1,6 +1,5 @@
 #!/usr/bin/env crystal
 
-LKP_SRC = ENV["LKP_SRC"]
 
 while (line = STDIN.gets)
   case line

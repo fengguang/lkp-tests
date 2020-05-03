@@ -1,7 +1,6 @@
 #!/usr/bin/env crystal
 
 # fio.workload is defined as the total number of read/wrote IO operation
-LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname(File.realpath(PROGRAM_NAME)))
 
 require "json"
 require "../../lib/log"

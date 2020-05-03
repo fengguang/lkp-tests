@@ -32,7 +32,6 @@
 # GET       0.330        99.28
 # GET       0.340        99.40
 
-LKP_SRC ||= ENV["LKP_SRC"] || File.dirname(__DIR__)
 
 require "../../lib/array_ext"
 

@@ -1,6 +1,5 @@
 #!/usr/bin/env crystal
 
-LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname(File.realpath(PROGRAM_NAME)))
 RESULT_ROOT = ENV["RESULT_ROOT"]
 
 require "../../lib/common"

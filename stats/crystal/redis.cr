@@ -1,6 +1,5 @@
 #!/usr/bin/env crystal
 
-LKP_SRC ||= ENV["LKP_SRC"] || File.dirname(__DIR__)
 
 require "../../lib/array_ext"
 
