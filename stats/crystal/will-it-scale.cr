@@ -12,7 +12,7 @@ per_thread = []
 workload = 0
 
 while (line = STDIN.gets)
-  case line.chomp!
+  case line
   when /^[a-z_,]+$/
     names = line.split ","
     names.shift

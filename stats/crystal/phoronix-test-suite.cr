@@ -6,7 +6,7 @@ is_begin_of_subtest = false
 while (line = STDIN.gets)
   # remove color control info
   line.gsub!(/.\[1;(\d+)m|.\[0m/, "")
-  case line.chomp!
+  case line
   when %r{(pts|system)/(\S+)-[0-9.]+ is not installed}
     item = Regexp.last_match[2]
     puts "#{item}.not_installed: 1"

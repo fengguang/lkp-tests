@@ -11,7 +11,7 @@ require "time"
 # Benchmark Run: Tue Jan 01 2019 15:48:24 - 15:56:36
 
 while (line = STDIN.gets)
-  case line.chomp!
+  case line
   when /^Benchmark Run: .+ (\d+:\d+:\d+) - (\d+:\d+:\d+)$/
     # We only care about the difference value between end time and start time
     start_time = Time.parse($1).to_f
@@ -23,7 +23,7 @@ while (line = STDIN.gets)
                end
   when /^System Benchmarks Partial Index .* INDEX$/
     line = STDIN.gets
-    if line.chomp!
+    if line
       lines = line.split
       throughput = lines[-2].to_f
     end

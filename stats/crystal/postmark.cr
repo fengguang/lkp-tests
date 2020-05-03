@@ -5,7 +5,7 @@ keys = %w(transactions files_created creation_alone creation_mixed_trans
   deletion_mixed_trans data_read data_written)
 
 while (line = STDIN.gets)
-  case line.chomp!
+  case line
   when /^[0-9. ]+$/
     data = line.split
     data[2..-1].each_with_index do |v, i|

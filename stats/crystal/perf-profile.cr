@@ -35,7 +35,7 @@ while (line = STDIN.gets)
   # Samples: 5K of event 'cycles'
   # Samples: 489  of event 'cache-misses'
   if line =~ /^# Events: \d+[KMG ]\s+/ || line =~ /^# Samples: \d+[KMG ] of event /
-    cur_event = $'.tr(":", "-").tr('\'', "").chomp
+    cur_event = $'.tr(":", "-").tr('\'', "")
     break
   end
 end
@@ -43,8 +43,6 @@ end
 results = Hash.new(0)
 
 while (line = STDIN.gets)
-  line.chomp!
-
   case line
 
   # Bypass lines before record begin:

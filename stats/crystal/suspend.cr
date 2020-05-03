@@ -5,7 +5,6 @@ srhash = {}
 srmaxhash = {}
 phase = "none"
 while (line = STDIN.gets)
-  line.chomp!
   case line
   when /^ *.* \[\d{3}\] .... *(\d{1,6}\.\d{6}): suspend_resume: (.*)\[(\d*)\] (.*)/
     timestamp = $1

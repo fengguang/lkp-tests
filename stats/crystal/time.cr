@@ -20,7 +20,7 @@ while (line = STDIN.gets)
       tt * 60 + t.to_f
     end
   when "percent_of_cpu_this_job_got"
-    val.chomp!("%\n")
+    val = val.chomp("%")
     val = "0" if val == "?"
   end
   puts "#{key}: #{val}"

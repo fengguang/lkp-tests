@@ -7,7 +7,7 @@ require "#{LKP_SRC}/lib/statistics"
 results = {}
 
 while (line = STDIN.gets)
-  case line.chomp!
+  case line
   when /^(.*):[\t\s]+([\d.]+)( (\S+))?/
     value = $2
     unit = "_" + $4 if $4

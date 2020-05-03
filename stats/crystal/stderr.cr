@@ -12,7 +12,7 @@ error_ids = {}
 Dir["#{LKP_SRC}/etc/ignore-stderr/*"].each do |f|
   File.open(f).each_line do |line|
     line = line.remediate_invalid_byte_sequence(replace: "_") unless line.valid_encoding?
-    @ignore_patterns << Regexp.new("^" + line.chomp + "$")
+    @ignore_patterns << Regexp.new("^" + line + "$")
   end
 end
 
@@ -30,7 +30,6 @@ def should_ignore_stderr(line)
 end
 
 while (line = gets)
-  line.chomp!
   next if should_ignore_stderr(line)
 
   # ERR: lib/dmesg.rb:151:in `gsub!': invalid byte sequence in US-ASCII (ArgumentError)

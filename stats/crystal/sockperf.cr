@@ -2,7 +2,7 @@
 
 sockperf = {}
 while (line = STDIN.gets)
-  case line.chomp!
+  case line
   when /^sockperf: subcommand (.+) (.+)$/
     subcommand = $1
     protocol = $2

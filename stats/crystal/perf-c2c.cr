@@ -1,8 +1,6 @@
 #!/usr/bin/env crystal
 
 while (line = STDIN.gets)
-  line.chomp!
-
   case line
   # Example input:
   #  Load Local HITM                   :          7

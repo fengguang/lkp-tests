@@ -9,7 +9,7 @@ def largest_bandwidth
   bandwidth = 0
 
   $stdin.each_line do |line|
-    break if line.chomp.empty?
+    break if line.empty?
 
     temp_size = line.split(" ")[0].to_f
     temp_bandwidth = line.split(" ")[1].to_f

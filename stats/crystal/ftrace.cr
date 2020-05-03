@@ -63,7 +63,6 @@ def normlize_event_data(event, event_data, records)
   record = {}
   file = File.open(event_data)
   while (line = file.gets)
-    line = line.chomp
     if line == "" && !record["time"].nil?
       normlize_record event, record, key_prefix_items, records
       record = {}

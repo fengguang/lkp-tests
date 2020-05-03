@@ -1,7 +1,7 @@
 #!/usr/bin/env crystal
 
 while (line = STDIN.gets)
-  case line.chomp!
+  case line
   # packetdrill/tests/linux/packetdrill/socket_wrong_err.pkt failed
   when /^(.*)\.pkt failed/
     puts "#{$1}.fail: 1"

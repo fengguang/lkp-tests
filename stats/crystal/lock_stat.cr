@@ -11,7 +11,6 @@ contentions = {}
 lock_stat = {}
 
 while (line = STDIN.gets)
-  line.chomp!
   line.sub!(%r{/c/kernel-tests/src/[^/]+/}, "")
   line.sub!(%r{/kbuild/src/[^/]+/}, "")
   case line

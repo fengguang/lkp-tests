@@ -6,7 +6,7 @@ require "#{LKP_SRC}/lib/statistics"
 require "#{LKP_SRC}/lib/log"
 
 while (line = STDIN.gets)
-  case line.chomp!
+  case line
   when /\s*\d+:\s*(\d+) bytes\s+\d+ times -->\s+([0-9.]+) Mbps in\s+([0-9.]+) usec/
     if $1.to_i < (8 * 1024)
       less_8k_usec ||= []

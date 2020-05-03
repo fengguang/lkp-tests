@@ -2,7 +2,7 @@
 
 qperf = {}
 while (line = STDIN.gets)
-  case line.chomp!
+  case line
   when /^(.+):$/
     protocol = $1.split("_")[0]
   when /^\s*([a-z_]+)\s*=\s*([0-9.]+)\s*[a-zA-Z\/]+$/

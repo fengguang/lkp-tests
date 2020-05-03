@@ -133,7 +133,6 @@ end
 stat_unittest(lines) if $PROGRAM_NAME =~ /kmsg/
 
 oops_map.each do |bug_to_bisect, line|
-  line.chomp!
 
   timestamp = $2 if line =~ /^(<[0-9]+>|....  :..... : )?\[ *(\d{1,6}\.\d{6})\] /
 
