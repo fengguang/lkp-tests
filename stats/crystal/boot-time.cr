@@ -2,7 +2,7 @@
 
 LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname(File.reapath(PROGRAM_NAME)))
 
-require "#{LKP_SRC}/lib/string_ext"
+require "../../lib/string_ext"
 
 def show_dmesg_times
   dmesg = "#{ENV["RESULT_ROOT"]}/kmsg"

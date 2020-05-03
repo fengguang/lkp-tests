@@ -3,7 +3,7 @@
 LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname(File.realpath(PROGRAM_NAME)))
 
 require "fileutils"
-require "#{LKP_SRC}/lib/statistics"
+require "../../lib/statistics"
 
 RESULT_ROOT = ENV["RESULT_ROOT"]
 results = {}

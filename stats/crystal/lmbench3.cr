@@ -2,7 +2,7 @@
 
 LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname(File.realpath(PROGRAM_NAME)))
 
-require "#{LKP_SRC}/lib/string_ext"
+require "../../lib/string_ext"
 
 def largest_bandwidth
   file_size = 0

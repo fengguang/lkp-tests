@@ -2,8 +2,8 @@
 
 LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname(File.realpath(PROGRAM_NAME)))
 
-require "#{LKP_SRC}/lib/statistics"
-require "#{LKP_SRC}/lib/string_ext"
+require "../../lib/statistics"
+require "../../lib/string_ext"
 
 stats = []
 testname = nil

@@ -21,9 +21,9 @@
 
 LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname(File.realpath(PROGRAM_NAME)))
 
-require "#{LKP_SRC}/lib/dmesg"
-require "#{LKP_SRC}/lib/log"
-require "#{LKP_SRC}/lib/string_ext"
+require "../../lib/dmesg"
+require "../../lib/log"
+require "../../lib/string_ext"
 
 if ARGV[0]
   kmsg_file = ARGV[0]

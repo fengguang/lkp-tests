@@ -6,8 +6,8 @@ RESULT_ROOT = ENV["RESULT_ROOT"]
 
 LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname(File.realpath(PROGRAM_NAME)))
 
-require "#{LKP_SRC}/lib/noise"
-require "#{LKP_SRC}/lib/log"
+require "../../lib/noise"
+require "../../lib/log"
 
 time = {}
 syscall_nr = {}

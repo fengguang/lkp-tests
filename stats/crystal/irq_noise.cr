@@ -3,8 +3,8 @@
 RESULT_ROOT = ENV["RESULT_ROOT"]
 
 LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname(File.realpath(PROGRAM_NAME)))
-require "#{LKP_SRC}/lib/ftrace"
-require "#{LKP_SRC}/lib/common"
+require "../../lib/ftrace"
+require "../../lib/common"
 
 # Analyze these samples to get how many times irq/softirq happened
 # and how long they take

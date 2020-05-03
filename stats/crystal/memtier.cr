@@ -34,7 +34,7 @@
 
 LKP_SRC ||= ENV["LKP_SRC"] || File.dirname(__DIR__)
 
-require "#{LKP_SRC}/lib/array_ext"
+require "../../lib/array_ext"
 
 $histo_sets_sum = Array.new(6, 0)
 $histo_sets_num = Array.new(6, 0)

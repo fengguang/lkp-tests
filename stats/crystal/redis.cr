@@ -2,7 +2,7 @@
 
 LKP_SRC ||= ENV["LKP_SRC"] || File.dirname(__DIR__)
 
-require "#{LKP_SRC}/lib/array_ext"
+require "../../lib/array_ext"
 
 set_sum = 0
 set_num = 0

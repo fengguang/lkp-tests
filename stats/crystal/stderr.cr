@@ -2,9 +2,9 @@
 
 LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname(File.realpath(PROGRAM_NAME)))
 
-require "#{LKP_SRC}/lib/dmesg"
-require "#{LKP_SRC}/lib/string_ext"
-require "#{LKP_SRC}/lib/log"
+require "../../lib/dmesg"
+require "../../lib/string_ext"
+require "../../lib/log"
 
 error_ids = {}
 

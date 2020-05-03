@@ -4,7 +4,7 @@ LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname(File.realpath(PROGRAM_NAME
 require "time"
 require "json"
 require "fileutils"
-require "#{LKP_SRC}/lib/log"
+require "../../lib/log"
 
 # The below is an example of mpstat output, read it then parse it into hash data.
 # {"sysstat": {

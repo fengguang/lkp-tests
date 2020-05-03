@@ -2,8 +2,8 @@
 
 LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname(File.realpath(PROGRAM_NAME)))
 
-require "#{LKP_SRC}/lib/log"
-require "#{LKP_SRC}/lib/string_ext"
+require "../../lib/log"
+require "../../lib/string_ext"
 
 while (line = STDIN.gets)
   line = line.remediate_invalid_byte_sequence(replace: "_") unless line.valid_encoding?

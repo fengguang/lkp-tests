@@ -2,7 +2,7 @@
 
 LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname(File.realpath(PROGRAM_NAME)))
 
-require "#{LKP_SRC}/lib/log"
+require "../../lib/log"
 
 while (line = STDIN.gets)
   case line
