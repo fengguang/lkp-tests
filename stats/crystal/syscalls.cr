@@ -4,7 +4,7 @@ UNIT = 1000.0
 DEBUG = false
 RESULT_ROOT = ENV["RESULT_ROOT"]
 
-LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname(File.realpath(PROGRAM_NAME)))
 
 require "#{LKP_SRC}/lib/noise"
 require "#{LKP_SRC}/lib/log"

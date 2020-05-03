@@ -19,7 +19,7 @@
 # on kmsg and falls back to dmesg) to catch 50000+ printk messages whose level
 # is >= KERN_WARNING.
 
-LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname(File.realpath(PROGRAM_NAME)))
 
 require "#{LKP_SRC}/lib/dmesg"
 require "#{LKP_SRC}/lib/log"
@@ -64,7 +64,7 @@ dmesg_lines = fixup_dmesg_file(dmesg_file)
 
 # check possibly misplaced serial log
 def verify_serial_log(dmesg_lines)
-  return unless $PROGRAM_NAME =~ /dmesg/
+  return unless PROGRAM_NAME =~ /dmesg/
   return if RESULT_ROOT.nil? || RESULT_ROOT.empty?
 
   dmesg_lines.grep(/RESULT_ROOT=/) do |line|
@@ -84,7 +84,7 @@ error_ids = {}
 error_lines = {}
 error_stamps = {}
 
-if $PROGRAM_NAME =~ /dmesg/
+if PROGRAM_NAME =~ /dmesg/
   lines = dmesg_lines
   oops_map = grep_crash_head dmesg_file
 else
@@ -130,7 +130,7 @@ def stat_unittest(unittests)
   end
 end
 
-stat_unittest(lines) if $PROGRAM_NAME =~ /kmsg/
+stat_unittest(lines) if PROGRAM_NAME =~ /kmsg/
 
 oops_map.each do |bug_to_bisect, line|
 
@@ -161,7 +161,7 @@ oops_map.each do |bug_to_bisect, line|
   error_stamps[error_id] ||= timestamp if timestamp
 end
 
-puts "boot_failures: 1" if $PROGRAM_NAME =~ /dmesg/ && !error_ids.empty?
+puts "boot_failures: 1" if PROGRAM_NAME =~ /dmesg/ && !error_ids.empty?
 
 # This shows each error id only once
 error_ids.each do |error_id, line|

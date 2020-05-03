@@ -2,7 +2,7 @@
 # unixbench.workload is defined as the total operations in unixbench for
 # all processes/threads
 
-LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname(File.realpath(PROGRAM_NAME)))
 
 require "#{LKP_SRC}/lib/log"
 require "time"

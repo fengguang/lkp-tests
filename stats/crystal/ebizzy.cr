@@ -3,7 +3,7 @@
 # the workload of ebizzy is defined as the total number of records for all
 # threads
 
-LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname(File.realpath(PROGRAM_NAME)))
 
 require "#{LKP_SRC}/lib/statistics"
 

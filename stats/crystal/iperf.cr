@@ -1,6 +1,6 @@
 #!/usr/bin/env crystal
 
-LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname(File.realpath(PROGRAM_NAME)))
 
 require "json"
 require "#{LKP_SRC}/lib/log"
