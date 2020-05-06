@@ -3,14 +3,14 @@
 LKP_SRC ||= ENV["LKP_SRC"] || File.dirname(__DIR__)
 
 require "ostruct"
-require "#{LKP_SRC}/lib/lkp_git"
-require "#{LKP_SRC}/lib/yaml"
-require "#{LKP_SRC}/lib/result"
-require "#{LKP_SRC}/lib/bounds"
-require "#{LKP_SRC}/lib/constant"
-require "#{LKP_SRC}/lib/statistics"
-require "#{LKP_SRC}/lib/log"
-require "#{LKP_SRC}/lib/tests"
+require "./lkp_git"
+require "./yaml"
+require "./result"
+require "./bounds"
+require "./constant"
+require "./statistics"
+require "./log"
+require "./tests"
 
 module LKP
   class ChangedStat

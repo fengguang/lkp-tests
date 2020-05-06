@@ -6,9 +6,9 @@ MAX_MATRIX_COLS = 100
 STATS_SOURCE_KEY = "stats_source".freeze
 
 require "set"
-require "#{LKP_SRC}/lib/log"
-require "#{LKP_SRC}/lib/run_env"
-require "#{LKP_SRC}/lib/constant"
+require "./log"
+require "./run_env"
+require "./constant"
 
 def event_counter?(name)
   $event_counter_prefixes ||= File.read("#{LKP_SRC}/etc/event-counter-prefixes").split

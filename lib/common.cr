@@ -6,7 +6,7 @@ require "timeout"
 require "pathname"
 require "fileutils"
 require "stringio"
-require "#{LKP_SRC}/lib/array_ext"
+require "./array_ext"
 require "English"
 
 def deepcopy(o)

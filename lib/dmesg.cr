@@ -2,8 +2,8 @@
 
 LKP_SRC ||= ENV["LKP_SRC"] || File.dirname(__DIR__)
 
-require "#{LKP_SRC}/lib/yaml"
-require "#{LKP_SRC}/lib/constant"
+require "./yaml"
+require "./constant"
 
 # /c/linux% git grep '"[a-z][a-z_]\+%d"'|grep -o '"[a-z_]\+'|cut -c2-|sort -u
 LINUX_DEVICE_NAMES = IO.read("#{LKP_SRC}/etc/linux-device-names").split("\n")

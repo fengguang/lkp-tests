@@ -4,16 +4,16 @@ LKP_SRC ||= ENV["LKP_SRC"] || File.dirname(__DIR__)
 
 require "set"
 require "timeout"
-require "#{LKP_SRC}/lib/lkp_git"
-require "#{LKP_SRC}/lib/git_update" if File.exist?("#{LKP_SRC}/lib/git_update.rb")
-require "#{LKP_SRC}/lib/yaml"
-require "#{LKP_SRC}/lib/result"
-require "#{LKP_SRC}/lib/bounds"
-require "#{LKP_SRC}/lib/constant"
-require "#{LKP_SRC}/lib/statistics"
-require "#{LKP_SRC}/lib/log"
-require "#{LKP_SRC}/lib/tests"
-require "#{LKP_SRC}/lib/changed_stat"
+require "./lkp_git"
+require "./git_update" if File.exist?("#{LKP_SRC}/lib/git_update.rb")
+require "./yaml"
+require "./result"
+require "./bounds"
+require "./constant"
+require "./statistics"
+require "./log"
+require "./tests"
+require "./changed_stat"
 
 MARGIN_SHIFT = 5
 MAX_RATIO = 5

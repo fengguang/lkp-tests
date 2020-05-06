@@ -2,10 +2,10 @@
 
 LKP_SRC ||= ENV["LKP_SRC"] || File.dirname(__DIR__)
 
-require "#{LKP_SRC}/lib/common"
-require "#{LKP_SRC}/lib/log"
-require "#{LKP_SRC}/lib/erb"
-require "#{LKP_SRC}/lib/assert"
+require "./common"
+require "./log"
+require "./erb"
+require "./assert"
 require "fileutils"
 require "yaml"
 require "json"

@@ -3,10 +3,10 @@
 LKP_SRC ||= ENV["LKP_SRC"]
 RESULT_ROOT ||= ENV["RESULT_ROOT"]
 
-require "#{LKP_SRC}/lib/common"
-require "#{LKP_SRC}/lib/ftrace"
-require "#{LKP_SRC}/lib/statistics"
-require "#{LKP_SRC}/lib/data_analysis"
+require "./common"
+require "./ftrace"
+require "./statistics"
+require "./data_analysis"
 
 PERCT_POINTS = (5..9).map { |n| n * 10 } + [95, 99]
 

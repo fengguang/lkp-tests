@@ -3,9 +3,9 @@
 LKP_SRC ||= ENV["LKP_SRC"] || File.dirname(__DIR__)
 
 require "set"
-require "#{LKP_SRC}/lib/lkp_git"
-require "#{LKP_SRC}/lib/run_env"
-require "#{LKP_SRC}/lib/constant"
+require "./lkp_git"
+require "./run_env"
+require "./constant"
 
 DEFAULT_COMPILER = "gcc-7".freeze
 

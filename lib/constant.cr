@@ -2,7 +2,7 @@
 LKP_SRC ||= ENV["LKP_SRC"] || File.dirname(__DIR__)
 LKP_USER ||= ENV["LKP_USER"] || ENV["USER"] || `whoami`.chomp
 
-require "#{LKP_SRC}/lib/run_env"
+require "./run_env"
 
 DEVEL_HOURLY_KCONFIGS = %w(x86_64-rhel-7.6).freeze
 GIT_ROOT_DIR = "/lkp/repo".freeze
