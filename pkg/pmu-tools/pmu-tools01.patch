@@ -1,0 +1,68 @@
+From 4772681a1aa3fdc2cd75ab4b3dd3a52f176b4120 Mon Sep 17 00:00:00 2001
+From: Haiyan Song <haiyanx.song@intel.com>
+Date: Fri, 17 Apr 2020 10:54:05 +0800
+Subject: [PATCH] Fix toplev run failed with error 'Unsupported CPU model 85'
+
+Run toplev on clx tbox from 0-day, running command as the following,
+
+  python toplev.py -l1 --no-desc sleep 10 -I 100 -x, -o toplev.csv
+
+toplev exit with error: 'Unsupported CPU model 85'
+
+CPU model and stepping were added in known_cpus,
+  ("clx", ((85, 5, 6, 7, ), )),
+
+but can't be recognized when using toplev.
+
+Add methods to recognize cpu model that have added in known_cpus.
+
+Signed-off-by: Haiyan Song <haiyanx.song@intel.com>
+---
+ tl_cpu.py | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
+
+diff --git a/tl_cpu.py b/tl_cpu.py
+index 5b250c4..129499f 100644
+--- a/tl_cpu.py
++++ b/tl_cpu.py
+@@ -75,6 +75,18 @@ class CPU:
+             return True
+         return False
+ 
++    def cpu_in_known_list(self, known_cpus):
++        for i in known_cpus:
++            if i[1]:
++                if isinstance(i[1][0], tuple):
++                    for j in i[1]:
++                        if self.model in j:
++                            return i[0]
++                else:
++                    if self.model in i[1]:
++                        return i[0]
++        return False
++
+     def __init__(self, known_cpus, nocheck, env):
+         self.env = env
+         self.model = 0
+@@ -155,12 +167,12 @@ class CPU:
+                     seen.add("stepping")
+                     self.step = int(n[2])
+         if len(seen) >= 7:
+-            for i in known_cpus:
+-                if self.model in i[1] or (self.model, self.step) in i[1]:
+-                    self.realcpu = i[0]
+-                    if not forced_cpu:
+-                        self.cpu = i[0]
+-                    break
++            cpu_name = self.cpu_in_known_list(known_cpus)
++            if cpu_name:
++                self.realcpu = cpu_name
++                if not forced_cpu:
++                    self.cpu = cpu_name
++
+         if self.counters == 0:
+             self.standard_counters = "0,1,2,3"
+             if self.cpu == "slm":
+-- 
+2.11.0
+
