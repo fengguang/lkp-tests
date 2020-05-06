@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-LKP_SRC ||= ENV["LKP_SRC"] || File.dirname(__DIR__)
+LKP_SRC = ENV["LKP_SRC"] || File.dirname(__DIR__)
 
 require "./run_env"
 require "set"
@@ -11,9 +11,9 @@ require "./assert"
 require "./git_ext"
 require "./constant"
 
-GIT_WORK_TREE ||= ENV["GIT_WORK_TREE"] || ENV["LKP_GIT_WORK_TREE"] || "#{GIT_ROOT_DIR}/linux"
-GIT_DIR ||= ENV["GIT_DIR"] || GIT_WORK_TREE + "/.git"
-GIT ||= "git --work-tree=#{GIT_WORK_TREE} --git-dir=#{GIT_DIR}".freeze
+GIT_WORK_TREE = ENV["GIT_WORK_TREE"] || ENV["LKP_GIT_WORK_TREE"] || "#{GIT_ROOT_DIR}/linux"
+GIT_DIR = ENV["GIT_DIR"] || GIT_WORK_TREE + "/.git"
+GIT = "git --work-tree=#{GIT_WORK_TREE} --git-dir=#{GIT_DIR}".freeze
 
 def __git_committer_name(commit)
   `#{GIT} log -n1 --pretty=format:'%cn' #{commit}`.chomp

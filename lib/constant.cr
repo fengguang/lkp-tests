@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-LKP_SRC ||= ENV["LKP_SRC"] || File.dirname(__DIR__)
+LKP_SRC = ENV["LKP_SRC"] || File.dirname(__DIR__)
 LKP_USER ||= ENV["LKP_USER"] || ENV["USER"] || `whoami`.chomp
 
 require "./run_env"

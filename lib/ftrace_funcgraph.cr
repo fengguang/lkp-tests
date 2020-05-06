@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
-LKP_SRC ||= ENV["LKP_SRC"]
-RESULT_ROOT ||= ENV["RESULT_ROOT"]
+LKP_SRC = ENV["LKP_SRC"]
+RESULT_ROOT = ENV["RESULT_ROOT"]
 
 require "./common"
 require "./ftrace"

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-LKP_SRC ||= ENV["LKP_SRC"] || File.dirname(__DIR__)
+LKP_SRC = ENV["LKP_SRC"] || File.dirname(__DIR__)
 
 require "logger"
 
