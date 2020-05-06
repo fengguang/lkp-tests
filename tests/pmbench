@@ -59,11 +59,29 @@ mkdir -p "$pmb_tmp_dir"
 
 parse_numa_node_binding "$cpu_node_bind" "$mem_node_bind"
 
-for i in $(seq 1 $nr_processes); do
-	numa_bind=$(numa_node_binding "$i")
-	log_echo "$exec_prefix $numa_bind /usr/local/bin/pmbench $opt $runtime > $pmb_tmp_dir/pmbench.$i &"
-	$numa_bind /usr/local/bin/pmbench $opt $runtime > "$pmb_tmp_dir/pmbench.$i" &
-	echo $! >> $TMP/pid-tests
+pmbench=/usr/local/bin/pmbench
+
+: "${cgroups:=nocg}"
+i=1
+
+if [ "$cgroup_ver" = 1 ]; then
+	cgdir="$CGROUP_MNT/memory"
+else
+	cgdir="$CGROUP_MNT"
+fi
+
+while [ "$i" -le "$nr_processes" ]; do
+	for cg in $cgroups; do
+		numa_bind=$(numa_node_binding "$i")
+		if [ "$cg" != nocg ]; then
+			log_eval "echo \$\$ > $cgdir/$cg/tasks"
+		fi
+		log_echo "$exec_prefix $numa_bind $pmbench $opt $runtime > $pmb_tmp_dir/pmbench.$i &"
+		$numa_bind $pmbench $opt $runtime > "$pmb_tmp_dir/pmbench.$i" &
+		echo $! >> $TMP/pid-tests
+		i=$((i+1))
+		[ "$i" -gt "$nr_processes" ] && break
+	done
 done
 
 wait
