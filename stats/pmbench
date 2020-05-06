@@ -1,12 +1,15 @@
 #!/usr/bin/env ruby
 
+LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
+require "#{LKP_SRC}/lib/statistics"
+
 res = 0.0
 histo_r = Array.new(24, 0)
 histo_w = Array.new(24, 0)
 histo_details_r = []
 histo_details_w = []
 latencies = []
-throughput = 0
+throughputs = []
 init_times = []
 sum_r = 0.0
 sum_w = 0.0
@@ -23,7 +26,7 @@ $stdin.each_line do |line|
   when /^  Page latency during benchmark \(inc. gen\): (\d+\.\d+) us \(\d+ clks\)/
     latencies << $1.to_f
   when / Benchmark done - took (\d+\.\d+) sec for (\d+) page access/
-    throughput += $2.to_f / $1.to_f
+    throughputs << $2.to_f / $1.to_f
   when /nitialization took (\d+\.\d+) ms/
     init_times << $1.to_f / 1000
   when /^2\^\((\d+),(\d+)\) ns: (\d+)  \[(.*)\]/
@@ -122,7 +125,8 @@ unless latencies.empty?
   puts "latency.ns.average: #{latency_avg * 1000}"
 end
 
-puts "throughput.aps: #{throughput}"
+puts "throughput.aps: #{throughputs.sum}"
+puts "throughput.std_dev%: #{throughputs.standard_deviation * 100 / throughputs.average}"
 
 unless init_times.empty?
   init_time_avg = init_times.reduce(:+) / init_times.length
