@@ -1,6 +1,5 @@
 #!/usr/bin/env crystal
 
-#$stdin.each_line do |line|
 STDIN.each_line do |line|
   case line
   when /wakeup cost \(single/

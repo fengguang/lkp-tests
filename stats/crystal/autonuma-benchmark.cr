@@ -30,7 +30,6 @@
 results = Hash(String, Float64).new
 output = false
 key = "" 
-#$stdin.each do |line|
 STDIN.each_line do |line|
   line = line.strip()
   case line
