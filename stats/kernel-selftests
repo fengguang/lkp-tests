@@ -111,6 +111,11 @@ while (line = STDIN.gets)
       # rli9 FIXME: consider the input has messed text like Entering doesn't match with Leaving
       testname = nil
     end
+  when /# \[\d+\] (.*)\[(PASS|FAIL|SKIP|UNRESOLVED|XFAIL|UNTESTED)\]/
+    next unless testname == 'ftrace'
+    subtest_name = $1.strip.tr(' ', '_').tr('-', '_').downcase
+    result = $2.downcase
+    stats << "#{testname}.#{subtest_name}.#{result}: 1"
   when /^*selftests.*: (.*) .*(\[|\[ )(PASS|FAIL|SKIP)/
     if testname == 'futex'
       futex_stat(line, tests_stats['futex'], stats)
@@ -137,6 +142,7 @@ while (line = STDIN.gets)
   when /^ignored_by_lkp (.*) test/
     stats << "#{$1}.ignored_by_lkp: 1"
   when /^(ok|not ok) \d+ selftests: (\S*): (\S*)( # SKIP)?/
+    next if testname == 'ftrace'
     testname = $2 + '.' + $3
     result = $4 =~ /SKIP/ ? 'skip' : 'fail'
     result = 'pass' if $1 == 'ok'
