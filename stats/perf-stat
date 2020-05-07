@@ -147,7 +147,11 @@ def parse
   $stdin.each_line do |line|
     next unless line =~ /^\s*\d+\.\d+\W+/
 
-    stime, *fields = line.split(',')
+    if line.include? ','
+      stime, *fields = line.split(',')
+    else
+      stime, *fields = line.split
+    end
 
     prev_time = time
     time = stime.to_f
@@ -175,7 +179,10 @@ def parse
       unit = fields[1]
     end
 
-    fields.delete_at 1
+    # 10.072447351 43181  context-switches 16105112423 100.00 0.003 M/sec
+    # 1.017184940,8778,,context-switches,16689586072,100.00,0.526,K/sec
+    fields.delete_at 1 if line.include? ','
+
     # for metrics
     # 1.000679357,S0,12,170516599,,l1d_pend_miss.pending,8004582139,66.65,80.5,Load_Miss_Real_Latency
     if fields[5] != nil
