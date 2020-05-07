@@ -1,6 +1,8 @@
 #!/usr/bin/env crystal
 
-qperf = {}
+#qperf = {}
+qperf = Hash(String, String).new
+protocol = "protocol" 
 while (line = STDIN.gets)
   case line
   when /^(.+):$/

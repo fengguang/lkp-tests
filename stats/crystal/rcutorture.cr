@@ -26,7 +26,7 @@ while (line = STDIN.gets)
   when /^\[.*\] ([A-Za-z_]+)-torture.*End of test: (.*):.*onoff_interval=([0-9]+).*/
     type = $1
     result = $2.downcase
-    cpuhotplug = true unless $3.eql? "0"
+    cpuhotplug = true unless $3 == "0"
     break
   end
 end
