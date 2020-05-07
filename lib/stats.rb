@@ -715,6 +715,7 @@ def get_changed_stats(matrix_path1, matrix_path2 = nil, options = {})
 end
 
 def add_stats_to_matrix(stats, matrix)
+  return matrix unless stats
   columns = 0
   matrix.each { |_k, v| columns = v.size if columns < v.size }
   stats.each do |k, v|

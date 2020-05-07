@@ -202,7 +202,7 @@ class MMResultRoot
   end
 
   def matrix
-    merge_matrixes(@mresult_roots.map(&:matrix))
+    merge_matrixes(@mresult_roots.map { |_rt| _rt.matrix if _rt })
   end
 
   def complete_matrix(m = nil)
