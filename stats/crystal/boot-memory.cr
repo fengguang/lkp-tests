@@ -11,7 +11,7 @@ def calc_bootmem
   memmap = JSON.parse(File.read("#{RESULT_ROOT}/memmap.json"))
   meminfo = JSON.parse(File.read("#{RESULT_ROOT}/boot-meminfo.json"))
 
-  printf "bootmem: %d, %d\n", memmap["memmap.System_RAM"][0] , meminfo["boot-meminfo.MemTotal"][0]
+  printf "bootmem: %d\n", memmap["memmap.System_RAM"][0].as_i - meminfo["boot-meminfo.MemTotal"][0].as_i
 end
 
 calc_bootmem
