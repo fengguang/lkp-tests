@@ -3,10 +3,11 @@
 
 require "../../lib/string_ext"
 
-stats = {}
+stats = {} of String => String
+#stats = Hash(String, String).new
 
 while (line = STDIN.gets)
-  line = line.remediate_invalid_byte_sequence(replace: "_") unless line.valid_encoding?
+  line = line.remediate_invalid_byte_sequence() unless line.valid_encoding?
   case line
   when / (\(\d*\/\d*\))(.*):(.*):  (\w+)(.*)/
     test_file = $2.strip

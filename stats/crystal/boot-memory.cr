@@ -5,22 +5,22 @@ RESULT_ROOT = ENV["RESULT_ROOT"]
 require "json"
 
 def calc_bootmem
-  return unless File.exist?("#{RESULT_ROOT}/memmap.json")
-  return unless File.exist?("#{RESULT_ROOT}/boot-meminfo.json")
+  return unless File.exists?("#{RESULT_ROOT}/memmap.json")
+  return unless File.exists?("#{RESULT_ROOT}/boot-meminfo.json")
 
   memmap = JSON.parse(File.read("#{RESULT_ROOT}/memmap.json"))
   meminfo = JSON.parse(File.read("#{RESULT_ROOT}/boot-meminfo.json"))
 
-  printf "bootmem: %d\n", memmap["memmap.System_RAM"][0] - meminfo["boot-meminfo.MemTotal"][0]
+  printf "bootmem: %d, %d\n", memmap["memmap.System_RAM"][0] , meminfo["boot-meminfo.MemTotal"][0]
 end
 
 calc_bootmem
 
-exit unless File.exist?("#{RESULT_ROOT}/kmsg")
+exit unless File.exists?("#{RESULT_ROOT}/kmsg")
 
 freed = 0
 
-File.foreach("#{RESULT_ROOT}/kmsg") do |line|
+File.each_line("#{RESULT_ROOT}/kmsg") do |line|
   case line
   when /^(\[[0-9\. ]+\] )?Memory: (\d+)k\/(\d+)k available \((\d+)k kernel code, (\d+)k reserved, (\d+)k data, (\d+)k init(, (\d+)k highmem)?/
     puts "free: " + $2

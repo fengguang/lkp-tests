@@ -10,10 +10,9 @@ class String
       .gsub(/[^[:print:]\n]/, "")
   end
 
-  def remediate_invalid_byte_sequence(options = {})
+  def remediate_invalid_byte_sequence()
     clone
-      .force_encoding("UTF-8")
-      .encode("UTF-8", "UTF-8", options.merge(invalid: :replace, undef: :replace))
+      .encode("UTF-8")
   end
 
   def replace_invalid_utf8!(to = "_")
