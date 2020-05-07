@@ -27,17 +27,18 @@
 # numa02_SMT_INVERSE_BIND
 # 22.31
 
-results = {}
+results = Hash(String, Float64).new
 output = false
-key = nil
-$stdin.each do |line|
+key = "" 
+#$stdin.each do |line|
+STDIN.each_line do |line|
   line = line.strip()
   case line
   when /^Hyper-Threading IS/
     output = true
-  when output && /^numa/
+  when output && /^numa/ 
     key = "#{line}"
-  when output && /\d+.\d+/
+  when output && /\d+.\d+/ && key.empty?
     results[key] = line.to_f
   end
 end

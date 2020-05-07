@@ -1,6 +1,7 @@
 #!/usr/bin/env crystal
 
-$stdin.each_line do |line|
+#$stdin.each_line do |line|
+STDIN.each_line do |line|
   case line
   when /wakeup cost \(single/
     puts "wakeup_cost_single_us: " + line.split[3].gsub(/us/, "")
