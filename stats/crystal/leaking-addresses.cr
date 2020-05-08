@@ -1,6 +1,6 @@
 #!/usr/bin/env crystal
 
-results=Hash(String, String | Int32 | Nil).new
+results=Hash(String, String | Int32).new
 leaking_number = 0
 
 while (line = STDIN.gets)
@@ -17,7 +17,7 @@ while (line = STDIN.gets)
 end
 
 results["leaking_number"] = leaking_number
-results["total_number"] = total_number
+results["total_number"] = total_number if total_number
 
 if results.empty?
   results["result.pass"] = 1
