@@ -8,13 +8,13 @@ STDIN.each_line do |line|
   sum[key] += value.to_i
 end
 
-node_local_load_ratio = if (sum["node-loads"] + sum["node-load-misses"]).nonzero?
+node_local_load_ratio = if (sum["node-loads"] + sum["node-load-misses"]) != 0
                           (100 * sum["node-loads"]) / (sum["node-loads"] + sum["node-load-misses"])
                         else
                           -1
                         end
 
-node_local_store_ratio = if (sum["node-stores"] + sum["node-store-misses"]).nonzero?
+node_local_store_ratio = if (sum["node-stores"] + sum["node-store-misses"]) != 0
                            (100 * sum["node-stores"]) / (sum["node-stores"] + sum["node-store-misses"])
                          else
                            -1
