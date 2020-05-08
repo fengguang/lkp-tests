@@ -1,6 +1,6 @@
 #!/usr/bin/env crystal
 
-result = {}
+result = Hash(String,Int32).new
 
 while (line = STDIN.gets)
   case line

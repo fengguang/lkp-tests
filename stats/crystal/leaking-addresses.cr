@@ -1,6 +1,6 @@
 #!/usr/bin/env crystal
 
-results = {}
+results=Hash(String, String | Int32 | Nil).new
 leaking_number = 0
 
 while (line = STDIN.gets)
@@ -8,10 +8,10 @@ while (line = STDIN.gets)
   when /Total number of results.*: (.*)/
     total_number = $1
   when /^\[ +([\d\.]+)\](.*)/
-    results["dmesg." + $2.sub!(/\b(0x)?ffff[[:xdigit:]]{12}\b/, "").delete(" ")] = 1
+    results["dmesg." + $2.sub(/\b(0x)?ffff[[:xdigit:]]{12}\b/, "").delete(" ")] = 1
     leaking_number += 1
   when /^\[\d+ ([^\]]+)\](.*)/
-    results["proc." + $1 + "." + $2.sub!(/\b(0x)?ffff[[:xdigit:]]{12}\b/, "").gsub(/\s+/, "")] = 1
+    results["proc." + $1 + "." + $2.sub(/\b(0x)?ffff[[:xdigit:]]{12}\b/, "").gsub(/\s+/, "")] = 1
     leaking_number += 1
   end
 end

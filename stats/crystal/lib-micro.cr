@@ -2,9 +2,9 @@
 
 time = 0
 protocol = " "
-lib_micro = {}
+lib_micro=Hash(String,String|Float64).new
 
-$stdin.each_line do |line|
+STDIN.each_line do |line|
   case line
   when %r(bin/)
     protocol = line.split[10].to_s
@@ -15,7 +15,7 @@ $stdin.each_line do |line|
 end
 
 lib_micro.each do |k, v|
-  puts k + ": " + v
+  puts k + ": " + v.to_s
 end
 
 puts "total_elasped_time: " + time.to_s

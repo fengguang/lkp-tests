@@ -4,7 +4,6 @@
 require "../../lib/string_ext"
 
 results = {}
-
 while (line = STDIN.gets)
   line = line.remediate_invalid_byte_sequence(replace: "_") unless line.valid_encoding?
 

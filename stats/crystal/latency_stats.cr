@@ -1,9 +1,14 @@
 #!/usr/bin/env crystal
 
-hits = Hash.new { |hash, key| hash[key] = 0 }
-sum = Hash.new { |hash, key| hash[key] = 0 }
-max = Hash.new { |hash, key| hash[key] = 0 }
-top = Hash.new { |hash, key| hash[key] = 0 }
+#hits = Hash.new { |hash, key| hash[key] = 0 }
+#sum = Hash.new { |hash, key| hash[key] = 0 }
+#max = Hash.new { |hash, key| hash[key] = 0 }
+#top = Hash.new { |hash, key| hash[key] = 0 }
+
+hits = Hash(String,Int32).new(0)
+sum = Hash(String,Int32).new(0)
+max = Hash(String,Int32).new(0)
+top = Hash(String,Int32|Float64).new(0)
 
 STDIN.each_line do |line|
   case line
@@ -23,7 +28,7 @@ def show_one(top, funcs, k, v)
   top[k] = v if top[k] < v
 end
 
-hits.each_pair do |funcs, hit|
+hits.each do |funcs, hit|
   show_one top, funcs, "hits", hit
   show_one top, funcs, "sum", sum[funcs]
   show_one top, funcs, "avg", sum[funcs] / hit
