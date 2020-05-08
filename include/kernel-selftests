@@ -19,6 +19,7 @@ need_kconfig:
 - CONFIG_NET_CLS_BPF=m
 - CONFIG_RC_LOOPBACK # Depends on: RC_DEVICES [=y] && RC_CORE [=m]
 - CONFIG_TEST_BPF=m
+- CONFIG_TLS=m ~ v(4\.1[3-9]|4\.20|5\.) # support kernel >=v4.13
 % elsif ___.group == 'kselftests-livepatch'
 - CONFIG_TEST_LIVEPATCH=m ~ v(5\.[1-9]) # support kernel >=v5.1-rc1
 % elsif ___.group == 'kselftests-00'
