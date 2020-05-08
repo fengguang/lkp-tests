@@ -1,7 +1,3 @@
-#!/usr/bin/env ruby
-
-require "active_support/core_ext/enumerable"
-
 class Array
   # multiple two arrays via multiple element with same index,
   # return the result array.
