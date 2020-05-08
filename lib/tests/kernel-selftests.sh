@@ -84,6 +84,45 @@ prepare_for_test()
 	}
 }
 
+# Get testing env kernel config file
+# Depending on your system, you'll find it in any one of these:
+# /proc/config.gz
+# /boot/config
+# /boot/config-$(uname -r)
+get_kconfig()
+{
+	local config_file="$1"
+	if [[ -e "/proc/config.gz" ]]; then
+		gzip -dc "/proc/config.gz" > "$config_file"
+	elif [[ -e "/boot/config-$(uname -r)" ]]; then
+		cat "/boot/config-$(uname -r)" > "$config_file"
+	elif [[ -e "/boot/config" ]]; then
+		cat "/boot/config" > "$config_file"
+	else
+		echo "Failed to get current kernel config"
+		return 1
+	fi
+
+	[[ -s "$config_file" ]]
+}
+
+check_kconfig()
+{
+	local dependent_config=$1
+	local kernel_config=$2
+
+	while read line
+	do
+		# Avoid commentary on config
+		[[ "$line" =~ "CONFIG_" ]] || continue
+		# Some kconfigs are required as m, but they may set as y alreadly.
+		# So don't check y/m, just match kconfig name
+		# E.g. convert CONFIG_TEST_VMALLOC=m to CONFIG_TEST_VMALLOC=
+		line="${line%=*}="
+		grep -q $line $kernel_config || return 1
+	done < $dependent_config
+}
+
 check_makefile()
 {
 	subtest=$1
@@ -473,6 +512,15 @@ run_tests()
 	[[ -e kselftest/runner.sh ]] && log_cmd sed -i 's/default_timeout=45/default_timeout=300/' kselftest/runner.sh
 	for mf in $selftest_mfs; do
 		subtest=${mf%/Makefile}
+		subtest_config="$subtest/config"
+		kernel_config="/lkp/kernel-selftests-kernel-config"
+
+		[[ -s "$subtest_config" ]] && get_kconfig "$kernel_config" && {
+			check_kconfig "$subtest_config" "$kernel_config" || {
+				echo "ignored_by_lkp $subtest test"
+				continue
+			}
+		}
 
 		check_ignore_case $subtest && echo "ignored_by_lkp $subtest test" && continue
 		subtest_in_skip_filter "$skip_filter" && continue
