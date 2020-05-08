@@ -251,7 +251,9 @@ fixup_bpf()
 		ln -fs bash /bin/sh
 
 	local python_version=$(python3 --version)
-	[[ "$python_version" =~ "3.5" ]] && [[ -e "bpf/test_bpftool.py" ]] && sed -i "s/res)/res.decode('utf-8'))/" bpf/test_bpftool.py
+	if [[ "$python_version" =~ "3.5" ]] && [[ -e "bpf/test_bpftool.py" ]]; then
+		sed -i "s/res)/res.decode('utf-8'))/" bpf/test_bpftool.py
+	fi
 }
 
 fixup_kmod()
