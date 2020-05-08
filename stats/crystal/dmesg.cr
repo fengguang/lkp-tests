@@ -32,7 +32,7 @@ elsif ENV["RESULT_ROOT"]
   RESULT_ROOT = ENV["RESULT_ROOT"]
   serial_file = "#{RESULT_ROOT}/dmesg"
   kmsg_file = "#{RESULT_ROOT}/kmsg"
-  if File.exist? serial_file
+  if File.exists? serial_file
     dmesg_file = serial_file
 
     if File.size?(kmsg_file) && File.size(serial_file).zero?
@@ -41,7 +41,7 @@ elsif ENV["RESULT_ROOT"]
     else
       kmsg_file = dmesg_file
     end
-  elsif File.exist? kmsg_file
+  elsif File.exists? kmsg_file
     dmesg_file = kmsg_file
   else
     # disabled due to not applicable for "lkp run";
@@ -71,7 +71,7 @@ def verify_serial_log(dmesg_lines)
     next unless line =~ / RESULT_ROOT=([A-Za-z0-9.,;_\/+%:@=-]+) /
 
     rt = $1
-    next unless Dir.exist? rt # serial console is often not reliable
+    next unless Dir.exists? rt # serial console is often not reliable
 
     log_error "RESULT_ROOT mismatch in dmesg: #{RESULT_ROOT} #{rt}" if rt != RESULT_ROOT
   end
@@ -90,7 +90,7 @@ else
   if kmsg_file == dmesg_file
     kmsg_lines = dmesg_lines
     kmsg = kmsg_lines.join "\n"
-  elsif File.exist?(kmsg_file)
+  elsif File.exists?(kmsg_file)
     kmsg = File.read kmsg_file
     kmsg_lines = kmsg.split("\n")
   end

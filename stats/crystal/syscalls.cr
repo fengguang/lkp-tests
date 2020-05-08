@@ -73,9 +73,9 @@ end
 
 def parse_syscalls(time)
   process_lines = {}
-  lines = if File.exist?("#{RESULT_ROOT}/ftrace.data.xz")
+  lines = if File.exists?("#{RESULT_ROOT}/ftrace.data.xz")
             IO.popen("xzcat #{RESULT_ROOT}/ftrace.data.xz").readlines
-          elsif File.exist?("#{RESULT_ROOT}/ftrace.data")
+          elsif File.exists?("#{RESULT_ROOT}/ftrace.data")
             IO.readlines("#{RESULT_ROOT}/ftrace.data")
           end
 

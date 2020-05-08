@@ -5,7 +5,7 @@ require "../../lib/string_ext"
 
 def show_dmesg_times
   dmesg = "#{ENV["RESULT_ROOT"]}/kmsg"
-  return unless File.exist? dmesg
+  return unless File.exists? dmesg
 
   dhcp = false
   smp_start = false

@@ -41,7 +41,7 @@ RESULT_ROOT = ENV["RESULT_ROOT"]
 # 2. For "network", it's value has both array type and hash type, every hash's value include another hash data.
 # 3. For "swap-pages", it's value only have one hash.
 
-exit unless File.exist?("#{RESULT_ROOT}/sar")
+exit unless File.exists?("#{RESULT_ROOT}/sar")
 sar_json = File.read("#{RESULT_ROOT}/sar")
 sar_hash = JSON.parse(sar_json)
 results = {}

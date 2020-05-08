@@ -21,7 +21,7 @@ require "csv"
 # 2.000233423,Backend_Bound,100.00,% Slots,,,0.00,100.0,<==
 
 RESULT_ROOT = ENV["RESULT_ROOT"]
-exit unless File.exist?("#{RESULT_ROOT}/toplev.csv")
+exit unless File.exists?("#{RESULT_ROOT}/toplev.csv")
 toplev_csv = "#{RESULT_ROOT}/toplev.csv"
 
 last_time = ""

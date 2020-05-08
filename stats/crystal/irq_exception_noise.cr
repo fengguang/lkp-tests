@@ -101,7 +101,7 @@ def extract_ftrace(fn)
 end
 
 fn = "#{RESULT_ROOT}/ftrace.data.xz"
-unless File.exist?(fn)
+unless File.exists?(fn)
   log_error "log file #{fn} does not exist"
   exit
 end

@@ -9,7 +9,7 @@ results = {}
 results["test"] = ""
 results["val"] = []
 
-exit unless File.exist?("#{RESULT_ROOT}/kmsg")
+exit unless File.exists?("#{RESULT_ROOT}/kmsg")
 
 def show_one(new_test, results)
   printf "%s: %d\n", results["test"], results["val"].average unless results["test"].empty? || results["val"].empty?
