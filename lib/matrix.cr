@@ -174,7 +174,7 @@ end
 
 def load_create_stats_matrix(result_root)
   stats_file = result_root + "/stats.json"
-  if File.exist? stats_file
+  if File.exists? stats_file
     load_json stats_file
   else
     create_stats_matrix result_root
@@ -196,7 +196,7 @@ end
 def load_matrix_file(matrix_file)
   matrix = nil
   begin
-    matrix = load_json(matrix_file) if File.exist? matrix_file
+    matrix = load_json(matrix_file) if File.exists? matrix_file
   rescue StandardError
     return nil
   end
@@ -337,7 +337,7 @@ end
 def read_matrix_from_csv_file(file_name)
   matrix = {}
   return {} unless file_name
-  return {} unless File.exist? file_name
+  return {} unless File.exists? file_name
 
   convert = lambda do |input|
     %i[Integer Float].each do |m|
@@ -382,13 +382,13 @@ def unite_params(result_root)
   params_file = result_path.params_file
   params_root = File.dirname params_file
 
-  if File.exist?(params_file) && Time.now - File.ctime(params_root) > 3600
+  if File.exists?(params_file) && Time.now - File.ctime(params_root) > 3600
     # no need to update params
     return true
   end
 
   params = {}
-  params = YAML.load_file(params_file) if File.exist? params_file
+  params = YAML.load_file(params_file) if File.exists? params_file
   unless params.instance_of? Hash
     log_warn "failed to parse file #{params_file}"
     params = {}

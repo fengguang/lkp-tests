@@ -200,7 +200,7 @@ end
 
 def grep_printk_errors(kmsg_file, kmsg)
   return "" if ENV.fetch("RESULT_ROOT", "").index "/trinity/"
-  return "" unless File.exist?("#{KTEST_USER_GENERATED_DIR}/printk-error-messages")
+  return "" unless File.exists?("#{KTEST_USER_GENERATED_DIR}/printk-error-messages")
 
   grep = if kmsg_file =~ /\.xz$/
            "xzgrep"

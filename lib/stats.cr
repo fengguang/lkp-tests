@@ -5,7 +5,7 @@ LKP_SRC = ENV["LKP_SRC"] || File.dirname(__DIR__)
 require "set"
 require "timeout"
 require "./lkp_git"
-require "./git_update" if File.exist?("#{LKP_SRC}/lib/git_update.rb")
+require "./git_update" if File.exists?("#{LKP_SRC}/lib/git_update.rb")
 require "./yaml"
 require "./result"
 require "./bounds"
@@ -273,7 +273,7 @@ def load_base_matrix_for_notag_project(git, rp, axis)
 
   rp[axis] = base_commit
   base_matrix_file = rp._result_root + "/matrix.json"
-  unless File.exist? base_matrix_file
+  unless File.exists? base_matrix_file
     log_warn "#{base_matrix_file} doesn't exist."
     return nil
   end
@@ -317,7 +317,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
   return load_base_matrix_for_notag_project(git, rp, axis) if git.tag_names.empty?
 
   begin
-    return nil unless git.commit_exist? commit
+    return nil unless git.commit_exists? commit
 
     version = nil
     is_exact_match = false
@@ -334,7 +334,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
     compiler = rp["compiler"]
     context_file = vmlinuz_dir(kconfig, compiler, commit) + "/context.yaml"
     version = nil
-    if File.exist? context_file
+    if File.exists? context_file
       context = YAML.load_file context_file
       version = context["rc_tag"]
       is_exact_match = false
@@ -374,13 +374,13 @@ def load_base_matrix(matrix_path, head_matrix, options)
 
     rp[axis] = tag
     base_matrix_file = rp._result_root + "/matrix.json"
-    unless File.exist? base_matrix_file
+    unless File.exists? base_matrix_file
       rp[axis] = git.release_tags2shas[tag]
       next unless rp[axis]
 
       base_matrix_file = rp._result_root + "/matrix.json"
     end
-    next unless File.exist? base_matrix_file
+    next unless File.exists? base_matrix_file
 
     log_debug "base_matrix_file: #{base_matrix_file}"
     rc_matrix = load_release_matrix base_matrix_file

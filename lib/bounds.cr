@@ -8,7 +8,7 @@ def valid_stats_range?(stats_field, num)
 
   $__valid_range_cache ||= {}
   unless $__valid_range_cache.includes?(range_file)
-    $__valid_range_cache[range_file] = File.exist?(range_file) ? load_json(range_file) : nil
+    $__valid_range_cache[range_file] = File.exists?(range_file) ? load_json(range_file) : nil
   end
 
   stats_range = $__valid_range_cache[range_file]

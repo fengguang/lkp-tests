@@ -78,7 +78,7 @@ end
 
 def search_file_in_paths(file, relative_to = nil, search_paths = nil)
   if file[0] == "/"
-    return nil unless File.exist? file
+    return nil unless File.exists? file
 
     return file
   end
@@ -87,7 +87,7 @@ def search_file_in_paths(file, relative_to = nil, search_paths = nil)
 
   if file =~ /^\.\.?\//
     file = File.join(relative_to, file)
-    return nil unless File.exist? file
+    return nil unless File.exists? file
 
     return file
   end
@@ -97,7 +97,7 @@ def search_file_in_paths(file, relative_to = nil, search_paths = nil)
 
   search_paths.each do |search_path|
     path = File.join(search_path, file)
-    return path if File.exist? path
+    return path if File.exists? path
   end
   nil
 end
@@ -142,7 +142,7 @@ class WTMP
     end
 
     def load_tail(file, lines = 100)
-      return nil unless File.exist? file
+      return nil unless File.exists? file
 
       tail = %x[tail -n #{lines} #{file}]
       load(tail)
@@ -187,8 +187,8 @@ $json_cache = {}
 $json_mtime = {}
 
 def load_json(file, cache = false)
-  file += ".gz" if file =~ /.json$/ && File.exist?(file + ".gz")
-  if file =~ /.json(\.gz)?$/ && File.exist?(file)
+  file += ".gz" if file =~ /.json$/ && File.exists?(file + ".gz")
+  if file =~ /.json(\.gz)?$/ && File.exists?(file)
     begin
       mtime = File.mtime(file)
       unless $json_cache[file] && $json_mtime[file] == mtime
@@ -213,7 +213,7 @@ def load_json(file, cache = false)
       raise
     end
     nil
-  elsif File.exist? file.sub(/\.json(\.gz)?$/, ".yaml")
+  elsif File.exists? file.sub(/\.json(\.gz)?$/, ".yaml")
     load_yaml file.sub(/\.json(\.gz)?$/, ".yaml")
   else
     warn "JSON/YAML file not exist: '#{file}'"
@@ -261,7 +261,7 @@ def load_merge_jsons(path)
 
   files = path.split(",")
   files.each do |file|
-    return nil unless File.exist? file
+    return nil unless File.exists? file
   end
 
   matrix_from_stats_files(files)
