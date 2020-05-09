@@ -3,7 +3,7 @@
 
 require "../../lib/string_ext"
 
-stats = []
+stats = Array(String)
 test_item = ""
 fs_type = ""
 build_type = ""
