@@ -11,7 +11,7 @@ workload = 0
 while (line = STDIN.gets)
   case line
   when /^(\d+) records\/s(.*)$/
-    puts "throughput: " + $1
+    puts "throughput: " + $1 
     throughput = $1.to_i
     data = $2.split.map(&.to_i)
 
@@ -21,6 +21,7 @@ while (line = STDIN.gets)
   when /^real\ +(\d+.\d+) s/
     puts "time.real: " + $1
     time = $1.to_f
+    throughput = $1.to_i
     workload += throughput * time
   when /^user\ +(\d+.\d+) s/
     puts "time.user: " + $1

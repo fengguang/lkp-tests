@@ -1,14 +1,14 @@
 #!/usr/bin/env crystal
 
-time = []
-counts = {}
+time = [] of Float64
+counts = {} of Int32=>Int32
 
 STDIN.each_line do |line|
   case line
   when /^time: (.*)/
-    time << $1
+    time << $1.to_f
   when /^(\d+.\d+) Joules power\/(.*)\//
-    counts[$2] = $1
+    counts[$2.to_i] = $1.to_i
   end
 end
 

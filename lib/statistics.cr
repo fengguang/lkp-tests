@@ -4,7 +4,6 @@
 
 # Add methods to Enumerable, which makes them available to Array
 
-require "active_support/core_ext/enumerable"
 
 module Enumerable
   def average
@@ -13,7 +12,10 @@ module Enumerable
 
   def sorted
     s = sort
-    s.shift while s[0] == -1 # -1 means empty data point
+   # s.shift while s[0] == -1 # -1 means empty data point
+    if s[0] == -1
+      s.shift
+    end
     s
   end
 
@@ -28,7 +30,7 @@ module Enumerable
 
   def sample_variance
     avg = average
-    sum = inject(0) { |acc, i| acc + (i - avg) ** 2 }
+    sum =reduce(0) { |acc, i| acc + (i - avg) ** 2 }
     1 / size.to_f * sum
   end
 
