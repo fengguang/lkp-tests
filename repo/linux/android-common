@@ -4,5 +4,6 @@ notify_build_success_branch: .*
 mail_to: cros-kernel-buildreports@googlegroups.com
 test_old_branches: .*
 blacklist_branch: .*-release|.*-mr.*
+blacklist_branch: .*-release|.*-mr.*|android-4.14-q
 blacklist_arch: .*
 whitelist_arch: x86_64|i386|arm|arm64
