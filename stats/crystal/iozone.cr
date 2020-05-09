@@ -3,8 +3,8 @@
 keys = %w(write rewrite read reread random_read random_write bkwd_read
           record_rewrite stride_read fwrite frewrite fread freread)
 
-per_io_type = {}
-per_record = {}
+per_io_type = Hash(String | String, Int32).new
+per_record = Hash(String | String, Int32).new
 all_sum = 0
 nr_records = 0
 while (line = STDIN.gets)

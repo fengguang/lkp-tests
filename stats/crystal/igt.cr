@@ -1,6 +1,6 @@
 #!/usr/bin/env crystal
 
-stats = []
+stats = [] of Int32 | String | Char
 
 while (line = STDIN.gets)
   case line

@@ -2,7 +2,7 @@
 
 require "set"
 
-cpus = []
+cpus = [] of Int32 | String | Char
 
 STDIN.each_line do |line|
   case line
@@ -31,7 +31,7 @@ STDIN.each_line do |line|
       cpus.each_with_index do |cpu, i|
         val = values[i + 1].to_i
         sum += val
-        puts cpu + "." + key + ": " + values[i + 1]
+        puts cpu.to_s + "." + key + ": " + values[i + 1]
       end
       puts key + ": " + sum.to_s
     end

@@ -3,17 +3,15 @@
 
 require "json"
 require "../../lib/log"
-
 begin
-  obj = JSON.load STDIN
-rescue JSON::ParserError => e
+  obj = JSON.parse(STDIN)
+rescue e : JSON::Error 
   log_error "error: malformed iperf result"
-  log_error e.message[0..300]
-  log_error e.backtrace.join('\n')
+  log_error e if e
   exit
 end
 
-exit if obj["end"].empty?
+exit if obj["end"].as_s.empty?
 
 puts "tcp.sender.bps: " + obj["end"]["streams"][0]["sender"]["bits_per_second"].to_s if obj["end"]["streams"][0]["sender"]
 puts "tcp.receiver.bps: " + obj["end"]["streams"][0]["receiver"]["bits_per_second"].to_s if obj["end"]["streams"][0]["receiver"]
