@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env crystal
 
 NOISE_LEVELS = [100, 75, 50, 25, 5, 2].freeze
 

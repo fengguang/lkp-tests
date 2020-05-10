@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env crystal
 LKP_SRC = ENV["LKP_SRC"] || File.dirname(__DIR__)
 LKP_USER ||= ENV["LKP_USER"] || ENV["USER"] || `whoami`.chomp
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env crystal
 LKP_SRC = ENV["LKP_SRC"] || File.dirname(__DIR__)
 LOCAL_RUN_ENV = "LKP_LOCAL_RUN".freeze
 

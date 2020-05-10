@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env crystal
 
 def to_seconds(time_spec)
   return time_spec if time_spec.is_a?(Integer)

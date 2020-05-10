@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env crystal
 
 LKP_SRC = ENV["LKP_SRC"]
 RESULT_ROOT = ENV["RESULT_ROOT"]
