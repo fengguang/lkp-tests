@@ -3,18 +3,18 @@
 res = 0.0
 histo_r = Array.new(24, 0)
 histo_w = Array.new(24, 0)
-histo_details_r = []
-histo_details_w = []
-latencies = []
+histo_details_r = [] of Int32
+histo_details_w = [] of Int32
+latencies = [] of Float32
 throughput = 0
-init_times = []
+init_times = [] of Float32
 sum_r = 0.0
 sum_w = 0.0
 mode = nil
 READ = :read
 WRITE = :write
 
-$stdin.each_line do |line|
+@@stdin.each_line do |line|
   case line
   when /^Read:/
     mode = READ
@@ -33,11 +33,11 @@ $stdin.each_line do |line|
     data = $4.split(", ")
     data.each_with_index do |v, i|
       if mode == READ
-        histo_details_r[p] ||= []
+        histo_details_r[p] ||= [] of Int32
         histo_details_r[p][i] ||= 0
         histo_details_r[p][i] += v.to_i
       else
-        histo_details_w[p] ||= []
+        histo_details_w[p] ||= [] of Int32
         histo_details_w[p][i] ||= 0
         histo_details_w[p][i] += v.to_i
       end

@@ -1,6 +1,6 @@
 #!/usr/bin/env crystal
 
-stats = []
+stats = [] of String
 
 while (line = STDIN.gets)
   case line

@@ -1,27 +1,27 @@
 #!/usr/bin/env crystal
 
-test_subname = []
+test_subname = [] of String
 test_id = -1
 is_begin_of_subtest = false
 while (line = STDIN.gets)
   # remove color control info
-  line.gsub!(/.\[1;(\d+)m|.\[0m/, "")
+  line.gsub(/.\[1;(\d+)m|.\[0m/, "")
   case line
   when %r{(pts|system)/(\S+)-[0-9.]+ is not installed}
-    item = Regexp.last_match[2]
+    item = $2
     puts "#{item}.not_installed: 1"
   when %r{(pts|system)/(\S+)-[0-9.]+}
-    test_name = Regexp.last_match[2]
+    test_name = $2
     if line =~ /(pts|system)\/(\S+)-[0-9.]+ \[(?<params>.+)\]/
-      params = Regexp.last_match[:params] # "Test: Furmark - Resolution: 800 x 600 - Mode: Windowed"
-      test_subname << params.split(" - ") # ["Test: Furmark", "Resolution: 800 x 600", "Mode: Windowed"]
+     params = Regex.match[:params] # "Test: Furmark - Resolution: 800 x 600 - Mode: Windowed"
+     test_subname << params.split(" - ") # ["Test: Furmark", "Resolution: 800 x 600", "Mode: Windowed"]
                             .map { |param| param.split(": ").last.gsub(/\s+/, "") } # ["Furmark", "800x600", "Windowed"]
                             .join(".")                                              # "Furmark.800x600.Windowed"
     end
     is_begin_of_subtest = true
   when /Average: ([0-9.]+) (.*)/
-    value = Regexp.last_match[1]
-    unit = Regexp.last_match[2]
+    value = $1
+    unit = $2
     if is_begin_of_subtest
       test_id += 1
       is_begin_of_subtest = false
@@ -33,7 +33,7 @@ while (line = STDIN.gets)
       puts "#{test_name}.#{test_id}.#{unit}: #{value}"
     end
   when /Final: ([0-9.]+) (.*)/
-    value = Regexp.last_match[1]
+    value = $1
     if value == "1" && is_begin_of_subtest
       test_id += 1
       is_begin_of_subtest = false

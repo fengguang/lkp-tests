@@ -1,14 +1,14 @@
 #!/usr/bin/env crystal
 
-stats = {}
+stats = {} of String => String
 while (line = STDIN.gets)
   case line
   when /^### (\w+_\d+):$/
-    item = Regexp.last_match[1]
+    item = $1
     stats[item] = "" unless stats.has_key?(item)
   when /^(\w+_\d+): (fail|pass|skip|ignored_by_lkp)$/
-    item = Regexp.last_match[1]
-    result = Regexp.last_match[2]
+    item = $1
+    result = $2
     stats[item] = "#{result}: 1" unless stats.has_key?(item) && !stats[item].empty?
   end
 end
