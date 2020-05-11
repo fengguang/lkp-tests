@@ -2,7 +2,7 @@
 
 require "set"
 
-cpus = [] of Int32 | String | Char
+cpus = [] of String
 
 STDIN.each_line do |line|
   case line
