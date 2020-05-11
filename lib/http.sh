@@ -99,7 +99,7 @@ http_do_request()
 	if [ -n "$HTTP_PREFIX" ]; then
 		http_prefix="$HTTP_PREFIX"
 	else
-		http_prefix="http://$LKP_SERVER:${LKP_CGI_PORT:-80}/~$LKP_USER"
+		http_prefix="http://$LKP_SERVER:${LKP_CGI_PORT:-3000}/~$LKP_USER"
 	fi
 
 	echo \

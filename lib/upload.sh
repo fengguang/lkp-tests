@@ -41,7 +41,7 @@ upload_files_lftp()
 	local dest_file
 	local ret=0
 	local LFTP_TIMEOUT='set net:timeout 2; set net:reconnect-interval-base 2; set net:max-retries 2;'
-	local UPLOAD_HOST="http://$LKP_SERVER"
+	local UPLOAD_HOST="http://$LKP_SERVER:${LFTP_PORT:-3080}"
 
 	[ -n "$target_directory" ] && {
 		local JOB_RESULT_ROOT=$JOB_RESULT_ROOT/$target_directory
