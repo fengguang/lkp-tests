@@ -4,7 +4,7 @@
 require "../../lib/string_ext"
 
 while (line = STDIN.gets)
-  line = line.remediate_invalid_byte_sequence(replace: "_") unless line.valid_encoding?
+  line = line.remediate_invalid_byte_sequence() unless line.valid_encoding?
   case line
   # queries performed:
   #     read:                            134956458
