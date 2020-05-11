@@ -27,15 +27,15 @@ require "../../lib/string_ext"
 if ARGV[0]
   kmsg_file = ARGV[0]
   dmesg_file = ARGV[0]
-  RESULT_ROOT = ENV["RESULT_ROOT"]
+  result_root = ENV["RESULT_ROOT"]
 elsif ENV["RESULT_ROOT"]
-  RESULT_ROOT = ENV["RESULT_ROOT"]
-  serial_file = "#{RESULT_ROOT}/dmesg"
-  kmsg_file = "#{RESULT_ROOT}/kmsg"
+  result_root = ENV["RESULT_ROOT"]
+  serial_file = "#{result_root}/dmesg"
+  kmsg_file = "#{result_root}/kmsg"
   if File.exists? serial_file
     dmesg_file = serial_file
 
-    if File.size?(kmsg_file) && File.size(serial_file).zero?
+    if File.exists?(kmsg_file) && File.size(kmsg_file).zero? && File.size(serial_file).zero?
       log_error "unexpected 0-sized serial file #{serial_file}"
       dmesg_file = kmsg_file
     else
@@ -54,7 +54,7 @@ else
   exit
 end
 
-unless File.size? dmesg_file
+unless File.size(dmesg_file).zero?
   # puts "early-boot-hang: 1"
   exit
 end
@@ -62,26 +62,28 @@ end
 dmesg_lines = fixup_dmesg_file(dmesg_file)
 
 # check possibly misplaced serial log
-def verify_serial_log(dmesg_lines)
-  return unless PROGRAM_NAME =~ /dmesg/
-  return if RESULT_ROOT.nil? || RESULT_ROOT.empty?
+def verify_serial_log(dmesg_lines,result_root)
 
-  dmesg_lines.grep(/RESULT_ROOT=/) do |line|
+  return unless PROGRAM_NAME =~ /dmesg/
+
+  return if result_root.nil? || result_root.empty?
+
+  dmesg_lines.grep(/result_root=/) do |line| 
     next if line =~ /(^|[0-9]\] )kexec -l | --initrd=| --append=|"$/
-    next unless line =~ / RESULT_ROOT=([A-Za-z0-9.,;_\/+%:@=-]+) /
+    next unless line =~ / result_root=([A-Za-z0-9.,;_\/+%:@=-]+) /
 
     rt = $1
     next unless Dir.exists? rt # serial console is often not reliable
 
-    log_error "RESULT_ROOT mismatch in dmesg: #{RESULT_ROOT} #{rt}" if rt != RESULT_ROOT
+    log_error "RESULT_ROOT mismatch in dmesg: #{result_root} #{rt}" if rt != result_root
   end
 end
 
-verify_serial_log(dmesg_lines)
+verify_serial_log(dmesg_lines,result_root)
 
-error_ids = {}
-error_lines = {}
-error_stamps = {}
+error_ids = Hash.new
+error_lines = Hash.new
+error_stamps = Hash.new
 
 if PROGRAM_NAME =~ /dmesg/
   lines = dmesg_lines
@@ -99,7 +101,7 @@ else
   output = grep_printk_errors kmsg_file, kmsg
   output.replace_invalid_utf8!
 
-  oops_map = {}
+  oops_map = Hash.new
   output.each_line do |line|
     oops_map[line] ||= line
   end

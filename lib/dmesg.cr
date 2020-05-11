@@ -5,18 +5,18 @@ LKP_SRC = ENV["LKP_SRC"] || File.dirname(__DIR__)
 require "./yaml"
 require "./constant"
 
-# /c/linux% git grep '"[a-z][a-z_]\+%d"'|grep -o '"[a-z_]\+'|cut -c2-|sort -u
+
 LINUX_DEVICE_NAMES = IO.read("#{LKP_SRC}/etc/linux-device-names").split("\n")
 LINUX_DEVICE_NAMES_RE = /\b(#{LINUX_DEVICE_NAMES.join("|")})\d+/.freeze
 
-require "fileutils"
-require "tempfile"
+#require "fileutils"
+#require "tempfile"
 
 # dmesg can be below forms
 # [    0.298729] Last level iTLB entries: 4KB 512, 2MB 7, 4MB 7
 # [    8.898106] system 00:01: [io  0x0400-0x047f] could not be reserved
 class DmesgTimestamp
-  include Comparable
+ #include Comparable
 
   getter :timestamp
 
@@ -52,8 +52,8 @@ class DmesgTimestamp
   # SMALL timestamp
   class AbnormalSequenceDetector
     def initialize
-      @large_dmesg_timestamps = []
-      @small_dmesg_timestamps = []
+      @large_dmesg_timestamps = Array.new
+      @small_dmesg_timestamps = Array.new
     end
 
     # dmesg "[ 0.000000]\n[ 1.000000]\n[ 1.000000]\n[ 2.000000]\n
@@ -81,12 +81,12 @@ class DmesgTimestamp
 end
 
 def fixup_dmesg(line)
-  line.chomp!
+  line = line.chomp
 
   # remove absolute path names
-  line.sub!(%r{/kbuild/src/[^/]+/}, "")
+  line =  line.sub(%r{/kbuild/src/[^/]+/}, "")
 
-  line.sub!(/\.(isra|constprop|part)\.[0-9]+\+0x/, "+0x")
+  line = line.sub(/\.(isra|constprop|part)\.[0-9]+\+0x/, "+0x")
 
   # break up mixed messages
   if line =~ /^<[0-9]>|^(kern  |user  |daemon):......: /
@@ -99,8 +99,8 @@ def fixup_dmesg(line)
 end
 
 def fixup_dmesg_file(dmesg_file)
-  tmpfile = Tempfile.new ".fixup-dmesg-", File.dirname(dmesg_file)
-  dmesg_lines = []
+  tmpfile = File.tempfile(".fixup-dmesg-", File.dirname(dmesg_file))
+  dmesg_lines = Array(String).new
   File.open(dmesg_file, "rb") do |f|
     f.each_line do |line|
       line = fixup_dmesg(line)
@@ -108,9 +108,10 @@ def fixup_dmesg_file(dmesg_file)
       tmpfile.puts line
     end
   end
-  tmpfile.chmod 0o664
+ # tmpfile.chmod 0o664
+  File.chmod(tmpfile.path,0o664)
   tmpfile.close
-  FileUtils.mv tmpfile.path, dmesg_file, force: true
+  FileUtils.mv tmpfile.path, dmesg_file
   dmesg_lines
 end
 
@@ -153,9 +154,9 @@ def grep_crash_head(dmesg_file)
   raw_oops = %x[ #{grep} -a -E -e \\\\+0x -f #{LKP_SRC}/etc/oops-pattern #{dmesg_file} |
        grep -v -E -f #{LKP_SRC}/etc/oops-pattern-ignore ]
 
-  return {} if raw_oops.empty?
+  return Hash.new if raw_oops.empty?
 
-  oops_map = {}
+  oops_map = Hash.new
 
   oops_re = load_regular_expressions("#{LKP_SRC}/etc/oops-pattern")
   prev_line = nil
@@ -237,8 +238,8 @@ def common_error_id(line)
   line.gsub!(/[\\"$]/, "~")
   line.gsub!(/[ \t]/, " ")
   line.gsub!(/\ \ +/, " ")
-  line.gsub!(/([^a-zA-Z0-9])\ /, '\1')
-  line.gsub!(/\ ([^a-zA-Z])/, '\1')
+  line.gsub!(/([^a-zA-Z0-9])\ /, "\1")
+  line.gsub!(/\ ([^a-zA-Z])/, "\1")
   line.gsub!(/^\ /, "")
   line.gsub!(/\  _/, "_")
   line.tr!(" ", "_")
@@ -254,7 +255,7 @@ def oops_to_bisect_pattern(line)
   return "" if words.empty?
   return line if words.size == 1
 
-  patterns = []
+  patterns = Array.new
   words.each do |w|
     case w
     when /([a-zA-Z0-9_]+)\.(isra|constprop|part)\.[0-9]+\+0x/
@@ -269,7 +270,9 @@ def oops_to_bisect_pattern(line)
       patterns << w
     end
   end
-  patterns.shift while patterns[0] == ".*"
+  while patterns[0] == ".*"
+     patterns.shift
+  end
   patterns.pop if patterns[-1] == ".*"
   patterns.join(" ")
 end
@@ -371,19 +374,19 @@ def analyze_error_id(line)
   # [   31.694592] ADFS-fs error (device nbd10): adfs_fill_super: unable to read superblock
   # [   33.147854] block nbd15: Attempted send on closed socket
   # /c/linux-next% git grep -w 'register_blkdev' | grep -o '".*"'
-  error_id.gsub!(/\b(bcache|blkext|btt|dasd|drbd|fd|hd|jsfd|lloop|loop|md|mdp|mmc|nbd|nd_blk|nfhd|nullb|nvme|pmem|ramdisk|scm|sd|simdisk|sr|ubd|ubiblock|virtblk|xsysace|zram)\d+/, '\1#')
+  error_id.gsub!(/\b(bcache|blkext|btt|dasd|drbd|fd|hd|jsfd|lloop|loop|md|mdp|mmc|nbd|nd_blk|nfhd|nullb|nvme|pmem|ramdisk|scm|sd|simdisk|sr|ubd|ubiblock|virtblk|xsysace|zram)\d+/, "\1#")
 
-  error_id.gsub! LINUX_DEVICE_NAMES_RE, '\1#'
+  error_id.gsub! LINUX_DEVICE_NAMES_RE, "\1#"
 
   error_id.gsub!(/\b[0-9a-f]{8}\b/, "#")
   error_id.gsub!(/\b[0-9a-f]{16}\b/, "#")
-  error_id.gsub!(/(=)[0-9a-f]+\b/, '\1#')
+  error_id.gsub!(/(=)[0-9a-f]+\b/, "\1#")
   error_id.gsub!(/[+\/]0x[0-9a-f]+\b/, "")
   error_id.gsub!(/[+\/][0-9a-f]+\b/, "")
 
   error_id = common_error_id(error_id)
 
-  error_id.gsub!(/([a-z]:)[0-9]+\b/, '\1') # WARNING: at arch/x86/kernel/cpu/perf_event.c:1077 x86_pmu_start+0xaa/0x110()
+  error_id.gsub!(/([a-z]:)[0-9]+\b/, "\1") # WARNING: at arch/x86/kernel/cpu/perf_event.c:1077 x86_pmu_start+0xaa/0x110()
   error_id.gsub!(/#:\[<#>\]\[<#>\]/, "") # RIP: 0010:[<ffffffff91906d8d>]  [<ffffffff91906d8d>] validate_chain+0xed/0xe80
   error_id.gsub!(/RIP:#:/, "RIP:")       # RIP: 0010:__might_sleep+0x72/0x80
 
@@ -399,7 +402,7 @@ def get_crash_stats(dmesg_file)
 
   boot_error_ids = `#{LKP_SRC}/stats/dmesg #{dmesg_file}`
 
-  oops_map = {}
+  oops_map = Hash.new
   id = ""
   new_error_id = false
   boot_error_ids.each_line do |line|
@@ -441,7 +444,7 @@ CALLTRACE_LIMIT_LEN = 100
 def get_crash_calltraces(dmesg_file)
   dmesg_content = get_content(dmesg_file)
 
-  calltraces = []
+  calltraces = Array.new
   index = 0
   line_count = 0
   in_calltrace = false

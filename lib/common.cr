@@ -1,8 +1,8 @@
-LKP_SRC = ENV["LKP_SRC"] || File.dirname(__DIR__)
+#LKP_SRC = ENV["LKP_SRC"] || File.dirname(__DIR__)
 
 ## common utilities
 
-require "timeout"
+#require "timeout"
 require "file_utils"
 require "./array_ext"
 

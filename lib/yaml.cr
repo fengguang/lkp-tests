@@ -1,21 +1,21 @@
 #!/usr/bin/env crystal
 
-LKP_SRC = ENV["LKP_SRC"] || File.dirname(__DIR__)
+#LKP_SRC = ENV["LKP_SRC"] || File.dirname(__DIR__)
 
 require "./common"
 require "./log"
-require "./erb"
-require "./assert"
-require "fileutils"
+#require "./erb"
+#require "./assert"
+#require "fileutils"
 require "yaml"
 require "json"
-require "English"
+#require "English"
 
 def compress_file(file)
   system "gzip #{file} < /dev/null"
 end
 
-def expand_yaml_template(yaml, file, context_hash = {})
+def expand_yaml_template(yaml, file, context_hash = Hash.new)
   yaml = yaml_merge_included_files(yaml, File.dirname(file))
   yaml = literal_double_braces(yaml)
   expand_erb(yaml, context_hash)
@@ -53,14 +53,14 @@ def load_yaml_with_flock(file, timeout = nil)
 end
 
 def load_yaml_merge(files)
-  all = {}
+  all = Hash.new
   files.each do |file|
     next unless File.size? file
 
     begin
       yaml = load_yaml(file)
       all.update(yaml)
-    rescue StandardError => e
+    rescue e : StandardError
       warn "#{e.class.name}: #{e.message.split("\n").first}: #{file}"
     end
   end
@@ -70,7 +70,7 @@ end
 def load_yaml_tail(file)
   begin
     return YAML.load %x[tail -n 100 #{file}]
-  rescue Psych::SyntaxError => e
+  rescue e : Psych::SyntaxError
     warn "#{file}: " + e.message
   end
   nil
@@ -128,8 +128,7 @@ end
 # though it also be extended to handle wtmp file concept
 #
 class WTMP
-  class << self
-    def load(content)
+    def self.load(content)
       # FIXME: rli9 YAML.load returns false under certain error like empty content
       YAML.load content
     rescue Psych::SyntaxError
@@ -141,15 +140,14 @@ class WTMP
       YAML.load(content.gsub(/[[[:cntrl:]]&&[^\n]]/, ""))
     end
 
-    def load_tail(file, lines = 100)
+    def self.load_tail(file, lines = 100)
       return nil unless File.exists? file
 
       tail = %x[tail -n #{lines} #{file}]
       load(tail)
-    rescue StandardError => e
+    rescue e : StandardError
       warn "#{file}: " + e.message
     end
-  end
 end
 
 def dot_file(path)
@@ -157,7 +155,7 @@ def dot_file(path)
 end
 
 def save_yaml(object, file, compress = false)
-  temp_file = dot_file(file) + "-#{$PROCESS_ID}"
+  temp_file = dot_file(file) + "-#{PROCESS_ID}"
   File.open(temp_file, "w") do |f|
     f.write(YAML.dump(object))
   end
@@ -183,15 +181,15 @@ def save_yaml_with_flock(object, file, timeout = nil, compress = false)
   end
 end
 
-$json_cache = {}
-$json_mtime = {}
+json_cache = Hash(String,String).new
+json_mtime = Hash(String,String).new
 
 def load_json(file, cache = false)
   file += ".gz" if file =~ /.json$/ && File.exists?(file + ".gz")
   if file =~ /.json(\.gz)?$/ && File.exists?(file)
     begin
       mtime = File.mtime(file)
-      unless $json_cache[file] && $json_mtime[file] == mtime
+      unless json_cache[file] && json_mtime[file] == mtime
         obj = if file =~ /\.json$/
                 JSON.load File.read(file)
               else
@@ -199,10 +197,10 @@ def load_json(file, cache = false)
               end
         return obj unless cache
 
-        $json_cache[file] = obj
-        $json_mtime[file] = mtime
+        json_cache[file] = obj
+        json_mtime[file] = mtime
       end
-      return $json_cache[file].freeze
+      return json_cache[file].freeze
     rescue SignalException
       raise
     rescue StandardError
@@ -223,7 +221,7 @@ def load_json(file, cache = false)
 end
 
 def save_json(object, file, compress = false)
-  temp_file = dot_file(file) + "-#{$PROCESS_ID}"
+  temp_file = dot_file(file) + "-#{PROCESS_ID}"
   File.open(temp_file, "w") do |file|
     file.write(JSON.pretty_generate(object, allow_nan: true))
   end
@@ -247,7 +245,7 @@ def try_load_json(path)
   end
 end
 
-class JSONFileNotExistError < StandardError
+class JSONFileNotExistError < Exception
   def initialize(path)
     super "Failed to load JSON for #{path}"
     @path = path
@@ -281,7 +279,7 @@ rescue JSONFileNotExistError
   false
 end
 
-def load_regular_expressions(file, options = {})
+def load_regular_expressions(file, options = Hash.new)
   pattern = File.read(file).split("\n")
   spec = "#{options[:prefix]}(#{pattern.join("|")})#{options[:suffix]}"
   Regexp.new spec
