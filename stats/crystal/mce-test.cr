@@ -1,6 +1,6 @@
 #!/usr/bin/env crystal
 
-stats = []
+stats = Array(String).new
 nr_test = 0
 
 while (line = STDIN.gets)

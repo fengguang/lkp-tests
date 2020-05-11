@@ -1,6 +1,5 @@
 #!/usr/bin/env crystal
 
-#qperf = {}
 qperf = Hash(String, String).new
 protocol = "protocol" 
 while (line = STDIN.gets)

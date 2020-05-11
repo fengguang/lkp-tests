@@ -2,7 +2,7 @@
 
 mtotal = nil
 munit = nil
-mused = []
+mused = Array(Int32).new
 
 STDIN.each_line do |line|
   case line
@@ -11,11 +11,11 @@ STDIN.each_line do |line|
   else
     key, value, unit = line.split
     key = key.chomp(":")
-    puts "#{key}: #{value}"
     value = value.to_i
+    puts "#{key}: #{value}"
     mtotal ||= value if key == "MemTotal"
     if key == "MemFree"
-      mused << mtotal - value
+      mused << mtotal - value if !mtotal.nil?
       munit ||= unit
       puts "Memused: #{mused.last}"
     end

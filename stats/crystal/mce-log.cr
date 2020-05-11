@@ -1,7 +1,8 @@
 #!/usr/bin/env crystal
 
-stats = {}
+stats = Hash(String, String).new
 
+item = "mce_log_item"
 while (line = STDIN.gets)
   case line
   when /^mce-log-item:(\S+)$/
