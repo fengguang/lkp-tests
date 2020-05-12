@@ -1,6 +1,6 @@
 #!/usr/bin/env crystal
 
-total = {}
+total = {} of String => Int32
 while (line = STDIN.gets)
   _i, _start_addr, _end_addr, bytes, type = line.split ","
   next if type.to_s.empty?

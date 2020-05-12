@@ -32,22 +32,22 @@
 # GET       0.330        99.28
 # GET       0.340        99.40
 
-
 require "../../lib/array_ext"
 
-$histo_sets_sum = Array.new(6, 0)
-$histo_sets_num = Array.new(6, 0)
-$histo_gets_sum = Array.new(6, 0)
-$histo_gets_num = Array.new(6, 0)
-$histo_waits_sum = Array.new(6, 0)
-$histo_waits_num = Array.new(6, 0)
-$histo_totals_sum = Array.new(6, 0)
-$histo_totals_num = Array.new(6, 0)
-set_latencies = []
-get_latencies = []
-proc_set_latencies = []
-proc_get_latencies = []
-PERCENTILE_STRS = ["90", "95", "99", "99.9"].freeze
+histo_sets_sum = Array.new(6, 0.0)
+histo_sets_num = Array.new(6, 0.0)
+histo_gets_sum = Array.new(6, 0.0)
+histo_gets_num = Array.new(6, 0.0)
+histo_waits_sum = Array.new(6, 0.0)
+histo_waits_num = Array.new(6, 0.0)
+histo_totals_sum = Array.new(6, 0.0)
+histo_totals_num = Array.new(6, 0.0)
+set_latencies = [] of Array(Float64)
+get_latencies = [] of Array(Float64)
+proc_set_latencies = [] of Float64
+proc_get_latencies = [] of Float64
+#PERCENTILE_STRS = ["90", "95", "99", "99.9"].freeze
+PERCENTILE_STRS = ["90", "95", "99", "99.9"]
 PERCENTILES = PERCENTILE_STRS.map(&.to_f)
 
 def extract_memtier(line, histo_sum, histo_num)
@@ -65,18 +65,19 @@ def memtier(line)
   end
 end
 
+is_set = Nil
 while (line = STDIN.gets)
   if line =~ /^Sets/
-    extract_memtier(line, $histo_sets_sum, $histo_sets_num)
+    extract_memtier(line, histo_sets_sum, histo_sets_num)
   elsif line =~ /^Gets/
-    extract_memtier(line, $histo_gets_sum, $histo_gets_num)
+    extract_memtier(line, histo_gets_sum, histo_gets_num)
   elsif line =~ /^Waits/
-    extract_memtier(line, $histo_waits_sum, $histo_waits_num)
+    extract_memtier(line, histo_waits_sum, histo_waits_num)
   elsif line =~ /^Totals/
-    extract_memtier(line, $histo_totals_sum, $histo_totals_num)
+    extract_memtier(line, histo_totals_sum, histo_totals_num)
   elsif line =~ /^Request Latency Distribution/
-    proc_set_latencies = []
-    proc_set_latencies = []
+    proc_set_latencies = [] of Float64
+    proc_set_latencies = [] of Float64
   elsif line =~ /^SET/
     is_set = true
     data = line.split
@@ -129,15 +130,15 @@ def gen_output_miss_rate(type, histo_sum, histo_num)
   puts "#{type}_miss_rate_%: #{miss_rate}"
 end
 
-gen_output_sum("sets", $histo_sets_sum)
-gen_output_sum("gets", $histo_gets_sum)
-gen_output_sum("waits", $histo_waits_sum)
-gen_output_sum("totals", $histo_totals_sum)
-gen_output_avg("sets", $histo_sets_sum, $histo_sets_num)
-gen_output_avg("gets", $histo_gets_sum, $histo_gets_num)
-gen_output_miss_rate("gets", $histo_gets_sum, $histo_gets_num)
-gen_output_avg("waits", $histo_waits_sum, $histo_waits_num)
-gen_output_avg("totals", $histo_totals_sum, $histo_totals_num)
+gen_output_sum("sets", histo_sets_sum)
+gen_output_sum("gets", histo_gets_sum)
+gen_output_sum("waits", histo_waits_sum)
+gen_output_sum("totals", histo_totals_sum)
+gen_output_avg("sets", histo_sets_sum, histo_sets_num)
+gen_output_avg("gets", histo_gets_sum, histo_gets_num)
+gen_output_miss_rate("gets", histo_gets_sum, histo_gets_num)
+gen_output_avg("waits", histo_waits_sum, histo_waits_num)
+gen_output_avg("totals", histo_totals_sum, histo_totals_num)
 
 def normalize_latencies(latencies)
   maxcol = latencies.map(&.size).max
@@ -147,7 +148,7 @@ def normalize_latencies(latencies)
       percent = proc_latencies[i]
       percent ||= prev
       prev = percent
-      proc_latencies[i] = percent
+      proc_latencies[i] = percent.to_f
     end
   end
 end

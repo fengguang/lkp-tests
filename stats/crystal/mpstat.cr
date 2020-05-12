@@ -2,7 +2,8 @@
 
 require "time"
 require "json"
-require "fileutils"
+#require "fileutils"
+require "file_utils"
 require "../../lib/log"
 
 # The below is an example of mpstat output, read it then parse it into hash data.
@@ -37,8 +38,13 @@ require "../../lib/log"
 if ARGV[0]
   mpstat = ARGV[0]
 elsif ENV["RESULT_ROOT"]
-  RESULT_ROOT = ENV["RESULT_ROOT"]
-  mpstat = "#{RESULT_ROOT}/mpstat"
+  #RESULT_ROOT = ENV["RESULT_ROOT"]
+  #mpstat = "#{RESULT_ROOT}/mpstat"
+  result_root = ENV["RESULT_ROOT"]
+  mpstat = "#{result_root}/mpstat"
+else
+  log_error "mpstat filepath is not exist"
+  exit
 end
 
 # Read the first line of mpstat, check if it is the old format.
@@ -54,7 +60,7 @@ end
 mpstat_json = File.read(mpstat)
 begin
   mpstat_hash = JSON.parse(mpstat_json)
-rescue JSON::ParserError
+rescue JSON::Error
   # The mpstat file may meet 2 kinds of uncomplete format:
   # If mpstat file end with string "},", need to delete "," , then complete json format.
   # If mpstat file end with "}", need to complete the missing string
@@ -64,38 +70,39 @@ rescue JSON::ParserError
 
     FileUtils.cp(mpstat, mpstat_update)
     File.open(mpstat_update, "r+") do |io|
-      io.seek(-2, IO::SEEK_END)
+      io.seek(-2, IO::Seek::End)
       str = io.gets
       if str == ",\n"
-        io.seek(-2, IO::SEEK_END)
+        io.seek(-2, IO::Seek::End)
         io.truncate(io.pos)
         io.puts "\n\t\t\t\]\n\t\t\}\n\t\]\n\}\}\n"
       elsif str == "\t\}"
-        io.seek(0, IO::SEEK_END)
+        io.seek(0, IO::Seek::End)
         io.puts "\n\t\t\t\]\n\t\t\}\n\t\]\n\}\}\n"
       end
     end
 
     mpstat_json = File.read(mpstat_update)
-    FileUtils.rm_f mpstat_update unless ENV["RESULT_ROOT"]
+    FileUtils.rm_rf mpstat_update unless ENV["RESULT_ROOT"]
     mpstat_hash = JSON.parse(mpstat_json)
-  rescue JSON::ParserError => e
+  rescue e: JSON::Error
     log_error "Fail to parse #{mpstat}: #{e}"
     exit
-  rescue StandardError => e
+  rescue e: Exception
     log_error "Fail to handle #{mpstat}: #{e}"
     exit
   end
 end
 
-results = {}
+#results = {} of String => Array(Hash(String,String|Float64))
+results = {} of String => Int64|JSON::Any
 # Every array data includes some hash type data.
 # Such as: "cpu-load" => [{"cpu" => "all", "usr" => 3.06,
 #                        "nice" => 0.00, "sys" => 5.87, ... }, {...}, ...]
 def get_array_result(prefix, array, results)
-  array.each do |item|
+    array.as_a.each do |item|
     next unless item.class == Hash
-
+    item = item.as_h
     key0, value0 = item.first
     item.each_key do |k_|
       next if k_ == key0
@@ -114,6 +121,7 @@ def get_array_result(prefix, array, results)
 end
 
 def get_hash_result(prefix, hash, results)
+  hash = hash.as_h
   hash.each do |k, v|
     key = "#{prefix}.#{k}"
     results[key] = v
@@ -131,12 +139,12 @@ def display_result(hash)
 end
 
 data = mpstat_hash["sysstat"]["hosts"][0]["date"]
-mpstat_hash["sysstat"]["hosts"][0]["statistics"].each do |item|
-  item.each do |k, v|
+mpstat_hash["sysstat"]["hosts"][0]["statistics"].as_a.each do |item|
+    item.as_h.each do |k, v|
     if v.class == Array
       get_array_result k, v, results
     elsif v.class == Hash
-      v.each do |k_, v_|
+	v.as_h.each do |k_, v_|
         if v_.class == Array
           get_array_result k_, v_, results
         elsif v_.class == Hash
@@ -146,7 +154,7 @@ mpstat_hash["sysstat"]["hosts"][0]["statistics"].each do |item|
         end
       end
     elsif k == "timestamp"
-      time = Time.parse([data, v].join(" ")).to_i
+      time = Time.parse_local([data, v].join(" "), "%F %T").to_unix
       results["time"] = time
     end
   end

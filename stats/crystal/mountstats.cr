@@ -1,13 +1,16 @@
 #!/usr/bin/env crystal
 
-params = {}
+params = {} of String => Array(String)
 
-params["xprt"] = {}
+#params["xprt"] = {}
+xprt = {} of String => Array(String)
 
-params["xprt"]["tcp"] = %w(srcport bind_count connect_count connect_time idle_time
+#params["xprt"]["tcp"] = %w(srcport bind_count connect_count connect_time idle_time
+xprt["tcp"] = %w(srcport bind_count connect_count connect_time idle_time
                            sends recvs bad_xids req_u bklog_u max_slots sending_u pending_u)
 
-params["xprt"]["udp"] = %w(srcport bind_count sends recvs bad_xids
+#params["xprt"]["udp"] = %w(srcport bind_count sends recvs bad_xids
+xprt["udp"] = %w(srcport bind_count sends recvs bad_xids
                            req_u bklog_u max_slots sending_u pending_u)
 
 params["rpcstats"] = %w(ops ntrans timeouts bytes_sent bytes_recv queue rtt execute)
@@ -26,7 +29,7 @@ params["eventcounters"] = %w(NFSIOS_INODEREVALIDATE NFSIOS_DENTRYREVALIDATE NFSI
                              NFSIOS_VFSLOCK NFSIOS_VFSRELEASE NFSIOS_CONGESTIONWAIT NFSIOS_SETATTRTRUNC NFSIOS_EXTENDWRITE
                              NFSIOS_SILLYRENAME NFSIOS_SHORTREAD NFSIOS_SHORTWRITE NFSIOS_DELAY NFSIOS_PNFS_READ NFSIOS_PNFS_WRITE)
 
-def print_values(path, line)
+def print_values(path, line, params, xprt)
   while (line = STDIN.gets)
     break if line.split.size <= 0
 
@@ -34,19 +37,19 @@ def print_values(path, line)
     when /\s*([\w]+):\s*([0-9]+)$/
       puts "#{path}.#{$1}: #{$2}"
     when /\s*([a-zA-Z]+):\s*(udp|tcp)?\s*([\s0-9]+)$/
-      print($1, $2, path, $3.split, params)
+      print($1, $2, path, $3.split, params, xprt)
     end
   end
 end
 
-def check_params(type, values, params)
+def check_params(type, values,sub_type, params, xprt)
   case type
   when "events"
     used = params["eventcounters"]
   when "bytes"
     used = params["bytecounters"]
   when "xprt"
-    used = params["xprt"][sub_type]
+    used = xprt[sub_type]
   when "fsc"
     used = params["fscachecounters"]
   else
@@ -57,10 +60,11 @@ def check_params(type, values, params)
   used
 end
 
-def print(type, sub_type, path, values, params)
+def print(type, sub_type, path, values, params, xprt)
   prefix = path + "." + type
   prefix = prefix + "." + sub_type if sub_type
-  used = check_params(type, values, params)
+  used = check_params(type, values,sub_type, params, xprt)
+  return if !used
   values.each_with_index do |value, i|
     puts "#{prefix}.#{used[i]}: #{value}"
   end
@@ -72,6 +76,6 @@ while (line = STDIN.gets)
     puts line
   when /^device.+mounted on (.+) with fstype nfs(\s+.+)?$/
     path = $1
-    print_values(path, line)
+    print_values(path, line, params, xprt)
   end
 end
