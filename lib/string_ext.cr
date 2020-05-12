@@ -10,7 +10,7 @@ class String
       .gsub(/[^[:print:]\n]/, "")
   end
 
-  def remediate_invalid_byte_sequence()
+  def remediate_invalid_byte_sequence(replace = "")
     clone
       .encode("UTF-8")
   end
