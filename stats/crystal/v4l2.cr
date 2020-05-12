@@ -1,6 +1,6 @@
 #!/usr/bin/env crystal
-
-stats = {}
+require "../../lib/string_ext"
+stats = {} of String =>String
 
 # skip invalid line
 while (line = STDIN.gets)
@@ -8,7 +8,7 @@ while (line = STDIN.gets)
 end
 
 while (line = STDIN.gets)
-  line = line.remediate_invalid_byte_sequence(replace: "_") unless line.valid_encoding?
+  line = line.remediate_invalid_byte_sequence( ) unless line.valid_encoding?
   case line
   when /test (.*): (FAIL|OK)*/
     result = $2.downcase

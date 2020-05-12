@@ -4,20 +4,20 @@ MAX_STACK_DEPTH = 5
 THRESHOLD = 0.01
 
 def parse
-  results = {}
-  cmd = nil
-  funcs = []
+  results = {} of String => Int32
+  cmd = Nil
+  funcs = [] of String 
 
   add_result = lambda do
     unless funcs.empty?
       funcs = funcs.slice(0, MAX_STACK_DEPTH)
       results[cmd] ||= Hash.new(0)
       results[cmd][funcs.join(".")] += 1
-      funcs = []
+      funcs = [] of String
     end
   end
 
-  $stdin.each_line do |line|
+  @@class_stdin.each_line do |line|
     if line.start_with? "/proc/"
       add_result.call
       cmd = line.split[1].split("/")[0]

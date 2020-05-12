@@ -13,8 +13,8 @@ while (line = STDIN.gets)
   case line
   when /^Benchmark Run: .+ (\d+:\d+:\d+) - (\d+:\d+:\d+)$/
     # We only care about the difference value between end time and start time
-    start_time = Time.parse($1).to_f
-    end_time = Time.parse($2).to_f
+    start_time = Time.parse($1,"%Y-%m-%d %H:%M:%S %z",Time::Location::UTC).to_unix
+    end_time = Time.parse($2,"%Y-%m-%d %H:%M:%S %z",Time::Location::UTC).to_unix
     duration = if end_time > start_time
                  end_time - start_time
                else

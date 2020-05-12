@@ -26,15 +26,15 @@ toplev_csv = "#{RESULT_ROOT}/toplev.csv"
 
 last_time = ""
 bottleneck_value = 0
-CSV.foreach(toplev_csv) do |row|
+CSV.each_row(toplev_csv) do |row|
   next if row[0] =~ /^#/
 
-  # row = ["8.048139281", "S0-C0", "Frontend_Bound",
+  #row = ["8.048139281", "S0-C0", "Frontend_Bound",
   #        "69.86", "% Slots", nil, nil, "0.00", "0.0", "<=="]
   time = row.shift
   puts "time: #{time}" if time != last_time
   last_time = time
-  key_arr = []
+  key_arr = [] of String
   row.each do |item|
     case item
     when /\d+\.\d+/

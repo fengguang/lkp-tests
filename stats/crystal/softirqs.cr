@@ -1,6 +1,6 @@
 #!/usr/bin/env crystal
 
-titles = nil
+titles = [] of String
 STDIN.each_line do |line|
   case line
   when /^time:/
