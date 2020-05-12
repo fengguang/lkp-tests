@@ -10,7 +10,7 @@ def show_dmesg_times
   dhcp = false
   smp_start = false
 
-  File.open(dmesg).each do |line|
+  File.open(dmesg).each_line do |line|
     line = line.remediate_invalid_byte_sequence(replace: "_") unless line.valid_encoding?
     case line
     when /\[ *(\d+\.\d+)\] Sending DHCP requests/
@@ -21,7 +21,7 @@ def show_dmesg_times
     when /\[ *(\d+\.\d+)\] x86: Booting SMP configuration:/
       smp_start = $1.to_f
     when /\[ *(\d+\.\d+)\] smp: Brought up \d+ nodes, \d+ CPUs$/
-      printf "smp_boot: %g\n", $1.to_f - smp_start if smp_start
+      printf "smp_boot: %g\n", $1.to_f
     when /\[ *(\d+\.\d+)\] Freeing unused kernel memory:/
       puts "kernel_boot: " + $1
       break

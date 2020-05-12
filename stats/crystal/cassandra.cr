@@ -21,7 +21,7 @@
 # StdDev GC time            :    0.0 ms
 # Total operation time      : 00:00:05
 
-$stdin.each_line do |line|
+STDIN.each_line do |line|
   case line
   # Parse the entry beginning with "Op rate"
   when /^Op rate\s+:\s+(\d+) op\/s\s+\[(.+)\]$/
