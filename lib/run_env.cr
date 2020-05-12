@@ -1,5 +1,4 @@
-#!/usr/bin/env crystal
-#LKP_SRC = ENV["LKP_SRC"] || File.dirname(__DIR__)
+#!/usr/bin/env ruby
 LOCAL_RUN_ENV = "LKP_LOCAL_RUN".freeze
 
 require "yaml"

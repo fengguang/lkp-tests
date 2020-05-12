@@ -1,12 +1,13 @@
-#!/usr/bin/env crystal
+#!/usr/bin/env ruby
 
 LKP_SRC = ENV["LKP_SRC"] || File.dirname(__DIR__)
 
 require "./yaml"
 require "./constant"
+require "logger"
 
-
-LINUX_DEVICE_NAMES = IO.read("#{LKP_SRC}/etc/linux-device-names").split("\n")
+# /c/linux% git grep '"[a-z][a-z_]\+%d"'|grep -o '"[a-z_]\+'|cut -c2-|sort -u
+LINUX_DEVICE_NAMES = File.read("#{LKP_SRC}/etc/linux-device-names").split("\n")
 LINUX_DEVICE_NAMES_RE = /\b(#{LINUX_DEVICE_NAMES.join("|")})\d+/.freeze
 
 #require "fileutils"
@@ -16,8 +17,6 @@ LINUX_DEVICE_NAMES_RE = /\b(#{LINUX_DEVICE_NAMES.join("|")})\d+/.freeze
 # [    0.298729] Last level iTLB entries: 4KB 512, 2MB 7, 4MB 7
 # [    8.898106] system 00:01: [io  0x0400-0x047f] could not be reserved
 class DmesgTimestamp
- #include Comparable
-
   getter :timestamp
 
   def initialize(line)
@@ -52,8 +51,8 @@ class DmesgTimestamp
   # SMALL timestamp
   class AbnormalSequenceDetector
     def initialize
-      @large_dmesg_timestamps = Array.new
-      @small_dmesg_timestamps = Array.new
+      @large_dmesg_timestamps = [] of String
+      @small_dmesg_timestamps = [] of String
     end
 
     # dmesg "[ 0.000000]\n[ 1.000000]\n[ 1.000000]\n[ 2.000000]\n
@@ -81,16 +80,15 @@ class DmesgTimestamp
 end
 
 def fixup_dmesg(line)
-  line = line.chomp
+  line.chomp
 
   # remove absolute path names
-  line =  line.sub(%r{/kbuild/src/[^/]+/}, "")
+  line.sub(%r{/kbuild/src/[^/]+/}, "")
 
-  line = line.sub(/\.(isra|constprop|part)\.[0-9]+\+0x/, "+0x")
+  line.sub(/\.(isra|constprop|part)\.[0-9]+\+0x/, "+0x")
 
   # break up mixed messages
   if line =~ /^<[0-9]>|^(kern  |user  |daemon):......: /
-    line = line
   elsif line =~ /(.+)(\[ *[0-9]{1,6}\.[0-9]{6}\] .*)/
     line = $1 + "\n" + $2
   end
@@ -99,8 +97,9 @@ def fixup_dmesg(line)
 end
 
 def fixup_dmesg_file(dmesg_file)
-  tmpfile = File.tempfile(".fixup-dmesg-", File.dirname(dmesg_file))
-  dmesg_lines = Array(String).new
+  tempfilename = File.dirname(dmesg_file) + ".fixup-dmesg-"
+  tmpfile = File.tempfile(tempfilename)
+  dmesg_lines = [] of String
   File.open(dmesg_file, "rb") do |f|
     f.each_line do |line|
       line = fixup_dmesg(line)
@@ -108,10 +107,9 @@ def fixup_dmesg_file(dmesg_file)
       tmpfile.puts line
     end
   end
- # tmpfile.chmod 0o664
-  File.chmod(tmpfile.path,0o664)
+  File.chmod(tempfilename, 0o664)
   tmpfile.close
-  FileUtils.mv tmpfile.path, dmesg_file
+  FileUtils.mv(tmpfile.path, dmesg_file)
   dmesg_lines
 end
 
@@ -126,21 +124,21 @@ CALLTRACE_COMMON_CONTEXT = "
   kernel_thread|
   process_one_work|
   notifier_call_chain|
-".freeze
+"
 
 CALLTRACE_PATTERN = /(
   #{CALLTRACE_COMMON_CONTEXT}
   SyS_[a-z0-9_]+
-)\+0x/x.freeze
+)\+0x/x
 
 CALLTRACE_IGNORE_PATTERN = /(
   #{CALLTRACE_COMMON_CONTEXT}
   worker_thread|
   warn_slowpath_.*
-)\+0x/x.freeze
+)\+0x/x
 
-OOM1 = "invoked oom-killer: gfp_mask=".freeze
-OOM2 = "Out of memory and no killable processes...".freeze
+OOM1 = "invoked oom-killer: gfp_mask="
+OOM2 = "Out of memory and no killable processes..."
 
 def grep_crash_head(dmesg_file)
   grep = if dmesg_file =~ /\.xz$/
@@ -154,21 +152,18 @@ def grep_crash_head(dmesg_file)
   raw_oops = %x[ #{grep} -a -E -e \\\\+0x -f #{LKP_SRC}/etc/oops-pattern #{dmesg_file} |
        grep -v -E -f #{LKP_SRC}/etc/oops-pattern-ignore ]
 
-  return Hash.new if raw_oops.empty?
+  return {} of String => String if raw_oops.empty?
 
-  oops_map = Hash.new
+  oops_map = {} of String => String | Nil
 
   oops_re = load_regular_expressions("#{LKP_SRC}/etc/oops-pattern")
   prev_line = nil
   has_oom = false
 
-  add_one_calltrace = lambda do |line|
-    break if has_oom
-    break if line =~ CALLTRACE_IGNORE_PATTERN
-    break unless line =~ />\] ([a-zA-Z0-9_.]+)\+0x[0-9a-fx\/]+/
-
-    oops_map["calltrace:" + $1] ||= line
-  end
+  add_one_calltrace = ->(line : String) { oops_map["calltrace:" + $1] ||= line }
+  
+  add = ->(x : Int32, y : Int32) {x + y}
+  add.call(1, 2)
 
   raw_oops.each_line do |line|
     if line =~ oops_re
@@ -183,8 +178,8 @@ def grep_crash_head(dmesg_file)
       next if line.index " ? "
 
       if line =~ CALLTRACE_PATTERN
-        add_one_calltrace[prev_line] unless line.index("SyS_")
-        add_one_calltrace[line]
+        oops_map["calltrace:" + $1] ||= prev_line unless line.index("SyS_")
+        add_one_calltrace.call(line)
         prev_line = nil
       else
         prev_line = line
@@ -193,7 +188,8 @@ def grep_crash_head(dmesg_file)
       next
     end
 
-    warn "oops pattern mismatch: #{line}"
+    log = Logger.new(STDOUT, level: Logger::WARN)
+    log.warn("oops pattern mismatch: #{line}")
   end
 
   oops_map
@@ -220,30 +216,32 @@ def grep_printk_errors(kmsg_file, kmsg)
     oops = `#{grep} -a -F -f #{KTEST_USER_GENERATED_DIR}/printk-error-messages #{kmsg_file} |
       grep -a -v -E -f #{LKP_SRC}/etc/oops-pattern |
       grep -a -v -F -f #{LKP_SRC}/etc/kmsg-blacklist`
-    oops += `grep -a -E -f #{LKP_SRC}/etc/ext4-crit-pattern #{kmsg_file}` if kmsg.index "EXT4-fs ("
-    oops += `grep -a -E -f #{LKP_SRC}/etc/xfs-alert-pattern #{kmsg_file}` if kmsg.index "XFS ("
-    oops += `grep -a -E -f #{LKP_SRC}/etc/btrfs-crit-pattern #{kmsg_file}` if kmsg.index "btrfs: "
+    if !kmsg.nil?
+      oops += `grep -a -E -f #{LKP_SRC}/etc/ext4-crit-pattern #{kmsg_file}` if kmsg.index "EXT4-fs ("
+      oops += `grep -a -E -f #{LKP_SRC}/etc/xfs-alert-pattern #{kmsg_file}` if kmsg.index "XFS ("
+      oops += `grep -a -E -f #{LKP_SRC}/etc/btrfs-crit-pattern #{kmsg_file}` if kmsg.index "btrfs: "
+    end
   end
   oops
 end
 
 def common_error_id(line)
   line = line.chomp
-  line.gsub!(/\b[3-9]\.[0-9]+[-a-z0-9.]+/, "#") # linux version: 3.17.0-next-20141008-g099669ed
-  line.gsub!(/\b[1-9][0-9]-[A-Z][a-z]+-[0-9]{4}\b/, "#") # Date: 28-Dec-2013
-  line.gsub!(/\b0x[0-9a-f]+\b/, "#") # hex number
-  line.gsub!(/\b[a-f0-9]{40}\b/, "#") # SHA-1
-  line.gsub!(/\b[0-9][0-9.]*/, "#") # number
-  line.gsub!(/#x\b/, "0x")
-  line.gsub!(/[\\"$]/, "~")
-  line.gsub!(/[ \t]/, " ")
-  line.gsub!(/\ \ +/, " ")
-  line.gsub!(/([^a-zA-Z0-9])\ /, "\1")
-  line.gsub!(/\ ([^a-zA-Z])/, "\1")
-  line.gsub!(/^\ /, "")
-  line.gsub!(/\  _/, "_")
-  line.tr!(" ", "_")
-  line.gsub!(/[-_.,;:#!\[\(]+$/, "")
+  line.gsub(/\b[3-9]\.[0-9]+[-a-z0-9.]+/, "#") # linux version: 3.17.0-next-20141008-g099669ed
+  line.gsub(/\b[1-9][0-9]-[A-Z][a-z]+-[0-9]{4}\b/, "#") # Date: 28-Dec-2013
+  line.gsub(/\b0x[0-9a-f]+\b/, "#") # hex number
+  line.gsub(/\b[a-f0-9]{40}\b/, "#") # SHA-1
+  line.gsub(/\b[0-9][0-9.]*/, "#") # number
+  line.gsub(/#x\b/, "0x")
+  line.gsub(/[\\"$]/, "~")
+  line.gsub(/[ \t]/, " ")
+  line.gsub(/\ \ +/, " ")
+  line.gsub(/([^a-zA-Z0-9])\ /, "\1")
+  line.gsub(/\ ([^a-zA-Z])/, "\1")
+  line.gsub(/^\ /, "")
+  line.gsub(/\  _/, "_")
+  line.tr(" ", "_")
+  line.gsub(/[-_.,;:#!\[\(]+$/, "")
   line
 end
 
@@ -255,7 +253,7 @@ def oops_to_bisect_pattern(line)
   return "" if words.empty?
   return line if words.size == 1
 
-  patterns = Array.new
+  patterns = [] of String
   words.each do |w|
     case w
     when /([a-zA-Z0-9_]+)\.(isra|constprop|part)\.[0-9]+\+0x/
@@ -271,15 +269,15 @@ def oops_to_bisect_pattern(line)
     end
   end
   while patterns[0] == ".*"
-     patterns.shift
-  end
+    patterns.shift
+  end  
   patterns.pop if patterns[-1] == ".*"
   patterns.join(" ")
 end
 
 def analyze_error_id(line)
   line = line.sub(/^(kern  |user  |daemon):......: /, "")
-  line.sub!(/^[^a-zA-Z]+/, "")
+  line.sub(/^[^a-zA-Z]+/, "")
   # line.sub!(/^\[ *[0-9]{1,6}\.[0-9]{6}\] )/, '') # the above pattern includes this one
 
   case line
@@ -364,31 +362,31 @@ def analyze_error_id(line)
 
   error_id = line
 
-  error_id.gsub!(/\ \]$/, "") # [ INFO: possible recursive locking detected ]
-  error_id.gsub!(/\/c\/kernel-tests\/src\/[^\/]+\//, "")
-  error_id.gsub!(/\/c\/(wfg|yliu)\/[^\/]+\//, "")
-  error_id.gsub!(/\/lkp\/[^\/]+\/linux[0-9]*\//, "")
-  error_id.gsub!(/\/kernel-tests\/linux[0-9]*\//, "")
-  error_id.gsub!(/\.(isra|constprop|part)\.[0-9]+/, "")
+  error_id.gsub(/\ \]$/, "") # [ INFO: possible recursive locking detected ]
+  error_id.gsub(/\/c\/kernel-tests\/src\/[^\/]+\//, "")
+  error_id.gsub(/\/c\/(wfg|yliu)\/[^\/]+\//, "")
+  error_id.gsub(/\/lkp\/[^\/]+\/linux[0-9]*\//, "")
+  error_id.gsub(/\/kernel-tests\/linux[0-9]*\//, "")
+  error_id.gsub(/\.(isra|constprop|part)\.[0-9]+/, "")
 
   # [   31.694592] ADFS-fs error (device nbd10): adfs_fill_super: unable to read superblock
   # [   33.147854] block nbd15: Attempted send on closed socket
   # /c/linux-next% git grep -w 'register_blkdev' | grep -o '".*"'
-  error_id.gsub!(/\b(bcache|blkext|btt|dasd|drbd|fd|hd|jsfd|lloop|loop|md|mdp|mmc|nbd|nd_blk|nfhd|nullb|nvme|pmem|ramdisk|scm|sd|simdisk|sr|ubd|ubiblock|virtblk|xsysace|zram)\d+/, "\1#")
+  error_id.gsub(/\b(bcache|blkext|btt|dasd|drbd|fd|hd|jsfd|lloop|loop|md|mdp|mmc|nbd|nd_blk|nfhd|nullb|nvme|pmem|ramdisk|scm|sd|simdisk|sr|ubd|ubiblock|virtblk|xsysace|zram)\d+/, "\1#")
 
-  error_id.gsub! LINUX_DEVICE_NAMES_RE, "\1#"
+  #error_id.gsub LINUX_DEVICE_NAMES_RE, "\1#"
 
-  error_id.gsub!(/\b[0-9a-f]{8}\b/, "#")
-  error_id.gsub!(/\b[0-9a-f]{16}\b/, "#")
-  error_id.gsub!(/(=)[0-9a-f]+\b/, "\1#")
-  error_id.gsub!(/[+\/]0x[0-9a-f]+\b/, "")
-  error_id.gsub!(/[+\/][0-9a-f]+\b/, "")
+  error_id.gsub(/\b[0-9a-f]{8}\b/, "#")
+  error_id.gsub(/\b[0-9a-f]{16}\b/, "#")
+  error_id.gsub(/(=)[0-9a-f]+\b/, "\1#")
+  error_id.gsub(/[+\/]0x[0-9a-f]+\b/, "")
+  error_id.gsub(/[+\/][0-9a-f]+\b/, "")
 
   error_id = common_error_id(error_id)
 
-  error_id.gsub!(/([a-z]:)[0-9]+\b/, "\1") # WARNING: at arch/x86/kernel/cpu/perf_event.c:1077 x86_pmu_start+0xaa/0x110()
-  error_id.gsub!(/#:\[<#>\]\[<#>\]/, "") # RIP: 0010:[<ffffffff91906d8d>]  [<ffffffff91906d8d>] validate_chain+0xed/0xe80
-  error_id.gsub!(/RIP:#:/, "RIP:")       # RIP: 0010:__might_sleep+0x72/0x80
+  error_id.gsub(/([a-z]:)[0-9]+\b/, "\1") # WARNING: at arch/x86/kernel/cpu/perf_event.c:1077 x86_pmu_start+0xaa/0x110()
+  error_id.gsub(/#:\[<#>\]\[<#>\]/, "") # RIP: 0010:[<ffffffff91906d8d>]  [<ffffffff91906d8d>] validate_chain+0xed/0xe80
+  error_id.gsub(/RIP:#:/, "RIP:")       # RIP: 0010:__might_sleep+0x72/0x80
 
   [error_id, bug_to_bisect]
 end
@@ -402,7 +400,7 @@ def get_crash_stats(dmesg_file)
 
   boot_error_ids = `#{LKP_SRC}/stats/dmesg #{dmesg_file}`
 
-  oops_map = Hash.new
+  oops_map = {} of String => String
   id = ""
   new_error_id = false
   boot_error_ids.each_line do |line|
@@ -444,7 +442,7 @@ CALLTRACE_LIMIT_LEN = 100
 def get_crash_calltraces(dmesg_file)
   dmesg_content = get_content(dmesg_file)
 
-  calltraces = Array.new
+  calltraces = [] of String
   index = 0
   line_count = 0
   in_calltrace = false

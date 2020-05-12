@@ -1,6 +1,4 @@
-#!/usr/bin/env crystal
-
-#LKP_SRC = ENV["LKP_SRC"] || File.dirname(__DIR__)
+#!/usr/bin/env ruby
 
 require "./common"
 require "./log"
@@ -15,7 +13,7 @@ def compress_file(file)
   system "gzip #{file} < /dev/null"
 end
 
-def expand_yaml_template(yaml, file, context_hash = Hash.new)
+def expand_yaml_template(yaml, file, context_hash = {} of String => String)
   yaml = yaml_merge_included_files(yaml, File.dirname(file))
   yaml = literal_double_braces(yaml)
   expand_erb(yaml, context_hash)
@@ -53,14 +51,14 @@ def load_yaml_with_flock(file, timeout = nil)
 end
 
 def load_yaml_merge(files)
-  all = Hash.new
+  all = {} of String => String
   files.each do |file|
     next unless File.size? file
 
     begin
       yaml = load_yaml(file)
       all.update(yaml)
-    rescue e : StandardError
+    rescue StandardError ; e
       warn "#{e.class.name}: #{e.message.split("\n").first}: #{file}"
     end
   end
@@ -70,7 +68,7 @@ end
 def load_yaml_tail(file)
   begin
     return YAML.load %x[tail -n 100 #{file}]
-  rescue e : Psych::SyntaxError
+  rescue Psych::SyntaxError ; e
     warn "#{file}: " + e.message
   end
   nil
@@ -128,7 +126,8 @@ end
 # though it also be extended to handle wtmp file concept
 #
 class WTMP
-    def self.load(content)
+  class CONST self
+    def load(content)
       # FIXME: rli9 YAML.load returns false under certain error like empty content
       YAML.load content
     rescue Psych::SyntaxError
@@ -140,14 +139,15 @@ class WTMP
       YAML.load(content.gsub(/[[[:cntrl:]]&&[^\n]]/, ""))
     end
 
-    def self.load_tail(file, lines = 100)
+    def load_tail(file, lines = 100)
       return nil unless File.exists? file
 
       tail = %x[tail -n #{lines} #{file}]
       load(tail)
-    rescue e : StandardError
+    rescue StandardError ; e
       warn "#{file}: " + e.message
     end
+  end
 end
 
 def dot_file(path)
@@ -181,8 +181,8 @@ def save_yaml_with_flock(object, file, timeout = nil, compress = false)
   end
 end
 
-json_cache = Hash(String,String).new
-json_mtime = Hash(String,String).new
+json_cache = {} of String => String
+json_mtime = {} of String => String
 
 def load_json(file, cache = false)
   file += ".gz" if file =~ /.json$/ && File.exists?(file + ".gz")
@@ -245,7 +245,7 @@ def try_load_json(path)
   end
 end
 
-class JSONFileNotExistError < Exception
+class JSONFileNotExistError
   def initialize(path)
     super "Failed to load JSON for #{path}"
     @path = path
@@ -279,8 +279,8 @@ rescue JSONFileNotExistError
   false
 end
 
-def load_regular_expressions(file, options = Hash.new)
+def load_regular_expressions(file, options = {} of String => String) 
   pattern = File.read(file).split("\n")
   spec = "#{options[:prefix]}(#{pattern.join("|")})#{options[:suffix]}"
-  Regexp.new spec
+  Regex.new spec
 end

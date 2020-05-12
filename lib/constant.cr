@@ -1,6 +1,4 @@
-#!/usr/bin/env crystal
-#LKP_SRC = ENV["LKP_SRC"] || File.dirname(__DIR__)
-LKP_USER = ENV["LKP_USER"] || ENV["USER"] || `whoami`.chomp
+#!/usr/bin/env ruby
 
 require "./run_env"
 
@@ -12,7 +10,7 @@ COMMIT_AXIS_KEY = "commit".freeze
 TBOX_GROUP_AXIS_KEY = "tbox_group".freeze
 
 KERNEL_ROOT = "/pkg/linux".freeze
-KTEST_USER_GENERATED_DIR = "/lkp/user-generated".freeze
+KTEST_USER_GENERATED_DIR = "/lkp/user-generated"
 KTEST_DATA_DIR = "/lkp/data".freeze
 KTEST_PATHS_DIR = "/lkp/paths".freeze
 RESULT_ROOT_DIR = "/lkp/result".freeze

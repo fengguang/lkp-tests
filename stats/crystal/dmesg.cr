@@ -27,15 +27,13 @@ require "../../lib/string_ext"
 if ARGV[0]
   kmsg_file = ARGV[0]
   dmesg_file = ARGV[0]
-  result_root = ENV["RESULT_ROOT"]
 elsif ENV["RESULT_ROOT"]
-  result_root = ENV["RESULT_ROOT"]
-  serial_file = "#{result_root}/dmesg"
-  kmsg_file = "#{result_root}/kmsg"
+  serial_file = "#{ENV["RESULT_ROOT"]}/dmesg"
+  kmsg_file = "#{ENV["RESULT_ROOT"]}/kmsg"
   if File.exists? serial_file
     dmesg_file = serial_file
 
-    if File.exists?(kmsg_file) && File.size(kmsg_file).zero? && File.size(serial_file).zero?
+    if File.size(kmsg_file) && File.size(serial_file).zero?
       log_error "unexpected 0-sized serial file #{serial_file}"
       dmesg_file = kmsg_file
     else
@@ -54,7 +52,7 @@ else
   exit
 end
 
-unless File.size(dmesg_file).zero?
+unless File.size(dmesg_file)
   # puts "early-boot-hang: 1"
   exit
 end
@@ -62,28 +60,28 @@ end
 dmesg_lines = fixup_dmesg_file(dmesg_file)
 
 # check possibly misplaced serial log
-def verify_serial_log(dmesg_lines,result_root)
-
+def verify_serial_log(dmesg_lines)
   return unless PROGRAM_NAME =~ /dmesg/
+  return if ENV["RESULT_ROOT"].nil? || ENV["RESULT_ROOT"].empty?
 
-  return if result_root.nil? || result_root.empty?
+  dmesg_lines.each do |line|
+    if line.includes?(ENV["RESULT_ROOT"] + "=")
+      next if line =~ /(^|[0-9]\] )kexec -l | --initrd=| --append=|"$/
+      next unless line =~ / ENV["RESULT_ROOT"]=([A-Za-z0-9.,;_\/+%:@=-]+) /
 
-  dmesg_lines.grep(/result_root=/) do |line| 
-    next if line =~ /(^|[0-9]\] )kexec -l | --initrd=| --append=|"$/
-    next unless line =~ / result_root=([A-Za-z0-9.,;_\/+%:@=-]+) /
+      rt = $1
+      next unless Dir.exists? rt # serial console is often not reliable
 
-    rt = $1
-    next unless Dir.exists? rt # serial console is often not reliable
-
-    log_error "RESULT_ROOT mismatch in dmesg: #{result_root} #{rt}" if rt != result_root
+      log_error "RESULT_ROOT mismatch in dmesg: #{ENV["RESULT_ROOT"]} #{rt}" if rt != ENV["RESULT_ROOT"]
+    end
   end
 end
 
-verify_serial_log(dmesg_lines,result_root)
+verify_serial_log(dmesg_lines)
 
-error_ids = Hash.new
-error_lines = Hash.new
-error_stamps = Hash.new
+error_ids = {} of String => String
+error_lines = {} of String => String
+error_stamps = {} of String => String
 
 if PROGRAM_NAME =~ /dmesg/
   lines = dmesg_lines
@@ -101,32 +99,36 @@ else
   output = grep_printk_errors kmsg_file, kmsg
   output.replace_invalid_utf8!
 
-  oops_map = Hash.new
+  oops_map = {} of String => String
   output.each_line do |line|
     oops_map[line] ||= line
   end
 end
 
-lines.reverse_each do |line|
-  if line =~ /^(<[0-9]+>|....  :..... : )?\[ *(\d{1,6}\.\d{6})\] /
-    error_stamps["last"] = $2
-    break
+if !lines.nil?
+  lines.reverse_each do |line|
+    if line =~ /^(<[0-9]+>|....  :..... : )?\[ *(\d{1,6}\.\d{6})\] /
+      error_stamps["last"] = $2
+      break
+    end
   end
 end
 
 def stat_unittest(unittests)
   found_unitest = false
-  unittests.each do |line|
-    if line =~ /### dt-test ### start of unittest/
-      found_unitest = true
-      next
-    end
-    next unless found_unitest
-    break if line =~ /### dt-test ### end of unittest - (\d+) passed, (\d+) failed/
-    # ### dt-test ### FAIL of_unittest_overlay_high_level():2475 overlay_base_root not initialized
-    if line =~ /(.*)### dt-test ### FAIL (.*)/
-      e = $2.gsub(/:|\d+/, "").gsub(" ", "_")
-      puts "unittest.#{e}.fail: 1"
+  if !unittests.nil?
+    unittests.each do |line|
+      if line =~ /### dt-test ### start of unittest/
+        found_unitest = true
+        next
+      end
+      next unless found_unitest
+      break if line =~ /### dt-test ### end of unittest - (\d+) passed, (\d+) failed/
+      # ### dt-test ### FAIL of_unittest_overlay_high_level():2475 overlay_base_root not initialized
+      if line =~ /(.*)### dt-test ### FAIL (.*)/
+        e = $2.gsub(/:|\d+/, "").gsub(" ", "_")
+        puts "unittest.#{e}.fail: 1"
+      end
     end
   end
 end
@@ -137,10 +139,12 @@ oops_map.each do |bug_to_bisect, line|
 
   timestamp = $2 if line =~ /^(<[0-9]+>|....  :..... : )?\[ *(\d{1,6}\.\d{6})\] /
 
-  if line.index("trinity")
-    break if line.index("invoked oom-killer:")
-    break if line.index("page allocation stalls for")
-    break if line.index("tried to map")
+  if !line.nil?
+    if line.index("trinity")
+      break if line.index("invoked oom-killer:")
+      break if line.index("page allocation stalls for")
+      break if line.index("tried to map")
+    end
   end
 
   # print_hex_dump
@@ -151,14 +155,16 @@ oops_map.each do |bug_to_bisect, line|
 
   next if line =~ /[^\t\n\0[:print:]]/
 
-  line.tr! "\0", ""
+  if !line.nil?
+    line.tr "\0", ""
+  end
 
   error_id, bug_to_bisect = analyze_error_id bug_to_bisect
   next if error_id.size <= 3
   next if bug_to_bisect.empty?
 
   error_ids[error_id] ||= bug_to_bisect
-  error_lines[error_id] ||= line
+  error_lines[error_id] ||= line if line
   error_stamps[error_id] ||= timestamp if timestamp
 end
 

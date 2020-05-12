@@ -1,4 +1,4 @@
-#!/usr/bin/env crystal
+#!/usr/bin/env ruby
 
 REGEX_ANSI_COLOR = /\e\[([0-9;]+m|[mK])/.freeze
 
@@ -10,7 +10,7 @@ class String
       .gsub(/[^[:print:]\n]/, "")
   end
 
-  def remediate_invalid_byte_sequence(replace = "")
+  def remediate_invalid_byte_sequence()
     clone
       .encode("UTF-8")
   end
@@ -18,7 +18,7 @@ class String
   def replace_invalid_utf8!(to = "_")
     return self if valid_encoding?
 
-    encode!("UTF-8", "UTF-8", invalid: :replace, undef: :replace, replace: to)
+    encode("UTF-8")
   end
 
   def strip_nonprintable_characters
