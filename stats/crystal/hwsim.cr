@@ -3,7 +3,7 @@
 
 require "../../lib/string_ext"
 
-results = {}
+results = Hash(String, Int32).new
 while (line = STDIN.gets)
   line = line.remediate_invalid_byte_sequence(replace: "_") unless line.valid_encoding?
 

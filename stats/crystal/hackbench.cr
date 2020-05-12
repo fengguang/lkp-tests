@@ -6,6 +6,10 @@ time = 0.0
 kb = 0
 workload = 0
 
+tasks = 0
+messages = 0
+bytes = 0
+
 while (line = gets)
   case line
   when /^Running in .* mode with (\d+) groups using (\d+) file descriptors each \(== (\d+) tasks\)/
