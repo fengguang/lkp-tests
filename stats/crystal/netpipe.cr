@@ -4,14 +4,16 @@
 require "../../lib/statistics"
 require "../../lib/log"
 
+less_8k_usec = nil
+bigger_5m_mbps = nil
 while (line = STDIN.gets)
   case line
   when /\s*\d+:\s*(\d+) bytes\s+\d+ times -->\s+([0-9.]+) Mbps in\s+([0-9.]+) usec/
     if $1.to_i < (8 * 1024)
-      less_8k_usec ||= []
+      less_8k_usec = [] of Float64
       less_8k_usec << $3.to_f
     elsif $1.to_i > (5 * 1024 * 1024)
-      bigger_5m_mbps ||= []
+      bigger_5m_mbps = [] of Float64
       bigger_5m_mbps << $2.to_f
     end
   end
