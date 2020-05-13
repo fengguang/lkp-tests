@@ -12,6 +12,23 @@ need_kconfig:
 - CONFIG_TEST_BITMAP=m ~ v(4\.[6-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.6-rc1
 - CONFIG_TEST_PRINTF=m ~ v(4\.[4-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.4-rc1
 - CONFIG_TEST_STRSCPY=m ~ v(5\.[2-9]) # support kernel >= v5.2-rc1
+% elsif ___.group == 'kselftests-cpufreq'
+- CONFIG_CPU_FREQ=y
+- CONFIG_CPU_FREQ_GOV_CONSERVATIVE=y
+- CONFIG_CPU_FREQ_GOV_ONDEMAND=y
+- CONFIG_CPU_FREQ_GOV_POWERSAVE=y
+- CONFIG_CPU_FREQ_GOV_SCHEDUTIL=y ~ v(4\.9|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.9-rc1
+- CONFIG_CPU_FREQ_GOV_USERSPACE=y
+- CONFIG_CPU_FREQ_STAT=y ~ v(4\.[8-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.8-rc1
+- CONFIG_DEBUG_ATOMIC_SLEEP=y
+- CONFIG_DEBUG_LOCK_ALLOC=y
+- CONFIG_DEBUG_MUTEXES=y
+- CONFIG_DEBUG_PI_LIST=y ~ v(3\.1[4-9]|4\.|5\.1) # support kernel >=v3.16-rc1, <= v5.1
+- CONFIG_DEBUG_PLIST=y ~ v(5\.[2-9]) # support kernel >= v5.2-rc1
+- CONFIG_DEBUG_RT_MUTEXES=y
+- CONFIG_DEBUG_SPINLOCK=y
+- CONFIG_LOCKDEP=y
+- CONFIG_PROVE_LOCKING=y
 % elsif ___.group == 'kselftests-kvm'
 - CONFIG_KVM=y
 - CONFIG_KVM_AMD=y
