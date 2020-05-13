@@ -1,6 +1,6 @@
 #!/usr/bin/env crystal
 
-$stdin.each_line do |line|
+STDIN.each_line do |line|
   case line
   when /50.0000th/
     puts "latency_50%_us: " + line.split[1]

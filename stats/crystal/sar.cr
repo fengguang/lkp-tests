@@ -44,13 +44,15 @@ RESULT_ROOT = ENV["RESULT_ROOT"]
 exit unless File.exists?("#{RESULT_ROOT}/sar")
 sar_json = File.read("#{RESULT_ROOT}/sar")
 sar_hash = JSON.parse(sar_json)
-results = {}
+results = {} of String => String
 
 # Every array data includes some hash type data.
 # Such as: "cpu-load" => [{"cpu" => "all", "usr" => 3.06, "nice" => 0.00, "sys" => 5.87,... }, {...}, ...]
 
 def get_array_result(prefix, array, results)
+  array = array.as_a
   array.each do |item|
+    item = item.as_h
     next unless item.class == Hash
 
     key_0, value_0 = item.first
@@ -59,16 +61,16 @@ def get_array_result(prefix, array, results)
 
       key = "#{prefix}.#{value_0}.#{k_}"
       key = "#{key}%" if prefix == "cpu-load"
-      results[key] = item[k_]
+      results[key] = item[k_].as_s
     end
   end
 end
 
 # Such as the hash: "swap-pages" => {"pswpin" => 0.00, "pswpout" => 0.00}.
 def get_hash_result(prefix, hash, results)
-  hash.each do |k, v|
+  hash.as_h.each do |k, v|
     key = "#{prefix}.#{k}"
-    results[key] = v
+    results[key] = v.as_s
   end
 end
 
@@ -85,21 +87,22 @@ def display_result(hash)
   end
 end
 
-sar_hash["sysstat"]["hosts"][0]["statistics"].each do |item|
-  item.each do |k, v|
+sar_hash["sysstat"]["hosts"][0]["statistics"].as_a.each do |item|
+  item.as_h.each do |k, v|
     if v.class == Array
       get_array_result k, v, results
     elsif v.class == Hash
-      v.each do |k_, v_|
+      v.as_h.each do |k_, v_|
         if v_.class == Array
           get_array_result k_, v_, results
         elsif v_.class == Hash
           get_hash_result k_, v_, results
         elsif k == "timestamp"
-          timestamp = Time.parse([v["data"], v["time"]].join(" ")).to_i
-          results["timestamp"] = timestamp
+         # timestamp = Time.parse([v["data"], v["time"]].join(" ")).to_i
+          timestamp = Time.parse_local([v["data"], v["time"]].join(" "), "%F %T").to_unix
+          results["timestamp"] = timestamp.to_s
         else
-          results["#{k}.#{k_}"] = v_
+          results["#{k}.#{k_}"] = v_.as_s
         end
       end
     end

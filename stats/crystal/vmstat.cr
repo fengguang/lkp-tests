@@ -29,8 +29,9 @@ while (line = STDIN.gets)
 
   data = line.split
   if data.size == keys.size + 1 # has "date time" in end of line
-    time = Time.parse(data.pop(2).join(" ")).to_i
-    data.push time
+   # time = Time.parse(data.pop(2).join(" "), "%y-%M-%d %H:%m:%s", Time::Location.load("China/Beijing")).to_s.to_i
+    time = Time.parse_local(data.pop(2).join(" "), "%F %T").to_unix
+    data.push time.to_s
     show_record keys, data
   elsif data.size == keys.size - 1 # no timestamp in old versions of vmstat
     show_record keys, data

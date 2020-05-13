@@ -8,7 +8,7 @@ require "../../lib/statistics"
 keys = %w(parent_time child_systime child_utime jobs_per_min
           jobs_per_min_child std_dev_time std_dev_percent jti)
 
-results = {}
+results = {} of String => Array(Float64)
 jobs = 0
 workload = 0
 while (line = STDIN.gets)
@@ -23,7 +23,7 @@ while (line = STDIN.gets)
   when /^[ \d.]+$/
     data = line.split
     data[1..-1].each_with_index do |v, i|
-      results[keys[i]] ||= []
+      results[keys[i]] ||= [] of Float64
       results[keys[i]] << v.to_f
     end
   end

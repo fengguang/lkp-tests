@@ -10,10 +10,10 @@ get_sum = 0
 get_num = 0
 get_avg = 0
 is_set = true
-set_latencies = []
-get_latencies = []
-proc_set_latencies = nil
-proc_get_latencies = nil
+set_latencies = [] of Hash(Int32, Float64) 
+get_latencies = [] of Hash(Int32, Float64) 
+proc_set_latencies = {} of Int32 => Float64
+proc_get_latencies = {} of Int32 => Float64
 set_time = 0
 set_time_sum = 0
 set_time_num = 0
@@ -24,7 +24,8 @@ get_time_num = 0
 PERCENTILE_STRS = ["90", "95", "99", "99.9"].freeze
 PERCENTILES = PERCENTILE_STRS.map(&.to_f)
 
-$stdin.each_line do |line|
+#$stdin.each_line do |line|
+STDIN.each_line do |line|
   case line
   when /PING_INLINE: (\d+).(\d+) requests per second$/
     puts "PING_INLINE: #{$1}.#{$2}"
@@ -32,10 +33,11 @@ $stdin.each_line do |line|
     puts "PING_BULK: #{$1}.#{$2}"
   when /====== SET ======$/
     is_set = true
-    proc_set_latencies = []
+    #proc_set_latencies = [] of Float64
+    
   when /====== GET ======$/
     is_set = false
-    proc_get_latencies = []
+    #proc_get_latencies = [] of Float64
   when /^(\d+\.\d+) requests per second$/
     if is_set
       set_sum += $1.to_f
@@ -112,14 +114,16 @@ def normalize_latencies(latencies)
       percent = proc_latencies[i]
       percent ||= prev
       prev = percent
-      proc_latencies[i] = percent
+      proc_latencies[i] = percent.to_f
     end
   end
 end
 
 def show_latencies(latencies, name)
   pi = 0
-  latencies.transpose.each_with_index do |ps, i|
+  #latencies.transpose.each_with_index do |ps, i|
+  latencies.transpose.each_with_index do |(k,v), i|
+    ps = {k=>v}
     sum = ps.sum
     next unless sum != 0
 
@@ -136,5 +140,5 @@ end
 normalize_latencies(set_latencies)
 normalize_latencies(get_latencies)
 
-show_latencies(set_latencies, "set")
-show_latencies(get_latencies, "get")
+#show_latencies(set_latencies, "set")
+#show_latencies(get_latencies, "get")

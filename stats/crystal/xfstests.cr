@@ -3,7 +3,9 @@
 
 require "../../lib/string_ext"
 
-results = Hash.new { |h, k| h[k] = [] }
+# results = Hash.new { |h, k| h[k] = [] of String }
+
+results = Hash(String, Array(String)).new { |h,k| h[k] = [] of String}
 
 def stat_line(line, results)
   case line
@@ -22,7 +24,7 @@ def stat_line(line, results)
 end
 
 while (line = STDIN.gets)
-  line = line.remediate_invalid_byte_sequence(replace: "_") unless line.valid_encoding?
+  line = line.remediate_invalid_byte_sequence() unless line.valid_encoding?
   stat_line(line, results)
 end
 
