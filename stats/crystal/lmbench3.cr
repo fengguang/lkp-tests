@@ -7,7 +7,7 @@ def largest_bandwidth
   file_size = 0
   bandwidth = 0
 
-  SRDIN.each_line do |line|
+  STDIN.each_line do |line|
     break if line.empty?
 
     temp_size = line.split(" ")[0].to_f
@@ -20,6 +20,11 @@ def largest_bandwidth
   bandwidth
 end
 
+bandwidth = ""
+file_size = Int32.new(0)
+size = false.as(Int32|Bool)
+read_bandwidth = false.as(Bool) 
+socket_bandwidth = false
 while (line = STDIN.gets)
   line = line.remediate_invalid_byte_sequence(replace: "_") unless line.valid_encoding?
   case line
@@ -90,7 +95,7 @@ while (line = STDIN.gets)
     # 8 1.65
     # 16 1.77
   when /^"size=\d+k ovr=\d+.\d+$/
-    size = line.to_s.split[0].split("=")[-1].to_i
+    size = line.to_s.split[0].split("=")[-1].to_i.as(Int32|Nil|String)
   when size && [0, 16, 64].includes?(size) && /^96 (\d+.\d+)$/
     puts "CTX.96P.#{size}K.latency.us: #{$1}"
 
@@ -99,12 +104,11 @@ while (line = STDIN.gets)
     # 0.000512 489.40
     # 0.001024 900.99
     # 0.002048 1757.11
-
   when /^"read bandwidth$/
     read_bandwidth = true
-    file_size = 0
+    file_size = 0  
   when read_bandwidth && /^(\d+.\d+) (\d+.\d+)$/
-    if file_size < $1.to_f
+    if  file_size < $1.to_f
       file_size = $1.to_f
       bandwidth = $2
     end
@@ -120,7 +124,7 @@ while (line = STDIN.gets)
     # 0.000128 210.87 MB/sec
 
   when /^TCP latency using localhost:.+microseconds$/
-    puts "TCP.localhost.latency: #{line.split[-2]}"
+    puts "TCP.localhost.latency: #{line.to_s.split[-2]}"
   when /^Socket bandwidth using localhost$/
     socket_bandwidth = true
   when socket_bandwidth && /^0.000064 (\d+.\d+) MB\/sec$/

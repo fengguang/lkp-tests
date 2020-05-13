@@ -3,16 +3,16 @@
 exit unless STDIN.gets =~ /lock_stat version 0.[34]/
 exit unless STDIN.gets =~ /---------------------/
 
-names = STDIN.gets.split
+names = STDIN.gets.to_s.split
 names.shift
 names.shift
 
-contentions = {}   of String => String
-lock_stat = {} of String => String
-
+contentions = {}   of String => Int32 
+lock_stat = {} of String => Int32|Float64
+lock = ""
 while (line = STDIN.gets)
-  line.sub!(%r{/c/kernel-tests/src/[^/]+/}, "")
-  line.sub!(%r{/kbuild/src/[^/]+/}, "")
+  line = line.sub(%r{/c/kernel-tests/src/[^/]+/}, "")
+  line = line.sub(%r{/kbuild/src/[^/]+/}, "")
   case line
   when / +(.+): +([0-9.]+ +[0-9.]+ +[0-9.]+ +.*)/
     lock = $1.tr(" ", "")
@@ -26,7 +26,7 @@ while (line = STDIN.gets)
     contentions[$2] += $1.to_i
   when /^$/
     unless contentions.empty?
-      lock.chomp! "-R"
+      lock = lock.chomp
       contentions.each do |key, val|
         lock_stat[lock + ".contentions." + key] ||= 0
         lock_stat[lock + ".contentions." + key] += val
