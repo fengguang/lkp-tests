@@ -119,7 +119,14 @@ check_kconfig()
 		# So don't check y/m, just match kconfig name
 		# E.g. convert CONFIG_TEST_VMALLOC=m to CONFIG_TEST_VMALLOC=
 		line="${line%=*}="
-		grep -q $line $kernel_config || return 1
+		if [[ "$line" == "CONFIG_DEBUG_PI_LIST=" ]]; then
+			grep -q $line $kernel_config || {
+				line="CONFIG_DEBUG_PLIST="
+				grep -q $line $kernel_config || return 1
+			}
+		else
+			grep -q $line $kernel_config || return 1
+		fi
 	done < $dependent_config
 }
 
