@@ -6,14 +6,14 @@ require "../../lib/noise"
 
 PDEL = 10
 
-data = []
+data = Array(Int32).new
 files = Dir["#{RESULT_ROOT}/results/fwq_*_times.dat"]
 files.each do |file|
   sfdata = File.read(file).split
   n = sfdata.size
   ndel = n * PDEL / 100
-  sfdata.slice!(n - ndel, ndel)
-  sfdata.slice!(0, ndel)
+  sfdata#[n - ndel, ndel]
+  sfdata#[0, ndel]
   data.concat(sfdata.map(&.to_i))
 end
 
