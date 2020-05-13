@@ -443,6 +443,14 @@ fixup_x86()
 	grep -qw '\-no\-pie' x86/Makefile || sed -i '/^CFLAGS/ s/$/ -no-pie/' x86/Makefile
 }
 
+fixup_ptp()
+{
+	[[ -e "/dev/ptp0" ]] || {
+		echo "ignored_by_lkp ptp.testptp test"
+		return 1
+	}
+}
+
 fixup_livepatch()
 {
 	# livepatch check if dmesg meet expected exactly, so disable redirect stdout&stderr to kmsg
@@ -565,6 +573,8 @@ run_tests()
 			fixup_ftrace
 		elif [[ "$subtest" = "kmod" ]]; then
 			fixup_kmod
+		elif [[ "$subtest" = "ptp" ]]; then
+			fixup_ptp || continue
 		fi
 
 		log_cmd make run_tests -C $subtest  2>&1 || return
