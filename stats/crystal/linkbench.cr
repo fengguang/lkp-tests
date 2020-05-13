@@ -3,9 +3,9 @@
 
 require "../../lib/statistics"
 
-linkbench = {}
+linkbench = {} of String => String
 
-$stdin.each_line do |line|
+STDIN.each_line do |line|
   case line
   when /\[main\]: (.*) count = (\d+)(.*)max = (\d+).(\d+)ms(.*)mean = (\d+).(\d+)ms/
     linkbench[$1 + ".count"] = $2

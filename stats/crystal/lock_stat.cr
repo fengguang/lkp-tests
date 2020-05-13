@@ -7,8 +7,8 @@ names = STDIN.gets.split
 names.shift
 names.shift
 
-contentions = {}
-lock_stat = {}
+contentions = {}   of String => String
+lock_stat = {} of String => String
 
 while (line = STDIN.gets)
   line.sub!(%r{/c/kernel-tests/src/[^/]+/}, "")

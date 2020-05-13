@@ -7,7 +7,7 @@ def largest_bandwidth
   file_size = 0
   bandwidth = 0
 
-  $stdin.each_line do |line|
+  SRDIN.each_line do |line|
     break if line.empty?
 
     temp_size = line.split(" ")[0].to_f
@@ -90,8 +90,8 @@ while (line = STDIN.gets)
     # 8 1.65
     # 16 1.77
   when /^"size=\d+k ovr=\d+.\d+$/
-    size = line.split[0].split("=")[-1].to_i
-  when ([0, 16, 64].includes? size) && /^96 (\d+.\d+)$/
+    size = line.to_s.split[0].split("=")[-1].to_i
+  when size && [0, 16, 64].includes?(size) && /^96 (\d+.\d+)$/
     puts "CTX.96P.#{size}K.latency.us: #{$1}"
 
     # Extract FILE test result, get the bandwidth value for the biggest file reading:
