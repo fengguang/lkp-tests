@@ -3,10 +3,11 @@
 
 require "../../lib/string_ext"
 
-stats = []
+stats = [] of String
 success_test = 0
 fail_test = 0
 is_divided = false
+type = ""
 
 while (line = STDIN.gets)
   line = line.remediate_invalid_byte_sequence(replace: "_") unless line.valid_encoding?
@@ -41,7 +42,7 @@ while (line = STDIN.gets)
     fail_test = $2
   when /(PASS|FAIL)/
     if is_divided
-      stats << type + ".#{$1.downcase}: 1"
+	    stats << type + ".#{$1.downcase}: 1"
       is_divided = false
     end
   end
