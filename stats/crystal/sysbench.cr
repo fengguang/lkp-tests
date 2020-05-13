@@ -27,57 +27,68 @@
 #     events (avg/stddev):           1048576.0000/0.00
 #     execution time (avg/stddev):   0.1212/0.00
 
-$results_total = {}
-$results_avg = {}
-$results_min = {}
-$results_max = {}
+#results_total = {} of String=> Float64|Array(String)
+results_total={} of String=> Array(Float64)
+results_avg = {} of String => Array(Float64)
+results_min = {} of String => Array(Float64)
+results_max = {} of String => Array(Float64)
 
 def add_result(results, key, val)
-  results[key] ||= []
+  results[key] ||= [] of Float64
   results[key] << val
 end
 
-$stdin.each_line do |line|
+STDIN.each_line do |line|
   case line
   when /Total operations:\s+\d+\s+\(([0-9.]+)\s+.+\)/
-    add_result($results_total, "throughput_ops/s", $1.to_f)
+    add_result(results_total, "throughput_ops/s", $1.to_f)
   when /.+\s+transferred\s+\(([0-9.]+)\s+.+\)/
-    add_result($results_total, "throughput_MB/s", $1.to_f)
+    add_result(results_total, "throughput_MB/s", $1.to_f)
   when /total number of events:\s+(\d+)/
-    add_result($results_total, "workload", $1.to_f)
+    add_result(results_total, "workload", $1.to_f)
   when /events\/s \(eps\):\s+([0-9.]+)/
-    add_result($results_avg, "throughput_events/s", $1.to_f)
+    add_result(results_avg, "throughput_events/s", $1.to_f)
   when /time elapsed:\s+([0-9.]+)/
-    add_result($results_avg, "throughput_time", $1.to_f)
+    add_result(results_avg, "throughput_time", $1.to_f)
   when /min:\s+([0-9.]+)/
-    add_result($results_min, "latency_ms.min", $1.to_f)
+    add_result(results_min, "latency_ms.min", $1.to_f)
   when /avg:\s+([0-9.]+)/
-    add_result($results_avg, "latency_ms.avg", $1.to_f)
+    add_result(results_avg, "latency_ms.avg", $1.to_f)
   when /max:\s+([0-9.]+)/
-    add_result($results_max, "latency_ms.max", $1.to_f)
+    add_result(results_max, "latency_ms.max", $1.to_f)
   when /95th percentile:\s+([0-9.]+)/
-    add_result($results_avg, "latency_ms.95th", $1.to_f)
+    add_result(results_avg, "latency_ms.95th", $1.to_f)
   when /events\s+\(avg\/stddev\):\s+([0-9.]+)\/([0-9.]+)/
-    add_result($results_avg, "events/thread.avg", $1.to_f)
-    add_result($results_avg, "events/thread.stddev", $2.to_f)
+    add_result(results_avg, "events/thread.avg", $1.to_f)
+    add_result(results_avg, "events/thread.stddev", $2.to_f)
   when /execution time.+:\s+([0-9.]+)\/([0-9.]+)/
-    add_result($results_avg, "runtime/thread.avg", $1.to_f)
-    add_result($results_avg, "runtime/thread.stddev", $2.to_f)
+    add_result(results_avg, "runtime/thread.avg", $1.to_f)
+    add_result(results_avg, "runtime/thread.stddev", $2.to_f)
   end
 end
 
-$results_total.each do |key, vals|
-  puts "#{key}: #{vals.inject(0.0, :+)}"
+results_total.each do |key, vals|
+#  puts "#{key}: #{vals.inject(0.0, :+)}"
+  total_val=0.0
+  vals.each do |val|
+    total_val+=val
+  end
+ puts "#{key}: #{total_val}"
 end
 
-$results_avg.each do |key, vals|
-  puts "#{key}: #{vals.inject(0.0, :+) / vals.size}"
+results_avg.each do |key, vals|
+#  puts "#{key}: #{vals.insert(0, :+) / vals.size}"
+ total_val=0.0
+ vals.each do |val|
+ total_val+=val
+ end
+ puts "{key}:#{total_val/vals.size}"
 end
 
-$results_min.each do |key, vals|
+results_min.each do |key, vals|
   puts "#{key}: #{vals.min}"
 end
 
-$results_max.each do |key, vals|
+results_max.each do |key, vals|
   puts "#{key}: #{vals.max}"
 end

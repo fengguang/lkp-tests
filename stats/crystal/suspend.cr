@@ -1,8 +1,8 @@
 #!/usr/bin/env crystal
 
 cycle = 1
-srhash = {}
-srmaxhash = {}
+srhash = {} of String => String | Float64 | Int32
+srmaxhash = {} of String => String | Int32 
 phase = "none"
 while (line = STDIN.gets)
   case line
@@ -71,7 +71,7 @@ while (line = STDIN.gets)
       cost = (timestamp.to_f - srhash[k].to_f) * 1000
       srhash[k] = cost.to_i
       srmaxhash[kmax] = 0 if srmaxhash[kmax].nil?
-      srmaxhash[kmax] = cost.to_i if srmaxhash[kmax] < cost.to_i
+      srmaxhash[kmax] = cost.to_i if srmaxhash[kmax].to_i < cost.to_i
     end
   else
     next
@@ -82,7 +82,7 @@ srhash.each do |kk, vv|
   case kk
   when /(.*)_\d*/
     kmax = $1
-    next if srmaxhash.has_key?(kmax) && srmaxhash[kmax] < 50
+    next if srmaxhash.has_key?(kmax) && srmaxhash[kmax].to_i < 50
 
     puts "#{kmax}: #{vv}"
   end

@@ -8,10 +8,10 @@ RESULT_ROOT = ENV["RESULT_ROOT"]
 require "../../lib/noise"
 require "../../lib/log"
 
-time = {}
-syscall_nr = {}
+time = {} of String => Array(Int32)
+syscall_nr = {} of String => Int32
 
-sys_nr = {}
+sys_nr = {} of String => Int32
 sys_nr["total"] = 0
 sys_nr["max"] = 0
 
@@ -38,7 +38,7 @@ def parse_process_lines(process_lines, time)
 
     if start
       if b[3] == "->"
-        warn 'not a START of syscall\n' + last_line + line if DEBUG
+        log_warn "not a START of syscall\n" + last_line + line if DEBUG
         find_next = true
         last_line = line
         next
@@ -49,21 +49,21 @@ def parse_process_lines(process_lines, time)
       start = false
     else
       if b[3] != "->"
-        warn 'not a syscall return:\n' + last_line + line if DEBUG
+        log_warn "not a syscall return:\n" + last_line + line if DEBUG
         find_next = true
         last_line = line
         next
       end
       syscall2 = b[2]
       if syscall2 != syscall1
-        warn 'not the same syscall\n' + last_line + line if DEBUG
+        log_warn "not the same syscall\n" + last_line + line if DEBUG
         find_next = true
         last_line = line
         next
       end
       syscall_end = b[1].to_i
       syscall_time = syscall_end - syscall_start
-      time[syscall2] = [] if time[syscall2].nil?
+      time[syscall2] = [] of Int32 if time[syscall2].nil?
       time[syscall2] << syscall_time
       start = true
     end
@@ -72,11 +72,13 @@ def parse_process_lines(process_lines, time)
 end
 
 def parse_syscalls(time)
-  process_lines = {}
+  process_lines = {} of String=>Array(String)
   lines = if File.exists?("#{RESULT_ROOT}/ftrace.data.xz")
-            IO.popen("xzcat #{RESULT_ROOT}/ftrace.data.xz").readlines
+  	    File.read_lines("xzcat #{RESULT_ROOT}/ftrace.data.xz")
+#            IO.popen("xzcat #{RESULT_ROOT}/ftrace.data.xz").readlines
+#	    IO.readlines("xzcat #{RESULT_ROOT}/ftrace.data.xz")
           elsif File.exists?("#{RESULT_ROOT}/ftrace.data")
-            IO.readlines("#{RESULT_ROOT}/ftrace.data")
+            File.read_lines("#{RESULT_ROOT}/ftrace.data")
           end
 
   if lines.nil?
@@ -91,7 +93,7 @@ def parse_syscalls(time)
     next if a[4].nil?
 
     process_name = a[0]
-    process_lines[process_name] = [] if process_lines[process_name].nil?
+    process_lines[process_name] = [] of String if process_lines[process_name].nil?
     process_lines[process_name] << line
   end
 
@@ -109,8 +111,8 @@ def get_syscall_nr(time, syscall_nr, sys_nr)
     sys_nr["total"] += nr
     sys_nr["max"] = nr if nr > sys_nr["max"]
   end
-
-  syscall_nr.sort_by { |_key, val| val }.reverse
+#  syscall_nr.to_a
+  syscall_nr.to_a.sort_by { |_key, val| val }.reverse.to_h
 end
 
 def show_syscalls_noise(time, syscall_nr, sys_nr)
