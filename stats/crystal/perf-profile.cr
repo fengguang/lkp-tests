@@ -34,8 +34,10 @@ while (line = STDIN.gets)
   # Events: 825  cache-misses
   # Samples: 5K of event 'cycles'
   # Samples: 489  of event 'cache-misses'
-  if line =~ /^# Events: \d+[KMG ]\s+/ || line =~ /^# Samples: \d+[KMG ] of event /
-    cur_event = $'.tr(":", "-").tr('\'', "")
+  if line =~ /^# Events: \d+[KMG ]\s+(.*)$/ || line =~ /^# Samples: \d+[KMG ] of event (.*)$/
+    #cur_event = $'.tr(":", "-").tr('\'', "")
+    cur_event = $1.tr(":", "-").tr("\\", "")
+    #cur_event = $'.tr(':', '-').tr('\'', '').chomp
     break
   end
 end

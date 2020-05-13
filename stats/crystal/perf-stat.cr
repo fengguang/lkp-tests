@@ -1,16 +1,16 @@
 #!/usr/bin/env crystal
 
-$results_sum = Hash.new(0)
-$results_nr = Hash.new(0)
-$interval_results_sum = Hash.new(0)
-$interval_results_nr = Hash.new(0)
-$interval_nr = 0
-$run_time = 0
+global_results_sum = Hash(String, Int32).new(0)
+global_results_nr = Hash(String, Int32).new(0)
+global_interval_results_sum = Hash(String, Int32).new(0)
+global_interval_results_nr = Hash(String, Int32).new(0)
+global_interval_nr = 0
+global_run_time = 0
 
-$stats_begin_time = ENV["stats_part_begin"].to_f
-$stats_end_time = ENV["stats_part_end"].to_f
+global_stats_begin_time = ENV["stats_part_begin"].to_f
+global_stats_end_time = ENV["stats_part_end"].to_f
 
-$latency_prev = Hash.new(0)
+global_latency_prev = Hash(String, Int32).new(0)
 
 def calc_addon_keys(results_sum, results_nr, interval, interval_nr, prefix)
   results_sum.each do |key, value|
@@ -45,7 +45,7 @@ def calc_addon_keys(results_sum, results_nr, interval, interval_nr, prefix)
       puts "#{prefix}#{stem}MPKI: #{value / instructions * 1000}" unless instructions.zero?
     when /(.*)UNC_M_(.*)_INSERTS/
       stem1 = $1
-      stem2 = $2
+      stem2 = global_2
       stem = "#{stem1}UNC_M_#{stem2}"
       occupancy_key = stem1 + "UNC_M_" + stem2 + "_OCCUPANCY"
       occupancy = results_sum[occupancy_key]
@@ -58,9 +58,9 @@ def calc_addon_keys(results_sum, results_nr, interval, interval_nr, prefix)
         latency = if value != 0
                     occupancy / value / (ticks_sum / (ticks_nr / interval_nr)) * 1e+9 * interval
                   else
-                    $latency_prev[latency_key]
+                    global_latency_prev[latency_key]
                   end
-        $latency_prev[latency_key] = latency
+        global_latency_prev[latency_key] = latency
         puts "#{latency_key}: #{latency}"
       end
       puts "#{prefix}#{stem}_throughput_MBps: #{value.to_f * 64 / 1024 / 1024 / interval}"
@@ -76,39 +76,39 @@ def calc_addon_keys(results_sum, results_nr, interval, interval_nr, prefix)
 end
 
 def output_interval(prev_time, time)
-  return if $interval_results_sum.empty?
+  return if global_interval_results_sum.empty?
 
   interval = time - prev_time
   puts "time: #{time}"
-  $interval_results_sum.each do |key, value|
+  global_interval_results_sum.each do |key, value|
     puts "i.#{key}: #{value / interval}"
   end
-  calc_addon_keys($interval_results_sum, $interval_results_nr,
+  calc_addon_keys(global_interval_results_sum, global_interval_results_nr,
                   interval, 1, "i.")
 
   ignore = false
-  if time <= $stats_begin_time
+  if time <= global_stats_begin_time
     ignore = true
-  elsif prev_time <= $stats_begin_time
-    # update $stats_begin_time to real start time
-    $stats_begin_time = prev_time
+  elsif prev_time <= global_stats_begin_time
+    # update global_stats_begin_time to real start time
+    global_stats_begin_time = prev_time
   end
 
-  if !ignore && $stats_end_time != 0 && time > $stats_end_time
-    $stats_end_time = prev_time if prev_time <= $stats_end_time
+  if !ignore && global_stats_end_time != 0 && time > global_stats_end_time
+    global_stats_end_time = prev_time if prev_time <= global_stats_end_time
     ignore = true
   end
 
   unless ignore
-    $interval_results_sum.each do |key, value|
-      $results_sum[key] += value
-      $results_nr[key] += $interval_results_nr[key]
+    global_interval_results_sum.each do |key, value|
+      global_results_sum[key] += value
+      global_results_nr[key] += global_interval_results_nr[key]
     end
-    $interval_nr += 1
+    global_interval_nr += 1
   end
 
-  $interval_results_sum.clear
-  $interval_results_nr.clear
+  global_interval_results_sum.clear
+  global_interval_results_nr.clear
 end
 
 # Example output
@@ -125,10 +125,10 @@ def parse
   prev_time = 0
   time = 0
 
-  $stdin.each_line do |line|
+  STDIN.each_line do |line|
     next unless line =~ /^\s*\d+\.\d+\s+/
 
-    stime, *fields = line.split
+    stime, fields = line.split
 
     prev_time = time
     time = stime.to_f
@@ -166,32 +166,35 @@ def parse
     key = "#{key}_#{unit}" if unit
     socket_key = "#{socket}.#{key}" if socket
 
-    $interval_results_sum[key] += value
-    $interval_results_nr[key] += 1
+    global_interval_results_sum[key] += value
+    global_interval_results_nr[key] += 1
     if socket_key
-      $interval_results_sum[socket_key] += value
-      $interval_results_nr[socket_key] += 1
+      global_interval_results_sum[socket_key] += value
+      global_interval_results_nr[socket_key] += 1
     end
   end
 
   # total time
-  end_time = $stats_end_time == 0 ? prev_time : $stats_end_time
-  $run_time = end_time - $stats_begin_time
+  end_time = global_stats_end_time == 0 ? prev_time : global_stats_end_time
+  global_run_time = end_time - global_stats_begin_time
 
   # skip the last record, because the interval hasn't run out
 end
 
 parse
 
-$results_sum.each do |key, value|
+global_results_sum.each do |key, value|
   # output per-second value
-  puts "ps.#{key}: #{value / $run_time}"
+  puts "ps.#{key}: #{value / global_run_time}"
 end
 
-instructions = $results_sum["instructions"]
+instructions = global_results_sum["instructions"]
 unless instructions.zero?
   # to calc path-length
   puts "total.instructions: #{instructions}"
 end
 
-calc_addon_keys($results_sum, $results_nr, $run_time, $interval_nr, "overall.")
+calc_addon_keys(global_results_sum,
+global_results_nr,
+global_run_time,
+global_interval_nr, "overall.")
