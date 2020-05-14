@@ -106,44 +106,118 @@ need_kconfig:
 - CONFIG_WW_MUTEX_SELFTEST=m ~ v(4\.1[1-9]|4\.20|5\.) # support kernel >=v4.11-rc1
 - CONFIG_XFS_FS=m
 % elsif ___.group == 'kselftests-02'
+- CONFIG_ANDROID=y
+- CONFIG_FUSE_FS=m
 - CONFIG_IPV6_MULTIPLE_TABLES=y
 - CONFIG_MACSEC=y
+- CONFIG_MEMORY_HOTPLUG=y
+- CONFIG_MEMORY_HOTPLUG_SPARSE=y
+- CONFIG_MEMORY_HOTREMOVE=y
+- CONFIG_MEMORY_NOTIFIER_ERROR_INJECT=m
 - CONFIG_MISC_FILESYSTEMS=y
 - CONFIG_MPTCP=y ~ v(5\.[6-9]) # support kernel >= v5.6-rc1
 - CONFIG_MPTCP_IPV6=y ~ v(5\.[6-9]) # support kernel >= v5.6-rc1
 - CONFIG_NET_FOU=m
 - CONFIG_NET_FOU_IP_TUNNELS=y
 - CONFIG_NET_L3_MASTER_DEV=y
+- CONFIG_NET_NS=y
 - CONFIG_NET_SCH_NETEM=m
 - CONFIG_NET_VRF=y # Depends on: IP_MULTIPLE_TABLES [=y]
-- CONFIG_PSTORE=y
-- CONFIG_PSTORE_CONSOLE=y
-- CONFIG_PSTORE_PMSG=y
-- CONFIG_PSTORE_RAM=m
-- CONFIG_SW_SYNC=y
-- CONFIG_TEST_BLACKHOLE_DEV=m ~ v(5\.[3-9]) # support kernel >= v5.3-rc1
-- CONFIG_TEST_STATIC_KEYS
-- CONFIG_TEST_SYSCTL=m
-- CONFIG_VETH=m
-- CONFIG_X86_CPU_RESCTRL=y ~ v(5\.0$|5\.[1-9]) # support kernel >= v5.0
-- CONFIG_NET_NS=y
-- CONFIG_NF_TABLES_INET=y ~ v(4\.1[7-9]|4\.20|5\.) # support kernel >=v4.17-rc1
-- CONFIG_NFT_QUEUE=m
-- CONFIG_NFT_NAT=m ~ v(5\.[1-9]) # support kernel >= v5.1-rc1
-- CONFIG_NFT_REDIR=m
-- CONFIG_NFT_MASQ=m
 - CONFIG_NFT_FLOW_OFFLOAD=m ~ v(4\.1[6-9]|4\.20|5\.) # support kernel >=v4.16-rc1
-- CONFIG_NF_CT_NETLINK=m
+- CONFIG_NFT_MASQ=m
+- CONFIG_NFT_NAT=m ~ v(5\.[1-9]) # support kernel >= v5.1-rc1
 - CONFIG_NFT_OBJREF=m ~ v(4\.1[0-9]|4\.20|5\.) # support kernel >=v4.10-rc1
+- CONFIG_NFT_QUEUE=m
+- CONFIG_NFT_REDIR=m
+- CONFIG_NF_CT_NETLINK=m
 - CONFIG_NF_FLOW_TABLE=m ~ v(4\.1[6-9]|4\.20|5\.) # support kernel >=v4.16-rc1
 - CONFIG_NF_FLOW_TABLE_INET=m ~ v(4\.1[6-9]|4\.20|5\.) # support kernel >=v4.16-rc1
 - CONFIG_NF_FLOW_TABLE_IPV4=m ~ v(4\.1[6-9]|4\.20|5\.) # support kernel >=v4.16-rc1
 - CONFIG_NF_FLOW_TABLE_IPV6=m ~ v(4\.1[6-9]|4\.20|5\.) # support kernel >=v4.16-rc1
+- CONFIG_NF_TABLES_INET=y ~ v(4\.1[7-9]|4\.20|5\.) # support kernel >=v4.17-rc1
 - CONFIG_NF_TABLES_NETDEV=y ~ v(4\.1[7-9]|4\.20|5\.) # support kernel >=v4.17-rc1
+- CONFIG_NOTIFIER_ERROR_INJECTION=y
+- CONFIG_PID_NS=y
+- CONFIG_PROC_FS=y
+- CONFIG_PSTORE=y
+- CONFIG_PSTORE_CONSOLE=y
+- CONFIG_PSTORE_PMSG=y
+- CONFIG_PSTORE_RAM=m
+- CONFIG_SECCOMP=y
+- CONFIG_SECCOMP_FILTER=y
+- CONFIG_SECURITY=y
+- CONFIG_SECURITYFS=y
+- CONFIG_STAGING=y
+- CONFIG_SW_SYNC=y
+- CONFIG_SYNC=y ~ v(3\.1[0-9]|4\.[0-7]) # support kernel >=v3.10-rc1, <= v4.7
+- CONFIG_TEST_BLACKHOLE_DEV=m ~ v(5\.[3-9]) # support kernel >= v5.3-rc1
+- CONFIG_TEST_STATIC_KEYS
+- CONFIG_TEST_SYSCTL=y
+- CONFIG_USER_NS=y
+- CONFIG_UTS_NS=y
+- CONFIG_VETH=m
+- CONFIG_X86_CPU_RESCTRL=y ~ v(5\.0$|5\.[1-9]) # support kernel >= v5.0
 % elsif ___.group == 'kselftests-03'
-- CONFIG_TEST_VMALLOC=m ~ v(5\.[1-9]) # support kernel >= v5.1-rc1
-- CONFIG_USERFAULTFD=y
+- CONFIG_CAN=m
+- CONFIG_CLS_U32_MARK=y
+- CONFIG_CLS_U32_PERF=y
+- CONFIG_GACT_PROB=y
 - CONFIG_GUP_BENCHMARK=y ~ v(4\.1[5-9]|4\.20|5\.) # v4.15 and later
+- CONFIG_NET=y
+- CONFIG_NET_ACT_BPF=m ~ v(4\.[0-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.0-rc1
+- CONFIG_NET_ACT_CONNMARK=m ~ v(4\.[0-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.0-rc1
+- CONFIG_NET_ACT_CSUM=m
+- CONFIG_NET_ACT_CT=m ~ v(5\.[3-9]) # support kernel >= v5.3-rc1
+- CONFIG_NET_ACT_CTINFO=m ~ v(5\.[3-9]) # support kernel >= v5.3-rc1
+- CONFIG_NET_ACT_GACT=m
+- CONFIG_NET_ACT_IFE=m ~ v(4\.[6-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.6-rc1
+- CONFIG_NET_ACT_IPT=m
+- CONFIG_NET_ACT_MIRRED=m
+- CONFIG_NET_ACT_MPLS=m ~ v(5\.[3-9]) # support kernel >= v5.3-rc1
+- CONFIG_NET_ACT_NAT=m
+- CONFIG_NET_ACT_PEDIT=m
+- CONFIG_NET_ACT_POLICE=m
+- CONFIG_NET_ACT_SAMPLE=m ~ v(4\.1[1-9]|4\.20|5\.) # support kernel >=v4.11-rc1
+- CONFIG_NET_ACT_SIMP=m
+- CONFIG_NET_ACT_SKBEDIT=m
+- CONFIG_NET_ACT_SKBMOD=m ~ v(4\.9|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.9-rc1
+- CONFIG_NET_ACT_TUNNEL_KEY=m ~ v(4\.9|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.9-rc1
+- CONFIG_NET_ACT_VLAN=m
+- CONFIG_NET_CLS=y
+- CONFIG_NET_CLS_ACT=y
+- CONFIG_NET_CLS_FW=m
+- CONFIG_NET_CLS_U32=m
+- CONFIG_NET_EMATCH=y
+- CONFIG_NET_EMATCH_CANID=m
+- CONFIG_NET_EMATCH_CMP=m
+- CONFIG_NET_EMATCH_IPSET=m
+- CONFIG_NET_EMATCH_IPT=m ~ v(4\.1[7-9]|4\.20|5\.) # support kernel >=v4.17-rc1
+- CONFIG_NET_EMATCH_META=m
+- CONFIG_NET_EMATCH_NBYTE=m
+- CONFIG_NET_EMATCH_STACK=32
+- CONFIG_NET_EMATCH_TEXT=m
+- CONFIG_NET_EMATCH_U32=m
+- CONFIG_NET_IFE_SKBMARK=m ~ v(4\.[6-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.6-rc1
+- CONFIG_NET_IFE_SKBPRIO=m ~ v(4\.[6-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.6-rc1
+- CONFIG_NET_IFE_SKBTCINDEX=m ~ v(4\.9|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.9-rc1
+- CONFIG_NET_SCHED=y ~ v(5\.[1-9]) # support kernel >= v5.1-rc1
+- CONFIG_NET_SCH_ETS=m ~ v(5\.[6-9]) # support kernel >= v5.6-rc1
+- CONFIG_NET_SCH_FIFO=y
+- CONFIG_NET_SCH_INGRESS=m ~ v(4\.[5-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.5-rc1
+- CONFIG_NET_SCH_PRIO=m
+- CONFIG_NF_CONNTRACK=m
+- CONFIG_NF_CONNTRACK_LABELS=y ~ (4\.19|4\.20|5\.) # support kernel >=v4.19-rc1
+- CONFIG_NF_CONNTRACK_MARK=y
+- CONFIG_NF_CONNTRACK_ZONES=y
+- CONFIG_NF_NAT=m ~ v(5\.[1-9]) # support kernel >= v5.1-rc1
+- CONFIG_SYSVIPC=y
+- CONFIG_TEST_USER_COPY=m
+- CONFIG_TEST_VMALLOC=m ~ v(5\.[1-9]) # support kernel >= v5.1-rc1
+- CONFIG_TIME_NS=y ~ v(5\.[6-9]) # support kernel >= v5.6-rc1
+- CONFIG_USERFAULTFD=y ~ v(4\.[3-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.3-rc1
+- CONFIG_USER_NS=y
+- CONFIG_ZRAM=m
+- CONFIG_ZSMALLOC=y
 % else
 - CONFIG_BLOCK=y
 - CONFIG_BTRFS_FS=m
