@@ -5,7 +5,7 @@ require "../../lib/log"
 require "../../lib/string_ext"
 
 while (line = STDIN.gets)
-  line = line.remediate_invalid_byte_sequence(replace: "_") unless line.valid_encoding?
+  line = line.to_s.remediate_invalid_byte_sequence(replace: "_") unless line.to_s.valid_encoding?
   case line
   when /^# Thread/
     next

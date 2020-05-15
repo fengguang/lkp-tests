@@ -14,7 +14,7 @@ STDIN.each_line do |line|
     next
   end
 
-  data = line.split
+  data = line.to_s.split
   next if data.size != keys.size + 3
 
   dev_name = data[2]
