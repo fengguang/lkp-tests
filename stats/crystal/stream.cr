@@ -3,7 +3,7 @@
 
 require "../../lib/log"
 
-stats = {}
+stats = Hash(String,String).new
 unit = nil
 
 while (line = STDIN.gets)
