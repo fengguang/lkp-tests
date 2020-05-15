@@ -34,18 +34,46 @@ need_kconfig:
 - CONFIG_KVM_AMD=y
 - CONFIG_KVM_INTEL=y
 % elsif ___.group == 'kselftests-bpf'
-- CONFIG_BPF_EVENTS=y
-- CONFIG_BPF_STREAM_PARSER=y
+- CONFIG_BPF=y
+- CONFIG_BPF_EVENTS=y ~ v(4\.[1-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.1-rc1
+- CONFIG_BPF_JIT=y
+- CONFIG_BPF_STREAM_PARSER=y ~ v(4\.1[4-9]|4\.20|5\.) # support kernel >= v4.14-rc1
 - CONFIG_BPF_SYSCALL=y
-- CONFIG_CGROUP_BPF=y
+- CONFIG_CGROUP_BPF=y ~ v(4\.1[0-9]|4\.20|5\.) # support kernel >= v4.10-rc1
+- CONFIG_CRYPTO_HMAC
+- CONFIG_CRYPTO_SHA256
+- CONFIG_CRYPTO_USER_API_HASH
+- CONFIG_FTRACE_SYSCALLS=y
+- CONFIG_GENEVE=y ~ v(4\.[3-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.3-rc1
+- CONFIG_IPV6=y
+- CONFIG_IPV6_FOU ~ v(4\.[7-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.7-rc1
+- CONFIG_IPV6_FOU_TUNNEL ~ v(4\.[7-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.7-rc1
+- CONFIG_IPV6_GRE=y
 - CONFIG_IPV6_SEG6_LWTUNNEL=y ~ v(4\.1[0-9]|4\.20|5\.) # support kernel >=v4.10-rc1
-- CONFIG_LWTUNNEL=y
+- CONFIG_IPV6_SIT=m
+- CONFIG_IPV6_TUNNEL=y
+- CONFIG_LWTUNNEL=y ~ v(4\.[3-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.3-rc1
+- CONFIG_MPLS=y ~ v(4\.[1-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.1-rc1
 - CONFIG_MPLS_IPTUNNEL=m ~ v(4\.[3-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.3-rc1
 - CONFIG_MPLS_ROUTING=m ~ v(4\.[1-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.1-rc1
+- CONFIG_NETDEVSIM=m ~ v(4\.1[6-9]|4\.20|5\.) # support kernel >= v4.16-rc1
+- CONFIG_NET_CLS_ACT=y
 - CONFIG_NET_CLS_BPF=m
+- CONFIG_NET_CLS_FLOWER=m ~ v(4\.[2-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.2-rc1
+- CONFIG_NET_FOU
+- CONFIG_NET_FOU_IP_TUNNELS=y
+- CONFIG_NET_IPGRE=y
+- CONFIG_NET_IPGRE_DEMUX=y
+- CONFIG_NET_IPIP=y
+- CONFIG_NET_MPLS_GSO=m
+- CONFIG_NET_SCHED=y
+- CONFIG_NET_SCH_INGRESS=y ~ v(4\.[5-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.5-rc1
 - CONFIG_RC_LOOPBACK # Depends on: RC_DEVICES [=y] && RC_CORE [=m]
+- CONFIG_SECURITY=y
 - CONFIG_TEST_BPF=m
 - CONFIG_TLS=m ~ v(4\.1[3-9]|4\.20|5\.) # support kernel >=v4.13
+- CONFIG_VXLAN=y
+- CONFIG_XDP_SOCKETS=y ~ v(4\.1[8-9]|4\.20|5\.) # support kernel >= v4.18-rc1
 % elsif ___.group == 'kselftests-livepatch'
 - CONFIG_DYNAMIC_DEBUG=y
 - CONFIG_LIVEPATCH=y ~ v(4\.[0-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.0-rc1
