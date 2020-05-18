@@ -12,17 +12,14 @@
 # - cd obj-i386; make.cross
 # - export ARCH=i386; make.cross
 #
-# With particular GCC_VERSION:
-# - GCC_VERSION=7.2.0 make.cross ARCH=arm
-#
-# Specify compiler clang (default is gcc):
+# Specify compiler and version (default is gcc):
+# - COMPILER=gcc-9.3.0 make.cross ARCH=arm64
 # - COMPILER=clang make.cross ARCH=arm64
 #
 # Copyright (c) 2014, Intel Corporation.
 # Author: Fengguang Wu <fengguang.wu@intel.com>
 # Credit: Tony Breeds <tony@bakeyournoodle.com> for crosstool
 
-GCC_VERSION=${GCC_VERSION:-""}
 COMPILER=${COMPILER:-"gcc"}
 
 if [[ ! "$0" =~ 'make.cross' && "$0" =~ make\.([a-z0-9_]+) ]]; then
@@ -119,11 +116,14 @@ install_crosstool_gcc()
 
 	local file
 	local gcc_arch_pattern=$(echo "${gcc_arch}" | sed 's/*/.*/g')
-	if [[ $GCC_VERSION ]]; then
+
+	local gcc_version
+	[[ $COMPILER =~ - ]] && gcc_version=${COMPILER##*-}
+	if [[ $gcc_version ]]; then
 		# for arch has more than 1 cross tool available, like x86_64-gcc-9.3.0-nolibc_arm-linux-gnueabi.tar.xz
 		# and x86_64-gcc-9.3.0-nolibc_arm-linux-gnueabihf.tar.xz for arm, match "arm-linux-gnueabi." instead of
 		# "arm-linux-gnueabi" to get single tool package which match exactly.
-		file=$(grep "${gcc_arch_pattern}\." $list | grep "${GCC_VERSION}" | tail -1)
+		file=$(grep "${gcc_arch_pattern}\." $list | grep "${gcc_version}" | tail -1)
 	else
 		file=$(grep "${gcc_arch_pattern}\." $list | tail -1)
 	fi
@@ -241,13 +241,13 @@ setup_crosstool_gcc()
 	esac
 
 	if [[ $gcc_arch ]]; then
-		gcc_exec=($COMPILER_INSTALL_PATH/gcc-${GCC_VERSION}*/${gcc_arch}/bin/${gcc_arch}-gcc)
+		gcc_exec=($COMPILER_INSTALL_PATH/${COMPILER}*/${gcc_arch}/bin/${gcc_arch}-gcc)
 		[[ -x $gcc_exec ]] || install_cross_compiler || {
 			echo "Install gcc cross compiler failed"
 			return 1
 		}
 
-		gcc_exec=($COMPILER_INSTALL_PATH/gcc-${GCC_VERSION}*/${gcc_arch}/bin/${gcc_arch}-gcc)
+		gcc_exec=($COMPILER_INSTALL_PATH/${COMPILER}*/${gcc_arch}/bin/${gcc_arch}-gcc)
 		[[ -x $gcc_exec ]] || {
 			echo "No cross compiler for $ARCH"
 			return 1
@@ -259,7 +259,7 @@ setup_crosstool_gcc()
 		opt_cross="CROSS_COMPILE=${gcc_exec%gcc}"
 
 		# load build-in depends libs
-		local deplibs_path=($COMPILER_INSTALL_PATH/gcc-${GCC_VERSION}*/${gcc_arch}/libexec/gcc/${gcc_arch}/*)
+		local deplibs_path=($COMPILER_INSTALL_PATH/${COMPILER}*/${gcc_arch}/libexec/gcc/${gcc_arch}/*)
 		deplibs_path=${deplibs_path[-1]}
 		[[ -d $deplibs_path ]] && export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$deplibs_path
 
