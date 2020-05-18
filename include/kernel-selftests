@@ -42,6 +42,8 @@ need_kconfig:
 - CONFIG_CRYPTO_HMAC
 - CONFIG_CRYPTO_SHA256
 - CONFIG_CRYPTO_USER_API_HASH
+- CONFIG_DEBUG_INFO
+- CONFIG_DEBUG_INFO_BTF ~ v(5\.[2-9]) # support kernel >= v5.2-rc1
 - CONFIG_FTRACE_SYSCALLS=y
 - CONFIG_GENEVE=y ~ v(4\.[3-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.3-rc1
 - CONFIG_IPV6=y
