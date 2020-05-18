@@ -257,13 +257,17 @@ setup_crosstool_gcc()
 		gcc_exec=${gcc_exec[-1]}
 
 		opt_cross="CROSS_COMPILE=${gcc_exec%gcc}"
+
+		# load build-in depends libs
+		local deplibs_path=($COMPILER_INSTALL_PATH/gcc-${GCC_VERSION}*/${gcc_arch}/libexec/gcc/${gcc_arch}/*)
+		deplibs_path=${deplibs_path[-1]}
+		[[ -d $deplibs_path ]] && export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$deplibs_path
+
 	else
 		opt_cross=
 	fi
 
-	# load build-in depends libs
-	local deplibs_path=($COMPILER_INSTALL_PATH/gcc-${GCC_VERSION}-nolibc/${gcc_arch}/libexec/gcc/${gcc_arch}/${GCC_VERSION})
-	[[ -d $deplibs_path ]] && export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$deplibs_path
+	return 0
 }
 
 setup_crosstool_clang()
