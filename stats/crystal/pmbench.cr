@@ -1,21 +1,22 @@
 #!/usr/bin/env crystal
 
 res = 0.0
+
 histo_r = Array.new(24, 0)
 histo_w = Array.new(24, 0)
-histo_details_r = [] of Int32
-histo_details_w = [] of Int32
-latencies = [] of Float32
+histo_details_r = []  of Array(Int64)
+histo_details_w = [] of Array(Int32)
+latencies = [] of Float64
 throughput = 0
-init_times = [] of Float32
+init_times = [] of Float64
 sum_r = 0.0
 sum_w = 0.0
 mode = nil
 READ = :read
 WRITE = :write
 
-@@stdin.each_line do |line|
-  case line
+STDIN.each_line do |line|
+ case line
   when /^Read:/
     mode = READ
   when /^Write:/
@@ -33,7 +34,7 @@ WRITE = :write
     data = $4.split(", ")
     data.each_with_index do |v, i|
       if mode == READ
-        histo_details_r[p] ||= [] of Int32
+        histo_details_r[p] ||= [] of Int64
         histo_details_r[p][i] ||= 0
         histo_details_r[p][i] += v.to_i
       else
@@ -90,15 +91,29 @@ end
 percentile_strs = %w(90 95 99)
 percentiles = percentile_strs.map(&.to_f)
 
-[[histo_r, histo_details_r, sum_r, READ], [histo_w, histo_details_w, sum_w, WRITE]].each do |histo, histo_details, sum, mode|
+# [[histo_r, histo_details_r, sum_r, READ], [histo_w, histo_details_w, sum_w, WRITE]].each do |his_array|
+(1..2).each do |his_index|
+ if his_index == 1
+  histo = histo_r
+  histo_details = histo_details_r
+  sum = sum_r
+  mode = READ
+ elsif his_index == 2
+  histo = histo_w
+  histo_details = histo_details_w
+  sum = sum_w
+  mode = WRITE
+ end
   pi = 0
   hist_cum = 0
   (0..23).each do |i|
     next if sum == 0.0
-
-    res = histo[i] / sum * 100
+    if histo && sum
+     histo_temp = histo[i]
+     res = histo_temp / sum * 100
+    end
     gen_output(mode, i, res)
-    if histo_details[i]
+    if histo_details && sum
       histo_details[i].each_with_index do |v, j|
         res = v / sum * 100
         hist_cum += res
@@ -118,13 +133,13 @@ percentiles = percentile_strs.map(&.to_f)
 end
 
 unless latencies.empty?
-  latency_avg = latencies.reduce(:+) / latencies.size
+  latency_avg = latencies.reduce{|acc,i| acc+i} / latencies.size
   puts "latency.ns.average: #{latency_avg * 1000}"
 end
 
 puts "throughput.aps: #{throughput}"
 
 unless init_times.empty?
-  init_time_avg = init_times.reduce(:+) / init_times.size
+  init_time_avg = init_times.reduce{|acc,i| acc+i} / init_times.size
   puts "init_time.avg: #{init_time_avg}"
 end
