@@ -94,6 +94,13 @@ def resctrl_stat(line, _resctrl, stats)
   end
 end
 
+def bpf_stat(test_case_name, _subtest, _result, stats)
+  subtest_case_name = _subtest.strip.tr(' ', '_').tr('-', '_').downcase
+  result = _result.downcase
+  result = 'pass' if result == 'ok'
+  stats << "bpf.#{test_case_name}.#{subtest_case_name}.#{result}: 1"
+end
+
 while (line = STDIN.gets)
   line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
 
@@ -131,6 +138,28 @@ while (line = STDIN.gets)
     else
       stats << "#{test_name}.#{Regexp.last_match[1].strip}.#{Regexp.last_match[3].downcase}: 1"
     end
+  when /^# selftests: bpf: (.*)/
+    subtest_case_name = $1
+  when /^# #\d+\/(p|u) (.*) (OK|SKIP|FAIL).*/
+    next unless subtest_case_name == 'test_verifier'
+
+    bpf_stat(subtest_case_name, $2, $3, stats)
+  when /^# (.*): ?(PASS|OK|FAIL|SKIP|Pass|Fail|Skip)$/
+    next unless %w(test_maps test_progs test_progs-no_alu32 test_lru_map test_btf test_hashmap test_sockmap).include? subtest_case_name
+
+    bpf_stat(subtest_case_name, $1, $2, stats)
+  when /^# Test case: (.*) .. \[(PASS|FAIL|SKIP)\]$/
+    next unless %w(test_sysctl test_sock test_sock_addr.sh).include? subtest_case_name
+
+    bpf_stat(subtest_case_name, $1, $2, stats)
+  when /^# Test   \d+: (.*) ... (PASS|Fail).*/
+    next unless subtest_case_name == 'test_align'
+
+    bpf_stat(subtest_case_name, $1, $2, stats)
+  when /^# (.*) ... (ok|fail|skip)$/
+    next unless subtest_case_name == 'test_bpftool.sh'
+
+    bpf_stat(subtest_case_name, $1, $2, stats)
   when /Test #([1-9].*):/
     mqueue_test = Regexp.last_match[1]
   when /(Send|Recv) msg:/

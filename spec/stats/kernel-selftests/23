@@ -1,0 +1,327 @@
+ignored_by_lkp bpf.test_lirc_mode2_user test
+ignored_by_lkp bpf.test_tc_tunnel.sh test
+ignored_by_lkp bpf.test_lwt_seg6local.sh test
+2020-05-14 10:32:44 make run_tests -C bpf
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-bpf-lsm-2-2ef96a5bb12be62ef75b5828c0aab838ebb29cb8/tools/testing/selftests/bpf'
+TAP version 13
+1..42
+# selftests: bpf: test_verifier
+# #0/u invalid and of negative number OK
+# #65/u bounds check after truncation of boundary-crossing range (1) OK
+# #837/p bpf_map_lookup_elem(xskmap, &key); xs->queue_id SKIP (unsupported map type 17)
+# Summary: 1601 PASSED, 1 SKIPPED, 0 FAILED
+ok 1 selftests: bpf: test_verifier
+# selftests: bpf: test_tag
+# test_tag: OK (40945 tests)
+ok 2 selftests: bpf: test_tag
+# selftests: bpf: test_maps
+# test_array_map_batch_ops:PASS
+# test_sk_storage_map:PASS
+# test_maps: OK, 0 SKIPPED
+ok 3 selftests: bpf: test_maps
+# selftests: bpf: test_lru_map
+# nr_cpus:2
+# 
+# test_lru_sanity0 (map_type:9 map_flags:0x0): Pass
+# 
+ok 4 selftests: bpf: test_lru_map
+# selftests: bpf: test_lpm_map
+# test_lpm: OK
+ok 5 selftests: bpf: test_lpm_map
+test_progs
+# selftests: bpf: test_progs
+# #1 attach_probe:OK
+# #11/63 size___diff_sz:OK
+# #11 core_reloc:OK
+# test_link_pinning:PASS:skel_open 0 nsec
+# test_link_pinning_subtest:PASS:link_attach 0 nsec
+# test_link_pinning_subtest:PASS:res_check1 0 nsec
+# libbpf: specified path /sys/fs/bpf/pinned_link_test is not on BPF FS
+# test_link_pinning_subtest:FAIL:link_pin err: -22
+# #26/1 pin_raw_tp:FAIL
+# #26 link_pinning:FAIL
+# #81 xdp_perf:OK
+# Summary: 77/472 PASSED, 4 SKIPPED, 5 FAILED
+not ok 6 selftests: bpf: test_progs # exit=1
+# selftests: bpf: test_align
+# Test   0: mov ... PASS
+# Test   7: packet variable offset ... Failed to find match 29: R5_w=pkt(id=4,off=18,r=0,umax_value=2040,var_off=(0x0; 0x7fc))
+# func#0 @0
+# 0: R1=ctx(id=0,off=0,imm=0) R10=fp0
+# 0: (61) r2 = *(u32 *)(r1 +76)
+# FAIL
+# Results: 7 pass 5 fail
+not ok 7 selftests: bpf: test_align # exit=1
+# selftests: bpf: test_verifier_log
+# Test log_level 0...
+# Test log_size < 128...
+# Test log_buff = NULL...
+# Test oversized buffer...
+# Test exact buffer...
+# Test undersized buffers...
+# test_verifier_log: OK
+ok 8 selftests: bpf: test_verifier_log
+# selftests: bpf: test_dev_cgroup
+# mknod: /tmp/test_dev_cgroup_null: Operation not permitted
+# test_dev_cgroup:PASS
+ok 9 selftests: bpf: test_dev_cgroup
+# selftests: bpf: test_tcpbpf_user
+# (cgroup_helpers.c:138: errno: Device or resource busy) Removing cgroup: /mnt/cgroup-test-work-dir/foo
+# (cgroup_helpers.c:138: errno: Device or resource busy) Removing cgroup: /mnt/cgroup-test-work-dir
+# PASSED!
+ok 10 selftests: bpf: test_tcpbpf_user
+# selftests: bpf: test_sock
+# Test case: bind4 load with invalid access: src_ip6 .. [PASS]
+# Test case: bind6 allow all .. [PASS]
+# Summary: 16 PASSED, 0 FAILED
+ok 11 selftests: bpf: test_sock
+# selftests: bpf: test_btf
+# BTF raw test[1] (struct test #1): OK
+# BTF raw test[7] (global data test #4, unsupported linkage): OK
+# BTF GET_INFO test[2] (== raw_btf_size-3): 38...39...40...OK
+# BTF prog info raw test[6] (line_info (No subprog. insn_off >= prog->len)): OK
+# BTF dedup test[9] (dedup: datasec and vars pass-through):OK
+# PASS:174 SKIP:0 FAIL:0
+ok 12 selftests: bpf: test_btf
+# selftests: bpf: test_sockmap
+# [TEST 0]: (1, 1, 1, sendmsg, pass,): PASS
+# [TEST 823]: (16, 1, 100, sendpage, cork 1600,start 1601,end 1600,pop (1599,1609),): PASS
+# Summary: 824 PASSED 0 FAILED
+ok 13 selftests: bpf: test_sockmap
+# selftests: bpf: get_cgroup_id_user
+# main:PASS:setup_cgroup_environment
+# ./get_cgroup_id_user:PASS
+ok 14 selftests: bpf: get_cgroup_id_user
+# selftests: bpf: test_socket_cookie
+# PASSED
+ok 15 selftests: bpf: test_socket_cookie
+# selftests: bpf: test_cgroup_storage
+# test_cgroup_storage:PASS
+ok 16 selftests: bpf: test_cgroup_storage
+# selftests: bpf: test_netcnt
+# test_netcnt:PASS
+ok 17 selftests: bpf: test_netcnt
+# selftests: bpf: test_tcpnotify_user
+# PASSED!
+ok 18 selftests: bpf: test_tcpnotify_user
+# selftests: bpf: test_sock_fields
+# srv_sa6.sin6_port:44775 cli_sa6.sin6_port:51983
+# 
+# listen_sk: state:10 bound_dev_if:0 family:10 type:1 protocol:6 mark:0 priority:0 src_ip4:600007f(127.0.0.6) src_ip6:0:0:0:1000000(::1) src_port:44775 dst_ip4:0(0.0.0.0) dst_ip6:0:0:0:0(::) dst_port:0
+# 
+# PASS
+ok 19 selftests: bpf: test_sock_fields
+# selftests: bpf: test_sysctl
+# libbpf: load bpf program failed: Permission denied
+# libbpf: -- BEGIN DUMP LOG ---
+# libbpf: 
+# ; int sysctl_tcp_mem(struct bpf_sysctl *ctx)
+# libbpf: -- END LOG --
+# libbpf: failed to load program 'cgroup/sysctl'
+# libbpf: failed to load object './test_sysctl_prog.o'
+# (test_sysctl.c:1490: errno: Permission denied) >>> Loading program (./test_sysctl_prog.o) error.
+# Test case: C prog: read tcp_mem .. [FAIL]
+# Summary: 37 PASSED, 3 FAILED
+not ok 20 selftests: bpf: test_sysctl # exit=255
+# selftests: bpf: test_hashmap
+# test_hashmap_empty: OK
+ok 21 selftests: bpf: test_hashmap
+test_progs-no_alu32
+# selftests: bpf: test_progs-no_alu32
+# Switching to flavor 'no_alu32' subdirectory...
+# #1 attach_probe:OK
+# test_link_pinning:PASS:skel_open 0 nsec
+# libbpf: specified path /sys/fs/bpf/pinned_link_test is not on BPF FS
+# test_link_pinning_subtest:FAIL:link_pin err: -22
+# #26/1 pin_raw_tp:FAIL
+# #45/45 sockmap IPv4/TCP LOOPBACK test_syncookie:OK
+# #45 select_reuseport:OK
+# test_test_lsm:PASS:skel_load 0 nsec
+# test_test_lsm:PASS:attach 0 nsec
+# test_test_lsm:PASS:exec_cmd 0 nsec
+# test_test_lsm:FAIL:bprm_count bprm_count = 0
+# test_test_lsm:FAIL:stack_mprotect want err=EPERM, got 22
+# #70 test_lsm:FAIL
+# Summary: 77/472 PASSED, 4 SKIPPED, 5 FAILED
+not ok 22 selftests: bpf: test_progs-no_alu32 # exit=1
+# selftests: bpf: test_current_pid_tgid_new_ns
+# libbpf: Error in bpf_create_map_xattr(test_ns_.bss):Operation not permitted(-1). Retrying without BTF.
+# libbpf: failed to create map (name: 'test_ns_.bss'): Operation not permitted(-1)
+# Testing bpf_get_ns_current_pid_tgid helper in new ns
+# main:PASS:unshare CLONE_NEWPID | CLONE_NEWNS
+ok 23 selftests: bpf: test_current_pid_tgid_new_ns
+# selftests: bpf: urandom_read
+ok 24 selftests: bpf: urandom_read
+# selftests: bpf: test_kmod.sh
+# sysctl: setting key "net.core.bpf_jit_enable": Invalid argument
+# [ JIT enabled:0 hardened:0 ]
+# [  951.989955] # [  951.896017] test_bpf: Summary: 378 PASSED, 0 FAILED, [365/365 JIT'ed]
+# [  951.998126] # [  951.902028] test_bpf: test_skb_segment: Summary: 2 PASSED, 0 FAILED
+# [  962.497613] test_bpf: Summary: 378 PASSED, 0 FAILED, [365/365 JIT'ed]
+# [  962.503429] test_bpf: test_skb_segment: Summary: 2 PASSED, 0 FAILED
+ok 25 selftests: bpf: test_kmod.sh
+# selftests: bpf: test_xdp_redirect.sh
+# [15] DATASEC license size=0 vlen=1 size == 0
+# 
+# PING 10.1.1.22 (10.1.1.22) 56(84) bytes of data.
+# 64 bytes from 10.1.1.22: icmp_seq=1 ttl=64 time=0.081 ms
+# 
+# --- 10.1.1.22 ping statistics ---
+# 1 packets transmitted, 1 received, 0% packet loss, time 0ms
+# rtt min/avg/max/mdev = 0.081/0.081/0.081/0.000 ms
+# PING 10.1.1.11 (10.1.1.11) 56(84) bytes of data.
+# 64 bytes from 10.1.1.11: icmp_seq=1 ttl=64 time=0.051 ms
+# selftests: test_xdp_redirect [PASS]
+ok 26 selftests: bpf: test_xdp_redirect.sh
+# selftests: bpf: test_xdp_meta.sh
+# BTF debug data section '.BTF' rejected: Invalid argument (22)!
+#  - Length:       2030
+# Verifier analysis:
+# 1 packets transmitted, 1 received, 0% packet loss, time 0ms
+# rtt min/avg/max/mdev = 0.057/0.057/0.057/0.000 ms
+# selftests: test_xdp_meta [PASS]
+ok 27 selftests: bpf: test_xdp_meta.sh
+# selftests: bpf: test_xdp_veth.sh
+# [11] VAR _license type_id=9 linkage=1
+# [12] DATASEC license size=0 vlen=1 size == 0
+# 
+# --- 10.1.1.33 ping statistics ---
+# 1 packets transmitted, 1 received, 0% packet loss, time 0ms
+# rtt min/avg/max/mdev = 0.060/0.060/0.060/0.000 ms
+# selftests: xdp_veth [PASS]
+ok 28 selftests: bpf: test_xdp_veth.sh
+# selftests: bpf: test_offload.py
+# SKIP: netdevsim module could not be loaded
+ok 29 selftests: bpf: test_offload.py
+# selftests: bpf: test_sock_addr.sh
+# Wait for testing IPv4/IPv6 to become available ... OK
+# libbpf: load bpf program failed: Permission denied
+# libbpf: -- BEGIN DUMP LOG ---
+# Test case: sendmsg6: deny call .. [PASS]
+# Test case: recvmsg4: return code ok .. [PASS]
+# Test case: recvmsg6: return code !ok .. [PASS]
+# Test case: recvmsg4: rewrite IP & port (asm) .. [PASS]
+# Summary: 35 PASSED, 0 FAILED
+ok 30 selftests: bpf: test_sock_addr.sh
+# selftests: bpf: test_tunnel.sh
+# Testing GRE tunnel...
+# Skipped 109 bytes, use 'verb' option for the full verbose log.
+# [...]
+# tal_size: 6820
+# [1] PTR (anon) type_id=2
+# [4] INT unsigned int size=4 bits_offset=0 nr_bits=32 encoding=(none)
+# [65] DATASEC license size=0 vlen=1 size == 0
+# 
+# PING ::11(::11) 56 data bytes
+# --- ::11 ping statistics ---
+# 5 packets transmitted, 3 received, 40% packet loss, time 4131ms
+# rtt min/avg/max/mdev = 0.052/0.073/0.084/0.016 ms
+# PING 10.1.1.100 (10.1.1.100) 56(84) bytes of data.
+# [64] VAR _license type_id=63 linkage=1
+# [65] DATASEC license size=0 vlen=1 size == 0
+# 
+# PING 10.1.1.100 (10.1.1.100) 56(84) bytes of data.
+# --- 10.1.1.200 ping statistics ---
+# 3 packets transmitted, 3 received, 0% packet loss, time 2065ms
+# rtt min/avg/max/mdev = 0.096/0.120/0.152/0.026 ms
+# [0;92mPASS: ip6geneve[0m
+# Testing IPSec tunnel...
+#             ping-18838 [000] ..s4  1036.556335: 0: reqid 1 spi 0x1 remote ip 0xac100164
+#             ping-18838 [000] ..s4  1037.580311: 0: reqid 1 spi 0x1 remote ip 0xac100164
+# [0;92mPASS: xfrm tunnel[0m
+# test_tunnel.sh: [0;92mPASS[0m
+ok 31 selftests: bpf: test_tunnel.sh
+# selftests: bpf: test_lirc_mode2.sh
+# ./test_lirc_mode2.sh: line 31: ./test_lirc_mode2_user: No such file or directory
+# [0;31mFAIL: lirc_mode2[0m
+ok 32 selftests: bpf: test_lirc_mode2.sh
+# selftests: bpf: test_skb_cgroup_id.sh
+# Wait for testing link-local IP to become available ... OK
+# [23] DATASEC license size=0 vlen=1 size == 0
+# [PASS]
+ok 33 selftests: bpf: test_skb_cgroup_id.sh
+# selftests: bpf: test_flow_dissector.sh
+# Testing global flow dissector...
+# Error: failed prog attach to map
+# inner.source6: ::1
+# pkts: tx=10 rx=10
+# selftests: test_flow_dissector [PASS]
+ok 34 selftests: bpf: test_flow_dissector.sh
+# selftests: bpf: test_xdp_vlan_mode_generic.sh
+# --- 100.64.41.2 ping statistics ---
+# 2 packets transmitted, 2 received, 0% packet loss, time 202ms
+# rtt min/avg/max/mdev = 0.050/0.064/0.078/0.014 ms
+# selftests: xdp_vlan_mode_generic [PASS]
+ok 35 selftests: bpf: test_xdp_vlan_mode_generic.sh
+# selftests: bpf: test_xdp_vlan_mode_native.sh
+# Cannot get device udp-fragmentation-offload settings: Operation not supported
+# [21] VAR _license type_id=20 linkage=1
+# [22] DATASEC license size=0 vlen=1 size == 0
+# selftests: xdp_vlan_mode_native [PASS]
+ok 36 selftests: bpf: test_xdp_vlan_mode_native.sh
+# selftests: bpf: test_lwt_ip_encap.sh
+# starting egress IPv4 encap test
+# [11] INT long long unsigned int size=8 bits_offset=0 nr_bits=64 encoding=(none)
+# [12] UNION (anon) size=8 vlen=1
+# 	sk type_id=13 bits_offset=0
+# ping: sendmsg: No route to host
+# PASS
+# starting ingress IPv4 encap test vrf red
+# 	sk type_id=13 bits_offset=0
+# [13] PTR (anon) type_id=24
+# PASS
+# passed tests: 8
+# failed tests: 0
+ok 37 selftests: bpf: test_lwt_ip_encap.sh
+# selftests: bpf: test_tcp_check_syncookie.sh
+# net.ipv4.tcp_syncookies = 2
+# net.ipv4.tcp_window_scaling = 0
+# Wait for IP 127.0.0.1 to become available . OK
+# Wait for IP ::1 to become available . OK
+# ok
+# Testing XDP...
+# BTF debug data section '.BTF' rejected: Invalid argument (22)!
+#  - Length:       3290
+# [26] DATASEC license size=0 vlen=1 size == 0
+# 
+# ok
+ok 38 selftests: bpf: test_tcp_check_syncookie.sh
+# selftests: bpf: test_tc_edt.sh
+# 
+# 	gso_segs type_id=3 bits_offset=1312
+# 	(anon) type_id=12 bits_offset=1344
+# [22] DATASEC license size=0 vlen=1 size == 0
+# 
+# elapsed: 20 sec; bps difference: -0.06%
+# PASS
+ok 39 selftests: bpf: test_tc_edt.sh
+# selftests: bpf: test_xdping.sh
+# Test client args '-I veth1 -S'; server args ''
+# Running server on veth0; press Ctrl+C to exit...
+# OK. All tests passed
+ok 40 selftests: bpf: test_xdping.sh
+# selftests: bpf: test_bpftool_build.sh
+# Trying to build bpftool
+# ... through kbuild
+# 
+# skip:    make tools/bpf (no .config found)
+# 
+# $PWD:    /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-bpf-lsm-2-2ef96a5bb12be62ef75b5828c0aab838ebb29cb8
+# command: make -s -C tools/bpf/bpftool OUTPUT=/tmp/tmp.unc5H2e1n4/ >/dev/null
+# jit_disasm.c: In function ‘disasm_print_insn’:
+#   BUILD_BUG_ON(ARRAY_SIZE(func_id_str) != __BPF_FUNC_MAX_ID);
+#   ^~~~~~~~~~~~
+# binary:  /tmp/tmp.u8tqAULt0j/bpftool
+# 
+ok 41 selftests: bpf: test_bpftool_build.sh
+# selftests: bpf: test_bpftool.sh
+# test_feature_dev_json (test_bpftool.TestBpftool) ... ok
+# test_feature_kernel (test_bpftool.TestBpftool) ... ok
+# test_feature_macros (test_bpftool.TestBpftool) ... ok
+# 
+# ----------------------------------------------------------------------
+# Ran 5 tests in 1.293s
+# 
+# OK
+ok 42 selftests: bpf: test_bpftool.sh
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-bpf-lsm-2-2ef96a5bb12be62ef75b5828c0aab838ebb29cb8/tools/testing/selftests/bpf'

@@ -1,2 +1,5 @@
+bpf.test_verifier.invalid_and_of_negative_number.pass: 1
+bpf.test_verifier.bounds_check_after_truncation_of_boundary_crossing_range_(1).pass: 1
+bpf.test_verifier.bpf_map_lookup_elem(xskmap,_&key);_xs_>queue_id.skip: 1
 bpf.test_verifier.pass: 1
 bpf.test_xdp_vlan_mode_generic.sh.pass: 1
