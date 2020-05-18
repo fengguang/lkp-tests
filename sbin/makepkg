@@ -1821,6 +1821,9 @@ strip_file() {
 }
 
 tidy_install() {
+	# If makepkg for lkp-src, we don't need to tidy_install.
+	[[ "$pkgname" = 'lkp-src' ]] && return
+
 	cd_safe "$pkgdir"
 	msg "$(gettext "Tidying install...")"
 
