@@ -5,7 +5,6 @@ kconfig: x86_64-rhel-7.6-kselftests
 
 need_kconfig:
 % if ___.group == 'kselftests-x86'
-- CONFIG_PKS_TESTING=y ~ v(5\.[7-9]) # support kernel >= v5.7-rc1
 - CONFIG_POSIX_TIMERS=y ~ v(4\.1[0-9]|4\.20|5\.) # support kernel >= v4.10-rc1
 % elsif ___.group == 'kselftests-lib'
 - CONFIG_PRIME_NUMBERS=m ~ v(5\.[2-9]) # support kernel >= v5.2-rc1
