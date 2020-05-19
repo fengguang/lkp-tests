@@ -337,7 +337,7 @@ prepare_for_selftest()
 	elif [ "$group" = "kselftests-01" ]; then
 		# subtest lib cause kselftest incomplete run, it's a kernel issue
 		# report [LKP] [software node] 7589238a8c: BUG:kernel_NULL_pointer_dereference,address
-		selftest_mfs=$(ls -d [c-l]*/Makefile | grep -v -e livepatch -e lib -e cpufreq -e kvm)
+		selftest_mfs=$(ls -d [c-l]*/Makefile | grep -v -e livepatch -e lib -e cpufreq -e kvm -e firmware)
 	elif [ "$group" = "kselftests-02" ]; then
 		# m* is slow
 		selftest_mfs=$(ls -d [m-s]*/Makefile | grep -v -w -e rseq -e resctrl -e net)
@@ -363,6 +363,8 @@ prepare_for_selftest()
 		selftest_mfs=$(ls -d kvm/Makefile)
 	elif [ "$group" = "kselftests-net" ]; then
 		selftest_mfs=$(ls -d net/Makefile)
+	elif [ "$group" = "kselftests-firmware" ]; then
+		selftest_mfs=$(ls -d firmware/Makefile)
 	fi
 }
 

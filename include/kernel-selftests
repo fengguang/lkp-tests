@@ -113,6 +113,12 @@ need_kconfig:
 - CONFIG_DYNAMIC_DEBUG=y
 - CONFIG_LIVEPATCH=y ~ v(4\.[0-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.0-rc1
 - CONFIG_TEST_LIVEPATCH=m ~ v(5\.[1-9]) # support kernel >=v5.1-rc1
+% elsif ___.group == 'kselftests-firmware'
+- CONFIG_FW_LOADER=y ~ v(4\.1[8-9]|4\.20|5\.) # support kernel >= v4.18-rc1
+- CONFIG_FW_LOADER_USER_HELPER=y ~ v(4\.1[8-9]|4\.20|5\.) # support kernel >= v4.18-rc1
+- CONFIG_IKCONFIG=y
+- CONFIG_IKCONFIG_PROC=y
+- CONFIG_TEST_FIRMWARE=y
 % elsif ___.group == 'kselftests-00'
 - CONFIG_ANDROID=y ~ v(3\.[3-9]|3\.1[0-9]|4\.|5\.) # support kernel >=v3.3-rc1
 - CONFIG_DRM=y
@@ -130,13 +136,9 @@ need_kconfig:
 - CONFIG_EXPERT=y
 - CONFIG_FTRACE=y
 - CONFIG_FUNCTION_PROFILER=y
-- CONFIG_FW_LOADER=y ~ v(4\.1[8-9]|4\.20|5\.) # support kernel >= v4.18-rc1
-- CONFIG_FW_LOADER_USER_HELPER=y ~ v(4\.1[8-9]|4\.20|5\.) # support kernel >= v4.18-rc1
 - CONFIG_GPIOLIB=y
 - CONFIG_GPIO_MOCKUP ~ v(4\.9|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.9-rc1
 - CONFIG_HIST_TRIGGERS=y ~ v(4\.[7-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.7-rc1
-- CONFIG_IKCONFIG=y
-- CONFIG_IKCONFIG_PROC=y
 - CONFIG_IMA_APPRAISE=y
 - CONFIG_IMA_ARCH_POLICY=y ~ v(5\.[0-9]) # support kernel >=v5.0-rc1
 - CONFIG_IRQSOFF_TRACER=y
@@ -159,7 +161,6 @@ need_kconfig:
 - CONFIG_SECURITYFS=y
 - CONFIG_STACK_TRACER=y
 - CONFIG_TEST_BITMAP
-- CONFIG_TEST_FIRMWARE=y
 - CONFIG_TEST_KMOD=m ~ v(4\.1[3-9]|4\.20|5\.) # support kernel >=v4.13-rc1
 - CONFIG_TEST_LKM=m
 - CONFIG_TEST_PRINTF
