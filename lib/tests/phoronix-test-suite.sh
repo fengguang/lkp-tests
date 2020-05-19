@@ -667,9 +667,6 @@ run_test()
 			fixup_smart || die "failed to fixup test smart"
 			;;
 		idle-power-usage-*)
-			# sleep 1 min
-			# Enter Value: 1
-			test_opt="1\nn"
 			fixup_supported_sensors || die "failed to fixup test $test"
 			;;
 		battery-power-usage-*)
@@ -843,8 +840,19 @@ run_test()
 		echo "${test}... ignored_by_lkp" && return
 	fi
 
-	if echo $test | grep idle-power-usage; then
-		echo "$test_opt" | log_cmd phoronix-test-suite run $test
+	if echo "$test" | grep idle-power-usage; then
+		# Choose
+		# sleep 1 min
+		# Enter Value: 1
+		/usr/bin/expect <<-EOF
+			spawn phoronix-test-suite run $test
+			expect {
+				"Enter Value:" { send "1\\r"; exp_continue }
+				"Would you like to save these test results" { send "n\\r"; exp_continue }
+				eof { }
+				default { exp_continue }
+			}
+		EOF
 	elif echo $test | grep netperf; then
 		# Choose
 		# Enter Value: localhost
