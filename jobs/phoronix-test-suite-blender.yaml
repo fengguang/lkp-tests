@@ -1,0 +1,22 @@
+suite: phoronix-test-suite
+testcase: phoronix-test-suite
+category: benchmark
+
+need_memory: 8G
+timeout: 1h
+
+phoronix-test-suite:
+  - test: blender-1.7.0
+    option_a:
+      - BMW27
+      - Classroom
+      - Fishy Cat
+      - Pabellon Barcelona
+      - Barbershop
+      # - Test All Options
+    option_b:
+      - CPU-Only
+      - OpenCL
+      - CUDA
+      - NVIDIA OptiX
+      # - Test All Options
