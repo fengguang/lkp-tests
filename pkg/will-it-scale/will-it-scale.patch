@@ -1,5 +1,15 @@
+From b941867b04f90ccdd618e80848cc14a9db4f7c04 Mon Sep 17 00:00:00 2001
+From: root <root@lkp-haiyan.sh.intel.com>
+Date: Thu, 21 May 2020 12:50:09 +0800
+Subject: [PATCH] update runtest.py
+
+Signed-off-by: root <root@lkp-haiyan.sh.intel.com>
+---
+ runtest.py | 82 +++++++++++++++++++++++++++++++-------------------------------
+ 1 file changed, 41 insertions(+), 41 deletions(-)
+
 diff --git a/runtest.py b/runtest.py
-index 8bda393..9211276 100755
+index 8bda393..de4271a 100755
 --- a/runtest.py
 +++ b/runtest.py
 @@ -48,12 +48,13 @@ class linux_stat():
@@ -63,41 +73,43 @@ index 8bda393..9211276 100755
 -	threads_idle = after.idle_fraction(before) * 100
 +linear = 0
 +for i in threads:
-+       i = int(i)
-+       processes_avg = 0
-+       processes_idle = 0
-+       if mode == 'process' or mode == 'both':
-+               c = './%s_processes -t %d -s %d' % (cmd, i, duration)
-+               before = linux_stat()
-+               pipe = subprocess.Popen(setarch + ' ' + c, shell=True, stdout=subprocess.PIPE, text=True).stdout
-+               for line in pipe.readlines():
-+                       if 'testcase:' in line:
-+                               (testcase, val) = line.split(':')
-+                               title = open(cmd + '.title', 'w')
-+                               title.write(val)
-+                               title.close()
++	i = int(i)
++	processes_avg = 0
++	processes_idle = 0
++	if mode == 'process' or mode == 'both':
++		c = './%s_processes -t %d -s %d' % (cmd, i, duration)
++		before = linux_stat()
++		pipe = subprocess.Popen(setarch + ' ' + c, shell=True, stdout=subprocess.PIPE, text=True).stdout
++		for line in pipe.readlines():
++			if 'testcase:' in line:
++				(testcase, val) = line.split(':')
++				title = open(cmd + '.title', 'w')
++				title.write(val)
++				title.close()
 +
-+                       if 'average:' in line:
-+                               (name, val) = line.split(':')
-+                               processes_avg = int(val)
-+               pipe.close()
-+               after = linux_stat()
-+               processes_idle = after.idle_fraction(before) * 100
++			if 'average:' in line:
++				(name, val) = line.split(':')
++				processes_avg = int(val)
++		pipe.close()
++		after = linux_stat()
++		processes_idle = after.idle_fraction(before) * 100
 +
-+       threads_avg = 0
-+       threads_idle = 0
-+       if mode == 'thread' or mode == 'both':
-+               c = './%s_threads -t %d -s %d' % (cmd, i, duration)
-+               before = linux_stat()
-+               pipe = subprocess.Popen(setarch + ' ' + c, shell=True, stdout=subprocess.PIPE, text=True).stdout
-+               for line in pipe.readlines():
-+                       if 'average:' in line:
-+                               (name, val) = line.split(':')
-+                               threads_avg = int(val)
-+               pipe.close()
-+               after = linux_stat()
-+               threads_idle = after.idle_fraction(before) * 100
++	threads_avg = 0
++	threads_idle = 0
++	if mode == 'thread' or mode == 'both':
++		c = './%s_threads -t %d -s %d' % (cmd, i, duration)
++		before = linux_stat()
++		pipe = subprocess.Popen(setarch + ' ' + c, shell=True, stdout=subprocess.PIPE, text=True).stdout
++		for line in pipe.readlines():
++			if 'average:' in line:
++				(name, val) = line.split(':')
++				threads_avg = int(val)
++		pipe.close()
++		after = linux_stat()
++		threads_idle = after.idle_fraction(before) * 100
  
  	if i == 1:
  		linear = max(processes_avg, threads_avg)
+-- 
+2.11.0
 
