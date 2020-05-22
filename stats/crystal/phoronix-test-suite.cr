@@ -13,10 +13,9 @@ while (line = STDIN.gets)
     puts "#{item}.not_installed: 1"
   when %r{(pts|system)/(\S+)-[0-9.]+}
    test_name = $2
-    regex = /(pts|system)\/(\S+)-[0-9.]+ \[(?<params>.+)\]/
-    if line =~ regex
+    if line =~ (pts|system)\/(\S+)-[0-9.]+ \[(?<params>.+)\]/
      params = $3 # "Test: Furmark - Resolution: 800 x 600 - Mode: Windowed"
-      test_subname << params.split(" - ") # ["Test: Furmark", "Resolution: 800 x 600", "Mode: Windowed"]
+     test_subname << params.split(" - ") # ["Test: Furmark", "Resolution: 800 x 600", "Mode: Windowed"]
                             .map { |param| param.split(": ").last.gsub(/\s+/, "") } # ["Furmark", "800x600", "Windowed"]
                             .join(".")                                              # "Furmark.800x600.Windowed"
     end

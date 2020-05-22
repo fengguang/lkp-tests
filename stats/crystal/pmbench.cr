@@ -4,7 +4,7 @@ res = 0.0
 
 histo_r = Array.new(24, 0)
 histo_w = Array.new(24, 0)
-histo_details_r = []  of Array(Int64)
+histo_details_r = [] of Array(Int64)
 histo_details_w = [] of Array(Int32)
 latencies = [] of Float64
 throughput = 0
