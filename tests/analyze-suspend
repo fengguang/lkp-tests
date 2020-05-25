@@ -12,6 +12,8 @@
 
 export PATH=/lkp/benchmarks/analyze-suspend:$PATH
 
+cmd=sleepgraph.py
+
 echo options: mode: $mode, runtime: $runtime, rtcwake: $rtcwake, multi: $multi, option: $option
 options=""
 [ -n "$mode" ] || mode='freeze'
@@ -129,9 +131,9 @@ do
 	fi
 
 	#commands to supend and resume
-	echo $(date +%T): analyze_suspend.py $options
-	echo $(date +%T): analyze_suspend.py $options >> $f_log
-	analyze_suspend.py $options
+	echo $(date +%T): $cmd $options
+	echo $(date +%T): $cmd $options >> $f_log
+	$cmd $options
 #	[ $? -ne 0 ] && exit 1
 	echo $(date +%T): resume back, return value $? !
 	echo $(date +%T): resume back, return value $? ! >> $f_log
