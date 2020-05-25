@@ -22,7 +22,7 @@ options=""
 
 [[ "$mode" = "freeze" && $(which turbostat) ]] && option="$option -turbostat"
 
-options="-m $mode $option -rtcwake $rtcwake -sync"
+options="-m $mode $option -rtcwake $rtcwake -sync -info $multi"
 
 [ $(which xset) ] && options="$options -display on"
 
