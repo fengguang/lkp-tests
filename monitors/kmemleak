@@ -1,0 +1,12 @@
+#!/bin/sh
+# - interval
+
+: ${interval:=10}
+
+while :
+do
+	echo scan >/sys/kernel/debug/kmemleak
+	cat /sys/kernel/debug/kmemleak
+	echo clear >/sys/kernel/debug/kmemleak
+	wait_timeout $interval
+done
