@@ -1,7 +1,11 @@
 #!/bin/sh
 # - interval
 
+. $LKP_SRC/lib/kmemleak.sh
 . $LKP_SRC/lib/wait.sh
+
+kmemleak_is_enabled || return
+
 setup_wait
 
 : ${interval:=10}
