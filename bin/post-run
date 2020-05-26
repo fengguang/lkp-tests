@@ -16,7 +16,7 @@ any_pid_alive()
 	ps_out=$(ps axho pid 2>/dev/null)
 
 	if [ -n "$ps_out" ]; then
-		echo "$ps_out" | grep -qFxf $pidfile
+		echo "$ps_out" | grep -qFwf $pidfile
 	else
 		is_busybox_ps=1
 		for pid in $(cat $pidfile)
