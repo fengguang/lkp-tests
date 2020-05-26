@@ -1,6 +1,9 @@
 #!/bin/sh
 # - interval
 
+. $LKP_SRC/lib/wait.sh
+setup_wait
+
 : ${interval:=10}
 
 while :
