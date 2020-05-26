@@ -109,6 +109,15 @@ need_kconfig:
 - CONFIG_NET_SCH_NETEM=y
 - CONFIG_TEST_BLACKHOLE_DEV=m ~ v(5\.[3-9]) # support kernel >=v5.3-rc1
 - CONFIG_KALLSYMS=y
+% elsif ___.group == 'kselftests-netfilter'
+- CONFIG_NET_NS=y
+- CONFIG_NFT_FLOW_OFFLOAD=m ~ v(4\.1[6-9]|4\.20|5\.) # support kernel >=v4.16-rc1
+- CONFIG_NFT_MASQ=m
+- CONFIG_NFT_NAT=m ~ v(5\.[1-9]) # support kernel >= v5.1-rc1
+- CONFIG_NFT_QUEUE=m
+- CONFIG_NFT_REDIR=m
+- CONFIG_NF_CT_NETLINK=m
+- CONFIG_NF_TABLES_INET=y ~ v(4\.1[7-9]|4\.20|5\.) # support kernel >=v4.17-rc1
 % elsif ___.group == 'kselftests-livepatch'
 - CONFIG_DYNAMIC_DEBUG=y
 - CONFIG_LIVEPATCH=y ~ v(4\.[0-9]|4\.1[0-9]|4\.20|5\.) # support kernel >= v4.0-rc1
@@ -184,21 +193,13 @@ need_kconfig:
 - CONFIG_NET_FOU
 - CONFIG_NET_FOU_IP_TUNNELS=y
 - CONFIG_NET_L3_MASTER_DEV=y
-- CONFIG_NET_NS=y
 - CONFIG_NET_SCH_NETEM
 - CONFIG_NET_VRF=y # Depends on: IP_MULTIPLE_TABLES [=y]
-- CONFIG_NFT_FLOW_OFFLOAD=m ~ v(4\.1[6-9]|4\.20|5\.) # support kernel >=v4.16-rc1
-- CONFIG_NFT_MASQ=m
-- CONFIG_NFT_NAT=m ~ v(5\.[1-9]) # support kernel >= v5.1-rc1
 - CONFIG_NFT_OBJREF=m ~ v(4\.1[0-9]|4\.20|5\.) # support kernel >=v4.10-rc1
-- CONFIG_NFT_QUEUE=m
-- CONFIG_NFT_REDIR=m
-- CONFIG_NF_CT_NETLINK=m
 - CONFIG_NF_FLOW_TABLE=m ~ v(4\.1[6-9]|4\.20|5\.) # support kernel >=v4.16-rc1
 - CONFIG_NF_FLOW_TABLE_INET=m ~ v(4\.1[6-9]|4\.20|5\.) # support kernel >=v4.16-rc1
 - CONFIG_NF_FLOW_TABLE_IPV4=m ~ v(4\.1[6-9]|4\.20|5\.) # support kernel >=v4.16-rc1
 - CONFIG_NF_FLOW_TABLE_IPV6=m ~ v(4\.1[6-9]|4\.20|5\.) # support kernel >=v4.16-rc1
-- CONFIG_NF_TABLES_INET=y ~ v(4\.1[7-9]|4\.20|5\.) # support kernel >=v4.17-rc1
 - CONFIG_NF_TABLES_NETDEV=y ~ v(4\.1[7-9]|4\.20|5\.) # support kernel >=v4.17-rc1
 - CONFIG_NOTIFIER_ERROR_INJECTION=y
 - CONFIG_PID_NS=y
