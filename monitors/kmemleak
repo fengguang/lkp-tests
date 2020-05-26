@@ -13,10 +13,16 @@ setup_wait
 # stop automatically scanning thread
 echo "scan=off" >/sys/kernel/debug/kmemleak
 
+i=0
 while :
 do
 	echo scan >/sys/kernel/debug/kmemleak
 	cat /sys/kernel/debug/kmemleak
 	echo clear >/sys/kernel/debug/kmemleak
-	wait_timeout $interval
+	if [ $i -le 2 ]; then
+		sleep $interval
+	else
+		wait_timeout $interval
+	fi
+	i=$((i+1))
 done
