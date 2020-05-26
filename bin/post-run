@@ -197,10 +197,6 @@ copy_results
 	upload_files $TMP/gcov-test.tar.gz
 }
 
-[ -f /sys/kernel/debug/kmemleak ] && {
-	upload_files /sys/kernel/debug/kmemleak
-}
-
 # the busybox reduced dmesg/truncate will refuse to run and it's not a big deal
 dmesg --facility user --human --decode --color=always > $TMP/umesg 2>/dev/null
 truncate --no-create --size='<10M' $TMP/output $TMP/stdout $TMP/stderr $TMP/umesg 2>/dev/null
