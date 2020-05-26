@@ -1,0 +1,24 @@
+unreferenced object 0xffff8df92908ff80 (size 128):
+  comm "swapper/0", pid 1, jiffies 4294668105 (age 37.813s)
+  hex dump (first 32 bytes):
+    69 27 6d 20 6c 65 61 6b 20 62 75 66 66 65 72 73  i'm leak buffers
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<(____ptrval____)>] unpack_to_rootfs+0x3d/0x304
+    [<(____ptrval____)>] populate_rootfs+0x19/0x106
+    [<(____ptrval____)>] do_one_initcall+0x46/0x220
+    [<(____ptrval____)>] kernel_init_freeable+0x206/0x280
+    [<(____ptrval____)>] kernel_init+0xa/0x110
+    [<(____ptrval____)>] ret_from_fork+0x35/0x40
+unreferenced object 0xffff8df929110000 (size 128):
+  comm "swapper/0", pid 1, jiffies 4294668108 (age 37.810s)
+  hex dump (first 32 bytes):
+    69 27 6d 20 6c 65 61 6b 20 62 75 66 66 65 72 73  i'm leak buffers
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<(____ptrval____)>] unpack_to_rootfs+0x3d/0x304
+    [<(____ptrval____)>] populate_rootfs+0x59/0x106
+    [<(____ptrval____)>] do_one_initcall+0x46/0x220
+    [<(____ptrval____)>] kernel_init_freeable+0x206/0x280
+    [<(____ptrval____)>] kernel_init+0xa/0x110
+    [<(____ptrval____)>] ret_from_fork+0x35/0x40
