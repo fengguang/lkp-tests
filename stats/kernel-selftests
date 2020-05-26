@@ -152,7 +152,7 @@ while (line = STDIN.gets)
     next unless test_case_name == 'test_sockmap'
 
     bpf_stat(test_case_name, $1, $2, stats)
-  when /^# (.*)\[\d+\] (.*): (OK|FAIL|SKIP)/
+  when /^# (.*)\[\d+\] (.*): ?(OK|FAIL|SKIP)/
     next unless test_case_name == 'test_btf'
 
     subtest_case_name = $1 + '.' + $2
@@ -160,7 +160,7 @@ while (line = STDIN.gets)
   when /^# (.*): ?(PASS|OK|FAIL|SKIP|Pass|Fail|Skip)/
     next unless %w(test_maps test_lru_map test_hashmap).include? test_case_name
 
-    bpf_stat(test_case_name, $1, $2, stats)
+    bpf_stat(test_case_name, $1, $2, stats) unless $1 == test_case_name
   when /^# Test case: (.*) .. \[(PASS|FAIL|SKIP)\]/
     next unless %w(test_sysctl test_sock test_sock_addr.sh).include? test_case_name
 
