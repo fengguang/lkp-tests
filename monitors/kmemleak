@@ -10,6 +10,9 @@ setup_wait
 
 : ${interval:=10}
 
+# stop automatically scanning thread
+echo "scan=off" >/sys/kernel/debug/kmemleak
+
 while :
 do
 	echo scan >/sys/kernel/debug/kmemleak
