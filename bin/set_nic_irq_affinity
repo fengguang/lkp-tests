@@ -47,7 +47,7 @@ usage()
 	exit 1
 }
 
-if [ "$1" == "-x" ]; then
+if [ "$1" = "-x" ]; then
 	XPS_ENA=1
 	shift
 fi
@@ -221,7 +221,7 @@ done
 
 # check for irqbalance running
 IRQBALANCE_ON=`ps ax | grep -v grep | grep -q irqbalance; echo $?`
-if [ "$IRQBALANCE_ON" == "0" ] ; then
+if [ "$IRQBALANCE_ON" = "0" ] ; then
 	echo " WARNING: irqbalance is running and will"
 	echo "          likely override this script's affinitization."
 	echo "          Please stop the irqbalance service and/or execute"
