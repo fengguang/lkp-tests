@@ -23,7 +23,7 @@ ROOTFS=$1
 source $LKP_SRC/lib/detect-system.sh
 detect_system $ROOTFS
 
-[ "$_system_name" == "unknown" ] && {
+[ "$_system_name" = "unknown" ] && {
 	echo "Detect system failed: $ROOTFS"
 	exit 1
 }
