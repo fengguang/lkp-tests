@@ -129,7 +129,7 @@ check_kconfig()
 		# So don't check y/m, just match kconfig name
 		# E.g. convert CONFIG_TEST_VMALLOC=m to CONFIG_TEST_VMALLOC=
 		line="${line%=*}="
-		if [[ "$line" == "CONFIG_DEBUG_PI_LIST=" ]]; then
+		if [[ "$line" = "CONFIG_DEBUG_PI_LIST=" ]]; then
 			grep -q $line $kernel_config || {
 				line="CONFIG_DEBUG_PLIST="
 				grep -q $line $kernel_config || return 1
@@ -432,7 +432,7 @@ fixup_openat2()
 	cd /mnt/kselftest/openat2
 	log_cmd ./openat2_test 2>&1
 	# Since we run openat2_test directly, we also need format the output.
-	if [[ "$?" == "0" ]]; then
+	if [[ "$?" = "0" ]]; then
 		echo "ok 1 selftests: openat2: openat2_test"
 	else
 		echo "not ok 1 selftests: openat2: openat2_test # exit=1"
