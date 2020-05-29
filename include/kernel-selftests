@@ -127,7 +127,7 @@ need_kconfig:
 - CONFIG_FW_LOADER_USER_HELPER=y ~ v(4\.1[8-9]|4\.20|5\.) # support kernel >= v4.18-rc1
 - CONFIG_IKCONFIG=y
 - CONFIG_IKCONFIG_PROC=y
-- CONFIG_TEST_FIRMWARE=y
+- CONFIG_TEST_FIRMWARE
 % elsif ___.group == 'kselftests-00'
 - CONFIG_ANDROID=y ~ v(3\.[3-9]|3\.1[0-9]|4\.|5\.) # support kernel >=v3.3-rc1
 - CONFIG_DRM=y
