@@ -770,6 +770,13 @@ def kpi_stat?(stat, _axes, _values = nil)
   all_tests_set.include?(base) && !remainder.start_with?('time.')
 end
 
+def sort_bisect_stats(stats)
+  stats.sort_by do |stat|
+    key = stat && stat[0]
+    $index_perf[key] || -255 # -255 is a error value that should be less than values in $index_perf
+  end
+end
+
 def kpi_stat_direction(stat_name, stat_change_percentage)
   key = $index_perf.keys.find { |i| stat_name =~ /^#{i}$/ }
   change_direction = if key.nil?
