@@ -10,7 +10,6 @@ disk:
 fs:
 - xfs
 - ext4
-- btrfs
 - f2fs
 
 aim7:
@@ -20,13 +19,7 @@ aim7:
   - disk_rw
   - disk_cp
   - disk_wrt
-  load: {{
-          if fs == 'btrfs'
-                  aim7.test == 'disk_src' ? 500 : 1500
-          else
-                  3000
-          end
-        }}
+  load: 3000
 
 ---
 aim7:
@@ -34,7 +27,6 @@ aim7:
   - sync_disk_rw
   load: {{
           case fs
-          when 'btrfs' then 10
           when 'f2fs'  then 200
           else              600
           end
@@ -46,7 +38,6 @@ aim7:
   - creat-clo
   load: {{
           case fs
-          when 'btrfs' then 4
           when 'ext4'  then 1000
           else              1500
           end
