@@ -1,0 +1,10 @@
+suite: test-bpf
+testcase: test-bpf
+category: functional
+
+need_memory: 1G
+
+test-bpf:
+  test:
+  - jit
+  - non-jit

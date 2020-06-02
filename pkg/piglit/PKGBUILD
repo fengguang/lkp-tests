@@ -59,10 +59,10 @@ build_piglit()
 
 build_intel_gpu_tools()
 {
+	python3 -m pip install meson || return
+	python3 -m pip install ninja || return
 	cd ../igt-gpu-tools || return
-	[ "$distro" = "centos" ] && local opts="--disable-amdgpu"
-	./autogen.sh $opts || return
-	make || return
+	meson build && ninja -C build
 }
 
 create_config()
@@ -71,7 +71,7 @@ create_config()
 	touch ${benchmark_path}/piglit.conf
 	cat > "${benchmark_path}/piglit.conf" <<EOF
 [igt]
-path=${benchmark_path}/lib/piglit/bin/igt
+path=${benchmark_path}/lib/piglit/bin/igt/build
 EOF
 }
 

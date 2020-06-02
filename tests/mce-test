@@ -134,7 +134,7 @@ test_choice()
 	rm -rf "$mount_points"/mce-test
 }
 
-if [ "$mce_case" == "all" ]; then
+if [ "$mce_case" = "all" ]; then
 	test_all
 else
 	test_choice

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+. $LKP_SRC/lib/reproduce-log.sh
+
+test_array=("kunit-test" "kunit-example-test" "ext4-inode-test" "sysctl-test" "list-test")
+
+run_kunit_tests()
+{
+	for i in ${test_array[@]}; do
+		log_cmd modprobe $i
+		log_cmd rmmod $i
+	done
+}
+
+
+# Clear dmesg info to collect kunit tests result
+dmesg -C
+run_kunit_tests
+dmesg > "$TMP_RESULT_ROOT"/kunit

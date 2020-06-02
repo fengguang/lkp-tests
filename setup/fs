@@ -117,7 +117,7 @@ mount_tmpfs()
 
 make_fs() {
 	is_btrfs_raid_levels && {
-		log_cmd mkfs.btrfs --data ${raid_level#b} $mkfs $ensure_mkfs $partitions || exit
+		log_cmd mkfs.btrfs --data ${raid_level#b} -m ${raid_level#b} $mkfs $ensure_mkfs $partitions || exit
 		return
 	}
 

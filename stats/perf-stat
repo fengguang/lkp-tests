@@ -4,6 +4,7 @@ $results_sum = Hash.new(0)
 $results_nr = Hash.new(0)
 $interval_results_sum = Hash.new(0)
 $interval_results_nr = Hash.new(0)
+$interval_metrics_val = Hash.new(0)
 $interval_nr = 0
 $run_time = 0
 
@@ -86,6 +87,12 @@ def output_interval(prev_time, time)
   calc_addon_keys($interval_results_sum, $interval_results_nr,
                   interval, 1, 'i.')
 
+  if !$interval_metrics_val.empty?
+    $interval_metrics_val.each do |key, value|
+      puts "i.#{key}: #{value}"
+    end
+  end
+
   ignore = false
   if time <= $stats_begin_time
     ignore = true
@@ -109,26 +116,42 @@ def output_interval(prev_time, time)
 
   $interval_results_sum.clear
   $interval_results_nr.clear
+  if !$interval_metrics_val.empty?
+    $interval_metrics_val.clear
+  end
 end
 
 # Example output
-#    290.690747746 777209  mem_load_uops_l3_miss_retired_remote_dram 89128748143 100.00
-#    324.224668698 7928832 Bytes llc_misses.mem_read 8005538025 100.00
+#     1.000679357,S0,12,170516599,,l1d_pend_miss.pending,8004582139,66.65,80.5,Load_Miss_Real_Latency
+#     1.000679357,S0,12,1202404,,mem_load_retired.l1_miss,8004582139,66.65,,
+#     1.000679357,S0,12,915585,,mem_load_retired.fb_hit,8004582139,66.65,,
+#     1.000679357,S0,12,66085859,,inst_retired.any,8009729165,66.69,7.3,CPI
+#     1.000679357,S0,12,481531770,,cycles,8009729165,66.69,,
+#     1.000679357,S0,12,478629457,,cpu-cycles,8005866225,66.66,,
+#     1.000679357,S0,12,65320043,,instructions,8005866225,66.66,0.14,insn per cycle
 
-#    2.003151490 S0 8 321055743  cpu-cycles 8012766737 100.00
-#    2.003151490 S0 8 161761287  instructions 8011773256 100.00 0.47 insn per cycle
-#    3.004126313 S0 8 319801680  cpu-cycles 8006470194 100.00
-#    3.004126313 S0 8 170196182  instructions 8007548409 100.00 0.50 insn per cycle
+#     5.000739365,163913433,,l1d_pend_miss.pending,8001787549,66.67,81.0,Load_Miss_Real_Latency
+#     5.000739365,1197996,,mem_load_retired.l1_miss,8001787549,66.67,,
+#     5.000739365,862693,,mem_load_retired.fb_hit,8001787549,66.67,,
+#     5.000739365,66368209,,inst_retired.any,8000697756,66.66,7.3,CPI
+#     5.000739365,478274162,,cycles,8000697756,66.66,,
+#     5.000739365,478535457,,cpu-cycles,8001495219,66.67,,
+#     5.000739365,69598766,,instructions,8001495219,66.67,0.14,insn per cycle
 
 def parse
   prev_prev_time = 0
   prev_time = 0
   time = 0
+  metric_val = 0
 
   $stdin.each_line do |line|
-    next unless line =~ /^\s*\d+\.\d+\s+/
+    next unless line =~ /^\s*\d+\.\d+\W+/
 
-    stime, *fields = line.split
+    if line.include? ','
+      stime, *fields = line.split(',')
+    else
+      stime, *fields = line.split
+    end
 
     prev_time = time
     time = stime.to_f
@@ -140,9 +163,10 @@ def parse
     socket = nil
     unit = nil
     socket_key = nil
+    metric_key = nil
 
     # per-socket mode
-    #    S0 8 321055743  cpu-cycles 8012766737 100.00
+    # S0,12,1202404,,mem_load_retired.l1_miss,8004582139,66.65,,
     if fields[0][0] == 'S'
       socket = fields[0]
       fields.delete_at 1
@@ -150,10 +174,27 @@ def parse
     end
 
     # for unit
-    # 7928832 Bytes llc_misses.mem_read 8005538025 100.00
+    # 7928832,Bytes,llc_misses.mem_read,8005538025,100.00,,
     if fields[1] == 'Bytes'
       unit = fields[1]
-      fields.delete_at 1
+    end
+
+    # 10.072447351 43181  context-switches 16105112423 100.00 0.003 M/sec
+    # 1.017184940,8778,,context-switches,16689586072,100.00,0.526,K/sec
+    fields.delete_at 1 if line.include? ','
+
+    # for metrics
+    # 1.000679357,S0,12,170516599,,l1d_pend_miss.pending,8004582139,66.65,80.5,Load_Miss_Real_Latency
+    if fields[5] != nil
+    # For the metric name, Its first char is an uppercase letter
+    # Ignore the test result which is not for metrics
+    # 1.000679357,S0,12,65320043,,instructions,8005866225,66.66,0.14,insn per cycle
+      if fields[5] =~ /^[A-Z][^ ]+$/
+        metric_key = "metric.#{fields[5].chomp}"
+        metric_key = "#{socket}.#{metric_key}" if socket
+        metric_val = fields[4]
+        metric_val = metric_val.to_f
+      end
     end
 
     # 777209 mem_load_uops_l3_miss_retired_remote_dram 89128748143 100.00
@@ -171,6 +212,9 @@ def parse
     if socket_key
       $interval_results_sum[socket_key] += value
       $interval_results_nr[socket_key] += 1
+    end
+    if metric_key
+      $interval_metrics_val[metric_key] += metric_val
     end
   end
 

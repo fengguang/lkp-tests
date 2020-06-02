@@ -7,10 +7,18 @@ split_syscalls()
 	# syscalls_partN file exists, abort splitting
 	[ -f "${cmdfile}_part1" ] && return 0
 
+	local timer_tests=$(grep -lr "sample = sample_fn" ./)
+	local timer_file="runtest/syscalls_timer"
+	for timer_test in $timer_tests; do
+		timer_test=${timer_test##*/}
+		timer_test=${timer_test%%.*}
+		grep "^$timer_test" "$cmdfile" >> "$timer_file"
+	done
+
 	i=1
 	n=1
 	test_num=""
-	cat $cmdfile | sed -e '/^$/ d' -e 's/^[ ,\t]*//' -e '/^#/ d' | while read line
+	grep -v -f "$timer_file" "$cmdfile" | sed -e '/^$/ d' -e 's/^[ ,\t]*//' -e '/^#/ d' | while read line
 	do
 		if [ "$i" = "2" ]; then
 			test_num=250
@@ -278,6 +286,10 @@ test_setting()
 		sed -i '/\/usr\/sbin\/named {/a\\/tmp\/** rw,' /etc/apparmor.d/usr.sbin.named || exit
 		systemctl start bind9 || exit
 		systemctl list-units | grep -wq apparmor.service && (systemctl reload-or-restart apparmor || exit)
+		;;
+	scsi_debug.part1-*)
+		# fix 'Unable to make dir /test/growfiles/XXX' error
+		mkdir -p /test/growfiles
 		;;
 	esac
 }

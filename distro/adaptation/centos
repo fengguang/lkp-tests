@@ -38,7 +38,6 @@ libattr1-dev: libattr-devel
 libaudit-dev: audit-libs-devel
 libblas3: liblas-libs
 libblkid-dev: libblkid-devel
-libc-bin:
 libc6: glibc.x86_64
 libc6-dev: glibc-devel glibc-static
 libc6-dev:i386: glibc-devel.i686 glibc-static.i686
@@ -48,6 +47,8 @@ libcairo2-dev: cairo-devel
 libcap2: libcap
 libcap-dev: libcap-devel
 libcap-ng-dev: libcap-ng-devel
+libc-bin: glibc-common
+libc-dev-bin: glibc-common
 libcilkrts5:
 libconfig-dev: libconfig-devel
 libcurl4-openssl-dev: libcurl-devel
@@ -208,6 +209,7 @@ xz-utils: xz
 zlib1g: zlib
 zlib1g-dev: zlib-devel
 openjdk-8-jdk: java-1.8.0-openjdk-devel
+locales: glibc-common
 libapparmor1:
 libapparmor-dev:
 libbabeltrace-dev:
@@ -223,3 +225,4 @@ libbz2-dev: bzip2-devel
 autopoint: gettext-devel
 libipc-run-perl: perl-IPC-Run
 libicu: libicu57
+libgdbm-dev: gdbm-devel

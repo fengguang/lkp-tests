@@ -1,0 +1,14 @@
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-bpf-lsm-2-2ef96a5bb12be62ef75b5828c0aab838ebb29cb8/tools/testing/selftests/bpf'
+# selftests: bpf: test_verifier
+# #0/u invalid and of negative number OK
+# #65/u bounds check after truncation of boundary-crossing range (1) OK
+# #837/p bpf_map_lookup_elem(xskmap, &key); xs->queue_id SKIP (unsupported map type 17)
+# Summary: 1601 PASSED, 1 SKIPPED, 0 FAILED
+ok 1 selftests: bpf: test_verifier
+# selftests: bpf: test_xdp_vlan_mode_generic.sh
+# --- 100.64.41.2 ping statistics ---
+# 2 packets transmitted, 2 received, 0% packet loss, time 202ms
+# rtt min/avg/max/mdev = 0.050/0.064/0.078/0.014 ms
+# selftests: xdp_vlan_mode_generic [PASS]
+ok 35 selftests: bpf: test_xdp_vlan_mode_generic.sh
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-bpf-lsm-2-2ef96a5bb12be62ef75b5828c0aab838ebb29cb8/tools/testing/selftests/bpf'

@@ -11,6 +11,12 @@ build()
 {
 	cd "$srcdir/$pkgname-$pkgname-$pkgver.$pkgrel"
 
+	# sendfile_tcp_stream() misses assignment of len and it is possible
+	# for random len to trigger the following issue, so fix it.
+	# stderr: netperf: data send error: sendfile: No space left on device
+	# stderr: len was -1847701200 send_size was 5120
+	sed -i 's/(netperf_sendfile/(len = netperf_sendfile/g' src/nettest_bsd.c
+
 	local configure_flags=(
 				--prefix="$pkgdir/lkp/benchmarks/$pkgname"
 				--enable-demo

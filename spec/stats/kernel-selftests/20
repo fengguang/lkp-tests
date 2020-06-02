@@ -1,0 +1,139 @@
+make[1]: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e'
+gcc -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 -fno-stack-protector -fno-PIE -I../../../../tools/include -I../../../../tools/arch/x86/include -I../../../../usr/include/ -Iinclude -Ilib -Iinclude/x86_64 -I..   -c lib/assert.c -o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/lib/assert.o
+gcc -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 -fno-stack-protector -fno-PIE -I../../../../tools/include -I../../../../tools/arch/x86/include -I../../../../usr/include/ -Iinclude -Ilib -Iinclude/x86_64 -I..   -c lib/elf.c -o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/lib/elf.o
+gcc -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 -fno-stack-protector -fno-PIE -I../../../../tools/include -I../../../../tools/arch/x86/include -I../../../../usr/include/ -Iinclude -Ilib -Iinclude/x86_64 -I..   -c lib/io.c -o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/lib/io.o
+gcc -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 -fno-stack-protector -fno-PIE -I../../../../tools/include -I../../../../tools/arch/x86/include -I../../../../usr/include/ -Iinclude -Ilib -Iinclude/x86_64 -I..   -c lib/kvm_util.c -o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/lib/kvm_util.o
+gcc -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 -fno-stack-protector -fno-PIE -I../../../../tools/include -I../../../../tools/arch/x86/include -I../../../../usr/include/ -Iinclude -Ilib -Iinclude/x86_64 -I..   -c lib/sparsebit.c -o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/lib/sparsebit.o
+gcc -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 -fno-stack-protector -fno-PIE -I../../../../tools/include -I../../../../tools/arch/x86/include -I../../../../usr/include/ -Iinclude -Ilib/x86_64 -Iinclude/x86_64 -I..   -c lib/x86_64/processor.c -o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/lib/x86_64/processor.o
+gcc -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 -fno-stack-protector -fno-PIE -I../../../../tools/include -I../../../../tools/arch/x86/include -I../../../../usr/include/ -Iinclude -Ilib/x86_64 -Iinclude/x86_64 -I..   -c lib/x86_64/vmx.c -o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/lib/x86_64/vmx.o
+gcc -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 -fno-stack-protector -fno-PIE -I../../../../tools/include -I../../../../tools/arch/x86/include -I../../../../usr/include/ -Iinclude -Ilib/x86_64 -Iinclude/x86_64 -I..   -c lib/x86_64/svm.c -o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/lib/x86_64/svm.o
+gcc -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 -fno-stack-protector -fno-PIE -I../../../../tools/include -I../../../../tools/arch/x86/include -I../../../../usr/include/ -Iinclude -Ilib/x86_64 -Iinclude/x86_64 -I..   -c lib/x86_64/ucall.c -o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/lib/x86_64/ucall.o
+ar crs /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/libkvm.a /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/lib/assert.o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/lib/elf.o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/lib/io.o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/lib/kvm_util.o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/lib/sparsebit.o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/lib/x86_64/processor.o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/lib/x86_64/vmx.o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/lib/x86_64/svm.o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/lib/x86_64/ucall.o
+gcc -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 -fno-stack-protector -fno-PIE -I../../../../tools/include -I../../../../tools/arch/x86/include -I../../../../usr/include/ -Iinclude -Ix86_64 -Iinclude/x86_64 -I..  -pthread  -no-pie   x86_64/cr4_cpuid_sync_test.c /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/libkvm.a  -o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/x86_64/cr4_cpuid_sync_test
+gcc -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 -fno-stack-protector -fno-PIE -I../../../../tools/include -I../../../../tools/arch/x86/include -I../../../../usr/include/ -Iinclude -Ix86_64 -Iinclude/x86_64 -I..  -pthread  -no-pie   x86_64/evmcs_test.c /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/libkvm.a  -o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/x86_64/evmcs_test
+gcc -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 -fno-stack-protector -fno-PIE -I../../../../tools/include -I../../../../tools/arch/x86/include -I../../../../usr/include/ -Iinclude -Ix86_64 -Iinclude/x86_64 -I..  -pthread  -no-pie   x86_64/hyperv_cpuid.c /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/libkvm.a  -o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/x86_64/hyperv_cpuid
+gcc -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 -fno-stack-protector -fno-PIE -I../../../../tools/include -I../../../../tools/arch/x86/include -I../../../../usr/include/ -Iinclude -Ix86_64 -Iinclude/x86_64 -I..  -pthread  -no-pie   x86_64/mmio_warning_test.c /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/libkvm.a  -o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/x86_64/mmio_warning_test
+gcc -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 -fno-stack-protector -fno-PIE -I../../../../tools/include -I../../../../tools/arch/x86/include -I../../../../usr/include/ -Iinclude -Ix86_64 -Iinclude/x86_64 -I..  -pthread  -no-pie   x86_64/platform_info_test.c /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/libkvm.a  -o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/x86_64/platform_info_test
+gcc -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 -fno-stack-protector -fno-PIE -I../../../../tools/include -I../../../../tools/arch/x86/include -I../../../../usr/include/ -Iinclude -Ix86_64 -Iinclude/x86_64 -I..  -pthread  -no-pie   x86_64/set_sregs_test.c /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/libkvm.a  -o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/x86_64/set_sregs_test
+gcc -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 -fno-stack-protector -fno-PIE -I../../../../tools/include -I../../../../tools/arch/x86/include -I../../../../usr/include/ -Iinclude -Ix86_64 -Iinclude/x86_64 -I..  -pthread  -no-pie   x86_64/smm_test.c /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/libkvm.a  -o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/x86_64/smm_test
+gcc -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 -fno-stack-protector -fno-PIE -I../../../../tools/include -I../../../../tools/arch/x86/include -I../../../../usr/include/ -Iinclude -Ix86_64 -Iinclude/x86_64 -I..  -pthread  -no-pie   x86_64/state_test.c /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/libkvm.a  -o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/x86_64/state_test
+gcc -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 -fno-stack-protector -fno-PIE -I../../../../tools/include -I../../../../tools/arch/x86/include -I../../../../usr/include/ -Iinclude -Ix86_64 -Iinclude/x86_64 -I..  -pthread  -no-pie   x86_64/sync_regs_test.c /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/libkvm.a  -o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/x86_64/sync_regs_test
+gcc -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 -fno-stack-protector -fno-PIE -I../../../../tools/include -I../../../../tools/arch/x86/include -I../../../../usr/include/ -Iinclude -Ix86_64 -Iinclude/x86_64 -I..  -pthread  -no-pie   x86_64/vmx_close_while_nested_test.c /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/libkvm.a  -o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/x86_64/vmx_close_while_nested_test
+gcc -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 -fno-stack-protector -fno-PIE -I../../../../tools/include -I../../../../tools/arch/x86/include -I../../../../usr/include/ -Iinclude -Ix86_64 -Iinclude/x86_64 -I..  -pthread  -no-pie   x86_64/vmx_dirty_log_test.c /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/libkvm.a  -o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/x86_64/vmx_dirty_log_test
+gcc -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 -fno-stack-protector -fno-PIE -I../../../../tools/include -I../../../../tools/arch/x86/include -I../../../../usr/include/ -Iinclude -Ix86_64 -Iinclude/x86_64 -I..  -pthread  -no-pie   x86_64/vmx_set_nested_state_test.c /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/libkvm.a  -o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/x86_64/vmx_set_nested_state_test
+gcc -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 -fno-stack-protector -fno-PIE -I../../../../tools/include -I../../../../tools/arch/x86/include -I../../../../usr/include/ -Iinclude -Ix86_64 -Iinclude/x86_64 -I..  -pthread  -no-pie   x86_64/vmx_tsc_adjust_test.c /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/libkvm.a  -o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/x86_64/vmx_tsc_adjust_test
+gcc -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 -fno-stack-protector -fno-PIE -I../../../../tools/include -I../../../../tools/arch/x86/include -I../../../../usr/include/ -Iinclude -Ix86_64 -Iinclude/x86_64 -I..  -pthread  -no-pie   x86_64/xss_msr_test.c /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/libkvm.a  -o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/x86_64/xss_msr_test
+gcc -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 -fno-stack-protector -fno-PIE -I../../../../tools/include -I../../../../tools/arch/x86/include -I../../../../usr/include/ -Iinclude -Ix86_64 -Iinclude/x86_64 -I..  -pthread  -no-pie   x86_64/svm_vmcall_test.c /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/libkvm.a  -o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/x86_64/svm_vmcall_test
+gcc -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 -fno-stack-protector -fno-PIE -I../../../../tools/include -I../../../../tools/arch/x86/include -I../../../../usr/include/ -Iinclude -I. -Iinclude/x86_64 -I..  -pthread  -no-pie   clear_dirty_log_test.c /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/libkvm.a  -o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/clear_dirty_log_test
+gcc -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 -fno-stack-protector -fno-PIE -I../../../../tools/include -I../../../../tools/arch/x86/include -I../../../../usr/include/ -Iinclude -I. -Iinclude/x86_64 -I..  -pthread  -no-pie   dirty_log_test.c /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/libkvm.a  -o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/dirty_log_test
+gcc -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 -fno-stack-protector -fno-PIE -I../../../../tools/include -I../../../../tools/arch/x86/include -I../../../../usr/include/ -Iinclude -I. -Iinclude/x86_64 -I..  -pthread  -no-pie   kvm_create_max_vcpus.c /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/libkvm.a  -o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm/kvm_create_max_vcpus
+TAP version 13
+1..18
+# selftests: kvm: cr4_cpuid_sync_test
+# Testing guest mode: PA-bits:ANY, VA-bits:48,  4K pages
+# Guest physical address width detected: 39
+ok 1 selftests: kvm: cr4_cpuid_sync_test
+# selftests: kvm: evmcs_test
+# Testing guest mode: PA-bits:ANY, VA-bits:48,  4K pages
+# Guest physical address width detected: 39
+ok 2 selftests: kvm: evmcs_test
+# selftests: kvm: hyperv_cpuid
+# Testing guest mode: PA-bits:ANY, VA-bits:48,  4K pages
+# Guest physical address width detected: 39
+ok 3 selftests: kvm: hyperv_cpuid
+# selftests: kvm: mmio_warning_test
+# ret1=0 exit_reason=17 suberror=1
+# ret1=0 exit_reason=8 suberror=65530
+# ret1=0 exit_reason=17 suberror=1
+# ret1=0 exit_reason=8 suberror=65530
+# ret1=0 exit_reason=17 suberror=1
+# ret1=0 exit_reason=8 suberror=65530
+# ret1=0 exit_reason=17 suberror=1
+# ret1=0 exit_reason=8 suberror=65530
+# ret1=0 exit_reason=17 suberror=1
+# ret1=0 exit_reason=8 suberror=65530
+# ret1=0 exit_reason=17 suberror=1
+# ret1=0 exit_reason=8 suberror=65530
+# ret1=0 exit_reason=17 suberror=1
+# ret1=0 exit_reason=8 suberror=65530
+# ret1=0 exit_reason=17 suberror=1
+# ret1=0 exit_reason=8 suberror=65530
+# ret1=0 exit_reason=17 suberror=1
+# ret1=0 exit_reason=8 suberror=65530
+# ret1=0 exit_reason=17 suberror=1
+# ret1=0 exit_reason=8 suberror=65530
+ok 4 selftests: kvm: mmio_warning_test
+# selftests: kvm: platform_info_test
+# Testing guest mode: PA-bits:ANY, VA-bits:48,  4K pages
+# Guest physical address width detected: 39
+ok 5 selftests: kvm: platform_info_test
+# selftests: kvm: set_sregs_test
+# Testing guest mode: PA-bits:ANY, VA-bits:48,  4K pages
+# Guest physical address width detected: 39
+ok 6 selftests: kvm: set_sregs_test
+# selftests: kvm: smm_test
+# Testing guest mode: PA-bits:ANY, VA-bits:48,  4K pages
+# Guest physical address width detected: 39
+ok 7 selftests: kvm: smm_test
+# selftests: kvm: state_test
+# Testing guest mode: PA-bits:ANY, VA-bits:48,  4K pages
+# Guest physical address width detected: 39
+ok 8 selftests: kvm: state_test
+# selftests: kvm: sync_regs_test
+# Testing guest mode: PA-bits:ANY, VA-bits:48,  4K pages
+# Guest physical address width detected: 39
+ok 9 selftests: kvm: sync_regs_test
+# selftests: kvm: vmx_close_while_nested_test
+# Testing guest mode: PA-bits:ANY, VA-bits:48,  4K pages
+# Guest physical address width detected: 39
+ok 10 selftests: kvm: vmx_close_while_nested_test
+# selftests: kvm: vmx_dirty_log_test
+# Testing guest mode: PA-bits:ANY, VA-bits:48,  4K pages
+# Guest physical address width detected: 39
+ok 11 selftests: kvm: vmx_dirty_log_test
+# selftests: kvm: vmx_set_nested_state_test
+# Testing guest mode: PA-bits:ANY, VA-bits:48,  4K pages
+# Guest physical address width detected: 39
+ok 12 selftests: kvm: vmx_set_nested_state_test
+# selftests: kvm: vmx_tsc_adjust_test
+# Testing guest mode: PA-bits:ANY, VA-bits:48,  4K pages
+# Guest physical address width detected: 39
+# IA32_TSC_ADJUST is -4294969570 (-1 * TSC_ADJUST_VALUE + -2274).
+# IA32_TSC_ADJUST is -4294969570 (-1 * TSC_ADJUST_VALUE + -2274).
+# IA32_TSC_ADJUST is -8589939078 (-2 * TSC_ADJUST_VALUE + -4486).
+# IA32_TSC_ADJUST is -8589939078 (-2 * TSC_ADJUST_VALUE + -4486).
+ok 13 selftests: kvm: vmx_tsc_adjust_test
+# selftests: kvm: xss_msr_test
+# Testing guest mode: PA-bits:ANY, VA-bits:48,  4K pages
+# Guest physical address width detected: 39
+ok 14 selftests: kvm: xss_msr_test
+# selftests: kvm: svm_vmcall_test
+# nested SVM not enabled, skipping test
+not ok 15 selftests: kvm: svm_vmcall_test # SKIP
+# selftests: kvm: clear_dirty_log_test
+# Test iterations: 32, interval: 10 (ms)
+# Testing guest mode: PA-bits:ANY, VA-bits:48,  4K pages
+# Guest physical address width detected: 39
+# guest physical test memory offset: 0x7fbffef000
+# Dirtied 1024 pages
+# Total bits checked: dirty (238685), clear (7888275), track_next (47343)
+ok 16 selftests: kvm: clear_dirty_log_test
+# selftests: kvm: dirty_log_test
+# Test iterations: 32, interval: 10 (ms)
+# Testing guest mode: PA-bits:ANY, VA-bits:48,  4K pages
+# Guest physical address width detected: 39
+# guest physical test memory offset: 0x7fbffef000
+# Dirtied 1024 pages
+# Total bits checked: dirty (240239), clear (7886721), track_next (52857)
+ok 17 selftests: kvm: dirty_log_test
+# selftests: kvm: kvm_create_max_vcpus
+# KVM_CAP_MAX_VCPU_ID: 1023
+# KVM_CAP_MAX_VCPUS: 288
+# Testing creating 288 vCPUs, with IDs 0...287.
+# Testing guest mode: PA-bits:ANY, VA-bits:48,  4K pages
+# Guest physical address width detected: 39
+# Testing creating 288 vCPUs, with IDs 735...1022.
+# Testing guest mode: PA-bits:ANY, VA-bits:48,  4K pages
+# Guest physical address width detected: 39
+ok 18 selftests: kvm: kvm_create_max_vcpus
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-16fbf79b0f83bc752cee8589279f1ebfe57b3b6e/tools/testing/selftests/kvm'

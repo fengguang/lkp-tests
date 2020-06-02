@@ -1,7 +1,8 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/dgc/linux-xfs.git
 integration_testing_branches: for-next
-mail_cc: linux-xfs@vger.kernel.org
 owner: Dave Chinner <david@fromorbit.com>
+mail_to: Dave Chinner <david@fromorbit.com>
+private_report_branch: .*
 subsystems:
 - xfs
 - libxfs

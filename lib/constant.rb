@@ -5,6 +5,7 @@ LKP_USER ||= ENV['LKP_USER'] || ENV['USER'] || `whoami`.chomp
 require "#{LKP_SRC}/lib/run_env"
 
 DEVEL_HOURLY_KCONFIGS = %w(x86_64-rhel-7.6).freeze
+LKP_DEFAULT_COMPILER = 'gcc-7'.freeze
 GIT_ROOT_DIR = '/lkp/repo'.freeze
 
 TESTCASE_AXIS_KEY = 'testcase'.freeze

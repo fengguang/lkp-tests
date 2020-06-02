@@ -16,7 +16,7 @@ GIT_DIR ||= ENV['GIT_DIR'] || GIT_WORK_TREE + '/.git'
 GIT ||= "git --work-tree=#{GIT_WORK_TREE} --git-dir=#{GIT_DIR}".freeze
 
 def __git_committer_name(commit)
-  `#{GIT} log -n1 --pretty=format:'%cn' #{commit}`.chomp
+  `#{GIT} log -n1 --pretty=format:'%cn' "#{commit}"`.chomp
 end
 
 def git_committer_name(commit)
@@ -26,7 +26,7 @@ def git_committer_name(commit)
 end
 
 def __git_parents(commit)
-  `#{GIT} rev-list --parents -n1 #{commit}`.chomp.split[1..-1]
+  `#{GIT} rev-list --parents -n1 "#{commit}"`.chomp.split[1..-1]
 end
 
 def git_parents(commit)
@@ -36,7 +36,7 @@ def git_parents(commit)
 end
 
 def __git_patchid(commit)
-  `#{GIT} show #{commit} 2>/dev/null | git patch-id --stable | awk '{ print $1 }'`.chomp
+  `#{GIT} show "#{commit}" 2>/dev/null | git patch-id --stable | awk '{ print $1 }'`.chomp
 end
 
 def git_patchid(commit)
@@ -56,13 +56,13 @@ def git_commit(commit)
   $__git_commit_cache ||= {}
   return $__git_commit_cache[commit] if $__git_commit_cache.include?(commit)
 
-  sha1_commit = `#{GIT} rev-list -n1 #{commit}`.chomp
+  sha1_commit = `#{GIT} rev-list -n1 "#{commit}"`.chomp
   $__git_commit_cache[commit] = sha1_commit unless sha1_commit.empty?
   sha1_commit
 end
 
 def __commit_tag(commit)
-  tags = `#{GIT} tag --points-at #{commit}`.split
+  tags = `#{GIT} tag --points-at "#{commit}"`.split
   tags.each do |tag|
     return tag if linus_tags.include? tag
   end
@@ -94,7 +94,7 @@ def __last_linus_release_tag(commit)
 
   version = patch_level = sub_level = rc = nil
 
-  `#{GIT} show #{commit}:Makefile`.each_line do |line|
+  `#{GIT} show "#{commit}:Makefile"`.each_line do |line|
     case line
     when /^#/
       next
@@ -234,19 +234,19 @@ def load_remotes
 end
 
 def git_committer(commit)
-  `#{GIT} log -n1 --pretty=format:'%cn <%ce>' #{commit}`.chomp
+  `#{GIT} log -n1 --pretty=format:'%cn <%ce>' "#{commit}"`.chomp
 end
 
 def git_commit_author(commit)
-  `#{GIT} log -n1 --pretty=format:'%an <%ae>' #{commit}`.chomp
+  `#{GIT} log -n1 --pretty=format:'%an <%ae>' "#{commit}"`.chomp
 end
 
 def relative_commit_date(commit)
-  `#{GIT} log -n1 --format=format:"%cr" #{commit}`.chomp
+  `#{GIT} log -n1 --format=format:"%cr" "#{commit}"`.chomp
 end
 
 def git_commit_subject(commit)
-  `#{GIT} log -1 --format=%s #{commit}`.chomp
+  `#{GIT} log -1 --format=%s "#{commit}"`.chomp
 end
 
 def remote_exists?(remote)
@@ -254,11 +254,11 @@ def remote_exists?(remote)
 end
 
 def branch_exists?(branch)
-  `#{GIT} branch --list -r #{branch}` != ''
+  `#{GIT} branch --list -r "#{branch}"` != ''
 end
 
 def commit_exists?(commit)
-  `#{GIT} rev-list -1 #{commit}` != ''
+  `#{GIT} rev-list -1 "#{commit}"` != ''
 end
 
 def merge_commit?(commit)

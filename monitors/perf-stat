@@ -6,6 +6,9 @@
 # - command
 # - per_socket
 # - interval_ms
+# - rmetrics
+# - metrics
+# - metric_only
 
 . $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/common.sh
@@ -14,6 +17,7 @@
 : ${interval_ms:=1000}
 : ${delay:=0}
 : ${duration:=0}
+: ${metric_only:=0}
 
 set_perf_path "/lkp/benchmarks/perf/perf"
 export perf
@@ -49,6 +53,8 @@ if [ -n "$revents" ]; then
 elif [ -n "$events" ]; then
 	events=$($LKP_SRC/bin/perf-events $events)
 	[ -n "$events" ] || die "Events are empty"
+elif [ -n "$rmetrics" ]; then
+	metrics="$rmetrics"
 else
 	# Each event should be used only once, because we have no
 	# event group support in stats/perf-stat yet
@@ -71,18 +77,20 @@ cpu-migrations,\
 minor-faults,major-faults"
 fi
 
-opt_events="-e $(echo $events | sed 's/ / -e /g')"
+[ -n "$events" ] && opt_events="-e $(echo $events | sed 's/ / -e /g')"
+[ -n "$metrics" ] && opt_metrics="-M $(echo $metrics)"
 
 . $LKP_SRC/lib/wait.sh
 
 setup_wait
 
 parse_bool -q "$per_socket" && opts="$opts --per-socket"
+parse_bool -q "$metric_only" && opts="$opts --metric-only"
 
 disable_nmi_watchdog
 
 # since 75998bb263 ("perf stat: Fix --no-scale"), -c is removed
-$perf stat -a --scale -I "$interval_ms" -x' ' $opt_events --log-fd 1 $opts -D $((delay * 1000)) -- $WAIT_POST_TEST_CMD &
+$perf stat -a --scale -I "$interval_ms" -x ',' $opt_events  $opt_metrics --log-fd 1 $opts -D $((delay * 1000)) -- $WAIT_POST_TEST_CMD &
 
 pid=$!
 

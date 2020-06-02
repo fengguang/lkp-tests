@@ -12,6 +12,8 @@
 
 export PATH=/lkp/benchmarks/analyze-suspend:$PATH
 
+cmd=sleepgraph.py
+
 echo options: mode: $mode, runtime: $runtime, rtcwake: $rtcwake, multi: $multi, option: $option
 options=""
 [ -n "$mode" ] || mode='freeze'
@@ -22,7 +24,7 @@ options=""
 
 [[ "$mode" = "freeze" && $(which turbostat) ]] && option="$option -turbostat"
 
-options="-m $mode $option -rtcwake $rtcwake -sync"
+options="-m $mode $option -rtcwake $rtcwake -sync -info $multi"
 
 [ $(which xset) ] && options="$options -display on"
 
@@ -71,6 +73,8 @@ f_lkp_output=./analyze-suspend
 echo options: $options >> $f_log
 echo analyze_suspend test started at: $(date +%F) $(date +%T) >> $f_log
 echo analyze_suspend test started
+
+sleep $idle_time
 
 for ite in $(seq $multi)
 do
@@ -127,9 +131,9 @@ do
 	fi
 
 	#commands to supend and resume
-	echo $(date +%T): analyze_suspend.py $options
-	echo $(date +%T): analyze_suspend.py $options >> $f_log
-	analyze_suspend.py $options
+	echo $(date +%T): $cmd $options
+	echo $(date +%T): $cmd $options >> $f_log
+	$cmd $options
 #	[ $? -ne 0 ] && exit 1
 	echo $(date +%T): resume back, return value $? !
 	echo $(date +%T): resume back, return value $? ! >> $f_log

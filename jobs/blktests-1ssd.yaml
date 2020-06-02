@@ -6,11 +6,4 @@ disk: 1SSD
 
 blktests:
   test:
-  - nvme-005
   - block-group1
-
----
-fs: ext4
-
-blktests:
-  test: nvme-group1

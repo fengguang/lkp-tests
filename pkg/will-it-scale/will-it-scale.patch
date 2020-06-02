@@ -1,5 +1,15 @@
+From b941867b04f90ccdd618e80848cc14a9db4f7c04 Mon Sep 17 00:00:00 2001
+From: root <root@lkp-haiyan.sh.intel.com>
+Date: Thu, 21 May 2020 12:50:09 +0800
+Subject: [PATCH] update runtest.py
+
+Signed-off-by: root <root@lkp-haiyan.sh.intel.com>
+---
+ runtest.py | 82 +++++++++++++++++++++++++++++++-------------------------------
+ 1 file changed, 41 insertions(+), 41 deletions(-)
+
 diff --git a/runtest.py b/runtest.py
-index b4c2730..696664d 100755
+index 8bda393..de4271a 100755
 --- a/runtest.py
 +++ b/runtest.py
 @@ -48,12 +48,13 @@ class linux_stat():
@@ -9,24 +19,24 @@ index b4c2730..696664d 100755
 -duration=5
 -
 -if len(sys.argv) != 2:
--	print >> sys.stderr, 'Usage: runtest.py <testcase>'
+-	print('Usage: runtest.py <testcase>', file=sys.stderr)
 +if len(sys.argv) < 5:
-+	print >> sys.stderr, 'Usage: runtest.py <testcase> <duration> <mode> <threads...>'
++	print('Usage: runtest.py <testcase> <duration> <mode> <threads...>', file=sys.stderr)
  	sys.exit(1)
  cmd = sys.argv[1]
 +duration = int(sys.argv[2])
 +mode = sys.argv[3]
-+threads  = sys.argv[4:]
++threads = sys.argv[4:]
  
  nr_cores=0
  r = re.compile('^processor')
 @@ -87,43 +88,42 @@ if arch == 'ppc64':
- print 'tasks,processes,processes_idle,threads,threads_idle,linear'
- print '0,0,100,0,100,0'
+ print('tasks,processes,processes_idle,threads,threads_idle,linear')
+ print('0,0,100,0,100,0')
  
 -step = 1
 -# if step=5, this is: [5, 10, 15, ... nr_cores]
--data_points = range(step, nr_cores+step, step)
+-data_points = list(range(step, nr_cores+step, step))
 -# this makes it [ 1, 5, 10, ... ]
 -if step > 1:
 -	data_points.insert(0, 1)
@@ -34,7 +44,7 @@ index b4c2730..696664d 100755
 -for i in data_points:
 -	c = './%s_processes -t %d -s %d' % (cmd, i, duration)
 -	before = linux_stat()
--	pipe = subprocess.Popen(setarch + ' ' + c, shell=True, stdout=subprocess.PIPE).stdout
+-	pipe = subprocess.Popen(setarch + ' ' + c, shell=True, stdout=subprocess.PIPE, text=True).stdout
 -	processes_avg = -1
 -	for line in pipe.readlines():
 -		if 'testcase:' in line:
@@ -42,22 +52,7 @@ index b4c2730..696664d 100755
 -			title = open(cmd + '.title', 'w')
 -			title.write(val)	
 -			title.close() 
-+linear = 0
-+for i in threads:
-+	i = int(i)
-+	processes_avg = 0
-+	processes_idle = 0
-+	if mode == 'process' or mode == 'both':
-+		c = './%s_processes -t %d -s %d' % (cmd, i, duration)
-+		before = linux_stat()
-+		pipe = subprocess.Popen(setarch + ' ' + c, shell=True, stdout=subprocess.PIPE).stdout
-+		for line in pipe.readlines():
-+			if 'testcase:' in line:
-+				(testcase, val) = line.split(':')
-+				title = open(cmd + '.title', 'w')
-+				title.write(val)
-+				title.close()
- 			
+-			
 -		if 'average:' in line:
 -			(name, val) = line.split(':')
 -			processes_avg = int(val)
@@ -67,7 +62,7 @@ index b4c2730..696664d 100755
 -
 -	c = './%s_threads -t %d -s %d' % (cmd, i, duration)
 -	before = linux_stat()
--	pipe = subprocess.Popen(setarch + ' ' + c, shell=True, stdout=subprocess.PIPE).stdout
+-	pipe = subprocess.Popen(setarch + ' ' + c, shell=True, stdout=subprocess.PIPE, text=True).stdout
 -	threads_avg = -1
 -	for line in pipe.readlines():
 -		if 'average:' in line:
@@ -76,6 +71,22 @@ index b4c2730..696664d 100755
 -	pipe.close()
 -	after = linux_stat()
 -	threads_idle = after.idle_fraction(before) * 100
++linear = 0
++for i in threads:
++	i = int(i)
++	processes_avg = 0
++	processes_idle = 0
++	if mode == 'process' or mode == 'both':
++		c = './%s_processes -t %d -s %d' % (cmd, i, duration)
++		before = linux_stat()
++		pipe = subprocess.Popen(setarch + ' ' + c, shell=True, stdout=subprocess.PIPE, text=True).stdout
++		for line in pipe.readlines():
++			if 'testcase:' in line:
++				(testcase, val) = line.split(':')
++				title = open(cmd + '.title', 'w')
++				title.write(val)
++				title.close()
++
 +			if 'average:' in line:
 +				(name, val) = line.split(':')
 +				processes_avg = int(val)
@@ -88,7 +99,7 @@ index b4c2730..696664d 100755
 +	if mode == 'thread' or mode == 'both':
 +		c = './%s_threads -t %d -s %d' % (cmd, i, duration)
 +		before = linux_stat()
-+		pipe = subprocess.Popen(setarch + ' ' + c, shell=True, stdout=subprocess.PIPE).stdout
++		pipe = subprocess.Popen(setarch + ' ' + c, shell=True, stdout=subprocess.PIPE, text=True).stdout
 +		for line in pipe.readlines():
 +			if 'average:' in line:
 +				(name, val) = line.split(':')
@@ -99,4 +110,6 @@ index b4c2730..696664d 100755
  
  	if i == 1:
  		linear = max(processes_avg, threads_avg)
- 
+-- 
+2.11.0
+

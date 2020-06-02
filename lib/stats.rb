@@ -44,7 +44,7 @@ class LinuxTestcasesTableSet
      'specjbb2015', 'specpower', 'stutter', 'sunspider', 'tbench', 'tcrypt',
      'thrulay', 'tlbflush', 'unixbench', 'vm-scalability', 'will-it-scale',
      'chromeswap', 'fio-basic', 'apachebench', 'perf-event-tests', 'swapin',
-     'tpcc', 'mytest', 'exit_free', 'pgbench', 'boot_trace', 'sysbench-cpu',
+     'tpcc', 'mytest', 'exit-free', 'pgbench', 'boot-trace', 'sysbench-cpu',
      'sysbench-memory', 'sysbench-threads', 'sysbench-mutex', 'stream',
      'perf-bench-futex', 'mutilate', 'lmbench3', 'lib-micro', 'schbench',
      'pmbench', 'linkbench', 'rocksdb', 'cassandra', 'redis', 'power-idle',
@@ -55,17 +55,17 @@ class LinuxTestcasesTableSet
      'galileo', 'irda-kernel', 'kernel-selftests', 'kvm-unit-tests', 'kvm-unit-tests-qemu',
      'leaking-addresses', 'locktorture', 'ltp', 'mce-test', 'otc_ddt', 'piglit', 'pm-qa', 'nvml',
      'qemu', 'rcuperf', 'rcutorture', 'suspend', 'suspend-stress', 'trinity', 'ndctl', 'nfs-test', 'hwsim',
-     'idle-inject', 'mdadm-selftests', 'xsave-test', 'nvml', 'test_bpf', 'mce-log', 'perf-sanity-tests',
+     'idle-inject', 'mdadm-selftests', 'xsave-test', 'nvml', 'test-bpf', 'mce-log', 'perf-sanity-tests',
      'build-perf_test', 'update-ucode', 'reboot', 'cat', 'libhugetlbfs-test', 'ocfs2test', 'syzkaller',
-     'perf_test', 'stress-ng', 'sof_test', 'fxmark', 'kvm-kernel-boot-test', 'bkc_ddt', 'bpf_offload',
-     'xfstests', 'autotest', 'packetdrill', 'avocado', 'v4l2', 'vmem'].freeze
+     'perf-test', 'stress-ng', 'sof_test', 'fxmark', 'kvm-kernel-boot-test', 'bkc_ddt', 'bpf_offload',
+     'xfstests', 'packetdrill', 'avocado', 'v4l2', 'vmem'].freeze
   OTHER_TESTCASES =
     ['0day-boot-tests', '0day-kbuild-tests', 'build-dpdk', 'build-sof', 'sof_test', 'build-nvml',
      'build-qemu', 'convert-lkpdoc-to-html', 'convert-lkpdoc-to-html-css', 'rsync-rootfs',
      'health-stats', 'hwinfo', 'internal-lkp-service', 'ipmi-setup', 'debug',
      'lkp-bug', 'lkp-install-run', 'lkp-services', 'lkp-src', 'pack', 'lkp-qemu',
      'pack-deps', 'makepkg', 'makepkg-deps', 'borrow', 'dpdk-dts', 'mbtest', 'build-acpica', 'build-ltp',
-     'bust-shm-exit', 'build-llvm_project', 'upgrade-trinity', 'build-0day-crosstools', 'deploy-clang'].freeze
+     'bust-shm-exit', 'build-llvm_project', 'upgrade-trinity', 'build-0day-crosstools', 'deploy-clang', 'kmemleak-test', 'kunit'].freeze
 end
 
 # => ["tcrypt.", "hackbench.", "dd.", "xfstests.", "aim7.", ..., "oltp.", "fileio.", "dmesg."]
@@ -715,6 +715,7 @@ def get_changed_stats(matrix_path1, matrix_path2 = nil, options = {})
 end
 
 def add_stats_to_matrix(stats, matrix)
+  return matrix unless stats
   columns = 0
   matrix.each { |_k, v| columns = v.size if columns < v.size }
   stats.each do |k, v|
@@ -767,6 +768,13 @@ def kpi_stat?(stat, _axes, _values = nil)
 
   base, _, remainder = stat.partition('.')
   all_tests_set.include?(base) && !remainder.start_with?('time.')
+end
+
+def sort_bisect_stats(stats)
+  stats.sort_by do |stat|
+    key = stat && stat[0]
+    $index_perf[key] || -255 # -255 is a error value that should be less than values in $index_perf
+  end
 end
 
 def kpi_stat_direction(stat_name, stat_change_percentage)

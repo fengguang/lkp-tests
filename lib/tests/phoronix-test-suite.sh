@@ -44,6 +44,21 @@ fixup_blogbench()
 	[ "$LKP_LOCAL_RUN" = "1" ] || sed -i "s,\$HOME,\/opt\/rootfs," "$target"
 }
 
+# 1. increase max startup time
+# 2. we have no sixth option it should be third option, change $6 to $3
+# 3. this subtest will produce big file to BASE_DIR, here produce file to $3/workfiles
+#    At last, remove these files by rm $3/workfiles
+fixup_startup_time()
+{
+	[ -n "$environment_directory" ] || return
+	local test=$1
+	local target=${environment_directory}/pts/${test}/startuptime-run
+	sed -i 's,$6,$3,' "$target"
+	sed -i 's,BASE_DIR=$3,BASE_DIR=$3/workfiles,' "$target"
+	sed -i "33ased -i 's,120,600,' comm_startup_lat.sh" "$target"
+	sed -i '37arm -r $3/workfiles' "$target"
+}
+
 # before test netperf, start netserver firstly
 fixup_netperf()
 {
@@ -61,6 +76,16 @@ fixup_iperf()
 	local target=${environment_directory}/pts/${test}/iperf
 	sed -i "2a./iperf3 -s -p 12345 &" "$target"
 	sed -i '5apkill iperf3' "$target"
+}
+
+# before test nuttcp, start nuttcp server firstly
+fixup_nuttcp()
+{
+	[ -n "$environment_directory" ] || return
+	local test=$1
+	local target=${environment_directory}/pts/${test}/nuttcp
+	sed -i "2a./nuttcp-8.1.4 -S &" "$target"
+	sed -i '5apkill nuttcp-8.1.4' "$target"
 }
 
 fixup_ior()
@@ -98,25 +123,14 @@ fixup_systemd_boot_total()
 
 # fix issue: Test Run-Time Too Short
 # before:
-# 6 cat sqlite-insertions.txt | ./sqlite_/bin/sqlite3 benchmark.db
-# 7 cat sqlite-insertions.txt | ./sqlite_/bin/sqlite3 benchmark.db
-# 8 cat sqlite-insertions.txt | ./sqlite_/bin/sqlite3 benchmark.db
+# 141:                            $minimal_test_time = pts_config::read_user_config('PhoronixTestSuite/Options/TestResultValidation/MinimalTestTime', 2);
 # after:
-# 6  i=1
-# 7  while [ $i -le 20 ]; do
-# 8  	cat sqlite-insertions.txt | ./sqlite_/bin/sqlite3 benchmark.db
-# 9  	i=$(($i+1))
-# 10 done
+# 141:                            $minimal_test_time = 0;
 fixup_sqlite()
 {
 	[ -n "$environment_directory" ] || return
-	local test=$1
-	local target=${environment_directory}/pts/${test}/sqlite-benchmark
-	sed -i '7,8d' "$target"
-	sed -i '5ai=1' "$target"
-	sed -i "6awhile [ \$i -le 20 ]; do" "$target"
-	sed -i '8ai=\$((\$i+1))' "$target"
-	sed -i '9adone' "$target"
+	local target=/usr/share/phoronix-test-suite/pts-core/objects/pts_test_result_parser.php
+	sed -i "s,pts_config::read_user_config('PhoronixTestSuite\/Options\/TestResultValidation\/MinimalTestTime'\, 2),0," "$target"
 }
 
 # reduce run times to avoid soft_timeout
@@ -181,6 +195,7 @@ fixup_mysqlslap()
 	[ -n "$environment_directory" ] || return
 	local test=$1
 	local target=$environment_directory/../test-profiles/pts/${test}/pre.sh
+	is_clearlinux && sed -i 's,mysqld_safe --no-defaults,mysqld --user root --log-error=/tmp/log,' "$target"
 	sed -i '4a groupadd mysql' "$target"
 	sed -i '5a useradd -g mysql mysql' "$target"
 	sed -i '6a chown -R mysql:mysql data' "$target"
@@ -249,21 +264,6 @@ fixup_aom_av1()
 	sed -i "s,sed $'s,sed 's,g" "$target"
 }
 
-# reinstall nginx and disable ipv6 before starting nginx
-fixup_nginx()
-{
-	[ -n "$environment_directory" ] || return
-	local test=$1
-
-	# nginx_/sbin/nginx binary from installed nginx triggers
-	# "Illegal instruction" so reinstall nginx to fix it.
-	phoronix-test-suite force-install $test
-	sed -i 's/^::1/#::1/' /etc/hosts
-
-	${environment_directory}/pts/${test}/nginx_/sbin/nginx
-	sleep 5
-}
-
 # default to test 1m
 fixup_fio()
 {
@@ -292,6 +292,15 @@ fixup_fio()
 	# 6: Default Test Directory
 	# 7: Test All Options
 	test_opt="\n4\n3\n3\n3\n9\n1\n3\nn"
+}
+
+# change to use bash to gpu-residency
+fixup_gpu_residency()
+{
+	[ -n "$environment_directory" ] || return
+	local test=$1
+	local target=${environment_directory}/pts/${test}/gpu-residency
+	sed -i 's,#!/bin/sh,#!/bin/bash,' "$target"
 }
 
 # change to use dash to bullet
@@ -440,6 +449,13 @@ fixup_opm_git_install()
 	sed -i "82a git clone --depth 1 https://github.com/OPM/opm-data.git" "$target"
 }
 
+fixup_clpeak_install()
+{
+	local test=$1
+	local target=/var/lib/phoronix-test-suite/test-profiles/pts/${test}/install.sh
+	sed -i "4a sed -i '43a/usr/lib/x86_64-linux-gnu' CMakeLists.txt" "$target"
+}
+
 fixup_apache_siege_install()
 {
 	local test=$1
@@ -488,6 +504,14 @@ fixup_install()
 		# python2 is required for installing cyclictest
 		setup_python2
 		env | grep CFLAGS && unset CFLAGS
+		;;
+	memtier-benchmark-*)
+		# fix issue: cc: error: x86_64: No such file or directory
+		env | grep ARCH && unset ARCH
+		;;
+	clpeak-*)
+		# fix issue: Could not find OpenCL include/libs.  Set OPENCL_ROOT to your OpenCL SDK.
+		is_clearlinux || fixup_clpeak_install $test || die "failed to fixup $test install"
 		;;
 	numenta-nab-*)
 		# fix issue: No matching distribution found for nupic==1.0.5 (from nab==1.0)
@@ -643,9 +667,6 @@ run_test()
 			fixup_smart || die "failed to fixup test smart"
 			;;
 		idle-power-usage-*)
-			# sleep 1 min
-			# Enter Value: 1
-			test_opt="1\nn"
 			fixup_supported_sensors || die "failed to fixup test $test"
 			;;
 		battery-power-usage-*)
@@ -688,11 +709,18 @@ run_test()
 		netperf-*)
 			fixup_netperf $test || die "failed to fixup test netperf"
 			;;
+		startup-time-*)
+			fixup_startup_time $test || die "failed to fixup test $test"
+			reduce_runtimes $test || die "failed to reduce run times when run $test"
+			;;
 		ior-*)
 			fixup_ior $test || die "failed to fixup test $test"
 			;;
 		iperf-*)
 			fixup_iperf $test || die "failed to fixup test $test"
+			;;
+		nuttcp-*)
+			fixup_nuttcp $test || die "failed to fixup test $test"
 			;;
 		sqlite-[0-9]*)
 			fixup_sqlite $test || die "failed to fixup test $test"
@@ -715,9 +743,6 @@ run_test()
 			;;
 		network-loopback-*)
 			fixup_network_loopback $test || die "failed to fixup test network-loopback"
-			;;
-		nginx-*)
-			fixup_nginx $test || die "failed to fixup test nginx"
 			;;
 		build-mplayer-*)
 			fixup_build_mplayer $test || die "failed to fixup test build-mplayer"
@@ -744,6 +769,9 @@ run_test()
 			is_clearlinux || {
 				fixup_bullet $test || die "failed to fixup test bullet"
 			}
+			;;
+		gpu-residency-*)
+			fixup_gpu_residency $test || die "failed to fixup test $test"
 			;;
 		fio-*)
 			fixup_fio $test || die "failed to fixup test fio"
@@ -782,12 +810,25 @@ run_test()
 		clpeak-*)
 			# 7: Kernel Latency
 			# 4: Integer Compute INT # this subtest was disabled on Intel platform
-			test_opt="7\nn"
+			test_opt="\n7\nn"
 			;;
 	esac
 
 	export PTS_SILENT_MODE=1
 	echo PTS_SILENT_MODE=$PTS_SILENT_MODE
+
+	if [ -n "$option_a" ]; then
+		test_opt='\n'
+		for i in {a..j}
+		do
+			eval option=\$option_${i}
+			[ -n "$option" ] || break
+			test_opt="$test_opt$option\n"
+		done
+		# don't save test results when met:
+		# Would you like to save these test results (Y/n):
+		test_opt=${test_opt}n
+	fi
 
 	is_clearlinux || {
 		root_access="/usr/share/phoronix-test-suite/pts-core/static/root-access.sh"
@@ -799,8 +840,19 @@ run_test()
 		echo "${test}... ignored_by_lkp" && return
 	fi
 
-	if echo $test | grep idle-power-usage; then
-		echo "$test_opt" | log_cmd phoronix-test-suite run $test
+	if echo "$test" | grep idle-power-usage; then
+		# Choose
+		# sleep 1 min
+		# Enter Value: 1
+		/usr/bin/expect <<-EOF
+			spawn phoronix-test-suite run $test
+			expect {
+				"Enter Value:" { send "1\\r"; exp_continue }
+				"Would you like to save these test results" { send "n\\r"; exp_continue }
+				eof { }
+				default { exp_continue }
+			}
+		EOF
 	elif echo $test | grep netperf; then
 		# Choose
 		# Enter Value: localhost
@@ -831,6 +883,20 @@ run_test()
 				"Duration:" { send "1\r"; exp_continue }
 				"Test:" { send "2\r"; exp_continue }
 				"Parallel:" { send "1\r"; exp_continue }
+				"Would you like to save these test results" { send "n\r"; exp_continue }
+				eof { }
+				default { exp_continue }
+			}
+		EOF
+	elif echo $test | grep nuttcp; then
+		# Choose
+		# 4: Test All Options
+		# Enter Value: 127.0.0.1
+		/usr/bin/expect <<-EOF
+			spawn phoronix-test-suite run $test
+			expect {
+				"Test:" { send "4\r"; exp_continue }
+				"Enter Value:" { send "127.0.0.1\r"; exp_continue }
 				"Would you like to save these test results" { send "n\r"; exp_continue }
 				eof { }
 				default { exp_continue }

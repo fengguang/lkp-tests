@@ -1,0 +1,9 @@
+url: https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/chromeos.git
+belongs_to: chrome-os
+notify_build_success_branch: .*
+mail_to:
+- Luciano Coelho <luciano.coelho@intel.com>
+- Golan Ben Ami <golan.ben.ami@intel.com>
+- Michael Golant <michael.golant@intel.com>
+- Johannes Berg <johannes.berg@intel.com>
+private_report_branch: .*

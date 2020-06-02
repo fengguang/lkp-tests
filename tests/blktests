@@ -32,11 +32,11 @@ arrange_group()
 	block-027)
 		echo "027" > tests/$test || return
 		;;
-	nvme-005)
-		echo "005" > tests/$test || return
-		;;
 	nvme-group1)
-		sed -i "/^005$/d" tests/$test || return
+		sed -i "/^032$/d" tests/$test || return
+		;;
+	nvme-032)
+		echo "032" > tests/$test || return
 		;;
 	*)
 		;;
@@ -61,10 +61,6 @@ set_env()
 	nbd-group*|loop-group*)
 		partition=""
 		;;
-	nvme-005)
-		modprobe -r nvme
-		partition=""
-		;;
 	scsi-group*)
 		partition=${partitions%% *}
 		is_virt && partition=$(echo "$partition" | sed 's/[0-9]*$//g')
@@ -84,6 +80,9 @@ set_env()
 
 	# fix blkzone is not available
 	ln -sf $BENCHMARK_ROOT/blktests/util-linux/blkzone /usr/bin/blkzone
+
+	# Use build in nvme
+	ln -sf "$BENCHMARK_ROOT/blktests/nvme-cli/usr/local/sbin/nvme" /usr/bin/nvme
 }
 
 run_test()
@@ -134,11 +133,14 @@ run_test()
 	# if don't have new test suite, exit
 	has_new_test || exit 0
 }
+
 arrange_group
 read_env_vars
 set_env
 run_test
 exit_value=$?
 
-[ -d results ] && upload_files -t results $BENCHMARK_ROOT/blktests/results/*
+[ -d "$BENCHMARK_ROOT/blktests/results" ] && upload_files -t results $BENCHMARK_ROOT/blktests/results/*
+[ -d "/mnt/$test/nodev" ] && upload_files -t results /mnt/$test/nodev/*
+
 exit $exit_value

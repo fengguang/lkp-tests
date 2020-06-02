@@ -3,6 +3,7 @@ testcase: stress-ng
 category: benchmark
 
 nr_threads: 100%
+timeout: 30m
 
 disk: 1HDD
 
@@ -39,6 +40,8 @@ stress-ng:
   - security
 
 ---
+nr_threads: 10%
+
 fs: ext4
 testtime:
 - 1s
@@ -50,7 +53,7 @@ stress-ng:
 
 ---
 testtime:
-- 1s
+- 10s
 
 stress-ng:
   class:

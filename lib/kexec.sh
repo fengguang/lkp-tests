@@ -22,12 +22,14 @@ read_kernel_cmdline_vars_from_append()
 		[ "$i" != "${i#job_initrd=}" ]		&& export "$i"
 		[ "$i" != "${i#lkp_initrd=}" ]		&& export "$i"
 		[ "$i" != "${i#modules_initrd=}" ]	&& export "$i"
+		[ "$i" != "${i#testing_nvdimm_modules_initrd=}" ]      && export "$i"
 		[ "$i" != "${i#tbox_initrd=}" ]		&& export "$i"
 		[ "$i" != "${i#linux_headers_initrd=}" ]	&& export "$i"
 		[ "$i" != "${i#audio_sof_initrd=}" ]	&& export "$i"
 		[ "$i" != "${i#syzkaller_initrd=}" ]	&& export "$i"
 		[ "$i" != "${i#linux_selftests_initrd=}" ]	&& export "$i"
 		[ "$i" != "${i#linux_perf_initrd=}" ]	&& export "$i"
+		[ "$i" != "${i#ucode_initrd=}" ]   && export "$i"
 	done
 }
 
@@ -111,7 +113,7 @@ download_initrd()
 
 	use_local_modules_initrds
 
-	for _initrd in $(echo $initrd $tbox_initrd $job_initrd $lkp_initrd $bm_initrd $modules_initrd $linux_headers_initrd $audio_sof_initrd $syzkaller_initrd $linux_selftests_initrd $linux_perf_initrd | tr , ' ')
+	for _initrd in $(echo $initrd $tbox_initrd $job_initrd $lkp_initrd $bm_initrd $modules_initrd $testing_nvdimm_modules_initrd $linux_headers_initrd $audio_sof_initrd $syzkaller_initrd $linux_selftests_initrd $linux_perf_initrd $ucode_initrd | tr , ' ')
 	do
 		_initrd=$(echo $_initrd | sed 's/^\///')
 		local file=$CACHE_DIR/$_initrd

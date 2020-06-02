@@ -12,18 +12,14 @@
 # - cd obj-i386; make.cross
 # - export ARCH=i386; make.cross
 #
-# With particular GCC_VERSION:
-# - GCC_VERSION=7.2.0 make.cross ARCH=arm
-#
-# Specify compiler clang (default is gcc):
+# Specify compiler and version (default is gcc):
+# - COMPILER=gcc-9.3.0 make.cross ARCH=arm64
 # - COMPILER=clang make.cross ARCH=arm64
 #
 # Copyright (c) 2014, Intel Corporation.
 # Author: Fengguang Wu <fengguang.wu@intel.com>
 # Credit: Tony Breeds <tony@bakeyournoodle.com> for crosstool
 
-GCC_VERSION=${GCC_VERSION:-""}
-COMPILER_INSTALL_PATH=${COMPILER_INSTALL_PATH:-"$HOME/0day"}
 COMPILER=${COMPILER:-"gcc"}
 
 if [[ ! "$0" =~ 'make.cross' && "$0" =~ make\.([a-z0-9_]+) ]]; then
@@ -46,6 +42,16 @@ shopt -s nullglob
 is_clang_worker()
 {
 	[[ "$COMPILER" =~ "clang" ]]
+}
+
+check_install_path()
+{
+	if [[ $COMPILER_INSTALL_PATH ]]; then
+		echo "Compiler will be installed in $COMPILER_INSTALL_PATH"
+	else
+		return 1
+	fi
+
 }
 
 install_packages()
@@ -80,30 +86,6 @@ download_extract()
 	tar Jxf $dir/$file -C $COMPILER_INSTALL_PATH
 }
 
-# Clang need install cross packages locally
-install_cross_packages()
-{
-	local cross_packages
-
-	if [[ "$ARCH" == "arm" ]]; then
-		cross_packages='binutils-arm-linux-gnueabi'
-	elif [[ "$ARCH" == "arm64" ]]; then
-		cross_packages='binutils-aarch64-linux-gnu'
-	else
-		cross_packages="binutils-$ARCH-linux-gnu"
-	fi
-
-	if [[ $(which apt-get) ]]; then
-		apt-get install "$cross_packages" || {
-			echo "cross tool $cross_packages install failed"
-			echo "Please ensure $ARCH cross tools has been installed."
-		}
-	else
-		echo "As of now, make.cross only install dpkg packages automatically"
-		echo "Please ensure $ARCH cross tools has been installed"
-	fi
-}
-
 install_crosstool_clang()
 {
 	local URL='https://download.01.org/0day-ci/cross-package'
@@ -134,11 +116,14 @@ install_crosstool_gcc()
 
 	local file
 	local gcc_arch_pattern=$(echo "${gcc_arch}" | sed 's/*/.*/g')
-	if [[ $GCC_VERSION ]]; then
+
+	local gcc_version
+	[[ $COMPILER =~ - ]] && gcc_version=${COMPILER##*-}
+	if [[ $gcc_version ]]; then
 		# for arch has more than 1 cross tool available, like x86_64-gcc-9.3.0-nolibc_arm-linux-gnueabi.tar.xz
 		# and x86_64-gcc-9.3.0-nolibc_arm-linux-gnueabihf.tar.xz for arm, match "arm-linux-gnueabi." instead of
 		# "arm-linux-gnueabi" to get single tool package which match exactly.
-		file=$(grep "${gcc_arch_pattern}\." $list | grep "${GCC_VERSION}" | tail -1)
+		file=$(grep "${gcc_arch_pattern}\." $list | grep "${gcc_version}" | tail -1)
 	else
 		file=$(grep "${gcc_arch_pattern}\." $list | tail -1)
 	fi
@@ -256,13 +241,13 @@ setup_crosstool_gcc()
 	esac
 
 	if [[ $gcc_arch ]]; then
-		gcc_exec=($COMPILER_INSTALL_PATH/gcc-${GCC_VERSION}*/${gcc_arch}/bin/${gcc_arch}-gcc)
+		gcc_exec=($COMPILER_INSTALL_PATH/${COMPILER}*/${gcc_arch}/bin/${gcc_arch}-gcc)
 		[[ -x $gcc_exec ]] || install_cross_compiler || {
 			echo "Install gcc cross compiler failed"
 			return 1
 		}
 
-		gcc_exec=($COMPILER_INSTALL_PATH/gcc-${GCC_VERSION}*/${gcc_arch}/bin/${gcc_arch}-gcc)
+		gcc_exec=($COMPILER_INSTALL_PATH/${COMPILER}*/${gcc_arch}/bin/${gcc_arch}-gcc)
 		[[ -x $gcc_exec ]] || {
 			echo "No cross compiler for $ARCH"
 			return 1
@@ -272,23 +257,33 @@ setup_crosstool_gcc()
 		gcc_exec=${gcc_exec[-1]}
 
 		opt_cross="CROSS_COMPILE=${gcc_exec%gcc}"
+
+		# load build-in depends libs
+		local deplibs_path=($COMPILER_INSTALL_PATH/${COMPILER}*/${gcc_arch}/libexec/gcc/${gcc_arch}/*)
+		deplibs_path=${deplibs_path[-1]}
+		[[ -d $deplibs_path ]] && export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$deplibs_path
+
 	else
 		opt_cross=
 	fi
-}
 
+	return 0
+}
 
 setup_crosstool_clang()
 {
-	install_cross_packages
-
 	local cross_clang=("$COMPILER_INSTALL_PATH"/clang-latest/bin/clang)
 	[[ -x $cross_clang ]] || install_cross_compiler || {
 		echo "Install clang compiler failed"
 		return 1
 	}
 
-	opt_cross="HOSTCC=$cross_clang CC=$cross_clang"
+	local opt_ldd="LD=$(dirname $cross_clang)/ld.lld"
+	local opt_readelf="READELF=$(dirname $cross_clang)/llvm-readelf"
+	[[ $ARCH =~ arm ]] &&
+		grep -q 'CONFIG_CPU_BIG_ENDIAN=y' .config && opt_ldd=
+
+	opt_cross="HOSTCC=$cross_clang CC=$cross_clang $opt_ldd $opt_readelf"
 	if [[ $ARCH = "arm64" ]]; then
 		opt_cross="$opt_cross CROSS_COMPILE=aarch64-linux-gnu-"
 	elif [[ $ARCH = "arm" ]]; then
@@ -305,6 +300,13 @@ setup_crosstool()
 	else
 		setup_crosstool_gcc
 	fi
+}
+
+check_install_path || {
+	echo "Please set COMPILER_INSTALL_PATH to specify compiler install path"
+	echo "E.g. COMPILER_INSTALL_PATH=\$HOME/0day COMPILER=clang make.cross ARCH=x86_64"
+	echo
+	exit 1
 }
 
 setup_crosstool || {
@@ -331,9 +333,9 @@ fi
 [[ -f .make-env ]] && source ./.make-env
 
 if [[ -d source && -L source ]]; then
-	echo make -C source O=$PWD $make_dts $opt_arch $opt_cross $subarch $opt_jobs "$@"
-	exec make -C source O=$PWD $make_dts $opt_arch $opt_cross $subarch $opt_jobs "$@"
+	echo make W=1 -C source O=$PWD $make_dts $opt_arch $opt_cross $subarch $opt_jobs "$@"
+	exec make W=1 -C source O=$PWD $make_dts $opt_arch $opt_cross $subarch $opt_jobs "$@"
 else
-	echo make $O $make_dts $opt_arch $opt_cross $subarch $opt_jobs "$@"
-	exec make $O $make_dts $opt_arch $opt_cross $subarch $opt_jobs "$@"
+	echo make W=1 $O $make_dts $opt_arch $opt_cross $subarch $opt_jobs "$@"
+	exec make W=1 $O $make_dts $opt_arch $opt_cross $subarch $opt_jobs "$@"
 fi

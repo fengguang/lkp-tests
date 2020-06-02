@@ -1,0 +1,38 @@
+<<<test_start>>>
+tag=mtest01w stime=1588620414
+cmdline="mtest01 -p80 -w"
+contacts=""
+analysis=exit
+Summary:
+passed   0
+failed   1
+skipped  0
+warnings 1
+<<<execution_status>>>
+initiation_status="ok"
+duration=312 termination_type=exited termination_id=7 corefile=no
+cutime=2 cstime=4
+<<<test_end>>>
+<<<test_start>>>
+tag=vma03 stime=1588621822
+cmdline="vma03"
+contacts=""
+analysis=exit
+<<<test_output>>>
+vma03       1  TCONF  :  vma03.c:147: __NR_mmap2 is not defined on your system
+vma03       2  TCONF  :  vma03.c:147: Remaining cases not appropriate for configuration
+<<<execution_status>>>
+initiation_status="ok"
+duration=0 termination_type=exited termination_id=32 corefile=no
+cutime=0 cstime=1
+<<<test_end>>>
+<<<test_start>>>
+tag=vma04 stime=1588621822
+cmdline="vma04"
+contacts=""
+analysis=exit
+<<<execution_status>>>
+initiation_status="ok"
+duration=0 termination_type=exited termination_id=0 corefile=no
+cutime=0 cstime=2
+<<<test_end>>>

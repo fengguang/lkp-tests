@@ -84,6 +84,62 @@ prepare_for_test()
 	}
 }
 
+# Get testing env kernel config file
+# Depending on your system, you'll find it in any one of these:
+# /proc/config.gz
+# /boot/config
+# /boot/config-$(uname -r)
+get_kconfig()
+{
+	local config_file="$1"
+	if [[ -e "/proc/config.gz" ]]; then
+		gzip -dc "/proc/config.gz" > "$config_file"
+	elif [[ -e "/boot/config-$(uname -r)" ]]; then
+		cat "/boot/config-$(uname -r)" > "$config_file"
+	elif [[ -e "/boot/config" ]]; then
+		cat "/boot/config" > "$config_file"
+	else
+		echo "Failed to get current kernel config"
+		return 1
+	fi
+
+	[[ -s "$config_file" ]]
+}
+
+check_kconfig()
+{
+	local dependent_config=$1
+	local kernel_config=$2
+
+	while read line
+	do
+		# Avoid commentary on config
+		[[ "$line" =~ "CONFIG_" ]] || continue
+
+		# CONFIG_BPF_LSM may casuse kernel panic, disable it by default
+		# Failed to allocate manager object: No data available
+		# [!!!!!!] Failed to allocate manager object, freezing.
+		# Freezing execution.
+		[[ "$line" =~ "CONFIG_BPF_LSM" ]] && continue
+
+		# only kernel <= v5.0 has CONFIG_NFT_CHAIN_NAT_IPV4 and CONFIG_NFT_CHAIN_NAT_IPV6
+		[[ "$line" =~ "CONFIG_NFT_CHAIN_NAT_IPV" ]] && continue
+
+		# Some kconfigs are required as m, but they may set as y alreadly.
+		# So don't check y/m, just match kconfig name
+		# E.g. convert CONFIG_TEST_VMALLOC=m to CONFIG_TEST_VMALLOC=
+		line="${line%=*}="
+		if [[ "$line" = "CONFIG_DEBUG_PI_LIST=" ]]; then
+			grep -q $line $kernel_config || {
+				line="CONFIG_DEBUG_PLIST="
+				grep -q $line $kernel_config || return 1
+			}
+		else
+			grep -q $line $kernel_config || return 1
+		fi
+	done < $dependent_config
+}
+
 check_makefile()
 {
 	subtest=$1
@@ -122,6 +178,10 @@ check_ignore_case()
 
 fixup_net()
 {
+	# udpgro tests need enable bpf firstly
+	# Missing xdp_dummy helper. Build bpf selftest first
+	log_cmd make -C bpf 2>&1
+
 	sed -i 's/l2tp.sh//' net/Makefile
 	echo "ignored_by_lkp net.l2tp.sh test"
 	# at v4.18-rc1, it introduces fib_tests.sh, which doesn't have execute permission
@@ -167,6 +227,12 @@ fixup_pstore()
 			return 1
 		}
 	}
+}
+
+fixup_ftrace()
+{
+	# FIX: sh: echo: I/O error
+	sed -i 's/bin\/sh/bin\/bash/' ftrace/ftracetest
 }
 
 fixup_firmware()
@@ -235,12 +301,32 @@ fixup_bpf()
 	echo "ignored_by_lkp bpf.test_tc_tunnel.sh test"
 	sed -i 's/test_lwt_seg6local.sh//' bpf/Makefile
 	echo "ignored_by_lkp bpf.test_lwt_seg6local.sh test"
-	sed -i 's/ runqslower//' bpf/Makefile
-	echo "ignored_by_lkp bpf.runqslower test"
 	# some sh scripts actually need bash
 	# ./test_libbpf.sh: 9: ./test_libbpf.sh: 0: not found
 	[ "$(cmd_path bash)" = '/bin/bash' ] && [ $(readlink -e /bin/sh) != '/bin/bash' ] &&
 		ln -fs bash /bin/sh
+
+	local python_version=$(python3 --version)
+	if [[ "$python_version" =~ "3.5" ]] && [[ -e "bpf/test_bpftool.py" ]]; then
+		sed -i "s/res)/res.decode('utf-8'))/" bpf/test_bpftool.py
+	fi
+	if [[ -e kselftest/runner.sh ]]; then
+		sed -i "48aCMD='./\$BASENAME_TEST'" kselftest/runner.sh
+		sed -i "49aecho \$BASENAME_TEST | grep test_progs && CMD='./\$BASENAME_TEST -b mmap'" kselftest/runner.sh
+		sed -i "s/tap_timeout .\/\$BASENAME_TEST/eval \$CMD/" kselftest/runner.sh
+	fi
+}
+
+fixup_kmod()
+{
+	# kmod tests failed on vm due to the following issue.
+	# request_module: modprobe fs-xfs cannot be processed, kmod busy with 50 threads for more than 5 seconds now
+	# MODPROBE_LIMIT decides threads num, reduce it to 10.
+	sed -i 's/MODPROBE_LIMIT=50/MODPROBE_LIMIT=10/' kmod/kmod.sh
+
+	# Although we reduce MODPROBE_LIMIT, but kmod_test_0009 sometimes timeout.
+	# Reduce the number of times we run 0009.
+	sed -i 's/0009\:150\:1/0009\:50\:1/' kmod/kmod.sh
 }
 
 prepare_for_selftest()
@@ -251,10 +337,10 @@ prepare_for_selftest()
 	elif [ "$group" = "kselftests-01" ]; then
 		# subtest lib cause kselftest incomplete run, it's a kernel issue
 		# report [LKP] [software node] 7589238a8c: BUG:kernel_NULL_pointer_dereference,address
-		selftest_mfs=$(ls -d [c-l]*/Makefile | grep -v -e livepatch -e lib)
+		selftest_mfs=$(ls -d [c-l]*/Makefile | grep -v -e livepatch -e lib -e cpufreq -e kvm -e firmware)
 	elif [ "$group" = "kselftests-02" ]; then
 		# m* is slow
-		selftest_mfs=$(ls -d [m-s]*/Makefile | grep -v -e rseq -e resctrl)
+		selftest_mfs=$(ls -d [m-s]*/Makefile | grep -v -w -e rseq -e resctrl -e net -e netfilter)
 	elif [ "$group" = "kselftests-03" ]; then
 		selftest_mfs=$(ls -d [t-z]*/Makefile | grep -v x86)
 	elif [ "$group" = "kselftests-rseq" ]; then
@@ -271,6 +357,16 @@ prepare_for_selftest()
 		selftest_mfs=$(ls -d net/mptcp/Makefile)
 	elif [ "$group" = "kselftests-lib" ]; then
 		selftest_mfs=$(ls -d lib/Makefile)
+	elif [ "$group" = "kselftests-cpufreq" ]; then
+		selftest_mfs=$(ls -d cpufreq/Makefile)
+	elif [ "$group" = "kselftests-kvm" ]; then
+		selftest_mfs=$(ls -d kvm/Makefile)
+	elif [ "$group" = "kselftests-net" ]; then
+		selftest_mfs=$(ls -d net/Makefile)
+	elif [ "$group" = "kselftests-netfilter" ]; then
+		selftest_mfs=$(ls -d netfilter/Makefile)
+	elif [ "$group" = "kselftests-firmware" ]; then
+		selftest_mfs=$(ls -d firmware/Makefile)
 	fi
 }
 
@@ -312,6 +408,40 @@ platform_is_skylake_or_snb()
 	([[ $model -ge 85 ]] && [[ $model -le 94 ]]) || [[ $model -eq 42 ]]
 }
 
+cleanup_openat2()
+{
+	umount /mnt/kselftest || return
+	rm -rf /mnt/kselftest || return
+}
+
+fixup_openat2()
+{
+	local original_dir=$(pwd)
+
+	# The default filesystem of testing workdir is none, some flags is not supported
+	# Create a virtual disk and format it with ext4 to run openat2
+	dd if=/dev/zero of=/tmp/raw.img bs=1M count=100 || return
+	mkfs -t ext4 /tmp/raw.img || return
+	[[ -d "/mnt/kselftest" ]] || mkdir -p "/mnt/kselftest" || return
+	mount -t ext4 /tmp/raw.img /mnt/kselftest || return
+	# Build openat2 firstly, just run binary on /mnt/kselftest
+	make -C openat2 >/dev/null || return
+	cp -r openat2 /mnt/kselftest || return
+
+	# Openat2 create testing files on current dir, so we need change working dir.
+	cd /mnt/kselftest/openat2
+	log_cmd ./openat2_test 2>&1
+	# Since we run openat2_test directly, we also need format the output.
+	if [[ "$?" = "0" ]]; then
+		echo "ok 1 selftests: openat2: openat2_test"
+	else
+		echo "not ok 1 selftests: openat2: openat2_test # exit=1"
+	fi
+	cd $original_dir
+
+	cleanup_openat2
+}
+
 fixup_breakpoints()
 {
 	platform_is_skylake_or_snb && grep -qw step_after_suspend_test breakpoints/Makefile && {
@@ -325,6 +455,25 @@ fixup_x86()
 	is_virt && grep -qw mov_ss_trap x86/Makefile && {
 		sed -i 's/mov_ss_trap//' x86/Makefile
 		echo "ignored_by_lkp x86.mov_ss_trap test"
+	}
+
+	# List cpus that supported SGX
+	# https://ark.intel.com/content/www/us/en/ark/search/featurefilter.html?productType=873&2_SoftwareGuardExtensions=Yes%20with%20Intel%C2%AE%20ME&1_Filter-UseConditions=3906
+	# If cpu support SGX, also need open SGX in bios
+	grep -qw sgx x86/Makefile && {
+		grep -qw sgx /proc/cpuinfo || echo "Current host doesn't support sgx"
+	}
+
+	# Fix error /usr/bin/ld: /tmp/lkp/cc6bx6aX.o: relocation R_X86_64_32S against `.text' can not be used when making a shared object; recompile with -fPIC
+	# https://www.spinics.net/lists/stable/msg229853.html
+	grep -qw '\-no\-pie' x86/Makefile || sed -i '/^CFLAGS/ s/$/ -no-pie/' x86/Makefile
+}
+
+fixup_ptp()
+{
+	[[ -e "/dev/ptp0" ]] || {
+		echo "ignored_by_lkp ptp.testptp test"
+		return 1
 	}
 }
 
@@ -393,9 +542,19 @@ run_tests()
 
 	local selftest_mfs=$@
 
-	log_cmd sed -i 's/default_timeout=45/default_timeout=300/' kselftest/runner.sh
+	# kselftest introduced runner.sh since kernel commit 42d46e57ec97 "selftests: Extract single-test shell logic from lib.mk"
+	[[ -e kselftest/runner.sh ]] && log_cmd sed -i 's/default_timeout=45/default_timeout=300/' kselftest/runner.sh
 	for mf in $selftest_mfs; do
 		subtest=${mf%/Makefile}
+		subtest_config="$subtest/config"
+		kernel_config="/lkp/kernel-selftests-kernel-config"
+
+		[[ -s "$subtest_config" ]] && get_kconfig "$kernel_config" && {
+			check_kconfig "$subtest_config" "$kernel_config" || {
+				echo "ignored_by_lkp $subtest test"
+				continue
+			}
+		}
 
 		check_ignore_case $subtest && echo "ignored_by_lkp $subtest test" && continue
 		subtest_in_skip_filter "$skip_filter" && continue
@@ -410,6 +569,9 @@ run_tests()
 			fixup_efivarfs || continue
 		elif [[ $subtest = "gpio" ]]; then
 			fixup_gpio || continue
+		elif [[ $subtest = "openat2" ]]; then
+			fixup_openat2
+			continue
 		elif [[ "$subtest" = "pstore" ]]; then
 			fixup_pstore || continue
 		elif [[ "$subtest" = "firmware" ]]; then
@@ -433,6 +595,12 @@ run_tests()
 			continue
 		elif [[ "$subtest" = "livepatch" ]]; then
 			fixup_livepatch
+		elif [[ "$subtest" = "ftrace" ]]; then
+			fixup_ftrace
+		elif [[ "$subtest" = "kmod" ]]; then
+			fixup_kmod
+		elif [[ "$subtest" = "ptp" ]]; then
+			fixup_ptp || continue
 		fi
 
 		log_cmd make run_tests -C $subtest  2>&1 || return

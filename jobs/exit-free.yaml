@@ -1,0 +1,17 @@
+# the memory size has to be more than 100G
+suite: exit-free
+testcase: exit-free
+category: benchmark
+need_memory: 128G
+
+transparent_hugepage:
+  thp_enabled: never
+
+vmstat:
+perf-profile:
+
+eatmem:
+  eatmem_size: 80G
+  eatmem_nonuma: true
+
+exit-free:

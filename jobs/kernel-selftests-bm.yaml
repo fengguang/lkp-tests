@@ -1,0 +1,17 @@
+suite: kernel-selftests
+testcase: kernel-selftests
+category: functional
+
+kernel-selftests:
+  group:
+  - kselftests-cpufreq
+  - kselftests-net
+  - kselftests-netfilter
+  - kselftests-firmware
+
+---
+kernel-selftests:
+  group:
+  - kselftests-kvm
+
+kernel_cmdline: kvm-intel.unrestricted_guest=0

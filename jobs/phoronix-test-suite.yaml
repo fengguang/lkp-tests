@@ -6,194 +6,300 @@ need_memory: 8G
 timeout: 1h
 
 phoronix-test-suite:
-  test:
-  - aio-stress-1.1.1
-  # - aircrack-ng-1.1.2 # need to connect to internet
-  - aobench-1.0.1
-  - aom-av1-1.2.0
-  - apache-1.7.2
-  - apache-siege-1.0.2
-  - asmfish-1.1.0
-  - blake2-1.2.1
-  - blogbench-1.1.0
-  - bork-1.0.1
-  - botan-1.4.0
-  - build-apache-1.4.0
-  - build-eigen-1.0.0
-  # - build-firefox-1.0.0 # wait for newer version
-  - build-gcc-1.1.1
-  - build-imagemagick-1.7.2
-  - build-linux-kernel-1.9.1
-  - build-llvm-1.1.0
-  - build-mplayer-1.4.0
-  - build-php-1.4.0
-  # - build-webkitfltk-1.0.0 # the test costs more than 2h
-  - bullet-1.2.2
-  - byte-1.2.1
-  - c-ray-1.2.0
-  - cachebench-1.1.2
-  # - caffe-1.3.3 # wait for newer version
-  - clomp-1.0.0
-  - cloverleaf-1.0.0
-  - comd-cl-1.0.0
-  - compilebench-1.0.2
-  - compress-7zip-1.7.0
-  - compress-gzip-1.2.0
-  - compress-lzma-1.3.1
-  - compress-pbzip2-1.5.0
-  - compress-rar-1.1.0
-  - compress-xz-1.0.1
-  - compress-zstd-1.1.1
-  - core-latency-1.0.0
-  - coremark-1.0.0
-  - cp2k-1.0.0
-  - cpp-perf-bench-1.0.0
-  - crafty-1.4.4
-  - ctx-clock-1.0.0
-  - cyclictest-1.0.0
-  - cython-bench-1.0.0
-  # - dacapobench-1.0.0 # 3rd party url is N/A
-  - darktable-1.0.4
-  - dav1d-1.0.0
-  - dbench-1.0.0
-  - dcraw-1.1.0
-  - dolfyn-1.0.2
-  - ebizzy-1.0.4
-  - embree-1.0.0
-  # - encode-ape-1.3.0 # this test profile is marked Deprecated
-  - encode-flac-1.6.0
-  - encode-mp3-1.7.3
-  # - encode-ogg-1.4.1 # this test profile is marked Deprecated
-  # - encode-opus-1.0.1 # this test profile is marked Deprecated
-  - encode-wavpack-1.3.0
-  - espeak-1.4.0
-  # - fahbench-1.0.1 # wait for newer version
-  - ffmpeg-2.8.0
-  - ffte-1.1.0
-  - fftw-1.2.0
-  - fhourstones-1.1.2
-  - fio-1.11.5
-  - fs-mark-1.0.2
-  - gcrypt-1.0.5
-  - git-1.0.2
-  - glibc-bench-1.6.0
-  - gmpbench-1.2.0
-  - gnupg-2.4.0
-  - go-benchmark-1.1.4
-  - graphics-magick-1.8.0
-  - hackbench-1.0.0
-  - hdparm-read-1.0.0
-  - himeno-1.2.0
-  - hint-1.0.2
-  - hmmer-1.1.2
-  # - hpcc-1.2.4 # run time more than 2h on clear, install failed on debian
-  - hpcg-1.1.1
-  - idle-1.1.0
-  - interbench-1.0.1
-  - ior-1.0.0
-  - iozone-1.9.5
-  - iperf-1.0.2
-  - java-gradle-perf-1.0.0
-  - java-jmh-1.0.0
-  - java-scimark2-1.1.2
-  - john-the-ripper-1.7.0
-  - lammps-1.0.1
-  - llvm-test-suite-1.0.0
-  - luajit-1.1.0
-  - lulesh-cl-1.0.1
-  - luxcorerender-1.1.2
-  - lzbench-1.0.0
-  - m-queens-1.1.0
-  - mafft-1.5.0
-  - mbw-1.0.0
-  - mcperf-1.1.1
-  - mencoder-1.5.0
-  - minion-1.5.2
-  - mpcbench-1.0.1
-  - mrbayes-1.3.2
-  - multichase-1.0.2
-  - mysqlslap-1.0.6
-  - n-queens-1.2.0
-  - namd-1.0.1
-  # - namd-cuda-1.0.0 # nvidia video card is needed
-  # - nero2d-1.1.0 # wait for newer version
-  - neatbench-1.0.3
-  - netperf-1.0.2
-  - network-loopback-1.0.3
-  # - nexuiz-iqc-1.0.0 # this test profile is currently marked Deprecated
-  - nginx-1.2.2
-  - node-octane-1.0.1
-  - noise-level-1.1.0
-  - npb-1.3.1
-  - numenta-nab-1.0.0
-  # - numpy-1.0.5 # run time more than 1h
-  - octave-benchmark-1.0.0
-  - oidn-1.1.1
-  - opencv-bench-1.0.0
-  # - open-porous-media-1.3.1 # 3rd party url is N/A
-  - openssl-1.11.0
-  - opm-git-1.3.38
-  - optcarrot-1.0.0
-  - osbench-1.0.1
-  - parboil-1.2.1
-  - pennant-1.0.1
-  - perl-benchmark-1.0.1
-  - pgbench-1.8.7
-  - php-1.0.0
-  - phpbench-1.1.5
-  - pjdfstest-1.0.1
-  # - plaidml-1.0.4 # need to connect to internet
-  - polybench-c-1.2.0
-  - postmark-1.1.1
-  - povray-1.2.1
-  - primesieve-1.6.0
-  - psstop-1.0.0
-  # - pts-self-test-1.0.4 # need to connect to internet and only for selftest
-  - pybench-1.1.3
-  - pymongo-inserts-1.0.0
-  # - pyopencl-1.0.0 # 3rd party url is N/A
-  - radiance-1.0.0
-  - redis-1.2.0
-  - renaissance-1.0.0
-  - rbenchmark-1.0.3
-  - rodinia-1.2.2
-  - rust-prime-1.0.0
-  - sample-program-1.1.1
-  - schbench-1.0.0
-  - scikit-learn-1.0.1
-  - scimark2-1.3.2
-  # - serial-loopback-1.0.2 # need to really plug to serial ports
-  - smallpt-1.2.0
-  - smart-1.0.0
-  - sockperf-1.0.0
-  - sqlite-2.0.1
-  - sqlite-speedtest-1.0.0
-  - startup-time-1.3.0
-  - stockfish-1.1.1
-  - stress-ng-1.2.2
-  # - stresscpu2-1.0.1 # not performance test
-  - sudokut-1.0.0
-  - sunflow-1.1.2
-  - swet-1.0.0
-  - sysbench-1.0.0
-  - system-decompress-bzip2-1.0.2
-  # - system-decompress-gzip-1.1.0 # 3rd party url is N/A
-  - system-decompress-xz-1.0.2
-  - system-libxml2-1.0.3
-  # - systemd-boot-kernel-1.0.1 # too old to run, use systemd-boot-total instead
-  - systemd-boot-total-1.0.5
-  # - systemd-boot-userspace-1.0.1 # too old to run, use systemd-boot-total instead
-  - systester-1.0.0
-  - tachyon-1.1.1
-  - tinymembench-1.0.2
-  - tiobench-1.3.1
-  - tjbench-1.0.2
-  - tscp-1.2.1
-  - ttsiod-renderer-1.7.0
-  - tungsten-1.0.0
-  - unpack-linux-1.1.1
-  # - v-ray-1.0.2 # 3rd party url is N/A
-  # - viennacl-1.0.0 # wait for newer version
-  - x264-2.5.0
-  - x265-1.1.0
-  - xsbench-1.0.0
+  - test:
+    - aio-stress-1.1.1
+    # - aircrack-ng-1.1.2 # need to connect to internet
+    - aobench-1.0.1
+    - aom-av1-1.2.0
+    - apache-1.7.2
+    - apache-siege-1.0.2
+  - test: appleseed-1.0.1
+    option_a:
+      - Emily
+      - Disney Material
+      - Material Tester
+      # - Test All Options
+  - test:
+    - asmfish-1.1.0
+    - blake2-1.2.1
+    - blogbench-1.1.0
+    - bork-1.0.1
+    - botan-1.4.0
+    - build-apache-1.4.0
+    - build-eigen-1.0.0
+    # - build-firefox-1.0.0 # wait for newer version
+    - build-gcc-1.1.1
+    - build-imagemagick-1.7.2
+    - build-linux-kernel-1.9.1
+    - build-llvm-1.1.0
+    - build-mplayer-1.4.0
+    - build-php-1.4.0
+    # - build-webkitfltk-1.0.0 # the test costs more than 2h
+    - bullet-1.2.2
+    - byte-1.2.1
+    - c-ray-1.2.0
+    - cachebench-1.1.2
+    # - caffe-1.3.3 # wait for newer version
+  - test: cassandra-1.0.3
+    option_a:
+      - Reads
+      - Writes
+      - Mixed 1:1
+      - Mixed 1:3
+      # - Test All Options
+  - test:
+    - clomp-1.0.0
+    - cloverleaf-1.0.0
+    - comd-cl-1.0.0
+    - compilebench-1.0.2
+    - compress-7zip-1.7.0
+    - compress-gzip-1.2.0
+    - compress-lzma-1.3.1
+    - compress-pbzip2-1.5.0
+    - compress-rar-1.1.0
+    - compress-xz-1.0.1
+    - compress-zstd-1.1.1
+    - core-latency-1.0.0
+    - coremark-1.0.0
+    - cp2k-1.0.0
+    - cpp-perf-bench-1.0.0
+    - crafty-1.4.4
+    - ctx-clock-1.0.0
+    - cyclictest-1.0.0
+    - cython-bench-1.0.0
+    # - dacapobench-1.0.0 # 3rd party url is N/A
+  - test: darktable-1.0.4
+    option_a:
+      - Boat
+      - Masskrug
+      - Server Room
+      - Server Rack
+      # - Test All Options
+    option_b:
+      - CPU-only
+      - OpenCL
+      # - Test All Options
+  - test:
+    - dav1d-1.0.0
+    - dbench-1.0.0
+    - dcraw-1.1.0
+    - dolfyn-1.0.2
+    - ebizzy-1.0.4
+    - embree-1.0.0
+    # - encode-ape-1.3.0 # this test profile is marked Deprecated
+    - encode-flac-1.6.0
+    - encode-mp3-1.7.3
+    # - encode-ogg-1.4.1 # this test profile is marked Deprecated
+    # - encode-opus-1.0.1 # this test profile is marked Deprecated
+    - encode-wavpack-1.3.0
+    - espeak-1.4.0
+    # - fahbench-1.0.1 # wait for newer version
+    - ffmpeg-2.8.0
+    - ffte-1.1.0
+    - fftw-1.2.0
+    - fhourstones-1.1.2
+    - fio-1.11.5
+    - fs-mark-1.0.2
+    - gcrypt-1.0.5
+    - git-1.0.2
+    - glibc-bench-1.6.0
+    - gmpbench-1.2.0
+    - gnupg-2.4.0
+    - go-benchmark-1.1.4
+    - graphics-magick-1.8.0
+    - hackbench-1.0.0
+    - hdparm-read-1.0.0
+    - himeno-1.2.0
+    - hint-1.0.2
+    - hmmer-1.1.2
+    # - hpcc-1.2.4 # run time more than 2h on clear, install failed on debian
+    - hpcg-1.1.1
+    - idle-1.1.0
+    - interbench-1.0.1
+    - ior-1.0.0
+    - iozone-1.9.5
+    - iperf-1.0.2
+    # - java-gradle-perf-1.0.0 # wait for newer version
+    - java-jmh-1.0.0
+    - java-scimark2-1.1.2
+    - john-the-ripper-1.7.0
+    - keydb-1.1.0
+    - lammps-1.0.1
+    - llvm-test-suite-1.0.0
+    - luajit-1.1.0
+    - lulesh-cl-1.0.1
+    - luxcorerender-1.1.2
+    - lzbench-1.0.0
+    - m-queens-1.1.0
+    - mafft-1.5.0
+    - mbw-1.0.0
+  - test: mcperf-1.1.1
+    option_a:
+      - Get
+      - Set
+      - Delete
+      - Add
+      - Replace
+      - Append
+      - Prepend
+      # - Test All Options
+  - test:
+    - memtier-benchmark-1.0.1
+    - mencoder-1.5.0
+    - minion-1.5.2
+    - mpcbench-1.0.1
+    - mrbayes-1.3.2
+    - multichase-1.0.2
+    - mysqlslap-1.0.6
+    - n-queens-1.2.0
+    - namd-1.0.1
+    # - namd-cuda-1.0.0 # nvidia video card is needed
+    # - nero2d-1.1.0 # wait for newer version
+    - neatbench-1.0.3
+    - netperf-1.0.2
+    - network-loopback-1.0.3
+    # - nexuiz-iqc-1.0.0 # this test profile is currently marked Deprecated
+    - nginx-1.2.2
+    - node-octane-1.0.1
+    - noise-level-1.1.0
+    - npb-1.3.1
+    - numenta-nab-1.0.0
+    # - numpy-1.0.5 # run time more than 1h
+    - nuttcp-1.0.3
+    - octave-benchmark-1.0.0
+    - oidn-1.1.1
+    - opencv-bench-1.0.0
+    # - open-porous-media-1.3.1 # 3rd party url is N/A
+    - openssl-1.11.0
+    - opm-git-1.3.38
+    - optcarrot-1.0.0
+    - osbench-1.0.1
+  - test: ospray-1.0.3
+    option_a:
+      - Magnetic Reconnection
+      - XFrog Forest
+      - NASA Streamlines
+      - San Miguel
+      # - Test All Options
+    option_b:
+      - SciVis [A fast ray-tracer for scientific visualizations.]
+      - 2 # Path Tracer [Supports soft shadows, indirect illumination and realistic materials.]
+      # - Test All Options
+  - test:
+    - parboil-1.2.1
+    - pennant-1.0.1
+    - perl-benchmark-1.0.1
+    - php-1.0.0
+    - phpbench-1.1.5
+    - pjdfstest-1.0.1
+    # - plaidml-1.0.4 # need to connect to internet
+    - polybench-c-1.2.0
+    - postmark-1.1.1
+    - povray-1.2.1
+  - test: pgbench-1.9.1
+    option_a:
+      - Buffer Test
+      - Mostly RAM
+      - On-Disk
+      # - Test All Options
+    option_b:
+      - Single Thread
+      - Normal Load
+      - Heavy Contention
+      # - Test All Options
+    option_c:
+      - Read Write
+      - Read Only
+      # - Test All Options
+  - test:
+    - primesieve-1.6.0
+    - psstop-1.0.0
+    # - pts-self-test-1.0.4 # need to connect to internet and only for selftest
+    - pybench-1.1.3
+    - pymongo-inserts-1.0.0
+    # - pyopencl-1.0.0 # 3rd party url is N/A
+    - radiance-1.0.0
+    - redis-1.2.0
+    - renaissance-1.0.0
+    - rbenchmark-1.0.3
+  - test: rocksdb-1.0.2
+    option_a:
+      - Sequential Fill
+      - Random Fill
+      - Random Fill Sync
+      - Random Read
+      - Read While Writing
+      # - Test All Options
+  - test:
+    - rodinia-1.2.2
+    - rust-prime-1.0.0
+    - sample-program-1.1.1
+    - schbench-1.0.0
+    - scikit-learn-1.0.1
+    - scimark2-1.3.2
+    # - serial-loopback-1.0.2 # need to really plug to serial ports
+    - smallpt-1.2.0
+    - smart-1.0.0
+  - test: sockperf-1.0.0
+    option_a:
+      - Latency Under Load
+      - Latency Ping Pong
+      - Throughput
+      # - Test All Options
+  - test:
+    - sqlite-2.1.0
+    - sqlite-speedtest-1.0.0
+  - test: startup-time-1.4.1
+    option_a:
+      - Only Sequential Reads
+      - Sequential Reads + Writes
+      # - Test All Options
+    option_b:
+      - GNOME Terminal
+      - xterm
+      - LibreOffice Writer
+      # - Test All Options
+    option_c:
+      - /opt/rootfs
+  - test:
+    - stockfish-1.1.1
+    - stress-ng-1.2.2
+    # - stresscpu2-1.0.1 # not performance test
+    - sudokut-1.0.0
+    - sunflow-1.1.2
+    - swet-1.0.0
+  - test: sysbench-1.0.0
+    option_a:
+      - CPU
+      - Memory
+      # - Test All Options
+  - test:
+    - system-decompress-bzip2-1.0.2
+    # - system-decompress-gzip-1.1.0 # 3rd party url is N/A
+    - system-decompress-xz-1.0.2
+    - system-libxml2-1.0.3
+    # - systemd-boot-kernel-1.0.1 # too old to run, use systemd-boot-total instead
+    - systemd-boot-total-1.0.5
+    # - systemd-boot-userspace-1.0.1 # too old to run, use systemd-boot-total instead
+    - systester-1.0.0
+    - tachyon-1.1.1
+    - tinymembench-1.0.2
+    - tiobench-1.3.1
+    - tjbench-1.0.2
+    - tscp-1.2.1
+    - ttsiod-renderer-1.7.0
+  - test: tungsten-1.0.0
+    option_a:
+      - Hair
+      - Water Caustic
+      - Non-Exponential
+      - Volumetric Caustic
+      - Test All Options
+  - test:
+    - unpack-linux-1.1.1
+    # - v-ray-1.0.2 # 3rd party url is N/A
+    # - viennacl-1.0.0 # wait for newer version
+    - vpxenc-3.0.0
+    - x264-2.5.0
+    - x265-1.1.0
+    - xsbench-1.0.0

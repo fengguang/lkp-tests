@@ -4,11 +4,21 @@ pkgrel=1
 url='https://github.com/antonblanchard/will-it-scale.git'
 arch=('i386' 'x86_64')
 license=('GPL')
-source=('https://github.com/antonblanchard/will-it-scale.git')
-md5sums=('SKIP')
+source=('https://github.com/antonblanchard/will-it-scale.git'
+	https://www.python.org/ftp/python/3.8.3/Python-3.8.3.tar.xz)
+md5sums=('SKIP' 'SKIP')
+
+build_python3()
+{
+	cd $srcdir/Python-3.8.3
+	./configure --prefix=${pkgdir}/lkp/benchmarks/python3
+	make
+	make install
+}
 
 build()
 {
+	build_python3
 	cd $srcdir/${pkgname}
 	make
 }

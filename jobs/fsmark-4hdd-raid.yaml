@@ -1,0 +1,35 @@
+suite: fsmark
+testcase: fsmark
+category: benchmark
+
+iterations: 1
+nr_threads:
+- 1
+- 64
+
+disk: 4HDD
+md: RAID0
+
+fs:
+- xfs
+- ext4
+- btrfs
+
+fsmark:
+  filesize: 4M
+  test_size: 200G
+  sync_method: NoSync
+
+---
+md: RAID5
+
+fsmark.test_size: 70G
+
+---
+md:
+- BRAID0
+- BRAID5
+- BRAID6
+fs: btrfs
+
+fsmark.test_size: {{ md == 'BRAID6' ? '24G' : '130G' }}

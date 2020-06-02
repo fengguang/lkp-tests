@@ -1,10 +1,10 @@
 aim7\.jobs-per-min: 1
 aim9\..+\.ops_per_sec: 1
 apachebench\.requests_per_second: 1
-autotest\..+\_MB_s: 1
 blogbench\..+\_score: 1
 boot-time\.boot: -1
 boot-time\.dhcp: -1
+cassandra\.Op.+rate: 1
 chromeswap\.throughput_swap_cycles_per_second: -1
 dbench\.max_latency: -1
 dbench\.throughput-MB\/sec: 1
@@ -12,7 +12,7 @@ dd\..+\_time_ms: -1
 ebizzy\.throughput: 1
 ebizzy\.throughput\.per_thread\.max: 1
 ebizzy\.throughput\.per_thread\.min: 1
-exit_free\.duration: -1
+exit-free\.duration: -1
 filebench\.sum_operations\/s: 1
 filebench\.sum_bytes_mb\/s: 1
 fileio\..+_operations\/s: 1
@@ -36,8 +36,10 @@ iperf\..+\.bps: 1
 kbuild\.buildtime_per_iteration: -1
 kernel-selftests\.mqueue\.nsec_per_msg: -1
 ku-latency\.total_average_us: -1
+linkbench\.requests\/s: 1
 linpack\.GFlops: 1
 lmbench3\..+\.MB\/sec: 1
+lmbench3\.Pagefaults\.ms: -1
 mcperf\..+\_rate\_.+\/s: 1
 memtier\..+_ops/s: 1
 mutilate\..+\.speed: 1
@@ -72,6 +74,7 @@ phoronix-test-suite\..+\.operations_per_second: 1
 phoronix-test-suite\..+\.queries_per_second: 1
 phoronix-test-suite\..+\.requests_per_second: 1
 phoronix-test-suite\..+\.score: 1
+phoronix-test-suite\..+\.sec: -1
 phoronix-test-suite\..+\.seconds: -1
 phoronix-test-suite\..+\.total_mop_s: 1
 phoronix-test-suite\..+\.tps: 1
@@ -118,7 +121,9 @@ phoronix-test-suite\..+\.bogo_ops_s: 1
 phoronix-test-suite\..+\.megapixels_sec: 1
 phoronix-test-suite\..+\.operations___second: 1
 phoronix-test-suite\..+\.lookups_s: 1
+phoronix-test-suite\..+\.op_s: 1
 phoronix-test-suite\..+\.ops_s: 1
+phoronix-test-suite\..+\.ops_sec: 1
 phoronix-test-suite\..+\.transaction_rate_per_second: 1
 phoronix-test-suite\..+\.milliwatts: -1
 phoronix-test-suite\..+\.frames: 1
@@ -127,10 +132,12 @@ phoronix-test-suite\..+\.gb_s: 1
 phoronix-test-suite\..+\.gflops: 1
 phoronix-test-suite\..+\.m_samples_sec: 1
 phoronix-test-suite\..+\.images___sec: 1
-phoronix-test-suite\..+\.fps: 1
 phoronix-test-suite\..+\.ns: -1
 phoronix-test-suite\..+\.hydro_cycle_time_-_seconds: -1
 phoronix-test-suite\..+\.iterations_sec: 1
+phoronix-test-suite\..+\.gmpbench_score: 1
+phoronix-test-suite\..+\.total_score: 1
+phoronix-test-suite\..+\.z_s: 1
 pigz\.throughput: 1
 pixz\.throughput: 1
 plzip\.throughput: 1

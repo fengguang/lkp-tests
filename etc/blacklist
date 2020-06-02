@@ -4,7 +4,6 @@
 ^aim7.*.jobs-per-min-per-task
 ^aim7.*.jti
 ^aim7.*.real
-^autotest\.monotonic_time\.tsc
 ^blktests\.block\.002
 ^blktests\.block\.009
 ^blktests\.loop\.002
@@ -407,8 +406,8 @@
 ^perf-profile.
 ^perf-stat.
 ^perf-stat\.i\.
-^perf_test\.event_relation_checking\.round1\.iTLB-loads,iTLB-load-misses
-^perf_test\.skid_test\.round1\.MEM_LOAD_RETIRED\.L2_HIT_dtlb_with_NMI
+^perf-test\.event_relation_checking\.round1\.iTLB-loads,iTLB-load-misses
+^perf-test\.skid_test\.round1\.MEM_LOAD_RETIRED\.L2_HIT_dtlb_with_NMI
 ^phoronix-test-suite.*.not_installed
 ^proc-vmstat.
 ^rcutorture.cpuhotplug-.*\.rcu_hotplug
@@ -419,8 +418,8 @@
 ^stderr\.
 ^syzkaller.*
 ^tcrypt.*
-^test_bpf\.fail_test
-^test_bpf\.success_test
+^test-bpf\.fail_test
+^test-bpf\.success_test
 ^time.
 .*\.total_fail
 .*\.total_pass

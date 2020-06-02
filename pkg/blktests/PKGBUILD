@@ -4,14 +4,23 @@ pkgrel=1
 arch=('i386' 'x86_64')
 url="https://github.com/osandov/blktests"
 license=('GPL')
-source=("https://github.com/osandov/blktests.git" "https://github.com/karelzak/util-linux.git")
-md5sums=('SKIP' 'SKIP')
+source=("https://github.com/osandov/blktests.git" "https://github.com/karelzak/util-linux.git" "https://github.com/linux-nvme/nvme-cli.git")
+md5sums=('SKIP' 'SKIP' 'SKIP')
 
 build_util_linux() {
 	cd "${srcdir}/util-linux"
 	./autogen.sh
 	./configure
 	make
+}
+
+install_nvme_cli() {
+	mkdir -p "${benchmark_path}/nvme-cli"
+	cd "${srcdir}/nvme-cli"
+	git checkout 'v1.6'
+	unset CFLAGS
+	make
+	make DESTDIR="${benchmark_path}/nvme-cli" install
 }
 
 build_blktests() {
@@ -27,6 +36,7 @@ build() {
 package() {
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
 	mkdir -p "${benchmark_path}"
+	install_nvme_cli
 	cp -af "$srcdir/blktests/"* "$benchmark_path"
 	cp -af "$srcdir/util-linux" "$benchmark_path"
 }

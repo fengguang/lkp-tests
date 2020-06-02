@@ -1,0 +1,26 @@
+#!/bin/sh
+# - runtime
+
+. $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/kmemleak.sh
+
+kmemleak_is_enabled || die "current kernel cannot support kmemleak, please check CONFIG_DEBUG_KMEMLEAK"
+
+echo clear > /sys/kernel/debug/kmemleak
+modprobe kmemleak-test
+
+# https://www.kernel.org/doc/html/latest/dev-tools/kmemleak.html
+# Note that the you may not get results instantly or on the first scanning. When kmemleak gets results, it’ll log kmemleak: <count of leaks> new suspected memory leaks.
+wait_kmemleak_finished()
+{
+       echo scan > /sys/kernel/debug/kmemleak
+       for i in $(seq 1 12)
+       do
+               dmesg | grep -q 'new suspected memory leaks' && break
+               sleep 5
+       done
+}
+
+wait_kmemleak_finished
+
+cat /sys/kernel/debug/kmemleak

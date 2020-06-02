@@ -34,4 +34,4 @@ fi
 
 ulimit -n 65536
 
-log_cmd python2 ./runtest.py $test $duration $mode $threads_to_iterate
+log_cmd /lkp/benchmarks/python3/bin/python3 ./runtest.py $test $duration $mode $threads_to_iterate

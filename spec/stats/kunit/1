@@ -1,0 +1,74 @@
+[   22.087937]	# Subtest: kunit-try-catch-test
+[   22.088994]	1..2
+[   22.114555]	ok 1 - kunit_test_try_catch_successful_try_no_catch
+[   22.126573]	ok 2 - kunit_test_try_catch_unsuccessful_try_does_catch
+[   22.127949] ok 4 - kunit-try-catch-test
+[   22.128774]	# Subtest: kunit-resource-test
+[   22.132604]	1..5
+[   22.141538]	ok 1 - kunit_resource_test_init_resources
+[   22.149576]	ok 2 - kunit_resource_test_alloc_resource
+[   22.164979]	ok 3 - kunit_resource_test_destroy_resource
+[   22.171583]	ok 4 - kunit_resource_test_cleanup_resources
+[   22.179577]	ok 5 - kunit_resource_test_proper_free_ordering
+[   22.181461] ok 5 - kunit-resource-test
+[   22.237543]	# Subtest: example
+[   22.238405]	1..1
+[   22.245545]	# example_simple_test: initializing
+[   22.246974]	ok 1 - example_simple_test
+[   22.248089] ok 6 - example
+[   22.294437]	# Subtest: ext4_inode_test
+[   22.295381]	1..1
+[   22.308561]	ok 1 - inode_test_xtimestamp_decoding
+[   22.311110] ok 7 - ext4_inode_test
+[   22.375547]	# Subtest: sysctl_test
+[   22.378257]	1..10
+[   22.384561]	ok 1 - sysctl_test_api_dointvec_null_tbl_data
+[   22.391569]	ok 2 - sysctl_test_api_dointvec_table_maxlen_unset
+[   22.402572]	ok 3 - sysctl_test_api_dointvec_table_len_is_zero
+[   22.409571]	ok 4 - sysctl_test_api_dointvec_table_read_but_position_set
+[   22.417569]	ok 5 - sysctl_test_dointvec_read_happy_single_positive
+[   22.425572]	ok 6 - sysctl_test_dointvec_read_happy_single_negative
+[   22.433573]	ok 7 - sysctl_test_dointvec_write_happy_single_positive
+[   22.437577]	ok 8 - sysctl_test_dointvec_write_happy_single_negative
+[   22.449243]	ok 9 - sysctl_test_api_dointvec_write_single_less_int_min
+[   22.453612]	ok 10 - sysctl_test_api_dointvec_write_single_greater_int_max
+[   22.457814] ok 8 - sysctl_test
+[   22.512317]	# Subtest: list-kunit-test
+[   22.514446]	1..36
+[   22.532547]	ok 1 - list_test_list_init
+[   22.542554]	ok 2 - list_test_list_add
+[   22.551568]	ok 3 - list_test_list_add_tail
+[   22.565569]	ok 4 - list_test_list_del
+[   22.574568]	ok 5 - list_test_list_replace
+[   22.583574]	ok 6 - list_test_list_replace_init
+[   22.596551]	ok 7 - list_test_list_swap
+[   22.605567]	ok 8 - list_test_list_del_init
+[   22.612560]	ok 9 - list_test_list_move
+[   22.624937]	ok 10 - list_test_list_move_tail
+[   22.634581]	ok 11 - list_test_list_bulk_move_tail
+[   22.644570]	ok 12 - list_test_list_is_first
+[   22.657585]	ok 13 - list_test_list_is_last
+[   22.666575]	ok 14 - list_test_list_empty
+[   22.675569]	ok 15 - list_test_list_empty_careful
+[   22.684573]	ok 16 - list_test_list_rotate_left
+[   22.698572]	ok 17 - list_test_list_rotate_to_front
+[   22.707582]	ok 18 - list_test_list_is_singular
+[   22.719562]	ok 19 - list_test_list_cut_position
+[   22.726555]	ok 20 - list_test_list_cut_before
+[   22.735584]	ok 21 - list_test_list_splice
+[   22.744581]	ok 22 - list_test_list_splice_tail
+[   22.767564]	ok 23 - list_test_list_splice_init
+[   22.779585]	ok 24 - list_test_list_splice_tail_init
+[   22.788549]	ok 25 - list_test_list_entry
+[   22.797570]	ok 26 - list_test_list_first_entry
+[   22.805578]	ok 27 - list_test_list_last_entry
+[   22.813579]	ok 28 - list_test_list_first_entry_or_null
+[   22.821575]	ok 29 - list_test_list_next_entry
+[   22.830575]	ok 30 - list_test_list_prev_entry
+[   22.839695]	ok 31 - list_test_list_for_each
+[   22.847577]	ok 32 - list_test_list_for_each_prev
+[   22.854549]	ok 33 - list_test_list_for_each_safe
+[   22.867575]	ok 34 - list_test_list_for_each_prev_safe
+[   22.877567]	ok 35 - list_test_list_for_each_entry
+[   22.883547]	ok 36 - list_test_list_for_each_entry_reverse
+[   22.885525] ok 9 - list-kunit-test

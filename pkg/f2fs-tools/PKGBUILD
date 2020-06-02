@@ -19,7 +19,7 @@ md5sums=('SKIP')
 
 build() {
   cd $_gitname
-  autoreconf -fi
+  ./autogen.sh
   ./configure --prefix=/usr --sbindir=/usr/bin
   make
 }

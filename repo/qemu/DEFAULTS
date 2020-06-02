@@ -1,0 +1,4 @@
+pkg_pattern: "qemu-system-x86_64"
+release_tag_pattern:
+  v(?<major>[0-9])\.(?<minor>\d+)\.?(?<micro>\d+)?\.?(?<mmicro>\d+)?(-rc(?<prerelease>\d+))?
+belongs_to: qemu

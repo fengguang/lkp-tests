@@ -3,6 +3,7 @@
 . $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/wait.sh
 . $LKP_SRC/lib/upload.sh
+. $LKP_SRC/lib/kmemleak.sh
 
 umask 002
 
@@ -16,7 +17,7 @@ any_pid_alive()
 	ps_out=$(ps axho pid 2>/dev/null)
 
 	if [ -n "$ps_out" ]; then
-		echo "$ps_out" | grep -qFxf $pidfile
+		echo "$ps_out" | grep -qFwf $pidfile
 	else
 		is_busybox_ps=1
 		for pid in $(cat $pidfile)
@@ -195,6 +196,11 @@ copy_results
 [ "$kconfig" = "x86_64-rhel-7.6-gcov" -o "$kconfig" = "x86_64-rhel-7.2-gcov" -o "$kconfig" = "x86_64-rhel-7.2-clear-gcov" ] && [ -d /sys/kernel/debug/gcov ] && {
 	$LKP_SRC/tools/gather-gcov-test $TMP/gcov-test.tar.gz
 	upload_files $TMP/gcov-test.tar.gz
+}
+
+kmemleak_is_enabled && {
+	cat /sys/kernel/debug/kmemleak >/tmp/debug-kmemleak
+	upload_files /tmp/debug-kmemleak
 }
 
 # the busybox reduced dmesg/truncate will refuse to run and it's not a big deal

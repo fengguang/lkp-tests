@@ -7,8 +7,6 @@ require "#{LKP_SRC}/lib/lkp_git"
 require "#{LKP_SRC}/lib/run_env"
 require "#{LKP_SRC}/lib/constant"
 
-DEFAULT_COMPILER = 'gcc-7'.freeze
-
 def tbox_group(hostname)
   if hostname =~ /.+-\d+$/
     hostname.sub(/-\d+$/, '').sub(/-\d+-/, '-')

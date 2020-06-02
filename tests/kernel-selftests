@@ -15,7 +15,7 @@ shopt -s nullglob
 prepare_test_env || die "prepare test env failed"
 
 # Only update llvm for bpf test
-[ "$group" = "kselftests-bpf" ] && {
+[ "$group" = "kselftests-bpf" -o "$group" = "kselftests-net" ] && {
 	cd / && {
 		prepare_for_llvm || die "install newest llvm failed"
 	}

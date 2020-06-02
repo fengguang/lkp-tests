@@ -29,6 +29,7 @@ libattr1-dev: libattr-devel
 libaudit-dev: audit-libs-devel
 libblas3: blas
 libblkid-dev: libblkid-devel
+libc6: glibc.x86_64
 libc6-dbg: glibc-debuginfo
 libc6-dev: glibc-devel glibc-static
 libc6-dev:i386: glibc-devel.i686 glibc-static.i686
@@ -37,6 +38,8 @@ libcairo2-dev: cairo-devel
 libcap2: libcap
 libcap-dev: libcap-devel
 libcap-ng-dev: libcap-ng-devel
+libc-bin: glibc-common
+libc-dev-bin: glibc-common
 libc-dev:i386: glibc-devel.i686
 libdbd-mysql-perl: libdbi-dbd-mysql
 libdbi-perl: perl-DBI
@@ -133,6 +136,7 @@ xz-utils: xz
 zlib1g: zlib
 zlib1g-dev: zlib-devel
 protobuf-compiler: protobuf
+locales: glibc-common
 libprotobuf-dev: protobuf-devel
 openjdk-8-jdk: java-1.8.0-openjdk-devel
 libunwind8: libunwind
@@ -143,6 +147,7 @@ libbsd0: libbsd
 libbsd-dev: libbsd-devel
 libgcrypt20: libgcrypt
 libgcrypt-dev: libgcrypt-devel
+libgdbm-dev: gdbm-devel
 libipsec-mb:
 libipsec-mb-dev:
 libkeyutils1: keyutils-libs
@@ -150,3 +155,9 @@ libkeyutils-dev: keyutils-libs-devel
 libbz2-dev: bzip2-devel
 libzstd-dev: libzstd-devel
 libtirpc: libtirpc1
+libbabeltrace-dev: libbabeltrace-devel
+libgtk2.0-dev: gtk2-devel
+libperl-dev: perl-devel
+libslang2-dev: slang-devel
+python-dev: python3-devel
+systemtap-sdt-dev: systemtap-sdt-devel
