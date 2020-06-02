@@ -4,7 +4,7 @@
 . $LKP_SRC/lib/kmemleak.sh
 . $LKP_SRC/lib/wait.sh
 
-kmemleak_is_enabled || return
+kmemleak_is_enabled || exit 0
 
 setup_wait
 
