@@ -1,0 +1,15 @@
+#!/bin/bash
+
+git_url='https://github.com/kunpengcompute/AvxToNeon'
+#step1: git clone avx2neon, comment this temporarily due to no git mirror now
+#git clone $git_url
+
+#set -x
+echo "api-avx2neon running"
+#step2: compile and run the tests
+avx2neon_dir="$LKP_SRC/tests/AvxToNeon"
+cd "$avx2neon_dir"
+cd tests
+make
+./test
+echo "api-avx2neon finished"
