@@ -101,6 +101,13 @@ def bpf_stat(test_case_name, _subtest, _result, stats)
   stats << "bpf.#{test_case_name}.#{subtest_case_name}.#{result}: 1"
 end
 
+def detail_stat(test_name, _test_case_name, _result, stats)
+  test_case_name = _test_case_name.strip.tr(' ', '_').tr('-', '_').downcase
+  result = _result.downcase
+  result = 'pass' if result == 'ok'
+  stats << "#{test_name}.#{test_case_name}.#{result}: 1"
+end
+
 while (line = STDIN.gets)
   line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
 
@@ -118,6 +125,14 @@ while (line = STDIN.gets)
       # rli9 FIXME: consider the input has messed text like Entering doesn't match with Leaving
       test_name = nil
     end
+  when /^(ion_test.sh: .*) - \[(PASS|FAIL|SKIP)\]$/
+    next unless test_name == 'android'
+
+    detail_stat('android', $1, $2, stats)
+  when /^(ok|fail|skip) \d+ (Test .*)/
+    next unless test_name == 'breakpoints'
+
+    detail_stat('breakpoints', $2, $1, stats)
   when /.*\[\d+\] (.*)\[(PASS|FAIL|SKIP|UNRESOLVED|XFAIL|UNTESTED)\]/
     next unless test_name == 'ftrace'
 
