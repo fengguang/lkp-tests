@@ -1,0 +1,10 @@
+membarrier.membarrier_test_single_thread.sys_membarrier_available.pass: 1
+membarrier.membarrier_test_single_thread.sys_membarrier_invalid_command_test:_command_=__1,_flags_=_0,_errno_=_22._failed_as_expected.pass: 1
+membarrier.membarrier_test_single_thread.sys_membarrier_membarrier_cmd_query_invalid_flags_test:_flags_=_1,_errno_=_22._failed_as_expected.pass: 1
+membarrier.membarrier_test_single_thread.sys_membarrier_membarrier_cmd_global_expedited_test:_flags_=_0.pass: 1
+membarrier.membarrier_test_single_thread.pass: 1
+membarrier.membarrier_test_multi_thread.sys_membarrier_available.pass: 1
+membarrier.membarrier_test_multi_thread.sys_membarrier_invalid_command_test:_command_=__1,_flags_=_0,_errno_=_22._failed_as_expected.pass: 1
+membarrier.membarrier_test_multi_thread.sys_membarrier_membarrier_cmd_register_global_expedited_test:_flags_=_0.pass: 1
+membarrier.membarrier_test_multi_thread.sys_membarrier_membarrier_cmd_global_expedited_test:_flags_=_0.pass: 1
+membarrier.membarrier_test_multi_thread.pass: 1
