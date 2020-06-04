@@ -217,7 +217,15 @@ while (line = STDIN.gets)
     next unless test_case_name == 'test_bpftool.sh'
 
     subtest_stat('bpf', test_case_name, $1, $2, stats)
+  when /^# selftests: mqueue: (.*)/
+    test_case_name = $1
+  when /^# (.*):.*(PASS|FAIL|SKIP)/
+    next unless test_name == 'mqueue'
+
+    subtest_stat('mqueue', test_case_name, $1, $2, stats)
   when /Test #([1-9].*):/
+    next unless test_name == 'mqueue'
+
     mqueue_test = Regexp.last_match[1]
   when /(Send|Recv) msg:/
     io = Regexp.last_match[1]
