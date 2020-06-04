@@ -16,6 +16,7 @@ per-user setup
 	git clone https://gitee.com/wu_fengguang/lkp-tests.git
 	cd lkp-tests
 	echo "export LKP_SRC=$PWD" >> $HOME/.${SHELL##*/}rc
+        echo "PATH="$PATH:$PWD/sbin:$PWD/bin" >> $HOME/.${SHELL##*/}rc
 
 	cat > hosts/$(hostname) <<-EOF
 	nr_cpu: $(nproc)
