@@ -1,0 +1,51 @@
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-2d16cf4817bc6944a2adb5bf4db607c8258e87da/tools/testing/selftests/capabilities'
+selftests: capabilities: test_execve
+========================================
+# validate_cap:: Capabilities after execve were correct
+# [RUN] +++ Tests with uid == 0 +++
+# [NOTE]        Using global UIDs for tests
+# [RUN] Root => ep
+ok 1 Passed
+# Check cap_ambient manipulation rules
+ok 2 PR_CAP_AMBIENT_RAISE failed on non-inheritable cap
+ok 3 PR_CAP_AMBIENT_RAISE failed on non-permitted cap
+ok 4 PR_CAP_AMBIENT_RAISE worked
+ok 5 Basic manipulation appears to work
+# [RUN] Root +i => eip
+ok 6 Passed
+# [RUN] UID 0 +ia => eipa
+ok 7 Passed
+# [RUN] Root +ia, suidroot => eipa
+ok 8 Passed
+# [RUN] Root +ia, suidnonroot => ip
+ok 9 Passed
+# [RUN] Root +ia, sgidroot => eipa
+ok 10 Passed
+ok 11 Passed
+# [RUN] Root +ia, sgidnonroot => eip
+ok 12 Passed
+Pass 12 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+1..12
+# validate_cap:: Capabilities after execve were correct
+# ==================================================
+# [RUN] +++ Tests with uid != 0 +++
+# [NOTE]        Using global UIDs for tests
+# [RUN] Non-root => no caps
+ok 1 Passed
+# Check cap_ambient manipulation rules
+ok 2 PR_CAP_AMBIENT_RAISE failed on non-inheritable cap
+ok 3 PR_CAP_AMBIENT_RAISE failed on non-permitted cap
+ok 4 PR_CAP_AMBIENT_RAISE worked
+ok 5 Basic manipulation appears to work
+# [RUN] Non-root +i => i
+ok 6 Passed
+# [RUN] UID 1 +ia => eipa
+ok 7 Passed
+# [RUN] Non-root +ia, sgidnonroot => i
+ok 8 Passed
+ok 9 Passed
+Pass 9 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+1..9
+# ==================================================
+ok 1..1 selftests: capabilities: test_execve [PASS]
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-2d16cf4817bc6944a2adb5bf4db607c8258e87da/tools/testing/selftests/capabilities'
