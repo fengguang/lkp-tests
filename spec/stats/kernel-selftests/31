@@ -1,0 +1,12 @@
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d6d5df1db6e9d7f8f76d2911707f7d5877251b02/tools/testing/selftests/pstore'
+# selftests: pstore: pstore_tests
+# === Pstore unit tests (pstore_tests) ===
+# UUID=c233e82b-4d26-4809-8483-492544817195
+# Checking pstore console is registered ... ok
+# Checking /dev/pmsg0 exists ... ok
+ok 1 selftests: pstore: pstore_tests
+# selftests: pstore: pstore_post_reboot_tests
+# UUID=851b9e4c-3957-4c1d-b4bf-a41b4e80d3b5
+# Checking pstore backend is registered ... ok
+not ok 2 selftests: pstore: pstore_post_reboot_tests # SKIP
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d6d5df1db6e9d7f8f76d2911707f7d5877251b02/tools/testing/selftests/pstore'
