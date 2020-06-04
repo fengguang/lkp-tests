@@ -182,11 +182,18 @@ distro_install_depends()
 
 		# chronic is provided by deps/pack.cgz, but nfs rootfs + run_on_local_disk environment,
 		# deps/pack.cgz will not be merged into the runtime rootfs currently.
+		# one by one installation improve the installation success rate.
 		if has_cmd chronic; then
-			chronic apt-get -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold install -y $packages
+			chronic=$chronic
 		else
-			apt-get -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold install -y $packages
+			chronic=
 		fi
+		for package in $packages
+		do
+			$chronic apt-get -o Dpkg::Options::=--force-confdef \
+					 -o Dpkg::Options::=--force-confold \
+					 install -y $package
+		done
 	done
 }
 
