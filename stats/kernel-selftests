@@ -133,6 +133,17 @@ while (line = STDIN.gets)
     next unless test_name == 'breakpoints'
 
     detail_stat('breakpoints', $2, $1, stats)
+  when /^# \[RUN\].*(Tests with uid .*) +++/
+    next unless test_name == 'capabilities'
+
+    test_case_name = $1.strip.tr(' ', '_').tr('-', '_').downcase
+  when /^Pass (\d+) Fail (\d+) Xfail (\d+) Xpass (\d+) Skip (\d+) Error (\d+)/
+    next unless test_name == 'capabilities'
+
+    result = 'skip'
+    result = 'fail' if $2 != '0' || $3 != '0' || $6 != '0'
+    result = 'pass' if $2 == '0' && $3 == '0' && $6 == '0'
+    stats << "#{test_name}.#{test_case_name}.#{result}: 1"
   when /.*\[\d+\] (.*)\[(PASS|FAIL|SKIP|UNRESOLVED|XFAIL|UNTESTED)\]/
     next unless test_name == 'ftrace'
 
