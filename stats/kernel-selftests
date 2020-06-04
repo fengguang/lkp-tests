@@ -152,6 +152,10 @@ while (line = STDIN.gets)
     next unless test_name == 'ia64'
 
     detail_stat('ia64', $2, $1, stats)
+  when /^(kmod_test.*): (OK|FAIL|SKIP)/
+    next unless test_name == 'kmod'
+
+    detail_stat('kmod', $1, $2, stats)
   when /.*\[\d+\] (.*)\[(PASS|FAIL|SKIP|UNRESOLVED|XFAIL|UNTESTED)\]/
     next unless test_name == 'ftrace'
 
