@@ -124,6 +124,7 @@ while (line = STDIN.gets)
     else
       # rli9 FIXME: consider the input has messed text like Entering doesn't match with Leaving
       test_name = nil
+      test_case_name = nil
     end
   when /^(ion_test.sh: .*) - \[(PASS|FAIL|SKIP)\]$/
     next unless test_name == 'android'
@@ -168,6 +169,8 @@ while (line = STDIN.gets)
     next unless test_name == 'pidfd'
 
     subtest_stat('pidfd', test_case_name, $2, $1, stats)
+  when /# selftests: pstore: (.*)/
+    test_case_name = $1
   when /.*\[\d+\] (.*)\[(PASS|FAIL|SKIP|UNRESOLVED|XFAIL|UNTESTED)\]/
     next unless test_name == 'ftrace'
 
@@ -219,10 +222,12 @@ while (line = STDIN.gets)
     next unless test_case_name == 'test_align'
 
     subtest_stat('bpf', test_case_name, $1, $2, stats)
-  when /^# (.*) ... (ok|fail|skip)/
-    next unless test_case_name == 'test_bpftool.sh'
-
-    subtest_stat('bpf', test_case_name, $1, $2, stats)
+  when /^# (.*) \.\.\. (ok|fail|skip)/
+    if test_case_name == 'test_bpftool.sh'
+      subtest_stat('bpf', test_case_name, $1, $2, stats)
+    elsif test_name == 'pstore'
+      subtest_stat('pstore', test_case_name, $1, $2, stats)
+    end
   when /^# selftests: mqueue: (.*)/
     test_case_name = $1
   when /^# (.*):.*(PASS|FAIL|SKIP)/
