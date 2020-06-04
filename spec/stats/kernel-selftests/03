@@ -1,5 +1,20 @@
 # mqueue
-
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d6d5df1db6e9d7f8f76d2911707f7d5877251b02/tools/testing/selftests/mqueue'
+# selftests: mqueue: mq_open_tests
+# Test series 1, behavior when no attr struct passed to mq_open:
+# Kernel supports setting defaults separately from maximums:            PASS
+# Kernel properly honors default setting knobs:                         PASS
+# Kernel properly fails to create queue when defaults would
+# exceed rlimit:                                                                PASS
+#
+#
+# Test series 2, behavior when attr struct is passed to mq_open:
+# Queue open with mq_maxmsg > limit when euid = 0 succeeded:            PASS
+# Queue open with mq_msgsize > limit when euid = 0 succeeded:           PASS
+# Queue open with total size > 2GB when euid = 0 failed:                        PASS
+# Queue open with total size > 2GB when euid = 99 failed:                       PASS
+ok 1 selftests: mqueue: mq_open_tests
+# selftests: mqueue: mq_perf_tests
         Test #2b: Time send/recv message, queue full, increasing prio
 :
                 (100000 iterations)
@@ -21,3 +36,5 @@
                 Recv msg:                       0.42457983s total time
                                                 424 nsec/msg
                 Draining queue...done.          0.17599680s
+ok 2 selftests: mqueue: mq_perf_tests
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d6d5df1db6e9d7f8f76d2911707f7d5877251b02/tools/testing/selftests/mqueue'

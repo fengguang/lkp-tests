@@ -1,1 +1,10 @@
+mqueue.mq_open_tests.kernel_supports_setting_defaults_separately_from_maximums.pass: 1
+mqueue.mq_open_tests.kernel_properly_honors_default_setting_knobs.pass: 1
+mqueue.mq_open_tests.exceed_rlimit.pass: 1
+mqueue.mq_open_tests.queue_open_with_mq_maxmsg_>_limit_when_euid_=_0_succeeded.pass: 1
+mqueue.mq_open_tests.queue_open_with_mq_msgsize_>_limit_when_euid_=_0_succeeded.pass: 1
+mqueue.mq_open_tests.queue_open_with_total_size_>_2gb_when_euid_=_0_failed.pass: 1
+mqueue.mq_open_tests.queue_open_with_total_size_>_2gb_when_euid_=_99_failed.pass: 1
+mqueue.mq_open_tests.pass: 1
+mqueue.mq_perf_tests.pass: 1
 mqueue.nsec_per_msg: 457
