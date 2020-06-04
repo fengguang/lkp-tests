@@ -162,6 +162,12 @@ while (line = STDIN.gets)
     next unless test_name == 'membarrier'
 
     subtest_stat('membarrier', test_case_name, $2, $1, stats)
+  when /# selftests: pidfd: (.*)/
+    test_case_name = $1
+  when /# (ok|fail|skip) \d+ (.*):.*/
+    next unless test_name == 'pidfd'
+
+    subtest_stat('pidfd', test_case_name, $2, $1, stats)
   when /.*\[\d+\] (.*)\[(PASS|FAIL|SKIP|UNRESOLVED|XFAIL|UNTESTED)\]/
     next unless test_name == 'ftrace'
 
