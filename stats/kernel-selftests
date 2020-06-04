@@ -94,11 +94,11 @@ def resctrl_stat(line, _resctrl, stats)
   end
 end
 
-def bpf_stat(test_case_name, _subtest, _result, stats)
-  subtest_case_name = _subtest.strip.tr(' ', '_').tr('-', '_').downcase
-  result = _result.downcase
+def subtest_stat(test_name, test_case_name, subtest, result, stats)
+  subtest_case_name = subtest.strip.tr(' ', '_').tr('-', '_').downcase
+  result = result.downcase
   result = 'pass' if result == 'ok'
-  stats << "bpf.#{test_case_name}.#{subtest_case_name}.#{result}: 1"
+  stats << "#{test_name}.#{test_case_name}.#{subtest_case_name}.#{result}: 1"
 end
 
 def detail_stat(test_name, _test_case_name, _result, stats)
@@ -156,6 +156,12 @@ while (line = STDIN.gets)
     next unless test_name == 'kmod'
 
     detail_stat('kmod', $1, $2, stats)
+  when /# selftests: membarrier: (.*)/
+    test_case_name = $1
+  when /^# (ok|fail|skip) \d+ (sys.membarrier .*)/
+    next unless test_name == 'membarrier'
+
+    subtest_stat('membarrier', test_case_name, $2, $1, stats)
   when /.*\[\d+\] (.*)\[(PASS|FAIL|SKIP|UNRESOLVED|XFAIL|UNTESTED)\]/
     next unless test_name == 'ftrace'
 
@@ -181,36 +187,36 @@ while (line = STDIN.gets)
   when /^# #\d+\/(p|u) (.*) (OK|SKIP|FAIL).*/
     next unless test_case_name == 'test_verifier'
 
-    bpf_stat(test_case_name, $2, $3, stats)
+    subtest_stat('bpf', test_case_name, $2, $3, stats)
   when /^# #\d+(\/\d+)? (.*):(OK|FAIL|SKIP)/
     next unless %w(test_progs test_progs-no_alu32).include? test_case_name
 
-    bpf_stat(test_case_name, $2, $3, stats) if $1.nil?
+    subtest_stat('bpf', test_case_name, $2, $3, stats) if $1.nil?
   when /^# \[TEST \d+\]: (.*): (PASS|FAIL|SKIP)/
     next unless test_case_name == 'test_sockmap'
 
-    bpf_stat(test_case_name, $1, $2, stats)
+    subtest_stat('bpf', test_case_name, $1, $2, stats)
   when /^# (.*)\[\d+\] (.*): ?(OK|FAIL|SKIP)/
     next unless test_case_name == 'test_btf'
 
     subtest_case_name = $1 + '.' + $2
-    bpf_stat(test_case_name, subtest_case_name, $3, stats)
+    subtest_stat('bpf', test_case_name, subtest_case_name, $3, stats)
   when /^# (.*): ?(PASS|OK|FAIL|SKIP|Pass|Fail|Skip)/
     next unless %w(test_maps test_lru_map test_hashmap).include? test_case_name
 
-    bpf_stat(test_case_name, $1, $2, stats) unless $1 == test_case_name
+    subtest_stat('bpf', test_case_name, $1, $2, stats) unless $1 == test_case_name
   when /^# Test case: (.*) .. \[(PASS|FAIL|SKIP)\]/
     next unless %w(test_sysctl test_sock test_sock_addr.sh).include? test_case_name
 
-    bpf_stat(test_case_name, $1, $2, stats)
+    subtest_stat('bpf', test_case_name, $1, $2, stats)
   when /^# Test   \d+: (.*) ... (PASS|Fail).*/
     next unless test_case_name == 'test_align'
 
-    bpf_stat(test_case_name, $1, $2, stats)
+    subtest_stat('bpf', test_case_name, $1, $2, stats)
   when /^# (.*) ... (ok|fail|skip)/
     next unless test_case_name == 'test_bpftool.sh'
 
-    bpf_stat(test_case_name, $1, $2, stats)
+    subtest_stat('bpf', test_case_name, $1, $2, stats)
   when /Test #([1-9].*):/
     mqueue_test = Regexp.last_match[1]
   when /(Send|Recv) msg:/
