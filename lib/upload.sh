@@ -41,7 +41,7 @@ upload_files_lftp()
 	local dest_file
 	local ret=0
 	local LFTP_TIMEOUT='set net:timeout 2; set net:reconnect-interval-base 2; set net:max-retries 2;'
-	local UPLOAD_HOST="http://$LKP_SERVER:${LFTP_PORT:-3080}"
+	local UPLOAD_HOST="http://$LKP_SERVER:${RESULT_WEBDAV_PORT:-3080}"
 
 	[ -n "$target_directory" ] && {
 		local JOB_RESULT_ROOT=$JOB_RESULT_ROOT/$target_directory
@@ -67,17 +67,18 @@ upload_one_curl()
 {
 	local src=$1
 	local dest=$2
+	local http_url="http://$LKP_SERVER:${RESULT_WEBDAV_PORT:-3080}$dest"
 
 	if [ -d "$src" ]; then
 		(
 			cd $(dirname "$1")
 			dir=$(basename "$1")
-			find "$dir" -type d -exec curl -sSf -X MKCOL "http://$LKP_SERVER$dest/{}" \;
-			find "$dir" -type f -size +0 -exec curl -sSf -T '{}' "http://$LKP_SERVER$dest/{}" \;
+			find "$dir" -type d -exec curl -sSf -X MKCOL "$http_url/{}" \;
+			find "$dir" -type f -size +0 -exec curl -sSf -T '{}' "$http_url/{}" \;
 		)
 	else
 		[ -s "$src" ] || return
-		curl -sSf -T "$src" http://$LKP_SERVER$dest/
+		curl -sSf -T "$src" $http_url/
 	fi
 }
 
@@ -85,6 +86,7 @@ upload_files_curl()
 {
 	local file
 	local ret=0
+	local http_host="http://$LKP_SERVER:${RESULT_WEBDAV_PORT:-3080}"
 
 	# "%" character as special character not be allowed in the URL when use curl command to transfer files, details can refer to below:
 	# https://www.werockyourweb.com/url-escape-characters/
@@ -95,7 +97,7 @@ upload_files_curl()
 		for dir in $(echo $target_directory | tr '/' ' ')
 		do
 			job_result_root=$job_result_root/$dir
-			curl -sSf -X MKCOL http://$LKP_SERVER$job_result_root  >/dev/null
+			curl -sSf -X MKCOL "$http_host$job_result_root"  >/dev/null
 		done
 	}
 
