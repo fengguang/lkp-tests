@@ -233,10 +233,21 @@ while (line = STDIN.gets)
 
     subtest_case_name = $1 + '.' + $2
     subtest_stat('bpf', test_case_name, subtest_case_name, $3, stats)
-  when /^# (.*): ?(PASS|OK|FAIL|SKIP|Pass|Fail|Skip)/
-    next unless %w(test_maps test_lru_map test_hashmap).include? test_case_name
+  when /^# Running kernel configuration test \d+ -- (.*)/
+    next unless test_name == 'firmware'
 
-    subtest_stat('bpf', test_case_name, $1, $2, stats) unless $1 == test_case_name
+    test_case_name = $1
+  when /^# Testing with the (file .*)\.\.\.$/
+    next unless test_name == 'firmware'
+
+    subtest_case_name1 = $1
+  when /^# (.*): ?(PASS|OK|FAIL|SKIP|Pass|Fail|Skip)/
+    if (%w(test_maps test_lru_map test_hashmap).include? test_case_name) && ($1 != test_case_name)
+      subtest_stat('bpf', test_case_name, $1, $2, stats)
+    elsif test_name == 'firmware'
+      subtest_case_name = subtest_case_name1 + '.' + $1
+      subtest_stat('firmware', test_case_name, subtest_case_name, $2, stats)
+    end
   when /^# Test case: (.*) .. \[(PASS|FAIL|SKIP)\]/
     next unless %w(test_sysctl test_sock test_sock_addr.sh).include? test_case_name
 
