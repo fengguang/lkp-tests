@@ -95,14 +95,14 @@ def resctrl_stat(line, _resctrl, stats)
 end
 
 def subtest_stat(test_name, test_case_name, subtest, result, stats)
-  subtest_case_name = subtest.strip.tr(' ', '_').tr('-', '_').downcase
+  subtest_case_name = subtest.strip.tr(' ', '_').tr('-', '_').downcase.gsub(/[\t\r\n\f]/, '_')
   result = result.downcase
   result = 'pass' if result == 'ok'
   stats << "#{test_name}.#{test_case_name}.#{subtest_case_name}.#{result}: 1"
 end
 
 def detail_stat(test_name, _test_case_name, _result, stats)
-  test_case_name = _test_case_name.strip.tr(' ', '_').tr('-', '_').downcase
+  test_case_name = _test_case_name.strip.tr(' ', '_').tr('-', '_').downcase.gsub(/[\t\r\n\f]/, '_')
   result = _result.downcase
   result = 'pass' if result == 'ok'
   stats << "#{test_name}.#{test_case_name}.#{result}: 1"
@@ -297,6 +297,10 @@ while (line = STDIN.gets)
     result = $4 =~ /SKIP/ ? 'skip' : 'fail'
     result = 'pass' if $1 == 'ok'
     stats << "#{test_name}.#{test_case_name}.#{result}: 1"
+  when /^# (.*) ?\[ (OK|FAIL|SKIP) \]/
+    next unless test_name == 'mptcp'
+
+    detail_stat('mptcp', $1, $2, stats)
   else
     if test_name == 'futex'
       futex_stat(line, tests_stats['futex'], stats)
