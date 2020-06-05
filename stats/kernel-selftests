@@ -165,12 +165,21 @@ while (line = STDIN.gets)
     subtest_stat('membarrier', test_case_name, $2, $1, stats)
   when /# selftests: pidfd: (.*)/
     test_case_name = $1
-  when /# (ok|fail|skip) \d+ (.*):.*/
-    next unless test_name == 'pidfd'
-
-    subtest_stat('pidfd', test_case_name, $2, $1, stats)
+  when /# (ok|fail|skip) \d+ (.*):(.*)/
+    if test_name == 'pidfd'
+      subtest_stat('pidfd', test_case_name, $2, $1, stats)
+    elsif test_name == 'timens'
+      subtest_case_name = $2 + ':' + $3
+      subtest_stat('timens', test_case_name, subtest_case_name, $1, stats)
+    end
   when /# selftests: pstore: (.*)/
     test_case_name = $1
+  when /# selftests: timens: (.*)/
+    test_case_name = $1
+  when /# (ok|fail|skip) \d+ (.*)/
+    next unless test_name == 'timens'
+
+    subtest_stat('timens', test_case_name, $2, $1, stats)
   when /.*\[\d+\] (.*)\[(PASS|FAIL|SKIP|UNRESOLVED|XFAIL|UNTESTED)\]/
     next unless test_name == 'ftrace'
 
