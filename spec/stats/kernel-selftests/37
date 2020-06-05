@@ -1,0 +1,12 @@
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-8223a71d1963d25cbec67dba3cecce6d3b09bd7d/tools/testing/selftests/net/mptcp'
+# selftests: net/mptcp: mptcp_connect.sh
+# Created /tmp/tmp.rZSP7CfbsA (size 6943603) containing data sent by server
+# New MPTCP socket can be blocked via sysctl		[ OK ]
+# setsockopt(..., TCP_ULP, "mptcp", ...) blocked	[ OK ]
+# INFO: Using loss of 0.17% delay 87 ms reorder 99% 83% on ns3eth4
+# ns1 MPTCP -> ns1 (10.0.1.1:10000      ) MPTCP	(duration   117ms) [ OK ]
+# ns1 MPTCP -> ns1 (10.0.1.1:10001      ) TCP  	(duration   113ms) [ OK ]
+# ns4 MPTCP -> ns3 (10.0.3.2:10040      ) MPTCP	(duration   185ms) [ OK ]
+# ns4 MPTCP -> ns3 (dead:beef:3::2:10041) MPTCP	(duration   204ms) [ OK ]
+ok 1 selftests: net/mptcp: mptcp_connect.sh
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-8223a71d1963d25cbec67dba3cecce6d3b09bd7d/tools/testing/selftests/net/mptcp'
