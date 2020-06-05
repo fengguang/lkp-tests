@@ -26,46 +26,46 @@ $perf_metrics_prefixes = File.read("#{LKP_SRC}/etc/perf-metrics-prefixes").split
 $index_perf = load_yaml "#{LKP_SRC}/etc/index-perf-all.yaml"
 
 $perf_metrics_re = load_regular_expressions("#{LKP_SRC}/etc/perf-metrics-patterns")
-$metrics_blacklist_re = load_regular_expressions("#{LKP_SRC}/etc/blacklist")
-$metrics_whitelist_re = load_regular_expressions("#{LKP_SRC}/etc/bisect-whitelist")
+$stat_blacklist = load_regular_expressions("#{LKP_SRC}/etc/stat-blacklist")
+$stat_whitelist = load_regular_expressions("#{LKP_SRC}/etc/stat-whitelist")
 $report_whitelist_re = load_regular_expressions("#{LKP_SRC}/etc/report-whitelist")
 $kill_pattern_whitelist_re = load_regular_expressions("#{LKP_SRC}/etc/dmesg-kill-pattern")
 
 class LinuxTestcasesTableSet
   LINUX_PERF_TESTCASES =
-    ['aim7', 'aim9', 'angrybirds', 'blogbench', 'dbench',
-     'dd-write', 'ebizzy', 'fileio', 'fishtank', 'fsmark', 'glbenchmark',
-     'hackbench', 'hpcc', 'idle', 'iozone', 'iperf', 'jsbenchmark', 'kbuild',
-     'ku-latency', 'linpack', 'mlc', 'nepim', 'netperf', 'netpipe',
-     'nuttcp', 'octane', 'oltp', 'openarena', 'pbzip2',
-     'perf-bench-numa-mem', 'perf-bench-sched-pipe', 'pft',
-     'phoronix-test-suite', 'pigz', 'pixz', 'plzip', 'postmark', 'pxz', 'qperf',
-     'reaim', 'sdf', 'siege', 'sockperf', 'speccpu', 'specjbb2013',
-     'specjbb2015', 'specpower', 'stutter', 'sunspider', 'tbench', 'tcrypt',
-     'thrulay', 'tlbflush', 'unixbench', 'vm-scalability', 'will-it-scale',
-     'chromeswap', 'fio-basic', 'apachebench', 'perf-event-tests', 'swapin',
-     'tpcc', 'mytest', 'exit-free', 'pgbench', 'boot-trace', 'sysbench-cpu',
-     'sysbench-memory', 'sysbench-threads', 'sysbench-mutex', 'stream',
-     'perf-bench-futex', 'mutilate', 'lmbench3', 'lib-micro', 'schbench',
-     'pmbench', 'linkbench', 'rocksdb', 'cassandra', 'redis', 'power-idle',
-     'mongodb', 'ycsb', 'memtier', 'mcperf', 'fio-jbod', 'cyclictest', 'filebench', 'igt',
-     'autonuma-benchmark', 'adrestia'].freeze
+    %w[aim7 aim9 angrybirds blogbench dbench
+       dd-write ebizzy fileio fishtank fsmark glbenchmark
+       hackbench hpcc idle iozone iperf jsbenchmark kbuild
+       ku-latency linpack mlc nepim netperf netpipe
+       nuttcp octane oltp openarena pbzip2
+       perf-bench-numa-mem perf-bench-sched-pipe pft
+       phoronix-test-suite pigz pixz plzip postmark pxz qperf
+       reaim sdf siege sockperf speccpu specjbb2013
+       specjbb2015 specpower stutter sunspider tbench tcrypt
+       thrulay tlbflush unixbench vm-scalability will-it-scale
+       chromeswap fio-basic apachebench perf-event-tests swapin
+       tpcc mytest exit-free pgbench boot-trace sysbench-cpu
+       sysbench-memory sysbench-threads sysbench-mutex stream
+       perf-bench-futex mutilate lmbench3 lib-micro schbench
+       pmbench linkbench rocksdb cassandra redis power-idle
+       mongodb ycsb memtier mcperf fio-jbod cyclictest filebench igt
+       autonuma-benchmark adrestia].freeze
   LINUX_TESTCASES =
-    ['analyze-suspend', 'boot', 'blktests', 'cpu-hotplug', 'ext4-frags', 'ftq', 'ftrace-onoff', 'fwq',
-     'galileo', 'irda-kernel', 'kernel-selftests', 'kvm-unit-tests', 'kvm-unit-tests-qemu',
-     'leaking-addresses', 'locktorture', 'ltp', 'mce-test', 'otc_ddt', 'piglit', 'pm-qa', 'nvml',
-     'qemu', 'rcuperf', 'rcutorture', 'suspend', 'suspend-stress', 'trinity', 'ndctl', 'nfs-test', 'hwsim',
-     'idle-inject', 'mdadm-selftests', 'xsave-test', 'nvml', 'test-bpf', 'mce-log', 'perf-sanity-tests',
-     'build-perf_test', 'update-ucode', 'reboot', 'cat', 'libhugetlbfs-test', 'ocfs2test', 'syzkaller',
-     'perf-test', 'stress-ng', 'sof_test', 'fxmark', 'kvm-kernel-boot-test', 'bkc_ddt', 'bpf_offload',
-     'xfstests', 'packetdrill', 'avocado', 'v4l2', 'vmem'].freeze
+    %w[analyze-suspend boot blktests cpu-hotplug ext4-frags ftq ftrace-onoff fwq
+       galileo irda-kernel kernel-selftests kvm-unit-tests kvm-unit-tests-qemu
+       leaking-addresses locktorture ltp mce-test otc_ddt piglit pm-qa nvml
+       qemu rcuperf rcutorture suspend suspend-stress trinity ndctl nfs-test hwsim
+       idle-inject mdadm-selftests xsave-test nvml test-bpf mce-log perf-sanity-tests
+       build-perf_test update-ucode reboot cat libhugetlbfs-test ocfs2test syzkaller
+       perf-test stress-ng sof_test fxmark kvm-kernel-boot-test bkc_ddt bpf_offload
+       xfstests packetdrill avocado v4l2 vmem].freeze
   OTHER_TESTCASES =
-    ['0day-boot-tests', '0day-kbuild-tests', 'build-dpdk', 'build-sof', 'sof_test', 'build-nvml',
-     'build-qemu', 'convert-lkpdoc-to-html', 'convert-lkpdoc-to-html-css', 'rsync-rootfs',
-     'health-stats', 'hwinfo', 'internal-lkp-service', 'ipmi-setup', 'debug',
-     'lkp-bug', 'lkp-install-run', 'lkp-services', 'lkp-src', 'pack', 'lkp-qemu',
-     'pack-deps', 'makepkg', 'makepkg-deps', 'borrow', 'dpdk-dts', 'mbtest', 'build-acpica', 'build-ltp',
-     'bust-shm-exit', 'build-llvm_project', 'upgrade-trinity', 'build-0day-crosstools', 'deploy-clang', 'kmemleak-test', 'kunit'].freeze
+    %w[0day-boot-tests 0day-kbuild-tests build-dpdk build-sof sof_test build-nvml
+       build-qemu convert-lkpdoc-to-html convert-lkpdoc-to-html-css rsync-rootfs
+       health-stats hwinfo internal-lkp-service ipmi-setup debug
+       lkp-bug lkp-install-run lkp-services lkp-src pack lkp-qemu
+       pack-deps makepkg makepkg-deps borrow dpdk-dts mbtest build-acpica build-ltp
+       bust-shm-exit build-llvm_project upgrade-trinity build-0day-crosstools deploy-clang kmemleak-test kunit].freeze
 end
 
 # => ["tcrypt.", "hackbench.", "dd.", "xfstests.", "aim7.", ..., "oltp.", "fileio.", "dmesg."]
@@ -491,8 +491,9 @@ def filter_incomplete_run(hash)
 end
 
 def bisectable_stat?(stat)
-  return true if stat =~ $metrics_whitelist_re
-  stat !~ $metrics_blacklist_re
+  return true if stat =~ $stat_whitelist
+
+  stat !~ $stat_blacklist
 end
 
 # b is the base of compare (eg. rc kernels) and normally have more samples than
@@ -519,6 +520,8 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
   b.keys.each { |k| a[k] = [0] * cols_a unless a.include?(k) }
 
   a.each do |k, v|
+    log_verbose k
+
     next if v[-1].is_a?(String)
     next if options['perf'] && !perf_metric?(k)
     next if is_incomplete_run && k !~ /^(dmesg|last_state|stderr)\./
@@ -705,8 +708,8 @@ def get_changed_stats(matrix_path1, matrix_path2 = nil, options = {})
 
   puts <<~DEBUG if ENV['LKP_VERBOSE']
     loading matrices to compare:
-      #{matrix_path1}
-      #{matrix_path2}
+    \t#{matrix_path1}
+    \t#{matrix_path2}
   DEBUG
   a, b = load_matrices_to_compare matrix_path1, matrix_path2, options
   return nil if a.nil? || b.nil?
@@ -716,6 +719,7 @@ end
 
 def add_stats_to_matrix(stats, matrix)
   return matrix unless stats
+
   columns = 0
   matrix.each { |_k, v| columns = v.size if columns < v.size }
   stats.each do |k, v|
