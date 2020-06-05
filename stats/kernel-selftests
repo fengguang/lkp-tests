@@ -214,6 +214,12 @@ while (line = STDIN.gets)
     else
       stats << "#{test_name}.#{Regexp.last_match[1].strip}.#{Regexp.last_match[3].downcase}: 1"
     end
+  when /^# selftests: livepatch: (.*)/
+    test_case_name = $1
+  when /^# TEST: (.*) \.\.\. (ok|fail|skip)/
+    next unless test_name == 'livepatch'
+
+    subtest_stat('livepatch', test_case_name, $1, $2, stats)
   when /^# selftests: bpf: (.*)/
     test_case_name = $1
   when /^# #\d+\/(p|u) (.*) (OK|SKIP|FAIL).*/
