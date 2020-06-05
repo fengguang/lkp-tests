@@ -1,0 +1,36 @@
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-8223a71d1963d25cbec67dba3cecce6d3b09bd7d/tools/testing/selftests/timers'
+# selftests: timers: posix_timers
+# Check itimer virtual... [OK]
+# Check timer_create() per process... [OK]
+ok 1 selftests: timers: posix_timers
+# selftests: timers: nanosleep
+# Nanosleep CLOCK_MONOTONIC                 [OK]
+# Nanosleep CLOCK_MONOTONIC_RAW             [UNSUPPORTED]
+# Nanosleep CLOCK_BOOTTIME                  [OK]
+ok 2 selftests: timers: nanosleep
+# selftests: timers: nsleep-lat
+# nsleep latency CLOCK_MONOTONIC            [OK]
+# nsleep latency CLOCK_MONOTONIC_RAW        [UNSUPPORTED]
+# nsleep latency CLOCK_BOOTTIME             [OK]
+ok 3 selftests: timers: nsleep-lat
+# selftests: timers: set-timer-lat
+# Setting timers for every 1 seconds
+# CLOCK_REALTIME         ABSTIME PERIODIC timer fired early:       0 : [OK]
+# CLOCK_MONOTONIC        ABSTIME PERIODIC timer fired early:       0 : [OK]
+# CLOCK_REALTIME_ALARM   RELTIME ONE-SHOT timer fired early:       0 : [OK]
+# CLOCK_TAI              RELTIME ONE-SHOT count:                   1 : [OK]
+ok 4 selftests: timers: set-timer-lat
+# selftests: timers: mqueue-lat
+# Mqueue latency :                          [OK]
+ok 5 selftests: timers: mqueue-lat
+# selftests: timers: inconsistency-check
+# Consistent CLOCK_MONOTONIC                [OK]
+ok 6 selftests: timers: inconsistency-check
+# selftests: timers: raw_skew
+# Estimating clock drift: 0.0(est) 0.0(act)     [OK]
+# # Pass 0 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+ok 7 selftests: timers: raw_skew
+# selftests: timers: threadtest
+# Testing consistency with 8 threads for 30 seconds: [OK]
+ok 8 selftests: timers: threadtest
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-8223a71d1963d25cbec67dba3cecce6d3b09bd7d/tools/testing/selftests/timers'
