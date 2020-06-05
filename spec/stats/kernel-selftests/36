@@ -1,0 +1,19 @@
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-abc50e754351e252176533b9dc99f6f0c8b200d7/tools/testing/selftests/livepatch'
+# selftests: livepatch: test-livepatch.sh
+# TEST: multiple livepatches ... ok
+ok 1 selftests: livepatch: test-livepatch.sh
+# selftests: livepatch: test-callbacks.sh
+# TEST: multiple livepatches ... ok
+# TEST: atomic replace ... ok
+ok 2 selftests: livepatch: test-callbacks.sh
+# selftests: livepatch: test-shadow-vars.sh
+# TEST: basic shadow variable API ... ok
+ok 3 selftests: livepatch: test-shadow-vars.sh
+# selftests: livepatch: test-state.sh
+# TEST: system state modification ... ok
+# TEST: incompatible cumulative livepatches ... ok
+ok 4 selftests: livepatch: test-state.sh
+# selftests: livepatch: test-ftrace.sh
+# TEST: livepatch interaction with ftrace_enabled sysctl ... ok
+ok 5 selftests: livepatch: test-ftrace.sh
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-abc50e754351e252176533b9dc99f6f0c8b200d7/tools/testing/selftests/livepatch'
