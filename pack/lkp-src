@@ -1,0 +1,86 @@
+#!/bin/bash
+
+LKP_SRC=${LKP_SRC:-/lkp/$USER/src}
+export ARCH=${arch:-x86_64}
+LKP_USER=${LKP_USER:-$USER}
+
+[[ $OWNER ]] || OWNER="root:lkp"
+OWNER_OPT="--owner $OWNER"
+
+. $LKP_SRC/lib/env.sh
+
+download()
+{
+	tmp_dir=/tmp/lkp_initrd-$USER
+}
+
+build()
+{
+	has_cmd make || {
+		echo "Cannot find the make binary. Please try to install it."
+		# return code 127 which means command not found
+		return 127
+	}
+
+	make -C $LKP_SRC/bin/event || {
+		local ret=$?
+
+		[[ $ARCH = 'i386' && $(arch) = 'x86_64' ]] && {
+			local gcc_ver=$(gcc -dumpversion)
+			echo Try: apt-get install lib32gcc-${gcc_ver%%.*}-dev
+		}
+
+		return $ret
+	}
+}
+
+install()
+{
+	umask 002
+	rm -fr "$tmp_dir" || return
+	mkdir -p $tmp_dir/rootfs/lkp/$LKP_USER/src
+	mkdir -p $tmp_dir/lkp/$LKP_USER
+	ln -sfT $LKP_SRC $tmp_dir/lkp/$LKP_USER/src
+}
+
+pack()
+{
+	local tmp_src=$tmp_dir/lkp/$LKP_USER/src
+	local archive=${CACHE_DIR:-/osimage/user/$USER}/lkp-${ARCH}
+	local cpio_cmd="cpio --quiet -o $OWNER_OPT -H newc -F ${archive}.cpio"
+
+	mkdir -p $(dirname $archive)
+	rm -f $archive.cpio
+
+	(
+		cd $tmp_dir/rootfs				&& find lkp			| $cpio_cmd
+		cd $tmp_dir					&& find lkp/$LKP_USER/src/*	| $cpio_cmd --append
+		{
+			cd $tmp_dir/lkp/$LKP_USER/src/rootfs/addon
+			[ -d etc/ssh ] &&
+			chmod -R 600 etc/ssh/* # to avoid sshd Permissions too open error
+			chmod g-ws root
+			[ -d root/.ssh ] && {
+				chmod -R go-rwxs root/.ssh
+				mkdir -p etc/dropbear
+				cp -al root/.ssh/authorized_keys etc/dropbear/
+			}
+			# don't override /lib, it could be a soft link to usr/lib at some distro(clear is known)
+			# don't override /etc/init.d, it is a soft link to /etc/rc.d/init.d on some distributions(e.g. centos, aliyun)
+			find * | grep -v -e ^lib$ -e ^/lib$ -e ^etc/init.d$ | $cpio_cmd --append
+		}
+		{
+			# restore permission for cleanup
+			cd $tmp_dir/lkp/$LKP_USER/src/rootfs/addon
+			find . -type d -exec chmod g+rwx \{\} \;
+			chmod -R g+rw *
+		}
+
+		[ -d /osimage/addon-${ARCH} ] &&
+		cd /osimage/addon-${ARCH}			&& find *			| $cpio_cmd --append
+	)
+
+	gzip -n -9 ${archive}.cpio
+	# atomic mv to avoid race condition
+	mv -f ${archive}.cpio.gz ${archive}.cgz
+}
