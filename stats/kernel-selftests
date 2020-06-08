@@ -185,6 +185,11 @@ while (line = STDIN.gets)
     next unless test_case_name == 'pmtu.sh'
 
     subtest_stat('net', test_case_name, $1, $2, stats)
+  when /^# (UDP|TCP|DCCP) (.*) \.\.\. (pass|fail|skip)/
+    next unless test_case_name == 'reuseport_addr_any.sh'
+
+    subtest_case_name = $1 + ' ' + $2
+    subtest_stat('net', test_case_name, subtest_case_name, $3, stats)
   when /^(kmod_test.*): (OK|FAIL|SKIP)/
     next unless test_name == 'kmod'
 
