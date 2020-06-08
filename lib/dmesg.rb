@@ -4,6 +4,7 @@ LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
 require "#{LKP_SRC}/lib/yaml"
 require "#{LKP_SRC}/lib/constant"
+require "#{LKP_SRC}/lib/string_ext"
 
 # /c/linux% git grep '"[a-z][a-z_]\+%d"'|grep -o '"[a-z_]\+'|cut -c2-|sort -u
 LINUX_DEVICE_NAMES = IO.read("#{LKP_SRC}/etc/linux-device-names").split("\n")
@@ -170,6 +171,7 @@ def grep_crash_head(dmesg_file)
   end
 
   raw_oops.each_line do |line|
+    line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
     if line =~ oops_re
       oops_map[$1] ||= line
       has_oom = true if line.index(OOM1)
