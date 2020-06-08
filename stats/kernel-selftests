@@ -159,10 +159,12 @@ while (line = STDIN.gets)
     detail_stat('ia64', $2, $1, stats)
   when /^# selftests: net: (.*)/
     test_case_name = $1
+  when /^# selftests: netfilter: (.*)/
+    test_case_name = $1
   when /^# (PASS|FAIL|SKIP): (.*)/
-    next unless test_name == 'net'
+    next unless %w(net netfilter).include? test_name
 
-    subtest_stat('net', test_case_name, $2, $1, stats)
+    subtest_stat(test_name, test_case_name, $2, $1, stats)
   when /^# (Single|Multipath|Single|Admin|Local|Single|FIB|IPv4|IPv6|Basic|Legacy|Routing) (.*)/
     next unless %w(fib_tests.sh fib_nexthops.sh icmp_redirect.sh).include? test_case_name
 
@@ -187,6 +189,11 @@ while (line = STDIN.gets)
     subtest_case_name = $1
     subtest_case_name = subtest_case_name1 + '.' + $1 if %w(fib_nexthops.sh icmp_redirect.sh).include? test_case_name
     subtest_stat('net', test_case_name, subtest_case_name, $2, stats)
+  when /^#   (net|port)(.*)\[( OK|FAIL|SKIP)/
+    next unless test_case_name == 'nft_concat_range.sh'
+
+    subtest_case_name = subtest_case_name1 + '.' + $1 + $2
+    subtest_stat('netfilter', test_case_name, subtest_case_name, $3, stats)
   when /^# (UDP|TCP|DCCP) (.*) \.\.\. (pass|fail|skip)/
     next unless test_case_name == 'reuseport_addr_any.sh'
 
@@ -345,6 +352,10 @@ while (line = STDIN.gets)
     next unless test_name == 'mptcp'
 
     detail_stat('mptcp', $1, $2, stats)
+  when /^# TEST: (.*)/
+    next unless test_case_name == 'nft_concat_range.sh'
+
+    subtest_case_name1 = $1
   else
     if test_name == 'futex'
       futex_stat(line, tests_stats['futex'], stats)
