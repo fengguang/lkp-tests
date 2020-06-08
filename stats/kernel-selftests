@@ -163,6 +163,24 @@ while (line = STDIN.gets)
     next unless test_name == 'net'
 
     subtest_stat('net', test_case_name, $2, $1, stats)
+  when /^# (Single|Multipath|Single|Admin|Local|Single|FIB|IPv4|IPv6) (.*)/
+    next unless test_case_name == 'fib_tests.sh'
+
+    subtest_case_name1 = $1 + ' ' + $2
+  when /^# TEST SECTION: (.*)/
+    next unless %w(fib-onlink-tests.sh fib_rule_tests.sh).include? test_case_name
+
+    subtest_case_name1 = $1
+  when /^# TEST SUBSECTION: (.*)/
+    next unless test_case_name == 'fib-onlink-tests.sh'
+
+    subtest_case_name2 = $1
+  when /^#     TEST: (.*) \[ ?(OK|FAIL|SKIP) ?\]$/
+    next unless %w(fib_tests.sh fib-onlink-tests.sh fib_rule_tests.sh).include? test_case_name
+
+    subtest_case_name = subtest_case_name1 + '.' + $1
+    subtest_case_name = subtest_case_name1 + '.' + subtest_case_name2 + '.' + $1 if test_case_name == 'fib-onlink-tests.sh'
+    subtest_stat('net', test_case_name, subtest_case_name, $2, stats)
   when /^(kmod_test.*): (OK|FAIL|SKIP)/
     next unless test_name == 'kmod'
 
