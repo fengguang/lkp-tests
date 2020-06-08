@@ -1,0 +1,12 @@
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-c72fcbc7d224903b8241afc1202a414575c1e557/tools/testing/selftests/net'
+# selftests: net: ipv6_flowlabel.sh
+# TEST management
+# [OK]   !(flowlabel_get(fd, 1, 255, 0))
+# [OK]   !(flowlabel_put(fd, 1))
+# [OK]   !(flowlabel_get(fd, 0x1FFFFF, 255, 1))
+# [OK]   flowlabel_get(fd, 1, 255, 1)
+# [OK]   flowlabel_get(fd, 1, 255, 0)
+# [OK]   flowlabel_get(fd, 1, 255, 1)
+# OK. All tests passed
+ok 29 selftests: net: ipv6_flowlabel.sh
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-c72fcbc7d224903b8241afc1202a414575c1e557/tools/testing/selftests/net'

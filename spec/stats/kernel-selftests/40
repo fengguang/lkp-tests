@@ -1,0 +1,72 @@
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-c72fcbc7d224903b8241afc1202a414575c1e557/tools/testing/selftests/net'
+# selftests: net: fib_tests.sh
+#
+# Single path route test
+#     Start point
+#     TEST: IPv4 fibmatch                                                 [ OK ]
+#     TEST: IPv6 fibmatch                                                 [ OK ]
+#     Nexthop device deleted
+# Local carrier tests - single path
+#     Start point
+#     TEST: IPv4 fibmatch                                                 [ OK ]
+#     TEST: IPv6 fibmatch                                                 [ OK ]
+# FIB rule with suppress_prefixlength
+#     TEST: FIB rule suppress test                                        [ OK ]
+#
+# IPv6 route add / append tests
+#     TEST: Attempt to add duplicate route - gw                           [ OK ]
+#     TEST: Attempt to add duplicate route - dev only                     [ OK ]
+#     TEST: Attempt to add duplicate route - reject route                 [ OK ]
+# IPv4 rp_filter tests
+#     TEST: rp_filter passes local packets                                [FAIL]
+#     TEST: rp_filter passes loopback packets                             [FAIL]
+# Tests passed: 164
+# Tests failed:   2
+not ok 14 selftests: net: fib_tests.sh # exit=1
+# selftests: net: fib-onlink-tests.sh
+# ######################################################################
+# TEST SECTION: IPv4 onlink
+# ######################################################################
+#
+# #########################################
+# TEST SUBSECTION: Valid onlink commands
+#
+# #########################################
+# TEST SUBSECTION: default VRF - main table
+#     TEST: unicast connected                                   [ OK ]
+#     TEST: unicast recursive                                   [ OK ]
+# ######################################################################
+# TEST SECTION: IPv6 onlink
+# ######################################################################
+#
+# #########################################
+# TEST SUBSECTION: Valid onlink commands
+#
+# #########################################
+# TEST SUBSECTION: default VRF - main table
+#     TEST: unicast connected                                   [ OK ]
+#     TEST: unicast recursive                                   [ OK ]
+#     TEST: v4-mapped                                           [ OK ]
+# Tests passed:  38
+# Tests failed:   0
+ok 15 selftests: net: fib-onlink-tests.sh
+# selftests: net: fib_rule_tests.sh
+#
+# ######################################################################
+# TEST SECTION: IPv4 fib rule
+# ######################################################################
+#
+#     TEST: rule4 check: oif dummy0                             [ OK ]
+#
+#     TEST: rule4 del by pref: oif dummy0                       [ OK ]
+# ######################################################################
+# TEST SECTION: IPv6 fib rule
+# ######################################################################
+#     TEST: rule6 check: ipproto ipv6-icmp                      [ OK ]
+#
+#     TEST: rule6 del by pref: ipproto ipv6-icmp                [ OK ]
+#
+# Tests passed:  32
+# Tests failed:   0
+ok 20 selftests: net: fib_rule_tests.sh
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-c72fcbc7d224903b8241afc1202a414575c1e557/tools/testing/selftests/net'

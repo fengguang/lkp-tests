@@ -1,0 +1,13 @@
+net.netdevice.sh.eth0:_interface_already_up.skip: 1
+net.netdevice.sh.eth0:_ethtool_list_features.pass: 1
+net.netdevice.sh.eth0:_ethtool_stats.pass: 1
+net.netdevice.sh.eth0:_interface_kept_up.skip: 1
+net.netdevice.sh.pass: 1
+net.rtnetlink.sh.policy_routing.pass: 1
+net.rtnetlink.sh.route_get.pass: 1
+net.rtnetlink.sh.preferred_lft_addresses_have_expired.pass: 1
+net.rtnetlink.sh.pass: 1
+net.xfrm_policy.sh.policy_before_exception_matches.pass: 1
+net.xfrm_policy.sh.policy_matches_(exceptions_and_block_policies_after_htresh_change_to_normal).pass: 1
+net.xfrm_policy.sh.policies_with_repeated_htresh_change.pass: 1
+net.xfrm_policy.sh.pass: 1

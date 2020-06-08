@@ -1,0 +1,19 @@
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-c72fcbc7d224903b8241afc1202a414575c1e557/tools/testing/selftests/net'
+# selftests: net: netdevice.sh
+# SKIP: eth0: interface already up
+# Cannot get device udp-fragmentation-offload settings: Operation not supported
+# PASS: eth0: ethtool list features
+# PASS: eth0: ethtool stats
+# SKIP: eth0: interface kept up
+ok 10 selftests: net: netdevice.sh
+# selftests: net: rtnetlink.sh
+# PASS: policy routing
+# PASS: route get
+# PASS: preferred_lft addresses have expired
+ok 11 selftests: net: rtnetlink.sh
+# selftests: net: xfrm_policy.sh
+# PASS: policy before exception matches
+# PASS: policy matches (exceptions and block policies after htresh change to normal)
+# PASS: policies with repeated htresh change
+ok 12 selftests: net: xfrm_policy.sh
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-c72fcbc7d224903b8241afc1202a414575c1e557/tools/testing/selftests/net'
