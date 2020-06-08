@@ -157,6 +157,12 @@ while (line = STDIN.gets)
     next unless test_name == 'ia64'
 
     detail_stat('ia64', $2, $1, stats)
+  when /^# selftests: net: (.*)/
+    test_case_name = $1
+  when /^# (PASS|FAIL|SKIP): (.*)/
+    next unless test_name == 'net'
+
+    subtest_stat('net', test_case_name, $2, $1, stats)
   when /^(kmod_test.*): (OK|FAIL|SKIP)/
     next unless test_name == 'kmod'
 
