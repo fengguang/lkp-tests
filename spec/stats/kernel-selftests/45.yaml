@@ -1,0 +1,24 @@
+netfilter.nft_nat.sh.netns_routing/connectivity:_ns0_kktxxkso_can_reach_ns1_kktxxkso_and_ns2_kktxxkso.pass: 1
+netfilter.nft_nat.sh.ping_to_ns1_kktxxkso_was_ip_natted_to_ns2_kktxxkso.pass: 1
+netfilter.nft_nat.sh.inet_ipv6_redirection_for_ns2_kktxxkso.pass: 1
+netfilter.nft_nat.sh.pass: 1
+netfilter.bridge_brouter.sh.netns_connectivity:_ns1_and_ns2_can_reach_each_other.pass: 1
+netfilter.bridge_brouter.sh.ns1/ns2_connectivity_with_active_broute_rule.pass: 1
+netfilter.bridge_brouter.sh.pass: 1
+netfilter.conntrack_icmp_related.sh.icmp_mtu_error_had_related_state.pass: 1
+netfilter.conntrack_icmp_related.sh.pass: 1
+netfilter.nft_flowtable.sh.netns_routing/connectivity:_ns1_can_reach_ns2.pass: 1
+netfilter.nft_flowtable.sh.ipsec_tunnel_mode_for_ns1/ns2.pass: 1
+netfilter.nft_flowtable.sh.pass: 1
+netfilter.nft_concat_range.sh.correctness.net,port. ok: 1
+netfilter.nft_concat_range.sh.concurrency.net,port.skip: 1
+netfilter.nft_concat_range.sh.concurrency.port,net.skip: 1
+netfilter.nft_concat_range.sh.concurrency.net6,port.skip: 1
+netfilter.nft_concat_range.sh.timeout.net6,port,net6,port. ok: 1
+netfilter.nft_concat_range.sh.timeout.net,port,mac,proto,net. ok: 1
+netfilter.nft_concat_range.sh.performance.net6,port,mac,proto.skip: 1
+netfilter.nft_concat_range.sh.performance.net,mac.skip: 1
+netfilter.nft_concat_range.sh.fail: 1
+netfilter.nft_queue.sh.tcp_and_nfqueue_in_forward_chain.pass: 1
+netfilter.nft_queue.sh.tcp_via_loopback.pass: 1
+netfilter.nft_queue.sh.pass: 1
