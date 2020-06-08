@@ -126,6 +126,10 @@ while (line = STDIN.gets)
       test_name = nil
       test_case_name = nil
     end
+  when /^# \[       (OK|FAIL|SKIP) \] (.*)/
+    next unless test_name == 'net'
+
+    detail_stat('net', $2, $1, stats)
   when /^(ion_test.sh: .*) - \[(PASS|FAIL|SKIP)\]$/
     next unless test_name == 'android'
 
