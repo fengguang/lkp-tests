@@ -142,6 +142,13 @@ while (line = STDIN.gets)
     next unless test_name == 'capabilities'
 
     test_case_name = $1.strip.tr(' ', '_').tr('-', '_').downcase
+  when /^# selftests: x86: (.*)/
+    test_case_name = $1
+    subtest_case_name = nil
+  when /^# \[RUN\](.*)/
+    next unless test_name == 'x86'
+
+    subtest_case_name = $1
   when /^Pass (\d+) Fail (\d+) Xfail (\d+) Xpass (\d+) Skip (\d+) Error (\d+)/
     next unless test_name == 'capabilities'
 
@@ -199,11 +206,13 @@ while (line = STDIN.gets)
 
     subtest_case_name = $1 + ' ' + $2
     subtest_stat('net', test_case_name, subtest_case_name, $3, stats)
-  when /^# \[(OK|FAIL|SKIP)\]   (.*)/
-    next unless test_case_name == 'ipv6_flowlabel.sh'
-
-    subtest_case_name = $2
-    subtest_stat('net', test_case_name, subtest_case_name, $1, stats)
+  when /^# \[(OK|FAIL|SKIP)\](.*)/
+    if test_case_name == 'ipv6_flowlabel.sh'
+      subtest_case_name = $2
+      subtest_stat('net', test_case_name, subtest_case_name, $1, stats)
+    elsif test_name == 'x86' && subtest_case_name
+      subtest_stat('x86', test_case_name, subtest_case_name, $1, stats)
+    end
   when /^(kmod_test.*): (OK|FAIL|SKIP)/
     next unless test_name == 'kmod'
 
