@@ -59,8 +59,8 @@ update_shared_pkg()
 	[ "$bm_name" = "$benchmark" ] && return
 
 	# benchmark is a symlink
-	ln -sf "$bm_link" "$sync_dest/${benchmark}-${arch}.cgz" || return
-	echo "update shared pkg link ${benchmark}-${arch}.cgz -> $bm_link"
+	ln -sf "$bm_link" "$sync_dest/${benchmark}.cgz" || return
+	echo "update shared pkg link ${benchmark}.cgz -> $bm_link"
 }
 
 distro_install_depends lkp-dev
@@ -76,7 +76,7 @@ date=$(date +"%Y%m%d")
 pkgver=$(get_pkg_info pkgver)
 pkgrel=$(get_pkg_info pkgrel)
 bm_name=$(check_shared_pkg)
-cgz_name="${bm_name}-${arch}-${pkgver:-0}-${pkgrel:-0}_${date}.cgz"
+cgz_name="${bm_name}-${pkgver:-0}-${pkgrel:-0}_${date}.cgz"
 
 setup_proxy
 
@@ -87,10 +87,10 @@ update_softlink()
 {
 	[ -e "$sync_dest/$cgz_name" ] || return
 
-	ln -sf "$(basename $(realpath $sync_dest/$cgz_name))" "$sync_dest/${bm_name}-${arch}.cgz" || return
-	echo "create package: $sync_dest/${bm_name}-${arch}.cgz -> $(realpath $sync_dest/$cgz_name)"
+	ln -sf "$(basename $(realpath $sync_dest/$cgz_name))" "$sync_dest/${bm_name}.cgz" || return
+	echo "create package: $sync_dest/${bm_name}.cgz -> $(realpath $sync_dest/$cgz_name)"
 
-	update_shared_pkg "${bm_name}-${arch}.cgz"
+	update_shared_pkg "${bm_name}.cgz"
 
 	[ -L $sync_dest/$cgz_name ] || return 0
 	rm $sync_dest/$cgz_name
