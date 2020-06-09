@@ -11,7 +11,7 @@ LKP_USER=${LKP_USER:-$USER}
 
 build()
 {
-	make -C $LKP_SRC/bin/event || {
+	ARCH=$CARCH make -C $LKP_SRC/bin/event || {
 		local ret=$?
 
 		[[ $CARCH = 'i386' ]] && {
