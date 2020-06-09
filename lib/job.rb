@@ -483,7 +483,6 @@ class Job
     job = deepcopy self
     job.load_defaults false
     job.delete :no_defaults
-    job.set_default_params
     yield job
   end
 
@@ -547,16 +546,6 @@ class Job
 
   def each(&block)
     @job.each(&block)
-  end
-
-  def set_default_params
-    return if @job['kconfig'] &&
-              @job['compiler']
-
-    @job[comment_to_symbol 'default params'] = nil
-
-    @job['kconfig']  ||= DEVEL_HOURLY_KCONFIGS[0]
-    @job['compiler'] ||= LKP_DEFAULT_COMPILER
   end
 
   def path_params
