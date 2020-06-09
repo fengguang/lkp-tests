@@ -1,0 +1,191 @@
+make: Entering directory '/usr/src/perf_selftests-x86_64-fedora-25-CONFIG_DEBUG_INFO_REDUCED-2ef96a5bb12be62ef75b5828c0aab838ebb29cb8/tools/testing/selftests/x86'
+# selftests: x86: single_step_syscall_32
+# [RUN]	Set TF and check nop
+# [OK]	Survived with TF set and 14 traps
+# [RUN]	Fast syscall with TF cleared
+# [OK]	Nothing unexpected happened
+ok 1 selftests: x86: single_step_syscall_32
+# selftests: x86: sysret_ss_attrs_32
+# [RUN]	Syscalls followed by SS validation
+# [OK]	We survived
+ok 2 selftests: x86: sysret_ss_attrs_32
+# selftests: x86: syscall_nt_32
+# [RUN]	Set NT and issue a syscall
+# [OK]	The syscall worked and flags are still set
+# [RUN]	Set NT|TF and issue a syscall
+# [OK]	The syscall worked and flags are still set
+ok 3 selftests: x86: syscall_nt_32
+# selftests: x86: sigreturn_32
+# [OK]	set_thread_area refused 16-bit data
+# [OK]	set_thread_area refused 16-bit data
+# [RUN]	Valid sigreturn: 64-bit CS (33), 32-bit SS (2b, GDT)
+# [OK]	all registers okay
+ok 6 selftests: x86: sigreturn_32
+# selftests: x86: iopl_32
+# [RUN]	child: write to 0x80
+# [OK]	CLI faulted
+# [OK]	STI faulted
+# [OK]	outb to 0x80 worked
+# [OK]	outb to 0x80 worked
+# [OK]	outb to 0xed failed
+# [OK]	Child succeeded
+ok 7 selftests: x86: iopl_32
+# selftests: x86: ioperm_32
+# [OK]	outb to 0x80 failed
+# [OK]	outb to 0xed failed
+# [RUN]	enable 0x80
+# [OK]	outb to 0x80 worked
+# [OK]	outb to 0xed failed
+ok 8 selftests: x86: ioperm_32
+# selftests: x86: test_vdso_32
+# [RUN]	Testing clock_gettime for clock CLOCK_REALTIME (0)...
+# 	1591239763.210179193 1591239763.210187686 1591239763.210188729
+# [RUN]	Testing clock_gettime for clock CLOCK_MONOTONIC (1)...
+# 	46.345663299 46.345664070 46.345664581
+# [RUN]	Testing clock_gettime for clock CLOCK_SGI_CYCLE (10)...
+# [OK]	No such clock.
+ok 10 selftests: x86: test_vdso_32
+# selftests: x86: test_vsyscall_32
+# [RUN]	test gettimeofday()
+# 	vDSO time offsets: 0.000009 0.000000
+# [OK]	vDSO gettimeofday()'s timeval was okay
+# [RUN]	getcpu() on CPU 0
+# [RUN]	getcpu() on CPU 1
+ok 11 selftests: x86: test_vsyscall_32
+# selftests: x86: syscall_arg_fault_32
+# [RUN]	SYSCALL with invalid state
+# [SKIP]	Illegal instruction
+ok 12 selftests: x86: syscall_arg_fault_32
+# selftests: x86: entry_from_vm86_32
+# [RUN]	#BR from vm86 mode
+# [SKIP]	vm86 not supported
+ok 13 selftests: x86: entry_from_vm86_32
+# selftests: x86: test_syscall_vdso_32
+# [RUN]	Executing 6-argument 32-bit syscall via VDSO
+# [WARN]	Flags before=0000000000200ed7 id 0 00 o d i s z 0 a 0 p 1 c
+# [WARN]	Flags  after=0000000000200606 id 0 00 d i 0 0 p 1 
+# [WARN]	Flags change=00000000000008d1 0 00 o s z 0 a 0 0 c
+# [OK]	Arguments are preserved across syscall
+# [NOTE]	R11 has changed:0000000000200606 - assuming clobbered by SYSRET insn
+# [OK]	R8..R15 did not leak kernel data
+ok 14 selftests: x86: test_syscall_vdso_32
+# selftests: x86: unwind_vdso_32
+# 	AT_SYSINFO is 0xf7f0f1e0
+# [OK]	AT_SYSINFO maps to linux-gate.so.1, loaded at 0x0xf7f0e000
+# [RUN]	Set TF and check a fast syscall
+# 	In vsyscall at 0xf7f0f1e0, returning to 0xf7cc6737
+# 	SIGTRAP at 0xf7f0f1e0
+# 	  0xf7f0f1e0
+# 	  0xf7cc6737
+# [OK]	  NR = 20, args = 1, 2, 3, 4, 5, 6
+# 	SIGTRAP at 0xf7f0f1e1
+# 	  0xf7f0f1e1
+# 	  0xf7cc6737
+# [OK]	All is well
+ok 15 selftests: x86: unwind_vdso_32
+# selftests: x86: test_FCMOV_32
+# [RUN]	Testing fcmovCC instructions
+# [OK]	fcmovCC
+ok 16 selftests: x86: test_FCMOV_32
+# selftests: x86: test_FCOMI_32
+# [RUN]	Testing f[u]comi[p] instructions
+# [OK]	f[u]comi[p]
+ok 17 selftests: x86: test_FCOMI_32
+# selftests: x86: test_FISTTP_32
+# [RUN]	Testing fisttp instructions
+# [OK]	fisttp
+ok 18 selftests: x86: test_FISTTP_32
+# selftests: x86: vdso_restorer_32
+# [RUN]	Raise a signal, SA_SIGINFO, sa.restorer == NULL
+# [OK]	SA_SIGINFO handler returned successfully
+ok 19 selftests: x86: vdso_restorer_32
+# selftests: x86: ldt_gdt_32
+# [RUN]	Test fork
+# [OK]	LDT entry 2 has AR 0x00507900 and limit 0x0000000A
+ok 20 selftests: x86: ldt_gdt_32
+# selftests: x86: ptrace_syscall_32
+# [RUN]	Check int80 return regs
+# [OK]	getpid() preserves regs
+ok 21 selftests: x86: ptrace_syscall_32
+# selftests: x86: single_step_syscall_64
+# [RUN]	Set TF and check nop
+# [OK]	Survived with TF set and 9 traps
+ok 22 selftests: x86: single_step_syscall_64
+# selftests: x86: sysret_ss_attrs_64
+# [RUN]	Syscalls followed by SS validation
+# [OK]	We survived
+ok 23 selftests: x86: sysret_ss_attrs_64
+# selftests: x86: syscall_nt_64
+# [RUN]	Set NT and issue a syscall
+# [OK]	The syscall worked and flags are still set
+ok 24 selftests: x86: syscall_nt_64
+# selftests: x86: sigreturn_64
+# [RUN]	Valid sigreturn: 64-bit CS (33), 32-bit SS (2b, GDT)
+# [OK]	all registers okay
+ok 27 selftests: x86: sigreturn_64
+# selftests: x86: iopl_64
+# [RUN]	child: write to 0x80
+# [OK]	CLI faulted
+# [OK]	STI faulted
+# [OK]	outb to 0x80 worked
+# [OK]	outb to 0x80 worked
+# [OK]	outb to 0xed failed
+# [OK]	Child succeeded
+ok 28 selftests: x86: iopl_64
+# selftests: x86: ioperm_64
+# [RUN]	disable 0x80
+# [OK]	it worked
+# [RUN]	enable 0x80 again
+# [OK]	it failed
+ok 29 selftests: x86: ioperm_64
+# selftests: x86: protection_keys_64
+# has pku: 0
+# running PKEY tests for unsupported CPU/OS
+ok 30 selftests: x86: protection_keys_64
+# selftests: x86: test_vdso_64
+# [RUN]	Testing clock_gettime for clock CLOCK_REALTIME (0)...
+# 	1591239764.524782498 1591239764.524790617 1591239764.524791229
+# [OK]	No such clock.
+ok 31 selftests: x86: test_vdso_64
+# selftests: x86: test_vsyscall_64
+# [RUN]	test gettimeofday()
+# 	vDSO time offsets: 0.000008 0.000003
+# [OK]	vDSO gettimeofday()'s timeval was okay
+# 	vsyscall time offsets: 0.000010 0.000001
+# [OK]	vsyscall gettimeofday()'s timeval was okay
+ok 32 selftests: x86: test_vsyscall_64
+# selftests: x86: syscall_arg_fault_64
+# [RUN]	SYSENTER with invalid state
+# [OK]	Seems okay
+ok 33 selftests: x86: syscall_arg_fault_64
+# selftests: x86: fsgsbase_64
+# [RUN]	ARCH_SET_GS(0x0) and clear gs, then schedule to 0xa1fa5f343cb85fa4
+# 	Before schedule, set selector to 0x2
+# 	other thread: ARCH_SET_GS(0x0) and clear gs -- sel is 0x0
+# [OK]	GS/BASE remained 0x2/0x0
+ok 34 selftests: x86: fsgsbase_64
+# selftests: x86: sysret_rip_64
+# [RUN]	Trying a SYSCALL that falls through to 0x8000000000000000
+# [OK]	mremap to 0x7ffffffffffff000 failed
+ok 35 selftests: x86: sysret_rip_64
+# selftests: x86: syscall_numbering_64
+# 	Checking for x32... not supported
+# [RUN]	Checking syscalls 512-547
+# [RUN]	Checking some 64-bit syscalls in x32 range
+# [RUN]	Checking numbers above 2^32-1
+# [OK]	They all returned -ENOSYS
+ok 36 selftests: x86: syscall_numbering_64
+# selftests: x86: ldt_gdt_64
+# [RUN]	Test fork
+# [OK]	LDT entry 2 has AR 0x00507900 and limit 0x0000000A
+# [OK]	New GSBASE was zero
+ok 37 selftests: x86: ldt_gdt_64
+# selftests: x86: ptrace_syscall_64
+# [RUN]	Check int80 return regs
+# [OK]	getpid() preserves regs
+# [OK]	kill(getpid(), SIGUSR1) preserves regs
+# [RUN]	ptrace-induced syscall restart
+# [RUN]	SYSEMU
+# [OK]	Initial nr and args are correct
+ok 38 selftests: x86: ptrace_syscall_64
+make: Leaving directory '/usr/src/perf_selftests-x86_64-fedora-25-CONFIG_DEBUG_INFO_REDUCED-2ef96a5bb12be62ef75b5828c0aab838ebb29cb8/tools/testing/selftests/x86'
