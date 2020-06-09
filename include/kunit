@@ -1,7 +1,7 @@
 need_kconfig:
-- CONFIG_EXT4_KUNIT_TESTS=m ~ v(5\.[5-9]) # support kernel >= v5.5-rc1
-- CONFIG_KUNIT=y ~ v(5\.[5-9]) # support kernel >= v5.5-rc1
-- CONFIG_KUNIT_EXAMPLE_TEST=m ~ v(5\.[5-9]) # support kernel >= v5.5-rc1
-- CONFIG_KUNIT_TEST=m ~ v(5\.[5-9]) # support kernel >= v5.5-rc1
-- CONFIG_LIST_KUNIT_TEST=m ~ v(5\.[5-9]) # support kernel >= v5.5-rc1
-- CONFIG_SYSCTL_KUNIT_TEST=m ~ v(5\.[5-9]) # support kernel >= v5.5-rc1
+- CONFIG_EXT4_KUNIT_TESTS=m ~ ">= v5.5-rc1"
+- CONFIG_KUNIT=y ~ ">= v5.5-rc1"
+- CONFIG_KUNIT_EXAMPLE_TEST=m ~ ">= v5.5-rc1"
+- CONFIG_KUNIT_TEST=m ~ ">= v5.5-rc1"
+- CONFIG_LIST_KUNIT_TEST=m ~ ">= v5.5-rc1"
+- CONFIG_SYSCTL_KUNIT_TEST=m ~ ">= v5.5-rc1"

@@ -31,9 +31,9 @@ need_kconfig:
 - CONFIG_PWM_LPSS_PLATFORM=m
 - CONFIG_USB_UAS=m
 - CONFIG_WDAT_WDT=m
-- CONFIG_STM ~ v(4\.[4-9]|4\.1[0-9]|4\.20|5\.) # support kernel >=v4.4-rc1
-- CONFIG_STM_DUMMY ~ v(4\.[4-9]|4\.1[0-9]|4\.20|5\.) # support kernel >=v4.4-rc1
-- CONFIG_STM_SOURCE_CONSOLE ~ v(4\.[4-9]|4\.1[0-9]|4\.20|5\.) # support kernel >=v4.4-rc1
-- CONFIG_STM_SOURCE_HEARTBEAT ~ v(4\.[6-9]|4\.1[0-9]|4\.20|5\.) # support kernel >=v4.6-rc1
-- CONFIG_STM_SOURCE_FTRACE ~ v(4\.[6-9]|4\.1[0-9]|4\.20|5\.) # support kernel >=v4.6-rc1
-- CONFIG_INTEL_TH_STH=m ~ v(4\.[4-9]|4\.1[0-9]|4\.20|5\.) # support kernel >=v4.4-rc1
+- CONFIG_STM ~ ">= v4.4-rc1"
+- CONFIG_STM_DUMMY ~ ">= v4.4-rc1"
+- CONFIG_STM_SOURCE_CONSOLE ~ ">= v4.4-rc1"
+- CONFIG_STM_SOURCE_HEARTBEAT ~ ">= v4.6-rc1"
+- CONFIG_STM_SOURCE_FTRACE ~ ">= v4.6-rc1"
+- CONFIG_INTEL_TH_STH=m ~ ">= v4.4-rc1"

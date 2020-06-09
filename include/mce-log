@@ -1,5 +1,5 @@
 need_kconfig:
 - CONFIG_X86_MCE=y
 - CONFIG_X86_MCE_INTEL=y
-- CONFIG_X86_MCELOG_LEGACY=y ~ v(4\.1[2-9]|4\.20|5\.) # support kernel >=v4.12-rc1
+- CONFIG_X86_MCELOG_LEGACY=y ~ ">= v4.12-rc1"
 - CONFIG_X86_MCE_INJECT=m

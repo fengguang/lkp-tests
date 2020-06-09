@@ -1,2 +1,2 @@
 need_kconfig:
- - CONFIG_RCU_PERF_TEST ~ v(4\.[7-9]|4\.1[0-9]|4\.20|5\.) # support kernel >=v4.7-rc1
+ - CONFIG_RCU_PERF_TEST ~ ">= v4.7-rc1"
