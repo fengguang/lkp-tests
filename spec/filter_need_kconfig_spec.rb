@@ -23,11 +23,11 @@ describe 'filter/need_kconfig.rb' do
   end
 
   context 'when CONFIG_XXXX is built-in in kernel' do
-    context 'when kernel version matches regexp' do
+    context 'when kernel version is within limit' do
       it 'does not filter the job' do
         File.open(@test_job_file, 'w') do |f|
           f.puts <<~EOF
-            need_kconfig: CONFIG_XXXX=y ~ v(4\\.|5\\.0) # support kernel <=v5.0
+            need_kconfig: CONFIG_XXXX=y ~ '<= v5.0' # support kernel <=v5.0
             kernel: #{@tmp_dir}/vmlinuz
           EOF
         end
@@ -37,11 +37,11 @@ describe 'filter/need_kconfig.rb' do
       end
     end
 
-    context 'when kernel version does not match regexp' do
+    context 'when kernel version outside limit' do
       it 'does not filter the job' do
         File.open(@test_job_file, 'w') do |f|
           f.puts <<~EOF
-            need_kconfig: CONFIG_XXXX=y ~ v(5\\.[1-9]) # support kernel >=v5.1-rc1
+            need_kconfig: CONFIG_XXXX=y ~ '>= v5.1-rc1' # support kernel >=v5.1-rc1
             kernel: #{@tmp_dir}/vmlinuz
           EOF
         end
@@ -50,7 +50,7 @@ describe 'filter/need_kconfig.rb' do
       end
     end
 
-    context 'when kernel version regexp is not defined' do
+    context 'when kernel version limit is not defined' do
       it 'does not filter the job' do
         File.open(@test_job_file, 'w') do |f|
           f.write({'need_kconfig' => 'CONFIG_XXXX=y', 'kernel' => "#{@tmp_dir}/vmlinuz"}.to_yaml)
@@ -62,11 +62,11 @@ describe 'filter/need_kconfig.rb' do
   end
 
   context 'when CONFIG_YYYY is not built in kernel' do
-    context 'when kernel version matches regexp' do
+    context 'when kernel version is within limit' do
       it 'filters the job' do
         File.open(@test_job_file, 'w') do |f|
           f.puts <<~EOF
-            need_kconfig: CONFIG_YYYY=m ~ v(4\\.|5\\.0) # support kernel <=v5.0
+            need_kconfig: CONFIG_YYYY=m ~ '<= v5.0' # support kernel <=v5.0
             kernel: #{@tmp_dir}/vmlinuz
           EOF
         end
@@ -75,11 +75,11 @@ describe 'filter/need_kconfig.rb' do
       end
     end
 
-    context 'when kernel version does not match regexp' do
+    context 'when kernel version is outside limit' do
       it 'does not filter the job' do
         File.open(@test_job_file, 'w') do |f|
           f.puts <<~EOF
-            need_kconfig: CONFIG_YYYY=m ~ v(5\\.[1-9]) # support kernel >=v5.1-rc1
+            need_kconfig: CONFIG_YYYY=m ~ '>= v5.1-rc1' # support kernel >=v5.1-rc1
             kernel: #{@tmp_dir}/vmlinuz
           EOF
         end
@@ -88,7 +88,7 @@ describe 'filter/need_kconfig.rb' do
       end
     end
 
-    context 'when kernel version regexp is not defined' do
+    context 'when kernel version limit is not defined' do
       it 'filters the job' do
         File.open(@test_job_file, 'w') do |f|
           f.write({'need_kconfig' => 'CONFIG_YYYY=m', 'kernel' => "#{@tmp_dir}/vmlinuz"}.to_yaml)
