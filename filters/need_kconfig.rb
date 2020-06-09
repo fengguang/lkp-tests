@@ -1,6 +1,9 @@
 #!/usr/bin/env ruby
 
+LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
+
 require 'yaml'
+require "#{LKP_SRC}/lib/kernel_tag"
 
 def read_kernel_version_from_context
   return nil unless self['kernel']
@@ -35,6 +38,20 @@ def check_kconfig(kconfig_lines, line)
   end
 end
 
+def kernel_include_kconfig?(kernel_version, config_info)
+  kernel_version = KernelTag.new(kernel_version)
+
+  config_info.split(' && ').each do |constraint|
+    match = constraint.match(/(?<operator><|>|==|!=|<=|>=) (?<kernel_tag>v[0-9]\.\d+(-rc\d+)*)/)
+    if match.nil? || match[:operator].nil? || match[:kernel_tag].nil?
+      raise Job::ParamError, "Wrong syntax of kconfig setting: #{config_info}"
+    else
+      return false unless kernel_version.method(match[:operator]).(KernelTag.new(match[:kernel_tag]))
+    end
+  end
+  true
+end
+
 def check_all(kconfig_lines)
   uncompiled_kconfigs_info = []
 
@@ -42,18 +59,18 @@ def check_all(kconfig_lines)
 
   $___.each do |e|
     # we use regular expression to redesign include kconfig format, like this:
-    # CONFIG_XXXX=m ~ v(4\.0) # support kernel >=v4.0-rc1 && <=v4.0
-    # CONFIG_YYYY=y ~ v(4\.1[7-9]|4\.20|5\.) # support kernel >=v4.17-rc1
-    # CONFIG_ZZZZ=y ~ v(4\.|5\.0) # support kernel >=v4.0-rc1 && <=v5.0
+    # CONFIG_XXXX=m: '>= v4.0-rc1 && <= v4.0'
+    # CONFIG_YYYY=y: '>= v4.17-rc1'
     # note: just match kernel version from v4.0 to lastest
-    config, kernel_version_regexp = e.split(' ~ ')
-    if kernel_version && kernel_version_regexp
-      next if kernel_version !~ /#{kernel_version_regexp}/
+    config, config_info = e.split(' ~ ')
+    if kernel_version && config_info
+      next unless kernel_include_kconfig?(kernel_version, config_info)
     end
+
     next if check_kconfig(kconfig_lines, config)
 
     kconfig_info = config
-    kconfig_info += " supported by kernel matching #{kernel_version_regexp} regexp" if kernel_version_regexp
+    kconfig_info += " supported by kernel #{config_info.gsub('\'','')}" if config_info
     uncompiled_kconfigs_info.push kconfig_info
   end
 
