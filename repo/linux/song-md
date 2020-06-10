@@ -1,1 +1,11 @@
 url: git://git.kernel.org/pub/scm/linux/kernel/git/song/md.git
+integration_testing_branches: md-next
+owner: Song Liu <song@kernel.org>
+subsystems:
+- md
+- raid5-cache
+- raid5
+- md-cluster
+notify_build_success_branch: .*
+mail_to: Song Liu <song@kernel.org>
+mail_cc: linux-raid@vger.kernel.org
