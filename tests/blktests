@@ -12,6 +12,9 @@
 
 cd $BENCHMARK_ROOT/blktests || die "fail to cd $BENCHMARK_ROOT/blktests"
 
+# https://github.com/osandov/blktests/pull/64
+sed -i 's/set -u//' common/multipath-over-rdma
+
 arrange_group()
 {
 	[ "$test" = "other" ] && return
