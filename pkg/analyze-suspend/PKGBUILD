@@ -5,8 +5,9 @@ arch=('i386' 'x86_64')
 url="https://github.com/intel/pm-graph.git"
 license=('GPL')
 source=("https://github.com/intel/pm-graph.git"
-	"https://github.com/aaronlu/turbostat.git")
-md5sums=('SKIP' 'SKIP')
+	"https://github.com/aaronlu/turbostat.git"
+	"https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git")
+md5sums=('SKIP' 'SKIP' 'SKIP')
 
 build() {
 	cd "$srcdir/turbostat"
@@ -19,5 +20,8 @@ package() {
 	cp -af "${srcdir}/pm-graph/"* "${benchmark_path}"
 	turbostat_path="${pkgdir}/lkp/benchmarks/turbostat"
 	mkdir -p "${turbostat_path}"
-	cp -a "$srcdir/turbostat/turbostat" "${turbostat_path}"
+	cp -a "${srcdir}/turbostat/turbostat" "${turbostat_path}"
+	firmware_path="${pkgdir}/lib/firmware/"
+	mkdir -p $firmware_path
+	cp -af "${srcdir}/linux-firmware/"* "${firmware_path}"
 }
