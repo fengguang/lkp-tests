@@ -14,3 +14,5 @@ need_kconfig:
 - CONFIG_INFINIBAND_ADDR_TRANS ~ ">= v4.17-rc1"
 - CONFIG_RDMA_RXE=m ~ ">= v4.8-rc1"
 - CONFIG_RDMA_SIW=m ~ ">= v5.3-rc1"
+- CONFIG_BTRFS_FS=m
+- CONFIG_BTRFS_FS_POSIX_ACL=y
