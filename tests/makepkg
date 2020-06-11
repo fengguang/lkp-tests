@@ -1,6 +1,9 @@
 #!/bin/bash
 # - rootfs
 # - benchmark
+# - os
+# - os_arch
+# - os_version
 
 ## makepkg is a script that automates the building of packages; it can download and validate source files,
 ## check dependencies, configure build-time settings, compile the sources, install into a temporary root,
@@ -11,10 +14,19 @@
 . $LKP_SRC/lib/misc-base.sh
 . $LKP_SRC/lib/env.sh
 
-[ -n "$rootfs" ] || die "rootfs is empty"
 [ -n "$benchmark" ] || die "benchmark is empty"
 
-export DISTRO=${rootfs%%-*}
+if [ -n "$rootfs" ]; then
+	pack_to=$(basename $rootfs)
+	export DISTRO=${rootfs%%-*}
+else
+	[ -n "$os" ] || die "os is empty"
+	[ -n "$os_arch" ] || die "os_arch is empty"
+	[ -n "$os_version" ] || die "os_version is empty"
+
+	pack_to=${os}/${os_arch}/${os_version}
+	export DISTRO=$os
+fi
 
 . $LKP_SRC/distro/${DISTRO}
 . $LKP_SRC/lib/install.sh
@@ -23,7 +35,6 @@ cd $LKP_SRC/pkg/$benchmark || die "pkg is empty"
 
 is_clearlinux && ln -sf $BENCHMARK_ROOT/makepkg/bin/fakeroot /usr/bin/fakeroot
 
-pack_to=$(basename $rootfs)
 PKG_MNT=/osimage/pkg
 mkdir -p "$PKG_MNT"
 
