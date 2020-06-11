@@ -776,7 +776,8 @@ end
 
 def sort_bisect_stats(stats)
   stats.sort_by do |stat|
-    key = stat && stat[0]
+    stat_name = stat[Compare::STAT_KEY]
+    key = $index_perf.keys.find { |i| stat_name =~ /^#{i}$/ }
     $index_perf[key] || -255 # -255 is a error value that should be less than values in $index_perf
   end
 end
