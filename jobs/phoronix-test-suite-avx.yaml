@@ -5,11 +5,29 @@ category: benchmark
 timeout: 1h
 
 phoronix-test-suite:
-  test:
-  - ramspeed-1.4.2
-  - rust-mandel-1.0.0
-  - stream-1.3.1
-  - svt-av1-1.2.0
-  - svt-hevc-1.0.0
-  - svt-vp9-1.0.0
-  - tensorflow-1.0.0
+  - test: ramspeed-1.4.2
+    option_a:
+      - Copy
+      - Scale
+      - Add
+      - Triad
+      - Average
+      # - Test All Options
+    option_b:
+      - Integer
+      - Floating Point
+      # - Test All Options
+  - test:
+    - rust-mandel-1.0.0
+  - test: stream-1.3.1
+    option_a:
+      - Copy
+      - Scale
+      - Add
+      - Triad
+      # - Test All Options
+  - test:
+    - svt-av1-1.2.0
+    - svt-hevc-1.0.0
+    - svt-vp9-1.0.0
+    - tensorflow-1.0.0
