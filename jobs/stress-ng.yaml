@@ -9,7 +9,6 @@ disk: 1HDD
 
 testtime:
 - 30s
-- 1s
 
 stress-ng:
   class:
@@ -39,17 +38,17 @@ stress-ng:
   class:
   - security
 
----
-nr_threads: 10%
-
-fs: ext4
-testtime:
-- 1s
-
-stress-ng:
-  class:
-  - os
-  - vm
+#---
+#nr_threads: 10%
+#
+#fs: ext4
+#testtime:
+#- 1s
+#
+#stress-ng:
+#  class:
+#  - os
+#  - vm
 
 ---
 testtime:
@@ -59,18 +58,18 @@ stress-ng:
   class:
   - memory
 
----
-sysctl:
-- sc_pid_max: 4194304
-
-testtime:
-- 1s
-
-stress-ng:
-  class:
-  - scheduler
-
----
-stress-ng:
-  test:
-  - switch
+#---
+#sysctl:
+#- sc_pid_max: 4194304
+#
+#testtime:
+#- 1s
+#
+#stress-ng:
+#  class:
+#  - scheduler
+#
+#---
+#stress-ng:
+#  test:
+#  - switch
