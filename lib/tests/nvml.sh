@@ -23,8 +23,8 @@ check_param()
 	testcases=$(ls -d "$group"_* 2>/dev/null)
 
 	# Some testcase is contianed in folder named by $group (such as traces).
-	# Adding it into testcases. We think it's a testcase if there is a TEST0 in the folder.
-	[[ -f "$group/TEST0" ]] && testcases+=" $group"
+	# Adding it into testcases. We think it's a testcase if there is a TEST0 or TESTS.py in the folder.
+	[[ -f "$group/TEST0" || -f "$group/TESTS.py" ]] && testcases+=" $group"
 	[[ -n "$testcases" ]] || die "Parameter \"group\" is invalid"
 }
 
@@ -44,6 +44,8 @@ build_env()
 
 	# ./check_max_mmap.sh: line 44: /build/nvml/src/src/test/tools/anonymous_mmap/../../testconfig.sh: No such file or directory
 	[ -f src/test/testconfig.sh ] || log_cmd cp src/test/testconfig.sh.example src/test/testconfig.sh
+	# Please add valid testconfig.py file - see testconfig.py.example
+	[ -f src/test/testconfig.py ] || log_cmd cp src/test/testconfig.py.example src/test/testconfig.py
 	# clear CFLAGS and CXXFLAGS to avoid unknown arguments
 	# clang-8: error: unknown argument: '-ftree-loop-distribute-patterns'
 	# clang-8: error: unknown argument: '-fno-semantic-interposition'
@@ -152,6 +154,7 @@ run()
 	local casename=$1
 	local user_filter="$BENCHMARK_ROOT/$casename/user_filter"
 	local testcase=
+	local test_cmd=
 
 	log_cmd cd $BENCHMARK_ROOT/$casename/src/test
 
@@ -168,6 +171,10 @@ run()
 	[ "$test" = "pmem" ] && echo "PMEM_FS_DIR_FORCE_PMEM=2" >> testconfig.sh
 	for testcase in $testcases
 	do
+		test_cmd="./RUNTESTS -f $test"
+		# If exist TESTS.py, call RUNTESTS.py to run tests
+		[[ -x "$testcase/TESTS.py" ]] && test_cmd="./RUNTESTS.py"
+
 		# fix util_extent/TEST0: SKIP file system tmpfs (ext4 required)
 		[[ "$testcase" = "util_extent" ]] && [[ "$test" = "non-pmem" ]] && setup_mount_loop_dev
 
@@ -178,9 +185,9 @@ run()
 			log_cmd chown lkp:lkp -R $BENCHMARK_ROOT/$casename
 			log_cmd chown lkp:lkp -R /tmp
 			log_cmd chown lkp:lkp -R /fs/pmem0
-			log_cmd su lkp -c "./RUNTESTS -f $test $testcase  2>&1"
+			log_eval su lkp -c "$test_cmd $testcase  2>&1"
 		else
-			log_cmd ./RUNTESTS -f $test $testcase  2>&1
+			log_eval $test_cmd $testcase  2>&1
 		fi  
 
 		# unset env variable in case it do impact on other tests
