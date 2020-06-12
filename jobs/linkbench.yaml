@@ -3,7 +3,6 @@ testcase: linkbench
 category: benchmark
 
 nr_task: 100%
-mysql-setup:
 setup-linkbench:
 linkbench:
   duration: 300s

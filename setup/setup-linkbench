@@ -32,6 +32,7 @@ is_clearlinux && {
 cp config/LinkConfigMysql.properties config/MyConfig.properties
 
 mysql << "MY_QUERY"
+SET GLOBAL max_connections = 400;
 DROP DATABASE IF EXISTS linkdb;
 CREATE DATABASE linkdb;
 USE linkdb;
