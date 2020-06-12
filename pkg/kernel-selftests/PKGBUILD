@@ -38,10 +38,9 @@ build_tools()
 
 	make allyesconfig
 	make prepare
-	# install cpupower command
+	# build cpupower
 	cd tools/power/cpupower
 	make
-	make install
 }
 
 install_selftests()
@@ -72,11 +71,8 @@ build()
 
 package()
 {
-	usr_path="${pkgdir}/usr"
-	mkdir -p "${usr_path}/lib"
-	for sofile in /usr/lib/libcpupower.*; do
-		cp "$sofile" "${usr_path}/lib"
-	done
-	mkdir -p "${usr_path}/bin"
-	cp /usr/bin/cpupower "${usr_path}/bin"
+	cd "${srcdir}/linux/tools/power/cpupower"
+
+	# install cpupower command and library
+	DESTDIR="$pkgdir" make install
 }
