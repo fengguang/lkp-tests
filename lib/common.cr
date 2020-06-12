@@ -30,14 +30,14 @@ end
 
 def with_set_globals(*var_val_list)
   var_vals = var_val_list.each_slice(2).to_a
-  ovals = var_vals.map { |var, val| eval(var.to_s) }
-  var_vals.each { |var, val| eval "#{var} = val" }
+  ovals = var_vals.map { |var, _| eval(var.to_s) }
+  var_vals.each { |var, val| eval "#{var} = #{val}" }
   yield
 ensure
   if ovals
     var_vals.zip(ovals).map do |var_val, oval|
-      var, _val = var_val
-      eval("#{var} = oval")
+      var, _ = var_val
+      eval("#{var} = #{oval}")
     end
   end
 end
@@ -221,22 +221,31 @@ def monitor_file(file, history = 10)
   system("tail", ["-f", "-n", history.to_s, file])
 end
 
-def zopen(fn, mode = "r", &blk)
-  fn = fn.sub(/(\.xz|\.gz)$/, "")
+def zopen(fn, mode = "r")
   if File.exists?(fn)
-    f = File.open(fn, mode)
-    yield f
-    f.close
+    File.open(fn, mode) { |file|
+      yield file
+    }
+  end
+end
+
+def zopen(fn, mode = "r") : Array(String)
+  fn = fn.sub(/(\.xz|\.gz)$/, "")
+
+  if File.exists?(fn)
+    buffer = File.read_lines(fn)
   elsif File.exists?(fn + ".xz")
-    fullpath = File.expand_path(fn + ".gz")
-    args=[fn + ".gz"]
-    process = Process.new("xzcat",  args)
-    yield process
+    fullpath = File.expand_path(fn + ".xz")
+    args=[fullpath]
+    buffer = IO::Memory.new
+    Process.run("xzcat",  args, output: buffer)
+    buffer.to_s.split("\n")
   elsif File.exists?(fn + ".gz")
     fullpath = File.expand_path(fn + ".gz")
-    args=[fn + ".gz"]
-    process = Process.new("zcat",  args)
-    yield process
+    args=[fullpath]
+    buffer = IO::Memory.new
+    Process.run("zcat",  args, output: buffer)
+    buffer.to_s.split("\n")
   else
     raise "File doesn't exist: #{fn}"
   end
@@ -244,7 +253,7 @@ end
 
 def copy_and_decompress(src_fullpath, dst)
   src_fullpath = src_fullpath.sub(/(\.xz|\.gz|\.bz2)$/, "")
-  
+
   if Dir.exists? dst
     fn = File.basename(src_fullpath, ".*")
     dst = File.join(dst, fn)
@@ -330,7 +339,7 @@ end
 
 #tested: monitor_file("/tmp/1.txt")
 
-#tested: zopen("pkg/ocfs2test-addon/timing-0.0.1.tar.gz") { |p| p p } 
+#tested: zopen("pkg/ocfs2test-addon/timing-0.0.1.tar.gz") { |p| p p }
 #               zopen("pkg/ocfs2test-addon/timing-0.0.1.tar.gzz") {puts "block"}
 #               zopen("/tmp/1.txt", "w+") do |f|
 #                   f.puts("abcd")
@@ -355,4 +364,3 @@ end
 # tested: with_flock_timeout("/tmp/testfile", 12) { puts "a" }
 
 # tested: delete_file_if_exist("/tmp/testfile")
-
