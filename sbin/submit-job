@@ -1,0 +1,58 @@
+#! /usr/bin/env ruby
+
+# frozen_string_literal: true
+
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+CCI_LAB ||= ENV['CCI_LAB'] || 'sparrow'
+
+require "#{LKP_SRC}/lib/job"
+require "#{LKP_SRC}/lib/scheduler_client"
+require 'optparse'
+require 'yaml'
+
+opt_set_key_value = {}
+
+options = OptionParser.new do |opts|
+  opts.banner = 'Usage: submit-job [options] jobs...'
+
+  opts.separator ''
+  opts.separator 'options:'
+
+  opts.on("-s 'KEY: VALUE'", "--set 'KEY: VALUE'", 'add YAML hash to job') do |key_value|
+    opt_set_key_value.merge! YAML.load key_value
+  end
+end
+
+options.parse!(ARGV)
+
+ARGV.delete_if do |arg|
+  if arg.index '='
+    opt_set_key_value.merge! YAML.load arg.sub(/=/, ': ')
+    true
+  else
+    false
+  end
+end
+
+if ARGV.size.zero?
+  puts(options)
+  exit
+end
+
+lab_path = "#{LKP_SRC}/labs/#{CCI_LAB}.yaml"
+
+ARGV.each do |jobfile|
+  jobs = Job.new
+  jobs.load(jobfile, true) || next
+  jobs.load_one_defaults(lab_path, jobs.to_hash)
+  jobs.overrides = opt_set_key_value
+  jobs.each_jobs do |job|
+    job_hash = job.to_hash
+    host = job_hash['SCHED_IP'] || '127.0.0.1'
+    port = job_hash['SCHED_PORT'] || 3000
+    scheduler_client = SchedulerClient.new(host, port)
+    job_json = job_hash.to_json
+    job_id = scheduler_client.submit_job(job_json)
+    puts("succeeded submitting #{jobfile}, got job id = #{job_id}")
+  end
+end
