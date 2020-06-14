@@ -3,7 +3,7 @@
 # the workload of kbuild is defined as the iteration number
 iterations = 0
 runtime = 0
-$stdin.each_line do |line|
+STDIN.each_line do |line|
   iterations = $1.to_i if line =~ /^iterations: (\d+)/
   runtime = $1.to_f if line =~ /^runtime: (\d+)/
 end

@@ -4,13 +4,18 @@
 require "../../lib/statistics"
 require "../../lib/string_ext"
 
-stats = []
+
+stats = Array(String).new
 testname = nil
-mqueue_speed = {}
-tests_stats = Hash.new { |h, k| h[k] = {} }
+mqueue_speed = Hash(String, Int32).new
+tests_stats = Hash(String, Hash(String, String?)).new { |h, k| h[k] = Hash(String, String?).new }
+
+pmx = nil
+vm_subname = nil
+mqueue_test = nil
 
 def futex_stat_result(futex, result, stats)
-  stats << if futex["argument"] && !(futex["argument"].includes? "none")
+  stats << if futex["argument"]? && !(futex["argument"].not_nil!.includes? "none")
     "futex.#{futex["subtest"]}.#{futex["argument"]}.#{result.downcase}: 1"
   else
     "futex.#{futex["subtest"]}.#{result.downcase}: 1"
@@ -36,7 +41,7 @@ def memory_hotplug_stat(line, memory_hotplug, stats)
     memory_hotplug["subtest"] = $1
   when /^\.\/(.+\.sh).+selftests: memory-hotplug/ # for kernel < v4.18-rc1
     memory_hotplug["subtest"] = $1
-  when /^*selftests.*: memory-hotplug \[FAIL\]/
+  when /^.*selftests.*: memory-hotplug \[FAIL\]/
     stats << "memory-hotplug.#{memory_hotplug["subtest"]}.fail: 1"
     memory_hotplug["subtest"] = nil
   when %r{make: Leaving directory .*/(.*)'}
@@ -60,30 +65,32 @@ def mount_stat(line, mount, stats)
   end
 end
 
-def x86_stat(line, _x86, stats)
+def x86_stat(line, _x86, stats, pmx)
   case line
   when /can not run MPX tests/
-    @pmx = "skip"
-  when /^*selftests.*: (.*) .*(PASS|FAIL)/
+    pmx = "skip"
+  when /^.*selftests.*: (.*) .*(PASS|FAIL)/
     test_name = $1.strip
     result = $2
-    if test_name =~ /mpx-mini-test/ && @pmx
-      stats << "x86.#{test_name}.#{@pmx}: 1"
+    if test_name =~ /mpx-mini-test/ && pmx
+      stats << "x86.#{test_name}.#{pmx}: 1"
     else
       stats << "x86.#{test_name}.#{result.downcase}: 1"
-      @pmx = nil
+      pmx = nil
     end
   end
+  return pmx
 end
 
-def vm_stat(line, _vm, stats)
+def vm_stat(line, _vm, stats, vm_subname)
   case line
-  when /^*running (.*)/
-    @vm_subname = $1.strip.tr(" ", "_")
+  when /^.*running (.*)/
+    vm_subname = $1.strip.tr(" ", "_")
   when /^\[(PASS|FAIL|ignored_by_lkp)\]/
-    stats << "vm.#{@vm_subname}.#{$1.downcase}: 1" if @vm_subname
-    @vm_subname = nil
+    stats << "vm.#{vm_subname}.#{$1.downcase}: 1" if vm_subname
+    vm_subname = nil
   end
+  return vm_subname
 end
 
 def resctrl_stat(line, _resctrl, stats)
@@ -94,11 +101,12 @@ def resctrl_stat(line, _resctrl, stats)
 end
 
 while (line = STDIN.gets)
+  line = line.to_s
   line = line.remediate_invalid_byte_sequence(replace: "_") unless line.valid_encoding?
 
   case line
   when %r{make: Entering directory .*/(.*)'}
-    testname = Regexp.last_match[1]
+    testname = $2
   when /^ok kernel supports resctrl filesystem/
     testname = "resctrl"
   when %r{make: Leaving directory .*/(.*)'}
@@ -110,24 +118,25 @@ while (line = STDIN.gets)
       # rli9 FIXME: consider the input has messed text like Entering doesn't match with Leaving
       testname = nil
     end
-  when /^*selftests.*: (.*) .*(\[|\[ )(PASS|FAIL|SKIP)/
+  when /^.*selftests.*: (.*) .*(\[|\[ )(PASS|FAIL|SKIP)/
     if testname == "futex"
       futex_stat(line, tests_stats["futex"], stats)
     elsif testname == "memory-hotplug"
       memory_hotplug_stat(line, tests_stats["memory-hotplug"], stats)
     elsif testname == "x86"
-      x86_stat(line, tests_stats["x86"], stats)
+      pmx = x86_stat(line, tests_stats["x86"], stats, pmx)
     elsif testname == "vm"
-      vm_stat(line, tests_stats["vm"], stats)
+      vm_subname = vm_stat(line, tests_stats["vm"], stats, vm_subname)
     else
-      stats << "#{testname}.#{Regexp.last_match[1].strip}.#{Regexp.last_match[3].downcase}: 1"
+      stats << "#{testname}.#{$1.strip}.#{$3.downcase}: 1"
     end
   when /Test #([1-9].*):/
-    mqueue_test = Regexp.last_match[1]
+    mqueue_test = $1
   when /(Send|Recv) msg:/
-    io = Regexp.last_match[1]
+    io = $1
+    io
   when %r{(\d+) nsec/msg}
-    mqueue_speed[mqueue_test + "." + io] = Regexp.last_match[1].to_i
+    mqueue_speed["#{mqueue_test}.io"] = $1.to_i  # [mqueue_test + "." + io]?
   when /: recipe for target.+failed$/
     next unless testname
 
@@ -148,9 +157,9 @@ while (line = STDIN.gets)
     elsif testname == "mount"
       mount_stat(line, tests_stats["mount"], stats)
     elsif testname == "x86"
-      x86_stat(line, tests_stats["x86"], stats)
+      pmx = x86_stat(line, tests_stats["x86"], stats, pmx)
     elsif testname == "vm"
-      vm_stat(line, tests_stats["vm"], stats)
+      vm_subname = vm_stat(line, tests_stats["vm"], stats, vm_subname)
     elsif testname == "resctrl"
       resctrl_stat(line, tests_stats["resctrl"], stats)
     end
@@ -162,4 +171,5 @@ if testname == "resctrl"
   stats << "resctrl.resctrl_tests.pass: 1" unless stats.any? { |stat| stat =~ /resctrl\..+\.fail: 1/ }
 end
 stats.uniq.each { |stat| puts stat }
-nr_test = stats.size { |k, _v| k !~ /\.make_fail|\.ignored_by_lkp/ }
+nr_test = stats.size #{ |k, _v| k !~ /\.make_fail|\.ignored_by_lkp/ }
+nr_test

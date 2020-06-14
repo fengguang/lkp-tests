@@ -10,9 +10,9 @@ require "../../lib/common"
 class IrqAnalysis
   def initialize(sample_array)
     @sample_array = sample_array
-    @last = nil
-    @irq = {}
-    @softirq = {}
+    @last = Hash(String, Array(Int32)).new
+    @irq = Hash(String, Array(Int32)).new
+    @softirq = Hash(String, Array(Int32)).new
     @irq_nr = @irq_time = @softirq_nr = @softirq_time = 0
   end
 
@@ -50,11 +50,11 @@ class IrqAnalysis
     t = (s2.timestamp * 1_000_000).to_i - (s1.timestamp * 1_000_000).to_i
     if s1.type == :softirq_entry
       vec_nr = s1.data["vec"]
-      @softirq[vec_nr] ||= []
+      @softirq[vec_nr] ||= Array(Int32).new
       @softirq[vec_nr] << t
     else
       irq_nr = s1.data["irq"]
-      @irq[irq_nr] ||= []
+      @irq[irq_nr] ||= Array(Int32).new
       @irq[irq_nr] << t
     end
   end
@@ -73,20 +73,22 @@ class IrqAnalysis
 end
 
 def extract_ftrace
+  samples = Hash(String, Array(Int32)).new
+
   fn = "#{RESULT_ROOT}/ftrace.data.xz"
   fmts_dir = "#{RESULT_ROOT}/ftrace_events"
   file = zopen(fn)
-  trace = TPTrace.new file, fmts_dir
 
-  samples = {}
+  trace = TPTrace.new file.not_nil!, fmts_dir
+
   # interrupt handler will not be migrated so to simply entry/exit
   # pair match, sort these samples according to CPU number
   trace.each do |sample|
-    samples[sample.cpu] ||= []
+    samples[sample.cpu] ||= Array(Int32).new
     samples[sample.cpu] << sample
   end
 
-  samples_array = []
+  samples_array = Array(Int320).new
   # then we put these sorted lines into a global array
   samples.each do |_, array|
     array.each do |sample|
