@@ -186,7 +186,7 @@ def parse
 
     # for metrics
     # 1.000679357,S0,12,170516599,,l1d_pend_miss.pending,8004582139,66.65,80.5,Load_Miss_Real_Latency
-    if fields[5] != nil
+    if !fields[5].nil?
     # For the metric name, Its first char is an uppercase letter
     # Ignore the test result which is not for metrics
     # 1.000679357,S0,12,65320043,,instructions,8005866225,66.66,0.14,insn per cycle
