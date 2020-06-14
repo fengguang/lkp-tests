@@ -1,0 +1,7 @@
+# modprobe: ERROR: ../libkmod/libkmod.c:586 kmod_search_moddep() could not open moddep file '/lib/modules/4.19.0-rc4-wt-ath-02898-g1491ae9/modules.dep.bin'
+modprobe:ERROR:../libkmod/libkmod.c:#kmod_search_moddep()could_not_open_moddep_file'/lib/modules/#/modules.dep.bin': 1
+
+# modprobe: FATAL: Module nfs not found in directory
+modprobe:FATAL:Module_nfs_not_found_in_directory: 1
+
+has_stderr: 1

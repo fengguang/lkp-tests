@@ -1,0 +1,3 @@
+Error:
+The sys_perf_event_open() syscall returned with 19 (No such device) for event (cpu-clock:ppH).
+/bin/dmesg | grep -i perf may provide additional information.
