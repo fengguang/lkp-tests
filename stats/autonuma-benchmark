@@ -36,7 +36,7 @@ $stdin.each do |line|
   when /^Hyper-Threading IS/
     output = true
   when output && /^numa/
-    key = "#{line}"
+    key = line.to_s
   when output && /\d+.\d+/
     results[key] = line.to_f
   end
