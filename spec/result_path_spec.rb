@@ -341,16 +341,16 @@ describe ResultPath do
       it 'do not check commit id' do
         result_path = described_class.new
 
-	#The commit name is kernel version in local run.
-	expect(result_path.parse_result_root("#{RESULT_ROOT_DIR}/will-it-scale/process-100%-brk1/shao2-debian/debian/x86_64-rhel-7.6/gcc-7/4.19.0-4-amd64/0", true)).to be true
-	expect(result_path['testcase']).to eq 'will-it-scale'
-	expect(result_path['path_params']).to eq 'process-100%-brk1'
-	expect(result_path['ucode']).to eq nil
-	expect(result_path['tbox_group']).to eq 'shao2-debian'
-	expect(result_path['rootfs']).to eq 'debian'
-	expect(result_path['kconfig']).to eq 'x86_64-rhel-7.6'
-	expect(result_path['compiler']).to eq 'gcc-7'
-	expect(result_path['commit']).to eq '4.19.0-4-amd64'
+  #The commit name is kernel version in local run.
+  expect(result_path.parse_result_root("#{RESULT_ROOT_DIR}/will-it-scale/process-100%-brk1/shao2-debian/debian/x86_64-rhel-7.6/gcc-7/4.19.0-4-amd64/0", true)).to be true
+  expect(result_path['testcase']).to eq 'will-it-scale'
+  expect(result_path['path_params']).to eq 'process-100%-brk1'
+  expect(result_path['ucode']).to eq nil
+  expect(result_path['tbox_group']).to eq 'shao2-debian'
+  expect(result_path['rootfs']).to eq 'debian'
+  expect(result_path['kconfig']).to eq 'x86_64-rhel-7.6'
+  expect(result_path['compiler']).to eq 'gcc-7'
+  expect(result_path['commit']).to eq '4.19.0-4-amd64'
       end
     end
   end
