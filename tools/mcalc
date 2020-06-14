@@ -89,11 +89,11 @@ def main
     usage
   end
   mc = MatrixCalculator.new(ARGV.first)
-  if ARGV.length > 1
-    operations = ARGV[1]
+  operations = if ARGV.length > 1
+    ARGV[1]
   else
-    operations = $stdin.read
-  end
+    $stdin.read
+               end
   mc.instance_eval operations
 end
 

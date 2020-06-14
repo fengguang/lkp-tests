@@ -15,11 +15,11 @@ class KernelTag
   # kernel_tag: v4.20-rc2 ==> 4 * 10000 + 20 * 100 + 2 = 42002
   def numerize_kernel_tag(kernel_tag)
     match = kernel_tag.match(/v(?<major_version>[0-9])\.(?<minor_version>\d+)\.?(-rc(?<prerelease_version>\d+))?/)
-    if match[:prerelease_version]
-      prerelease_version = match[:prerelease_version].to_i
+    prerelease_version = if match[:prerelease_version]
+      match[:prerelease_version].to_i
     else
-      prerelease_version = 99
-    end
+      99
+                         end
     match[:major_version].to_i * 10000 + match[:minor_version].to_i * 100 + prerelease_version
   end
 
