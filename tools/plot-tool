@@ -94,6 +94,7 @@ def plot_it(matrix_stat_arr)
       dstat = "diff-#{stat}"
       ys = matrix[stat]
       next unless ys
+
       dys = (1...ys.length).map { |i| ys[i] - ys[i - 1] }
       matrix[dstat] = dys
       stat = dstat
@@ -101,6 +102,7 @@ def plot_it(matrix_stat_arr)
       rstat = "rel-#{stat}"
       ys = matrix[stat]
       next unless ys
+
       y0 = ys[0]
       rys = ys.map { |yi| yi - y0 }
       matrix[rstat] = rys

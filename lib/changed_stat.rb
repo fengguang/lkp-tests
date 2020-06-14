@@ -55,22 +55,28 @@ module LKP
           min_gap = [len_a, len_b].max * options['distance']
 
           return true if min_b - max_a > min_gap
+
           log_cause "NOT: min_b - max_a > min_gap (#{min_gap})"
 
           return true if min_a - max_b > min_gap
+
           log_cause "NOT: min_a - max_b > min_gap (#{min_gap})"
         else
           return true if min_b > max_a && (min_b - max_a) > (mean_b - mean_a) / 2
+
           log_cause "NOT: min_b > max_a && (min_b - max_a) > (mean_b - mean_a) / 2"
 
           return true if min_a > max_b && (min_a - max_b) > (mean_a - mean_b) / 2
+
           log_cause "NOT: min_a > max_b && (min_a - max_b) > (mean_a - mean_b) / 2"
         end
       else
         return true if min_b > mean_a && mean_b > max_a
+
         log_cause "NOT: min_b > mean_a && mean_b > max_a"
 
         return true if min_a > mean_b && mean_a > max_b
+
         log_cause "NOT: min_a > mean_b && mean_a > max_b"
       end
 

@@ -38,6 +38,7 @@ class MatrixCalculator
     stats.each do |stat|
       vals = @matrix[stat]
       next unless vals
+
       if block_given?
         nstat, nvals = yield stat, vals
       else
