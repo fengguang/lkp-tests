@@ -70,7 +70,7 @@ def check_all(kconfig_lines)
     next if check_kconfig(kconfig_lines, config)
 
     kconfig_info = config
-    kconfig_info += " supported by kernel #{config_info.gsub('\'','')}" if config_info
+    kconfig_info += " supported by kernel #{config_info.gsub('\'', '')}" if config_info
     uncompiled_kconfigs_info.push kconfig_info
   end
 
