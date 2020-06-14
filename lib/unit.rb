@@ -8,19 +8,19 @@ def to_seconds(time_spec)
 
   case time_spec[-1]
   when 'y'
-    return n * 3600 * 24 * 365
+    n * 3600 * 24 * 365
   when 'w'
-    return n * 3600 * 24 * 7
+    n * 3600 * 24 * 7
   when 'd'
-    return n * 3600 * 24
+    n * 3600 * 24
   when 'h'
-    return n * 3600
+    n * 3600
   when 'm'
-    return n * 60
+    n * 60
   when 's'
-    return n
+    n
   else
-    return n
+    n
   end
 end
 

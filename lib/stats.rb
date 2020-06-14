@@ -402,14 +402,14 @@ def load_base_matrix(matrix_path, head_matrix, options)
        head_matrix['stderr.has_stderr']
       log_debug "compare with release matrix: #{matrix_path} #{tags_merged}"
       options['good_commit'] = tags_merged.first
-      return matrix
+      matrix
     else
       log_debug "release matrix too small: #{matrix_path} #{tags_merged}"
-      return nil
+      nil
     end
   else
     log_debug "no release matrix was found: #{matrix_path}"
-    return nil
+    nil
   end
 end
 
