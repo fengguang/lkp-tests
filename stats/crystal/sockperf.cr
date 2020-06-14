@@ -1,6 +1,8 @@
 #!/usr/bin/env crystal
 
-sockperf = {}
+sockperf = Hash(String,String).new
+subcommand = "unknown_subcommand"
+protocol = "unknown_protocol"
 while (line = STDIN.gets)
   case line
   when /^sockperf: subcommand (.+) (.+)$/
