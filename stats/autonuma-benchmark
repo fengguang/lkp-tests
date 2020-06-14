@@ -31,7 +31,7 @@ results = {}
 output = false
 key = nil
 $stdin.each do |line|
-  line = line.strip()
+  line = line.strip
   case line
   when /^Hyper-Threading IS/
     output = true
