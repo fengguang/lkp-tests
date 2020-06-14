@@ -42,4 +42,4 @@ $stdin.each do |line|
   end
 end
 
-results.each { |key, value| puts "#{key}.seconds: #{value}"} if !results.empty?
+results.each { |key, value| puts "#{key}.seconds: #{value}"} unless results.empty?

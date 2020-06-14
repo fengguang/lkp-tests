@@ -88,7 +88,7 @@ def output_interval(prev_time, time)
   calc_addon_keys($interval_results_sum, $interval_results_nr,
                   interval, 1, 'i.')
 
-  if !$interval_metrics_val.empty?
+  unless $interval_metrics_val.empty?
     $interval_metrics_val.each do |key, value|
       puts "i.#{key}: #{value}"
     end
@@ -117,7 +117,7 @@ def output_interval(prev_time, time)
 
   $interval_results_sum.clear
   $interval_results_nr.clear
-  if !$interval_metrics_val.empty?
+  unless $interval_metrics_val.empty?
     $interval_metrics_val.clear
   end
 end
