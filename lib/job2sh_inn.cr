@@ -1,5 +1,5 @@
 require "./job"
-require "../../lib/shellwords"
+require "./shellwords"
 
 SHELL_BLOCK_KEYWORDS = {
   "if" => %w[then fi],

@@ -1,7 +1,7 @@
 require "option_parser"
 
 require "./job2sh_inn"
-require "../../lib/log"
+require "./log"
 
 destination = ""
 output = STDOUT
