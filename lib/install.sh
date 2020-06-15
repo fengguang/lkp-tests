@@ -118,6 +118,7 @@ get_dependency_packages()
 	[ -f "$base_file" ] || return
 
 	local generic_packages="$(sed 's/#.*//' "$base_file")"
+	detect_system
 	parse_packages_arch
 	[ "$distro" != "debian" ] && remove_packages_version && remove_packages_repository
 
