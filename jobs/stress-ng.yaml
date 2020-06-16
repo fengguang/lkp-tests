@@ -51,6 +51,9 @@ stress-ng:
 #  - vm
 
 ---
+oom-killer:
+  ignored: 1
+
 testtime:
 - 10s
 
