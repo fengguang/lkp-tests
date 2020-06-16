@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require "#{LKP_SRC}/lib/string_ext"
+
 #example input:
 # Hyper-Threading IS enabled.
 # numa01
@@ -31,6 +33,7 @@ results = {}
 output = false
 key = nil
 $stdin.each do |line|
+  line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
   line = line.strip
   case line
   when /^Hyper-Threading IS/
