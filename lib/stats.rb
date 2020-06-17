@@ -371,7 +371,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
     next if o >  order
     next if o == order && is_exact_match
     next if is_exact_match && tag =~ /^#{version}-rc[0-9]+$/
-    break if tag =~ /\.[0-9]+$/ && tags_merged.size >= 2 && cols >= 10
+    break if tag =~ /\.[0-9]+$/ && tags_merged.size >= 2 && cols >= 6
 
     rp[axis] = tag
     base_matrix_file = rp._result_root + '/matrix.json'
@@ -393,8 +393,8 @@ def load_base_matrix(matrix_path, head_matrix, options)
     options['base_matrixes'] ||= []
     options['base_matrixes'] << "#{tag} #{rc_matrix['stats_source'].size} #{rc_matrix[options['stat']].inspect}"
 
-    cols += matrix['stats_source'].size
-    break if tags_merged.size >= 3 && cols >= 20
+    cols += rc_matrix['stats_source'].size
+    break if tags_merged.size >= 3 && cols >= 9
     break if tag =~ /-rc1$/ && cols >= 3
   end
 
