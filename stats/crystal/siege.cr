@@ -3,7 +3,7 @@
 
 require "../../lib/statistics"
 
-results = {}
+results = {} of String => Array(Float64)
 
 while (line = STDIN.gets)
   case line
@@ -12,7 +12,7 @@ while (line = STDIN.gets)
     unit = "_" + $4 if $4
     unit ||= ""
     key = $1.tr(" ", "_") + unit
-    results[key] ||= []
+    results[key] ||= [] of Float64
     results[key] << value.to_f
   end
 end
