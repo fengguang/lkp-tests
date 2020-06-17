@@ -12,8 +12,5 @@ run_kunit_tests()
 	done
 }
 
-
-# Clear dmesg info to collect kunit tests result
-dmesg -C
 run_kunit_tests
 dmesg > "$TMP_RESULT_ROOT"/kunit
