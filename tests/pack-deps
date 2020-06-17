@@ -1,27 +1,42 @@
 #!/bin/bash
+# - rootfs
 # - benchmark
 # - pack_arch
+# - os
+# - os_arch
+# - os_version
 
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/misc-base.sh
 
-[ -n "$rootfs" ] || die "rootfs is empty"
 [ -n "$benchmark" ] || die "benchmark is empty"
-
-DISTRO=${rootfs%%-*}
-DISTRO=${DISTRO##*/}
-
-. $LKP_SRC/distro/${DISTRO}
+[ -n "$pack_arch" ] || die "pack_arch is empty"
 
 DEPS_MNT=/osimage/deps
 mkdir -p "$DEPS_MNT"
+
+if 	[ -n "$rootfs" ]; then
+	DISTRO=${rootfs%%-*}
+	DISTRO=${DISTRO##*/}
+	pack_to=$DEPS_MNT/$(basename $rootfs)
+
+else
+	[ -n "$os" ] || die "os is empty"
+	[ -n "$os_arch" ] || die "os_arch is empty"
+	[ -n "$os_version" ] || die "os_version is empty"
+	DISTRO=${os}
+	pack_to=$DEPS_MNT/${os}/${os_arch}/${os_version}
+
+fi	
+
+. $LKP_SRC/distro/${DISTRO}
+
 mount $LKP_SERVER:$DEPS_MNT $DEPS_MNT || die "Failed to run mount"
 
 umask 002
 
-pack_to=$DEPS_MNT/$(basename $rootfs)
 [[ -d "$pack_to" ]] || {
-	mkdir "$pack_to"
+	mkdir -p "$pack_to"
 	chown .lkp "$pack_to"
 }
 
