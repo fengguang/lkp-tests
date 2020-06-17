@@ -389,6 +389,10 @@ def load_base_matrix(matrix_path, head_matrix, options)
 
     add_stats_to_matrix(rc_matrix, matrix)
     tags_merged << tag
+
+    options['base_matrixes'] ||= []
+    options['base_matrixes'] << "#{tag} #{rc_matrix['stats_source'].size} #{rc_matrix[options['stat']].inspect}"
+
     cols += matrix['stats_source'].size
     break if tags_merged.size >= 3 && cols >= 20
     break if tag =~ /-rc1$/ && cols >= 3
