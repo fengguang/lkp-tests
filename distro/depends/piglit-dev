@@ -4,10 +4,11 @@ pkg-config
 libx11-xcb-dev
 libdrm-dev/unstable
 xutils-dev
-python3-mako
-python3-markupsafe
+python3-distutils
+python3-mako/unstable
+python3-markupsafe/unstable
 python3-pip
-python3-numpy
+python3-numpy/unstable
 python3-six
 libunwind-dev
 flex
@@ -48,7 +49,7 @@ libgcc-6-dev
 libmpfr6
 libmpc3/unstable
 libc-dev-bin/unstable
-libgcc1/unstable
+libgcc1
 libubsan0
 libcilkrts5
 libmpx2/unstable

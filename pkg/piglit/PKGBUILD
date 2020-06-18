@@ -4,8 +4,9 @@ pkgrel=1
 url='https://gitlab.freedesktop.org/mesa/piglit'
 arch=('i386' 'x86_64')
 license=('GPL')
-source=('https://github.com/waffle-gl/waffle.git' 'https://gitlab.freedesktop.org/drm/igt-gpu-tools.git' 'https://github.com/mesa3d/piglit.git')
-md5sums=('SKIP' 'SKIP' 'SKIP')
+source=('https://github.com/waffle-gl/waffle.git' 'https://gitlab.freedesktop.org/drm/igt-gpu-tools.git'
+	'https://github.com/mesa3d/piglit.git' 'https://www.python.org/ftp/python/3.7.6/Python-3.7.6.tgz')
+md5sums=('SKIP' 'SKIP' 'SKIP' 'SKIP')
 
 benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
 
@@ -28,10 +29,25 @@ build()
 		cmake_major="cmake3"
 	fi
 
+	# piglit need python >= 3.6
+	python_major=$($(which python3) -V | cut -d. -f2)
+	if [[ "$python_major" -le 5 ]]; then
+		build_python3 || return
+	fi
 	ln -snf /usr/bin/python3 /usr/bin/python || return
 	build_waffle || return
 	build_piglit || return
 	build_intel_gpu_tools || return
+}
+
+build_python3()
+{
+	tar -zxvf "${srcdir}/Python-${pkgver}.tgz"
+	cd "${srcdir}/Python-${pkgver}"
+	./configure || return
+	make || return
+	make install || return
+	ln -snf /usr/local/bin/python3.7 /usr/bin/python3 || return
 }
 
 build_waffle()
@@ -110,9 +126,9 @@ package()
 	cd $srcdir/$pkgname
 	mkdir -p $benchmark_patch/lib/piglit/bin/igt
 	mv -T ../igt-gpu-tools $benchmark_path/lib/piglit/bin/igt
-	create_config
-	generate_tests
-	separate_tests
+	create_config || die  "create_config failed"
+	generate_tests || die "generate_tests failed"
+	separate_tests || die "seperate_tests failed"
 
 	mkdir -p ${pkgdir}/usr/lib
 	for sofile in /usr/lib/${CARCH}-linux-gnu/libwaffle-1.so*; do
