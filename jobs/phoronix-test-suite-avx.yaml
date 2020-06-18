@@ -26,8 +26,18 @@ phoronix-test-suite:
       - Add
       - Triad
       # - Test All Options
+  - test: svt-av1-2.2.1
+    option_a:
+      - Enc Mode 8 [Fastest - Default]
+      - Enc Mode 4 [Mid-Speed]
+      - Enc Mode 0 [Slowest]
+      # - Test All Options
+  - test: svt-vp9-1.2.2
+    option_a:
+      - Visual Quality Optimized
+      - PSNR/SSIM Optimized [Default]
+      - VMAF Optimized
+      # - Test All Options
   - test:
-    - svt-av1-2.2.1
     - svt-hevc-1.1.0
-    - svt-vp9-1.2.2
     - tensorflow-1.0.0
