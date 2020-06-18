@@ -108,8 +108,7 @@ libpcap-dev: libpcap-devel
 libpci3: pciutils
 libpciaccess-dev: libpciaccess-devel
 libpci-dev: pciutils-devel
-libperl5.20: perl-libs
-libperl5.22: perl-libs
+libperl5: perl-libs
 libperl-dev: perl-devel.x86_64
 libpixman-1-dev: pixman-devel
 libpng12-dev: libpng12-devel
@@ -166,8 +165,7 @@ nfs-kernel-server: nfs-utils
 ocfs2-tools-dev: ocfs2-tools-devel
 openbsd-inetd: xinetd
 perl-base: perl
-perl-modules-5.22: perl-CPAN
-perl-modules: perl-CPAN
+perl-modules-5: perl-CPAN
 pixz: pxz
 pkg-config: pkgconfig
 plzip:

@@ -74,8 +74,7 @@ libpcap0.8-dev: libpcap-devel
 libpcap0.8: libpcap
 libpcap-dev: libpcap-devel
 libpciaccess-dev: libpciaccess-devel
-libperl5.20: perl-libs
-libperl5.22: perl-libs
+libperl5: perl-libs
 libpixman-1-dev: pixman-devel
 libpng12-dev: libpng12-devel
 libpopt0: popt
@@ -108,8 +107,7 @@ netpipe-tcp:
 nfs-common: nfs-utils
 nfs-kernel-server: nfs-utils
 perl-base:
-perl-modules-5.22: perl-CPAN
-perl-modules: perl-CPAN
+perl-modules-5: perl-CPAN
 pixz: pxz
 pkg-config: pkgconfig
 plzip:
