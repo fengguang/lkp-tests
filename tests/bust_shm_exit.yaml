@@ -1,0 +1,16 @@
+short_description: >
+ A small program to stress the shared memory exit path.
+
+description: |
+ Create a bunch of shared memory segments, then a bunch of threads that continually clone and exit.
+
+homepage: https://github.com/gaowanlong/bust_shm_exit
+
+parameters:
+ runtime:      limit run time to runtime seconds
+ segments:     the number of Shared Memory Segments
+ nr_threads:   the number of threads
+
+results:
+ bust-shm-exit.pass:   bust_shm_exit test done
+ bust-shm-exit.fail:   bust_shm_exit test exit with some error
