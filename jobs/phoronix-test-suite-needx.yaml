@@ -8,10 +8,6 @@ timeout: 1h
 phoronix-test-suite:
   - test: apitest-1.1.0
     option_a:
-      - 800 x 600
-      - 1024 x 768
-      # - Test All Options
-    option_b:
       - DynamicStreaming GLBufferSubData
       - DynamicStreaming GLMapUnsynchronized
       - DynamicStreaming GLMapPersistent
@@ -49,11 +45,6 @@ phoronix-test-suite:
       - Default
       - Renderer2
       # - Test All Options
-    option_b:
-      - 800 x 600
-      - 1024 x 768
-      - 1280 x 1024
-      # - Test All Options
   - test:
     # - etqw-1.1.0 # has been replaced by newer etqw-demo
     # - etqw-demo-1.1.0 # need 32bit libs
@@ -61,10 +52,6 @@ phoronix-test-suite:
     - etxreal-1.0.0
   - test: geexlab-1.0.0
     option_a:
-      - 800 x 600
-      - 1024 x 768
-      # - Test All Options
-    option_b:
       - GL2 AntTweakBar
       - GL2 Cell Shading
       - GL2 Noise Animation Electric
@@ -82,11 +69,6 @@ phoronix-test-suite:
       - Windowed
       # - Test All Options
     option_b:
-      - 800 x 600
-      - 1024 x 768
-      - 1280 x 1024
-      # - Test All Options
-    option_c:
       - Fill-Rate
       - Fragment
       - Geometry
@@ -105,11 +87,6 @@ phoronix-test-suite:
       - Plot3D
       # - Test All Options
     option_b:
-      - 800 x 600
-      - 1024 x 768
-      - 1280 x 1024
-      # - Test All Options
-    option_c:
       - Fullscreen
       - Windowed
       # - Test All Options
@@ -163,15 +140,10 @@ phoronix-test-suite:
       # - Test All Options
   - test: nexuiz-1.6.1
     option_a:
-      - 800 x 600
-      - 1024 x 768
-      - 1280 x 1024
-      # - Test All Options
-    option_b:
       - Yes
       - No
       # - Test All Options
-    option_c:
+    option_b:
       - On
       - Off
       # - Test All Options
@@ -189,11 +161,6 @@ phoronix-test-suite:
       - Many Spheres
       - Wavelet Contour
       - Wavelet Volume
-      # - Test All Options
-    option_b:
-      - 800 x 600
-      - 1024 x 768
-      - 1280 x 1024
       # - Test All Options
   - test:
     # - prey-1.1.2 # need to download files from stream
@@ -222,22 +189,17 @@ phoronix-test-suite:
     # - specviewperf9-1.1.1 # need csh or tcsh
   - test: supertuxkart-1.5.2
     option_a:
-      - 800 x 600
-      - 1024 x 768
-      - 1280 x 1024
-      # - Test All Options
-    option_b:
       - Windowed
       - Fullscreen
       # - Test All Options
-    option_c:
+    option_b:
       - Basic
       - Low
       - Medium
       - High
       - Ultimate
       # - Test All Options
-    option_d:
+    option_c:
       - 1
       - 2
       - 3
@@ -247,7 +209,7 @@ phoronix-test-suite:
       - 7
       - 8
       # - Test All Options
-    option_e:
+    option_d:
       - Candela City [Approximately 400k triangles; advanced graphics]
       - Cocoa Temple [Approximately 300k triangles; advanced graphics]
       - Gran Paradiso Island [Approximately 275k triangles; advanced graphics]
@@ -268,41 +230,21 @@ phoronix-test-suite:
     # - ue4-mountains-1.1.0 # block by known issue
   - test: unigine-heaven-1.6.4
     option_a:
-      - 800 x 600
-      - 1024 x 768
-      - 1280 x 1024
-      # - Test All Options
-    option_b:
       - Fullscreen
       - Windowed
       # - Test All Options
   - test: unigine-sanctuary-1.6.4
     option_a:
-      - 800 x 600
-      - 1024 x 768
-      - 1280 x 1024
-      # - Test All Options
-    option_b:
       - Fullscreen
       - Windowed
       # - Test All Options
   - test: unigine-tropics-1.6.4
     option_a:
-      - 800 x 600
-      - 1024 x 768
-      - 1280 x 1024
-      # - Test All Options
-    option_b:
       - Fullscreen
       - Windowed
       # - Test All Options
   - test: unigine-valley-1.1.7
     option_a:
-      - 800 x 600
-      - 1024 x 768
-      - 1280 x 1024
-      # - Test All Options
-    option_b:
       - Fullscreen
       - Windowed
       # - Test All Options
