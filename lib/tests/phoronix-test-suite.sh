@@ -23,6 +23,16 @@ fixup_open_porous_media()
 	sed -i 's/nice mpirun -np/nice mpirun --allow-run-as-root -np/' "$target"
 }
 
+# only test max resolution for a tbox
+find_max_resolution()
+{
+	[ -n "$environment_directory" ] || return
+	local test=$1
+	local target=/usr/share/phoronix-test-suite/pts-core/objects/pts_test_run_options.php
+	sed -i "s,\$option_names\[\] = \$this_name,\$option_names\[0\] = \$this_name," "$target"
+	sed -i "s,\$option_values\[\] = \$this_value,\$option_values\[0\] = \$this_value," "$target"
+}
+
 # prepare download file beforehand
 # pls download http://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz and put it to
 # phoronix-rootfs/var/lib/phoronix-test-suite/installed-tests/pts/tensorflow-*/cifar10
@@ -308,9 +318,8 @@ fixup_gluxmark()
 	export DISPLAY=:0
 	# Choose
 	# 1: Windowed
-	# 2: 800 x 600
-	# 3: Fill-Rate
-	test_opt="\n2\n1\n1\nn"
+	# 2: Fill-Rate
+	test_opt="\n2\n1\nn"
 }
 
 fixup_java_gradle_perf()
@@ -631,11 +640,9 @@ run_test()
 			ignored_on_clear=1
 			;;
 		tesseract-*)
-			# Choose
-			# 1: 800 x 600
-			test_opt="\n1\nn"
 			export DISPLAY=:0
 			ignored_on_clear=1
+			find_max_resolution $test || die "failed to find max resolution for $test"
 			;;
 		smart-*)
 			# Choose 1st disk to get smart info
@@ -644,10 +651,8 @@ run_test()
 			fixup_smart || die "failed to fixup test smart"
 			;;
 		urbanterror-*)
-			# Choose
-			# 1: 800 x 600
-			test_opt="\n1\nn"
 			export DISPLAY=:0
+			find_max_resolution $test || die "failed to find max resolution for $test"
 			;;
 		hdparm-read-*)
 			# Choose
@@ -656,11 +661,11 @@ run_test()
 			;;
 		nexuiz-*)
 			# Choose
-			# 1: 800 x 600
+			# 1: Test All Options
 			# 2: Test All Options
-			# 3: Test All Options
-			test_opt="\n1\n3\n3\nn"
+			test_opt="\n3\n3\nn"
 			export DISPLAY=:0
+			find_max_resolution $test || die "failed to find max resolution for $test"
 			;;
 		plaidml-*)
 			# Choose
@@ -761,18 +766,19 @@ run_test()
 			;;
 		gluxmark-*)
 			fixup_gluxmark $test || die "failed to fixup gluxmark"
+			find_max_resolution $test || die "failed to find max resolution for $test"
 			;;
 		java-gradle-perf-*)
 			fixup_java_gradle_perf || die "failed to fixup java-gradle-perf"
 			;;
 		unigine-heaven-*|unigine-valley-*)
 			export DISPLAY=:0
-			# resolutino: 800X600
-			# full screen
-			test_opt="\n1\n1\nn"
+			test_opt="\n1\nn"
+			find_max_resolution $test || die "failed to find max resolution for $test"
 			;;
 		glmark2-*|openarena-*|gputest-*|supertuxkart-*)
 			export DISPLAY=:0
+			find_max_resolution $test || die "failed to find max resolution for $test"
 			;;
 		cairo-perf-trace-*)
 			# select Poppler
@@ -782,6 +788,9 @@ run_test()
 			# 7: Kernel Latency
 			# 4: Integer Compute INT # this subtest was disabled on Intel platform
 			test_opt="\n7\nn"
+			;;
+		apitest-*|et-*|etlegacy-*|etxreal-*|geexlab-*|paraview-*|unigine-sanctuary-*|unigine-tropics-*)
+			find_max_resolution $test || die "failed to find max resolution for $test"
 			;;
 	esac
 
