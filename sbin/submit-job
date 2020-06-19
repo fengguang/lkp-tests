@@ -5,7 +5,7 @@
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 CCI_LAB ||= ENV['CCI_LAB'] || 'sparrow'
 
-require "#{LKP_SRC}/lib/job"
+require "#{LKP_SRC}/lib/job2sh"
 require "#{LKP_SRC}/lib/scheduler_client"
 require 'optparse'
 require 'yaml'
@@ -42,15 +42,26 @@ end
 lab_path = "#{LKP_SRC}/labs/#{CCI_LAB}.yaml"
 
 ARGV.each do |jobfile|
-  jobs = Job.new
+  jobs = Job2sh.new
   jobs.load(jobfile, true) || next
   jobs.load_one_defaults(lab_path, jobs.to_hash)
   jobs.overrides = opt_set_key_value
   jobs.each_jobs do |job|
+    # get job shell function
+    sh_run_job = job.sh_run_job
+    sh_extract_stats = job.sh_extract_stats
+    sh_hash = {"job2sh" => {"run_job" => sh_run_job, "extract_stats" => sh_extract_stats}}
+    
+    # merge job info
     job_hash = job.to_hash
+    job_hash = job_hash.merge(sh_hash)
+
+    # init scheduler client 
     host = job_hash['SCHED_IP'] || '127.0.0.1'
     port = job_hash['SCHED_PORT'] || 3000
     scheduler_client = SchedulerClient.new(host, port)
+    
+    # submit job
     job_json = job_hash.to_json
     job_id = scheduler_client.submit_job(job_json)
     puts("succeeded submitting #{jobfile}, got job id = #{job_id}")

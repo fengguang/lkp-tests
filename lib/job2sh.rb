@@ -240,6 +240,7 @@ class Job2sh < Job
   def to_shell
     @script_lines = []
     @stats_lines = []
+    local_script_lines = []
 
     shell_header
 
@@ -256,6 +257,63 @@ class Job2sh < Job
     out_line "\t[ -n \"$LKP_SRC\" ] ||"
     out_line "\texport LKP_SRC=/lkp/${user:-lkp}/src"
     out_line "}\n\n"
+    local_script_lines += @script_lines
+
+    sh_run_job(job)
+    local_script_lines += @script_lines
+
+
+    sh_extract_stats(job)
+
+    out_line '"$@"'
+
+    local_script_lines + @script_lines
+  end
+
+  def sh_extract_stats(job = nil)
+    @script_lines = []
+    @stats_lines ||= []
+
+    @monitors = available_programs(:monitors)
+    @setups   = available_programs(:setup)
+    @programs = available_programs(:workload_elements)
+
+    if !job
+      job = (@jobx || @job).clone # a shallow copy so that delete_if won't impact @job
+    end
+
+    @cur_func = :extract_stats
+
+    out_line 'extract_stats()'
+    out_line '{'
+    ajob = @jobx || @job
+    out_line "\texport stats_part_begin=#{ajob['stats_part_begin']}"
+    out_line "\texport stats_part_end=#{ajob['stats_part_end']}"
+    out_line
+    @monitors = {}
+    @programs = available_programs(:stats)
+    parse_hash [], job
+    out_line
+    out_line @stats_lines
+    parse_hash [], YAML.load_file(LKP_SRC + '/etc/default_stats.yaml')
+    out_line "}\n\n"
+    @script_lines
+  end
+
+  def sh_run_job(job = nil)
+    @script_lines = []
+    @stats_lines ||= []
+
+    @monitors = available_programs(:monitors)
+    @setups   = available_programs(:setup)
+    @programs = available_programs(:workload_elements)
+    
+    if !job
+      job = (@jobx || @job).clone # a shallow copy so that delete_if won't impact @job
+      job.delete_if { |key, val| parse_one([], key, val, :PASS_EXPORT_ENV) }
+    end
+
+    @cur_func = :run_job
 
     out_line 'run_job()'
     out_line '{'
@@ -270,24 +328,6 @@ class Job2sh < Job
     out_line
     parse_hash [], job
     out_line "}\n\n"
-
-    @cur_func = :extract_stats
-    out_line 'extract_stats()'
-    out_line '{'
-    ajob = @jobx || @job
-    out_line "\texport stats_part_begin=#{ajob['stats_part_begin']}"
-    out_line "\texport stats_part_end=#{ajob['stats_part_end']}"
-    out_line
-    @monitors = {}
-    @programs = available_programs(:stats)
-    parse_hash [], job
-    out_line
-    out_line @stats_lines
-    parse_hash [], YAML.load_file(LKP_SRC + '/etc/default_stats.yaml')
-    out_line "}\n\n"
-
-    out_line '"$@"'
-
     @script_lines
   end
 end
