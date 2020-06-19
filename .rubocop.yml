@@ -1,5 +1,6 @@
 AllCops:
-  TargetRubyVersion: 2.3
+  TargetRubyVersion: 2.7
+  NewCops: enable
 
 Style/Documentation:
   Enabled: false
@@ -8,9 +9,6 @@ Style/FrozenStringLiteralComment:
   Enabled: false
 
 Style/SafeNavigation:
-  Enabled: false
-
-Layout/IndentFirstArrayElement:
   Enabled: false
 
 Layout/SpaceInsideHashLiteralBraces:
@@ -29,9 +27,6 @@ Style/CommandLiteral:
   Enabled: false
 
 Style/PercentLiteralDelimiters:
-  Enabled: false
-
-Metrics/LineLength:
   Enabled: false
 
 Metrics/MethodLength:
@@ -65,9 +60,6 @@ Security/Eval:
   Enabled: false
 
 Security/JSONLoad:
-  Enabled: false
-
-Layout/IndentHeredoc:
   Enabled: false
 
 Lint/ShadowingOuterLocalVariable:
