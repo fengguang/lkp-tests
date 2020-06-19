@@ -5,37 +5,31 @@
 #    mapping to a new package name, then the new package will be install later.
 
 # reason(3)
+binutils/unstable: binutils
 bsdtar: libarchive-tools
-
-# reason(3)
 btrfs-tools: btrfs-progs
-
-# reason(3)
-libmariadbclient-dev: libmariadb-dev-compat
-
-# reason(3)
-libmariadbclient18: libmariadb3
-
-# reason(3)
-libgcrypt-dev: libgcrypt20-dev
-
-# reason(3)
-libipsec-mb: libipsec-mb0
-
-#reason(3)
-libicu: libicu63
-
-#reason(3)
-libntfs: libntfs-3g883
-
-#reason(3)
-libtirpc: libtirpc3
-
-#reason(3)
+gcc: gcc-8
 libasan: libasan5
-
-#reason(3)
+libasan: libasan5
+libc-bin/unstable: libc-bin
+libc-dev-bin/unstable: libc-dev-bin
+libc6-dev/unstable: libc6-dev
+libc6/unstable: libc6
+libcc1-0/unstable: libcc1-0
+libdrm-dev/unstable: libdrm-dev
+libgcc-6-dev: libgcc-8-dev
+libgcrypt-dev: libgcrypt20-dev
+libicu: libicu63
+libipsec-mb: libipsec-mb0
+libmariadbclient-dev: libmariadb-dev-compat
+libmariadbclient18: libmariadb3
+libmpx2/unstable: libmpx2
+libmpx2/unstable: libmpx2
+libntfs: libntfs-3g883
 libperl5: libperl5.28
-
-reason(3)
+libquadmath0/unstable: libquadmath0
+libtirpc: libtirpc3
 perl-modules-5: perl-modules-5.28
+python3-mako/unstable: python3-mako
+python3-markupsafe/unstable: python3-markupsafe
+python3-numpy/unstable: python3-numpy
