@@ -1,0 +1,12 @@
+---
+nr_threads: 200%
+iterations: 100x
+task:
+  iterations: 1
+  task2:
+    ebizzy:
+      duration: 10s
+      iterations: 2
+    fwq:
+fsmark:
+  nr_threads: 100%

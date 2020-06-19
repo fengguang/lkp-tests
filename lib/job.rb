@@ -437,6 +437,51 @@ class Job
     end
   end
 
+  # program_args: hash for program name and program_name's args
+  # program_name: string for program's name
+  # option : string for one of program_name's arg
+  def get_program_option_value(program_args, program_name, option, option_value=nil)
+    unless program_args.is_a?(Hash)
+      return option_value
+    end
+    if program_args.has_key?(option)
+      option_value = program_args[option]
+    end
+    if program_args.has_key?(program_name)
+      p_args = program_args[program_name]
+      if p_args.is_a?(Hash)
+        if p_args.has_key?(option)
+          option_value = p_args[option]
+        end
+      end
+      return option_value
+    else
+      program_args.each do |name, args|
+        next if @referenced_programs.include?(name) and not name.eql?(program_name)
+        next if name.eql?("pp")
+        option_value = get_program_option_value(args, program_name, option, option_value)
+      end
+    end
+    return option_value
+  end
+
+  def add_pp()
+    @job["pp"] = Hash.new()
+    init_program_options()
+    @referenced_programs.each do |program_name, options_hash|
+      if @job.has_key?(program_name) and not @job[program_name].is_a?(Hash)
+        @job["pp"][program_name] = @job[program_name]
+        next
+      end
+      @job["pp"][program_name] = Hash.new()
+      options_array = options_hash.keys
+      options_array.each do |option|
+        option_value = get_program_option_value(@job, program_name, option)
+        @job["pp"][program_name][option] = option_value unless option_value.nil?
+      end
+    end
+  end
+
   def each_job_init
     init_program_options
     @dims_to_expand = Set.new EXPAND_DIMS
