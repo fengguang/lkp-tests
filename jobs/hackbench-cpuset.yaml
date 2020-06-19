@@ -8,6 +8,7 @@ cgroup:
   cpuset.cpus: 0-$((nr_cpu-1))
 
 nr_threads: 1600%
+iterations: 10
 
 hackbench:
   mode:
