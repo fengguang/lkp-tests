@@ -13,6 +13,7 @@ mkdir -p $lkp_dir
 cp $job_yaml $lkp_dir
 $LKP_SRC/sbin/job2sh $job_yaml -o $lkp_dir/${job_name%.yaml}.sh
 
+cp $lkp_dir/${job_name%.yaml}.sh $(dirname $(realpath $job_yaml))/
 cd $tmp_dir
 find lkp | cpio --quiet -o -H newc | gzip > $out_cgz
 
