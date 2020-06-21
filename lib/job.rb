@@ -323,6 +323,12 @@ class Job
     @jobx = job
     expand_params(false)
     @jobx = nil
+
+    Dir.glob(["/etc/crystal-ci/defaults/*.yaml",
+              "ENV['HOME']/.config/crystal-ci/defaults/*.yaml"]).each do |file|
+      load_one_defaults(file, job)
+    end
+
     for_each_in(job, i.keys) do |_pk, _h, k, v|
       job['___'] = v
 
