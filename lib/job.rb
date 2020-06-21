@@ -280,6 +280,8 @@ class Job
   end
 
   def load_one_defaults(file, job)
+    return nil unless file
+    return nil if @file_loaded.include?(file)
     return nil unless File.exist? file
 
     context_hash = deepcopy(@defaults)
@@ -294,6 +296,7 @@ class Job
       @defaults[source_file_symkey(file)] = nil
       revise_hash(@defaults, defaults, true)
     end
+    @file_loaded[file] = true
     true
   end
 
@@ -324,13 +327,7 @@ class Job
       job['___'] = v
 
       load_one = lambda do |f|
-        file = i[k][f]
-        break unless file
-        break if @file_loaded.include?(file)
-
-        break unless load_one_defaults(file, job)
-
-        @file_loaded[file] = true
+        load_one_defaults(i[k][f], job)
       end
 
       if @referenced_programs.include?(k) && i.include?(k)
