@@ -3,7 +3,6 @@
 # frozen_string_literal: true
 
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
-CCI_LAB ||= ENV['CCI_LAB'] || 'sparrow'
 
 require "#{LKP_SRC}/lib/job2sh"
 require "#{LKP_SRC}/lib/scheduler_client"
@@ -39,12 +38,9 @@ if ARGV.size.zero?
   exit
 end
 
-lab_path = "#{LKP_SRC}/labs/#{CCI_LAB}.yaml"
-
 ARGV.each do |jobfile|
   jobs = Job2sh.new
   jobs.load(jobfile, true) || next
-  jobs.load_one_defaults(lab_path, jobs.to_hash)
   jobs.overrides = opt_set_key_value
   jobs.each_jobs do |job|
     # get job shell function
