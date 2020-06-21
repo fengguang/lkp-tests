@@ -324,14 +324,13 @@ class Job
       job['___'] = v
 
       load_one = lambda do |f|
-        break unless i[k][f]
-        break if @file_loaded.include?(k) &&
-                 @file_loaded[k].include?(f)
+        file = i[k][f]
+        break unless file
+        break if @file_loaded.include?(file)
 
-        break unless load_one_defaults(i[k][f], job)
+        break unless load_one_defaults(file, job)
 
-        @file_loaded[k]  ||= {}
-        @file_loaded[k][f] = true
+        @file_loaded[file] = true
       end
 
       if @referenced_programs.include?(k) && i.include?(k)
