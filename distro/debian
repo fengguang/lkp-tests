@@ -220,7 +220,6 @@ fixup_distro_mirror()
 	# debconf: (TERM is not set, so the dialog frontend is not usable.)
 	export DEBIAN_FRONTEND=noninteractive
 	# echo "deb http://mirrors.163.com/debian jessie main" >> /etc/apt/sources.list
-	echo "deb http://linux-ftp.sh.intel.com/pub/mirrors/debian jessie main" >> /etc/apt/sources.list
 }
 
 fixup_preinstall()
