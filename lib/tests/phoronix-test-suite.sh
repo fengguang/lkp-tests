@@ -411,6 +411,13 @@ fixup_dolfyn_install()
 	sed -i "4a sed -i \"s/stop'bug:/stop 'bug:/g\" gmsh2dolfyn.f90" "$target"
 }
 
+fixup_build_eigen_install()
+{
+	local test=$1
+	local target=/var/lib/phoronix-test-suite/test-profiles/pts/${test}/install.sh
+	sed -i 's,\${CXX},\\${CXX},' "$target"
+}
+
 fixup_interbench()
 {
 	[ -n "$environment_directory" ] || return
@@ -543,6 +550,10 @@ fixup_install()
 	lammps-*)
 		# fix issue: pointers.h:24:10: fatal error: mpi.h: No such file or directory
 		fixup_lammps_install $test || die "failed to fixup lammps install"
+		;;
+	build-eigen-*)
+		# fix issue: ./build-eigen: line 8: -DEIGEN2_SUPPORT=: command not found
+		fixup_build_eigen_install $test || die "failed to fixup $test install"
 		;;
 	x264-opencl-*)
 		fixup_x264_opencl_install $test || die "failed to fixup x264-opencl install"
