@@ -1,6 +1,5 @@
 build-essential
-python-simplejson
-cgroup-bin
+python3-simplejson
 cgroup-tools
 libtool
 apt-file
@@ -14,7 +13,7 @@ automake
 gfortran
 sysstat
 net-tools
-python-pkg-resources
+python3-pkg-resources
 psmisc
 runc/unstable
 needrestart/unstable
@@ -26,13 +25,13 @@ lvm2
 libmodule-build-perl
 libexpat1-dev
 pkg-config
-python2.7
+python3
 pax
 libiberty-dev
 binutils-dev
-python-pexpect
+python3-pexpect
 nmap
-python-libvirt
+python3-libvirt
 libvirt-clients
 libvirt-daemon
 libvirt-daemon-system
