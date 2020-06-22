@@ -13,7 +13,7 @@ phoronix-test-suite:
     - aom-av1-1.2.0
     - apache-1.7.2
   - test: apache-siege-1.0.2
-    option_a:
+    option_a: # cocurrent users
       - 1
       - 10
       - 50
@@ -150,7 +150,7 @@ phoronix-test-suite:
       - Summer Nature 4K
       # - Test All Options
   - test: dbench-1.0.0
-    option_a:
+    option_a: # client count
       - 1
       - 6
       - 12
@@ -292,7 +292,7 @@ phoronix-test-suite:
       - Swirl
       # - Test All Options
   - test: hackbench-1.0.0
-    option_a:
+    option_a: # group count
       - 1
       - 2
       - 4
@@ -449,7 +449,7 @@ phoronix-test-suite:
       - 5 # 1GB Array, 256 Byte Stride, 4 Threads
       # - Test All Options
   - test: mysqlslap-1.0.6
-    option_a:
+    option_a: # clients
       - 1
       - 4
       - 8
@@ -502,7 +502,7 @@ phoronix-test-suite:
       - Flow MPI Norne
       - Flow MPI Extra
       # - Test All Options
-    option_b:
+    option_b: # threads
       - 1
       - 2
       - 4
@@ -646,7 +646,7 @@ phoronix-test-suite:
     - rust-prime-1.0.0
     - sample-program-1.1.1
   - test: schbench-1.0.0
-    option_a:
+    option_a: # message threads
       - 2
       - 4
       - 6
@@ -654,7 +654,7 @@ phoronix-test-suite:
       - 16
       - 32
       # - Test All Options
-    option_b:
+    option_b: # workers per message thread
       - 2
       - 4
       - 6
@@ -685,7 +685,7 @@ phoronix-test-suite:
       - Throughput
       # - Test All Options
   - test: sqlite-2.1.0
-    option_a:
+    option_a: # threads per copy
       - 1
       - 8
       - 32
@@ -813,7 +813,7 @@ phoronix-test-suite:
       # - 128MB
       # - 256MB
       # - Test All Options
-    option_c:
+    option_c: # thread count
       - 4
       - 8
       # - 16
