@@ -19,6 +19,7 @@
 # - numa_mem_policy
 # - numa_cpu_nodes
 # - pre_read
+# - rwmixread
 
 . $LKP_SRC/lib/common.sh
 . $LKP_SRC/lib/unit.sh
@@ -88,6 +89,8 @@ $create_task
 time_based
 "
 fi
+
+[ -n "$rwmixread" ] && rwmixread_setup="rwmixread=$rwmixread"
 
 parse_numa_mem_policy()
 {
@@ -160,6 +163,7 @@ $create_task
 rw=$rw
 $storage_setup
 numjobs=$jobs_per_storage
+$rwmixread_setup
 $(__numa_mem_policy $no)
 $(__numa_cpu_nodes $no)
 "
