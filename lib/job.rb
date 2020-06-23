@@ -325,7 +325,7 @@ class Job
     @jobx = nil
 
     Dir.glob(["/etc/crystal-ci/defaults/*.yaml",
-              "ENV['HOME']/.config/crystal-ci/defaults/*.yaml"]).each do |file|
+              "#{ENV['HOME']}/.config/crystal-ci/defaults/*.yaml"]).each do |file|
       load_one_defaults(file, job)
     end
 
