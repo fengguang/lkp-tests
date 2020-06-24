@@ -278,12 +278,17 @@ setup_crosstool_clang()
 		return 1
 	}
 
-	local opt_ldd="LD=$(dirname $cross_clang)/ld.lld"
-	local opt_readelf="READELF=$(dirname $cross_clang)/llvm-readelf"
+	local cross_clang_path=$(dirname $cross_clang)
+	local opt_ldd="LD=${cross_clang_path}/ld.lld HOSTLD=${cross_clang_path}/ld.lld"
 	[[ $ARCH =~ arm ]] &&
 		grep -q 'CONFIG_CPU_BIG_ENDIAN=y' .config && opt_ldd=
 
-	opt_cross="HOSTCC=$cross_clang CC=$cross_clang $opt_ldd $opt_readelf"
+	# https://www.kernel.org/doc/html/latest/kbuild/llvm.html
+	opt_cross="HOSTCC=$cross_clang CC=$cross_clang $opt_ldd \
+		AR=${cross_clang_path}/llvm-ar NM=${cross_clang_path}/llvm-nm \
+		STRIP=${cross_clang_path}/llvm-strip OBJDUMP=${cross_clang_path}/llvm-objdump \
+		OBJSIZE=${cross_clang_path}/llvm-size READELF=${cross_clang_path}/llvm-readelf \
+		HOSTCXX=${cross_clang_path}/clang++ HOSTAR=${cross_clang_path}/llvm-ar"
 	if [[ $ARCH = "arm64" ]]; then
 		opt_cross="$opt_cross CROSS_COMPILE=aarch64-linux-gnu-"
 	elif [[ $ARCH = "arm" ]]; then
