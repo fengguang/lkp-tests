@@ -58,7 +58,7 @@ class Job
             next if path =~ /\.[0-9]+$/
 
             unless File.executable?(path)
-                puts "skip non-executable #{path}"
+                puts "skip non-executable #{path}" unless path =~ /\.cr$/
                 next
             end
 

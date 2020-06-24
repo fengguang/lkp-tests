@@ -94,7 +94,7 @@ def __create_programs_hash(glob, lkp_src)
     next if path =~ /\.[0-9]+$/
 
     unless File.executable?(path)
-      log_warn "skip non-executable #{path}"
+      log_warn "skip non-executable #{path}" unless path =~ /\.cr$/
       next
     end
     file = File.basename(path)
