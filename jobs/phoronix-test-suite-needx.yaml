@@ -140,12 +140,12 @@ phoronix-test-suite:
       # - Test All Options
   - test: nexuiz-1.6.1
     option_a:
-      - Yes
-      - No
+      - 'Yes'
+      - 'No'
       # - Test All Options
     option_b:
-      - On
-      - Off
+      - 'On'
+      - 'Off'
       # - Test All Options
   - test:
     # - octanebench-1.1.2 # need CUDA compatible hardware
