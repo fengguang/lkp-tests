@@ -55,17 +55,17 @@ ARGV.each do |jobfile|
     # get job shell function
     sh_run_job = job.sh_run_job
     sh_extract_stats = job.sh_extract_stats
-    sh_hash = {"job2sh" => {"run_job" => sh_run_job, "extract_stats" => sh_extract_stats}}
-    
+    sh_hash = {'job2sh' => {'run_job' => sh_run_job, 'extract_stats' => sh_extract_stats}}
+
     # merge job info
     job_hash = job.to_hash
     job_hash = job_hash.merge(sh_hash)
 
-    # init scheduler client 
+    # init scheduler client
     host = job_hash['SCHED_IP'] || '127.0.0.1'
     port = job_hash['SCHED_PORT'] || 3000
     scheduler_client = SchedulerClient.new(host, port)
-    
+
     # submit job
     job_json = job_hash.to_json
     job_id = scheduler_client.submit_job(job_json)
