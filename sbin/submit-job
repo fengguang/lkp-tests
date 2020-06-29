@@ -5,6 +5,7 @@
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
 require "#{LKP_SRC}/lib/job2sh"
+require "#{LKP_SRC}/lib/distro_info"
 require "#{LKP_SRC}/lib/scheduler_client"
 require 'optparse'
 require 'yaml'
@@ -38,11 +39,19 @@ if ARGV.size.zero?
   exit
 end
 
+distroinfo = LKP::DistroInfo.instance
+
 ARGV.each do |jobfile|
   jobs = Job2sh.new
   jobs.load(jobfile, true) || next
   jobs.overrides = opt_set_key_value
+  jobs['testbox'] = opt_set_key_value['testbox'] if opt_set_key_value['testbox']
+  jobs['arch'] ||= distroinfo.systemarch
+  jobs['tbox_group'] = tbox_group(jobs['testbox'])
+  jobs['node_roles'] ||= 'server client' if jobs['cluster']
   jobs.each_jobs do |job|
+    job.add_pp
+
     # get job shell function
     sh_run_job = job.sh_run_job
     sh_extract_stats = job.sh_extract_stats
