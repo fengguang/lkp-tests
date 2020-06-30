@@ -117,9 +117,7 @@ def output_interval(prev_time, time)
 
   $interval_results_sum.clear
   $interval_results_nr.clear
-  unless $interval_metrics_val.empty?
-    $interval_metrics_val.clear
-  end
+  $interval_metrics_val.clear unless $interval_metrics_val.empty?
 end
 
 # Example output
@@ -176,9 +174,7 @@ def parse
 
     # for unit
     # 7928832,Bytes,llc_misses.mem_read,8005538025,100.00,,
-    if fields[1] == 'Bytes'
-      unit = fields[1]
-    end
+    unit = fields[1] if fields[1] == 'Bytes'
 
     # 10.072447351 43181  context-switches 16105112423 100.00 0.003 M/sec
     # 1.017184940,8778,,context-switches,16689586072,100.00,0.526,K/sec
@@ -214,9 +210,7 @@ def parse
       $interval_results_sum[socket_key] += value
       $interval_results_nr[socket_key] += 1
     end
-    if metric_key
-      $interval_metrics_val[metric_key] += metric_val
-    end
+    $interval_metrics_val[metric_key] += metric_val if metric_key
   end
 
   # total time

@@ -85,9 +85,7 @@ def usage
 end
 
 def main
-  if ARGV.length > 2 || ARGV.empty?
-    usage
-  end
+  usage if ARGV.length > 2 || ARGV.empty?
   mc = MatrixCalculator.new(ARGV.first)
   operations = if ARGV.length > 1
                  ARGV[1]
