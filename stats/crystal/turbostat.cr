@@ -5,7 +5,7 @@ while (line = STDIN.gets)
 
   titles = line.split
   values = STDIN.gets.not_nil!.split("")
-  titles[titles.size - values.size..-1].each_with_index do |title, i|
+  titles[titles.size - values.size..].each_with_index do |title, i|
     next if values[i].includes? "*"
     next if values[i] == "-"
 

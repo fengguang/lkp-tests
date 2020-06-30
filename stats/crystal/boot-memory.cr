@@ -22,7 +22,7 @@ freed = 0
 
 File.each_line("#{RESULT_ROOT}/kmsg") do |line|
   case line
-  when /^(\[[0-9\. ]+\] )?Memory: (\d+)k\/(\d+)k available \((\d+)k kernel code, (\d+)k reserved, (\d+)k data, (\d+)k init(, (\d+)k highmem)?/
+  when /^(\[[0-9. ]+\] )?Memory: (\d+)k\/(\d+)k available \((\d+)k kernel code, (\d+)k reserved, (\d+)k data, (\d+)k init(, (\d+)k highmem)?/
     puts "free: " + $2
     puts "phys: " + $3
     puts "code: " + $4
@@ -30,7 +30,7 @@ File.each_line("#{RESULT_ROOT}/kmsg") do |line|
     puts "data: " + $6
     puts "init: " + $7
     puts "highmem: " + $9 if $8
-  when /^(\[[0-9\. ]+\] )?Memory: (\d+)k\/(\d+)k available \((\d+)k kernel code, (\d+)k absent, (\d+)k reserved, (\d+)k data, (\d+)k init/
+  when /^(\[[0-9. ]+\] )?Memory: (\d+)k\/(\d+)k available \((\d+)k kernel code, (\d+)k absent, (\d+)k reserved, (\d+)k data, (\d+)k init/
     puts "free: " + $2
     puts "phys: " + $3
     puts "code: " + $4
@@ -38,7 +38,7 @@ File.each_line("#{RESULT_ROOT}/kmsg") do |line|
     puts "reserved: " + $6
     puts "data: " + $7
     puts "init: " + $8
-  when /^(\[[0-9\. ]+\] )?Memory: (\d+)K\/(\d+)K available \((\d+)K kernel code, (\d+)K rwdata, (\d+)K rodata, (\d+)K init, (\d+)K bss, (\d+)K reserved(, (\d+)K highmem)?/
+  when /^(\[[0-9. ]+\] )?Memory: (\d+)K\/(\d+)K available \((\d+)K kernel code, (\d+)K rwdata, (\d+)K rodata, (\d+)K init, (\d+)K bss, (\d+)K reserved(, (\d+)K highmem)?/
     puts "free: " + $2
     puts "phys: " + $3
     puts "code: " + $4
@@ -48,9 +48,9 @@ File.each_line("#{RESULT_ROOT}/kmsg") do |line|
     puts "bss: " + $8
     puts "reserved: " + $9
     puts "highmem: " + $11 if $10
-  when /^(\[[0-9\. ]+\] )?Freeing .* memory: (\d+)K /
+  when /^(\[[0-9. ]+\] )?Freeing .* memory: (\d+)K /
     freed += $2.to_i
-  when /^(\[[0-9\. ]+\] )?Freeing .*: (\d+)k freed$/
+  when /^(\[[0-9. ]+\] )?Freeing .*: (\d+)k freed$/
     freed += $2.to_i
   end
 end

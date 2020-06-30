@@ -10,7 +10,7 @@ keys = {
   "GB_total" => "GB,\\s*data-total",
   "nsecs_byte_thread" => "nsecs,\\s*runtime/byte/thread",
   "GB_sec_thread" => "GB/sec,\\s*thread-speed",
-  "GB_sec_total" => "GB/sec,\\s*total-speed",
+  "GB_sec_total" => "GB/sec,\\s*total-speed"
 }
 
 while (line = STDIN.gets)

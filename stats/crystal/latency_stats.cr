@@ -16,7 +16,7 @@ STDIN.each_line do |line|
     next
   when /[0-9]+ [0-9]+ [0-9]+ [a-zA-Z]+/
     values = line.gsub(/\.(isra|constprop|part)\.[0-9]+/, "").split
-    funcs = values[3..-1].join(".")
+    funcs = values[3..].join(".")
     hits[funcs] += values[0].to_i
     sum[funcs] += values[1].to_i
     max[funcs] = [values[2].to_i, max[funcs]].max

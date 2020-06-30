@@ -8,7 +8,7 @@ while (line = STDIN.gets)
   case line
   when /^[0-9. ]+$/
     data = line.split
-    data[2..-1].each_with_index do |v, i|
+    data[2..].each_with_index do |v, i|
       puts "#{keys[i]}: #{v}"
     end
     exit

@@ -17,7 +17,7 @@ STDIN.each_line do |line|
   next if data.size != keys.size + 3
 
   dev_name = data[2]
-  data[3..-1].each_with_index do |v, i|
+  data[3..].each_with_index do |v, i|
     puts keys[i] + "." + dev_name + ": " + v
   end
 end

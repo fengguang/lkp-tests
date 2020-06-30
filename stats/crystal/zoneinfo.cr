@@ -30,7 +30,9 @@ while (line = STDIN.gets)
   when /cpu:\s*([0-9]+)/
     cpu = $1
     (1..4).each do |_i|
-      puts "node#{node}.#{zone}.pagesets.cpu#{cpu}.#{$1.tr(" ", "_")}: #{$2}" if STDIN.gets =~ /\s*([a-zA-Z].*):\s*([0-9]+)/
+      if STDIN.gets =~ /\s*([a-zA-Z].*):\s*([0-9]+)/
+        puts "node#{node}.#{zone}.pagesets.cpu#{cpu}.#{$1.tr(" ", "_")}: #{$2}"
+      end
     end
     tag = ""
   when /pages free\s*([0-9]+)/

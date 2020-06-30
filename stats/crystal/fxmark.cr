@@ -13,9 +13,9 @@ name = Nil
 while (line = STDIN.gets)
   case line
   when /^## (hdd|ssd|nvme|mem)(.*)/
-    name = line[3..-1].tr(":", "_")
+    name = line[3..].tr(":", "_")
   when /^# ncpu/
-    subname = line[2..-1].tr(".", "_").split
+    subname = line[2..].tr(".", "_").split
 
     datas = STDIN.gets
     break unless datas

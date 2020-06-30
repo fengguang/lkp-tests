@@ -15,7 +15,7 @@ while (line = STDIN.gets)
   when /^Total/
     parts = line.split
     totalqps = parts[3].to_f
-    totalqpstotal = parts[4][1..-1].to_f
+    totalqpstotal = parts[4][1..].to_f
     totalqpstime = parts[6].to_f
     puts "totalqps: #{totalqps}"
     puts "totalqps.total: #{totalqpstotal}"

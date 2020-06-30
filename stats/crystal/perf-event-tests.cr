@@ -4,9 +4,9 @@ stats = Hash(String, String).new
 item = nil
 while (line = STDIN.gets)
   case line
-  when /^[ ]+\+ \S+\/(\S+)$/
+  when /^ +\+ \S+\/(\S+)$/
     item = $1
-  when /\.\.\.[ ]+([\S\s]+)$/
+  when /\.\.\. +([\S\s]+)$/
     stats[item] = $1.strip.to_s.tr(" ", "_").downcase if item
   when /^(ignored_by_lkp)\s+(.*)\s+/
     stats[$2] = $1

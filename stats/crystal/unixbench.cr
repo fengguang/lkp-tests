@@ -25,7 +25,7 @@ while (line = STDIN.gets)
       lines = line.split
       throughput = lines[-2].to_f
     end
-  when /^System Benchmarks Index Score .* ([0-9\.]+)$/
+  when /^System Benchmarks Index Score .* ([0-9.]+)$/
     score = $1
   end
 end

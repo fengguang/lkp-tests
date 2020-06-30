@@ -16,7 +16,7 @@ end
 
 def extract_avg_cpu(line)
   # remove heading avg-cpu item
-  title = line.split[1..-1]
+  title = line.split[1..]
 
   return unless (line = STDIN.gets)
 

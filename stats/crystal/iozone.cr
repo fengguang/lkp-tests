@@ -13,11 +13,11 @@ while (line = STDIN.gets)
   data = line.split
   data.each_index do |i|
     if data[i].size > 8
-      data.insert i + 1, data[i][-8..-1]
+      data.insert i + 1, data[i][-8..]
       data[i] = data[i][0..-9]
     end
   end
-  data[2..-1].each_with_index do |v, i|
+  data[2..].each_with_index do |v, i|
     puts data[0] + "KB_" + data[1] + "reclen." + keys[i] + ": " + v
     per_io_type[keys[i]] ||= 0
     per_io_type[keys[i]] += v.to_i

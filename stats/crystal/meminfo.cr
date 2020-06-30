@@ -15,7 +15,7 @@ STDIN.each_line do |line|
     puts "#{key}: #{value}"
     mtotal ||= value if key == "MemTotal"
     if key == "MemFree"
-      mused << mtotal - value if !mtotal.nil?
+      mused << mtotal - value unless mtotal.nil?
       munit ||= unit
       puts "Memused: #{mused.last}"
     end

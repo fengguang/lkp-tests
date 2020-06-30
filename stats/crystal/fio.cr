@@ -21,7 +21,7 @@ unless idx
   log_error "#{fn}: maybe it is not a json format file"
   exit
 end
-contents = contents[idx..-1] # contents should start with '{'
+contents = contents[idx..] # contents should start with '{'
 res = JSON.parse(contents)
 unless res
   log_error "Invalid/empty fio output"

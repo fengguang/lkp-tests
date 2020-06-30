@@ -20,7 +20,7 @@ def stat_line(line, results)
 end
 
 while (line = STDIN.gets)
-  line = line.remediate_invalid_byte_sequence() unless line.valid_encoding?
+  line = line.remediate_invalid_byte_sequence unless line.valid_encoding?
   stat_line(line, results)
 end
 

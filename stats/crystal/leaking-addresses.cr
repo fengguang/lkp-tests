@@ -7,7 +7,7 @@ while (line = STDIN.gets)
   case line
   when /Total number of results.*: (.*)/
     total_number = $1
-  when /^\[ +([\d\.]+)\](.*)/
+  when /^\[ +([\d.]+)\](.*)/
     results["dmesg." + $2.sub(/\b(0x)?ffff[[:xdigit:]]{12}\b/, "").delete(" ")] = 1
     leaking_number += 1
   when /^\[\d+ ([^\]]+)\](.*)/

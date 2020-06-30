@@ -31,15 +31,15 @@ results = Hash(String, Float64).new
 output = false
 key = ""
 STDIN.each_line do |line|
-  line = line.strip()
+  line = line.strip
   case line
   when /^Hyper-Threading IS/
     output = true
   when output && /^numa/
-    key = "#{line}"
+    key = line.to_s
   when output && /\d+.\d+/ && key.empty?
     results[key] = line.to_f
   end
 end
 
-results.each { |key, value| puts "#{key}.seconds: #{value}" } if !results.empty?
+results.each { |key, value| puts "#{key}.seconds: #{value}" } unless results.empty?
