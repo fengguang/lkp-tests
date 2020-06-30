@@ -1,8 +1,8 @@
 #!/usr/bin/env crystal
 
 keys = %w(transactions files_created creation_alone creation_mixed_trans
-  files_read files_appended files_deleted deletion_alone
-  deletion_mixed_trans data_read data_written)
+          files_read files_appended files_deleted deletion_alone
+          deletion_mixed_trans data_read data_written)
 
 while (line = STDIN.gets)
   case line

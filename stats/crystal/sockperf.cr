@@ -1,6 +1,6 @@
 #!/usr/bin/env crystal
 
-sockperf = Hash(String,String).new
+sockperf = Hash(String, String).new
 subcommand = "unknown_subcommand"
 protocol = "unknown_protocol"
 while (line = STDIN.gets)

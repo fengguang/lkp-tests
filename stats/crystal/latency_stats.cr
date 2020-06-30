@@ -1,14 +1,14 @@
 #!/usr/bin/env crystal
 
-#hits = Hash.new { |hash, key| hash[key] = 0 }
-#sum = Hash.new { |hash, key| hash[key] = 0 }
-#max = Hash.new { |hash, key| hash[key] = 0 }
-#top = Hash.new { |hash, key| hash[key] = 0 }
+# hits = Hash.new { |hash, key| hash[key] = 0 }
+# sum = Hash.new { |hash, key| hash[key] = 0 }
+# max = Hash.new { |hash, key| hash[key] = 0 }
+# top = Hash.new { |hash, key| hash[key] = 0 }
 
-hits = Hash(String,Int32).new(0)
-sum = Hash(String,Int32).new(0)
-max = Hash(String,Int32).new(0)
-top = Hash(String,Int32|Float64).new(0)
+hits = Hash(String, Int32).new(0)
+sum = Hash(String, Int32).new(0)
+max = Hash(String, Int32).new(0)
+top = Hash(String, Int32 | Float64).new(0)
 
 STDIN.each_line do |line|
   case line

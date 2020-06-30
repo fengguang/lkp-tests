@@ -1,6 +1,5 @@
 #!/usr/bin/env crystal
 
-
 require "../../lib/log"
 
 while (line = STDIN.gets)

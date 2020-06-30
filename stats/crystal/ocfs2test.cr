@@ -1,7 +1,7 @@
 #!/usr/bin/env crystal
 
 stats = [""]
-case_name=""
+case_name = ""
 while (line = STDIN.gets)
   case line
   when /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} ([^\(\)]+)$/

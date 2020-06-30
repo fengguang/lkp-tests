@@ -1,6 +1,5 @@
 #!/usr/bin/env crystal
 
-
 require "../../lib/string_ext"
 
 while (line = STDIN.gets)

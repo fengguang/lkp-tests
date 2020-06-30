@@ -1,6 +1,5 @@
 #!/usr/bin/env crystal
 
-
 require "../../lib/log"
 require "../../lib/string_ext"
 
@@ -12,7 +11,7 @@ end
 
 while (line = STDIN.gets)
   line = line.remediate_invalid_byte_sequence(replace: "_") unless line.valid_encoding?
-  line =line.to_s
+  line = line.to_s
 # cut the left we don't care
   break if line =~ /run time:/
 

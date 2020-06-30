@@ -1,6 +1,5 @@
 #!/usr/bin/env crystal
 
-
 require "../../lib/string_ext"
 
 keys = %w(read_ios read_merges read_sectors read_ticks

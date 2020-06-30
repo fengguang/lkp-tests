@@ -1,6 +1,5 @@
 #!/usr/bin/env crystal
 
-
 require "../../lib/string_ext"
 
 results = Hash(String, Array(String)).new

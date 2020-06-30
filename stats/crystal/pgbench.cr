@@ -1,6 +1,5 @@
 #!/usr/bin/env crystal
 
-
 while (line = STDIN.gets)
   case line
   when /number of transactions actually processed: (\d+)/

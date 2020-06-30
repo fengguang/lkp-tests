@@ -1,6 +1,6 @@
 #!/usr/bin/env crystal
 
-#example input:
+# example input:
 # Hyper-Threading IS enabled.
 # numa01
 # 181.85
@@ -29,13 +29,13 @@
 
 results = Hash(String, Float64).new
 output = false
-key = "" 
+key = ""
 STDIN.each_line do |line|
   line = line.strip()
   case line
   when /^Hyper-Threading IS/
     output = true
-  when output && /^numa/ 
+  when output && /^numa/
     key = "#{line}"
   when output && /\d+.\d+/ && key.empty?
     results[key] = line.to_f

@@ -54,7 +54,7 @@ avg_throughput = throughput / num
 throughput /= iterations if iterations > 0
 
 workload = throughput * time
-workload = workload * 10 ** 6 / 8.0 / pkt_size if unit == "Mbps"
+workload = workload * 10**6 / 8.0 / pkt_size if unit == "Mbps"
 puts "Throughput_" + unit + ": " + avg_throughput.to_s
 puts "Throughput_total_" + unit + ": " + throughput.to_s
 puts "workload: " + workload.to_s

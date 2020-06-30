@@ -1,6 +1,5 @@
 #!/usr/bin/env crystal
 
-
 require "../../lib/string_ext"
 
 while (line = STDIN.gets)
@@ -25,7 +24,7 @@ while (line = STDIN.gets)
   when /queries:\s+(\d+)\s+\(([\d.]+) per sec.\)/
     puts "queries: " + $1
     puts "queries/s: " + $2
-    #Latency (ms):
+    # Latency (ms):
     #     min:                                    0.90
     #     avg:                                    1.78
     #     max:                                   57.61
@@ -41,7 +40,7 @@ while (line = STDIN.gets)
     puts "latency_95th_ms: " + $1
   when /sum:\s+([\d.]+)/
     puts "latency_sum_ms: " + $1
-    #Threads fairness:
+    # Threads fairness:
     #  events (avg/stddev):           33716.7500/24.71
     #  execution time (avg/stddev):   59.9486/0.01
   when /events \(avg\/stddev\):\s+([\d.]+)\/([\d.]+)/

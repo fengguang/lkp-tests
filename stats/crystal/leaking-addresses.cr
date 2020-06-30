@@ -1,6 +1,6 @@
 #!/usr/bin/env crystal
 
-results=Hash(String, String | Int32).new
+results = Hash(String, String | Int32).new
 leaking_number = 0
 
 while (line = STDIN.gets)

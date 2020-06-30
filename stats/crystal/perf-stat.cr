@@ -30,6 +30,7 @@ def calc_addon_keys(results_sum, results_nr, interval, interval_nr, prefix)
         break
       end
       next if value.zero?
+
       if key =~ /(.*)iTLB-load-misses/
         stem = $1
         instructions = results_sum[stem + "instructions"]
@@ -195,6 +196,6 @@ unless instructions.zero?
 end
 
 calc_addon_keys(global_results_sum,
-global_results_nr,
-global_run_time,
-global_interval_nr, "overall.")
+                global_results_nr,
+                global_run_time,
+                global_interval_nr, "overall.")

@@ -14,5 +14,5 @@ while (line = STDIN.gets)
 end
 
 stats.each do |k, v|
-  puts  "#{k}." + v + ": 1"
+  puts "#{k}." + v + ": 1"
 end

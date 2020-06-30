@@ -8,17 +8,17 @@ require "time"
 #  0  0      0 224752  33636 6760180    0    0     0     4  753 2187  2  1 98  0  0 2015-01-11 20:18:36
 
 keys = %w(procs.r procs.b memory.swpd memory.free
-  memory.buff memory.cache swap.si swap.so io.bi
-  io.bo system.in system.cs cpu.us cpu.sy cpu.id cpu.wa cpu.st time)
+          memory.buff memory.cache swap.si swap.so io.bi
+          io.bo system.in system.cs cpu.us cpu.sy cpu.id cpu.wa cpu.st time)
 
 old_keys = %w(time procs.r procs.b memory.swpd memory.free
-  memory.buff memory.cache swap.si swap.so io.bi
-  io.bo system.in system.cs cpu.us cpu.sy cpu.id cpu.wa cpu.st)
+              memory.buff memory.cache swap.si swap.so io.bi
+              io.bo system.in system.cs cpu.us cpu.sy cpu.id cpu.wa cpu.st)
 
 # To match output from vmstat 3.3.8
 keys_v338 = %w(procs.r procs.b memory.swpd memory.free
-  memory.buff memory.cache swap.si swap.so io.bi
-  io.bo system.in system.cs cpu.us cpu.sy cpu.id cpu.wa)
+               memory.buff memory.cache swap.si swap.so io.bi
+               io.bo system.in system.cs cpu.us cpu.sy cpu.id cpu.wa)
 
 def show_record(keys, data)
   data.each_with_index { |v, i| puts "#{keys[i]}: #{v}" }

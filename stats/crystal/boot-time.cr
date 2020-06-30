@@ -1,6 +1,5 @@
 #!/usr/bin/env crystal
 
-
 require "../../lib/string_ext"
 
 def show_dmesg_times

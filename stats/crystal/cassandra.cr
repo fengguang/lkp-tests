@@ -1,6 +1,5 @@
 #!/usr/bin/env crystal
 
-
 # Example output of Cassandra:
 # Results:
 # Op rate                   :      683 op/s  [insert: 364 op/s, range1: 319 op/s]

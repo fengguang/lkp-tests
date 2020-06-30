@@ -2,7 +2,7 @@
 
 time = 0
 protocol = " "
-lib_micro=Hash(String,String|Float64).new
+lib_micro = Hash(String, String | Float64).new
 
 STDIN.each_line do |line|
   case line

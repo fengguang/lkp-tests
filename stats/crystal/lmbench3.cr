@@ -1,6 +1,5 @@
 #!/usr/bin/env crystal
 
-
 require "../../lib/string_ext"
 
 def largest_bandwidth
@@ -22,8 +21,8 @@ end
 
 bandwidth = ""
 file_size = Int32.new(0)
-size = false.as(Int32|Bool)
-read_bandwidth = false.as(Bool) 
+size = false.as(Int32 | Bool)
+read_bandwidth = false.as(Bool)
 socket_bandwidth = false
 while (line = STDIN.gets)
   line = line.remediate_invalid_byte_sequence(replace: "_") unless line.valid_encoding?
@@ -95,7 +94,7 @@ while (line = STDIN.gets)
     # 8 1.65
     # 16 1.77
   when /^"size=\d+k ovr=\d+.\d+$/
-    size = line.to_s.split[0].split("=")[-1].to_i.as(Int32|Nil|String)
+    size = line.to_s.split[0].split("=")[-1].to_i.as(Int32 | Nil | String)
   when size && [0, 16, 64].includes?(size) && /^96 (\d+.\d+)$/
     puts "CTX.96P.#{size}K.latency.us: #{$1}"
 
@@ -106,9 +105,9 @@ while (line = STDIN.gets)
     # 0.002048 1757.11
   when /^"read bandwidth$/
     read_bandwidth = true
-    file_size = 0  
+    file_size = 0
   when read_bandwidth && /^(\d+.\d+) (\d+.\d+)$/
-    if  file_size < $1.to_f
+    if file_size < $1.to_f
       file_size = $1.to_f
       bandwidth = $2
     end

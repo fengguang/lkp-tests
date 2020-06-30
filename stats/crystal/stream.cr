@@ -1,9 +1,8 @@
 #!/usr/bin/env crystal
 
-
 require "../../lib/log"
 
-stats = Hash(String,String).new
+stats = Hash(String, String).new
 unit = nil
 
 while (line = STDIN.gets)
