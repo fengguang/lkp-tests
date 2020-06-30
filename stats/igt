@@ -6,9 +6,9 @@ while (line = STDIN.gets)
   case line
   when /^(.*): (SUCCESS|FAIL)/
     stats_type = if $2 == 'SUCCESS'
-      'pass'
-    else
-      'fail'
+                   'pass'
+                 else
+                   'fail'
                  end
     stats << $1.tr(' /', '_.') + ".#{stats_type}: 1"
   end

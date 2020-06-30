@@ -16,9 +16,9 @@ class KernelTag
   def numerize_kernel_tag(kernel_tag)
     match = kernel_tag.match(/v(?<major_version>[0-9])\.(?<minor_version>\d+)\.?(-rc(?<prerelease_version>\d+))?/)
     prerelease_version = if match[:prerelease_version]
-      match[:prerelease_version].to_i
-    else
-      99
+                           match[:prerelease_version].to_i
+                         else
+                           99
                          end
     match[:major_version].to_i * 10000 + match[:minor_version].to_i * 100 + prerelease_version
   end
