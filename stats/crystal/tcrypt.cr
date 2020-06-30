@@ -1,6 +1,5 @@
 #!/usr/bin/env crystal
 
-
 ##require "fileutils"
 require "../../lib/statistics"
 
@@ -18,7 +17,7 @@ def show_one(new_test, results_test,results_val)
   results_val["val"] = [] of Int32|Float64
 end
 
-File.each_line("#{RESULT_ROOT}/kmsg") do |line|  
+File.each_line("#{RESULT_ROOT}/kmsg") do |line|
   case line
   when /testing speed of (.*)$/
         show_one($1.tr(" ", "."), results_test,results_val)

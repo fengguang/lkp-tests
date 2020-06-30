@@ -4,7 +4,7 @@ require "../../lib/dmesg"
 require "../../lib/string_ext"
 require "../../lib/log"
 
-error_ids = {} of String => String 
+error_ids = {} of String => String
 
 line_str = ""
 Dir["#{LKP_SRC}/etc/ignore-stderr/*"].each do |f|

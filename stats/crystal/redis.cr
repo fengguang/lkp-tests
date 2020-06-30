@@ -1,6 +1,5 @@
 #!/usr/bin/env crystal
 
-
 require "../../lib/array_ext"
 
 set_sum = 0
@@ -10,8 +9,8 @@ get_sum = 0
 get_num = 0
 get_avg = 0
 is_set = true
-set_latencies = [] of Hash(Int32, Float64) 
-get_latencies = [] of Hash(Int32, Float64) 
+set_latencies = [] of Hash(Int32, Float64)
+get_latencies = [] of Hash(Int32, Float64)
 proc_set_latencies = {} of Int32 => Float64
 proc_get_latencies = {} of Int32 => Float64
 set_time = 0
@@ -34,7 +33,7 @@ STDIN.each_line do |line|
   when /====== SET ======$/
     is_set = true
     #proc_set_latencies = [] of Float64
-    
+
   when /====== GET ======$/
     is_set = false
     #proc_get_latencies = [] of Float64

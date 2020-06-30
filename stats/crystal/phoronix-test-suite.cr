@@ -22,7 +22,7 @@ while (line = STDIN.gets)
     is_begin_of_subtest = true
   when /Average: ([0-9.]+) (.*)/
     value = $1
-    unit = $2 
+    unit = $2
     if is_begin_of_subtest
       test_id += 1
       is_begin_of_subtest = false

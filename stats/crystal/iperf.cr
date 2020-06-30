@@ -1,11 +1,11 @@
 #!/usr/bin/env crystal
 
-
 require "json"
 require "../../lib/log"
+
 begin
   obj = JSON.parse(STDIN)
-rescue e : JSON::Error 
+rescue e : JSON::Error
   log_error "error: malformed iperf result"
   log_error e if e
   exit

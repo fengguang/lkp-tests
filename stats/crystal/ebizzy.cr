@@ -3,7 +3,6 @@
 # the workload of ebizzy is defined as the total number of records for all
 # threads
 
-
 require "../../lib/statistics"
 
 workload = 0
@@ -11,7 +10,7 @@ workload = 0
 while (line = STDIN.gets)
   case line
   when /^(\d+) records\/s(.*)$/
-    puts "throughput: " + $1 
+    puts "throughput: " + $1
     throughput = $1.to_i
     data = $2.split.map(&.to_i)
 

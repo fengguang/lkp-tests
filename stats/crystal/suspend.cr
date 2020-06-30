@@ -2,7 +2,7 @@
 
 cycle = 1
 srhash = {} of String => String | Float64 | Int32
-srmaxhash = {} of String => String | Int32 
+srmaxhash = {} of String => String | Int32
 phase = "none"
 while (line = STDIN.gets)
   case line

@@ -7,7 +7,7 @@ names = STDIN.gets.to_s.split
 names.shift
 names.shift
 
-contentions = {}   of String => Int32 
+contentions = {} of String => Int32
 lock_stat = {} of String => Int32|Float64
 lock = ""
 while (line = STDIN.gets)

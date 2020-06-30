@@ -1,11 +1,10 @@
 #!/usr/bin/env crystal
 
-
 require "../../lib/statistics"
 
 key = ""
 value = [] of Int32
-samples = { key => value } 
+samples = { key => value }
 
 def show_samples(samples)
   samples.each do |k, v|
