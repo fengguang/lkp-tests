@@ -43,7 +43,7 @@ module LKP
     def change?
       if options['distance']
         if max_a.is_a?(Integer) && (min_a - max_b == 1 || min_b - max_a == 1)
-          log_cause "min_a - max_b == 1 || min_b - max_a == 1"
+          log_cause 'min_a - max_b == 1 || min_b - max_a == 1'
           log_debug "not cs | cs: #{cs}" if options['trace_cause'] == stat
 
           return false
@@ -64,20 +64,20 @@ module LKP
         else
           return true if min_b > max_a && (min_b - max_a) > (mean_b - mean_a) / 2
 
-          log_cause "NOT: min_b > max_a && (min_b - max_a) > (mean_b - mean_a) / 2"
+          log_cause 'NOT: min_b > max_a && (min_b - max_a) > (mean_b - mean_a) / 2'
 
           return true if min_a > max_b && (min_a - max_b) > (mean_a - mean_b) / 2
 
-          log_cause "NOT: min_a > max_b && (min_a - max_b) > (mean_a - mean_b) / 2"
+          log_cause 'NOT: min_a > max_b && (min_a - max_b) > (mean_a - mean_b) / 2'
         end
       else
         return true if min_b > mean_a && mean_b > max_a
 
-        log_cause "NOT: min_b > mean_a && mean_b > max_a"
+        log_cause 'NOT: min_b > mean_a && mean_b > max_a'
 
         return true if min_a > mean_b && mean_a > max_b
 
-        log_cause "NOT: min_a > mean_b && mean_a > max_b"
+        log_cause 'NOT: min_a > mean_b && mean_a > max_b'
       end
 
       log_debug "not cs | cs: #{cs}" if options['trace_cause'] == stat

@@ -384,7 +384,7 @@ end
 
 stats << "mqueue.nsec_per_msg: #{mqueue_speed.values.average.to_i}" unless mqueue_speed.empty?
 if test_name == 'resctrl'
-  stats << "resctrl.resctrl_tests.pass: 1" unless stats.any? { |stat| stat =~ /resctrl\..+\.fail: 1/ }
+  stats << 'resctrl.resctrl_tests.pass: 1' unless stats.any? { |stat| stat =~ /resctrl\..+\.fail: 1/ }
 end
 stats.uniq.each { |stat| puts stat }
 nr_test = stats.count { |k, _v| k !~ /\.make_fail|\.ignored_by_lkp/ }
