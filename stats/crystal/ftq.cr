@@ -7,7 +7,7 @@ require "../../lib/log"
 
 PDEL = 10
 
-data = []
+data = [] of Int32
 files = Dir["#{RESULT_ROOT}/results/ftq_*.dat*"]
 if files.empty?
   log_error "can not find any log file at #{RESULT_ROOT}/results/"
@@ -15,21 +15,27 @@ if files.empty?
 end
 files.each do |file|
   zopen(file) do |f|
-    rdata = f.read
+    rdata = f.gets_to_end
     n = (rdata =~ /^[^#]/)
-    rdata.slice!(0, n)
-    sfdata = rdata.split
-    sfdata.select!.with_index { |_x, i| i.odd? }
-    n = sfdata.size
-    ndel = n * PDEL / 100
-    sfdata.slice!(n - ndel, ndel)
-    sfdata.slice!(0, ndel)
-    data.concat(sfdata.map(&.to_i))
+    if n
+      rdata.byte_slice?(n,rdata.size)
+    end
+    sfdata = rdata.to_s.split(/ |\n/)
+    sfdata.delete("")
+    sfdata_temp = [] of String
+    sfdata.each_with_index do |x, i|
+      if i.odd?
+        sfdata_temp << x
+      end
+    end
+    n = sfdata_temp.size
+    ndel = (n * PDEL / 100).to_i
+    data.concat(sfdata_temp[ndel,n-ndel-1].map { |x| x.to_i })
   end
 end
 
 data.sort!
-mean = data[data.size / 2]
+mean = data[(data.size / 2).to_i]
 max = data.last
 samples = data.size
 
@@ -39,15 +45,16 @@ printf "mean: %d\n", mean
 perf_levels = [1, 25, 50, 75, 95, 98]
 
 start = 0
-perf_num_levels = perf_levels.each_with_index.map do |level, _i|
+perf_num_levels = [] of Array(Float64 | Int32)
+perf_levels.each do |level|
   lc = mean * level / 100
   nstart = data.bsearch_index { |n| n >= lc }
   nstart ||= samples
   num = nstart * 1_000_000.0 / samples
   start = nstart
-  [level, num]
+  perf_num_levels << [level, num]
 end
 
-perf_num_levels.each do |level, num|
-  printf "noise.%d%%: %g\n", 100 - level, num
+perf_num_levels.each do |x|
+  printf "noise.%d%%: %g\n", 100 - x[0], x[1]
 end
