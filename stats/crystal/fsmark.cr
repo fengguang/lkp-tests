@@ -8,8 +8,8 @@ while (line = STDIN.gets)
   break if line =~ /^FSUse/
 end
 
-files_per_sec = []
-app_overhead = []
+files_per_sec = [] of Float64
+app_overhead = [] of Float64
 while (line = STDIN.gets)
   iteration = line.split
   if iteration.size != 5
