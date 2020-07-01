@@ -246,6 +246,7 @@ announce_bootup()
 	local version="$(cat /proc/sys/kernel/version 2>/dev/null| cut -f1 -d' ' | cut -c2-)"
 	local release="$(cat /proc/sys/kernel/osrelease 2>/dev/null)"
 	local mac="$(show_mac_addr)"
+	local ip="$(ip route get 1.2.3.4 | awk '{print $7; exit}')"
 
 	echo 'Kernel tests: Boot OK!'
 
@@ -253,7 +254,7 @@ announce_bootup()
 	# this helps diagnose serial console connections
 	for ttys in ttyS0 ttyS1 ttyS2 ttyS3
 	do
-		echo "LKP: HOSTNAME $HOSTNAME, MAC $mac, kernel $release $version, serial console /dev/$ttys" > /dev/$ttys 2>/dev/null
+		echo "LKP: HOSTNAME $HOSTNAME, MAC $mac, IP $ip, kernel $release $version, serial console /dev/$ttys" > /dev/$ttys 2>/dev/null
 	done
 }
 
