@@ -114,10 +114,13 @@ get_dependency_packages()
 	local script=$2
 	local PKG_TYPE=$3
 	local base_file="$LKP_SRC/distro/depends/${script}"
+	local files=""
 
-	[ -f "$base_file" ] || return
+	[ -f "$base_file" ]		 && files="$base_file"
+	[ -f "$base_file.${pack_arch}" ] && files="$base_file.${pack_arch} $files"
+	[ -z "$files" ] && return
 
-	local generic_packages="$(sed 's/#.*//' "$base_file")"
+	local generic_packages="$(sed 's/#.*//' $files)"
 	detect_system
 	parse_packages_arch
 	[ "$distro" != "debian" ] && remove_packages_version && remove_packages_repository
