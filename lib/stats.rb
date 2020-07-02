@@ -779,10 +779,12 @@ def kpi_stat?(stat, _axes, _values = nil)
 end
 
 def sort_bisect_stats(stats)
+  monitor_stats = Dir["#{LKP_SRC}/monitors/*"].map { |m| File.basename m }
   stats.sort_by do |stat|
     stat_name = stat[Compare::STAT_KEY]
+    score = monitor_stats.include?(stat_name.split('.').first) ? -100 : 0
     key = $index_perf.keys.find { |i| stat_name =~ /^#{i}$/ }
-    $index_perf[key] || -255 # -255 is a error value that should be less than values in $index_perf
+    $index_perf[key] ? $index_perf[key].to_i + score : -255 # -255 is a error value that should be less than values in $index_perf
   end
 end
 
