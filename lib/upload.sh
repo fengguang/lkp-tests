@@ -96,7 +96,7 @@ upload_files_curl()
 		local dir
 		for dir in $(echo $target_directory | tr '/' ' ')
 		do
-			job_result_root=$job_result_root/$dir
+			job_result_root=$job_result_root/$dir/
 			curl -sSf -X MKCOL "$http_host$job_result_root"  >/dev/null
 		done
 	}
