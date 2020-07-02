@@ -132,7 +132,14 @@ phoronix-test-suite:
       # - Test All Options
   - test:
     - cython-bench-1.0.0
-    # - dacapobench-1.0.0 # 3rd party url is N/A
+  - test: dacapobench-1.0.0
+    option_a:
+      - Eclipse
+      - H2
+      - Jython
+      - Tradebeans
+      - Tradesoap
+      # - Test All Options
   - test: darktable-1.0.4
     option_a:
       - Boat
