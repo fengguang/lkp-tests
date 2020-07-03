@@ -2298,7 +2298,9 @@ create_package() {
 		CGZDEST=${CGZDEST:-/osimage/pkg/makepkg/${pkgname}-${fullver}.cgz}
 		pkgver_cgz=$(extend_pkgver_cgz_name $CGZDEST)
 		mkdir -p $(dirname $pkgver_cgz)
-		find . | cpio -o -H newc --owner=root.root | gzip -n -9 > ${pkgver_cgz}
+		# /bin, /sbin, /lib, etc. could be soft link in some distro, avoid overwriting them
+		find . | grep -xv -e bin -e sbin -e lib -e lib64 -e etc/init.d |
+			cpio -o -H newc --owner=root.root | gzip -n -9 > ${pkgver_cgz}
 		[ "$pkgver_cgz" = "$CGZDEST" ] || ln -sf $(basename $pkgver_cgz) ${CGZDEST}
 		return
 	fi
