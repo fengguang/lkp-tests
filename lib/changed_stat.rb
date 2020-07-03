@@ -80,7 +80,7 @@ module LKP
         log_cause 'NOT: min_a > mean_b && mean_a > max_b'
       end
 
-      log_debug "not cs | cs: #{cs}" if options['trace_cause'] == stat
+      log_debug "cs | cs: #{cs}" if options['trace_cause'] == stat
       false
     end
 
