@@ -82,11 +82,15 @@ downgrade_ucode()
 
 wget_install_cgz()
 {
-	for cgz_url
+	local url
+	for url
 	do
-		echo "wget $cgz_url"
-		wget $cgz_url -O /tmp.cgz
-		(cd / | gzip -dc tmp.cgz | cpio -id)
+		echo "wget $url"
+		wget $url -O /tmp.cgz
+		(
+			cd /
+			gzip -dc /tmp.cgz | cpio -id
+		)
 	done
 	rm -f /tmp.cgz
 }
