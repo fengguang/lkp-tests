@@ -80,7 +80,23 @@ downgrade_ucode()
 	ucode_less_than_current $next_version
 }
 
+wget_install_cgz()
+{
+	for cgz_url
+	do
+		echo "wget $cgz_url"
+		wget $cgz_url -O /tmp.cgz
+		(cd / | gzip -dc tmp.cgz | cpio -id)
+	done
+	rm -f /tmp.cgz
+}
+
 while true; do
+	if [ "$os_mount" != "initramfs" ]; then
+		wget_install_cgz $initrd_deps
+		wget_install_cgz $initrd_pkg
+	fi
+
 	echo $LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp
 	$LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp $job
 
