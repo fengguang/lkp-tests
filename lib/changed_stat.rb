@@ -24,6 +24,7 @@ module LKP
                            sorted_b: sorted_b, min_b: min_b, mean_b: mean_b, max_b: max_b,
                            stat: stat
       @options = options
+      options['gap_distance'] ||= 2
     end
 
     %w(sorted_a min_a mean_a max_a sorted_b min_b mean_b max_b stat).each do |name|
@@ -62,13 +63,11 @@ module LKP
 
           log_cause "NOT: min_a - max_b > min_gap (#{min_gap})"
         else
-          return true if min_b > max_a && (min_b - max_a) > (mean_b - mean_a) / 4
+          return true if min_b > max_a && (min_b - max_a) > (mean_b - mean_a) / options['gap_distance']
+          log_cause "NOT: min_b > max_a && (min_b - max_a) > (mean_b - mean_a) / #{options['gap_distance']}"
 
-          log_cause 'NOT: min_b > max_a && (min_b - max_a) > (mean_b - mean_a) / 4'
-
-          return true if min_a > max_b && (min_a - max_b) > (mean_a - mean_b) / 4
-
-          log_cause 'NOT: min_a > max_b && (min_a - max_b) > (mean_a - mean_b) / 4'
+          return true if min_a > max_b && (min_a - max_b) > (mean_a - mean_b) / options['gap_distance']
+          log_cause "NOT: min_a > max_b && (min_a - max_b) > (mean_a - mean_b) / #{options['gap_distance']}"
         end
       else
         return true if min_b > mean_a && mean_b > max_a
