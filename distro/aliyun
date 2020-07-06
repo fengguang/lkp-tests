@@ -60,7 +60,7 @@ pack_benchmark()
 
 yum_download()
 {
-	support_repo_epel
+	[ ${DISTRO^^} == "CENTOS" ] && support_repo_epel
 
 	echo yum install --downloadonly $*
 	yum install --downloadonly $*
