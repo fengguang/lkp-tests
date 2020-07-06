@@ -88,7 +88,7 @@ def extract_ftrace
     samples[sample.cpu] << sample
   end
 
-  samples_array = Array(Int320).new
+  samples_array = Array(Int32).new
   # then we put these sorted lines into a global array
   samples.each do |_, array|
     array.each do |sample|
