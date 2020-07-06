@@ -86,19 +86,21 @@ wget_install_cgz()
 	for url
 	do
 		echo "wget $url"
-		wget $url -O /tmp.cgz
+		wget $url -O /tmp/tmp.cgz
 		(
 			cd /
-			gzip -dc /tmp.cgz | cpio -id
+			gzip -dc /tmp/tmp.cgz | cpio -id
 		)
 	done
-	rm -f /tmp.cgz
+	rm -f /tmp/tmp.cgz
 }
 
 while true; do
 	if [ "$os_mount" != "initramfs" ]; then
 		wget_install_cgz $initrd_deps
 		wget_install_cgz $initrd_pkg
+		install_rpms
+		install_deb
 	fi
 
 	echo $LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp
