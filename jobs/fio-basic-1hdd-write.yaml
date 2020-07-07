@@ -33,7 +33,7 @@ fio-setup-basic:
   ioengine: sync
 
 ---
-runtime: 20m
+runtime: 1h
 fs: ext4
 test_size: 32G
 fio-setup-basic:
