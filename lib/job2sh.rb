@@ -142,6 +142,9 @@ class Job2sh < Job
   end
 
   def parse_one(ancestors, key, val, pass)
+    if ['pp', 'define_files'].include?(key)
+      return false
+    end
     tabs = indent(ancestors)
     if @programs.include?(key) || (key =~ /^(call|command|source)\s/ && @cur_func == :run_job)
       if @setups.include?(key)
