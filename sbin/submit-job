@@ -55,7 +55,15 @@ ARGV.each do |jobfile|
     # get job shell function
     sh_run_job = job.sh_run_job
     sh_extract_stats = job.sh_extract_stats
-    sh_hash = {'job2sh' => {'run_job' => sh_run_job, 'extract_stats' => sh_extract_stats}}
+    sh_define_files = job.sh_define_files
+
+    sh_hash = {
+      'job2sh' => {
+        'run_job' => sh_run_job,
+        'extract_stats' => sh_extract_stats,
+        'define_files' => sh_define_files
+      }
+    }
 
     # merge job info
     job_hash = job.to_hash

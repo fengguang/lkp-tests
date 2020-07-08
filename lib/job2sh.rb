@@ -267,6 +267,9 @@ class Job2sh < Job
 
 
     sh_extract_stats(job)
+    local_script_lines += @script_lines
+
+    sh_define_files()
 
     out_line '"$@"'
 
@@ -332,5 +335,24 @@ class Job2sh < Job
     parse_hash [], job
     out_line "}\n\n"
     @script_lines
+  end
+
+  def sh_define_files
+    @script_lines = []
+
+    job = (@jobx || @job)
+
+    define_files = job['define_files'] || {}
+
+    out_line 'define_files()'
+    out_line '{'
+    out_line
+    out_line "\texport define_files='#{define_files.keys.join ' '}'"
+    define_files.each do |file, val|
+      out_line "\tcat > $LKP_SRC/#{file} <<'EOF'"
+      out_line val
+      out_line "EOF"
+    end
+    out_line '}'
   end
 end
