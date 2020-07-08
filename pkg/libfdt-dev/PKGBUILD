@@ -7,7 +7,7 @@ url="https://git.kernel.org/cgit/utils/dtc/dtc.git"
 license=('GPL')
 depends=()
 source=("https://git.kernel.org/pub/scm/utils/dtc/dtc.git")
-md5sums=('b7b4b691afe1c6cad6c2a1c267611794')
+md5sums=('SKIP')
 
 build() {
   cd "$srcdir/device-tree-compiler-1.4.0+dfsg.orig"
