@@ -62,8 +62,8 @@ yum_download()
 {
 	[ ${DISTRO^^} == "CENTOS" ] && support_repo_epel
 
-	echo 'yum install -y --downloadonly $*'
-	yum install -y --downloadonly $*
+	echo "yum install -y --downloadonly $*"
+	yum install -y --downloadonly "$@"
 }
 
 yum_pack()
@@ -111,7 +111,7 @@ pack_benchmark_deps()
 		local ocfs2_tools_name=$(echo "$packages" | grep 'ocfs2-tools')
 		[ -n "$ocfs2_tools_name" ] && download_ocfs2_tools "$ocfs2_tools_name"
 
-		if yum_download "$packages"; then
+		if yum_download $packages; then
 			yum_pack
 		else
 			echo "failed to pack-deps $BM_NAME" >&2
