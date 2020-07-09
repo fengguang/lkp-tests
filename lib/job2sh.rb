@@ -352,6 +352,9 @@ class Job2sh < Job
       out_line "\tcat > $LKP_SRC/#{file} <<'EOF'"
       out_line val
       out_line "EOF"
+      if File::executable?("#{ENV['LKP_SRC']}/#{file}")
+        out_line "\tchmod +x $LKP_SRC/#{file}"
+      end
     end
     out_line '}'
   end
