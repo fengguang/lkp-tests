@@ -9,3 +9,8 @@ ucode_less_than_current()
 {
 	return 1
 }
+
+deploy_intel_ucode()
+{
+	return 0
+}

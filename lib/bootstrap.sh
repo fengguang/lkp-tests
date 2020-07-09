@@ -4,6 +4,7 @@
 . $LKP_SRC/lib/http.sh
 . $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/reboot.sh
+. $LKP_SRC/lib/ucode.sh
 
 # borrowed from linux/tools/testing/selftests/rcutorture/doc/initrd.txt
 # Author: Paul E. McKenney <paulmck@linux.vnet.ibm.com>
@@ -711,6 +712,7 @@ add_nfs_default_options()
 # each fresh boot.
 boot_init()
 {
+	deploy_intel_ucode
 	setup_env
 
 	mount_kernel_fs
