@@ -62,8 +62,8 @@ yum_download()
 {
 	[ ${DISTRO^^} == "CENTOS" ] && support_repo_epel
 
-	echo yum install --downloadonly $*
-	yum install --downloadonly $*
+	echo 'yum install -y --downloadonly $*'
+	yum install -y --downloadonly $*
 }
 
 yum_pack()
@@ -148,7 +148,7 @@ download_ocfs2_tools()
 	fi
 
 	# Try to download the dependences of ocfs2-tools/ocfs2-tools-devel
-	yum install --downloadonly "$download_pkgs"
+	yum install -y --downloadonly "$download_pkgs"
 }
 
 install_ocfs2_tools()
