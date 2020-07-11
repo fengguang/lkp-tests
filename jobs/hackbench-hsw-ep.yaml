@@ -8,7 +8,7 @@ nr_threads:
 - 1600%
 
 hackbench:
-  iterations: 18
+  iterations: 10
   mode:
   - process
   - threads
@@ -21,4 +21,4 @@ hackbench:
 nr_threads:
 - 50%
 
-hackbench.iterations: 12
+hackbench.iterations: 10

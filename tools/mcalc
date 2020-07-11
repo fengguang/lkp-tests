@@ -38,6 +38,7 @@ class MatrixCalculator
     stats.each do |stat|
       vals = @matrix[stat]
       next unless vals
+
       if block_given?
         nstat, nvals = yield stat, vals
       else
@@ -84,15 +85,13 @@ def usage
 end
 
 def main
-  if ARGV.length > 2 || ARGV.length < 1
-    usage
-  end
+  usage if ARGV.length > 2 || ARGV.empty?
   mc = MatrixCalculator.new(ARGV.first)
-  if ARGV.length > 1
-    operations = ARGV[1]
-  else
-    operations = $stdin.read
-  end
+  operations = if ARGV.length > 1
+                 ARGV[1]
+               else
+                 $stdin.read
+               end
   mc.instance_eval operations
 end
 

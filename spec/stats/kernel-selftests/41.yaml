@@ -1,0 +1,10 @@
+net.pmtu.sh.ipv4:_pmtu_exceptions.pass: 1
+net.pmtu.sh.ipv6:_pmtu_exceptions___nexthop_objects.pass: 1
+net.pmtu.sh.ipv6_over_gue6:_pmtu_exceptions.pass: 1
+net.pmtu.sh.ipv6_over_gue6:_pmtu_exceptions___nexthop_objects.pass: 1
+net.pmtu.sh.vti6:_pmtu_exceptions.pass: 1
+net.pmtu.sh.vti4:_pmtu_exceptions.pass: 1
+net.pmtu.sh.vti6:_default_mtu_assignment.pass: 1
+net.pmtu.sh.vti6:_mtu_changes_on_link_changes.pass: 1
+net.pmtu.sh.ipv4:_cleanup_of_cached_exceptions___nexthop_objects.pass: 1
+net.pmtu.sh.pass: 1

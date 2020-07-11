@@ -1,0 +1,45 @@
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-ffa63ebeea0697a99388d200e8d1bc10c0940fc2/tools/testing/selftests/netfilter'
+# selftests: netfilter: nft_nat.sh
+# PASS: netns routing/connectivity: ns0-KktxxkSo can reach ns1-KktxxkSo and ns2-KktxxkSo
+# PASS: ping to ns1-KktxxkSo was ip NATted to ns2-KktxxkSo
+# PASS: inet IPv6 redirection for ns2-KktxxkSo
+ok 2 selftests: netfilter: nft_nat.sh
+# selftests: netfilter: bridge_brouter.sh
+# PASS: netns connectivity: ns1 and ns2 can reach each other
+# PASS: ns1/ns2 connectivity with active broute rule
+ok 3 selftests: netfilter: bridge_brouter.sh
+# selftests: netfilter: conntrack_icmp_related.sh
+# PASS: icmp mtu error had RELATED state
+ok 4 selftests: netfilter: conntrack_icmp_related.sh
+# selftests: netfilter: nft_flowtable.sh
+# PASS: netns routing/connectivity: ns1 can reach ns2
+# ./nft_flowtable.sh: line 248:  6005 Terminated              ip netns exec $nsb nc -w 5 -l -p 12345 < "$ns2in" > "$ns2out"
+# ./nft_flowtable.sh: line 213:  6010 Terminated              ip netns exec $nsa nc -w 4 "$dstip" "$dstport" < "$ns1in" > "$ns1out"
+# PASS: ipsec tunnel mode for ns1/ns2
+ok 5 selftests: netfilter: nft_flowtable.sh
+# selftests: netfilter: nft_concat_range.sh
+# TEST: reported issues
+#   Add two elements, flush, re-add                               [ OK ]
+# TEST: correctness
+#   net,port                                                      [ OK ]
+# TEST: concurrency
+#   net,port                                                      [SKIP]
+# need one of: iperf3 iperf netperf, skipping
+#   port,net                                                      [SKIP]
+# need one of: iperf3 iperf netperf, skipping
+#   net6,port                                                     [SKIP]
+# need one of: iperf3 iperf netperf, skipping
+# TEST: timeout
+#   net6,port,net6,port                                           [ OK ]
+#   net,port,mac,proto,net                                        [ OK ]
+# TEST: performance
+#   net6,port,mac,proto                                           [SKIP]
+#   perf not supported
+#   net,mac                                                       [SKIP]
+#   perf not supported
+not ok 7 selftests: netfilter: nft_concat_range.sh # exit=1
+# selftests: netfilter: nft_queue.sh
+# PASS: tcp and nfqueue in forward chain
+# PASS: tcp via loopback
+ok 8 selftests: netfilter: nft_queue.sh
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-ffa63ebeea0697a99388d200e8d1bc10c0940fc2/tools/testing/selftests/netfilter'

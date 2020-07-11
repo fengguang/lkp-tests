@@ -214,8 +214,8 @@ def load_remotes
     repo_info = load_yaml_merge [defaults, file]
 
     project = File.basename(File.dirname(file))
-    repo_info['project']  ||= project
-    repo_info['suite']    ||= project + '-ci'
+    repo_info['project'] ||= project
+    repo_info['suite'] ||= project + '-ci'
     repo_info['testcase'] ||= project + '-ci'
 
     repo_info['upstream'] = true if repo_info['project'] == remote

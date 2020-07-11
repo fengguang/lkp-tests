@@ -17,7 +17,9 @@
 # - file_service_type
 # - random_distribution
 # - numa_mem_policy
+# - numa_cpu_nodes
 # - pre_read
+# - rwmixread
 
 . $LKP_SRC/lib/common.sh
 . $LKP_SRC/lib/unit.sh
@@ -88,6 +90,8 @@ time_based
 "
 fi
 
+[ -n "$rwmixread" ] && rwmixread_setup="rwmixread=$rwmixread"
+
 parse_numa_mem_policy()
 {
 	if [ -z "$numa_mem_policy" ]; then
@@ -116,7 +120,35 @@ __numa_mem_policy()
 	esac
 }
 
+parse_numa_cpu_nodes()
+{
+	if [ -z "$numa_cpu_nodes" ]; then
+		__numa_cpu_nodes_setup="none"
+	elif [ "${numa_cpu_nodes%even*}" != "$numa_cpu_nodes" ]; then
+		__numa_cpu_nodes_setup="even"
+	else
+		__numa_cpu_nodes_setup="orig"
+	fi
+}
+
+__numa_cpu_nodes()
+{
+	__seq_no=$1
+
+	case "$__numa_cpu_nodes_setup" in
+		none)
+		;;
+		even)
+			echo "numa_cpu_nodes=$((__seq_no%nr_node))"
+			;;
+		orig)
+			echo "numa_cpu_nodes=${numa_cpu_nodes}"
+			;;
+	esac
+}
+
 parse_numa_mem_policy
+parse_numa_cpu_nodes
 
 no=0
 for storage in $storages; do
@@ -131,7 +163,9 @@ $create_task
 rw=$rw
 $storage_setup
 numjobs=$jobs_per_storage
+$rwmixread_setup
 $(__numa_mem_policy $no)
+$(__numa_cpu_nodes $no)
 "
 	no=$((no+1))
 done

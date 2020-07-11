@@ -16,7 +16,7 @@ while (line = STDIN.gets)
     puts "#{cpu_dma_latency}: #{val}"
   when /^# (.*):(.+)/
     val = $2
-    type = $1.downcase.gsub(' ','_')
+    type = $1.downcase.gsub(' ', '_')
     puts "#{type}: #{val}"
   end
 end

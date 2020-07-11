@@ -1,0 +1,21 @@
+short_description: >
+ A program that emulates web browser workload to see the performance of the
+ swap subsystem.
+
+description: |
+ Run basic performance benchmarks on compressed swap. Launches a number of "hog"
+ processes that can be told to "balloon" (allocating a specified amount of memory
+ in 1 MiB chunks) and can also be "poked", which reads from and writes to random
+ places in memory to force swapping in and out. Hog processes report back statistics
+ on how long a "poke" took (real and CPU time) and number of page faults.
+
+homepage: https://github.com/aaronlu/chromeswap.git
+
+parameters:
+ runtime:        limit run time to runtime seconds
+ selection:      selection of function name (uniform/sequential/exponential)
+ nr_procs:       Number of hog processes to use
+ swap_targets:   Floating point value of target swap usage
+
+results:
+ chromeswap.throughput_swap_cycles_per_second:

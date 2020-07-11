@@ -23,6 +23,16 @@ fixup_open_porous_media()
 	sed -i 's/nice mpirun -np/nice mpirun --allow-run-as-root -np/' "$target"
 }
 
+# only test max resolution for a tbox
+find_max_resolution()
+{
+	[ -n "$environment_directory" ] || return
+	local test=$1
+	local target=/usr/share/phoronix-test-suite/pts-core/objects/pts_test_run_options.php
+	sed -i "s,\$option_names\[\] = \$this_name,\$option_names\[0\] = \$this_name," "$target"
+	sed -i "s,\$option_values\[\] = \$this_value,\$option_values\[0\] = \$this_value," "$target"
+}
+
 # prepare download file beforehand
 # pls download http://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz and put it to
 # phoronix-rootfs/var/lib/phoronix-test-suite/installed-tests/pts/tensorflow-*/cifar10
@@ -141,29 +151,6 @@ reduce_runtimes()
 	local target=${environment_directory}/../test-profiles/pts/${test}/test-definition.xml
 	[ -f $target.bak ] || cp $target $target.bak
 	sed -i 's,<TimesToRun>3</TimesToRun>,<TimesToRun>2</TimesToRun>,' "$target"
-}
-
-# fix issue: supported_sensors array length don't match sensor length
-fixup_supported_sensors()
-{
-	# sensor:
-	# Array
-	#(
-	# [0] => sys
-	# [1] => power
-	#)
-	# supported_sensors part:
-	#[11] => Array
-	#(
-	# [0] => sys
-	# [1] => power
-	# [2] => sys_power
-	#)
-	local target="/usr/share/phoronix-test-suite/pts-core/objects/pts_test_result_parser.php"
-	sed -i "72a \                        \$new_supported_sensors\ =\ self\:\:\$supported_sensors;" "$target"
-	sed -i "73a \                        foreach\(\$new_supported_sensors\ as\ \&\$v\) unset\(\$v\[2\]\);" "$target"
-	sed -i '75d' "$target"
-	sed -i "74a \                        if\(count\(\$sensor\)\ \!\=\ 2\ \|\|\ \!in_array\(\$sensor\,\ \$new_supported_sensors\)\)" "$target"
 }
 
 # fix issue: [NOTICE] Undefined: min_result in pts_test_result_parser:478
@@ -331,9 +318,8 @@ fixup_gluxmark()
 	export DISPLAY=:0
 	# Choose
 	# 1: Windowed
-	# 2: 800 x 600
-	# 3: Fill-Rate
-	test_opt="\n2\n1\n1\nn"
+	# 2: Fill-Rate
+	test_opt="\n2\n1\nn"
 }
 
 fixup_java_gradle_perf()
@@ -423,6 +409,13 @@ fixup_dolfyn_install()
 	local test=$1
 	local target=/var/lib/phoronix-test-suite/test-profiles/pts/${test}/install.sh
 	sed -i "4a sed -i \"s/stop'bug:/stop 'bug:/g\" gmsh2dolfyn.f90" "$target"
+}
+
+fixup_build_eigen_install()
+{
+	local test=$1
+	local target=/var/lib/phoronix-test-suite/test-profiles/pts/${test}/install.sh
+	sed -i 's,\${CXX},\\${CXX},' "$target"
 }
 
 fixup_interbench()
@@ -558,6 +551,10 @@ fixup_install()
 		# fix issue: pointers.h:24:10: fatal error: mpi.h: No such file or directory
 		fixup_lammps_install $test || die "failed to fixup lammps install"
 		;;
+	build-eigen-*)
+		# fix issue: ./build-eigen: line 8: -DEIGEN2_SUPPORT=: command not found
+		fixup_build_eigen_install $test || die "failed to fixup $test install"
+		;;
 	x264-opencl-*)
 		fixup_x264_opencl_install $test || die "failed to fixup x264-opencl install"
 	esac
@@ -654,11 +651,9 @@ run_test()
 			ignored_on_clear=1
 			;;
 		tesseract-*)
-			# Choose
-			# 1: 800 x 600
-			test_opt="\n1\nn"
 			export DISPLAY=:0
 			ignored_on_clear=1
+			find_max_resolution $test || die "failed to find max resolution for $test"
 			;;
 		smart-*)
 			# Choose 1st disk to get smart info
@@ -666,17 +661,9 @@ run_test()
 			test_opt="\n1\nn"
 			fixup_smart || die "failed to fixup test smart"
 			;;
-		idle-power-usage-*)
-			fixup_supported_sensors || die "failed to fixup test $test"
-			;;
-		battery-power-usage-*)
-			fixup_supported_sensors || die "failed to fixup test $test"
-			;;
 		urbanterror-*)
-			# Choose
-			# 1: 800 x 600
-			test_opt="\n1\nn"
 			export DISPLAY=:0
+			find_max_resolution $test || die "failed to find max resolution for $test"
 			;;
 		hdparm-read-*)
 			# Choose
@@ -685,11 +672,11 @@ run_test()
 			;;
 		nexuiz-*)
 			# Choose
-			# 1: 800 x 600
+			# 1: Test All Options
 			# 2: Test All Options
-			# 3: Test All Options
-			test_opt="\n1\n3\n3\nn"
+			test_opt="\n3\n3\nn"
 			export DISPLAY=:0
+			find_max_resolution $test || die "failed to find max resolution for $test"
 			;;
 		plaidml-*)
 			# Choose
@@ -790,18 +777,19 @@ run_test()
 			;;
 		gluxmark-*)
 			fixup_gluxmark $test || die "failed to fixup gluxmark"
+			find_max_resolution $test || die "failed to find max resolution for $test"
 			;;
 		java-gradle-perf-*)
 			fixup_java_gradle_perf || die "failed to fixup java-gradle-perf"
 			;;
 		unigine-heaven-*|unigine-valley-*)
 			export DISPLAY=:0
-			# resolutino: 800X600
-			# full screen
-			test_opt="\n1\n1\nn"
+			test_opt="\n1\nn"
+			find_max_resolution $test || die "failed to find max resolution for $test"
 			;;
 		glmark2-*|openarena-*|gputest-*|supertuxkart-*)
 			export DISPLAY=:0
+			find_max_resolution $test || die "failed to find max resolution for $test"
 			;;
 		cairo-perf-trace-*)
 			# select Poppler
@@ -811,6 +799,9 @@ run_test()
 			# 7: Kernel Latency
 			# 4: Integer Compute INT # this subtest was disabled on Intel platform
 			test_opt="\n7\nn"
+			;;
+		apitest-*|et-*|etlegacy-*|etxreal-*|geexlab-*|paraview-*|unigine-sanctuary-*|unigine-tropics-*)
+			find_max_resolution $test || die "failed to find max resolution for $test"
 			;;
 	esac
 

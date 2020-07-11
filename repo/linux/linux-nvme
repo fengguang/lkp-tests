@@ -7,3 +7,5 @@ owner:
 subsystems:
 - nvme
 notify_build_success_branch: .*
+git_am_branch: for-next
+mail_cc: linux-nvme@lists.infradead.org

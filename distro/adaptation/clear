@@ -224,7 +224,7 @@ libfreetype6: dev-utils-dev
 libfuse-dev: storage-utils-dev
 libgbm-dev: dev-utils-dev
 libgcc1:
-libgcc-6-dev: dev-utils-dev
+libgcc-dev: dev-utils-dev
 libgcc-7-dev: dev-utils-dev
 libgcc-7-dev/unstable: dev-utils-dev
 libgd3: stream-server
@@ -309,8 +309,7 @@ libpcap-dev: network-basic-dev
 libpci3: sysadmin-basic
 libpciaccess-dev: dev-utils-dev
 libpci-dev: sysadmin-basic-dev
-libperl5.24: perl-basic
-libperl5.26: perl-basic
+libperl5: perl-basic
 libipc-run-perl: perl-extras
 libpipeline1: dev-utils-dev
 libpixman-1-0: dev-utils-dev
@@ -446,7 +445,7 @@ ocfs2-tools:
 ocfs2-tools-dev:
 openbsd-inetd:
 opencryptoki:
-openjdk-8-jdk: java-runtime
+openjdk: java-runtime
 openmpi-bin: dev-utils-dev
 openssl: openssl
 pandoc: os-testsuite-0day
@@ -457,8 +456,7 @@ pbzip2: os-testsuite-phoronix
 pciutils: sysadmin-basic
 perl: perl-basic
 perl-base: perl-basic
-perl-modules-5.24: perl-basic
-perl-modules-5.26: perl-basic
+perl-modules-5: perl-basic
 phoronix-test-suite: os-testsuite-phoronix
 php-cli: php-basic
 php-xml: php-basic

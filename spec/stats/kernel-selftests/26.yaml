@@ -1,0 +1,8 @@
+exec.check_success_of_execveat(8,_'execveat',_0).pass: 1
+exec.check_success_of_execveat(_100,_'/usr/src/perf_selfte...ftests/exec/execveat',_0).pass: 1
+exec.check_success_of_execveat(21,_'',_4096).pass: 1
+exec.check_failure_of_execveat(99,_'execveat',_0)_with_ebadf.pass: 1
+exec.check_failure_of_execveat(10,_'execveat',_0)_with_enotdir.pass: 1
+exec.check_success_of_execveat(7,_'usr/src/perf_selftes...yyyyyyyyyyyyyyyyyyyy',_0).pass: 1
+exec.check_success_of_execveat(22,_'',_4096).pass: 1
+exec.execveat.pass: 1

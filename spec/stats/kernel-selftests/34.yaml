@@ -1,0 +1,17 @@
+vm.hugepage_mmap.pass: 1
+vm.hugepage_shm.pass: 1
+vm.map_hugetlb.pass: 1
+vm.map_fixed_noreplace.pass: 1
+vm.userfaultfd.pass: 1
+vm.userfaultfd_hugetlb.pass: 1
+vm.userfaultfd_shmem.pass: 1
+vm.compaction_test.pass: 1
+vm.on_fault_limit.pass: 1
+vm.map_populate.pass: 1
+vm.mlock_random_test.pass: 1
+vm.mlock2_tests.pass: 1
+vm.thuge_gen.pass: 1
+vm.virtual_address_range.pass: 1
+vm.virtual_address_128tb_switch_test.pass: 1
+vm.vmalloc_stability_smoke_test.pass: 1
+vm.run_vmtests.pass: 1

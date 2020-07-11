@@ -12,7 +12,7 @@ while (line = STDIN.gets)
   case line
   when /test (.*): (FAIL|OK)*/
     result = $2.downcase
-    test = $1.downcase.gsub(' ','_')
+    test = $1.downcase.gsub(' ', '_')
     stats[test] = result
   end
 end

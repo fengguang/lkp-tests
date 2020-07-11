@@ -31,6 +31,7 @@ def calc_addon_keys(results_sum, results_nr, interval, interval_nr, prefix)
         break
       end
       next if value.zero?
+
       if key =~ /(.*)iTLB-load-misses/
         stem = $1
         instructions = results_sum[stem + 'instructions']
@@ -87,7 +88,7 @@ def output_interval(prev_time, time)
   calc_addon_keys($interval_results_sum, $interval_results_nr,
                   interval, 1, 'i.')
 
-  if !$interval_metrics_val.empty?
+  unless $interval_metrics_val.empty?
     $interval_metrics_val.each do |key, value|
       puts "i.#{key}: #{value}"
     end
@@ -116,9 +117,7 @@ def output_interval(prev_time, time)
 
   $interval_results_sum.clear
   $interval_results_nr.clear
-  if !$interval_metrics_val.empty?
-    $interval_metrics_val.clear
-  end
+  $interval_metrics_val.clear unless $interval_metrics_val.empty?
 end
 
 # Example output
@@ -175,9 +174,7 @@ def parse
 
     # for unit
     # 7928832,Bytes,llc_misses.mem_read,8005538025,100.00,,
-    if fields[1] == 'Bytes'
-      unit = fields[1]
-    end
+    unit = fields[1] if fields[1] == 'Bytes'
 
     # 10.072447351 43181  context-switches 16105112423 100.00 0.003 M/sec
     # 1.017184940,8778,,context-switches,16689586072,100.00,0.526,K/sec
@@ -185,7 +182,7 @@ def parse
 
     # for metrics
     # 1.000679357,S0,12,170516599,,l1d_pend_miss.pending,8004582139,66.65,80.5,Load_Miss_Real_Latency
-    if fields[5] != nil
+    if !fields[5].nil?
     # For the metric name, Its first char is an uppercase letter
     # Ignore the test result which is not for metrics
     # 1.000679357,S0,12,65320043,,instructions,8005866225,66.66,0.14,insn per cycle
@@ -213,9 +210,7 @@ def parse
       $interval_results_sum[socket_key] += value
       $interval_results_nr[socket_key] += 1
     end
-    if metric_key
-      $interval_metrics_val[metric_key] += metric_val
-    end
+    $interval_metrics_val[metric_key] += metric_val if metric_key
   end
 
   # total time

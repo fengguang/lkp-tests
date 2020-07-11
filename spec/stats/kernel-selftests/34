@@ -1,0 +1,94 @@
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-8223a71d1963d25cbec67dba3cecce6d3b09bd7d/tools/testing/selftests/vm'
+# selftests: vm: run_vmtests
+# ---------------------
+# running hugepage-mmap
+# ---------------------
+# First hex is 0
+# [PASS]
+# --------------------
+# running hugepage-shm
+# --------------------
+# shmaddr: 0x7fa78e000000
+# Starting the writes:
+# Starting the Check...Done.
+# [PASS]
+# -------------------
+# running map_hugetlb
+# -------------------
+# Default size hugepages
+# First hex is 3020100
+# [PASS]
+# ---------------------------
+# running map_fixed_noreplace
+# ---------------------------
+# mmap() @ 0x10000000-0x10005000 p=0x10000000 result=Success
+# unmap() successful
+# mmap() @ 0x10000000-0x10005000 p=0xffffffffffffffff result=File exists
+# mmap() @ 0x10004000-0x10005000 p=0x10004000 result=Success
+# OK
+# [PASS]
+# -------------------
+# running userfaultfd
+# -------------------
+# nr_pages: 32768, nr_pages_per_cpu: 16384
+# bounces: 0, mode:, userfaults: 5213 4802
+# testing signal delivery: done.
+# [PASS]
+# ---------------------------
+# running userfaultfd_hugetlb
+# ---------------------------
+# nr_pages: 64, nr_pages_per_cpu: 32
+# bounces: 31, mode: rnd racing ver poll, userfaults: 26 6
+# [PASS]
+# -------------------------
+# running userfaultfd_shmem
+# -------------------------
+# nr_pages: 32768, nr_pages_per_cpu: 16384
+# bounces: 31, mode: rnd racing ver poll, userfaults: 4459 4605
+# bounces: 0, mode:, userfaults: 2935 2860
+# testing UFFDIO_ZEROPAGE: done.
+# [PASS]
+# -----------------------
+# running compaction_test
+# -----------------------
+# [ignored_by_lkp]
+# [PASS]
+# ----------------------
+# running on-fault-limit
+# ----------------------
+# [PASS]
+# --------------------
+# running map_populate
+# --------------------
+# [PASS]
+# -------------------------
+# running mlock-random-test
+# -------------------------
+# [PASS]
+# --------------------
+# running mlock2-tests
+# --------------------
+# [ignored_by_lkp]
+# [PASS]
+# -----------------
+# running thuge-gen
+# -----------------
+# Found 2MB
+# Not enough huge pages for page size 2 MB, need 4
+# [PASS]
+# -----------------------------
+# running virtual_address_range
+# -----------------------------
+# [PASS]
+# -----------------------------
+# running virtual address 128TB switch test
+# -----------------------------
+# [ignored_by_lkp]
+# [PASS]
+# ------------------------------------
+# running vmalloc stability smoke test
+# ------------------------------------
+# Check the kernel ring buffer to see the summary.
+# [PASS]
+ok 1 selftests: vm: run_vmtests
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-8223a71d1963d25cbec67dba3cecce6d3b09bd7d/tools/testing/selftests/vm'

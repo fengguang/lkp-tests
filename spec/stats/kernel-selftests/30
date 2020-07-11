@@ -1,0 +1,28 @@
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d6d5df1db6e9d7f8f76d2911707f7d5877251b02/tools/testing/selftests/pidfd'
+# selftests: pidfd: pidfd_test
+# TAP version 13
+# 1..4
+# # Parent: pid: 2793
+# # Parent: Waiting for Child (2794) to complete.
+# # Time waited for child: 3
+# ok 1 pidfd_poll check for premature notification on child thread exec test: Passed
+# ok 4 pidfd_poll check for premature notification on non-emptygroup leader exit test: Passed
+# ok 5 pidfd_send_signal check for support test: pidfd_send_signal() syscall is supported. Tests can be executed
+# # Pass 8 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+ok 1 selftests: pidfd: pidfd_test
+# selftests: pidfd: pidfd_open_test
+# 1..3
+# ok 1 do not allow invalid pid test: passed
+# # pidfd 5 refers to process with pid 3926
+# # Pass 3 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+ok 2 selftests: pidfd: pidfd_open_test
+# selftests: pidfd: pidfd_poll_test
+# # running pidfd poll test for 10000 iterations
+# ok 1 pidfd poll test: pass
+ok 3 selftests: pidfd: pidfd_poll_test
+# selftests: pidfd: pidfd_wait
+# 1..2
+# ok 1 pidfd wait simple test: Passed
+# # Pass 2 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+ok 4 selftests: pidfd: pidfd_wait
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d6d5df1db6e9d7f8f76d2911707f7d5877251b02/tools/testing/selftests/pidfd'

@@ -1,0 +1,13 @@
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-c72fcbc7d224903b8241afc1202a414575c1e557/tools/testing/selftests/net'
+# selftests: net: pmtu.sh
+# TEST: ipv4: PMTU exceptions                                         [ OK ]
+# TEST: ipv6: PMTU exceptions - nexthop objects                       [ OK ]
+# TEST: IPv6 over gue6: PMTU exceptions                               [ OK ]
+# TEST: IPv6 over gue6: PMTU exceptions - nexthop objects             [ OK ]
+# TEST: vti6: PMTU exceptions                                         [ OK ]
+# TEST: vti4: PMTU exceptions                                         [ OK ]
+# TEST: vti6: default MTU assignment                                  [ OK ]
+# TEST: vti6: MTU changes on link changes                             [ OK ]
+# TEST: ipv4: cleanup of cached exceptions - nexthop objects          [ OK ]
+ok 16 selftests: net: pmtu.sh
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-c72fcbc7d224903b8241afc1202a414575c1e557/tools/testing/selftests/net'

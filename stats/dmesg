@@ -121,6 +121,7 @@ def stat_unittest(unittests)
     end
     next unless found_unitest
     break if line =~ /### dt-test ### end of unittest - (\d+) passed, (\d+) failed/
+
     # ### dt-test ### FAIL of_unittest_overlay_high_level():2475 overlay_base_root not initialized
     if line =~ /(.*)### dt-test ### FAIL (.*)/
       e = $2.gsub(/:|\d+/, '').gsub(' ', '_')

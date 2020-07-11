@@ -9,7 +9,7 @@ describe 'stats' do
       it "invariance: #{file}" do
         script = File.basename(File.dirname(file))
         old_stat = File.read yaml_file
-        new_stat = if script =~ /^(kmsg|dmesg|mpstat|fio)$/
+        new_stat = if script =~ /^(kmsg|dmesg|mpstat|fio|perf-stat-tests)$/
                      `#{LKP_SRC}/stats/#{script} #{file}`
                    else
                      `#{LKP_SRC}/stats/#{script} < #{file}`

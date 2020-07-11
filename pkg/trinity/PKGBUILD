@@ -11,12 +11,7 @@ build() {
 	gcc_major=$($(which gcc) -dumpversion | cut -d. -f1)
 	cd "$srcdir/${pkgname}" || return
 	./configure || return
-	if [[ "$gcc_major" -ge 8 ]]; then
-		CFLAGS="-Wno-address-of-packed-member -Werror=format-overflow=0" make
-	else
-		make
-	fi
-
+	make
 	make install
 }
 

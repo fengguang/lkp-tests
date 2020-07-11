@@ -229,6 +229,12 @@ def unite_remove_blacklist_stats(matrix)
   end
 end
 
+# When stats script is changed, some stats can be no longer existed.
+# Remove these stats when rts are re-processed.
+def unite_remove_empty_stats(matrix)
+  matrix.reject { |_k, v| v.empty? }
+end
+
 def unite_to(stats, matrix_root, max_cols = nil, delete = false)
   matrix_file = matrix_root + '/matrix.json'
 
@@ -246,6 +252,8 @@ def unite_to(stats, matrix_root, max_cols = nil, delete = false)
   shrink_matrix(matrix, max_cols) if max_cols
 
   matrix = unite_remove_blacklist_stats(matrix)
+  matrix = unite_remove_empty_stats(matrix)
+
   save_json(matrix, matrix_file)
   matrix = matrix_fill_missing_zeros(matrix)
   save_matrix_to_csv_file(matrix_root + '/matrix.csv', matrix) if local_run?

@@ -1,0 +1,48 @@
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-c72fcbc7d224903b8241afc1202a414575c1e557/tools/testing/selftests/net'
+# selftests: net: fib_nexthops.sh
+#
+# Basic functional tests
+# ----------------------
+# TEST: List with nothing defined                                     [ OK ]
+# TEST: Nexthop get on non-existent id                                [ OK ]
+# TEST: Nexthop with no device or gateway                             [ OK ]
+#
+# IPv4 groups functional
+# ----------------------
+# TEST: Create nexthop group with single nexthop                      [ OK ]
+# TEST: Get nexthop group by id                                       [ OK ]
+# TEST: Delete nexthop group by id                                    [ OK ]
+# TEST: Nexthop group with multiple nexthops                          [ OK ]
+# IPv6 groups functional
+# ----------------------
+# TEST: Create nexthop group with single nexthop                      [ OK ]
+# TEST: Get nexthop group by id                                       [ OK ]
+ok 35 selftests: net: fib_nexthops.sh
+# selftests: net: icmp_redirect.sh
+#
+# ###########################################################################
+# Legacy routing
+# ###########################################################################
+#
+# TEST: IPv4: redirect exception                                      [ OK ]
+# TEST: IPv6: redirect exception                                      [FAIL]
+# TEST: IPv4: redirect exception plus mtu                             [ OK ]
+# TEST: IPv6: redirect exception plus mtu                             [FAIL]
+# ###########################################################################
+# Routing with nexthop objects and VRF
+# ###########################################################################
+# TEST: IPv6: mtu exception                                           [ OK ]
+# TEST: IPv4: mtu exception plus redirect                             [ OK ]
+not ok 37 selftests: net: icmp_redirect.sh # exit=1
+# selftests: net: fib_nexthop_multiprefix.sh
+# TEST: IPv4: host 0 to host 2, mtu 1350                              [ OK ]
+# TEST: IPv6: host 0 to host 2, mtu 1350                              [FAIL]
+#
+# TEST: IPv4: host 0 to host 3, mtu 1400                              [ OK ]
+# TEST: IPv6: host 0 to host 3, mtu 1400                              [FAIL]
+not ok 34 selftests: net: fib_nexthop_multiprefix.sh # exit=1
+# selftests: net: ip6_gre_headroom.sh
+# TEST: ip6gretap headroom                                            [PASS]
+# TEST: ip6erspan headroom                                            [PASS]
+ok 38 selftests: net: ip6_gre_headroom.sh
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-c72fcbc7d224903b8241afc1202a414575c1e557/tools/testing/selftests/net'

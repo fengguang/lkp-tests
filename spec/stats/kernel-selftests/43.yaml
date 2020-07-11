@@ -1,0 +1,6 @@
+net.ipv6_flowlabel.sh.!(flowlabel_get(fd,_1,_255,_0)).pass: 1
+net.ipv6_flowlabel.sh.!(flowlabel_put(fd,_1)).pass: 1
+net.ipv6_flowlabel.sh.!(flowlabel_get(fd,_0x1fffff,_255,_1)).pass: 1
+net.ipv6_flowlabel.sh.flowlabel_get(fd,_1,_255,_1).pass: 1
+net.ipv6_flowlabel.sh.flowlabel_get(fd,_1,_255,_0).pass: 1
+net.ipv6_flowlabel.sh.pass: 1

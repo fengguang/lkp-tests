@@ -1,0 +1,25 @@
+#!/bin/sh
+# - ssid
+# - passwd
+
+. $LKP_SRC/lib/reproduce-log.sh
+
+wifi_dev=
+
+for i in $(ls /sys/class/net)
+do
+       cat /sys/class/net/$i/uevent | grep wlan
+       [ $? -ne 0 ] && continue
+       wifi_dev=$i
+       break
+done
+
+[ -z $wifi_dev ] && exit 0
+
+if [ -n "$ssid" ] && [ -n "$passwd" ]; then
+	rfkill unblock wifi
+	ifconfig $wifi_dev up
+	wpa_passphrase $ssid $passwd > /etc/wpa_supplicant.conf
+	wpa_supplicant -B -D nl80211 -i $wifi_dev -c /etc/wpa_supplicant.conf
+	dhclient $wifi_dev
+fi

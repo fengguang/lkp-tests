@@ -36,7 +36,7 @@ libnuma1: numactl
 liboop-dev: liboop
 libpcap0.8-dev: libpcap
 libpcap0.8: libpcap
-libperl5.20:
+libperl5:
 libpopt0: popt
 libpopt-dev: popt
 librdmacm-dev: librdmacm
@@ -59,7 +59,7 @@ netpipe-tcp: netpipe
 nfs-common: nfs-utils
 nfs-kernel-server: nfs-utils
 perl-base:
-perl-modules: perl-module-build
+perl-modules-5: perl-module-build
 python-minimal: python2
 qemu-system-x86: qemu
 ruby-gnuplot:

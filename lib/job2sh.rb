@@ -28,15 +28,15 @@ def shell_escape_expand(val)
 
   case val
   when nil, ''
-    return ''
+    ''
   when Integer
-    return val.to_s
+    val.to_s
   when /^[-a-zA-Z0-9~!@#%^&*()_+=;:.,<>\/?|\t "]+$/, Time
-    return "'#{val}'"
+    "'#{val}'"
   when /^[-a-zA-Z0-9~!@#%^&*()_+=;:.,<>\/?|\t '$]+$/
-    return '"' + val + '"'
+    '"' + val + '"'
   else
-    return Shellwords.shellescape(val)
+    Shellwords.shellescape(val)
   end
 end
 

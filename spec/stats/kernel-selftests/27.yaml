@@ -1,0 +1,7 @@
+ia64./dev/mem_0xc0000_0x100000_is_readable.pass: 1
+ia64./dev/mem_0x0_0x100000_is_mappable.pass: 1
+ia64./sys/devices/pci0000:00/0000:00:02.0/rom_read_38398_bytes.pass: 1
+ia64./sys/devices/pci0000:00/0000:00:03.0/rom_read_247294_bytes.pass: 1
+ia64./proc/bus/pci/00/00.0_0x0_0xa0000_not_mappable.pass: 1
+ia64./proc/bus/pci/00/01.0_0x0_0xa0000_not_mappable.pass: 1
+ia64.aliasing-test.pass: 1

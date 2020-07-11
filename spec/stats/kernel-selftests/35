@@ -1,0 +1,66 @@
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-da0c9ea146cbe92b832f1b0f694840ea8eb33cce/tools/testing/selftests/firmware'
+# selftests: firmware: fw_run_tests.sh
+# -----------------------------------------------------
+# Running kernel configuration test 1 -- rare
+# Emulates:
+# CONFIG_FW_LOADER=y
+# CONFIG_FW_LOADER_USER_HELPER=n
+# CONFIG_FW_LOADER_USER_HELPER_FALLBACK=n
+# ./fw_filesystem.sh: filesystem loading works
+# ./fw_filesystem.sh: async filesystem loading works
+# 
+# Testing with the file present...
+# Batched request_firmware() normal try #1: OK
+# Batched request_firmware_into_buf() normal try #1: OK
+# Batched request_firmware_direct() normal try #5: OK
+# Batched request_firmware_nowait(uevent=true) normal try #1: OK
+# 
+# Testing with the file missing...
+# Batched request_firmware() nofile try #5: OK
+# Batched request_firmware_into_buf() nofile try #1: OK
+# Batched request_firmware_direct() nofile try #5: OK
+# Batched request_firmware_nowait(uevent=true) nofile try #1: OK
+# Batched request_firmware_nowait(uevent=false) nofile try #2: OK
+# -----------------------------------------------------
+# Running kernel configuration test 2 -- distro
+# Emulates:
+# CONFIG_FW_LOADER=y
+# CONFIG_FW_LOADER_USER_HELPER=y
+# CONFIG_FW_LOADER_USER_HELPER_FALLBACK=n
+# ./fw_filesystem.sh: timeout works
+# ./fw_filesystem.sh: filesystem loading works
+# ./fw_filesystem.sh: async filesystem loading works
+# 
+# Testing with the file present...
+# Batched request_firmware() normal try #5: OK
+# Batched request_firmware_into_buf() normal try #5: OK
+# Batched request_firmware_direct() normal try #1: OK
+# Batched request_firmware_nowait(uevent=true) normal try #1: OK
+# Batched request_firmware_nowait(uevent=false) normal try #1: OK
+# 
+# Testing with the file missing...
+# Batched request_firmware() nofile try #5: OK
+# Batched request_firmware_into_buf() nofile try #1: OK
+# Batched request_firmware_direct() nofile try #5: OK
+# Batched request_firmware_nowait(uevent=true) nofile try #1: OK
+# -----------------------------------------------------
+# Running kernel configuration test 3 -- android
+# Emulates:
+# CONFIG_FW_LOADER=y
+# CONFIG_FW_LOADER_USER_HELPER=y
+# CONFIG_FW_LOADER_USER_HELPER_FALLBACK=y
+# ./fw_filesystem.sh: timeout works
+# ./fw_filesystem.sh: filesystem loading works
+# ./fw_filesystem.sh: async filesystem loading works
+# 
+# Testing with the file present...
+# Batched request_firmware() normal try #1: OK
+# Batched request_firmware_into_buf() normal try #1: OK
+# Batched request_firmware_nowait(uevent=false) normal try #5: OK
+# 
+# Testing with the file missing...
+# Batched request_firmware_into_buf() nofile try #5: OK
+# Batched request_firmware_direct() nofile try #1: OK
+# ./fw_fallback.sh: cancelling custom fallback mechanism works
+ok 1 selftests: firmware: fw_run_tests.sh
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-da0c9ea146cbe92b832f1b0f694840ea8eb33cce/tools/testing/selftests/firmware'

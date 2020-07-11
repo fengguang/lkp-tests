@@ -1,0 +1,15 @@
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-c72fcbc7d224903b8241afc1202a414575c1e557/tools/testing/selftests/net'
+# selftests: net: tls
+# [==========] Running 48 tests from 3 test cases.
+# [ RUN      ] tls_basic.base_base
+# [       OK ] tls_basic.base_base
+# [ RUN      ] tls.sendfile
+# [       OK ] tls.sendfile
+# [ RUN      ] tls.send_then_sendfile
+# [       OK ] tls.send_then_sendfile
+# [ RUN      ] global.tls12
+# [       OK ] global.tls12
+# [==========] 48 / 48 tests passed.
+# [  PASSED  ]
+ok 6 selftests: net: tls
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-c72fcbc7d224903b8241afc1202a414575c1e557/tools/testing/selftests/net'

@@ -1,0 +1,28 @@
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-84df9525b0c27f3ebc2ebb1864fa62a97fdedb7d/tools/testing/selftests/android'
+selftests: android: run.sh
+Sharing fd: 7, Client fd: 6
+Received buffer fd: 0
+ion_test.sh: heap_type: 0 - [FAIL]
+Sharing fd: 7, Client fd: 6
+Received buffer fd: 0
+ion_test.sh: heap_type: 1 - [FAIL]
+
+ion_test.sh: done
+not ok 1..1 selftests: android: run.sh [FAIL]
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-84df9525b0c27f3ebc2ebb1864fa62a97fdedb7d/tools/testing/selftests/android'
+
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-84df9525b0c27f3ebc2ebb1864fa62a97fdedb7d/tools/testing/selftests/breakpoints'
+selftests: breakpoints: breakpoint_test
+========================================
+ok 1 Test breakpoint 0 with local: 0 global: 1
+ok 2 Test breakpoint 1 with local: 0 global: 1
+ok 13 Test write watchpoint 0 with len: 1 local: 0 global: 1
+ok 14 Test write watchpoint 1 with len: 1 local: 0 global: 1
+ok 61 Test read watchpoint 0 with len: 1 local: 0 global: 1
+ok 62 Test read watchpoint 1 with len: 1 local: 0 global: 1
+ok 109 Test icebp
+ok 110 Test int 3 trap
+Pass 110 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+1..110
+ok 1..1 selftests: breakpoints: breakpoint_test [PASS]
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-84df9525b0c27f3ebc2ebb1864fa62a97fdedb7d/tools/testing/selftests/breakpoints'

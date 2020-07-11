@@ -5,8 +5,21 @@ category: benchmark
 timeout: 1h
 
 phoronix-test-suite:
-  test:
-  - clpeak-1.0.1
-  - gpu-residency-1.0.1
-  - xsbench-cl-1.0.0
-  - x264-opencl-1.9.0
+  - test: clpeak-1.0.1
+    option_a:
+      - Global Memory Bandwidth
+      - Single-Precision Float
+      - Double-Precision Double
+      - Integer Compute INT
+      - Transfer Bandwidth enqueueWriteBuffer
+      - Transfer Bandwidth enqueueReadBuffer
+      - Kernel Latency
+      # - Test All Options
+  - test: gpu-residency-1.0.1
+    option_a:
+      - RC6
+      - RC6P
+      # - Test All Options
+  - test:
+    - xsbench-cl-1.0.0
+    - x264-opencl-1.9.0
