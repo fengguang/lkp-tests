@@ -32,6 +32,7 @@ libacl1-dev: libacl-devel
 libaio1: libaio
 libaio-dev: libaio-devel
 libarchive-dev: libarchive-devel
+libarchive-tools: libarchive
 libarchive13: libarchive
 libattr1: libattr
 libattr1-dev: libattr-devel
@@ -179,7 +180,7 @@ python3: python34
 python3-six: python36-six
 python-dev: platform-python-devel
 python-minimal: python2
-python-numpy: numpy
+python3-minimal: python3
 python-numpy: numpy
 python-openssl: pyOpenSSL
 python-pkg-resources: python-setuptools
