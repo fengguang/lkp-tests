@@ -20,6 +20,11 @@
 # - numa_cpu_nodes
 # - pre_read
 # - rwmixread
+# - zero_buffers
+# - ioscheduler
+# - iodepth_batch
+# - iodepth_batch_complate
+# - partitions
 
 . $LKP_SRC/lib/common.sh
 . $LKP_SRC/lib/unit.sh
@@ -45,6 +50,10 @@ size=$((test_size / nr_task))
 : ${file_service_type:=roundrobin}
 : ${random_distribution:=random}
 : ${pre_read:=0}
+: ${zero_buffers:=0}
+: ${ioscheduler:=none}
+: ${iodepth_batch:=0}
+: ${iodepth_batch_complete:=0}
 
 direct=$(parse_bool $direct)
 raw_disk=$(parse_bool $raw_disk)
@@ -82,6 +91,21 @@ group_reporting
 create_only=1
 pre_read=$pre_read
 "
+params="zero_buffers iodepth_batch iodepth_batch_complete"
+for param in $params; do
+	param_value="$(eval echo '$'$param)"
+	if [ "$param_value" != 0 ]; then
+		create_task="\
+$create_task
+$param=$param_value"
+	fi
+done
+
+if [ "$ioscheduler" != "none" ]; then
+	create_task="\
+$create_task
+ioscheduler=$ioscheduler"
+fi
 
 if parse_bool -q "$time_based"; then
 	create_task="
@@ -164,6 +188,7 @@ rw=$rw
 $storage_setup
 numjobs=$jobs_per_storage
 $rwmixread_setup
+name=rw_${rw}_bs_${bs}_jobname
 $(__numa_mem_policy $no)
 $(__numa_cpu_nodes $no)
 "
