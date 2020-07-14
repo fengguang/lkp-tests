@@ -1,6 +1,6 @@
 #!/usr/bin/env crystal
 
-LKP_SRC = ENV["LKP_SRC"] || File.dirname(__DIR__)
+# LKP_SRC = ENV["LKP_SRC"] || File.dirname(__DIR__)
 
 require "./statistics"
 require "./common"
@@ -13,7 +13,7 @@ def auto_range(max_level = 6, min_level = 0)
   end.flatten + [10 ** (max_level + 1)]
 end
 
-def histogram(data, range = nil, params = {})
+def histogram(data, range = nil, params = Hash(String, Bool))
   no_percent = params[:no_percent]
   accumulate = params[:accumulate]
 
@@ -54,7 +54,7 @@ def format_time(val, unit = "u")
   end
 end
 
-def print_histogram(range, hist, params = {})
+def print_histogram(range, hist, params = Hash(String, Bool))
   with_range = params[:with_range]
   as_time = params[:as_time]
   unit = params[:unit] || "u"

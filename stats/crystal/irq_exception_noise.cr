@@ -4,6 +4,7 @@ RESULT_ROOT = ENV["RESULT_ROOT"]
 
 require "../../lib/ftrace"
 require "../../lib/common"
+require "../../lib/log"
 require "../../lib/statistics"
 require "../../lib/data_analysis"
 require "../../lib/ftrace_funcgraph"
@@ -13,9 +14,9 @@ require "../../lib/ftrace_funcgraph"
 class IrqAnalysis
   def initialize(sample_array)
     @sample_array = sample_array
-    @last = nil
-    @irq = {}
-    @softirq = {}
+    @last = false
+    @irq = Hash(Int32, Array(Int32)).new
+    @softirq = Hash(Int32, Array(Int32)).new
     @irq_nr = @irq_time = @softirq_nr = @softirq_time = 0
   end
 
@@ -55,11 +56,11 @@ class IrqAnalysis
     t = (s2.timestamp * 1_000_000).to_i - (s1.timestamp * 1_000_000).to_i
     if s1.type == :softirq_entry
       vec_nr = s1.data["vec"]
-      @softirq[vec_nr] ||= []
+      @softirq[vec_nr] ||= Array(Int32).new
       @softirq[vec_nr] << t
     else
       irq_nr = s1.data["irq"]
-      @irq[irq_nr] ||= []
+      @irq[irq_nr] ||= Array(Int32).new
       @irq[irq_nr] << t
     end
   end
@@ -68,7 +69,7 @@ class IrqAnalysis
     @sample_array.each do |sample|
       if @last
         process @last, sample if sample.type == :softirq_exit || sample.type == :irq_handler_exit
-        @last = nil
+        @last = false
       elsif sample.type == :softirq_entry || sample.type == :irq_handler_entry
         @last = sample
       end
@@ -82,15 +83,15 @@ def extract_ftrace(fn)
   file = zopen(fn)
   trace = TPTrace.new file, fmts_dir
 
-  samples = {}
+  samples = Hash(Int32, Array(Int32)).new
   # interrupt handler will not be migrated so to simply entry/exit
   # pair match, sort these samples according to CPU number
   trace.each do |sample|
-    samples[sample.cpu] ||= []
+    samples[sample.cpu] ||= Array(Int32).new
     samples[sample.cpu] << sample
   end
 
-  samples_array = []
+  samples_array = Array(Int32).new
   # then we put these sorted lines into a global array
   samples.each do |_, array|
     array.each do |sample|
