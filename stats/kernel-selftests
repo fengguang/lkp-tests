@@ -211,7 +211,22 @@ while (line = STDIN.gets)
       subtest_case_name = $2
       subtest_stat('net', test_case_name, subtest_case_name, $1, stats)
     elsif test_name == 'x86' && subtest_case_name
-      subtest_stat('x86', test_case_name, subtest_case_name, $1, stats)
+      # [RUN] ARCH_SET_GS(0x1), then schedule to 0x0
+      #       Before schedule, set selector to 0x3
+      #       other thread: ARCH_SET_GS(0x0) -- sel is 0x0
+      # [FAIL]        GS/BASE changed from 0x3/0x0 to 0x0/0x0
+      # [RUN] ARCH_SET_GS(0x1), then schedule to 0x0
+      #       Before schedule, set selector to 0x2b
+      #       other thread: ARCH_SET_GS(0x0) -- sel is 0x0
+      # [OK]  GS/BASE remained 0x2b/0x0
+      result = $1
+      detail = $2
+
+      # extract address to distiguish different RUN with same name
+      match = detail.match(/GS\/BASE (remained|changed from) (?<address>[^\s]+)/)
+      match ||= {}
+
+      subtest_stat('x86', test_case_name, "#{subtest_case_name} #{match[:address]}", result, stats)
     end
   when /^(kmod_test.*): (OK|FAIL|SKIP)/
     next unless test_name == 'kmod'
