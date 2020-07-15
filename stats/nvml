@@ -10,8 +10,8 @@ fs_type = ''
 build_type = ''
 
 while (line = STDIN.gets)
-  line = line.plain_text
   line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
+  line = line.plain_text
   case line
   when %r{^(.+)/TEST[0-9]+: SETUP\s*\(.+/(.+)/(.+)\)$}
     test_item = Regexp.last_match[1]
