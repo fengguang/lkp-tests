@@ -1,0 +1,24 @@
+pkgname=atomic
+pkgver=1.0
+pkgrel=1
+pkgdesc="atomic is a special memory testing program"
+arch=('aarch64')
+url="git://$GIT_SERVER/atomic/zhangyale"
+license=('SKIP')
+depends=('')
+source=("git://$GIT_SERVER/atomic/zhangyale")
+md5sums=('SKIP')
+
+build() 
+{
+    cd "$srcdir/zhangyale"
+    make clean
+    make
+}
+
+package()
+{
+	local benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+	mkdir -p $benchmark_path
+	cp -af "$srcdir/zhangyale/"* "$benchmark_path"
+}
