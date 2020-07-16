@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+while (line = STDIN.gets)
+  case line.chomp!
+  when /.*atomic:\s+\d+/
+    lines = line.split
+    threads = lines[4]
+    score = lines[-1]
+    puts "threads: #{threads}"
+    puts "score: #{score}"
+  end
+end
