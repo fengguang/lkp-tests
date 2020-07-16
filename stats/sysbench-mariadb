@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+while (line = STDIN.gets)
+    case line.chomp!
+    when /transactions:\s+(\d+)/
+      puts "transactions: #{$1}"
+    when /95th percentile:\s+(\S+)/
+      puts "95th percentile: #{$1}"
+    end
+end
