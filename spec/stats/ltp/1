@@ -36,3 +36,21 @@ initiation_status="ok"
 duration=0 termination_type=exited termination_id=0 corefile=no
 cutime=0 cstime=2
 <<<test_end>>>
+<<<test_start>>>
+tag=renameat01 stime=1594856338
+cmdline="renameat01"
+contacts=""
+analysis=exit
+<<<test_output>>>
+mke2fs 1.44.5 (15-Dec-2018)
+renameat01    0  TINFO  :  Found free device 0 '/dev/loop0'
+renameat01    0  TINFO  :  Failed reach the subdirs limit on EXT2/EXT3/EXT4 filesystem
+renameat01    1  TPASS  :  renameat() returned the expected value: TEST_ERRNO=SUCCESS(0): Success
+renameat01    2  TPASS  :  renameat() returned the expected value: TEST_ERRNO=SUCCESS(0): Success
+renameat01    8  TCONF  :  renameat01.c:200: EMLINK test is not appropriate
+renameat01    0  TWARN  :  tst_device.c:223: ioctl(/dev/loop0, LOOP_CLR_FD, 0) no ENXIO for too long
+<<<execution_status>>>
+initiation_status="ok"
+duration=7 termination_type=exited termination_id=36 corefile=no
+cutime=15 cstime=251
+<<<test_end>>>
