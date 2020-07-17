@@ -10,11 +10,11 @@ source=("https://git.kernel.org/pub/scm/utils/dtc/dtc.git")
 md5sums=('SKIP')
 
 build() {
-  cd "$srcdir/device-tree-compiler-1.4.0+dfsg.orig"
+  cd "$srcdir/dtc"
   make
 }
 
 package() {
-  cd "$srcdir/device-tree-compiler-1.4.0+dfsg.orig"
+  cd "$srcdir/dtc"
   make DESTDIR="$pkgdir/" install 
 }
