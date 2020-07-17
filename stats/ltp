@@ -46,7 +46,7 @@ $2 ~ /[0-9]*/ && $3 ~ /TCONF/ {
 	termid_fail++
 }
 
-/termination_type=exited termination_id=32/ {
+/termination_type=exited termination_id=(2|6|18|32|34|36|48) / {
 	termid_fail--
 	termid_block++
 }
