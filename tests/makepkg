@@ -92,7 +92,7 @@ cgz_name="${bm_name}-${pkgver:-0}-${pkgrel:-0}_${date}.cgz"
 setup_proxy
 
 PACMAN=true BUILDDIR=$TMP CARCH=$arch PKGEXT=.cgz CGZDEST="$sync_dest/$cgz_name" \
-	$LKP_SRC/sbin/makepkg --config $LKP_SRC/etc/makepkg.conf
+	$LKP_SRC/sbin/makepkg -A --config $LKP_SRC/etc/makepkg.conf
 
 update_softlink()
 {
