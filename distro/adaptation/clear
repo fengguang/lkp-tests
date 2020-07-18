@@ -171,7 +171,7 @@ libc6-dev-x32: dev-utils-dev
 libc6-dev-x32/unstable: dev-utils-dev
 libc6-i386: dev-utils-dev
 libc6/unstable: dev-utils-dev
-libcairo2:dev-utils-dev
+libcairo2: dev-utils-dev
 libcairo2-dev: dev-utils-dev
 libcap2: dev-utils-dev
 libcap2-bin: sysadmin-basic
@@ -505,7 +505,7 @@ qemu-system-x86: kvm-host
 qemu-utils: kvm-host
 quota:
 reiserfsprogs:
-rpcbind:storage-utils
+rpcbind: storage-utils
 rstatd:
 rsync: dev-utils
 rsyslog:

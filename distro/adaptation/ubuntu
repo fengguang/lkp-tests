@@ -1,16 +1,16 @@
-iblz4-1:liblz4-dev
-libbz2-1.0:libbz2-dev
+iblz4-1: liblz4-dev
+libbz2-1.0: libbz2-dev
 libcpupower-dev:
 libevent-2.0-5: libevent-dev
 libgcrypt-dev: libgcrypt11-dev
-libgflags2v5:libgflags-dev
+libgflags2v5: libgflags-dev
 libhugetlbfs-bin: hugepages
 libhugetlbfs: libhugetlbfs0
 libicu: libicu-dev
 libipsec-mb:
 libntfs: libntfs-3g88
 libperl5: libperl5.26
-libsnappy1v5:libsnappy-dev
+libsnappy1v5: libsnappy-dev
 libssl: libssl1.0.0
 libtirpc: libtirpc1
 libtool-bin:
@@ -19,6 +19,6 @@ linux-perf: linux-tools-common
 linux-perf: linux-tools-generic
 linux-tools: linux-tools-generic
 perl-modules-5: perl-modules-5.26
-pmdk:pmdk-tools
+pmdk: pmdk-tools
 which: debianutils
-zlib1g:zlib1g-dev
+zlib1g: zlib1g-dev
