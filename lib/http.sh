@@ -92,6 +92,13 @@ http_do_request()
 		return
 	}
 
+	[ "${path#http://}" != "$path" ] && {
+		echo \
+		$http_client_cmd "$path" "$@"
+		$http_client_cmd "$path" "$@"
+		return
+	}
+
 	# $ busybox wget http://XXX:/
 	# wget: bad port spec 'XXX:'
 	local http_prefix
@@ -101,7 +108,6 @@ http_do_request()
 	else
 		http_prefix="http://$LKP_SERVER:${LKP_CGI_PORT:-3000}/~$LKP_USER"
 	fi
-
 	echo \
 	$http_client_cmd "$http_prefix/$path" "$@"
 	$http_client_cmd "$http_prefix/$path" "$@"
