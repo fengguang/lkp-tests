@@ -50,6 +50,16 @@ ARGV.each do |jobfile|
   jobs['tbox_group'] = tbox_group(jobs['testbox'])
   jobs['node_roles'] ||= 'server client' if jobs['cluster']
   jobs.each_jobs do |job|
+    host = job['SCHED_IP']
+    port = job['SCHED_PORT']
+
+    if !host || !port
+      raise 'Please configure SCHED_IP and SCHED_PORT first'
+    end
+
+    job["LKP_CGI_PORT"] = port
+    job["LKP_SERVER"] = host
+
     job.add_pp
 
     # get job shell function
@@ -70,8 +80,6 @@ ARGV.each do |jobfile|
     job_hash = job_hash.merge(sh_hash)
 
     # init scheduler client
-    host = job_hash['SCHED_IP'] || '127.0.0.1'
-    port = job_hash['SCHED_PORT'] || 3000
     scheduler_client = SchedulerClient.new(host, port)
 
     # submit job
