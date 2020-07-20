@@ -391,9 +391,9 @@ def load_base_matrix(matrix_path, head_matrix, options)
     tags_merged << tag
 
     options['base_matrixes'] ||= []
-    options['base_matrixes'] << "#{tag} #{rc_matrix['stats_source'].size} #{rc_matrix[options['stat']].inspect}"
+    options['base_matrixes'] << "#{tag} #{base_matrix_file} #{(rc_matrix['stats_source'] || []).size} #{rc_matrix[options['stat']].inspect}"
 
-    cols += rc_matrix['stats_source'].size
+    cols += (rc_matrix['stats_source'] || []).size
     break if tags_merged.size >= 3 && cols >= 9
     break if tag =~ /-rc1$/ && cols >= 3
   end
