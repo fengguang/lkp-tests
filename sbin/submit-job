@@ -50,11 +50,11 @@ ARGV.each do |jobfile|
   jobs['tbox_group'] = tbox_group(jobs['testbox'])
   jobs['node_roles'] ||= 'server client' if jobs['cluster']
   jobs.each_jobs do |job|
-    host = job['SCHED_IP']
+    host = job['SCHED_HOST']
     port = job['SCHED_PORT']
 
     if !host || !port
-      raise 'Please configure SCHED_IP and SCHED_PORT first'
+      raise 'Please configure SCHED_HOST and SCHED_PORT first'
     end
 
     job["LKP_CGI_PORT"] = port
