@@ -1,0 +1,23 @@
+pkgname=mutex
+pkgver=1.0
+pkgrel=1
+arch=('aarch64')
+url="git://$GIT_SERVER/mutex/huxuejiao"
+license=('SKIP')
+depends=('')
+source=("git://$GIT_SERVER/mutex/huxuejiao")
+md5sums=('SKIP')
+
+build() 
+{
+    cd "$srcdir/huxuejiao"
+    make clean
+    make
+}
+
+package()
+{
+    local benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+    mkdir -p $benchmark_path
+    cp -af "$srcdir/huxuejiao/"* "$benchmark_path"
+}
