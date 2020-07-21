@@ -671,10 +671,6 @@ run_test()
 			test_opt="\n1\nn"
 			;;
 		nexuiz-*)
-			# Choose
-			# 1: Test All Options
-			# 2: Test All Options
-			test_opt="\n3\n3\nn"
 			export DISPLAY=:0
 			find_max_resolution $test || die "failed to find max resolution for $test"
 			;;
