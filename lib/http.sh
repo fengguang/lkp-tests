@@ -108,6 +108,7 @@ http_do_request()
 	else
 		http_prefix="http://$LKP_SERVER:${LKP_CGI_PORT:-3000}/~$LKP_USER"
 	fi
+
 	echo \
 	$http_client_cmd "$http_prefix/$path" "$@"
 	$http_client_cmd "$http_prefix/$path" "$@"

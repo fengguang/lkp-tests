@@ -551,14 +551,13 @@ tbox_cant_kexec()
 
 download_job()
 {
-	job="$(grep -o '^initrd http://.*/job.cgz' $NEXT_JOB | awk '{print $2}')"
-	[ -n "$job" ] || { 
+	job="$(grep -m1 '^initrd http://.*/job.cgz' $NEXT_JOB | awk '{print $2}')"
+	[ -z "$job" ] && {
 		job="$(grep -o 'job=[^ ]*.yaml' $NEXT_JOB | awk -F 'job=' '{print $2}')"
 	}
+
 	local job_cgz=$job
-	[ "${job_cgz%.cgz}" != "$job_cgz" ] || {
-  		job_cgz=${job_cgz%.yaml}.cgz
-	}
+	[ "${job_cgz%.cgz}" = "$job_cgz" ] && job_cgz=${job_cgz%.yaml}.cgz
 
 	# TODO: escape is necessary. We might also need download some extra cgz
 	http_get_file "$job_cgz" /tmp/next-job.cgz

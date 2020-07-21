@@ -35,15 +35,15 @@ read_kernel_cmdline_vars_from_append()
 
 download_kernel()
 {
+	# kernel can be one of
+	# 	http://...
+	# 	/full/path/...
 	kernel="$(echo $kernel | sed 's/^\///')"
 
 	echo "downloading kernel image ..."
 	set_job_state "wget_kernel"
-	kernel_file=$kernel
-	# kernel file examples:
-	# 	http://...(new scheme)
-	# 	/fullpath/...(old scheme)
-	kernel_file=${kernel_file#http://*/}
+
+	kernel_file=${kernel#http://*/}
 	kernel_file="$CACHE_DIR/$kernel_file"
 	http_get_newer "$kernel" $kernel_file || {
 		set_job_state "wget_kernel_fail"
@@ -107,7 +107,6 @@ use_local_modules_initrds()
 	}
 }
 
-
 download_initrd()
 {
 	local _initrd
@@ -119,7 +118,7 @@ download_initrd()
 
 	use_local_modules_initrds
 
-	for _initrd in $(awk '/^(initrd|INITRD)/{print $2}' /tmp/next-job-$LKP_USER)
+	for _initrd in $(awk '/^(initrd|INITRD) / {print $2}' $NEXT_JOB)
 	do
 		local file=$_initrd
 		[ "${file#http://}" != "$file" ] && {
@@ -141,7 +140,6 @@ download_initrd()
 
 		initrds="${initrds}$file "
 	done
-
 
 	for _initrd in $(echo $initrd $tbox_initrd $job_initrd $lkp_initrd $bm_initrd $modules_initrd $testing_nvdimm_modules_initrd $linux_headers_initrd $audio_sof_initrd $syzkaller_initrd $linux_selftests_initrd $linux_perf_initrd $ucode_initrd | tr , ' ')
 	do
@@ -182,11 +180,10 @@ kexec_to_next_job()
 	local kernel append acpi_rsdp download_initrd_ret
 	kernel=$(awk  '/^KERNEL / { print $2; exit }' $NEXT_JOB)
 	append=$(grep -m1 '^APPEND ' $NEXT_JOB | sed 's/^APPEND //')
-	[ -z "$append" ] && append=$(awk  '/^KERNEL / { print $3" "$4" "$5" "$6" "$7" "$8" "$9}' $NEXT_JOB)
+	[ -z "$append" ] && append=$(awk  '/^KERNEL / {for (i=3; i<=NF; i++) printf $i " "}' $NEXT_JOB
 	rm -f /tmp/initrd-* /tmp/modules.cgz
 
 	read_kernel_cmdline_vars_from_append "$append"
-	#[ -z "$append" ] && [ -n "$cmdline" ] && append=$cmdline
 	append=$(echo "$append" | sed -r 's/ [a-z_]*initrd=[^ ]+//g')
         
 	# Pass the RSDP address to the kernel for EFI system
