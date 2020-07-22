@@ -50,4 +50,4 @@ log_cmd umount $mnt
 log_cmd mount -t ext4 -o commit=10000 $partition $mnt || die
 log_cmd rm -rf $mnt/b
 
-echo "$testcase pass"
+echo "ext4-frags pass"

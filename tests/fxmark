@@ -6,7 +6,7 @@
 
 . $LKP_SRC/lib/debug.sh
 
-cd $BENCHMARK_ROOT/$testcase || die "can not enter $BENCHMARK_ROOT/$testcase"
+cd $BENCHMARK_ROOT/fxmark || die "can not enter $BENCHMARK_ROOT/fxmark"
 
 loopdev=$(losetup -f)
 
@@ -71,7 +71,7 @@ setup_config()
 
 	# install the filebench command
 	[[ "$test" =~ "filebench" ]] && {
-		ln -s $BENCHMARK_ROOT/$testcase/filebench/bin/filebench /usr/bin/filebench
+		ln -s $BENCHMARK_ROOT/fxmark/filebench/bin/filebench /usr/bin/filebench
 	}
 
 	sed -i "/    confirm_media_path()/i\\

@@ -1,6 +1,8 @@
 #!/bin/bash
 # - group
 
+testcase=vmem
+
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/tests/vmem.sh

@@ -6,7 +6,7 @@
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/reproduce-log.sh
 
-log_cmd cd $BENCHMARK_ROOT/$testcase || die "can not enter $BENCHMARK_ROOT/$testcase"
+log_cmd cd $BENCHMARK_ROOT/stream || die "can not enter $BENCHMARK_ROOT/stream"
 
 log_cmd export OMP_NUM_THREADS=$nr_threads
 
