@@ -39,14 +39,11 @@ if ARGV.size.zero?
   exit
 end
 
-distroinfo = LKP::DistroInfo.instance
-
 ARGV.each do |jobfile|
   jobs = Job2sh.new
   jobs.load(jobfile, true) || next
   jobs.overrides = opt_set_key_value
   jobs['testbox'] = opt_set_key_value['testbox'] if opt_set_key_value['testbox']
-  jobs['arch'] ||= distroinfo.systemarch
   jobs['tbox_group'] = tbox_group(jobs['testbox'])
   jobs['node_roles'] ||= 'server client' if jobs['cluster']
   jobs.each_jobs do |job|
