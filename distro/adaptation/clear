@@ -13,7 +13,6 @@ automake: c-basic
 autopoint: os-core-dev
 autotools-dev: dev-utils-dev
 bash-completion: os-core
-bc: bc
 bind9:
 binutils: c-basic
 binutils-dev: c-basic
@@ -71,7 +70,6 @@ expect: os-core-dev
 f2fs-tools: os-testsuite-0day
 fakeroot: os-testsuite-0day
 file: os-core-dev
-fio: fio
 flex: c-basic
 fontconfig: dev-utils-dev
 fontconfig-config: dev-utils-dev
@@ -90,13 +88,11 @@ gcc-6-multilib: dev-utils-dev
 gcc-7: c-extras-gcc7
 gcc: c-basic
 gcc-multilib: dev-utils-dev
-gdb: gdb
 gengetopt:
 genisoimage:
 gettext: os-core-dev
 gettext-base: os-core-dev
 gfortran: os-core-dev
-git: git
 glibc-doc:
 gnu-efi: os-core-dev
 gnupg: desktop-apps
@@ -116,7 +112,6 @@ indent: c-basic
 info2man:
 initramfs-tools: sysadmin-basic
 initramfs-tools-core:i386: sysadmin-basic
-inotify-tools: inotify-tools
 install-info: texinfo
 intltool-debian: os-testsuite-0day
 inxi:
@@ -126,7 +121,6 @@ ipmitool: sysadmin-basic
 iproute2: network-basic
 iw: network-basic
 jfsutils:
-jq: jq
 kexec-tools: os-cloudguest-azure
 klibc-utils:
 klibc-utils:i386:
@@ -447,11 +441,9 @@ openbsd-inetd:
 opencryptoki:
 openjdk: java-runtime
 openmpi-bin: dev-utils-dev
-openssl: openssl
 pandoc: os-testsuite-0day
 parallel: sysadmin-basic
 parted: storage-utils
-patch: patch
 pbzip2: os-testsuite-phoronix
 pciutils: sysadmin-basic
 perl: perl-basic
@@ -550,9 +542,7 @@ sssd-proxy:
 sssd-tools:
 strace: sysadmin-basic
 stress-ng: dev-utils
-sudo: sudo
 sysbench:
-sysstat: sysstat
 systemd: os-core
 systemtap-sdt-dev:
 tcl: tcl-basic
@@ -571,7 +561,6 @@ update-inetd:
 usbutils: sysadmin-basic
 uuid-dev: os-core-dev
 uuid-runtime: os-core
-vim: vim
 virt-what:
 vsftpd:
 waffle-utils:
@@ -592,7 +581,6 @@ xsltproc: dev-utils
 xutils-dev: os-clr-on-clr-dev
 zlib1g: os-core-dev
 zlib1g-dev: os-core-dev
-zsh: zsh
 libapparmor1:
 libapparmor-dev:
 libbsd0:
