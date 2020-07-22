@@ -1,0 +1,22 @@
+#!/bin/bash
+# - nr_threads
+
+cd $BENCHMARK_ROOT/atomic || exit
+[ -n "$nr_threads" ] || nr_threads=1
+
+run_atomic()
+{
+	insmod atomic.ko threads=$nr_threads
+	sleep 10
+	for i in $(seq 100)
+	do
+		sleep 1
+		output=$(dmesg | grep "atomic:")
+		[ -n "output" ] && break
+	done
+
+	echo "$output"
+	rmmod atomic.ko
+}
+
+run_atomic
