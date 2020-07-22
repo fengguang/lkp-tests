@@ -19,12 +19,11 @@ gcc-4.9: gcc
 gcc-5: gcc
 gcc-6: gcc
 gcc-6-multilib:
-gfortran: gcc-c++
+gfortran: gcc-gfortran
 heirloom-mailx: mailx
 hpcc:
 initramfs-tools: dracut
 install-info: info
-iozone3: gnuplot*
 iproute2: iproute
 klibc-utils:
 gcc-multilib: libgcc.i686
@@ -197,7 +196,7 @@ systemtap-sdt-dev: systemtap-sdt-devel
 trinity:
 tshark: wireshark
 update-inetd: xinetd
-uuid-dev: libuuid-devel
+uuid-dev: uuid-devel
 uuid-runtime:
 wireless-regdb: crda
 wpasupplicant: wpa_supplicant
