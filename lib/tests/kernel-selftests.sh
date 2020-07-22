@@ -379,9 +379,6 @@ fixup_vm()
 	# has too many errors now
 	sed -i 's/hugetlbfstest//' vm/Makefile
 
-	sed -i 's/.\/va_128TBswitch/echo [ignored_by_lkp] #.\/va_128TBswitch/' vm/run_vmtests
-	sed -i 's/.\/mlock2-tests/echo [ignored_by_lkp] #.\/mlock2-tests/' vm/run_vmtests
-
 	# we need to adjust two value in vm/run_vmtests accroding to the nr_cpu
 	# 1) needmem=262144, in Byte
 	# 2) ./userfaultfd hugetlb *128* 32, we call it memory here, in MB
