@@ -99,6 +99,9 @@ build()
 	build_install_libfabric
 	build_install_libcxx
 	build_install_ndctl
+
+	cd "${srcdir}/nvml"
+	git checkout 1.8
 }
 
 package()
