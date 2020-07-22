@@ -1,0 +1,24 @@
+pkgname=spinlock
+pkgver=1.0
+pkgrel=1
+pkgdesc="spinlock is a lock, it is used for the SMP system to protect the critical section."
+arch=('aarch64')
+url="git://$GIT_SERVER/spinlock/baijing"
+license=('SKIP')
+depends=('')
+source=("git://$GIT_SERVER/spinlock/baijing")
+md5sums=('SKIP')
+
+build()
+{
+    cd "$srcdir/baijing"
+    make clean
+    make
+}
+
+package()
+{
+    local benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+    mkdir -p $benchmark_path
+    cp -af "$srcdir/baijing/"* "$benchmark_path"
+}
