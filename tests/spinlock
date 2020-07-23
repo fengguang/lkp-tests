@@ -1,0 +1,21 @@
+#!/bin/bash
+# - nr_threads
+
+cd $BENCHMARK_ROOT/spinlock || exit
+[ -n "$nr_threads" ] || nr_threads=1
+
+run_spinlock()
+{
+        insmod bench.ko threads=$nr_threads
+        sleep 10
+        for i in $(seq 100)
+        do
+                sleep 1
+                output=$(dmesg | grep "spinlock:")
+                [ -n "output" ] && break
+        done
+        echo "$output"
+        rmmod bench.ko
+}
+
+run_spinlock
