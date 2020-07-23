@@ -1,1 +1,38 @@
 #!/bin/bash
+# - max_test_fail
+# - testcase_timeout
+# - parallel
+# - retry
+
+: "${max_test_fail:=0}"
+: "${testcase_timeout:=300}"
+: "${parallel:=8}"
+: "${retry:=0}"
+
+args=(
+	--force
+	--timestamp
+	--timer
+	--max-test-fail=$max_test_fail
+	--testcase-timeout=$testcase_timeout
+	--parallel=$parallel
+	--retry=$retry
+	--big-test
+)
+
+run_mysql()
+{
+	local mysql_path
+	if [ -f /usr/local/mysql/mysql-test/mtr ]; then
+		mysql_path=/usr/local/mysql/mysql-test
+	elif [ -f /usr/share/mysql-test/mtr ]; then
+		mysql_path=/usr/share/mysql-test
+	else
+		mysql_path=/usr/lib/mysql-test
+	fi
+
+	cd $mysql_path || exit
+	./mtr "${args[@]}"
+}
+
+run_mysql
