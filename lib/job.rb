@@ -498,6 +498,54 @@ class Job
     end
   end
 
+  # find all create or update files from LKP_SRC directory
+  def find_git_change_files()
+    git_files_list = Array.new()
+    git_status = %x(cd #{LKP_SRC} && git status --porcelain=1)
+    git_status_line = git_status.split("\n")
+    git_status_line.each do |line|
+      git_file = line.split[-1]
+      git_file = File.join("#{LKP_SRC}", git_file)
+      git_files_list << git_file if File.exist?(git_file)
+    end
+
+    git_diff = %x(cd #{LKP_SRC} && git diff --name-only origin/master)
+    git_diff_line = git_diff.split("\n")
+    git_diff_line.each do |line|
+      git_file = line.strip
+      git_file = File.join("#{LKP_SRC}", git_file)
+      if File.exist?(git_file) && !git_files_list.include?(git_file)
+        git_files_list << git_file
+      end
+    end
+    git_files_list
+  end
+
+  # add test-user change files to job's define_files
+  # the change files is related with test program
+  def add_define_files()
+    @job["define_files"] = Hash.new()
+    git_files_list = find_git_change_files()
+    programs_params_hash = @job["pp"] || {}
+    program_name_list = programs_params_hash.keys || []
+    program_name_list.each do |program|
+
+      # if job is run as makepkg, makepkg-deps, pack-deps,
+      # then use makepkg's benchmark as program to get define_files
+      if ["makepkg", "makepkg-deps", "pack-deps"].include?(program)
+        program = programs_params_hash[program]["benchmark"]
+      end
+
+      Dir.glob("#{LKP_SRC}/*/#{program}{,/*}").each do |file|
+        if git_files_list.include?(file)
+          relative_path = file.sub("#{LKP_SRC}/", '')
+          @job["define_files"][relative_path] = File.read(file)
+        end
+      end
+    end
+  end
+
+
   def each_job_init
     init_program_options
     @dims_to_expand = Set.new EXPAND_DIMS

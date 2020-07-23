@@ -11,6 +11,7 @@ require 'optparse'
 require 'yaml'
 
 opt_set_key_value = {}
+opt_auto_define_files = false
 
 options = OptionParser.new do |opts|
   opts.banner = 'Usage: tj [options] jobs...'
@@ -20,6 +21,10 @@ options = OptionParser.new do |opts|
 
   opts.on("-s 'KEY: VALUE'", "--set 'KEY: VALUE'", 'add YAML hash to job') do |key_value|
     opt_set_key_value.merge! YAML.load key_value
+  end
+
+  opts.on("-a", "--auto-define-files", "auto add define_files") do
+    opt_auto_define_files = true
   end
 end
 
@@ -58,6 +63,7 @@ ARGV.each do |jobfile|
     job["LKP_SERVER"] = host
 
     job.add_pp
+    job.add_define_files if opt_auto_define_files
 
     # get job shell function
     sh_run_job = job.sh_run_job
