@@ -13,7 +13,7 @@ require 'yaml'
 opt_set_key_value = {}
 
 options = OptionParser.new do |opts|
-  opts.banner = 'Usage: submit-job [options] jobs...'
+  opts.banner = 'Usage: tj [options] jobs...'
 
   opts.separator ''
   opts.separator 'options:'
