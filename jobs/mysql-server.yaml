@@ -1,0 +1,6 @@
+suite: mysql-server 
+category: functional 
+
+mysql-server:
+  testcase_timeout: 300
+  parallel: 8
