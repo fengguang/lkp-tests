@@ -43,7 +43,7 @@ def max_cols(matrix)
 end
 
 def matrix_fill_missing_zeros(matrix)
-  cols = matrix['stats_source'].size
+  cols = (matrix['stats_source'] || []).size
   matrix.each do |_k, v|
     v << 0 while v.size < cols
   end
