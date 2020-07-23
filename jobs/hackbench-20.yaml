@@ -1,0 +1,23 @@
+suite: hackbench
+category: benchmark
+
+disable_latency_stats: 1
+
+nr_threads:
+   - 1
+   - 2
+   - 3
+   - 5
+   - 10
+   - 20
+iterations: 10
+datesize: 1000
+runtime: 300
+
+hackbench:
+  mode:
+  - process
+  - threads
+  ipc:
+  - pipe
+  - socket
