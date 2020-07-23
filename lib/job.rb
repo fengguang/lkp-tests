@@ -252,7 +252,6 @@ class Job
 
   def load_hosts_config
     return if @job.include?(:no_defaults)
-    return unless @job.include? 'tbox_group'
 
     hosts_file = get_hosts_file
     if !(File.exist? hosts_file)
@@ -267,7 +266,13 @@ class Job
   end
 
   def get_hosts_file
-    hosts_file_name = @job['testbox'].split('--')[0]
+    if @job.include? 'tbox_group'
+      tbox_group = @job['tbox_group']
+    else
+      tbox_group = tbox_group(@job['testbox'])
+    end
+
+    hosts_file_name = tbox_group.split('--')[0]
     hosts_file = "#{LKP_SRC}/hosts/#{hosts_file_name}"
   end
 
