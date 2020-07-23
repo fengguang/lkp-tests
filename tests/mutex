@@ -1,0 +1,22 @@
+#!/bin/bash
+# - nr_threads
+
+cd $BENCHMARK_ROOT/mutex || exit
+[ -n "$nr_threads" ] || nr_threads=1
+
+run_mutex()
+{
+	insmod mutex_test.ko threads=$nr_threads
+	sleep 10
+	for i in $(seq 100)
+	do
+		sleep 1
+		output=$(dmesg | grep "mutex:")
+		[ -n "output" ] && break
+	done
+
+	echo "$output"
+	rmmod mutex_test.ko
+}
+
+run_mutex
