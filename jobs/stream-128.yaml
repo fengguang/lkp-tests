@@ -1,0 +1,15 @@
+suite: stream
+category: benchmark
+
+nr_threads:
+- 128
+- 64
+- 32
+
+stream:
+  array_size:
+  - 10000000 # 0.2GB
+  - 50000000 # 1GB
+  omp:
+  - true
+  - false
