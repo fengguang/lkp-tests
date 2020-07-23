@@ -535,6 +535,7 @@ tbox_cant_kexec()
 	[ "${HOSTNAME#*lkp-whlu01}"      != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-cfl-h01}"      != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-ivb-d02}"    != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-hsw-d02}"    != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*sof-minnow-1}" != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*sof-minnow-2}" != "$HOSTNAME" ] && return 0
 	[ "${HOSTNAME#*lkp-skly01}"     != "$HOSTNAME" ] && return 0
