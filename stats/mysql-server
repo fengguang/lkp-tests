@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.reapath($PROGRAM_NAME)))
+
+require "#{LKP_SRC}/lib/string_ext"
+
+results = []
+
+while (line = STDIN.gets)
+  line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
+
+  case line
+    # The output is as below:
+    # 200706 14:35:48 [ 99%] main.subquery_sj_innodb_all              w8  [ pass ]    140
+    # 200706 14:35:52 [ 99%] main.ssl_dynamic_persisted               w1  [ fail ]   5953
+    # 200706 14:35:59 [ 99%] main.mysql_upgrade_grant                 w7  [ skipped ]  80805
+  when /\[\s*\d+\%\]/
+    results << line.split(']')[1].split[0] + '.pass: 1'      if line.include?('[ pass ]')
+    results << line.split(']')[1].split[0] + '.fail: 1'      if line.include?('[ fail ]')
+    results << line.split(']')[1].split[0] + '.skip: 1'      if line.include?('[ skipped ]')
+  end
+end
+
+results.each do |item|
+  puts item
+end
