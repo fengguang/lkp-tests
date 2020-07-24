@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+
+# usage:
+#   cat $LKP_SRC/distro/depends/* | $LKP_SRC/sbin/adapt-packages $os
+# output:
+#   package names for $os
+
+require 'yaml'
+require 'set'
+
+adapt = YAML.load_file ENV['LKP_SRC'] + '/distro/adaptation/' + ARGV[0]
+pkgs = Set.new
+
+while (line = STDIN.gets)
+  line.chomp.split.each do |pkg|
+    pkg = pkg.delete_suffix '/unstable'
+    if adapt.include? pkg
+      pkgs << adapt[pkg].split if adapt[pkg]
+    else
+      pkgs.add pkg
+    end
+  end
+end
+
+pkgs.each { |p| puts p }
