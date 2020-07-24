@@ -20,7 +20,7 @@ distro_install_depends()
 	local bm="$1"
 	local scripts=$(find $LKP_SRC/distro/depends/ -name "$bm" -o -name "${bm}.[0-9]")
 
-	support_repo_epel
+	[ ${DISTRO^^} == "CENTOS" ] && support_repo_epel
 
 	for script in $scripts
 	do
