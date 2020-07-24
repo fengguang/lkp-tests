@@ -218,7 +218,11 @@ setup_crosstool_gcc()
 			gcc_arch=or1k-linux
 			;;
 		riscv)
-			gcc_arch=riscv64-linux
+			if grep -q 'CONFIG_32BIT=y' .config; then
+				gcc_arch=riscv32-linux
+			else
+				gcc_arch=riscv64-linux
+			fi
 			;;
 		s390)
 			gcc_arch=s390-linux
