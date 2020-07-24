@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if ! rpm -q epel-release >/dev/null; then
-	yum install -y epel-release
+	[ ${DISTRO^^} == "OPENEULER" ] || yum install -y epel-release
 	yum makecache fast
 fi
 
