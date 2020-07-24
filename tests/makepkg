@@ -76,14 +76,9 @@ update_shared_pkg()
 
 distro_install_depends lkp-dev
 
-if [ $os = "centos" ]
-then
-	release_version=$(awk '{match($0,"release "); print substr($0,RSTART+RLENGTH)}' /etc/centos-release | awk -F '.' '{print $1}')
-	if [ $release_version -eq 7 ]
-	then
-		source /opt/rh/devtoolset-8/enable
-	fi
-fi
+[ $os = "centos" ] &&
+grep -sqF "CentOS Linux release 7" /etc/centos-release &&
+source /opt/rh/devtoolset-8/enable
 
 distro_install_depends ${benchmark}-dev
 
