@@ -11,9 +11,7 @@ setup_wget()
 
 	http_client_cmd="$wget -q --timeout=1800 --tries=1"
 
-	local wget_help="$($http_client_cmd --help 2>&1)"
-
-	[ "$wget_help" != "${wget_help#*--local-encoding}" ] && {
+	$http_client_cmd --help 2>&1 | grep -q -F -e '--local-encoding' && {
 		local iri_not_support="This version does not have support for IRIs"
 		# $ /usr/bin/wget --local-encoding=UTF-8 /tmp/abcde
 		# This version does not have support for IRIs
