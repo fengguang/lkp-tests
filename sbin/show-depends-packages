@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# This script is used to get dependency packages for determined os distribution
+# and output them.
+# There are two sources to get these packages names:
+# 1. $LKP_SRC/distro/depends/*, files here contain dependency packages names
+# 2. $LKP_SRC/distro/adaptation/$distro, the $distro contains packages mapping
+# from debian to other os, Default file is $1, if not found, get centos then.
+
+show_packages()
+{
+	local distro=$1
+	cat $LKP_SRC/distro/depends/* | adapt-packages $distro
+}
+
+# adaptation file contains packages mapping from debian to other os
+distro=$1
+[ -z "$distro" ] && distro="centos"
+show_packages "$distro"
