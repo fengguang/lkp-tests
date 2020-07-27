@@ -178,9 +178,9 @@ download_initrd()
 kexec_to_next_job()
 {
 	local kernel append acpi_rsdp download_initrd_ret
-	kernel=$(awk  '/^KERNEL / { print $2; exit }' $NEXT_JOB)
-	append=$(grep -m1 '^APPEND ' $NEXT_JOB | sed 's/^APPEND //')
-	[ -z "$append" ] && append=$(awk  '/^KERNEL / {for (i=3; i<=NF; i++) printf $i " "}' $NEXT_JOB | sed -r 's/ [a-z_]*initrd=[^ ]+//g')
+	kernel=$(awk -v IGNORECASE=1 '/^KERNEL / { print $2; exit }' $NEXT_JOB)
+	append=$(grep -Em1 '^(APPEND|append) ' $NEXT_JOB | sed -r 's/^(APPEND|append) //')
+	[ -z "$append" ] && append=$(awk -v IGNORECASE=1 '/^KERNEL / {for (i=3; i<=NF; i++) printf $i " "}' $NEXT_JOB | sed -r 's/ [a-z_]*initrd=[^ ]+//g')
 	rm -f /tmp/initrd-* /tmp/modules.cgz
 
 	read_kernel_cmdline_vars_from_append "$append"

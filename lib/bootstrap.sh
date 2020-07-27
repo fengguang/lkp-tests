@@ -588,7 +588,7 @@ __next_job()
 		return 1
 	}
 
-	grep -q "^KERNEL " $NEXT_JOB || {
+	grep -iq "^KERNEL " $NEXT_JOB || {
 		echo "no KERNEL found" 1>&2
 		set_tbox_wtmp 'no_kernel_found'
 		cat $NEXT_JOB
@@ -622,7 +622,7 @@ rsync_rootfs()
 	[ -n "$NO_NETWORK" ] && return
 	[ -z "$LKP_SERVER" ] && return
 
-	local append="$(grep -m1 '^APPEND ' $NEXT_JOB | sed 's/^APPEND //')"
+	local append="$(grep -Em1 '^(APPEND|append) ' $NEXT_JOB | sed -r 's/^(APPEND|append) //')"
 	for i in $append
 	do
 		[ "$i" != "${i#remote_rootfs=}" ] && export "$i"
