@@ -7,6 +7,12 @@ license=('GPL')
 source=('https://github.com/kdlucas/byte-unixbench.git')
 md5sums=('SKIP')
 
+patch_source()
+{
+        cd $srcdir/byte-unixbench
+        patch -p1 < "$LKP_SRC/pkg/${pkgname}/${pkgname}.patch"
+}
+
 build()
 {
 	cd $srcdir/byte-unixbench

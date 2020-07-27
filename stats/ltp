@@ -1,7 +1,9 @@
 #!/usr/bin/awk -f
 
 BEGIN {
-	rst_tignore = rst_tpass = rst_tfail = rst_tconf = 0
+	tc_name = "unknown"
+	rst_tignore = rst_tpass = rst_tfail = rst_tblock = 0
+	termid_pass = termid_fail = termid_block = 0
 }
 
 /^tag=/ {
@@ -9,7 +11,7 @@ BEGIN {
 }
 
 $2 ~ /[0-9]*/ && $3 ~ /ignored_by_lkp/ {
-    rst_tignore++
+	rst_tignore++
 }
 
 $2 ~ /[0-9]*/ && $3 ~ /TFAIL/ {
@@ -17,7 +19,7 @@ $2 ~ /[0-9]*/ && $3 ~ /TFAIL/ {
 }
 
 $2 ~ /[0-9]*/ && $3 ~ /TBROK/ {
-	rst_tfail++
+	rst_tblock++
 }
 
 $2 ~ /[0-9]*/ && $3 ~ /TPASS/ {
@@ -25,15 +27,7 @@ $2 ~ /[0-9]*/ && $3 ~ /TPASS/ {
 }
 
 $2 ~ /[0-9]*/ && $3 ~ /TCONF/ {
-	rst_tconf++
-}
-
-/termination_type=exited termination_id=0/ {
-	rst_tpass++
-}
-
-/termination_type=exited termination_id=[1-9]+/ {
-	rst_tfail++
+	rst_tblock++
 }
 
 # Treat termination_id=32 as block result
@@ -43,8 +37,18 @@ $2 ~ /[0-9]*/ && $3 ~ /TCONF/ {
 #define TWARN	4	/* Test warning flag */
 #define TINFO	16	/* Test information flag */
 #define TCONF	32	/* Test not appropriate for configuration flag */
-/termination_type=exited termination_id=32/ {
-	rst_tfail--
+
+/termination_type=exited termination_id=0/ {
+	termid_pass++
+}
+
+/termination_type=exited termination_id=[1-9]+/ {
+	termid_fail++
+}
+
+/termination_type=exited termination_id=(2|6|18|32|34|36|48) / {
+	termid_fail--
+	termid_block++
 }
 
 /<<<test_end>>>/ {
@@ -52,13 +56,21 @@ $2 ~ /[0-9]*/ && $3 ~ /TCONF/ {
 		printf("%s.ignored_by_lkp: 1\n", tc_name)
 	} else if ( rst_tfail ) {
 		printf("%s.fail: 1\n", tc_name)
-	} else if ( rst_tconf ) {
+	} else if ( rst_tblock ) {
 		printf("%s.block: 1\n", tc_name)
 	} else if ( rst_tpass ) {
 		printf("%s.pass: 1\n", tc_name)
+	} else if ( termid_fail ) {
+		printf("%s.fail: 1\n", tc_name)
+	} else if ( termid_block ) {
+		printf("%s.block: 1\n", tc_name)
+	}  else if ( termid_pass ) {
+		printf("%s.pass: 1\n", tc_name)
+	} else {
+		printf("%s.unknown: 1\n", tc_name)
 	}
 
 	tc_name = "unknown"
-	rst_tignore = rst_tpass = rst_tfail = rst_tconf = 0
+	rst_tignore = rst_tpass = rst_tfail = rst_tblock = 0
+	termid_pass = termid_fail = termid_block = 0
 }
-

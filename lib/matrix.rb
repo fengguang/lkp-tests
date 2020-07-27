@@ -43,7 +43,7 @@ def max_cols(matrix)
 end
 
 def matrix_fill_missing_zeros(matrix)
-  cols = matrix['stats_source'].size
+  cols = (matrix['stats_source'] || []).size
   matrix.each do |_k, v|
     v << 0 while v.size < cols
   end
@@ -241,7 +241,7 @@ def unite_to(stats, matrix_root, max_cols = nil, delete = false)
   matrix = load_matrix_file(matrix_root + '/matrix.json')
   matrix ||= load_matrix_file(matrix_root + '/matrix.yaml')
 
-  if matrix
+  if matrix && matrix[STATS_SOURCE_KEY]
     dup_col = matrix[STATS_SOURCE_KEY].index stats[STATS_SOURCE_KEY]
     matrix_delete_col(matrix, dup_col) if dup_col
   else

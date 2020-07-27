@@ -45,8 +45,8 @@ memtier\..+_ops/s: 1
 mutilate\..+\.speed: 1
 nepim\..+\.kbps_in: 1
 nepim\..+\.kbps_out: 1
-netperf\..+\_Mbps: 1
-netperf\..+\_tps: 1
+netperf\.Throughput_Mbps: 1
+netperf\.Throughput_tps: 1
 netpipe\..+\.avg: 1
 nuttcp\.throughput_Mbps: 1
 oltp\..+\/s: 1
@@ -141,6 +141,7 @@ phoronix-test-suite\..+\.z_s: 1
 phoronix-test-suite\..+\.gbps: 1
 phoronix-test-suite\..+\.mivoxels___sec: 1
 phoronix-test-suite\..+\.ghash_s: 1
+phoronix-test-suite\..+\.giops: 1
 pigz\.throughput: 1
 pixz\.throughput: 1
 plzip\.throughput: 1

@@ -1,19 +1,4 @@
 <<<test_start>>>
-tag=mtest01w stime=1588620414
-cmdline="mtest01 -p80 -w"
-contacts=""
-analysis=exit
-Summary:
-passed   0
-failed   1
-skipped  0
-warnings 1
-<<<execution_status>>>
-initiation_status="ok"
-duration=312 termination_type=exited termination_id=7 corefile=no
-cutime=2 cstime=4
-<<<test_end>>>
-<<<test_start>>>
 tag=vma03 stime=1588621822
 cmdline="vma03"
 contacts=""
@@ -26,6 +11,7 @@ initiation_status="ok"
 duration=0 termination_type=exited termination_id=32 corefile=no
 cutime=0 cstime=1
 <<<test_end>>>
+
 <<<test_start>>>
 tag=vma04 stime=1588621822
 cmdline="vma04"
@@ -35,4 +21,151 @@ analysis=exit
 initiation_status="ok"
 duration=0 termination_type=exited termination_id=0 corefile=no
 cutime=0 cstime=2
+<<<test_end>>>
+
+<<<test_start>>>
+tag=renameat01 stime=1594856338
+cmdline="renameat01"
+contacts=""
+analysis=exit
+<<<test_output>>>
+mke2fs 1.44.5 (15-Dec-2018)
+renameat01    0  TINFO  :  Found free device 0 '/dev/loop0'
+renameat01    0  TINFO  :  Failed reach the subdirs limit on EXT2/EXT3/EXT4 filesystem
+renameat01    1  TPASS  :  renameat() returned the expected value: TEST_ERRNO=SUCCESS(0): Success
+renameat01    2  TPASS  :  renameat() returned the expected value: TEST_ERRNO=SUCCESS(0): Success
+renameat01    8  TCONF  :  renameat01.c:200: EMLINK test is not appropriate
+renameat01    0  TWARN  :  tst_device.c:223: ioctl(/dev/loop0, LOOP_CLR_FD, 0) no ENXIO for too long
+<<<execution_status>>>
+initiation_status="ok"
+duration=7 termination_type=exited termination_id=36 corefile=no
+cutime=15 cstime=251
+<<<test_end>>>
+
+<<<test_start>>>
+tag=swapping01 stime=1594861698
+cmdline="swapping01 -i 5"
+contacts="" 
+analysis=exit  
+<<<test_output>>>
+tst_test.c:1247: INFO: Timeout per run is 0h 05m 00s
+swapping01.c:107: INFO: available physical memory: 13078 MB
+swapping01.c:109: INFO: try to allocate: 17001 MB
+Test timeouted, sending SIGKILL!
+tst_test.c:1287: INFO: If you are running on slow machine, try exporting LTP_TIMEOUT_MUL > 1
+tst_test.c:1288: BROK: Test killed! (timeout?)
+Summary:
+passed   0
+failed   0
+skipped  0
+warnings 0  
+<<<execution_status>>>
+initiation_status="ok"
+duration=319 termination_type=exited termination_id=2 corefile=no
+cutime=0 cstime=0
+<<<test_end>>>
+
+<<<test_start>>>
+tag=test_robind03 stime=1594926092
+cmdline="test_robind.sh -c "growfiles -W gf03 -b -e 1 -g 1 -i 1 -S 150 -u -f gf05_""
+contacts=""
+analysis=exit
+<<<test_output>>>
+test_robind 1 TINFO: Formatting /dev/vda with xfs extra opts='-f'
+test_robind 1 TINFO: command: growfiles -W gf03 -b -e 1 -g 1 -i 1 -S 150 -u -f gf05_
+test_robind 1 TPASS: RO-FileSystem Tests PASSED for                             dir1 xfs read-only flag: false
+test_robind 2 TINFO: command: growfiles -W gf03 -b -e 1 -g 1 -i 1 -S 150 -u -f gf05_
+test_robind 2 TPASS: RO-FileSystem Tests PASSED for                             dir2-bound xfs read-only flag: false
+test_robind 3 TINFO: command: growfiles -W gf03 -b -e 1 -g 1 -i 1 -S 150 -u -f gf05_
+test_robind 3 TPASS: RO-FileSystem Tests PASSED for                             dir3-ro xfs read-only flag: true
+umount: /tmp/ltp-Q2hjRava7H/test_robind.hMTC9GhRSr/dir1: target is busy.
+test_robind 4 TWARN: umount dir1
+<<<execution_status>>>
+initiation_status="ok"
+duration=1 termination_type=exited termination_id=4 corefile=no
+cutime=5 cstime=12
+<<<test_end>>>
+
+<<<test_start>>>
+tag=fallocate06 stime=1594933318
+cmdline="fallocate06"
+contacts=""
+analysis=exit
+<<<test_output>>>
+tst_device.c:89: INFO: Found free device 0 '/dev/loop0'
+tst_supported_fs_types.c:60: INFO: Kernel supports ext2
+...
+tst_fill_fs.c:32: INFO: Creating file mntpoint/file7 size 76896492
+tst_fill_fs.c:32: INFO: Creating file mntpoint/file8 size 72228649
+tst_fill_fs.c:32: INFO: Creating file mntpoint/file9 size 36207821
+tst_fill_fs.c:32: INFO: Creating file mntpoint/file10 size 81483962
+tst_fill_fs.c:32: INFO: Creating file mntpoint/file11 size 92198827
+tst_fill_fs.c:59: INFO: write(): ENOSPC (28)
+fallocate06.c:157: PASS: write() successful
+fallocate06.c:201: PASS: Misaligned allocation works as expected
+fallocate06.c:210: CONF: fallocate(FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE): EOPNOTSUPP (95)
+fallocate06.c:168: INFO: Case 3. Fill FS: no; Use copy on write: yes
+fallocate06.c:174: CONF: File system does not support copy-on-write
+tst_test.c:1308: INFO: Testing on ntfs
+tst_mkfs.c:90: INFO: Formatting /dev/loop0 with ntfs opts='' extra opts=''
+The partition start sector was not specified for /dev/loop0 and it could not be obtained automatically.  It has been set to 0.
+The number of sectors per track was not specified for /dev/loop0 and it could not be obtained automatically.  It has been set to 0.
+The number of heads was not specified for /dev/loop0 and it could not be obtained automatically.  It has been set to 0.
+To boot from a device, Windows needs the 'partition start sector', the 'sectors per track' and the 'number of heads' to be set.
+Windows will not be able to boot from this device.
+safe_macros.c:754: INFO: Trying FUSE...
+tst_test.c:1247: INFO: Timeout per run is 0h 05m 00s
+*** stack smashing detected ***: <unknown> terminated
+tst_test.c:1292: BROK: Test killed by SIGIOT/SIGABRT!
+HINT: You _MAY_ be missing kernel fixes, see:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=e093c4be760e
+Summary:
+passed   33
+failed   1
+skipped  7
+warnings 0
+<<<execution_status>>>
+initiation_status="ok"
+duration=31 termination_type=exited termination_id=3 corefile=no
+cutime=45 cstime=990
+<<<test_end>>>
+
+<<<test_start>>>
+tag=mtest01w stime=1594906629
+cmdline="mtest01 -p80 -w"
+contacts=""
+analysis=exit
+<<<test_output>>>
+tst_test.c:1247: INFO: Timeout per run is 0h 05m 00s
+mtest01.c:134: INFO: Filling up 80% of free ram which is 10858444 kbytes
+mtest01.c:149: INFO: ... child 2573 starting
+mtest01.c:149: INFO: ... child 2574 starting
+mtest01.c:149: INFO: ... child 2572 starting
+mtest01.c:149: INFO: ... child 2575 starting
+mtest01.c:166: INFO: ... [t=73] 1681915904 bytes allocated and used in child 2575
+mtest01.c:208: WARN: the remaininig time is not enough for testing
+mtest01.c:218: FAIL: kbytes allocated (and written to) less than expected 10858444
+tst_test.c:362: BROK: Child (2573) killed by signal SIGKILL
+Summary:
+passed   0
+failed   1
+skipped  0
+warnings 1
+<<<execution_status>>>
+initiation_status="ok"
+duration=289 termination_type=exited termination_id=7 corefile=no
+cutime=927 cstime=11300
+<<<test_end>>>
+
+<<<test_start>>>
+tag=FSX032 stime=1594888996
+cmdline="fsx-linux -l 500000 -r 4096 -t 4096 -w 4096 -N 10000 $TMPDIR/aiodio.$$/junkfile"
+contacts=""
+analysis=exit
+<<<test_output>>>
+/tmp/ltp-jAzhNz0cKY/aiodio.2415/junkfile: No such file or directory
+<<<execution_status>>>
+initiation_status="ok"
+duration=0 termination_type=exited termination_id=91 corefile=no
+cutime=0 cstime=0
 <<<test_end>>>

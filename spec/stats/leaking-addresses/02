@@ -1,0 +1,72 @@
+2020-07-12 10:47:44 ./leaking_addresses.pl --output-raw result/scan.out
+2020-07-12 10:48:11 ./leaking_addresses.pl --input-raw result/scan.out --squash-by-filename
+
+Total number of results from scan (incl dmesg): 150867
+
+dmesg output:
+[    0.027905] mapped APIC to ffffffffff5fc000 (        fee00000)
+[    0.040071] mapped IOAPIC to ffffffffff5fb000 (fec00000)
+[    7.893362] RSP: 0018:ffffffff82603e58 EFLAGS: 00000202
+[    7.893364] RAX: ffff88841f22b1c0 RBX: ffff88841f236100 RCX: 000000000000001f
+[    7.893365] RBP: ffffffff829a3fa0 R08: 00000001d67a5ff1 R09: 000000007fffffff
+[    7.893365] R10: 0000000000000001 R11: ffff88841f22a324 R12: 00000001d67a5ff1
+[    7.893365] R13: 0000000000000004 R14: 0000000000000004 R15: ffffffff82612940
+
+Results squashed by filename (excl dmesg). Displaying [<number of results> <filename>], <example result>
+[14 __verbose] 0xffffffffc00ad0c8
+[4 .init.data] 0xffffffffc019d000
+[1 .data..cacheline_aligned] 0xffffffffc05fb400
+[1 devices] B: KEY=1000000000007 ff980000000007ff febeffdfffefffff fffffffffffffffe
+[1 .rodata.cst32.byteshift_table] 0xffffffffc0280100
+[1 _error_injection_whitelist] 0xffffffffc08d5d70
+[42 __mcount_loc] 0xffffffffc00ab03c
+[1 .rodata.cst16.mask2] 0xffffffffc02800e0
+[1 _ftrace_eval_map] 0xffffffffc08d1a08
+[47 .symtab] 0xffffffffc00b2000
+[35 .init.text] 0xffffffffc00b0000
+[30 .text.unlikely] 0xffffffffc00aab4f
+[14 __ksymtab_gpl] 0xffffffffc009803c
+[35 .data] 0xffffffffc00ad000
+[13 .altinstructions] 0xffffffffc034bd22
+[43 .orc_unwind_ip] 0xffffffffc00ab3a0
+[1 ___srcu_struct_ptrs] 0xffffffffc0160760
+[14 .parainstructions] 0xffffffffc0098d88
+[5 __tracepoints_strings] 0xffffffffc087e8a0
+[13 .altinstr_replacement] 0xffffffffc033a77a
+[35 .rodata.str1.8] 0xffffffffc00ab170
+[47 .note.Linux] 0xffffffffc00ab024
+[2 6] inotify wd:29 ino:1ff sdev:1b mask:2 ignored_mask:0 fhandle-bytes:8 fhandle-type:fe f_handle:ff01000000000000
+[5 _ftrace_events] 0xffffffffc08d04e0
+[5 __tracepoints] 0xffffffffc08d1ae0
+[1 key] 1000000000007 ff980000000007ff febeffdfffefffff fffffffffffffffe
+[19 __jump_table] 0xffffffffc00ac000
+[47 .gnu.linkonce.this_module] 0xffffffffc00ad140
+[47 .strtab] 0xffffffffc00b2b88
+[7 .fixup] 0xffffffffc00d82c1
+[37 .rodata.str1.1] 0xffffffffc00ab09c
+[10 .data..read_mostly] 0xffffffffc00ad100
+[9 .init.rodata] 0xffffffffc00b1000
+[5 __tracepoints_ptrs] 0xffffffffc086a184
+[5 .ref.data] 0xffffffffc08d0760
+[12 .data.once] 0xffffffffc034c5c0
+[29 .bss] 0xffffffffc00ad500
+[47 .text] 0xffffffffc00aa000
+[21 .smp_locks] 0xffffffffc00ab094
+[149455 kallsyms] ffffffff81000000 T startup_64
+[5 __bpf_raw_tp_map] 0xffffffffc08cfb00
+[25 __bug_table] 0xffffffffc0278070
+[17 __param] 0xffffffffc00ab378
+[26 __ksymtab_strings] 0xffffffffc0233048
+[38 .rodata] 0xffffffffc00ab2c0
+[20 __ksymtab] 0xffffffffc023303c
+[324 blacklist] 0xffffffff81c00870-0xffffffff81c00890	asm_exc_divide_error
+[2 .rodata.cst16.bswap_mask] 0xffffffffc0209070
+[1 uevent] KEY=1000000000007 ff980000000007ff febeffdfffefffff fffffffffffffffe
+[47 modules] btrfs 1531904 1 - Live 0xffffffffc0791000
+[4 .altinstr_aux] 0xffffffffc0700482
+[43 .orc_unwind] 0xffffffffc00ab544
+[47 .note.gnu.build-id] 0xffffffffc00ab000
+[32 .exit.text] 0xffffffffc00aac10
+[57 printk_formats] 0xffffffff82356167 : "CPU_ON"
+[1 .rodata.cst16.mask1] 0xffffffffc02800d0
+[10 __ex_table] 0xffffffffc0061128

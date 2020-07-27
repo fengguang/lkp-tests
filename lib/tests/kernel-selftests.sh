@@ -183,7 +183,8 @@ fixup_net()
 	log_cmd make -C bpf 2>&1
 
 	sed -i 's/l2tp.sh//' net/Makefile
-	echo "ignored_by_lkp net.l2tp.sh test"
+	echo "LKP SKIP net.l2tp.sh"
+
 	# at v4.18-rc1, it introduces fib_tests.sh, which doesn't have execute permission
 	# here is to fix the permission
 	[[ -f $subtest/fib_tests.sh ]] && {
@@ -197,19 +198,19 @@ fixup_net()
 fixup_efivarfs()
 {
 	[[ -d "/sys/firmware/efi" ]] || {
-		echo "ignored_by_lkp efivarfs test: /sys/firmware/efi dir does not exist"
+		echo "LKP SKIP efivarfs | no /sys/firmware/efi"
 		return 1
 	}
 
 	grep -q -F -w efivarfs /proc/filesystems || modprobe efivarfs || {
-		echo "ignored_by_lkp efivarfs test: no efivarfs support, try enable CONFIG_EFIVAR_FS"
+		echo "LKP SKIP efivarfs"
 		return 1
 	}
 	# if efivarfs is built-in, "modprobe efivarfs" always returns 0, but it does not means
 	# efivarfs is supported since this requires some specified hardwares, such as booting from
 	# uefi, so check again
 	log_cmd mount -t efivarfs efivarfs /sys/firmware/efi/efivars || {
-		echo "ignored_by_lkp efivarfs test: unable to mount efivarfs to /sys/firmware/efi/efivars"
+		echo "LKP SKIP efivarfs"
 		return 1
 	}
 }
@@ -223,7 +224,7 @@ fixup_pstore()
 		# NOTE: the root cause is not clear
 		modprobe ramoops mem_address=0x8000000 ecc=0 mem_size=1000000 2>&1
 		[[ -e /dev/pmsg0 ]] || {
-			echo "ignored_by_lkp pstore test: /dev/pmsg0 does not exist"
+			echo "LKP SKIP pstore | no /dev/pmsg0"
 			return 1
 		}
 	}
@@ -269,7 +270,7 @@ cleanup_for_firmware()
 subtest_in_skip_filter()
 {
 	local filter=$@
-	echo "$filter" | grep -w -q "$subtest" && echo "ignored_by_lkp $subtest test"
+	echo "$filter" | grep -w -q "$subtest" && echo "LKP SKIP $subtest"
 }
 
 fixup_memfd()
@@ -295,12 +296,15 @@ fixup_bpf()
 	}
 	## ths test needs special device /dev/lircN
 	sed -i 's/test_lirc_mode2_user//' bpf/Makefile
-	echo "ignored_by_lkp bpf.test_lirc_mode2_user test"
+	echo "LKP SKIP bpf.test_lirc_mode2_user"
+
 	## test_tc_tunnel runs well but hang on perl process
 	sed -i 's/test_tc_tunnel.sh//' bpf/Makefile
-	echo "ignored_by_lkp bpf.test_tc_tunnel.sh test"
+	echo "LKP SKIP bpf.test_tc_tunnel.sh"
+
 	sed -i 's/test_lwt_seg6local.sh//' bpf/Makefile
-	echo "ignored_by_lkp bpf.test_lwt_seg6local.sh test"
+	echo "LKP SKIP bpf.test_lwt_seg6local.sh"
+
 	# some sh scripts actually need bash
 	# ./test_libbpf.sh: 9: ./test_libbpf.sh: 0: not found
 	[ "$(cmd_path bash)" = '/bin/bash' ] && [ $(readlink -e /bin/sh) != '/bin/bash' ] &&
@@ -375,9 +379,6 @@ fixup_vm()
 	# has too many errors now
 	sed -i 's/hugetlbfstest//' vm/Makefile
 
-	sed -i 's/.\/va_128TBswitch/echo [ignored_by_lkp] #.\/va_128TBswitch/' vm/run_vmtests
-	sed -i 's/.\/mlock2-tests/echo [ignored_by_lkp] #.\/mlock2-tests/' vm/run_vmtests
-
 	# we need to adjust two value in vm/run_vmtests accroding to the nr_cpu
 	# 1) needmem=262144, in Byte
 	# 2) ./userfaultfd hugetlb *128* 32, we call it memory here, in MB
@@ -397,7 +398,7 @@ fixup_vm()
 		sed -i "s#needmem=262144#needmem=$memory#" vm/run_vmtests
 	}
 
-	sed -i 's/.\/compaction_test/echo [ignored_by_lkp] #.\/compaction_test/' vm/run_vmtests
+	sed -i 's/.\/compaction_test/echo LKP SKIP #.\/compaction_test/' vm/run_vmtests
 }
 
 platform_is_skylake_or_snb()
@@ -446,7 +447,7 @@ fixup_breakpoints()
 {
 	platform_is_skylake_or_snb && grep -qw step_after_suspend_test breakpoints/Makefile && {
 		sed -i 's/step_after_suspend_test//' breakpoints/Makefile
-		echo "ignored_by_lkp breakpoints.step_after_suspend_test test"
+		echo "LKP SKIP breakpoints.step_after_suspend_test"
 	}
 }
 
@@ -454,7 +455,7 @@ fixup_x86()
 {
 	is_virt && grep -qw mov_ss_trap x86/Makefile && {
 		sed -i 's/mov_ss_trap//' x86/Makefile
-		echo "ignored_by_lkp x86.mov_ss_trap test"
+		echo "LKP SKIP x86.mov_ss_trap"
 	}
 
 	# List cpus that supported SGX
@@ -472,7 +473,7 @@ fixup_x86()
 fixup_ptp()
 {
 	[[ -e "/dev/ptp0" ]] || {
-		echo "ignored_by_lkp ptp.testptp test"
+		echo "LKP SKIP ptp.testptp"
 		return 1
 	}
 }
@@ -551,12 +552,12 @@ run_tests()
 
 		[[ -s "$subtest_config" ]] && get_kconfig "$kernel_config" && {
 			check_kconfig "$subtest_config" "$kernel_config" || {
-				echo "ignored_by_lkp $subtest test"
+				echo "LKP SKIP $subtest"
 				continue
 			}
 		}
 
-		check_ignore_case $subtest && echo "ignored_by_lkp $subtest test" && continue
+		check_ignore_case $subtest && echo "LKP SKIP $subtest" && continue
 		subtest_in_skip_filter "$skip_filter" && continue
 
 		check_makefile $subtest || log_cmd make TARGETS=$subtest 2>&1
@@ -583,7 +584,7 @@ run_tests()
 		elif [[ "$subtest" = "ir" ]]; then
 			## Ignore RCMM infrared remote controls related tests.
 			sed -i 's/{ RC_PROTO_RCMM/\/\/{ RC_PROTO_RCMM/g' ir/ir_loopback.c
-			echo "ignored_by_lkp ir.ir_loopback_rcmm tests"
+			echo "LKP SKIP ir.ir_loopback_rcmm"
 		elif [[ "$subtest" = "memfd" ]]; then
 			fixup_memfd
 		elif [[ "$subtest" = "vm" ]]; then

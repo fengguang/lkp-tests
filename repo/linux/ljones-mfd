@@ -3,6 +3,8 @@ integration_testing_branches:
 - for-mfd-next
 - for-mfd-fixes
 owner: Lee Jones <lee.jones@linaro.org>
+mail_cc: Lee Jones <lee.jones@linaro.org>
+notify_build_success_branch: .*
 subsystems:
 - mfd
 - cros_ec

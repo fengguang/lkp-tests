@@ -2,6 +2,8 @@ suite: kernel-selftests
 testcase: kernel-selftests
 category: functional
 
+kconfig: x86_64-rhel-7.6-kselftests
+
 kernel-selftests:
   group:
   - kselftests-cpufreq

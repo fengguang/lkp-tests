@@ -1,8 +1,6 @@
 need_kernel_headers: true
 need_kernel_selftests: true
 
-kconfig: x86_64-rhel-7.6-kselftests
-
 need_kconfig:
 % if ___.group == "kselftests-x86"
 - CONFIG_POSIX_TIMERS=y ~ ">= v4.10-rc1"

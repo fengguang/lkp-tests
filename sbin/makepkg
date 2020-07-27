@@ -2253,6 +2253,15 @@ extend_pkgver_cgz_name() {
 	fi
 }
 
+# /bin, /sbin, /lib, etc. could be soft link in some distro,
+# avoid overwriting them
+create_cpio() {
+	find . |
+	grep -xv -e bin -e sbin -e lib -e lib64 -e etc/init.d |
+	cpio -o -H newc --owner=root.root |
+	gzip -n -9
+}
+
 create_package() {
 	(( NOARCHIVE )) && return
 
@@ -2298,10 +2307,16 @@ create_package() {
 		CGZDEST=${CGZDEST:-/osimage/pkg/makepkg/${pkgname}-${fullver}.cgz}
 		pkgver_cgz=$(extend_pkgver_cgz_name $CGZDEST)
 		mkdir -p $(dirname $pkgver_cgz)
-		# /bin, /sbin, /lib, etc. could be soft link in some distro, avoid overwriting them
-		find . | grep -xv -e bin -e sbin -e lib -e lib64 -e etc/init.d |
-			cpio -o -H newc --owner=root.root | gzip -n -9 > ${pkgver_cgz}
-		[ "$pkgver_cgz" = "$CGZDEST" ] || ln -sf $(basename $pkgver_cgz) ${CGZDEST}
+
+		if [[ "$pkgver_cgz" = "$CGZDEST" ]]; then
+			create_cpio > ${pkgver_cgz}.tmp
+			# atomic mv to avoid race condition
+			mv -fv ${pkgver_cgz}.tmp ${pkgver_cgz}
+		else
+			create_cpio > ${pkgver_cgz}
+			ln -svf $(basename $pkgver_cgz) ${CGZDEST}
+		fi
+
 		return
 	fi
 

@@ -1,10 +1,22 @@
-gcc-6
-gcc-6-multilib
-libc6-dev/unstable
-libc-bin/unstable
-libc6-dev-i386/unstable (x86_64)
-libc6-dev-x32/unstable
+gcc-8
+gcc-8-multilib
+libc6-dev
+libc-bin
+libc6-dev-i386 (x86_64)
+libc6-dev-x32
 libc6/unstable
+lib32gcc-8-dev
+libx32gcc-8-dev
+libc6-i386
+libc6-dev
+libc6-x32
+libx32gcc1
+libx32gomp1
+libx32itm1
+libx32atomic1
+libx32asan5
+libx32ubsan1
+libx32quadmath0
 rsync
 make
 libcap-ng-dev
@@ -50,5 +62,5 @@ lib64atomic1 (i386)
 lib64asan3 (i386)
 libc6-amd64/unstable (i386)
 libc6-dev-amd64/unstable (i386)
-lib64gcc-6-dev (i386)
-libx32gcc-6-dev (i386)
+lib64gcc-8-dev (i386)
+libx32gcc-8-dev (i386)
