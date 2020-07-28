@@ -1,7 +1,8 @@
 #!/bin/sh -e
 # - scaling_max_freq
+# - scaling_min_freq
 
-[ -n "$scaling_max_freq" ] || exit 0
+[ -n "$scaling_max_freq" ] || [ -n "$scaling_min_freq" ] || exit 0
 
 . $LKP_SRC/lib/reproduce-log.sh
 
@@ -14,11 +15,13 @@
 log_echo "
 	for i in \$(seq 0 \$((\$(nproc)-1)))
 	do
-		echo $scaling_max_freq > /sys/devices/system/cpu/cpu\$i/cpufreq/scaling_max_freq
+		[ -n "scaling_max_freq" ] && echo $scaling_max_freq > /sys/devices/system/cpu/cpu\$i/cpufreq/scaling_max_freq
+		[ -n "scaling_min_freq" ] && echo $scaling_min_freq > /sys/devices/system/cpu/cpu\$i/cpufreq/scaling_min_freq
 	done
 "
 
 for i in $(seq 0 $((nr_cpu-1)))
 do
-	echo $scaling_max_freq > /sys/devices/system/cpu/cpu$i/cpufreq/scaling_max_freq
+	[ -n "scaling_max_freq" ] && echo $scaling_max_freq > /sys/devices/system/cpu/cpu$i/cpufreq/scaling_max_freq
+	[ -n "scaling_min_freq" ] && echo $scaling_min_freq > /sys/devices/system/cpu/cpu$i/cpufreq/scaling_min_freq
 done
