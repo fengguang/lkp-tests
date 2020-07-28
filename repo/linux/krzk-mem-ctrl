@@ -1,0 +1,8 @@
+url: https://git.kernel.org/pub/scm/linux/kernel/git/krzk/linux-mem-ctrl.git
+integration_testing_branches: for-next
+owner: Krzysztof Kozlowski <krzk@kernel.org>
+subsystems:
+- arm
+- memory
+- mips
+notify_build_success_branch: .*
