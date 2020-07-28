@@ -76,6 +76,8 @@ end
 
 def for_each_in(ah, set, pk = nil)
   ah.each do |k, v|
+    next if k == 'pp'
+
     yield pk, ah, k, v if set.include?(k)
     next unless v.is_a?(Hash)
 
