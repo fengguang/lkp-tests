@@ -156,7 +156,7 @@ setup_result_root()
 	mkdir -p $RESULT_ROOT
 	# check emptiness except for files: dmesg pre-dmesg
 	if [ "$result_fs" != "tmpfs" ]; then
-		ls $RESULT_ROOT | grep -v -q -F dmesg &&
+		ls $RESULT_ROOT | grep -v -q -F -e dmesg -e job &&
 		echo "RESULT_ROOT not empty: $(ls -l $RESULT_ROOT)" >&2
 	fi
 
