@@ -12,6 +12,8 @@ adapt = YAML.load_file ENV['LKP_SRC'] + '/distro/adaptation/' + ARGV[0]
 pkgs = Set.new
 
 while (line = STDIN.gets)
+  next if line.start_with?('#')
+
   line.chomp.split.each do |pkg|
     pkg = pkg.delete_suffix '/unstable'
     if adapt.include? pkg
