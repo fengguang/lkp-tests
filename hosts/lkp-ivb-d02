@@ -3,6 +3,9 @@ nr_node: 1
 nr_cpu: 4
 memory: 8G
 nr_hdd_partitions: 2
+nr_ssd_partitions: 1
+ssd_partitions:
+ /dev/disk/by-id/ata-INTEL_SSDSC2BA400G4_BTHV634505W5400NGN-part1
 hdd_partitions:
  /dev/disk/by-id/ata-ST1000DM003-1CH162_Z1DBQSB0-part1
  /dev/disk/by-id/ata-ST1000DM003-1CH162_Z1DBQSB0-part2
