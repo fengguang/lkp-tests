@@ -10,6 +10,10 @@ sha256sums=('SKIP')
 build()
 {
 	cd "${srcdir}/${pkgname}-${pkgver}"
+        [ ! -f "/usr/share/misc/config.guess" ]&&
+        curl -s -o /usr/share/misc/config.guess 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD'
+        [ ! -f "/usr/share/misc/config.sub" ]&&
+        curl -s -o /usr/share/misc/config.sub 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD'
 	cp /usr/share/misc/config.{guess,sub} .
 	./configure
 	make
