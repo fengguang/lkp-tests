@@ -531,11 +531,15 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
     next if is_incomplete_run && k !~ /^(dmesg|last_state|stderr)\./
     next if !options['more'] && !bisectable_stat?(k) && k !~ $report_whitelist_re
 
-    is_failure_stat = if options['force_' + k]
-                        true
-                      else
-                        is_failure k
-                      end
+    is_failure_stat = is_failure k
+    if is_failure_stat && k !~ /^(dmesg|kmsg|last_state|stderr)\./
+      # if stat is packetdrill.packetdrill/gtests/net/tcp/mtu_probe/basic-v6_ipv6.fail,
+      # base rt stats should contain the prefix 'packetdrill.packetdrill/gtests/net/tcp/mtu_probe/basic-v6_ipv6'
+      stat_base = k.sub(/\.[^\.]*$/, '')
+      next unless b.keys.any? { |stat| stat =~ /^#{stat_base}\.[^\.]*$/ }
+    end
+
+    is_failure_stat = true if options['force_' + k]
 
     is_latency_stat = is_latency k
     max_margin = if is_failure_stat || is_latency_stat
