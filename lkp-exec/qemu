@@ -249,7 +249,7 @@ create_lkp_src_initrd()
 		LKP_USER="$user"
 		archive="${CACHE_DIR}"
 		cd "$LKP_SRC/pkg/lkp-src"
-		PACMAN=true BUILDDIR=/tmp/$USER CARCH=$arch PKGEXT=.cgz CGZDEST="${archive}.cgz" \
+		PACMAN=true BUILDDIR=/tmp/$USER CARCH=$arch PKGEXT=.cgz CGZDEST="$CACHE_DIR/lkp-$arch.cgz" \
 		$LKP_SRC/sbin/makepkg --config $LKP_SRC/etc/makepkg.conf -e
 		[[ -f $CACHE_DIR/lkp-$arch.cgz ]] || {
 			echo "Failed to pack: $CACHE_DIR/lkp-$arch.cgz"
