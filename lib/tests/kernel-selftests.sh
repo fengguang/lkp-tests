@@ -132,10 +132,16 @@ check_kconfig()
 		if [[ "$line" = "CONFIG_DEBUG_PI_LIST=" ]]; then
 			grep -q $line $kernel_config || {
 				line="CONFIG_DEBUG_PLIST="
-				grep -q $line $kernel_config || return 1
+				grep -q $line $kernel_config || {
+					echo "LKP WARN miss config $line of $dependent_config"
+					return 1
+				}
 			}
 		else
-			grep -q $line $kernel_config || return 1
+			grep -q $line $kernel_config || {
+				echo "LKP WARN miss config $line of $dependent_config"
+				return 1
+			}
 		fi
 	done < $dependent_config
 }
