@@ -1,0 +1,25 @@
+[   62.168598] ================================================================================
+[   62.170116] UBSAN: Undefined behaviour in include/linux/hugetlb.h:492:28
+[   62.171210] shift exponent 63 is too large for 32-bit type 'long unsigned int'
+[   62.172231] CPU: 7 PID: 675 Comm: trinity-c13 Not tainted 5.5.0-00006-g191f778f83f578 #1
+[   62.173278] Call Trace:
+[   62.173618]  dump_stack+0x4f/0x69
+[   62.174046]  ubsan_epilogue+0x8/0x21
+[   62.174513]  __ubsan_handle_shift_out_of_bounds.cold+0x55/0x10d
+[   62.175730]  ? vsnprintf+0x24f/0x500
+[   62.176226]  newseg.cold+0x12/0x5e
+[   62.176687]  ipcget+0x2bf/0x300
+[   62.177095]  ? ipcget+0x50/0x300
+[   62.177532]  ksys_shmget+0x37/0x40
+[   62.177971]  ksys_ipc+0x1bc/0x280
+[   62.178445]  ? __task_pid_nr_ns+0x93/0xf0
+[   62.179000]  sys_ipc+0x28/0x30
+[   62.179430]  do_int80_syscall_32+0x65/0x160
+[   62.180012]  entry_INT80_32+0x127/0x127
+[   62.180530] EIP: 0x809b132
+[   62.180894] Code: 89 c8 c3 90 8d 74 26 00 85 c0 c7 01 01 00 00 00 75 d8 a1 6c 94 a8 08 eb d1 66 90 66 90 66 90 66 90 66 90 66 90 66 90 90 cd 80 <c3> 8d b6 00 00 00 00 8d bc 27 00 00 00 00 8b 10 a3 94 94 a8 08 85
+[   62.183330] EAX: ffffffda EBX: 00000017 ECX: 6b33c02d EDX: 0000baba
+[   62.184156] ESI: ffffffff EDI: 00000000 EBP: fffffff6 ESP: bfa4cc28
+[   62.184422] vm86_32: could not access userspace vm86 info
+[   62.184979] DS: 007b ES: 007b FS: 0000 GS: 0033 SS: 007b EFLAGS: 00000296
+[   62.185010] ================================================================================
