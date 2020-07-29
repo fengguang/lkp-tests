@@ -1,0 +1,59 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require 'ostruct'
+require 'fileutils'
+require 'shellwords'
+
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+LKP_USER = ENV['USER'] || `whoami`.chomp
+
+TMP = "/tmp/lkp-#{LKP_USER}".freeze
+ENV['TMP'] = TMP
+
+require "#{LKP_SRC}/lib/run_env"
+set_local_run
+require "#{LKP_SRC}/lib/yaml"
+require "#{LKP_SRC}/lib/stats"
+require "#{LKP_SRC}/lib/matrix"
+require "#{LKP_SRC}/lib/job"
+require "#{LKP_SRC}/lib/result_root"
+require "#{LKP_SRC}/lib/common"
+
+ENV['PATH'] = ENV['PATH'] + ":#{LKP_SRC}/bin"
+ENV['BENCHMARK_ROOT'] = '/lkp/benchmarks'
+
+result_root = (ARGV[0] && File.absolute_path(ARGV[0])) || Dir.getwd
+
+jobfile = "#{result_root}/job.yaml"
+
+job = Job.new
+begin
+  job.load(jobfile)
+rescue StandardError
+  warn "#{jobfile} is not a valid jobfile"
+  exit 1
+end
+
+_result_root = job._result_root
+if _result_root != File.dirname(result_root)
+  warn "_rt doesn't match rt: #{_result_root} vs. #{result_root}"
+  exit 1
+end
+
+ENV['RESULT_ROOT'] = result_root
+ENV['TMP_RESULT_ROOT'] = result_root
+
+job_script = result_root + '/job.sh'
+
+FileUtils.rm Dir.glob("#{result_root}/*.json{,.gz,.xz}")
+
+system job_script, 'extract_stats'
+
+stats = create_stats_matrix result_root
+stats['stats_source'] = result_root + '/stats.json'
+unite_to(stats, _result_root)
+system(LKP_SRC + '/sbin/unite-params', result_root)
+
+MResultRootTableSet.create_tables_layout
+convert_mrt(_result_root)
