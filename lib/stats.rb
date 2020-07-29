@@ -390,8 +390,8 @@ def load_base_matrix(matrix_path, head_matrix, options)
     add_stats_to_matrix(rc_matrix, matrix)
     tags_merged << tag
 
-    options['base_matrixes'] ||= []
-    options['base_matrixes'] << "#{tag} #{options['stat']} #{base_matrix_file} #{(rc_matrix['stats_source'] || []).size} #{rc_matrix[options['stat']].inspect}"
+    options['base_matrixes'] ||= {}
+    options['base_matrixes'][tag] = rc_matrix
 
     cols += (rc_matrix['stats_source'] || []).size
     break if tags_merged.size >= 3 && cols >= 9
@@ -645,6 +645,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
                          'max' => max,
                          'nr_run' => v.size }
     changed_stats[k].merge! options
+    changed_stats['base_matrixes'] = options['base_matrixes'].map { |tag, matrix| "#{tag}: #{matrix[k].inspect}" }
   end
 
   changed_stats
