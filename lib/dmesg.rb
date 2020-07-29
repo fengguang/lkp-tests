@@ -265,6 +265,8 @@ def oops_to_bisect_pattern(line)
     when /([a-zA-Z0-9_]+\+0x)/, /([a-zA-Z0-9_]+=)/
       patterns << $1
       break
+    when /^([a-zA-Z\/\._-]*):[0-9]/
+      patterns << "#{$1}:.*"
     when /[^a-zA-Z\/:.()!_-]/
       patterns << '.*' if patterns[-1] != '.*'
     else
@@ -302,9 +304,6 @@ def analyze_error_id(line)
        /(used greatest stack depth:)/,
        /([A-Z]+[ a-zA-Z]*): [a-f0-9]{4} \[#[0-9]+\] /,
        /(BUG: KASAN: [a-z\-_ ]+ in [a-z])/,
-       # UBSAN: Undefined behaviour in ../include/linux/bitops.h:110:33
-       # UBSAN: shift-out-of-bounds in drivers/of/unittest.c:1893:36
-       /(UBSAN: .+)/,
        /(cpu clock throttled)/
     line = $1
     bug_to_bisect = $1
@@ -323,6 +322,11 @@ def analyze_error_id(line)
   when /(BUG: key )[0-9a-f]+ (not in .data)/
     line = $1 + $2
     bug_to_bisect = $1 + '.* ' + $2
+  when /(UBSAN: .+)/
+    # UBSAN: Undefined behaviour in ../include/linux/bitops.h:110:33
+    # UBSAN: shift-out-of-bounds in drivers/of/unittest.c:1893:36
+    line = $1
+    bug_to_bisect = oops_to_bisect_pattern line
   when /(BUG: using smp_processor_id\(\) in preemptible)/
     line = $1
     bug_to_bisect = oops_to_bisect_pattern line

@@ -1,9 +1,9 @@
 boot_failures: 1
 
-# kernel BUG at
+# kernel BUG at mm/rmap.c:.*
 kernel_BUG_at_mm/rmap.c: 1
 message:kernel_BUG_at_mm/rmap.c: [   51.531037] kernel BUG at mm/rmap.c:1306!
-pattern:kernel_BUG_at_mm/rmap.c: kernel BUG at
+pattern:kernel_BUG_at_mm/rmap.c: kernel BUG at mm/rmap.c:.*
 
 # invalid opcode:
 invalid_opcode:#[##]: 1

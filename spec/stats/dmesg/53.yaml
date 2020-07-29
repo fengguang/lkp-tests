@@ -1,9 +1,9 @@
 boot_failures: 1
 
-# page allocation failure:
+# page allocation failure: order:.* mode:.*
 page_allocation_failure:order:#,mode:#(GFP_KERNEL|__GFP_COMP|__GFP_ZERO): 1
 message:page_allocation_failure:order:#,mode:#(GFP_KERNEL|__GFP_COMP|__GFP_ZERO): [   48.661306] swapper/0: page allocation failure: order:8, mode:0x240c0c0(GFP_KERNEL|__GFP_COMP|__GFP_ZERO)
-pattern:page_allocation_failure:order:#,mode:#(GFP_KERNEL|__GFP_COMP|__GFP_ZERO): page allocation failure:
+pattern:page_allocation_failure:order:#,mode:#(GFP_KERNEL|__GFP_COMP|__GFP_ZERO): page allocation failure: order:.* mode:.*
 
 # warn_alloc_failed+0x
 warn_alloc_failed+0x: 1
