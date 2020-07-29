@@ -52,13 +52,13 @@ create_cgroup()
 	for item in $subsys
 	do
 		if [ "$item" = "cpu" -o "$item" = "cpuacct" ] &&
-			   ! [ -d "$CGROUP_MNT/cpu,cpuacct" ]; then
+			   ! mountpoint -q "$CGROUP_MNT/cpu,cpuacct"; then
 			log_cmd mkdir -p $CGROUP_MNT/cpu,cpuacct 2>/dev/null
 			log_cmd mount -t cgroup -o cpu,cpuacct cpu,cpuacct $CGROUP_MNT/cpu,cpuacct 2>/dev/null
 			log_cmd mkdir -p $CGROUP_MNT/cpu,cpuacct/$testcase
 			continue
 		fi
-		if ! [ -d "$CGROUP_MNT/$item" ]; then
+		if ! mountpoint -q "$CGROUP_MNT/$item"; then
 			log_cmd mkdir -p $CGROUP_MNT/$item
 			log_cmd mount -t cgroup -o $item $item $CGROUP_MNT/$item
 		fi
