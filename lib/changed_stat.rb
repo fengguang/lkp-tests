@@ -90,8 +90,12 @@ module LKP
     def log_cause(cause)
       return unless options['trace_cause'] == stat
 
-      %w(sorted_a min_a mean_a max_a sorted_b min_b mean_b max_b stat).each do |name|
-        cause = cause.gsub(name, "#{name} (#{eval name})")
+      begin
+        %w(sorted_a min_a mean_a max_a sorted_b min_b mean_b max_b stat).each do |name|
+          cause = cause.gsub(name, "#{name} (#{eval name})")
+        end
+      rescue StandardError => e
+        log_debug e.formatted_headline
       end
 
       log_debug "not cs | cause: #{cause}"
