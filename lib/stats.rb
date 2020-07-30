@@ -645,7 +645,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
                          'max' => max,
                          'nr_run' => v.size }
     changed_stats[k].merge! options
-    changed_stats['base_matrixes'] = options['base_matrixes'].map { |tag, matrix| "#{tag}: #{matrix[k].inspect}" }
+    changed_stats[k]['base_matrixes'] = options['base_matrixes'].map { |tag, matrix| "#{tag}: #{matrix[k].inspect}" } if options['base_matrixes']
   end
 
   changed_stats
