@@ -538,7 +538,10 @@ class Job
         program = programs_params_hash[program]["benchmark"]
       end
 
-      Dir.glob("#{LKP_SRC}/*/#{program}{,/*}").each do |file|
+      # this Dir.glob will search for the following paths:
+      #       $LKP_SRC/*/$program   $LKP_SRC/*/*/$program
+      #       $LKP_SRC/*/$program/* $LKP_SRC/*/*/$program/*
+      Dir.glob("#{LKP_SRC}/{*,*/*}/#{program}{,/*}").each do |file|
         if git_files_list.include?(file)
           relative_path = file.sub("#{LKP_SRC}/", '')
           @job["define_files"][relative_path] = File.read(file)
