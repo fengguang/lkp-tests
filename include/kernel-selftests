@@ -9,6 +9,7 @@ need_kconfig:
 - CONFIG_TEST_BITMAP=m ~ ">= v4.6-rc1"
 - CONFIG_TEST_PRINTF=m ~ ">= v4.4-rc1"
 - CONFIG_TEST_STRSCPY=m ~ ">= v5.2-rc1"
+- CONFIG_TEST_BITOPS=m ~ ">= v5.8-rc1"
 % elsif ___.group == "kselftests-cpufreq"
 - CONFIG_CPU_FREQ=y
 - CONFIG_CPU_FREQ_GOV_CONSERVATIVE=y
