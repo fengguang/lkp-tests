@@ -134,13 +134,11 @@ check_kconfig()
 				line="CONFIG_DEBUG_PLIST="
 				grep -q $line $kernel_config || {
 					echo "LKP WARN miss config $line of $dependent_config"
-					return 1
 				}
 			}
 		else
 			grep -q $line $kernel_config || {
 				echo "LKP WARN miss config $line of $dependent_config"
-				return 1
 			}
 		fi
 	done < $dependent_config
@@ -557,10 +555,7 @@ run_tests()
 		kernel_config="/lkp/kernel-selftests-kernel-config"
 
 		[[ -s "$subtest_config" ]] && get_kconfig "$kernel_config" && {
-			check_kconfig "$subtest_config" "$kernel_config" || {
-				echo "LKP SKIP $subtest"
-				continue
-			}
+			check_kconfig "$subtest_config" "$kernel_config"
 		}
 
 		check_ignore_case $subtest && echo "LKP SKIP $subtest" && continue
