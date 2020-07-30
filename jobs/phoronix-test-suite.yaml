@@ -15,10 +15,10 @@ phoronix-test-suite:
   - test: apache-siege-1.0.2
     option_a: # cocurrent users
       - 1
-      - 10
-      - 50
-      - 100
-      - 200
+      # - 10
+      # - 50
+      # - 100
+      # - 200
       - 250
       # - Test All Options
   - test: appleseed-1.0.1
@@ -159,10 +159,10 @@ phoronix-test-suite:
   - test: dbench-1.0.0
     option_a: # client count
       - 1
-      - 6
-      - 12
-      - 48
-      - 128
+      # - 6
+      # - 12
+      # - 48
+      # - 128
       - 256
       # - Test All Options
   - test:
@@ -197,15 +197,15 @@ phoronix-test-suite:
       - Float + SSE
       # - Test All Options
     option_b:
-      - 1D FFT Size 32
-      - 1D FFT Size 64
+      # - 1D FFT Size 32
+      # - 1D FFT Size 64
       - 1D FFT Size 128
       # - 1D FFT Size 256
       # - 1D FFT Size 512
       # - 1D FFT Size 1024
       # - 1D FFT Size 2048
       # - 1D FFT Size 4096
-      - 2D FFT Size 32
+      # - 2D FFT Size 32
       - 2D FFT Size 64
       # - 2D FFT Size 128
       # - 2D FFT Size 256
@@ -238,13 +238,13 @@ phoronix-test-suite:
       # - Test All Options
     option_e:
       - 4KB
-      - 8KB
-      - 16KB
-      - 32KB
-      - 64KB
-      - 128KB
-      - 256KB
-      - 512KB
+      # - 8KB
+      # - 16KB
+      # - 32KB
+      # - 64KB
+      # - 128KB
+      # - 256KB
+      # - 512KB
       - 1MB
       # - 2MB
       # - 4MB
@@ -302,10 +302,10 @@ phoronix-test-suite:
   - test: hackbench-1.0.0
     option_a: # group count
       - 1
-      - 2
-      - 4
-      - 8
-      - 16
+      # - 2
+      # - 4
+      # - 8
+      # - 16
       - 32
       # - Test All Options
     option_b:
@@ -353,7 +353,7 @@ phoronix-test-suite:
   - test: iozone-1.9.5
     option_a:
       - 4Kb
-      - 64Kb
+      # - 64Kb
       - 1MB
       # - Test All Options
     option_b:
@@ -451,20 +451,20 @@ phoronix-test-suite:
   - test: multichase-1.0.2
     option_a:
       - 1 # 256MB Array, 256 Byte Stride
-      - 2 # 4MB Array, 64 Byte Stride
-      - 3 # 1GB Array, 256 Byte Stride
-      - 4 # 1GB Array, 256 Byte Stride, 2 Threads
+      # - 2 # 4MB Array, 64 Byte Stride
+      # - 3 # 1GB Array, 256 Byte Stride
+      # - 4 # 1GB Array, 256 Byte Stride, 2 Threads
       - 5 # 1GB Array, 256 Byte Stride, 4 Threads
       # - Test All Options
   - test: mysqlslap-1.0.6
     option_a: # clients
       - 1
-      - 4
-      - 8
-      - 16
-      - 32
-      - 64
-      - 128
+      # - 4
+      # - 8
+      # - 16
+      # - 32
+      # - 64
+      # - 128
       - 256
       # - Test All Options
   - test:
@@ -512,12 +512,12 @@ phoronix-test-suite:
       # - Test All Options
     option_b: # threads
       - 1
-      - 2
-      - 4
-      - 8
-      - 16
-      - 32
-      - 64
+      # - 2
+      # - 4
+      # - 8
+      # - 16
+      # - 32
+      # - 64
       - 128
       # - Test All Options
   - test:
@@ -656,19 +656,19 @@ phoronix-test-suite:
   - test: schbench-1.0.0
     option_a: # message threads
       - 2
-      - 4
-      - 6
-      - 8
-      - 16
+      # - 4
+      # - 6
+      # - 8
+      # - 16
       - 32
       # - Test All Options
     option_b: # workers per message thread
       - 2
-      - 4
-      - 6
-      - 8
-      - 16
-      - 24
+      # - 4
+      # - 6
+      # - 8
+      # - 16
+      # - 24
       - 32
       # - Test All Options
   - test:
@@ -695,9 +695,9 @@ phoronix-test-suite:
   - test: sqlite-2.1.0
     option_a: # threads per copy
       - 1
-      - 8
-      - 32
-      - 64
+      # - 8
+      # - 32
+      # - 64
       - 128
       # - Test All Options
   - test:
@@ -752,25 +752,25 @@ phoronix-test-suite:
   - test: system-libxml2-1.0.3
     option_a:
       - 5 KB
-      - 50 KB
-      - 100 KB
-      - 150 KB
-      - 200 KB
-      - 250 KB
-      - 300 KB
-      - 350 KB
-      - 400 KB
-      - 450 KB
-      - 500 KB
-      - 550 KB
-      - 600 KB
-      - 650 KB
-      - 700 KB
-      - 750 KB
-      - 800 KB
-      - 850 KB
-      - 900 KB
-      - 950 KB
+      # - 50 KB
+      # - 100 KB
+      # - 150 KB
+      # - 200 KB
+      # - 250 KB
+      # - 300 KB
+      # - 350 KB
+      # - 400 KB
+      # - 450 KB
+      # - 500 KB
+      # - 550 KB
+      # - 600 KB
+      # - 650 KB
+      # - 700 KB
+      # - 750 KB
+      # - 800 KB
+      # - 850 KB
+      # - 900 KB
+      # - 950 KB
       - 1 MB
       # - 2 MB
       # - 3 MB
@@ -797,9 +797,9 @@ phoronix-test-suite:
       # - Test All Options
     option_c:
       - 1 thread [Single Thread Test]
-      - 2 threads [2+ Cores Recommended]
-      - 4 threads [2+ Cores Recommended]
-      - 8 threads [4+ Cores Recommended]
+      # - 2 threads [2+ Cores Recommended]
+      # - 4 threads [2+ Cores Recommended]
+      # - 8 threads [4+ Cores Recommended]
       - 16 threads [8+ Cores Recommended]
       # - 32 threads [Recommended For Servers]
       # - 64 threads [Recommended For Servers]
