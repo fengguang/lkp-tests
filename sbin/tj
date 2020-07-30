@@ -11,6 +11,7 @@ require 'optparse'
 require 'yaml'
 
 opt_set_key_value = {}
+opt_output_dir = nil
 opt_auto_define_files = false
 
 options = OptionParser.new do |opts|
@@ -22,6 +23,15 @@ options = OptionParser.new do |opts|
 
   opts.on("-s 'KEY: VALUE'", "--set 'KEY: VALUE'", 'add YAML hash to job') do |key_value|
     opt_set_key_value.merge! YAML.load key_value
+  end
+
+  opts.on('-o DIR', '--output DIR', 'save job yaml to DIR/') do |dir|
+    if File.file? dir
+      puts "Please input directory for job save yaml after '-o'"
+      exit 1
+    end
+    opt_output_dir = dir
+    Dir.mkdir(dir) unless File.directory? dir
   end
 
   opts.on("-a", "--auto-define-files", "auto add define_files") do
@@ -82,6 +92,15 @@ ARGV.each do |jobfile|
     # merge job info
     job_hash = job.to_hash
     job_hash = job_hash.merge(sh_hash)
+
+    # save job to yaml
+    if opt_output_dir
+      prefix = File.join(opt_output_dir, File.basename(jobfile, '.yaml'))
+      unit_jobfile = prefix + '-' + job.path_params + '.yaml'
+      job.save unit_jobfile
+      puts "#{jobfile} => #{unit_jobfile}"
+      next
+    end
 
     # init scheduler client
     scheduler_client = SchedulerClient.new(host, port)
