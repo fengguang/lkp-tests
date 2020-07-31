@@ -1,0 +1,18 @@
+suite: hwsim
+testcase: hwsim
+category: functional
+
+need_memory: 1G
+
+hwsim:
+  group:
+    - hwsim-10
+    - hwsim-11
+    - hwsim-12
+    - hwsim-13
+    - hwsim-14
+    - hwsim-15
+    - hwsim-16
+    - hwsim-17
+    - hwsim-18
+    - hwsim-19
