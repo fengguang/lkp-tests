@@ -425,6 +425,8 @@ fixup_interbench()
 	local target=${environment_directory}/../test-profiles/pts/${test}/install.sh
 	sed -i "4ased -i 's,interbench.read,/opt/rootfs/interbench.read,' interbench.c" "$target"
 	sed -i "5ased -i 's,interbench.read,/opt/rootfs/interbench.read,' Makefile" "$target"
+	sed -i "6ased -i 's,interbench.write,/opt/rootfs/interbench.write,' interbench.c" "$target"
+	sed -i "7ased -i 's,interbench.write,/opt/rootfs/interbench.write,' Makefile" "$target"
 	phoronix-test-suite force-install $test
 }
 
