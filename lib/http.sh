@@ -70,7 +70,7 @@ set_tbox_wtmp()
 	local tbox_state="$1"
 	[ -n "$tbox_state" ] || return
 
-	http_get_cgi "cgi-bin/lkp-wtmp?tbox_name=$HOSTNAME&tbox_state=$tbox_state"
+	http_get_cgi "cgi-bin/lkp-wtmp?tbox_name=$HOSTNAME&tbox_state=$tbox_state&mac=$PUB_MAC&ip=$PUB_IP&job_id=$id"
 }
 
 ####################################################
