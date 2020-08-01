@@ -5,13 +5,8 @@ pkgdesc="The Apache Cassandra database is the right choice when you need scalabi
 arch=('i386' 'x86_64')
 url="http://cassandra.apache.org/"
 license=(Apache)
-source=(https://mirrors.tuna.tsinghua.edu.cn/apache/cassandra/$pkgver/$pkgname-$pkgver-bin.tar.gz)
-md5sums=('SKIP')
-
-build()
-{
-    tar -xvf $pkgname-$pkgver-bin.tar.gz
-}
+source=(http://archive.apache.org/dist/cassandra/$pkgver/$pkgname-$pkgver-bin.tar.gz)
+sha512sums=('0e778f8fb4a050fde3ec174a9ca365e49ef437cd9e61280b6b4dcba950418a3d04a104bb41aed1add858e2acc2513cf7df4065ca5ca751dd1daf60e70adc4042')
 
 package()
 {
