@@ -9,6 +9,12 @@ md5sums=('SKIP')
 
 build() {
 	cd "$srcdir/$pkgname"
+
+	# fixup openeuler
+	[ -d "/usr/lib/python3" ] || {
+		local dirs=(/usr/lib/python3.*)
+		ln -s "${dirs[-1]}" /usr/lib/python3
+	}
 }
 
 package() {
