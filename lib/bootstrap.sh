@@ -233,29 +233,33 @@ setup_hosts()
 	ln -fs $tmpfs_hosts /etc/hosts
 }
 
-show_mac_addr()
+export_ip_mac()
 {
 	if has_cmd ip; then
-		ip link | awk '/ether/ {print $2; exit}'
+		export PUB_NIC=$(ip route get 1.2.3.4 | awk '{print $5; exit}')
+		export PUB_IP=$( ip route get 1.2.3.4 | awk '{print $7; exit}')
+	elif has_cmd route; then
+		export PUB_NIC=$(route -n | awk '/[UG][UG]/ {print $8}')
+		export PUB_IP=$(ifconfig $PUB_NIC | awk '/inet / {print $2}')
 	else
-		ifconfig 2>/dev/null | awk '/ether/ {print $2; exit}'
+		export PUB_NIC=$(awk 'NR > 1 && $3 != "00000000" { print $1; exit }' /proc/net/route)
+		export PUB_IP=$(ifconfig $PUB_NIC | awk '/inet / {print $2}')
 	fi
+
+	export PUB_MAC=$(cat /sys/class/net/$PUB_NIC/address)
+	[ -n "$SCHED_HOST" ] && PUB_MAC=$(echo "$PUB_MAC" | tr : -)
 }
 
 announce_bootup()
 {
 	local version="$(cat /proc/sys/kernel/version 2>/dev/null| cut -f1 -d' ' | cut -c2-)"
 	local release="$(cat /proc/sys/kernel/osrelease 2>/dev/null)"
-	local mac="$(show_mac_addr)"
-	local ip="$(ip route get 1.2.3.4 | awk '{print $7; exit}')"
-
-	echo 'Kernel tests: Boot OK!'
 
 	# make sure to output something if serial console is not ttyS0
 	# this helps diagnose serial console connections
 	for ttys in ttyS0 ttyS1 ttyS2 ttyS3
 	do
-		echo "LKP: HOSTNAME $HOSTNAME, MAC $mac, IP $ip, kernel $release $version, serial console /dev/$ttys" > /dev/$ttys 2>/dev/null
+		echo "LKP: HOSTNAME $HOSTNAME, MAC $PUB_MAC, IP $PUB_IP, kernel $release $version, serial console /dev/$ttys" > /dev/$ttys 2>/dev/null
 	done
 }
 
@@ -577,11 +581,9 @@ __next_job()
 	NEXT_JOB="/tmp/next-job-$LKP_USER"
 
 	echo "getting new job..."
-	local mac="$(show_mac_addr)"
 	local last_kernel=
-	[ -n "$SCHED_HOST" ] && mac=${mac//:/-}
 	[ -n "$job" ] && last_kernel="last_kernel=$(grep ^kernel: $job | cut -d \" -f 2)&"
-	http_get_cgi "cgi-bin/gpxelinux.cgi?hostname=${HOSTNAME}&mac=$mac&${last_kernel}${manual_reboot}lkp_wtmp" \
+	http_get_cgi "cgi-bin/gpxelinux.cgi?hostname=${HOSTNAME}&mac=$PUB_MAC&${last_kernel}${manual_reboot}lkp_wtmp" \
 		$NEXT_JOB || {
 		echo "cannot get next job" 1>&2
 		set_tbox_wtmp 'cannot_get_next_job'
@@ -727,10 +729,10 @@ boot_init()
 	mount_tmpfs
 	redirect_stdout_stderr
 
+	echo 'Kernel tests: Boot OK!'
+
 	setup_hostname
 	setup_hosts
-
-	announce_bootup
 
 	add_lkp_user
 
@@ -738,6 +740,9 @@ boot_init()
 
 	setup_network
 	run_ntpdate
+	export_ip_mac
+
+	announce_bootup
 
 	mount_debugfs
 
