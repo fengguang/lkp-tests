@@ -105,6 +105,7 @@ pack()
 
 	{
 		find . -xdev |
+		sed 's,^\./,,' |
 		grep -v -f $LKP_SRC/rootfs/rootfs-strip-list
 
 		[[ -f $LKP_SRC/distro/$DISTRO/$BM_NAME-whitelist ]] &&

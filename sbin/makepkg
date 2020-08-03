@@ -2257,7 +2257,7 @@ extend_pkgver_cgz_name() {
 # avoid overwriting them
 create_cpio() {
 	find . |
-	grep -xv -e bin -e sbin -e lib -e lib64 -e etc/init.d |
+	grep -Fxv -e ./bin -e ./sbin -e ./lib -e ./lib64 -e ./etc/init.d |
 	cpio -o -H newc --owner=root.root |
 	gzip -n -9
 }
