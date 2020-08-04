@@ -17,7 +17,7 @@ export BENCHMARK_ROOT=/lkp/benchmarks
 export CGROUP_MNT=/cgroup
 
 job_init
-export LKP_USER=$user
+export LKP_USER=${user:-lkp}
 
 echo $$ > $TMP/run-lkp.pid	# for use by monitors/watchdog
 
