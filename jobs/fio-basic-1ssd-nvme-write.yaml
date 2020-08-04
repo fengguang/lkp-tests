@@ -15,7 +15,7 @@ fio-setup-basic:
   rw: write
   bs: 4k
   ioengine: sync
-  test_size: 512g
+  test_size: 256g
 
 fio:
 
@@ -26,7 +26,7 @@ fio-setup-basic:
   rw: randwrite
   bs: 4M
   ioengine: sync
-  test_size: 512g
+  test_size: 256g
 
 ---
 fs: xfs
@@ -37,7 +37,7 @@ fio-setup-basic:
   rw: randwrite
   bs: 4k
   ioengine: sync
-  test_size: 512g
+  test_size: 256g
 
 ---
 fs: btrfs
@@ -48,7 +48,7 @@ fio-setup-basic:
   rw: randwrite
   bs: 4k
   ioengine: sync
-  test_size: 512g
+  test_size: 256g
 
 ---
 fs: ext4
@@ -59,7 +59,7 @@ fio-setup-basic:
   rw: randwrite
   bs: 4k
   ioengine: sync
-  test_size: 512g
+  test_size: 256g
 
 ---
 fs: ext4
@@ -70,7 +70,7 @@ fio-setup-basic:
   rw: write
   bs: 4k
   ioengine: libaio
-  test_size: 512g
+  test_size: 256g
 
 ---
 fs: ext4
@@ -82,4 +82,4 @@ fio-setup-basic:
   direct: direct
   bs: 4k
   ioengine: sync
-  test_size: 512g
+  test_size: 256g
