@@ -1,0 +1,55 @@
+#!/bin/bash
+# - os
+# - os_arch
+# - os_version
+# - pkgbuild_repo
+# - upstream_commit
+
+## makepkg is a script that automates the building of packages; it can download and validate source files,
+## check dependencies, configure build-time settings, compile the sources, install into a temporary root,
+## make customizations, generate meta-info, and package everything together.
+## See: https://wiki.archlinux.org/index.php/Makepkg
+
+. $LKP_SRC/lib/debug.sh
+
+init_env()
+{
+  [ -n "$os" ] || die "os is empty"
+  [ -n "$os_arch" ] || die "os_arch is empty"
+  [ -n "$os_version" ] || die "os_version is empty"
+  [ -n "$pkgbuild_repo" ] || die "pkgbuild_repo is empty"
+  [ -n "$upstream_commit" ] || die "upstream_commit is empty"
+
+  PKG_MNT=/initrd/build-pkg
+  mkdir -p "$PKG_MNT"
+
+  [ -n "$LKP_SERVER" ] && {
+    mount $LKP_SERVER:$PKG_MNT $PKG_MNT || die "Failed to run mount"
+  }
+}
+
+request_pkgbuild()
+{
+  curl -H 'Content-Type: Application/json' -XPOST $LKP_SERVER':8100/git_command' \
+   -d '{"git_repo": "'${pkgbuild_repo}'", "git_command": ["git-show", "HEAD:PKGBUILD"]}' \
+   -D header -o PKGBUILD
+
+  [ -f PKGBUILD ] || die "PKGBUILD not exist"
+  [ -s PKGBUILD ] || die "PKGBUILD is empty"
+}
+
+
+build_source_pkg()
+{
+  source PKGBUILD
+  upstream_source="source=(\"${source}#commit=${upstream_commit}\")"
+  sed -i "s|^source=.*|${upstream_source}|g" PKGBUILD
+
+  cgz_name="$PKG_MNT/${pkgname}/${upstream_commit}.cgz"
+  PACMAN=true BUILDDIR=$TMP CARCH=$os_arch PKGEXT=.cgz CGZDEST="$cgz_name" \
+    $LKP_SRC/sbin/makepkg -A --check --config $LKP_SRC/etc/makepkg.conf 2>&1
+}
+
+init_env
+request_pkgbuild
+build_source_pkg
