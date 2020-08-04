@@ -33,6 +33,7 @@ mount_dev()
 
 mount_kernel_fs()
 {
+	is_docker && return
 	[ -d /proc/1 ] ||
 	mount -t proc -o noexec,nosuid,nodev proc /proc
 
