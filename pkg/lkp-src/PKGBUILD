@@ -7,7 +7,7 @@ source=("https://github.com/intel/lkp-tests.git")
 license=('GPL2.0')
 
 LKP_SRC=${LKP_SRC:-/lkp/$USER/src}
-LKP_USER=${LKP_USER:-lkp}
+LKP_USER=${LKP_USER:-$USER}
 
 build()
 {
