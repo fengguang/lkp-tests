@@ -1,0 +1,29 @@
+# Maintainer: Chocobo1 <chocobo1 AT archlinux DOT net>
+
+pkgname=make-git
+pkgver=4.3.90
+pkgrel=1
+pkgdesc="A tool which controls the generation of executables and other non-source files of a program from the program's source files"
+arch=('i686' 'x86_64')
+url="git://$GIT_SERVER/make/make"
+license=('GPL3')
+depends=('glibc' 'guile')
+makedepends=('git' 'rsync' 'wget')
+provides=('make')
+conflicts=('make')
+source=("git://$GIT_SERVER/make/make")
+sha256sums=('SKIP')
+
+build() {
+  cd "$srcdir/make"
+  ./bootstrap
+  ./configure \
+    --prefix="/usr" \
+    --with-guile
+  make
+}
+
+package() {
+  cd "$srcdir/make"
+  make DESTDIR=$pkgdir install
+}
