@@ -95,6 +95,46 @@ wget_install_cgz()
 	rm -f /tmp/tmp.cgz
 }
 
+install_proxy_apt()
+{
+	[ -d "/etc/yum/" ] || return
+
+	echo "proxy=http://$SQUID_HOST:$SQUID_PORT" >> /etc/yum.conf
+	if ls /etc/yum.repos.d/*.repo >/dev/null 2>&1; then
+		sed -i 's/https:/http:/g' /etc/yum.repos.d/*.repo
+	fi
+
+	return 0
+}
+
+install_proxy_yum()
+{
+	[ -d "/etc/apt/" ] || return
+
+	cat << EOF > /etc/apt/apt.conf.d/proxy
+Acquire::http::proxy "http://$SQUID_HOST:$SQUID_PORT/";
+Acquire::ftp::proxy "ftp://$SQUID_HOST:$SQUID_PORT/";
+EOF
+
+	for cfg in /etc/apt/sources.list /etc/apt/sources.list.d/*
+	do
+		[ -f "$cfg" ] || continue
+		sed -i 's/https:/http:/g' $cfg
+	done
+
+	return 0
+}
+
+install_proxy()
+{
+	[ -z "$SQUID_HOST" ] && return
+	[ -z "$SQUID_PORT" ] && return
+
+	install_proxy_apt || install_proxy_yum
+}
+
+install_proxy
+
 while true; do
 	set_tbox_wtmp 'running'
 	if [ "$os_mount" != "initramfs" ]; then
