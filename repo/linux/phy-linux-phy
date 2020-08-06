@@ -1,1 +1,7 @@
-url: git://git.kernel.org/pub/scm/linux/kernel/git/phy/linux-phy.git
+url: https://git.kernel.org/pub/scm/linux/kernel/git/phy/linux-phy.git
+owner: Vinod Koul <vkoul@kernel.org>
+mail_cc:
+- Vinod Koul <vkoul@kernel.org>
+- Kishon <kishon@ti.com>
+notify_build_success_branch: .*
+belongs_to: DMA driver
