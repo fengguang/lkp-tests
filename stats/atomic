@@ -1,12 +1,9 @@
 #!/usr/bin/env ruby
 
 while (line = STDIN.gets)
-  case line.chomp!
-  when /.*atomic:\s+\d+/
-    lines = line.split
-    threads = lines[4]
-    score = lines[-1]
-    puts "threads: #{threads}"
-    puts "score: #{score}"
-  end
+  line.chomp!
+  next unless line =~ /atomic:\s+\d+\s+(\d+).+\s+(\d+)$/
+  
+  puts "threads: #{$1}"
+  puts "score: #{$2}"
 end
