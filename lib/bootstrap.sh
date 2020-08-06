@@ -206,6 +206,7 @@ run_ntpdate()
 setup_hostname()
 {
 	export HOSTNAME=${testbox:-localhost}
+	is_docker && return
 
 	echo $HOSTNAME > /tmp/hostname
 	ln -fs /tmp/hostname /etc/hostname
