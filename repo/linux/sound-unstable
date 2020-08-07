@@ -9,6 +9,6 @@ subsystems:
 - dice
 - oxfw
 - firewire-lib
-whitelist_branch: master
+branch_allowlist: master
 blacklist_branch: .*
 mail_cc: alsa-devel@alsa-project.org

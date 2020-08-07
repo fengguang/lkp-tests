@@ -3,6 +3,6 @@ owner: Kees Cook <keescook@chromium.org>
 integration_testing_branches:
 - for-next/pstore
 - for-next/kspp
-whitelist_branch: experimental
+branch_allowlist: experimental
 blacklist_branch: nx-emu
 no_merge_branch: linker/orphaned-sections
