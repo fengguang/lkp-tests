@@ -10,4 +10,4 @@ subsystems:
 - dts
 - hack
 branch_allowlist: master|for-next
-blacklist_branch: .*
+branch_denylist: .*

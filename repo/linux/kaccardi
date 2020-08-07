@@ -4,4 +4,4 @@ notify_build_success_branch: .*
 private_report_branch: .*
 mail_to: Kristen C Accardi <kristen.c.accardi@intel.com>
 branch_allowlist: fg-kaslr
-blacklist_branch: .*
+branch_denylist: .*

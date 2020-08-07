@@ -2,4 +2,4 @@ url: git://git.libc.org/linux-sh
 mail_cc: linux-sh@vger.kernel.org
 integration_testing_branches: for-next
 branch_allowlist: for-next
-blacklist_branch: .*
+branch_denylist: .*

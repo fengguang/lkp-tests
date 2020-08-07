@@ -10,5 +10,5 @@ subsystems:
 - clk
 - msm
 branch_allowlist: for-next
-blacklist_branch: .*
+branch_denylist: .*
 notify_build_success_branch: .*

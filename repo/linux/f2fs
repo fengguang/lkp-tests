@@ -6,4 +6,4 @@ owner: Jaegeuk Kim <jaegeuk@kernel.org>
 subsystems:
 - f2fs
 branch_allowlist: dev|dev-test
-blacklist_branch: .*
+branch_denylist: .*

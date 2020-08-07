@@ -1,4 +1,4 @@
 url: git://git.infradead.org/linux-ubi.git
 owner: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
 branch_allowlist: linux-next
-blacklist_branch: .*
+branch_denylist: .*

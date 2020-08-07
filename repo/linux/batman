@@ -4,4 +4,4 @@ mail_cc: Sven Eckelmann <sven@narfation.org>
 subsystems:
 - batman-adv
 branch_allowlist: batadv/net-next|batadv/net
-blacklist_branch: .*
+branch_denylist: .*

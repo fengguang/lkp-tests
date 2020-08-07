@@ -10,5 +10,5 @@ subsystems:
 - oxfw
 - firewire-lib
 branch_allowlist: master
-blacklist_branch: .*
+branch_denylist: .*
 mail_cc: alsa-devel@alsa-project.org

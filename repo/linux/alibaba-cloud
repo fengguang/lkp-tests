@@ -4,6 +4,6 @@ private_report_branch: .*
 mail_to: alikernel-developer@linux.alibaba.com
 test_old_branches: .*
 branch_allowlist: linux-next
-blacklist_branch: .*
+branch_denylist: .*
 customconfig: alicloud-customedconfig
 belongs_to: ali

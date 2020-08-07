@@ -20,6 +20,6 @@ subsystems:
 - function
 - legacy
 branch_allowlist: dwc3|musb|xceiv|gadget|fixes|next|testing/fixes|testing/next
-blacklist_branch: .*
+branch_denylist: .*
 notify_build_success_branch: testing/.*
 belongs_to: USB driver

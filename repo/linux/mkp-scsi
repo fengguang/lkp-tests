@@ -3,7 +3,7 @@ owner: Martin K. Petersen <martin.petersen@oracle.com>
 integration_testing_branches: for-next
 notify_build_success_branch: .*
 branch_allowlist: for-next|queue|fixes
-blacklist_branch: .*
+branch_denylist: .*
 subsystems:
 - scsi
 - target

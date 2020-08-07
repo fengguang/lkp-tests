@@ -13,4 +13,4 @@ subsystems:
 - bxt
 - gen8
 belongs_to: i915
-blacklist_branch: rerere-cache|maintainer-tools
+branch_denylist: rerere-cache|maintainer-tools
