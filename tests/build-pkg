@@ -12,14 +12,17 @@
 
 . $LKP_SRC/lib/debug.sh
 
-init_env()
+check_vars()
 {
-  [ -n "$os" ] || die "os is empty"
-  [ -n "$os_arch" ] || die "os_arch is empty"
-  [ -n "$os_version" ] || die "os_version is empty"
-  [ -n "$pkgbuild_repo" ] || die "pkgbuild_repo is empty"
-  [ -n "$upstream_commit" ] || die "upstream_commit is empty"
+  [ -n "$os" ]			|| die "os is empty"
+  [ -n "$os_arch" ]		|| die "os_arch is empty"
+  [ -n "$os_version" ]		|| die "os_version is empty"
+  [ -n "$pkgbuild_repo" ]	|| die "pkgbuild_repo is empty"
+  [ -n "$upstream_commit" ]	|| die "upstream_commit is empty"
+}
 
+mount_dest()
+{
   PKG_MNT=/initrd/build-pkg
   mkdir -p "$PKG_MNT"
 
@@ -50,6 +53,7 @@ build_source_pkg()
     $LKP_SRC/sbin/makepkg -A --check --config $LKP_SRC/etc/makepkg.conf 2>&1
 }
 
-init_env
+check_vars
+mount_dest
 request_pkgbuild
 build_source_pkg
