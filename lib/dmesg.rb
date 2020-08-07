@@ -215,12 +215,12 @@ def grep_printk_errors(kmsg_file, kmsg)
     oops = `#{grep} -a -E -e '^<[0123]>' -e '^kern  :(err   |crit  |alert |emerg ): ' #{kmsg_file} |
       sed -r 's/\\x1b\\[([0-9;]+m|[mK])//g' |
       grep -a -v -E -f #{LKP_SRC}/etc/oops-pattern |
-      grep -a -v -F -f #{LKP_SRC}/etc/kmsg-blacklist`
+      grep -a -v -F -f #{LKP_SRC}/etc/kmsg-denylist`
   else
     # the dmesg file is from serial console
     oops = `#{grep} -a -F -f #{KTEST_USER_GENERATED_DIR}/printk-error-messages #{kmsg_file} |
       grep -a -v -E -f #{LKP_SRC}/etc/oops-pattern |
-      grep -a -v -F -f #{LKP_SRC}/etc/kmsg-blacklist`
+      grep -a -v -F -f #{LKP_SRC}/etc/kmsg-denylist`
     oops += `grep -a -E -f #{LKP_SRC}/etc/ext4-crit-pattern #{kmsg_file}` if kmsg.index 'EXT4-fs ('
     oops += `grep -a -E -f #{LKP_SRC}/etc/xfs-alert-pattern #{kmsg_file}` if kmsg.index 'XFS ('
     oops += `grep -a -E -f #{LKP_SRC}/etc/btrfs-crit-pattern #{kmsg_file}` if kmsg.index 'btrfs: '
