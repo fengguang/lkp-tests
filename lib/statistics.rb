@@ -35,4 +35,8 @@ module Enumerable
   def standard_deviation
     Math.sqrt(sample_variance)
   end
+
+  def relative_stddev
+    standard_deviation * 100 / average
+  end
 end
