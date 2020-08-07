@@ -29,7 +29,7 @@ $perf_metrics_re = load_regular_expressions("#{LKP_SRC}/etc/perf-metrics-pattern
 $stat_denylist = load_regular_expressions("#{LKP_SRC}/etc/stat-denylist")
 $stat_allowlist = load_regular_expressions("#{LKP_SRC}/etc/stat-allowlist")
 $report_allowlist_re = load_regular_expressions("#{LKP_SRC}/etc/report-allowlist")
-$kill_pattern_whitelist_re = load_regular_expressions("#{LKP_SRC}/etc/dmesg-kill-pattern")
+$kill_pattern_allowlist_re = load_regular_expressions("#{LKP_SRC}/etc/dmesg-kill-pattern")
 
 class LinuxTestcasesTableSet
   LINUX_PERF_TESTCASES =
@@ -589,7 +589,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
         if max_a.zero?
           has_boot_fix = true if k =~ /^dmesg\./
           next if options['regression-only'] ||
-                  (k !~ $kill_pattern_whitelist_re && options['all-critical'])
+                  (k !~ $kill_pattern_allowlist_re && options['all-critical'])
         end
         # this relies on the fact dmesg.* comes ahead
         # of kmsg.* in etc/default_stats.yaml
@@ -774,10 +774,10 @@ def strict_kpi_stat?(stat, _axes, _values = nil)
   $index_perf.keys.any? { |i| stat =~ /^#{i}$/ }
 end
 
-$kpi_stat_blacklist = Set.new ['vm-scalability.stddev', 'unixbench.incomplete_result']
+$kpi_stat_denylist = Set.new ['vm-scalability.stddev', 'unixbench.incomplete_result']
 
 def kpi_stat?(stat, _axes, _values = nil)
-  return false if $kpi_stat_blacklist.include?(stat)
+  return false if $kpi_stat_denylist.include?(stat)
 
   base, _, remainder = stat.partition('.')
   all_tests_set.include?(base) && !remainder.start_with?('time.')
