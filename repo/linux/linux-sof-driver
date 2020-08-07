@@ -12,7 +12,7 @@ blacklist_config: .*
 customconfig: sof-customedconfig
 git_weight: 300
 belongs_to: sof
-blacklist_stat:
+stat_denylist:
 - "error: 'struct snd_soc_acpi_mach' has no member named 'mach_params'"
 - "error: 'dai_links' undeclared; did you mean 'dai_link'?"
 no_merge_branch: .*
