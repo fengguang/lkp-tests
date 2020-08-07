@@ -27,7 +27,7 @@ $index_perf = load_yaml "#{LKP_SRC}/etc/index-perf-all.yaml"
 
 $perf_metrics_re = load_regular_expressions("#{LKP_SRC}/etc/perf-metrics-patterns")
 $stat_denylist = load_regular_expressions("#{LKP_SRC}/etc/stat-denylist")
-$stat_whitelist = load_regular_expressions("#{LKP_SRC}/etc/stat-whitelist")
+$stat_allowlist = load_regular_expressions("#{LKP_SRC}/etc/stat-allowlist")
 $report_whitelist_re = load_regular_expressions("#{LKP_SRC}/etc/report-whitelist")
 $kill_pattern_whitelist_re = load_regular_expressions("#{LKP_SRC}/etc/dmesg-kill-pattern")
 
@@ -495,7 +495,7 @@ def filter_incomplete_run(hash)
 end
 
 def bisectable_stat?(stat)
-  return true if stat =~ $stat_whitelist
+  return true if stat =~ $stat_allowlist
 
   stat !~ $stat_denylist
 end
