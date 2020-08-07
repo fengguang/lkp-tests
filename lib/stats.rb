@@ -26,7 +26,7 @@ $perf_metrics_prefixes = File.read("#{LKP_SRC}/etc/perf-metrics-prefixes").split
 $index_perf = load_yaml "#{LKP_SRC}/etc/index-perf-all.yaml"
 
 $perf_metrics_re = load_regular_expressions("#{LKP_SRC}/etc/perf-metrics-patterns")
-$stat_blacklist = load_regular_expressions("#{LKP_SRC}/etc/stat-blacklist")
+$stat_denylist = load_regular_expressions("#{LKP_SRC}/etc/stat-denylist")
 $stat_whitelist = load_regular_expressions("#{LKP_SRC}/etc/stat-whitelist")
 $report_whitelist_re = load_regular_expressions("#{LKP_SRC}/etc/report-whitelist")
 $kill_pattern_whitelist_re = load_regular_expressions("#{LKP_SRC}/etc/dmesg-kill-pattern")
@@ -497,7 +497,7 @@ end
 def bisectable_stat?(stat)
   return true if stat =~ $stat_whitelist
 
-  stat !~ $stat_blacklist
+  stat !~ $stat_denylist
 end
 
 # b is the base of compare (eg. rc kernels) and normally have more samples than
