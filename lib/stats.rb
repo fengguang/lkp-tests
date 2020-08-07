@@ -151,14 +151,14 @@ def reasonable_perf_change?(name, delta, max)
   true
 end
 
-def blacklist_auto_report_author?(author)
-  auto_report_author_blacklist_re = load_regular_expressions("#{LKP_SRC}/etc/auto-report-author-blacklist")
-  author =~ auto_report_author_blacklist_re
+def deny_auto_report_author?(author)
+  regexp = load_regular_expressions("#{LKP_SRC}/etc/auto-report-author-denylist")
+  author =~ regexp
 end
 
-def blacklist_auto_report_stat?(stat)
-  auto_report_blacklist_re = load_regular_expressions("#{LKP_SRC}/etc/auto-report-blacklist")
-  stat =~ auto_report_blacklist_re
+def deny_auto_report_stat?(stat)
+  regexp = load_regular_expressions("#{LKP_SRC}/etc/auto-report-stat-denylist")
+  stat =~ regexp
 end
 
 def changed_stats?(sorted_a, min_a, mean_a, max_a,
