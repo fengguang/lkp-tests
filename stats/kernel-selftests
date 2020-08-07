@@ -375,7 +375,12 @@ while (line = STDIN.gets)
   when /^# (.*) ?\[ (OK|FAIL|SKIP) \]/
     next unless test_name == 'mptcp'
 
-    detail_stat('mptcp', $1, $2, stats)
+    # $1 is "ns1 MPTCP -> ns1 (10.0.1.1:10000      ) MPTCP   (duration  1089ms)"
+    # test_case_name is "ns1 MPTCP -> ns1 (10.0.1.1:10000      ) MPTCP"
+    # $2 is "OK", $2 should be saved before changing $1
+    result = $2
+    test_case_name = $1.gsub(/\(duration(.*)\)/, '')
+    detail_stat('mptcp', test_case_name, result, stats)
   when /^# TEST: (.*)/
     next unless test_case_name == 'nft_concat_range.sh'
 
