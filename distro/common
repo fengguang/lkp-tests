@@ -19,7 +19,7 @@ show_deps_list()
 {
 	local denylist="^pack-deps$
 -dev$
--whitelist$"
+-allowlist$"
 
 	find $LKP_SRC/distro/depends/ -type f | sed 's:.*/::' | grep -v "$denylist"
 }

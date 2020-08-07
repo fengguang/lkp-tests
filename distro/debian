@@ -107,8 +107,8 @@ pack()
 		find . -xdev |
 		grep -v -f $LKP_SRC/rootfs/rootfs-strip-list
 
-		[[ -f $LKP_SRC/distro/$DISTRO/$BM_NAME-whitelist ]] &&
-		cat   $LKP_SRC/distro/$DISTRO/$BM_NAME-whitelist
+		[[ -f $LKP_SRC/distro/$DISTRO/$BM_NAME-allowlist ]] &&
+		cat   $LKP_SRC/distro/$DISTRO/$BM_NAME-allowlist
 	} |
 	cpio --quiet -o -H newc --owner=root.root |
 	gzip -n -9 >	$pack_to/${BM_NAME}_$date.cgz	|| return
