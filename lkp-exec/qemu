@@ -210,6 +210,11 @@ job_script=$1
 
 sed -i 's/\r//' $job_script
 sed -i 's/LKP_SERVER=.*$/LKP_LOCAL_RUN=1/g' $job_script
+# lkp-src makepkg use current user name to generate path to save code
+# switch to current user here if job_script specified user=lkp to fix lkp qemu running error:
+# rc.local[297]: /etc/init.d/lkp-bootstrap: 75: /etc/init.d/lkp-bootstrap: /lkp/lkp/src/bin/lkp-setup-rootfs: not found
+sed -i 's/user=lkp/user=$(whoami)/g' $job_script
+sed -i 's/export user=['\'']lkp['\'']/user=$(whoami)/g' $job_script
 
 validate_options $job_script || exit 1
 

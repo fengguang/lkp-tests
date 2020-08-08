@@ -1,0 +1,9 @@
+boot_failures: 1
+
+# BUG: KCSAN: data-race in generic_permission / kernfs_refresh_inode
+BUG:KCSAN:data-race_in_generic_permission/kernfs_refresh_inode: 1
+message:BUG:KCSAN:data-race_in_generic_permission/kernfs_refresh_inode: [   62.168598] BUG: KCSAN: data-race in generic_permission / kernfs_refresh_inode
+pattern:BUG:KCSAN:data-race_in_generic_permission/kernfs_refresh_inode: BUG: KCSAN: data-race in generic_permission / kernfs_refresh_inode
+
+timestamp:last: 62.168598
+timestamp:BUG:KCSAN:data-race_in_generic_permission/kernfs_refresh_inode: 62.168598

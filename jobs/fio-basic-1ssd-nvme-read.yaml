@@ -22,6 +22,6 @@ fio-setup-basic:
   ioengine:
           - sync
           - libaio
-  test_size: 512g
+  test_size: 256g
 
 fio:

@@ -27,6 +27,11 @@ else
 	fi
 fi
 
+# errata.txt and run_tests.sh are under same directory, using
+# absolute path for errata.sh will increase the risk of missing
+# file, here we directly use relative path.
+sed -i 's/\(ERRATATXT=\).*/\1errata.txt/' config.mak
+
 setup_test_environment || die "failed to setup test environment"
 
 check_ignored_cases
