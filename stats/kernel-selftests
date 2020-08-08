@@ -365,7 +365,7 @@ while (line = STDIN.gets)
   when /^ignored_by_lkp (.*) test/
     stats << "#{$1}.ignored_by_lkp: 1"
   when /^(ok|not ok) \d+ selftests: (\S*): (\S*)( # SKIP)?/
-    next if test_name == 'ftrace'
+    next if test_name == 'ftrace' || test_name == 'x86'
 
     test_name = $2
     test_case_name = $3
