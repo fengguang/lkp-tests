@@ -125,12 +125,32 @@ EOF
 	return 0
 }
 
+install_docker_proxy()
+{
+	has_cmd docker || return
+	[ -n "$DOCKER_PROXY_HOST" ] || return
+
+	mkdir -p /etc/systemd/system/docker.service.d
+	cat << EOF > /etc/systemd/system/docker.service.d/http-proxy.conf
+[Service]
+Environment="HTTPS_PROXY=http://$DOCKER_PROXY_HOST:$DOCKER_PROXY_PORT/"
+EOF
+
+	curl http://$DOCKER_PROXY_HOST:$DOCKER_PROXY_PORT/ca.crt >
+		/etc/pki/ca-trust/source/anchors/docker_registry_proxy.crt || return
+	update-ca-trust extract
+
+	systemctl daemon-reload
+	systemctl restart docker.service
+}
+
 install_proxy()
 {
 	[ -z "$SQUID_HOST" ] && return
 	[ -z "$SQUID_PORT" ] && return
 
 	install_proxy_apt || install_proxy_yum
+	install_docker_proxy
 }
 
 install_proxy
