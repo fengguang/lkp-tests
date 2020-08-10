@@ -220,6 +220,8 @@ setup_hostname()
 
 setup_hosts()
 {
+	is_docker && return
+
 	# /etc/hosts may be shared when it's NFSROOT and there is no obvious
 	# way to detect if rootfs is already RAM based. So unconditionally
 	# symlink it to my own tmpfs copy.
