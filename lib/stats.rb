@@ -500,6 +500,31 @@ def bisectable_stat?(stat)
   stat !~ $stat_denylist
 end
 
+def expand_matrix(matrix, options)
+  return unless options['stat']
+  return unless options['stat'].include?('.virtual.')
+
+  # stat is like will-it-scale.per_process_ops.virtual.relative_stddev
+  # the suffix is the conversion function name which can be found in statistics.rb
+  stat = options['stat']
+
+  # real stat is like will-it-scale.per_process_ops
+  real_stat = stat.sub(/\.virtual\.[^.]*$/, '')
+  real_values = matrix[real_stat]
+  return unless real_values.is_a?(Array)
+
+  # convert function is like relative_stddev
+  convert_function = stat.sub(/.*\.virtual\./, '')
+  return unless real_values.respond_to?(convert_function)
+
+  converted_values = real_values.public_send(convert_function)
+  if converted_values.is_a?(Array)
+    matrix[stat] = converted_values
+  elsif converted_values.is_a?(Numeric)
+    matrix[stat] = Array.new(real_values.size, converted_values)
+  end
+end
+
 # b is the base of compare (eg. rc kernels) and normally have more samples than
 # a (eg. the branch HEADs)
 def __get_changed_stats(a, b, is_incomplete_run, options)
@@ -517,6 +542,12 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
   if options['variance']
     return nil if cols_a < 10 || cols_b < 10
   end
+
+  # Before: matrix = { "will-it-scale.per_process_ops" => [1183733, 1285303, 721524, 858073, 1207794] }
+  # After:  matrix = { "will-it-scale.per_process_ops" => [1183733, 1285303, 721524, 858073, 1207794],
+  #                    "expand_stat.will-it-scale.per_process_ops.relative_stddev" => [20.964567773186214, 20.964567773186214, 20.964567773186214, 20.964567773186214, 20.964567773186214]}
+  expand_matrix(a, options)
+  expand_matrix(b, options)
 
   b_monitors = {}
   b.keys.each { |k| b_monitors[stat_key_base(k)] = true }
