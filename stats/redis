@@ -92,10 +92,10 @@ $stdin.each_line do |line|
     puts "MSET: #{$1}.#{$2}"
   end
 end
-set_avg = set_sum / set_num
-get_avg = get_sum / get_num
-set_time = set_time_sum / set_time_num
-get_time = get_time_sum / get_time_num
+set_avg = set_num > 0 ? set_sum / set_num : 0
+get_avg = get_num > 0 ? get_sum / get_num : 0
+set_time = set_time_num > 0 ? set_time_sum / set_time_num : 0
+get_time = get_time_num > 0 ? get_time_sum / get_time_num : 0
 puts "set_total_throughput_rps: #{set_sum}"
 puts "get_total_throughput_rps: #{get_sum}"
 puts "set_total_time_sec: #{set_time_sum}"
