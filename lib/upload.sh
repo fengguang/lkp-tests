@@ -2,13 +2,18 @@
 
 . $LKP_SRC/lib/env.sh
 
-is_local_server()
+has_rsync_server()
 {
+	[ -n "$RSYNC_SERVER" ] && return
+	[ -e $LKP_SRC/etc/trustable-lkp-server ] || return
+
 	echo "$LKP_SERVER" | grep -q -E -f $LKP_SRC/etc/trustable-lkp-server
 }
 
 upload_files_rsync()
 {
+	[ -n "$RSYNC_SERVER" ] || local RSYNC_SERVER=$LKP_SERVER
+
 	[ -n "$target_directory" ] && {
 
 		local current_dir=$(pwd)
@@ -20,7 +25,7 @@ upload_files_rsync()
 			--chmod=D775,F664 \
 			--ignore-missing-args \
 			--min-size=1 \
-			${target_directory%%/*} rsync://$LKP_SERVER$JOB_RESULT_ROOT/
+			${target_directory%%/*} rsync://$RSYNC_SERVER$JOB_RESULT_ROOT/
 
 		local JOB_RESULT_ROOT=$JOB_RESULT_ROOT/$target_directory
 
@@ -32,7 +37,7 @@ upload_files_rsync()
 		--chmod=D775,F664 \
 		--ignore-missing-args \
 		--min-size=1 \
-		"$@" rsync://$LKP_SERVER$JOB_RESULT_ROOT/
+		"$@" rsync://$RSYNC_SERVER$JOB_RESULT_ROOT/
 }
 
 upload_files_lftp()
@@ -161,7 +166,7 @@ upload_files()
 			return
 		}
 
-		if has_cmd rsync && is_local_server; then
+		if has_cmd rsync && has_rsync_server; then
 			upload_files_rsync "$@"
 			return
 		fi
