@@ -15,9 +15,9 @@ opt_output_dir = nil
 opt_auto_define_files = false
 
 options = OptionParser.new do |opts|
-  opts.banner = 'Usage: tj [options] jobs...'
+  opts.banner = 'Usage: submit [options] jobs...'
 
-  opts.separator '       TiJiao(submit) test jobs to the scheduler'
+  opts.separator '       submit test jobs to the scheduler'
   opts.separator ''
   opts.separator 'options:'
 
