@@ -406,6 +406,7 @@ fixup_packages()
 
 mount_debugfs()
 {
+	is_docker && return
 	check_mount debug /sys/kernel/debug -t debugfs
 }
 
