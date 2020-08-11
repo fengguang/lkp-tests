@@ -1,5 +1,6 @@
 provider: qemu
 template: kvm
 nr_cpu: 2
+nr_node: 1
 memory: 8G
 arch: aarch64
