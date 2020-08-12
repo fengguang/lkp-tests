@@ -79,6 +79,7 @@ opt_parser = OptionParser.new do |opts|
 
   opts.on('-f FIELD', '--field FIELD', 'FIELD to evaluate: vmstat.cpu.sy, iostat.sda.util, etc.') do |field|
     $opt_field = field
+    $options['stat'] = field
   end
 
   opts.on('-g PATTERN', '--grep PATTERN', 'only compare result roots that match PATTERN') do |pattern|
@@ -231,7 +232,8 @@ def setup_project
 end
 
 def get_json_field(file, key, is_rt)
-  matrix = load_json file, true
+  matrix = load_json file
+  expand_matrix(matrix, 'stat' => key)
   if is_rt
     # convert stats.json data structure to that of matrix.json
     nmatrix = {}
@@ -365,8 +367,10 @@ def setup_changed_stats
     next unless File.exist? matrix_file2
 
     if $opt_index
-      matrix1 = load_json matrix_file1, true
-      matrix2 = load_json matrix_file2, true
+      matrix1 = load_json matrix_file1
+      expand_matrix(matrix1, 'stat' => $opt_field)
+      matrix2 = load_json matrix_file2
+      expand_matrix(matrix2, 'stat' => $opt_field)
       $all_index.each do |stat, weight|
         if stat.index 'iostat\.'
           next unless k =~ /\/(dd-write)\//
@@ -754,8 +758,10 @@ end
 def call_mmplot
   $cases.each do |_rt, _value|
     file = _rt + '/matrix.json'
-    matrix1 = load_json file, true
-    matrix2 = load_json file.sub($opt_dims[0], $opt_dims[1]), true
+    matrix1 = load_json file
+    expand_matrix(matrix1, 'stat' => $opt_field)
+    matrix2 = load_json file.sub($opt_dims[0], $opt_dims[1])
+    expand_matrix(matrix2, 'stat' => $opt_field)
     mmplot(matrix2, matrix1, [$opt_field], File.dirname(File.dirname(_rt)))
   end
 end
