@@ -156,11 +156,71 @@ install_proxy()
 	install_docker_proxy
 }
 
+# Save the result to
+# "/srv/initrd/pkg/$os/$os_arch/$os_version/$benchmark.cgz",
+# get the result through wget $initrd_pkg.
+define_files_pkg_pack()
+{
+	(
+		local benchmark=${1#pkg/}
+		export benchmark=${benchmark%/PKGBUILD}
+		$LKP_SRC/tests/makepkg
+	)
+}
+
+# There may be $program-dev or $program-dev-dev in the
+# "$LKP_SRC/distro/depends" directory,
+# when the value passed by $define_files is "distro/depends/$program-dev",
+# you don't know which script in "makepkg" or "pack-deps" to execute,
+# so it needs to be handled sparately.
+# Save the result to
+# "/srv/initrd/deps/$os/$os_arch/$os_version/$deps_benchmark.cgz",
+# get the result through wget $initrd_deps.
+define_files_deps_pack()
+{
+	local deps_benchmark=${1##*/}
+	local pkg_benchmark=${deps_benchmark%-dev}
+	local suffix=${deps_benchmark##*-}
+
+	[ $suffix == "dev" ] && [ -f "$LKP_SRC/pkg/$pkg_benchmark/PKGBUILD" ] && {
+		(
+			export benchmark=$pkg_benchmark
+			$LKP_SRC/tests/makepkg
+		)
+		return 0
+	}
+
+	(
+		export benchmark=$deps_benchmark
+		export pack_arch=$os_arch
+		$LKP_SRC/tests/pack-deps
+	)
+}
+
+# $define_files may be like this:
+# "pkg/$program/PKGBUILD distro/depends/$program distro/depends/$program-dev".
+define_files_auto_pack()
+{
+	for path
+	do
+		[ -f "$LKP_SRC/$path" ] || continue
+
+		[ ${path##*/} = PKGBUILD ] && {
+			define_files_pkg_pack $path
+		}
+		[ ${path#distro/depends/} != $path ] && {
+			define_files_deps_pack $path
+		}
+	done
+}
+
 install_proxy
 
 while true; do
 	set_tbox_wtmp 'running'
 	if [ "$os_mount" != "initramfs" ]; then
+		. $job_script define_files
+		define_files_auto_pack $define_files
 		wget_install_cgz $initrd_deps
 		wget_install_cgz $initrd_pkg
 		install_rpms
