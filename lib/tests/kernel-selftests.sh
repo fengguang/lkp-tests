@@ -350,7 +350,7 @@ prepare_for_selftest()
 		# m* is slow
 		selftest_mfs=$(ls -d [m-s]*/Makefile | grep -v -w -e rseq -e resctrl -e net -e netfilter -e rcutorture)
 	elif [ "$group" = "kselftests-03" ]; then
-		selftest_mfs=$(ls -d [t-z]*/Makefile | grep -v x86)
+		selftest_mfs=$(ls -d [t-z]*/Makefile | grep -v x86 -e tc-testing)
 	elif [ "$group" = "kselftests-rseq" ]; then
 		selftest_mfs=$(ls -d rseq/Makefile)
 	elif [ "$group" = "kselftests-livepatch" ]; then
@@ -377,6 +377,8 @@ prepare_for_selftest()
 		selftest_mfs=$(ls -d firmware/Makefile)
 	elif [ "$group" = "kselftests-rcutorture" ]; then
 		selftest_mfs=$(ls -d rcutorture/Makefile)
+	elif [ "$group" = "kselftests-tc-testing" ]; then
+		selftest_mfs=$(ls -d tc-testing/Makefile)
 	fi
 }
 
