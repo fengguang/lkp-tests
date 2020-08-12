@@ -5,7 +5,7 @@ RESULT_ROOT = ENV['RESULT_ROOT']
 
 memleaks = []
 memleak = {}
-bts = []
+bts = ""
 
 while (line = STDIN.gets)
   case line.chomp!
