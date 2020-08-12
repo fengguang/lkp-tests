@@ -2,9 +2,9 @@ pkgname=kvm-unit-tests
 pkgver=git
 pkgrel=1
 arch=('i386' 'x86_64')
-url="https://git.kernel.org/pub/scm/virt/kvm/kvm-unit-tests.git"
+url="https://gitlab.com/kvm-unit-tests/kvm-unit-tests"
 license=('GPL')
-source=("https://git.kernel.org/pub/scm/virt/kvm/kvm-unit-tests.git")
+source=("https://gitlab.com/kvm-unit-tests/kvm-unit-tests.git")
 md5sums=('SKIP')
 
 build()
