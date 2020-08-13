@@ -24,17 +24,17 @@ def common_error_id(line)
 end
 
 error_ids = Set.new
-in_stderr = 0
+in_stderr = false
 seqno = ''
 
 while (line = STDIN.gets)
   case line.chomp!
   when /^## ______________([0-9.]+):stderr$/
-    in_stderr = 1
+    in_stderr = true
     seqno = $1
     next
   when /^## ______________#{seqno}:enderr$/
-    in_stderr = 0
+    in_stderr = false
     seqno = ''
   end
   next unless in_stderr
