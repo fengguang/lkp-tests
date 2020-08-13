@@ -40,21 +40,21 @@ class TPSample
       pid = $2.to_i
       cpu = $3.to_i
       timestamp = $4.to_f
-      type = $5.intern
+      type = $5
       raw_data = $6
     when RE_SAMPLE2
       cmd = $3
       pid = $4.to_i
       cpu = $2.to_i
       timestamp = $1.to_f
-      type = $6.intern
+      type = $6
       raw_data = $7
     end
     return if raw_data.nil?
 
     arg_pair_strs = raw_data.scan RES_ARG
     arg_pairs = arg_pair_strs.map do |regex| # do |k, v|
-      [regex[1], regex[2]]                   # [k.intern, v]
+      [regex[1], regex[2]]                   # [k, v]
     end
     data = arg_pairs.to_h
     new cmd, pid, cpu, timestamp, type, raw_data, data
@@ -98,7 +98,7 @@ class TPEventFormat
       if fmt
         arg_pair_strs = fmt[1].scan TPSample::RES_ARG
         arg_pairs = arg_pair_strs.map do |regex|   # |k, v|
-          [regex[1], regex[2]]                     # [k.intern, v]
+          [regex[1], regex[2]]                     # [k, v]
         end
         args = arg_pairs.to_h
       end
@@ -121,8 +121,6 @@ class TPTrace
   end
 
   def each
-    block_given? || (return enum_for(__method__))
-
     @file.each_line do |line|
       (sample = TPSample.parse(line)) || next
       fmt = @formats[sample.type]
@@ -145,7 +143,7 @@ class FGSample
 
   getter :cmd, :pid, :duration, :func
 
-  def initialize(cmd, pid, duration, func)
+  def initialize(cmd : String, pid : Int32, duration : Float64, func : String)
     @cmd = cmd
     @pid = pid
     @duration = duration
@@ -155,23 +153,21 @@ class FGSample
   def self.parse(str)
     case str
     when RE_SAMPLE
-      new $1, $2.to_i, $3.to_f, $4.intern
+      new $1, $2.to_i, $3.to_f, $4
     when RE_SAMPLE2
       return if $5.to_f.zero?
 
-      new $3, $4.to_i, $5.to_f, $6.intern
+      new $3, $4.to_i, $5.to_f, $6
     end
   end
 end
 
 class FGTrace
-  def initialize(file)
+  def initialize(file : File)
     @file = file
   end
 
   def each
-    block_given? || (return enum_for(__method__))
-
     @file.each_line do |line|
       (sample = FGSample.parse(line)) || next
       yield sample
@@ -198,7 +194,7 @@ class FuncSample
 
   def self.parse(str)
     # taskname, pid, cpuID, timestamp, func, callerfunc
-    FuncSample.new($1, $2.to_i, $3.to_i, $5.to_f, $6.strip.intern, $7.strip) if str =~ RE_SAMPLE
+    FuncSample.new($1, $2.to_i, $3.to_i, $5.to_f, $6.strip, $7.strip) if str =~ RE_SAMPLE
   end
 end
 

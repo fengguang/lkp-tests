@@ -81,6 +81,6 @@ end
 
 def percentile(data, points = [90, 95, 99])
   points.map do |p|
-    [p, data[data.size * 0.01 * p]]
+    [p, data[(data.size * 0.01 * p).to_i]]
   end
 end
