@@ -22,8 +22,8 @@ def analyze
   functions_samples.each do |func, samples|
     samples.sort!
     perct = percentile(samples, PERCT_POINTS)
-    perct.each do |p, v|
-      puts "#{func}.#{p}th: #{v}"
+    perct.each do |i|
+      puts "#{func}.#{i[0]}th: #{i[1]}"
     end
     puts "#{func}.min: #{samples[0]}"
     puts "#{func}.max: #{samples[-1]}"
