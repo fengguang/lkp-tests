@@ -3,7 +3,7 @@ require "#{LKP_SRC}/lib/yaml"
 
 def stable_yaml_file(yaml_file)
   job = load_yaml(yaml_file)
-  delete_job_key = %w(LKP_DEBUG_PREFIX lkp_initrd_user)
+  delete_job_key = %w(LKP_DEBUG_PREFIX lkp_initrd_user job_origin)
   job.delete_if do |key, _|
     delete_job_key.include?(key) ||
       key.to_s.start_with?('#! ') ||
@@ -25,7 +25,7 @@ describe 'submit job spec' do
     job_name = File.basename(yaml_file, '.yaml')
     output_dir = "#{LKP_SRC}/spec/submit/#{job_name}"
     it 'save atomic yaml' do
-      system("#{LKP_SRC}/sbin/submit -o #{output_dir} #{yaml_file}")
+      system("#{LKP_SRC}/sbin/submit -s 'testbox: vm-hi1620-2p8g--spec_submit' -o #{output_dir} #{yaml_file}")
       traverse_file(output_dir)
     end
   end
