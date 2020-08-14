@@ -1,0 +1,87 @@
+---
+suite: redis
+testcase: redis
+category: benchmark
+need_memory: 62G
+nr_threads: 100%
+numactl:
+  all: 1
+sysctl:
+  sc_overcommit_memory: 1
+  sc_somaxconn: 65535
+transparent_hugepage:
+  thp_enabled: never
+  thp_defrag: never
+cluster: cs-localhost
+cpu_node_bind: even
+nr_processes: 4
+if role server:
+  redis-server: 
+if role client:
+  redis:
+    test: set,get
+    data_size: 1024
+    n_client: 5
+    requests: 68000000
+    n_pipeline: 3
+    key_len: 68000000
+testbox: vm-hi1620-2p8g--spec_submit
+tbox_group: vm-hi1620-2p8g--spec_submit
+node_roles: server client
+provider: qemu
+template: kvm
+nr_cpu: 2
+nr_node: 1
+memory: 8G
+arch: aarch64
+kmsg: 
+boot-time: 
+uptime: 
+iostat: 
+heartbeat: 
+vmstat: 
+numa-numastat: 
+numa-vmstat: 
+numa-meminfo: 
+proc-vmstat: 
+proc-stat: 
+meminfo: 
+slabinfo: 
+interrupts: 
+lock_stat: 
+latency_stats: 
+softirqs: 
+bdi_dev_mapping: 
+diskstats: 
+nfsstat: 
+cpuidle: 
+cpufreq-stats: 
+sched_debug: 
+perf-stat: 
+mpstat: 
+perf-profile: 
+cpufreq_governor: 
+need_kconfig:
+- CONFIG_KVM_GUEST=y
+pp:
+  numactl:
+    all: 1
+  sysctl:
+    sc_overcommit_memory: 1
+    sc_somaxconn: 65535
+  transparent_hugepage:
+    thp_enabled: never
+    thp_defrag: never
+  redis-server:
+    nr_processes: 4
+    cpu_node_bind: even
+  redis:
+    test: set,get
+    data_size: 1024
+    n_client: 5
+    requests: 68000000
+    n_pipeline: 3
+    key_len: 68000000
+    nr_processes: 4
+    cpu_node_bind: even
+  cpufreq_governor: 
