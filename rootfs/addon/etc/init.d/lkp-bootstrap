@@ -74,6 +74,12 @@ export PS4='+(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
 
 set +m
 
+. $LKP_SRC/lib/env.sh
+
+if is_docker; then
+	$LKP_DEBUG_PREFIX $LKP_SRC/bin/lkp-setup-rootfs && exit
+fi
+
 (
 	$LKP_DEBUG_PREFIX $LKP_SRC/bin/lkp-setup-rootfs && exit
 
