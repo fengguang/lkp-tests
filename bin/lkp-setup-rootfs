@@ -230,6 +230,11 @@ while true; do
 	echo $LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp
 	$LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp $job
 
+	is_docker && {
+		echo "LKP: exiting"
+		exit
+	}
+	
 	if tbox_cant_kexec || job_force_reboot; then
 		echo "LKP: rebooting"
 		set_tbox_wtmp 'rebooting'
