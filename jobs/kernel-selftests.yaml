@@ -16,6 +16,7 @@ kernel-selftests:
     - kselftests-bpf
     - kselftests-livepatch
     - kselftests-rseq
+    - kselftests-tc-testing
 # never register ERST as pstore backend
 kernel_cmdline: erst_disable
 

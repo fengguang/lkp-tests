@@ -1,7 +1,7 @@
 url: https://github.com/gthelen/linux.git
 notify_build_success_branch: .*
-whitelist_branch: for-next
-blacklist_branch: .*
+branch_allowlist: for-next
+branch_denylist: .*
 private_report_branch: .*
 mail_to: Greg Thelen <gthelen@google.com>
 owner: Greg Thelen <gthelen@google.com>

@@ -210,7 +210,7 @@ run_test()
 
 	# the ignore file like xfs-ignore, but $test like xfs-group1, so need to get its prefix.
 	local test_ignore="$test_dir/${test%-*}-ignore"
-	# /$BENCHMARK_ROOT/xfstests/${test%-*}-ignore is built from upstream blacklist
+	# /$BENCHMARK_ROOT/xfstests/${test%-*}-ignore is built from upstream denylist
 	test_ignore="$test_ignore /$BENCHMARK_ROOT/xfstests/${test%-*}-ignore"
 
 	local ignored_tests

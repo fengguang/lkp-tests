@@ -9,5 +9,5 @@ subsystems:
 - arm
 - dts
 - hack
-whitelist_branch: master|for-next
-blacklist_branch: .*
+branch_allowlist: master|for-next
+branch_denylist: .*

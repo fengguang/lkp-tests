@@ -7,10 +7,9 @@ subsystems:
 - vmx
 - mmu
 belongs_to: kvm
-blacklist_branch: auto-next
+branch_denylist: auto-next
 mail_cc:
 - kvm@vger.kernel.org
 - Robert Hu <robert.hu@intel.com>
 - Farrah Chen <farrah.chen@intel.com>
 - Danmei Wei <danmei.wei@intel.com>
-

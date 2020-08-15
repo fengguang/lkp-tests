@@ -12,5 +12,5 @@ subsystems:
 - rxrpc
 - overlayfs
 - asn.1
-blacklist_branch: unionmount
+branch_denylist: unionmount
 notify_build_success_branch: .*

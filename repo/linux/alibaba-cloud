@@ -3,7 +3,7 @@ notify_build_success_branch: .*
 private_report_branch: .*
 mail_to: alikernel-developer@linux.alibaba.com
 test_old_branches: .*
-whitelist_branch: linux-next
-blacklist_branch: .*
+branch_allowlist: linux-next
+branch_denylist: .*
 customconfig: alicloud-customedconfig
 belongs_to: ali

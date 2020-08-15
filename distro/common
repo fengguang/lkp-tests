@@ -17,11 +17,11 @@ check_shared_package()
 
 show_deps_list()
 {
-	local blacklist="^pack-deps$
+	local denylist="^pack-deps$
 -dev$
--whitelist$"
+-allowlist$"
 
-	find $LKP_SRC/distro/depends/ -type f | sed 's:.*/::' | grep -v "$blacklist"
+	find $LKP_SRC/distro/depends/ -type f | sed 's:.*/::' | grep -v "$denylist"
 }
 
 show_pack_list()

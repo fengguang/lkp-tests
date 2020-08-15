@@ -26,10 +26,10 @@ $perf_metrics_prefixes = File.read("#{LKP_SRC}/etc/perf-metrics-prefixes").split
 $index_perf = load_yaml "#{LKP_SRC}/etc/index-perf-all.yaml"
 
 $perf_metrics_re = load_regular_expressions("#{LKP_SRC}/etc/perf-metrics-patterns")
-$stat_blacklist = load_regular_expressions("#{LKP_SRC}/etc/stat-blacklist")
-$stat_whitelist = load_regular_expressions("#{LKP_SRC}/etc/stat-whitelist")
-$report_whitelist_re = load_regular_expressions("#{LKP_SRC}/etc/report-whitelist")
-$kill_pattern_whitelist_re = load_regular_expressions("#{LKP_SRC}/etc/dmesg-kill-pattern")
+$stat_denylist = load_regular_expressions("#{LKP_SRC}/etc/stat-denylist")
+$stat_allowlist = load_regular_expressions("#{LKP_SRC}/etc/stat-allowlist")
+$report_allowlist_re = load_regular_expressions("#{LKP_SRC}/etc/report-allowlist")
+$kill_pattern_allowlist_re = load_regular_expressions("#{LKP_SRC}/etc/dmesg-kill-pattern")
 
 class LinuxTestcasesTableSet
   LINUX_PERF_TESTCASES =
@@ -151,14 +151,14 @@ def reasonable_perf_change?(name, delta, max)
   true
 end
 
-def blacklist_auto_report_author?(author)
-  auto_report_author_blacklist_re = load_regular_expressions("#{LKP_SRC}/etc/auto-report-author-blacklist")
-  author =~ auto_report_author_blacklist_re
+def deny_auto_report_author?(author)
+  regexp = load_regular_expressions("#{LKP_SRC}/etc/auto-report-author-denylist")
+  author =~ regexp
 end
 
-def blacklist_auto_report_stat?(stat)
-  auto_report_blacklist_re = load_regular_expressions("#{LKP_SRC}/etc/auto-report-blacklist")
-  stat =~ auto_report_blacklist_re
+def deny_auto_report_stat?(stat)
+  regexp = load_regular_expressions("#{LKP_SRC}/etc/auto-report-stat-denylist")
+  stat =~ regexp
 end
 
 def changed_stats?(sorted_a, min_a, mean_a, max_a,
@@ -495,9 +495,34 @@ def filter_incomplete_run(hash)
 end
 
 def bisectable_stat?(stat)
-  return true if stat =~ $stat_whitelist
+  return true if stat =~ $stat_allowlist
 
-  stat !~ $stat_blacklist
+  stat !~ $stat_denylist
+end
+
+def expand_matrix(matrix, options)
+  return unless options['stat']
+  return unless options['stat'].include?('.virtual.')
+
+  # stat is like will-it-scale.per_process_ops.virtual.relative_stddev
+  # the suffix is the conversion function name which can be found in statistics.rb
+  stat = options['stat']
+
+  # real stat is like will-it-scale.per_process_ops
+  real_stat = stat.sub(/\.virtual\.[^.]*$/, '')
+  real_values = matrix[real_stat]
+  return unless real_values.is_a?(Array)
+
+  # convert function is like relative_stddev
+  convert_function = stat.sub(/.*\.virtual\./, '')
+  return unless real_values.respond_to?(convert_function)
+
+  converted_values = real_values.public_send(convert_function)
+  if converted_values.is_a?(Array)
+    matrix[stat] = converted_values
+  elsif converted_values.is_a?(Numeric)
+    matrix[stat] = Array.new(real_values.size, converted_values)
+  end
 end
 
 # b is the base of compare (eg. rc kernels) and normally have more samples than
@@ -518,6 +543,12 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
     return nil if cols_a < 10 || cols_b < 10
   end
 
+  # Before: matrix = { "will-it-scale.per_process_ops" => [1183733, 1285303, 721524, 858073, 1207794] }
+  # After:  matrix = { "will-it-scale.per_process_ops" => [1183733, 1285303, 721524, 858073, 1207794],
+  #                    "expand_stat.will-it-scale.per_process_ops.relative_stddev" => [20.964567773186214, 20.964567773186214, 20.964567773186214, 20.964567773186214, 20.964567773186214]}
+  expand_matrix(a, options)
+  expand_matrix(b, options)
+
   b_monitors = {}
   b.keys.each { |k| b_monitors[stat_key_base(k)] = true }
 
@@ -529,7 +560,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
     next if v[-1].is_a?(String)
     next if options['perf'] && !perf_metric?(k)
     next if is_incomplete_run && k !~ /^(dmesg|last_state|stderr)\./
-    next if !options['more'] && !bisectable_stat?(k) && k !~ $report_whitelist_re
+    next if !options['more'] && !bisectable_stat?(k) && k !~ $report_allowlist_re
 
     is_failure_stat = is_failure k
     if is_failure_stat && k !~ /^(dmesg|kmsg|last_state|stderr)\./
@@ -589,7 +620,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
         if max_a.zero?
           has_boot_fix = true if k =~ /^dmesg\./
           next if options['regression-only'] ||
-                  (k !~ $kill_pattern_whitelist_re && options['all-critical'])
+                  (k !~ $kill_pattern_allowlist_re && options['all-critical'])
         end
         # this relies on the fact dmesg.* comes ahead
         # of kmsg.* in etc/default_stats.yaml
@@ -774,10 +805,10 @@ def strict_kpi_stat?(stat, _axes, _values = nil)
   $index_perf.keys.any? { |i| stat =~ /^#{i}$/ }
 end
 
-$kpi_stat_blacklist = Set.new ['vm-scalability.stddev', 'unixbench.incomplete_result']
+$kpi_stat_denylist = Set.new ['vm-scalability.stddev', 'unixbench.incomplete_result']
 
 def kpi_stat?(stat, _axes, _values = nil)
-  return false if $kpi_stat_blacklist.include?(stat)
+  return false if $kpi_stat_denylist.include?(stat)
 
   base, _, remainder = stat.partition('.')
   all_tests_set.include?(base) && !remainder.start_with?('time.')

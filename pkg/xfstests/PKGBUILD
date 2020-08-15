@@ -7,12 +7,12 @@ license=('GPL')
 source=('https://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs-tools.git' 'https://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git')
 md5sums=('SKIP' 'SKIP')
 
-build_upstream_ext4_blacklist()
+build_upstream_ext4_denylist()
 {
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-	wget -O ext4-upstream-blacklist https://git.kernel.org/pub/scm/fs/ext2/xfstests-bld.git/plain/kvm-xfstests/test-appliance/files/root/fs/ext4/exclude || return
-	cat ext4-upstream-blacklist | grep -v '^#' | grep 'generic/' | awk -F'/' '{print $2}' >> $benchmark_path/tests/generic-ext4-ignore
-	cat ext4-upstream-blacklist | grep -v '^#' | grep 'ext4/' | awk -F'/' '{print $2}' >> $benchmark_path/tests/ext4-ignore
+	wget -O ext4-upstream-denylist https://git.kernel.org/pub/scm/fs/ext2/xfstests-bld.git/plain/kvm-xfstests/test-appliance/files/root/fs/ext4/exclude || return
+	cat ext4-upstream-denylist | grep -v '^#' | grep 'generic/' | awk -F'/' '{print $2}' >> $benchmark_path/tests/generic-ext4-ignore
+	cat ext4-upstream-denylist | grep -v '^#' | grep 'ext4/' | awk -F'/' '{print $2}' >> $benchmark_path/tests/ext4-ignore
 }
 
 build_install_xfstests()
@@ -41,7 +41,7 @@ build_ignore_file()
 	git grep "_require_xfs_mkfs_without_validation" | grep -v "common/" | awk -F '[:/]' '{print $3}' > $benchmark_path/tests/xfs-ignore
 	git grep _require_xfs_io_command | grep -E "fzero|fcollapse|finsert|fcollapse" | grep generic | awk -F '[:/]' '{print $3}' > $benchmark_path/tests/generic-btrfs-ignore
 
-	build_upstream_ext4_blacklist
+	build_upstream_ext4_denylist
 }
 
 build_xfs_file()

@@ -2,6 +2,6 @@ url: https://git.kernel.org/pub/scm/linux/kernel/git/sashal/linux-stable.git
 owner: Alexander Levin <alexander.levin@verizon.com>
 mail_to: Alexander Levin <alexander.levin@verizon.com>
 test_old_branches: .*
-blacklist_branch: for-greg/.*
+branch_denylist: for-greg/.*
 private_report_branch: .*
 no_merge_branch: .*

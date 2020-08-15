@@ -1,6 +1,6 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/jwboyer/fedora.git
-whitelist_arch: x86_64|i386|arm|arm64|powerpc|s390
-blacklist_arch: .*
+arch_allowlist: x86_64|i386|arm|arm64|powerpc|s390
+arch_denylist: .*
 test_old_branches: .*
 private_report_branch: .*
 mail_to: Josh Boyer <jwboyer@fedoraproject.org>

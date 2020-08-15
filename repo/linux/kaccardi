@@ -3,5 +3,5 @@ owner: Kristen C Accardi <kristen.c.accardi@intel.com>
 notify_build_success_branch: .*
 private_report_branch: .*
 mail_to: Kristen C Accardi <kristen.c.accardi@intel.com>
-whitelist_branch: fg-kaslr
-blacklist_branch: .*
+branch_allowlist: fg-kaslr
+branch_denylist: .*

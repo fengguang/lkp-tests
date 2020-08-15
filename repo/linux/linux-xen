@@ -6,5 +6,5 @@ subsystems:
 - xen
 - blkfront
 - blkback
-blacklist_branch: devel/.*
+branch_denylist: devel/.*
 mail_cc: xen-devel@lists.xensource.com
