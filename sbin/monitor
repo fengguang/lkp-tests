@@ -1,0 +1,50 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+
+require "#{LKP_SRC}/lib/monitor"
+
+require 'optparse'
+require 'yaml'
+
+opt_set_key_value = {}
+
+options = OptionParser.new do |opts|
+  opts.banner = 'Usage: monitor [options] <filter>'
+  opts.separator '       <filter> like: job_id=1 level=info'
+  opts.separator '       monitor logs'
+  opts.separator '       use ctrl+c to break'
+  opts.separator ''
+  opts.separator 'options:'
+
+  opts.on('-u URL', '--url URL',
+          'set Message Server API address, default is ws://localhost:11310/filter') do |url|
+    URL = url
+  end
+end
+
+options.parse!(ARGV)
+
+ARGV.each do |arg|
+  if arg.index '='
+    opt_set_key_value.merge! YAML.load arg.sub(/=/, ': ')
+    true
+  else
+    false
+  end
+end
+
+if ARGV.empty?
+  puts options
+  exit
+end
+
+
+URL ||= 'ws://localhost:11310/filter'
+
+monitor = Monitor.new
+monitor.url = URL
+monitor.overrides = opt_set_key_value
+
+monitor.run
