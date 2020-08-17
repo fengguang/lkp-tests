@@ -269,6 +269,12 @@ announce_bootup()
 
 redirect_stdout_stderr()
 {
+	if is_docker; then
+		exec  > /tmp/stdout
+		exec 2> /tmp/stderr
+		return
+	fi
+	
 	[ -c /dev/kmsg ] || return
 	has_cmd tail || return
 
