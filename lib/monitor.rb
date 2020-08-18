@@ -42,16 +42,24 @@ class Monitor
     merge_overrides
     field_check
     query = @query.to_json
+    puts "query=>#{query}"
 
     EM.run {
       ws = Faye::WebSocket::Client.new(@url)
 
       ws.on :open do |event|
+        puts "connect to #{@url}"
         ws.send(query)
       end
 
       ws.on :message do |event|
-        puts event.data
+        data = JSON.parse(event.data)
+        puts
+        if data['log']
+          puts JSON.parse(data['log'])
+        else
+          puts data
+        end
       end
 
       ws.on :close do |event|
