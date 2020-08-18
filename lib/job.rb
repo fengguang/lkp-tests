@@ -242,7 +242,7 @@ class Job
         if job_path.start_with?(LKP_SRC)
           prefix = LKP_SRC
         else
-          prefix = `git -C "#{job_path}" rev-parse --show-toplevel 2>/dev/null`.chomp!
+          prefix = `git -C "#{job_path}" rev-parse --show-toplevel 2>/dev/null`.chomp
           prefix = ENV['HOME'] if prefix.empty?
         end
         jobfile.sub!(/^#{prefix}\//, "")
