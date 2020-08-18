@@ -322,3 +322,9 @@ libgcc-dev: glibc-devel
 multipath-tools: device-mapper-multipath
 gcc-8: gcc
 initramfs-tools:
+debhelper:
+dh-autoreconf:
+dh-exec:
+dh-python:
+dh-strip-nondeterminism:
+dh-systemd:
