@@ -234,9 +234,18 @@ class Job
     @job = {}
     unless @jobs.first['job_origin']
       if File.symlink?(jobfile) &&
-         File.readlink(jobfile) =~ %r|^../../../(.*)|
+        File.readlink(jobfile) =~ %r|^../../../(.*)|
         @job[comment_to_symbol $1] = nil
       else
+        jobfile = File.realpath(jobfile)
+        job_path = File.dirname(jobfile)
+        if job_path.start_with?(LKP_SRC)
+          prefix = LKP_SRC
+        else
+          prefix = `git -C "#{job_path}" rev-parse --show-toplevel 2>/dev/null`.chomp!
+          prefix = ENV['HOME'] if prefix.empty?
+        end
+        jobfile.sub!(/^#{prefix}\//, "")
         @job[source_file_symkey jobfile] = nil
       end
     end
