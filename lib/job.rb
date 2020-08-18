@@ -548,6 +548,14 @@ class Job
     @job.each(&block)
   end
 
+  def monitor_params
+    m = []
+    each_program(:monitors) do |k, _v|
+      m << k
+    end
+    m
+  end
+
   def path_params
     sorted_params = []
     each_param { |k, v, option_type| sorted_params << [k, v, option_type] }
