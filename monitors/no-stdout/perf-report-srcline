@@ -35,6 +35,7 @@ setup_wait
 
 PERF_REPORT_SRCLINE_DATA=$TMP/perf-report-srcline.data
 
+$perf -v || die 'perf command failed'
 $perf record -q -ag --realtime=1 -m 256 $opt_freq $opt_events \
 	-o $PERF_REPORT_SRCLINE_DATA -D $((delay * 1000)) -- \
 	timeout $((delay + duration)) \

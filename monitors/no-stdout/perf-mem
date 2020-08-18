@@ -36,6 +36,7 @@ perf_mem_data=$TMP_RESULT_ROOT/perf-mem.data
 # the former will wait for (delay+duration) before exit
 # the latter will wait for (delay) before collecting samples
 
+$perf -v || die 'perf command failed'
 $perf mem record -a $opt_type $opt_event $opt_ldlat \
 	-o $perf_mem_data --delay $((delay * 1000)) -- \
 	$WAIT_POST_TEST_CMD --timeout $((delay + duration))

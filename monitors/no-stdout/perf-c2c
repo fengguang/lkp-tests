@@ -33,6 +33,7 @@ setup_wait
 
 perf_c2c_data=$TMP/perf_c2c.data
 
+$perf -v || die 'perf command failed'
 $perf c2c record -ag $opt_event $opt_mode $opt_eldlat -o \
 	$perf_c2c_data -D $((delay * 1000)) -- \
 	$WAIT_POST_TEST_CMD --timeout $((delay + duration))

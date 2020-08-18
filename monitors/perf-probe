@@ -13,6 +13,7 @@ echo sym-offset	> $TRACING_ROOT/trace_options
 echo sym-addr	> $TRACING_ROOT/trace_options
 echo stacktrace	> $TRACING_ROOT/trace_options
 
+$perf -v || die 'perf command failed'
 for event in $events
 do
 	$perf probe $event
