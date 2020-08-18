@@ -55,11 +55,13 @@ prepare_for_test()
 	mkdir -p /hugepages
 
 	# make sure the test_bpf.ko path for bpf test is right
-	mkdir -p "$linux_selftests_dir/lib" || die
-	if [[ "$LKP_LOCAL_RUN" = "1" ]]; then
-		cp -r /lib/modules/`uname -r`/kernel/lib/* $linux_selftests_dir/lib
-	else
-		mount --bind /lib/modules/`uname -r`/kernel/lib $linux_selftests_dir/lib || die
+	if [ "$group" = "kselftests-bpf" ]; then
+		mkdir -p "$linux_selftests_dir/lib" || die
+		if [[ "$LKP_LOCAL_RUN" = "1" ]]; then
+			cp -r /lib/modules/`uname -r`/kernel/lib/* $linux_selftests_dir/lib
+		else
+			mount --bind /lib/modules/`uname -r`/kernel/lib $linux_selftests_dir/lib || die
+		fi
 	fi
 
 	# temporarily workaround compile error on gcc-6
