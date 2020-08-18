@@ -282,6 +282,8 @@ need_kconfig:
 - CONFIG_USER_NS=y
 - CONFIG_ZRAM=m
 - CONFIG_ZSMALLOC=y
+- CONFIG_DEVICE_PRIVATE=y ~ ">= v5.7-rc4"
+- CONFIG_TEST_HMM=m ~ ">= v5.7-rc4"
 % else
 - CONFIG_BLOCK=y
 - CONFIG_BTRFS_FS=m
