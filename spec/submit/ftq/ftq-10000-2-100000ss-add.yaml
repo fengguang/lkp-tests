@@ -2,11 +2,11 @@
 suite: ftq
 testcase: ftq
 category: noise-benchmark
-nr_task: 100%
+nr_task: 2
 samples: 100000ss
 ftq:
   test: add
-  freq: 1000
+  freq: 10000
 testbox: vm-hi1620-2p8g--spec_submit
 tbox_group: vm-hi1620-2p8g--spec_submit
 provider: qemu
@@ -20,8 +20,8 @@ need_kconfig:
 - CONFIG_KVM_GUEST=y
 pp:
   ftq:
-    nr_task: 100%
+    nr_task: 2
     samples: 100000ss
-    freq: 1000
+    freq: 10000
     test: add
   cpufreq_governor: 

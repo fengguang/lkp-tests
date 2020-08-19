@@ -2,7 +2,7 @@
 suite: ftq
 testcase: ftq
 category: noise-benchmark
-nr_task: 100%
+nr_task: 2
 samples: 6000ss
 ftq:
   test: cache
@@ -20,7 +20,7 @@ need_kconfig:
 - CONFIG_KVM_GUEST=y
 pp:
   ftq:
-    nr_task: 100%
+    nr_task: 2
     samples: 6000ss
     freq: 20
     test: cache
