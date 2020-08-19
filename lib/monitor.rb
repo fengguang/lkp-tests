@@ -10,9 +10,7 @@ require 'eventmachine'
 require 'json'
 
 class Monitor
-  attr_accessor :url
-  attr_accessor :query
-  attr_accessor :overrides
+  attr_accessor :url, :query, :overrides
 
   def initialize(url = '', overrides = {}, query = {})
     @url = url
@@ -27,15 +25,9 @@ class Monitor
   end
 
   def field_check
-    if @url.empty?
-      raise 'url can\'t be empty'
-    end
-    if @query.empty?
-      raise 'query can\'t be empty'
-    end
-    if @query.class != Hash
-      raise 'query must be Hash'
-    end
+    raise 'url can\'t be empty' if @url.empty?
+    raise 'query can\'t be empty' if @query.empty?
+    raise 'query must be Hash' if @query.class != Hash
   end
 
   def run
@@ -44,10 +36,10 @@ class Monitor
     query = @query.to_json
     puts "query=>#{query}"
 
-    EM.run {
+    EM.run do
       ws = Faye::WebSocket::Client.new(@url)
 
-      ws.on :open do |event|
+      ws.on :open do |_event|
         puts "connect to #{@url}"
         ws.send(query)
       end
@@ -65,11 +57,10 @@ class Monitor
       ws.on :close do |event|
         puts "connection closed: #{event.reason}"
       end
-    }
+    end
   end
 
-  def []=(k, v)
-    @query[k] = v
+  def []=(key, value)
+    @query[key] = value
   end
-
 end
