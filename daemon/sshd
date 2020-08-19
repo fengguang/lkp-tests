@@ -1,0 +1,9 @@
+#!/bin/sh
+# - pub_key
+
+if [ -n "$pub_key" ]; then
+	umask 0077
+	echo "$pub_key" > ~/.ssh/authorized_keys
+fi
+
+systemctl start sshd
