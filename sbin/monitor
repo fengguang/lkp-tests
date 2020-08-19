@@ -22,6 +22,11 @@ options = OptionParser.new do |opts|
           'set Message Server API address, default is ws://localhost:11310/filter') do |url|
     URL = url
   end
+
+  opts.on("-f 'KEY: VALUE'", "--filter 'KEY: VALUE'", 'add YAML hash to filter') do |key_value|
+    opt_set_key_value.merge! YAML.load key_value
+  end
+
 end
 
 options.parse!(ARGV)
@@ -35,13 +40,14 @@ ARGV.each do |arg|
   end
 end
 
-if ARGV.empty?
+if opt_set_key_value.empty?
   puts options
   exit
 end
 
 
 URL ||= 'ws://localhost:11310/filter'
+opt_set_key_value['job_id'] = opt_set_key_value['job_id'].to_s if opt_set_key_value['job_id']
 
 monitor = Monitor.new
 monitor.url = URL
