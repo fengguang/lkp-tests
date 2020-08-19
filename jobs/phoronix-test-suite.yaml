@@ -585,8 +585,8 @@ phoronix-test-suite:
   - test: pgbench-1.9.1
     option_a:
       - Buffer Test
-      - Mostly RAM
-      - On-Disk
+      # - Mostly RAM # need more than 3h
+      # - On-Disk # need more than 3h
       # - Test All Options
     option_b:
       - Single Thread
