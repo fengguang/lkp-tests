@@ -346,7 +346,14 @@ class Job
       h.delete(k) if v.is_a?(Array)
     end
     @jobx = job
-    expand_params(false)
+    if @job.include?(:expand_params)
+      expand_params()
+      @job = deepcopy(@jobx)
+      @job.delete("___")
+      @job.delete(:expand_params)
+    else
+      expand_params(false)
+    end
     @jobx = nil
 
     Dir.glob(["/etc/crystal-ci/defaults/*.yaml",
