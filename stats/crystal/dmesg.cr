@@ -156,7 +156,7 @@ oops_map.each do |bug_to_bisect, line|
   next if line =~ /[^\t\n\0[:print:]]/
 
   if !line.nil?
-    line.tr "\0", ""
+    line = line.tr "\0", ""
   end
 
   error_id, bug_to_bisect = analyze_error_id bug_to_bisect
