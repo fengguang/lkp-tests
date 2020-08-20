@@ -13,6 +13,8 @@ require 'yaml'
 opt_set_key_value = {}
 opt_output_dir = nil
 opt_auto_define_files = false
+opt_monitor = false
+opt_monitor_query = {}
 
 options = OptionParser.new do |opts|
   opts.banner = 'Usage: submit [options] jobs...'
@@ -37,6 +39,15 @@ options = OptionParser.new do |opts|
   opts.on("-a", "--auto-define-files", "auto add define_files") do
     opt_auto_define_files = true
   end
+
+  opts.on('-m', '--monitor', "monitor job status: use -m 'KEY: VALUE' to add rule") do
+    opt_monitor = true
+    filter = YAML.load ARGV[0] if ARGV[0]
+    if filter.class == Hash
+      opt_monitor_query.merge! filter
+      ARGV.shift
+    end
+  end
 end
 
 options.parse!(ARGV)
@@ -54,6 +65,8 @@ if ARGV.size.zero?
   puts(options)
   exit
 end
+
+job_ids = []
 
 ARGV.each do |jobfile|
   jobs = Job2sh.new
@@ -109,6 +122,12 @@ ARGV.each do |jobfile|
     # submit job
     job_json = job_hash.to_json
     job_id = scheduler_client.submit_job(job_json)
+    job_ids << job_id.to_s
     puts("succeeded submitting #{jobfile}, got job id = #{job_id}")
   end
+end
+
+if opt_monitor
+  opt_monitor_query.merge! ({'job_id' => job_ids[0]})
+  exec "#{LKP_SRC}/sbin/monitor -f \'#{opt_monitor_query.to_json}\'"
 end
