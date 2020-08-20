@@ -8,11 +8,11 @@ describe 'pp' do
   yaml_files.each do |file|
     it 'check' do
       # get input
-      job = Job.new()
+      job = Job.new
       job.load(file)
-      job.add_pp()
-      input = Hash.new()
-      input["pp"] = job.to_hash["pp"]
+      job.add_pp
+      input = {}
+      input['pp'] = job.to_hash['pp']
       # get output
       name = File.basename(file, '.yaml')
       output_file = "#{LKP_SRC}/spec/pp/#{name}.pp"
