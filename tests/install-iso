@@ -1,6 +1,10 @@
 #!/bin/bash
 set -xe
 
+# allow sut os array
+# - if job's os not in this array, job won't execute
+ALLOW_OS=("openeuler")
+
 log_info()
 {
 	echo "[INFO] $*"
@@ -14,12 +18,29 @@ die()
 
 check_yaml_vars()
 {
-	log_info "starting check yaml vars"
+	log_info "starting check yaml vars ..."
+
+	local yaml_vars=(
+		"os"
+		"os_arch"
+		"os_version"
+		"iso2rootfs_cgz"
+		"nfs_server"
+		"iso_url_file"
+	)
+
+	local yaml_t
+	for yaml_t in "${yaml_vars[@]}"
+	do
+		[ -n "$(eval echo "\$${yaml_t}")" ] || die "var\(${yaml_t}\) is none"
+	done
 }
 
 check_os()
 {
 	log_info "starting check os ..."
+	echo "${ALLOW_OS[@]}" | grep -wq "${os}" ||
+		die "current host \(${os}\) is not in \(${ALLOW_OS[@]}\), exit !!!"
 }
 
 config_iso2rootfs_env()
