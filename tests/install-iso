@@ -1,0 +1,80 @@
+#!/bin/bash
+set -xe
+
+log_info()
+{
+	echo "[INFO] $*"
+}
+
+die()
+{
+	echo "[ERROR] $*" >&2
+	exit 1
+}
+
+check_yaml_vars()
+{
+	log_info "starting check yaml vars"
+}
+
+check_os()
+{
+	log_info "starting check os ..."
+}
+
+config_iso2rootfs_env()
+{
+	log_info "starting config iso2rootfs env ..."
+}
+
+prepare_iso2qcow2()
+{
+	log_info "starting prepare iso2qcow2 env ..."
+}
+
+run_iso2qcow2()
+{
+	log_info "starting run iso2qcow2 ..."
+}
+
+prepare_qcow2rootfs()
+{
+	log_info "starting prepare qcow2rootfs env ..."
+}
+
+run_qcow2rootfs()
+{
+	log_info "starting run qcow2rootfs ..."
+}
+
+test_rootfs()
+{
+	log_info "starting test rootfs ..."
+}
+
+post_works()
+{
+	log_info "starting post works ..."
+
+	log_info "iso2rootfs finished !!!"
+}
+
+main()
+{
+	check_yaml_vars
+	check_os
+
+	config_iso2rootfs_env
+
+	prepare_iso2qcow2
+	run_iso2qcow2
+
+	prepare_qcow2rootfs
+	run_qcow2rootfs
+
+	test_rootfs
+
+	post_works
+}
+
+main
