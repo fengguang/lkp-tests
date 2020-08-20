@@ -1,5 +1,5 @@
-#!/usr/bin/env ruby
-require 'set'
+#!/usr/bin/env crystal
+require "set"
 
 def common_error_id(line)
   line = line.chomp
@@ -23,26 +23,26 @@ def common_error_id(line)
   line
 end
 
-error_ids = Set.new
+error_ids = Set(String).new
 in_stderr = false
-seqno = ''
+seqno = ""
 
 while (line = STDIN.gets)
-  case line.chomp!
+  case line
   when /^## ______________([0-9.]+):stderr$/
     in_stderr = true
     seqno = $1
     next
   when /^## ______________#{seqno}:enderr$/
     in_stderr = false
-    seqno = ''
+    seqno = ""
   end
   next unless in_stderr
-  next unless line.include?('error') || line.include?('warning')
+  next unless line.includes?("error") || line.includes?("warning")
 
   error_ids << common_error_id(line)
 end
 
 error_ids.each do |id|
-  puts id + ': 1'
+  puts id + ": 1"
 end
