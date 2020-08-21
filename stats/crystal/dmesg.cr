@@ -33,9 +33,11 @@ elsif ENV["RESULT_ROOT"]
   if File.exists? serial_file
     dmesg_file = serial_file
 
-    if File.size(kmsg_file) && File.size(serial_file).zero?
-      log_error "unexpected 0-sized serial file #{serial_file}"
-      dmesg_file = kmsg_file
+    if File.exists? kmsg_file
+      if File.size(serial_file).zero?
+        log_error "unexpected 0-sized serial file #{serial_file}"
+        dmesg_file = kmsg_file
+      end
     else
       kmsg_file = dmesg_file
     end
