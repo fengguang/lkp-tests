@@ -191,6 +191,12 @@ detect_system()
 		_system_name="Eywa"
 		_system_version="$(grep 'VERSION_ID=' ${rootfs}/etc/os-release | cut -d '=' -f 2)"
 	elif
+		[ -f ${rootfs}/etc/os-release ] &&
+			GREP_OPTIONS="" \command \grep "ID=\"openEuler\"" ${rootfs}/etc/os-release >/dev/null
+	then
+		_system_name="openEuler"
+		_system_version="$(awk -F'=' '$1=="VERSION_ID"{gsub(/"/,"",$2);print $2}' ${rootfs}/etc/os-release)"
+	elif
 		has_cmd hostnamectl
 	then
 		_system_name=$(hostnamectl status | grep 'Operating System' | awk '{print $3}')
