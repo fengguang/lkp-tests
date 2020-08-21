@@ -8,6 +8,7 @@ stats = [] of String
 success_test = 0
 fail_test = 0
 is_divided = false
+type = ""
 
 while (line = STDIN.gets)
   case line
@@ -39,7 +40,6 @@ while (line = STDIN.gets)
     success_test = $1
     fail_test = $2
   when /(PASS|FAIL)/
-    type = ""
     if is_divided
       stats << type + ".#{$1.downcase}: 1"
       is_divided = false
