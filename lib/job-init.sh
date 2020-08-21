@@ -51,9 +51,14 @@ setup_result_service()
 {
 	[ -n "$result_service" ] && return
 	[ -n "$NO_NETWORK" ] && return 1
+	[ -n "$RESULT_SERVER" ] || RESULT_SERVER=$LKP_SERVER
 
-	supports_netfs 'nfs'	&& result_service=$LKP_SERVER:/result	&& return
-	supports_netfs 'cifs'	&& result_service=//$LKP_SERVER/result	&& return
+	if [ "$os_mount" == 'nfs' ] || [ -z "$os_mount" ]; then
+		supports_netfs 'nfs'    && result_service=$RESULT_SERVER:/result   && return
+	elif [ "$os_mount" == 'cifs' ] || [ -z "$os_mount" ]; then
+		supports_netfs 'cifs'   && result_service=//$RESULT_SERVER/result  && return
+	fi
+
 	supports_raw_upload && result_service=raw_upload && return
 
 	return 1
