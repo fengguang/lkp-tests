@@ -265,10 +265,7 @@ class Job
     return if @job.include?(:no_defaults)
 
     hosts_file = get_hosts_file
-    if !(File.exist? hosts_file)
-      raise "hosts_file doesn't exist: #{hosts_file}, please check your testbox"
-    end
-    return unless File.exist? hosts_file
+    File.file?(hosts_file) || raise("hosts_file not exist: #{hosts_file}, please check testbox field")
 
     hwconfig = load_yaml(hosts_file, nil)
     @job[source_file_symkey(hosts_file)] = nil
@@ -283,7 +280,7 @@ class Job
       tbox_group = tbox_group(@job['testbox'])
     end
 
-    hosts_file_name = tbox_group.split('--')[0]
+    hosts_file_name = tbox_group.to_s.split('--')[0]
     hosts_file = "#{LKP_SRC}/hosts/#{hosts_file_name}"
   end
 
