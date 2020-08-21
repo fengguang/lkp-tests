@@ -149,11 +149,12 @@ EOF
 
 install_proxy()
 {
+	install_docker_proxy
+
 	[ -z "$SQUID_HOST" ] && return
 	[ -z "$SQUID_PORT" ] && return
 
 	install_proxy_apt || install_proxy_yum
-	install_docker_proxy
 }
 
 # Save the result to
