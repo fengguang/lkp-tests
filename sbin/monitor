@@ -9,6 +9,7 @@ require 'optparse'
 require 'yaml'
 
 opt_set_key_value = {}
+opt_type = 'output'
 
 options = OptionParser.new do |opts|
   opts.banner = 'Usage: monitor [options] <filter>'
@@ -23,10 +24,13 @@ options = OptionParser.new do |opts|
     URL = url
   end
 
+  opts.on('-t type', '--type type', 'set monitor run type, default is output') do |type|
+    opt_type = type
+  end
+
   opts.on("-f 'KEY: VALUE'", "--filter 'KEY: VALUE'", 'add YAML hash to filter') do |key_value|
     opt_set_key_value.merge! YAML.load key_value
   end
-
 end
 
 options.parse!(ARGV)
@@ -45,7 +49,6 @@ if opt_set_key_value.empty?
   exit
 end
 
-
 URL ||= 'ws://localhost:11310/filter'
 opt_set_key_value['job_id'] = opt_set_key_value['job_id'].to_s if opt_set_key_value['job_id']
 
@@ -53,4 +56,4 @@ monitor = Monitor.new
 monitor.url = URL
 monitor.overrides = opt_set_key_value
 
-monitor.run
+monitor.run(opt_type)

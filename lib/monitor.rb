@@ -30,7 +30,21 @@ class Monitor
     raise 'query must be Hash' if @query.class != Hash
   end
 
-  def run
+  def output(data)
+    data = JSON.parse(data['log']) if data['log']
+    puts data
+    return data
+  end
+
+  def connect(data, web_socket)
+    data = output(data)
+    return unless data['ip']
+
+    web_socket.close
+    exec "ssh root@#{data['ip']}"
+  end
+
+  def run(type = 'output')
     merge_overrides
     field_check
     query = @query.to_json
@@ -46,11 +60,14 @@ class Monitor
 
       ws.on :message do |event|
         data = JSON.parse(event.data)
-        puts
-        if data['log']
-          puts JSON.parse(data['log'])
+
+        case type
+        when 'output'
+          output(data)
+        when 'connect'
+          connect(data, ws)
         else
-          puts data
+          raise "Invalid run type: #{type}"
         end
       end
 
