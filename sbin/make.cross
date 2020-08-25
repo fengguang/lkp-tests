@@ -186,7 +186,17 @@ setup_crosstool_gcc()
 		i386|x86_64)
 			gcc_arch=
 			;;
-		arc|c6x)
+		arc)
+			# start to support big endian arc toolchain form gcc-9.3.0
+			# for earlier gcc version, will failed to find arceb-elf for
+			# big endian arceb-elf tool chain
+			if grep -q 'CONFIG_CPU_BIG_ENDIAN=y' .config; then
+				gcc_arch=arceb-elf
+			else
+				gcc_arch=arc-elf
+			fi
+			;;
+		c6x)
 			gcc_arch=$ARCH-elf
 			;;
 		um)
