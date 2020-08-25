@@ -79,7 +79,7 @@ ARGV.each do |jobfile|
   jobs.overrides = opt_set_key_value
   jobs[:expand_params] = true
   jobs['testbox'] = opt_set_key_value['testbox'] if opt_set_key_value['testbox']
-  jobs['tbox_group'] = tbox_group(jobs['testbox'])
+  jobs['tbox_group'] = tbox_group(jobs['testbox']) if jobs.include?('testbox')
   jobs['node_roles'] ||= 'server client' if jobs['cluster']
   jobs.each_jobs do |job|
     host = job['SCHED_HOST']

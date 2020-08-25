@@ -263,25 +263,27 @@ class Job
 
   def load_hosts_config
     return if @job.include?(:no_defaults)
+    return if @load_hosts_done
 
     hosts_file = get_hosts_file
+    return if hosts_file.nil?
+
     File.file?(hosts_file) || raise("hosts_file not exist: #{hosts_file}, please check testbox field")
 
     hwconfig = load_yaml(hosts_file, nil)
     @job[source_file_symkey(hosts_file)] = nil
     @job.merge!(hwconfig) { |_k, a, _b| a } # job's key/value has priority over hwconfig
-    @job["arch"] ||= x86_64
+    @job['arch'] ||= x86_64
+    @load_hosts_done = true
   end
 
   def get_hosts_file
-    if @job.include? 'tbox_group'
-      tbox_group = @job['tbox_group']
-    else
-      tbox_group = tbox_group(@job['testbox'])
+    if @job.include?('tbox_group') || @job.include?('testbox')
+      @job['tbox_group'] ||= tbox_group(@job['testbox'])
+      hosts_file_name = @job['tbox_group'].to_s.split('--')[0]
+      hosts_file = "#{LKP_SRC}/hosts/#{hosts_file_name}"
     end
-
-    hosts_file_name = tbox_group.to_s.split('--')[0]
-    hosts_file = "#{LKP_SRC}/hosts/#{hosts_file_name}"
+    hosts_file
   end
 
   def include_files
