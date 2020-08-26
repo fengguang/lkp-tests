@@ -1,9 +1,13 @@
 #!/bin/bash
-set -xe
+set -e
+
+umask 0002
 
 # allow sut os array
 # - if job's os not in this array, job won't execute
-ALLOW_OS=("openeuler")
+ALLOW_OS=(
+	openeuler
+)
 
 log_info()
 {
@@ -27,6 +31,10 @@ check_yaml_vars()
 		"iso2rootfs_cgz"
 		"nfs_server"
 		"iso_url_file"
+		"SQUID_HOST"
+		"SQUID_PORT"
+		"DOCKER_PROXY_HOST"
+		"DOCKER_PROXY_PORT"
 	)
 
 	local yaml_t
@@ -43,9 +51,91 @@ check_os()
 		die "current host \(${os}\) is not in \(${ALLOW_OS[@]}\), exit !!!"
 }
 
-config_iso2rootfs_env()
+wget_and_unzip_cgz()
+{
+	local cgz_url="http://${nfs_server}:8800/initrd/pkg/${os}/${os_arch}/${os_version}/${iso2rootfs_cgz}"
+	local cgz_name
+	cgz_name=$(basename "${cgz_url}")
+	local cgz_path_t=${ENV_DIR}/${cgz_name}
+	CGZ_PATH=${ENV_DIR}/${cgz_name%.cgz}
+
+	[ -d "$ENV_DIR" ] || mkdir -p "$ENV_DIR"
+	[ -f "${cgz_path_t}" ] && rm -f "${cgz_path_t}"
+	wget -c -O "${cgz_path_t}" "${cgz_url}"
+
+	[ -d "$CGZ_PATH" ] && rm -rf "$CGZ_PATH"
+	mkdir -p "$CGZ_PATH"
+	tar -xf "${cgz_path_t}" -C "${CGZ_PATH}"
+}
+
+stop_firewalld()
+{
+	systemctl stop firewalld
+}
+
+start_services()
+{
+	local st
+
+	for st
+	do
+		systemctl is-active "$st" || systemctl start "$st"
+	done
+}
+
+install_pkgs()
+{
+	local pkgs
+
+	if [ "$os" == "openeuler" ]
+	then
+		if [ "$os_arch" == "aarch64" ]
+		then
+			pkgs=(
+				vim
+				git
+				qemu
+				wget
+				python3
+				docker
+				ntp
+				bridge-utils
+				nginx
+				libvirt
+				edk2-aarch64
+				dnsmasq
+			)
+			yum install -y "${pkgs[@]}"
+		fi
+	fi
+
+	start_services nginx libvirtd dnsmasq docker
+}
+
+install_python_modules()
+{
+	local http_pip_src="http://mirrors.aliyun.com/pypi/simple"
+
+	local http_pip_domain
+	http_pip_domain=$(echo ${http_pip_src#*://} | cut -d '/' -f 1)
+
+	pip3 config set install.trusted-host "${http_pip_domain}"
+	pip3 config set global.index-url "$http_pip_src"
+	pip3 config set global.proxy "http://$SQUID_HOST:$SQUID_PORT"
+
+	pip3 install -i "$http_pip_src" pip -U
+	pip3 install python-benedict
+}
+
+prepare_iso2rootfs()
 {
 	log_info "starting config iso2rootfs env ..."
+	wget_and_unzip_cgz
+
+	stop_firewalld
+
+	install_pkgs
+	install_python_modules
 }
 
 prepare_iso2qcow2()
@@ -77,7 +167,7 @@ post_works()
 {
 	log_info "starting post works ..."
 
-	log_info "iso2rootfs finished !!!"
+	log_info "iso2rootfs finished"
 }
 
 main()
@@ -85,7 +175,7 @@ main()
 	check_yaml_vars
 	check_os
 
-	config_iso2rootfs_env
+	prepare_iso2rootfs
 
 	prepare_iso2qcow2
 	run_iso2qcow2
