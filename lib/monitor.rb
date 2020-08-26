@@ -41,7 +41,8 @@ class Monitor
     return unless data['ip']
 
     web_socket.close
-    exec "ssh root@#{data['ip']}"
+    exec "ssh-keygen -R #{data['ip']};
+    ssh root@#{data['ip']} -o StrictHostKeyChecking=no"
   end
 
   def run(type = 'output')
