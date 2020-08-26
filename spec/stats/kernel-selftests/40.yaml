@@ -1,13 +1,3 @@
-net.fib_tests.sh.single_path_route_test.ipv4_fibmatch.pass: 1
-net.fib_tests.sh.single_path_route_test.ipv6_fibmatch.pass: 1
-net.fib_tests.sh.local_carrier_tests___single_path.ipv4_fibmatch.pass: 1
-net.fib_tests.sh.local_carrier_tests___single_path.ipv6_fibmatch.pass: 1
-net.fib_tests.sh.fib_rule_with_suppress_prefixlength.fib_rule_suppress_test.pass: 1
-net.fib_tests.sh.ipv6_route_add_/_append_tests.attempt_to_add_duplicate_route___gw.pass: 1
-net.fib_tests.sh.ipv6_route_add_/_append_tests.attempt_to_add_duplicate_route___dev_only.pass: 1
-net.fib_tests.sh.ipv6_route_add_/_append_tests.attempt_to_add_duplicate_route___reject_route.pass: 1
-net.fib_tests.sh.ipv4_rp_filter_tests.rp_filter_passes_local_packets.fail: 1
-net.fib_tests.sh.ipv4_rp_filter_tests.rp_filter_passes_loopback_packets.fail: 1
 net.fib_tests.sh.fail: 1
 net.fib-onlink-tests.sh.ipv4_onlink.default_vrf___main_table.unicast_connected.pass: 1
 net.fib-onlink-tests.sh.ipv4_onlink.default_vrf___main_table.unicast_recursive.pass: 1
