@@ -261,6 +261,17 @@ class Job
     spec_file_context.each_key { |k| @job.delete k }
   end
 
+  def check_load_hosts_config(defaults_config)
+    return if @load_hosts_done
+
+    if defaults_config.include?('testbox')
+      @job['tbox_group'] = tbox_group(defaults_config['testbox'])
+    elsif defaults_config.include?('tbox_group')
+      @job['tbox_group'] = defaults_config['tbox_group']
+    end
+    return @job.include?('tbox_group')
+  end
+
   def load_hosts_config
     return if @job.include?(:no_defaults)
     return if @load_hosts_done
@@ -326,6 +337,7 @@ class Job
     if defaults.is_a?(Hash) && !defaults.empty?
       @defaults[source_file_symkey(file)] = nil
       revise_hash(@defaults, defaults, true)
+      load_hosts_config if check_load_hosts_config(defaults)
     end
     @file_loaded[file] = true
     true
