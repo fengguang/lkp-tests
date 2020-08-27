@@ -243,7 +243,23 @@ start_daemon()
 	# If cs-localhost mode, the pid of daemon is recorded and will be used
 	# to kill it in bin/post-run when the task is finished
 	if [ "$cluster" = "cs-localhost" ]; then
-		local daemon=${@##*/}
+		# (1) for dash, refer to https://wiki.ubuntu.com/DashAsBinSh
+		# local a=5 b=6;
+		# in /bin/dash this line makes b a global variable!
+		# so neither
+		#     local deamon=${@##*/}
+		# nor
+		#     local deamon=${*##*/}
+		# could work on dash (tested on 0.5.10.2-5, default on debian 10)
+		# error is like "local: /lkp/lkp/src/daemon/mongodb: bad variable name"
+		# (2) for bash, refer to 'man bash'
+		# ${parameter##word}
+		# If parameter is an array variable subscripted with @ or *, the
+		# pattern removal operation is applied to each member of the array
+		# in turn, and the expansion is the resultant list.
+		# above is not expected in our usage case.
+		local daemon="$*"
+		daemon=${daemon##*/}
 		run_program_in_background "$@"
 		echo $! >> $TMP/pid-bg-proc-$daemon
 	else
