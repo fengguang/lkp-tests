@@ -130,8 +130,8 @@ EOF
 
 install_docker_proxy()
 {
-	has_cmd docker || return
 	[ -n "$DOCKER_PROXY_HOST" ] || return
+	[ -n "$DOCKER_PROXY_PORT" ] || return
 
 	mkdir -p /etc/systemd/system/docker.service.d
 	cat << EOF > /etc/systemd/system/docker.service.d/http-proxy.conf
@@ -144,7 +144,9 @@ EOF
 	update-ca-trust extract
 
 	systemctl daemon-reload
-	systemctl restart docker.service
+	has_cmd docker && systemctl restart docker.service
+
+	return 0
 }
 
 install_proxy()
