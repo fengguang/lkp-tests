@@ -114,16 +114,14 @@ install_pkgs()
 
 install_python_modules()
 {
-	local http_pip_src="http://mirrors.aliyun.com/pypi/simple"
-
 	local http_pip_domain
-	http_pip_domain=$(echo ${http_pip_src#*://} | cut -d '/' -f 1)
+	http_pip_domain=$(echo "${HTTP_PIP_URL#*://}" | cut -d '/' -f 1)
 
 	pip3 config set install.trusted-host "${http_pip_domain}"
-	pip3 config set global.index-url "$http_pip_src"
+	pip3 config set global.index-url "$HTTP_PIP_URL"
 	pip3 config set global.proxy "http://$SQUID_HOST:$SQUID_PORT"
 
-	pip3 install -i "$http_pip_src" pip -U
+	pip3 install -i "$HTTP_PIP_URL" pip -U
 	pip3 install python-benedict
 }
 
@@ -131,6 +129,8 @@ prepare_iso2rootfs()
 {
 	log_info "starting config iso2rootfs env ..."
 	wget_and_unzip_cgz
+
+	source "${CGZ_PATH}/config"
 
 	stop_firewalld
 
