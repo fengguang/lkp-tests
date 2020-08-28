@@ -9,6 +9,9 @@ ALLOW_OS=(
 	openeuler
 )
 
+WORKSPACE="/usr/local/iso2rootfs"
+ENV_DIR="${WORKSPACE}/env"
+
 log_info()
 {
 	echo "[INFO] $*"
@@ -31,6 +34,9 @@ check_yaml_vars()
 		"iso2rootfs_cgz"
 		"nfs_server"
 		"iso_url_file"
+		"iso_os"
+		"iso_arch"
+		"iso_version"
 		"SQUID_HOST"
 		"SQUID_PORT"
 		"DOCKER_PROXY_HOST"
@@ -42,6 +48,57 @@ check_yaml_vars()
 	do
 		[ -n "$(eval echo "\$${yaml_t}")" ] || die "var\(${yaml_t}\) is none"
 	done
+}
+
+get_daily_iso_checksum()
+{
+	ISO_URL="$(curl "${iso_url_file}")"
+	ISO_NAME=$(basename "$ISO_URL")
+	ISO_CHECKSUM_URL="${ISO_URL}.sha256sum"
+
+	SHA256SUM_NET=$(curl -s "$ISO_CHECKSUM_URL" | awk '{print $1}')
+}
+
+mount_nfs()
+{
+	local nfs_server_path="${nfs_server}:/os-rw/${iso_os}/${iso_arch}"
+	NFS_LOCAL_PATH="${WORKSPACE}/crystal_os_${iso_os}_${iso_arch}"
+
+	[ -d "${NFS_LOCAL_PATH}" ] || mkdir -p "$NFS_LOCAL_PATH"
+	mount -t nfs "${nfs_server_path}" "${NFS_LOCAL_PATH}"
+}
+
+get_cache_iso_checksum()
+{
+	mount_nfs
+
+	CHECKSUM_FILE_CACHE="${NFS_LOCAL_PATH}/${iso_version}-newest.sha256sum"
+	[ ! -f "${CHECKSUM_FILE_CACHE}" ] ||
+		SHA256SUM_CACHE=$(awk '{print $1}' "$CHECKSUM_FILE_CACHE")
+}
+
+check_sha256sum_update()
+{
+	get_cache_iso_checksum
+	get_daily_iso_checksum
+
+	if [ -n "$SHA256SUM_CACHE" ]
+	then
+		[ -n "$SHA256SUM_NET" ] || die "get net sha256sum failed !!!"
+
+		if [ "$SHA256SUM_CACHE" == "$SHA256SUM_NET" ]
+		then
+			log_info "${iso_os} haven't release new iso, no need to generate rootfs"
+			exit 0
+		else
+			log_info "${iso_os} release a new iso, start to generate rootfs ..."
+			return
+		fi
+
+	else
+		log_info "${CHECKSUM_FILE_CACHE} doesn't exist, start to generate rootfs ..."
+		return
+	fi
 }
 
 check_os()
@@ -163,9 +220,19 @@ test_rootfs()
 	log_info "starting test rootfs ..."
 }
 
+update_sha256sum_file()
+{
+	[ -f "${CHECKSUM_FILE_CACHE}" ] && rm -f "${CHECKSUM_FILE_CACHE}"
+	wget -c -O "${CHECKSUM_FILE_CACHE}" "${ISO_CHECKSUM_URL}"
+}
+
 post_works()
 {
 	log_info "starting post works ..."
+
+	update_sha256sum_file
+
+	umount "${NFS_LOCAL_PATH}"
 
 	log_info "iso2rootfs finished"
 }
@@ -173,6 +240,7 @@ post_works()
 main()
 {
 	check_yaml_vars
+	check_sha256sum_update
 	check_os
 
 	prepare_iso2rootfs
