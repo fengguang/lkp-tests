@@ -210,10 +210,6 @@ while (line = STDIN.gets)
     detail_stat('kmod', $1, $2, stats)
   when /# selftests: membarrier: (.*)/
     test_case_name = $1
-  when /^# (ok|fail|skip) \d+ (sys.membarrier .*)/
-    next unless test_name == 'membarrier'
-
-    subtest_stat('membarrier', test_case_name, $2, $1, stats)
   when /# selftests: pidfd: (.*)/
     test_case_name = $1
   when /# (ok|fail|skip) \d+ (.*):(.*)/
