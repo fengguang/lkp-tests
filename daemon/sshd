@@ -3,7 +3,8 @@
 
 if [ -n "$pub_key" ]; then
 	umask 0077
-	echo "$pub_key" > ~/.ssh/authorized_keys
+	mkdir -p /root/.ssh
+	echo "$pub_key" > /root/.ssh/authorized_keys
 fi
 
 systemctl start sshd
