@@ -99,7 +99,7 @@ mount_result_root()
 		//*/*)
 			result_fs=cifs
 			modprobe cifs 2>/dev/null
-			local cifs_mount_option='-o guest'
+			local cifs_mount_option='-o guest,vers=3'
 			[ -n "$LKP_CIFS_PORT" ] && cifs_mount_option="$cifs_mount_option,port=$LKP_CIFS_PORT"
 			mount.cifs $cifs_mount_option $result_service $RESULT_MNT || return
 			;;
