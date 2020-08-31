@@ -338,7 +338,7 @@ while (line = STDIN.gets)
     test_case_name = $3
     result = $4 =~ /SKIP/ ? 'skip' : 'fail'
     result = 'pass' if $1 == 'ok'
-    stats << "#{test_name}.#{test_case_name}.#{result}: 1"
+    stats << "#{test_name}.#{test_case_name}.#{result}: 1" unless %w(pmtu.sh fib_rule_tests.sh reuseport_addr_any.sh traceroute.sh altnames.sh icmp_redirect.sh ip6_gre_headroom.sh fib-onlink-tests.sh).include? test_case_name
   when /^# (.*) ?\[ (OK|FAIL|SKIP) \]/
     next unless test_name == 'mptcp'
 
