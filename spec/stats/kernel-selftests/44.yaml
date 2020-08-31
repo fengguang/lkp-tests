@@ -1,12 +1,3 @@
-net.fib_nexthops.sh.basic_functional_tests.list_with_nothing_defined.pass: 1
-net.fib_nexthops.sh.basic_functional_tests.nexthop_get_on_non_existent_id.pass: 1
-net.fib_nexthops.sh.basic_functional_tests.nexthop_with_no_device_or_gateway.pass: 1
-net.fib_nexthops.sh.ipv4_groups_functional.create_nexthop_group_with_single_nexthop.pass: 1
-net.fib_nexthops.sh.ipv4_groups_functional.get_nexthop_group_by_id.pass: 1
-net.fib_nexthops.sh.ipv4_groups_functional.delete_nexthop_group_by_id.pass: 1
-net.fib_nexthops.sh.ipv4_groups_functional.nexthop_group_with_multiple_nexthops.pass: 1
-net.fib_nexthops.sh.ipv6_groups_functional.create_nexthop_group_with_single_nexthop.pass: 1
-net.fib_nexthops.sh.ipv6_groups_functional.get_nexthop_group_by_id.pass: 1
 net.fib_nexthops.sh.pass: 1
 net.icmp_redirect.sh.legacy_routing.ipv4:_redirect_exception.pass: 1
 net.icmp_redirect.sh.legacy_routing.ipv6:_redirect_exception.fail: 1
