@@ -25,6 +25,9 @@
 ^dmesg.BUG:Dentry.*i=.*n=.*
 ^dmesg.BUG:soft_lockup-CPU##stuck_for#s
 ^dmesg.BUG:KCSAN:data-race_in
+^dmesg.BUG:kernel_hang_in_early-boot_stage,last_printk:Probing_EDD
+^dmesg.BUG:kernel_hang_in_early-boot_stage,last_printk:early_console_in_setup_code
+^dmesg.BUG:kernel_reboot-without-warning_in_early-boot_stage,last_printk:early_console_in_setup_code
 ^dmesg.calltrace
 ^dmesg..*cpu_clock_throttled.*
 ^dmesg..*-detected_stall_on_CPUINFO
