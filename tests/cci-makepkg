@@ -1,0 +1,111 @@
+#!/bin/bash
+# - benchmark
+# - os_mount
+# - os
+# - os_arch
+# - os_version
+
+## makepkg is a script that automates the building of packages; it can download and validate source files,
+## check dependencies, configure build-time settings, compile the sources, install into a temporary root,
+## make customizations, generate meta-info, and package everything together.
+## See: https://wiki.archlinux.org/index.php/Makepkg
+
+. $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/misc-base.sh
+. $LKP_SRC/lib/env.sh
+
+[ -n "$benchmark" ]		|| die "benchmark is empty"
+[ -n "$os_mount" ]		|| die "os_mount is empty"
+[ -n "$os" ]			|| die "os is empty"
+[ -n "$os_arch" ]		|| die "os_arch is empty"
+[ -n "$os_version" ]		|| die "os_version is empty"
+
+PKG_MNT=/initrd/pkg
+mkdir -p "$PKG_MNT"
+
+DISTRO=${os}
+
+[[ "$os_mount" = "cifs" ]] && os_mount="nfs"
+pack_to=${os_mount}/${os}/${os_arch}/${os_version}
+
+
+. $LKP_SRC/distro/${DISTRO}
+. $LKP_SRC/lib/install.sh
+
+cd $LKP_SRC/pkg/$benchmark || die "pkg is empty"
+
+[ -n "$LKP_SERVER" ] && {
+	mount $LKP_SERVER:$PKG_MNT $PKG_MNT || die "Failed to run mount"
+}
+
+get_pkg_info()
+{
+	var=$1
+	pkg_dir=${2:-.}
+	(
+		. $pkg_dir/PKGBUILD
+		eval echo '$'$var
+	)
+}
+
+# for packages with same dependencies, force the update instead of generating link
+# due to schedule stage will auto detect symbolic link, so no need generate new link
+check_shared_pkg()
+{
+	if [ -L $LKP_SRC/pkg/$benchmark ]; then
+		basename $(readlink $LKP_SRC/pkg/$benchmark)
+	else
+		echo $benchmark
+	fi
+}
+
+update_shared_pkg()
+{
+	local bm_link=$1
+
+	[ "$bm_name" = "$benchmark" ] && return
+
+	# benchmark is a symlink
+	ln -sf "$bm_link" "$sync_dest/${benchmark}.cgz" || return
+	echo "update shared pkg link ${benchmark}.cgz -> $bm_link"
+}
+
+distro_install_depends lkp-dev
+
+[ $os = "centos" ] &&
+grep -sqF "CentOS Linux release 7" /etc/centos-release &&
+source /opt/rh/devtoolset-8/enable
+
+distro_install_depends ${benchmark}-dev
+
+[[ $arch ]] || arch=$(get_system_arch)
+
+build_depends_pkg -i $benchmark $TMP
+
+sync_dest="$PKG_MNT/$pack_to"
+date=$(date +"%Y%m%d")
+pkgver=$(get_pkg_info pkgver)
+pkgrel=$(get_pkg_info pkgrel)
+bm_name=$(check_shared_pkg)
+cgz_name="${bm_name}-${pkgver:-0}-${pkgrel:-0}_${date}.cgz"
+
+setup_proxy
+
+echo $LKP_SRC/sbin/makepkg -A --skippgpcheck --config $LKP_SRC/etc/makepkg.conf
+PACMAN=true BUILDDIR=$TMP CARCH=$arch PKGEXT=.cgz CGZDEST="$sync_dest/$cgz_name" \
+	$LKP_SRC/sbin/makepkg -A --skippgpcheck --config $LKP_SRC/etc/makepkg.conf
+
+update_softlink()
+{
+	[ -e "$sync_dest/$cgz_name" ] || return
+
+	ln -sf "$(basename $(realpath $sync_dest/$cgz_name))" "$sync_dest/${bm_name}.cgz" || return
+	echo "create package: $sync_dest/${bm_name}.cgz -> $(realpath $sync_dest/$cgz_name)"
+
+	update_shared_pkg "${bm_name}.cgz"
+
+	[ -L $sync_dest/$cgz_name ] || return 0
+	rm $sync_dest/$cgz_name
+}
+
+update_softlink && echo "Makepkg finished successfully"
