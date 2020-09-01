@@ -31,10 +31,17 @@ then
 
 fi
 
-cstate_cnt=$(ls /sys/devices/system/cpu/cpu0/cpuidle/* | grep state | awk 'END{print NR}')
-
-for cpu_dir in /sys/devices/system/cpu/cpu[0-9]*
+echo -n Disable cstate:
+for c in $fb_list
 do
+	echo -n " $(cat /sys/devices/system/cpu/cpu0/cpuidle/state$c/name)"
+done
+echo
+
+cpu=0
+while [ -d /sys/devices/system/cpu/cpu$cpu ]
+do
+	cpu_dir=/sys/devices/system/cpu/cpu$cpu
 	online_file="$cpu_dir"/online
 	[ -f "$online_file" ] && [ "$(cat "$online_file")" -eq 0 ] && continue
 
@@ -42,5 +49,21 @@ do
 	do
 		echo 1 > $cpu_dir/cpuidle/state$cstate/disable
 	done
-	grep . $cpu_dir/cpuidle/state*/disable
+
+	state=1
+	echo CPU$cpu:
+
+	while [ -d $cpu_dir/cpuidle/state$state ]
+	do
+		state_dir=$cpu_dir/cpuidle/state$state
+		name=$(cat $state_dir/name)
+		desc=$(cat $state_dir/desc)
+		status=disabled
+		t=$(cat $state_dir/disable)
+		[ $t -eq 0 ] && status=enabled
+		default=$(cat $state_dir/default_status)
+		printf '\t state%s %7s [%10s]: %8s [%8s]\n' $state $name "$desc" $status $default
+		state=$(( $state + 1 ))
+	done
+	cpu=$(( $cpu + 1 ))
 done
