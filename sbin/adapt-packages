@@ -16,6 +16,8 @@ while (line = STDIN.gets)
 
   line.chomp.split.each do |pkg|
     pkg = pkg.delete_suffix '/unstable'
+    next if pkg.start_with?('(')
+
     if adapt.include? pkg
       pkgs << adapt[pkg].split if adapt[pkg]
     else
