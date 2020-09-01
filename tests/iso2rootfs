@@ -108,7 +108,7 @@ check_os()
 		die "current host \(${os}\) is not in \(${ALLOW_OS[@]}\), exit !!!"
 }
 
-wget_and_unzip_cgz()
+get_cgz()
 {
 	local cgz_url="http://${nfs_server}:8800/initrd/pkg/${os}/${os_arch}/${os_version}/${iso2rootfs_cgz}"
 	local cgz_name
@@ -125,74 +125,28 @@ wget_and_unzip_cgz()
 	tar -xf "${cgz_path_t}" -C "${CGZ_PATH}"
 }
 
-stop_firewalld()
-{
-	systemctl stop firewalld
-}
-
-start_services()
-{
-	local st
-
-	for st
-	do
-		systemctl is-active "$st" || systemctl start "$st"
-	done
-}
-
 install_pkgs()
 {
-	local pkgs
+	local pkg_installer
+	command -v yum && pkg_installer="yum"
 
-	if [ "$os" == "openeuler" ]
-	then
-		if [ "$os_arch" == "aarch64" ]
-		then
-			pkgs=(
-				vim
-				git
-				qemu
-				wget
-				python3
-				docker
-				ntp
-				bridge-utils
-				nginx
-				libvirt
-				edk2-aarch64
-				dnsmasq
-			)
-			yum install -y "${pkgs[@]}"
-		fi
-	fi
+	[[ -n "$pkg_installer" ]] || die "can not find pkg installer !!!"
 
-	start_services nginx libvirtd dnsmasq docker
-}
-
-install_python_modules()
-{
-	local http_pip_domain
-	http_pip_domain=$(echo "${HTTP_PIP_URL#*://}" | cut -d '/' -f 1)
-
-	pip3 config set install.trusted-host "${http_pip_domain}"
-	pip3 config set global.index-url "$HTTP_PIP_URL"
-	pip3 config set global.proxy "http://$SQUID_HOST:$SQUID_PORT"
-
-	pip3 install -i "$HTTP_PIP_URL" pip -U
-	pip3 install python-benedict
+	local pt
+	for pt
+	do
+		"$pkg_installer" install -y "$pt" || die "install pkg\($pt\) failed !!!"
+	done
 }
 
 prepare_iso2rootfs()
 {
 	log_info "starting config iso2rootfs env ..."
-	wget_and_unzip_cgz
+	get_cgz
 
 	source "${CGZ_PATH}/config"
 
-	stop_firewalld
-
-	install_pkgs
-	install_python_modules
+	install_pkgs "git"
 }
 
 prepare_iso2qcow2()
