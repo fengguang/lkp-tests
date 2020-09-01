@@ -4,18 +4,37 @@
 LKP_SRC ||= env['LKP_SRC'] || File.dirname(__dir__)
 
 require "#{LKP_SRC}/lib/hash"
+require "#{LKP_SRC}/lib/yaml"
 
 require 'faye/websocket'
 require 'eventmachine'
 require 'json'
 
 class Monitor
-  attr_accessor :url, :query, :overrides
+  attr_accessor :monitor_url, :query, :overrides
 
-  def initialize(url = '', overrides = {}, query = {})
-    @url = url
+  def initialize(monitor_url = '', overrides = {}, query = {})
+    @monitor_url = monitor_url
     @query = query
     @overrides = overrides
+    @defaults = {}
+    load_default
+  end
+
+  def load_default
+    Dir.glob(['/etc/crystal-ci/monitor/*.yaml',
+              "#{ENV['HOME']}/.config/crystal-ci/monitor/*.yaml"]).each do |file|
+      next unless File.exist? file
+      next if File.zero? file
+
+      defaults = load_yaml(file)
+      next unless defaults.is_a?(Hash)
+      next if defaults.empty?
+
+      revise_hash(@defaults, defaults, true)
+    end
+
+    @monitor_url = @defaults['monitor_url'] || 'ws://localhost:11310/filter'
   end
 
   def merge_overrides
@@ -25,7 +44,7 @@ class Monitor
   end
 
   def field_check
-    raise 'url can\'t be empty' if @url.empty?
+    raise 'monitor_url can\'t be empty' if @monitor_url.empty?
     raise 'query can\'t be empty' if @query.empty?
     raise 'query must be Hash' if @query.class != Hash
   end
@@ -52,10 +71,10 @@ class Monitor
     puts "query=>#{query}"
 
     EM.run do
-      ws = Faye::WebSocket::Client.new(@url)
+      ws = Faye::WebSocket::Client.new(@monitor_url)
 
       ws.on :open do |_event|
-        puts "connect to #{@url}"
+        puts "connect to #{@monitor_url}"
         ws.send(query)
       end
 

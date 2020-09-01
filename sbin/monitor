@@ -10,6 +10,7 @@ require 'yaml'
 
 opt_set_key_value = {}
 opt_type = 'output'
+opt_monitor_url = nil
 
 options = OptionParser.new do |opts|
   opts.banner = 'Usage: monitor [options] <filter>'
@@ -20,8 +21,8 @@ options = OptionParser.new do |opts|
   opts.separator 'options:'
 
   opts.on('-u URL', '--url URL',
-          'set Message Server API address, default is ws://localhost:11310/filter') do |url|
-    URL = url
+          'set Message Server API address, default is ws://localhost:11310/filter') do |monitor_url|
+    opt_monitor_url = monitor_url
   end
 
   opts.on('-t type', '--type type', 'set monitor run type, default is output') do |type|
@@ -49,11 +50,10 @@ if opt_set_key_value.empty?
   exit
 end
 
-URL ||= 'ws://localhost:11310/filter'
 opt_set_key_value['job_id'] = opt_set_key_value['job_id'].to_s if opt_set_key_value['job_id']
 
 monitor = Monitor.new
-monitor.url = URL
+monitor.monitor_url = opt_monitor_url if opt_monitor_url
 monitor.overrides = opt_set_key_value
 
 monitor.run(opt_type)
