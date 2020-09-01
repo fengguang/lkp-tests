@@ -44,6 +44,8 @@ check_shared_package "$benchmark" && {
 	exit 0
 }
 
+share_debian_package
+
 fixup_distro_mirror
 
 update

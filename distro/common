@@ -71,3 +71,13 @@ add_i386_package()
 {
 	:
 }
+
+share_debian_package()
+{
+	[[ "$os" = "debian" ]] && return
+	grep -qFx "$benchmark" $LKP_SRC/distro/depends/share-debian || return
+
+	ln -sf ../../../../${os_mount}/debian/${os_arch}/sid/${benchmark}.cgz ${pack_to}/${benchmark}.cgz
+
+	exit 0
+}
