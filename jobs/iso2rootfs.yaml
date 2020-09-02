@@ -1,9 +1,12 @@
 suite: iso2rootfs
 category: benchmark
 iso2rootfs:
-  nfs_server:
   iso2rootfs_cgz:
   iso_url_file:
   iso_os:
   iso_arch:
   iso_version:
+  rootfs_nfs_server:
+  rootfs_nfs_path:
+  initrd_http_host:
+  initrd_http_port:

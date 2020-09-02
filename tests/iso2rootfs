@@ -32,11 +32,14 @@ check_yaml_vars()
 		"os_arch"
 		"os_version"
 		"iso2rootfs_cgz"
-		"nfs_server"
 		"iso_url_file"
 		"iso_os"
 		"iso_arch"
 		"iso_version"
+		"rootfs_nfs_server"
+		"rootfs_nfs_path"
+		"initrd_http_host"
+		"initrd_http_port"
 	)
 
 	local yaml_t
@@ -57,7 +60,7 @@ get_daily_iso_checksum()
 
 mount_nfs()
 {
-	local nfs_server_path="${nfs_server}:/os-rw/${iso_os}/${iso_arch}"
+	local nfs_server_path="${rootfs_nfs_server}:${rootfs_nfs_path}/${iso_os}/${iso_arch}"
 	NFS_LOCAL_PATH="${WORKSPACE}/crystal_os_${iso_os}_${iso_arch}"
 
 	[ -d "${NFS_LOCAL_PATH}" ] || mkdir -p "$NFS_LOCAL_PATH"
@@ -106,7 +109,7 @@ check_os()
 
 get_cgz()
 {
-	local cgz_url="http://${nfs_server}:8800/initrd/pkg/${os}/${os_arch}/${os_version}/${iso2rootfs_cgz}"
+	local cgz_url="http://${initrd_http_host}:${initrd_http_port}/initrd/pkg/${os}/${os_arch}/${os_version}/${iso2rootfs_cgz}"
 	local cgz_name
 	cgz_name=$(basename "${cgz_url}")
 	local cgz_path_t=${ENV_DIR}/${cgz_name}
