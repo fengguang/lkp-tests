@@ -500,6 +500,17 @@ def bisectable_stat?(stat)
   stat !~ $stat_denylist
 end
 
+def samples_remove_boot_fails(matrix, samples)
+  perf_samples = []
+  samples.each_with_index do |v, i|
+    next if matrix['last_state.is_incomplete_run'] &&
+            matrix['last_state.is_incomplete_run'][i] == 1
+
+    perf_samples << v
+  end
+  perf_samples
+end
+
 def expand_matrix(matrix, options)
   return unless options['stat']
   return unless options['stat'].include?('.virtual.')
@@ -517,11 +528,16 @@ def expand_matrix(matrix, options)
   convert_function = stat.sub(/.*\.virtual\./, '')
   return unless real_values.respond_to?(convert_function)
 
+  # remove the incompleted run to avoid misleading data, e.g. min can be 0 if
+  # any result is incompleted, or relative stddev can be inaccurate when 0 is counted
+  real_values = samples_remove_boot_fails(matrix, real_values)
+  return if real_values.empty?
+
   converted_values = real_values.public_send(convert_function)
   if converted_values.is_a?(Array)
     matrix[stat] = converted_values
   elsif converted_values.is_a?(Numeric)
-    matrix[stat] = Array.new(real_values.size, converted_values)
+    matrix[stat] = Array.new(matrix_cols(matrix), converted_values)
   end
 end
 
