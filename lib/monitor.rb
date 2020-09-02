@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-LKP_SRC ||= env['LKP_SRC'] || File.dirname(__dir__)
+LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
 require "#{LKP_SRC}/lib/hash"
 require "#{LKP_SRC}/lib/yaml"
