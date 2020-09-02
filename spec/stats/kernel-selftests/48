@@ -1,0 +1,24 @@
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd/tools/testing/selftests/memory-hotplug'
+TAP version 13
+1..1
+# selftests: memory-hotplug: mem-on-off-test.sh
+# Test scope: 2% hotplug memory
+# 	 online all hot-pluggable memory in offline state:
+# 		 SKIPPED - no hot-pluggable memory in offline state
+# 	 offline 2% hot-pluggable memory in online state
+# 	 trying to offline 2 out of 64 memory block(s):
+# online->offline memory0
+# ./mem-on-off-test.sh: line 78: echo: write error: Invalid argument
+# offline_memory_expect_success 0: unexpected fail
+# online->offline memory1
+# online->offline memory10
+# 	 online all hot-pluggable memory in offline state:
+# offline->online memory1
+# offline->online memory10
+# 	 Test with memory notifier error injection
+# ./mem-on-off-test.sh: line 78: echo: write error: Device or resource busy
+# offline_memory_expect_success 41: unexpected fail
+# ./mem-on-off-test.sh: line 78: echo: write error: Device or resource busy
+# offline_memory_expect_success 66: unexpected fail
+ok 1 selftests: memory-hotplug: mem-on-off-test.sh
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd/tools/testing/selftests/memory-hotplug'
