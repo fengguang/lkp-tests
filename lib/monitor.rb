@@ -18,6 +18,10 @@ class Monitor
     @query = query
     @overrides = overrides
     @defaults = {}
+    # exit_status_code: how to exit EM.run
+    # 0 means normal exit
+    # 1 means timeout exit
+    @exit_status_code = 0
     load_default
   end
 
@@ -64,7 +68,12 @@ class Monitor
     ssh root@#{data['ip']} -o StrictHostKeyChecking=no"
   end
 
-  def run(type = 'output')
+  def stop_em(web_socket)
+    web_socket.close
+    EM.stop
+  end
+
+  def run(type = 'output', close_time = nil)
     merge_overrides
     field_check
     query = @query.to_json
@@ -72,6 +81,13 @@ class Monitor
 
     EM.run do
       ws = Faye::WebSocket::Client.new(@monitor_url)
+
+      if close_time
+        EM.add_timer(close_time) do
+          @exit_status_code = 1
+          stop_em(ws)
+        end
+      end
 
       ws.on :open do |_event|
         puts "connect to #{@monitor_url}"
@@ -95,6 +111,7 @@ class Monitor
         puts "connection closed: #{event.reason}"
       end
     end
+    return @exit_status_code
   end
 
   def []=(key, value)
