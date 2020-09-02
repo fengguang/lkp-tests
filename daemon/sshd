@@ -1,10 +1,50 @@
 #!/bin/sh
-# - pub_key
+# pub_key
+# email
 
-if [ -n "$pub_key" ]; then
+run_ssh()
+{
+	[ -n "$pub_key" ] || return
 	umask 0077
 	mkdir -p /root/.ssh
 	echo "$pub_key" > /root/.ssh/authorized_keys
-fi
+	systemctl start sshd
+}
 
-systemctl start sshd
+compose_email()
+{
+	deadline=$(date -d "+$runtime seconds" +"%Y-%m-%d %H:%M:%S")
+	data="To: $email
+Subject: [NOTIFY crystal-ci] $testbox ready to ssh
+
+Dear $email:
+    Thanks for your participation in Kunpeng and software ecosystem!
+    According to your application, $testbox has been provisioned.
+    The datails are as follows:
+
+    Login:
+        ssh root@$PUB_IP
+    Due time:
+        $deadline
+
+    HW:
+        nr_cpu: $nr_cpu
+        memory: $memory
+        testbox: $testbox
+    OS:
+        $os $os_version $os_arch
+
+Regards
+crystal-ci
+"
+}
+
+run_email()
+{
+	[ -n "$email" ] || return 0
+	compose_email
+	curl -XPOST "$MAIL_HOST:$MAIL_PORT/send_mail_text" -d "$data"
+}
+
+run_ssh
+run_email
