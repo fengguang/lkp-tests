@@ -102,6 +102,8 @@ class Monitor
           output(data)
         when 'connect'
           connect(data, ws)
+        when 'stop'
+          stop_em(ws)
         else
           raise "Invalid run type: #{type}"
         end
