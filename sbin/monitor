@@ -11,6 +11,7 @@ require 'yaml'
 opt_set_key_value = {}
 opt_type = 'output'
 opt_monitor_url = nil
+opt_close_time = nil
 
 options = OptionParser.new do |opts|
   opts.banner = 'Usage: monitor [options] <filter>'
@@ -31,6 +32,10 @@ options = OptionParser.new do |opts|
 
   opts.on("-f 'KEY: VALUE'", "--filter 'KEY: VALUE'", 'add YAML hash to filter') do |key_value|
     opt_set_key_value.merge! YAML.load key_value
+  end
+
+  opts.on('-c time', '--close-time time', 'set monitor client auto close time(second)') do |time|
+    opt_close_time = time
   end
 end
 
@@ -56,4 +61,4 @@ monitor = Monitor.new
 monitor.monitor_url = opt_monitor_url if opt_monitor_url
 monitor.overrides = opt_set_key_value
 
-monitor.run(opt_type)
+monitor.run(opt_type, opt_close_time)
