@@ -387,6 +387,8 @@ def load_base_matrix(matrix_path, head_matrix, options)
     rc_matrix = load_release_matrix base_matrix_file
     next unless rc_matrix
 
+    expand_matrix(rc_matrix, options)
+
     add_stats_to_matrix(rc_matrix, matrix)
     tags_merged << tag
 
