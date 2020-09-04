@@ -627,7 +627,7 @@ def show_header(is_fail)
 end
 
 def show_delta(stat, key_g)
-  is_fail = is_function_change stat
+  is_fail = function_stat?(stat)
 
   dims = []
   $cases.values.each { |v| dims += v.keys }

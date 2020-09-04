@@ -84,5 +84,5 @@ else
   changed_fields = changed_stats.keys
 end
 
-changed_fields.reject! { |stat| is_function_change(stat) || !bisectable_stat?(stat) } if $options['concise']
+changed_fields.reject! { |stat| function_stat?(stat) || !bisectable_stat?(stat) } if $options['concise']
 mmplot(matrix1, matrix2, changed_fields)
