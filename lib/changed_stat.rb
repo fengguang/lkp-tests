@@ -34,7 +34,7 @@ module LKP
     end
 
     def failure?
-      @failure ||= options['force_' + stat] || is_failure(stat)
+      @failure ||= options['force_' + stat] || is_function_change(stat)
     end
 
     def latency?

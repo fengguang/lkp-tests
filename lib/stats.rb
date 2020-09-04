@@ -163,7 +163,7 @@ end
 
 def changed_stats?(sorted_a, min_a, mean_a, max_a,
                    sorted_b, min_b, mean_b, max_b,
-                   is_failure_stat, is_latency_stat,
+                   is_function_change_stat, is_latency_stat,
                    stat, options)
 
   if options['perf-profile'] && stat =~ /^perf-profile\./ && options['perf-profile'].is_a?(mean_a.class)
@@ -171,7 +171,7 @@ def changed_stats?(sorted_a, min_a, mean_a, max_a,
            mean_b > options['perf-profile']
   end
 
-  return max_a != max_b if is_failure_stat
+  return max_a != max_b if is_function_change_stat
 
   if is_latency_stat
     if options['distance']
@@ -419,7 +419,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
   end
 end
 
-def __is_failure(stats_field)
+def __is_function_change(stats_field)
   return false if stats_field.index('.time.')
   return false if stats_field.index('.timestamp.')
   return true if $metric_failure.any? { |pattern| stats_field =~ %r{^#{pattern}} }
@@ -427,12 +427,12 @@ def __is_failure(stats_field)
   false
 end
 
-def is_failure(stats_field)
-  $__is_failure_cache ||= {}
-  if $__is_failure_cache.include? stats_field
-    $__is_failure_cache[stats_field]
+def is_function_change(stats_field)
+  $__is_function_change_cache ||= {}
+  if $__is_function_change_cache.include? stats_field
+    $__is_function_change_cache[stats_field]
   else
-    $__is_failure_cache[stats_field] = __is_failure(stats_field)
+    $__is_function_change_cache[stats_field] = __is_function_change(stats_field)
   end
 end
 
@@ -580,8 +580,8 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
     next if is_incomplete_run && k !~ /^(dmesg|last_state|stderr)\./
     next if !options['more'] && !bisectable_stat?(k) && k !~ $report_allowlist_re
 
-    is_failure_stat = is_failure k
-    if is_failure_stat && k !~ /^(dmesg|kmsg|last_state|stderr)\./
+    is_function_change_stat = is_function_change k
+    if is_function_change_stat && k !~ /^(dmesg|kmsg|last_state|stderr)\./
       # if stat is packetdrill.packetdrill/gtests/net/tcp/mtu_probe/basic-v6_ipv6.fail,
       # base rt stats should contain 'packetdrill.packetdrill/gtests/net/tcp/mtu_probe/basic-v6_ipv6.pass'
       stat_base = k.sub(/\.[^\.]*$/, '')
@@ -589,16 +589,16 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
       next unless b.keys.any? { |stat| stat =~ /^#{stat_base}\.(pass|passed)$/ }
     end
 
-    is_failure_stat = true if options['force_' + k]
+    is_function_change_stat = true if options['force_' + k]
 
     is_latency_stat = is_latency k
-    max_margin = if is_failure_stat || is_latency_stat
+    max_margin = if is_function_change_stat || is_latency_stat
                    0
                  else
                    3
                  end
 
-    unless is_failure_stat
+    unless is_function_change_stat
       # for none-failure stats field, we need asure that
       # at least one matrix has 3 samples.
       next if cols_a < 3 && cols_b < 3 && !options['whole']
@@ -611,7 +611,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
 
     # newly added monitors don't have values to compare in the base matrix
     next unless b[k] ||
-                is_failure_stat ||
+                is_function_change_stat ||
                 (k =~ /^(lock_stat|perf-profile|latency_stats)\./ && b_monitors[$1])
 
     b_k = b[k] || [0] * cols_b
@@ -631,11 +631,11 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
 
     next unless changed_stats?(sorted_a, min_a, mean_a, max_a,
                                sorted_b, min_b, mean_b, max_b,
-                               is_failure_stat, is_latency_stat,
+                               is_function_change_stat, is_latency_stat,
                                k, options)
 
     if options['regression-only'] || options['all-critical']
-      if is_failure_stat
+      if is_function_change_stat
         if max_a.zero?
           has_boot_fix = true if k =~ /^dmesg\./
           next if options['regression-only'] ||
@@ -679,7 +679,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
                          'a' => sorted_a,
                          'b' => sorted_b,
                          'ttl' => Time.now,
-                         'is_failure' => is_failure_stat,
+                         'is_function_change' => is_function_change_stat,
                          'is_latency' => is_latency_stat,
                          'ratio' => ratio,
                          'delta' => delta,
