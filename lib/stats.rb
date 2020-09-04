@@ -452,6 +452,16 @@ def is_latency(stats_field)
   end
 end
 
+def is_failure(stats_field)
+  $metric_failure.each { |pattern| return true if stats_field =~ %r{^#{pattern}} }
+  false
+end
+
+def is_pass(stats_field)
+  $metric_pass.each { |pattern| return true if stats_field =~ %r{^#{pattern}} }
+  false
+end
+
 def memory_change?(stats_field)
   stats_field =~ /^(boot-meminfo|boot-memory|proc-vmstat|numa-vmstat|meminfo|memmap|numa-meminfo)\./
 end
