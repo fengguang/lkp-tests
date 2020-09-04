@@ -164,15 +164,43 @@ get_code_iso2qcow2()
 	git clone "$ISO2QCOW2_GIT_URL" "${ISO2QCOW2_DIR}"
 }
 
+config_pip_proxy()
+{
+	if [[ -n ${SQUID_HOST} ]] && [[ -n ${SQUID_PORT} ]]
+	then
+		sed -i "s|^PIP_PROXY=|PIP_PROXY=\"http://$SQUID_HOST:$SQUID_PORT\"|g" "${ISO2QCOW2_DIR}/conf/config"
+	fi
+}
+
+config_iso_conf()
+{
+	local config_file="${ISO2QCOW2_DIR}/conf/iso/iso.conf"
+	sed -i "s|^OS=.*|OS=\"${iso_os}\"|g" "$config_file"
+	sed -i "s|^OS_ARCH=.*|OS_ARCH=\"${iso_arch}\"|g" "$config_file"
+	sed -i "s|^OS_VERSION=.*|OS_VERSION=\"${iso_version}\"|g" "$config_file"
+}
+
+config_iso_url()
+{
+	local iso_url_file="${ISO2QCOW2_DIR}/conf/iso/net-iso/${iso_os}/${iso_arch}/${iso_version}"
+	sed -i "s|^iso_url=.*|iso_url=\"${ISO_URL}\"|g" "${iso_url_file}"
+	sed -i "s|^iso_checksum_url=.*|iso_checksum_url=\"${ISO_CHECKSUM_URL}\"|g" "${iso_url_file}"
+}
+
 prepare_iso2qcow2()
 {
 	log_info "starting prepare iso2qcow2 env ..."
 	get_code_iso2qcow2
+
+	config_pip_proxy
+	config_iso_conf
+	config_iso_url
 }
 
 run_iso2qcow2()
 {
 	log_info "starting run iso2qcow2 ..."
+	${ISO2QCOW2_DIR}/auto-install-iso.sh
 }
 
 prepare_qcow2rootfs()
