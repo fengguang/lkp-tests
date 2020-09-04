@@ -21,6 +21,7 @@ MAX_RATIO = 5
 $metric_add_max_latency = IO.read("#{LKP_SRC}/etc/add-max-latency").split("\n")
 $metric_latency = IO.read("#{LKP_SRC}/etc/latency").split("\n")
 $metric_failure = IO.read("#{LKP_SRC}/etc/failure").split("\n")
+$metric_pass = IO.read("#{LKP_SRC}/etc/pass").split("\n")
 $perf_metrics_threshold = YAML.load_file "#{LKP_SRC}/etc/perf-metrics-threshold.yaml"
 $perf_metrics_prefixes = File.read("#{LKP_SRC}/etc/perf-metrics-prefixes").split
 $index_perf = load_yaml "#{LKP_SRC}/etc/index-perf-all.yaml"
@@ -423,6 +424,7 @@ def __is_function_change(stats_field)
   return false if stats_field.index('.time.')
   return false if stats_field.index('.timestamp.')
   return true if $metric_failure.any? { |pattern| stats_field =~ %r{^#{pattern}} }
+  return true if $metric_pass.any? { |pattern| stats_field =~ %r{^#{pattern}} }
 
   false
 end
