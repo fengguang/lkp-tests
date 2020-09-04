@@ -12,6 +12,7 @@ ALLOW_OS=(
 WORKSPACE="/usr/local/iso2rootfs"
 ENV_DIR="${WORKSPACE}/env"
 ISO2QCOW2_DIR="${WORKSPACE}/iso2qcow2"
+CCI_SRC="${WORKSPACE}/crystal-ci"
 
 log_info()
 {
@@ -203,9 +204,31 @@ run_iso2qcow2()
 	${ISO2QCOW2_DIR}/auto-install-iso.sh
 }
 
+get_code_crystal_ci()
+{
+	[ -d "${CCI_SRC}" ] && rm -rf "${CCI_SRC}"
+	git clone "$CRYSTAL_CI_GIT_URL" "${CCI_SRC}"
+}
+
+config_rootfs_dir()
+{
+	ROOTFS_DES_DIR=${NFS_LOCAL_PATH}/$(date "+%Y%m%d-%H%M%S")
+	[ -d "${ROOTFS_DES_DIR}" ] &&
+		ROOTFS_DES_DIR="${ROOTFS_DES_DIR}-${HOSTNAME##*--}"
+	mkdir -p "$ROOTFS_DES_DIR"
+}
+
 prepare_qcow2rootfs()
 {
 	log_info "starting prepare qcow2rootfs env ..."
+	get_code_crystal_ci
+
+	install_pkgs "docker"
+	systemctl start docker
+
+	config_rootfs_dir
+	export CCI_SRC
+	export HOME="/root"
 }
 
 run_qcow2rootfs()
