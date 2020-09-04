@@ -11,6 +11,7 @@ ALLOW_OS=(
 
 WORKSPACE="/usr/local/iso2rootfs"
 ENV_DIR="${WORKSPACE}/env"
+ISO2QCOW2_DIR="${WORKSPACE}/iso2qcow2"
 
 log_info()
 {
@@ -138,6 +139,14 @@ install_pkgs()
 	done
 }
 
+config_git_proxy()
+{
+	if [[ -n ${GITCACHE_HOST} ]] && [[ -n ${GITCACHE_PORT} ]]
+	then
+		git config --system url."http://${GITCACHE_HOST}:${GITCACHE_PORT}/".insteadOf "https://"
+	fi
+}
+
 prepare_iso2rootfs()
 {
 	log_info "starting config iso2rootfs env ..."
@@ -146,11 +155,19 @@ prepare_iso2rootfs()
 	source "${CGZ_PATH}/config"
 
 	install_pkgs "git"
+	config_git_proxy
+}
+
+get_code_iso2qcow2()
+{
+	[ -d "${ISO2QCOW2_DIR}" ] && rm -rf "${ISO2QCOW2_DIR}"
+	git clone "$ISO2QCOW2_GIT_URL" "${ISO2QCOW2_DIR}"
 }
 
 prepare_iso2qcow2()
 {
 	log_info "starting prepare iso2qcow2 env ..."
+	get_code_iso2qcow2
 }
 
 run_iso2qcow2()
