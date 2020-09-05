@@ -11,17 +11,18 @@ require 'eventmachine'
 require 'json'
 
 class Monitor
-  attr_accessor :monitor_url, :query, :overrides
+  attr_accessor :monitor_url, :query, :overrides, :action
 
-  def initialize(monitor_url = '', overrides = {}, query = {})
+  def initialize(monitor_url = '', query = {}, action = {})
     @monitor_url = monitor_url
     @query = query
-    @overrides = overrides
-    @defaults = {}
+    @action = action
+    @overrides = {}
     # exit_status_code: how to exit EM.run
     # 0 means normal exit
     # 1 means timeout exit
     @exit_status_code = 0
+    @defaults = {}
     load_default
   end
 
@@ -54,13 +55,20 @@ class Monitor
   end
 
   def output(data)
-    data = JSON.parse(data['log']) if data['log']
+    return unless @action['output']
+    if data['log']
+      data = JSON.parse(data['log'])
+    elsif data['message']
+      data = data['message']
+    end
     puts data
-    return data
   end
 
   def connect(data, web_socket)
-    data = output(data)
+    return unless @action['connect']
+    return unless data['log']
+
+    data = JSON.parse(data['log'])
     return unless data['ip']
 
     web_socket.close
@@ -73,7 +81,7 @@ class Monitor
     EM.stop
   end
 
-  def run(type = 'output', close_time = nil)
+  def run(close_time = nil)
     merge_overrides
     field_check
     query = @query.to_json
@@ -97,16 +105,10 @@ class Monitor
       ws.on :message do |event|
         data = JSON.parse(event.data)
 
-        case type
-        when 'output'
-          output(data)
-        when 'connect'
-          connect(data, ws)
-        when 'stop'
-          stop_em(ws)
-        else
-          raise "Invalid run type: #{type}"
-        end
+        output(data)
+        connect(data, ws)
+
+        stop_em(ws) if @action['stop']
       end
 
       ws.on :close do |event|

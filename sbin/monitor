@@ -9,7 +9,7 @@ require 'optparse'
 require 'yaml'
 
 opt_set_key_value = {}
-opt_type = 'output'
+opt_action = {'output' => true}
 opt_monitor_url = nil
 opt_close_time = nil
 
@@ -26,9 +26,15 @@ options = OptionParser.new do |opts|
     opt_monitor_url = monitor_url
   end
 
-  opts.on('-t type', '--type type', 'set monitor run type, default is output') do |type|
-    opt_type = type
+  opts.on('-a action', '--action action', 'set monitor run action, default is output') do |actions|
+    opt_action = {}
+    actions.split(',').each do |action|
+      opt_action[action] = true
+    end
   end
+  opts.separator '                                     action: output, output log'
+  opts.separator '                                     action: connect, connect to the host when get ip'
+  opts.separator '                                     action: stop, exit monitor client when get log'
 
   opts.on("-f 'KEY: VALUE'", "--filter 'KEY: VALUE'", 'add YAML hash to filter') do |key_value|
     opt_set_key_value.merge! YAML.load key_value
@@ -60,5 +66,6 @@ opt_set_key_value['job_id'] = opt_set_key_value['job_id'].to_s if opt_set_key_va
 monitor = Monitor.new
 monitor.monitor_url = opt_monitor_url if opt_monitor_url
 monitor.overrides = opt_set_key_value
+monitor.action = opt_action
 
-monitor.run(opt_type, opt_close_time)
+monitor.run(opt_close_time)
