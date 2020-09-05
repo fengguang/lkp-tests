@@ -37,7 +37,7 @@ options = OptionParser.new do |opts|
     Dir.mkdir(dir) unless File.directory? dir
   end
 
-  opts.on("-a", "--auto-define-files", "auto add define_files") do
+  opts.on('-a', '--auto-define-files', 'auto add define_files') do
     opt_auto_define_files = true
   end
 
@@ -82,15 +82,11 @@ ARGV.each do |jobfile|
   jobs['tbox_group'] = tbox_group(jobs['testbox']) if jobs.include?('testbox')
   jobs['node_roles'] ||= 'server client' if jobs['cluster']
   jobs.each_jobs do |job|
-    host = job['SCHED_HOST']
-    port = job['SCHED_PORT']
+    raise 'Please configure SCHED_HOST' if !job['SCHED_HOST']
+    raise 'Please configure SCHED_PORT' if !job['SCHED_PORT']
 
-    if !host || !port
-      raise 'Please configure SCHED_HOST and SCHED_PORT first'
-    end
-
-    job["LKP_CGI_PORT"] = port
-    job["LKP_SERVER"] = host
+    job['LKP_CGI_PORT'] = job['SCHED_PORT']
+    job['LKP_SERVER'] = job['SCHED_HOST']
 
     job.add_pp
     job.add_define_files if opt_auto_define_files
@@ -122,7 +118,7 @@ ARGV.each do |jobfile|
     end
 
     # init scheduler client
-    scheduler_client = SchedulerClient.new(host, port)
+    scheduler_client = SchedulerClient.new(job['SCHED_HOST'], job['SCHED_PORT'])
 
     # submit job
     job_json = job_hash.to_json
@@ -133,7 +129,7 @@ ARGV.each do |jobfile|
 end
 
 if opt_monitor
-  opt_monitor_query.merge! ({'job_id' => job_ids[0]})
+  opt_monitor_query.merge!({'job_id' => job_ids[0]})
   cmd = "#{LKP_SRC}/sbin/monitor -f \'#{opt_monitor_query.to_json}\'"
   cmd += ' -t connect' if opt_auto_connect
   exec cmd
