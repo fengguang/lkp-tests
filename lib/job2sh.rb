@@ -146,6 +146,7 @@ class Job2sh < Job
       return false
     end
     tabs = indent(ancestors)
+    key = string_re_hash_key(@programs, key)
     if @programs.include?(key) || (key =~ /^(call|command|source)\s/ && @cur_func == :run_job)
       if @setups.include?(key)
         return false unless pass == :PASS_RUN_SETUP

@@ -74,10 +74,29 @@ def string_or_hash_key(h)
   end
 end
 
+# if match return k or re_k
+def string_re_hash_key(hash, re_k, exist=nil)
+  exist ||= []
+  hash.keys.each do |k|
+    return k if k.is_a?(String) && !exist.include?(k) && re_k =~ /^#{k}(-\d+){0,1}$/
+  end
+  re_k
+end
+
+# if match return key or nil
+def hash_key_re_string(hash, re_k, exist=nil)
+  exist ||= []
+  hash.keys.each do |k|
+    return k if k.is_a?(String) && !exist.include?(k) && k =~ /^#{re_k}(-\d+){0,1}$/
+  end
+  nil
+end
+
 def for_each_in(ah, set, pk = nil)
   ah.each do |k, v|
     next if k == 'pp'
 
+    k = k.sub(/-\d+$/, '') if k.is_a?(String)
     yield pk, ah, k, v if set.include?(k)
     next unless v.is_a?(Hash)
 
@@ -520,11 +539,14 @@ class Job
   def add_pp()
     @job["pp"] = Hash.new()
     init_program_options()
-    @referenced_programs.each do |program_name, options_hash|
-      if @job.has_key?(program_name) and not @job[program_name].is_a?(Hash)
-        @job["pp"][program_name] = @job[program_name]
+    for_each_in(@job, @referenced_programs.keys) do |_pk, h, p_n, p_args|
+      k = hash_key_re_string(@job, p_n, @job['pp'].keys)
+      if k && !@job[k].is_a?(Hash)
+        @job['pp'][k] = @job[k]
         next
       end
+      options_hash = @referenced_programs[p_n]
+      program_name = hash_key_re_string(h, p_n, @job['pp'].keys)
       @job["pp"][program_name] = Hash.new()
       options_array = options_hash.keys
       options_array.each do |option|
