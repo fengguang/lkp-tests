@@ -122,9 +122,15 @@ ARGV.each do |jobfile|
 
     # submit job
     job_json = job_hash.to_json
-    job_id = scheduler_client.submit_job(job_json)
-    job_ids << job_id.to_s if job_id.to_s.to_i != 0
-    puts("submit #{jobfile}, got #{job_id}")
+    messages = scheduler_client.submit_job(job_json)
+    JSON.parse(messages).each do |msg|
+      if msg['message'].empty?
+        job_ids << msg['job_id'].to_s
+        puts("submit #{jobfile}, got job_id=#{msg['job_id']}")
+      else
+        puts("submit #{jobfile} failed, got job_id=#{msg['job_id']}, error: #{msg['message']}")
+      end
+    end
   end
 end
 
