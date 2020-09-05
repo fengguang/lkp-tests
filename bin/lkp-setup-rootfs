@@ -149,8 +149,17 @@ EOF
 	return 0
 }
 
+modify_gem_source()
+{
+       echo ':sources: ["http://rubygems.org"]' >> ~/.gemrc
+
+       return 0
+}
+
 install_proxy()
 {
+	modify_gem_source
+
 	install_docker_proxy
 
 	[ -z "$SQUID_HOST" ] && return
