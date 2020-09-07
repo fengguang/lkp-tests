@@ -11,7 +11,7 @@ ALLOW_OS=(
 
 WORKSPACE="/usr/local/iso2rootfs"
 ENV_DIR="${WORKSPACE}/env"
-ISO2QCOW2_DIR="${WORKSPACE}/iso2qcow2"
+I2Q_SRC="${WORKSPACE}/iso2qcow2"
 CCI_SRC="${WORKSPACE}/crystal-ci"
 
 log_info()
@@ -161,21 +161,21 @@ prepare_iso2rootfs()
 
 get_code_iso2qcow2()
 {
-	[ -d "${ISO2QCOW2_DIR}" ] && rm -rf "${ISO2QCOW2_DIR}"
-	git clone "$ISO2QCOW2_GIT_URL" "${ISO2QCOW2_DIR}"
+	[ -d "${I2Q_SRC}" ] && rm -rf "${I2Q_SRC}"
+	git clone "$ISO2QCOW2_GIT_URL" "${I2Q_SRC}"
 }
 
 config_pip_proxy()
 {
 	if [[ -n ${SQUID_HOST} ]] && [[ -n ${SQUID_PORT} ]]
 	then
-		sed -i "s|^PIP_PROXY=|PIP_PROXY=\"http://$SQUID_HOST:$SQUID_PORT\"|g" "${ISO2QCOW2_DIR}/conf/config"
+		sed -i "s|^PIP_PROXY=|PIP_PROXY=\"http://$SQUID_HOST:$SQUID_PORT\"|g" "${I2Q_SRC}/conf/config"
 	fi
 }
 
 config_iso_conf()
 {
-	local config_file="${ISO2QCOW2_DIR}/conf/iso/iso.conf"
+	local config_file="${I2Q_SRC}/conf/iso/iso.conf"
 	sed -i "s|^OS=.*|OS=\"${iso_os}\"|g" "$config_file"
 	sed -i "s|^OS_ARCH=.*|OS_ARCH=\"${iso_arch}\"|g" "$config_file"
 	sed -i "s|^OS_VERSION=.*|OS_VERSION=\"${iso_version}\"|g" "$config_file"
@@ -183,7 +183,7 @@ config_iso_conf()
 
 config_iso_url()
 {
-	local iso_url_file="${ISO2QCOW2_DIR}/conf/iso/net-iso/${iso_os}/${iso_arch}/${iso_version}"
+	local iso_url_file="${I2Q_SRC}/conf/iso/net-iso/${iso_os}/${iso_arch}/${iso_version}"
 	sed -i "s|^iso_url=.*|iso_url=\"${ISO_URL}\"|g" "${iso_url_file}"
 	sed -i "s|^iso_checksum_url=.*|iso_checksum_url=\"${ISO_CHECKSUM_URL}\"|g" "${iso_url_file}"
 }
@@ -201,7 +201,7 @@ prepare_iso2qcow2()
 run_iso2qcow2()
 {
 	log_info "starting run iso2qcow2 ..."
-	${ISO2QCOW2_DIR}/auto-install-iso.sh
+	${I2Q_SRC}/auto-install-iso.sh
 }
 
 get_code_crystal_ci()
@@ -240,15 +240,65 @@ prepare_qcow2rootfs()
 run_qcow2rootfs()
 {
 	log_info "starting run qcow2rootfs ..."
-	local qcow2_path="${ISO2QCOW2_DIR}/output/${ISO_NAME%.iso}.qcow2"
+	local qcow2_path="${I2Q_SRC}/output/${ISO_NAME%.iso}.qcow2"
 
 	cd "${CCI_SRC}/container/qcow2rootfs"
 	./run "${qcow2_path}" "${ROOTFS_DES_DIR}"
 }
 
+get_qemu_efi_fd()
+{
+	source "$I2Q_SRC"/lib/tools/checker.sh
+	source "$I2Q_SRC"/lib/os/hoster.sh
+	source "$I2Q_SRC"/lib/libvirt/libvirt_vars.sh
+
+	get_host_info
+	get_efi_fd_path
+}
+
 test_rootfs()
 {
 	log_info "starting test rootfs ..."
+	local test_script="${CGZ_PATH}/kvm.sh"
+
+	local kernel_path=$(realpath "${ROOTFS_DES_DIR}"/boot/vmlinuz*|grep -v rescue)
+	local initrd_lkp_path=$(realpath "${ROOTFS_DES_DIR}"/boot/initramfs.lkp*)
+	local nfsroot_path="${rootfs_nfs_server}:${rootfs_nfs_path}/${iso_os}/${iso_arch}/$(basename "${ROOTFS_DES_DIR}")"
+	get_qemu_efi_fd
+
+	sed -i "s|KERNEL|\"${kernel_path}\"|g" "$test_script"
+	sed -i "s|INITRD_LKP|\"${initrd_lkp_path}\"|g" "$test_script"
+	sed -i "s|NFS_ROOT|\"${nfsroot_path}\"|g" "$test_script"
+	sed -i "s|QEMU_EFI_FD|\"${EFI_FD_PATH}\"|g" "$test_script"
+
+	cd "$(dirname "${test_script}")"
+
+	expect << EOF
+		# timeout for kvm.sh
+		set timeout 300
+
+		spawn "/bin/bash"
+		match_max 100000
+
+		expect -exact "# " {
+		send -- "./$(basename "${test_script}")\r"
+		}
+
+		expect {
+			"localhost login: " {
+				send_user "\[INFO\] test rootfs ok"
+				exit 0
+			}
+			"nfs: server * not responding, timed out" {
+				send_user "\[WARNING\] rootfs can start, but need to disable some services"
+				exit 0
+			}
+			timeout {
+				send_user "\[ERROR\] test rootfs time out"
+				exit 1
+			}
+		}
+EOF
 }
 
 update_sha256sum_file()
