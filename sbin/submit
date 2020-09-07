@@ -82,8 +82,8 @@ ARGV.each do |jobfile|
   jobs['tbox_group'] = tbox_group(jobs['testbox']) if jobs.include?('testbox')
   jobs['node_roles'] ||= 'server client' if jobs['cluster']
   jobs.each_jobs do |job|
-    raise 'Please configure SCHED_HOST' if !job['SCHED_HOST']
-    raise 'Please configure SCHED_PORT' if !job['SCHED_PORT']
+    raise 'Please configure SCHED_HOST' unless job['SCHED_HOST']
+    raise 'Please configure SCHED_PORT' unless job['SCHED_PORT']
 
     job['LKP_CGI_PORT'] = job['SCHED_PORT']
     job['LKP_SERVER'] = job['SCHED_HOST']
