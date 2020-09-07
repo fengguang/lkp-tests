@@ -146,7 +146,7 @@ else
 	$program_dir/$program < /dev/null > $tmpfile || { log_error "$program_dir/$program < /dev/null  exit code $?, check $tmpfile"; exit 1; }
 fi
 
-grep -q "^$program\." <($LKP_SRC/etc/failure $LKP_SRC/etc/pass) ||
+grep -q "^$program\." <(cat $LKP_SRC/etc/failure $LKP_SRC/etc/pass) ||
 check_incomplete_run $tmpfile
 
 warn_empty_stats
