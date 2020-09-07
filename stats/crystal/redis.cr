@@ -124,7 +124,7 @@ def show_latencies(latencies, name)
   latencies.transpose.each_with_index do |(k,v), i|
     ps = {k=>v}
     sum = ps.sum
-    next unless sum != 0
+    next if sum == 0
 
     avg = sum.to_f / ps.size
     puts "#{name}_latency_#{i}ms%: #{avg}"
