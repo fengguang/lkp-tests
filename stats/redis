@@ -122,7 +122,7 @@ def show_latencies(latencies, name)
   pi = 0
   latencies.transpose.each_with_index do |ps, i|
     sum = ps.sum
-    next unless sum != 0
+    next if sum == 0
 
     avg = sum.to_f / ps.length
     puts "#{name}_latency_#{i}ms%: #{avg}"
