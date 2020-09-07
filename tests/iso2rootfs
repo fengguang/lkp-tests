@@ -212,7 +212,7 @@ get_code_crystal_ci()
 
 config_rootfs_dir()
 {
-	ROOTFS_DES_DIR=${NFS_LOCAL_PATH}/$(date "+%Y%m%d-%H%M%S")
+	ROOTFS_DES_DIR=${NFS_LOCAL_PATH}/${iso_version}-$(date "+%Y%m%d%H%M%S")
 	[ -d "${ROOTFS_DES_DIR}" ] &&
 		ROOTFS_DES_DIR="${ROOTFS_DES_DIR}-${HOSTNAME##*--}"
 	mkdir -p "$ROOTFS_DES_DIR"
@@ -229,11 +229,21 @@ prepare_qcow2rootfs()
 	config_rootfs_dir
 	export CCI_SRC
 	export HOME="/root"
+
+	cd "${CCI_SRC}/container/qcow2rootfs"
+	./build
+
+	cd "${CCI_SRC}/container/dracut-initrd"
+	./build
 }
 
 run_qcow2rootfs()
 {
 	log_info "starting run qcow2rootfs ..."
+	local qcow2_path="${ISO2QCOW2_DIR}/output/${ISO_NAME%.iso}.qcow2"
+
+	cd "${CCI_SRC}/container/qcow2rootfs"
+	./run "${qcow2_path}" "${ROOTFS_DES_DIR}"
 }
 
 test_rootfs()
