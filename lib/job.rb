@@ -301,11 +301,13 @@ class Job
     return unless check_set_tbox_group
 
     hosts_file = get_hosts_file
+    if hosts_file
+      hwconfig = load_yaml(hosts_file, nil)
+      @job[source_file_symkey(hosts_file)] = nil
+      @job.merge!(hwconfig) { |_k, a, _b| a } # job's key/value has priority over hwconfig
+    end
 
-    hwconfig = load_yaml(hosts_file, nil)
-    @job[source_file_symkey(hosts_file)] = nil
-    @job.merge!(hwconfig) { |_k, a, _b| a } # job's key/value has priority over hwconfig
-    @job['arch'] ||= x86_64
+    @job['arch'] ||= 'x86_64'
     @load_hosts_done = true
   end
 
@@ -321,10 +323,12 @@ class Job
     hosts_file_name = @job['tbox_group'].split('--')[0]
     hosts_file = "#{LKP_SRC}/hosts/#{hosts_file_name}"
 
-    File.file?(hosts_file) ||
-      raise("hosts_file not exist: #{hosts_file}, please check testbox field")
-
-    hosts_file
+    if File.file?(hosts_file)
+      hosts_file
+    elsif
+      puts("hosts_file not exist: #{hosts_file}, maybe need check testbox field")
+      nil
+    end
   end
 
   def include_files
