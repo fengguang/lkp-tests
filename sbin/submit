@@ -75,8 +75,8 @@ job_ids = []
 
 ARGV.each do |jobfile|
   jobs = Job2sh.new
-  jobs.load(jobfile, true) || next
   jobs.overrides = opt_set_key_value
+  jobs.load(jobfile, true) || next
   jobs[:expand_params] = true
   jobs['testbox'] = opt_set_key_value['testbox'] if opt_set_key_value['testbox']
   jobs['tbox_group'] = tbox_group(jobs['testbox']) if jobs.include?('testbox')

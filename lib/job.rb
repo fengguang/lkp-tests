@@ -243,6 +243,10 @@ class Job
 
       @jobs = []
       YAML.load_stream(yaml) do |hash|
+        if hash.has_key?('override') && hash['override'].is_a?(Hash)
+          @overrides.merge!(hash['override']){ |_key, a, _b| a}
+          hash.delete('override')
+        end
         @jobs << hash
       end
     rescue StandardError => e
@@ -607,7 +611,6 @@ class Job
       end
     end
   end
-
 
   def each_job_init
     init_program_options
