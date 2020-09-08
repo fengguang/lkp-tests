@@ -6,16 +6,16 @@ arch=(i386 x86_64)
 url="https://github.com/axboe/fio"
 license=('GPL')
 depends=('')
-source=("https://github.com/axboe/fio/archive/fio-$pkgver.tar.gz")
+source=("https://github.com/axboe/fio.git")
 md5sums=('SKIP')
 
 build() {
-    cd "$srcdir/fio-fio-$pkgver"
+    cd "$srcdir/fio"
     ./configure --disable-native
     make
 }
 
 package() {
-    cd "$srcdir/fio-fio-$pkgver"
+    cd "$srcdir/fio"
     make DESTDIR="$pkgdir" install
 }
