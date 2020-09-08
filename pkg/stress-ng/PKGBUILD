@@ -5,15 +5,15 @@ pkgdesc="tool to load and stress a computer"
 arch=('i386' 'x86_64')
 url="http://kernel.ubuntu.com/~cking/stress-ng/"
 license=('GPL')
-source=("http://kernel.ubuntu.com/~cking/tarballs/stress-ng/${pkgname}-$pkgver.$pkgrel.tar.xz")
-md5sums=('62ec3c3a6809b6c3cf7f73e9c6f37faf')
+source=("https://github.com/ColinIanKing/stress-ng.git")
+md5sums=('SKIP')
 
 build() {
-  cd "$srcdir/$pkgname-$pkgver.$pkgrel"
+  cd "$srcdir/$pkgname"
   make
 }
 
 package() {
-  cd "$srcdir/$pkgname-$pkgver.$pkgrel"
+  cd "$srcdir/$pkgname"
   make DESTDIR="$pkgdir" install
 }
