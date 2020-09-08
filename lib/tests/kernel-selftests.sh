@@ -611,7 +611,7 @@ run_tests()
 			fixup_ptp || continue
 		fi
 
-		log_cmd make run_tests -C $subtest  2>&1 || return
+		log_cmd make run_tests -C $subtest  2>&1
 
 		if [[ "$subtest" = "firmware" ]]; then
 			cleanup_for_firmware
