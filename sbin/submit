@@ -16,6 +16,7 @@ opt_auto_define_files = false
 opt_monitor = false
 opt_monitor_query = {}
 opt_auto_connect = false
+actions = ['output']
 
 options = OptionParser.new do |opts|
   opts.banner = 'Usage: submit [options] jobs...'
@@ -42,7 +43,7 @@ options = OptionParser.new do |opts|
   end
 
   opts.on('-c', '--connect', 'auto connect to the host') do
-    opt_auto_connect = true
+    actions << 'connect'
   end
 
   opts.on('-m', '--monitor', "monitor job status: use -m 'KEY: VALUE' to add rule") do
@@ -136,7 +137,6 @@ end
 
 if opt_monitor
   opt_monitor_query.merge!({'job_id' => job_ids[0]})
-  cmd = "#{LKP_SRC}/sbin/monitor -f \'#{opt_monitor_query.to_json}\'"
-  cmd += ' -t connect' if opt_auto_connect
+  cmd = "#{LKP_SRC}/sbin/monitor -f '#{opt_monitor_query.to_json}' -a #{actions.join(',')}"
   exec cmd
 end
