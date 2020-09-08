@@ -101,3 +101,22 @@ EOF
     end
   end
 end
+
+describe 'load_yaml' do
+  TEST_LOAD_YAML_FILE = '/tmp/load_test.yaml'.freeze
+
+  before(:example) do
+    File.open(TEST_LOAD_YAML_FILE, 'w') do |f|
+      f.write("key1: value1\nkey2: <%= key2_map %>\n")
+    end
+  end
+
+  it 'returns correct value' do
+    yaml = load_yaml(TEST_LOAD_YAML_FILE, {'key2_map' => 'value2'})
+    expect(yaml['key2']).to eq 'value2'
+  end
+
+  after(:example) do
+    FileUtils.rm TEST_LOAD_YAML_FILE
+  end
+end
