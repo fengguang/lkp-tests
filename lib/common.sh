@@ -17,6 +17,18 @@ abs_path()
 	fi
 }
 
+echo_run()
+{
+	echo "$@"
+	"$@"
+}
+
+echo_exec()
+{
+	echo "$@"
+	exec "$@"
+}
+
 query_var_from_yaml()
 {
 	local key=$1
