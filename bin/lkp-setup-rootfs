@@ -161,7 +161,10 @@ install_gitcache()
        [ -n "$gitcache_host" ] || return
 
        # the "https://git" prefix catches github/gitlab/gitee
-       echo -e "[url \"http://$gitcache_host:${gitcache_port:-5000}/git\"]\n\tinsteadOf = https://git" >> /etc/gitconfig
+       cat >> /etc/gitconfig << EOF
+[url "http://$gitcache_host:${gitcache_port:-5000}/git"]
+	insteadOf = https://git
+EOF
 
        return 0
 }
