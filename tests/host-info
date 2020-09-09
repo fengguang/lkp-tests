@@ -1,0 +1,92 @@
+#!/bin/bash
+
+get_node()
+{
+	echo "nr_node: $(grep -Eo 'Node [0-9]+,' /proc/zoneinfo | uniq | wc -l)"
+	echo "nr_cpu: $(nproc)"
+	memory_total=$(cat /proc/meminfo |grep MemTotal | awk '{print $2}')
+	memory_new=$(awk 'BEGIN{printf "%0.2f", '$memory_total'/1024/1024}')
+	memory=$(echo $memory_new | awk '{print int($0)+1}')G
+	echo "memory: $memory"
+}
+
+get_model_name()
+{
+	echo "model_name: $(lscpu |grep "Model name" | awk '{print $3}')"
+}
+
+get_nr_disk()
+{
+	nr_hdd_disks=$(lsblk -d -o name,ROTA | grep -v loop | awk '{print $2}' | grep 1 | wc -l)
+	nr_ssd_disks=$(lsblk -d -o name,ROTA | grep -v loop | awk '{print $2}' | grep 0 | wc -l)
+	[[ "$nr_hdd_disks" -ne 0 ]] && echo "nr_hdd_partitions: $nr_hdd_disks"
+	[[ "$nr_ssd_disks" -ne 0 ]] && echo "nr_ssd_partitions: $nr_ssd_disks"
+}
+
+get_mac()
+{
+	echo "mac_addr:"
+	for i in $(cat /sys/class/net/e*/address)
+	do
+		echo "  - $i"
+	done
+}
+
+get_part()
+{
+	for i
+	do
+		# ls -l /dev/disk/by-id/
+		# lrwxrwxrwx 1 root root 10 Sep  2 18:42 ata-SAMSUNG_MZ7LH480HAHQ-00005_S45PNA2MB43944-part1 -> ../../sda1
+		# lrwxrwxrwx 1 root root 10 Sep  2 18:42 ata-SAMSUNG_MZ7LH480HAHQ-00005_S45PNA2MB43944-part2 -> ../../sda2
+		# lrwxrwxrwx 1 root root 10 Sep  2 18:42 ata-SAMSUNG_MZ7LH480HAHQ-00005_S45PNA2MB43944-part3 -> ../../sda3
+		# lrwxrwxrwx 1 root root 10 Sep  2 18:42 ata-SAMSUNG_MZ7LH480HAHQ-00005_S45PNA2MB43209 -> ../../sdb
+		info=$(ls -l /dev/disk/by-id/ | grep "/$i" | awk '{print $9}' | grep -e "^scsi-" -e "^ata-" -e "^nvme-" | sed 's/-part[0-9]//g')
+		count=$(echo $info | tr ' ' '\n' | wc -l)
+		partition=$(echo $info | tr ' ' '\n' | uniq)
+		if [ $count -gt 1 ]; then
+			parts=$(echo /dev/disk/by-id/$partition-part*)
+			for i in $parts
+			do
+				echo "  -" $i
+			done
+		else
+			echo "  -" /dev/disk/by-id/$partition
+		fi
+
+	 done
+ }
+
+get_partitions()
+{
+	# lsblk -d -o name,ROTA
+	# NAME ROTA
+	# sda     0
+	# sdb     0
+	# sdc     0
+	# sdd     0
+	# sde     1
+	# sdf     1
+	ssd=$(lsblk -d -o name,ROTA |grep 0$ | awk '{print $1}')
+	hdd=$(lsblk -d -o name,ROTA |grep 1$ | awk '{print $1}')
+	if [ -n "$hdd" ]; then
+		echo "hdd_partitions:"
+		get_part $hdd
+	fi
+
+	if [ -n "$ssd" ]; then
+		echo "ssd_partitions:"
+		get_part $ssd
+	fi
+}
+
+main()
+{
+	get_node
+	get_nr_disk
+	get_partitions
+	get_mac
+	get_model_name
+}
+
+main
