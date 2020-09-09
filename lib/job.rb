@@ -325,7 +325,7 @@ class Job
 
     if File.file?(hosts_file)
       hosts_file
-    elsif
+    else
       puts("hosts_file not exist: #{hosts_file}, maybe need check testbox field")
       nil
     end
