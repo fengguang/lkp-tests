@@ -21,6 +21,8 @@ build_selftests()
 
 prepare_test_env()
 {
+	has_cmd make || return
+
 	# lkp qemu needs linux-selftests_dir and linux_headers_dir to reproduce kernel-selftests.
 	# when reproduce bug reported by kernel test robot, the downloaded linux-selftests file is stored at /usr/src/linux-selftests
 	linux_selftests_dir=(/usr/src/linux-selftests-*)
