@@ -387,16 +387,16 @@ class Job
     revise_hash(job, deepcopy(@job2), true)
     revise_hash(job, deepcopy(@overrides), true)
     job['___'] = nil
-    expand_each_in(job, @dims_to_expand) do |h, k, v|
-      h.delete(k) if v.is_a?(Array)
-    end
     @jobx = job
     if @job.include?(:expand_params)
-      expand_params()
+      expand_params
       @job = deepcopy(@jobx)
-      @job.delete("___")
+      @job.delete('___')
       @job.delete(:expand_params)
     else
+      expand_each_in(job, @dims_to_expand) do |h, k, v|
+        h.delete(k) if v.is_a?(Array)
+      end
       expand_params(false)
     end
     @jobx = nil
