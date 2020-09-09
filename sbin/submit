@@ -15,7 +15,6 @@ opt_output_dir = nil
 opt_auto_define_files = false
 opt_monitor = false
 opt_monitor_query = {}
-opt_auto_connect = false
 actions = ['output']
 
 options = OptionParser.new do |opts|
