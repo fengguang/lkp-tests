@@ -36,14 +36,16 @@ prepare_test_env()
 		echo "KERNEL SELFTESTS: linux_headers_dir is $linux_headers_dir"
 
 		# headers_install's default location is usr/include which is required by several tests' Makefile
-		mkdir -p "$linux_selftests_dir/usr/include" || die
-		mount --bind $linux_headers_dir/include $linux_selftests_dir/usr/include || die
-		mkdir -p "$linux_selftests_dir/tools/include/uapi/asm" || die
-		mount --bind $linux_headers_dir/include/asm $linux_selftests_dir/tools/include/uapi/asm || die
+		mkdir -p "$linux_selftests_dir/usr/include" || return
+		mount --bind $linux_headers_dir/include $linux_selftests_dir/usr/include || return
+
+		mkdir -p "$linux_selftests_dir/tools/include/uapi/asm" || return
+		mount --bind $linux_headers_dir/include/asm $linux_selftests_dir/tools/include/uapi/asm || return
 	elif [ -d "/tmp/build-kernel-selftests/linux" ]; then
 		# commit bb5ef9c change build directory to /tmp/build-$BM_NAME/xxx
 		linux_selftests_dir="/tmp/build-kernel-selftests/linux"
-		cd $linux_selftests_dir
+
+		cd $linux_selftests_dir || return
 		build_selftests
 	else
 		linux_selftests_dir="/lkp/benchmarks/kernel-selftests"
