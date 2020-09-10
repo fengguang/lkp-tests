@@ -15,6 +15,7 @@ nr_cpu: 2
 nr_node: 1
 memory: 8G
 arch: aarch64
+lab: spec_lab
 cpufreq_governor: 
 need_kconfig:
 - CONFIG_KVM_GUEST=y

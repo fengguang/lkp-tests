@@ -25,7 +25,14 @@ describe 'submit job spec' do
     job_name = File.basename(yaml_file, '.yaml')
     output_dir = "#{LKP_SRC}/spec/submit/#{job_name}"
     it 'save atomic yaml' do
-      system("#{LKP_SRC}/sbin/submit -s 'testbox: vm-hi1620-2p8g--spec_submit' -o #{output_dir} #{yaml_file}")
+      submit_cmd = [
+        "#{LKP_SRC}/sbin/submit",
+        '-o', output_dir,
+        '-s', 'lab: spec_lab',
+        '-s', 'testbox: vm-hi1620-2p8g--spec_submit',
+        yaml_file
+      ]
+      system(*submit_cmd)
       traverse_file(output_dir)
     end
   end
