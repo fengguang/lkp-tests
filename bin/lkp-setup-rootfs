@@ -156,23 +156,8 @@ modify_gem_source()
        return 0
 }
 
-install_gitcache()
-{
-       [ -n "$gitcache_host" ] || return
-
-       # the "https://git" prefix catches github/gitlab/gitee
-       cat >> /etc/gitconfig << EOF
-[url "http://$gitcache_host:${gitcache_port:-5000}/git"]
-	insteadOf = https://git
-EOF
-
-       return 0
-}
-
 install_proxy()
 {
-	install_gitcache
-
 	modify_gem_source
 
 	install_docker_proxy
