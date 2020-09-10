@@ -56,6 +56,7 @@ class Monitor
 
   def output(data)
     return unless @action['output']
+
     if data['log']
       data = JSON.parse(data['log'])
     elsif data['message']
@@ -81,7 +82,7 @@ class Monitor
     EM.stop
   end
 
-  def run(close_time = nil)
+  def run(timeout = nil)
     merge_overrides
     field_check
     query = @query.to_json
@@ -90,8 +91,8 @@ class Monitor
     EM.run do
       ws = Faye::WebSocket::Client.new(@monitor_url)
 
-      if close_time
-        EM.add_timer(close_time) do
+      if timeout && timeout != 0
+        EM.add_timer(timeout) do
           @exit_status_code = 1
           stop_em(ws)
         end

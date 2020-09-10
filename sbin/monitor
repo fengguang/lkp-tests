@@ -4,6 +4,7 @@
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
 require "#{LKP_SRC}/lib/monitor"
+require "#{LKP_SRC}/lib/unit"
 
 require 'optparse'
 require 'yaml'
@@ -11,7 +12,7 @@ require 'yaml'
 opt_set_key_value = {}
 opt_action = {'output' => true}
 opt_monitor_url = nil
-opt_close_time = nil
+opt_timeout = 0
 
 options = OptionParser.new do |opts|
   opts.banner = 'Usage: monitor [options] <filter>'
@@ -40,8 +41,8 @@ options = OptionParser.new do |opts|
     opt_set_key_value.merge! YAML.load key_value
   end
 
-  opts.on('-c time', '--close-time time', 'set monitor client auto close time(second)') do |time|
-    opt_close_time = time
+  opts.on('-t', '--timeout N[smhd]', 'set monitor client timeout interval') do |time|
+    opt_timeout = time
   end
 end
 
@@ -62,10 +63,11 @@ if opt_set_key_value.empty?
 end
 
 opt_set_key_value['job_id'] = opt_set_key_value['job_id'].to_s if opt_set_key_value['job_id']
+opt_timeout = to_seconds(opt_timeout)
 
 monitor = Monitor.new
 monitor.monitor_url = opt_monitor_url if opt_monitor_url
 monitor.overrides = opt_set_key_value
 monitor.action = opt_action
 
-monitor.run(opt_close_time)
+monitor.run(opt_timeout)
