@@ -34,16 +34,12 @@ mount_dest()
 
 request_pkgbuild()
 {
-  local pkgrepo="${pkgbuild_repo}"
+  local pkgrepo="${pkgbuild_repo%%//*}"
   local pkgpath=""
-
-  echo "${pkgbuild_repo}" | grep -qE "/(packages|community)//" && {
-	read pkgrepo pkgpath <<< "$(echo "${pkgbuild_repo}" | awk -F"//" '{print $1,$2}')"
-	pkgpath="${pkgpath}/"
-  }
+  [[ "$pkgrepo" =~ ^archlinux/(packages|community) ]] && pkgpath="${pkgbuild_repo#*//}/"
 
   curl -sS -H 'Content-Type: Application/json' -XPOST $LKP_SERVER':8100/git_command' \
-   -d '{"git_repo": "'${pkgrepo}'", "git_command": ["git-show", "HEAD:${pkgpath}PKGBUILD"]}' \
+   -d '{"git_repo": "'${pkgrepo}'", "git_command": ["git-show", "HEAD:'${pkgpath}'PKGBUILD"]}' \
    -D header -o PKGBUILD
 
   [ -f PKGBUILD ] || die "PKGBUILD not exist"
