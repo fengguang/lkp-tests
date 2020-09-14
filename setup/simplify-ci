@@ -1,0 +1,76 @@
+#!/bin/sh
+# SPDX-License-Identifier: MulanPSL-2.0+
+
+git_ci()
+{
+	git clone https://gitee.com/wu_fengguang/crystal-ci.git /c/crystal-ci
+}
+
+# this function will be replaced by git_ci()
+# only for debug
+wget_ci()
+{
+	mkdir -p /c
+	cd /c
+	wget http://$initrd_http_host:$initrd_http_port/initrd/pkg/$os/$os_arch/$os_version/deploy-kvm.tar.gz
+	tar xf deploy-kvm.tar.gz
+}
+
+dev_env()
+{
+	export sched_host=$SCHED_HOST
+	export sched_port=$SCHED_PORT
+	3-code/dev-env
+}
+
+install_env()
+{
+	cd /c/crystal-ci/sparrow || return
+	0-package/install
+	1-storage/tiny
+	5-build/ipxe &
+	1-storage/permission
+	2-network/br0
+	2-network/iptables
+	3-code/git
+	dev_env
+	. /etc/profile.d/crystal.sh
+}
+
+boot_ipxe()
+{
+	sed -i "s%172.17.0.1%$SCHED_HOST%g" /tftpboot/boot.ipxe
+	sed -i "s%3000%$SCHED_PORT%g" /tftpboot/boot.ipxe
+}
+
+run_service()
+{
+	(
+		cd $CCI_SRC/container/dnsmasq || return
+		./build
+		./start
+		boot_ipxe
+	)&
+	(
+		cd $CCI_SRC/container/qemu-efi || return
+		./build
+		./install
+	)&
+	(
+		cd $CCI_SRC/container/fluentd-base || return
+		./build
+		cd $CCI_SRC/container/sub-fluentd || return
+		./build
+		./start
+	)&
+}
+
+main()
+{
+	wget_ci
+	install_env
+	run_service
+}
+
+main
+wait
