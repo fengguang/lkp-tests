@@ -23,11 +23,10 @@
 PKG_MNT=/initrd/pkg
 mkdir -p "$PKG_MNT"
 
-DISTRO=${os}
+export DISTRO=${os}
 
 [[ "$os_mount" = "cifs" ]] && os_mount="nfs"
 pack_to=${os_mount}/${os}/${os_arch}/${os_version}
-
 
 . $LKP_SRC/distro/${DISTRO}
 . $LKP_SRC/lib/install.sh
