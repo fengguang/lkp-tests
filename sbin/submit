@@ -11,6 +11,7 @@ require 'optparse'
 require 'yaml'
 
 opt_set_key_value = {}
+opt_cmdline_defaults = {}
 opt_output_dir = nil
 opt_auto_define_files = false
 opt_monitor = false
@@ -57,9 +58,15 @@ end
 
 options.parse!(ARGV)
 
+find_job_yaml = false
 ARGV.delete_if do |arg|
+  find_job_yaml = true if File.file?(arg)
   if arg.index '='
-    opt_set_key_value.merge! YAML.load arg.sub(/=/, ': ')
+    if find_job_yaml
+      opt_set_key_value.merge! YAML.load arg.sub(/=/, ': ')
+    else
+      opt_cmdline_defaults.merge! YAML.load arg.sub(/=/, ': ')
+    end
     true
   else
     false
@@ -75,6 +82,7 @@ job_ids = []
 
 ARGV.each do |jobfile|
   jobs = Job2sh.new
+  jobs.cmdline_defaults = opt_cmdline_defaults
   jobs.overrides = opt_set_key_value
   jobs.load(jobfile, true) || next
   jobs[:expand_params] = true

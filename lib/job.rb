@@ -209,11 +209,13 @@ class Job
   attr_reader :referenced_programs
   attr_accessor :overrides
   attr_accessor :defaults
+  attr_accessor :cmdline_defaults
 
-  def initialize(job = {}, defaults = {}, overrides = {})
+  def initialize(job = {}, defaults = {}, overrides = {}, cmdline_defaults={})
     @job = job
     @defaults = defaults # from auto includes
     @overrides = overrides # from command line
+    @cmdline_defaults = cmdline_defaults # from command line
     @available_programs = {}
   end
 
@@ -451,6 +453,8 @@ class Job
   def merge_defaults(first_time = true)
     revise_hash(@job, @defaults, false)
     @defaults = {}
+
+    revise_hash(@job, @cmdline_defaults, false)
 
     return unless first_time
 
