@@ -1,0 +1,13 @@
+#!/bin/sh
+# SPDX-License-Identifier: MulanPSL-2.0+
+# - tbox_group
+# - nr_vm
+
+multi_qemu()
+{
+	export CCI_SRC=/c/crystal-ci
+	local hostname=$tbox_group--$HOSTNAME
+	$CCI_SRC/providers/multi-qemu "$hostname" "$nr_vm"
+}
+
+multi_qemu
