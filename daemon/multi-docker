@@ -1,0 +1,14 @@
+#!/bin/sh
+# SPDX-License-Identifier: MulanPSL-2.0+
+# - tbox_group
+# - nr_container
+
+multi_docker()
+{
+	export CCI_SRC=/c/crystal-ci
+	export HOME=/root
+	local hostname=$tbox_group--$HOSTNAME
+	$CCI_SRC/providers/multi-docker -n $hostname -c $nr_container
+}
+
+multi_docker
