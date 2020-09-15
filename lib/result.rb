@@ -8,19 +8,13 @@ require "#{LKP_SRC}/lib/run_env"
 require "#{LKP_SRC}/lib/constant"
 
 def tbox_group(hostname)
-  if hostname =~ /.+--\w+-\d+$/
-    # eg:
-    #   hostname: vm-hi1620-2p8g--taishan200-2280-2s64p-256g--a38-0
-    #   return:   vm-hi1620-2p8g--taishan200-2280-2s64p-256g--a38
-    hostname.sub(/-\d+$/, '')
-  elsif hostname =~ /.+-\d+$/
-    # eg:
-    #   hostname: daixiang-HP-ProBook-450-G3-0
-    #   return:   daixiang-HP-ProBook-G3
-    hostname.sub(/-\d+$/, '').sub(/-\d+-/, '-')
-  else
-    hostname
-  end
+  # special case 1: $tbox_group contains -N-
+  #   hostname: daixiang-HP-ProBook-450-G3-0
+  #   return:   daixiang-HP-ProBook-450-G3
+  # special case 2: $vm_tbox_group--$host_testbox-$seqno
+  #   hostname: vm-hi1620-2p8g--taishan200-2280-2s64p-256g-3-0
+  #   return:   vm-hi1620-2p8g--taishan200-2280-2s64p-256g
+  hostname.sub(/(-\d+)+$/, '')
 end
 
 def tbox_group?(hostname)

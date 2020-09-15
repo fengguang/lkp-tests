@@ -10,11 +10,13 @@ require "./constant"
 DEFAULT_COMPILER = "gcc-7".freeze
 
 def tbox_group(hostname)
-  if hostname =~ /.+-\d+$/
-    hostname.sub(/-\d+$/, "").sub(/-\d+-/, "-")
-  else
-    hostname
-  end
+  # special case 1: $tbox_group contains -N-
+  #   hostname: daixiang-HP-ProBook-450-G3-0
+  #   return:   daixiang-HP-ProBook-450-G3
+  # special case 2: $vm_tbox_group--$host_testbox-$seqno
+  #   hostname: vm-hi1620-2p8g--taishan200-2280-2s64p-256g-3-0
+  #   return:   vm-hi1620-2p8g--taishan200-2280-2s64p-256g
+  hostname.sub(/(-\d+)+$/, '')
 end
 
 def tbox_group?(hostname)
