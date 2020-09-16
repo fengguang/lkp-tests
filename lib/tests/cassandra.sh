@@ -2,7 +2,11 @@
 
 setup_java_home()
 {
-	if [ -d /usr/lib/jvm/java-1.8.0-openjdk ]; then
+	if [ -d /usr/lib/jvm/java-1.11.0-openjdk ]; then
+		export JAVA_HOME=/usr/lib/jvm/java-1.11.0-openjdk
+	elif [ -d /usr/lib/jvm/java-11-openjdk-amd64 ]; then
+		export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+	elif [ -d /usr/lib/jvm/java-1.8.0-openjdk ]; then
 		export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
 	elif [ -d /usr/lib/jvm/java-8-openjdk-amd64 ]; then
 		export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
