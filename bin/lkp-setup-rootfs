@@ -230,14 +230,14 @@ install_proxy
 
 while true; do
 	set_tbox_wtmp 'running'
+	. $job_script define_files
+	define_files_auto_pack $define_files
 	if [ "$os_mount" != "initramfs" ]; then
-		. $job_script define_files
-		define_files_auto_pack $define_files
 		wget_install_cgz $initrd_deps
 		wget_install_cgz $initrd_pkg
-		install_rpms
-		install_deb
 	fi
+	install_rpms
+	install_deb
 
 	echo $LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp
 	$LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp $job
