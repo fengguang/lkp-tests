@@ -515,6 +515,7 @@ tbox_use_lkp_grub()
 	[ "${HOSTNAME#*lkp-bdwy-lenovo1}"       != "$HOSTNAME" ] && return 0
 	# lkp-kblr-hp1 has PXE, but has UEFI BIOS Only
 	[ "${HOSTNAME#*lkp-kblr-hp1}"       != "$HOSTNAME" ] && return 0
+	[ "${HOSTNAME#*lkp-icl-sut1}"       != "$HOSTNAME" ] && return 0
 	return 1
 }
 
