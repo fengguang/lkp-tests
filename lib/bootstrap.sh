@@ -5,6 +5,7 @@
 . $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/reboot.sh
 . $LKP_SRC/lib/ucode.sh
+. $LKP_SRC/lib/tbox.sh
 
 # borrowed from linux/tools/testing/selftests/rcutorture/doc/initrd.txt
 # Author: Paul E. McKenney <paulmck@linux.vnet.ibm.com>
@@ -486,69 +487,6 @@ netconsole_init()
 	[ -n "$netconsole_server" ] || return
 	# eth0 is default interface if netconsole_interface is null.
 	modprobe netconsole netconsole=@/$netconsole_interface,$netconsole_port@$netconsole_server/
-}
-
-tbox_use_lkp_ipxe()
-{
-	[ "${HOSTNAME#*lkp-ivb-toshiba1}"       != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-bxtm-lenovo1}"       != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-bytm-lenovo1}"       != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-bdw-nuc1}"       != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-skl-nuc1}"       != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-bdwu-lenovo1}"       != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-kbl-lenovo1}"        != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-skl-d01}"    != "$HOSTNAME" ] && return 0
-	return 1
-}
-
-tbox_use_lkp_grub()
-{
-	[ "${HOSTNAME#*lkp-bxt01}"      != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-glk01}"      != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-kbly01}"     != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-kblr01}"     != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-kbls01}"     != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-cfl-s01}"    != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-cfl-s02}"    != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-kbls02}"     != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-sklu-lenovo1}"       != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-bdwy-lenovo1}"       != "$HOSTNAME" ] && return 0
-	# lkp-kblr-hp1 has PXE, but has UEFI BIOS Only
-	[ "${HOSTNAME#*lkp-kblr-hp1}"       != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-icl-sut1}"       != "$HOSTNAME" ] && return 0
-	return 1
-}
-
-tbox_cant_kexec()
-{
-	is_virt && return 0
-
-	tbox_use_lkp_ipxe && return 0
-	tbox_use_lkp_grub && return 0
-
-	# following tbox are buggy while using kexec to boot
-	[ "${HOSTNAME#*lkp-kboot04}"         != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-glk02}"      != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-cfl-s02}"      != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-kbls02}"      != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-kbly01}"      != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-kblr01}"      != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-whlu01}"      != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-cfl-h01}"      != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-ivb-d02}"    != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-ivb-d04}"    != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-hsw-d02}"    != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*sof-minnow-1}" != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*sof-minnow-2}" != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*lkp-skly01}"     != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*sof-gp-1}" != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*sof-gp-2}" != "$HOSTNAME" ] && return 0
-	[ "${HOSTNAME#*sof-up-1}" != "$HOSTNAME" ] && return 0
-
-	has_cmd kexec || return 0
-	has_cmd cpio || return 0
-
-	return 1
 }
 
 download_job()
