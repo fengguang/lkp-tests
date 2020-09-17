@@ -4,6 +4,7 @@
 # - os_version
 # - pkgbuild_repo
 # - upstream_repo
+# - upstream_url
 # - upstream_commit
 
 ## makepkg is a script that automates the building of packages; it can download and validate source files,
@@ -59,11 +60,18 @@ request_pkg()
 
 build_source_pkg()
 {
-  local dirname=""
+  local repo_dir=""
   source PKGBUILD
   [ -n "$upstream_repo" ] && {
-	[[ "$source" = *::* ]] && dirname="${source%%::*}::"
-	upstream_source="source=(\"${dirname}git://${LKP_SERVER}/${upstream_repo}#commit=${upstream_commit}\")"
+
+	if [[ "$source" = *::* ]]; then
+		repo_dir="${source%%::*}::"
+	else
+		repo_dir="$(basename ${upstream_url})"
+		repo_dir="${repo_dir%.git*}::"
+	fi
+
+	upstream_source="source=(\"${repo_dir}git://${LKP_SERVER}/${upstream_repo}#commit=${upstream_commit}\")"
 	sed -i "s|^source=.*|${upstream_source}|g" PKGBUILD
   }
 
