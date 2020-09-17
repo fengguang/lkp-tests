@@ -32,15 +32,25 @@ mount_dest()
   }
 }
 
-request_pkgbuild()
+get_pkgfile()
+{
+  curl -sS -H 'Content-Type: Application/json' -XPOST "$LKP_SERVER"':8100/git_command' \
+   -d '{"git_repo": "'$1'", "git_command": ["git-show", "HEAD:'$2'"]}' -o "${2##*/}"
+}
+
+request_pkg()
 {
   local pkgrepo="${pkgbuild_repo%%//*}"
-  local pkgpath=""
-  [[ "$pkgrepo" =~ ^archlinux/(packages|community) ]] && pkgpath="${pkgbuild_repo#*//}/"
+  local pkgpath="./"
+  [[ "$pkgrepo" =~ ^archlinux/(packages|community) ]] && pkgpath="${pkgpath}${pkgbuild_repo#*//}/"
 
-  curl -sS -H 'Content-Type: Application/json' -XPOST $LKP_SERVER':8100/git_command' \
-   -d '{"git_repo": "'${pkgrepo}'", "git_command": ["git-show", "HEAD:'${pkgpath}'PKGBUILD"]}' \
-   -o PKGBUILD
+  filelist=$(curl -sS -H 'Content-Type: Application/json' -XPOST "$LKP_SERVER"':8100/git_command' \
+   -d '{"git_repo": "'${pkgrepo}'", "git_command": ["git-ls-files", "'${pkgpath}'"]}')
+
+  for pkgfile in ${filelist[*]}
+  do
+    get_pkgfile "${pkgrepo}" "$pkgfile"
+  done
 
   [ -f PKGBUILD ] || die "PKGBUILD not exist"
   [ -s PKGBUILD ] || die "PKGBUILD is empty"
@@ -64,5 +74,5 @@ build_source_pkg()
 
 check_vars
 mount_dest
-request_pkgbuild
+request_pkg
 build_source_pkg
