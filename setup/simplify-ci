@@ -3,17 +3,7 @@
 
 git_ci()
 {
-	git clone https://gitee.com/wu_fengguang/crystal-ci.git /c/crystal-ci
-}
-
-# this function will be replaced by git_ci()
-# only for debug
-wget_ci()
-{
-	mkdir -p /c
-	cd /c
-	wget http://$initrd_http_host:$initrd_http_port/initrd/pkg/$os/$os_arch/$os_version/deploy-kvm.tar.gz
-	tar xf deploy-kvm.tar.gz
+	git clone git://$GIT_SERVER/gitee.com/wu_fengguang/crystal-ci.git /c/crystal-ci
 }
 
 dev_env()
@@ -67,7 +57,7 @@ run_service()
 
 main()
 {
-	wget_ci
+	git_ci
 	install_env
 	run_service
 }
