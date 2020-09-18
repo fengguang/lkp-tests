@@ -62,7 +62,7 @@ build_source_pkg()
 {
   local repo_dir=""
   source PKGBUILD
-  [ -n "$upstream_repo" ] && {
+  [ -n "$upstream_repo" ] && [ -n "$upstream_url" ] && {
 
 	if [[ "$source" = *::* ]]; then
 		repo_dir="${source%%::*}::"
