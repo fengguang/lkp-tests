@@ -80,7 +80,20 @@ end
 
 job_ids = []
 
+def find_jobfile(jobfile)
+  return jobfile if File.exist?(jobfile)
+
+  search_paths = [Dir.pwd, File.join(LKP_SRC, 'jobs')]
+  search_paths.each do |search_path|
+    search_jobfile = File.join(search_path, jobfile)
+    return search_jobfile if File.exist?(search_jobfile)
+  end
+  puts("Cannot find job #{jobfile} in directories:"); puts search_paths
+  exit 1
+end
+
 ARGV.each do |jobfile|
+  jobfile = find_jobfile(jobfile)
   jobs = Job2sh.new
   jobs.cmdline_defaults = opt_cmdline_defaults
   jobs.overrides = opt_set_key_value
