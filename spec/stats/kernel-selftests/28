@@ -1,28 +1,975 @@
-make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-2d16cf4817bc6944a2adb5bf4db607c8258e87da/tools/testing/selftests/kmod'
-selftests: kmod: kmod.sh
-Fri May 29 10:44:41 CST 2020
-Running test: kmod_test_0001 - run #0
-kmod_test_0001_driver: OK! - loading kmod test
-kmod_test_0001_driver: OK! - Return value: 256 (MODULE_NOT_FOUND), expected MODULE_NOT_FOUND
-kmod_test_0001_fs: OK! - loading kmod test
-kmod_test_0001_fs: OK! - Return value: -22 (-EINVAL), expected -EINVAL
-Fri May 29 10:44:41 CST 2020
-Running test: kmod_test_0001 - run #1
-kmod_test_0001_driver: OK! - loading kmod test
-kmod_test_0001_driver: OK! - Return value: 256 (MODULE_NOT_FOUND), expected MODULE_NOT_FOUND
-kmod_test_0001_fs: OK! - loading kmod test
-kmod_test_0001_fs: OK! - Return value: -22 (-EINVAL), expected -EINVAL
-Fri May 29 10:44:42 CST 2020
-Running test: kmod_test_0003 - run #0
-kmod_test_0003: OK! - loading kmod test
-kmod_test_0003: OK! - Return value: 0 (SUCCESS), expected SUCCESS
-Fri May 29 10:44:43 CST 2020
-Running test: kmod_test_0004 - run #0
-kmod_test_0004: OK! - loading kmod test
-kmod_test_0004: OK! - Return value: 0 (SUCCESS), expected SUCCESS
-Running test: kmod_test_0009 - run #49
-kmod_test_0009: OK! - loading kmod test
-kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
-Test completed
-ok 1..1 selftests: kmod: kmod.sh [PASS]
-make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-2d16cf4817bc6944a2adb5bf4db607c8258e87da/tools/testing/selftests/kmod'
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-856deb866d16e29bd65952e0289066f6078af773/tools/testing/selftests/kmod'
+TAP version 13
+1..1
+# selftests: kmod: kmod.sh
+# Tue Sep 15 17:57:51 UTC 2020
+# Running test: kmod_test_0001 - run #0
+# kmod_test_0001_driver: OK! - loading kmod test
+# kmod_test_0001_driver: OK! - Return value: 256 (MODULE_NOT_FOUND), expected MODULE_NOT_FOUND
+# kmod_test_0001_fs: SKIP! - loading kmod test
+# kmod_test_0001_fs: OK! - Return value: -22 (-EINVAL), expected -EINVAL
+# Tue Sep 15 17:57:51 UTC 2020
+# Running test: kmod_test_0001 - run #1
+# kmod_test_0001_driver: OK! - loading kmod test
+# kmod_test_0001_driver: OK! - Return value: 256 (MODULE_NOT_FOUND), expected MODULE_NOT_FOUND
+# kmod_test_0001_fs: FAIL! - loading kmod test
+# kmod_test_0001_fs: OK! - Return value: -22 (-EINVAL), expected -EINVAL
+# Tue Sep 15 17:57:51 UTC 2020
+# Running test: kmod_test_0001 - run #2
+# kmod_test_0001_driver: OK! - loading kmod test
+# kmod_test_0001_driver: OK! - Return value: 256 (MODULE_NOT_FOUND), expected MODULE_NOT_FOUND
+# kmod_test_0001_fs: OK! - loading kmod test
+# kmod_test_0001_fs: SKIP! - Return value: -22 (-EINVAL), expected -EINVAL
+# Tue Sep 15 17:57:51 UTC 2020
+# Running test: kmod_test_0002 - run #0
+# kmod_test_0002_driver: OK! - loading kmod test
+# kmod_test_0002_driver: OK! - Return value: 256 (MODULE_NOT_FOUND), expected MODULE_NOT_FOUND
+# kmod_test_0002_fs: OK! - loading kmod test
+# kmod_test_0002_fs: OK! - Return value: -22 (-EINVAL), expected -EINVAL
+# Tue Sep 15 17:57:52 UTC 2020
+# Running test: kmod_test_0002 - run #1
+# kmod_test_0002_driver: OK! - loading kmod test
+# kmod_test_0002_driver: OK! - Return value: 256 (MODULE_NOT_FOUND), expected MODULE_NOT_FOUND
+# kmod_test_0002_fs: OK! - loading kmod test
+# kmod_test_0002_fs: OK! - Return value: -22 (-EINVAL), expected -EINVAL
+# Tue Sep 15 17:57:52 UTC 2020
+# Running test: kmod_test_0002 - run #2
+# kmod_test_0002_driver: OK! - loading kmod test
+# kmod_test_0002_driver: OK! - Return value: 256 (MODULE_NOT_FOUND), expected MODULE_NOT_FOUND
+# kmod_test_0002_fs: OK! - loading kmod test
+# kmod_test_0002_fs: OK! - Return value: -22 (-EINVAL), expected -EINVAL
+# Tue Sep 15 17:57:52 UTC 2020
+# Running test: kmod_test_0003 - run #0
+# kmod_test_0003: SKIP! - loading kmod test
+# kmod_test_0003: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:57:53 UTC 2020
+# Running test: kmod_test_0004 - run #0
+# kmod_test_0004: OK! - loading kmod test
+# kmod_test_0004: SKIP! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:57:53 UTC 2020
+# Running test: kmod_test_0005 - run #0
+# kmod_test_0005: OK! - loading kmod test
+# kmod_test_0005: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:57:54 UTC 2020
+# Running test: kmod_test_0005 - run #1
+# kmod_test_0005: OK! - loading kmod test
+# kmod_test_0005: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:57:54 UTC 2020
+# Running test: kmod_test_0005 - run #2
+# kmod_test_0005: OK! - loading kmod test
+# kmod_test_0005: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:57:54 UTC 2020
+# Running test: kmod_test_0005 - run #3
+# kmod_test_0005: OK! - loading kmod test
+# kmod_test_0005: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:57:55 UTC 2020
+# Running test: kmod_test_0005 - run #4
+# kmod_test_0005: OK! - loading kmod test
+# kmod_test_0005: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:57:55 UTC 2020
+# Running test: kmod_test_0005 - run #5
+# kmod_test_0005: OK! - loading kmod test
+# kmod_test_0005: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:57:56 UTC 2020
+# Running test: kmod_test_0005 - run #6
+# kmod_test_0005: OK! - loading kmod test
+# kmod_test_0005: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:57:56 UTC 2020
+# Running test: kmod_test_0005 - run #7
+# kmod_test_0005: OK! - loading kmod test
+# kmod_test_0005: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:57:57 UTC 2020
+# Running test: kmod_test_0005 - run #8
+# kmod_test_0005: OK! - loading kmod test
+# kmod_test_0005: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:57:57 UTC 2020
+# Running test: kmod_test_0005 - run #9
+# kmod_test_0005: OK! - loading kmod test
+# kmod_test_0005: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:57:57 UTC 2020
+# Running test: kmod_test_0006 - run #0
+# kmod_test_0006: OK! - loading kmod test
+# kmod_test_0006: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:57:59 UTC 2020
+# Running test: kmod_test_0006 - run #1
+# kmod_test_0006: OK! - loading kmod test
+# kmod_test_0006: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:00 UTC 2020
+# Running test: kmod_test_0006 - run #2
+# kmod_test_0006: OK! - loading kmod test
+# kmod_test_0006: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:02 UTC 2020
+# Running test: kmod_test_0006 - run #3
+# kmod_test_0006: OK! - loading kmod test
+# kmod_test_0006: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:04 UTC 2020
+# Running test: kmod_test_0006 - run #4
+# kmod_test_0006: OK! - loading kmod test
+# kmod_test_0006: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:05 UTC 2020
+# Running test: kmod_test_0006 - run #5
+# kmod_test_0006: OK! - loading kmod test
+# kmod_test_0006: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:06 UTC 2020
+# Running test: kmod_test_0006 - run #6
+# kmod_test_0006: OK! - loading kmod test
+# kmod_test_0006: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:07 UTC 2020
+# Running test: kmod_test_0006 - run #7
+# kmod_test_0006: OK! - loading kmod test
+# kmod_test_0006: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:08 UTC 2020
+# Running test: kmod_test_0006 - run #8
+# kmod_test_0006: OK! - loading kmod test
+# kmod_test_0006: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:10 UTC 2020
+# Running test: kmod_test_0006 - run #9
+# kmod_test_0006: OK! - loading kmod test
+# kmod_test_0006: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:11 UTC 2020
+# Running test: kmod_test_0007 - run #0
+# kmod_test_0005: OK! - loading kmod test
+# kmod_test_0005: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# kmod_test_0006: OK! - loading kmod test
+# kmod_test_0006: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:13 UTC 2020
+# Running test: kmod_test_0007 - run #1
+# kmod_test_0005: OK! - loading kmod test
+# kmod_test_0005: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# kmod_test_0006: OK! - loading kmod test
+# kmod_test_0006: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:14 UTC 2020
+# Running test: kmod_test_0007 - run #2
+# kmod_test_0005: OK! - loading kmod test
+# kmod_test_0005: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# kmod_test_0006: OK! - loading kmod test
+# kmod_test_0006: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:16 UTC 2020
+# Running test: kmod_test_0007 - run #3
+# kmod_test_0005: OK! - loading kmod test
+# kmod_test_0005: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# kmod_test_0006: OK! - loading kmod test
+# kmod_test_0006: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:18 UTC 2020
+# Running test: kmod_test_0007 - run #4
+# kmod_test_0005: OK! - loading kmod test
+# kmod_test_0005: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# kmod_test_0006: OK! - loading kmod test
+# kmod_test_0006: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:20 UTC 2020
+# Running test: kmod_test_0008 - run #0
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:20 UTC 2020
+# Running test: kmod_test_0008 - run #1
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:20 UTC 2020
+# Running test: kmod_test_0008 - run #2
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:20 UTC 2020
+# Running test: kmod_test_0008 - run #3
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:21 UTC 2020
+# Running test: kmod_test_0008 - run #4
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:21 UTC 2020
+# Running test: kmod_test_0008 - run #5
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:21 UTC 2020
+# Running test: kmod_test_0008 - run #6
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:21 UTC 2020
+# Running test: kmod_test_0008 - run #7
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:21 UTC 2020
+# Running test: kmod_test_0008 - run #8
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:22 UTC 2020
+# Running test: kmod_test_0008 - run #9
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:22 UTC 2020
+# Running test: kmod_test_0008 - run #10
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:22 UTC 2020
+# Running test: kmod_test_0008 - run #11
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:22 UTC 2020
+# Running test: kmod_test_0008 - run #12
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:22 UTC 2020
+# Running test: kmod_test_0008 - run #13
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:22 UTC 2020
+# Running test: kmod_test_0008 - run #14
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:23 UTC 2020
+# Running test: kmod_test_0008 - run #15
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:23 UTC 2020
+# Running test: kmod_test_0008 - run #16
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:23 UTC 2020
+# Running test: kmod_test_0008 - run #17
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:23 UTC 2020
+# Running test: kmod_test_0008 - run #18
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:23 UTC 2020
+# Running test: kmod_test_0008 - run #19
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:24 UTC 2020
+# Running test: kmod_test_0008 - run #20
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:24 UTC 2020
+# Running test: kmod_test_0008 - run #21
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:24 UTC 2020
+# Running test: kmod_test_0008 - run #22
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:24 UTC 2020
+# Running test: kmod_test_0008 - run #23
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:24 UTC 2020
+# Running test: kmod_test_0008 - run #24
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:25 UTC 2020
+# Running test: kmod_test_0008 - run #25
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:25 UTC 2020
+# Running test: kmod_test_0008 - run #26
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:25 UTC 2020
+# Running test: kmod_test_0008 - run #27
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:25 UTC 2020
+# Running test: kmod_test_0008 - run #28
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:25 UTC 2020
+# Running test: kmod_test_0008 - run #29
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:26 UTC 2020
+# Running test: kmod_test_0008 - run #30
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:26 UTC 2020
+# Running test: kmod_test_0008 - run #31
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:26 UTC 2020
+# Running test: kmod_test_0008 - run #32
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:26 UTC 2020
+# Running test: kmod_test_0008 - run #33
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:26 UTC 2020
+# Running test: kmod_test_0008 - run #34
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:27 UTC 2020
+# Running test: kmod_test_0008 - run #35
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:27 UTC 2020
+# Running test: kmod_test_0008 - run #36
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:27 UTC 2020
+# Running test: kmod_test_0008 - run #37
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:27 UTC 2020
+# Running test: kmod_test_0008 - run #38
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:27 UTC 2020
+# Running test: kmod_test_0008 - run #39
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:27 UTC 2020
+# Running test: kmod_test_0008 - run #40
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:28 UTC 2020
+# Running test: kmod_test_0008 - run #41
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:28 UTC 2020
+# Running test: kmod_test_0008 - run #42
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:28 UTC 2020
+# Running test: kmod_test_0008 - run #43
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:28 UTC 2020
+# Running test: kmod_test_0008 - run #44
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:28 UTC 2020
+# Running test: kmod_test_0008 - run #45
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:29 UTC 2020
+# Running test: kmod_test_0008 - run #46
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:29 UTC 2020
+# Running test: kmod_test_0008 - run #47
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:29 UTC 2020
+# Running test: kmod_test_0008 - run #48
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:29 UTC 2020
+# Running test: kmod_test_0008 - run #49
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:29 UTC 2020
+# Running test: kmod_test_0008 - run #50
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:30 UTC 2020
+# Running test: kmod_test_0008 - run #51
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:30 UTC 2020
+# Running test: kmod_test_0008 - run #52
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:30 UTC 2020
+# Running test: kmod_test_0008 - run #53
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:30 UTC 2020
+# Running test: kmod_test_0008 - run #54
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:30 UTC 2020
+# Running test: kmod_test_0008 - run #55
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:30 UTC 2020
+# Running test: kmod_test_0008 - run #56
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:31 UTC 2020
+# Running test: kmod_test_0008 - run #57
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:31 UTC 2020
+# Running test: kmod_test_0008 - run #58
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:31 UTC 2020
+# Running test: kmod_test_0008 - run #59
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:31 UTC 2020
+# Running test: kmod_test_0008 - run #60
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:31 UTC 2020
+# Running test: kmod_test_0008 - run #61
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:32 UTC 2020
+# Running test: kmod_test_0008 - run #62
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:32 UTC 2020
+# Running test: kmod_test_0008 - run #63
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:32 UTC 2020
+# Running test: kmod_test_0008 - run #64
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:32 UTC 2020
+# Running test: kmod_test_0008 - run #65
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:32 UTC 2020
+# Running test: kmod_test_0008 - run #66
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:33 UTC 2020
+# Running test: kmod_test_0008 - run #67
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:33 UTC 2020
+# Running test: kmod_test_0008 - run #68
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:33 UTC 2020
+# Running test: kmod_test_0008 - run #69
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:33 UTC 2020
+# Running test: kmod_test_0008 - run #70
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:33 UTC 2020
+# Running test: kmod_test_0008 - run #71
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:33 UTC 2020
+# Running test: kmod_test_0008 - run #72
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:34 UTC 2020
+# Running test: kmod_test_0008 - run #73
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:34 UTC 2020
+# Running test: kmod_test_0008 - run #74
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:34 UTC 2020
+# Running test: kmod_test_0008 - run #75
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:34 UTC 2020
+# Running test: kmod_test_0008 - run #76
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:34 UTC 2020
+# Running test: kmod_test_0008 - run #77
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:35 UTC 2020
+# Running test: kmod_test_0008 - run #78
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:35 UTC 2020
+# Running test: kmod_test_0008 - run #79
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:35 UTC 2020
+# Running test: kmod_test_0008 - run #80
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:35 UTC 2020
+# Running test: kmod_test_0008 - run #81
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:35 UTC 2020
+# Running test: kmod_test_0008 - run #82
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:36 UTC 2020
+# Running test: kmod_test_0008 - run #83
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:36 UTC 2020
+# Running test: kmod_test_0008 - run #84
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:36 UTC 2020
+# Running test: kmod_test_0008 - run #85
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:36 UTC 2020
+# Running test: kmod_test_0008 - run #86
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:36 UTC 2020
+# Running test: kmod_test_0008 - run #87
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:36 UTC 2020
+# Running test: kmod_test_0008 - run #88
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:37 UTC 2020
+# Running test: kmod_test_0008 - run #89
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:37 UTC 2020
+# Running test: kmod_test_0008 - run #90
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:37 UTC 2020
+# Running test: kmod_test_0008 - run #91
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:37 UTC 2020
+# Running test: kmod_test_0008 - run #92
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:37 UTC 2020
+# Running test: kmod_test_0008 - run #93
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:38 UTC 2020
+# Running test: kmod_test_0008 - run #94
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:38 UTC 2020
+# Running test: kmod_test_0008 - run #95
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:38 UTC 2020
+# Running test: kmod_test_0008 - run #96
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:38 UTC 2020
+# Running test: kmod_test_0008 - run #97
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:38 UTC 2020
+# Running test: kmod_test_0008 - run #98
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:39 UTC 2020
+# Running test: kmod_test_0008 - run #99
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:39 UTC 2020
+# Running test: kmod_test_0008 - run #100
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:39 UTC 2020
+# Running test: kmod_test_0008 - run #101
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:39 UTC 2020
+# Running test: kmod_test_0008 - run #102
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:39 UTC 2020
+# Running test: kmod_test_0008 - run #103
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:40 UTC 2020
+# Running test: kmod_test_0008 - run #104
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:40 UTC 2020
+# Running test: kmod_test_0008 - run #105
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:40 UTC 2020
+# Running test: kmod_test_0008 - run #106
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:40 UTC 2020
+# Running test: kmod_test_0008 - run #107
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:40 UTC 2020
+# Running test: kmod_test_0008 - run #108
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:41 UTC 2020
+# Running test: kmod_test_0008 - run #109
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:41 UTC 2020
+# Running test: kmod_test_0008 - run #110
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:41 UTC 2020
+# Running test: kmod_test_0008 - run #111
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:41 UTC 2020
+# Running test: kmod_test_0008 - run #112
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:41 UTC 2020
+# Running test: kmod_test_0008 - run #113
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:41 UTC 2020
+# Running test: kmod_test_0008 - run #114
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:42 UTC 2020
+# Running test: kmod_test_0008 - run #115
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:42 UTC 2020
+# Running test: kmod_test_0008 - run #116
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:42 UTC 2020
+# Running test: kmod_test_0008 - run #117
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:42 UTC 2020
+# Running test: kmod_test_0008 - run #118
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:42 UTC 2020
+# Running test: kmod_test_0008 - run #119
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:43 UTC 2020
+# Running test: kmod_test_0008 - run #120
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:43 UTC 2020
+# Running test: kmod_test_0008 - run #121
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:43 UTC 2020
+# Running test: kmod_test_0008 - run #122
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:43 UTC 2020
+# Running test: kmod_test_0008 - run #123
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:43 UTC 2020
+# Running test: kmod_test_0008 - run #124
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:44 UTC 2020
+# Running test: kmod_test_0008 - run #125
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:44 UTC 2020
+# Running test: kmod_test_0008 - run #126
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:44 UTC 2020
+# Running test: kmod_test_0008 - run #127
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:44 UTC 2020
+# Running test: kmod_test_0008 - run #128
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:44 UTC 2020
+# Running test: kmod_test_0008 - run #129
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:45 UTC 2020
+# Running test: kmod_test_0008 - run #130
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:45 UTC 2020
+# Running test: kmod_test_0008 - run #131
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:45 UTC 2020
+# Running test: kmod_test_0008 - run #132
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:45 UTC 2020
+# Running test: kmod_test_0008 - run #133
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:45 UTC 2020
+# Running test: kmod_test_0008 - run #134
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:45 UTC 2020
+# Running test: kmod_test_0008 - run #135
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:46 UTC 2020
+# Running test: kmod_test_0008 - run #136
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:46 UTC 2020
+# Running test: kmod_test_0008 - run #137
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:46 UTC 2020
+# Running test: kmod_test_0008 - run #138
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:46 UTC 2020
+# Running test: kmod_test_0008 - run #139
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:46 UTC 2020
+# Running test: kmod_test_0008 - run #140
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:47 UTC 2020
+# Running test: kmod_test_0008 - run #141
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:47 UTC 2020
+# Running test: kmod_test_0008 - run #142
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:47 UTC 2020
+# Running test: kmod_test_0008 - run #143
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:47 UTC 2020
+# Running test: kmod_test_0008 - run #144
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:47 UTC 2020
+# Running test: kmod_test_0008 - run #145
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:48 UTC 2020
+# Running test: kmod_test_0008 - run #146
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:48 UTC 2020
+# Running test: kmod_test_0008 - run #147
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:48 UTC 2020
+# Running test: kmod_test_0008 - run #148
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:48 UTC 2020
+# Running test: kmod_test_0008 - run #149
+# kmod_test_0008: OK! - loading kmod test
+# kmod_test_0008: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:48 UTC 2020
+# Running test: kmod_test_0009 - run #0
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:49 UTC 2020
+# Running test: kmod_test_0009 - run #1
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:50 UTC 2020
+# Running test: kmod_test_0009 - run #2
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:51 UTC 2020
+# Running test: kmod_test_0009 - run #3
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:51 UTC 2020
+# Running test: kmod_test_0009 - run #4
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:52 UTC 2020
+# Running test: kmod_test_0009 - run #5
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:53 UTC 2020
+# Running test: kmod_test_0009 - run #6
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:54 UTC 2020
+# Running test: kmod_test_0009 - run #7
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:55 UTC 2020
+# Running test: kmod_test_0009 - run #8
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:55 UTC 2020
+# Running test: kmod_test_0009 - run #9
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:56 UTC 2020
+# Running test: kmod_test_0009 - run #10
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:57 UTC 2020
+# Running test: kmod_test_0009 - run #11
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:58 UTC 2020
+# Running test: kmod_test_0009 - run #12
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:58 UTC 2020
+# Running test: kmod_test_0009 - run #13
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:58:59 UTC 2020
+# Running test: kmod_test_0009 - run #14
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:00 UTC 2020
+# Running test: kmod_test_0009 - run #15
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:01 UTC 2020
+# Running test: kmod_test_0009 - run #16
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:01 UTC 2020
+# Running test: kmod_test_0009 - run #17
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:02 UTC 2020
+# Running test: kmod_test_0009 - run #18
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:03 UTC 2020
+# Running test: kmod_test_0009 - run #19
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:04 UTC 2020
+# Running test: kmod_test_0009 - run #20
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:05 UTC 2020
+# Running test: kmod_test_0009 - run #21
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:05 UTC 2020
+# Running test: kmod_test_0009 - run #22
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:06 UTC 2020
+# Running test: kmod_test_0009 - run #23
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:07 UTC 2020
+# Running test: kmod_test_0009 - run #24
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:08 UTC 2020
+# Running test: kmod_test_0009 - run #25
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:09 UTC 2020
+# Running test: kmod_test_0009 - run #26
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:10 UTC 2020
+# Running test: kmod_test_0009 - run #27
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:10 UTC 2020
+# Running test: kmod_test_0009 - run #28
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:11 UTC 2020
+# Running test: kmod_test_0009 - run #29
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:12 UTC 2020
+# Running test: kmod_test_0009 - run #30
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:13 UTC 2020
+# Running test: kmod_test_0009 - run #31
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:14 UTC 2020
+# Running test: kmod_test_0009 - run #32
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:15 UTC 2020
+# Running test: kmod_test_0009 - run #33
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:16 UTC 2020
+# Running test: kmod_test_0009 - run #34
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:17 UTC 2020
+# Running test: kmod_test_0009 - run #35
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:18 UTC 2020
+# Running test: kmod_test_0009 - run #36
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:18 UTC 2020
+# Running test: kmod_test_0009 - run #37
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:19 UTC 2020
+# Running test: kmod_test_0009 - run #38
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:20 UTC 2020
+# Running test: kmod_test_0009 - run #39
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:21 UTC 2020
+# Running test: kmod_test_0009 - run #40
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:22 UTC 2020
+# Running test: kmod_test_0009 - run #41
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:23 UTC 2020
+# Running test: kmod_test_0009 - run #42
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:24 UTC 2020
+# Running test: kmod_test_0009 - run #43
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:25 UTC 2020
+# Running test: kmod_test_0009 - run #44
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:26 UTC 2020
+# Running test: kmod_test_0009 - run #45
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:27 UTC 2020
+# Running test: kmod_test_0009 - run #46
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:28 UTC 2020
+# Running test: kmod_test_0009 - run #47
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:29 UTC 2020
+# Running test: kmod_test_0009 - run #48
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:30 UTC 2020
+# Running test: kmod_test_0009 - run #49
+# kmod_test_0009: OK! - loading kmod test
+# kmod_test_0009: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+# Tue Sep 15 17:59:31 UTC 2020
+# Running test: kmod_test_0010 - run #0
+# kmod_test_0010: SKIP! - loading kmod test
+# kmod_test_0010: SKIP! - Return value: -2 (-ENOENT), expected -ENOENT
+# Tue Sep 15 17:59:31 UTC 2020
+# Running test: kmod_test_0011 - run #0
+# kmod_test_0011: SKIP! - loading kmod test
+# kmod_test_0011: FAIL! - Return value: -2 (-ENOENT), expected -ENOENT
+# Tue Sep 15 17:59:31 UTC 2020
+# Running test: kmod_test_0012 - run #0
+# kmod_check_visibility: SKIP!
+# Tue Sep 15 17:59:31 UTC 2020
+# Running test: kmod_test_0013 - run #0
+# kmod_check_visibility: FAIL!
+# Test completed
+ok 1 selftests: kmod: kmod.sh
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-856deb866d16e29bd65952e0289066f6078af773/tools/testing/selftests/kmod'
