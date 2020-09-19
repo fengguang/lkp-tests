@@ -394,7 +394,6 @@ class Job
       expand_params
       @job = deepcopy(@jobx)
       @job.delete('___')
-      @job.delete(:expand_params)
     else
       expand_each_in(job, @dims_to_expand) do |h, k, v|
         h.delete(k) if v.is_a?(Array)
@@ -666,6 +665,7 @@ class Job
     job = deepcopy self
     job.load_defaults false
     job.delete :no_defaults
+    job.delete :expand_params
     yield job
   end
 
