@@ -106,9 +106,6 @@ ARGV.each do |jobfile|
     raise 'Please configure SCHED_HOST' unless job['SCHED_HOST']
     raise 'Please configure SCHED_PORT' unless job['SCHED_PORT']
 
-    job['LKP_CGI_PORT'] = job['SCHED_PORT']
-    job['LKP_SERVER'] = job['SCHED_HOST']
-
     job.add_pp
     job.add_define_files if opt_auto_define_files
 
