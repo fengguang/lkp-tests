@@ -53,7 +53,7 @@ setup_result_service()
 	[ -n "$NO_NETWORK" ] && return 1
 	[ -n "$RESULT_SERVER" ] || RESULT_SERVER=$LKP_SERVER
 
-	is_docker || {
+	is_docker || [ -n "$access_key" ] || {
 		if [ "$os_mount" = 'nfs' ] || [ -z "$os_mount" ]; then
 			supports_netfs 'nfs'    && result_service=$RESULT_SERVER:/result   && return
 		elif [ "$os_mount" = 'cifs' ] || [ -z "$os_mount" ]; then
