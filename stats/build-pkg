@@ -38,7 +38,7 @@ while (line = STDIN.gets)
     seqno = ''
   end
   next unless in_stderr
-  next unless line.include?('error') || line.include?('warning')
+  next unless line.downcase =~ /error|warning/
 
   error_ids << common_error_id(line)
 end
