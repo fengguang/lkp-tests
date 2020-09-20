@@ -1,4 +1,7 @@
 #!/bin/bash
+
+# SPDX-License-Identifier: MulanPSL-2.0+
+
 set -e
 
 umask 0002
@@ -216,7 +219,7 @@ run_iso2qcow2()
 }
 
 ############ qcow2rootfs ############
-download_crystal_ci()
+download_compass_ci()
 {
 	[ -d "${CCI_SRC}" ] && rm -rf "${CCI_SRC}"
 	git clone "$CRYSTAL_CI_GIT_URL" "${CCI_SRC}"
@@ -233,7 +236,7 @@ config_rootfs_dir()
 config_qcow2rootfs()
 {
 	log_info "starting config qcow2rootfs env ..."
-	download_crystal_ci
+	download_compass_ci
 
 	install_pkgs "docker"
 	systemctl start docker
