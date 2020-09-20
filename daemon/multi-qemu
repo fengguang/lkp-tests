@@ -5,7 +5,7 @@
 
 multi_qemu()
 {
-	export CCI_SRC=/c/crystal-ci
+	export CCI_SRC=/c/compass-ci
 	local hostname=$tbox_group--$HOSTNAME
 	$CCI_SRC/providers/multi-qemu "$hostname" "$nr_vm"
 }

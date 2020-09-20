@@ -3,7 +3,7 @@
 
 git_ci()
 {
-	git clone git://$GIT_SERVER/gitee.com/wu_fengguang/crystal-ci.git /c/crystal-ci
+	git clone git://$GIT_SERVER/gitee.com/wu_fengguang/compass-ci.git /c/compass-ci
 }
 
 dev_env()
@@ -15,7 +15,7 @@ dev_env()
 
 install_env()
 {
-	cd /c/crystal-ci/sparrow || return
+	cd /c/compass-ci/sparrow || return
 	0-package/install
 	1-storage/tiny
 	5-build/ipxe &

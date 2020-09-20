@@ -15,7 +15,7 @@ compose_email()
 {
 	deadline=$(date -d "+$runtime seconds" +"%Y-%m-%d %H:%M:%S")
 	data="To: $email
-Subject: [NOTIFY crystal-ci] $testbox ready to ssh
+Subject: [NOTIFY compass-ci] $testbox ready to ssh
 
 Dear $email:
     Thanks for your participation in Kunpeng and software ecosystem!
@@ -35,7 +35,7 @@ Dear $email:
         $os $os_version $os_arch
 
 Regards
-crystal-ci
+compass-ci
 "
 }
 

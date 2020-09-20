@@ -27,8 +27,8 @@ class Monitor
   end
 
   def load_default
-    Dir.glob(['/etc/crystal-ci/monitor/*.yaml',
-              "#{ENV['HOME']}/.config/crystal-ci/monitor/*.yaml"]).each do |file|
+    Dir.glob(['/etc/compass-ci/monitor/*.yaml',
+              "#{ENV['HOME']}/.config/compass-ci/monitor/*.yaml"]).each do |file|
       next unless File.exist? file
       next if File.zero? file
 

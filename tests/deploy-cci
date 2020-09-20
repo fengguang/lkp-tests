@@ -13,12 +13,12 @@ export gitcache_host=$GITCACHE_HOST
 export gitcache_port=$GITCACHE_PORT
 
 cd /c || exit
-git clone https://gitee.com/wu_fengguang/crystal-ci.git
+git clone https://gitee.com/wu_fengguang/compass-ci.git
 
-# Need mount tmpfs to fix crystal-ci/container/os-nfs/start error
+# Need mount tmpfs to fix compass-ci/container/os-nfs/start error
 # "exportfs: /exports/result does not support NFS export"
 mount -t tmpfs none /srv
 
 # test the script for one-click deployment
-cd /c/crystal-ci/sparrow || exit
+cd /c/compass-ci/sparrow || exit
 ./install-tiny

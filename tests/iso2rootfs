@@ -12,7 +12,7 @@ ALLOW_OS=(
 WORKSPACE="/usr/local/iso2rootfs"
 ENV_DIR="${WORKSPACE}/env"
 I2Q_SRC="${WORKSPACE}/iso2qcow2"
-CCI_SRC="${WORKSPACE}/crystal-ci"
+CCI_SRC="${WORKSPACE}/compass-ci"
 
 log_info()
 {
