@@ -17,14 +17,26 @@ read_env_vars()
 	return 0
 }
 
+wait_post_test_timeout()
+{
+	$LKP_SRC/bin/event/wait post-test --timeout $1
+	ret=$?
+
+	# only wakeup activate-monitor when event catched or timeout
+	if [ $ret = 0 ] || [ $ret = 62 ]; then
+		$LKP_SRC/bin/event/wakeup activate-monitor
+
+	fi
+}
+
 wakeup_pre_test()
 {
 	mkdir $TMP/wakeup_pre_test-once 2>/dev/null || return
 
 	if [ -n "$monitor_delay" ]; then
 		(
-			$LKP_SRC/bin/event/wait post-test --timeout $monitor_delay &&
-			$LKP_SRC/bin/event/wakeup activate-monitor
+			wait_post_test_timeout $monitor_delay
+
 		) &
 	else
 		$LKP_SRC/bin/event/wakeup activate-monitor
