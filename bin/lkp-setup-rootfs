@@ -226,7 +226,16 @@ define_files_auto_pack()
 	done
 }
 
+chmod_root_ssh()
+{
+	[ -d "/root/.ssh" ] || return
+	[ -f "/root/.ssh/id_rsa" ] || return
+	chmod 700 /root/.ssh/
+	chmod 600 /root/.ssh/id_rsa
+}
+
 install_proxy
+chmod_root_ssh
 
 while true; do
 	set_tbox_wtmp 'running'
