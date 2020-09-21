@@ -579,6 +579,8 @@ run_tests()
 			fixup_bpf || die "fixup_bpf failed"
 		elif [[ $subtest = "efivarfs" ]]; then
 			fixup_efivarfs || continue
+		elif [[ $subtest = "exec" ]]; then
+			log_cmd touch ./$subtest/pipe || die "touch pipe failed"
 		elif [[ $subtest = "gpio" ]]; then
 			fixup_gpio || continue
 		elif [[ $subtest = "openat2" ]]; then
