@@ -32,7 +32,7 @@ run_mysql()
 	fi
 
 	cd $mysql_path || exit
-	./mtr "${args[@]}"
+	./mtr "${args[@]}" || exit 0
 }
 
 run_mysql
