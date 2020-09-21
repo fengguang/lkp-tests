@@ -1,5 +1,6 @@
 #!/bin/sh -e
 # SPDX-License-Identifier: MulanPSL-2.0+
+# Copyright (c) 2020 Huawei Technologies Co., Ltd. All rights reserved.
 
 # redirect remote-repository address to "/srv/git/gitee.com"
 cat >> /etc/gitconfig <<EOF
