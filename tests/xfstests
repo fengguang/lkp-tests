@@ -56,6 +56,7 @@ set_env()
 	# has already been added. If not, add "fsgqa" user.
 	check_add_user "fsgqa"
 	check_add_user "123456-fsgqa"
+	check_add_user "fsgqa2"
 
 	umount $mount_points
 
