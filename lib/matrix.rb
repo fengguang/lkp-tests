@@ -204,6 +204,7 @@ def load_matrix_file(matrix_file)
 end
 
 def shrink_matrix(matrix, max_cols)
+  return unless matrix['stats_source']
   n = matrix['stats_source'].size - max_cols
   return unless n > 1
 
