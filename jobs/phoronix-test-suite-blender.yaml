@@ -17,6 +17,6 @@ phoronix-test-suite:
     option_b:
       - CPU-Only
       - OpenCL
-      - CUDA
-      - NVIDIA OptiX
+      # - CUDA # need CUDA compatible hardware
+      # - NVIDIA OptiX # need NVIDIA compatible hardware
       # - Test All Options
