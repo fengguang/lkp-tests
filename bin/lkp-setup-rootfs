@@ -89,7 +89,7 @@ wget_install_cgz()
 	for url
 	do
 		echo "wget $url"
-		wget $url -O /tmp/tmp.cgz
+		http_get_file $url /tmp/tmp.cgz
 		(
 			cd /
 			gzip -dc /tmp/tmp.cgz | cpio -id
