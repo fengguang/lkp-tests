@@ -14,7 +14,7 @@ subsystem:
 install:
 	mkdir -p $(TARGET_DIR_BIN)
 	ln -sf $(shell pwd)/bin/lkp $(TARGET_DIR_BIN)/lkp
-	bash sbin/install-dependency.sh
+	bash sbin/install-dependencies.sh
 	bash sbin/set-env.sh
 
 .PHONY: doc
