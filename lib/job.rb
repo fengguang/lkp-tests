@@ -309,7 +309,7 @@ class Job
       @job.merge!(hwconfig) { |_k, a, _b| a } # job's key/value has priority over hwconfig
     end
 
-    @job['arch'] ||= 'x86_64'
+    @job['arch'] ||= 'aarch64'
     @load_hosts_done = true
   end
 
