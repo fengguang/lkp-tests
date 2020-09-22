@@ -2,14 +2,14 @@
 aim7\.jobs-per-min: 1
 aim9\..+\.ops_per_sec: 1
 apachebench\.requests_per_second: 1
-blogbench\..+\_score: 1
+blogbench\..+_score: 1
 boot-time\.boot: -1
 boot-time\.dhcp: -1
 cassandra\.Op.+rate: 1
 chromeswap\.throughput_swap_cycles_per_second: -1
 dbench\.max_latency: -1
 dbench\.throughput-MB\/sec: 1
-dd\..+\_time_ms: -1
+dd\..+_time_ms: -1
 ebizzy\.throughput: 1
 ebizzy\.throughput\.per_thread\.max: 1
 ebizzy\.throughput\.per_thread\.min: 1
@@ -17,8 +17,8 @@ exit-free\.duration: -1
 filebench\.sum_operations\/s: 1
 filebench\.sum_bytes_mb\/s: 1
 fileio\..+_operations\/s: 1
-fio\..+\_bw_MBps: 1
-fio\..+\_iops: 1
+fio\..+_bw_MBps: 1
+fio\..+_iops: 1
 fsmark\.files_per_sec: 1
 ftq\.max: 1
 ftq\.mean: 1
@@ -41,7 +41,7 @@ linkbench\.requests\/s: 1
 linpack\.GFlops: 1
 lmbench3\..+\.MB\/sec: 1
 lmbench3\.Pagefaults\.ms: -1
-mcperf\..+\_rate\_.+\/s: 1
+mcperf\..+_rate_.+\/s: 1
 memtier\..+_ops\/s: 1
 mutilate\..+\.speed: 1
 nepim\..+\.kbps_in: 1
@@ -151,7 +151,7 @@ pmbench\.throughput\.aps: 1
 postmark\.transactions: 1
 pxz\.throughput: 1
 qperf\..+\.bw: 1
-qperf\..+\_bw: 1
+qperf\..+_bw: 1
 reaim\.jobs_per_min: 1
 redis\..+_throughput_rps: 1
 schbench\.latency_max_us: -1
@@ -159,7 +159,7 @@ sockperf\.throughput\..+\.BandWidth_MBps: 1
 specjbb2015\.critical-jOPS: 1
 specjbb2015\.max-jOPS: 1
 specjbb2015\.median: 1
-stream\..+\_bandwidth_MBps: 1
+stream\..+_bandwidth_MBps: 1
 stress-ng\..+\.ops_per_sec: 1
 tbench\.max_latency: -1
 tbench\.throughput-MB\/sec: 1
@@ -175,7 +175,7 @@ tlbflush\.munmap_ns_time: -1
 unixbench\.score: 1
 vm-scalability\.median: 1
 vm-scalability\.throughput: 1
-will-it-scale\..+\_ops: 1
+will-it-scale\..+_ops: 1
 will-it-scale\.scalability: 1
 sysbench\-.+\.throughput_MB\/s: 1
 sysbench\-.+\.throughput_events\/s: 1
