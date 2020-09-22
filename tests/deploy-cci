@@ -13,6 +13,7 @@ export initrd_http_port=$INITRD_HTTP_PORT
 export gitcache_host=$GITCACHE_HOST
 export gitcache_port=$GITCACHE_PORT
 
+mdkir -p /c
 cd /c || exit
 git clone https://gitee.com/wu_fengguang/compass-ci.git
 
