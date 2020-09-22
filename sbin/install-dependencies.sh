@@ -7,7 +7,8 @@ linux_dep()
 source /etc/os-release
 case $ID in
 ubuntu|debian)
-	apt-get install -y -m ruby-git ruby-activesupport ruby-rest-client
+	export DEBIAN_FRONTEND=noninteractive
+	apt-get install -yqm ruby-git ruby-activesupport ruby-rest-client
 	;;
 openEuler|fedora|rhel|centos)
 	if type dnf > /dev/null 2>&1; then
@@ -26,7 +27,7 @@ esac
 
 mac_dep()
 {
-	brew install ruby
+	brew -f install ruby
 	gem -f install git activesupport rest-client
 }
 
