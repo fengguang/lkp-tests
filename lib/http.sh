@@ -73,6 +73,14 @@ set_tbox_wtmp()
 	http_get_cgi "cgi-bin/lkp-wtmp?tbox_name=$HOSTNAME&tbox_state=$tbox_state&mac=$PUB_MAC&ip=$PUB_IP&job_id=$id"
 }
 
+report_ssh_port()
+{
+	local ssh_port="$1"
+	[ -n "$ssh_port" ] || return
+
+	http_get_cgi "cgi-bin/report_ssh_port?tbox_name=$HOSTNAME&job_id=$id&ssh_port=$ssh_port"
+}
+
 ####################################################
 
 http_escape_request()
