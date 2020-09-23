@@ -16,7 +16,6 @@
 : "${mysql_port:=3306}"
 : "${mysql_db:=test_1000}"
 : "${db_driver:=mysql}"
-: "${oltp_test_mode:=complex}"
 : "${oltp_tables_count:=3}"
 : "${oltp_table_size:=1000}"
 : "${nr_threads:=64}"
@@ -29,9 +28,8 @@ args=(
  	 --mysql-port=$mysql_port
  	 --mysql-db=$mysql_db
 	 --db-driver=$db_driver
-	 --oltp-test-mode=$oltp_test_mode
-	 --oltp-tables-count=$oltp_tables_count
-	 --oltp-table-size=$oltp_table_size
+	 --tables=$oltp_tables_count
+	 --table-size=$oltp_table_size
 	 --threads=$nr_threads
 	 --time=$runtime
 	 --report-interval=$report_interval
@@ -39,16 +37,16 @@ args=(
 
 run_sysbench_step()
 {
-	sysbench /usr/share/sysbench/tests/include/oltp_legacy/oltp.lua "${args[@]}" $1
+	sysbench /usr/share/sysbench/$1 "${args[@]}" $2
 }
 
 run_sysbench_mysql()
 {
 	systemctl start mysqld
 	mysql -e "create database test_1000;"
-	run_sysbench_step prepare
-	run_sysbench_step run
-	run_sysbench_step cleanup
+	run_sysbench_step oltp_common.lua prepare
+	run_sysbench_step oltp_read_write.lua run
+	run_sysbench_step oltp_common.lua cleanup
 }
 
 run_sysbench_mysql
