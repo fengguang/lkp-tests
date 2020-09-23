@@ -10,7 +10,16 @@ class SchedulerClient
   end
 
   def submit_job(job_json)
-    resource = RestClient::Resource.new("http://#{@host}:#{@port}/submit_job")
+    url_prefix = ''
+    if @host.match('.*[a-zA-Z]+.*')
+      # Internet users should use domain name and https
+      url_prefix = 'https://'
+    else
+      # used in intranet for now
+      url_prefix = 'http://'
+    end
+
+    resource = RestClient::Resource.new("#{url_prefix}#{@host}:#{@port}/submit_job")
     resource.post(job_json)
   end
 end
