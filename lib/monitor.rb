@@ -28,6 +28,8 @@ class Monitor
   end
 
   def load_default
+    return unless @monitor_url == ''
+
     Dir.glob(['/etc/compass-ci/monitor/*.yaml',
               "#{ENV['HOME']}/.config/compass-ci/monitor/*.yaml"]).each do |file|
       next unless File.exist? file
