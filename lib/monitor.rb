@@ -11,12 +11,13 @@ require 'eventmachine'
 require 'json'
 
 class Monitor
-  attr_accessor :monitor_url, :query, :overrides, :action
+  attr_accessor :monitor_url, :query, :overrides, :action, :job
 
   def initialize(monitor_url = '', query = {}, action = {})
     @monitor_url = monitor_url
     @query = query
     @action = action
+    @job = {}
     @overrides = {}
     # exit_status_code: how to exit EM.run
     # 0 means normal exit
@@ -70,11 +71,25 @@ class Monitor
     return unless data['log']
 
     data = JSON.parse(data['log'])
-    return unless data['ip']
+    if job['uuid']
+      # means Internet user
+      # using the redirection service to log in
+      return unless data['ssh_port']
 
+      ssh_connect(job['SCHED_HOST'], data['ssh_port'], web_socket)
+    else
+      # intranet user: direct login internal IP
+      return unless data['ip']
+
+      ssh_connect(data['ip'], 22, web_socket)
+    end
+  end
+
+  def ssh_connect(ssh_host, ssh_port, web_socket)
     web_socket.close
-    exec "ssh-keygen -R #{data['ip']};
-    ssh root@#{data['ip']} -o StrictHostKeyChecking=no"
+
+    exec "ssh-keygen -R #{ssh_host};
+    ssh root@#{ssh_host} -p #{ssh_port} -o StrictHostKeyChecking=no"
   end
 
   def stop_em(web_socket)

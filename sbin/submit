@@ -79,6 +79,7 @@ if ARGV.size.zero?
 end
 
 job_ids = []
+job_json_list = []
 
 def find_jobfile(jobfile)
   return jobfile if File.exist?(jobfile)
@@ -140,6 +141,7 @@ ARGV.each do |jobfile|
 
     # submit job
     job_json = job_hash.to_json
+    job_json_list << job_json
     messages = scheduler_client.submit_job(job_json)
     JSON.parse(messages).each do |msg|
       if msg['message'].empty?
@@ -154,6 +156,6 @@ end
 
 if opt_monitor
   opt_monitor_query.merge!({'job_id' => job_ids[0]})
-  cmd = "#{LKP_SRC}/sbin/monitor -f '#{opt_monitor_query.to_json}' -a #{actions.join(',')}"
+  cmd = "#{LKP_SRC}/sbin/monitor -f '#{opt_monitor_query.to_json}' -j '#{job_json_list[0]}' -a #{actions.join(',')}"
   exec cmd
 end
