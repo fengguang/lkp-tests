@@ -4,8 +4,8 @@
 
 write_shellrc()
 {
-	echo "export LKP_SRC=$PWD" >> $HOME/.${SHELL##*/}rc
-	echo "export PATH=\$PATH:$PWD/sbin:$PWD/bin" >> $HOME/.${SHELL##*/}rc
+	echo "export LKP_SRC=$PWD" >> $(shell_profile)
+	echo "export PATH=\$PATH:$PWD/sbin:$PWD/bin" >> $(shell_profile)
 }
 
 write_host()

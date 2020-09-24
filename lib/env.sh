@@ -118,3 +118,12 @@ is_system()
 {
 	[ $(uname -s) = $1 ]
 }
+
+shell_profile()
+{
+        if [ "${SHELL##*/}" == "bash" ]; then
+             echo $HOME/.${SHELL##*/}_profile
+        else
+             echo $HOME/.${SHELL##*/}rc
+        fi
+}
