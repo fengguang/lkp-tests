@@ -1,16 +1,15 @@
 #!/usr/bin/env crystal
 
-
 require "../../lib/string_ext"
 
 stats = [] of String
 test_item = ""
 build_type = ""
 
-#vmmalloc_memalign/TEST1: SETUP (check/nondebug)
+# vmmalloc_memalign/TEST1: SETUP (check/nondebug)
 while (line = STDIN.gets)
   line = line.to_s
-  line = line.remediate_invalid_byte_sequence() unless line.valid_encoding?
+  line = line.remediate_invalid_byte_sequence unless line.valid_encoding?
   case line
   when %r{^(.+)/TEST[0-9]+: SETUP \(.+/(.+)\)$}
     test_item = $1

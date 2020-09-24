@@ -3,8 +3,8 @@
 require "../../lib/string_ext"
 
 keys = %w(read_ios read_merges read_sectors read_ticks
-          write_ios write_merges write_sectors write_ticks
-          in_flight io_ticks time_in_queue)
+  write_ios write_merges write_sectors write_ticks
+  in_flight io_ticks time_in_queue)
 
 STDIN.each_line do |line|
   line = line.remediate_invalid_byte_sequence(replace: "_") unless line.valid_encoding?

@@ -9,7 +9,7 @@
 # Totals       7278.61       867.78      4955.10      0.41000      2610.72
 # Request Latency Distribution
 # Type     <= msec         Percent
-#------------------------------------------------------------------------
+# ------------------------------------------------------------------------
 # SET       0.260        87.07
 # SET       0.270        89.46
 # SET       0.280        92.75
@@ -46,9 +46,9 @@ set_latencies = [] of Array(Float64)
 get_latencies = [] of Array(Float64)
 proc_set_latencies = [] of Float64
 proc_get_latencies = [] of Float64
-#PERCENTILE_STRS = ["90", "95", "99", "99.9"].freeze
+# PERCENTILE_STRS = ["90", "95", "99", "99.9"].freeze
 PERCENTILE_STRS = ["90", "95", "99", "99.9"]
-PERCENTILES = PERCENTILE_STRS.map(&.to_f)
+PERCENTILES     = PERCENTILE_STRS.map(&.to_f)
 
 def extract_memtier(line, histo_sum, histo_num)
   data = line.split

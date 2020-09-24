@@ -1,6 +1,5 @@
 #!/usr/bin/env crystal
 
-
 require "../../lib/string_ext"
 
 stats = [] of String
@@ -42,7 +41,7 @@ while (line = STDIN.gets)
     fail_test = $2
   when /(PASS|FAIL)/
     if is_divided
-	    stats << type + ".#{$1.downcase}: 1"
+      stats << type + ".#{$1.downcase}: 1"
       is_divided = false
     end
   end

@@ -13,6 +13,7 @@ def puts_vals(tag, node, zone, line)
     puts "node#{node}.#{zone}.#{$1.tr(" ", "_")}: #{$2}"
   end
 end
+
 node = ""
 zone = ""
 while (line = STDIN.gets)

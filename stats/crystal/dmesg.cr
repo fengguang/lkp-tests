@@ -19,7 +19,6 @@
 # on kmsg and falls back to dmesg) to catch 50000+ printk messages whose level
 # is >= KERN_WARNING.
 
-
 require "../../lib/dmesg"
 require "../../lib/log"
 require "../../lib/string_ext"
@@ -138,7 +137,6 @@ end
 stat_unittest(lines) if PROGRAM_NAME =~ /kmsg/
 
 oops_map.each do |bug_to_bisect, line|
-
   timestamp = $2 if line =~ /^(<[0-9]+>|....  :..... : )?\[ *(\d{1,6}\.\d{6})\] /
 
   if !line.nil?

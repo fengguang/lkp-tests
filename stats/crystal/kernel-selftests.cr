@@ -1,9 +1,7 @@
 #!/usr/bin/env crystal
 
-
 require "../../lib/statistics"
 require "../../lib/string_ext"
-
 
 stats = Array(String).new
 testname = nil
@@ -136,7 +134,7 @@ while (line = STDIN.gets)
     io = $1
     io
   when %r{(\d+) nsec/msg}
-    mqueue_speed["#{mqueue_test}.io"] = $1.to_i  # [mqueue_test + "." + io]?
+    mqueue_speed["#{mqueue_test}.io"] = $1.to_i # [mqueue_test + "." + io]?
   when /: recipe for target.+failed$/
     next unless testname
 
@@ -171,5 +169,5 @@ if testname == "resctrl"
   stats << "resctrl.resctrl_tests.pass: 1" unless stats.any? { |stat| stat =~ /resctrl\..+\.fail: 1/ }
 end
 stats.uniq.each { |stat| puts stat }
-nr_test = stats.size #{ |k, _v| k !~ /\.make_fail|\.ignored_by_lkp/ }
+nr_test = stats.size # { |k, _v| k !~ /\.make_fail|\.ignored_by_lkp/ }
 nr_test

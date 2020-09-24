@@ -12,7 +12,7 @@ end
 while (line = STDIN.gets)
   line = line.remediate_invalid_byte_sequence(replace: "_") unless line.valid_encoding?
   line = line.to_s
-# cut the left we don't care
+  # cut the left we don't care
   break if line =~ /run time:/
 
   res_line = line.split

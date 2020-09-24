@@ -2,7 +2,7 @@
 
 require "time"
 require "json"
-#require "fileutils"
+# require "fileutils"
 require "file_utils"
 require "../../lib/log"
 
@@ -38,8 +38,8 @@ require "../../lib/log"
 if ARGV[0]
   mpstat = ARGV[0]
 elsif ENV["RESULT_ROOT"]
-  #RESULT_ROOT = ENV["RESULT_ROOT"]
-  #mpstat = "#{RESULT_ROOT}/mpstat"
+  # RESULT_ROOT = ENV["RESULT_ROOT"]
+  # mpstat = "#{RESULT_ROOT}/mpstat"
   result_root = ENV["RESULT_ROOT"]
   mpstat = "#{result_root}/mpstat"
 else
@@ -85,22 +85,23 @@ rescue JSON::Error
     mpstat_json = File.read(mpstat_update)
     FileUtils.rm_rf mpstat_update unless ENV["RESULT_ROOT"]
     mpstat_hash = JSON.parse(mpstat_json)
-  rescue e: JSON::Error
+  rescue e : JSON::Error
     log_error "Fail to parse #{mpstat}: #{e}"
     exit
-  rescue e: Exception
+  rescue e : Exception
     log_error "Fail to handle #{mpstat}: #{e}"
     exit
   end
 end
 
-#results = {} of String => Array(Hash(String,String|Float64))
-results = {} of String => Int64|JSON::Any
+# results = {} of String => Array(Hash(String,String|Float64))
+results = {} of String => Int64 | JSON::Any
+
 # Every array data includes some hash type data.
 # Such as: "cpu-load" => [{"cpu" => "all", "usr" => 3.06,
 #                        "nice" => 0.00, "sys" => 5.87, ... }, {...}, ...]
 def get_array_result(prefix, array, results)
-    array.as_a.each do |item|
+  array.as_a.each do |item|
     next unless item.class == Hash
     item = item.as_h
     key0, value0 = item.first
@@ -140,11 +141,11 @@ end
 
 data = mpstat_hash["sysstat"]["hosts"][0]["date"]
 mpstat_hash["sysstat"]["hosts"][0]["statistics"].as_a.each do |item|
-    item.as_h.each do |k, v|
+  item.as_h.each do |k, v|
     if v.class == Array
       get_array_result k, v, results
     elsif v.class == Hash
-	v.as_h.each do |k_, v_|
+      v.as_h.each do |k_, v_|
         if v_.class == Array
           get_array_result k_, v_, results
         elsif v_.class == Hash

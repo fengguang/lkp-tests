@@ -6,7 +6,7 @@
 require "../../lib/statistics"
 
 keys = %w(parent_time child_systime child_utime jobs_per_min
-          jobs_per_min_child std_dev_time std_dev_percent jti)
+  jobs_per_min_child std_dev_time std_dev_percent jti)
 
 results = {} of String => Array(Float64)
 jobs = 0

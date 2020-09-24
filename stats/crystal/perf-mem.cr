@@ -53,9 +53,9 @@
 
 PERF_MEM_EVENT = %w(loads stores)
 
-weight = Hash(String|Int32, Int32).new(0)
-samples = Hash(String|Int32, Int32).new(0)
-event_list = [] of String|Nil
+weight = Hash(String | Int32, Int32).new(0)
+samples = Hash(String | Int32, Int32).new(0)
+event_list = [] of String | Nil
 event_name = nil
 
 def get_event_name(str)

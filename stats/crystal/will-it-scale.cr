@@ -6,7 +6,7 @@
 require "../../lib/statistics"
 
 scalability = [] of Float64
-per_process = []  of Float64
+per_process = [] of Float64
 per_thread = [] of Float64
 workload = 0
 
@@ -26,7 +26,7 @@ while (line = STDIN.gets)
     workload += values[0].to_f
     per_thread << values[2].to_f / nr_task.to_i
     workload += values[2].to_f
-    #names.each_with_index do |name, i|
+    # names.each_with_index do |name, i|
     values.each_with_index do |name, i|
       puts nr_task + "." + name + ": " + values[i]
     end

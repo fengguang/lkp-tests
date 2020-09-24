@@ -18,7 +18,7 @@ files.each do |file|
     rdata = f.gets_to_end
     n = (rdata =~ /^[^#]/)
     if n
-      rdata.byte_slice?(n,rdata.size)
+      rdata.byte_slice?(n, rdata.size)
     end
     sfdata = rdata.to_s.split(/ |\n/)
     sfdata.delete("")
@@ -30,7 +30,7 @@ files.each do |file|
     end
     n = sfdata_temp.size
     ndel = (n * PDEL / 100).to_i
-    data.concat(sfdata_temp[ndel,n-ndel-1].map { |x| x.to_i })
+    data.concat(sfdata_temp[ndel, n - ndel - 1].map { |x| x.to_i })
   end
 end
 

@@ -8,7 +8,7 @@ names.shift
 names.shift
 
 contentions = {} of String => Int32
-lock_stat = {} of String => Int32|Float64
+lock_stat = {} of String => Int32 | Float64
 lock = ""
 while (line = STDIN.gets)
   line = line.sub(%r{/c/kernel-tests/src/[^/]+/}, "")

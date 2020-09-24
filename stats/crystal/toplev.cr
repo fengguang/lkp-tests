@@ -29,7 +29,7 @@ bottleneck_value = 0
 CSV.each_row(toplev_csv) do |row|
   next if row[0] =~ /^#/
 
-  #row = ["8.048139281", "S0-C0", "Frontend_Bound",
+  # row = ["8.048139281", "S0-C0", "Frontend_Bound",
   #        "69.86", "% Slots", nil, nil, "0.00", "0.0", "<=="]
   time = row.shift
   puts "time: #{time}" if time != last_time

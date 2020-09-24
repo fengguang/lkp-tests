@@ -1,6 +1,5 @@
 #!/usr/bin/env crystal
 
-
 require "../../lib/statistics"
 
 linkbench = {} of String => String

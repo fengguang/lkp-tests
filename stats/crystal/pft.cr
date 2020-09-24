@@ -6,7 +6,7 @@ require "../../lib/log"
 clients = ""
 
 keys = %w(gbyte nr_tests cachelines user_time sys_time elapsed_time
-          faults_per_sec_per_cpu faults_per_sec)
+  faults_per_sec_per_cpu faults_per_sec)
 
 while (line = STDIN.gets)
   case line

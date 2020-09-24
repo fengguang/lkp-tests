@@ -14,22 +14,22 @@ Dir["#{LKP_SRC}/etc/ignore-stderr/*"].each do |f|
   end
 end
 
-def should_ignore_stderr(line,line_str)
+def should_ignore_stderr(line, line_str)
   if line
     line = line.remediate_invalid_byte_sequence(replace: "_") unless line.valid_encoding?
     ignore_patterns = Regex.new("^" + line_str + "$")
     # ERR in `match': invalid byte sequence in US-ASCII (ArgumentError)
     # treat unrecognized line as "can't be ignored"
-      begin
-        ignore_patterns.match line.to_s
-      rescue Exception
-        nil
-      end
+    begin
+      ignore_patterns.match line.to_s
+    rescue Exception
+      nil
+    end
   end
 end
 
 while (line = STDIN.gets)
-  next if should_ignore_stderr(line,line_str)
+  next if should_ignore_stderr(line, line_str)
 
   # ERR: lib/dmesg.rb:151:in `gsub!': invalid byte sequence in US-ASCII (ArgumentError)
   line2 = line.remediate_invalid_byte_sequence(replace: "_") unless line.valid_encoding?

@@ -1,9 +1,8 @@
 #!/usr/bin/crystal
 
-UNIT = 1000.0
-DEBUG = false
+UNIT        = 1000.0
+DEBUG       = false
 RESULT_ROOT = ENV["RESULT_ROOT"]
-
 
 require "../../lib/noise"
 require "../../lib/log"
@@ -72,11 +71,11 @@ def parse_process_lines(process_lines, time)
 end
 
 def parse_syscalls(time)
-  process_lines = {} of String=>Array(String)
+  process_lines = {} of String => Array(String)
   lines = if File.exists?("#{RESULT_ROOT}/ftrace.data.xz")
-  	    File.read_lines("xzcat #{RESULT_ROOT}/ftrace.data.xz")
-#            IO.popen("xzcat #{RESULT_ROOT}/ftrace.data.xz").readlines
-#	    IO.readlines("xzcat #{RESULT_ROOT}/ftrace.data.xz")
+            File.read_lines("xzcat #{RESULT_ROOT}/ftrace.data.xz")
+            #            IO.popen("xzcat #{RESULT_ROOT}/ftrace.data.xz").readlines
+            #	    IO.readlines("xzcat #{RESULT_ROOT}/ftrace.data.xz")
           elsif File.exists?("#{RESULT_ROOT}/ftrace.data")
             File.read_lines("#{RESULT_ROOT}/ftrace.data")
           end
@@ -111,7 +110,7 @@ def get_syscall_nr(time, syscall_nr, sys_nr)
     sys_nr["total"] += nr
     sys_nr["max"] = nr if nr > sys_nr["max"]
   end
-#  syscall_nr.to_a
+  #  syscall_nr.to_a
   syscall_nr.to_a.sort_by { |_key, val| val }.reverse.to_h
 end
 

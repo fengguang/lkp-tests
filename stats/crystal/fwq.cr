@@ -12,8 +12,8 @@ files.each do |file|
   sfdata = File.read(file).split
   n = sfdata.size
   ndel = n * PDEL / 100
-  sfdata#[n - ndel, ndel]
-  sfdata#[0, ndel]
+  sfdata # [n - ndel, ndel]
+  sfdata # [0, ndel]
   data.concat(sfdata.map(&.to_i))
 end
 

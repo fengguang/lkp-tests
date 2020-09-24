@@ -12,11 +12,11 @@ init_times = [] of Float64
 sum_r = 0.0
 sum_w = 0.0
 mode = nil
-READ = :read
+READ  = :read
 WRITE = :write
 
 STDIN.each_line do |line|
- case line
+  case line
   when /^Read:/
     mode = READ
   when /^Write:/
@@ -93,24 +93,24 @@ percentiles = percentile_strs.map(&.to_f)
 
 # [[histo_r, histo_details_r, sum_r, READ], [histo_w, histo_details_w, sum_w, WRITE]].each do |his_array|
 (1..2).each do |his_index|
- if his_index == 1
-  histo = histo_r
-  histo_details = histo_details_r
-  sum = sum_r
-  mode = READ
- elsif his_index == 2
-  histo = histo_w
-  histo_details = histo_details_w
-  sum = sum_w
-  mode = WRITE
- end
+  if his_index == 1
+    histo = histo_r
+    histo_details = histo_details_r
+    sum = sum_r
+    mode = READ
+  elsif his_index == 2
+    histo = histo_w
+    histo_details = histo_details_w
+    sum = sum_w
+    mode = WRITE
+  end
   pi = 0
   hist_cum = 0
   (0..23).each do |i|
     next if sum == 0.0
     if histo && sum
-     histo_temp = histo[i]
-     res = histo_temp / sum * 100
+      histo_temp = histo[i]
+      res = histo_temp / sum * 100
     end
     gen_output(mode, i, res)
     if histo_details && sum
@@ -133,13 +133,13 @@ percentiles = percentile_strs.map(&.to_f)
 end
 
 unless latencies.empty?
-  latency_avg = latencies.reduce{|acc,i| acc+i} / latencies.size
+  latency_avg = latencies.reduce { |acc, i| acc + i } / latencies.size
   puts "latency.ns.average: #{latency_avg * 1000}"
 end
 
 puts "throughput.aps: #{throughput}"
 
 unless init_times.empty?
-  init_time_avg = init_times.reduce{|acc,i| acc+i} / init_times.size
+  init_time_avg = init_times.reduce { |acc, i| acc + i } / init_times.size
   puts "init_time.avg: #{init_time_avg}"
 end

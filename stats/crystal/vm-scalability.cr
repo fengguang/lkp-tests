@@ -4,7 +4,7 @@ require "../../lib/statistics"
 require "../../lib/log"
 
 bytes = 0
-kbps = [] of  Float64 | Int32
+kbps = [] of Float64 | Int32
 throughput = [] of Float64
 median = [] of Float64 | Int32
 free_secs = [] of Float64
@@ -21,8 +21,8 @@ def add_one_sample(kbps, throughput, median, ret)
   puts "# #{kbps.size} #{kbps.sum}"
   return unless kbps.size != 1 && (kbps.size & 1) != 0 && !ret["warned"]
 
-  #Log.warn { "stats/vm-scalability: possibly disordered output #{ARGV[0]}"}
-  log_warn  "stats/vm-scalability: possibly disordered output #{ARGV[0]}"
+  # Log.warn { "stats/vm-scalability: possibly disordered output #{ARGV[0]}"}
+  log_warn "stats/vm-scalability: possibly disordered output #{ARGV[0]}"
 
   ret["warned"] = true
 end

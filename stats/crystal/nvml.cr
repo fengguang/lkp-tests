@@ -1,6 +1,5 @@
 #!/usr/bin/env crystal
 
-
 require "../../lib/string_ext"
 
 stats = [] of String
@@ -9,8 +8,8 @@ fs_type = ""
 build_type = ""
 
 while (line = STDIN.gets)
-  line=line.to_s
-  line = line.remediate_invalid_byte_sequence() unless line.valid_encoding?
+  line = line.to_s
+  line = line.remediate_invalid_byte_sequence unless line.valid_encoding?
   case line
   when %r{^(.+)/TEST[0-9]+: SETUP \(.+/(.+)/(.+)\)$}
     test_item = $1

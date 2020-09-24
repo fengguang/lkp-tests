@@ -1,6 +1,5 @@
 #!/usr/bin/env crystal
 
-
 # sysbench 1.0.12 (using bundled LuaJIT 2.1.0-beta2)
 # Running the test with following options:
 # Number of threads: 1
@@ -27,8 +26,8 @@
 #     events (avg/stddev):           1048576.0000/0.00
 #     execution time (avg/stddev):   0.1212/0.00
 
-#results_total = {} of String=> Float64|Array(String)
-results_total={} of String=> Array(Float64)
+# results_total = {} of String=> Float64|Array(String)
+results_total = {} of String => Array(Float64)
 results_avg = {} of String => Array(Float64)
 results_min = {} of String => Array(Float64)
 results_max = {} of String => Array(Float64)
@@ -68,21 +67,21 @@ STDIN.each_line do |line|
 end
 
 results_total.each do |key, vals|
-#  puts "#{key}: #{vals.inject(0.0, :+)}"
-  total_val=0.0
+  #  puts "#{key}: #{vals.inject(0.0, :+)}"
+  total_val = 0.0
   vals.each do |val|
-    total_val+=val
+    total_val += val
   end
- puts "#{key}: #{total_val}"
+  puts "#{key}: #{total_val}"
 end
 
 results_avg.each do |key, vals|
-#  puts "#{key}: #{vals.insert(0, :+) / vals.size}"
- total_val=0.0
- vals.each do |val|
- total_val+=val
- end
- puts "{key}:#{total_val/vals.size}"
+  #  puts "#{key}: #{vals.insert(0, :+) / vals.size}"
+  total_val = 0.0
+  vals.each do |val|
+    total_val += val
+  end
+  puts "{key}:#{total_val/vals.size}"
 end
 
 results_min.each do |key, vals|

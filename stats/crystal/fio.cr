@@ -6,7 +6,7 @@ require "json"
 require "../../lib/log"
 
 workload = 0
-OPS = %w(read write)
+OPS         = %w(read write)
 PERCENTILES = %w(90.000000 95.000000 99.000000)
 
 if ENV["RESULT_ROOT"]

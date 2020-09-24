@@ -98,7 +98,7 @@ sar_hash["sysstat"]["hosts"][0]["statistics"].as_a.each do |item|
         elsif v_.class == Hash
           get_hash_result k_, v_, results
         elsif k == "timestamp"
-         # timestamp = Time.parse([v["data"], v["time"]].join(" ")).to_i
+          # timestamp = Time.parse([v["data"], v["time"]].join(" ")).to_i
           timestamp = Time.parse_local([v["data"], v["time"]].join(" "), "%F %T").to_unix
           results["timestamp"] = timestamp.to_s
         else

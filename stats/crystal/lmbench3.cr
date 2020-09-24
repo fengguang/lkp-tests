@@ -36,7 +36,6 @@ while (line = STDIN.gets)
   # Simple open/close: 1.3696 microseconds
   when /^Simple (\S+): (\d+.\d+) microseconds$/
     puts "syscall.#{$1}.latency.us: #{$2}"
-
     # Extract select test result.
     # Select on 100 fd's: 1.2293 microseconds
     # Select on 100 tcp fd's: 5.0377 microseconds
@@ -44,14 +43,12 @@ while (line = STDIN.gets)
     puts "Select.100fd.latency.us: #{$1}"
   when /^Select on 100 tcp fd's: (\d+.\d+) microseconds$/
     puts "Select.100tcp.latency.us: #{$1}"
-
     # Extract proc test result.
     # Process fork+exit: 134.4530 microseconds
     # Process fork+execve: 382.2759 microseconds
     # Process fork+/bin/sh -c: 918.9524 microseconds
   when /^Process (fork\+\S+)(?:\s-c)?: (\d+.?\d+) microseconds$/
     puts "Process.#{$1}.latency.us: #{$2}"
-
     # Extract pipe test result.
     # Pipe latency: 7.9239 microseconds
     # Pipe bandwidth: 3042.74 MB/sec
@@ -59,7 +56,6 @@ while (line = STDIN.gets)
     puts "PIPE.latency.us: #{$1}"
   when /^Pipe bandwidth: (\d+.\d+) \S+$/
     puts "PIPE.bandwidth.MB/sec: #{$1}"
-
     # Extract unix test result.
     # AF_UNIX sock stream latency: 6.2302 microseconds
     # AF_UNIX sock stream bandwidth: 7058.07 MB/sec
@@ -68,7 +64,6 @@ while (line = STDIN.gets)
     puts "AF_UNIX.sock.stream.latency.us: #{$1}"
   when /^AF_UNIX sock stream bandwidth: (\d+.\d+) \S+$/
     puts "AF_UNIX.sock.stream.bandwidth.MB/sec: #{$1}"
-
     # Extract ops test results.
     # integer bit: 0.33 nanoseconds
     # integer add: 0.09 nanoseconds
@@ -80,12 +75,10 @@ while (line = STDIN.gets)
     # int64 mul: -0.02 nanoseconds
   when /^(integer|int64|float|double) (bit|add|mul|div|mil): (\d+.\d+) nanoseconds$/
     puts "OPS.#{$1}.#{$2}.latency.ns: #{$3}"
-
     # Extract UDP test result:
     # UDP latency using localhost: 8.4815 microseconds
   when /^UDP latency using localhost: (\d+.\d+) microseconds$/
     puts "UDP.usinglocalhost.latency.us: #{$1}"
-
     # For CTX test reuslt, only extract part of data, context switching times for
     # 96p/0K, 96p/16K, 96p/64K (processes/process_size).
     # "size=0k ovr=0.90
@@ -97,7 +90,6 @@ while (line = STDIN.gets)
     size = line.to_s.split[0].split("=")[-1].to_i.as(Int32 | Nil | String)
   when size && [0, 16, 64].includes?(size) && /^96 (\d+.\d+)$/
     puts "CTX.96P.#{size}K.latency.us: #{$1}"
-
     # Extract FILE test result, get the bandwidth value for the biggest file reading:
     # "read bandwidth
     # 0.000512 489.40
@@ -130,12 +122,10 @@ while (line = STDIN.gets)
     puts "TCP.socket.bandwidth.64B.MB/sec: #{$1}"
   when socket_bandwidth && /^10.485760 (\d+.\d+) MB\/sec$/
     puts "TCP.socket.bandwidth.10MB.MB/sec: #{$1}"
-
     # Extract CONNECT test result:
     # TCP/IP connection cost to localhost: 19.1327 microseconds
   when /^TCP\/IP connection cost to localhost: (\d+.\d+) microseconds/
     puts "CONNECT.localhost.latency.us: #{$1}"
-
     # Extract BCOPY test result:
     # bcopy test outputs some test results,but only get the last largest result from the last line.
     # According to lmbench3 source script "getsummary" to extract the four items test result:
@@ -150,7 +140,6 @@ while (line = STDIN.gets)
     # ...
   when /^"libc bcopy unaligned$/
     puts "BCOPY.libc.bandwidth.MB/sec: #{largest_bandwidth}"
-
     # "unrolled bcopy unaligned
     # 0.000512 13442.67
     # 0.001024 13699.91
@@ -161,7 +150,6 @@ while (line = STDIN.gets)
     # ...
   when /^"unrolled bcopy unaligned$/
     puts "BCOPY.unrolled.bandwidth.MB/sec: #{largest_bandwidth}"
-
     # Memory read bandwidth
     # 0.000512 16353.73
     # 0.001024 16577.89
@@ -171,7 +159,6 @@ while (line = STDIN.gets)
     # ...
   when /^Memory read bandwidth$/
     puts "BCOPY.memory_read.bandwidth.MB/sec: #{largest_bandwidth}"
-
     # Memory write bandwidth
     # 0.000512 13964.88
     # 0.001024 13954.19
@@ -180,11 +167,9 @@ while (line = STDIN.gets)
     # ...
   when /^Memory write bandwidth$/
     puts "BCOPY.memory_write.bandwidth.MB/sec: #{largest_bandwidth}"
-
     # Pagefaults on /var/tmp/XXX: 0.2653 microseconds
   when /^Pagefaults on (.*): (.*) microseconds/
     puts "Pagefaults.ms: #{$2}"
-
     # "Mmap read bandwidth
     # 0.000512 275064.12
     # 0.001024 280518.89
@@ -192,7 +177,6 @@ while (line = STDIN.gets)
     # ...
   when /^"Mmap read bandwidth$/
     puts "MMAP.read.bandwidth.MB/sec: #{largest_bandwidth}"
-
     # "Mmap read open2close bandwidth
     # 0.000512 479.98
     # 0.001024 964.48

@@ -1,7 +1,7 @@
 #!/usr/bin/env crystal
 
 time = [] of Float64
-counts = {} of Int32=>Int32
+counts = {} of Int32 => Int32
 
 STDIN.each_line do |line|
   case line

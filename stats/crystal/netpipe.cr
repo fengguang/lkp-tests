@@ -1,6 +1,5 @@
 #!/usr/bin/env crystal
 
-
 require "../../lib/statistics"
 require "../../lib/log"
 

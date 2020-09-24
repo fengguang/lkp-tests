@@ -4,18 +4,18 @@ require "file_utils"
 require "yaml"
 
 RESULT_ROOT = ENV["RESULT_ROOT"]
-TIME_DELTA = YAML.parse(File.read(RESULT_ROOT + "/job.yaml"))["time_delta"].as_f
-FMT_DIR = RESULT_ROOT + "/trace_event/"
+TIME_DELTA  = YAML.parse(File.read(RESULT_ROOT + "/job.yaml"))["time_delta"].as_f
+FMT_DIR     = RESULT_ROOT + "/trace_event/"
 
 KEY_PREFIX_MAPPING = YAML.parse(File.read(File.dirname(__FILE__) + "/../etc/ftrace_key_prefix")).as_h
-BDI_DEV_MAPPING = Hash(YAML::Any, YAML::Any).new
+BDI_DEV_MAPPING    = Hash(YAML::Any, YAML::Any).new
 if File.exists? RESULT_ROOT + "/bdi_dev_mapping"
   BDI_DEV_MAPPING.merge! YAML.parse(File.read(RESULT_ROOT + "/bdi_dev_mapping")).as_h
 end
 
 # A hash to make sure we record one event data only
 # for each event in 1s unit
-records = Hash(String,Hash(String, String)).new
+records = Hash(String, Hash(String, String)).new
 
 def generate_prefix(event, key_prefix_items, record)
   key_prefix = event
@@ -112,7 +112,7 @@ def parse_event(event_fmt, records)
     file.puts "grep -F ' #{event}: ' #{ARGV[0]} | perl -pe 's/^.*#{pattern}.*$/#{replace}/' > #{event_parser_out}"
   end
 
-  File.open(event_parser) { |file| File.chmod(event_parser,file.info.permissions.to_i | 0o111)}
+  File.open(event_parser) { |file| File.chmod(event_parser, file.info.permissions.to_i | 0o111) }
   system "/bin/bash #{event_parser}"
 
   normlize_event_data(event, event_parser_out, records)
