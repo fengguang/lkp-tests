@@ -55,7 +55,7 @@ while (line = STDIN.gets)
     next
   when /^\# Events: \d+[KMG ]\s+/,
        /^# Samples: \d+[KMG ] of event /
-    cur_event = $'.tr(":", "-").tr('\'', "")
+    cur_event = $'.tr(":", "-").tr("'", "")
 
     # 93.48%    93.48%  [kernel.kallsyms]   [k] clear_page_c_e
     # 96.02%     0.20%  [kernel.kallsyms]   [k] entry_SYSCALL_64_after_hwframe      -      -
