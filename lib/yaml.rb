@@ -77,6 +77,10 @@ def load_yaml_tail(file)
 end
 
 def search_file_in_paths(file, relative_to = nil, search_paths = nil)
+  file.gsub!(/\$.*?\//) do |s|
+    ENV[s.delete_prefix("$").delete_suffix("/")] + "/"
+  end
+
   if file[0] == '/'
     return nil unless File.exist? file
 
