@@ -125,6 +125,7 @@ ARGV.each do |jobfile|
 
     # merge job info
     job_hash = job.to_hash
+    job_json_list << job_hash.to_json
     job_hash = job_hash.merge(sh_hash)
 
     # save job to yaml
@@ -141,7 +142,6 @@ ARGV.each do |jobfile|
 
     # submit job
     job_json = job_hash.to_json
-    job_json_list << job_json
     messages = scheduler_client.submit_job(job_json)
     JSON.parse(messages).each do |msg|
       if msg['message'].empty?
