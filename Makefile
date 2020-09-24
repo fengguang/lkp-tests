@@ -3,7 +3,7 @@ ifeq ($(TARGET_DIR_BIN), )
 endif
 
 ifneq ($(shell whoami), "root")
-    TARGET_DIR_BIN := /home/$(shell whoami)/bin
+    TARGET_DIR_BIN := $${HOME}/bin
 endif
 
 all: subsystem install
