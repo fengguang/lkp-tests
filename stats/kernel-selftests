@@ -21,12 +21,12 @@ end
 
 def futex_stat(line, futex, stats)
   case line
-  when /^(futex.+): /, /# (futex.+): /
-    futex['subtest'] = $1
-  when /^\s+Arguments: (.+)/, /^# \s+Arguments: (.+)/
-    futex['argument'] = $1.tr(' ', '_')
-  when /Result\:\s+(PASS|FAIL)/, /^selftests\:.*(PASS|FAIL)/, /^(ok|not ok) \d+/
-    result = $1 == 'ok' || $1 == 'PASS' ? 'PASS' : 'FAIL'
+  when /^(# )*(futex.+): /
+    futex['subtest'] = $2
+  when /^(# )*\s+Arguments: (.+)/
+    futex['argument'] = $2.tr(' ', '_')
+  when /Result\:\s+(PASS|FAIL)/, /^selftests\:.*(PASS|FAIL)/, /^(# )*(ok|not ok) \d+/
+    result = $2 == 'ok' || $1 == 'PASS' ? 'PASS' : 'FAIL'
     futex_stat_result(futex, result, stats)
   end
 end
@@ -264,9 +264,8 @@ while (line = STDIN.gets)
   when /# selftests: timens: (.*)/
     test_case_name = $1
   when /# (ok|fail|skip) \d+ (.*)/
-    next unless test_name == 'timens'
-
-    subtest_stat('timens', test_case_name, $2, $1, stats)
+    futex_stat(line, tests_stats['futex'], stats) if test_name == 'futex'
+    subtest_stat('timens', test_case_name, $2, $1, stats) if test_name == 'timens'
   when /^# selftests: timers: (.*)/
     test_case_name = $1
   when /^# (.*)(\.\.\.|:| ) \[(OK|FAIL|SKIP|UNSUPPORTED)\]/
