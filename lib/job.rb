@@ -321,9 +321,25 @@ class Job
     return @job.include?('tbox_group')
   end
 
+  def get_lab_hosts_file
+    lab_hosts_file_name = @job['testbox']
+    lab_hosts_file = "#{ENV['CCI_REPOS']}/lab-#{@defaults['lab']}/hosts/#{lab_hosts_file_name}"
+
+    if File.file?(lab_hosts_file)
+      lab_hosts_file
+    else
+      nil
+    end
+  end
+
   def get_hosts_file
     hosts_file_name = @job['tbox_group'].split('--')[0]
     hosts_file = "#{LKP_SRC}/hosts/#{hosts_file_name}"
+
+    lab_hosts_file = get_lab_hosts_file
+    if lab_hosts_file
+      hosts_file = lab_hosts_file
+    end
 
     if File.file?(hosts_file)
       hosts_file
@@ -671,10 +687,10 @@ class Job
 
   def each_jobs(&block)
     each_job_init
-    load_hosts_config
     job = deepcopy(@job)
     @job2 = {}
     load_defaults
+    load_hosts_config
     each_job_init
     each_job(&block)
     @jobs.each do |hash|
