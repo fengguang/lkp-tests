@@ -1,0 +1,19 @@
+/lkp/benchmarks/perf/perf: error while loading shared libraries: libpython2.7.so.1.0: cannot open shared object file: No such file or directory
+/lkp/benchmarks/perf/perf: error while loading shared libraries: libpython2.7.so.1.0: cannot open shared object file: No such file or directory
+/lkp/benchmarks/perf/perf: error while loading shared libraries: libpython2.7.so.1.0: cannot open shared object file: No such file or directory
+In file included from scripts/kconfig/zconf.tab.c:2576:
+scripts/kconfig/confdata.c: In function ‘conf_write’:
+scripts/kconfig/confdata.c:773:19: warning: ‘%s’ directive writing likely 7 or more bytes into a region of size between 1 and 4097 [-Wformat-overflow=]
+  sprintf(newname, "%s%s", dirname, basename);
+                   ^~~~~~
+scripts/kconfig/confdata.c:773:19: note: assuming directive output of 7 bytes
+scripts/kconfig/confdata.c:773:2: note: ‘sprintf’ output 1 or more bytes (assuming 4104) into a destination of size 4097
+  sprintf(newname, "%s%s", dirname, basename);
+  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+scripts/kconfig/confdata.c:776:20: warning: ‘.tmpconfig.’ directive writing 11 bytes into a region of size between 1 and 4097 [-Wformat-overflow=]
+   sprintf(tmpname, "%s.tmpconfig.%d", dirname, (int)getpid());
+                    ^~~~~~~~~~~~~~~~~
+scripts/kconfig/confdata.c:776:3: note: ‘sprintf’ output between 13 and 4119 bytes into a destination of size 4097
+   sprintf(tmpname, "%s.tmpconfig.%d", dirname, (int)getpid());
+   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+make -j 576 vmlinux_prereq failed
