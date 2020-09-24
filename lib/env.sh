@@ -113,3 +113,8 @@ is_docker()
 {
 	[ -f /.dockerenv ]
 }
+
+is_system()
+{
+	[ $(uname -s) = $1 ]
+}

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. bin/env.sh
+
 # choose install function base on 
 # DISTRIBUTION
 linux_dep()
@@ -31,16 +33,15 @@ mac_dep()
 	gem -f install git activesupport rest-client
 }
 
+run()
+{
+	if is_system "Linux"; then
+		linux_dep
+	elif is_system "Darwin"; then
+		mac_dep
+	else
+		echo "$DISTRO not supported!"
+	fi
+}
 
-DISTRO=$(uname -s)
-case $DISTRO in
-Linux)
-	linux_dep
-	;;
-Darwin)
-	mac_dep
-	;;
-*)
-	echo "$DISTRO not supported!"
-	;;
-esac
+run
