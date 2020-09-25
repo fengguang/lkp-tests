@@ -1,0 +1,25 @@
+suite: will-it-scale
+testcase: will-it-scale
+category: benchmark
+
+nr_task:
+  - 16
+  - 50%
+  - 100%
+
+will-it-scale:
+  mode:
+  - thread
+  - process
+  test:
+  - getppid1
+  - lock1
+  - lseek1
+  - lseek2
+  - malloc1
+  - malloc2
+  - mmap1
+  - mmap2
+  - open1
+  - open2
+  #  - open3
