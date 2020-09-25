@@ -25,7 +25,7 @@ install_env()
 	2-network/iptables
 	3-code/git
 	dev_env
-	. /etc/profile.d/crystal.sh
+	. /etc/profile.d/compass.sh
 }
 
 boot_ipxe()
