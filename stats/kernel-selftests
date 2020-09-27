@@ -362,7 +362,7 @@ while (line = STDIN.gets)
     io = Regexp.last_match[1]
   when %r{(\d+) nsec/msg}
     mqueue_speed[mqueue_test + '.' + io] = Regexp.last_match[1].to_i
-  when /: recipe for target.+failed$/, /^make: \*\*\* (.*) (Error 1|Stop\.)$/
+  when /: recipe for target.+failed$/, /^make: \*\*\* (.*) (Error \d+|Stop\.)$/
     next unless test_name
 
     # do not count make fail in nr_test, which is for sub test number
