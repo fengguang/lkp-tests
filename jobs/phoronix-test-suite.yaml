@@ -704,7 +704,7 @@ phoronix-test-suite:
     - sqlite-speedtest-1.0.0
   - test: startup-time-1.4.1
     option_a:
-      - Only Sequential Reads
+      # - Only Sequential Reads # need more than 1h
       - Sequential Reads + Writes
       # - Test All Options
     option_b:
