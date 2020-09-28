@@ -23,3 +23,6 @@ doc:
 
 tests/%.md: tests/%.yaml
 	lkp gen-doc $<
+
+ctags:
+	ctags -R --links=no
