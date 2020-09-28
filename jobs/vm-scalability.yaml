@@ -58,6 +58,8 @@ size: 256G
 
 vm-scalability:
   test:
+  - msync
+  - msync-mt
   - lru-shm-rand
 
 ---
@@ -76,8 +78,6 @@ size: 1T
 
 vm-scalability:
   test:
-  - msync
-  - msync-mt
   - lru-shm
 
 ---
