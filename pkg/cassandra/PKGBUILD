@@ -1,20 +1,21 @@
 pkgname=apache-cassandra
-pkgver=3.11.6
+pkgver=4.0
+pkgver_ext="-beta2"
 pkgrel=0
 pkgdesc="The Apache Cassandra database is the right choice when you need scalability and high availability without compromising performance."
 arch=('i386' 'x86_64')
 url="http://cassandra.apache.org/"
 license=(Apache)
-source=(https://mirrors.tuna.tsinghua.edu.cn/apache/cassandra/$pkgver/$pkgname-$pkgver-bin.tar.gz)
+source=(https://mirrors.tuna.tsinghua.edu.cn/apache/cassandra/$pkgver${pkgver_ext}/$pkgname-$pkgver${pkgver_ext}-bin.tar.gz)
 md5sums=('SKIP')
 
 build()
 {
-    tar -xvf $pkgname-$pkgver-bin.tar.gz
+    tar -xvf $pkgname-$pkgver${pkgver_ext}-bin.tar.gz
 }
 
 package()
 {
     mkdir -p "$pkgdir/lkp/benchmarks/cassandra"
-    cp -af "$srcdir/$pkgname-$pkgver/"* "$pkgdir/lkp/benchmarks/cassandra/"
+    cp -af "$srcdir/$pkgname-$pkgver${pkgver_ext}/"* "$pkgdir/lkp/benchmarks/cassandra/"
 }
