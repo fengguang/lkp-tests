@@ -20,3 +20,4 @@ read_ip()
 
 [ -n "$IP" ] || read_ip
 configure_networking
+ntpdate -u ntp.api.bz
