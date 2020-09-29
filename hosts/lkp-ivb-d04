@@ -2,7 +2,14 @@ model: Ivy Bridge
 nr_node: 1
 nr_cpu: 4
 memory: 8G
-nr_hdd_partitions: 1
-hdd_partitions: /dev/disk/by-id/ata-WDC_WD20EZRX-00D8PB0_WD-WCC4M0KTT6NK-part3
+nr_ssd_partitions: 1
+nr_hdd_partitions: 4
+ssd_partitions:
+ /dev/disk/by-id/ata-INTEL_SSDSC2KB240G8_BTYF836606UQ240AGN-part1
+hdd_partitions:
+ /dev/disk/by-id/ata-WDC_WD20EZRX-00D8PB0_WD-WCC4M0KTT6NK-part2
+ /dev/disk/by-id/ata-WDC_WD20EZRX-00D8PB0_WD-WCC4M0KTT6NK-part3
+ /dev/disk/by-id/ata-WDC_WD20EZRX-00D8PB0_WD-WCC4M0KTT6NK-part4
+ /dev/disk/by-id/ata-WDC_WD20EZRX-00D8PB0_WD-WCC4M0KTT6NK-part5
 rootfs_partition: /dev/disk/by-id/ata-WDC_WD20EZRX-00D8PB0_WD-WCC4M0KTT6NK-part1
 brand: Intel(R) Core(TM) i3-3220 CPU @ 3.30GHz
