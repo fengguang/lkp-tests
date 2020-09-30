@@ -188,7 +188,7 @@ clearlinux_timesync()
 run_ntpdate()
 {
 	[ -z "$NO_NETWORK" ] || return
-	[ "$LKP_SERVER" = inn ] || return
+	[ -n "$LKP_SERVER" ] || return
 	is_clearlinux && clearlinux_timesync && return
 
 	[ -x '/usr/sbin/ntpdate' ] || return
