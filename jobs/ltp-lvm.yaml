@@ -1,0 +1,12 @@
+suite: ltp
+testcase: ltp
+category: functional
+
+need_modules: true
+need_memory: 32G
+
+ltp:
+  test:
+# Cause OOM, require at least 32GB memory
+  - lvm.part1
+  - lvm.part2

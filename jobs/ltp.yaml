@@ -27,9 +27,6 @@ ltp:
   - ipc
   - ltp-aiodio.part1
   - ltp-aiodio.part3
-# Cause OOM, require at least 32GB memory
-#  - lvm.part1
-#  - lvm.part2
   - math
   - net.ipv6_lib
   - net.rpc
