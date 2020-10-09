@@ -18,7 +18,7 @@ check_add_user()
 	[ "x$1" != "x" ] || return
 	grep -q -w "$1" /etc/passwd && return
 	# 123456-fsgqa is a invalid user name on Clear, useradd doesn't work
-	useradd "$1" >/dev/null 2>&1 || {
+	useradd -m "$1" >/dev/null 2>&1 || {
 		if is_clearlinux; then
 			mkdir /home/$1
 			echo "$1:x:666" >> /etc/group
