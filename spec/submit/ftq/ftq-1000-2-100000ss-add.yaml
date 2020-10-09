@@ -7,8 +7,8 @@ samples: 100000ss
 ftq:
   test: add
   freq: 1000
-testbox: vm-hi1620-2p8g--spec_submit
-tbox_group: vm-hi1620-2p8g--spec_submit
+testbox: vm-2p8g--spec_submit
+tbox_group: vm-2p8g--spec_submit
 provider: qemu
 template: kvm
 nr_cpu: 2

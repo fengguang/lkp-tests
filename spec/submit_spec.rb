@@ -29,7 +29,7 @@ describe 'submit job spec' do
         "#{LKP_SRC}/sbin/submit",
         '-o', output_dir,
         '-s', 'lab: spec_lab',
-        '-s', 'testbox: vm-hi1620-2p8g--spec_submit',
+        '-s', 'testbox: vm-2p8g--spec_submit',
         yaml_file
       ]
       system(*submit_cmd)

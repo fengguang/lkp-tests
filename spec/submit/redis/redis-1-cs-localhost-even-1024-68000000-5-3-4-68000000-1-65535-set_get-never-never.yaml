@@ -25,8 +25,8 @@ if role client:
     requests: 68000000
     n_pipeline: 3
     key_len: 68000000
-testbox: vm-hi1620-2p8g--spec_submit
-tbox_group: vm-hi1620-2p8g--spec_submit
+testbox: vm-2p8g--spec_submit
+tbox_group: vm-2p8g--spec_submit
 node_roles: server client
 provider: qemu
 template: kvm
