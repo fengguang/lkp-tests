@@ -21,6 +21,7 @@ while (line = gets)
     time << seconds.to_f
   end
 end
+
 kb = tasks * messages * bytes >> 10
-time_ave = time.sort.first(3).average
-puts "throughput: #{kb / time_ave}"
+best_time = time.sort.first
+puts "throughput: #{kb / best_time}"
