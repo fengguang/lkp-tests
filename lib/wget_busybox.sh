@@ -2,8 +2,14 @@
 
 setup_wget_busybox()
 {
-	wget=$(cmd_path wget)
-	http_client_cmd="$wget -q"
+	if has_cmd wget; then
+		http_client_cmd=$(cmd_path wget)
+		http_client_cmd="$http_client_cmd -q"
+		return
+	fi
+
+	busybox=$(cmd_path busybox) || return
+	http_client_cmd="$busybox wget -q"
 }
 
 [ -n "$http_client_cmd" ] || setup_wget_busybox || return
