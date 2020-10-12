@@ -5,8 +5,8 @@ get_node()
 	echo "nr_node: $(grep -Eo 'Node [0-9]+,' /proc/zoneinfo | uniq | wc -l)"
 	echo "nr_cpu: $(nproc)"
 	memory_total=$(cat /proc/meminfo |grep MemTotal | awk '{print $2}')
-	memory_new=$(awk 'BEGIN{printf "%0.2f", '$memory_total'/1024/1024}')
-	memory=$(echo $memory_new | awk '{print int($0)+1}')G
+	memory_new=$(awk 'BEGIN{printf "%0.2f", '$memory_total'/1024/1024/16}')
+	memory=$(echo `expr $(echo $memory_new | awk '{print int($0)+1}') \* 16`)G
 	echo "memory: $memory"
 }
 
