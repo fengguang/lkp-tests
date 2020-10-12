@@ -8,9 +8,6 @@ fio-setup-basic:
   iodepth: 1024
   nr_task: 2
   test_size: 1G
-  zero_buffers: 1
-  iodepth_batch: 2
-  iodepth_batch_complete: 4
   rwmixread: 70
   rw:
   - write
