@@ -286,6 +286,7 @@ def analyze_error_id(line)
   case line
   when /(INFO: rcu[_a-z]* self-detected stall on CPU)/,
        /(INFO: rcu[_a-z]* detected stalls on CPUs\/tasks:)/,
+       /(Kernel panic - not syncing:)/,
        /(BUG: unable to handle kernel)/,
        /(BUG: unable to handle kernel) NULL pointer dereference/,
        /(BUG: unable to handle kernel) paging request/,
