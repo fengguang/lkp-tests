@@ -210,6 +210,12 @@ test_setting()
 		# match logic of check_ignored_cases
 		sed -i "s/\t/ /g" runtest/fs_ext4
 		;;
+	lvm.local)
+		# Creates runtest/lvm.local with testcases for all locally supported FS types
+		log_cmd LTPROOT=${PWD} PATH="$PATH:$LTPROOT/testcases/bin" testcases/bin/generate_lvm_runfile.sh
+		# Creates 2 LVM volume groups and mounts logical volumes for all locally supported FS types
+		log_cmd LTPROOT=${PWD} PATH="$PATH:$LTPROOT/testcases/bin" testcases/bin/prepare_lvm.sh
+		;;
 	mm-00)
 		local pid_job="$(cat $TMP/run-job.pid)"
 		echo 0 > /proc/$pid_job/oom_score_adj
@@ -296,6 +302,10 @@ test_setting()
 
 cleanup_ltp()
 {
+	[ "$test" = "lvm.local" ] && {
+		# remove LVM volume groups created by prepare_lvm.sh and release the associated loop devices
+		log_cmd LTPROOT=${PWD} PATH="$PATH:$LTPROOT/testcases/bin" testcases/bin/cleanup_lvm.sh
+	}
 	[ "$test" = "mm-00" ] && {
 		dmesg -C || exit
 	}
