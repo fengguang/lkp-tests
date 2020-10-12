@@ -11,7 +11,7 @@ while (line = STDIN.gets)
 end
 
 while (line = STDIN.gets)
-  line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
+  line = line.resolve_invalid_bytes
   case line
   # Connection rate: 991.1 conn/s (1.0 ms/conn <= 12 concurrent connections)
   when /^(Connection|Request|Response) rate: (.*.) (.*\/s)/

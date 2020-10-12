@@ -26,7 +26,7 @@ result = {}
 invalid_records = []
 record_index = 0
 while (line = STDIN.gets)
-  line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
+  line = line.resolve_invalid_bytes
   next if line[0] == '#'
 
   k, _, v = line.partition(': ')

@@ -97,7 +97,7 @@ else
 
   lines = kmsg_lines
   output = grep_printk_errors kmsg_file, kmsg
-  output.replace_invalid_utf8!
+  output = output.resolve_invalid_bytes
 
   oops_map = {}
   output.each_line do |line|

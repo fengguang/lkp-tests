@@ -11,7 +11,7 @@ num_objs = 0
 num_pages = 0
 
 while (line = STDIN.gets)
-  line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
+  line = line.resolve_invalid_bytes
   v = line.split
   pagesperslab = v[5].to_i
   num_slabs = v[14].to_i

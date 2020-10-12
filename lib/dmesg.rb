@@ -171,7 +171,7 @@ def grep_crash_head(dmesg_file)
   end
 
   raw_oops.each_line do |line|
-    line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
+    line = line.resolve_invalid_bytes
     if line =~ oops_re
       oops_map[$1] ||= line
       has_oom = true if line.index(OOM1)

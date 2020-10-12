@@ -8,7 +8,7 @@ while (line = STDIN.gets)
 end
 
 while (line = STDIN.gets)
-  line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
+  line = line.resolve_invalid_bytes
   case line
   when /test (.*): (FAIL|OK)*/
     result = $2.downcase

@@ -7,12 +7,12 @@ require "#{LKP_SRC}/lib/string_ext"
 
 # skip none-result data
 while (line = STDIN.gets)
-  line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
+  line = line.resolve_invalid_bytes
   break if line =~ /\(secs\)    \(secs\)    \(secs\)/
 end
 
 while (line = STDIN.gets)
-  line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
+  line = line.resolve_invalid_bytes
   # cut the left we don't care
   break if line =~ /run time:/
 

@@ -6,7 +6,7 @@ require "#{LKP_SRC}/lib/log"
 require "#{LKP_SRC}/lib/string_ext"
 
 while (line = STDIN.gets)
-  line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
+  line = line.resolve_invalid_bytes
   case line
   when /^# Thread/
     next

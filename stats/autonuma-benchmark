@@ -35,8 +35,7 @@ results = {}
 output = false
 key = nil
 $stdin.each do |line|
-  line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
-  line = line.strip
+  line = line.resolve_invalid_bytes.strip
   case line
   when /^Hyper-Threading IS/
     output = true

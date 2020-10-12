@@ -13,8 +13,8 @@ module Git
       # to deal with "GIT error: cat-file ["commit", "9f86262dcc573ca195488de9ec6e4d6d74288ad3"]: invalid byte sequence in US-ASCII"
       # - one possibility is the encoding of string is wrongly set (due to unknown reason), e.g. UTF-8 string's encoding is set as US-ASCII
       #   thus to force_encoding to utf8_string and compare to error check of utf8_string, if same, will consider as wrong encoding info
-      command_lines = command_lines.remediate_invalid_byte_sequence(replace: '_') unless command_lines.valid_encoding?
-      command_lines.split("\n")
+      command_lines.resolve_invalid_bytes
+                   .split("\n")
     end
 
     public :command_lines
