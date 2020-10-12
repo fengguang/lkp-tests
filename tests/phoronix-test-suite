@@ -17,7 +17,7 @@ if [ "$need_x" = true ]; then
 	chmod 1777		/tmp/.X11-unix
 	chown root:root		/tmp/.X11-unix
 
-	xinit $LKP_SRC/tests/phoronix-test-suite.xinitrc -- $LKP_SRC/tests/piglit.xserverrc
+	xinit $LKP_SRC/tests/phoronix-test-suite.xinitrc
 else
 	$LKP_SRC/tests/phoronix-test-suite.xinitrc
 fi
