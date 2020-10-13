@@ -10,12 +10,12 @@ RIP:find_busiest_group: 1
 message:RIP:find_busiest_group: [    0.412324] RIP: 0010:[<ffffffff810fe412>]  [<ffffffff810fe412>] find_busiest_group+0x252/0x8a0
 pattern:RIP:find_busiest_group: RIP: .* find_busiest_group+0x
 
-# Kernel panic - not syncing: Fatal exception in interrupt
-Kernel_panic-not_syncing:Fatal_exception_in_interrupt: 1
-message:Kernel_panic-not_syncing:Fatal_exception_in_interrupt: [    0.420007] Kernel panic - not syncing: Fatal exception in interrupt
-pattern:Kernel_panic-not_syncing:Fatal_exception_in_interrupt: Kernel panic - not syncing: Fatal exception in interrupt
+# Kernel panic - not syncing:
+Kernel_panic-not_syncing: 1
+message:Kernel_panic-not_syncing: [    0.420007] Kernel panic - not syncing: Fatal exception in interrupt
+pattern:Kernel_panic-not_syncing: Kernel panic - not syncing:
 
 timestamp:last: 0.420007
 timestamp:general_protection_fault:#[##]: 0.410012
 timestamp:RIP:find_busiest_group: 0.412324
-timestamp:Kernel_panic-not_syncing:Fatal_exception_in_interrupt: 0.420007
+timestamp:Kernel_panic-not_syncing: 0.420007
