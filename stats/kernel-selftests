@@ -157,6 +157,7 @@ while (line = STDIN.gets)
     stats << "#{test_name}.#{test_case_name}.#{result}: 1"
   when /^(Check .*)... \[(OK|FAIL|SKIP)\]/
     next unless test_name == 'exec'
+    next if $1 =~ /execveat/
 
     detail_stat('exec', $1, $2, stats)
   when /^(PASS|FAIL|SKIP): (.*)/
