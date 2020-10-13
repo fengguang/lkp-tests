@@ -42,8 +42,9 @@ check_yaml_vars()
 		"iso_os"
 		"iso_arch"
 		"iso_version"
-		"rootfs_nfs_server"
-		"rootfs_nfs_path"
+		"rootfs_protocol"
+		"rootfs_server"
+		"rootfs_path"
 		"initrd_http_host"
 		"initrd_http_port"
 	)
@@ -64,20 +65,39 @@ get_daily_iso_checksum()
 	SHA256SUM_NET=$(curl -s "$ISO_CHECKSUM_URL" | awk '{print $1}')
 }
 
-mount_nfs()
+mount_rootfs()
 {
-	NFS_SERVER_PATH="${rootfs_nfs_server}:${rootfs_nfs_path}/${iso_os}/${iso_arch}/debug-versions/dailybuild"
-	NFS_LOCAL_PATH="${WORKSPACE}/crystal_os_${iso_os}_${iso_arch}"
+	case ${rootfs_protocol} in
+		"nfs")
+			ROOTFS_SERVER_PATH="${rootfs_server}:${rootfs_path}/${iso_os}/${iso_arch}/debug-versions/dailybuild"
+			install_pkgs "nfs-utils"
+		;;
+		"cifs")
+			ROOTFS_SERVER_PATH="//${rootfs_server}/${rootfs_path}/${iso_os}/${iso_arch}/debug-versions/dailybuild"
+			ROOTFS_MOUNT_PARAM="guest,vers=1.0,noacl,nouser_xattr"
+			install_pkgs "cifs-utils"
+		;;
+		*)
+			die "rootfs_protocol is none, exit !!!"
+		;;
+	esac
 
-	[ -d "${NFS_LOCAL_PATH}" ] || mkdir -p "$NFS_LOCAL_PATH"
-	mount -t nfs "${NFS_SERVER_PATH}" "${NFS_LOCAL_PATH}"
+	ROOTFS_LOCAL_PATH="${WORKSPACE}/compass_os_${iso_os}_${iso_arch}"
+
+	[ -d "${ROOTFS_LOCAL_PATH}" ] || mkdir -p "$ROOTFS_LOCAL_PATH"
+	if [ -n "${ROOTFS_MOUNT_PARAM}" ]
+	then
+		mount -t ${rootfs_protocol} -o "${ROOTFS_MOUNT_PARAM}" "${ROOTFS_SERVER_PATH}" "${ROOTFS_LOCAL_PATH}"
+	else
+		mount -t ${rootfs_protocol} "${ROOTFS_SERVER_PATH}" "${ROOTFS_LOCAL_PATH}"
+	fi
 }
 
 get_cache_iso_checksum()
 {
-	mount_nfs
+	mount_rootfs
 
-	CHECKSUM_FILE_CACHE="${NFS_LOCAL_PATH}/${iso_version}-newest.sha256sum"
+	CHECKSUM_FILE_CACHE="${ROOTFS_LOCAL_PATH}/${iso_version}-newest.sha256sum"
 	[ ! -f "${CHECKSUM_FILE_CACHE}" ] ||
 		SHA256SUM_CACHE=$(awk '{print $1}' "$CHECKSUM_FILE_CACHE")
 }
@@ -155,6 +175,7 @@ config_git_proxy()
 config_iso2rootfs()
 {
 	log_info "starting config iso2rootfs env ..."
+	install_pkgs "wget"
 	get_cgz
 
 	source "${CGZ_PATH}/config"
@@ -222,12 +243,12 @@ run_iso2qcow2()
 download_compass_ci()
 {
 	[ -d "${CCI_SRC}" ] && rm -rf "${CCI_SRC}"
-	git clone "$CRYSTAL_CI_GIT_URL" "${CCI_SRC}"
+	git clone "$COMPASS_CI_GIT_URL" "${CCI_SRC}"
 }
 
 config_rootfs_dir()
 {
-	ROOTFS_DES_DIR=${NFS_LOCAL_PATH}/${iso_version}-$(date "+%Y%m%d%H%M%S")
+	ROOTFS_DES_DIR=${ROOTFS_LOCAL_PATH}/${iso_version}-$(date "+%Y%m%d%H%M%S")
 	[ -d "${ROOTFS_DES_DIR}" ] &&
 		ROOTFS_DES_DIR="${ROOTFS_DES_DIR}-${HOSTNAME##*--}"
 	mkdir -p "$ROOTFS_DES_DIR"
@@ -279,12 +300,23 @@ test_rootfs()
 
 	local kernel_path=$(realpath "${ROOTFS_DES_DIR}"/boot/vmlinuz*|grep -v rescue)
 	local initrd_lkp_path=$(realpath "${ROOTFS_DES_DIR}"/boot/initramfs.lkp*)
-	local nfsroot_path="${NFS_SERVER_PATH}/$(basename "${ROOTFS_DES_DIR}")"
+	local root_path
+	case ${rootfs_protocol} in
+		"nfs")
+			root_path="${ROOTFS_SERVER_PATH}/$(basename "${ROOTFS_DES_DIR}")"
+		;;
+		"cifs")
+			root_path="cifs:${ROOTFS_SERVER_PATH}/$(basename "${ROOTFS_DES_DIR}"),${ROOTFS_MOUNT_PARAM}"
+		;;
+		*)
+			die "rootfs_protocol is none, exit !!!"
+		;;
+	esac
 	get_qemu_efi_fd
 
 	sed -i "s|KERNEL|\"${kernel_path}\"|g" "$test_script"
 	sed -i "s|INITRD_LKP|\"${initrd_lkp_path}\"|g" "$test_script"
-	sed -i "s|NFS_ROOT|\"${nfsroot_path}\"|g" "$test_script"
+	sed -i "s|ROOT|\"${root_path}\"|g" "$test_script"
 	sed -i "s|QEMU_EFI_FD|\"${EFI_FD_PATH}\"|g" "$test_script"
 
 	cd "$(dirname "${test_script}")"
@@ -305,7 +337,7 @@ test_rootfs()
 				send_user "\[INFO\] test rootfs ok"
 				exit 0
 			}
-			"nfs: server * not responding, timed out" {
+			"server * not responding, timed out" {
 				send_user "\[WARNING\] rootfs can start, but need to disable some services"
 				exit 0
 			}
@@ -330,7 +362,7 @@ post_works()
 
 	update_sha256sum_file
 
-	umount "${NFS_LOCAL_PATH}"
+	umount "${ROOTFS_LOCAL_PATH}"
 
 	log_info "iso2rootfs finished"
 }
