@@ -66,7 +66,8 @@ get_daily_iso_checksum()
 	ISO_NAME=$(basename "$ISO_URL")
 	ISO_CHECKSUM_URL="${ISO_URL}.sha256sum"
 
-	SHA256SUM_NET=$(curl -s "$ISO_CHECKSUM_URL" | awk '{print $1}')
+	curl -o "${CHECKSUM_FILE_CACHE}.tmp" "${ISO_CHECKSUM_URL}"
+	SHA256SUM_NET=$(awk '{print $1}' "${CHECKSUM_FILE_CACHE}.tmp")
 }
 
 mount_rootfs()
@@ -118,6 +119,7 @@ check_sha256sum_update()
 		if [ "$SHA256SUM_CACHE" == "$SHA256SUM_NET" ]
 		then
 			log_info "${iso_os} haven't release new iso, no need to generate rootfs"
+			rm -f "${CHECKSUM_FILE_CACHE}.tmp"
 			exit 0
 		else
 			log_info "${iso_os} release a new iso, start to generate rootfs ..."
@@ -354,17 +356,11 @@ EOF
 }
 
 ############ post works ############
-update_sha256sum_file()
-{
-	[ -f "${CHECKSUM_FILE_CACHE}" ] && rm -f "${CHECKSUM_FILE_CACHE}"
-	wget -c -O "${CHECKSUM_FILE_CACHE}" "${ISO_CHECKSUM_URL}"
-}
-
 post_works()
 {
 	log_info "starting post works ..."
 
-	update_sha256sum_file
+	mv "${CHECKSUM_FILE_CACHE}.tmp" "${CHECKSUM_FILE_CACHE}"
 
 	umount "${ROOTFS_LOCAL_PATH}"
 
