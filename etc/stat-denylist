@@ -28,6 +28,7 @@
 ^dmesg.BUG:kernel_hang_in_early-boot_stage,last_printk:Probing_EDD
 ^dmesg.BUG:kernel_hang_in_early-boot_stage,last_printk:early_console_in_setup_code
 ^dmesg.BUG:kernel_reboot-without-warning_in_early-boot_stage,last_printk:early_console_in_setup_code
+^dmesg.BUG:using__this_cpu_read\(\)in_preemptible\[#\]code
 ^dmesg.calltrace
 ^dmesg..*cpu_clock_throttled.*
 ^dmesg..*-detected_stall_on_CPUINFO
@@ -36,6 +37,7 @@
 ^dmesg.INFO:rcu_sched_detected_stalls_on_CPUs/tasks:
 ^dmesg.INFO:Slab0x\(____ptrval____\)objects=#used=#fp=0x\((null|____ptrval____)\)flags=
 ^dmesg.INFO:Stall_ended_before_state_dump_start
+^dmesg.INFO:trying_to_register_non-static_key
 ^dmesg.invoked_oom-killer:gfp_mask=0x
 ^dmesg.IP-Config:Auto-configuration_of_network_failed
 ^dmesg.Kernel_panic-not_syncing:Out_of_memory.*
@@ -47,8 +49,11 @@
 ^dmesg.RIP:inet_sock_destruct
 ^dmesg.RIP:sk_stream_kill_queues
 ^dmesg.timestamp:.*
+^dmesg.WARNING:at_kernel/rcu/rcutorture.c:#rcutorture_oom_notify
+^dmesg.WARNING:at_kernel/rcu/refscale.c:#ref_scale_init
 ^dmesg.WARNING:at_net/core/stream.c:#sk_stream_kill_queues
 ^dmesg.WARNING:at_net/ipv4/af_inet.c:#inet_sock_destruct
+^dmesg.WARNING:inconsistent_lock_state
 ^GLib-WARNING\*\*:#:#:#:gmem.c:#:custom_memory_allocation_vtable_not_supported
 .*\.ignored_by_lkp
 ^internal-lkp-service.*
