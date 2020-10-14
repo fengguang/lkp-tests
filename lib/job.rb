@@ -617,9 +617,9 @@ class Job
     program_name_list = programs_params_hash.keys || []
     program_name_list.each do |program|
 
-      # if job is run as makepkg, makepkg-deps, pack-deps,
+      # if job is run as makepkg, makepkg-deps, pack-deps, cci-makepkg
       # then use makepkg's benchmark as program to get define_files
-      if ["makepkg", "makepkg-deps", "pack-deps"].include?(program)
+      if %w(makepkg makepkg-deps pack-deps cci-makepkg).include?(program)
         program = programs_params_hash[program]["benchmark"]
       end
 
