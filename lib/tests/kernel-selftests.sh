@@ -203,6 +203,9 @@ fixup_net()
 	ulimit -l 10240
 	modprobe fou
 	modprobe nf_conntrack_broadcast
+
+	log_cmd make -C ../../../tools/testing/selftests/net 2>&1 || return
+	log_cmd make install INSTALL_PATH=/usr/bin/ -C ../../../tools/testing/selftests/net 2>&1 || return
 }
 
 fixup_efivarfs()
