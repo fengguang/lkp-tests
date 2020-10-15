@@ -574,6 +574,8 @@ class Job
       end
       options_hash = @referenced_programs[p_n]
       program_name = hash_key_re_string(h, p_n, @job['pp'].keys)
+      next if program_name.nil?
+
       @job["pp"][program_name] = Hash.new()
       options_array = options_hash.keys
       options_array.each do |option|
