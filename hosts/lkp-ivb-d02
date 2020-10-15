@@ -7,10 +7,10 @@ nr_ssd_partitions: 1
 ssd_partitions:
  /dev/disk/by-id/ata-INTEL_SSDSC2BA400G4_BTHV634505W5400NGN-part1
 hdd_partitions:
- /dev/disk/by-id/ata-WDC_WD20EZRX-00D8PB0_WD-WCC4MDUPAHNE-part1
- /dev/disk/by-id/ata-WDC_WD20EZRX-00D8PB0_WD-WCC4MDUPAHNE-part2
- /dev/disk/by-id/ata-WDC_WD20EZRX-00D8PB0_WD-WCC4MDUPAHNE-part3
- /dev/disk/by-id/ata-WDC_WD20EZRX-00D8PB0_WD-WCC4MDUPAHNE-part4
-swap_partitions: /dev/disk/by-id/ata-WDC_WD20EZRX-00D8PB0_WD-WCC4MDUPAHNE-part6
-rootfs_partition: /dev/disk/by-id/ata-WDC_WD20EZRX-00D8PB0_WD-WCC4MDUPAHNE-part5
+ /dev/disk/by-id/ata-ST4000NM0035-1V4107_ZC127QJQ-part1
+ /dev/disk/by-id/ata-ST4000NM0035-1V4107_ZC127QJQ-part2
+ /dev/disk/by-id/ata-ST4000NM0035-1V4107_ZC127QJQ-part3
+ /dev/disk/by-id/ata-ST4000NM0035-1V4107_ZC127QJQ-part4
+swap_partitions: /dev/disk/by-id/ata-ST4000NM0035-1V4107_ZC127QJQ-part6
+rootfs_partition: /dev/disk/by-id/ata-ST4000NM0035-1V4107_ZC127QJQ-part5
 brand: Intel(R) Core(TM) i3-3220 CPU @ 3.30GHz
