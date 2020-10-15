@@ -8,4 +8,4 @@ need_physical_tbox: true
 disk: 1SSD
 ltp:
   test:
-  - fs_ext4
+  # - fs_ext4 # it was removed at 29f51a85b122c08744d759286b9b54de95ec89aa
