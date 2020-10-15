@@ -303,10 +303,10 @@ while (line = STDIN.gets)
     subtest_stat('livepatch', test_case_name, $1, $2, stats)
   when /^# selftests: bpf: (.*)/
     test_case_name = $1
-  when /^# #\d+\/(p|u) (.*) (OK|SKIP|FAIL).*/
+  when /^# #\d+\/(.*) (OK|SKIP|FAIL).*/
     next unless test_case_name == 'test_verifier'
 
-    subtest_stat('bpf', test_case_name, $2, $3, stats)
+    subtest_stat('bpf', test_case_name, $1, $2, stats)
   when /^# #\d+(\/\d+)? (.*):(OK|FAIL|SKIP)/
     next unless %w(test_progs test_progs-no_alu32).include? test_case_name
 
