@@ -34,7 +34,7 @@ pack_to=${os_mount}/${os}/${os_arch}/${os_version}
 cd $LKP_SRC/pkg/$benchmark || die "pkg is empty"
 
 [ -n "$LKP_SERVER" ] && {
-	mount $LKP_SERVER:$PKG_MNT $PKG_MNT || die "Failed to run mount"
+	mount -t cifs -o guest,vers=1.0,noacl,nouser_xattr //$LKP_SERVER$PKG_MNT $PKG_MNT || die "Failed to run mount"
 }
 
 get_pkg_info()
