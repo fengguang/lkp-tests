@@ -586,7 +586,7 @@ class Job
   # find all create or update files from LKP_SRC directory
   def find_git_change_files()
     git_files_list = Array.new()
-    git_status = %x(cd #{LKP_SRC} && git status --porcelain=1)
+    git_status = %x(cd #{LKP_SRC} && git status --porcelain=1 -u)
     git_status_line = git_status.split("\n")
     git_status_line.each do |line|
       git_file = line.split[-1]
