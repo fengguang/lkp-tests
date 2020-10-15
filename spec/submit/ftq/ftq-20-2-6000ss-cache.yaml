@@ -9,13 +9,13 @@ ftq:
   freq: 20
 testbox: vm-2p8g--spec_submit
 tbox_group: vm-2p8g--spec_submit
+lab: spec_lab
 provider: qemu
 template: kvm
-nr_cpu: 2
 nr_node: 1
+nr_cpu: 2
 memory: 8G
 arch: aarch64
-lab: spec_lab
 cpufreq_governor: 
 need_kconfig:
 - CONFIG_KVM_GUEST=y
