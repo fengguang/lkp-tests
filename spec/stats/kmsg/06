@@ -1,0 +1,31 @@
+kern  :err   : [   13.708876] irq 16: nobody cared (try booting with the "irqpoll" option)
+kern  :warn  : [   13.708881] CPU: 7 PID: 0 Comm: swapper/7 Not tainted 5.9.0-rc1-00001-gd3f99f9183068e #1
+kern  :warn  : [   13.708881] Hardware name:  /DZ77BH-55K, BIOS BHZ7710H.86A.0097.2012.1228.1346 12/28/2012
+kern  :warn  : [   13.708882] Call Trace:
+kern  :warn  : [   13.708886]  <IRQ>
+kern  :warn  : [   13.708892]  dump_stack+0x57/0x80
+kern  :warn  : [   13.708897]  __report_bad_irq+0x35/0xa7
+kern  :warn  : [   13.708899]  note_interrupt.cold+0xb/0x73
+kern  :warn  : [   13.708901]  handle_irq_event_percpu+0x6f/0x80
+kern  :warn  : [   13.708902]  handle_irq_event+0x3d/0x5a
+kern  :warn  : [   13.708904]  handle_fasteoi_irq+0x8b/0x140
+kern  :warn  : [   13.708907]  asm_call_on_stack+0x12/0x20
+kern  :warn  : [   13.708908]  </IRQ>
+kern  :warn  : [   13.708911]  common_interrupt+0xb5/0x140
+kern  :warn  : [   13.708913]  asm_common_interrupt+0x1e/0x40
+kern  :warn  : [   13.708916] RIP: 0010:cpuidle_enter_state+0xc1/0x3e0
+kern  :warn  : [   13.708918] Code: c4 0f 1f 44 00 00 31 ff e8 5c 1d 78 ff 80 7c 24 0f 00 74 12 9c 58 f6 c4 02 0f 85 fb 02 00 00 31 ff e8 63 f9 7e ff fb 45 85 ed <0f> 88 57 02 00 00 49 63 d5 4c 2b 64 24 10 48 8d 04 52 48 8d 04 82
+kern  :warn  : [   13.708919] RSP: 0018:ffffc900000b7e70 EFLAGS: 00000202
+kern  :warn  : [   13.708920] RAX: ffff88841f3eb340 RBX: ffff88841f3f6100 RCX: 000000000000001f
+kern  :warn  : [   13.708921] RDX: 0000000000000000 RSI: 0000000024a78c80 RDI: 0000000000000000
+kern  :warn  : [   13.708922] RBP: ffffffff827643c0 R08: 00000003311cc3eb R09: 000000007fffffff
+kern  :warn  : [   13.708923] R10: 0000000000000001 R11: ffff88841f3ea364 R12: 00000003311cc3eb
+kern  :warn  : [   13.708924] R13: 0000000000000004 R14: 0000000000000004 R15: ffff888107420000
+kern  :warn  : [   13.708928]  cpuidle_enter+0x29/0x40
+kern  :warn  : [   13.708931]  do_idle+0x1d9/0x280
+kern  :warn  : [   13.708933]  cpu_startup_entry+0x19/0x20
+kern  :warn  : [   13.708937]  start_secondary+0x114/0x160
+kern  :warn  : [   13.708939]  secondary_startup_64+0xb6/0xc0
+kern  :err   : [   13.708941] handlers:
+kern  :err   : [   13.708945] [<0000000013155f90>] usb_hcd_irq
+kern  :emerg : [   13.708946] Disabling IRQ #16
