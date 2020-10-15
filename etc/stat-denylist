@@ -106,6 +106,7 @@
 ^kmsg.db_root:cannot_open:/etc/target
 ^kmsg.DebugCtl=#DebugExceptions=
 ^kmsg.DHCP/BOOTP:Reply_not_for_us_on_eth#,op\[#\]xid\[#\]
+^kmsg.Disabling_IRQ
 ^kmsg.DMAR:DRHD:handling_fault_status_reg
 ^(kmsg|dmesg).genirq:Flags_mismatch_irq##\(serial\)vs.#\(goldfish_pdev_bus\)
 ^kmsg.DRM_emulated:enable_CONFIG_FB_LITTLE_ENDIAN_to_support_this_framebuffer
@@ -135,6 +136,7 @@
 ^kmsg.gpio_winbond:not_an_our_chip
 ^kmsg.GS:sel=#,attr=#,limit=#,base=
 ^kmsg.Guest_State\*\*\*
+^kmsg.handlers
 ^kmsg.hfi1#:ff:#:hfi1_0:get_platform_config:Failed_to_get_platform_config,falling_back_to_sub-optimal_default_file
 ^kmsg.hfi1#:ff:#:hfi1_0:get_platform_config:No_default_platform_config_file_found
 ^kmsg.hfi1#:ff:#:hfi1_0:unable_to_obtain_working_firmware
@@ -150,6 +152,7 @@
 ^kmsg.in_atomic\(\):#,irqs_disabled\(\):
 ^kmsg.Interruptibility=#ActivityState=
 ^kmsg.ioatdma#:#:#:
+^kmsg.irq#:nobody_cared
 ^kmsg.jbd2_journal_bmap:journal_block_not_found_at_offset#on_
 ^kmsg.Kernel_command_line
 ^kmsg.kvm:host_upgrade_recommended
@@ -211,6 +214,7 @@
 ^kmsg.tsc:HPET/PMTIMER_calibration_failed
 ^kmsg.TSC_Offset=
 ^kmsg.tsc:Unable_to_calibrate_against_PIT
+^kmsg.usb_hcd_irq
 ^kmsg.usb_usb#-port#:Cannot_enable.Maybe_the_USB_cable_is_bad\?
 ^kmsg.veth[0-9]*:Failed_to_cycle_device_veth
 ^kmsg.VFS:Filesystem_freeze_failed
