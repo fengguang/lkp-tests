@@ -568,9 +568,7 @@ class Job
     init_program_options()
     for_each_in(@job, @referenced_programs.keys) do |_pk, h, p_n, p_args|
       k = hash_key_re_string(@job, p_n, @job['pp'].keys)
-      next if k.nil?
-
-      unless @job[k].is_a?(Hash)
+      if k && !@job[k].is_a?(Hash)
         @job['pp'][k] = @job[k]
         next
       end
