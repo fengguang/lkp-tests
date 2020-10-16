@@ -705,7 +705,7 @@ phoronix-test-suite:
   - test: startup-time-1.4.1
     option_a:
       # - Only Sequential Reads # need more than 1h
-      - Sequential Reads + Writes
+      # - Sequential Reads + Writes
       # - Test All Options
     option_b:
       - GNOME Terminal
