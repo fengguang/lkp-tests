@@ -118,7 +118,7 @@ phoronix-test-suite:
       - Atol
       - Ctype
       - Math Library
-      - Random Numbers
+      # - Random Numbers # runtime > 30m
       # - Test All Options
   - test:
     - crafty-1.4.4
