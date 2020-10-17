@@ -382,7 +382,8 @@ class Job
     if defaults.is_a?(Hash) && !defaults.empty?
       @defaults[source_file_symkey(file)] = nil
       revise_hash(@defaults, defaults, true)
-      load_hosts_config if check_load_hosts_config(defaults)
+      @defaults.merge!(@overrides)
+      load_hosts_config if check_load_hosts_config(@defaults)
     end
     @file_loaded[file] = true
     true
