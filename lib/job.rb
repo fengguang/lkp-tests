@@ -401,6 +401,11 @@ class Job
       @file_loaded ||= {}
     end
 
+    Dir.glob(["/etc/compass-ci/defaults/*.yaml",
+              "#{ENV['HOME']}/.config/compass-ci/defaults/*.yaml"]).each do |file|
+      load_one_defaults(file, @job)
+    end
+
     i = include_files
     job = deepcopy(@job)
     revise_hash(job, deepcopy(@job2), true)
@@ -418,11 +423,6 @@ class Job
       expand_params(false)
     end
     @jobx = nil
-
-    Dir.glob(["/etc/compass-ci/defaults/*.yaml",
-              "#{ENV['HOME']}/.config/compass-ci/defaults/*.yaml"]).each do |file|
-      load_one_defaults(file, job)
-    end
 
     for_each_in(job, i.keys) do |_pk, _h, k, v|
       job['___'] = v
