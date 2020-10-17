@@ -307,10 +307,10 @@ class Job
       hwconfig = load_yaml(hosts_file, nil)
       @job[source_file_symkey(hosts_file)] = nil
       @job.merge!(hwconfig) { |_k, a, _b| a } # job's key/value has priority over hwconfig
+      @load_hosts_done = true
     end
 
     @job['arch'] ||= 'aarch64'
-    @load_hosts_done = true
   end
 
   def check_set_tbox_group
