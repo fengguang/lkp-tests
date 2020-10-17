@@ -3,12 +3,18 @@ suite: fio-basic
 category: benchmark
 runtime: 60
 
+disk:
+- 1HDD
+fs:
+- ext4
+nr_task: 24
+
 fio-setup-basic:
   ioengine: libaio
   iodepth: 1024
-  nr_task: 2
   test_size: 1G
   rwmixread: 70
+  direct: 1
   rw:
   - write
   - read
