@@ -11,7 +11,7 @@ require 'eventmachine'
 require 'json'
 
 class Monitor
-  attr_accessor :monitor_url, :query, :overrides, :action, :job
+  attr_accessor :monitor_url, :query, :overrides, :action, :job, :result
 
   def initialize(monitor_url = '', query = {}, action = {})
     @monitor_url = monitor_url
@@ -25,6 +25,7 @@ class Monitor
     @exit_status_code = 0
     @defaults = {}
     load_default
+    @result = []
   end
 
   def load_default
@@ -122,6 +123,7 @@ class Monitor
 
       ws.on :message do |event|
         data = JSON.parse(event.data)
+        @result << data
 
         output(data)
         connect(data, ws)
