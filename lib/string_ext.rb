@@ -10,16 +10,12 @@ class String
       .gsub(/[^[:print:]\n]/, '')
   end
 
-  def remediate_invalid_byte_sequence(options = {})
-    clone
-      .force_encoding('UTF-8')
-      .encode('UTF-8', 'UTF-8', options.merge(invalid: :replace, undef: :replace))
-  end
-
-  def replace_invalid_utf8!(to = '_')
+  # invalid byte sequence in US-ASCII (ArgumentError)
+  def resolve_invalid_bytes(options = {replace: '_'})
     return self if valid_encoding?
 
-    encode!('UTF-8', 'UTF-8', invalid: :replace, undef: :replace, replace: to)
+    clone.force_encoding('UTF-8')
+         .encode('UTF-8', 'UTF-8', options.merge(invalid: :replace, undef: :replace))
   end
 
   def strip_nonprintable_characters

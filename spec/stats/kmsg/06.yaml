@@ -1,0 +1,26 @@
+
+# irq .* nobody cared (try booting with the .* option)
+irq#:nobody_cared(try_booting_with_the~irqpoll~option): 1
+message:irq#:nobody_cared(try_booting_with_the~irqpoll~option): kern  :err   : [   13.708876] irq 16: nobody cared (try booting with the "irqpoll" option)
+pattern:irq#:nobody_cared(try_booting_with_the~irqpoll~option): irq .* nobody cared (try booting with the .* option)
+
+# handlers:
+handlers: 1
+message:handlers: kern  :err   : [   13.708941] handlers:
+pattern:handlers: handlers:
+
+# usb_hcd_irq
+usb_hcd_irq: 1
+message:usb_hcd_irq: kern  :err   : [   13.708945] [<0000000013155f90>] usb_hcd_irq
+pattern:usb_hcd_irq: usb_hcd_irq
+
+# Disabling IRQ
+Disabling_IRQ: 1
+message:Disabling_IRQ: kern  :emerg : [   13.708946] Disabling IRQ #16
+pattern:Disabling_IRQ: Disabling IRQ
+
+timestamp:last: 13.708946
+timestamp:irq#:nobody_cared(try_booting_with_the~irqpoll~option): 13.708876
+timestamp:handlers: 13.708941
+timestamp:usb_hcd_irq: 13.708945
+timestamp:Disabling_IRQ: 13.708946

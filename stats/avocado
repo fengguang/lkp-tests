@@ -7,7 +7,7 @@ require "#{LKP_SRC}/lib/string_ext"
 stats = {}
 
 while (line = STDIN.gets)
-  line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
+  line = line.resolve_invalid_bytes
   case line
   when / (\(\d*\/\d*\))(.*):(.*):  (\w+)(.*)/
     test_file = $2.strip

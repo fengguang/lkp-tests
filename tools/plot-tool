@@ -18,6 +18,7 @@ $y_min = nil
 $y_relative = false
 $x_range = [nil, nil]
 $opt_diff = nil
+$opt_diff_distance = 1
 
 opt_parser = OptionParser.new do |opts|
   opts.banner = 'Usage: mplot matrix.json stat_field [matrix.json stat_filed]... [OPTION...]'
@@ -61,6 +62,10 @@ opt_parser = OptionParser.new do |opts|
     $opt_diff = true
   end
 
+  opts.on('--diff-distance DISTANCE', 'The diff distance') do |distance|
+    $opt_diff_distance = distance.to_i
+  end
+
   opts.on_tail('-h', '--help', 'show help message') do
     puts opts
     exit
@@ -91,12 +96,12 @@ def plot_it(matrix_stat_arr)
       plotter.set_x_stat_key(rel_x)
     end
     if $opt_diff
-      dstat = "diff-#{stat}"
+      dstat = "diff#{$opt_diff_distance}-#{stat}"
       ys = matrix[stat]
       next unless ys
 
-      dys = (1...ys.length).map { |i| ys[i] - ys[i - 1] }
-      matrix[dstat] = dys
+      dys = ($opt_diff_distance...ys.length).map { |i| ys[i] - ys[i - $opt_diff_distance] }
+      matrix[dstat] = [0] * $opt_diff_distance + dys
       stat = dstat
     elsif $y_relative
       rstat = "rel-#{stat}"

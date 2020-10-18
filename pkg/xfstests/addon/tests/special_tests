@@ -13,8 +13,12 @@ generic-299
 generic-387
 # /dev/mapper/logwrites-test xfs does not support -o dax
 generic-470
+# runtime >1800s
+generic-476
 # test is unstable and the average running time is about 400 seconds
 generic-521
+# runtime >1800s
+generic-522
 # the filesystem has valuable metadata changes in a log which needs to 11 be replayed
 xfs-083
 # reflink not supported by test filesystem type: xfs

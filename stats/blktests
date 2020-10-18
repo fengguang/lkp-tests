@@ -7,6 +7,8 @@ require "#{LKP_SRC}/lib/string_ext"
 results = Hash.new { |h, k| h[k] = [] }
 
 def stat_line(line, results)
+  line = line.resolve_invalid_bytes
+
   case line
   when /^(.+? ).*\[passed\]/
     results['passes'] += $1.rstrip.tr('/', '.').split
@@ -22,7 +24,6 @@ def stat_line(line, results)
 end
 
 while (line = STDIN.gets)
-  line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
   stat_line(line, results)
 end
 

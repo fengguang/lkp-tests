@@ -21,6 +21,7 @@ set_perf_path "/lkp/benchmarks/perf/perf"
 setup_wait
 wait_timeout $delay
 
+$perf -v || die 'perf command failed'
 while true; do
 	$perf record -g -a -q -o perf.record -- timeout $duration $WAIT_POST_TEST_CMD
 

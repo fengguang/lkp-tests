@@ -1,9 +1,9 @@
 bpf.test_lirc_mode2_user.ignored_by_lkp: 1
 bpf.test_tc_tunnel.sh.ignored_by_lkp: 1
 bpf.test_lwt_seg6local.sh.ignored_by_lkp: 1
-bpf.test_verifier.invalid_and_of_negative_number.pass: 1
-bpf.test_verifier.bounds_check_after_truncation_of_boundary_crossing_range_(1).pass: 1
-bpf.test_verifier.bpf_map_lookup_elem(xskmap,_&key);_xs_>queue_id.skip: 1
+bpf.test_verifier.u_invalid_and_of_negative_number.pass: 1
+bpf.test_verifier.u_bounds_check_after_truncation_of_boundary_crossing_range_(1).pass: 1
+bpf.test_verifier.p_bpf_map_lookup_elem(xskmap,_&key);_xs_>queue_id.skip: 1
 bpf.test_verifier.pass: 1
 bpf.test_tag.pass: 1
 bpf.test_maps.test_array_map_batch_ops.pass: 1

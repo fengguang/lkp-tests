@@ -42,6 +42,7 @@ setup_wait
 # with perf profile's.
 perf_data=$TMP/perf-pt.data
 
+$perf -v || die 'perf command failed'
 # WAIT_POST_TEST_CMD will start at the same time with perf
 # the former will wait for (delay+duration) before exit
 # the latter will wait for (delay) before collecting samples

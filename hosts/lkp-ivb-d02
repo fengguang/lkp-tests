@@ -2,13 +2,15 @@ model: Ivy Bridge
 nr_node: 1
 nr_cpu: 4
 memory: 8G
-nr_hdd_partitions: 2
+nr_hdd_partitions: 4
 nr_ssd_partitions: 1
 ssd_partitions:
  /dev/disk/by-id/ata-INTEL_SSDSC2BA400G4_BTHV634505W5400NGN-part1
 hdd_partitions:
- /dev/disk/by-id/ata-ST1000DM003-1CH162_Z1DBQSB0-part1
- /dev/disk/by-id/ata-ST1000DM003-1CH162_Z1DBQSB0-part2
-swap_partitions: /dev/disk/by-id/ata-ST1000DM003-1CH162_Z1DBQSB0-part3
-rootfs_partition: /dev/disk/by-id/ata-ST1000DM003-1CH162_Z1DBQSB0-part4
+ /dev/disk/by-id/ata-ST4000NM0035-1V4107_ZC127QJQ-part1
+ /dev/disk/by-id/ata-ST4000NM0035-1V4107_ZC127QJQ-part2
+ /dev/disk/by-id/ata-ST4000NM0035-1V4107_ZC127QJQ-part3
+ /dev/disk/by-id/ata-ST4000NM0035-1V4107_ZC127QJQ-part4
+swap_partitions: /dev/disk/by-id/ata-ST4000NM0035-1V4107_ZC127QJQ-part6
+rootfs_partition: /dev/disk/by-id/ata-ST4000NM0035-1V4107_ZC127QJQ-part5
 brand: Intel(R) Core(TM) i3-3220 CPU @ 3.30GHz

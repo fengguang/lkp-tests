@@ -171,7 +171,7 @@ def grep_crash_head(dmesg_file)
   end
 
   raw_oops.each_line do |line|
-    line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
+    line = line.resolve_invalid_bytes
     if line =~ oops_re
       oops_map[$1] ||= line
       has_oom = true if line.index(OOM1)
@@ -286,6 +286,9 @@ def analyze_error_id(line)
   case line
   when /(INFO: rcu[_a-z]* self-detected stall on CPU)/,
        /(INFO: rcu[_a-z]* detected stalls on CPUs\/tasks:)/,
+       /(Kernel panic - not syncing:)/,
+       /(related general protection fault:)/,
+       /(BUG: using __this_cpu_read\(\) in preemptible)/,
        /(BUG: unable to handle kernel)/,
        /(BUG: unable to handle kernel) NULL pointer dereference/,
        /(BUG: unable to handle kernel) paging request/,
@@ -364,6 +367,10 @@ def analyze_error_id(line)
     # [   12.344185 ] INFO: Slab 0x(____ptrval____) objects=22 used=11 fp=0x(____ptrval____) flags=0x10201
     bug_to_bisect = oops_to_bisect_pattern line
     line = $1 + '(#) ' + $2
+  when /^[0-9a-z]+>\] (.+)/
+    # [   13.708945 ] [<0000000013155f90>] usb_hcd_irq
+    line = $1
+    bug_to_bisect = oops_to_bisect_pattern line
   else
     bug_to_bisect = oops_to_bisect_pattern line
   end

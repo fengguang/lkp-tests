@@ -9,8 +9,6 @@ md5sums=('SKIP' 'SKIP')
 
 build() {
 	cd "$srcdir/v4l-utils"
-	local newest_stable=$(git describe --tags $(git rev-list --tags --max-count=1))
-	git checkout -B $newest_stable
 	./bootstrap.sh || return
 	./configure --prefix="${pkgdir}/lkp/benchmarks/v4l2" || return
 	make || return

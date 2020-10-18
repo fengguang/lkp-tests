@@ -21,12 +21,12 @@ end
 
 def futex_stat(line, futex, stats)
   case line
-  when /^(futex.+): /, /# (futex.+): /
-    futex['subtest'] = $1
-  when /^\s+Arguments: (.+)/, /^# \s+Arguments: (.+)/
-    futex['argument'] = $1.tr(' ', '_')
-  when /Result\:\s+(PASS|FAIL)/, /^selftests\:.*(PASS|FAIL)/, /^(ok|not ok) \d+/
-    result = $1 == 'ok' || $1 == 'PASS' ? 'PASS' : 'FAIL'
+  when /^(# )*(futex.+): /
+    futex['subtest'] = $2
+  when /^(# )*\s+Arguments: (.+)/
+    futex['argument'] = $2.tr(' ', '_')
+  when /Result\:\s+(PASS|FAIL)/, /^selftests\:.*(PASS|FAIL)/, /^(# )*(ok|not ok) \d+/
+    result = $2 == 'ok' || $1 == 'PASS' ? 'PASS' : 'FAIL'
     futex_stat_result(futex, result, stats)
   end
 end
@@ -109,11 +109,17 @@ def detail_stat(test_name, _test_case_name, _result, stats)
 end
 
 while (line = STDIN.gets)
-  line = line.remediate_invalid_byte_sequence(replace: '_') unless line.valid_encoding?
+  line = line.resolve_invalid_bytes
 
   case line
   when %r{make: Entering directory .*/(.*)'}
     test_name = Regexp.last_match[1]
+    if test_name == 'kmod'
+        last_subtest_case_name = nil
+        subtest_case_name = nil
+        subtest_case_result = nil
+        all_subtest_case_skip = true
+    end
   when /^ok kernel supports resctrl filesystem/
     test_name = 'resctrl'
   when %r{make: Leaving directory .*/(.*)'}
@@ -142,13 +148,6 @@ while (line = STDIN.gets)
     next unless test_name == 'capabilities'
 
     test_case_name = $1.strip.tr(' ', '_').tr('-', '_').downcase
-  when /^# selftests: x86: (.*)/
-    test_case_name = $1
-    subtest_case_name = nil
-  when /^# \[RUN\](.*)/
-    next unless test_name == 'x86'
-
-    subtest_case_name = $1
   when /^Pass (\d+) Fail (\d+) Xfail (\d+) Xpass (\d+) Skip (\d+) Error (\d+)/
     next unless test_name == 'capabilities'
 
@@ -158,6 +157,7 @@ while (line = STDIN.gets)
     stats << "#{test_name}.#{test_case_name}.#{result}: 1"
   when /^(Check .*)... \[(OK|FAIL|SKIP)\]/
     next unless test_name == 'exec'
+    next if $1 =~ /execveat/
 
     detail_stat('exec', $1, $2, stats)
   when /^(PASS|FAIL|SKIP): (.*)/
@@ -171,9 +171,9 @@ while (line = STDIN.gets)
   when /^# (PASS|FAIL|SKIP): (.*)/
     next unless %w(net netfilter).include? test_name
 
-    subtest_stat(test_name, test_case_name, $2, $1, stats)
+    subtest_stat(test_name, test_case_name, $2, $1, stats) unless %w(fib_nexthops.sh).include? test_case_name
   when /^# (Single|Multipath|Single|Admin|Local|Single|FIB|IPv4|IPv6|Basic|Legacy|Routing) (.*)/
-    next unless %w(fib_tests.sh fib_nexthops.sh icmp_redirect.sh).include? test_case_name
+    next unless %w(icmp_redirect.sh).include? test_case_name
 
     subtest_case_name1 = $1 + ' ' + $2
   when /^# TEST SECTION: (.*)/
@@ -185,16 +185,16 @@ while (line = STDIN.gets)
 
     subtest_case_name2 = $1
   when /^#     TEST: (.*) \[ ?(OK|FAIL|SKIP) ?\]$/
-    next unless %w(fib_tests.sh fib-onlink-tests.sh fib_rule_tests.sh).include? test_case_name
+    next unless %w(fib-onlink-tests.sh fib_rule_tests.sh).include? test_case_name
 
     subtest_case_name = subtest_case_name1 + '.' + $1
     subtest_case_name = subtest_case_name1 + '.' + subtest_case_name2 + '.' + $1 if test_case_name == 'fib-onlink-tests.sh'
     subtest_stat('net', test_case_name, subtest_case_name, $2, stats)
   when /^# TEST: (.*) \[ ?(PASS|OK|FAIL|SKIP) ?\]/
-    next unless %w(pmtu.sh fib_nexthop_multiprefix.sh fib_nexthops.sh icmp_redirect.sh ip6_gre_headroom.sh).include? test_case_name
+    next unless %w(pmtu.sh icmp_redirect.sh ip6_gre_headroom.sh).include? test_case_name
 
     subtest_case_name = $1
-    subtest_case_name = subtest_case_name1 + '.' + $1 if %w(fib_nexthops.sh icmp_redirect.sh).include? test_case_name
+    subtest_case_name = subtest_case_name1 + '.' + $1 if %w(icmp_redirect.sh).include? test_case_name
     subtest_stat('net', test_case_name, subtest_case_name, $2, stats)
   when /^#   (net|port)(.*)\[( OK|FAIL|SKIP)/
     next unless test_case_name == 'nft_concat_range.sh'
@@ -206,43 +206,56 @@ while (line = STDIN.gets)
 
     subtest_case_name = $1 + ' ' + $2
     subtest_stat('net', test_case_name, subtest_case_name, $3, stats)
-  when /^# \[(OK|FAIL|SKIP)\](.*)/
-    if test_case_name == 'ipv6_flowlabel.sh'
-      subtest_case_name = $2
-      subtest_stat('net', test_case_name, subtest_case_name, $1, stats)
-    elsif test_name == 'x86' && subtest_case_name
-      # [RUN] ARCH_SET_GS(0x1), then schedule to 0x0
-      #       Before schedule, set selector to 0x3
-      #       other thread: ARCH_SET_GS(0x0) -- sel is 0x0
-      # [FAIL]        GS/BASE changed from 0x3/0x0 to 0x0/0x0
-      # [RUN] ARCH_SET_GS(0x1), then schedule to 0x0
-      #       Before schedule, set selector to 0x2b
-      #       other thread: ARCH_SET_GS(0x0) -- sel is 0x0
-      # [OK]  GS/BASE remained 0x2b/0x0
-      result = $1
-      detail = $2
-
-      # extract address to distiguish different RUN with same name
-      match = detail.match(/GS\/BASE (remained|changed from) (?<address>[^\s]+)/)
-      match ||= {}
-
-      subtest_stat('x86', test_case_name, "#{subtest_case_name} #{match[:address]}", result, stats)
-    end
-  when /^(kmod_test.*): (OK|FAIL|SKIP)/
+  when /^# selftests: kmod: (.*)/
+    test_case_name = $1
+  when /^# Running test: (kmod_test.*) - run/, /^# Test completed/
     next unless test_name == 'kmod'
 
-    detail_stat('kmod', $1, $2, stats)
+    last_subtest_case_name = subtest_case_name
+    # '# Test completed' marks the whole kmod tests finished, where no $1
+    subtest_case_name = $1 unless $1.nil?
+    # a test may run several times, regard them as one test
+    # # Running test: kmod_test_0005 - run #1
+    # # kmod_test_0005: OK! - loading kmod test
+    # # kmod_test_0005: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+    # # Tue Sep 15 17:57:54 UTC 2020
+    # # Running test: kmod_test_0005 - run #2
+    # # kmod_test_0005: OK! - loading kmod test
+    # # kmod_test_0005: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+    # need notice when meet 'Test completed', when $1 is nil, so
+    # subtest_case_name doesn't change. below "&& !$1.nil?" is used to
+    # avoid missing last subtest handling
+    next if subtest_case_name == last_subtest_case_name && !$1.nil?
+
+    # when starting 'Running' first test, there is no last_subtest_case_name
+    next if last_subtest_case_name.nil?
+    # subtest_case_result and all_subtest_case_skip are still corresponding to last_subtest_case_name here.
+    # need calibrate result in one situation when meet -
+    # (1) no 'FAIL'
+    # (2) not all subtests are 'SKIP'
+    # whatever the subtest_case_result is 'OK' or 'SKIP' here, regard whole subtest 'pass'
+    subtest_case_result = 'OK' if subtest_case_result != 'FAIL' && !all_subtest_case_skip
+    subtest_stat('kmod', test_case_name, last_subtest_case_name, subtest_case_result, stats)
+    # reset subtest_case_result and all_subtest_case_skip for new subtest
+    subtest_case_result = nil
+    all_subtest_case_skip = true
+  when /^# (kmod_test.*|kmod_check_visibility): (OK|FAIL|SKIP)/
+    next unless test_name == 'kmod'
+
+    # if any single test fails, regard the whole subtest fail
+    next if subtest_case_result == 'FAIL'
+    subtest_case_result = $2
+    # if results are OK+SKIP, will regard as 'pass'.
+    # when all subtest results are 'SKIP', regard the subtest as 'skip'
+    next unless all_subtest_case_skip
+    all_subtest_case_skip = subtest_case_result == 'SKIP'
   when /# selftests: membarrier: (.*)/
     test_case_name = $1
-  when /^# (ok|fail|skip) \d+ (sys.membarrier .*)/
-    next unless test_name == 'membarrier'
-
-    subtest_stat('membarrier', test_case_name, $2, $1, stats)
   when /# selftests: pidfd: (.*)/
     test_case_name = $1
   when /# (ok|fail|skip) \d+ (.*):(.*)/
     if test_name == 'pidfd'
-      subtest_stat('pidfd', test_case_name, $2, $1, stats)
+      subtest_stat('pidfd', test_case_name, $2, $1, stats) unless test_case_name == 'pidfd_test'
     elsif test_name == 'timens'
       subtest_case_name = $2 + ':' + $3
       subtest_stat('timens', test_case_name, subtest_case_name, $1, stats)
@@ -252,13 +265,12 @@ while (line = STDIN.gets)
   when /# selftests: timens: (.*)/
     test_case_name = $1
   when /# (ok|fail|skip) \d+ (.*)/
-    next unless test_name == 'timens'
-
-    subtest_stat('timens', test_case_name, $2, $1, stats)
+    futex_stat(line, tests_stats['futex'], stats) if test_name == 'futex'
+    subtest_stat('timens', test_case_name, $2, $1, stats) if test_name == 'timens'
   when /^# selftests: timers: (.*)/
     test_case_name = $1
   when /^# (.*)(\.\.\.|:| ) \[(OK|FAIL|SKIP|UNSUPPORTED)\]/
-    next unless test_name == 'timers'
+    next unless test_name == 'timers' && test_case_name != 'set-timer-lat'
 
     subtest_stat('timers', test_case_name, $1, $3, stats)
   when /^# running (.*)/
@@ -269,12 +281,6 @@ while (line = STDIN.gets)
     next unless test_name == 'vm'
 
     detail_stat('vm', test_case_name, $1, stats)
-  when /.*\[\d+\] (.*)\[(PASS|FAIL|SKIP|UNRESOLVED|XFAIL|UNTESTED)\]/
-    next unless test_name == 'ftrace'
-
-    test_case_name = $1.strip.tr(' ', '_').tr('-', '_').downcase
-    result = $2.downcase
-    stats << "#{test_name}.#{test_case_name}.#{result}: 1"
   when /^*selftests.*: (.*) .*(\[|\[ )(PASS|FAIL|SKIP)/
     next if test_name == 'bpf'
 
@@ -297,10 +303,10 @@ while (line = STDIN.gets)
     subtest_stat('livepatch', test_case_name, $1, $2, stats)
   when /^# selftests: bpf: (.*)/
     test_case_name = $1
-  when /^# #\d+\/(p|u) (.*) (OK|SKIP|FAIL).*/
+  when /^# #\d+\/(.*) (OK|SKIP|FAIL).*/
     next unless test_case_name == 'test_verifier'
 
-    subtest_stat('bpf', test_case_name, $2, $3, stats)
+    subtest_stat('bpf', test_case_name, $1, $2, stats)
   when /^# #\d+(\/\d+)? (.*):(OK|FAIL|SKIP)/
     next unless %w(test_progs test_progs-no_alu32).include? test_case_name
 
@@ -357,7 +363,7 @@ while (line = STDIN.gets)
     io = Regexp.last_match[1]
   when %r{(\d+) nsec/msg}
     mqueue_speed[mqueue_test + '.' + io] = Regexp.last_match[1].to_i
-  when /: recipe for target.+failed$/
+  when /: recipe for target.+failed$/, /^make: \*\*\* (.*) (Error \d+|Stop\.)$/
     next unless test_name
 
     # do not count make fail in nr_test, which is for sub test number
@@ -365,13 +371,13 @@ while (line = STDIN.gets)
   when /^ignored_by_lkp (.*) test/
     stats << "#{$1}.ignored_by_lkp: 1"
   when /^(ok|not ok) \d+ selftests: (\S*): (\S*)( # SKIP)?/
-    next if test_name == 'ftrace' || test_name == 'x86'
+    next if %w(memory-hotplug).include? test_name
 
     test_name = $2
     test_case_name = $3
     result = $4 =~ /SKIP/ ? 'skip' : 'fail'
     result = 'pass' if $1 == 'ok'
-    stats << "#{test_name}.#{test_case_name}.#{result}: 1"
+    stats << "#{test_name}.#{test_case_name}.#{result}: 1" unless %w(pmtu.sh fib_rule_tests.sh reuseport_addr_any.sh traceroute.sh altnames.sh icmp_redirect.sh ip6_gre_headroom.sh fib-onlink-tests.sh mq_open_tests pidfd_fdinfo_test pidfd_open_test pidfd_poll_test pidfd_wait pstore_tests pstore_post_reboot_tests kmod.sh).include? test_case_name
   when /^# (.*) ?\[ (OK|FAIL|SKIP) \]/
     next unless test_name == 'mptcp'
 

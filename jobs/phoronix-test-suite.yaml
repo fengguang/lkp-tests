@@ -329,7 +329,7 @@ phoronix-test-suite:
     option_a:
       - Gaming
       - Compile
-      - Audio
+      # - Audio # run more than 40m on lkp-skl-nuc2
       - Video
       - X
       - Burn
@@ -340,7 +340,7 @@ phoronix-test-suite:
     option_b:
       - Gaming
       - Compile
-      - Audio
+      # - Audio # no passed job in our env
       - Video
       - X
       - Burn
@@ -585,13 +585,13 @@ phoronix-test-suite:
   - test: pgbench-1.9.1
     option_a:
       - Buffer Test
-      - Mostly RAM
-      - On-Disk
+      # - Mostly RAM # need more than 3h
+      # - On-Disk # need more than 3h
       # - Test All Options
     option_b:
       - Single Thread
       - Normal Load
-      - Heavy Contention
+      # - Heavy Contention
       # - Test All Options
     option_c:
       - Read Write
@@ -704,7 +704,7 @@ phoronix-test-suite:
     - sqlite-speedtest-1.0.0
   - test: startup-time-1.4.1
     option_a:
-      - Only Sequential Reads
+      # - Only Sequential Reads # need more than 1h
       - Sequential Reads + Writes
       # - Test All Options
     option_b:

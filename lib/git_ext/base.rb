@@ -44,6 +44,11 @@ module Git
       !command('branch', ['--list', '-a', pattern]).empty?
     end
 
+    def fix_commit_exist?(branch, commit)
+      short_commit = commit[0..7]
+      !command("log --grep 'Fixes:' #{commit}..#{branch} | grep \"Fixes: #{short_commit}\"").empty?
+    end
+
     def linux_last_release_tag_strategy(commit_sha)
       version = patch_level = sub_level = rc = nil
 

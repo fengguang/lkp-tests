@@ -32,6 +32,7 @@ rm -rf $perf_data
 . $LKP_SRC/lib/wait.sh
 setup_wait
 
+$perf -v || die 'perf command failed'
 $perf sched record -g -o $perf_data -D $((delay * 1000)) \
 	-- $WAIT_POST_TEST_CMD --timeout $((delay + duration))
 

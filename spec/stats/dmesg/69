@@ -1,0 +1,68 @@
+[   84.600934] BUG: using __this_cpu_read() in preemptible [00000000] code: trinity-c4/1161
+[   84.603374] caller is lockdep_hardirqs_on_prepare+0x2f/0x1c0
+[   84.605478] CPU: 1 PID: 1161 Comm: trinity-c4 Not tainted 5.9.0-rc8-14224-g060196553d11 #1
+[   84.607758] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+[   84.610030] Call Trace:
+[   84.611839]  dump_stack+0x8d/0xb5
+[   84.613695]  check_preemption_disabled+0xc3/0xe0
+[   84.615623]  lockdep_hardirqs_on_prepare+0x2f/0x1c0
+[   84.617562]  trace_hardirqs_on+0x40/0x100
+[   84.619419]  __bad_area_nosemaphore+0x63/0x180
+[   84.621296]  exc_page_fault+0x5d/0x260
+[   84.623105]  ? asm_exc_page_fault+0x8/0x30
+[   84.624908]  asm_exc_page_fault+0x1e/0x30
+[   84.626681] RIP: 0023:0x805cbe8
+[   84.628354] Code: 76 00 8b 7c 24 40 8b 74 24 44 8b 4c 24 44 01 fe 85 c9 0f 84 d1 fd ff ff 8d 76 00 8d bc 27 00 00 00 00 e8 8b 02 00 00 83 c7 01 <88> 47 ff 39 fe 75 f1 e9 b3 fd ff ff 8d 74 26 00 8b 54 24 44 85 d2
+[   84.632704] RSP: 002b:00000000fffc6d50 EFLAGS: 00010282
+[   84.634542] RAX: 00000000694e4347 RBX: 000000000813d000 RCX: 00000000694e4347
+[   84.636501] RDX: 0000000008ad1180 RSI: 00000000f6c00000 RDI: 00000000f6bff001
+[   84.638445] RBP: 00000000f751a030 R08: 0000000000000000 R09: 0000000000000000
+[   84.640356] R10: 0000000000000000 R11: 0000000000000206 R12: 0000000000000000
+[   84.642254] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+[   84.651027] BUG: using __this_cpu_read() in preemptible [00000000] code: trinity-c4/1161
+[   84.652978] caller is lockdep_hardirqs_on+0x38/0x120
+[   84.654680] CPU: 1 PID: 1161 Comm: trinity-c4 Not tainted 5.9.0-rc8-14224-g060196553d11 #1
+[   84.656617] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+[   84.658534] Call Trace:
+[   84.659971]  dump_stack+0x8d/0xb5
+[   84.661453]  check_preemption_disabled+0xc3/0xe0
+[   84.663003]  ? __bad_area_nosemaphore+0x63/0x180
+[   84.664529]  lockdep_hardirqs_on+0x38/0x120
+[   84.666006]  __bad_area_nosemaphore+0x63/0x180
+[   84.667476]  exc_page_fault+0x5d/0x260
+[   84.668864]  ? asm_exc_page_fault+0x8/0x30
+[   84.670259]  asm_exc_page_fault+0x1e/0x30
+[   84.671625] RIP: 0023:0x805cbe8
+[   84.672916] Code: 76 00 8b 7c 24 40 8b 74 24 44 8b 4c 24 44 01 fe 85 c9 0f 84 d1 fd ff ff 8d 76 00 8d bc 27 00 00 00 00 e8 8b 02 00 00 83 c7 01 <88> 47 ff 39 fe 75 f1 e9 b3 fd ff ff 8d 74 26 00 8b 54 24 44 85 d2
+[   84.676475] RSP: 002b:00000000fffc6d50 EFLAGS: 00010282
+[   84.677939] RAX: 00000000694e4347 RBX: 000000000813d000 RCX: 00000000694e4347
+[   84.679524] RDX: 0000000008ad1180 RSI: 00000000f6c00000 RDI: 00000000f6bff001
+[   84.681084] RBP: 00000000f751a030 R08: 0000000000000000 R09: 0000000000000000
+[   84.682625] R10: 0000000000000000 R11: 0000000000000206 R12: 0000000000000000
+[   84.684143] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+[   84.717442] audit: type=1326 audit(1602340844.722:42): auid=4294967295 uid=65534 gid=65534 ses=4294967295 pid=1137 comm="trinity-c7" exe="/bin/trinity" sig=9 arch=40000003 syscall=19 compat=1 ip=0xf7fa8549 code=0x0
+[   91.876529] audit: type=1326 audit(1602340851.881:43): auid=4294967295 uid=65534 gid=65534 ses=4294967295 pid=1241 comm="trinity-c6" exe="/bin/trinity" sig=9 arch=40000003 syscall=19 compat=1 ip=0xf7fa8549 code=0x0
+[   92.273600] audit: type=1326 audit(1602340852.279:44): auid=4294967295 uid=65534 gid=65534 ses=4294967295 pid=1185 comm="trinity-c2" exe="/bin/trinity" sig=9 arch=40000003 syscall=19 compat=1 ip=0xf7fa8549 code=0x0
+[   92.286524] [main] 30650 iterations. [F:22970 S:7505 HI:1950]
+[   92.286531] 
+[   93.000184] BUG: using __this_cpu_read() in preemptible [00000000] code: trinity-c5/1224
+[   93.001882] caller is lockdep_hardirqs_on_prepare+0x2f/0x1c0
+[   93.003351] CPU: 1 PID: 1224 Comm: trinity-c5 Not tainted 5.9.0-rc8-14224-g060196553d11 #1
+[   93.005017] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+[   93.006689] Call Trace:
+[   93.007907]  dump_stack+0x8d/0xb5
+[   93.009200]  check_preemption_disabled+0xc3/0xe0
+[   93.010590]  lockdep_hardirqs_on_prepare+0x2f/0x1c0
+[   93.012002]  trace_hardirqs_on+0x40/0x100
+[   93.013353]  __bad_area_nosemaphore+0x63/0x180
+[   93.014708]  exc_page_fault+0x5d/0x260
+[   93.015977]  ? asm_exc_page_fault+0x8/0x30
+[   93.017262]  asm_exc_page_fault+0x1e/0x30
+[   93.018526] RIP: 0023:0x805cdbd
+[   93.019713] Code: 44 8b 44 24 40 c6 44 30 ff 00 83 c4 2c 5b 5e 5f 5d c3 8d 76 00 31 c0 89 07 e9 28 fc ff ff 8d b4 26 00 00 00 00 e8 03 f8 ff ff <89> 07 e9 15 fc ff ff 8d b6 00 00 00 00 8d bf 00 00 00 00 e8 de d6
+[   93.023152] RSP: 002b:00000000fffc6d50 EFLAGS: 00010286
+[   93.024587] RAX: 00000000f6bfd000 RBX: 000000000813d000 RCX: 0000000000001000
+[   93.026174] RDX: 0000000000000003 RSI: 0000000000000004 RDI: 00000000f7501000
+[   93.027774] RBP: 0000000055555556 R08: 0000000000000000 R09: 0000000000000000
+[   93.029336] R10: 0000000000000000 R11: 0000000000000206 R12: 0000000000000000
+[   93.030875] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000

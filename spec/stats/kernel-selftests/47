@@ -1,0 +1,12 @@
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd/tools/testing/selftests/net'
+# selftests: net: traceroute.sh
+# SKIP: Could not run IPV6 test without traceroute6
+# SKIP: Could not run IPV4 test without traceroute
+#
+# Tests passed:   0
+# Tests failed:   0
+ok 32 selftests: net: traceroute.sh
+# selftests: net: altnames.sh
+# SKIP: jq not installed
+not ok 36 selftests: net: altnames.sh # exit=1
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd/tools/testing/selftests/net'

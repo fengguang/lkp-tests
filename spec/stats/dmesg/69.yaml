@@ -1,0 +1,9 @@
+boot_failures: 1
+
+# BUG: using __this_cpu_read() in preemptible
+BUG:using__this_cpu_read()in_preemptible: 1
+message:BUG:using__this_cpu_read()in_preemptible: [   84.600934] BUG: using __this_cpu_read() in preemptible [00000000] code: trinity-c4/1161
+pattern:BUG:using__this_cpu_read()in_preemptible: BUG: using __this_cpu_read() in preemptible
+
+timestamp:last: 93.030875
+timestamp:BUG:using__this_cpu_read()in_preemptible: 84.600934

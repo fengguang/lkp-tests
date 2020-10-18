@@ -359,7 +359,7 @@ module Compare
     def get_include_all_failure_stat_keys
       return [] unless @comparer.include_all_failure_stat_keys
 
-      get_all_stat_keys.select { |stat_key| is_failure stat_key }
+      get_all_stat_keys.select { |stat_key| function_stat?(stat_key) }
     end
 
     def do_filter_testcase_stat_keys(stats)
@@ -421,7 +421,7 @@ module Compare
       aruns = runs ms
       cruns = complete_runs cms
       changed_stat_keys(ms).each do |stat_key|
-        failure = is_failure stat_key
+        failure = function_stat?(stat_key)
         tms = failure ? ms : cms
         truns = failure ? aruns : cruns
         stat = {

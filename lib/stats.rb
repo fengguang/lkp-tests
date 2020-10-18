@@ -21,6 +21,7 @@ MAX_RATIO = 5
 $metric_add_max_latency = IO.read("#{LKP_SRC}/etc/add-max-latency").split("\n")
 $metric_latency = IO.read("#{LKP_SRC}/etc/latency").split("\n")
 $metric_failure = IO.read("#{LKP_SRC}/etc/failure").split("\n")
+$metric_pass = IO.read("#{LKP_SRC}/etc/pass").split("\n")
 $perf_metrics_threshold = YAML.load_file "#{LKP_SRC}/etc/perf-metrics-threshold.yaml"
 $perf_metrics_prefixes = File.read("#{LKP_SRC}/etc/perf-metrics-prefixes").split
 $index_perf = load_yaml "#{LKP_SRC}/etc/index-perf-all.yaml"
@@ -163,7 +164,7 @@ end
 
 def changed_stats?(sorted_a, min_a, mean_a, max_a,
                    sorted_b, min_b, mean_b, max_b,
-                   is_failure_stat, is_latency_stat,
+                   is_function_stat, is_latency_stat,
                    stat, options)
 
   if options['perf-profile'] && stat =~ /^perf-profile\./ && options['perf-profile'].is_a?(mean_a.class)
@@ -171,7 +172,7 @@ def changed_stats?(sorted_a, min_a, mean_a, max_a,
            mean_b > options['perf-profile']
   end
 
-  return max_a != max_b if is_failure_stat
+  return max_a != max_b if is_function_stat
 
   if is_latency_stat
     if options['distance']
@@ -387,6 +388,8 @@ def load_base_matrix(matrix_path, head_matrix, options)
     rc_matrix = load_release_matrix base_matrix_file
     next unless rc_matrix
 
+    expand_matrix(rc_matrix, options)
+
     add_stats_to_matrix(rc_matrix, matrix)
     tags_merged << tag
 
@@ -417,20 +420,21 @@ def load_base_matrix(matrix_path, head_matrix, options)
   end
 end
 
-def __is_failure(stats_field)
+def __function_stat?(stats_field)
   return false if stats_field.index('.time.')
   return false if stats_field.index('.timestamp.')
   return true if $metric_failure.any? { |pattern| stats_field =~ %r{^#{pattern}} }
+  return true if $metric_pass.any? { |pattern| stats_field =~ %r{^#{pattern}} }
 
   false
 end
 
-def is_failure(stats_field)
-  $__is_failure_cache ||= {}
-  if $__is_failure_cache.include? stats_field
-    $__is_failure_cache[stats_field]
+def function_stat?(stats_field)
+  $function_stats_cache ||= {}
+  if $function_stats_cache.include? stats_field
+    $function_stats_cache[stats_field]
   else
-    $__is_failure_cache[stats_field] = __is_failure(stats_field)
+    $function_stats_cache[stats_field] = __function_stat?(stats_field)
   end
 end
 
@@ -446,6 +450,16 @@ def is_latency(stats_field)
   else
     $__is_latency_cache[stats_field] = __is_latency(stats_field)
   end
+end
+
+def is_failure(stats_field)
+  $metric_failure.each { |pattern| return true if stats_field =~ %r{^#{pattern}} }
+  false
+end
+
+def is_pass(stats_field)
+  $metric_pass.each { |pattern| return true if stats_field =~ %r{^#{pattern}} }
+  false
 end
 
 def memory_change?(stats_field)
@@ -500,6 +514,17 @@ def bisectable_stat?(stat)
   stat !~ $stat_denylist
 end
 
+def samples_remove_boot_fails(matrix, samples)
+  perf_samples = []
+  samples.each_with_index do |v, i|
+    next if matrix['last_state.is_incomplete_run'] &&
+            matrix['last_state.is_incomplete_run'][i] == 1
+
+    perf_samples << v
+  end
+  perf_samples
+end
+
 def expand_matrix(matrix, options)
   return unless options['stat']
   return unless options['stat'].include?('.virtual.')
@@ -517,11 +542,16 @@ def expand_matrix(matrix, options)
   convert_function = stat.sub(/.*\.virtual\./, '')
   return unless real_values.respond_to?(convert_function)
 
+  # remove the incompleted run to avoid misleading data, e.g. min can be 0 if
+  # any result is incompleted, or relative stddev can be inaccurate when 0 is counted
+  real_values = samples_remove_boot_fails(matrix, real_values)
+  return if real_values.empty?
+
   converted_values = real_values.public_send(convert_function)
   if converted_values.is_a?(Array)
     matrix[stat] = converted_values
   elsif converted_values.is_a?(Numeric)
-    matrix[stat] = Array.new(real_values.size, converted_values)
+    matrix[stat] = Array.new(matrix_cols(matrix), converted_values)
   end
 end
 
@@ -562,24 +592,26 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
     next if is_incomplete_run && k !~ /^(dmesg|last_state|stderr)\./
     next if !options['more'] && !bisectable_stat?(k) && k !~ $report_allowlist_re
 
-    is_failure_stat = is_failure k
-    if is_failure_stat && k !~ /^(dmesg|kmsg|last_state|stderr)\./
+    is_function_stat = function_stat?(k)
+    if is_function_stat && k !~ /^(dmesg|kmsg|last_state|stderr)\./
       # if stat is packetdrill.packetdrill/gtests/net/tcp/mtu_probe/basic-v6_ipv6.fail,
-      # base rt stats should contain the prefix 'packetdrill.packetdrill/gtests/net/tcp/mtu_probe/basic-v6_ipv6'
+      # base rt stats should contain 'packetdrill.packetdrill/gtests/net/tcp/mtu_probe/basic-v6_ipv6.pass'
       stat_base = k.sub(/\.[^\.]*$/, '')
-      next unless b.keys.any? { |stat| stat =~ /^#{stat_base}\.[^\.]*$/ }
+      # only consider pass and fail temporarily
+      next if k =~ /\.fail$/ && !b.keys.any? { |stat| stat == "#{stat_base}.pass" }
+      next if k =~ /\.pass$/ && !b.keys.any? { |stat| stat == "#{stat_base}.fail" }
     end
 
-    is_failure_stat = true if options['force_' + k]
+    is_function_stat = true if options['force_' + k]
 
     is_latency_stat = is_latency k
-    max_margin = if is_failure_stat || is_latency_stat
+    max_margin = if is_function_stat || is_latency_stat
                    0
                  else
                    3
                  end
 
-    unless is_failure_stat
+    unless is_function_stat
       # for none-failure stats field, we need asure that
       # at least one matrix has 3 samples.
       next if cols_a < 3 && cols_b < 3 && !options['whole']
@@ -592,7 +624,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
 
     # newly added monitors don't have values to compare in the base matrix
     next unless b[k] ||
-                is_failure_stat ||
+                is_function_stat ||
                 (k =~ /^(lock_stat|perf-profile|latency_stats)\./ && b_monitors[$1])
 
     b_k = b[k] || [0] * cols_b
@@ -612,11 +644,11 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
 
     next unless changed_stats?(sorted_a, min_a, mean_a, max_a,
                                sorted_b, min_b, mean_b, max_b,
-                               is_failure_stat, is_latency_stat,
+                               is_function_stat, is_latency_stat,
                                k, options)
 
     if options['regression-only'] || options['all-critical']
-      if is_failure_stat
+      if is_function_stat
         if max_a.zero?
           has_boot_fix = true if k =~ /^dmesg\./
           next if options['regression-only'] ||
@@ -660,7 +692,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
                          'a' => sorted_a,
                          'b' => sorted_b,
                          'ttl' => Time.now,
-                         'is_failure' => is_failure_stat,
+                         'is_function_stat' => is_function_stat,
                          'is_latency' => is_latency_stat,
                          'ratio' => ratio,
                          'delta' => delta,
@@ -676,7 +708,12 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
                          'max' => max,
                          'nr_run' => v.size }
     changed_stats[k].merge! options
-    changed_stats[k]['base_matrixes'] = options['base_matrixes'].map { |tag, matrix| "#{tag}: #{matrix[k].inspect}" } if options['base_matrixes']
+
+    if options['base_matrixes']
+      changed_stats[k].delete('base_matrixes')
+      changed_stats[k]['extra'] ||= {}
+      changed_stats[k]['extra']['base_matrixes'] = options['base_matrixes'].map { |tag, matrix| "#{tag}: #{matrix[k].inspect}" }
+    end
   end
 
   changed_stats

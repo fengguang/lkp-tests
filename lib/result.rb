@@ -70,6 +70,9 @@ class ResultPath < Hash
     if self['path_params']
       ucode = self['path_params'][/ucode=0x[0-9a-z]*/]
       self['ucode'] = ucode.split('=').last if ucode
+
+      monitor = self['path_params'][/monitor=[0-9a-f]{8}/]
+      self['monitor'] = monitor.split('=').last if monitor
     end
 
     if ps.include?('commit')

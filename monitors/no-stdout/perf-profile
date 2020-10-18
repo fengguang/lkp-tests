@@ -73,6 +73,7 @@ kptr_restrict=0
 [ -f "$kptr_restrict_file" ] && kptr_restrict=$(cat "$kptr_restrict_file")
 [ "$kptr_restrict" -ne 0 ] && echo 0 > "$kptr_restrict_file"
 
+$perf -v || die 'perf command failed'
 # WAIT_POST_TEST_CMD will start at the same time with perf
 # the former will wait for (delay+duration) before exit
 # the latter will wait for (delay) before collecting samples

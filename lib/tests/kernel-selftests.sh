@@ -21,6 +21,8 @@ build_selftests()
 
 prepare_test_env()
 {
+	has_cmd make || return
+
 	# lkp qemu needs linux-selftests_dir and linux_headers_dir to reproduce kernel-selftests.
 	# when reproduce bug reported by kernel test robot, the downloaded linux-selftests file is stored at /usr/src/linux-selftests
 	linux_selftests_dir=(/usr/src/linux-selftests-*)
@@ -34,14 +36,16 @@ prepare_test_env()
 		echo "KERNEL SELFTESTS: linux_headers_dir is $linux_headers_dir"
 
 		# headers_install's default location is usr/include which is required by several tests' Makefile
-		mkdir -p "$linux_selftests_dir/usr/include" || die
-		mount --bind $linux_headers_dir/include $linux_selftests_dir/usr/include || die
-		mkdir -p "$linux_selftests_dir/tools/include/uapi/asm" || die
-		mount --bind $linux_headers_dir/include/asm $linux_selftests_dir/tools/include/uapi/asm || die
+		mkdir -p "$linux_selftests_dir/usr/include" || return
+		mount --bind $linux_headers_dir/include $linux_selftests_dir/usr/include || return
+
+		mkdir -p "$linux_selftests_dir/tools/include/uapi/asm" || return
+		mount --bind $linux_headers_dir/include/asm $linux_selftests_dir/tools/include/uapi/asm || return
 	elif [ -d "/tmp/build-kernel-selftests/linux" ]; then
 		# commit bb5ef9c change build directory to /tmp/build-$BM_NAME/xxx
 		linux_selftests_dir="/tmp/build-kernel-selftests/linux"
-		cd $linux_selftests_dir
+
+		cd $linux_selftests_dir || return
 		build_selftests
 	else
 		linux_selftests_dir="/lkp/benchmarks/kernel-selftests"
@@ -55,11 +59,13 @@ prepare_for_test()
 	mkdir -p /hugepages
 
 	# make sure the test_bpf.ko path for bpf test is right
-	mkdir -p "$linux_selftests_dir/lib" || die
-	if [[ "$LKP_LOCAL_RUN" = "1" ]]; then
-		cp -r /lib/modules/`uname -r`/kernel/lib/* $linux_selftests_dir/lib
-	else
-		mount --bind /lib/modules/`uname -r`/kernel/lib $linux_selftests_dir/lib || die
+	if [ "$group" = "kselftests-bpf" ]; then
+		mkdir -p "$linux_selftests_dir/lib" || die
+		if [[ "$LKP_LOCAL_RUN" = "1" ]]; then
+			cp -r /lib/modules/`uname -r`/kernel/lib/* $linux_selftests_dir/lib
+		else
+			mount --bind /lib/modules/`uname -r`/kernel/lib $linux_selftests_dir/lib || die
+		fi
 	fi
 
 	# temporarily workaround compile error on gcc-6
@@ -197,6 +203,9 @@ fixup_net()
 	ulimit -l 10240
 	modprobe fou
 	modprobe nf_conntrack_broadcast
+
+	log_cmd make -C ../../../tools/testing/selftests/net 2>&1 || return
+	log_cmd make install INSTALL_PATH=/usr/bin/ -C ../../../tools/testing/selftests/net 2>&1 || return
 }
 
 fixup_efivarfs()
@@ -350,7 +359,7 @@ prepare_for_selftest()
 		# m* is slow
 		selftest_mfs=$(ls -d [m-s]*/Makefile | grep -v -w -e rseq -e resctrl -e net -e netfilter -e rcutorture)
 	elif [ "$group" = "kselftests-03" ]; then
-		selftest_mfs=$(ls -d [t-z]*/Makefile | grep -v x86 -e tc-testing)
+		selftest_mfs=$(ls -d [t-z]*/Makefile | grep -v -e x86 -e tc-testing)
 	elif [ "$group" = "kselftests-rseq" ]; then
 		selftest_mfs=$(ls -d rseq/Makefile)
 	elif [ "$group" = "kselftests-livepatch" ]; then
@@ -573,6 +582,8 @@ run_tests()
 			fixup_bpf || die "fixup_bpf failed"
 		elif [[ $subtest = "efivarfs" ]]; then
 			fixup_efivarfs || continue
+		elif [[ $subtest = "exec" ]]; then
+			log_cmd touch ./$subtest/pipe || die "touch pipe failed"
 		elif [[ $subtest = "gpio" ]]; then
 			fixup_gpio || continue
 		elif [[ $subtest = "openat2" ]]; then
@@ -609,7 +620,7 @@ run_tests()
 			fixup_ptp || continue
 		fi
 
-		log_cmd make run_tests -C $subtest  2>&1 || return
+		log_cmd make run_tests -C $subtest  2>&1
 
 		if [[ "$subtest" = "firmware" ]]; then
 			cleanup_for_firmware

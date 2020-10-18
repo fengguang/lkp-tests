@@ -13,3 +13,15 @@ index 08f3cb0..a210bfe 100644
          worker->ret = err;
          worker->usecs = e_us - s_us;
          wmb();
+diff --git a/bin/run-fxmark.py b/bin/run-fxmark.py
+index a5fe0aa..93a0783 100755
+--- a/bin/run-fxmark.py
++++ b/bin/run-fxmark.py
+@@ -128,6 +128,7 @@ class Runner(object):
+             "btrfs":"-f",
+             "jfs":"-q",
+             "reiserfs":"-q",
++            "f2fs": "-f",
+         }
+
+         # media config

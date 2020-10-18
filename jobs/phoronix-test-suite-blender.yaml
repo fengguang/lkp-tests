@@ -10,13 +10,13 @@ phoronix-test-suite:
     option_a:
       - BMW27
       - Classroom
-      - Fishy Cat
-      - Pabellon Barcelona
+      # - Fishy Cat
+      # - Pabellon Barcelona
       - Barbershop
       # - Test All Options
     option_b:
       - CPU-Only
       - OpenCL
-      - CUDA
-      - NVIDIA OptiX
+      # - CUDA # need CUDA compatible hardware
+      # - NVIDIA OptiX # need NVIDIA compatible hardware
       # - Test All Options

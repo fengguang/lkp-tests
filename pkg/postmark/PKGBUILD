@@ -1,5 +1,5 @@
 pkgname=postmark
-pkgver=1.51
+pkgver=1.53
 pkgrel=0
 pkgdesc="File system benchmark from NetApp"
 arch=('i386' 'x86_64')
@@ -7,7 +7,7 @@ url="www.netapp.com"
 license=('GPL')
 depends=()
 source=("http://archive.ubuntu.com/ubuntu/pool/universe/p/postmark/postmark_$pkgver.orig.tar.gz")
-md5sums=('b494167c2df1850004110ab28e5ad164')
+md5sums=('SKIP')
 
 build() {
   gcc -o $pkgname "$pkgname-$pkgver/$pkgname-$pkgver.c"

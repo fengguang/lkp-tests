@@ -20,14 +20,14 @@ calltrace:SyS_socketcall: 1
 message:calltrace:SyS_socketcall: [   21.827023]  [<817eefcb>] SyS_socketcall+0x42b/0x600
 pattern:calltrace:SyS_socketcall: SyS_socketcall+0x
 
-# Kernel panic - not syncing: Fatal exception
-Kernel_panic-not_syncing:Fatal_exception: 1
-message:Kernel_panic-not_syncing:Fatal_exception: [   21.889319] Kernel panic - not syncing: Fatal exception
-pattern:Kernel_panic-not_syncing:Fatal_exception: Kernel panic - not syncing: Fatal exception
+# Kernel panic - not syncing:
+Kernel_panic-not_syncing: 1
+message:Kernel_panic-not_syncing: [   21.889319] Kernel panic - not syncing: Fatal exception
+pattern:Kernel_panic-not_syncing: Kernel panic - not syncing:
 
 timestamp:last: 21.889319
 timestamp:BUG:unable_to_handle_kernel: 21.734461
 timestamp:Oops:#[##]: 21.748156
 timestamp:EIP_is_at_bpf_prog_free: 21.755582
 timestamp:calltrace:SyS_socketcall: 21.827023
-timestamp:Kernel_panic-not_syncing:Fatal_exception: 21.889319
+timestamp:Kernel_panic-not_syncing: 21.889319

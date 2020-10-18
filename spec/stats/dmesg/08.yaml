@@ -15,13 +15,13 @@ calltrace:rbtree_test_init: 1
 message:calltrace:rbtree_test_init: [  510.822824]  [<ffffffff82df1977>] rbtree_test_init+0x200/0x317
 pattern:calltrace:rbtree_test_init: rbtree_test_init+0x
 
-# Kernel panic - not syncing: softlockup: hung tasks
-Kernel_panic-not_syncing:softlockup:hung_tasks: 1
-message:Kernel_panic-not_syncing:softlockup:hung_tasks: [  511.119241] Kernel panic - not syncing: softlockup: hung tasks
-pattern:Kernel_panic-not_syncing:softlockup:hung_tasks: Kernel panic - not syncing: softlockup: hung tasks
+# Kernel panic - not syncing:
+Kernel_panic-not_syncing: 1
+message:Kernel_panic-not_syncing: [  511.119241] Kernel panic - not syncing: softlockup: hung tasks
+pattern:Kernel_panic-not_syncing: Kernel panic - not syncing:
 
 timestamp:last: 511.772661
 timestamp:BUG:soft_lockup-CPU##stuck_for#s![swapper:#]: 482.381374
 timestamp:RIP:insert_augmented: 510.369402
 timestamp:calltrace:rbtree_test_init: 510.822824
-timestamp:Kernel_panic-not_syncing:softlockup:hung_tasks: 511.119241
+timestamp:Kernel_panic-not_syncing: 511.119241

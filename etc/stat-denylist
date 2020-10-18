@@ -25,6 +25,10 @@
 ^dmesg.BUG:Dentry.*i=.*n=.*
 ^dmesg.BUG:soft_lockup-CPU##stuck_for#s
 ^dmesg.BUG:KCSAN:data-race_in
+^dmesg.BUG:kernel_hang_in_early-boot_stage,last_printk:Probing_EDD
+^dmesg.BUG:kernel_hang_in_early-boot_stage,last_printk:early_console_in_setup_code
+^dmesg.BUG:kernel_reboot-without-warning_in_early-boot_stage,last_printk:early_console_in_setup_code
+^dmesg.BUG:using__this_cpu_read\(\)in_preemptible\[#\]code
 ^dmesg.calltrace
 ^dmesg..*cpu_clock_throttled.*
 ^dmesg..*-detected_stall_on_CPUINFO
@@ -33,6 +37,7 @@
 ^dmesg.INFO:rcu_sched_detected_stalls_on_CPUs/tasks:
 ^dmesg.INFO:Slab0x\(____ptrval____\)objects=#used=#fp=0x\((null|____ptrval____)\)flags=
 ^dmesg.INFO:Stall_ended_before_state_dump_start
+^dmesg.INFO:trying_to_register_non-static_key
 ^dmesg.invoked_oom-killer:gfp_mask=0x
 ^dmesg.IP-Config:Auto-configuration_of_network_failed
 ^dmesg.Kernel_panic-not_syncing:Out_of_memory.*
@@ -44,8 +49,11 @@
 ^dmesg.RIP:inet_sock_destruct
 ^dmesg.RIP:sk_stream_kill_queues
 ^dmesg.timestamp:.*
+^dmesg.WARNING:at_kernel/rcu/rcutorture.c:#rcutorture_oom_notify
+^dmesg.WARNING:at_kernel/rcu/refscale.c:#ref_scale_init
 ^dmesg.WARNING:at_net/core/stream.c:#sk_stream_kill_queues
 ^dmesg.WARNING:at_net/ipv4/af_inet.c:#inet_sock_destruct
+^dmesg.WARNING:inconsistent_lock_state
 ^GLib-WARNING\*\*:#:#:#:gmem.c:#:custom_memory_allocation_vtable_not_supported
 .*\.ignored_by_lkp
 ^internal-lkp-service.*
@@ -94,6 +102,7 @@
 ^kmsg.db_root:cannot_open:/etc/target
 ^kmsg.DebugCtl=#DebugExceptions=
 ^kmsg.DHCP/BOOTP:Reply_not_for_us_on_eth#,op\[#\]xid\[#\]
+^kmsg.Disabling_IRQ
 ^kmsg.DMAR:DRHD:handling_fault_status_reg
 ^(kmsg|dmesg).genirq:Flags_mismatch_irq##\(serial\)vs.#\(goldfish_pdev_bus\)
 ^kmsg.DRM_emulated:enable_CONFIG_FB_LITTLE_ENDIAN_to_support_this_framebuffer
@@ -123,6 +132,7 @@
 ^kmsg.gpio_winbond:not_an_our_chip
 ^kmsg.GS:sel=#,attr=#,limit=#,base=
 ^kmsg.Guest_State\*\*\*
+^kmsg.handlers
 ^kmsg.hfi1#:ff:#:hfi1_0:get_platform_config:Failed_to_get_platform_config,falling_back_to_sub-optimal_default_file
 ^kmsg.hfi1#:ff:#:hfi1_0:get_platform_config:No_default_platform_config_file_found
 ^kmsg.hfi1#:ff:#:hfi1_0:unable_to_obtain_working_firmware
@@ -138,6 +148,7 @@
 ^kmsg.in_atomic\(\):#,irqs_disabled\(\):
 ^kmsg.Interruptibility=#ActivityState=
 ^kmsg.ioatdma#:#:#:
+^kmsg.irq#:nobody_cared
 ^kmsg.jbd2_journal_bmap:journal_block_not_found_at_offset#on_
 ^kmsg.Kernel_command_line
 ^kmsg.kvm:host_upgrade_recommended
@@ -199,6 +210,7 @@
 ^kmsg.tsc:HPET/PMTIMER_calibration_failed
 ^kmsg.TSC_Offset=
 ^kmsg.tsc:Unable_to_calibrate_against_PIT
+^kmsg.usb_hcd_irq
 ^kmsg.usb_usb#-port#:Cannot_enable.Maybe_the_USB_cable_is_bad\?
 ^kmsg.veth[0-9]*:Failed_to_cycle_device_veth
 ^kmsg.VFS:Filesystem_freeze_failed
@@ -214,6 +226,9 @@
 ^kmsg.XFS\(loop#\):writeback_error_on_sector
 ^kvm-unit-tests-qemu\.apic
 ^last_state\..+\.exit_code
+^last_state\.running
+^last_state\.soft_timeout
+^last_state\.wget_kernel_fail
 ^latency_stats.
 ^latency_stats.*cifs.*
 ^leaking-addresses\.dmesg.R

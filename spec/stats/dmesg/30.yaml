@@ -15,13 +15,13 @@ calltrace:SyS_exit_group: 1
 message:calltrace:SyS_exit_group: [   40.674066]  [<cc639a13>] SyS_exit_group+0x11/0x11
 pattern:calltrace:SyS_exit_group: SyS_exit_group+0x
 
-# Kernel panic - not syncing: Fatal exception
-Kernel_panic-not_syncing:Fatal_exception: 1
-message:Kernel_panic-not_syncing:Fatal_exception: [   40.711101] Kernel panic - not syncing: Fatal exception
-pattern:Kernel_panic-not_syncing:Fatal_exception: Kernel panic - not syncing: Fatal exception
+# Kernel panic - not syncing:
+Kernel_panic-not_syncing: 1
+message:Kernel_panic-not_syncing: [   40.711101] Kernel panic - not syncing: Fatal exception
+pattern:Kernel_panic-not_syncing: Kernel panic - not syncing:
 
 timestamp:last: 40.711101
 timestamp:general_protection_fault:#[##]: 40.594570
 timestamp:EIP_is_at_native_flush_tlb_global: 40.600933
 timestamp:calltrace:SyS_exit_group: 40.674066
-timestamp:Kernel_panic-not_syncing:Fatal_exception: 40.711101
+timestamp:Kernel_panic-not_syncing: 40.711101

@@ -430,6 +430,27 @@ fixup_interbench()
 	phoronix-test-suite force-install $test
 }
 
+# fix issue: Run out of memory under overlay/
+# before:
+# 106: $HOME/pg_/bin/initdb -D $HOME/pg_/data/db --encoding=SQL_ASCII --locale=C
+# 109: PGDATA=\$HOME/pg_/data/db/
+# after:
+# 106: rm -rf /opt/rootfs/pg_
+# 107: mkdir -p /opt/rootfs/pg_/data/db/
+# 108: $HOME/pg_/bin/initdb -D /opt/rootfs/pg_/data/db/ --encoding=SQL_ASCII --locale=C
+# 111: PGDATA=/opt/rootfs/pg_/data/db/
+fixup_pgbench()
+{
+	[ -n "$environment_directory" ] || return
+	local test=$1
+	local target=${environment_directory}/../test-profiles/pts/${test}/install.sh
+	sed -i "105a rm -rf /opt/rootfs/pg_" "$target"
+	sed -i "106a mkdir -p /opt/rootfs/pg_/data/db/" "$target"
+	sed -i 's,-D $HOME/pg_/data/db,-D /opt/rootfs/pg_/data/db/,' "$target"
+	sed -i 's,PGDATA=\\$HOME/pg_/data/db/,PGDATA=/opt/rootfs/pg_/data/db/,' "$target"
+	phoronix-test-suite force-install $test
+}
+
 fixup_xsbench_cl_install()
 {
 	local test=$1
@@ -800,6 +821,9 @@ run_test()
 			;;
 		apitest-*|et-*|etlegacy-*|etxreal-*|geexlab-*|paraview-*|unigine-sanctuary-*|unigine-tropics-*)
 			find_max_resolution $test || die "failed to find max resolution for $test"
+			;;
+		pgbench-*)
+			fixup_pgbench $test || die "failed to fixup pgbench"
 			;;
 	esac
 
