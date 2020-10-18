@@ -56,11 +56,15 @@ while (line = STDIN.gets)
   if k =~ /[ \t]/
     invalid_records.push record_index
     warn_stat "whitespace in stats name: #{k}", monitor
+
+    exit 1
   end
   # only number is valid
   unless v.numeric?
     invalid_records.push record_index
     warn_stat "invalid stats value: #{v}", monitor
+
+    exit 1
   end
 
   v = v.index('.') ? v.to_f : v.to_i
