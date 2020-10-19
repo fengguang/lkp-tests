@@ -21,6 +21,8 @@
 # - pre_read
 # - rwmixread
 # - ioscheduler
+# - ramp_time
+# - loops
 
 . $LKP_SRC/lib/common.sh
 . $LKP_SRC/lib/unit.sh
@@ -47,6 +49,8 @@ size=$((test_size / nr_task))
 : ${random_distribution:=random}
 : ${pre_read:=0}
 : ${ioscheduler:=none}
+: ${ramp_time:=0}
+: ${loops:=0}
 
 direct=$(parse_bool $direct)
 raw_disk=$(parse_bool $raw_disk)
@@ -95,6 +99,16 @@ group_reporting
 create_only=1
 pre_read=$pre_read
 "
+
+params="ramp_time loops"
+for param in $params; do
+	param_value="$(eval echo '$'$param)"
+	if [ "$param_value" != 0 ]; then
+		create_task="\
+$create_task
+$param=$param_value"
+	fi
+done
 
 if [ "$ioscheduler" != "none" ]; then
 	create_task="\
