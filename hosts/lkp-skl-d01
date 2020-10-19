@@ -3,10 +3,10 @@ nr_cpu: 8
 memory: 16G
 nr_ssd_partitions: 1
 nr_hdd_partitions: 4
-hdd_partitions: /dev/disk/by-id/ata-WDC_WD10EZEX-75WN4A0_WD-WCC6Y2JD9SLU-part*
-ssd_partitions: /dev/disk/by-id/ata-INTEL_SSDSC2BA800G4_BTHV6401027F800OGN-part1
-swap_partitions: /dev/disk/by-id/ata-INTEL_SSDSC2BA800G4_BTHV6401027F800OGN-part3
-rootfs_partition: /dev/disk/by-id/ata-INTEL_SSDSC2BA800G4_BTHV6401027F800OGN-part2
+hdd_partitions: /dev/disk/by-id/wwn-0x50014ee20d26b072-part*
+ssd_partitions: /dev/disk/by-id/wwn-0x55cd2e404c39bfc5-part1
+swap_partitions: /dev/disk/by-id/wwn-0x55cd2e404c39bfc5-part3
+rootfs_partition: /dev/disk/by-id/wwn-0x55cd2e404c39bfc5-part2
 brand: Intel(R) Core(TM) i7-6700 CPU @ 3.40GHz
 cpu_info: skylake i7-6700
 bios_version: 1.2.8
