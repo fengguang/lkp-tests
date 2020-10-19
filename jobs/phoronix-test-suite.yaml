@@ -702,18 +702,18 @@ phoronix-test-suite:
       # - Test All Options
   - test:
     - sqlite-speedtest-1.0.0
-  - test: startup-time-1.4.1
-    option_a:
+      # - test: startup-time-1.4.1
+      # option_a:
       # - Only Sequential Reads # need more than 1h
       # - Sequential Reads + Writes
       # - Test All Options
-    option_b:
-      - GNOME Terminal
-      - xterm
-      - LibreOffice Writer
+      # option_b:
+      # - GNOME Terminal
+      # - xterm
+      # - LibreOffice Writer
       # - Test All Options
-    option_c:
-      - /opt/rootfs
+      # option_c:
+      # - /opt/rootfs
   - test:
     - stockfish-1.1.1
   - test: stress-ng-1.2.2
