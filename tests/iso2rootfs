@@ -72,7 +72,6 @@ get_daily_iso_checksum()
 
 mount_rootfs()
 {
-	DAILYBUILD_ROOTFS_DIR="debug-versions/dailybuild"
 	case ${rootfs_protocol} in
 		"nfs")
 			ROOTFS_SERVER_PATH="${rootfs_server}:${rootfs_path}/${iso_os}/${iso_arch}"
@@ -103,7 +102,7 @@ get_cache_iso_checksum()
 {
 	mount_rootfs
 
-	CHECKSUM_FILE_CACHE="${ROOTFS_LOCAL_PATH}/${DAILYBUILD_ROOTFS_DIR}/${iso_version}-newest.sha256sum"
+	CHECKSUM_FILE_CACHE="${ROOTFS_LOCAL_PATH}/${iso_version}-latest.sha256sum"
 	[ ! -f "${CHECKSUM_FILE_CACHE}" ] ||
 		SHA256SUM_CACHE=$(awk '{print $1}' "$CHECKSUM_FILE_CACHE")
 }
@@ -255,7 +254,7 @@ download_compass_ci()
 
 config_rootfs_dir()
 {
-	ROOTFS_DES_DIR=${ROOTFS_LOCAL_PATH}/${DAILYBUILD_ROOTFS_DIR}/${iso_version}-$(date "+%Y%m%d%H%M%S")
+	ROOTFS_DES_DIR=${ROOTFS_LOCAL_PATH}/${iso_version}-$(date "+%Y-%m-%d-%H-%M-%S")
 	[ -d "${ROOTFS_DES_DIR}" ] &&
 		ROOTFS_DES_DIR="${ROOTFS_DES_DIR}-${HOSTNAME##*--}"
 	mkdir -p "$ROOTFS_DES_DIR"
@@ -310,10 +309,10 @@ test_rootfs()
 	local root_path
 	case ${rootfs_protocol} in
 		"nfs")
-			root_path="${ROOTFS_SERVER_PATH}/${DAILYBUILD_ROOTFS_DIR}/$(basename "${ROOTFS_DES_DIR}")"
+			root_path="${ROOTFS_SERVER_PATH}/$(basename "${ROOTFS_DES_DIR}")"
 		;;
 		"cifs")
-			root_path="cifs:${ROOTFS_SERVER_PATH}/${DAILYBUILD_ROOTFS_DIR}/$(basename "${ROOTFS_DES_DIR}"),${ROOTFS_MOUNT_PARAM}"
+			root_path="cifs:${ROOTFS_SERVER_PATH}/$(basename "${ROOTFS_DES_DIR}"),${ROOTFS_MOUNT_PARAM}"
 		;;
 		*)
 			die "rootfs_protocol is none, exit !!!"
@@ -366,8 +365,7 @@ post_works()
 	local soft_link="${iso_version}-dailybuild"
 	cd "${ROOTFS_LOCAL_PATH}" &&
 		rm -f "${soft_link}" &&
-			ln -s "${DAILYBUILD_ROOTFS_DIR}/$(basename ${ROOTFS_DES_DIR})" \
-				"${soft_link}"
+			ln -s "$(basename ${ROOTFS_DES_DIR})" "${soft_link}"
 
 	cd / && umount "${ROOTFS_LOCAL_PATH}"
 
