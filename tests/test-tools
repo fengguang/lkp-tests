@@ -1,0 +1,37 @@
+#!/bin/bash
+# - testsuite
+# - case
+
+cd $BENCHMARK_ROOT/test-tools/mugen || exit
+: "${testsuite:=smoke-testing}"
+: "${case:=oe_test_dd_001}"
+
+set_env()
+{
+	bash runoet.sh -c
+	source ~/.bash_profile
+}
+
+test_one_case()
+{
+
+	bash runoet.sh -f $testsuite -r $case -x
+}
+
+test_all_cases()
+{
+	bash runoet.sh -a
+}
+
+run()
+{
+	set_env
+	if [ "${testsuite}" == "all" ]
+	then
+		test_all_cases
+	else
+		test_one_case
+	fi
+}
+
+run
