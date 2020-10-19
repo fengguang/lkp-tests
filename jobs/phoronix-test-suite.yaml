@@ -156,14 +156,14 @@ phoronix-test-suite:
       - Summer Nature 1080p
       - Summer Nature 4K
       # - Test All Options
-  - test: dbench-1.0.0
-    option_a: # client count
-      - 1
+  # - test: dbench-1.0.0
+    # option_a: # client count
+      # - 1
       # - 6
       # - 12
       # - 48
       # - 128
-      - 256
+      # - 256
       # - Test All Options
   - test:
     - dcraw-1.1.0
