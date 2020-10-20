@@ -157,11 +157,21 @@ modify_gem_source()
        return 0
 }
 
+install_goproxy()
+{
+	mkdir -p /root/.config/go/
+	echo "GOPROXY=https://goproxy.io,direct" >> /root/.config/go/env
+
+	return 0
+}
+
 install_proxy()
 {
 	modify_gem_source
 
 	install_docker_proxy
+
+	install_goproxy
 
 	[ -z "$SQUID_HOST" ] && return
 	[ -z "$SQUID_PORT" ] && return
