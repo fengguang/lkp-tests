@@ -22,6 +22,12 @@ log_info()
 	echo "[INFO] $*"
 }
 
+exit_info()
+{
+	log_info "$@"
+	exit 0
+}
+
 die()
 {
 	echo "[ERROR] $*" >&2
@@ -56,6 +62,48 @@ check_yaml_vars()
 	done
 }
 
+check_iso_name()
+{
+	# Why need this step:
+	#
+	# 1. Our current strategy for detecting iso updates is as follows:
+	#    - Monitor iso releases for different os (such as Openeuler).
+	#    - Openeuler currently provides an http release_iso file that is
+	#      updated each time a new iso is released. we can get the
+	#      following two contents from this file:
+	#      - Latest iso url;
+	#      - Latest iso sha256sum; # Can be obtained by splicing:
+	#        {latest_iso_url}. sha256sum
+	#
+	# 2. Regarding the iso name in the iso url, I consulted the support
+	#    staff of openeuler's iso release and got the following reply:
+	#    - There are currently two kinds of iso names:
+	#      - openEuler-2.0-SP8-xxx.iso;
+	#      - openEuler-20.03-xxx.iso;
+	#    - openEuler-2.0.SP8-xxx. iso is not used for dailybuild;
+	#    - Not sure if new uses of iso will be added in the future;
+	#
+	# 3. So we've prepared an array to fill in iso names to skip and
+	#    exclude any additions later.
+
+	local iso_prefixes_to_skip
+	case ${iso_os} in
+		"openeuler")
+			iso_prefixes_to_skip=("openEuler-2.0-SP8")
+		;;
+		*)
+			return
+		;;
+	esac
+
+	local prefix
+	for prefix in "${iso_prefixes_to_skip[@]}"
+	do
+		[[ ${ISO_NAME} != ${prefix}* ]] ||
+			exit_info "${iso_os} haven't release new iso for openEuler, no need to generate rootfs"
+	done
+}
+
 get_daily_iso_checksum()
 {
 	ISO_URL="$(curl "${iso_url_file}")"
@@ -63,8 +111,10 @@ get_daily_iso_checksum()
 		local pub_ip=$(echo "${iso_url_file}" | grep -oEw "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}")
 		ISO_URL="$(curl "${iso_url_file}" |sed -r "s/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/${pub_ip}/g")"
 	}
+
 	ISO_NAME=$(basename "$ISO_URL")
 	ISO_CHECKSUM_URL="${ISO_URL}.sha256sum"
+	check_iso_name
 
 	curl -o "${CHECKSUM_FILE_CACHE}.tmp" "${ISO_CHECKSUM_URL}"
 	SHA256SUM_NET=$(awk '{print $1}' "${CHECKSUM_FILE_CACHE}.tmp")
@@ -118,9 +168,8 @@ check_sha256sum_update()
 
 		if [ "$SHA256SUM_CACHE" == "$SHA256SUM_NET" ]
 		then
-			log_info "${iso_os} haven't release new iso, no need to generate rootfs"
 			rm -f "${CHECKSUM_FILE_CACHE}.tmp"
-			exit 0
+			exit_info "${iso_os} haven't release new iso, no need to generate rootfs"
 		else
 			log_info "${iso_os} release a new iso, start to generate rootfs ..."
 			return
