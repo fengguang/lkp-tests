@@ -80,6 +80,25 @@ get_partitions()
 	fi
 }
 
+get_ipmi_ip()
+{
+	# root@localhost ~# ipmitool lan print
+	# Set in Progress         : Set Complete
+	# IP Address Source       : Static Address
+	# IP Address              : 9.3.4.1
+	# Subnet Mask             : 255.255.0.0
+	# MAC Address             : e0:00:84:2b:51:7b
+	# SNMP Community String   : TrapAdmin12#$
+	# IP Header               : TTL=0x40 Flags=0x40 Precedence=0x00 TOS=0x10
+	# Default Gateway IP      : 9.3.0.1
+	# 802.1q VLAN ID          : Disabled
+	# RMCP+ Cipher Suites     : 0,1,2,3,17
+	# Cipher Suite Priv Max   : XuuaXXXXXXXXXXX
+	local ip=$(ipmitool lan print | awk 'NR==3{print $4}')
+	[ -n "$ip" ] && echo "ipmi_ip:" $ip
+
+}
+
 main()
 {
 	get_node
@@ -87,6 +106,7 @@ main()
 	get_partitions
 	get_mac
 	get_model_name
+	get_ipmi_ip
 }
 
 main
