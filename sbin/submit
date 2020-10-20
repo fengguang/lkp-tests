@@ -60,7 +60,6 @@ options.parse!(ARGV)
 
 seen_job_yaml = false
 ARGV.delete_if do |arg|
-  seen_job_yaml = true if arg =~ /\.yaml$/
   if arg.index '='
     if seen_job_yaml
       opt_set_key_value.merge! YAML.load arg.sub(/=/, ': ')
@@ -69,6 +68,7 @@ ARGV.delete_if do |arg|
     end
     true
   else
+    seen_job_yaml = true if arg =~ /\.yaml$/
     false
   end
 end
