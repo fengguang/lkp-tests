@@ -60,7 +60,7 @@ options.parse!(ARGV)
 
 find_job_yaml = false
 ARGV.delete_if do |arg|
-  find_job_yaml = true if File.file?(arg)
+  find_job_yaml = true if arg =~ /\.yaml$/
   if arg.index '='
     if find_job_yaml
       opt_set_key_value.merge! YAML.load arg.sub(/=/, ': ')
