@@ -9,5 +9,5 @@ opt_ip=
 [ "$ip" = 'ipv6' ] && opt_ip='-6'
 
 # start netserver
-log_echo netserver $opt_ip -D
-exec netserver $opt_ip -D
+log_echo netserver $opt_ip 
+exec netserver $opt_ip
