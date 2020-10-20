@@ -151,7 +151,7 @@ EOF
 
 modify_gem_source()
 {
-       echo ':sources: ["http://rubygems.org"]' >> ~/.gemrc
+       echo ':sources: ["http://rubygems.org"]' >> /root/.gemrc
 
        return 0
 }
