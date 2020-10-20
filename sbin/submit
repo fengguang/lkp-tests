@@ -108,6 +108,7 @@ ARGV.each do |jobfile|
     raise 'Please configure SCHED_PORT' unless job['SCHED_PORT']
 
     job.add_pp
+    job.add_monitors
     job.add_define_files if opt_auto_define_files
 
     # get job shell function

@@ -564,6 +564,13 @@ class Job
     return option_value
   end
 
+  def add_monitors
+    @job['monitors'] = {}
+    for_each_in(@job, monitor_params) do |_pk, _h, m_n, _m_args|
+      @job['monitors'][m_n] = nil
+    end
+  end
+
   def add_pp()
     @job["pp"] = Hash.new()
     init_program_options()
