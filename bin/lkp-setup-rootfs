@@ -139,6 +139,7 @@ install_docker_proxy()
 Environment="HTTPS_PROXY=http://$DOCKER_PROXY_HOST:$DOCKER_PROXY_PORT/"
 EOF
 
+	mkdir -p /etc/pki/ca-trust/source/anchors
 	curl http://$DOCKER_PROXY_HOST:$DOCKER_PROXY_PORT/ca.crt > \
 		/etc/pki/ca-trust/source/anchors/docker_registry_proxy.crt || return
 	update-ca-trust extract
