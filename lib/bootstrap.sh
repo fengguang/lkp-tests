@@ -631,12 +631,12 @@ is_same_kernel_and_rootfs()
 	return 1
 }
 
-is_same_testcase()
+is_same_suite()
 {
-	local current_testcase=$testcase
-	local next_testcase=$(awk '/^testcase: /{print $2}' $job | tr -d '"')
+	local current_suite=$suite
+	local next_suite=$(awk '/^suite: /{print $2}' $job | tr -d '"')
 
-	[ "$current_testcase" = "$next_testcase" ]
+	[ "$current_suite" = "$next_suite" ]
 }
 
 is_same_bp_memmap()
