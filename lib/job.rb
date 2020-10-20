@@ -249,6 +249,7 @@ class Job
           @overrides.merge!(hash['override']){ |_key, a, _b| a}
           hash.delete('override')
         end
+        hash.merge!(@overrides)
         @jobs << hash
       end
     rescue StandardError => e
@@ -409,7 +410,6 @@ class Job
     i = include_files
     job = deepcopy(@job)
     revise_hash(job, deepcopy(@job2), true)
-    revise_hash(job, deepcopy(@overrides), true)
     job['___'] = nil
     @jobx = job
     if @job.include?(:expand_params)
