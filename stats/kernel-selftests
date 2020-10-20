@@ -166,6 +166,8 @@ while (line = STDIN.gets)
     next unless test_name == 'ia64'
 
     detail_stat('ia64', $2, $1, stats)
+  when /^# selftests: futex: (.*)/
+    test_case_name = $1
   when /^# selftests: net: (.*)/
     test_case_name = $1
   when /^# selftests: netfilter: (.*)/
@@ -267,7 +269,7 @@ while (line = STDIN.gets)
   when /# selftests: timens: (.*)/
     test_case_name = $1
   when /# (ok|fail|skip) \d+ (.*)/
-    futex_stat(line, tests_stats['futex'], stats) if test_name == 'futex'
+    # futex_stat(line, tests_stats['futex'], stats) if test_name == 'futex'
     subtest_stat('timens', test_case_name, $2, $1, stats) if test_name == 'timens'
   when /^# selftests: timers: (.*)/
     test_case_name = $1
@@ -287,7 +289,7 @@ while (line = STDIN.gets)
     next if test_name == 'bpf'
 
     if test_name == 'futex'
-      futex_stat(line, tests_stats['futex'], stats)
+      # futex_stat(line, tests_stats['futex'], stats)
     elsif test_name == 'memory-hotplug'
       memory_hotplug_stat(line, tests_stats['memory-hotplug'], stats)
     elsif test_name == 'x86'
@@ -395,7 +397,7 @@ while (line = STDIN.gets)
     subtest_case_name1 = $1
   else
     if test_name == 'futex'
-      futex_stat(line, tests_stats['futex'], stats)
+      # futex_stat(line, tests_stats['futex'], stats)
     elsif test_name == 'memory-hotplug'
       memory_hotplug_stat(line, tests_stats['memory-hotplug'], stats)
     elsif test_name == 'mount'
