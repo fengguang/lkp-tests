@@ -1,0 +1,17 @@
+net.vrf_route_leaking.sh.IPv4_(sym_route):_VRF_ICMP_ttl_error_route_lookup_ping.Basic_IPv4_connectivity.pass: 1
+net.vrf_route_leaking.sh.IPv4_(sym_route):_VRF_ICMP_ttl_error_route_lookup_ping.Ping_received_ICMP_ttl_exceeded.pass: 1
+net.vrf_route_leaking.sh.IPv4_(sym_route):_VRF_ICMP_error_route_lookup_traceroute.skip: 1
+net.vrf_route_leaking.sh.IPv4_(sym_route):_VRF_ICMP_fragmentation_error_route_lookup_ping.Basic_IPv4_connectivity.pass: 1
+net.vrf_route_leaking.sh.IPv4_(sym_route):_VRF_ICMP_fragmentation_error_route_lookup_ping.Ping_received_ICMP_Frag_needed.pass: 1
+net.vrf_route_leaking.sh.IPv4_(asym_route):_VRF_ICMP_ttl_error_route_lookup_ping.Basic_IPv4_connectivity.pass: 1
+net.vrf_route_leaking.sh.IPv4_(asym_route):_VRF_ICMP_ttl_error_route_lookup_ping.Ping_received_ICMP_ttl_exceeded.pass: 1
+net.vrf_route_leaking.sh.IPv4_(asym_route):_VRF_ICMP_error_route_lookup_traceroute.skip: 1
+net.vrf_route_leaking.sh.IPv6_(sym_route):_VRF_ICMP_ttl_error_route_lookup_ping.Basic_IPv6_connectivity.pass: 1
+net.vrf_route_leaking.sh.IPv6_(sym_route):_VRF_ICMP_ttl_error_route_lookup_ping.Ping_received_ICMP_Hop_limit.pass: 1
+net.vrf_route_leaking.sh.IPv6_(sym_route):_VRF_ICMP_error_route_lookup_traceroute.skip: 1
+net.vrf_route_leaking.sh.IPv6_(sym_route):_VRF_ICMP_fragmentation_error_route_lookup_ping.Basic_IPv6_connectivity.pass: 1
+net.vrf_route_leaking.sh.IPv6_(sym_route):_VRF_ICMP_fragmentation_error_route_lookup_ping.Ping_received_ICMP_Packet_too_big.fail: 1
+net.vrf_route_leaking.sh.IPv6_(asym_route):_VRF_ICMP_ttl_error_route_lookup_ping.Basic_IPv6_connectivity.pass: 1
+net.vrf_route_leaking.sh.IPv6_(asym_route):_VRF_ICMP_ttl_error_route_lookup_ping.Ping_received_ICMP_Hop_limit.pass: 1
+net.vrf_route_leaking.sh.IPv6_(asym_route):_VRF_ICMP_error_route_lookup_traceroute.skip: 1
+net.vrf_route_leaking.sh.fail: 1
