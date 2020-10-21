@@ -11,7 +11,7 @@ require 'eventmachine'
 require 'json'
 
 class Monitor
-  attr_accessor :monitor_url, :query, :overrides, :action, :job, :result
+  attr_accessor :monitor_url, :query, :overrides, :action, :job, :result, :stop_query
 
   def initialize(monitor_url = '', query = {}, action = {})
     @monitor_url = monitor_url
@@ -26,6 +26,7 @@ class Monitor
     @defaults = {}
     load_default
     @result = []
+    @stop_query = {}
   end
 
   def load_default
@@ -100,6 +101,13 @@ class Monitor
     EM.stop
   end
 
+  def stop(data, web_socket)
+    @stop_query.each do |key, value|
+      return false unless data[key] == value
+    end
+    stop_em(web_socket)
+  end
+
   def run(timeout = nil)
     merge_overrides
     field_check
@@ -128,7 +136,7 @@ class Monitor
         output(data)
         connect(data, ws)
 
-        stop_em(ws) if @action['stop']
+        stop(data, ws) if @action['stop']
       end
 
       ws.on :close do |event|
