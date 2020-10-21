@@ -3,10 +3,12 @@
 # Copyright (c) 2020 Huawei Technologies Co., Ltd. All rights reserved.
 
 # redirect remote-repository address to "/srv/git/gitee.com"
-cat >> /etc/gitconfig <<EOF
-[url "git://$GIT_SERVER/gitee.com"]
-	insteadOf=https://gitee.com
-EOF
+if [ -n "$GIT_SERVER" ]; then
+	cat >> /etc/gitconfig <<-EOF
+	[url "git://$GIT_SERVER/gitee.com"]
+	      insteadOf=https://gitee.com
+	EOF
+fi
 
 export initrd_http_host=$INITRD_HTTP_HOST
 export initrd_http_port=$INITRD_HTTP_PORT
