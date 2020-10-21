@@ -3,6 +3,8 @@
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
 require "#{LKP_SRC}/lib/string_ext"
+require "#{LKP_SRC}/lib/array_ext"
+require "#{LKP_SRC}/lib/log"
 
 stats = []
 test_item = ''
@@ -41,4 +43,14 @@ while (line = STDIN.gets)
   end
 end
 
-stats.uniq.each { |stat| puts stat }
+stats.each { |stat| puts stat }
+
+# self validation
+# FIXME one possible bad case can be below which is not checked now
+#   a.pass: 1
+#   a.fail: 1
+duplicated_stats = stats.duplicated_elements
+unless duplicated_stats.empty?
+  log_error "duplicated stats: #{duplicated_stats}"
+  exit 1
+end
