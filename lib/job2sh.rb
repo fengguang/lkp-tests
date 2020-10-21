@@ -142,7 +142,7 @@ class Job2sh < Job
   end
 
   def parse_one(ancestors, key, val, pass)
-    if ['pp', 'define_files'].include?(key)
+    if ['pp', 'define_files', 'monitors'].include?(key)
       return false
     end
     tabs = indent(ancestors)
