@@ -16,7 +16,7 @@ opt_output_dir = nil
 opt_auto_define_files = false
 opt_monitor = false
 opt_monitor_query = {}
-actions = ['output']
+actions = ['output', 'stop']
 
 options = OptionParser.new do |opts|
   opts.banner = 'Usage: submit [options] jobs...'
@@ -157,6 +157,6 @@ end
 
 if opt_monitor
   opt_monitor_query.merge!({'job_id' => job_ids[0]})
-  cmd = "#{LKP_SRC}/sbin/monitor -f '#{opt_monitor_query.to_json}' -j '#{job_json_list[0]}' -a #{actions.join(',')}"
+  cmd = "#{LKP_SRC}/sbin/monitor -f '#{opt_monitor_query.to_json}' -j '#{job_json_list[0]}' -a #{actions.join(',')} -s 'job_state: extract_finished'"
   exec cmd
 end

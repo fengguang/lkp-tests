@@ -14,6 +14,7 @@ opt_action = {'output' => true}
 opt_job = {}
 opt_monitor_url = nil
 opt_timeout = 0
+opt_stop_query = {}
 
 options = OptionParser.new do |opts|
   opts.banner = 'Usage: monitor [options] <filter>'
@@ -49,6 +50,10 @@ options = OptionParser.new do |opts|
   opts.on('-j', '--job json', 'set job') do |job|
     opt_job.merge! YAML.load job
   end
+
+  opts.on('-s', '--stop-query json', 'add query to stop monitor') do |stop_query|
+    opt_stop_query.merge! YAML.load stop_query
+  end
 end
 
 options.parse!(ARGV)
@@ -75,5 +80,6 @@ monitor.monitor_url = opt_monitor_url if opt_monitor_url
 monitor.overrides = opt_set_key_value
 monitor.action = opt_action
 monitor.job = opt_job
+monitor.stop_query = opt_stop_query
 
 monitor.run(opt_timeout)
