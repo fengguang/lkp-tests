@@ -53,12 +53,18 @@ check_yaml_vars()
 		"rootfs_path"
 		"initrd_http_host"
 		"initrd_http_port"
+		"test_yaml"
+		"test_os"
+		"test_os_arch"
+		"test_os_version"
+		"test_os_mount"
+		"test_testbox"
 	)
 
 	local yaml_t
 	for yaml_t in "${yaml_vars[@]}"
 	do
-		[ -n "$(eval echo "\$${yaml_t}")" ] || die "var\(${yaml_t}\) is none"
+		[ -n "$(eval echo "\$${yaml_t}")" ] || die "cannot fine value of var: ${yaml_t}."
 	done
 }
 
@@ -133,7 +139,7 @@ mount_rootfs()
 			install_pkgs "cifs-utils"
 		;;
 		*)
-			die "rootfs_protocol is none, exit !!!"
+			die "cannot support the rootfs_protocol: ${rootfs_protocol}."
 		;;
 	esac
 
@@ -164,7 +170,7 @@ check_sha256sum_update()
 
 	if [ -n "$SHA256SUM_CACHE" ]
 	then
-		[ -n "$SHA256SUM_NET" ] || die "get net sha256sum failed !!!"
+		[ -n "$SHA256SUM_NET" ] || die "cannot get sha256sum of dailybuild iso."
 
 		if [ "$SHA256SUM_CACHE" == "$SHA256SUM_NET" ]
 		then
@@ -185,7 +191,9 @@ check_os()
 {
 	log_info "starting check os ..."
 	echo "${ALLOW_OS[@]}" | grep -wq "${os}" ||
-		die "current host \(${os}\) is not in \(${ALLOW_OS[@]}\), exit !!!"
+		die "current os is not in allow os.
+			current os: ${os}.
+			allow os: \(${ALLOW_OS[@]}\)"
 }
 
 get_cgz()
@@ -210,12 +218,12 @@ install_pkgs()
 	local pkg_installer
 	command -v yum && pkg_installer="yum"
 
-	[[ -n "$pkg_installer" ]] || die "can not find pkg installer !!!"
+	[[ -n "$pkg_installer" ]] || die "cannot find pkg installer."
 
 	local pt
 	for pt
 	do
-		"$pkg_installer" install -y "$pt" || die "install pkg\($pt\) failed !!!"
+		"$pkg_installer" install -y "$pt" || die "cannot install pkg: $pt."
 	done
 }
 
@@ -364,7 +372,7 @@ test_rootfs()
 			root_path="cifs:${ROOTFS_SERVER_PATH}/$(basename "${ROOTFS_DES_DIR}"),${ROOTFS_MOUNT_PARAM}"
 		;;
 		*)
-			die "rootfs_protocol is none, exit !!!"
+			die "cannot support the rootfs_protocol: ${rootfs_protocol}."
 		;;
 	esac
 	get_qemu_efi_fd
@@ -404,6 +412,57 @@ test_rootfs()
 EOF
 }
 
+############ submit test job yaml ############
+generate_global_yaml()
+{
+	local config_yaml="/etc/compass-ci/defaults/sparrow.yaml"
+
+	mkdir -p "$(dirname "${config_yaml}")"
+	echo "SCHED_HOST: ${SCHED_HOST}" >> "${config_yaml}"
+	echo "SCHED_PORT: ${SCHED_PORT}" >> "${config_yaml}"
+}
+
+generate_submit_append_str()
+{
+	local wait_add_vars=(
+		"os"
+		"os_arch"
+		"os_version"
+		"os_mount"
+		"testbox"
+	)
+	for vt in "${wait_add_vars[@]}"
+	do
+		SUBMIT_APPEND_STR="${SUBMIT_APPEND_STR} ${vt}=$(eval echo "\$test_${vt}")"
+	done
+}
+
+submit_test_job_yaml()
+{
+	log_info "starting submit ${test_yaml} ..."
+
+	[ -d "${LKP_SRC}" ] || die "cannot find value of var: LKP_SRC."
+
+	cd "${LKP_SRC}" && {
+		chmod +x ./sbin/install-dependencies.sh
+		./sbin/install-dependencies.sh
+
+		generate_global_yaml
+	}
+
+	cd "${LKP_SRC}/jobs" && {
+		[ -f "${test_yaml}" ] ||
+			die "cannot find test yaml in LKP_SRC/jobs.
+				test yaml: ${test_yaml}."
+
+		generate_submit_append_str
+
+		"${LKP_SRC}/sbin/submit" ${SUBMIT_APPEND_STR} "${test_yaml}"
+	}
+
+	log_info "submit ${test_yaml} finished"
+}
+
 ############ post works ############
 post_works()
 {
@@ -414,7 +473,7 @@ post_works()
 	local soft_link="${iso_version}-dailybuild"
 	cd "${ROOTFS_LOCAL_PATH}" &&
 		rm -f "${soft_link}" &&
-			ln -s "$(basename ${ROOTFS_DES_DIR})" "${soft_link}"
+			ln -s "$(basename "${ROOTFS_DES_DIR}")" "${soft_link}"
 
 	cd / && umount "${ROOTFS_LOCAL_PATH}"
 
@@ -433,6 +492,7 @@ main()
 	run_qcow2rootfs
 
 	test_rootfs
+	submit_test_job_yaml
 
 	post_works
 }
