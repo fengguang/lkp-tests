@@ -75,18 +75,9 @@ class Monitor
     return unless data['log']
 
     data = JSON.parse(data['log'])
-    if job['uuid']
-      # means Internet user
-      # using the redirection service to log in
-      return unless data['ssh_port']
+    return unless data['ssh_port']
 
-      ssh_connect(job['SCHED_HOST'], data['ssh_port'], web_socket)
-    else
-      # intranet user: direct login internal IP
-      return unless data['ip']
-
-      ssh_connect(data['ip'], 22, web_socket)
-    end
+    ssh_connect(job['SCHED_HOST'], data['ssh_port'], web_socket)
   end
 
   def ssh_connect(ssh_host, ssh_port, web_socket)
