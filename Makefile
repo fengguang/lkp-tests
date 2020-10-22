@@ -2,7 +2,7 @@ ifeq ($(TARGET_DIR_BIN), )
     TARGET_DIR_BIN := /usr/local/bin
 endif
 
-ifneq ($(shell whoami), "root")
+ifneq ($(shell whoami), root)
     TARGET_DIR_BIN := $${HOME}/bin
 endif
 
@@ -14,8 +14,8 @@ subsystem:
 install:
 	mkdir -p $(TARGET_DIR_BIN)
 	ln -sf $(shell pwd)/bin/lkp $(TARGET_DIR_BIN)/lkp
-	bash sbin/install-dependencies.sh
 	bash sbin/set-env.sh
+	sudo bash sbin/install-dependencies.sh
 
 .PHONY: doc
 doc:
