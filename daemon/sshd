@@ -1,6 +1,16 @@
 #!/bin/sh
 # pub_key
-# email
+# my_email
+# sshr_port
+# sshr_port_len
+# sshr_port_base
+
+. $LKP_SRC/lib/http.sh
+
+sshr_ip=$LKP_SERVER
+[ -n "$sshr_port" ] || sshr_port=5050
+[ -n "$sshr_port_len" ] || sshr_port_len=2000
+[ -n "$sshr_port_base" ] || sshr_port_base=50000
 
 run_ssh()
 {
@@ -11,40 +21,79 @@ run_ssh()
 	systemctl start sshd
 }
 
-compose_email()
+data_success()
 {
-	deadline=$(date -d "+$runtime seconds" +"%Y-%m-%d %H:%M:%S")
-	data="To: $email
-Subject: [NOTIFY compass-ci] $testbox ready to ssh
+	data="To: $my_email
+Subject: [NOTIFY Compass-ci] $testbox ready to use
 
-Dear $email:
-    Thanks for your participation in Kunpeng and software ecosystem!
-    According to your application, $testbox has been provisioned.
-    The datails are as follows:
+Dear $my_username:
+	Thanks for your participation in software ecosystem!
+	According to your application, $testbox has been provisioned.
+	The datails are as follows:
 
-    Login:
-        ssh root@$PUB_IP
-    Due time:
-        $deadline
-
-    HW:
-        nr_cpu: $nr_cpu
-        memory: $memory
-        testbox: $testbox
-    OS:
-        $os $os_version $os_arch
+	Login:
+		ssh root@api.compass-ci.openeuler.org -p $port
+	Due time:
+		$deadline
+	HW:
+		nr_cpu: $nr_cpu
+		memory: $memory
+		testbox: $testbox
+	OS:
+		$os $os_version $os_arch
 
 Regards
-compass-ci
+Compass-Ci
 "
+}
+
+data_failure()
+{
+	data="To: $my_email
+Subject: [NOTIFY Compass-ci] Applying $testbox failed
+
+Dear $my_username:
+	Sorry to inform you that your application failed.
+	You may need to wait a moment, or check whether your pub_key exists.
+
+Regards
+Compass-Ci
+"
+}
+
+compose_email()
+{
+	deadline=$(date -d "$runtime seconds" +"%Y-%m-%d %H:%M:%S")
+	if [ -n "$port" ]; then
+		data_success
+	else
+		data_failure
+	fi
+}
+
+set_port()
+{
+	[ -n "$pub_key" ] || return
+
+	for i in $(seq 1 10)
+	do
+		port=$(($(date +%s%N)%"$sshr_port_len"+"$sshr_port_base"))
+		ssh -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes -o TCPKeepAlive=yes \
+		    -Nf -R $port:localhost:22 sshr@"$sshr_ip" -p "$sshr_port" &>/dev/null
+		[ $? -eq 0 ] && return
+	done
+	port=""
 }
 
 run_email()
 {
-	[ -n "$email" ] || return 0
+	[ -n "$my_email" ] || return 0
+	my_username=$(echo "$my_email" | awk -F '@' '{print $1}')
 	compose_email
-	curl -XPOST "$MAIL_HOST:$MAIL_PORT/send_mail_text" -d "$data"
+	curl -XPOST "${MAIL_HOST:-$LKP_SERVER}:${MAIL_PORT:-11312}/send_mail_text" -d "$data"
 }
 
 run_ssh
+set_port
+report_ssh_port $port
 run_email
