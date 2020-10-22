@@ -8,7 +8,7 @@ module Git
   class Object
     class Commit
       alias orig_initialize initialize
-      PGP_SIGNATURE = "-----END PGP SIGNATURE-----\n \n\n".freeze
+      PGP_SIGNATURE = "-----END PGP SIGNATURE-----".freeze
 
       def initialize(base, sha, init = nil)
         orig_initialize(base, sha, init)
@@ -24,7 +24,7 @@ module Git
 
       def subject
         raw_message = message
-        raw_message = raw_message.split(PGP_SIGNATURE).last if raw_message.include?(PGP_SIGNATURE)
+        raw_message = raw_message.split(PGP_SIGNATURE).last.sub(/^\s+/, '') if raw_message.include?(PGP_SIGNATURE)
         raw_message.split("\n").first
       end
 
