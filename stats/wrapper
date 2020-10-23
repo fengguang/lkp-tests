@@ -35,6 +35,15 @@ check_incomplete_run()
 	echo -e "# missing $program $file\nis_incomplete_run: 1" >> $RESULT_ROOT/last_state
 }
 
+check_soft_timeout()
+{
+	local file=$RESULT_ROOT/soft_timeout
+	[[ -f $file ]] || return
+
+	grep -xq "soft_timeout: 1" $RESULT_ROOT/last_state ||
+	echo -e "soft_timeout: 1" >> $RESULT_ROOT/last_state
+}
+
 check_empty_output()
 {
 	[[ -s $log ]] && return
@@ -136,6 +145,7 @@ if [[ $log =~ ^"$RESULT_ROOT"/kmsg$ ]]; then
 fi
 
 check_incomplete_run $log
+check_soft_timeout
 check_empty_output
 check_binary_output
 
