@@ -13,6 +13,11 @@ STDIN.each_line do |line|
   line = line.resolve_invalid_bytes
 
   case line
+
+  # /proc/meminfo is replaced as 'test_klp_atomic_replace: this has been live patched'
+  # from time to time in kernel-selftests/kselftests-livepatch testing. ignore them.
+  when /^test_klp_atomic_replace:/
+    next
   when /^time:/
     puts line
   else
