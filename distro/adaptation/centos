@@ -8,7 +8,6 @@ build-essential: make automake gcc gcc-c++ kernel-devel rpm-build
 cgroup-bin: libcgroup
 clang-6.0: clang
 cmake: cmake cmake3
-dbench=4.0-2: dbench
 dnsutils: bind-utils
 dpkg-dev: dpkg-devel
 e2fslibs-dev: e2fsprogs-devel
@@ -297,7 +296,6 @@ libtasn1-6: libtasn1
 libtimedate-perl: perl-TimeDate
 libtirpc-common: libtirpc
 libtirpc3: libtirpc
-network-manager: network-manager-applet
 libv4l-dev: libv4l-devel
 libvirt-clients: libvirt-client
 libvirt-daemon-system: libvirt-daemon
@@ -328,3 +326,11 @@ dh-python:
 dh-strip-nondeterminism:
 dh-systemd:
 guile-2.0: guile
+libpython2.7: python-libs
+network-manager: NetworkManager
+init-system-helpers:
+javahelper:
+junit4: junit
+liboath-dev: liboath-devel
+lsb-release: redhat-lsb
+linux-base:

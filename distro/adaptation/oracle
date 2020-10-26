@@ -5,7 +5,6 @@ binutils-dev: binutils-devel
 btrfs-tools: btrfs-progs
 build-essential: make automake gcc gcc-c++ kernel-uek-devel rpm-build
 cgroup-bin: libcgroup
-dbench=4.0-2: dbench
 dpkg-dev: dpkg-devel
 f2fs-tools:
 freeglut3: freeglut
@@ -133,3 +132,6 @@ xutils-dev: imake
 xz-utils: xz
 zlib1g-dev: zlib-devel
 initramfs-tools:
+init-system-helpers:
+javahelper:
+linux-base:

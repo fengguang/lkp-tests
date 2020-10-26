@@ -5,7 +5,6 @@ binutils-dev: binutils-devel
 btrfs-tools: btrfs-progs
 build-essential: make automake gcc gcc-c++ kernel-devel rpm-build
 cgroup-bin: libcgroup
-dbench=4.0-2: dbench
 dpkg-dev: dpkg-devel
 freeglut3: freeglut
 fsmark: fs_mark
@@ -158,3 +157,8 @@ libslang2-dev: slang-devel
 python-dev: python3-devel
 systemtap-sdt-dev: systemtap-sdt-devel
 initramfs-tools:
+init-system-helpers:
+network-manager: NetworkManager
+javahelper:
+junit4: junit
+linux-base:
