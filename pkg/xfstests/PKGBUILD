@@ -98,7 +98,7 @@ separate_tests()
 	split xfs-new -d -n r/30 xfs-group
 	split btrfs-new -d -n r/3 btrfs-group
 	split generic-new -d -n r/30 generic-group
-	split ext4-new -d -n r/1 ext4-group
+	split ext4-new -d -n r/2 ext4-group
 }
 
 # Some special tests need to be separated and tested separately

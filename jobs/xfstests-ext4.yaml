@@ -12,6 +12,7 @@ fs:
 xfstests:
   test:
   - ext4-group00
+  - ext4-group01
   # - ext4-009 # execution time is long nearly 1h
   - ext4-029
 # - ext4-new
