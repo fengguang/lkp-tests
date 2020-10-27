@@ -14,33 +14,35 @@ build_type = ''
 while (line = STDIN.gets)
   line = line.resolve_invalid_bytes.plain_text
   case line
-  when %r{^(.+)/TEST[0-9]+: SETUP\s*\(.+/(.+)/(.+)\)$}
+  # from /nvml/src/test/unittest/unittest.sh
+  # 2732: msg "$UNITTEST_NAME: SETUP ($TEST/$REAL_FS/$BUILD$MCSTR$PROV$PM)"
+  when %r{^(.+)/TEST[0-9]+: SETUP\s*\((.+)\)$}
     test_item = Regexp.last_match[1]
-    fs_type = Regexp.last_match[2]
-    build_type = Regexp.last_match[3]
+    subtest = Regexp.last_match[2].tr('/','_')
   when %r{^(.+)/(TEST[0-9]+): (PASS|FAIL|SKIP)}
     item = Regexp.last_match[1]
     name = Regexp.last_match[2]
     next unless test_item == item
 
-    stats << item + '_' + name + '_' + fs_type + '_' + build_type + '.' + Regexp.last_match[3].downcase + ': 1'
+    stats << item + '_' + name + '_' + subtest + '.' + Regexp.last_match[3].downcase + ': 1'
   when %r{RUNTESTS: stopping: (.+)/(TEST[0-9]+) failed}
     item = Regexp.last_match[1]
     name = Regexp.last_match[2]
-    if line =~ /FS=(.+) BUILD=(.+)/
+    if line =~ /TEST=(.+) FS=(.+) BUILD=(.+)/
       test_item = item
-      fs_type = $1
-      build_type = $2
+      subtest_name = $1
+      fs_type = $2
+      build_type = $3
     end
     next unless test_item == item
 
-    stats << item + '_' + name + '_' + fs_type + '_' + build_type + '.fail: 1'
+    stats << item + '_' + name + '_' + subtest_name + '_' + fs_type + '_' + build_type + '.fail: 1'
   when %r{RUNTESTS: stopping: (.+)/(TEST[0-9]+) timed out}
     item = Regexp.last_match[1]
     name = Regexp.last_match[2]
     next unless test_item == item
 
-    stats << item + '_' + name + '_' + fs_type + '_' + build_type + '.timeout: 1'
+    stats << item + '_' + name + '_' + subtest + '.timeout: 1'
   when %r{^(.+)/(TEST[0-9]+): SKIP}
     item = Regexp.last_match[1]
     name = Regexp.last_match[2]
