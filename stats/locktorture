@@ -1,5 +1,9 @@
 #!/usr/bin/env ruby
 
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+
+require "#{LKP_SRC}/lib/string_ext"
+
 # The result line in input is in format:
 # [time] $type-torture:--- End of test: $result: arg=value arg=value ...
 #
@@ -24,6 +28,8 @@ type = 'unknown'
 cpuhotplug = false
 
 while (line = STDIN.gets)
+  line = line.resolve_invalid_bytes
+
   case line
   when /^\[.*\] ([A-Za-z_]+)-torture.*End of test: (.*):.*onoff_interval=([0-9]+).*/
     type = $1
