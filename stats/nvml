@@ -14,6 +14,12 @@ build_type = ''
 while (line = STDIN.gets)
   line = line.resolve_invalid_bytes.plain_text
   case line
+  # 5607:blk_nblock/TEST3: SKIP: Only supported on ppc64
+  # blk_pool/TEST10: SKIP required: run without superuser rights
+  # blk_rw/TEST10: SKIP DEVICE_DAX_PATH does not specify enough dax devices (min: 1)
+  # blk_rw/TEST11: SKIP DEVICE_DAX_PATH does not specify enough dax devices or they don't have required alignments (min: 2, alignments: 4096 4096)
+  when /Only supported on ppc64/, /run without superuser rights/, /does not specify enough dax devices/
+    next
   # from /nvml/src/test/unittest/unittest.sh
   # 2732: msg "$UNITTEST_NAME: SETUP ($TEST/$REAL_FS/$BUILD$MCSTR$PROV$PM)"
   when %r{^(.+)/TEST[0-9]+: SETUP\s*\((.+)\)$}
