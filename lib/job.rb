@@ -305,7 +305,7 @@ class Job
 
     hosts_file = get_hosts_file
     if hosts_file
-      hwconfig = load_yaml(hosts_file, nil)
+      hwconfig = load_yaml(hosts_file, {})
       @job[source_file_symkey(hosts_file)] = nil
       @job.merge!(hwconfig) { |_k, a, _b| a } # job's key/value has priority over hwconfig
       @load_hosts_done = true
