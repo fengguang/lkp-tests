@@ -6,7 +6,10 @@ runtime: 60
 disk:
 - 1HDD
 fs:
-- ext4
+- xfs
+iosched:
+- mq-deadline
+raw_disk: rd
 nr_task: 24
 
 fio-setup-basic:
@@ -26,7 +29,6 @@ fio-setup-basic:
   bs:
   - 4k
   - 16k
-  - 32k
   - 64k
   - 128k
   - 256k
