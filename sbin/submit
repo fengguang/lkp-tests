@@ -79,7 +79,7 @@ if ARGV.size.zero?
 end
 
 job_ids = []
-job_json_list = []
+job_hash_list = []
 
 def find_jobfile(jobfile)
   return jobfile if File.exist?(jobfile)
@@ -126,7 +126,7 @@ ARGV.each do |jobfile|
 
     # merge job info
     job_hash = job.to_hash
-    job_json_list << job_hash.to_json
+    job_hash_list << job_hash
     job_hash = job_hash.merge(sh_hash)
 
     # save job to yaml
@@ -156,7 +156,8 @@ ARGV.each do |jobfile|
 end
 
 if opt_monitor
+  job_hash_list[0].delete('define_files')
   opt_monitor_query.merge!({'job_id' => job_ids[0]})
-  cmd = "#{LKP_SRC}/sbin/monitor -f '#{opt_monitor_query.to_json}' -j '#{job_json_list[0]}' -a #{actions.join(',')} -s 'job_state: extract_finished'"
+  cmd = "#{LKP_SRC}/sbin/monitor -f '#{opt_monitor_query.to_json}' -j '#{job_hash_list[0].to_json}' -a #{actions.join(',')} -s 'job_state: extract_finished'"
   exec cmd
 end
