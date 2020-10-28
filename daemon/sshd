@@ -90,7 +90,7 @@ run_email()
 	[ -n "$my_email" ] || return 0
 	my_username=$(echo "$my_email" | awk -F '@' '{print $1}')
 	compose_email
-	curl -XPOST "${MAIL_HOST:-$LKP_SERVER}:${MAIL_PORT:-11312}/send_mail_text" -d "$data"
+	curl -XPOST "${MAIL_HOST:-$LKP_SERVER}:${MAIL_PORT:-49000}/send_mail_text" -d "$data"
 }
 
 run_ssh
