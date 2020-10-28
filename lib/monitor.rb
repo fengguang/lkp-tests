@@ -27,6 +27,7 @@ class Monitor
     load_default
     @result = []
     @stop_query = {}
+    @reason = nil
   end
 
   def load_default
@@ -87,16 +88,12 @@ class Monitor
     ssh root@#{ssh_host} -p #{ssh_port} -o StrictHostKeyChecking=no"
   end
 
-  def stop_em(web_socket)
-    web_socket.close
-    EM.stop
-  end
-
-  def stop(data, web_socket)
+  def stop(data, web_socket, code = 1000, reason = 'normal')
     @stop_query.each do |key, value|
       return false unless data[key] == value
     end
-    stop_em(web_socket)
+    @reason = reason
+    web_socket.close(code, reason)
   end
 
   def run(timeout = nil)
@@ -111,7 +108,8 @@ class Monitor
       if timeout && timeout != 0
         EM.add_timer(timeout) do
           @exit_status_code = 1
-          stop_em(ws)
+          @reason = 'timeout'
+          ws.close(1000, @reason)
         end
       end
 
@@ -131,7 +129,9 @@ class Monitor
       end
 
       ws.on :close do |event|
-        puts "connection closed: #{event.reason}"
+        reason = event.reason || @reason
+        puts "connection closed: #{reason}"
+        EM.stop
       end
     end
     return @exit_status_code
