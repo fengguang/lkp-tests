@@ -14,11 +14,17 @@ build_type = ''
 while (line = STDIN.gets)
   line = line.resolve_invalid_bytes.plain_text
   case line
-  # 5607:blk_nblock/TEST3: SKIP: Only supported on ppc64
+  # ignore below SKIP test:
+  # blk_nblock/TEST3: SKIP: Only supported on ppc64
   # blk_pool/TEST10: SKIP required: run without superuser rights
   # blk_rw/TEST10: SKIP DEVICE_DAX_PATH does not specify enough dax devices (min: 1)
   # blk_rw/TEST11: SKIP DEVICE_DAX_PATH does not specify enough dax devices or they don't have required alignments (min: 2, alignments: 4096 4096)
-  when /Only supported on ppc64/, /run without superuser rights/, /does not specify enough dax devices/
+  # ./check_max_mmap.sh: SKIP: DEVICE_DAX_PATH does not specify path to DAX device.
+  # obj_badblock/TEST0: SKIP: tests using 'sudo' are not enabled in testconfig.sh (ENABLE_SUDO_TESTS)
+  # obj_ctl_debug/TEST2: SKIP pmemcheck does not support --expect-fence-after-clflush option. Please update it to the latest version.
+  # pmempool_check/TEST33: SKIP compiled with support for shutdown state
+  # ex_libpmemobj/TEST15: SKIP no terminal
+  when %r(SKIP.+(Only supported on ppc64|run without superuser rights|not (enabled|specify|support)|compiled with support for shutdown state|no terminal))
     next
   # from /nvml/src/test/unittest/unittest.sh
   # 2732: msg "$UNITTEST_NAME: SETUP ($TEST/$REAL_FS/$BUILD$MCSTR$PROV$PM)"
