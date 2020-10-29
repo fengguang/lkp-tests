@@ -26,6 +26,18 @@ while (line = STDIN.gets)
     next unless valid_datetime?($1)
 
     test_name = $2
+  when /^(SUCCESS|FAIL)/
+    # 1 2020-10-27 01:29:45 build/tests/core_getstats
+    # 2 IGT-Version: 1.25-ga15f8da1 (x86_64) (Linux: 5.9.0-wt-17357-g18b04b6d608b x86_64)
+    # 3 SUCCESS (0.005s)
+    next if test_name == nil
+
+    stats_type = if $1 == 'SUCCESS'
+                   'pass'
+                 else
+                   'fail'
+                 end
+    stats << test_name + ".#{stats_type}: 1"
   when /Starting subtest: (.*)$/
     # Starting subtest: invalid-buffer
     next if test_name == nil
