@@ -1,18 +1,25 @@
 #!/bin/bash
 
-get_node()
+get_memory()
 {
-	echo "nr_node: $(grep -Eo 'Node [0-9]+,' /proc/zoneinfo | uniq | wc -l)"
-	echo "nr_cpu: $(nproc)"
 	memory_total=$(cat /proc/meminfo |grep MemTotal | awk '{print $2}')
 	memory_new=$(awk 'BEGIN{printf "%0.2f", '$memory_total'/1024/1024/16}')
 	memory=$(echo `expr $(echo $memory_new | awk '{print int($0)+1}') \* 16`)G
 	echo "memory: $memory"
 }
 
-get_model_name()
+get_cpu()
 {
-	echo "model_name: $(lscpu |grep "Model name" | awk '{print $3}')"
+	echo $1: $(lscpu | awk -F': *' '/'$2':/{print $2}')
+}
+
+get_cpu_info()
+{
+	cpu_info=("arch Architecture" "nr_node NUMA\snode\(s\)" "nr_cpu ^CPU\(s\)" "model_name Model\sname")
+	for info in "${cpu_info[@]}"
+	do
+		get_cpu $info
+	done
 }
 
 get_nr_disk()
@@ -101,11 +108,11 @@ get_ipmi_ip()
 
 main()
 {
-	get_node
+	get_memory
 	get_nr_disk
 	get_partitions
 	get_mac
-	get_model_name
+	get_cpu_info
 	get_ipmi_ip
 }
 
