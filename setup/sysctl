@@ -193,6 +193,15 @@
 # - sc_hot_threshold_mbytes
 # - sc_cold_threshold_mbytes
 # - sc_drop_threshold_mbytes
+# - sc_ipv4_tcp_tw_reuse
+# - sc_ipv4_tcp_keepalive_time
+# - sc_ipv4_tcp_fin_timeout
+# - sc_ipv4_tcp_max_tw_buckets
+# - sc_ipv4_tcp_max_syn_backlog
+# - sc_ipv4_ip_local_port_range
+# - sc_netdev_max_backlog
+# - sc_rmem_max
+# - sc_wmem_max
 
 . $LKP_SRC/lib/reproduce-log.sh
 
@@ -390,5 +399,14 @@
 [ -n "$sc_hot_threshold_mbytes" ] && log_eval "echo '$sc_hot_threshold_mbytes' > '/proc/sys/vm/hot_threshold_mbytes'"
 [ -n "$sc_cold_threshold_mbytes" ] && log_eval "echo '$sc_cold_threshold_mbytes' > '/proc/sys/vm/cold_threshold_mbytes'"
 [ -n "$sc_drop_threshold_mbytes" ] && log_eval "echo '$sc_drop_threshold_mbytes' > '/proc/sys/vm/drop_threshold_mbytes'"
+[ -n "$sc_ipv4_tcp_tw_reuse" ] && log_eval "echo '$sc_ipv4_tcp_tw_reuse' > '/proc/sys/net/ipv4/tcp_tw_reuse'"
+[ -n "$sc_ipv4_tcp_keepalive_time" ] && log_eval "echo '$sc_ipv4_tcp_keepalive_time' > '/proc/sys/net/ipv4/tcp_keepalive_time'"
+[ -n "$sc_ipv4_tcp_fin_timeout" ] && log_eval "echo '$sc_ipv4_tcp_fin_timeout' > '/proc/sys/net/ipv4/tcp_fin_timeout'"
+[ -n "$sc_ipv4_tcp_max_tw_buckets" ] && log_eval "echo '$sc_ipv4_tcp_max_tw_buckets' > '/proc/sys/net/ipv4/tcp_max_tw_buckets'"
+[ -n "$sc_ipv4_tcp_max_syn_backlog" ] && log_eval "echo '$sc_ipv4_tcp_max_syn_backlog' > '/proc/sys/net/ipv4/tcp_max_syn_backlog'"
+[ -n "$sc_ipv4_ip_local_port_range" ] && log_eval "echo '$sc_ipv4_ip_local_port_range' > '/proc/sys/net/ipv4/ip_local_port_range'"
+[ -n "$sc_netdev_max_backlog" ] && log_eval "echo '$sc_netdev_max_backlog' > '/proc/sys/net/core/netdev_max_backlog'"
+[ -n "$sc_rmem_max" ] && log_eval "echo '$sc_rmem_max' > '/proc/sys/net/core/rmem_max'"
+[ -n "$sc_wmem_max" ] && log_eval "echo '$sc_wmem_max' > '/proc/sys/net/core/wmem_max'"
 
 exit 0
