@@ -1,0 +1,1842 @@
+2020-10-26 01:24:50 build/tests/dmabuf
+IGT-Version: 1.25-ga15f8da1 (x86_64) (Linux: 5.9.0-01339-g9533aa80de121f x86_64)
+Starting subtest: all
+No dynamic tests executed.
+Subtest all: SKIP (0.000s)
+Test requirement not met in function igt_kselftests, file ../lib/igt_kmod.c:644:
+Test requirement: !igt_list_empty(&tests)
+Last errno: 2, No such file or directory
+2020-10-26 01:24:50 build/tests/kms_atomic
+IGT-Version: 1.25-ga15f8da1 (x86_64) (Linux: 5.9.0-01339-g9533aa80de121f x86_64)
+Starting subtest: plane-overlay-legacy
+Subtest plane-overlay-legacy: SUCCESS (0.142s)
+Starting subtest: plane-primary-legacy
+Subtest plane-primary-legacy: SUCCESS (0.100s)
+Starting subtest: plane-primary-overlay-mutable-zpos
+Test requirement not met in function __real_main1072, file ../tests/kms_atomic.c:1134:
+Test requirement: igt_plane_has_format_mod(primary, format_primary, 0x0)
+Subtest plane-primary-overlay-mutable-zpos: SKIP (0.000s)
+Starting subtest: plane-immutable-zpos
+Committing with the plane[0] underneath plane[1]
+Subtest plane-immutable-zpos: SUCCESS (0.167s)
+Starting subtest: test-only
+Subtest test-only: SUCCESS (0.220s)
+Starting subtest: plane-cursor-legacy
+Subtest plane-cursor-legacy: SUCCESS (0.103s)
+Starting subtest: plane-invalid-params
+Subtest plane-invalid-params: SUCCESS (0.067s)
+Starting subtest: plane-invalid-params-fence
+Test requirement not met in function igt_require_sw_sync, file ../lib/sw_sync.c:247:
+Test requirement: kernel_has_sw_sync()
+Last errno: 2, No such file or directory
+Subtest plane-invalid-params-fence: SKIP (0.017s)
+Starting subtest: crtc-invalid-params
+Subtest crtc-invalid-params: SUCCESS (0.033s)
+Starting subtest: crtc-invalid-params-fence
+Test requirement not met in function igt_require_sw_sync, file ../lib/sw_sync.c:247:
+Test requirement: kernel_has_sw_sync()
+Last errno: 2, No such file or directory
+Subtest crtc-invalid-params-fence: SKIP (0.017s)
+Starting subtest: atomic-invalid-params
+Subtest atomic-invalid-params: SUCCESS (0.083s)
+2020-10-26 01:24:52 build/tests/kms_cursor_edge_walk
+IGT-Version: 1.25-ga15f8da1 (x86_64) (Linux: 5.9.0-01339-g9533aa80de121f x86_64)
+Starting subtest: pipe-A-64x64-left-edge
+Subtest pipe-A-64x64-left-edge: SUCCESS (3.113s)
+Starting subtest: pipe-A-64x64-right-edge
+Subtest pipe-A-64x64-right-edge: SUCCESS (3.143s)
+Starting subtest: pipe-A-64x64-top-edge
+Subtest pipe-A-64x64-top-edge: SUCCESS (3.143s)
+Starting subtest: pipe-A-64x64-bottom-edge
+Subtest pipe-A-64x64-bottom-edge: SUCCESS (3.159s)
+Starting subtest: pipe-A-128x128-left-edge
+Subtest pipe-A-128x128-left-edge: SUCCESS (3.159s)
+Starting subtest: pipe-A-128x128-right-edge
+Subtest pipe-A-128x128-right-edge: SUCCESS (3.159s)
+Starting subtest: pipe-A-128x128-top-edge
+Subtest pipe-A-128x128-top-edge: SUCCESS (3.159s)
+Starting subtest: pipe-A-128x128-bottom-edge
+Subtest pipe-A-128x128-bottom-edge: SUCCESS (3.159s)
+Starting subtest: pipe-A-256x256-left-edge
+Subtest pipe-A-256x256-left-edge: SUCCESS (3.159s)
+Starting subtest: pipe-A-256x256-right-edge
+Subtest pipe-A-256x256-right-edge: SUCCESS (3.159s)
+Starting subtest: pipe-A-256x256-top-edge
+Subtest pipe-A-256x256-top-edge: SUCCESS (3.159s)
+Starting subtest: pipe-A-256x256-bottom-edge
+Subtest pipe-A-256x256-bottom-edge: SUCCESS (3.143s)
+Starting subtest: pipe-B-64x64-left-edge
+Subtest pipe-B-64x64-left-edge: SUCCESS (3.213s)
+Starting subtest: pipe-B-64x64-right-edge
+Subtest pipe-B-64x64-right-edge: SUCCESS (3.159s)
+Starting subtest: pipe-B-64x64-top-edge
+Subtest pipe-B-64x64-top-edge: SUCCESS (3.159s)
+Starting subtest: pipe-B-64x64-bottom-edge
+Subtest pipe-B-64x64-bottom-edge: SUCCESS (3.159s)
+Starting subtest: pipe-B-128x128-left-edge
+Subtest pipe-B-128x128-left-edge: SUCCESS (3.159s)
+Starting subtest: pipe-B-128x128-right-edge
+Subtest pipe-B-128x128-right-edge: SUCCESS (3.159s)
+Starting subtest: pipe-B-128x128-top-edge
+Subtest pipe-B-128x128-top-edge: SUCCESS (3.159s)
+Starting subtest: pipe-B-128x128-bottom-edge
+Subtest pipe-B-128x128-bottom-edge: SUCCESS (3.159s)
+Starting subtest: pipe-B-256x256-left-edge
+Subtest pipe-B-256x256-left-edge: SUCCESS (3.159s)
+Starting subtest: pipe-B-256x256-right-edge
+Subtest pipe-B-256x256-right-edge: SUCCESS (3.159s)
+Starting subtest: pipe-B-256x256-top-edge
+Subtest pipe-B-256x256-top-edge: SUCCESS (3.159s)
+Starting subtest: pipe-B-256x256-bottom-edge
+Subtest pipe-B-256x256-bottom-edge: SUCCESS (3.159s)
+Starting subtest: pipe-C-64x64-left-edge
+Subtest pipe-C-64x64-left-edge: SUCCESS (3.214s)
+Starting subtest: pipe-C-64x64-right-edge
+Subtest pipe-C-64x64-right-edge: SUCCESS (3.159s)
+Starting subtest: pipe-C-64x64-top-edge
+Subtest pipe-C-64x64-top-edge: SUCCESS (3.159s)
+Starting subtest: pipe-C-64x64-bottom-edge
+Subtest pipe-C-64x64-bottom-edge: SUCCESS (3.159s)
+Starting subtest: pipe-C-128x128-left-edge
+Subtest pipe-C-128x128-left-edge: SUCCESS (3.159s)
+Starting subtest: pipe-C-128x128-right-edge
+Subtest pipe-C-128x128-right-edge: SUCCESS (3.159s)
+Starting subtest: pipe-C-128x128-top-edge
+Subtest pipe-C-128x128-top-edge: SUCCESS (3.159s)
+Starting subtest: pipe-C-128x128-bottom-edge
+Subtest pipe-C-128x128-bottom-edge: SUCCESS (3.159s)
+Starting subtest: pipe-C-256x256-left-edge
+Subtest pipe-C-256x256-left-edge: SUCCESS (3.159s)
+Starting subtest: pipe-C-256x256-right-edge
+Subtest pipe-C-256x256-right-edge: SUCCESS (3.159s)
+Starting subtest: pipe-C-256x256-top-edge
+Subtest pipe-C-256x256-top-edge: SUCCESS (3.159s)
+Starting subtest: pipe-C-256x256-bottom-edge
+Subtest pipe-C-256x256-bottom-edge: SUCCESS (3.159s)
+Test requirement not met in function igt_require_pipe, file ../lib/igt_kms.c:1907:
+Test requirement: !(!display->pipes[pipe].enabled)
+Pipe D does not exist or not enabled
+Subtest pipe-D-64x64-left-edge: SKIP
+Subtest pipe-D-64x64-right-edge: SKIP
+Subtest pipe-D-64x64-top-edge: SKIP
+Subtest pipe-D-64x64-bottom-edge: SKIP
+Subtest pipe-D-128x128-left-edge: SKIP
+Subtest pipe-D-128x128-right-edge: SKIP
+Subtest pipe-D-128x128-top-edge: SKIP
+Subtest pipe-D-128x128-bottom-edge: SKIP
+Subtest pipe-D-256x256-left-edge: SKIP
+Subtest pipe-D-256x256-right-edge: SKIP
+Subtest pipe-D-256x256-top-edge: SKIP
+Subtest pipe-D-256x256-bottom-edge: SKIP
+Test requirement not met in function igt_require_pipe, file ../lib/igt_kms.c:1907:
+Test requirement: !(!display->pipes[pipe].enabled)
+Pipe E does not exist or not enabled
+Subtest pipe-E-64x64-left-edge: SKIP
+Subtest pipe-E-64x64-right-edge: SKIP
+Subtest pipe-E-64x64-top-edge: SKIP
+Subtest pipe-E-64x64-bottom-edge: SKIP
+Subtest pipe-E-128x128-left-edge: SKIP
+Subtest pipe-E-128x128-right-edge: SKIP
+Subtest pipe-E-128x128-top-edge: SKIP
+Subtest pipe-E-128x128-bottom-edge: SKIP
+Subtest pipe-E-256x256-left-edge: SKIP
+Subtest pipe-E-256x256-right-edge: SKIP
+Subtest pipe-E-256x256-top-edge: SKIP
+Subtest pipe-E-256x256-bottom-edge: SKIP
+Test requirement not met in function igt_require_pipe, file ../lib/igt_kms.c:1907:
+Test requirement: !(!display->pipes[pipe].enabled)
+Pipe F does not exist or not enabled
+Subtest pipe-F-64x64-left-edge: SKIP
+Subtest pipe-F-64x64-right-edge: SKIP
+Subtest pipe-F-64x64-top-edge: SKIP
+Subtest pipe-F-64x64-bottom-edge: SKIP
+Subtest pipe-F-128x128-left-edge: SKIP
+Subtest pipe-F-128x128-right-edge: SKIP
+Subtest pipe-F-128x128-top-edge: SKIP
+Subtest pipe-F-128x128-bottom-edge: SKIP
+Subtest pipe-F-256x256-left-edge: SKIP
+Subtest pipe-F-256x256-right-edge: SKIP
+Subtest pipe-F-256x256-top-edge: SKIP
+Subtest pipe-F-256x256-bottom-edge: SKIP
+2020-10-26 01:26:46 build/tests/kms_flip_tiling
+IGT-Version: 1.25-ga15f8da1 (x86_64) (Linux: 5.9.0-01339-g9533aa80de121f x86_64)
+Starting subtest: flip-changes-tiling
+Subtest flip-changes-tiling: SUCCESS (0.833s)
+Starting subtest: flip-changes-tiling-Y
+Test requirement not met in function __real_main154, file ../tests/kms_flip_tiling.c:196:
+Test requirement: igt_display_has_format_mod(&data.display, data.testformat, tiling[i])
+Subtest flip-changes-tiling-Y: SKIP (0.000s)
+Starting subtest: flip-changes-tiling-Yf
+Test requirement not met in function __real_main154, file ../tests/kms_flip_tiling.c:212:
+Test requirement: igt_display_has_format_mod(&data.display, data.testformat, tiling[i])
+Subtest flip-changes-tiling-Yf: SKIP (0.000s)
+Starting subtest: flip-X-tiled
+Subtest flip-X-tiled: SUCCESS (0.797s)
+Starting subtest: flip-Y-tiled
+Test requirement not met in function __real_main154, file ../tests/kms_flip_tiling.c:248:
+Test requirement: igt_display_has_format_mod(&data.display, data.testformat, tiling[i])
+Subtest flip-Y-tiled: SKIP (0.000s)
+Starting subtest: flip-Yf-tiled
+Test requirement not met in function __real_main154, file ../tests/kms_flip_tiling.c:264:
+Test requirement: igt_display_has_format_mod(&data.display, data.testformat, tiling[i])
+Subtest flip-Yf-tiled: SKIP (0.000s)
+Starting subtest: flip-to-X-tiled
+Subtest flip-to-X-tiled: SUCCESS (0.795s)
+Starting subtest: flip-to-Y-tiled
+Test requirement not met in function __real_main154, file ../tests/kms_flip_tiling.c:300:
+Test requirement: igt_display_has_format_mod(&data.display, data.testformat, tiling[i])
+Subtest flip-to-Y-tiled: SKIP (0.000s)
+Starting subtest: flip-to-Yf-tiled
+Test requirement not met in function __real_main154, file ../tests/kms_flip_tiling.c:316:
+Test requirement: igt_display_has_format_mod(&data.display, data.testformat, tiling[i])
+Subtest flip-to-Yf-tiled: SKIP (0.000s)
+2020-10-26 01:26:49 build/tests/kms_multipipe_modeset
+IGT-Version: 1.25-ga15f8da1 (x86_64) (Linux: 5.9.0-01339-g9533aa80de121f x86_64)
+Starting subtest: basic-max-pipe-crc-check
+Test requirement not met in function test_multipipe, file ../tests/kms_multipipe_modeset.c:125:
+Test requirement: valid_outputs == num_pipes
+Number of connected outputs(1) not equal to the number of pipes supported(3)
+Subtest basic-max-pipe-crc-check: SKIP (0.000s)
+2020-10-26 01:26:49 build/tests/kms_prime
+IGT-Version: 1.25-ga15f8da1 (x86_64) (Linux: 5.9.0-01339-g9533aa80de121f x86_64)
+Starting subtest: basic-crc
+Test requirement not met in function __real_main252, file ../tests/kms_prime.c:268:
+Test requirement: second_fd >= 0
+Last errno: 2, No such file or directory
+Subtest basic-crc: SKIP (0.001s)
+2020-10-26 01:26:49 build/tests/kms_setmode
+IGT-Version: 1.25-ga15f8da1 (x86_64) (Linux: 5.9.0-01339-g9533aa80de121f x86_64)
+Starting subtest: basic
+Testing: basic 1 connector combinations
+  Test id#1 CRTC count 1
+    CRTC[45] [Pipe A] Mode: 1024x768@60Hz Connectors: HDMI-A-1[79]
+Expected frametime: 16666us; measured 16716.9us +- 9.077us accuracy 0.16% [1.32 scanlines]
+(kms_setmode:1404) CRITICAL: Test assertion failure function check_timings, file ../tests/kms_setmode.c:506:
+(kms_setmode:1404) CRITICAL: Failed assertion: accuracy < line_time(kmode)
+(kms_setmode:1404) CRITICAL: vblank accuracy (27.230us, 0.2%) worse than a scanline (20.677us)
+Subtest basic failed.
+**** DEBUG ****
+(kms_setmode:1404) INFO: Testing: basic 1 connector combinations
+(kms_setmode:1404) igt_fb-DEBUG: igt_create_fb_with_bo_size(width=1024, height=768, format=XR24(0x34325258), modifier=0x0, size=0)
+(kms_setmode:1404) igt_fb-DEBUG: igt_create_fb_with_bo_size(handle=1, pitch=4096)
+(kms_setmode:1404) ioctl_wrappers-DEBUG: Test requirement passed: igt_has_fb_modifiers(fd)
+(kms_setmode:1404) igt_fb-DEBUG: Test requirement passed: cairo_surface_status(fb->cairo_surface) == CAIRO_STATUS_SUCCESS
+(kms_setmode:1404) INFO:   Test id#1 CRTC count 1
+(kms_setmode:1404) INFO:     CRTC[45] [Pipe A] Mode: 1024x768@60Hz Connectors: HDMI-A-1[79]
+(kms_setmode:1404) igt_fb-DEBUG: igt_create_fb_with_bo_size(width=1024, height=768, format=XR24(0x34325258), modifier=0x0, size=0)
+(kms_setmode:1404) igt_fb-DEBUG: igt_create_fb_with_bo_size(handle=2, pitch=4096)
+(kms_setmode:1404) ioctl_wrappers-DEBUG: Test requirement passed: igt_has_fb_modifiers(fd)
+(kms_setmode:1404) igt_fb-DEBUG: Test requirement passed: cairo_surface_status(fb->cairo_surface) == CAIRO_STATUS_SUCCESS
+(kms_setmode:1404) igt_fb-DEBUG: Test requirement passed: cairo_surface_status(fb->cairo_surface) == CAIRO_STATUS_SUCCESS
+(kms_setmode:1404) INFO: Expected frametime: 16666us; measured 16716.9us +- 9.077us accuracy 0.16% [1.32 scanlines]
+(kms_setmode:1404) CRITICAL: Test assertion failure function check_timings, file ../tests/kms_setmode.c:506:
+(kms_setmode:1404) CRITICAL: Failed assertion: accuracy < line_time(kmode)
+(kms_setmode:1404) CRITICAL: vblank accuracy (27.230us, 0.2%) worse than a scanline (20.677us)
+(kms_setmode:1404) igt_core-INFO: Stack trace:
+(kms_setmode:1404) igt_core-INFO:   #0 ../lib/igt_core.c:1727 __igt_fail_assert()
+(kms_setmode:1404) igt_core-INFO:   #1 ../tests/kms_setmode.c:472 test_one_combination()
+(kms_setmode:1404) igt_core-INFO:   #2 ../tests/kms_setmode.c:796 __real_main837()
+(kms_setmode:1404) igt_core-INFO:   #3 ../tests/kms_setmode.c:837 main()
+(kms_setmode:1404) igt_core-INFO:   #4 [__libc_start_main+0xeb]
+(kms_setmode:1404) igt_core-INFO:   #5 [_start+0x2a]
+****  END  ****
+Stack trace:
+  #0 ../lib/igt_core.c:1727 __igt_fail_assert()
+  #1 ../tests/kms_setmode.c:472 test_one_combination()
+  #2 ../tests/kms_setmode.c:796 __real_main837()
+  #3 ../tests/kms_setmode.c:837 main()
+  #4 [__libc_start_main+0xeb]
+  #5 [_start+0x2a]
+Subtest basic: FAIL (2.132s)
+Starting subtest: basic-clone-single-crtc
+Testing: basic-clone-single-crtc 2 connector combinations
+Testing: basic-clone-single-crtc 3 connector combinations
+Subtest basic-clone-single-crtc: SUCCESS (0.000s)
+Starting subtest: invalid-clone-single-crtc
+Testing: invalid-clone-single-crtc 2 connector combinations
+Testing: invalid-clone-single-crtc 3 connector combinations
+Subtest invalid-clone-single-crtc: SUCCESS (0.000s)
+Starting subtest: invalid-clone-exclusive-crtc
+Testing: invalid-clone-exclusive-crtc 2 connector combinations
+Testing: invalid-clone-exclusive-crtc 3 connector combinations
+Subtest invalid-clone-exclusive-crtc: SUCCESS (0.000s)
+Starting subtest: clone-exclusive-crtc
+Testing: clone-exclusive-crtc 2 connector combinations
+Testing: clone-exclusive-crtc 3 connector combinations
+Subtest clone-exclusive-crtc: SUCCESS (0.000s)
+Starting subtest: invalid-clone-single-crtc-stealing
+Testing: invalid-clone-single-crtc-stealing 2 connector combinations
+Subtest invalid-clone-single-crtc-stealing: SUCCESS (0.000s)
+2020-10-26 01:26:51 build/tests/panfrost_gem_new
+IGT-Version: 1.25-ga15f8da1 (x86_64) (Linux: 5.9.0-01339-g9533aa80de121f x86_64)
+Test requirement not met in function drm_open_driver, file ../lib/drmtest.c:554:
+Test requirement: !(fd<0)
+No known gpu found for chipset flags 0x32 (panfrost)
+Last errno: 2, No such file or directory
+Subtest gem-new-4096: SKIP
+Subtest gem-new-0: SKIP
+Subtest gem-new-zeroed: SKIP
+2020-10-26 01:26:51 build/tests/syncobj_basic
+IGT-Version: 1.25-ga15f8da1 (x86_64) (Linux: 5.9.0-01339-g9533aa80de121f x86_64)
+Starting subtest: bad-destroy
+Subtest bad-destroy: SUCCESS (0.000s)
+Starting subtest: bad-create-flags
+Subtest bad-create-flags: SUCCESS (0.000s)
+Starting subtest: bad-handle-to-fd
+Subtest bad-handle-to-fd: SUCCESS (0.000s)
+Starting subtest: bad-fd-to-handle
+Subtest bad-fd-to-handle: SUCCESS (0.000s)
+Starting subtest: bad-flags-handle-to-fd
+Subtest bad-flags-handle-to-fd: SUCCESS (0.000s)
+Starting subtest: bad-flags-fd-to-handle
+Subtest bad-flags-fd-to-handle: SUCCESS (0.000s)
+Starting subtest: bad-pad-handle-to-fd
+Subtest bad-pad-handle-to-fd: SUCCESS (0.000s)
+Starting subtest: bad-pad-fd-to-handle
+Subtest bad-pad-fd-to-handle: SUCCESS (0.000s)
+Starting subtest: illegal-fd-to-handle
+Subtest illegal-fd-to-handle: SUCCESS (0.000s)
+Starting subtest: bad-destroy-pad
+Subtest bad-destroy-pad: SUCCESS (0.000s)
+Starting subtest: create-signaled
+Subtest create-signaled: SUCCESS (0.000s)
+Starting subtest: test-valid-cycle
+Subtest test-valid-cycle: SUCCESS (0.000s)
+2020-10-26 01:26:51 build/tests/vc4_label_bo
+IGT-Version: 1.25-ga15f8da1 (x86_64) (Linux: 5.9.0-01339-g9533aa80de121f x86_64)
+Test requirement not met in function drm_open_driver, file ../lib/drmtest.c:554:
+Test requirement: !(fd<0)
+No known gpu found for chipset flags 0x2 (vc4)
+Last errno: 2, No such file or directory
+Subtest set-label: SKIP
+Subtest set-bad-handle: SKIP
+Subtest set-bad-name: SKIP
+Subtest set-kernel-name: SKIP
+2020-10-26 01:26:52 build/tests/prime_nv_test
+IGT-Version: 1.25-ga15f8da1 (x86_64) (Linux: 5.9.0-01339-g9533aa80de121f x86_64)
+Test requirement not met in function __real_main354, file ../tests/prime_nv_test.c:359:
+Test requirement: nouveau_fd != -1
+Last errno: 2, No such file or directory
+Subtest i915_nv_sharing: SKIP
+Subtest nv_i915_sharing: SKIP
+Subtest nv_write_i915_cpu_mmap_read: SKIP
+Subtest nv_write_i915_gtt_mmap_read: SKIP
+Subtest i915_import_cpu_mmap: SKIP
+Subtest i915_import_gtt_mmap: SKIP
+Subtest i915_import_pread_pwrite: SKIP
+Subtest i915_blt_fill_nv_read: SKIP
+2020-10-26 01:26:52 build/tests/gem_blits
+IGT-Version: 1.25-ga15f8da1 (x86_64) (Linux: 5.9.0-01339-g9533aa80de121f x86_64)
+Starting subtest: basic
+Subtest basic: SUCCESS (0.602s)
+2020-10-26 01:26:52 build/tests/gem_ctx_isolation
+IGT-Version: 1.25-ga15f8da1 (x86_64) (Linux: 5.9.0-01339-g9533aa80de121f x86_64)
+Starting subtest: nonpriv
+Starting dynamic subtest: rcs0
+Test requirement not met in function nonpriv, file ../tests/i915/gem_ctx_isolation.c:617:
+Test requirement: !(intel_gen(intel_get_drm_devid(fd)) < 8)
+Dynamic subtest rcs0: SKIP (0.000s)
+Subtest nonpriv: SUCCESS (0.000s)
+Starting subtest: nonpriv-switch
+Starting dynamic subtest: rcs0
+Test requirement not met in function nonpriv, file ../tests/i915/gem_ctx_isolation.c:617:
+Test requirement: !(intel_gen(intel_get_drm_devid(fd)) < 8)
+Dynamic subtest rcs0: SKIP (0.000s)
+Subtest nonpriv-switch: SUCCESS (0.000s)
+Starting subtest: clean
+Starting dynamic subtest: rcs0
+Dynamic subtest rcs0: SUCCESS (0.015s)
+Subtest clean: SUCCESS (0.016s)
+Starting subtest: dirty-create
+Starting dynamic subtest: rcs0
+Dynamic subtest rcs0: SUCCESS (0.110s)
+Subtest dirty-create: SUCCESS (0.111s)
+Starting subtest: dirty-switch
+Starting dynamic subtest: rcs0
+Dynamic subtest rcs0: SUCCESS (0.116s)
+Subtest dirty-switch: SUCCESS (0.116s)
+Starting subtest: preservation
+Starting dynamic subtest: rcs0
+Dynamic subtest rcs0: SUCCESS (0.077s)
+Subtest preservation: SUCCESS (0.077s)
+Starting subtest: preservation-S3
+Starting dynamic subtest: rcs0
+[cmd] rtcwake: wakeup from "mem" using /dev/rtc0 at Mon Oct 26 01:27:09 2020
+Dynamic subtest rcs0: SUCCESS (3.059s)
+Subtest preservation-S3: SUCCESS (3.059s)
+Starting subtest: preservation-S4
+Starting dynamic subtest: rcs0
+Test requirement not met in function igt_system_suspend_autoresume, file ../lib/igt_aux.c:863:
+Test requirement: !(state == SUSPEND_STATE_DISK && !intel_get_total_swap_mb())
+Suspend to disk requires swap space.
+Dynamic subtest rcs0: SKIP (0.044s)
+Subtest preservation-S4: SUCCESS (0.044s)
+Starting subtest: preservation-reset
+Starting dynamic subtest: rcs0
+Dynamic subtest rcs0: SUCCESS (0.090s)
+Subtest preservation-reset: SUCCESS (0.091s)
+2020-10-26 01:27:11 build/tests/gem_exec_await
+IGT-Version: 1.25-ga15f8da1 (x86_64) (Linux: 5.9.0-01339-g9533aa80de121f x86_64)
+Using Legacy submission
+Test requirement not met in function drm_open_driver, file ../lib/drmtest.c:554:
+Test requirement: !(fd<0)
+No known gpu found for chipset flags 0x4 (vgem)
+Last errno: 2, No such file or directory
+Subtest wide-all: SKIP
+Subtest wide-contexts: SKIP
+2020-10-26 01:27:14 build/tests/gem_exec_nop
+IGT-Version: 1.25-ga15f8da1 (x86_64) (Linux: 5.9.0-01339-g9533aa80de121f x86_64)
+Using Legacy submission
+Starting subtest: basic-series
+Maximum execution latency on bcs0, 2.939us, min 2.891us, total 8.749us per cycle, average 2.916us
+All (3 engines): 850953 cycles, average 2.350us per cycle [expected 2.907us]
+Subtest basic-series: SUCCESS (2.751s)
+Starting subtest: basic-parallel
+average (individually): 2.866us
+rcs0: 541670 cycles, 3.692us
+bcs0: 262747 cycles, 7.612us
+vcs0: 257781 cycles, 7.759us
+Subtest basic-parallel: SUCCESS (2.754s)
+Starting subtest: basic-sequential
+Total (individual) execution latency 8.646us per cycle
+Sequential (3 engines, 1 processes): average 20.922us per cycle [expected 8.646us]
+Subtest basic-sequential: SUCCESS (2.762s)
+Starting subtest: single
+Starting dynamic subtest: rcs0
+rcs0: 7550623 cycles: 2.649us
+Dynamic subtest rcs0: SUCCESS (20.015s)
+Starting dynamic subtest: bcs0
+bcs0: 6894159 cycles: 2.901us
+Dynamic subtest bcs0: SUCCESS (20.000s)
+Starting dynamic subtest: vcs0
+vcs0: 6941159 cycles: 2.881us
+Dynamic subtest vcs0: SUCCESS (20.000s)
+Subtest single: SUCCESS (60.016s)
+Starting subtest: signal
+Starting dynamic subtest: rcs0
+Signal rcs0: 296231 cycles (295654 signals): 6.752us
+Dynamic subtest rcs0: SUCCESS (2.001s)
+Starting dynamic subtest: bcs0
+Signal bcs0: 297511 cycles (277445 signals): 6.722us
+Dynamic subtest bcs0: SUCCESS (2.001s)
+Starting dynamic subtest: vcs0
+Signal vcs0: 282116 cycles (244984 signals): 7.089us
+Dynamic subtest vcs0: SUCCESS (2.001s)
+Subtest signal: SUCCESS (6.002s)
+Starting subtest: signal-all
+Signal all: 2941443 cycles (2886643 signals): 6.799us
+Subtest signal-all: SUCCESS (20.001s)
+Starting subtest: series
+Maximum execution latency on bcs0, 2.950us, min 2.731us, total 8.608us per cycle, average 2.869us
+All (3 engines): 8507715 cycles, average 2.351us per cycle [expected 2.804us]
+Subtest series: SUCCESS (20.754s)
+Starting subtest: parallel
+average (individually): 2.851us
+rcs0: 5421384 cycles, 3.689us
+bcs0: 2632132 cycles, 7.598us
+vcs0: 2589933 cycles, 7.722us
+Subtest parallel: SUCCESS (20.755s)
+Starting subtest: independent
+average (individually): 2.876us
+rcs0: 4938515 cycles, 4.050us
+vcs0: 2646208 cycles, 7.558us
+bcs0: 2679756 cycles, 7.463us
+Subtest independent: SUCCESS (20.760s)
+Starting subtest: multiple
+Starting dynamic subtest: rcs0
+0: 716303 cycles, 27.921us
+1: 711167 cycles, 28.123us
+2: 717022 cycles, 27.893us
+3: 704552 cycles, 28.387us
+Dynamic subtest rcs0: SUCCESS (20.020s)
+Starting dynamic subtest: bcs0
+0: 1709660 cycles, 11.698us
+1: 1714226 cycles, 11.667us
+2: 1707289 cycles, 11.714us
+3: 1703671 cycles, 11.739us
+Dynamic subtest bcs0: SUCCESS (20.019s)
+Starting dynamic subtest: vcs0
+0: 1708533 cycles, 11.706us
+2: 1721942 cycles, 11.615us
+3: 1737957 cycles, 11.508us
+1: 1726564 cycles, 11.584us
+Dynamic subtest vcs0: SUCCESS (20.026s)
+Subtest multiple: SUCCESS (60.065s)
+Starting subtest: sequential
+Total (individual) execution latency 8.830us per cycle
+Sequential (3 engines, 1 processes): average 23.559us per cycle [expected 8.830us]
+Subtest sequential: SUCCESS (20.788s)
+Starting subtest: forked-sequential
+Total (individual) execution latency 8.763us per cycle
+Sequential (3 engines, 4 processes): average 36.949us per cycle [expected 35.052us]
+Subtest forked-sequential: SUCCESS (20.773s)
+Starting subtest: context-sequential
+Total (individual) execution latency 8.799us per cycle
+Sequential (3 engines, 4 processes): average 51.007us per cycle [expected 35.197us]
+Subtest context-sequential: SUCCESS (20.781s)
+Test requirement not met in function __real_main937, file ../tests/i915/gem_exec_nop.c:1013:
+Test requirement: gem_scheduler_has_ctx_priority(device)
+Subtest preempt: SKIP
+Starting subtest: poll
+Starting dynamic subtest: rcs0
+rcs0 completed 3909273 cycles: 5.493 us
+Dynamic subtest rcs0: SUCCESS (21.475s)
+Starting dynamic subtest: bcs0
+bcs0 completed 3729010 cycles: 5.759 us
+Dynamic subtest bcs0: SUCCESS (21.475s)
+Starting dynamic subtest: vcs0
+vcs0 completed 3823706 cycles: 5.616 us
+Dynamic subtest vcs0: SUCCESS (21.475s)
+Subtest poll: SUCCESS (64.426s)
+Starting subtest: headless
+Starting dynamic subtest: rcs0
+With one display connected: 2.67us
+Without a display connected (headless): 2.67us
+Dynamic subtest rcs0: SUCCESS (5.051s)
+Starting dynamic subtest: bcs0
+With one display connected: 2.91us
+Without a display connected (headless): 2.91us
+Dynamic subtest bcs0: SUCCESS (5.012s)
+Starting dynamic subtest: vcs0
+With one display connected: 2.89us
+Without a display connected (headless): 2.89us
+Dynamic subtest vcs0: SUCCESS (5.012s)
+Subtest headless: SUCCESS (15.075s)
+Starting subtest: poll-sequential
+Sequential completed 1623014 cycles: 13.231 us
+Subtest poll-sequential: SUCCESS (21.475s)
+2020-10-26 01:33:34 build/tests/gem_fence_upload
+IGT-Version: 1.25-ga15f8da1 (x86_64) (Linux: 5.9.0-01339-g9533aa80de121f x86_64)
+Starting subtest: performance
+Upload rate for 2 linear surfaces:	9873.496MiB/s
+Upload rate for 2 tiled surfaces:	10832.712MiB/s
+Upload rate for 4 linear surfaces:	9871.330MiB/s
+Upload rate for 4 tiled surfaces:	10797.132MiB/s
+Upload rate for 8 linear surfaces:	9871.247MiB/s
+Upload rate for 8 tiled surfaces:	10790.007MiB/s
+Upload rate for 16 linear surfaces:	9861.106MiB/s
+Upload rate for 16 tiled surfaces:	10792.488MiB/s
+Upload rate for 32 linear surfaces:	9852.128MiB/s
+Upload rate for 32 tiled surfaces:	10793.053MiB/s
+Upload rate for 64 linear surfaces:	9860.218MiB/s
+Upload rate for 64 tiled surfaces:	6122.132MiB/s
+(gem_fence_upload:2900) CRITICAL: Test assertion failure function performance, file ../tests/i915/gem_fence_upload.c:104:
+(gem_fence_upload:2900) CRITICAL: Failed assertion: tiled[1] > 0.75 * tiled[0]
+Subtest performance failed.
+**** DEBUG ****
+(gem_fence_upload:2900) drmtest-DEBUG: Test requirement passed: !(fd<0)
+(gem_fence_upload:2900) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_fence_upload:2900) DEBUG: Test requirement passed: num_fences > 0
+(gem_fence_upload:2900) INFO: Upload rate for 2 linear surfaces:	9873.496MiB/s
+(gem_fence_upload:2900) INFO: Upload rate for 2 tiled surfaces:	10832.712MiB/s
+(gem_fence_upload:2900) INFO: Upload rate for 4 linear surfaces:	9871.330MiB/s
+(gem_fence_upload:2900) INFO: Upload rate for 4 tiled surfaces:	10797.132MiB/s
+(gem_fence_upload:2900) INFO: Upload rate for 8 linear surfaces:	9871.247MiB/s
+(gem_fence_upload:2900) INFO: Upload rate for 8 tiled surfaces:	10790.007MiB/s
+(gem_fence_upload:2900) INFO: Upload rate for 16 linear surfaces:	9861.106MiB/s
+(gem_fence_upload:2900) INFO: Upload rate for 16 tiled surfaces:	10792.488MiB/s
+(gem_fence_upload:2900) INFO: Upload rate for 32 linear surfaces:	9852.128MiB/s
+(gem_fence_upload:2900) INFO: Upload rate for 32 tiled surfaces:	10793.053MiB/s
+(gem_fence_upload:2900) INFO: Upload rate for 64 linear surfaces:	9860.218MiB/s
+(gem_fence_upload:2900) INFO: Upload rate for 64 tiled surfaces:	6122.132MiB/s
+(gem_fence_upload:2900) CRITICAL: Test assertion failure function performance, file ../tests/i915/gem_fence_upload.c:104:
+(gem_fence_upload:2900) CRITICAL: Failed assertion: tiled[1] > 0.75 * tiled[0]
+(gem_fence_upload:2900) igt_core-INFO: Stack trace:
+(gem_fence_upload:2900) igt_core-INFO:   #0 ../lib/igt_core.c:1727 __igt_fail_assert()
+(gem_fence_upload:2900) igt_core-INFO:   #1 ../tests/i915/gem_fence_upload.c:103 __real_main389()
+(gem_fence_upload:2900) igt_core-INFO:   #2 ../tests/i915/gem_fence_upload.c:389 main()
+(gem_fence_upload:2900) igt_core-INFO:   #3 [__libc_start_main+0xeb]
+(gem_fence_upload:2900) igt_core-INFO:   #4 [_start+0x2a]
+****  END  ****
+Stack trace:
+  #0 ../lib/igt_core.c:1727 __igt_fail_assert()
+  #1 ../tests/i915/gem_fence_upload.c:103 __real_main389()
+  #2 ../tests/i915/gem_fence_upload.c:389 main()
+  #3 [__libc_start_main+0xeb]
+  #4 [_start+0x2a]
+Subtest performance: FAIL (29.682s)
+Starting subtest: thread-contention
+Contended upload rate for 1 linear threads:	241.695MiB/s
+Contended upload rate for 1 tiled threads:	244.570MiB/s
+Contended upload rate for 2 linear threads:	431.308MiB/s
+Contended upload rate for 2 tiled threads:	438.146MiB/s
+Contended upload rate for 4 linear threads:	319.910MiB/s
+Contended upload rate for 4 tiled threads:	327.456MiB/s
+Contended upload rate for 8 linear threads:	334.266MiB/s
+Contended upload rate for 8 tiled threads:	315.784MiB/s
+Contended upload rate for 16 linear threads:	318.357MiB/s
+Contended upload rate for 16 tiled threads:	327.527MiB/s
+Contended upload rate for 32 linear threads:	312.225MiB/s
+Contended upload rate for 32 tiled threads:	316.321MiB/s
+Contended upload rate for 64 linear threads:	293.861MiB/s
+Contended upload rate for 64 tiled threads:	277.667MiB/s
+(gem_fence_upload:2900) CRITICAL: Test assertion failure function thread_contention, file ../tests/i915/gem_fence_upload.c:329:
+(gem_fence_upload:2900) CRITICAL: Failed assertion: linear[1] > 0.75 * linear[0]
+Subtest thread-contention failed.
+**** DEBUG ****
+(gem_fence_upload:2900) drmtest-DEBUG: Test requirement passed: !(fd<0)
+(gem_fence_upload:2900) DEBUG: Test requirement passed: num_fences > 0
+(gem_fence_upload:2900) INFO: Contended upload rate for 1 linear threads:	241.695MiB/s
+(gem_fence_upload:2900) INFO: Contended upload rate for 1 tiled threads:	244.570MiB/s
+(gem_fence_upload:2900) INFO: Contended upload rate for 2 linear threads:	431.308MiB/s
+(gem_fence_upload:2900) INFO: Contended upload rate for 2 tiled threads:	438.146MiB/s
+(gem_fence_upload:2900) INFO: Contended upload rate for 4 linear threads:	319.910MiB/s
+(gem_fence_upload:2900) INFO: Contended upload rate for 4 tiled threads:	327.456MiB/s
+(gem_fence_upload:2900) INFO: Contended upload rate for 8 linear threads:	334.266MiB/s
+(gem_fence_upload:2900) INFO: Contended upload rate for 8 tiled threads:	315.784MiB/s
+(gem_fence_upload:2900) INFO: Contended upload rate for 16 linear threads:	318.357MiB/s
+(gem_fence_upload:2900) INFO: Contended upload rate for 16 tiled threads:	327.527MiB/s
+(gem_fence_upload:2900) INFO: Contended upload rate for 32 linear threads:	312.225MiB/s
+(gem_fence_upload:2900) INFO: Contended upload rate for 32 tiled threads:	316.321MiB/s
+(gem_fence_upload:2900) INFO: Contended upload rate for 64 linear threads:	293.861MiB/s
+(gem_fence_upload:2900) INFO: Contended upload rate for 64 tiled threads:	277.667MiB/s
+(gem_fence_upload:2900) CRITICAL: Test assertion failure function thread_contention, file ../tests/i915/gem_fence_upload.c:329:
+(gem_fence_upload:2900) CRITICAL: Failed assertion: linear[1] > 0.75 * linear[0]
+(gem_fence_upload:2900) igt_core-INFO: Stack trace:
+(gem_fence_upload:2900) igt_core-INFO:   #0 ../lib/igt_core.c:1727 __igt_fail_assert()
+(gem_fence_upload:2900) igt_core-INFO:   #1 ../tests/i915/gem_fence_upload.c:403 __real_main389()
+(gem_fence_upload:2900) igt_core-INFO:   #2 ../tests/i915/gem_fence_upload.c:389 main()
+(gem_fence_upload:2900) igt_core-INFO:   #3 [__libc_start_main+0xeb]
+(gem_fence_upload:2900) igt_core-INFO:   #4 [_start+0x2a]
+****  END  ****
+Stack trace:
+  #0 ../lib/igt_core.c:1727 __igt_fail_assert()
+  #1 ../tests/i915/gem_fence_upload.c:403 __real_main389()
+  #2 ../tests/i915/gem_fence_upload.c:389 main()
+  #3 [__libc_start_main+0xeb]
+  #4 [_start+0x2a]
+Subtest thread-contention: FAIL (13.488s)
+Starting subtest: wc-contention
+Contended upload rate for 1 linear threads/wc:	658.084MiB/s
+Contended upload rate for 1 tiled threads/wc:	732.567MiB/s
+Contended upload rate for 2 linear threads/wc:	646.465MiB/s
+Contended upload rate for 2 tiled threads/wc:	829.230MiB/s
+Contended upload rate for 4 linear threads/wc:	667.599MiB/s
+Contended upload rate for 4 tiled threads/wc:	680.366MiB/s
+Contended upload rate for 8 linear threads/wc:	700.207MiB/s
+Contended upload rate for 8 tiled threads/wc:	724.679MiB/s
+Contended upload rate for 16 linear threads/wc:	689.456MiB/s
+Contended upload rate for 16 tiled threads/wc:	720.934MiB/s
+Contended upload rate for 32 linear threads/wc:	692.448MiB/s
+Contended upload rate for 32 tiled threads/wc:	699.512MiB/s
+Contended upload rate for 64 linear threads/wc:	653.838MiB/s
+Contended upload rate for 64 tiled threads/wc:	657.040MiB/s
+Subtest wc-contention: SUCCESS (6.007s)
+Starting subtest: thread-performance-read
+Download rate for 2 linear surfaces, 2 threads:	 96.134MiB/s
+Download rate for 2 tiled surfaces, 2 threads:	 96.507MiB/s
+Download rate for 4 linear surfaces, 4 threads:	185.084MiB/s
+Download rate for 4 tiled surfaces, 4 threads:	185.972MiB/s
+Download rate for 8 linear surfaces, 8 threads:	183.147MiB/s
+Download rate for 8 tiled surfaces, 8 threads:	178.220MiB/s
+Download rate for 16 linear surfaces, 16 threads:	183.852MiB/s
+Download rate for 16 tiled surfaces, 16 threads:	185.504MiB/s
+Download rate for 32 linear surfaces, 32 threads:	185.640MiB/s
+Download rate for 32 tiled surfaces, 32 threads:	185.515MiB/s
+Download rate for 64 linear surfaces, 64 threads:	185.291MiB/s
+Download rate for 64 tiled surfaces, 64 threads:	166.039MiB/s
+Subtest thread-performance-read: SUCCESS (22.762s)
+Starting subtest: thread-performance-write
+Received signal SIGBUS.
+Stack trace: 
+ #0 [fatal_sig_handler+0xd6]
+ #1 [killpg+0x40]
+ #2 [write_thread_performance+0x5a]
+ #3 [start_thread+0xf3]
+ #4 [clone+0x3f]
+Upload rate for 2 linear surfaces, 2 threads:	8283.717MiB/s
+Upload rate for 2 tiled surfaces, 2 threads:	7812.500MiB/s
+Upload rate for 4 linear surfaces, 4 threads:	7403.123MiB/s
+Upload rate for 4 tiled surfaces, 4 threads:	7836.415MiB/s
+Upload rate for 8 linear surfaces, 8 threads:	7801.548MiB/s
+Upload rate for 8 tiled surfaces, 8 threads:	8110.506MiB/s
+Upload rate for 16 linear surfaces, 16 threads:	8066.041MiB/s
+Upload rate for 16 tiled surfaces, 16 threads:	8122.858MiB/s
+Upload rate for 32 linear surfaces, 32 threads:	8235.086MiB/s
+Upload rate for 32 tiled surfaces, 32 threads:	8154.554MiB/s
+Upload rate for 64 linear surfaces, 64 threads:	8182.704MiB/s
+[thread:4090] Subtest thread-performance-write: CRASH (1.102s)
+[thread:4090] Starting subtest: thread-performance-both
+gem_fence_upload: ../lib/igt_thread.c:37: igt_thread_clear_fail_state: Assertion `igt_thread_is_main()' failed.
+Received signal SIGSEGV.
+Received signal SIGFPE.
+Received signal SIGSEGVReceived signal .
+SIGFPE.
+Received signal SIGABRT.
+Stack trace: 
+Received signal SIGSEGV.
+Stack trace: 
+Received signal Received signal SIGSEGVSIGSEGV.
+.
+Stack trace: 
+Stack trace: 
+Stack trace: 
+Stack trace: 
+Received signal SIGSEGV.
+Received signal SIGSEGV.
+Received signal SIGFPE.
+Stack trace: 
+Received signal SIGSEGV.
+Received signal SIGSEGV.
+Stack trace: 
+Received signal SIGSEGV.
+Received signal SIGSEGV.
+Received signal SIGSEGV.
+Received signal SIGSEGV.
+Received signal SIGSEGV.
+Received signal SIGSEGV.
+Received signal SIGSEGV.
+Stack trace: 
+Received signal SIGSEGV.
+Received signal SIGSEGV.
+Stack trace: 
+Received signal Received signal SIGSEGV.
+SIGSEGV.
+Received signal SIGSEGVReceived signal .
+SIGSEGV.
+Stack trace: 
+Received signal SIGSEGV.
+Received signal Received signal SIGSEGVSIGSEGV.
+.
+Stack trace: 
+Received signal SIGSEGV.
+Received signal SIGSEGV.
+Received signal SIGSEGV.
+Received signal SIGSEGV.
+Received signal SIGSEGV.
+Received signal SIGSEGV.
+Received signal SIGSEGV.
+Received signal SIGSEGV.
+Received signal SIGSEGVReceived signal SIGSEGV.
+.
+Stack trace: 
+Stack trace: 
+Received signal SIGSEGV.
+Stack trace: 
+Stack trace: 
+Stack trace: 
+Received signal SIGSEGV.
+Stack trace: 
+Received signal SIGSEGV.
+Stack trace: 
+Stack trace: 
+Stack trace: 
+Stack trace: 
+Stack trace: 
+Stack trace: 
+Stack trace: 
+Received signal Stack trace: 
+Stack trace: 
+SIGSEGVStack trace: 
+Stack trace: 
+.
+Stack trace: 
+Stack trace: 
+Stack trace: 
+Stack trace: 
+Stack trace: 
+Stack trace: 
+Stack trace: 
+Stack trace: 
+Stack trace: 
+Stack trace: 
+ #0 [fatal_ si#g0_ h[afnadtlaelr_+s0ixgd_6h]a
+ndler+0xd6 ]#
+0 [fatal_sig_handler+0xd6]
+Stack trace: 
+Stack trace: 
+Stack trace: 
+Stack trace: 
+ #0 [fatal _#s0i g[fatal_sig_handler+0xd6]
+_handler+0xd6]
+  #0 [fatal_sig_handler+0xd6]
+ #0 [fatal_sig_handler+0xd6]
+#0 [fatal_sig_handler+0xd6]
+ #0 [fatal_sig_handler+0xd6]
+ #1 [killpg+0x40]
+ #0 [fatal_sig_handler+0xd6]
+ #0 [fatal_sig_handler+0xd6]
+ #0 [fatal_sig_handler+0xd6]
+ #1 [killpg+0x40]
+ #0 [fatal_sig_handler+0xd6]
+ #0 [fatal_sig_ha n#d0l e[rf+a0taxld_6s]i
+g_handler+0xd6]
+ #0 [fatal_sig_handler+0xd6]
+ #1 [killpg+0x40]
+ #2 [write_thread_performance+0x5a]
+ #2 [ w#r2 [write_thread_performance+0x5a]
+ite_thread_performance+0x61]
+ #0 [fatal_sig_handler+0xd6]
+ #1 [killpg+0x40]
+ #0 [fatal_sig_handler+0xd6]
+ #0 [fatal_sig_handler+0xd6]
+ #0 [fatal_sig_handler+0xd6]
+ #0 [fatal_sig_handler+0xd6]
+ #1 [killpg+0x40]
+ #1 [killpg+0x40]
+ #2 [write_thread_performance+0x5a]
+ #0 [fatal_sig_handler+0xd6]
+ #3 #2 [write_thread_performance+0x5a]
+ [start_thread+0xf3]
+ #1 [killpg+0x40] 
+#2 [write_thread_performance+0x2e]
+ #1 [killpg+0x40]
+ #3 [start_thread+0xf3]
+ #0 [fatal_sig_handler+0xd6]
+ #2 [write_thread_ pe#r0f o[rfmaatnacle_+s0ixg5_ah]a
+ndler+0xd6]
+ #0 [fatal_sig_handler+0xd6]
+ #0 [fatal_sig_handler+0xd6]
+  #0 [fatal_sig_handler+0xd6]
+#3 [start_thread+0xf3]
+ #1 [killpg+0x40]
+ #0 [fatal_sig_handler+0 x#d26 ][
+write_thread_performance+0x5a]
+ #3 [ st#a1r t[_ktihlrlepagd++00xx4f03]]
+
+ #0 [fatal_sig_handler+0xd6]
+ #0 [fatal_sig_handler+0xd6]
+ #0 [fatal_sig_handler+0xd6]
+  #0 [fatal_sig_handler+0 x#d16 ][
+killpg+0x40]
+#0 #2 [write_thread_performance+0x5a]
+  #1 [killpg+0x40]
+ #1 [killpg+0x40]
+ #1 [killpg+0x40]
+ #1 [killpg+0x40]
+[fatal_sig_handler+0xd6]
+ #1 [killpg+0x40]
+ #0 [fatal_sig_handler+0xd6]
+ #1 [killpg+0x40]
+ #2 [write_thread_performance+0x5a]
+ #0 [fatal_s i#g0_handler+0xd6]
+ #0 [fatal_sig_handle r#+02x d[6w]r
+ite_thread_performance+0x2e]
+ #0 [fatal_sig_handler+0xd6]
+ [fatal_sig_handler+0xd6]
+ #0 [f a#t3a [ls_tsaritg__thhraenadd+l0exfr3+]0
+xd6]
+ #0 [fatal #1 [killpg+0x40]
+_sig_hand le#r0+ 0[xfda6t]a
+l_sig_handler+0xd6]
+ #0 [fatal_sig_handler+0xd6]
+  #0 [fatal_sig_ #2 [write_thread_performance+0x5a]
+handler+0xd6]
+ #3 [start_thread+0xf3]
+#3 [start_thread+0xf3]
+ #2 [write_thread_performance+0x5a]
+ #1 [killpg+0x40]
+ #2 [write_thread_performance+0x5a]
+ #1 [killpg+0x40]
+ #2 [write_thread_performance+0x5a]
+ #3 [start_thread+0xf3]
+ #1 [killpg+0x40]
+ #2 [write_thread_perform a#n3c e[+s0txa5rat]_
+thread+0xf3]
+ #3 [start_thread+0xf3]
+ #4 [clone+0x3f]
+Segmentation fault
+2020-10-26 01:34:47 build/tests/gem_lut_handle
+IGT-Version: 1.25-ga15f8da1 (x86_64) (Linux: 5.9.0-01339-g9533aa80de121f x86_64)
+SUCCESS (36.666s)
+2020-10-26 01:35:24 build/tests/gem_pread
+IGT-Version: 1.25-ga15f8da1 (x86_64) (Linux: 5.9.0-01339-g9533aa80de121f x86_64)
+Starting subtest: bench
+Time to pread 16384 bytes x      1:	 22.000µs, 744.7MiB/s
+Time to pread 16384 bytes x      2:	  4.500µs, 3.6GiB/s
+Time to pread 16384 bytes x      4:	  3.500µs, 4.7GiB/s
+Time to pread 16384 bytes x      8:	  3.375µs, 4.9GiB/s
+Time to pread 16384 bytes x     16:	  3.125µs, 5.2GiB/s
+Time to pread 16384 bytes x     32:	  2.406µs, 6.8GiB/s
+Time to pread 16384 bytes x     64:	  2.125µs, 7.7GiB/s
+Time to pread 16384 bytes x    128:	  1.953µs, 8.4GiB/s
+Time to pread 16384 bytes x    256:	  1.926µs, 8.5GiB/s
+Time to pread 16384 bytes x    512:	  1.891µs, 8.7GiB/s
+Time to pread 16384 bytes x   1024:	  1.897µs, 8.6GiB/s
+Time to pread 16384 bytes x   2048:	  1.868µs, 8.8GiB/s
+Time to pread 16384 bytes x   4096:	  1.865µs, 8.8GiB/s
+Time to pread 16384 bytes x   8192:	  1.902µs, 8.6GiB/s
+Time to pread 16384 bytes x  16384:	  1.897µs, 8.6GiB/s
+Time to pread 16384 bytes x  32768:	  1.883µs, 8.7GiB/s
+Time to pread 16384 bytes x  65536:	  1.883µs, 8.7GiB/s
+Time to pread 16384 bytes x 131072:	  1.881µs, 8.7GiB/s
+Subtest bench: SUCCESS (0.494s)
+Starting subtest: self
+Subtest self: SUCCESS (0.010s)
+Starting subtest: uncached
+Time to uncached pread 16384 bytes x      1:	  6.000µs, 2.7GiB/s
+Time to uncached pread 16384 bytes x      2:	  3.000µs, 5.5GiB/s
+Time to uncached pread 16384 bytes x      4:	  3.000µs, 5.5GiB/s
+Time to uncached pread 16384 bytes x      8:	  2.750µs, 6.0GiB/s
+Time to uncached pread 16384 bytes x     16:	  3.500µs, 4.7GiB/s
+Time to uncached pread 16384 bytes x     32:	  2.812µs, 5.8GiB/s
+Time to uncached pread 16384 bytes x     64:	  2.688µs, 6.1GiB/s
+Time to uncached pread 16384 bytes x    128:	  2.648µs, 6.2GiB/s
+Time to uncached pread 16384 bytes x    256:	  2.727µs, 6.0GiB/s
+Time to uncached pread 16384 bytes x    512:	  2.732µs, 6.0GiB/s
+Time to uncached pread 16384 bytes x   1024:	  2.630µs, 6.2GiB/s
+Time to uncached pread 16384 bytes x   2048:	  2.627µs, 6.2GiB/s
+Time to uncached pread 16384 bytes x   4096:	  2.615µs, 6.3GiB/s
+Time to uncached pread 16384 bytes x   8192:	  2.651µs, 6.2GiB/s
+Time to uncached pread 16384 bytes x  16384:	  2.631µs, 6.2GiB/s
+Time to uncached pread 16384 bytes x  32768:	  2.153µs, 7.6GiB/s
+Time to uncached pread 16384 bytes x  65536:	  1.888µs, 8.7GiB/s
+Time to uncached pread 16384 bytes x 131072:	  1.883µs, 8.7GiB/s
+Subtest uncached: SUCCESS (0.528s)
+Starting subtest: snoop
+Time to snoop pread 16384 bytes x      1:	  6.000µs, 2.7GiB/s
+Time to snoop pread 16384 bytes x      2:	  4.000µs, 4.1GiB/s
+Time to snoop pread 16384 bytes x      4:	  3.000µs, 5.5GiB/s
+Time to snoop pread 16384 bytes x      8:	  3.125µs, 5.2GiB/s
+Time to snoop pread 16384 bytes x     16:	  2.875µs, 5.7GiB/s
+Time to snoop pread 16384 bytes x     32:	  9.219µs, 1.8GiB/s
+Time to snoop pread 16384 bytes x     64:	  2.094µs, 7.8GiB/s
+Time to snoop pread 16384 bytes x    128:	  1.945µs, 8.4GiB/s
+Time to snoop pread 16384 bytes x    256:	  1.918µs, 8.5GiB/s
+Time to snoop pread 16384 bytes x    512:	  1.879µs, 8.7GiB/s
+Time to snoop pread 16384 bytes x   1024:	  1.948µs, 8.4GiB/s
+Time to snoop pread 16384 bytes x   2048:	  2.347µs, 7.0GiB/s
+Time to snoop pread 16384 bytes x   4096:	  1.932µs, 8.5GiB/s
+Time to snoop pread 16384 bytes x   8192:	  1.871µs, 8.8GiB/s
+Time to snoop pread 16384 bytes x  16384:	  1.875µs, 8.7GiB/s
+Time to snoop pread 16384 bytes x  32768:	  1.894µs, 8.7GiB/s
+Time to snoop pread 16384 bytes x  65536:	  1.878µs, 8.7GiB/s
+Time to snoop pread 16384 bytes x 131072:	  1.884µs, 8.7GiB/s
+Subtest snoop: SUCCESS (0.495s)
+Starting subtest: display
+Time to display pread 16384 bytes x      1:	  4.000µs, 4.1GiB/s
+Time to display pread 16384 bytes x      2:	  4.000µs, 4.1GiB/s
+Time to display pread 16384 bytes x      4:	  3.250µs, 5.0GiB/s
+Time to display pread 16384 bytes x      8:	  3.500µs, 4.7GiB/s
+Time to display pread 16384 bytes x     16:	  2.750µs, 6.0GiB/s
+Time to display pread 16384 bytes x     32:	  2.344µs, 7.0GiB/s
+Time to display pread 16384 bytes x     64:	  2.094µs, 7.8GiB/s
+Time to display pread 16384 bytes x    128:	  1.969µs, 8.3GiB/s
+Time to display pread 16384 bytes x    256:	  2.172µs, 7.5GiB/s
+Time to display pread 16384 bytes x    512:	  1.896µs, 8.6GiB/s
+Time to display pread 16384 bytes x   1024:	  1.882µs, 8.7GiB/s
+Time to display pread 16384 bytes x   2048:	  1.900µs, 8.6GiB/s
+Time to display pread 16384 bytes x   4096:	  1.927µs, 8.5GiB/s
+Time to display pread 16384 bytes x   8192:	  1.864µs, 8.8GiB/s
+Time to display pread 16384 bytes x  16384:	  1.896µs, 8.6GiB/s
+Time to display pread 16384 bytes x  32768:	  1.895µs, 8.6GiB/s
+Time to display pread 16384 bytes x  65536:	  1.892µs, 8.7GiB/s
+Time to display pread 16384 bytes x 131072:	  1.887µs, 8.7GiB/s
+Subtest display: SUCCESS (0.496s)
+2020-10-26 01:35:26 build/tests/gem_render_tiled_blits
+IGT-Version: 1.25-ga15f8da1 (x86_64) (Linux: 5.9.0-01339-g9533aa80de121f x86_64)
+Starting subtest: basic
+Using a snoop linear buffer for comparisons
+Verifying initialisation...
+Cyclic blits, forward...
+Cyclic blits, backward...
+Random blits...
+Subtest basic: SUCCESS (0.011s)
+Starting subtest: aperture-thrash
+Using a snoop linear buffer for comparisons
+Verifying initialisation...
+Cyclic blits, forward...
+Cyclic blits, backward...
+Random blits...
+Subtest aperture-thrash: SUCCESS (22.013s)
+Starting subtest: aperture-shrink
+Using a snoop linear buffer for comparisons
+Verifying initialisation...
+Cyclic blits, forward...
+Cyclic blits, backward...
+Random blits...
+Subtest aperture-shrink: SUCCESS (22.459s)
+Starting subtest: swap-thrash
+Test requirement not met in function __real_main197, file ../tests/i915/gem_render_tiled_blits.c:230:
+Test requirement: swap_mb > 0
+Subtest swap-thrash: SKIP (0.000s)
+2020-10-26 01:36:11 build/tests/gem_sync
+IGT-Version: 1.25-ga15f8da1 (x86_64) (Linux: 5.9.0-01339-g9533aa80de121f x86_64)
+Using Legacy submission
+Starting subtest: default
+Starting dynamic subtest: default
+  3666944 cycles: 5.455 us
+Dynamic subtest default: SUCCESS (20.015s)
+Starting dynamic subtest: render
+  3682304 cycles: 5.431 us
+Dynamic subtest render: SUCCESS (20.011s)
+Starting dynamic subtest: bsd
+  5113856 cycles: 3.912 us
+Dynamic subtest bsd: SUCCESS (20.019s)
+Starting dynamic subtest: bsd1
+  5109760 cycles: 3.915 us
+Dynamic subtest bsd1: SUCCESS (20.014s)
+Starting dynamic subtest: bsd2
+Test requirement not met in function sync_ring, file ../tests/i915/gem_sync.c:156:
+Test requirement: ied.nengines
+Dynamic subtest bsd2: SKIP (0.000s)
+Starting dynamic subtest: blt
+  5071872 cycles: 3.944 us
+Dynamic subtest blt: SUCCESS (20.013s)
+Starting dynamic subtest: vebox
+Test requirement not met in function sync_ring, file ../tests/i915/gem_sync.c:156:
+Test requirement: ied.nengines
+Dynamic subtest vebox: SKIP (0.000s)
+Subtest default: SUCCESS (100.073s)
+Starting subtest: idle
+Starting dynamic subtest: default
+Completed 305152 cycles: 65.595 us
+Dynamic subtest default: SUCCESS (20.017s)
+Starting dynamic subtest: render
+Completed 305152 cycles: 65.574 us
+Dynamic subtest render: SUCCESS (20.014s)
+Starting dynamic subtest: bsd
+Completed 654336 cycles: 30.589 us
+Dynamic subtest bsd: SUCCESS (20.034s)
+Starting dynamic subtest: bsd1
+Completed 654336 cycles: 30.584 us
+Dynamic subtest bsd1: SUCCESS (20.023s)
+Starting dynamic subtest: bsd2
+Test requirement not met in function gem_require_ring, file ../lib/ioctl_wrappers.c:1102:
+Test requirement: gem_has_ring(fd, ring)
+Dynamic subtest bsd2: SKIP (0.000s)
+Starting dynamic subtest: blt
+Completed 653312 cycles: 30.651 us
+Dynamic subtest blt: SUCCESS (20.041s)
+Starting dynamic subtest: vebox
+Test requirement not met in function gem_require_ring, file ../lib/ioctl_wrappers.c:1102:
+Test requirement: gem_has_ring(fd, ring)
+Dynamic subtest vebox: SKIP (0.000s)
+Subtest idle: SUCCESS (100.131s)
+Starting subtest: active
+Starting dynamic subtest: default
+  4912128 cycles: 4.072 us
+Dynamic subtest default: SUCCESS (20.019s)
+Starting dynamic subtest: render
+  4912128 cycles: 4.072 us
+Dynamic subtest render: SUCCESS (20.012s)
+Starting dynamic subtest: bsd
+  5382144 cycles: 3.716 us
+Dynamic subtest bsd: SUCCESS (20.011s)
+Starting dynamic subtest: bsd1
+  5340160 cycles: 3.745 us
+Dynamic subtest bsd1: SUCCESS (20.010s)
+Starting dynamic subtest: bsd2
+Test requirement not met in function active_ring, file ../tests/i915/gem_sync.c:334:
+Test requirement: ied.nengines
+Dynamic subtest bsd2: SKIP (0.000s)
+Starting dynamic subtest: blt
+  5317632 cycles: 3.761 us
+Dynamic subtest blt: SUCCESS (20.013s)
+Starting dynamic subtest: vebox
+Test requirement not met in function active_ring, file ../tests/i915/gem_sync.c:334:
+Test requirement: ied.nengines
+Dynamic subtest vebox: SKIP (0.000s)
+Subtest active: SUCCESS (100.065s)
+Starting subtest: wakeup
+Starting dynamic subtest: default
+  baseline 321001 cycles: 1.548 us
+  completed 960485 cycles: 1.548 + 10.357 us
+Dynamic subtest default: SUCCESS (24.009s)
+Starting dynamic subtest: render
+  baseline 320897 cycles: 1.558 us
+  completed 968149 cycles: 1.558 + 10.235 us
+Dynamic subtest render: SUCCESS (24.011s)
+Starting dynamic subtest: bsd
+  baseline 426510 cycles: 1.242 us
+  completed 1611087 cycles: 1.242 + 4.579 us
+Dynamic subtest bsd: SUCCESS (24.014s)
+Starting dynamic subtest: bsd1
+  baseline 425783 cycles: 1.232 us
+  completed 1592023 cycles: 1.232 + 4.745 us
+Dynamic subtest bsd1: SUCCESS (24.015s)
+Starting dynamic subtest: bsd2
+Test requirement not met in function wakeup_ring, file ../tests/i915/gem_sync.c:241:
+Test requirement: ied.nengines
+Dynamic subtest bsd2: SKIP (0.000s)
+Starting dynamic subtest: blt
+  baseline 422206 cycles: 1.251 us
+  completed 1577488 cycles: 1.251 + 4.887 us
+Dynamic subtest blt: SUCCESS (24.010s)
+Starting dynamic subtest: vebox
+Test requirement not met in function wakeup_ring, file ../tests/i915/gem_sync.c:241:
+Test requirement: ied.nengines
+Dynamic subtest vebox: SKIP (0.000s)
+Subtest wakeup: SUCCESS (120.059s)
+Starting subtest: active-wakeup
+Starting dynamic subtest: default
+  baseline 335853 cycles: 1.620 us
+  completed 72486 cycles: 1.620 + 266.291 us
+Dynamic subtest default: SUCCESS (24.034s)
+Starting dynamic subtest: render
+  baseline 334296 cycles: 1.723 us
+  completed 163616 cycles: 1.723 + 112.420 us
+Dynamic subtest render: SUCCESS (24.037s)
+Starting dynamic subtest: bsd
+  baseline 332033 cycles: 1.233 us
+  completed 727025 cycles: 1.233 + 18.333 us
+Dynamic subtest bsd: SUCCESS (24.019s)
+Starting dynamic subtest: bsd1
+  baseline 331055 cycles: 1.233 us
+  completed 9724 cycles: 1.233 + 2049.442 us
+Dynamic subtest bsd1: SUCCESS (24.029s)
+Starting dynamic subtest: bsd2
+Test requirement not met in function active_wakeup_ring, file ../tests/i915/gem_sync.c:383:
+Test requirement: ied.nengines
+Dynamic subtest bsd2: SKIP (0.000s)
+Starting dynamic subtest: blt
+  baseline 331522 cycles: 1.261 us
+  completed 370632 cycles: 1.261 + 44.903 us
+Dynamic subtest blt: SUCCESS (24.050s)
+Starting dynamic subtest: vebox
+Test requirement not met in function active_wakeup_ring, file ../tests/i915/gem_sync.c:383:
+Test requirement: ied.nengines
+Dynamic subtest vebox: SKIP (0.000s)
+Subtest active-wakeup: SUCCESS (120.169s)
+Starting subtest: double-wakeup
+Starting dynamic subtest: default
+  baseline 323404 cycles: 1.541 us
+  completed 803623 cycles: 1.541 + 11.844 us
+Dynamic subtest default: SUCCESS (24.011s)
+Starting dynamic subtest: render
+  baseline 321925 cycles: 1.545 us
+  completed 816412 cycles: 1.545 + 11.585 us
+Dynamic subtest render: SUCCESS (24.011s)
+Starting dynamic subtest: bsd
+  baseline 424019 cycles: 1.239 us
+  completed 807605 cycles: 1.239 + 11.468 us
+Dynamic subtest bsd: SUCCESS (24.010s)
+Starting dynamic subtest: bsd1
+  baseline 425428 cycles: 1.234 us
+  completed 773019 cycles: 1.234 + 11.846 us
+Dynamic subtest bsd1: SUCCESS (24.010s)
+Starting dynamic subtest: bsd2
+Test requirement not met in function wakeup_ring, file ../tests/i915/gem_sync.c:241:
+Test requirement: ied.nengines
+Dynamic subtest bsd2: SKIP (0.000s)
+Starting dynamic subtest: blt
+  baseline 421476 cycles: 1.262 us
+  completed 756724 cycles: 1.262 + 12.102 us
+Dynamic subtest blt: SUCCESS (24.012s)
+Starting dynamic subtest: vebox
+Test requirement not met in function wakeup_ring, file ../tests/i915/gem_sync.c:241:
+Test requirement: ied.nengines
+Dynamic subtest vebox: SKIP (0.000s)
+Subtest double-wakeup: SUCCESS (120.054s)
+Starting subtest: store
+Starting dynamic subtest: default
+  completed 257024 cycles: 78.081 us
+Dynamic subtest default: SUCCESS (20.080s)
+Starting dynamic subtest: render
+  completed 256000 cycles: 78.271 us
+Dynamic subtest render: SUCCESS (20.053s)
+Starting dynamic subtest: bsd
+  completed 254976 cycles: 78.505 us
+Dynamic subtest bsd: SUCCESS (20.027s)
+Starting dynamic subtest: bsd1
+  completed 254976 cycles: 78.692 us
+Dynamic subtest bsd1: SUCCESS (20.075s)
+Starting dynamic subtest: bsd2
+Test requirement not met in function store_ring, file ../tests/i915/gem_sync.c:498:
+Test requirement: ied.nengines
+Dynamic subtest bsd2: SKIP (0.000s)
+Starting dynamic subtest: blt
+  completed 254976 cycles: 78.663 us
+Dynamic subtest blt: SUCCESS (20.070s)
+Starting dynamic subtest: vebox
+Test requirement not met in function store_ring, file ../tests/i915/gem_sync.c:498:
+Test requirement: ied.nengines
+Dynamic subtest vebox: SKIP (0.000s)
+Subtest store: SUCCESS (100.305s)
+Starting subtest: switch
+Starting dynamic subtest: default
+Dynamic subtest default failed.
+**** DEBUG ****
+(gem_sync:4450) i915/gem_context-DEBUG: Test requirement passed: gem_has_contexts(fd)
+(gem_sync:4450) DEBUG: Test requirement passed: ied.nengines
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_core-INFO: Timed out waiting for children
+****  END  ****
+Timed out waiting for children
+child 0 died with signal 9, Killed
+Dynamic subtest default: FAIL (30.001s)
+Starting dynamic subtest: render
+Dynamic subtest render failed.
+**** DEBUG ****
+(gem_sync:4450) i915/gem_context-DEBUG: Test requirement passed: gem_has_contexts(fd)
+(gem_sync:4450) DEBUG: Test requirement passed: ied.nengines
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_core-INFO: Timed out waiting for children
+****  END  ****
+Timed out waiting for children
+child 0 died with signal 9, Killed
+Dynamic subtest render: FAIL (30.001s)
+Starting dynamic subtest: bsd
+Dynamic subtest bsd failed.
+**** DEBUG ****
+(gem_sync:4450) i915/gem_context-DEBUG: Test requirement passed: gem_has_contexts(fd)
+(gem_sync:4450) DEBUG: Test requirement passed: ied.nengines
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_core-INFO: Timed out waiting for children
+****  END  ****
+Timed out waiting for children
+child 0 died with signal 9, Killed
+Dynamic subtest bsd: FAIL (30.001s)
+Starting dynamic subtest: bsd1
+Dynamic subtest bsd1 failed.
+**** DEBUG ****
+(gem_sync:4450) i915/gem_context-DEBUG: Test requirement passed: gem_has_contexts(fd)
+(gem_sync:4450) DEBUG: Test requirement passed: ied.nengines
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_core-INFO: Timed out waiting for children
+****  END  ****
+Timed out waiting for children
+child 0 died with signal 9, Killed
+Dynamic subtest bsd1: FAIL (30.001s)
+Starting dynamic subtest: bsd2
+Test requirement not met in function switch_ring, file ../tests/i915/gem_sync.c:596:
+Test requirement: ied.nengines
+Dynamic subtest bsd2: SKIP (0.000s)
+Starting dynamic subtest: blt
+Dynamic subtest blt failed.
+**** DEBUG ****
+(gem_sync:4450) i915/gem_context-DEBUG: Test requirement passed: gem_has_contexts(fd)
+(gem_sync:4450) DEBUG: Test requirement passed: ied.nengines
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_core-INFO: Timed out waiting for children
+****  END  ****
+Timed out waiting for children
+child 0 died with signal 9, Killed
+Dynamic subtest blt: FAIL (30.001s)
+Starting dynamic subtest: vebox
+Test requirement not met in function switch_ring, file ../tests/i915/gem_sync.c:596:
+Test requirement: ied.nengines
+Dynamic subtest vebox: SKIP (0.000s)
+Subtest switch: FAIL (150.007s)
+Starting subtest: forked-switch
+Starting dynamic subtest: default
+Dynamic subtest default failed.
+**** DEBUG ****
+(gem_sync:4450) i915/gem_context-DEBUG: Test requirement passed: gem_has_contexts(fd)
+(gem_sync:4450) DEBUG: Test requirement passed: ied.nengines
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_core-INFO: Timed out waiting for children
+****  END  ****
+Timed out waiting for children
+child 1 died with signal 9, Killed
+Dynamic subtest default: FAIL (30.003s)
+Starting dynamic subtest: render
+Dynamic subtest render failed.
+**** DEBUG ****
+(gem_sync:4450) i915/gem_context-DEBUG: Test requirement passed: gem_has_contexts(fd)
+(gem_sync:4450) DEBUG: Test requirement passed: ied.nengines
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_core-INFO: Timed out waiting for children
+****  END  ****
+Timed out waiting for children
+child 0 died with signal 9, Killed
+Dynamic subtest render: FAIL (30.003s)
+Starting dynamic subtest: bsd
+Dynamic subtest bsd failed.
+**** DEBUG ****
+(gem_sync:4450) i915/gem_context-DEBUG: Test requirement passed: gem_has_contexts(fd)
+(gem_sync:4450) DEBUG: Test requirement passed: ied.nengines
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_core-INFO: Timed out waiting for children
+****  END  ****
+Timed out waiting for children
+child 0 died with signal 9, Killed
+Dynamic subtest bsd: FAIL (30.003s)
+Starting dynamic subtest: bsd1
+Dynamic subtest bsd1 failed.
+**** DEBUG ****
+(gem_sync:4450) i915/gem_context-DEBUG: Test requirement passed: gem_has_contexts(fd)
+(gem_sync:4450) DEBUG: Test requirement passed: ied.nengines
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_core-INFO: Timed out waiting for children
+****  END  ****
+Timed out waiting for children
+child 3 died with signal 9, Killed
+Dynamic subtest bsd1: FAIL (30.003s)
+Starting dynamic subtest: bsd2
+Test requirement not met in function switch_ring, file ../tests/i915/gem_sync.c:596:
+Test requirement: ied.nengines
+Dynamic subtest bsd2: SKIP (0.000s)
+Starting dynamic subtest: blt
+Dynamic subtest blt failed.
+**** DEBUG ****
+(gem_sync:4450) i915/gem_context-DEBUG: Test requirement passed: gem_has_contexts(fd)
+(gem_sync:4450) DEBUG: Test requirement passed: ied.nengines
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_core-INFO: Timed out waiting for children
+****  END  ****
+Timed out waiting for children
+child 3 died with signal 9, Killed
+Dynamic subtest blt: FAIL (30.003s)
+Starting dynamic subtest: vebox
+Test requirement not met in function switch_ring, file ../tests/i915/gem_sync.c:596:
+Test requirement: ied.nengines
+Dynamic subtest vebox: SKIP (0.000s)
+Subtest forked-switch: FAIL (150.016s)
+Starting subtest: many
+Starting dynamic subtest: default
+  completed 4077 cycles
+Dynamic subtest default: SUCCESS (21.500s)
+Starting dynamic subtest: render
+  completed 4084 cycles
+Dynamic subtest render: SUCCESS (21.497s)
+Starting dynamic subtest: bsd
+  completed 4052 cycles
+Dynamic subtest bsd: SUCCESS (21.493s)
+Starting dynamic subtest: bsd1
+  completed 4047 cycles
+Dynamic subtest bsd1: SUCCESS (21.498s)
+Starting dynamic subtest: bsd2
+Test requirement not met in function store_many, file ../tests/i915/gem_sync.c:904:
+Test requirement: ied.nengines
+Dynamic subtest bsd2: SKIP (0.000s)
+Starting dynamic subtest: blt
+  completed 4057 cycles
+Dynamic subtest blt: SUCCESS (21.492s)
+Starting dynamic subtest: vebox
+Test requirement not met in function store_many, file ../tests/i915/gem_sync.c:904:
+Test requirement: ied.nengines
+Dynamic subtest vebox: SKIP (0.000s)
+Subtest many: SUCCESS (107.480s)
+Starting subtest: forked
+Starting dynamic subtest: default
+  1720320 cycles: 11.627 us
+  1723392 cycles: 11.606 us
+  1723392 cycles: 11.606 us
+  1718272 cycles: 11.641 us
+Dynamic subtest default: SUCCESS (20.026s)
+Starting dynamic subtest: render
+  1716224 cycles: 11.654 us
+  1720320 cycles: 11.629 us
+  1725440 cycles: 11.597 us
+  1721344 cycles: 11.624 us
+Dynamic subtest render: SUCCESS (20.023s)
+Starting dynamic subtest: bsd
+  1631232 cycles: 12.262 us
+  1616896 cycles: 12.372 us
+  1608704 cycles: 12.435 us
+  1611776 cycles: 12.413 us
+Dynamic subtest bsd: SUCCESS (20.020s)
+Starting dynamic subtest: bsd1
+  1646592 cycles: 12.148 us
+  1547264 cycles: 12.928 us
+  1614848 cycles: 12.389 us
+  1633280 cycles: 12.249 us
+Dynamic subtest bsd1: SUCCESS (20.024s)
+Starting dynamic subtest: bsd2
+Test requirement not met in function sync_ring, file ../tests/i915/gem_sync.c:156:
+Test requirement: ied.nengines
+Dynamic subtest bsd2: SKIP (0.000s)
+Starting dynamic subtest: blt
+  1562624 cycles: 12.800 us
+  1505280 cycles: 13.290 us
+  1537024 cycles: 13.016 us
+  1507328 cycles: 13.273 us
+Dynamic subtest blt: SUCCESS (20.021s)
+Starting dynamic subtest: vebox
+Test requirement not met in function sync_ring, file ../tests/i915/gem_sync.c:156:
+Test requirement: ied.nengines
+Dynamic subtest vebox: SKIP (0.000s)
+Subtest forked: SUCCESS (100.114s)
+Starting subtest: forked-store
+Starting dynamic subtest: default
+  completed 76800 cycles: 261.303 us
+  completed 76800 cycles: 261.309 us
+  completed 76800 cycles: 261.310 us
+  completed 76800 cycles: 261.306 us
+Dynamic subtest default: SUCCESS (20.086s)
+Starting dynamic subtest: render
+  completed 76800 cycles: 261.311 us
+  completed 76800 cycles: 261.318 us
+  completed 76800 cycles: 261.316 us
+  completed 76800 cycles: 261.325 us
+Dynamic subtest render: SUCCESS (20.081s)
+Starting dynamic subtest: bsd
+  completed 76800 cycles: 262.148 us
+  completed 76800 cycles: 262.155 us
+  completed 76800 cycles: 262.150 us
+  completed 76800 cycles: 262.168 us
+Dynamic subtest bsd: SUCCESS (20.144s)
+Starting dynamic subtest: bsd1
+  completed 76800 cycles: 262.128 us
+  completed 76800 cycles: 262.139 us
+  completed 76800 cycles: 262.131 us
+  completed 76800 cycles: 262.136 us
+Dynamic subtest bsd1: SUCCESS (20.141s)
+Starting dynamic subtest: bsd2
+Test requirement not met in function store_ring, file ../tests/i915/gem_sync.c:498:
+Test requirement: ied.nengines
+Dynamic subtest bsd2: SKIP (0.000s)
+Starting dynamic subtest: blt
+  completed 76800 cycles: 262.223 us
+  completed 76800 cycles: 262.229 us
+  completed 76800 cycles: 262.225 us
+  completed 76800 cycles: 262.229 us
+Dynamic subtest blt: SUCCESS (20.156s)
+Starting dynamic subtest: vebox
+Test requirement not met in function store_ring, file ../tests/i915/gem_sync.c:498:
+Test requirement: ied.nengines
+Dynamic subtest vebox: SKIP (0.000s)
+Subtest forked-store: SUCCESS (100.608s)
+Starting subtest: basic-all
+Completed 204800 cycles: 9.773 us
+Subtest basic-all: SUCCESS (2.013s)
+Starting subtest: basic-store-all
+Completed 9216 cycles: 227.275 us
+Subtest basic-store-all: SUCCESS (2.103s)
+Starting subtest: all
+Completed 2058240 cycles: 9.722 us
+Subtest all: SUCCESS (20.020s)
+Starting subtest: store-all
+Completed 89088 cycles: 225.601 us
+Subtest store-all: SUCCESS (20.111s)
+Starting subtest: forked-all
+Completed 636928 cycles: 31.431 us
+Completed 635904 cycles: 31.490 us
+Completed 625664 cycles: 32.008 us
+Completed 649216 cycles: 30.849 us
+Subtest forked-all: SUCCESS (20.043s)
+Starting subtest: forked-store-all
+Completed 25600 cycles: 805.073 us
+Completed 25600 cycles: 805.102 us
+Completed 25600 cycles: 805.111 us
+Completed 25600 cycles: 805.161 us
+Subtest forked-store-all: SUCCESS (20.623s)
+Starting subtest: basic-each
+vcs0 338944 cycles: 5.911 us
+bcs0 296960 cycles: 6.753 us
+rcs0 241664 cycles: 8.308 us
+Subtest basic-each: SUCCESS (2.021s)
+Starting subtest: basic-store-each
+rcs0 completed 8192 cycles: 254.966 us
+vcs0 completed 12288 cycles: 174.852 us
+bcs0 completed 12288 cycles: 174.891 us
+Subtest basic-store-each: SUCCESS (2.160s)
+Starting subtest: basic-many-each
+rcs0 completed 145 cycles
+bcs0 completed 146 cycles
+vcs0 completed 146 cycles
+Subtest basic-many-each: SUCCESS (2.178s)
+Starting subtest: switch-each
+Subtest switch-each failed.
+**** DEBUG ****
+(gem_sync:4450) i915/gem_context-DEBUG: Test requirement passed: gem_has_contexts(fd)
+(gem_sync:4450) DEBUG: Test requirement passed: ied.nengines
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_core-INFO: Timed out waiting for children
+****  END  ****
+Timed out waiting for children
+child 1 died with signal 9, Killed
+Subtest switch-each: FAIL (30.002s)
+Starting subtest: forked-switch-each
+Subtest forked-switch-each failed.
+**** DEBUG ****
+(gem_sync:4450) i915/gem_context-DEBUG: Test requirement passed: gem_has_contexts(fd)
+(gem_sync:4450) DEBUG: Test requirement passed: ied.nengines
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_core-INFO: Timed out waiting for children
+****  END  ****
+Timed out waiting for children
+child 10 died with signal 9, Killed
+Subtest forked-switch-each: FAIL (30.009s)
+Starting subtest: forked-each
+rcs0 651264 cycles: 30.729 us
+rcs0 654336 cycles: 30.581 us
+rcs0 637952 cycles: 31.354 us
+bcs0 724992 cycles: 27.606 us
+vcs0 721920 cycles: 27.717 us
+vcs0 737280 cycles: 27.139 us
+rcs0 647168 cycles: 30.921 us
+bcs0 723968 cycles: 27.637 us
+bcs0 728064 cycles: 27.500 us
+vcs0 723968 cycles: 27.656 us
+bcs0 716800 cycles: 27.931 us
+vcs0 737280 cycles: 27.152 us
+Subtest forked-each: SUCCESS (20.040s)
+Starting subtest: forked-store-each
+vcs0 completed 29696 cycles: 675.819 us
+vcs0 completed 29696 cycles: 675.913 us
+vcs0 completed 29696 cycles: 675.912 us
+vcs0 completed 29696 cycles: 675.885 us
+bcs0 completed 30720 cycles: 660.209 us
+bcs0 completed 30720 cycles: 660.253 us
+bcs0 completed 30720 cycles: 660.226 us
+bcs0 completed 30720 cycles: 660.216 us
+rcs0 completed 18432 cycles: 1110.514 us
+rcs0 completed 18432 cycles: 1110.446 us
+rcs0 completed 18432 cycles: 1110.377 us
+rcs0 completed 18432 cycles: 1110.650 us
+Subtest forked-store-each: SUCCESS (20.488s)
+Starting subtest: active-each
+bcs0 3097600 cycles: 6.457 us
+vcs0 3052544 cycles: 6.552 us
+rcs0 3057664 cycles: 6.542 us
+Subtest active-each: SUCCESS (20.014s)
+Starting subtest: wakeup-each
+rcs0 baseline 247505 cycles: 2.223 us
+rcs0 completed 737415 cycles: 2.223 + 11.996 us
+bcs0 baseline 270003 cycles: 1.848 us
+bcs0 completed 933755 cycles: 1.848 + 8.392 us
+vcs0 baseline 269975 cycles: 1.765 us
+vcs0 completed 943145 cycles: 1.765 + 8.187 us
+Subtest wakeup-each: SUCCESS (24.016s)
+Starting subtest: active-wakeup-each
+rcs0 baseline 254529 cycles: 2.337 us
+rcs0 completed 843150 cycles: 2.337 + 10.428 us
+bcs0 baseline 252068 cycles: 1.719 us
+bcs0 completed 929984 cycles: 1.719 + 7.804 us
+vcs0 baseline 253814 cycles: 2.000 us
+vcs0 completed 945554 cycles: 2.000 + 7.599 us
+Subtest active-wakeup-each: SUCCESS (24.018s)
+Starting subtest: double-wakeup-each
+rcs0 baseline 208934 cycles: 2.656 us
+rcs0 completed 537246 cycles: 2.656 + 14.032 us
+vcs0 baseline 298559 cycles: 1.936 us
+vcs0 completed 564220 cycles: 1.936 + 16.334 us
+bcs0 baseline 262315 cycles: 2.115 us
+bcs0 completed 551799 cycles: 2.115 + 16.363 us
+Subtest double-wakeup-each: SUCCESS (24.010s)
+Starting subtest: default
+Starting dynamic subtest: rcs0
+  3674112 cycles: 5.444 us
+Dynamic subtest rcs0: SUCCESS (20.010s)
+Starting dynamic subtest: bcs0
+  5067776 cycles: 3.947 us
+Dynamic subtest bcs0: SUCCESS (20.012s)
+Starting dynamic subtest: vcs0
+  5092352 cycles: 3.928 us
+Dynamic subtest vcs0: SUCCESS (20.014s)
+Subtest default: SUCCESS (60.036s)
+Starting subtest: idle
+Starting dynamic subtest: rcs0
+Completed 308224 cycles: 65.003 us
+Dynamic subtest rcs0: SUCCESS (20.036s)
+Starting dynamic subtest: bcs0
+Completed 653312 cycles: 30.653 us
+Dynamic subtest bcs0: SUCCESS (20.031s)
+Starting dynamic subtest: vcs0
+Completed 651264 cycles: 30.711 us
+Dynamic subtest vcs0: SUCCESS (20.015s)
+Subtest idle: SUCCESS (60.082s)
+Starting subtest: active
+Starting dynamic subtest: rcs0
+  4866048 cycles: 4.111 us
+Dynamic subtest rcs0: SUCCESS (20.024s)
+Starting dynamic subtest: bcs0
+  5251072 cycles: 3.809 us
+Dynamic subtest bcs0: SUCCESS (20.014s)
+Starting dynamic subtest: vcs0
+  5304320 cycles: 3.771 us
+Dynamic subtest vcs0: SUCCESS (20.013s)
+Subtest active: SUCCESS (60.051s)
+Starting subtest: wakeup
+Starting dynamic subtest: rcs0
+  baseline 319664 cycles: 1.555 us
+  completed 930865 cycles: 1.555 + 10.736 us
+Dynamic subtest rcs0: SUCCESS (24.012s)
+Starting dynamic subtest: bcs0
+  baseline 417601 cycles: 1.278 us
+  completed 1575714 cycles: 1.278 + 4.744 us
+Dynamic subtest bcs0: SUCCESS (24.011s)
+Starting dynamic subtest: vcs0
+  baseline 420222 cycles: 1.273 us
+  completed 1620482 cycles: 1.273 + 4.480 us
+Dynamic subtest vcs0: SUCCESS (24.011s)
+Subtest wakeup: SUCCESS (72.034s)
+Starting subtest: active-wakeup
+Starting dynamic subtest: rcs0
+  baseline 332804 cycles: 1.720 us
+  completed 107745 cycles: 1.720 + 175.605 us
+Dynamic subtest rcs0: SUCCESS (24.021s)
+Starting dynamic subtest: bcs0
+  baseline 329812 cycles: 1.279 us
+  completed 487246 cycles: 1.279 + 31.717 us
+Dynamic subtest bcs0: SUCCESS (24.008s)
+Starting dynamic subtest: vcs0
+  baseline 325513 cycles: 1.363 us
+  completed 10317 cycles: 1.363 + 1928.731 us
+Dynamic subtest vcs0: SUCCESS (24.012s)
+Subtest active-wakeup: SUCCESS (72.041s)
+Starting subtest: double-wakeup
+Starting dynamic subtest: rcs0
+  baseline 319886 cycles: 1.550 us
+  completed 726591 cycles: 1.550 + 13.049 us
+Dynamic subtest rcs0: SUCCESS (24.011s)
+Starting dynamic subtest: bcs0
+  baseline 418379 cycles: 1.269 us
+  completed 830512 cycles: 1.269 + 11.133 us
+Dynamic subtest bcs0: SUCCESS (24.010s)
+Starting dynamic subtest: vcs0
+  baseline 415985 cycles: 1.285 us
+  completed 790781 cycles: 1.285 + 11.552 us
+Dynamic subtest vcs0: SUCCESS (24.010s)
+Subtest double-wakeup: SUCCESS (72.031s)
+Starting subtest: store
+Starting dynamic subtest: rcs0
+  completed 257024 cycles: 78.059 us
+Dynamic subtest rcs0: SUCCESS (20.074s)
+Starting dynamic subtest: bcs0
+  completed 254976 cycles: 78.588 us
+Dynamic subtest bcs0: SUCCESS (20.045s)
+Starting dynamic subtest: vcs0
+  completed 254976 cycles: 78.477 us
+Dynamic subtest vcs0: SUCCESS (20.022s)
+Subtest store: SUCCESS (60.141s)
+Starting subtest: switch
+Starting dynamic subtest: rcs0
+Dynamic subtest rcs0 failed.
+**** DEBUG ****
+(gem_sync:4450) i915/gem_context-DEBUG: Test requirement passed: gem_has_contexts(fd)
+(gem_sync:4450) DEBUG: Test requirement passed: ied.nengines
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_core-INFO: Timed out waiting for children
+****  END  ****
+Timed out waiting for children
+child 0 died with signal 9, Killed
+Dynamic subtest rcs0: FAIL (30.001s)
+Starting dynamic subtest: bcs0
+Dynamic subtest bcs0 failed.
+**** DEBUG ****
+(gem_sync:4450) i915/gem_context-DEBUG: Test requirement passed: gem_has_contexts(fd)
+(gem_sync:4450) DEBUG: Test requirement passed: ied.nengines
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_core-INFO: Timed out waiting for children
+****  END  ****
+Timed out waiting for children
+child 0 died with signal 9, Killed
+Dynamic subtest bcs0: FAIL (30.001s)
+Starting dynamic subtest: vcs0
+Dynamic subtest vcs0 failed.
+**** DEBUG ****
+(gem_sync:4450) i915/gem_context-DEBUG: Test requirement passed: gem_has_contexts(fd)
+(gem_sync:4450) DEBUG: Test requirement passed: ied.nengines
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_core-INFO: Timed out waiting for children
+****  END  ****
+Timed out waiting for children
+child 0 died with signal 9, Killed
+Dynamic subtest vcs0: FAIL (30.001s)
+Subtest switch: FAIL (90.004s)
+Starting subtest: forked-switch
+Starting dynamic subtest: rcs0
+Dynamic subtest rcs0 failed.
+**** DEBUG ****
+(gem_sync:4450) i915/gem_context-DEBUG: Test requirement passed: gem_has_contexts(fd)
+(gem_sync:4450) DEBUG: Test requirement passed: ied.nengines
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_core-INFO: Timed out waiting for children
+****  END  ****
+Timed out waiting for children
+child 0 died with signal 9, Killed
+Dynamic subtest rcs0: FAIL (30.003s)
+Starting dynamic subtest: bcs0
+Dynamic subtest bcs0 failed.
+**** DEBUG ****
+(gem_sync:4450) i915/gem_context-DEBUG: Test requirement passed: gem_has_contexts(fd)
+(gem_sync:4450) DEBUG: Test requirement passed: ied.nengines
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_core-INFO: Timed out waiting for children
+****  END  ****
+Timed out waiting for children
+child 1 died with signal 9, Killed
+Dynamic subtest bcs0: FAIL (30.003s)
+Starting dynamic subtest: vcs0
+Dynamic subtest vcs0 failed.
+**** DEBUG ****
+(gem_sync:4450) i915/gem_context-DEBUG: Test requirement passed: gem_has_contexts(fd)
+(gem_sync:4450) DEBUG: Test requirement passed: ied.nengines
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_sync:4450) igt_core-INFO: Timed out waiting for children
+****  END  ****
+Timed out waiting for children
+child 1 died with signal 9, Killed
+Dynamic subtest vcs0: FAIL (30.003s)
+Subtest forked-switch: FAIL (90.009s)
+Starting subtest: many
+Starting dynamic subtest: rcs0
+  completed 4072 cycles
+Dynamic subtest rcs0: SUCCESS (21.500s)
+Starting dynamic subtest: bcs0
+  completed 4039 cycles
+Dynamic subtest bcs0: SUCCESS (21.497s)
+Starting dynamic subtest: vcs0
+  completed 4041 cycles
+Dynamic subtest vcs0: SUCCESS (21.490s)
+Subtest many: SUCCESS (64.487s)
+Starting subtest: forked
+Starting dynamic subtest: rcs0
+  1722368 cycles: 11.616 us
+  1728512 cycles: 11.575 us
+  1732608 cycles: 11.548 us
+  1745920 cycles: 11.459 us
+Dynamic subtest rcs0: SUCCESS (20.022s)
+Starting dynamic subtest: bcs0
+  1529856 cycles: 13.075 us
+  1500160 cycles: 13.334 us
+  1495040 cycles: 13.381 us
+  1496064 cycles: 13.374 us
+Dynamic subtest bcs0: SUCCESS (20.020s)
+Starting dynamic subtest: vcs0
+  1564672 cycles: 12.783 us
+  1546240 cycles: 12.936 us
+  1597440 cycles: 12.524 us
+  1563648 cycles: 12.795 us
+Dynamic subtest vcs0: SUCCESS (20.020s)
+Subtest forked: SUCCESS (60.062s)
+Starting subtest: forked-store
+Starting dynamic subtest: rcs0
+  completed 76800 cycles: 261.274 us
+  completed 76800 cycles: 261.280 us
+  completed 76800 cycles: 261.280 us
+  completed 76800 cycles: 261.275 us
+Dynamic subtest rcs0: SUCCESS (20.082s)
+Starting dynamic subtest: bcs0
+  completed 76800 cycles: 262.216 us
+  completed 76800 cycles: 262.216 us
+  completed 76800 cycles: 262.216 us
+  completed 76800 cycles: 262.217 us
+Dynamic subtest bcs0: SUCCESS (20.149s)
+Starting dynamic subtest: vcs0
+  completed 76800 cycles: 262.212 us
+  completed 76800 cycles: 262.220 us
+  completed 76800 cycles: 262.218 us
+  completed 76800 cycles: 262.218 us
+Dynamic subtest vcs0: SUCCESS (20.149s)
+Subtest forked-store: SUCCESS (60.380s)
+Test requirement not met in function __real_main1134, file ../tests/i915/gem_sync.c:1231:
+Test requirement: gem_scheduler_has_ctx_priority(fd)
+Subtest preempt-all: SKIP
+Subtest preempt: SKIP
+2020-10-26 02:17:25 build/tests/gem_tiling_max_stride
+IGT-Version: 1.25-ga15f8da1 (x86_64) (Linux: 5.9.0-01339-g9533aa80de121f x86_64)
+SUCCESS (0.014s)
+2020-10-26 02:17:25 build/tests/i915_pm_backlight
+IGT-Version: 1.25-ga15f8da1 (x86_64) (Linux: 5.9.0-01339-g9533aa80de121f x86_64)
+Test requirement not met in function __real_main182, file ../tests/i915/i915_pm_backlight.c:206:
+Test requirement: !(backlight_read(&old, "brightness"))
+Last errno: 2, No such file or directory
+Subtest basic-brightness: SKIP
+Subtest bad-brightness: SKIP
+Subtest fade: SKIP
+Subtest fade_with_dpms: SKIP
+Subtest fade_with_suspend: SKIP
+2020-10-26 02:17:26 build/tests/sysfs_timeslice_duration
+IGT-Version: 1.25-ga15f8da1 (x86_64) (Linux: 5.9.0-01339-g9533aa80de121f x86_64)
+Starting subtest: idempotent
+Starting dynamic subtest: vcs0
+Test requirement not met in function dyn_sysfs_engines, file ../lib/i915/gem_engine_topology.c:536:
+Test requirement: fstatat(engine, file, &st, 0) == 0
+Last errno: 2, No such file or directory
+Dynamic subtest vcs0: SKIP (0.000s)
+Starting dynamic subtest: bcs0
+Test requirement not met in function dyn_sysfs_engines, file ../lib/i915/gem_engine_topology.c:536:
+Test requirement: fstatat(engine, file, &st, 0) == 0
+Last errno: 2, No such file or directory
+Dynamic subtest bcs0: SKIP (0.000s)
+Starting dynamic subtest: rcs0
+Test requirement not met in function dyn_sysfs_engines, file ../lib/i915/gem_engine_topology.c:536:
+Test requirement: fstatat(engine, file, &st, 0) == 0
+Last errno: 2, No such file or directory
+Dynamic subtest rcs0: SKIP (0.000s)
+Subtest idempotent: SUCCESS (0.001s)
+Starting subtest: invalid
+Starting dynamic subtest: vcs0
+Test requirement not met in function dyn_sysfs_engines, file ../lib/i915/gem_engine_topology.c:536:
+Test requirement: fstatat(engine, file, &st, 0) == 0
+Last errno: 2, No such file or directory
+Dynamic subtest vcs0: SKIP (0.000s)
+Starting dynamic subtest: bcs0
+Test requirement not met in function dyn_sysfs_engines, file ../lib/i915/gem_engine_topology.c:536:
+Test requirement: fstatat(engine, file, &st, 0) == 0
+Last errno: 2, No such file or directory
+Dynamic subtest bcs0: SKIP (0.000s)
+Starting dynamic subtest: rcs0
+Test requirement not met in function dyn_sysfs_engines, file ../lib/i915/gem_engine_topology.c:536:
+Test requirement: fstatat(engine, file, &st, 0) == 0
+Last errno: 2, No such file or directory
+Dynamic subtest rcs0: SKIP (0.000s)
+Subtest invalid: SUCCESS (0.000s)
+Starting subtest: duration
+Starting dynamic subtest: vcs0
+Test requirement not met in function dyn_sysfs_engines, file ../lib/i915/gem_engine_topology.c:536:
+Test requirement: fstatat(engine, file, &st, 0) == 0
+Last errno: 2, No such file or directory
+Dynamic subtest vcs0: SKIP (0.000s)
+Starting dynamic subtest: bcs0
+Test requirement not met in function dyn_sysfs_engines, file ../lib/i915/gem_engine_topology.c:536:
+Test requirement: fstatat(engine, file, &st, 0) == 0
+Last errno: 2, No such file or directory
+Dynamic subtest bcs0: SKIP (0.000s)
+Starting dynamic subtest: rcs0
+Test requirement not met in function dyn_sysfs_engines, file ../lib/i915/gem_engine_topology.c:536:
+Test requirement: fstatat(engine, file, &st, 0) == 0
+Last errno: 2, No such file or directory
+Dynamic subtest rcs0: SKIP (0.000s)
+Subtest duration: SUCCESS (0.000s)
+Starting subtest: timeout
+Starting dynamic subtest: vcs0
+Test requirement not met in function dyn_sysfs_engines, file ../lib/i915/gem_engine_topology.c:536:
+Test requirement: fstatat(engine, file, &st, 0) == 0
+Last errno: 2, No such file or directory
+Dynamic subtest vcs0: SKIP (0.000s)
+Starting dynamic subtest: bcs0
+Test requirement not met in function dyn_sysfs_engines, file ../lib/i915/gem_engine_topology.c:536:
+Test requirement: fstatat(engine, file, &st, 0) == 0
+Last errno: 2, No such file or directory
+Dynamic subtest bcs0: SKIP (0.000s)
+Starting dynamic subtest: rcs0
+Test requirement not met in function dyn_sysfs_engines, file ../lib/i915/gem_engine_topology.c:536:
+Test requirement: fstatat(engine, file, &st, 0) == 0
+Last errno: 2, No such file or directory
+Dynamic subtest rcs0: SKIP (0.000s)
+Subtest timeout: SUCCESS (0.000s)
+Starting subtest: off
+Starting dynamic subtest: vcs0
+Test requirement not met in function dyn_sysfs_engines, file ../lib/i915/gem_engine_topology.c:536:
+Test requirement: fstatat(engine, file, &st, 0) == 0
+Last errno: 2, No such file or directory
+Dynamic subtest vcs0: SKIP (0.000s)
+Starting dynamic subtest: bcs0
+Test requirement not met in function dyn_sysfs_engines, file ../lib/i915/gem_engine_topology.c:536:
+Test requirement: fstatat(engine, file, &st, 0) == 0
+Last errno: 2, No such file or directory
+Dynamic subtest bcs0: SKIP (0.000s)
+Starting dynamic subtest: rcs0
+Test requirement not met in function dyn_sysfs_engines, file ../lib/i915/gem_engine_topology.c:536:
+Test requirement: fstatat(engine, file, &st, 0) == 0
+Last errno: 2, No such file or directory
+Dynamic subtest rcs0: SKIP (0.000s)
+Subtest off: SUCCESS (0.001s)
+2020-10-26 02:17:26 build/tests/testdisplay
+IGT-Version: 1.25-ga15f8da1 (x86_64) (Linux: 5.9.0-01339-g9533aa80de121f x86_64)
+CRTC(45):[0]  1024x768 60 1024 1048 1184 1344 768 771 777 806 0x5 0x48 65000
+CRTC(45):[1]  1024x768 75 1024 1040 1136 1312 768 769 772 800 0x5 0x40 78750
+CRTC(45):[2]  1024x768 70 1024 1048 1184 1328 768 771 777 806 0xa 0x40 75000
+CRTC(45):[3]  1024x768 60 1024 1048 1184 1344 768 771 777 806 0xa 0x40 65000
+CRTC(45):[4]  800x600 75 800 816 896 1056 600 601 604 625 0x5 0x40 49500
+CRTC(45):[5]  800x600 72 800 856 976 1040 600 637 643 666 0x5 0x40 50000
+CRTC(45):[6]  800x600 60 800 840 968 1056 600 601 605 628 0x5 0x40 40000
+CRTC(45):[7]  800x600 56 800 824 896 1024 600 601 603 625 0x5 0x40 36000
+CRTC(45):[8]  640x480 75 640 656 720 840 480 481 484 500 0xa 0x40 31500
+CRTC(45):[9]  640x480 73 640 664 704 832 480 489 492 520 0xa 0x40 31500
+CRTC(45):[10]  640x480 60 640 656 752 800 480 490 492 525 0xa 0x40 25175
+CRTC(45):[11]  720x400 70 720 738 846 900 400 412 414 449 0x6 0x40 28320
+SUCCESS (1.222s)
