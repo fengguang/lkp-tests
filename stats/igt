@@ -11,6 +11,7 @@ require "#{LKP_SRC}/lib/log"
 stats = []
 test_name = nil
 subtest_name = nil
+has_dynamic_subtest = false
 
 def valid_datetime?(datetime_str)
   !!Time.parse(datetime_str) rescue false
@@ -30,9 +31,29 @@ while (line = STDIN.gets)
     next if test_name == nil
 
     subtest_name = $1
+    has_dynamic_subtest = false
   when /^Subtest (.*): (SUCCESS|FAIL)/
     # Subtest invalid-buffer: SUCCESS (0.000s)
-    next if test_name == nil
+    # one special case is
+    # 953 2020-10-26 01:36:11 build/tests/gem_sync
+    # ...
+    # 956 Starting subtest: default
+    # 957 Starting dynamic subtest: default
+    # 958   3666944 cycles: 5.455 us
+    # 959 Dynamic subtest default: SUCCESS (20.015s)
+    # ...
+    # 980 Subtest default: SUCCESS (100.073s)
+    # ...
+    # 1511 Starting subtest: default
+    # 1512 Starting dynamic subtest: rcs0
+    # 1513   3674112 cycles: 5.444 us
+    # 1514 Dynamic subtest rcs0: SUCCESS (20.010s)
+    # ...
+    # 1521 Subtest default: SUCCESS (60.036s)
+    # above line 953-980 and 1511-1521 could be regarded as two sections for
+    # gem_sync.default, they include different dynamic subtests.
+    # should ignore the 'Subtest default' results from 980 and 1521 to avoid duplicated stats
+    next if test_name == nil || has_dynamic_subtest
 
     stats_type = if $2 == 'SUCCESS'
                    'pass'
@@ -46,6 +67,8 @@ while (line = STDIN.gets)
     # 2608 Starting dynamic subtest: rcs0
     # 2609 Dynamic subtest rcs0: SUCCESS (1.060s)
     next if test_name == nil || subtest_name == nil
+
+    has_dynamic_subtest = true
 
     stats_type = if $2 == 'SUCCESS'
                    'pass'
