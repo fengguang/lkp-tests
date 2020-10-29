@@ -2,24 +2,57 @@
 
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
+require 'time'
 require "#{LKP_SRC}/lib/statistics"
 require "#{LKP_SRC}/lib/string_ext"
 require "#{LKP_SRC}/lib/array_ext"
 require "#{LKP_SRC}/lib/log"
 
 stats = []
+test_name = nil
+subtest_name = nil
+
+def valid_datetime?(datetime_str)
+  !!Time.parse(datetime_str) rescue false
+end
 
 while (line = STDIN.gets)
   line = line.resolve_invalid_bytes
 
   case line
-  when /^(.*): (SUCCESS|FAIL)/
+  when /^(.*) build\/tests\/(.*)$/
+    # 2020-10-27 01:29:45 build/tests/core_getstats
+    next unless valid_datetime?($1)
+
+    test_name = $2
+  when /Starting subtest: (.*)$/
+    # Starting subtest: invalid-buffer
+    next if test_name == nil
+
+    subtest_name = $1
+  when /^Subtest (.*): (SUCCESS|FAIL)/
+    # Subtest invalid-buffer: SUCCESS (0.000s)
+    next if test_name == nil
+
     stats_type = if $2 == 'SUCCESS'
                    'pass'
                  else
                    'fail'
                  end
-    stats << $1.tr(' /', '_.') + ".#{stats_type}: 1"
+    stats << test_name + "." + $1 + ".#{stats_type}: 1"
+  when /^Dynamic subtest (.*): (SUCCESS|FAIL)/
+    # a 'dynamic subtest' is such like a 2nd level subtest under 'subtest' as below
+    # 2607 Starting subtest: exec-single-timeline
+    # 2608 Starting dynamic subtest: rcs0
+    # 2609 Dynamic subtest rcs0: SUCCESS (1.060s)
+    next if test_name == nil || subtest_name == nil
+
+    stats_type = if $2 == 'SUCCESS'
+                   'pass'
+                 else
+                   'fail'
+                 end
+    stats << test_name + "." + subtest_name + ".dynamic." + $1 + ".#{stats_type}: 1"
   end
 end
 
