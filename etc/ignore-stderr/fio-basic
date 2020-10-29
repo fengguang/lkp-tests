@@ -1,7 +1,7 @@
 perf_event_attr:
   size                             .*
   { sample_period, sample_freq }   .*
-  sample_type                      IP|TID|TIME|CALLCHAIN|ID|CPU
+  sample_type                      IP\|TID\|TIME\|CALLCHAIN\|ID\|CPU
   read_format                      ID
   disabled                         .*
   inherit                          .*
