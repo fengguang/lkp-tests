@@ -211,10 +211,12 @@ test_setting()
 		sed -i "s/\t/ /g" runtest/fs_ext4
 		;;
 	lvm.local)
+		export LTPROOT=${PWD}
+		export PATH="$PATH:$LTPROOT/testcases/bin"
 		# Creates runtest/lvm.local with testcases for all locally supported FS types
-		log_cmd LTPROOT=${PWD} PATH="$PATH:$LTPROOT/testcases/bin" testcases/bin/generate_lvm_runfile.sh
+		log_cmd testcases/bin/generate_lvm_runfile.sh
 		# Creates 2 LVM volume groups and mounts logical volumes for all locally supported FS types
-		log_cmd LTPROOT=${PWD} PATH="$PATH:$LTPROOT/testcases/bin" testcases/bin/prepare_lvm.sh
+		log_cmd testcases/bin/prepare_lvm.sh
 		;;
 	mm-00)
 		local pid_job="$(cat $TMP/run-job.pid)"
@@ -303,8 +305,10 @@ test_setting()
 cleanup_ltp()
 {
 	[ "$test" = "lvm.local" ] && {
+		export LTPROOT=${PWD}
+		export PATH="$PATH:$LTPROOT/testcases/bin"
 		# remove LVM volume groups created by prepare_lvm.sh and release the associated loop devices
-		log_cmd LTPROOT=${PWD} PATH="$PATH:$LTPROOT/testcases/bin" testcases/bin/cleanup_lvm.sh
+		log_cmd testcases/bin/cleanup_lvm.sh
 	}
 	[ "$test" = "mm-00" ] && {
 		dmesg -C || exit
