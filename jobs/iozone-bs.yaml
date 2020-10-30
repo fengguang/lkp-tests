@@ -1,0 +1,19 @@
+suite: iozone
+category: benchmark
+
+file_size: 4g
+write_rewrite: true
+read_reread: true
+random_read_write: true
+
+block_size:
+- 64k
+- 256k
+- 1m
+- 4m
+- 16m
+
+disk: 1HDD
+fs: xfs
+iosched: kyber
+iozone:
