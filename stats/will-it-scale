@@ -11,6 +11,9 @@ per_process = []
 per_thread = []
 workload = 0
 
+# tasks,processes,processes_idle,threads,threads_idle,linear
+# 0,0,100,0,100,0
+# 192,0,0.00,46252474,0.10,0
 while (line = STDIN.gets)
   case line.chomp!
   when /^[a-z_,]+$/
@@ -21,12 +24,27 @@ while (line = STDIN.gets)
     nr_task = values.shift
     next if nr_task == '0'
 
+    processes = values[0].to_i
+    threads = values[2].to_i
+
+    # bad sample when stderr has
+    # tasks,processes,processes_idle,threads,threads_idle,linear
+    # 0,0,100,0,100,0
+    # 192,0,0.00,0,0.08,0
+    #
+    # when stderr is
+    # context_switch1_threads: tests/context_switch1.c:33: child: Assertion `ret == 1' failed.
+    # context_switch1_threads: tests/context_switch1.c:33: child: Assertion `ret == 1' failed.
+    # Aborted
+    next if processes.zero? && threads.zero?
+
     linear = values[-1].to_i
     scalability << values[0].to_f / linear if linear != 0 && nr_task != '1'
-    per_process << values[0].to_f / nr_task.to_i
-    workload += values[0].to_f
-    per_thread << values[2].to_f / nr_task.to_i
-    workload += values[2].to_f
+    per_process << processes.to_f / nr_task.to_i
+    workload += processes.to_f
+    per_thread << threads.to_f / nr_task.to_i
+    workload += threads.to_f
+
     names.each_with_index do |name, i|
       puts nr_task + '.' + name + ': ' + values[i]
     end
