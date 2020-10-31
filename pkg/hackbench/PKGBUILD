@@ -2,9 +2,9 @@ pkgname=hackbench
 pkgver=1.8
 pkgrel=1
 arch=('i386' 'x86_64')
-url="https://www.kernel.org/pub/linux/utils/rt-tests"
+url="https://git.kernel.org/pub/scm/utils/rt-tests"
 license=('GPL')
-source=("https://www.kernel.org/pub/linux/utils/rt-tests/rt-tests-${pkgver}.tar.gz")
+source=("https://git.kernel.org/pub/scm/utils/rt-tests/rt-tests.git/snapshot/rt-tests-${pkgver}.tar.gz")
 sha256sums=('SKIP')
 
 package() {
