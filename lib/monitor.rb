@@ -99,6 +99,10 @@ class Monitor
   def run(timeout = nil)
     merge_overrides
     field_check
+
+    @query.each do |k, v|
+      @query[k] = JSON.parse(v)
+    end
     query = @query.to_json
     puts "query=>#{query}"
 

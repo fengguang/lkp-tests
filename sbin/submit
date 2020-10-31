@@ -157,7 +157,7 @@ end
 
 if opt_monitor
   job_hash_list[0].delete('define_files')
-  opt_monitor_query.merge!({'job_id' => job_ids[0]})
+  opt_monitor_query.merge!({'job_id' => job_ids})
   cmd = "#{LKP_SRC}/sbin/monitor -f '#{opt_monitor_query.to_json}' -j '#{job_hash_list[0].to_json}' -a #{actions.join(',')} -s 'job_state: extract_finished'"
   exec cmd
 end
