@@ -1,0 +1,20 @@
+pkgname=hackbench-git
+pkgver=git
+pkgrel=1
+arch=('i386' 'x86_64' 'aarch64')
+url="https://github.com/lacombar/hackbench.git"
+license=('GPL')
+source=("https://github.com/lacombar/hackbench.git")
+sha256sums=('SKIP')
+
+build()
+{
+	cd "${srcdir}/hackbench/hackbench" || exit
+	gcc -o hackbench hackbench.c -lpthread
+}
+
+package()
+{
+	mkdir -p "${pkgdir}/lkp/benchmarks/${pkgname}"
+	cp -rf "${srcdir}/hackbench/hackbench" "${pkgdir}/lkp/benchmarks/${pkgname}"
+}
