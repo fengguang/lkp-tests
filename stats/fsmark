@@ -26,5 +26,11 @@ while (line = STDIN.gets)
   app_overhead << iteration[4].to_f
 end
 
-puts 'files_per_sec: ' + files_per_sec.average.to_s
-puts 'app_overhead: ' + app_overhead.average.to_s
+# when result is empty, it's possible some kernel issue
+# and it should not output meaningless stat like
+# files_per_sec: '', instead it needs show nothing to
+# become incompleted run
+unless files_per_sec.empty?
+  puts 'files_per_sec: ' + files_per_sec.average.to_s
+  puts 'app_overhead: ' + app_overhead.average.to_s
+end
