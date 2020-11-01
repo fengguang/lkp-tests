@@ -49,6 +49,7 @@
 ^dmesg.RIP:inet_sock_destruct
 ^dmesg.RIP:sk_stream_kill_queues
 ^dmesg.timestamp:.*
+^dmesg.UBSAN
 ^dmesg.WARNING:at_kernel/rcu/rcutorture.c:#rcutorture_oom_notify
 ^dmesg.WARNING:at_kernel/rcu/refscale.c:#ref_scale_init
 ^dmesg.WARNING:at_net/core/stream.c:#sk_stream_kill_queues
