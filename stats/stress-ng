@@ -38,6 +38,16 @@ while (line = STDIN.gets)
     exit 1
   end
 
-  puts res_line[3] + '.ops: ' + res_line[4]
-  puts res_line[3] + '.ops_per_sec: ' + res_line[8]
+  stressor = res_line[3]
+  bogo_ops = res_line[4]
+  # stress-ng: info:  [2659] sendfile       14461076     30.00      0.85   2845.44    482025.00      5080.68
+  # stress-ng: info:  [2659] splice                0      0.00      0.00      0.00         0.00         0.00
+  # stress-ng: info:  [2659] tee             3608666     30.00      6.61   2779.77    120280.46      1295.11
+  if bogo_ops == '0'
+    puts "#{stressor}.fail: 1"
+  else
+    puts "#{stressor}.pass: 1"
+    puts "#{stressor}.ops: #{bogo_ops}"
+    puts "#{stressor}.ops_per_sec: #{res_line[8]}"
+  end
 end
