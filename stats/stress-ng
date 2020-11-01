@@ -35,8 +35,9 @@ while (line = STDIN.gets)
   res_line = line.split
   if res_line.size != 10
     log_warn "unexpected output: #{line}"
-    next
+    exit 1
   end
+
   puts res_line[3] + '.ops: ' + res_line[4]
   puts res_line[3] + '.ops_per_sec: ' + res_line[8]
 end
