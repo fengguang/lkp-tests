@@ -12,12 +12,16 @@ end
 
 files_per_sec = []
 app_overhead = []
+
+# FSUse%        Count         Size    Files/sec     App Overhead
+#    12         3840     16777216          9.6        295550597
 while (line = STDIN.gets)
   iteration = line.split
   if iteration.size != 5
     log_error "WARNING: unexpected fsmark output: #{line}"
-    next
+    exit 1
   end
+
   files_per_sec << iteration[3].to_f
   app_overhead << iteration[4].to_f
 end
