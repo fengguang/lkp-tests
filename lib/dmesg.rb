@@ -212,7 +212,7 @@ def grep_printk_errors(kmsg_file, kmsg)
 
   if kmsg_file =~ /\bkmsg\b/
     # the kmsg file is dumped inside the running kernel
-    oops = `#{grep} -a -E -e '^<[0123]>' -e '^kern  :(err   |crit  |alert |emerg ): ' #{kmsg_file} |
+    oops = `#{grep} -a -E -e 'segfault at' -e '^<[0123]>' -e '^kern  :(err   |crit  |alert |emerg ): ' #{kmsg_file} |
       sed -r 's/\\x1b\\[([0-9;]+m|[mK])//g' |
       grep -a -v -E -f #{LKP_SRC}/etc/oops-pattern |
       grep -a -v -F -f #{LKP_SRC}/etc/kmsg-denylist`
@@ -370,6 +370,11 @@ def analyze_error_id(line)
   when /^[0-9a-z]+>\] (.+)/
     # [   13.708945 ] [<0000000013155f90>] usb_hcd_irq
     line = $1
+    bug_to_bisect = oops_to_bisect_pattern line
+  when /segfault at .* ip .* sp .* error/
+    # [ 2062.833046] pmbench[5394]: segfault at b ip 00007f568fec1ca6 sp 00007f54c1bf9d80 error 4 in libc-2.28.so[7f568fea8000+148000]
+    # [  834.411251 ] init[1]: segfault at ffffffffff600400 ip ffffffffff600400 sp 00007fff59f7caa8 error 15
+    line = 'segfault at ip sp error'
     bug_to_bisect = oops_to_bisect_pattern line
   else
     bug_to_bisect = oops_to_bisect_pattern line
