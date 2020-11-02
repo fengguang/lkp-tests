@@ -187,14 +187,14 @@ define_files_pkg_pack()
 	(
 		local benchmark=${1#pkg/}
 		export benchmark=${benchmark%/PKGBUILD}
-		$LKP_SRC/tests/makepkg
+		$LKP_SRC/tests/cci-makepkg
 	)
 }
 
 # There may be $program-dev or $program-dev-dev in the
 # "$LKP_SRC/distro/depends" directory,
 # when the value passed by $define_files is "distro/depends/$program-dev",
-# you don't know which script in "makepkg" or "pack-deps" to execute,
+# you don't know which script in "cci-makepkg" or "cci-depends" to execute,
 # so it needs to be handled sparately.
 # Save the result to
 # "/srv/initrd/deps/$os/$os_arch/$os_version/$deps_benchmark.cgz",
@@ -208,7 +208,7 @@ define_files_deps_pack()
 	[ $suffix == "dev" ] && [ -f "$LKP_SRC/pkg/$pkg_benchmark/PKGBUILD" ] && {
 		(
 			export benchmark=$pkg_benchmark
-			$LKP_SRC/tests/makepkg
+			$LKP_SRC/tests/cci-makepkg
 		)
 		return 0
 	}
@@ -216,7 +216,7 @@ define_files_deps_pack()
 	(
 		export benchmark=$deps_benchmark
 		export pack_arch=$os_arch
-		$LKP_SRC/tests/pack-deps
+		$LKP_SRC/tests/cci-depends
 	)
 }
 
