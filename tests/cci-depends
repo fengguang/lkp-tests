@@ -18,7 +18,7 @@ DEPS_MNT=/initrd/deps	&& mkdir -p "$DEPS_MNT"
 DISTRO=${os}
 
 [[ "$os_mount" = "cifs" ]] && os_mount="nfs"
-pack_to=${DEPS_MNT}/${os_mount}/${os}/${os_arch}/${os_version}
+pack_to=${DEPS_MNT}/${os_mount}/${os}/${os_arch}/${os_version}/${benchmark}
 
 pack_arch=$os_arch
 [[ "$benchmark" = "${benchmark##*.}" ]] ||

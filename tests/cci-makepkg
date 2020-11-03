@@ -26,7 +26,7 @@ mkdir -p "$PKG_MNT"
 export DISTRO=${os}
 
 [[ "$os_mount" = "cifs" ]] && os_mount="nfs"
-pack_to=${os_mount}/${os}/${os_arch}/${os_version}
+pack_to=${os_mount}/${os}/${os_arch}/${os_version}/${benchmark}
 
 . $LKP_SRC/distro/${DISTRO}
 . $LKP_SRC/lib/install.sh
@@ -65,8 +65,8 @@ update_shared_pkg()
 	[ "$bm_name" = "$benchmark" ] && return
 
 	# benchmark is a symlink
-	ln -sf "$bm_link" "$sync_dest/${benchmark}.cgz" || return
-	echo "update shared pkg link ${benchmark}.cgz -> $bm_link"
+	ln -sf latest.cgz "$sync_dest/${benchmark}.cgz" || return
+	echo "update shared pkg link ${benchmark}.cgz -> ${bm_name}/${cgz_name}"
 }
 
 distro_install_depends lkp-dev
@@ -86,7 +86,7 @@ date=$(date +"%Y%m%d")
 pkgver=$(get_pkg_info pkgver)
 pkgrel=$(get_pkg_info pkgrel)
 bm_name=$(check_shared_pkg)
-cgz_name="${bm_name}-${pkgver:-0}-${pkgrel:-0}_${date}.cgz"
+cgz_name="${pkgver:-0}-${pkgrel:-0}.cgz"
 
 setup_proxy
 
@@ -98,8 +98,8 @@ update_softlink()
 {
 	[ -e "$sync_dest/$cgz_name" ] || return
 
-	ln -sf "$(basename $(realpath $sync_dest/$cgz_name))" "$sync_dest/${bm_name}.cgz" || return
-	echo "create package: $sync_dest/${bm_name}.cgz -> $(realpath $sync_dest/$cgz_name)"
+	ln -sf "$(basename $(realpath $sync_dest/$cgz_name))" "$sync_dest/latest.cgz" || return
+	echo "create package: $sync_dest/latest.cgz -> $(realpath $sync_dest/$cgz_name)"
 
 	update_shared_pkg "${bm_name}.cgz"
 
