@@ -1,4 +1,4 @@
-suite: hackbench
+suite: hackbench-git
 category: benchmark
 
 disable_latency_stats: 1
@@ -11,13 +11,13 @@ nr_threads:
    - 10
    - 20
 iterations: 10
-datasize: 1000
+loops: 1000
 runtime: 300
 
-hackbench:
+hackbench-git:
   mode:
   - process
-  - threads
+  - thread
   ipc:
   - pipe
   - socket
