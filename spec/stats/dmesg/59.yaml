@@ -15,13 +15,13 @@ calltrace:hfi1_mod_init: 1
 message:calltrace:hfi1_mod_init: [   17.098600]  [<ffffffffa3cbbc60>] hfi1_mod_init+0x33/0x2f3
 pattern:calltrace:hfi1_mod_init: hfi1_mod_init+0x
 
-# Kernel panic - not syncing:
-Kernel_panic-not_syncing: 1
-message:Kernel_panic-not_syncing: [   17.129242] Kernel panic - not syncing: Fatal exception
-pattern:Kernel_panic-not_syncing: Kernel panic - not syncing:
+# Kernel panic - not syncing: Fatal exception
+Kernel_panic-not_syncing:Fatal_exception: 1
+message:Kernel_panic-not_syncing:Fatal_exception: [   17.129242] Kernel panic - not syncing: Fatal exception
+pattern:Kernel_panic-not_syncing:Fatal_exception: Kernel panic - not syncing: Fatal exception
 
 timestamp:last: 17.129242
 timestamp:general_protection_fault:#[##]: 17.070650
 timestamp:RIP:init_real_cpu_mask: 17.075591
 timestamp:calltrace:hfi1_mod_init: 17.098600
-timestamp:Kernel_panic-not_syncing: 17.129242
+timestamp:Kernel_panic-not_syncing:Fatal_exception: 17.129242

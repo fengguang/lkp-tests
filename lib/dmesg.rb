@@ -286,7 +286,6 @@ def analyze_error_id(line)
   case line
   when /(INFO: rcu[_a-z]* self-detected stall on CPU)/,
        /(INFO: rcu[_a-z]* detected stalls on CPUs\/tasks:)/,
-       /(Kernel panic - not syncing:)/,
        /(related general protection fault:)/,
        /(BUG: using __this_cpu_read\(\) in preemptible)/,
        /(BUG: unable to handle kernel)/,

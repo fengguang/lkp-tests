@@ -10,10 +10,10 @@ calltrace:test_rht_init: 1
 message:calltrace:test_rht_init: [  254.165391]  [<c17c5191>] test_rht_init+0x544/0x595
 pattern:calltrace:test_rht_init: test_rht_init+0x
 
-# Kernel panic - not syncing:
-Kernel_panic-not_syncing: 1
-message:Kernel_panic-not_syncing: [  257.618158] Kernel panic - not syncing: hung_task: blocked tasks
-pattern:Kernel_panic-not_syncing: Kernel panic - not syncing:
+# Kernel panic - not syncing: hung_task: blocked tasks
+Kernel_panic-not_syncing:hung_task:blocked_tasks: 1
+message:Kernel_panic-not_syncing:hung_task:blocked_tasks: [  257.618158] Kernel panic - not syncing: hung_task: blocked tasks
+pattern:Kernel_panic-not_syncing:hung_task:blocked_tasks: Kernel panic - not syncing: hung_task: blocked tasks
 
 # watchdog+0x
 calltrace:watchdog: 1
@@ -23,5 +23,5 @@ pattern:calltrace:watchdog: watchdog+0x
 timestamp:last: 257.812078
 timestamp:INFO:task_blocked_for_more_than#seconds: 251.950215
 timestamp:calltrace:test_rht_init: 254.165391
-timestamp:Kernel_panic-not_syncing: 257.618158
+timestamp:Kernel_panic-not_syncing:hung_task:blocked_tasks: 257.618158
 timestamp:calltrace:watchdog: 257.746675
