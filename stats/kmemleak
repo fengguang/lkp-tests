@@ -3,9 +3,6 @@
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 RESULT_ROOT = ENV['RESULT_ROOT']
 
-require "#{LKP_SRC}/lib/array_ext"
-require "#{LKP_SRC}/lib/log"
-
 memleaks = []
 memleak = {}
 bts = []
@@ -33,14 +30,4 @@ if !bts.empty? && memleak['type']
   memleaks << memleak
 end
 
-memleaks.each { |m| puts "#{m['comm']}.#{m['type']}#{m['bt']}: 1" }
-
-# self validation
-# FIXME one possible bad case can be below which is not checked now
-#   a.pass: 1
-#   a.fail: 1
-duplicated_stats = memleaks.duplicated_elements
-unless duplicated_stats.empty?
-  log_error "duplicated stats: #{duplicated_stats}"
-  exit 1
-end
+memleaks.uniq.each { |m| puts "#{m['comm']}.#{m['type']}#{m['bt']}: 1" }
