@@ -35,7 +35,6 @@ ltp:
   - power_management_tests
   # - power_management_tests_exclusive # system is not a multi socket & multi core & hyper-threaded, there is no proper test environment
   - pty
-  - quickhit
   - net.rpc_tests
   - sched
   - securebits
