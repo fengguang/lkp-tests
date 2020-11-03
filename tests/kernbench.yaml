@@ -1,0 +1,44 @@
+short_description: >
+Kernbench is a CPU throughput benchmark. It is designed to compare kernels on
+the same machine, or to compare hardware.
+It runs a kernel compile at various numbers of concurrent jobs: 1/2 number
+of CPUs, optimal (default is 4xnumber of CPUs), and maximal job count.
+Optionally it can also run single threaded. It then prints out a number of
+useful statistics for the average of each group of runs.
+
+description: |
+This is a cpu throughput benchmark. It is designed to compare kernels on the
+same machine, or to comparehardware.
+To compare hardware you need to be running the same architecture
+machines (eg i386), the same userspace binaries and run kernbench on the same
+kernel source tree.
+It runs a kernel at various numbers of concurrent jobs: 1/2 number of cpus,
+optimal (default is 1xnumber of cpus) and maximal job count. Optionally it can
+also run single threaded and a custom number of jobs. It then prints out a
+number of useful statistics for the average of each group of runs and logs them
+to kernbench.log
+You need more than 4Gb of ram for this to be a true throughput benchmark with
+the -M option or else you will get swapstorms.
+Ideally it should be run in single user mode on a non-journalled filesystem,
+from a ramdisk would be even better. To compare results it should always be
+run in the same kernel tree.
+
+homepage: http://ck.kolivas.org/apps/kernbench/kernbench-0.50/
+
+parameters:
+ nr_loops:
+ nr_threads:
+
+results:
+ kernbench.elapsed_time:
+ kernbench.elapsed_time_stddev:
+ kernbench.user_time:
+ kernbench.user_time_stddev:
+ kernbench.system_time:
+ kernbench.system_time_stddev:
+ kernbench.percent_cpu:
+ kernbench.percent_cpu_stddev:
+ kernbench.context_switches:
+ kernbench.context_switches_stddev:
+ kernbench.sleeps:
+ kernbench.sleeps_stddev:

@@ -1,0 +1,15 @@
+#!/bin/sh
+# - nr_loops
+# - nr_threads
+
+cd $BENCHMARK_ROOT/kernbench || {
+	echo "ERROR: kernbench benchmark is not installed yet!" >&2
+	exit 1
+}
+
+cd linux || {
+	echo "ERROR: linux kernel source not found!" >&2
+	exit 1
+}
+
+../kernbench -n $nr_loops -o $nr_threads -H -M
