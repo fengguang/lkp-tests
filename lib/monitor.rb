@@ -102,6 +102,7 @@ class Monitor
 
     @query.each do |k, v|
       @query[k] = JSON.parse(v)
+    rescue
     end
     query = @query.to_json
     puts "query=>#{query}"
