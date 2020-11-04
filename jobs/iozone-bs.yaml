@@ -14,6 +14,11 @@ block_size:
 - 16m
 
 disk: 1HDD
-fs: xfs
-iosched: kyber
+
+fs:
+- xfs
+
+iosched:
+- kyber
+
 iozone:
