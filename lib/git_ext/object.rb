@@ -28,11 +28,6 @@ module Git
         raw_message.split("\n").first
       end
 
-      # FIXME: rli9 need a better name, or remove the function if not common
-      def name
-        interested_tag || sha
-      end
-
       def tags
         @tags ||= @base.command("tag --points-at #{sha} | grep -v ^error:").split
       end
@@ -45,8 +40,8 @@ module Git
         @base.command_lines('show', "#{sha}:#{content}")
       end
 
-      def interested_tag
-        @interested_tag ||= release_tag || tags.first
+      def tag
+        @tag ||= release_tag || tags.first
       end
 
       def release_tag
@@ -183,7 +178,7 @@ module Git
       end
 
       def abbr
-        release_tag || sha[0..9]
+        tag || sha[0..9]
       end
     end
 
