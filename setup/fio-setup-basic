@@ -117,7 +117,7 @@ ioscheduler=$ioscheduler"
 fi
 
 if parse_bool -q "$time_based"; then
-	create_task="
+	create_task="\
 $create_task
 time_based
 "
