@@ -1,0 +1,21 @@
+suite: sysbench-threads-git
+category: benchmark
+
+nr_threads:
+- 2
+- 4
+- 8
+- 16
+- 32
+- 64
+- 128
+- 256
+- 512
+- 1024
+- 2048
+- 4096
+- 8192
+
+sysbench-threads-git:
+  thread_yields: 100
+  thread_locks: 2
