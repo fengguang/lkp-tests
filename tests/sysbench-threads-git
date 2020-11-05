@@ -1,0 +1,18 @@
+#!/bin/sh
+# - nr_threads
+# - thread_yields
+# - thread_locks
+
+. "$LKP_SRC/lib/reproduce-log.sh"
+
+: "${nr_threads:=2}"
+: "${thread_yields:=100}"
+: "${thread_locks:=2}"
+
+args=(
+ --threads=$nr_threads
+ --thread-yields=$thread_yields
+ --thread-locks=$thread_locks
+)
+
+log_cmd sysbench --test=threads "${args[@]}" run
