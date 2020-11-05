@@ -1,0 +1,8 @@
+#!/bin/sh
+# - runtime
+
+cd $BENCHMARK_ROOT/libMicro || exit
+
+[ -n "$runtime" ] || runtime=300
+
+log_cmd ./bench || exit
