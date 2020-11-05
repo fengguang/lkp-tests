@@ -1,0 +1,23 @@
+pkgname=sysbench-threads-git
+pkgver=git
+pkgrel=1
+pkgdesc="Benchmark tool for evaluating OS parameters that are important for a system running a database under intensive load."
+url="http://github.com/dallasmarlow/sysbench.git"
+arch=('x86_64' 'i386' 'aarch64')
+license=('GPL')
+source=("http://github.com/dallasmarlow/sysbench.git")
+md5sums=('SKIP')
+
+build()
+{
+  cd "$srcdir/sysbench"
+  ./autogen.sh
+  ./configure --prefix=/usr --without-gcc-arch --without-mysql
+  make
+}
+
+package()
+{
+  cd "$srcdir/sysbench"
+  make DESTDIR=$pkgdir install
+}
