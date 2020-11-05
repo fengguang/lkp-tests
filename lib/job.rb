@@ -626,6 +626,7 @@ class Job
     programs_params_hash = @job["pp"] || {}
     program_name_list = programs_params_hash.keys || []
     program_name_list.each do |program|
+      program = $1 if program =~ /^(.*)-\d+$/
 
       # if job is run as makepkg, makepkg-deps, pack-deps, cci-makepkg, cci-depends
       # then use makepkg's benchmark as program to get define_files
