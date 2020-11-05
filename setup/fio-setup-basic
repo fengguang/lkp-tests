@@ -95,6 +95,7 @@ fallocate=$fallocate
 io_size=$io_size
 file_service_type=$file_service_type
 random_distribution=$random_distribution
+allow_mounted_write=1
 group_reporting
 create_only=1
 pre_read=$pre_read
