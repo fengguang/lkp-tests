@@ -334,20 +334,14 @@ class Job
   end
 
   def get_hosts_file
+    lab_hosts_file = get_lab_hosts_file
+    return lab_hosts_file if lab_hosts_file
+
     hosts_file_name = @job['tbox_group'].split('--')[0]
     hosts_file = "#{LKP_SRC}/hosts/#{hosts_file_name}"
+    return hosts_file if File.file?(hosts_file)
 
-    lab_hosts_file = get_lab_hosts_file
-    if lab_hosts_file
-      hosts_file = lab_hosts_file
-    end
-
-    if File.file?(hosts_file)
-      hosts_file
-    else
-      puts("hosts_file not exist: #{hosts_file}, maybe need check testbox field")
-      nil
-    end
+    raise ArgumentError, "hosts file not exist: #{hosts_file_name}, maybe need check testbox field"
   end
 
   def include_files
