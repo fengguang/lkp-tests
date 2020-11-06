@@ -2,10 +2,12 @@
 # - os
 # - os_arch
 # - os_version
+# - os_mount
 # - pkgbuild_repo
 # - upstream_repo
 # - upstream_url
 # - upstream_commit
+# - upstream_tag
 
 ## makepkg is a script that automates the building of packages; it can download and validate source files,
 ## check dependencies, configure build-time settings, compile the sources, install into a temporary root,
@@ -21,15 +23,21 @@ check_vars()
   [ -n "$os_version" ]		|| die "os_version is empty"
   [ -n "$pkgbuild_repo" ]	|| die "pkgbuild_repo is empty"
   [ -n "$upstream_commit" ]	|| die "upstream_commit is empty"
+  [ -n "$os_mount" ]		|| die "os_mount is empty"
 }
 
 mount_dest()
 {
+  # the same image is mounted to cifs and nfs, the generated cgz files
+  # are stored in the nfs directory.
+  [[ "$os_mount" = "cifs" ]] && os_mount="nfs"
+  pack_to=${os_mount}/${os}/${os_arch}/${os_version}
+
   PKG_MNT=/initrd/build-pkg
   mkdir -p "$PKG_MNT"
 
   [ -n "$LKP_SERVER" ] && {
-    mount $LKP_SERVER:$PKG_MNT $PKG_MNT || die "Failed to run mount"
+    mount -t cifs -o guest,vers=1.0,noacl,nouser_xattr //$LKP_SERVER$PKG_MNT $PKG_MNT || die "Failed to run mount"
   }
 }
 
@@ -75,12 +83,27 @@ build_source_pkg()
 	sed -i "s|^source=.*|${upstream_source}|g" PKGBUILD
   }
 
-  cgz_name="$PKG_MNT/${pkgname}/${upstream_commit}.cgz"
+  cgz_name="$PKG_MNT/${pack_to}/${pkgname}/${upstream_commit}.cgz"
   PACMAN=true BUILDDIR=$TMP CARCH=$os_arch PKGEXT=.cgz CGZDEST="$cgz_name" \
-    $LKP_SRC/sbin/makepkg -A --check --config $LKP_SRC/etc/makepkg.conf 2>&1
+    $LKP_SRC/sbin/makepkg -A --check --skippgpcheck --config $LKP_SRC/etc/makepkg.conf 2>&1
+}
+
+create_softlink()
+{
+	local soft_path="$PKG_MNT/${pack_to}/${pkgname}"
+	local bm_name=$(basename $(realpath ${cgz_name}))
+
+	if [ -n "$upstream_tag" ]; then
+		echo "create soft link: ${upstream_tag}.cgz -> ${bm_name}"
+		ln -sf "${bm_name}" "${soft_path}/${upstream_tag}.cgz"
+	fi
+
+	echo "create soft link: latest.cgz -> ${bm_name}"
+	ln -sf "${bm_name}" "${soft_path}/latest.cgz"
 }
 
 check_vars
 mount_dest
 request_pkg
 build_source_pkg
+create_softlink
