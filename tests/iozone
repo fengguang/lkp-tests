@@ -1,42 +1,52 @@
 #!/bin/sh
 # - block_size
 # - file_size
-# - write_rewrite
-# - read_reread
-# - random_read_write
-# - read_backwards
-# - rewrite_record
-# - stride_read
-# - fwrite_refwrite
-# - fread_refread
-# - random_mix
-# - pwrite_repwrite
-# - pread_repread
-# - pwritev_repwritev
-# - preadv_repreadv
+# - test
 ## IOzone is a filesystem benchmark tool. The benchmark generates
 ## and measures a variety of file operations.
 
 . $LKP_SRC/lib/reproduce-log.sh
 
-
 args="iozone"
 if [ -n "$block_size" ]; then
 	args+=" -r $block_size"
-	[ -n "$file_size" ]         && args+=" -s $file_size"
-	[ -n "$write_rewrite" ]     && args+=" -i 0"
-	[ -n "$read_reread" ]       && args+=" -i 1"
-	[ -n "$random_read_write" ] && args+=" -i 2"
-	[ -n "$read_backwards" ]    && args+=" -i 3"
-	[ -n "$rewrite_record" ]    && args+=" -i 4"
-	[ -n "$stride_read" ]       && args+=" -i 5"
-	[ -n "$fwrite_refwrite" ]   && args+=" -i 6"
-	[ -n "$fread_refread" ]     && args+=" -i 7"
-	[ -n "$random_mix" ]        && args+=" -i 8"
-	[ -n "$pwrite_repwrite" ]   && args+=" -i 9"
-	[ -n "$pread_repread" ]     && args+=" -i 10"
-	[ -n "$pwritev_repwritev" ] && args+=" -i 11"
-	[ -n "$preadv_repreadv" ]   && args+=" -i 12"
+	[ -n "$file_size" ] && args+=" -s $file_size"
+	OLD_IFS="$IFS"
+	# reset IFS to split $test by "," and then restore default
+	IFS=","
+	array=($test)
+	IFS="$OLD_IFS"
+	for ele in ${array[@]}
+	do
+		case $ele in
+			"write")     args+=" -i 0"
+				;;
+			"read")      args+=" -i 1"
+				;;
+			"rand_rw")   args+=" -i 2"
+				;;
+			"backwards") args+=" -i 3"
+				;;
+			"record")    args+=" -i 4"
+				;;
+			"stride")    args+=" -i 5"
+				;;
+			"fwrite")    args+=" -i 6"
+				;;
+			"fread")     args+=" -i 7"
+				;;
+			"rand_mix")  args+=" -i 8"
+				;;
+			"pwrite")    args+=" -i 9"
+				;;
+			"pread")     args+=" -i 10"
+				;;
+			"pwritev")   args+=" -i 11"
+				;;
+			"preadv")    args+=" -i 12"
+				;;
+		esac
+	done
 else
 	args+=" -a"
 fi
