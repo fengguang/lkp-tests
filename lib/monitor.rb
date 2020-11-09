@@ -51,7 +51,7 @@ class Monitor
   def merge_overrides
     return if @overrides.empty?
 
-    revise_hash(@query, @overrides, true)
+    @query.merge!(@overrides)
   end
 
   def field_check
