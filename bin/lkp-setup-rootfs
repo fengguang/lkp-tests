@@ -224,6 +224,9 @@ define_files_deps_pack()
 # "pkg/$program/PKGBUILD distro/depends/$program distro/depends/$program-dev".
 define_files_auto_pack()
 {
+	[ "$suite" = "cci-makepkg" ] && return
+	[ "$suite" = "cci-depends" ] && return
+
 	for path
 	do
 		[ -f "$LKP_SRC/$path" ] || continue
