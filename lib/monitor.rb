@@ -64,7 +64,7 @@ class Monitor
     return unless @action['output']
 
     if data['log']
-      data = JSON.parse(data['log'])
+      data = data['log']
     elsif data['message']
       data = data['message']
     end
