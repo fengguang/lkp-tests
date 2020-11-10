@@ -7,6 +7,7 @@
 
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/misc-base.sh
+. $LKP_SRC/lib/mount.sh
 
 [ -n "$benchmark" ]	|| die "benchmark is empty"
 [ -n "$os_mount" ]	|| die "os_mount is empty"
@@ -28,6 +29,7 @@ pack_arch=$os_arch
 
 . $LKP_SRC/distro/$DISTRO
 
+is_mount_point ${DEPS_MNT} && umount ${DEPS_MNT}
 mount -t cifs -o guest,vers=1.0,noacl,nouser_xattr //$LKP_SERVER$DEPS_MNT $DEPS_MNT || die "Failed to run mount"
 
 umask 002

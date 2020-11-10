@@ -13,6 +13,7 @@
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/misc-base.sh
 . $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/mount.sh
 
 [ -n "$benchmark" ]		|| die "benchmark is empty"
 [ -n "$os_mount" ]		|| die "os_mount is empty"
@@ -34,6 +35,7 @@ pack_to=${os_mount}/${os}/${os_arch}/${os_version}/${benchmark}
 cd $LKP_SRC/pkg/$benchmark || die "pkg is empty"
 
 [ -n "$LKP_SERVER" ] && {
+	is_mount_point ${PKG_MNT} && umount ${PKG_MNT}
 	mount -t cifs -o guest,vers=1.0,noacl,nouser_xattr //$LKP_SERVER$PKG_MNT $PKG_MNT || die "Failed to run mount"
 }
 
