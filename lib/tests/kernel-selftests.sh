@@ -350,16 +350,16 @@ prepare_for_selftest()
 {
 	if [ "$group" = "group-00" ]; then
 		# bpf is slow
-		selftest_mfs=$(ls -d [a-b]*/Makefile | grep -v bpf)
+		selftest_mfs=$(ls -d [a-b]*/Makefile | grep -v ^bpf)
 	elif [ "$group" = "group-01" ]; then
 		# subtest lib cause kselftest incomplete run, it's a kernel issue
 		# report [LKP] [software node] 7589238a8c: BUG:kernel_NULL_pointer_dereference,address
-		selftest_mfs=$(ls -d [c-l]*/Makefile | grep -v -e livepatch -e lib -e cpufreq -e kvm -e firmware)
+		selftest_mfs=$(ls -d [c-l]*/Makefile | grep -v -e ^livepatch -e ^lib -e ^cpufreq -e ^kvm -e ^firmware)
 	elif [ "$group" = "group-02" ]; then
 		# m* is slow
-		selftest_mfs=$(ls -d [m-s]*/Makefile | grep -v -w -e rseq -e resctrl -e net -e netfilter -e rcutorture)
+		selftest_mfs=$(ls -d [m-s]*/Makefile | grep -v -e ^rseq -e ^resctrl -e ^net -e ^netfilter -e ^rcutorture)
 	elif [ "$group" = "group-03" ]; then
-		selftest_mfs=$(ls -d [t-z]*/Makefile | grep -v -e x86 -e tc-testing -e vm)
+		selftest_mfs=$(ls -d [t-z]*/Makefile | grep -v -e ^x86 -e ^tc-testing -e ^vm)
 	elif [ "$group" = "mptcp" ]; then
 		selftest_mfs=$(ls -d net/mptcp/Makefile)
 	else
