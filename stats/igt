@@ -26,7 +26,7 @@ while (line = STDIN.gets)
     next unless valid_datetime?($1)
 
     test_name = $2
-  when /^(SUCCESS|FAIL)/
+  when /^(SUCCESS|FAIL|CRASH)/
     # 1 2020-10-27 01:29:45 build/tests/core_getstats
     # 2 IGT-Version: 1.25-ga15f8da1 (x86_64) (Linux: 5.9.0-wt-17357-g18b04b6d608b x86_64)
     # 3 SUCCESS (0.005s)
@@ -44,7 +44,9 @@ while (line = STDIN.gets)
 
     subtest_name = $1
     has_dynamic_subtest = false
-  when /^Subtest (.*): (SUCCESS|FAIL)/
+  when /^Subtest (.+): (SUCCESS|FAIL|CRASH)/
+    # [thread:4146] Subtest thread-performance-write: CRASH (0.580s)
+    #
     # Subtest invalid-buffer: SUCCESS (0.000s)
     # one special case is
     # 953 2020-10-26 01:36:11 build/tests/gem_sync
@@ -73,7 +75,7 @@ while (line = STDIN.gets)
                    'fail'
                  end
     stats << test_name + "." + $1 + ".#{stats_type}: 1"
-  when /^Dynamic subtest (.*): (SUCCESS|FAIL)/
+  when /^Dynamic subtest (.*): (SUCCESS|FAIL|CRASH)/
     # a 'dynamic subtest' is such like a 2nd level subtest under 'subtest' as below
     # 2607 Starting subtest: exec-single-timeline
     # 2608 Starting dynamic subtest: rcs0
