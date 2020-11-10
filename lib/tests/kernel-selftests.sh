@@ -359,11 +359,11 @@ prepare_for_selftest()
 		# m* is slow
 		selftest_mfs=$(ls -d [m-s]*/Makefile | grep -v -w -e rseq -e resctrl -e net -e netfilter -e rcutorture)
 	elif [ "$group" = "group-03" ]; then
-		selftest_mfs=$(ls -d [t-z]*/Makefile | grep -v -e x86 -e tc-testing)
+		selftest_mfs=$(ls -d [t-z]*/Makefile | grep -v -e x86 -e tc-testing -e vm)
 	elif [ "$group" = "mptcp" ]; then
 		selftest_mfs=$(ls -d net/mptcp/Makefile)
 	else
-		# bpf cpufreq firmware kvm lib livepatch net netfilter rcutorture resctrl rseq tc-testing x86
+		# bpf cpufreq firmware kvm lib livepatch net netfilter rcutorture resctrl rseq tc-testing vm x86
 		selftest_mfs=$(ls -d $group/Makefile)
 	fi
 }
