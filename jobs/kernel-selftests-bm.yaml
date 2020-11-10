@@ -6,14 +6,14 @@ kconfig: x86_64-rhel-7.6-kselftests
 
 kernel-selftests:
   group:
-  - kselftests-cpufreq
-  - kselftests-net
-  - kselftests-netfilter
-  - kselftests-firmware
+  - cpufreq
+  - net
+  - netfilter
+  - firmware
 
 ---
 kernel-selftests:
   group:
-  - kselftests-kvm
+  - kvm
 
 kernel_cmdline: kvm-intel.unrestricted_guest=0

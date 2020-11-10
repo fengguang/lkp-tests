@@ -7,6 +7,6 @@ kconfig: x86_64-rhel-7.6-kselftests
 need_memory: 3G
 kernel-selftests:
   group:
-    - kselftests-rcutorture
+    - rcutorture
 
 kernel_cmdline: kvm-intel.unrestricted_guest=0

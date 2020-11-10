@@ -15,7 +15,7 @@ shopt -s nullglob
 prepare_test_env || die "prepare test env failed"
 
 # Only update llvm for bpf test
-[ "$group" = "kselftests-bpf" -o "$group" = "kselftests-net" -o "$group" = "kselftests-tc-testing" ] && {
+[ "$group" = "bpf" -o "$group" = "net" -o "$group" = "tc-testing" ] && {
 	cd / && {
 		prepare_for_llvm || die "install newest llvm failed"
 	}
@@ -26,6 +26,8 @@ cd $linux_selftests_dir/tools/testing/selftests || die
 prepare_for_test
 
 prepare_for_selftest
+
+[ -n "$selftest_mfs" ] || die "empty selftest_mfs"
 
 run_tests $selftest_mfs
 ret=$?

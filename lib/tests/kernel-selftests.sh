@@ -59,7 +59,7 @@ prepare_for_test()
 	mkdir -p /hugepages
 
 	# make sure the test_bpf.ko path for bpf test is right
-	if [ "$group" = "kselftests-bpf" ]; then
+	if [ "$group" = "bpf" ]; then
 		mkdir -p "$linux_selftests_dir/lib" || die
 		if [[ "$LKP_LOCAL_RUN" = "1" ]]; then
 			cp -r /lib/modules/`uname -r`/kernel/lib/* $linux_selftests_dir/lib
@@ -348,46 +348,23 @@ fixup_kmod()
 
 prepare_for_selftest()
 {
-	if [ "$group" = "kselftests-00" ]; then
+	if [ "$group" = "group-00" ]; then
 		# bpf is slow
 		selftest_mfs=$(ls -d [a-b]*/Makefile | grep -v bpf)
-	elif [ "$group" = "kselftests-01" ]; then
+	elif [ "$group" = "group-01" ]; then
 		# subtest lib cause kselftest incomplete run, it's a kernel issue
 		# report [LKP] [software node] 7589238a8c: BUG:kernel_NULL_pointer_dereference,address
 		selftest_mfs=$(ls -d [c-l]*/Makefile | grep -v -e livepatch -e lib -e cpufreq -e kvm -e firmware)
-	elif [ "$group" = "kselftests-02" ]; then
+	elif [ "$group" = "group-02" ]; then
 		# m* is slow
 		selftest_mfs=$(ls -d [m-s]*/Makefile | grep -v -w -e rseq -e resctrl -e net -e netfilter -e rcutorture)
-	elif [ "$group" = "kselftests-03" ]; then
+	elif [ "$group" = "group-03" ]; then
 		selftest_mfs=$(ls -d [t-z]*/Makefile | grep -v -e x86 -e tc-testing)
-	elif [ "$group" = "kselftests-rseq" ]; then
-		selftest_mfs=$(ls -d rseq/Makefile)
-	elif [ "$group" = "kselftests-livepatch" ]; then
-		selftest_mfs=$(ls -d livepatch/Makefile)
-	elif [ "$group" = "kselftests-bpf" ]; then
-		selftest_mfs=$(ls -d bpf/Makefile)
-	elif [ "$group" = "kselftests-x86" ]; then
-		selftest_mfs=$(ls -d x86/Makefile)
-	elif [ "$group" = "kselftests-resctrl" ]; then
-		selftest_mfs=$(ls -d resctrl/Makefile)
-	elif [ "$group" = "kselftests-mptcp" ]; then
+	elif [ "$group" = "mptcp" ]; then
 		selftest_mfs=$(ls -d net/mptcp/Makefile)
-	elif [ "$group" = "kselftests-lib" ]; then
-		selftest_mfs=$(ls -d lib/Makefile)
-	elif [ "$group" = "kselftests-cpufreq" ]; then
-		selftest_mfs=$(ls -d cpufreq/Makefile)
-	elif [ "$group" = "kselftests-kvm" ]; then
-		selftest_mfs=$(ls -d kvm/Makefile)
-	elif [ "$group" = "kselftests-net" ]; then
-		selftest_mfs=$(ls -d net/Makefile)
-	elif [ "$group" = "kselftests-netfilter" ]; then
-		selftest_mfs=$(ls -d netfilter/Makefile)
-	elif [ "$group" = "kselftests-firmware" ]; then
-		selftest_mfs=$(ls -d firmware/Makefile)
-	elif [ "$group" = "kselftests-rcutorture" ]; then
-		selftest_mfs=$(ls -d rcutorture/Makefile)
-	elif [ "$group" = "kselftests-tc-testing" ]; then
-		selftest_mfs=$(ls -d tc-testing/Makefile)
+	else
+		# bpf cpufreq firmware kvm lib livepatch net netfilter rcutorture resctrl rseq tc-testing x86
+		selftest_mfs=$(ls -d $group/Makefile)
 	fi
 }
 

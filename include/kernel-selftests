@@ -2,15 +2,15 @@ need_kernel_headers: true
 need_kernel_selftests: true
 
 need_kconfig:
-% if ___.group == "kselftests-x86"
+% if ___.group == "x86"
 - CONFIG_POSIX_TIMERS=y ~ ">= v4.10-rc1"
-% elsif ___.group == "kselftests-lib"
+% elsif ___.group == "lib"
 - CONFIG_PRIME_NUMBERS=m ~ ">= v5.2-rc1"
 - CONFIG_TEST_BITMAP=m ~ ">= v4.6-rc1"
 - CONFIG_TEST_PRINTF=m ~ ">= v4.4-rc1"
 - CONFIG_TEST_STRSCPY=m ~ ">= v5.2-rc1"
 - CONFIG_TEST_BITOPS=m ~ ">= v5.8-rc1"
-% elsif ___.group == "kselftests-cpufreq"
+% elsif ___.group == "cpufreq"
 - CONFIG_CPU_FREQ=y
 - CONFIG_CPU_FREQ_GOV_CONSERVATIVE=y
 - CONFIG_CPU_FREQ_GOV_ONDEMAND=y
@@ -27,11 +27,11 @@ need_kconfig:
 - CONFIG_DEBUG_SPINLOCK=y
 - CONFIG_LOCKDEP=y
 - CONFIG_PROVE_LOCKING=y
-% elsif ___.group == "kselftests-kvm"
+% elsif ___.group == "kvm"
 - CONFIG_KVM=y
 - CONFIG_KVM_AMD=y
 - CONFIG_KVM_INTEL=y
-% elsif ___.group == "kselftests-bpf"
+% elsif ___.group == "bpf"
 - CONFIG_BPF=y
 - CONFIG_BPF_EVENTS=y ~ ">= v4.1-rc1"
 - CONFIG_BPF_JIT=y
@@ -74,7 +74,7 @@ need_kconfig:
 - CONFIG_TLS=m ~ ">= v4.13-rc1"
 - CONFIG_VXLAN=y
 - CONFIG_XDP_SOCKETS=y ~ ">= v4.18-rc1"
-% elsif ___.group == "kselftests-net"
+% elsif ___.group == "net"
 - CONFIG_USER_NS=y
 - CONFIG_BPF_SYSCALL=y
 - CONFIG_TEST_BPF=m
@@ -108,7 +108,7 @@ need_kconfig:
 - CONFIG_NET_SCH_NETEM=y
 - CONFIG_TEST_BLACKHOLE_DEV=m ~ ">= v5.3-rc1"
 - CONFIG_KALLSYMS=y
-% elsif ___.group == "kselftests-netfilter"
+% elsif ___.group == "netfilter"
 - CONFIG_NET_NS=y
 - CONFIG_NFT_FLOW_OFFLOAD=m ~ ">= v4.16-rc1"
 - CONFIG_NFT_MASQ=m
@@ -117,24 +117,24 @@ need_kconfig:
 - CONFIG_NFT_REDIR=m
 - CONFIG_NF_CT_NETLINK=m
 - CONFIG_NF_TABLES_INET=y ~ ">= v4.17-rc1"
-% elsif ___.group == "kselftests-livepatch"
+% elsif ___.group == "livepatch"
 - CONFIG_DYNAMIC_DEBUG=y
 - CONFIG_LIVEPATCH=y ~ ">= v4.0-rc1"
 - CONFIG_TEST_LIVEPATCH=m ~ ">= v5.1-rc1"
-% elsif ___.group == "kselftests-firmware"
+% elsif ___.group == "firmware"
 - CONFIG_FW_LOADER=y ~ ">= v4.18-rc1"
 - CONFIG_FW_LOADER_USER_HELPER=y ~ ">= v4.18-rc1"
 - CONFIG_IKCONFIG=y
 - CONFIG_IKCONFIG_PROC=y
 - CONFIG_TEST_FIRMWARE
-% elsif ___.group == "kselftests-00"
+% elsif ___.group == "group-00"
 - CONFIG_ANDROID=y
 - CONFIG_DRM=y
 - CONFIG_DRM_VGEM=y
 - CONFIG_ION=y # Depends on: STAGING [=y]
 - CONFIG_ION_SYSTEM_HEAP=y ~ ">= v4.12-rc1" # Depends on: STAGING [=y] && ION [=y]
 - CONFIG_STAGING=y
-% elsif ___.group == "kselftests-01"
+% elsif ___.group == "group-01"
 - CONFIG_ARCH_HAVE_NMI_SAFE_CMPXCHG=y
 - CONFIG_BTRFS_FS=m
 - CONFIG_CHECKPOINT_RESTORE=y
@@ -177,7 +177,7 @@ need_kconfig:
 - CONFIG_TUN=m
 - CONFIG_WW_MUTEX_SELFTEST=m ~ ">= v4.11-rc1"
 - CONFIG_XFS_FS=m
-% elsif ___.group == "kselftests-02"
+% elsif ___.group == "group-02"
 - CONFIG_ANDROID=y
 - CONFIG_FUSE_FS=m
 - CONFIG_IPV6_MULTIPLE_TABLES=y
@@ -221,7 +221,7 @@ need_kconfig:
 - CONFIG_UTS_NS=y
 - CONFIG_VETH
 - CONFIG_X86_CPU_RESCTRL=y ~ ">= v5.0-rc1"
-% elsif ___.group == "kselftests-03"
+% elsif ___.group == "group-03"
 - CONFIG_CAN=m
 - CONFIG_CLS_U32_MARK=y
 - CONFIG_CLS_U32_PERF=y
