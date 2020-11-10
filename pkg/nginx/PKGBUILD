@@ -1,0 +1,23 @@
+pkgname=nginx
+pkgver=1.14
+pkgrel=2
+arch=('i386' 'x86_64')
+url="https://nginx.org"
+license=('BSD')
+source=("https://nginx.org/download/nginx-${pkgver}.${pkgrel}.tar.gz")
+md5sums=('SKIP')
+
+build()
+{
+	benchmark_path="/lkp/benchmarks/${pkgname}"
+	mkdir -p "${benchmark_path}"
+	cd "${srcdir}/${pkgname}-${pkgver}.${pkgrel}"
+	./configure --with-http_ssl_module --prefix="${benchmark_path}"
+	make -j4
+}
+
+package()
+{
+	cd "${srcdir}/${pkgname}-${pkgver}.${pkgrel}"
+	make install DESTDIR="${pkgdir}"
+}
