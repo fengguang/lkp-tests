@@ -1,8 +1,6 @@
 suite: borrow
 testcase: borrow
 
-runtime: 1h
-
 sshd:
         pub_key: <%=
         begin
@@ -13,4 +11,4 @@ sshd:
         %>
         email:
 # sleep at the bottom
-sleep:
+sleep: 1h
