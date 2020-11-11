@@ -34,7 +34,7 @@ build_install_f2fs_tools()
 }
 
 # Automatically generate ignore file to skip test cases which can not be enabled at present.
-build_ignore_file()
+generate_ignore_tests()
 {
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
 	cd ${srcdir}/xfstests-dev || return
@@ -44,12 +44,12 @@ build_ignore_file()
 	build_upstream_ext4_denylist
 }
 
-build_xfs_file()
+generate_xfs_tests()
 {
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
 	cd ${srcdir}/xfstests-dev || return
 	git grep -l "_require_realtime" | grep tests/xfs | awk -F/ '{ print $3 }' > $benchmark_path/tests/xfs-external
-	git grep -L "_require_realtime" $(git grep -l "_require_scratch_reflink" $(git grep -l "_require_xfs_scratch_rmapbt" | grep tests/xfs))  | awk -F/ '{print $3}' > $benchmark_path/tests/xfs-reflink_rmapbt
+	git grep -L "_require_realtime" $(git grep -l "_require_scratch_reflink" $(git grep -l "_require_xfs_scratch_rmapbt" | grep tests/xfs))  | awk -F/ '{print $3}' > $benchmark_path/tests/xfs-reflink-rmapbt
 	git grep -L "_require_realtime" $(git grep -L "_require_scratch_reflink" $(git grep -l "_require_xfs_scratch_rmapbt" | grep tests/xfs))  | awk -F/ '{print $3}' > $benchmark_path/tests/xfs-rmapbt
 	git grep -L "_require_realtime" $(git grep -L "_require_xfs_scratch_rmapbt" $(git grep -l "_require_scratch_reflink" | grep tests/xfs))  | awk -F/ '{print $3}' > $benchmark_path/tests/xfs-reflink
 }
@@ -63,23 +63,31 @@ build()
 	mkdir -p ${benchmark_path}/tests
 
 	build_install_xfstests || return
-	build_install_f2fs_tools || return
-	build_ignore_file || return
-	build_xfs_file || return
+	build_install_f2fs_tools
 }
 
 package()
 {
-	generate_tests || return
-	separate_tests || return
+	generate_ignore_tests || return
+	generate_xfs_tests || return
+	generate_new_tests || return
+
+	split_tests
 }
 
-generate_tests()
+generate_new_tests()
 {
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
 	cp -af $srcdir/xfstests-dev/* $benchmark_path
-	cp -af $LKP_SRC/pkg/${pkgname}/addon/tests/* $benchmark_path/tests
-	## generate the new add subcase automatically after every upgrade xfstests
+
+	cp -af $LKP_SRC/pkg/${pkgname}/addon/tools/* $benchmark_path/tests
+
+	for tests in $LKP_SRC/pkg/${pkgname}/addon/tests/*
+	do
+		cat $tests | grep -v '^#' > $benchmark_path/tests/$(basename $tests)
+	done
+
+	# generate the new add subcase automatically after every upgrade xfstests
 	cd $benchmark_path/tests
 	./update-new-cases.sh ext4
 	./update-new-cases.sh btrfs
@@ -88,11 +96,12 @@ generate_tests()
 }
 
 # Some files contain too many tests, which are split for easy testing
-separate_tests()
+split_tests()
 {
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+
 	cd $benchmark_path/tests
-	separate_special_tests || return
+	split_standalone_tests || return
 
 	# Option "-n r/N" to avoid splitting lines
 	split xfs-new -d -n r/30 xfs-group
@@ -102,29 +111,18 @@ separate_tests()
 }
 
 # Some special tests need to be separated and tested separately
-separate_special_tests()
+split_standalone_tests()
 {
 	# These special tests are written in the relevant files under LKP-SRC/pack/xfstests-addon/tests
-	files=("dax" "logwrites" "no_bug_assert" "special_tests" "ignored_by_lkp")
-	ignored_tests=$(cat "ignored_by_lkp" | grep -v "#")
-	for file in ${files[@]}
+	for file in *-standalone
 	do
-		if [[ "$file" != "ignored_by_lkp" ]]; then
-			for ignored_test in ${ignored_tests[@]}
-			do
-				sed -i "/$ignored_test/d" $file
-			done
-		fi
-		tests=$(cat $file | grep -v "#")
+		fields=(`echo $file | tr '-' ' '`)
+		fs=${fields[0]}
+
+		tests=$(cat $file)
 		for test in ${tests[@]}
 		do
-			arrary=(`echo $test | tr '-' ' '`)
-			sed -i "/${arrary[1]}/d" ${arrary[0]}-new
-			if [[ "$file" == "special_tests" ]]; then
-				echo ${arrary[1]} > ./$test
-			elif [[ "$file" != "ignored_by_lkp" ]]; then
-				echo ${arrary[1]} >> ./${arrary[0]}-$file
-			fi
+			echo $test >> ./$fs-$test
 		done
 	done
 }

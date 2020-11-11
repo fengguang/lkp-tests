@@ -14,7 +14,6 @@ fs:
 
 xfstests:
   test:
-#  - generic-127 # execution time is nearly 1h
   - generic-group15
   - generic-group16
   - generic-group17
@@ -30,6 +29,3 @@ xfstests:
   - generic-group27
   - generic-group28
   - generic-group29
-  # - generic-521 # execution time is nearly 1h
-# - generic-new
-# - generic-all

@@ -104,7 +104,7 @@ set_env()
 		log_eval export SCRATCH_XFS_LIST_FUZZ_VERBS=random
 	}
 
-	[ "$test" = "xfs-no_bug_assert" ] && {
+	[ "$test" = "xfs-no-bug-assert" ] && {
 		[ -f /sys/fs/xfs/debug/bug_on_assert ] && echo 0 > /sys/fs/xfs/debug/bug_on_assert
 	}
 
@@ -136,7 +136,7 @@ set_env()
 		log_eval export MKFS_OPTIONS="-mreflink=1"
 		log_eval unset SCRATCH_LOGDEV
 	}
-	[ "$test" = "xfs-reflink_rmapbt" ] && log_eval export MKFS_OPTIONS="\"-mreflink=1 -mrmapbt=1\""
+	[ "$test" = "xfs-reflink-rmapbt" ] && log_eval export MKFS_OPTIONS="\"-mreflink=1 -mrmapbt=1\""
 	[ "$test" = "xfs-reflink" ] && log_eval export MKFS_OPTIONS="-mreflink=1"
 	[ "$test" = "xfs-rmapbt" ] && log_eval export MKFS_OPTIONS="-mrmapbt=1"
 	[ "$test" = "xfs-244" ] && log_eval export MKFS_OPTIONS="-mcrc=0"
@@ -180,7 +180,7 @@ set_env()
 		[ "$fs" = "xfs" ] && unset MKFS_OPTIONS
 	fi
 
-        [ "$test" = "ext4-029" ] && {
+	[ "$test" = "ext4-029" ] && {
 		log_eval export USE_EXTERNAL=yes
 
 		# create a 100M partition for log, avoid test cost too much time

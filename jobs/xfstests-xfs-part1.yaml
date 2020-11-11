@@ -12,7 +12,7 @@ fs:
 xfstests:
   test:
   - xfs-external
-  - xfs-reflink_rmapbt
+  - xfs-reflink-rmapbt
   - xfs-132
   - xfs-244
   - xfs-275
@@ -32,6 +32,4 @@ xfstests:
   - xfs-group12
   - xfs-group13
   - xfs-group14
-  - xfs-no_bug_assert
-# - xfs-new
-# - xfs-all
+  - xfs-no-bug-assert

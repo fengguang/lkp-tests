@@ -16,7 +16,6 @@ xfstests:
   test:
   - generic-387
   - generic-054
-#  - generic-127 # execution time is nearly 1h
   - generic-group00
   - generic-group01
   - generic-group02
@@ -32,5 +31,3 @@ xfstests:
   - generic-group12
   - generic-group13
   - generic-group14
-# - generic-new
-# - generic-all
