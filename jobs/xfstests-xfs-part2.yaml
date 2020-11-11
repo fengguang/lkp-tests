@@ -12,7 +12,10 @@ fs:
 xfstests:
   test:
   - xfs-rmapbt
-  - xfs-reflink
+  - xfs-reflink-00
+  - xfs-reflink-01
+  - xfs-reflink-02
+  - xfs-reflink-03
   - xfs-083
   - xfs-group15
   - xfs-group16

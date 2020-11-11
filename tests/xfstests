@@ -137,7 +137,7 @@ set_env()
 		log_eval unset SCRATCH_LOGDEV
 	}
 	[ "$test" = "xfs-reflink-rmapbt" ] && log_eval export MKFS_OPTIONS="\"-mreflink=1 -mrmapbt=1\""
-	[ "$test" = "xfs-reflink" ] && log_eval export MKFS_OPTIONS="-mreflink=1"
+	[ "${test%%[0-9]*}" = "xfs-reflink-" ] && log_eval export MKFS_OPTIONS="-mreflink=1"
 	[ "$test" = "xfs-rmapbt" ] && log_eval export MKFS_OPTIONS="-mrmapbt=1"
 	[ "$test" = "xfs-244" ] && log_eval export MKFS_OPTIONS="-mcrc=0"
 	[ "$test" = "xfs-132" ] && (mkfs.xfs -f -mreflink=1 $TEST_DEV || die "mkfs.xfs test_dev failed")
