@@ -28,10 +28,9 @@ while (line = STDIN.gets)
     end
 
     results[summary_type] = $2.tr('/', '.').split
-  when /^#{TEST_PATTERN}\s+\[failed, /,
-       /^#{TEST_PATTERN}\s+- output mismatch/
-    # btrfs/158       - output mismatch (see /lkp/benchmarks/xfstests/results//btrfs/158.out.bad)
-    # btrfs/005       [failed, exit status 1]- output mismatch (see /lkp/benchmarks/xfstests/results//btrfs/005.out.bad)
+  when /^#{TEST_PATTERN}\s+\[failed, /, # btrfs/005 [failed, exit status 1]- output mismatch (see /lkp/benchmarks/xfstests/results//btrfs/005.out.bad)
+       /^#{TEST_PATTERN}\s+- output mismatch/, # btrfs/158 - output mismatch (see /lkp/benchmarks/xfstests/results//btrfs/158.out.bad)
+       /^#{TEST_PATTERN}\s+_check_dmesg: something found in dmesg/ # xfs/385 _check_dmesg: something found in dmesg (see /lkp/benchmarks/xfstests/results//xfs/385.dmesg)
     results['fail'] << "#{$1}.#{$2}"
   when /^#{TEST_PATTERN}\s+\[not run\]/
     # xfs/161 [not run] Assuming DMAPI modules are not loaded
