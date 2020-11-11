@@ -28,12 +28,6 @@ begin
   job = Job2sh.new
   job.load(ARGV[0])
   job.expand_params
-
-  unless job.atomic_job?
-    log_error "Looks #{ARGV[0]} isn't a atomic jobfile, only atomic jobfile is supported"
-    log_error "Please run 'lkp split-job #{ARGV[0]}' first"
-    exit(1)
-  end
 rescue e : Job::ParamError
   log_error "Abandon job: #{e.message}"
   exit(1)
