@@ -1,0 +1,54 @@
+#!/usr/bin/env ruby
+
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+
+require "#{LKP_SRC}/lib/statistics"
+require "#{LKP_SRC}/lib/log"
+
+task = nil
+run = []
+period = []
+slack = []
+wu_lat = []
+
+def puts_one_task(task, run, period, slack, wu_lat)
+  return if task.nil?
+  if run.size > 0
+    # first 2 line data unstable observed sometimes.
+    # could consider to skip first 2 line to wait stable data
+    # TODO
+    puts "#{task}.run.average: #{run.average}"
+    puts "#{task}.run.stddev: #{run.standard_deviation}"
+    puts "#{task}.period.average: #{period.average}"
+    puts "#{task}.period.stddev: #{period.standard_deviation}"
+    puts "#{task}.slack.average: #{slack.average}"
+    puts "#{task}.slack.stddev: #{slack.standard_deviation}"
+    puts "#{task}.wu_lat.average: #{wu_lat.average}"
+    puts "#{task}.wu_lat.stddev: #{wu_lat.standard_deviation}"
+  else
+    # sometimes empty data for some tasks which is expected
+    # just warning here
+    log_error 'stats/rt-app: invalid data'
+    exit 1
+  end
+end
+
+while (line = STDIN.gets)
+  case line
+  when /(.*).log$/
+    puts_one_task(task, run, period, slack, wu_lat)
+    task = $1.gsub("./", "")
+    run.clear
+    period.clear
+    slack.clear
+    wu_lat.clear
+  when /(\d+)(\s+)(\d+)(\s+)(\d+)(\s+)(\d+)(\s+)(\d+)(\s+)(\d+)(\s+)(\d+)(\s+)(\d+)(\s+)(\d+)(\s+)(\d+)(\s+)(\d+)(\s+)/
+    next unless task
+    run << $5.to_i
+    period << $7.to_i
+    slack << $15.to_i
+    wu_lat << $21.to_i
+  end
+end
+
+puts_one_task(task, run, period, slack, wu_lat)

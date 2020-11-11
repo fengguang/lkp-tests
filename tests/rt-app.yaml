@@ -1,0 +1,22 @@
+short_description: >
+ rt-app is a test application that starts multiple periodic threads in order to
+ simulate a real-time periodic load.
+
+description: |
+ rt-app is a test application that starts multiple periodic threads in order to
+ simulate a real-time periodic load.
+
+homepage: https://github.com/scheduler-tools/rt-app
+
+parameters:
+ workload:
+
+results:
+ run.average:
+ run.stddev:
+ period.average:
+ period.stddev:
+ slack.average:
+ slack.stddev:
+ wu_lat.average:
+ wu_lat.stddev:
