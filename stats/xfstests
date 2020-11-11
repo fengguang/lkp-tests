@@ -28,7 +28,9 @@ while (line = STDIN.gets)
     end
 
     results[summary_type] = $2.tr('/', '.').split
-  when /^#{TEST_PATTERN}\s+\[failed, /
+  when /^#{TEST_PATTERN}\s+\[failed, /,
+       /^#{TEST_PATTERN}\s+- output mismatch/
+    # btrfs/158       - output mismatch (see /lkp/benchmarks/xfstests/results//btrfs/158.out.bad)
     # btrfs/005       [failed, exit status 1]- output mismatch (see /lkp/benchmarks/xfstests/results//btrfs/005.out.bad)
     results['fail'] << "#{$1}.#{$2}"
   when /^#{TEST_PATTERN}\s+\[not run\]/
@@ -50,17 +52,17 @@ end
   results[status].each { |test| puts "#{test}.#{status}: 1" }
 end
 
-if results['failures'] && results['failures'] != (results['inconsistent_fs'] + results['fail']).sort
+if results.key?('failures') && results['failures'] != (results['inconsistent_fs'] + results['fail']).sort
   log_error 'summarized failures != inconsistent_fs + fail'
   exit 1
 end
 
-if results['not_run'] && results['not_run'] != results['skip']
+if results.key?('not_run') && results['not_run'] != results['skip']
   log_error 'summarized not_run != skip'
   exit 1
 end
 
-if results['ran'] && results['ran'] != (results['inconsistent_fs'] + results['fail'] + results['pass'] + results['skip']).sort
+if results.key?('ran') && results['ran'] != (results['inconsistent_fs'] + results['fail'] + results['pass'] + results['skip']).sort
   log_error 'summarized ran != inconsistent_fs + fail + pass + skip'
   exit 1
 end
