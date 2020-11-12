@@ -96,6 +96,7 @@ generate_new_tests()
 	./update-new-cases.sh btrfs
 	./update-new-cases.sh xfs
 	./update-new-cases.sh generic
+	./update-new-cases.sh udf
 }
 
 # Some files contain too many tests, which are split for easy testing
@@ -111,6 +112,7 @@ split_tests()
 	split btrfs-new -d -n r/3 btrfs-group
 	split generic-new -d -n r/30 generic-group
 	split ext4-new -d -n r/2 ext4-group
+	split udf-new -d -n r/1 udf-group
 }
 
 # Some special tests need to be separated and tested separately

@@ -2,19 +2,13 @@ suite: xfstests
 testcase: xfstests
 category: functional
 
-need_memory: 2G
+need_memory: 1G
 
 disk: 4HDD
 
 fs:
-- ext2
-- ext4
-- xfs
-- btrfs
-- f2fs
 - udf
 
 xfstests:
   test:
-  - generic-299
-  - generic-logwrites
+  - udf-group-00
