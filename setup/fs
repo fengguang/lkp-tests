@@ -43,6 +43,8 @@ fs_options() {
 		def_mount="-o vers=4"
 		fs="nfs"
 		;;
+	udf)
+		;;
 	esac
 }
 
