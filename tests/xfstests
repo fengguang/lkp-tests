@@ -209,46 +209,29 @@ run_test()
 
 	local test_dir="/$BENCHMARK_ROOT/xfstests/tests"
 
-	# the ignore file like xfs-ignore, but $test like xfs-group1, so need to get its prefix.
-	local test_ignore="$test_dir/${test%-*}-ignore"
-	# /$BENCHMARK_ROOT/xfstests/${test%-*}-ignore is built from upstream denylist
-	test_ignore="$test_ignore /$BENCHMARK_ROOT/xfstests/${test%-*}-ignore"
-
-	local ignored_tests
-	local ignored_tests_cmd
 	local all_tests
 	local all_tests_cmd
 
 	if [ "${test#*-}" = "all" ]; then
 		all_tests_cmd="cd tests && ls ${test%-*}/[0-9][0-9][0-9]"
-		get_ignored_and_worked_tests "$all_tests_cmd"
 	elif [ "${test#*-}" = "new" ]; then
 		all_tests_cmd="cd tests && sed \"s:^:${test%-*}/:\" $test"
-		get_ignored_and_worked_tests "$all_tests_cmd"
 	elif [ "${test%[a-z4]-[0-9][0-9][0-9]}" != "$test" ]; then
 		all_tests_cmd="echo ${test%-*}/${test#*-}"
-		get_ignored_and_worked_tests "$all_tests_cmd"
 	elif [ "${test%-*}" = "$fs" ]; then
 		all_tests_cmd="sed \"s:^:${test%-*}/:\" $test_dir/$test"
-		get_ignored_and_worked_tests "$all_tests_cmd" "$test_ignore"
 	elif [ "${test#*-}" != "$test" ]; then
-		generic_fs_ignore="$test_dir/${test%-*}-$fs-ignore /$BENCHMARK_ROOT/xfstests/tests/generic-$fs-ignore"
 		all_tests_cmd="sed \"s:^:${test%-*}/:\" $test_dir/$test"
-		get_ignored_and_worked_tests "$all_tests_cmd" "$test_ignore $generic_fs_ignore"
 	else
 		# Now rename $test-broken to $test-ignore wihch is easier to understand.
 		all_tests_cmd="cd tests && ls $test/[0-9][0-9][0-9]"
-		get_ignored_and_worked_tests "$all_tests_cmd" "$test_ignore"
 	fi
 
-	[ -n "$ignored_tests_cmd" ] && log_echo $ignored_tests_cmd
-	for ignored_test in $ignored_tests
-	do
-		echo "ignored by lkp: $ignored_test"
-	done
+	log_echo $all_tests_cmd
+	all_tests=$(eval "$all_tests_cmd")
 
-	[ -n "$all_tests_cmd" ] && log_echo $all_tests_cmd
-	log_cmd ./check $all_tests
+	[ -s exclude/$fs ] && exclude_file="-E exclude/$fs"
+	log_cmd ./check $exclude_file $all_tests
 }
 
 export LC_ALL=C
