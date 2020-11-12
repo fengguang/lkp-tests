@@ -90,6 +90,8 @@ build_source_pkg()
 
 create_softlink()
 {
+	[ -e "$cgz_name" ] || return 0
+
 	local soft_path="$PKG_MNT/${pack_to}/${pkgname}"
 	local bm_name=$(basename $(realpath ${cgz_name}))
 
