@@ -53,15 +53,8 @@ check_yaml_vars()
 		"rootfs_path"
 		"initrd_http_host"
 		"initrd_http_port"
-		"test_yaml"
-		"test_os"
-		"test_os_arch"
-		"test_os_version"
-		"test_os_mount"
-		"test_testbox"
 	)
 
-	local yaml_t
 	for yaml_t in "${yaml_vars[@]}"
 	do
 		[ -n "$(eval echo "\$${yaml_t}")" ] || die "cannot fine value of var: ${yaml_t}."
@@ -460,9 +453,24 @@ generate_submit_append_str()
 
 submit_test_job_yaml()
 {
+	[ -n ${test_yaml} ] || return 0
+
 	log_info "starting submit ${test_yaml} ..."
 
 	[ -d "${LKP_SRC}" ] || die "cannot find value of var: LKP_SRC."
+
+	local test_yaml_vars=(
+		"test_os"
+		"test_os_arch"
+		"test_os_version"
+		"test_os_mount"
+		"test_testbox"
+	)
+
+	for yaml_t in "${test_yaml_vars[@]}"
+	do
+		[ -n "$(eval echo "\$${yaml_t}")" ] || die "cannot fine value of var: ${yaml_t}."
+	done
 
 	cd "${LKP_SRC}" && {
 		chmod +x ./sbin/install-dependencies.sh
