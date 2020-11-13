@@ -45,6 +45,9 @@ fs_options() {
 		;;
 	udf)
 		;;
+	ocfs2)
+		ensure_mkfs='-q -F'
+		;;
 	esac
 }
 
