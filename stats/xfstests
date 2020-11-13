@@ -30,29 +30,25 @@ while (line = STDIN.gets)
     results[summary_type] = $2.tr('/', '.').split
   when /^#{TEST_PATTERN}\s+\[failed, /, # btrfs/005 [failed, exit status 1]- output mismatch (see /lkp/benchmarks/xfstests/results//btrfs/005.out.bad)
        /^#{TEST_PATTERN}\s+- output mismatch/, # btrfs/158 - output mismatch (see /lkp/benchmarks/xfstests/results//btrfs/158.out.bad)
-       /^#{TEST_PATTERN}\s+_check_dmesg: something found in dmesg/ # xfs/385 _check_dmesg: something found in dmesg (see /lkp/benchmarks/xfstests/results//xfs/385.dmesg)
+       /^#{TEST_PATTERN}\s+_check_dmesg: something found in dmesg/, # xfs/385 _check_dmesg: something found in dmesg (see /lkp/benchmarks/xfstests/results//xfs/385.dmesg)
+       /^_check_generic_filesystem: filesystem on .+ is inconsistent \(see .+\/([a-z]+)\/([0-9]+)\.full\)/,
+       /^#{TEST_PATTERN}\s+_check.+: filesystem on .+ is inconsistent/ # btrfs/002 _check_btrfs_filesystem: filesystem on /dev/sda2 is inconsistent
     results['fail'] << "#{$1}.#{$2}"
   when /^#{TEST_PATTERN}\s+\[not run\]/
     # xfs/161 [not run] Assuming DMAPI modules are not loaded
     results['skip'] << "#{$1}.#{$2}"
-  when /^_check_generic_filesystem: filesystem on .+ is inconsistent \(see .+\/([a-z]+)\/([0-9]+)\.full\)/,
-       /^#{TEST_PATTERN}\s+_check.+: filesystem on .+ is inconsistent/
-    # btrfs/002     _check_btrfs_filesystem: filesystem on /dev/sda2 is inconsistent
-    results['inconsistent_fs'] << "#{$1}.#{$2}"
-  when /^(ignored by lkp): (.*)/
-    puts "#{$2.tr('/', '.')}.ignored_by_lkp: 1"
   when /^#{TEST_PATTERN}\s+(\d+)s/
     # btrfs/011        3434s
     results['pass'] << "#{$1}.#{$2}"
   end
 end
 
-%w(inconsistent_fs pass fail skip).each do |status|
+%w(pass fail skip).each do |status|
   results[status].each { |test| puts "#{test}.#{status}: 1" }
 end
 
-if results.key?('failures') && results['failures'] != (results['inconsistent_fs'] + results['fail']).sort
-  log_error 'summarized failures != inconsistent_fs + fail'
+if results.key?('failures') && results['failures'] != results['fail']
+  log_error 'summarized failures != fail'
   exit 1
 end
 
@@ -61,7 +57,7 @@ if results.key?('not_run') && results['not_run'] != results['skip']
   exit 1
 end
 
-if results.key?('ran') && results['ran'] != (results['inconsistent_fs'] + results['fail'] + results['pass'] + results['skip']).sort
-  log_error 'summarized ran != inconsistent_fs + fail + pass + skip'
+if results.key?('ran') && results['ran'] != (results['fail'] + results['pass'] + results['skip']).sort
+  log_error 'summarized ran != fail + pass + skip'
   exit 1
 end

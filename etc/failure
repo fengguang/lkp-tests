@@ -10,5 +10,5 @@ lkp-bug.*
 locktoture\..+lock_hotplug
 rcutoture\..+rcu_hotplug
 stderr.*
-xfstests\..+(fail|crash|crashed|timeout|warn|dmesg-warn|dmesg-fail|inconsistent_fs)$
+xfstests\..+fail$
 piglit\..+(fail|dmesg-warn|warn|dmesg-fail)$
