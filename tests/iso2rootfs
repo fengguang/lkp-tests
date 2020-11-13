@@ -345,6 +345,27 @@ run_qcow2rootfs()
 	./run "${qcow2_path}" "${ROOTFS_DES_DIR}"
 }
 
+
+############ config rootfs ############
+config_dns_resolver()
+{
+	cat <<-EOF > "${ROOTFS_DES_DIR}/etc/resolv.conf"
+	nameserver 114.114.114.114
+	nameserver 8.8.8.8
+	EOF
+}
+
+disable_selinux()
+{
+	sed -i 's/^SELINUX=.*/SELINUX=disabled/g' "${ROOTFS_DES_DIR}/etc/selinux/config"
+}
+
+config_rootfs()
+{
+	config_dns_resolver
+	disable_selinux
+}
+
 ############ test rootfs ############
 get_qemu_efi_fd()
 {
@@ -490,6 +511,8 @@ main()
 
 	config_qcow2rootfs
 	run_qcow2rootfs
+
+	config_rootfs
 
 	test_rootfs
 	submit_test_job_yaml
