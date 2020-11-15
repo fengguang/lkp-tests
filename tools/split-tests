@@ -1,0 +1,23 @@
+#!/bin/bash
+
+usage()
+{
+	echo "Usage: $(basename $0) tests_file group_size group_name_prefix"
+	exit 1
+}
+
+[[ $# -eq 3 ]] || usage
+
+tests_file=$1
+group_size=$2
+group_name_prefix=$3
+
+while read t
+do
+	# convert t to 10 base, otherwise value like 008 is treated as octal number
+	# and fails with "008: value too great for base (error token is "008")"
+	group_index=$(( 10#$t / group_size ))
+	group_index=$(printf "%02d" $group_index)
+
+	echo $t >> $group_name_prefix$group_index
+done < $tests_file

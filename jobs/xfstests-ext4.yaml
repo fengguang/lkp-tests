@@ -12,6 +12,9 @@ fs:
 
 xfstests:
   test:
-  - ext4-group00
-  - ext4-group01
+  - ext4-group-00
+  - ext4-group-01
+  - ext4-group-02
+  - ext4-group-13
+  - ext4-group-15
   - ext4-029

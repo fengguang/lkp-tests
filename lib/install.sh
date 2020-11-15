@@ -168,7 +168,7 @@ build_depends_pkg() {
 			return 0
 		fi
 	fi
-	
+
 	for pkg in $packages; do
 		# pack and install dependencies of pkg
 		build_depends_pkg -i $pkg "$dest"

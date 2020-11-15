@@ -7,6 +7,8 @@ license=('GPL')
 source=('https://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs-tools.git' 'https://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git')
 md5sums=('SKIP' 'SKIP')
 
+. $LKP_SRC/lib/tests/common.sh
+
 build_install_xfstests()
 {
 	cd ${srcdir}/xfstests-dev || return
@@ -51,7 +53,7 @@ generate_xfs_tests()
 	git grep -L "_require_realtime" $(git grep -L "_require_xfs_scratch_rmapbt" $(git grep -l "_require_scratch_reflink" | grep tests/xfs))  | awk -F/ '{print $3}' > $benchmark_path/tests/xfs-reflink
 
 	cd $benchmark_path/tests
-	split xfs-reflink -d -n r/4 xfs-reflink-
+	$LKP_SRC/tools/split-tests xfs-reflink 20 xfs-reflink-
 	rm -f xfs-reflink
 }
 
@@ -106,13 +108,12 @@ split_tests()
 	cd $benchmark_path/tests
 	split_standalone_tests || return
 
-	# Option "-n r/N" to avoid splitting lines
-	split xfs-new -d -n r/30 xfs-group
-	split btrfs-new -d -n r/3 btrfs-group
-	split generic-new -d -n r/30 generic-group
-	split ext4-new -d -n r/2 ext4-group
-	split udf-new -d -n r/1 udf-group
-	split ocfs2-new -d -n r/1 ocfs2-group
+	$LKP_SRC/tools/split-tests xfs-new 10 xfs-group-
+	$LKP_SRC/tools/split-tests btrfs-new 50 btrfs-group-
+	$LKP_SRC/tools/split-tests generic-new 20 generic-group-
+	$LKP_SRC/tools/split-tests ext4-new 20 ext4-group-
+	$LKP_SRC/tools/split-tests udf-new 10 udf-group-
+	$LKP_SRC/tools/split-tests ocfs2-new 10 ocfs2-group-
 }
 
 # Some special tests need to be separated and tested separately
