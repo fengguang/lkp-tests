@@ -142,7 +142,7 @@ class Job2sh < Job
   end
 
   def parse_one(ancestors, key, val, pass)
-    if ['pp', 'define_files', 'monitors'].include?(key)
+    if ['pp', 'define_files', 'monitors', 'on_fail'].include?(key)
       return false
     end
     tabs = indent(ancestors)
@@ -266,11 +266,13 @@ class Job2sh < Job
     sh_run_job(job)
     local_script_lines += @script_lines
 
-
     sh_extract_stats(job)
     local_script_lines += @script_lines
 
     sh_define_files()
+    local_script_lines += @script_lines
+
+    sh_on_state(job)
 
     out_line '"$@"'
 
@@ -358,6 +360,28 @@ class Job2sh < Job
         out_line "\tchmod +x $LKP_SRC/#{file}"
       end
     end
-    out_line '}'
+    out_line "}\n\n"
+  end
+
+  def sh_on_state(job = nil)
+    @script_lines = []
+
+    @programs = available_programs(:workload_elements)
+
+    job ||= (@jobx || @job).clone
+
+    if job.include?('on_fail')
+
+      @cur_func = :run_job
+
+      out_line 'on_fail()'
+      out_line '{'
+      out_line
+      out_line "\t. $LKP_SRC/lib/job.sh"
+      out_line "\t. $LKP_SRC/lib/env.sh"
+      out_line
+      parse_hash [], job['on_fail']
+      out_line "}\n\n"
+    end
   end
 end
