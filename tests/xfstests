@@ -75,6 +75,13 @@ set_env()
 
 	log_cmd mkdir $SCRATCH_MNT -p
 
+	# generic/339     udf_test not installed, please download and build the Philips
+	# UDF Verification Software from http://www.extra.research.philips.com/udf/.
+	# Then copy the udf_test binary to /lkp/benchmarks/xfstests/src/.
+	# If you do not wish to run udf_test then set environment variable DISABLE_UDF_TEST
+	# to 1.
+	[ "$fs" = udf ] && log_eval export DISABLE_UDF_TEST=1
+
 	if [ "$fs" = btrfs ] && [ "$nr_partitions" -ge 4 ]; then
 		log_eval export SCRATCH_DEV_POOL=\"${partitions#* }\"
 	else
