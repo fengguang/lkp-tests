@@ -623,6 +623,11 @@ extract_git() {
 
 	cd_safe "${dir##*/}"
 
+	# modify submodules address to local server address.
+	if [[ -f ".gitmodules" ]] && [[ -n ${LKP_SERVER} ]]; then
+		echo -e "[url \"git://${LKP_SERVER}/\"]\n\tinsteadOf = https://" >> /etc/gitconfig
+	fi
+
 	local ref=origin/HEAD
 	if [[ -n $fragment ]]; then
 		case ${fragment%%=*} in
