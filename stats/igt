@@ -69,6 +69,11 @@ while (line = STDIN.gets)
     # should ignore the 'Subtest default' results from 980 and 1521 to avoid duplicated stats
     next if test_name == nil || has_dynamic_subtest
 
+    if subtest_name != $1
+      log_warn "subtest_name [#{subtest_name}] != $1 [#{$1}]"
+      exit 1
+    end
+
     stats_type = if $2 == 'SUCCESS'
                    'pass'
                  else
