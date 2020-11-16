@@ -237,7 +237,7 @@ run_test()
 	log_echo $all_tests_cmd
 	all_tests=$(eval "$all_tests_cmd")
 
-	[ -s exclude/$fs ] && exclude_file="-E exclude/$fs"
+	[ -s tests/exclude/$fs ] && exclude_file="-E tests/exclude/$fs"
 	log_cmd ./check $exclude_file $all_tests
 }
 
