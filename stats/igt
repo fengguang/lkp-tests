@@ -44,7 +44,7 @@ while (line = STDIN.gets)
 
     subtest_name = $1
     has_dynamic_subtest = false
-  when /^Subtest (.+): (SUCCESS|FAIL|CRASH)/
+  when /Subtest (.+): (SUCCESS|FAIL|CRASH)/
     # [thread:4146] Subtest thread-performance-write: CRASH (0.580s)
     #
     # Subtest invalid-buffer: SUCCESS (0.000s)
