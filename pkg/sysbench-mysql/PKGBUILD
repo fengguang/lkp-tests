@@ -18,6 +18,8 @@ build() {
 package() {
 	cd "$pkgname-$pkgver.$pkgrel"
 	make DESTDIR=$pkgdir install
-	[[ $os == openeuler ]] && mkdir -p $pkgdir/usr/lib64
-        cp -rpf /usr/local/mysql/lib/* $pkgdir/usr/lib64/
+	[[ $os == openeuler ]] && {
+		mkdir -p $pkgdir/usr/lib64
+		cp -rpf /usr/local/mysql/lib/* $pkgdir/usr/lib64/
+	}
 }
