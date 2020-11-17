@@ -1,0 +1,33 @@
+#!/bin/sh
+# - nr_threads
+# - mode
+# - ipc
+# - iterations
+# - loops
+
+## Hackbench-git is both a benchmark and a stress test for the Linux kernel scheduler.
+## Its main job is to create a specified number of schedulable entities pairs.
+## (either threads or traditional processes)which communicate via either sockets
+## or pipes and time how long it takes for each pair to send data back and forth.
+
+[ "$ipc" = 'pipe' ] 	&& ipc_option='-pipe'
+[ -n "$iterations" ] 	|| iterations=10
+[ -n "$loops" ] 	|| loops=100
+[ -n "$nr_threads" ] 	|| nr_threads=1
+
+run_hackbench()
+{
+	# args: groups number, mode [process/thread], loops, ipc [pipe/socket]
+	hackbench_path="$BENCHMARK_ROOT"/hackbench-git/hackbench/hackbench
+	[ ! -x "${hackbench_path}" ] && {
+		echo "The hackbench executable file cannot be found."
+		exit 1
+	}
+
+	echo "--------$ipc $mode num=$nr_threads--------"
+	for i in $(seq 1 $iterations); do
+		log_cmd $hackbench_path $ipc_option $nr_threads $mode $loops
+	done
+}
+
+run_hackbench
