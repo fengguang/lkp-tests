@@ -180,6 +180,11 @@ module Git
       def abbr
         tag || sha[0..9]
       end
+
+      def reverted?(branch)
+        reverted_subject = 'Revert "' + subject + '"'
+        !@base.command("log --format=%s #{sha}..#{branch} | grep -x -m1 '#{reverted_subject}'").empty?
+      end
     end
 
     class Tag
