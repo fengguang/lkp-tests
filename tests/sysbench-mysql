@@ -1,52 +1,94 @@
 #!/bin/sh
+# - oltp_test_mode
+# - oltp_tables_count
+# - oltp_table_size
+# - max_requests
+# - mysql_table_engine
+# - nr_threads
+# - rand_type
+# - rand_spec_pct
+# - runtime
+# - report_interval
+# - oltp_read_only
+# - events
 # mysql_user
 # mysql_host
 # mysql_port
 # mysql_db
+# mysql_password
 # db_driver
-# - oltp_test_mode
-# - oltp_tables_count
-# - oltp_table_size
-# - nr_threads
-# - runtime
-# - report_interval
 
 : "${mysql_user:=root}"
-: "${mysql_host:=localhost}"
-: "${mysql_port:=3306}"
-: "${mysql_db:=test_1000}"
+: "${mysql_host:=$direct_server_ips}"
+: "${mysql_port:=$mysql_port}"
+: "${mysql_db:=sysbench_1}"
+: "${mysql_password:=$mysql_password}"
 : "${db_driver:=mysql}"
-: "${oltp_tables_count:=3}"
-: "${oltp_table_size:=1000}"
-: "${nr_threads:=64}"
-: "${runtime:=120}"
-: "${report_interval:=10}"
+: "${oltp_test_mode:=complex}"
+: "${oltp_tables_count:=1000}"
+: "${oltp_table_size:=100000}"
+: "${max_requests:=0}"
+: "${mysql_table_engine:=innodb}"
+: "${rand_type:=special}"
+: "${rand_spec_pct:=100}"
+: "${nr_threads:=256}"
+: "${runtime:=7200}"
+: "${report_interval:=1}"
+: "${oltp_read_only:=off}"
+: "${events:=2000000000}"
 
-args=(
+args1=(
 	 --mysql-user=$mysql_user
 	 --mysql-host=$mysql_host
  	 --mysql-port=$mysql_port
  	 --mysql-db=$mysql_db
+	 --oltp-test-mode=$oltp_test_mode
 	 --db-driver=$db_driver
-	 --tables=$oltp_tables_count
-	 --table-size=$oltp_table_size
+	 --mysql-password=$mysql_password
+	 --max-requests=$max_requests
+	 --mysql-table-engine=$mysql_table_engine
+	 --oltp-table-size=$oltp_table_size
+	 --oltp-tables-count=$oltp_tables_count
+	 --rand-type=$rand_type
+	 --rand-spec-pct=$rand_spec_pct
 	 --threads=$nr_threads
 	 --time=$runtime
-	 --report-interval=$report_interval
 )
+
+args2=(
+	--mysql-user=$mysql_user
+	--mysql-password=$mysql_password
+	--mysql-host=$mysql_host
+	--mysql-port=$mysql_port
+	--mysql-db=$mysql_db
+	--threads=$nr_threads
+	--oltp-read-only=$oltp_read_only
+	--oltp-table-size=$oltp_table_size
+	--oltp-tables-count=$oltp_tables_count
+	--report-interval=$report_interval
+	--time=$runtime
+	--events=$events
+)
+
+stop_firewalld()
+{
+	systemctl stop firewalld
+	iptables -F
+}
 
 run_sysbench_step()
 {
-	sysbench /usr/share/sysbench/$1 "${args[@]}" $2
+	lua_script=$1
+	shift
+	sysbench /usr/local/share/sysbench/tests/include/oltp_legacy/$lua_script "$@"
 }
 
 run_sysbench_mysql()
 {
-	systemctl start mysqld
-	mysql -e "create database test_1000;"
-	run_sysbench_step oltp_common.lua prepare
-	run_sysbench_step oltp_read_write.lua run
-	run_sysbench_step oltp_common.lua cleanup
+	run_sysbench_step parallel_prepare.lua ${args1[@]} prepare
+	run_sysbench_step oltp.lua ${args2[@]} run
+	run_sysbench_step oltp.lua ${args2[@]} cleanup
 }
 
+stop_firewalld
 run_sysbench_mysql
