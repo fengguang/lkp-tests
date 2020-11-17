@@ -92,10 +92,6 @@ cgz_name="${pkgver:-0}-${pkgrel:-0}.cgz"
 
 setup_proxy
 
-echo $LKP_SRC/sbin/makepkg -A --skippgpcheck --config $LKP_SRC/etc/makepkg.conf
-PACMAN=true BUILDDIR=$TMP CARCH=$arch PKGEXT=.cgz CGZDEST="$sync_dest/$cgz_name" \
-	$LKP_SRC/sbin/makepkg -A --skippgpcheck --config $LKP_SRC/etc/makepkg.conf
-
 update_softlink()
 {
 	[ -e "$sync_dest/$cgz_name" ] || return
@@ -109,4 +105,13 @@ update_softlink()
 	rm $sync_dest/$cgz_name
 }
 
+build_source_pkg()
+{
+	local makepkg="$LKP_SRC/sbin/makepkg -A --skippgpcheck --config $LKP_SRC/etc/makepkg.conf"
+	echo "$makepkg"
+
+	PACMAN=true BUILDDIR=$TMP CARCH=$arch PKGEXT=.cgz CGZDEST="$sync_dest/$cgz_name" $makepkg
+}
+
+build_source_pkg
 update_softlink && echo "Makepkg finished successfully"
