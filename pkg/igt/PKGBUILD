@@ -17,20 +17,19 @@ build()
 
 separate_test()
 {
-	ignored_tests=$(cat "$LKP_SRC/pkg/igt/ignored_by_lkp" | grep -v "#")
 	cd $srcdir/igt-gpu-tools
-	sed -n '2p' build/tests/test-list.txt | tr " " "\n" > all-tests
-	for ignored_test in ${ignored_tests[@]}
-	do
-		sed -i "/$ignored_test/d" all-tests
-	done
-	split all-tests -d -n r/10 group_
+	sed -n '2p' build/tests/test-list.txt | tr " " "\n" | grep -v amdgpu | sort > all-tests
+
+	split all-tests -d -n25 group-
 }
 
 package()
 {
 	separate_test || return
+
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
 	mkdir -p $benchmark_path
 	cp -af "${srcdir}/igt-gpu-tools/"* $benchmark_path
+
+	cp -af $LKP_SRC/pkg/${pkgname}/exclude $benchmark_path
 }

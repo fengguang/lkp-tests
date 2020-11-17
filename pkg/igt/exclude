@@ -11,3 +11,6 @@ perf_pmu
 gem_ctx_switch
 gem_wait
 gem_exec_parallel
+gem_exec_suspend
+# OOM since igt commit: 0b0eaa353 ("tests/dumb_buffer: Try to compute the largest possible dumb buffer")
+dumb_buffer
