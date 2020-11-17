@@ -111,7 +111,8 @@ build_source_pkg()
 	echo "$makepkg"
 
 	PACMAN=true BUILDDIR=$TMP CARCH=$arch PKGEXT=.cgz CGZDEST="$sync_dest/$cgz_name" $makepkg
+
+	[ "$?" == 0 ] && update_softlink
 }
 
 build_source_pkg
-update_softlink && echo "Makepkg finished successfully"
