@@ -185,6 +185,10 @@ module Git
         reverted_subject = 'Revert "' + subject + '"'
         !@base.command("log --format=%s #{sha}..#{branch} | grep -x -m1 '#{reverted_subject}'").empty?
       end
+
+      def exist_in?(branch)
+        @base.command("merge-base --is-ancestor #{sha} #{branch}; echo $?").to_i.zero?
+      end
     end
 
     class Tag
