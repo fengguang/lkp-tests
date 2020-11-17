@@ -65,6 +65,21 @@ request_pkg()
   [ -s PKGBUILD ] || die "PKGBUILD is empty"
 }
 
+create_softlink()
+{
+	[ -e "$cgz_name" ] || return 0
+
+	local soft_path="$PKG_MNT/${pack_to}/${pkgname}"
+	local bm_name=$(basename $(realpath ${cgz_name}))
+
+	if [ -n "$upstream_tag" ]; then
+		echo "create soft link: ${upstream_tag}.cgz -> ${bm_name}"
+		ln -sf "${bm_name}" "${soft_path}/${upstream_tag}.cgz"
+	fi
+
+	echo "create soft link: latest.cgz -> ${bm_name}"
+	ln -sf "${bm_name}" "${soft_path}/latest.cgz"
+}
 
 build_source_pkg()
 {
@@ -86,22 +101,6 @@ build_source_pkg()
   cgz_name="$PKG_MNT/${pack_to}/${pkgname}/${upstream_commit}.cgz"
   PACMAN=true BUILDDIR=$TMP CARCH=$os_arch PKGEXT=.cgz CGZDEST="$cgz_name" \
     $LKP_SRC/sbin/makepkg -A --check --skippgpcheck --config $LKP_SRC/etc/makepkg.conf 2>&1
-}
-
-create_softlink()
-{
-	[ -e "$cgz_name" ] || return 0
-
-	local soft_path="$PKG_MNT/${pack_to}/${pkgname}"
-	local bm_name=$(basename $(realpath ${cgz_name}))
-
-	if [ -n "$upstream_tag" ]; then
-		echo "create soft link: ${upstream_tag}.cgz -> ${bm_name}"
-		ln -sf "${bm_name}" "${soft_path}/${upstream_tag}.cgz"
-	fi
-
-	echo "create soft link: latest.cgz -> ${bm_name}"
-	ln -sf "${bm_name}" "${soft_path}/latest.cgz"
 }
 
 check_vars
