@@ -20,5 +20,10 @@ do
 		echo $subtest | grep suspend && continue
 
 		log_cmd build/tests/$testcase --run-subtest $subtest 2>&1
+
+		# #define IGT_EXIT_ABORT 112
+		# Exit status indicating a severe test/enviroment failure, any continued
+		# testing past this point can yeild unexpected reasults and is not recommended
+		[ $? -eq 112 ] && exit 112
 	done
 done < $test_file
