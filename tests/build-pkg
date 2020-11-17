@@ -101,10 +101,11 @@ build_source_pkg()
   cgz_name="$PKG_MNT/${pack_to}/${pkgname}/${upstream_commit}.cgz"
   PACMAN=true BUILDDIR=$TMP CARCH=$os_arch PKGEXT=.cgz CGZDEST="$cgz_name" \
     $LKP_SRC/sbin/makepkg -A --check --skippgpcheck --config $LKP_SRC/etc/makepkg.conf 2>&1
+
+  [ "$?" == 0 ] && create_softlink
 }
 
 check_vars
 mount_dest
 request_pkg
 build_source_pkg
-create_softlink
