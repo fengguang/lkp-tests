@@ -181,6 +181,11 @@ module Git
         tag || sha[0..9]
       end
 
+      def fixed?(branch, commit)
+        short_sha = sha[0..7]
+        !@base.command("log --grep 'Fixes:' #{sha}..#{branch} | grep \"Fixes: #{short_sha}\"").empty?
+      end
+
       def reverted?(branch)
         reverted_subject = 'Revert "' + subject + '"'
         !@base.command("log --format=%s #{sha}..#{branch} | grep -x -m1 '#{reverted_subject}'").empty?
