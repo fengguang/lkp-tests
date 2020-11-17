@@ -20,7 +20,7 @@ separate_test()
 	cd $srcdir/igt-gpu-tools
 	sed -n '2p' build/tests/test-list.txt | tr " " "\n" | grep -v amdgpu | sort > all-tests
 
-	split all-tests -d -n25 group-
+	$LKP_SRC/tools/split-tests all-tests 25 group-
 }
 
 package()
