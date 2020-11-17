@@ -21,8 +21,9 @@ while (line = STDIN.gets)
   line = line.resolve_invalid_bytes
 
   case line
-  when /^(.*) build\/tests\/(.*)$/
+  when /^(.*) build\/tests\/([^\s]+)/
     # 2020-10-27 01:29:45 build/tests/core_getstats
+    # 2020-11-17 03:02:16 build/tests/fbdev --run-subtest info
     next unless valid_datetime?($1)
 
     test_name = $2
