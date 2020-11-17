@@ -97,6 +97,10 @@ elif [ "$run_job_exit_code" != 0 ]; then
 		else
 			set_job_state 'failed'
 		fi
+
+		source $job_script
+		[ "$(type -t on_fail)" = "function" ] && $LKP_DEBUG_PREFIX $job_script on_fail
+
 elif [ -f '/var/log/wtmp' ] && has_cmd last && last -n1 | grep -q -E '(pts/|tty)[0-9].*(still logged in)'; then
 	set_job_state 'disturbed'
 	disturbed=1
