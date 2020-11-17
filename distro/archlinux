@@ -1,0 +1,111 @@
+#!/bin/bash
+# SPDX-License-Identifier: GPL-2.0
+
+shopt -s nullglob
+
+. $LKP_SRC/lib/install.sh
+. $LKP_SRC/distro/common
+. $LKP_SRC/lib/debug.sh
+
+pack_benchmark_deps()
+{
+	setup_proxy
+
+	for BM_NAME in $benchmark
+	do
+
+		cleanup_downloaded_pkgs
+
+		check_shared_package $BM_NAME
+
+		packages=$(echo $(get_dependency_packages $DISTRO $BM_NAME))
+
+		if pacman_download $packages; then
+			pacman_pack
+		else
+			echo "failed to pack-deps $BM_NAME" >&2
+		fi
+	done
+}
+
+cleanup_downloaded_pkgs()
+{
+	[[ -d /var/cache/pacman/pkg/ ]] && {
+		find_pacman_package | xargs rm -f
+	}
+}
+
+find_pacman_package()
+{
+	find /var/cache/pacman/pkg/ -type f -name "*.pkg.tar*"
+}
+
+pacman_download()
+{
+	echo "pacman -Sw --noconfirm $*"
+	pacman -Sw --noconfirm "$@"
+}
+
+pacman_pack()
+{
+	local target_dir=/opt/pkgs
+	local date=$(date +"%Y%m%d")
+
+	local downloaded_pkgs=$(find_pacman_package)
+
+	[ "$downloaded_pkgs" ] || return
+
+	mkdir -p $target_dir
+
+	mv $downloaded_pkgs $target_dir
+
+	find $target_dir | cpio --quiet -o -H newc --owner=root.root | gzip -n -9 >$pack_to/${BM_NAME}_$date.cgz
+
+	ln -sf ${BM_NAME}_$date.cgz $pack_to/${BM_NAME}.cgz || return
+	chown .lkp $pack_to/${BM_NAME}_$date.cgz $pack_to/${BM_NAME}.cgz || return
+	echo package installed to $pack_to/${BM_NAME}.cgz
+
+	ls $target_dir/*.pkg.tar* > $pack_to/.${BM_NAME}.packages
+
+	rm -rf $target_dir
+}
+
+distro_install_depends()
+{
+	local script
+	local bm="$1"
+	local scripts=$(find $LKP_SRC/distro/depends/ -name "$bm" -o -name "${bm}.[0-9]")
+
+	for script in $scripts
+	do
+		script=$(basename $script)
+		packages=$(get_dependency_packages $DISTRO $script)
+
+		[ -z "$packages" ] && continue
+
+		echo install packages for $script: $packages
+
+		for pkg in $packages
+		do
+			pacman -Qqs --noconfirm $pkg || pacman -Sy --noconfirm $pkg
+		done
+	done
+}
+
+pack_benchmark()
+{
+	setup_proxy
+
+	distro_install_depends lkp-dev
+
+	# Process each benchmark
+	for BM_NAME in $benchmark
+	do
+		distro_install_depends $BM_NAME-dev || continue
+
+		echo $LKP_SRC/sbin/pack -d $DISTRO -f -c -s $PKG_MNT/$pack_to $BM_NAME
+		(
+			$LKP_SRC/sbin/pack -d $DISTRO -f -c -s $PKG_MNT/$pack_to $BM_NAME
+		)
+	done
+}
