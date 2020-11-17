@@ -16,12 +16,26 @@ do
 	sed -i "/$test/d" test_file
 done
 
+denylist=$BENCHMARK_ROOT/igt/tests/intel-ci/blacklist.txt
+cat $denylist | grep -v -e ^# -e ^$ > $(dirname $denylist)/denylist
+denylist=$(dirname $denylist)/denylist
+
 while read testcase
 do
 	subtests=$(build/tests/$testcase --list-subtest)
 	for subtest in ${subtests[@]}
 	do
-		echo $subtest | grep suspend && continue
+		full_test_name=igt@$testcase@$subtest
+
+		echo $subtest | grep -q -e suspend -e hibernate && {
+			echo "LKP SKIP $full_test_name"
+			continue
+		}
+
+		echo $full_test_name | grep -q -E -f $denylist && {
+			echo "LKP SKIP $full_test_name"
+			continue
+		}
 
 		log_cmd build/tests/$testcase --run-subtest $subtest 2>&1
 
