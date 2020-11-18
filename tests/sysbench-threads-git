@@ -10,7 +10,7 @@
 : "${thread_locks:=2}"
 
 args=(
- --threads=$nr_threads
+ --num-threads=$nr_threads
  --thread-yields=$thread_yields
  --thread-locks=$thread_locks
 )
