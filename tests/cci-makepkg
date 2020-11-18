@@ -88,13 +88,22 @@ update_shared_pkg()
 	echo "update shared pkg link ${benchmark}.cgz -> ${bm_name}/${cgz_name}"
 }
 
+centos_update_gcc()
+{
+	if grep -sqF "CentOS Linux release 7" /etc/centos-release; then
+		[ "$os_mount" = "initramfs" ] && {
+			yum install -y centos-release-scl-rh
+			yum install -y "devtoolset-8-gcc*"
+		}
+		source /opt/rh/devtoolset-8/enable
+	fi
+}
+
 [ -n "$PKGBUILD_TAG" ] && download_pkgfile
 
 distro_install_depends lkp-dev
 
-[ $os = "centos" ] &&
-grep -sqF "CentOS Linux release 7" /etc/centos-release &&
-source /opt/rh/devtoolset-8/enable
+[ "$os" = "centos" ] && centos_update_gcc
 
 distro_install_depends ${benchmark}-dev
 
