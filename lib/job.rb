@@ -337,7 +337,7 @@ class Job
     lab_hosts_file = get_lab_hosts_file
     return lab_hosts_file if lab_hosts_file
 
-    hosts_file_name = @job['tbox_group'].split('--')[0]
+    hosts_file_name = @job['tbox_group'].split(/\.|--/)[0]
     hosts_file = "#{LKP_SRC}/hosts/#{hosts_file_name}"
     return hosts_file if File.file?(hosts_file)
 
