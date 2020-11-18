@@ -39,12 +39,29 @@ cd $LKP_SRC/pkg/$benchmark || die "pkg is empty"
 	mount -t cifs -o guest,vers=1.0,noacl,nouser_xattr //$LKP_SERVER$PKG_MNT $PKG_MNT || die "Failed to run mount"
 }
 
+curl_pkgfile()
+{
+	curl -sS -H 'Content-Type: Application/json' -XPOST "$LKP_SERVER"':8100/git_command' \
+	-d '{"git_repo": "'$1'", "git_command": ["git-show", "HEAD:'$2'"]}' -o "$2"
+}
+
+download_pkgfile()
+{
+	local pkg_tag_file="PKGBUILD-$PKGBUILD_TAG"
+
+	curl_pkgfile "pkg/$benchmark" "$pkg_tag_file"
+
+	[ -f "$pkg_tag_file" ] || die "$pkg_tag_file not exist"
+	[ -s "$pkg_tag_file" ] || die "$pkg_tag_file is empty"
+}
+
 get_pkg_info()
 {
 	var=$1
 	pkg_dir=${2:-.}
 	(
 		. $pkg_dir/PKGBUILD
+		[ -n "$PKGBUILD_TAG" ] && . $pkg_dir/PKGBUILD-$PKGBUILD_TAG
 		eval echo '$'$var
 	)
 }
@@ -70,6 +87,8 @@ update_shared_pkg()
 	ln -sf latest.cgz "$sync_dest/${benchmark}.cgz" || return
 	echo "update shared pkg link ${benchmark}.cgz -> ${bm_name}/${cgz_name}"
 }
+
+[ -n "$PKGBUILD_TAG" ] && download_pkgfile
 
 distro_install_depends lkp-dev
 
