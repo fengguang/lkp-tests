@@ -1,0 +1,32 @@
+2020-11-17 14:30:58 iozone -r 256k -s 4g -i 0 -i 1 -i 2 -f /fs/sda/iozonetest &
+2020-11-17 14:30:58 wait
+	Iozone: Performance Test of File I/O
+	        Version $Revision: 3.479 $
+		Compiled for 64 bit mode.
+		Build: linux 
+
+	Contributors:William Norcott, Don Capps, Isom Crawford, Kirby Collins
+	             Al Slater, Scott Rhine, Mike Wisner, Ken Goss
+	             Steve Landherr, Brad Smith, Mark Kelly, Dr. Alain CYR,
+	             Randy Dunlap, Mark Montague, Dan Million, Gavin Brebner,
+	             Jean-Marc Zucconi, Jeff Blomberg, Benny Halevy, Dave Boone,
+	             Erik Habbinga, Kris Strecker, Walter Wong, Joshua Root,
+	             Fabrice Bacchella, Zhenghua Xue, Qin Li, Darren Sawyer,
+	             Vangel Bojaxhi, Ben England, Vikentsi Lapa,
+	             Alexey Skidanov.
+
+	Run began: Tue Nov 17 14:30:58 2020
+
+	Record Size 256 kB
+	File size set to 4194304 kB
+	Command line used: iozone -r 256k -s 4g -i 0 -i 1 -i 2 -f /fs/sda/iozonetest
+	Output is in kBytes/sec
+	Time Resolution = 0.000001 seconds.
+	Processor cache size set to 1024 kBytes.
+	Processor cache line size set to 32 bytes.
+	File stride size set to 17 * record size.
+                                                              random    random     bkwd    record    stride                                    
+              kB  reclen    write  rewrite    read    reread    read     write     read   rewrite      read   fwrite frewrite    fread  freread
+         4194304     256 14257802 15088999  8516076  8375138  5221373  5382018                                                                
+
+iozone test complete.
