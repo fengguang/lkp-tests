@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+# General statistics:
+#     total time:                          0.2671s
+#     total number of events:              10000
+#     total time taken by event execution: 0.3971s
+#     response time:
+#           min:                           0.04ms
+
+$stdin.each_line do |line|
+  next unless line =~ /^\s+total time:\s+([0-9.]+)/
+
+  puts "total time: #{$1.to_f}s"
+end
