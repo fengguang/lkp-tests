@@ -21,19 +21,19 @@ def traverse_file(output_dir)
 end
 
 describe 'submit job spec' do
-  Dir.glob("#{LKP_SRC}/spec/submit/*.yaml").each do |yaml_file|
-    job_name = File.basename(yaml_file, '.yaml')
-    output_dir = "#{LKP_SRC}/spec/submit/#{job_name}"
-    it 'save atomic yaml' do
-      submit_cmd = [
-        "#{LKP_SRC}/sbin/submit",
-        '-o', output_dir,
-        '-s', 'lab: spec_lab',
-        '-s', 'testbox: vm-2p8g--spec_submit',
-        yaml_file
-      ]
-      system(*submit_cmd)
-      traverse_file(output_dir)
+    it 'link jobs spec' do
+      Dir.glob("#{LKP_SRC}/spec/submit/link_jobs/*.yaml").each do |yaml_file|
+        job_name = File.basename(yaml_file, '.yaml')
+        output_dir = "#{LKP_SRC}/spec/submit/link_jobs/#{job_name}"
+        submit_cmd = [
+          "#{LKP_SRC}/sbin/submit",
+          '-o', output_dir,
+          '-s', 'lab: spec_lab',
+          '-s', 'testbox: vm-2p8g--spec_submit',
+          yaml_file
+        ]
+        system(*submit_cmd)
+        traverse_file(output_dir)
     end
   end
 end
