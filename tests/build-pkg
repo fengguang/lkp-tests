@@ -7,7 +7,7 @@
 # - upstream_repo
 # - upstream_url
 # - upstream_commit
-# - upstream_tag
+# - PKGBUILD_TAG
 
 ## makepkg is a script that automates the building of packages; it can download and validate source files,
 ## check dependencies, configure build-time settings, compile the sources, install into a temporary root,
@@ -61,6 +61,15 @@ request_pkg()
     get_pkgfile "${pkgrepo}" "$pkgfile"
   done
 
+  # download PKGBUILD-$tag
+  benchmark="${upstream_repo##*/}"
+  benchmark="${benchmark%.git}"
+  [ -n "$PKGBUILD_TAG" ] && {
+	get_pkgfile "pkg/$benchmark" "PKGBUILD-$PKGBUILD_TAG"
+	[ -f "PKGBUILD-$PKGBUILD_TAG" ] || die "PKGBUILD-$PKGBUILD_TAG not exist"
+	[ -s "PKGBUILD-$PKGBUILD_TAG" ] || die "PKGBUILD-$PKGBUILD_TAG is empty"
+  }
+
   [ -f PKGBUILD ] || die "PKGBUILD not exist"
   [ -s PKGBUILD ] || die "PKGBUILD is empty"
 }
@@ -72,9 +81,9 @@ create_softlink()
 	local soft_path="$PKG_MNT/${pack_to}/${pkgname}"
 	local bm_name=$(basename $(realpath ${cgz_name}))
 
-	if [ -n "$upstream_tag" ]; then
-		echo "create soft link: ${upstream_tag}.cgz -> ${bm_name}"
-		ln -sf "${bm_name}" "${soft_path}/${upstream_tag}.cgz"
+	if [ -n "$PKGBUILD_TAG" ]; then
+		echo "create soft link: ${PKGBUILD_TAG}.cgz -> ${bm_name}"
+		ln -sf "${bm_name}" "${soft_path}/${PKGBUILD_TAG}.cgz"
 	fi
 
 	echo "create soft link: latest.cgz -> ${bm_name}"
@@ -96,6 +105,9 @@ build_source_pkg()
 
 	upstream_source="source=(\"${repo_dir}git://${LKP_SERVER}/${upstream_repo}#commit=${upstream_commit}\")"
 	sed -i "s|^source=.*|${upstream_source}|g" PKGBUILD
+	[ -n "$PKGBUILD_TAG" ] && {
+		sed -i "s|^source=.*|${upstream_source}|g" "PKGBUILD-$PKGBUILD_TAG"
+	}
   }
 
   cgz_name="$PKG_MNT/${pack_to}/${pkgname}/${upstream_commit}.cgz"
