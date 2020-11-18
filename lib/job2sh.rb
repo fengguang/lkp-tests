@@ -363,14 +363,14 @@ class Job2sh < Job
     out_line "}\n\n"
   end
 
-  def sh_on_state(job = nil)
+  def sh_on_state(state = nil, job = nil)
     @script_lines = []
 
     @programs = available_programs(:workload_elements)
 
     job ||= (@jobx || @job).clone
 
-    if job.include?('on_fail')
+    if state == 'on_fail' && job.include?('on_fail')
 
       @cur_func = :run_job
 
