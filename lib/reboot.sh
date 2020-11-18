@@ -2,5 +2,9 @@
 
 reboot_tbox()
 {
-	reboot
+	if [ "${os}" = "archlinux" ]; then
+		systemctl reboot
+	else
+		reboot
+	fi
 }
