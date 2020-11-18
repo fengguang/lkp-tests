@@ -393,6 +393,8 @@ fixup_vm()
 	}
 
 	sed -i 's/.\/compaction_test/echo LKP SKIP #.\/compaction_test/' vm/run_vmtests
+	# ./userfaultfd anon 128 32
+	sed -i 's/.\/userfaultfd anon .*$/echo LKP SKIP #.\/userfaultfd/' vm/run_vmtests
 }
 
 platform_is_skylake_or_snb()
