@@ -1,0 +1,10 @@
+suite: ltp
+testcase: ltp
+category: functional
+
+need_modules: true
+need_memory: 4G
+
+ltp:
+  test:
+  - cve

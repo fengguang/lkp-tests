@@ -30,6 +30,7 @@ ltp:
 #  - net_stress.ipsec_udp
 #  - net_stress.multicast
 #  - net_stress.route
+  - syscalls-ipc-msgstress
 
 ---
 need_memory: 8G
