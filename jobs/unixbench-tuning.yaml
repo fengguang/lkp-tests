@@ -1,0 +1,10 @@
+suite: unixbench-tuning
+category: benchmark
+
+runtime: 300s
+
+nr_task:
+  - 1
+  - 96
+
+unixbench-tuning:
