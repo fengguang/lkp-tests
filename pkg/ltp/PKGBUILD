@@ -85,10 +85,11 @@ install_numactl()
 
 build()
 {
+	split_syscalls_tests
+
 	cd $srcdir/$pkgname
 
 	benchmark_path="${pkgdir}/${benchmark_path}"
-
 	build_ltp "${benchmark_path}" || exit
 
 	cd ../tpm-emulator || exit
@@ -102,6 +103,75 @@ build()
 		build_rusers || exit
 	}
 	return 0
+}
+
+hide()
+{
+	mv $1 .$1
+}
+
+split_syscalls_tests()
+{
+	cd $srcdir/$pkgname || return
+
+	local timer_tests
+	timer_tests=$(grep -lr "sample = sample_fn" ./) || return
+
+	cd $srcdir/$pkgname/runtest || return
+
+	for timer_test in $timer_tests; do
+		timer_test=${timer_test##*/}
+		timer_test=${timer_test%%.*}
+		grep "^$timer_test" syscalls >> syscalls-timer
+	done
+
+	grep "^tgkill" syscalls >> syscalls-tgkill || return
+
+	grep -v -f syscalls-timer -f syscalls-tgkill syscalls > syscalls-rest || return
+	$LKP_SRC/tools/split-tests syscalls-rest 8 syscalls-
+	hide syscalls-rest
+	hide syscalls
+}
+
+split_tests()
+{
+	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+
+	cd $benchmark_path/runtest || return
+
+	$LKP_SRC/tools/split-tests dio 4 dio-
+	hide dio
+
+	$LKP_SRC/tools/split-tests fs_readonly 4 fs_readonly-
+	hide fs_readonly
+
+	$LKP_SRC/tools/split-tests fs 4 fs-
+	hide fs
+
+	$LKP_SRC/tools/split-tests crashme 2 crashme-
+	hide crashme
+
+	$LKP_SRC/tools/split-tests scsi_debug.part1 4 scsi_debug.part1-
+	hide scsi_debug.part1
+
+	# net_stress.appl
+	grep "ssh" net_stress.appl > net_stress.appl-ssh || return
+	grep "dns" net_stress.appl > net_stress.appl-dns || return
+	grep "http" net_stress.appl > net_stress.appl-http || return
+	grep "ftp" net_stress.appl > net_stress.appl-ftp || return
+	grep -v -e ^# -e ^$ -e ssh -e dns -e http -e ftp net_stress.appl && return 1
+	hide net_stress.appl
+
+	# syscalls-ipc
+	grep "msgstress" syscalls-ipc > syscalls-ipc-msgstress
+	grep -v "msgstress" syscalls-ipc > syscalls-ipc-00
+	hide syscalls-ipc
+
+	# mm
+	grep -e oom mm > mm-oom || return
+	grep -e min_free_kbytes mm > mm-min_free_kbytes || return
+	grep -v -e oom -e min_free_kbytes mm > mm-00 || return
+	hide mm
 }
 
 package()
@@ -122,5 +192,8 @@ package()
 		cd ../rusers || exit
 		install_rusers || exit
 	}
+
+	split_tests
+
 	return 0
 }

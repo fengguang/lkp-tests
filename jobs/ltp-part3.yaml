@@ -1,0 +1,26 @@
+suite: ltp
+testcase: ltp
+category: functional
+
+need_modules: true
+need_memory: 4G
+
+ltp:
+  test:
+  - fsx # stress test groups, but will not take too long time
+  - crypto
+  # - io_cd # require special peripheral(/dev/cdrom and media)
+  # - io_floppy # ignore floppy tests
+  - fs_bind
+  - kernel_misc
+  - net.ipv6
+  - net.multicast
+  - net.tcp_cmds
+  - cve
+  - scsi_debug.part1-00
+  - scsi_debug.part1-01
+  - scsi_debug.part1-02
+  - scsi_debug.part1-03
+  - syscalls-ipc-00
+  - syscalls-ipc-msgstress
+  - tracing

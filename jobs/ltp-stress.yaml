@@ -35,8 +35,7 @@ ltp:
 need_memory: 8G
 ltp:
   test:
-  - net_stress.appl-00
-  - net_stress.appl-01
-  - net_stress.appl-02
-  - net_stress.appl-03
-  - net_stress.appl-04
+  - net_stress.appl-ssh
+  - net_stress.appl-dns
+  - net_stress.appl-http
+  - net_stress.appl-ftp

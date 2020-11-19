@@ -4,7 +4,7 @@ category: functional
 
 need_modules: true
 
-need_memory: 3G
+need_memory: 4G
 
 disk: 1HDD
 fs:
@@ -26,13 +26,17 @@ ltp:
   - fs_perms_simple
   - fsx
   - ltp-aiodio.part4
-  - syscalls_part1
-  - syscalls_part3
-  - syscalls_part4
-  - syscalls_part5
+  - syscalls-00
+  - syscalls-01
+  - syscalls-02
+  - syscalls-03
+  - syscalls-04
+  - syscalls-05
+  - syscalls-06
+  - syscalls-07
 
 ---
 fs:
 ltp:
   test:
-  - mm-01
+  - mm-00

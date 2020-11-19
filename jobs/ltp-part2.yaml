@@ -1,0 +1,26 @@
+suite: ltp
+testcase: ltp
+category: functional
+
+need_modules: true
+need_memory: 4G
+
+ltp:
+  test:
+  - ltp-aiodio.part1
+  - ltp-aiodio.part3
+  - math
+  - net.ipv6_lib
+  - net.rpc
+  - net.sctp
+  - nptl
+  - numa
+  - power_management_tests
+  # - power_management_tests_exclusive # system is not a multi socket & multi core & hyper-threaded, there is no proper test environment
+  - pty
+  - net.rpc_tests
+  - sched
+  - securebits
+  # - smack # need CONFIG_SECURITY_SMACK=y and CONFIG_SECURITY_SELINUX not set, in test kconfig, it is just the opposite
+  - net.tirpc_tests
+  - tpm_tools
