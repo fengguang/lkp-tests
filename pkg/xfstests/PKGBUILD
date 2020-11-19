@@ -52,10 +52,16 @@ generate_special_require_tests()
 {
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
 	cd ${srcdir}/xfstests-dev || return
+
 	git grep -l "_require_realtime" | grep tests/xfs | awk -F/ '{ print $3 }' > $benchmark_path/tests/xfs-external
 	git grep -L "_require_realtime" $(git grep -l "_require_scratch_reflink" $(git grep -l "_require_xfs_scratch_rmapbt" | grep tests/xfs))  | awk -F/ '{print $3}' > $benchmark_path/tests/xfs-reflink-rmapbt
 	git grep -L "_require_realtime" $(git grep -L "_require_scratch_reflink" $(git grep -l "_require_xfs_scratch_rmapbt" | grep tests/xfs))  | awk -F/ '{print $3}' > $benchmark_path/tests/xfs-rmapbt
 	git grep -L "_require_realtime" $(git grep -L "_require_xfs_scratch_rmapbt" $(git grep -l "_require_scratch_reflink" | grep tests/xfs))  | awk -F/ '{print $3}' > $benchmark_path/tests/xfs-reflink
+
+	# these tests requires a valid $LOGWRITES_DEV
+	# rli9 FIXME consider other fs that has this requirement
+	grep -l "_require_log_writes$" -r btrfs | cut -d/ -f2 > $benchmark_path/tests/btrfs-logwrites
+	grep -l "_require_log_writes$" -r generic | cut -d/ -f2 > $benchmark_path/tests/generic-logwrites
 }
 
 build()
