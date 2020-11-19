@@ -124,7 +124,7 @@ build()
 	echo build_ltp
 	build_ltp "${pkgdir}/lkp/benchmarks/${pkgname}" || return
 
-	build_tpm_emulator || return
+	# build_tpm_emulator || return
 	build_numactl || return
 
 	[ "$DISTRO" = "debian" -o "$DISTRO" = "ubuntu" ] && {
@@ -211,8 +211,7 @@ package()
 	cd $srcdir/$pkgname
 	install_ltp "${pkgdir}/lkp/benchmarks/${pkgname}" || return
 
-	install_tpm_emulator || return
-
+	# install_tpm_emulator || return
 	install_numactl || return
 
 	[ "$DISTRO" = "debian" -o "$DISTRO" = "ubuntu" ] && {
