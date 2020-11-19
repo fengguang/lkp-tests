@@ -35,4 +35,4 @@ do
 	group_index=$(printf "%02d" $group_index)
 
 	echo $test >> $group_name_prefix$group_index
-done < $tests_file
+done <<< $(cat $tests_file | grep -v -e ^# -e ^$)
