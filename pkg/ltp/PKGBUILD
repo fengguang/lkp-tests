@@ -10,10 +10,12 @@ md5sums=('SKIP' 'SKIP' 'SKIP' 'SKIP')
 
 . $LKP_SRC/lib/tests/ltp.sh
 
-benchmark_path="lkp/benchmarks/${pkgname}"
-
 build_rusers()
 {
+	cd $srcdir/rusers || return
+
+	benchmark_path=${pkgdir}/lkp/benchmarks/${pkgname}
+
 	local branch=$(git branch -a | grep /c | tail -1 | awk -F/ '{print $NF}')
 	git checkout "$branch" || return
 
@@ -31,31 +33,39 @@ build_rusers()
 		patch -f -p0 < SOURCES/$p
 	done
 
-	cd netkit-rusers-$rusers_version
+	cd netkit-rusers-$rusers_version || return
 	./configure --prefix="${benchmark_path}"/netkit-rusers
+
 	cd rup
-	make || return
-	cd ../../
+	make
 }
 
 build_tpm_emulator()
 {
+	cd $srcdir/tpm-emulator || return
+
 	# the lastest tpm-emulator is currupted so use old one
 	git reset --hard 0f4579e
 	# remove Werror to use gcc-7
-	sed -i "s/-Werror//g" CMakeLists.txt
+	sed -i "s/-Werror//g" CMakeLists.txt || return
 	# don't build kernel module
-	sed -i "s/add_subdirectory(tpmd_dev)/#add_subdirectory(tpmd_dev)/g" CMakeLists.txt
-	mkdir build && cd build
-	cmake ..
+	sed -i "s/add_subdirectory(tpmd_dev)/#add_subdirectory(tpmd_dev)/g" CMakeLists.txt || return
+
+	mkdir build || return
+
+	cd build
+	cmake .. || return
 	make || return
 	make install || return
-	make package || return
-	cd ..
+	make package
 }
 
 build_numactl()
 {
+	cd $srcdir/numactl || return
+
+	benchmark_path=${pkgdir}/lkp/benchmarks/${pkgname}
+
 	autoreconf -f -i
 	./configure --prefix="${benchmark_path}"/testcases/bin/numactl
 	make
@@ -63,6 +73,8 @@ build_numactl()
 
 install_rusers()
 {
+	cd $srcdir/rusers || return
+
 	mkdir -p "${benchmark_path}"/netkit-rusers/{bin,man/man1}
 
 	local rusers_version=$(grep ^Version: SPECS/rusers.spec | awk '{print $2}')
@@ -72,12 +84,20 @@ install_rusers()
 
 install_tpm_emulator()
 {
+	cd $srcdir/tpm-emulator || return
+
+	benchmark_path=${pkgdir}/lkp/benchmarks/${pkgname}
+
 	mkdir -p "${benchmark_path}"/tpm-emulater
 	cp build/*.zip "${benchmark_path}"/tpm-emulater
 }
 
 install_numactl()
 {
+	cd $srcdir/numactl || return
+
+	benchmark_path=${pkgdir}/lkp/benchmarks/${pkgname}
+
 	make install
 	ln -sf "${benchmark_path}"/testcases/bin/numactl/bin/numademo "${benchmark_path}"/testcases/bin/numademo
 	ln -sf "${benchmark_path}"/testcases/bin/numactl/bin/memhog "${benchmark_path}"/testcases/bin/memhog
@@ -87,21 +107,16 @@ build()
 {
 	split_syscalls_tests
 
-	cd $srcdir/$pkgname
+	cd $srcdir/$pkgname || return
+	build_ltp "${pkgdir}/lkp/benchmarks/${pkgname}" || return
 
-	benchmark_path="${pkgdir}/${benchmark_path}"
-	build_ltp "${benchmark_path}" || exit
-
-	cd ../tpm-emulator || exit
-	build_tpm_emulator || exit
-
-	cd ../numactl || exit
-	build_numactl || exit
+	build_tpm_emulator || return
+	build_numactl || return
 
 	[ "$DISTRO" = "debian" -o "$DISTRO" = "ubuntu" ] && {
-		cd ../rusers || exit
-		build_rusers || exit
+		build_rusers || return
 	}
+
 	return 0
 }
 
@@ -136,7 +151,6 @@ split_syscalls_tests()
 split_tests()
 {
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-
 	cd $benchmark_path/runtest || return
 
 	$LKP_SRC/tools/split-tests dio 4 dio-
@@ -163,8 +177,8 @@ split_tests()
 	hide net_stress.appl
 
 	# syscalls-ipc
-	grep "msgstress" syscalls-ipc > syscalls-ipc-msgstress
-	grep -v "msgstress" syscalls-ipc > syscalls-ipc-00
+	grep "msgstress" syscalls-ipc > syscalls-ipc-msgstress || return
+	grep -v "msgstress" syscalls-ipc > syscalls-ipc-00 || return
 	hide syscalls-ipc
 
 	# mm
@@ -177,23 +191,17 @@ split_tests()
 package()
 {
 	cd $srcdir/$pkgname
+	install_ltp "${pkgdir}/lkp/benchmarks/${pkgname}" || return
 
-	benchmark_path="${pkgdir}/${benchmark_path}"
+	install_tpm_emulator || return
 
-	install_ltp "${benchmark_path}" || exit
-
-	cd ../tpm-emulator || exit
-	install_tpm_emulator || exit
-
-	cd ../numactl || exit
-	install_numactl || exit
+	install_numactl || return
 
 	[ "$DISTRO" = "debian" -o "$DISTRO" = "ubuntu" ] && {
-		cd ../rusers || exit
-		install_rusers || exit
+		install_rusers || return
 	}
 
-	split_tests
+	split_tests || return
 
 	return 0
 }
