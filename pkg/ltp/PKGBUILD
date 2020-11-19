@@ -12,6 +12,8 @@ md5sums=('SKIP' 'SKIP' 'SKIP' 'SKIP')
 
 build_rusers()
 {
+	echo build_rusers
+
 	cd $srcdir/rusers || return
 
 	benchmark_path=${pkgdir}/lkp/benchmarks/${pkgname}
@@ -42,6 +44,8 @@ build_rusers()
 
 build_tpm_emulator()
 {
+	echo build_tpm_emulator
+
 	cd $srcdir/tpm-emulator || return
 
 	# the lastest tpm-emulator is currupted so use old one
@@ -62,6 +66,8 @@ build_tpm_emulator()
 
 build_numactl()
 {
+	echo build_numactl
+
 	cd $srcdir/numactl || return
 
 	benchmark_path=${pkgdir}/lkp/benchmarks/${pkgname}
@@ -73,6 +79,8 @@ build_numactl()
 
 install_rusers()
 {
+	echo install_rusers
+
 	cd $srcdir/rusers || return
 
 	mkdir -p "${benchmark_path}"/netkit-rusers/{bin,man/man1}
@@ -84,6 +92,8 @@ install_rusers()
 
 install_tpm_emulator()
 {
+	echo install_tpm_emulator
+
 	cd $srcdir/tpm-emulator || return
 
 	benchmark_path=${pkgdir}/lkp/benchmarks/${pkgname}
@@ -94,6 +104,8 @@ install_tpm_emulator()
 
 install_numactl()
 {
+	echo install_numactl
+
 	cd $srcdir/numactl || return
 
 	benchmark_path=${pkgdir}/lkp/benchmarks/${pkgname}
@@ -108,6 +120,8 @@ build()
 	split_syscalls_tests
 
 	cd $srcdir/$pkgname || return
+
+	echo build_ltp
 	build_ltp "${pkgdir}/lkp/benchmarks/${pkgname}" || return
 
 	build_tpm_emulator || return
@@ -127,6 +141,8 @@ hide()
 
 split_syscalls_tests()
 {
+	echo split_syscalls_tests
+
 	cd $srcdir/$pkgname || return
 
 	local timer_tests
@@ -150,6 +166,8 @@ split_syscalls_tests()
 
 split_tests()
 {
+	echo split_tests
+
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
 	cd $benchmark_path/runtest || return
 
