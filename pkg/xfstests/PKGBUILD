@@ -43,6 +43,11 @@ generate_exclude_files()
 	done
 }
 
+hide()
+{
+	mv $1 .$1
+}
+
 generate_special_require_tests()
 {
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
@@ -51,19 +56,14 @@ generate_special_require_tests()
 	git grep -L "_require_realtime" $(git grep -l "_require_scratch_reflink" $(git grep -l "_require_xfs_scratch_rmapbt" | grep tests/xfs))  | awk -F/ '{print $3}' > $benchmark_path/tests/xfs-reflink-rmapbt
 	git grep -L "_require_realtime" $(git grep -L "_require_scratch_reflink" $(git grep -l "_require_xfs_scratch_rmapbt" | grep tests/xfs))  | awk -F/ '{print $3}' > $benchmark_path/tests/xfs-rmapbt
 	git grep -L "_require_realtime" $(git grep -L "_require_xfs_scratch_rmapbt" $(git grep -l "_require_scratch_reflink" | grep tests/xfs))  | awk -F/ '{print $3}' > $benchmark_path/tests/xfs-reflink
-
-	cd $benchmark_path/tests
-	$LKP_SRC/tools/split-tests xfs-reflink 20 xfs-reflink-
-	rm -f xfs-reflink
 }
 
 build()
 {
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-	cd $srcdir
-	mkdir -p ${benchmark_path}
 	mkdir -p ${benchmark_path}/tests
 
+	cd $srcdir
 	build_install_xfstests || return
 	build_install_f2fs_tools
 }
@@ -114,6 +114,9 @@ split_tests()
 	$LKP_SRC/tools/split-tests ext4-new 20 ext4-group-
 	$LKP_SRC/tools/split-tests udf-new 10 udf-group-
 	$LKP_SRC/tools/split-tests ocfs2-new 10 ocfs2-group-
+
+	$LKP_SRC/tools/split-tests xfs-reflink 20 xfs-reflink-
+	hide xfs-reflink
 }
 
 # Some special tests need to be separated and tested separately
