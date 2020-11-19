@@ -43,7 +43,7 @@ generate_exclude_files()
 	done
 }
 
-generate_xfs_tests()
+generate_special_require_tests()
 {
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
 	cd ${srcdir}/xfstests-dev || return
@@ -74,7 +74,7 @@ package()
 	cp -af $srcdir/xfstests-dev/* $benchmark_path
 
 	generate_exclude_files || return
-	generate_xfs_tests || return
+	generate_special_require_tests || return
 	generate_new_tests || return
 
 	split_tests
