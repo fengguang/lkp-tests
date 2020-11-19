@@ -77,7 +77,7 @@ set_port()
 
 	for i in $(seq 1 10)
 	do
-		port=$(($(date +%s%N)%"$sshr_port_len"+"$sshr_port_base"))
+		port=$(($(date +%s%N)%${sshr_port_len}+${sshr_port_base}))
 		ssh -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes -o TCPKeepAlive=yes \
 		    -Nf -R $port:localhost:22 sshr@"$sshr_ip" -p "$sshr_port" &>/dev/null
 		[ $? -eq 0 ] && return
