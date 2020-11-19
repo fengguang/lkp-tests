@@ -187,7 +187,7 @@ set_env()
 		[ "$fs" = "xfs" ] && unset MKFS_OPTIONS
 	fi
 
-	[ "$test" = "ext4-029" ] && {
+	[ "$test" = "generic-logdev" or "$test" = "ext4-logdev" or "$test" = "xfs-logdev" ] && {
 		log_eval export USE_EXTERNAL=yes
 
 		# create a 100M partition for log, avoid test cost too much time
