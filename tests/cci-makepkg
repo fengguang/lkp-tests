@@ -90,20 +90,20 @@ update_shared_pkg()
 
 centos_update_gcc()
 {
-	if grep -sqF "CentOS Linux release 7" /etc/centos-release; then
-		[ "$os_mount" = "initramfs" ] && {
-			yum install -y centos-release-scl-rh
-			yum install -y "devtoolset-8-gcc*"
-		}
-		source /opt/rh/devtoolset-8/enable
-	fi
+	grep -sqF "CentOS Linux release 7" /etc/centos-release || return
+
+	[ "$os_mount" = "initramfs" ] && {
+		yum install -y centos-release-scl-rh
+		yum install -y "devtoolset-8-gcc*"
+	}
+	source /opt/rh/devtoolset-8/enable
 }
 
 [ -n "$PKGBUILD_TAG" ] && download_pkgfile
 
 distro_install_depends lkp-dev
 
-[ "$os" = "centos" ] && centos_update_gcc
+centos_update_gcc
 
 distro_install_depends ${benchmark}-dev
 
