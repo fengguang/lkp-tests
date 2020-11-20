@@ -34,6 +34,7 @@ INFO: trying to register non-static key.
 initcall .* returned with .*
 Initiating system reboot
 Initramfs unpacking failed: 
+rootfs image is not initramfs \(invalid magic at start of compressed archive\)
 invoked oom-killer: gfp_mask=0x
 IP-Config: Auto-configuration of network failed
  is exiting with locks still held!
