@@ -181,7 +181,7 @@ module Git
         tag || sha[0..9]
       end
 
-      def fixed?(branch, commit)
+      def fixed?(branch)
         short_sha = sha[0..7]
         !@base.command("log --grep 'Fixes:' #{sha}..#{branch} | grep \"Fixes: #{short_sha}\"").empty?
       end
