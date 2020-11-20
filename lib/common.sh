@@ -85,6 +85,18 @@ cpu_list_ref()
 	echo $cpu_list | cut -d ' ' -f $((n+1))
 }
 
+
+# input: 1-3 output: 3
+# input: 1,3 output: 2
+cpu_list_num()
+{
+	cpu_list=""
+	for cpu in $(expand_cpu_list $1); do
+		cpu_list+="$cpu "
+	done
+	cpu_list_count "$cpu_list"
+}
+
 # if str starts with prefix, output remaining part, otherwise output empty string
 remove_prefix()
 {
