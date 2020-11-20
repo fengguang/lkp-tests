@@ -457,17 +457,33 @@ generate_submit_append_str()
 	echo "os=${iso_os} os_arch=${iso_arch} os_version=${iso_version} os_mount=$1 testbox=$2"
 }
 
-submit_test_job_yaml()
+submit_one_yaml()
 {
-	[ -n ${test_yaml} ] || return 0
-
 	log_info "starting submit ${test_yaml} ..."
 
+	cd "${LKP_SRC}/jobs"
+	[ -f "${test_yaml}" ] || die "cannot find yaml in LKP_SRC/jobs: ${test_yaml}."
+
+	local test_os_mount="$(eval echo "\$${test_num}_os_mount")"
+	local test_testbox="$(eval echo "\$${test_num}_testbox")"
+
+	[ -n "${test_os_mount}" ] || die "cannot find value of var: ${test_num}_os_mount."
+	[ -n "${test_testbox}" ] || die "cannot find value of var: ${test_num}_testbox."
+
+	"${LKP_SRC}/sbin/submit" \
+		$(generate_submit_append_str "${test_os_mount}" "${test_testbox}") \
+		"${test_yaml}"
+
+	log_info "submit ${test_yaml} finished"
+}
+
+submit_yamls()
+{
+	[ -n "$test1_yaml" ] || return 0
+
+	log_info "starting submit test yamls ..."
+
 	[ -d "${LKP_SRC}" ] || die "cannot find value of var: LKP_SRC."
-
-	[ -n "${test_os_mount}" ] || die "cannot find value of var: test_os_mount."
-	[ -n "${test_testbox}" ] || die "cannot find value of var: test_testbox."
-
 	cd "${LKP_SRC}" && {
 		chmod +x ./sbin/install-dependencies.sh
 		./sbin/install-dependencies.sh
@@ -475,17 +491,19 @@ submit_test_job_yaml()
 		generate_global_yaml
 	}
 
-	cd "${LKP_SRC}/jobs" && {
-		[ -f "${test_yaml}" ] ||
-			die "cannot find test yaml in LKP_SRC/jobs.
-				test yaml: ${test_yaml}."
+	local test_yaml_index=1
+	local test_num="test${test_yaml_index}"
+	local test_yaml="$(eval echo "\$${test_num}_yaml")"
 
-		"${LKP_SRC}/sbin/submit" \
-			$(generate_submit_append_str "${test_os_mount}" "${test_testbox}") \
-			"${test_yaml}"
-	}
+	while [ -n "${test_yaml}" ]
+	do
+		submit_one_yaml
+		test_yaml_index=$((${test_yaml_index} +1))
+		test_num="test${test_yaml_index}"
+		test_yaml="$(eval echo "\$${test_num}_yaml")"
+	done
 
-	log_info "submit ${test_yaml} finished"
+	log_info "submit test yamls finished"
 }
 
 ############ post works ############
@@ -525,7 +543,7 @@ main()
 	config_rootfs
 
 	test_rootfs
-	submit_test_job_yaml
+	submit_yamls
 
 	post_works
 }

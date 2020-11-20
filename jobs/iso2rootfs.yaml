@@ -21,6 +21,8 @@ iso2rootfs:
   dailybuild_iso_url_file:
 
   # submit test yaml related fields
-  test_yaml:
-  test_os_mount:
-  test_testbox:
+  ## 1. you can add as many jobs as you like.
+  ## 2. the following three fields is requied for every test job.
+  test1_yaml:
+  test1_os_mount:
+  test1_testbox:
