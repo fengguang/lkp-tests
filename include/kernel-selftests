@@ -29,7 +29,6 @@ need_kconfig:
 - CONFIG_PROVE_LOCKING=y
 % elsif ___.group == "kvm"
 - CONFIG_KVM=y
-- CONFIG_KVM_AMD=y
 - CONFIG_KVM_INTEL=y
 % elsif ___.group == "bpf"
 - CONFIG_BPF=y
