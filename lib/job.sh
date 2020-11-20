@@ -278,7 +278,7 @@ start_daemon()
 		run_program daemon "$@"
 	fi
 
-	sync_cluster_state 'finished'
+	sync_cluster_state 'started'
 	# If failed to start the daemon above, the job will abort.
 	# LKP server on notice of the failed job will abort the other waiting nodes.
 
