@@ -20,20 +20,24 @@ def traverse_file(output_dir)
   end
 end
 
+def submit_job(submit_item)
+  submit_yaml_path = File.join("#{LKP_SRC}/spec/submit", submit_item)
+  Dir.glob("#{submit_yaml_path}/*.yaml").each do |yaml_file|
+  output_dir = File.join(submit_yaml_path, File.basename(yaml_file, '.yaml'))
+    submit_cmd = [
+      "#{LKP_SRC}/sbin/submit",
+      '-o', output_dir,
+      '-s', 'lab: spec_lab',
+      '-s', 'testbox: vm-2p8g--spec_submit',
+      yaml_file
+    ]
+    system(*submit_cmd)
+    traverse_file(output_dir)
+  end
+end
+
 describe 'submit job spec' do
-    it 'link jobs spec' do
-      Dir.glob("#{LKP_SRC}/spec/submit/link_jobs/*.yaml").each do |yaml_file|
-        job_name = File.basename(yaml_file, '.yaml')
-        output_dir = "#{LKP_SRC}/spec/submit/link_jobs/#{job_name}"
-        submit_cmd = [
-          "#{LKP_SRC}/sbin/submit",
-          '-o', output_dir,
-          '-s', 'lab: spec_lab',
-          '-s', 'testbox: vm-2p8g--spec_submit',
-          yaml_file
-        ]
-        system(*submit_cmd)
-        traverse_file(output_dir)
-    end
+  it 'link jobs spec' do
+    submit_job('link_jobs')
   end
 end
