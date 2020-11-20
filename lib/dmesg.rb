@@ -298,7 +298,7 @@ def analyze_error_id(line)
        /(BUG: spinlock .* on CPU#\d+)/,
        /(Out of memory: Kill process) \d+ \(/,
        # old format: "[  122.209638 ] ??? Writer stall state 8 g62150 c62149 f0x2"
-             # new format: "[  122.209638 ] ??? Writer stall state RTWS_STUTTER(8) g62150 c62149 f0x2"
+       # new format: "[  122.209638 ] ??? Writer stall state RTWS_STUTTER(8) g62150 c62149 f0x2"
        /(Writer stall state \w*).+ g\d+ c\d+ f/,
        /(BUG: workqueue lockup - pool)/,
        /(rcu_sched kthread starved) for \d+ jiffies/,
