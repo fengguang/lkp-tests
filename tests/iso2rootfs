@@ -44,7 +44,6 @@ check_yaml_vars()
 		"os_arch"
 		"os_version"
 		"iso2rootfs_cgz"
-		"iso_url_file"
 		"iso_os"
 		"iso_arch"
 		"iso_version"
@@ -105,10 +104,10 @@ check_iso_name()
 
 get_daily_iso_checksum()
 {
-	ISO_URL="$(curl "${iso_url_file}")"
+	ISO_URL="$(curl "${dailybuild_iso_url_file}")"
 	[ "${iso_os}" == "openeuler" ] && {
-		local pub_ip=$(echo "${iso_url_file}" | grep -oEw "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}")
-		ISO_URL="$(curl "${iso_url_file}" |sed -r "s/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/${pub_ip}/g")"
+		local pub_ip=$(echo "${dailybuild_iso_url_file}" | grep -oEw "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}")
+		ISO_URL="$(curl "${dailybuild_iso_url_file}" | sed -r "s/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/${pub_ip}/g")"
 	}
 
 	ISO_NAME=$(basename "$ISO_URL")
@@ -149,15 +148,15 @@ mount_rootfs()
 
 get_cache_iso_checksum()
 {
-	mount_rootfs
-
 	CHECKSUM_FILE_CACHE="${ROOTFS_LOCAL_PATH}/${iso_version}-latest.sha256sum"
-	[ ! -f "${CHECKSUM_FILE_CACHE}" ] ||
-		SHA256SUM_CACHE=$(awk '{print $1}' "$CHECKSUM_FILE_CACHE")
+	[ -f "${CHECKSUM_FILE_CACHE}" ] || return 0
+	SHA256SUM_CACHE=$(awk '{print $1}' "$CHECKSUM_FILE_CACHE")
 }
 
 check_sha256sum_update()
 {
+	[ -n "${dailybuild_iso_url_file}" ] || return 0
+
 	get_cache_iso_checksum
 	get_daily_iso_checksum
 
@@ -183,6 +182,7 @@ check_sha256sum_update()
 check_os()
 {
 	log_info "starting check os ..."
+
 	echo "${ALLOW_OS[@]}" | grep -wq "${os}" ||
 		die "current os is not in allow os.
 			current os: ${os}.
@@ -243,7 +243,10 @@ config_iso2rootfs()
 pre_works()
 {
 	check_yaml_vars
+
+	mount_rootfs
 	check_sha256sum_update
+
 	check_os
 
 	config_iso2rootfs
@@ -274,14 +277,17 @@ config_iso_conf()
 
 config_iso_url()
 {
-	local iso_url_file="${I2Q_SRC}/conf/iso/net-iso/${iso_os}/${iso_arch}/${iso_version}"
-	sed -i "s|^iso_url=.*|iso_url=\"${ISO_URL}\"|g" "${iso_url_file}"
-	sed -i "s|^iso_checksum_url=.*|iso_checksum_url=\"${ISO_CHECKSUM_URL}\"|g" "${iso_url_file}"
+	[ -n "${dailybuild_iso_url_file}" ] || return 0
+
+	local i2q_iso_url_file="${I2Q_SRC}/conf/iso/net-iso/${iso_os}/${iso_arch}/${iso_version}"
+	sed -i "s|^iso_url=.*|iso_url=\"${ISO_URL}\"|g" "${i2q_iso_url_file}"
+	sed -i "s|^iso_checksum_url=.*|iso_checksum_url=\"${ISO_CHECKSUM_URL}\"|g" "${i2q_iso_url_file}"
 }
 
 config_iso2qcow2()
 {
 	log_info "starting config iso2qcow2 env ..."
+
 	download_iso2qcow2
 
 	config_pip_proxy
@@ -292,6 +298,7 @@ config_iso2qcow2()
 run_iso2qcow2()
 {
 	log_info "starting run iso2qcow2 ..."
+
 	${I2Q_SRC}/auto-install-iso.sh
 }
 
@@ -313,6 +320,7 @@ config_rootfs_dir()
 config_qcow2rootfs()
 {
 	log_info "starting config qcow2rootfs env ..."
+
 	download_compass_ci
 
 	install_pkgs "docker"
@@ -332,7 +340,8 @@ config_qcow2rootfs()
 run_qcow2rootfs()
 {
 	log_info "starting run qcow2rootfs ..."
-	local qcow2_path="${I2Q_SRC}/output/${ISO_NAME%.iso}.qcow2"
+
+	local qcow2_path="$(ls ${I2Q_SRC}/output/*.qcow2)"
 
 	cd "${CCI_SRC}/container/qcow2rootfs"
 	./run "${qcow2_path}" "${ROOTFS_DES_DIR}"
@@ -373,11 +382,11 @@ get_qemu_efi_fd()
 test_rootfs()
 {
 	log_info "starting test rootfs ..."
+
 	local test_script="${CGZ_PATH}/kvm.sh"
 
 	local kernel_path=$(realpath "${ROOTFS_DES_DIR}"/boot/vmlinuz)
 	local initrd_lkp_path=$(realpath "${ROOTFS_DES_DIR}"/initrd.lkp)
-
 	[ -f "$kernel_path" ] || die "cannot find kernel of rootfs: $kernel_path"
 	[ -f "$initrd_lkp_path" ] || die "cannot find initrd_lkp of rootfs: $initrd_lkp_path"
 
@@ -497,16 +506,22 @@ submit_test_job_yaml()
 }
 
 ############ post works ############
-post_works()
+update_dailybuild_soft_link()
 {
-	log_info "starting post works ..."
+	[ -n "${dailybuild_iso_url_file}" ] || return 0
 
 	mv "${CHECKSUM_FILE_CACHE}.tmp" "${CHECKSUM_FILE_CACHE}"
 
 	local soft_link="${iso_version}-dailybuild"
 	cd "${ROOTFS_LOCAL_PATH}" &&
-		rm -f "${soft_link}" &&
-			ln -s "$(basename "${ROOTFS_DES_DIR}")" "${soft_link}"
+		ln -sfT "$(basename "${ROOTFS_DES_DIR}")" "${soft_link}"
+}
+
+post_works()
+{
+	log_info "starting post works ..."
+
+	update_dailybuild_soft_link
 
 	cd / && umount "${ROOTFS_LOCAL_PATH}"
 

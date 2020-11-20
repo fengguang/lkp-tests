@@ -2,7 +2,6 @@ suite: iso2rootfs
 category: benchmark
 iso2rootfs:
   iso2rootfs_cgz:
-  iso_url_file:
   iso_os:
   iso_arch:
   iso_version:
@@ -11,6 +10,9 @@ iso2rootfs:
   rootfs_path:
   initrd_http_host:
   initrd_http_port:
+
+  # dailybuild related fields
+  dailybuild_iso_url_file:
 
   # submit test yaml related fields
   test_yaml:
