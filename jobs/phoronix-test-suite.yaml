@@ -331,7 +331,7 @@ phoronix-test-suite:
       - Compile
       # - Audio # run more than 40m on lkp-skl-nuc2
       - Video
-      - X
+      # - X # run more than 3h on lkp-csl-2sp8
       - Burn
       - Memload
       - Write
