@@ -351,6 +351,7 @@ run_qcow2rootfs()
 ############ config rootfs ############
 config_dns_resolver()
 {
+	echo "${config_rootfs}" | grep -qw 'dns' || return 0
 	cat <<-EOF > "${ROOTFS_DES_DIR}/etc/resolv.conf"
 	nameserver 114.114.114.114
 	nameserver 8.8.8.8
@@ -359,6 +360,7 @@ config_dns_resolver()
 
 disable_selinux()
 {
+	echo "${config_rootfs}" | grep -qw 'no_selinux' || return 0
 	sed -i 's/^SELINUX=.*/SELINUX=disabled/g' "${ROOTFS_DES_DIR}/etc/selinux/config"
 }
 

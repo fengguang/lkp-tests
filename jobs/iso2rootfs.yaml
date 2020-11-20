@@ -11,6 +11,12 @@ iso2rootfs:
   initrd_http_host:
   initrd_http_port:
 
+  # config rootfs related fields
+  ## supported fields:
+  ## - dns: will config /etc/resolv.conf.
+  ## - no_selinux: will disable selinux in /etc/selinux/config.
+  config_rootfs:
+
   # dailybuild related fields
   dailybuild_iso_url_file:
 
