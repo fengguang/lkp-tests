@@ -56,7 +56,7 @@ check_yaml_vars()
 
 	for yaml_t in "${yaml_vars[@]}"
 	do
-		[ -n "$(eval echo "\$${yaml_t}")" ] || die "cannot fine value of var: ${yaml_t}."
+		[ -n "$(eval echo "\$${yaml_t}")" ] || die "cannot find value of var: ${yaml_t}."
 	done
 }
 
@@ -453,17 +453,8 @@ generate_global_yaml()
 
 generate_submit_append_str()
 {
-	local wait_add_vars=(
-		"os"
-		"os_arch"
-		"os_version"
-		"os_mount"
-		"testbox"
-	)
-	for vt in "${wait_add_vars[@]}"
-	do
-		SUBMIT_APPEND_STR="${SUBMIT_APPEND_STR} ${vt}=$(eval echo "\$test_${vt}")"
-	done
+	[ "$#" -eq 2 ] || die "generate_submit_append_str: please give 2 parameters."
+	echo "os=${iso_os} os_arch=${iso_arch} os_version=${iso_version} os_mount=$1 testbox=$2"
 }
 
 submit_test_job_yaml()
@@ -474,18 +465,8 @@ submit_test_job_yaml()
 
 	[ -d "${LKP_SRC}" ] || die "cannot find value of var: LKP_SRC."
 
-	local test_yaml_vars=(
-		"test_os"
-		"test_os_arch"
-		"test_os_version"
-		"test_os_mount"
-		"test_testbox"
-	)
-
-	for yaml_t in "${test_yaml_vars[@]}"
-	do
-		[ -n "$(eval echo "\$${yaml_t}")" ] || die "cannot fine value of var: ${yaml_t}."
-	done
+	[ -n "${test_os_mount}" ] || die "cannot find value of var: test_os_mount."
+	[ -n "${test_testbox}" ] || die "cannot find value of var: test_testbox."
 
 	cd "${LKP_SRC}" && {
 		chmod +x ./sbin/install-dependencies.sh
@@ -499,9 +480,9 @@ submit_test_job_yaml()
 			die "cannot find test yaml in LKP_SRC/jobs.
 				test yaml: ${test_yaml}."
 
-		generate_submit_append_str
-
-		"${LKP_SRC}/sbin/submit" ${SUBMIT_APPEND_STR} "${test_yaml}"
+		"${LKP_SRC}/sbin/submit" \
+			$(generate_submit_append_str "${test_os_mount}" "${test_testbox}") \
+			"${test_yaml}"
 	}
 
 	log_info "submit ${test_yaml} finished"
