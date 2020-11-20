@@ -26,3 +26,8 @@ iso2rootfs:
   test1_yaml:
   test1_os_mount:
   test1_testbox:
+  ## the following three fields is required when your job.yaml and
+  ## script for this test are from the internet.
+  test1_git_url:
+  test1_git_yaml:
+  test1_git_script:

@@ -457,9 +457,35 @@ generate_submit_append_str()
 	echo "os=${iso_os} os_arch=${iso_arch} os_version=${iso_version} os_mount=$1 testbox=$2"
 }
 
+prepare_submit()
+{
+	local submit_dir="/tmp/iso2rootfs/submit_tmp"
+	mkdir -p "${submit_dir}"
+
+	local submit_git_dir="${submit_dir}/${test_git_url##*/}"
+	submit_git_dir="${submit_git_dir%.git}"
+
+	[ -d "${submit_git_dir}" ] || {
+		cd "${submit_dir}"
+		git clone "${test_git_url}"
+	}
+
+	local test_git_yaml="${submit_git_dir}/$(eval echo "\$${test_num}_git_yaml")"
+	local test_git_script="${submit_git_dir}/$(eval echo "\$${test_num}_git_script")"
+
+	[ -f "${test_git_yaml}" ] || die "cannot find file: ${test_num}_git_yaml."
+	cp "${test_git_yaml}" "${LKP_SRC}/jobs/"
+
+	[ -f "${test_git_script}" ] || die "cannot find file: ${test_num}_git_script."
+	cp "${test_git_script}" "${LKP_SRC}/tests/"
+}
+
 submit_one_yaml()
 {
 	log_info "starting submit ${test_yaml} ..."
+
+	local test_git_url="$(eval echo "\$${test_num}_git_url")"
+	[ -z "${test_git_url}" ] || prepare_submit
 
 	cd "${LKP_SRC}/jobs"
 	[ -f "${test_yaml}" ] || die "cannot find yaml in LKP_SRC/jobs: ${test_yaml}."
