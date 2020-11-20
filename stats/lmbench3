@@ -21,6 +21,27 @@ def largest_bandwidth
   bandwidth
 end
 
+def designated_file_size
+  designated_hash = {}
+  result_str = ''
+
+  $stdin.each_line do |line|
+    result_str += line
+    break if line =~ /(^\s|^\t)/
+  end
+
+  result_str.split("\n").each do |e|
+    designated_hash['L1_$'] = e.split[1] if e =~ /0.01758/
+    designated_hash['Rand_mem'] = e.split[1] if e =~ /512.0000/
+    designated_hash['Mmap_Latency'] = e.split[1] if e =~ /536.870912/
+    designated_hash['L2_$'] = e.split[1] if e =~ /0.05078/
+  end
+
+  designated_hash
+end
+
+null_io_array = []
+
 while (line = STDIN.gets)
   line = line.resolve_invalid_bytes
   case line
@@ -32,14 +53,15 @@ while (line = STDIN.gets)
   # Simple fstat: 0.3517 microseconds
   # Simple open/close: 1.3696 microseconds
   when /^Simple (\S+): (\d+.\d+) microseconds$/
+    null_io_array << $2.to_f if $1.to_s == 'read' || $1.to_s == 'write'
     puts "syscall.#{$1}.latency.us: #{$2}"
 
   # Extract select test result.
   # Select on 100 fd's: 1.2293 microseconds
   # Select on 100 tcp fd's: 5.0377 microseconds
-  when /^Select on 100 fd\'s: (\d+.\d+) microseconds$/
+  when /^Select on 100 fd's: (\d+.\d+) microseconds$/
     puts "Select.100fd.latency.us: #{$1}"
-  when /^Select on 100 tcp fd\'s: (\d+.\d+) microseconds$/
+  when /^Select on 100 tcp fd's: (\d+.\d+) microseconds$/
     puts "Select.100tcp.latency.us: #{$1}"
 
   # Extract proc test result.
@@ -198,5 +220,41 @@ while (line = STDIN.gets)
   # ...
   when /^"Mmap read open2close bandwidth$/
     puts "MMAP.read_open2close.bandwidth.MB/sec: #{largest_bandwidth}"
+
+  # Random load latency
+  # 416.00000 92.824
+  # 448.00000 92.772
+  # 512.00000 92.640
+  # ...
+  when /^Random load latency$/
+    result_rand_mem = designated_file_size
+    puts "Rand_mem: #{result_rand_mem['Rand_mem']}"
+
+  # Memory load latency
+  # 0.00049 1.539
+  # 0.00098 1.539
+  # 512.00000 74.421
+  # ...
+  when /^Memory load latency$/
+    result_rand_mem = designated_file_size
+    puts "L1_$: #{result_rand_mem['L1_$']}"
+    puts "L2_$: #{result_rand_mem['L2_$']}"
+
+  # "mappings
+  # 67.108864 82
+  # 134.217728 151
+  # 268.435456 309
+  # 536.870912 615
+  # ...
+  when /^"mappings$/
+    result_map = designated_file_size
+    puts "Mmap_Latency: #{result_map['Mmap_Latency']}"
   end
 end
+
+num = 0
+null_io_array.each do |v|
+  num += v
+end
+null_num = format('%.4f', num / 2).to_f
+puts "null_io: #{null_num}"
