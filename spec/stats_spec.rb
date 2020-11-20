@@ -3,7 +3,7 @@ require "#{LKP_SRC}/lib/stats"
 
 describe 'stats' do
   describe 'scripts' do
-    yaml_files = Dir.glob ["#{LKP_SRC}/spec/stats/*/[0-9]*.yaml"]
+    yaml_files = Dir.glob ["#{LKP_SRC}/spec/stats/*/*.yaml"]
     yaml_files.each do |yaml_file|
       file = yaml_file.chomp '.yaml'
       it "invariance: #{file}" do

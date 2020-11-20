@@ -305,7 +305,8 @@ def analyze_error_id(line)
        /(Could not create tracefs)/,
        /(used greatest stack depth:)/,
        /([A-Z]+[ a-zA-Z]*): [a-f0-9]{4} \[#[0-9]+\] /,
-       /(BUG: KASAN: [a-z\-_ ]+ in [a-z])/,
+       # [  406.307645] BUG: KASAN: slab-out-of-bounds in kfd_create_crat_image_virtual+0x129d/0x12fd
+       /(BUG: KASAN: [a-z\-_ ]+ in [a-z_]+)\+/,
        /(cpu clock throttled)/
     line = $1
     bug_to_bisect = $1
