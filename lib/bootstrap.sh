@@ -705,3 +705,10 @@ boot_init()
 
 	mount_rootfs
 }
+
+install_pkgs()
+{
+	[ -d /opt/pkgs ] || return
+	echo "install $(ls /opt/pkgs/*.pkg.tar*)"
+	pacman -U --needed --noconfirm /opt/pkgs/*.pkg.tar*
+}

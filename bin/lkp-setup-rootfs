@@ -261,6 +261,7 @@ while true; do
 	fi
 	install_rpms
 	install_deb
+	install_pkgs
 
 	echo $LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp
 	$LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp $job
