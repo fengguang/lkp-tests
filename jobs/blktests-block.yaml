@@ -4,11 +4,14 @@ category: functional
 
 need_memory: 3G
 
-disk: 1HDD
+disk:
+- 1SSD
+- 1HDD
 
 blktests:
   test:
-  - block-group2
+  - block-group-01
+  - block-group-02
   - block-010
 
 ---

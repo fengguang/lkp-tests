@@ -2,8 +2,11 @@ suite: blktests
 testcase: blktests
 category: functional
 
-disk: 1SSD
+need_memory: 1G
+
+disk: 1HDD
 
 blktests:
   test:
-  - block-group1
+  - scsi-group-01
+  - scsi-group-02

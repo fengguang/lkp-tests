@@ -6,5 +6,6 @@ disk: 1SSD
 
 blktests:
   test:
-  - nvme-group1
+  - nvme-group-01
+  - nvme-group-02
   - nvme-032
