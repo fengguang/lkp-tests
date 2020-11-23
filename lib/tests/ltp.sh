@@ -34,28 +34,28 @@ install_ltp()
 	cp testcases/commands/tpm-tools/tpmtoken/tpmtoken_protect/tpmtoken_protect_data.txt  $1/testcases/bin/
 }
 
-check_ignored_cases()
+is_excluded()
 {
 	test=$1
-	local ignored_by_lkp=$LKP_SRC/pkg/ltp-addon/ignored_by_lkp
-	cp $ignored_by_lkp ./ignored_by_lkp
+	local exclude_file=$LKP_SRC/pkg/ltp/addon/exclude
+	cp $exclude_file ./exclude
 
 	# regex match
-	for regex in $(cat "$ignored_by_lkp" | grep -v '^#' | grep -w ^${test}:.*:regex$ | awk -F: 'NF == 3 {print $2}')
+	for regex in $(cat "$exclude_file" | grep -v '^#' | grep -w ^${test}:.*:regex$ | awk -F: 'NF == 3 {print $2}')
 	do
-		echo "# regex: $regex generated" >> ./ignored_by_lkp
-		cat runtest/$test | awk '{print $1}' | grep -G "$regex" | awk -v prefix=$test":" '$0=prefix$0' >> ./ignored_by_lkp
+		echo "# regex: $regex generated" >> ./exclude
+		cat runtest/$test | awk '{print $1}' | grep -G "$regex" | awk -v prefix=$test":" '$0=prefix$0' >> ./exclude
 	done
 
 	orig_test=$(echo "$test" | sed 's/-[0-9]\{2\}$//')
-	for i in $(cat ./ignored_by_lkp | grep -v '^#' | grep -w ^$orig_test | awk -F: 'NF == 2')
+	for i in $(cat ./exclude | grep -v '^#' | grep -w ^$orig_test | awk -F: 'NF == 2')
 	do
 		ignore=$(echo $i | awk -F: '{print $2}')
 		grep -q "^${ignore}" runtest/${test} || continue
 		sed -i "s/^${ignore} /#${ignore} /g" runtest/${test}
 		echo "<<<test_start>>>"
 		echo "tag=${ignore}"
-		echo "${ignore} 0 ignored_by_lkp"
+		echo "${ignore} 0 exclude"
 		echo "<<<test_end>>>"
 	done
 }
@@ -107,7 +107,7 @@ test_setting()
 		[ -z "$partitions" ] && exit
 		big_dev="${partitions%% *}"
 		big_dev_opt="-z $big_dev"
-		# match logic of check_ignored_cases
+		# match logic of is_excluded
 		sed -i "s/\t/ /g" runtest/fs_ext4
 		;;
 	lvm.local)
