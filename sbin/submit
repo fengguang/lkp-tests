@@ -16,6 +16,7 @@ opt_output_dir = nil
 opt_auto_define_files = false
 opt_monitor = false
 opt_monitor_query = {}
+opt_my_queue = false
 actions = ['output', 'stop']
 
 options = OptionParser.new do |opts|
@@ -54,6 +55,11 @@ options = OptionParser.new do |opts|
       ARGV.shift
     end
   end
+
+  opts.on('--my-queue', 'add to my queue') do
+    opt_my_queue = true
+  end
+
 end
 
 options.parse!(ARGV)
@@ -91,6 +97,10 @@ def find_jobfile(jobfile)
   end
   puts("Cannot find job #{jobfile} in directories:"); puts search_paths
   exit 1
+end
+
+def add_my_queue(job)
+  job['queue'] = "#{job['tbox_group']}~#{ENV['USER']}"
 end
 
 ARGV.each do |jobfile|
@@ -134,6 +144,7 @@ ARGV.each do |jobfile|
     job_hash_list << job_hash
     job_hash = job_hash.merge(sh_hash)
 
+    add_my_queue(job_hash) if opt_my_queue
     # save job to yaml
     if opt_output_dir
       prefix = File.join(opt_output_dir, File.basename(jobfile, '.yaml'))
