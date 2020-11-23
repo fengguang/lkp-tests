@@ -15,7 +15,7 @@ build()
 	meson build && ninja -C build
 }
 
-separate_test()
+split_tests()
 {
 	cd $srcdir/igt-gpu-tools
 	sed -n '2p' build/tests/test-list.txt | tr " " "\n" | grep -v amdgpu | sort > all-tests
@@ -25,7 +25,7 @@ separate_test()
 
 package()
 {
-	separate_test || return
+	split_tests || return
 
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
 	mkdir -p $benchmark_path
