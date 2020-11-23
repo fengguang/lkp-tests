@@ -86,17 +86,18 @@ package()
 	cp -af $srcdir/xfstests-dev/* $benchmark_path
 
 	generate_exclude_files || return
-	generate_special_require_tests || return
-	generate_new_tests || return
+
+	generate_tests || return
 
 	split_tests
 }
 
-generate_new_tests()
+generate_tests()
 {
+	generate_special_require_tests || return
+
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
 
-	cp -af $LKP_SRC/pkg/${pkgname}/addon/tools/* $benchmark_path/tests
 	for tests in $LKP_SRC/pkg/${pkgname}/addon/tests/*
 	do
 		cat $tests | grep -v '^#' > $benchmark_path/tests/$(basename $tests)
@@ -104,12 +105,13 @@ generate_new_tests()
 
 	# generate the new add subcase automatically after every upgrade xfstests
 	cd $benchmark_path/tests
-	./update-new-cases.sh ext4
-	./update-new-cases.sh btrfs
-	./update-new-cases.sh xfs
-	./update-new-cases.sh generic
-	./update-new-cases.sh udf
-	./update-new-cases.sh ocfs2
+
+	$LKP_SRC/tools/generate-tests ext4
+	$LKP_SRC/tools/generate-tests btrfs
+	$LKP_SRC/tools/generate-tests xfs
+	$LKP_SRC/tools/generate-tests generic
+	$LKP_SRC/tools/generate-tests udf
+	$LKP_SRC/tools/generate-tests ocfs2
 }
 
 # Some files contain too many tests, which are split for easy testing
@@ -120,12 +122,12 @@ split_tests()
 	cd $benchmark_path/tests
 	split_standalone_tests || return
 
-	$LKP_SRC/tools/split-tests xfs-new 10 xfs-group-
-	$LKP_SRC/tools/split-tests btrfs-new 50 btrfs-group-
-	$LKP_SRC/tools/split-tests generic-new 20 generic-group-
-	$LKP_SRC/tools/split-tests ext4-new 20 ext4-group-
-	$LKP_SRC/tools/split-tests udf-new 10 udf-group-
-	$LKP_SRC/tools/split-tests ocfs2-new 10 ocfs2-group-
+	$LKP_SRC/tools/split-tests xfs-all 10 xfs-group-
+	$LKP_SRC/tools/split-tests btrfs-all 50 btrfs-group-
+	$LKP_SRC/tools/split-tests generic-all 20 generic-group-
+	$LKP_SRC/tools/split-tests ext4-all 20 ext4-group-
+	$LKP_SRC/tools/split-tests udf-all 10 udf-group-
+	$LKP_SRC/tools/split-tests ocfs2-all 10 ocfs2-group-
 
 	$LKP_SRC/tools/split-tests xfs-reflink 20 xfs-reflink-
 	hide xfs-reflink
