@@ -53,7 +53,7 @@ class LinuxTestcasesTableSet
        autonuma-benchmark adrestiai kernbench rt-app].freeze
   LINUX_TESTCASES =
     %w[analyze-suspend boot blktests cpu-hotplug ext4-frags ftq ftrace-onoff fwq
-       galileo irda-kernel kernel-selftests kvm-unit-tests kvm-unit-tests-qemu
+       galileo irda-kernel kernel-builtin kernel-selftests kvm-unit-tests kvm-unit-tests-qemu
        leaking-addresses locktorture ltp mce-test otc_ddt piglit pm-qa nvml
        qemu rcuperf rcutorture suspend suspend-stress trinity ndctl nfs-test hwsim
        idle-inject mdadm-selftests xsave-test nvml test-bpf mce-log perf-sanity-tests
