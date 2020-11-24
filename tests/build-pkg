@@ -90,6 +90,11 @@ create_softlink()
 	ln -sf "${bm_name}" "${soft_path}/latest.cgz"
 }
 
+replace_source()
+{
+  sed -i "s|^source=[^)]*|$1|g" "$2"
+}
+
 build_source_pkg()
 {
   local repo_dir=""
@@ -103,11 +108,9 @@ build_source_pkg()
 		repo_dir="${repo_dir%.git*}::"
 	fi
 
-	upstream_source="source=(\"${repo_dir}git://${LKP_SERVER}/${upstream_repo}#commit=${upstream_commit}\")"
-	sed -i "s|^source=.*|${upstream_source}|g" PKGBUILD
-	[ -n "$PKGBUILD_TAG" ] && {
-		sed -i "s|^source=.*|${upstream_source}|g" "PKGBUILD-$PKGBUILD_TAG"
-	}
+	upstream_source="source=(\"${repo_dir}git://${LKP_SERVER}/${upstream_repo}#commit=${upstream_commit}\""
+	replace_source "${upstream_source}" PKGBUILD
+	[ -n "$PKGBUILD_TAG" ] && replace_source "${upstream_source}" "PKGBUILD-$PKGBUILD_TAG"
   }
 
   cgz_name="$PKG_MNT/${pack_to}/${pkgname}/${upstream_commit}.cgz"
