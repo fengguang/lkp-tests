@@ -19,6 +19,8 @@ if [ -n "$block_size" ]; then
 	for ele in ${array[@]}
 	do
 		case $ele in
+			"all")       args+=" -a"
+				;;
 			"write")     args+=" -i 0"
 				;;
 			"read")      args+=" -i 1"
@@ -44,6 +46,9 @@ if [ -n "$block_size" ]; then
 			"pwritev")   args+=" -i 11"
 				;;
 			"preadv")    args+=" -i 12"
+				;;
+			*) echo "invalid test option, please check again!"
+				exit 1
 				;;
 		esac
 	done
