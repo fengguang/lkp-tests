@@ -36,7 +36,7 @@ cd $LKP_SRC/pkg/$benchmark || die "pkg is empty"
 
 [ -n "$LKP_SERVER" ] && {
 	is_mount_point ${PKG_MNT} && umount ${PKG_MNT}
-	mount -t cifs -o guest,vers=1.0,noacl,nouser_xattr //$LKP_SERVER$PKG_MNT $PKG_MNT || die "Failed to run mount"
+	mount -t cifs -o guest,vers=1.0,noacl,nouser_xattr,port=446 //$LKP_SERVER$PKG_MNT $PKG_MNT || die "Failed to run mount"
 }
 
 curl_pkgfile()
