@@ -604,11 +604,14 @@ class Job
       program_name = hash_key_re_string(h, p_n, @job['pp'].keys)
       next if program_name.nil?
 
-      @job["pp"][program_name] = Hash.new()
+      @job['pp'][program_name] = nil
       options_array = options_hash.keys
       options_array.each do |option|
         option_value = get_program_option_value(@job, program_name, option)
-        @job["pp"][program_name][option] = option_value unless option_value.nil?
+        next if option_value.nil?
+
+        @job['pp'][program_name] ||= {}
+        @job['pp'][program_name][option] = option_value
       end
     end
   end
