@@ -23,4 +23,4 @@ ltp:
   - securebits
   # - smack # need CONFIG_SECURITY_SMACK=y and CONFIG_SECURITY_SELINUX not set, in test kconfig, it is just the opposite
   - net.tirpc_tests
-  - tpm_tools
+  # - tpm_tools # disable due to 9d67d269d7d2
