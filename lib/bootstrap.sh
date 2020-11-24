@@ -54,8 +54,24 @@ mount_tmpfs()
 	mount -t tmpfs -o mode=1777 tmp /tmp
 }
 
+get_net_devices()
+{
+	local net_devices
+	local i
+	for i in /sys/class/net/*/
+	do
+		[ "${i#*/lo/}" != "$i" ] && continue
+		[ "${i#*/eth}" != "$i" ] && net_devices="$net_devices $(basename $i)"
+		[ "${i#*/en}"  != "$i" ] && net_devices="$net_devices $(basename $i)"
+	done
+
+	echo "$net_devices"
+}
+
 netdevice_linkup()
 {
+	local net_devices=$(get_net_devices)
+	local ndev
 	for ndev in $net_devices
 	do
 		if has_cmd ip; then
@@ -72,8 +88,6 @@ network_ok()
 	for i in /sys/class/net/*/
 	do
 		[ "${i#*/lo/}" != "$i" ] && continue
-		[ "${i#*/eth}" != "$i" ] && net_devices="$net_devices $(basename $i)"
-		[ "${i#*/en}"  != "$i" ] && net_devices="$net_devices $(basename $i)"
 		[ "$(cat $i/operstate)" = 'up' ]		&& return 0
 		[ "$(cat $i/carrier 2>/dev/null)" = '1' ]	&& return 0
 	done
@@ -103,8 +117,6 @@ warn_no_eth0()
 
 setup_network()
 {
-	local net_devices=
-
 	network_ok && return || { echo "LKP: waiting for network..."; sleep 2; }
 	network_ok && return || sleep 5
 	network_ok && return || sleep 10
@@ -116,6 +128,7 @@ setup_network()
 		return
 	}
 
+	local net_devices=$(get_net_devices)
 	if [ -z "$net_devices" ]; then
 
 		warn_no_eth0
