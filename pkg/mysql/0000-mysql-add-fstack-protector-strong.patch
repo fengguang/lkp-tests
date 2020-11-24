@@ -1,0 +1,20 @@
+diff --git a/cmake/build_configurations/compiler_options.cmake b/cmake/build_configurations/compiler_options.cmake
+index fecf2a2..f3e012f 100644
+--- a/cmake/build_configurations/compiler_options.cmake
++++ b/cmake/build_configurations/compiler_options.cmake
+@@ -43,6 +43,7 @@ IF(UNIX)
+   # Default GCC flags
+   IF(CMAKE_COMPILER_IS_GNUCC)
+     SET(COMMON_C_FLAGS               "-fno-omit-frame-pointer")
++    SET(COMMON_C_FLAGS               "-fstack-protector-strong")
+     # Disable inline optimizations for valgrind testing to avoid false positives
+     IF(WITH_VALGRIND)
+       STRING_PREPEND(COMMON_C_FLAGS  "-fno-inline ")
+@@ -57,6 +58,7 @@ IF(UNIX)
+   ENDIF()
+   IF(CMAKE_COMPILER_IS_GNUCXX)
+     SET(COMMON_CXX_FLAGS               "-std=c++14 -fno-omit-frame-pointer")
++    SET(COMMON_CXX_FLAGS               "-fstack-protector-strong")
+     # Disable inline optimizations for valgrind testing to avoid false positives
+     IF(WITH_VALGRIND)
+       STRING_PREPEND(COMMON_CXX_FLAGS  "-fno-inline ")

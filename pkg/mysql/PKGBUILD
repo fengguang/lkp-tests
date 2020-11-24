@@ -1,0 +1,60 @@
+pkgname=mysql
+pkgver=8.0.17
+pkgrel=3
+arch=('aarch64' 'x86_64')
+url="http://www.mysql.com"
+license=('GPLv2')
+source=("https://cdn.mysql.com/archives/mysql-8.0/mysql-boost-$pkgver.tar.gz"
+	"0000-mysql-add-fstack-protector-strong.patch"
+	"https://mirrors.huaweicloud.com/kunpeng/archive/openEuler/patch/database/mysql/getcpu.tgz"
+	"my.cnf")
+md5sums=('7472a25d91973cbba5d8a8f176a3080b' '6e853850efbd6f887ac3e13b1bf99cc4' 'f13eb11de53616017f7428cc06d4e242' '7bb0372ec4e9281813a9afc67c6cfc20')
+
+prepare()
+{
+	cd $srcdir/$pkgname-$pkgver
+	patch -p1 < ../0000-mysql-add-fstack-protector-strong.patch
+}
+
+build()
+{
+	build_getcpu
+	build_mysql
+}
+
+build_mysql()
+{
+	cd $srcdir/$pkgname-$pkgver
+
+	CMAKE=cmake
+	grep -sqF "CentOS Linux release 7" /etc/centos-release && CMAKE=cmake3
+
+	$CMAKE . -DCMAKE_INSTALL_PREFIX=/usr/local/mysql -DMYSQL_DATADIR=/data/mysql/data -DSYSCONFDIR=/etc \
+                -DWITH_INNOBASE_STORAGE_ENGINE=1 -DWITH_PARTITION_STORAGE_ENGINE=1 -DWITH_FEDERATED_STORAGE_ENGINE=1 \
+                -DWITH_ARCHIVE_STORAGE_ENGINE=1 -DWITH_BLACKHOLE_STORAGE_ENGINE=1 -DWITH_MYISAM_STORAGE_ENGINE=1 \
+                -DENABLED_LOCAL_INFILE=1 -DENABLE_DTRACE=0 -DDEFAULT_CHARSET=utf8mb4 -DDEFAULT_COLLATION=utf8mb4_general_ci \
+                -DWITH_EMBEDDED_SERVER=1 -DDOWNLOAD_BOOST=1 -DWITH_BOOST=./boost -DFORCE_INSOURCE_BUILD=1
+	make -j8
+}
+
+build_getcpu()
+{
+	cd $srcdir
+	tar -zxvf getcpu.tgz
+
+	cd getcpu || exit
+	make
+}
+
+
+package()
+{
+	mkdir -p $pkgdir/getcpu
+	cp getcpu/getcpu-hi.ko $pkgdir/getcpu/
+
+	mkdir -p $pkgdir/etc
+	cp my.cnf $pkgdir/etc/
+
+	cd $srcdir/$pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}
