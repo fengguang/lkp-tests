@@ -68,16 +68,17 @@ get_net_devices()
 	echo "$net_devices"
 }
 
-netdevice_linkup()
+net_devices_link()
 {
+	local operation=$1
 	local net_devices=$(get_net_devices)
 	local ndev
 	for ndev in $net_devices
 	do
 		if has_cmd ip; then
-			ip link set $ndev up
+			ip link set $ndev $operation
 		elif has_cmd ifconfig; then
-			ifconfig $ndev up
+			ifconfig $ndev $operation
 		fi
 	done
 }
@@ -93,7 +94,7 @@ network_ok()
 	done
 
 	is_clearlinux && {
-		netdevice_linkup
+		net_devices_link up
 
 		# in case of systemd-networkd.service was masked
 		systemctl unmask systemd-networkd.service
