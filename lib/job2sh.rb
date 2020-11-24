@@ -287,9 +287,7 @@ class Job2sh < Job
     @setups   = available_programs(:setup)
     @programs = available_programs(:workload_elements)
 
-    if !job
-      job = (@jobx || @job).clone # a shallow copy so that delete_if won't impact @job
-    end
+    job ||= (@jobx || @job).clone # a shallow copy so that delete_if won't impact @job
 
     @cur_func = :extract_stats
 
@@ -317,7 +315,7 @@ class Job2sh < Job
     @setups   = available_programs(:setup)
     @programs = available_programs(:workload_elements)
     
-    if !job
+    unless job
       job = (@jobx || @job).clone # a shallow copy so that delete_if won't impact @job
       job.delete_if { |key, val| parse_one([], key, val, :PASS_EXPORT_ENV) }
     end
