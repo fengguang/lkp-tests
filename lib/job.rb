@@ -250,7 +250,7 @@ class Job
           hash.delete('override')
         end
         hash.merge!(@overrides)
-        @jobs << hash
+        @jobs.concat(multi_args(hash)) # return [hash] or [h1,h2]
       end
     rescue StandardError => e
       log_error "#{jobfile}: " + e.message
@@ -278,6 +278,30 @@ class Job
     @job.merge!(@jobs.shift)
     @job['job_origin'] ||= jobfile
     @jobfile = jobfile
+  end
+
+  def multi_args(hash)
+    jobs_array = []
+    hash.each { |key, value|
+      next unless key =~ /^\w.*\s+.*\w$/
+
+      next unless value.class == Array
+
+      key_array = key.split
+      value.each do |v|
+        v_array = v.split
+        next unless key_array.size == v_array.size
+
+        hash_job = hash.clone
+        key_array.size.times do |i|
+          hash_job[key_array[i]] = v_array[i]
+        end
+        hash_job.delete(key)
+        jobs_array << hash_job
+      end
+    }
+    jobs_array = [hash] if jobs_array.empty?
+    return jobs_array
   end
 
   def delete_keys_from_spec(spec_file)
