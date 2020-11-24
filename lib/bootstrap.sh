@@ -103,6 +103,33 @@ network_ok()
 	return 1
 }
 
+network_up()
+{
+	local default_route=$1
+
+	net_devices_link up
+	network_ok || { echo "LKP: waiting for network..."; sleep 10; }
+	network_ok || sleep 20
+	network_ok || sleep 30
+	network_ok || return
+
+	ip route | grep -q 'default via' && return
+	if [ -n "$default_route" ]; then
+		ip route add $default_route
+	else
+		local nameserver=$(grep -m1 nameserver /etc/resolv.conf 2>/dev/null | awk '{print $NF}')
+		[ -n "$nameserver" ] || return
+		ip route add default via $nameserver
+	fi
+}
+
+network_down()
+{
+	local default_route=$(ip route | grep 'default via')
+	net_devices_link down
+	echo "$default_route"
+}
+
 # Many randconfig test kernels may not have the necessary NIC driver.
 # Show warning only when the kernel does compile in suitable driver.
 # QEMU VMs use e1000 or virtio; HW machines mostly have e1000 or igb.
