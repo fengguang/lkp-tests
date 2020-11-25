@@ -730,7 +730,8 @@ class Job
     @jobs.each do |hash|
       @load_hosts_done = false
       @job = deepcopy(job)
-      @job2 = hash
+      @job.merge!(hash)
+      @job2 = {}
       load_defaults
       load_hosts_config
       each_job_init
