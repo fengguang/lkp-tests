@@ -37,7 +37,7 @@ mount_dest()
   mkdir -p "$PKG_MNT"
 
   [ -n "$LKP_SERVER" ] && {
-    mount -t cifs -o guest,vers=1.0,noacl,nouser_xattr //$LKP_SERVER$PKG_MNT $PKG_MNT || die "Failed to run mount"
+    mount -t cifs -o guest,vers=1.0,noacl,nouser_xattr,port=446 //$LKP_SERVER$PKG_MNT $PKG_MNT || die "Failed to run mount"
   }
 }
 
