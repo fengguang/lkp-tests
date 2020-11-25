@@ -1,5 +1,5 @@
 #!/bin/sh
-# pub_key
+# my_ssh_pubkey
 # my_email
 # sshr_port
 # sshr_port_len
@@ -14,10 +14,10 @@ sshr_ip=$LKP_SERVER
 
 run_ssh()
 {
-	[ -n "$pub_key" ] || return
+	[ -n "$my_ssh_pubkey" ] || return
 	umask 0077
 	mkdir -p /root/.ssh
-	echo "$pub_key" > /root/.ssh/authorized_keys
+	echo "$my_ssh_pubkey" > /root/.ssh/authorized_keys
 	systemctl start sshd
 }
 
@@ -73,11 +73,11 @@ compose_email()
 
 set_port()
 {
-	[ -n "$pub_key" ] || return
+	[ -n "$my_ssh_pubkey" ] || return
 
 	for i in $(seq 1 10)
 	do
-		port=$(($(date +%s%N)%${sshr_port_len}+${sshr_port_base}))
+		port=$(($(date +%s%N)%$sshr_port_len+$sshr_port_base))
 		ssh -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes -o TCPKeepAlive=yes \
 		    -Nf -R $port:localhost:22 sshr@"$sshr_ip" -p "$sshr_port" &>/dev/null
 		[ $? -eq 0 ] && return
