@@ -153,6 +153,7 @@ setup_network()
 	is_virt &&
 	[ ! -e /usr/share/initramfs-tools/scripts/functions ] && {
 		export NO_NETWORK=1
+		echo "export NO_NETWORK=1 due to no initramfs-tools"
 		return
 	}
 
@@ -169,6 +170,7 @@ setup_network()
 		# valuable dmesg/kmsg to ttyS0/ttyS1
 		if is_virt; then
 			export NO_NETWORK=1
+			echo "export NO_NETWORK=1 due to no net devices"
 			return
 		else
 			reboot 2>/dev/null
@@ -680,8 +682,10 @@ is_same_cmdline()
 
 setup_env()
 {
-	[ "$result_service" != "${result_service#9p/}" ] &&
-	export VM_VIRTFS=1
+	[ "$result_service" != "${result_service#9p/}" ] && {
+		export VM_VIRTFS=1
+		echo "export VM_VIRTFS=1 due to result service $result_service"
+	}
 }
 
 add_nfs_default_options()
