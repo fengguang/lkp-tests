@@ -10,11 +10,11 @@ timers.nsleep-lat.nsleep_latency_CLOCK_MONOTONIC_RAW.unsupported: 1
 timers.nsleep-lat.nsleep_latency_CLOCK_BOOTTIME.pass: 1
 timers.nsleep-lat.pass: 1
 timers.set-timer-lat.pass: 1
-timers.mqueue-lat.Mqueue_latency_:.pass: 1
+timers.mqueue-lat.Mqueue_latency.pass: 1
 timers.mqueue-lat.pass: 1
 timers.inconsistency-check.Consistent_CLOCK_MONOTONIC.pass: 1
 timers.inconsistency-check.pass: 1
-timers.raw_skew.Estimating_clock_drift:_0.0(est)_0.0(act).pass: 1
+timers.raw_skew.Estimating_clock_drift.pass: 1
 timers.raw_skew.pass: 1
 timers.threadtest.Testing_consistency_with_8_threads_for_30_seconds.pass: 1
 timers.threadtest.pass: 1
