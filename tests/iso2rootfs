@@ -49,8 +49,6 @@ check_yaml_vars()
 		"rootfs_protocol"
 		"rootfs_server"
 		"rootfs_path"
-		"initrd_http_host"
-		"initrd_http_port"
 	)
 
 	for yaml_t in "${yaml_vars[@]}"
@@ -190,7 +188,7 @@ check_os()
 
 get_cgz()
 {
-	local cgz_url="http://${initrd_http_host}:${initrd_http_port}/initrd/pkg/nfs/${os}/${os_arch}/${os_version}/iso2rootfs.cgz"
+	local cgz_url="http://${INITRD_HTTP_HOST}:${INITRD_HTTP_PORT}/initrd/pkg/nfs/${os}/${os_arch}/${os_version}/iso2rootfs.cgz"
 	local cgz_name
 	cgz_name=$(basename "${cgz_url}")
 	local cgz_path_t=${ENV_DIR}/${cgz_name}
