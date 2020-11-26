@@ -1,7 +1,17 @@
 suite: borrow
 testcase: borrow
 
-runtime: 1d
 timeout: 1d
 
-sleep:
+sshd:
+        pub_key: <%=
+        begin
+          File.read("#{ENV['HOME']}/.ssh/id_rsa.pub").chomp
+        rescue
+          nil
+        end
+        %>
+        my_email:
+
+# sleep at the bottom
+sleep: 1d
