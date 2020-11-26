@@ -30,7 +30,8 @@ end
 
 result_mapping = {
   'passed' => 'pass',
-  'failed' => 'fail'
+  'failed' => 'fail',
+  'skipped' => 'skip'
 }
 
 stats.each do |k, v|
