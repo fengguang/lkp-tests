@@ -6,11 +6,11 @@ need_x: true
 timeout: 1h
 
 phoronix-test-suite:
-  - test: cl-mem-1.0.1
-    option_a:
-      - Read
-      - Write
-      - Copy
+  # - test: cl-mem-1.0.1 # need to run on better perf tbox than lkp-cfl-d1
+    # option_a:
+      # - Read
+      # - Write
+      # - Copy
       # - Test All Options
   - test: financebench-1.0.0
     option_a:
