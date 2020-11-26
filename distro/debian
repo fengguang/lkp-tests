@@ -271,6 +271,7 @@ pack_benchmark_deps()
 			echo "$PACKAGE_LIST" > $pack_to/.${BM_NAME}.packages
 		else
 			echo "failed to pack-deps $BM_NAME" >&2
+			exit 1
 		fi
 
 		rm -fr "$work_dir"

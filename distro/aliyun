@@ -126,6 +126,7 @@ pack_benchmark_deps()
 			yum_pack
 		else
 			echo "failed to pack-deps $BM_NAME" >&2
+			exit 1
 		fi
 	done
 }
