@@ -1,15 +1,25 @@
 #!/usr/bin/env ruby
 
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+
+require "#{LKP_SRC}/lib/string_ext"
+require "#{LKP_SRC}/lib/log"
+
 test_subname = []
 test_id = -1
 is_begin_of_subtest = false
 while (line = STDIN.gets)
+  line = line.resolve_invalid_bytes
+
   # remove color control info
   line.gsub!(/.\[1;(\d+)m|.\[0m/, '')
   case line.chomp!
   when %r{(pts|system)/(\S+)-[0-9.]+ is not installed}
     item = Regexp.last_match[2]
     puts "#{item}.not_installed: 1"
+
+    log_warn "#{item} is not installed"
+    exit 1
   when %r{(pts|system)/(\S+)-[0-9.]+}
     test_name = Regexp.last_match[2]
     if line =~ /(pts|system)\/(\S+)-[0-9.]+ \[(?<params>.+)\]/
