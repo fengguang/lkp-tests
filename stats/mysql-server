@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
-# frozen_string_literal: true
 
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.reapath($PROGRAM_NAME)))
 
@@ -16,9 +15,9 @@ while (line = STDIN.gets)
     # 200706 14:35:52 [ 99%] main.ssl_dynamic_persisted               w1  [ fail ]   5953
     # 200706 14:35:59 [ 99%] main.mysql_upgrade_grant                 w7  [ skipped ]  80805
   when /\[\s*\d+%\]/
-    results << line.split(']')[1].split[0] + '.pass: 1'      if line.include?('[ pass ]')
-    results << line.split(']')[1].split[0] + '.fail: 1'      if line.include?('[ fail ]')
-    results << line.split(']')[1].split[0] + '.skip: 1'      if line.include?('[ skipped ]')
+    results << line.split(']')[1].split[0] + '.pass: 1' if line.include?('[ pass ]')
+    results << line.split(']')[1].split[0] + '.fail: 1' if line.include?('[ fail ]')
+    results << line.split(']')[1].split[0] + '.skip: 1' if line.include?('[ skipped ]')
   end
 end
 
