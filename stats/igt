@@ -6,16 +6,19 @@ require 'time'
 require "#{LKP_SRC}/lib/statistics"
 require "#{LKP_SRC}/lib/string_ext"
 require "#{LKP_SRC}/lib/array_ext"
-require "#{LKP_SRC}/lib/log"
+require "#{LKP_SRC}/lib/tests/stats"
 
-stats = []
 test_name = nil
 subtest_name = nil
 has_dynamic_subtest = false
 
 def valid_datetime?(datetime_str)
-  !!Time.parse(datetime_str) rescue false
+  !!Time.parse(datetime_str)
+rescue StandardError
+  false
 end
+
+stats = LKP::Stats.new
 
 while (line = STDIN.gets)
   line = line.resolve_invalid_bytes
@@ -31,17 +34,12 @@ while (line = STDIN.gets)
     # 1 2020-10-27 01:29:45 build/tests/core_getstats
     # 2 IGT-Version: 1.25-ga15f8da1 (x86_64) (Linux: 5.9.0-wt-17357-g18b04b6d608b x86_64)
     # 3 SUCCESS (0.005s)
-    next if test_name == nil
+    next if test_name.nil?
 
-    stats_type = if $1 == 'SUCCESS'
-                   'pass'
-                 else
-                   'fail'
-                 end
-    stats << test_name + ".#{stats_type}: 1"
+    stats.add test_name, $1
   when /Starting subtest: (.*)$/
     # Starting subtest: invalid-buffer
-    next if test_name == nil
+    next if test_name.nil?
 
     subtest_name = $1
     has_dynamic_subtest = false
@@ -68,45 +66,25 @@ while (line = STDIN.gets)
     # above line 953-980 and 1511-1521 could be regarded as two sections for
     # gem_sync.default, they include different dynamic subtests.
     # should ignore the 'Subtest default' results from 980 and 1521 to avoid duplicated stats
-    next if test_name == nil || has_dynamic_subtest
+    next if test_name.nil? || has_dynamic_subtest
 
     if subtest_name != $1
       log_warn "subtest_name [#{subtest_name}] != $1 [#{$1}]"
       exit 1
     end
 
-    stats_type = if $2 == 'SUCCESS'
-                   'pass'
-                 else
-                   'fail'
-                 end
-    stats << test_name + "." + $1 + ".#{stats_type}: 1"
+    stats.add "#{test_name}.#{$1}", $2
   when /^Dynamic subtest (.*): (SUCCESS|FAIL|CRASH)/
     # a 'dynamic subtest' is such like a 2nd level subtest under 'subtest' as below
     # 2607 Starting subtest: exec-single-timeline
     # 2608 Starting dynamic subtest: rcs0
     # 2609 Dynamic subtest rcs0: SUCCESS (1.060s)
-    next if test_name == nil || subtest_name == nil
+    next if test_name.nil? || subtest_name.nil?
 
     has_dynamic_subtest = true
 
-    stats_type = if $2 == 'SUCCESS'
-                   'pass'
-                 else
-                   'fail'
-                 end
-    stats << test_name + "." + subtest_name + ".dynamic." + $1 + ".#{stats_type}: 1"
+    stats.add "#{test_name}.#{subtest_name}.dynamic.#{$1}", $2
   end
 end
 
-stats.each { |stat| puts stat }
-
-# self validation
-# rli9 FIXME one possible bad case can be below which is not checked now
-#   a.pass: 1
-#   a.fail: 1
-duplicated_stats = stats.duplicated_elements
-unless duplicated_stats.empty?
-  log_error "duplicated stats: #{duplicated_stats}"
-  exit 1
-end
+stats.dump('success' => 'pass', 'crash' => 'fail')
