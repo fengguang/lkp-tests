@@ -43,7 +43,6 @@ check_yaml_vars()
 		"os"
 		"os_arch"
 		"os_version"
-		"iso2rootfs_cgz"
 		"iso_os"
 		"iso_arch"
 		"iso_version"
@@ -191,7 +190,7 @@ check_os()
 
 get_cgz()
 {
-	local cgz_url="http://${initrd_http_host}:${initrd_http_port}/initrd/pkg/nfs/${os}/${os_arch}/${os_version}/${iso2rootfs_cgz}"
+	local cgz_url="http://${initrd_http_host}:${initrd_http_port}/initrd/pkg/nfs/${os}/${os_arch}/${os_version}/iso2rootfs.cgz"
 	local cgz_name
 	cgz_name=$(basename "${cgz_url}")
 	local cgz_path_t=${ENV_DIR}/${cgz_name}
