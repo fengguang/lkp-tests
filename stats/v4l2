@@ -3,6 +3,7 @@
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
 require "#{LKP_SRC}/lib/string_ext"
+require "#{LKP_SRC}/lib/log"
 
 stats = {}
 
@@ -20,10 +21,22 @@ while (line = STDIN.gets)
   when /test (.*): (FAIL|OK)*/
     result = $2.downcase
     test = $1.downcase.gsub(' ', '_')
+
+    if stats[test]
+      log_warn "test #{test} has already existed"
+      exit 1
+    end
+
     stats[test] = result
   end
 end
 
+result_mapping = {
+  'ok' => 'pass'
+}
+
 stats.each do |k, v|
+  v = result_mapping[v] || v
+
   puts k + '.' + v + ': 1'
 end
