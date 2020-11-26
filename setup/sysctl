@@ -202,6 +202,9 @@
 # - sc_netdev_max_backlog
 # - sc_rmem_max
 # - sc_wmem_max
+# - sc_ipv4_tcp_rmem
+# - sc_ipv4_tcp_wmem
+# - sc_sched_features
 
 . $LKP_SRC/lib/reproduce-log.sh
 
@@ -405,8 +408,11 @@
 [ -n "$sc_ipv4_tcp_max_tw_buckets" ] && log_eval "echo '$sc_ipv4_tcp_max_tw_buckets' > '/proc/sys/net/ipv4/tcp_max_tw_buckets'"
 [ -n "$sc_ipv4_tcp_max_syn_backlog" ] && log_eval "echo '$sc_ipv4_tcp_max_syn_backlog' > '/proc/sys/net/ipv4/tcp_max_syn_backlog'"
 [ -n "$sc_ipv4_ip_local_port_range" ] && log_eval "echo '$sc_ipv4_ip_local_port_range' > '/proc/sys/net/ipv4/ip_local_port_range'"
+[ -n "$sc_ipv4_tcp_rmem" ] && log_eval "echo '$sc_ipv4_tcp_rmem' > '/proc/sys/net/ipv4/tcp_rmem'"
+[ -n "$sc_ipv4_tcp_wmem" ] && log_eval "echo '$sc_ipv4_tcp_wmem' > '/proc/sys/net/ipv4/tcp_wmem'"
 [ -n "$sc_netdev_max_backlog" ] && log_eval "echo '$sc_netdev_max_backlog' > '/proc/sys/net/core/netdev_max_backlog'"
 [ -n "$sc_rmem_max" ] && log_eval "echo '$sc_rmem_max' > '/proc/sys/net/core/rmem_max'"
 [ -n "$sc_wmem_max" ] && log_eval "echo '$sc_wmem_max' > '/proc/sys/net/core/wmem_max'"
+[ -n "$sc_sched_features" ] && log_eval "echo '$sc_sched_features' > '/sys/kernel/debug/sched_features'"
 
 exit 0
