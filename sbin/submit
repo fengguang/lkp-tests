@@ -112,6 +112,7 @@ ARGV.each do |jobfile|
   jobs[:expand_params] = true
   jobs['testbox'] = opt_set_key_value['testbox'] if opt_set_key_value['testbox']
   jobs['tbox_group'] = tbox_group(jobs['testbox']) if jobs.include?('testbox')
+  add_my_queue(jobs) if opt_my_queue
   jobs['node_roles'] ||= 'server client' if jobs['cluster']
   jobs.each_jobs do |job|
     raise 'Please configure SCHED_HOST' unless job['SCHED_HOST']
@@ -144,7 +145,6 @@ ARGV.each do |jobfile|
     job_hash_list << job_hash
     job_hash = job_hash.merge(sh_hash)
 
-    add_my_queue(job_hash) if opt_my_queue
     # save job to yaml
     if opt_output_dir
       prefix = File.join(opt_output_dir, File.basename(jobfile, '.yaml'))
