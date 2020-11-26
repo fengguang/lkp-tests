@@ -1,7 +1,7 @@
 mptcp.New_MPTCP_socket_can_be_blocked_via_sysctl.pass: 1
-mptcp.setsockopt(...,_TCP_ULP,_"mptcp",_...)_blocked.pass: 1
-mptcp.ns1_MPTCP__>_ns1_(10.0.1.1:10000_)_MPTCP.pass: 1
-mptcp.ns1_MPTCP__>_ns1_(10.0.1.1:10001_)_TCP.pass: 1
-mptcp.ns4_MPTCP__>_ns3_(10.0.3.2:10040_)_MPTCP.pass: 1
-mptcp.ns4_MPTCP__>_ns3_(dead:beef:3::2:10041)_MPTCP.pass: 1
+mptcp.setsockopt_..._TCP_ULP_mptcp_..._blocked.pass: 1
+mptcp.ns1_MPTCP_>_ns1_10.0.1.1_10000_MPTCP.pass: 1
+mptcp.ns1_MPTCP_>_ns1_10.0.1.1_10001_TCP.pass: 1
+mptcp.ns4_MPTCP_>_ns3_10.0.3.2_10040_MPTCP.pass: 1
+mptcp.ns4_MPTCP_>_ns3_dead_beef_3_2_10041_MPTCP.pass: 1
 net/mptcp.mptcp_connect.sh.pass: 1

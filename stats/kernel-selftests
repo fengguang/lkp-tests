@@ -108,8 +108,7 @@ end
 
 def resctrl_stat(line, _resctrl, stats)
   if line =~ /^not ok\s+(.*)/
-    test_content = $1.strip.tr(': ', '_')
-    stats.add "resctrl.#{test_content}", 'fail'
+    stats.add "resctrl.#{$1.strip}", 'fail'
   end
 end
 
@@ -164,7 +163,7 @@ while (line = STDIN.gets)
   when /^# \[RUN\].*(Tests with uid .*) +++/
     next unless test_name == 'capabilities'
 
-    test_case_name = $1.strip.tr(' ', '_').tr('-', '_').downcase
+    test_case_name = $1.strip
   when /^Pass (\d+) Fail (\d+) Xfail (\d+) Xpass (\d+) Skip (\d+) Error (\d+)/
     next unless test_name == 'capabilities'
 

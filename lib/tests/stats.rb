@@ -11,7 +11,9 @@ module LKP
     end
 
     def add(test_case, test_result)
-      test_case = test_case.strip.gsub(/\s+/, '_')
+      test_case = test_case.strip
+                           .gsub(/[\s,"_\(\):]+/, '_')
+                           .gsub(/(^_|_$)/, '')
       raise "#{test_case} has already existed" if @stats.key? test_case
 
       test_result = test_result.strip.gsub(/\s+/, '_').downcase if test_result.instance_of? String
