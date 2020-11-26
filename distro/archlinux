@@ -109,3 +109,18 @@ pack_benchmark()
 		)
 	done
 }
+
+add_aur_helper()
+{
+	echo "lkp ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+	pacman -Q yay 2>/dev/null && return
+
+	local user=lkp
+	local dir=/home/${user}
+
+	mkdir -p ${dir} && chown ${user}:${user} ${dir}
+	pacman -S --needed --noconfirm git base-devel 2>/dev/null
+	su - ${user} -c "git clone https://aur.archlinux.org/yay.git"
+	su - ${user} -c "cd yay && makepkg -si --needed --noconfirm"
+}

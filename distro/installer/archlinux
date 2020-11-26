@@ -2,12 +2,15 @@
 
 # Archlinux package installation
 
-# yaourt is a wrapper for pacman that adds automated access 
-# to the AUR.
-# See: https://wiki.archlinux.org/index.php/Yaourt
+# Yet Another Yogurt - An AUR Helper Written in Go
+# Yay is based on the design of yaourt, apacman and pacaur
+# See: https://github.com/Jguer/yay
 
-# yaourt not support root to build package
+# Yay not support root to build package
 # Use regular user to do this
-regular_user=`grep 1000 /etc/passwd | awk -F':' '{ print $1 }'`
+. $LKP_SRC/distro/${DISTRO}
+add_aur_helper
 
-sudo -u $regular_user yaourt -S --noconfirm $*
+regular_user=$(grep 1090 /etc/passwd | awk -F':' '{ print $1 }')
+
+sudo -u $regular_user yay -S --needed --noconfirm $*
