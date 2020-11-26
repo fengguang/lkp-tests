@@ -1,5 +1,5 @@
-timens.timens.passed_for_clock_boottime_(syscall).pass: 1
-timens.timens.passed_for_clock_monotonic_raw_(vdso).pass: 1
+timens.timens.Passed_for_CLOCK_BOOTTIME_(syscall).pass: 1
+timens.timens.Passed_for_CLOCK_MONOTONIC_RAW_(vdso).pass: 1
 timens.timens.pass: 1
 timens.timerfd.clockid=9.pass: 1
 timens.timerfd.pass: 1
@@ -8,7 +8,7 @@ timens.timer.pass: 1
 timens.clock_nanosleep.clockid:_1_abs:0.pass: 1
 timens.clock_nanosleep.clockid:_9_abs:1.pass: 1
 timens.clock_nanosleep.pass: 1
-timens.procfs.passed_for_/proc/uptime.pass: 1
+timens.procfs.Passed_for_/proc/uptime.pass: 1
 timens.procfs.pass: 1
 timens.exec.exec.pass: 1
 timens.exec.pass: 1
