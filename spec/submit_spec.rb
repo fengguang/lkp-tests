@@ -44,4 +44,8 @@ describe 'submit job spec' do
   it 'link matrix' do
     submit_job('matrix')
   end
+
+  it 'separate yaml spec' do
+    submit_job('separate_yaml')
+  end
 end
