@@ -48,4 +48,8 @@ describe 'submit job spec' do
   it 'separate yaml spec' do
     submit_job('separate_yaml')
   end
+
+  it 'job on fail' do
+    submit_job('job_on_fail')
+  end
 end
