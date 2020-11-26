@@ -1,0 +1,9 @@
+suite: unixbench
+
+runtime: 300s
+
+nr_task test:
+        - 1 whetstone-double
+        - 3 shell1
+
+unixbench:

@@ -40,4 +40,8 @@ describe 'submit job spec' do
   it 'link jobs spec' do
     submit_job('link_jobs')
   end
+
+  it 'link matrix' do
+    submit_job('matrix')
+  end
 end
