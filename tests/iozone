@@ -47,8 +47,7 @@ if [ -n "$block_size" ]; then
 				;;
 			"preadv")    args+=" -i 12"
 				;;
-			*) echo "invalid test option, please check again!"
-				exit 1
+			*)           echo "invalid test option, please check again!" && exit 1
 				;;
 		esac
 	done
