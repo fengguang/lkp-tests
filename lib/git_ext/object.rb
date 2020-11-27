@@ -8,7 +8,7 @@ module Git
   class Object
     class Commit
       alias orig_initialize initialize
-      PGP_SIGNATURE = "-----END PGP SIGNATURE-----".freeze
+      PGP_SIGNATURE = '-----END PGP SIGNATURE-----'.freeze
 
       def initialize(base, sha, init = nil)
         orig_initialize(base, sha, init)
