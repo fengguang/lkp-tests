@@ -37,12 +37,25 @@ def futex_stat(line, futex, stats)
   end
 end
 
-class NetStater
+class Stater
   def initialize(test, test_script)
     @test = test
     @test_script = test_script
+
+    @test_prefix = "#{@test}.#{@test_script}"
   end
 
+  def stat(line, stats)
+    case line
+    when /^(ok|not ok) \d+ selftests: (#{@test}): (#{@test_script})/
+      # not ok 46 selftests: net: vrf_route_leaking.sh # exit=1
+      # ok 1 selftests: vm: run_vmtests
+      stats.add @test_prefix.to_s, $1
+    end
+  end
+end
+
+class NetStater < Stater
   def stat(line, stats)
     case line
     when /^#\s+(IPv.+)/
@@ -50,13 +63,33 @@ class NetStater
       @test_group = $1
     when /^#\s+TEST:\s+(.+)\s+\[( OK |FAIL|SKIP)\]/
       # TEST: Basic IPv4 connectivity                                       [ OK ]
-      stats.add "net.#{@test_script}.#{@test_group}.#{$1}", $2
+      stats.add "#{@test_prefix}.#{@test_group}.#{$1}", $2
     when /^#\s+(SKIP|FAIL)/
       # SKIP: Could not run IPV4 test without traceroute
-      stats.add "net.#{@test_script}.#{@test_group}", $1
-    when /^(ok|not ok) \d+ selftests: (net): (#{@test_script})/
-      # not ok 46 selftests: net: vrf_route_leaking.sh # exit=1
-      stats.add "net.#{@test_script}", $1
+      stats.add "#{@test_prefix}.#{@test_group}", $1
+    else
+      super(line, stats)
+    end
+  end
+end
+
+class VmStater < Stater
+  def stat(line, stats)
+    case line
+    when /^#\s+running\s+(.+)/
+      # running hugepage-shm
+      @test_case = $1
+    when /^#\s+\[(PASS|FAIL|ignored_by_lkp)\]/
+      # rli9 FIXME why below test has both ignored and pass result
+      #
+      # running virtual address 128TB switch test
+      # -----------------------------
+      # [ignored_by_lkp]
+      # [PASS]
+      stats.add "#{@test_prefix}.#{@test_case}", $1 if @test_case
+      @test_case = nil
+    else
+      super(line, stats)
     end
   end
 end
@@ -107,20 +140,8 @@ def x86_stat(line, _x86, stats)
   end
 end
 
-def vm_stat(line, _vm, stats)
-  case line
-  when /^*running\s+(.*)/
-    @vm_subname = $1.strip
-  when /^\[(PASS|FAIL|ignored_by_lkp)\]/
-    stats.add "vm.#{@vm_subname}", $1 if @vm_subname
-    @vm_subname = nil
-  end
-end
-
 def resctrl_stat(line, _resctrl, stats)
-  if line =~ /^not ok\s+(.*)/
-    stats.add "resctrl.#{$1.strip}", 'fail'
-  end
+  stats.add "resctrl.#{$1.strip}", 'fail' if line =~ /^not ok\s+(.*)/
 end
 
 def subtest_stat(test_name, test_case_name, subtest, result, stats)
@@ -141,6 +162,9 @@ while (line = STDIN.gets)
   case line
   when /^# selftests: (net): (vrf_route_leaking.sh)/
     stater = NetStater.new($1, $2)
+  when /^# selftests: (vm): (.+)/
+    # selftests: vm: run_vmtests
+    stater = VmStater.new($1, $2)
   when /^# selftests: net: (.*)/
     test_case_name = $1
     stater = nil
@@ -326,14 +350,6 @@ while (line = STDIN.gets)
     next unless test_name == 'timers'
 
     subtest_stat('timers', test_case_name, $1, $3, stats)
-  when /^# running (.*)/
-    next unless test_name == 'vm'
-
-    test_case_name = $1
-  when /^# \[(PASS|FAIL|SKIP)\]/
-    next unless test_name == 'vm'
-
-    detail_stat('vm', test_case_name, $1, stats)
   when /^*selftests.*: (.*) .*(\[|\[ )(PASS|FAIL|SKIP)/
     next if test_name == 'bpf'
 
@@ -343,8 +359,6 @@ while (line = STDIN.gets)
       memory_hotplug_stat(line, tests_stats['memory-hotplug'], stats)
     elsif test_name == 'x86'
       x86_stat(line, tests_stats['x86'], stats)
-    elsif test_name == 'vm'
-      vm_stat(line, tests_stats['vm'], stats)
     else
       stats.add "#{test_name}.#{Regexp.last_match[1].strip}", Regexp.last_match[3]
     end
@@ -430,8 +444,6 @@ while (line = STDIN.gets)
       mount_stat(line, tests_stats['mount'], stats)
     elsif test_name == 'x86'
       x86_stat(line, tests_stats['x86'], stats)
-    elsif test_name == 'vm'
-      vm_stat(line, tests_stats['vm'], stats)
     elsif test_name == 'resctrl'
       resctrl_stat(line, tests_stats['resctrl'], stats)
     end
