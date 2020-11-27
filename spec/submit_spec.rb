@@ -52,4 +52,8 @@ describe 'submit job spec' do
   it 'job on fail' do
     submit_job('job_on_fail')
   end
+
+  it 'merge yaml' do
+    submit_job('merge_yaml')
+  end
 end
