@@ -10,8 +10,8 @@ class Array
   end
 
   def duplicated_elements
-    self.group_by { |i| i }
-        .select { |_k, v| v.size > 1 }
-        .map(&:first)
+    group_by { |i| i }
+      .select { |_k, v| v.size > 1 }
+      .map(&:first)
   end
 end
