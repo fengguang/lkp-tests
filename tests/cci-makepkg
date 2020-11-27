@@ -34,10 +34,16 @@ pack_to=${os_mount}/${os}/${os_arch}/${os_version}/${benchmark}
 
 cd $LKP_SRC/pkg/$benchmark || die "pkg is empty"
 
-[ -n "$LKP_SERVER" ] && {
-	is_mount_point ${PKG_MNT} && umount ${PKG_MNT}
-	mount -t cifs -o guest,vers=1.0,noacl,nouser_xattr,port=446 //$LKP_SERVER$PKG_MNT $PKG_MNT || die "Failed to run mount"
+mount_pkg_mnt()
+{
+        is_mount_point ${PKG_MNT} && umount ${PKG_MNT}
+        mount -t cifs -o guest,vers=1.0,noacl,nouser_xattr,port=446 //$LKP_SERVER$PKG_MNT $PKG_MNT || die "Failed to run mount"
 }
+
+is_docker || {
+        [ -n "$LKP_SERVER" ] && mount_pkg_mnt
+}
+
 
 curl_pkgfile()
 {
@@ -140,7 +146,11 @@ build_source_pkg()
 
 	PACMAN=true BUILDDIR=$TMP CARCH=$arch PKGEXT=.cgz CGZDEST="$sync_dest/$cgz_name" $makepkg
 
-	[ "$?" == 0 ] && update_softlink
+	[ "$?" == 0 ] || exit 1
+	update_softlink
+
+	is_docker || exit 0
+	upload_to_target_dir ${sync_dest}
 }
 
 build_source_pkg
