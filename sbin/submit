@@ -99,10 +99,6 @@ def find_jobfile(jobfile)
   exit 1
 end
 
-def add_my_queue(job)
-  job['queue'] = "#{job['tbox_group']}~#{ENV['USER']}"
-end
-
 ARGV.each do |jobfile|
   jobfile = find_jobfile(jobfile)
   jobs = Job2sh.new
@@ -112,11 +108,12 @@ ARGV.each do |jobfile|
   jobs[:expand_params] = true
   jobs['testbox'] = opt_set_key_value['testbox'] if opt_set_key_value['testbox']
   jobs['tbox_group'] = tbox_group(jobs['testbox']) if jobs.include?('testbox')
-  add_my_queue(jobs) if opt_my_queue
   jobs['node_roles'] ||= 'server client' if jobs['cluster']
   jobs.each_jobs do |job|
     raise 'Please configure SCHED_HOST' unless job['SCHED_HOST']
     raise 'Please configure SCHED_PORT' unless job['SCHED_PORT']
+
+    job['queue'] = "#{jobs['tbox_group']}~#{ENV['USER']}" if opt_my_queue
 
     job.add_pp
     job.add_monitors
