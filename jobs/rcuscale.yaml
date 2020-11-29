@@ -1,12 +1,12 @@
-suite: rcuperf
-testcase: rcuperf
+suite: rcuscale
+testcase: rcuscale
 category: functional
 
 need_memory: 300MB
 runtime: 300s
 
-rcuperf:
-  perf_type:
+rcuscale:
+  scale_type:
   - rcu
   - srcu
   - srcud
