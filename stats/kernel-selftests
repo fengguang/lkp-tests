@@ -451,8 +451,5 @@ while (line = STDIN.gets)
 end
 
 stats.add 'mqueue.nsec_per_msg', mqueue_speed.values.average.to_i unless mqueue_speed.empty?
-if test == 'resctrl'
-  stats.add 'resctrl.resctrl_tests', 'pass' unless stats.any? { |stat| stat =~ /resctrl\..+\.fail: 1/ }
-end
 
 stats.dump('ok' => 'pass', 'not_ok' => 'fail')
