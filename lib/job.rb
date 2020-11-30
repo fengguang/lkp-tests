@@ -115,6 +115,11 @@ def __create_programs_hash(glob, lkp_src)
     next if path =~ /\.[0-9]+$/
 
     unless File.executable?(path)
+      if File.symlink?(path)
+        real_path = File.readlink(path)
+        real_path = File.join(File.dirname(path), real_path) if real_path =~ /^\.\.|^\w/
+        next unless File.exist?(real_path)
+      end
       log_warn "skip non-executable #{path}" unless path =~ /\.cr$/
       next
     end
