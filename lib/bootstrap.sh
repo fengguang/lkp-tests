@@ -105,29 +105,30 @@ network_ok()
 
 network_up()
 {
-	local default_route=$1
-
 	net_devices_link up
 	network_ok || { echo "LKP: waiting for network..."; sleep 10; }
 	network_ok || sleep 20
 	network_ok || sleep 30
-	network_ok || return
+	network_ok || return 1
 
-	ip route | grep -q 'default via' && return
-	if [ -n "$default_route" ]; then
-		ip route add $default_route
-	else
-		local nameserver=$(grep -m1 nameserver /etc/resolv.conf 2>/dev/null | awk '{print $NF}')
-		[ -n "$nameserver" ] || return
-		ip route add default via $nameserver
-	fi
+	ip route | grep -q 'default via' || {
+		# recover the default route
+		[ -f /tmp/ip_route ] && ip route add $(grep 'default via' /tmp/ip_route)
+		[ $? = 0 ] || {
+			echo "failed to set default route"
+			return $?
+		}
+	}
+
+	set_tbox_wtmp 'network_up'
 }
 
 network_down()
 {
-	local default_route=$(ip route | grep 'default via')
+	set_tbox_wtmp 'network_down'
+	# backup route table
+	ip route > /tmp/ip_route
 	net_devices_link down
-	echo "$default_route"
 }
 
 # Many randconfig test kernels may not have the necessary NIC driver.
