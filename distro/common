@@ -89,5 +89,7 @@ upload_to_target_dir()
 	local dir="$1"
 	local file="$(ls -F ${dir} | grep -v "@")"
 
+	[ -z "${file}" ] && return 0
+
 	upload_one_curl "${dir}/${file}"  "${dir}" >/dev/null
 }
