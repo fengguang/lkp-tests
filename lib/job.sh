@@ -313,3 +313,10 @@ run_test()
 	fi
 }
 
+# user can run self-define stats by:
+# run_target_stats $(basename $0)
+run_target_stats()
+{
+	local script_name=$1
+	$LKP_SRC/stats/$script_name < $TMP_RESULT_ROOT/$script_name > $TMP_RESULT_ROOT/$script_name.json
+}
