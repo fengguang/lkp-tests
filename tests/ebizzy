@@ -2,6 +2,8 @@
 # - nr_threads
 # - duration
 # - iterations
+# - mmap
+# - linear
 
 ## ebizzy is designed to generate a workload resembling common
 ## webapplication server workloads. It is highly threaded,
@@ -12,9 +14,13 @@ cd $BENCHMARK_ROOT/ebizzy || exit
 
 duration=${duration%%s}
 
+[ -n "$mmap" ] && opt_mmap=" -m "
+[ -n "$linear" ] && opt_linear=" -z "
+
+
 for i in $(seq 1 $iterations)
 do
 	echo Iteration: $i
-	log_cmd ./ebizzy -t $nr_threads \
-		     -S $duration
+	log_cmd ./ebizzy -t $nr_threads -S $duration \
+		$opt_mmap $opt_linear
 done
