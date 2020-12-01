@@ -187,8 +187,8 @@ module Git
       end
 
       def reverted?(branch)
-        reverted_subject = 'Revert "' + subject + '"'
-        !@base.command("log --format=%s #{sha}..#{branch} | grep -x -m1 '#{reverted_subject}'").empty?
+        reverted_subject = 'Revert \"' + subject + '\"'
+        !@base.command("log --format=%s #{sha}..#{branch} | grep -x -m1 \"#{reverted_subject}\"").empty?
       end
 
       def exist_in?(branch)
