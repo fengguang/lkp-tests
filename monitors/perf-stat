@@ -5,6 +5,7 @@
 # - duration
 # - command
 # - per_socket
+# - per_die
 # - interval_ms
 # - rmetrics
 # - metrics
@@ -86,6 +87,7 @@ fi
 setup_wait
 
 parse_bool -q "$per_socket" && opts="$opts --per-socket"
+parse_bool -q "$per_die" && opts="$opts --per-die"
 parse_bool -q "$metric_only" && opts="$opts --metric-only"
 
 disable_nmi_watchdog
