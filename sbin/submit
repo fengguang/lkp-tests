@@ -20,7 +20,7 @@ opt_my_queue = false
 actions = ['output', 'stop']
 
 options = OptionParser.new do |opts|
-  opts.banner = 'Usage: submit [options] jobs...'
+  opts.banner = 'Usage: submit [options] job1.yaml job2.yaml ...'
 
   opts.separator '       submit test jobs to the scheduler'
   opts.separator ''
