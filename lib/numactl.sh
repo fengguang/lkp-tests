@@ -78,6 +78,6 @@ numa_node_binding()
 		       "$__mem_even_nodes" "$__nr_mem_even_node" "$__mem_nodes"
 	[ -n "$__binding" ] && __mem_binding="--membind=$__binding"
 	if [ -n "$__cpu_binding" ] || [ -n "$__mem_binding" ]; then
-		echo -n "numactl $__cpu_binding $__mem_binding --"
+		echo -n "numactl $numactl_opts $__cpu_binding $__mem_binding --"
 	fi
 }
