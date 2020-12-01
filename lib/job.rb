@@ -288,13 +288,13 @@ class Job
   def multi_args(hash)
     jobs_array = []
     hash.each { |key, value|
-      next unless key =~ /^\w.*\s+.*\w$/
+      next unless key =~ /^\w.*\|.*\w$/
 
-      next unless value.class == Array
+      key_array = key.split('|')
+      [value].flatten.each do |v|
+        next unless v =~ /^\w.*\|.*\w$/
 
-      key_array = key.split
-      value.each do |v|
-        v_array = v.split
+        v_array = v.split('|')
         next unless key_array.size == v_array.size
 
         hash_job = hash.clone
