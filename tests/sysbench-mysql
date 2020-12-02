@@ -19,7 +19,7 @@
 # db_driver
 
 : "${mysql_user:=root}"
-: "${mysql_host:=$direct_server_ips}"
+: "${mysql_host:=$server}"
 : "${mysql_port:=$mysql_port}"
 : "${mysql_db:=sysbench_1}"
 : "${mysql_password:=$mysql_password}"
