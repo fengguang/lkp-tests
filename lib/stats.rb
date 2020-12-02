@@ -25,6 +25,7 @@ $metric_pass = IO.read("#{LKP_SRC}/etc/pass").split("\n")
 $perf_metrics_threshold = YAML.load_file "#{LKP_SRC}/etc/perf-metrics-threshold.yaml"
 $perf_metrics_prefixes = File.read("#{LKP_SRC}/etc/perf-metrics-prefixes").split
 $index_perf = load_yaml "#{LKP_SRC}/etc/index-perf-all.yaml"
+$index_latency = load_yaml "#{LKP_SRC}/etc/index-latency.yaml"
 
 $perf_metrics_re = load_regular_expressions("#{LKP_SRC}/etc/perf-metrics-patterns")
 $stat_denylist = load_regular_expressions("#{LKP_SRC}/etc/stat-denylist")
@@ -839,7 +840,7 @@ def stat_key_base(stat)
 end
 
 def strict_kpi_stat?(stat, _axes, _values = nil)
-  $index_perf.keys.any? { |i| stat =~ /^#{i}$/ }
+  $index_perf.keys.any? { |i| stat =~ /^#{i}$/ } || $index_latency.keys.any? { |i| stat =~ /^#{i}$/ }
 end
 
 $kpi_stat_denylist = Set.new ['vm-scalability.stddev', 'unixbench.incomplete_result']
