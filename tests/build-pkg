@@ -98,6 +98,26 @@ replace_source()
   sed -i "s|^source=[^)]*|$1|g" "$2"
 }
 
+# replace *.tar.* address from source field in PKGBUILD
+replace_tar_source()
+{
+  echo "source=(" > PKGBUILD.src
+  for url in ${source[@]}
+  do
+	echo "$url" | egrep '.+\.tar' && {
+		local_url="http://${LKP_SERVER}:8800/initrd/build-tar/${pkgname}/${url##*/}"
+
+		# check whether local server exists *.tar.* file
+		wget -q --spider "${local_url}"
+		[ "$?" == 0 ] || continue
+
+		url="\"${local_url}\""
+	}
+	echo "$url" >> PKGBUILD.src
+  done
+  echo ")" >> PKGBUILD.src
+}
+
 build_source_pkg()
 {
   local repo_dir=""
@@ -115,6 +135,8 @@ build_source_pkg()
 	replace_source "${upstream_source}" PKGBUILD
 	[ -n "$PKGBUILD_TAG" ] && replace_source "${upstream_source}" "PKGBUILD-$PKGBUILD_TAG"
   }
+
+  replace_tar_source
 
   cgz_name="$PKG_MNT/${pack_to}/${pkgname}/${upstream_commit}.cgz"
   PACMAN=true BUILDDIR=$TMP CARCH=$os_arch PKGEXT=.cgz CGZDEST="$cgz_name" \
