@@ -17,7 +17,7 @@ is_virt && exit 0
 
 if [ -z "$delay" ]; then
 	if [ -n "$runtime" ]; then
-		delay=$((runtime / 2))
+		delay=$((runtime * 3 / 5))
 	else
 		delay=100
 	fi
@@ -39,6 +39,7 @@ $perf sched record -g -o $perf_data -D $((delay * 1000)) \
 cat > "$TMP_RESULT_ROOT/post-run.perf-sched" <<EOF
 [ -s "$perf_data" ] && {
 	$perf sched latency -i $perf_data | gzip > $TMP_RESULT_ROOT/perf-sched.latency.gz
-	$perf sched timehist -i $perf_data | gzip > $TMP_RESULT_ROOT/perf-sched.timehist.gz
+	$perf sched timehist -i $perf_data >> $TMP_RESULT_ROOT/perf-sched
+	cat $TMP_RESULT_ROOT/perf-sched | gzip > $TMP_RESULT_ROOT/perf-sched.timehist.gz
 }
 EOF
