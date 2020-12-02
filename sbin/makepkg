@@ -895,6 +895,7 @@ update_pkgver() {
 			sed --follow-symlinks -i "s:^pkgrel=[^ ]*:pkgrel=1:" "$BUILDFILE"
 			source_safe "$BUILDFILE"
 			[[ -n $PKGBUILD_TAG ]] && source_safe "$BUILDFILE-$PKGBUILD_TAG"
+			[[ -f PKGBUILD.src ]]  && source_safe "PKGBUILD.src"
 			local fullver=$(get_full_version)
 			msg "$(gettext "Updated version: %s")" "$pkgbase $fullver"
 		else
@@ -3699,6 +3700,7 @@ else
 	fi
 	source_buildfile "$BUILDFILE"
 	[[ -n $PKGBUILD_TAG ]] && source_buildfile "$BUILDFILE-$PKGBUILD_TAG"
+	[[ -f PKGBUILD.src ]]  && source_buildfile PKGBUILD.src
 fi
 
 # set defaults if they weren't specified in buildfile
