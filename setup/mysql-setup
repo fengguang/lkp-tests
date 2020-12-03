@@ -33,4 +33,12 @@ setup_mysql()
 [ -n "$mount_points" ] || { echo "empty mount_points, disk failed?" >&2; exit; }
 
 mnt_point="${mount_points%% *}"
+[ -f /var/run/mysqld/mysqld.sock ] || {
+	# ERROR: There's not enough space in /var/lib/mysql/
+	# dpkg: error processing archive /opt/deb/mariadb-server-10.3_1%3a10.3.23-0+deb10u1_amd64.deb (--install):
+	#   new mariadb-server-10.3 package pre-installation script subprocess returned error exit status 1
+	mkdir -p $mnt_point/var_lib_mysql
+	mount --bind $mnt_point/var_lib_mysql /var/lib/mysql
+	dpkg --force-all -i /opt/deb/mariadb*
+}
 setup_mysql "$mnt_point"
