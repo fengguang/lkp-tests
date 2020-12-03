@@ -3,15 +3,13 @@ testcase: borrow
 
 timeout: 1d
 
+pub_key: <%=
+         begin
+           File.read("#{ENV['HOME']}/.ssh/id_rsa.pub").chomp
+         rescue
+           nil
+         end
+         %>
 sshd:
-        pub_key: <%=
-        begin
-          File.read("#{ENV['HOME']}/.ssh/id_rsa.pub").chomp
-        rescue
-          nil
-        end
-        %>
-        my_email:
-
 # sleep at the bottom
 sleep: 1d
