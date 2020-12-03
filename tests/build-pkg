@@ -21,60 +21,60 @@
 
 check_vars()
 {
-  [ -n "$os" ]			|| die "os is empty"
-  [ -n "$os_arch" ]		|| die "os_arch is empty"
-  [ -n "$os_version" ]		|| die "os_version is empty"
-  [ -n "$pkgbuild_repo" ]	|| die "pkgbuild_repo is empty"
-  [ -n "$upstream_commit" ]	|| die "upstream_commit is empty"
-  [ -n "$os_mount" ]		|| die "os_mount is empty"
+	[ -n "$os" ]			|| die "os is empty"
+	[ -n "$os_arch" ]		|| die "os_arch is empty"
+	[ -n "$os_version" ]		|| die "os_version is empty"
+	[ -n "$pkgbuild_repo" ]		|| die "pkgbuild_repo is empty"
+	[ -n "$upstream_commit" ]	|| die "upstream_commit is empty"
+	[ -n "$os_mount" ]		|| die "os_mount is empty"
 }
 
 mount_dest()
 {
-  # the same image is mounted to cifs and nfs, the generated cgz files
-  # are stored in the nfs directory.
-  [[ "$os_mount" = "cifs" ]] && os_mount="nfs"
-  pack_to=${os_mount}/${os}/${os_arch}/${os_version}
+	# the same image is mounted to cifs and nfs, the generated cgz files
+	# are stored in the nfs directory.
+	[[ "$os_mount" = "cifs" ]] && os_mount="nfs"
+	pack_to=${os_mount}/${os}/${os_arch}/${os_version}
 
-  PKG_MNT=/initrd/build-pkg
-  mkdir -p "$PKG_MNT"
+	PKG_MNT=/initrd/build-pkg
+	mkdir -p "$PKG_MNT"
 
-  [ -n "$LKP_SERVER" ] && {
-    mount -t cifs -o guest,vers=1.0,noacl,nouser_xattr,port=446 //$LKP_SERVER$PKG_MNT $PKG_MNT || die "Failed to run mount"
-  }
+	[ -n "$LKP_SERVER" ] && {
+		mount -t cifs -o guest,vers=1.0,noacl,nouser_xattr,port=446 //$LKP_SERVER$PKG_MNT $PKG_MNT || die "Failed to run mount"
+	}
 }
 
 get_pkgfile()
 {
-  curl -sS -H 'Content-Type: Application/json' -XPOST "$LKP_SERVER"':8100/git_command' \
-   -d '{"git_repo": "'$1'", "git_command": ["git-show", "HEAD:'$2'"]}' -o "${2##*/}"
-}
+	curl -sS -H 'Content-Type: Application/json' -XPOST "$LKP_SERVER"':8100/git_command' \
+		-d '{"git_repo": "'$1'", "git_command": ["git-show", "HEAD:'$2'"]}' -o "${2##*/}"
+	}
 
 request_pkg()
 {
-  local pkgrepo="${pkgbuild_repo%%//*}"
-  local pkgpath="./"
-  [[ "$pkgrepo" =~ ^archlinux/(packages|community) ]] && pkgpath="${pkgpath}${pkgbuild_repo#*//}/"
+	local pkgrepo="${pkgbuild_repo%%//*}"
+	local pkgpath="./"
+	[[ "$pkgrepo" =~ ^archlinux/(packages|community) ]] && pkgpath="${pkgpath}${pkgbuild_repo#*//}/"
 
-  filelist=$(curl -sS -H 'Content-Type: Application/json' -XPOST "$LKP_SERVER"':8100/git_command' \
-   -d '{"git_repo": "'${pkgrepo}'", "git_command": ["git-ls-files", "'${pkgpath}'"]}')
+	filelist=$(curl -sS -H 'Content-Type: Application/json' -XPOST "$LKP_SERVER"':8100/git_command' \
+		-d '{"git_repo": "'${pkgrepo}'", "git_command": ["git-ls-files", "'${pkgpath}'"]}')
 
-  for pkgfile in ${filelist[*]}
-  do
-    get_pkgfile "${pkgrepo}" "$pkgfile"
-  done
+	for pkgfile in ${filelist[*]}
+	do
+		get_pkgfile "${pkgrepo}" "$pkgfile"
+	done
 
-  # download PKGBUILD-$tag
-  benchmark="${upstream_repo##*/}"
-  benchmark="${benchmark%.git}"
-  [ -n "$PKGBUILD_TAG" ] && {
-	get_pkgfile "pkg/$benchmark" "PKGBUILD-$PKGBUILD_TAG"
-	[ -f "PKGBUILD-$PKGBUILD_TAG" ] || die "PKGBUILD-$PKGBUILD_TAG not exist"
-	[ -s "PKGBUILD-$PKGBUILD_TAG" ] || die "PKGBUILD-$PKGBUILD_TAG is empty"
-  }
+	# download PKGBUILD-$tag
+	benchmark="${upstream_repo##*/}"
+	benchmark="${benchmark%.git}"
+	[ -n "$PKGBUILD_TAG" ] && {
+		get_pkgfile "pkg/$benchmark" "PKGBUILD-$PKGBUILD_TAG"
+		[ -f "PKGBUILD-$PKGBUILD_TAG" ] || die "PKGBUILD-$PKGBUILD_TAG not exist"
+		[ -s "PKGBUILD-$PKGBUILD_TAG" ] || die "PKGBUILD-$PKGBUILD_TAG is empty"
+	}
 
-  [ -f PKGBUILD ] || die "PKGBUILD not exist"
-  [ -s PKGBUILD ] || die "PKGBUILD is empty"
+	[ -f PKGBUILD ] || die "PKGBUILD not exist"
+	[ -s PKGBUILD ] || die "PKGBUILD is empty"
 }
 
 create_softlink()
@@ -95,54 +95,54 @@ create_softlink()
 
 replace_source()
 {
-  sed -i "s|^source=[^)]*|$1|g" "$2"
+	sed -i "s|^source=[^)]*|$1|g" "$2"
 }
 
 # replace *.tar.* address from source field in PKGBUILD
 replace_tar_source()
 {
-  echo "source=(" > PKGBUILD.src
-  for url in ${source[@]}
-  do
-	echo "$url" | egrep '.+\.tar' && {
-		local_url="http://${LKP_SERVER}:8800/initrd/build-tar/${pkgname}/${url##*/}"
+	echo "source=(" > PKGBUILD.src
+	for url in ${source[@]}
+	do
+		echo "$url" | egrep '.+\.tar' && {
+			local_url="http://${LKP_SERVER}:8800/initrd/build-tar/${pkgname}/${url##*/}"
 
-		# check whether local server exists *.tar.* file
-		wget -q --spider "${local_url}"
-		[ "$?" == 0 ] || continue
+			# check whether local server exists *.tar.* file
+			wget -q --spider "${local_url}"
+			[ "$?" == 0 ] || continue
 
-		url="\"${local_url}\""
+			url="\"${local_url}\""
 	}
-	echo "$url" >> PKGBUILD.src
-  done
-  echo ")" >> PKGBUILD.src
+		echo "$url" >> PKGBUILD.src
+	done
+	echo ")" >> PKGBUILD.src
 }
 
 build_source_pkg()
 {
-  local repo_dir=""
-  source PKGBUILD
-  [ -n "$upstream_repo" ] && [ -n "$upstream_url" ] && {
+	local repo_dir=""
+	source PKGBUILD
+	[ -n "$upstream_repo" ] && [ -n "$upstream_url" ] && {
 
-	if [[ "$source" = *::* ]]; then
-		repo_dir="${source%%::*}::"
-	else
-		repo_dir="$(basename ${upstream_url})"
-		repo_dir="${repo_dir%.git*}::"
-	fi
+		if [[ "$source" = *::* ]]; then
+			repo_dir="${source%%::*}::"
+		else
+			repo_dir="$(basename ${upstream_url})"
+			repo_dir="${repo_dir%.git*}::"
+		fi
 
-	upstream_source="source=(\"${repo_dir}git://${LKP_SERVER}/${upstream_repo}#commit=${upstream_commit}\""
-	replace_source "${upstream_source}" PKGBUILD
-	[ -n "$PKGBUILD_TAG" ] && replace_source "${upstream_source}" "PKGBUILD-$PKGBUILD_TAG"
-  }
+		upstream_source="source=(\"${repo_dir}git://${LKP_SERVER}/${upstream_repo}#commit=${upstream_commit}\""
+		replace_source "${upstream_source}" PKGBUILD
+		[ -n "$PKGBUILD_TAG" ] && replace_source "${upstream_source}" "PKGBUILD-$PKGBUILD_TAG"
+	}
 
-  replace_tar_source
+	replace_tar_source
 
-  cgz_name="$PKG_MNT/${pack_to}/${pkgname}/${upstream_commit}.cgz"
-  PACMAN=true BUILDDIR=$TMP CARCH=$os_arch PKGEXT=.cgz CGZDEST="$cgz_name" \
-    $LKP_SRC/sbin/makepkg -A --check --skippgpcheck --config $LKP_SRC/etc/makepkg.conf 2>&1
+	cgz_name="$PKG_MNT/${pack_to}/${pkgname}/${upstream_commit}.cgz"
+	PACMAN=true BUILDDIR=$TMP CARCH=$os_arch PKGEXT=.cgz CGZDEST="$cgz_name" \
+		$LKP_SRC/sbin/makepkg -A --check --skippgpcheck --config $LKP_SRC/etc/makepkg.conf 2>&1
 
-  [ "$?" == 0 ] && create_softlink
+	[ "$?" == 0 ] && create_softlink
 }
 
 check_vars
