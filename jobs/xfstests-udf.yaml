@@ -11,4 +11,6 @@ fs:
 
 xfstests:
   test:
-  - udf-group-00
+  # currentlr only has udf/102
+  # thus when group size = 10, group id = 10
+  - udf-group-10
