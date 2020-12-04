@@ -8,7 +8,8 @@ per_record = Hash(String | String, Int32).new
 all_sum = 0
 nr_records = 0
 while (line = STDIN.gets)
-  next unless line =~ /^\s*\d+.*\d+$/
+  line = line.strip
+  next unless line =~ /^\d+.*\d+$/
 
   data = line.split
   data.each_index do |i|
