@@ -8,7 +8,7 @@
 #           min:                           0.04ms
 
 $stdin.each_line do |line|
-  next unless line =~ /^\s+total time:\s+([0-9.]+)/
+  next unless line =~ /^\s+total\stime:\s+(\S+)/
 
-  puts "total time: #{$1.to_f}s"
+  puts "total time: #{$1}"
 end
