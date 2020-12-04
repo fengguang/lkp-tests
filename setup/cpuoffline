@@ -1,0 +1,64 @@
+#!/bin/sh -e
+# - offline_cpus
+# - offline_package
+# - online_cpus
+
+. $LKP_SRC/lib/reproduce-log.sh
+
+# online_cpus overrides the denied list
+if [ ! -z $online_cpus ]
+then
+	cpu_id=0
+	d_cpu=/sys/devices/system/cpu/cpu$cpu_id
+	while [ -d $d_cpu ]
+	do
+		match_cpu=false
+		for i in $online_cpus
+		do
+			if [ $i -eq $cpu_id ]
+			then
+				match_cpu=true
+				break
+			fi
+		done
+		if [ "$match_cpu" = "false" ]
+		then
+			echo 0 > $d_cpu/online
+			echo CPU$cpu_id offlined
+		else
+			[ -f $d_cpu/online ] && echo 1 > $d_cpu/online
+		fi
+		sleep 1
+		cpu_id=$(( $cpu_id + 1 ))
+		d_cpu=/sys/devices/system/cpu/cpu$cpu_id
+	done
+
+	sleep 3
+	return
+fi
+
+if [ ! -z $offline_cpus ]
+then
+	for i in $offline_cpus
+	do
+		echo 0 > $d_cpu/online
+		echo CPU$i offlined
+		sleep 1
+	done
+fi
+
+if [ ! -z $offline_package ]
+then
+	cpu_id=1
+	d_cpu=/sys/devices/system/cpu/cpu$cpu_id
+	while [ -d $d_cpu ]
+	do
+		package_id=$(cat $d_cpu/topology/physical_package_id)
+		echo CPU$cpu_id: physcal_package_id $(cat $d_cpu/topology/physical_package_id), package cpu list: $(cat $d_cpu/topology/package_cpus_list)
+		[ "$package_id" = "$offline_package" ] && { echo 0 > $d_cpu/online; echo CPU$cpu_id offlined; sleep 1; }
+		cpu_id=$(( $cpu_id + 1 ))
+		d_cpu=/sys/devices/system/cpu/cpu$cpu_id
+	done
+
+fi
+sleep 3
