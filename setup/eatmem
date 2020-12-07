@@ -5,6 +5,7 @@
 # - cpu_node_bind
 # - mem_node_bind
 
+. "$LKP_SRC/lib/reproduce-log.sh"
 . "$LKP_SRC/lib/debug.sh"
 . "$LKP_SRC/lib/numactl.sh"
 

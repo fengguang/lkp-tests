@@ -21,6 +21,7 @@
 # - pre_read
 # - rwmixread
 
+. $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/common.sh
 . $LKP_SRC/lib/unit.sh
 . $LKP_SRC/lib/debug.sh

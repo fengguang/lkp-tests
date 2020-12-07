@@ -1,6 +1,7 @@
 #!/bin/sh
 
 . $LKP_SRC/lib/tests/cassandra.sh
+. $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/env.sh
 
 check_mysql_server()
