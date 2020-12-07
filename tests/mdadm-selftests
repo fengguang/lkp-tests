@@ -94,8 +94,6 @@ for testcase in $(cd tests && ls ${test_prefix}*); do
 	run_test
 done
 
-exit_value=$?
-
 [ -d result ] && upload_files -t results result/*
 
-exit $exit_value
+exit 0

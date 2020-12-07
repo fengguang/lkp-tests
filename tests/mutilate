@@ -42,3 +42,5 @@ run_agent
 run_mutilate
 
 [ -n "$agent_pid" ] && kill "$agent_pid"
+
+exit 0

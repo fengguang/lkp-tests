@@ -45,3 +45,5 @@ do
 		[ $? -eq 112 ] && exit 112
 	done
 done < $test_file
+
+exit 0

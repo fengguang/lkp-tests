@@ -248,9 +248,7 @@ has_virtual_disk=false
 read_env_vars
 set_env
 run_test
-exit_value=$?
 
 # umonut the virtual disk
 [ "$has_virtual_disk" = true ] && losetup -d /dev/loop0
 upload_files -t results $BENCHMARK_ROOT/xfstests/results/*
-exit $exit_value

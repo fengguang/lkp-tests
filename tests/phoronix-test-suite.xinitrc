@@ -2,6 +2,7 @@
 
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/tests/phoronix-test-suite.sh
+. $LKP_SRC/lib/reproduce-log.sh
 
 ## See 'tests/phoronix-test-suite'.
 
@@ -23,10 +24,7 @@ test_installed=`phoronix-test-suite info $test | grep "Test Installed" | awk '{p
 }
 
 run_test $test
-exit_value=$?
 
 end_time=$(date +%s.%N)
 elapsed=$(echo $end_time - $start_time | bc)
 echo "${test}.seconds: $elapsed"
-
-exit $exit_value

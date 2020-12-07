@@ -22,8 +22,4 @@ run_test()
 
 run_test
 
-exit_value=$?
-
 upload_files -t results result/*
-
-exit $exit_value

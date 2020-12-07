@@ -92,4 +92,4 @@ run_test
 [ -d "$BENCHMARK_ROOT/blktests/results" ] && upload_files -t results $BENCHMARK_ROOT/blktests/results/*
 [ -d "/mnt/$test/nodev" ] && upload_files -t results /mnt/$test/nodev/*
 
-exit
+exit 0
