@@ -16,13 +16,8 @@ workaround_env
 
 test_setting
 is_excluded $test
-log_cmd ./runltp -f $test $big_dev_opt $tmpdir_opt || exit
-
-exit_value=$?
+log_cmd ./runltp -f $test $big_dev_opt $tmpdir_opt
 
 cleanup_ltp
 
-upload_files -t results $BENCHMARK_ROOT/ltp/results/* \
-	$BENCHMARK_ROOT/ltp/output
-
-exit $exit_value
+upload_files -t results $BENCHMARK_ROOT/ltp/results/* $BENCHMARK_ROOT/ltp/output
