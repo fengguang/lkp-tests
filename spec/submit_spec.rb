@@ -16,20 +16,18 @@ end
 
 def traverse_file(output_dir)
   Dir.glob("#{output_dir}/*.yaml").each do |yaml_file|
-    stable_yaml_file(yaml_file)
+    stable_yaml_file(yaml_file) unless File.basename(yaml_file) == 'job.yaml'
   end
 end
 
-def submit_job(submit_item)
-  submit_yaml_path = File.join("#{LKP_SRC}/spec/submit", submit_item)
-  Dir.glob("#{submit_yaml_path}/*.yaml").each do |yaml_file|
-  output_dir = File.join(submit_yaml_path, File.basename(yaml_file, '.yaml'))
+def submit_job()
+  Dir.glob("#{LKP_SRC}/spec/submit/*").each do |output_dir|
     submit_cmd = [
       "#{LKP_SRC}/sbin/submit",
       '-o', output_dir,
       '-s', 'lab: spec_lab',
       '-s', 'testbox: vm-2p8g--spec_submit',
-      yaml_file
+      "#{output_dir}/job.yaml"
     ]
     system(*submit_cmd)
     traverse_file(output_dir)
@@ -38,22 +36,6 @@ end
 
 describe 'submit job spec' do
   it 'link jobs spec' do
-    submit_job('link_jobs')
-  end
-
-  it 'link matrix' do
-    submit_job('matrix')
-  end
-
-  it 'separate yaml spec' do
-    submit_job('separate_yaml')
-  end
-
-  it 'job on fail' do
-    submit_job('job_on_fail')
-  end
-
-  it 'merge yaml' do
-    submit_job('merge_yaml')
+    submit_job()
   end
 end
