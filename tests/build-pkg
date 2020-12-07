@@ -95,32 +95,20 @@ create_softlink()
 
 replace_source()
 {
-	sed -i "s|^source=[^)]*|$1|g" "$2"
-}
-
-# replace *.tar.* address from source field in PKGBUILD
-replace_tar_source()
-{
-	echo "source=(" > PKGBUILD.src
+	echo "source=(" > $1
 	for url in ${source[@]}
 	do
-		echo "$url" | egrep '.+\.tar' && {
-			local_url="http://${LKP_SERVER}:8800/initrd/build-tar/${pkgname}/${url##*/}"
-
-			# check whether local server exists *.tar.* file
-			wget -q --spider "${local_url}"
-			[ "$?" == 0 ] || continue
-
-			url="\"${local_url}\""
-	}
-		echo "$url" >> PKGBUILD.src
+		echo "$url" | egrep 'git\+|\.git$' && {
+			url="\"${repo_dir}git://${LKP_SERVER}/${upstream_repo}#commit=${upstream_commit}\""
+		}
+		echo "$url" >> $1
 	done
-	echo ")" >> PKGBUILD.src
+	echo ")" >> $1
 }
 
 build_source_pkg()
 {
-	local repo_dir=""
+	repo_dir=""
 	source PKGBUILD
 	[ -n "$upstream_repo" ] && [ -n "$upstream_url" ] && {
 
@@ -130,13 +118,11 @@ build_source_pkg()
 			repo_dir="$(basename ${upstream_url})"
 			repo_dir="${repo_dir%.git*}::"
 		fi
-
-		upstream_source="source=(\"${repo_dir}git://${LKP_SERVER}/${upstream_repo}#commit=${upstream_commit}\""
-		replace_source "${upstream_source}" PKGBUILD
-		[ -n "$PKGBUILD_TAG" ] && replace_source "${upstream_source}" "PKGBUILD-$PKGBUILD_TAG"
 	}
 
-	replace_tar_source
+	replace_source "PKGBUILD.src"
+
+	[ -n "$PKGBUILD_TAG" ] && replace_source "PKGBUILD-$PKGBUILD_TAG"
 
 	cgz_name="$PKG_MNT/${pack_to}/${pkgname}/${upstream_commit}.cgz"
 	PACMAN=true BUILDDIR=$TMP CARCH=$os_arch PKGEXT=.cgz CGZDEST="$cgz_name" \
