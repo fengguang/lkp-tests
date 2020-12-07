@@ -7,13 +7,15 @@
 
 shopt -s nullglob
 
-[ -n "$mount_points" ] || die "\"mount_points\" is empty"
-
-cd "$BENCHMARK_ROOT"/mce-test || exit
-
 . "$LKP_SRC"/lib/upload.sh
 . "$LKP_SRC"/lib/job.sh
 . "$LKP_SRC"/lib/debug.sh
+. $LKP_SRC/lib/reproduce-log.sh
+
+[ -n "$mount_points" ] || die "\"mount_points\" is empty"
+
+cd $BENCHMARK_ROOT/mce-test || die "no $BENCHMARK_ROOT/mce-test"
+
 read_env_vars
 exit_value=0
 
@@ -111,9 +113,7 @@ test_choice()
 		if grep -q "^$i" "$MCE_SCENARIO_DIR"/*; then
 			grep -h "^$i" "$MCE_SCENARIO_DIR"/* | awk '{print $1" "$2}' >> $MCE_CASELIST
 		else
-			echo "mce test case: $i not found"
-			exit_value=1
-			return
+			die "mce test case: $i not found"
 		fi
 	done
 
@@ -121,7 +121,6 @@ test_choice()
 		create_edac_ref
 	fi
 	./runmcetest -t $MCE_TMPDIR -s $MCE_SUMDIR -o $MCE_LOGDIR -b $MCE_TOOLDIR -l $MCE_CASELIST -r 1
-	exit_value=$?
 
 	#upload_files -t results  $MCE_LOGDIR/*
 
@@ -140,4 +139,4 @@ else
 	test_choice
 fi
 
-exit $exit_value
+exit 0

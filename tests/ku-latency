@@ -3,7 +3,9 @@
 
 ## Measuring latency in the Linux network stack between kernel and user space.
 
-cd $BENCHMARK_ROOT/ku-latency || exit
+. $LKP_SRC/lib/reproduce-log.sh
+
+cd $BENCHMARK_ROOT/ku-latency || die "no $BENCHMARK_ROOT/ku-latency"
 
 [ -n "$runtime" ] || runtime=300
 

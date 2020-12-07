@@ -4,11 +4,12 @@
 ## The LTP testsuite contains a collection of tools for
 ## testing the Linux kernel and related features.
 
-cd $BENCHMARK_ROOT/ltp || exit
-
 . $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/upload.sh
 . $LKP_SRC/lib/tests/ltp.sh
+. $LKP_SRC/lib/reproduce-log.sh
+
+cd $BENCHMARK_ROOT/ltp || die "no $BENCHMARK_ROOT/ltp"
 
 export PATH=/lkp/benchmarks/ltp/bin:$PATH
 

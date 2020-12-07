@@ -3,9 +3,10 @@
 
 ## Utilities for testing Power Management
 
-cd $BENCHMARK_ROOT/pm-qa || exit
-
 . $LKP_SRC/lib/upload.sh
+. $LKP_SRC/lib/reproduce-log.sh
+
+cd $BENCHMARK_ROOT/pm-qa || die "no $BENCHMARK_ROOT/pm-qa"
 
 [ -e "/usr/bin/glmark2" ] || ln -sf /lkp/benchmarks/pm-qa/glmark2/bin/glmark2 /usr/bin/glmark2
 

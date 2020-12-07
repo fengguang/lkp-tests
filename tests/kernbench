@@ -2,14 +2,10 @@
 # - nr_loops
 # - nr_threads
 
-cd $BENCHMARK_ROOT/kernbench || {
-	echo "ERROR: kernbench benchmark is not installed yet!" >&2
-	exit 1
-}
+. $LKP_SRC/lib/reproduce-log.sh
 
-cd linux || {
-	echo "ERROR: linux kernel source not found!" >&2
-	exit 1
-}
+cd $BENCHMARK_ROOT/kernbench || die "kernbench benchmark is not installed yet"
+
+cd linux || die "linux kernel source not found"
 
 ../kernbench -n $nr_loops -o $nr_threads -H -M

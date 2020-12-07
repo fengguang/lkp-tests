@@ -8,9 +8,11 @@
 ## of a Unix-like system; hence, multiple tests are used to test
 ## various aspects of the system's performance.
 
-cd $BENCHMARK_ROOT/unixbench || exit
-
+. $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/upload.sh
+
+cd $BENCHMARK_ROOT/unixbench || die "no $BENCHMARK_ROOT/unixbench"
+
 export LANG=C
 
 [ -n "$runtime" ] || runtime=300
@@ -25,8 +27,4 @@ iteration=$(( runtime / 10 ))
 cd UnixBench
 log_cmd ./Run $test $other_params -i $iteration || exit
 
-exit_value=$?
-
 upload_files -t results $BENCHMARK_ROOT/unixbench/UnixBench/results/*
-
-exit $exit_value

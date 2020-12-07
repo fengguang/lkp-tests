@@ -4,10 +4,10 @@
 ## Automated hostapd/wpa_supplicant testing with mac80211_hwsim.
 ## See: https://github.com/jmalinen/hostap/tree/master/tests/hwsim
 
-cd $BENCHMARK_ROOT/hwsim/tests/hwsim || exit
-
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/reproduce-log.sh
+
+cd $BENCHMARK_ROOT/hwsim/tests/hwsim || die "no $BENCHMARK_ROOT/hwsim/tests/hwsim"
 
 test_file=$BENCHMARK_ROOT/hwsim/hwsim-$test
 [ -f "$test_file" ] || die "can not find $test_file under $BENCHMARK_ROOT/hwsim"

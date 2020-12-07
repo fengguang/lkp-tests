@@ -5,7 +5,9 @@
 # - sleeptime_us
 # - cputime_us
 
-cd $BENCHMARK_ROOT/schbench || exit
+. $LKP_SRC/lib/reproduce-log.sh
+
+cd $BENCHMARK_ROOT/schbench || die "no $BENCHMARK_ROOT/schbench"
 
 : ${worker_threads:=16}
 : ${runtime:=300}

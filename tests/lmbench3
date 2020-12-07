@@ -177,10 +177,7 @@ run_lmbench3_development()
 
 show_result()
 {
-	cat results/x86_64-linux-gnu/$testbox.0 || {
-	echo "no test result found"
-	exit -1
-	}
+	cat results/x86_64-linux-gnu/$testbox.0 || die "no test result found"
 }
 
 cd $BENCHMARK_ROOT/lmbench3 || {

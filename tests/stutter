@@ -1,10 +1,10 @@
 #!/bin/sh
 # - iterations
 
-cd $BENCHMARK_ROOT/stutter || exit
-
 . $LKP_SRC/lib/unit.sh
 . $LKP_SRC/lib/reproduce-log.sh
+
+cd $BENCHMARK_ROOT/stutter || die "no $BENCHMARK_ROOT/stutter"
 
 set_memtotal_bytes()
 {
@@ -28,7 +28,6 @@ log_cmd mkdir -p $LOGDIR_RESULTS
 log_eval export TESTDISK_DIR="${mount_points%% *}"
 
 log_cmd ./run.sh
-ret=$?
 
 # This case reuqires disk_size > (system memory * 2 * 2), but it seems lkp has
 # not an existed filter to handle it, so here is to check whether there is a
@@ -40,5 +39,3 @@ if [ $ret -ne 0 ]; then
 else
 	echo "stutter: pass"
 fi
-
-exit $ret

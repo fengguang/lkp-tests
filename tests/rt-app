@@ -2,16 +2,12 @@
 # - workload
 
 . $LKP_SRC/lib/upload.sh
+. $LKP_SRC/lib/reproduce-log.sh
 
-cd $BENCHMARK_ROOT/rt-app || {
-	echo "ERROR: rt-app benchmark is not installed yet!" >&2
-	exit 1
-}
+cd $BENCHMARK_ROOT/rt-app || die "rt-app benchmark is not installed yet"
 
 log_cmd bin/rt-app workloads/${workload}.json 2>&1
-exit_value=$?
 
 log_cmd find . -print -name "*.log" -exec cat {} \;
 
 upload_files -t results $BENCHMARK_ROOT/rt-app/*.log
-exit $exit_value

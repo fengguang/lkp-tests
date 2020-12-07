@@ -6,7 +6,9 @@
 ## main code from Mel Gorman
 ## https://lkml.org/lkml/2013/12/17/112
 
-cd $BENCHMARK_ROOT/tlbflush || exit
+. $LKP_SRC/lib/reproduce-log.sh
+
+cd $BENCHMARK_ROOT/tlbflush || die "no $BENCHMARK_ROOT/tlbflush"
 
 TLBFLUSH_MAX_ENTRIES=$entries
 TLBFLUSH_ITERATIONS=$iterations

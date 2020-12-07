@@ -10,7 +10,9 @@
 ## has a large in-memory working set, and allocates
 ## and deallocates memory frequently.
 
-cd $BENCHMARK_ROOT/ebizzy || exit
+. $LKP_SRC/lib/reproduce-log.sh
+
+cd $BENCHMARK_ROOT/ebizzy || die "no $BENCHMARK_ROOT/ebizzy"
 
 duration=${duration%%s}
 

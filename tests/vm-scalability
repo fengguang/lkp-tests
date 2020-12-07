@@ -18,7 +18,7 @@
 
 . $LKP_SRC/lib/reproduce-log.sh
 
-log_eval "cd $BENCHMARK_ROOT/vm-scalability" || exit
+log_eval "cd $BENCHMARK_ROOT/vm-scalability" || die "no $BENCHMARK_ROOT/vm-scalability"
 
 [ -n "$runtime" ] || runtime=300
 [ -n "$pre_setup" ] || pre_setup=0
@@ -90,7 +90,7 @@ else
 	log_test "./case-$test"
 fi
 
-if [ "$pre_setup" = "0" ]; then 
+if [ "$pre_setup" = "0" ]; then
 	remove_sparse_root
 	remove_tmpfs
 fi

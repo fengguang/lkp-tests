@@ -3,7 +3,9 @@
 # - nr_task
 # - samples
 
-cd $BENCHMARK_ROOT/libMicro || exit
+. $LKP_SRC/lib/reproduce-log.sh
+
+cd $BENCHMARK_ROOT/libMicro || die "no $BENCHMARK_ROOT/libMicro"
 
 case $test in
 	"fast")

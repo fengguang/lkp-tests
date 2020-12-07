@@ -9,7 +9,10 @@
 ## so should be good for comparing OSs. "Postmark: a new file system
 ## benchmark", Jeffrey Katcher, Network Appliance Technical Report TR-3022, October 1997
 
-[ -z "$mount_points" ] && exit
+. $LKP_SRC/lib/reproduce-log.sh
+
+[ -z "$mount_points" ] && die "no $mount_points"
+
 location="${mount_points%% *}"
 number=${number%n}
 trans=${trans%s}
