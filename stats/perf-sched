@@ -13,6 +13,7 @@ while (line = STDIN.gets)
     perf_sched[key][2] << (data[-4].to_f + data[-3].to_f).round(3)
   end
 end
+exit if perf_sched.empty?
 
 total_perf_sched = [[], [], []]
 perf_sched.each do |_k, v|
