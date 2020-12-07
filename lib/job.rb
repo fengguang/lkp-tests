@@ -302,6 +302,7 @@ class Job
           hash_job[key_array[i]] = v_array[i]
         end
         hash_job.delete(key)
+        @overrides.delete(key)
         jobs_array << hash_job
       end
     }
