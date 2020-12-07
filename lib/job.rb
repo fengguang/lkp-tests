@@ -290,11 +290,11 @@ class Job
     hash.each { |key, value|
       next unless key =~ /^\w.*\|.*\w$/
 
-      key_array = key.split('|')
+      key_array = key.split('|').map(&:strip)
       [value].flatten.each do |v|
         next unless v =~ /^\w.*\|.*\w$/
 
-        v_array = v.split('|')
+        v_array = v.split('|').map(&:strip)
         next unless key_array.size == v_array.size
 
         hash_job = hash.clone
