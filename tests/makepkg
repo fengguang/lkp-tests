@@ -10,6 +10,7 @@
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/misc-base.sh
 . $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/reproduce-log.sh
 
 [ -n "$rootfs" ] || die "rootfs is empty"
 [ -n "$benchmark" ] || die "benchmark is empty"

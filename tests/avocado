@@ -1,6 +1,7 @@
 #!/bin/bash
 # - test_group
 
+. $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/upload.sh

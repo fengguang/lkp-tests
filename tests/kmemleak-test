@@ -3,6 +3,7 @@
 
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/kmemleak.sh
+. $LKP_SRC/lib/reproduce-log.sh
 
 kmemleak_is_enabled || die "current kernel cannot support kmemleak, please check CONFIG_DEBUG_KMEMLEAK"
 
