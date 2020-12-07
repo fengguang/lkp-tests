@@ -14,5 +14,7 @@ while (line = STDIN.gets)
   when /ignored_by_lkp: (.*)/
     case_name = $1.strip.tr(' ', '_')
     puts "#{case_name}.ignored_by_lkp: 1"
+  when /make perf failed/
+    puts 'perf.make_fail: 1'
   end
 end
