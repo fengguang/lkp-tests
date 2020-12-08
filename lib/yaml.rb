@@ -157,7 +157,7 @@ def dot_file(path)
 end
 
 def save_yaml(object, file, compress = false)
-  temp_file = dot_file(file) + "-#{tmpname}"
+  temp_file = File.join('/tmp', ".#{File.basename(file)}-#{tmpname}")
   File.open(temp_file, 'w') do |f|
     f.write(YAML.dump(object))
   end
