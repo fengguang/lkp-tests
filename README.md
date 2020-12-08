@@ -11,7 +11,7 @@
 	lkp help
 ```
 
-## Install packages for a job
+## Install dependency packages for jobs
 
 ```
 	# browse and select a job you want to run, for example, jobs/hackbench.yaml
