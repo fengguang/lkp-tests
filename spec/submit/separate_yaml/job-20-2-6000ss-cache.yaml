@@ -14,7 +14,7 @@ nr_node: 1
 nr_cpu: 2
 memory: 8G
 arch: aarch64
-cpufreq_governor:
+cpufreq_governor: 
 need_kconfig:
 - CONFIG_KVM_GUEST=y
 pp:
@@ -23,5 +23,5 @@ pp:
     samples: 6000ss
     freq: 20
     test: cache
-  cpufreq_governor:
-monitors:
+  cpufreq_governor: 
+monitors: 

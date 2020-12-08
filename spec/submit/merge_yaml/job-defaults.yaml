@@ -1,6 +1,6 @@
 ---
 suite: atomic
-atomic:
+atomic: 
 lab: spec_lab
 testbox: vm-2p8g--spec_submit
 tbox_group: vm-2p8g--spec_submit
@@ -10,10 +10,10 @@ nr_node: 1
 nr_cpu: 2
 memory: 8G
 arch: aarch64
-cpufreq_governor:
+cpufreq_governor: 
 need_kconfig:
 - CONFIG_KVM_GUEST=y
 pp:
-  atomic:
-  cpufreq_governor:
-monitors:
+  atomic: 
+  cpufreq_governor: 
+monitors: 

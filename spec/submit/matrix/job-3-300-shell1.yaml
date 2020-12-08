@@ -1,7 +1,7 @@
 ---
 suite: unixbench
 runtime: 300
-unixbench:
+unixbench: 
 lab: spec_lab
 testbox: vm-2p8g--spec_submit
 nr_task: '3'
@@ -13,7 +13,7 @@ nr_node: 1
 nr_cpu: 2
 memory: 8G
 arch: aarch64
-cpufreq_governor:
+cpufreq_governor: 
 need_kconfig:
 - CONFIG_KVM_GUEST=y
 pp:
@@ -21,5 +21,5 @@ pp:
     runtime: 300
     test: shell1
     nr_task: '3'
-  cpufreq_governor:
-monitors:
+  cpufreq_governor: 
+monitors: 
