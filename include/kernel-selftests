@@ -126,6 +126,8 @@ need_kconfig:
 - CONFIG_IKCONFIG=y
 - CONFIG_IKCONFIG_PROC=y
 - CONFIG_TEST_FIRMWARE
+% elsif ___.group == "lkdtm"
+- CONFIG_LKDTM=y
 % elsif ___.group == "group-00"
 - CONFIG_ANDROID=y
 - CONFIG_DRM=y
