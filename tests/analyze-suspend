@@ -16,11 +16,11 @@ cmd=sleepgraph.py
 
 echo options: mode: $mode, runtime: $runtime, rtcwake: $rtcwake, multi: $multi, option: $option
 options=""
-[ -n "$mode" ] || mode='freeze'
-[ -n "$multi" ] || mutli=1
-[ -n "$runtime" ] || runtime=600
-[ -n "$rtcwake" ] || rtcwake=30
-[ -n "$idle_time" ] || idle_time=0
+[ -n "$mode" ]		|| mode='freeze'
+[ -n "$multi" ] 	|| multi=1
+[ -n "$runtime" ]	|| runtime=600
+[ -n "$rtcwake" ]	|| rtcwake=30
+[ -n "$idle_time" ]	|| idle_time=0
 
 [[ "$mode" = "freeze" && $(which turbostat) ]] && option="$option -turbostat"
 
