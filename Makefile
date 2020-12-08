@@ -15,7 +15,7 @@ install:
 	mkdir -p $(TARGET_DIR_BIN)
 	ln -sf $(shell pwd)/bin/lkp $(TARGET_DIR_BIN)/lkp
 	bash sbin/set-env.sh
-	sudo bash sbin/install-dependencies.sh
+	bash sbin/install-dependencies.sh
 
 .PHONY: doc
 doc:
