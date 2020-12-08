@@ -1,0 +1,45 @@
+#!/bin/sh 
+# monitoring system resources
+# depend on $LKP_SRC/setup/simplify-ci
+
+check_env()
+{
+	[ -d "/c/compass-ci" ] || {
+		echo "please setting the compass-ci environment"
+		return 1
+	}
+}
+
+check_variables()
+{
+	[[ -n "$netdata_master_host" && -n "$netdata_master_port" && -n "$netdata_uuid" ]] || {
+		echo "please check the following variables:"
+		echo "1. netdata_master_host"
+		echo "2. netdata_master_port"
+		echo "3. netdata_uuid"
+		return 1
+	}
+}
+
+modify_config_file()
+{
+	cd /c/compass-ci/container/netdata-slave/config
+	sed -i "s%destination =.*%destination = $netdata_master_host:$netdata_master_port%g" stream.conf
+	sed -i "s%api key =.*%api key = $netdata_uuid%g" stream.conf
+}
+
+run_container()
+{
+	cd /c/compass-ci/container/netdata-slave
+	./build && ./run
+}
+
+main()
+{
+	check_env || return
+	check_variables || return
+	modify_config_file
+	run_container
+}
+
+main
