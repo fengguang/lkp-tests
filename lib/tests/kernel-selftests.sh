@@ -354,7 +354,8 @@ prepare_for_selftest()
 	elif [ "$group" = "group-01" ]; then
 		# subtest lib cause kselftest incomplete run, it's a kernel issue
 		# report [LKP] [software node] 7589238a8c: BUG:kernel_NULL_pointer_dereference,address
-		selftest_mfs=$(ls -d [c-l]*/Makefile | grep -v -e ^livepatch -e ^lib -e ^cpufreq -e ^kvm -e ^firmware)
+		# lkdtm is unstable [validated 1] f825d3f7ed
+		selftest_mfs=$(ls -d [c-l]*/Makefile | grep -v -e ^livepatch -e ^lib -e ^cpufreq -e ^kvm -e ^firmware -e ^lkdtm)
 	elif [ "$group" = "group-02" ]; then
 		# m* is slow
 		selftest_mfs=$(ls -d [m-s]*/Makefile | grep -v -e ^rseq -e ^resctrl -e ^net -e ^netfilter -e ^rcutorture)
@@ -363,7 +364,7 @@ prepare_for_selftest()
 	elif [ "$group" = "mptcp" ]; then
 		selftest_mfs=$(ls -d net/mptcp/Makefile)
 	else
-		# bpf cpufreq firmware kvm lib livepatch net netfilter rcutorture resctrl rseq tc-testing vm x86
+		# bpf cpufreq firmware kvm lib livepatch lkdtm net netfilter rcutorture resctrl rseq tc-testing vm x86
 		selftest_mfs=$(ls -d $group/Makefile)
 	fi
 }

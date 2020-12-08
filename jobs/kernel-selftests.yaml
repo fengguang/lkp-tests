@@ -34,5 +34,6 @@ kernel-selftests:
   group:
     - group-01
     - lib
+    - lkdtm
 
 kernel_cmdline: kvm-intel.unrestricted_guest=0
