@@ -18,6 +18,8 @@
 ## See: https://wiki.archlinux.org/index.php/Makepkg
 
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/env.sh
+. $LKP_SRC/distro/common
 
 check_vars()
 {
@@ -27,6 +29,13 @@ check_vars()
 	[ -n "$pkgbuild_repo" ]		|| die "pkgbuild_repo is empty"
 	[ -n "$upstream_commit" ]	|| die "upstream_commit is empty"
 	[ -n "$os_mount" ]		|| die "os_mount is empty"
+}
+
+mount_pkg_mnt()
+{
+	[ -n "$LKP_SERVER" ] && {
+		mount -t cifs -o guest,vers=1.0,noacl,nouser_xattr,port=446 //$LKP_SERVER$PKG_MNT $PKG_MNT || die "Failed to run mount"
+	}
 }
 
 mount_dest()
@@ -39,9 +48,7 @@ mount_dest()
 	PKG_MNT=/initrd/build-pkg
 	mkdir -p "$PKG_MNT"
 
-	[ -n "$LKP_SERVER" ] && {
-		mount -t cifs -o guest,vers=1.0,noacl,nouser_xattr,port=446 //$LKP_SERVER$PKG_MNT $PKG_MNT || die "Failed to run mount"
-	}
+	is_docker || mount_pkg_mnt
 }
 
 get_pkgfile()
@@ -128,7 +135,11 @@ build_source_pkg()
 	PACMAN=true BUILDDIR=$TMP CARCH=$os_arch PKGEXT=.cgz CGZDEST="$cgz_name" \
 		$LKP_SRC/sbin/makepkg -A --check --skippgpcheck --config $LKP_SRC/etc/makepkg.conf 2>&1
 
-	[ "$?" == 0 ] && create_softlink
+	[ "$?" == 0 ] || exit 1
+	create_softlink
+
+	is_docker || exit 0
+	upload_to_target_dir ${PKG_MNT}/${pack_to}/${pkgname}
 }
 
 check_vars
