@@ -18,7 +18,7 @@ openEuler|fedora|rhel|centos)
 	else
 		yum install -y --skip-broken ruby rubygems gcc gcc-c++ make ruby-devel git
 	fi
-	gem install -f git activesupport rest-client
+	sudo gem install -f git activesupport rest-client
 	;;
 *)
 	echo "$ID not support! please install dependencies manually."
