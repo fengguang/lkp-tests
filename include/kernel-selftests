@@ -128,6 +128,14 @@ need_kconfig:
 - CONFIG_TEST_FIRMWARE
 % elsif ___.group == "lkdtm"
 - CONFIG_LKDTM=y
+% elsif ___.group == "pidfd"
+- CONFIG_UTS_NS=y
+- CONFIG_IPC_NS=y
+- CONFIG_USER_NS=y
+- CONFIG_PID_NS=y
+- CONFIG_NET_NS=y
+- CONFIG_CGROUPS=y
+- CONFIG_CHECKPOINT_RESTORE=y
 % elsif ___.group == "group-00"
 - CONFIG_ANDROID=y
 - CONFIG_DRM=y
