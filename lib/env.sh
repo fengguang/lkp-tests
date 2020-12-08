@@ -121,9 +121,7 @@ is_system()
 
 shell_profile()
 {
-        if [ "${SHELL##*/}" == "bash" ]; then
-             echo $HOME/.${SHELL##*/}_profile
-        else
-             echo $HOME/.${SHELL##*/}rc
-        fi
+	local profile="$HOME/.${SHELL##*/}rc"
+	[ -f "$profile" ] || profile="$HOME/.${SHELL##*/}_profile"
+	echo $profile
 }
