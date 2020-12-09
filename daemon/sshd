@@ -8,8 +8,8 @@
 . $LKP_SRC/lib/http.sh
 
 sshr_ip=$LKP_SERVER
-[ -n "$sshr_port" ] || sshr_port=5050
-[ -n "$sshr_port_len" ] || sshr_port_len=2000
+[ -n "$sshr_port" ]      || sshr_port=5050
+[ -n "$sshr_port_len" ]  || sshr_port_len=2000
 [ -n "$sshr_port_base" ] || sshr_port_base=50000
 
 run_ssh()
@@ -24,11 +24,12 @@ run_ssh()
 data_success()
 {
 	data="To: $my_email
-Subject: [NOTIFY Compass-ci] $testbox ready to use
+Subject: [NOTIFY Compass-ci] Machine application successful
 
 Dear $my_username:
+
 	Thanks for your participation in software ecosystem!
-	According to your application, $testbox has been provisioned.
+	According to your application, the test machine has been provisioned.
 	The datails are as follows:
 
 	Login:
@@ -50,9 +51,10 @@ Compass-Ci
 data_failure()
 {
 	data="To: $my_email
-Subject: [NOTIFY Compass-ci] Applying $testbox failed
+Subject: [NOTIFY Compass-ci] Machine application failed
 
 Dear $my_username:
+
 	Sorry to inform you that your application failed.
 	You may need to wait a moment, or check whether your pub_key exists.
 
