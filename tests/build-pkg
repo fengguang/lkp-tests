@@ -106,7 +106,9 @@ replace_source()
 	for url in ${source[@]}
 	do
 		echo "$url" | egrep 'git\+|\.git$' && {
-			url="\"${repo_dir}git://${LKP_SERVER}/${upstream_repo}#commit=${upstream_commit}\""
+			[ -n "$repo_dir" ] && {
+				url="\"${repo_dir}git://${LKP_SERVER}/${upstream_repo}#commit=${upstream_commit}\""
+			}
 		}
 		url=$(echo "$url" | sed 's|https://|http://|g')
 
