@@ -108,6 +108,8 @@ replace_source()
 		echo "$url" | egrep 'git\+|\.git$' && {
 			url="\"${repo_dir}git://${LKP_SERVER}/${upstream_repo}#commit=${upstream_commit}\""
 		}
+		url=$(echo "$url" | sed 's|https://|http://|g')
+
 		echo "$url" >> $1
 	done
 	echo ")" >> $1
@@ -126,8 +128,7 @@ build_source_pkg()
 			repo_dir="${repo_dir%.git*}::"
 		fi
 	}
-
-	replace_source "PKGBUILD.src"
+	replace_source PKGBUILD.src
 
 	[ -n "$PKGBUILD_TAG" ] && replace_source "PKGBUILD-$PKGBUILD_TAG"
 
