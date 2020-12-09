@@ -35,7 +35,7 @@ def submit_job()
 end
 
 describe 'submit job spec' do
-  it 'link jobs spec' do
+  it 'spec for submit/*/job.yaml' do
     submit_job()
   end
 end
