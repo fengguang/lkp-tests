@@ -98,7 +98,7 @@ centos_update_gcc()
 {
 	grep -sqF "CentOS Linux release 7" /etc/centos-release || return
 
-	[ "$os_mount" = "initramfs" ] && {
+	[ -f /.dockerenv -o "$os_mount" = "initramfs" ] && {
 		yum install -y centos-release-scl-rh
 		yum install -y "devtoolset-8-gcc*"
 	}
