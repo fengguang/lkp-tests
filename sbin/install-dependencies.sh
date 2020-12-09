@@ -1,6 +1,7 @@
 #!/bin/bash
 
 . lib/env.sh
+. sbin/set-env.sh
 
 # choose install function base on 
 # DISTRIBUTION
@@ -30,8 +31,7 @@ esac
 mac_dep()
 {
 	brew install ruby
-	echo "export PATH=/usr/local/opt/ruby/bin:$PATH" >> $(shell_profile)
-	source $(shell_profile)
+	write_shell_profile "export PATH=/usr/local/opt/ruby/bin:$PATH"
 	gem install git activesupport rest-client
 }
 
