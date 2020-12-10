@@ -18,7 +18,6 @@
 ## See: https://wiki.archlinux.org/index.php/Makepkg
 
 . $LKP_SRC/lib/debug.sh
-. $LKP_SRC/lib/env.sh
 . $LKP_SRC/distro/common
 
 check_vars()
@@ -31,13 +30,6 @@ check_vars()
 	[ -n "$os_mount" ]		|| die "os_mount is empty"
 }
 
-mount_pkg_mnt()
-{
-	[ -n "$LKP_SERVER" ] && {
-		mount -t cifs -o guest,vers=1.0,noacl,nouser_xattr,port=446 //$LKP_SERVER$PKG_MNT $PKG_MNT || die "Failed to run mount"
-	}
-}
-
 mount_dest()
 {
 	# the same image is mounted to cifs and nfs, the generated cgz files
@@ -47,8 +39,6 @@ mount_dest()
 
 	PKG_MNT=/initrd/build-pkg
 	mkdir -p "$PKG_MNT"
-
-	is_docker || mount_pkg_mnt
 }
 
 get_pkgfile()
@@ -140,8 +130,6 @@ build_source_pkg()
 
 	[ "$?" == 0 ] || exit 1
 	create_softlink
-
-	is_docker || exit 0
 	upload_to_target_dir ${PKG_MNT}/${pack_to}/${pkgname}
 }
 

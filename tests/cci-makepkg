@@ -13,7 +13,6 @@
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/misc-base.sh
 . $LKP_SRC/lib/env.sh
-. $LKP_SRC/lib/mount.sh
 
 [ -n "$benchmark" ]		|| die "benchmark is empty"
 [ -n "$os_mount" ]		|| die "os_mount is empty"
@@ -33,17 +32,6 @@ pack_to=${os_mount}/${os}/${os_arch}/${os_version}/${benchmark}
 . $LKP_SRC/lib/install.sh
 
 cd $LKP_SRC/pkg/$benchmark || die "pkg is empty"
-
-mount_pkg_mnt()
-{
-        is_mount_point ${PKG_MNT} && umount ${PKG_MNT}
-        mount -t cifs -o guest,vers=1.0,noacl,nouser_xattr,port=446 //$LKP_SERVER$PKG_MNT $PKG_MNT || die "Failed to run mount"
-}
-
-is_docker || {
-        [ -n "$LKP_SERVER" ] && mount_pkg_mnt
-}
-
 
 curl_pkgfile()
 {
@@ -148,8 +136,6 @@ build_source_pkg()
 
 	[ "$?" == 0 ] || exit 1
 	update_softlink
-
-	is_docker || exit 0
 	upload_to_target_dir ${sync_dest}
 }
 

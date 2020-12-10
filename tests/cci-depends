@@ -7,7 +7,6 @@
 
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/misc-base.sh
-. $LKP_SRC/lib/mount.sh
 
 [ -n "$benchmark" ]	|| die "benchmark is empty"
 [ -n "$os_mount" ]	|| die "os_mount is empty"
@@ -28,11 +27,6 @@ pack_arch=$os_arch
 }
 
 . $LKP_SRC/distro/$DISTRO
-
-is_docker || {
-	is_mount_point ${DEPS_MNT} && umount ${DEPS_MNT}
-	mount -t cifs -o guest,vers=1.0,noacl,nouser_xattr,port=446 //$LKP_SERVER$DEPS_MNT $DEPS_MNT || die "Failed to run mount"
-}
 
 umask 002
 
@@ -62,5 +56,4 @@ fixup_arch_install $pack_arch
 
 pack_benchmark_deps
 
-is_docker || exit 0
 upload_to_target_dir ${pack_to}
