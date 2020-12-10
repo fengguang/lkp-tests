@@ -433,7 +433,6 @@ class Job
 
     i = include_files
     job = deepcopy(@job)
-    revise_hash(job, deepcopy(@job2), true)
     job['___'] = nil
     @jobx = job
     if @job.include?(:expand_params)
@@ -497,8 +496,6 @@ class Job
     revise_hash(@job, @cmdline_defaults, false)
 
     return unless first_time
-
-    revise_hash(@job, @job2, true)
 
     return if @overrides.empty?
 
@@ -729,7 +726,6 @@ class Job
   def each_jobs(&block)
     each_job_init
     job = deepcopy(@job)
-    @job2 = {}
     load_defaults
     load_hosts_config
     each_job_init
@@ -738,7 +734,6 @@ class Job
       @load_hosts_done = false
       @job = deepcopy(job)
       @job.merge!(hash)
-      @job2 = {}
       load_defaults
       load_hosts_config
       each_job_init
