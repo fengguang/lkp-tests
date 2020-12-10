@@ -21,6 +21,7 @@ iso2rootfs:
   ## supported fields:
   ## - dns: will config /etc/resolv.conf.
   ## - no_selinux: will disable selinux in /etc/selinux/config.
+  ## - no_fstab: will comment all line in /etc/fstab.
   config_rootfs:
 
   # dailybuild related fields

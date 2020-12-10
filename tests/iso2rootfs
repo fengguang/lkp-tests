@@ -361,10 +361,17 @@ disable_selinux()
 	sed -i 's/^SELINUX=.*/SELINUX=disabled/g' "${ROOTFS_DES_DIR}/etc/selinux/config"
 }
 
+disable_fstab()
+{
+	echo "${config_rootfs}" | grep -qw 'no_fstab' || return 0
+	sed -i 's/^\([^#]\)/# \1/g' "${ROOTFS_DES_DIR}/etc/fstab"
+}
+
 config_rootfs()
 {
 	config_dns_resolver
 	disable_selinux
+	disable_fstab
 }
 
 ############ test rootfs ############
