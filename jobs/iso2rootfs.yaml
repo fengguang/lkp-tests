@@ -1,35 +1,63 @@
 suite: iso2rootfs
 category: benchmark
 iso2rootfs:
+  #################
   # iso related fields to be used to generate rootfs
+  #################
+
   iso_os:
   iso_arch:
   iso_version:
 
+  #################
   # place the result rootfs related fields
-  ## 1. result rootfs will be placed in the following localtion on the
-  ##    remote file server:
-  ##    - {remote_file_server}/{rootfs_path}/{iso_os}/{iso_arch}/
-  ## 2. remote file server protocols current supported:
-  ##    - nfs
-  ##    - cifs
+  #################
+
+  # 1. Result rootfs will be placed in the following location on the
+  #    remote file server:
+  #    - {remote_file_server}/{rootfs_path}/{iso_os}/{iso_arch}/
+  # 2. Remote file server protocols current supported:
+  #    - nfs
+  #    - cifs
   rootfs_protocol:
   rootfs_server:
   rootfs_path:
 
+  #################
   # config rootfs related fields
-  ## supported fields:
-  ## - dns: will config /etc/resolv.conf.
-  ## - no_selinux: will disable selinux in /etc/selinux/config.
-  ## - no_fstab: will comment all line in /etc/fstab.
+  #################
+
+  # you can config add some configurations of the result rootfs.
+  # supported fields:
+  # - dns: will config /etc/resolv.conf.
+  # - no_selinux: will disable selinux in /etc/selinux/config.
+  # - no_fstab: will comment all line in /etc/fstab.
   config_rootfs:
 
+  #################
   # dailybuild related fields
+  #################
+
+  # dailybuild_iso_url_file:
+  # - The `dailybuild iso url file` content is the url of a iso.
+  # - The iso checksum file also exists on the network, and the checksum file path is "{dailybuild_iso_url}.check256sum"
+  # - demo:
+  #   root@localhost ~% curl http://1.1.1.1/dailybuilds/openEuler-20.03-LTS-aarch64-LTS/release_iso
+  #   http://1.1.1.1//dailybuilds/1970-01-01-00-00-00/openEuler-20.03-LTS-aarch64-dvd.iso
   dailybuild_iso_url_file:
 
+  #################
   # submit test yaml related fields
-  ## 1. you can add as many jobs as you like.
-  ## 2. the following three fields is requied for every test job.
+  #################
+
+  # three required fields when submit test yaml
+  submit_email:
+  submit_name:
+  submit_uuid:
+
+  # submit target tests yaml
+  ## 1. You can add as many jobs as you like.
+  ## 2. The following three fields is required for every test job.
   test1_yaml:
   test1_os_mount:
   test1_testbox:
