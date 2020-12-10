@@ -1,13 +1,13 @@
 #!/usr/bin/env ruby
-# - job_id
-# - error_id
+# bad_job_id
+# error_id
 # SPDX-License-Identifier: MulanPSL-2.0+
 # frozen_string_literal: true
 
 require_relative "#{ENV['CCI_SRC']}/lib/git_bisect"
 require_relative "#{ENV['CCI_SRC']}/lib/mail_bisect_result"
 
-task = {'job_id' => ENV['job_id'], 'error_id' => ENV['error_id']}
+task = {'bad_job_id' => ENV['bad_job_id'], 'error_id' => ENV['error_id']}
 gb = GitBisect.new(task)
 result = gb.find_first_bad_commit
 
