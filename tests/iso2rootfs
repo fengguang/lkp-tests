@@ -203,17 +203,24 @@ get_cgz()
 	tar -xf "${cgz_path_t}" -C "${CGZ_PATH}"
 }
 
+get_pkg_installer()
+{
+	local installer
+
+	has_cmd yum && installer=yum
+	has_cmd apt && installer=apt
+
+	[ -n "$installer" ] || die "cannot find pkg installer."
+	echo $installer
+}
+
 install_pkgs()
 {
-	local pkg_installer
-	command -v yum && pkg_installer="yum"
+	local installer=$(get_pkg_installer)
 
-	[[ -n "$pkg_installer" ]] || die "cannot find pkg installer."
-
-	local pt
 	for pt
 	do
-		"$pkg_installer" install -y "$pt" || die "cannot install pkg: $pt."
+		"$installer" install -y "$pt" || die "cannot install pkg: $pt."
 	done
 }
 
@@ -367,11 +374,26 @@ disable_fstab()
 	sed -i 's/^\([^#]\)/# \1/g' "${ROOTFS_DES_DIR}/etc/fstab"
 }
 
+install_pkgs_for_rootfs()
+{
+	[ -n "$rootfs_install_pkgs" ] || return 0
+
+	local installer=$(get_pkg_installer)
+
+	if [ "$installer" == "yum" ]; then
+		"$installer" install -y --skip-broken --installroot=${ROOTFS_DES_DIR} ${rootfs_install_pkgs//,/ }
+	elif [ "$installer" == "apt" ]; then
+		"$installer" install -y --ignore-missing --fix-missing --fix-broken -o RootDir=${ROOTFS_DES_DIR} ${rootfs_install_pkgs//,/ }
+	fi
+}
+
 config_rootfs()
 {
 	config_dns_resolver
 	disable_selinux
 	disable_fstab
+
+	install_pkgs_for_rootfs
 }
 
 ############ test rootfs ############
