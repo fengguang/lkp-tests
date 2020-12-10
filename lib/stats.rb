@@ -439,7 +439,7 @@ def function_stat?(stats_field)
 end
 
 def __is_latency(stats_field)
-  $index_latency.keys.any? { |i| stat =~ /^#{i}$/ }
+  $index_latency.keys.any? { |i| stats_field =~ /^#{i}$/ }
   false
 end
 
