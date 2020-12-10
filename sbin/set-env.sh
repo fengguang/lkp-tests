@@ -2,10 +2,17 @@
 
 . lib/env.sh
 
-write_shellrc()
+write_shell_profile()
 {
-	echo "export LKP_SRC=$PWD" >> $(shell_profile)
-	echo "export PATH=\$PATH:\$LKP_SRC/sbin:\$LKP_SRC/bin" >> $(shell_profile)
+	shell_profile_file=$(shell_profile)
+	if [ $# -gt 0 ]; then
+	     echo $@ >> $shell_profile_file
+	else
+	     echo "export LKP_SRC=$PWD" >> $shell_profile_file
+	     echo "export PATH=\$PATH:\$LKP_SRC/sbin:\$LKP_SRC/bin" >> $shell_profile_file
+	fi
+
+	source $shell_profile_file
 }
 
 write_host()
@@ -28,5 +35,5 @@ write_host()
 	EOF
 }
 
-write_shellrc
+write_shell_profile
 write_host
