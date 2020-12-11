@@ -16,8 +16,12 @@ cpuhotplug)
         ;;
 esac
 
-log_cmd modprobe locktorture $args ||
-die "failed to load locktorture module, try to enable CONFIG_LOCK_TORTURE_TEST as module and build locktorture.ko"
+log_cmd modprobe locktorture $args || {
+	errno=$?
+
+	sleep 10
+	die "failed to load locktorture module $errno"
+}
 
 log_cmd sleep $runtime
 
