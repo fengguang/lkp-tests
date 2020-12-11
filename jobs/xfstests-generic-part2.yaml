@@ -7,29 +7,21 @@ need_memory: 3G
 disk: 4HDD
 
 fs:
+- ext2
 - ext4
 - xfs
 - btrfs
 - f2fs
+- udf
+- ocfs2
 
 xfstests:
   test:
-#  - generic-127 # execution time is nearly 1h
-  - generic-group15
-  - generic-group16
-  - generic-group17
-  - generic-group18
-  - generic-group19
-  - generic-group20
-  - generic-group21
-  - generic-group22
-  - generic-group23
-  - generic-group24
-  - generic-group25
-  - generic-group26
-  - generic-group27
-  - generic-group28
-  - generic-group29
-  # - generic-521 # execution time is nearly 1h
-# - generic-new
-# - generic-all
+  - generic-group-09
+  - generic-group-10
+  - generic-group-11
+  - generic-group-12
+  - generic-group-13
+  - generic-group-14
+  - generic-group-15
+  - generic-group-16

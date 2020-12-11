@@ -7,8 +7,9 @@
 ## or 'noise' on a node from the applications perspective.
 
 . $LKP_SRC/lib/upload.sh
+. $LKP_SRC/lib/reproduce-log.sh
 
-cd $BENCHMARK_ROOT/fwq || exit
+cd $BENCHMARK_ROOT/fwq || die "no $BENCHMARK_ROOT/fwq"
 
 [ "$nr_task" -gt 1  ] && opt_task="-t $nr_task"
 
@@ -20,10 +21,6 @@ samples=${samples%%ss}
 
 opt_iterations="-w $iterations"
 
-log_cmd ./t_fwq -n $samples $opt_iterations $opt_task || exit
-
-exit_value=$?
+log_cmd ./t_fwq -n $samples $opt_iterations $opt_task
 
 upload_files -t results $BENCHMARK_ROOT/fwq/*.dat
-
-exit $exit_value

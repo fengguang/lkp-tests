@@ -1,0 +1,15 @@
+boot_failures: 1
+
+# divide_error:
+divide_error:#[##]: 1
+message:divide_error:#[##]: [   16.396361] divide_error: 0000 [#1]
+pattern:divide_error:#[##]: divide_error:
+
+# RIP: main_func+0x
+RIP:main_func: 1
+message:RIP:main_func: [   16.399668] RIP: 0010:main_func+0x299/0x369
+pattern:RIP:main_func: RIP: main_func+0x
+
+timestamp:last: 16.438444
+timestamp:divide_error:#[##]: 16.396361
+timestamp:RIP:main_func: 16.399668

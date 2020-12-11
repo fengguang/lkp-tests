@@ -1,0 +1,24 @@
+suite: ltp
+testcase: ltp
+category: functional
+
+need_modules: true
+
+need_memory: 4G
+
+disk: 1HDD
+fs:
+- ext4
+- xfs
+- btrfs
+
+ltp:
+  test:
+  - syscalls-00
+  - syscalls-01
+  - syscalls-02
+  - syscalls-03
+  - syscalls-04
+  - syscalls-05
+  - syscalls-06
+  - syscalls-07

@@ -1,0 +1,27 @@
+pkgname=rt-app
+pkgver=1.0
+pkgrel=1
+url='https://github.com/scheduler-tools/rt-app'
+arch=('i386' 'x86_64')
+license=('GPL')
+source=('https://github.com/scheduler-tools/rt-app.git')
+md5sums=('SKIP')
+
+build()
+{
+	cd ${srcdir}/${pkgname}
+
+	./autogen.sh || return
+	./configure --prefix=${srcdir}/${pkgname} --with-deadline || return
+	make || return
+	make install
+}
+
+package()
+{
+	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+	mkdir -p ${benchmark_path}/workloads
+
+	cp -arf ${srcdir}/${pkgname}/bin ${benchmark_path}/
+	cp -arf ${srcdir}/${pkgname}/doc/examples/*.json ${benchmark_path}/workloads/
+}

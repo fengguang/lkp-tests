@@ -1,0 +1,28 @@
+suite: xfstests
+testcase: xfstests
+category: functional
+
+need_memory: 3G
+
+disk: 4HDD
+
+fs:
+- xfs
+
+xfstests:
+  test:
+  - xfs-group-15
+  - xfs-group-16
+  - xfs-group-17
+  - xfs-group-18
+  - xfs-group-19
+  - xfs-group-20
+  - xfs-group-21
+  - xfs-group-22
+  - xfs-group-23
+  - xfs-group-24
+  - xfs-group-25
+  - xfs-group-26
+  - xfs-group-27
+  - xfs-group-28
+  - xfs-logdev

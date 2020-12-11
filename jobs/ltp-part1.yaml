@@ -1,0 +1,24 @@
+suite: ltp
+testcase: ltp
+category: functional
+
+need_modules: true
+need_memory: 4G
+
+ltp:
+  test:
+  - can
+  - cap_bounds
+  - commands
+  - connectors
+  - containers
+  - cpuhotplug
+  # - dma_thread_diotest # kernel bug, will nerver be success. please see https://github.com/linux-test-project/ltp/issues/63
+  - fcntl-locktests
+  - filecaps
+  - fs_perms_simple
+  - hugetlb
+  - hyperthreading
+  - ima
+  - input
+  - ipc

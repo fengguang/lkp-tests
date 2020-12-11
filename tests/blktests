@@ -15,58 +15,25 @@ cd $BENCHMARK_ROOT/blktests || die "fail to cd $BENCHMARK_ROOT/blktests"
 # https://github.com/osandov/blktests/pull/64
 sed -i 's/set -u//' common/multipath-over-rdma
 
-arrange_group()
-{
-	[ "$test" = "other" ] && return
-
-	ls tests/${test%-*}/ | grep -P '^\d+$' > tests/$test
-	case "$test" in
-	block-group1)
-		sed -i "9,\$d" tests/$test || return
-		;;
-	block-group2)
-		sed -i "1,8d" tests/$test || return
-		sed -i "/^027$/d" tests/$test || return
-		sed -i "/^010$/d" tests/$test || return
-		;;
-	block-010)
-		echo "010" > tests/$test || return
-		;;
-	block-027)
-		echo "027" > tests/$test || return
-		;;
-	nvme-group1)
-		sed -i "/^032$/d" tests/$test || return
-		;;
-	nvme-032)
-		echo "032" > tests/$test || return
-		;;
-	*)
-		;;
-	esac
-}
-
-has_new_test()
-{
-	ls tests > tests/$test || return
-	# if has any other test suite besides these known tests, write into file: other
-	known_test="block\|loop\|meta\|nvmeof-mp\|nbd\|nvme\|scsi\|srp\|zbd\|other"
-	sed -i "/\<\($known_test\)\>/d" tests/$test || return
-	[ -s tests/$test ] && return
-	# if don't have new test suite, exit
-	echo "check new test: no [ignored by lkp]" && return 1
-}
-
 set_env()
 {
 	local partition
 	case "$test" in
-	nbd-group*|loop-group*)
+	nbd-group-*|loop-group-*)
 		partition=""
 		;;
-	scsi-group*)
+	scsi-group-*)
 		partition=${partitions%% *}
 		is_virt && partition=$(echo "$partition" | sed 's/[0-9]*$//g')
+		;;
+	srp-group-*)
+		log_cmd systemctl stop multipathd
+		;;
+	block-004)
+		log_eval export TIMEOUT=300
+		;;
+	block-027)
+		log_cmd mount -t cgroup2 none /sys/fs/cgroup
 		;;
 	*)
 		partition=${partitions%% *}
@@ -91,59 +58,38 @@ set_env()
 run_test()
 {
 	local test_dir="$BENCHMARK_ROOT/blktests/tests"
-	local test_ignore="$LKP_SRC/pkg/blktests/addon/tests/${test%-*}-ignore"
-	local ignored_tests
-	local ignored_tests_cmd
+
 	local all_tests
 	local all_tests_cmd
 
 	if [ "${test%[a-z4]-[0-9][0-9][0-9]}" != "$test" ]; then # single test
 		all_tests_cmd="echo ${test%-*}/${test#*-}"
-		get_ignored_and_worked_tests "$all_tests_cmd"
 	elif [ "${test#*-}" != "$test" ]; then # group tests
-		all_tests_cmd="sed \"s:^:${test%-*}/:\" $test_dir/$test"
-		get_ignored_and_worked_tests "$all_tests_cmd" "$test_ignore"
-	elif [ "$test" = "other" ]; then #group other
-		all_tests=$(cat $test_dir/$test)
+		all_tests_cmd="sed \"s:^:${test%%-*}/:\" $test_dir/$test"
 	else
 		all_tests="$test"
 	fi
 
-	[ -n "$ignored_tests_cmd" ] && log_echo $ignored_tests_cmd
-	for ignored_test in $ignored_tests
-	do
-		echo "$ignored_test [ignored by lkp]"
-	done
-
-	[ -n "$all_tests_cmd" ] && log_echo $all_tests_cmd
-
-	[ "$test" = "block-004" ] && export TIMEOUT=300
-
-	[ "$test" = "block-027" ] && {
-		log_cmd mount -t cgroup2 none /sys/fs/cgroup
+	[ -n "$all_tests_cmd" ] && {
+		log_echo $all_tests_cmd
+		all_tests=$(eval "$all_tests_cmd")
 	}
 
-	[ "$test" = "srp-group1" ] && systemctl stop multipathd
-
-	if [ "$test" = "nvme-group1" ]; then
+	case "$test" in
+	nvme-group-*)
 		log_cmd ./check -o /mnt/$test $all_tests
-	else
+		;;
+	*)
 		log_cmd ./check $all_tests
-	fi
+		;;
+	esac
 }
 
-[ "$test" = "other" ] && {
-	# if don't have new test suite, exit
-	has_new_test || exit 0
-}
-
-arrange_group
 read_env_vars
 set_env
 run_test
-exit_value=$?
 
 [ -d "$BENCHMARK_ROOT/blktests/results" ] && upload_files -t results $BENCHMARK_ROOT/blktests/results/*
 [ -d "/mnt/$test/nodev" ] && upload_files -t results /mnt/$test/nodev/*
 
-exit $exit_value
+exit 0

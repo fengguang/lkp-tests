@@ -43,6 +43,11 @@ fs_options() {
 		def_mount="-o vers=4"
 		fs="nfs"
 		;;
+	udf)
+		;;
+	ocfs2)
+		ensure_mkfs='-q -F'
+		;;
 	esac
 }
 

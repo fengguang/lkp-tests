@@ -1,0 +1,15 @@
+boot_failures: 1
+
+# BUG: KASAN: slab-out-of-bounds in copy_from_iter
+BUG:KASAN:slab-out-of-bounds_in_copy_from_iter: 1
+message:BUG:KASAN:slab-out-of-bounds_in_copy_from_iter: [    5.429402] BUG: KASAN: slab-out-of-bounds in copy_from_iter+0x2ef/0x3c0 at addr ffff88002d8e3a10
+pattern:BUG:KASAN:slab-out-of-bounds_in_copy_from_iter: BUG: KASAN: slab-out-of-bounds in copy_from_iter
+
+# SyS_writev+0x
+calltrace:SyS_writev: 1
+message:calltrace:SyS_writev: [    5.441593]  [<ffffffff81188d1b>] SyS_writev+0xb/0x10
+pattern:calltrace:SyS_writev: SyS_writev+0x
+
+timestamp:last: 5.449526
+timestamp:BUG:KASAN:slab-out-of-bounds_in_copy_from_iter: 5.429402
+timestamp:calltrace:SyS_writev: 5.441593

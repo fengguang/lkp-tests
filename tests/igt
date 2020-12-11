@@ -4,26 +4,46 @@
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/upload.sh
 
-test_file=$BENCHMARK_ROOT/igt/$group
-
 cd "$BENCHMARK_ROOT/igt" || exit
 
-# ~/intel-gpu-tools$ git grep -A1 -B1 -w 77 NEWS
-# NEWS-- compute exitcode first: In the case of running multiple subtests which all
-# NEWS:happen to be skipped, igt_exitcode is 0, but the final exit code will be 77.
-# NEWS-(Chris Wilson)
+exclude=$BENCHMARK_ROOT/igt/exclude
+test_file=$BENCHMARK_ROOT/igt/$group
 
-# our script exit 1 only if all tests are failed(exit code is not either 77 or 0)
-ret=1
+excluded_tests=$(cat "$exclude" | grep -v "#")
+
+for test in ${excluded_tests[@]}
+do
+	sed -i "/$test/d" $test_file
+done
+
+denylist=$BENCHMARK_ROOT/igt/tests/intel-ci/blacklist.txt
+cat $denylist | grep -v -e ^# -e ^$ > $(dirname $denylist)/denylist
+denylist=$(dirname $denylist)/denylist
+
 while read testcase
 do
-	# OOM since igt commit: 0b0eaa353 ("tests/dumb_buffer: Try to compute the largest possible dumb buffer")
-	# disable it until we get response from community
-	[ "$testcase" = "dumb_buffer" ] && continue
-	log_cmd build/tests/$testcase 2>&1
-	if [ $? -eq 77 ] || [ $? -eq 0 ]; then
-		ret=0
-	fi
+	subtests=$(build/tests/$testcase --list-subtest)
+	for subtest in ${subtests[@]}
+	do
+		full_test_name=igt@$testcase@$subtest
+
+		echo $subtest | grep -q -e suspend -e hibernate && {
+			echo "LKP SKIP $full_test_name"
+			continue
+		}
+
+		echo $full_test_name | grep -q -E -f $denylist && {
+			echo "LKP SKIP $full_test_name"
+			continue
+		}
+
+		log_cmd build/tests/$testcase --run-subtest $subtest 2>&1
+
+		# #define IGT_EXIT_ABORT 112
+		# Exit status indicating a severe test/enviroment failure, any continued
+		# testing past this point can yeild unexpected reasults and is not recommended
+		[ $? -eq 112 ] && exit 112
+	done
 done < $test_file
 
-exit $ret
+exit 0

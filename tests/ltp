@@ -4,25 +4,21 @@
 ## The LTP testsuite contains a collection of tools for
 ## testing the Linux kernel and related features.
 
-cd $BENCHMARK_ROOT/ltp || exit
-
 . $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/upload.sh
 . $LKP_SRC/lib/tests/ltp.sh
+. $LKP_SRC/lib/reproduce-log.sh
+
+cd $BENCHMARK_ROOT/ltp || die "no $BENCHMARK_ROOT/ltp"
 
 export PATH=/lkp/benchmarks/ltp/bin:$PATH
 
 workaround_env
 
 test_setting
-check_ignored_cases $test
-log_cmd ./runltp -f $test $big_dev_opt $tmpdir_opt || exit
-
-exit_value=$?
+is_excluded $test
+log_cmd ./runltp -f $test $big_dev_opt $tmpdir_opt
 
 cleanup_ltp
 
-upload_files -t results $BENCHMARK_ROOT/ltp/results/* \
-	$BENCHMARK_ROOT/ltp/output
-
-exit $exit_value
+upload_files -t results $BENCHMARK_ROOT/ltp/results/* $BENCHMARK_ROOT/ltp/output

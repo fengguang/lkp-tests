@@ -29,6 +29,4 @@ log_cmd sysbench $args prepare
 log_cmd sysbench $args run
 log_cmd sysbench $args cleanup
 killall -15 mysqld
-sleep 5
-umount $TMP/mysql
 EOF

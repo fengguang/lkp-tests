@@ -1,0 +1,20 @@
+pkgname=kernbench
+pkgver=0.50
+pkgrel=1
+url='http://ck.kolivas.org/apps/kernbench/kernbench-0.50'
+arch=('i386' 'x86_64')
+license=('GPL')
+kernel_ver=5.9
+source=('http://ck.kolivas.org/apps/kernbench/kernbench-0.50/kernbench' "https://www.kernel.org/pub/linux/kernel/v5.x/linux-${kernel_ver}.tar.xz")
+md5sums=('SKIP' 'SKIP')
+
+package()
+{
+	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+	mkdir -p ${benchmark_path}
+
+	#copy the original file instead of link, so don't use -a option
+	cp -f "$srcdir/$pkgname" "$benchmark_path/"
+	chmod a+x "$benchmark_path/$pkgname"
+	cp -arf "$srcdir/linux-${kernel_ver}/" "${pkgdir}/lkp/benchmarks/${pkgname}/linux"
+}

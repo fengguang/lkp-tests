@@ -1,19 +1,16 @@
 #!/bin/sh
-# - group
+# - test
 
 ## Automated hostapd/wpa_supplicant testing with mac80211_hwsim.
 ## See: https://github.com/jmalinen/hostap/tree/master/tests/hwsim
 
-cd $BENCHMARK_ROOT/hwsim/tests/hwsim || exit
-
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/reproduce-log.sh
 
-group_file=$LKP_SRC/pack/hwsim-addon/groups/$group
-[ -f "$group_file" ] || {
-	group_file=$BENCHMARK_ROOT/hwsim/$group
-	[ -f "$group_file" ] || die "can not find group_file both in $LKP_SRC/pack/hwsim-addon/groups and $BENCHMARK_ROOT/hwsim"
-}
+cd $BENCHMARK_ROOT/hwsim/tests/hwsim || die "no $BENCHMARK_ROOT/hwsim/tests/hwsim"
+
+test_file=$BENCHMARK_ROOT/hwsim/hwsim-$test
+[ -f "$test_file" ] || die "can not find $test_file under $BENCHMARK_ROOT/hwsim"
 
 nm_conf="/etc/NetworkManager/NetworkManager.conf"
 [ -f "$nm_conf" ] && log_eval "cat >> $nm_conf <<EOF
@@ -23,55 +20,38 @@ EOF"
 
 [ $USER ] || log_eval export USER=root
 
-require_mcc=$BENCHMARK_ROOT/hwsim/tests/hwsim/require_mcc
-
-add_extra_options()
+is_excluded()
 {
-	opt=
-	[ -f $BENCHMARK_ROOT/hwsim/tests/hwsim/require_long_param ] &&
-	grep -q -w $casename $BENCHMARK_ROOT/hwsim/tests/hwsim/require_long_param && opt="--long"
-}
+	local testcase=$1
+	local exclude_file=$BENCHMARK_ROOT/hwsim/hwsim-exclude
 
-check_ignore_case()
-{
-	local casename=$1
-	local ignored_by_lkp=$BENCHMARK_ROOT/hwsim/tests/hwsim/ignored_by_lkp
-
-	# skip cases that in ignored_by_lkp
-	[ -f "$ignored_by_lkp" ] && grep -q -w $casename "$ignored_by_lkp" && return 0
+	[ -f "$exclude_file" ] && grep -q -w $testcase "$exclude_file" && return 0
 
 	return 1
 }
 
 log_cmd ./build.sh 2>&1 || die "fail to build test environment"
 
-log_cmd ./start.sh || die "fail to setup test environment"
 
-while read casename
+run_tests_opt=
+start_opt=
+
+case "$test" in
+long-param)
+	run_tests_opt="--long"
+	;;
+mcc)
+	start_opt="channels=4"
+	;;
+esac
+
+log_cmd ./start.sh $start_opt || die "fail to setup test environment"
+
+while read testcase
 do
-	check_ignore_case $casename && echo "ignored_by_lkp $casename" && continue
+	is_excluded $testcase && echo "LKP SKIP $testcase" && continue
 
-	[ -f $require_mcc ] &&
-	grep -q -w $casename $require_mcc && continue
-	
-	add_extra_options
-	log_echo "\
-	./run-tests.py $casename $opt"
-	./run-tests.py $casename $opt 2>&1
-done < $group_file
-log_cmd ./stop.sh
+	log_cmd ./run-tests.py $testcase $run_tests_opt 2>&1
+done < $test_file
 
-# test with multi-channels
-[ -f $require_mcc ] || exit 0
-log_cmd ./start.sh channels=4 || die "fail to setup mcc test environment"
-
-grep -wf $group_file $require_mcc | while read casename
-do
-	check_ignore_case $casename && continue
-
-	add_extra_options
-	log_echo "\
-	./run-tests.py $casename $opt"
-	./run-tests.py $casename $opt 2>&1
-done
 log_cmd ./stop.sh

@@ -1,17 +1,27 @@
 #!/usr/bin/env ruby
 
-stats = {}
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+
+require "#{LKP_SRC}/lib/string_ext"
+require "#{LKP_SRC}/lib/tests/stats"
+
+stats = LKP::Stats.new
+
 while (line = STDIN.gets)
+  line = line.resolve_invalid_bytes
+
   case line
-  when /^[ ]+\+ \S+\/(\S+)$/
-    item = $1
-  when /\.\.\.[ ]+([\S\s]+)$/
-    stats[item] = $1.strip.to_s.tr(' ', '_').downcase
+  when /^[ ]+\+ tests\/(\S+)$/
+    #   + tests/utils/check_paranoid
+    #  + tests/sysfs/events
+    testcase = $1.downcase
+  when /\.\.\.\s+(.+)$/
+    #     Testing \"branch-misses\" generalized event...               PASSED
+    #     Testing PERF_FLAG_FD_OUTPUT flag...                        KNOWN KERNEL BUG
+    stats.add testcase, $1
   when /^(ignored_by_lkp)\s+(.*)\s+/
-    stats[$2] = $1
+    stats.add $2, $1
   end
 end
 
-stats.each do |k, v|
-  puts k + '.' + v + ': 1'
-end
+stats.dump('passed' => 'pass', 'failed' => 'fail', 'skipped' => 'skip')

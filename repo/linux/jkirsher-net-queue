@@ -1,14 +1,1 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/jkirsher/net-queue.git
-owner: Jeff Kirsher <jeffrey.t.kirsher@intel.com>
-subsystems:
-- net
-- tcp
-- cxgb4
-- maintainers
-- fec
-- ibmveth
-- net_sched
-notify_build_success_branch: .*
-mail_cc: Intel Wired LAN <intel-wired-lan@lists.osuosl.org>
-mail_to: Intel Wired LAN <intel-wired-lan@lists.osuosl.org>
-belongs_to: NIC

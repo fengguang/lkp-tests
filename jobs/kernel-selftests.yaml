@@ -11,11 +11,11 @@ need_memory: 2G
 need_cpu: 2
 kernel-selftests:
   group:
-    - kselftests-00
-    - kselftests-03
-    - kselftests-livepatch
-    - kselftests-rseq
-    - kselftests-tc-testing
+    - group-00
+    - group-03
+    - livepatch
+    - rseq
+    - tc-testing
 # never register ERST as pstore backend
 kernel_cmdline: erst_disable
 
@@ -23,13 +23,18 @@ kernel_cmdline: erst_disable
 need_memory: 3G
 kernel-selftests:
   group:
-    - kselftests-02
-    - kselftests-mptcp
+    - group-02
+    - mptcp
+    - pidfd
+
+# for sysctl
+kernel_cmdline: sysctl.debug.test_sysctl.boot_int=1
 
 ---
 kernel-selftests:
   group:
-    - kselftests-01
-    - kselftests-lib
+    - group-01
+    - lib
+    - lkdtm
 
 kernel_cmdline: kvm-intel.unrestricted_guest=0

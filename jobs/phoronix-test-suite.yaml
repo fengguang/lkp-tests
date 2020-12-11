@@ -118,7 +118,7 @@ phoronix-test-suite:
       - Atol
       - Ctype
       - Math Library
-      - Random Numbers
+      # - Random Numbers # runtime > 30m
       # - Test All Options
   - test:
     - crafty-1.4.4
@@ -156,14 +156,14 @@ phoronix-test-suite:
       - Summer Nature 1080p
       - Summer Nature 4K
       # - Test All Options
-  - test: dbench-1.0.0
-    option_a: # client count
-      - 1
+  # - test: dbench-1.0.0
+    # option_a: # client count
+      # - 1
       # - 6
       # - 12
       # - 48
       # - 128
-      - 256
+      # - 256
       # - Test All Options
   - test:
     - dcraw-1.1.0
@@ -331,7 +331,7 @@ phoronix-test-suite:
       - Compile
       # - Audio # run more than 40m on lkp-skl-nuc2
       - Video
-      - X
+      # - X # run more than 3h on lkp-csl-2sp8
       - Burn
       - Memload
       - Write
@@ -702,18 +702,18 @@ phoronix-test-suite:
       # - Test All Options
   - test:
     - sqlite-speedtest-1.0.0
-  - test: startup-time-1.4.1
-    option_a:
+      # - test: startup-time-1.4.1
+      # option_a:
       # - Only Sequential Reads # need more than 1h
-      - Sequential Reads + Writes
+      # - Sequential Reads + Writes
       # - Test All Options
-    option_b:
-      - GNOME Terminal
-      - xterm
-      - LibreOffice Writer
+      # option_b:
+      # - GNOME Terminal
+      # - xterm
+      # - LibreOffice Writer
       # - Test All Options
-    option_c:
-      - /opt/rootfs
+      # option_c:
+      # - /opt/rootfs
   - test:
     - stockfish-1.1.1
   - test: stress-ng-1.2.2

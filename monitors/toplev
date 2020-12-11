@@ -4,6 +4,7 @@
 # - core
 # - sleep
 # - interval
+# - forcecpu
 
 # parameter interpretation:
 # level: option sets the maximum level to measure.
@@ -51,6 +52,7 @@ set_opt()
     opt=
     [ -n "$cpu" ] && opt="${opt} --cpu ${cpu}"
     [ -n "$core" ] && opt="${opt} --core ${core}"
+    [ -n "$forcecpu" ] && opt="${opt} --force-cpu ${forcecpu}"
 }
 
 create_links

@@ -4,7 +4,9 @@
 ## entire TCP/UDP/IPv4/IPv6 network stacks, from the system call
 ## layer down to the NIC hardware.
 
-cd $BENCHMARK_ROOT/packetdrill/gtests/net || exit
+. $LKP_SRC/lib/reproduce-log.sh
+
+cd $BENCHMARK_ROOT/packetdrill/gtests/net || die "no $BENCHMARK_ROOT/packetdrill/gtests/net"
 
 # fix the issue: open tun device: No such file or directory
 lsmod | grep -q tun || modprobe tun

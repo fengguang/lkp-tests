@@ -25,6 +25,7 @@ $metric_pass = IO.read("#{LKP_SRC}/etc/pass").split("\n")
 $perf_metrics_threshold = YAML.load_file "#{LKP_SRC}/etc/perf-metrics-threshold.yaml"
 $perf_metrics_prefixes = File.read("#{LKP_SRC}/etc/perf-metrics-prefixes").split
 $index_perf = load_yaml "#{LKP_SRC}/etc/index-perf-all.yaml"
+$index_latency = load_yaml "#{LKP_SRC}/etc/index-latency.yaml"
 
 $perf_metrics_re = load_regular_expressions("#{LKP_SRC}/etc/perf-metrics-patterns")
 $stat_denylist = load_regular_expressions("#{LKP_SRC}/etc/stat-denylist")
@@ -50,12 +51,12 @@ class LinuxTestcasesTableSet
        perf-bench-futex mutilate lmbench3 lib-micro schbench
        pmbench linkbench rocksdb cassandra redis power-idle
        mongodb ycsb memtier mcperf fio-jbod cyclictest filebench igt
-       autonuma-benchmark adrestia].freeze
+       autonuma-benchmark adrestiai kernbench rt-app].freeze
   LINUX_TESTCASES =
     %w[analyze-suspend boot blktests cpu-hotplug ext4-frags ftq ftrace-onoff fwq
-       galileo irda-kernel kernel-selftests kvm-unit-tests kvm-unit-tests-qemu
+       galileo irda-kernel kernel-builtin kernel-selftests kvm-unit-tests kvm-unit-tests-qemu
        leaking-addresses locktorture ltp mce-test otc_ddt piglit pm-qa nvml
-       qemu rcuperf rcutorture suspend suspend-stress trinity ndctl nfs-test hwsim
+       qemu rcuscale rcutorture suspend suspend-stress trinity ndctl nfs-test hwsim
        idle-inject mdadm-selftests xsave-test nvml test-bpf mce-log perf-sanity-tests
        build-perf_test update-ucode reboot cat libhugetlbfs-test ocfs2test syzkaller
        perf-test stress-ng sof_test fxmark kvm-kernel-boot-test bkc_ddt bpf_offload
@@ -839,7 +840,7 @@ def stat_key_base(stat)
 end
 
 def strict_kpi_stat?(stat, _axes, _values = nil)
-  $index_perf.keys.any? { |i| stat =~ /^#{i}$/ }
+  $index_perf.keys.any? { |i| stat =~ /^#{i}$/ } || $index_latency.keys.any? { |i| stat =~ /^#{i}$/ }
 end
 
 $kpi_stat_denylist = Set.new ['vm-scalability.stddev', 'unixbench.incomplete_result']

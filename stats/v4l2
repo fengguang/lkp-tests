@@ -3,8 +3,9 @@
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
 require "#{LKP_SRC}/lib/string_ext"
+require "#{LKP_SRC}/lib/tests/stats"
 
-stats = {}
+stats = LKP::Stats.new
 
 # skip invalid line
 while (line = STDIN.gets)
@@ -18,12 +19,8 @@ while (line = STDIN.gets)
 
   case line
   when /test (.*): (FAIL|OK)*/
-    result = $2.downcase
-    test = $1.downcase.gsub(' ', '_')
-    stats[test] = result
+    stats.add $1, $2
   end
 end
 
-stats.each do |k, v|
-  puts k + '.' + v + ': 1'
-end
+stats.dump('ok' => 'pass')

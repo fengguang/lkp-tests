@@ -2,12 +2,8 @@
 
 setup_mysql()
 {
+	local mnt_point=$1
 	systemctl stop mariadb.service
-
-	# datadir in rootfs too small to meet mysql requriments
-	# /etc/init.d/mysql: ERROR: The partition with /lkp/lkp/src/tmp/mysql is too full! ... failed!
-	mkdir -p $TMP/mysql
-	mount -t tmpfs mysql $TMP/mysql
 
 	# fix "Neither host 'lkp-bdw-ex1' nor 'localhost'
 	# could be looked up with '/usr/sbin/resolveip'"
@@ -15,7 +11,8 @@ setup_mysql()
 	[ ! -x /usr/sbin/resolveip ] && \
 	ln -s $(which resolveip) /usr/sbin/resolveip
 
-	mysql_install_db --datadir="$TMP/mysql" --user=mysql
+	mkdir -p $mnt_point/mysql
+	mysql_install_db --datadir="$mnt_point/mysql" --user=mysql
 
 	# fix "FATAL: error 1040: Too many connections"
 	local max_conn=100
@@ -30,7 +27,18 @@ setup_mysql()
 	# /usr/bin/haswell/mysql is used on Clear Linux
 	local exec_mysqld='mysqld'
 	mysqld --version >/dev/null 2>&1 || exec_mysqld='/usr/libexec/mysqld'
-	$exec_mysqld --datadir="$TMP/mysql" --max-connections="$max_conn" --skip-grant-tables --user=mysql &
+	$exec_mysqld --datadir="$mnt_point/mysql" --max-connections="$max_conn" --skip-grant-tables --user=mysql &
 }
 
-setup_mysql
+[ -n "$mount_points" ] || { echo "empty mount_points, disk failed?" >&2; exit; }
+
+mnt_point="${mount_points%% *}"
+[ -f /var/run/mysqld/mysqld.sock ] || {
+	# ERROR: There's not enough space in /var/lib/mysql/
+	# dpkg: error processing archive /opt/deb/mariadb-server-10.3_1%3a10.3.23-0+deb10u1_amd64.deb (--install):
+	#   new mariadb-server-10.3 package pre-installation script subprocess returned error exit status 1
+	mkdir -p $mnt_point/var_lib_mysql
+	mount --bind $mnt_point/var_lib_mysql /var/lib/mysql
+	dpkg --force-all -i /opt/deb/mariadb*
+}
+setup_mysql "$mnt_point"

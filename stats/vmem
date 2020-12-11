@@ -3,8 +3,11 @@
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
 require "#{LKP_SRC}/lib/string_ext"
+require "#{LKP_SRC}/lib/array_ext"
+require "#{LKP_SRC}/lib/tests/stats"
 
-stats = []
+stats = LKP::Stats.new
+
 test_item = ''
 build_type = ''
 
@@ -20,25 +23,26 @@ while (line = STDIN.gets)
     name = Regexp.last_match[2]
     next unless test_item == item
 
-    stats << item + '_' + name + '_' + build_type + '.' + Regexp.last_match[3].downcase + ': 1'
+    stats.add "#{item}_#{name}_#{build_type}", Regexp.last_match[3]
   when %r{RUNTESTS: stopping: (.+)/(TEST[0-9]+) failed}
     item = Regexp.last_match[1]
     name = Regexp.last_match[2]
 
     next unless test_item == item
 
-    stats << item + '_' + name + '_' + build_type + '.fail: 1'
+    stats.add "#{item}_#{name}_#{build_type}", 'fail'
   when %r{RUNTESTS: stopping: (.+)/(TEST[0-9]+) timed out}
     item = Regexp.last_match[1]
     name = Regexp.last_match[2]
     next unless test_item == item
 
-    stats << item + '_' + name + '_' + build_type + '.timeout: 1'
+    stats.add "#{item}_#{name}_#{build_type}", 'timeout'
   when %r{^(.+)/(TEST[0-9]+): SKIP}
     item = Regexp.last_match[1]
     name = Regexp.last_match[2]
-    stats << item + '_' + name + '.test_skip: 1'
+
+    stats.add "#{item}_#{name}", 'test_skip'
   end
 end
 
-stats.uniq.each { |stat| puts stat }
+stats.show

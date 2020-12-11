@@ -7,12 +7,23 @@ need_memory: 2G
 disk: 4HDD
 
 fs:
+- ext2
 - ext4
 - xfs
 - btrfs
 - f2fs
+- udf
+- ocfs2
 
 xfstests:
   test:
   - generic-299
   - generic-logwrites
+  - generic-group-17
+  - generic-group-18
+  - generic-group-19
+  - generic-group-20
+  - generic-group-21
+  - generic-group-22
+  - generic-group-23
+  - generic-group-24

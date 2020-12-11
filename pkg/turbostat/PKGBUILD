@@ -1,31 +1,21 @@
-# Contributor: graysky <graysky AT archlinux dot us>
-
 pkgname=turbostat
-pkgver=3.7
-pkgrel=4
-_srcname=linux-3.18
-pkgdesc="Newer version of turbostat-shows CPU frequency and C-state residency on modern Intel turbo-capable processors."
-arch=('x86_64' 'i386')
-url="http://acpi.sourceforge.net/dsdt/index.php"
+pkgver=git
+pkgrel=1
+url='https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git'
+arch=('i386' 'x86_64')
 license=('GPL')
-conflicts=('pmtools')
-source=("https://github.com/aaronlu/turbostat.git")
-#"http://www.kernel.org/pub/linux/kernel/v3.x/patch-${pkgver}.xz")
+source=('https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git')
+md5sums=('SKIP')
 
-sha256sums=('SKIP')
-
-#prepare() {
-#  cd "$_srcname"
-#  patch -p1 -i "${srcdir}/patch-${pkgver}"
-#}
-
-build() {
-  cd "$srcdir/$pkgname"
-  make
+build()
+{
+	cd $srcdir/linux/tools/power/x86/turbostat
+	make
 }
 
-package() {
-  cd "$srcdir/$pkgname"
-  mkdir -p "$pkgdir/lkp/benchmarks/${pkgname}"
-  cp -a turbostat "$pkgdir/lkp/benchmarks/${pkgname}/${pkgname}"
+package()
+{
+	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+	mkdir -p $benchmark_path
+	cp -af $srcdir/linux/tools/power/x86/turbostat/turbostat $benchmark_path
 }

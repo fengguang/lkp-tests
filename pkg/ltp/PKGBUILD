@@ -10,10 +10,14 @@ md5sums=('SKIP' 'SKIP' 'SKIP' 'SKIP')
 
 . $LKP_SRC/lib/tests/ltp.sh
 
-benchmark_path="lkp/benchmarks/${pkgname}"
-
 build_rusers()
 {
+	echo build_rusers
+
+	cd $srcdir/rusers || return
+
+	benchmark_path=${pkgdir}/lkp/benchmarks/${pkgname}
+
 	local branch=$(git branch -a | grep /c | tail -1 | awk -F/ '{print $NF}')
 	git checkout "$branch" || return
 
@@ -31,31 +35,43 @@ build_rusers()
 		patch -f -p0 < SOURCES/$p
 	done
 
-	cd netkit-rusers-$rusers_version
+	cd netkit-rusers-$rusers_version || return
 	./configure --prefix="${benchmark_path}"/netkit-rusers
+
 	cd rup
-	make || return
-	cd ../../
+	make
 }
 
 build_tpm_emulator()
 {
+	echo build_tpm_emulator
+
+	cd $srcdir/tpm-emulator || return
+
 	# the lastest tpm-emulator is currupted so use old one
 	git reset --hard 0f4579e
 	# remove Werror to use gcc-7
-	sed -i "s/-Werror//g" CMakeLists.txt
+	sed -i "s/-Werror//g" CMakeLists.txt || return
 	# don't build kernel module
-	sed -i "s/add_subdirectory(tpmd_dev)/#add_subdirectory(tpmd_dev)/g" CMakeLists.txt
-	mkdir build && cd build
-	cmake ..
+	sed -i "s/add_subdirectory(tpmd_dev)/#add_subdirectory(tpmd_dev)/g" CMakeLists.txt || return
+
+	mkdir build || return
+
+	cd build
+	cmake .. || return
 	make || return
 	make install || return
-	make package || return
-	cd ..
+	make package
 }
 
 build_numactl()
 {
+	echo build_numactl
+
+	cd $srcdir/numactl || return
+
+	benchmark_path=${pkgdir}/lkp/benchmarks/${pkgname}
+
 	autoreconf -f -i
 	./configure --prefix="${benchmark_path}"/testcases/bin/numactl
 	make
@@ -63,6 +79,10 @@ build_numactl()
 
 install_rusers()
 {
+	echo install_rusers
+
+	cd $srcdir/rusers || return
+
 	mkdir -p "${benchmark_path}"/netkit-rusers/{bin,man/man1}
 
 	local rusers_version=$(grep ^Version: SPECS/rusers.spec | awk '{print $2}')
@@ -72,12 +92,24 @@ install_rusers()
 
 install_tpm_emulator()
 {
+	echo install_tpm_emulator
+
+	cd $srcdir/tpm-emulator || return
+
+	benchmark_path=${pkgdir}/lkp/benchmarks/${pkgname}
+
 	mkdir -p "${benchmark_path}"/tpm-emulater
 	cp build/*.zip "${benchmark_path}"/tpm-emulater
 }
 
 install_numactl()
 {
+	echo install_numactl
+
+	cd $srcdir/numactl || return
+
+	benchmark_path=${pkgdir}/lkp/benchmarks/${pkgname}
+
 	make install
 	ln -sf "${benchmark_path}"/testcases/bin/numactl/bin/numademo "${benchmark_path}"/testcases/bin/numademo
 	ln -sf "${benchmark_path}"/testcases/bin/numactl/bin/memhog "${benchmark_path}"/testcases/bin/memhog
@@ -85,42 +117,108 @@ install_numactl()
 
 build()
 {
-	cd $srcdir/$pkgname
+	split_syscalls_tests
 
-	benchmark_path="${pkgdir}/${benchmark_path}"
+	cd $srcdir/$pkgname || return
 
-	build_ltp "${benchmark_path}" || exit
+	echo build_ltp
+	build_ltp "${pkgdir}/lkp/benchmarks/${pkgname}" || return
 
-	cd ../tpm-emulator || exit
-	build_tpm_emulator || exit
-
-	cd ../numactl || exit
-	build_numactl || exit
+	# build_tpm_emulator || return
+	build_numactl || return
 
 	[ "$DISTRO" = "debian" -o "$DISTRO" = "ubuntu" ] && {
-		cd ../rusers || exit
-		build_rusers || exit
+		build_rusers || return
 	}
+
 	return 0
+}
+
+hide()
+{
+	mv $1 .$1
+}
+
+split_syscalls_tests()
+{
+	echo split_syscalls_tests
+
+	cd $srcdir/$pkgname || return
+
+	local timer_tests
+	timer_tests=$(grep -lr "sample = sample_fn" ./) || return
+
+	cd $srcdir/$pkgname/runtest || return
+
+	for timer_test in $timer_tests; do
+		timer_test=${timer_test##*/}
+		timer_test=${timer_test%%.*}
+		grep "^$timer_test" syscalls >> syscalls-timer
+	done
+
+	grep "^tgkill" syscalls >> syscalls-tgkill || return
+
+	grep -v -f syscalls-timer -f syscalls-tgkill syscalls > syscalls-rest || return
+	$LKP_SRC/tools/split-tests syscalls-rest 8 syscalls-
+	hide syscalls-rest
+	hide syscalls
+}
+
+split_tests()
+{
+	echo split_tests
+
+	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+	cd $benchmark_path/runtest || return
+
+	$LKP_SRC/tools/split-tests dio 4 dio-
+	hide dio
+
+	$LKP_SRC/tools/split-tests fs_readonly 4 fs_readonly-
+	hide fs_readonly
+
+	$LKP_SRC/tools/split-tests fs 4 fs-
+	hide fs
+
+	$LKP_SRC/tools/split-tests crashme 2 crashme-
+	hide crashme
+
+	$LKP_SRC/tools/split-tests scsi_debug.part1 4 scsi_debug.part1-
+	hide scsi_debug.part1
+
+	# net_stress.appl
+	grep "ssh" net_stress.appl > net_stress.appl-ssh || return
+	grep "dns" net_stress.appl > net_stress.appl-dns || return
+	grep "http" net_stress.appl > net_stress.appl-http || return
+	grep "ftp" net_stress.appl > net_stress.appl-ftp || return
+	grep -v -e ^# -e ^$ -e ssh -e dns -e http -e ftp net_stress.appl && return 1
+	hide net_stress.appl
+
+	# syscalls-ipc
+	grep "msgstress" syscalls-ipc > syscalls-ipc-msgstress || return
+	grep -v "msgstress" syscalls-ipc > syscalls-ipc-00 || return
+	hide syscalls-ipc
+
+	# mm
+	grep -e oom mm > mm-oom || return
+	grep -e min_free_kbytes mm > mm-min_free_kbytes || return
+	grep -v -e oom -e min_free_kbytes mm > mm-00 || return
+	hide mm
 }
 
 package()
 {
 	cd $srcdir/$pkgname
+	install_ltp "${pkgdir}/lkp/benchmarks/${pkgname}" || return
 
-	benchmark_path="${pkgdir}/${benchmark_path}"
-
-	install_ltp "${benchmark_path}" || exit
-
-	cd ../tpm-emulator || exit
-	install_tpm_emulator || exit
-
-	cd ../numactl || exit
-	install_numactl || exit
+	# install_tpm_emulator || return
+	install_numactl || return
 
 	[ "$DISTRO" = "debian" -o "$DISTRO" = "ubuntu" ] && {
-		cd ../rusers || exit
-		install_rusers || exit
+		install_rusers || return
 	}
+
+	split_tests || return
+
 	return 0
 }

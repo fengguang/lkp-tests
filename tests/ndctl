@@ -6,6 +6,7 @@
 shopt -s nullglob
 
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/reproduce-log.sh
 
 [[ -x "/lkp/benchmarks/bin/ndctl" ]] || die "Can not find executable ndctl file"
 

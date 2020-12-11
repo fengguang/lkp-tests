@@ -1,49 +1,44 @@
 #!/usr/bin/env ruby
-# example input:
-# =========================================================================
-# Type         Ops/sec     Hits/sec   Misses/sec      Latency       KB/sec
-# -------------------------------------------------------------------------
-# Sets         1455.72          ---          ---      0.42200      1522.73
-# Gets         5822.89       867.78      4955.10      0.40700      1088.00
-# Waits           0.00          ---          ---      0.00000          ---
-# Totals       7278.61       867.78      4955.10      0.41000      2610.72
-# Request Latency Distribution
-# Type     <= msec         Percent
-#------------------------------------------------------------------------
-# SET       0.260        87.07
-# SET       0.270        89.46
-# SET       0.280        92.75
-# SET       0.290        95.86
-# SET       0.300        97.88
-# SET       0.310        98.79
-# SET       0.320        99.13
-# SET       0.330        99.28
-# SET       0.340        99.40
-# SET       0.350        99.51
-# SET       0.360        99.62
-# GET       0.250        85.06
-# GET       0.260        87.07
-# GET       0.270        89.46
-# GET       0.280        92.75
-# GET       0.290        95.86
-# GET       0.300        97.88
-# GET       0.310        98.79
-# GET       0.320        99.13
-# GET       0.330        99.28
-# GET       0.340        99.40
 
-LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
 require "#{LKP_SRC}/lib/array_ext"
+require "#{LKP_SRC}/lib/string_ext"
 
-$histo_sets_sum = Array.new(6, 0)
-$histo_sets_num = Array.new(6, 0)
-$histo_gets_sum = Array.new(6, 0)
-$histo_gets_num = Array.new(6, 0)
-$histo_waits_sum = Array.new(6, 0)
-$histo_waits_num = Array.new(6, 0)
-$histo_totals_sum = Array.new(6, 0)
-$histo_totals_num = Array.new(6, 0)
+# example input:
+# ============================================================================================================================
+# Type         Ops/sec     Hits/sec   Misses/sec    Avg. Latency     p50 Latency     p99 Latency   p99.9 Latency       KB/sec
+# ----------------------------------------------------------------------------------------------------------------------------
+# Sets        21659.56          ---          ---         1.72237         1.68700         2.99100         4.28700     22716.77
+# Gets        86638.24     13005.02     73633.22         1.72807         1.69500         3.00700         4.31900     16523.21
+# Waits           0.00          ---          ---             ---             ---             ---             ---          ---
+# Totals     108297.80     13005.02     73633.22         1.72693         1.69500         3.00700         4.31900     39239.98
+# 
+# 
+# Request Latency Distribution
+# Type     <= msec         Percent
+# ------------------------------------------------------------------------
+# SET       0.279         0.00
+# SET       1.095         5.00
+# ...
+# SET     346.111       100.00
+# ---
+# GET       0.279         0.00
+# GET       1.095         5.00
+# ...
+# GET     348.159       100.00
+# ---
+# WAIT      0.000       100.00
+# 
+
+$histo_sets_sum = Array.new(9, 0)
+$histo_sets_num = Array.new(9, 0)
+$histo_gets_sum = Array.new(9, 0)
+$histo_gets_num = Array.new(9, 0)
+$histo_waits_sum = Array.new(9, 0)
+$histo_waits_num = Array.new(9, 0)
+$histo_totals_sum = Array.new(9, 0)
+$histo_totals_num = Array.new(9, 0)
 set_latencies = []
 get_latencies = []
 proc_set_latencies = []
@@ -67,6 +62,8 @@ def memtier(line)
 end
 
 while (line = STDIN.gets)
+  line = line.resolve_invalid_bytes
+
   if line =~ /^Sets/
     extract_memtier(line, $histo_sets_sum, $histo_sets_num)
   elsif line =~ /^Gets/
@@ -103,8 +100,11 @@ def gen_output_sum(type, histo_sum)
   puts "total_#{type}_ops/s: #{histo_sum[1]}"
   puts "total_#{type}_hits/s: #{histo_sum[2]}"
   puts "total_#{type}_misses/s: #{histo_sum[3]}"
-  puts "total_#{type}_latency_ms: #{histo_sum[4]}"
-  puts "total_#{type}_kb/s: #{histo_sum[5]}"
+  puts "total_#{type}_avg_latency_ms: #{histo_sum[4]}"
+  puts "total_#{type}_p50_latency_ms: #{histo_sum[5]}"
+  puts "total_#{type}_p99_latency_ms: #{histo_sum[6]}"
+  puts "total_#{type}_p99.9_latency_ms: #{histo_sum[7]}"
+  puts "total_#{type}_kb/s: #{histo_sum[8]}"
 end
 
 def gen_output_avg(type, histo_sum, histo_num)
@@ -115,8 +115,14 @@ def gen_output_avg(type, histo_sum, histo_num)
   avg_tmp = histo_sum[3] / histo_num[3]
   puts "avg_#{type}_misses/s: #{avg_tmp}"
   avg_tmp = histo_sum[4] / histo_num[4]
-  puts "avg_#{type}_latency_ms: #{avg_tmp}"
+  puts "avg_#{type}_avg_latency_ms: #{avg_tmp}"
   avg_tmp = histo_sum[5] / histo_num[5]
+  puts "avg_#{type}_p50_latency_ms: #{avg_tmp}"
+  avg_tmp = histo_sum[6] / histo_num[6]
+  puts "avg_#{type}_p99_latency_ms: #{avg_tmp}"
+  avg_tmp = histo_sum[7] / histo_num[7]
+  puts "avg_#{type}_p99.9_latency_ms: #{avg_tmp}"
+  avg_tmp = histo_sum[8] / histo_num[8]
   puts "avg_#{type}_kb/s: #{avg_tmp}"
 end
 

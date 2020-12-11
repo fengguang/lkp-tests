@@ -11,7 +11,8 @@ disk: 2pmem
 need_memory: 20G
 
 fs:
-- ext4 
+- ext2
+- ext4
 
 xfstests:
   test:

@@ -1,0 +1,30 @@
+#!/usr/bin/env ruby
+
+# Input example:
+# [   20.504916] rcu-scale:--- Start of test: nreaders=2 nwriters=2 verbose=1 shutdown=0
+# [   20.521488] rcu-scale: rcu_scale_reader task started
+# [   20.526468] rcu-scale: rcu_scale_reader task started
+# [   20.536483] rcu-scale: rcu_scale_writer task started
+# [   20.541467] rcu-scale: rcu_scale_writer task started
+# [   31.728409] rcu-scale: rcu_scale_writer 0 has 100 measurements
+# [   31.730422] rcu-scale: rcu_scale_writer 1 has 100 measurements
+# [   31.744797] rcu-scale: Test complete
+# [  320.627980] rcu-scale: writer 0 gps: 101
+# [  320.637100] rcu-scale: writer 1 gps: 100
+# [  320.640206] rcu-scale: start: 30396186972 end: 31136206117 duration: 740019145 gps: 201 batches: 207
+# ...
+
+result = 'unknown'
+type = 'unknown'
+
+while (line = STDIN.gets)
+  case line
+  when /^\[.*\] ([A-Za-z]+)-scale: Test complete/
+    type = $1
+    result = 'pass'
+    break
+  end
+end
+
+stat = type + '.' + result
+puts "#{stat}: 1"

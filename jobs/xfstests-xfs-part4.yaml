@@ -1,0 +1,35 @@
+suite: xfstests
+testcase: xfstests
+category: functional
+
+need_memory: 3G
+
+disk: 4HDD
+
+fs:
+- xfs
+
+xfstests:
+  test:
+  - xfs-group-29
+  - xfs-group-30
+  - xfs-group-31
+  - xfs-group-34
+  - xfs-group-35
+  - xfs-group-36
+  - xfs-group-37
+  - xfs-group-38
+  - xfs-group-39
+  - xfs-group-40
+  - xfs-group-41
+  - xfs-group-42
+  - xfs-group-43
+  - xfs-group-44
+  - xfs-group-45
+  - xfs-group-46
+  - xfs-group-47
+  - xfs-group-48
+  - xfs-group-49
+  - xfs-group-50
+  - xfs-group-51
+  - xfs-group-52

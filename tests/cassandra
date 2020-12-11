@@ -12,10 +12,7 @@
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/tests/cassandra.sh
 
-cd "$BENCHMARK_ROOT"/cassandra || {
-       echo "ERROR: cassandra database has not been installed yet"
-       exit -1
-}
+cd "$BENCHMARK_ROOT"/cassandra || die "cassandra database has not been installed yet"
 
 setup_java_home
 

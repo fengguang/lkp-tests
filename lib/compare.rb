@@ -119,7 +119,7 @@ module Compare
               :include_all_failure_stat_keys, :filter_stat_keys,
               :filter_testcase_stat_keys, :filter_kpi_stat_keys,
               :filter_kpi_stat_strict_keys,
-              :exclude_stat_keys,
+              :exclude_stat_keys, :stats_field,
               :gap, :more_stats, :perf_profile_threshold,
               :group_by_stat, :show_empty_group, :compact_show,
               :sort_by_group
@@ -131,6 +131,7 @@ module Compare
       @sort_mresult_roots = true
       @dedup_mresult_roots = true
       @gap = nil
+      @stats_field = nil
       @perf_profile_threshold = 5
       set_params params
       @stat_calc_funcs = [Compare.method(:calc_stat_change)]
@@ -181,7 +182,7 @@ module Compare
       groups.map do |g|
         next if g.axes_data.size < 2
 
-        Group.new self, g.axes, g.group_axeses, g.axes_data
+        Group.new self, g.axes, g.group_axeses, g.axes_data, @stats_field
       end.compact
     end
 
@@ -270,11 +271,12 @@ module Compare
 
     private
 
-    def initialize(comparer, axes, compare_axeses, mresult_roots)
+    def initialize(comparer, axes, compare_axeses, mresult_roots, stats_field = '')
       @comparer = comparer
       @axes = axes
       @mresult_roots = mresult_roots
       @compare_axeses = compare_axeses
+      @stats_field = stats_field
     end
 
     public
@@ -314,7 +316,9 @@ module Compare
       changed_stat_keys = []
       ms = deepcopy(matrixes_in)
       m0 = ms[0]
+      expand_matrix(m0, 'stat' => @stats_field)
       ms.drop(1).each do |m|
+        expand_matrix(m, 'stat' => @stats_field)
         changes = _get_changed_stats(m, m0,
                                      'gap' => @comparer.gap,
                                      'more' => @comparer.more_stats,
@@ -423,12 +427,20 @@ module Compare
       changed_stat_keys(ms).each do |stat_key|
         failure = function_stat?(stat_key)
         tms = failure ? ms : cms
+        values = if stat_key == @stats_field
+                   deepcopy(tms).map do |m|
+                     expand_matrix(m, 'stat' => @stats_field)
+                     m[stat_key]
+                   end
+                 else
+                   tms.map { |m| m[stat_key] }
+                 end
         truns = failure ? aruns : cruns
         stat = {
           STAT_KEY => stat_key,
           FAILURE => failure,
           GROUP => self,
-          VALUES => tms.map { |m| m[stat_key] },
+          VALUES => values,
           RUNS => truns
         }
         calc_funcs.each do |calc_func|

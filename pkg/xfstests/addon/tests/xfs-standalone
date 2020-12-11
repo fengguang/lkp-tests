@@ -1,0 +1,10 @@
+# the filesystem has valuable metadata changes in a log which needs to 11 be replayed
+083
+# it requires special configurations, which will break some other xfs tests
+275
+# can't run find-api-violations.sh without WORKAREA set
+437
+# reflink not supported by test filesystem type: xfs
+132
+# 16 bit project IDs not supported on /dev/vdd
+244

@@ -1,0 +1,12 @@
+
+# sanitizer.util/cpumap.c:.* runtime error: member access within misaligned address .* for type .* which requires .* byte alignment
+sanitizer.util/cpumap.c:#:#:runtime_error:member_access_within_misaligned_address#for_type'struct_perf_record_record_cpu_map',which_requires#byte_alignment: 1
+message:sanitizer.util/cpumap.c:#:#:runtime_error:member_access_within_misaligned_address#for_type'struct_perf_record_record_cpu_map',which_requires#byte_alignment: sanitizer.util/cpumap.c:48:22: runtime error: member access within misaligned address 0x7f0b88b29eaa for type 'struct perf_record_record_cpu_map', which requires 8 byte alignment
+pattern:sanitizer.util/cpumap.c:#:#:runtime_error:member_access_within_misaligned_address#for_type'struct_perf_record_record_cpu_map',which_requires#byte_alignment: sanitizer.util/cpumap.c:.* runtime error: member access within misaligned address .* for type .* which requires .* byte alignment
+
+# sanitizer.strdup/perf_evlist__set_event_name/process_event_desc/perf_file_section__process/perf_header__process_sections/perf_session__read_header/
+sanitizer.strdup/perf_evlist__set_event_name/process_event_desc/perf_file_section__process/perf_header__process_sections/perf_session__read_header/: 1
+message:sanitizer.strdup/perf_evlist__set_event_name/process_event_desc/perf_file_section__process/perf_header__process_sections/perf_session__read_header/: sanitizer.strdup/perf_evlist__set_event_name/process_event_desc/perf_file_section__process/perf_header__process_sections/perf_session__read_header/
+pattern:sanitizer.strdup/perf_evlist__set_event_name/process_event_desc/perf_file_section__process/perf_header__process_sections/perf_session__read_header/: sanitizer.strdup/perf_evlist__set_event_name/process_event_desc/perf_file_section__process/perf_header__process_sections/perf_session__read_header/
+
+timestamp:last: 840.028372

@@ -10,8 +10,9 @@
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/upload.sh
 . $LKP_SRC/lib/tests/kvm-unit-tests.sh
+. $LKP_SRC/lib/reproduce-log.sh
 
-cd $BENCHMARK_ROOT/kvm-unit-tests || exit
+cd $BENCHMARK_ROOT/kvm-unit-tests || die "no $BENCHMARK_ROOT/kvm-unit-tests"
 
 # Debian/Fedora/Ubuntu use /usr/bin/qemu-system-x86_64 as QEMU Emulator.
 # RHEL use /usr/libexec/qemu-kvm as QEMU Emulator.
@@ -22,8 +23,7 @@ else
 	if [ -f "/usr/libexec/qemu-kvm" ]; then
 		export QEMU="/usr/libexec/qemu-kvm"
 	else
-		echo "Can not find QEMU Emulator" >&2
-		exit 1
+		die "Can not find QEMU Emulator"
 	fi
 fi
 
@@ -37,10 +37,6 @@ setup_test_environment || die "failed to setup test environment"
 check_ignored_cases
 
 run_tests
-exit_code=$?
+[ $? -ne 0 ] && dump_qemu
 
 upload_test_results
-
-[ $exit_code -ne 0 ] && dump_qemu
-
-exit $exit_code

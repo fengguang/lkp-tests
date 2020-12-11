@@ -3,6 +3,7 @@
 
 . $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/reproduce-log.sh
 
 cd $BENCHMARK_ROOT/libhugetlbfs-test || die "can not cd libhugetlbfs-test"
 
@@ -26,3 +27,5 @@ log_cmd make $make_opt check
 # before sed: shmoverride_unlinked.c: In function ‘local_read_meminfo’:
 # after sed: shmoverride_unlinked.c: In function 'local_read_meminfo':
 [ -s $TMP/stderr ] && sed -i "s/‘\|’/'/g" $TMP/stderr
+
+exit 0

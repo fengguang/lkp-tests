@@ -1,0 +1,2 @@
+need_kconfig:
+ - CONFIG_RCU_SCALE_TEST=m ~ ">= v5.10-rc1"

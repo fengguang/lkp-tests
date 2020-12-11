@@ -1,0 +1,52 @@
+#!/usr/bin/env ruby
+
+perf_sched = Hash.new { |h, k| h[k] = [[], [], []] }
+stats = []
+
+while (line = STDIN.gets)
+  case line
+  when / <- /
+    data = line.gsub(' <- ', '.').split(' ')
+    key = data.last.split('.')[0..4].join('.')
+    perf_sched[key][0] << data[-4].to_f
+    perf_sched[key][1] << data[-3].to_f
+    perf_sched[key][2] << (data[-4].to_f + data[-3].to_f).round(3)
+  end
+end
+exit if perf_sched.empty?
+
+total_perf_sched = [[], [], []]
+perf_sched.each do |_k, v|
+  v.each_with_index { |data, i| total_perf_sched[i] << data }
+end
+
+compare_average = 0
+compare_count = 0
+{'total_wait_time' => 0, 'total_sch_delay' => 1, 'total_wait_and_delay' => 2}.each do |type, i|
+  v = total_perf_sched[i].flatten
+  average = (v.reduce(:+).to_f / v.size).round(3)
+  if type == 'total_wait_and_delay'
+    compare_average = average
+    compare_count = (v.size * 0.005).to_i
+    stats << "#{type}.count.ms: #{v.size}"
+  end
+  stats << "#{type}.max.ms: #{v.max}"
+  stats << "#{type}.average.ms: #{average}"
+end
+
+sorted_keys = perf_sched.keys.sort_by { |k| perf_sched[k][0].size }
+sorted_keys.reverse_each do |k|
+  {'wait_time' => 0, 'sch_delay' => 1, 'wait_and_delay' => 2}.each do |type, i|
+    v = perf_sched[k][i]
+    average = (v.reduce(:+).to_f / v.size).round(3)
+    if type == 'wait_and_delay'
+      next if average < compare_average && v.size < compare_count
+
+      stats << "#{type}.count.#{k}: #{v.size}"
+    end
+    stats << "#{type}.max.ms.#{k}: #{v.max}"
+    stats << "#{type}.avg.ms.#{k}: #{average}"
+  end
+end
+
+stats.each { |stat| puts stat }

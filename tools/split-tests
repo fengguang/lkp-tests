@@ -1,0 +1,38 @@
+#!/bin/bash
+
+usage()
+{
+	echo "Usage: $(basename $0) tests_file group_size group_name_prefix"
+	exit 1
+}
+
+hashsum()
+{
+	echo $* | cksum | cut -f1 -d' '
+}
+
+[[ $# -eq 3 ]] || usage
+
+tests_file=$1
+group_size=$2
+group_name_prefix=$3
+
+while read test
+do
+	if [[ $test =~ ^[0-9]+$ ]]; then
+		# convert t to 10 base, otherwise value like 008 is treated as octal number
+		# and fails with "008: value too great for base (error token is "008")"
+		#
+		# group_size means $group_size elements in each group
+		group_index=$(( 10#$test / group_size ))
+	else
+		test_hashsum=$(hashsum $test)
+
+		# group_size means total $group_size groups
+		group_index=$(( test_hashsum % group_size ))
+	fi
+
+	group_index=$(printf "%02d" $group_index)
+
+	echo $test >> $group_name_prefix$group_index
+done <<< $(cat $tests_file | grep -v -e ^# -e ^$)

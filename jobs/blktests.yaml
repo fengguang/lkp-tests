@@ -6,9 +6,13 @@ need_memory: 1G
 
 blktests:
   test:
-  - loop-group1
-  - nbd-group1
-  - srp-group1
-  - zbd-group1
-  # - nvmeof-mp-group1 # incompatible with CONFIG_NVME_MULTIPATH
-  - other
+  - loop-group-00
+  - loop-group-01
+  - nbd-group-00
+  - nbd-group-01
+  - zbd-group-00
+  - zbd-group-01
+  # - nvmeof-mp-group-00 # incompatible with CONFIG_NVME_MULTIPATH
+  # - nvmeof-mp-group-01 # incompatible with CONFIG_NVME_MULTIPATH
+  - srp-group-00
+  - srp-group-01

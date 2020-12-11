@@ -7,6 +7,7 @@
 shopt -s nullglob
 
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/reproduce-log.sh
 
 cd $BENCHMARK_ROOT/mce-log || die "can not find mce-log dir"
 
@@ -17,7 +18,6 @@ touch .depend
 ln -s $BENCHMARK_ROOT/mce-log/mcelog /usr/sbin/mcelog
 
 make test
-exit_value=$?
 
 files=($BENCHMARK_ROOT/mce-log/tests/*/results)
 if [[ $files ]]; then
@@ -31,4 +31,4 @@ else
     echo "WARNING: mcelog test results is not exist."
 fi
 
-exit $exit_value
+exit 0

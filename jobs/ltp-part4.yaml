@@ -1,0 +1,27 @@
+suite: ltp
+testcase: ltp
+category: functional
+
+need_modules: true
+need_memory: 4G
+
+disk: 1HDD
+fs:
+- ext4
+- xfs
+- btrfs
+
+ltp:
+  test:
+  - fs_readonly-00
+  - fs_readonly-01
+  - fs_readonly-02
+  - fs_readonly-03
+  - fs_bind
+  - fs_perms_simple
+  - fsx
+  - ltp-aiodio.part4
+  - fs-00
+  - fs-01
+  - fs-02
+  - fs-03

@@ -8,7 +8,7 @@ module Git
   class Object
     class Commit
       alias orig_initialize initialize
-      PGP_SIGNATURE = "-----END PGP SIGNATURE-----\n \n\n".freeze
+      PGP_SIGNATURE = '-----END PGP SIGNATURE-----'.freeze
 
       def initialize(base, sha, init = nil)
         orig_initialize(base, sha, init)
@@ -24,13 +24,8 @@ module Git
 
       def subject
         raw_message = message
-        raw_message = raw_message.split(PGP_SIGNATURE).last if raw_message.include?(PGP_SIGNATURE)
+        raw_message = raw_message.split(PGP_SIGNATURE).last.sub(/^\s+/, '') if raw_message.include?(PGP_SIGNATURE)
         raw_message.split("\n").first
-      end
-
-      # FIXME: rli9 need a better name, or remove the function if not common
-      def name
-        interested_tag || sha
       end
 
       def tags
@@ -45,8 +40,8 @@ module Git
         @base.command_lines('show', "#{sha}:#{content}")
       end
 
-      def interested_tag
-        @interested_tag ||= release_tag || tags.first
+      def tag
+        @tag ||= release_tag || tags.first
       end
 
       def release_tag
@@ -183,7 +178,21 @@ module Git
       end
 
       def abbr
-        release_tag || sha[0..9]
+        tag || sha[0..9]
+      end
+
+      def fixed?(branch)
+        short_sha = sha[0..7]
+        !@base.command("log --grep 'Fixes:' #{sha}..#{branch} | grep \"Fixes: #{short_sha}\"").empty?
+      end
+
+      def reverted?(branch)
+        reverted_subject = 'Revert \"' + subject + '\"'
+        !@base.command("log --format=%s #{sha}..#{branch} | grep -x -m1 \"#{reverted_subject}\"").empty?
+      end
+
+      def exist_in?(branch)
+        @base.command("merge-base --is-ancestor #{sha} #{branch}; echo $?").to_i.zero?
       end
     end
 

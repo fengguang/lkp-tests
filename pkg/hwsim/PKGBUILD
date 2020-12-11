@@ -13,51 +13,53 @@ build()
 	make || return
 	# binary will be installed into /usr/bin/wmediumd
 	make install || return
-	cd $srcdir/hostap
+
+	cd $srcdir/hostap || return
 
 	# support WPA-EAP-SUITE-B-192, example-wpa_supplicant.config and example-hostapd.config contains support options for build.
 	# hostapd_config_parse_key_mgmt() in hostapd/config_file.c will check "CONFIG_SUITEB192".
 	# if not set "CONFIG_SUITEB192=y", suite_b_192 can not be added into key_mnt.
 
-	# if example-wpa_supplicant.config and example-hostapd.config not exist, it means hostap(git://w1.fi/srv/git/hostap.git)
+	# if example-wpa_supplicant.config and example-hostapd.config not exist, it means hostap (git://w1.fi/srv/git/hostap.git)
 	# remove the files, we need to check the option in the new configuration files
 	local wpa_supplicant_config="./tests/hwsim/example-wpa_supplicant.config"
-	local hostapd_config="./tests/hwsim/example-hostapd.config"
-
 	if [[ -f $wpa_supplicant_config ]]; then
 		grep -q -w "CONFIG_SUITEB192=y" $wpa_supplicant_config || echo "CONFIG_SUITEB192=y" >> $wpa_supplicant_config
 	else
 		echo "Warning: $wpa_supplicant_config not exist, failed to set CONFIG_SUITEB192=y"
+		return 1
 	fi
+
+	local hostapd_config="./tests/hwsim/example-hostapd.config"
 	if [[ -f $hostapd_config ]]; then
 		grep -q -w "CONFIG_SUITEB192=y" $hostapd_config || echo "CONFIG_SUITEB192=y" >> $hostapd_config
 	else
 		echo "Warning: $hostapd_config not exist, failed to set CONFIG_SUITEB192=y"
+		return 1
 	fi
 
-	build_hwsim_param_long
-	build_hwsim_require_mcc
-
-	cd $srcdir/wmediumd
-	$LKP_SRC/tools/hwsim-extract-testcase $srcdir/hostap/tests/hwsim
+	build_hwsim_tests
 }
 
-build_hwsim_param_long()
+build_hwsim_tests()
 {
+	cd $srcdir/hostap/tests/hwsim
+
 	# try to find out the case requiring params long
 	# root@debian9:/home/lizhijian/chroot/lkp/benchmarks/hwsim/tests/hwsim# git grep -B 2 -w 'if not params\['\'long\']
 	# test_ap_ciphers.py-def test_ap_cipher_tkip_countermeasures_sta2(dev, apdev, params):
 	# test_ap_ciphers.py-    """WPA-PSK/TKIP countermeasures (detected by two STAs) [long]"""
 	# test_ap_ciphers.py:    if not params['long']:
+	git grep -B 2 -w 'if not params\['\'long\'] | grep '.*\.py\-def' | awk -F 'def ' '{print $2}' | awk -F'(' '{print $1}' | sed s/test_//g > $srcdir/hostap/hwsim-long-param
 
-	cd $srcdir/hostap/tests/hwsim
-	git grep -B 2 -w 'if not params\['\'long\'] | grep '.*\.py\-def' | awk -F 'def ' '{print $2}' | awk -F'(' '{print $1}' | sed s/test_//g > require_long_param
-}
+	git grep -E -e 'def test.*mcc' | awk -F 'test_' '{print $3}'| awk -F '(' '{print $1}' > $srcdir/hostap/hwsim-mcc
 
-build_hwsim_require_mcc()
-{
-    cd $srcdir/hostap/tests/hwsim
-    git grep -E -e 'def test.*mcc' | awk -F 'test_' '{print $3}'| awk -F '(' '{print $1}' > require_mcc
+	grep "^def test_" -rh test_*.py | # def test_wmm_disabled(dev, apdev)
+		cut -d "(" -f1 | # def test_wmm_disabled
+		while read line; do echo ${line#*_}; done | # wmm_disabled
+		grep -v -f <(cat $srcdir/hostap/hwsim-* | grep -v ^$) |
+		sort |
+		uniq > $srcdir/hostap/hwsim-all
 }
 
 package()
@@ -66,7 +68,18 @@ package()
 	mkdir -p $benchmark_path
 	cp -af $srcdir/wmediumd/* $benchmark_path
 	cp -af $srcdir/hostap/* $benchmark_path
+
 	usr_path="${pkgdir}/usr"
 	mkdir -p $usr_path/bin
 	cp /usr/bin/wmediumd $usr_path/bin
+
+	split_tests
+}
+
+split_tests()
+{
+	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+
+	cd $benchmark_path || return
+	$LKP_SRC/tools/split-tests hwsim-all 40 hwsim-group-
 }

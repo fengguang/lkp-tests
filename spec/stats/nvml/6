@@ -1,0 +1,26 @@
+2020-10-18 10:16:06 ./RUNTESTS -f non-pmem blk_rw
+blk_rw/TEST10: SKIP DEVICE_DAX_PATH does not specify enough dax devices (min: 1)
+blk_rw/TEST10: SKIP DEVICE_DAX_PATH does not specify enough dax devices (min: 1)
+blk_rw/TEST10: SKIP DEVICE_DAX_PATH does not specify enough dax devices (min: 1)
+blk_rw/TEST10: SKIP DEVICE_DAX_PATH does not specify enough dax devices (min: 1)
+blk_rw/TEST11: SKIP DEVICE_DAX_PATH does not specify enough dax devices or they don't have required alignments (min: 2, alignments: 4096 4096)
+blk_rw/TEST11: SKIP DEVICE_DAX_PATH does not specify enough dax devices or they don't have required alignments (min: 2, alignments: 4096 4096)
+blk_rw/TEST11: SKIP DEVICE_DAX_PATH does not specify enough dax devices or they don't have required alignments (min: 2, alignments: 4096 4096)
+blk_rw/TEST11: SKIP DEVICE_DAX_PATH does not specify enough dax devices or they don't have required alignments (min: 2, alignments: 4096 4096)
+blk_rw/TEST14: SKIP: Only supported on ppc64
+blk_rw/TEST14: SKIP: Only supported on ppc64
+blk_rw/TEST14: SKIP: Only supported on ppc64
+blk_rw/TEST14: SKIP: Only supported on ppc64
+2020-10-18 10:15:59 ./RUNTESTS -f non-pmem blk_pool
+blk_pool/TEST10: SKIP required: run without superuser rights
+blk_pool/TEST10: SKIP required: run without superuser rights
+blk_pool/TEST10: SKIP required: run without superuser rights
+blk_pool/TEST10: SKIP required: run without superuser rights
+blk_pool/TEST12: SETUP (check/non-pmem/debug)
+blk_pool/TEST12: PASS
+blk_pool/TEST12: SETUP (check/non-pmem/nondebug)
+blk_pool/TEST12: PASS
+blk_pool/TEST12: SETUP (check/non-pmem/static-debug)
+blk_pool/TEST12: PASS
+blk_pool/TEST12: SETUP (check/non-pmem/static-nondebug)
+blk_pool/TEST12: PASS

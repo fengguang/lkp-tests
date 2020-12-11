@@ -7,6 +7,8 @@
 ## available bandwidth between hosts. nepim is also useful
 ## to generate network traffic for testing purposes.
 
+. $LKP_SRC/lib/reproduce-log.sh
+
 [ -n "$nr_threads" ] && opt_streams="-n $nr_threads"
 [ "${protocol#udp}" != "$protocol" ]	&& opt_udp=-u
 [ "${protocol%6}" != "$protocol" ]	&& opt_addr='::1'
@@ -18,6 +20,6 @@
 server=${server%% *}
 [ -z "$opt_addr" ] && opt_addr=$server
 
-cd $BENCHMARK_ROOT/nepim || exit
+cd $BENCHMARK_ROOT/nepim || die "no $BENCHMARK_ROOT/nepim"
 export LD_LIBRARY_PATH=/usr/local/oop/lib:$LD_LIBRARY_PATH
 log_cmd ./nepim -c $opt_addr -d $opt_udp -a $runtime $opt_streams 2>&1

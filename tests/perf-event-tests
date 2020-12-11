@@ -13,8 +13,5 @@ check_elements "$paranoid"
 setup_test_env "$paranoid"
 
 log_cmd ./run_tests.sh
-exit_value=$?
 
 cleanup_test_env
-
-exit $exit_value

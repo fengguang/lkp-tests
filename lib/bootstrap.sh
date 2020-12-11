@@ -55,14 +55,31 @@ mount_tmpfs()
 	mount -t tmpfs -o mode=1777 tmp /tmp
 }
 
-netdevice_linkup()
+get_net_devices()
 {
+	local net_devices
+	local i
+	for i in /sys/class/net/*/
+	do
+		[ "${i#*/lo/}" != "$i" ] && continue
+		[ "${i#*/eth}" != "$i" ] && net_devices="$net_devices $(basename $i)"
+		[ "${i#*/en}"  != "$i" ] && net_devices="$net_devices $(basename $i)"
+	done
+
+	echo "$net_devices"
+}
+
+net_devices_link()
+{
+	local operation=$1
+	local net_devices=$(get_net_devices)
+	local ndev
 	for ndev in $net_devices
 	do
 		if has_cmd ip; then
-			ip link set $ndev up
+			ip link set $ndev $operation
 		elif has_cmd ifconfig; then
-			ifconfig $ndev up
+			ifconfig $ndev $operation
 		fi
 	done
 }
@@ -73,20 +90,46 @@ network_ok()
 	for i in /sys/class/net/*/
 	do
 		[ "${i#*/lo/}" != "$i" ] && continue
-		[ "${i#*/eth}" != "$i" ] && net_devices="$net_devices $(basename $i)"
-		[ "${i#*/en}"  != "$i" ] && net_devices="$net_devices $(basename $i)"
 		[ "$(cat $i/operstate)" = 'up' ]		&& return 0
 		[ "$(cat $i/carrier 2>/dev/null)" = '1' ]	&& return 0
 	done
 
 	is_clearlinux && {
-		netdevice_linkup
+		net_devices_link up
 
 		# in case of systemd-networkd.service was masked
 		systemctl unmask systemd-networkd.service
 		systemctl start systemd-networkd.service
 	}
 	return 1
+}
+
+network_up()
+{
+	net_devices_link up
+	network_ok || { echo "LKP: waiting for network..."; sleep 10; }
+	network_ok || sleep 20
+	network_ok || sleep 30
+	network_ok || return 1
+
+	ip route | grep -q 'default via' || {
+		# recover the default route
+		[ -f /tmp/ip_route ] && ip route add $(grep 'default via' /tmp/ip_route)
+		[ $? = 0 ] || {
+			echo "failed to set default route"
+			return $?
+		}
+	}
+
+	set_tbox_wtmp 'network_up'
+}
+
+network_down()
+{
+	set_tbox_wtmp 'network_down'
+	# backup route table
+	ip route > /tmp/ip_route
+	net_devices_link down
 }
 
 # Many randconfig test kernels may not have the necessary NIC driver.
@@ -104,8 +147,6 @@ warn_no_eth0()
 
 setup_network()
 {
-	local net_devices=
-
 	network_ok && return || { echo "LKP: waiting for network..."; sleep 2; }
 	network_ok && return || sleep 5
 	network_ok && return || sleep 10
@@ -114,9 +155,11 @@ setup_network()
 	is_virt &&
 	[ ! -e /usr/share/initramfs-tools/scripts/functions ] && {
 		export NO_NETWORK=1
+		echo "export NO_NETWORK=1 due to no initramfs-tools"
 		return
 	}
 
+	local net_devices=$(get_net_devices)
 	if [ -z "$net_devices" ]; then
 
 		warn_no_eth0
@@ -129,6 +172,7 @@ setup_network()
 		# valuable dmesg/kmsg to ttyS0/ttyS1
 		if is_virt; then
 			export NO_NETWORK=1
+			echo "export NO_NETWORK=1 due to no net devices"
 			return
 		else
 			reboot 2>/dev/null
@@ -659,8 +703,10 @@ is_same_cmdline()
 
 setup_env()
 {
-	[ "$result_service" != "${result_service#9p/}" ] &&
-	export VM_VIRTFS=1
+	[ "$result_service" != "${result_service#9p/}" ] && {
+		export VM_VIRTFS=1
+		echo "export VM_VIRTFS=1 due to result service $result_service"
+	}
 }
 
 add_nfs_default_options()

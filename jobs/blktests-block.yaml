@@ -1,0 +1,22 @@
+suite: blktests
+testcase: blktests
+category: functional
+
+need_memory: 3G
+
+disk:
+- 1SSD
+- 1HDD
+
+blktests:
+  test:
+  - block-group-00
+  - block-group-01
+  - block-010
+
+---
+kernel_cmdline: "cgroup_no_v1=all"
+
+blktests:
+  test:
+  - block-027

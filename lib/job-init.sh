@@ -14,7 +14,7 @@ mount_cgroup()
 	[ -n "$cgroup_subsys" ] || return
 	cgroup_subsys=$(echo $cgroup_subsys | sed -e 's/\. / /g' -e 's/\.$/ /')
 	log_cmd mkdir -p $CGROUP_MNT
-	#Bind each subsystem to an individual hierachy 
+	#Bind each subsystem to an individual hierachy
 	for item in $cgroup_subsys
 	do
 		log_cmd mkdir -p $CGROUP_MNT/$item
@@ -53,6 +53,8 @@ setup_result_service()
 	[ -n "$NO_NETWORK" ] && return 1
 	[ -n "$RESULT_SERVER" ] || RESULT_SERVER=$LKP_SERVER
 
+	supports_raw_upload && result_service=raw_upload && return
+
 	is_docker || [ -n "$access_key" ] || {
 		if [ "$os_mount" = 'nfs' ] || [ -z "$os_mount" ]; then
 			supports_netfs 'nfs'    && result_service=$RESULT_SERVER:/result   && return
@@ -61,14 +63,12 @@ setup_result_service()
 		fi
 	}
 
-	supports_raw_upload && result_service=raw_upload && return
-
 	return 1
 }
 
 mount_result_root()
 {
-	echo "result_service=$result_service, RESULT_MNT=$RESULT_MNT, RESULT_ROOT=$RESULT_ROOT"
+	echo "result_service: $result_service, RESULT_MNT: $RESULT_MNT, RESULT_ROOT: $RESULT_ROOT, TMP_RESULT_ROOT: $TMP_RESULT_ROOT"
 	is_mount_point $RESULT_MNT && return 0
 
 	case $result_service in

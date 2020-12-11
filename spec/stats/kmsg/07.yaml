@@ -1,0 +1,8 @@
+
+# segfault at ip sp error
+segfault_at_ip_sp_error: 1
+message:segfault_at_ip_sp_error: kern  :info  : [ 2062.833046] pmbench[5394]: segfault at b ip 00007f568fec1ca6 sp 00007f54c1bf9d80 error 4 in libc-2.28.so[7f568fea8000+148000]
+pattern:segfault_at_ip_sp_error: segfault at ip sp error
+
+timestamp:last: 2072.160468
+timestamp:segfault_at_ip_sp_error: 2062.833046

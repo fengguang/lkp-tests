@@ -55,7 +55,7 @@ run()
 	log_cmd sysbench fileio ${args} run
 }
 
-log_eval cd "$mount_points" || exit
+log_eval cd "$mount_points" || die "no $mount_points"
 
 if [ "${rwmode#*wr}" != "$rwmode" ]; then
 	prepare_fallocate

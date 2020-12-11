@@ -1,103 +1,5 @@
 #!/bin/bash
 
-split_syscalls()
-{
-	local cmdfile="runtest/syscalls"
-	[ -f "$cmdfile" ] || return 0
-	# syscalls_partN file exists, abort splitting
-	[ -f "${cmdfile}_part1" ] && return 0
-
-	local timer_tests=$(grep -lr "sample = sample_fn" ./)
-	local timer_file="runtest/syscalls_timer"
-	for timer_test in $timer_tests; do
-		timer_test=${timer_test##*/}
-		timer_test=${timer_test%%.*}
-		grep "^$timer_test" "$cmdfile" >> "$timer_file"
-	done
-
-	i=1
-	n=1
-	test_num=""
-	grep -v -f "$timer_file" "$cmdfile" | sed -e '/^$/ d' -e 's/^[ ,\t]*//' -e '/^#/ d' | while read line
-	do
-		if [ "$i" = "2" ]; then
-			test_num=250
-		elif [ "$i" = "3" ]; then
-			test_num=50
-		else
-			test_num=300
-		fi
-
-		if [ $n -gt $test_num ];then
-			i=$(($i+1))
-			n=1
-		fi
-
-		if [[ "$line" =~ "tgkill" ]];then
-			echo "$line" >> "runtest/syscalls_tgkill"
-		else
-			echo "$line" >> "runtest/syscalls_part${i}"
-			n=$(($n+1))
-		fi
-	done
-
-	echo "Splitting syscalls to syscalls_part1, ..., syscalls_part$i"
-}
-
-rearrange_dio()
-{
-	[ -f "dio" ] || return
-
-	sed -e "s/^#.*//g" dio | awk '{if (length !=0) print $0}' >> diocase || return
-	sed -n "1,20p" diocase >> dio-00 || return
-	sed -n "21,25p" diocase >> dio-01 || return
-	sed -n "26,28p" diocase >> dio-02 || return
-	sed -n "29,\$p" diocase >> dio-03 || return
-	rm diocase || return
-}
-
-rearrange_case()
-{
-	cd ./runtest || return
-
-	# re-arrange the case dio
-	rearrange_dio || return
-
-	# re-arrange the case fs_readonly
-	[ -f "fs_readonly" ] || return
-	split -d -l15 fs_readonly fs_readonly- || return
-
-	# re-arrange the case fs
-	sed -e "s/^#.*//g" fs | awk '{if (length !=0) print $0}' > fscase || return
-	split -d -l20 fscase fs- || return
-
-	# re-arrange the case crashme
-	sed -e "s/^#.*//g" crashme | awk '{if (length !=0) print $0}' > crashmecase || return
-	split -d -l2 crashmecase crashme- || return
-
-	# re-arrange the case mm
-	grep -e oom -e min_free_kbytes mm > mm-00 || return
-	cat mm | grep -v oom | grep -v min_free_kbytes > mm-01 || return
-
-	# re-arrange the case net_stress.appl
-	grep "http4" net_stress.appl > net_stress.appl-00 || return
-	grep "http6" net_stress.appl > net_stress.appl-01 || return
-	grep "ftp4-download" net_stress.appl > net_stress.appl-02 || return
-	grep "ftp6-download" net_stress.appl > net_stress.appl-03 || return
-	cat net_stress.appl | grep -v "http[4|6]" | grep -v "ftp[4|6]-download" > net_stress.appl-04 || return
-
-	# re-arrange the case syscalls-ipc
-	sed -e "s/^#.*//g" syscalls-ipc | awk '{if (length !=0) print $0}' > syscalls-ipc-case || return
-	cat syscalls-ipc-case | grep -v "msgstress04" > syscalls-ipc-00
-	cat syscalls-ipc-case | grep "msgstress04" > syscalls-ipc-01
-
-	# re-arrange the case scsi_debug.part1
-	sed -e "s/^#.*//g" scsi_debug.part1 | awk '{if (length !=0) print $0}' > scsi_debug.part1-case || return
-	split -d -l90 scsi_debug.part1-case scsi_debug.part1- || return
-
-	cd ..
-}
-
 rebuild()
 {
 	[ -d "$1" ] || return
@@ -113,8 +15,6 @@ rebuild()
 
 build_ltp()
 {
-	split_syscalls
-	rearrange_case || return
 	make autotools
 	./configure --prefix=$1
 	make || return
@@ -134,28 +34,28 @@ install_ltp()
 	cp testcases/commands/tpm-tools/tpmtoken/tpmtoken_protect/tpmtoken_protect_data.txt  $1/testcases/bin/
 }
 
-check_ignored_cases()
+is_excluded()
 {
 	test=$1
-	local ignored_by_lkp=$LKP_SRC/pkg/ltp-addon/ignored_by_lkp
-	cp $ignored_by_lkp ./ignored_by_lkp
+	local exclude_file=$LKP_SRC/pkg/ltp/addon/exclude
+	cp $exclude_file ./exclude
 
 	# regex match
-	for regex in $(cat "$ignored_by_lkp" | grep -v '^#' | grep -w ^${test}:.*:regex$ | awk -F: 'NF == 3 {print $2}')
+	for regex in $(cat "$exclude_file" | grep -v '^#' | grep -w ^${test}:.*:regex$ | awk -F: 'NF == 3 {print $2}')
 	do
-		echo "# regex: $regex generated" >> ./ignored_by_lkp
-		cat runtest/$test | awk '{print $1}' | grep -G "$regex" | awk -v prefix=$test":" '$0=prefix$0' >> ./ignored_by_lkp
+		echo "# regex: $regex generated" >> ./exclude
+		cat runtest/$test | awk '{print $1}' | grep -G "$regex" | awk -v prefix=$test":" '$0=prefix$0' >> ./exclude
 	done
 
 	orig_test=$(echo "$test" | sed 's/-[0-9]\{2\}$//')
-	for i in $(cat ./ignored_by_lkp | grep -v '^#' | grep -w ^$orig_test | awk -F: 'NF == 2')
+	for i in $(cat ./exclude | grep -v '^#' | grep -w ^$orig_test | awk -F: 'NF == 2')
 	do
 		ignore=$(echo $i | awk -F: '{print $2}')
 		grep -q "^${ignore}" runtest/${test} || continue
 		sed -i "s/^${ignore} /#${ignore} /g" runtest/${test}
 		echo "<<<test_start>>>"
 		echo "tag=${ignore}"
-		echo "${ignore} 0 ignored_by_lkp"
+		echo "${ignore} 0 exclude"
 		echo "<<<test_end>>>"
 	done
 }
@@ -207,20 +107,22 @@ test_setting()
 		[ -z "$partitions" ] && exit
 		big_dev="${partitions%% *}"
 		big_dev_opt="-z $big_dev"
-		# match logic of check_ignored_cases
+		# match logic of is_excluded
 		sed -i "s/\t/ /g" runtest/fs_ext4
 		;;
 	lvm.local)
+		export LTPROOT=${PWD}
+		export PATH="$PATH:$LTPROOT/testcases/bin"
 		# Creates runtest/lvm.local with testcases for all locally supported FS types
-		log_cmd LTPROOT=${PWD} PATH="$PATH:$LTPROOT/testcases/bin" testcases/bin/generate_lvm_runfile.sh
+		log_cmd testcases/bin/generate_lvm_runfile.sh
 		# Creates 2 LVM volume groups and mounts logical volumes for all locally supported FS types
-		log_cmd LTPROOT=${PWD} PATH="$PATH:$LTPROOT/testcases/bin" testcases/bin/prepare_lvm.sh
+		log_cmd testcases/bin/prepare_lvm.sh
 		;;
-	mm-00)
+	mm-oom|mm-min_free_kbytes)
 		local pid_job="$(cat $TMP/run-job.pid)"
 		echo 0 > /proc/$pid_job/oom_score_adj
 		;;
-	mm-01)
+	mm-00)
 		[ -z "$partitions" ] && exit
 		swap_partition="${partitions%% *}"
 		mkswap $swap_partition 2>&1 || exit 1
@@ -250,25 +152,24 @@ test_setting()
 		export P11_USER_PWD="HELLO7"
 		export NEW_P11_USER_PWD="HELLO8"
 		;;
-	ltp-aiodio.part[24]|syscalls_part[14]|dio-0*|io)
+	ltp-aiodio.part[24]|dio-0*|io)
 		specify_tmpdir || exit
 		;;
-	syscalls-ipc-01)
+	syscalls-ipc-msgstress)
 		# avoid soft_timeout by reducing the max number of message
 		# queues to 10000(default is 32000)
 		echo 10000 > /proc/sys/kernel/msgmni
 		;;
-	syscalls_part2)
+	syscalls-0*)
 		export LTP_TIMEOUT_MUL=5
 		specify_tmpdir || exit
+
 		relatime=$(mount | grep /tmp | grep relatime)
 		noatime=$(mount | grep /tmp | grep noatime)
 		if [ "$relatime" != "" ] || [ "$noatime" != "" ]; then
 			mount -o remount,strictatime /tmp
 		fi
-		;;
-	syscalls_part5)
-		specify_tmpdir || exit
+
 		echo "#\$SystemLogSocketName /run/systemd/journal/syslog" > /etc/rsyslog.d/listen.conf
 		systemctl restart rsyslog || exit
 		[ -f /var/log/maillog ] || {
@@ -302,16 +203,20 @@ test_setting()
 
 cleanup_ltp()
 {
-	[ "$test" = "lvm.local" ] && {
+	case "$test" in
+	lvm.local)
+		export LTPROOT=${PWD}
+		export PATH="$PATH:$LTPROOT/testcases/bin"
 		# remove LVM volume groups created by prepare_lvm.sh and release the associated loop devices
-		log_cmd LTPROOT=${PWD} PATH="$PATH:$LTPROOT/testcases/bin" testcases/bin/cleanup_lvm.sh
-	}
-	[ "$test" = "mm-00" ] && {
+		log_cmd testcases/bin/cleanup_lvm.sh
+		;;
+	mm-oom|mm-min_free_kbytes)
 		dmesg -C || exit
-	}
-
-	[ "$test" = "syscalls_part2" ] && {
+		;;
+	syscalls-0*)
 		[ "$relatime" != "" ] && mount -o remount,relatime /tmp
 		[ "$noatime" != "" ] && mount -o remount,noatime /tmp
-	}
+		;;
+	esac
+
 }

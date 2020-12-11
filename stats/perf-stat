@@ -148,6 +148,9 @@ def parse
 
     if line.include? ','
       stime, *fields = line.split(',')
+      # 139.478674756,146633.37,msec,task-clock,146633365406,100.00,146.633,CPUs utilized
+      # 139.478674756,
+      next if fields.size < 7
     else
       stime, *fields = line.split
     end

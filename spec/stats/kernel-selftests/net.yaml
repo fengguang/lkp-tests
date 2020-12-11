@@ -1,0 +1,12 @@
+net.pmtu.sh.ipv4_PMTU_exceptions.pass: 1
+net.pmtu.sh.ipv6_PMTU_exceptions_nexthop_objects.pass: 1
+net.pmtu.sh.IPv6_over_gue6_PMTU_exceptions.pass: 1
+net.pmtu.sh.IPv6_over_gue6_PMTU_exceptions_nexthop_objects.pass: 1
+net.pmtu.sh.vti6_PMTU_exceptions.pass: 1
+net.pmtu.sh.vti4_PMTU_exceptions.pass: 1
+net.pmtu.sh.vti6_default_MTU_assignment.pass: 1
+net.pmtu.sh.vti6_MTU_changes_on_link_changes.pass: 1
+net.pmtu.sh.ipv4_cleanup_of_cached_exceptions_nexthop_objects.pass: 1
+net.traceroute.sh.Could_not_run_IPV6_test_without_traceroute6.skip: 1
+net.traceroute.sh.Could_not_run_IPV4_test_without_traceroute.skip: 1
+net.altnames.sh.jq_not_installed.skip: 1

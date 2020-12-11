@@ -30,11 +30,11 @@
 ## - `fsmark.files_per_sec`: number of files written per second
 ## - `fsmark.app_overhead`: time in microseconds spent in the test not doing file writing related system calls
 
-mkdir -p $BENCHMARK_ROOT
-cd $BENCHMARK_ROOT || exit
-
 . $LKP_SRC/lib/unit.sh
 . $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/reproduce-log.sh
+
+cd $BENCHMARK_ROOT || die "no $BENCHMARK_ROOT"
 
 # NOTE: support 1 disk test only so far
 test_dir=${mount_points%% *}

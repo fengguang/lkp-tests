@@ -75,6 +75,13 @@ set_env()
 
 	log_cmd mkdir $SCRATCH_MNT -p
 
+	# generic/339     udf_test not installed, please download and build the Philips
+	# UDF Verification Software from http://www.extra.research.philips.com/udf/.
+	# Then copy the udf_test binary to /lkp/benchmarks/xfstests/src/.
+	# If you do not wish to run udf_test then set environment variable DISABLE_UDF_TEST
+	# to 1.
+	[ "$fs" = udf ] && log_eval export DISABLE_UDF_TEST=1
+
 	if [ "$fs" = btrfs ] && [ "$nr_partitions" -ge 4 ]; then
 		log_eval export SCRATCH_DEV_POOL=\"${partitions#* }\"
 	else
@@ -104,7 +111,7 @@ set_env()
 		log_eval export SCRATCH_XFS_LIST_FUZZ_VERBS=random
 	}
 
-	[ "$test" = "xfs-no_bug_assert" ] && {
+	[ "$test" = "xfs-no-bug-assert" ] && {
 		[ -f /sys/fs/xfs/debug/bug_on_assert ] && echo 0 > /sys/fs/xfs/debug/bug_on_assert
 	}
 
@@ -136,8 +143,8 @@ set_env()
 		log_eval export MKFS_OPTIONS="-mreflink=1"
 		log_eval unset SCRATCH_LOGDEV
 	}
-	[ "$test" = "xfs-reflink_rmapbt" ] && log_eval export MKFS_OPTIONS="\"-mreflink=1 -mrmapbt=1\""
-	[ "$test" = "xfs-reflink" ] && log_eval export MKFS_OPTIONS="-mreflink=1"
+	[ "$test" = "xfs-reflink-rmapbt" ] && log_eval export MKFS_OPTIONS="\"-mreflink=1 -mrmapbt=1\""
+	[ "${test%%[0-9]*}" = "xfs-reflink-" ] && log_eval export MKFS_OPTIONS="-mreflink=1"
 	[ "$test" = "xfs-rmapbt" ] && log_eval export MKFS_OPTIONS="-mrmapbt=1"
 	[ "$test" = "xfs-244" ] && log_eval export MKFS_OPTIONS="-mcrc=0"
 	[ "$test" = "xfs-132" ] && (mkfs.xfs -f -mreflink=1 $TEST_DEV || die "mkfs.xfs test_dev failed")
@@ -162,7 +169,7 @@ set_env()
 	}
 
 	# need at least 3 partitions for TEST_DEV, SCRATCH_DEV and LOGWRITES_DEV
-	if [ "$test" = "generic-logwrites" ] && [ "$nr_partitions" -ge 3 ]; then
+	if [ "$test" = "generic-logwrites" -o "$test" = "btrfs-logwrites" ] && [ "$nr_partitions" -ge 3 ]; then
 		LOGWRITES_DEV=${partitions#* }
 		LOGWRITES_DEV=${LOGWRITES_DEV%% *}
 		log_eval export LOGWRITES_DEV="$LOGWRITES_DEV"
@@ -180,7 +187,7 @@ set_env()
 		[ "$fs" = "xfs" ] && unset MKFS_OPTIONS
 	fi
 
-        [ "$test" = "ext4-029" ] && {
+	[ "$test" = "generic-logdev" -o "$test" = "ext4-logdev" -o "$test" = "xfs-logdev" ] && {
 		log_eval export USE_EXTERNAL=yes
 
 		# create a 100M partition for log, avoid test cost too much time
@@ -209,46 +216,29 @@ run_test()
 
 	local test_dir="/$BENCHMARK_ROOT/xfstests/tests"
 
-	# the ignore file like xfs-ignore, but $test like xfs-group1, so need to get its prefix.
-	local test_ignore="$test_dir/${test%-*}-ignore"
-	# /$BENCHMARK_ROOT/xfstests/${test%-*}-ignore is built from upstream denylist
-	test_ignore="$test_ignore /$BENCHMARK_ROOT/xfstests/${test%-*}-ignore"
-
-	local ignored_tests
-	local ignored_tests_cmd
 	local all_tests
 	local all_tests_cmd
 
 	if [ "${test#*-}" = "all" ]; then
 		all_tests_cmd="cd tests && ls ${test%-*}/[0-9][0-9][0-9]"
-		get_ignored_and_worked_tests "$all_tests_cmd"
 	elif [ "${test#*-}" = "new" ]; then
 		all_tests_cmd="cd tests && sed \"s:^:${test%-*}/:\" $test"
-		get_ignored_and_worked_tests "$all_tests_cmd"
 	elif [ "${test%[a-z4]-[0-9][0-9][0-9]}" != "$test" ]; then
 		all_tests_cmd="echo ${test%-*}/${test#*-}"
-		get_ignored_and_worked_tests "$all_tests_cmd"
 	elif [ "${test%-*}" = "$fs" ]; then
-		all_tests_cmd="sed \"s:^:${test%-*}/:\" $test_dir/$test"
-		get_ignored_and_worked_tests "$all_tests_cmd" "$test_ignore"
+		all_tests_cmd="sed \"s:^:${test%%-*}/:\" $test_dir/$test"
 	elif [ "${test#*-}" != "$test" ]; then
-		generic_fs_ignore="$test_dir/${test%-*}-$fs-ignore /$BENCHMARK_ROOT/xfstests/tests/generic-$fs-ignore"
-		all_tests_cmd="sed \"s:^:${test%-*}/:\" $test_dir/$test"
-		get_ignored_and_worked_tests "$all_tests_cmd" "$test_ignore $generic_fs_ignore"
+		all_tests_cmd="sed \"s:^:${test%%-*}/:\" $test_dir/$test"
 	else
 		# Now rename $test-broken to $test-ignore wihch is easier to understand.
 		all_tests_cmd="cd tests && ls $test/[0-9][0-9][0-9]"
-		get_ignored_and_worked_tests "$all_tests_cmd" "$test_ignore"
 	fi
 
-	[ -n "$ignored_tests_cmd" ] && log_echo $ignored_tests_cmd
-	for ignored_test in $ignored_tests
-	do
-		echo "ignored by lkp: $ignored_test"
-	done
+	log_echo $all_tests_cmd
+	all_tests=$(eval "$all_tests_cmd")
 
-	[ -n "$all_tests_cmd" ] && log_echo $all_tests_cmd
-	log_cmd ./check $all_tests
+	[ -s tests/exclude/$fs ] && exclude_file="-E tests/exclude/$fs"
+	log_cmd ./check $exclude_file $all_tests
 }
 
 export LC_ALL=C
@@ -258,9 +248,7 @@ has_virtual_disk=false
 read_env_vars
 set_env
 run_test
-exit_value=$?
 
 # umonut the virtual disk
 [ "$has_virtual_disk" = true ] && losetup -d /dev/loop0
 upload_files -t results $BENCHMARK_ROOT/xfstests/results/*
-exit $exit_value

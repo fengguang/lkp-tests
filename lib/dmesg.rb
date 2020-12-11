@@ -212,10 +212,12 @@ def grep_printk_errors(kmsg_file, kmsg)
 
   if kmsg_file =~ /\bkmsg\b/
     # the kmsg file is dumped inside the running kernel
-    oops = `#{grep} -a -E -e '^<[0123]>' -e '^kern  :(err   |crit  |alert |emerg ): ' #{kmsg_file} |
+    oops = `#{grep} -a -E -e 'segfault at' -e '^<[0123]>' -e '^kern  :(err   |crit  |alert |emerg ): ' #{kmsg_file} |
       sed -r 's/\\x1b\\[([0-9;]+m|[mK])//g' |
       grep -a -v -E -f #{LKP_SRC}/etc/oops-pattern |
-      grep -a -v -F -f #{LKP_SRC}/etc/kmsg-denylist`
+      grep -a -v -F -f #{LKP_SRC}/etc/kmsg-denylist;
+      grep -Eo "[^ ]* runtime error:.*" #{kmsg_file} | sed 's/^/sanitizer./g';
+      grep -Eo "#[0-5] 0x[0-9a-z]{12} in .*" #{kmsg_file} | sed 's/#0/|sanitizer.#0/g' | sed "s/#[0-5] 0x[0-9a-z]\\{12\\} in //g" | awk '{print $1}' | tr '\n' '/' | tr '|' '\n'`
   else
     # the dmesg file is from serial console
     oops = `#{grep} -a -F -f #{KTEST_USER_GENERATED_DIR}/printk-error-messages #{kmsg_file} |
@@ -286,7 +288,6 @@ def analyze_error_id(line)
   case line
   when /(INFO: rcu[_a-z]* self-detected stall on CPU)/,
        /(INFO: rcu[_a-z]* detected stalls on CPUs\/tasks:)/,
-       /(Kernel panic - not syncing:)/,
        /(related general protection fault:)/,
        /(BUG: using __this_cpu_read\(\) in preemptible)/,
        /(BUG: unable to handle kernel)/,
@@ -299,15 +300,17 @@ def analyze_error_id(line)
        /(BUG: spinlock .* on CPU#\d+)/,
        /(Out of memory: Kill process) \d+ \(/,
        # old format: "[  122.209638 ] ??? Writer stall state 8 g62150 c62149 f0x2"
-             # new format: "[  122.209638 ] ??? Writer stall state RTWS_STUTTER(8) g62150 c62149 f0x2"
+       # new format: "[  122.209638 ] ??? Writer stall state RTWS_STUTTER(8) g62150 c62149 f0x2"
        /(Writer stall state \w*).+ g\d+ c\d+ f/,
        /(BUG: workqueue lockup - pool)/,
        /(rcu_sched kthread starved) for \d+ jiffies/,
        /(Could not create tracefs)/,
        /(used greatest stack depth:)/,
        /([A-Z]+[ a-zA-Z]*): [a-f0-9]{4} \[#[0-9]+\] /,
-       /(BUG: KASAN: [a-z\-_ ]+ in [a-z])/,
-       /(cpu clock throttled)/
+       # [  406.307645] BUG: KASAN: slab-out-of-bounds in kfd_create_crat_image_virtual+0x129d/0x12fd
+       /(BUG: KASAN: [a-z\-_ ]+ in [a-z_]+)\+/,
+       /(cpu clock throttled)/,
+       /(BUG: Bad page cache in process trinity-main)/
     line = $1
     bug_to_bisect = $1
   when /(BUG: ).* (still has locks held)/,
@@ -370,6 +373,11 @@ def analyze_error_id(line)
   when /^[0-9a-z]+>\] (.+)/
     # [   13.708945 ] [<0000000013155f90>] usb_hcd_irq
     line = $1
+    bug_to_bisect = oops_to_bisect_pattern line
+  when /segfault at .* ip .* sp .* error/
+    # [ 2062.833046] pmbench[5394]: segfault at b ip 00007f568fec1ca6 sp 00007f54c1bf9d80 error 4 in libc-2.28.so[7f568fea8000+148000]
+    # [  834.411251 ] init[1]: segfault at ffffffffff600400 ip ffffffffff600400 sp 00007fff59f7caa8 error 15
+    line = 'segfault at ip sp error'
     bug_to_bisect = oops_to_bisect_pattern line
   else
     bug_to_bisect = oops_to_bisect_pattern line

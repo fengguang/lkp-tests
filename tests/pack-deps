@@ -8,6 +8,7 @@
 
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/misc-base.sh
+. $LKP_SRC/lib/reproduce-log.sh
 
 [ -n "$benchmark" ] || die "benchmark is empty"
 [ -n "$pack_arch" ] || die "pack_arch is empty"

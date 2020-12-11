@@ -8,19 +8,46 @@ require "#{LKP_SRC}/lib/string_ext"
 # skip none-result data
 while (line = STDIN.gets)
   line = line.resolve_invalid_bytes
-  break if line =~ /\(secs\)    \(secs\)    \(secs\)/
+
+  # stress-ng: info:  [2694] stressor       bogo ops real time  usr time  sys time   bogo ops/s   bogo ops/s
+  # stress-ng: info:  [2694]                           (secs)    (secs)    (secs)   (real time) (usr+sys time)
+  # stress-ng: info:  [2694] atomic          1060503     10.00    928.24      0.01    106049.80      1142.48
+  break if line =~ /\(secs\)\s+\(secs\)\s+\(secs\)/
 end
 
 while (line = STDIN.gets)
   line = line.resolve_invalid_bytes
-  # cut the left we don't care
+
+  # stress-ng: info:  [2694] zlib              70082     10.02    947.64      0.91      6994.33        73.88
+  # stress-ng: fail:  [2694] qsort instance 51 corrupted bogo-ops counter, 18298 vs 0
+  # stress-ng: fail:  [2694] qsort instance 51 hash error in bogo-ops counter and run flag, 3808369776 vs 0
+  # stress-ng: fail:  [2694] metrics-check: stressor metrics corrupted, data is compromised
+  next if line =~ /fail:/
+
+  # stress-ng: info:  [2694] for a 494.74s run time:
+  # stress-ng: info:  [2694]   47495.22s available CPU time
+  # stress-ng: info:  [2694]   25864.19s user time   ( 54.46%)
+  # stress-ng: info:  [2694]   13804.50s system time ( 29.07%)
+  # stress-ng: info:  [2694]   39668.69s total time  ( 83.52%)
+  # stress-ng: info:  [2694] load average: 157.53 303.16 161.49
   break if line =~ /run time:/
 
   res_line = line.split
   if res_line.size != 10
-    log_error "WARNING: unexpected stress-ng output: #{line}"
-    next
+    log_warn "unexpected output: #{line}"
+    exit 1
   end
-  puts res_line[3] + '.ops: ' + res_line[4]
-  puts res_line[3] + '.ops_per_sec: ' + res_line[8]
+
+  stressor = res_line[3]
+  bogo_ops = res_line[4]
+  # stress-ng: info:  [2659] sendfile       14461076     30.00      0.85   2845.44    482025.00      5080.68
+  # stress-ng: info:  [2659] splice                0      0.00      0.00      0.00         0.00         0.00
+  # stress-ng: info:  [2659] tee             3608666     30.00      6.61   2779.77    120280.46      1295.11
+  if bogo_ops == '0'
+    puts "#{stressor}.fail: 1"
+  else
+    puts "#{stressor}.pass: 1"
+    puts "#{stressor}.ops: #{bogo_ops}"
+    puts "#{stressor}.ops_per_sec: #{res_line[8]}"
+  end
 end

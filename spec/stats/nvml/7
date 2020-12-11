@@ -1,0 +1,41 @@
+./check_max_mmap.sh: SKIP: DEVICE_DAX_PATH does not specify path to DAX device.
+./check_max_mmap.sh: SKIP: DEVICE_DAX_PATH does not specify path to DAX device.
+2020-10-28 11:34:54 ./RUNTESTS -f pmem obj_badblock
+obj_badblock/TEST0: SKIP: tests using 'sudo' are not enabled in testconfig.sh (ENABLE_SUDO_TESTS)
+obj_badblock/TEST0: SKIP: tests using 'sudo' are not enabled in testconfig.sh (ENABLE_SUDO_TESTS)
+obj_badblock/TEST0: SKIP: tests using 'sudo' are not enabled in testconfig.sh (ENABLE_SUDO_TESTS)
+obj_badblock/TEST0: SKIP: tests using 'sudo' are not enabled in testconfig.sh (ENABLE_SUDO_TESTS)
+2020-10-28 11:35:29 ./RUNTESTS -f pmem obj_ctl_debug
+obj_ctl_debug/TEST0: SETUP (check/pmem/debug)
+obj_ctl_debug/TEST0: PASS
+obj_ctl_debug/TEST0: SETUP (check/pmem/nondebug)
+obj_ctl_debug/TEST0: PASS
+obj_ctl_debug/TEST0: SETUP (check/pmem/static-debug)
+obj_ctl_debug/TEST0: PASS
+obj_ctl_debug/TEST0: SETUP (check/pmem/static-nondebug)
+obj_ctl_debug/TEST0: PASS
+obj_ctl_debug/TEST1: SETUP (check/pmem/debug/memcheck)
+obj_ctl_debug/TEST1: PASS
+obj_ctl_debug/TEST1: SETUP (check/pmem/nondebug/memcheck)
+obj_ctl_debug/TEST1: PASS
+obj_ctl_debug/TEST1: SETUP (check/pmem/static-debug/memcheck)
+obj_ctl_debug/TEST1: PASS
+obj_ctl_debug/TEST1: SETUP (check/pmem/static-nondebug/memcheck)
+obj_ctl_debug/TEST1: PASS
+obj_ctl_debug/TEST2: SKIP pmemcheck does not support --expect-fence-after-clflush option. Please update it to the latest version.
+obj_ctl_debug/TEST2: SKIP pmemcheck does not support --expect-fence-after-clflush option. Please update it to the latest version.
+obj_ctl_debug/TEST2: SKIP pmemcheck does not support --expect-fence-after-clflush option. Please update it to the latest version.
+obj_ctl_debug/TEST2: SKIP pmemcheck does not support --expect-fence-after-clflush option. Please update it to the latest version.
+2020-10-28 11:40:01 ./RUNTESTS -f pmem obj_pool_lock
+obj_pool_lock/TEST0: SKIP required: run without superuser rights
+obj_pool_lock/TEST0: SKIP required: run without superuser rights
+obj_pool_lock/TEST0: SKIP required: run without superuser rights
+obj_pool_lock/TEST0: SKIP required: run without superuser rights
+2020-10-28 00:48:40 ./RUNTESTS -f pmem pmempool_check
+pmempool_check/TEST33: SKIP compiled with support for shutdown state
+pmempool_check/TEST33: SKIP compiled with support for shutdown state
+pmempool_check/TEST33: SKIP compiled with support for shutdown state
+pmempool_check/TEST33: SKIP compiled with support for shutdown state
+2020-10-28 01:33:58 ./RUNTESTS -f pmem ex_libpmemobj
+ex_libpmemobj/TEST15: SKIP no terminal
+ex_libpmemobj/TEST15: SKIP no terminal

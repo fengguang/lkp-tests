@@ -4,7 +4,9 @@
 # - service_time
 # - num_threads
 
-cd $BENCHMARK_ROOT/adrestia || exit
+. $LKP_SRC/lib/reproduce-log.sh
+
+cd $BENCHMARK_ROOT/adrestia || die "no $BENCHMARK_ROOT/adrestia"
 
 : ${arrival_rate:=2000}
 : ${num_loop:=200000}

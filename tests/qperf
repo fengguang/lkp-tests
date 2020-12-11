@@ -4,7 +4,9 @@
 ## qperf measures bandwidth and latency between two nodes.
 ## It can work over TCP/IP as well as the RDMA transports.
 
-cd $BENCHMARK_ROOT/qperf || exit
+. $LKP_SRC/lib/reproduce-log.sh
+
+cd $BENCHMARK_ROOT/qperf || die "no $BENCHMARK_ROOT/qperf"
 
 modprobe sctp 2>/dev/null
 

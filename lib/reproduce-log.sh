@@ -1,5 +1,7 @@
 #!/bin/sh
 
+. $LKP_SRC/lib/debug.sh
+
 log_echo()
 {
 	date=$(date +'%F %T')

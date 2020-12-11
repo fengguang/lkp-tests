@@ -1,0 +1,74 @@
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-9f0534f97d167459c6c612cbd66f3dcf6e89ae1d/tools/testing/selftests/net'
+# selftests: net: vrf_route_leaking.sh
+#
+# ###########################################################################
+# IPv4 (sym route): VRF ICMP ttl error route lookup ping
+# ###########################################################################
+#
+# TEST: Basic IPv4 connectivity                                       [ OK ]
+# TEST: Ping received ICMP ttl exceeded                               [ OK ]
+#
+# ###########################################################################
+# IPv4 (sym route): VRF ICMP error route lookup traceroute
+# ###########################################################################
+#
+# SKIP: Could not run IPV4 test without traceroute
+#
+# ###########################################################################
+# IPv4 (sym route): VRF ICMP fragmentation error route lookup ping
+# ###########################################################################
+#
+# TEST: Basic IPv4 connectivity                                       [ OK ]
+# TEST: Ping received ICMP Frag needed                                [ OK ]
+#
+# ###########################################################################
+# IPv4 (asym route): VRF ICMP ttl error route lookup ping
+# ###########################################################################
+#
+# TEST: Basic IPv4 connectivity                                       [ OK ]
+# TEST: Ping received ICMP ttl exceeded                               [ OK ]
+#
+# ###########################################################################
+# IPv4 (asym route): VRF ICMP error route lookup traceroute
+# ###########################################################################
+#
+# SKIP: Could not run IPV4 test without traceroute
+#
+# ###########################################################################
+# IPv6 (sym route): VRF ICMP ttl error route lookup ping
+# ###########################################################################
+#
+# TEST: Basic IPv6 connectivity                                       [ OK ]
+# TEST: Ping received ICMP Hop limit                                  [ OK ]
+#
+# ###########################################################################
+# IPv6 (sym route): VRF ICMP error route lookup traceroute
+# ###########################################################################
+#
+# SKIP: Could not run IPV6 test without traceroute6
+#
+# ###########################################################################
+# IPv6 (sym route): VRF ICMP fragmentation error route lookup ping
+# ###########################################################################
+#
+# TEST: Basic IPv6 connectivity                                       [ OK ]
+# TEST: Ping received ICMP Packet too big                             [FAIL]
+#
+# ###########################################################################
+# IPv6 (asym route): VRF ICMP ttl error route lookup ping
+# ###########################################################################
+#
+# TEST: Basic IPv6 connectivity                                       [ OK ]
+# TEST: Ping received ICMP Hop limit                                  [ OK ]
+#
+# ###########################################################################
+# IPv6 (asym route): VRF ICMP error route lookup traceroute
+# ###########################################################################
+#
+# SKIP: Could not run IPV6 test without traceroute6
+#
+# Tests passed:  11
+# Tests failed:   1
+not ok 46 selftests: net: vrf_route_leaking.sh # exit=1
+make: warning:  Clock skew detected.  Your build may be incomplete.
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-9f0534f97d167459c6c612cbd66f3dcf6e89ae1d/tools/testing/selftests/net'

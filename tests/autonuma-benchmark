@@ -1,6 +1,8 @@
 #!/bin/sh
 # - test
 
+. $LKP_SRC/lib/reproduce-log.sh
+
 export PATH=$PATH:/lkp/benchmarks/autonuma-benchmark
 
 ln -sf /usr/bin/gnuplot-qt /usr/bin/gnuplot
@@ -31,6 +33,6 @@ case "$test" in
         ;;
 esac
 
-cd "/lkp/benchmarks/autonuma-benchmark" || exit
+cd "/lkp/benchmarks/autonuma-benchmark" || die "no /lkp/benchmarks/autonuma-benchmark"
 
 /bin/bash start_bench.sh $option 2>&1

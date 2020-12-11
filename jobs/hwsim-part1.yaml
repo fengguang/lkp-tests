@@ -5,14 +5,14 @@ category: functional
 need_memory: 1G
 
 hwsim:
-  group:
-    - hwsim-00
-    - hwsim-01
-    - hwsim-02
-    - hwsim-03
-    - hwsim-04
-    - hwsim-05
-    - hwsim-06
-    - hwsim-07
-    - hwsim-08
-    - hwsim-09
+  test:
+    - group-00
+    - group-01
+    - group-02
+    - group-03
+    - group-04
+    - group-05
+    - group-06
+    - group-07
+    - group-08
+    - group-09

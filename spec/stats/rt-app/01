@@ -1,0 +1,62 @@
+2021-02-22 04:12:52 bin/rt-app workloads/mp3-short.json
+[rt-app] <notice> Calibrate ns per loop
+[rt-app] <notice> pLoad = 32ns : calib_cpu 0
+[rt-app] <notice> thread_data_set_unique_name 0 AudioTick-0
+[rt-app] <notice> thread_data_set_unique_name 1 AudioOut-1
+[rt-app] <notice> [0] Locking pages in memory
+[rt-app] <notice> thread_data_set_unique_name 2 AudioTrack-2
+[rt-app] <notice> [1] Locking pages in memory
+[rt-app] <notice> thread_data_set_unique_name 3 mp3.decoder-3
+[rt-app] <notice> [2] Locking pages in memory
+[rt-app] <notice> thread_data_set_unique_name 4 OMXCall-4
+[rt-app] <notice> [3] Locking pages in memory
+[rt-app] <notice> [4] Locking pages in memory
+[rt-app] <notice> [0] starting thread ...
+
+[rt-app] <notice> [4] starting thread ...
+
+[rt-app] <notice> [1] starting thread ...
+
+[rt-app] <notice> [2] starting thread ...
+
+[rt-app] <notice> [3] starting thread ...
+
+[rt-app] <notice> [1] Starting with SCHED_OTHER policy with priority -19
+[rt-app] <notice> [0] Starting with SCHED_OTHER policy with priority -19
+[rt-app] <notice> [2] Starting with SCHED_OTHER policy with priority -16
+[rt-app] <notice> [4] Starting with SCHED_OTHER policy with priority -2
+[rt-app] <notice> [3] Starting with SCHED_OTHER policy with priority -2
+[rt-app] <notice> [2] Exiting.
+[rt-app] <notice> [3] Exiting.
+[rt-app] <notice> [4] Exiting.
+[rt-app] <notice> [1] Exiting.
+[rt-app] <notice> [0] Exiting.
+2021-02-22 04:13:05 find . -print -name *.log -exec cat {} ;
+
+./mp3-OMXCall-4.log
+#idx     perf      run   period           start             end          rel_st      slack c_duration   c_period     wu_lat
+   4        9      321     5535        25383969        25389504            7230          0        300          0          0
+   4        9      326    24821        25389506        25414327           12767          0        300          0          0
+   4        9      335    31970        25414329        25446299           37590          0        300          0          0
+   4        9      308    28035        25446301        25474336           69562          0        300          0          0
+   4        9      305    29997        25474338        25504336           97599          0        300          0          0
+   4        9      314    30001        25504338        25534339          127599          0        300          0          0
+   4        9      294    30096        25534341        25564437          157602          0        300          0          0
+   4        9      294    29946        25564440        25594386          187701          0        300          0          0
+   4        9      301    29961        25594389        25624350          217650          0        300          0          0
+   4        9      302    30049        25624352        25654401          247613          0        300          0          0
+   4        9      294    29995        25654404        25684399          277665          0        300          0          0
+   4        9      294    29981        25684402        25714383          307663          0        300          0          0
+
+./mp3-AudioTick-0.log
+#idx     perf      run   period           start             end          rel_st      slack c_duration   c_period     wu_lat
+   0        0        0      617        22765910        22766527            7292        549          0       6000         61
+   0        0        0     5985        22766531        22772516            7913       5933          0       6000         52
+   0        0        0     6000        22772518        22778518           13900       5946          0       6000         54
+   0        0        0     5997        22778520        22784518           19903       5944          0       6000         54
+   0        0        0     5998        22784520        22790518           25902       5944          0       6000         54
+   0        0        0     5956        22790521        22796477           31903       5939          0       6000         53
+   0        0        0     6039        22796479        22802518           37861       5985          0       6000         53
+   0        0        0     5999        22802519        22808518           43902       5945          0       6000         53
+   0        0        0     5998        22808520        22814518           49902       5944          0       6000         54
+   0        0        0     5997        22814520        22820518           55903       5944          0       6000         53

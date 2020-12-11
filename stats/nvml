@@ -3,49 +3,68 @@
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
 require "#{LKP_SRC}/lib/string_ext"
+require "#{LKP_SRC}/lib/array_ext"
+require "#{LKP_SRC}/lib/tests/stats"
 
-stats = []
 test_item = ''
 fs_type = ''
 build_type = ''
 
+stats = LKP::Stats.new
+
 while (line = STDIN.gets)
   line = line.resolve_invalid_bytes.plain_text
+
   case line
-  when %r{^(.+)/TEST[0-9]+: SETUP\s*\(.+/(.+)/(.+)\)$}
+  # ignore below SKIP test:
+  # blk_nblock/TEST3: SKIP: Only supported on ppc64
+  # blk_pool/TEST10: SKIP required: run without superuser rights
+  # blk_rw/TEST10: SKIP DEVICE_DAX_PATH does not specify enough dax devices (min: 1)
+  # blk_rw/TEST11: SKIP DEVICE_DAX_PATH does not specify enough dax devices or they don't have required alignments (min: 2, alignments: 4096 4096)
+  # ./check_max_mmap.sh: SKIP: DEVICE_DAX_PATH does not specify path to DAX device.
+  # obj_badblock/TEST0: SKIP: tests using 'sudo' are not enabled in testconfig.sh (ENABLE_SUDO_TESTS)
+  # obj_ctl_debug/TEST2: SKIP pmemcheck does not support --expect-fence-after-clflush option. Please update it to the latest version.
+  # pmempool_check/TEST33: SKIP compiled with support for shutdown state
+  # ex_libpmemobj/TEST15: SKIP no terminal
+  when %r(SKIP.+(Only supported on ppc64|run without superuser rights|not (enabled|specify|support)|compiled with support for shutdown state|no terminal))
+    next
+  # from /nvml/src/test/unittest/unittest.sh
+  # 2732: msg "$UNITTEST_NAME: SETUP ($TEST/$REAL_FS/$BUILD$MCSTR$PROV$PM)"
+  when %r{^(.+)/TEST[0-9]+: SETUP\s*\((.+)\)$}
     test_item = Regexp.last_match[1]
-    fs_type = Regexp.last_match[2]
-    build_type = Regexp.last_match[3]
+    subtest = Regexp.last_match[2].tr('/','_')
   when %r{^(.+)/(TEST[0-9]+): (PASS|FAIL|SKIP)}
     item = Regexp.last_match[1]
     name = Regexp.last_match[2]
     next unless test_item == item
 
-    stats << item + '_' + name + '_' + fs_type + '_' + build_type + '.' + Regexp.last_match[3].downcase + ': 1'
+    stats.add "#{item}_#{name}_#{subtest}", Regexp.last_match[3]
   when %r{RUNTESTS: stopping: (.+)/(TEST[0-9]+) failed}
     item = Regexp.last_match[1]
     name = Regexp.last_match[2]
-    if line =~ /FS=(.+) BUILD=(.+)/
+    if line =~ /TEST=(.+) FS=(.+) BUILD=(.+)/
       test_item = item
-      fs_type = $1
-      build_type = $2
+      subtest_name = $1
+      fs_type = $2
+      build_type = $3
     end
     next unless test_item == item
 
-    stats << item + '_' + name + '_' + fs_type + '_' + build_type + '.fail: 1'
+    stats.add "#{item}_#{name}_#{subtest_name}_#{fs_type}_#{build_type}", 'fail'
   when %r{RUNTESTS: stopping: (.+)/(TEST[0-9]+) timed out}
     item = Regexp.last_match[1]
     name = Regexp.last_match[2]
     next unless test_item == item
 
-    stats << item + '_' + name + '_' + fs_type + '_' + build_type + '.timeout: 1'
+    stats.add "#{item}_#{name}_#{subtest}", 'timeout'
   when %r{^(.+)/(TEST[0-9]+): SKIP}
     item = Regexp.last_match[1]
     name = Regexp.last_match[2]
-    stats << item + '_' + name + '.test_skip: 1'
+
+    stats.add "#{item}_#{name}", 'test_skip'
   when /^(ignored_by_lkp)\s+(.*)\s+/
-    stats << "#{$2}.#{$1}: 1"
+    stats.add $2, $1
   end
 end
 
-stats.uniq.each { |stat| puts stat }
+stats.dump

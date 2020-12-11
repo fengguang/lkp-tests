@@ -7,36 +7,99 @@ license=('GPL')
 source=("https://github.com/osandov/blktests.git" "https://github.com/karelzak/util-linux.git" "https://github.com/linux-nvme/nvme-cli.git")
 md5sums=('SKIP' 'SKIP' 'SKIP')
 
-build_util_linux() {
+build_util_linux()
+{
 	cd "${srcdir}/util-linux"
-	./autogen.sh
-	./configure
+	./autogen.sh || return
+	./configure || return
 	make
 }
 
-install_nvme_cli() {
+install_nvme_cli()
+{
 	mkdir -p "${benchmark_path}/nvme-cli"
+
 	cd "${srcdir}/nvme-cli"
 	git checkout 'v1.6'
+
 	unset CFLAGS
-	make
+	make || return
 	make DESTDIR="${benchmark_path}/nvme-cli" install
 }
 
-build_blktests() {
+build_blktests()
+{
 	cd "${srcdir}/blktests"
 	make
 }
 
-build() {
+build()
+{
 	build_util_linux || return
-	build_blktests || return
+	build_blktests
 }
 
-package() {
+package()
+{
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
 	mkdir -p "${benchmark_path}"
-	install_nvme_cli
+
+	install_nvme_cli || return
 	cp -af "$srcdir/blktests/"* "$benchmark_path"
 	cp -af "$srcdir/util-linux" "$benchmark_path"
+
+	generate_new_tests || return
+
+	split_tests
+}
+
+generate_new_tests()
+{
+	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+
+	for tests in $LKP_SRC/pkg/${pkgname}/addon/tests/*
+	do
+		cat $tests | grep -v '^#' > $benchmark_path/tests/$(basename $tests)
+	done
+
+	# generate the new add subcase automatically after every upgrade xfstests
+	cd $benchmark_path/tests
+
+	find -mindepth 1 -maxdepth 1 -type d | while read type;
+	do
+		type=$(basename $type)
+		$LKP_SRC/tools/generate-tests $type
+	done
+}
+
+split_tests()
+{
+	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+
+	cd $benchmark_path/tests
+
+	split_standalone_tests || return
+
+	find -mindepth 1 -maxdepth 1 -type d | while read type;
+	do
+		type=$(basename $type)
+		$LKP_SRC/tools/split-tests $type-all 2 $type-group-
+	done
+}
+
+# Some special tests need to be separated and tested separately
+split_standalone_tests()
+{
+	# These special tests are written in the relevant files under LKP-SRC/pack/xfstests-addon/tests
+	for file in *-standalone
+	do
+		fields=(`echo $file | tr '-' ' '`)
+		fs=${fields[0]}
+
+		tests=$(cat $file)
+		for test in ${tests[@]}
+		do
+			echo $test >> ./$fs-$test
+		done
+	done
 }

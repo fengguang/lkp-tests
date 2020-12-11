@@ -24,6 +24,7 @@
 # - ramp_time
 # - loops
 
+. $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/common.sh
 . $LKP_SRC/lib/unit.sh
 . $LKP_SRC/lib/debug.sh

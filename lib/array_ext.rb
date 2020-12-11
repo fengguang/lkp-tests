@@ -8,4 +8,10 @@ class Array
   def pos_multiple(an_arr)
     zip(an_arr).map { |v1, v2| v1 * v2 }
   end
+
+  def duplicated_elements
+    group_by { |i| i }
+      .select { |_k, v| v.size > 1 }
+      .map(&:first)
+  end
 end

@@ -12,26 +12,24 @@ fs:
 xfstests:
   test:
   - xfs-external
-  - xfs-reflink_rmapbt
+  - xfs-083
   - xfs-132
   - xfs-244
   - xfs-275
   - xfs-437
-  - xfs-group00
-  - xfs-group01
-  - xfs-group02
-  - xfs-group03
-  - xfs-group04
-  - xfs-group05
-  - xfs-group06
-  - xfs-group07
-  - xfs-group08
-  - xfs-group09
-  - xfs-group10
-  - xfs-group11
-  - xfs-group12
-  - xfs-group13
-  - xfs-group14
-  - xfs-no_bug_assert
-# - xfs-new
-# - xfs-all
+  - xfs-group-00
+  - xfs-group-01
+  - xfs-group-02
+  - xfs-group-03
+  - xfs-group-04
+  - xfs-group-05
+  - xfs-group-06
+  - xfs-group-07
+  - xfs-group-08
+  - xfs-group-09
+  - xfs-group-10
+  - xfs-group-11
+  - xfs-group-12
+  - xfs-group-13
+  - xfs-group-14
+  - xfs-no-bug-assert

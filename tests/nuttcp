@@ -4,7 +4,9 @@
 ## nuttcp is a network performance measurement tool intended for use
 ## by network and system managers.
 
-cd $BENCHMARK_ROOT/nuttcp || exit
+. $LKP_SRC/lib/reproduce-log.sh
+
+cd $BENCHMARK_ROOT/nuttcp || die "no $BENCHMARK_ROOT/nuttcp"
 
 [ -n "$runtime" ] || runtime=300
 

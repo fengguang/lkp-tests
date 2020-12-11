@@ -3,31 +3,61 @@
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
 require "#{LKP_SRC}/lib/string_ext"
+require "#{LKP_SRC}/lib/log"
 
 results = Hash.new { |h, k| h[k] = [] }
 
-def stat_line(line, results)
+TEST_PATTERN = '(generic|ext4|xfs|btrfs)\/(\d\d\d)'.freeze
+
+while (line = STDIN.gets)
   line = line.resolve_invalid_bytes
 
   case line
-  when /^(Ran|Failures): (.*)/
-    results[$1.downcase] += $2.tr('/', '.').split
-  when /^Not run: (.*)/
-    results['skips'] = $1.tr('/', '.').split
-  when /^_check_generic_filesystem: filesystem on .+ is inconsistent \(see .+\/([a-z]+)\/([0-9]+)\.full\)/
-    puts "#{$1}.#{$2}.inconsistent_fs: 1"
-  when /^(ignored by lkp): (.*)/
-    puts "#{$2.tr('/', '.')}.ignored_by_lkp: 1"
-  when /^(generic|ext4|xfs|btrfs)\/(\d\d\d)\s+(\d+)s/
-    test = $1 + '.' + $2
-    results['passes'].push test
+  when /^(Ran|Failures|Not run): (.*)/
+    # Ran: ext4/001 ext4/003 ext4/005 ext4/007 ext4/010 ext4/012 ext4/014 ext4/016 ext4/018 ext4/020 ext4/022 ext4/024 ext4/026
+    # Failures: ext4/007 ext4/045
+    # Not run: xfs/161 xfs/426
+
+    # Above summarized lines only occur once in the end, which will be used to check
+    # possible logic issue. And use detail line to analyze test status, in case the
+    # summarized line is not existed due to issue like soft timeout or panic
+    summary_type = $1.downcase.tr(' ', '_')
+    if results.key? summary_type
+      log_error "summary #{summary_type} appears again"
+      exit 1
+    end
+
+    results[summary_type] = $2.tr('/', '.').split
+  when /^#{TEST_PATTERN}\s+\[failed, /, # btrfs/005 [failed, exit status 1]- output mismatch (see /lkp/benchmarks/xfstests/results//btrfs/005.out.bad)
+       /^#{TEST_PATTERN}\s+- output mismatch/, # btrfs/158 - output mismatch (see /lkp/benchmarks/xfstests/results//btrfs/158.out.bad)
+       /^#{TEST_PATTERN}\s+_check_dmesg: something found in dmesg/, # xfs/385 _check_dmesg: something found in dmesg (see /lkp/benchmarks/xfstests/results//xfs/385.dmesg)
+       /^_check_generic_filesystem: filesystem on .+ is inconsistent \(see .+\/([a-z]+)\/([0-9]+)\.full\)/,
+       /^#{TEST_PATTERN}\s+_check.+: filesystem on .+ is inconsistent/ # btrfs/002 _check_btrfs_filesystem: filesystem on /dev/sda2 is inconsistent
+    results['fail'] << "#{$1}.#{$2}"
+  when /^#{TEST_PATTERN}\s+\[not run\]/
+    # xfs/161 [not run] Assuming DMAPI modules are not loaded
+    results['skip'] << "#{$1}.#{$2}"
+  when /^#{TEST_PATTERN}\s+(\d+)s/
+    # btrfs/011        3434s
+    results['pass'] << "#{$1}.#{$2}"
   end
 end
 
-while (line = STDIN.gets)
-  stat_line(line, results)
+%w(pass fail skip).each do |status|
+  results[status].each { |test| puts "#{test}.#{status}: 1" }
 end
 
-results['passes'].each { |seq| puts "#{seq}.pass: 1" }
-results['skips'].each { |seq| puts "#{seq}.skip: 1" }
-results['failures'].each { |seq| puts "#{seq}.fail: 1" }
+if results.key?('failures') && results['failures'] != results['fail']
+  log_error 'summarized failures != fail'
+  exit 1
+end
+
+if results.key?('not_run') && results['not_run'] != results['skip']
+  log_error 'summarized not_run != skip'
+  exit 1
+end
+
+if results.key?('ran') && results['ran'] != (results['fail'] + results['pass'] + results['skip']).sort
+  log_error 'summarized ran != fail + pass + skip'
+  exit 1
+end

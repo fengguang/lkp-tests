@@ -1,0 +1,17 @@
+suite: ltp
+testcase: ltp
+category: functional
+
+need_modules: true
+
+need_memory: 7G
+
+reboot_for_next_job: 1
+
+oom-killer:
+  ignored: 1
+
+ltp:
+  test:
+  - crashme-00
+  - crashme-01

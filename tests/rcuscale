@@ -1,0 +1,21 @@
+#!/bin/sh
+# - runtime
+# - scale_type
+
+## creates an rcuscale kernel module that can be loaded to
+## run a torture test.
+
+. $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/reproduce-log.sh
+
+args=""
+[ ! -z "$scale_type" ] && args="$args scale_type=$scale_type"
+
+log_cmd modprobe rcuscale $args ||
+die "failed to load rcuscale module, try to enable CONFIG_RCU_SCALE_TEST as module and build rcuscale.ko"
+
+log_cmd sleep $runtime
+
+log_cmd rmmod rcuscale 2> /dev/null
+
+dmesg | grep scalei:

@@ -5,6 +5,10 @@ category: benchmark
 runtime: 600s
 nr_threads: 100%
 
+disk: 1SSD
+fs:
+- ext4
+
 mysql-setup:
 setup-oltp:
   table_size: 1000000

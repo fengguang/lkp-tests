@@ -5,6 +5,7 @@
 # - test
 
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/reproduce-log.sh
 
 cd $BENCHMARK_ROOT/fxmark || die "can not enter $BENCHMARK_ROOT/fxmark"
 

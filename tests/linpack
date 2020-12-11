@@ -6,10 +6,11 @@
 ## determined by running a computer program that solves a dense system of linear equations.
 ## See: http://www.netlib.org/utk/people/JackDongarra/faq-linpack.html#_Toc27885709
 
-cd $BENCHMARK_ROOT/linpack || exit
-
 . $LKP_SRC/lib/upload.sh
 . $LKP_SRC/lib/unit.sh
+. $LKP_SRC/lib/reproduce-log.sh
+
+cd $BENCHMARK_ROOT/linpack || die "no $BENCHMARK_ROOT/linpack"
 
 if [ -z "$test_memory_size" ]; then
 	test_memory_size=$(($(to_byte $memory) / 2))

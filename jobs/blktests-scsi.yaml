@@ -1,0 +1,12 @@
+suite: blktests
+testcase: blktests
+category: functional
+
+need_memory: 1G
+
+disk: 1HDD
+
+blktests:
+  test:
+  - scsi-group-00
+  - scsi-group-01

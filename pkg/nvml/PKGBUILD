@@ -16,7 +16,6 @@ md5sums=('SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP')
 build_install_valgrind_pmem()
 {
 	cd "${srcdir}/valgrind"
-	git checkout pmem-3.12
 	git submodule init
 	git submodule update
 	./autogen.sh
@@ -28,7 +27,6 @@ build_install_valgrind_pmem()
 build_install_libfabric()
 {
 	cd "${srcdir}/libfabric"
-	git checkout v1.4.x
 	./autogen.sh
 	./configure --prefix=/usr/local --with-valgrind=/usr/local
 	make
@@ -81,7 +79,6 @@ build_install_libcxx()
 build_install_ndctl()
 {
 	cd "${srcdir}/ndctl"
-	git checkout pending
 	./autogen.sh
 	./configure CFLAGS='-g -O0' --disable-docs --enable-debug --prefix=/usr/local
 	make
@@ -100,8 +97,6 @@ build()
 	build_install_libcxx
 	build_install_ndctl
 
-	cd "${srcdir}/nvml"
-	git checkout 1.8
 }
 
 package()

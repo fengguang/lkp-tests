@@ -6,9 +6,9 @@
 ## It can be used for debugging or analyzing latencies and
 ## performance issues that take place outside of user-space.
 
-cd /sys/kernel/debug/tracing || exit
-
 . $LKP_SRC/lib/reproduce-log.sh
+
+cd /sys/kernel/debug/tracing || die "no /sys/kernel/debug/tracing"
 
 : ${runtime:=300}
 

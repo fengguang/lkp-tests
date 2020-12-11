@@ -1,0 +1,13 @@
+suite: rcuscale
+testcase: rcuscale
+category: functional
+
+need_memory: 300MB
+runtime: 300s
+
+rcuscale:
+  scale_type:
+  - rcu
+  - srcu
+  - srcud
+  - tasks

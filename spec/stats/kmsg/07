@@ -1,0 +1,19 @@
+kern  :info  : [ 2062.833046] pmbench[5394]: segfault at b ip 00007f568fec1ca6 sp 00007f54c1bf9d80 error 4 in libc-2.28.so[7f568fea8000+148000]
+kern  :info  : [ 2062.844366] Code: 41 54 45 31 e4 55 53 48 83 ec 28 48 89 74 24 08 85 c9 0f 85 dc 02 00 00 83 fa 01 0f 84 8b 01 00 00 83 fa 24 0f 87 82 01 00 00 <49> 0f be 4d 00 49 8b 70 68 4c 89 eb 48 89 c8 f6 44 4e 01 20 74 16
+kern  :info  : [ 2063.585168] pmbench[5385]: segfault at b ip 00007fba6dedcca6 sp 00007fb89fc14d80 error 4 in libc-2.28.so[7fba6dec3000+148000]
+kern  :info  : [ 2063.596496] Code: 41 54 45 31 e4 55 53 48 83 ec 28 48 89 74 24 08 85 c9 0f 85 dc 02 00 00 83 fa 01 0f 84 8b 01 00 00 83 fa 24 0f 87 82 01 00 00 <49> 0f be 4d 00 49 8b 70 68 4c 89 eb 48 89 c8 f6 44 4e 01 20 74 16
+kern  :info  : [ 2063.930737] pmbench[5407]: segfault at b ip 00007f39058e7ca6 sp 00007f373761fd80 error 4 in libc-2.28.so[7f39058ce000+148000]
+kern  :info  : [ 2063.942049] Code: 41 54 45 31 e4 55 53 48 83 ec 28 48 89 74 24 08 85 c9 0f 85 dc 02 00 00 83 fa 01 0f 84 8b 01 00 00 83 fa 24 0f 87 82 01 00 00 <49> 0f be 4d 00 49 8b 70 68 4c 89 eb 48 89 c8 f6 44 4e 01 20 74 16
+kern  :info  : [ 2064.860339] pmbench[5446]: segfault at b ip 00007f8833937ca6 sp 00007f866566fd80 error 4 in libc-2.28.so[7f883391e000+148000]
+kern  :info  : [ 2064.871651] Code: 41 54 45 31 e4 55 53 48 83 ec 28 48 89 74 24 08 85 c9 0f 85 dc 02 00 00 83 fa 01 0f 84 8b 01 00 00 83 fa 24 0f 87 82 01 00 00 <49> 0f be 4d 00 49 8b 70 68 4c 89 eb 48 89 c8 f6 44 4e 01 20 74 16
+kern  :info  : [ 2065.028068] pmbench[5456]: segfault at b ip 00007f0e5d598ca6 sp 00007f0c8f2d0d80 error 4 in libc-2.28.so[7f0e5d57f000+148000]
+kern  :info  : [ 2065.039390] Code: 41 54 45 31 e4 55 53 48 83 ec 28 48 89 74 24 08 85 c9 0f 85 dc 02 00 00 83 fa 01 0f 84 8b 01 00 00 83 fa 24 0f 87 82 01 00 00 <49> 0f be 4d 00 49 8b 70 68 4c 89 eb 48 89 c8 f6 44 4e 01 20 74 16
+kern  :info  : [ 2066.328952] pmbench[5493]: segfault at b ip 00007fadd53f7ca6 sp 00007fac0712fd80 error 4 in libc-2.28.so[7fadd53de000+148000]
+kern  :info  : [ 2066.340269] Code: 41 54 45 31 e4 55 53 48 83 ec 28 48 89 74 24 08 85 c9 0f 85 dc 02 00 00 83 fa 01 0f 84 8b 01 00 00 83 fa 24 0f 87 82 01 00 00 <49> 0f be 4d 00 49 8b 70 68 4c 89 eb 48 89 c8 f6 44 4e 01 20 74 16
+kern  :info  : [ 2066.398552] pmbench[5459]: segfault at b ip 00007fe23f70fca6 sp 00007fe071447d80 error 4 in libc-2.28.so[7fe23f6f6000+148000]
+kern  :info  : [ 2066.409872] Code: 41 54 45 31 e4 55 53 48 83 ec 28 48 89 74 24 08 85 c9 0f 85 dc 02 00 00 83 fa 01 0f 84 8b 01 00 00 83 fa 24 0f 87 82 01 00 00 <49> 0f be 4d 00 49 8b 70 68 4c 89 eb 48 89 c8 f6 44 4e 01 20 74 16
+kern  :info  : [ 2067.664419] pmbench[5531]: segfault at b ip 00007f448fccbca6 sp 00007f42c1a03d80 error 4 in libc-2.28.so[7f448fcb2000+148000]
+kern  :info  : [ 2067.675734] Code: 41 54 45 31 e4 55 53 48 83 ec 28 48 89 74 24 08 85 c9 0f 85 dc 02 00 00 83 fa 01 0f 84 8b 01 00 00 83 fa 24 0f 87 82 01 00 00 <49> 0f be 4d 00 49 8b 70 68 4c 89 eb 48 89 c8 f6 44 4e 01 20 74 16
+kern  :info  : [ 2071.616843] pmbench[5602]: segfault at b ip 00007fb581f36ca6 sp 00007fb3b3c6ed80 error 4 in libc-2.28.so[7fb581f1d000+148000]
+kern  :info  : [ 2071.628156] Code: 41 54 45 31 e4 55 53 48 83 ec 28 48 89 74 24 08 85 c9 0f 85 dc 02 00 00 83 fa 01 0f 84 8b 01 00 00 83 fa 24 0f 87 82 01 00 00 <49> 0f be 4d 00 49 8b 70 68 4c 89 eb 48 89 c8 f6 44 4e 01 20 74 16
+kern  :info  : [ 2072.160468] pmbench[5658]: segfault at b ip 00007f6dd92feca6 sp 00007f6c0b036d80 error 4 in libc-2.28.so[7f6dd92e5000+148000]

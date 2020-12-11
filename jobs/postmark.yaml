@@ -13,6 +13,5 @@ fs1:
 postmark:
   number:
   - {{ fs == 'ext4' ? '5000n' : '20000n' }}
-  - {{ fs == 'ext4' ? '10000n' : '30000n' }}
   trans: 30000s
   subdirs: 100d

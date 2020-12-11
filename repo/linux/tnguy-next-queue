@@ -1,0 +1,14 @@
+url: https://git.kernel.org/pub/scm/linux/kernel/git/tnguy/next-queue.git
+owner: Anthony L Nguyen <anthony.l.nguyen@intel.com>
+git_am_branch: dev-queue
+subsystems:
+- i40e
+- ixgbe
+- i40evf
+- fm10k
+- igb
+- e1000
+notify_build_success_branch: .*
+mail_to: Intel Wired LAN <intel-wired-lan@lists.osuosl.org>
+mail_cc: Intel Wired LAN <intel-wired-lan@lists.osuosl.org>
+belongs_to: NIC

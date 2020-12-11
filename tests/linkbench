@@ -3,10 +3,12 @@
 # - duration
 
 . $LKP_SRC/lib/tests/cassandra.sh
+. $LKP_SRC/lib/reproduce-log.sh
 
 setup_java_home
 
-cd "$BENCHMARK_ROOT/linkbench" || exit
+cd "$BENCHMARK_ROOT/linkbench" || die "no $BENCHMARK_ROOT/linkbench"
+
 duration=${duration%%s}
 
 ./bin/linkbench 2>&1 \

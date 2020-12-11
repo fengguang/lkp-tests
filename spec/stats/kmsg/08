@@ -1,0 +1,46 @@
+user  :err   : [  838.792330] Indirect leak of 7 byte(s) in 1 object(s) allocated from:
+
+user  :err   : [  838.801605]     #0 0x7fbe2243e810 in strdup (/usr/lib/x86_64-linux-gnu/libasan.so.5+0x3a810)
+
+user  :err   : [  838.812733]     #1 0x55decd4f5ff1 in perf_evlist__set_event_name util/header.c:2292
+
+user  :err   : [  838.822928]     #2 0x55decd4f6339 in process_event_desc util/header.c:2313
+
+user  :err   : [  838.832487]     #3 0x55decd50401b in perf_file_section__process util/header.c:3646
+
+user  :err   : [  838.842768]     #4 0x55decd5020f4 in perf_header__process_sections util/header.c:3422
+
+user  :err   : [  838.853252]     #5 0x55decd50659f in perf_session__read_header util/header.c:3883
+
+user  :err   : [  838.863273]     #6 0x55decd551f55 in perf_session__open util/session.c:107
+
+user  :err   : [  838.872668]     #7 0x55decd552e5a in perf_session__new util/session.c:211
+
+user  :err   : [  838.883418]     #8 0x55decd1a0f8b in cmd_report /usr/src/perf_selftests-x86_64-rhel-8.3-bbf5c979011a099af5dc76498918ed7df445635b/tools/perf/builtin-report.c:1372
+
+user  :err   : [  838.901668]     #9 0x55decd3bec09 in run_builtin /usr/src/perf_selftests-x86_64-rhel-8.3-bbf5c979011a099af5dc76498918ed7df445635b/tools/perf/perf.c:312
+
+user  :err   : [  838.919262]     #10 0x55decd3bf3b4 in handle_internal_command /usr/src/perf_selftests-x86_64-rhel-8.3-bbf5c979011a099af5dc76498918ed7df445635b/tools/perf/perf.c:364
+
+user  :err   : [  838.937729]     #11 0x55decd3bf8d6 in run_argv /usr/src/perf_selftests-x86_64-rhel-8.3-bbf5c979011a099af5dc76498918ed7df445635b/tools/perf/perf.c:408
+
+user  :err   : [  838.954825]     #12 0x55decd3c02b6 in main /usr/src/perf_selftests-x86_64-rhel-8.3-bbf5c979011a099af5dc76498918ed7df445635b/tools/perf/perf.c:538
+
+user  :err   : [  838.970813]     #13 0x7fbe216da09a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2409a)
+
+
+user  :err   : [  838.983987] SUMMARY: AddressSanitizer: 9287051 byte(s) leaked in 119672 allocation(s).
+
+user  :err   : [  839.956165] util/cpumap.c:48:22: runtime error: member access within misaligned address 0x7f0b88b29eaa for type 'struct perf_record_record_cpu_map', which requires 8 byte alignment
+
+user  :err   : [  839.974455] 0x7f0b88b29eaa: note: pointer points here
+
+user  :err   : [  839.982681]  20 00  01 00 01 00 08 00 00 00  00 00 ff 00 00 00 00 00  00 00 00 00 00 00 00 00  11 00 00 00 00 00
+
+user  :err   : [  839.994671]               ^
+
+user  :err   : [  840.001901] util/cpumap.c:48:33: runtime error: member access within misaligned address 0x7f0b88b29eaa for type 'struct perf_record_record_cpu_map', which requires 8 byte alignment
+
+user  :err   : [  840.020161] 0x7f0b88b29eaa: note: pointer points here
+
+user  :err   : [  840.028372]  20 00  01 00 01 00 08 00 00 00  00 00 ff 00 00 00 00 00  00 00 00 00 00 00 00 00  11 00 00 00 00 00

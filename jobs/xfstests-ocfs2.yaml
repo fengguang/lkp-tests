@@ -1,0 +1,14 @@
+suite: xfstests
+testcase: xfstests
+category: functional
+
+need_memory: 1G
+
+disk: 4HDD
+
+fs:
+- ocfs2
+
+xfstests:
+  test:
+  - ocfs2-group-00

@@ -9,6 +9,7 @@
 
 . $LKP_SRC/lib/upload.sh
 . $LKP_SRC/lib/unit.sh
+. $LKP_SRC/lib/reproduce-log.sh
 
 [ "$test" = cache ] && {
 	cache_size=$(sed -ne '1,$s/cache size\s\+:\s\([0-9]\+\)\s\+\(.\)./\1\2/p' /proc/cpuinfo | tail -n 1)
@@ -17,7 +18,7 @@
 	opt_arg="-a $task_cache_size"
 }
 
-cd $BENCHMARK_ROOT/ftq || exit
+cd $BENCHMARK_ROOT/ftq || die "no $BENCHMARK_ROOT/ftq"
 
 [ 0"$nr_task" -gt 1  ] && opt_task="-t $nr_task"
 
@@ -27,10 +28,6 @@ cd $BENCHMARK_ROOT/ftq || exit
 
 samples=${samples%%ss}
 
-log_cmd ./ftq_$test $opt_freq -n $samples $opt_task $opt_arg || exit
-
-exit_value=$?
+log_cmd ./ftq_$test $opt_freq -n $samples $opt_task $opt_arg
 
 upload_files -t results $BENCHMARK_ROOT/ftq/*.dat
-
-exit $exit_value
