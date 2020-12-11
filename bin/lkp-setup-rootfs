@@ -61,7 +61,10 @@ job_does_not_need_reboot()
 
 job_force_reboot()
 {
-	grep -q "^force_reboot: \+1$" $job
+	grep -q "^force_reboot: 1$" $job && return 0
+	grep -q "^do_not_reboot: 1$" $job || return 0
+
+	return 1
 }
 
 reboot_for_next_job()
