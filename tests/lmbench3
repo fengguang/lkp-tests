@@ -187,6 +187,9 @@ cd $BENCHMARK_ROOT/lmbench3 || {
 
 make 2>&1 || die "failed to build lmbench3"
 
+# os_arch is only set in compass-ci
+[ -n "$os_arch" ] || os_arch=$(arch)
+
 case "$mode" in
 	'all') run_lmbench3_all ;;
 	'hardware') run_lmbench3_hardware ;;
