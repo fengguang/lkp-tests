@@ -112,7 +112,7 @@ replace_source()
 		}
 		url=$(echo "$url" | sed 's|https://|http://|g')
 
-		echo "$url" >> $1
+		echo \'$url\' >> $1
 	done
 	echo ")" >> $1
 }
