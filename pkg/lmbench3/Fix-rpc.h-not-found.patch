@@ -1,0 +1,42 @@
+From a3423b73ee44631e7bb48f8d5967ca706e66567c Mon Sep 17 00:00:00 2001
+From: Hao Li <lihao2018.fnst@cn.fujitsu.com>
+Date: Mon, 14 Dec 2020 10:48:06 +0800
+Subject: [PATCH] Fix rpc.h not found
+
+Signed-off-by: Hao Li <lihao2018.fnst@cn.fujitsu.com>
+---
+ scripts/build | 2 +-
+ src/Makefile  | 4 ++++
+ 2 files changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/scripts/build b/scripts/build
+index 16a6600..561cdb3 100755
+--- a/scripts/build
++++ b/scripts/build
+@@ -18,7 +18,7 @@ done
+ 
+ trap 'rm -f ${BASE}$$.s ${BASE}$$.c ${BASE}$$.o ${BASE}$$; exit 1' 1 2 15
+ 
+-LDLIBS=-lm
++LDLIBS="-lm -ltirpc"
+ 
+ # check for HP-UX's ANSI compiler
+ echo "main(int ac, char *av[]) { int i; }" > ${BASE}$$.c
+diff --git a/src/Makefile b/src/Makefile
+index 2555014..faca887 100644
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -60,6 +60,10 @@ SAMPLES=lmbench/Results/aix/rs6000 lmbench/Results/hpux/snake \
+ 
+ COMPILE=$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)
+ 
++ifeq (,$(wildcard /usr/include/rpc.h))
++	COMPILE += -I/usr/include/tirpc
++endif
++
+ INCS =	bench.h lib_mem.h lib_tcp.h lib_udp.h stats.h timing.h
+ 
+ SRCS =  bw_file_rd.c bw_mem.c bw_mmap_rd.c bw_pipe.c bw_tcp.c bw_udp.c	\
+-- 
+2.29.2
+
