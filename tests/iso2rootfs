@@ -6,6 +6,8 @@ set -e
 
 umask 0002
 
+. $LKP_SRC/lib/env.sh
+
 # allow sut os array
 # - if job's os not in this array, job won't execute
 ALLOW_OS=(
