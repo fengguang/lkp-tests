@@ -162,6 +162,7 @@ ARGV.each do |jobfile|
         job_ids << msg['job_id'].to_s
         puts("submit #{jobfile}, got job_id=#{msg['job_id']}")
       else
+        opt_monitor = false
         puts("submit #{jobfile} failed, got job_id=#{msg['job_id']}, error: #{msg['message']}")
       end
     end
