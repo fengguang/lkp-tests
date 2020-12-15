@@ -122,6 +122,6 @@ is_system()
 shell_profile()
 {
 	local profile="$HOME/.${SHELL##*/}rc"
-	[ -f "$profile" ] || profile="$HOME/.${SHELL##*/}_profile"
+	[ -f "$profile" ] || touch $profile
 	echo $profile
 }
