@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. lib/env.sh
+. $LKP_SRC/lib/env.sh
 
 write_shell_profile()
 {

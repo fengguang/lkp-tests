@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. lib/env.sh
+. $LKP_SRC/lib/env.sh
 
 make
 

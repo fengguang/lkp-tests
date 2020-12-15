@@ -1,7 +1,7 @@
 #!/bin/bash
 
-. lib/env.sh
-. sbin/set-env.sh
+. $LKP_SRC/lib/env.sh
+. $LKP_SRC/sbin/set-env.sh
 
 # choose install function base on 
 # DISTRIBUTION
