@@ -414,6 +414,17 @@ class Job
     true
   end
 
+  def load_self_config
+    self_config_path = "#{ENV['HOME']}/.config/compass-ci"
+    Dir.glob(['/etc/compass-ci/defaults/*.yaml',
+              "#{self_config_path}/defaults/*.yaml"]).each do |file|
+      load_one_defaults(file, @job)
+    end
+
+    lab_yaml = File.join(self_config_path, 'include/lab', "#{@defaults['lab']}.yaml")
+    load_one_defaults(lab_yaml, @job)
+  end
+
   def load_defaults(first_time = true)
     if @job.include? :no_defaults
       merge_defaults first_time
@@ -426,11 +437,7 @@ class Job
       @file_loaded ||= {}
     end
 
-    Dir.glob(["/etc/compass-ci/defaults/*.yaml",
-              "#{ENV['HOME']}/.config/compass-ci/defaults/*.yaml"]).each do |file|
-      load_one_defaults(file, @job)
-    end
-
+    load_self_config
     i = include_files
     job = deepcopy(@job)
     job['___'] = nil
