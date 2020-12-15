@@ -123,7 +123,7 @@ split_tests()
 	split_standalone_tests || return
 
 	$LKP_SRC/tools/split-tests xfs-all 10 xfs-group-
-	$LKP_SRC/tools/split-tests btrfs-all 50 btrfs-group-
+	$LKP_SRC/tools/split-tests btrfs-all 10 btrfs-group-
 	$LKP_SRC/tools/split-tests generic-all 20 generic-group-
 	$LKP_SRC/tools/split-tests ext4-all 20 ext4-group-
 	$LKP_SRC/tools/split-tests udf-all 10 udf-group-
