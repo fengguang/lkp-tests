@@ -405,6 +405,7 @@ class Job
       return false
     end
     if defaults.is_a?(Hash) && !defaults.empty?
+      @defaults.delete_if { |key, _| defaults.has_key?(key) }
       @defaults[source_file_symkey(file)] = nil
       revise_hash(@defaults, defaults, true)
       @defaults.merge!(@overrides)
