@@ -1,5 +1,5 @@
-need_kernel_headers: true
-need_kernel_selftests: true
+need_linux_headers: true
+need_linux_selftests: true
 
 need_kconfig:
 % if ___.group == "x86"
