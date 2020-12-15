@@ -1,4 +1,5 @@
 #!/bin/bash
+. $LKP_SRC/lib/env.sh
 
 get_memory()
 {
@@ -101,8 +102,10 @@ get_ipmi_ip()
 	# 802.1q VLAN ID          : Disabled
 	# RMCP+ Cipher Suites     : 0,1,2,3,17
 	# Cipher Suite Priv Max   : XuuaXXXXXXXXXXX
+	is_virt && return
+	is_docker && return
 	local ip=$(ipmitool lan print | awk 'NR==3{print $4}')
-	[ -n "$ip" ] && echo "ipmi_ip:" $ip
+	[ -n "$ip" ] && echo "ipmi_ip: $ip"
 
 }
 
