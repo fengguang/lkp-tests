@@ -293,6 +293,9 @@ need_kconfig:
 - CONFIG_ZSMALLOC=y
 - CONFIG_DEVICE_PRIVATE=y ~ ">= v5.7-rc4"
 - CONFIG_TEST_HMM=m ~ ">= v5.7-rc4"
+% elsif ___.group == "resctrl"
+- CONFIG_X86_CPU_RESCTRL=y
+- CONFIG_PROC_CPU_RESCTRL=y
 % else
 - CONFIG_BLOCK=y
 - CONFIG_BTRFS_FS=m
