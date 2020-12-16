@@ -55,7 +55,7 @@ setup_result_service()
 
 	supports_raw_upload && result_service=raw_upload && return
 
-	is_docker || [ -n "$access_key" ] || {
+	is_docker || [ -n "$id" ] || {
 		if [ "$os_mount" = 'nfs' ] || [ -z "$os_mount" ]; then
 			supports_netfs 'nfs'    && result_service=$RESULT_SERVER:/result   && return
 		elif [ "$os_mount" = 'cifs' ] || [ -z "$os_mount" ]; then

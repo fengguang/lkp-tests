@@ -78,9 +78,9 @@ upload_one_curl()
 		(
 			cd $(dirname "$1")
 			dir=$(basename "$1")
-			if [ -n "$access_key" ]; then
-				find "$dir" -type d -exec curl -sSf -X MKCOL "$http_url/{}" --cookie "ACCESSKEY=$access_key" \;
-				find "$dir" -type f -size +0 -exec curl -sSf -T '{}' "$http_url/{}" --cookie "ACCESSKEY=$access_key" \;
+			if [ -n "$id" ]; then
+				find "$dir" -type d -exec curl -sSf -X MKCOL "$http_url/{}" --cookie "JOBID=$id" \;
+				find "$dir" -type f -size +0 -exec curl -sSf -T '{}' "$http_url/{}" --cookie "JOBID=$id" \;
 			else
 				find "$dir" -type d -exec curl -sSf -X MKCOL "$http_url/{}" \;
 				find "$dir" -type f -size +0 -exec curl -sSf -T '{}' "$http_url/{}" \;
@@ -88,8 +88,8 @@ upload_one_curl()
 		)
 	else
 		[ -s "$src" ] || return
-		if [ -n "$$access_key" ]; then
-			curl -sSf -T "$src" $http_url/ --cookie "ACCESSKEY=$access_key"
+		if [ -n "$id" ]; then
+			curl -sSf -T "$src" $http_url/ --cookie "JOBID=$id"
 		else
 			curl -sSf -T "$src" $http_url/
 		fi
@@ -111,8 +111,8 @@ upload_files_curl()
 		for dir in $(echo $target_directory | tr '/' ' ')
 		do
 			job_result_root=$job_result_root/$dir/
-			if [ -n "$$access_key" ]; then
-				curl -sSf -X MKCOL "$http_host$job_result_root" --cookie "ACCESSKEY=$access_key"  >/dev/null
+			if [ -n "$id" ]; then
+				curl -sSf -X MKCOL "$http_host$job_result_root" --cookie "JOBID=$id"  >/dev/null
 			else
 				curl -sSf -X MKCOL "$http_host$job_result_root"  >/dev/null
 			fi
@@ -178,12 +178,12 @@ upload_files()
 			upload_files_copy "$@"
 			return
 		}
-		if has_cmd rsync && has_rsync_server && [ -z "$access_key" ]; then
+		if has_cmd rsync && has_rsync_server && [ -z "$id" ]; then
 			upload_files_rsync "$@"
 			return
 		fi
 
-		if has_cmd lftp && [ -z "$access_key" ]; then
+		if has_cmd lftp && [ -z "$id" ]; then
 			upload_files_lftp "$@"
 			return
 		fi
