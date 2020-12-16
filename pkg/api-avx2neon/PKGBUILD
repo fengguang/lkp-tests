@@ -1,0 +1,19 @@
+pkgname=api-avx2neon
+pkgver=1
+pkgrel=1
+arch=('aarch64' 'x86_64')
+url="https://github.com/kunpengcompute/AvxToNeon.git"
+license=('Apache 2.0')
+source=("https://github.com/kunpengcompute/AvxToNeon.git")
+md5sums=('SKIP')
+
+build() {
+	cd "$srcdir/AvxToNeon/tests"
+	make
+}
+
+package() {
+	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+	mkdir -p "${benchmark_path}"
+	cp -af "${srcdir}/AvxToNeon/"* "${benchmark_path}"
+}
