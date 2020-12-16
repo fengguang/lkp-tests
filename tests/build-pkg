@@ -2,7 +2,8 @@
 # - pkgbuild_repo
 # - upstream_repo
 # - upstream_commit
-# - PKGBUILD_TAG
+# - git_tag
+# - pkg_ver
 # upstream_url
 
 # We'll use the below global env vars, but not treat them as parameter to avoid
@@ -60,34 +61,32 @@ request_pkg()
 	do
 		get_pkgfile "${pkgrepo}" "$pkgfile"
 	done
+}
 
-	# download PKGBUILD-$tag
-	benchmark="${upstream_repo##*/}"
-	benchmark="${benchmark%.git}"
-	[ -n "$PKGBUILD_TAG" ] && {
-		get_pkgfile "pkg/$benchmark" "PKGBUILD-$PKGBUILD_TAG"
-		[ -f "PKGBUILD-$PKGBUILD_TAG" ] || die "PKGBUILD-$PKGBUILD_TAG not exist"
-		[ -s "PKGBUILD-$PKGBUILD_TAG" ] || die "PKGBUILD-$PKGBUILD_TAG is empty"
+create_cgz_name()
+{
+	cgz_path="$PKG_MNT/${pack_to}/${pkgname}"
+	cgz_name="${cgz_path}/${upstream_commit}.cgz"
+	pkg_args="-A --check --skippgpcheck"
+
+        [ -n "$git_tag" ] && {
+		cgz_name="${cgz_path}/${git_tag}.cgz"
 	}
 
-	[ -f PKGBUILD ] || die "PKGBUILD not exist"
-	[ -s PKGBUILD ] || die "PKGBUILD is empty"
+	[ -n "$pkg_ver" ] && {
+		cgz_name="${cgz_path}/${pkg_ver}.cgz"
+		pkg_args="${pkg_args} --skipchecksums --skipinteg"
+	}
 }
 
 create_softlink()
 {
 	[ -e "$cgz_name" ] || return 0
 
-	local soft_path="$PKG_MNT/${pack_to}/${pkgname}"
 	local bm_name=$(basename $(realpath ${cgz_name}))
 
-	if [ -n "$PKGBUILD_TAG" ]; then
-		echo "create soft link: ${PKGBUILD_TAG}.cgz -> ${bm_name}"
-		ln -sf "${bm_name}" "${soft_path}/${PKGBUILD_TAG}.cgz"
-	fi
-
 	echo "create soft link: latest.cgz -> ${bm_name}"
-	ln -sf "${bm_name}" "${soft_path}/latest.cgz"
+	ln -sf "${bm_name}" "${cgz_path}/latest.cgz"
 }
 
 replace_source()
@@ -98,6 +97,9 @@ replace_source()
 		echo "$url" | egrep 'git\+|\.git$' && {
 			[ -n "$repo_dir" ] && {
 				url="${repo_dir}git://${LKP_SERVER}/${upstream_repo}#commit=${upstream_commit}"
+				[ -n ${git_tag} ] && {
+					url="${repo_dir}git://${LKP_SERVER}/${upstream_repo}#tag=${git_tag}"
+				}
 			}
 		}
 		url=$(echo "$url" | sed 's|https://|http://|g')
@@ -109,6 +111,8 @@ replace_source()
 
 build_source_pkg()
 {
+	[ -n "$pkg_ver" ] && sed -i "s|^pkgver=.*|pkgver=${pkg_ver}|g" PKGBUILD
+
 	repo_dir=""
 	source PKGBUILD
 	[ -n "$upstream_repo" ] && [ -n "$upstream_url" ] && {
@@ -122,11 +126,10 @@ build_source_pkg()
 	}
 	replace_source PKGBUILD.src
 
-	[ -n "$PKGBUILD_TAG" ] && replace_source "PKGBUILD-$PKGBUILD_TAG"
+	create_cgz_name
 
-	cgz_name="$PKG_MNT/${pack_to}/${pkgname}/${upstream_commit}.cgz"
 	PACMAN=true BUILDDIR=$TMP CARCH=$os_arch PKGEXT=.cgz CGZDEST="$cgz_name" STDERR_REDIR=y\
-		$LKP_SRC/sbin/makepkg -A --check --skippgpcheck --config $LKP_SRC/etc/makepkg.conf
+		$LKP_SRC/sbin/makepkg ${pkg_args} --config $LKP_SRC/etc/makepkg.conf
 
 	[ "$?" == 0 ] || exit 1
 	create_softlink
