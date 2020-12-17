@@ -1,6 +1,7 @@
 suite: borrow
 testcase: borrow
 
+runtime: 10d
 ssh_pub_key: <%=
          begin
            File.read("#{ENV['HOME']}/.ssh/id_rsa.pub").chomp
@@ -10,4 +11,4 @@ ssh_pub_key: <%=
          %>
 sshd:
 # sleep at the bottom
-sleep: 10d
+sleep:
