@@ -13,6 +13,7 @@ memtier\..*_latency_.+: -0.1
 oltp\..+\_ms: -0.2
 perf-bench-numa-mem\.secs_latency: -0.1
 pgbench\.latency_ms: -0.1
+phoronix-test-suite\..+\.max_latency_ms: -0.1
 pmbench\..+\.ns: -0.1
 pmbench\..+\%: -0.1
 qperf\..+\.latency: -0.3
