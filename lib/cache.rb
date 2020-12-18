@@ -12,6 +12,10 @@ module Cacheable
       @cache_store ||= {}
     end
 
+    def cache_options
+      @cache_options ||= {}
+    end
+
     #
     # cache_key_prefix_generator - customized key prefix generator, possible values
     #   default => share cache between all objects belong to same class
@@ -19,14 +23,13 @@ module Cacheable
     #   ->(obj) {obj.to_s} => share cache between objects who has same to_s
     #   ->(obj) {obj.object_id} => do not share cache between objects
     #
-    def cache_method(method_name, cache_key_prefix_generator = nil)
+    def cache_method(method_name, options = {})
       # credit to rails alias_method_chain
       alias_method "#{method_name}_without_cache", method_name
 
       kclass = self
 
-      @cache_key_prefix_generators ||= {}
-      @cache_key_prefix_generators[method_name] = cache_key_prefix_generator
+      cache_options[method_name] = options
 
       # rli9 FIXME: not support &block
       # rli9 FIXME: better solution for generating key can refer to
@@ -59,7 +62,7 @@ module Cacheable
       # cache_key = [self, method_name, args]
       cache_key = "#{method_name}_#{args.join('_')}"
 
-      cache_key_prefix_generator = @cache_key_prefix_generators[method_name]
+      cache_key_prefix_generator = cache_options[method_name][:cache_key_prefix_generator]
       cache_key = "#{cache_key_prefix_generator.call obj}_#{cache_key}" if cache_key_prefix_generator
 
       cache_key
