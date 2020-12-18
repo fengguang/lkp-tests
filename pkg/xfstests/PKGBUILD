@@ -61,7 +61,7 @@ generate_special_require_tests()
 	# these tests requires a valid $LOGWRITES_DEV
 	# rli9 FIXME consider other fs that has this requirement
 	grep -l "_require_log_writes$" -r tests/btrfs | cut -d/ -f3 | grep -v -f <(cat $benchmark_path/tests/btrfs-*) > $benchmark_path/tests/btrfs-logwrites
-	grep -l "_require_log_writes$" -r tests/generic | cut -d/ -f3 > $benchmark_path/tests/generic-logwrites
+	grep -l "_require_log_writes$" -r tests/generic | cut -d/ -f3 | grep -v -f <(cat $benchmark_path/tests/generic-*) > $benchmark_path/tests/generic-logwrites
 
 	# these tests requires a valid $SCRATCH_LOGDEV
 	for fs in generic ext4 xfs
