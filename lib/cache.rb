@@ -49,7 +49,10 @@ module Cacheable
       if cache_store.instance_of?(Hash)
         return cache_store[cache_key] if cache_store.key?(cache_key)
 
-        cache_store[cache_key] = obj.send("#{method_name}_without_cache", *args)
+        fetch = obj.send("#{method_name}_without_cache", *args)
+        return nil if fetch.nil? && !cache_options[method_name][:cache_nil]
+
+        cache_store[cache_key] = fetch
       else
         cache_store.fetch cache_key do
           obj.send("#{method_name}_without_cache", *args)
