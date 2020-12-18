@@ -129,7 +129,7 @@ build_source_pkg()
 	create_cgz_name
 
 	PACMAN=true BUILDDIR=$TMP CARCH=$os_arch PKGEXT=.cgz CGZDEST="$cgz_name" \
-		$LKP_SRC/sbin/makepkg ${pkg_args} --config $LKP_SRC/etc/makepkg.conf 2>&1
+		$LKP_SRC/sbin/makepkg ${pkg_args} --config $LKP_SRC/etc/makepkg.conf
 
 	[ "$?" == 0 ] || exit 1
 	create_softlink
