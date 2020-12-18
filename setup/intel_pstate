@@ -2,6 +2,7 @@
 # - max_perf_pct
 # - min_perf_pct
 # - no_turbo
+# - status
 
 [ -d "/sys/devices/system/cpu/intel_pstate" ] || exit 0
 
@@ -17,4 +18,8 @@
 
 [ -n "$no_turbo" ] && {
 	log_eval "echo $no_turbo > /sys/devices/system/cpu/intel_pstate/no_turbo"
+}
+
+[ -n "$status" ] && {
+	log_eval "echo '$status' > /sys/devices/system/cpu/intel_pstate/status"
 }
