@@ -1761,19 +1761,11 @@ run_build() {
 		[[ -d /usr/lib/ccache/bin ]] && export PATH="/usr/lib/ccache/bin:$PATH"
 	fi
 
-	if [[ $STDERR_REDIR == y ]];then
-		run_function_safe "build" 2>&1
-	else
-		run_function_safe "build"
-	fi
+	run_function_safe "build"
 }
 
 run_check() {
-	if [[ $STDERR_REDIR == y ]];then
-		run_function_safe "check" 2>&1
-	else
-		run_function_safe "check"
-	fi
+	run_function_safe "check"
 }
 
 run_package() {
@@ -1784,11 +1776,7 @@ run_package() {
 		pkgfunc="package_$1"
 	fi
 
-	if [[ $STDERR_REDIR == y ]];then
-		run_function_safe "$pkgfunc" 2>&1
-	else
-		run_function_safe "$pkgfunc"
-	fi
+	run_function_safe "$pkgfunc"
 }
 
 build_id() {
