@@ -55,9 +55,9 @@ iso2rootfs:
   #################
 
   # three required fields when submit test yaml
-  submit_email:
   submit_name:
-  submit_uuid:
+  submit_email:
+  submit_token:
 
   # submit target tests yaml
   ## 1. You can add as many jobs as you like.

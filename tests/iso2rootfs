@@ -472,9 +472,9 @@ EOF
 ############ submit test job yaml ############
 generate_global_yaml()
 {
-	[ -n "${submit_email}" ] || die "cannot find value of var: submit_email"
 	[ -n "${submit_name}" ] || die "cannot find value of var: submit_name"
-	[ -n "${submit_uuid}" ] || die "cannot find value of var: submit_uuid"
+	[ -n "${submit_email}" ] || die "cannot find value of var: submit_email"
+	[ -n "${submit_token}" ] || die "cannot find value of var: submit_token"
 
 	local config_yaml="/etc/compass-ci/defaults/sparrow.yaml"
 
@@ -483,9 +483,9 @@ generate_global_yaml()
 	cat <<-EOF > "${config_yaml}"
 	SCHED_HOST: ${SCHED_HOST}
 	SCHED_PORT: ${SCHED_PORT}
-	my_email: ${submit_email}
 	my_name: ${submit_name}
-	my_uuid: ${submit_uuid}
+	my_email: ${submit_email}
+	my_token: ${submit_token}
 	EOF
 }
 
