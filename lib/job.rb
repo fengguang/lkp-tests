@@ -317,17 +317,6 @@ class Job
     spec_file_context.each_key { |k| @job.delete k }
   end
 
-  def check_load_hosts_config(defaults_config)
-    return if @load_hosts_done
-
-    if defaults_config.include?('testbox')
-      @job['tbox_group'] = tbox_group(defaults_config['testbox'])
-    elsif defaults_config.include?('tbox_group')
-      @job['tbox_group'] = defaults_config['tbox_group']
-    end
-    return @job.include?('tbox_group')
-  end
-
   def load_hosts_config
     return if @job.include?(:no_defaults)
     return if @load_hosts_done
@@ -354,7 +343,7 @@ class Job
 
   def get_lab_hosts_file
     lab_hosts_file_name = @job['testbox']
-    lab_hosts_file = "#{ENV['CCI_REPOS']}/lab-#{@defaults['lab']}/hosts/#{lab_hosts_file_name}"
+    lab_hosts_file = "#{ENV['CCI_REPOS']}/lab-#{@job['lab']}/hosts/#{lab_hosts_file_name}"
 
     if File.file?(lab_hosts_file)
       lab_hosts_file
@@ -409,7 +398,6 @@ class Job
       @defaults[source_file_symkey(file)] = nil
       revise_hash(@defaults, defaults, true)
       @defaults.merge!(@overrides)
-      load_hosts_config if check_load_hosts_config(@defaults)
     end
     @file_loaded[file] = true
     true
