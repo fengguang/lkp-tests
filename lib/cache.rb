@@ -1,5 +1,6 @@
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
+require 'ostruct'
 require "#{LKP_SRC}/lib/log"
 
 module Cacheable
@@ -47,17 +48,31 @@ module Cacheable
       cache_key = cache_key(obj, method_name, *args)
 
       if cache_store.instance_of?(Hash)
-        return cache_store[cache_key] if cache_store.key?(cache_key)
+        # rli9 FIXME the operation to hash is not thread safe
+        if cache_store.key?(cache_key)
+          cache = cache_store[cache_key]
+          return cache.value unless cache_expired?(method_name, cache.timestamp)
 
-        fetch = obj.send("#{method_name}_without_cache", *args)
-        return nil if fetch.nil? && !cache_options[method_name][:cache_nil]
+          cache_store.delete(cache_key)
+        end
 
-        cache_store[cache_key] = fetch
+        value = obj.send("#{method_name}_without_cache", *args)
+        return nil if value.nil? && !cache_options[method_name][:cache_nil]
+
+        cache_store[cache_key] = OpenStruct.new(value: value, timestamp: Time.now)
+        cache_store[cache_key].value
       else
         cache_store.fetch cache_key do
           obj.send("#{method_name}_without_cache", *args)
         end
       end
+    end
+
+    def cache_expired?(method_name, timestamp)
+      cache_expire = cache_options[method_name][:cache_expire]
+      return false unless cache_expire
+
+      (Time.now - timestamp).to_i > cache_expire
     end
 
     def cache_key(obj, method_name, *args)
