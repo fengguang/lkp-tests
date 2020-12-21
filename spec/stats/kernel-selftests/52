@@ -1,0 +1,50 @@
+2020-12-16 16:13:38 make run_tests -C net/mptcp
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-2c85ebc57b3e1817b6ce1a6b703928e113a90442/tools/testing/selftests/net/mptcp'
+make --no-builtin-rules ARCH=x86 -C ../../../../.. headers_install
+TAP version 13
+1..5
+# selftests: net/mptcp: mptcp_connect.sh
+# INFO: set ns3-5fda3251-Hhdprf dev ns3eth2: ethtool -K tso off gso off gro off
+# INFO: set ns4-5fda3251-Hhdprf dev ns4eth3: ethtool -K tso off
+# Created /tmp/tmp.RyjwnrS3O0 (size 5345308	/tmp/tmp.RyjwnrS3O0) containing data sent by client
+# Created /tmp/tmp.tVCDIW7l5m (size 2806812	/tmp/tmp.tVCDIW7l5m) containing data sent by server
+# New MPTCP socket can be blocked via sysctl		[ OK ]
+# setsockopt(..., TCP_ULP, "mptcp", ...) blocked	[ OK ]
+# INFO: validating network environment with pings
+# INFO: Using loss of 0.12% delay 25 ms reorder 91% 69% with delay 6ms on ns3eth4
+# ns1 MPTCP -> ns1 (10.0.1.1:10000      ) MPTCP	(duration    40ms) [ OK ]
+# ns1 MPTCP -> ns1 (10.0.1.1:10001      ) TCP  	(duration    35ms) [ OK ]
+# ns1 TCP   -> ns1 (10.0.1.1:10002      ) MPTCP	(duration    33ms) [ OK ]
+# ns1 MPTCP -> ns1 (dead:beef:1::1:10003) MPTCP	(duration    41ms) [ OK ]
+# ns1 MPTCP -> ns1 (dead:beef:1::1:10004) TCP  	(duration    36ms) [ OK ]
+# ns1 TCP   -> ns1 (dead:beef:1::1:10005) MPTCP	(duration    35ms) [ OK ]
+# ns1 MPTCP -> ns2 (10.0.1.2:10006      ) MPTCP	(duration    65ms) [ OK ]
+# ns1 MPTCP -> ns2 (dead:beef:1::2:10007) MPTCP	(duration    72ms) [ OK ]
+# ns1 MPTCP -> ns2 (10.0.2.1:10008      ) MPTCP	(duration    65ms) [ OK ]
+# ns1 MPTCP -> ns2 (dead:beef:2::1:10009) MPTCP	(duration   273ms) [ OK ]
+# ns1 MPTCP -> ns3 (10.0.2.2:10010      ) MPTCP	(duration   669ms) [ OK ]
+# ns1 MPTCP -> ns3 (dead:beef:2::2:10011) MPTCP	(duration   319ms) [ OK ]
+# ns1 MPTCP -> ns3 (10.0.3.2:10012      ) MPTCP	(duration   329ms) [ OK ]
+# ns1 MPTCP -> ns3 (dead:beef:3::2:10013) MPTCP	(duration   321ms) [ OK ]
+# ns1 MPTCP -> ns4 (10.0.3.1:10014      ) MPTCP	(duration   729ms) [ OK ]
+# ns1 MPTCP -> ns4 (dead:beef:3::1:10015) MPTCP	(duration   355ms) [ OK ]
+# ns2 MPTCP -> ns1 (10.0.1.1:10016      ) MPTCP	(duration    65ms) [ OK ]
+# ns2 MPTCP -> ns1 (dead:beef:1::1:10017) MPTCP	(duration    80ms) [ OK ]
+# ns2 MPTCP -> ns3 (10.0.2.2:10018      ) MPTCP	(duration   347ms) [ OK ]
+# ns2 MPTCP -> ns3 (dead:beef:2::2:10019) MPTCP	(duration   323ms) [ OK ]
+# ns2 MPTCP -> ns3 (10.0.3.2:10020      ) MPTCP	(duration   374ms) [ OK ]
+# ns2 MPTCP -> ns3 (dead:beef:3::2:10021) MPTCP	(duration   328ms) [ OK ]
+# ns2 MPTCP -> ns4 (10.0.3.1:10022      ) MPTCP	(duration   364ms) [ OK ]
+# ns2 MPTCP -> ns4 (dead:beef:3::1:10023) MPTCP	copyfd_io_poll: poll timed out (events: POLLIN 1, POLLOUT 0)
+# (duration 30429ms) [ FAIL ] client exit code 0, server 2
+#
+# netns ns4-5fda3251-Hhdprf socket stat for 10023:
+# State Recv-Q Send-Q Local Address:Port Peer Address:PortProcess
+#
+# netns ns2-5fda3251-Hhdprf socket stat for 10023:
+# State     Recv-Q Send-Q    Local Address:Port      Peer Address:Port Process
+# TIME-WAIT 0      0      [dead:beef:2::1]:52978 [dead:beef:3::1]:10023 timer:(timewait,59sec,0)
+#
+# ns3 MPTCP -> ns1 (10.0.1.1:10024      ) MPTCP	(duration   322ms) [ OK ]
+# FAIL: Could not even run loopback test
+not ok 1 selftests: net/mptcp: mptcp_connect.sh # exit=1

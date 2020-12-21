@@ -430,6 +430,10 @@ while (line = STDIN.gets)
     # $2 is "OK", $2 should be saved before changing $1
     result = $2
     test_script = $1.gsub(/\(duration(.*)\)/, '')
+    # to reduce below situation
+    # ns2 MPTCP -> ns4 (dead:beef:3::1:10023) MPTCP copyfd_io_poll: poll timed out (events: POLLIN 1, POLLOUT 0)
+    # (duration 30429ms) [ FAIL ] client exit code 0, server 2
+    next unless test_script =~ /MPTCP/
     detail_stat('mptcp', test_script, result, stats)
   when /^# TEST: (.*)/
     next unless test_script == 'nft_concat_range.sh'
