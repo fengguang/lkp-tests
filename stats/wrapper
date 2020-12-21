@@ -44,6 +44,19 @@ check_soft_timeout()
 	echo -e "soft_timeout: 1" >> $RESULT_ROOT/last_state
 }
 
+check_die()
+{
+	# test.locktorture.exit_code.99: 1
+	[[ -f $RESULT_ROOT/last_state ]] || return 0
+
+	grep -q "exit_code.99: 1" $RESULT_ROOT/last_state && {
+		log_warn "job exited due to die"
+		return 1
+	}
+
+	return 0
+}
+
 check_empty_output()
 {
 	[[ -s $log ]] && return
@@ -146,12 +159,30 @@ check_incomplete_run $log
 check_soft_timeout
 check_empty_output
 check_binary_output
+check_die || exit 1
+
+# When stats script returns failure, we need decide whether it is a bad rt
+# - job exists due to die, so that rt is bad. This is handled in check_die.
+# - job has soft_timeout or OOM or panic, which may lead to the incomplete/missing
+# output. The rt is not necessarily bad.
+# - job runs to the end without the serious states mentioned in above bullets, then
+# if any output is incomplete/missing, it is a bad rt.
+is_bad_rt_candidate()
+{
+	[[ -f $RESULT_ROOT/last_state ]] || return
+
+	# rli9 FIXME the logic can't handle panic situation now
+	grep -q -e "soft_timeout: 1" -e "OOM: 1" $RESULT_ROOT/last_state && return 1
+
+	return 0
+}
 
 tmpfile=$(mktemp --tmpdir=/tmp lkp-stats.XXXXXXXX)
 if [[ -f $log ]]; then
-	$program_dir/$program $log < $log > $tmpfile || { log_error "$program_dir/$program $log < $log  exit code $?, check $tmpfile"; exit 1; }
+	$program_dir/$program $log < $log > $tmpfile || { log_error "$program_dir/$program $log < $log  exit code $?, check $tmpfile"; is_bad_rt_candidate && exit 1; }
+	$program_dir/$program $log < $log > $tmpfile
 else
-	$program_dir/$program < /dev/null > $tmpfile || { log_error "$program_dir/$program < /dev/null  exit code $?, check $tmpfile"; exit 1; }
+	$program_dir/$program < /dev/null > $tmpfile || { log_error "$program_dir/$program < /dev/null  exit code $?, check $tmpfile"; is_bad_rt_candidate && exit 1; }
 fi
 
 grep -q "^$program\." <(cat $LKP_SRC/etc/failure $LKP_SRC/etc/pass) ||
