@@ -1,7 +1,10 @@
 #!/bin/bash
 
-. $LKP_SRC/lib/env.sh
-. $LKP_SRC/sbin/set-env.sh
+SCRIPT_DIR=$(dirname $(realpath $0))
+PROJECT_DIR=$(dirname $SCRIPT_DIR)
+
+. $PROJECT_DIR/lib/env.sh
+. $PROJECT_DIR/sbin/set-env.sh
 
 # choose install function base on 
 # DISTRIBUTION

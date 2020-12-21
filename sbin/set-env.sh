@@ -1,6 +1,9 @@
 #!/bin/sh
 
-. $LKP_SRC/lib/env.sh
+SCRIPT_DIR=$(dirname $(realpath $0))
+PROJECT_DIR=$(dirname $SCRIPT_DIR)
+
+. $PROJECT_DIR/lib/env.sh
 
 write_shell_profile()
 {
