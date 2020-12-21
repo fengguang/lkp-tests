@@ -102,7 +102,7 @@ get_ipmi_ip()
 	# 802.1q VLAN ID          : Disabled
 	# RMCP+ Cipher Suites     : 0,1,2,3,17
 	# Cipher Suite Priv Max   : XuuaXXXXXXXXXXX
-	[ -e /dev/ipmi0 ] || [ -e /dev/ipmi/0 ] || [ -e /dev/ipmidev/0 ] || return
+	[ -e /dev/ipmi0 ] || [ -e /dev/ipmi/0 ] || [ -e /dev/ipmidev/0 ] || return 0
 	local ip=$(ipmitool lan print | awk 'NR==3{print $4}')
 	[ -n "$ip" ] && echo "ipmi_ip: $ip"
 }
