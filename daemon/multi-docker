@@ -6,6 +6,8 @@
 # SPDX-License-Identifier: MulanPSL-2.0+
 # Copyright (c) 2020 Huawei Technologies Co., Ltd. All rights reserved.
 
+: ${queues:="$tbox_group.$HOSTNAME,$tbox_group.$(arch)"}
+
 multi_docker()
 {
 	export CCI_SRC=${CCI_SRC:-"/c/compass-ci"}
