@@ -24,7 +24,6 @@ class Monitor
     # 1 means timeout exit
     @exit_status_code = 0
     @defaults = {}
-    load_default
     @result = []
     @stop_query = {}
     @reason = nil
@@ -32,6 +31,10 @@ class Monitor
 
   def load_default
     return unless @monitor_url == ''
+
+    if host = @job["SCHED_HOST"]
+      return @monitor_url = "ws://#{host}:11310/filter"
+    end
 
     Dir.glob(['/etc/compass-ci/monitor/*.yaml',
               "#{ENV['HOME']}/.config/compass-ci/monitor/*.yaml"]).each do |file|
@@ -98,6 +101,7 @@ class Monitor
 
   def run(timeout = nil)
     merge_overrides
+    load_default
     field_check
 
     @query.each do |k, v|
