@@ -4,7 +4,6 @@ SCRIPT_DIR=$(dirname $(realpath $0))
 PROJECT_DIR=$(dirname $SCRIPT_DIR)
 
 . $PROJECT_DIR/lib/env.sh
-. $PROJECT_DIR/sbin/set-env.sh
 
 # choose install function base on DISTRIBUTION
 linux_dep()
@@ -48,4 +47,13 @@ run()
 	fi
 }
 
+set_env()
+{
+	write_host
+	write_shell_profile "export LKP_SRC=$PWD"
+	write_shell_profile "export PATH=\$PATH:\$LKP_SRC/sbin:\$LKP_SRC/bin"
+	source $(shell_profile)
+}
+
+set_env
 run
