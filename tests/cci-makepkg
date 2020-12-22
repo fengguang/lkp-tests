@@ -41,6 +41,8 @@ curl_pkgfile()
 
 download_pkgfile()
 {
+	[ -n "$PKGBUILD_TAG" ] || return
+
 	local pkg_tag_file="PKGBUILD-$PKGBUILD_TAG"
 
 	curl_pkgfile "pkg/$benchmark" "$pkg_tag_file"
@@ -93,7 +95,7 @@ centos_update_gcc()
 	source /opt/rh/devtoolset-8/enable
 }
 
-[ -n "$PKGBUILD_TAG" ] && download_pkgfile
+download_pkgfile
 
 distro_install_depends lkp-dev
 
