@@ -79,7 +79,7 @@ class VmStater < Stater
     when /^#\s+running\s+(.+)/
       # running hugepage-shm
       @test_case = $1
-    when /^#\s+\[(PASS|FAIL|ignored_by_lkp)\]/
+    when /^#\s+\[(PASS|FAIL)\]/, /^#\s+LKP (SKIP)/
       # rli9 FIXME why below test has both ignored and pass result
       #
       # running virtual address 128TB switch test
@@ -411,8 +411,8 @@ while (line = STDIN.gets)
 
     # do not count make fail in nr_test, which is for sub test number
     stats.add test, 'make_fail'
-  when /^ignored_by_lkp (.*) test/
-    stats.add $1, 'ignored_by_lkp'
+  when /^LKP SKIP (.*)/
+    stats.add $1, 'skip'
   when /^(ok|not ok) \d+ selftests: (\S*): (\S*)( # SKIP)?/
     next if %w(memory-hotplug).include? test
 

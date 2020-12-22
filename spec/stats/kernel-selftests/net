@@ -24,3 +24,5 @@ ok 32 selftests: net: traceroute.sh
 # SKIP: jq not installed
 not ok 36 selftests: net: altnames.sh # exit=1
 make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd/tools/testing/selftests/net'
+
+LKP SKIP net.l2tp.sh
