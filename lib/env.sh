@@ -69,7 +69,8 @@ is_virt()
 		# run as root
 		[ -n "$(virt-what)" ]
 	else
-		grep -q -w hypervisor /proc/cpuinfo
+		grep -q -w hypervisor /proc/cpuinfo && return 1
+		return 0
 	fi
 }
 
