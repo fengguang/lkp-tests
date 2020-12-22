@@ -51,8 +51,7 @@ make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-822
 # -----------------------
 # running compaction_test
 # -----------------------
-# [ignored_by_lkp]
-# [PASS]
+# LKP SKIP[PASS]
 # ----------------------
 # running on-fault-limit
 # ----------------------
@@ -68,8 +67,7 @@ make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-822
 # --------------------
 # running mlock2-tests
 # --------------------
-# [ignored_by_lkp]
-# [PASS]
+# LKP SKIP[PASS]
 # -----------------
 # running thuge-gen
 # -----------------
@@ -83,8 +81,7 @@ make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-822
 # -----------------------------
 # running virtual address 128TB switch test
 # -----------------------------
-# [ignored_by_lkp]
-# [PASS]
+# LKP SKIP[PASS]
 # ------------------------------------
 # running vmalloc stability smoke test
 # ------------------------------------

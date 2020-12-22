@@ -80,12 +80,6 @@ class VmStater < Stater
       # running hugepage-shm
       @test_case = $1
     when /^#\s+\[(PASS|FAIL)\]/, /^#\s+LKP (SKIP)/
-      # rli9 FIXME why below test has both ignored and pass result
-      #
-      # running virtual address 128TB switch test
-      # -----------------------------
-      # [ignored_by_lkp]
-      # [PASS]
       stats.add "#{@test_prefix}.#{@test_case}", $1 if @test_case
       @test_case = nil
     else

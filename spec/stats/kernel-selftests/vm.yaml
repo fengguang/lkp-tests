@@ -5,13 +5,13 @@ vm.run_vmtests.map_fixed_noreplace.pass: 1
 vm.run_vmtests.userfaultfd.pass: 1
 vm.run_vmtests.userfaultfd_hugetlb.pass: 1
 vm.run_vmtests.userfaultfd_shmem.pass: 1
-vm.run_vmtests.compaction_test.ignored_by_lkp: 1
+vm.run_vmtests.compaction_test.skip: 1
 vm.run_vmtests.on-fault-limit.pass: 1
 vm.run_vmtests.map_populate.pass: 1
 vm.run_vmtests.mlock-random-test.pass: 1
-vm.run_vmtests.mlock2-tests.ignored_by_lkp: 1
+vm.run_vmtests.mlock2-tests.skip: 1
 vm.run_vmtests.thuge-gen.pass: 1
 vm.run_vmtests.virtual_address_range.pass: 1
-vm.run_vmtests.virtual_address_128TB_switch_test.ignored_by_lkp: 1
+vm.run_vmtests.virtual_address_128TB_switch_test.skip: 1
 vm.run_vmtests.vmalloc_stability_smoke_test.pass: 1
 vm.run_vmtests.pass: 1

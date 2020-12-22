@@ -395,9 +395,9 @@ fixup_vm()
 		sed -i "s#needmem=262144#needmem=$memory#" vm/run_vmtests
 	}
 
-	sed -i 's/.\/compaction_test/echo LKP SKIP #.\/compaction_test/' vm/run_vmtests
+	sed -i 's/.\/compaction_test/echo -n LKP SKIP #.\/compaction_test/' vm/run_vmtests
 	# ./userfaultfd anon 128 32
-	sed -i 's/.\/userfaultfd anon .*$/echo LKP SKIP #.\/userfaultfd/' vm/run_vmtests
+	sed -i 's/.\/userfaultfd anon .*$/echo -n LKP SKIP #.\/userfaultfd/' vm/run_vmtests
 }
 
 platform_is_skylake_or_snb()
