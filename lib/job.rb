@@ -254,6 +254,7 @@ class Job
           @overrides.merge!(hash['override']){ |_key, a, _b| a}
           hash.delete('override')
         end
+        hash.delete_if { |key, _| key.start_with?('#!') }
         hash.merge!(@overrides)
         @jobs.concat(multi_args(hash)) # return [hash] or [h1,h2]
       end
