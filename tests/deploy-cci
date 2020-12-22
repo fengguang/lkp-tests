@@ -19,6 +19,9 @@ mkdir -p /c
 cd /c || exit
 git clone https://gitee.com/wu_fengguang/compass-ci.git
 
+cd /c/compass-ci || exit
+[ -n "$compass_commitid" ] && git reset --hard "$compass_commitid"
+
 # Need mount tmpfs to fix compass-ci/container/os-nfs/start error
 # "exportfs: /exports/result does not support NFS export"
 mount -t tmpfs none /srv
