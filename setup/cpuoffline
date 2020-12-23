@@ -2,6 +2,7 @@
 # - offline_cpus
 # - offline_package
 # - online_cpus
+# - noht
 
 . $LKP_SRC/lib/reproduce-log.sh
 
@@ -40,6 +41,36 @@ then
 
 	sleep 3
 	exit 0
+fi
+
+if [ ! -z $noht ]
+then
+	#	Poking smt/control interface is not safe
+	#	echo off > /sys/devices/system/cpu/smt/control
+	#	We need to do this in a stupid way
+
+	cpu_id=0
+	d_cpu=/sys/devices/system/cpu/cpu$cpu_id
+	while [ -d $d_cpu ]
+	do
+		if [ -f $d_cpu/online ]
+		then
+			online=$(cat $d_cpu/online)
+			if [ $online -eq 1 ]
+			then
+				core_cpus=$(cat $d_cpu/topology/core_cpus_list)
+				# Do not offline the last cpu of the core
+				if [ "$core_cpus" != "$cpu_id" ]
+				then
+					echo 0 > $d_cpu/online
+					echo CPU$cpu_id offlined
+					sleep 1
+				fi
+			fi
+		fi
+		cpu_id=$(( $cpu_id + 1 ))
+		d_cpu=/sys/devices/system/cpu/cpu$cpu_id
+	done
 fi
 
 if [ ! -z $offline_cpus ]
