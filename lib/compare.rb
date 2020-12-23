@@ -119,7 +119,7 @@ module Compare
               :include_all_failure_stat_keys, :filter_stat_keys,
               :filter_testcase_stat_keys, :filter_kpi_stat_keys,
               :filter_kpi_stat_strict_keys,
-              :exclude_stat_keys, :stats_field,
+              :exclude_stat_keys, :stats_field, :allowed_stat,
               :gap, :more_stats, :perf_profile_threshold,
               :group_by_stat, :show_empty_group, :compact_show,
               :sort_by_group
@@ -132,6 +132,7 @@ module Compare
       @dedup_mresult_roots = true
       @gap = nil
       @stats_field = nil
+      @allowed_stat = nil
       @perf_profile_threshold = 5
       set_params params
       @stat_calc_funcs = [Compare.method(:calc_stat_change)]
@@ -182,7 +183,7 @@ module Compare
       groups.map do |g|
         next if g.axes_data.size < 2
 
-        Group.new self, g.axes, g.group_axeses, g.axes_data, @stats_field
+        Group.new self, g.axes, g.group_axeses, g.axes_data, 'stats_field' => @stats_field, 'allowed_stat' => @allowed_stat
       end.compact
     end
 
@@ -271,12 +272,13 @@ module Compare
 
     private
 
-    def initialize(comparer, axes, compare_axeses, mresult_roots, stats_field = '')
+    def initialize(comparer, axes, compare_axeses, mresult_roots, options = {})
       @comparer = comparer
       @axes = axes
       @mresult_roots = mresult_roots
       @compare_axeses = compare_axeses
-      @stats_field = stats_field
+      @stats_field = options['stats_field'] || ''
+      @allowed_stat = options['allowed_stat'] || ''
     end
 
     public
@@ -317,12 +319,17 @@ module Compare
       ms = deepcopy(matrixes_in)
       m0 = ms[0]
       expand_matrix(m0, 'stat' => @stats_field)
+
+      options = {
+        'gap' => @comparer.gap,
+        'more' => @comparer.more_stats,
+        'perf-profile' => @comparer.perf_profile_threshold
+      }
+      options['force_' + @allowed_stat] = true unless @allowed_stat.empty?
+
       ms.drop(1).each do |m|
         expand_matrix(m, 'stat' => @stats_field)
-        changes = _get_changed_stats(m, m0,
-                                     'gap' => @comparer.gap,
-                                     'more' => @comparer.more_stats,
-                                     'perf-profile' => @comparer.perf_profile_threshold)
+        changes = _get_changed_stats(m, m0, options)
         changed_stat_keys |= changes.keys if changes
       end
       changed_stat_keys

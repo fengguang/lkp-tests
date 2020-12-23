@@ -602,7 +602,14 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
       next if k =~ /\.pass$/ && !b.keys.any? { |stat| stat == "#{stat_base}.fail" }
     end
 
-    is_function_stat = true if options['force_' + k]
+    is_allowed_stat = false
+    if options['force_' + k]
+      if strict_kpi_stat?(k, nil)
+        is_allowed_stat = true
+      else
+        is_function_stat = true
+      end
+    end
 
     is_latency_stat = is_latency k
     max_margin = if is_function_stat || is_latency_stat
@@ -642,10 +649,12 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
     min_a, mean_a, max_a = get_min_mean_max sorted_a
     next unless max_a
 
-    next unless changed_stats?(sorted_a, min_a, mean_a, max_a,
-                               sorted_b, min_b, mean_b, max_b,
-                               is_function_stat, is_latency_stat,
-                               k, options)
+    unless is_allowed_stat
+      next unless changed_stats?(sorted_a, min_a, mean_a, max_a,
+                                 sorted_b, min_b, mean_b, max_b,
+                                 is_function_stat, is_latency_stat,
+                                 k, options)
+    end
 
     if options['regression-only'] || options['all-critical']
       if is_function_stat
@@ -677,10 +686,12 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
     y = 0 if y < 0
     ratio = MAX_RATIO if ratio > MAX_RATIO
 
-    unless options['perf-profile'] && k =~ /^perf-profile\./
-      next unless ratio > 1.01 # time.elapsed_time only has 0.01s precision
-      next unless ratio > 1.1 || perf_metric?(k)
-      next unless reasonable_perf_change?(k, delta, max)
+    unless is_allowed_stat
+      unless options['perf-profile'] && k =~ /^perf-profile\./
+        next unless ratio > 1.01 # time.elapsed_time only has 0.01s precision
+        next unless ratio > 1.1 || perf_metric?(k)
+        next unless reasonable_perf_change?(k, delta, max)
+      end
     end
 
     interval_a = format('[ %-10.5g - %-10.5g ]', min_a, max_a)
