@@ -1,9 +1,8 @@
-suite: build-pkg
-category: functional
-
-# pkgbuild_repo examples
+# the field of "pkgbuild_repo" refers to the path of PKGBUILD, the examples are as follow:
 # pkgbuild_repo: archlinux/aur-j/java8-openjdk
 # pkgbuild_repo: archlinux/community//keepalived/trunk
 # pkgbuild_repo: archlinux/packages//prometheus-node-exporter/trunk
 
+suite: build-pkg
+category: functional
 build-pkg:
