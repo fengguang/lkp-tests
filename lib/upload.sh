@@ -17,8 +17,7 @@ upload_files_rsync()
 		mkdir -p ${target_directory}
 
 		rsync -a --no-owner --no-group \
-			--chmod=D775,F664 \
-			--ignore-missing-args \
+			--chmod=Dug=rwx,Do=rx,Fug=rw,Fo=r \
 			--min-size=1 \
 			${target_directory%%/*} rsync://$LKP_SERVER$JOB_RESULT_ROOT/
 
@@ -29,8 +28,7 @@ upload_files_rsync()
 	}
 
 	rsync -a --no-owner --no-group \
-		--chmod=D775,F664 \
-		--ignore-missing-args \
+		--chmod=Dug=rwx,Do=rx,Fug=rw,Fo=r \
 		--min-size=1 \
 		"$@" rsync://$LKP_SERVER$JOB_RESULT_ROOT/
 }
