@@ -32,7 +32,7 @@ module Git
     #
     alias orig_init init
     def init(options = {})
-      assert(options[:project], "Git.init: options[:project] can't be #{options[:project].inspect}")
+      options[:project] ||= 'linux'
 
       working_dir = options[:working_dir] || "#{GIT_ROOT_DIR}/#{options[:project]}"
 
@@ -44,7 +44,7 @@ module Git
     #
     alias orig_open open
     def open(options = {})
-      assert(options[:project], "Git.open: options[:project] can't be #{options[:project].inspect}")
+      options[:project] ||= 'linux'
 
       working_dir = options[:working_dir] || "#{GIT_ROOT_DIR}/#{options[:project]}"
 
