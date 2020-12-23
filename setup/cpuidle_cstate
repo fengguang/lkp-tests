@@ -42,8 +42,11 @@ cpu=0
 while [ -d /sys/devices/system/cpu/cpu$cpu ]
 do
 	cpu_dir=/sys/devices/system/cpu/cpu$cpu
-	online_file="$cpu_dir"/online
-	[ -f "$online_file" ] && [ "$(cat "$online_file")" -eq 0 ] && continue
+	cpu=$(( $cpu + 1 ))
+
+	online=1
+	[ -f $cpu_dir/online ] && online=$(cat $cpu_dir/online)
+	[ $online -eq 0 ] && continue
 
 	for cstate in $fb_list
 	do
@@ -51,7 +54,6 @@ do
 	done
 
 	state=1
-	echo CPU$cpu:
 
 	while [ -d $cpu_dir/cpuidle/state$state ]
 	do
@@ -65,5 +67,4 @@ do
 		printf '\t state%s %7s [%10s]: %8s [%8s]\n' $state $name "$desc" $status $default
 		state=$(( $state + 1 ))
 	done
-	cpu=$(( $cpu + 1 ))
 done
