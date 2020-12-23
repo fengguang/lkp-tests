@@ -22,6 +22,11 @@ log_echo "
 
 for i in $(seq 0 $((nr_cpu-1)))
 do
-	[ -n "scaling_max_freq" ] && echo $scaling_max_freq > /sys/devices/system/cpu/cpu$i/cpufreq/scaling_max_freq
-	[ -n "scaling_min_freq" ] && echo $scaling_min_freq > /sys/devices/system/cpu/cpu$i/cpufreq/scaling_min_freq
+	d_cpu=/sys/devices/system/cpu/cpu$i
+
+	online=1
+	[ -f $d_cpu/online ] && online=$(cat $d_cpu/online)
+	[ $online -eq 0 ] && continue
+	[ -n "scaling_max_freq" ] && echo $scaling_max_freq > $d_cpu/cpufreq/scaling_max_freq
+	[ -n "scaling_min_freq" ] && echo $scaling_min_freq > $d_cpu/cpufreq/scaling_min_freq
 done
