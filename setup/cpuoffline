@@ -23,8 +23,13 @@ then
 		done
 		if [ "$match_cpu" = "false" ]
 		then
-			echo 0 > $d_cpu/online
-			echo CPU$cpu_id offlined
+			if [ -f $d_cpu/online ]
+			then
+				echo 0 > $d_cpu/online
+				echo CPU$cpu_id offlined
+			else
+				echo CPU$cpu_id can not be offlined
+			fi
 		else
 			[ -f $d_cpu/online ] && echo 1 > $d_cpu/online
 		fi
@@ -34,13 +39,17 @@ then
 	done
 
 	sleep 3
-	return
+	exit 0
 fi
 
 if [ ! -z $offline_cpus ]
 then
 	for i in $offline_cpus
 	do
+		d_cpu=/sys/devices/system/cpu/cpu$i
+
+		[ -f $d_cpu/online ] || { echo CPU$i can not be offlined; exit 1; }
+
 		echo 0 > $d_cpu/online
 		echo CPU$i offlined
 		sleep 1
@@ -49,16 +58,25 @@ fi
 
 if [ ! -z $offline_package ]
 then
-	cpu_id=1
+	cpu_id=0
 	d_cpu=/sys/devices/system/cpu/cpu$cpu_id
 	while [ -d $d_cpu ]
 	do
-		package_id=$(cat $d_cpu/topology/physical_package_id)
-		echo CPU$cpu_id: physcal_package_id $(cat $d_cpu/topology/physical_package_id), package cpu list: $(cat $d_cpu/topology/package_cpus_list)
-		[ "$package_id" = "$offline_package" ] && { echo 0 > $d_cpu/online; echo CPU$cpu_id offlined; sleep 1; }
+		online=1
+		[ -f $d_cpu/online ] && online=$(cat $d_cpu/online)
+		if [ $online -eq 1 ]
+		then
+			package_id=$(cat $d_cpu/topology/physical_package_id)
+			if [ "$package_id" = "$offline_package" ]
+			then
+				[ -f $d_cpu/online ] || { echo CPU$cpu_id can not be offlined; exit 1; }
+				echo 0 > $d_cpu/online
+				echo CPU$cpu_id offlined
+				sleep 1
+			fi
+		fi
 		cpu_id=$(( $cpu_id + 1 ))
 		d_cpu=/sys/devices/system/cpu/cpu$cpu_id
 	done
-
 fi
 sleep 3
