@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env crystal
 
 REGEX_ANSI_COLOR = /\e\[([0-9;]+m|[mK])/.freeze
 
