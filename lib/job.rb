@@ -254,7 +254,6 @@ class Job
           @overrides.merge!(hash['override']){ |_key, a, _b| a}
           hash.delete('override')
         end
-        hash.delete_if { |key, _| key.start_with?('#!') }
         hash.merge!(@overrides)
         @jobs.concat(multi_args(hash)) # return [hash] or [h1,h2]
       end
@@ -290,6 +289,12 @@ class Job
     jobs_array = []
     hash.each { |key, value|
       next unless key =~ /^\w.*\|.*\w$/
+      next unless key.is_a?(String)
+
+      if key.start_with?('#! ')
+        hash.delete(key)
+        next
+      end
 
       key_array = key.split('|').map(&:strip)
       [value].flatten.each do |v|
