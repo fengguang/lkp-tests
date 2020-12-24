@@ -315,6 +315,13 @@ announce_bootup()
 redirect_stdout_stderr()
 {
 	if is_docker; then
+		[ -e /tmp/stdout ] || touch /tmp/stdout
+		[ -e /tmp/stderr ] || touch /tmp/stderr
+		tail -f /tmp/stdout > /dev/stdout &
+		echo $! >> /tmp/pid-tail-global
+		tail -f /tmp/stderr > /dev/stderr &
+		echo $! >> /tmp/pid-tail-global
+
 		exec  > /tmp/stdout
 		exec 2> /tmp/stderr
 		return
