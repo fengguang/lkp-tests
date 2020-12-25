@@ -314,6 +314,8 @@ announce_bootup()
 
 redirect_stdout_stderr()
 {
+	has_cmd tail || return
+
 	if is_docker; then
 		[ -e /tmp/stdout ] || touch /tmp/stdout
 		[ -e /tmp/stderr ] || touch /tmp/stderr
@@ -328,7 +330,6 @@ redirect_stdout_stderr()
 	fi
 	
 	[ -c /dev/kmsg ] || return
-	has_cmd tail || return
 
 	exec  > /tmp/stdout
 	exec 2> /tmp/stderr
