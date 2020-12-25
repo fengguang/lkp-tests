@@ -4,6 +4,7 @@
 # - upstream_commit
 # - git_tag
 # - pkg_ver
+# - config
 # upstream_url
 
 # We'll use the below global env vars, but not treat them as parameter to avoid
@@ -20,6 +21,7 @@
 
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/distro/common
+. $LKP_SRC/lib/http.sh
 
 check_vars()
 {
@@ -29,6 +31,24 @@ check_vars()
 	[ -n "$pkgbuild_repo" ]		|| die "pkgbuild_repo is empty"
 	[ -n "$upstream_commit" ]	|| die "upstream_commit is empty"
 	[ -n "$os_mount" ]		|| die "os_mount is empty"
+}
+
+get_config()
+{
+	local cci_http_host=${INITRD_HTTP_HOST}
+	local cci_http_port=${INITRD_HTTP_PORT:-8800}
+	export cci_dir=/cci/build-config
+	local remote_dir="http://${cci_http_host}:${cci_http_port}${cci_dir}/${pkgname}"
+
+	mkdir -p ${cci_dir}
+
+	[ -n "$config" ] || return
+	http_get_file "${remote_dir}/${config}" "${cci_dir}/${pkgname}/${config}"
+}
+
+upload_config()
+{
+	upload_to_target_dir "${cci_dir}/${pkgname}"
 }
 
 mount_dest()
@@ -46,7 +66,7 @@ get_pkgfile()
 {
 	curl -sS -H 'Content-Type: Application/json' -XPOST "$LKP_SERVER"':8100/git_command' \
 		-d '{"git_repo": "'$1'", "git_command": ["git-show", "HEAD:'$2'"]}' -o "${2##*/}"
-	}
+}
 
 request_pkg()
 {
@@ -125,13 +145,17 @@ build_source_pkg()
 		fi
 	}
 	replace_source PKGBUILD.src
-
 	create_cgz_name
+	get_config
 
 	PACMAN=true BUILDDIR=$TMP CARCH=$os_arch PKGEXT=.cgz CGZDEST="$cgz_name" \
 		$LKP_SRC/sbin/makepkg ${pkg_args} --config $LKP_SRC/etc/makepkg.conf
 
-	[ "$?" == 0 ] || exit 1
+	local build_state="$?"
+
+	upload_config
+
+	[ "${build_state}" == "0" ] || exit 1
 	create_softlink
 	upload_to_target_dir ${PKG_MNT}/${pack_to}/${pkgname}
 }
