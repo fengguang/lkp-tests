@@ -48,7 +48,10 @@ get_config()
 
 upload_config()
 {
-	upload_to_target_dir "${cci_dir}/${pkgname}"
+	local upload_dir="${cci_dir}/${pkgname}"
+	[ -d "${upload_dir}" ] || return
+
+	upload_to_target_dir "${upload_dir}"
 }
 
 mount_dest()
