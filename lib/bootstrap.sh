@@ -6,6 +6,7 @@
 . $LKP_SRC/lib/reboot.sh
 . $LKP_SRC/lib/ucode.sh
 . $LKP_SRC/lib/tbox.sh
+. $LKP_SRC/lib/detect-system.sh
 
 # borrowed from linux/tools/testing/selftests/rcutorture/doc/initrd.txt
 # Author: Paul E. McKenney <paulmck@linux.vnet.ibm.com>
@@ -236,7 +237,13 @@ run_ntpdate()
 	[ -n "$LKP_SERVER" ] || return
 	is_clearlinux && clearlinux_timesync && return
 
-	[ -x '/usr/sbin/ntpdate' ] || return
+	has_cmd ntpdate || {
+		detect_system
+		local DISTRO=$_system_name_lowercase
+		. $LKP_SRC/distro/installer/$DISTRO $(echo ntpdate | $LKP_SRC/sbin/adapt-packages $DISTRO)
+	}
+
+	has_cmd ntpdate || return
 
 	local hour="$(date +%H)"
 
