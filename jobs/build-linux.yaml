@@ -1,0 +1,4 @@
+suite: build-pkg
+category: functional
+build-pkg:
+config: <%= 'aarch64-randconfig-'+SecureRandom.random_number(1000).to_s %>
