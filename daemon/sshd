@@ -5,12 +5,21 @@
 # sshr_port_len
 # sshr_port_base
 
-. $LKP_SRC/lib/http.sh
+SCRIPT_DIR=$(dirname $(realpath $0))
+PROJECT_DIR=$(dirname $SCRIPT_DIR)
+
+. $PROJECT_DIR/lib/http.sh
+. $PROJECT_DIR/lib/env.sh
 
 sshr_ip=$LKP_SERVER
 [ -n "$sshr_port" ]      || sshr_port=5050
 [ -n "$sshr_port_len" ]  || sshr_port_len=2000
 [ -n "$sshr_port_base" ] || sshr_port_base=50000
+
+generate_key_file()
+{
+	echo -e "y\n" | ssh-keygen -t rsa -b 2048 -N '' -f /etc/ssh/ssh_host_rsa_key
+}
 
 run_ssh()
 {
@@ -18,7 +27,13 @@ run_ssh()
 	umask 0077
 	mkdir -p /root/.ssh
 	echo "$my_ssh_pubkey" > /root/.ssh/authorized_keys
-	systemctl start sshd
+	if is_docker; then
+		generate_key_file
+		sshd_path=$(cmd_path sshd)
+		$sshd_path -q
+	else
+		systemctl start sshd
+	fi
 }
 
 data_success()
