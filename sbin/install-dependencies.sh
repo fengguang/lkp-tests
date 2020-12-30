@@ -16,9 +16,9 @@ linux_dep()
 		;;
 	openEuler|fedora|rhel|centos)
 		if type dnf > /dev/null 2>&1; then
-			dnf install -y --skip-broken ruby rubygems gcc gcc-c++ make ruby-devel git
+			dnf install -y --skip-broken ruby rubygems gcc gcc-c++ make ruby-devel git lftp
 		else
-			yum install -y --skip-broken ruby rubygems gcc gcc-c++ make ruby-devel git
+			yum install -y --skip-broken ruby rubygems gcc gcc-c++ make ruby-devel git lftp
 		fi
 		sudo gem install -f git activesupport rest-client
 		;;
