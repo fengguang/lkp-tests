@@ -87,8 +87,11 @@ class Monitor
   def ssh_connect(ssh_host, ssh_port, web_socket)
     web_socket.close
 
-    exec "ssh-keygen -R #{ssh_host};
-    ssh root@#{ssh_host} -p #{ssh_port} -o StrictHostKeyChecking=no"
+    cmd = "ssh root@#{ssh_host} -p #{ssh_port} -o StrictHostKeyChecking=no"
+    puts cmd
+
+    cmd = "ssh-keygen -R #{ssh_host};" + cmd
+    exec cmd
   end
 
   def stop(data, web_socket, code = 1000, reason = 'normal')
