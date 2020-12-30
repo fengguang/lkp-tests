@@ -1,4 +1,7 @@
 suite: build-pkg
 category: functional
 build-pkg:
-config: <%= 'aarch64-randconfig-'+SecureRandom.random_number(1000).to_s %>
+config: <%=
+        today = Time.new
+        Array.new(100) { |i| 'aarch64-randconfig-' + today.strftime('%Y-%m-%d') + '-' + format('%02d', i) }
+        %>
