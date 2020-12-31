@@ -88,6 +88,8 @@ request_pkg()
 
 create_cgz_name()
 {
+	[ -n "${pkgbase}" ] && pkgname="${pkgbase}"
+
 	cgz_path="$PKG_MNT/${pack_to}/${pkgname}"
 	cgz_name="${cgz_path}/${upstream_commit}.cgz"
 	pkg_args="-A --check --skippgpcheck"
