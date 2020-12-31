@@ -9,7 +9,7 @@ md5sums=('SKIP')
 
 build() {
 	cd "$srcdir/AvxToNeon/tests"
-	make
+	make ARCH=$(arch)
 }
 
 package() {
