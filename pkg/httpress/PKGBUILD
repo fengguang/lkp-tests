@@ -1,0 +1,17 @@
+pkgname=httpress
+pkgver=1
+pkgrel=1
+url='http://ftp.us2.freshrpms.net/linux/RPM/epel/7/aarch64/Packages/h/httpress-1.1.0-2.el7.aarch64.html'
+arch=('aarch64')
+license=('BSD')
+source=("https://download.fedoraproject.org/pub/epel/7/SRPMS/Packages/h/httpress-1.1.0-2.el7.src.rpm")
+md5sums=('SKIP')
+
+package()
+{
+	# The rpm from source maybe not be available
+	# httpress-1.1.0-13.fc31.aarch64.rpm has been validated to be available
+	rpmpkg_path="${pkgdir}/opt/rpms/"
+	mkdir -p "${rpmpkg_path}"
+	cp "${srcdir}/"*.rpm "${rpmpkg_path}"
+}
