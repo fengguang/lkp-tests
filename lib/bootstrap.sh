@@ -160,6 +160,9 @@ setup_network()
 		return
 	}
 
+	$LKP_DEBUG_PREFIX $LKP_SRC/bin/run-ipconfig
+	network_ok && return
+
 	local net_devices=$(get_net_devices)
 	if [ -z "$net_devices" ]; then
 
@@ -180,9 +183,6 @@ setup_network()
 			exit
 		fi
 	fi
-
-	$LKP_DEBUG_PREFIX $LKP_SRC/bin/run-ipconfig
-	network_ok && return
 
 	local err_msg='IP-Config: Auto-configuration of network failed'
 	dmesg | grep -q -F "$err_msg" || {
