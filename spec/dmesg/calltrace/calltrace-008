@@ -1,0 +1,270 @@
+[  235.553325] BUG: sleeping function called from invalid context at arch/x86/mm/fault.c:1351
+[  235.554684] in_atomic(): 0, irqs_disabled(): 1, non_block: 0, pid: 7515, name: trinity-c1
+[  235.555890] 2 locks held by trinity-c1/7515:
+[  235.556506] #0: ffffffff8323dd38 (&ids->rwsem){....}-{3:3}, at: semctl_down+0x6d/0x686 
+[  235.557684] #1: ffff888128ccc868 (&mm->mmap_lock#2){....}-{3:3}, at: do_user_addr_fault+0x196/0x59e 
+[  235.559020] CPU: 1 PID: 7515 Comm: trinity-c1 Not tainted 5.10.0-g97593cad003c #2
+[  235.560317] Call Trace:
+[  235.560767] dump_stack+0x7d/0xa3 
+[  235.561371] ___might_sleep+0x2c4/0x2df 
+[  235.562063] ? do_user_addr_fault+0x196/0x59e 
+[  235.562834] do_user_addr_fault+0x234/0x59e 
+[  235.563519] exc_page_fault+0x70/0x8b 
+[  235.564112] asm_exc_page_fault+0x1b/0x20 
+[  235.564754] RIP: kasan_record_aux_stack+0x64/0x74 
+[ 235.565603] Code: 48 f7 fe 8b 47 24 49 89 f0 8d 70 ff 41 0f af f0 48 01 ce 48 29 d3 48 39 f3 48 0f 46 f3 e8 6f e5 ff ff bf 00 08 00 00 48 89 c3 <8b> 40 08 89 43 0c e8 fb e2 ff ff 89 43 08 5b c3 53 48 89 f3 e8 61
+All code
+========
+   0:	48 f7 fe             	idiv   %rsi
+   3:	8b 47 24             	mov    0x24(%rdi),%eax
+   6:	49 89 f0             	mov    %rsi,%r8
+   9:	8d 70 ff             	lea    -0x1(%rax),%esi
+   c:	41 0f af f0          	imul   %r8d,%esi
+  10:	48 01 ce             	add    %rcx,%rsi
+  13:	48 29 d3             	sub    %rdx,%rbx
+  16:	48 39 f3             	cmp    %rsi,%rbx
+  19:	48 0f 46 f3          	cmovbe %rbx,%rsi
+  1d:	e8 6f e5 ff ff       	callq  0xffffffffffffe591
+  22:	bf 00 08 00 00       	mov    $0x800,%edi
+  27:	48 89 c3             	mov    %rax,%rbx
+  2a:*	8b 40 08             	mov    0x8(%rax),%eax		<-- trapping instruction
+  2d:	89 43 0c             	mov    %eax,0xc(%rbx)
+  30:	e8 fb e2 ff ff       	callq  0xffffffffffffe330
+  35:	89 43 08             	mov    %eax,0x8(%rbx)
+  38:	5b                   	pop    %rbx
+  39:	c3                   	retq   
+  3a:	53                   	push   %rbx
+  3b:	48 89 f3             	mov    %rsi,%rbx
+  3e:	e8                   	.byte 0xe8
+  3f:	61                   	(bad)  
+
+Code starting with the faulting instruction
+===========================================
+   0:	8b 40 08             	mov    0x8(%rax),%eax
+   3:	89 43 0c             	mov    %eax,0xc(%rbx)
+   6:	e8 fb e2 ff ff       	callq  0xffffffffffffe306
+   b:	89 43 08             	mov    %eax,0x8(%rbx)
+   e:	5b                   	pop    %rbx
+   f:	c3                   	retq   
+  10:	53                   	push   %rbx
+  11:	48 89 f3             	mov    %rsi,%rbx
+  14:	e8                   	.byte 0xe8
+  15:	61                   	(bad)  
+[  235.568479] RSP: 0000:ffff88811f29fce8 EFLAGS: 00010046
+[  235.569415] RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffff88813a800000
+[  235.570645] RDX: 0000000000000080 RSI: ffff88813a800000 RDI: 0000000000000800
+[  235.571721] RBP: 00000000001ea2c0 R08: 0000000000000000 R09: 0000000000000001
+[  235.572728] R10: ffffed1027500013 R11: ffff88813a800093 R12: ffff88813a800080
+[  235.573700] R13: 0000000000000000 R14: ffff88813a8000f8 R15: 0000000000000246
+[  235.574793] ? kasan_record_aux_stack+0x5c/0x74 
+[  235.575536] ? sem_more_checks+0x6c/0x6c 
+[  235.576171] call_rcu+0xbe/0x96f 
+[  235.576668] ? lock_downgrade+0x46b/0x46b 
+[  235.577343] ? do_nocb_bypass_wakeup_timer+0x65/0x65 
+[  235.578220] semctl_down+0x602/0x686 
+[  235.579015] ? sem_lock_and_putref+0x1b/0x1b 
+[  235.579762] ? kvm_sched_clock_read+0x5/0xd 
+[  235.580517] ? paravirt_sched_clock+0x5/0x8 
+[  235.581259] compat_ksys_semctl+0x1a8/0x1de 
+[  235.582005] ? semctl_main+0x81b/0x81b 
+[  235.582675] ? lock_downgrade+0x46b/0x46b 
+[  235.583340] ? get_vtime_delta+0x83/0x115 
+[  235.583994] ? do_write_seqcount_end+0x12/0x42 
+[  235.584724] do_int80_syscall_32+0x38/0x45 
+[  235.585383] entry_INT80_compat+0x82/0x87 
+[  235.586014] RIP: 0023:0xf7ef1a02
+[ 235.586543] Code: 95 01 00 05 25 36 02 00 83 ec 14 8d 80 e8 99 ff ff 50 6a 02 e8 1f ff 00 00 c7 04 24 7f 00 00 00 e8 7e 87 01 00 66 90 90 cd 80 <c3> 8d b6 00 00 00 00 8d bc 27 00 00 00 00 8b 1c 24 c3 8d b6 00 00
+All code
+========
+   0:	95                   	xchg   %eax,%ebp
+   1:	01 00                	add    %eax,(%rax)
+   3:	05 25 36 02 00       	add    $0x23625,%eax
+   8:	83 ec 14             	sub    $0x14,%esp
+   b:	8d 80 e8 99 ff ff    	lea    -0x6618(%rax),%eax
+  11:	50                   	push   %rax
+  12:	6a 02                	pushq  $0x2
+  14:	e8 1f ff 00 00       	callq  0xff38
+  19:	c7 04 24 7f 00 00 00 	movl   $0x7f,(%rsp)
+  20:	e8 7e 87 01 00       	callq  0x187a3
+  25:	66 90                	xchg   %ax,%ax
+  27:	90                   	nop
+  28:	cd 80                	int    $0x80
+  2a:*	c3                   	retq   		<-- trapping instruction
+  2b:	8d b6 00 00 00 00    	lea    0x0(%rsi),%esi
+  31:	8d bc 27 00 00 00 00 	lea    0x0(%rdi,%riz,1),%edi
+  38:	8b 1c 24             	mov    (%rsp),%ebx
+  3b:	c3                   	retq   
+  3c:	8d                   	.byte 0x8d
+  3d:	b6 00                	mov    $0x0,%dh
+	...
+
+Code starting with the faulting instruction
+===========================================
+   0:	c3                   	retq   
+   1:	8d b6 00 00 00 00    	lea    0x0(%rsi),%esi
+   7:	8d bc 27 00 00 00 00 	lea    0x0(%rdi,%riz,1),%edi
+   e:	8b 1c 24             	mov    (%rsp),%ebx
+  11:	c3                   	retq   
+  12:	8d                   	.byte 0x8d
+  13:	b6 00                	mov    $0x0,%dh
+	...
+[  235.589764] RSP: 002b:00000000ffe6b0f8 EFLAGS: 00000292 ORIG_RAX: 000000000000018a
+[  235.591049] RAX: ffffffffffffffda RBX: 0000000000000081 RCX: 0000000000000001
+[  235.592230] RDX: 0000000000000000 RSI: 0000000000004000 RDI: 00000000000000ff
+[  235.593329] RBP: 000000007aeed3f6 R08: 0000000000000000 R09: 0000000000000000
+[  235.594454] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
+[  235.595609] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+[  235.596810] BUG: kernel NULL pointer dereference, address: 0000000000000008
+[  235.598027] #PF: supervisor read access in kernel mode
+[  235.598952] #PF: error_code(0x0000) - not-present page
+[  235.599857] PGD 8000000118306067 P4D 8000000118306067 PUD 11ac1e067 PMD 15b2e9067 PTE 0
+[  235.601232] Oops: 0000 [#1] SMP KASAN PTI
+[  235.601936] CPU: 1 PID: 7515 Comm: trinity-c1 Tainted: G        W         5.10.0-g97593cad003c #2
+[  235.603475] RIP: kasan_record_aux_stack+0x64/0x74 
+[ 235.604329] Code: 48 f7 fe 8b 47 24 49 89 f0 8d 70 ff 41 0f af f0 48 01 ce 48 29 d3 48 39 f3 48 0f 46 f3 e8 6f e5 ff ff bf 00 08 00 00 48 89 c3 <8b> 40 08 89 43 0c e8 fb e2 ff ff 89 43 08 5b c3 53 48 89 f3 e8 61
+All code
+========
+   0:	48 f7 fe             	idiv   %rsi
+   3:	8b 47 24             	mov    0x24(%rdi),%eax
+   6:	49 89 f0             	mov    %rsi,%r8
+   9:	8d 70 ff             	lea    -0x1(%rax),%esi
+   c:	41 0f af f0          	imul   %r8d,%esi
+  10:	48 01 ce             	add    %rcx,%rsi
+  13:	48 29 d3             	sub    %rdx,%rbx
+  16:	48 39 f3             	cmp    %rsi,%rbx
+  19:	48 0f 46 f3          	cmovbe %rbx,%rsi
+  1d:	e8 6f e5 ff ff       	callq  0xffffffffffffe591
+  22:	bf 00 08 00 00       	mov    $0x800,%edi
+  27:	48 89 c3             	mov    %rax,%rbx
+  2a:*	8b 40 08             	mov    0x8(%rax),%eax		<-- trapping instruction
+  2d:	89 43 0c             	mov    %eax,0xc(%rbx)
+  30:	e8 fb e2 ff ff       	callq  0xffffffffffffe330
+  35:	89 43 08             	mov    %eax,0x8(%rbx)
+  38:	5b                   	pop    %rbx
+  39:	c3                   	retq   
+  3a:	53                   	push   %rbx
+  3b:	48 89 f3             	mov    %rsi,%rbx
+  3e:	e8                   	.byte 0xe8
+  3f:	61                   	(bad)  
+
+Code starting with the faulting instruction
+===========================================
+   0:	8b 40 08             	mov    0x8(%rax),%eax
+   3:	89 43 0c             	mov    %eax,0xc(%rbx)
+   6:	e8 fb e2 ff ff       	callq  0xffffffffffffe306
+   b:	89 43 08             	mov    %eax,0x8(%rbx)
+   e:	5b                   	pop    %rbx
+   f:	c3                   	retq   
+  10:	53                   	push   %rbx
+  11:	48 89 f3             	mov    %rsi,%rbx
+  14:	e8                   	.byte 0xe8
+  15:	61                   	(bad)  
+[  235.607111] RSP: 0000:ffff88811f29fce8 EFLAGS: 00010046
+[  235.607964] RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffff88813a800000
+[  235.609165] RDX: 0000000000000080 RSI: ffff88813a800000 RDI: 0000000000000800
+[  235.610409] RBP: 00000000001ea2c0 R08: 0000000000000000 R09: 0000000000000001
+[  235.611834] R10: ffffed1027500013 R11: ffff88813a800093 R12: ffff88813a800080
+[  235.613110] R13: 0000000000000000 R14: ffff88813a8000f8 R15: 0000000000000246
+[  235.614379] FS:  0000000000000000(0000) GS:ffff8881e8a00000(0063) knlGS:00000000f7eec840
+[  235.615685] CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
+[  235.616545] CR2: 0000000000000008 CR3: 00000001100b0000 CR4: 00000000000406a0
+[  235.617684] Call Trace:
+[  235.618092] ? sem_more_checks+0x6c/0x6c 
+[  235.618706] call_rcu+0xbe/0x96f 
+[  235.619190] ? lock_downgrade+0x46b/0x46b 
+[  235.619825] ? do_nocb_bypass_wakeup_timer+0x65/0x65 
+[  235.620678] semctl_down+0x602/0x686 
+[  235.621319] ? sem_lock_and_putref+0x1b/0x1b 
+[  235.622096] ? kvm_sched_clock_read+0x5/0xd 
+[  235.622855] ? paravirt_sched_clock+0x5/0x8 
+[  235.623616] compat_ksys_semctl+0x1a8/0x1de 
+[  235.624377] ? semctl_main+0x81b/0x81b 
+[  235.625066] ? lock_downgrade+0x46b/0x46b 
+[  235.625799] ? get_vtime_delta+0x83/0x115 
+[  235.626468] ? do_write_seqcount_end+0x12/0x42 
+[  235.627214] do_int80_syscall_32+0x38/0x45 
+[  235.627854] entry_INT80_compat+0x82/0x87 
+[  235.628552] RIP: 0023:0xf7ef1a02
+[ 235.629128] Code: 95 01 00 05 25 36 02 00 83 ec 14 8d 80 e8 99 ff ff 50 6a 02 e8 1f ff 00 00 c7 04 24 7f 00 00 00 e8 7e 87 01 00 66 90 90 cd 80 <c3> 8d b6 00 00 00 00 8d bc 27 00 00 00 00 8b 1c 24 c3 8d b6 00 00
+All code
+========
+   0:	95                   	xchg   %eax,%ebp
+   1:	01 00                	add    %eax,(%rax)
+   3:	05 25 36 02 00       	add    $0x23625,%eax
+   8:	83 ec 14             	sub    $0x14,%esp
+   b:	8d 80 e8 99 ff ff    	lea    -0x6618(%rax),%eax
+  11:	50                   	push   %rax
+  12:	6a 02                	pushq  $0x2
+  14:	e8 1f ff 00 00       	callq  0xff38
+  19:	c7 04 24 7f 00 00 00 	movl   $0x7f,(%rsp)
+  20:	e8 7e 87 01 00       	callq  0x187a3
+  25:	66 90                	xchg   %ax,%ax
+  27:	90                   	nop
+  28:	cd 80                	int    $0x80
+  2a:*	c3                   	retq   		<-- trapping instruction
+  2b:	8d b6 00 00 00 00    	lea    0x0(%rsi),%esi
+  31:	8d bc 27 00 00 00 00 	lea    0x0(%rdi,%riz,1),%edi
+  38:	8b 1c 24             	mov    (%rsp),%ebx
+  3b:	c3                   	retq   
+  3c:	8d                   	.byte 0x8d
+  3d:	b6 00                	mov    $0x0,%dh
+	...
+
+Code starting with the faulting instruction
+===========================================
+   0:	c3                   	retq   
+   1:	8d b6 00 00 00 00    	lea    0x0(%rsi),%esi
+   7:	8d bc 27 00 00 00 00 	lea    0x0(%rdi,%riz,1),%edi
+   e:	8b 1c 24             	mov    (%rsp),%ebx
+  11:	c3                   	retq   
+  12:	8d                   	.byte 0x8d
+  13:	b6 00                	mov    $0x0,%dh
+	...
+[  235.632253] RSP: 002b:00000000ffe6b0f8 EFLAGS: 00000292 ORIG_RAX: 000000000000018a
+[  235.633500] RAX: ffffffffffffffda RBX: 0000000000000081 RCX: 0000000000000001
+[  235.634649] RDX: 0000000000000000 RSI: 0000000000004000 RDI: 00000000000000ff
+[  235.635722] RBP: 000000007aeed3f6 R08: 0000000000000000 R09: 0000000000000000
+[  235.636865] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
+[  235.638130] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+[  235.639416] Modules linked in: mousedev crc32c_intel evdev psmouse autofs4
+[  235.640669] CR2: 0000000000000008
+[  235.641281] ---[ end trace 21817c93fd871d30 ]---
+[  235.642019] RIP: kasan_record_aux_stack+0x64/0x74 
+[ 235.642932] Code: 48 f7 fe 8b 47 24 49 89 f0 8d 70 ff 41 0f af f0 48 01 ce 48 29 d3 48 39 f3 48 0f 46 f3 e8 6f e5 ff ff bf 00 08 00 00 48 89 c3 <8b> 40 08 89 43 0c e8 fb e2 ff ff 89 43 08 5b c3 53 48 89 f3 e8 61
+All code
+========
+   0:	48 f7 fe             	idiv   %rsi
+   3:	8b 47 24             	mov    0x24(%rdi),%eax
+   6:	49 89 f0             	mov    %rsi,%r8
+   9:	8d 70 ff             	lea    -0x1(%rax),%esi
+   c:	41 0f af f0          	imul   %r8d,%esi
+  10:	48 01 ce             	add    %rcx,%rsi
+  13:	48 29 d3             	sub    %rdx,%rbx
+  16:	48 39 f3             	cmp    %rsi,%rbx
+  19:	48 0f 46 f3          	cmovbe %rbx,%rsi
+  1d:	e8 6f e5 ff ff       	callq  0xffffffffffffe591
+  22:	bf 00 08 00 00       	mov    $0x800,%edi
+  27:	48 89 c3             	mov    %rax,%rbx
+  2a:*	8b 40 08             	mov    0x8(%rax),%eax		<-- trapping instruction
+  2d:	89 43 0c             	mov    %eax,0xc(%rbx)
+  30:	e8 fb e2 ff ff       	callq  0xffffffffffffe330
+  35:	89 43 08             	mov    %eax,0x8(%rbx)
+  38:	5b                   	pop    %rbx
+  39:	c3                   	retq   
+  3a:	53                   	push   %rbx
+  3b:	48 89 f3             	mov    %rsi,%rbx
+  3e:	e8                   	.byte 0xe8
+  3f:	61                   	(bad)  
+
+Code starting with the faulting instruction
+===========================================
+   0:	8b 40 08             	mov    0x8(%rax),%eax
+   3:	89 43 0c             	mov    %eax,0xc(%rbx)
+   6:	e8 fb e2 ff ff       	callq  0xffffffffffffe306
+   b:	89 43 08             	mov    %eax,0x8(%rbx)
+   e:	5b                   	pop    %rbx
+   f:	c3                   	retq   
+  10:	53                   	push   %rbx
+  11:	48 89 f3             	mov    %rsi,%rbx
+  14:	e8                   	.byte 0xe8
+  15:	61                   	(bad)  

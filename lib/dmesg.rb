@@ -461,6 +461,7 @@ def get_content(dmesg_file)
 end
 
 CALLTRACE_LIMIT_LEN = 100
+DECODE_FLAG = 'Code starting with the faulting instruction'.freeze
 def get_crash_calltraces(dmesg_file)
   dmesg_content = get_content(dmesg_file)
 
@@ -468,6 +469,9 @@ def get_crash_calltraces(dmesg_file)
   index = 0
   line_count = 0
   in_calltrace = false
+  end_calltrace = false
+  in_decode = false
+  decode_stacktrace = dmesg_content.include?(DECODE_FLAG)
 
   dmesg_content.each_line do |line|
     if line =~ / BUG: | WARNING: | INFO: | UBSAN: | kernel BUG at /
@@ -477,15 +481,26 @@ def get_crash_calltraces(dmesg_file)
       line_count = 1
     elsif line.index('---[ end trace ') && in_calltrace
       in_calltrace = false
+      end_calltrace = true
       calltraces[index] << line
-      index += 1
+      index += 1 unless decode_stacktrace
     elsif in_calltrace
       calltraces[index] << line
       line_count += 1
       if line_count > CALLTRACE_LIMIT_LEN
         line_count = 0
         in_calltrace = false
+        end_calltrace = true
+        index += 1 unless decode_stacktrace
+      end
+    elsif !in_calltrace && end_calltrace && decode_stacktrace
+      if in_decode && line !~ /^(===|  ( [0-9a-f]|[0-9a-f]{2}):| +\.\.\.)/
+        decode_stacktrace = false
+        in_decode = false
         index += 1
+      else
+        calltraces[index] << line
+        in_decode = true if line.index(DECODE_FLAG)
       end
     end
   end
