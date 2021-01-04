@@ -240,6 +240,10 @@ run_ntpdate()
 	has_cmd ntpdate || {
 		detect_system
 		local DISTRO=$_system_name_lowercase
+		[ "$DISTRO" == "unknown" ] && {
+			echo "[WARNING] Current os cannot be recognized by lkp-test, so skip run_ntpdate."
+			return
+		}
 		. $LKP_SRC/distro/installer/$DISTRO $(echo ntpdate | $LKP_SRC/sbin/adapt-packages $DISTRO)
 	}
 
