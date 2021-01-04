@@ -2,6 +2,6 @@ suite: build-pkg
 category: functional
 build-pkg:
 config: <%=
-        today = Time.new
-        Array.new(100) { |i| 'aarch64-randconfig-' + today.strftime('%Y-%m-%d') + '-' + format('%02d', i) }
+        today = Time.new.strftime('%Y-%m-%d')
+        Array.new(100) { |i| "aarch64-randconfig-#{today}-" + format('%02d', i) }
         %>
