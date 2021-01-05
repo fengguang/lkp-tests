@@ -71,7 +71,8 @@ get_net_devices()
 net_devices_link()
 {
 	local operation=$1
-	local net_devices=$(get_net_devices)
+	local net_devices
+	net_devices=$(get_net_devices)
 	local ndev
 	for ndev in $net_devices
 	do
