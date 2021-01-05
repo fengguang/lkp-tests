@@ -73,7 +73,7 @@ get_net_devices()
 net_devices_link()
 {
 	local operation=$1
-	local net_devices=$(get_net_devices)
+	local net_devices="$(get_net_devices)"
 	local ndev
 	for ndev in $net_devices
 	do
@@ -163,7 +163,7 @@ setup_network()
 	$LKP_DEBUG_PREFIX $LKP_SRC/bin/run-ipconfig
 	network_ok && return
 
-	local net_devices=$(get_net_devices)
+	local net_devices="$(get_net_devices)"
 	if [ -z "$net_devices" ]; then
 
 		warn_no_eth0
