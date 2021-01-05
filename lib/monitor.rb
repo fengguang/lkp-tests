@@ -27,12 +27,13 @@ class Monitor
     @result = []
     @stop_query = {}
     @reason = nil
+    @result_root = nil
   end
 
   def load_default
     return unless @monitor_url == ''
 
-    if host = @job["SCHED_HOST"]
+    if host = @job['SCHED_HOST']
       return @monitor_url = "ws://#{host}:11310/filter"
     end
 
@@ -94,6 +95,32 @@ class Monitor
     exec cmd
   end
 
+  def set_result_root(data)
+    return unless @action['lftp_result']
+    return unless data['log']
+
+    data = JSON.parse(data['log'])
+    return unless data['result_root']
+
+    @result_root = data['result_root']
+  end
+
+  def lftp_mirror
+    @result_root.delete_prefix!('/srv')
+    srv_http_host = job['SRV_HTTP_HOST'] || '124.160.11.58'
+    srv_http_port = job['SRV_HTTP_PORT'] || '11300'
+    url = "http://#{srv_http_host}:#{srv_http_port}#{@result_root}"
+    system "lftp -c mirror #{url} >/dev/null 2>&1"
+  end
+
+  def lftp(data)
+    if @result_root
+      lftp_mirror
+    else
+      set_result_root(data)
+    end
+  end
+
   def stop(data, web_socket, code = 1000, reason = 'normal')
     @stop_query.each do |key, value|
       return false unless data[key] == value
@@ -109,7 +136,7 @@ class Monitor
 
     @query.each do |k, v|
       @query[k] = JSON.parse(v)
-    rescue
+    rescue StandardError
     end
     query = @query.to_json
     puts "query=>#{query}"
@@ -136,6 +163,7 @@ class Monitor
 
         output(data)
         connect(data, ws)
+        lftp(data)
 
         stop(data, ws) if @action['stop']
       end

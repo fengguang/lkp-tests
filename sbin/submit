@@ -47,6 +47,10 @@ options = OptionParser.new do |opts|
     actions << 'connect'
   end
 
+  opts.on('-l', '--lftp', 'lftp mirror job result') do
+    actions << 'lftp_result'
+  end
+
   opts.on('-m', '--monitor', "monitor job status: use -m 'KEY: VALUE' to add rule") do
     opt_monitor = true
     filter = YAML.load ARGV[0] if ARGV[0]
