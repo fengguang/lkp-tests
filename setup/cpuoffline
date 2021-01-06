@@ -9,6 +9,7 @@
 # online_cpus overrides the denied list
 if [ ! -z $online_cpus ]
 then
+	echo Online CPUs: $online_cpus
 	cpu_id=0
 	d_cpu=/sys/devices/system/cpu/cpu$cpu_id
 	while [ -d $d_cpu ]
@@ -45,6 +46,7 @@ fi
 
 if [ ! -z $noht ]
 then
+	echo Disabling HT
 	#	Poking smt/control interface is not safe
 	#	echo off > /sys/devices/system/cpu/smt/control
 	#	We need to do this in a stupid way
@@ -75,6 +77,7 @@ fi
 
 if [ ! -z $offline_cpus ]
 then
+	echo Offline CPUs: $offline_cpus
 	for i in $offline_cpus
 	do
 		d_cpu=/sys/devices/system/cpu/cpu$i
@@ -89,6 +92,7 @@ fi
 
 if [ ! -z $offline_package ]
 then
+	echo Offline Package: $offline_package
 	cpu_id=0
 	d_cpu=/sys/devices/system/cpu/cpu$cpu_id
 	while [ -d $d_cpu ]
