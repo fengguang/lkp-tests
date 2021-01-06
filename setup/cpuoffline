@@ -6,6 +6,32 @@
 
 . $LKP_SRC/lib/reproduce-log.sh
 
+cat >> "$TMP_RESULT_ROOT/post-run.cpuoffline" <<EOF
+#!/bin/bash
+
+id=0
+while true
+do
+	d_cpu=/sys/devices/system/cpu/cpu\$id
+	[ -d \$d_cpu ] || break
+	if [ -f \$d_cpu/online ]
+	then
+		online=\$(cat \$d_cpu/online)
+		if [ \$online -eq 0 ]
+		then
+			echo "Online CPU\$id"
+			echo 1 > \$d_cpu/online
+			sleep 1
+		fi
+	fi
+	id=\$(( \$id + 1 ))
+done
+sleep 1
+EOF
+
+echo $TMP_RESULT_ROOT/post-run.cpuoffline created
+cat $TMP_RESULT_ROOT/post-run.cpuoffline
+
 # online_cpus overrides the denied list
 if [ ! -z $online_cpus ]
 then
