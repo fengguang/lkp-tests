@@ -1,0 +1,14 @@
+ssh_pub_key:
+        <%=
+         begin
+           File.read("#{ENV['HOME']}/.ssh/id_rsa.pub").chomp
+         rescue
+           nil
+         end
+         %>
+sshd:
+sleep: 6h
+
+on_fail:
+        sshd:
+        sleep: 6h
