@@ -119,7 +119,8 @@ module Compare
               :include_all_failure_stat_keys, :filter_stat_keys,
               :filter_testcase_stat_keys, :filter_kpi_stat_keys,
               :filter_kpi_stat_strict_keys,
-              :exclude_stat_keys, :stats_field, :allowed_stat,
+              :exclude_stat_keys, :exclude_result_roots,
+              :stats_field, :allowed_stat,
               :gap, :more_stats, :perf_profile_threshold,
               :group_by_stat, :show_empty_group, :compact_show,
               :sort_by_group
@@ -133,9 +134,22 @@ module Compare
       @gap = nil
       @stats_field = nil
       @allowed_stat = nil
+      @exclude_result_roots = nil
       @perf_profile_threshold = 5
       set_params params
       @stat_calc_funcs = [Compare.method(:calc_stat_change)]
+    end
+
+    # Convert string to hash:
+    # "commit/1,2,3" => { commit => [1, 2, 3] }
+    def convert_exclude_result_roots
+      return nil if @exclude_result_roots.to_s.empty?
+
+      arr = @exclude_result_roots.split('/')
+      return { arr[0] => arr[1].split(',').delete_if(&:empty?) } if arr.size == 2 && sha1_40?(arr[0]) && arr[1] =~ /[0-9,]+/
+
+      log_error "invalid exclude_result_roots #{@exclude_result_roots}, should be '<commit_sha_40>/<num_1>,<num_2>'"
+      nil
     end
 
     public
@@ -183,7 +197,10 @@ module Compare
       groups.map do |g|
         next if g.axes_data.size < 2
 
-        Group.new self, g.axes, g.group_axeses, g.axes_data, 'stats_field' => @stats_field, 'allowed_stat' => @allowed_stat
+        Group.new self, g.axes, g.group_axeses, g.axes_data, \
+                  'stats_field' => @stats_field, \
+                  'allowed_stat' => @allowed_stat, \
+                  'exclude_result_roots' => convert_exclude_result_roots
       end.compact
     end
 
@@ -279,12 +296,36 @@ module Compare
       @compare_axeses = compare_axeses
       @stats_field = options['stats_field'] || ''
       @allowed_stat = options['allowed_stat'] || ''
+      @exclude_result_roots = options['exclude_result_roots'] || {}
     end
 
     public
 
+    def update_matrix(mresult_root)
+      matrix = mresult_root.matrix
+      commit = File.basename(mresult_root.mresult_root_path)
+      return matrix unless @exclude_result_roots[commit]
+
+      @exclude_result_roots[commit].each do |i|
+        stats_path = File.join(mresult_root.mresult_root_path, i, 'stats.json')
+        stats = try_load_json(stats_path)
+        next unless stats
+
+        stats.each do |k, v|
+          mv = matrix[k]
+          matrix[k].delete_at(mv.index(v)) if mv.is_a?(Array) && mv.index(v)
+        end
+        matrix['stats_source'].delete_at(matrix['stats_source'].index(stats_path))
+      end
+      matrix
+    end
+
     def matrixes
-      mresult_roots.map { |_rt| _rt.matrix.freeze }
+      if @exclude_result_roots.empty?
+        mresult_roots.map { |_rt| _rt.matrix.freeze }
+      else
+        mresult_roots.map { |_rt| update_matrix(_rt).freeze }
+      end
     end
 
     def complete_matrixes(ms = nil)
