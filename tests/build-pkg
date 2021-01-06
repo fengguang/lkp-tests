@@ -95,11 +95,11 @@ create_cgz_name()
 	pkg_args="-A --check --skippgpcheck"
 
         [ -n "$git_tag" ] && {
-		cgz_name="${cgz_path}/${git_tag}.cgz"
+		cgz_name="${cgz_path}/${git_tag}-${pkgrel}.cgz"
 	}
 
 	[ -n "$pkg_ver" ] && {
-		cgz_name="${cgz_path}/${pkg_ver}.cgz"
+		cgz_name="${cgz_path}/${pkg_ver}-${pkgrel}.cgz"
 		pkg_args="${pkg_args} --skipchecksums --skipinteg"
 	}
 }
