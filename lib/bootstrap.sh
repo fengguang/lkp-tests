@@ -244,6 +244,10 @@ run_ntpdate()
 			echo "[WARNING] Current os cannot be recognized by lkp-test, so skip run_ntpdate."
 			return
 		}
+		has_cmd ruby || {
+			echo "[WARNING] Cannot find ruby in $DISTRO, so skip run_ntpdate."
+			return
+		}
 		. $LKP_SRC/distro/installer/$DISTRO $(echo ntpdate | $LKP_SRC/sbin/adapt-packages $DISTRO)
 	}
 
