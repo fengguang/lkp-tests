@@ -1,4 +1,5 @@
 suite: bisect
 docker_image: delimiter:latest
-testbox: dc-1g-bisect
+testbox: dc-1g
+queue: dc-1g-bisect
 bisect:
