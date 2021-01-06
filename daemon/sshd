@@ -39,13 +39,11 @@ run_ssh()
 data_success()
 {
 	data="To: $my_email
-Subject: [NOTIFY Compass-ci] Machine application successful
+Subject: [NOTIFY Compass-CI] Machine application successful
 
-Dear $my_username:
+Dear $my_username,
 
-	Thanks for your participation in software ecosystem!
-	According to your application, the test machine has been provisioned.
-	The datails are as follows:
+	Your test machine has been provisioned.
 
 	Login:
 		ssh root@api.compass-ci.openeuler.org -p $port
@@ -59,7 +57,7 @@ Dear $my_username:
 		$os $os_version $os_arch
 
 Regards
-Compass-Ci
+Compass-CI
 "
 }
 
