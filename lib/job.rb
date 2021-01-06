@@ -288,13 +288,14 @@ class Job
   def multi_args(hash)
     jobs_array = []
     hash.each { |key, value|
-      next unless key =~ /^\w.*\|.*\w$/
       next unless key.is_a?(String)
 
       if key.start_with?('#! ')
         hash.delete(key)
         next
       end
+
+      next unless key =~ /^\w.*\|.*\w$/
 
       key_array = key.split('|').map(&:strip)
       [value].flatten.each do |v|
