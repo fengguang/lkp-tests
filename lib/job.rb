@@ -255,6 +255,7 @@ class Job
           hash.delete('override')
         end
         hash.merge!(@overrides)
+        hash.merge!(fault_reproduction) if hash.has_key?("id")
         @jobs.concat(multi_args(hash)) # return [hash] or [h1,h2]
       end
     rescue StandardError => e
@@ -283,6 +284,10 @@ class Job
     @job.merge!(@jobs.shift)
     @job['job_origin'] ||= jobfile
     @jobfile = jobfile
+  end
+
+  def fault_reproduction
+    wait = load_yaml("#{lkp_src}/jobs/fault_reproduction.yaml", {})
   end
 
   def multi_args(hash)
