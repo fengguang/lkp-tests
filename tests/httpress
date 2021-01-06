@@ -1,0 +1,136 @@
+#!/bin/sh
+# - nic
+# - nic_ip
+# - request_ip
+# - request_port
+# - request_index
+# - core_nums
+# - protocol
+# - alive_type
+
+. $LKP_SRC/lib/env.sh
+
+: "${request_index:=index.html}"
+: "${core_nums:=4}"
+: "${protocol:=http}"
+: "${alive_type:=short}"
+
+core_range=0-15
+
+http_long_requests()
+{
+	if [ "$core_nums" == 4 ]; then
+		requests_num=3000000
+		threads_num=100
+		concurrent_num=100
+		httpress -n "$requests_num" -c "$concurrent_num" -t "$threads_num" -k "$request_url"
+	elif [ "$core_nums" == 8 ]; then
+		requests_num=5000000
+		threads_num=300
+		concurrent_num=300
+		httpress -n "$requests_num" -c "$concurrent_num" -t "$threads_num" -k "$request_url"
+	elif [ "$core_nums" == 48 ]; then
+		requests_num=50000000
+		threads_num=1200
+		concurrent_num=1200
+		ethtool -L $nic combined 16 && /lkp/lkp/src/bin/set_nic_irq_affinity $core_range $nic
+		numactl -C 16-95 httpress -n "$requests_num" -c "$concurrent_num" -t "$threads_num" -k "$request_url"
+	elif [ "$core_nums" == 96 ]; then
+		requests_num=50000000
+		threads_num=400
+		concurrent_num=400
+		ethtool -L $nic combined 16 && /lkp/lkp/src/bin/set_nic_irq_affinity $core_range $nic
+		numactl -C 16-95 httpress -n "$requests_num" -c "$concurrent_num" -t "$threads_num" -k "$request_url"
+	fi
+}
+
+http_short_requests()
+{
+	if [ "$core_nums" == 4 ]; then
+		requests_num=3000000
+		threads_num=300
+		concurrent_num=300
+		httpress -n "$requests_num" -c "$concurrent_num" -t "$threads_num" "$request_url"
+	elif [ "$core_nums" == 8 ]; then
+		requests_num=5000000
+		threads_num=400
+		concurrent_num=400
+		httpress -n "$requests_num" -c "$concurrent_num" -t "$threads_num" "$request_url"
+	elif [ "$core_nums" == 48 ]; then
+		requests_num=10000000
+		threads_num=300
+		concurrent_num=300
+		ethtool -L $nic combined 16 && $LKP_SRC/bin/set_nic_irq_affinity $core_range $nic
+		numactl -C 16-95 httpress -n "$requests_num" -c "$concurrent_num" -t "$threads_num" "$request_url"
+	elif [ "$core_nums" == 96 ]; then
+		requests_num=10000000
+		threads_num=600
+		concurrent_num=600
+		ethtool -L $nic combined 16 && $LKP_SRC/bin/set_nic_irq_affinity $core_range $nic
+		numactl -C 16-95 httpress -n "$requests_num" -c "$concurrent_num" -t "$threads_num" "$request_url"
+	fi
+}
+
+https_long_requests()
+{
+	if [ "$core_nums" == 4 ] || [ "$core_nums" == 8 ]; then
+		requests_num=5000000
+		threads_num=100
+		concurrent_num=100
+		httpress -n "$requests_num" -c "$concurrent_num" -t "$threads_num" -k "$request_url"
+	elif [ "$core_nums" == 48 ]; then
+		requests_num=5000000
+		threads_num=600
+		concurrent_num=600
+		httpress -n "$requests_num" -c "$concurrent_num" -t "$threads_num" -k "$request_url"
+	elif [ "$core_nums" == 96 ]; then
+		requests_num=10000000
+		threads_num=600
+		concurrent_num=600
+		httpress -n "$requests_num" -c "$concurrent_num" -t "$threads_num" -k "$request_url"
+	fi
+}
+
+https_short_requests()
+{
+	if [ "$core_nums" == 4 ] || [ "$core_nums" == 8 ]; then
+		requests_num=500000
+		threads_num=100
+		concurrent_num=100
+		httpress -n "$requests_num" -c "$concurrent_num" -t "$threads_num" "$request_url"
+	elif [ "$core_nums" == 48 ]; then
+		requests_num=500000
+		threads_num=600
+		concurrent_num=600
+		httpress -n "$requests_num" -c "$concurrent_num" -t "$threads_num" "$request_url"
+	elif [ "$core_nums" == 96 ]; then
+		requests_num=1000000
+		threads_num=1200
+		concurrent_num=1200
+		httpress -n "$requests_num" -c "$concurrent_num" -t "$threads_num" "$request_url"
+	fi
+}
+
+main()
+{
+	local request_url="$protocol://$request_ip:$request_port/$request_index"
+
+	ip addr add $nic_ip/24 dev "$nic"
+	ip link set "$nic" up
+
+	if [ "$protocol" == 'http' ]; then
+		if [ "$alive_type" == 'long' ]; then
+			http_long_requests
+		else
+			http_short_requests
+		fi
+	elif [ "$protocol" == 'https' ]; then
+		if [ "$alive_type" == 'long' ]; then
+			https_long_requests
+		else
+			https_short_requests
+		fi
+	fi
+}
+
+main
