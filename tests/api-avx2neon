@@ -1,6 +1,17 @@
 #!/bin/bash
 
-cd $BENCHMARK_ROOT/api-avx2neon/tests || exit
+
+script=$(dirname $(realpath $0))
+cd $script
+
+yum install -y git
+yum install -y make
+
+git clone https://github.com/Siguyi/AvxToNeon
+
+cd AvxToNeon
+cd tests
+make
 
 echo "api-avx2neon running"
 ./test
