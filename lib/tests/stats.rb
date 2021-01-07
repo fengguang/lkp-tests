@@ -10,6 +10,13 @@ module LKP
       @stats = {}
     end
 
+    def key?(test_case)
+      test_case = test_case.strip
+                           .gsub(/[\s,"_\(\):]+/, '_')
+                           .gsub(/(^_|_$)/, '')
+      @stats.key? test_case
+    end
+
     def add(test_case, test_result)
       test_case = test_case.strip
                            .gsub(/[\s,"_\(\):]+/, '_')

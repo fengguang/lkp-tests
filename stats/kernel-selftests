@@ -135,7 +135,14 @@ def x86_stat(line, _x86, stats)
 end
 
 def resctrl_stat(line, _resctrl, stats)
-  stats.add "resctrl.#{$1.strip}", 'fail' if line =~ /^not ok\s+(.*)/
+  if line =~ /^not ok\s+(.*)/
+    result = 'fail'
+  elsif line =~ /^ok\s+(.*)/
+    result = 'pass'
+  else return
+  end
+
+  stats.add "resctrl.#{$1.strip}", result unless stats.key? "resctrl.#{$1.strip}"
 end
 
 def subtest_stat(test, test_script, subtest, result, stats)
