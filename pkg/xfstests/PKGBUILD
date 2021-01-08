@@ -12,6 +12,11 @@ md5sums=('SKIP' 'SKIP')
 build_install_xfstests()
 {
 	cd ${srcdir}/xfstests-dev || return
+	# revert commit (90d76997 "src/multi_open_unlink: Stop using attr_set") to fix the error:
+	# https://www.spinics.net/lists/fstests/msg15434.html
+	# /tmp/lkp/xfstests/src/xfstests-dev/src/dmiperf.c:192: undefined reference to `attr_setf'
+	git revert -n 90d76997831ed7cd7b86028b8ee60aa3135347db || return
+
 	## Currently, ./configure file can't work with "--prefix" option correctly,
 	## so we just use the "make" command to generate the execuable file.
 	make
