@@ -1,10 +1,8 @@
 #!/usr/bin/env crystal
 
-LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname(File.realpath(PROGRAM_NAME)))
+require "../../lib/statistics"
 
-require "#{LKP_SRC}/lib/statistics"
-
-$stdin.each_line do |line|
+STDIN.each_line do |line|
   case line
   when /Elapsed Time/
     puts "elapsed_time: " + line.split[2]
