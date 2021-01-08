@@ -16,9 +16,13 @@ setup_test_block()
 {
 	dev=$partition
 
-	echo "$fstype" | grep -q -e "^ext" -e "^f2fs" || local mkfs_opts="-f"
+	echo "$fstype" | grep -q -e "^ext" || local mkfs_opts="-f"
 	umount $dev 2>/dev/null
-	mkfs -t ${fstype%%_*} -q $mkfs_opts $dev || return
+
+	# "$ mkfs -t f2fs -q -f /dev/sda2" will output "WDC WD30EZRX-00S0A80"
+	# and it will be shown as " WDC WD30EZRX-00S0A80^@^@" in rt/fxmark,
+	# the "^@^@" lead to no fxmark.json under rt, thus redirect mkfs's output
+	mkfs -t ${fstype%%_*} -q $mkfs_opts $dev >/dev/null || return
 
 	mkdir -p /fs/$dev
 	mount -t ${fstype%%_*} $dev /fs/$dev || return
