@@ -21,6 +21,20 @@ run_kbuild()
 	while true; do
 		log_cmd make mrproper || die "make mrproper failed"
 		log_cmd make $build_kconfig || die "make $build_kconfig failed"
+
+		# git show v5.4:Makefile | grep -C2 autoksyms_recursive:
+		# PHONY += autoksyms_recursive
+		# ifdef CONFIG_TRIM_UNUSED_KSYMS
+		# autoksyms_recursive: descend modules.order
+		#         $(Q)$(CONFIG_SHELL) $(srctree)/scripts/adjust_autoksyms.sh \
+		#           "$(MAKE) -f $(srctree)/Makefile vmlinux"
+
+		# https://cateee.net/lkddb/web-lkddb/TRIM_UNUSED_KSYMS.html
+		# The Linux kernel configuration item CONFIG_TRIM_UNUSED_KSYMS:
+		#   depends on: ! CONFIG_UNUSED_SYMBOLS
+		log_cmd scripts/config --file .config --disable CONFIG_UNUSED_SYMBOLS
+		log_cmd scripts/config --file .config --enable CONFIG_TRIM_UNUSED_KSYMS
+
 		log_cmd make -j $nr_task $target 2> /dev/null || die "make -j $nr_task $target failed"
 		iterations=$((iterations + 1))
 		now=$(date +%s)

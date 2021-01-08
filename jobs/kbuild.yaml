@@ -8,7 +8,7 @@ nr_task:
 - 200%
 - 50%
 
-target: vmlinux_prereq
+target: autoksyms_recursive
 
 kbuild:
 
