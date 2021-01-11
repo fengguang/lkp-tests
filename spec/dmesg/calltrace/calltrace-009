@@ -1,0 +1,222 @@
+[  249.207361] WARNING: CPU: 0 PID: 13 at kernel/sched/core.c:7244 balance_push (kbuild/src/consumer/kernel/sched/core.c:7244 (discriminator 13)) 
+[  249.209018] Modules linked in: rcutorture torture input_leds led_class rtc_cmos qemu_fw_cfg evdev
+[  249.210255] CPU: 0 PID: 13 Comm: rcub/0 Not tainted 5.10.0-rc5-00090-gae7927023243 #1
+[  249.211316] EIP: balance_push (kbuild/src/consumer/kernel/sched/core.c:7244 (discriminator 13)) 
+[ 249.211904] Code: ff 0f 0b e9 0e ff ff ff 8d 74 26 00 80 3d d7 9e e3 4a 00 0f 85 0f ff ff ff c6 05 d7 9e e3 4a 01 68 43 74 82 4a e8 e3 6c ce 00 <0f> 0b 58 e9 f6 fe ff ff 8d b4 26 00 00 00 00 8d 76 00 ba 01 00 00
+All code
+========
+   0:	ff 0f                	decl   (%rdi)
+   2:	0b e9                	or     %ecx,%ebp
+   4:	0e                   	(bad)  
+   5:	ff                   	(bad)  
+   6:	ff                   	(bad)  
+   7:	ff 8d 74 26 00 80    	decl   -0x7fffd98c(%rbp)
+   d:	3d d7 9e e3 4a       	cmp    $0x4ae39ed7,%eax
+  12:	00 0f                	add    %cl,(%rdi)
+  14:	85 0f                	test   %ecx,(%rdi)
+  16:	ff                   	(bad)  
+  17:	ff                   	(bad)  
+  18:	ff c6                	inc    %esi
+  1a:	05 d7 9e e3 4a       	add    $0x4ae39ed7,%eax
+  1f:	01 68 43             	add    %ebp,0x43(%rax)
+  22:	74 82                	je     0xffffffffffffffa6
+  24:	4a e8 e3 6c ce 00    	rex.WX callq 0xce6d0d
+  2a:*	0f 0b                	ud2    		<-- trapping instruction
+  2c:	58                   	pop    %rax
+  2d:	e9 f6 fe ff ff       	jmpq   0xffffffffffffff28
+  32:	8d b4 26 00 00 00 00 	lea    0x0(%rsi,%riz,1),%esi
+  39:	8d 76 00             	lea    0x0(%rsi),%esi
+  3c:	ba                   	.byte 0xba
+  3d:	01 00                	add    %eax,(%rax)
+	...
+
+Code starting with the faulting instruction
+===========================================
+   0:	0f 0b                	ud2    
+   2:	58                   	pop    %rax
+   3:	e9 f6 fe ff ff       	jmpq   0xfffffffffffffefe
+   8:	8d b4 26 00 00 00 00 	lea    0x0(%rsi,%riz,1),%esi
+   f:	8d 76 00             	lea    0x0(%rsi),%esi
+  12:	ba                   	.byte 0xba
+  13:	01 00                	add    %eax,(%rax)
+	...
+[  249.214413] EAX: 0000001d EBX: dabf8240 ECX: 00000027 EDX: daa8ff40
+[  249.215260] ESI: 410dc000 EDI: be830000 EBP: 410cfe4c ESP: 410cfe40
+[  249.216363] DS: 007b ES: 007b FS: 00d8 GS: 0000 SS: 0068 EFLAGS: 00010012
+[  249.217653] CR0: 80050033 CR2: 3f9d70ec CR3: 7edae220 CR4: 000406b0
+[  249.218872] Call Trace:
+[  249.219379] ? do_balance_callbacks (kbuild/src/consumer/kernel/sched/core.c:3978) 
+[  249.220063] ? rt_mutex_setprio (kbuild/src/consumer/kernel/sched/core.c:5460) 
+[  249.220645] ? find_held_lock (kbuild/src/consumer/kernel/locking/lockdep.c:4935) 
+[  249.221172] ? rt_mutex_adjust_prio (kbuild/src/consumer/kernel/locking/rtmutex.c:346) 
+[  249.221777] ? task_blocks_on_rt_mutex (kbuild/src/consumer/kernel/locking/rtmutex.c:974) 
+[  249.222438] ? rt_mutex_slowlock+0x86/0x1c0 
+[  249.223156] ? rcu_boost_kthread (kbuild/src/consumer/kernel/rcu/tree_plugin.h:1033 kbuild/src/consumer/kernel/rcu/tree_plugin.h:1056) 
+[  249.223789] ? rcu_boost_kthread (kbuild/src/consumer/kernel/rcu/tree_plugin.h:1052 (discriminator 25)) 
+[  249.224364] ? rt_mutex_lock_nested (kbuild/src/consumer/kernel/locking/rtmutex.c:1483) 
+[  249.224964] ? rcu_boost_kthread (kbuild/src/consumer/kernel/rcu/tree_plugin.h:1033 kbuild/src/consumer/kernel/rcu/tree_plugin.h:1056) 
+[  249.225548] ? rcu_boost_kthread (kbuild/src/consumer/kernel/rcu/tree_plugin.h:1033 kbuild/src/consumer/kernel/rcu/tree_plugin.h:1056) 
+[  249.226137] ? kthread (kbuild/src/consumer/kernel/kthread.c:292) 
+[  249.226598] ? rcu_boost_kthread_setaffinity (kbuild/src/consumer/kernel/rcu/tree_plugin.h:1043) 
+[  249.227297] ? kthread_delayed_work_timer_fn (kbuild/src/consumer/kernel/kthread.c:245) 
+[  249.228029] ? ret_from_fork (kbuild/src/consumer/arch/x86/entry/entry_32.S:856) 
+[  249.228552] irq event stamp: 202
+[  249.229002] hardirqs last enabled at (201): _raw_spin_unlock_irqrestore (kbuild/src/consumer/include/linux/spinlock_api_smp.h:160 kbuild/src/consumer/kernel/locking/spinlock.c:191) 
+[  249.230174] hardirqs last disabled at (202): _raw_spin_lock_irqsave (kbuild/src/consumer/include/linux/spinlock_api_smp.h:108 kbuild/src/consumer/kernel/locking/spinlock.c:159) 
+[  249.231289] softirqs last enabled at (182): __do_softirq (kbuild/src/consumer/arch/x86/include/asm/preempt.h:26 kbuild/src/consumer/kernel/softirq.c:326) 
+[  249.232332] softirqs last disabled at (175): do_softirq_own_stack (kbuild/src/consumer/arch/x86/kernel/irq_32.c:59 kbuild/src/consumer/arch/x86/kernel/irq_32.c:148) 
+[  249.233419] ---[ end trace e8113877dca43521 ]---
+[  249.234054]
+[  249.234055] ======================================================
+---
+[  249.234056] WARNING: possible circular locking dependency detected
+[  249.234057] 5.10.0-rc5-00090-gae7927023243 #1 Not tainted
+[  249.234058] ------------------------------------------------------
+[  249.234059] rcub/0/13 is trying to acquire lock:
+[  249.234060] 4aa040ac (console_owner){-...}-{0:0}, at: console_unlock (kbuild/src/consumer/kernel/printk/printk.c:1737 kbuild/src/consumer/kernel/printk/printk.c:2496) 
+[  249.234063]
+[  249.234064] but task is already holding lock:
+[  249.234065] dabf8250 (&rq->lock){-.-.}-{2:2}, at: __task_rq_lock (kbuild/src/consumer/include/linux/sched.h:1913 (discriminator 10) kbuild/src/consumer/kernel/sched/core.c:190 (discriminator 10)) 
+[  249.234068]
+[  249.234069] which lock already depends on the new lock.
+[  249.234070]
+[  249.234071] the existing dependency chain (in reverse order) is:
+[  249.234071]
+[  249.234072] -> #4 (&rq->lock){-.-.}-{2:2}:
+[  249.234075]
+[  249.234076] -> #3 (&p->pi_lock){-.-.}-{2:2}:
+[  249.234078]
+[  249.234078] -> #2 (&tty->write_wait){-.-.}-{2:2}:
+[  249.234081]
+[  249.234082] -> #1 (&port_lock_key){-.-.}-{2:2}:
+[  249.234084]
+[  249.234085] -> #0 (console_owner){-...}-{0:0}:
+[  249.234087]
+[  249.234088] other info that might help us debug this:
+[  249.234088]
+[  249.234089] Chain exists of:
+[  249.234090]   console_owner --> &p->pi_lock --> &rq->lock
+[  249.234093]
+[  249.234094]  Possible unsafe locking scenario:
+[  249.234095]
+[  249.234096]        CPU0                    CPU1
+[  249.234096]        ----                    ----
+[  249.234097]   lock(&rq->lock);
+[  249.234098]                                lock(&p->pi_lock);
+[  249.234100]                                lock(&rq->lock);
+[  249.234101]   lock(console_owner);
+[  249.234103]
+[  249.234104]  *** DEADLOCK ***
+[  249.234104]
+[  249.234105] 5 locks held by rcub/0/13:
+[  249.234106] #0: 4ad27bd0 (rcu_state){+.+.}-{0:0}, at: rcu_boost_kthread (kbuild/src/consumer/kernel/rcu/tree_plugin.h:1033 kbuild/src/consumer/kernel/rcu/tree_plugin.h:1056) 
+[  249.234109] #1: 4ad27b94 (&lock->wait_lock#2){....}-{2:2}, at: rt_mutex_slowlock+0x32/0x1c0 
+[  249.234113] #2: be8305c4 (&p->pi_lock){-.-.}-{2:2}, at: task_blocks_on_rt_mutex (kbuild/src/consumer/kernel/locking/rtmutex_common.h:55 kbuild/src/consumer/kernel/locking/rtmutex.c:969) 
+[  249.234116] #3: dabf8250 (&rq->lock){-.-.}-{2:2}, at: __task_rq_lock (kbuild/src/consumer/include/linux/sched.h:1913 (discriminator 10) kbuild/src/consumer/kernel/sched/core.c:190 (discriminator 10)) 
+[  249.234119] #4: 4ad241bc (console_lock){+.+.}-{0:0}, at: vprintk_emit (kbuild/src/consumer/kernel/printk/printk.c:1799 kbuild/src/consumer/kernel/printk/printk.c:2027) 
+[  249.234122]
+[  249.234123] stack backtrace:
+[  249.234124] CPU: 0 PID: 13 Comm: rcub/0 Not tainted 5.10.0-rc5-00090-gae7927023243 #1
+[  249.234125] Call Trace:
+[  249.234125] ? dump_stack (kbuild/src/consumer/lib/dump_stack.c:122) 
+[  249.234126] ? print_circular_bug.cold+0x119/0x121 
+[  249.234127] ? check_noncircular (kbuild/src/consumer/kernel/locking/lockdep.c:2117) 
+[  249.234128] ? check_prev_add (kbuild/src/consumer/kernel/locking/lockdep.c:2869) 
+[  249.234128] ? validate_chain (kbuild/src/consumer/kernel/locking/lockdep.c:2994 kbuild/src/consumer/kernel/locking/lockdep.c:3608) 
+[  249.234129] ? __lock_acquire (kbuild/src/consumer/kernel/locking/lockdep.c:4832) 
+[  249.234130] ? lock_acquire (kbuild/src/consumer/kernel/locking/lockdep.c:437 kbuild/src/consumer/kernel/locking/lockdep.c:5439) 
+[  249.234131] ? console_unlock (kbuild/src/consumer/kernel/printk/printk.c:1737 kbuild/src/consumer/kernel/printk/printk.c:2496) 
+[  249.234132] ? console_unlock (kbuild/src/consumer/arch/x86/include/asm/jump_label.h:25 kbuild/src/consumer/include/linux/jump_label.h:200 kbuild/src/consumer/include/trace/events/printk.h:10 kbuild/src/consumer/kernel/printk/printk.c:1858 kbuild/src/consumer/kernel/printk/printk.c:2499) 
+[  249.234133] ? console_unlock (kbuild/src/consumer/kernel/printk/printk.c:1737 kbuild/src/consumer/kernel/printk/printk.c:2496) 
+[  249.234133] ? vprintk_emit (kbuild/src/consumer/arch/x86/include/asm/preempt.h:94 kbuild/src/consumer/kernel/printk/printk.c:2029) 
+[  249.234134] ? vprintk_default (kbuild/src/consumer/kernel/printk/printk.c:2046) 
+[  249.234135] ? vprintk_func (kbuild/src/consumer/kernel/printk/printk_safe.c:393) 
+[  249.234135] ? printk (kbuild/src/consumer/kernel/printk/printk.c:2080) 
+[  249.234136] ? __warn_printk (kbuild/src/consumer/kernel/panic.c:646) 
+[  249.234137] ? balance_push (kbuild/src/consumer/kernel/sched/core.c:7244 (discriminator 13)) 
+[  249.234138] ? do_balance_callbacks (kbuild/src/consumer/kernel/sched/core.c:3978) 
+[  249.234138] ? rt_mutex_setprio (kbuild/src/consumer/kernel/sched/core.c:5460) 
+[  249.234139] ? find_held_lock (kbuild/src/consumer/kernel/locking/lockdep.c:4935) 
+[  249.234140] ? rt_mutex_adjust_prio (kbuild/src/consumer/kernel/locking/rtmutex.c:346) 
+[  249.234140] ? task_blocks_on_rt_mutex (kbuild/src/consumer/kernel/locking/rtmutex.c:974) 
+[  249.234141] ? rt_mutex_slowlock+0x86/0x1c0 
+[  249.234142] ? rcu_boost_kthread (kbuild/src/consumer/kernel/rcu/tree_plugin.h:1033 kbuild/src/consumer/kernel/rcu/tree_plugin.h:1056) 
+[  249.234142] ? rcu_boost_kthread (kbuild/src/consumer/kernel/rcu/tree_plugin.h:1052 (discriminator 25)) 
+[  249.234143] ? rt_mutex_lock_nested (kbuild/src/consumer/kernel/locking/rtmutex.c:1483) 
+[  249.234144] ? rcu_boost_kthread (kbuild/src/consumer/kernel/rcu/tree_plugin.h:1033 kbuild/src/consumer/kernel/rcu/tree_plugin.h:1056) 
+[  249.234145] ? rcu_boost_kthread (kbuild/src/consumer/kernel/rcu/tree_plugin.h:1033 kbuild/src/consumer/kernel/rcu/tree_plugin.h:1056) 
+[  249.234146] ? kthread (kbuild/src/consumer/kernel/kthread.c:292) 
+[  249.234147] ? rcu_boost_kthread_setaffinity (kbuild/src/consumer/kernel/rcu/tree_plugin.h:1043) 
+[  249.234148] ? kthread_delayed_work_timer_fn (kbuild/src/consumer/kernel/kthread.c:245) 
+[  249.234149] ? ret_from_fork (kbuild/src/consumer/arch/x86/entry/entry_32.S:856) 
+[  249.302866] smpboot: CPU 1 is now offline
+[  249.316206] x86: Booting SMP configuration:
+[  249.317069] smpboot: Booting Node 0 Processor 1 APIC 0x1
+[  249.366154] kvm-clock: cpu 1, msr b070021, secondary cpu clock
+[  249.366293] masked ExtINT on CPU#1
+[  249.369174] kvm-guest: stealtime: cpu 1, msr 9aaacb00
+[  249.462771] smpboot: CPU 1 is now offline
+[  249.471342] x86: Booting SMP configuration:
+[  249.472345] smpboot: Booting Node 0 Processor 1 APIC 0x1
+[  249.496842] kvm-clock: cpu 1, msr b070021, secondary cpu clock
+[  249.496978] masked ExtINT on CPU#1
+[  249.498805] kvm-guest: stealtime: cpu 1, msr 9aaacb00
+[  249.512128] smpboot: CPU 1 is now offline
+[  249.520863] x86: Booting SMP configuration:
+[  249.521352] smpboot: Booting Node 0 Processor 1 APIC 0x1
+[  249.544190] kvm-clock: cpu 1, msr b070021, secondary cpu clock
+[  249.544327] masked ExtINT on CPU#1
+[  249.547786] kvm-guest: stealtime: cpu 1, msr 9aaacb00
+[  249.561602] smpboot: CPU 1 is now offline
+[  249.580686] x86: Booting SMP configuration:
+[  249.581480] smpboot: Booting Node 0 Processor 1 APIC 0x1
+[  249.606928] kvm-clock: cpu 1, msr b070021, secondary cpu clock
+[  249.607066] masked ExtINT on CPU#1
+[  249.608924] kvm-guest: stealtime: cpu 1, msr 9aaacb00
+[  249.631131] smpboot: CPU 1 is now offline
+[  249.643911] x86: Booting SMP configuration:
+[  249.644727] smpboot: Booting Node 0 Processor 1 APIC 0x1
+[  249.670115] kvm-clock: cpu 1, msr b070021, secondary cpu clock
+[  249.670251] masked ExtINT on CPU#1
+[  249.672951] kvm-guest: stealtime: cpu 1, msr 9aaacb00
+[  249.750607] smpboot: CPU 1 is now offline
+[  249.764660] x86: Booting SMP configuration:
+[  249.766619] smpboot: Booting Node 0 Processor 1 APIC 0x1
+[  249.806665] kvm-clock: cpu 1, msr b070021, secondary cpu clock
+[  249.806808] masked ExtINT on CPU#1
+[  249.813057] kvm-guest: stealtime: cpu 1, msr 9aaacb00
+[  249.885941] smpboot: CPU 1 is now offline
+[  249.910915] x86: Booting SMP configuration:
+[  249.911752] smpboot: Booting Node 0 Processor 1 APIC 0x1
+[  249.964907] kvm-clock: cpu 1, msr b070021, secondary cpu clock
+[  249.965042] masked ExtINT on CPU#1
+[  249.966880] kvm-guest: stealtime: cpu 1, msr 9aaacb00
+[  249.987073] smpboot: CPU 1 is now offline
+[  250.008695] x86: Booting SMP configuration:
+[  250.009534] smpboot: Booting Node 0 Processor 1 APIC 0x1
+[  250.031426] kvm-clock: cpu 1, msr b070021, secondary cpu clock
+[  250.031649] masked ExtINT on CPU#1
+[  250.041538] kvm-guest: stealtime: cpu 1, msr 9aaacb00
+[  250.060066] smpboot: CPU 1 is now offline
+[  250.068962] x86: Booting SMP configuration:
+[  250.069903] smpboot: Booting Node 0 Processor 1 APIC 0x1
+[  250.095427] kvm-clock: cpu 1, msr b070021, secondary cpu clock
+[  250.095617] masked ExtINT on CPU#1
+[  250.099761] kvm-guest: stealtime: cpu 1, msr 9aaacb00
+[  250.149553] smpboot: CPU 1 is now offline
+[  250.160731] x86: Booting SMP configuration:
+[  250.161632] smpboot: Booting Node 0 Processor 1 APIC 0x1
+[  250.195655] kvm-clock: cpu 1, msr b070021, secondary cpu clock
+[  250.195793] masked ExtINT on CPU#1
+[  250.209815] kvm-guest: stealtime: cpu 1, msr 9aaacb00
+[  250.232604] smpboot: CPU 1 is now offline
+[  250.242963] x86: Booting SMP configuration:
+[  250.243950] smpboot: Booting Node 0 Processor 1 APIC 0x1
+[  250.287618] kvm-clock: cpu 1, msr b070021, secondary cpu clock
+[  250.287751] masked ExtINT on CPU#1
+[  250.339537] kvm-guest: stealtime: cpu 1, msr 9aaacb00
+[  250.353121] smpboot: CPU 1 is now offline
+[  250.370744] x86: Booting SMP configuration:
+[  250.371656] smpboot: Booting Node 0 Processor 1 APIC 0x1
+[  250.407631] kvm-clock: cpu 1, msr b070021, secondary cpu clock
+[  250.407761] masked ExtINT on CPU#1
