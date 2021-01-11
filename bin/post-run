@@ -97,7 +97,7 @@ wait_for_bg_procs
 sleep 1
 kill_bg_procs -KILL
 
-for post_run in $TMP_RESULT_ROOT/post-run.*; do
+for post_run in $TMP_RESULT_ROOT/post-run.* $LKP_SRC/post-run/*; do
 	[ -f "$post_run" ] && sh "$post_run"
 done
 

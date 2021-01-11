@@ -76,6 +76,16 @@ To run your own benchmarks that are not part of lkp-tests, you can use mytest jo
 	lkp result hackbench
 ```
 
+## Add extra scripts in post run stage
+```
+	# create new scripts or rename hidden template scripts in the directory
+	echo "echo result_root: \$RESULT_ROOT" > post-run/print-result-root
+	lkp run ./ebizzy-10s-1x-200%.yaml
+	# output is:
+	# ...
+	# result_root: /lkp/result/ebizzy/10s-1x-200%/shao2-debian/debian/defconfig/gcc-6/5.7.0-2-amd64/1
+```
+
 ## Supported Distributions
 
 Most test cases should install/run well in
