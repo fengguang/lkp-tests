@@ -103,6 +103,9 @@ def find_jobfile(jobfile)
   exit 1
 end
 
+submit_id = %x(uuidgen).chomp
+puts "submit_id=#{submit_id}"
+
 ARGV.each do |jobfile|
   jobfile = find_jobfile(jobfile)
   jobs = Job2sh.new
@@ -113,6 +116,7 @@ ARGV.each do |jobfile|
   jobs['testbox'] = opt_set_key_value['testbox'] if opt_set_key_value['testbox']
   jobs['tbox_group'] = tbox_group(jobs['testbox']) if jobs.include?('testbox')
   jobs['node_roles'] ||= 'server client' if jobs['cluster']
+  jobs['submit_id'] = submit_id
   jobs.each_jobs do |job|
     raise 'Please configure SCHED_HOST' unless job['SCHED_HOST']
     raise 'Please configure SCHED_PORT' unless job['SCHED_PORT']
