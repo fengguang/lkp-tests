@@ -168,10 +168,10 @@ ARGV.each do |jobfile|
     JSON.parse(messages).each do |msg|
       if msg['message'].empty?
         job_ids << msg['job_id'].to_s
-        puts("submit #{jobfile}, got job_id=#{msg['job_id']}")
+        puts("submit #{jobfile}, got job id=#{msg['job_id']}")
       else
         opt_monitor = false
-        puts("submit #{jobfile} failed, got job_id=#{msg['job_id']}, error: #{msg['message']}")
+        puts("submit #{jobfile} failed, got job id=#{msg['job_id']}, error: #{msg['message']}")
       end
     end
   end
