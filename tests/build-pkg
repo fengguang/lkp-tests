@@ -7,12 +7,12 @@
 # - config
 # upstream_url
 
-# We'll use the below global env vars, but not treat them as parameter to avoid
+# We'll use the below global env vars, but not treat them as parameters to avoid
 # duplicates in result path like /openeuler-20.03-aarch64/openeuler-aarch64-cifs-2003/
-# - os
-# - os_arch
-# - os_version
-# - os_mount
+# os
+# os_arch
+# os_version
+# os_mount
 
 ## makepkg is a script that automates the building of packages; it can download and validate source files,
 ## check dependencies, configure build-time settings, compile the sources, install into a temporary root,
