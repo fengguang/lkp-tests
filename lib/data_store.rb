@@ -599,6 +599,7 @@ module DataStore
 
     def create_storage_link(src)
       mkdir_p File.dirname(@path)
+      FileUtils.rm_f(@path)
       FileUtils.symlink(src, @path, force: true)
     end
 
