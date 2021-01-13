@@ -6,14 +6,14 @@
 
 def parse
   cg = "nocg"
-  $stdin.each_line do |line|
+  STDIN.each_line do |line|
     case line
     when /^time:/
       puts line
     when /^cgroup: (\S+)/
       cg = $1
     when /(\S+)\s*(\S+)/
-      k, v, = line.split
+      k, v = line.split
       puts "#{cg}.#{k}: #{v}"
     end
   end
