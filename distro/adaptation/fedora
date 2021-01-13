@@ -152,10 +152,11 @@ libkeyutils1: keyutils-libs
 libkeyutils-dev: keyutils-libs-devel
 libbz2-dev: bzip2-devel
 libzstd-dev: libzstd-devel
-libtirpc: libtirpc1
+libtirpc-dev: libtirpc-devel
 libbabeltrace-dev: libbabeltrace-devel
 libgtk2.0-dev: gtk2-devel
 libperl-dev: perl-devel
 libslang2-dev: slang-devel
 python-dev: python3-devel
 systemtap-sdt-dev: systemtap-sdt-devel
+libpython2.7: python27
