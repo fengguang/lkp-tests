@@ -133,10 +133,16 @@ update_softlink()
 
 build_source_pkg()
 {
-	local makepkg="$LKP_SRC/sbin/makepkg -A --skippgpcheck --config $LKP_SRC/etc/makepkg.conf"
-	echo "$makepkg"
+	local mark="true"
+	local pkg_args="-A --check --skippgpcheck"
+	[ "${DISTRO}" == "archlinux" ] && {
+		local mark="pacman"
+		local pkg_args="${pkg_args} -s --needed --noconfirm"
+	}
+	local makepkg="$LKP_SRC/sbin/makepkg ${pkg_args} --config $LKP_SRC/etc/makepkg.conf"
+	echo "${makepkg}"
 
-	PACMAN=true BUILDDIR=$TMP CARCH=$arch PKGEXT=.cgz CGZDEST="$sync_dest/$cgz_name" $makepkg
+	PACMAN="${mark}" BUILDDIR=$TMP CARCH=$arch PKGEXT=.cgz CGZDEST="$sync_dest/$cgz_name" $makepkg
 
 	[ "$?" == 0 ] || exit 1
 	update_softlink

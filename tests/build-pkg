@@ -92,7 +92,9 @@ create_cgz_name()
 
 	cgz_path="$PKG_MNT/${pack_to}/${pkgname}"
 	cgz_name="${cgz_path}/${upstream_commit}.cgz"
+
 	pkg_args="-A --check --skippgpcheck"
+	[ "${os}" == "archlinux" ] && pkg_args="${pkg_args} -s --needed --noconfirm"
 
         [ -n "$git_tag" ] && {
 		cgz_name="${cgz_path}/${git_tag}-${pkgrel}.cgz"
@@ -153,7 +155,10 @@ build_source_pkg()
 	create_cgz_name
 	get_config
 
-	PACMAN=true BUILDDIR=$TMP CARCH=$os_arch PKGEXT=.cgz CGZDEST="$cgz_name" \
+	local mark="true"
+	[ "${os}" == "archlinux" ] && local mark="pacman"
+
+	PACMAN="${mark}" BUILDDIR=$TMP CARCH=$os_arch PKGEXT=.cgz CGZDEST="$cgz_name" \
 		$LKP_SRC/sbin/makepkg ${pkg_args} --config $LKP_SRC/etc/makepkg.conf
 
 	local build_state="$?"
