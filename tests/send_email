@@ -1,0 +1,20 @@
+#!/bin/sh
+# - subject
+# my_email
+
+SCRIPT_DIR=$(dirname $(realpath $0))
+PROJECT_DIR=$(dirname $SCRIPT_DIR)
+
+. $PROJECT_DIR/lib/email.sh
+
+[ -n "$my_email" ] || {
+	echo "Can not get my_email, send email failed!"
+	exit 0
+}
+
+[ -n "$subject" ] || {
+	echo "Can not get email subject, send email failed!"
+	exit 0
+}
+
+send_email "$subject"
