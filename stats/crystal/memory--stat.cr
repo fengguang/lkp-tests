@@ -1,11 +1,11 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env crystal
 
 # time: 123456
 # cgroup: pmbench.1
 # cache 0
 
 def parse
-  cg = 'nocg'
+  cg = "nocg"
   $stdin.each_line do |line|
     case line
     when /^time:/
