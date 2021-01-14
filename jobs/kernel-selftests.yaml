@@ -24,6 +24,7 @@ need_memory: 3G
 kernel-selftests:
   group:
     - group-02
+    - group-s
     - mptcp
     - pidfd
 
