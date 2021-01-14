@@ -28,12 +28,12 @@ def load_yaml(file, template_context = nil)
 
   begin
     result = YAML.load yaml
-  rescue Psych::SyntaxError
-    warn "failed to parse file #{file}"
+  rescue Psych::SyntaxError => e
+    log_debug "failed to parse file #{file} | #{e}"
     raise
   end
 
-  assert result, "Possible empty file #{file}" unless template_context
+  assert result, "possible empty file #{file} #{File.size file}" unless template_context
 
   result
 end
