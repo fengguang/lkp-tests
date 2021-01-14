@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+while (line = STDIN.gets)
+  case line.chomp!
+  when /ok=(\d+)\s+changed=(\d+)\s+unreachable=(\d+)\s+failed=(\d+)\s+skipped=(\d+)\s+rescued=(\d+)\s+ignored=(\d+)/
+    puts "ansible_test.total.nr_ok: #{$1}"
+    puts "ansible_test.total.nr_changed: #{$2}"
+    puts "ansible_test.total.nr_failed: #{$4}"
+    puts "ansible_test.total.nr_skipped: #{$5}"
+    puts "ansible_test.total.nr_rescued: #{$6}"
+    puts "ansible_test.total.nr_ignored: #{$7}"
+  when /playbook_run_on_fail/
+    puts line
+  end
+end
