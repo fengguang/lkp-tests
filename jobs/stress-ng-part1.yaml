@@ -20,6 +20,9 @@ nr_threads: 10%
 
 fs:
 - btrfs
+- f2fs
+- ext4
+- xfs
 
 stress-ng:
   class:
