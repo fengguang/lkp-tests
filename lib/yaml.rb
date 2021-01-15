@@ -52,13 +52,13 @@ def load_yaml_with_flock(file, timeout = nil)
   end
 end
 
-def load_yaml_merge(files)
+def load_yaml_merge(files, template_context = nil)
   all = {}
   files.each do |file|
     next unless File.size? file
 
     begin
-      yaml = load_yaml(file)
+      yaml = load_yaml(file, template_context)
       all.update(yaml)
     rescue StandardError => e
       warn "#{e.class.name}: #{e.message.split("\n").first}: #{file}"
