@@ -107,7 +107,7 @@ class Monitor
 
   def lftp_mirror
     @result_root.delete_prefix!('/srv')
-    srv_http_host = job['SRV_HTTP_HOST'] || '124.160.11.58'
+    srv_http_host = job['SRV_HTTP_HOST'] || 'api.compass-ci.openeuler.org'
     srv_http_port = job['SRV_HTTP_PORT'] || '11300'
     url = "http://#{srv_http_host}:#{srv_http_port}#{@result_root}"
     system "lftp -c mirror #{url} >/dev/null 2>&1"
