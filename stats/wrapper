@@ -180,7 +180,6 @@ is_bad_rt_candidate()
 tmpfile=$(mktemp --tmpdir=/tmp lkp-stats.XXXXXXXX)
 if [[ -f $log ]]; then
 	$program_dir/$program $log < $log > $tmpfile || { log_error "failed to stat $program" "$program_dir/$program $log < $log\nerrno: $?\ntmpfile: $tmpfile"; is_bad_rt_candidate && exit 1; }
-	$program_dir/$program $log < $log > $tmpfile
 else
 	$program_dir/$program < /dev/null > $tmpfile || { log_error "failed to stat $program" "$program_dir/$program < /dev/null\nerrno: $?\ntmpfile: $tmpfile"; is_bad_rt_candidate && exit 1; }
 fi
