@@ -50,7 +50,7 @@ check_die()
 	[[ -f $RESULT_ROOT/last_state ]] || return 0
 
 	grep -q "exit_code.99: 1" $RESULT_ROOT/last_state && {
-		log_warn "job exited due to die"
+		log_warn "job exited due to die" "$RESULT_ROOT"
 		return 1
 	}
 
@@ -84,7 +84,7 @@ check_binary_output()
 
 	grep -Paq '\x0' $log || return
 
-	log_warn "skip binary file $log"
+	log_warn "$program: skip binary file" "$log"
 	exit 0
 }
 
@@ -101,7 +101,7 @@ warn_empty_stats()
 	grep -q "^$program\." $LKP_SRC/etc/failure && return
 	grep -q "^$program\." $LKP_SRC/etc/pass && return
 
-	log_warn "empty stats for $log"
+	log_warn "$program: empty stats" "$log"
 }
 
 check_empty_json()
@@ -126,7 +126,7 @@ check_empty_json()
 		if [[ -f $RESULT_ROOT/last_state ]] && grep -q is_incomplete_run $RESULT_ROOT/last_state; then
 			return 1
 		else
-			log_warn "no generate json file for $stats_group, check $RESULT_ROOT"
+			log_warn "$stats_group: no json file generated" "$RESULT_ROOT"
 			echo -e "# no json file for $stats_group\nis_incomplete_run: 1" >> $RESULT_ROOT/last_state
 			return 1
 		fi
@@ -179,10 +179,10 @@ is_bad_rt_candidate()
 
 tmpfile=$(mktemp --tmpdir=/tmp lkp-stats.XXXXXXXX)
 if [[ -f $log ]]; then
-	$program_dir/$program $log < $log > $tmpfile || { log_error "$program_dir/$program $log < $log  exit code $?, check $tmpfile"; is_bad_rt_candidate && exit 1; }
+	$program_dir/$program $log < $log > $tmpfile || { log_error "failed to stat $program" "$program_dir/$program $log < $log\nerrno: $?\ntmpfile: $tmpfile"; is_bad_rt_candidate && exit 1; }
 	$program_dir/$program $log < $log > $tmpfile
 else
-	$program_dir/$program < /dev/null > $tmpfile || { log_error "$program_dir/$program < /dev/null  exit code $?, check $tmpfile"; is_bad_rt_candidate && exit 1; }
+	$program_dir/$program < /dev/null > $tmpfile || { log_error "failed to stat $program" "$program_dir/$program < /dev/null\nerrno: $?\ntmpfile: $tmpfile"; is_bad_rt_candidate && exit 1; }
 fi
 
 grep -q "^$program\." <(cat $LKP_SRC/etc/failure $LKP_SRC/etc/pass) ||
@@ -195,7 +195,7 @@ dump_stat()
 	local stats_group=$1
 	local file=$2
 
-	$LKP_SRC/sbin/dump-stat $stats_group < $file || { log_error "$LKP_SRC/sbin/dump-stat $program  exit code $?, check $file"; exit 1; }
+	$LKP_SRC/sbin/dump-stat $stats_group < $file || { log_error "failed to dump-stat $program" "errno: $?\nfile: $file"; exit 1; }
 	rm $file
 }
 
