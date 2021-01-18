@@ -190,6 +190,7 @@ need_kconfig:
 - CONFIG_TUN=m
 - CONFIG_WW_MUTEX_SELFTEST=m ~ ">= v4.11-rc1"
 - CONFIG_XFS_FS=m
+- CONFIG_DMA_MAP_BENCHMARK=y ~ ">= v5.11-rc1"
 % elsif ___.group == "group-02"
 - CONFIG_FUSE_FS=m
 - CONFIG_IPV6_MULTIPLE_TABLES=y
