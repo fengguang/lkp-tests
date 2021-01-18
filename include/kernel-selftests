@@ -75,6 +75,7 @@ need_kconfig:
 - CONFIG_TLS=m ~ ">= v4.13-rc1"
 - CONFIG_VXLAN=y
 - CONFIG_XDP_SOCKETS=y ~ ">= v4.18-rc1"
+- CONFIG_IMA_READ_POLICY=y ~ ">= v5.11-rc1"
 % elsif ___.group == "net"
 - CONFIG_USER_NS=y
 - CONFIG_BPF_SYSCALL=y
