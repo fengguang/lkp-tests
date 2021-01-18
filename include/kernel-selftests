@@ -110,6 +110,7 @@ need_kconfig:
 - CONFIG_NET_SCH_NETEM=y
 - CONFIG_TEST_BLACKHOLE_DEV=m ~ ">= v5.3-rc1"
 - CONFIG_KALLSYMS=y
+- CONFIG_BAREUDP=m ~ ">= v5.7-rc1"
 % elsif ___.group == "netfilter"
 - CONFIG_NET_NS=y
 - CONFIG_NFT_FLOW_OFFLOAD=m ~ ">= v4.16-rc1"
