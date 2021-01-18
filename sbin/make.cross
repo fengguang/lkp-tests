@@ -310,6 +310,12 @@ setup_crosstool_clang()
 		opt_cross="$opt_cross CROSS_COMPILE=arm-linux-gnueabi-"
 	elif [[ $ARCH = "s390" ]]; then
 		opt_cross="$opt_cross CROSS_COMPILE=s390x-linux-gnu-"
+	elif [[ $ARCH = "riscv" ]]; then
+		if grep -q 'CONFIG_32BIT=y' .config; then
+			opt_cross="$opt_cross $(COMPILER=gcc && setup_crosstool_gcc && echo $opt_cross)"
+		else
+			opt_cross="$opt_cross CROSS_COMPILE=riscv64-linux-gnu-"
+		fi
 	else
 		opt_cross="$opt_cross CROSS_COMPILE=$ARCH-linux-gnu-"
 	fi
