@@ -4,7 +4,7 @@ pkgrel=1
 url='https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git'
 arch=('i386' 'x86_64')
 license=('GPL')
-source=('https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git')
+source=("git://$GIT_SERVER/l/linux/linux.git")
 md5sums=('SKIP')
 
 build()
