@@ -58,7 +58,7 @@ setup_result_service()
 	is_docker || [ -n "$id" ] || {
 		if [ "$os_mount" = 'nfs' ] || [ -z "$os_mount" ]; then
 			supports_netfs 'nfs'    && result_service=$RESULT_SERVER:/result   && return
-		elif [ "$os_mount" = 'cifs' ] || [ -z "$os_mount" ]; then
+		elif [ "$os_mount" = 'cifs' ]; then
 			supports_netfs 'cifs'   && result_service=//$RESULT_SERVER/result  && return
 		fi
 	}
