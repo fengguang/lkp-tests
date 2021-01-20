@@ -36,7 +36,9 @@ check_add_user()
 create_virtual_disk()
 {
 	dd if=/dev/zero of=raw.img bs=1M count=$1 || return
-	mkfs -t $fs raw.img || return
+	local MIXED_BLOCK
+	[ "$fs" = btrfs ] && MIXED_BLOCK="-M"
+	mkfs.$fs $MIXED_BLOCK raw.img || return
 	losetup /dev/loop0 raw.img || return
 	has_virtual_disk=true
 }
