@@ -318,5 +318,5 @@ run_test()
 run_target_stats()
 {
 	local script_name=$1
-	$LKP_SRC/stats/$script_name < $TMP_RESULT_ROOT/$script_name > $TMP_RESULT_ROOT/$script_name.json
+	$LKP_SRC/stats/$script_name < $TMP_RESULT_ROOT/$script_name > $TMP_RESULT_ROOT/$script_name.yaml
 }
