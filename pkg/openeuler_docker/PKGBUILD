@@ -1,0 +1,27 @@
+pkgname=openeuler_docker
+pkgver=1.0
+pkgrel=1
+pkgdesc="openeuler docker image"
+arch=('i386' 'x86_64')
+url="https://repo.openeuler.org/openEuler-20.03-LTS/docker_img"
+license=('GPL')
+source=("https://repo.openeuler.org/openEuler-20.03-LTS/docker_img/aarch64/openEuler-docker.aarch64.tar.xz")
+md5sums=('6aa300910c9f9040b725939fb80e8121')
+
+handle_docker_image()
+{
+	docker load < openEuler-docker.aarch64.tar.xz
+	docker run -d --name my-openeuler openeuler-20.03-lts:latest
+	container_id=$(docker ps -aqf 'name=my-openeuler')
+	docker cp /etc/yum.repos.d/openEuler.repo $container_id:/etc/yum.repos.d/
+	docker commit $container_id openeuler-20.03-lts:v1
+	docker save -o openeuler-20.03-lts-v1.tar openeuler-20.03-lts:v1
+	docker rm -f $container_id
+}
+
+package()
+{
+	handle_docker_image
+	mkdir -p "$pkgdir/lkp/benchmarks/${pkgname}"
+	cp "$srcdir/openeuler-20.03-lts-v1.tar" "$pkgdir/lkp/benchmarks/${pkgname}"
+}
