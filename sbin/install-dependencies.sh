@@ -12,15 +12,16 @@ linux_dep()
 	case $ID in
 	ubuntu|debian)
 		export DEBIAN_FRONTEND=noninteractive
-		apt-get install -yqm ruby-git ruby-activesupport ruby-rest-client
+		sudo apt-get install -yqm ruby-git ruby-activesupport ruby-rest-client ruby-dev libssl-dev gcc g++
+		sudo gem install faye-websocket
 		;;
 	openEuler|fedora|rhel|centos)
 		if type dnf > /dev/null 2>&1; then
-			dnf install -y --skip-broken ruby rubygems gcc gcc-c++ make ruby-devel git lftp
+			sudo dnf install -y --skip-broken ruby rubygems gcc gcc-c++ make ruby-devel git lftp
 		else
-			yum install -y --skip-broken ruby rubygems gcc gcc-c++ make ruby-devel git lftp
+			sudo yum install -y --skip-broken ruby rubygems gcc gcc-c++ make ruby-devel git lftp
 		fi
-		sudo gem install -f git activesupport rest-client
+		sudo gem install -f git activesupport rest-client faye-websocket
 		;;
 	*)
 		echo "$ID not support! please install dependencies manually."
