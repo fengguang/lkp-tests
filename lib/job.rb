@@ -215,6 +215,8 @@ class Job
   attr_accessor :overrides
   attr_accessor :defaults
   attr_accessor :cmdline_defaults
+  attr_accessor :default_yamls
+  attr_accessor :override_yamls
 
   def initialize(job = {}, defaults = {}, overrides = {}, cmdline_defaults={})
     @job = job
@@ -222,6 +224,8 @@ class Job
     @overrides = overrides # from command line
     @cmdline_defaults = cmdline_defaults # from command line
     @available_programs = {}
+    @default_yamls = []
+    @override_yamls = []
   end
 
   def source_file_symkey(file)
@@ -254,8 +258,11 @@ class Job
           @overrides.merge!(hash['override']){ |_key, a, _b| a}
           hash.delete('override')
         end
-        hash.merge!(@overrides)
-        hash.merge!(fault_reproduction) if hash.has_key?("id")
+
+        revise_hash(hash, load_include_yamls(@default_yamls), false) unless @default_yamls.empty?
+        revise_hash(hash, load_include_yamls(@override_yamls), true) unless @override_yamls.empty?
+        revise_hash(hash, @overrides, true) unless @overrides.empty?
+
         @jobs.concat(multi_args(hash)) # return [hash] or [h1,h2]
       end
     rescue StandardError => e
@@ -286,8 +293,10 @@ class Job
     @jobfile = jobfile
   end
 
-  def fault_reproduction
-    wait = load_yaml("#{lkp_src}/jobs/fault_reproduction.yaml", {})
+  def load_include_yamls(include_yamls)
+    include_hash = {}
+    include_hash[comment_to_symbol("#{include_yamls.join(' ')}")] = nil
+    include_hash.merge!(load_yaml_merge(include_yamls, {}))
   end
 
   def multi_args(hash)

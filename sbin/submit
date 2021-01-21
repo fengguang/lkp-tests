@@ -14,6 +14,7 @@ opt_set_key_value = {}
 opt_cmdline_defaults = {}
 opt_output_dir = nil
 opt_auto_define_files = false
+opt_include_yamls = []
 opt_monitor = false
 opt_monitor_query = {}
 opt_my_queue = false
@@ -43,6 +44,10 @@ options = OptionParser.new do |opts|
     opt_auto_define_files = true
   end
 
+  opts.on('-i include.yaml', '--include include.yaml', 'include other job yamls') do |yaml|
+    opt_include_yamls << yaml
+  end
+
   opts.on('-c', '--connect', 'auto connect to the host') do
     actions << 'connect'
   end
@@ -66,6 +71,7 @@ options = OptionParser.new do |opts|
 
 end
 
+ARGV_CLONE = ARGV.clone
 options.parse!(ARGV)
 
 seen_job_yaml = false
@@ -91,6 +97,19 @@ end
 job_ids = []
 job_hash_list = []
 
+def prioritize_include_yaml(include_yamls, jobfile)
+  default_yamls, override_yamls = [], []
+  jobfile_index = ARGV_CLONE.index(jobfile)
+  include_yamls.each do |yaml|
+    if ARGV_CLONE.index(yaml) < jobfile_index
+      default_yamls << yaml
+    else
+      override_yamls << yaml
+    end
+  end
+  return default_yamls, override_yamls
+end
+
 def find_jobfile(jobfile)
   return jobfile if File.exist?(jobfile)
 
@@ -103,14 +122,25 @@ def find_jobfile(jobfile)
   exit 1
 end
 
+def find_jobfiles(jobfile_list)
+  search_jobfile_list = []
+  jobfile_list.each do |jobfile|
+    search_jobfile_list << find_jobfile(jobfile)
+  end
+  return search_jobfile_list
+end
+
 submit_id = %x(uuidgen).chomp
 puts "submit_id=#{submit_id}"
 
 ARGV.each do |jobfile|
+  default_yamls, override_yamls = prioritize_include_yaml(opt_include_yamls, jobfile)
   jobfile = find_jobfile(jobfile)
   jobs = Job2sh.new
   jobs.cmdline_defaults = opt_cmdline_defaults
   jobs.overrides = opt_set_key_value
+  jobs.default_yamls = find_jobfiles(default_yamls)
+  jobs.override_yamls = find_jobfiles(override_yamls)
   jobs.load(jobfile, true) || next
   jobs[:expand_params] = true
   jobs['testbox'] = opt_set_key_value['testbox'] if opt_set_key_value['testbox']
