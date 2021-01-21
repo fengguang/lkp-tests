@@ -1,4 +1,5 @@
 #!/bin/sh
+# - runtime
 # - nr_threads
 
 ## TBENCH produces the network load to simulate the network part of
@@ -7,6 +8,7 @@
 
 [ -n "$direct_server_ips" ] && server=$direct_server_ips
 [ -z "$server" ] && server=127.0.0.1
+[ -n "$runtime" ] || runtime=600
 server=${server%% *}
 
-log_cmd tbench $nr_threads $server
+log_cmd tbench -t $runtime $nr_threads $server
