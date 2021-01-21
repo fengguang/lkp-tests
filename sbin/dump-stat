@@ -14,12 +14,7 @@ require 'set'
 monitor = ARGV[0]
 
 def warn_stat(msg, monitor, k, v)
-  if $stat_context_showed
-    log_warn msg
-  else
-    $stat_context_showed = true
-    log_debug "#{msg}: #{RESULT_ROOT}/#{monitor}: #{k}:#{v}"
-  end
+  log_warn event: msg, detail: "#{RESULT_ROOT}/#{monitor}: #{k}:#{v}"
 end
 
 result = {}
