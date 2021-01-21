@@ -60,8 +60,16 @@ jobfile_append_var()
 	http_get_cgi "cgi-bin/lkp-jobfile-append-var?$query_str"
 }
 
+exit_with_job_state()
+{
+	local exit_code=$?
+	set_job_state "$1"
+	exit $exit_code
+}
+
 set_job_state()
 {
+	[ -n "$1" ] || return
 	jobfile_append_var "job_state=$1"
 }
 

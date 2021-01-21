@@ -103,8 +103,6 @@ wget_install_cgz()
 
 install_proxy_yum()
 {
-	[ -d "/etc/yum/" ] || return
-
 	echo "proxy=http://$SQUID_HOST:$SQUID_PORT" >> /etc/yum.conf
 	if ls /etc/yum.repos.d/*.repo >/dev/null 2>&1; then
 		sed -i 's/https:/http:/g' /etc/yum.repos.d/*.repo
@@ -115,8 +113,6 @@ install_proxy_yum()
 
 install_proxy_apt()
 {
-	[ -d "/etc/apt/" ] || return
-
 	cat << EOF > /etc/apt/apt.conf.d/proxy
 Acquire::http::proxy "http://$SQUID_HOST:$SQUID_PORT/";
 Acquire::ftp::proxy "ftp://$SQUID_HOST:$SQUID_PORT/";
@@ -133,8 +129,8 @@ EOF
 
 install_docker_proxy()
 {
-	[ -n "$DOCKER_PROXY_HOST" ] || return
-	[ -n "$DOCKER_PROXY_PORT" ] || return
+	[ -n "$DOCKER_PROXY_HOST" ] || return 0
+	[ -n "$DOCKER_PROXY_PORT" ] || return 0
 
 	mkdir -p /etc/systemd/system/docker.service.d
 	cat << EOF > /etc/systemd/system/docker.service.d/http-proxy.conf
@@ -156,30 +152,32 @@ EOF
 modify_gem_source()
 {
        echo ':sources: ["http://rubygems.org"]' >> /root/.gemrc
-
-       return 0
 }
 
 install_goproxy()
 {
-	mkdir -p /root/.config/go/
+	mkdir -p /root/.config/go/ || return
 	echo "GOPROXY=https://goproxy.io,direct" >> /root/.config/go/env
-
-	return 0
 }
 
 install_proxy()
 {
-	modify_gem_source
+	modify_gem_source || return
 
 	install_docker_proxy
 
-	install_goproxy
+	install_goproxy || return
 
 	[ -z "$SQUID_HOST" ] && return
 	[ -z "$SQUID_PORT" ] && return
 
-	install_proxy_apt || install_proxy_yum
+	if [ -d "/etc/yum/" ]; then
+		install_proxy_yum
+	elif [ -d "/etc/apt/" ]; then
+		install_proxy_apt
+	else
+		:
+	fi
 }
 
 # Save the result to
@@ -251,7 +249,7 @@ chmod_root_ssh()
 	chmod 600 /root/.ssh/id_rsa
 }
 
-install_proxy
+install_proxy || exit_with_job_state 'error:proxy'
 chmod_root_ssh
 
 while true; do
