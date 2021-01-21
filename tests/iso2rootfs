@@ -576,6 +576,7 @@ update_dailybuild_soft_link()
 	[ -n "${dailybuild_iso_url_file}" ] || return 0
 
 	mv "${CHECKSUM_FILE_CACHE}.tmp" "${CHECKSUM_FILE_CACHE}"
+	cp "${CHECKSUM_FILE_CACHE}" "${ROOTFS_DES_DIR}"
 
 	local soft_link="${iso_version}-dailybuild"
 	cd "${ROOTFS_LOCAL_PATH}" &&
