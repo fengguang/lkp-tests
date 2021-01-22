@@ -2,8 +2,18 @@
 # SPDX-License-Identifier: MulanPSL-2.0+
 # Copyright (c) 2020 Huawei Technologies Co., Ltd. All rights reserved.
 
+: ${SCHED_HOST:=172.17.0.1}
+: ${SCHED_PORT:=3000}
+
 git_ci()
 {
+	if [ -n "$GIT_SERVER" ]; then
+		cat >> /etc/gitconfig <<-EOF
+		[url "git://$GIT_SERVER/gitee.com"]
+			insteadOf=https://gitee.com
+		EOF
+	fi
+
 	git clone git://$GIT_SERVER/gitee.com/wu_fengguang/compass-ci.git /c/compass-ci
 }
 
