@@ -1,0 +1,10 @@
+suite: reset-tbox
+category: functional
+
+testbox: dc-8g
+os_mount: container
+docker_image: reset-tbox:latest
+queue: reset-tbox
+
+reset-tbox:
+host_name:

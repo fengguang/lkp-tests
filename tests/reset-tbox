@@ -1,0 +1,46 @@
+#!/bin/bash
+# host_name
+
+account_file=/etc/lab/.account.info
+hosts_file=/etc/lab/hosts_file
+command_file=/usr/bin/ipmitool
+
+file_check()
+{
+	for i in $account_file $hosts_file $command_file
+	do
+		[ -f $i ] || {
+			echo "File not found: $i"
+			exit 0
+		}
+	done
+	source $account_file
+}
+
+tbox_check()
+{
+	ibmc_ip=$(grep -w $host_name $hosts_file | awk '{print $1}')
+
+	[[ "$ibmc_ip" =~ ^[0-9]+.* ]] || {
+		echo "Testbox not found: $host_name"
+		exit 1
+	}
+}
+
+reset_tbox()
+{
+	echo "reboot the tesetbox..."
+	ipmitool -I lanplus -H $ibmc_ip -U $iBMC_user -P $iBMC_passwd power reset
+}
+
+main()
+{
+	file_check
+	tbox_check
+	reset_tbox || {
+		echo "Failed to reboot the testbox: $host_name"
+		exit 2
+	}
+}
+
+main
