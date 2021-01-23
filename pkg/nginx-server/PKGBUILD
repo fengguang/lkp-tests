@@ -5,8 +5,8 @@ arch=('i386' 'x86_64')
 url="https://nginx.org"
 license=('BSD')
 nginx_name=("nginx-${pkgver}.${pkgrel}")
-source=("https://nginx.org/download/${nginx_name}.tar.gz")
-md5sums=('SKIP')
+source=("https://nginx.org/download/${nginx_name}.tar.gz" "blacklist.conf")
+md5sums=('SKIP' 'SKIP')
 
 build()
 {
@@ -19,6 +19,12 @@ build()
 
 package()
 {
+	mkdir -p "$pkgdir/rootfs/addon/etc/modprobe.d/"
+	cp blacklist.conf "$pkgdir/rootfs/addon/etc/modprobe.d/"
+
+	mkdir -p "$pkgdir/lkp/benchmarks/${pkgname}/"
+	cp -r "$LKP_SRC/pkg/${pkgname}/nginx_conf" "$pkgdir/lkp/benchmarks/${pkgname}/"
+
 	cd "${srcdir}/${nginx_name}"
 	make install DESTDIR="${pkgdir}"
 }
