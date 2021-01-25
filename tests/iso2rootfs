@@ -358,6 +358,10 @@ run_qcow2rootfs()
 config_dns_resolver()
 {
 	echo "${config_rootfs}" | grep -qw 'dns' || return 0
+
+	grep -qs "^dns=none" $config_file ||
+		sed -i '/^\[main\]/adns=none' "${ROOTFS_DES_DIR}/etc/NetworkManager/NetworkManager.conf"
+
 	cat <<-EOF > "${ROOTFS_DES_DIR}/etc/resolv.conf"
 	nameserver 114.114.114.114
 	nameserver 8.8.8.8
