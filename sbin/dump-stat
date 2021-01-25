@@ -59,6 +59,13 @@ while (line = STDIN.gets)
 
     exit 1
   end
+
+  # keep message | log line which key end with .message|.log
+  if k.end_with?('.message', '.log')
+    result[k] = v
+    next
+  end
+
   # only number is valid
   unless v.numeric?
     invalid_records.push record_index
@@ -84,6 +91,8 @@ min_cols_stat = ''
 max_cols_stat = ''
 zero_stats = []
 result.each do |key, val|
+  next if val.is_a?(String)
+
   if max_cols < val.size
     max_cols = val.size
     max_cols_stat = key
