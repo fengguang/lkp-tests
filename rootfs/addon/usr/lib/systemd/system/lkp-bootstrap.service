@@ -8,7 +8,7 @@ Type=forking
 Environment=HOME=/root
 ExecStart=/etc/init.d/lkp-bootstrap
 IgnoreSIGPIPE=no
-KillMode=none
+KillMode=control-group
 TasksMax=infinity
 
 [Install]
