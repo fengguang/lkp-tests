@@ -287,7 +287,7 @@ export_ip_mac()
 {
 	if has_cmd ip; then
 		export PUB_NIC=$(ip route get 1.2.3.4 | awk '{print $5; exit}')
-		export PUB_IP=$( ip route get 1.2.3.4 | awk '{print $7; exit}')
+		export PUB_IP=$(ip route get 1.2.3.4 | awk '{print $7; exit}')
 	elif has_cmd route; then
 		export PUB_NIC=$(route -n | awk '/[UG][UG]/ {print $8}')
 		export PUB_IP=$(ifconfig $PUB_NIC | awk '/inet / {print $2}')
