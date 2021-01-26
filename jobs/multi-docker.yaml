@@ -1,0 +1,17 @@
+suite: multi-docker
+category: functional
+simplify-ci:
+runtime: 100d
+multi-docker-0:
+        nr_container: 20
+        tbox_group: dc-1g
+multi-docker-1:
+        nr_container: 10
+        tbox_group: dc-2g
+multi-docker-2:
+        nr_container: 5
+        tbox_group: dc-4g
+multi-docker-3:
+        nr_container: 20
+        tbox_group: dc-8g
+sleep:

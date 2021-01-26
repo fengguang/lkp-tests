@@ -1,0 +1,23 @@
+suite: multi-qemu
+category: functional
+simplify-ci:
+runtime: 100d
+multi-qemu-0:
+        nr_vm: 5
+        tbox_group: vm-2p1g
+multi-qemu-1:
+        nr_vm: 5
+        tbox_group: vm-2p2g
+multi-qemu-2:
+        nr_vm: 5
+        tbox_group: vm-2p4g
+multi-qemu-3:
+        nr_vm: 10
+        tbox_group: vm-2p8g
+multi-qemu-4:
+        nr_vm: 5
+        tbox_group: vm-2p16g
+multi-qemu-5:
+        nr_vm: 1
+        tbox_group: vm-2p32g
+sleep:
