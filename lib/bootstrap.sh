@@ -94,13 +94,6 @@ network_ok()
 		[ "$(cat $i/carrier 2>/dev/null)" = '1' ]	&& return 0
 	done
 
-	is_clearlinux && {
-		net_devices_link up
-
-		# in case of systemd-networkd.service was masked
-		systemctl unmask systemd-networkd.service
-		systemctl start systemd-networkd.service
-	}
 	return 1
 }
 
@@ -221,20 +214,10 @@ add_lkp_user()
 	fi
 }
 
-clearlinux_timesync()
-{
-	echo "[Time]" >/etc/systemd/timesyncd.conf
-	echo "NTP=internal-lkp-server" >>/etc/systemd/timesyncd.conf
-	timedatectl set-ntp false
-	timedatectl set-ntp true
-	hwclock -w
-}
-
 run_ntpdate()
 {
 	[ -z "$NO_NETWORK" ] || return
 	[ "$LKP_SERVER" = inn ] || return
-	is_clearlinux && clearlinux_timesync && return
 
 	[ -x '/usr/sbin/ntpdate' ] || return
 
@@ -721,7 +704,7 @@ boot_init()
 
 	mount_debugfs
 
-	if is_clearlinux || is_aliyunos; then
+	if is_aliyunos; then
 		add_nfs_default_options
 	fi
 

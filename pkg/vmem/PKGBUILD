@@ -91,7 +91,7 @@ build()
 		cd "${srcdir}/nvml"
 		sed -i 's/CXXFLAGS += -Wno-unknown-attributes/CXXFLAGS += -Wno-ignored-attributes/' ./src/benchmarks/Makefile
 	}
-	[ "$DISTRO" = "clear" ] && return
+
 	build_install_valgrind_pmem
 	build_install_ndctl
 	build_install_pmdk
@@ -104,13 +104,12 @@ package()
 	mkdir -p "${benchmark_path}"
 	cp -af "${srcdir}/${pkgname}" "${benchmark_path}"
 	. $LKP_SRC/lib/env.sh
-	is_clearlinux || {
-		cd "${srcdir}/valgrind"
-		make DESTDIR="${pkgdir}" install
-		cp -af "/usr/local/libcxx" "${pkgdir}/usr/local"
-		cd "${srcdir}/ndctl"
-		make DESTDIR="${pkgdir}" install
-		cd "${srcdir}/pmdk"
-		make DESTDIR="${pkgdir}" install
-	}
+
+	cd "${srcdir}/valgrind"
+	make DESTDIR="${pkgdir}" install
+	cp -af "/usr/local/libcxx" "${pkgdir}/usr/local"
+	cd "${srcdir}/ndctl"
+	make DESTDIR="${pkgdir}" install
+	cd "${srcdir}/pmdk"
+	make DESTDIR="${pkgdir}" install
 }

@@ -9,9 +9,6 @@ md5sums=('7dc8f085701122f031516e03c439d347')
 
 package()
 {
-	# clearlinux use bundle to install this benchmark
-	[ "$DISTRO" = "clear" ] && return 0
-
 	cd "${srcdir}/${pkgname}"
 	sh install-sh
 	mkdir -p "${pkgdir}/usr/bin"

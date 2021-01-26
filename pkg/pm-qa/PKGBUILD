@@ -14,8 +14,6 @@ build()
 	cd utils
 	make
 
-	[ "$DISTRO" = "clear" ] && return
-
 	cd ${srcdir}/glmark2
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
 	mkdir -p $benchmark_path/glmark2

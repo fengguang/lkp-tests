@@ -2,8 +2,4 @@
 
 . $LKP_SRC/lib/env.sh
 
-if is_clearlinux; then
-	systemctl stop sshd.service
-else
-	/etc/init.d/ssh stop
-fi
+/etc/init.d/ssh stop

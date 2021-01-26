@@ -25,11 +25,6 @@ setup_java_home
 
 cd "$BENCHMARK_ROOT/linkbench" || exit
 
-is_clearlinux && {
-	/usr/bin/mysqld --user root > /dev/null 2>&1 &
-	sleep 3
-}
-
 cp config/LinkConfigMysql.properties config/MyConfig.properties
 
 mysql << "MY_QUERY"

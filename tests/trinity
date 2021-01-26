@@ -34,7 +34,6 @@ has_cmd trinity || {
 
 cd /tmp
 if chroot --help 2>&1 | grep -q -- --userspec; then
-	groupadd nogroup 2>&1 # for clearlinux
 	log_cmd chroot --userspec nobody:nogroup / $cmd 2>&1 &
 else
 	log_cmd $cmd -X 2>&1 &
