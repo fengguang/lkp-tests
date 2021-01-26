@@ -472,7 +472,7 @@ def should_add_max_latency(stats_field)
 end
 
 def sort_remove_margin(array, max_margin = nil)
-  return nil unless array
+  return [] if array.to_a.empty?
 
   margin = array.size >> MARGIN_SHIFT
   margin = [margin, max_margin].min if max_margin
@@ -483,7 +483,7 @@ end
 
 # NOTE: array *must* be sorted
 def get_min_mean_max(array)
-  return [0, 0, 0] unless array
+  return [0, 0, 0] if array.to_a.empty?
 
   [array[0], array[array.size / 2], array[-1]]
 end
