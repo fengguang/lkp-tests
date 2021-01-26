@@ -25,16 +25,4 @@ class RepoSpec
   def internal?
     @name =~ /^internal-/
   end
-
-  class << self
-    def url_to_remote(url)
-      unless @url_remotes
-        names = Dir[File.join(ROOT_DIR, '*', '*')].map { |file| File.basename file }
-                                                  .reject { |name| name =~ /(DEFAULTS|linux-review|linux-devel|internal-devel)$/ }
-        @url_remotes = Hash[names.map { |name| [new(name)['url'], name] }]
-      end
-
-      @url_remotes[url]
-    end
-  end
 end
