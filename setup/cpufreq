@@ -13,22 +13,29 @@
 }
 
 log_echo "
-	for i in \$(seq 0 \$((\$(nproc)-1)))
-	do
-		[ -n "scaling_max_freq" ] && echo $scaling_max_freq > /sys/devices/system/cpu/cpu\$i/cpufreq/scaling_max_freq
-		[ -n "scaling_min_freq" ] && echo $scaling_min_freq > /sys/devices/system/cpu/cpu\$i/cpufreq/scaling_min_freq
-	done
+for cpu_dir in /sys/devices/system/cpu/cpu[0-9]*
+do
+	# Skip offlined CPUs
+	online_file="$cpu_dir"/online
+        [ -f "$online_file" ] && [ "$(cat "$online_file")" -eq 0 ] && continue
+
+	[ "$scaling_max_freq" = "base_freq" ] && scaling_max_freq=$(cat $cpu_dir/cpufreq/base_frequency)
+	[ "$scaling_min_freq" = "base_freq" ] && scaling_min_freq=$(cat $cpu_dir/cpufreq/base_frequency)
+
+	[ -n "$scaling_max_freq" ] && echo $scaling_max_freq > $cpu_dir/cpufreq/scaling_max_freq
+	[ -n "$scaling_min_freq" ] && echo $scaling_min_freq > $cpu_dir/cpufreq/scaling_min_freq
+done
 "
 
-for i in $(seq 0 $((nr_cpu-1)))
+for cpu_dir in /sys/devices/system/cpu/cpu[0-9]*
 do
-	d_cpu=/sys/devices/system/cpu/cpu$i
+	# Skip offlined CPUs
+	online_file="$cpu_dir"/online
+        [ -f "$online_file" ] && [ "$(cat "$online_file")" -eq 0 ] && continue
 
-	online=1
-	[ -f $d_cpu/online ] && online=$(cat $d_cpu/online)
-	[ $online -eq 0 ] && continue
-	[ "$scaling_max_freq" = "base_freq" ] && scaling_max_freq=$(cat $d_cpu/cpufreq/base_frequency)
-	[ "$scaling_min_freq" = "base_freq" ] && scaling_min_freq=$(cat $d_cpu/cpufreq/base_frequency)
-	[ -n "scaling_max_freq" ] && echo $scaling_max_freq > $d_cpu/cpufreq/scaling_max_freq
-	[ -n "scaling_min_freq" ] && echo $scaling_min_freq > $d_cpu/cpufreq/scaling_min_freq
+	[ "$scaling_max_freq" = "base_freq" ] && scaling_max_freq=$(cat $cpu_dir/cpufreq/base_frequency)
+	[ "$scaling_min_freq" = "base_freq" ] && scaling_min_freq=$(cat $cpu_dir/cpufreq/base_frequency)
+
+	[ -n "$scaling_max_freq" ] && echo $scaling_max_freq > $cpu_dir/cpufreq/scaling_max_freq
+	[ -n "$scaling_min_freq" ] && echo $scaling_min_freq > $cpu_dir/cpufreq/scaling_min_freq
 done
