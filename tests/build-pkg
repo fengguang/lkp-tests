@@ -157,6 +157,8 @@ build_source_pkg()
 	local mark="true"
 	[ "${os}" == "archlinux" ] && local mark="pacman"
 
+	export V=1
+
 	PACMAN="${mark}" BUILDDIR=$TMP CARCH=$os_arch PKGEXT=.cgz CGZDEST="$cgz_name" \
 		$LKP_SRC/sbin/makepkg ${pkg_args} --config $LKP_SRC/etc/makepkg.conf
 
