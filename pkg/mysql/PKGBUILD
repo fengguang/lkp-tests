@@ -7,8 +7,9 @@ license=('GPLv2')
 source=("https://cdn.mysql.com/archives/mysql-8.0/mysql-boost-$pkgver.tar.gz"
 	"0000-mysql-add-fstack-protector-strong.patch"
 	"https://mirrors.huaweicloud.com/kunpeng/archive/openEuler/patch/database/mysql/getcpu.tgz"
+	"https://github.com/thkukuk/rpcsvc-proto/releases/download/v1.4/rpcsvc-proto-1.4.tar.gz"
 	"my.cnf")
-md5sums=('7472a25d91973cbba5d8a8f176a3080b' '6e853850efbd6f887ac3e13b1bf99cc4' 'f13eb11de53616017f7428cc06d4e242' '7bb0372ec4e9281813a9afc67c6cfc20')
+md5sums=('7472a25d91973cbba5d8a8f176a3080b' '6e853850efbd6f887ac3e13b1bf99cc4' 'f13eb11de53616017f7428cc06d4e242' 'df1022ccc5d0aff30b8e505735b4a98b' '7bb0372ec4e9281813a9afc67c6cfc20')
 
 prepare()
 {
@@ -19,7 +20,16 @@ prepare()
 build()
 {
 	build_getcpu
+	build_rpcsvc
 	build_mysql
+}
+
+build_rpcsvc()
+{
+	cd "$srcdir/rpcsvc-proto-1.4"
+	./configure
+	make
+	make install
 }
 
 build_mysql()
