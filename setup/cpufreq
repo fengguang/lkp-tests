@@ -4,33 +4,6 @@
 
 [ -n "$scaling_max_freq" ] || [ -n "$scaling_min_freq" ] || exit 0
 
-. $LKP_SRC/lib/reproduce-log.sh
-
-log_echo "
-for cpu_dir in /sys/devices/system/cpu/cpu[0-9]*
-do
-	# Skip offlined CPUs
-	online_file="$cpu_dir"/online
-        [ -f "$online_file" ] && [ "$(cat "$online_file")" -eq 0 ] && continue
-
-	[ ${scaling_max_freq%%%} != $scaling_max_freq ] && {
-		cpuinfo_max_freq=$(cat $cpu_dir/cpufreq/cpuinfo_max_freq)
-		scaling_max_freq=${scaling_max_freq%%%}
-		scaling_max_freq=$(( cpuinfo_max_freq * scaling_max_freq / 100 ))
-	}
-
-	[ "$scaling_max_freq" = "turbo" ] && scaling_max_freq=$(cat $cpu_dir/cpufreq/cpuinfo_max_freq)
-	[ "$scaling_max_freq" = "hfm" ] && scaling_max_freq=$(cat $cpu_dir/cpufreq/base_frequency)
-	[ "$scaling_max_freq" = "lfm" ] && scaling_max_freq=$(cat $cpu_dir/cpufreq/cpuinfo_min_freq)
-	[ "$scaling_min_freq" = "turbo" ] && scaling_min_freq=$(cat $cpu_dir/cpufreq/cpuinfo_max_freq)
-	[ "$scaling_min_freq" = "hfm" ] && scaling_min_freq=$(cat $cpu_dir/cpufreq/base_frequency)
-	[ "$scaling_min_freq" = "lfm" ] && scaling_min_freq=$(cat $cpu_dir/cpufreq/cpuinfo_min_freq)
-
-	[ -n "$scaling_max_freq" ] && echo $scaling_max_freq > $cpu_dir/cpufreq/scaling_max_freq
-	[ -n "$scaling_min_freq" ] && echo $scaling_min_freq > $cpu_dir/cpufreq/scaling_min_freq
-done
-"
-
 for cpu_dir in /sys/devices/system/cpu/cpu[0-9]*
 do
 	# Skip offlined CPUs
