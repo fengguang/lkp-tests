@@ -639,6 +639,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
     v << 0 while v.size < cols_a
 
     sorted_b = sort_remove_margin b_k, max_margin
+    next if sorted_b.empty?
     min_b, mean_b, max_b = get_min_mean_max sorted_b
     next unless max_b
 
@@ -646,6 +647,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
 
     max_margin = 1 if b_k.size <= 3 && max_margin > 1
     sorted_a = sort_remove_margin v, max_margin
+    next if sorted_a.empty?
     min_a, mean_a, max_a = get_min_mean_max sorted_a
     next unless max_a
 
