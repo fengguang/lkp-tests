@@ -55,8 +55,6 @@ update
 
 fixup_preinstall
 
-[[ "$benchmark" = "all" ]] && benchmark="$(ls $LKP_SRC/distro/depends | grep -v -e '-dev' -e '-allowlist')"
-
 fixup_arch_install $pack_arch
 
 pack_benchmark_deps
