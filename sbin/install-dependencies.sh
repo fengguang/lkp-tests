@@ -12,8 +12,8 @@ linux_dep()
 	case $ID in
 	ubuntu|debian)
 		export DEBIAN_FRONTEND=noninteractive
-		sudo apt-get install -yqm ruby-git ruby-activesupport ruby-rest-client ruby-dev libssl-dev gcc g++
-		sudo gem install -f faye-websocket
+		sudo apt-get install -yqm ruby-dev libssl-dev gcc g++
+		sudo gem install -f faye-websocket git activesupport rest-client
 		;;
 	openEuler|fedora|rhel|centos)
 		if type dnf > /dev/null 2>&1; then
