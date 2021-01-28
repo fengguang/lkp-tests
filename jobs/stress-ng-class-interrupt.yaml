@@ -1,0 +1,39 @@
+suite: stress-ng
+testcase: stress-ng
+category: benchmark
+
+nr_threads: 100%
+
+disk: 1HDD
+
+testtime:
+- 60s
+
+stress-ng:
+  class:
+  - interrupt
+  test:
+  - aio
+  - aiol
+  - clock
+  - fault
+  - itimer
+  - kill
+  - nanosleep
+  - schedpolicy
+  - sigabrt
+  - sigchld
+  - sigfd
+  - sigfpe
+  - sigio
+  - signal
+  - sigpending
+  - sigpipe
+  - sigq
+  - sigrt
+  - sigsegv
+  - sigsuspend
+  - sigtrap
+  - sleep
+  - timer
+  - timerfd

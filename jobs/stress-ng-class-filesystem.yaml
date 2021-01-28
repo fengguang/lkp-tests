@@ -1,0 +1,63 @@
+suite: stress-ng
+testcase: stress-ng
+category: benchmark
+
+nr_threads: 10%
+
+disk: 1HDD
+
+testtime:
+- 60s
+
+fs:
+- btrfs
+- f2fs
+- ext4
+- xfs
+
+stress-ng:
+  class:
+  - filesystem
+  test:
+  - access
+  - binderfs
+  - chattr
+  - chdir
+  - chmod
+  - chown
+  - copy-file
+  - dentry
+  - dir
+  - dirdeep
+  - dnotify
+  - dup
+  - eventfd
+  - fallocate
+  - fanotify
+  - fcntl
+  - fiemap
+  - file-ioctl
+  - filename
+  - flock
+  - fstat
+  - getdent
+  - handle
+  - inode-flags
+  - inotify
+  - io
+  - iomix
+  - ioprio
+  - lease
+  - link
+  - locka
+  - lockf
+  - lockofd
+  - mknod
+  - open
+  - procfs
+  - rename
+  - symlink
+  - sync-file
+  - utime
+  - verity
+  - xattr

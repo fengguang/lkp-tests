@@ -1,0 +1,24 @@
+suite: stress-ng
+testcase: stress-ng
+category: benchmark
+
+nr_threads: 100%
+
+disk: 1HDD
+
+testtime:
+- 60s
+
+stress-ng:
+  class:
+  - io
+  test:
+  - aio
+  - aiol
+  - hdd
+  - io-uring
+  - rawdev
+  - readahead
+  - revio
+  - seek
+  - sync-file

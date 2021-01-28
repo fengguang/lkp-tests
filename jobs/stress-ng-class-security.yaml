@@ -1,0 +1,16 @@
+suite: stress-ng
+testcase: stress-ng
+category: benchmark
+
+nr_threads: 100%
+
+disk: 1HDD
+
+testtime:
+- 60s
+
+kernel_cmdline: "apparmor=1 security=apparmor"
+
+stress-ng:
+  class:
+  - security

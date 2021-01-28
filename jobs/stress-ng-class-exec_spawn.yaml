@@ -1,0 +1,18 @@
+suite: stress-ng
+testcase: stress-ng
+category: benchmark
+
+nr_threads: 100%
+
+disk: 1HDD
+
+testtime:
+- 60s
+
+stress-ng:
+  class:
+##most stressors could run as root except exec and spawn, classify exec and spawn into exec_spawn, run exec_spawn as lkp.
+  - exec_spawn
+  test:
+  - exec
+  - spawn
