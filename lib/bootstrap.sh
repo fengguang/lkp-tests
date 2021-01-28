@@ -147,7 +147,7 @@ add_lkp_user()
 run_ntpdate()
 {
 	[ -z "$NO_NETWORK" ] || return
-	[ "$LKP_SERVER" = inn ] || return
+	[ "$LKP_SERVER" = internal-lkp-server ] || return
 
 	[ -x '/usr/sbin/ntpdate' ] || return
 
