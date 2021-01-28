@@ -1,0 +1,6 @@
+# use this send_email.yaml by:
+#   submit job.yaml -i send-email.yaml send_email.subject=$subject
+#   values of $subject are limited to job_failed/job_debug/borrow_success/borrow_failed.
+
+send_email:
+  subject: job_failed
