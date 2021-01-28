@@ -13,7 +13,7 @@ linux_dep()
 	ubuntu|debian)
 		export DEBIAN_FRONTEND=noninteractive
 		sudo apt-get install -yqm ruby-git ruby-activesupport ruby-rest-client ruby-dev libssl-dev gcc g++
-		sudo gem install faye-websocket
+		sudo gem install -f faye-websocket
 		;;
 	openEuler|fedora|rhel|centos)
 		if type dnf > /dev/null 2>&1; then
@@ -34,7 +34,7 @@ mac_dep()
 {
 	brew install ruby
 	write_shell_profile "export PATH=/usr/local/opt/ruby/bin:$PATH"
-	gem install git activesupport rest-client
+	sudo gem install -f git activesupport rest-client
 }
 
 run()
