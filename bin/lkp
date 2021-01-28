@@ -56,5 +56,5 @@ try_run 'sbin'		"$@"
 try_run 'tools'		"$@"
 try_run 'lkp-exec'	"$@"
 
-echo "Cannot find LKP command under $LKP_SRC/{bin,sbin,tools,lkp-exec}/"
+echo "Cannot find \"$lkp_command\" command under $LKP_SRC/{bin,sbin,tools,lkp-exec}/"
 exit 1
