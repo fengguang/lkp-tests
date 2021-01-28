@@ -13,6 +13,7 @@
 [ -n "$wait_disks_timeout" ] || wait_disks_timeout=30
 
 . $LKP_SRC/lib/unit.sh
+. $LKP_SRC/lib/debug.sh
 
 check_nr_partitions()
 {
@@ -23,23 +24,19 @@ check_nr_partitions()
 	nr_hdd_partitions=${nr_hdd_partitions:-$(echo $hdd_partitions | wc -w)}
 
 	[ "$ssd_partitions" ] && [ "$nr_ssd_partitions" != "$max_ssd" ] && {
-		echo "disk number $nr_ssd_partitions mismatch with $max_ssd real disks: $ssd_partitions" >&2
-		return 1
+		die "disk number $nr_ssd_partitions mismatch with $max_ssd real disks: $ssd_partitions"
 	}
 
 	[ "$hdd_partitions" ] && [ "$nr_hdd_partitions" != "$max_hdd" ] && {
-		echo "disk number $nr_hdd_partitions mismatch with $max_hdd real disks: $hdd_partitions" >&2
-		return 1
+		die "disk number $nr_hdd_partitions mismatch with $max_hdd real disks: $hdd_partitions"
 	}
 
 	[ "$nr_hdd_partitions" -gt 0 ] && [ -z "$hdd_partitions" ] && {
-		echo "Invalid hdd disk configuration, please check host file!" >&2
-		return 1
+		die "Invalid hdd disk configuration, please check host file!"
 	}
 
 	[ "$nr_ssd_partitions" -gt 0 ] && [ -z "$ssd_partitions" ] && {
-		echo "Invalid ssd disk configuration, please check host file!" >&2
-		return 1
+		die "Invalid ssd disk configuration, please check host file!"
 	}
 
 	return 0
@@ -60,10 +57,7 @@ wait_disks()
 check_nr_pmem()
 {
 	max_pmem=$(ls /sys/block/pmem* | wc -w)
-	[ $max_pmem -eq 0 ] && {
-		echo "No pmem device" >&2
-		exit 1
-	}
+	[ $max_pmem -eq 0 ] && die "No pmem device"
 
 	[ "$nr_pmem" -gt "$max_pmem" ] && nr_pmem=$max_pmem
 }
@@ -142,16 +136,15 @@ elif [ -n "$nr_pmem" -a "$nr_pmem" != 0 ]; then
 	disk_descriptions=${nr_pmem}pmem
 	disks="fake pmem disk, you shouldn't use it"
 else
-	echo "setup/disk: should not reach here" >&2
 	echo "setup/disk: dumping shell variables:"
 	set
 	echo
-	exit 1
+
+	die "setup/disk: should not reach here"
 fi
 
 [ -z "$nr_partitions" -o "$nr_partitions" -lt 1 ] && {
-	echo "setup/disk: no disk partitions found, nr_partitions=$nr_partitions" >&2
-	exit 1
+	die "setup/disk: no disk partitions found, nr_partitions=$nr_partitions"
 }
 
 [ "${partitions#/dev/disk/by-}" != "$partitions" ] && partitions="$(readlink -e $partitions)"
