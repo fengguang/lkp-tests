@@ -1,0 +1,63 @@
+#!/bin/sh
+# - monitor_repo
+# - job_yaml
+# - job_testbox
+
+. $LKP_SRC/lib/log.sh
+
+set_scheduler_config()
+{
+	mkdir -p /etc/compass-ci/defaults
+	cat > /etc/compass-ci/defaults/$lab.yaml <<-EOF
+		SCHED_HOST: $SCHED_HOST
+		SCHED_PORT: $SCHED_PORT
+		lab: $lab
+		my_email: $my_email
+	EOF
+}
+
+install_gem_pkgs()
+{
+	gem sources -c -a https://gems.ruby-china.com/
+	gem install activesupport git rest-client elasticsearch
+}
+
+build_my_info()
+{
+	git clone git://$GIT_SERVER/gitee.com/wu_fengguang/compass-ci.git "$CCI_SRC"
+	ruby "$CCI_SRC"/sbin/build-my-info.rb -e "$my_email" -n "$my_name" -l "$lab"
+
+	git clone git://$GIT_SERVER/gitee.com/wu_fengguang/lkp-tests.git "$LKP_SRC"
+}
+
+download_monitor_repo()
+{
+	if [ -n "$monitor_repo" ]; then
+		git clone git://"$LKP_SERVER"/"$monitor_repo"
+	else
+		log_error "monitor_repo is not specified" && exit 1
+	fi
+
+	test_code=${monitor_repo##*/}
+	cp -r "$test_code"/* $LKP_SRC/
+}
+
+submit_job()
+{
+	yaml=${job_yaml##*/}
+	"$LKP_SRC"/sbin/submit -a "$yaml" testbox="$job_testbox"
+}
+
+main()
+{
+	local CCI_SRC=/c/compass-ci
+	local LKP_SRC=/c/lkp-tests
+
+	install_gem_pkgs
+	set_scheduler_config
+	build_my_info
+	download_monitor_repo
+	submit_job
+}
+
+main
