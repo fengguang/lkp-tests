@@ -59,7 +59,7 @@ class LinuxTestcasesTableSet
        idle-inject mdadm-selftests xsave-test nvml test-bpf mce-log perf-sanity-tests
        build-perf_test update-ucode reboot cat libhugetlbfs-test ocfs2test syzkaller
        perf-test stress-ng fxmark kvm-kernel-boot-test bkc_ddt bpf_offload
-       xfstests packetdrill avocado v4l2 vmem perf-stat-tests].freeze
+       xfstests packetdrill avocado v4l2 vmem perf-stat-tests cgroup2-test].freeze
   OTHER_TESTCASES =
     %w[0day-boot-tests 0day-kbuild-tests build-dpdk build-nvml
        build-qemu convert-lkpdoc-to-html convert-lkpdoc-to-html-css rsync-rootfs

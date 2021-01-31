@@ -1,0 +1,13 @@
+suite: cgroup2-test
+testcase: cgroup2-test
+cgroup2:
+    memory.high: 90%
+    memory.low: 50%
+    memory.max: max
+    memory.swap.max:
+    io.max:
+    io.weight:
+    rdma.max:
+    pids.max: 10000
+
+kernel_cmdline: systemd.unified_cgroup_hierarchy=1
