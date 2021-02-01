@@ -13,7 +13,6 @@ linux_dep()
 	ubuntu|debian)
 		export DEBIAN_FRONTEND=noninteractive
 		sudo apt-get install -yqm ruby-dev libssl-dev gcc g++
-		sudo gem install -f faye-websocket git activesupport rest-client
 		;;
 	openEuler|fedora|rhel|centos)
 		if type dnf > /dev/null 2>&1; then
@@ -21,7 +20,6 @@ linux_dep()
 		else
 			sudo yum install -y --skip-broken ruby rubygems gcc gcc-c++ make ruby-devel git lftp
 		fi
-		sudo gem install -f git activesupport rest-client faye-websocket
 		;;
 	*)
 		echo "$ID not support! please install dependencies manually." && exit 1
@@ -34,7 +32,12 @@ mac_dep()
 {
 	brew install ruby
 	write_shell_profile "export PATH=/usr/local/opt/ruby/bin:$PATH"
-	sudo gem install -f git activesupport rest-client
+}
+
+install_gem_pkg()
+{
+	gem sources -r https://rubygems.org/ -a https://gems.ruby-china.com/
+	sudo gem install -f git activesupport rest-client faye-websocket
 }
 
 run()
@@ -46,6 +49,8 @@ run()
 	else
 		echo "$DISTRO not supported!" && exit 1
 	fi
+
+	install_gem_pkg
 }
 
 set_env()
