@@ -566,7 +566,7 @@ download_git() {
 
 	if [[ ! -d "$dir" ]] || dir_is_empty "$dir" ; then
 		msg2 "$(gettext "Cloning %s %s repo...")" "${repo}" "git"
-		if ! git clone --mirror "$url" "$dir"; then
+		if ! git clone -q --mirror "$url" "$dir"; then
 			error "$(gettext "Failure while downloading %s %s repo")" "${repo}" "git"
 			plain "$(gettext "Aborting...")"
 			exit 1
@@ -580,7 +580,7 @@ download_git() {
 			exit 1
 		fi
 		msg2 "$(gettext "Updating %s %s repo...")" "${repo}" "git"
-		if ! git fetch --all -p; then
+		if ! git fetch -q --all -p; then
 			# only warn on failure to allow offline builds
 			warning "$(gettext "Failure while updating %s %s repo")" "${repo}" "git"
 		fi
@@ -609,13 +609,13 @@ extract_git() {
 	if [[ -d "${dir##*/}" ]]; then
 		updating=1
 		cd_safe "${dir##*/}"
-		if ! git fetch; then
+		if ! git fetch -q; then
 			error "$(gettext "Failure while updating working copy of %s %s repo")" "${repo}" "git"
 			plain "$(gettext "Aborting...")"
 			exit 1
 		fi
 		cd_safe "$srcdir"
-	elif ! git clone "$dir"; then
+	elif ! git clone -q "$dir"; then
 		error "$(gettext "Failure while creating working copy of %s %s repo")" "${repo}" "git"
 		plain "$(gettext "Aborting...")"
 		exit 1
@@ -645,7 +645,7 @@ extract_git() {
 	fi
 
 	if [[ $ref != "origin/HEAD" ]] || (( updating )) ; then
-		if ! git checkout --force --no-track -B makepkg $ref; then
+		if ! git checkout -q --force --no-track -B makepkg $ref; then
 			error "$(gettext "Failure while creating working copy of %s %s repo")" "${repo}" "git"
 			plain "$(gettext "Aborting...")"
 			exit 1
@@ -1270,10 +1270,10 @@ verify_integrity_one() {
 	local source_name=$1 integ=$2 expectedsum=$3
 
 	local file="$(get_filename "$source_name")"
-	printf '    %s ... ' "$file" >&2
+	printf '    %s ... ' "$file"
 
 	if [[ $expectedsum = 'SKIP' ]]; then
-		printf '%s\n' "$(gettext "Skipped")" >&2
+		printf '%s\n' "$(gettext "Skipped")"
 		return
 	fi
 
@@ -1285,7 +1285,7 @@ verify_integrity_one() {
 	local realsum="$(openssl dgst -${integ} "$file")"
 	realsum="${realsum##* }"
 	if [[ ${expectedsum,,} = "$realsum" ]]; then
-		printf '%s\n' "$(gettext "Passed")" >&2
+		printf '%s\n' "$(gettext "Passed")"
 	else
 		printf '%s\n' "$(gettext "FAILED")" >&2
 		return 1
@@ -1553,7 +1553,7 @@ check_source_integrity() {
 		warning "$(gettext "Skipping verification of source file checksums.")"
 		check_pgpsigs "$@"
 	elif (( SKIPPGPCHECK )); then
-		warning "$(gettext "Skipping verification of source file PGP signatures.")"
+		# warning "$(gettext "Skipping verification of source file PGP signatures.")"
 		check_checksums "$@"
 	else
 		check_checksums "$@"
