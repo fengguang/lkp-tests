@@ -24,7 +24,7 @@ linux_dep()
 		sudo gem install -f git activesupport rest-client faye-websocket
 		;;
 	*)
-		echo "$ID not support! please install dependencies manually."
+		echo "$ID not support! please install dependencies manually." && exit 1
 		;;
 	esac
 }
@@ -44,7 +44,7 @@ run()
 	elif is_system "Darwin"; then
 		mac_dep
 	else
-		echo "$DISTRO not supported!"
+		echo "$DISTRO not supported!" && exit 1
 	fi
 }
 
