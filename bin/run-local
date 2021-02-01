@@ -85,8 +85,13 @@ def create_result_root(_result_root)
   nil
 end
 
-job = Job.new
 begin
+  # "#!" is defined by comment_to_symbol
+  if File.readlines(jobfile).any? { |l| l.start_with?('#! ') }
+    log_warn "Jobfile is a dirty file, better to run 'lkp split-job --compatible #{jobfile}' first"
+  end
+
+  job = Job.new
   job.load(jobfile)
   unless job.atomic_job?
     log_error "Looks #{ARGV[0]} isn't a atomic jobfile, only atomic jobfile is supported"
