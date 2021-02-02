@@ -1,4 +1,5 @@
 #!/bin/sh
+# - lite_mode
 # - delay
 # - duration
 # - runtime
@@ -36,10 +37,18 @@ $perf -v || die 'perf command failed'
 $perf sched record -g -o $perf_data -D $((delay * 1000)) \
 	-- $WAIT_POST_TEST_CMD --timeout $((delay + duration))
 
-cat > "$TMP_RESULT_ROOT/post-run.perf-sched" <<EOF
-[ -s "$perf_data" ] && {
-	$perf sched latency -i $perf_data | gzip > $TMP_RESULT_ROOT/perf-sched.latency.gz
-	$perf sched timehist -i $perf_data >> $TMP_RESULT_ROOT/perf-sched
-	cat $TMP_RESULT_ROOT/perf-sched | gzip > $TMP_RESULT_ROOT/perf-sched.timehist.gz
-}
+if [ "$lite_mode" = 1 ]; then
+	cat > "$TMP_RESULT_ROOT/post-run.perf-sched" <<-EOF
+	[ -s "$perf_data" ] && {
+		$perf sched timehist -i $perf_data >> $TMP_RESULT_ROOT/perf-sched
+	}
 EOF
+else
+	cat > "$TMP_RESULT_ROOT/post-run.perf-sched" <<-EOF
+	[ -s "$perf_data" ] && {
+		$perf sched latency -i $perf_data | gzip > $TMP_RESULT_ROOT/perf-sched.latency.gz
+		$perf sched timehist -i $perf_data >> $TMP_RESULT_ROOT/perf-sched
+		cat $TMP_RESULT_ROOT/perf-sched | gzip > $TMP_RESULT_ROOT/perf-sched.timehist.gz
+	}
+EOF
+fi

@@ -15,6 +15,7 @@ slabinfo:
 interrupts:
 lock_stat:
 perf-sched:
+  lite_mode: 1 # cleanup raw data of this program
 softirqs:
 bdi_dev_mapping:
 diskstats:

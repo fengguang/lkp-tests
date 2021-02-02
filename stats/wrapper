@@ -198,6 +198,13 @@ dump_stat()
 	rm $file
 }
 
+# cleanup program raw data
+[[ $lite_mode = 1 ]] && {
+    rm -f $RESULT_ROOT/$program
+    rm -f $RESULT_ROOT/$program.xz
+    rm -f $RESULT_ROOT/$program.gz
+}
+
 if [[ $program = 'ftrace' ]]; then
 	for file in $RESULT_ROOT/$program.*.yaml
 	do
