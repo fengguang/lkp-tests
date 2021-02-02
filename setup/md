@@ -6,7 +6,7 @@
 : ${raid_chunk:=256}
 : ${mdadm_mode:=create}
 
-. $LKP_SRC/lib/wipefs.sh
+. $LKP_SRC/lib/fs_ext.sh
 
 for i in 0 1 2 3 4 5; do
 	if [ -e /proc/mdstat ]; then
