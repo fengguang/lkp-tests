@@ -393,11 +393,23 @@ install_pkgs_for_rootfs()
 	fi
 }
 
+enable_repos()
+{
+	echo "${config_rootfs}" | grep -qw 'enable_repos' || return 0
+
+	ls ${ROOTFS_DES_DIR}/etc/yum.repos.d/*.repo > /dev/null 2>&1 && {
+		sed -i 's/^enabled=0$/enabled=1/g' ${ROOTFS_DES_DIR}/etc/yum.repos.d/*.repo
+	}
+
+	return 0
+}
+
 config_rootfs()
 {
 	config_dns_resolver
 	disable_selinux
 	disable_fstab
+	enable_repos
 
 	install_pkgs_for_rootfs
 }

@@ -32,6 +32,7 @@ iso2rootfs:
   # - dns: will config /etc/resolv.conf.
   # - no_selinux: will disable selinux in /etc/selinux/config.
   # - no_fstab: will comment all line in /etc/fstab.
+  # - enable_repos: will enable all repo file of result rootfs.
   config_rootfs:
 
   ## install pkgs for result rootfs
