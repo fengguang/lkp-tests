@@ -94,3 +94,15 @@ upload_to_target_dir()
 
 	upload_one_curl "${dir}/${file}"  "${dir}" >/dev/null
 }
+
+rename_cgz_file()
+{
+	[ "${BM_NAME}" == "${benchmark}" ] && return
+
+	cd "$pack_to" && {
+		[ -f "${BM_NAME}".cgz ] || return
+		rm "${BM_NAME}".cgz
+		date=$(ls -F | grep -v "@" | grep -Eo "[0-9]{8}")
+		mv "${BM_NAME}"_"$date".cgz "${benchmark}"_"$date".cgz
+	}
+}
