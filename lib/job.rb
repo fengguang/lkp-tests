@@ -259,6 +259,11 @@ class Job
           hash.delete('override')
         end
 
+        if hash.has_key?('id')
+          d_keys = ["my_name", "my_email", "lab"]
+          hash.delete_if { |k| d_keys.include? k }
+        end
+
         revise_hash(hash, load_include_yamls(@default_yamls), false) unless @default_yamls.empty?
         revise_hash(hash, load_include_yamls(@override_yamls), true) unless @override_yamls.empty?
         revise_hash(hash, @overrides, true) unless @overrides.empty?
