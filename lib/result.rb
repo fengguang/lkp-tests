@@ -6,6 +6,7 @@ require 'set'
 require "#{LKP_SRC}/lib/lkp_git"
 require "#{LKP_SRC}/lib/run_env"
 require "#{LKP_SRC}/lib/constant"
+require "#{LKP_SRC}/lib/lkp_path"
 
 def tbox_group(hostname)
   if hostname =~ /.+-\d+$/
@@ -18,7 +19,7 @@ end
 def tbox_group?(hostname)
   return nil unless hostname.is_a?(String) && !hostname.empty?
 
-  Dir[LKP_SRC + '/hosts/' + hostname][0]
+  Dir[LKP::Path.src('hosts', hostname)][0]
 end
 
 class ResultPath < Hash
