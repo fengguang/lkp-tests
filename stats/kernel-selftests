@@ -434,7 +434,9 @@ while (line = STDIN.gets)
     # to reduce below situation
     # ns2 MPTCP -> ns4 (dead:beef:3::1:10023) MPTCP copyfd_io_poll: poll timed out (events: POLLIN 1, POLLOUT 0)
     # (duration 30429ms) [ FAIL ] client exit code 0, server 2
-    next unless test_script =~ /MPTCP/
+    # but not exclude below line
+    # setsockopt(..., TCP_ULP, "mptcp", ...) blocked  [ OK ]
+    next unless test_script =~ /MPTCP|mptcp/
     detail_stat('mptcp', test_script, result, stats)
   when /^# TEST: (.*)/
     next unless test_script == 'nft_concat_range.sh'

@@ -1,4 +1,5 @@
 mptcp.New_MPTCP_socket_can_be_blocked_via_sysctl.pass: 1
+mptcp.setsockopt_..._TCP_ULP_mptcp_..._blocked.pass: 1
 mptcp.ns1_MPTCP_>_ns1_10.0.1.1_10000_MPTCP.pass: 1
 mptcp.ns1_MPTCP_>_ns1_10.0.1.1_10001_TCP.pass: 1
 mptcp.ns1_TCP_>_ns1_10.0.1.1_10002_MPTCP.pass: 1
