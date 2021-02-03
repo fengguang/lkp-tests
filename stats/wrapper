@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source $LKP_SRC/lib/log.sh
+source $LKP_SRC/lib/lkp_path.sh
 
 set -o pipefail
 
@@ -9,6 +10,7 @@ program=$1
 stats_group=${2:-$1}
 log=$RESULT_ROOT/$stats_group
 
+LKP_SRC_ETC=$(lkp_src)/etc
 # exit processing the stats if the program is not in the program_list.
 # program_list is a file that records all the programs(setups, monitors, tests,
 # daemons) being executed during the test.
@@ -18,7 +20,7 @@ log=$RESULT_ROOT/$stats_group
 # on server node due to the current Job2sh algorithm.
 
 # default stats are not in the program_list
-grep -q "^$program\:" $LKP_SRC/etc/default_stats.yaml
+grep -q "^$program\:" $LKP_SRC_ETC/default_stats.yaml
 if [ $? -ne 0 ]; then
 	[ -f $RESULT_ROOT/program_list ] && {
 		grep -q "$program" $RESULT_ROOT/program_list || exit 0
@@ -98,8 +100,8 @@ warn_empty_stats()
 	[[ $program = 'perf-profile' ]] && return
 	[[ -s $RESULT_ROOT/time ]] || return
 	[[ -s $RESULT_ROOT/last_state ]] && return
-	grep -q "^$program\." $LKP_SRC/etc/failure && return
-	grep -q "^$program\." $LKP_SRC/etc/pass && return
+	grep -q "^$program\." $LKP_SRC_ETC/failure && return
+	grep -q "^$program\." $LKP_SRC_ETC/pass && return
 
 	log_warn "$program: empty stats" "$log"
 }
@@ -184,7 +186,7 @@ else
 	$program_dir/$program < /dev/null > $tmpfile || { log_error "failed to stat $program" "$program_dir/$program < /dev/null\nerrno: $?\ntmpfile: $tmpfile"; is_bad_rt_candidate && exit 1; }
 fi
 
-grep -q "^$program\." <(cat $LKP_SRC/etc/failure $LKP_SRC/etc/pass) ||
+grep -q "^$program\." <(cat $LKP_SRC_ETC/failure $LKP_SRC_ETC/pass) ||
 check_incomplete_run $tmpfile
 
 warn_empty_stats
