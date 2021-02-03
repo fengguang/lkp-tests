@@ -7,7 +7,8 @@ require "#{LKP_SRC}/lib/log"
 
 results = Hash.new { |h, k| h[k] = [] }
 
-TEST_PATTERN = '(generic|ext4|xfs|btrfs)\/(\d\d\d)'.freeze
+# udf/102 - output mismatch (see /lkp/benchmarks/xfstests/results//udf/102.out.bad)
+TEST_PATTERN = '(generic|ext4|xfs|btrfs|udf)\/(\d\d\d)'.freeze
 
 while (line = STDIN.gets)
   line = line.resolve_invalid_bytes
