@@ -18,7 +18,7 @@ set_scheduler_config()
 
 install_gem_pkgs()
 {
-	gem sources -c -a https://gems.ruby-china.com/
+	gem sources -r http://rubygems.org -a https://gems.ruby-china.com/
 	gem install activesupport git rest-client elasticsearch
 }
 
