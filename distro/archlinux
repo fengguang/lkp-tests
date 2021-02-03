@@ -88,7 +88,7 @@ distro_install_depends()
 
 		for pkg in $packages
 		do
-			pacman -Qqs --noconfirm $pkg || pacman -Sy --noconfirm $pkg
+			pacman -Qq --noconfirm $pkg || pacman -Sy --noconfirm $pkg
 		done
 	done
 }
