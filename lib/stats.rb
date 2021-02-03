@@ -478,7 +478,7 @@ def sort_remove_margin(array, max_margin = nil)
   margin = [margin, max_margin].min if max_margin
 
   array = array.sorted
-  array[margin..-margin - 1]
+  array[margin..-margin - 1] || []
 end
 
 # NOTE: array *must* be sorted
