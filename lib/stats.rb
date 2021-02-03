@@ -14,23 +14,26 @@ require "#{LKP_SRC}/lib/statistics"
 require "#{LKP_SRC}/lib/log"
 require "#{LKP_SRC}/lib/tests"
 require "#{LKP_SRC}/lib/changed_stat"
+require "#{LKP_SRC}/lib/lkp_path"
 
 MARGIN_SHIFT = 5
 MAX_RATIO = 5
 
-$metric_add_max_latency = IO.read("#{LKP_SRC}/etc/add-max-latency").split("\n")
-$metric_failure = IO.read("#{LKP_SRC}/etc/failure").split("\n")
-$metric_pass = IO.read("#{LKP_SRC}/etc/pass").split("\n")
-$perf_metrics_threshold = YAML.load_file "#{LKP_SRC}/etc/perf-metrics-threshold.yaml"
-$perf_metrics_prefixes = File.read("#{LKP_SRC}/etc/perf-metrics-prefixes").split
-$index_perf = load_yaml "#{LKP_SRC}/etc/index-perf-all.yaml"
-$index_latency = load_yaml "#{LKP_SRC}/etc/index-latency-all.yaml"
+LKP_SRC_ETC ||= LKP::Path.src('etc')
 
-$perf_metrics_re = load_regular_expressions("#{LKP_SRC}/etc/perf-metrics-patterns")
-$stat_denylist = load_regular_expressions("#{LKP_SRC}/etc/stat-denylist")
-$stat_allowlist = load_regular_expressions("#{LKP_SRC}/etc/stat-allowlist")
-$report_allowlist_re = load_regular_expressions("#{LKP_SRC}/etc/report-allowlist")
-$kill_pattern_allowlist_re = load_regular_expressions("#{LKP_SRC}/etc/dmesg-kill-pattern")
+$metric_add_max_latency = IO.read("#{LKP_SRC_ETC}/add-max-latency").split("\n")
+$metric_failure = IO.read("#{LKP_SRC_ETC}/failure").split("\n")
+$metric_pass = IO.read("#{LKP_SRC_ETC}/pass").split("\n")
+$perf_metrics_threshold = YAML.load_file "#{LKP_SRC_ETC}/perf-metrics-threshold.yaml"
+$perf_metrics_prefixes = File.read("#{LKP_SRC_ETC}/perf-metrics-prefixes").split
+$index_perf = load_yaml "#{LKP_SRC_ETC}/index-perf-all.yaml"
+$index_latency = load_yaml "#{LKP_SRC_ETC}/index-latency-all.yaml"
+
+$perf_metrics_re = load_regular_expressions("#{LKP_SRC_ETC}/perf-metrics-patterns")
+$stat_denylist = load_regular_expressions("#{LKP_SRC_ETC}/stat-denylist")
+$stat_allowlist = load_regular_expressions("#{LKP_SRC_ETC}/stat-allowlist")
+$report_allowlist_re = load_regular_expressions("#{LKP_SRC_ETC}/report-allowlist")
+$kill_pattern_allowlist_re = load_regular_expressions("#{LKP_SRC_ETC}/dmesg-kill-pattern")
 
 class LinuxTestcasesTableSet
   LINUX_PERF_TESTCASES =
@@ -153,12 +156,12 @@ def reasonable_perf_change?(name, delta, max)
 end
 
 def deny_auto_report_author?(author)
-  regexp = load_regular_expressions("#{LKP_SRC}/etc/auto-report-author-denylist")
+  regexp = load_regular_expressions("#{LKP_SRC_ETC}/auto-report-author-denylist")
   author =~ regexp
 end
 
 def deny_auto_report_stat?(stat)
-  regexp = load_regular_expressions("#{LKP_SRC}/etc/auto-report-stat-denylist")
+  regexp = load_regular_expressions("#{LKP_SRC_ETC}/auto-report-stat-denylist")
   stat =~ regexp
 end
 

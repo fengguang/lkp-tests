@@ -3,6 +3,7 @@
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
 require "#{LKP_SRC}/lib/job"
+require "#{LKP_SRC}/lib/lkp_path"
 require 'shellwords'
 
 TMP ||= ENV['TMP'] || '/tmp'
@@ -283,7 +284,7 @@ class Job2sh < Job
     parse_hash [], job
     out_line
     out_line @stats_lines
-    parse_hash [], YAML.load_file(LKP_SRC + '/etc/default_stats.yaml')
+    parse_hash [], YAML.load_file(LKP::Path.src('etc', 'default_stats.yaml'))
     out_line "}\n\n"
 
     out_line '"$@"'
