@@ -193,7 +193,7 @@ distro_install_depends()
 		do
 			$chronic apt-get -o Dpkg::Options::=--force-confdef \
 					 -o Dpkg::Options::=--force-confold \
-					 install -y $package
+					 install -y --no-upgrade $package
 		done
 	done
 }
