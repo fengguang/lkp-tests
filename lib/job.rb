@@ -367,26 +367,15 @@ class Job
     return @job.include?('tbox_group')
   end
 
-  def get_lab_hosts_file
-    lab_hosts_file_name = @job['testbox']
-    lab_hosts_file = "#{ENV['CCI_REPOS']}/lab-#{@job['lab']}/hosts/#{lab_hosts_file_name}"
-
-    if File.file?(lab_hosts_file)
-      lab_hosts_file
-    else
-      nil
-    end
-  end
-
   def get_hosts_file
-    lab_hosts_file = get_lab_hosts_file
-    return lab_hosts_file if lab_hosts_file
+    testbox_file = "#{ENV['CCI_REPOS']}/lab-#{@job['lab']}/hosts/#{@job['testbox']}"
+    return testbox_file if File.file?(testbox_file)
 
-    hosts_file_name = @job['tbox_group'].split(/\.|--/)[0]
-    hosts_file = "#{LKP_SRC}/hosts/#{hosts_file_name}"
-    return hosts_file if File.file?(hosts_file)
+    tbox_group = @job['tbox_group'].split(/\.|--/)[0]
+    tbox_group_file = "#{LKP_SRC}/hosts/#{tbox_group}"
+    return tbox_group_file if File.file?(tbox_group_file)
 
-    raise ArgumentError, "hosts file not exist: #{hosts_file_name}, maybe need check testbox field"
+    raise ArgumentError, "hosts file not exist: #{tbox_group}, maybe need check testbox field"
   end
 
   def include_files
@@ -438,6 +427,9 @@ class Job
 
     lab_yaml = File.join(self_config_path, 'include/lab', "#{@defaults['lab']}.yaml")
     load_one_defaults(lab_yaml, @job)
+
+    merge_defaults
+    load_hosts_config
   end
 
   def load_defaults(first_time = true)
@@ -749,7 +741,6 @@ class Job
     each_job_init
     job = deepcopy(@job)
     load_defaults
-    load_hosts_config
     each_job_init
     each_job(&block)
     @jobs.each do |hash|
@@ -757,7 +748,6 @@ class Job
       @job = deepcopy(job)
       @job.merge!(hash)
       load_defaults
-      load_hosts_config
       each_job_init
       each_job(&block)
     end
