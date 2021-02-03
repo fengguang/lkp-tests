@@ -7,8 +7,6 @@ require "#{LKP_SRC}/lib/assert"
 require "#{LKP_SRC}/lib/lkp_git"
 
 class RepoSpec
-  ROOT_DIR = LKP_SRC + '/repo'
-
   def initialize(name)
     $remotes ||= load_remotes
 
