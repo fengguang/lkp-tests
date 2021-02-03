@@ -52,36 +52,5 @@ module Git
 
       Git.orig_open(working_dir, options)
     end
-
-    # rli9 FIXME: remove ENV usage
-    # load remotes information from config files
-    #
-    # options
-    #    :project => 'project_name', default is linux
-    #
-    def remote_descs(options = {})
-      lkp_src = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
-
-      options[:project] ||= '*'
-      options[:remote] ||= '*'
-
-      remotes = {}
-
-      Dir[File.join(lkp_src, 'repo', options[:project], options[:remote])].each do |file|
-        remote = File.basename file
-        next if remote == 'DEFAULTS'
-
-        defaults = File.dirname(file) + '/DEFAULTS'
-        remotes[remote] = load_yaml_merge [defaults, file]
-      end
-
-      remotes
-    end
-
-    def remote_desc(options = {})
-      assert(options[:remote], "options[:remote] parameter can't be #{options[:remote].inspect}")
-
-      remote_descs(options)[options[:remote]]
-    end
   end
 end
