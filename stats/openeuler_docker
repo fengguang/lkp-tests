@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+while (line = STDIN.gets)
+  case line.chomp!
+  when /Error: Unable to find a match: (.+)/
+    $1.split.each do |repo|
+       puts "yum.error.Unable-to-find-a-match.#{repo}: 1"
+    end
+  when /\/bin\/sh: (.+): command not found/
+    puts "sh.command-not-found.#{$1}: 1"
+  end
+end
