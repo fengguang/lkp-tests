@@ -52,21 +52,38 @@ prepare_test_env()
 	fi
 }
 
+prepare_for_bpf()
+{
+	local modules_dir="/lib/modules/$(uname -r)"
+	mkdir -p "$linux_selftests_dir/lib" || die
+	if [[ "$LKP_LOCAL_RUN" = "1" ]]; then
+		cp -r $modules_dir/kernel/lib/* $linux_selftests_dir/lib
+	else
+		# make sure the test_bpf.ko path for bpf test is right
+		log_cmd mount --bind $modules_dir/kernel/lib $linux_selftests_dir/lib || die
+
+		local linux_headers_dir=$(ls -d /usr/src/linux-headers*-bpf)
+		[[ $linux_headers_dir ]] || die "failed to find linux-headers package"
+
+		# prepare for bpf_testmod.ko
+		cp -r $linux_headers_dir/arch/*/include/generated $linux_selftests_dir/arch/x86/include/
+		cp -r $linux_headers_dir/include/generated $linux_selftests_dir/include
+		mkdir -p $linux_selftests_dir/include/config/ &&
+		cp $linux_headers_dir/include/config/auto.conf $linux_selftests_dir/include/config/
+		cp $linux_headers_dir/scripts/basic/fixdep $linux_selftests_dir/scripts/basic/
+		cp $linux_headers_dir/scripts/mod/modpost $linux_selftests_dir/scripts/mod
+		cp $linux_headers_dir/tools/objtool/objtool $linux_selftests_dir/tools/objtool/
+		cp $linux_headers_dir/scripts/module.lds $linux_selftests_dir/scripts/
+	fi
+}
+
 prepare_for_test()
 {
 	export PATH=/lkp/benchmarks/kernel-selftests/kernel-selftests/iproute2-next/sbin:$PATH
 	# workaround hugetlbfstest.c open_file() error
 	mkdir -p /hugepages
 
-	# make sure the test_bpf.ko path for bpf test is right
-	if [ "$group" = "bpf" ]; then
-		mkdir -p "$linux_selftests_dir/lib" || die
-		if [[ "$LKP_LOCAL_RUN" = "1" ]]; then
-			cp -r /lib/modules/`uname -r`/kernel/lib/* $linux_selftests_dir/lib
-		else
-			mount --bind /lib/modules/`uname -r`/kernel/lib $linux_selftests_dir/lib || die
-		fi
-	fi
+	[[ "$group" = "bpf" || "$group" = "net" ]] && prepare_for_bpf
 
 	# temporarily workaround compile error on gcc-6
 	command -v gcc-5 >/dev/null && log_cmd ln -sf /usr/bin/gcc-5 /usr/bin/gcc
