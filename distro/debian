@@ -171,7 +171,7 @@ distro_install_depends()
 	add_i386_package
 	update
 
-	apt-get install -yf
+	fixup_preinstall
 	for script in $scripts
 	do
 		script=$(basename $script)
