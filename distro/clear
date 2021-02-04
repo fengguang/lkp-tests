@@ -135,7 +135,7 @@ pack_bundles_files()
 	ln -sf ${BM_NAME}_$date.cgz $pack_to/${BM_NAME}.cgz || return
 	chown .lkp $pack_to/${BM_NAME}_$date.cgz $pack_to/${BM_NAME}.cgz || return
 
-	echo package installed to $pack_to/${BM_NAME}.cgz
+	echo package installed to $pack_to/${benchmark}.cgz
 }
 
 # 1. install all un-installed bundles and record it to uninstalled_bundles
