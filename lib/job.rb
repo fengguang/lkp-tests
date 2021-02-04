@@ -680,6 +680,7 @@ class Job
       Dir.glob("#{LKP_SRC}/{*,*/*}/{#{program},#{program}-dev,#{program}.*}{,/*}").each do |file|
         file = File.realpath(file)
         if git_files_list.include?(file)
+          puts "define_file: #{file}"
           relative_path = file.sub("#{LKP_SRC}/", '')
           @job["define_files"][relative_path] = File.read(file)
         end
