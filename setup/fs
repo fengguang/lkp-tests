@@ -65,7 +65,9 @@ make_fs() {
 		return
 	}
 
-	[ "$fs" = 'ocfs2' ] && start_o2cb
+	[ "$fs" = 'ocfs2' ] && {
+		start_o2cb || exit
+	}
 
 	local pids=
 	for dev in $bdevs
