@@ -240,6 +240,7 @@ need_kconfig:
 - CONFIG_SW_SYNC=y
 - CONFIG_GENERIC_ENTRY=y
 - CONFIG_TEST_SYSCTL=y
+- CONFIG_X86_SGX=y ~ ">= v5.11-rc1"
 % elsif ___.group == "group-03"
 - CONFIG_CAN=m
 - CONFIG_CLS_U32_MARK=y
