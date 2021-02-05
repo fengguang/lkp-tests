@@ -96,7 +96,7 @@ class Monitor
   end
 
   def set_result_root(data)
-    return unless @action['lftp_result']
+    return unless @action['mirror_result']
     return unless data['log']
 
     data = JSON.parse(data['log'])
@@ -113,7 +113,7 @@ class Monitor
     system "lftp -c mirror #{url} >/dev/null 2>&1"
   end
 
-  def lftp(data)
+  def mirror_result(data)
     if @result_root
       lftp_mirror
     else
@@ -163,7 +163,7 @@ class Monitor
 
         output(data)
         connect(data, ws)
-        lftp(data)
+        mirror_result(data)
 
         stop(data, ws) if @action['stop']
       end

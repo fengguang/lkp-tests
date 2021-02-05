@@ -52,8 +52,8 @@ options = OptionParser.new do |opts|
     actions << 'connect'
   end
 
-  opts.on('-l', '--lftp', 'lftp mirror job result') do
-    actions << 'lftp_result'
+  opts.on('-r', '--result', 'mirror job result dir') do
+    actions << 'mirror_result'
   end
 
   opts.on('-m', '--monitor', "monitor job status: use -m 'KEY: VALUE' to add rule") do
