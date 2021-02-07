@@ -345,26 +345,24 @@ class Job
 
   def load_hosts_config
     return if @job.include?(:no_defaults)
-    return if @load_hosts_done
-    return unless check_set_tbox_group
 
+    check_set_tbox_group
     hosts_file = get_hosts_file
     if hosts_file
       hwconfig = load_yaml(hosts_file, {})
       @job[source_file_symkey(hosts_file)] = nil
       @job.merge!(hwconfig) { |_k, a, _b| a } # job's key/value has priority over hwconfig
-      @load_hosts_done = true
     end
 
     @job['arch'] ||= 'aarch64'
   end
 
   def check_set_tbox_group
-    if @job.include?('testbox')
-      @job['tbox_group'] = tbox_group(@job['testbox'])
-      return true
+    unless @job.include?('testbox')
+      @job[comment_to_symbol('set default testbox')] = nil
+      @job['testbox'] = 'dc-8g'
     end
-    return @job.include?('tbox_group')
+    @job['tbox_group'] = tbox_group(@job['testbox'])
   end
 
   def get_hosts_file
@@ -745,7 +743,6 @@ class Job
     each_job_init
     each_job(&block)
     @jobs.each do |hash|
-      @load_hosts_done = false
       @job = deepcopy(job)
       @job.merge!(hash)
       load_defaults
