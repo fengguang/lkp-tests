@@ -12,13 +12,13 @@ linux_dep()
 	case $ID in
 	ubuntu|debian)
 		export DEBIAN_FRONTEND=noninteractive
-		sudo apt-get install -yqm ruby-dev libssl-dev gcc g++
+		sudo apt-get install -yqm ruby-dev libssl-dev gcc g++ uuid-runtime
 		;;
 	openEuler|fedora|rhel|centos)
 		if type dnf > /dev/null 2>&1; then
-			sudo dnf install -y --skip-broken ruby rubygems gcc gcc-c++ make ruby-devel git lftp
+			sudo dnf install -y --skip-broken ruby rubygems gcc gcc-c++ make ruby-devel git lftp util-linux
 		else
-			sudo yum install -y --skip-broken ruby rubygems gcc gcc-c++ make ruby-devel git lftp
+			sudo yum install -y --skip-broken ruby rubygems gcc gcc-c++ make ruby-devel git lftp util-linux
 		fi
 		;;
 	*)
