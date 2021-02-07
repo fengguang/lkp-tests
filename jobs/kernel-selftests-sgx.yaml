@@ -1,0 +1,10 @@
+suite: kernel-selftests
+testcase: kernel-selftests
+category: functional
+
+kconfig: x86_64-rhel-7.6-kselftests
+
+need_memory: 3G
+kernel-selftests:
+  group:
+    - sgx

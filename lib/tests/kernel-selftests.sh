@@ -383,7 +383,7 @@ prepare_for_selftest()
 	elif [ "$group" = "mptcp" ]; then
 		selftest_mfs=$(ls -d net/mptcp/Makefile)
 	elif [ "$group" = "group-s" ]; then
-		selftest_mfs=$(ls -d s*/Makefile)
+		selftest_mfs=$(ls -d s*/Makefile | grep -v sgx)
 	else
 		# bpf cpufreq firmware kvm lib livepatch lkdtm net netfilter pidfd rcutorture resctrl rseq tc-testing vm x86
 		selftest_mfs=$(ls -d $group/Makefile)
