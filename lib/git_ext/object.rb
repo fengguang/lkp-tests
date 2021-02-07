@@ -187,7 +187,7 @@ module Git
       end
 
       def reverted?(branch)
-        reverted_subject = 'Revert \"' + subject + '\"'
+        reverted_subject = 'Revert \"' + subject.gsub('"', '\"') + '\"'
         !@base.command("log --format=%s #{sha}..#{branch} | grep -x -m1 \"#{reverted_subject}\"").empty?
       end
 
