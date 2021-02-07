@@ -27,7 +27,6 @@ linux_dep()
 	esac
 }
 
-
 mac_dep()
 {
 	brew install ruby
