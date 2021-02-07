@@ -283,6 +283,13 @@ setup_hosts()
 	ln -fs $tmpfs_hosts /etc/hosts
 }
 
+setup_dns()
+{
+	[ -n "$DNS_HOST" ] || return 0
+
+	echo "nameserver ${DNS_HOST}" > /etc/resolv.conf
+}
+
 export_ip_mac()
 {
 	if has_cmd ip; then
@@ -739,6 +746,7 @@ boot_init()
 
 	setup_hostname
 	setup_hosts
+	setup_dns
 
 	add_lkp_user
 
