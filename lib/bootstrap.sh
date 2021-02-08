@@ -85,14 +85,19 @@ net_devices_link()
 	done
 }
 
+test_ping()
+{
+	ping -c 1 -W 1 $LKP_SERVER > /dev/null || return 1
+}
+
 network_ok()
 {
 	local i
 	for i in /sys/class/net/*/
 	do
 		[ "${i#*/lo/}" != "$i" ] && continue
-		[ "$(cat $i/operstate)" = 'up' ]		&& return 0
-		[ "$(cat $i/carrier 2>/dev/null)" = '1' ]	&& return 0
+		[ "$(cat $i/operstate)" = 'up' ]		&& test_ping && return 0
+		[ "$(cat $i/carrier 2>/dev/null)" = '1' ]	&& test_ping && return 0
 	done
 
 	is_clearlinux && {
