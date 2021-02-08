@@ -5,26 +5,34 @@ PROJECT_DIR=$(dirname $SCRIPT_DIR)
 
 . $PROJECT_DIR/lib/env.sh
 
-# choose install function base on DISTRIBUTION
+# choose install function base on common Package Manager
 linux_dep()
 {
-	source /etc/os-release
-	case $ID in
-	ubuntu|debian)
+	get_package_manager
+
+	case "$installer" in
+	apt-get)
 		export DEBIAN_FRONTEND=noninteractive
-		sudo apt-get install -yqm ruby-dev libssl-dev gcc g++ uuid-runtime
+		sudo "$installer" install -yqm ruby-dev libssl-dev gcc g++ uuid-runtime
 		;;
-	openEuler|fedora|rhel|centos)
-		if type dnf > /dev/null 2>&1; then
-			sudo dnf install -y --skip-broken ruby rubygems gcc gcc-c++ make ruby-devel git lftp util-linux
-		else
-			sudo yum install -y --skip-broken ruby rubygems gcc gcc-c++ make ruby-devel git lftp util-linux
-		fi
+	dnf|yum)
+		sudo "$installer" install -y --skip-broken ruby rubygems gcc gcc-c++ make ruby-devel git lftp util-linux
+		;;
+	pacman)
+		sudo "$installer" -Sy --noconfirm --needed ruby rubygems gcc make git lftp util-linux
 		;;
 	*)
-		echo "$ID not support! please install dependencies manually." && exit 1
+		echo "Unknown Package Manager! please install dependencies manually." && exit 1
 		;;
 	esac
+}
+
+get_package_manager()
+{
+	has_cmd "yum" && installer="yum"
+	has_cmd "dnf" && installer="dnf" && return
+	has_cmd "apt-get" && installer="apt-get" && return
+	has_cmd "pacman" && installer="pacman" && return
 }
 
 mac_dep()
