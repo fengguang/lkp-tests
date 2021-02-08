@@ -339,5 +339,6 @@ def build_pkg_error_id(line)
   line = line.tr(" ", "-")
   line = line.gsub(/[-_.,;:#!\[(]+$/, "")
   line = line.gsub(/([-_.,;:#!]){3,}/, ":")
+  line = line.gsub(/^\/tmp\/(?!lkp).*?\//, "")
   line
 end
