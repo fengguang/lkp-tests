@@ -45,7 +45,3 @@ def log_verbose(*args, &block)
 
   $log.debug(*args, &block)
 end
-
-def log_exception(e, _binding)
-  log_error e
-end

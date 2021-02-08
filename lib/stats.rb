@@ -264,7 +264,7 @@ end
 def load_release_matrix(matrix_file)
   load_json matrix_file
 rescue StandardError => e
-  log_exception e, binding
+  log_error e
   nil
 end
 
@@ -315,7 +315,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
     $git[project] ||= Git.open(project: project, remote: remote)
     git = $git[project]
   rescue StandardError => e
-    log_exception e, binding
+    log_error e
     return nil
   end
 
@@ -329,7 +329,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
     version, is_exact_match = git.gcommit(commit).last_release_tag
     puts "project: #{project}, version: #{version}, is exact match: #{is_exact_match}" if ENV['LKP_VERBOSE']
   rescue StandardError => e
-    log_exception e, binding
+    log_error e
     return nil
   end
 

@@ -231,7 +231,7 @@ module Compare
           stat_enum = Compare.sort_stats stat_enum
           GroupResult.new g, stat_enum
         rescue StandardError => e
-          log_exception e, binding
+          log_error e
           nil
         end
       end
