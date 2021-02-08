@@ -6,6 +6,7 @@ require "#{LKP_SRC}/lib/yaml"
 require "#{LKP_SRC}/lib/constant"
 require "#{LKP_SRC}/lib/string_ext"
 require "#{LKP_SRC}/lib/lkp_path"
+require "#{LKP_SRC}/lib/log"
 
 LKP_SRC_ETC ||= LKP::Path.src('etc')
 
@@ -197,7 +198,7 @@ def grep_crash_head(dmesg_file)
       next
     end
 
-    warn "oops pattern mismatch: #{line}"
+    log_warn "oops pattern mismatch: #{line}"
   end
 
   oops_map

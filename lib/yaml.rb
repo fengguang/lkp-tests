@@ -6,6 +6,7 @@ require "#{LKP_SRC}/lib/common"
 require "#{LKP_SRC}/lib/log"
 require "#{LKP_SRC}/lib/erb"
 require "#{LKP_SRC}/lib/assert"
+require "#{LKP_SRC}/lib/log"
 require 'fileutils'
 require 'yaml'
 require 'json'
@@ -61,7 +62,7 @@ def load_yaml_merge(files)
       yaml = load_yaml(file)
       all.update(yaml)
     rescue StandardError => e
-      warn "#{e.class.name}: #{e.message.split("\n").first}: #{file}"
+      log_warn "#{e.class.name}: #{e.message.split("\n").first}: #{file}"
     end
   end
   all
@@ -71,7 +72,7 @@ def load_yaml_tail(file)
   begin
     return YAML.load %x[tail -n 100 #{file}]
   rescue Psych::SyntaxError => e
-    warn "#{file}: " + e.message
+    log_warn "#{file}: " + e.message
   end
   nil
 end
@@ -147,7 +148,7 @@ class WTMP
       tail = %x[tail -n #{lines} #{file}]
       load(tail)
     rescue StandardError => e
-      warn "#{file}: " + e.message
+      log_warn "#{file}: " + e.message
     end
   end
 end
@@ -207,8 +208,8 @@ def load_json(file, cache = false)
       raise
     rescue StandardError
       tempfile = file + '-bad'
-      warn "Failed to load JSON file: #{file}"
-      warn "Kept corrupted JSON file for debugging: #{tempfile}"
+      log_warn "Failed to load JSON file: #{file}"
+      log_warn "Kept corrupted JSON file for debugging: #{tempfile}"
       FileUtils.mv file, tempfile, force: true
       raise
     end
@@ -216,8 +217,8 @@ def load_json(file, cache = false)
   elsif File.exist? file.sub(/\.json(\.gz)?$/, '.yaml')
     load_yaml file.sub(/\.json(\.gz)?$/, '.yaml')
   else
-    warn "JSON/YAML file not exist: '#{file}'"
-    warn caller
+    log_warn "JSON/YAML file not exist: '#{file}'"
+    log_warn caller
     nil
   end
 end

@@ -4,6 +4,7 @@ LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
 require 'yaml'
 require "#{LKP_SRC}/lib/kernel_tag"
+require "#{LKP_SRC}/lib/log"
 
 def read_kernel_version_from_context
   return nil unless self['kernel']
@@ -33,7 +34,7 @@ def check_kconfig(kconfig_lines, line)
   when /^(CONFIG_[A-Z0-9_]+=[ym])/, /^(CONFIG_[A-Z0-9_]+)/, /^(CONFIG_[A-Z0-9_]+=[0-9]+)/
     kconfig_lines =~ /^#{$1}/
   else
-    warn "unknown kconfig option: #{line}"
+    log_warn "unknown kconfig option: #{line}"
     true
   end
 end

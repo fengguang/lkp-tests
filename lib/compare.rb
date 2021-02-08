@@ -497,7 +497,7 @@ module Compare
         yield stat
       end
     rescue StandardError
-      warn "Error while comparing: #{mresult_roots.map(&:to_s).join ' '}"
+      log_warn "Error while comparing: #{mresult_roots.map(&:to_s).join ' '}"
       raise
     end
 
