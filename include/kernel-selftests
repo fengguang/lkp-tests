@@ -31,6 +31,7 @@ need_kconfig:
 - CONFIG_KVM=y
 - CONFIG_KVM_INTEL=y
 % elsif ___.group == "vm"
+- CONFIG_GUP_BENCHMARK=y ~ ">= v4.15-rc1 && < v5.11-rc1"
 - CONFIG_GUP_TEST=y ~ ">= v5.11-rc1"
 % elsif ___.group == "bpf"
 - CONFIG_BPF=y
@@ -246,7 +247,6 @@ need_kconfig:
 - CONFIG_CLS_U32_MARK=y
 - CONFIG_CLS_U32_PERF=y
 - CONFIG_GACT_PROB=y
-- CONFIG_GUP_BENCHMARK=y ~ ">= v4.15-rc1"
 - CONFIG_NET=y
 - CONFIG_NET_ACT_BPF=m ~ ">= v4.0-rc1"
 - CONFIG_NET_ACT_CONNMARK=m ~ ">= v4.0-rc1"
