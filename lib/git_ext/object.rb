@@ -126,6 +126,20 @@ module Git
         nil
       end
 
+      def next_release_tag
+        tag = release_tag
+        return nil unless tag
+
+        order = @base.release_tag_order(tag)
+        @base.release_tags_with_order.reverse_each do |tag, o|
+          next if o <= order
+
+          return tag
+        end
+
+        nil
+      end
+
       def version_tag
         tag, is_exact_match = last_release_tag
 
