@@ -1,0 +1,173 @@
+#!/bin/sh
+# - nics
+# - nics_ips
+# - core_nums
+# - protocol
+# - alive_type
+
+. $LKP_SRC/lib/common.sh
+
+# To manually check CPU usage when clients sent http/https requests, please use htop tool.
+# htop tool download url: http://rpmfind.net/linux/epel/8/Everything/aarch64/Packages/h/htop-2.2.0-6.el8.aarch64.rpm
+# For send http request, can use httpress tool.
+# httpress tool download url: http://rpmfind.net/linux/epel/7/aarch64/Packages/h/httpress-1.1.0-2.el7.aarch64.rpm
+
+: "${protocol:=https}"    # http or https
+: "${alive_type:=short}"  # short or long
+
+nics=(${nics//,/ })
+nics_ips=(${nics_ips//,/ })
+[ -n "$BENCHMARK_ROOT" ] || BENCHMARK_ROOT=/lkp/benchmarks
+
+check_nginx_install()
+{
+	if [ -x "$nginx_path" ]; then
+		pkill -f "$nginx_path"
+	else
+		echo "nginx is not installed" >&2 && exit 1
+	fi
+
+	if [ ! -f "$conf_dir/$protocol/basic.conf" ]; then
+		echo "Could not find nginx conf" >&2 && exit 1
+	fi
+}
+
+prepare()
+{
+	setenforce 0
+	ulimit -SHn 409600
+	export LD_PRELOAD=/usr/lib64/libtcmalloc.so.4
+
+	# require by $LKP_SRC/bin/set_nic_irq_affinity
+	pkill -9 irqbalance
+}
+
+bind_core_net_irp()
+{
+	# binding cores are used to process NIC interrupts, each corresponds to a NIC.
+	# the interrupt cores in each CPU are bound only to the NIC that belong to the CPU.
+	# the CPU cores are bound by node.
+
+	ip addr add "$nic_ip"/24 dev "$nic"
+	ip link set "$nic" up
+
+	ethtool -L $nic combined $bind_core_nums
+	$LKP_SRC/bin/set_nic_irq_affinity $core_range $nic
+}
+
+update_nginx_conf()
+{
+	update_key=$1
+	update_value="$(eval echo '$'$update_key)"
+	sed -i "s|{{$update_key}}|$update_value|" "$conf_path"
+}
+
+start_nginx()
+{
+	local ssl_certificate_path="$conf_dir/$protocol/server_2048.crt"
+	local ssl_certificate_key_path="$conf_dir/$protocol/server_2048.key"
+	local conf_path="$conf_dir/$protocol.$alive_type.$core_range.conf"
+	cp -f "$conf_dir/$protocol/basic.conf" "$conf_path"
+	source "$conf_dir/$protocol/$alive_type/$core_range"
+
+	update_nginx_conf html_index
+	update_nginx_conf listen_port
+	update_nginx_conf worker_processes
+	update_nginx_conf worker_cpu_affinity
+	[ "$protocol" == 'https' ] && {
+		update_nginx_conf ssl_certificate
+		update_nginx_conf ssl_certificate_key
+	}
+
+	"$nginx_path" -c "$conf_path" -p "$BENCHMARK_ROOT/nginx-server/"
+}
+
+assign_core_ranges()
+{
+	if [ "$protocol" == 'http' ]; then
+		case "$core_nums" in
+			"4")
+				if [ "$alive_type" == 'long' ]; then
+					core_ranges='3'
+				else
+					core_ranges='2-3'
+				fi
+				;;
+			"8")
+				if [ "$alive_type" == 'long' ]; then
+					core_ranges='6-7'
+				else
+					core_ranges='2-3 6-7'
+				fi
+				;;
+			"48")
+				if [ "$alive_type" == 'long' ]; then
+					core_ranges='18-23 42-47'
+				else
+					core_ranges='12-17 18-23 36-41 42-47'
+				fi
+				;;
+			"96")
+				if [ "$alive_type" == 'long' ]; then
+					core_ranges='18-23 42-47 66-71 90-95'
+				else
+					core_ranges='0-15 16-31 48-63 64-79'
+				fi
+				;;
+			*) echo "The enter core num:$core_nums is incorrect" && exit 1
+				;;
+		esac
+	else
+		case "$core_nums" in
+			"4") core_ranges='3'
+				;;
+			"8")
+				if [ "$alive_type" == 'long' ]; then
+					core_ranges='6-7'
+				else
+					core_ranges='7'
+				fi
+				;;
+			"48")
+				if [ "$alive_type" == 'long' ]; then
+					core_ranges='20-23 44-47'
+				else
+					core_ranges='23 47'
+				fi
+				;;
+			"96")
+				if [ "$alive_type" == 'long' ]; then
+					core_ranges='20-23 44-47 68-71 92-95'
+				else
+					core_ranges='46-47 94-95'
+				fi
+				;;
+			*) echo "The enter core num:$core_nums is incorrect" && exit 1
+				;;
+		esac
+	fi
+}
+
+main()
+{
+	local core_ranges
+	local nginx_path="$BENCHMARK_ROOT/nginx-server/sbin/nginx"
+	local conf_dir="$BENCHMARK_ROOT/nginx-server/nginx_conf"
+
+	check_nginx_install
+	prepare
+	assign_core_ranges
+
+	index=0
+	for core_range in $core_ranges
+	do
+		local nic=${nics[$index]}
+		local nic_ip=${nics_ips[$index]}
+		local bind_core_nums=$(cpu_list_num $core_range)
+		bind_core_net_irp
+		start_nginx
+		index=$((index+1))
+	done
+}
+
+main
