@@ -87,7 +87,7 @@ net_devices_link()
 
 test_ping()
 {
-	ping -c 1 -W 1 $LKP_SERVER > /dev/null || return 1
+	ping -c 1 -w 1 $LKP_SERVER > /dev/null
 }
 
 network_ok()
