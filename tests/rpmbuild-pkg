@@ -35,7 +35,7 @@ download_rpm_repo()
 build_rpm()
 {
 	spec_dir=${HOME}/rpmbuild/SPECS/$benchmark.spec
-	sed -i 's/^\(Source[^ ]*:[ \t]*\)https/\1http/g' `grep http -rl $benchmark.spec`
+	sed -i 's/^\(Source[^ ]*:[ \t]*\)https/\1http/g' `grep http -rl $spec_dir`
 	# Install build depends
 	yum-builddep -y $spec_dir
 	# Download tar.gz to default path ${HOME}/rpmbuild/SOURCE
