@@ -447,7 +447,7 @@ class Job
     job = deepcopy(@job)
     job['___'] = nil
     @jobx = job
-    if @job.include?(:expand_params)
+    if @job.include?(:expand_params) && !first_time
       expand_params
       @job = deepcopy(@jobx)
       @job.delete('___')
