@@ -5,8 +5,8 @@
 . $LKP_SRC/lib/upload.sh
 
 [ -n "$rpm_repo" ] || die "rpm_repo is empty"
-benchmark=${rpm_repo##*/}
-sync_dest="/initrd/rpmbuild-pkg/${os_mount}/${os}/${os_arch}/${os_version}/${benchmark}"
+package_name=${rpm_repo##*/}
+sync_dest="/initrd/rpmbuild-pkg/${os_mount}/${os}/${os_arch}/${os_version}/${package_name}"
 
 init_workspace()
 {
@@ -16,15 +16,15 @@ init_workspace()
 
 get_pkgfile()
 {
-	curl -sS -H 'Content-Type: Application/json' -XPOST "$LKP_SERVER"':8100/git_command' \
+	curl -sS -H 'Content-Type: Application/json' -XPOST "$GIT_SERVER"':8100/git_command' \
 	-d '{"git_repo": "'${rpm_repo}'", "git_command": ["git-show", "HEAD:'$1'"]}' -o "${2}"
 }
 
 download_rpm_repo()
 {
-	filelist=$(curl -sS -H 'Content-Type: Application/json' -XPOST "$LKP_SERVER"':8100/git_command' \
+	local filelist=$(curl -sS -H 'Content-Type: Application/json' -XPOST "$GIT_SERVER"':8100/git_command' \
 		-d '{"git_repo": "'${rpm_repo}'", "git_command": ["git-ls-files", "."]}')
-	for pkgfile in ${filelist[*]}
+	for pkgfile in "${filelist[@]}"
 	do
 		local dir="SOURCES"
 		echo $pkgfile | egrep "\.spec$" && dir="SPECS"
@@ -34,20 +34,29 @@ download_rpm_repo()
 
 build_rpm()
 {
-	spec_dir=${HOME}/rpmbuild/SPECS/$benchmark.spec
-	sed -i 's/^\(Source[^ ]*:[ \t]*\)https/\1http/g' `grep http -rl $spec_dir`
+	local spec_file=${HOME}/rpmbuild/SPECS/$package_name.spec
+
+	# HTTP is proxy cache friendly
+	sed -i 's/^\(Source[^ ]*:[ \t]*\)https/\1http/g' `grep http -rl $spec_file`
+
 	# Install build depends
-	yum-builddep -y $spec_dir
+	yum-builddep -y $spec_file || exit
 	# Download tar.gz to default path ${HOME}/rpmbuild/SOURCE
-	spectool -g -R $spec_dir
+	spectool -g -R $spec_file || exit
 	# Building rpm or srpm packages
-	rpmbuild -ba $spec_dir
+	rpmbuild -ba $spec_file || exit
+}
+
+show_rpm_files()
+{
+	find ${HOME}/rpmbuild/RPMS -type f -name "*.rpm"
+	find ${HOME}/rpmbuild/SRPMS -type f -name "*.rpm"
 }
 
 upload_rpm_pkg()
 {
-	# rpm package will be generated in "${HOME}/rpmbuild/SRPMS" and "${HOME}/rpmbuild/RPMS"
-	for file in $(find ${HOME}/rpmbuild/ -type f -name "*.rpm")
+	local file
+	for file in $(show_rpm_files)
 	do
 		upload_one_curl ${file} ${sync_dest}
 	done
