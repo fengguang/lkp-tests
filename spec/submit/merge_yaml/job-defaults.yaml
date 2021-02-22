@@ -9,6 +9,7 @@ template: kvm
 nr_node: 1
 nr_cpu: 2
 memory: 8G
+hdd_partitions: "/dev/vda"
 arch: aarch64
 cpufreq_governor: 
 need_kconfig:
