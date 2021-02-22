@@ -51,7 +51,7 @@ meminfo:
 slabinfo: 
 interrupts: 
 lock_stat: 
-latency_stats: 
+perf-sched: 
 softirqs: 
 bdi_dev_mapping: 
 diskstats: 
@@ -103,7 +103,7 @@ monitors:
   slabinfo: 
   interrupts: 
   lock_stat: 
-  latency_stats: 
+  perf-sched: 
   softirqs: 
   bdi_dev_mapping: 
   diskstats: 
