@@ -14,7 +14,7 @@ git_ci()
 		EOF
 	fi
 
-	git clone https://gitee.com/wu_fengguang/compass-ci.git /c/compass-ci
+	git clone https://gitee.com/wu_fengguang/compass-ci.git /c/compass-ci || return 1
 }
 
 dev_env()
@@ -68,7 +68,7 @@ run_service()
 
 main()
 {
-	git_ci
+	git_ci || return 1
 	install_env
 	run_service
 }
