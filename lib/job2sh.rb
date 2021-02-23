@@ -318,6 +318,7 @@ class Job2sh < Job
     unless job
       job = (@jobx || @job).clone # a shallow copy so that delete_if won't impact @job
       job.delete_if { |key, val| parse_one([], key, val, :PASS_EXPORT_ENV) }
+      job.delete_if { |key, val| key == "secrets" }
     end
 
     @cur_func = :run_job
