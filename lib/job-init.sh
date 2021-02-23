@@ -1,4 +1,5 @@
 . $LKP_SRC/lib/upload.sh
+. $LKP_SRC/lib/job.sh
 
 mount_cgroup()
 {
@@ -270,4 +271,5 @@ job_init()
 	job_redirect_stdout_stderr
 
 	job_env
+	read_secret_vars
 }

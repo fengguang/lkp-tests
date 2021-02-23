@@ -1,8 +1,20 @@
 #!/bin/sh
 
+read_secret_vars()
+{
+	read_yaml_vars "$(dirname $job_file)/secrets.yaml" secrets_
+}
+
 read_env_vars()
 {
-	[ -f "$TMP/env.yaml" ] || return 0
+	read_yaml_vars "$TMP/env.yaml"
+}
+
+read_yaml_vars()
+{
+	local file=$1
+	local prefix=$2
+	[ -f "$file" ] || return 0
 
 	local key
 	local val
@@ -11,8 +23,8 @@ read_env_vars()
 	do
 		[ "${key%[a-zA-Z0-9_]:}" != "$key" ] || continue
 		key=${key%:}
-		export "$key=$val"
-	done < $TMP/env.yaml
+		export "$prefix$key=$val"
+	done < $file
 
 	return 0
 }
