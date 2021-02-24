@@ -115,6 +115,12 @@ need_kconfig:
 - CONFIG_TEST_BLACKHOLE_DEV=m ~ ">= v5.3-rc1"
 - CONFIG_KALLSYMS=y
 - CONFIG_BAREUDP=m ~ ">= v5.7-rc1"
+- CONFIG_MPLS_ROUTING=m ~ ">= v4.1-rc1"
+- CONFIG_MPLS_IPTUNNEL=m ~ ">= v4.3-rc1"
+- CONFIG_NET_SCH_INGRESS=y ~ ">= v4.19-rc1"
+- CONFIG_NET_CLS_FLOWER=m ~ ">= v4.2-rc1"
+- CONFIG_NET_ACT_TUNNEL_KEY=m ~ ">= v4.9-rc1"
+- CONFIG_NET_ACT_MIRRED=m ~ ">= v5.11-rc1"
 % elsif ___.group == "netfilter"
 - CONFIG_NET_NS=y
 - CONFIG_NFT_FLOW_OFFLOAD=m ~ ">= v4.16-rc1"
