@@ -786,8 +786,8 @@ def _get_changed_stats(a, b, options)
   filter_incomplete_run(a)
   filter_incomplete_run(b)
 
-  is_all_incomplete_run = (a['stats_source'].empty? ||
-         b['stats_source'].empty?)
+  is_all_incomplete_run = (a['stats_source'].to_s.empty? ||
+                           b['stats_source'].to_s.empty?)
   return changed_stats if is_all_incomplete_run
 
   more_changed_stats = __get_changed_stats(a, b, false, options)
