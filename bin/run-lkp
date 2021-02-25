@@ -29,7 +29,7 @@ setup_result_root || { job_done; exit 1; }
 echo run-job $job
 set_job_state 'running'
 
-echo "target ucode: $ucode"
+[ -n "${ucode}" ] && echo "target ucode: $ucode"
 if [ -n "$ucode" ] && ! is_same_as_current_ucode_version "$ucode"; then
 	echo "microcode is not matched, skip testing..."
 	set_job_state 'microcode_is_not_matched'
