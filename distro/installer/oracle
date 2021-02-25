@@ -1,8 +1,8 @@
 #!/bin/sh
 
 if ! rpm -q epel-release >/dev/null; then
-	yum install -y epel-release
-	yum makecache fast
+	yum install -yq epel-release
+	yum makecache fast >/dev/null
 fi
 
-yum install -y $*
+yum install -yq $*

@@ -2,7 +2,8 @@
 
 # Debian package installation
 export DEBIAN_FRONTEND=noninteractive
-dpkg --add-architecture i386 && apt-get update
+dpkg --add-architecture i386 && apt-get -qq update
 apt-get -o Dpkg::Options::="--force-confdef" \
      -o Dpkg::Options::="--force-confold" \
-     -y install $* >/tmp/apt-get_info 2>&1
+     -qq install $*
+grep -v "dpkg: warning: files list file for package '.*' missing;" /tmp/apt-get_info

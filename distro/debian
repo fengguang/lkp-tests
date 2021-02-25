@@ -8,7 +8,7 @@ shopt -s nullglob
 
 update()
 {
-	apt-get update
+	apt-get -qq update
 }
 
 add_i386_package()
@@ -18,8 +18,8 @@ add_i386_package()
 
 download()
 {
-	echo apt-get download $*
-	apt-get download $*
+	echo apt-get -qq download $*
+	apt-get -qq download $*
 }
 
 hardlink_to_symlink()
@@ -128,7 +128,7 @@ resolve_depends()
 	local deps=$*
 	local command
 
-	command="apt-get --simulate --no-install-recommends install $deps"
+	command="apt-get --simulate --no-install-recommends install -qq $deps"
 	# using "bash -c" to support wildcard in apt-get.
 	# if use wildcard in the package version variable,
 	# apt-get will treat the wildcard as a normal character.
@@ -193,7 +193,8 @@ distro_install_depends()
 		do
 			$chronic apt-get -o Dpkg::Options::=--force-confdef \
 					 -o Dpkg::Options::=--force-confold \
-					 install -y --no-upgrade $package
+					 install -qq --no-upgrade $package >/tmp/apt-get_info 2>&1
+			grep -v "dpkg: warning: files list file for package '.*' missing;" /tmp/apt-get_info
 		done
 	done
 }
@@ -225,7 +226,7 @@ fixup_distro_mirror()
 
 fixup_preinstall()
 {
-	apt-get install -yf
+	apt-get install -qqf
 }
 
 fixup_arch_install()
@@ -235,7 +236,7 @@ fixup_arch_install()
 
 	dpkg --add-architecture i386
 	update
-	apt -y --allow-remove-essential --fix-broken install -o=APT::Architecture="i386"
+	apt --allow-remove-essential --fix-broken install -qq -o=APT::Architecture="i386"
 }
 
 pack_benchmark_deps()

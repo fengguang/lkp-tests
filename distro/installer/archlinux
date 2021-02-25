@@ -13,4 +13,5 @@ add_aur_helper
 
 regular_user=$(grep 1090 /etc/passwd | awk -F':' '{ print $1 }')
 
-sudo -u $regular_user yay -S --needed --noconfirm $*
+sudo -u $regular_user yay -Sq --needed --noconfirm $* >/tmp/pacman_info 2>&1
+[ -f /tmp/pacman_info ] && grep -v "warning: could not get file information for *" /tmp/pacman_info

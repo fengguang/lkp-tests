@@ -43,8 +43,8 @@ find_pacman_package()
 
 pacman_download()
 {
-	echo "pacman -Sw --noconfirm $*"
-	pacman -Sw --noconfirm "$@"
+	echo "pacman -Swq --noconfirm $*"
+	pacman -Swq --noconfirm "$@"
 }
 
 pacman_pack()
@@ -88,7 +88,8 @@ distro_install_depends()
 
 		for pkg in $packages
 		do
-			pacman -Qq --noconfirm $pkg > /dev/null || pacman -Sy --noconfirm $pkg
+			pacman -Qq --noconfirm $pkg > /dev/null || pacman -Syq --noconfirm  --needed $pkg >/tmp/pacman_info 2>&1
+			[ -f /tmp/pacman_info ] && grep -v "warning: could not get file information for *" /tmp/pacman_info
 		done
 	done
 }
@@ -115,13 +116,13 @@ add_aur_helper()
 {
 	echo "lkp ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-	pacman -Q yay 2>/dev/null && return
+	pacman -Qq yay >/dev/null && return
 
 	local user=lkp
 	local dir=/home/${user}
 
 	mkdir -p ${dir} && chown ${user}:${user} ${dir}
-	pacman -S --needed --noconfirm git base-devel 2>/dev/null
+	pacman -Sq --needed --noconfirm git base-devel 2>/dev/null
 	su - ${user} -c "git clone https://aur.archlinux.org/yay.git"
 	su - ${user} -c "cd yay && makepkg -si --needed --noconfirm"
 }

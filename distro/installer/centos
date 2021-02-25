@@ -1,12 +1,12 @@
 #!/bin/bash
 
 if ! rpm -q epel-release >/dev/null; then
-	[ ${DISTRO^^} == "OPENEULER" ] || yum install -y epel-release
+	[ ${DISTRO^^} == "OPENEULER" ] || yum install -yq epel-release
 	if [ ${DISTRO^^} == "OPENEULER" ]; then
-		yum makecache timer
+		yum makecache timer >/dev/null
 	else
-		yum makecache fast
+		yum makecache fast >/dev/null
 	fi
 fi
 
-yum install -y $*
+yum install -yq $*
