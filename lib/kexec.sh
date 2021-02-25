@@ -190,8 +190,8 @@ kexec_to_next_job()
 
 	if [ -n "$(find /etc/rc6.d -name '[SK][0-9][0-9]kexec' 2>/dev/null)" ]; then
 		# expecting the system to run "kexec -e" in some rc6.d/* script
-		echo "LKP: rebooting"
-		echo "LKP: rebooting" > /dev/ttyS0 &
+		echo "LKP: rebooting by exec"
+		echo "LKP: rebooting by exec" > /dev/ttyS0 &
 		kexec -e 2>/dev/null
 		sleep 100 || exit	# exit if reboot kills sleep as expected
 	fi
