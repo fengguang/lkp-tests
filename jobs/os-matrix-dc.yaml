@@ -1,0 +1,9 @@
+os_arch: aarch64
+os_mount: container
+testbox: dc-8g
+
+os | os_version | docker_image:
+- centos    | 7     | centos:7
+- centos    | 8     | centos:8
+- openeuler | 20.03 | openeuler:20.03
+- openeuler | 20    | openeuler:20

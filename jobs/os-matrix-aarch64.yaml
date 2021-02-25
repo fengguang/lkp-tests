@@ -1,0 +1,22 @@
+os_arch: aarch64
+testbox: vm-2p8g
+
+os | os_version | os_mount:
+- openeuler | 1.0                  | cifs
+- openeuler | 20.03                | cifs
+- openeuler | 20.09                | initramfs
+- openeuler | 20.09                | cifs
+- openeuler | 20.09                | initramfs
+- openeuler | mainline-dailybuild  | cifs
+- openeuler | 20.03-dailybuild     | cifs
+- openeuler | 20.09-dailybuild     | cifs
+- openeuler | 20.03-sp1-dailybuild | cifs
+- centos    | 7.6.1810             | cifs
+- centos    | 7.6.1810             | initramfs
+- centos    | 7.8.2003             | cifs
+- centos    | 7.8.2003             | initramfs
+- centos    | 8.1.1911             | cifs
+- centos    | 7.8.2003             | cifs
+- debian    | sid                  | cifs
+- debian    | sid                  | initramfs
+- archlinux | 2020-11-12           | nfs

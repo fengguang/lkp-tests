@@ -1,0 +1,10 @@
+os_arch: x86_64
+os_mount: cifs
+testbox: 2288hv5-2s44p-384g
+
+os | os_version:
+- openeuler | 20.03
+- openeuler | 20.09
+- centos    | 7.6.1810
+- centos    | 7.8.2003
+- debian    | sid
