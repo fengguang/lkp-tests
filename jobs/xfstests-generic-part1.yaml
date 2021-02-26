@@ -17,7 +17,6 @@ fs:
 
 xfstests:
   test:
-  - generic-387
   - generic-054
   - generic-group-00
   - generic-group-01
@@ -28,3 +27,16 @@ xfstests:
   - generic-group-06
   - generic-group-07
   - generic-group-08
+
+---
+fs:
+- ext2
+- ext4
+- xfs
+- btrfs
+- f2fs
+- udf
+
+xfstests:
+  test:
+  - generic-387

@@ -24,4 +24,16 @@ xfstests:
   - generic-group-28
   - generic-group-29
   - generic-group-30
+
+---
+fs:
+- ext2
+- ext4
+- xfs
+- btrfs
+- f2fs
+- udf
+
+xfstests:
+  test:
   - generic-logdev
