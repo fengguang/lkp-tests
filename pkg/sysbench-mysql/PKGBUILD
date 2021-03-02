@@ -8,18 +8,16 @@ license=('GPL')
 source=("https://github.com/akopytov/sysbench/archive/$pkgver.$pkgrel.tar.gz")
 md5sums=('2912bfe7238cac7351459019a84e2557')
 
-build() {
+build()
+{
 	cd "$pkgname-$pkgver.$pkgrel"
 	./autogen.sh
-	./configure --with-mysql-includes=/usr/local/mysql/include/ --with-mysql-libs=/usr/local/mysql/lib/ --disable-dependency-tracking
+	./configure --disable-dependency-tracking
 	make -j4
 }
 
-package() {
+package()
+{
 	cd "$pkgname-$pkgver.$pkgrel"
 	make DESTDIR=$pkgdir install
-	[[ $os == openeuler ]] && {
-		mkdir -p $pkgdir/usr/lib64
-		cp -rpf /usr/local/mysql/lib/* $pkgdir/usr/lib64/
-	}
 }
