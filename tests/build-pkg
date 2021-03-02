@@ -159,7 +159,7 @@ build_source_pkg()
 
 	export V=1
 
-	PACMAN="${mark}" BUILDDIR=$TMP CARCH=$os_arch PKGEXT=.cgz CGZDEST="$cgz_name" \
+	PACMAN="${mark}" BUILDDIR=$TMP CARCH=$os_arch PKGEXT=.cgz CGZDEST="$cgz_name" PACKAGER="${PACKAGER:-Compass-CI}" \
 		$LKP_SRC/sbin/makepkg ${pkg_args} --config $LKP_SRC/etc/makepkg.conf
 
 	local build_state="$?"

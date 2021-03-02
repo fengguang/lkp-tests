@@ -142,7 +142,7 @@ build_source_pkg()
 	local makepkg="$LKP_SRC/sbin/makepkg ${pkg_args} --config $LKP_SRC/etc/makepkg.conf"
 	echo "${makepkg}"
 
-	PACMAN="${mark}" BUILDDIR=$TMP CARCH=$arch PKGEXT=.cgz CGZDEST="$sync_dest/$cgz_name" $makepkg
+	PACMAN="${mark}" BUILDDIR=$TMP CARCH=$arch PKGEXT=.cgz CGZDEST="$sync_dest/$cgz_name" PACKAGER="${PACKAGER:-Compass-CI}" $makepkg
 
 	[ "$?" == 0 ] || exit 1
 	update_softlink
