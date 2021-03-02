@@ -273,6 +273,9 @@ setup_hosts()
 {
 	is_docker && return
 
+	suffix="sh.intel.com"
+	[ -n "${CCI_SRC}" ] && suffix="compass-ci.net"
+
 	# /etc/hosts may be shared when it's NFSROOT and there is no obvious
 	# way to detect if rootfs is already RAM based. So unconditionally
 	# symlink it to my own tmpfs copy.
@@ -283,8 +286,8 @@ setup_hosts()
 	else
 		cp /etc/hosts $tmpfs_hosts
 	fi
-	echo "127.0.0.1 $HOSTNAME.sh.intel.com  $HOSTNAME" >> $tmpfs_hosts
-	echo "::1 $HOSTNAME.sh.intel.com  $HOSTNAME" >> $tmpfs_hosts
+	echo "127.0.0.1 $HOSTNAME.${suffix}  $HOSTNAME" >> $tmpfs_hosts
+	echo "::1 $HOSTNAME.${suffix}  $HOSTNAME" >> $tmpfs_hosts
 	ln -fs $tmpfs_hosts /etc/hosts
 }
 
