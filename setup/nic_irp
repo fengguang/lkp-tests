@@ -1,0 +1,41 @@
+#!/bin/sh
+# - nics
+# - nics_ip
+# - core_ranges
+
+. "$LKP_SRC"/lib/common.sh
+
+if [ -z "$nics" ]; then
+	echo "no nics found" >&2
+	exit 1
+fi
+
+if [ -z "$core_ranges" ]; then
+	echo "no core ranges found" >&2
+	exit 1
+fi
+
+main()
+{
+	pkill -9 irqbalance
+
+	index=0
+	for core_range in $core_ranges; do
+		local nic=${nics[$index]}
+		local nic_ip=${nics_ip[$index]}
+		local bind_core_nums=$(cpu_list_num $core_range)
+
+		[ -n "$nic_ip" ] && {
+			ip addr add "$nic_ip"/24 dev "$nic"
+			ip link set "$nic" up
+		}
+
+		ethtool -L $nic combined $bind_core_nums
+		$LKP_SRC/bin/set_nic_irq_affinity $core_range $nic
+
+		ethtool -l $nic
+		index=$((index+1))
+	done
+}
+
+main
