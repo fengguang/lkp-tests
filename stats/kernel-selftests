@@ -79,6 +79,10 @@ class VmStater < Stater
     when /^#\s+running\s+(.+)/
       # running hugepage-shm
       @test_case = $1
+    when /^#\s+running: (\S+)(.+)# (\S+)/
+      # running: gup_test -u # get_user_pages_fast() benchmark
+      # vm.run_vmtests.sh.gup_test.get_user_pages_fast.pass: 1
+      @test_case = "#{$1}.#{$3.strip.gsub(/[-\t\r\n\f]/, '_')}"
     when /^#\s+\[(PASS|FAIL)\]/, /^#\s+LKP (SKIP)/
       stats.add "#{@test_prefix}.#{@test_case}", $1 if @test_case
       @test_case = nil

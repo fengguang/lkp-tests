@@ -2,6 +2,9 @@ vm.run_vmtests.hugepage-mmap.pass: 1
 vm.run_vmtests.hugepage-shm.pass: 1
 vm.run_vmtests.map_hugetlb.pass: 1
 vm.run_vmtests.map_fixed_noreplace.pass: 1
+vm.run_vmtests.gup_test.get_user_pages_fast.pass: 1
+vm.run_vmtests.gup_test.pin_user_pages_fast.pass: 1
+vm.run_vmtests.gup_test.dump_page.pass: 1
 vm.run_vmtests.userfaultfd.pass: 1
 vm.run_vmtests.userfaultfd_hugetlb.pass: 1
 vm.run_vmtests.userfaultfd_shmem.pass: 1
