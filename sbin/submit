@@ -28,7 +28,8 @@ options = OptionParser.new do |opts|
   opts.separator 'options:'
 
   opts.on("-s 'KEY: VALUE'", "--set 'KEY: VALUE'", 'add YAML hash to job') do |key_value|
-    opt_set_key_value.merge! YAML.load key_value
+    k, v = key_value.sub(' ', '').split(':')
+    opt_set_key_value[k] = v
   end
 
   opts.on('-o DIR', '--output DIR', 'save job yaml to DIR/') do |dir|
@@ -58,9 +59,9 @@ options = OptionParser.new do |opts|
 
   opts.on('-m', '--monitor', "monitor job status: use -m 'KEY: VALUE' to add rule") do
     opt_monitor = true
-    filter = YAML.load ARGV[0] if ARGV[0]
-    if filter.class == Hash
-      opt_monitor_query.merge! filter
+    k, v = ARGV[0].sub(' ', '').split(':') if ARGV[0]
+    if (k && !k.empty?) && (v && !v.empty?)
+      opt_monitor_query[k] = v
       ARGV.shift
     end
   end
@@ -77,10 +78,11 @@ options.parse!(ARGV)
 seen_job_yaml = false
 ARGV.delete_if do |arg|
   if arg.index '='
+    k, v = arg.sub(' ', '').sub(/=/, ':').split(':')
     if seen_job_yaml
-      opt_set_key_value.merge! YAML.load arg.sub(/=/, ': ')
+      opt_set_key_value[k] = v
     else
-      opt_cmdline_defaults.merge! YAML.load arg.sub(/=/, ': ')
+      opt_cmdline_defaults[k] = v
     end
     true
   else
