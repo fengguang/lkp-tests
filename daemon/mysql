@@ -1,0 +1,91 @@
+#!/bin/sh
+# - data_dev
+# mysql_user
+# mysql_host
+# mysql_port
+# mysql_db
+# mysql_password
+. $LKP_SRC/lib/common.sh
+
+: "${mysql_user:=root}"
+: "${mysql_host:=$server}"
+: "${mysql_port:=3306}"
+: "${mysql_db:=sysbench_test}"
+: "${mysql_password:=mysql_password}"
+
+prepare()
+{
+	systemctl stop firewalld >/dev/null 2>&1
+	iptables -F >/dev/null 2>&1
+	systemctl start tuned >/dev/null 2>&1
+}
+
+insmod_getcpu()
+{
+	if [ -d "/getcpu" ]; then
+		cd /getcpu && insmod getcpu-hi.ko
+	else
+		echo "this test will not use getcpu optimize to bind core."
+	fi
+}
+
+create_basedir()
+{
+	mkdir -p /data
+	mkfs.xfs -f /dev/"$data_dev"
+	mount /dev/"$data_dev" /data
+
+	mkdir -p /data/mysql/{data,share,tmp,run,log}
+
+	useradd mysql
+	touch /data/mysql/log/mysql.log
+	chown -R mysql:mysql /data
+	chown -R mysql:mysql /data/mysql/log/mysql.log
+}
+
+configure_mysql()
+{
+	if [ ! -f $mysqld ] || [ ! -f $mysql ] || [ ! -f $mysql_server ]; then
+		echo "mysql is not installed!" && exit 1
+	fi
+
+	"$mysqld" --user=mysql --basedir=/data/mysql --datadir=/data/mysql/data/ --initialize --port="$mysql_port"
+	sleep 10
+
+	"$mysql_server" start
+	sleep 10
+
+	"$mysql" -u "$mysql_user" -e "flush privileges; use mysql; alter user 'root'@'localhost' identified by '$mysql_password'; flush privileges;"
+	sed -i '/^skip-grant-tables/d' /etc/my.cnf
+	"$mysql_server" restart
+	sleep 10
+}
+
+create_database()
+{
+	"$mysql" -u "$mysql_user" -p"$mysql_password" -e "use mysql; update user set host ='%' where user='root'; flush privileges;"
+	"$mysql" -u "$mysql_user" -p"$mysql_password" -e "create database $mysql_db;"
+	"$mysql_server" stop
+	sleep 10
+}
+
+start_mysql()
+{
+	numactl -C 0-92 -i 0-3 "$mysqld" --defaults-file=/etc/my.cnf --port="$mysql_port" &
+	sleep 20
+}
+
+main()
+{
+	local mysql="/usr/local/mysql/bin/mysql"
+	local mysqld="/usr/local/mysql/bin/mysqld"
+	local mysql_server="/usr/local/mysql/support-files/mysql.server"
+
+	prepare
+	insmod_getcpu
+	create_basedir
+	configure_mysql
+	create_database
+	start_mysql
+}
+main
