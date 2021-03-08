@@ -1,9 +1,6 @@
 #!/bin/sh
-# - oltp_test_mode
 # - oltp_tables_count
 # - oltp_table_size
-# - max_requests
-# - mysql_table_engine
 # - nr_threads
 # - rand_type
 # - rand_spec_pct
@@ -21,14 +18,11 @@
 : "${mysql_user:=root}"
 : "${mysql_host:=$server}"
 : "${mysql_port:=3306}"
-: "${mysql_db:=sysbench_1}"
+: "${mysql_db:=sysbench_test}"
 : "${mysql_password:=mysql_password}"
 : "${db_driver:=mysql}"
-: "${oltp_test_mode:=complex}"
 : "${oltp_tables_count:=1000}"
 : "${oltp_table_size:=100000}"
-: "${max_requests:=0}"
-: "${mysql_table_engine:=innodb}"
 : "${rand_type:=special}"
 : "${rand_spec_pct:=100}"
 : "${nr_threads:=256}"
@@ -42,13 +36,10 @@ args1=(
 	 --mysql-host=$mysql_host
  	 --mysql-port=$mysql_port
  	 --mysql-db=$mysql_db
-	 --oltp-test-mode=$oltp_test_mode
 	 --db-driver=$db_driver
 	 --mysql-password=$mysql_password
-	 --max-requests=$max_requests
-	 --mysql-table-engine=$mysql_table_engine
-	 --oltp-table-size=$oltp_table_size
-	 --oltp-tables-count=$oltp_tables_count
+	 --table-size=$oltp_table_size
+	 --tables=$oltp_tables_count
 	 --rand-type=$rand_type
 	 --rand-spec-pct=$rand_spec_pct
 	 --threads=$nr_threads
@@ -72,8 +63,8 @@ args2=(
 
 stop_firewalld()
 {
-	systemctl stop firewalld
-	iptables -F
+	systemctl stop firewalld >/dev/null 2>&1
+	iptables -F >/dev/null 2>&1
 }
 
 run_sysbench_step()
@@ -85,9 +76,11 @@ run_sysbench_step()
 
 run_sysbench_mysql()
 {
-	run_sysbench_step parallel_prepare.lua ${args1[@]} prepare
+	sysbench ${args1[@]} oltp_read_write prepare > /dev/null
+
 	run_sysbench_step oltp.lua ${args2[@]} run
-	run_sysbench_step oltp.lua ${args2[@]} cleanup
+
+	run_sysbench_step oltp.lua ${args2[@]} cleanup > /dev/null
 }
 
 stop_firewalld
