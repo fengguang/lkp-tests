@@ -1,12 +1,43 @@
 #!/usr/bin/env ruby
+require 'set'
+
+repo_set = Set[]
+sys_set = Set[]
 
 while (line = STDIN.gets)
   case line.chomp!
+  # Error: Unable to find a match: docker-registry
   when /Error: Unable to find a match: (.+)/
     $1.split.each do |repo|
-       puts "yum.error.Unable-to-find-a-match.#{repo}: 1"
+       repo_set << repo
     end
+
+  # /bin/sh: passwd: command not found
   when /\/bin\/sh: (.+): command not found/
     puts "sh.command-not-found.#{$1}: 1"
+    puts "sh.command-not-found.#{$1}.message: #{line}"
+
+  # RUN yum -y swap -- remove fakesystemd -- install systemd systemd-libs
+  # yum swap: error: unrecognized arguments: install systemd systemd-libs
+  when /yum swap: error: .*: install (.+)/
+    $1.split.each do |sys|
+      sys_set << sys
+    end
+
+  # curl: (22) The requested URL returned error: 404 Not Found
+  # error: skipping https://dl.fedoraproject.org/pub/epel/bash-latest-7.noarch.rpm - transfer failed
+  when /.*error: .* (https.*)/
+    puts "requested-URL-returned.error: 1"
+    puts "requested-URL-returned.error.message: #{line}"
   end
+end
+
+repo_set.each do |repo|
+  puts "yum.error.Unable-to-find-a-match.#{repo}: 1"
+  puts "yum.error.Unable-to-find-a-match.#{repo}.message: Error: Unable to find a match: #{repo}"
+end
+
+sys_set.each do |sys|
+    puts "yum.swap.error.unrecognized-arguments-install.#{sys}: 1"
+    puts "yum.swap.error.unrecognized-arguments.#{sys}.message: yum swap: error: unrecognized arguments: install #{sys}"
 end
