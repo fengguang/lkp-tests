@@ -6,8 +6,7 @@
 
 [ -n "$rpm_repo" ] || die "rpm_repo is empty"
 package_name=${rpm_repo##*/}
-[[ "$os_mount" = "cifs" ]] && os_mount="nfs"
-sync_dest="/initrd/rpmbuild-pkg/${os_mount}/${os}/${os_arch}/${os_version}/${package_name}"
+sync_dest="/initrd/rpmbuild-pkg/${os}/${os_arch}/${os_version}/${package_name}"
 
 init_workspace()
 {
