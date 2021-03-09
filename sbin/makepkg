@@ -89,6 +89,7 @@ SIGNPKG=''
 SPLITPKG=0
 SOURCEONLY=0
 VERIFYSOURCE=0
+REWRITEGITSERVER=0
 
 # Forces the pkgver of the current PKGBUILD. Used by the fakeroot call
 # when dealing with svn/cvs/etc PKGBUILDs.
@@ -587,6 +588,16 @@ download_git() {
 	fi
 }
 
+# modify submodules address to local server address.
+# (( REWRITEGITSERVER )) is true, replace submodules domain, and download it from local end.
+modify_gitmodules() {
+	(( REWRITEGITSERVER )) || return
+
+	if [[ -f ".gitmodules" ]] && [[ -n ${GIT_SERVER} ]]; then
+		git config --system url."git://${GIT_SERVER}/".insteadOf https://
+	fi
+}
+
 extract_git() {
 	local netfile=$1
 
@@ -623,10 +634,7 @@ extract_git() {
 
 	cd_safe "${dir##*/}"
 
-	# modify submodules address to local server address.
-	if [[ -f ".gitmodules" ]] && [[ -n ${LKP_SERVER} ]]; then
-		echo -e "[url \"git://${LKP_SERVER}/\"]\n\tinsteadOf = https://" >> /etc/gitconfig
-	fi
+	modify_gitmodules
 
 	local ref=origin/HEAD
 	if [[ -n $fragment ]]; then
@@ -3421,6 +3429,7 @@ usage() {
 	printf -- "$(gettext "  --skipinteg      Do not perform any verification checks on source files")\n"
 	printf -- "$(gettext "  --skippgpcheck   Do not verify source files with PGP signatures")\n"
 	printf -- "$(gettext "  --verifysource   Download source files (if needed) and perform integrity checks")\n"
+	printf -- "$(gettext "  --rewritegitserver Change domain name when downloading submodules repository")\n"
 	echo
 	printf -- "$(gettext "These options can be passed to %s:")\n" "pacman"
 	echo
@@ -3462,7 +3471,7 @@ OPT_LONG=('allsource' 'check' 'clean' 'cleanbuild' 'config:' 'force' 'geninteg'
           'help' 'holdver' 'ignorearch' 'install' 'key:' 'log' 'noarchive' 'nobuild'
           'nocolor' 'nocheck' 'nodeps' 'noextract' 'noprepare' 'nosign' 'pkg:' 'repackage'
           'rmdeps' 'sign' 'skipchecksums' 'skipinteg' 'skippgpcheck' 'source' 'syncdeps'
-          'verifysource' 'version')
+          'verifysource' 'version' 'rewritegitserver')
 
 # Pacman Options
 OPT_LONG+=('asdeps' 'noconfirm' 'needed' 'noprogressbar')
@@ -3514,6 +3523,7 @@ while true; do
 		-s|--syncdeps)    DEP_BIN=1 ;;
 		-S|--source)      SOURCEONLY=1 ;;
 		--verifysource)   VERIFYSOURCE=1 ;;
+		--rewritegitserver) REWRITEGITSERVER=1 ;;
 
 		-h|--help)        usage; exit 0 ;; # E_OK
 		-V|--version)     version; exit 0 ;; # E_OK
