@@ -2,8 +2,7 @@
 # SPDX-License-Identifier: MulanPSL-2.0+
 # Copyright (c) 2020 Huawei Technologies Co., Ltd. All rights reserved.
 
-: ${SCHED_HOST:=172.17.0.1}
-: ${SCHED_PORT:=3000}
+export server_ip=$SCHED_HOST
 
 git_ci()
 {
@@ -17,61 +16,11 @@ git_ci()
 	git clone https://gitee.com/wu_fengguang/compass-ci.git /c/compass-ci || return 1
 }
 
-dev_env()
+deploy()
 {
-	export sched_host=$SCHED_HOST
-	export sched_port=$SCHED_PORT
-	3-code/dev-env
+	cd /c/compass-ci/sparrow && ./install-client
 }
 
-install_env()
-{
-	cd /c/compass-ci/sparrow || return
-	0-package/install
-	1-storage/tiny
-	5-build/ipxe &
-	1-storage/permission
-	2-network/br0
-	2-network/iptables
-	3-code/git
-	dev_env
-	. /etc/profile.d/compass.sh
-}
+git_ci || exit 1
+deploy
 
-boot_ipxe()
-{
-	sed -i "s%172.17.0.1%$SCHED_HOST%g" /tftpboot/boot.ipxe
-	sed -i "s%3000%$SCHED_PORT%g" /tftpboot/boot.ipxe
-}
-
-run_service()
-{
-	(
-		cd $CCI_SRC/container/dnsmasq || return
-		./build
-		./start
-		boot_ipxe
-	)&
-	(
-		cd $CCI_SRC/container/qemu-efi || return
-		./build
-		./install
-	)&
-	(
-		cd $CCI_SRC/container/fluentd-base || return
-		./build
-		cd $CCI_SRC/container/sub-fluentd || return
-		./build
-		./start
-	)&
-}
-
-main()
-{
-	git_ci || return 1
-	install_env
-	run_service
-}
-
-main
-wait
