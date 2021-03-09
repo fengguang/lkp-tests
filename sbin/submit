@@ -28,7 +28,7 @@ options = OptionParser.new do |opts|
   opts.separator 'options:'
 
   opts.on("-s 'KEY: VALUE'", "--set 'KEY: VALUE'", 'add YAML hash to job') do |key_value|
-    k, v = key_value.sub(' ', '').split(':')
+    k, v = key_value.sub(' ', '').split(':', 2)
     opt_set_key_value[k] = v
   end
 
@@ -59,7 +59,7 @@ options = OptionParser.new do |opts|
 
   opts.on('-m', '--monitor', "monitor job status: use -m 'KEY: VALUE' to add rule") do
     opt_monitor = true
-    k, v = ARGV[0].sub(' ', '').split(':') if ARGV[0]
+    k, v = ARGV[0].sub(' ', '').split(':', 2) if ARGV[0]
     if (k && !k.empty?) && (v && !v.empty?)
       opt_monitor_query[k] = v
       ARGV.shift
@@ -78,7 +78,7 @@ options.parse!(ARGV)
 seen_job_yaml = false
 ARGV.delete_if do |arg|
   if arg.index '='
-    k, v = arg.sub(' ', '').sub(/=/, ':').split(':')
+    k, v = arg.sub(' ', '').split('=', 2)
     if seen_job_yaml
       opt_set_key_value[k] = v
     else
