@@ -19,6 +19,7 @@ opt_monitor = false
 opt_monitor_query = {}
 opt_my_queue = false
 actions = ['output', 'stop']
+result_roots = []
 
 options = OptionParser.new do |opts|
   opts.banner = 'Usage: submit [options] job1.yaml job2.yaml ...'
@@ -199,6 +200,7 @@ ARGV.each do |jobfile|
     messages = scheduler_client.submit_job(job_json)
     JSON.parse(messages).each do |msg|
       if msg['message'].empty?
+        result_roots << msg['result_root']
         job_ids << msg['job_id'].to_s
         puts("submit #{jobfile}, got job id=#{msg['job_id']}")
       else
@@ -212,6 +214,6 @@ end
 if opt_monitor
   job_hash_list[0].delete('define_files')
   opt_monitor_query.merge!({'job_id' => job_ids})
-  cmd = "#{LKP_SRC}/sbin/monitor -f '#{opt_monitor_query.to_json}' -j '#{job_hash_list[0].to_json}' -a #{actions.join(',')} -s 'job_state: extract_finished'"
+  cmd = "#{LKP_SRC}/sbin/monitor -f '#{opt_monitor_query.to_json}' -j '#{job_hash_list[0].to_json}' -a #{actions.join(',')} -r #{result_roots.join(',')} -s 'job_state: extract_finished'"
   exec cmd
 end

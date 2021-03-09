@@ -12,6 +12,7 @@ require 'yaml'
 opt_set_key_value = {}
 opt_action = {'output' => true}
 opt_job = {}
+opt_results = []
 opt_monitor_url = nil
 opt_timeout = 0
 opt_stop_query = {}
@@ -33,6 +34,12 @@ options = OptionParser.new do |opts|
     opt_action = {}
     actions.split(',').each do |action|
       opt_action[action] = true
+    end
+  end
+
+  opts.on('-r result_roots', '--results results', 'set monitor result_roots') do |result_roots|
+    result_roots.split(',').each do |res|
+      opt_results << res
     end
   end
   opts.separator '                                     action: output, output log'
@@ -79,6 +86,7 @@ monitor = Monitor.new
 monitor.monitor_url = opt_monitor_url if opt_monitor_url
 monitor.overrides = opt_set_key_value
 monitor.action = opt_action
+monitor.result_roots = opt_results
 monitor.job = opt_job
 monitor.stop_query = opt_stop_query
 

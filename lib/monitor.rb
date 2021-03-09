@@ -11,7 +11,7 @@ require 'eventmachine'
 require 'json'
 
 class Monitor
-  attr_accessor :monitor_url, :query, :overrides, :action, :job, :result, :stop_query
+  attr_accessor :monitor_url, :query, :overrides, :action, :job, :result, :result_roots, :stop_query
 
   def initialize(monitor_url = '', query = {}, action = {})
     @monitor_url = monitor_url
@@ -25,9 +25,9 @@ class Monitor
     @exit_status_code = 0
     @defaults = {}
     @result = []
+    @result_roots = []
     @stop_query = {}
     @reason = nil
-    @result_root = nil
   end
 
   def load_default
@@ -95,29 +95,13 @@ class Monitor
     exec cmd
   end
 
-  def set_result_root(data)
-    return unless @action['mirror_result']
-    return unless data['log']
-
-    data = JSON.parse(data['log'])
-    return unless data['result_root']
-
-    @result_root = data['result_root']
-  end
-
-  def lftp_mirror
-    @result_root.delete_prefix!('/srv')
-    srv_http_host = job['SRV_HTTP_HOST'] || 'api.compass-ci.openeuler.org'
-    srv_http_port = job['SRV_HTTP_PORT'] || '11300'
-    url = "http://#{srv_http_host}:#{srv_http_port}#{@result_root}"
-    system "lftp -c mirror #{url} >/dev/null 2>&1"
-  end
-
-  def mirror_result(data)
-    if @result_root
-      lftp_mirror
-    else
-      set_result_root(data)
+  def mirror_result
+    @result_roots.each do |res|
+      res.to_s.delete_prefix!('/srv')
+      srv_http_host = job['SRV_HTTP_HOST'] || 'api.compass-ci.openeuler.org'
+      srv_http_port = job['SRV_HTTP_PORT'] || '11300'
+      url = "http://#{srv_http_host}:#{srv_http_port}#{res}"
+      system "lftp -c mirror #{url} >/dev/null 2>&1"
     end
   end
 
@@ -163,7 +147,7 @@ class Monitor
 
         output(data)
         connect(data, ws)
-        mirror_result(data)
+        mirror_result
 
         stop(data, ws) if @action['stop']
       end
