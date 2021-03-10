@@ -203,6 +203,15 @@ check_ignore_case()
 	return 1
 }
 
+fixup_dma()
+{
+	# need to bind a device to dma_map_benchmark driver
+	# for PCI devices
+	echo dma_map_benchmark > /sys/bus/pci/devices/0000:00:01.0/driver_override || return
+	echo 0000:00:01.0 > /sys/bus/pci/drivers/pcieport/unbind || return
+	echo 0000:00:01.0 > /sys/bus/pci/drivers/dma_map_benchmark/bind || return
+}
+
 fixup_net()
 {
 	# udpgro tests need enable bpf firstly
@@ -581,6 +590,8 @@ run_tests()
 			fixup_breakpoints
 		elif [[ $subtest = "bpf" ]]; then
 			fixup_bpf || die "fixup_bpf failed"
+		elif [[ $subtest = "dma" ]]; then
+			fixup_dma || die "fixup_dma failed"
 		elif [[ $subtest = "efivarfs" ]]; then
 			fixup_efivarfs || continue
 		elif [[ $subtest = "exec" ]]; then
