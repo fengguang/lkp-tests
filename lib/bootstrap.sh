@@ -274,7 +274,7 @@ setup_hosts()
 	is_docker && return
 
 	suffix="sh.intel.com"
-	[ -n "${CCI_SRC}" ] && suffix="compass-ci.net"
+	[ -n "${lab}" ] && suffix="compass-ci.net"
 
 	# /etc/hosts may be shared when it's NFSROOT and there is no obvious
 	# way to detect if rootfs is already RAM based. So unconditionally
