@@ -89,9 +89,79 @@ prepare_lv()
 	create_lv
 }
 
+generate_ks()
+{
+	log_info "start generate $ks_file"
+
+	local nic=$(ip route get ${LKP_SERVER} | awk '{print $3; exit}')
+
+	cat > ${ks_file} <<-EOF
+	# Use network installation
+	url --url="http://${HTTP_SERVER_HOST}:${HTTP_SERVER_PORT}/${HTTP_ROOT_DIR}/${iso_os}/${iso_arch}/${iso_version}/"
+
+	# Network information
+	network --bootproto=dhcp --device=${nic} --ipv6=auto --activate
+	network  --hostname=localhost.localdomain
+
+	# Specifies a list of disks for the installation program to use. All other disks are ignored.
+	ignoredisk --only-use=${rootfs_disk#/dev/}
+
+	# if installation target is a logical volume, bootloader should be none.
+	bootloader --location=none
+	logvol / --vgname=${VG_NAME} --name=${LV_NAME} --useexisting
+
+	# Root password
+	rootpw --iscrypted ${ROOTFS_ROOT_PASSWD}
+
+	# Reboot after installation
+	reboot --eject
+
+	# Use text mode install
+	text
+
+	# Keyboard layouts
+	keyboard --vckeymap=us --xlayouts='us'
+
+	# System language
+	lang en_US.UTF-8
+
+	# Do not configure the X Window System
+	skipx
+
+	# System services
+	services --enabled="chronyd"
+
+	# System timezone
+	timezone Asia/Shanghai --isUtc
+
+	%packages
+	@^minimal-environment
+
+	%end
+
+	%anaconda
+	pwpolicy root --minlen=8 --minquality=1 --notstrict --nochanges --notempty
+	pwpolicy user --minlen=8 --minquality=1 --notstrict --nochanges --emptyok
+	pwpolicy luks --minlen=8 --minquality=1 --notstrict --nochanges --notempty
+	%end
+	EOF
+}
+
+upload_ks()
+{
+	log_info "start upload ks to rsync-server: ${RSYNC_SERVER_HOST}:${RSYNC_SERVER_PORT}"
+
+	rsync -vrtopg --port ${RSYNC_SERVER_PORT} ${ks_file} ${RSYNC_SERVER_HOST}::ks/ || die "upload ks to rsync-server failed, please check."
+}
+
 prepare_ks()
 {
-	:
+	log_info "start prepare kickstart file"
+
+	local ks_file=/tmp/${iso_os}_${iso_arch}_${iso_version}.ks
+
+	generate_ks
+	upload_ks
 }
 
 prepare_submit()
