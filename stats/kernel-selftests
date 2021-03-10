@@ -397,6 +397,14 @@ while (line = STDIN.gets)
 
   when /^# (.*) \.\.\. (ok|fail|skip)/
     subtest_stat('pstore', test_script, $1, $2, stats) if test == 'pstore'
+  when /^# average (map|unmap) latency\(us\):(.*) standard deviation:(.*)/
+    # average map latency(us):0.8 standard deviation:1.2
+    # average unmap latency(us):0.6 standard deviation:1.1
+    next unless test == 'dma'
+
+    subtest_case_name = "dma_map_benchmark.average_#{$1}_latency"
+    stats.add test + "." + subtest_case_name, $2.to_f
+    stats.add test + "." + subtest_case_name + "_stddev", $3.to_f
   when /^# selftests: mqueue: (.*)/
     test_script = $1
   when /^# (.*):.*(PASS|FAIL|SKIP)/

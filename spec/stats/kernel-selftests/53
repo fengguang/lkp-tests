@@ -1,0 +1,13 @@
+make[1]: Entering directory '/usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-f40ddce88593482919761f74910f42f4b84c004b/tools/testing/selftests/dma'
+gcc -I../../../../usr/include/    dma_map_benchmark.c  -o /usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-f40ddce88593482919761f74910f42f4b84c004b/tools/testing/selftests/dma/dma_map_benchmark
+make[1]: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-f40ddce88593482919761f74910f42f4b84c004b/tools/testing/selftests/dma'
+2021-03-09 07:27:33 make run_tests -C dma
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-f40ddce88593482919761f74910f42f4b84c004b/tools/testing/selftests/dma'
+TAP version 13
+1..1
+# selftests: dma: dma_map_benchmark
+# dma mapping benchmark: threads:1 seconds:20 node:-1 dir:BIDIRECTIONAL
+# average map latency(us):0.8 standard deviation:1.2
+# average unmap latency(us):0.6 standard deviation:1.1
+ok 1 selftests: dma: dma_map_benchmark
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-f40ddce88593482919761f74910f42f4b84c004b/tools/testing/selftests/dma'
