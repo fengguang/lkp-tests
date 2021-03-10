@@ -1,0 +1,52 @@
+suite: install-iso-pre
+
+install-iso-pre:
+  #################
+  # iso info
+  #################
+  iso_os:
+  iso_arch:
+  iso_version:
+
+  #################
+  # http server info, which stored the installation source
+  #################
+  HTTP_SERVER_HOST:
+  HTTP_SERVER_PORT:
+  HTTP_ROOT_DIR:
+
+  #################
+  # rsync-server info, used for upload ks
+  #################
+  RSYNC_SERVER_HOST:
+  RSYNC_SERVER_PORT:
+
+  #################
+  # tftp server info, used for kickstart auto install
+  #################
+  TFTP_SERVER_HOST:
+
+  #################
+  # nfs server info, used for store rootfs
+  #################
+  NFS_SERVER_HOST:
+  NFS_ROOT_DIR:
+
+  #################
+  # result rootfs suffix, format: $(date "+%Y%m%d%H%M%S")
+  #################
+  ROOTFS_SUFFIX:
+
+  #################
+  # name of volume group which stores the logical volume of rootfs
+  #################
+  VG_NAME:
+
+  #################
+  # lab_z9 git repo clone url, used for find host file when submit
+  #################
+  LAB_Z9_URL:
+
+secrets:
+  ROOTFS_ROOT_PASSWD:
+  MY_TOKEN:

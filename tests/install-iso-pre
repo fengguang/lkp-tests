@@ -1,0 +1,86 @@
+#!/bin/bash
+# SPDX-License-Identifier: MulanPSL-2.0+
+# Copyright (c) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+
+set -e
+
+. $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/log.sh
+
+check_params()
+{
+	log_info "start check params"
+
+	local required_vars=(
+		"iso_os"
+		"iso_arch"
+		"iso_version"
+		"ROOTFS_SUFFIX"
+		"VG_NAME"
+
+		"HTTP_SERVER_HOST"
+		"HTTP_SERVER_PORT"
+		"HTTP_ROOT_DIR"
+		"ROOTFS_ROOT_PASSWD"
+		"rootfs_disk"
+
+		"RSYNC_SERVER_HOST"
+		"RSYNC_SERVER_PORT"
+		"TFTP_SERVER_HOST"
+		"NFS_SERVER_HOST"
+		"NFS_ROOT_DIR"
+
+		"LAB_Z9_URL"
+		"MY_TOKEN"
+	)
+
+	for i in "${required_vars[@]}"
+	do
+		[ -n "$(eval echo \$$i)" ] || die "cannot get value of var: $i"
+	done
+}
+
+prepare_lv()
+{
+	:
+}
+
+prepare_ks()
+{
+	:
+}
+
+prepare_submit()
+{
+	:
+}
+
+submit_install_iso_yaml()
+{
+	:
+}
+
+submit_install_iso_firstboot_yaml()
+{
+	:
+}
+
+submit_install_iso_sync_rootfs_yaml()
+{
+	:
+}
+
+main()
+{
+	check_params
+
+	prepare_lv
+	prepare_ks
+	prepare_submit
+
+	submit_install_iso_yaml
+	submit_install_iso_firstboot_yaml
+	submit_install_iso_sync_rootfs_yaml
+}
+
+main
