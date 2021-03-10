@@ -185,9 +185,35 @@ prepare_submit()
 	EOF
 }
 
+prepare_install_iso_yaml()
+{
+	log_info "start prepare install-iso.yaml"
+
+	local tftp_root="tftp://${TFTP_SERVER_HOST}/EFI/BOOT/${iso_os}/${iso_arch}/${iso_version}"
+	local custom_ipxe
+
+	custom_ipxe="#!ipxe\\\\n"
+	custom_ipxe="${custom_ipxe}\\\\ndhcp"
+	custom_ipxe="${custom_ipxe}\\\\ninitrd ${tftp_root}/initrd.img"
+	custom_ipxe="${custom_ipxe}\\\\nkernel ${tftp_root}/vmlinux ro inst.geoloc=0 console=ttyS0 smmu.bypassdev=0x1000:0x17 smmu.bypassde1000:0x15 viff video=VGA-1:640x480-32@60me initrd=initrd.img ip=dhcp inst.ks=http://${HTTP_SERVER_HOST}:${HTTP_SERVER_PORT}/os/kickstart/ks/${iso_os}_${iso_arch}_${iso_version}.cfg"
+	custom_ipxe="${custom_ipxe}\\\\nboot\\\\n"
+
+	log_info "custom_ipxe: $custom_ipxe"
+	sed -i "/custom_ipxe:/ccustom_ipxe: \"${custom_ipxe}\"" ${install_iso_yaml}
+}
+
 submit_install_iso_yaml()
 {
-	:
+	log_info "start submit install-iso.yaml"
+
+	local install_iso_yaml="${LKP_SRC}/jobs/install-iso.yaml"
+	[ -f "${install_iso_yaml}" ] || die "cannot find ${install_iso_yaml}"
+
+	prepare_install_iso_yaml
+
+	${LKP_SRC}/sbin/submit \
+		${install_iso_yaml} \
+		testbox=$testbox || die "submit ${install_iso_yaml} failed"
 }
 
 submit_install_iso_firstboot_yaml()
