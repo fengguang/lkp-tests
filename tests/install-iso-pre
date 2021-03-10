@@ -236,7 +236,22 @@ submit_install_iso_firstboot_yaml()
 
 submit_install_iso_sync_rootfs_yaml()
 {
-	:
+	log_info "start submit install-iso-sync-rootfs.yaml"
+
+	local sync_rootfs_yaml="${LKP_SRC}/jobs/install-iso-sync-rootfs.yaml"
+	[ -f "${sync_rootfs_yaml}" ] || die "cannot find ${sync_rootfs_yaml}"
+
+	${LKP_SRC}/sbin/submit \
+		${sync_rootfs_yaml} \
+		suite=install-iso-sync-rootfs-${ROOTFS_SUFFIX} \
+		iso_os=${iso_os} \
+		iso_arch=${iso_arch} \
+		iso_version=${iso_version} \
+		NFS_SERVER_HOST=${NFS_SERVER_HOST} \
+		NFS_ROOT_DIR=${NFS_ROOT_DIR} \
+		ROOTFS_SUFFIX=${ROOTFS_SUFFIX} \
+		VG_NAME=${VG_NAME} \
+		testbox=$testbox || die "submit ${sync_rootfs_yaml} failed"
 }
 
 main()
