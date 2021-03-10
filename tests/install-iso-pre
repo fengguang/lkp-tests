@@ -166,7 +166,23 @@ prepare_ks()
 
 prepare_submit()
 {
-	:
+	${LKP_SRC}/sbin/install-dependencies.sh
+
+	export CCI_REPOS="/c"
+
+	mkdir -p $CCI_REPOS && cd $CCI_REPOS
+	git clone $LAB_Z9_URL || die "clone lab-z9 git repo failed: $LAB_Z9_URL"
+
+	local config_yaml="/etc/compass-ci/defaults/sparrow.yaml"
+	mkdir -p $(dirname $config_yaml)
+	cat >> $config_yaml <<-EOF
+	SCHED_HOST: ${SCHED_HOST}
+	SCHED_PORT: ${SCHED_PORT}
+	my_name: ${my_name}
+	my_email: ${my_email}
+	my_token: ${MY_TOKEN}
+	lab: z9
+	EOF
 }
 
 submit_install_iso_yaml()
