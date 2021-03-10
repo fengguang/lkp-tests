@@ -7,6 +7,20 @@ set -e
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/log.sh
 
+SKIP_SYNC_DIRS=(
+	"srv"
+	"opt"
+	"mnt"
+	"media"
+	"home"
+	"lost+found"
+	"dev"
+	"proc"
+	"run"
+	"sys"
+	"var/log"
+)
+
 check_params()
 {
 	log_info "start check params"
@@ -28,9 +42,46 @@ check_params()
 	done
 }
 
+prepare_exclude_file()
+{
+	local exclude_file=$1
+
+	rm -rf $exclude_file
+	for i in "${SKIP_SYNC_DIRS[@]}"
+	do
+		echo $i >> $exclude_file
+	done
+}
+
 sync_rootfs_to_nfs_server()
 {
-	:
+	# mount nfs rootfs
+	local nfs_rootfs_mount_point=/tmp/nfs_rootfs_${ROOTFS_SUFFIX}
+
+	mkdir -p ${nfs_rootfs_mount_point}
+	mount -t nfs ${NFS_SERVER_HOST}:${NFS_ROOT_DIR}/${os}/${os_arch}/${os_version}-iso-${ROOTFS_SUFFIX} ${nfs_rootfs_mount_point} || die "mount nfs rootfs failed"
+
+	# activate the lvm
+	vgchange -ay
+
+	# mount local logical volume
+	local lv_rootfs_mount_point=/tmp/lv_rootfs_${ROOTFS_SUFFIX}
+
+	mkdir -p ${lv_rootfs_mount_point}
+	mount /dev/mapper/${VG_NAME}-${iso_os}_${iso_arch}_${iso_version}_${ROOTFS_SUFFIX} ${lv_rootfs_mount_point} || die "mount lv rootfs failed"
+
+	# sync rootfs
+	local exclude_file=/tmp/exclude_file_${ROOTFS_SUFFIX}
+
+	prepare_exclude_file "$exclude_file"
+	rsync -az ${lv_rootfs_mount_point}/. ${nfs_rootfs_mount_point} --exclude-from=$exclude_file || die "copy out rootfs failed"
+	cd ${nfs_rootfs_mount_point} && mkdir -p "${SKIP_SYNC_DIRS[@]}"
+
+	# umount nfs rootfs
+	umount $nfs_rootfs_mount_point || log_warn "umount failed: nfs_rootfs_mount_point"
+
+	# umount local logical volume
+	umount $lv_rootfs_mount_point || log_warn "umount failed: $lv_rootfs_mount_point"
 }
 
 main()
