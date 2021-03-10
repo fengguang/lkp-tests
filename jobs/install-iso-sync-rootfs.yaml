@@ -1,0 +1,22 @@
+suite: install-iso-sync-rootfs
+category: benchmark
+install-iso-sync-rootfs:
+  #################
+  # nfs target path: ${NFS_SERVER_HOST}:${NFS_ROOT_DIR}/${iso_os}/${iso_arch}/${iso_version}
+  #################
+  iso_os:
+  iso_arch:
+  iso_version:
+  NFS_SERVER_HOST:
+  NFS_ROOT_DIR:
+
+  #################
+  # result rootfs suffix, format: $(date "+%Y%m%d%H%M%S")
+  #################
+  ROOTFS_SUFFIX:
+
+  #################
+  # name of volume group which stores the logical volume of rootfs
+  #################
+  VG_NAME:
+

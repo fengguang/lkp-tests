@@ -1,0 +1,46 @@
+#!/bin/bash
+# SPDX-License-Identifier: MulanPSL-2.0+
+# Copyright (c) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+
+set -e
+
+. $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/log.sh
+
+check_params()
+{
+	log_info "start check params"
+
+	local required_vars=(
+		"iso_os"
+		"iso_arch"
+		"iso_version"
+		"NFS_SERVER_HOST"
+		"NFS_ROOT_DIR"
+
+		"ROOTFS_SUFFIX"
+		"VG_NAME"
+	)
+
+	for i in "${required_vars[@]}"
+	do
+		[ -n "$(eval echo \$$i)" ] || die "cannot get value of var: $i"
+	done
+}
+
+sync_rootfs_to_nfs_server()
+{
+	:
+}
+
+main()
+{
+	check_params
+
+	sync_rootfs_to_nfs_server
+
+	lvchange --permission r /dev/mapper/${VG_NAME}-${iso_os}_${iso_arch}_${iso_version}_${ROOTFS_SUFFIX} ||
+		die "change logical volume permission to readonly failed:/dev/mapper/${VG_NAME}-${iso_os}_${iso_arch}_${iso_version}_${ROOTFS_SUFFIX}"
+}
+
+main
