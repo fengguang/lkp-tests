@@ -218,7 +218,20 @@ submit_install_iso_yaml()
 
 submit_install_iso_firstboot_yaml()
 {
-	:
+	log_info "start submit install-iso-firstboot.yaml"
+
+	local firstboot_yaml="${LKP_SRC}/jobs/install-iso-firstboot.yaml"
+	[ -f "${firstboot_yaml}" ] || die "cannot find ${firstboot_yaml}"
+
+	${LKP_SRC}/sbin/submit \
+		${firstboot_yaml} \
+		suite=install-iso-firstboot-${ROOTFS_SUFFIX} \
+		os=${iso_os} \
+		os_arch=${iso_arch} \
+		os_version=${iso_version} \
+		os_mount=local \
+		kernel_custom_params="src_lv_suffix=${ROOTFS_SUFFIX} boot_lv_suffix=${ROOTFS_SUFFIX}" \
+		testbox=$testbox || die "submit ${firstboot_yaml} failed"
 }
 
 submit_install_iso_sync_rootfs_yaml()
