@@ -40,9 +40,53 @@ check_params()
 	done
 }
 
+create_vg()
+{
+	log_info "start create vg:$VG_NAME"
+
+	local disk
+
+	for disk in "${rootfs_disk[@]}"
+	do
+		log_info "start handle disk: $disk"
+		pvdisplay ${disk} > /dev/null || pvcreate ${disk} || die "create pv failed: $disk"
+
+		if vgdisplay ${VG_NAME} > /dev/null; then
+			vgextend ${VG_NAME} ${disk}
+		else
+			vgcreate ${VG_NAME} ${disk}
+		fi
+	done
+
+}
+
+create_lv()
+{
+	log_info "start create lv:$LV_NAME"
+
+	lvcreate -y -L 10G -n ${LV_NAME} ${VG_NAME} || die "create logical volume failed."
+}
+
 prepare_lv()
 {
-	:
+	log_info "start prepare logical volume"
+
+	# activate lvm
+	vgchange -ay
+
+	# VG_NAME defines in job.yaml
+	export VG_NAME
+	export LV_NAME="${iso_os}_${iso_arch}_${iso_version}_${ROOTFS_SUFFIX}"
+
+	# lv existed
+	lvdisplay /dev/mapper/${VG_NAME}-${LV_NAME} > /dev/null && {
+		log_info "iso already install to this testbox, so rootfs maybe already generated ok. please check it."
+		exit 0
+	}
+
+	# lv not existed
+	vgdisplay ${VG_NAME} > /dev/null || create_vg
+	create_lv
 }
 
 prepare_ks()
