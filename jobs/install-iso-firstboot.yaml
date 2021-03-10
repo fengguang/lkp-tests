@@ -1,0 +1,10 @@
+suite: install-iso-firstboot
+
+sleep: 1
+
+# os_mount must be equal to 'local'
+os_mount: local
+
+# kernel_custom_params must have 'boot_lv_suffix' and 'src_lv_suffix',
+# and they must be the same. so can boot from the specify logical volume
+kernel_custom_params:
