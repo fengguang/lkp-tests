@@ -112,7 +112,7 @@ download_initrd()
 
 	use_local_modules_initrds
 
-	for _initrd in $(echo $initrd $tbox_initrd $job_initrd $lkp_initrd $bm_initrd $modules_initrd $testing_nvdimm_modules_initrd $linux_headers_initrd $syzkaller_initrd $linux_selftests_initrd $linux_perf_initrd $ucode_initrd | tr , ' ')
+	for _initrd in $(echo $initrd $tbox_initrd $job_initrd $lkp_initrd $bm_initrd $modules_initrd $testing_nvdimm_modules_initrd $linux_headers_initrd $syzkaller_initrd $linux_selftests_initrd $linux_perf_initrd $kselftests_initrd $ucode_initrd | tr , ' ')
 	do
 		_initrd=$(echo $_initrd | sed 's/^\///')
 		local file=$CACHE_DIR/$_initrd
