@@ -56,6 +56,11 @@ build_env()
 	# src/common.inc:366: *** Please install libndctl-dev/libndctl-devel >= 63.  Stop.
 	is_aliyunos && log_cmd export PKG_CONFIG_PATH="$PKG_CONFIG_PATH":/usr/local/lib/pkgconfig/
 
+	# force to set OS_DIMM to avoid the below errors:
+	# /usr/bin/ld: ../../../src/../src/debug/libpmemcommon.a(libpmemcommon_all.o): in function `pmem2_badblock_context_new':
+	# /lkp/benchmarks/nvml/src/common/../../src/../src/libpmem2/badblocks_ndctl.c:281: undefined reference to `pmem2_region_namespace'
+	log_cmd export OS_DIMM=ndctl
+
 	# All C++ container tests need customized version of libc --libc++ to compile. So specify the path of libc++ to make.
 	log_cmd make EXTRA_CFLAGS="-DPAGE_SIZE=4096 -DUSE_VALGRIND" USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1/ LIBCPP_LIBDIR=/usr/local/libcxx/lib || return
 	log_cmd make EXTRA_CFLAGS="-DPAGE_SIZE=4096 -DUSE_VALGRIND" USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1/ LIBCPP_LIBDIR=/usr/local/libcxx/lib test || return
