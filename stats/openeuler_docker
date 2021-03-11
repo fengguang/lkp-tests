@@ -6,11 +6,17 @@ sys_set = Set[]
 
 while (line = STDIN.gets)
   case line.chomp!
-  # Error: Unable to find a match: docker-registry
+  # Error: Unable to find a match: docker-registry mock xx
   when /Error: Unable to find a match: (.+)/
     $1.split.each do |repo|
        repo_set << repo
     end
+
+  # Error: Unknown repo: 'powertools'
+  when /Error: Unknown repo: (.+)/
+    repo = $1.delete!("'")
+    puts "unknown-repo.#{repo}: 1"
+    puts "unknown-repo.#{repo}.message: #{line}"
 
   # /bin/sh: passwd: command not found
   when /\/bin\/sh: (.+): command not found/
