@@ -569,6 +569,7 @@ run_tests()
 	skip_filter="powerpc zram media_tests watchdog"
 
 	local selftest_mfs=$@
+	local run_cached_kselftests="/kselftests/run_kselftest.sh"
 
 	# kselftest introduced runner.sh since kernel commit 42d46e57ec97 "selftests: Extract single-test shell logic from lib.mk"
 	[[ -e kselftest/runner.sh ]] && log_cmd sed -i 's/default_timeout=45/default_timeout=300/' kselftest/runner.sh
@@ -632,7 +633,12 @@ run_tests()
 			fixup_ptp || continue
 		fi
 
-		log_cmd make run_tests -C $subtest  2>&1
+		# run_cached_kselftests is from kselftests.cgz which may not exist in local
+		if $run_cached_kselftests -l 2>/dev/null | grep -q "^$subtest:"; then
+			log_cmd $run_cached_kselftests -c $subtest 2>&1
+		else
+			log_cmd make run_tests -C $subtest 2>&1
+		fi
 
 		if [[ "$subtest" = "firmware" ]]; then
 			cleanup_for_firmware
