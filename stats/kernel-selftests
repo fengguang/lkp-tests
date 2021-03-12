@@ -340,8 +340,9 @@ while (line = STDIN.gets)
   when /# selftests: timens: (.*)/
     test_script = $1
   when /# (ok|fail|skip) \d+ (.*)/
+    next unless %w(timens net).include? test
     # futex_stat(line, tests_stats['futex'], stats) if test == 'futex'
-    subtest_stat('timens', test_script, $2, $1, stats) if test == 'timens'
+    subtest_stat(test, test_script, $2, $1, stats)
   when /^# selftests: timers: (.*)/
     test_script = $1
   when /^# (.+\w)(\.\.\.)?\s+\[(OK|FAIL|SKIP|UNSUPPORTED)\]/,

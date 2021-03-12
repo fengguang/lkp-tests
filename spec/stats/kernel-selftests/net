@@ -26,3 +26,80 @@ not ok 36 selftests: net: altnames.sh # exit=1
 make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd/tools/testing/selftests/net'
 
 LKP SKIP net.l2tp.sh
+
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd/tools/testing/selftests/net'
+# selftests: net: reuseaddr_ports_exhausted.sh
+# TAP version 13
+# 1..3
+# # Starting 3 tests from 1 test cases.
+# #  RUN           global.reuseaddr_ports_exhausted_unreusable ...
+# #            OK  global.reuseaddr_ports_exhausted_unreusable
+# ok 1 global.reuseaddr_ports_exhausted_unreusable
+# #  RUN           global.reuseaddr_ports_exhausted_reusable_same_euid ...
+# #            OK  global.reuseaddr_ports_exhausted_reusable_same_euid
+# ok 2 global.reuseaddr_ports_exhausted_reusable_same_euid
+# #  RUN           global.reuseaddr_ports_exhausted_reusable_different_euid ...
+# #            OK  global.reuseaddr_ports_exhausted_reusable_different_euid
+# ok 3 global.reuseaddr_ports_exhausted_reusable_different_euid
+# # PASSED: 3 / 3 tests passed.
+# # Totals: pass:3 fail:0 xfail:0 xpass:0 skip:0 error:0
+# tests done
+ok 40 selftests: net: reuseaddr_ports_exhausted.sh
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd/tools/testing/selftests/net'
+
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-f40ddce88593482919761f74910f42f4b84c004b/tools/testing/selftests/net'
+# selftests: net: tls
+# TAP version 13
+# 1..183
+# # Starting 183 tests from 6 test cases.
+# #  RUN           global.non_established ...
+# #            OK  global.non_established
+# ok 1 global.non_established
+# #  RUN           global.keysizes ...
+# #            OK  global.keysizes
+# ok 2 global.keysizes
+# #  RUN           tls_basic.base_base ...
+# #            OK  tls_basic.base_base
+# ok 3 tls_basic.base_base
+# #  RUN           tls.12_gcm.sendfile ...
+# #            OK  tls.12_gcm.sendfile
+# ok 4 tls.12_gcm.sendfile
+# #  RUN           tls.12_gcm.send_then_sendfile ...
+# #            OK  tls.12_gcm.send_then_sendfile
+# ok 5 tls.12_gcm.send_then_sendfile
+# #  RUN           tls.12_gcm.multi_chunk_sendfile ...
+# # multi_chunk_sendfile: Test terminated by timeout
+# #          FAIL  tls.12_gcm.multi_chunk_sendfile
+# not ok 6 tls.12_gcm.multi_chunk_sendfile
+# #  RUN           tls.12_gcm.recv_max ...
+# #            OK  tls.12_gcm.recv_max
+# ok 7 tls.12_gcm.recv_max
+# #  RUN           tls.12_gcm.recv_small ...
+# #            OK  tls.12_gcm.recv_small
+# ok 8 tls.12_gcm.recv_small
+# #  RUN           tls.12_gcm.msg_more ...
+# #            OK  tls.12_gcm.msg_more
+# ok 9 tls.12_gcm.msg_more
+# #  RUN           tls.12_gcm.msg_more_unsent ...
+# #            OK  tls.12_gcm.msg_more_unsent
+# ok 10 tls.12_gcm.msg_more_unsent
+# #  RUN           tls.12_gcm.sendmsg_single ...
+# #            OK  tls.12_gcm.sendmsg_single
+# ok 11 tls.12_gcm.sendmsg_single
+# #  RUN           tls.12_gcm.sendmsg_fragmented ...
+# #            OK  tls.12_gcm.sendmsg_fragmented
+# ok 12 tls.12_gcm.sendmsg_fragmented
+# #  RUN           tls.12_gcm.sendmsg_large ...
+# #            OK  tls.12_gcm.sendmsg_large
+# ok 13 tls.12_gcm.sendmsg_large
+# #  RUN           tls.12_gcm.sendmsg_multiple ...
+# #            OK  tls.12_gcm.sendmsg_multiple
+# ok 14 tls.12_gcm.sendmsg_multiple
+# #  RUN           tls.12_gcm.sendmsg_multiple_stress ...
+# #            OK  tls.12_gcm.sendmsg_multiple_stress
+# ok 15 tls.12_gcm.sendmsg_multiple_stress
+# # FAILED: 177 / 183 tests passed.
+# # Totals: pass:177 fail:6 xfail:0 xpass:0 skip:0 error:0
+not ok 6 selftests: net: tls # exit=1
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-f40ddce88593482919761f74910f42f4b8
+4c004b/tools/testing/selftests/net'
