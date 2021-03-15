@@ -13,16 +13,6 @@ support_repo_epel()
 	fi
 }
 
-update_yum_into_dnf()
-{
-	if ! rpm -q dnf >/dev/null; then
-		yum install -y -q dnf
-		ln -sf /usr/bin/dnf /usr/bin/yum
-	else
-		dnf makecache timer >/dev/null
-	fi
-}
-
 distro_install_depends()
 {
 	local script
@@ -30,7 +20,6 @@ distro_install_depends()
 	local scripts=$(find $LKP_SRC/distro/depends/ -name "$bm" -o -name "${bm}.[0-9]")
 
 	[ ${DISTRO^^} == "CENTOS" ] && support_repo_epel
-	[ ${DISTRO^^} == "CENTOS" ] && update_yum_into_dnf
 
 	for script in $scripts
 	do
@@ -71,10 +60,10 @@ pack_benchmark()
 yum_download()
 {
 	[ ${DISTRO^^} == "CENTOS" ] && support_repo_epel
-	[ ${DISTRO^^} == "CENTOS" ] && update_yum_into_dnf
 
-	echo "yum install -y -q --downloadonly $*"
-	yum install -y -q --downloadonly "$@"
+	echo "yum install -y --downloadonly $@ | grep -e \"No\ package .*\ available\""
+	yum install -y --downloadonly "$@" | grep -e "No\ package .*\ available" && exit 1
+	return 0
 }
 
 yum_pack()
