@@ -6,6 +6,7 @@
 # - pkg_ver
 # - config
 # upstream_url
+# upstream_dir
 
 # We'll use the below global env vars, but not treat them as parameters to avoid
 # duplicates in result path like /openeuler-20.03-aarch64/openeuler-aarch64-cifs-2003/
@@ -123,9 +124,9 @@ replace_source()
 	do
 		echo "$url" | egrep 'git\+|\.git$' && {
 			[ -n "$repo_dir" ] && {
-				url="${repo_dir}git://${LKP_SERVER}/${upstream_repo}#commit=${upstream_commit}"
+				url="${repo_dir}git://${LKP_SERVER}/${upstream_dir}/${upstream_repo}#commit=${upstream_commit}"
 				[ -n "$git_tag" ] && {
-					url="${repo_dir}git://${LKP_SERVER}/${upstream_repo}#tag=${git_tag}"
+					url="${repo_dir}git://${LKP_SERVER}/${upstream_dir}/${upstream_repo}#tag=${git_tag}"
 				}
 			}
 		}
