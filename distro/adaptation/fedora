@@ -1,12 +1,15 @@
 apache2: httpd
 apt-file:
 autotools-dev: autoconf
+bind9: bind
 binutils-dev: binutils-devel
 btrfs-tools: btrfs-progs
 build-essential: make automake gcc gcc-c++ kernel-devel rpm-build
 cgroup-bin: libcgroup
+cron: cronie
 dbench=4.0-2: dbench
 dpkg-dev: dpkg-devel
+exfat-fuse: exfat-utils
 freeglut3: freeglut
 fsmark: fs_mark
 gcc-4.9: gcc
@@ -53,6 +56,7 @@ libfabric-dev: libfabric-devel
 libfdt-dev: libfdt-devel
 libfuse-dev: fuse-devel
 libgbm-dev: mesa-libgbm-devel
+libgmp-dev: gmp-devel
 libgl1-mesa-dev: mesa-libGL-devel
 libgles2-mesa: mesa-libGLES
 libglib2.0-0: glib
@@ -74,9 +78,11 @@ libnl-3-dev: libnl3-devel
 libnl-genl-3-200: libnl3
 libnl-genl-3-dev: libnl3-devel
 libnl-route-3-dev: libnl3-devel
+libntfs: ntfs-3g
 libnuma1: numactl
 libnuma-dev: numactl-devel
 liboop-dev:
+libopencryptoki0: opencryptoki-libs
 libpcap0.8-dev: libpcap-devel
 libpcap0.8: libpcap
 libpcap-dev: libpcap-devel
@@ -102,6 +108,7 @@ libuuid1: libuuid
 libuv1-dev: libuv-devel
 libx11-xcb-dev: libX11-devel
 libxml2-dev: libxml2-devel
+linux-base:
 linux-libc-dev:i386: kernel-headers
 linux-libc-dev: kernel-headers
 linux-perf: perf
@@ -115,6 +122,7 @@ netpipe-pvm: NetPIPE
 netpipe-tcp: NetPIPE
 nfs-common: nfs-utils
 nfs-kernel-server: nfs-utils
+openbsd-inetd: xinetd
 perl-base: perl
 perl-modules-5: perl
 pkg-config: pkgconfig
@@ -122,12 +130,16 @@ plzip:
 postmark:
 python-minimal: python2
 python-pkg-resources: python-setuptools
+rstatd: rusers-server
+rusersd: rusers-server
 rt-tests: numactl-devel
 ruby-dev: ruby-devel
 sg3-utils: sg3_utils
 stress-ng: stress-ng
 tshark: wireshark
 uuid-dev: libuuid-devel
+update-inetd:
+uuid-runtime: util-linux
 xfslibs-dev: xfsprogs-devel
 xinit: xorg-x11-xinit
 xorg:
@@ -160,6 +172,7 @@ libbabeltrace-dev: libbabeltrace-devel
 libgtk2.0-dev: gtk2-devel
 libperl-dev: perl-devel
 libslang2-dev: slang-devel
+libmariadbclient18: mariadb-connector-c
 python-dev: python3-devel
 systemtap-sdt-dev: systemtap-sdt-devel
 libpython2.7: python27
