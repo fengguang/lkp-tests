@@ -2,60 +2,67 @@
 # - monitor_repo
 # - job_yaml
 # - job_testbox
+# lab
+# my_name
+# my_email
+# my_token
 
 . $LKP_SRC/lib/log.sh
 
-set_scheduler_config()
+set_submit_config()
 {
-	mkdir -p /etc/compass-ci/defaults
-	cat > /etc/compass-ci/defaults/$lab.yaml <<-EOF
+	mkdir -p ~/.config/compass-ci/defaults/
+	cat > ~/.config/compass-ci/defaults/"$lab".yaml <<-EOF
 		SCHED_HOST: $SCHED_HOST
 		SCHED_PORT: $SCHED_PORT
 		lab: $lab
+	EOF
+
+	cat > ~/.config/compass-ci/defaults/account.yaml <<-EOF
+		my_name: $my_name
 		my_email: $my_email
+	EOF
+
+	my_token=${my_token:-$secrets_my_token}
+	mkdir -p ~/.config/compass-ci/include/lab/
+	cat > ~/.config/compass-ci/include/lab/"$lab".yaml <<-EOF
+		my_token: $my_token
 	EOF
 }
 
-install_gem_pkgs()
+install_lkp()
 {
-	gem sources -r http://rubygems.org -a https://gems.ruby-china.com/
-	gem install git activesupport rest-client faye-websocket
-}
-
-build_my_info()
-{
-	git clone git://$GIT_SERVER/gitee.com/wu_fengguang/compass-ci.git "$CCI_SRC"
-	ruby "$CCI_SRC"/sbin/build-my-info.rb -e "$my_email" -n "$my_name" -l "$lab"
-
 	git clone git://$GIT_SERVER/gitee.com/wu_fengguang/lkp-tests.git "$LKP_SRC"
+	cd "$LKP_SRC" && make install
 }
 
 download_monitor_repo()
 {
-	if [ -n "$monitor_repo" ]; then
-		git clone git://"$LKP_SERVER"/"$monitor_repo"
-	else
-		log_error "monitor_repo is not specified" && exit 1
-	fi
-
-	test_code=${monitor_repo##*/}
-	cp -r "$test_code"/* $LKP_SRC/
+	git clone git://"$GIT_SERVER"/"$monitor_repo" "$repo_path"
+	cp -r "$repo_path"/* "$LKP_SRC"/
 }
 
 submit_job()
 {
-	yaml=${job_yaml##*/}
-	"$LKP_SRC"/sbin/submit -a "$yaml" testbox="$job_testbox"
+	if [ -f "$LKP_SRC"/"$job_yaml" ]; then
+		job_yaml="$LKP_SRC"/"$job_yaml"
+	else
+		job_yaml=${job_yaml##*/}
+	fi
+
+	"$LKP_SRC"/sbin/submit -a "$job_yaml" testbox="$job_testbox"
 }
 
 main()
 {
-	local CCI_SRC=/c/compass-ci
+	[ -z "$monitor_repo" ] && log_error "monitor_repo is not specified" && exit 1
+
+	local repo=${monitor_repo##*/}
+	local repo_path=/c/"$repo"
 	local LKP_SRC=/c/lkp-tests
 
-	install_gem_pkgs
-	set_scheduler_config
-	build_my_info
+	set_submit_config
+	install_lkp
 	download_monitor_repo
 	submit_job
 }
