@@ -14,7 +14,9 @@ nr_task: 8
 fio-setup-basic:
   rw: write
   bs: 4k
-  ioengine: sync
+  ioengine:
+  - sync
+  - io_uring
   test_size: 256g
 
 fio:
@@ -25,7 +27,9 @@ nr_task: 4
 fio-setup-basic:
   rw: randwrite
   bs: 4M
-  ioengine: sync
+  ioengine:
+  - sync
+  - io_uring
   test_size: 256g
 
 ---
@@ -36,7 +40,9 @@ nr_task: 32
 fio-setup-basic:
   rw: randwrite
   bs: 4k
-  ioengine: sync
+  ioengine:
+  - sync
+  - io_uring
   test_size: 256g
 
 ---
@@ -47,7 +53,9 @@ nr_task: 8
 fio-setup-basic:
   rw: randwrite
   bs: 4k
-  ioengine: sync
+  ioengine:
+  - sync
+  - io_uring
   test_size: 256g
 
 ---
@@ -58,7 +66,9 @@ nr_task: 64
 fio-setup-basic:
   rw: randwrite
   bs: 4k
-  ioengine: sync
+  ioengine:
+  - sync
+  - io_uring
   test_size: 256g
 
 ---
@@ -81,5 +91,7 @@ fio-setup-basic:
   rw: write
   direct: direct
   bs: 4k
-  ioengine: sync
+  ioengine:
+  - sync
+  - io_uring
   test_size: 256g

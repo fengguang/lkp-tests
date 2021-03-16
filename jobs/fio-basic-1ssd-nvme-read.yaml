@@ -15,14 +15,15 @@ fs:
 
 fio-setup-basic:
   rw:
-    - read
-    - randread
+  - read
+  - randread
   bs:
-    - 4k
-    - 2M
+  - 4k
+  - 2M
   ioengine:
-          - sync
-          - libaio
+  - sync
+  - libaio
+  - io_uring
   test_size: 256g
 
 fio:
