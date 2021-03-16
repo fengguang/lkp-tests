@@ -28,6 +28,7 @@ read_kernel_cmdline_vars_from_append()
 		[ "$i" != "${i#syzkaller_initrd=}" ]	&& export "$i"
 		[ "$i" != "${i#linux_selftests_initrd=}" ]	&& export "$i"
 		[ "$i" != "${i#linux_perf_initrd=}" ]	&& export "$i"
+		[ "$i" != "${i#kselftests_initrd=}" ]	&& export "$i"
 		[ "$i" != "${i#ucode_initrd=}" ]   && export "$i"
 	done
 }
