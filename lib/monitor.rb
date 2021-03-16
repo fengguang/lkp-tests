@@ -34,7 +34,7 @@ class Monitor
     return unless @monitor_url == ''
 
     if host = @job['SCHED_HOST']
-      return @monitor_url = "ws://#{host}:11310/filter"
+      return @monitor_url = "ws://#{host}:20001/filter"
     end
 
     Dir.glob(['/etc/compass-ci/monitor/*.yaml',
@@ -49,7 +49,7 @@ class Monitor
       revise_hash(@defaults, defaults, true)
     end
 
-    @monitor_url = @defaults['monitor_url'] || 'ws://localhost:11310/filter'
+    @monitor_url = @defaults['monitor_url'] || 'ws://localhost:20001/filter'
   end
 
   def merge_overrides

@@ -26,7 +26,7 @@ options = OptionParser.new do |opts|
   opts.separator 'options:'
 
   opts.on('-u URL', '--url URL',
-          'set Message Server API address, default is ws://localhost:11310/filter') do |monitor_url|
+          'set Message Server API address, default is ws://localhost:20001/filter') do |monitor_url|
     opt_monitor_url = monitor_url
   end
 
