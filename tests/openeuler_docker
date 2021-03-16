@@ -1,0 +1,151 @@
+#!/bin/sh
+# - dockerfile_url
+
+# exit 1 if openEuler failed
+# exit 0 if
+# - no centos support
+# - centos failed
+
+. $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/log.sh
+
+[ -n "$dockerfile_url" ] || die "dockerfile_url is empty"
+
+declare -i nr_openeuler_fail=0
+declare -i nr_openeuler_success=0
+declare -i is_openeuler_build_fail=0
+declare -i dockerfile_count=0
+
+fit_repo()
+{
+	yum reinstall -y git
+	git clone "$dockerfile_url" "$BENCHMARK_ROOT/src/"
+	dockerfile_path="$(find "$BENCHMARK_ROOT/src/" -type f -name "*Dockerfile*" | xargs grep -HE '^FROM centos:(centos|)[78]')"
+	dockerfile_count=$(( $(echo $dockerfile_path | awk '{print NF}') / 2 ))
+	[ -n "$dockerfile_path" ] || {
+		echo "current-repo-not-support-centos: 1"
+		exit 0
+	}
+}
+
+openeuler_ready()
+{
+	docker load < $BENCHMARK_ROOT/openeuler_docker/openeuler-20.03-lts-v1.tar
+}
+
+centos_docker()
+{
+	is_openeuler_build_fail=0
+	index=1
+	for file in $dockerfile_path
+	do
+		[[ $file =~ ^centos ]] && continue
+		file=$(echo "$file" | awk -F: '{print $1}')
+		dockerfile_name="${file##*/}"
+		cd "${file%/*}" || continue
+		image=$(echo "$file" | awk -F '/' '{print $5}' | tr 'A-Z' 'a-z')
+		[ -n "$image" ] && image=${image}_$index
+		if [ -f "build.sh" ] && [ -x "build.sh" ]; then
+			./build.sh > /dev/null 2> /dev/null
+		else
+			docker_build > /dev/null 2> /dev/null
+		fi
+
+		[ $? == 0 ] && {
+			handle_dockerfile
+		}
+
+		let index++
+	done
+}
+
+handle_FROM()
+{
+	sed -i "s/^FROM .*/FROM openeuler-20.03-lts:v1/g" "$dockerfile_name"
+}
+
+handle_epel()
+{
+	grep -qw "epel-release" "$dockerfile_name" && {
+		sed -i "s/epel-release/bash/g" "$dockerfile_name"
+	}
+}
+
+handle_epelrpm()
+{
+	grep -qw "https://.*epel-release.*rpm" "$dockerfile_name" && {
+		sed -i "s|https://.*epel-release.*rpm|bash|g" "$dockerfile_name"
+	}
+}
+
+add_base_commands()
+{
+	# grep -qw "groupadd*" "$file" && {
+	# fix missing useradd, groupadd, chpasswd, etc. commands
+	sed -i '/FROM /a\RUN yum -y install shadow tar' "$dockerfile_name"
+}
+
+handle_epel_repo()
+{
+	sed -i '/.* wget .*(epel|CentOS-Base)\.repo/ s|^|#|g' "$dockerfile_name"
+}
+
+handle_dockerfile()
+{
+	is_openeuler_build_fail=1
+	handle_FROM
+	handle_epel
+	add_base_commands
+	if docker_build "-openeuler"; then
+		docker_run "-openeuler"
+		let nr_openeuler_success++
+	else
+		let nr_openeuler_fail++
+	fi
+}
+
+docker_build()
+{
+	docker build -f "$dockerfile_name" -t "${image}$1" .
+	[ $? != 0 ] && {
+		[ "$is_openeuler_build_fail" == "1" ] && echo "${image}$1.build.fail: 1"
+		return 1
+	}
+	[ "$is_openeuler_build_fail" == "1" ] && echo "${image}$1.build.success: 1"
+	is_openeuler_build_fail=0
+}
+
+docker_run()
+{
+	docker run -d --name "${image}" "${image}$1"
+	docker_stats=$(docker inspect -f '{{.State.Running}}' ${image})
+	[ $docker_stats == false ] && {
+		echo "${image}.run.fail: 1"
+		return 1
+	}
+
+	echo "${image}.run.success: 1"
+}
+
+handle_build_result()
+{
+	if [ "$nr_openeuler_fail" != 0 ]; then
+		echo "openeuler build failed times: $nr_openeuler_fail"
+		echo "openeuler_valid_url: $dockerfile_url"
+		exit 1
+	# centos all success, openeuler all success
+	elif [ "$nr_openeuler_success" == "$dockerfile_count" ]; then
+		echo "openeuler_valid_url: $dockerfile_url"
+		exit 0
+	fi
+}
+
+docker_test()
+{
+	fit_repo
+	openeuler_ready
+	centos_docker
+	handle_build_result
+}
+
+docker_test
