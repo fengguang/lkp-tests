@@ -18,6 +18,11 @@ while (line = STDIN.gets)
     puts "unknown-repo.#{repo}: 1"
     puts "unknown-repo.#{repo}.message: #{line}"
 
+  # Error: Module or Group 'convert' does not exist.
+  when /Error: Module or Group ('[^\s]+')/
+    repo = $1.delete!("'")
+    puts "error.not-exist-module-or-group.#{repo}: 1"
+    puts "error.not-exist-module-or-group.#{repo}.message: #{line}"
   # /bin/sh: passwd: command not found
   when /\/bin\/sh: (.+): command not found/
     puts "sh.command-not-found.#{$1}: 1"
