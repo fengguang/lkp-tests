@@ -1,12 +1,16 @@
 #!/bin/bash
-# - rpm_repo
+# - upstream_repo
+# - compat_os
 
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/upload.sh
 
-[ -n "$rpm_repo" ] || die "rpm_repo is empty"
-package_name=${rpm_repo##*/}
-sync_dest="/initrd/rpmbuild-pkg/${os}/${os_arch}/${os_version}/${package_name}"
+: "${compat_os:=budding-openeuler}"
+
+[ -n "$upstream_repo" ] || die "upstream_repo is empty"
+package_name=${upstream_repo##*/}
+rpm_dest="/initrd/rpmbuild-pkg/${os}-${os_version}/${compat_os}/${os_arch}/Packages"
+src_rpm_dest="/initrd/rpmbuild-pkg/${os}-${os_version}/${compat_os}/source/Packages"
 
 init_workspace()
 {
@@ -14,21 +18,16 @@ init_workspace()
 	rpmdev-setuptree
 }
 
-get_pkgfile()
+download_upstream_repo()
 {
-	curl -sS -H 'Content-Type: Application/json' -XPOST "$GIT_SERVER"':8100/git_command' \
-	-d '{"git_repo": "'${rpm_repo}'", "git_command": ["git-show", "HEAD:'$1'"]}' -o "${2}"
-}
-
-download_rpm_repo()
-{
-	local filelist=$(curl -sS -H 'Content-Type: Application/json' -XPOST "$GIT_SERVER"':8100/git_command' \
-		-d '{"git_repo": "'${rpm_repo}'", "git_command": ["git-ls-files", "."]}')
-	for pkgfile in "${filelist[@]}"
+	git clone "git://$GIT_SERVER/openeuler/${upstream_repo}" || die "clone git repo ${package_name} failed: git://$GIT_SERVER/openeuler/${upstream_repo}"
+	cd $package_name || exit
+	filelist=$(git ls-files)
+	for pkgfile in ${filelist[@]}
 	do
 		local dir="SOURCES"
 		echo $pkgfile | egrep "\.spec$" && dir="SPECS"
-		get_pkgfile "$pkgfile" "${HOME}/rpmbuild/${dir}/$pkgfile"
+		mv "$pkgfile" "${HOME}/rpmbuild/${dir}/"
 	done
 }
 
@@ -50,19 +49,29 @@ build_rpm()
 show_rpm_files()
 {
 	find ${HOME}/rpmbuild/RPMS -type f -name "*.rpm"
+}
+
+show_src_rpm_files()
+{
 	find ${HOME}/rpmbuild/SRPMS -type f -name "*.rpm"
 }
 
 upload_rpm_pkg()
 {
-	local file
-	for file in $(show_rpm_files)
+	local rpm_file
+	for rpm_file in $(show_rpm_files)
 	do
-		upload_one_curl ${file} ${sync_dest}
+		upload_one_curl ${rpm_file} ${rpm_dest}
+	done
+
+	local src_rpm_file
+	for src_rpm_file in $(show_src_rpm_files)
+	do
+		upload_one_curl ${src_rpm_file} ${src_rpm_dest}
 	done
 }
 
 init_workspace
-download_rpm_repo
+download_upstream_repo
 build_rpm
 upload_rpm_pkg
