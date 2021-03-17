@@ -651,6 +651,11 @@ run_tests()
 				echo "source $LKP_SRC/lib/tests/kernel-selftests-ext.sh"
 				source $LKP_SRC/lib/tests/kernel-selftests-ext.sh
 			}
+
+			# not ok 1 selftests: firmware: fw_run_tests.sh # TIMEOUT 45 seconds
+			[[ ! -f /kselftests/$subtest/settings ]] &&
+			[[ -f $subtest/settings ]] &&
+			log_cmd cp $subtest/settings /kselftests/$subtest/settings
 		else
 			found_subtest_in_cache=
 			check_makefile $subtest || log_cmd make TARGETS=$subtest 2>&1
