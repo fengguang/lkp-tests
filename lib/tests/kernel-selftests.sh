@@ -627,7 +627,6 @@ run_tests()
 
 	local selftest_mfs=$@
 
-	local found_subtest_in_cache
 	[[ $run_cached_kselftests ]] ||
 	local run_cached_kselftests="/kselftests/run_kselftest.sh"
 
@@ -645,14 +644,19 @@ run_tests()
 		check_ignore_case $subtest && echo "LKP SKIP $subtest" && continue
 		subtest_in_skip_filter "$skip_filter" && continue
 
+		(
 		if $run_cached_kselftests -l 2>/dev/null | grep -q "^$subtest:"; then
 			found_subtest_in_cache=1
+			[[ -f $LKP_SRC/lib/tests/kernel-selftests-ext.sh ]] && {
+				echo "source $LKP_SRC/lib/tests/kernel-selftests-ext.sh"
+				source $LKP_SRC/lib/tests/kernel-selftests-ext.sh
+			}
 		else
 			found_subtest_in_cache=
 			check_makefile $subtest || log_cmd make TARGETS=$subtest 2>&1
 		fi
 
-		fixup_subtest $subtest || continue
+		fixup_subtest $subtest || return
 
 		if [[ $found_subtest_in_cache ]]; then
 			# run_cached_kselftests is from kselftests.cgz which may not exist in local
@@ -667,5 +671,6 @@ run_tests()
 		if [[ "$subtest" = "firmware" ]]; then
 			cleanup_for_firmware
 		fi
+		)
 	done
 }
