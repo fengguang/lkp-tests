@@ -454,9 +454,13 @@ fixup_openat2()
 	mkfs -t ext4 /tmp/raw.img || return
 	[[ -d "/mnt/kselftest" ]] || mkdir -p "/mnt/kselftest" || return
 	mount -t ext4 /tmp/raw.img /mnt/kselftest || return
-	# Build openat2 firstly, just run binary on /mnt/kselftest
-	make -C openat2 >/dev/null || return
-	cp -r openat2 /mnt/kselftest || return
+	if $run_cached_kselftests -l | grep "^$subtest:"; then
+		cp -r $(dirname $run_cached_kselftests)/openat2 /mnt/kselftest || return
+	else
+		# Build openat2 firstly, just run binary on /mnt/kselftest
+		log_cmd make -C openat2 >/dev/null || return
+		cp -r openat2 /mnt/kselftest || return
+	fi
 
 	# Openat2 create testing files on current dir, so we need change working dir.
 	cd /mnt/kselftest/openat2
