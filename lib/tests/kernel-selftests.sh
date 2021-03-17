@@ -404,6 +404,8 @@ fixup_vm()
 	# has too many errors now
 	sed -i 's/hugetlbfstest//' vm/Makefile
 
+	local run_vmtests="run_vmtests.sh"
+	[[ -f vm/run_vmtests ]] && run_vmtests="run_vmtests"
 	# we need to adjust two value in vm/run_vmtests accroding to the nr_cpu
 	# 1) needmem=262144, in Byte
 	# 2) ./userfaultfd hugetlb *128* 32, we call it memory here, in MB
@@ -418,14 +420,14 @@ fixup_vm()
 	[ $nr_cpu -gt 64 ] && {
 		local memory=$((nr_cpu/64+1))
 		memory=$((memory*128))
-		sed -i "s#./userfaultfd hugetlb 128 32#./userfaultfd hugetlb $memory 32#" vm/run_vmtests
+		sed -i "s#./userfaultfd hugetlb 128 32#./userfaultfd hugetlb $memory 32#" vm/$run_vmtests
 		memory=$((memory*1024*2))
-		sed -i "s#needmem=262144#needmem=$memory#" vm/run_vmtests
+		sed -i "s#needmem=262144#needmem=$memory#" vm/$run_vmtests
 	}
 
-	sed -i 's/.\/compaction_test/echo -n LKP SKIP #.\/compaction_test/' vm/run_vmtests
+	sed -i 's/.\/compaction_test/echo -n LKP SKIP #.\/compaction_test/' vm/$run_vmtests
 	# ./userfaultfd anon 128 32
-	sed -i 's/.\/userfaultfd anon .*$/echo -n LKP SKIP #.\/userfaultfd/' vm/run_vmtests
+	sed -i 's/.\/userfaultfd anon .*$/echo -n LKP SKIP #.\/userfaultfd/' vm/$run_vmtests
 }
 
 platform_is_skylake_or_snb()
