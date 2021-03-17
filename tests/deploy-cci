@@ -6,8 +6,6 @@ export_env()
 {
 	export initrd_http_host=$INITRD_HTTP_HOST
 	export initrd_http_port=$INITRD_HTTP_PORT
-	export gitcache_host=$GITCACHE_HOST
-	export gitcache_port=$GITCACHE_PORT
 }
 
 deploy()
