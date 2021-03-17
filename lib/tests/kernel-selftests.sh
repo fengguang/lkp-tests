@@ -575,6 +575,9 @@ run_tests()
 	skip_filter="powerpc zram media_tests watchdog"
 
 	local selftest_mfs=$@
+
+	local found_subtest_in_cache
+	[[ $run_cached_kselftests ]] ||
 	local run_cached_kselftests="/kselftests/run_kselftest.sh"
 
 	# kselftest introduced runner.sh since kernel commit 42d46e57ec97 "selftests: Extract single-test shell logic from lib.mk"
@@ -591,7 +594,12 @@ run_tests()
 		check_ignore_case $subtest && echo "LKP SKIP $subtest" && continue
 		subtest_in_skip_filter "$skip_filter" && continue
 
-		check_makefile $subtest || log_cmd make TARGETS=$subtest 2>&1
+		if $run_cached_kselftests -l 2>/dev/null | grep -q "^$subtest:"; then
+			found_subtest_in_cache=1
+		else
+			found_subtest_in_cache=
+			check_makefile $subtest || log_cmd make TARGETS=$subtest 2>&1
+		fi
 
 		if [[ "$subtest" = "breakpoints" ]]; then
 			fixup_breakpoints
@@ -639,9 +647,12 @@ run_tests()
 			fixup_ptp || continue
 		fi
 
-		# run_cached_kselftests is from kselftests.cgz which may not exist in local
-		if $run_cached_kselftests -l 2>/dev/null | grep -q "^$subtest:"; then
+		if [[ $found_subtest_in_cache ]]; then
+			# run_cached_kselftests is from kselftests.cgz which may not exist in local
 			log_cmd $run_cached_kselftests -c $subtest 2>&1
+		elif [[ -f $run_cached_kselftests ]]; then
+			echo "LKP WARN miss target $subtest"
+			log_cmd make run_tests -C $subtest 2>&1
 		else
 			log_cmd make run_tests -C $subtest 2>&1
 		fi
