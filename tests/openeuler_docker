@@ -78,6 +78,11 @@ handle_epelrpm()
 	}
 }
 
+handle_rpm_gpg()
+{
+	sed -i "s|RPM-GPG-KEY-CentOS-7|RPM-GPG-KEY-openEuler|g" "$dockerfile_name"
+}
+
 add_base_commands()
 {
 	# grep -qw "groupadd*" "$file" && {
@@ -95,6 +100,7 @@ handle_dockerfile()
 	is_openeuler_build_fail=1
 	handle_FROM
 	handle_epel
+	handle_rpm_gpg
 	add_base_commands
 	if docker_build "-openeuler"; then
 		docker_run "-openeuler"
