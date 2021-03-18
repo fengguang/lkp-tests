@@ -6,6 +6,8 @@ binutils-dev: binutils-devel
 btrfs-tools: btrfs-progs
 build-essential: make automake gcc gcc-c++ kernel-devel rpm-build
 cgroup-bin: libcgroup
+cgroup-tools: libcgroup-tools
+cgroupfs-mount:
 cron: cronie
 dbench=4.0-2: dbench
 dpkg-dev: dpkg-devel
@@ -16,6 +18,7 @@ gcc-4.9: gcc
 gcc-5: gcc
 gcc-6: gcc
 gcc-multilib: libgcc.i686
+gdbserver: gdb-gdbserver
 gfortran: gcc-gfortran
 hpcc:
 initramfs-tools: dracut
@@ -34,8 +37,10 @@ libaudit-dev: audit-libs-devel
 libblas3: blas
 libblkid-dev: libblkid-devel
 libc6: glibc.x86_64
+libc6/unstable: glibc.x86_64
 libc6-dbg: glibc-debuginfo
 libc6-dev: glibc-devel glibc-static
+libc6-dev/unstable: glibc-devel glibc-static
 libc6-dev:i386: glibc-devel.i686 glibc-static.i686
 libc6-dev-x32:
 libcairo2-dev: cairo-devel
@@ -43,6 +48,7 @@ libcap2: libcap
 libcap-dev: libcap-devel
 libcap-ng-dev: libcap-ng-devel
 libc-bin: glibc-common
+libc-bin/unstable: glibc-common
 libc-dev-bin: glibc-common
 libc-dev:i386: glibc-devel.i686
 libdbd-mysql-perl: libdbi-dbd-mysql
@@ -53,6 +59,7 @@ libdw-dev: elfutils-devel
 libegl1-mesa-dev: mesa-libEGL-devel
 libelf-dev: elfutils-devel
 libfabric-dev: libfabric-devel
+libffi-dev: libffi-devel
 libfdt-dev: libfdt-devel
 libfuse-dev: fuse-devel
 libgbm-dev: mesa-libgbm-devel
@@ -96,6 +103,7 @@ librdmacm-dev: librdmacm-devel
 libreadline5: compat-readline5
 libsctp1: lksctp-tools
 libsctp-dev: lksctp-tools-devel
+libseccomp2/unstable: libseccomp2
 libselinux1:
 libsqlite3-dev: libsqlite3x-devel
 libssl: openssl-devel
@@ -106,8 +114,12 @@ libudev-dev: systemd-devel
 libunwind-dev: libunwind-devel
 libuuid1: libuuid
 libuv1-dev: libuv-devel
+libvirt-dev: libvirt-devel
+libvirt-daemon-system: libvirt-client libvirt-daemon
+libvirt-clients: libvirt-client
 libx11-xcb-dev: libX11-devel
 libxml2-dev: libxml2-devel
+libyaml-dev: libyaml-devel
 linux-base:
 linux-libc-dev:i386: kernel-headers
 linux-libc-dev: kernel-headers
@@ -115,11 +127,13 @@ linux-perf: perf
 linux-tools: perf
 mysql-server: mariadb
 ncurses-bin: ncurses
+needrestart/unstable: needrestart
 netpipe-lam: NetPIPE
 netpipe-mpich2: NetPIPE
 netpipe-openmpi: NetPIPE
 netpipe-pvm: NetPIPE
 netpipe-tcp: NetPIPE
+network-manager: NetworkManager
 nfs-common: nfs-utils
 nfs-kernel-server: nfs-utils
 openbsd-inetd: xinetd
@@ -132,6 +146,7 @@ python-minimal: python2
 python-pkg-resources: python-setuptools
 rstatd: rusers-server
 rusersd: rusers-server
+runc/unstable: runc
 rt-tests: numactl-devel
 ruby-dev: ruby-devel
 sg3-utils: sg3_utils
@@ -140,6 +155,7 @@ tshark: wireshark
 uuid-dev: libuuid-devel
 update-inetd:
 uuid-runtime: util-linux
+wpasupplicant: wpa_supplicant
 xfslibs-dev: xfsprogs-devel
 xinit: xorg-x11-xinit
 xorg:
@@ -174,5 +190,6 @@ libperl-dev: perl-devel
 libslang2-dev: slang-devel
 libmariadbclient18: mariadb-connector-c
 python-dev: python3-devel
+python3-dev: python3-devel
 systemtap-sdt-dev: systemtap-sdt-devel
 libpython2.7: python27
