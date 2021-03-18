@@ -1,0 +1,79 @@
+#!/bin/bash
+# - ansible_repo
+
+. $LKP_SRC/lib/debug.sh
+
+check_vars()
+{
+	[ -n "$ansible_repo" ] 	|| die "ansible_repo is empty"
+	benchmark=${ansible_repo##*/}
+
+	ansible_path=/root/.ansible
+	[ -d "$ansible_path" ] || mkdir -p /root/.ansible
+}
+
+install_ansible()
+{
+	if [ "$os" == "openeuler" ]; then
+		yum -y reinstall git
+		yum -y install python3
+		pip3 install ansible
+	elif [ "$os" == "centos" ]; then
+		yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+		yum -y reinstall git
+		yum -y install ansible
+	elif [ "$os" == "debian" ]; then
+		apt-get install -y ansible
+	fi
+
+	command -v ansible > /dev/null && {
+		ansible localhost -m ping
+		[ $? -eq 0 ] || {
+			echo "Ansible failed to install."
+			exit 1
+		}
+	}
+}
+
+download_ansible_role()
+{
+	ansible_roles_path=$ansible_path/roles
+	[ -d $ansible_roles_path ] || mkdir -p $ansible_roles_path
+	cd $ansible_roles_path
+	git clone git://github.com/$ansible_repo.git 
+	if [ $? -eq 0 ]; then
+		echo "$benchmark is successfully cloned"
+	else
+		echo "Please check whether your ansible_repo is correct!"
+		exit 1
+	fi
+}
+
+ansible_playbook_run()
+{
+	cat <<-EOF > "$ansible_path"/site.yml
+	- hosts: localhost
+	  roles:
+	     - role: $benchmark
+	EOF
+	[ $? -eq 0 ] && {
+		echo "Playbook has been generated!"
+		}
+	ansible-playbook "$ansible_path"/site.yml
+
+	if [ $? -eq 0 ]; then
+		echo "Your playbook is running successfully!"
+	else
+		echo "Your playbook is running failed!" && exit 1
+	fi
+}
+
+main()
+{
+	check_vars
+	install_ansible
+	download_ansible_role
+	ansible_playbook_run
+}
+
+main
