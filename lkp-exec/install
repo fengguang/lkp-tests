@@ -170,9 +170,9 @@ verify_install() {
 	local pkg=$1
 	case $DISTRO in
 		debian|ubuntu)
-			dpkg -s "$pkg" > /dev/null 2>&1 || dpkg -s "$pkg-lkp" > /dev/null 2>&1;;
+			[[ ! $(dpkg -V "$pkg" 2>&1) ]] || [[ ! $(dpkg -V "$pkg-lkp" 2>&1) ]];;
 		centos|fedora)
-			rpm -q "$pkg" > /dev/null || rpm -q "$pkg-lkp" > /dev/null 2>&1;;
+			[[ ! $(rpm -V "$pkg" 2>&1) ]] || [[ ! $(rpm -V "$pkg-lkp" 2>&1) ]];;
 		*)
 			return 1;;
 	esac
