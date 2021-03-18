@@ -54,6 +54,7 @@ libc-bin: glibc-common
 libc-bin/unstable: glibc-common
 libc-dev-bin: glibc-common
 libc-dev:i386: glibc-devel.i686
+libcunit1-dev: CUnit-devel
 libdbd-mysql-perl: libdbi-dbd-mysql
 libdbi-perl: perl-DBI
 libdbus-1-dev: dbus-devel
