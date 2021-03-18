@@ -1,5 +1,6 @@
 apache2: httpd
 apt-file:
+autopoint: gettext
 autotools-dev: autoconf
 bind9: bind
 binutils-dev: binutils-devel
@@ -25,7 +26,9 @@ initramfs-tools: dracut
 install-info: info
 iozone3:
 iproute2: iproute
+junit4: junit
 klibc-utils:
+llvm-dev: llvm-devel
 libacl1-dev: libacl-devel
 libaio1: libaio
 libaio-dev: libaio-devel
@@ -51,13 +54,18 @@ libc-bin: glibc-common
 libc-bin/unstable: glibc-common
 libc-dev-bin: glibc-common
 libc-dev:i386: glibc-devel.i686
+libcunit1-dev: CUnit-devel
 libdbd-mysql-perl: libdbi-dbd-mysql
 libdbi-perl: perl-DBI
 libdbus-1-dev: dbus-devel
 libdrm-dev: libdrm-devel
 libdw-dev: elfutils-devel
 libegl1-mesa-dev: mesa-libEGL-devel
+libelf1: elfutils-libelf
 libelf-dev: elfutils-devel
+libedit-dev: libedit-devel
+libexpat1-dev: expat-devel
+libevent-dev: libevent-devel
 libfabric-dev: libfabric-devel
 libffi-dev: libffi-devel
 libfdt-dev: libfdt-devel
@@ -70,6 +78,7 @@ libglib2.0-0: glib
 libglib2.0-dev: glib2-devel
 libglu-dev: mesa-libGLU-devel
 libgomp1: libgomp
+libgoogle-perftools-dev: gperftools-devel
 libhwloc-dev: hwloc-devel
 libiberty-dev: binutils-devel
 libibverbs-dev: libibverbs-devel
@@ -78,6 +87,7 @@ libklibc-dev:
 libkmod2: kmod-libs
 libkmod-dev: kmod-devel
 liblzma-dev: xz-devel
+libldap2-dev: openldap-devel
 libmariadbclient-dev: mysql-devel
 libncurses5-dev: ncurses-devel
 libnl-3-200: libnl3
@@ -88,6 +98,7 @@ libnl-route-3-dev: libnl3-devel
 libntfs: ntfs-3g
 libnuma1: numactl
 libnuma-dev: numactl-devel
+liboath-dev: liboath-devel
 liboop-dev:
 libopencryptoki0: opencryptoki-libs
 libpcap0.8-dev: libpcap-devel
@@ -108,6 +119,7 @@ libselinux1:
 libsqlite3-dev: libsqlite3x-devel
 libssl: openssl-devel
 libssl-dev: openssl-devel
+libsnappy-dev: snappy-devel
 libtool-bin: libtool
 libudev1: systemd-libs
 libudev-dev: systemd-devel
@@ -120,6 +132,7 @@ libvirt-clients: libvirt-client
 libx11-xcb-dev: libX11-devel
 libxml2-dev: libxml2-devel
 libyaml-dev: libyaml-devel
+libyaml-cpp-dev: yaml-cpp-devel
 linux-base:
 linux-libc-dev:i386: kernel-headers
 linux-libc-dev: kernel-headers
@@ -167,6 +180,8 @@ zlib1g-dev: zlib-devel
 protobuf-compiler: protobuf
 locales: glibc-common
 libprotobuf-dev: protobuf-devel
+libpmem1: libpmem
+libpmem-dev: libpmem-devel
 openjdk: java-1.8.0-openjdk-devel
 libunwind8: libunwind
 libipc-run-perl: perl-IPC-Run
@@ -185,6 +200,7 @@ libbz2-dev: bzip2-devel
 libzstd-dev: libzstd-devel
 libtirpc-dev: libtirpc-devel
 libbabeltrace-dev: libbabeltrace-devel
+libbabeltrace-ctf-dev: libbabeltrace-devel
 libgtk2.0-dev: gtk2-devel
 libperl-dev: perl-devel
 libslang2-dev: slang-devel
