@@ -37,6 +37,8 @@
 
 	# install the remaining dependencies for the splited job
 	lkp install ./hackbench-50%-threads-socket.yaml
+	# or add -f option to force to install all dependencies
+	lkp install -f ./hackbench-50%-threads-socket.yaml
 
 	lkp run ./hackbench-50%-threads-socket.yaml
 ```
