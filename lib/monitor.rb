@@ -96,6 +96,8 @@ class Monitor
   end
 
   def mirror_result
+    return unless @action['mirror_result']
+
     @result_roots.each do |res|
       res.to_s.delete_prefix!('/srv')
       srv_http_host = job['SRV_HTTP_HOST'] || 'api.compass-ci.openeuler.org'
