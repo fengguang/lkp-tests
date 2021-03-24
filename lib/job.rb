@@ -366,12 +366,15 @@ class Job
   end
 
   def get_hosts_file
-    testbox_file = "#{ENV['CCI_REPOS']}/lab-#{@job['lab']}/hosts/#{@job['testbox']}"
-    return testbox_file if File.file?(testbox_file)
-
+    lab_repo = "#{ENV['CCI_REPOS']}/lab-#{@job['lab']}"
     tbox_group = @job['tbox_group'].split(/\.|--/)[0]
-    tbox_group_file = "#{LKP_SRC}/hosts/#{tbox_group}"
-    return tbox_group_file if File.file?(tbox_group_file)
+
+    ["#{lab_repo}/hosts/#{@job['testbox']}",
+     "#{LKP_SRC}/hosts/#{@job['testbox']}",
+     "#{lab_repo}/hosts/#{tbox_group}",
+     "#{LKP_SRC}/hosts/#{tbox_group}"].each do |file|
+      return file if File.file?(file)
+    end
 
     raise ArgumentError, "hosts file not exist: #{tbox_group}, maybe need check testbox field"
   end
