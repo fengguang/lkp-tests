@@ -87,5 +87,5 @@ send_email()
 
 	${subject}_content
 
-	curl -XPOST "${MAIL_HOST:-$LKP_SERVER}:${MAIL_PORT:-10001}/send_mail_text" -d "$email_content"
+	curl -XPOST "${SEND_MAIL_HOST:-$LKP_SERVER}:${SEND_MAIL_PORT:-10001}/send_mail_text" -d "$email_content"
 }
