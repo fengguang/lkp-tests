@@ -2,18 +2,18 @@
 
 require 'json'
 
-def output_error(error_msg)
+def output_error(error_msg, error_key)
   return if error_msg.nil?
 
   if error_msg.is_a? Array
     error_msg.each do |i|
       error_id = common_error_id i
-      puts "error.#{error_id}: 1"
+      puts "error.[#{error_key}].#{error_id}: 1"
       puts "error.#{error_id}.message: #{@ansible_failed_info}"
     end
   elsif error_msg.is_a? String
     error_id = common_error_id error_msg
-    puts "error.#{error_id}: 1"
+    puts "error.[#{error_key}].#{error_id}: 1"
     puts "error.#{error_id}.message: #{@ansible_failed_info}"
   end
 end
@@ -33,8 +33,8 @@ while (line = STDIN.gets)
 
   ansible_failed_json = JSON.parse @ansible_failed_info
 
-  output_error ansible_failed_json['msg']
-  output_error ansible_failed_json['message']
-  output_error ansible_failed_json['cmd']
-  output_error ansible_failed_json['failures']
+  output_error ansible_failed_json['msg'],'msg'
+  output_error ansible_failed_json['message'],'message'
+  output_error ansible_failed_json['cmd'],'cmd'
+  output_error ansible_failed_json['failures'],'failures'
 end
