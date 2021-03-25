@@ -8,7 +8,7 @@ Subject: [NOTIFY Compass-CI] Test job failed: $id
 Dear $my_name:
 
 	Sorry to inform you that your test job is failed, you can click the following link to view details.
-	http://api.compass-ci.openeuler.org:${SRV_HTTP_PORT:-11300}$result_root
+	http://api.compass-ci.openeuler.org:${SRV_HTTP_RESULT_PORT:-20007}$result_root
 
 Regards
 Compass-CI
