@@ -1,6 +1,8 @@
 #!/bin/bash
 # - upstream_repo
 # - compat_os
+# - repo_name
+# - repo_addr
 
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/upload.sh
@@ -8,9 +10,30 @@
 : "${compat_os:=budding-openeuler}"
 
 [ -n "$upstream_repo" ] || die "upstream_repo is empty"
-package_name=${upstream_repo##*/}
-rpm_dest="/initrd/rpmbuild-pkg/${os}-${os_version}/${compat_os}/${os_arch}/Packages"
-src_rpm_dest="/initrd/rpmbuild-pkg/${os}-${os_version}/${compat_os}/source/Packages"
+
+dest_dir="/initrd/rpmbuild-pkg/${os}-${os_version}/${compat_os}"
+
+from_git()
+{
+	package_name=${upstream_repo##*/}
+	rpm_dest="${dest_dir}/${os_arch}/Packages"
+	src_rpm_dest="${dest_dir}/source/Packages"
+
+	init_workspace
+	download_upstream_repo
+}
+
+from_srpm()
+{
+	[ -n "$repo_name" ] || die "repo_name is empty"
+	[ -n "$repo_addr" ] || die "repo_addr is empty"
+
+	rpm_dest="${dest_dir}/${repo_name}/${os_arch}/Packages"
+	src_rpm_dest="${dest_dir}/${repo_name}/source/Packages"
+
+	install_srpm
+}
+
 
 init_workspace()
 {
@@ -20,30 +43,43 @@ init_workspace()
 
 download_upstream_repo()
 {
-	git clone "git://$GIT_SERVER/openeuler/${upstream_repo}" || die "clone git repo ${package_name} failed: git://$GIT_SERVER/openeuler/${upstream_repo}"
-	cd $package_name || exit
+	local url="git://${GIT_SERVER}/openeuler/${upstream_repo}"
+
+	git clone "$url" || die "clone git repo ${package_name} failed: $url"
+	cd "$package_name" || exit
 	filelist=$(git ls-files)
+
 	for pkgfile in ${filelist[@]}
 	do
 		local dir="SOURCES"
-		echo $pkgfile | egrep "\.spec$" && dir="SPECS"
+
+		echo "$pkgfile" | grep -E "\\.spec$" && dir="SPECS"
 		mv "$pkgfile" "${HOME}/rpmbuild/${dir}/"
 	done
 }
 
+install_srpm()
+{
+	rpm -i "${repo_addr}/${upstream_repo}" >/dev/null || die "failed to install source rpm: ${repo_addr}/${upstream_repo}"
+}
+
 build_rpm()
 {
-	local spec_file=${HOME}/rpmbuild/SPECS/$package_name.spec
-
-	# HTTP is proxy cache friendly
-	sed -i 's/^\(Source[^ ]*:[ \t]*\)https/\1http/g' `grep http -rl $spec_file`
-
+	local spec_dir="${HOME}/rpmbuild/SPECS"
+	[ -n "$package_name" ] &&
+		{
+			# HTTP is proxy cache friendly
+			sed -i 's/^\(Source[^ ]*:[ \t]*\)https/\1http/g' "$(grep http -rl "$spec_dir/${package_name}.spec")"
+		}
 	# Install build depends
-	yum-builddep -y $spec_file || exit
+	yum-builddep -y "$spec_dir"/*.spec || die "failed to solve dependencies"
 	# Download tar.gz to default path ${HOME}/rpmbuild/SOURCE
-	spectool -g -R $spec_file || exit
+	[ -n "$package_name" ] &&
+		{
+			spectool -g -R "$spec_dir/${package_name}.spec" || die "failed to download source file"
+		}
 	# Building rpm or srpm packages
-	rpmbuild -ba $spec_file || exit
+	rpmbuild -ba "$spec_dir"/*.spec || die "failed to build rpms"
 }
 
 show_rpm_files()
@@ -71,7 +107,6 @@ upload_rpm_pkg()
 	done
 }
 
-init_workspace
-download_upstream_repo
+[ -n "$repo_name" ] && from_srpm || from_git
 build_rpm
 upload_rpm_pkg
