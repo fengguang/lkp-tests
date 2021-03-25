@@ -20,7 +20,7 @@ while (line = STDIN.gets)
     seqno = ''
   end
   next unless in_stderr
-  next unless line.downcase =~ /error|warning/
+  next unless line.downcase =~ /(error|warning):[^:]/
 
   error_ids << build_pkg_error_id(line)
 end
