@@ -79,7 +79,7 @@ options.parse!(ARGV)
 seen_job_yaml = false
 ARGV.delete_if do |arg|
   if arg.index '='
-    k, v = arg.sub(' ', '').split('=', 2)
+    k, v = arg.split('=', 2)
     if seen_job_yaml
       opt_set_key_value[k] = v
     else
