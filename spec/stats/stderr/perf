@@ -1,3 +1,4 @@
+Events disabled
 ------------------------------------------------------------
 perf_event_attr:
   size                             120
@@ -40,3 +41,6 @@ perf_event_attr:
   bpf_event                        1
   { wakeup_events, wakeup_watermark } 1
 ------------------------------------------------------------
+Events enabled
+[ perf record: Woken up 5 times to write data ]
+[ perf record: Captured and wrote 23.009 MB /tmp/lkp/perf-sched.data (101038 samples) ]
