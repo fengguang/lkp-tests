@@ -1,0 +1,18 @@
+2021-01-25 06:09:50 ./check udf/102
+FSTYP         -- udf
+PLATFORM      -- Linux/x86_64 lkp-skl-d04 5.11.0-rc4-g19c329f68089 #1 SMP Mon Jan 18 09:53:38 CST 2021
+MKFS_OPTIONS  -- /dev/sdb4
+MOUNT_OPTIONS -- /dev/sdb4 /fs/scratch
+
+udf/102	- output mismatch (see /lkp/benchmarks/xfstests/results//udf/102.out.bad)
+    --- tests/udf/102.out	2021-01-14 07:40:58.000000000 +0000
+    +++ /lkp/benchmarks/xfstests/results//udf/102.out.bad	2021-01-25 06:09:51.678752355 +0000
+    @@ -1,2 +1,3 @@
+     QA output created by 102
+    +/lkp/benchmarks/xfstests/tests/udf/102: line 32: _setup_udf_scratchdir: command not found
+     Finished
+    ...
+    (Run 'diff -u /lkp/benchmarks/xfstests/tests/udf/102.out /lkp/benchmarks/xfstests/results//udf/102.out.bad'  to see the entire diff)
+Ran: udf/102
+Failures: udf/102
+Failed 1 of 1 tests
