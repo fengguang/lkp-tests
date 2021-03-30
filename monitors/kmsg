@@ -6,6 +6,8 @@
 # serial console has better availability.
 is_virt && [ -z "$LKP_LOCAL_RUN" ] && exec > /dev/ttyS1
 
+[ -f /.dockerenv ] && exit 0
+
 if dmesg --help 2>&1 | grep -q -- --follow; then
 	exec dmesg --follow --decode
 else
