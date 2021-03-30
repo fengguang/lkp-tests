@@ -221,6 +221,13 @@ fixup_net()
 	sed -i 's/l2tp.sh//' net/Makefile
 	echo "LKP SKIP net.l2tp.sh"
 
+	# for tls, it will directly run
+	# /kselftests/run_kselftests.sh -t net:tls
+	if [[ $test != "tls" ]]; then
+		sed -i 's/tls//' net/Makefile
+		echo "LKP SKIP net.tls"
+	fi
+
 	# at v4.18-rc1, it introduces fib_tests.sh, which doesn't have execute permission
 	# here is to fix the permission
 	[[ -f $subtest/fib_tests.sh ]] && {
@@ -666,8 +673,12 @@ run_tests()
 		fixup_subtest $subtest || return
 
 		if [[ $found_subtest_in_cache ]]; then
-			# run_cached_kselftests is from kselftests.cgz which may not exist in local
-			log_cmd $run_cached_kselftests -c $subtest 2>&1
+			if [[ $group == "net" && $test == "tls" ]]; then
+				log_cmd $run_cached_kselftests -t $subtest:tls 2>&1
+			else
+				# run_cached_kselftests is from kselftests.cgz which may not exist in local
+				log_cmd $run_cached_kselftests -c $subtest 2>&1
+			fi
 		elif [[ -f $run_cached_kselftests ]]; then
 			echo "LKP WARN miss target $subtest"
 			log_cmd make run_tests -C $subtest 2>&1
