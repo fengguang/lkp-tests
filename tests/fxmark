@@ -82,7 +82,7 @@ setup_config()
 	sed -i "/    confirm_media_path()/i\\
     Runner.HDDDEV = \"$partition\"\n\
     Runner.SSDDEV = \"$partition\"\n\
-    run_config = [(Runner.CORE_FINE_GRAIN, PerfMon.LEVEL_LOW, (\"$media\", \"$fstype\", \"$test\", \"*\", \"$directio\")),]"  bin/run-fxmark.py
+    run_config = [(Runner.CORE_COARSE_GRAIN, PerfMon.LEVEL_LOW, (\"$media\", \"$fstype\", \"$test\", \"*\", \"$directio\")),]"  bin/run-fxmark.py
 
 	sed -i "/    (opts, args) = parser.parse_args()/i\\
     parser.add_option(\"--directio\", help=\"directio\")" bin/run-*bench.py
