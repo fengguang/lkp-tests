@@ -58,7 +58,18 @@ ansible_playbook_run()
 	EOF
 	[ $? -eq 0 ] && {
 		echo "Playbook has been generated!"
-		}
+	}
+	[ $(command -v ansible-playbook) ] || {
+		echo "ansible-playbook: command not found"
+		exit 1
+	}
+
+	sed -i "536a\                    print\(\"{\'action\':\'%s\'}\" \% task_result.__dict__[\'_task_fields\'][\'action\']\)" \
+		/usr/local/lib/python3.7/site-packages/ansible/plugins/strategy/__init__.py
+
+	sed -i "550a\                print\(\"{\'action\':\'%s\'}\" \% task_result.__dict__[\'_task_fields\'][\'action\']\)" \
+		/usr/local/lib/python3.7/site-packages/ansible/plugins/strategy/__init__.py
+
 	ansible-playbook "$ansible_path"/site.yml
 
 	if [ $? -eq 0 ]; then
