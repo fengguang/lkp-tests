@@ -3,11 +3,14 @@
 # - fstype
 # - directio
 # - test
+# - duration
 
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/reproduce-log.sh
 
 cd $BENCHMARK_ROOT/$testcase || die "can not enter $BENCHMARK_ROOT/$testcase"
+
+: ${duration:=50}
 
 loopdev=$(losetup -f)
 
@@ -79,6 +82,8 @@ setup_config()
 		ln -s $BENCHMARK_ROOT/$testcase/filebench/bin/filebench /usr/bin/filebench
 	}
 
+	sed -i "s/self.DURATION      = 30/self.DURATION      = $duration/" bin/run-fxmark.py
+
 	sed -i "/    confirm_media_path()/i\\
     Runner.HDDDEV = \"$partition\"\n\
     Runner.SSDDEV = \"$partition\"\n\
@@ -112,6 +117,9 @@ sleep 5
 do_backup
 
 setup_config || die "failed to setup configuration"
+
+# run-fxmark.py has been changed much, save a copy for check
+cp ./bin/run-fxmark.py	$TMP_RESULT_ROOT/
 
 run
 
