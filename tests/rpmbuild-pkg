@@ -3,6 +3,7 @@
 # - compat_os
 # - repo_name
 # - repo_addr
+# Git repo jobs only use the first two parameters, SRPMs jobs use all
 
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/upload.sh
