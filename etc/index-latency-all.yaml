@@ -4,6 +4,8 @@ dd\.startup_time: -0.1
 ebizzy\.throughput.per_thread\.stddev_percent: -0.1
 fileio\.latency_95th_ms: -0.1
 fileio\.latency_max_ms: -0.1
+ftq\.noise\..+: -0.1
+fwq\.noise\..+: -0.1
 iostat\..*\.(await|r_await|w_await|svctm|avgqu-sz)\.max: -0.1
 kernel-selftests\.dma\.dma_map_benchmark\.average_(map|unmap)_latency: -0.1
 ku-latency\.total_average_us: -0.1
