@@ -2,6 +2,7 @@
 # - runtime
 # - seed
 # - group
+# - number
 
 . $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/reproduce-log.sh
@@ -16,6 +17,14 @@
 	else
 		seed=$(echo $kconfig | md5sum | cut -c1-5)
 		seed=$(( 0x$seed ))
+	fi
+}
+
+[ -n "$number" ] || {
+	if [ -n "$runtime" ]; then
+		number=999999999
+	else
+		number=99999
 	fi
 }
 
@@ -34,9 +43,9 @@ if [ -n "$group" ]; then
 		num=$(( 0x$num ))
 		[ group-0$(( seed % num % max_group_nr )) = "$group" ] && targets="$targets -c $syscall"
 	done
-	cmd="trinity -q -q -l off -s $seed -N 999999 $targets"
+	cmd="trinity -q -q -l off -s $seed -N $number $targets"
 else
-	cmd="trinity -q -q -l off -s $seed -x get_robust_list -x remap_file_pages -N 999999999"
+	cmd="trinity -q -q -l off -s $seed -x get_robust_list -x remap_file_pages -N $number"
 fi
 
 # suppress "Killed" message to stderr
