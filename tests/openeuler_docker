@@ -8,12 +8,12 @@
 
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/log.sh
+. $LKP_SRC/lib/handle_dockerfile.sh
 
 [ -n "$dockerfile_url" ] || die "dockerfile_url is empty"
 
 declare -i nr_openeuler_fail=0
 declare -i nr_openeuler_success=0
-declare -i is_openeuler_build_fail=0
 declare -i dockerfile_count=0
 
 fit_repo()
@@ -33,110 +33,51 @@ openeuler_ready()
 	docker load < $BENCHMARK_ROOT/openeuler_docker/openeuler-20.03-lts-v1.tar
 }
 
-centos_docker()
+build_centos()
 {
-	is_openeuler_build_fail=0
-	index=1
-	for file in $dockerfile_path
-	do
-		[[ $file =~ ^centos ]] && continue
-		file=$(echo "$file" | awk -F: '{print $1}')
-		dockerfile_name="${file##*/}"
-		cd "${file%/*}" || continue
-		image=$(echo "$file" | awk -F '/' '{print $5}' | tr 'A-Z' 'a-z')
-		[ -n "$image" ] && image=${image}_$index
-		if [ -f "build.sh" ] && [ -x "build.sh" ]; then
-			./build.sh > /dev/null 2> /dev/null
-		else
-			docker_build > /dev/null 2> /dev/null
-		fi
-
-		[ $? == 0 ] && {
-			handle_dockerfile
-		}
-
-		let index++
-	done
-}
-
-handle_FROM()
-{
-	sed -i "s/^FROM .*/FROM openeuler-20.03-lts:v1/g" "$dockerfile_name"
-}
-
-handle_epel()
-{
-	grep -qw "epel-release" "$dockerfile_name" && {
-		sed -i "s/epel-release/bash/g" "$dockerfile_name"
-	}
-}
-
-handle_epelrpm()
-{
-	grep -qw "https://.*epel-release.*rpm" "$dockerfile_name" && {
-		sed -i "s|https://.*epel-release.*rpm|bash|g" "$dockerfile_name"
-	}
-}
-
-handle_rpm_gpg()
-{
-	sed -i "s|RPM-GPG-KEY-CentOS-7|RPM-GPG-KEY-openEuler|g" "$dockerfile_name"
-}
-
-add_base_commands()
-{
-	# grep -qw "groupadd*" "$file" && {
-	# fix missing useradd, groupadd, chpasswd, etc. commands
-	sed -i '/FROM /a\RUN yum -y install shadow tar' "$dockerfile_name"
-}
-
-handle_epel_repo()
-{
-	sed -i '/.* wget .*(epel|CentOS-Base)\.repo/ s|^|#|g' "$dockerfile_name"
-}
-
-handle_dockerfile()
-{
-	is_openeuler_build_fail=1
-	handle_FROM
-	handle_epel
-	handle_rpm_gpg
-	add_base_commands
-	if docker_build "-openeuler"; then
-		docker_run "-openeuler"
-		let nr_openeuler_success++
+	cd ${file%/*}
+	if [ -f "build.sh" ] && [ -x "build.sh" ]; then
+		./build.sh || return 1
 	else
-		let nr_openeuler_fail++
+		docker build -f "$dockerfile_name" -t "${image}_$1_$index" . || return 1
 	fi
 }
 
-docker_build()
+build_openeuler()
 {
-	docker build -f "$dockerfile_name" -t "${image}$1" .
+	docker build -f "$dockerfile_name" -t "${image}_$1_$index" . >> $TMP_RESULT_ROOT/${image}_$1_$index 2>&1
 	[ $? != 0 ] && {
-		[ "$is_openeuler_build_fail" == "1" ] && echo "${image}$1.build.fail: 1"
+		let nr_openeuler_fail++
+		echo "${image}_$index.build.fail: 1"
 		return 1
 	}
-	[ "$is_openeuler_build_fail" == "1" ] && echo "${image}$1.build.success: 1"
-	is_openeuler_build_fail=0
+	echo "${image}_$index.build.success: 1"
+	let nr_openeuler_success++
+	return 0
 }
 
 docker_run()
-{
-	docker run -d --name "${image}" "${image}$1"
-	docker_stats=$(docker inspect -f '{{.State.Running}}' ${image})
-	[ $docker_stats == false ] && {
-		echo "${image}.run.fail: 1"
+{ 
+	docker_run_cmd="docker run -d --name ${image}_$1_$index ${image}_$1_$index"
+	[ $1 == "openeuler" ] && {
+		docker_run_cmd="${docker_run_cmd} >> $TMP_RESULT_ROOT/${image}_$1_$index 2>&1"
+	}
+
+	eval $docker_run_cmd
+
+	docker_stats=$(docker inspect -f '{{.State.Running}}' $image_$1_$index)
+	[ $docker_stats == "false" ] && {
+		[ $1 == "openeuler" ] && echo "${image}_$index.run.fail: 1"
 		return 1
 	}
 
-	echo "${image}.run.success: 1"
+	[ $1 == "openeuler"] && echo "${image}_$index.run.success: 1"
 }
 
 handle_build_result()
 {
 	if [ "$nr_openeuler_fail" != 0 ]; then
-		echo "openeuler build failed times: $nr_openeuler_fail"
+		echo "openeuler_build.nr_failed: $nr_openeuler_fail"
 		echo "openeuler_valid_url: $dockerfile_url"
 		exit 1
 	# centos all success, openeuler all success
@@ -144,6 +85,38 @@ handle_build_result()
 		echo "openeuler_valid_url: $dockerfile_url"
 		exit 0
 	fi
+}
+
+build()
+{
+	dockerfile_name="${file##*/}"
+	dockerfile_name="${dockerfile_name%:*}"
+	image=$(echo "$file" | awk -F '/' '{print $5}' | tr 'A-Z' 'a-z')
+
+	build_centos "centos" > /dev/null 2>&1 || return 1
+	handle_dockerfile "$dockerfile_name"
+	build_openeuler "openeuler"
+	[ $? != 0 ] && return 1
+}
+
+run()
+{
+	docker_run "centos" > /dev/null 2>&1
+	[ $? != 0 ] && return 1
+	docker_run "openeuler"
+}
+
+centos_docker()
+{
+	index=1
+	for file in $dockerfile_path
+	do
+		[[ $file =~ ^centos ]] && continue
+
+		build
+		[ $? = 0 ] && run
+		let index++
+	done
 }
 
 docker_test()
