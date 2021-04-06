@@ -115,18 +115,21 @@ class MemoryHotplugStater < Stater
 end
 
 # for kernel < v4.18-rc1
-def mount_stat(line, mount, stats)
-  case line
-  when %r{if .* then ./(.*) ; else echo}
-    mount['subtest'] = $1
-  when /^WARN\: No \/proc\/self\/uid_map exist, test skipped/
-    stats.add "mount.#{mount['subtest']}", 'skip'
-    mount['subtest'] = nil
-  when /(^(MS.+|Default.+) malfunctions$)|(^Mount flags unexpectedly changed after remount$)/
-    stats.add "mount.#{mount['subtest']}", 'fail'
-    mount['subtest'] = nil
-  when %r{make: Leaving directory .*/(.*)'}
-    stats.add "mount.#{mount['subtest']}", 'pass' if mount['subtest']
+class MountStater < Stater
+  def stat(line, stats)
+    case line
+    when /^WARN\: No \/proc\/self\/uid_map exist, test skipped/
+      # WARN: No /proc/self/uid_map exist, test skipped.
+      stats.add "#{@test_prefix}", 'skip'
+      @test_script = nil
+    when /(^(MS.+|Default.+) malfunctions$)|(^Mount flags unexpectedly changed after remount$)/
+      # Mount flags unexpectedly changed after remount
+      stats.add "#{@test_prefix}", 'fail'
+      @test_script = nil
+    when %r{make: Leaving directory .*/(.*)'}
+      # test pass if it's not skip or fail
+      stats.add "#{@test_prefix}", 'pass' if @test_script
+    end
   end
 end
 
@@ -183,6 +186,9 @@ while (line = STDIN.gets)
        /\.\/(.*\.sh).*memory-hotplug/
     # ./mem-on-off-test.sh -r 2 || echo "selftests: memory-hotplug [FAIL]"
     stater = MemoryHotplugStater.new('memory-hotplug', $1)
+  when /gcc -Wall -O2 (.*).c -o/
+    # gcc -Wall -O2 unprivileged-remount-test.c -o unprivileged-remount-test
+    stater = MountStater.new('mount', $1)
   when /^# selftests: net: (.*)/
     test_script = $1
     stater = nil
@@ -207,13 +213,9 @@ while (line = STDIN.gets)
   when /^ok kernel supports resctrl filesystem/
     test = 'resctrl'
   when %r{make: Leaving directory .*/(.*)'}
-    if test == 'mount'
-      mount_stat(line, tests_stats['mount'], stats)
-    else
-      # rli9 FIXME: consider the input has messed text like Entering doesn't match with Leaving
-      test = nil
-      test_script = nil
-    end
+    # rli9 FIXME: consider the input has messed text like Entering doesn't match with Leaving
+    test = nil
+    test_script = nil
   when /^# \[       (OK|FAIL|SKIP) \] (.*)/
     next unless test == 'net'
 
@@ -468,8 +470,6 @@ while (line = STDIN.gets)
   else
     if test == 'futex'
       # futex_stat(line, tests_stats['futex'], stats)
-    elsif test == 'mount'
-      mount_stat(line, tests_stats['mount'], stats)
     elsif test == 'x86'
       x86_stat(line, tests_stats['x86'], stats)
     elsif test == 'resctrl'

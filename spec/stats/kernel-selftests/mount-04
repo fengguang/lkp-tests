@@ -1,0 +1,10 @@
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-0d02ec6b3136c73c09e7859f0d0e4e2c4c07b49b/tools/testing/selftests/mount'
+gcc -Wall -O2    unprivileged-remount-test.c  -o /usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-0d02ec6b3136c73c09e7859f0d0e4e2c4c07b49b/tools/testing/selftests/mount/unprivileged-remount-test
+gcc -Wall -O2    nosymfollow-test.c  -o /usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-0d02ec6b3136c73c09e7859f0d0e4e2c4c07b49b/tools/testing/selftests/mount/nosymfollow-test
+TAP version 13
+1..2
+# selftests: mount: run_unprivileged_remount.sh
+ok 1 selftests: mount: run_unprivileged_remount.sh
+# selftests: mount: run_nosymfollow.sh
+ok 2 selftests: mount: run_nosymfollow.sh
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-0d02ec6b3136c73c09e7859f0d0e4e2c4c07b49b/tools/testing/selftests/mount'
