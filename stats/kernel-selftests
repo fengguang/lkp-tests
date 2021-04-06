@@ -50,6 +50,7 @@ class Stater
     when /^(ok|not ok) \d+ selftests: (#{@test}): (#{@test_script})/
       # not ok 46 selftests: net: vrf_route_leaking.sh # exit=1
       # ok 1 selftests: vm: run_vmtests
+      # ok 1 selftests: memory-hotplug: mem-on-off-test.sh
       stats.add @test_prefix.to_s, $1
     end
   end
@@ -92,17 +93,24 @@ class VmStater < Stater
   end
 end
 
-def memory_hotplug_stat(line, memory_hotplug, stats)
-  case line
-  when /selftests.*: (.+\.sh)/
-    memory_hotplug['subtest'] = $1
-  when /^\.\/(.+\.sh).+selftests: memory-hotplug/ # for kernel < v4.18-rc1
-    memory_hotplug['subtest'] = $1
-  when /^*selftests.*: memory-hotplug \[FAIL\]/
-    stats.add "memory-hotplug.#{memory_hotplug['subtest']}", 'fail'
-    memory_hotplug['subtest'] = nil
-  when %r{make: Leaving directory .*/(.*)'}
-    stats.add "memory-hotplug.#{memory_hotplug['subtest']}", 'pass' if memory_hotplug['subtest']
+class MemoryHotplugStater < Stater
+  def stat(line, stats)
+    case line
+    when /^selftests: memory-hotplug \[FAIL\]/
+      # selftests: memory-hotplug [FAIL]
+      stats.add "#{@test_prefix}", 'fail'
+      @test_script = nil
+    when %r{make: Leaving directory .*/(.*)'}
+      # do not add stats here if it has below 2 lines
+      # ok 1 selftests: memory-hotplug: mem-on-off-test.sh
+      # selftests: memory-hotplug [FAIL]
+      stats.add "#{@test_prefix}", 'pass' unless stats.key? "#{@test_prefix}" || !@test_script
+    when %r{: recipe for target.+failed}
+      # Makefile:47: recipe for target 'sysret_ss_attrs_64' failed
+      stats.add "#{@test}", 'make_fail'
+    else
+      super(line, stats)
+    end
   end
 end
 
@@ -170,6 +178,11 @@ while (line = STDIN.gets)
   when /^# selftests: (vm): (.+)/
     # selftests: vm: run_vmtests
     stater = VmStater.new($1, $2)
+  when /^# selftests: memory-hotplug: (.*\.sh)/,
+    # selftests: memory-hotplug: mem-on-off-test.sh
+       /\.\/(.*\.sh).*memory-hotplug/
+    # ./mem-on-off-test.sh -r 2 || echo "selftests: memory-hotplug [FAIL]"
+    stater = MemoryHotplugStater.new('memory-hotplug', $1)
   when /^# selftests: net: (.*)/
     test_script = $1
     stater = nil
@@ -194,9 +207,7 @@ while (line = STDIN.gets)
   when /^ok kernel supports resctrl filesystem/
     test = 'resctrl'
   when %r{make: Leaving directory .*/(.*)'}
-    if test == 'memory-hotplug'
-      memory_hotplug_stat(line, tests_stats['memory-hotplug'], stats)
-    elsif test == 'mount'
+    if test == 'mount'
       mount_stat(line, tests_stats['mount'], stats)
     else
       # rli9 FIXME: consider the input has messed text like Entering doesn't match with Leaving
@@ -357,12 +368,11 @@ while (line = STDIN.gets)
 
     subtest_stat('timers', test_script, $1, $3, stats)
   when /^*selftests.*: (.*) .*(\[|\[ )(PASS|FAIL|SKIP)/
-    next if test == 'bpf'
+    # skip "./mem-on-off-test.sh -r 2 || echo "selftests: memory-hotplug [FAIL]""
+    next if %w(bpf memory-hotplug).include? test
 
     if test == 'futex'
       # futex_stat(line, tests_stats['futex'], stats)
-    elsif test == 'memory-hotplug'
-      memory_hotplug_stat(line, tests_stats['memory-hotplug'], stats)
     elsif test == 'x86'
       x86_stat(line, tests_stats['x86'], stats)
     else
@@ -458,8 +468,6 @@ while (line = STDIN.gets)
   else
     if test == 'futex'
       # futex_stat(line, tests_stats['futex'], stats)
-    elsif test == 'memory-hotplug'
-      memory_hotplug_stat(line, tests_stats['memory-hotplug'], stats)
     elsif test == 'mount'
       mount_stat(line, tests_stats['mount'], stats)
     elsif test == 'x86'
