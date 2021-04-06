@@ -639,6 +639,16 @@ run_tests()
 	[[ $run_cached_kselftests ]] ||
 	local run_cached_kselftests="/kselftests/run_kselftest.sh"
 
+	# $ uname -r
+	# 5.9.0-0.bpo.2-amd64
+	# $ uname -r | grep -o "^[0-9]\.[0-9]*"
+	# 5.9
+	local kernel_version=$(uname -r | grep -o "^[0-9]\.[0-9]*")
+
+	# run_kselftest.sh started to support testing individually from the below commit:
+	# 5da1918446a1 selftests/run_kselftest.sh: Make each test individually selectable
+	(( $(echo "$kernel_version < 5.10" | bc -l) )) && run_cached_kselftests=
+
 	# kselftest introduced runner.sh since kernel commit 42d46e57ec97 "selftests: Extract single-test shell logic from lib.mk"
 	[[ -e kselftest/runner.sh ]] && log_cmd sed -i 's/default_timeout=45/default_timeout=300/' kselftest/runner.sh
 	for mf in $selftest_mfs; do
