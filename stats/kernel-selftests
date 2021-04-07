@@ -13,30 +13,6 @@ test = nil
 mqueue_speed = {}
 tests_stats = Hash.new { |h, k| h[k] = {} }
 
-def futex_stat_result(futex, result, stats)
-  if futex['argument'] && !(futex['argument'].include? 'none')
-    stats.add "futex.#{futex['subtest']}.#{futex['argument']}", result
-  else
-    stats.add "futex.#{futex['subtest']}", result
-  end
-
-  futex['argument'] = nil
-end
-
-def futex_stat(line, futex, stats)
-  case line
-  when /^(# )*(futex.+): /
-    futex['subtest'] = $2
-  when /^(# )*\s+Arguments: (.+)/
-    futex['argument'] = $2
-  when /Result\:\s+(PASS|FAIL)/,
-       /^selftests\:.*(PASS|FAIL)/
-    futex_stat_result(futex, $1, stats)
-  when /^(# )*(ok|not ok) \d+/
-    futex_stat_result(futex, $2, stats)
-  end
-end
-
 class Stater
   def initialize(test, test_script)
     @test = test
@@ -159,6 +135,14 @@ class X86Stater < Stater
   end
 end
 
+class FutexStater < Stater
+  def stat(line, stats)
+    # ignore detail stats of futex to avoid duplication
+    # c0e64368308a (stats/kernel-selftests: rm detail stats for futex)
+    super(line, stats)
+  end
+end
+
 def resctrl_stat(line, _resctrl, stats)
   if line =~ /^not ok\s+(.*)/
     result = 'fail'
@@ -206,6 +190,9 @@ while (line = STDIN.gets)
     # for mpx.skip
     # processor lacks MPX XSTATE(s), can not run MPX tests
     stater = X86Stater.new($1, nil)
+  when /^# selftests: (futex): (.+)/
+    # selftests: futex: run.sh
+    stater = FutexStater.new($1, $2)
   when /^# selftests: net: (.*)/
     test_script = $1
     stater = nil
@@ -266,8 +253,6 @@ while (line = STDIN.gets)
     next unless test == 'ia64'
 
     detail_stat('ia64', $2, $1, stats)
-  when /^# selftests: futex: (.*)/
-    test_script = $1
   when /^# selftests: netfilter: (.*)/
     test_script = $1
   when /^# (PASS|FAIL|SKIP): (.*)/
@@ -371,7 +356,6 @@ while (line = STDIN.gets)
     test_script = $1
   when /# (ok|fail|skip) \d+ (.*)/
     next unless %w(timens net).include? test
-    # futex_stat(line, tests_stats['futex'], stats) if test == 'futex'
     subtest_stat(test, test_script, $2, $1, stats)
   when /^# selftests: timers: (.*)/
     test_script = $1
@@ -391,11 +375,7 @@ while (line = STDIN.gets)
     # skip "selftests: mpx-mini-test_64 [PASS]"
     next if %w(bpf memory-hotplug x86).include? test
 
-    if test == 'futex'
-      # futex_stat(line, tests_stats['futex'], stats)
-    else
-      stats.add "#{test}.#{Regexp.last_match[1].strip}", Regexp.last_match[3]
-    end
+    stats.add "#{test}.#{Regexp.last_match[1].strip}", Regexp.last_match[3]
   when /^# selftests: livepatch: (.*)/
     test_script = $1
   when /^# TEST: (.*) \.\.\. (ok|fail|skip)/
@@ -484,11 +464,7 @@ while (line = STDIN.gets)
 
     subtest_case_name1 = $1
   else
-    if test == 'futex'
-      # futex_stat(line, tests_stats['futex'], stats)
-    elsif test == 'resctrl'
-      resctrl_stat(line, tests_stats['resctrl'], stats)
-    end
+    resctrl_stat(line, tests_stats['resctrl'], stats) if test == 'resctrl'
   end
 end
 
