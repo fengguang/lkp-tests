@@ -133,18 +133,28 @@ class MountStater < Stater
   end
 end
 
-def x86_stat(line, _x86, stats)
-  case line
-  when /can not run MPX tests/
-    @pmx = 'skip'
-  when /^*selftests.*: (.*) .*(PASS|FAIL)/
-    test_script = $1.strip
-    result = $2
-    if test_script =~ /mpx-mini-test/ && @pmx
-      stats.add "x86.#{test_script}", @pmx
+class X86Stater < Stater
+  def stat(line, stats)
+    case line
+    when /can not run MPX/
+      # processor lacks MPX XSTATE(s), can not run MPX tests
+      @mpx_result = 'skip'
+    when /^selftests.*: (.*) \[(PASS|FAIL|SKIP)\]/
+      # selftests: mpx-mini-test_64 [PASS]
+      @test_script = $1
+      @result = $2
+      if @test_script =~ /mpx-mini-test/ && @mpx_result
+        # processor lacks MPX XSTATE(s), can not run MPX tests
+        stats.add "#{@test}.#{@test_script}", @mpx_result
+      else
+        # selftests: mpx-mini-test_64 [PASS]
+        stats.add "#{@test}.#{@test_script}", @result
+      end
+    when %r{: recipe for target.+failed}
+      # Makefile:47: recipe for target 'sysret_ss_attrs_64' failed
+      stats.add "#{@test}", 'make_fail'
     else
-      stats.add "x86.#{test_script}", result
-      @pmx = nil
+      super(line, stats)
     end
   end
 end
@@ -189,6 +199,13 @@ while (line = STDIN.gets)
   when /gcc -Wall -O2 (.*).c -o/
     # gcc -Wall -O2 unprivileged-remount-test.c -o unprivileged-remount-test
     stater = MountStater.new('mount', $1)
+  when /^# selftests: (x86): (.+)/
+    # selftests: x86: single_step_syscall_32
+    stater = X86Stater.new($1, $2)
+  when /^make: Entering.*(x86)'/
+    # for mpx.skip
+    # processor lacks MPX XSTATE(s), can not run MPX tests
+    stater = X86Stater.new($1, nil)
   when /^# selftests: net: (.*)/
     test_script = $1
     stater = nil
@@ -371,12 +388,11 @@ while (line = STDIN.gets)
     subtest_stat('timers', test_script, $1, $3, stats)
   when /^*selftests.*: (.*) .*(\[|\[ )(PASS|FAIL|SKIP)/
     # skip "./mem-on-off-test.sh -r 2 || echo "selftests: memory-hotplug [FAIL]""
-    next if %w(bpf memory-hotplug).include? test
+    # skip "selftests: mpx-mini-test_64 [PASS]"
+    next if %w(bpf memory-hotplug x86).include? test
 
     if test == 'futex'
       # futex_stat(line, tests_stats['futex'], stats)
-    elsif test == 'x86'
-      x86_stat(line, tests_stats['x86'], stats)
     else
       stats.add "#{test}.#{Regexp.last_match[1].strip}", Regexp.last_match[3]
     end
@@ -470,8 +486,6 @@ while (line = STDIN.gets)
   else
     if test == 'futex'
       # futex_stat(line, tests_stats['futex'], stats)
-    elsif test == 'x86'
-      x86_stat(line, tests_stats['x86'], stats)
     elsif test == 'resctrl'
       resctrl_stat(line, tests_stats['resctrl'], stats)
     end
