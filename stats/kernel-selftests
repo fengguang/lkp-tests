@@ -11,7 +11,6 @@ stats = LKP::Stats.new
 
 test = nil
 mqueue_speed = {}
-tests_stats = Hash.new { |h, k| h[k] = {} }
 
 class Stater
   def initialize(test, test_script)
@@ -143,15 +142,17 @@ class FutexStater < Stater
   end
 end
 
-def resctrl_stat(line, _resctrl, stats)
-  if line =~ /^not ok\s+(.*)/
-    result = 'fail'
-  elsif line =~ /^ok\s+(.*)/
-    result = 'pass'
-  else return
+class ResctrlStater < Stater
+  def stat(line, stats)
+    case line
+    when /^not ok\s+(.*)/
+      # not ok CAT: cache miss rate within 4%
+      stats.add "#{@test}.#{$1}", 'fail' unless stats.key? "#{@test}.#{$1}"
+    when /^ok\s+(.*)/
+      # ok CAT: test
+      stats.add "#{@test}.#{$1}", 'pass' unless stats.key? "#{@test}.#{$1}"
+    end
   end
-
-  stats.add "resctrl.#{$1.strip}", result unless stats.key? "resctrl.#{$1.strip}"
 end
 
 def subtest_stat(test, test_script, subtest, result, stats)
@@ -193,6 +194,8 @@ while (line = STDIN.gets)
   when /^# selftests: (futex): (.+)/
     # selftests: futex: run.sh
     stater = FutexStater.new($1, $2)
+  when /^ok kernel supports (resctrl) filesystem/
+    stater = ResctrlStater.new($1, nil)
   when /^# selftests: net: (.*)/
     test_script = $1
     stater = nil
@@ -214,8 +217,6 @@ while (line = STDIN.gets)
       subtest_case_result = nil
       all_subtest_case_skip = true
     end
-  when /^ok kernel supports resctrl filesystem/
-    test = 'resctrl'
   when %r{make: Leaving directory .*/(.*)'}
     # rli9 FIXME: consider the input has messed text like Entering doesn't match with Leaving
     test = nil
@@ -463,8 +464,6 @@ while (line = STDIN.gets)
     next unless test_script == 'nft_concat_range.sh'
 
     subtest_case_name1 = $1
-  else
-    resctrl_stat(line, tests_stats['resctrl'], stats) if test == 'resctrl'
   end
 end
 
