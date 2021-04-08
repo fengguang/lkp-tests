@@ -155,6 +155,34 @@ class ResctrlStater < Stater
   end
 end
 
+class MptcpStater < Stater
+  def stat(line, stats)
+    case line
+    when /^# (.*) ?\[ (OK|FAIL|SKIP) \]/
+      # for "ns1 MPTCP -> ns1 (10.0.1.1:10000      ) MPTCP (duration    75ms) [ OK ]"
+      # it's @result is "OK"
+      # it's @test_case is "ns1 MPTCP -> ns1 (10.0.1.1:10000      ) MPTCP"
+      @result = $2
+      @test_case = $1.gsub(/\(duration(.*)\)/, '').strip.gsub(/[-\t\r\n\f]/, '_')
+      if @test_script == 'mptcp_connect.sh'
+        # ns1 MPTCP -> ns1 (10.0.1.1:10000      ) MPTCP (duration    75ms) [ OK ]
+
+        # to reduce below situation
+        # ns2 MPTCP -> ns4 (dead:beef:3::1:10023) MPTCP copyfd_io_poll: poll timed out (events: POLLIN 1, POLLOUT 0)
+        # (duration 30429ms) [ FAIL ] client exit code 0, server 2
+        # but not exclude below line
+        # setsockopt(..., TCP_ULP, "mptcp", ...) blocked  [ OK ]
+        stats.add "#{@test_prefix}.#{@test_case}", @result if @test_case =~ /MPTCP|mptcp/
+      else
+        # defaults addr list                                 [ OK ]
+        stats.add "#{@test_prefix}.#{@test_case}", @result
+      end
+    else
+      super(line, stats)
+    end
+  end
+end
+
 def subtest_stat(test, test_script, subtest, result, stats)
   subtest_case_name = subtest.strip.gsub(/[-\t\r\n\f]/, '_')
 
@@ -196,6 +224,9 @@ while (line = STDIN.gets)
     stater = FutexStater.new($1, $2)
   when /^ok kernel supports (resctrl) filesystem/
     stater = ResctrlStater.new($1, nil)
+  when /^# selftests: (net\/mptcp): (.*\.sh)/
+    # selftests: net/mptcp: mptcp_connect.sh
+    stater = MptcpStater.new($1, $2)
   when /^# selftests: net: (.*)/
     test_script = $1
     stater = nil
@@ -445,21 +476,6 @@ while (line = STDIN.gets)
     result = 'pass' if $1 == 'ok'
 
     stats.add "#{test}.#{test_script}", result unless %w(pmtu.sh fib_rule_tests.sh reuseport_addr_any.sh traceroute.sh altnames.sh icmp_redirect.sh ip6_gre_headroom.sh fib-onlink-tests.sh mq_open_tests pidfd_fdinfo_test pidfd_open_test pidfd_poll_test pidfd_wait pstore_tests pstore_post_reboot_tests kmod.sh).include? test_script
-  when /^# (.*) ?\[ (OK|FAIL|SKIP) \]/
-    next unless test == 'mptcp'
-
-    # $1 is "ns1 MPTCP -> ns1 (10.0.1.1:10000      ) MPTCP   (duration  1089ms)"
-    # test_script is "ns1 MPTCP -> ns1 (10.0.1.1:10000      ) MPTCP"
-    # $2 is "OK", $2 should be saved before changing $1
-    result = $2
-    test_script = $1.gsub(/\(duration(.*)\)/, '')
-    # to reduce below situation
-    # ns2 MPTCP -> ns4 (dead:beef:3::1:10023) MPTCP copyfd_io_poll: poll timed out (events: POLLIN 1, POLLOUT 0)
-    # (duration 30429ms) [ FAIL ] client exit code 0, server 2
-    # but not exclude below line
-    # setsockopt(..., TCP_ULP, "mptcp", ...) blocked  [ OK ]
-    next unless test_script =~ /MPTCP|mptcp/
-    detail_stat('mptcp', test_script, result, stats)
   when /^# TEST: (.*)/
     next unless test_script == 'nft_concat_range.sh'
 
