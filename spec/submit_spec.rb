@@ -3,7 +3,7 @@ require "#{LKP_SRC}/lib/yaml"
 
 def stable_yaml_file(yaml_file)
   job = load_yaml(yaml_file)
-  delete_job_key = %w(LKP_DEBUG_PREFIX lkp_initrd_user job_origin my_token my_email my_name)
+  delete_job_key = %w(LKP_DEBUG_PREFIX lkp_initrd_user job_origin my_token my_email my_name submit_id)
   job.delete_if do |key, _|
     delete_job_key.include?(key) ||
       key.to_s.start_with?('#! ') ||
