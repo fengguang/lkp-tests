@@ -183,6 +183,20 @@ class MptcpStater < Stater
   end
 end
 
+class LivepatchStater < Stater
+  def stat(line, stats)
+    case line
+    when /^# TEST: (.*) \.\.\. (ok|fail|skip)/
+      # TEST: multiple livepatches ... ok
+      @result = $2
+      @test_case = $1.gsub(/\(duration(.*)\)/, '').strip.gsub(/[-\t\r\n\f]/, '_')
+      stats.add "#{@test_prefix}.#{@test_case}", @result
+    else
+      super(line, stats)
+    end
+  end
+end
+
 def subtest_stat(test, test_script, subtest, result, stats)
   subtest_case_name = subtest.strip.gsub(/[-\t\r\n\f]/, '_')
 
@@ -227,6 +241,9 @@ while (line = STDIN.gets)
   when /^# selftests: (net\/mptcp): (.*\.sh)/
     # selftests: net/mptcp: mptcp_connect.sh
     stater = MptcpStater.new($1, $2)
+  when /^# selftests: (livepatch): (.*)/
+    # selftests: livepatch: test-livepatch.sh
+    stater = LivepatchStater.new($1, $2)
   when /^# selftests: net: (.*)/
     test_script = $1
     stater = nil
@@ -408,12 +425,6 @@ while (line = STDIN.gets)
     next if %w(bpf memory-hotplug x86).include? test
 
     stats.add "#{test}.#{Regexp.last_match[1].strip}", Regexp.last_match[3]
-  when /^# selftests: livepatch: (.*)/
-    test_script = $1
-  when /^# TEST: (.*) \.\.\. (ok|fail|skip)/
-    next unless test == 'livepatch'
-
-    subtest_stat('livepatch', test_script, $1, $2, stats)
   when /^# selftests: bpf: (.*)/
     test_script = $1
 
