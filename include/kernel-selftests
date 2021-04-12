@@ -155,8 +155,8 @@ need_kconfig:
 - CONFIG_ANDROID=y
 - CONFIG_DRM=y
 - CONFIG_DRM_VGEM=y
-- CONFIG_ION=y # Depends on: STAGING [=y]
-- CONFIG_ION_SYSTEM_HEAP=y ~ ">= v4.12-rc1" # Depends on: STAGING [=y] && ION [=y]
+- CONFIG_ION=y ~ "< v5.11-rc1" # Depends on: STAGING [=y]
+- CONFIG_ION_SYSTEM_HEAP=y ~ ">= v4.12-rc1" && "< v5.11-rc1" # Depends on: STAGING [=y] && ION [=y]
 - CONFIG_STAGING=y
 % elsif ___.group == "group-01"
 - CONFIG_ARCH_HAVE_NMI_SAFE_CMPXCHG=y
