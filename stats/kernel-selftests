@@ -213,6 +213,24 @@ class TimensStater < Stater
   end
 end
 
+class TimersStater < Stater
+  def stat(line, stats)
+    case line
+    when /^# (.+\w)(\.\.\.)?\s+\[(OK|FAIL|SKIP|UNSUPPORTED)\]/,
+         /^# ([^:]+\w)(\s?:.+)\[(OK|FAIL|SKIP|UNSUPPORTED)\]/
+      # Check itimer virtual... [OK]
+      # Nanosleep CLOCK_MONOTONIC                 [OK]
+      # Mqueue latency :                          [OK]
+      # Testing consistency with 8 threads for 30 seconds: [OK]
+      # Estimating clock drift: 0.0(est) 0.0(act)     [OK]
+      # CLOCK_TAI              RELTIME ONE-SHOT count:                   1 : [OK]
+      stats.add "#{@test_prefix}.#{$1}", $3
+    else
+      super(line, stats)
+    end
+  end
+end
+
 def subtest_stat(test, test_script, subtest, result, stats)
   subtest_case_name = subtest.strip.gsub(/[-\t\r\n\f]/, '_')
 
@@ -263,6 +281,9 @@ while (line = STDIN.gets)
   when /# selftests: (timens): (.*)/
     # selftests: timens: timens
     stater = TimensStater.new($1, $2)
+  when /# selftests: (timers): (.*)/
+    # selftests: timers: posix_timers
+    stater = TimersStater.new($1, $2)
   when /^# selftests: net: (.*)/
     test_script = $1
     stater = nil
@@ -421,19 +442,6 @@ while (line = STDIN.gets)
     next unless %w(net).include? test
 
     subtest_stat(test, test_script, $2, $1, stats)
-  when /^# selftests: timers: (.*)/
-    test_script = $1
-  when /^# (.+\w)(\.\.\.)?\s+\[(OK|FAIL|SKIP|UNSUPPORTED)\]/,
-       /^# ([^:]+\w)(\s?:.+)\[(OK|FAIL|SKIP|UNSUPPORTED)\]/
-    # Check itimer virtual... [OK]
-    # Nanosleep CLOCK_MONOTONIC                 [OK]
-    # Mqueue latency :                          [OK]
-    # Testing consistency with 8 threads for 30 seconds: [OK]
-    # Estimating clock drift: 0.0(est) 0.0(act)     [OK]
-    # CLOCK_TAI              RELTIME ONE-SHOT count:                   1 : [OK]
-    next unless test == 'timers'
-
-    subtest_stat('timers', test_script, $1, $3, stats)
   when /^*selftests.*: (.*) .*(\[|\[ )(PASS|FAIL|SKIP)/
     # skip "./mem-on-off-test.sh -r 2 || echo "selftests: memory-hotplug [FAIL]""
     # skip "selftests: mpx-mini-test_64 [PASS]"

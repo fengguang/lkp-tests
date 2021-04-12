@@ -11,8 +11,8 @@ timers.nsleep-lat.nsleep_latency_CLOCK_BOOTTIME.pass: 1
 timers.nsleep-lat.pass: 1
 timers.set-timer-lat.CLOCK_REALTIME_ABSTIME_PERIODIC_timer_fired_early.pass: 1
 timers.set-timer-lat.CLOCK_MONOTONIC_ABSTIME_PERIODIC_timer_fired_early.pass: 1
-timers.set-timer-lat.CLOCK_REALTIME_ALARM_RELTIME_ONE_SHOT_timer_fired_early.pass: 1
-timers.set-timer-lat.CLOCK_TAI_RELTIME_ONE_SHOT_count.pass: 1
+timers.set-timer-lat.CLOCK_REALTIME_ALARM_RELTIME_ONE-SHOT_timer_fired_early.pass: 1
+timers.set-timer-lat.CLOCK_TAI_RELTIME_ONE-SHOT_count.pass: 1
 timers.set-timer-lat.pass: 1
 timers.mqueue-lat.Mqueue_latency.pass: 1
 timers.mqueue-lat.pass: 1
