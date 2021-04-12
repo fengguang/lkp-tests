@@ -197,6 +197,22 @@ class LivepatchStater < Stater
   end
 end
 
+class TimensStater < Stater
+  def stat(line, stats)
+    case line
+    when /# (ok|fail|skip) \d+ (.*):(.*)/
+      # ok 1 clockid: 1 abs:0
+      @test_case = $2 + ':' + $3
+      stats.add "#{@test_prefix}.#{@test_case}", $1
+    when /# (ok|fail|skip) \d+ (.*)/
+      # ok 1 Passed for CLOCK_BOOTTIME (syscall)
+      stats.add "#{@test_prefix}.#{$2}", $1
+    else
+      super(line, stats)
+    end
+  end
+end
+
 def subtest_stat(test, test_script, subtest, result, stats)
   subtest_case_name = subtest.strip.gsub(/[-\t\r\n\f]/, '_')
 
@@ -244,6 +260,9 @@ while (line = STDIN.gets)
   when /^# selftests: (livepatch): (.*)/
     # selftests: livepatch: test-livepatch.sh
     stater = LivepatchStater.new($1, $2)
+  when /# selftests: (timens): (.*)/
+    # selftests: timens: timens
+    stater = TimensStater.new($1, $2)
   when /^# selftests: net: (.*)/
     test_script = $1
     stater = nil
@@ -395,16 +414,12 @@ while (line = STDIN.gets)
   when /# (ok|fail|skip) \d+ (.*):(.*)/
     if test == 'pidfd'
       subtest_stat('pidfd', test_script, $2, $1, stats) unless test_script == 'pidfd_test'
-    elsif test == 'timens'
-      subtest_case_name = $2 + ':' + $3
-      subtest_stat('timens', test_script, subtest_case_name, $1, stats)
     end
   when /# selftests: pstore: (.*)/
     test_script = $1
-  when /# selftests: timens: (.*)/
-    test_script = $1
   when /# (ok|fail|skip) \d+ (.*)/
-    next unless %w(timens net).include? test
+    next unless %w(net).include? test
+
     subtest_stat(test, test_script, $2, $1, stats)
   when /^# selftests: timers: (.*)/
     test_script = $1
