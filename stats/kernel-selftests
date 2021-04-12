@@ -22,11 +22,16 @@ class Stater
 
   def stat(line, stats)
     case line
-    when /^(ok|not ok) \d+ selftests: (#{@test}): (#{@test_script})/
-      # not ok 46 selftests: net: vrf_route_leaking.sh # exit=1
-      # ok 1 selftests: vm: run_vmtests
-      # ok 1 selftests: memory-hotplug: mem-on-off-test.sh
-      stats.add @test_prefix.to_s, $1
+    when /^(ok|not ok) \d+ selftests: (#{@test}): (#{@test_script})( # SKIP)?/
+      if $4
+        # not ok 2 selftests: pstore: pstore_post_reboot_tests # SKIP
+        stats.add @test_prefix.to_s, 'skip'
+      else
+        # not ok 46 selftests: net: vrf_route_leaking.sh # exit=1
+        # ok 1 selftests: vm: run_vmtests
+        # ok 1 selftests: memory-hotplug: mem-on-off-test.sh
+        stats.add @test_prefix.to_s, $1
+      end
     end
   end
 end
@@ -231,6 +236,18 @@ class TimersStater < Stater
   end
 end
 
+class PstoreStater < Stater
+  def stat(line, stats)
+    case line
+    when /^# (.*) \.\.\. (ok|fail|skip)/
+      # Checking pstore backend is registered ... ok
+      stats.add "#{@test_prefix}.#{$1}", $2
+    else
+      super(line, stats)
+    end
+  end
+end
+
 def subtest_stat(test, test_script, subtest, result, stats)
   subtest_case_name = subtest.strip.gsub(/[-\t\r\n\f]/, '_')
 
@@ -284,6 +301,9 @@ while (line = STDIN.gets)
   when /# selftests: (timers): (.*)/
     # selftests: timers: posix_timers
     stater = TimersStater.new($1, $2)
+  when /# selftests: (pstore): (.*)/
+    # selftests: pstore: pstore_tests
+    stater = PstoreStater.new($1, $2)
   when /^# selftests: net: (.*)/
     test_script = $1
     stater = nil
@@ -436,8 +456,6 @@ while (line = STDIN.gets)
     if test == 'pidfd'
       subtest_stat('pidfd', test_script, $2, $1, stats) unless test_script == 'pidfd_test'
     end
-  when /# selftests: pstore: (.*)/
-    test_script = $1
   when /# (ok|fail|skip) \d+ (.*)/
     next unless %w(net).include? test
 
@@ -470,8 +488,6 @@ while (line = STDIN.gets)
   when /^# Test   \d+: (.*) ... (PASS|Fail).*/
     next unless test_script == 'test_align'
 
-  when /^# (.*) \.\.\. (ok|fail|skip)/
-    subtest_stat('pstore', test_script, $1, $2, stats) if test == 'pstore'
   when /^# average (map|unmap) latency\(us\):(.*) standard deviation:(.*)/
     # average map latency(us):0.8 standard deviation:1.2
     # average unmap latency(us):0.6 standard deviation:1.1
@@ -502,14 +518,14 @@ while (line = STDIN.gets)
   when /^LKP SKIP (.*)/
     stats.add $1, 'skip'
   when /^(ok|not ok) \d+ selftests: (\S*): (\S*)( # SKIP)?/
-    next if %w(memory-hotplug).include? test
+    next if %w(memory-hotplug pstore).include? test
 
     test = $2
     test_script = $3
     result = $4 =~ /SKIP/ ? 'skip' : 'fail'
     result = 'pass' if $1 == 'ok'
 
-    stats.add "#{test}.#{test_script}", result unless %w(pmtu.sh fib_rule_tests.sh reuseport_addr_any.sh traceroute.sh altnames.sh icmp_redirect.sh ip6_gre_headroom.sh fib-onlink-tests.sh mq_open_tests pidfd_fdinfo_test pidfd_open_test pidfd_poll_test pidfd_wait pstore_tests pstore_post_reboot_tests kmod.sh).include? test_script
+    stats.add "#{test}.#{test_script}", result unless %w(pmtu.sh fib_rule_tests.sh reuseport_addr_any.sh traceroute.sh altnames.sh icmp_redirect.sh ip6_gre_headroom.sh fib-onlink-tests.sh mq_open_tests pidfd_fdinfo_test pidfd_open_test pidfd_poll_test pidfd_wait kmod.sh).include? test_script
   when /^# TEST: (.*)/
     next unless test_script == 'nft_concat_range.sh'
 
