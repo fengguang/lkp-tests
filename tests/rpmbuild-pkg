@@ -108,6 +108,32 @@ upload_rpm_pkg()
 	done
 }
 
+handle_rpm_list()
+{
+	rpm_list=($(show_rpm_files | xargs basename -a))
+	srpm_list=($(show_src_rpm_files | xargs basename -a))
+	full_list=(${rpm_list[@]} ${srpm_list[@]})
+	j=0
+
+	for rpm_name in ${full_list[@]}
+	do
+		full_list[$j]="\"/srv${rpm_dest}/${rpm_name}\""
+		[[ ${rpm_name} =~ "src.rpm" ]] && full_list[$j]="\"/srv${src_rpm_dest}/${rpm_name}\""
+		((j++))
+	done
+
+	full_list=$(echo ${full_list[@]} | sed 's; ;,;g')
+}
+
+update_repo_mq()
+{
+	handle_rpm_list
+
+	curl -H 'Content-Type: Application/json' -XPOST "${LKP_SERVER}:10003/upload" \
+		-d "{\"upload_rpms\": ["${full_list}"]}"
+}
+
 [ -n "$repo_name" ] && from_srpm || from_git
 build_rpm
 upload_rpm_pkg
+update_repo_mq
