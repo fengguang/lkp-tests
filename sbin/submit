@@ -5,7 +5,6 @@
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
 require "#{LKP_SRC}/lib/job2sh"
-require "#{LKP_SRC}/lib/distro_info"
 require "#{LKP_SRC}/lib/scheduler_client"
 require 'optparse'
 require 'yaml'
