@@ -28,7 +28,7 @@ setup_wget()
 http_get_file()
 {
 	check_create_base_dir "$2"
-	http_do_request "$1" -O "$2"
+	http_escape_request "$1" -O "$2"
 }
 
 http_get_directory()
@@ -42,7 +42,7 @@ http_get_directory()
 http_get_newer()
 {
 	local path="$(dirname "$2")"
-	http_do_request "$1" -N -P "$path"
+	http_escape_request "$1" -N -P "$path"
 }
 
 http_get_cgi()
