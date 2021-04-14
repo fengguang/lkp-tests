@@ -1,0 +1,8 @@
+2021-04-14 04:30:10 /kselftests/run_kselftest.sh -c dma
+TAP version 13
+1..1
+# selftests: dma: dma_map_benchmark
+# dma mapping benchmark: threads:1 seconds:20 node:-1 dir:BIDIRECTIONAL
+# average map latency(us):0.7 standard deviation:1.1
+# average unmap latency(us):0.6 standard deviation:0.9
+ok 1 selftests: dma: dma_map_benchmark

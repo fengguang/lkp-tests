@@ -248,6 +248,21 @@ class PstoreStater < Stater
   end
 end
 
+class DmaStater < Stater
+  def stat(line, stats)
+    case line
+    when /^# average (map|unmap) latency\(us\):(.*) standard deviation:(.*)/
+      # average unmap latency(us):0.6 standard deviation:1.1
+      # average map latency(us):0.8 standard deviation:1.2
+      @test_case = "average_#{$1}_latency"
+      stats.add "#{@test_prefix}.#{@test_case}", $2.to_f
+      stats.add "#{@test_prefix}.#{@test_case}_stddev", $3.to_f
+    else
+      super(line, stats)
+    end
+  end
+end
+
 def subtest_stat(test, test_script, subtest, result, stats)
   subtest_case_name = subtest.strip.gsub(/[-\t\r\n\f]/, '_')
 
@@ -304,6 +319,9 @@ while (line = STDIN.gets)
   when /# selftests: (pstore): (.*)/
     # selftests: pstore: pstore_tests
     stater = PstoreStater.new($1, $2)
+  when /# selftests: (dma): (.*)/
+    # selftests: dma: dma_map_benchmark
+    stater = DmaStater.new($1, $2)
   when /^# selftests: net: (.*)/
     test_script = $1
     stater = nil
@@ -488,14 +506,6 @@ while (line = STDIN.gets)
   when /^# Test   \d+: (.*) ... (PASS|Fail).*/
     next unless test_script == 'test_align'
 
-  when /^# average (map|unmap) latency\(us\):(.*) standard deviation:(.*)/
-    # average map latency(us):0.8 standard deviation:1.2
-    # average unmap latency(us):0.6 standard deviation:1.1
-    next unless test == 'dma'
-
-    subtest_case_name = "dma_map_benchmark.average_#{$1}_latency"
-    stats.add test + "." + subtest_case_name, $2.to_f
-    stats.add test + "." + subtest_case_name + "_stddev", $3.to_f
   when /^# selftests: mqueue: (.*)/
     test_script = $1
   when /^# (.*):.*(PASS|FAIL|SKIP)/
