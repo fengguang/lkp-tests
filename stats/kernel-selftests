@@ -263,6 +263,19 @@ class DmaStater < Stater
   end
 end
 
+class PidfdStater < Stater
+  def stat(line, stats)
+    case line
+    when /# (ok|fail|skip) \d+ (.*)(:.*)?/
+      # ok 1 pidfd poll test: pass
+      # ok 1 global.wait_simple
+      stats.add "#{@test_prefix}.#{$2}", $1 unless @test_script == 'pidfd_test'
+    else
+      super(line, stats)
+    end
+  end
+end
+
 def subtest_stat(test, test_script, subtest, result, stats)
   subtest_case_name = subtest.strip.gsub(/[-\t\r\n\f]/, '_')
 
@@ -322,6 +335,9 @@ while (line = STDIN.gets)
   when /# selftests: (dma): (.*)/
     # selftests: dma: dma_map_benchmark
     stater = DmaStater.new($1, $2)
+  when /# selftests: (pidfd): (.*)/
+    # selftests: pidfd: pidfd_poll_test
+    stater = PidfdStater.new($1, $2)
   when /^# selftests: net: (.*)/
     test_script = $1
     stater = nil
@@ -468,12 +484,6 @@ while (line = STDIN.gets)
     all_subtest_case_skip = subtest_case_result == 'SKIP'
   when /# selftests: membarrier: (.*)/
     test_script = $1
-  when /# selftests: pidfd: (.*)/
-    test_script = $1
-  when /# (ok|fail|skip) \d+ (.*):(.*)/
-    if test == 'pidfd'
-      subtest_stat('pidfd', test_script, $2, $1, stats) unless test_script == 'pidfd_test'
-    end
   when /# (ok|fail|skip) \d+ (.*)/
     next unless %w(net).include? test
 
@@ -535,7 +545,7 @@ while (line = STDIN.gets)
     result = $4 =~ /SKIP/ ? 'skip' : 'fail'
     result = 'pass' if $1 == 'ok'
 
-    stats.add "#{test}.#{test_script}", result unless %w(pmtu.sh fib_rule_tests.sh reuseport_addr_any.sh traceroute.sh altnames.sh icmp_redirect.sh ip6_gre_headroom.sh fib-onlink-tests.sh mq_open_tests pidfd_fdinfo_test pidfd_open_test pidfd_poll_test pidfd_wait kmod.sh).include? test_script
+    stats.add "#{test}.#{test_script}", result unless %w(pmtu.sh fib_rule_tests.sh reuseport_addr_any.sh traceroute.sh altnames.sh icmp_redirect.sh ip6_gre_headroom.sh fib-onlink-tests.sh mq_open_tests kmod.sh).include? test_script
   when /^# TEST: (.*)/
     next unless test_script == 'nft_concat_range.sh'
 
