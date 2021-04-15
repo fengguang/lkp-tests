@@ -122,7 +122,7 @@ replace_source()
 	echo "source=(" > $1
 	for url in ${source[@]}
 	do
-		echo "$url" | egrep 'git\+|\.git$' && {
+		echo "$url" | egrep 'git\+|\.git$' > /dev/null && {
 			[ -n "$repo_dir" ] && {
 				url="${repo_dir}git://${LKP_SERVER}/${upstream_dir}/${upstream_repo}#commit=${upstream_commit}"
 				[ -n "$git_tag" ] && {
