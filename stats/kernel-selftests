@@ -276,6 +276,24 @@ class PidfdStater < Stater
   end
 end
 
+class FirmwareStater < Stater
+  def stat(line, stats)
+    case line
+    when /^# Running kernel configuration test \d+ -- (.*)/
+      # Running kernel configuration test 1 -- rare
+      @test_case = $1
+    when /^# Testing with the (file .*)\.\.\.$/
+      # Testing with the file missing...
+      @test_subcase = $1
+    when /^# (.*): ?(PASS|OK|FAIL|SKIP|Pass|Fail|Skip)/
+      # Batched request_firmware_into_buf() nofile try #1: OK
+      stats.add "#{@test_prefix}.#{@test_case}.#{@test_subcase}.#{$1}", $2
+    else
+      super(line, stats)
+    end
+  end
+end
+
 def subtest_stat(test, test_script, subtest, result, stats)
   subtest_case_name = subtest.strip.gsub(/[-\t\r\n\f]/, '_')
 
@@ -338,6 +356,9 @@ while (line = STDIN.gets)
   when /# selftests: (pidfd): (.*)/
     # selftests: pidfd: pidfd_poll_test
     stater = PidfdStater.new($1, $2)
+  when /# selftests: (firmware): (.*)/
+    # selftests: firmware: fw_run_test.sh
+    stater = FirmwareStater.new($1, $2)
   when /^# selftests: net: (.*)/
     test_script = $1
     stater = nil
@@ -497,19 +518,6 @@ while (line = STDIN.gets)
   when /^# selftests: bpf: (.*)/
     test_script = $1
 
-  when /^# Running kernel configuration test \d+ -- (.*)/
-    next unless test == 'firmware'
-
-    test_script = $1
-  when /^# Testing with the (file .*)\.\.\.$/
-    next unless test == 'firmware'
-
-    subtest_case_name1 = $1
-  when /^# (.*): ?(PASS|OK|FAIL|SKIP|Pass|Fail|Skip)/
-    if test == 'firmware'
-      subtest_case_name = subtest_case_name1 + '.' + $1
-      subtest_stat('firmware', test_script, subtest_case_name, $2, stats)
-    end
   when /^# Test case: (.*) .. \[(PASS|FAIL|SKIP)\]/
     next unless %w(test_sysctl test_sock test_sock_addr.sh).include? test_script
 
