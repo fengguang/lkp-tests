@@ -294,6 +294,27 @@ class FirmwareStater < Stater
   end
 end
 
+class CapabilitiesStater < Stater
+  def stat(line, stats)
+    case line
+    when /\[RUN\].*(Tests with uid .*) +++/
+      # [RUN] +++ Tests with uid == 0 +++
+      # # [RUN] +++ Tests with uid != 0 +++
+      @test_case = $1
+    when /^Pass (\d+) Fail (\d+) Xfail (\d+) Xpass (\d+) Skip (\d+) Error (\d+)/,
+         /^# # Totals: pass:(\d+) fail:(\d+) xfail:(\d+) xpass:(\d+) skip:(\d+) error:(\d+)/
+      # Pass 9 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
+      # # Totals: pass:9 fail:0 xfail:0 xpass:0 skip:0 error:0
+      @result = 'skip'
+      @result = 'fail' if $2 != '0' || $3 != '0' || $6 != '0'
+      @result = 'pass' if $2 == '0' && $3 == '0' && $6 == '0'
+      stats.add "#{@test_prefix}.#{@test_case}", @result
+    else
+      super(line, stats)
+    end
+  end
+end
+
 def subtest_stat(test, test_script, subtest, result, stats)
   subtest_case_name = subtest.strip.gsub(/[-\t\r\n\f]/, '_')
 
@@ -359,6 +380,9 @@ while (line = STDIN.gets)
   when /# selftests: (firmware): (.*)/
     # selftests: firmware: fw_run_test.sh
     stater = FirmwareStater.new($1, $2)
+  when /selftests: (capabilities): (.*)/
+    # selftests: capabilities: test_execve
+    stater = CapabilitiesStater.new($1, $2)
   when /^# selftests: net: (.*)/
     test_script = $1
     stater = nil
@@ -396,18 +420,6 @@ while (line = STDIN.gets)
     next unless test == 'breakpoints'
 
     detail_stat('breakpoints', $2, $1, stats)
-  when /^# \[RUN\].*(Tests with uid .*) +++/
-    next unless test == 'capabilities'
-
-    test_script = $1.strip
-  when /^Pass (\d+) Fail (\d+) Xfail (\d+) Xpass (\d+) Skip (\d+) Error (\d+)/
-    next unless test == 'capabilities'
-
-    result = 'skip'
-    result = 'fail' if $2 != '0' || $3 != '0' || $6 != '0'
-    result = 'pass' if $2 == '0' && $3 == '0' && $6 == '0'
-
-    stats.add "#{test}.#{test_script}", result
   when /^(Check .*)... \[(OK|FAIL|SKIP)\]/
     next unless test == 'exec'
     next if $1 =~ /execveat/

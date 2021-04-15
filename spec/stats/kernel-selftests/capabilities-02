@@ -1,0 +1,64 @@
+2021-04-10 13:26:32 /kselftests/run_kselftest.sh -c capabilities
+TAP version 13
+1..1
+# selftests: capabilities: test_execve
+# # validate_cap:: Capabilities after execve were correct
+# # validate_cap:: Capabilities after execve were correct
+# # validate_cap:: Capabilities after execve were correct
+# # validate_cap:: Capabilities after execve were correct
+# # validate_cap:: Capabilities after execve were correct
+# # validate_cap:: Capabilities after execve were correct
+# # validate_cap:: Capabilities after execve were correct
+# # validate_cap:: Capabilities after execve were correct
+# TAP version 13
+# 1..12
+# # [RUN]       +++ Tests with uid == 0 +++
+# # [NOTE]      Using global UIDs for tests
+# # [RUN]       Root => ep
+# ok 1 Passed
+# # Check cap_ambient manipulation rules
+# ok 2 PR_CAP_AMBIENT_RAISE failed on non-inheritable cap
+# ok 3 PR_CAP_AMBIENT_RAISE failed on non-permitted cap
+# ok 4 PR_CAP_AMBIENT_RAISE worked
+# ok 5 Basic manipulation appears to work
+# # [RUN]       Root +i => eip
+# ok 6 Passed
+# # [RUN]       UID 0 +ia => eipa
+# ok 7 Passed
+# # [RUN]       Root +ia, suidroot => eipa
+# ok 8 Passed
+# # [RUN]       Root +ia, suidnonroot => ip
+# ok 9 Passed
+# # [RUN]       Root +ia, sgidroot => eipa
+# ok 10 Passed
+# ok 11 Passed
+# # [RUN]       Root +ia, sgidnonroot => eip
+# ok 12 Passed
+# # Totals: pass:12 fail:0 xfail:0 xpass:0 skip:0 error:0
+# # validate_cap:: Capabilities after execve were correct
+# # validate_cap:: Capabilities after execve were correct
+# # validate_cap:: Capabilities after execve were correct
+# # validate_cap:: Capabilities after execve were correct
+# # validate_cap:: Capabilities after execve were correct
+# # ==================================================
+# TAP version 13
+# 1..9
+# # [RUN]       +++ Tests with uid != 0 +++
+# # [NOTE]      Using global UIDs for tests
+# # [RUN]       Non-root => no caps
+# ok 1 Passed
+# # Check cap_ambient manipulation rules
+# ok 2 PR_CAP_AMBIENT_RAISE failed on non-inheritable cap
+# ok 3 PR_CAP_AMBIENT_RAISE failed on non-permitted cap
+# ok 4 PR_CAP_AMBIENT_RAISE worked
+# ok 5 Basic manipulation appears to work
+# # [RUN]       Non-root +i => i
+# ok 6 Passed
+# # [RUN]       UID 1 +ia => eipa
+# ok 7 Passed
+# # [RUN]       Non-root +ia, sgidnonroot => i
+# ok 8 Passed
+# ok 9 Passed
+# # Totals: pass:9 fail:0 xfail:0 xpass:0 skip:0 error:0
+# # ==================================================
+ok 1 selftests: capabilities: test_execve
