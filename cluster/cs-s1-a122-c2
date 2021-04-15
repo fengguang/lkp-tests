@@ -1,0 +1,14 @@
+switch: Switch-P12
+ip0: 1
+nodes:
+  taishan200-2280-2s64p-256g--a122:
+    roles: [ node1 ]
+    macs: [ "44:a1:91:9d:d8:25" ]
+
+  taishan200-2280-2s64p-256g--a123:
+    roles: [ node2 ]
+    macs: [ "44:a1:91:9d:f5:4a" ]
+
+  taishan200-2280-2s64p-256g--a125:
+    roles: [ node3 ]
+    macs: [ "44:67:47:85:f4:65" ]
