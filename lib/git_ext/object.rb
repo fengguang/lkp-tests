@@ -206,7 +206,9 @@ module Git
       end
 
       def exist_in?(branch)
-        @base.command("merge-base --is-ancestor #{sha} #{branch}; echo $?").to_i.zero?
+        # $ git merge-base --is-ancestor 071e7d275bd4abeb7d75844020b05bd77032ac62 origin/master
+        # fatal: Not a valid commit name 071e7d275bd4abeb7d75844020b05bd77032ac62
+        @base.command("merge-base --is-ancestor #{sha} #{branch} 2>/dev/null; echo $?").to_i.zero?
       end
     end
 
