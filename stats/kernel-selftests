@@ -327,6 +327,21 @@ class AndroidStater < Stater
   end
 end
 
+class BreakpointsStater < Stater
+  def stat(line, stats)
+    case line
+    when /^(ok|fail|skip) \d+ (Test .*)/
+      # ok 1 Test breakpoint 0 with local: 0 global: 1
+      stats.add "#{@test_prefix}.#{$2}", $1
+    when /No such collection '(breakpoints)'/
+      # No such collection 'breakpoints'
+      stats.add "#{$1}", 'fail'
+    else
+      super(line, stats)
+    end
+  end
+end
+
 def subtest_stat(test, test_script, subtest, result, stats)
   subtest_case_name = subtest.strip.gsub(/[-\t\r\n\f]/, '_')
 
@@ -402,6 +417,13 @@ while (line = STDIN.gets)
     # for below situation:
     # not ok 1 selftests: android: run.sh # SKIP
     stater = AndroidStater.new($1, 'run.sh')
+  when /selftests: (breakpoints): (.*)/
+    # selftests: breakpoints: breakpoint_test
+    stater = BreakpointsStater.new($1, $2)
+  when /run_kselftest\.sh -c (breakpoints)/
+    # for below situation:
+    # No such collection 'breakpoints'
+    stater = BreakpointsStater.new($1, nil)
   when /^# selftests: net: (.*)/
     test_script = $1
     stater = nil
@@ -431,10 +453,6 @@ while (line = STDIN.gets)
     next unless test == 'net'
 
     detail_stat('net', $2, $1, stats)
-  when /^(ok|fail|skip) \d+ (Test .*)/
-    next unless test == 'breakpoints'
-
-    detail_stat('breakpoints', $2, $1, stats)
   when /^(Check .*)... \[(OK|FAIL|SKIP)\]/
     next unless test == 'exec'
     next if $1 =~ /execveat/
