@@ -355,6 +355,43 @@ class Ia64Stater < Stater
   end
 end
 
+class KmodStater < Stater
+  def stat(line, stats)
+    case line
+    when /^# Running test: (kmod_test.*) - run/
+      # below a test may run several times, regard them as one test
+      # Running test: kmod_test_0005 - run #1
+      # kmod_test_0005: OK! - loading kmod test
+      # kmod_test_0005: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+      # Tue Sep 15 17:57:54 UTC 2020
+      # Running test: kmod_test_0005 - run #2
+      # kmod_test_0005: OK! - loading kmod test
+      # kmod_test_0005: OK! - Return value: 0 (SUCCESS), expected SUCCESS
+      @last_test_case = @test_case
+      @test_case = $1 unless $1.nil?
+
+      if @test_case != @last_test_case && !@last_test_case.nil?
+        # regard whole subtest as 'pass' if @test_case is 'OK' or 'SKIP'
+        @test_case_result = 'pass' if @test_case_result != 'FAIL' && !@all_test_case_skip
+        stats.add "#{@test_prefix}.#{@last_test_case}", @test_case_result
+        # reset @test_case_result and all_subtest_case_skip for new test_case
+        @test_case_result = nil
+        @all_test_case_skip = true
+      end
+    when /^# (kmod_test.*|kmod_check_visibility): (OK|FAIL|SKIP)/
+      # if any single test fails, regard the whole subtest fail
+      @test_case_result = $2 if @test_case_result != 'FAIL'
+      # when all @test_case_result are 'SKIP', regard the subtest as 'skip'
+      @all_test_case_skip = @test_case_result == 'SKIP' if @all_test_case_skip
+    when /^# Test completed/
+      # '# Test completed' marks the whole kmod tests finished
+      stats.add "#{@test_prefix}.#{@test_case}", @test_case_result
+    else
+      super(line, stats)
+    end
+  end
+end
+
 def subtest_stat(test, test_script, subtest, result, stats)
   subtest_case_name = subtest.strip.gsub(/[-\t\r\n\f]/, '_')
 
@@ -440,6 +477,9 @@ while (line = STDIN.gets)
   when /selftests: (ia64): (.*)/
     # selftests: ia64: aliasing-test
     stater = Ia64Stater.new($1, $2)
+  when /selftests: (kmod): (.*)/
+    # selftests: kmod: kmod.sh
+    stater = KmodStater.new($1, $2)
   when /^# selftests: net: (.*)/
     test_script = $1
     stater = nil
@@ -455,12 +495,6 @@ while (line = STDIN.gets)
   case line
   when %r{make: Entering directory .*/(.*)'}
     test = Regexp.last_match[1]
-    if test == 'kmod'
-      last_subtest_case_name = nil
-      subtest_case_name = nil
-      subtest_case_result = nil
-      all_subtest_case_skip = true
-    end
   when %r{make: Leaving directory .*/(.*)'}
     # rli9 FIXME: consider the input has messed text like Entering doesn't match with Leaving
     test = nil
@@ -514,52 +548,6 @@ while (line = STDIN.gets)
 
     subtest_case_name = $1 + ' ' + $2
     subtest_stat('net', test_script, subtest_case_name, $3, stats)
-  when /^# selftests: kmod: (.*)/
-    test_script = $1
-  when /^# Running test: (kmod_test.*) - run/, /^# Test completed/
-    next unless test == 'kmod'
-
-    last_subtest_case_name = subtest_case_name
-    # '# Test completed' marks the whole kmod tests finished, where no $1
-    subtest_case_name = $1 unless $1.nil?
-    # a test may run several times, regard them as one test
-    # # Running test: kmod_test_0005 - run #1
-    # # kmod_test_0005: OK! - loading kmod test
-    # # kmod_test_0005: OK! - Return value: 0 (SUCCESS), expected SUCCESS
-    # # Tue Sep 15 17:57:54 UTC 2020
-    # # Running test: kmod_test_0005 - run #2
-    # # kmod_test_0005: OK! - loading kmod test
-    # # kmod_test_0005: OK! - Return value: 0 (SUCCESS), expected SUCCESS
-    # need notice when meet 'Test completed', when $1 is nil, so
-    # subtest_case_name doesn't change. below "&& !$1.nil?" is used to
-    # avoid missing last subtest handling
-    next if subtest_case_name == last_subtest_case_name && !$1.nil?
-
-    # when starting 'Running' first test, there is no last_subtest_case_name
-    next if last_subtest_case_name.nil?
-
-    # subtest_case_result and all_subtest_case_skip are still corresponding to last_subtest_case_name here.
-    # need calibrate result in one situation when meet -
-    # (1) no 'FAIL'
-    # (2) not all subtests are 'SKIP'
-    # whatever the subtest_case_result is 'OK' or 'SKIP' here, regard whole subtest 'pass'
-    subtest_case_result = 'OK' if subtest_case_result != 'FAIL' && !all_subtest_case_skip
-    subtest_stat('kmod', test_script, last_subtest_case_name, subtest_case_result, stats)
-    # reset subtest_case_result and all_subtest_case_skip for new subtest
-    subtest_case_result = nil
-    all_subtest_case_skip = true
-  when /^# (kmod_test.*|kmod_check_visibility): (OK|FAIL|SKIP)/
-    next unless test == 'kmod'
-
-    # if any single test fails, regard the whole subtest fail
-    next if subtest_case_result == 'FAIL'
-
-    subtest_case_result = $2
-    # if results are OK+SKIP, will regard as 'pass'.
-    # when all subtest results are 'SKIP', regard the subtest as 'skip'
-    next unless all_subtest_case_skip
-
-    all_subtest_case_skip = subtest_case_result == 'SKIP'
   when /# selftests: membarrier: (.*)/
     test_script = $1
   when /# (ok|fail|skip) \d+ (.*)/
@@ -610,7 +598,7 @@ while (line = STDIN.gets)
     result = $4 =~ /SKIP/ ? 'skip' : 'fail'
     result = 'pass' if $1 == 'ok'
 
-    stats.add "#{test}.#{test_script}", result unless %w(pmtu.sh fib_rule_tests.sh reuseport_addr_any.sh traceroute.sh altnames.sh icmp_redirect.sh ip6_gre_headroom.sh fib-onlink-tests.sh mq_open_tests kmod.sh).include? test_script
+    stats.add "#{test}.#{test_script}", result unless %w(pmtu.sh fib_rule_tests.sh reuseport_addr_any.sh traceroute.sh altnames.sh icmp_redirect.sh ip6_gre_headroom.sh fib-onlink-tests.sh mq_open_tests).include? test_script
   when /^# TEST: (.*)/
     next unless test_script == 'nft_concat_range.sh'
 
