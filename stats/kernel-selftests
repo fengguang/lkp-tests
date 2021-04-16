@@ -315,6 +315,18 @@ class CapabilitiesStater < Stater
   end
 end
 
+class AndroidStater < Stater
+  def stat(line, stats)
+    case line
+    when /^(ion_test.sh: .*) - \[(PASS|FAIL|SKIP)\]$/
+      # ion_test.sh: heap_type: 0 - [FAIL]
+      stats.add "#{@test_prefix}.#{$1}", $2
+    else
+      super(line, stats)
+    end
+  end
+end
+
 def subtest_stat(test, test_script, subtest, result, stats)
   subtest_case_name = subtest.strip.gsub(/[-\t\r\n\f]/, '_')
 
@@ -383,6 +395,13 @@ while (line = STDIN.gets)
   when /selftests: (capabilities): (.*)/
     # selftests: capabilities: test_execve
     stater = CapabilitiesStater.new($1, $2)
+  when /selftests: (android): (.*)/
+    # selftests: android: run.sh
+    stater = AndroidStater.new($1, $2)
+  when /make run_tests -C (android)/
+    # for below situation:
+    # not ok 1 selftests: android: run.sh # SKIP
+    stater = AndroidStater.new($1, 'run.sh')
   when /^# selftests: net: (.*)/
     test_script = $1
     stater = nil
@@ -412,10 +431,6 @@ while (line = STDIN.gets)
     next unless test == 'net'
 
     detail_stat('net', $2, $1, stats)
-  when /^(ion_test.sh: .*) - \[(PASS|FAIL|SKIP)\]$/
-    next unless test == 'android'
-
-    detail_stat('android', $1, $2, stats)
   when /^(ok|fail|skip) \d+ (Test .*)/
     next unless test == 'breakpoints'
 
