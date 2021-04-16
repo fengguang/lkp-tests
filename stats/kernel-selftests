@@ -342,6 +342,19 @@ class BreakpointsStater < Stater
   end
 end
 
+class Ia64Stater < Stater
+  def stat(line, stats)
+    case line
+    when /^(# )?(PASS|FAIL|SKIP): (.*)/
+      # PASS: /dev/mem 0xc0000-0x100000 is readable
+      # # PASS: /dev/mem 0x0-0xa0000 is readable
+      stats.add "#{@test_prefix}.#{$3}", $2
+    else
+      super(line, stats)
+    end
+  end
+end
+
 def subtest_stat(test, test_script, subtest, result, stats)
   subtest_case_name = subtest.strip.gsub(/[-\t\r\n\f]/, '_')
 
@@ -424,6 +437,9 @@ while (line = STDIN.gets)
     # for below situation:
     # No such collection 'breakpoints'
     stater = BreakpointsStater.new($1, nil)
+  when /selftests: (ia64): (.*)/
+    # selftests: ia64: aliasing-test
+    stater = Ia64Stater.new($1, $2)
   when /^# selftests: net: (.*)/
     test_script = $1
     stater = nil
@@ -458,10 +474,6 @@ while (line = STDIN.gets)
     next if $1 =~ /execveat/
 
     detail_stat('exec', $1, $2, stats)
-  when /^(PASS|FAIL|SKIP): (.*)/
-    next unless test == 'ia64'
-
-    detail_stat('ia64', $2, $1, stats)
   when /^# selftests: netfilter: (.*)/
     test_script = $1
   when /^# (PASS|FAIL|SKIP): (.*)/
