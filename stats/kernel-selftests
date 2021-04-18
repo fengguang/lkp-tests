@@ -411,6 +411,23 @@ class NetfilterStater < Stater
   end
 end
 
+class ExecStater < Stater
+  def stat(line, stats)
+    case line
+    when /^(Check .*)... \[(OK|FAIL|SKIP)\]/
+      # Check success of execveat(8, 'execveat', 0)... [OK]
+
+      # ignore detail stats of execveat to avoid duplication
+      stats.add "#{@test_prefix}.#{$1}", $2 unless @test_script =~ /execveat/
+    when /: recipe for target.+failed$/, /^make: \*\*\* (.*) (Error \d+|Stop\.)$/
+      # make: *** No rule to make target .*, needed by 'all'.  Stop.
+      stats.add "#{@test}", 'make_fail'
+    else
+      super(line, stats)
+    end
+  end
+end
+
 def subtest_stat(test, test_script, subtest, result, stats)
   subtest_case_name = subtest.strip.gsub(/[-\t\r\n\f]/, '_')
 
@@ -502,6 +519,9 @@ while (line = STDIN.gets)
   when /selftests: (netfilter): (.*)/
     # selftests: netfilter: nft_queue.sh
     stater = NetfilterStater.new($1, $2)
+  when /selftests: (exec): (.*)/
+    # selftests: exec: execveat
+    stater = ExecStater.new($1, $2)
   when /^# selftests: net: (.*)/
     test_script = $1
     stater = nil
@@ -525,11 +545,6 @@ while (line = STDIN.gets)
     next unless test == 'net'
 
     detail_stat('net', $2, $1, stats)
-  when /^(Check .*)... \[(OK|FAIL|SKIP)\]/
-    next unless test == 'exec'
-    next if $1 =~ /execveat/
-
-    detail_stat('exec', $1, $2, stats)
   when /^# (PASS|FAIL|SKIP): (.*)/
     next unless %w(net).include? test
 
