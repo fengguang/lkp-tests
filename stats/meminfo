@@ -30,8 +30,7 @@ STDIN.each_line do |line|
       mused << mtotal - value
       munit ||= unit
       puts "Memused: #{mused.last}"
+      puts "max_used_#{munit}: #{mused.max}"
     end
   end
 end
-
-puts "max_used_#{munit}: #{mused.max}"

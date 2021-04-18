@@ -8,6 +8,7 @@ require "#{LKP_SRC}/lib/lkp_git"
 require "#{LKP_SRC}/lib/yaml"
 require "#{LKP_SRC}/lib/stats"
 require "#{LKP_SRC}/lib/result"
+require "#{LKP_SRC}/lib/log"
 
 $opt_group = '_rt'
 $opt_kernel = ''
@@ -37,7 +38,7 @@ opt_parser = OptionParser.new do |opts|
     when /[0-9]+m$/, /[0-9]+w$/, /[0-9]+d$/, /[0-9]+$/
       $opt_pattern = "  -d #{date}" + $opt_pattern
     else
-      warn "-d #{date}: parameter is unsuitable."
+      log_warn "-d #{date}: parameter is unsuitable."
       puts opts
       exit
     end
@@ -65,7 +66,7 @@ opt_parser.parse!(ARGV)
 
 unless $opt_kernel.empty?
   unless sha1_40?($opt_kernel)
-    git = Git.open(project: 'linux')
+    git = Git.open
     $opt_kernel = git.gcommit($opt_kernel).sha
   end
 

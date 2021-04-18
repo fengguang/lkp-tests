@@ -6,6 +6,7 @@ require 'set'
 require "#{LKP_SRC}/lib/lkp_git"
 require "#{LKP_SRC}/lib/run_env"
 require "#{LKP_SRC}/lib/constant"
+require "#{LKP_SRC}/lib/lkp_path"
 
 def tbox_group(hostname)
   # special case 1: $tbox_group contains -N-
@@ -20,7 +21,7 @@ end
 def tbox_group?(hostname)
   return nil unless hostname.is_a?(String) && !hostname.empty?
 
-  Dir[LKP_SRC + '/hosts/' + hostname][0]
+  Dir[LKP::Path.src('hosts', hostname)][0]
 end
 
 class ResultPath < Hash
@@ -41,7 +42,6 @@ class ResultPath < Hash
     'build-ltp' => %w[rootfs ltp_commit run],
     'build-acpica' => %w[acpica_commit test run],
     'build-ceph' => %w[ceph_commit run],
-    'build-sof' => %w[sof_config sof_commit soft_commit run],
     'kvm-unit-tests-qemu' => %w[path_params tbox_group rootfs kconfig compiler commit qemu_config qemu_commit run],
     'kvm-kernel-boot-test' => %w[tbox_group kconfig commit qemu_config qemu_commit linux_commit run],
     'build-perf_test' => %w[perf_test_commit run]

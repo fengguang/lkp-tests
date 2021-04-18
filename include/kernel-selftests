@@ -1,5 +1,6 @@
-need_kernel_headers: true
-need_kernel_selftests: true
+need_linux_headers: true
+need_linux_selftests: true
+need_kselftests: true
 
 need_kconfig:
 % if ___.group == "x86"
@@ -30,6 +31,9 @@ need_kconfig:
 % elsif ___.group == "kvm"
 - CONFIG_KVM=y
 - CONFIG_KVM_INTEL=y
+% elsif ___.group == "vm"
+- CONFIG_GUP_BENCHMARK=y ~ ">= v4.15-rc1 && < v5.11-rc1"
+- CONFIG_GUP_TEST=y ~ ">= v5.11-rc1"
 % elsif ___.group == "bpf"
 - CONFIG_BPF=y
 - CONFIG_BPF_EVENTS=y ~ ">= v4.1-rc1"
@@ -73,6 +77,10 @@ need_kconfig:
 - CONFIG_TLS=m ~ ">= v4.13-rc1"
 - CONFIG_VXLAN=y
 - CONFIG_XDP_SOCKETS=y ~ ">= v4.18-rc1"
+- CONFIG_IMA_READ_POLICY=y ~ ">= v5.11-rc1"
+- CONFIG_IMA_WRITE_POLICY=y ~ ">= v5.11-rc1"
+- CONFIG_SECURITYFS=y ~ ">= v5.11-rc1"
+- CONFIG_IMA=y ~ ">= v5.11-rc1"
 % elsif ___.group == "net"
 - CONFIG_USER_NS=y
 - CONFIG_BPF_SYSCALL=y
@@ -107,6 +115,13 @@ need_kconfig:
 - CONFIG_NET_SCH_NETEM=y
 - CONFIG_TEST_BLACKHOLE_DEV=m ~ ">= v5.3-rc1"
 - CONFIG_KALLSYMS=y
+- CONFIG_BAREUDP=m ~ ">= v5.7-rc1"
+- CONFIG_MPLS_ROUTING=m ~ ">= v4.1-rc1"
+- CONFIG_MPLS_IPTUNNEL=m ~ ">= v4.3-rc1"
+- CONFIG_NET_SCH_INGRESS=y ~ ">= v4.19-rc1"
+- CONFIG_NET_CLS_FLOWER=m ~ ">= v4.2-rc1"
+- CONFIG_NET_ACT_TUNNEL_KEY=m ~ ">= v4.9-rc1"
+- CONFIG_NET_ACT_MIRRED=m ~ ">= v5.11-rc1"
 % elsif ___.group == "netfilter"
 - CONFIG_NET_NS=y
 - CONFIG_NFT_FLOW_OFFLOAD=m ~ ">= v4.16-rc1"
@@ -140,8 +155,8 @@ need_kconfig:
 - CONFIG_ANDROID=y
 - CONFIG_DRM=y
 - CONFIG_DRM_VGEM=y
-- CONFIG_ION=y # Depends on: STAGING [=y]
-- CONFIG_ION_SYSTEM_HEAP=y ~ ">= v4.12-rc1" # Depends on: STAGING [=y] && ION [=y]
+- CONFIG_ION=y ~ "< v5.11-rc1" # Depends on: STAGING [=y]
+- CONFIG_ION_SYSTEM_HEAP=y ~ ">= v4.12-rc1" && "< v5.11-rc1" # Depends on: STAGING [=y] && ION [=y]
 - CONFIG_STAGING=y
 % elsif ___.group == "group-01"
 - CONFIG_ARCH_HAVE_NMI_SAFE_CMPXCHG=y
@@ -186,8 +201,8 @@ need_kconfig:
 - CONFIG_TUN=m
 - CONFIG_WW_MUTEX_SELFTEST=m ~ ">= v4.11-rc1"
 - CONFIG_XFS_FS=m
+- CONFIG_DMA_MAP_BENCHMARK=y ~ ">= v5.11-rc1"
 % elsif ___.group == "group-02"
-- CONFIG_ANDROID=y
 - CONFIG_FUSE_FS=m
 - CONFIG_IPV6_MULTIPLE_TABLES=y
 - CONFIG_MACSEC=y
@@ -210,7 +225,6 @@ need_kconfig:
 - CONFIG_NF_FLOW_TABLE_IPV6=m ~ ">= v4.16-rc1"
 - CONFIG_NF_TABLES_NETDEV=y ~ ">= v4.17-rc1"
 - CONFIG_NOTIFIER_ERROR_INJECTION=y
-- CONFIG_PID_NS=y
 - CONFIG_PROC_FS=y
 - CONFIG_PSTORE=y
 - CONFIG_PSTORE_CONSOLE=y
@@ -218,24 +232,31 @@ need_kconfig:
 - CONFIG_PSTORE_RAM=m
 - CONFIG_SECCOMP=y
 - CONFIG_SECCOMP_FILTER=y
-- CONFIG_SECURITY=y
-- CONFIG_SECURITYFS=y
-- CONFIG_STAGING=y
-- CONFIG_SW_SYNC=y
-- CONFIG_SYNC=y ~ "<= v4.7"
 - CONFIG_TEST_BLACKHOLE_DEV=m ~ ">= v5.3-rc1"
-- CONFIG_TEST_STATIC_KEYS
-- CONFIG_TEST_SYSCTL=y
-- CONFIG_USER_NS=y
 - CONFIG_UTS_NS=y
 - CONFIG_VETH
 - CONFIG_X86_CPU_RESCTRL=y ~ ">= v5.0-rc1"
+% elsif ___.group == "group-s"
+- CONFIG_SECURITY=y
+- CONFIG_SECURITYFS=y
+- CONFIG_PID_NS=y
+- CONFIG_SECCOMP=y
+- CONFIG_SECCOMP_FILTER=y
+- CONFIG_USER_NS=y
+- CONFIG_TEST_LKM=m
+- CONFIG_TEST_STATIC_KEYS=m
+- CONFIG_STAGING=y
+- CONFIG_ANDROID=y
+- CONFIG_SYNC=y ~ "<= v4.7"
+- CONFIG_SW_SYNC=y
+- CONFIG_GENERIC_ENTRY=y
+- CONFIG_TEST_SYSCTL=y
+- CONFIG_X86_SGX=y ~ ">= v5.11-rc1"
 % elsif ___.group == "group-03"
 - CONFIG_CAN=m
 - CONFIG_CLS_U32_MARK=y
 - CONFIG_CLS_U32_PERF=y
 - CONFIG_GACT_PROB=y
-- CONFIG_GUP_BENCHMARK=y ~ ">= v4.15-rc1"
 - CONFIG_NET=y
 - CONFIG_NET_ACT_BPF=m ~ ">= v4.0-rc1"
 - CONFIG_NET_ACT_CONNMARK=m ~ ">= v4.0-rc1"
@@ -293,6 +314,9 @@ need_kconfig:
 - CONFIG_ZSMALLOC=y
 - CONFIG_DEVICE_PRIVATE=y ~ ">= v5.7-rc4"
 - CONFIG_TEST_HMM=m ~ ">= v5.7-rc4"
+% elsif ___.group == "resctrl"
+- CONFIG_X86_CPU_RESCTRL=y
+- CONFIG_PROC_CPU_RESCTRL=y
 % else
 - CONFIG_BLOCK=y
 - CONFIG_BTRFS_FS=m

@@ -1,0 +1,46 @@
+Events disabled
+------------------------------------------------------------
+perf_event_attr:
+  size                             120
+  { sample_period, sample_freq }   1000003
+  sample_type                      IP|TID|TIME|CALLCHAIN|ID|CPU
+  read_format                      ID
+  disabled                         1
+  inherit                          1
+  precise_ip                       2
+  sample_id_all                    1
+  exclude_guest                    1
+------------------------------------------------------------
+------------------------------------------------------------
+perf_event_attr:
+  type                             1
+  size                             120
+  config                           0x9
+  { sample_period, sample_freq }   1000003
+  sample_type                      IP|TID|TIME|CALLCHAIN|ID|CPU
+  read_format                      ID
+  disabled                         1
+  inherit                          1
+  mmap                             1
+  comm                             1
+  enable_on_exec                   1
+  task                             1
+  sample_id_all                    1
+  mmap2                            1
+  comm_exec                        1
+  ksymbol                          1
+  bpf_event                        1
+------------------------------------------------------------
+------------------------------------------------------------
+perf_event_attr:
+  type                             1
+  size                             120
+  config                           0x9
+  watermark                        1
+  sample_id_all                    1
+  bpf_event                        1
+  { wakeup_events, wakeup_watermark } 1
+------------------------------------------------------------
+Events enabled
+[ perf record: Woken up 5 times to write data ]
+[ perf record: Captured and wrote 23.009 MB /tmp/lkp/perf-sched.data (101038 samples) ]

@@ -158,12 +158,18 @@ ftrace_stop()
 
 ftrace_run()
 {
+	# mark the start time of ftrace
+	ftrace_set tracing_on 1
+	ftrace_set trace_marker timestamp for test starting
+	ftrace_set tracing_on 0
+
 	echo_time "going to sleep for $delay seconds"
 	[ "$delay" -ne 0 ] && $WAIT_POST_TEST_CMD --timeout "$delay"
 
 	ftrace_show_params
 
 	ftrace_start
+	ftrace_set trace_marker timestamp for ftrace starting
 	$WAIT_POST_TEST_CMD --timeout "$duration"
 	ftrace_stop
 

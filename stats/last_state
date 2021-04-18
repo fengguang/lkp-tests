@@ -1,15 +1,5 @@
 #!/bin/bash
 
-[[ $LKP_SRC ]] || LKP_SRC="$(dirname $(dirname $(readlink -e -v $0)))"
+grep -E ".+: [0-9]+$" | sort -u
 
-source $LKP_SRC/lib/log.sh
-
-stats=$(grep -E ".+: [0-9]+$" | sort -u)
-
-# test.avocado.exit_code.99: 1
-echo "$stats" | grep -q 'exit_code.99: 1' && {
-	log_warn "exit due to die"
-	exit 1
-}
-
-echo "$stats"
+true

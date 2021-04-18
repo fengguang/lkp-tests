@@ -4,8 +4,10 @@ integration_testing_branches:
 - keys-next
 owner: David Howells <dhowells@redhat.com>
 subsystems:
+- afs
+- cachefiles
+- fscache
 - vfs
-- fs-cache
 - modsign
 - x.509
 - keys

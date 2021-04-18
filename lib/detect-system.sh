@@ -31,6 +31,8 @@ parse_executable_arch()
 			_system_arch=aarch64;;
 		*ARM)
 			_system_arch=arm;;
+		*RISC-V)
+			_system_arch=riscv;;
 		*)
 			_system_arch=unknown
 			return 1;;
@@ -161,6 +163,12 @@ detect_system()
 	then
 		_system_name="ArchLinux"
 		detect_libc_version $rootfs
+	elif
+		[ -f ${rootfs}/etc/os-release ] &&
+		GREP_OPTIONS=""
+	then
+		_system_version="$(awk -F'=' '$1=="VERSION_ID"{print $2}'  ${rootfs}/etc/os-release | head -n 1)"
+		_system_name="Exaleap-riscv-linux"
 	elif
 		[ -f ${rootfs}/etc/fedora-release ]
 	then

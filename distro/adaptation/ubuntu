@@ -1,3 +1,11 @@
+# this adaptation is used for
+# 1. not exist/valid packages, mark it empty to avoid installing error.
+# 2. exist/valid packages, mark it empty if you don't want to install later.
+# 3. exist/valid packages, but its name needs to be adapted for other distro,
+#    mapping to a new package name, then the new package will be install later.
+
+which: debianutils
+bsdtar: libarchive-tools
 iblz4-1: liblz4-dev
 libbz2-1.0: libbz2-dev
 libcpupower-dev:
@@ -8,6 +16,7 @@ libhugetlbfs-bin: hugepages
 libhugetlbfs: libhugetlbfs0
 libicu: libicu-dev
 libipsec-mb:
+libmariadbclient18: libmariadb3
 libntfs: libntfs-3g88
 libperl5: libperl5.26
 libsnappy1v5: libsnappy-dev
@@ -22,3 +31,4 @@ perl-modules-5: perl-modules-5.26
 pmdk: pmdk-tools
 which: debianutils
 zlib1g: zlib1g-dev
+procps-ng: procps

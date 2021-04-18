@@ -2,11 +2,12 @@
 
 # Archlinux package installation
 
-# Yet Another Yogurt - An AUR Helper Written in Go
-# Yay is based on the design of yaourt, apacman and pacaur
-# See: https://github.com/Jguer/yay
+# yay is a wrapper for pacman that adds automated access (substitute of yaourt)
+# to the AUR.
+# See:	https://wiki.archlinux.org/index.php/AUR_helpers
+#	https://aur.archlinux.org/packages/yay/
 
-# Yay not support root to build package
+# yay not support root to build package
 # Use regular user to do this
 . $LKP_SRC/distro/${DISTRO}
 add_aur_helper

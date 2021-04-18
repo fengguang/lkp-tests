@@ -13,4 +13,6 @@ xfstests:
   test:
   # currentlr only has udf/102
   # thus when group size = 10, group id = 10
-  - udf-group-10
+  # _setup_udf_scratchdir() in udf/102 has been rm in c041421687,
+  # lead to 0s of udf/102, thus comment out it
+  # - udf-group-10

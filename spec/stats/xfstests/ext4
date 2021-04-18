@@ -1,0 +1,7 @@
+ext4/005         10s
+ext4/007        [failed, exit status 1]- output mismatch (see /lkp/benchmarks/xfstests/results//ext4/007.out.bad)
+    --- tests/ext4/007.out      2020-10-27 06:25:55.000000000 +0000
+    +++ /lkp/benchmarks/xfstests/results//ext4/007.out.bad      2020-11-10 11:55:43.884674375 +0000
+ext4/043         10s
+ext4/045        _check_generic_filesystem: filesystem on /dev/sdb4 is inconsistent
+

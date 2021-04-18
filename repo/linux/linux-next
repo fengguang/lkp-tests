@@ -3,6 +3,7 @@ fetch_tags: true
 owner: Stephen Rothwell <sfr@canb.auug.org.au>
 branch_denylist: akpm|akpm-base|stable
 notify_build_success_branch: .*
+notify_build_success_cc_committer: true
 mail_to: Andrew Morton <akpm@linux-foundation.org>
 mail_cc: Linux Memory Management List <linux-mm@kvack.org>
 no_merge_branch: master

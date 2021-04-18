@@ -21,6 +21,8 @@ fio-setup-basic:
   bs:
   - 4k
   - 4M
-  ioengine: sync
+  ioengine:
+  - sync
+  - io_uring
 
 fio:

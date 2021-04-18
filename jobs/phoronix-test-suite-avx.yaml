@@ -2,8 +2,6 @@ suite: phoronix-test-suite
 testcase: phoronix-test-suite
 category: benchmark
 
-timeout: 1h
-
 phoronix-test-suite:
   - test: ramspeed-1.4.2
     option_a:

@@ -1,0 +1,44 @@
+suite: stress-ng
+testcase: stress-ng
+category: benchmark
+
+nr_threads: 10%
+
+disk: 1HDD
+
+testtime:
+- 60s
+
+fs: ext4
+
+stress-ng:
+  class:
+  - vm
+  test:
+  - bad-altstack
+  - bigheap
+  - brk
+  - dev-shm
+  - env
+  - madvise
+  - malloc
+  - mlock
+  - mmap
+  - mmapaddr
+  - mmapfixed
+  - mmapfork
+  - mmapmany
+  - mremap
+  - msync
+  - physpage
+  - shm
+  - shm-sysv
+  - stack
+  - stackmmap
+  - tmpfs
+  - userfaultfd
+  - vm
+  - vm-addr
+  - vm-rw
+  - vm-segv
+  - vm-splice

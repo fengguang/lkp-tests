@@ -33,7 +33,6 @@ init_postgresql()
 	chown postgres "$data_dir"
 
 	bin_dir=/usr/lib/postgresql/*/bin
-	is_clearlinux && bin_dir=/usr/bin
 
 	postgres_run $bin_dir/initdb  -D "$data_dir" 2>&1
 	postgresql_conf_file="$data_dir"/postgresql.conf

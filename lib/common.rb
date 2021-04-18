@@ -7,6 +7,7 @@ require 'pathname'
 require 'fileutils'
 require 'stringio'
 require "#{LKP_SRC}/lib/array_ext"
+require "#{LKP_SRC}/lib/log"
 require 'English'
 
 def deepcopy(o)
@@ -257,7 +258,7 @@ def copy_and_decompress(src_fullpath, dst)
     src_fullpath += '.xz'
     %x(xz -cd #{src_fullpath} > #{dst})
   else
-    warn "File doesn't exist: #{src_fullpath}"
+    log_warn "File doesn't exist: #{src_fullpath}"
     return false
   end
 

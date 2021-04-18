@@ -9,9 +9,12 @@ require 'set'
 require "#{LKP_SRC}/lib/log"
 require "#{LKP_SRC}/lib/run_env"
 require "#{LKP_SRC}/lib/constant"
+require "#{LKP_SRC}/lib/lkp_path"
+
+LKP_SRC_ETC ||= LKP::Path.src('etc')
 
 def event_counter?(name)
-  $event_counter_prefixes ||= File.read("#{LKP_SRC}/etc/event-counter-prefixes").split
+  $event_counter_prefixes ||= File.read("#{LKP_SRC_ETC}/event-counter-prefixes").split
   $event_counter_prefixes.each do |prefix|
     return true if name.index(prefix) == 0
   end
@@ -19,7 +22,7 @@ def event_counter?(name)
 end
 
 def independent_counter?(name)
-  $independent_counter_prefixes ||= File.read("#{LKP_SRC}/etc/independent-counter-prefixes").split
+  $independent_counter_prefixes ||= File.read("#{LKP_SRC_ETC}/independent-counter-prefixes").split
   $independent_counter_prefixes.each do |prefix|
     return true if name.index(prefix) == 0
   end
@@ -27,7 +30,7 @@ def independent_counter?(name)
 end
 
 def ignore_part(name)
-  $ignore_part_prefixes ||= File.read("#{LKP_SRC}/etc/ignore-part-prefixes").split
+  $ignore_part_prefixes ||= File.read("#{LKP_SRC_ETC}/ignore-part-prefixes").split
   $ignore_part_prefixes.each do |prefix|
     return true if name.start_with?(prefix)
   end
@@ -54,7 +57,7 @@ def add_performance_per_watt(stats, matrix)
   watt = stats['pmeter.Average_Active_Power']
   return unless watt && watt > 0
 
-  kpi_stats = load_yaml("#{LKP_SRC}/etc/index-perf-all.yaml")
+  kpi_stats = load_yaml("#{LKP_SRC_ETC}/index-perf-all.yaml")
   return unless kpi_stats
 
   performance = 0
@@ -422,7 +425,7 @@ def unite_params(result_root)
   begin
     atomic_save_yaml_json params, params_file
   rescue StandardError => e
-    log_exception e, binding
+    log_error e
   end
 
   begin

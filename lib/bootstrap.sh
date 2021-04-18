@@ -7,6 +7,7 @@
 . $LKP_SRC/lib/ucode.sh
 . $LKP_SRC/lib/tbox.sh
 . $LKP_SRC/lib/detect-system.sh
+. $LKP_SRC/lib/network.sh
 
 # borrowed from linux/tools/testing/selftests/rcutorture/doc/initrd.txt
 # Author: Paul E. McKenney <paulmck@linux.vnet.ibm.com>
@@ -227,20 +228,10 @@ add_lkp_user()
 	fi
 }
 
-clearlinux_timesync()
-{
-	echo "[Time]" >/etc/systemd/timesyncd.conf
-	echo "NTP=internal-lkp-server" >>/etc/systemd/timesyncd.conf
-	timedatectl set-ntp false
-	timedatectl set-ntp true
-	hwclock -w
-}
-
 run_ntpdate()
 {
 	[ -z "$NO_NETWORK" ] || return
 	[ -n "$LKP_SERVER" ] || return
-	is_clearlinux && clearlinux_timesync && return
 
 	has_cmd ntpdate || return
 
@@ -768,7 +759,7 @@ boot_init()
 
 	mount_debugfs
 
-	if is_clearlinux || is_aliyunos; then
+	if is_aliyunos; then
 		add_nfs_default_options
 	fi
 

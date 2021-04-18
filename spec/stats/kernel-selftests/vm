@@ -27,6 +27,22 @@ make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-822
 # mmap() @ 0x10004000-0x10005000 p=0x10004000 result=Success
 # OK
 # [PASS]
+# ------------------------------------------------------
+# running: gup_test -u # get_user_pages_fast() benchmark
+# ------------------------------------------------------
+# GUP_FAST_BENCHMARK: Time: get:9331 put:238 us
+# [PASS]
+# ------------------------------------------------------
+# running: gup_test -a # pin_user_pages_fast() benchmark
+# ------------------------------------------------------
+# PIN_FAST_BENCHMARK: Time: get:9718 put:609 us
+# [PASS]
+# ------------------------------------------------------------
+# # Dump pages 0, 19, and 4096, using pin_user_pages:
+# running: gup_test -ct -F 0x1 0 19 0x1000 # dump_page() test
+# ------------------------------------------------------------
+# DUMP_USER_PAGES_TEST: done
+# [PASS]
 # -------------------
 # running userfaultfd
 # -------------------
@@ -51,8 +67,7 @@ make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-822
 # -----------------------
 # running compaction_test
 # -----------------------
-# [ignored_by_lkp]
-# [PASS]
+# LKP SKIP[PASS]
 # ----------------------
 # running on-fault-limit
 # ----------------------
@@ -68,8 +83,7 @@ make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-822
 # --------------------
 # running mlock2-tests
 # --------------------
-# [ignored_by_lkp]
-# [PASS]
+# LKP SKIP[PASS]
 # -----------------
 # running thuge-gen
 # -----------------
@@ -83,8 +97,7 @@ make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-822
 # -----------------------------
 # running virtual address 128TB switch test
 # -----------------------------
-# [ignored_by_lkp]
-# [PASS]
+# LKP SKIP[PASS]
 # ------------------------------------
 # running vmalloc stability smoke test
 # ------------------------------------

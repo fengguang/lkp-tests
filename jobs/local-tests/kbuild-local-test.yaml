@@ -10,6 +10,6 @@ runtime: 10s
 nr_task:
 - 200%
 
-target: vmlinux_prereq
+target: autoksyms_recursive
 
 kbuild:

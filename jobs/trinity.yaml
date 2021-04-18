@@ -4,8 +4,17 @@ category: functional
 
 need_memory: 300MB
 
-runtime: 300s
-
 kmsg:
 
+trinity:
+  number: 5999999
+  group:
+    - group-00
+    - group-01
+    - group-02
+    - group-03
+    - group-04
+
+---
+runtime: 300s
 trinity:

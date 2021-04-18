@@ -7,11 +7,6 @@
 
 cd $BENCHMARK_ROOT/libhugetlbfs-test || die "can not cd libhugetlbfs-test"
 
-is_clearlinux && {
-	make_opt="PREFIX=/usr LIB32=lib32 LIB64=lib64 CFLAGS=-fPIC"
-	sed -i 's#/usr/bin/env python#/usr/bin/env python2#g' tests/run_tests.py
-}
-
 log_cmd make $make_opt || die "make failed"
 
 [ -z $pagesize ] && die "invalid parameter"

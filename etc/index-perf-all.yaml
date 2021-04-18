@@ -7,12 +7,9 @@ boot-time\.boot: -1
 boot-time\.dhcp: -1
 cassandra\.Op.+rate: 1
 chromeswap\.throughput_swap_cycles_per_second: -1
-dbench\.max_latency: -1
 dbench\.throughput-MB\/sec: 1
 dd\..+_time_ms: -1
 ebizzy\.throughput: 1
-ebizzy\.throughput\.per_thread\.max: 1
-ebizzy\.throughput\.per_thread\.min: 1
 exit-free\.duration: -1
 filebench\.sum_operations\/s: 1
 filebench\.sum_bytes_mb\/s: 1
@@ -36,7 +33,6 @@ iozone\.average_KBps: 1
 iperf\..+\.bps: 1
 kbuild\.buildtime_per_iteration: -1
 kernel-selftests\.mqueue\.nsec_per_msg: -1
-ku-latency\.total_average_us: -1
 linkbench\.requests\/s: 1
 linpack\.GFlops: 1
 lmbench3\..+\.MB\/sec: 1
@@ -101,7 +97,6 @@ phoronix-test-suite\..+\.quips: 1
 phoronix-test-suite\..+\.gflop_s: 1
 phoronix-test-suite\..+\.microamps: -1
 phoronix-test-suite\..+\.m_samples_s: 1
-phoronix-test-suite\..+\.max_latency_ms: -1
 phoronix-test-suite\..+\.mbits_sec: 1
 phoronix-test-suite\..+\.units_per_second: 1
 phoronix-test-suite\..+\.real_c_s: 1
@@ -114,7 +109,6 @@ phoronix-test-suite\..+\.signs_per_second: 1
 phoronix-test-suite\..+\.ns_per_event: 1
 phoronix-test-suite\..+\.us_per_event: -1
 phoronix-test-suite\..+\.kb: 1
-phoronix-test-suite\..+\.9th_latency_percentile: -1
 phoronix-test-suite\..+\.messages_per_second: 1
 phoronix-test-suite\..+\.us: -1
 phoronix-test-suite\..+\.usec: -1
@@ -146,7 +140,6 @@ phoronix-test-suite\..+\.giops: 1
 pigz\.throughput: 1
 pixz\.throughput: 1
 plzip\.throughput: 1
-pmbench\.latency\.ns\.average: -1
 pmbench\.throughput\.aps: 1
 postmark\.transactions: 1
 pxz\.throughput: 1
@@ -154,14 +147,12 @@ qperf\..+\.bw: 1
 qperf\..+_bw: 1
 reaim\.jobs_per_min: 1
 redis\..+_throughput_rps: 1
-schbench\.latency_max_us: -1
 sockperf\.throughput\..+\.BandWidth_MBps: 1
 specjbb2015\.critical-jOPS: 1
 specjbb2015\.max-jOPS: 1
 specjbb2015\.median: 1
 stream\..+_bandwidth_MBps: 1
 stress-ng\..+\.ops_per_sec: 1
-tbench\.max_latency: -1
 tbench\.throughput-MB\/sec: 1
 tcrypt\.async\..+\.decryption: 1
 tcrypt\.async\..+\.encryption: 1

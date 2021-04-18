@@ -1,0 +1,21 @@
+suite: stress-ng
+testcase: stress-ng
+category: benchmark
+
+nr_threads: 100%
+
+disk: 1HDD
+
+testtime:
+- 60s
+
+stress-ng:
+  class:
+  - device
+  test:
+  - dev
+  - full
+  - loop
+  - null
+  - urandom
+  - zero

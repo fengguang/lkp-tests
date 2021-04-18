@@ -336,7 +336,7 @@ end
 def convert_one_mresult_root(_rt)
   mrtts = mrt_table_set
   n = mrtts.new_node(_rt.axes)
-  if File.exist? n.path
+  if File.symlink?(n.path) && File.readlink(n.path) == _rt
     false
   else
     n.create_storage_link(_rt.path)
@@ -366,6 +366,13 @@ def convert_all_mresult_root(date_from_in = nil, date_to_in = nil)
     end
     date += ONE_DAY
   end
+end
+
+def mrt_storage_path(_rt_path)
+  _rt = MResultRoot.new(_rt_path)
+  mrtts = mrt_table_set
+  n = mrtts.new_node(_rt.axes)
+  n.path
 end
 
 def convert_mrt(_rt_path)

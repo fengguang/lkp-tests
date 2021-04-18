@@ -53,15 +53,15 @@ generate_special_require_tests()
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
 	cd ${srcdir}/xfstests-dev || return
 
-	git grep -l "_require_realtime" | grep tests/xfs | awk -F/ '{ print $3 }' > $benchmark_path/tests/xfs-external
-	git grep -L "_require_realtime" $(git grep -l "_require_scratch_reflink" $(git grep -l "_require_xfs_scratch_rmapbt" | grep tests/xfs))  | awk -F/ '{print $3}' > $benchmark_path/tests/xfs-reflink-rmapbt
-	git grep -L "_require_realtime" $(git grep -L "_require_scratch_reflink" $(git grep -l "_require_xfs_scratch_rmapbt" | grep tests/xfs))  | awk -F/ '{print $3}' > $benchmark_path/tests/xfs-rmapbt
-	git grep -L "_require_realtime" $(git grep -L "_require_xfs_scratch_rmapbt" $(git grep -l "_require_scratch_reflink" | grep tests/xfs))  | awk -F/ '{print $3}' > $benchmark_path/tests/xfs-reflink
+	git grep -l "_require_realtime" | grep tests/xfs | awk -F/ '{ print $3 }' | grep -v -f <(cat $benchmark_path/tests/xfs-*) > $benchmark_path/tests/xfs-external
+	git grep -L "_require_realtime" $(git grep -l "_require_scratch_reflink" $(git grep -l "_require_xfs_scratch_rmapbt" | grep tests/xfs))  | awk -F/ '{print $3}' | grep -v -f <(cat $benchmark_path/tests/xfs-*) > $benchmark_path/tests/xfs-reflink-rmapbt
+	git grep -L "_require_realtime" $(git grep -L "_require_scratch_reflink" $(git grep -l "_require_xfs_scratch_rmapbt" | grep tests/xfs))  | awk -F/ '{print $3}' | grep -v -f <(cat $benchmark_path/tests/xfs-*) > $benchmark_path/tests/xfs-rmapbt
+	git grep -L "_require_realtime" $(git grep -L "_require_xfs_scratch_rmapbt" $(git grep -l "_require_scratch_reflink" | grep tests/xfs))  | awk -F/ '{print $3}' | grep -v -f <(cat $benchmark_path/tests/xfs-*) > $benchmark_path/tests/xfs-reflink
 
 	# these tests requires a valid $LOGWRITES_DEV
 	# rli9 FIXME consider other fs that has this requirement
-	grep -l "_require_log_writes$" -r tests/btrfs | cut -d/ -f3 > $benchmark_path/tests/btrfs-logwrites
-	grep -l "_require_log_writes$" -r tests/generic | cut -d/ -f3 > $benchmark_path/tests/generic-logwrites
+	grep -l "_require_log_writes$" -r tests/btrfs | cut -d/ -f3 | grep -v -f <(cat $benchmark_path/tests/btrfs-*) > $benchmark_path/tests/btrfs-logwrites
+	grep -l "_require_log_writes$" -r tests/generic | cut -d/ -f3 | grep -v -f <(cat $benchmark_path/tests/generic-*) > $benchmark_path/tests/generic-logwrites
 
 	# these tests requires a valid $SCRATCH_LOGDEV
 	for fs in generic ext4 xfs
@@ -94,14 +94,14 @@ package()
 
 generate_tests()
 {
-	generate_special_require_tests || return
-
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
 
 	for tests in $LKP_SRC/pkg/${pkgname}/addon/tests/*
 	do
 		cat $tests | grep -v '^#' > $benchmark_path/tests/$(basename $tests)
 	done
+
+	generate_special_require_tests || return
 
 	# generate the new add subcase automatically after every upgrade xfstests
 	cd $benchmark_path/tests
@@ -123,7 +123,7 @@ split_tests()
 	split_standalone_tests || return
 
 	$LKP_SRC/tools/split-tests xfs-all 10 xfs-group-
-	$LKP_SRC/tools/split-tests btrfs-all 50 btrfs-group-
+	$LKP_SRC/tools/split-tests btrfs-all 10 btrfs-group-
 	$LKP_SRC/tools/split-tests generic-all 20 generic-group-
 	$LKP_SRC/tools/split-tests ext4-all 20 ext4-group-
 	$LKP_SRC/tools/split-tests udf-all 10 udf-group-

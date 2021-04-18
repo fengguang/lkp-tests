@@ -1,0 +1,40 @@
+suite: stress-ng
+testcase: stress-ng
+category: benchmark
+
+nr_threads: 100%
+
+disk: 1HDD
+
+testtime:
+- 60s
+
+stress-ng:
+  class:
+  - cpu-cache
+  test:
+  - bsearch
+  - cache
+  - heapsort
+  - hsearch
+  - icache
+  - judy
+  - lockbus
+  - lsearch
+  - malloc
+  - matrix
+  - matrix-3d
+  - membarrier
+  - memcpy
+  - mergesort
+  - qsort
+  - radixsort
+  - shellsort
+  - skiplist
+  - str
+  - stream
+  - tree
+  - tsearch
+  - vecmath
+  - wcs
+  - zlib

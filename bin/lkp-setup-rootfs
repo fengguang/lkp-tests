@@ -273,7 +273,7 @@ while true; do
 	}
 	
 	if tbox_cant_kexec || job_force_reboot; then
-		echo "LKP: rebooting"
+		echo "LKP: rebooting forcely"
 		set_tbox_wtmp 'rebooting'
 		# Avoid get stuck in yocto minimal rootfs.
 		# LKP: rebooting

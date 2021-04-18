@@ -3,6 +3,7 @@
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
 require "#{LKP_SRC}/lib/job"
+require "#{LKP_SRC}/lib/lkp_path"
 require 'shellwords'
 
 TMP ||= ENV['TMP'] || '/tmp'
@@ -44,7 +45,7 @@ def get_program_env(_program, env)
   program_env = {}
   args = []
 
-  return program_env, args if env.nil? || @cur_func == :extract_stats
+  return program_env, args if env.nil?
 
   case env
   when String

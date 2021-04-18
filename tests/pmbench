@@ -3,6 +3,7 @@
 # - pattern
 # - mapsize
 # - setsize
+# - total_setsize
 # - shape
 # - nr_processes
 # - nr_threads
@@ -28,6 +29,9 @@
 set_opt()
 {
 	opt=
+	if [ -n "$total_setsize" ] && [ -z "$setsize" ]; then
+		setsize=$((total_setsize / nr_processes))
+	fi
 	if [ -n "$setsize" ]; then
 		opt="${opt} -s$((setsize/1024/1024))"
 		[ -z "$mapsize" ] && mapsize="$setsize"

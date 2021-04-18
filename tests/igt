@@ -22,7 +22,8 @@ denylist=$(dirname $denylist)/denylist
 
 while read testcase
 do
-	subtests=$(build/tests/$testcase --list-subtest)
+	# "sort -u" is to rm duplicate subtest "interruptible"
+	subtests=$(build/tests/$testcase --list-subtest | sort -u)
 	for subtest in ${subtests[@]}
 	do
 		full_test_name=igt@$testcase@$subtest

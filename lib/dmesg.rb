@@ -5,9 +5,13 @@ LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 require "#{LKP_SRC}/lib/yaml"
 require "#{LKP_SRC}/lib/constant"
 require "#{LKP_SRC}/lib/string_ext"
+require "#{LKP_SRC}/lib/lkp_path"
+require "#{LKP_SRC}/lib/log"
+
+LKP_SRC_ETC ||= LKP::Path.src('etc')
 
 # /c/linux% git grep '"[a-z][a-z_]\+%d"'|grep -o '"[a-z_]\+'|cut -c2-|sort -u
-LINUX_DEVICE_NAMES = IO.read("#{LKP_SRC}/etc/linux-device-names").split("\n")
+LINUX_DEVICE_NAMES = IO.read("#{LKP_SRC_ETC}/linux-device-names").split("\n")
 LINUX_DEVICE_NAMES_RE = /\b(#{LINUX_DEVICE_NAMES.join('|')})\d+/.freeze
 
 require 'fileutils'
@@ -151,14 +155,14 @@ def grep_crash_head(dmesg_file)
            # cat = 'cat'
          end
 
-  raw_oops = %x[ #{grep} -a -E -e \\\\+0x -f #{LKP_SRC}/etc/oops-pattern #{dmesg_file} |
-       grep -v -E -f #{LKP_SRC}/etc/oops-pattern-ignore ]
+  raw_oops = %x[ #{grep} -a -E -e \\\\+0x -f #{LKP_SRC_ETC}/oops-pattern #{dmesg_file} |
+       grep -v -E -f #{LKP_SRC_ETC}/oops-pattern-ignore ]
 
   return {} if raw_oops.empty?
 
   oops_map = {}
 
-  oops_re = load_regular_expressions("#{LKP_SRC}/etc/oops-pattern")
+  oops_re = load_regular_expressions("#{LKP_SRC_ETC}/oops-pattern")
   prev_line = nil
   has_oom = false
 
@@ -194,7 +198,7 @@ def grep_crash_head(dmesg_file)
       next
     end
 
-    warn "oops pattern mismatch: #{line}"
+    log_warn "oops pattern mismatch: #{line}"
   end
 
   oops_map
@@ -214,18 +218,18 @@ def grep_printk_errors(kmsg_file, kmsg)
     # the kmsg file is dumped inside the running kernel
     oops = `#{grep} -a -E -e 'segfault at' -e '^<[0123]>' -e '^kern  :(err   |crit  |alert |emerg ): ' #{kmsg_file} |
       sed -r 's/\\x1b\\[([0-9;]+m|[mK])//g' |
-      grep -a -v -E -f #{LKP_SRC}/etc/oops-pattern |
-      grep -a -v -F -f #{LKP_SRC}/etc/kmsg-denylist;
+      grep -a -v -E -f #{LKP_SRC_ETC}/oops-pattern |
+      grep -a -v -F -f #{LKP_SRC_ETC}/kmsg-denylist;
       grep -Eo "[^ ]* runtime error:.*" #{kmsg_file} | sed 's/^/sanitizer./g';
       grep -Eo "#[0-5] 0x[0-9a-z]{12} in .*" #{kmsg_file} | sed 's/#0/|sanitizer.#0/g' | sed "s/#[0-5] 0x[0-9a-z]\\{12\\} in //g" | awk '{print $1}' | tr '\n' '/' | tr '|' '\n'`
   else
     # the dmesg file is from serial console
     oops = `#{grep} -a -F -f #{KTEST_USER_GENERATED_DIR}/printk-error-messages #{kmsg_file} |
-      grep -a -v -E -f #{LKP_SRC}/etc/oops-pattern |
-      grep -a -v -F -f #{LKP_SRC}/etc/kmsg-denylist`
-    oops += `grep -a -E -f #{LKP_SRC}/etc/ext4-crit-pattern #{kmsg_file}` if kmsg.index 'EXT4-fs ('
-    oops += `grep -a -E -f #{LKP_SRC}/etc/xfs-alert-pattern #{kmsg_file}` if kmsg.index 'XFS ('
-    oops += `grep -a -E -f #{LKP_SRC}/etc/btrfs-crit-pattern #{kmsg_file}` if kmsg.index 'btrfs: '
+      grep -a -v -E -f #{LKP_SRC_ETC}/oops-pattern |
+      grep -a -v -F -f #{LKP_SRC_ETC}/kmsg-denylist`
+    oops += `grep -a -E -f #{LKP_SRC_ETC}/ext4-crit-pattern #{kmsg_file}` if kmsg.index 'EXT4-fs ('
+    oops += `grep -a -E -f #{LKP_SRC_ETC}/xfs-alert-pattern #{kmsg_file}` if kmsg.index 'XFS ('
+    oops += `grep -a -E -f #{LKP_SRC_ETC}/btrfs-crit-pattern #{kmsg_file}` if kmsg.index 'btrfs: '
   end
   oops
 end
@@ -461,6 +465,7 @@ def get_content(dmesg_file)
 end
 
 CALLTRACE_LIMIT_LEN = 100
+DECODE_FLAG = 'Code starting with the faulting instruction'.freeze
 def get_crash_calltraces(dmesg_file)
   dmesg_content = get_content(dmesg_file)
 
@@ -468,24 +473,47 @@ def get_crash_calltraces(dmesg_file)
   index = 0
   line_count = 0
   in_calltrace = false
+  end_calltrace = false
+
+  in_decode = false
+  end_decode = false
+  decode_stacktrace = dmesg_content.include?(DECODE_FLAG)
 
   dmesg_content.each_line do |line|
     if line =~ / BUG: | WARNING: | INFO: | UBSAN: | kernel BUG at /
       in_calltrace = true
+      if end_calltrace
+        index += 1
+        end_calltrace = false
+      end
+      in_decode = false
+      end_decode = false
+
       calltraces[index] ||= ''
       calltraces[index] << line
       line_count = 1
     elsif line.index('---[ end trace ') && in_calltrace
       in_calltrace = false
+      end_calltrace = true
       calltraces[index] << line
-      index += 1
     elsif in_calltrace
       calltraces[index] << line
       line_count += 1
       if line_count > CALLTRACE_LIMIT_LEN
-        line_count = 0
         in_calltrace = false
-        index += 1
+        end_calltrace = true
+      end
+    elsif !end_decode && end_calltrace && decode_stacktrace
+      if !in_decode
+        line_count += 1
+        calltraces[index] << line
+        in_decode = true if line.index(DECODE_FLAG)
+        end_decode = true if line_count > CALLTRACE_LIMIT_LEN * 1.5
+      elsif line !~ /^(===|  ( [0-9a-f]|[0-9a-f]{2}):| +\.\.\.)/
+        in_decode = false
+        end_decode = true
+      else
+        calltraces[index] << line
       end
     end
   end

@@ -19,6 +19,7 @@ require "#{LKP_SRC}/lib/matrix"
 require "#{LKP_SRC}/lib/job"
 require "#{LKP_SRC}/lib/result_root"
 require "#{LKP_SRC}/lib/common"
+require "#{LKP_SRC}/lib/log"
 
 ENV['PATH'] = ENV['PATH'] + ":#{LKP_SRC}/bin"
 ENV['BENCHMARK_ROOT'] = '/lkp/benchmarks'
@@ -31,13 +32,13 @@ job = Job.new
 begin
   job.load(jobfile)
 rescue StandardError
-  warn "#{jobfile} is not a valid jobfile"
+  log_warn "#{jobfile} is not a valid jobfile"
   exit 1
 end
 
 _result_root = job._result_root
 if _result_root != File.dirname(result_root)
-  warn "_rt doesn't match rt: #{_result_root} vs. #{result_root}"
+  log_warn "_rt doesn't match rt: #{_result_root} vs. #{result_root}"
   exit 1
 end
 

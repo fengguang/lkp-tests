@@ -14,24 +14,26 @@ require "#{LKP_SRC}/lib/statistics"
 require "#{LKP_SRC}/lib/log"
 require "#{LKP_SRC}/lib/tests"
 require "#{LKP_SRC}/lib/changed_stat"
+require "#{LKP_SRC}/lib/lkp_path"
 
 MARGIN_SHIFT = 5
 MAX_RATIO = 5
 
-$metric_add_max_latency = IO.read("#{LKP_SRC}/etc/add-max-latency").split("\n")
-$metric_latency = IO.read("#{LKP_SRC}/etc/latency").split("\n")
-$metric_failure = IO.read("#{LKP_SRC}/etc/failure").split("\n")
-$metric_pass = IO.read("#{LKP_SRC}/etc/pass").split("\n")
-$perf_metrics_threshold = YAML.load_file "#{LKP_SRC}/etc/perf-metrics-threshold.yaml"
-$perf_metrics_prefixes = File.read("#{LKP_SRC}/etc/perf-metrics-prefixes").split
-$index_perf = load_yaml "#{LKP_SRC}/etc/index-perf-all.yaml"
-$index_latency = load_yaml "#{LKP_SRC}/etc/index-latency.yaml"
+LKP_SRC_ETC ||= LKP::Path.src('etc')
 
-$perf_metrics_re = load_regular_expressions("#{LKP_SRC}/etc/perf-metrics-patterns")
-$stat_denylist = load_regular_expressions("#{LKP_SRC}/etc/stat-denylist")
-$stat_allowlist = load_regular_expressions("#{LKP_SRC}/etc/stat-allowlist")
-$report_allowlist_re = load_regular_expressions("#{LKP_SRC}/etc/report-allowlist")
-$kill_pattern_allowlist_re = load_regular_expressions("#{LKP_SRC}/etc/dmesg-kill-pattern")
+$metric_add_max_latency = IO.read("#{LKP_SRC_ETC}/add-max-latency").split("\n")
+$metric_failure = IO.read("#{LKP_SRC_ETC}/failure").split("\n")
+$metric_pass = IO.read("#{LKP_SRC_ETC}/pass").split("\n")
+$perf_metrics_threshold = YAML.load_file "#{LKP_SRC_ETC}/perf-metrics-threshold.yaml"
+$perf_metrics_prefixes = File.read("#{LKP_SRC_ETC}/perf-metrics-prefixes").split
+$index_perf = load_yaml "#{LKP_SRC_ETC}/index-perf-all.yaml"
+$index_latency = load_yaml "#{LKP_SRC_ETC}/index-latency-all.yaml"
+
+$perf_metrics_re = load_regular_expressions("#{LKP_SRC_ETC}/perf-metrics-patterns")
+$stat_denylist = load_regular_expressions("#{LKP_SRC_ETC}/stat-denylist")
+$stat_allowlist = load_regular_expressions("#{LKP_SRC_ETC}/stat-allowlist")
+$report_allowlist_re = load_regular_expressions("#{LKP_SRC_ETC}/report-allowlist")
+$kill_pattern_allowlist_re = load_regular_expressions("#{LKP_SRC_ETC}/dmesg-kill-pattern")
 
 class LinuxTestcasesTableSet
   LINUX_PERF_TESTCASES =
@@ -51,7 +53,7 @@ class LinuxTestcasesTableSet
        perf-bench-futex mutilate lmbench3 lib-micro schbench
        pmbench linkbench rocksdb cassandra redis power-idle
        mongodb ycsb memtier mcperf fio-jbod cyclictest filebench igt
-       autonuma-benchmark adrestiai kernbench rt-app].freeze
+       autonuma-benchmark adrestia kernbench rt-app].freeze
   LINUX_TESTCASES =
     %w[analyze-suspend boot blktests cpu-hotplug ext4-frags ftq ftrace-onoff fwq
        galileo irda-kernel kernel-builtin kernel-selftests kvm-unit-tests kvm-unit-tests-qemu
@@ -59,10 +61,10 @@ class LinuxTestcasesTableSet
        qemu rcuscale rcutorture suspend suspend-stress trinity ndctl nfs-test hwsim
        idle-inject mdadm-selftests xsave-test nvml test-bpf mce-log perf-sanity-tests
        build-perf_test update-ucode reboot cat libhugetlbfs-test ocfs2test syzkaller
-       perf-test stress-ng sof_test fxmark kvm-kernel-boot-test bkc_ddt bpf_offload
-       xfstests packetdrill avocado v4l2 vmem perf-stat-tests].freeze
+       perf-test stress-ng fxmark kvm-kernel-boot-test bkc_ddt bpf_offload
+       xfstests packetdrill avocado v4l2 vmem perf-stat-tests cgroup2-test].freeze
   OTHER_TESTCASES =
-    %w[0day-boot-tests 0day-kbuild-tests build-dpdk build-sof sof_test build-nvml
+    %w[0day-boot-tests 0day-kbuild-tests build-dpdk build-nvml
        build-qemu convert-lkpdoc-to-html convert-lkpdoc-to-html-css rsync-rootfs
        health-stats hwinfo internal-lkp-service ipmi-setup debug
        lkp-bug lkp-install-run lkp-services lkp-src pack lkp-qemu
@@ -154,12 +156,12 @@ def reasonable_perf_change?(name, delta, max)
 end
 
 def deny_auto_report_author?(author)
-  regexp = load_regular_expressions("#{LKP_SRC}/etc/auto-report-author-denylist")
+  regexp = load_regular_expressions("#{LKP_SRC_ETC}/auto-report-author-denylist")
   author =~ regexp
 end
 
 def deny_auto_report_stat?(stat)
-  regexp = load_regular_expressions("#{LKP_SRC}/etc/auto-report-stat-denylist")
+  regexp = load_regular_expressions("#{LKP_SRC_ETC}/auto-report-stat-denylist")
   stat =~ regexp
 end
 
@@ -262,7 +264,7 @@ end
 def load_release_matrix(matrix_file)
   load_json matrix_file
 rescue StandardError => e
-  log_exception e, binding
+  log_error e
   nil
 end
 
@@ -313,7 +315,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
     $git[project] ||= Git.open(project: project, remote: remote)
     git = $git[project]
   rescue StandardError => e
-    log_exception e, binding
+    log_error e
     return nil
   end
 
@@ -327,7 +329,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
     version, is_exact_match = git.gcommit(commit).last_release_tag
     puts "project: #{project}, version: #{version}, is exact match: #{is_exact_match}" if ENV['LKP_VERBOSE']
   rescue StandardError => e
-    log_exception e, binding
+    log_error e
     return nil
   end
 
@@ -440,7 +442,7 @@ def function_stat?(stats_field)
 end
 
 def __is_latency(stats_field)
-  $metric_latency.each { |pattern| return true if stats_field =~ %r{^#{pattern}} }
+  $index_latency.keys.any? { |i| stats_field =~ /^#{i}$/ }
   false
 end
 
@@ -473,18 +475,18 @@ def should_add_max_latency(stats_field)
 end
 
 def sort_remove_margin(array, max_margin = nil)
-  return nil unless array
+  return [] if array.to_a.empty?
 
   margin = array.size >> MARGIN_SHIFT
   margin = [margin, max_margin].min if max_margin
 
   array = array.sorted
-  array[margin..-margin - 1]
+  array[margin..-margin - 1] || []
 end
 
 # NOTE: array *must* be sorted
 def get_min_mean_max(array)
-  return [0, 0, 0] unless array
+  return [0, 0, 0] if array.to_a.empty?
 
   [array[0], array[array.size / 2], array[-1]]
 end
@@ -603,7 +605,14 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
       next if k =~ /\.pass$/ && !b.keys.any? { |stat| stat == "#{stat_base}.fail" }
     end
 
-    is_function_stat = true if options['force_' + k]
+    is_allowed_stat = false
+    if options['force_' + k]
+      if strict_kpi_stat?(k, nil)
+        is_allowed_stat = true
+      else
+        is_function_stat = true
+      end
+    end
 
     is_latency_stat = is_latency k
     max_margin = if is_function_stat || is_latency_stat
@@ -633,6 +642,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
     v << 0 while v.size < cols_a
 
     sorted_b = sort_remove_margin b_k, max_margin
+    next if sorted_b.empty?
     min_b, mean_b, max_b = get_min_mean_max sorted_b
     next unless max_b
 
@@ -640,13 +650,16 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
 
     max_margin = 1 if b_k.size <= 3 && max_margin > 1
     sorted_a = sort_remove_margin v, max_margin
+    next if sorted_a.empty?
     min_a, mean_a, max_a = get_min_mean_max sorted_a
     next unless max_a
 
-    next unless changed_stats?(sorted_a, min_a, mean_a, max_a,
-                               sorted_b, min_b, mean_b, max_b,
-                               is_function_stat, is_latency_stat,
-                               k, options)
+    unless is_allowed_stat
+      next unless changed_stats?(sorted_a, min_a, mean_a, max_a,
+                                 sorted_b, min_b, mean_b, max_b,
+                                 is_function_stat, is_latency_stat,
+                                 k, options)
+    end
 
     if options['regression-only'] || options['all-critical']
       if is_function_stat
@@ -678,10 +691,12 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
     y = 0 if y < 0
     ratio = MAX_RATIO if ratio > MAX_RATIO
 
-    unless options['perf-profile'] && k =~ /^perf-profile\./
-      next unless ratio > 1.01 # time.elapsed_time only has 0.01s precision
-      next unless ratio > 1.1 || perf_metric?(k)
-      next unless reasonable_perf_change?(k, delta, max)
+    unless is_allowed_stat
+      unless options['perf-profile'] && k =~ /^perf-profile\./
+        next unless ratio > 1.01 # time.elapsed_time only has 0.01s precision
+        next unless ratio > 1.1 || perf_metric?(k)
+        next unless reasonable_perf_change?(k, delta, max)
+      end
     end
 
     interval_a = format('[ %-10.5g - %-10.5g ]', min_a, max_a)
@@ -771,8 +786,8 @@ def _get_changed_stats(a, b, options)
   filter_incomplete_run(a)
   filter_incomplete_run(b)
 
-  is_all_incomplete_run = (a['stats_source'].empty? ||
-         b['stats_source'].empty?)
+  is_all_incomplete_run = (a['stats_source'].to_s.empty? ||
+                           b['stats_source'].to_s.empty?)
   return changed_stats if is_all_incomplete_run
 
   more_changed_stats = __get_changed_stats(a, b, false, options)

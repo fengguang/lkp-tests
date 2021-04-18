@@ -71,8 +71,7 @@ module Git
 
         [tag, false]
       else
-        warn "Not a kernel tree? Check #{repo}"
-        warn caller.join "\n"
+        log_warn e
 
         nil
       end

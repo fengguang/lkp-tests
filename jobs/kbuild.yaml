@@ -8,6 +8,12 @@ nr_task:
 - 200%
 - 50%
 
-target: vmlinux_prereq
+target: autoksyms_recursive
 
 kbuild:
+
+---
+disk: 1HDD
+fs:
+- ext4
+- btrfs

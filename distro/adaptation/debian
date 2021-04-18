@@ -11,6 +11,7 @@ fsverity:
 # reason(3)
 which: debianutils
 libgcrypt-dev: libgcrypt20-dev
+bsdtar: libarchive-tools
 libipsec-mb:
 libicu: libicu57
 libntfs: libntfs-3g871
@@ -22,3 +23,4 @@ perl-modules-5: perl-modules-5.24
 libgcc-dev: libgcc-6-dev
 openjdk: openjdk-8-jdk
 postgresql-server-dev-all: postgresql
+procps-ng: procps

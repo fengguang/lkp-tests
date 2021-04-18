@@ -7,6 +7,7 @@ require 'ostruct'
 require 'set'
 require 'fileutils'
 require "#{LKP_SRC}/lib/constant"
+require "#{LKP_SRC}/lib/log"
 
 MIN_MSG_LEN = 18
 OUTPUT_FILE = "#{KTEST_USER_GENERATED_DIR}/printk-error-messages".freeze
@@ -155,7 +156,7 @@ kmsg_denylist = File.read(File.join(LKP_SRC, 'etc', 'kmsg-denylist')).split "\n"
       if str[0] =~ /[iudsxXpPco]/
         str[0] = ''
       else
-        warn 'IGNORE ' + line
+        log_warn 'IGNORE ' + line
       end
     end
 

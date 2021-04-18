@@ -1,0 +1,11 @@
+2021-03-28 03:41:38 ./check ocfs2/001
+FSTYP         -- ocfs2
+PLATFORM      -- Linux/x86_64 lkp-skl-d04 5.12.0-rc4-06327-gc47290c98af2 #1 SMP Sun Mar 28 10:42:41 CST 2021
+MKFS_OPTIONS  -- /dev/sda4
+MOUNT_OPTIONS -- /dev/sda4 /fs/scratch
+
+ocfs2/001	_check_dmesg: something found in dmesg (see /lkp/benchmarks/xfstests/results//ocfs2/001.dmesg)
+
+Ran: ocfs2/001
+Failures: ocfs2/001
+Failed 1 of 1 tests

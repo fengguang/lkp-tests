@@ -36,6 +36,8 @@ options = OptionParser.new do |opts|
     opt_set_key_value.merge! YAML.load key_value
   end
 
+  opts.on('--compatible', 'refine a dirty job file') { @opt_compatible = true }
+
   opts.on('--any', 'save one single random atom job') { @opt_any = true }
 
   opts.on('--no-defaults', 'do not load the defaults headers') { @opt_no_defaults = true }
@@ -74,8 +76,25 @@ atom_jobs = []
 
 distroinfo = LKP::DistroInfo.instance
 
+def refine_job_file(jobfile)
+  # "#!" is defined in comment_to_symbol
+  return jobfile if File.readlines(jobfile).none? { |l| l.start_with?('#! ') }
+
+  # job file is a dirty yaml which may contains invalid values
+  file = Tempfile.open do |f|
+    p = true
+    File.readlines(jobfile).each do |line|
+      p = !line.match(/^#! .*\.yaml$/).nil? if line.start_with?('#! ')
+      f.puts line if p
+    end
+    f
+  end
+  file.path
+end
+
 ARGV.each do |jobfile|
   jobs = Job.new
+  jobfile = refine_job_file(jobfile) if @opt_compatible
   jobs.load(jobfile, true) || next
   jobs['kconfig'] = @opt_kconfig if @opt_kconfig
   jobs['commit'] = @opt_commit if @opt_commit

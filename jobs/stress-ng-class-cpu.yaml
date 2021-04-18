@@ -1,0 +1,55 @@
+suite: stress-ng
+testcase: stress-ng
+category: benchmark
+
+nr_threads: 100%
+
+disk: 1HDD
+
+testtime:
+- 60s
+
+stress-ng:
+  class:
+  - cpu
+  test:
+  - af-alg
+  - atomic
+  - branch
+  - bsearch
+  - context
+  - cpu
+  - crypt
+  - fp-error
+  - funccall
+  - funcret
+  - getrandom
+  - heapsort
+  - hsearch
+  - ioport
+  - ipsec-mb
+  - judy
+  - longjmp
+  - lsearch
+  - matrix
+  - matrix-3d
+  - mergesort
+  - nop
+  - numa
+  - opcode
+  - pkey
+  - qsort
+  - radixsort
+  - rdrand
+  - rseq
+  - shellsort
+  - skiplist
+  - str
+  - stream
+  - tree
+  - tsc
+  - tsearch
+  - uprobe
+  - vecmath
+  - wcs
+  - zlib

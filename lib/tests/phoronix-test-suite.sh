@@ -182,7 +182,6 @@ fixup_mysqlslap()
 	[ -n "$environment_directory" ] || return
 	local test=$1
 	local target=$environment_directory/../test-profiles/pts/${test}/pre.sh
-	is_clearlinux && sed -i 's,mysqld_safe --no-defaults,mysqld --user root --log-error=/tmp/log,' "$target"
 	sed -i '4a groupadd mysql' "$target"
 	sed -i '5a useradd -g mysql mysql' "$target"
 	sed -i '6a chown -R mysql:mysql data' "$target"
@@ -267,7 +266,7 @@ fixup_fio()
 	modprobe loop || return
 	mount -t auto -o loop $test_disk $test_dir ||return
 
-	is_clearlinux || sed -i 's,#!/bin/sh,#!/bin/dash,' "$target"
+	sed -i 's,#!/bin/sh,#!/bin/dash,' "$target"
 	sed -i "s#filename=\$DIRECTORY_TO_TEST#filename=$test_dir/fiofile#" "$target"
 
 	# Choose
@@ -358,11 +357,8 @@ fixup_network_loopback()
 	[ -n "$environment_directory" ] || return
 	local test=$1
 	local target=${environment_directory}/pts/${test}/network-loopback
-	if is_clearlinux; then
-		sed -i 's,nc -d -l,nc -l,' $target
-	else
-		sed -i 's,nc -d -l,nc -l -p,' $target
-	fi
+
+	sed -i 's,nc -d -l,nc -l -p,' $target
 }
 
 fixup_mcperf()
@@ -527,7 +523,7 @@ fixup_install()
 		;;
 	clpeak-*)
 		# fix issue: Could not find OpenCL include/libs.  Set OPENCL_ROOT to your OpenCL SDK.
-		is_clearlinux || fixup_clpeak_install $test || die "failed to fixup $test install"
+		fixup_clpeak_install $test || die "failed to fixup $test install"
 		;;
 	numenta-nab-*)
 		# fix issue: No matching distribution found for nupic==1.0.5 (from nab==1.0)
@@ -606,14 +602,6 @@ run_test()
 			# 3: Test All Options
 			test_opt="\n3\n2\n3\nn"
 			;;
-		pymongo-inserts-*)
-			# no needed package(mongodb) on clear
-			ignored_on_clear=1
-			;;
-		render-bench-*)
-			# no needed package(libimlib2-dev) on clear
-			ignored_on_clear=1
-			;;
 		interbench-*)
 			# produce big file to /opt/rootfs when test on cluster
 			[ "$LKP_LOCAL_RUN" = "1" ] || fixup_interbench $test || die "failed to fixup test $test"
@@ -626,9 +614,7 @@ run_test()
 			# Choose
 			# 2: Flow MPI Norne
 			# 1: 1
-			# no needed packages(tinyxml-dev lapack) on clear
 			test_opt="\n2\n1\nn"
-			ignored_on_clear=1
 			;;
 		numenta-nab-*)
 			# fix issue: SyntaxError: Missing parentheses in call to 'print'.
@@ -660,22 +646,17 @@ run_test()
 			# Choose
 			# 1: ONS-Torlan Botmatch
 			# 2: 800 x 600
-			# no needed package(libstdc++5) on clear
 			test_opt="\n6\n1\nn"
 			export DISPLAY=:0
-			ignored_on_clear=1
 			;;
 		x11perf-*)
 			# Choose
 			# 1: 500px PutImage Square
-			# no needed package(libxmuu-dev libxrender-dev libxft-dev) on clear
 			test_opt="\n1\nn"
 			export DISPLAY=:0
-			ignored_on_clear=1
 			;;
 		tesseract-*)
 			export DISPLAY=:0
-			ignored_on_clear=1
 			find_max_resolution $test || die "failed to find max resolution for $test"
 			;;
 		smart-*)
@@ -772,9 +753,7 @@ run_test()
 			fixup_aom_av1 $test || die "failed to fixup test aom-av1"
 			;;
 		bullet-*)
-			is_clearlinux || {
-				fixup_bullet $test || die "failed to fixup test bullet"
-			}
+			fixup_bullet $test || die "failed to fixup test bullet"
 			;;
 		gpu-residency-*)
 			fixup_gpu_residency $test || die "failed to fixup test $test"
@@ -843,15 +822,9 @@ run_test()
 		test_opt=${test_opt}n
 	fi
 
-	is_clearlinux || {
-		root_access="/usr/share/phoronix-test-suite/pts-core/static/root-access.sh"
-		[ -f "$root_access" ] || die "$root_access not exist"
-		sed -i 's,#!/bin/sh,#!/bin/dash,' $root_access
-	}
-
-	if is_clearlinux && [ "$ignored_on_clear" ]; then
-		echo "${test}... ignored_by_lkp" && return
-	fi
+	root_access="/usr/share/phoronix-test-suite/pts-core/static/root-access.sh"
+	[ -f "$root_access" ] || die "$root_access not exist"
+	sed -i 's,#!/bin/sh,#!/bin/dash,' $root_access
 
 	if echo "$test" | grep idle-power-usage; then
 		# Choose

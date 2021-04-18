@@ -1,18 +1,44 @@
 #!/bin/sh -e
+# - online_cpus
+# - online_cores
+# - noht
 # - offline_cpus
 # - offline_package
-# - online_cpus
 
 . $LKP_SRC/lib/reproduce-log.sh
 
+cat >> "$TMP_RESULT_ROOT/post-run.cpuoffline" <<EOF
+#!/bin/bash
+
+for cpu_dir in /sys/devices/system/cpu/cpu[0-9]*
+do
+	online_file="\$cpu_dir"/online
+	cpu_id=\$(basename \$cpu_dir | sed 's/cpu//')
+
+	if [ -f "\$online_file" ] && [ "\$(cat "\$online_file")" -eq 0 ]
+	then
+		echo "Online CPU\$cpu_id"
+		echo 1 > \$online_file
+		sleep 1
+	fi
+done
+sleep 1
+EOF
+
+echo $TMP_RESULT_ROOT/post-run.cpuoffline created
+cat $TMP_RESULT_ROOT/post-run.cpuoffline
+
 # online_cpus overrides the denied list
-if [ ! -z $online_cpus ]
+if [ ! -z "$online_cpus" ]
 then
-	cpu_id=0
-	d_cpu=/sys/devices/system/cpu/cpu$cpu_id
-	while [ -d $d_cpu ]
+	echo Online CPUs: $online_cpus
+
+	for cpu_dir in /sys/devices/system/cpu/cpu[0-9]*
 	do
+		online_file="$cpu_dir"/online
+		cpu_id=$(basename $cpu_dir | sed 's/cpu//')
 		match_cpu=false
+
 		for i in $online_cpus
 		do
 			if [ $i -eq $cpu_id ]
@@ -23,42 +49,121 @@ then
 		done
 		if [ "$match_cpu" = "false" ]
 		then
-			echo 0 > $d_cpu/online
-			echo CPU$cpu_id offlined
+			if [ -f $online_file ]
+			then
+				echo 0 > $online_file
+				echo CPU$cpu_id offlined
+			else
+				echo CPU$cpu_id can not be offlined
+			fi
 		else
-			[ -f $d_cpu/online ] && echo 1 > $d_cpu/online
+			[ -f $online_file ] && echo 1 > $online_file
 		fi
 		sleep 1
-		cpu_id=$(( $cpu_id + 1 ))
-		d_cpu=/sys/devices/system/cpu/cpu$cpu_id
 	done
 
 	sleep 3
-	return
+	exit 0
 fi
 
-if [ ! -z $offline_cpus ]
+if [ ! -z "$online_cores" ]
 then
+	echo Online Cores: $online_cores
+	for cpu_dir in /sys/devices/system/cpu/cpu[0-9]*
+	do
+		online_file="$cpu_dir"/online
+		cpu_id=$(basename $cpu_dir | sed 's/cpu//')
+		[ -f "$online_file" ] && [ "$(cat "$online_file")" -eq 0 ] && continue
+
+		core_id=$(cat $cpu_dir/topology/core_id)
+		die_id=$(cat $cpu_dir/topology/die_id)
+		pkg_id=$(cat $cpu_dir/topology/physical_package_id)
+		cur_ids=$pkg_id-$die_id-$core_id
+
+		match=false
+		for id in "$online_cores"
+		do
+			[ "$cur_ids" = "$id" ] && match=true
+		done
+
+		if [ "$match" = "false" ]
+		then
+			if [ -f $online_file ]
+			then
+				echo 0 > $online_file
+				echo CPU$cpu_id offlined
+			else
+				echo CPU$cpu_id can not be offlined
+				exit 1
+			fi
+		else
+			[ -f $online_file ] && echo 1 > $online_file
+		fi
+		sleep 1
+	done
+
+	sleep 3
+	exit 0
+fi
+
+
+if [ ! -z "$noht" ]
+then
+	echo Disabling HT
+	# Poking smt/control interface is not safe
+	# We need to do this in a stupid way
+
+	for cpu_dir in /sys/devices/system/cpu/cpu[0-9]*
+	do
+		online_file="$cpu_dir"/online
+		cpu_id=$(basename $cpu_dir | sed 's/cpu//')
+		[ -f "$online_file" ] || continue
+		[ "$(cat "$online_file")" -eq 0 ] && continue
+
+		core_cpus=$(cat $cpu_dir/topology/core_cpus_list)
+		# Do not offline the last cpu of the core
+		if [ "$core_cpus" != "$cpu_id" ]
+		then
+			echo 0 > $online_file
+			echo CPU$cpu_id offlined
+			sleep 1
+		fi
+	done
+fi
+
+if [ ! -z "$offline_cpus" ]
+then
+	echo Offline CPUs: $offline_cpus
 	for i in $offline_cpus
 	do
-		echo 0 > $d_cpu/online
+		online_file=/sys/devices/system/cpu/cpu$i/online
+
+		[ -f $online_file ] || { echo CPU$i can not be offlined; exit 1; }
+
+		echo 0 > $online_file
 		echo CPU$i offlined
 		sleep 1
 	done
 fi
 
-if [ ! -z $offline_package ]
+if [ ! -z "$offline_package" ]
 then
-	cpu_id=1
-	d_cpu=/sys/devices/system/cpu/cpu$cpu_id
-	while [ -d $d_cpu ]
+	echo Offline Package: $offline_package
+	for cpu_dir in /sys/devices/system/cpu/cpu[0-9]*
 	do
-		package_id=$(cat $d_cpu/topology/physical_package_id)
-		echo CPU$cpu_id: physcal_package_id $(cat $d_cpu/topology/physical_package_id), package cpu list: $(cat $d_cpu/topology/package_cpus_list)
-		[ "$package_id" = "$offline_package" ] && { echo 0 > $d_cpu/online; echo CPU$cpu_id offlined; sleep 1; }
-		cpu_id=$(( $cpu_id + 1 ))
-		d_cpu=/sys/devices/system/cpu/cpu$cpu_id
-	done
+		online_file="$cpu_dir"/online
+		cpu_id=$(basename $cpu_dir | sed 's/cpu//')
 
+		[ -f "$online_file" ] && [ "$(cat "$online_file")" -eq 0 ] && continue
+
+		package_id=$(cat $cpu_dir/topology/physical_package_id)
+		if [ "$package_id" = "$offline_package" ]
+		then
+			[ -f $online_file ] || { echo CPU$cpu_id can not be offlined; exit 1; }
+			echo 0 > $online_file
+			echo CPU$cpu_id offlined
+			sleep 1
+		fi
+	done
 fi
 sleep 3

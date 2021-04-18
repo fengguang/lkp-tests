@@ -52,21 +52,38 @@ prepare_test_env()
 	fi
 }
 
+prepare_for_bpf()
+{
+	local modules_dir="/lib/modules/$(uname -r)"
+	mkdir -p "$linux_selftests_dir/lib" || die
+	if [[ "$LKP_LOCAL_RUN" = "1" ]]; then
+		cp -r $modules_dir/kernel/lib/* $linux_selftests_dir/lib
+	else
+		# make sure the test_bpf.ko path for bpf test is right
+		log_cmd mount --bind $modules_dir/kernel/lib $linux_selftests_dir/lib || die
+
+		local linux_headers_dir=$(ls -d /usr/src/linux-headers*-bpf)
+		[[ $linux_headers_dir ]] || die "failed to find linux-headers package"
+
+		# prepare for bpf_testmod.ko
+		cp -r $linux_headers_dir/arch/*/include/generated $linux_selftests_dir/arch/x86/include/
+		cp -r $linux_headers_dir/include/generated $linux_selftests_dir/include
+		mkdir -p $linux_selftests_dir/include/config/ &&
+		cp $linux_headers_dir/include/config/auto.conf $linux_selftests_dir/include/config/
+		cp $linux_headers_dir/scripts/basic/fixdep $linux_selftests_dir/scripts/basic/
+		cp $linux_headers_dir/scripts/mod/modpost $linux_selftests_dir/scripts/mod
+		cp $linux_headers_dir/tools/objtool/objtool $linux_selftests_dir/tools/objtool/
+		cp $linux_headers_dir/scripts/module.lds $linux_selftests_dir/scripts/ 2>&1
+	fi
+}
+
 prepare_for_test()
 {
 	export PATH=/lkp/benchmarks/kernel-selftests/kernel-selftests/iproute2-next/sbin:$PATH
 	# workaround hugetlbfstest.c open_file() error
 	mkdir -p /hugepages
 
-	# make sure the test_bpf.ko path for bpf test is right
-	if [ "$group" = "bpf" ]; then
-		mkdir -p "$linux_selftests_dir/lib" || die
-		if [[ "$LKP_LOCAL_RUN" = "1" ]]; then
-			cp -r /lib/modules/`uname -r`/kernel/lib/* $linux_selftests_dir/lib
-		else
-			mount --bind /lib/modules/`uname -r`/kernel/lib $linux_selftests_dir/lib || die
-		fi
-	fi
+	[[ "$group" = "bpf" || "$group" = "net" ]] && prepare_for_bpf
 
 	# temporarily workaround compile error on gcc-6
 	command -v gcc-5 >/dev/null && log_cmd ln -sf /usr/bin/gcc-5 /usr/bin/gcc
@@ -186,6 +203,15 @@ check_ignore_case()
 	return 1
 }
 
+fixup_dma()
+{
+	# need to bind a device to dma_map_benchmark driver
+	# for PCI devices
+	echo dma_map_benchmark > /sys/bus/pci/devices/0000:00:01.0/driver_override || return
+	echo 0000:00:01.0 > /sys/bus/pci/drivers/pcieport/unbind || return
+	echo 0000:00:01.0 > /sys/bus/pci/drivers/dma_map_benchmark/bind || return
+}
+
 fixup_net()
 {
 	# udpgro tests need enable bpf firstly
@@ -194,6 +220,13 @@ fixup_net()
 
 	sed -i 's/l2tp.sh//' net/Makefile
 	echo "LKP SKIP net.l2tp.sh"
+
+	# for tls, it will directly run
+	# /kselftests/run_kselftests.sh -t net:tls
+	if [[ $test != "tls" ]]; then
+		sed -i 's/tls//' net/Makefile
+		echo "LKP SKIP net.tls"
+	fi
 
 	# at v4.18-rc1, it introduces fib_tests.sh, which doesn't have execute permission
 	# here is to fix the permission
@@ -355,15 +388,20 @@ prepare_for_selftest()
 		# subtest lib cause kselftest incomplete run, it's a kernel issue
 		# report [LKP] [software node] 7589238a8c: BUG:kernel_NULL_pointer_dereference,address
 		# lkdtm is unstable [validated 1] f825d3f7ed
-		selftest_mfs=$(ls -d [c-l]*/Makefile | grep -v -e ^livepatch -e ^lib -e ^cpufreq -e ^kvm -e ^firmware -e ^lkdtm)
+		# landlock depends on new version libc6-dev
+		selftest_mfs=$(ls -d [c-l]*/Makefile | grep -v -e ^livepatch -e ^lib -e ^cpufreq -e ^kvm -e ^firmware -e ^lkdtm -e ^landlock)
 	elif [ "$group" = "group-02" ]; then
 		# m* is slow
 		# pidfd caused soft_timeout in kernel-selftests.splice.short_splice_read.sh.fail.v5.9-v5.10-rc1.2020-11-06.132952
-		selftest_mfs=$(ls -d [m-s]*/Makefile | grep -v -e ^rseq -e ^resctrl -e ^net -e ^netfilter -e ^rcutorture -e ^pidfd)
+		selftest_mfs=$(ls -d [m-r]*/Makefile | grep -v -e ^rseq -e ^resctrl -e ^net -e ^netfilter -e ^rcutorture -e ^pidfd -e ^memory-hotplug)
 	elif [ "$group" = "group-03" ]; then
 		selftest_mfs=$(ls -d [t-z]*/Makefile | grep -v -e ^x86 -e ^tc-testing -e ^vm)
 	elif [ "$group" = "mptcp" ]; then
 		selftest_mfs=$(ls -d net/mptcp/Makefile)
+	elif [ "$group" = "group-s" ]; then
+		selftest_mfs=$(ls -d s*/Makefile | grep -v sgx)
+	elif [ "$group" = "memory-hotplug" ]; then
+		selftest_mfs=$(ls -d memory-hotplug/Makefile)
 	else
 		# bpf cpufreq firmware kvm lib livepatch lkdtm net netfilter pidfd rcutorture resctrl rseq tc-testing vm x86
 		selftest_mfs=$(ls -d $group/Makefile)
@@ -375,6 +413,8 @@ fixup_vm()
 	# has too many errors now
 	sed -i 's/hugetlbfstest//' vm/Makefile
 
+	local run_vmtests="run_vmtests.sh"
+	[[ -f vm/run_vmtests ]] && run_vmtests="run_vmtests"
 	# we need to adjust two value in vm/run_vmtests accroding to the nr_cpu
 	# 1) needmem=262144, in Byte
 	# 2) ./userfaultfd hugetlb *128* 32, we call it memory here, in MB
@@ -389,14 +429,14 @@ fixup_vm()
 	[ $nr_cpu -gt 64 ] && {
 		local memory=$((nr_cpu/64+1))
 		memory=$((memory*128))
-		sed -i "s#./userfaultfd hugetlb 128 32#./userfaultfd hugetlb $memory 32#" vm/run_vmtests
+		sed -i "s#./userfaultfd hugetlb 128 32#./userfaultfd hugetlb $memory 32#" vm/$run_vmtests
 		memory=$((memory*1024*2))
-		sed -i "s#needmem=262144#needmem=$memory#" vm/run_vmtests
+		sed -i "s#needmem=262144#needmem=$memory#" vm/$run_vmtests
 	}
 
-	sed -i 's/.\/compaction_test/echo LKP SKIP #.\/compaction_test/' vm/run_vmtests
+	sed -i 's/.\/compaction_test/echo -n LKP SKIP #.\/compaction_test/' vm/$run_vmtests
 	# ./userfaultfd anon 128 32
-	sed -i 's/.\/userfaultfd anon .*$/echo LKP SKIP #.\/userfaultfd/' vm/run_vmtests
+	sed -i 's/.\/userfaultfd anon .*$/echo -n LKP SKIP #.\/userfaultfd/' vm/$run_vmtests
 }
 
 platform_is_skylake_or_snb()
@@ -423,9 +463,13 @@ fixup_openat2()
 	mkfs -t ext4 /tmp/raw.img || return
 	[[ -d "/mnt/kselftest" ]] || mkdir -p "/mnt/kselftest" || return
 	mount -t ext4 /tmp/raw.img /mnt/kselftest || return
-	# Build openat2 firstly, just run binary on /mnt/kselftest
-	make -C openat2 >/dev/null || return
-	cp -r openat2 /mnt/kselftest || return
+	if $run_cached_kselftests -l | grep "^$subtest:"; then
+		cp -r $(dirname $run_cached_kselftests)/openat2 /mnt/kselftest || return
+	else
+		# Build openat2 firstly, just run binary on /mnt/kselftest
+		log_cmd make -C openat2 >/dev/null || return
+		cp -r openat2 /mnt/kselftest || return
+	fi
 
 	# Openat2 create testing files on current dir, so we need change working dir.
 	cd /mnt/kselftest/openat2
@@ -528,6 +572,57 @@ pack_selftests()
 	[[ $arch ]] && mv "/lkp/benchmarks/${BM_NAME}.cgz" "/lkp/benchmarks/${BM_NAME}-${arch}.cgz"
 }
 
+fixup_subtest()
+{
+	local subtest=$1
+	if [[ "$subtest" = "breakpoints" ]]; then
+		fixup_breakpoints
+	elif [[ $subtest = "bpf" ]]; then
+		fixup_bpf || die "fixup_bpf failed"
+	elif [[ $subtest = "dma" ]]; then
+		fixup_dma || die "fixup_dma failed"
+	elif [[ $subtest = "efivarfs" ]]; then
+		fixup_efivarfs || return
+	elif [[ $subtest = "exec" ]]; then
+		log_cmd touch ./$subtest/pipe || die "touch pipe failed"
+	elif [[ $subtest = "gpio" ]]; then
+		fixup_gpio || continue
+	elif [[ $subtest = "openat2" ]]; then
+		fixup_openat2
+		return 1
+	elif [[ "$subtest" = "pstore" ]]; then
+		fixup_pstore || return
+	elif [[ "$subtest" = "firmware" ]]; then
+		fixup_firmware || return
+	elif [[ "$subtest" = "net" ]]; then
+		fixup_net || return
+	elif [[ "$subtest" = "sysctl" ]]; then
+		lsmod | grep -q test_sysctl || modprobe test_sysctl
+	elif [[ "$subtest" = "ir" ]]; then
+		## Ignore RCMM infrared remote controls related tests.
+		sed -i 's/{ RC_PROTO_RCMM/\/\/{ RC_PROTO_RCMM/g' ir/ir_loopback.c
+		echo "LKP SKIP ir.ir_loopback_rcmm"
+	elif [[ "$subtest" = "memfd" ]]; then
+		fixup_memfd
+	elif [[ "$subtest" = "vm" ]]; then
+		fixup_vm
+	elif [[ "$subtest" = "x86" ]]; then
+		fixup_x86
+	elif [[ "$subtest" = "resctrl" ]]; then
+		log_cmd resctrl/resctrl_tests 2>&1
+		return 1
+	elif [[ "$subtest" = "livepatch" ]]; then
+		fixup_livepatch
+	elif [[ "$subtest" = "ftrace" ]]; then
+		fixup_ftrace
+	elif [[ "$subtest" = "kmod" ]]; then
+		fixup_kmod
+	elif [[ "$subtest" = "ptp" ]]; then
+		fixup_ptp || return
+	fi
+	return 0
+}
+
 run_tests()
 {
 	# zram: skip zram since 0day-kernel-tests always disable CONFIG_ZRAM which is required by zram
@@ -540,6 +635,19 @@ run_tests()
 	skip_filter="powerpc zram media_tests watchdog"
 
 	local selftest_mfs=$@
+
+	[[ $run_cached_kselftests ]] ||
+	local run_cached_kselftests="/kselftests/run_kselftest.sh"
+
+	# $ uname -r
+	# 5.9.0-0.bpo.2-amd64
+	# $ uname -r | grep -o "^[0-9]\.[0-9]*"
+	# 5.9
+	local kernel_version=$(uname -r | grep -o "^[0-9]\.[0-9]*")
+
+	# run_kselftest.sh started to support testing individually from the below commit:
+	# 5da1918446a1 selftests/run_kselftest.sh: Make each test individually selectable
+	(( $(echo "$kernel_version < 5.10" | bc -l) )) && run_cached_kselftests=
 
 	# kselftest introduced runner.sh since kernel commit 42d46e57ec97 "selftests: Extract single-test shell logic from lib.mk"
 	[[ -e kselftest/runner.sh ]] && log_cmd sed -i 's/default_timeout=45/default_timeout=300/' kselftest/runner.sh
@@ -555,56 +663,42 @@ run_tests()
 		check_ignore_case $subtest && echo "LKP SKIP $subtest" && continue
 		subtest_in_skip_filter "$skip_filter" && continue
 
-		check_makefile $subtest || log_cmd make TARGETS=$subtest 2>&1
+		(
+		if $run_cached_kselftests -l 2>/dev/null | grep -q "^$subtest:"; then
+			found_subtest_in_cache=1
+			[[ -f $LKP_SRC/lib/tests/kernel-selftests-ext.sh ]] && {
+				echo "source $LKP_SRC/lib/tests/kernel-selftests-ext.sh"
+				source $LKP_SRC/lib/tests/kernel-selftests-ext.sh
+			}
 
-		if [[ "$subtest" = "breakpoints" ]]; then
-			fixup_breakpoints
-		elif [[ $subtest = "bpf" ]]; then
-			fixup_bpf || die "fixup_bpf failed"
-		elif [[ $subtest = "efivarfs" ]]; then
-			fixup_efivarfs || continue
-		elif [[ $subtest = "exec" ]]; then
-			log_cmd touch ./$subtest/pipe || die "touch pipe failed"
-		elif [[ $subtest = "gpio" ]]; then
-			fixup_gpio || continue
-		elif [[ $subtest = "openat2" ]]; then
-			fixup_openat2
-			continue
-		elif [[ "$subtest" = "pstore" ]]; then
-			fixup_pstore || continue
-		elif [[ "$subtest" = "firmware" ]]; then
-			fixup_firmware || continue
-		elif [[ "$subtest" = "net" ]]; then
-			fixup_net || continue
-		elif [[ "$subtest" = "sysctl" ]]; then
-			lsmod | grep -q test_sysctl || modprobe test_sysctl
-		elif [[ "$subtest" = "ir" ]]; then
-			## Ignore RCMM infrared remote controls related tests.
-			sed -i 's/{ RC_PROTO_RCMM/\/\/{ RC_PROTO_RCMM/g' ir/ir_loopback.c
-			echo "LKP SKIP ir.ir_loopback_rcmm"
-		elif [[ "$subtest" = "memfd" ]]; then
-			fixup_memfd
-		elif [[ "$subtest" = "vm" ]]; then
-			fixup_vm
-		elif [[ "$subtest" = "x86" ]]; then
-			fixup_x86
-		elif [[ "$subtest" = "resctrl" ]]; then
-			log_cmd resctrl/resctrl_tests 2>&1
-			continue
-		elif [[ "$subtest" = "livepatch" ]]; then
-			fixup_livepatch
-		elif [[ "$subtest" = "ftrace" ]]; then
-			fixup_ftrace
-		elif [[ "$subtest" = "kmod" ]]; then
-			fixup_kmod
-		elif [[ "$subtest" = "ptp" ]]; then
-			fixup_ptp || continue
+			# not ok 1 selftests: firmware: fw_run_tests.sh # TIMEOUT 45 seconds
+			[[ ! -f /kselftests/$subtest/settings ]] &&
+			[[ -f $subtest/settings ]] &&
+			log_cmd cp $subtest/settings /kselftests/$subtest/settings
+		else
+			found_subtest_in_cache=
+			check_makefile $subtest || log_cmd make TARGETS=$subtest 2>&1
 		fi
 
-		log_cmd make run_tests -C $subtest  2>&1
+		fixup_subtest $subtest || return
+
+		if [[ $found_subtest_in_cache ]]; then
+			if [[ $group == "net" && $test == "tls" ]]; then
+				log_cmd $run_cached_kselftests -t $subtest:tls 2>&1
+			else
+				# run_cached_kselftests is from kselftests.cgz which may not exist in local
+				log_cmd $run_cached_kselftests -c $subtest 2>&1
+			fi
+		elif [[ -f $run_cached_kselftests ]]; then
+			echo "LKP WARN miss target $subtest"
+			log_cmd make run_tests -C $subtest 2>&1
+		else
+			log_cmd make run_tests -C $subtest 2>&1
+		fi
 
 		if [[ "$subtest" = "firmware" ]]; then
 			cleanup_for_firmware
 		fi
+		)
 	done
 }

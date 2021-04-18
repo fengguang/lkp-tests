@@ -11,6 +11,8 @@ PLOT_SIZE_X = 80
 PLOT_SIZE_Y = 20
 NR_PLOT = 1
 
+LKP_SRC_ETC ||= LKP::Path.src('etc')
+
 module Gnuplot
   # fallback to v2.4.1 to avoid circular dependency and potential dead lock
   def self.open(persist = true)
@@ -367,11 +369,11 @@ end
 
 class << MatrixPlotter
   def plot_unit
-    @plot_unit ||= load_yaml LKP_SRC + '/etc/plot-unit.yaml'
+    @plot_unit ||= load_yaml(File.join(LKP_SRC_ETC, 'plot-unit.yaml'))
   end
 
   def unit_size
-    @unit_size = load_yaml LKP_SRC + '/etc/unit-size.yaml'
+    @unit_size = load_yaml(File.join(LKP_SRC_ETC, 'unit-size.yaml'))
   end
 end
 

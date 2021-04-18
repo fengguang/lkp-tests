@@ -1,0 +1,33 @@
+suite: stress-ng
+testcase: stress-ng
+category: benchmark
+
+nr_threads: 100%
+
+disk: 1HDD
+
+testtime:
+- 60s
+
+stress-ng:
+  class:
+  - network
+  test:
+  - dccp
+  - epoll
+  - icmp-flood
+  - netdev
+  - ping-sock
+  - rawpkt
+  - rawsock
+  - rawudp
+  - sctp
+  - sock
+  - sockabuse
+  - sockdiag
+  - sockfd
+  - sockpair
+  - sockmany
+  - tun
+  - udp
+  - udp-flood

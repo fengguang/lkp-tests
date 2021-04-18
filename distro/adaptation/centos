@@ -84,6 +84,7 @@ liblsan0:
 liblz-dev:
 liblzma-dev: xz-devel
 libmount-dev: libmount-devel
+libmariadbclient18: mariadb-connector-c
 libmariadbclient-dev: mariadb-devel
 libmysqlclient-dev: mysql-devel
 libmpx2:
@@ -336,3 +337,4 @@ lsb-release: redhat-lsb
 linux-base:
 openssh-client: openssh-clients
 postgresql-server: postgresql
+xsltproc: libxslt

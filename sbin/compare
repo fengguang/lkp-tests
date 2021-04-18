@@ -50,7 +50,7 @@ $header_shown = {}
 def expand_possible_commit(s)
   return s unless commit_name? s
 
-  git = Git.open(project: 'linux', working_dir: ENV['SRC_ROOT'])
+  git = Git.open(working_dir: ENV['SRC_ROOT'])
   return s unless git.commit_exist? s
 
   git.gcommit(s).sha

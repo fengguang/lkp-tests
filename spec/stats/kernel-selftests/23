@@ -1,6 +1,6 @@
-ignored_by_lkp bpf.test_lirc_mode2_user test
-ignored_by_lkp bpf.test_tc_tunnel.sh test
-ignored_by_lkp bpf.test_lwt_seg6local.sh test
+LKP SKIP bpf.test_lirc_mode2_user
+LKP SKIP bpf.test_tc_tunnel.sh
+LKP SKIP bpf.test_lwt_seg6local.sh
 2020-05-14 10:32:44 make run_tests -C bpf
 make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-bpf-lsm-2-2ef96a5bb12be62ef75b5828c0aab838ebb29cb8/tools/testing/selftests/bpf'
 TAP version 13

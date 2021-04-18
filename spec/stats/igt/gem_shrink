@@ -1,0 +1,44 @@
+2021-04-11 19:50:30 build/tests/gem_shrink --run-subtest execbuf1-oom
+IGT-Version: 1.25-g84e6a7e1 (x86_64) (Linux: 5.12.0-rc6-06088-g11e0c868f5c7 x86_64)
+Using 72 processes and 436MiB per process
+Starting subtest: execbuf1-oom
+Received signal SIGSEGV.
+Stack trace:
+Received signal SIGSEGV.
+Stack trace:
+ #0 [fatal_sig_handler+0xd6]
+Received signal SIGSEGV.
+Stack trace:
+ #0 [fatal_sig_handler+0xd6]
+ #1 [killpg+0x40]
+ #2 [__real_main396+0x837]
+ #3 [main+0x27]
+ #4 [__libc_start_main+0xeb]
+Stack trace:
+ #5 [_start+0x2a]
+Subtest execbuf1-oom: CRASH (0.021s)
+ #1 [killpg+0x40]
+ #2 [__real_main396+0x837]
+ #3 [main+0x27]
+ #4 [__libc_start_main+0xeb]
+ #5 [_start+0x2a]
+Subtest execbuf1-oom: CRASH (0.021s)
+ #4 [__libc_start_main+0xeb]
+ #5 [_start+0x2a]
+Subtest execbuf1-oom: CRASH (0.021s)
+Stack trace:
+  #0 ../lib/igt_core.c:1726 __igt_fail_assert()
+  #1 ../tests/i915/gem_shrink.c:397 __real_main396()
+  #2 ../tests/i915/gem_shrink.c:325 __real_main396()
+  #3 ../tests/i915/gem_shrink.c:396 main()
+  #4 [__libc_start_main+0xeb]
+  #5 [_start+0x2a]
+(gem_shrink:2534) CRITICAL: Test assertion failure function userptr, file ../tests/i915/gem_shrink.c:231:
+(gem_shrink:2534) CRITICAL: Failed assertion: (alloc & 4095) == 0
+Subtest execbuf1-oom failed.
+**** DEBUG ****
+(gem_shrink:2426) drmtest-DEBUG: Test requirement passed: !(fd<0)
+(gem_shrink:2426) DEBUG: Test requirement passed: has_userptr()
+****  END  ****
+child 0 died with signal 9, Killed
+Subtest execbuf1-oom: FAIL (0.081s)

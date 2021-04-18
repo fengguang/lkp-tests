@@ -1,6 +1,6 @@
-bpf.test_lirc_mode2_user.ignored_by_lkp: 1
-bpf.test_tc_tunnel.sh.ignored_by_lkp: 1
-bpf.test_lwt_seg6local.sh.ignored_by_lkp: 1
+bpf.test_lirc_mode2_user.skip: 1
+bpf.test_tc_tunnel.sh.skip: 1
+bpf.test_lwt_seg6local.sh.skip: 1
 bpf.test_verifier.pass: 1
 bpf.test_tag.pass: 1
 bpf.test_maps.pass: 1

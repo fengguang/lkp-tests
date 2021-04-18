@@ -37,6 +37,8 @@
 
 	# install the remaining dependencies for the splited job
 	lkp install ./hackbench-50%-threads-socket.yaml
+	# or add -f option to force to install all dependencies
+	lkp install -f ./hackbench-50%-threads-socket.yaml
 
 	lkp run ./hackbench-50%-threads-socket.yaml
 ```
@@ -74,6 +76,16 @@ To run your own benchmarks that are not part of lkp-tests, you can use mytest jo
 ## Check result
 ```
 	lkp result hackbench
+```
+
+## Add extra scripts in post run stage
+```
+	# create new scripts or rename hidden template scripts in the directory
+	echo "echo result_root: \$RESULT_ROOT" > post-run/print-result-root
+	lkp run ./ebizzy-10s-1x-200%.yaml
+	# output is:
+	# ...
+	# result_root: /lkp/result/ebizzy/10s-1x-200%/shao2-debian/debian/defconfig/gcc-6/5.7.0-2-amd64/1
 ```
 
 ## Supported Distributions

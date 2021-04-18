@@ -1,10 +1,23 @@
 #!/bin/sh
 # - benchmarks
+# - duration
+# - threads
+# - value_size
+# - num
 
 DB_BENCH=/usr/share/rocksdb/tools/db_bench
 
 "$DB_BENCH" --benchmarks="fillseq"
 
+run_opts=" --use_existing_db"
+
+[ -n "$benchmarks" ] && run_opts="$run_opts --benchmarks=$benchmarks"
+[ -n "$duration" ] && run_opts="$run_opts --duration=$duration"
+[ -n "$threads" ] && run_opts="$run_opts --threads=$threads"
+[ -n "$value_size" ] && run_opts="$run_opts --value_size=$value_size"
+[ -n "$num" ] && run_opts="$run_opts --num=$num"
+
+# value_size = 4K/32K
 cat > "$TMP_RESULT_ROOT"/run.rocksdb <<EOF
-$DB_BENCH --use_existing_db --benchmarks="$benchmarks"
+$DB_BENCH $run_opts
 EOF

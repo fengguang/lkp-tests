@@ -6,3 +6,4 @@ git_am_branch: for-kbuild-bot/current-stable
 subsystems:
 - rt
 test_old_branches: .*
+branch_denylist: linux-5\..+\.y-rt

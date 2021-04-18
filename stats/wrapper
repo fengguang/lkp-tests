@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source $LKP_SRC/lib/log.sh
+source $LKP_SRC/lib/lkp_path.sh
 
 set -o pipefail
 
@@ -9,6 +10,7 @@ program=$1
 stats_group=${2:-$1}
 log=$RESULT_ROOT/$stats_group
 
+LKP_SRC_ETC=$(lkp_src)/etc
 # exit processing the stats if the program is not in the program_list.
 # program_list is a file that records all the programs(setups, monitors, tests,
 # daemons) being executed during the test.
@@ -18,7 +20,7 @@ log=$RESULT_ROOT/$stats_group
 # on server node due to the current Job2sh algorithm.
 
 # default stats are not in the program_list
-grep -q "^$program\:" $LKP_SRC/etc/default_stats.yaml
+grep -q "^$program\:" $LKP_SRC_ETC/default_stats.yaml
 if [ $? -ne 0 ]; then
 	[ -f $RESULT_ROOT/program_list ] && {
 		grep -q "$program" $RESULT_ROOT/program_list || exit 0
@@ -42,6 +44,19 @@ check_soft_timeout()
 
 	grep -xq "soft_timeout: 1" $RESULT_ROOT/last_state ||
 	echo -e "soft_timeout: 1" >> $RESULT_ROOT/last_state
+}
+
+check_die()
+{
+	# test.locktorture.exit_code.99: 1
+	[[ -f $RESULT_ROOT/last_state ]] || return 0
+
+	grep -q "exit_code.99: 1" $RESULT_ROOT/last_state && {
+		log_warn "job exited due to die" "$RESULT_ROOT"
+		return 1
+	}
+
+	return 0
 }
 
 check_empty_output()
@@ -71,7 +86,7 @@ check_binary_output()
 
 	grep -Paq '\x0' $log || return
 
-	log_warn "skip binary file $log"
+	log_warn "$program: skip binary file" "$log"
 	exit 0
 }
 
@@ -85,10 +100,10 @@ warn_empty_stats()
 	[[ $program = 'perf-profile' ]] && return
 	[[ -s $RESULT_ROOT/time ]] || return
 	[[ -s $RESULT_ROOT/last_state ]] && return
-	grep -q "^$program\." $LKP_SRC/etc/failure && return
-	grep -q "^$program\." $LKP_SRC/etc/pass && return
+	grep -q "^$program\." $LKP_SRC_ETC/failure && return
+	grep -q "^$program\." $LKP_SRC_ETC/pass && return
 
-	log_warn "empty stats for $log"
+	log_warn "$program: empty stats" "$log"
 }
 
 check_empty_json()
@@ -113,7 +128,7 @@ check_empty_json()
 		if [[ -f $RESULT_ROOT/last_state ]] && grep -q is_incomplete_run $RESULT_ROOT/last_state; then
 			return 1
 		else
-			log_warn "no generate json file for $stats_group, check $RESULT_ROOT"
+			log_warn "$stats_group: no json file generated" "$RESULT_ROOT"
 			echo -e "# no json file for $stats_group\nis_incomplete_run: 1" >> $RESULT_ROOT/last_state
 			return 1
 		fi
@@ -146,15 +161,32 @@ check_incomplete_run $log
 check_soft_timeout
 check_empty_output
 check_binary_output
+check_die || exit 1
+
+# When stats script returns failure, we need decide whether it is a bad rt
+# - job exists due to die, so that rt is bad. This is handled in check_die.
+# - job has soft_timeout or OOM or panic, which may lead to the incomplete/missing
+# output. The rt is not necessarily bad.
+# - job runs to the end without the serious states mentioned in above bullets, then
+# if any output is incomplete/missing, it is a bad rt.
+is_bad_rt_candidate()
+{
+	[[ -f $RESULT_ROOT/last_state ]] || return
+
+	# rli9 FIXME the logic can't handle panic situation now
+	grep -q -e "soft_timeout: 1" -e "OOM: 1" $RESULT_ROOT/last_state && return 1
+
+	return 0
+}
 
 tmpfile=$(mktemp -p /tmp -t lkp-stats.XXXXXXXX)
 if [[ -f $log ]]; then
-	$program_dir/$program $log < $log > $tmpfile || { log_error "$program_dir/$program $log < $log  exit code $?, check $tmpfile"; exit 1; }
+	$program_dir/$program $log < $log > $tmpfile || { log_error "failed to stat $program" "$program_dir/$program $log < $log\nerrno: $?\ntmpfile: $tmpfile"; is_bad_rt_candidate && exit 1; }
 else
-	$program_dir/$program < /dev/null > $tmpfile || { log_error "$program_dir/$program < /dev/null  exit code $?, check $tmpfile"; exit 1; }
+	$program_dir/$program < /dev/null > $tmpfile || { log_error "failed to stat $program" "$program_dir/$program < /dev/null\nerrno: $?\ntmpfile: $tmpfile"; is_bad_rt_candidate && exit 1; }
 fi
 
-grep -q "^$program\." <(cat $LKP_SRC/etc/failure $LKP_SRC/etc/pass) ||
+grep -q "^$program\." <(cat $LKP_SRC_ETC/failure $LKP_SRC_ETC/pass) ||
 check_incomplete_run $tmpfile
 
 warn_empty_stats
@@ -164,8 +196,15 @@ dump_stat()
 	local stats_group=$1
 	local file=$2
 
-	$LKP_SRC/sbin/dump-stat $stats_group < $file || { log_error "$LKP_SRC/sbin/dump-stat $program  exit code $?, check $file"; exit 1; }
+	$LKP_SRC/sbin/dump-stat $stats_group < $file || { log_error "failed to dump-stat $program" "errno: $?\nfile: $file"; exit 1; }
 	rm $file
+}
+
+# cleanup program raw data
+[[ $lite_mode = 1 ]] && {
+    rm -f $RESULT_ROOT/$program
+    rm -f $RESULT_ROOT/$program.xz
+    rm -f $RESULT_ROOT/$program.gz
 }
 
 if [[ $program = 'ftrace' ]]; then

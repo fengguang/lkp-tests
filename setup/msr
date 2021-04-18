@@ -18,7 +18,11 @@ modprobe msr > /dev/null 2>&1
 
 sanity_check()
 {
-	[ -c /dev/cpu/0/msr ] || die "/dev/cpu/0/msr not available"
+	for cpu_dir in /dev/cpu/[0-9]*
+	do
+		[ -c $cpu_dir/msr ] || die "$cpu_dir/msr not available"
+		return
+	done
 }
 
 restore_msr()

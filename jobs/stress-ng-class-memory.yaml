@@ -1,0 +1,64 @@
+suite: stress-ng
+testcase: stress-ng
+category: benchmark
+
+nr_threads: 100%
+
+disk: 1HDD
+
+testtime:
+- 60s
+
+oom-killer:
+  ignored: 1
+
+stress-ng:
+  class:
+  - memory
+  test:
+  - atomic
+  - bad-altstack
+  - bsearch
+  - context
+  - full
+  - heapsort
+  - hsearch
+  - judy
+  - lockbus
+  - lsearch
+  - malloc
+  - matrix
+  - matrix-3d
+  - mcontend
+  - membarrier
+  - memcpy
+  - memfd
+  - memrate
+  - memthrash
+  - mergesort
+  - mincore
+  - null
+  - numa
+  - pipe
+  - pipeherd
+  - qsort
+  - radixsort
+  - remap
+  - resources
+  - rmap
+  - shellsort
+  - skiplist
+  - stackmmap
+  - str
+  - stream
+  - tlb-shootdown
+  - tmpfs
+  - tree
+  - tsearch
+  - vm
+  - vm-addr
+  - vm-rw
+  - vm-segv
+  - wcs
+  - zero
+  - zlib

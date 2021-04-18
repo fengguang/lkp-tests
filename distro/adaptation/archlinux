@@ -11,6 +11,7 @@ dpkg-dev: dpkg
 freeglut3: freeglut
 iozone3: iozone
 klibc-utils:
+libarchive13: libarchive
 libacl1-dev: acl
 libaio1: libaio
 libaio-dev: libaio
@@ -66,6 +67,7 @@ sg3-utils: sg3_utils
 uuid-dev: uuid
 xfslibs-dev: xfsprogs
 xinit: xorg-xinit
+xsltproc: libxslt
 xutils-dev: imake
 xz-utils: xz
 libtirpc: libtirpc1
@@ -80,3 +82,4 @@ libssl: openssl
 libtool-bin: libtool
 linux-perf: perf
 ruby-dev: ruby
+libtirpc-dev:

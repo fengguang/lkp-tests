@@ -6,11 +6,13 @@ runtime: 300s
 
 nr_task: 200%
 
-target: vmlinux_prereq
+target: autoksyms_recursive
 build_kconfig: allyesconfig
 
 kbuild:
 
 ---
 disk: 1HDD
-fs: ext4
+fs:
+- ext4
+- btrfs

@@ -38,32 +38,24 @@ do
 done
 echo
 
-cpu=0
-while [ -d /sys/devices/system/cpu/cpu$cpu ]
+for cpu_dir in /sys/devices/system/cpu/cpu[0-9]*
 do
-	cpu_dir=/sys/devices/system/cpu/cpu$cpu
-	online_file="$cpu_dir"/online
-	[ -f "$online_file" ] && [ "$(cat "$online_file")" -eq 0 ] && continue
+        online_file="$cpu_dir"/online
+        [ -f "$online_file" ] && [ "$(cat "$online_file")" -eq 0 ] && continue
 
 	for cstate in $fb_list
 	do
 		echo 1 > $cpu_dir/cpuidle/state$cstate/disable
 	done
 
-	state=1
-	echo CPU$cpu:
-
-	while [ -d $cpu_dir/cpuidle/state$state ]
+	for state_dir in $cpu_dir/cpuidle/state[0-9]
 	do
-		state_dir=$cpu_dir/cpuidle/state$state
 		name=$(cat $state_dir/name)
 		desc=$(cat $state_dir/desc)
 		status=disabled
 		t=$(cat $state_dir/disable)
 		[ $t -eq 0 ] && status=enabled
 		default=$(cat $state_dir/default_status)
-		printf '\t state%s %7s [%10s]: %8s [%8s]\n' $state $name "$desc" $status $default
-		state=$(( $state + 1 ))
+		printf '\t %s %7s [%10s]: %8s [%8s]\n' $(basename $state_dir) $name "$desc" $status $default
 	done
-	cpu=$(( $cpu + 1 ))
 done

@@ -1,0 +1,22 @@
+suite: stress-ng
+testcase: stress-ng
+category: benchmark
+
+nr_threads: 100%
+
+disk: 1HDD
+
+testtime:
+- 60s
+
+stress-ng:
+  class:
+  - pipe
+  test:
+  - fifo
+  - pipe
+  - pipeherd
+  - sendfile
+  - splice
+  - tee
+  - vm-splice

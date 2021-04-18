@@ -1,2 +1,5 @@
 need_kconfig:
- - CONFIG_RCU_SCALE_TEST=m ~ ">= v5.10-rc1"
+- CONFIG_RCU_PERF_TEST=m ~ "<= v5.9"
+- CONFIG_RCU_SCALE_TEST=m ~ ">= v5.10-rc1"
+- CONFIG_SECURITY_LOADPIN_ENABLED=n ~ "<= v4.19"
+- CONFIG_SECURITY_LOADPIN_ENFORCE=n ~ ">= v4.20"

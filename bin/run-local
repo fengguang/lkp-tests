@@ -22,6 +22,7 @@ require "#{LKP_SRC}/lib/job2sh"
 require "#{LKP_SRC}/lib/job"
 require "#{LKP_SRC}/lib/result_root"
 require "#{LKP_SRC}/lib/common"
+require "#{LKP_SRC}/lib/log"
 
 ENV['PATH'] = ENV['PATH'] + ":#{LKP_SRC}/bin"
 ENV['BENCHMARK_ROOT'] = '/lkp/benchmarks'
@@ -81,12 +82,17 @@ def create_result_root(_result_root)
     FileUtils.mkdir_p result_root, mode: 0o2775
     return result_root
   end
-  warn "cannot create more result_roots under #{_result_root}"
+  log_warn "cannot create more result_roots under #{_result_root}"
   nil
 end
 
-job = Job.new
 begin
+  # "#!" is defined by comment_to_symbol
+  if File.readlines(jobfile).any? { |l| l.start_with?('#! ') }
+    log_warn "Jobfile is a dirty file, better to run 'lkp split-job --compatible #{jobfile}' first"
+  end
+
+  job = Job.new
   job.load(jobfile)
   unless job.atomic_job?
     log_error "Looks #{ARGV[0]} isn't a atomic jobfile, only atomic jobfile is supported"
@@ -94,7 +100,7 @@ begin
     exit 1
   end
 rescue StandardError
-  warn "#{jobfile} is not a valid jobfile"
+  log_warn "#{jobfile} is not a valid jobfile"
   exit 1
 end
 

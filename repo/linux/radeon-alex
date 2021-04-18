@@ -8,4 +8,4 @@ subsystems:
 - radeon
 - amd
 test_old_branches: .*
-branch_denylist: .*chrome.*
+branch_denylist: .*chrome.*|amd-2.*

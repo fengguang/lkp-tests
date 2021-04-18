@@ -7,6 +7,4 @@ need_memory: 2G
 perf-sanity-tests:
   perf_compiler:
     - gcc
-    # disable clang since compiling errors with clang
-    # if upstream fix the compiling issue, re-enable it
-    # - clang
+    - clang
