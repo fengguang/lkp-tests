@@ -10,7 +10,6 @@ require "#{LKP_SRC}/lib/tests/stats"
 stats = LKP::Stats.new
 
 test = nil
-mqueue_speed = {}
 
 class Stater
   def initialize(test, test_script)
@@ -428,6 +427,35 @@ class ExecStater < Stater
   end
 end
 
+class MqueueStater < Stater
+  attr_accessor :mqueue_speed
+  def initialize(test, test_script)
+    super(test, test_script)
+    @mqueue_speed = {}
+  end
+
+  def stat(line, stats)
+    case line
+    when /^# (.*):.*(PASS|FAIL|SKIP)/
+      # Queue open with mq_maxmsg > limit when euid = 0 succeeded:            PASS
+      stats.add "#{@test_prefix}.#{$1}", $2
+    when /Test #([1-9].*):/
+      # Test #2b: Time send/recv message, queue full, increasing prio
+      @mqueue_test = Regexp.last_match[1]
+    when /(Send|Recv) msg:/
+      #  Send msg:                       0.48443412s total time
+      @io = Regexp.last_match[1]
+    when %r{(\d+) nsec/msg}
+      # 484 nsec/msg
+      @mqueue_speed[@mqueue_test + '.' + @io] = Regexp.last_match[1].to_i
+    when /make: Leaving.*mqueue'/
+      stats.add "#{@test}.nsec_per_msg", @mqueue_speed.values.average.to_i unless @mqueue_speed.empty?
+    else
+      super(line, stats)
+    end
+  end
+end
+
 def subtest_stat(test, test_script, subtest, result, stats)
   subtest_case_name = subtest.strip.gsub(/[-\t\r\n\f]/, '_')
 
@@ -522,6 +550,9 @@ while (line = STDIN.gets)
   when /selftests: (exec): (.*)/
     # selftests: exec: execveat
     stater = ExecStater.new($1, $2)
+  when /^# selftests: (mqueue): (.*)/
+    # selftests: mqueue: mq_perf_tests
+    stater = MqueueStater.new($1, $2)
   when /^# selftests: net: (.*)/
     test_script = $1
     stater = nil
@@ -599,20 +630,6 @@ while (line = STDIN.gets)
   when /^# Test   \d+: (.*) ... (PASS|Fail).*/
     next unless test_script == 'test_align'
 
-  when /^# selftests: mqueue: (.*)/
-    test_script = $1
-  when /^# (.*):.*(PASS|FAIL|SKIP)/
-    next unless test == 'mqueue'
-
-    subtest_stat('mqueue', test_script, $1, $2, stats)
-  when /Test #([1-9].*):/
-    next unless test == 'mqueue'
-
-    mqueue_test = Regexp.last_match[1]
-  when /(Send|Recv) msg:/
-    io = Regexp.last_match[1]
-  when %r{(\d+) nsec/msg}
-    mqueue_speed[mqueue_test + '.' + io] = Regexp.last_match[1].to_i
   when /: recipe for target.+failed$/, /^make: \*\*\* (.*) (Error \d+|Stop\.)$/
     next unless test
 
@@ -631,7 +648,5 @@ while (line = STDIN.gets)
     stats.add "#{test}.#{test_script}", result unless %w(pmtu.sh fib_rule_tests.sh reuseport_addr_any.sh traceroute.sh altnames.sh icmp_redirect.sh ip6_gre_headroom.sh fib-onlink-tests.sh mq_open_tests).include? test_script
   end
 end
-
-stats.add 'mqueue.nsec_per_msg', mqueue_speed.values.average.to_i unless mqueue_speed.empty?
 
 stats.dump('ok' => 'pass', 'not_ok' => 'fail')
