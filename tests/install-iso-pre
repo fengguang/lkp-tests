@@ -21,7 +21,7 @@ check_params()
 		"HTTP_SERVER_HOST"
 		"HTTP_SERVER_PORT"
 		"HTTP_ROOT_DIR"
-		"ROOTFS_ROOT_PASSWD"
+		"secrets_ROOTFS_ROOT_PASSWD"
 		"rootfs_disk"
 
 		"RSYNC_SERVER_HOST"
@@ -31,7 +31,7 @@ check_params()
 		"NFS_ROOT_DIR"
 
 		"LAB_Z9_URL"
-		"MY_TOKEN"
+		"secrets_MY_TOKEN"
 	)
 
 	for i in "${required_vars[@]}"
@@ -65,6 +65,8 @@ create_lv()
 	log_info "start create lv:$LV_NAME"
 
 	lvcreate -y -L 10G -n ${LV_NAME} ${VG_NAME} || die "create logical volume failed."
+
+	mkfs.ext4 /dev/mapper/${VG_NAME}-${LV_NAME}
 }
 
 prepare_lv()
@@ -111,7 +113,7 @@ generate_ks()
 	logvol / --vgname=${VG_NAME} --name=${LV_NAME} --useexisting
 
 	# Root password
-	rootpw --iscrypted ${ROOTFS_ROOT_PASSWD}
+	rootpw --iscrypted ${secrets_ROOTFS_ROOT_PASSWD}
 
 	# Reboot after installation
 	reboot --eject
@@ -180,7 +182,7 @@ prepare_submit()
 	SCHED_PORT: ${SCHED_PORT}
 	my_name: ${my_name}
 	my_email: ${my_email}
-	my_token: ${MY_TOKEN}
+	my_token: ${secrets_MY_TOKEN}
 	lab: z9
 	EOF
 }
@@ -195,7 +197,7 @@ prepare_install_iso_yaml()
 	custom_ipxe="#!ipxe\\\\n"
 	custom_ipxe="${custom_ipxe}\\\\ndhcp"
 	custom_ipxe="${custom_ipxe}\\\\ninitrd ${tftp_root}/initrd.img"
-	custom_ipxe="${custom_ipxe}\\\\nkernel ${tftp_root}/vmlinux ro inst.geoloc=0 console=ttyS0 smmu.bypassdev=0x1000:0x17 smmu.bypassde1000:0x15 viff video=VGA-1:640x480-32@60me initrd=initrd.img ip=dhcp inst.ks=http://${HTTP_SERVER_HOST}:${HTTP_SERVER_PORT}/os/kickstart/ks/${iso_os}_${iso_arch}_${iso_version}.cfg"
+	custom_ipxe="${custom_ipxe}\\\\nkernel ${tftp_root}/vmlinuz ro inst.geoloc=0 console=ttyS0 smmu.bypassdev=0x1000:0x17 smmu.bypassde1000:0x15 viff video=VGA-1:640x480-32@60me initrd=initrd.img ip=dhcp inst.ks=http://${HTTP_SERVER_HOST}:${HTTP_SERVER_PORT}/os/install/ks/${iso_os}_${iso_arch}_${iso_version}.ks"
 	custom_ipxe="${custom_ipxe}\\\\nboot\\\\n"
 
 	log_info "custom_ipxe: $custom_ipxe"
@@ -244,13 +246,13 @@ submit_install_iso_sync_rootfs_yaml()
 	${LKP_SRC}/sbin/submit \
 		${sync_rootfs_yaml} \
 		suite=install-iso-sync-rootfs-${ROOTFS_SUFFIX} \
-		iso_os=${iso_os} \
-		iso_arch=${iso_arch} \
-		iso_version=${iso_version} \
-		NFS_SERVER_HOST=${NFS_SERVER_HOST} \
-		NFS_ROOT_DIR=${NFS_ROOT_DIR} \
-		ROOTFS_SUFFIX=${ROOTFS_SUFFIX} \
-		VG_NAME=${VG_NAME} \
+		install-iso-sync-rootfs.iso_os=${iso_os} \
+		install-iso-sync-rootfs.iso_arch=${iso_arch} \
+		install-iso-sync-rootfs.iso_version=${iso_version} \
+		install-iso-sync-rootfs.NFS_SERVER_HOST=${NFS_SERVER_HOST} \
+		install-iso-sync-rootfs.NFS_ROOT_DIR=${NFS_ROOT_DIR} \
+		install-iso-sync-rootfs.ROOTFS_SUFFIX=${ROOTFS_SUFFIX} \
+		install-iso-sync-rootfs.VG_NAME=${VG_NAME} \
 		testbox=$testbox || die "submit ${sync_rootfs_yaml} failed"
 }
 
