@@ -9,7 +9,7 @@ source=("https://cdn.mysql.com/archives/mysql-8.0/mysql-boost-$pkgver.tar.gz"
 	"https://mirrors.huaweicloud.com/kunpeng/archive/openEuler/patch/database/mysql/getcpu.tgz"
 	"https://github.com/thkukuk/rpcsvc-proto/releases/download/v1.4/rpcsvc-proto-1.4.tar.gz"
 	"my.cnf")
-md5sums=('7472a25d91973cbba5d8a8f176a3080b' '6e853850efbd6f887ac3e13b1bf99cc4' 'f13eb11de53616017f7428cc06d4e242' 'df1022ccc5d0aff30b8e505735b4a98b' '1390631a1ea1832f9c27d07fcc1e536e')
+md5sums=('7472a25d91973cbba5d8a8f176a3080b' '6e853850efbd6f887ac3e13b1bf99cc4' 'f13eb11de53616017f7428cc06d4e242' 'df1022ccc5d0aff30b8e505735b4a98b' 'd90ba2c701507eeac43b06fcfa49c2c1')
 
 prepare()
 {
