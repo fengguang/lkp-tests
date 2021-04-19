@@ -225,14 +225,18 @@ submit_install_iso_firstboot_yaml()
 	local firstboot_yaml="${LKP_SRC}/jobs/install-iso-firstboot.yaml"
 	[ -f "${firstboot_yaml}" ] || die "cannot find ${firstboot_yaml}"
 
+	custom_ipxe="#!ipxe\\\\n"
+	custom_ipxe="${custom_ipxe}\\\\ndhcp"
+	custom_ipxe="${custom_ipxe}\\\\ninitrd http://${OS_HTTP_HOST}:${OS_HTTP_PORT}/os/${iso_os}/${iso_arch}/${iso_version}/initrd.lkp"
+	custom_ipxe="${custom_ipxe}\\\\ninitrd http://${INITRD_HTTP_HOST}:${INITRD_HTTP_PORT}/initrd/custom_bootstrap/reboot.cgz"
+	custom_ipxe="${custom_ipxe}\\\\nkernel http://${OS_HTTP_HOST}:${OS_HTTP_PORT}/os/${iso_os}/${iso_arch}/${iso_version}/boot/vmlinuz ip=dhcp root=/dev/mapper/os-${iso_os}_${iso_arch}_${iso_version}_${ROOTFS_SUFFIX} initrd=initrd.lkp initrd=reboot.cgz local rw"
+	custom_ipxe="${custom_ipxe}\\\\nboot\\\\n"
+
+	sed -i "/custom_ipxe:/ccustom_ipxe: \"${custom_ipxe}\"" $firstboot_yaml
+
 	${LKP_SRC}/sbin/submit \
 		${firstboot_yaml} \
 		suite=install-iso-firstboot-${ROOTFS_SUFFIX} \
-		os=${iso_os} \
-		os_arch=${iso_arch} \
-		os_version=${iso_version} \
-		os_mount=local \
-		kernel_custom_params="src_lv_suffix=${ROOTFS_SUFFIX} boot_lv_suffix=${ROOTFS_SUFFIX}" \
 		testbox=$testbox || die "submit ${firstboot_yaml} failed"
 }
 
