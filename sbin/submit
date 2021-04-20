@@ -19,6 +19,7 @@ opt_monitor_query = {}
 opt_my_queue = false
 actions = ['output', 'stop']
 result_roots = []
+nr_run = 1
 
 options = OptionParser.new do |opts|
   opts.banner = 'Usage: submit [options] job1.yaml job2.yaml ...'
@@ -55,6 +56,11 @@ options = OptionParser.new do |opts|
 
   opts.on('-r', '--result', 'mirror job result dir') do
     actions << 'mirror_result'
+  end
+
+  opts.on('-n job_number', '--number job_number', 'number to submit job') do |number|
+    nr_run = number.to_i
+    nr_run = 1 if nr_run < 1
   end
 
   opts.on('-m', '--monitor', "monitor job status: use -m 'KEY: VALUE' to add rule") do
@@ -195,16 +201,19 @@ ARGV.each do |jobfile|
     scheduler_client = SchedulerClient.new(job['SCHED_HOST'], job['SCHED_PORT'])
 
     # submit job
+    job_hash['nr_run'] = nr_run
     job_json = job_hash.to_json
-    messages = scheduler_client.submit_job(job_json)
-    JSON.parse(messages).each do |msg|
-      if msg['message'].empty?
-        result_roots << msg['result_root']
-        job_ids << msg['job_id'].to_s
-        puts("submit #{jobfile}, got job id=#{msg['job_id']}")
-      else
-        opt_monitor = false
-        puts("submit #{jobfile} failed, got job id=#{msg['job_id']}, error: #{msg['message']}")
+    nr_run.times do
+      messages = scheduler_client.submit_job(job_json)
+      JSON.parse(messages).each do |msg|
+        if msg['message'].empty?
+          result_roots << msg['result_root']
+          job_ids << msg['job_id'].to_s
+          puts("submit #{jobfile}, got job id=#{msg['job_id']}")
+        else
+          opt_monitor = false
+          puts("submit #{jobfile} failed, got job id=#{msg['job_id']}, error: #{msg['message']}")
+        end
       end
     end
   end
