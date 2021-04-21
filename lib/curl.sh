@@ -36,7 +36,7 @@ http_get_directory()
 	file_list=$(echo "$dir_page_content" | grep href | sed -e 's/.*href="//' -e 's/".*//' | grep -v '/')
 	# download first level files in the given directory
 	for file in $file_list; do
-		http_escape_request $path/$file -o $dir/$file || {
+		http_do_request $path/$file -o $dir/$file || {
 			echo "Failed to download file: $file"
 			return 1
 		}
@@ -57,5 +57,5 @@ http_get_newer()
 http_get_cgi()
 {
 	check_create_base_dir "$2"
-	http_escape_request "$1" -o "${2:-/dev/null}"
+	http_do_request "$1" -o "${2:-/dev/null}"
 }
