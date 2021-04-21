@@ -160,7 +160,15 @@ module Compare
     end
 
     def do_sort_mresult_roots
-      return if @mresult_roots.empty?
+      mrts = []
+      @mresult_roots.each do |_rt|
+        if File.exist?(_rt.path)
+          mrts << _rt
+        else
+          log_warn "#{_rt.path} not exist"
+        end
+      end
+      return [] if mrts.empty?
 
       if sort_mresult_roots
         skeys = @compare_axis_keys.map do |k|
@@ -170,28 +178,28 @@ module Compare
         skeys.compact!
         unless skeys.empty?
           keys_values = skeys.map do |k, git|
-            values = @mresult_roots.map { |_rt| _rt.axes[k] }
+            values = mrts.map { |_rt| _rt.axes[k] }
             values.compact!
             values.uniq!
             [k, commits_to_string(git.sort_commits(values))]
           end
-          @mresult_roots.sort_by! do |_rt|
+          mrts.sort_by! do |_rt|
             axes = _rt.axes
             keys_values.map do |k, values|
               values.index(axes[k]) || -1
             end
           end
         end
-      else
-        @mresult_roots
       end
+      mrts
     end
 
     def compare_groups
-      do_sort_mresult_roots
-      @mresult_roots.uniq! if dedup_mresult_roots
+      mrts = do_sort_mresult_roots
+      return [] if mrts.empty?
+      mrts.uniq! if dedup_mresult_roots
       grouper = AxesGrouper.new
-      groups = grouper.set_axes_data(@mresult_roots)
+      groups = grouper.set_axes_data(mrts)
                       .set_group_axis_keys(@compare_axis_keys)
                       .group
       groups.map do |g|
