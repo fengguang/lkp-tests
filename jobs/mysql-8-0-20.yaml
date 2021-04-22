@@ -1,0 +1,34 @@
+suite: cci-makepkg
+category: functional
+
+testbox: taishan200-2280-2s48p-256g--a18
+
+os: openeuler
+os_version: 20.03
+os_mount: initramfs
+
+mysql_user:
+mysql_host:
+mysql_port:
+mysql_db:
+mysql_password:
+data_dev: sdb
+
+cci-makepkg:
+  benchmark: mysql-8-0-20
+
+mysql-8-0-20:
+
+sysbench-mysql:
+  oltp_test_mode: complex
+  max_requests: 0
+  mysql_table_engine: innodb
+  oltp_tables_count: 1000
+  oltp_table_size: 100000
+  nr_threads: 256
+  runtime: 60
+  rand_type: special
+  rand_spec_pct: 100
+  oltp_read_only: false
+  report_interval: 1
+  events: 20000
