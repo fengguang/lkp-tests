@@ -1,0 +1,79 @@
+pkgname=mysql-server-mysql
+pkgver=8.0.20
+gccdir=gcc
+pkgrel=1
+arch=('aarch64' 'x86_64')
+url="http://www.mysql.com"
+license=('GPLv2')
+source=("https://gitee.com/li-yancheng/my-sql_with_boostkit_patch.git"
+        "https://gitee.com/li-yancheng/gcc.git"
+        "my.cnf")
+md5sums=('SKIP' 'SKIP' '99c4965aa870c475000993f52a0dee66')
+
+build()
+{
+        # build_gcc
+        build_mysql
+}
+
+build_gcc()
+{
+        mkdir -p $HOME/rpmbuild/SOURCES/ && {
+                cd $srcdir/gcc && cp -r * $HOME/rpmbuild/SOURCES/
+        }
+
+        cd $HOME/rpmbuild/SOURCES/ && {
+                rpmbuild -bp gcc.spec
+        }
+
+        cd $HOME/rpmbuild/BUILD/gcc-9.3.0 && {
+                ./configure --prefix=/usr/ \
+                --enable-shared \
+                --enable-threads=posix \
+                --enable-checking=release \
+                --with-system-zlib \
+                --enable-__cxa_atexit \
+                --disable-libunwind-exceptions \
+                --enable-gnu-unique-object \
+                --enable-linker-build-id \
+                --with-linker-hash-style=gnu \
+                --enable-languages=c,c++,objc,obj-c++,fortran,lto \
+                --enable-plugin \
+                --enable-initfini-array \
+                --disable-libgcj \
+                --without-isl \
+                --without-cloog \
+                --enable-gnu-indirect-function \
+                --with-stage1-ldflags='-Wl,-z,relro,-z,now' \
+                --with-boot-ldflags='-Wl,-z,relro,-z,now' \
+                --with-multilib-list=lp64
+                make -j96
+		make install
+        }
+}
+
+build_mysql()
+{
+        unset CPPFLAGS
+        unset CFLAGS
+        unset CXXFLAGS
+        cd $srcdir/my-sql_with_boostkit_patch/$pkgname-$pkgver
+
+        CMAKE=cmake
+        grep -sqF "CentOS Linux release 7" /etc/centos-release && CMAKE=cmake3
+
+        mkdir -p build
+        cd build && {
+                $CMAKE .. -DBUILD_CONFIG=mysql_release -DCMAKE_INSTALL_PREFIX=/usr/local/mysql -DMYSQL_DATADIR=/data/mysql/data -DSYSCONFDIR=/etc  -DWITH_BOOST=../boost/boost_1_70_0/
+                make -j96
+        }
+}
+
+package()
+{
+        cp my.cnf /etc/
+
+        cd $srcdir/my-sql_with_boostkit_patch/$pkgname-$pkgver/build && {
+		make install
+	}
+}
