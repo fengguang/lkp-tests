@@ -80,6 +80,22 @@ Compass-CI
 "
 }
 
+selftest_content()
+{
+	email_content="To: $my_email
+Subject: [NOTIFY Compass-CI] Self-test report
+
+Dear $my_name:
+
+	Your self-test groud_id=selftest job result is:
+
+	$job_state
+
+Regards
+Compass-CI
+"
+}
+
 send_email()
 {
 	local subject=$1
