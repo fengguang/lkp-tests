@@ -1,0 +1,27 @@
+suite: qcow2rootfs-x86_64
+category: benchmark
+qcow2rootfs-x86_64:
+
+        # The related fields about qcow2 image to be used to generate rootfs
+        # it should be the same as the official provided image name
+        qcow2_os: 
+        qcow2_arch: 
+        qcow2_version: 
+
+        # place the result rootfs related fields
+        # 1. result rootfs will be placed in the following localtion on the
+        #     remote file server:
+        #     - {remote_file_server}/{rootfs_path}/{iso_os}/{iso_arch}/
+        # 2. remote file server protocols current supported:
+        #     - nfs
+        rootfs_protocol: nfs
+        rootfs_server: 172.168.131.2
+        rootfs_path: os-rw
+
+# The best host for execution is the x86 OpenEuler system
+os: 
+os_version: 
+os_arch: 
+os_mount: 
+testbox: 
+queue: 
