@@ -1,0 +1,80 @@
+#!/bin/bash
+# - qcow2_os
+# - qcow2_arch
+# - qcow2_version
+# - rootfs_protocol
+# - rootfs_server
+# - rootfs_path
+
+set_qcow2rootfs_tools()
+{
+	export QCOW2_PATH="/c/compass-ci/container/qcow2rootfs"
+	git clone https://gitee.com/wu_fengguang/compass-ci.git /c/compass-ci || return 1
+	rm ${QCOW2_PATH}/root/etc/yum.repos.d/*
+	wget -O ${QCOW2_PATH}/root/etc/yum.repos.d/CentOS-Base.repo https://repo.huaweicloud.com/repository/conf/CentOS-7-reg.repo
+	${QCOW2_PATH}/build
+	sed -i 's#$EXTRACT_ROOT/bin/extract $QCOW2_FILE $tar_out_file#$EXTRACT_ROOT/bin/extract $EXTRACT_ROOT/qcow2-dir/$QCOW2_NAME $tar_out_file#' \
+		${QCOW2_PATH}/bin/mail
+
+}
+
+check_url()
+{
+	export QCOW2_NAME="${qcow2_os}-${qcow2_version}.${qcow2_arch}.qcow2.xz"
+
+	# Since the 21.03 version of OpenEuler's mirror naming format has changed, 
+	# it has been modified.
+	if [ "${qcow2_version}" == "21.03" ];then
+	       export QCOW2_NAME="${qcow2_os}-${qcow2_version}-${qcow2_arch}.qcow2.xz"	
+	fi
+
+	export QCOW2_URL="https://repo.openeuler.org/${qcow2_os}-${qcow2_version}/virtual_machine_img/${qcow2_arch}/${QCOW2_NAME}"
+}
+
+download_qcow2_img()
+{
+	export IMG_PATH="/root/qcow2"
+	mkdir -p ${IMG_PATH} && cd ${IMG_PATH}
+	[ -f "${IMG_PATH}/${QCOW2_NAME}" ] || { 
+		wget ${QCOW2_URL} || exit 1
+	}
+}
+
+mount_os-rw()
+{
+	export MOUNT_POINT="${IMG_PATH}/mnt"
+	mkdir ${MOUNT_POINT}
+	mount -t ${rootfs_protocol} -o rw ${rootfs_server}:/${rootfs_path} ${MOUNT_POINT}
+}
+
+extract_rootfs()
+{
+	export ROOTFS_DIR="${qcow2_version}-$(date +%Y-%m-%d-%H-%M-%S)"
+	export ROOTFS_PATH="${MOUNT_POINT}/openeuler/${qcow2_arch}/automatic-build/${ROOTFS_DIR}"
+	mkdir -p $ROOTFS_PATH
+	${QCOW2_PATH}/run ${IMG_PATH}/${QCOW2_NAME} ${ROOTFS_PATH}
+}
+
+set_resolv_config()
+{
+	cat >${ROOTFS_PATH}/etc/resolv.conf<<-EOF
+	nameserver 114.114.114.114
+	EOF
+}
+
+set_link()
+{
+	cd ${MOUNT_POINT}/openeuler/${qcow2_arch}
+	ln -fs automatic-build/${ROOTFS_DIR} ${qcow2_version}-automatic
+
+	umount ${MOUNT_POINT}
+	echo $ROOTFS_PATH
+}
+
+set_qcow2rootfs_tools
+check_url
+download_qcow2_img
+mount_os-rw
+extract_rootfs
+set_resolv_config
+set_link
