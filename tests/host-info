@@ -55,10 +55,11 @@ get_part()
 		# lrwxrwxrwx 1 root root 10 Sep  2 18:42 ata-SAMSUNG_MZ7LH480HAHQ-00005_S45PNA2MB43944-part3 -> ../../sda3
 		# lrwxrwxrwx 1 root root 10 Sep  2 18:42 ata-SAMSUNG_MZ7LH480HAHQ-00005_S45PNA2MB43209 -> ../../sdb
 		info=$(ls -l /dev/disk/by-id/ | grep "/$i" | awk '{print $9}' | grep -e "^scsi-" -e "^ata-" -e "^nvme-" | sed 's/-part[0-9]//g')
-		count=$(echo $info | tr ' ' '\n' | wc -l)
-		partition=$(echo $info | tr ' ' '\n' | uniq)
+		count=$(echo "$info" | wc -l)
+		partition=$(echo "$info" | uniq)
 		if [ $count -gt 1 ]; then
-			parts=$(echo /dev/disk/by-id/$partition-part*)
+			parts=$(ls /dev/disk/by-id/$partition-part*)
+			echo "  -" /dev/disk/by-id/$partition
 			for i in $parts
 			do
 				echo "  -" $i
