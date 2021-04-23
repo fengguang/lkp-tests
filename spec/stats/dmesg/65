@@ -1,0 +1,26 @@
+[2001021079.622495] EIP: delay_tsc+0x3b/0xe0
+[2001021079.622495] Code: fa 9c c9 01 83 15 24 fa 9c c9 00 ff 05 88 74 2c c8 83 05 28 fa 9c c9 01 83 15 2c fa 9c c9 00 0f 01 f9 3e 8d 74 26 00 fa 9c c9 <01> 89 c6 89 d7 83 15 34 fa 9c c9 00 eb 4d 8d b4 26 00 00 00 00 83
+[2001021079.622495] EAX: b4f995b3 EBX: 00000000 ECX: 00000000 EDX: 00000059
+[2001021079.622495] ESI: c8b3757d EDI: 00000000 EBP: c1063f0c ESP: c1063f08
+[2001021079.622495] DS: 007b ES: 007b FS: 0000 GS: 0000 SS: 0068 EFLAGS: 00010046
+[2001021079.622495] CR0: 80050033 CR2: 83d789c6 CR3: 08bd2000 CR4: 00040690
+[2001021079.622495] Kernel panic - not syncing: Fatal exception
+[2001021079.622495] BUG: unable to handle page fault for address: 83d789c6
+[2001021079.622495] #PF: supervisor write access in kernel mode
+[2001021079.622495] #PF: error_code(0x0002) - not-present page
+[2001021079.622495] *pde = 00000000 
+[2001021079.622495] Thread overran stack, or stack corrupted
+[2001021079.622495] Oops: 0002 [#44]
+[2001021079.622495] ------------[ cut here ]------------
+[2001021079.622495] WARNING: CPU: 0 PID: -967707560 at kernel/kthread.c:83 kthread_probe_data+0x5e/0x80
+[2001021079.622495] Modules linked in:
+[2001021079.622495] ------------[ cut here ]------------
+[2001021079.622495] WARNING: CPU: 0 PID: -967707560 at kernel/kthread.c:83 kthread_probe_data+0x5e/0x80
+[2001021079.622495] Modules linked in:
+[2001021079.622495] ------------[ cut here ]------------
+[2001021079.622495] WARNING: CPU: 0 PID: -967707560 at kernel/kthread.c:83 kthread_probe_data+0x5e/0x80
+[2001021079.622495] Modules linked in:
+[2001021079.622495] ------------[ cut here ]------------
+[2001021079.622495] WARNING: CPU: 0 PID: -967707560 at kernel/kthread.c:83 kthread_probe_data+0x5e/0x80
+[2001021079.622495] Modules linked in:
+[2001021079.622495] ------------[ cut here ]------------
