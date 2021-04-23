@@ -165,7 +165,7 @@ module Compare
         if File.exist?(_rt.path)
           mrts << _rt
         else
-          log_warn "#{_rt.path} not exist"
+          log_warn "#{_rt.path} not exist" if ENV['LKP_VERBOSE']
         end
       end
       return [] if mrts.empty?
