@@ -40,7 +40,6 @@ configure_mysql()
 	sleep 10
 
 	"$mysql" -u "$mysql_user" -e "flush privileges; use mysql; alter user 'root'@'localhost' identified by '$mysql_password'; flush privileges;"
-	sed -i '/^skip-grant-tables/d' /etc/my.cnf
 	"$mysql_server" restart
 	sleep 10
 }
