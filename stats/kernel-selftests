@@ -38,15 +38,142 @@ end
 class NetStater < Stater
   def stat(line, stats)
     case line
-    when /^#\s+(IPv.+)/
-      # IPv4 (sym route): VRF ICMP error route lookup traceroute
-      @test_group = $1
-    when /^#\s+TEST:\s+(.+)\s+\[( OK |FAIL|SKIP)\]/
-      # TEST: Basic IPv4 connectivity                                       [ OK ]
-      stats.add "#{@test_prefix}.#{@test_group}.#{$1}", $2
-    when /^#\s+(SKIP|FAIL)/
-      # SKIP: Could not run IPV4 test without traceroute
-      stats.add "#{@test_prefix}.#{@test_group}", $1
+    when /^# TEST SECTION: (.*)/
+      # selftests: net: fib-onlink-tests.sh
+      # TEST SECTION: IPv4 onlink
+      @test_case = $1
+    when /^# TEST SUBSECTION: (.*)/
+      # selftests: net: fib-onlink-tests.sh
+      # TEST SUBSECTION: Valid onlink commands
+      @test_subcase = $1
+    when /#     (.*tart point)/,
+         /#     (.*device deleted)/,
+         /#     (Route deleted on down)/,
+         /#     (.*device.* down.*)/,
+         /#     (.*arrier)/
+      #     Start point
+      #     Verify start point
+      #     One nexthop device deleted
+      #     One device down, one up
+      #     Both devices down
+      #     Carrier off on nexthop
+      #     Route to local address with carrier down
+
+      # selftests: net: fib_tests.sh
+      @test_subcase = $1
+    when /^# (.*qdisc on VRF device)/
+      # selftests: net: vrf-xfrm-tests.sh
+      # No qdisc on VRF device
+      # netem qdisc on VRF device
+      @test_case = $1
+    when /^# (Single|Multipath|Single|Admin|Local|Single|FIB|IPv4|IPv6|Basic|Legacy|Routing) (.*)/
+      # selftests: net: icmp_redirect.sh
+      # Routing with nexthop objects and VRF
+      @test_case = $1 + ' ' + $2 if %w(icmp_redirect.sh fib_tests.sh fib_nexthops.sh vrf_route_leaking.sh).include? @test_script
+
+      # empty @test_subcase when get new @test_case
+      @test_subcase = nil if @test_script == 'fib_tests.sh'
+    when /^#\s+(PASS|SKIP|FAIL): (.*)/
+      if @test_case
+        # selftests: net: vrf_route_leaking.sh
+        #
+        # ###########################################################################
+        # IPv4 (sym route): VRF ICMP error route lookup traceroute
+        # ###########################################################################
+        #
+        # SKIP: Could not run IPV4 test without traceroute
+        stats.add "#{@test_prefix}.#{@test_case}.#{$2}", $1
+      else
+        # selftests: net: netdevice.sh
+        # SKIP: eth0: interface already up
+        stats.add "#{@test_prefix}.#{$2}", $1
+      end
+    when /^# \[       (OK|FAIL|SKIP) \] (.*)/
+      # selftests: net: tls
+      # [       OK ] tls_basic.base_base
+      # [       OK ] tls.sendfile
+      stats.add "#{@test_prefix}.#{$2}", $1
+    when /^#     TEST: (.*) \[ ?(OK|FAIL|SKIP) ?\]$/
+      if @test_subcase
+        # selftests: net: fib-onlink-tests.sh
+        # ######################################################################
+        # TEST SECTION: IPv4 onlink
+        # ######################################################################
+        #
+        # #########################################
+        # TEST SUBSECTION: Valid onlink commands
+        #
+        # #########################################
+        # TEST SUBSECTION: default VRF - main table
+        #     TEST: unicast connected                                   [ OK ]
+        stats.add "#{@test_prefix}.#{@test_case}.#{@test_subcase}.#{$1}", $2
+      else
+        # selftests: net: fib_rule_tests.sh
+        #
+        # ######################################################################
+        # TEST SECTION: IPv4 fib rule
+        # ######################################################################
+        #
+        #     TEST: rule4 check: oif dummy0                             [ OK ]
+
+        # ignore some detail stats of fib_tests.sh to avoid duplication
+        # selftests: net: fib_tests.sh
+        #
+        # IPv4 route with IPv6 gateway tests
+        #    TEST:     Multipath route delete exact match                        [ OK ]
+        #    TEST: Multipath route add - v4 nexthop then v6                      [ OK ]
+        #    TEST:     Multipath route delete - nexthops in wrong order          [ OK ]
+        #    TEST:     Multipath route delete exact match                        [ OK ]
+        stats.add "#{@test_prefix}.#{@test_case}.#{$1}", $2 unless @test_case == 'IPv4 route with IPv6 gateway tests'
+      end
+    when /^# TEST: (.*) \[ ?(PASS|OK|FAIL|SKIP) ?\]/
+      if @test_case
+        # selftests: net: vrf_route_leaking.sh
+        #
+        # ###########################################################################
+        # IPv4 (sym route): VRF ICMP ttl error route lookup ping
+        # ###########################################################################
+        #
+        # TEST: Basic IPv4 connectivity                                      [ OK ]
+
+        # ignore detail stats of fib_nexthops.sh to avoid duplication
+        # selftests: net: fib_nexthops.sh
+        # IPv4 groups functional
+        # ----------------------
+        # TEST: IPv6 nexthop with IPv4 route                                  [ OK ]
+        # TEST: IPv6 nexthop with IPv4 route                                  [ OK ]
+        # IPv4 functional runtime
+        # TEST: IPv6 nexthop with IPv4 route                                  [ OK ]
+        # TEST: IPv4 route with mixed v4-v6 multipath route                   [ OK ]
+        # TEST: IPv6 nexthop with IPv4 route                                  [ OK ]
+        stats.add "#{@test_prefix}.#{@test_case}.#{$1}", $2 unless @test_script == 'fib_nexthops.sh'
+      else
+        # selftests: net: pmtu.sh
+        # TEST: ipv4: PMTU exceptions                                        [ OK ]
+
+        # ignore detail stats of fib_nexthops_multiprefix.sh to avoid duplication
+        # selftests: net: fib_nexthop_multiprefix.sh
+        # TEST: IPv4: host 0 to host 1, mtu 1300                              [ OK ]
+        # TEST: IPv6: host 0 to host 1, mtu 1300                              [FAIL]
+        #
+        # TEST: IPv4: host 0 to host 2, mtu 1350                              [ OK ]
+        # TEST: IPv6: host 0 to host 2, mtu 1350                              [FAIL]
+        #
+        # TEST: IPv4: host 0 to host 3, mtu 1400                              [ OK ]
+        # TEST: IPv6: host 0 to host 3, mtu 1400                              [FAIL]
+        #
+        # TEST: IPv4: host 0 to host 1, mtu 1300                              [ OK ]
+        # TEST: IPv6: host 0 to host 1, mtu 1300                              [FAIL]
+        stats.add "#{@test_prefix}.#{$1}", $2 unless @test_script == 'fib_nexthop_multiprefix.sh'
+      end
+    when /^# (UDP|TCP|DCCP) (.*) \.\.\. (pass|fail|skip)/
+      # selftests: net: reuseport_addr_any.sh
+      # UDP IPv4 ... pass
+      stats.add "#{@test_prefix}.#{$1} #{$2}", $3
+    when /# (ok|fail|skip) \d+ (.*)/
+      # selftests: net: reuseaddr_ports_exhausted.sh
+      # ok 1 global.reuseaddr_ports_exhausted_unreusable
+      stats.add "#{@test_prefix}.#{$2}", $1
     else
       super(line, stats)
     end
@@ -472,7 +599,8 @@ while (line = STDIN.gets)
   line = line.resolve_invalid_bytes
 
   case line
-  when /^# selftests: (net): (vrf_route_leaking.sh)/
+  when /^# selftests: (net): (.*)/
+    # selftests: net: reuseport_addr_any.sh
     stater = NetStater.new($1, $2)
   when /^# selftests: (vm): (.+)/
     # selftests: vm: run_vmtests
@@ -553,9 +681,9 @@ while (line = STDIN.gets)
   when /^# selftests: (mqueue): (.*)/
     # selftests: mqueue: mq_perf_tests
     stater = MqueueStater.new($1, $2)
-  when /^# selftests: net: (.*)/
-    test_script = $1
-    stater = nil
+  when /^LKP SKIP (.*)/
+    # LKP SKIP net.l2tp.sh
+    stats.add "#{$1}", 'skip'
   when /^# selftests: (.+): (.+)/
     stater = nil
   else
@@ -572,49 +700,8 @@ while (line = STDIN.gets)
     # rli9 FIXME: consider the input has messed text like Entering doesn't match with Leaving
     test = nil
     test_script = nil
-  when /^# \[       (OK|FAIL|SKIP) \] (.*)/
-    next unless test == 'net'
-
-    detail_stat('net', $2, $1, stats)
-  when /^# (PASS|FAIL|SKIP): (.*)/
-    next unless %w(net).include? test
-
-    subtest_stat(test, test_script, $2, $1, stats) unless %w(fib_nexthops.sh).include? test_script
-  when /^# (Single|Multipath|Single|Admin|Local|Single|FIB|IPv4|IPv6|Basic|Legacy|Routing) (.*)/
-    next unless %w(icmp_redirect.sh).include? test_script
-
-    subtest_case_name1 = $1 + ' ' + $2
-  when /^# TEST SECTION: (.*)/
-    next unless %w(fib-onlink-tests.sh fib_rule_tests.sh).include? test_script
-
-    subtest_case_name1 = $1
-  when /^# TEST SUBSECTION: (.*)/
-    next unless test_script == 'fib-onlink-tests.sh'
-
-    subtest_case_name2 = $1
-  when /^#     TEST: (.*) \[ ?(OK|FAIL|SKIP) ?\]$/
-    next unless %w(fib-onlink-tests.sh fib_rule_tests.sh).include? test_script
-
-    subtest_case_name = subtest_case_name1 + '.' + $1
-    subtest_case_name = subtest_case_name1 + '.' + subtest_case_name2 + '.' + $1 if test_script == 'fib-onlink-tests.sh'
-    subtest_stat('net', test_script, subtest_case_name, $2, stats)
-  when /^# TEST: (.*) \[ ?(PASS|OK|FAIL|SKIP) ?\]/
-    next unless %w(pmtu.sh icmp_redirect.sh ip6_gre_headroom.sh).include? test_script
-
-    subtest_case_name = $1
-    subtest_case_name = subtest_case_name1 + '.' + $1 if %w(icmp_redirect.sh).include? test_script
-    subtest_stat('net', test_script, subtest_case_name, $2, stats)
-  when /^# (UDP|TCP|DCCP) (.*) \.\.\. (pass|fail|skip)/
-    next unless test_script == 'reuseport_addr_any.sh'
-
-    subtest_case_name = $1 + ' ' + $2
-    subtest_stat('net', test_script, subtest_case_name, $3, stats)
   when /# selftests: membarrier: (.*)/
     test_script = $1
-  when /# (ok|fail|skip) \d+ (.*)/
-    next unless %w(net).include? test
-
-    subtest_stat(test, test_script, $2, $1, stats)
   when /^*selftests.*: (.*) .*(\[|\[ )(PASS|FAIL|SKIP)/
     # skip "./mem-on-off-test.sh -r 2 || echo "selftests: memory-hotplug [FAIL]""
     # skip "selftests: mpx-mini-test_64 [PASS]"
@@ -635,8 +722,6 @@ while (line = STDIN.gets)
 
     # do not count make fail in nr_test, which is for sub test number
     stats.add test, 'make_fail'
-  when /^LKP SKIP (.*)/
-    stats.add $1, 'skip'
   when /^(ok|not ok) \d+ selftests: (\S*): (\S*)( # SKIP)?/
     next if %w(memory-hotplug pstore).include? test
 
@@ -645,7 +730,7 @@ while (line = STDIN.gets)
     result = $4 =~ /SKIP/ ? 'skip' : 'fail'
     result = 'pass' if $1 == 'ok'
 
-    stats.add "#{test}.#{test_script}", result unless %w(pmtu.sh fib_rule_tests.sh reuseport_addr_any.sh traceroute.sh altnames.sh icmp_redirect.sh ip6_gre_headroom.sh fib-onlink-tests.sh mq_open_tests).include? test_script
+    stats.add "#{test}.#{test_script}", result
   end
 end
 

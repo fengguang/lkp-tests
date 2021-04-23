@@ -1,0 +1,16 @@
+net.fib_tests.sh.Single_path_route_test.Start_point.IPv4_fibmatch.pass: 1
+net.fib_tests.sh.Single_path_route_test.Start_point.IPv6_fibmatch.pass: 1
+net.fib_tests.sh.Single_path_route_test.Nexthop_device_deleted.IPv4_fibmatch_-_no_route.pass: 1
+net.fib_tests.sh.Single_path_route_test.Nexthop_device_deleted.IPv6_fibmatch_-_no_route.pass: 1
+net.fib_tests.sh.Multipath_route_test.Start_point.IPv4_fibmatch.pass: 1
+net.fib_tests.sh.Multipath_route_test.Start_point.IPv6_fibmatch.pass: 1
+net.fib_tests.sh.Multipath_route_test.One_nexthop_device_deleted.IPv4_-_multipath_route_removed_on_delete.pass: 1
+net.fib_tests.sh.Multipath_route_test.One_nexthop_device_deleted.IPv6_-_multipath_down_to_single_path.pass: 1
+net.fib_tests.sh.Multipath_route_test.Second_nexthop_device_deleted.IPv6_-_no_route.pass: 1
+net.fib_tests.sh.Single_path_admin_down.Start_point.IPv4_fibmatch.pass: 1
+net.fib_tests.sh.Single_path_admin_down.Start_point.IPv6_fibmatch.pass: 1
+net.fib_tests.sh.Single_path_admin_down.Route_deleted_on_down.IPv4_fibmatch.pass: 1
+net.fib_tests.sh.Single_path_admin_down.Route_deleted_on_down.IPv6_fibmatch.pass: 1
+net.fib_tests.sh.fail: 1
+net.fib_nexthop_multiprefix.sh.pass: 1
+net.fib_nexthops.sh.fail: 1

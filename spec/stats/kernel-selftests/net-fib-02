@@ -1,0 +1,111 @@
+# selftests: net: fib_tests.sh
+#
+# Single path route test
+#     Start point
+#     TEST: IPv4 fibmatch                                                 [ OK ]
+#     TEST: IPv6 fibmatch                                                 [ OK ]
+#     Nexthop device deleted
+#     TEST: IPv4 fibmatch - no route                                      [ OK ]
+#     TEST: IPv6 fibmatch - no route                                      [ OK ]
+#
+# Multipath route test
+#     Start point
+#     TEST: IPv4 fibmatch                                                 [ OK ]
+#     TEST: IPv6 fibmatch                                                 [ OK ]
+#     One nexthop device deleted
+#     TEST: IPv4 - multipath route removed on delete                      [ OK ]
+#     TEST: IPv6 - multipath down to single path                          [ OK ]
+#     Second nexthop device deleted
+#     TEST: IPv6 - no route                                               [ OK ]
+#
+# Single path, admin down
+#     Start point
+#     TEST: IPv4 fibmatch                                                 [ OK ]
+#     TEST: IPv6 fibmatch                                                 [ OK ]
+#     Route deleted on down
+#     TEST: IPv4 fibmatch                                                 [ OK ]
+#     TEST: IPv6 fibmatch                                                 [ OK ]
+#
+# IPv4 route with IPv6 gateway tests
+#     TEST: Single path route with IPv6 gateway                           [ OK ]
+#     TEST: Single path route with IPv6 gateway - ping                    [ OK ]
+#     TEST: Single path route delete                                      [ OK ]
+#     TEST: Multipath route add - v6 nexthop then v4                      [ OK ]
+#     TEST:     Multipath route delete - nexthops in wrong order          [ OK ]
+#     TEST:     Multipath route delete exact match                        [ OK ]
+#     TEST: Multipath route add - v4 nexthop then v6                      [ OK ]
+#     TEST:     Multipath route delete - nexthops in wrong order          [ OK ]
+#     TEST:     Multipath route delete exact match                        [ OK ]
+#
+# Tests passed: 163
+# Tests failed:   2
+not ok 13 selftests: net: fib_tests.sh # exit=1
+# selftests: net: fib_nexthop_multiprefix.sh
+# TEST: IPv4: host 0 to host 1, mtu 1300                              [ OK ]
+# TEST: IPv6: host 0 to host 1, mtu 1300                              [FAIL]
+#
+# TEST: IPv4: host 0 to host 2, mtu 1350                              [ OK ]
+# TEST: IPv6: host 0 to host 2, mtu 1350                              [FAIL]
+#
+# TEST: IPv4: host 0 to host 3, mtu 1400                              [ OK ]
+# TEST: IPv6: host 0 to host 3, mtu 1400                              [FAIL]
+#
+# TEST: IPv4: host 0 to host 1, mtu 1300                              [ OK ]
+# TEST: IPv6: host 0 to host 1, mtu 1300                              [FAIL]
+#
+# TEST: IPv4: host 0 to host 2, mtu 1350                              [ OK ]
+# TEST: IPv6: host 0 to host 2, mtu 1350                              [FAIL]
+#
+# TEST: IPv4: host 0 to host 3, mtu 1400                              [ OK ]
+# TEST: IPv6: host 0 to host 3, mtu 1400                              [FAIL]
+ok 33 selftests: net: fib_nexthop_multiprefix.sh
+# selftests: net: fib_nexthops.sh
+#
+# IPv4 groups functional
+# ----------------------
+# TEST: Create nexthop group with single nexthop                      [ OK ]
+# TEST: Get nexthop group by id                                       [ OK ]
+# TEST: Delete nexthop group by id                                    [ OK ]
+# TEST: Nexthop group with multiple nexthops                          [ OK ]
+# TEST: Nexthop group updated when entry is deleted                   [ OK ]
+# TEST: Nexthop group with weighted nexthops                          [ OK ]
+# TEST: Weighted nexthop group updated when entry is deleted          [ OK ]
+# TEST: Nexthops in groups removed on admin down                      [ OK ]
+# TEST: Multiple groups with same nexthop                             [ OK ]
+# TEST: Nexthops in group removed on admin down - mixed group         [ OK ]
+# TEST: Nexthop group can not have a group as an entry                [ OK ]
+# TEST: Nexthop group with a blackhole entry                          [ OK ]
+# TEST: Nexthop group can not have a blackhole and another nexthop    [ OK ]
+# TEST: IPv6 nexthop with IPv4 route                                  [ OK ]
+# TEST: IPv6 nexthop with IPv4 route                                  [ OK ]
+# TEST: IPv4 route with IPv6 gateway                                  [ OK ]
+# TEST: IPv4 route with invalid IPv6 gateway                          [ OK ]
+#
+IPv4 functional runtime
+# -----------------------
+# TEST: Route add                                                     [ OK ]
+# TEST: Route delete                                                  [ OK ]
+# TEST: Route add - scope conflict with nexthop                       [ OK ]
+# TEST: Nexthop replace with invalid scope for existing route         [ OK ]
+# TEST: Basic ping                                                    [ OK ]
+# TEST: Ping - multipath                                              [ OK ]
+# TEST: Ping - multiple default routes, nh first                      [ OK ]
+# TEST: Ping - multiple default routes, nh second                     [ OK ]
+# TEST: Ping - blackhole                                              [ OK ]
+# TEST: Ping - blackhole replaced with gateway                        [ OK ]
+# TEST: Ping - gateway replaced by blackhole                          [ OK ]
+# TEST: Ping - group with blackhole                                   [ OK ]
+# TEST: Ping - group blackhole replaced with gateways                 [ OK ]
+# TEST: IPv4 route with device only nexthop                           [ OK ]
+# TEST: IPv4 multipath route with nexthop mix - dev only + gw         [ OK ]
+# TEST: IPv6 nexthop with IPv4 route                                  [ OK ]
+# TEST: IPv4 route with mixed v4-v6 multipath route                   [ OK ]
+# TEST: IPv6 nexthop with IPv4 route                                  [ OK ]
+# TEST: IPv4 route with IPv6 gateway                                  [ OK ]
+# TEST: IPv4 default route with IPv6 gateway                          [ OK ]
+# TEST: IPv4 route with MPLS encap                                    [ OK ]
+# TEST: IPv4 route with MPLS encap - check                            [ OK ]
+# TEST: IPv4 route with MPLS encap and v6 gateway                     [ OK ]
+# TEST: IPv4 route with MPLS encap, v6 gw - check                     [ OK ]
+#
+not ok 34 selftests: net: fib_nexthops.sh # TIMEOUT 45 seconds

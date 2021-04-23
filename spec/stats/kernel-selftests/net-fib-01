@@ -69,4 +69,30 @@ ok 15 selftests: net: fib-onlink-tests.sh
 # Tests passed:  32
 # Tests failed:   0
 ok 20 selftests: net: fib_rule_tests.sh
+# selftests: net: fib_nexthops.sh
+#
+# Basic functional tests
+# ----------------------
+# TEST: List with nothing defined                                     [ OK ]
+# TEST: Nexthop get on non-existent id                                [ OK ]
+# TEST: Nexthop with no device or gateway                             [ OK ]
+#
+# IPv4 groups functional
+# ----------------------
+# TEST: Create nexthop group with single nexthop                      [ OK ]
+# TEST: Get nexthop group by id                                       [ OK ]
+# TEST: Delete nexthop group by id                                    [ OK ]
+# TEST: Nexthop group with multiple nexthops                          [ OK ]
+# IPv6 groups functional
+# ----------------------
+# TEST: Create nexthop group with single nexthop                      [ OK ]
+# TEST: Get nexthop group by id                                       [ OK ]
+ok 35 selftests: net: fib_nexthops.sh
+# selftests: net: fib_nexthop_multiprefix.sh
+# TEST: IPv4: host 0 to host 2, mtu 1350                              [ OK ]
+# TEST: IPv6: host 0 to host 2, mtu 1350                              [FAIL]
+#
+# TEST: IPv4: host 0 to host 3, mtu 1400                              [ OK ]
+# TEST: IPv6: host 0 to host 3, mtu 1400                              [FAIL]
+not ok 34 selftests: net: fib_nexthop_multiprefix.sh # exit=1
 make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-c72fcbc7d224903b8241afc1202a414575c1e557/tools/testing/selftests/net'
