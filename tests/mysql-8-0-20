@@ -54,8 +54,8 @@ create_database()
 
 start_mysql()
 {
-	"$mysqld" --defaults-file=/etc/my.cnf --port="$mysql_port"
-	sleep 20
+	"$mysql_server" start &
+        wait
 }
 
 main()
