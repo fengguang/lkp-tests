@@ -338,7 +338,7 @@ module DataStore
       end
 
       files.each do |ifn|
-        `#{grep_cmdline} #{ifn} #{ext_grep_cmdline}`.lines.reverse!.each do |line|
+        `strings #{ifn} | #{grep_cmdline} #{ext_grep_cmdline}`.lines.reverse!.each do |line|
           line = line.strip
           yield line unless line.empty?
         end
