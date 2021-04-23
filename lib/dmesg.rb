@@ -297,6 +297,7 @@ def analyze_error_id(line)
        /(BUG: unable to handle kernel)/,
        /(BUG: unable to handle kernel) NULL pointer dereference/,
        /(BUG: unable to handle kernel) paging request/,
+       /(BUG: workqueue leaked lock or atomic:)/,
        /(BUG: scheduling while atomic:)/,
        /(BUG: Bad page map in process)/,
        /(BUG: Bad page state in process)/,

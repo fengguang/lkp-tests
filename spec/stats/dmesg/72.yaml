@@ -1,0 +1,15 @@
+boot_failures: 1
+
+# BUG: workqueue leaked lock or atomic:
+BUG:workqueue_leaked_lock_or_atomic: 1
+message:BUG:workqueue_leaked_lock_or_atomic: [  179.857058] BUG: workqueue leaked lock or atomic: kworker/u2:2/0x00000001/127
+pattern:BUG:workqueue_leaked_lock_or_atomic: BUG: workqueue leaked lock or atomic:
+
+# BUG: scheduling while atomic:
+BUG:scheduling_while_atomic: 1
+message:BUG:scheduling_while_atomic: [  179.867914] BUG: scheduling while atomic: kworker/u2:2/127/0x00000002
+pattern:BUG:scheduling_while_atomic: BUG: scheduling while atomic:
+
+timestamp:last: 179.867914
+timestamp:BUG:workqueue_leaked_lock_or_atomic: 179.857058
+timestamp:BUG:scheduling_while_atomic: 179.867914
