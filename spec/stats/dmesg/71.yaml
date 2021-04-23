@@ -1,0 +1,9 @@
+boot_failures: 1
+
+# Kernel panic - not syncing: __populate_section_memmap: Failed to allocate .* bytes align=
+Kernel_panic-not_syncing:__populate_section_memmap:Failed_to_allocate#bytes_align=#nid=#from=: 1
+message:Kernel_panic-not_syncing:__populate_section_memmap:Failed_to_allocate#bytes_align=#nid=#from=: [    0.317424] Kernel panic - not syncing: __populate_section_memmap: Failed to allocate 5242880 bytes align=0x1000 nid=0 from=0x0000000001000000
+pattern:Kernel_panic-not_syncing:__populate_section_memmap:Failed_to_allocate#bytes_align=#nid=#from=: Kernel panic - not syncing: __populate_section_memmap: Failed to allocate .* bytes align=
+
+timestamp:last: 0.323802
+timestamp:Kernel_panic-not_syncing:__populate_section_memmap:Failed_to_allocate#bytes_align=#nid=#from=: 0.317424

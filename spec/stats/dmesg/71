@@ -1,0 +1,16 @@
+[    0.317424] Kernel panic - not syncing: __populate_section_memmap: Failed to allocate 5242880 bytes align=0x1000 nid=0 from=0x0000000001000000
+[    0.318712] CPU: 0 PID: 0 Comm: swapper Not tainted 5.12.0-rc7 #1
+[    0.319274] Call Trace:
+[    0.319516]  dump_stack+0x95/0xe0
+[    0.319844]  panic+0xb2/0x269
+[    0.320123]  __populate_section_memmap+0x6d/0x76
+[    0.320562]  sparse_init_nid+0x166/0x22d
+[    0.320943]  sparse_init+0x190/0x19e
+[    0.321267]  paging_init+0x82/0x8a
+[    0.321585]  native_pagetable_init+0x106/0x10e
+[    0.321988]  setup_arch+0xa65/0xb22
+[    0.322336]  ? vprintk_default+0x10/0x20
+[    0.322726]  start_kernel+0x5d/0x59f
+[    0.323061]  i386_start_kernel+0x43/0x45
+[    0.323418]  startup_32_smp+0x164/0x168
+[    0.323802] ---[ end Kernel panic - not syncing: __populate_section_memmap: Failed to allocate 5242880 bytes align=0x1000 nid=0 from=0x0000000001000000 ]---
