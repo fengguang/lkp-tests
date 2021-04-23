@@ -14,6 +14,7 @@
 # mysql_db
 # mysql_password
 # db_driver
+# mysql_socket
 
 : "${mysql_user:=root}"
 : "${mysql_host:=$server}"
@@ -30,6 +31,7 @@
 : "${report_interval:=1}"
 : "${oltp_read_only:=off}"
 : "${events:=2000000000}"
+: "${mysql_socket:=/data/mysql/run/mysql.sock}"
 
 args1=(
 	 --mysql-user=$mysql_user
@@ -44,10 +46,12 @@ args1=(
 	 --rand-spec-pct=$rand_spec_pct
 	 --threads=$nr_threads
 	 --time=$runtime
+	 --mysql-socket=$mysql_socket
 )
 
 args2=(
 	--mysql-user=$mysql_user
+	--mysql-socket=$mysql_socket
 	--mysql-password=$mysql_password
 	--mysql-host=$mysql_host
 	--mysql-port=$mysql_port
