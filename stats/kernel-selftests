@@ -653,7 +653,7 @@ while (line = STDIN.gets)
   when /(^|^# )selftests: (capabilities): (.*)/
     # selftests: capabilities: test_execve
     stater = CapabilitiesStater.new($2, $3)
-  when /selftests: (android): (.*)/
+  when /^selftests: (android): (.*)/
     # selftests: android: run.sh
     stater = AndroidStater.new($1, $2)
   when /make run_tests -C (android)/
