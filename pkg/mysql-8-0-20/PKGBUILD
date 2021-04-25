@@ -5,8 +5,8 @@ pkgrel=1
 arch=('aarch64' 'x86_64')
 url="http://www.mysql.com"
 license=('GPLv2')
-source=("https://gitee.com/li-yancheng/my-sql_with_boostkit_patch.git"
-        "https://gitee.com/li-yancheng/gcc.git"
+source=("git://$GIT_SERVER/upstream/m/my-sql_with_boostkit_patch/my-sql_with_boostkit_patch.git"
+        "git://$GIT_SERVER/upstream/g/gcc/gcc.git"
         "my.cnf")
 md5sums=('SKIP' 'SKIP' '99c4965aa870c475000993f52a0dee66')
 
