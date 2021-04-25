@@ -660,7 +660,7 @@ while (line = STDIN.gets)
     # for below situation:
     # not ok 1 selftests: android: run.sh # SKIP
     stater = AndroidStater.new($1, 'run.sh')
-  when /selftests: (breakpoints): (.*)/
+  when /^selftests: (breakpoints): (.*)/
     # selftests: breakpoints: breakpoint_test
     stater = BreakpointsStater.new($1, $2)
   when /run_kselftest\.sh -c (breakpoints)/
