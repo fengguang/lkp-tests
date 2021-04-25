@@ -12,7 +12,7 @@ md5sums=('SKIP' 'SKIP' '99c4965aa870c475000993f52a0dee66')
 
 build()
 {
-        # build_gcc
+        build_gcc
         build_mysql
 }
 
@@ -48,7 +48,8 @@ build_gcc()
                 --with-boot-ldflags='-Wl,-z,relro,-z,now' \
                 --with-multilib-list=lp64
                 make -j96
-		make install
+                make install &
+                wait
         }
 }
 
