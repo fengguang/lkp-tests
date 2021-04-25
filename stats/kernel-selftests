@@ -21,7 +21,7 @@ class Stater
 
   def stat(line, stats)
     case line
-    when /^(ok|not ok) \d+ selftests: (#{@test}): (#{@test_script})( # SKIP)?/
+    when /^(ok|not ok).*selftests: (#{@test}): (#{@test_script})( # SKIP)?/
       if $4
         # not ok 2 selftests: pstore: pstore_post_reboot_tests # SKIP
         stats.add @test_prefix.to_s, 'skip'
@@ -29,6 +29,7 @@ class Stater
         # not ok 46 selftests: net: vrf_route_leaking.sh # exit=1
         # ok 1 selftests: vm: run_vmtests
         # ok 1 selftests: memory-hotplug: mem-on-off-test.sh
+        # ok 1..1 selftests: capabilities: test_execve [PASS]
         stats.add @test_prefix.to_s, $1
       end
     end
@@ -649,9 +650,9 @@ while (line = STDIN.gets)
   when /# selftests: (firmware): (.*)/
     # selftests: firmware: fw_run_test.sh
     stater = FirmwareStater.new($1, $2)
-  when /selftests: (capabilities): (.*)/
+  when /(^|^# )selftests: (capabilities): (.*)/
     # selftests: capabilities: test_execve
-    stater = CapabilitiesStater.new($1, $2)
+    stater = CapabilitiesStater.new($2, $3)
   when /selftests: (android): (.*)/
     # selftests: android: run.sh
     stater = AndroidStater.new($1, $2)
