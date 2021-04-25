@@ -670,7 +670,7 @@ while (line = STDIN.gets)
   when /selftests: (ia64): (.*)/
     # selftests: ia64: aliasing-test
     stater = Ia64Stater.new($1, $2)
-  when /selftests: (kmod): (.*)/
+  when /^# selftests: (kmod): (.*)/
     # selftests: kmod: kmod.sh
     stater = KmodStater.new($1, $2)
   when /^# selftests: (netfilter): (.*)/
