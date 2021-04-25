@@ -13,26 +13,3 @@ clone3_cap_checkpoint_restore.c:148:9: error: expected expression before ‘retu
          ^~~~~~
 make: *** [../lib.mk:140: /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd/tools/testing/selftests/clone3/clone3_cap_checkpoint_restore] Error 1
 make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd/tools/testing/selftests/clone3'
-2020-09-08 09:05:10 make run_tests -C core
-make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd/tools/testing/selftests/core'
-gcc -g -I../../../../usr/include/    close_range_test.c /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd/tools/testing/selftests/kselftest_harness.h /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd/tools/testing/selftests/kselftest.h  -o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd/tools/testing/selftests/core/close_range_test
-close_range_test.c: In function ‘close_range’:
-close_range_test.c:47:5: warning: implicit declaration of function ‘XFAIL’ [-Wimplicit-function-declaration]
-     XFAIL(return, "Skipping test since /dev/null does not exist");
-     ^~~~~
-close_range_test.c:47:11: error: expected expression before ‘return’
-     XFAIL(return, "Skipping test since /dev/null does not exist");
-           ^~~~~~
-close_range_test.c:55:10: error: expected expression before ‘return’
-    XFAIL(return, "close_range() syscall not supported");
-          ^~~~~~
-close_range_test.c: In function ‘close_range_unshare’:
-close_range_test.c:111:11: error: expected expression before ‘return’
-     XFAIL(return, "Skipping test since /dev/null does not exist");
-           ^~~~~~
-close_range_test.c: In function ‘close_range_unshare_capped’:
-close_range_test.c:200:11: error: expected expression before ‘return’
-     XFAIL(return, "Skipping test since /dev/null does not exist");
-           ^~~~~~
-make: *** [../lib.mk:140: /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd/tools/testing/selftests/core/close_range_test] Error 1
-make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd/tools/testing/selftests/core'
