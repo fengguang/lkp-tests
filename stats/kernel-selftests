@@ -673,7 +673,7 @@ while (line = STDIN.gets)
   when /selftests: (kmod): (.*)/
     # selftests: kmod: kmod.sh
     stater = KmodStater.new($1, $2)
-  when /selftests: (netfilter): (.*)/
+  when /^# selftests: (netfilter): (.*)/
     # selftests: netfilter: nft_queue.sh
     stater = NetfilterStater.new($1, $2)
   when /^selftests: (exec): (.*)/
