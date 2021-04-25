@@ -206,7 +206,7 @@ class VmStater < Stater
     when /^#\s+running: (\S+)(.+)# (\S+)/
       # running: gup_test -u # get_user_pages_fast() benchmark
       # vm.run_vmtests.sh.gup_test.get_user_pages_fast.pass: 1
-      @test_case = "#{$1}.#{$3.strip.gsub(/[-\t\r\n\f]/, '_')}"
+      @test_case = "#{$1}.#{$3}"
     when /^#\s+\[(PASS|FAIL)\]/, /^#\s+LKP (SKIP)/
       stats.add "#{@test_prefix}.#{@test_case}", $1 if @test_case
       @test_case = nil
@@ -311,7 +311,7 @@ class MptcpStater < Stater
       # it's @result is "OK"
       # it's @test_case is "ns1 MPTCP -> ns1 (10.0.1.1:10000      ) MPTCP"
       @result = $2
-      @test_case = $1.gsub(/\(duration(.*)\)/, '').strip.gsub(/[-\t\r\n\f]/, '_')
+      @test_case = $1.gsub(/\(duration(.*)\)/, '')
       if @test_script == 'mptcp_connect.sh'
         # ns1 MPTCP -> ns1 (10.0.1.1:10000      ) MPTCP (duration    75ms) [ OK ]
 
@@ -337,7 +337,7 @@ class LivepatchStater < Stater
     when /^# TEST: (.*) \.\.\. (ok|fail|skip)/
       # TEST: multiple livepatches ... ok
       @result = $2
-      @test_case = $1.gsub(/\(duration(.*)\)/, '').strip.gsub(/[-\t\r\n\f]/, '_')
+      @test_case = $1.gsub(/\(duration(.*)\)/, '')
       stats.add "#{@test_prefix}.#{@test_case}", @result
     else
       super(line, stats)
