@@ -676,7 +676,7 @@ while (line = STDIN.gets)
   when /selftests: (netfilter): (.*)/
     # selftests: netfilter: nft_queue.sh
     stater = NetfilterStater.new($1, $2)
-  when /selftests: (exec): (.*)/
+  when /^selftests: (exec): (.*)/
     # selftests: exec: execveat
     stater = ExecStater.new($1, $2)
   when /^# selftests: (mqueue): (.*)/
