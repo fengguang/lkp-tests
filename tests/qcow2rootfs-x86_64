@@ -9,12 +9,17 @@
 set_qcow2rootfs_tools()
 {
 	export QCOW2_PATH="/c/compass-ci/container/qcow2rootfs"
-	git clone https://gitee.com/wu_fengguang/compass-ci.git /c/compass-ci || return 1
+	export CCI_SRC="/c/compass-ci"
+	git clone https://gitee.com/wu_fengguang/compass-ci.git /c/compass-ci 
 	rm ${QCOW2_PATH}/root/etc/yum.repos.d/*
 	wget -O ${QCOW2_PATH}/root/etc/yum.repos.d/CentOS-Base.repo https://repo.huaweicloud.com/repository/conf/CentOS-7-reg.repo
-	${QCOW2_PATH}/build
+	cd ${QCOW2_PATH}
+	./build || {
+	        echo "build container failed~"
+	        exit 1
+	}
 	sed -i 's#$EXTRACT_ROOT/bin/extract $QCOW2_FILE $tar_out_file#$EXTRACT_ROOT/bin/extract $EXTRACT_ROOT/qcow2-dir/$QCOW2_NAME $tar_out_file#' \
-		${QCOW2_PATH}/bin/mail
+		${QCOW2_PATH}/bin/main
 
 }
 
@@ -52,7 +57,13 @@ extract_rootfs()
 	export ROOTFS_DIR="${qcow2_version}-$(date +%Y-%m-%d-%H-%M-%S)"
 	export ROOTFS_PATH="${MOUNT_POINT}/openeuler/${qcow2_arch}/automatic-build/${ROOTFS_DIR}"
 	mkdir -p $ROOTFS_PATH
-	${QCOW2_PATH}/run ${IMG_PATH}/${QCOW2_NAME} ${ROOTFS_PATH}
+	cd $CCI_SRC/container/dracut-initrd
+	./build || {
+		echo "build container failed~"
+		exit 1
+		}
+	cd ${QCOW2_PATH}
+	./run ${IMG_PATH}/${QCOW2_NAME} ${ROOTFS_PATH}
 }
 
 set_resolv_config()
