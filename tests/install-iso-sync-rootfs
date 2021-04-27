@@ -59,7 +59,7 @@ sync_rootfs_to_nfs_server()
 	local nfs_rootfs_mount_point=/tmp/nfs_rootfs_${ROOTFS_SUFFIX}
 
 	mkdir -p ${nfs_rootfs_mount_point}
-	mount -t nfs ${NFS_SERVER_HOST}:${NFS_ROOT_DIR}/${os}/${os_arch}/${os_version}-iso-${ROOTFS_SUFFIX} ${nfs_rootfs_mount_point} || die "mount nfs rootfs failed"
+	mount -t nfs ${NFS_SERVER_HOST}:${NFS_ROOT_DIR}/${iso_os}/${iso_arch}/${iso_version}-iso-${ROOTFS_SUFFIX} ${nfs_rootfs_mount_point} || die "mount nfs rootfs failed"
 
 	# activate the lvm
 	vgchange -ay
@@ -78,7 +78,7 @@ sync_rootfs_to_nfs_server()
 	cd ${nfs_rootfs_mount_point} && mkdir -p "${SKIP_SYNC_DIRS[@]}"
 
 	# umount nfs rootfs
-	umount $nfs_rootfs_mount_point || log_warn "umount failed: nfs_rootfs_mount_point"
+	cd / && umount $nfs_rootfs_mount_point || log_warn "umount failed: nfs_rootfs_mount_point"
 
 	# umount local logical volume
 	umount $lv_rootfs_mount_point || log_warn "umount failed: $lv_rootfs_mount_point"
