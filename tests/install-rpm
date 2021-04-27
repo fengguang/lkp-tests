@@ -1,0 +1,83 @@
+#!/bin/bash
+# - compat_os
+# - rpm_name
+# - custom_repo_name
+# - custom_repo_addr
+# user can add custom_repo_name and custom_repo_addr to setup
+# local repo, value can be an array
+
+. $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/upload.sh
+. $LKP_SRC/lib/log.sh
+
+: "${compat_os:=budding-openeuler}"
+: "${DISTRO:=openeuler}"
+: "${basearch:=$(arch)}"
+. $LKP_SRC/distro/${DISTRO}
+
+[ -n "${rpm_name}" ]		|| die "rpm_name is empty"
+[ -n "${custom_repo_name}" ]	|| die "custom_repo_name is empty"
+[ -n "${custom_repo_addr}" ]	|| die "custom_repo_addr is empty"
+
+custom_repo_name=($custom_repo_name)
+custom_repo_addr=($custom_repo_addr)
+rpm_name=($rpm_name)
+
+add_repo()
+{
+	custom_repo_name=($custom_repo_name)
+	custom_repo_addr=($custom_repo_addr)
+
+	for i in ${!custom_repo_name[@]}
+	do
+		cat <<-EOF >> /etc/yum.repos.d/"${custom_repo_name[$i]}.repo"
+		[${custom_repo_name[$i]}]
+		name=${custom_repo_name[$i]}
+		baseurl=${custom_repo_addr[$i]}
+		enabled=1
+		gpgcheck=0
+		priority=100
+
+		EOF
+	done
+}
+
+install_rpm()
+{
+	log_info "Starting install test: yum install -y ${rpm_name[@]}"
+	yum install -y ${rpm_name[@]}
+
+	return 0
+}
+
+ldd_test()
+{
+	log_info "Starting ldd test"
+	for i in $(rpm -qa ${rpm_name[@]})
+	do
+		ldd_list=$(rpm -ql $i | awk -F'/' '$3 ~ /bin|sbin|lib|lib64/')
+		[ -z "${ldd_list}" ] || {
+			for i in ${ldd_list[@]}
+			do
+				[[ -f "$i" && -x "$i" ]] && {
+					echo "ldd for $i"
+					ldd -d -r $i
+				}
+			done
+		}
+	done
+}
+
+remove_rpm()
+{
+	log_info "Starting remove test: yum remove -y ${rpm_name[@]}"
+	yum remove -y ${rpm_name[@]}
+
+	return 0
+}
+
+distro_install_depends install-rpm
+add_repo
+install_rpm
+ldd_test
+remove_rpm
