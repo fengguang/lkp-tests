@@ -1,6 +1,7 @@
 #!/bin/bash
 
 . $LKP_SRC/lib/email.sh
+. $LKP_SRC/lib/log.sh
 
 submit_args=(
 		"testbox=dc-8g cci-depends.benchmark=sshd cci-depends.yaml"
@@ -8,21 +9,22 @@ submit_args=(
 		"testbox=vm-2p8g borrow-1h.yaml runtime=1m"
 	    )
 
-submit_one()
-{
-	args="$1"
-	submit_result=$(submit -m $args group_id=selftest)
-}
-
-submit_all()
+submit_job()
 {
 	for args in "${submit_args[@]}"
 	do
-		submit_one "$args"
+		report_content=$(submit -m $args group_id=selftest 2>&1)
+		echo $report_content | grep -q "\"job_state\":\"submit\"" ||
+			{
+				log_error  "submit $args failed: $report_content"
+				send_email selftest
+				exit 1
+			}
 	done
 
-	job_state=$(es-jobs group_id=selftest | grep job_state)
+	report_content=$(es-jobs group_id=selftest | grep job_state)
+	log_info "selftest job result: $report_content"
 }
 
-submit_all
+submit_job
 send_email selftest
