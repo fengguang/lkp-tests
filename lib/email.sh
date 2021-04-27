@@ -89,7 +89,7 @@ Dear $my_name:
 
 	Your self-test groud_id=selftest job result is:
 
-	$job_state
+	$report_content
 
 Regards
 Compass-CI
