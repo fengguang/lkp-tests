@@ -88,6 +88,10 @@ net_devices_link()
 
 test_ping()
 {
+	has_cmd ping || {
+		echo "command not found: ping, skip ping test."
+		return 0
+	}
 	ping -c 1 -w 1 $LKP_SERVER > /dev/null
 }
 
