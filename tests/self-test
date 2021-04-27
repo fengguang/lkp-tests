@@ -3,6 +3,8 @@
 . $LKP_SRC/lib/email.sh
 . $LKP_SRC/lib/log.sh
 
+source /etc/profile.d/compass.sh
+
 submit_args=(
 		"testbox=dc-8g cci-depends.benchmark=sshd cci-depends.yaml"
 		"testbox=dc-8g borrow-1h.yaml runtime=1m"
