@@ -318,6 +318,8 @@ download_compass_ci()
 config_rootfs_dir()
 {
 	ROOTFS_DES_DIR=${ROOTFS_LOCAL_PATH}/${iso_version}-$(date "+%Y-%m-%d-%H-%M-%S")
+	[ -n "${dailybuild_iso_url_file}" ] && ROOTFS_DES_DIR=${ROOTFS_LOCAL_PATH}/${iso_version}-dailybuild-$(date "+%Y-%m-%d-%H-%M-%S")
+
 	[ -d "${ROOTFS_DES_DIR}" ] &&
 		ROOTFS_DES_DIR="${ROOTFS_DES_DIR}-${HOSTNAME##*--}"
 	mkdir -p "$ROOTFS_DES_DIR"
@@ -592,7 +594,7 @@ update_dailybuild_soft_link()
 	[ -n "${dailybuild_iso_url_file}" ] || return 0
 
 	mv "${CHECKSUM_FILE_CACHE}.tmp" "${CHECKSUM_FILE_CACHE}"
-	cp "${CHECKSUM_FILE_CACHE}" "${ROOTFS_DES_DIR}"
+	cp "${CHECKSUM_FILE_CACHE}" "${ROOTFS_DES_DIR}/SHA256SUM"
 
 	local soft_link="${iso_version}-dailybuild"
 	cd "${ROOTFS_LOCAL_PATH}" &&
