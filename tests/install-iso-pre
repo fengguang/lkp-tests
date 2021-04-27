@@ -112,41 +112,9 @@ generate_ks()
 	bootloader --location=none
 	logvol / --vgname=${VG_NAME} --name=${LV_NAME} --useexisting
 
-	# Root password
-	rootpw --iscrypted ${secrets_ROOTFS_ROOT_PASSWD}
-
-	# Reboot after installation
-	reboot --eject
-
-	# Use text mode install
-	text
-
-	# Keyboard layouts
-	keyboard --vckeymap=us --xlayouts='us'
-
-	# System language
-	lang en_US.UTF-8
-
-	# Do not configure the X Window System
-	skipx
-
-	# System services
-	services --enabled="chronyd"
-
-	# System timezone
-	timezone Asia/Shanghai --isUtc
-
-	%packages
-	@^minimal-environment
-
-	%end
-
-	%anaconda
-	pwpolicy root --minlen=8 --minquality=1 --notstrict --nochanges --notempty
-	pwpolicy user --minlen=8 --minquality=1 --notstrict --nochanges --emptyok
-	pwpolicy luks --minlen=8 --minquality=1 --notstrict --nochanges --notempty
-	%end
 	EOF
+
+	curl -s http://${OS_HTTP_HOST}:${OS_HTTP_PORT}/os/install/ks/template/${iso_os}-${iso_arch}-${iso_version}.ks >> $ks_file
 }
 
 upload_ks()
