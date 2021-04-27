@@ -9,6 +9,7 @@
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/upload.sh
 . $LKP_SRC/lib/log.sh
+. $LKP_SRC/lib/rpm.sh
 
 : "${compat_os:=budding-openeuler}"
 : "${DISTRO:=openeuler}"
@@ -19,28 +20,7 @@
 [ -n "${custom_repo_name}" ]	|| die "custom_repo_name is empty"
 [ -n "${custom_repo_addr}" ]	|| die "custom_repo_addr is empty"
 
-custom_repo_name=($custom_repo_name)
-custom_repo_addr=($custom_repo_addr)
 rpm_name=($rpm_name)
-
-add_repo()
-{
-	custom_repo_name=($custom_repo_name)
-	custom_repo_addr=($custom_repo_addr)
-
-	for i in ${!custom_repo_name[@]}
-	do
-		cat <<-EOF >> /etc/yum.repos.d/"${custom_repo_name[$i]}.repo"
-		[${custom_repo_name[$i]}]
-		name=${custom_repo_name[$i]}
-		baseurl=${custom_repo_addr[$i]}
-		enabled=1
-		gpgcheck=0
-		priority=100
-
-		EOF
-	done
-}
 
 install_rpm()
 {

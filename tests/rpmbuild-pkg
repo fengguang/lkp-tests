@@ -3,10 +3,15 @@
 # - compat_os
 # - repo_name
 # - repo_addr
+# - custom_repo_name
+# - custom_repo_addr
 # Git repo jobs only use the first two parameters, SRPMs jobs use all
+# user can add custom_repo_name and custom_repo_addr to setup
+# local repo, value can be an array
 
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/upload.sh
+. $LKP_SRC/lib/rpm.sh
 
 : "${compat_os:=budding-openeuler}"
 
@@ -133,6 +138,7 @@ update_repo_mq()
 		-d "{\"upload_rpms\": ["${full_list}"]}"
 }
 
+add_repo
 [ -n "$repo_name" ] && from_srpm || from_git
 build_rpm
 upload_rpm_pkg
