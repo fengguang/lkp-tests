@@ -49,7 +49,7 @@ init_workspace()
 
 download_upstream_repo()
 {
-	local url="git://${GIT_SERVER}/openeuler/${upstream_repo}"
+	local url="git://${GIT_SERVER}/${upstream_dir}/${upstream_repo}"
 
 	git clone "$url" || die "clone git repo ${package_name} failed: $url"
 	cd "$package_name" || exit
@@ -75,14 +75,14 @@ build_rpm()
 	[ -n "$package_name" ] &&
 		{
 			# HTTP is proxy cache friendly
-			sed -i 's/^\(Source[^ ]*:[ \t]*\)https/\1http/g' "$(grep http -rl "$spec_dir/${package_name}.spec")"
+			sed -i 's/^\(Source[^ ]*:[ \t]*\)https/\1http/g' "$(grep http -rl "$spec_dir/"*.spec)"
 		}
 	# Install build depends
 	yum-builddep -y "$spec_dir"/*.spec || die "failed to solve dependencies"
 	# Download tar.gz to default path ${HOME}/rpmbuild/SOURCE
 	[ -n "$package_name" ] &&
 		{
-			spectool -g -R "$spec_dir/${package_name}.spec" || die "failed to download source file"
+			spectool -g -R "$spec_dir/"*.spec || die "failed to download source file"
 		}
 	# Building rpm or srpm packages
 	rpmbuild -ba "$spec_dir"/*.spec || die "failed to build rpms"
