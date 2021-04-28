@@ -162,7 +162,11 @@ module Compare
     def do_sort_mresult_roots
       mrts = []
       @mresult_roots.each do |_rt|
-        if File.exist?(_rt.path)
+        if !_rt.respond_to?(:path)
+          # class MMResultRoot
+          mrts << _rt
+        elsif File.exist?(_rt.path)
+          # class NMResultRoot
           mrts << _rt
         else
           log_warn "#{_rt.path} not exist" if ENV['LKP_VERBOSE']
@@ -197,6 +201,7 @@ module Compare
     def compare_groups
       mrts = do_sort_mresult_roots
       return [] if mrts.empty?
+
       mrts.uniq! if dedup_mresult_roots
       grouper = AxesGrouper.new
       groups = grouper.set_axes_data(mrts)
