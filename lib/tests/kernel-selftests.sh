@@ -658,6 +658,7 @@ run_tests()
 
 	# kselftest introduced runner.sh since kernel commit 42d46e57ec97 "selftests: Extract single-test shell logic from lib.mk"
 	[[ -e kselftest/runner.sh ]] && log_cmd sed -i 's/default_timeout=45/default_timeout=300/' kselftest/runner.sh
+	[[ -e /kselftests/kselftest/runner.sh ]] && log_cmd sed -i 's/default_timeout=45/default_timeout=300/' /kselftests/kselftest/runner.sh
 	for mf in $selftest_mfs; do
 		subtest=${mf%/Makefile}
 		subtest_config="$subtest/config"
