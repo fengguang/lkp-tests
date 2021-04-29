@@ -691,9 +691,11 @@ run_tests()
 
 		if [[ $found_subtest_in_cache ]]; then
 			if [[ $group == "net" && $test == "tls" ]]; then
+				$run_cached_kselftests -l | grep -q ^$subtest:tls$ &&
 				log_cmd $run_cached_kselftests -t $subtest:tls 2>&1
 			else
 				# run_cached_kselftests is from kselftests.cgz which may not exist in local
+				$run_cached_kselftests -l | grep -q ^$subtest: &&
 				log_cmd $run_cached_kselftests -c $subtest 2>&1
 			fi
 		elif [[ -f $run_cached_kselftests ]]; then
