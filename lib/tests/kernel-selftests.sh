@@ -526,6 +526,11 @@ fixup_livepatch()
 	[[ -s "/tmp/pid-tail-global" ]] && cat /tmp/pid-tail-global | xargs kill -9 && echo "" >/tmp/pid-tail-global
 }
 
+fixup_sgx()
+{
+	:
+}
+
 build_tools()
 {
 
@@ -619,6 +624,8 @@ fixup_subtest()
 		fixup_kmod
 	elif [[ "$subtest" = "ptp" ]]; then
 		fixup_ptp || return
+	elif [[ "$subtest" = "sgx" ]]; then
+		fixup_sgx
 	fi
 	return 0
 }
