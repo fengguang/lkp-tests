@@ -23,4 +23,13 @@ kernel-selftests:
   group:
   - net
   test:
+  - fcnal-test.sh
+
+timeout: 1h
+
+---
+kernel-selftests:
+  group:
+  - net
+  test:
   - tls

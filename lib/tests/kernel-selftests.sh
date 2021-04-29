@@ -228,6 +228,11 @@ fixup_net()
 		echo "LKP SKIP net.tls"
 	fi
 
+	if [[ $test != "fcnal-test.sh" ]]; then
+		sed -i 's/fcnal-test.sh//' net/Makefile
+		echo "LKP SKIP net.fcnal-test.sh"
+	fi
+
 	# at v4.18-rc1, it introduces fib_tests.sh, which doesn't have execute permission
 	# here is to fix the permission
 	[[ -f $subtest/fib_tests.sh ]] && {
@@ -691,9 +696,13 @@ run_tests()
 		fixup_subtest $subtest || return
 
 		if [[ $found_subtest_in_cache ]]; then
-			if [[ $group == "net" && $test == "tls" ]]; then
-				$run_cached_kselftests -l | grep -q ^$subtest:tls$ &&
-				log_cmd $run_cached_kselftests -t $subtest:tls 2>&1
+			if [[ $group == "net" && $test =~ ^(tls|fcnal-test.sh)$ ]]; then
+				if [[ $test == "fcnal-test.sh" ]]; then
+					[[ -f /kselftests/net/settings ]] && sed -i '/timeout=/d' /kselftests/net/settings
+					echo "timeout=3600" >> /kselftests/net/settings
+				fi
+				$run_cached_kselftests -l | grep -q ^$subtest:$test$ &&
+				log_cmd $run_cached_kselftests -t $subtest:$test 2>&1
 			else
 				# run_cached_kselftests is from kselftests.cgz which may not exist in local
 				$run_cached_kselftests -l | grep -q ^$subtest: &&
