@@ -44,6 +44,24 @@ run_kbuild()
 	echo "runtime: $((now - start_time))"
 }
 
-cd $BENCHMARK_ROOT/kbuild/linux || die "no kernel source code in $BENCHMARK_ROOT/kbuild/linux"
+linux_src="$BENCHMARK_ROOT/kbuild/linux"
+[ -d "$linux_src" ] || die "no kernel source code in $BENCHMARK_ROOT/kbuild/linux"
 
-run_kbuild
+: ${kbuild_work_dirs:=$linux_src}
+
+kbuild_tmp_dir="$TMP/kbuild"
+i=0
+
+mkdir -p $kbuild_tmp_dir
+
+for wdir in $kbuild_work_dirs; do
+	(
+		log_eval cd "$wdir"
+		run_kbuild > "$kbuild_tmp_dir/kbuild.$i"
+	) &
+	i=$((i+1))
+done
+
+wait
+
+cat "$kbuild_tmp_dir"/kbuild.*
