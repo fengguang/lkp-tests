@@ -1,0 +1,16 @@
+suite: benchmark-sql
+
+mysql_user:
+mysql_host: localhost
+mysql_port:
+mysql_db:
+benchmark_db: tpcc
+mysql_password:
+data_dev: sdb
+
+cci-makepkg:
+  benchmark: mysql-8-0-20
+
+mysql-8-0-20:
+
+benchmark-sql:
