@@ -7,13 +7,14 @@ url="http://www.mysql.com"
 license=('GPLv2')
 source=("git://$GIT_SERVER/upstream/m/my-sql_with_boostkit_patch/my-sql_with_boostkit_patch.git"
         "git://$GIT_SERVER/upstream/g/gcc/gcc.git"
+        "https://mirrors.huaweicloud.com/kunpeng/archive/kunpeng_solution/database/patch/benchmarksql5.0-for-mysql.zip"
         "my.cnf")
-md5sums=('SKIP' 'SKIP' '99c4965aa870c475000993f52a0dee66')
+md5sums=('SKIP' 'SKIP' 'f33c03fd48ff5993dca6d00b53a46da4' '99c4965aa870c475000993f52a0dee66')
 
 build()
 {
-        build_gcc
         build_mysql
+        build_benchmarksql
 }
 
 build_gcc()
@@ -47,9 +48,8 @@ build_gcc()
                 --with-stage1-ldflags='-Wl,-z,relro,-z,now' \
                 --with-boot-ldflags='-Wl,-z,relro,-z,now' \
                 --with-multilib-list=lp64
-                make -j96
-                make install &
-                wait
+                make -j96 > /dev/null
+                make install > /dev/null
         }
 }
 
@@ -58,6 +58,11 @@ build_mysql()
         unset CPPFLAGS
         unset CFLAGS
         unset CXXFLAGS
+
+        cd $srcdir/my-sql_with_boostkit_patch && {
+                grep 3f3d2692fd05a18011d93dcadeef661f386595ac compass-ci.cfg || build_gcc
+        }
+
         cd $srcdir/my-sql_with_boostkit_patch/$pkgname-$pkgver
 
         CMAKE=cmake
@@ -65,8 +70,36 @@ build_mysql()
 
         mkdir -p build
         cd build && {
-                $CMAKE .. -DBUILD_CONFIG=mysql_release -DCMAKE_INSTALL_PREFIX=/usr/local/mysql -DMYSQL_DATADIR=/data/mysql/data -DSYSCONFDIR=/etc  -DWITH_BOOST=../boost/boost_1_70_0/
-                make -j96
+                $CMAKE .. -DBUILD_CONFIG=mysql_release -DCMAKE_INSTALL_PREFIX=/usr/local/mysql -DMYSQL_DATADIR=/data/mysql/data -DSYSCONFDIR=/etc  -DWITH_BOOST=../boost/boost_1_70_0/ > /dev/null
+                make -j96 > /dev/null
+        }
+}
+
+build_benchmarksql()
+{
+        cd $srcdir && {
+                cp -r benchmarksql5.0-for-mysql "$HOME/"
+                chmod -R 777 "$HOME/benchmarksql5.0-for-mysql"
+        }
+
+        cd "$HOME/benchmarksql5.0-for-mysql/run" && {
+                chmod 777 *.sh
+                sed -i \
+                    -e '/^conn=/ s|mysql://.*:3306|mysql://localhost:3306|' \
+                    -e '/^user=/cuser=root' \
+                    -e '/^password=/cpassword=mysql_password' \
+                    -e '/^warehouses=/cwarehouses=1000' \
+                    -e '/^loadWorkers=/cloadWorkers=100' \
+                    -e '/^terminals=/cterminals=200' \
+                    -e '/^runTxnsPerTerminal=/crunTxnsPerTerminal=0' \
+                    -e '/^runMins=/crunMins=30' \
+                    -e '/^limitTxnsPerMin=/climitTxnsPerMin=1000' \
+                    -e '/^terminalWarehouseFixed=/cterminalWarehouseFixed=true' \
+                    -e '/^newOrderWeight=/cnewOrderWeight=45' \
+                    -e '/^paymentWeight=/cpaymentWeight=43' \
+                    -e '/^orderStatusWeight=/corderStatusWeight=4' \
+                    -e '/^deliveryWeight=/cdeliveryWeight=4' \
+                    props.conf
         }
 }
 
@@ -75,6 +108,6 @@ package()
         cp my.cnf /etc/
 
         cd $srcdir/my-sql_with_boostkit_patch/$pkgname-$pkgver/build && {
-		make install
-	}
+                make install > /dev/null
+        }
 }
