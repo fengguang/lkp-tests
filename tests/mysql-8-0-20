@@ -4,69 +4,75 @@
 # mysql_host
 # mysql_port
 # mysql_db
+# benchmark_db
 # mysql_password
+
 . $LKP_SRC/lib/common.sh
 
 : "${mysql_user:=root}"
 : "${mysql_host:=127.0.0.1}"
 : "${mysql_port:=3306}"
 : "${mysql_db:=sysbench_test}"
+: "${benchmark_db:=tpcc}"
 : "${mysql_password:=mysql_password}"
 
 create_basedir()
 {
-	mkdir -p /data
-	mkfs.xfs -f /dev/"$data_dev"
-	mount /dev/"$data_dev" /data
+        mkdir -p /data
+        mkfs.xfs -f /dev/"$data_dev"
+        mount /dev/"$data_dev" /data
 
-	mkdir -p /data/mysql/{data,share,tmp,run,log}
+        mkdir -p /data/mysql/{data,share,tmp,run,log}
 
-	useradd mysql
-	touch /data/mysql/log/mysql.log
-	chown -R mysql:mysql /data
-	chown -R mysql:mysql /data/mysql/log/mysql.log
+        useradd mysql
+        touch /data/mysql/log/mysql.log
+        chown -R mysql:mysql /data
+        chown -R mysql:mysql /data/mysql/log/mysql.log
 }
 
 configure_mysql()
 {
-	if [ ! -f $mysqld ] || [ ! -f $mysql ] || [ ! -f $mysql_server ]; then
-		echo "mysql is not installed!" && exit 1
-	fi
+        if [ ! -f $mysqld ] || [ ! -f $mysql ] || [ ! -f $mysql_server ]; then
+                echo "mysql is not installed!" && exit 1
+        fi
 
-	"$mysqld" --user=mysql --datadir=/data/mysql/data --basedir=/data/mysql --initialize --port="$mysql_port"
-	sleep 10
+        "$mysqld" --user=mysql --datadir=/data/mysql/data --basedir=/data/mysql --initialize --port="$mysql_port"
+        sleep 10
 
-	"$mysql_server" start
-	sleep 10
+        "$mysql_server" start
+        sleep 10
 
-	"$mysql" -u "$mysql_user" -e "flush privileges; use mysql; alter user 'root'@'localhost' identified by '$mysql_password'; flush privileges;"
-	"$mysql_server" restart
-	sleep 10
+        "$mysql" -u "$mysql_user" -e "flush privileges; use mysql; alter user 'root'@'localhost' identified by '$mysql_password'; flush privileges;"
+        sed -i '/^skip-grant-tables/d' /etc/my.cnf
+        sed -i '/^skip-name-resolve/d' /etc/my.cnf
+        "$mysql_server" restart
+        sleep 10
 }
 
 create_database()
 {
-	"$mysql" -u "$mysql_user" -p"$mysql_password" -e "use mysql; update user set host ='%' where user='root'; flush privileges;"
-	"$mysql" -u "$mysql_user" -p"$mysql_password" -e "create database $mysql_db;"
-	"$mysql_server" stop
-	sleep 10
+        "$mysql" -u "$mysql_user" -p"$mysql_password" -e "use mysql; update user set host ='%' where user='root'; flush privileges;"
+        "$mysql" -u "$mysql_user" -p"$mysql_password" -e "create database $mysql_db;"
+        "$mysql" -u "$mysql_user" -p"$mysql_password" -e "create database $benchmark_db;"
+        "$mysql_server" stop
+        sleep 10
 }
 
 start_mysql()
 {
-	"$mysql_server" start &
+        "$mysql_server" start &
         wait
 }
 
 main()
 {
-	local mysql="/usr/local/mysql/bin/mysql"
-	local mysqld="/usr/local/mysql/bin/mysqld"
-	local mysql_server="/usr/local/mysql/support-files/mysql.server"
+        local mysql="/usr/local/mysql/bin/mysql"
+        local mysqld="/usr/local/mysql/bin/mysqld"
+        local mysql_server="/usr/local/mysql/support-files/mysql.server"
 
-	create_basedir
-	configure_mysql
-	create_database
-	start_mysql
+        create_basedir
+        configure_mysql
+        create_database
+        start_mysql
 }
 main
