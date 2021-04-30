@@ -1,0 +1,28 @@
+suite: sysbench-mysql
+
+mysql_user:
+mysql_host: localhost
+mysql_port:
+mysql_db:
+mysql_password:
+data_dev: sdb
+
+cci-makepkg:
+  benchmark: mysql-8-0-20
+
+mysql-8-0-20:
+
+sysbench-mysql:
+  oltp_test_mode: complex
+  max_requests: 0
+  mysql_table_engine: innodb
+  oltp_tables_count: 1000
+  oltp_table_size: 100000
+  nr_threads: 256
+  runtime: 60
+  rand_type: special
+  rand_spec_pct: 100
+  oltp_read_only: false
+  report_interval: 1
+  events: 20000
+  mysql_socket: /data/mysql/run/mysql.sock
