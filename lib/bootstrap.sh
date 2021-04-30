@@ -57,6 +57,35 @@ mount_tmpfs()
 	mount -t tmpfs -o mode=1777 tmp /tmp
 }
 
+resize_virtual_rootfs()
+{
+        # tmpfs and rootfs default use 50% memory:
+        #
+        #   root@taishan200-2280-2s48p-256g--a13 ~# mount | head -n 1
+        #   rootfs on / type rootfs (rw,size=133395136k,nr_inodes=2084299)
+        #
+        #   root@taishan200-2280-2s48p-256g--a13 ~# df -h /
+        #   Filesystem      Size  Used Avail Use% Mounted on
+        #   rootfs          128G  114G   14G  90% /
+        #
+        # this maybe cause the docker no space error.
+
+        if mount | head -n 1 | grep "type rootfs" > /dev/null
+        then
+                echo "Set the rootfs to 90% memory"
+                mount -o remount,rw,size=90% rootfs /
+        fi
+	# Test Result: 
+	#   root@taishan200-2280-2s64p-256g--a125 ~# free -g
+	#                 total        used        free      shared  buff/cache   available
+	#   Mem:          255Gi       8.5Gi       243Gi       2.7Gi       2.9Gi       224Gi
+	#   Swap:            0B          0B          0B
+	#   root@taishan200-2280-2s64p-256g--a125 ~# df -h /
+	#   Filesystem      Size  Used Avail Use% Mounted on
+	#   rootfs          230G  2.7G  228G   2% /
+
+}
+
 get_net_devices()
 {
 	local net_devices
@@ -737,6 +766,7 @@ boot_init()
 
 	mount_kernel_fs
 	mount_tmpfs
+	resize_virtual_rootfs
 	redirect_stdout_stderr
 
 	echo 'Kernel tests: Boot OK!'
