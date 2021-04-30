@@ -82,10 +82,14 @@ Compass-CI
 
 selftest_content()
 {
-	email_content="To: $my_email
+	email_content="To: $recipient_email
 Subject: [NOTIFY Compass-CI] Self-test report
 
-Dear $my_name:
+Dear $author_name and $commiter:
+
+	commit_id: $commit_id
+
+	commit_subject: $commit_subject
 
 	Your self-test groud_id=selftest job result is:
 

@@ -28,5 +28,23 @@ submit_job()
 	log_info "selftest job result: $report_content"
 }
 
+get_commit_info()
+{
+	cd /c/compass-ci || exit
+
+	commit_id=$(git log -1 --format="%H")
+	commit_subject=$(git log -1 --format="%s")
+
+	author_name=$(git log -1 --format="%an")
+	author_email=$(git log -1 --format="%ae")
+
+	commiter=$(git log -1 --format="%cn")
+	commiter_email=$(git log -1 --format="%ce")
+
+	recipient_email="$author_email;$commiter_email"
+
+}
+
+get_commit_info
 submit_job
 send_email selftest
