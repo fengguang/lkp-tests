@@ -89,6 +89,7 @@ probe_filesystem()
 }
 
 mount_fs() {
+	local bdevs_num=0
 	for dev in $bdevs
 	do
 		local mnt=/fs/$(basename $dev)
@@ -96,7 +97,14 @@ mount_fs() {
 		probe_filesystem $fs
 		log_cmd mount -t $fs ${mount:-$def_mount} $mount_option $dev $mnt || exit
 		mount_points="${mount_points}$mnt "
+		bdevs_num=$(($bdevs_num + 1))
 	done
+
+	local special_jobs=(multi-qemu multi-docker)
+	echo "${special_jobs[@]}" | grep -wq $suite && [ $bdevs_num -eq 1 ] && [ -n "$mount_point" ] &&{
+		log_cmd mkdir -p $mount_point
+		log_cmd mount -t $fs ${mount:-$def_mount} $mount_option $dev $mount_point || exit
+	}
 }
 
 if is_btrfs_raid_levels; then
