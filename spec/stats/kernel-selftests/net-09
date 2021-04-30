@@ -1,0 +1,147 @@
+# selftests: net: fcnal-test.sh
+#
+# ###########################################################################
+# IPv4 ping
+# ###########################################################################
+#
+#
+# #################################################################
+# No VRF
+#
+# SYSCTL: net.ipv4.raw_l3mdev_accept=0
+#
+# TEST: ping out - ns-B IP                                                      [ OK ]
+# TEST: ping out, device bind - ns-B IP                                         [ OK ]
+# TEST: ping out, address bind - ns-B IP                                        [ OK ]
+# TEST: ping out - ns-B loopback IP                                             [ OK ]
+# TEST: ping out, device bind - ns-B loopback IP                                [ OK ]
+# TEST: ping out, address bind - ns-B loopback IP                               [ OK ]
+# TEST: ping in - ns-A IP                                                       [ OK ]
+# TEST: ping in - ns-A loopback IP                                              [ OK ]
+# TEST: ping local - ns-A IP                                                    [ OK ]
+# TEST: ping local - ns-A loopback IP                                           [ OK ]
+# TEST: ping local - loopback                                                   [ OK ]
+# TEST: ping local, device bind - ns-A IP                                       [ OK ]
+# TEST: ping local, device bind - ns-A loopback IP                              [ OK ]
+# TEST: ping local, device bind - loopback                                      [ OK ]
+# TEST: ping out, blocked by rule - ns-B loopback IP                            [ OK ]
+# TEST: ping in, blocked by rule - ns-A loopback IP                             [ OK ]
+# TEST: ping out, blocked by route - ns-B loopback IP                           [ OK ]
+# TEST: ping in, blocked by route - ns-A loopback IP                            [ OK ]
+# TEST: ping out, unreachable default route - ns-B loopback IP                  [ OK ]
+# SYSCTL: net.ipv4.raw_l3mdev_accept=1
+#
+# TEST: ping out - ns-B IP                                                      [ OK ]
+# TEST: ping out, device bind - ns-B IP                                         [ OK ]
+# TEST: ping out, address bind - ns-B IP                                        [ OK ]
+# TEST: ping out - ns-B loopback IP                                             [ OK ]
+# TEST: ping out, device bind - ns-B loopback IP                                [ OK ]
+# TEST: ping out, address bind - ns-B loopback IP                               [ OK ]
+# TEST: ping in - ns-A IP                                                       [ OK ]
+# TEST: ping in - ns-A loopback IP                                              [ OK ]
+# TEST: ping local - ns-A IP                                                    [ OK ]
+# TEST: ping local - ns-A loopback IP                                           [ OK ]
+# TEST: ping local - loopback                                                   [ OK ]
+# TEST: ping local, device bind - ns-A IP                                       [ OK ]
+# TEST: ping local, device bind - ns-A loopback IP                              [ OK ]
+# TEST: ping local, device bind - loopback                                      [ OK ]
+# TEST: ping out, blocked by rule - ns-B loopback IP                            [ OK ]
+# TEST: ping in, blocked by rule - ns-A loopback IP                             [ OK ]
+# TEST: ping out, blocked by route - ns-B loopback IP                           [ OK ]
+# TEST: ping in, blocked by route - ns-A loopback IP                            [ OK ]
+# TEST: ping out, unreachable default route - ns-B loopback IP                  [ OK ]
+#
+# #################################################################
+# With VRF
+#
+# SYSCTL: net.ipv4.raw_l3mdev_accept=1
+#
+# TEST: ping out, VRF bind - ns-B IP                                            [ OK ]
+# TEST: ping out, device bind - ns-B IP                                         [ OK ]
+# TEST: ping out, vrf device + dev address bind - ns-B IP                       [ OK ]
+# TEST: ping out, vrf device + vrf address bind - ns-B IP                       [ OK ]
+# TEST: ping out, VRF bind - ns-B loopback IP                                   [ OK ]
+# TEST: ping out, device bind - ns-B loopback IP                                [ OK ]
+# TEST: ping out, vrf device + dev address bind - ns-B loopback IP              [ OK ]
+# TEST: ping out, vrf device + vrf address bind - ns-B loopback IP              [ OK ]
+# TEST: ping in - ns-A IP                                                       [ OK ]
+# TEST: ping in - VRF IP                                                        [ OK ]
+# TEST: ping local, VRF bind - ns-A IP                                          [ OK ]
+# TEST: ping local, VRF bind - VRF IP                                           [ OK ]
+# TEST: ping local, VRF bind - loopback                                         [ OK ]
+# TEST: ping local, device bind - ns-A IP                                       [ OK ]
+# TEST: ping local, device bind - VRF IP                                        [ OK ]
+# TEST: ping local, device bind - loopback                                      [ OK ]
+# TEST: ping out, vrf bind, blocked by rule - ns-B loopback IP                  [ OK ]
+# TEST: ping out, device bind, blocked by rule - ns-B loopback IP               [ OK ]
+# TEST: ping in, blocked by rule - ns-A loopback IP                             [ OK ]
+# TEST: ping out, vrf bind, unreachable route - ns-B loopback IP                [ OK ]
+# TEST: ping out, device bind, unreachable route - ns-B loopback IP             [ OK ]
+# TEST: ping in, unreachable route - ns-A loopback IP                           [ OK ]
+#
+# ###########################################################################
+# IPv4/TCP
+# ###########################################################################
+#
+#
+# #################################################################
+# No VRF
+#
+#
+# #################################################################
+# tcp_l3mdev_accept disabled
+#
+# SYSCTL: net.ipv4.tcp_l3mdev_accept=0
+#
+# TEST: Global server - ns-A IP                                                 [ OK ]
+# TEST: Global server - ns-A loopback IP                                        [ OK ]
+# TEST: Device server - ns-A IP                                                 [ OK ]
+# TEST: No server - ns-A IP                                                     [ OK ]
+# TEST: No server - ns-A loopback IP                                            [ OK ]
+# TEST: Client - ns-B IP                                                        [ OK ]
+# TEST: Client, device bind - ns-B IP                                           [ OK ]
+# TEST: No server, unbound client - ns-B IP                                     [ OK ]
+# TEST: No server, device client - ns-B IP                                      [ OK ]
+# TEST: Client - ns-B loopback IP                                               [ OK ]
+# TEST: Client, device bind - ns-B loopback IP                                  [ OK ]
+# TEST: No server, unbound client - ns-B loopback IP                            [ OK ]
+# TEST: No server, device client - ns-B loopback IP                             [ OK ]
+# TEST: Global server, local connection - ns-A IP                               [ OK ]
+# TEST: Global server, local connection - ns-A loopback IP                      [ OK ]
+# TEST: Global server, local connection - loopback                              [ OK ]
+# TEST: Device server, unbound client, local connection - ns-A IP               [ OK ]
+# TEST: Device server, unbound client, local connection - ns-A loopback IP      [ OK ]
+# TEST: Device server, unbound client, local connection - loopback              [ OK ]
+# TEST: Global server, device client, local connection - ns-A IP                [ OK ]
+# TEST: Global server, device client, local connection - ns-A loopback IP       [ OK ]
+# TEST: Global server, device client, local connection - loopback               [ OK ]
+# TEST: Device server, device client, local connection - ns-A IP                [ OK ]
+# TEST: No server, device client, local conn - ns-A IP                          [ OK ]
+# TEST: MD5: Single address config                                              [ OK ]
+# TEST: MD5: Server no config, client uses password                             [ OK ]
+# TEST: MD5: Client uses wrong password                                         [ OK ]
+# TEST: MD5: Client address does not match address configured with password     [ OK ]
+# TEST: MD5: Prefix config                                                      [ OK ]
+# TEST: MD5: Prefix config, client uses wrong password                          [ OK ]
+# TEST: MD5: Prefix config, client address not in configured prefix             [ OK ]
+#
+# #################################################################
+# tcp_l3mdev_accept enabled
+#
+# SYSCTL: net.ipv4.tcp_l3mdev_accept=1
+#
+# TEST: Global server - ns-A IP                                                 [ OK ]
+# TEST: Global server - ns-A loopback IP                                        [ OK ]
+# TEST: Device server - ns-A IP                                                 [ OK ]
+# TEST: No server - ns-A IP                                                     [ OK ]
+# TEST: No server - ns-A loopback IP                                            [ OK ]
+# TEST: Client - ns-B IP                                                        [ OK ]
+# TEST: Client, device bind - ns-B IP                                           [ OK ]
+# TEST: No server, unbound client - ns-B IP                                     [ OK ]
+# TEST: No server, device client - ns-B IP                                      [ OK ]
+# TEST: Client - ns-B loopback IP                                               [ OK ]
+# TEST: Client, device bind - ns-B loopback IP                                  [ OK ]
+# TEST: No server, unbound client - ns-B loopback IP                            [ OK ]
+# TEST: No server, device client - ns-B loopback IP                             [ OK ]
+#
+not ok 30 selftests: net: fcnal-test.sh # TIMEOUT 300 seconds
