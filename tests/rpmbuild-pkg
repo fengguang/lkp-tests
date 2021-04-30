@@ -5,6 +5,7 @@
 # - repo_addr
 # - custom_repo_name
 # - custom_repo_addr
+# - whether_email
 # Git repo jobs only use the first two parameters, SRPMs jobs use all
 # user can add custom_repo_name and custom_repo_addr to setup
 # local repo, value can be an array
@@ -12,12 +13,20 @@
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/upload.sh
 . $LKP_SRC/lib/rpm.sh
+. $LKP_SRC/lib/email.sh
 
 : "${compat_os:=budding-openeuler}"
 
 [ -n "$upstream_repo" ] || die "upstream_repo is empty"
 
 dest_dir="/rpm/upload/${os}-${os_version}/${compat_os}"
+
+die()
+{
+	rpmbuild_email "rpmbuild_failed"
+	echo "$@" 1>&2
+	exit 99
+}
 
 from_git()
 {
@@ -27,6 +36,20 @@ from_git()
 
 	init_workspace
 	download_upstream_repo
+}
+
+git_pretty_format()
+{
+	curl -sS -H 'Content-Type: Application/json' -XPOST "$LKP_SERVER"':8100/git_command' -d '{"git_repo": "'${upstream_dir}/${upstream_repo}.git'", "git_command": ["git-log","-n1","--pretty=format:'$1'", "'${upstream_commit}'"]}'
+}
+
+rpmbuild_email()
+{
+	[ -n "$whether_email" ] && {
+		author_email=$(git_pretty_format "%ae")
+		author_name=$(git_pretty_format "%an")
+		send_email $1
+	}
 }
 
 from_srpm()
@@ -143,3 +166,4 @@ add_repo
 build_rpm
 upload_rpm_pkg
 update_repo_mq
+rpmbuild_email "rpmbuild_success"
