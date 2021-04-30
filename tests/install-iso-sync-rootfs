@@ -53,6 +53,25 @@ prepare_exclude_file()
 	done
 }
 
+delete_firstboot_cgz()
+{
+	local cgz_url="http://${INITRD_HTTP_HOST}:${INITRD_HTTP_PORT}/initrd/custom_bootstrap/reboot-after-systemd-logind.cgz"
+
+	local tmp_dir="/tmp/$(basename $cgz_url)_${ROOTFS_SUFFIX}"
+	rm -rf $tmp_dir && mkdir -p $tmp_dir && cd $tmp_dir
+
+	wget $cgz_url || die "wget cgz failed: $cgz_url"
+
+	gzip -dc reboot-after-systemd-logind.cgz | cpio -id
+
+	[ -d "custom_bootstrap" ] || die "cannot find custom_bootstrap dir after unzip"
+
+	for i in $(find custom_bootstrap/* -not -type d)
+	do
+		rm -f ${lv_rootfs_mount_point}/${i#custom_bootstrap/}
+	done
+}
+
 sync_rootfs_to_nfs_server()
 {
 	# mount nfs rootfs
@@ -69,6 +88,9 @@ sync_rootfs_to_nfs_server()
 
 	mkdir -p ${lv_rootfs_mount_point}
 	mount /dev/mapper/${VG_NAME}-${iso_os}_${iso_arch}_${iso_version}_${ROOTFS_SUFFIX} ${lv_rootfs_mount_point} || die "mount lv rootfs failed"
+
+	# delete cgz for firstboot reboot
+	delete_firstboot_cgz
 
 	# sync rootfs
 	local exclude_file=/tmp/exclude_file_${ROOTFS_SUFFIX}
