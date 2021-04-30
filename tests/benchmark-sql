@@ -1,0 +1,15 @@
+#!/bin/sh
+# benchmark_pkg_name
+
+: "${benchmark_pkg_name:=benchmarksql5.0-for-mysql}"
+
+run_benchmark_mysql()
+{
+        cd "$HOME/$benchmark_pkg_name/run/" && {
+                ./runDatabaseBuild.sh props.conf
+                ./runBenchmark.sh  props.conf
+                ./runDatabaseDestroy.sh props.conf
+       }
+}
+
+run_benchmark_mysql
