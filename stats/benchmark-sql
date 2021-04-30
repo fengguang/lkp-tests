@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+
+# 11:28:16,052 [Thread-2] INFO   jTPCC : Term-00, Measured tpmC (NewOrders) = 450.31
+# 11:28:16,052 [Thread-2] INFO   jTPCC : Term-00, Measured tpmTOTAL = 999.71
+# 11:28:16,052 [Thread-2] INFO   jTPCC : Term-00, Session Start     = 2021-04-29 10:58:15
+# 11:28:16,052 [Thread-2] INFO   jTPCC : Term-00, Session End       = 2021-04-29 11:28:16
+# 11:28:16,052 [Thread-2] INFO   jTPCC : Term-00, Transaction Count = 30003
+
+while (line = STDIN.gets)
+  case line.chomp!
+  when /Measured tpmC \(NewOrders\) = (\d*\.\d*)/
+    puts "Measured_tpmC\(NewOrders\): #{$1}"
+  when /Measured tpmTOTAL = (\d*\.\d*)/
+    puts "Measured_tpmTOTAL: #{$1}"
+  end
+end
