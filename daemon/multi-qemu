@@ -13,7 +13,8 @@ multi_qemu()
 	export CCI_SRC=${CCI_SRC:-"/c/compass-ci"}
 	local hostname=$tbox_group.$HOSTNAME
 
-	cd "$CACHE_DIR"
+	mkdir -p /srv/$suite && cd /srv/$suite
+	[ -d "mount_point" ] && cd "$mount_point"
 	$CCI_SRC/providers/multi-qemu -n "$hostname" -c "$nr_vm" -q "$queues"
 }
 
