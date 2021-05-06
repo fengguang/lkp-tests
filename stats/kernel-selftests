@@ -614,6 +614,21 @@ class MqueueStater < Stater
   end
 end
 
+class PrctlStater < Stater
+  def stat(line, stats)
+    case line
+    when /^(ok|not ok) (\d+) selftests: (\S*): (\S*)/
+      # selftests: prctl: disable-tsc-ctxt-sw-stress-test
+      # [No further output means we're allright]
+      # ok 1 selftests: prctl: disable-tsc-ctxt-sw-stress-test
+      # selftests: prctl: disable-tsc-ctxt-sw-stress-test
+      # [No further output means we're allright]
+      # ok 2 selftests: prctl: disable-tsc-ctxt-sw-stress-test
+      stats.add "#{@test}.#{$2}.#{$4}", $1
+    end
+  end
+end
+
 while (line = STDIN.gets)
   line = line.resolve_invalid_bytes
 
@@ -700,6 +715,9 @@ while (line = STDIN.gets)
   when /^# selftests: (mqueue): (.*)/
     # selftests: mqueue: mq_perf_tests
     stater = MqueueStater.new($1, $2)
+  when /^# selftests: (prctl): (.*)/
+    # selftests: prctl: disable-tsc-ctxt-sw-stress-test
+    stater = PrctlStater.new($1, $2)
   when /^LKP SKIP (.*)/
     # LKP SKIP net.l2tp.sh
     stats.add "#{$1}", 'skip'
