@@ -2,6 +2,8 @@
 
 add_repo()
 {
+	[[ -n "$custom_repo_name" && -n "$custom_repo_addr" ]] || return 0
+
 	custom_repo_name=($custom_repo_name)
 	custom_repo_addr=($custom_repo_addr)
 
