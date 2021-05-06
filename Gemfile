@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'git'
+gem 'git', '~> 1.7.0'
 gem 'rake'
 gem 'pry'
 gem 'pry-doc'
