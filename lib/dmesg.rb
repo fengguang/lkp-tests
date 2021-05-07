@@ -206,7 +206,6 @@ end
 
 def grep_printk_errors(kmsg_file, kmsg)
   return '' if ENV.fetch('RESULT_ROOT', '').index '/trinity/'
-  return '' unless File.exist?("#{KTEST_USER_GENERATED_DIR}/printk-error-messages")
 
   grep = if kmsg_file =~ /\.xz$/
            'xzgrep'
@@ -223,6 +222,7 @@ def grep_printk_errors(kmsg_file, kmsg)
       grep -Eo "[^ ]* runtime error:.*" #{kmsg_file} | sed 's/^/sanitizer./g';
       grep -Eo "#[0-5] 0x[0-9a-z]{12} in .*" #{kmsg_file} | sed 's/#0/|sanitizer.#0/g' | sed "s/#[0-5] 0x[0-9a-z]\\{12\\} in //g" | awk '{print $1}' | tr '\n' '/' | tr '|' '\n'`
   else
+    return '' unless File.exist?("#{KTEST_USER_GENERATED_DIR}/printk-error-messages")
     # the dmesg file is from serial console
     oops = `#{grep} -a -F -f #{KTEST_USER_GENERATED_DIR}/printk-error-messages #{kmsg_file} |
       grep -a -v -E -f #{LKP_SRC_ETC}/oops-pattern |
