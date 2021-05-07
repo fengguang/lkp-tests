@@ -4,6 +4,7 @@
 # sshr_port
 # sshr_port_len
 # sshr_port_base
+# tmout
 
 SCRIPT_DIR=$(dirname $(realpath $0))
 PROJECT_DIR=$(dirname $SCRIPT_DIR)
@@ -16,6 +17,12 @@ sshr_ip=$LKP_SERVER
 [ -n "$sshr_port" ]      || sshr_port=5051
 [ -n "$sshr_port_len" ]  || sshr_port_len=2000
 [ -n "$sshr_port_base" ] || sshr_port_base=21000
+[ -n "$tmout" ]          || tmout=3600
+
+set_login_tmout()
+{
+	echo "TMOUT=$tmout" >> /etc/profile
+}
 
 generate_key_file()
 {
@@ -63,6 +70,7 @@ run_email()
 	fi
 }
 
+set_login_tmout
 run_ssh
 set_port
 report_ssh_port $port
