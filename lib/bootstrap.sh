@@ -440,7 +440,7 @@ install_rpms()
 	[ -d /opt/rpms ] || return
 	echo "install $(ls /opt/rpms/*.rpm)"
 	rpm -ivh --force --ignoresize /opt/rpms/*.rpm
-	rm -f /opt/rpms/*.rpm
+	rm -rf /opt/rpms
 }
 
 try_get_and_set_distro()
