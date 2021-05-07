@@ -10,10 +10,10 @@ gem 'term-ansicolor'
 
 group :test do
   gem 'rspec'
-  gem 'rubocop'
+  gem 'rubocop', '~> 1.12.0'
   gem 'ci_reporter_rspec'
   gem 'simplecov'
   gem 'simplecov-rcov'
 end
 
-gem 'activesupport'
+gem 'activesupport', '~> 5.2.0'
