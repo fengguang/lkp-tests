@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
-LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
-
+require 'spec_helper'
 require 'fileutils'
 require 'tmpdir'
 
