@@ -6,7 +6,6 @@ require "#{LKP_SRC}/lib/common"
 require "#{LKP_SRC}/lib/log"
 require "#{LKP_SRC}/lib/erb"
 require "#{LKP_SRC}/lib/assert"
-require "#{LKP_SRC}/lib/log"
 require 'fileutils'
 require 'yaml'
 require 'json'
