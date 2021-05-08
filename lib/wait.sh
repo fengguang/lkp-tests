@@ -91,6 +91,8 @@ kill_tests()
 
 check_oom()
 {
+	[ -f /.dockerenv ] && return
+
 	dmesg | grep -q -F \
 			-e 'Out of memory' \
 			-e 'invoked oom-killer: gfp_mask=0x' \
