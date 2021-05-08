@@ -91,7 +91,7 @@ Dear $author_name and $commiter:
 
 	commit_subject: $commit_subject
 
-	Your self-test groud_id=selftest job result is:
+	Your self-test job $id result is:
 
 	$report_content
 
