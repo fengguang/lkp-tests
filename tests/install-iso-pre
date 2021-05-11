@@ -40,7 +40,7 @@ check_params()
 	done
 }
 
-create_vg()
+prepare_vg()
 {
 	log_info "start create vg:$VG_NAME"
 
@@ -52,7 +52,10 @@ create_vg()
 		pvdisplay ${disk} > /dev/null || pvcreate -y ${disk} || die "create pv failed: $disk"
 
 		if vgdisplay ${VG_NAME} > /dev/null; then
-			vgextend -y ${VG_NAME} ${disk} || die "vgextend failed: $disk"
+			# if pv not in vg: add disk to vg
+			pvdisplay $disk | grep 'VG Name' | grep -w $VG_NAME || {
+				vgextend -y ${VG_NAME} ${disk} || die "vgextend failed: $disk"
+			}
 		else
 			vgcreate -y ${VG_NAME} ${disk} || die "vgcreate failed: $disk"
 		fi
@@ -86,7 +89,7 @@ prepare_lv()
 	}
 
 	# lv not existed
-	vgdisplay ${VG_NAME} > /dev/null || create_vg
+	prepare_vg
 	create_lv
 }
 
