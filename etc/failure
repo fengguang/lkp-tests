@@ -12,3 +12,5 @@ rcutoture\..+rcu_hotplug
 stderr.*
 xfstests\..+(fail|crash|crashed|timeout|warn|dmesg-warn|dmesg-fail|inconsistent_fs)$
 build-pkg.*:(error|warning):.*
+openeuler_docker.centos
+openeuler_docker.openeuler
