@@ -1,0 +1,8 @@
+#!/bin/sh
+# cluster_ssh_key
+# cluster_ssh_pub_key
+
+umask 0077
+echo "$cluster_ssh_key" > /root/.ssh/id_rsa
+echo "$cluster_ssh_pub_key" > /root/.ssh/id_rsa.pub
+echo "$cluster_ssh_pub_key" >> /root/.ssh/authorized_keys

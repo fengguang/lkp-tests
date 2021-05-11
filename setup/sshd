@@ -34,7 +34,7 @@ run_ssh()
 	[ -n "$my_ssh_pubkey" ] || return
 	umask 0077
 	mkdir -p /root/.ssh
-	echo "$my_ssh_pubkey" > /root/.ssh/authorized_keys
+	echo "$my_ssh_pubkey" >> /root/.ssh/authorized_keys
 	if is_docker; then
 		generate_key_file
 		sshd_path=$(cmd_path sshd)

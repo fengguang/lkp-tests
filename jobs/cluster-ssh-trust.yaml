@@ -1,0 +1,7 @@
+cluster-ssh-trust:
+        cluster_ssh_keygen:
+                <%= system("echo -e \'y\n\' | ssh-keygen -t rsa -P \'\' -f #{ENV['HOME']}/.ssh/cluster_id_rsa > /dev/null") %>
+        cluster_ssh_key:
+                <%= File.read("#{ENV['HOME']}/.ssh/cluster_id_rsa").chomp.dump %>
+        cluster_ssh_pub_key:
+                <%= File.read("#{ENV['HOME']}/.ssh/cluster_id_rsa.pub").chomp %>
