@@ -1,0 +1,469 @@
+2021-05-10 05:48:44 /kselftests/run_kselftest.sh -t net:fcnal-test.sh
+TAP version 13
+1..1
+# selftests: net: fcnal-test.sh
+#
+# ###########################################################################
+# IPv4 ping
+# ###########################################################################
+#
+#
+# #################################################################
+# No VRF
+#
+# SYSCTL: net.ipv4.raw_l3mdev_accept=0
+#
+# TEST: ping out - ns-B IP                                                      [ OK ]
+# TEST: ping out, device bind - ns-B IP                                         [ OK ]
+# TEST: ping out, address bind - ns-B IP                                        [ OK ]
+# TEST: ping out - ns-B loopback IP                                             [ OK ]
+# TEST: ping out, device bind - ns-B loopback IP                                [ OK ]
+# TEST: ping out, address bind - ns-B loopback IP                               [ OK ]
+# TEST: ping in - ns-A IP                                                       [ OK ]
+# TEST: ping in - ns-A loopback IP                                              [ OK ]
+# TEST: ping local - ns-A IP                                                    [ OK ]
+# TEST: ping local - ns-A loopback IP                                           [ OK ]
+# TEST: ping local - loopback                                                   [ OK ]
+# TEST: ping local, device bind - ns-A IP                                       [ OK ]
+# TEST: ping local, device bind - ns-A loopback IP                              [ OK ]
+# TEST: ping local, device bind - loopback                                      [ OK ]
+# TEST: ping out, blocked by rule - ns-B loopback IP                            [ OK ]
+# TEST: ping in, blocked by rule - ns-A loopback IP                             [ OK ]
+# TEST: ping out, blocked by route - ns-B loopback IP                           [ OK ]
+# TEST: ping in, blocked by route - ns-A loopback IP                            [ OK ]
+# TEST: ping out, unreachable default route - ns-B loopback IP                  [ OK ]
+# SYSCTL: net.ipv4.raw_l3mdev_accept=1
+#
+# TEST: ping out - ns-B IP                                                      [ OK ]
+# TEST: ping out, device bind - ns-B IP                                         [ OK ]
+# TEST: ping out, address bind - ns-B IP                                        [ OK ]
+# TEST: ping out - ns-B loopback IP                                             [ OK ]
+# TEST: ping out, device bind - ns-B loopback IP                                [ OK ]
+# TEST: ping out, address bind - ns-B loopback IP                               [ OK ]
+# TEST: ping in - ns-A IP                                                       [ OK ]
+# TEST: ping in - ns-A loopback IP                                              [ OK ]
+# TEST: ping local - ns-A IP                                                    [ OK ]
+# TEST: ping local - ns-A loopback IP                                           [ OK ]
+# TEST: ping local - loopback                                                   [ OK ]
+# TEST: ping local, device bind - ns-A IP                                       [ OK ]
+# TEST: ping local, device bind - ns-A loopback IP                              [ OK ]
+# TEST: ping local, device bind - loopback                                      [ OK ]
+# TEST: ping out, blocked by rule - ns-B loopback IP                            [ OK ]
+# TEST: ping in, blocked by rule - ns-A loopback IP                             [ OK ]
+# TEST: ping out, blocked by route - ns-B loopback IP                           [ OK ]
+# TEST: ping in, blocked by route - ns-A loopback IP                            [ OK ]
+# TEST: ping out, unreachable default route - ns-B loopback IP                  [ OK ]
+#
+# #################################################################
+# With VRF
+#
+# SYSCTL: net.ipv4.raw_l3mdev_accept=1
+#
+# TEST: ping out, VRF bind - ns-B IP                                            [ OK ]
+# TEST: ping out, device bind - ns-B IP                                         [ OK ]
+# TEST: ping out, vrf device + dev address bind - ns-B IP                       [ OK ]
+# TEST: ping out, vrf device + vrf address bind - ns-B IP                       [ OK ]
+# TEST: ping out, VRF bind - ns-B loopback IP                                   [ OK ]
+# TEST: ping out, device bind - ns-B loopback IP                                [ OK ]
+# TEST: ping out, vrf device + dev address bind - ns-B loopback IP              [ OK ]
+# TEST: ping out, vrf device + vrf address bind - ns-B loopback IP              [ OK ]
+# TEST: ping in - ns-A IP                                                       [ OK ]
+# TEST: ping in - VRF IP                                                        [ OK ]
+# TEST: ping local, VRF bind - ns-A IP                                          [ OK ]
+# TEST: ping local, VRF bind - VRF IP                                           [ OK ]
+# TEST: ping local, VRF bind - loopback                                         [ OK ]
+# TEST: ping local, device bind - ns-A IP                                       [ OK ]
+# TEST: ping local, device bind - VRF IP                                        [ OK ]
+# TEST: ping local, device bind - loopback                                      [ OK ]
+# TEST: ping out, vrf bind, blocked by rule - ns-B loopback IP                  [ OK ]
+# TEST: ping out, device bind, blocked by rule - ns-B loopback IP               [ OK ]
+# TEST: ping in, blocked by rule - ns-A loopback IP                             [ OK ]
+# TEST: ping out, vrf bind, unreachable route - ns-B loopback IP                [ OK ]
+# TEST: ping out, device bind, unreachable route - ns-B loopback IP             [ OK ]
+# TEST: ping in, unreachable route - ns-A loopback IP                           [ OK ]
+#
+# ###########################################################################
+# IPv4/TCP
+# ###########################################################################
+#
+#
+# #################################################################
+# No VRF
+#
+#
+# #################################################################
+# tcp_l3mdev_accept disabled
+#
+# SYSCTL: net.ipv4.tcp_l3mdev_accept=0
+#
+# TEST: Global server - ns-A IP                                                 [ OK ]
+# TEST: Global server - ns-A loopback IP                                        [ OK ]
+# TEST: Device server - ns-A IP                                                 [ OK ]
+# TEST: No server - ns-A IP                                                     [ OK ]
+# TEST: No server - ns-A loopback IP                                            [ OK ]
+# TEST: Client - ns-B IP                                                        [ OK ]
+# TEST: Client, device bind - ns-B IP                                           [ OK ]
+# TEST: No server, unbound client - ns-B IP                                     [ OK ]
+# TEST: No server, device client - ns-B IP                                      [ OK ]
+# TEST: Client - ns-B loopback IP                                               [ OK ]
+# TEST: Client, device bind - ns-B loopback IP                                  [ OK ]
+# TEST: No server, unbound client - ns-B loopback IP                            [ OK ]
+# TEST: No server, device client - ns-B loopback IP                             [ OK ]
+# TEST: Global server, local connection - ns-A IP                               [ OK ]
+# TEST: Global server, local connection - ns-A loopback IP                      [ OK ]
+# TEST: Global server, local connection - loopback                              [ OK ]
+# TEST: Device server, unbound client, local connection - ns-A IP               [ OK ]
+# TEST: Device server, unbound client, local connection - ns-A loopback IP      [ OK ]
+# TEST: Device server, unbound client, local connection - loopback              [ OK ]
+# TEST: Global server, device client, local connection - ns-A IP                [ OK ]
+# TEST: Global server, device client, local connection - ns-A loopback IP       [ OK ]
+# TEST: Global server, device client, local connection - loopback               [ OK ]
+# TEST: Device server, device client, local connection - ns-A IP                [ OK ]
+# TEST: No server, device client, local conn - ns-A IP                          [ OK ]
+# TEST: MD5: Single address config                                              [ OK ]
+# TEST: MD5: Server no config, client uses password                             [ OK ]
+# TEST: MD5: Client uses wrong password                                         [ OK ]
+# TEST: MD5: Client address does not match address configured with password     [ OK ]
+# TEST: MD5: Prefix config                                                      [ OK ]
+# TEST: MD5: Prefix config, client uses wrong password                          [ OK ]
+# TEST: MD5: Prefix config, client address not in configured prefix             [ OK ]
+#
+# #################################################################
+# tcp_l3mdev_accept enabled
+#
+# SYSCTL: net.ipv4.tcp_l3mdev_accept=1
+#
+# TEST: Global server - ns-A IP                                                 [ OK ]
+# TEST: Global server - ns-A loopback IP                                        [ OK ]
+# TEST: Device server - ns-A IP                                                 [ OK ]
+# TEST: No server - ns-A IP                                                     [ OK ]
+# TEST: No server - ns-A loopback IP                                            [ OK ]
+# TEST: Client - ns-B IP                                                        [ OK ]
+# TEST: Client, device bind - ns-B IP                                           [ OK ]
+# TEST: No server, unbound client - ns-B IP                                     [ OK ]
+# TEST: No server, device client - ns-B IP                                      [ OK ]
+# TEST: Client - ns-B loopback IP                                               [ OK ]
+# TEST: Client, device bind - ns-B loopback IP                                  [ OK ]
+# TEST: No server, unbound client - ns-B loopback IP                            [ OK ]
+# TEST: No server, device client - ns-B loopback IP                             [ OK ]
+# TEST: Global server, local connection - ns-A IP                               [ OK ]
+# TEST: Global server, local connection - ns-A loopback IP                      [ OK ]
+# TEST: Global server, local connection - loopback                              [ OK ]
+# TEST: Device server, unbound client, local connection - ns-A IP               [ OK ]
+# TEST: Device server, unbound client, local connection - ns-A loopback IP      [ OK ]
+# TEST: Device server, unbound client, local connection - loopback              [ OK ]
+# TEST: Global server, device client, local connection - ns-A IP                [ OK ]
+# TEST: Global server, device client, local connection - ns-A loopback IP       [ OK ]
+# TEST: Global server, device client, local connection - loopback               [ OK ]
+# TEST: Device server, device client, local connection - ns-A IP                [ OK ]
+# TEST: No server, device client, local conn - ns-A IP                          [ OK ]
+# TEST: MD5: Single address config                                              [ OK ]
+# TEST: MD5: Server no config, client uses password                             [ OK ]
+# TEST: MD5: Client uses wrong password                                         [ OK ]
+# TEST: MD5: Client address does not match address configured with password     [ OK ]
+# TEST: MD5: Prefix config                                                      [ OK ]
+# TEST: MD5: Prefix config, client uses wrong password                          [ OK ]
+# TEST: MD5: Prefix config, client address not in configured prefix             [ OK ]
+#
+# #################################################################
+# With VRF
+#
+#
+# #################################################################
+# Global server disabled
+#
+# SYSCTL: net.ipv4.tcp_l3mdev_accept=0
+#
+# TEST: Global server - ns-A IP                                                 [ OK ]
+# TEST: VRF server - ns-A IP                                                    [ OK ]
+# TEST: Device server - ns-A IP                                                 [ OK ]
+# TEST: No server - ns-A IP                                                     [ OK ]
+# TEST: Global server - VRF IP                                                  [ OK ]
+# TEST: VRF server - VRF IP                                                     [ OK ]
+# TEST: Device server - VRF IP                                                  [ OK ]
+# TEST: No server - VRF IP                                                      [ OK ]
+# TEST: Global server, local connection - ns-A IP                               [ OK ]
+# TEST: MD5: VRF: Single address config                                         [ OK ]
+# TEST: MD5: VRF: Server no config, client uses password                        [ OK ]
+# TEST: MD5: VRF: Client uses wrong password                                    [ OK ]
+# TEST: MD5: VRF: Client address does not match address configured with password  [ OK ]
+# TEST: MD5: VRF: Prefix config                                                 [ OK ]
+# TEST: MD5: VRF: Prefix config, client uses wrong password                     [ OK ]
+# TEST: MD5: VRF: Prefix config, client address not in configured prefix        [ OK ]
+# TEST: MD5: VRF: Single address config in default VRF and VRF, conn in VRF     [ OK ]
+# TEST: MD5: VRF: Single address config in default VRF and VRF, conn in default VRF  [ OK ]
+# TEST: MD5: VRF: Single address config in default VRF and VRF, conn in default VRF with VRF pw  [ OK ]
+# TEST: MD5: VRF: Single address config in default VRF and VRF, conn in VRF with default VRF pw  [ OK ]
+# TEST: MD5: VRF: Prefix config in default VRF and VRF, conn in VRF             [ OK ]
+# TEST: MD5: VRF: Prefix config in default VRF and VRF, conn in default VRF     [ OK ]
+# TEST: MD5: VRF: Prefix config in default VRF and VRF, conn in default VRF with VRF pw  [ OK ]
+# TEST: MD5: VRF: Prefix config in default VRF and VRF, conn in VRF with default VRF pw  [ OK ]
+# TEST: MD5: VRF: Device must be a VRF - single address                         [ OK ]
+# TEST: MD5: VRF: Device must be a VRF - prefix                                 [ OK ]
+#
+# #################################################################
+# VRF Global server enabled
+#
+# SYSCTL: net.ipv4.tcp_l3mdev_accept=1
+#
+# TEST: Global server - ns-A IP                                                 [ OK ]
+# TEST: VRF server - ns-A IP                                                    [ OK ]
+# TEST: No server - ns-A IP                                                     [ OK ]
+# TEST: Global server - VRF IP                                                  [ OK ]
+# TEST: VRF server - VRF IP                                                     [ OK ]
+# TEST: No server - VRF IP                                                      [ OK ]
+# TEST: Device server - ns-A IP                                                 [ OK ]
+# TEST: Global server, local connection - ns-A IP                               [ OK ]
+# TEST: Global server, local connection - VRF IP                                [ OK ]
+# TEST: Client, VRF bind - ns-B IP                                              [ OK ]
+# TEST: Client, device bind - ns-B IP                                           [ OK ]
+# TEST: No server, VRF client - ns-B IP                                         [ OK ]
+# TEST: No server, device client - ns-B IP                                      [ OK ]
+# TEST: Client, VRF bind - ns-B loopback IP                                     [ OK ]
+# TEST: Client, device bind - ns-B loopback IP                                  [ OK ]
+# TEST: No server, VRF client - ns-B loopback IP                                [ OK ]
+# TEST: No server, device client - ns-B loopback IP                             [ OK ]
+# TEST: VRF server, VRF client, local connection - ns-A IP                      [ OK ]
+# TEST: VRF server, VRF client, local connection - VRF IP                       [ OK ]
+# TEST: VRF server, VRF client, local connection - loopback                     [ OK ]
+# TEST: VRF server, device client, local connection - ns-A IP                   [ OK ]
+# TEST: VRF server, unbound client, local connection - ns-A IP                  [ OK ]
+# TEST: Device server, VRF client, local connection - ns-A IP                   [ OK ]
+# TEST: Device server, device client, local connection - ns-A IP                [ OK ]
+#
+# ###########################################################################
+# IPv4/UDP
+# ###########################################################################
+#
+#
+# #################################################################
+# No VRF
+#
+#
+# #################################################################
+# udp_l3mdev_accept disabled
+#
+# SYSCTL: net.ipv4.udp_l3mdev_accept=0
+#
+# TEST: Global server - ns-A IP                                                 [ OK ]
+# TEST: No server - ns-A IP                                                     [ OK ]
+# TEST: Global server - ns-A loopback IP                                        [ OK ]
+# TEST: No server - ns-A loopback IP                                            [ OK ]
+# TEST: Device server - ns-A IP                                                 [ OK ]
+# TEST: Client - ns-B IP                                                        [ OK ]
+# TEST: Client, device bind - ns-B IP                                           [ OK ]
+# TEST: Client, device send via cmsg - ns-B IP                                  [ OK ]
+# TEST: Client, device bind via IP_UNICAST_IF - ns-B IP                         [ OK ]
+# TEST: No server, unbound client - ns-B IP                                     [ OK ]
+# TEST: No server, device client - ns-B IP                                      [ OK ]
+# TEST: Client - ns-B loopback IP                                               [ OK ]
+# TEST: Client, device bind - ns-B loopback IP                                  [ OK ]
+# TEST: Client, device send via cmsg - ns-B loopback IP                         [ OK ]
+# TEST: Client, device bind via IP_UNICAST_IF - ns-B loopback IP                [ OK ]
+# TEST: No server, unbound client - ns-B loopback IP                            [ OK ]
+# TEST: No server, device client - ns-B loopback IP                             [ OK ]
+# TEST: Global server, local connection - ns-A IP                               [ OK ]
+# TEST: Global server, local connection - ns-A loopback IP                      [ OK ]
+# TEST: Global server, local connection - loopback                              [ OK ]
+# TEST: Device server, unbound client, local connection - ns-A IP               [ OK ]
+# TEST: Device server, unbound client, local connection - ns-A loopback IP      [ OK ]
+# TEST: Device server, unbound client, local connection - loopback              [ OK ]
+# TEST: Global server, device client, local connection - ns-A IP                [ OK ]
+# TEST: Global server, device send via cmsg, local connection - ns-A IP         [ OK ]
+# TEST: Global server, device client via IP_UNICAST_IF, local connection - ns-A IP  [ OK ]
+# TEST: Global server, device client, local connection - ns-A loopback IP       [ OK ]
+# TEST: Global server, device send via cmsg, local connection - ns-A loopback IP  [ OK ]
+# TEST: Global server, device client via IP_UNICAST_IF, local connection - ns-A loopback IP  [ OK ]
+# TEST: Global server, device client, local connection - loopback               [ OK ]
+# TEST: Global server, device send via cmsg, local connection - loopback        [ OK ]
+# TEST: Global server, device client via IP_UNICAST_IF, local connection - loopback  [ OK ]
+# TEST: Device server, device client, local conn - ns-A IP                      [ OK ]
+# TEST: No server, device client, local conn - ns-A IP                          [ OK ]
+#
+# #################################################################
+# udp_l3mdev_accept enabled
+#
+# SYSCTL: net.ipv4.udp_l3mdev_accept=1
+#
+# TEST: Global server - ns-A IP                                                 [ OK ]
+# TEST: No server - ns-A IP                                                     [ OK ]
+# TEST: Global server - ns-A loopback IP                                        [ OK ]
+# TEST: No server - ns-A loopback IP                                            [ OK ]
+# TEST: Device server - ns-A IP                                                 [ OK ]
+# TEST: Client - ns-B IP                                                        [ OK ]
+# TEST: Client, device bind - ns-B IP                                           [ OK ]
+# TEST: Client, device send via cmsg - ns-B IP                                  [ OK ]
+# TEST: Client, device bind via IP_UNICAST_IF - ns-B IP                         [ OK ]
+# TEST: No server, unbound client - ns-B IP                                     [ OK ]
+# TEST: No server, device client - ns-B IP                                      [ OK ]
+# TEST: Client - ns-B loopback IP                                               [ OK ]
+# TEST: Client, device bind - ns-B loopback IP                                  [ OK ]
+# TEST: Client, device send via cmsg - ns-B loopback IP                         [ OK ]
+# TEST: Client, device bind via IP_UNICAST_IF - ns-B loopback IP                [ OK ]
+# TEST: No server, unbound client - ns-B loopback IP                            [ OK ]
+# TEST: No server, device client - ns-B loopback IP                             [ OK ]
+# TEST: Global server, local connection - ns-A IP                               [ OK ]
+# TEST: Global server, local connection - ns-A loopback IP                      [ OK ]
+# TEST: Global server, local connection - loopback                              [ OK ]
+# TEST: Device server, unbound client, local connection - ns-A IP               [ OK ]
+# TEST: Device server, unbound client, local connection - ns-A loopback IP      [ OK ]
+# TEST: Device server, unbound client, local connection - loopback              [ OK ]
+# TEST: Global server, device client, local connection - ns-A IP                [ OK ]
+# TEST: Global server, device send via cmsg, local connection - ns-A IP         [ OK ]
+# TEST: Global server, device client via IP_UNICAST_IF, local connection - ns-A IP  [ OK ]
+# TEST: Global server, device client, local connection - ns-A loopback IP       [ OK ]
+# TEST: Global server, device send via cmsg, local connection - ns-A loopback IP  [ OK ]
+# TEST: Global server, device client via IP_UNICAST_IF, local connection - ns-A loopback IP  [ OK ]
+# TEST: Global server, device client, local connection - loopback               [ OK ]
+# TEST: Global server, device send via cmsg, local connection - loopback        [ OK ]
+# TEST: Global server, device client via IP_UNICAST_IF, local connection - loopback  [ OK ]
+# TEST: Device server, device client, local conn - ns-A IP                      [ OK ]
+# TEST: No server, device client, local conn - ns-A IP                          [ OK ]
+#
+# #################################################################
+# With VRF
+#
+#
+# #################################################################
+# Global server disabled
+#
+# SYSCTL: net.ipv4.udp_l3mdev_accept=0
+#
+# TEST: Global server - ns-A IP                                                 [ OK ]
+# TEST: VRF server - ns-A IP                                                    [ OK ]
+# TEST: Enslaved device server - ns-A IP                                        [ OK ]
+# TEST: No server - ns-A IP                                                     [ OK ]
+# TEST: Global server, VRF client, local connection - ns-A IP                   [ OK ]
+# TEST: Global server - VRF IP                                                  [ OK ]
+# TEST: VRF server - VRF IP                                                     [ OK ]
+# TEST: Enslaved device server - VRF IP                                         [ OK ]
+# TEST: No server - VRF IP                                                      [ OK ]
+# TEST: Global server, VRF client, local connection - VRF IP                    [ OK ]
+# TEST: VRF server, VRF client, local conn - ns-A IP                            [ OK ]
+# TEST: VRF server, enslaved device client, local connection - ns-A IP          [ OK ]
+# TEST: Enslaved device server, VRF client, local conn - ns-A IP                [ OK ]
+# TEST: Enslaved device server, device client, local conn - ns-A IP             [ OK ]
+#
+# #################################################################
+# Global server enabled
+#
+# SYSCTL: net.ipv4.udp_l3mdev_accept=1
+#
+# TEST: Global server - ns-A IP                                                 [ OK ]
+# TEST: VRF server - ns-A IP                                                    [ OK ]
+# TEST: Enslaved device server - ns-A IP                                        [ OK ]
+# TEST: No server - ns-A IP                                                     [ OK ]
+# TEST: Global server - VRF IP                                                  [ OK ]
+# TEST: VRF server - VRF IP                                                     [ OK ]
+# TEST: Enslaved device server - VRF IP                                         [ OK ]
+# TEST: No server - VRF IP                                                      [ OK ]
+# TEST: VRF client                                                              [ OK ]
+# TEST: Enslaved device client                                                  [ OK ]
+# TEST: No server, VRF client                                                   [ OK ]
+# TEST: No server, enslaved device client                                       [ OK ]
+# TEST: Global server, VRF client, local conn - ns-A IP                         [ OK ]
+# TEST: VRF server, VRF client, local conn - ns-A IP                            [ OK ]
+# TEST: VRF server, device client, local conn - ns-A IP                         [ OK ]
+# TEST: Enslaved device server, VRF client, local conn - ns-A IP                [ OK ]
+# TEST: Enslaved device server, device client, local conn - ns-A IP             [ OK ]
+# TEST: Global server, VRF client, local conn - VRF IP                          [ OK ]
+# TEST: Global server, VRF client, local conn - loopback                        [ OK ]
+# TEST: VRF server, VRF client, local conn - VRF IP                             [ OK ]
+# TEST: VRF server, VRF client, local conn - loopback                           [ OK ]
+# TEST: No server, VRF client, local conn - ns-A IP                             [ OK ]
+# TEST: No server, VRF client, local conn - VRF IP                              [ OK ]
+# TEST: No server, VRF client, local conn - loopback                            [ OK ]
+#
+# ###########################################################################
+# Run time tests - ipv4
+# ###########################################################################
+#
+# TEST: Device delete with active traffic - ping in - ns-A IP                   [ OK ]
+# TEST: Device delete with active traffic - ping in - VRF IP                    [ OK ]
+# TEST: Device delete with active traffic - ping out - ns-B IP                  [ OK ]
+# TEST: TCP active socket, global server - ns-A IP                              [ OK ]
+# TEST: TCP active socket, global server - VRF IP                               [ OK ]
+# TEST: TCP active socket, VRF server - ns-A IP                                 [ OK ]
+# TEST: TCP active socket, VRF server - VRF IP                                  [ OK ]
+# TEST: TCP active socket, enslaved device server - ns-A IP                     [ OK ]
+# TEST: TCP active socket, VRF client - ns-A IP                                 [ OK ]
+# TEST: TCP active socket, enslaved device client - ns-A IP                     [ OK ]
+# TEST: TCP active socket, global server, VRF client, local - ns-A IP           [ OK ]
+# TEST: TCP active socket, global server, VRF client, local - VRF IP            [ OK ]
+# TEST: TCP active socket, VRF server and client, local - ns-A IP               [ OK ]
+# TEST: TCP active socket, VRF server and client, local - VRF IP                [ OK ]
+# TEST: TCP active socket, global server, enslaved device client, local - ns-A IP  [ OK ]
+# TEST: TCP active socket, VRF server, enslaved device client, local - ns-A IP  [ OK ]
+# TEST: TCP active socket, enslaved device server and client, local - ns-A IP   [ OK ]
+# TEST: TCP passive socket, global server - ns-A IP                             [ OK ]
+# TEST: TCP passive socket, global server - VRF IP                              [ OK ]
+# TEST: TCP passive socket, VRF server - ns-A IP                                [ OK ]
+# TEST: TCP passive socket, VRF server - VRF IP                                 [ OK ]
+# TEST: TCP passive socket, enslaved device server - ns-A IP                    [ OK ]
+# TEST: TCP passive socket, VRF client - ns-A IP                                [ OK ]
+# TEST: TCP passive socket, enslaved device client - ns-A IP                    [ OK ]
+# TEST: TCP passive socket, global server, VRF client, local - ns-A IP          [ OK ]
+# TEST: TCP passive socket, global server, VRF client, local - VRF IP           [ OK ]
+# TEST: TCP passive socket, VRF server and client, local - ns-A IP              [ OK ]
+# TEST: TCP passive socket, VRF server and client, local - VRF IP               [ OK ]
+# TEST: TCP passive socket, global server, enslaved device client, local - ns-A IP  [ OK ]
+# TEST: TCP passive socket, VRF server, enslaved device client, local - ns-A IP  [ OK ]
+# TEST: TCP passive socket, enslaved device server and client, local - ns-A IP  [ OK ]
+#
+# ###########################################################################
+# IPv4 Netfilter
+# ###########################################################################
+#
+#
+# #################################################################
+# TCP reset
+#
+# TEST: Global server, reject with TCP-reset on Rx - ns-A IP                    [ OK ]
+# TEST: Global server, reject with TCP-reset on Rx - VRF IP                     [ OK ]
+#
+# #################################################################
+# ICMP unreachable
+#
+# TEST: Global TCP server, Rx reject icmp-port-unreach - ns-A IP                [ OK ]
+# TEST: Global TCP server, Rx reject icmp-port-unreach - VRF IP                 [ OK ]
+# TEST: Global UDP server, Rx reject icmp-port-unreach - ns-A IP                [ OK ]
+# TEST: Global UDP server, Rx reject icmp-port-unreach - VRF IP                 [ OK ]
+#
+# ###########################################################################
+# Use cases
+# ###########################################################################
+#
+#
+# #################################################################
+# Device enslaved to bridge
+#
+# TEST: Bridge into VRF - IPv4 ping out                                         [ OK ]
+# TEST: Bridge into VRF - IPv6 ping out                                         [ OK ]
+# TEST: Bridge into VRF - IPv4 ping in                                          [ OK ]
+# TEST: Bridge into VRF - IPv6 ping in                                          [ OK ]
+# TEST: Bridge into VRF with br_netfilter - IPv4 ping out                       [ OK ]
+# TEST: Bridge into VRF with br_netfilter - IPv6 ping out                       [ OK ]
+# TEST: Bridge into VRF with br_netfilter - IPv4 ping in                        [ OK ]
+# TEST: Bridge into VRF with br_netfilter - IPv6 ping in                        [ OK ]
+# TEST: Bridge vlan into VRF - IPv4 ping out                                    [ OK ]
+# TEST: Bridge vlan into VRF - IPv6 ping out                                    [ OK ]
+# TEST: Bridge vlan into VRF - IPv4 ping in                                     [ OK ]
+# TEST: Bridge vlan into VRF - IPv6 ping in                                     [ OK ]
+# TEST: Bridge vlan into VRF with br_netfilter - IPv4 ping out                  [ OK ]
+# TEST: Bridge vlan into VRF with br_netfilter - IPv6 ping out                  [ OK ]
+# TEST: Bridge vlan into VRF - IPv4 ping in                                     [ OK ]
+# TEST: Bridge vlan into VRF - IPv6 ping in                                     [ OK ]
+#
+# #################################################################
+# Ping LLA with multiple interfaces
+#
+# TEST: Pre cycle, ping out ns-B - multicast IP                                 [ OK ]
+# TEST: Pre cycle, ping out ns-C - multicast IP                                 [ OK ]
+# TEST: Post cycle ns-A eth1, ping out ns-B - multicast IP                      [ OK ]
+# TEST: Post cycle ns-A eth1, ping out ns-C - multicast IP                      [ OK ]
+# TEST: Post cycle ns-A eth2, ping out ns-B - multicast IP                      [ OK ]
+# TEST: Post cycle ns-A eth2, ping out ns-C - multicast IP                      [ OK ]
+#
+# Tests passed: 714
+# Tests failed:   2
+ok 1 selftests: net: fcnal-test.sh

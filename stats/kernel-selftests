@@ -55,6 +55,48 @@ end
 class NetStater < Stater
   def stat(line, stats)
     case line
+    # begain for net.fcnal-test.sh
+    when /(IPv4 ping|IPv4\/TCP|IPv4\/UDP|IPv4 Netfilter)/,
+         /(IPv6 ping|IPv6\/TCP|IPv6\/UDP|IPv6 Netfilter)/
+      # ##########################################################################
+      # IPv4 ping
+      # ##########################################################################
+      #
+      #
+      # ##########################################################################
+      # No VRF
+      #
+      # SYSCTL: net.ipv4.raw_l3mdev_accept=0
+      #
+      # TEST: ping out - ns-B IP                                        [ OK ]
+      @test_case = $1
+    when /^# (No VRF|With VRF)/
+      @test_subcase1 = $1
+    when /^# SYSCTL: (.*)/
+      @test_subcase2 = $1
+    when /(Run time tests - ipv4)/,
+         /(Run time tests - ipv6)/
+      # ###########################################################################
+      # Run time tests - ipv4
+      # ###########################################################################
+      #
+      # TEST: Device delete with active traffic - ping in - ns-A IP     [ OK ]
+      @test_case = $1
+      @test_subcase1 = @test_subcase2 = nil
+    when /(Use cases)/
+      # ###########################################################################
+      # Use cases
+      # ###########################################################################
+      #
+      #
+      # ###########################################################################
+      # Device enslaved to bridge
+      #
+      # TEST: Bridge into VRF - IPv4 ping out                           [ OK ]
+      @test_case = $1
+    when /(Device enslaved to bridge|Ping LLA with multiple interfaces)/
+      @test_subcase = $1
+    # end for net.fcnal-test.sh
     when /^# TEST SECTION: (.*)/
       # selftests: net: fib-onlink-tests.sh
       # TEST SECTION: IPv4 onlink
@@ -144,7 +186,31 @@ class NetStater < Stater
         stats.add "#{@test_prefix}.#{@test_case}.#{$1}", $2 unless @test_case == 'IPv4 route with IPv6 gateway tests'
       end
     when /^# TEST: (.*) \[ ?(PASS|OK|FAIL|SKIP) ?\]/
-      if @test_case
+      if @test_subcase2
+        # ###########################################################################
+        # IPv4 ping
+        # ###########################################################################
+        #
+        #
+        # #################################################################
+        # No VRF
+        #
+        # SYSCTL: net.ipv4.raw_l3mdev_accept=0
+        #
+        # TEST: ping out - ns-B IP                                      [ OK ]
+        stats.add "#{@test_prefix}.#{@test_case}.#{@test_subcase1}.#{@test_subcase2}.#{$1}", $2 if @test_script == 'fcnal-test.sh'
+      elsif @test_subcase
+        # ###########################################################################
+        # Use cases
+        # ###########################################################################
+        #
+        #
+        # #################################################################
+        # Device enslaved to bridge
+        #
+        # TEST: Bridge into VRF - IPv4 ping out                         [ OK ]
+        stats.add "#{@test_prefix}.#{@test_case}.#{@test_subcase}.#{$1}", $2 if @test_script == 'fcnal-test.sh'
+      elsif @test_case
         # selftests: net: vrf_route_leaking.sh
         #
         # ###########################################################################
