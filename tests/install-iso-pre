@@ -49,15 +49,14 @@ create_vg()
 	for disk in "${rootfs_disk[@]}"
 	do
 		log_info "start handle disk: $disk"
-		pvdisplay ${disk} > /dev/null || pvcreate ${disk} || die "create pv failed: $disk"
+		pvdisplay ${disk} > /dev/null || pvcreate -y ${disk} || die "create pv failed: $disk"
 
 		if vgdisplay ${VG_NAME} > /dev/null; then
-			vgextend ${VG_NAME} ${disk}
+			vgextend -y ${VG_NAME} ${disk} || die "vgextend failed: $disk"
 		else
-			vgcreate ${VG_NAME} ${disk}
+			vgcreate -y ${VG_NAME} ${disk} || die "vgcreate failed: $disk"
 		fi
 	done
-
 }
 
 create_lv()
