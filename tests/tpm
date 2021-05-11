@@ -1,0 +1,6 @@
+#!/bin/sh
+
+mkdir /sys/fs/cgroup/memory/test
+echo $$ > /sys/fs/cgroup/memory/test/tasks
+echo 50M > /sys/fs/cgroup/memory/test/memory.limit_in_bytes
+dd if=/dev/zero of=tmp_file bs=1M count=100
