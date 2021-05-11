@@ -55,14 +55,6 @@ end
 class NetStater < Stater
   def stat(line, stats)
     case line
-    when /^# (No VRF|With VRF)/
-      # selftests: net: fcnal-test.sh
-      # With VRF
-      @test_case = $1
-    when /^# SYSCTL: (.*)/
-      # selftests: net: fcnal-test.sh
-      # SYSCTL: net.ipv4.tcp_l3mdev_accept=0
-      @test_subcase = $1
     when /^# TEST SECTION: (.*)/
       # selftests: net: fib-onlink-tests.sh
       # TEST SECTION: IPv4 onlink
@@ -152,13 +144,7 @@ class NetStater < Stater
         stats.add "#{@test_prefix}.#{@test_case}.#{$1}", $2 unless @test_case == 'IPv4 route with IPv6 gateway tests'
       end
     when /^# TEST: (.*) \[ ?(PASS|OK|FAIL|SKIP) ?\]/
-      if @test_subcase
-        # selftests: net: fcnal-test.sh
-        # No VRF
-        # SYSCTL: net.ipv4.raw_l3mdev_accept=0
-        # TEST: ping out - ns-B IP                                           [ OK ]
-        stats.add "#{@test_prefix}.#{@test_case}.#{@test_subcase}.#{$1}", $2
-      elsif @test_case
+      if @test_case
         # selftests: net: vrf_route_leaking.sh
         #
         # ###########################################################################
