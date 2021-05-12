@@ -4,3 +4,5 @@ nr_node: 1
 nr_cpu: 2
 memory: 16G
 hdd_partitions: /dev/vda
+rootfs_disk:
+  - /dev/vdb
