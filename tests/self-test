@@ -38,10 +38,10 @@ get_commit_info()
 	author_name=$(git log -1 --format="%an")
 	author_email=$(git log -1 --format="%ae")
 
-	commiter=$(git log -1 --format="%cn")
-	commiter_email=$(git log -1 --format="%ce")
+	committer=$(git log -1 --format="%cn")
+	committer_email=$(git log -1 --format="%ce")
 
-	recipient_email="$author_email;$commiter_email"
+	recipient_email="$author_email;$committer_email"
 
 }
 

@@ -85,7 +85,7 @@ selftest_content()
 	email_content="To: $recipient_email
 Subject: [NOTIFY Compass-CI] Self-test report
 
-Dear $author_name and $commiter:
+Dear $author_name and $committer:
 
 	commit_id: $commit_id
 
