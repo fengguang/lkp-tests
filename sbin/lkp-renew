@@ -1,0 +1,17 @@
+#!/bin/bash
+
+SCRIPT_DIR=$(dirname $(realpath $0))
+PROJECT_DIR=$(dirname $SCRIPT_DIR)
+
+. $PROJECT_DIR/lib/unit.sh
+. /lkp/scheduled/job.sh >/dev/null 2>&1
+
+extended_time=$(to_seconds $1)
+
+export_top_env
+
+response=$(curl "http://${SCHED_HOST}:${SCHED_PORT}/renew_deadline?job_id=$id&time=$extended_time")
+
+[ "$response" == "true" ] || exit
+
+echo $extended_time > /tmp/renew
