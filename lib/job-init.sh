@@ -171,6 +171,17 @@ setup_result_root()
 	return 0
 }
 
+wait_on_renew_deadline()
+{
+	[ -f /tmp/renew ] || return 0
+
+	time=$(cat /tmp/renew)
+	rm /tmp/renew
+
+	set_job_state 'renew'
+	sleep $time
+}
+
 # in case someone is logged in, give him at most 10hour time to do manual checks
 wait_on_manual_check()
 {
@@ -182,6 +193,7 @@ wait_on_manual_check()
 
 	for i in $(seq 600)
 	do
+		wait_on_renew_deadline
 		if [ -f $TMP/disturbed ]; then
 			:
 		elif ! has_cmd 'users'; then
