@@ -45,7 +45,10 @@ class Stater
       # selftests: bpf: test_xdp_vlan_mode_generic.sh
       # selftests: xdp_vlan_mode_generic [PASS]
       # ok 35 selftests: bpf: test_xdp_vlan_mode_generic.sh
-      stats.add "#{@test}.#{$1}", $3 unless @test == 'bpf'
+
+      # ignore detail stats of futex to avoid duplication
+      # c0e64368308a ("stats/kernel-selftests: rm detail stats for futex")
+      stats.add "#{@test}.#{$1}", $3 unless %w(bpf futex).include? @test
     when %r{make: Leaving directory .*/(.*)'}
       @test = @test_script = @test_prefix = @test_case = @test_subcase = nil
     end
