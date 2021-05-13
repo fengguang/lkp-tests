@@ -5,6 +5,8 @@
 # - git_tag
 # - pkg_ver
 # - config
+# - fetch_install
+# - build_install
 # upstream_url
 # upstream_dir
 
@@ -32,6 +34,15 @@ check_vars()
 	[ -n "$pkgbuild_repo" ]		|| die "pkgbuild_repo is empty"
 	[ -n "$upstream_commit" ]	|| die "upstream_commit is empty"
 	[ -n "$os_mount" ]		|| die "os_mount is empty"
+}
+
+fetch_install()
+{
+	local cci_http_host=${INITRD_HTTP_HOST}
+	local cci_http_port=${INITRD_HTTP_PORT:-8800}
+	wget -q "http://$cci_http_host:$cci_http_port/initrd/build-pkg/$os_mount/$os/$os_arch/$os_version/$pkgname/$upstream_commit.cgz" -O "/$upstream_commit.cgz" || return
+	cd / && gzip -dc $upstream_commit.cgz | cpio -id
+	exit 0
 }
 
 get_config()
@@ -85,6 +96,16 @@ request_pkg()
 	do
 		get_pkgfile "${pkgrepo}" "$pkgfile"
 	done
+}
+
+download_pkg()
+{
+	git clone git://$LKP_SERVER/pkgbuild/${pkgbuild_repo}
+	proj_name=${pkgbuild_repo##*/}
+	cd ${proj_name%.git}
+
+	[ -n "$pkg_ver" ] && sed -i "s|^pkgver=.*|pkgver=${pkg_ver}|g" PKGBUILD
+	source PKGBUILD
 }
 
 create_cgz_name()
@@ -175,4 +196,7 @@ build_source_pkg()
 check_vars
 mount_dest
 request_pkg
+download_pkg
+[[ -n $fetch_install ]] && fetch_install
 build_source_pkg
+[[ -n $build_install ]] && fetch_install
