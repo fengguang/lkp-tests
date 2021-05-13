@@ -1,0 +1,68 @@
+#!/bin/bash
+# - iso_os
+# - iso_arch
+# - iso_version
+# - rootfs_protocol
+# - rootfs_server
+# - rootfs_path
+
+set_tool_containers()
+{
+	export CCI_SRC="${HOME}/compass-ci"
+	export QCOW2_PATH="${CCI_SRC}/container/qcow2rootfs"
+
+	git clone https://gitee.com/wu_fengguang/compass-ci.git ${CCI_SRC}
+	rm ${QCOW2_PATH}/root/etc/yum.repos.d/*
+	wget -O ${QCOW2_PATH}/root/etc/yum.repos.d/CentOS-Base.repo https://repo.huaweicloud.com/repository/conf/CentOS-7-reg.repo
+
+	cd ${QCOW2_PATH}
+	./build || {
+		echo "build container failed!"
+		exit 1
+	}
+
+	export DRACUT_PATH="${CCI_SRC}/container/dracut-initrd"
+	cd ${DRACUT_PATH}
+	./build || {
+		echo "build container failed!"
+		exit 1
+	}
+}
+
+set_iso2qcow2_tool()
+{
+	git clone https://gitee.com/ycvayne/iso2qcow2 ${HOME}/iso2qcow2
+	export ISO2_PATH="${HOME}/iso2qcow2/iso2qcow2_x86"
+
+	sed -i "s/os=.*/os=${iso_os}/" ${ISO2_PATH}/iso.conf
+	sed -i "s/os_arch=.*/os_arch=${iso_arch}/" ${ISO2_PATH}/iso.conf
+	sed -i "s/os_version=.*/os_version=${iso_version}/" ${ISO2_PATH}/iso.conf
+}
+
+mount_os-rw()
+{
+	export MOUNT_POINT="/mnt"
+	mkdir ${MOUNT_POINT}
+	mount -t ${rootfs_protocol} -o rw ${rootfs_server}:/${rootfs_path} ${MOUNT_POINT}
+}
+
+iso2qcow2()
+{
+	cd ${ISO2_PATH} && ./auto_create.sh
+	export DISK_PATH="${HOME}/qcow2/${iso_os}-${iso_version}-${iso_arch}.qcow2"
+}
+
+qcow2rootfs()
+{
+	export ROOTFS_DIR="${iso_version}-$(date +%Y-%m-%d-%H-%M-%S)"
+	export ROOTFS_PATH="${MOUNT_POINT}/openeuler/${iso_arch}/automatic-build/${ROOTFS_DIR}"
+	mkdir -p ${ROOTFS_PATH}
+	cd ${QCOW2_PATH}
+	./run ${DISK_PATH} ${ROOTFS_PATH}
+}
+
+set_tool_containers
+set_iso2qcow2_tool
+mount_os-rw
+iso2qcow2
+qcow2rootfs
