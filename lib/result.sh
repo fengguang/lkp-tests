@@ -76,7 +76,7 @@ cleanup_path_record_from_patterns()
 	match_temp_file=$(mktemp -p /tmp lkp-result-cleanup-path.tmpXXXXXX) || return
 	chmod 664 $dot_temp_file || return
 
-	for path_file in $(grep -l "$pattern" $KTEST_PATHS_DIR/????-??-??-* $KTEST_PATHS_DIR/.????-??-??-*)
+	for path_file in $(grep -l "$pattern" $KTEST_PATHS_DIR/*/????-??-??-* $KTEST_PATHS_DIR/*/.????-??-??-*)
 	do
 		awk -v file1="$match_temp_file" -v file2="$dot_temp_file"  "BEGIN {modified=0} $cmd {print >> file1; modified=1; next}; \
 		{print > file2} END {exit 1-modified}" $path_file &&
@@ -107,10 +107,10 @@ cleanup_path_record_from_result_root()
 	dot_temp_file=$(mktemp -p /tmp lkp-result-cleanup-path.tmpXXXXXX)
 	chmod 664 $dot_temp_file || return
 
-	if [[ $(find $KTEST_PATHS_DIR -name ".????-??-??-*" 2>/dev/null) ]]; then
-		paths=$(grep -s -l "$path" $KTEST_PATHS_DIR/????-??-??-* $KTEST_PATHS_DIR/.????-??-??-*)
+	if [[ $(find $KTEST_PATHS_DIR -type f -name ".????-??-??-*" 2>/dev/null) ]]; then
+		paths=$(grep -s -l "$path" $KTEST_PATHS_DIR/*/????-??-??-* $KTEST_PATHS_DIR/*/.????-??-??-*)
 	else
-		paths=$(grep -s -l "$path" $KTEST_PATHS_DIR/????-??-??-*)
+		paths=$(grep -s -l "$path" $KTEST_PATHS_DIR/*/????-??-??-*)
 	fi
 
 	for path_file in $paths
