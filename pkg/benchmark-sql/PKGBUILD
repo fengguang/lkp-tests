@@ -1,0 +1,17 @@
+pkgname=benchmarksql5.0-for-mysql
+pkgver=1
+gccdir=gcc
+pkgrel=1
+arch=('aarch64' 'x86_64')
+url="http://www.mysql.com"
+license=('GPLv2')
+source=("https://mirrors.huaweicloud.com/kunpeng/archive/kunpeng_solution/database/patch/benchmarksql5.0-for-mysql.zip")
+md5sums=('f33c03fd48ff5993dca6d00b53a46da4')
+
+package()
+{
+        cd "$srcdir"
+        cp -r "$pkgname" "$pkgdir/"
+        cd "$pkgdir/$pkgname/run"
+        chmod 777 *.sh
+}
