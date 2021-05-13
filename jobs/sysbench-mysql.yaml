@@ -1,14 +1,25 @@
 suite: sysbench-mysql
 
-mysql_user:
 mysql_host: localhost
-mysql_port:
-mysql_db:
-mysql_password:
 data_dev: sdb
+timeout: 14400
 
-cci-makepkg:
-  benchmark: mysql-8-0-20
+build-pkg-0:
+        upstream_repo: g/gcc/gcc
+        upstream_url:  https://gitee.com/shdluan/gcc-buildpkg
+        upstream_commit: 3f3d2692fd05a18011d93dcadeef661f386595ac
+        upstream_dir: upstream
+        pkgbuild_repo: aur-g/gcc-9/gcc-9
+        fetch_install: 1
+        build_install: 1
+
+build-pkg-1:
+        upstream_repo: m/my-sql_with_boostkit_patch/my-sql_with_boostkit_patch
+        upstream_url: https://gitee.com/shdluan/mysql-buildpkg.git
+        upstream_commit: HEAD
+        upstream_dir: upstream
+        pkgbuild_repo: aur-m/mysql-server-mysql/mysql-server-mysql.git
+        build_install: 1
 
 mysql-8-0-20:
 
