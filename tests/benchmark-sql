@@ -1,15 +1,59 @@
 #!/bin/sh
+# - warehouses
+# - loadworkers
+# - terminals
+# - runmins
+# - limittxnspermin
+# - runtxnsperterminal
+# mysql_password
+# mysql_user
+# mysql_port
+# mysql_host
 # benchmark_pkg_name
 
 : "${benchmark_pkg_name:=benchmarksql5.0-for-mysql}"
+: "${warehouses:=1000}"
+: "${loadworkers:=100}"
+: "${terminals:=200}"
+: "${runmins:=30}"
+: "${limittxnspermin:=1000}"
+: "${runtxnsperterminal:=0}"
+: "${mysql_user:=root}"
+: "${mysql_password:=mysql_password}"
+: "${mysql_port:=3306}"
+: "${mysql_host:=localhost}"
+
+
+benchmarksql_config()
+{
+        cd "/$benchmark_pkg_name/run/" && {
+                sed -i \
+                    -e "/^conn=/ s|mysql://.*|mysql://$mysql_host:$mysql_port|" \
+                    -e "/^user=/cuser=$mysql_user" \
+                    -e "/^password=/cpassword=$mysql_password" \
+                    -e "/^loadWorkers=/cloadWorkers=$loadworkers" \
+                    -e "/^warehouses=/cwarehouses=$warehouses" \
+                    -e "/^terminals=/cterminals=$terminals" \
+                    -e "/^runTxnsPerTerminal=/crunTxnsPerTerminal=$runtxnsperterminal" \
+                    -e "/^runMins=/crunMins=$runmins" \
+                    -e "/^limitTxnsPerMin=/climitTxnsPerMin=$limittxnspermin" \
+                    -e '/^terminalWarehouseFixed=/cterminalWarehouseFixed=true' \
+                    -e '/^newOrderWeight=/cnewOrderWeight=45' \
+                    -e '/^paymentWeight=/cpaymentWeight=43' \
+                    -e '/^orderStatusWeight=/corderStatusWeight=4' \
+                    -e '/^deliveryWeight=/cdeliveryWeight=4' \
+                    props.conf
+        }
+}
 
 run_benchmark_mysql()
 {
-        cd "$HOME/$benchmark_pkg_name/run/" && {
+        cd "/$benchmark_pkg_name/run/" && {
                 ./runDatabaseBuild.sh props.conf
                 ./runBenchmark.sh  props.conf
                 ./runDatabaseDestroy.sh props.conf
        }
 }
 
+benchmarksql_config
 run_benchmark_mysql
