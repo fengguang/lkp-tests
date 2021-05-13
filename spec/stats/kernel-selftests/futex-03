@@ -18,7 +18,6 @@ make[1]: Leaving directory '/usr/src/linux-selftests-x86_64-rhel-5771a8c08880cdc
 tput: No value for $TERM and no -T specified
 tput: No value for $TERM and no -T specified
 
-f
 futex_requeue_pi: Test requeue functionality
 	Arguments: broadcast=0 locked=0 owner=0 timeout=0ns
 selftests: futex-requeue-pi [ PASS]
