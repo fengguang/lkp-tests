@@ -91,7 +91,7 @@ kill_tests()
 
 check_oom()
 {
-	[ -f /.dockerenv ] && return
+	[ -f /.dockerenv ] && return 1
 
 	dmesg | grep -q -F \
 			-e 'Out of memory' \
