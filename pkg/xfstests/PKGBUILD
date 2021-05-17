@@ -143,9 +143,9 @@ split_standalone_tests()
 		fs=${fields[0]}
 
 		tests=$(cat $file)
-		for test in ${tests[@]}
+		for test in "${tests[@]}"
 		do
-			echo $test >> ./$fs-$test
+			echo "$test" >> ./$fs-$test
 		done
 	done
 }

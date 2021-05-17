@@ -16,7 +16,7 @@ if [ -n "$block_size" ]; then
 	IFS=","
 	array=($test)
 	IFS="$OLD_IFS"
-	for ele in ${array[@]}
+	for ele in "${array[@]}"
 	do
 		case $ele in
 			"all")       args+=" -a"

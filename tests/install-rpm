@@ -25,7 +25,7 @@ rpm_name=($rpm_name)
 install_rpm()
 {
 	log_info "Starting install test: yum install -y ${rpm_name[@]}"
-	yum install -y ${rpm_name[@]}
+	yum install -y "${rpm_name[@]}"
 
 	return 0
 }

@@ -78,7 +78,7 @@ download_upstream_repo()
 	cd "$package_name" || exit
 	filelist=$(git ls-files)
 
-	for pkgfile in ${filelist[@]}
+	for pkgfile in "${filelist[@]}"
 	do
 		local dir="SOURCES"
 
@@ -140,17 +140,17 @@ handle_rpm_list()
 {
 	rpm_list=($(show_rpm_files | xargs basename -a))
 	srpm_list=($(show_src_rpm_files | xargs basename -a))
-	full_list=(${rpm_list[@]} ${srpm_list[@]})
+	full_list=("${rpm_list[@]}" "${srpm_list[@]}")
 	j=0
 
-	for rpm_name in ${full_list[@]}
+	for rpm_name in "${full_list[@]}"
 	do
 		full_list[$j]="\"/srv${rpm_dest}/${rpm_name}\""
 		[[ ${rpm_name} =~ "src.rpm" ]] && full_list[$j]="\"/srv${src_rpm_dest}/${rpm_name}\""
 		((j++))
 	done
 
-	full_list=$(echo ${full_list[@]} | sed 's; ;,;g')
+	full_list=$(echo "${full_list[@]}" | sed 's; ;,;g')
 }
 
 update_repo_mq()

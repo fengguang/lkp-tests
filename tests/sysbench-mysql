@@ -80,11 +80,11 @@ run_sysbench_step()
 
 run_sysbench_mysql()
 {
-	sysbench ${args1[@]} oltp_read_write prepare > /dev/null
+	sysbench "${args1[@]}" oltp_read_write prepare > /dev/null
 
-	run_sysbench_step oltp.lua ${args2[@]} run
+	run_sysbench_step oltp.lua "${args2[@]}" run
 
-	run_sysbench_step oltp.lua ${args2[@]} cleanup > /dev/null
+	run_sysbench_step oltp.lua "${args2[@]}" cleanup > /dev/null
 }
 
 stop_firewalld

@@ -7,7 +7,7 @@ add_repo()
 	custom_repo_name=($custom_repo_name)
 	custom_repo_addr=($custom_repo_addr)
 
-	for i in ${!custom_repo_name[@]}
+	for i in "${!custom_repo_name[@]}"
 	do
 		cat <<-EOF >> /etc/yum.repos.d/"${custom_repo_name[$i]}.repo"
 		[${custom_repo_name[$i]}]
