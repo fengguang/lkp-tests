@@ -114,20 +114,8 @@ wait_cluster_state()
 	exit 1
 }
 
-wait_other_nodes()
+config_ips_by_macs()
 {
-	should_wait_cluster || return
-
-	local program_type=$1
-	[ "$program_type" = 'test' ] && echo "${*#test }" >> $TMP/executed-test-programs
-
-	mkdir $TMP/wait_other_nodes-once 2>/dev/null || return
-
-	sync_cluster_state 'write_state' "node_roles=$(echo "$node_roles" | tr -s ' ' '+')" \
-					 "ip=$(hostname -I | cut -d' ' -f1)" \
-					 "direct_macs=$(echo "$direct_macs" | tr -s ' ' '+')" \
-					 "direct_ips=$(echo "$direct_ips" | tr -s ' ' '+')"
-
 	local idx=1
 	for mac in $direct_macs
 	do
@@ -148,6 +136,28 @@ wait_other_nodes()
 		fi
 		idx=$((idx + 1))
 	done
+}
+
+wait_other_nodes()
+{
+	should_wait_cluster || return
+
+	local program_type=$1
+	[ "$program_type" = 'test' ] && echo "${*#test }" >> $TMP/executed-test-programs
+
+	mkdir $TMP/wait_other_nodes-once 2>/dev/null || return
+
+	if [ -n "$direct_macs" ];then
+		config_ips_by_macs
+	else
+		direct_ips=$(ip route get "${BR1_ROUTE:-172.20.0.1}" | awk '{print $7; exit}')
+		direct_macs=$(ip addr | grep -B1 "$direct_ips"| grep "link/ether" | awk '{print $2}')
+	fi
+
+	sync_cluster_state 'write_state' "node_roles=$(echo "$node_roles" | tr -s ' ' '+')" \
+					 "ip=$(hostname -I | cut -d' ' -f1)" \
+					 "direct_macs=$(echo "$direct_macs" | tr -s ' ' '+')" \
+					 "direct_ips=$(echo "$direct_ips" | tr -s ' ' '+')"
 
 	# exit if either of the other nodes failed its job
 
