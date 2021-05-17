@@ -177,11 +177,11 @@ av () {
 }
 
 ad () {
-        apt-cache show $@ | more
+        apt-cache show "$@" | more
 }
 
 dL () {
-        dpkg -L $@ | more
+        dpkg -L "$@" | more
 }
 
 function lw () {

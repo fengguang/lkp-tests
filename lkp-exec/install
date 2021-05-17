@@ -313,7 +313,7 @@ export DISTRO
 
 export LKP_LOCAL_RUN=1
 
-validate_parameters $@ || exit 1
+validate_parameters "$@" || exit 1
 
 [ -n "$SKIP_BASE" ] || install_base_support
 
