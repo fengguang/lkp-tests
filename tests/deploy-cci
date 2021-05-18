@@ -2,12 +2,6 @@
 # SPDX-License-Identifier: MulanPSL-2.0+
 # Copyright (c) 2020 Huawei Technologies Co., Ltd. All rights reserved.
 
-export_env()
-{
-	export initrd_http_host=$INITRD_HTTP_HOST
-	export initrd_http_port=$INITRD_HTTP_PORT
-}
-
 deploy()
 {
 	# redirect remote-repository address to "/srv/git/gitee.com"
@@ -33,5 +27,4 @@ deploy()
 	./install-tiny
 }
 
-export_env
 deploy
