@@ -25,9 +25,8 @@ rpm_name=($rpm_name)
 install_rpm()
 {
 	log_info "Starting install test: yum install -y ${rpm_name[@]}"
-	yum install -y "${rpm_name[@]}"
-
-	return 0
+	yum install -y "${rpm_name[@]}" 2>&1 || die "install rpm failed"
+	echo "install success: ${rpm_name[@]}"
 }
 
 ldd_test()
@@ -51,9 +50,8 @@ ldd_test()
 remove_rpm()
 {
 	log_info "Starting remove test: yum remove -y ${rpm_name[@]}"
-	yum remove -y ${rpm_name[@]}
-
-	return 0
+	yum remove -y "${rpm_name[@]}" 2>&1 || die "remove rpm failed"
+	echo "remove success: ${rpm_name[@]}"
 }
 
 distro_install_depends install-rpm
