@@ -165,6 +165,7 @@ wait_other_nodes()
 
 	while read line; do
 		[ "${line#\#}" != "$line" ] && continue
+		echo " ${line#*=} ${line%=*}" >> /etc/hosts
 		export "$line"
 	done <<EOF
 $(sync_cluster_state 'roles_ip')
