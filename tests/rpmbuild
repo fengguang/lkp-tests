@@ -76,7 +76,7 @@ download_upstream_repo()
 
 	git clone -q "$url" || die "clone git repo ${package_name} failed: $url"
 	cd "$package_name" || exit
-	filelist=$(git ls-files)
+	filelist=($(git ls-files))
 
 	for pkgfile in "${filelist[@]}"
 	do
