@@ -220,7 +220,9 @@ def grep_printk_errors(kmsg_file, kmsg)
       grep -a -v -E -f #{LKP_SRC_ETC}/oops-pattern |
       grep -a -v -F -f #{LKP_SRC_ETC}/kmsg-denylist;
       grep -Eo "[^ ]* runtime error:.*" #{kmsg_file} | sed 's/^/sanitizer./g';
-      grep -Eo "#[0-5] 0x[0-9a-z]{12} in .*" #{kmsg_file} | sed 's/#0/|sanitizer.#0/g' | sed "s/#[0-5] 0x[0-9a-z]\\{12\\} in //g" | awk '{print $1}' | tr '\n' '/' | tr '|' '\n'`
+      grep -Eo -e "Direct leak of .*allocated from:" -e "Indirect leak of .*allocated from:" -e "#[0-5] 0x[0-9a-z]{12} in .*" #{kmsg_file} |
+      sed 's/^Indirect leak.*/|sanitizer.indirect_leak/g' | sed 's/^Direct leak.*/|sanitizer.direct_leak/g' |
+      sed "s/#[0-5] 0x[0-9a-z]\\{12\\} in //g" | awk '{print $1}' | tr '\n' '/' | tr '|' '\n' | sed 's|/$||'`
   else
     return '' unless File.exist?("#{KTEST_USER_GENERATED_DIR}/printk-error-messages")
     # the dmesg file is from serial console
