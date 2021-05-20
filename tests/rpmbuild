@@ -38,17 +38,71 @@ from_git()
 	download_upstream_repo
 }
 
+echo_commit_info()
+{
+	for i in $(git_pretty_format "$1" "$2" "$3")
+	do
+		echo "$4+=('"$i"')"
+	done
+}
+
+get_merge_info()
+{
+	declare -a name
+	declare -a email
+	declare -A email_name_hash
+
+	eval $(echo_commit_info "--no-color" "%ae" "$1" email)
+	eval $(echo_commit_info "--no-color" "%ce" "$1" email)
+	eval $(echo_commit_info "-n1" "%ae" "$2" email)
+	eval $(echo_commit_info "-n1" "%ce" "$2" email)
+
+	IFS_SAVE=$IFS
+	IFS=$'\n'
+	eval $(echo_commit_info "--no-color" "%an" "$1" name)
+	eval $(echo_commit_info "--no-color" "%cn" "$1" name)
+	eval $(echo_commit_info "-n1" "%an" "$2" name)
+	eval $(echo_commit_info "-n1" "%cn" "$2" name)
+	IFS=$IFS_SAVE
+
+	for key in "${!email[@]}"
+	do
+		[[ "${email[$key]}" =~ ^noreply ]] && continue
+		email_name_hash["${email[$key]}"]="${name[$key]}"
+	done
+
+	IFS_SAVE=$IFS
+	IFS=$';'
+	eval $3='"${!email_name_hash[*]}"'
+	IFS=$IFS_SAVE
+
+	IFS_SAVE=$IFS
+	IFS=$','
+	eval $4='"${email_name_hash[*]}"'
+	IFS=$IFS_SAVE
+}
+
 git_pretty_format()
 {
-	curl -sS -H 'Content-Type: Application/json' -XPOST "$LKP_SERVER"':8100/git_command' -d '{"git_repo": "'${upstream_dir}/${upstream_repo}.git'", "git_command": ["git-log","-n1","--pretty=format:'$1'", "'${upstream_commit}'"]}'
+	curl -sS -H 'Content-Type: Application/json' -XPOST "$LKP_SERVER"':8100/git_command' -d '{"git_repo": "'${upstream_dir}/${upstream_repo}.git'", "git_command": ["git-log","'$1'","--pretty=format:'$2'", "'$3'"]}'
+}
+
+is_git_merge()
+{
+	curl -sS -H 'Content-Type: Application/json' -XPOST "$LKP_SERVER"':8100/git_command' -d '{"git_repo": "'${upstream_dir}/${upstream_repo}.git'", "git_command": ["git-show", "--no-patch", "--format=%p", "'$1'"]}'
 }
 
 rpmbuild_email()
 {
 	[ -n "$whether_email" ] && {
-		author_email=$(git_pretty_format "%ae")
-		author_name=$(git_pretty_format "%an")
-		send_email $1
+		if [[ $(is_git_merge "$upstream_commit" | wc -w) -eq 1 ]]; then
+			get_merge_info "" "${upstream_commit}" author_email author_name
+			send_email $1
+		else
+			parent_commit=$(is_git_merge $upstream_commit | sed 's/\ /.../')
+			get_merge_info "${parent_commit}" "${upstream_commit}" author_email author_name
+			send_email $1
+		fi
 	}
 }
 
@@ -166,4 +220,4 @@ add_repo
 build_rpm
 upload_rpm_pkg
 update_repo_mq
-rpmbuild_email "rpmbuild_success"
+[ -n "$upstream_commit" ] && rpmbuild_email "rpmbuild_success"
