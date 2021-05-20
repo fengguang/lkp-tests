@@ -130,6 +130,7 @@ download_upstream_repo()
 
 	git clone -q "$url" || die "clone git repo ${package_name} failed: $url"
 	cd "$package_name" || exit
+	[ -n "${upstream_commit}" ] && git checkout -q "${upstream_commit}"
 	filelist=($(git ls-files))
 
 	for pkgfile in "${filelist[@]}"
