@@ -32,7 +32,7 @@ set_tool_containers()
 set_iso2qcow2_tool()
 {
 	git clone https://gitee.com/ycvayne/iso2qcow2 ${HOME}/iso2qcow2
-	export ISO2_PATH="${HOME}/iso2qcow2/iso2qcow2_x86"
+	export ISO2_PATH="${HOME}/iso2qcow2/x86_64"
 
 	sed -i "s/os=.*/os=${iso_os}/" ${ISO2_PATH}/iso.conf
 	sed -i "s/os_arch=.*/os_arch=${iso_arch}/" ${ISO2_PATH}/iso.conf
@@ -59,6 +59,8 @@ qcow2rootfs()
 	mkdir -p ${ROOTFS_PATH}
 	cd ${QCOW2_PATH}
 	./run ${DISK_PATH} ${ROOTFS_PATH}
+
+	echo "result: /srv/os/openeuler/${iso_arch}/automatic-build/${ROOTFS_DIR}"
 }
 
 set_tool_containers
