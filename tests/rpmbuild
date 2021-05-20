@@ -74,7 +74,7 @@ download_upstream_repo()
 {
 	local url="git://${GIT_SERVER}/${upstream_dir}/${upstream_repo}"
 
-	git clone "$url" || die "clone git repo ${package_name} failed: $url"
+	git clone -q "$url" || die "clone git repo ${package_name} failed: $url"
 	cd "$package_name" || exit
 	filelist=$(git ls-files)
 
@@ -82,7 +82,7 @@ download_upstream_repo()
 	do
 		local dir="SOURCES"
 
-		echo "$pkgfile" | grep -E "\\.spec$" && dir="SPECS"
+		echo "$pkgfile" | grep -q -E "\\.spec$" && dir="SPECS"
 		mv "$pkgfile" "${HOME}/rpmbuild/${dir}/"
 	done
 }
