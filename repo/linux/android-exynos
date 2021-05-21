@@ -5,3 +5,6 @@ subsystems:
 - crypto
 - manta_defconfig
 - manta
+test_old_branches: .*
+private_report_branch: .*
+mail_to: Mark Salyzyn <salyzyn@google.com>
