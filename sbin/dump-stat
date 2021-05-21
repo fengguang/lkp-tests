@@ -40,6 +40,13 @@ while (line = STDIN.gets)
 
   k = monitor + '.' + k
   result[k] ||= []
+
+  # assemble value which key end with .element
+  if k.end_with?('.element')
+    result[k] << v
+    next
+  end
+
   size = result[k].size
   if record_index < size
     record_index = size
