@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'git'
+gem 'git', '~> 1.7.0'
 gem 'rake'
 gem 'pry'
 gem 'pry-doc'
@@ -10,10 +10,10 @@ gem 'term-ansicolor'
 
 group :test do
   gem 'rspec'
-  gem 'rubocop'
+  gem 'rubocop', '~> 1.12.0'
   gem 'ci_reporter_rspec'
   gem 'simplecov'
   gem 'simplecov-rcov'
 end
 
-gem 'activesupport'
+gem 'activesupport', '~> 5.2.0'

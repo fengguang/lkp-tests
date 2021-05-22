@@ -286,7 +286,7 @@ setup_crosstool_gcc()
 
 setup_crosstool_clang()
 {
-	local cross_clang=("$COMPILER_INSTALL_PATH"/clang-latest/bin/clang)
+	local cross_clang=("$COMPILER_INSTALL_PATH"/clang/bin/clang)
 	[[ -x $cross_clang ]] || install_cross_compiler || {
 		echo "Install clang compiler failed"
 		return 1

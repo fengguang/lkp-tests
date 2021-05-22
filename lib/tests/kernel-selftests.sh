@@ -228,6 +228,11 @@ fixup_net()
 		echo "LKP SKIP net.tls"
 	fi
 
+	if [[ $test != "fcnal-test.sh" ]]; then
+		sed -i 's/fcnal-test.sh//' net/Makefile
+		echo "LKP SKIP net.fcnal-test.sh"
+	fi
+
 	# at v4.18-rc1, it introduces fib_tests.sh, which doesn't have execute permission
 	# here is to fix the permission
 	[[ -f $subtest/fib_tests.sh ]] && {
@@ -526,6 +531,11 @@ fixup_livepatch()
 	[[ -s "/tmp/pid-tail-global" ]] && cat /tmp/pid-tail-global | xargs kill -9 && echo "" >/tmp/pid-tail-global
 }
 
+fixup_sgx()
+{
+	:
+}
+
 build_tools()
 {
 
@@ -619,6 +629,8 @@ fixup_subtest()
 		fixup_kmod
 	elif [[ "$subtest" = "ptp" ]]; then
 		fixup_ptp || return
+	elif [[ "$subtest" = "sgx" ]]; then
+		fixup_sgx
 	fi
 	return 0
 }
@@ -632,7 +644,7 @@ run_tests()
 	# 1. requires /dev/watchdog device, but not all tbox have this device
 	# 2. /dev/watchdog: need support open/ioctl etc file ops, but not all watchdog support it
 	# 3. this test will not complete until issue Ctrl+C to abort it
-	skip_filter="powerpc zram media_tests watchdog"
+	skip_filter="arm64 sparc64 powerpc zram media_tests watchdog"
 
 	local selftest_mfs=$@
 
@@ -651,6 +663,7 @@ run_tests()
 
 	# kselftest introduced runner.sh since kernel commit 42d46e57ec97 "selftests: Extract single-test shell logic from lib.mk"
 	[[ -e kselftest/runner.sh ]] && log_cmd sed -i 's/default_timeout=45/default_timeout=300/' kselftest/runner.sh
+	[[ -e /kselftests/kselftest/runner.sh ]] && log_cmd sed -i 's/default_timeout=45/default_timeout=300/' /kselftests/kselftest/runner.sh
 	for mf in $selftest_mfs; do
 		subtest=${mf%/Makefile}
 		subtest_config="$subtest/config"
@@ -683,10 +696,16 @@ run_tests()
 		fixup_subtest $subtest || return
 
 		if [[ $found_subtest_in_cache ]]; then
-			if [[ $group == "net" && $test == "tls" ]]; then
-				log_cmd $run_cached_kselftests -t $subtest:tls 2>&1
+			if [[ $group == "net" && $test =~ ^(tls|fcnal-test.sh)$ ]]; then
+				if [[ $test == "fcnal-test.sh" ]]; then
+					[[ -f /kselftests/net/settings ]] && sed -i '/timeout=/d' /kselftests/net/settings
+					echo "timeout=3600" >> /kselftests/net/settings
+				fi
+				$run_cached_kselftests -l | grep -q ^$subtest:$test$ &&
+				log_cmd $run_cached_kselftests -t $subtest:$test 2>&1
 			else
 				# run_cached_kselftests is from kselftests.cgz which may not exist in local
+				$run_cached_kselftests -l | grep -q ^$subtest: &&
 				log_cmd $run_cached_kselftests -c $subtest 2>&1
 			fi
 		elif [[ -f $run_cached_kselftests ]]; then

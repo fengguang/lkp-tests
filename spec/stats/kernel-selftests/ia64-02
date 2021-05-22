@@ -1,0 +1,87 @@
+2021-04-10 13:39:56 make run_tests -C ia64
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-e49d033bddf5b565044e2abe4241353959bc9120/tools/testing/selftests/ia64'
+Makefile:9: warning: overriding recipe for target 'clean'
+../lib.mk:123: warning: ignoring old recipe for target 'clean'
+TAP version 13
+1..1
+# selftests: ia64: aliasing-test
+# PASS: /dev/mem 0x0-0xa0000 is readable
+# PASS: /dev/mem 0xa0000-0xc0000 is mappable
+# PASS: /dev/mem 0xc0000-0x100000 is readable
+# PASS: /dev/mem 0x0-0x100000 is mappable
+# PASS: /sys/devices/pci0000:00/0000:00:02.0/rom read 65534 bytes
+# PASS: /proc/bus/pci/00/00.0 0x0-0xa0000 not mappable
+# PASS: /proc/bus/pci/00/02.0 0x0-0xa0000 not mappable
+# PASS: /proc/bus/pci/00/08.0 0x0-0xa0000 not mappable
+# PASS: /proc/bus/pci/00/14.0 0x0-0xa0000 not mappable
+# PASS: /proc/bus/pci/00/14.2 0x0-0xa0000 not mappable
+# PASS: /proc/bus/pci/00/16.0 0x0-0xa0000 not mappable
+# PASS: /proc/bus/pci/00/17.0 0x0-0xa0000 not mappable
+# PASS: /proc/bus/pci/00/1c.0 0x0-0xa0000 not mappable
+# PASS: /proc/bus/pci/00/1c.1 0x0-0xa0000 not mappable
+# PASS: /proc/bus/pci/00/1c.2 0x0-0xa0000 not mappable
+# PASS: /proc/bus/pci/00/1c.4 0x0-0xa0000 not mappable
+# PASS: /proc/bus/pci/00/1f.0 0x0-0xa0000 not mappable
+# PASS: /proc/bus/pci/00/1f.2 0x0-0xa0000 not mappable
+# PASS: /proc/bus/pci/00/1f.3 0x0-0xa0000 not mappable
+# PASS: /proc/bus/pci/00/1f.4 0x0-0xa0000 not mappable
+# PASS: /proc/bus/pci/00/1f.6 0x0-0xa0000 not mappable
+# PASS: /proc/bus/pci/02/00.0 0x0-0xa0000 not mappable
+# PASS: /proc/bus/pci/03/00.0 0x0-0xa0000 not mappable
+# PASS: /proc/bus/pci/00/00.0 0xa0000-0xc0000 not mappable
+# PASS: /proc/bus/pci/00/02.0 0xa0000-0xc0000 not mappable
+# PASS: /proc/bus/pci/00/08.0 0xa0000-0xc0000 not mappable
+# PASS: /proc/bus/pci/00/14.0 0xa0000-0xc0000 not mappable
+# PASS: /proc/bus/pci/00/14.2 0xa0000-0xc0000 not mappable
+# PASS: /proc/bus/pci/00/16.0 0xa0000-0xc0000 not mappable
+# PASS: /proc/bus/pci/00/17.0 0xa0000-0xc0000 not mappable
+# PASS: /proc/bus/pci/00/1c.0 0xa0000-0xc0000 not mappable
+# PASS: /proc/bus/pci/00/1c.1 0xa0000-0xc0000 not mappable
+# PASS: /proc/bus/pci/00/1c.2 0xa0000-0xc0000 not mappable
+# PASS: /proc/bus/pci/00/1c.4 0xa0000-0xc0000 not mappable
+# PASS: /proc/bus/pci/00/1f.0 0xa0000-0xc0000 not mappable
+# PASS: /proc/bus/pci/00/1f.2 0xa0000-0xc0000 not mappable
+# PASS: /proc/bus/pci/00/1f.3 0xa0000-0xc0000 not mappable
+# PASS: /proc/bus/pci/00/1f.4 0xa0000-0xc0000 not mappable
+# PASS: /proc/bus/pci/00/1f.6 0xa0000-0xc0000 not mappable
+# PASS: /proc/bus/pci/02/00.0 0xa0000-0xc0000 not mappable
+# PASS: /proc/bus/pci/03/00.0 0xa0000-0xc0000 not mappable
+# PASS: /proc/bus/pci/00/00.0 0xc0000-0x100000 not mappable
+# PASS: /proc/bus/pci/00/02.0 0xc0000-0x100000 not mappable
+# PASS: /proc/bus/pci/00/08.0 0xc0000-0x100000 not mappable
+# PASS: /proc/bus/pci/00/14.0 0xc0000-0x100000 not mappable
+# PASS: /proc/bus/pci/00/14.2 0xc0000-0x100000 not mappable
+# PASS: /proc/bus/pci/00/16.0 0xc0000-0x100000 not mappable
+# PASS: /proc/bus/pci/00/17.0 0xc0000-0x100000 not mappable
+# PASS: /proc/bus/pci/00/1c.0 0xc0000-0x100000 not mappable
+# PASS: /proc/bus/pci/00/1c.1 0xc0000-0x100000 not mappable
+# PASS: /proc/bus/pci/00/1c.2 0xc0000-0x100000 not mappable
+# PASS: /proc/bus/pci/00/1c.4 0xc0000-0x100000 not mappable
+# PASS: /proc/bus/pci/00/1f.0 0xc0000-0x100000 not mappable
+# PASS: /proc/bus/pci/00/1f.2 0xc0000-0x100000 not mappable
+# PASS: /proc/bus/pci/00/1f.3 0xc0000-0x100000 not mappable
+# PASS: /proc/bus/pci/00/1f.4 0xc0000-0x100000 not mappable
+# PASS: /proc/bus/pci/00/1f.6 0xc0000-0x100000 not mappable
+# PASS: /proc/bus/pci/02/00.0 0xc0000-0x100000 not mappable
+# PASS: /proc/bus/pci/03/00.0 0xc0000-0x100000 not mappable
+# PASS: /proc/bus/pci/00/00.0 0x0-0x100000 not mappable
+# PASS: /proc/bus/pci/00/02.0 0x0-0x100000 not mappable
+# PASS: /proc/bus/pci/00/08.0 0x0-0x100000 not mappable
+# PASS: /proc/bus/pci/00/14.0 0x0-0x100000 not mappable
+# PASS: /proc/bus/pci/00/14.2 0x0-0x100000 not mappable
+# PASS: /proc/bus/pci/00/16.0 0x0-0x100000 not mappable
+# PASS: /proc/bus/pci/00/17.0 0x0-0x100000 not mappable
+# PASS: /proc/bus/pci/00/1c.0 0x0-0x100000 not mappable
+# PASS: /proc/bus/pci/00/1c.1 0x0-0x100000 not mappable
+# PASS: /proc/bus/pci/00/1c.2 0x0-0x100000 not mappable
+# PASS: /proc/bus/pci/00/1c.4 0x0-0x100000 not mappable
+# PASS: /proc/bus/pci/00/1f.0 0x0-0x100000 not mappable
+# PASS: /proc/bus/pci/00/1f.2 0x0-0x100000 not mappable
+# PASS: /proc/bus/pci/00/1f.3 0x0-0x100000 not mappable
+# PASS: /proc/bus/pci/00/1f.4 0x0-0x100000 not mappable
+# PASS: /proc/bus/pci/00/1f.6 0x0-0x100000 not mappable
+# PASS: /proc/bus/pci/02/00.0 0x0-0x100000 not mappable
+# PASS: /proc/bus/pci/03/00.0 0x0-0x100000 not mappable
+ok 1 selftests: ia64: aliasing-test
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-e49d033bddf5
+b565044e2abe4241353959bc9120/tools/testing/selftests/ia64'

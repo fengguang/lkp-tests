@@ -206,7 +206,6 @@ end
 
 def grep_printk_errors(kmsg_file, kmsg)
   return '' if ENV.fetch('RESULT_ROOT', '').index '/trinity/'
-  return '' unless File.exist?("#{KTEST_USER_GENERATED_DIR}/printk-error-messages")
 
   grep = if kmsg_file =~ /\.xz$/
            'xzgrep'
@@ -221,8 +220,11 @@ def grep_printk_errors(kmsg_file, kmsg)
       grep -a -v -E -f #{LKP_SRC_ETC}/oops-pattern |
       grep -a -v -F -f #{LKP_SRC_ETC}/kmsg-denylist;
       grep -Eo "[^ ]* runtime error:.*" #{kmsg_file} | sed 's/^/sanitizer./g';
-      grep -Eo "#[0-5] 0x[0-9a-z]{12} in .*" #{kmsg_file} | sed 's/#0/|sanitizer.#0/g' | sed "s/#[0-5] 0x[0-9a-z]\\{12\\} in //g" | awk '{print $1}' | tr '\n' '/' | tr '|' '\n'`
+      grep -Eo -e "Direct leak of .*allocated from:" -e "Indirect leak of .*allocated from:" -e "#[0-5] 0x[0-9a-z]{12} in .*" #{kmsg_file} |
+      sed 's/^Indirect leak.*/|sanitizer.indirect_leak/g' | sed 's/^Direct leak.*/|sanitizer.direct_leak/g' |
+      sed "s/#[0-5] 0x[0-9a-z]\\{12\\} in //g" | awk '{print $1}' | tr '\n' '/' | tr '|' '\n' | sed 's|/$||'`
   else
+    return '' unless File.exist?("#{KTEST_USER_GENERATED_DIR}/printk-error-messages")
     # the dmesg file is from serial console
     oops = `#{grep} -a -F -f #{KTEST_USER_GENERATED_DIR}/printk-error-messages #{kmsg_file} |
       grep -a -v -E -f #{LKP_SRC_ETC}/oops-pattern |
@@ -297,6 +299,7 @@ def analyze_error_id(line)
        /(BUG: unable to handle kernel)/,
        /(BUG: unable to handle kernel) NULL pointer dereference/,
        /(BUG: unable to handle kernel) paging request/,
+       /(BUG: workqueue leaked lock or atomic:)/,
        /(BUG: scheduling while atomic:)/,
        /(BUG: Bad page map in process)/,
        /(BUG: Bad page state in process)/,
@@ -411,6 +414,7 @@ def analyze_error_id(line)
 
   error_id = common_error_id(error_id)
 
+  error_id.gsub!(/#\]$/, '') unless error_id =~ /\[[^\]]+\]$/ # ---[ end Kernel panic - not syncing: __populate_section_memmap: Failed to allocate 5242880 bytes align=0x1000 nid=0 from=0x0000000001000000   ]---
   error_id.gsub!(/([a-z]:)[0-9]+\b/, '\1') # WARNING: at arch/x86/kernel/cpu/perf_event.c:1077 x86_pmu_start+0xaa/0x110()
   error_id.gsub!(/#:\[<#>\]\[<#>\]/, '') # RIP: 0010:[<ffffffff91906d8d>]  [<ffffffff91906d8d>] validate_chain+0xed/0xe80
   error_id.gsub!(/RIP:#:/, 'RIP:')       # RIP: 0010:__might_sleep+0x72/0x80

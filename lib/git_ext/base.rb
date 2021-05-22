@@ -44,6 +44,14 @@ module Git
       !command('branch', ['--list', '-a', pattern]).empty?
     end
 
+    def kernel_branch?(branch)
+      return false unless command_lines('show', "#{branch}:").include?('Makefile')
+      return false unless command('show', "#{branch}:Makefile").include?('KERNELRELEASE')
+      true
+    rescue StandardError
+      false
+    end
+
     def linux_last_release_tag_strategy(commit_sha)
       version = patch_level = sub_level = rc = nil
 

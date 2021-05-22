@@ -1,0 +1,77 @@
+2021-04-12 07:51:46 /kselftests/run_kselftest.sh -c mqueue
+TAP version 13
+1..2
+# selftests: mqueue: mq_open_tests
+# Using Default queue path - /test1
+#
+# Initial system state:
+#       Using queue path:               /test1
+#       RLIMIT_MSGQUEUE(soft):          819200
+#       RLIMIT_MSGQUEUE(hard):          819200
+#       Maximum Message Size:           8192
+#       Maximum Queue Size:             10
+#       Default Message Size:           8192
+#       Default Queue Size:             10
+#
+# Adjusted system state for testing:
+#       RLIMIT_MSGQUEUE(soft):          819200
+#       RLIMIT_MSGQUEUE(hard):          819200
+#       Maximum Message Size:           8192
+#       Maximum Queue Size:             10
+#       Default Message Size:           8192
+#       Default Queue Size:             10
+#
+#
+# Test series 1, behavior when no attr struct passed to mq_open:
+# Kernel supports setting defaults separately from maximums:            PASS
+# Given sane values, mq_open without an attr struct succeeds:           PASS
+# Kernel properly honors default setting knobs:                         PASS
+# Kernel properly limits default values to lesser of default/max:               PASS
+# Kernel properly fails to create queue when defaults would
+# exceed rlimit:
+#
+#
+# Test series 2, behavior when attr struct is passed to mq_open:
+# Queue open in excess of rlimit max when euid = 0 failed:              PASS
+# Queue open with mq_maxmsg > limit when euid = 0 succeeded:            PASS
+# Queue open with mq_msgsize > limit when euid = 0 succeeded:           PASS
+# Queue open with total size > 2GB when euid = 0 failed:                        PASS
+# Queue open in excess of rlimit max when euid = 99 failed:             PASS
+# Queue open with mq_maxmsg > limit when euid = 99 failed:              PASS
+# Queue open with mq_msgsize > limit when euid = 99 failed:             PASS
+# Queue open with total size > 2GB when euid = 99 failed:                       PASS
+ok 1 selftests: mqueue: mq_open_tests
+# selftests: mqueue: mq_perf_tests
+# Caught signal 15, exiting
+#
+# Initial system state:
+#       Using queue path:                       /mq_perf_tests
+#       RLIMIT_MSGQUEUE(soft):                  819200
+#       RLIMIT_MSGQUEUE(hard):                  819200
+#       Maximum Message Size:                   8192
+#       Maximum Queue Size:                     10
+#       Nice value:                             0
+#
+# Adjusted system state for testing:
+#       RLIMIT_MSGQUEUE(soft):                  (unlimited)
+#       RLIMIT_MSGQUEUE(hard):                  (unlimited)
+#       Maximum Message Size:                   16777216
+#       Maximum Queue Size:                     65530
+#       Nice value:                             -20
+#       Continuous mode:                        (disabled)
+#       CPUs to pin:                            7
+#
+#       Queue /mq_perf_tests created:
+#               mq_flags:                       O_NONBLOCK
+#               mq_maxmsg:                      65530
+#               mq_msgsize:                     16
+#               mq_curmsgs:                     0
+#
+#       Started mqueue performance test thread on CPU 7
+#               Max priorities:                 32768
+#               Clock resolution:               1 nsec
+#
+#       Test #1: Time send/recv message, queue empty
+#               (10000000 iterations)
+#
+not ok 2 selftests: mqueue: mq_perf_tests # TIMEOUT 45 seconds

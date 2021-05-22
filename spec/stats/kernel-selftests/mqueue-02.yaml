@@ -1,0 +1,14 @@
+mqueue.mq_open_tests.Kernel_supports_setting_defaults_separately_from_maximums.pass: 1
+mqueue.mq_open_tests.Given_sane_values_mq_open_without_an_attr_struct_succeeds.pass: 1
+mqueue.mq_open_tests.Kernel_properly_honors_default_setting_knobs.pass: 1
+mqueue.mq_open_tests.Kernel_properly_limits_default_values_to_lesser_of_default/max.pass: 1
+mqueue.mq_open_tests.Queue_open_in_excess_of_rlimit_max_when_euid_=_0_failed.pass: 1
+mqueue.mq_open_tests.Queue_open_with_mq_maxmsg_>_limit_when_euid_=_0_succeeded.pass: 1
+mqueue.mq_open_tests.Queue_open_with_mq_msgsize_>_limit_when_euid_=_0_succeeded.pass: 1
+mqueue.mq_open_tests.Queue_open_with_total_size_>_2GB_when_euid_=_0_failed.pass: 1
+mqueue.mq_open_tests.Queue_open_in_excess_of_rlimit_max_when_euid_=_99_failed.pass: 1
+mqueue.mq_open_tests.Queue_open_with_mq_maxmsg_>_limit_when_euid_=_99_failed.pass: 1
+mqueue.mq_open_tests.Queue_open_with_mq_msgsize_>_limit_when_euid_=_99_failed.pass: 1
+mqueue.mq_open_tests.Queue_open_with_total_size_>_2GB_when_euid_=_99_failed.pass: 1
+mqueue.mq_open_tests.pass: 1
+mqueue.mq_perf_tests.fail: 1

@@ -1,9 +1,27 @@
 boot_failures: 1
 
-# cpu clock throttled
-cpu_clock_throttled: 1
-message:cpu_clock_throttled: [  127.367915] CPU26: Core temperature above threshold, cpu clock throttled (total events = 1)
-pattern:cpu_clock_throttled: cpu clock throttled
+# EIP: delay_tsc+0x
+EIP:delay_tsc: 1
+message:EIP:delay_tsc: [2001021079.622495] EIP: delay_tsc+0x3b/0xe0
+pattern:EIP:delay_tsc: EIP: delay_tsc+0x
 
-timestamp:last: 127.367925
-timestamp:cpu_clock_throttled: 127.367915
+# Kernel panic - not syncing: Fatal exception
+Kernel_panic-not_syncing:Fatal_exception: 1
+message:Kernel_panic-not_syncing:Fatal_exception: [2001021079.622495] Kernel panic - not syncing: Fatal exception
+pattern:Kernel_panic-not_syncing:Fatal_exception: Kernel panic - not syncing: Fatal exception
+
+# BUG: unable to handle page fault for address:
+BUG:unable_to_handle_page_fault_for_address: 1
+message:BUG:unable_to_handle_page_fault_for_address: [2001021079.622495] BUG: unable to handle page fault for address: 83d789c6
+pattern:BUG:unable_to_handle_page_fault_for_address: BUG: unable to handle page fault for address:
+
+# Oops:
+Oops:#[##]: 1
+message:Oops:#[##]: [2001021079.622495] Oops: 0002 [#44]
+pattern:Oops:#[##]: Oops:
+
+# WARNING:.* at .* kthread_probe_data+0x
+WARNING:at_kernel/kthread.c:#kthread_probe_data: 1
+message:WARNING:at_kernel/kthread.c:#kthread_probe_data: [2001021079.622495] WARNING: CPU: 0 PID: -967707560 at kernel/kthread.c:83 kthread_probe_data+0x5e/0x80
+pattern:WARNING:at_kernel/kthread.c:#kthread_probe_data: WARNING:.* at .* kthread_probe_data+0x
+

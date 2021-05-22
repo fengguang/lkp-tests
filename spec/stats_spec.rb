@@ -14,6 +14,8 @@ describe 'stats' do
                    else
                      `#{LKP_SRC}/stats/#{script} < #{file}`
                    end
+        raise "stats script exists #{$CHILD_STATUS.exitstatus}" unless $CHILD_STATUS.exitstatus.zero?
+
         expect(new_stat).to eq old_stat
       end
     end

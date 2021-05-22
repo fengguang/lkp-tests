@@ -114,7 +114,7 @@ class ResultRootCollection
     return enum_for(__method__) unless block_given?
 
     date_glob = @date_glob || DATE_GLOB
-    files = Dir[File.join KTEST_PATHS_DIR, date_glob + '-*']
+    files = Dir[File.join KTEST_PATHS_DIR, date_glob, date_glob + '-*']
     files.sort!
     files.reverse!
     files.each do |fn|
@@ -295,7 +295,7 @@ class MResultRootCollection
   def each
     return enum_for(__method__) unless block_given?
 
-    cmdline = "grep -he '#{pattern}' #{KTEST_PATHS_DIR}/????-??-??-*"
+    cmdline = "grep -he '#{pattern}' #{KTEST_PATHS_DIR}/*/????-??-??-*"
     @other_conditions.values.each do |ocond|
       cmdline += " | grep -e '#{ocond}'"
     end

@@ -1,0 +1,17 @@
+[  179.857058] BUG: workqueue leaked lock or atomic: kworker/u2:2/0x00000001/127
+[  179.857058]      last function: stress_inorder_work
+[  179.857984] INFO: lockdep is turned off.
+[  179.857984] CPU: 0 PID: 127 Comm: kworker/u2:2 Tainted: G        W         5.12.0-rc4-02460-gd43013c83210 #3
+[  179.857984] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+[  179.857984] Workqueue: test-ww_mutex stress_inorder_work
+[  179.857984] Call Trace:
+[  179.857984]  dump_stack+0x45/0x63
+[  179.857984]  process_one_work+0xa6c/0xce0
+[  179.857984]  ? ww_acquire_init+0x100/0x100
+[  179.857984]  worker_thread+0x44d/0xbc0
+[  179.857984]  ? rescuer_thread+0x740/0x740
+[  179.857984]  kthread+0x242/0x290
+[  179.857984]  ? rescuer_thread+0x740/0x740
+[  179.857984]  ? kthread_create_worker+0x40/0x40
+[  179.857984]  ret_from_fork+0x1c/0x28
+[  179.867914] BUG: scheduling while atomic: kworker/u2:2/127/0x00000002

@@ -1,0 +1,75 @@
+2021-05-04 05:24:11 /kselftests/run_kselftest.sh -c prctl
+TAP version 13
+1..12
+# selftests: prctl: disable-tsc-ctxt-sw-stress-test
+# [No further output means we're allright]
+ok 1 selftests: prctl: disable-tsc-ctxt-sw-stress-test
+# selftests: prctl: disable-tsc-ctxt-sw-stress-test
+# [No further output means we're allright]
+ok 2 selftests: prctl: disable-tsc-ctxt-sw-stress-test
+# selftests: prctl: disable-tsc-on-off-stress-test
+# [No further output means we're allright]
+ok 3 selftests: prctl: disable-tsc-on-off-stress-test
+# selftests: prctl: disable-tsc-on-off-stress-test
+# [No further output means we're allright]
+ok 4 selftests: prctl: disable-tsc-on-off-stress-test
+# selftests: prctl: disable-tsc-test
+# rdtsc() == 1583379865128878
+# prctl(PR_GET_TSC, &tsc_val); tsc_val == PR_TSC_ENABLE
+# rdtsc() == 1583379865471631
+# prctl(PR_SET_TSC, PR_TSC_ENABLE)
+# rdtsc() == 1583379865482184
+# prctl(PR_SET_TSC, PR_TSC_SIGSEGV)
+# rdtsc() == [ SIG_SEGV ]
+# prctl(PR_GET_TSC, &tsc_val); tsc_val == PR_TSC_SIGSEGV
+# prctl(PR_SET_TSC, PR_TSC_ENABLE)
+# rdtsc() == 1583379865540225
+ok 5 selftests: prctl: disable-tsc-test
+# selftests: prctl: disable-tsc-test
+# rdtsc() == 1583380036106643
+# prctl(PR_GET_TSC, &tsc_val); tsc_val == PR_TSC_ENABLE
+# rdtsc() == 1583380036454019
+# prctl(PR_SET_TSC, PR_TSC_ENABLE)
+# rdtsc() == 1583380036466059
+# prctl(PR_SET_TSC, PR_TSC_SIGSEGV)
+# rdtsc() == [ SIG_SEGV ]
+# prctl(PR_GET_TSC, &tsc_val); tsc_val == PR_TSC_SIGSEGV
+# prctl(PR_SET_TSC, PR_TSC_ENABLE)
+# rdtsc() == 1583380036526427
+ok 6 selftests: prctl: disable-tsc-test
+# selftests: prctl: disable-tsc-ctxt-sw-stress-test
+# [No further output means we're allright]
+ok 7 selftests: prctl: disable-tsc-ctxt-sw-stress-test
+# selftests: prctl: disable-tsc-ctxt-sw-stress-test
+# [No further output means we're allright]
+ok 8 selftests: prctl: disable-tsc-ctxt-sw-stress-test
+# selftests: prctl: disable-tsc-on-off-stress-test
+# [No further output means we're allright]
+ok 9 selftests: prctl: disable-tsc-on-off-stress-test
+# selftests: prctl: disable-tsc-on-off-stress-test
+# [No further output means we're allright]
+ok 10 selftests: prctl: disable-tsc-on-off-stress-test
+# selftests: prctl: disable-tsc-test
+# rdtsc() == 1583512082556765
+# prctl(PR_GET_TSC, &tsc_val); tsc_val == PR_TSC_ENABLE
+# rdtsc() == 1583512082923990
+# prctl(PR_SET_TSC, PR_TSC_ENABLE)
+# rdtsc() == 1583512082934471
+# prctl(PR_SET_TSC, PR_TSC_SIGSEGV)
+# rdtsc() == [ SIG_SEGV ]
+# prctl(PR_GET_TSC, &tsc_val); tsc_val == PR_TSC_SIGSEGV
+# prctl(PR_SET_TSC, PR_TSC_ENABLE)
+# rdtsc() == 1583512082991790
+ok 11 selftests: prctl: disable-tsc-test
+# selftests: prctl: disable-tsc-test
+# rdtsc() == 1583512211217590
+# prctl(PR_GET_TSC, &tsc_val); tsc_val == PR_TSC_ENABLE
+# rdtsc() == 1583512211675366
+# prctl(PR_SET_TSC, PR_TSC_ENABLE)
+# rdtsc() == 1583512211686417
+# prctl(PR_SET_TSC, PR_TSC_SIGSEGV)
+# rdtsc() == [ SIG_SEGV ]
+# prctl(PR_GET_TSC, &tsc_val); tsc_val == PR_TSC_SIGSEGV
+# prctl(PR_SET_TSC, PR_TSC_ENABLE)
+# rdtsc() == 1583512211744685
+ok 12 selftests: prctl: disable-tsc-test

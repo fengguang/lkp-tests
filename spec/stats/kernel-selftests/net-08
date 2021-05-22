@@ -1,0 +1,33 @@
+# selftests: net: vrf-xfrm-tests.sh
+#
+# No qdisc on VRF device
+# TEST: IPv4 no xfrm policy                                           [ OK ]
+# TEST: IPv6 no xfrm policy                                           [ OK ]
+# TEST: IPv4 xfrm policy based on address                             [ OK ]
+# TEST: IPv6 xfrm policy based on address                             [ OK ]
+# TEST: IPv6 xfrm policy with VRF in selector                         [ OK ]
+# Error: Unknown device type.
+# Cannot find device "xfrm0"
+# Cannot find device "xfrm0"
+# Cannot find device "xfrm0"
+# TEST: IPv4 xfrm policy with xfrm device                             [FAIL]
+# TEST: IPv6 xfrm policy with xfrm device                             [FAIL]
+# Cannot find device "xfrm0"
+#
+# netem qdisc on VRF device
+# TEST: IPv4 no xfrm policy                                           [ OK ]
+# TEST: IPv6 no xfrm policy                                           [ OK ]
+# TEST: IPv4 xfrm policy based on address                             [ OK ]
+# TEST: IPv6 xfrm policy based on address                             [ OK ]
+# TEST: IPv6 xfrm policy with VRF in selector                         [ OK ]
+# Error: Unknown device type.
+# Cannot find device "xfrm0"
+# Cannot find device "xfrm0"
+# Cannot find device "xfrm0"
+# TEST: IPv4 xfrm policy with xfrm device                             [FAIL]
+# TEST: IPv6 xfrm policy with xfrm device                             [FAIL]
+# Cannot find device "xfrm0"
+#
+# Tests passed:  10
+# Tests failed:   4
+not ok 41 selftests: net: vrf-xfrm-tests.sh # exit=1

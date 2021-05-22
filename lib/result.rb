@@ -170,7 +170,7 @@ class ResultPath < Hash
     def grep(test_case, options = {})
       pattern = [RESULT_ROOT_DIR, test_case, PATH_SCHEME[test_case].map { |key| options[key] || '.*' }].flatten.join('/')
 
-      cmdline = "grep -he '#{pattern}' #{KTEST_PATHS_DIR}/????-??-??-* | sed -e 's#[0-9]\\+/$##' | sort | uniq"
+      cmdline = "grep -he '#{pattern}' #{KTEST_PATHS_DIR}/*/????-??-??-* | sed -e 's#[0-9]\\+/$##' | sort | uniq"
       `#{cmdline}`
     end
   end

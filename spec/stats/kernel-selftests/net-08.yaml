@@ -1,0 +1,15 @@
+net.vrf-xfrm-tests.sh.No_qdisc_on_VRF_device.IPv4_no_xfrm_policy.pass: 1
+net.vrf-xfrm-tests.sh.No_qdisc_on_VRF_device.IPv6_no_xfrm_policy.pass: 1
+net.vrf-xfrm-tests.sh.No_qdisc_on_VRF_device.IPv4_xfrm_policy_based_on_address.pass: 1
+net.vrf-xfrm-tests.sh.No_qdisc_on_VRF_device.IPv6_xfrm_policy_based_on_address.pass: 1
+net.vrf-xfrm-tests.sh.No_qdisc_on_VRF_device.IPv6_xfrm_policy_with_VRF_in_selector.pass: 1
+net.vrf-xfrm-tests.sh.No_qdisc_on_VRF_device.IPv4_xfrm_policy_with_xfrm_device.fail: 1
+net.vrf-xfrm-tests.sh.No_qdisc_on_VRF_device.IPv6_xfrm_policy_with_xfrm_device.fail: 1
+net.vrf-xfrm-tests.sh.netem_qdisc_on_VRF_device.IPv4_no_xfrm_policy.pass: 1
+net.vrf-xfrm-tests.sh.netem_qdisc_on_VRF_device.IPv6_no_xfrm_policy.pass: 1
+net.vrf-xfrm-tests.sh.netem_qdisc_on_VRF_device.IPv4_xfrm_policy_based_on_address.pass: 1
+net.vrf-xfrm-tests.sh.netem_qdisc_on_VRF_device.IPv6_xfrm_policy_based_on_address.pass: 1
+net.vrf-xfrm-tests.sh.netem_qdisc_on_VRF_device.IPv6_xfrm_policy_with_VRF_in_selector.pass: 1
+net.vrf-xfrm-tests.sh.netem_qdisc_on_VRF_device.IPv4_xfrm_policy_with_xfrm_device.fail: 1
+net.vrf-xfrm-tests.sh.netem_qdisc_on_VRF_device.IPv6_xfrm_policy_with_xfrm_device.fail: 1
+net.vrf-xfrm-tests.sh.fail: 1

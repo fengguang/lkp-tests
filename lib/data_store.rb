@@ -338,7 +338,7 @@ module DataStore
       end
 
       files.each do |ifn|
-        `#{grep_cmdline} #{ifn} #{ext_grep_cmdline}`.lines.reverse!.each do |line|
+        `strings #{ifn} | #{grep_cmdline} #{ext_grep_cmdline}`.lines.reverse!.each do |line|
           line = line.strip
           yield line unless line.empty?
         end
@@ -445,13 +445,14 @@ module DataStore
       bn = axes[@axis_keys.first]
       return unless bn
 
-      path bn
+      path File.join(bn[0..1], bn)
     end
 
     def index(node)
       axes = node.axes
       ifn = index_file axes
       return unless ifn
+      mkdir_p File.dirname(ifn) unless Dir.exist? File.dirname(ifn)
 
       with_index_lock do
         File.open(ifn, 'a') do |f|
@@ -852,7 +853,12 @@ module DataStore
       index.set_axis_keys ['a']
     end
     tbl = Table.open tbl_path
-    0.upto(3) do |a|
+    [
+      '1c163f4c7b3f621efff9b28a47abb36f7378d783',
+      'e93c9c99a629c61837d5a7fc2120cd2b6c70dbdd',
+      '0ecfebd2b52404ae0c54a878c872bb93363ada36',
+      '4d856f72c10ecb060868ed10ff1b1453943fc6c8'
+    ].each do |a|
       'h'.upto('k') do |b|
         n = tbl.new_node('a' => a, 'b' => b, 'c' => 2)
         m = n.matrix

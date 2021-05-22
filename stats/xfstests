@@ -38,6 +38,9 @@ while (line = STDIN.gets)
   when /^#{TEST_PATTERN}\s+\[not run\]/
     # xfs/161 [not run] Assuming DMAPI modules are not loaded
     results['skip'] << "#{$1}.#{$2}"
+  when /^#{TEST_PATTERN}\s+\[expunged\]/
+    # generic/042       [expunged]
+    results['skip'] << "#{$1}.#{$2}"
   when /^#{TEST_PATTERN}\s+(\d+)s/
     # btrfs/011        3434s
     results['pass'] << "#{$1}.#{$2}"

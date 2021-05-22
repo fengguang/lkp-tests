@@ -1,0 +1,215 @@
+  SORTEX  vmlinux
+  SYSMAP  System.map
+iterations: 1
+runtime: 4192
+2021-04-28 04:20:11 make mrproper
+2021-04-28 04:20:16 make allmodconfig
+  SORTEX  vmlinux
+  SYSMAP  System.map
+iterations: 1
+runtime: 4141
+2021-04-28 04:20:11 make mrproper
+2021-04-28 04:20:16 make allmodconfig
+  HOSTCC  scripts/basic/fixdep
+  HOSTCC  scripts/kconfig/conf.o
+  HOSTCC  scripts/kconfig/confdata.o
+  UPD     include/generated/compile.h
+  CC      init/version.o
+  AR      init/built-in.a
+  LD      vmlinux.o
+  MODPOST vmlinux.o
+  MODINFO modules.builtin.modinfo
+  LD      .tmp_vmlinux1
+  KSYM    .tmp_kallsyms1.o
+  LD      .tmp_vmlinux2
+  KSYM    .tmp_kallsyms2.o
+  LD      vmlinux
+  SORTEX  vmlinux
+  SYSMAP  System.map
+iterations: 1
+runtime: 4124
+2021-04-28 04:20:11 make mrproper
+  LD      .tmp_vmlinux1
+  KSYM    .tmp_kallsyms1.o
+  LD      .tmp_vmlinux2
+  KSYM    .tmp_kallsyms2.o
+  LD      vmlinux
+  SORTEX  vmlinux
+  SYSMAP  System.map
+iterations: 1
+runtime: 4131
+2021-04-28 04:20:11 make mrproper
+2021-04-28 04:20:16 make allmodconfig
+  HOSTCC  scripts/basic/fixdep
+  HOSTCC  scripts/kconfig/conf.o
+  HOSTCC  scripts/kconfig/confdata.o
+  HOSTCC  scripts/kconfig/expr.o
+  LEX     scripts/kconfig/lexer.lex.c
+  YACC    scripts/kconfig/parser.tab.[ch]
+  MODINFO modules.builtin.modinfo
+  LD      .tmp_vmlinux1
+  KSYM    .tmp_kallsyms1.o
+  LD      .tmp_vmlinux2
+  KSYM    .tmp_kallsyms2.o
+  LD      vmlinux
+  SORTEX  vmlinux
+  SYSMAP  System.map
+iterations: 1
+runtime: 4131
+2021-04-28 04:20:11 make mrproper
+2021-04-28 04:20:16 make allmodconfig
+  HOSTCC  scripts/basic/fixdep
+  HOSTCC  scripts/kconfig/conf.o
+  HOSTCC  scripts/kconfig/confdata.o
+  MODPOST vmlinux.o
+  MODINFO modules.builtin.modinfo
+  LD      .tmp_vmlinux1
+  KSYM    .tmp_kallsyms1.o
+  LD      .tmp_vmlinux2
+  KSYM    .tmp_kallsyms2.o
+  LD      vmlinux
+  SORTEX  vmlinux
+  SYSMAP  System.map
+iterations: 1
+runtime: 4143
+2021-04-28 04:20:11 make mrproper
+2021-04-28 04:20:16 make allmodconfig
+  HOSTCC  scripts/basic/fixdep
+  HOSTCC  scripts/kconfig/conf.o
+  HOSTCC  scripts/kconfig/confdata.o
+  HOSTCC  scripts/kconfig/expr.o
+  LEX     scripts/kconfig/lexer.lex.c
+  LD      .tmp_vmlinux1
+  KSYM    .tmp_kallsyms1.o
+  LD      .tmp_vmlinux2
+  KSYM    .tmp_kallsyms2.o
+  LD      vmlinux
+  SORTEX  vmlinux
+  SYSMAP  System.map
+iterations: 1
+runtime: 4157
+2021-04-28 04:20:11 make mrproper
+2021-04-28 04:20:16 make allmodconfig
+  HOSTCC  scripts/basic/fixdep
+  AR      init/built-in.a
+  LD      vmlinux.o
+  MODPOST vmlinux.o
+  MODINFO modules.builtin.modinfo
+  LD      .tmp_vmlinux1
+  KSYM    .tmp_kallsyms1.o
+  LD      .tmp_vmlinux2
+  KSYM    .tmp_kallsyms2.o
+  LD      vmlinux
+  SORTEX  vmlinux
+  SYSMAP  System.map
+iterations: 1
+runtime: 4124
+2021-04-28 04:20:11 make mrproper
+2021-04-28 04:20:16 make allmodconfig
+  HOSTCC  scripts/basic/fixdep
+  HOSTCC  scripts/kconfig/conf.o
+  HOSTCC  scripts/kconfig/confdata.o
+  HOSTCC  scripts/kconfig/expr.o
+  LEX     scripts/kconfig/lexer.lex.c
+  YACC    scripts/kconfig/parser.tab.[ch]
+  HOSTCC  scripts/kconfig/lexer.lex.o
+  AR      init/built-in.a
+  LD      vmlinux.o
+  MODPOST vmlinux.o
+  MODINFO modules.builtin.modinfo
+  LD      .tmp_vmlinux1
+  KSYM    .tmp_kallsyms1.o
+  LD      .tmp_vmlinux2
+  KSYM    .tmp_kallsyms2.o
+  LD      vmlinux
+  SORTEX  vmlinux
+  SYSMAP  System.map
+iterations: 1
+runtime: 4195
+2021-04-28 04:20:11 make mrproper
+2021-04-28 04:20:16 make allmodconfig
+  HOSTCC  scripts/basic/fixdep
+  HOSTCC  scripts/kconfig/conf.o
+  HOSTCC  scripts/kconfig/confdata.o
+  HOSTCC  scripts/kconfig/expr.o
+  LEX     scripts/kconfig/lexer.lex.c
+  YACC    scripts/kconfig/parser.tab.[ch]
+  MODPOST vmlinux.o
+  MODINFO modules.builtin.modinfo
+  LD      .tmp_vmlinux1
+  KSYM    .tmp_kallsyms1.o
+  LD      .tmp_vmlinux2
+  KSYM    .tmp_kallsyms2.o
+  LD      vmlinux
+  SORTEX  vmlinux
+  SYSMAP  System.map
+iterations: 1
+runtime: 4162
+2021-04-28 04:20:11 make mrproper
+2021-04-28 04:20:16 make allmodconfig
+  HOSTCC  scripts/basic/fixdep
+  HOSTCC  scripts/kconfig/conf.o
+  HOSTCC  scripts/kconfig/confdata.o
+  HOSTCC  scripts/kconfig/expr.o
+  LEX     scripts/kconfig/lexer.lex.c
+  YACC    scripts/kconfig/parser.tab.[ch]
+  HOSTCC  scripts/kconfig/lexer.lex.o
+  HOSTCC  scripts/kconfig/parser.tab.o
+  HOSTCC  scripts/kconfig/preprocess.o
+  HOSTCC  scripts/kconfig/symbol.o
+  KSYM    .tmp_kallsyms2.o
+  LD      vmlinux
+  SORTEX  vmlinux
+  SYSMAP  System.map
+iterations: 1
+runtime: 4162
+2021-04-28 04:20:11 make mrproper
+2021-04-28 04:20:16 make allmodconfig
+  HOSTCC  scripts/basic/fixdep
+  HOSTCC  scripts/kconfig/conf.o
+  HOSTCC  scripts/kconfig/confdata.o
+  HOSTCC  scripts/kconfig/expr.o
+  LEX     scripts/kconfig/lexer.lex.c
+  YACC    scripts/kconfig/parser.tab.[ch]
+  LD      vmlinux
+  SORTEX  vmlinux
+  SYSMAP  System.map
+iterations: 1
+runtime: 4190
+2021-04-28 04:20:11 make mrproper
+2021-04-28 04:20:16 make allmodconfig
+  HOSTCC  scripts/basic/fixdep
+  HOSTCC  scripts/kconfig/conf.o
+  LD      vmlinux
+  SORTEX  vmlinux
+  SYSMAP  System.map
+iterations: 1
+runtime: 4152
+2021-04-28 04:20:11 make mrproper
+2021-04-28 04:20:16 make allmodconfig
+  HOSTCC  scripts/basic/fixdep
+  LD      vmlinux
+  SORTEX  vmlinux
+  SYSMAP  System.map
+iterations: 1
+runtime: 4126
+2021-04-28 04:20:11 make mrproper
+2021-04-28 04:20:16 make allmodconfig
+  HOSTCC  scripts/basic/fixdep
+  LD      .tmp_vmlinux2
+  KSYM    .tmp_kallsyms2.o
+  LD      vmlinux
+  SORTEX  vmlinux
+  SYSMAP  System.map
+iterations: 1
+runtime: 4145
+2021-04-28 04:20:11 make mrproper
+2021-04-28 04:20:16 make allmodconfig
+  HOSTCC  scripts/basic/fixdep
+  HOSTCC  scripts/kconfig/conf.o
+  HOSTCC  scripts/kconfig/confdata.o
+  LD      vmlinux
+  SORTEX  vmlinux
+  SYSMAP  System.map
+iterations: 1
+runtime: 4140

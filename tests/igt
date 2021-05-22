@@ -28,7 +28,9 @@ do
 	do
 		full_test_name=igt@$testcase@$subtest
 
-		echo $subtest | grep -q -e suspend -e hibernate && {
+		echo $subtest | grep -q -e suspend -e hibernate -e S3 && {
+			# add "-e S3" to skip PM-related test
+			# [  133.586866] PM: suspend entry (deep)
 			echo "LKP SKIP $full_test_name"
 			continue
 		}

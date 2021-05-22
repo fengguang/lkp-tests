@@ -1,0 +1,12 @@
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-84df9525b0c27f3ebc2ebb1864fa62a97fdedb7d/tools/testing/selftests/android'
+selftests: android: run.sh
+Sharing fd: 7, Client fd: 6
+Received buffer fd: 0
+ion_test.sh: heap_type: 0 - [FAIL]
+Sharing fd: 7, Client fd: 6
+Received buffer fd: 0
+ion_test.sh: heap_type: 1 - [FAIL]
+
+ion_test.sh: done
+not ok 1..1 selftests: android: run.sh [FAIL]
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-84df9525b0c27f3ebc2ebb1864fa62a97fdedb7d/tools/testing/selftests/android'

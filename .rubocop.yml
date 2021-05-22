@@ -11,6 +11,9 @@ Style/FrozenStringLiteralComment:
 Style/SafeNavigation:
   Enabled: false
 
+Layout/FirstArrayElementIndentation:
+  Enabled: false
+
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: false
 
@@ -60,6 +63,9 @@ Security/Eval:
   Enabled: false
 
 Security/JSONLoad:
+  Enabled: false
+
+Layout/HeredocIndentation:
   Enabled: false
 
 Lint/ShadowingOuterLocalVariable:

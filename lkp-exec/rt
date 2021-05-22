@@ -53,16 +53,16 @@ if [[ $opt_date ]]; then
 	do
 		day=$(date +%F -d "$d days ago")
 		if [[ $script_name =~ ^_ ]]; then
-			files+=($KTEST_PATHS_DIR/$day-$opt_queue $KTEST_PATHS_DIR/.$day-$opt_queue)
+			files+=($KTEST_PATHS_DIR/$day/$day-$opt_queue $KTEST_PATHS_DIR/$day/.$day-$opt_queue)
 		else
-			files+=($KTEST_PATHS_DIR/$day-$opt_queue)
+			files+=($KTEST_PATHS_DIR/$day/$day-$opt_queue)
 		fi
 	done
 else
 	if [[ $script_name =~ ^_ ]]; then
-		files=($KTEST_PATHS_DIR/????-??-??-$opt_queue $KTEST_PATHS_DIR/.????-??-??-$opt_queue)
+		files=($KTEST_PATHS_DIR/*/????-??-??-$opt_queue $KTEST_PATHS_DIR/*/.????-??-??-$opt_queue)
 	else
-		files=($KTEST_PATHS_DIR/????-??-??-$opt_queue)
+		files=($KTEST_PATHS_DIR/*/????-??-??-$opt_queue)
 	fi
 fi
 
