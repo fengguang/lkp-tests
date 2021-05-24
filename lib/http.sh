@@ -109,7 +109,7 @@ http_do_request()
 		return
 	}
 
-	[ "${path#http://}" != "$path" ] && {
+	([ "${path#http://}" != "$path" ] || [ "${path#https://}" != "$path" ]) && {
 		echo \
 		$http_client_cmd "$path" "$@"
 		$http_client_cmd "$path" "$@"
