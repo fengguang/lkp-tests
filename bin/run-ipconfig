@@ -17,7 +17,7 @@ configure_networking()
 			[ "${DEVICE}" = "lo" ] && continue
 			[ "${DEVICE}" = "docker0" ] && continue
 
-			for ROUNDTTT in 2 3 4 6 9 16 25 36 64 100; do
+			for ROUNDTTT in 2 3 4; do
 
 				[ -e /run/net-"${DEVICE}".conf ] && break
 				case ${IP} in
