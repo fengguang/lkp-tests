@@ -83,6 +83,7 @@ sync_rootfs_to_nfs_server()
 	vgchange -ay
 
 	# mount local logical volume
+	local iso_version=${iso_version//-/_}
 	local lv_rootfs_mount_point=/tmp/lv_rootfs_${ROOTFS_SUFFIX}
 
 	mkdir -p ${lv_rootfs_mount_point}
@@ -103,6 +104,9 @@ sync_rootfs_to_nfs_server()
 
 	# umount local logical volume
 	umount $lv_rootfs_mount_point || log_warn "umount failed: $lv_rootfs_mount_point"
+
+	lvchange --permission r /dev/mapper/${VG_NAME}-${iso_os}_${iso_arch}_${iso_version}_${ROOTFS_SUFFIX} ||
+		die "change logical volume permission to readonly failed:/dev/mapper/${VG_NAME}-${iso_os}_${iso_arch}_${iso_version}_${ROOTFS_SUFFIX}"
 }
 
 main()
@@ -110,9 +114,6 @@ main()
 	check_params
 
 	sync_rootfs_to_nfs_server
-
-	lvchange --permission r /dev/mapper/${VG_NAME}-${iso_os}_${iso_arch}_${iso_version}_${ROOTFS_SUFFIX} ||
-		die "change logical volume permission to readonly failed:/dev/mapper/${VG_NAME}-${iso_os}_${iso_arch}_${iso_version}_${ROOTFS_SUFFIX}"
 }
 
 main
