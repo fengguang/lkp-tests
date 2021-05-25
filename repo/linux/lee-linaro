@@ -3,4 +3,4 @@ owner: Lee Jones <lee.jones@linaro.org>
 mail_to: Lee Jones <lee.jones@linaro.org>
 notify_build_success_branch: .*
 private_report_branch: .*
-branch_denylist: google/android-3.18|aosp-android-mainline-tracking
+branch_denylist: .*android-3.18.*|aosp-android-mainline-tracking
