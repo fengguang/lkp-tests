@@ -1,7 +1,6 @@
 # ~/.bash_profile: executed by bash(1) for login shells.
 
 # the default umask is set in /etc/login.defs
-umask 0077
 
 export PATH=/sbin:/usr/sbin:"${PATH}"
 
