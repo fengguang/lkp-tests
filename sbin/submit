@@ -213,6 +213,12 @@ ARGV.each do |jobfile|
         else
           opt_monitor = false
           puts("submit #{jobfile} failed, got job id=#{msg['job_id']}, error: #{msg['message']}")
+          if msg['message'].include?('Failed to verify the account.')
+            puts 'The submitted account information is as follows:'
+            puts "my_name: #{job['my_name']}"
+            puts "my_email: #{job['my_email']}"
+            puts "my_token: #{job['my_token']}"
+          end
         end
       end
     end
