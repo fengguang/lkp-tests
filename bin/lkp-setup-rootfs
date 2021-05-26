@@ -86,12 +86,12 @@ downgrade_ucode()
 	ucode_less_than_current $next_version
 }
 
-wget_install_cgz()
+download_install_cgz()
 {
 	local url
 	for url
 	do
-		echo "wget $url"
+		echo "download $url"
 		http_get_file $url /tmp/tmp.cgz
 		(
 			cd /
@@ -182,7 +182,7 @@ install_proxy()
 
 # Save the result to
 # "/srv/initrd/pkg/$os/$os_arch/$os_version/$benchmark.cgz",
-# get the result through wget $initrd_pkg.
+# get the result through download $initrd_pkg.
 define_files_pkg_pack()
 {
 	(
@@ -199,7 +199,7 @@ define_files_pkg_pack()
 # so it needs to be handled sparately.
 # Save the result to
 # "/srv/initrd/deps/$os/$os_arch/$os_version/$deps_benchmark.cgz",
-# get the result through wget $initrd_deps.
+# get the result through download $initrd_deps.
 define_files_deps_pack()
 {
 	local deps_benchmark=${1##*/}
@@ -257,8 +257,8 @@ while true; do
 	. $job_script define_files
 	define_files_auto_pack $define_files
 	if [ "$os_mount" != "initramfs" ]; then
-		wget_install_cgz $initrd_deps
-		wget_install_cgz $initrd_pkg
+		download_install_cgz $initrd_deps
+		download_install_cgz $initrd_pkg
 	fi
 	install_rpms
 	install_deb
