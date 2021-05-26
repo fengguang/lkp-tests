@@ -21,7 +21,8 @@ sshr_ip=$LKP_SERVER
 
 set_login_tmout()
 {
-	echo "TMOUT=$tmout" >> /etc/profile
+	# set the idle wait time(TMOUT) of linux system, set 0 is prevent timeout exit
+	echo "export TMOUT=$tmout" >> /etc/profile
 }
 
 generate_key_file()
