@@ -536,6 +536,13 @@ fixup_sgx()
 	:
 }
 
+fixup_mount_setattr()
+{
+	# fix no real run for mount_setattr
+	grep -q TEST_PROGS mount_setattr/Makefile ||
+	grep "TEST_GEN_FILES +=" mount_setattr/Makefile | sed 's/TEST_GEN_FILES/TEST_PROGS/' >> mount_setattr/Makefile
+}
+
 build_tools()
 {
 
@@ -631,6 +638,8 @@ fixup_subtest()
 		fixup_ptp || return
 	elif [[ "$subtest" = "sgx" ]]; then
 		fixup_sgx
+	elif [[ "$subtest" = "mount_setattr" ]]; then
+		fixup_mount_setattr
 	fi
 	return 0
 }
