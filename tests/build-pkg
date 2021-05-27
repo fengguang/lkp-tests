@@ -199,4 +199,5 @@ request_pkg
 download_pkg
 [[ -n $fetch_install ]] && fetch_install
 build_source_pkg
-[[ -n $build_install ]] && fetch_install
+[[ -n $build_install ]] || exit 0
+fetch_install
