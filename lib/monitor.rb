@@ -73,6 +73,39 @@ class Monitor
       data = data['message']
     end
     puts data
+    puts_reminder(data)
+  end
+
+  def puts_reminder(data)
+    return if @job.empty?
+    return unless data.include?('"job_state":"download"')
+
+    case get_testbox_type(@job['testbox'])
+    when 'vm'
+      time = '3 minutes'
+    when 'dc'
+      time = '30 seconds'
+    when 'bare-metal'
+      time = '10 minutes'
+    else
+      return
+    end
+
+    puts "\nThe #{@job['testbox']} testbox is starting. Please wait about #{time}"
+  end
+
+  def get_testbox_type(testbox)
+    return unless testbox
+
+    if testbox.start_with?('vm')
+      type = 'vm'
+    elsif testbox.start_with?('dc')
+      type = 'dc'
+    else
+      type = 'bare-metal'
+    end
+
+    type
   end
 
   def connect(data, web_socket)
