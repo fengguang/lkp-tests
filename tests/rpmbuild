@@ -1,11 +1,11 @@
 #!/bin/bash
 # - upstream_repo
-# - compat_os
 # - repo_name
 # - repo_addr
 # - custom_repo_name
 # - custom_repo_addr
-# - whether_email
+# whether_email
+# compat_os
 # Git repo jobs only use the first two parameters, SRPMs jobs use all
 # user can add custom_repo_name and custom_repo_addr to setup
 # local repo, value can be an array
@@ -116,7 +116,6 @@ from_srpm()
 
 	install_srpm
 }
-
 
 init_workspace()
 {
