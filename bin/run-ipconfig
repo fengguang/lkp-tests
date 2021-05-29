@@ -10,36 +10,33 @@ IP=$DIRECT_IP
 # to support the configuration of multiple network cards
 configure_networking()
 {
-	for device in /sys/class/net/* ; do
-		if [ -f "$device/address" ]; then
-			DEVICE=${device##*/}
+	ARRAY_DEVICE=$(ls -ld /sys/class/net/* | awk -F '/' '{print $NF}' | tr '\n' ' ')
 
-			[ "${DEVICE}" = "lo" ] && continue
-			[ "${DEVICE}" = "docker0" ] && continue
+	for ROUNDTTT in 4 6 9 16 25 36 64 100; do
 
-			for ROUNDTTT in 2 3 4; do
+		for x in /run/net-*.conf ; do
+			[ "$x" == "/run/net-lo.conf" ] && continue
+			[ -e "$x" ] && break 2
+		done
 
-				[ -e /run/net-"${DEVICE}".conf ] && break
-				case ${IP} in
-					none|off)
-						# Do nothing
-						;;
-					""|on|any)
-						# Bring up device
-						ipconfig -t ${ROUNDTTT} "${DEVICE}"
-						;;
-					dhcp|bootp|rarp|both)
-						ipconfig -t ${ROUNDTTT} -c "${IP}" -d "${DEVICE}"
-						;;
-					*)
-						ipconfig -t ${ROUNDTTT} -d "$IP"
-						;;
-				esac
-			done
-
-			. "/run/net-${DEVICE}.conf"
-		fi
+		case ${IP} in
+			none|off)
+				# Do nothing
+				;;
+			""|on|any)
+				# Bring up device
+				ipconfig -t ${ROUNDTTT} ${ARRAY_DEVICE[*]}
+				;;
+			dhcp|bootp|rarp|both)
+				ipconfig -t ${ROUNDTTT} -c "${IP}" -d ${ARRAY_DEVICE[*]}
+				;;
+			*)
+				ipconfig -t ${ROUNDTTT} -d "$IP"
+				;;
+		esac
 	done
+
+	. /run/net-*.conf
 
 }
 
