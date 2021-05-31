@@ -2,6 +2,7 @@
 
 . $LKP_SRC/lib/email.sh
 . $LKP_SRC/lib/log.sh
+. $LKP_SRC/lib/upload.sh
 
 source /etc/profile.d/compass.sh
 
@@ -45,6 +46,18 @@ get_commit_info()
 
 }
 
+upload_failed_result()
+{
+	lab=$(awk '/^lab:\s/ {print $2; exit}' /etc/compass-ci/defaults/*.yaml)
+	job_ids=$(find /srv/result -name "$lab.*"| awk -F'/' '{print $NF}')
+	for job_id in $job_ids
+	do
+		result_root=/srv$(es-find id=$job_id | grep result_root | cut -d'"' -f4)
+		es-find id=$job_id| grep job_state| grep -q finished || upload_files -t $job_id $result_root/*
+	done
+}
+
 get_commit_info
 submit_job
 send_email selftest
+upload_failed_result
