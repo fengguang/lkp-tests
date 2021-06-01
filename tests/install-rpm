@@ -49,9 +49,12 @@ ldd_test()
 
 remove_rpm()
 {
-	log_info "Starting remove test: yum remove -y ${rpm_name[@]}"
-	yum remove -y "${rpm_name[@]}" 2>&1 || die "remove rpm failed"
-	echo "remove success: ${rpm_name[@]}"
+	for i in ${rpm_name[@]}
+	do
+		echo "start remove test: $i"
+		yum remove -y "$i" 2>&1
+		echo "remove test finished: $i"
+	done
 }
 
 distro_install_depends install-rpm
