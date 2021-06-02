@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+while (line = STDIN.gets)
+  case line.chomp!
+  when /START TIME:\s(.*),\sEND TIME:\s(.*),\sTotal duration:\s(.*)\sseconds/
+    puts "start_time: #{$1}"
+    puts "end_time: #{$2}"
+    puts "total_duration(s): #{$3}"
+  end
+end

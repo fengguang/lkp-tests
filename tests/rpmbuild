@@ -154,6 +154,8 @@ build_rpm()
 			# HTTP is proxy cache friendly
 			sed -i 's/^\(Source[^ ]*:[ \t]*\)https/\1http/g' "$(grep http -rl "$spec_dir/"*.spec)"
 		}
+	startTime=$(date +%Y-%m-%d-%H:%M)
+	startTime_s=$(date +%s)
 	# Install build depends
 	yum-builddep -y "$spec_dir"/*.spec || die "failed to solve dependencies"
 	# Download tar.gz to default path ${HOME}/rpmbuild/SOURCE
@@ -163,6 +165,12 @@ build_rpm()
 		}
 	# Building rpm or srpm packages
 	rpmbuild -ba "$spec_dir"/*.spec || die "failed to build rpms"
+	endTime=$(date +%Y-%m-%d-%H:%M)
+	endTime_s=$(date +%s)
+
+	sumTime=$[ $endTime_s - $startTime_s ]
+
+	echo "RPM build START TIME: $startTime, END TIME: $endTime, Total duration: $sumTime seconds"
 }
 
 show_rpm_files()
