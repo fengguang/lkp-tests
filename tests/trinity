@@ -60,6 +60,8 @@ has_cmd trinity || {
 	exit 1
 }
 
+start_time=$(date +%s)
+
 cd /tmp
 if chroot --help 2>&1 | grep -q -- --userspec; then
 	log_cmd chroot --userspec nobody:nogroup / $cmd 2>&1 &
@@ -75,3 +77,16 @@ if [ -n "$runtime" ]; then
 else
 	wait $pid
 fi
+
+end_time=$(date +%s)
+# end time is wrong in some trinity tests, not root cause yet:
+# grep -e start_time -e end_time /result/trinity/group-01-99999/vm-snb/yocto-x86_64-minimal-20190520.cgz/x86_64-rhel-8.3/gcc-9/34bfc452f977849cca0fb57f8b46f4bff67e1969/4/job.yaml
+# start_time: '1622552630'
+# end_time: '68764814'
+
+# $ date -d @1622552630
+# Tue Jun  1 21:03:50 CST 2021
+
+# $ date -d @68764814
+# Tue Mar  7 05:20:14 CST 1972
+[ "$end_time" -lt "$start_time" ] && log_cmd hwclock --hctosys
