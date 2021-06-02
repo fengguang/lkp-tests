@@ -41,6 +41,10 @@ module LKP
       end
     end
 
+    def empty
+      @stats.empty?
+    end
+
     # def exit(warn)
     #   log_warn warn if warn
     #   exit 1
