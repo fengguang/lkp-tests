@@ -11,7 +11,6 @@ build-pkg-0:
         upstream_dir: upstream
         pkgbuild_repo: aur-g/gcc-9/gcc-9
         fetch_install: 1
-        build_install: 1
 
 build-pkg-1:
         upstream_repo: m/my-sql_with_boostkit_patch/my-sql_with_boostkit_patch
@@ -19,7 +18,7 @@ build-pkg-1:
         upstream_commit: HEAD
         upstream_dir: upstream
         pkgbuild_repo: aur-m/mysql-server-mysql/mysql-server-mysql.git
-        build_install: 1
+        fetch_install: 1
 
 mysql-8-0-20:
 

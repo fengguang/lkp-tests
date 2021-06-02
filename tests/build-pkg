@@ -6,7 +6,6 @@
 # - pkg_ver
 # - config
 # - fetch_install
-# - build_install
 # upstream_url
 # upstream_dir
 
@@ -40,6 +39,7 @@ fetch_install()
 {
 	local cci_http_host=${INITRD_HTTP_HOST}
 	local cci_http_port=${INITRD_HTTP_PORT:-8800}
+
 	wget -q "http://$cci_http_host:$cci_http_port/initrd/build-pkg/$os_mount/$os/$os_arch/$os_version/$pkgname/$upstream_commit.cgz" -O "/$upstream_commit.cgz" || return
 	cd / && gzip -dc $upstream_commit.cgz | cpio -id
 	exit 0
@@ -83,6 +83,15 @@ get_pkgfile()
 		-d '{"git_repo": "'$1'", "git_command": ["git-show", "HEAD:'$2'"]}' -o "${2##*/}"
 }
 
+download_pkg()
+{
+	if [ ${pkgbuild_repo%%/*} == "archlinux" ]; then
+		request_pkg
+	else
+		clone_pkg_repo
+	fi
+}
+
 request_pkg()
 {
 	local pkgrepo="${pkgbuild_repo%%//*}"
@@ -98,14 +107,13 @@ request_pkg()
 	done
 }
 
-download_pkg()
+clone_pkg_repo()
 {
-	git clone git://$LKP_SERVER/pkgbuild/${pkgbuild_repo}
-	proj_name=${pkgbuild_repo##*/}
-	cd ${proj_name%.git}
+	local url="git://${GIT_SERVER}/pkgbuild/${pkgbuild_repo}"
 
-	[ -n "$pkg_ver" ] && sed -i "s|^pkgver=.*|pkgver=${pkg_ver}|g" PKGBUILD
-	source PKGBUILD
+	proj_name=${pkgbuild_repo##*/}
+	git clone -q "$url" || die "clone git repo ${proj_name} failed: $url"
+	cd ${proj_name%.git}
 }
 
 create_cgz_name()
@@ -195,9 +203,8 @@ build_source_pkg()
 
 check_vars
 mount_dest
-request_pkg
 download_pkg
-[[ -n $fetch_install ]] && fetch_install
+[ $upstream_commit == HEAD ] && [[ -n $fetch_install ]] && fetch_install
 build_source_pkg
-[[ -n $build_install ]] || exit 0
+[[ -n $fetch_install ]] || exit 0
 fetch_install
