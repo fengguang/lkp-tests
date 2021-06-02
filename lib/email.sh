@@ -100,6 +100,23 @@ Compass-CI
 "
 }
 
+selftest_env_content()
+{
+	email_content="To: $recipient_email_to
+Bcc: $recipient_email_bcc
+Subject: [SELF-TEST] REPORT
+
+Dear All:
+
+group_id: $group_id
+
+$report_content
+
+Regards
+Compass-CI
+"
+}
+
 rpmbuild_report()
 {
 	email_content="To: $author_email
@@ -143,4 +160,14 @@ send_email()
 	${subject}_content
 
 	curl -XPOST "${SEND_MAIL_HOST:-$LKP_SERVER}:${SEND_MAIL_PORT:-10001}/send_mail_text" -d "$email_content"
+}
+
+local_send_email()
+{
+	local subject=$1
+	local email_content
+
+	${subject}_content
+
+	curl -XPOST "${SEND_MAIL_HOST:-$LKP_SERVER}:${LOCAL_SEND_MAIL_PORT:-11311}/send_mail_text" -d "$email_content"
 }
