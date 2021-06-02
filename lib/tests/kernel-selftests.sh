@@ -644,6 +644,14 @@ fixup_subtest()
 	return 0
 }
 
+should_run_cached_kselftests()
+{
+	# force to run cached binary
+	[[ $subtest = 'mount_setattr' ]] && [[ -d $(dirname $run_cached_kselftests)/mount_setattr ]] && return
+
+	$run_cached_kselftests -l 2>/dev/null | grep -q "^$subtest:"
+}
+
 run_tests()
 {
 	# zram: skip zram since 0day-kernel-tests always disable CONFIG_ZRAM which is required by zram
@@ -686,7 +694,7 @@ run_tests()
 		subtest_in_skip_filter "$skip_filter" && continue
 
 		(
-		if $run_cached_kselftests -l 2>/dev/null | grep -q "^$subtest:"; then
+		if should_run_cached_kselftests; then
 			found_subtest_in_cache=1
 			[[ -f $LKP_SRC/lib/tests/kernel-selftests-ext.sh ]] && {
 				echo "source $LKP_SRC/lib/tests/kernel-selftests-ext.sh"
