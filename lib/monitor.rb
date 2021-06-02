@@ -72,6 +72,11 @@ class Monitor
     elsif data['message']
       data = data['message']
     end
+    if data.include?('error_message')
+      data = JSON.parse(data)
+      data.delete('error_message')
+      data = data.to_json
+    end
     puts data
     puts_reminder(data)
   end
