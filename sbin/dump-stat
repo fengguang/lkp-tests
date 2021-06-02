@@ -94,6 +94,7 @@ max_cols_stat = ''
 zero_stats = []
 result.each do |key, val|
   next if val.is_a?(String)
+  next if val[0].is_a?(String)
 
   if max_cols < val.size
     max_cols = val.size
