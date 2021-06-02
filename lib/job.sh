@@ -92,6 +92,9 @@ wait_cluster_state()
 		'abort')
 			break
 			;;
+		'start')
+			return
+			;;
 		'ready')
 			return
 			;;
@@ -138,14 +141,8 @@ config_ips_by_macs()
 	done
 }
 
-wait_other_nodes()
+wait_other_nodes_start()
 {
-	should_wait_cluster || return
-
-	local program_type=$1
-	[ "$program_type" = 'test' ] && echo "${*#test }" >> $TMP/executed-test-programs
-
-	mkdir $TMP/wait_other_nodes-once 2>/dev/null || return
 
 	if [ -n "$direct_macs" ];then
 		config_ips_by_macs
@@ -161,7 +158,7 @@ wait_other_nodes()
 
 	# exit if either of the other nodes failed its job
 
-	wait_cluster_state 'wait_ready'
+	wait_cluster_state 'wait_start'
 
 	while read line; do
 		[ "${line#\#}" != "$line" ] && continue
@@ -170,6 +167,24 @@ wait_other_nodes()
 	done <<EOF
 $(sync_cluster_state 'roles_ip')
 EOF
+}
+
+wait_other_nodes()
+{
+	should_wait_cluster || return
+
+	local program_type=$1
+	[ "$program_type" = 'test' ] && echo "${*#test }" >> $TMP/executed-test-programs
+	[ "$program_type" = 'start' ] && {
+		mkdir $TMP/wait_other_nodes-start-once 2>/dev/null || return
+		wait_other_nodes_start && return
+	}
+
+	mkdir $TMP/wait_other_nodes-once 2>/dev/null || return
+	# exit if either of the other nodes failed its job
+
+	wait_cluster_state 'wait_ready'
+
 }
 
 # In a cluster test, if some server/service role only started daemon(s) and
@@ -298,10 +313,10 @@ start_daemon()
 		run_program_in_background "$@"
 		echo $! >> $TMP/pid-bg-proc-$daemon
 	else
+		wait_other_nodes 'start'
 		run_program daemon "$@"
 	fi
 
-	sync_cluster_state 'started'
 	# If failed to start the daemon above, the job will abort.
 	# LKP server on notice of the failed job will abort the other waiting nodes.
 
@@ -329,6 +344,7 @@ run_test()
 		# it should be able to killed by watchdog
 		echo $$ >> $TMP/pid-run-tests
 
+		wait_other_nodes 'start'
 		wait_other_nodes 'test'
 		wakeup_pre_test
 		run_program test "$@"
