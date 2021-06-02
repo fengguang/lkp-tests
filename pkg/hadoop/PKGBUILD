@@ -30,4 +30,10 @@ package()
 	hadoop_home="${pkgdir}/usr/${pkgname}"
 	mkdir -p "${hadoop_home}"
 	cp -af "${srcdir}/${pkgname}-${pkgver}/"* "${hadoop_home}"
+
+	# package hadoop conf
+	hadoop_conf_dir="${hadoop_home}/etc/hadoop"
+	mkdir -p "${hadoop_conf_dir}"
+	cp core-site.xml "${hadoop_conf_dir}"
+	cp hdfs-site.xml "${hadoop_conf_dir}"
 }
