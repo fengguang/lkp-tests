@@ -16,10 +16,22 @@ will-it-scale:
   - lock1
   - lseek1
   - lseek2
-  - malloc1
+  #  - malloc1
   - malloc2
   - mmap1
   - mmap2
   - open1
   - open2
   #  - open3
+
+---
+nr_task:
+  - 16
+  - 50%
+  - 100%
+
+will-it-scale:
+  mode:
+  - process
+  test:
+  - malloc1
