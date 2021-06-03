@@ -12,7 +12,7 @@ multi_docker()
 {
 	export CCI_SRC=${CCI_SRC:-"/c/compass-ci"}
 	local hostname=$tbox_group.$HOSTNAME
-	$CCI_SRC/providers/multi-docker -n $hostname -c $nr_container -q $queues
+	$CCI_SRC/providers/multi-docker -n $hostname -c $nr_container -q $queues >/dev/null 2>&1
 }
 
 multi_docker

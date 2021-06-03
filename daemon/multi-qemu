@@ -15,7 +15,7 @@ multi_qemu()
 
 	mkdir -p /srv/$suite && cd /srv/$suite
 	[ -d "mount_point" ] && cd "$mount_point"
-	$CCI_SRC/providers/multi-qemu -n "$hostname" -c "$nr_vm" -q "$queues"
+	$CCI_SRC/providers/multi-qemu -n "$hostname" -c "$nr_vm" -q "$queues" >/dev/null 2>&1
 }
 
 multi_qemu
