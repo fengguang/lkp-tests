@@ -41,7 +41,7 @@ fetch_install()
 	local cci_http_port=${INITRD_HTTP_PORT:-8800}
 
 	wget -q "http://$cci_http_host:$cci_http_port/initrd/build-pkg/$os_mount/$os/$os_arch/$os_version/$pkgname/$upstream_commit.cgz" -O "/$upstream_commit.cgz" || return
-	cd / && gzip -dc $upstream_commit.cgz | cpio -id
+	cd / && gzip -dc $upstream_commit.cgz | cpio -id --quiet
 	exit 0
 }
 
