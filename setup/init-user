@@ -1,0 +1,17 @@
+#!/bin/bash
+# username
+# userpassword
+
+[[ -n $username ]] || exit
+
+id -u $username || {
+	useradd -d /home/$username -m $username
+}
+
+[[ -n $userpassword ]] && {
+        echo $username:$userpassword | chpasswd
+}
+
+su - $username <<-EOF
+ssh-keygen -f /home/$username/.ssh/id_rsa -N ''
+EOF
