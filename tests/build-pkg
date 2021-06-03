@@ -204,7 +204,7 @@ build_source_pkg()
 check_vars
 mount_dest
 download_pkg
-[ $upstream_commit == HEAD ] && [[ -n $fetch_install ]] && fetch_install
+[ $upstream_commit != HEAD ] && [[ -n $fetch_install ]] && fetch_install
 build_source_pkg
 [[ -n $fetch_install ]] || exit 0
 fetch_install
