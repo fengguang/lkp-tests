@@ -34,9 +34,22 @@ argv = if ARGV == []
        end
 opt_parser.parse!(argv)
 
+def find_jobfile(jobfile)
+  return jobfile if File.exist?(jobfile)
+
+  search_paths = [Dir.pwd, File.join(LKP_SRC, 'jobs')]
+  search_paths.each do |search_path|
+    search_jobfile = File.join(search_path, jobfile)
+    return search_jobfile if File.exist?(search_jobfile)
+  end
+  puts("Cannot find job #{jobfile} in directories:"); puts search_paths
+  exit 1
+end
+
 begin
   job = Job2sh.new
-  job.load(ARGV[0])
+  jobfile = find_jobfile(ARGV[0])
+  job.load(jobfile)
   job.expand_params
 rescue Job::ParamError => e
   log_error "Abandon job: #{e.message}"
