@@ -90,6 +90,7 @@ def fixup_dmesg(line)
 
   # remove absolute path names
   line.sub!(%r{/kbuild/src/[^/]+/}, '')
+  line.sub!(%r{/tmp/kbuild/src/[^/]+/}, '')
 
   line.sub!(/\.(isra|constprop|part)\.[0-9]+\+0x/, '+0x')
 
@@ -360,12 +361,14 @@ def analyze_error_id(line)
     # [   36.605689] kobject ((____ptrval____)): tried to init an initialized object, something is seriously wrong.
     bug_to_bisect = oops_to_bisect_pattern line
     line = line.sub(/kobject \(([0-9a-f]+|\(_*ptrval_*\))\)/, 'kobject (#)')
-  when /BUG: Bad rss-counter state mm:([0-9a-f]+|\(_*ptrval_*\)) idx:/
+  when /BUG: Bad rss-counter state mm:([0-9a-f]+|\(_*ptrval_*\)) /
     # [   70.951419 ] BUG: Bad rss-counter state mm:(____ptrval____) idx:1 val:4
     # [ 2841.215571 ] BUG: Bad rss-counter state mm:000000000fb13173 idx:1 val:-1
     # [   11.380524 ] BUG: Bad rss-counter state mm:(ptrval) idx:1 val:1
+    # [   80.051123] BUG: Bad rss-counter state mm:0000000002d98df7 type:MM_ANONPAGES val:512
+    # [   23.093962] BUG: Bad rss-counter state mm:(____ptrval____) type:MM_ANONPAGES val:-512
     bug_to_bisect = oops_to_bisect_pattern line
-    line = line.sub(/BUG: Bad rss-counter state mm:([0-9a-f]+|\(_*ptrval_*\)) idx:/, 'BUG: Bad rss-counter state mm:# idx:')
+    line = line.sub(/BUG: Bad rss-counter state mm:([0-9a-f]+|\(_*ptrval_*\)) /, 'BUG: Bad rss-counter state mm:# ')
   when /Bad pagetable: [0-9a-f]+ \[#/
     # [   29.493015 ] Bad pagetable: 000f [#1] PTI
     # [    9.167214 ] Bad pagetable: 001d [#1] PTI
