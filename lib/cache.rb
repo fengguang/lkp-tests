@@ -83,7 +83,7 @@ module Cacheable
     def cache_key(obj, method_name, *args)
       # rli9 FIXME: to understand performance impact of different hash key
       # cache_key = [self, method_name, args]
-      cache_key = "#{method_name}_#{args.join('_')}"
+      cache_key = "#{obj.instance_of?(Class) ? obj.to_s : obj.class.to_s}_#{method_name}_#{args.join('_')}"
 
       cache_key_prefix_generator = cache_options[method_name][:cache_key_prefix_generator]
       cache_key = "#{cache_key_prefix_generator.call obj}_#{cache_key}" if cache_key_prefix_generator
