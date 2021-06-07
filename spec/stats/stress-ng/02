@@ -1,0 +1,21 @@
+2021-06-03 18:06:32 stress-ng --timeout 60 --times --verify --metrics-brief --memrate 96
+stress-ng: info:  [2680] successful run completed in 60.06s (1 min, 0.06 secs)
+stress-ng: info:  [2680] stressor       bogo ops real time  usr time  sys time   bogo ops/s     bogo ops/s
+stress-ng: info:  [2680]                           (secs)    (secs)    (secs)   (real time) (usr+sys time)
+stress-ng: info:  [2680] memrate            3159     60.01   5597.27     17.81        52.64           0.56
+stress-ng: info:  [2680] memrate         1656.82 write128 MB/sec (average per stressor)
+stress-ng: info:  [2680] memrate         1754.68 read128 MB/sec (average per stressor)
+stress-ng: info:  [2680] memrate         1456.49 write64 MB/sec (average per stressor)
+stress-ng: info:  [2680] memrate         1328.51 read64 MB/sec (average per stressor)
+stress-ng: info:  [2680] memrate         1517.58 write32 MB/sec (average per stressor)
+stress-ng: info:  [2680] memrate         1234.07 read32 MB/sec (average per stressor)
+stress-ng: info:  [2680] memrate         1600.51 write16 MB/sec (average per stressor)
+stress-ng: info:  [2680] memrate         1223.24 read16 MB/sec (average per stressor)
+stress-ng: info:  [2680] memrate         1510.90 write8 MB/sec (average per stressor)
+stress-ng: info:  [2680] memrate         1078.30 read8 MB/sec (average per stressor)
+stress-ng: info:  [2680] for a 60.06s run time:
+stress-ng: info:  [2680]    5765.35s available CPU time
+stress-ng: info:  [2680]    5597.73s user time   ( 97.09%)
+stress-ng: info:  [2680]      18.41s system time (  0.32%)
+stress-ng: info:  [2680]    5616.14s total time  ( 97.41%)
+stress-ng: info:  [2680] load average: 61.57 17.76 6.11
