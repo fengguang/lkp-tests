@@ -9,7 +9,7 @@ module Cacheable
   end
 
   module ClassMethods
-    def cache_store
+    def cache_store(method_name)
       @cache_store ||= {}
     end
 
@@ -45,27 +45,32 @@ module Cacheable
     end
 
     def cache_fetch(obj, method_name, *args)
+      cache_store = cache_store(method_name)
       cache_key = cache_key(obj, method_name, *args)
 
       if cache_store.instance_of?(Hash)
-        # rli9 FIXME the operation to hash is not thread safe
-        if cache_store.key?(cache_key)
-          cache = cache_store[cache_key]
-          return cache.value unless cache_expired?(method_name, cache.timestamp)
-
-          cache_store.delete(cache_key)
-        end
-
-        value = obj.send("#{method_name}_without_cache", *args)
-        return nil if value.nil? && !cache_options[method_name][:cache_nil]
-
-        cache_store[cache_key] = OpenStruct.new(value: value, timestamp: Time.now)
-        cache_store[cache_key].value
+        cache_fetch_hash(cache_store, cache_key, obj, method_name, *args)
       else
         cache_store.fetch cache_key do
           obj.send("#{method_name}_without_cache", *args)
         end
       end
+    end
+
+    def cache_fetch_hash(cache_store, cache_key, obj, method_name, *args)
+      # rli9 FIXME the operation to hash is not thread safe
+      if cache_store.key?(cache_key)
+        cache = cache_store[cache_key]
+        return cache.value unless cache_expired?(method_name, cache.timestamp)
+
+        cache_store.delete(cache_key)
+      end
+
+      value = obj.send("#{method_name}_without_cache", *args)
+      return nil if value.nil? && !cache_options[method_name][:cache_nil]
+
+      cache_store[cache_key] = OpenStruct.new(value: value, timestamp: Time.now)
+      cache_store[cache_key].value
     end
 
     def cache_expired?(method_name, timestamp)
