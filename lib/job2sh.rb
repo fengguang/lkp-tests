@@ -353,9 +353,7 @@ class Job2sh < Job
     out_line "\texport define_files='#{define_files.keys.join ' '}'"
     define_files.each do |file, val|
       out_line "\tmkdir -p $LKP_SRC/$(dirname #{file})"
-      out_line "\tcat > $LKP_SRC/#{file} <<'EOF'"
-      out_line val
-      out_line "EOF"
+      out_line "\techo \'#{val}\' > $LKP_SRC/#{file}"
       if File::executable?("#{ENV['LKP_SRC']}/#{file}")
         out_line "\tchmod +x $LKP_SRC/#{file}"
       end
