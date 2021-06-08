@@ -1,0 +1,16 @@
+2021-06-07 09:52:25 fs_mark -d /fs/sda1/1 -d /fs/sda1/2 -d /fs/sda1/3 -d /fs/sda1/4 -d /fs/sda1/5 -d /fs/sda1/6 -d /fs/sda1/7 -d /fs/sda1/8 -d /fs/sda1/9 -d /fs/sda1/10 -d /fs/sda1/11 -d /fs/sda1/12 -d /fs/sda1/13 -d /fs/sda1/14 -d /fs/sda1/15 -d /fs/sda1/16 -d /fs/sda1/17 -d /fs/sda1/18 -d /fs/sda1/19 -d /fs/sda1/20 -d /fs/sda1/21 -d /fs/sda1/22 -d /fs/sda1/23 -d /fs/sda1/24 -d /fs/sda1/25 -d /fs/sda1/26 -d /fs/sda1/27 -d /fs/sda1/28 -d /fs/sda1/29 -d /fs/sda1/30 -d /fs/sda1/31 -d /fs/sda1/32 -D 16 -N 256 -n 1600 -L 1 -S 1 -s 8192
+
+#  fs_mark  -d  /fs/sda1/1  -d  /fs/sda1/2  -d  /fs/sda1/3  -d  /fs/sda1/4  -d  /fs/sda1/5  -d  /fs/sda1/6  -d  /fs/sda1/7  -d  /fs/sda1/8  -d  /fs/sda1/9  -d  /fs/sda1/10  -d  /fs/sda1/11  -d  /fs/sda1/12  -d  /fs/sda1/13  -d  /fs/sda1/14  -d  /fs/sda1/15  -d  /fs/sda1/16  -d  /fs/sda1/17  -d  /fs/sda1/18  -d  /fs/sda1/19  -d  /fs/sda1/20  -d  /fs/sda1/21  -d  /fs/sda1/22  -d  /fs/sda1/23  -d  /fs/sda1/24  -d  /fs/sda1/25  -d  /fs/sda1/26  -d  /fs/sda1/27  -d  /fs/sda1/28  -d  /fs/sda1/29  -d  /fs/sda1/30  -d  /fs/sda1/31  -d  /fs/sda1/32  -D  16  -N  256  -n  1600  -L  1  -S  1  -s  8192
+#       Version 3.3, 32 thread(s) starting at Mon Jun  7 09:52:25 2021
+#       Sync method: INBAND FSYNC: fsync() per file in write loop.
+#       Directories:  Round Robin between directories across 16 subdirectories with 256 files per subdirectory.
+#       File names: 40 bytes long, (16 initial bytes of time stamp with 24 random bytes at end of name)
+#       Files info: size 8192 bytes, written with an IO size of 16384 bytes per write
+#       App overhead is time in microseconds spent in the test not doing file writing related system calls.
+
+FSUse%        Count         Size    Files/sec     App Overhead
+     5        51200         8192       8324.8           390190
+Average Files/sec:       8324.0
+p50 Files/sec: 8324
+p90 Files/sec: 8324
+p99 Files/sec: 8324
