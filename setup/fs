@@ -4,7 +4,24 @@
 # - mount
 # - mount_option
 # - nr_tmpfs
+# mount_to
 
+# normal disks will mount to $mount_points/{nfs, fs}/
+# mount_to is for mount disks to specified directory.
+#	use it by:
+#	  disk:
+#         - 1HDD
+#         fs:
+#         - xfs
+#         mount_to: /mnt/sda
+#      or
+#         disk:
+#         - 2HDD
+#         fs:
+#         - xfs
+#         mount_to:
+#         - /mnt/sda
+#         - /mnt/sdb
 # This script supports 2 NFS mount schemes:
 # fs1: followup scripts will see NFS mount_points only
 # fs2: followup scripts will see NFS mount_points as well as original mount_points
@@ -92,12 +109,15 @@ mount_fs() {
 	local bdevs_num=0
 	for dev in $bdevs
 	do
-		local mnt=/fs/$(basename $dev)
+		local mnt
+		bdevs_num=$(($bdevs_num + 1))
+
+		[ -n "$mount_to" ] && mnt=$(echo $mount_to | awk "{print \$${bdevs_num}}")
+		mnt=${mnt:-/fs/$(basename $dev)}
 		log_cmd mkdir -p $mnt
 		probe_filesystem $fs
 		log_cmd mount -t $fs ${mount:-$def_mount} $mount_option $dev $mnt || exit
 		mount_points="${mount_points}$mnt "
-		bdevs_num=$(($bdevs_num + 1))
 	done
 
 	local special_jobs=(multi-qemu multi-docker)
