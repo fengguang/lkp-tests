@@ -47,13 +47,24 @@ ldd_test()
 	done
 }
 
+handle_rpm_name()
+{
+	name=$(yum info $@ | awk -F ': ' '{if($1 ~ /Name/) print $2}')
+	version=$(yum info $@ | awk -F ': ' '{if($1 ~ /Version/) print $2}')
+	release=$(yum info $@ | awk -F ': ' '{if($1 ~ /Release/) print $2}')
+	architecture=$(yum info $@ | awk -F ': ' '{if($1 ~ /Architecture/) print $2}')
+
+	rpm_full_name="${name}-${version}-${release}.${architecture}"
+}
+
 remove_rpm()
 {
 	for i in ${rpm_name[@]}
 	do
-		echo "start remove test: $i"
+		handle_rpm_name $i
+		echo "start remove test: ${rpm_full_name}"
 		yum remove -y "$i" 2>&1
-		echo "remove test finished: $i"
+		echo "remove test finished: ${rpm_full_name}"
 	done
 }
 
