@@ -120,12 +120,6 @@ mount_fs() {
 		log_cmd mount -t $fs ${mount:-$def_mount} $mount_option $dev $mnt || exit
 		mount_points="${mount_points}$mnt "
 	done
-
-	local special_jobs=(multi-qemu multi-docker)
-	echo "${special_jobs[@]}" | grep -wq $suite && [ $bdevs_num -eq 1 ] && [ -n "$mount_point" ] &&{
-		log_cmd mkdir -p $mount_point
-		log_cmd mount -t $fs ${mount:-$def_mount} $mount_option $dev $mount_point || exit
-	}
 }
 
 if is_btrfs_raid_levels; then
