@@ -464,7 +464,7 @@ module ResultStddev
     FileUtils.mkdir_p dir
     path = File.join(dir, file)
     data = if File.exist? path
-             load_json(path)
+             load_json(path) || {}
            else
              {}
            end
