@@ -1,0 +1,195 @@
+#!/bin/bash
+# - cephfs_mount_point
+# - ceph_data_pool
+# - ceph_metadata_pool
+# - ceph_block_pool
+# - ceph_pg_num
+# - ceph_pgp_num
+# - ceph_images_size
+# - ceph_images_num
+# - ceph_images_range
+# ceph_type
+# ceph_nodes
+# ceph_clients
+
+# ceph cluster contains cephnodes and some clients.
+# commonly the cluster contains 3 or more ceph nodes.
+# the nodes can be cephnode1, cephnode2, cephnode3, ...
+# cephnode1 will also display the role to do the deployer,
+# it will do the deployment for mon, mgr, mds, osd, ...
+# the osd pool and cephfs/images can be created on any one of the nodes
+# after you created the cephfs/images,
+# you can mount the cepnfs or map the images as disks on the client side
+
+all_nodes=($(echo $ceph_nodes $ceph_clients))
+ceph_nodes=($(echo $ceph_nodes))
+
+conf_support()
+{
+	pip_dir=$(pip show ceph-deploy | awk '/^Location/ {print $NF}')
+	ceph_init_file="${pip_dir}/ceph_deploy/hosts/__init__.py"
+
+	# add config for support openEuler
+	[[ -f  $ceph_init_file ]]&& {
+		sed -i "/distributions = {/a           'openeuler': fedora," "$ceph_init_file"
+	}
+}
+
+extract_network()
+{
+	network=$(ip route | grep default | awk '{print $3}' | awk -F'.' '{print $1"."$2}')
+	net_mask=$(ip route | grep "^$network" | awk '{print $1}')
+}
+
+# deploy ceph cluster
+ceph_deploy()
+{
+	[[ -d "$HOME/ceph-deploy" ]] || {
+		mkdir -p "$HOME/ceph-deploy"
+	}
+
+	cd "$HOME/ceph-deploy" && {
+		ceph-deploy new "${ceph_nodes[@]}"
+		echo "public_network = ${net_mask}" >> "$HOME/ceph-deploy/ceph.conf"
+		ceph-deploy mon create-initial
+		ceph-deploy --overwrite-conf admin "${all_nodes[@]}"
+		ceph-deploy mgr create "${ceph_nodes[@]}"
+		ceph-deploy mds create "${ceph_nodes[@]}"
+	}
+}
+
+ceph_osd_create()
+{
+	ceph_disks=($(echo $disks))
+
+	local host
+	for host in "${ceph_nodes[@]}";
+	do
+		for ceph_disk in "${ceph_disks[@]}";
+		do
+			ceph-deploy osd create --data "$ceph_disk" "$host"
+		done
+	done
+	wait
+}
+
+ceph_osd_create_with_nvme()
+{
+	ceph_disks=($(echo $disks))
+
+	local host
+	for host in "${ceph_nodes[@]}";
+	do
+		local j=1
+		local k=2
+		local ceph_disk
+		for ceph_disk in "${ceph_disks[@]}";
+		do
+			ceph-deploy osd create --data "$ceph_disk" "$host" --block-wal /dev/nvme0n1${j} --block-db /dev/nvme0n1${k}
+			((j=${j}+2))
+			((k=${k}+2))
+			sleep 3
+		done
+	done
+	wait
+}
+
+conf_cephfs()
+{
+	ceph osd pool create "$ceph_data_pool" "$ceph_pg_num" "$ceph_pgp_num"
+	ceph osd pool create "$ceph_metadata_pool" "$ceph_pg_num" "$ceph_pgp_num"
+	wait
+
+	ceph fs new cephfs "$ceph_metadata_pool" "$ceph_data_pool"
+
+	echo 'export ceph_state=ready' >> "$HOME/.${SHELL##*/}rc"
+}
+
+ceph_image()
+{
+	ceph osd pool create $ceph_block_pool $ceph_pg_num $ceph_pgp_num
+	ceph osd pool application enable $ceph_block_pool rbd
+
+	local i
+	for i in $(seq $ceph_images_num);
+	do
+		rbd create image${i} --size ${ceph_images_size} --pool ${ceph_block_pool} --image-format 2 --image-feature layering
+	done
+
+	echo 'export ceph_state=ready' >> "$HOME/.${SHELL##*/}rc"
+}
+
+mount_cephfs()
+{
+	mkdir -p $cephfs_mount_point
+	ceph-authtool -p /etc/ceph/ceph.client.admin.keyring > /etc/ceph/admin.secret
+	mount.ceph cephnode1,cephnode2,cephnode3:/ $cephfs_mount_point -o name=admin,secretfile=/etc/ceph/admin.secret
+}
+
+ceph_block_map()
+{
+	index_list=$(eval echo {$ceph_images_range})
+
+	local i
+	for i in $index_list;
+	do
+		rbd map block_pool/image${i}
+	done
+}
+
+sync_ceph_state()
+{
+	[[ $node_roles == cephnode1 ]] && return 0
+
+	local cephnode1_state
+	cephnode1_state=$(ssh -q root@cephnode1 "echo \$ceph_state" 2> /dev/null)
+
+	until [[ $cephnode1_state == ready ]]; do
+		sleep 5
+		cephnode1_state=$(ssh -q root@cephnode1 "echo \$ceph_state" 2> /dev/null)
+	done
+
+	echo 'export ceph_state=ready' >> "$HOME/.${SHELL##*/}rc"
+}
+
+check_ceph_state()
+{
+	local ceph_state
+	local host
+
+	for host in "${all_nodes[@]}"; do
+		ceph_state=$(ssh -q root@"$host" "echo \$ceph_state" 2> /dev/null)
+
+		until [[ $ceph_state == ready ]]; do
+			sleep 5
+			ceph_state=$(ssh -q root@"$host" "echo \$ceph_state" 2> /dev/null)
+		done
+
+		ceph_state=''
+	done
+}
+
+[[ $node_roles == cephnode1 ]] && {
+	conf_support
+	extract_network
+	ceph_deploy
+
+	if [[ $nvme == true ]];
+	then
+		ceph_osd_create_with_nvme
+	else
+		ceph_osd_create
+	fi
+
+	[[ $ceph_type == fs ]] && conf_cephfs
+	[[ $ceph_type == block ]] && ceph_image
+}
+
+sync_ceph_state
+check_ceph_state
+
+[[ $node_roles =~ cephclient ]] || exit 0
+
+[[ $ceph_type == fs ]] && mount_cephfs
+[[ $ceph_type == block ]] && ceph_block_map
+exit 0
