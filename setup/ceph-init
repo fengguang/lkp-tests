@@ -1,0 +1,142 @@
+#!/bin/bash
+# - ceph_version
+# nr_hdd
+
+# the ceph cluster default contains 3 nodes and 3 clients.
+# node's hostname will be set as its node_roles.
+# cephnode1 will also play the deploy role to do the deployment,
+# so case on cephnode1, it will install the ceph-deploy.
+# case specified ceph_version in the job yaml file, 
+# it will update the yum repo and install the specified version of ceph.
+# it will part the nvme if there is one and you have specified the variable
+# nvme with value true.
+# the nvme part is used to enhance the performance of created osd(s)
+
+stop_firewalld()
+{
+	systemctl stop firewalld
+	systemctl disable firewalld
+
+	setenforce 0
+}
+
+conf_hostname()
+{
+	hostnamectl set-hostname "$node_roles"
+}
+
+update_yum_repos()
+{
+	cat >> /etc/yum.repos.d/ceph.repo <<-EOF
+	[ceph]
+	name=ceph package
+	baseurl=http://download.ceph.com/rpm-nautilus/el7/\$basearch
+	gpgcheck=1
+	enabled=1
+	type=rpm-md
+	gpgkey=https://download.ceph.com/keys/release.asc
+	priority=1
+	
+	[ceph-noarch]
+	name=ceph noarch
+	baseurl=http://download.ceph.com/rpm-nautilus/el7/noarch
+	gpgcheck=1
+	enabled=1
+	type=rpm-md
+	gpgkey=https://download.ceph.com/keys/release.asc
+	priority=1
+	
+	[ceph-source]
+	name=ceph source
+	baseurl=http://download.ceph.com/rpm-nautilus/el7/SRPMS
+	gpgcheck=1
+	enabled=1
+	type=rpm-md
+	gpgkey=https://download.ceph.com/keys/release.asc
+	priority=1
+	EOF
+
+	cat >> /etc/yum.repos.d/archfedora.repo <<-EOF
+	[arch_fedora_online]
+	name=arch_fedora
+	baseurl=https://mirrors.huaweicloud.com/fedora/releases/30/Everything/aarch64/os/
+	gpgcheck=0
+	enabled=1
+	priority=2
+	EOF
+
+	yum clean all && yum makecache
+}
+
+
+update_ceph()
+{
+	yum install -y --skip-broken ceph-$ceph_version
+}
+
+conf_ssh_auth()
+{
+	sed -i '/StrictHostKeyChecking/c StrictHostKeyChecking no' /etc/ssh/ssh_config
+}
+
+install_ceph_deploy()
+{
+        [[ $(command -v pip) ]] || {
+                wget https://bootstrap.pypa.io/get-pip.py || {
+                        echo 'Failed to install pip'
+                        exit 1
+                }
+                python get-pip.py
+        }
+
+	[[ $node_roles == cephnode1 ]] && pip install ceph-deploy &
+
+	pip install prettytable &
+	wait
+}
+
+format_disk()
+{
+	ceph_disks=($(echo $disks))
+
+	for ceph_disk in "${ceph_disks[@]}";
+	do
+		umount $ceph_disk
+		mkfs.xfs -f $ceph_disk &
+	done
+	wait
+}
+
+part_nvme()
+{
+	expect -c "
+		set timeout 5
+		spawn parted /dev/nvme0n1 mklabel gpt
+		expect {
+			"Yes/No" {send \"yes\r\"; exp_continue}
+		}"
+
+	for j in $(seq 1 ${nr_hdd});
+	do
+		((b = $(( $j * 8 ))))
+		((a = $(( $b - 8 ))))
+		((c = $(( $b - 6 ))))
+		str="%"
+		parted /dev/nvme0n1 mkpart primary ${a}${str} ${c}${str}
+		parted /dev/nvme0n1 mkpart primary ${c}${str} ${b}${str}
+	done
+}
+
+stop_firewalld
+conf_hostname
+[[ -n $ceph_version ]] && {
+	update_yum_repos
+	update_ceph
+}
+conf_ssh_auth
+install_ceph_deploy
+
+[[ $node_roles =~ cephnode ]] || exit 0
+format_disk
+[[ $nvme == true ]] || exit 0
+part_nvme
