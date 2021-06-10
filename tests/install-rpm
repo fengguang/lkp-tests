@@ -49,10 +49,10 @@ ldd_test()
 
 handle_rpm_name()
 {
-	name=$(yum info $@ | awk -F ': ' '{if($1 ~ /Name/) print $2}')
-	version=$(yum info $@ | awk -F ': ' '{if($1 ~ /Version/) print $2}')
-	release=$(yum info $@ | awk -F ': ' '{if($1 ~ /Release/) print $2}')
-	architecture=$(yum info $@ | awk -F ': ' '{if($1 ~ /Architecture/) print $2}')
+	name=$(yum info --installed $@ | awk -F ': ' '{if($1 ~ /Name/) print $2}')
+	version=$(yum info --installed $@ | awk -F ': ' '{if($1 ~ /Version/) print $2}')
+	release=$(yum info --installed $@ | awk -F ': ' '{if($1 ~ /Release/) print $2}')
+	architecture=$(yum info --installed $@ | awk -F ': ' '{if($1 ~ /Architecture/) print $2}')
 
 	rpm_full_name="${name}-${version}-${release}.${architecture}"
 }
