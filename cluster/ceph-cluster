@@ -1,0 +1,26 @@
+switch: Switch-P12
+ip0: 1
+nodes:
+  taishan200-2280-2s48p-256g--a99:
+    roles: [ cephnode1 ]
+    macs: [ "44:67:47:d7:6d:14" ]
+
+  taishan200-2280-2s48p-256g--a32:
+    roles: [ cephnode2 ]
+    macs: [ "44:67:47:c9:db:38" ]
+
+  taishan200-2280-2s48p-256g--a33:
+    roles: [ cephnode3 ]
+    macs: [ "44:67:47:d7:6c:c4" ]
+
+  taishan200-2280-2s64p-256g--a117:
+    roles: [ cephclient1 ]
+    macs: [ "44:67:47:85:f4:0b" ]
+
+  taishan200-2280-2s64p-256g--a118:
+    roles: [ cephclient2 ]
+    macs: [ "44:67:47:e9:78:cf" ]
+
+  taishan200-2280-2s64p-256g--a119:
+    roles: [ cephclient3 ]
+    macs: [ "44:67:47:e9:79:65" ]
