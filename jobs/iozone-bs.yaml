@@ -2,7 +2,7 @@ suite: iozone
 category: benchmark
 
 file_size: 4g
-test: write, read, rand_rw
+test: write read rand_rw
 
 block_size:
 - 64k

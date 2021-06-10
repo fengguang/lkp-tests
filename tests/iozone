@@ -11,11 +11,7 @@ args="iozone"
 if [ -n "$block_size" ]; then
 	args+=" -r $block_size"
 	[ -n "$file_size" ] && args+=" -s $file_size"
-	OLD_IFS="$IFS"
-	# reset IFS to split $test by "," and then restore default
-	IFS=","
 	array=($test)
-	IFS="$OLD_IFS"
 	for ele in "${array[@]}"
 	do
 		case $ele in
