@@ -1,0 +1,77 @@
+suite: ceph
+category: functional
+
+
+cluster: ceph-cluster
+os_mount: cifs
+
+ceph_version: 14.2.8
+
+cephfs_mount_point: /cephfs
+ceph_data_pool: cephfs_data
+ceph_metadata_pool: cephfs_metadata
+ceph_block_pool: block_pool
+ceph_pg_num: 128
+ceph_pgp_num: 128
+ceph_images_size: 20480
+ceph_images_num: 30
+
+ceph_type: 
+        - block
+        - fs
+
+nvme: false
+
+ceph_nodes:
+        - cephnode1
+        - cephnode2
+        - cephnode3
+
+ceph_clients:
+        - cephclient1
+        - cephclient2
+        - cephclient3
+
+<< : cluster-ssh-trust.yaml
+
+if role cephnode1:
+        nr_hdd: 2
+        disk:
+        fs:
+        - xfs
+        ceph-init:
+        ceph-install:
+
+if role cephnode2:
+        nr_hdd: 2
+        disk:
+        fs:
+        - xfs
+        ceph-init:
+        ceph-install:
+
+if role cephnode3:
+        nr_hdd: 2
+        disk:
+        fs:
+        - xfs
+        ceph-init:
+        ceph-install:
+
+if role cephclient1:
+        ceph_images_range: 1..10
+        ceph-init:
+        ceph-install:
+        sleep: 3600
+
+if role cephclient2:
+        ceph_images_range: 11..20
+        ceph-init:
+        ceph-install:
+        sleep: 3600
+
+if role cephclient3:
+        ceph_images_range: 21..30
+        ceph-init:
+        ceph-install:
+        sleep: 3600
