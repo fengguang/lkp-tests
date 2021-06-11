@@ -1,0 +1,9 @@
+2021-04-28 19:28:19 systemctl stop multipathd
+2021-04-28 19:28:19 sed "s:^:srp/:" /lkp/benchmarks/blktests/tests/srp-group-01
+2021-04-28 19:28:19 ./check srp/002 srp/003
+srp/002 (File I/O on top of multipath concurrently with logout and login (mq))
+srp/002 (File I/O on top of multipath concurrently with logout and login (mq)) [passed]
+    runtime  ...  32.787s
+srp/003 (File I/O on top of multipath concurrently with logout and login (sq))
+srp/003 (File I/O on top of multipath concurrently with logout and login (sq)) [not run]
+    legacy device mapper support is missing

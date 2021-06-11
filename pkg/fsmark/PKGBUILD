@@ -1,19 +1,19 @@
 pkgname=fsmark
-pkgver=3.3
+pkgver=git
 pkgrel=1
 arch=('i386' 'x86_64')
-url="https://sourceforge.net/projects/fsmark"
+url="https://github.com/josefbacik/fs_mark.git"
 license=('GPL')
-source=("https://sourceforge.net/projects/${pkgname}/files/${pkgname}/${pkgver}/fs_mark-${pkgver}.tar.gz")
-sha256sums=('SKIP')
+source=("https://github.com/josefbacik/fs_mark.git")
+md5sums=('SKIP')
 
 build()
 {
-	cd "${srcdir}/fs_mark-${pkgver}"
+	cd "${srcdir}/fs_mark"
 	make fs_mark
 }
 
 package() {
 	mkdir -p "${pkgdir}/lkp/benchmarks/fsmark"
-	cp -af "$srcdir/fs_mark-$pkgver/fs_mark" "${pkgdir}/lkp/benchmarks/fsmark"
+	cp -af "$srcdir/fs_mark/"* "${pkgdir}/lkp/benchmarks/fsmark"
 }

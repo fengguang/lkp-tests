@@ -1,0 +1,56 @@
+2021-06-06 19:03:50 stress-ng --timeout 5 --times --verify --metrics-brief --sequential 24 --class memory --minimize --exclude spawn,exec,swap,stack
+stress-ng: info:  [2759] disabled 'oom-pipe' as it may hang or reboot the machine (enable it with the --pathological option)
+stress-ng: info:  [2759] dispatching hogs: 24 atomic, 24 bad-altstack, 24 bsearch, 24 context, 24 full, 24 heapsort, 24 hsearch, 24 judy, 24 list, 24 lockbus, 24 lsearch, 24 malloc, 24 matrix, 24 matrix-3d, 24 mcontend, 24 membarrier, 24 memcpy, 24 memfd, 24 memrate, 24 memthrash, 24 mergesort, 24 mincore, 24 misaligned, 24 null, 24 numa, 24 pipe, 24 pipeherd, 24 qsort, 24 radixsort, 24 remap, 24 resources, 24 rmap, 24 shellsort, 24 skiplist, 24 stackmmap, 24 str, 24 stream, 24 tlb-shootdown, 24 tmpfs, 24 tree, 24 tsearch, 24 vm, 24 vm-addr, 24 vm-rw, 24 vm-segv, 24 wcs, 24 zero, 24 zlib
+stress-ng: info:  [2759] successful run completed in 247.66s (4 mins, 7.66 secs)
+stress-ng: info:  [2759] stressor       bogo ops real time  usr time  sys time   bogo ops/s     bogo ops/s
+stress-ng: info:  [2759]                           (secs)    (secs)    (secs)   (real time) (usr+sys time)
+stress-ng: info:  [2759] memrate             218      5.00    116.28      1.78        43.58           1.85
+stress-ng: info:  [2759] memrate         4640.01 write128 MB/sec (average per stressor)
+stress-ng: info:  [2759] memrate         8032.25 read128 MB/sec (average per stressor)
+stress-ng: info:  [2759] memrate         4716.54 write64 MB/sec (average per stressor)
+stress-ng: info:  [2759] memrate         7004.02 read64 MB/sec (average per stressor)
+stress-ng: info:  [2759] memrate         4500.34 write32 MB/sec (average per stressor)
+stress-ng: info:  [2759] memrate         6545.54 read32 MB/sec (average per stressor)
+stress-ng: info:  [2759] memrate         3779.26 write16 MB/sec (average per stressor)
+stress-ng: info:  [2759] memrate         6107.08 read16 MB/sec (average per stressor)
+stress-ng: info:  [2759] memrate         2369.39 write8 MB/sec (average per stressor)
+stress-ng: info:  [2759] memrate         4092.60 read8 MB/sec (average per stressor)
+stress-ng: info:  [2759] memthrash          7373      5.26    455.41      4.22      1400.72          16.04
+stress-ng: info:  [2759] mergesort        690709      5.00    118.43      0.00    138139.72        5832.21
+stress-ng: info:  [2759] mincore          642689      5.00     17.19    101.51    128538.03        5414.40
+stress-ng: info:  [2759] misaligned        13195      5.00    119.07      0.00      2637.00         110.82
+stress-ng: info:  [2759] null            8142845      5.00      4.26    114.67   1628570.47       68467.54
+stress-ng: info:  [2759] numa                 35      5.27      0.31    123.90         6.64           0.28
+stress-ng: info:  [2759] pipe          114699197      5.00     87.08    149.07  22938940.74      485704.84
+stress-ng: info:  [2759] pipeherd       31374714      5.03      8.84    298.78   6235302.61      101991.79
+stress-ng: info:  [2759] pipeherd           1.01 context switches per bogo op (average per stressor)
+stress-ng: info:  [2759] pipeherd      262868.42 context switches per second (average per stressor)
+stress-ng: info:  [2759] qsort            401107      5.00    118.91      0.00     80217.79        3373.20
+stress-ng: info:  [2759] radixsort       1234615      5.00    118.80      0.00    246913.57       10392.38
+stress-ng: info:  [2759] remap              1943      5.07      0.34    120.37       383.23          16.10
+stress-ng: info:  [2759] resources          8635      6.65      1.05    640.54      1299.39          13.46
+stress-ng: info:  [2759] rmap                384      5.00      0.08      2.09        76.79         176.96
+stress-ng: info:  [2759] shellsort        459346      5.00    119.04      0.00     91865.75        3858.75
+stress-ng: info:  [2759] skiplist         561290      5.00    118.89      0.00    112255.85        4721.09
+stress-ng: info:  [2759] stackmmap         51653      5.00      5.44    112.11     10328.80         439.41
+stress-ng: info:  [2759] str             4839884      5.00    118.80      0.00    967980.31       40739.76
+stress-ng: info:  [2759] stream            10344      5.00    113.01      5.15      2067.19          87.54
+stress-ng: info:  [2759] stream          5372.21 memory rate (MB per sec) (average per stressor)
+stress-ng: info:  [2759] stream          2148.88 memory rate (Mflop per sec) (average per stressor)
+stress-ng: info:  [2759] tlb-shootdown      1156      5.05      3.17     18.12       228.92          54.30
+stress-ng: info:  [2759] tmpfs               984      5.02     47.03     69.29       195.93           8.46
+stress-ng: info:  [2759] tree             190503      5.00    118.80      0.00     38100.64        1603.56
+stress-ng: info:  [2759] tsearch          299150      5.00    118.83      0.00     59828.47        2517.46
+stress-ng: info:  [2759] vm               128185      5.14    122.29      0.00     24940.71        1048.21
+stress-ng: info:  [2759] vm-addr             384      7.75    176.93      2.20        49.53           2.14
+stress-ng: info:  [2759] vm-rw          14538905      5.00     11.36    140.14   2907764.70       95966.37
+stress-ng: info:  [2759] vm-segv           43334      5.00      1.29    120.60      8665.10         355.52
+stress-ng: info:  [2759] wcs             2828871      5.00    118.80      0.00    565775.80       23812.05
+stress-ng: info:  [2759] zero            1434549      5.00      3.98    111.71    286899.01       12399.94
+stress-ng: info:  [2759] zlib               3494      5.14    123.32      0.00       679.71          28.33
+stress-ng: info:  [2759] for a 247.66s run time:
+stress-ng: info:  [2759]   23775.09s available CPU time
+stress-ng: info:  [2759]    4379.07s user time   ( 18.42%)
+stress-ng: info:  [2759]    2482.81s system time ( 10.44%)
+stress-ng: info:  [2759]    6861.88s total time  ( 28.86%)
+stress-ng: info:  [2759] load average: 169.67 116.23 46.65

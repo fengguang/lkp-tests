@@ -1,0 +1,10 @@
+
+[   22.164633] VFS: Warning: trinity-c7 using old stat() call. Recompile your binary.
+[   22.166102] ptrace attach of "trinity -q -q -l off -s 364045467 -N 99999"[1412] was attempted by "trinity -q -q -l off -s 364045467 -N 99999"[1426]
+[   22.195465] NET: Registered protocol family 36
+[   22.233588] NET: Registered protocol family 15
+[   23.052400] audit: type=1326 audit(1621759409.742:4): auid=4294967295 uid=65534 gid=65534 ses=4294967295 pid=1412 comm="trinity-c2" exe="/bin/trinity" sig=9 arch=40000003 syscall=19 compat=1 ip=0xf7ee7549 code=0x0
+[   23.093962] BUG: Bad rss-counter state mm:(____ptrval____) type:MM_ANONPAGES val:-512
+[   23.120153] audit: type=1326 audit(1621759409.810:5): auid=4294967295 uid=65534 gid=65534 ses=4294967295 pid=1415 comm="trinity-c5" exe="/bin/trinity" sig=9 arch=40000003 syscall=19 compat=1 ip=0xf7ee7549 code=0x0
+[   23.135426] audit: type=1326 audit(1621759409.825:6): auid=4294967295 uid=65534 gid=65534 ses=4294967295 pid=1450 comm="trinity-c5" exe="/bin/trinity" sig=9 arch=40000003 syscall=19 compat=1 ip=0xf7ee7549 code=0x0
+[   24.115327] audit: type=1326 audit(1621759410.805:7): auid=4294967295 uid=65534 gid=65534 ses=4294967295 pid=1410 comm="trinity-c0" exe="/bin/trinity" sig=9 arch=40000003 syscall=19 compat=1 ip=0xf7ee7549 code=0x0

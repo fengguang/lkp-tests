@@ -1,0 +1,9 @@
+boot_failures: 1
+
+# BUG: Bad rss-counter state mm:.* type:MM_ANONPAGES val:.*
+BUG:Bad_rss-counter_state_mm:#type:MM_ANONPAGES_val: 1
+message:BUG:Bad_rss-counter_state_mm:#type:MM_ANONPAGES_val: [   80.051123] BUG: Bad rss-counter state mm:0000000002d98df7 type:MM_ANONPAGES val:512
+pattern:BUG:Bad_rss-counter_state_mm:#type:MM_ANONPAGES_val: BUG: Bad rss-counter state mm:.* type:MM_ANONPAGES val:.*
+
+timestamp:last: 80.320925
+timestamp:BUG:Bad_rss-counter_state_mm:#type:MM_ANONPAGES_val: 80.051123

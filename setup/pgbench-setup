@@ -15,12 +15,12 @@
 
 postgres_run()
 {
-	sudo -u postgres "$@"
+	sudo -u postgres $exec_prefix "$@"
 }
 
 postgres_run_log()
 {
-	log_cmd sudo -u postgres "$@"
+	log_cmd sudo -u postgres $exec_prefix "$@"
 }
 
 init_postgresql()
@@ -68,5 +68,5 @@ fi
 [ -n "$latency_limit" ] && run_opts="$run_opts -L $latency_limit"
 
 cat > "$TMP_RESULT_ROOT"/run.pgbench <<EOF
-log_cmd sudo -u postgres pgbench -n $run_opts
+log_cmd sudo -u postgres $exec_prefix pgbench -n $run_opts
 EOF

@@ -2,31 +2,28 @@
 
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
+require "#{LKP_SRC}/lib/statistics"
 require "#{LKP_SRC}/lib/string_ext"
+require "#{LKP_SRC}/lib/array_ext"
+require "#{LKP_SRC}/lib/tests/stats"
 
-results = Hash.new { |h, k| h[k] = [] }
+stats = LKP::Stats.new
 
-def stat_line(line, results)
+while (line = STDIN.gets)
   line = line.resolve_invalid_bytes
 
   case line
-  when /^(.+? ).*\[passed\]/
-    results['passes'] += $1.rstrip.tr('/', '.').split
-  when /^(.+? ).*\[failed\]/
-    results['failures'] += $1.rstrip.tr('/', '.').split
-  when /^(.+? ).*\[not run\]/
-    results['skips'] += $1.rstrip.tr('/', '.').split
-  when /^(.+?\/\*\*\*).*\[not run\]/
-    results['skips'] += $1.tr('/', '.').split
-  when /^(.+? ).*\[ignored by lkp\]/
-    puts "#{$1.rstrip.tr('/', '.')}.ignored_by_lkp: 1"
+  when /^(.+? ).*\[(passed)\]/
+    # srp/002 (File I/O ... and login (mq)) [passed]
+    stats.add "#{$1}", $2
+  when /^(.+? ).*\[(failed)\]/
+    stats.add "#{$1}", $2
+  when /^(.+? ).*\[(not run)\]/
+    # srp/003 (File I/O ... and login (sq)) [not run]
+    stats.add "#{$1}", $2
+  when /^(.+?\/\*\*\*).*\[(not run)\]/
+    stats.add "#{$1}", $2
   end
 end
 
-while (line = STDIN.gets)
-  stat_line(line, results)
-end
-
-results['passes'].each { |seq| puts "#{seq}.pass: 1" }
-results['skips'].each { |seq| puts "#{seq}.skip: 1" }
-results['failures'].each { |seq| puts "#{seq}.fail: 1" }
+stats.dump('passed' => 'pass', 'failed' => 'fail', 'not_run' => 'skip')

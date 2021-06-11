@@ -536,6 +536,13 @@ fixup_sgx()
 	:
 }
 
+fixup_mount_setattr()
+{
+	# fix no real run for mount_setattr
+	grep -q TEST_PROGS mount_setattr/Makefile ||
+	grep "TEST_GEN_FILES +=" mount_setattr/Makefile | sed 's/TEST_GEN_FILES/TEST_PROGS/' >> mount_setattr/Makefile
+}
+
 build_tools()
 {
 
@@ -631,8 +638,18 @@ fixup_subtest()
 		fixup_ptp || return
 	elif [[ "$subtest" = "sgx" ]]; then
 		fixup_sgx
+	elif [[ "$subtest" = "mount_setattr" ]]; then
+		fixup_mount_setattr
 	fi
 	return 0
+}
+
+should_run_cached_kselftests()
+{
+	# force to run cached binary
+	[[ $subtest = 'mount_setattr' ]] && [[ -d $(dirname $run_cached_kselftests)/mount_setattr ]] && return
+
+	$run_cached_kselftests -l 2>/dev/null | grep -q "^$subtest:"
 }
 
 run_tests()
@@ -677,7 +694,7 @@ run_tests()
 		subtest_in_skip_filter "$skip_filter" && continue
 
 		(
-		if $run_cached_kselftests -l 2>/dev/null | grep -q "^$subtest:"; then
+		if should_run_cached_kselftests; then
 			found_subtest_in_cache=1
 			[[ -f $LKP_SRC/lib/tests/kernel-selftests-ext.sh ]] && {
 				echo "source $LKP_SRC/lib/tests/kernel-selftests-ext.sh"

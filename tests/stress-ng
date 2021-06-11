@@ -7,6 +7,10 @@
 mount_dev()
 {
 	local mnt=/mnt/stress-ng
+
+	[ $nr_partitions -ge 1 ] || die "nr_partitions is less than 1"
+	partition=${partitions%% *}
+
 	log_cmd mkdir -p $mnt
 	log_cmd mount $partition $mnt 2>/dev/null
 	cd $mnt
@@ -15,8 +19,7 @@ mount_dev()
 ## some options are universal, put them in universal_setting
 set_for_universal()
 {
-	[ $nr_partitions -ge 1 ] || exit
-	partition=${partitions%% *}
+
 	[ -n "$testtime" ] || testtime=1
 
 	default_option="

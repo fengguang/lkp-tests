@@ -37,3 +37,16 @@ fs:
 xfstests:
   test:
   - generic-299
+
+---
+fs:
+- ext2
+- ext4
+- xfs
+- btrfs
+- f2fs
+- udf
+
+xfstests:
+  test:
+  - generic-281

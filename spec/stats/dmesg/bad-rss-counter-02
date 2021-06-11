@@ -1,0 +1,9 @@
+
+[   77.942409] audit: type=1326 audit(1621988597.409:32): auid=4294967295 uid=65534 gid=65534 ses=4294967295 pid=1752 comm="trinity-c3" exe="/bin/trinity" sig=9 arch=40000003 syscall=19 compat=1 ip=0xf7fbb549 code=0x0
+[   78.934719] audit: type=1326 audit(1621988598.402:33): auid=4294967295 uid=65534 gid=65534 ses=4294967295 pid=1734 comm="trinity-c0" exe="/bin/trinity" sig=9 arch=40000003 syscall=19 compat=1 ip=0xf7fbb549 code=0x0
+[   79.022900] audit: type=1326 audit(1621988598.490:34): auid=4294967295 uid=65534 gid=65534 ses=4294967295 pid=1766 comm="trinity-c0" exe="/bin/trinity" sig=9 arch=40000003 syscall=19 compat=1 ip=0xf7fbb549 code=0x0
+[   80.051123] BUG: Bad rss-counter state mm:0000000002d98df7 type:MM_ANONPAGES val:512
+[   80.071356] audit: type=1326 audit(1621988599.539:35): auid=4294967295 uid=65534 gid=65534 ses=4294967295 pid=1776 comm="trinity-c5" exe="/bin/trinity" sig=9 arch=40000003 syscall=19 compat=1 ip=0xf7fbb549 code=0x0
+[   80.204813] audit: type=1326 audit(1621988599.669:36): auid=4294967295 uid=65534 gid=65534 ses=4294967295 pid=1758 comm="trinity-c3" exe="/bin/trinity" sig=9 arch=40000003 syscall=19 compat=1 ip=0xf7fbb549 code=0x0
+[   80.220148] audit: type=1326 audit(1621988599.687:37): auid=4294967295 uid=65534 gid=65534 ses=4294967295 pid=1779 comm="trinity-c3" exe="/bin/trinity" sig=9 arch=40000003 syscall=19 compat=1 ip=0xf7fbb549 code=0x0
+[   80.320925] audit: type=1326 audit(1621988599.788:38): auid=4294967295 uid=65534 gid=65534 ses=4294967295 pid=1780 comm="trinity-c3" exe="/bin/trinity" sig=9 arch=40000003 syscall=19 compat=1 ip=0xf7fbb549 code=0x0

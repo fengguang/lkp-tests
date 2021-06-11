@@ -1,0 +1,8 @@
+2021-04-30 06:51:50 sed "s:^:zbd/:" /lkp/benchmarks/blktests/tests/zbd-group-01
+2021-04-30 06:51:50 ./check zbd/002 zbd/003
+zbd/002 => nullb0 (report zone)
+zbd/002 => nullb0 (report zone)                              [passed]
+    runtime  ...  0.031s
+zbd/003 => nullb0 (reset sequential required zones)
+zbd/003 => nullb0 (reset sequential required zones)          [passed]
+    runtime  ...  0.063s
