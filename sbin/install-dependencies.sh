@@ -64,6 +64,7 @@ set_env()
 {
 	write_host
 	write_shell_profile "export LKP_SRC=$PWD"
+	write_shell_profile "export CCI_REPOS=$(dirname $PWD)"
 	write_shell_profile "export PATH=\$PATH:\$LKP_SRC/sbin:\$LKP_SRC/bin"
 }
 
