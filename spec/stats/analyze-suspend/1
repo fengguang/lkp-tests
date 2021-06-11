@@ -1,0 +1,27 @@
+options: mode: freeze, runtime: 72000, rtcwake: 5, multi: 2000, option: -dev -wifi
+analyze_suspend test started
+01:41:36: sleepgraph.py -m freeze -dev -wifi -rtcwake 5 -sync -info 2000 -gzip -skiphtml -skipkprobe udelay -bufsize 51200
+Checking this system (lkp-sklu-lenovo1)...
+    have root access: YES
+    is sysfs mounted: YES
+    is "freeze" a valid power mode: YES
+    is ftrace supported: YES
+    are kprobes supported: YES
+    timeline data source: FTRACE (all trace events found)
+    is rtcwake supported: YES
+    optional commands this tool may use for info:
+        turbostat: MISSING
+        mcelog: MISSING
+        lspci: FOUND
+        lsusb: FOUND
+INITIALIZING FTRACE...
+INITIALIZING KPROBES...
+SYNCING FILESYSTEMS
+START TRACING
+SUSPEND START
+will issue an rtcwake in 5 seconds
+RESUME COMPLETE
+CAPTURING DMESG
+CAPTURING TRACE
+12:09:54: resume back, return value 0 !
+analyze_suspend test done
