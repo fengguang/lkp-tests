@@ -1,0 +1,104 @@
+#!/bin/sh
+# java_home
+# hadoop_home
+# hadoop_user
+# hdfs_dir
+# namenode
+# namenode_fs_port
+# namenode_http_port
+# seconary_namenode
+# seconary_namenode_http_port
+# datanodes
+
+: "${java_home:=/usr/local/jdk}"
+: "${hadoop_home:=/usr/hadoop}"
+: "${hadoop_user:=root}"
+: "${hdfs_dir:=/hadoop/hdfs}"
+: "${namenode:=localhost}"
+: "${namenode_fs_port:=8020}"
+: "${namenode_http_port:=50070}"
+: "${seconary_namenode:=local}"
+: "${seconary_namenode_http_port:=50090}"
+: "${datanodes:=localhost}"
+
+hdfs_replucation=0
+namenode_dir="$hdfs_dir/namenode"
+datanode_dir="$hdfs_dir/datanode"
+seconary_namenode_dir="$hdfs_dir/seconary_namenode"
+
+set_hostname()
+{	
+	cat > /etc/sysconfig/network <<-EOF
+		NETWORKING=yes
+		HOSTNAME=$node_roles
+	EOF
+
+	hostnamectl --static set-hostname "$node_roles"
+}
+
+set_env()
+{
+	cat >> /etc/profile <<-EOF
+		umask 0022
+		setenforce 0
+		export JAVA_HOME=$java_home
+		export HADOOP_HOME=$hadoop_home
+		export PATH=$java_home/bin:$hadoop_home/bin:$hadoop_home/sbin:$PATH
+	EOF
+}
+
+set_hadoop_env()
+{
+	cat >> "$hadoop_home/etc/hadoop/hadoop-env.sh" <<-EOF
+		export JAVA_HOME=$java_home
+		export HADOOP_HOME=$hadoop_home
+		export JAVA_LIBRAY_PATH=$hadoop_home/lib/native
+		export HDFS_NAMENODE_USER=$hadoop_user
+		export HDFS_SECONDARYNAMENODE_USER=$hadoop_user
+		export HDFS_DATANODE_USER=$hadoop_user
+		export HADOOP_PID_DIR=$hadoop_home/pid
+		export HADOOP_LOG_DIR=$hadoop_home/logs
+		export HADOOP_HEAPSIZE_MAX=4g
+	EOF
+}
+
+set_hadoop_datanode()
+{
+	rm -f "$hadoop_home/etc/hadoop/workers"
+	for node in ${datanodes[@]}
+	do
+		echo "$node" >> "$hadoop_home/etc/hadoop/workers"
+		hdfs_replucation=$((hdfs_replucation+1))
+	done
+}
+
+set_core_site()
+{
+	local core_site_xml="$hadoop_home/etc/hadoop/core-site.xml"
+	sed -i -e "s|{{namenode}}|$namenode|" \
+		-e "s|{{namenode_fs_port}}|$namenode_fs_port|" "$core_site_xml"
+}
+
+set_hdfs_site()
+{
+	mkdir -p "$namenode_dir" "$datanode_dir"
+	local hdfs_site_xml="$hadoop_home/etc/hadoop/hdfs-site.xml"
+	sed -i -e "s|{{hdfs_replucation}}|$hdfs_replucation|" \
+		-e  "s|{{namenode}}|$namenode|" \
+		-e "s|{{namenode_http_port}}|$namenode_http_port|" \
+		-e "s|{{seconary_namenode}}|$seconary_namenode|" \
+		-e "s|{{seconary_namenode_http_port}}|$seconary_namenode_http_port|" \
+		-e "s|{{namenode_dir}}|$namenode_dir|" \
+		-e "s|{{datanode_dir}}|$datanode_dir|" \
+		-e "s|{{seconary_namenode_dir}}|$seconary_namenode_dir|" "$hdfs_site_xml"
+}
+
+main()
+{	set_hostname
+	set_env
+	set_hadoop_env
+	set_hadoop_datanode
+	set_core_site
+	set_hdfs_site
+}
+main
