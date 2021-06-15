@@ -1,0 +1,15 @@
+#!/bin/sh
+
+: "${hadoop_home:=/usr/hadoop}"
+
+main()
+{
+	source /etc/profile > /dev/null
+
+	# The first time you bring up HDFS, it must be formatted.
+	# Format a new distributed filesystem as hdfs:
+	$hadoop_home/bin/hdfs namenode -format
+
+	$hadoop_home/sbin/start-dfs.sh
+}
+main
