@@ -156,14 +156,14 @@ build_rpm()
 		}
 	startTime=$(date +%Y-%m-%d-%H:%M)
 	startTime_s=$(date +%s)
-	# Install build depends
+	# Install build dependencies
 	yum-builddep -y "$spec_dir"/*.spec || die "failed to solve dependencies"
 	# Download tar.gz to default path ${HOME}/rpmbuild/SOURCE
 	[ -n "$package_name" ] &&
 		{
 			spectool -g -R "$spec_dir/"*.spec || die "failed to download source file"
 		}
-	# Building rpm or srpm packages
+	# Build source and binary packages
 	rpmbuild -ba "$spec_dir"/*.spec || die "failed to build rpms"
 	endTime=$(date +%Y-%m-%d-%H:%M)
 	endTime_s=$(date +%s)
