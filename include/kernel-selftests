@@ -236,9 +236,9 @@ need_kconfig:
 - CONFIG_UTS_NS=y
 - CONFIG_VETH
 - CONFIG_X86_CPU_RESCTRL=y ~ ">= v5.0-rc1"
-- CONFIG_NFC= ~ ">= v5.12-rc1"
-- CONFIG_NFC_NCI= ~ ">= v5.12-rc1"
-- CONFIG_NFC_VIRTUAL_NCI= ~ ">= v5.12-rc1"
+- CONFIG_NFC=m ~ ">= v5.12-rc1"
+- CONFIG_NFC_NCI=m ~ ">= v5.12-rc1"
+- CONFIG_NFC_VIRTUAL_NCI=m ~ ">= v5.12-rc1"
 % elsif ___.group == "group-s"
 - CONFIG_SECURITY=y
 - CONFIG_SECURITYFS=y
