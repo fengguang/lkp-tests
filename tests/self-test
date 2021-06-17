@@ -6,20 +6,79 @@
 
 source /etc/profile.d/compass.sh
 
-submit_args=(
-		"testbox=dc-8g cci-depends.benchmark=sshd cci-depends.yaml"
-		"testbox=dc-8g borrow-1h.yaml runtime=1m"
-		"testbox=vm-2p8g borrow-1h.yaml runtime=1m"
-	    )
+group_id=selftest
 
-submit_job()
+cci_makepkg=(	reaim
+		pixz
+		iozone
+		hackbench
+		netpipe
+		pft
+		ku-latency
+		redis-server
+		hackben-git
+)
+
+cci_depends=(	sshd
+		pft
+		reaim
+		pixz
+		netpipe
+		numactl
+		fs
+)
+
+dc_cases=(	"testbox=dc-8g borrow-1h.yaml runtime=10s"	)
+
+vm_cases=(	"testbox=vm-2p8g borrow-1h.yaml     runtime=10s"
+		"testbox=vm-2p8g reaim.yaml         reaim.test=aim9 runtime=10s"
+		"testbox=vm-2p8g pixz.yaml          nr_threads=100% runtime=10s"
+		"testbox=vm-2p8g iozone-bs.yaml     block_size=64k  runtime=10s"
+		"testbox=vm-2p8g hackbench-git.yaml nr_threads=1    hackbench-git.mode=process hackbench-git.ipc=pipe runtime=10s"
+		"testbox=vm-2p8g host-info.yaml     runtime=10s"
+		"testbox=vm-2p8g kunit.yaml         runtime=10s"
+		"testbox=vm-2p8g netpipe.yaml       runtime=10s"
+		"testbox=vm-2p8g redis.yaml         runtime=10s"
+		"testbox=vm-2p8g ku-latency.yaml    runtime=10s"
+		"testbox=vm-2p8g pft.yaml           nr_task=50%     runtime=10s"
+)
+
+run_testboxes()
 {
-	for args in "${submit_args[@]}"
-	do
-		submit -m $args group_id=selftest
-	done
+	"$CCI_SRC"/providers/multi-qemu -n vm-2p16g -c 5 -q vm-2p16g."$(arch)" >/dev/null 2>&1 &
+}
 
-	report_content=$(es-jobs group_id=selftest | grep job_state)
+submit_makepkg()
+{
+	local testbox=vm-2p16g
+
+	for args in "${cci_makepkg[@]}"
+	do
+		submit -m testbox="$testbox" cci-makepkg.yaml cci-makepkg.benchmark="$args" group_id="$group_id" >/dev/null 2>&1 &
+	done
+}
+
+submit_depends()
+{
+	local testbox=vm-2p8g
+
+	for args in "${cci_depends[@]}"
+	do
+		submit -m testbox="$testbox" cci-depends.yaml cci-depends.benchmark="$args" group_id="$group_id" >/dev/null 2>&1 &
+	done
+}
+
+submit_cases()
+{
+	for args in "${vm_cases[@]}" "${dc_cases[@]}"
+	do
+		submit -m $args group_id="$group_id" >/dev/null 2>&1 &
+	done
+}
+
+get_report_content()
+{
+	report_content=$(es-jobs group_id="$group_id" | grep job_state)
 	log_info "selftest job result: $report_content"
 }
 
@@ -51,7 +110,15 @@ upload_failed_result()
 	done
 }
 
+run_testboxes
+submit_makepkg
+submit_depends
+wait
+
+submit_cases
+wait
+
 get_commit_info
-submit_job
+get_report_content
 send_email selftest
 upload_failed_result
