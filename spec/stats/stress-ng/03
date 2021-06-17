@@ -1,0 +1,18 @@
+2021-06-17 02:25:40 mkdir -p /mnt/stress-ng
+2021-06-17 02:25:40 mount /dev/sdb1 /mnt/stress-ng
+2021-06-17 02:25:42 stress-ng --timeout 60 --times --verify --metrics-brief --signest 4
+stress-ng: info:  [2196] dispatching hogs: 4 signest
+stress-ng: info:  [2197] stress-ng-signest: 16 unique nested signals handled, HUP ILL QUIT ABRT FPE TERM XCPU XFSZ STKFLT PWR VTALRM USR1 USR2 TTOU TTIN WINCH
+stress-ng: info:  [2198] stress-ng-signest: 16 unique nested signals handled, HUP ILL QUIT ABRT FPE TERM XCPU XFSZ STKFLT PWR VTALRM USR1 USR2 TTOU TTIN WINCH
+stress-ng: info:  [2199] stress-ng-signest: 16 unique nested signals handled, HUP ILL QUIT ABRT FPE TERM XCPU XFSZ STKFLT PWR VTALRM USR1 USR2 TTOU TTIN WINCH
+stress-ng: info:  [2200] stress-ng-signest: 16 unique nested signals handled, HUP ILL QUIT ABRT FPE TERM XCPU XFSZ STKFLT PWR VTALRM USR1 USR2 TTOU TTIN WINCH
+stress-ng: info:  [2196] successful run completed in 60.00s (1 min, 0.00 secs)
+stress-ng: info:  [2196] stressor       bogo ops real time  usr time  sys time   bogo ops/s     bogo ops/s
+stress-ng: info:  [2196]                           (secs)    (secs)    (secs)   (real time) (usr+sys time)
+stress-ng: info:  [2196] signest        64943005     60.00    116.97    120.61   1082381.11      273352.16
+stress-ng: info:  [2196] for a 60.00s run time:
+stress-ng: info:  [2196]    2880.06s available CPU time
+stress-ng: info:  [2196]     116.98s user time   (  4.06%)
+stress-ng: info:  [2196]     120.63s system time (  4.19%)
+stress-ng: info:  [2196]     237.61s total time  (  8.25%)
+stress-ng: info:  [2196] load average: 3.92 1.58 0.58
