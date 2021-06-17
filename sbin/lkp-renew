@@ -1,17 +1,54 @@
 #!/bin/bash
-
 SCRIPT_DIR=$(dirname $(realpath $0))
 PROJECT_DIR=$(dirname $SCRIPT_DIR)
 
 . $PROJECT_DIR/lib/unit.sh
+. $PROJECT_DIR/lib/debug.sh
 . /lkp/scheduled/job.sh >/dev/null 2>&1
 
-extended_time=$(to_seconds $1)
+usage()
+{
+	cat <<-EOF
+	Usage:
+	lkp-renew -g
+		get the testbox current deadline date
+	lkp-renew 1d
+		renew the testbox deadline date one day
+	EOF
+	exit
+}
+
+if [[ "$#" != 1 ]]; then
+	usage
+fi
+
+renew()
+{
+	[[ $1 =~ ^[0-9]+[ywdhms]$  ]] || die "Wrong format of your input: $1"
+	local extended_time=$(to_seconds $1)
+	local response=$(curl -s -w " %{http_code}" "http://${SCHED_HOST}:${SCHED_PORT}/renew_deadline?job_id=$id&time=$extended_time")
+	local code=$(echo $response | awk '{print $NF}')
+	local msg=$(echo $response | sed 's/ *[0-9]*$//g')
+
+	[ "$code" == "200" ] || die "Your testbox renew failed, error: $msg"
+	echo "Your testbox renew to $msg"
+	echo $extended_time > /tmp/renew
+}
+
+get_deadline()
+{
+	local response=$(curl -s -w " %{http_code}" "http://${SCHED_HOST}:${SCHED_PORT}/get_deadline?testbox=$testbox")
+	local code=$(echo $response | awk '{print $NF}')
+	local msg=$(echo $response | sed 's/ *[0-9]*$//g')
+
+	[ "$code" == "200" ] || die "get deadline failed: testbox=$testbox, error=$msg"
+	echo "Your testbox renew to $msg"
+}
 
 export_top_env
 
-response=$(curl "http://${SCHED_HOST}:${SCHED_PORT}/renew_deadline?job_id=$id&time=$extended_time")
-
-[ "$response" == "true" ] || exit
-
-echo $extended_time > /tmp/renew
+if [[ "$1" == "-g" ]]; then
+	get_deadline
+else
+	renew $1
+fi
