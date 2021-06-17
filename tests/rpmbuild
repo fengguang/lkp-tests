@@ -219,7 +219,7 @@ update_repo_mq()
 {
 	handle_rpm_list
 
-	curl -H 'Content-Type: Application/json' -XPOST "${LKP_SERVER}:10003/upload" \
+	curl -sS -H 'Content-Type: Application/json' -XPOST "${LKP_SERVER}:10003/upload" \
 		-d "{\"upload_rpms\": ["${full_list}"]}"
 }
 
