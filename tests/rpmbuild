@@ -229,3 +229,4 @@ build_rpm
 upload_rpm_pkg
 update_repo_mq
 [ -n "$upstream_commit" ] && rpmbuild_email "rpmbuild_success"
+exit 0
