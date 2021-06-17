@@ -16,13 +16,7 @@ submit_job()
 {
 	for args in "${submit_args[@]}"
 	do
-		report_content=$(submit -m $args group_id=selftest 2>&1)
-		echo $report_content | grep -q "\"job_state\":\"submit\"" ||
-			{
-				log_error  "submit $args failed: $report_content"
-				send_email selftest
-				exit 1
-			}
+		submit -m $args group_id=selftest
 	done
 
 	report_content=$(es-jobs group_id=selftest | grep job_state)
