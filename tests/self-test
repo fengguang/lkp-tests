@@ -8,39 +8,36 @@ source /etc/profile.d/compass.sh
 
 group_id=selftest
 
-cci_makepkg=(	reaim
-		pixz
-		iozone
-		hackbench
-		netpipe
-		pft
-		ku-latency
-		redis-server
-		hackben-git
+cci_pkg_deps=(	"testbox=vm-2p16g cci-makepkg.yaml cci-makepkg.benchmark=reaim"
+		"testbox=vm-2p16g cci-makepkg.yaml cci-makepkg.benchmark=pixz"
+		"testbox=vm-2p16g cci-makepkg.yaml cci-makepkg.benchmark=iozone"
+		"testbox=vm-2p16g cci-makepkg.yaml cci-makepkg.benchmark=hackbench"
+		"testbox=vm-2p16g cci-makepkg.yaml cci-makepkg.benchmark=netpipe"
+		"testbox=vm-2p16g cci-makepkg.yaml cci-makepkg.benchmark=pft"
+		"testbox=vm-2p16g cci-makepkg.yaml cci-makepkg.benchmark=ku-latency"
+		"testbox=vm-2p16g cci-makepkg.yaml cci-makepkg.benchmark=redis-server"
+		"testbox=vm-2p16g cci-makepkg.yaml cci-makepkg.benchmark=hackben-git"
+		"testbox=dc-8g    cci-depends.yaml cci-depends.benchmark=sshd"
+		"testbox=vm-2p8g  cci-depends.yaml cci-depends.benchmark=pft"
+		"testbox=vm-2p8g  cci-depends.yaml cci-depends.benchmark=reaim"
+		"testbox=vm-2p8g  cci-depends.yaml cci-depends.benchmark=pixz"
+		"testbox=vm-2p8g  cci-depends.yaml cci-depends.benchmark=netpipe"
+		"testbox=vm-2p8g  cci-depends.yaml cci-depends.benchmark=numactl"
+		"testbox=vm-2p8g  cci-depends.yaml cci-depends.benchmark=fs"
 )
 
-cci_depends=(	sshd
-		pft
-		reaim
-		pixz
-		netpipe
-		numactl
-		fs
-)
-
-dc_cases=(	"testbox=dc-8g borrow-1h.yaml runtime=10s"	)
-
-vm_cases=(	"testbox=vm-2p8g borrow-1h.yaml     runtime=10s"
-		"testbox=vm-2p8g reaim.yaml         reaim.test=aim9 runtime=10s"
-		"testbox=vm-2p8g pixz.yaml          nr_threads=100% runtime=10s"
-		"testbox=vm-2p8g iozone-bs.yaml     block_size=64k  runtime=10s"
-		"testbox=vm-2p8g hackbench-git.yaml nr_threads=1    hackbench-git.mode=process hackbench-git.ipc=pipe runtime=10s"
-		"testbox=vm-2p8g host-info.yaml     runtime=10s"
-		"testbox=vm-2p8g kunit.yaml         runtime=10s"
-		"testbox=vm-2p8g netpipe.yaml       runtime=10s"
-		"testbox=vm-2p8g redis.yaml         runtime=10s"
-		"testbox=vm-2p8g ku-latency.yaml    runtime=10s"
-		"testbox=vm-2p8g pft.yaml           nr_task=50%     runtime=10s"
+cases=( "testbox=dc-8g   borrow-1h.yaml     runtime=10s"
+        "testbox=vm-2p8g borrow-1h.yaml     runtime=10s"
+        "testbox=vm-2p8g reaim.yaml         reaim.test=aim9 runtime=10s"
+        "testbox=vm-2p8g pixz.yaml          nr_threads=100% runtime=10s"
+        "testbox=vm-2p8g iozone-bs.yaml     block_size=64k  runtime=10s"
+        "testbox=vm-2p8g hackbench-git.yaml nr_threads=1    hackbench-git.mode=process hackbench-git.ipc=pipe runtime=10s"
+        "testbox=vm-2p8g host-info.yaml     runtime=10s"
+        "testbox=vm-2p8g kunit.yaml         runtime=10s"
+        "testbox=vm-2p8g netpipe.yaml       runtime=10s"
+        "testbox=vm-2p8g redis.yaml         runtime=10s"
+        "testbox=vm-2p8g ku-latency.yaml    runtime=10s"
+        "testbox=vm-2p8g pft.yaml           nr_task=50%     runtime=10s"
 )
 
 run_testboxes()
@@ -48,29 +45,17 @@ run_testboxes()
 	"$CCI_SRC"/providers/multi-qemu -n vm-2p16g -c 5 -q vm-2p16g."$(arch)" >/dev/null 2>&1 &
 }
 
-submit_makepkg()
+submit_pkg_deps()
 {
-	local testbox=vm-2p16g
-
-	for args in "${cci_makepkg[@]}"
+	for args in "${cci_pkg_deps[@]}"
 	do
-		submit -m testbox="$testbox" cci-makepkg.yaml cci-makepkg.benchmark="$args" group_id="$group_id" >/dev/null 2>&1 &
-	done
-}
-
-submit_depends()
-{
-	local testbox=vm-2p8g
-
-	for args in "${cci_depends[@]}"
-	do
-		submit -m testbox="$testbox" cci-depends.yaml cci-depends.benchmark="$args" group_id="$group_id" >/dev/null 2>&1 &
+		submit -m $args group_id="$group_id" >/dev/null 2>&1 &
 	done
 }
 
 submit_cases()
 {
-	for args in "${vm_cases[@]}" "${dc_cases[@]}"
+	for args in "${cases[@]}"
 	do
 		submit -m $args group_id="$group_id" >/dev/null 2>&1 &
 	done
@@ -111,10 +96,8 @@ upload_failed_result()
 }
 
 run_testboxes
-submit_makepkg
-submit_depends
+submit_pkg_deps
 wait
-
 submit_cases
 wait
 
