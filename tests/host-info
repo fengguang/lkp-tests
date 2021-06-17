@@ -50,25 +50,10 @@ get_part()
 	for i
 	do
 		# ls -l /dev/disk/by-id/
-		# lrwxrwxrwx 1 root root 10 Sep  2 18:42 ata-SAMSUNG_MZ7LH480HAHQ-00005_S45PNA2MB43944-part1 -> ../../sda1
-		# lrwxrwxrwx 1 root root 10 Sep  2 18:42 ata-SAMSUNG_MZ7LH480HAHQ-00005_S45PNA2MB43944-part2 -> ../../sda2
-		# lrwxrwxrwx 1 root root 10 Sep  2 18:42 ata-SAMSUNG_MZ7LH480HAHQ-00005_S45PNA2MB43944-part3 -> ../../sda3
-		# lrwxrwxrwx 1 root root 10 Sep  2 18:42 ata-SAMSUNG_MZ7LH480HAHQ-00005_S45PNA2MB43209 -> ../../sdb
 		info=$(ls -l /dev/disk/by-id/ | grep "/$i" | awk '{print $9}' | grep -e "^scsi-" -e "^ata-" -e "^nvme-" | sed 's/-part[0-9]//g')
-		count=$(echo "$info" | wc -l)
 		partition=$(echo "$info" | uniq)
-		if [ $count -gt 1 ]; then
-			parts=$(ls /dev/disk/by-id/$partition-part*)
-			echo "  -" /dev/disk/by-id/$partition
-			for i in $parts
-			do
-				echo "  -" $i
-			done
-		else
-			echo "  -" /dev/disk/by-id/$partition
-		fi
-
-	 done
+		echo "  -" /dev/disk/by-id/$partition
+	done
  }
 
 get_partitions()
@@ -84,7 +69,7 @@ get_partitions()
 	ssd=$(lsblk -d -o name,ROTA |grep 0$ | awk '{print $1}')
 	hdd=$(lsblk -d -o name,ROTA |grep 1$ | awk '{print $1}')
 	if [ -n "$hdd" ]; then
-		echo "hdd_partitions:"
+		echo "hdd_partitions:"	
 		get_part $hdd
 	fi
 
