@@ -48,5 +48,5 @@ while (line = STDIN.gets)
   end
 end
 
-stats.add "#{type}", "#{result}" if stats.empty
+stats.add "#{type}", "#{result}" if stats.empty?
 stats.dump('success' => 'pass', 'failure' => 'fail')

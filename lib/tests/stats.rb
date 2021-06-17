@@ -41,8 +41,8 @@ module LKP
       end
     end
 
-    def empty
-      @stats.empty?
+    def method_missing(sym, *args, &block)
+      @stats.send(sym, *args, &block)
     end
 
     # def exit(warn)

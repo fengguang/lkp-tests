@@ -18,6 +18,6 @@ while (line = $stdin.gets)
   end
 end
 
-stats.add 'fail', 1 if stats.empty
+stats.add 'fail', 1 if stats.empty?
 
 stats.dump
