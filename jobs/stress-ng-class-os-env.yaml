@@ -1,0 +1,19 @@
+suite: stress-ng
+testcase: stress-ng
+category: benchmark
+
+need_memory: 222G
+nr_threads: 5%
+
+disk: 1HDD
+
+testtime:
+- 60s
+
+fs: ext4
+
+stress-ng:
+  class:
+  - os
+  test:
+  - env
