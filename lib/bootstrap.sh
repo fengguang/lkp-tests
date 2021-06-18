@@ -516,24 +516,54 @@ cleanup_pkg_cache()
 
 wait_load_disk()
 {
+	local load_disk=$1
 	# set the max time of wait is 30s
 	for i in $(seq 30)
 	do
 		# eg: /dev/disk/by-id/ata-WDC_WD1002FAEX-00Z3A0_WD-WCATRC577623-part2
-		ls $rootfs_partition >/dev/null 2>&1 && return
+		ls $load_disk >/dev/null 2>&1 && return
 		# eg: LABEL=LKP-ROOTFS
-		blkid | grep -q ${rootfs_partition#*=} && return
+		blkid | grep -q ${load_disk#*=} && return
 		sleep 1
 	done
 
 	return 1
 }
 
+add_disk_to_vg()
+{
+	local one_disk=$1
+	local vg_name=os
+
+	# if one_disk is not pv, then pvcreate it.
+	pvdisplay $one_disk > /dev/null || pvcreate -y $one_disk || {
+		echo "create pv failed: $one_disk"
+		return 1
+	}
+
+	# if vg not existed: create it by one_disk.
+	# if vg existed:     add one_disk to vg,
+	if vgdisplay $vg_name > /dev/null; then
+		# if pv not in vg: add one_disk to vg
+		pvdisplay $one_disk | grep 'VG Name' | grep -w $vg_name || {
+			vgextend -y $vg_name $one_disk || {
+				echo "vgextend failed: $one_disk"
+				return 1
+			}
+		}
+	else
+		vgcreate -y $vg_name $one_disk || {
+			echo "vgcreate failed: $one_disk"
+			return 1
+		}
+	fi
+}
+
 mount_rootfs()
 {
 	if [ -n "$rootfs_partition" ]; then
 		# wait for the machine to load the disk
-		wait_load_disk || {
+		wait_load_disk "$rootfs_partition" || {
 			# skipping following test if disk can't be load
 			echo "can't load the disk $rootfs_partition, skip testing..."
 			set_job_state 'load_disk_fail'
@@ -548,6 +578,44 @@ mount_rootfs()
 		mkdir -p $ROOTFS_DIR/tmp
 		CACHE_DIR=$ROOTFS_DIR/tmp
 		cleanup_pkg_cache $CACHE_DIR
+	elif [ -n "$rootfs_disk" ]; then
+		local one_disk
+		local vg_name=os
+
+		for one_disk in ${rootfs_disk}
+		do
+			# wait for the machine to load the disk
+			wait_load_disk "$one_disk" || {
+				echo "can't load the disk $one_disk, skip testing..."
+				set_job_state 'load_disk_fail'
+				return 1
+			}
+
+			# add disk to vg
+			add_disk_to_vg "$one_disk" || {
+				echo "can't add disk to vg: $one_disk, skip testing..."
+				return 1
+			}
+		done
+
+		# add CACHE_DIR if testbox have rootfs_disk
+		local cache_lv=/dev/mapper/${vg_name}-cache
+		[ -b "$cache_lv" ] && lvremove --force $cache_lv
+		lvcreate -y -L 8G --name cache "$vg_name" || {
+			echo "lvcreate failed: cache"
+			return 1
+		}
+
+		CACHE_DIR=/tmp/cache
+		mkdir -p $CACHE_DIR
+		mkfs.ext4 $cache_lv || {
+			echo "mkfs.ext4 failed: $cache_lv"
+			return 1
+		}
+		mount $cache_lv $CACHE_DIR || {
+			echo "mount cache_lv failed"
+			return 1
+		}
 	else
 		CACHE_DIR=/tmp/cache
 		mkdir -p $CACHE_DIR
