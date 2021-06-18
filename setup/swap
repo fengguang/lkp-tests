@@ -5,8 +5,35 @@
 . "$LKP_SRC"/lib/common.sh
 . "$LKP_SRC"/lib/reproduce-log.sh
 
+config_swap_partition()
+{
+	local vg_name=os
+	vgdisplay $vg_name > /dev/null || {
+		echo "cannot find vg: $vg_name"
+		exit 1
+	}
+
+	local swap_lv=/dev/mapper/${vg_name}-swap
+	[ -b "$swap_lv" ] && lvremove --force $swap_lv
+	lvcreate -y -L 8G --name swap "$vg_name" || {
+		echo "lvcreate failed: swap"
+		exit 1
+	}
+
+	mkswap -f $swap_lv && swapon $swap_lv || {
+		echo "prepare swap failed."
+		exit 1
+	}
+}
+
+# if have $rootfs_disk, then 'swap' field will create a swap lv(8G) and use it as swap partition.
+[ -n "$rootfs_disk" ] && config_swap_partition
+
 if [ -z "$partitions" ]; then
 	echo "no partitions found" >&2
+
+	# if have $rootfs_disk, then exit 0
+	[ -n "$rootfs_disk" ] && exit 0
 	exit 1
 fi
 
