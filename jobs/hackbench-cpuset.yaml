@@ -1,5 +1,4 @@
 suite: hackbench
-testcase: hackbench
 category: benchmark
 
 nr_node: $(echo /sys/devices/system/node/node* | wc -w)
