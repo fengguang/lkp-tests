@@ -1,0 +1,28 @@
+#!/bin/sh
+# - runtime
+
+: "${mgp_pattern:=$testcase}"
+: "${mgp_from:=0}"
+: "${mgp_to:=1}"
+
+echo -n "start: "
+grep pgmigrate_success /proc/vmstat
+
+start_time=$(date +%s)
+while true; do
+	for pid in $(pgrep "$mgp_pattern"); do
+		migratepages "$pid" "$mgp_from" "$mgp_to"
+	done
+
+	tmp="$mgp_from"
+	mgp_from="$mgp_to"
+	mgp_to="$tmp"
+
+	now=$(date +%s)
+	[ $((now - start_time)) -gt "$runtime" ] && break
+done
+
+echo -n "end: "
+grep pgmigrate_success /proc/vmstat
+
+echo "duration: $((now - start_time))"
