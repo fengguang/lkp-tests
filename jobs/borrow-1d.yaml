@@ -1,15 +1,8 @@
 suite: borrow
 
-timeout: 1d
-
-runtime: 1d
-ssh_pub_key: <%=
-         begin
-           File.read("#{ENV['HOME']}/.ssh/id_rsa.pub").chomp
-         rescue
-           nil
-         end
-         %>
+ssh_pub_key: <%= File.read("#{ENV['HOME']}/.ssh/id_rsa.pub").chomp rescue nil %>
 sshd:
+
 # sleep at the bottom
+runtime: 1d
 sleep:
