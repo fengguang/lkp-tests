@@ -211,13 +211,12 @@ handle_rpm_list()
 	rpm_list=($(show_rpm_files | xargs basename -a))
 	srpm_list=($(show_src_rpm_files | xargs basename -a))
 	full_list=("${rpm_list[@]}" "${srpm_list[@]}")
-	j=0
 
-	for rpm_name in "${full_list[@]}"
+	for rpm_index in "${!full_list[@]}"
 	do
-		full_list[$j]="\"/srv${rpm_dest}/${rpm_name}\""
-		[[ ${rpm_name} =~ "src.rpm" ]] && full_list[$j]="\"/srv${src_rpm_dest}/${rpm_name}\""
-		((j++))
+		rpm_name="${full_list["${rpm_index}"]}"
+		full_list["${rpm_index}"]="\"/srv${rpm_dest}/${rpm_name}\""
+		[[ ${rpm_name} =~ "src.rpm" ]] && full_list["${rpm_index}"]="\"/srv${src_rpm_dest}/${rpm_name}\""
 	done
 
 	full_list=$(echo "${full_list[@]}" | sed 's; ;,;g')
