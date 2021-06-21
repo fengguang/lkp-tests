@@ -143,7 +143,7 @@ download_upstream_repo()
 
 install_srpm()
 {
-	rpm -i "${repo_addr}/${upstream_repo}" >/dev/null || die "failed to install source rpm: ${repo_addr}/${upstream_repo}"
+	rpm -i --nosignature "${repo_addr}/${upstream_repo}" >/dev/null || die "failed to install source rpm: ${repo_addr}/${upstream_repo}"
 }
 
 build_rpm()
