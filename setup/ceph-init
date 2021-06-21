@@ -74,11 +74,6 @@ update_ceph()
 	yum install -y --skip-broken ceph-$ceph_version
 }
 
-conf_ssh_auth()
-{
-	sed -i '/StrictHostKeyChecking/c StrictHostKeyChecking no' /etc/ssh/ssh_config
-}
-
 install_ceph_deploy()
 {
         [[ $(command -v pip) ]] || {
@@ -133,7 +128,6 @@ conf_hostname
 	update_yum_repos
 	update_ceph
 }
-conf_ssh_auth
 install_ceph_deploy
 
 [[ $node_roles =~ cephnode ]] || exit 0

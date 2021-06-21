@@ -3,6 +3,8 @@
 # cluster_ssh_pub_key
 # username
 
+sed -i '/StrictHostKeyChecking/c StrictHostKeyChecking no' /etc/ssh/ssh_config
+
 umask 0077
 echo "$cluster_ssh_key" > /root/.ssh/id_rsa
 echo "$cluster_ssh_pub_key" > /root/.ssh/id_rsa.pub
