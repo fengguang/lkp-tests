@@ -141,8 +141,16 @@ download_upstream_repo()
 	done
 }
 
+add_user_mock()
+{
+	useradd mock
+	useradd mockbuild
+}
+
 install_srpm()
 {
+	add_user_mock
+
 	rpm -i --nosignature "${repo_addr}/${upstream_repo}" >/dev/null || die "failed to install source rpm: ${repo_addr}/${upstream_repo}"
 }
 
