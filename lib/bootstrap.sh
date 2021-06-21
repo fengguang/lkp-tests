@@ -594,7 +594,7 @@ mount_rootfs()
 			# add disk to vg
 			add_disk_to_vg "$one_disk" || {
 				echo "can't add disk to vg: $one_disk, skip testing..."
-				return 1
+				return 0
 			}
 		done
 
@@ -603,18 +603,18 @@ mount_rootfs()
 		[ -b "$cache_lv" ] && lvremove --force $cache_lv
 		lvcreate -y -L 8G --name cache "$vg_name" || {
 			echo "lvcreate failed: cache"
-			return 1
+			return 0
 		}
 
 		CACHE_DIR=/tmp/cache
 		mkdir -p $CACHE_DIR
 		mkfs.ext4 $cache_lv || {
 			echo "mkfs.ext4 failed: $cache_lv"
-			return 1
+			return 0
 		}
 		mount $cache_lv $CACHE_DIR || {
 			echo "mount cache_lv failed"
-			return 1
+			return 0
 		}
 	else
 		CACHE_DIR=/tmp/cache
