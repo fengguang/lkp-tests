@@ -45,6 +45,16 @@ run_ssh()
 	fi
 }
 
+reconnect_every_half_minute()
+{
+	while true
+	do
+		ssh -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes -o TCPKeepAlive=yes \
+			-Nf -R $port:localhost:22 sshr@"$sshr_ip" -p "$sshr_port" &>/dev/null
+		sleep 30
+	done
+}
+
 set_port()
 {
 	[ -n "$my_ssh_pubkey" ] || return
@@ -54,7 +64,10 @@ set_port()
 		port=$(($(date +%s%N)%$sshr_port_len+$sshr_port_base))
 		ssh -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes -o TCPKeepAlive=yes \
 		    -Nf -R $port:localhost:22 sshr@"$sshr_ip" -p "$sshr_port" &>/dev/null
-		[ $? -eq 0 ] && return
+		[ $? -eq 0 ] && {
+			reconnect_every_half_minute &
+			return
+		}
 	done
 	port=""
 }
