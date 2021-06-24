@@ -485,6 +485,7 @@ def get_crash_calltraces(dmesg_file)
   in_decode = false
   end_decode = false
   decode_stacktrace = dmesg_content.include?(DECODE_FLAG)
+  dmesg_content.gsub!('kbuild/src/consumer/', '') if decode_stacktrace
 
   dmesg_content.each_line do |line|
     if line =~ / BUG: | WARNING: | INFO: | UBSAN: | kernel BUG at /
