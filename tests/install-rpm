@@ -1,6 +1,5 @@
 #!/bin/bash
 # - rpm_name
-# compat_os
 # custom_repo_name
 # custom_repo_addr
 # user can add custom_repo_name and custom_repo_addr to setup
@@ -11,7 +10,6 @@
 . $LKP_SRC/lib/log.sh
 . $LKP_SRC/lib/rpm.sh
 
-: "${compat_os:=budding-openeuler}"
 : "${DISTRO:=openeuler}"
 : "${basearch:=$(arch)}"
 . $LKP_SRC/distro/${DISTRO}
