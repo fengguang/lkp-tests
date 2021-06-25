@@ -1,6 +1,9 @@
 #!/bin/sh
 
 : "${hadoop_home:=/usr/hadoop}"
+: "${namenode:=localhost}"
+: "${resourcemanager_node:=localhost}"
+: "${jobhistory_node:=localhost}"
 
 main()
 {
@@ -8,8 +11,11 @@ main()
 
 	# The first time you bring up HDFS, it must be formatted.
 	# Format a new distributed filesystem as hdfs:
-	$hadoop_home/bin/hdfs namenode -format
+	ssh "$namenode" "$hadoop_home/bin/hdfs" namenode -format
+	ssh "$namenode" "$hadoop_home/sbin/start-dfs.sh"
 
-	$hadoop_home/sbin/start-dfs.sh
+	# resourcemanager should be started at resourcemanager hostname
+	ssh "$resourcemanager_node" "$hadoop_home/sbin/start-yarn.sh"
+	ssh "$jobhistory_node" "$hadoop_home/bin/mapred" --daemon start historyserver
 }
 main

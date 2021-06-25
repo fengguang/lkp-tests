@@ -16,10 +16,19 @@
 : "${hdfs_dir:=/hadoop/hdfs}"
 : "${namenode:=localhost}"
 : "${namenode_fs_port:=8020}"
-: "${namenode_http_port:=50070}"
+: "${namenode_http_port:=9870}"
 : "${seconary_namenode:=local}"
 : "${seconary_namenode_http_port:=50090}"
 : "${datanodes:=localhost}"
+: "${resourcemanager_node:=localhost}"
+: "${resourcemanager_port:=18040}"
+: "${resourcemanager_scheduler_port:=18030}"
+: "${resourcemanager_traker_port:=18025}"
+: "${resourcemanager_admin_port:=18141}"
+: "${resourcemanager_webapp_port:=8088}"
+: "${jobhistory_node:=localhost}"
+: "${jobhistory_port:=10020}"
+: "${jobhistory_webapp_port:=19888}"
 
 hdfs_replucation=0
 namenode_dir="$hdfs_dir/namenode"
@@ -56,6 +65,8 @@ set_hadoop_env()
 		export HDFS_NAMENODE_USER=$hadoop_user
 		export HDFS_SECONDARYNAMENODE_USER=$hadoop_user
 		export HDFS_DATANODE_USER=$hadoop_user
+		export YARN_RESOURCEMANAGER_USER=$hadoop_user
+		export YARN_NODEMANAGER_USER=$hadoop_user
 		export HADOOP_PID_DIR=$hadoop_home/pid
 		export HADOOP_LOG_DIR=$hadoop_home/logs
 		export HADOOP_HEAPSIZE_MAX=4g
@@ -93,6 +104,26 @@ set_hdfs_site()
 		-e "s|{{seconary_namenode_dir}}|$seconary_namenode_dir|" "$hdfs_site_xml"
 }
 
+set_yarn_site()
+{
+	local yarn_site_xml="$hadoop_home/etc/hadoop/yarn-site.xml"
+	sed -i -e "s|{{hadoop_home}}|$hadoop_home|" \
+		-e "s|{{resourcemanager_node}}|$resourcemanager_node|" \
+		-e "s|{{resourcemanager_port}}|$resourcemanager_port|" \
+		-e "s|{{resourcemanager_scheduler_port}}|$resourcemanager_scheduler_port|" \
+		-e "s|{{resourcemanager_traker_port}}|$resourcemanager_traker_port|" \
+		-e "s|{{resourcemanager_admin_port}}|$resourcemanager_admin_port|" \
+		-e "s|{{resourcemanager_webapp_port}}|$resourcemanager_webapp_port|" "$yarn_site_xml"
+}
+
+set_mapred_site()
+{
+	local mapred_site_xml="$hadoop_home/etc/hadoop/mapred-site.xml"
+	sed -i -e "s|{{jobhistory_node}}|$jobhistory_node|" \
+		-e "s|{{jobhistory_port}}|$jobhistory_port|" \
+		-e "s|{{jobhistory_webapp_port}}|$jobhistory_webapp_port|" "$mapred_site_xml"
+}
+
 main()
 {	set_hostname
 	set_env
@@ -100,5 +131,7 @@ main()
 	set_hadoop_datanode
 	set_core_site
 	set_hdfs_site
+	set_yarn_site
+	set_mapred_site
 }
 main
