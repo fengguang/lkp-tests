@@ -536,9 +536,15 @@ add_disk_to_vg()
 	local vg_name=os
 
 	# if one_disk is not pv, then pvcreate it.
-	pvdisplay $one_disk > /dev/null || pvcreate -y $one_disk || {
+	pvdisplay $one_disk > /dev/null || {
+		# clean the partition table of disk
+		dd if=/dev/zero of=$one_disk bs=512K count=1
+
+		# create pv
+		pvcreate -y $one_disk || {
 		echo "create pv failed: $one_disk"
 		return 1
+		}
 	}
 
 	# if vg not existed: create it by one_disk.
