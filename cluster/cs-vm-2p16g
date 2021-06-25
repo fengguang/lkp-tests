@@ -1,0 +1,7 @@
+ip0: 1
+nodes:
+   vm-2p16g-multi-node--1:
+     roles: [ server ]
+
+   vm-2p16g-multi-node--2:
+     roles: [ client ]
