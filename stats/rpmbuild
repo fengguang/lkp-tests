@@ -1,10 +1,34 @@
 #!/usr/bin/env ruby
 
+LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
+
+require 'set'
+require "#{LKP_SRC}/lib/common"
+
+error_ids = Set.new
+in_stderr = false
+seqno = ''
+
 while (line = STDIN.gets)
   case line.chomp!
+  when /^## ______________([0-9.]+):stderr$/
+    in_stderr = true
+    seqno = $1
+    next
+  when /^## ______________#{seqno}:enderr$/
+    in_stderr = false
+    seqno = ''
   when /START TIME:\s(.*),\sEND TIME:\s(.*),\sTotal duration:\s(.*)\sseconds/
     puts "start_time.message: #{$1}"
     puts "end_time.message: #{$2}"
     puts "total_duration(s).message: #{$3}"
   end
+  next unless in_stderr
+  next unless line =~ /(error|warning):[^:]/i
+
+  error_ids << build_pkg_error_id(line)
+end
+
+error_ids.each do |id|
+  puts id + ': 1'
 end
