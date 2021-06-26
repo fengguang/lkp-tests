@@ -77,10 +77,10 @@ upload_one_curl()
 			cd $(dirname "$1")
 			dir=$(basename "$1")
 			if [ -n "$id" ]; then
-				find "$dir" -type d -exec curl -sSf -X MKCOL "$http_url/{}" --cookie "JOBID=$id" \;
+				find "$dir" -type d -exec curl -sSf -X MKCOL "$http_url/{}/" --cookie "JOBID=$id" \;
 				find "$dir" -type f -size +0 -exec curl -sSf -T '{}' "$http_url/{}" --cookie "JOBID=$id" \;
 			else
-				find "$dir" -type d -exec curl -sSf -X MKCOL "$http_url/{}" \;
+				find "$dir" -type d -exec curl -sSf -X MKCOL "$http_url/{}/" \;
 				find "$dir" -type f -size +0 -exec curl -sSf -T '{}' "$http_url/{}" \;
 			fi
 		)
