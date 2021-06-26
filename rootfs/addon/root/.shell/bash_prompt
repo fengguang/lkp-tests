@@ -44,7 +44,7 @@ case $TERM in
 esac
 
 #XTermTitle=''
-PS1="\[$RESET\]$XTermTitle$SymboColor$UserColor\u$SymboColor@$HostColor\h$SymboColor $PathColor\w\[$RESET\]$SymboColor$PromptColor$Prompt $CommandColor"
+PS1="\[$RESET\]$XTermTitle$SymboColor$UserColor\u$SymboColor@$HostColor\H$SymboColor $PathColor\w\[$RESET\]$SymboColor$PromptColor$Prompt $CommandColor"
 PS2="$SymboColor> $CommandColor"
 
 export PS1 PS2
