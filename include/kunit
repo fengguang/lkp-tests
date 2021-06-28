@@ -1,7 +1,9 @@
 need_kconfig:
 - CONFIG_EXT4_KUNIT_TESTS=m ~ ">= v5.5-rc1"
 - CONFIG_KUNIT=y ~ ">= v5.5-rc1"
-- CONFIG_KUNIT_DRIVER_PE_TEST=y ~ ">= v5.6-rc1"
+- CONFIG_KUNIT_DRIVER_PE_TEST=y ~ ">= v5.6-rc1" && "< v5.13-rc1"
+- CONFIG_DRIVER_PE_KUNIT_TEST=y ~ ">= v5.13-rc1" # Depends on: KUNIT_ALL_TESTS [=n] && KUNIT [=y]
+- CONFIG_KUNIT_ALL_TESTS=n ~ ">= v5.8-rc1"
 - CONFIG_KUNIT_EXAMPLE_TEST=m ~ ">= v5.5-rc1"
 - CONFIG_KUNIT_TEST=m ~ ">= v5.5-rc1"
 - CONFIG_LIST_KUNIT_TEST=m ~ ">= v5.5-rc1"
