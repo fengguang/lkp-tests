@@ -152,6 +152,19 @@ http://api.compass-ci.openeuler.org:${SRV_HTTP_RESULT_PORT:-20007}$result_root"
 	rpmbuild_report
 }
 
+service_errors_env_content()
+{
+        email_content="To: $recipient_email_to
+Bcc: $recipient_email_bcc
+Subject: [log error] top $lab service errors
+
+$report_content
+
+Regards
+Compass-CI
+"
+}
+
 send_email()
 {
 	local subject=$1
