@@ -147,7 +147,7 @@ wait_other_nodes_start()
 	if [ -n "$direct_macs" ];then
 		config_ips_by_macs
 	else
-		direct_ips=$(ip route get "${BR1_ROUTE:-172.20.0.1}" | awk '{print $7; exit}')
+		direct_ips=$(ip route get "${BR1_ROUTE:-172.20.0.1}" | awk -F'src ' '{print $2; exit}' | awk '{print $1}')
 		direct_macs=$(ip addr | grep -B1 "$direct_ips"| grep "link/ether" | awk '{print $2}')
 	fi
 
