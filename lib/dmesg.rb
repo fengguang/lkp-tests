@@ -304,6 +304,7 @@ def analyze_error_id(line)
        /(BUG: scheduling while atomic:)/,
        /(BUG: Bad page map in process)/,
        /(BUG: Bad page state in process)/,
+       /(BUG: Bad page cache in process)/,
        /(BUG: soft lockup - CPU#\d+ stuck for \d+s!.*)/,
        /(BUG: spinlock .* on CPU#\d+)/,
        /(Out of memory: Kill process) \d+ \(/,
@@ -317,8 +318,7 @@ def analyze_error_id(line)
        /([A-Z]+[ a-zA-Z]*): [a-f0-9]{4} \[#[0-9]+\] /,
        # [  406.307645] BUG: KASAN: slab-out-of-bounds in kfd_create_crat_image_virtual+0x129d/0x12fd
        /(BUG: KASAN: [a-z\-_ ]+ in [a-z_]+)\+/,
-       /(cpu clock throttled)/,
-       /(BUG: Bad page cache in process trinity-main)/
+       /(cpu clock throttled)/
     line = $1
     bug_to_bisect = $1
   when /(BUG: ).* (still has locks held)/,
