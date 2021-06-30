@@ -1,0 +1,17 @@
+#!/bin/sh
+
+source /etc/profile > /dev/null
+
+for node in ${all_nodes[@]}
+do
+	echo "$node jps"
+	ssh $node "$JAVA_HOME/bin/jps"
+done
+
+hadoop="$HADOOP_HOME/bin/hadoop"
+
+[ -n "$hdfs_test" ] && {
+	mapreduce_test_jar="$HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-*-tests.jar"
+	$hadoop jar $mapreduce_test_jar TestDFSIO -write -nrFiles 20 -size 1024
+	$hadoop jar $mapreduce_test_jar TestDFSIO -read -nrFiles 20 -size 1024
+}
