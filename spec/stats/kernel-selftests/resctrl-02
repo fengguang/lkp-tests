@@ -1,0 +1,122 @@
+make[1]: Entering directory '/usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-25eba7c82c367e31e4b75503d21e3857a6a796b0/tools/testing/selftests/resctrl'
+gcc -g -Wall -O2 -D_FORTIFY_SOURCE=2 -c resctrl_val.c cat_test.c cmt_test.c mbm_test.c resctrl_tests.c fill_buf.c cache.c mba_test.c resctrlfs.c
+gcc -g -Wall -O2 -D_FORTIFY_SOURCE=2 -o resctrl_tests resctrl_val.o cat_test.o cmt_test.o mbm_test.o resctrl_tests.o fill_buf.o cache.o mba_test.o resctrlfs.o
+make[1]: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-25eba7c82c367e31e4b75503d21e3857a6a796b0/tools/testing/selftests/resctrl'
+2021-06-25 23:06:55 resctrl/resctrl_tests
+TAP version 13
+# Pass: Check kernel supports resctrl filesystem
+# Pass: Check resctrl mountpoint "/sys/fs/resctrl" exists
+# resctrl filesystem not mounted
+# dmesg: [    8.929464] resctrl: MB allocation detected
+# dmesg: [    8.938736] resctrl: L3 monitoring detected
+1..4
+# Starting MBM BW change ...
+# Mounting resctrl to "/sys/fs/resctrl"
+# Mounting resctrl to "/sys/fs/resctrl"
+TAP version 13
+# Pass: Check kernel supports resctrl filesystem
+# Pass: Check resctrl mountpoint "/sys/fs/resctrl" exists
+# resctrl filesystem not mounted
+# dmesg: [    8.929464] resctrl: MB allocation detected
+# dmesg: [    8.938736] resctrl: L3 monitoring detected
+1..4
+# Starting MBM BW change ...
+# Mounting resctrl to "/sys/fs/resctrl"
+# Mounting resctrl to "/sys/fs/resctrl"
+# Benchmark PID: 10635
+# Writing benchmark parameters to resctrl FS
+# Checking for pass/fail
+# Pass: Check MBM diff within 5%
+# avg_diff_per: 2%
+# Span (MB): 250
+# avg_bw_imc: 13338
+# avg_bw_resc: 13047
+ok 1 MBM: bw change
+# Starting MBA Schemata change ...
+# Mounting resctrl to "/sys/fs/resctrl"
+# Mounting resctrl to "/sys/fs/resctrl"
+Failed to open cache level: No such file or directory
+TAP version 13
+# Pass: Check kernel supports resctrl filesystem
+# Pass: Check resctrl mountpoint "/sys/fs/resctrl" exists
+# resctrl filesystem not mounted
+# dmesg: [    8.929464] resctrl: MB allocation detected
+# dmesg: [    8.938736] resctrl: L3 monitoring detected
+1..4
+# Starting MBM BW change ...
+# Mounting resctrl to "/sys/fs/resctrl"
+# Mounting resctrl to "/sys/fs/resctrl"
+# Benchmark PID: 10635
+# Writing benchmark parameters to resctrl FS
+# Checking for pass/fail
+# Pass: Check MBM diff within 5%
+# avg_diff_per: 2%
+# Span (MB): 250
+# avg_bw_imc: 13338
+# avg_bw_resc: 13047
+ok 1 MBM: bw change
+# Starting MBA Schemata change ...
+# Mounting resctrl to "/sys/fs/resctrl"
+# Mounting resctrl to "/sys/fs/resctrl"
+# Benchmark PID: 10659
+# Writing benchmark parameters to resctrl FS
+# Write schema "MB:0=100" to resctrl FS
+# Write schema "MB:0=90" to resctrl FS
+# Write schema "MB:0=80" to resctrl FS
+# Write schema "MB:0=70" to resctrl FS
+# Write schema "MB:0=60" to resctrl FS
+# Write schema "MB:0=50" to resctrl FS
+# Write schema "MB:0=40" to resctrl FS
+# Write schema "MB:0=30" to resctrl FS
+# Write schema "MB:0=20" to resctrl FS
+# Write schema "MB:0=10" to resctrl FS
+# Results are displayed in (MB)
+# Pass: Check MBA diff within 5% for schemata 100
+# avg_diff_per: 2%
+# avg_bw_imc: 13308
+# avg_bw_resc: 12974
+# Pass: Check MBA diff within 5% for schemata 90
+# avg_diff_per: 1%
+# avg_bw_imc: 9581
+# avg_bw_resc: 9399
+# Pass: Check MBA diff within 5% for schemata 80
+# avg_diff_per: 1%
+# avg_bw_imc: 9659
+# avg_bw_resc: 9488
+# Pass: Check MBA diff within 5% for schemata 70
+# avg_diff_per: 1%
+# avg_bw_imc: 9730
+# avg_bw_resc: 9550
+# Pass: Check MBA diff within 5% for schemata 60
+# avg_diff_per: 1%
+# avg_bw_imc: 8536
+# avg_bw_resc: 8378
+# Pass: Check MBA diff within 5% for schemata 50
+# avg_diff_per: 2%
+# avg_bw_imc: 7575
+# avg_bw_resc: 7411
+# Pass: Check MBA diff within 5% for schemata 40
+# avg_diff_per: 1%
+# avg_bw_imc: 6868
+# avg_bw_resc: 6731
+# Pass: Check MBA diff within 5% for schemata 30
+# avg_diff_per: 2%
+# avg_bw_imc: 3887
+# avg_bw_resc: 3792
+# Pass: Check MBA diff within 5% for schemata 20
+# avg_diff_per: 2%
+# avg_bw_imc: 2804
+# avg_bw_resc: 2743
+# Pass: Check MBA diff within 5% for schemata 10
+# avg_diff_per: 3%
+# avg_bw_imc: 1863
+# avg_bw_resc: 1804
+# Pass: Check schemata change using MBA
+ok 2 MBA: schemata change
+# Starting CMT test ...
+# Mounting resctrl to "/sys/fs/resctrl"
+# Mounting resctrl to "/sys/fs/resctrl"
+not ok 3 CMT: test
+# Starting CAT test ...
+ok 4 # SKIP Hardware does not support CAT or CAT is disabled
+# Totals: pass:2 fail:1 xfail:0 xpass:0 skip:1 error:0
