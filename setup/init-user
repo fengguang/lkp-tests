@@ -1,17 +1,18 @@
 #!/bin/bash
-# username
-# userpassword
+# secrets_username
+# secrets_userpassword
 
-[[ -n $username ]] || exit
+[[ -n $secrets_username ]] || exit
 
-id -u $username || {
-	useradd -d /home/$username -m $username
+id -u $secrets_username || {
+	useradd -d /home/$secrets_username -m $secrets_username
 }
 
-[[ -n $userpassword ]] && {
-        echo $username:$userpassword | chpasswd
+[[ -n $secrets_userpassword ]] && {
+        echo $secrets_username:$secrets_userpassword | chpasswd
 }
 
-su - $username <<-EOF
-ssh-keygen -f /home/$username/.ssh/id_rsa -N ''
+su - $secrets_username <<-EOF
+mkdir -p /home/$secrets_username/.ssh
+ssh-keygen -f /home/$secrets_username/.ssh/id_rsa -N ''
 EOF
