@@ -1,19 +1,15 @@
 pkgname=test-tools
 pkgver=git
 pkgrel=1
-pkgdesc="smoke test"
+pkgdesc="tools for improve test efficiency"
 url="https://gitee.com/openeuler/test-tools.git"
 arch=aarch64
 license=('Mulan PSL v2')
-source=("https://gitee.com/openeuler/test-tools.git"
-        "https://gitee.com/openeuler/integration-test.git"
-)
-md5sums=('SKIP' 'SKIP')
+source=("https://gitee.com/openeuler/test-tools.git")
+md5sums=('SKIP')
 
 package() {
    test_tools_path="${pkgdir}/lkp/benchmarks/${pkgname}"
    mkdir -p "${test_tools_path}"
    cp -af "${srcdir}/test-tools/"* "${test_tools_path}"
-   cp -af "${srcdir}/integration-test/testcases" "${test_tools_path}/mugen"
-   cp -af "${srcdir}/integration-test/suite2cases" "${test_tools_path}/mugen"
 }
