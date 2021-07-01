@@ -2,16 +2,51 @@
 
 source /etc/profile > /dev/null
 
-for node in ${all_nodes[@]}
-do
-	echo "$node jps"
-	ssh $node "$JAVA_HOME/bin/jps"
-done
+check_node_components()
+{
+	for node in ${all_nodes[@]}
+	do
+		echo "$node jps"
+		ssh $node "$JAVA_HOME/bin/jps"
+	done
+}
 
-hadoop="$HADOOP_HOME/bin/hadoop"
+do_hdfs_test()
+{
+	local hadoop="$HADOOP_HOME/bin/hadoop"
 
-[ -n "$hdfs_test" ] && {
 	mapreduce_test_jar="$HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-*-tests.jar"
 	$hadoop jar $mapreduce_test_jar TestDFSIO -write -nrFiles 20 -size 1024
 	$hadoop jar $mapreduce_test_jar TestDFSIO -read -nrFiles 20 -size 1024
 }
+
+start_test()
+{
+	echo "$test_items" | grep hdfs && do_hdfs_test
+
+	# notice cluster complete
+	for node in ${all_nodes[@]}
+	do
+		ssh $node mkdir -p $TMP/hadoop_complete
+	done
+}
+
+check_for_complete()
+{
+	while true
+	do
+		[ -d "$TMP/hadoop_complete" ] && break
+		sleep 10
+	done
+
+	echo "hadoop test complete"
+}
+
+main()
+{
+	check_node_components
+	[ -n "$test_items" ] && start_test
+	check_for_complete
+}
+
+main
