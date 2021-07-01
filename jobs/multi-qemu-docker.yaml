@@ -1,0 +1,41 @@
+suite: multi-qemu-docker
+category: functional
+simplify-ci:
+swap:
+multi-qemu-0:
+        nr_vm: 10
+        tbox_group: vm-1p1g
+multi-qemu-1:
+        nr_vm: 10
+        tbox_group: vm-2p4g
+multi-qemu-2:
+        nr_vm: 20
+        tbox_group: vm-2p8g
+multi-qemu-3:
+        nr_vm: 10
+        tbox_group: vm-2p16g
+multi-qemu-4:
+        nr_vm: 6
+        tbox_group: vm-2p32g
+multi-qemu-5:
+        nr_vm: 2
+        tbox_group: vm-4p64g
+multi-docker-0:
+        nr_container: 10
+        tbox_group: dc-1g
+multi-docker-1:
+        nr_container: 10
+        tbox_group: dc-2g
+multi-docker-2:
+        nr_container: 10
+        tbox_group: dc-4g
+multi-docker-3:
+        nr_container: 20
+        tbox_group: dc-8g
+multi-docker-4:
+        nr_container: 10
+        tbox_group: dc-16g
+multi-docker-5:
+        nr_container: 6
+        tbox_group: dc-32g
+sleep: 100d
