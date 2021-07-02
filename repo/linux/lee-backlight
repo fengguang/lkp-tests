@@ -7,3 +7,4 @@ mail_cc: Lee Jones <lee.jones@linaro.org>
 notify_build_success_branch: .*
 subsystems:
 - backlight
+branch_denylist: .*android-3.18.*|aosp-android-mainline-tracking
