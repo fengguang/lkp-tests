@@ -10,6 +10,8 @@
 
 multi_docker()
 {
+	sysctl -w fs.inotify.max_user_instances="12800"
+	sysctl -w fs.inotify.max_user_watches="819200"
 	export CCI_SRC=${CCI_SRC:-"/c/compass-ci"}
 	local hostname=$tbox_group.$HOSTNAME
 	$CCI_SRC/providers/multi-docker -n $hostname -c $nr_container -q $queues >/dev/null 2>&1
