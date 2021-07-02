@@ -16,8 +16,6 @@ export job=$job_file
 export BENCHMARK_ROOT=/lkp/benchmarks
 export CGROUP_MNT=/cgroup
 
-echo PATH="$LKP_SRC/sbin:$PATH" >> /root/.bashrc
-
 job_init
 export LKP_USER=${user:-lkp}
 

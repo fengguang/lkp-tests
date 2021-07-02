@@ -11,14 +11,15 @@
 
 umask 002
 
-export PATH=$PATH:$LKP_SRC/bin
-echo   PATH=$PATH
+export PATH=$PATH:$LKP_SRC/bin:$LKP_SRC/sbin
 
 . $LKP_SRC/lib/bootstrap.sh
 . $LKP_SRC/lib/http.sh
 . $LKP_SRC/lib/reboot.sh
 . $LKP_SRC/lib/ucode.sh
 . $LKP_SRC/lib/env.sh
+
+echo "export PATH=$PATH" >> $(shell_profile)
 
 # https://stackoverflow.com/questions/19100708/mongodb-mongorestore-failure-localefacet-s-create-c-locale-name-not-valid
 # To fix:
