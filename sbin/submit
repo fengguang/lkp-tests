@@ -217,6 +217,7 @@ ARGV.each do |jobfile|
             puts 'The submitted account information is as follows:'
             puts "my_name: #{job['my_name']}"
             puts "my_email: #{job['my_email']}"
+            puts "my_account: #{job['my_account']}"
             puts "my_token: #{job['my_token']}"
           end
         end
