@@ -260,7 +260,7 @@ class Job
         end
 
         if hash.has_key?('id')
-          d_keys = ["my_name", "my_email", "lab"]
+          d_keys = ["my_name", "my_email", "my_account", "lab"]
           hash.delete_if { |k| d_keys.include? k }
         end
 
