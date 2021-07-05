@@ -1,6 +1,5 @@
 #!/bin/sh
 # my_ssh_pubkey
-# my_email
 # sshr_port
 # sshr_port_len
 # sshr_port_base
@@ -74,9 +73,9 @@ set_port()
 
 run_email()
 {
-	[ -n "$my_email" ] || return 0
-
 	deadline=$(date -d "$runtime seconds" +"%Y-%m-%d %H:%M:%S")
+	parse_secret_fields
+
 	if [ -n "$port" ]; then
 		send_email "borrow_success"
 	else
