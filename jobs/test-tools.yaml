@@ -1,7 +1,16 @@
 suite: test-tools
 category: functional
 
+secrets:
+  userpassword:
+  username:
 init-user:
-test-tools:
-        testsuite:
-        case:
+
+cluster: cs-vm-2p32g
+runtime: 3h
+if role server:
+  test-tools:
+    testsuite:
+    case:
+if role client:
+  sleep: 3h
