@@ -20,3 +20,14 @@ add_repo()
 		EOF
 	done
 }
+
+fix_on_distro()
+{
+	source /etc/os-release
+	case "${ID}-${VERSION_ID}" in
+		centos-8|openEuler-20.03)
+			# New version macro adapt
+			sed -i '/%{?fedora} >\|%{?rhel} >/ s/$/ || %{?openEuler} == 2/' ${HOME}/rpmbuild/SPECS/*.spec
+			;;
+	esac
+}
