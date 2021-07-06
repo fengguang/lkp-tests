@@ -2,36 +2,63 @@
 # - testsuite
 # - case
 
+. $LKP_SRC/lib/upload.sh
+
 cd $BENCHMARK_ROOT/test-tools/mugen || exit
-: "${testsuite:=smoke-testing}"
-: "${case:=oe_test_dd_001}"
 
 set_env()
 {
-	bash runoet.sh -c
-	source ~/.bash_profile
+	bash mugen.sh -c "$direct_server_ips" "$secrets_username" "$secrets_userpassword"
+	bash mugen.sh -c "$direct_client_ips" "$secrets_username" "$secrets_userpassword"
+}
+
+download_cases()
+{
+	bash mugen.sh -d
+
+	# skip os-basic, because not support test about rebooting testbox.
+	mv suite2cases/os-basic .
 }
 
 test_one_case()
 {
+	bash mugen.sh -f "$testsuite" -Cr "$case"
+}
 
-	bash runoet.sh -f $testsuite -r $case -x
+test_one_testsuite()
+{
+	bash mugen.sh -f "$testsuite"
 }
 
 test_all_cases()
 {
-	bash runoet.sh -a
+	bash mugen.sh -a
+}
+
+upload_results_logs()
+{
+
+	ls results/failed >> results/failed_list
+	ls results/succeed >> results/succeed_list
+	upload_files -t logs logs/*
+	upload_files -t results results/failed_list
+	upload_files -t results results/succeed_list
 }
 
 run()
 {
 	set_env
-	if [ "${testsuite}" == "all" ]
-	then
-		test_all_cases
+	download_cases
+	if [ -n "$testsuite" ];then
+		if [ -n "$case" ];then
+			test_one_case
+		else
+			test_one_testsuite
+		fi
 	else
-		test_one_case
+		test_all_cases
 	fi
+	upload_results_logs
 }
 
 run
