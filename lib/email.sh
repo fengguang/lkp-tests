@@ -152,17 +152,17 @@ http://api.compass-ci.openeuler.org:${SRV_HTTP_RESULT_PORT:-20007}$result_root"
 	rpmbuild_report
 }
 
-service_errors_env_content()
+errors_env_content()
 {
-        email_content="To: $recipient_email_to
+	email_content=$(echo "To: $recipient_email_to
 Bcc: $recipient_email_bcc
-Subject: [log error] top $lab service errors
+Subject: $mail_subject
 
 $report_content
 
 Regards
 Compass-CI
-"
+" | base64)
 }
 
 send_email()
@@ -183,4 +183,14 @@ local_send_email()
 	${subject}_content
 
 	curl -XPOST "${SEND_MAIL_HOST:-$LKP_SERVER}:${LOCAL_SEND_MAIL_PORT:-11311}/send_mail_text" -d "$email_content"
+}
+
+local_send_email_encode()
+{
+	local subject=$1
+	local email_content
+
+	${subject}_content
+
+	curl -XPOST "${SEND_MAIL_HOST:-$LKP_SERVER}:${LOCAL_SEND_MAIL_PORT:-11311}/send_mail_encode" -d "$email_content"
 }
