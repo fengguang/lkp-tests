@@ -1,13 +1,5 @@
 #!/bin/sh
 
-parse_secret_fields()
-{
-	. $LKP_SRC/lib/yaml.sh
-	secrets_yaml=/lkp/scheduled/secrets.yaml
-
-	create_yaml_variables $secrets_yaml
-}
-
 job_failed_content()
 {
 	email_content="To: $my_email

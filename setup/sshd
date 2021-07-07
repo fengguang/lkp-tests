@@ -74,7 +74,7 @@ set_port()
 run_email()
 {
 	deadline=$(date -d "$runtime seconds" +"%Y-%m-%d %H:%M:%S")
-	parse_secret_fields
+	local my_email="$secrets_my_email"
 
 	if [ -n "$port" ]; then
 		send_email "borrow_success"
