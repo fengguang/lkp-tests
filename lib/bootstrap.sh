@@ -8,6 +8,7 @@
 . $LKP_SRC/lib/tbox.sh
 . $LKP_SRC/lib/detect-system.sh
 . $LKP_SRC/lib/network.sh
+. $LKP_SRC/lib/log.sh
 
 # borrowed from linux/tools/testing/selftests/rcutorture/doc/initrd.txt
 # Author: Paul E. McKenney <paulmck@linux.vnet.ibm.com>
@@ -843,7 +844,7 @@ boot_init()
 	resize_virtual_rootfs
 	redirect_stdout_stderr
 
-	echo 'Kernel tests: Boot OK!'
+	log_info "Kernel tests: Boot OK!"
 
 	setup_hostname
 	setup_hosts
