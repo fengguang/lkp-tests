@@ -1,4 +1,5 @@
 #!/bin/sh
+# - nr_instances
 
 ## wrapper to run other other tests
 
@@ -29,4 +30,21 @@ echo $! >> $TMP/.pid-pipes
 }
 
 export testcase=${testcase#kvm:}
-exec $time_prefix $exec_prefix $program_dir/$program "$@" > $fifo
+if [ -n "$nr_instances" ]; then
+	rm -rf $TMP_RESULT_ROOT/log-$program
+	mkdir -p $TMP_RESULT_ROOT/log-$program
+	(
+	i=1
+	while [ "$i" -le "$nr_instances" ]; do
+		export instance_id=$i
+		exec $time_prefix $exec_prefix $program_dir/$program "$@" > $TMP_RESULT_ROOT/log-$program/$i &
+		i=$((i+1))
+		[ "$i" -gt "$nr_instances" ] && break
+	done
+	wait
+	cd $TMP_RESULT_ROOT/log-$program && ls | sort -h | xargs cat > $fifo
+	)
+	rm -rf $TMP_RESULT_ROOT/log-$program
+else
+	exec $time_prefix $exec_prefix $program_dir/$program "$@" > $fifo
+fi
