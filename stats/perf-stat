@@ -1,9 +1,5 @@
 #!/usr/bin/env ruby
 
-LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
-
-require "#{LKP_SRC}/lib/tests/stats"
-
 $results_sum = Hash.new(0)
 $results_nr = Hash.new(0)
 $interval_results_sum = Hash.new(0)
@@ -16,8 +12,6 @@ $stats_begin_time = ENV['stats_part_begin'].to_f
 $stats_end_time = ENV['stats_part_end'].to_f
 
 $latency_prev = Hash.new(0)
-
-$stats = LKP::Stats.new
 
 def calc_addon_keys(results_sum, results_nr, interval, interval_nr, prefix)
   results_sum.each do |key, value|
@@ -33,7 +27,7 @@ def calc_addon_keys(results_sum, results_nr, interval, interval_nr, prefix)
                 else
                   avalue
                 end
-        $stats.add "#{prefix}#{stem}-miss-rate%", (value * 100.0 / total)
+        puts "#{prefix}#{stem}-miss-rate%: #{value * 100.0 / total}"
         break
       end
       next if value.zero?
@@ -41,16 +35,16 @@ def calc_addon_keys(results_sum, results_nr, interval, interval_nr, prefix)
       if key =~ /(.*)iTLB-load-misses/
         stem = $1
         instructions = results_sum[stem + 'instructions']
-        $stats.add "#{prefix}#{stem}instructions-per-iTLB-miss", (instructions / value) unless instructions.zero?
+        puts "#{prefix}#{stem}instructions-per-iTLB-miss: #{instructions / value}" unless instructions.zero?
       elsif key =~ /(.*)cache-misses/
         stem = $1
         cycles = results_sum[stem + 'cpu-cycles']
-        $stats.add "#{prefix}#{stem}cycles-between-cache-misses", (cycles / value) unless cycles.zero?
+        puts "#{prefix}#{stem}cycles-between-cache-misses: #{cycles / value}" unless cycles.zero?
       end
     when /(.*)cache-references/
       stem = $1
       instructions = results_sum[stem + 'instructions']
-      $stats.add "#{prefix}#{stem}MPKI", (value / instructions * 1000) unless instructions.zero?
+      puts "#{prefix}#{stem}MPKI: #{value / instructions * 1000}" unless instructions.zero?
     when /(.*)UNC_M_(.*)_INSERTS/
       stem1 = $1
       stem2 = $2
@@ -69,15 +63,15 @@ def calc_addon_keys(results_sum, results_nr, interval, interval_nr, prefix)
                     $latency_prev[latency_key]
                   end
         $latency_prev[latency_key] = latency
-        $stats.add latency_key.to_s, latency
+        puts "#{latency_key}: #{latency}"
       end
-      $stats.add "#{prefix}#{stem}_throughput_MBps", (value.to_f * 64 / 1024 / 1024 / interval)
+      puts "#{prefix}#{stem}_throughput_MBps: #{value.to_f * 64 / 1024 / 1024 / interval}"
     when /(.*)cpu-cycles/
       stem = $1
       instructions = results_sum[stem + 'instructions']
       unless instructions.zero?
-        $stats.add "#{prefix}#{stem}ipc", (instructions / value)
-        $stats.add "#{prefix}#{stem}cpi", (value / instructions)
+        puts "#{prefix}#{stem}ipc: #{instructions / value}"
+        puts "#{prefix}#{stem}cpi: #{value / instructions}"
       end
     end
   end
@@ -87,16 +81,16 @@ def output_interval(prev_time, time)
   return if $interval_results_sum.empty?
 
   interval = time - prev_time
-  $stats.add 'time', time
+  puts "time: #{time}"
   $interval_results_sum.each do |key, value|
-    $stats.add "i.#{key}", (value / interval)
+    puts "i.#{key}: #{value / interval}"
   end
   calc_addon_keys($interval_results_sum, $interval_results_nr,
                   interval, 1, 'i.')
 
   unless $interval_metrics_val.empty?
     $interval_metrics_val.each do |key, value|
-      $stats.add "i.#{key}", value
+      puts "i.#{key}: #{value}"
     end
   end
 
@@ -233,15 +227,13 @@ parse
 
 $results_sum.each do |key, value|
   # output per-second value
-  $stats.add "ps.#{key}", (value / $run_time)
+  puts "ps.#{key}: #{value / $run_time}"
 end
 
 instructions = $results_sum['instructions']
 unless instructions.zero?
   # to calc path-length
-  $stats.add 'total.instructions', instructions
+  puts "total.instructions: #{instructions}"
 end
 
 calc_addon_keys($results_sum, $results_nr, $run_time, $interval_nr, 'overall.')
-
-$stats.dump
