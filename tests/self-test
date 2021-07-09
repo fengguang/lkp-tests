@@ -91,7 +91,7 @@ upload_failed_result()
 	for job_id in $job_ids
 	do
 		result_root=/srv$(es-find id=$job_id | grep result_root | cut -d'"' -f4)
-		es-find id=$job_id| grep job_state| grep -q finished || upload_files -t $job_id $result_root/*
+		es-find id=$job_id| grep job_health| grep -q "success" || upload_files -t $job_id $result_root/*
 	done
 }
 
