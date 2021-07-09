@@ -18,7 +18,6 @@
 ^dmesg.boot_failures
 ^dmesg.boot_successes
 ^dmesg.BUG:Dentry.*i=.*n=.*
-^dmesg.BUG:soft_lockup-CPU##stuck_for#s
 ^dmesg.BUG:KCSAN:data-race_in
 ^dmesg.BUG:using__this_cpu_read\(\)in_preemptible\[#\]code
 ^dmesg.BUG:KFENCE
@@ -41,7 +40,6 @@
 ^dmesg..*/lkp/
 ^dmesg.Mem-Info
 ^dmesg.timestamp:.*
-^dmesg.UBSAN
 ^GLib-WARNING\*\*:#:#:#:gmem.c:#:custom_memory_allocation_vtable_not_supported
 .*\.ignored_by_lkp
 ^internal-lkp-service.*
