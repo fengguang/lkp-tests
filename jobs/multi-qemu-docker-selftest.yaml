@@ -1,0 +1,9 @@
+suite: multi-qemu-docker
+category: functional
+simplify-ci:
+multi-qemu:
+        nr_vm: 10
+        tbox_group: vm-2p8g
+multi-docker:
+        nr_container: 10
+        tbox_group: dc-8g
