@@ -152,7 +152,8 @@ replace_source()
 	echo "source=(" > $1
 	for url in "${source[@]}"
 	do
-		echo "$url" | grep -E 'git\+|\.git$' | grep -q "$upstream_url" && [ -n "$repo_dir" ] && {
+		# delete upstream_url protocol head http://xxxx => xxxx
+		echo "$url" | grep -E 'git(\+|:)|\.git$' | grep -q "${upstream_url##*//}" && [ -n "$repo_dir" ] && {
 			url="${repo_dir}git://${LKP_SERVER}/${upstream_dir}/${upstream_repo}#commit=${upstream_commit}"
 			[ -n "$git_tag" ] && url="${repo_dir}git://${LKP_SERVER}/${upstream_dir}/${upstream_repo}#tag=${git_tag}"
 		}
