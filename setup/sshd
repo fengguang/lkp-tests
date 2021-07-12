@@ -58,6 +58,7 @@ set_port()
 {
 	[ -n "$my_ssh_pubkey" ] || return
 
+	chmod 600 /root/.ssh/sshr/id_rsa
 	for i in $(seq 1 10)
 	do
 		port=$(($(date +%s%N)%$sshr_port_len+$sshr_port_base))
