@@ -166,7 +166,7 @@ build_rpm()
 	startTime_s=$(date +%s)
 	fix_on_distro
 	# Install build dependencies
-	yum-builddep -y "$spec_dir"/*.spec || die "failed to solve dependencies"
+	yum-builddep -y "$spec_dir"/*.spec 2>&1 || die "failed to solve dependencies"
 	# Download tar.gz to default path ${HOME}/rpmbuild/SOURCE
 	[ -n "$package_name" ] &&
 		{

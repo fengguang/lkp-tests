@@ -22,6 +22,8 @@ while (line = STDIN.gets)
     puts "start_time.message: #{$1}"
     puts "end_time.message: #{$2}"
     puts "total_duration(s).message: #{$3}"
+  when /No matching package to install: '(.*)'/
+    puts "no_matching_package.element: #{$1}"
   end
   next unless in_stderr
   next unless line =~ /(error|warning):[^:]/i
