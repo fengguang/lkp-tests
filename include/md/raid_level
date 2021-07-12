@@ -3,8 +3,8 @@
 	when 'JBOD'
 	when /^braid/
 	when /^raid[456]$/
-		"need_kconfig: CONFIG_MD_RAID456"
+		"need_kconfig: MD_RAID456"
 	else
-		"need_kconfig: CONFIG_MD_#{___.upcase}"
+		"need_kconfig: MD_#{___.upcase}"
 	end
 %>

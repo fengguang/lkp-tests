@@ -1,1 +1,2 @@
-need_kconfig: CONFIG_X86_INTEL_PSTATE=y
+need_kconfig:
+- X86_INTEL_PSTATE: y

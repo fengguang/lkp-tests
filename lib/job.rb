@@ -179,6 +179,9 @@ end
 class Job
   class ParamError < ArgumentError
   end
+
+  class SyntaxError < ArgumentError
+  end
 end
 
 class Job

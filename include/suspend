@@ -2,6 +2,6 @@
 avoid_nfs: 1
 
 need_kconfig:
-- CONFIG_SUSPEND=y
-- CONFIG_FTRACE=y
-- CONFIG_FUNCTION_TRACER=y
+- SUSPEND: y
+- FTRACE: y
+- FUNCTION_TRACER: y

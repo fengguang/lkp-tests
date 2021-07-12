@@ -2,6 +2,6 @@
 avoid_nfs: 1
 
 need_kconfig:
-- CONFIG_SUSPEND=y
-- CONFIG_HIBERNATION=y
-- CONFIG_PM_DEBUG=y
+- SUSPEND: y
+- HIBERNATION: y
+- PM_DEBUG: y

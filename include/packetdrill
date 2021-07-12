@@ -1,5 +1,5 @@
 need_kconfig:
-- CONFIG_NETDEVICES=y
-- CONFIG_NET_CORE=y
-- CONFIG_INET=y
-- CONFIG_TUN=m
+- NETDEVICES: y
+- NET_CORE: y
+- INET: y
+- TUN: m
