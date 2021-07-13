@@ -148,7 +148,20 @@ class NetStater < Stater
       else
         # selftests: net: netdevice.sh
         # SKIP: eth0: interface already up
-        stats.add "#{@test_prefix}.#{$2}", $1
+        @result = $1
+        @test_case = $2
+
+        if @test_case == 'fdb get tests: iproute2 too old'
+          # below rtnetlink.sh's subtest will repeate twice thus cause duplication
+          # SKIP: fdb get tests: iproute2 too old
+          # and it's passed stat will be
+          # PASS: bridge fdb get
+          stats.add "#{@test_prefix}.bridge_fdb_get", @result unless stats.key? "#{@test_prefix}.bridge_fdb_get"
+        else
+          stats.add "#{@test_prefix}.#{@test_case}", $1
+        end
+        @test_case = nil
+        @result = nil
       end
     when /^# \[       (OK|FAIL|SKIP) \] (.*)/
       # selftests: net: tls
