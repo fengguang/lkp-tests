@@ -151,12 +151,12 @@ install_srpm()
 {
 	add_user_mock
 
-	rpm -i --nosignature "${repo_addr}/${upstream_repo}" >/dev/null || die "failed to install source rpm: ${repo_addr}/${upstream_repo}"
+	su lkp -c "rpm -i --nosignature ${repo_addr}/${upstream_repo} >/dev/null" || die "failed to install source rpm: ${repo_addr}/${upstream_repo}"
 }
 
 build_rpm()
 {
-	local spec_dir="${HOME}/rpmbuild/SPECS"
+	export spec_dir="/home/lkp/rpmbuild/SPECS"
 	[ -n "$package_name" ] &&
 		{
 			# HTTP is proxy cache friendly
@@ -173,7 +173,7 @@ build_rpm()
 			spectool -g -R "$spec_dir/"*.spec || die "failed to download source file"
 		}
 	# Build source and binary packages
-	rpmbuild -ba "$spec_dir"/*.spec || die "failed to build rpms"
+	su lkp -c "rpmbuild -ba ${spec_dir}/*.spec" || die "failed to build rpms"
 	endTime=$(date +%Y-%m-%d-%H:%M)
 	endTime_s=$(date +%s)
 
@@ -184,12 +184,12 @@ build_rpm()
 
 show_rpm_files()
 {
-	find ${HOME}/rpmbuild/RPMS -type f -name "*.rpm"
+	find /home -type f -name "*.rpm" | grep -v src.rpm
 }
 
 show_src_rpm_files()
 {
-	find ${HOME}/rpmbuild/SRPMS -type f -name "*.rpm"
+	find /home -type f -name "*.src.rpm"
 }
 
 show_spec_file()

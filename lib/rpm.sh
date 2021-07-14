@@ -27,7 +27,7 @@ fix_on_distro()
 	case "${ID}-${VERSION_ID}" in
 		centos-8|openEuler-20.03)
 			# New version macro adapt
-			sed -i '/%{?fedora} >\|%{?rhel} >/ s/$/ || %{?openEuler} == 2/' ${HOME}/rpmbuild/SPECS/*.spec
+			sed -i '/%{?fedora} >\|%{?rhel} >/ s/$/ || %{?openEuler} == 2/' ${spec_dir}/*.spec
 			;;
 	esac
 }
