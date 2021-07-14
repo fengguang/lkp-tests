@@ -68,7 +68,9 @@ while (line = STDIN.gets)
     # should ignore the 'Subtest default' results from 980 and 1521 to avoid duplicated stats
     next if test_name.nil? || has_dynamic_subtest
 
-    if subtest_name != $1
+    # media_fill has no 'Starting subtest:', just 'Subtest media-fill:'
+    # thus when running media_fill, subtest_name will still be the last one, not $1
+    if subtest_name != $1 && $1 != 'media-fill'
       log_warn "subtest_name [#{subtest_name}] != $1 [#{$1}]"
       exit 1
     end

@@ -1,0 +1,43 @@
+2021-07-10 22:57:04 build/tests/gem_exec_create --run-subtest madvise
+IGT-Version: 1.26-g098d0b82 (x86_64) (Linux: 5.13.0-wt-ath-15682-ge03d3b9afe51 x86_64)
+Starting subtest: madvise
+[0] All (4 engines): 967984 cycles, average 20.662us per cycle
+Subtest madvise: SUCCESS (20.045s)
+2021-07-10 22:57:27 build/tests/gem_media_fill --run-subtest media-fill
+IGT-Version: 1.26-g098d0b82 (x86_64) (Linux: 5.13.0-wt-ath-15682-ge03d3b9afe51 x86_64)
+(gem_media_fill:1994) CRITICAL: Test assertion failure function __real_main135, file ../tests/i915/gem_media_fill.c:154:
+(gem_media_fill:1994) CRITICAL: Failed assertion: query_info
+Test gem_media_fill failed.
+**** DEBUG ****
+(gem_media_fill:1994) igt_core-INFO: IGT-Version: 1.26-g098d0b82 (x86_64) (Linux: 5.13.0-wt-ath-15682-ge03d3b9afe51 x86_64)
+(gem_media_fill:1994) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_media_fill:1994) drmtest-DEBUG: Test requirement passed: is_i915_device(fd)
+(gem_media_fill:1994) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_media_fill:1994) i915/gem-DEBUG: Test requirement passed: dir >= 0
+(gem_media_fill:1994) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_media_fill:1994) igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+(gem_media_fill:1994) i915/gem-DEBUG: Test requirement passed: err == 0
+(gem_media_fill:1994) intel_bufops-DEBUG: generation: 9, supported tiles: 0x0f
+(gem_media_fill:1994) intel_bufops-DEBUG: buf tiling: X, swizzle: 0, phys_swizzle: 0
+(gem_media_fill:1994) intel_bufops-DEBUG: X fence support: yes
+(gem_media_fill:1994) intel_bufops-DEBUG: buf tiling: Y, swizzle: 0, phys_swizzle: 0
+(gem_media_fill:1994) intel_bufops-DEBUG: Y fence support: yes
+(gem_media_fill:1994) intel_bufops-DEBUG: Ys format not supported
+(gem_media_fill:1994) DEBUG: Test requirement passed: fill_fn
+(gem_media_fill:1994) CRITICAL: Test assertion failure function __real_main135, file ../tests/i915/gem_media_fill.c:154:
+(gem_media_fill:1994) CRITICAL: Failed assertion: query_info
+(gem_media_fill:1994) igt_core-INFO: Stack trace:
+(gem_media_fill:1994) igt_core-INFO:   #0 ../lib/igt_core.c:1745 __igt_fail_assert()
+(gem_media_fill:1994) igt_core-INFO:   #1 ../tests/i915/gem_media_fill.c:151 __real_main
+135()
+(gem_media_fill:1994) igt_core-INFO:   #2 ../tests/i915/gem_media_fill.c:135 main()
+(gem_media_fill:1994) igt_core-INFO:   #3 [__libc_start_main+0xeb]
+(gem_media_fill:1994) igt_core-INFO:   #4 [_start+0x2a]
+****  END  ****
+Stack trace:
+  #0 ../lib/igt_core.c:1745 __igt_fail_assert()
+  #1 ../tests/i915/gem_media_fill.c:151 __real_main135()
+  #2 ../tests/i915/gem_media_fill.c:135 main()
+  #3 [__libc_start_main+0xeb]
+  #4 [_start+0x2a]
+Subtest media-fill: FAIL
