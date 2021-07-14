@@ -192,6 +192,11 @@ show_src_rpm_files()
 	find ${HOME}/rpmbuild/SRPMS -type f -name "*.rpm"
 }
 
+show_spec_file()
+{
+	find /home -type f -name "*.spec"
+}
+
 upload_rpm_pkg()
 {
 	local rpm_file
@@ -204,6 +209,14 @@ upload_rpm_pkg()
 	for src_rpm_file in $(show_src_rpm_files)
 	do
 		upload_one_curl ${src_rpm_file} ${src_rpm_dest}
+	done
+}
+
+upload_spec_file()
+{
+	for spec_file in $(show_spec_file)
+	do
+		upload_one_curl ${spec_file} ${result_root}
 	done
 }
 
@@ -233,6 +246,7 @@ update_repo_mq()
 
 add_repo
 [ -n "$repo_name" ] && from_srpm || from_git
+upload_spec_file
 build_rpm
 upload_rpm_pkg
 update_repo_mq
