@@ -18,7 +18,6 @@
 ^dmesg.boot_failures
 ^dmesg.boot_successes
 ^dmesg.BUG:Dentry.*i=.*n=.*
-^dmesg.BUG:KCSAN:data-race_in
 ^dmesg.BUG:using__this_cpu_read\(\)in_preemptible\[#\]code
 ^dmesg.BUG:KFENCE
 ^dmesg.BUG_TestSlub_.*
