@@ -1,5 +1,5 @@
 pkgname=cyclictest
-pkgver=1.0
+pkgver=2.1
 pkgrel=1
 pkgdesc="Cyclictest is a high resolution test program"
 arch=('i386' 'x86_64')
@@ -10,7 +10,7 @@ md5sums=('SKIP')
 
 package() {
 	cd "$srcdir/rt-tests"
-	git checkout -b stable/v1.0 origin/stable/v1.0
+	git checkout -b stable/v${pkgver} origin/stable/v${pkgver}
 	make prefix="${pkgdir}/lkp/benchmarks/${pkgname}"
 	make prefix="${pkgdir}/lkp/benchmarks/${pkgname}" install
 }
