@@ -106,7 +106,7 @@ else
 end
 
 lines.reverse_each do |line|
-  if line =~ /^(<[0-9]+>|....  :..... : )?\[ *(\d{1,6}\.\d{6})\] /
+  if line =~ /^(<[0-9]+>|....  :..... : )?\[ *(\d{1,6}\.\d{6})\]( |\[)/
     error_stamps['last'] = $2
     break
   end
@@ -135,7 +135,7 @@ stat_unittest(lines) if $PROGRAM_NAME =~ /kmsg/
 oops_map.each do |bug_to_bisect, line|
   line.chomp!
 
-  timestamp = $2 if line =~ /^(<[0-9]+>|....  :..... : )?\[ *(\d{1,6}\.\d{6})\] /
+  timestamp = $2 if line =~ /^(<[0-9]+>|....  :..... : )?\[ *(\d{1,6}\.\d{6})\]( |\[)/
 
   if line.index('cpu clock throttled')
     log_error "cpu clock throttled, skip to parse dmesg/kmsg"

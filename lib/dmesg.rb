@@ -289,6 +289,11 @@ end
 
 def analyze_error_id(line)
   line = line.sub(/^(kern  |user  |daemon):......: /, '')
+
+  # remove caller information from CONFIG_PRINTK_CALLER
+  # [   55.954373][    T1] UBI error: cannot initialize UBI, error -1 => [   55.954373] UBI error: cannot initialize UBI, error -1
+  line.sub!(/\[ {0,4}[A-Z][0-9]{1,5}\] /, ' ')
+
   line.sub!(/^[^a-zA-Z]+/, '')
   # line.sub!(/^\[ *[0-9]{1,6}\.[0-9]{6}\] )/, '') # the above pattern includes this one
 
