@@ -3,34 +3,36 @@
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
 require "#{LKP_SRC}/lib/string_ext"
+require "#{LKP_SRC}/lib/tests/stats"
 
-stats = []
+stats = LKP::Stats.new
+
 success_test = 0
 fail_test = 0
 is_divided = false
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   line = line.resolve_invalid_bytes
 
   case line
   when /test_bpf: #[0-9]+ (.+) jited:.+ PASS$/
     type = $1.tr(' ', '_')
-    stats << type + '.pass: 1'
+    stats.add type, 'pass'
   when /test_bpf: #[0-9]+ (.+) jited:.+ FAIL/
     type = $1.tr(' ', '_')
-    stats << type + '.fail: 1'
+    stats.add type, 'fail'
   when /test_bpf: #[0-9]+ check: (.+) PASS$/
     type = $1.tr(' ', '_')
-    stats << 'check:_' + type + '.pass: 1'
+    stats.add "check:_#{type}", 'pass'
   when /test_bpf: #[0-9]+ check: (.+) FAIL/
     type = $1.tr(' ', '_')
-    stats << 'check:_' + type + '.fail: 1'
+    stats.add "check:_#{type}", 'fail'
   when /test_bpf: #[0-9]+ (.+) PASS$/
     type = $1.tr(' ', '_')
-    stats << type + '.pass: 1'
+    stats.add type, 'pass'
   when /test_bpf: #[0-9]+ (.+) FAIL/
     type = $1.tr(' ', '_')
-    stats << type + '.fail: 1'
+    stats.add type, 'fail'
   when /test_bpf: #[0-9]+ check: (.+)/
     type = 'check:_' + $1.strip.tr(' ', '_')
     is_divided = true
@@ -42,12 +44,13 @@ while (line = STDIN.gets)
     fail_test = $2
   when /(PASS|FAIL)/
     if is_divided
-      stats << type + ".#{$1.downcase}: 1"
+      stats.add type, $1.downcase
       is_divided = false
     end
   end
 end
 
-stats.each { |stat| puts stat }
-puts "success_test: #{success_test}"
-puts "fail_test: #{fail_test}"
+stats.add 'success_test', success_test
+stats.add 'fail_test', fail_test
+
+stats.dump
