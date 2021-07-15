@@ -31,4 +31,5 @@ mpstat:
 
 % unless job['nr_vm'] and job['nr_vm'] > 1
 perf-profile:
+  lite_mode: 1
 % end
