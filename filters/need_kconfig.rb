@@ -122,7 +122,7 @@ def check_arch_constraints
   end
 end
 
-unless self['kernel']
+if self['kernel']
   $___ = Array(___)
 
   check_arch_constraints
