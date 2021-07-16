@@ -31,8 +31,18 @@ def should_ignore_stderr(line)
   end
 end
 
+debug_mode = false
+
 while (line = gets)
   line.chomp!
+
+  debug_mode = true if line.start_with?('+') && line.include?("'")
+  if debug_mode && line.end_with?("'")
+    debug_mode = false
+    next
+  end
+  next if debug_mode
+
   next if should_ignore_stderr(line)
 
   # ERR: lib/dmesg.rb:151:in `gsub!': invalid byte sequence in US-ASCII (ArgumentError)
