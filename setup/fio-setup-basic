@@ -20,6 +20,7 @@
 # - numa_cpu_nodes
 # - pre_read
 # - rwmixread
+# - cpuload
 
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/common.sh
@@ -99,6 +100,13 @@ if parse_bool -q "$time_based"; then
 	create_task="
 $create_task
 time_based
+"
+fi
+
+if parse_bool -q "$cpuload"; then
+	create_task="
+$create_task
+cpuload=$cpuload
 "
 fi
 
