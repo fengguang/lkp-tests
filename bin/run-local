@@ -134,7 +134,10 @@ ENV['RESULT_ROOT'] = result_root
 ENV['TMP_RESULT_ROOT'] = result_root
 
 jobx = Job2sh.new(job.to_hash)
-exit unless jobx.expand_params
+unless jobx.expand_params
+  log_error "Failed to expand params!"
+  exit
+end
 
 FileUtils.rm_rf TMP
 Dir.mkdir TMP
