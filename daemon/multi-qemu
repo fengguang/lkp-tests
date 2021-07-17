@@ -6,16 +6,148 @@
 # SPDX-License-Identifier: MulanPSL-2.0+
 # Copyright (c) 2020 Huawei Technologies Co., Ltd. All rights reserved.
 
+. $LKP_SRC/lib/log.sh
+. $LKP_SRC/lib/env.sh
+
 : ${queues:="$tbox_group.$HOSTNAME,$tbox_group.$(arch)"}
 
-multi_qemu()
+prepare_vars()
 {
 	export CCI_SRC=${CCI_SRC:-"/c/compass-ci"}
-	local hostname=$tbox_group.$HOSTNAME
 
-	mkdir -p /srv/$suite && cd /srv/$suite
-	[ -d "mount_point" ] && cd "$mount_point"
-	$CCI_SRC/providers/multi-qemu -n "$hostname" -c "$nr_vm" -q "$queues" >/dev/null 2>&1
+	# multi-qemu need run simplify-ci firstly, simplify-ci will export LKP_SRC=/c/lkp-tests.
+	# but multi-qemu is called by /lkp/scheduled/job.sh, when executed here, LKP_SRC=/lkp/lkp/src/
+	# so add this judgement.
+	[ -d "/c/lkp-tests" ] && export LKP_SRC="/c/lkp-tests"
+
+	hostname=$tbox_group.$HOSTNAME
+
+	local mnt
+	for mnt in $mount_points; do
+		[[ "$mnt" =~ "multi-qemu" ]] && qemu_mount_point="$mnt" && break
+	done
+	[ -n "$qemu_mount_point" ] || {
+		qemu_mount_point=/srv/$suite
+		mkdir -p $qemu_mount_point
+	}
+
+	[ -d "$qemu_mount_point" ] || {
+		log_error "cannot find dir: $qemu_mount_point"
+		exit 1
+	}
 }
 
-multi_qemu
+get_unit_file_name()
+{
+	local index=0
+	local limit=1000
+
+	unset UNIT_FILE
+
+	while true
+	do
+		local unit_file="/usr/lib/systemd/system/${suite}-${index}.service"
+		[ -f "$unit_file" ] && {
+			index=$(($index + 1))
+			continue
+		}
+
+		[ $index -ge $limit ] && {
+			log_error "cannot find right var in limit times: index"
+			exit 1
+		}
+
+		export UNIT_FILE="$unit_file"
+		break
+	done
+
+	[ -n "$UNIT_FILE" ] || {
+		log_error "cannot get right var: UNIT_FILE."
+		exit 1
+	}
+
+	export INDEX=$index
+}
+
+write_env()
+{
+	for env_t
+        do
+		value_env_t=$(eval echo "\$${env_t}")
+                if [ -n "$value_env_t" ]; then
+			cat >> ${UNIT_FILE}<<-EOF
+			Environment="${env_t}=${value_env_t}"
+			EOF
+		else
+			log_warn "cannot find value of var: ${env_t}."
+		fi
+        done
+
+}
+
+
+write_unit_file()
+{
+	cat > ${UNIT_FILE}<<-EOF
+	[Unit]
+	Description=${suite}-${INDEX}
+
+	[Service]
+	Type=simple
+	EOF
+
+	env_list=(
+		"CCI_SRC"
+		"LKP_SRC"
+		"LKP_SERVER"
+		"LKP_CGI_PORT"
+		"MQ_HOST"
+		"MQ_PORT"
+		"LKP_SERVER"
+		"runtime"
+		"suite"
+		"HOSTNAME"
+	)
+	write_env "${env_list[@]}"
+
+	cat >> ${UNIT_FILE}<<-EOF
+	ExecStart=$CCI_SRC/providers/multi-qemu -n "$hostname" -c "$nr_vm" -q "$queues" -i $INDEX
+	WorkingDirectory=$qemu_mount_point
+	Restart=always
+	StandardOutput=tty
+	StandardError=tty
+	TTYPath=/dev/ttyS0
+	KillMode=process
+
+	[Install]
+	WantedBy=multi-user.target
+	EOF
+}
+
+prepare_systemd_unit_file()
+{
+	get_unit_file_name
+	write_unit_file
+}
+
+start_multi_qemu_service()
+{
+	prepare_vars
+
+	has_cmd "lockfile-create" && has_cmd "lockfile-remove" || {
+		log_error "cannot find cmd: lockfile-create | lockfile-remove"
+		exit 1
+	}
+	get_unit_file_name_lock="/tmp/$HOSTNAME/get_unit_file_name.lock"
+	mkdir -p $(dirname $get_unit_file_name_lock)
+	while ! lockfile-create --lock-name -p $get_unit_file_name_lock ; do
+		sleep 1
+	done
+	prepare_systemd_unit_file
+	lockfile-remove --lock-name $get_unit_file_name_lock
+
+	systemctl daemon-reload
+	systemctl start ${UNIT_FILE##*/}
+}
+
+start_multi_qemu_service
