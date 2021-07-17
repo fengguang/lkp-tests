@@ -150,6 +150,7 @@ class Monitor
       return false unless data[key] == value
     end
     @reason = reason
+    mirror_result
     web_socket.close(code, reason)
   end
 
