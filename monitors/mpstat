@@ -37,4 +37,4 @@ pid=$!
 
 $WAIT_POST_TEST_CMD
 
-pkill -INT "$pid"
+pkill -INT mpstat
