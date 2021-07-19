@@ -22,6 +22,7 @@ fio-setup-basic:
   ioengine:
   - sync
   - io_uring
+  - splice
 
 fio:
 
@@ -35,6 +36,7 @@ fio-setup-basic:
   ioengine:
   - sync
   - io_uring
+  - splice
 ---
 runtime: 1h
 fs: ext4
