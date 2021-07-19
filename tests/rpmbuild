@@ -151,7 +151,7 @@ install_srpm()
 {
 	add_user_mock
 
-	su lkp -c "rpm -i --nosignature ${repo_addr}/${upstream_repo} >/dev/null" || die "failed to install source rpm: ${repo_addr}/${upstream_repo}"
+	su lkp -c "rpm -i --nosignature ${repo_addr} >/dev/null" || su lkp -c "rpm -i --nosignature ${repo_addr}/${upstream_repo} >/dev/null" || die "failed to install source rpm: ${repo_addr}/${upstream_repo}"
 }
 
 build_rpm()
