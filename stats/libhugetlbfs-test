@@ -1,8 +1,14 @@
 #!/usr/bin/env ruby
 
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+
+require "#{LKP_SRC}/lib/tests/stats"
+
+stats = LKP::Stats.new
+
 result = {}
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   case line
   when /(32|64)\)\:\s+(PASS|FAIL|ignored by lkp)/
     name = "#{$1}bit.#{line.split('(')[0].rstrip.tr('[ .]', '_')}".downcase
@@ -22,5 +28,7 @@ end
 result['total_test'] = result.size
 
 result.each do |k, v|
-  puts "#{k}: #{v}"
+  stats.add k, v
 end
+
+stats.dump
