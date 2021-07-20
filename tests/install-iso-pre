@@ -15,7 +15,7 @@ check_params()
 		"iso_os"
 		"iso_arch"
 		"iso_version"
-		"ROOTFS_SUFFIX"
+		"group_id"
 		"VG_NAME"
 
 		"HTTP_SERVER_HOST"
@@ -82,7 +82,7 @@ prepare_lv()
 
 	# VG_NAME defines in job.yaml
 	export VG_NAME
-	export LV_NAME="${iso_os}_${iso_arch}_${iso_version}_${ROOTFS_SUFFIX}"
+	export LV_NAME="${iso_os}_${iso_arch}_${iso_version}_${group_id}"
 
 	# lv existed
 	lvdisplay /dev/mapper/${VG_NAME}-${LV_NAME} > /dev/null && {
@@ -208,7 +208,8 @@ submit_install_iso_firstboot_yaml()
 
 	${LKP_SRC}/sbin/submit \
 		${firstboot_yaml} \
-		suite=install-iso-firstboot-${ROOTFS_SUFFIX} \
+		suite=install-iso-firstboot \
+		group_id=${group_id} \
 		testbox=$testbox || die "submit ${firstboot_yaml} failed"
 }
 
@@ -221,13 +222,13 @@ submit_install_iso_sync_rootfs_yaml()
 
 	${LKP_SRC}/sbin/submit \
 		${sync_rootfs_yaml} \
-		suite=install-iso-sync-rootfs-${ROOTFS_SUFFIX} \
+		suite=install-iso-sync-rootfs \
+		group_id=${group_id} \
 		install-iso-sync-rootfs.iso_os=${iso_os} \
 		install-iso-sync-rootfs.iso_arch=${iso_arch} \
 		install-iso-sync-rootfs.iso_version=${iso_version} \
 		install-iso-sync-rootfs.NFS_SERVER_HOST=${NFS_SERVER_HOST} \
 		install-iso-sync-rootfs.NFS_ROOT_DIR=${NFS_ROOT_DIR} \
-		install-iso-sync-rootfs.ROOTFS_SUFFIX=${ROOTFS_SUFFIX} \
 		install-iso-sync-rootfs.VG_NAME=${VG_NAME} \
 		testbox=$testbox || die "submit job failed: ${sync_rootfs_yaml}"
 }

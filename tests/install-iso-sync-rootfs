@@ -31,7 +31,7 @@ check_params()
 		"NFS_SERVER_HOST"
 		"NFS_ROOT_DIR"
 
-		"ROOTFS_SUFFIX"
+		"group_id"
 		"VG_NAME"
 	)
 
@@ -56,7 +56,7 @@ delete_firstboot_cgz()
 {
 	local cgz_url="http://${INITRD_HTTP_HOST}:${INITRD_HTTP_PORT}/initrd/custom_bootstrap/reboot-after-systemd-logind.cgz"
 
-	local tmp_dir="/tmp/$(basename $cgz_url)_${ROOTFS_SUFFIX}"
+	local tmp_dir="/tmp/$(basename $cgz_url)_${group_id}"
 	rm -rf $tmp_dir && mkdir -p $tmp_dir && cd $tmp_dir
 
 	wget $cgz_url || die "wget cgz failed: $cgz_url"
@@ -74,26 +74,26 @@ delete_firstboot_cgz()
 sync_rootfs_to_nfs_server()
 {
 	# mount nfs rootfs
-	local nfs_rootfs_mount_point=/tmp/nfs_rootfs_${ROOTFS_SUFFIX}
+	local nfs_rootfs_mount_point=/tmp/nfs_rootfs_${group_id}
 
 	mkdir -p ${nfs_rootfs_mount_point}
-	mount -t nfs ${NFS_SERVER_HOST}:${NFS_ROOT_DIR}/${iso_os}/${iso_arch}/${iso_version}-iso-${ROOTFS_SUFFIX} ${nfs_rootfs_mount_point} || die "mount nfs rootfs failed"
+	mount -t nfs ${NFS_SERVER_HOST}:${NFS_ROOT_DIR}/${iso_os}/${iso_arch}/${iso_version}-iso-${group_id} ${nfs_rootfs_mount_point} || die "mount nfs rootfs failed"
 
 	# activate the lvm
 	vgchange -ay
 
 	# mount local logical volume
 	local iso_version=${iso_version//-/_}
-	local lv_rootfs_mount_point=/tmp/lv_rootfs_${ROOTFS_SUFFIX}
+	local lv_rootfs_mount_point=/tmp/lv_rootfs_${group_id}
 
 	mkdir -p ${lv_rootfs_mount_point}
-	mount /dev/mapper/${VG_NAME}-${iso_os}_${iso_arch}_${iso_version}_${ROOTFS_SUFFIX} ${lv_rootfs_mount_point} || die "mount lv rootfs failed"
+	mount /dev/mapper/${VG_NAME}-${iso_os}_${iso_arch}_${iso_version}_${group_id} ${lv_rootfs_mount_point} || die "mount lv rootfs failed"
 
 	# delete cgz for firstboot reboot
 	delete_firstboot_cgz
 
 	# sync rootfs
-	local exclude_file=/tmp/exclude_file_${ROOTFS_SUFFIX}
+	local exclude_file=/tmp/exclude_file_${group_id}
 
 	prepare_exclude_file "$exclude_file"
 	rsync -az ${lv_rootfs_mount_point}/. ${nfs_rootfs_mount_point} --exclude-from=$exclude_file || die "copy out rootfs failed"
@@ -105,8 +105,8 @@ sync_rootfs_to_nfs_server()
 	# umount local logical volume
 	umount $lv_rootfs_mount_point || log_warn "umount failed: $lv_rootfs_mount_point"
 
-	lvchange --permission r /dev/mapper/${VG_NAME}-${iso_os}_${iso_arch}_${iso_version}_${ROOTFS_SUFFIX} ||
-		die "change logical volume permission to readonly failed:/dev/mapper/${VG_NAME}-${iso_os}_${iso_arch}_${iso_version}_${ROOTFS_SUFFIX}"
+	lvchange --permission r /dev/mapper/${VG_NAME}-${iso_os}_${iso_arch}_${iso_version}_${group_id} ||
+		die "change logical volume permission to readonly failed:/dev/mapper/${VG_NAME}-${iso_os}_${iso_arch}_${iso_version}_${group_id}"
 }
 
 main()
