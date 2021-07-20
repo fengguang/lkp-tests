@@ -7,19 +7,6 @@ set -e
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/log.sh
 
-SKIP_SYNC_DIRS=(
-	"srv"
-	"opt"
-	"mnt"
-	"media"
-	"home"
-	"lost+found"
-	"dev"
-	"proc"
-	"run"
-	"sys"
-)
-
 check_params()
 {
 	log_info "start check params"
@@ -38,17 +25,6 @@ check_params()
 	for i in "${required_vars[@]}"
 	do
 		[ -n "$(eval echo \$$i)" ] || die "cannot get value of var: $i"
-	done
-}
-
-prepare_exclude_file()
-{
-	local exclude_file=$1
-
-	rm -rf $exclude_file
-	for i in "${SKIP_SYNC_DIRS[@]}"
-	do
-		echo $i >> $exclude_file
 	done
 }
 
@@ -93,11 +69,7 @@ sync_rootfs_to_nfs_server()
 	delete_firstboot_cgz
 
 	# sync rootfs
-	local exclude_file=/tmp/exclude_file_${group_id}
-
-	prepare_exclude_file "$exclude_file"
-	rsync -az ${lv_rootfs_mount_point}/. ${nfs_rootfs_mount_point} --exclude-from=$exclude_file || die "copy out rootfs failed"
-	cd ${nfs_rootfs_mount_point} && mkdir -p "${SKIP_SYNC_DIRS[@]}"
+	cp -a ${lv_rootfs_mount_point}/. ${nfs_rootfs_mount_point} || die "copy out rootfs failed"
 
 	# umount nfs rootfs
 	cd / && umount $nfs_rootfs_mount_point || log_warn "umount failed: nfs_rootfs_mount_point"
