@@ -1,6 +1,6 @@
-From cf75357d6efe3fa9fc1a9a74290b69cbb24e1e4e Mon Sep 17 00:00:00 2001
+From d8a8f96bc77e0f8ac04a2c98f83227682da3738d Mon Sep 17 00:00:00 2001
 From: Haiyan Song <haiyanx.song@intel.com>
-Date: Fri, 17 Apr 2020 10:54:05 +0800
+Date: Tue, 20 Jul 2021 01:03:37 -0400
 Subject: [PATCH] Fix toplev run failed with error 'Unsupported CPU model 85'
 
 Run toplev on clx tbox from 0-day, running command as the following,
@@ -22,10 +22,10 @@ Signed-off-by: Haiyan Song <haiyanx.song@intel.com>
  1 file changed, 18 insertions(+), 6 deletions(-)
 
 diff --git a/tl_cpu.py b/tl_cpu.py
-index 4cf5ebb..55cd96f 100644
+index 0107e81..5488d1a 100644
 --- a/tl_cpu.py
 +++ b/tl_cpu.py
-@@ -74,6 +74,18 @@ class CPU:
+@@ -90,6 +90,18 @@ class CPU(object):
              return True
          return False
  
@@ -44,7 +44,7 @@ index 4cf5ebb..55cd96f 100644
      def __init__(self, known_cpus, nocheck, env):
          self.env = env
          self.model = 0
-@@ -153,12 +165,12 @@ class CPU:
+@@ -168,12 +180,12 @@ class CPU(object):
                      seen.add("stepping")
                      self.step = int(n[2])
          if len(seen) >= 7:
@@ -60,9 +60,9 @@ index 4cf5ebb..55cd96f 100644
 +                if not forced_cpu:
 +                    self.cpu = cpu_name
 +
-         self.standard_counters = ("0,1,2,3",)
-         if self.counters == 0:
-             if self.cpu == "slm":
+         self.force_counters()
+         self.limit4_counters = { "cpu": "none" }
+         self.standard_counters = { "cpu": ("0,1,2,3",) }
 -- 
-2.17.1
+2.20.1
 
