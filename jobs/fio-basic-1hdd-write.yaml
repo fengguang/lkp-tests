@@ -81,3 +81,12 @@ fio-setup-basic:
   - 100
   - 200
 
+---
+fs: ext4
+nr_task: 1
+fio-setup-basic:
+  rw: write
+  filesize: 64G
+  bs: 4k
+  ioengine: e4defrag
+  donorname: e4defrag.def
