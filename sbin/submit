@@ -4,6 +4,7 @@
 
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
+require "#{LKP_SRC}/lib/local_pack"
 require "#{LKP_SRC}/lib/job2sh"
 require "#{LKP_SRC}/lib/scheduler_client"
 require 'optparse'
@@ -197,11 +198,34 @@ ARGV.each do |jobfile|
       next
     end
 
+    # do local pack
+    # modified files since the last tag
+    # untracked files
+    pkg_data = {}
+
+    lkp_repos = [ENV['LKP_SRC']]
+    lkp_repos.insert(-1, ENV['LKP_SRC2']) if ENV['LKP_SRC2']
+
+    lkp_repos.each do |repo|
+      repo_name = File.basename(repo)
+      do_package = PackChange.new(repo)
+      tag, md5, content = do_package.pack_source
+
+      pkg_data[repo_name] = {
+        'tag' => tag,
+        'md5' => md5,
+        'content' => content
+      }
+    end
+
     # init scheduler client
     scheduler_client = SchedulerClient.new(job['SCHED_HOST'], job['SCHED_PORT'])
 
     # submit job
     job_hash['nr_run'] = nr_run
+
+    # add pkg_data to job_hash
+    job_hash['pkg_data'] = pkg_data unless pkg_data.empty?
     job_json = job_hash.to_json
     nr_run.times do
       messages = scheduler_client.submit_job(job_json)
