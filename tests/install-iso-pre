@@ -152,8 +152,9 @@ prepare_submit()
 	cat >> $config_yaml <<-EOF
 	SCHED_HOST: ${SCHED_HOST}
 	SCHED_PORT: ${SCHED_PORT}
-	my_name: ${my_name}
-	my_email: ${my_email}
+	my_account: ${my_account}
+	my_name: ${secrets_MY_NAME}
+	my_email: ${secrets_MY_EMAIL}
 	my_token: ${secrets_MY_TOKEN}
 	lab: z9
 	EOF
