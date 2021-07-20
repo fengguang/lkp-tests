@@ -186,6 +186,8 @@ cd $BENCHMARK_ROOT/lmbench3 || {
 }
 
 make 2>&1 || die "failed to build lmbench3"
+os=$(cd $BENCHMARK_ROOT/lmbench3/scripts; ./os)
+[ -n "$os" ] && rm -rf $BENCHMARK_ROOT/lmbench3/results/$os/
 
 case "$mode" in
 	'all') run_lmbench3_all ;;
