@@ -64,7 +64,7 @@ def check_all(kernel_kconfigs)
       # ignore the check of kconfig type if kernel is not within the valid range
       next if expected_kernel_versions && !kernel_match_version?(kernel_version, expected_kernel_versions)
 
-      types, config_options = config_options.partition { |option| option =~ /^(y|m)$/ }
+      types, config_options = config_options.partition { |option| option =~ /^(y|m|n)$/ }
       raise Job::SyntaxError, "Wrong syntax of kconfig setting: #{e.to_hash}" if types.size > 1
 
       raise Job::SyntaxError, "Wrong syntax of kconfig setting: #{e.to_hash}" unless config_options.size.zero?
