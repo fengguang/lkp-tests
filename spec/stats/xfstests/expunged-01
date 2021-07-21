@@ -1,0 +1,35 @@
+2021-07-14 19:28:57 export TEST_DIR=/fs/sda1
+2021-07-14 19:28:57 export TEST_DEV=/dev/sda1
+2021-07-14 19:28:57 export FSTYP=ext2
+2021-07-14 19:28:57 export SCRATCH_MNT=/fs/scratch
+2021-07-14 19:28:57 mkdir /fs/scratch -p
+2021-07-14 19:28:57 export SCRATCH_DEV=/dev/sda4
+2021-07-14 19:28:57 sed "s:^:generic/:" //lkp/benchmarks/xfstests/tests/generic-group-11
+2021-07-14 19:28:57 ./check -E tests/exclude/ext2 generic/220 generic/221 generic/222 generic/223 generic/224 generic/225 generic/226 generic/227 generic/228 generic/229 generic/230 generic/232 generic/233 generic/234 generic/235 generic/236 generic/237 generic/238 generic/239
+FSTYP         -- ext2
+PLATFORM      -- Linux/x86_64 lkp-ivb-d02 5.14.0-rc1 #1 SMP PREEMPT Wed Jul 14 16:51:13 CST 2021
+MKFS_OPTIONS  -- /dev/sda4
+MOUNT_OPTIONS -- -o acl,user_xattr /dev/sda4 /fs/scratch
+
+generic/220     [not run] Reflink not supported by scratch filesystem type: ext2
+generic/221      60s
+generic/222     [not run] Reflink not supported by scratch filesystem type: ext2
+generic/223     [not run] xfs_io falloc  failed (old kernel/wrong fs?)
+generic/224      75s
+generic/225      111s
+generic/226      11s
+generic/227     [not run] Reflink not supported by scratch filesystem type: ext2
+generic/228     [not run] xfs_io falloc  failed (old kernel/wrong fs?)
+generic/229     [not run] Reflink not supported by scratch filesystem type: ext2
+generic/230      158s
+generic/232      211s
+generic/233      203s
+generic/234      176s
+generic/235       [expunged]
+generic/236      60s
+generic/237      59s
+generic/238     [not run] Reflink not supported by scratch filesystem type: ext2
+generic/239      72s
+Ran: generic/220 generic/221 generic/222 generic/223 generic/224 generic/225 generic/226 generic/227 generic/228 generic/229 generic/230 generic/232 generic/233 generic/234 generic/236 generic/237 generic/238 generic/239
+Not run: generic/220 generic/222 generic/223 generic/227 generic/228 generic/229 generic/238
+Passed all 18 tests

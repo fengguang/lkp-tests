@@ -24,9 +24,6 @@ while (line = $stdin.gets)
   when /^#{TEST_PATTERN}\s+\[not run\]/
     # xfs/161 [not run] Assuming DMAPI modules are not loaded
     stats.add "#{$1}.#{$2}", 'skip'
-  when /^#{TEST_PATTERN}\s+\[expunged\]/
-    # generic/042       [expunged]
-    stats.add "#{$1}.#{$2}", 'skip'
   when /^#{TEST_PATTERN}\s+(\d+)s/
     # btrfs/011        3434s
     stats.add "#{$1}.#{$2}", 'pass'
