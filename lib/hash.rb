@@ -117,7 +117,7 @@ def revise_hash(original, revisions, overwrite_top_keys = true)
     elsif k[-1] == '+'
       kk = k.chomp '+'
       _parent, _pkey, hash, key, _keys = lookup_hash(original, kk, true)
-      hash[key] = merge_accumulative(hash[key], v)
+      hash[key] = merge_accumulative(hash[key], v).uniq
       next false
     end
 
