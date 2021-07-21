@@ -65,7 +65,7 @@ if [ -n "$nr_instances" ]; then
 			export instance_id=$i
 			setup_cgroup "$cg"
 			numa_bind=$(numa_node_binding "$i")
-			log_echo "exec $time_prefix $exec_prefix $numa_bind $program_dir/$program "$@" > $TMP_RESULT_ROOT/log-$program/$i &"
+			$time_prefix $exec_prefix $numa_bind $program_dir/$program "$@" > "$TMP_RESULT_ROOT/log-$program/$i" &
 			i=$((i+1))
 			[ "$i" -gt "$nr_instances" ] && break
 		done
