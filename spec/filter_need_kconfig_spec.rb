@@ -33,6 +33,16 @@ describe 'filter/need_kconfig.rb' do
     job = Job.open(job_file)
   end
 
+  context 'when X is disabled in kernel' do
+    it 'filters the job' do
+      job = generate_job <<~EOF
+              need_kconfig:
+              - X: n
+            EOF
+      expect { job.expand_params }.to raise_error Job::ParamError
+    end
+  end
+
   context 'when syntax is wrong' do
     it 'raises syntax error' do
       job = generate_job <<~EOF
