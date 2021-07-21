@@ -6,7 +6,7 @@
 # repo_addr
 # whether_email
 # compat_os
-# Git repo jobs not use repo_name and repo_addr, SRPMs jobs use all.
+# SRPMs jobs not use upstream_repo, Git jobs use all.
 # user can add custom_repo_name and custom_repo_addr to setup
 # local repo, value can be an array
 
@@ -16,8 +16,6 @@
 . $LKP_SRC/lib/email.sh
 
 : "${compat_os:=budding-openeuler}"
-
-[ -n "$upstream_repo" ] || die "upstream_repo is empty"
 
 dest_dir="/rpm/upload/${os}-${os_version}/${compat_os}"
 
@@ -31,8 +29,8 @@ die()
 from_git()
 {
 	package_name=${upstream_repo##*/}
-	rpm_dest="${dest_dir}/${os_arch}/Packages"
-	src_rpm_dest="${dest_dir}/source/Packages"
+	rpm_dest="${dest_dir}/${repo_name}/${os_arch}/Packages"
+	src_rpm_dest="${dest_dir}/${repo_name}/source/Packages"
 
 	init_workspace
 	download_upstream_repo
@@ -120,14 +118,14 @@ from_srpm()
 init_workspace()
 {
 	# generate workspace in ${HOME}
-	rpmdev-setuptree
+	su lkp -c rpmdev-setuptree
 }
 
 download_upstream_repo()
 {
 	local url="git://${GIT_SERVER}/${upstream_dir}/${upstream_repo}"
 
-	git clone -q "$url" || die "clone git repo ${package_name} failed: $url"
+	git clone -q "$url" || git clone -q "$upstream_repo" || die "clone git repo ${package_name} failed: $url"
 	cd "$package_name" || exit
 	[ -n "${upstream_commit}" ] && git checkout -q "${upstream_commit}"
 	filelist=($(git ls-files))
@@ -137,7 +135,7 @@ download_upstream_repo()
 		local dir="SOURCES"
 
 		echo "$pkgfile" | grep -q -E "\\.spec$" && dir="SPECS"
-		mv "$pkgfile" "${HOME}/rpmbuild/${dir}/"
+		mv "$pkgfile" "/home/lkp/rpmbuild/${dir}/"
 	done
 }
 
@@ -170,7 +168,7 @@ build_rpm()
 	# Download tar.gz to default path ${HOME}/rpmbuild/SOURCE
 	[ -n "$package_name" ] &&
 		{
-			spectool -g -R "$spec_dir/"*.spec || die "failed to download source file"
+			su lkp -c "spectool -g -R $spec_dir/"*.spec || die "failed to download source file"
 		}
 	# Build source and binary packages
 	su - lkp -c "rpmbuild -ba ${spec_dir}/*.spec" || die "failed to build rpms"
@@ -245,7 +243,7 @@ update_repo_mq()
 }
 
 add_repo
-[ -n "$repo_name" ] && from_srpm || from_git
+[ -n "$upstream_repo" ] && from_git || from_srpm
 upload_spec_file
 build_rpm
 upload_rpm_pkg
