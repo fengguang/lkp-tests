@@ -79,8 +79,6 @@ def check_all(kernel_kconfigs)
     uncompiled_kconfig = expected_kernel_kconfig
     uncompiled_kconfig += " supported by kernel (#{expected_kernel_versions.join(', ').gsub("\"", '')})" if expected_kernel_versions
     uncompiled_kconfigs.push uncompiled_kconfig
-
-    warn uncompiled_kconfigs.inspect
   end
 
   return nil if uncompiled_kconfigs.empty?
