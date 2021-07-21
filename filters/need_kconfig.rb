@@ -25,7 +25,7 @@ def kernel_match_kconfig?(kernel_kconfigs, expected_kernel_kconfig)
   case expected_kernel_kconfig
   when /^([A-Z0-9_]+)=n$/
     config_name = $1
-    kernel_kconfigs =~ "# CONFIG_#{config_name} is not set" || kernel_kconfigs !~ /^CONFIG_#{config_name}=[ym]$/
+    kernel_kconfigs =~ /# CONFIG_#{config_name} is not set/ || kernel_kconfigs !~ /^CONFIG_#{config_name}=[ym]$/
   when /^([A-Z0-9_]+=[ym])$/, /^([A-Z0-9_]+=[0-9]+)$/
     kernel_kconfigs =~ /^CONFIG_#{$1}$/
   when /^([A-Z0-9_]+)$/
