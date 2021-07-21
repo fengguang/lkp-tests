@@ -1,4 +1,5 @@
-need_testing_nvdimm_modules: true
+initrds+:
+- testing_nvdimm_modules
 need_kconfig:
 - LIBNVDIMM: m
 - BLK_DEV_PMEM: m

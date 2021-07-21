@@ -1,6 +1,7 @@
-need_linux_headers: true
-need_linux_selftests: true
-need_kselftests: true
+initrds+:
+- linux_headers
+- linux_selftests
+- kselftests
 
 need_kconfig:
 % if ___.group == "x86"
