@@ -126,7 +126,7 @@ class Monitor
   def ssh_connect(ssh_host, ssh_port, web_socket)
     web_socket.close
 
-    cmd = "ssh root@#{ssh_host} -p #{ssh_port} -o StrictHostKeyChecking=no"
+    cmd = "ssh root@#{ssh_host} -p #{ssh_port} -o StrictHostKeyChecking=no -o LogLevel=error"
     puts "\033[41m#{cmd}\033[0m"
 
     cmd = "ssh-keygen -R #{ssh_host};" + cmd
