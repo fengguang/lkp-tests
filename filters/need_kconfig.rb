@@ -25,11 +25,19 @@ def kernel_match_kconfig?(kernel_kconfigs, expected_kernel_kconfig)
   case expected_kernel_kconfig
   when /^([A-Z0-9_]+)=n$/
     config_name = $1
-    kernel_kconfigs =~ /# CONFIG_#{config_name} is not set/ || kernel_kconfigs !~ /^CONFIG_#{config_name}=[ym]$/
+    config_name = "CONFIG_#{config_name}" unless config_name =~ /^CONFIG_/
+
+    kernel_kconfigs =~ /# #{config_name} is not set/ || kernel_kconfigs !~ /^#{config_name}=[ym]$/
   when /^([A-Z0-9_]+=[ym])$/, /^([A-Z0-9_]+=[0-9]+)$/
-    kernel_kconfigs =~ /^CONFIG_#{$1}$/
+    config_name = $1
+    config_name = "CONFIG_#{config_name}" unless config_name =~ /^CONFIG_/
+
+    kernel_kconfigs =~ /^#{config_name}$/
   when /^([A-Z0-9_]+)$/
-    kernel_kconfigs =~ /^CONFIG_#{$1}/
+    config_name = $1
+    config_name = "CONFIG_#{config_name}" unless config_name =~ /^CONFIG_/
+
+    kernel_kconfigs =~ /^#{config_name}/
   else
     raise Job::SyntaxError, "Wrong syntax of kconfig: #{expected_kernel_kconfig}"
   end
