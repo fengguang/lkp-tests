@@ -95,7 +95,7 @@ class PackChange
   def pack_source
     FileUtils.remove_dir "#{@dest_home}/lkp" if Dir.exist? "#{@dest_home}/lkp"
 
-    tag = %x(git describe --abbrev=0 --tags).chomp
+    tag = %x(git -C #{@repo_dir} describe --abbrev=0 --tags).chomp
 
     if tag.empty?
       err_msg = 'Please update your repo and then try again.'
