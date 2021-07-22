@@ -20,4 +20,6 @@ while (line = gets)
   end
 end
 
+exit if time.empty?
+
 puts "#{args}_#{tasks}: #{time.sum / time.size}"
