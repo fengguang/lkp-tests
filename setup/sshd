@@ -70,12 +70,13 @@ set_port()
 	do
 		port=$(($(date +%s%N)%$sshr_port_len+$sshr_port_base))
 		ssh -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes -o TCPKeepAlive=yes \
-		    -Nf -R $port:localhost:22 sshr@"$sshr_ip" -p "$sshr_port" -i /root/.ssh/sshr/id_rsa &>/dev/null
+			-Nf -R $port:localhost:22 sshr@"$sshr_ip" -p "$sshr_port" -i /root/.ssh/sshr/id_rsa > ssh_msg 2>&1
 		[ $? -eq 0 ] && {
 			reconnect_every_half_minute &
 			return
 		}
 	done
+	cat ssh_msg
 	port=""
 }
 
