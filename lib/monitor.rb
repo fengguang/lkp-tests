@@ -129,7 +129,6 @@ class Monitor
     cmd = "ssh root@#{ssh_host} -p #{ssh_port} -o StrictHostKeyChecking=no -o LogLevel=error"
     puts "\033[41m#{cmd}\033[0m"
 
-    cmd = "ssh-keygen -R #{ssh_host};" + cmd
     exec cmd
   end
 
