@@ -24,6 +24,13 @@ set_login_tmout()
 	echo "export TMOUT=$tmout" >> /etc/profile
 }
 
+set_term()
+{
+	# $TERM be set "tmux-256color" in tmux, this will raise:
+	# 	setterm: tmux-256color: unknown terminal type
+	echo "export TERM='linux'" >> /etc/profile
+}
+
 generate_key_file()
 {
 	echo -e "y\n" | ssh-keygen -t rsa -b 2048 -N '' -f /etc/ssh/ssh_host_rsa_key
@@ -85,6 +92,7 @@ run_email()
 }
 
 set_login_tmout
+set_term
 run_ssh
 set_port
 report_ssh_port $port
