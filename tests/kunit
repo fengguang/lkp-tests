@@ -2,7 +2,7 @@
 
 . $LKP_SRC/lib/reproduce-log.sh
 
-test_array=("kunit-test" "kunit-example-test" "ext4-inode-test" "sysctl-test" "list-test")
+test_array=("bitfield_kunit" "cmdline_kunit" "ext4-inode-test" "kunit" "mptcp_crypto_test" "mptcp_token_test" "property-entry-test" "resource_kunit" "sysctl-test" "test_bits" "test_linear_ranges" "test_kasan" "list-test" "qos-test")
 
 run_kunit_tests()
 {
