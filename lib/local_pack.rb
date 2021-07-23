@@ -119,18 +119,18 @@ class PackChange
         %x(touch #{dest_cgz}) unless File.exist? dest_cgz
         %x(cd "#{@base_home}" && find lkp | cpio -o -H newc | gzip -9 > "#{dest_cgz}")
       end
-    end
 
-    unless File.exist? dest_cgz
-      error_msg = 'There has none local package yet, do one first.'
-      raise error_msg
+      unless File.exist? dest_cgz
+        error_msg = 'There has none local package yet, do one first.'
+        raise error_msg
+      end
+
+      FileUtils.remove_dir "#{@dest_test_home}/lkp" if Dir.exist? "#{@dest_test_home}/lkp"
+      FileUtils.cp_r "#{@dest_home}/lkp", @dest_test_home
     end
 
     md5 = Digest::MD5.hexdigest File.read(dest_cgz)
     content = Base64.encode64(File.read(dest_cgz)).chomp
-
-    FileUtils.remove_dir "#{@dest_test_home}/lkp" if Dir.exist? "#{@dest_test_home}/lkp"
-    FileUtils.cp_r "#{@dest_home}/lkp", @dest_test_home
 
     [tag, md5, content]
   end
