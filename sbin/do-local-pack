@@ -1,0 +1,6 @@
+#! /usr/bin/env ruby
+# frozen_string_literal: true
+
+require "#{ENV['LKP_SRC']}/lib/do_local_pack"
+
+do_local_pack
