@@ -117,7 +117,7 @@ class PackChange
         FileUtils.mkdir_p(@cgz_dir) unless Dir.exist? @cgz_dir
 
         %x(touch #{dest_cgz}) unless File.exist? dest_cgz
-        %x(cd "#{@base_home}" && find lkp | cpio -o -H newc | gzip -N -9 > "#{dest_cgz}")
+        %x(cd "#{@base_home}" && find lkp | cpio -o -H newc | gzip -9 > "#{dest_cgz}")
       end
     end
 
