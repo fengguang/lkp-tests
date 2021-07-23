@@ -99,7 +99,6 @@ write_unit_file()
 	env_list=(
 		"CCI_SRC"
 		"LKP_SRC"
-		"LKP_SERVER"
 		"LKP_CGI_PORT"
 		"MQ_HOST"
 		"MQ_PORT"
@@ -107,6 +106,8 @@ write_unit_file()
 		"runtime"
 		"suite"
 		"HOSTNAME"
+		"id"
+		"JOB_RESULT_ROOT"
 	)
 	write_env "${env_list[@]}"
 
