@@ -66,7 +66,7 @@ class PackChange
 
   def extract_modified_files(lkp_tag)
     FileUtils.chdir @repo_dir
-    modified_file_list = %x(git diff --name-only #{lkp_tag}).split("\n")
+    modified_file_list = %x(git diff --name-only #{lkp_tag} 2>/dev/null).split("\n")
 
     return if modified_file_list.empty?
 
@@ -77,7 +77,7 @@ class PackChange
 
   def extract_new_files
     FileUtils.chdir @repo_dir
-    new_file_list = %x(git status --short | grep -v "^ *M"| awk '{print $2}').split("\n")
+    new_file_list = %x(git status --short 2>/dev/null | grep -v "^ *M"| awk '{print $2}').split("\n")
 
     return if new_file_list.empty?
 
