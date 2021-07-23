@@ -21,6 +21,7 @@ opt_my_queue = false
 actions = ['output', 'stop']
 result_roots = []
 nr_run = 1
+do_pack = true
 
 options = OptionParser.new do |opts|
   opts.banner = 'Usage: submit [options] job1.yaml job2.yaml ...'
@@ -45,6 +46,10 @@ options = OptionParser.new do |opts|
 
   opts.on('-a', '--auto-define-files', 'auto add define_files') do
     opt_auto_define_files = true
+  end
+
+  opts.on('--no-pack', "don't do pack, just use the last one") do
+    do_pack = false
   end
 
   opts.on('-i include.yaml', '--include include.yaml', 'include other job yamls') do |yaml|
@@ -198,32 +203,34 @@ ARGV.each do |jobfile|
       next
     end
 
-    # do local pack
-    # modified files since the last tag
-    # untracked files
-    pkg_data = {}
-
-    lkp_repos = [ENV['LKP_SRC']]
-    lkp_repos.insert(-1, ENV['LKP_SRC2']) if ENV['LKP_SRC2']
-
-    lkp_repos.each do |repo|
-      repo_name = File.basename(repo)
-      do_package = PackChange.new(repo)
-      tag, md5, content = do_package.pack_source
-
-      pkg_data[repo_name] = {
-        'tag' => tag,
-        'md5' => md5,
-        'content' => content
-      }
-    end
-
-    # init scheduler client
     scheduler_client = SchedulerClient.new(job['SCHED_HOST'], job['SCHED_PORT'])
 
     # submit job
     job_hash['nr_run'] = nr_run
 
+    # do local pack
+    # modified files since the last tag
+    # untracked files
+    pkg_data = {}
+
+    unless job_hash.key?('pkg_data')
+      lkp_repos = [ENV['LKP_SRC']]
+      lkp_repos.insert(-1, ENV['LKP_SRC2']) if ENV['LKP_SRC2']
+
+      lkp_repos.each do |repo|
+        repo_name = File.basename(repo)
+        do_package = PackChange.new(repo, do_pack)
+        tag, md5, content = do_package.pack_source
+
+        pkg_data[repo_name] = {
+          'tag' => tag,
+          'md5' => md5,
+          'content' => content
+        }
+      end
+    end
+
+    # init scheduler client
     # add pkg_data to job_hash
     job_hash['pkg_data'] = pkg_data unless pkg_data.empty?
     job_json = job_hash.to_json
