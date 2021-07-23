@@ -25,8 +25,9 @@ require 'base64'
 #     - copy extracted file to specified dir
 #     - used to do the 'check_difference' for the next time
 class PackChange
-  def initialize(repo_dir)
+  def initialize(repo_dir, do_pack)
     @repo_dir = repo_dir
+    @do_pack = do_pack
     @repo_name = File.basename(@repo_dir)
     @base_home = "#{ENV['HOME']}/lkp-pkg-files"
     @dest_home = "#{@base_home}/lkp"
@@ -36,7 +37,7 @@ class PackChange
                         "#{@base_home}/LKP_SRC2"
                       end
 
-    @cgz_dir = "#{ENV['HOME']}/srv/initrd/lkp"
+    @cgz_dir = "#{@base_home}/lkp_package"
     @pass_file_type = %w[.md .bk .swp .zip .bak .yml]
   end
 
@@ -84,8 +85,10 @@ class PackChange
     end
   end
 
-  def check_difference
+  def check_difference(dest_cgz)
     return false if Dir.empty? @dest_test_home
+
+    return false unless File.exist? dest_cgz
 
     return true if %x(diff -urNa #{@dest_test_home} #{@dest_home}).empty?
 
@@ -93,26 +96,33 @@ class PackChange
   end
 
   def pack_source
-    FileUtils.remove_dir "#{@dest_home}/lkp" if Dir.exist? "#{@dest_home}/lkp"
-
     tag = %x(git -C #{@repo_dir} describe --abbrev=0 --tags).chomp
+    dest_cgz = "#{@cgz_dir}/#{@repo_name}.cgz"
 
-    if tag.empty?
-      err_msg = 'Please update your repo and then try again.'
-      raise err_msg
+    if @do_pack
+      FileUtils.remove_dir "#{@dest_home}/lkp" if Dir.exist? "#{@dest_home}/lkp"
+
+      if tag.empty?
+        err_msg = 'Please update your repo and then try again.'
+        raise err_msg
+      end
+
+      extract_modified_files(tag)
+      extract_new_files
+
+      FileUtils.mkdir_p(@dest_test_home) unless Dir.exist? @dest_test_home
+
+      unless check_difference(dest_cgz)
+        FileUtils.mkdir_p(@cgz_dir) unless Dir.exist? @cgz_dir
+
+        %x(touch #{dest_cgz}) unless File.exist? dest_cgz
+        %x(cd "#{@base_home}" && find lkp | cpio -o -H newc | gzip -N -9 > "#{dest_cgz}")
+      end
     end
 
-    extract_modified_files(tag)
-    extract_new_files
-
-    dest_cgz = "#{@cgz_dir}/#{@repo_name}.cgz"
-    FileUtils.mkdir_p(@dest_test_home) unless Dir.exist? @dest_test_home
-
-    unless check_difference
-      FileUtils.mkdir_p(@cgz_dir) unless Dir.exist? @cgz_dir
-
-      %x(touch #{dest_cgz}) unless File.exist? dest_cgz
-      %x(cd "#{@base_home}" && find lkp | cpio -o -H newc | gzip -N -9 > "#{dest_cgz}")
+    unless File.exist? dest_cgz
+      error_msg = 'There has none local package yet, do one first.'
+      raise error_msg
     end
 
     md5 = Digest::MD5.hexdigest File.read(dest_cgz)
