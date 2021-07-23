@@ -44,7 +44,7 @@ mac_dep()
 install_gem_pkg()
 {
 	gem sources -r https://rubygems.org/ -a https://gems.ruby-china.com/
-	sudo gem install -f git activesupport rest-client faye-websocket
+	sudo gem install -f git activesupport rest-client faye-websocket md5sum base64
 }
 
 run()
