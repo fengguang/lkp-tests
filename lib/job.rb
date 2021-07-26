@@ -304,6 +304,16 @@ class Job
     include_hash.merge!(load_yaml_merge(include_yamls, {}))
   end
 
+  def split_multi_args(value)
+    if value =~ /^\w.*\|.*\w$/
+      return value.split('|').map(&:strip)
+    elsif value =~ /^\w.*\:.*\w$/
+      return value.split(':').map(&:strip)
+    else
+      return false
+    end
+  end
+
   def multi_args(hash)
     jobs_array = []
     hash.each { |key, value|
@@ -313,19 +323,17 @@ class Job
         hash.delete(key)
         next
       end
+      key_array = split_multi_args(key)
+      next unless key_array
 
-      next unless key =~ /^\w.*\|.*\w$/
-
-      key_array = key.split('|').map(&:strip)
-      [value].flatten.each do |v|
-        next unless v =~ /^\w.*\|.*\w$/
-
-        v_array = v.split('|').map(&:strip)
-        next unless key_array.size == v_array.size
+      [value].flatten.each do |value|
+        value_array = split_multi_args(value)
+        next unless value_array
+        next unless key_array.size == value_array.size
 
         hash_job = hash.clone
         key_array.size.times do |i|
-          hash_job[key_array[i]] = v_array[i]
+          hash_job[key_array[i]] = value_array[i]
         end
         hash_job.delete(key)
         @overrides.delete(key)
