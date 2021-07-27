@@ -76,7 +76,8 @@ set_port()
 			return
 		}
 	done
-	cat ssh_msg
+	ssh_error_message="$(cat -e ssh_msg)"
+	echo $ssh_error_message
 	port=""
 }
 
@@ -96,5 +97,5 @@ set_login_tmout
 set_term
 run_ssh
 set_port
-report_ssh_port $port
+report_ssh_info "$port" "${ssh_error_message}"
 run_email
