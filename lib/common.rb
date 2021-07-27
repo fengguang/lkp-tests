@@ -323,6 +323,8 @@ end
 
 def build_pkg_error_id(line)
   line = line.chomp
+  # ^[[01m^[[KTSOTraceBuilder.cpp:823:10:^[[m^[[K ^[[01;35m^[[Kwarning: ^[[m^[[Kvariable '^[[01m^[[Kconflicts_with_lu^[[m^[[K' set but not used [^[[01;35m^[[K-Wunused-but-set-variable^[[m^[[K]
+  line = line.gsub(/\^\[\[([0-9]{1,2}(;[0-9]{1,2})?)?[mK]/,"")
   line = line.gsub(/\b[3-9]\.[0-9]+[-a-z0-9.]+/, "#") # linux version: 3.17.0-next-20141008-g099669ed
   line = line.gsub(/\b[1-9][0-9]-[A-Z][a-z]+-[0-9]{4}\b/, "#") # Date: 28-Dec-2013
   line = line.gsub(/\b0x[0-9a-f]+\b/, "#") # hex number
