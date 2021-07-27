@@ -90,6 +90,15 @@ report_ssh_port()
 	http_get_cgi "cgi-bin/report_ssh_port?tbox_name=$HOSTNAME&job_id=$id&ssh_port=$ssh_port"
 }
 
+report_ssh_info()
+{
+	local ssh_port="$1"
+	local message="$2"
+
+	content='{"tbox_name": "'$HOSTNAME'", "job_id": "'$id'", "ssh_port": "'$ssh_port'", "message": "'$message'"}'
+	curl -XPOST "http://$LKP_SERVER:${LKP_CGI_PORT:-3000}/~lkp/cgi-bin/report_ssh_info" -d "$content"
+}
+
 ####################################################
 
 http_escape_request()
