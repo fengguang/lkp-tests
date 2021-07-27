@@ -118,16 +118,24 @@ class Monitor
     return unless data['log']
 
     data = JSON.parse(data['log'])
-    return unless data['ssh_port']
+    return unless data['state'] == 'set ssh port'
 
-    ssh_connect(job['SCHED_HOST'], data['ssh_port'], web_socket)
+    if data['ssh_port']
+      ssh_connect(job['SCHED_HOST'], data['ssh_port'], web_socket)
+    else
+      red_output('sshd error: ' + data['message'].to_s)
+    end
+  end
+
+  def red_output(msg)
+    puts "\033[41m#{msg}\033[0m"
   end
 
   def ssh_connect(ssh_host, ssh_port, web_socket)
     web_socket.close
 
     cmd = "ssh root@#{ssh_host} -p #{ssh_port} -o StrictHostKeyChecking=no -o LogLevel=error"
-    puts "\033[41m#{cmd}\033[0m"
+    red_output(cmd)
 
     exec cmd
   end
