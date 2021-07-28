@@ -23,6 +23,9 @@ fio-setup-basic:
   - sync
   - io_uring
   - splice
+  - falloc
+  - ftruncate
+  - sg
 
 fio:
 
@@ -37,6 +40,9 @@ fio-setup-basic:
   - sync
   - io_uring
   - splice
+  - falloc
+  - ftruncate
+  - sg
 ---
 runtime: 1h
 fs: ext4
