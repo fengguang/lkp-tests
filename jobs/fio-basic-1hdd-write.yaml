@@ -26,6 +26,10 @@ fio-setup-basic:
   - falloc
   - ftruncate
   - sg
+  - vsync
+  - pvsync
+  - pvsync2
+  - posixaio
 
 fio:
 
@@ -43,6 +47,10 @@ fio-setup-basic:
   - falloc
   - ftruncate
   - sg
+  - vsync
+  - pvsync
+  - pvsync2
+  - posixaio
 ---
 runtime: 1h
 fs: ext4
