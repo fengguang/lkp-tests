@@ -294,8 +294,6 @@ setup_crosstool_clang()
 
 	local cross_clang_path=$(dirname $cross_clang)
 	local opt_ldd="LD=${cross_clang_path}/ld.lld HOSTLD=${cross_clang_path}/ld.lld"
-	[[ $ARCH =~ arm ]] &&
-		grep -q 'CONFIG_CPU_BIG_ENDIAN=y' .config && opt_ldd=
 	[[ $ARCH = s390 ]] && opt_ldd=
 
 	# https://www.kernel.org/doc/html/latest/kbuild/llvm.html
