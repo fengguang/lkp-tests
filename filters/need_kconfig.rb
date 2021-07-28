@@ -66,13 +66,15 @@ def check_all(kernel_kconfigs)
   $___.each do |e|
     if e.instance_of? Hashugar
       config_name, config_options = e.to_hash.first
-      config_options = config_options.split(',').map(&:strip)
+      # to_s is for "CMA_SIZE_MBYTES: 200"
+      config_options = config_options.to_s.split(',').map(&:strip)
 
       expected_kernel_versions, config_options = config_options.partition { |option| option =~ /v\d+\.\d+/ }
       # ignore the check of kconfig type if kernel is not within the valid range
       next if expected_kernel_versions && !kernel_match_version?(kernel_version, expected_kernel_versions)
 
-      types, config_options = config_options.partition { |option| option =~ /^(y|m|n)$/ }
+      # \d+ is for "CMA_SIZE_MBYTES: 200"
+      types, config_options = config_options.partition { |option| option =~ /^(y|m|n|\d+)$/ }
       raise Job::SyntaxError, "Wrong syntax of kconfig setting: #{e.to_hash}" if types.size > 1
 
       raise Job::SyntaxError, "Wrong syntax of kconfig setting: #{e.to_hash}" unless config_options.size.zero?

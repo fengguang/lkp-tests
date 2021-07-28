@@ -13,7 +13,7 @@ describe 'filter/need_kconfig.rb' do
     end
 
     File.open(File.join(@tmp_dir, '.config'), 'w') do |f|
-      f.write('CONFIG_X=y')
+      f.write("CONFIG_X=y\nCONFIG_Y=200")
     end
   end
 
@@ -40,6 +40,26 @@ describe 'filter/need_kconfig.rb' do
               - X: n
             EOF
       expect { job.expand_params }.to raise_error Job::ParamError
+    end
+  end
+
+  context 'when X needs to set value' do
+    it 'filters the job' do
+      job = generate_job <<~EOF
+              need_kconfig:
+              - X: 200
+            EOF
+      expect { job.expand_params }.to raise_error Job::ParamError
+    end
+  end
+
+  context 'when the value of Y is the same as kconfig' do
+    it 'does not filters the job' do
+      job = generate_job <<~EOF
+              need_kconfig:
+              - Y: 200
+            EOF
+      job.expand_params
     end
   end
 
