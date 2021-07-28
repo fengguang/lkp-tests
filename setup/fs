@@ -5,6 +5,7 @@
 # - mount_option
 # - nr_tmpfs
 # mount_to
+# mount_bind
 
 # normal disks will mount to $mount_points/{nfs, fs}/
 # mount_to is for mount disks to specified directory.
@@ -22,6 +23,9 @@
 #         mount_to:
 #         - /mnt/sda
 #         - /mnt/sdb
+# mount_bind will mount only the first mount point of mount_to array, and mount all the rest mount points of mount_to array bind to the first mount point,
+# if $mount_bind=true, will call function mount_bind() in this script,
+# if $mount_bind is not true or not exist, will not call function mount_bind(), just mount the every disk to every mount point.
 # This script supports 2 NFS mount schemes:
 # fs1: followup scripts will see NFS mount_points only
 # fs2: followup scripts will see NFS mount_points as well as original mount_points
@@ -120,6 +124,22 @@ mount_fs() {
 		log_cmd mount -t $fs ${mount:-$def_mount} $mount_option $dev $mnt || exit
 		mount_points="${mount_points}$mnt "
 	done
+
+	[ "$mount_bind" == "true" ] && mount_bind
+}
+
+mount_bind()
+{
+	mount_array=($mount_to)
+	num=$(echo ${#mount_array[@]})
+	[ "$num" -gt "1" ] && {
+		for i in ${!mount_array[@]}
+		do
+			[ "$i" == "0" ] && continue
+			log_cmd mkdir -p ${mount_array[$i]}
+			mount --bind ${mount_array[$i]} ${mount_array[0]}
+		done
+	}
 }
 
 if is_btrfs_raid_levels; then
