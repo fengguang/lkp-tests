@@ -141,7 +141,7 @@ need_kconfig:
 - FW_LOADER: y, v4.18-rc1
 - FW_LOADER_USER_HELPER: y, v4.18-rc1
 - IKCONFIG: y
-- IKPROC: y
+- IKCONFIG_PROC: y
 - TEST_FIRMWARE
 % elsif ___.group == "lkdtm"
 - LKDTM: y
