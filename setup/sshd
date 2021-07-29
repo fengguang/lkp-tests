@@ -4,6 +4,7 @@
 # sshr_port_len
 # sshr_port_base
 # tmout
+# JUMPER_HOST
 
 SCRIPT_DIR=$(dirname $(realpath $0))
 PROJECT_DIR=$(dirname $SCRIPT_DIR)
@@ -81,6 +82,17 @@ set_port()
 	port=""
 }
 
+mount_user_home()
+{
+	[[ -n "$secrets_smb_user" ]] || return
+	[[ -n "$secrets_smb_pass" ]] || return
+
+	# the mount point in testbox is set the same as its home dir in the account-vm
+	[[ -d "/home/$secrets_smb_user" ]] || mkdir -p "/home/$secrets_smb_user"
+	mount.cifs //"$JUMPER_HOST"/"$secrets_smb_user" "/home/$secrets_smb_user" \
+		   -o username="$secrets_smb_user",password="$secrets_smb_pass"
+}
+
 run_email()
 {
 	deadline=$(date -d "$runtime seconds" +"%Y-%m-%d %H:%M:%S")
@@ -98,4 +110,5 @@ set_term
 run_ssh
 set_port
 report_ssh_info "$port" "${ssh_error_message}"
+mount_user_home
 run_email
