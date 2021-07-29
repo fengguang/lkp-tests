@@ -343,5 +343,8 @@ def build_pkg_error_id(line)
   line = line.gsub(/[-_.,;:#!\[(]+$/, "")
   line = line.gsub(/([-_.,;:#!]){3,}/, ":")
   line = line.gsub(/^\/tmp\/(?!lkp).*?\//, "")
+  # /tmp/lkp/cciPSGjL.ltrans30.ltrans.o:<artificial>:targets.#lto_priv:error:undefined-reference-to'.L2673' =>
+  # ltrans30.ltrans.o:<artificial>:targets.#lto_priv:error:undefined-reference-to'.L2673'
+  line = line.sub(/^\/tmp\/lkp\/\w+\.(?=(\w+\.){2}\w+:)/, "")
   line
 end
