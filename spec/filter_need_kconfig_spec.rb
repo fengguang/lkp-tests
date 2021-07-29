@@ -13,7 +13,7 @@ describe 'filter/need_kconfig.rb' do
     end
 
     File.open(File.join(@tmp_dir, '.config'), 'w') do |f|
-      f.write("CONFIG_X=y\nCONFIG_Y=200")
+      f.write("CONFIG_X=y\nCONFIG_Y=200\nCONFIG_Z1=m\nCONFIG_Z2=y")
     end
   end
 
@@ -40,6 +40,27 @@ describe 'filter/need_kconfig.rb' do
               - X: n
             EOF
       expect { job.expand_params }.to raise_error Job::ParamError
+    end
+  end
+
+  context 'when Z does not set n/m/y or version' do
+    it 'does not filters the job' do
+      job = generate_job <<~EOF
+              need_kconfig:
+              - Z1
+              - Z2
+            EOF
+      job.expand_params
+    end
+  end
+
+  context 'when Z does not set n/m/y' do
+    it 'does not filters the job' do
+      job = generate_job <<~EOF
+              need_kconfig:
+              - Z1: v5.2 # support kernel >=v5.2
+            EOF
+      job.expand_params
     end
   end
 
