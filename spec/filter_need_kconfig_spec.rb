@@ -63,6 +63,16 @@ describe 'filter/need_kconfig.rb' do
     end
   end
 
+  context 'when the value of Y is not the same as kconfig' do
+    it 'filters the job' do
+      job = generate_job <<~EOF
+              need_kconfig:
+              - Y: 100
+            EOF
+      expect { job.expand_params }.to raise_error Job::ParamError
+    end
+  end
+
   context 'when syntax is wrong' do
     it 'raises syntax error' do
       job = generate_job <<~EOF
