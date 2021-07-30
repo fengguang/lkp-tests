@@ -33,11 +33,13 @@ def kernel_match_kconfig?(kernel_kconfigs, expected_kernel_kconfig)
     config_name = "CONFIG_#{config_name}" unless config_name =~ /^CONFIG_/
 
     kernel_kconfigs =~ /^#{config_name}$/
-  when /^([A-Z0-9_]+)$/
+  when /^([A-Z0-9_]+)$/, /^([A-Z0-9_]+)=$/
+    # /^([A-Z0-9_]+)$/ is for "CRYPTO_HMAC"
+    # /^([A-Z0-9_]+)=$/ is for "DEBUG_INFO_BTF: v5.2"
     config_name = $1
     config_name = "CONFIG_#{config_name}" unless config_name =~ /^CONFIG_/
 
-    kernel_kconfigs =~ /^#{config_name}/
+    kernel_kconfigs =~ /^#{config_name}=(y|m)$/
   else
     raise Job::SyntaxError, "Wrong syntax of kconfig: #{expected_kernel_kconfig}"
   end
