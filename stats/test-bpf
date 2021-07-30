@@ -7,8 +7,6 @@ require "#{LKP_SRC}/lib/tests/stats"
 
 stats = LKP::Stats.new
 
-success_test = 0
-fail_test = 0
 is_divided = false
 
 while (line = $stdin.gets)
@@ -39,9 +37,6 @@ while (line = $stdin.gets)
   when /test_bpf: #[0-9]+ (.+)/
     type = $1.strip.tr(' ', '_')
     is_divided = true
-  when /test_bpf: Summary: ([0-9]+) PASSED, ([0-9]+) FAILED, \[.+ JIT'ed\]$/
-    success_test = $1
-    fail_test = $2
   when /(PASS|FAIL)/
     if is_divided
       stats.add type, $1.downcase
@@ -49,8 +44,5 @@ while (line = $stdin.gets)
     end
   end
 end
-
-stats.add 'success_test', success_test
-stats.add 'fail_test', fail_test
 
 stats.dump
