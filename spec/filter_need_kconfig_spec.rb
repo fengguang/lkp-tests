@@ -58,7 +58,7 @@ describe 'filter/need_kconfig.rb' do
     it 'does not filters the job' do
       job = generate_job <<~EOF
               need_kconfig:
-              - Z1: v5.2 # support kernel >=v5.2
+              - Z1: v4.9 # support kernel >=v4.9
             EOF
       job.expand_params
     end
