@@ -1,0 +1,9 @@
+boot_failures: 1
+
+# KCSAN: data-race in mutex_spin_on_owner+0x
+KCSAN:data-race_in_mutex_spin_on_owner: 1
+message:KCSAN:data-race_in_mutex_spin_on_owner: [   14.009362][  T161] BUG: KCSAN: data-race in mutex_spin_on_owner+0x14e/0x2c0
+pattern:KCSAN:data-race_in_mutex_spin_on_owner: KCSAN: data-race in mutex_spin_on_owner+0x
+
+timestamp:last: 14.011132
+timestamp:KCSAN:data-race_in_mutex_spin_on_owner: 14.009362
