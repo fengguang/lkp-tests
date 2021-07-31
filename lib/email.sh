@@ -102,7 +102,7 @@ Compass-CI
 
 selftest_env_content()
 {
-	email_content="To: $recipient_email_to
+	email_content=$(echo "To: $recipient_email_to
 Bcc: $recipient_email_bcc
 Subject: [SELF-TEST] REPORT
 
@@ -114,7 +114,7 @@ $report_content
 
 Regards
 Compass-CI
-"
+" | base64)
 }
 
 rpmbuild_report()
