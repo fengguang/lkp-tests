@@ -6,6 +6,8 @@ export server_ip=$SCHED_HOST
 
 git_ci()
 {
+	# use $GIT_SERVER to direct git remote repo from gitee.com to our own git remote repo(by container git-daemon),
+	# to make sure can use the latest code.
 	if [ -n "$GIT_SERVER" ]; then
 		cat >> /etc/gitconfig <<-EOF
 		[url "git://$GIT_SERVER/gitee.com"]
