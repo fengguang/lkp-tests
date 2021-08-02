@@ -49,12 +49,10 @@ phoronix-test-suite:
       # - Test All Options
     option_b:
       - 1024 x 768
-  - test: etxreal-1.0.0
+ # - test: etxreal-1.0.0 # too old (last update 2012) to work
     # - etqw-1.1.0 # has been replaced by newer etqw-demo
     # - etqw-demo-1.1.0 # need 32bit libs
     # - etqw-demo-iqc-1.0.0 # need 32bit libs
-    option_a:
-      - 1024 x 768
   - test: geexlab-1.0.0
     option_a:
       - 1024 x 768
