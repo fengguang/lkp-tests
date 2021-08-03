@@ -252,7 +252,7 @@ fixup_fio()
 	local test_dir="/media/test_fio"
 	fallocate -l 100M $test_disk || return
 	mkfs -t ext4 $test_disk 2> /dev/null || return
-	mkdir $test_dir || return
+	mkdir -p $test_dir || return
 	modprobe loop || return
 	mount -t auto -o loop $test_disk $test_dir ||return
 
