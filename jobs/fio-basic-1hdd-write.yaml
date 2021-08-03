@@ -30,6 +30,9 @@ fio-setup-basic:
   - pvsync
   - pvsync2
   - posixaio
+  - filecreate
+  - filestat
+  - filedelete
 
 fio:
 
@@ -51,6 +54,9 @@ fio-setup-basic:
   - pvsync
   - pvsync2
   - posixaio
+  - filecreate
+  - filestat
+  - filedelete
 ---
 runtime: 1h
 fs: ext4
