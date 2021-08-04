@@ -44,7 +44,7 @@ class PackChange
   def copy_file(file)
     if @repo_name == 'lkp-tests'
       return if file.eql?('.swp')
-      return if file.start_with?('sbin/')
+      return if file.start_with?('doc/')
       return if file.start_with?('jobs/')
       return if file.start_with?('rootfs/addon/root/.ssh/')
     end
