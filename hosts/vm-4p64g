@@ -1,0 +1,8 @@
+provider: qemu
+template: kvm
+nr_node: 1
+nr_cpu: 4
+memory: 64G
+hdd_partitions: /dev/vda
+rootfs_disk:
+  - /dev/vdb
