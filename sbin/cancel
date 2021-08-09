@@ -1,0 +1,57 @@
+#! /usr/bin/env ruby
+
+# frozen_string_literal: true
+
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+
+require 'yaml'
+require 'optparse'
+
+require "#{LKP_SRC}/lib/load_file"
+require "#{LKP_SRC}/lib/scheduler_client"
+
+def format_result(result)
+  info = "job_id: #{result['job_id']}"
+  info += ' ' * (20 - result['job_id'].size) + "result: #{result['result']}"
+  return info if result['result'] == 'success'
+
+  info += ' ' * (20 - result['result'].size)
+  info + "message: #{result['message']}"
+end
+
+options = OptionParser.new do |opts|
+  opts.banner = 'Usage: cancel job_id1 job_id2 ...'
+  opts.separator '       cancel jobs that have not been consumed'
+  opts.separator ''
+  opts.separator 'options:'
+
+  opts.on('-h', '--help', 'show this message') do
+    puts options
+    exit
+  end
+end
+
+options.parse!(ARGV)
+
+if ARGV.empty?
+  puts(options)
+  exit
+end
+
+hash = load_my_config
+hash['job_ids'] = ARGV
+
+raise 'Please configure SCHED_HOST' unless hash['SCHED_HOST']
+raise 'Please configure SCHED_PORT' unless hash['SCHED_PORT']
+
+scheduler_client = SchedulerClient.new(hash['SCHED_HOST'], hash['SCHED_PORT'])
+response = scheduler_client.cancel_jobs(hash.to_json)
+response = JSON.parse(response)
+if response['error_msg']
+  puts response['error_msg']
+  exit
+end
+
+response['results'].each do |res|
+  puts format_result(res)
+end

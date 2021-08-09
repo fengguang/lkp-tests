@@ -16,6 +16,11 @@ class SchedulerClient
     resource.post(job_json)
   end
 
+  def cancel_jobs(content)
+    resource = RestClient::Resource.new("#{@url_prefix}#{@host}:#{@port}/cancel_jobs")
+    resource.post(content)
+  end
+
   def renew_deadline(job_id, time)
     resource = RestClient::Resource.new(
       "#{@url_prefix}#{@host}:#{@port}/renew_deadline?job_id=#{job_id}&time=#{to_seconds(time)}")
