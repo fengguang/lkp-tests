@@ -13,6 +13,11 @@ COMMAND_INFO = {
     'path' => "#{LKP_SRC}/sbin/submit",
     'type' => 'external'
   },
+  'cancel' =>{
+    'profile' => 'cancel jobs that have not been consumed',
+    'path' => "#{LKP_SRC}/sbin/cancel",
+    'type' => 'external'
+  },
   'lkp-renew' => {
     'profile' => 'prolong the service time of the testbox',
     'path' => "#{LKP_SRC}/sbin/lkp-renew",
