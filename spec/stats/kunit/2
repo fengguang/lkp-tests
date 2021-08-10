@@ -1,0 +1,120 @@
+[   38.569721]     # Subtest: kasan
+[   38.569726]     1..48
+[   38.575894] ==================================================================
+[   38.591128] BUG: KASAN: slab-out-of-bounds in kmalloc_oob_right+0x19f/0x260 [test_kasan]
+[   38.602221] Write of size 1 at addr ffff8888bc87a37b by task kunit_try_catch/742
+
+[   38.616911] CPU: 0 PID: 742 Comm: kunit_try_catch Tainted: G          I       5.14.0-rc3 #1
+[   38.628336] Hardware name:  /NUC6i7KYB, BIOS KYSKLi70.86A.0041.2016.0817.1130 08/17/2016
+[   38.639520] Call Trace:
+[   38.644949]  dump_stack_lvl+0x34/0x44
+[   38.651645]  print_address_description.constprop.0+0x21/0x140
+[   38.660458]  ? kmalloc_oob_right+0x19f/0x260 [test_kasan]
+[   38.668916]  kasan_report.cold+0x7f/0x11b
+[   38.675915]  ? kmalloc_oob_right+0x19f/0x260 [test_kasan]
+[   38.684370]  kmalloc_oob_right+0x19f/0x260 [test_kasan]
+[   38.692688]  ? kmalloc_oob_left+0x270/0x270 [test_kasan]
+[   38.701104]  ? __switch_to+0x301/0x680
+[   38.707837]  ? _raw_spin_lock_irqsave+0x87/0xe0
+[   38.715447]  ? _raw_write_lock_irqsave+0xe0/0xe0
+[   38.723107]  ? kunit_fail_assert_format+0x30/0x30
+[   38.730800]  ? kunit_add_resource+0xec/0x110
+[   38.738030]  kunit_try_run_case+0x8e/0xc0
+[   38.745018]  ? kunit_catch_run_case+0x70/0x70
+[   38.752414]  kunit_generic_run_threadfn_adapter+0x29/0x50
+[   38.760919]  ? kunit_try_catch_throw+0x40/0x40
+[   38.768381]  kthread+0x1f7/0x220
+[   38.774598]  ? set_kthread_struct+0x80/0x80
+[   38.781762]  ret_from_fork+0x22/0x30
+[   38.792787] Allocated by task 742:
+[   38.799183]  kasan_save_stack+0x1b/0x40
+[   38.806055]  __kasan_kmalloc+0x7c/0x90
+[   38.812902]  kmalloc_oob_right+0x93/0x260 [test_kasan]
+[   38.821161]  kunit_try_run_case+0x8e/0xc0
+[   38.828220]  kunit_generic_run_threadfn_adapter+0x29/0x50
+[   38.836800]  kthread+0x1f7/0x220
+[   38.843129]  ret_from_fork+0x22/0x30
+
+[   38.854297] The buggy address belongs to the object at ffff8888bc87a300
+                which belongs to the cache kmalloc-128 of size 128
+[   38.873250] The buggy address is located 123 bytes inside of
+                128-byte region [ffff8888bc87a300, ffff8888bc87a380)
+[   38.891347] The buggy address belongs to the page:
+[   38.899279] page:00000000540cb0c1 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x8bc8
+7a
+[   38.912124] head:00000000540cb0c1 order:1 compound_mapcount:0
+[   38.921297] flags: 0x17ffffc0010200(slab|head|node=0|zone=2|lastcpupid=0x1fffff)
+[   38.932153] raw: 0017ffffc0010200 0000000000000000 dead000000000122 ffff88810c8428c0
+[   38.943511] raw: 0000000000000000 0000000080200020 00000001ffffffff 0000000000000000
+[   38.954842] page dumped because: kasan: bad access detected
+
+[   38.968716] Memory state around the buggy address:
+[   38.976913]  ffff8888bc87a200: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[   38.987715]  ffff8888bc87a280: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[   38.998501] >ffff8888bc87a300: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 03
+[   39.009284]                                                                 ^
+[   39.020082]  ffff8888bc87a380: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[   39.030921]  ffff8888bc87a400: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[   39.041748] ==================================================================
+[   39.052559] Disabling lock debugging due to kernel taint
+[   39.061594]     ok 1 - kmalloc_oob_right
+[   39.061919] ==================================================================
+[   39.080606] BUG: KASAN: slab-out-of-bounds in kmalloc_oob_left+0x19f/0x270 [test_kasan]
+[   39.092709] Read of size 1 at addr ffff888202d5c39f by task kunit_try_catch/743
+
+[   39.109323] CPU: 4 PID: 743 Comm: kunit_try_catch Tainted: G    B     I       5.14.0-rc3 #1
+[   39.121904] Hardware name:  /NUC6i7KYB, BIOS KYSKLi70.86A.0041.2016.0817.1130 08/17/2016
+[   39.134182] Call Trace:
+[   39.140453]  dump_stack_lvl+0x34/0x44
+[   39.148028]  print_address_description.constprop.0+0x21/0x140
+[   39.157729]  ? kmalloc_oob_left+0x19f/0x270 [test_kasan]
+[   39.166969]  kasan_report.cold+0x7f/0x11b
+[   39.174875]  ? kmalloc_oob_left+0x19f/0x270 [test_kasan]
+[   39.184115]  kmalloc_oob_left+0x19f/0x270 [test_kasan]
+[   39.193172]  ? kmalloc_pagealloc_oob_right+0x250/0x250 [test_kasan]
+[   39.203452]  ? __switch_to+0x4fd/0x680
+[   39.211027]  ? _raw_spin_lock_irqsave+0x87/0xe0
+[   39.219501]  ? _raw_write_lock_irqsave+0xe0/0xe0
+[   39.228004]  ? kunit_fail_assert_format+0x30/0x30
+[   39.236549]  ? kunit_add_resource+0xec/0x110
+[   39.244616]  kunit_try_run_case+0x8e/0xc0
+[   39.252486]  ? kunit_catch_run_case+0x70/0x70
+[   39.260639]  kunit_generic_run_threadfn_adapter+0x29/0x50
+[   39.269923]  ? kunit_try_catch_throw+0x40/0x40
+[   39.278161]  kthread+0x1f7/0x220
+[   39.285170]  ? set_kthread_struct+0x80/0x80
+[   39.293186]  ret_from_fork+0x22/0x30
+
+[   39.305679] Allocated by task 0:
+[   39.312650] (stack is not available)
+
+[   39.325170] The buggy address belongs to the object at ffff888202d5c380
+                which belongs to the cache kmalloc-16 of size 16
+[   39.345316] The buggy address is located 15 bytes to the right of
+                16-byte region [ffff888202d5c380, ffff888202d5c390)
+[   39.365303] The buggy address belongs to the page:
+[   39.374065] page:0000000090d40c18 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x202d
+5c
+[   39.387597] flags: 0x17ffffc0000200(slab|node=0|zone=2|lastcpupid=0x1fffff)
+[   39.387597] flags: 0x17ffffc0000200(slab|node=0|zone=2|lastcpupid=0x1fffff)
+[   39.398672] raw: 0017ffffc0000200 0000000000000000 dead000000000122 ffff88810c8423c0
+[   39.410628] raw: 0000000000000000 0000000080800080 00000001ffffffff 0000000000000000
+[   39.422552] page dumped because: kasan: bad access detected
+
+[   39.437598] Memory state around the buggy address:
+[   39.446455]  ffff888202d5c280: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[   39.457833]  ffff888202d5c300: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[   39.469198] >ffff888202d5c380: fc fc fc fc 00 07 fc fc fc fc fc fc fc fc fc fc
+[   39.480556]                             ^
+[   39.488532]  ffff888202d5c400: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[   39.499916]  ffff888202d5c480: fc fc fc fc fc fc fc fc fa fb fc fc fc fc fc fc
+[   41.541804] ==================================================================
+[   41.553190]     ok 6 - kmalloc_pagealloc_invalid_free
+[   41.553449]     ok 7 - pagealloc_oob_right # SKIP Test requires CONFIG_KASAN_GENERIC=n
+[   41.562702] ==================================================================
+[   80.398961]     ok 44 - kmalloc_double_kzfree
+[   80.399152]     ok 45 - vmalloc_oob # SKIP Test requires CONFIG_KASAN_VMALLOC=y
+[   80.407189]     ok 46 - match_all_not_assigned # SKIP Test requires CONFIG_KASAN_GENERIC=n
+[   80.418730]     ok 47 - match_all_ptr_tag # SKIP Test requires CONFIG_KASAN_GENERIC=n
+[   80.431615]     ok 48 - match_all_mem_tag # SKIP Test requires CONFIG_KASAN_GENERIC=n
+[   80.443358] ok 13 - kasan

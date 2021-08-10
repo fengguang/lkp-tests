@@ -1,0 +1,9 @@
+kmalloc_oob_right.pass: 1
+kmalloc_pagealloc_invalid_free.pass: 1
+pagealloc_oob_right.skip: 1
+kmalloc_double_kzfree.pass: 1
+vmalloc_oob.skip: 1
+match_all_not_assigned.skip: 1
+match_all_ptr_tag.skip: 1
+match_all_mem_tag.skip: 1
+kasan.pass: 1
