@@ -34,10 +34,10 @@ renew()
 	local job_sh='/lkp/scheduled/job.sh'
 	# export runtime=3600
 	local cur_runtime=$(cat "$job_sh" | egrep 'export runtime=[0-9]+' | awk -F '=' '{print $2}')
-	local new_runtime=$((cur_runtime + extended_time))
+	local new_runtime=$(("$cur_runtime" + "$extended_time"))
 	sed -i "s/export runtime=[0-9]*/export runtime=$new_runtime/g" "$job_sh"
 	echo "Your testbox renew to $msg"
-	echo $extended_time > /tmp/renew
+	echo $extended_time >> /tmp/renew
 }
 
 get_deadline()

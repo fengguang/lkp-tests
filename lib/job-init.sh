@@ -173,13 +173,18 @@ setup_result_root()
 
 wait_on_renew_deadline()
 {
-	[ -f /tmp/renew ] || return 0
+	local renew_path=/tmp/renew
+	[ -f $renew_path ] || return 0
 
-	time=$(cat /tmp/renew)
-	rm /tmp/renew
+	local total_time=0
+	local times=$(cat "$renew_path")
+	for time in ${times[*]}; do
+		total_time=$(("$total_time" + "$time"))
+	done
+	rm "$renew_path"
 
 	set_job_state 'renew'
-	sleep $time
+	sleep "$total_time"
 }
 
 # in case someone is logged in, give him at most 10hour time to do manual checks
