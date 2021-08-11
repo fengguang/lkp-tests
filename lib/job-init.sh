@@ -198,7 +198,10 @@ wait_on_manual_check()
 
 	for i in $(seq 600)
 	do
-		wait_on_renew_deadline
+		if [ -f /tmp/renew ]; then
+			wait_on_renew_deadline
+			continue
+		fi
 		if [ -f $TMP/disturbed ]; then
 			:
 		elif ! has_cmd 'users'; then
