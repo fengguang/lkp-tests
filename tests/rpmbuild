@@ -243,6 +243,7 @@ update_repo_mq()
 }
 
 add_repo
+yum_repo_retry
 [ -n "$upstream_repo" ] && from_git || from_srpm
 upload_spec_file
 build_rpm

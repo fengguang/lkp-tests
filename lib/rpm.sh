@@ -43,3 +43,13 @@ fix_on_distro()
 			;;
 	esac
 }
+
+yum_repo_retry()
+{
+        for i in {1..3}
+        do
+                yum makecache > /dev/null && return
+                [[ "${i}" < 3 ]] && sleep 10
+        done
+        exit 1
+}
