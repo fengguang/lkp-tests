@@ -213,7 +213,14 @@ setup_crosstool_gcc()
 			gcc_arch=aarch64-linux*
 			;;
 		powerpc)
-			gcc_arch=powerpc64-linux
+			gcc_arch=powerpc-linux
+			grep -q 'CONFIG_PPC64=y' .config && {
+				if grep -q 'CONFIG_CPU_LITTLE_ENDIAN=y' .config; then
+					gcc_arch=powerpc64le-linux
+				else
+					gcc_arch=powerpc64-linux
+				fi
+			}
 			;;
 		blackfin)
 			gcc_arch=bfin-uclinux
@@ -316,6 +323,16 @@ setup_crosstool_clang()
 		opt_cross="$opt_cross CROSS_COMPILE=s390x-linux-gnu-"
 	elif [[ $ARCH = "hexagon" ]]; then
 		opt_cross="$opt_cross LLVM_IAS=1 CROSS_COMPILE=hexagon-unknown-linux-musl-"
+	elif [[ $ARCH = "powerpc" ]]; then
+		local cross_compile='powerpc-linux-gnu-'
+		grep -q 'CONFIG_PPC64=y' .config && {
+			if grep -q 'CONFIG_CPU_LITTLE_ENDIAN=y' .config; then
+				cross_compile='powerpc64le-linux-gnu-'
+			else
+				cross_compile='powerpc64-linux-gnu-'
+			fi
+		}
+		opt_cross="$opt_cross CROSS_COMPILE=$cross_compile"
 	elif [[ $ARCH = "riscv" ]]; then
 		if grep -q 'CONFIG_32BIT=y' .config; then
 			opt_cross="$opt_cross $(COMPILER=gcc && setup_crosstool_gcc && echo $opt_cross)"
