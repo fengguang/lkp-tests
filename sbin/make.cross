@@ -37,6 +37,12 @@ fi
 	exit 1
 }
 
+if [[ "$*" =~ \ O=([^ ]+) ]]; then
+	BUILD_DIR="${BASH_REMATCH[1]}"
+else
+	BUILD_DIR="."
+fi
+
 shopt -s nullglob
 
 is_clang_worker()
@@ -168,7 +174,7 @@ setup_compiler_for_xtensa()
 {
 	local variant
 
-	variant=$(grep -s -h '^CONFIG_XTENSA_VARIANT_CUSTOM_NAME=' .config |
+	variant=$(grep -s -h '^CONFIG_XTENSA_VARIANT_CUSTOM_NAME=' $BUILD_DIR/.config |
 		  head -n1 |
 		  cut -f2 -d'"')
 
@@ -194,7 +200,7 @@ setup_crosstool_gcc()
 			# start to support big endian arc toolchain form gcc-9.3.0
 			# for earlier gcc version, will failed to find arceb-elf for
 			# big endian arceb-elf tool chain
-			if grep -q 'CONFIG_CPU_BIG_ENDIAN=y' .config; then
+			if grep -q 'CONFIG_CPU_BIG_ENDIAN=y' $BUILD_DIR/.config; then
 				gcc_arch=arceb-elf
 			else
 				gcc_arch=arc-elf
@@ -214,8 +220,8 @@ setup_crosstool_gcc()
 			;;
 		powerpc)
 			gcc_arch=powerpc-linux
-			grep -q 'CONFIG_PPC64=y' .config && {
-				if grep -q 'CONFIG_CPU_LITTLE_ENDIAN=y' .config; then
+			grep -q 'CONFIG_PPC64=y' $BUILD_DIR/.config && {
+				if grep -q 'CONFIG_CPU_LITTLE_ENDIAN=y' $BUILD_DIR/.config; then
 					gcc_arch=powerpc64le-linux
 				else
 					gcc_arch=powerpc64-linux
@@ -239,7 +245,7 @@ setup_crosstool_gcc()
 			gcc_arch=or1k-linux
 			;;
 		riscv)
-			if grep -q 'CONFIG_32BIT=y' .config; then
+			if grep -q 'CONFIG_32BIT=y' $BUILD_DIR/.config; then
 				gcc_arch=riscv32-linux
 			else
 				gcc_arch=riscv64-linux
@@ -325,8 +331,8 @@ setup_crosstool_clang()
 		opt_cross="$opt_cross LLVM_IAS=1 CROSS_COMPILE=hexagon-unknown-linux-musl-"
 	elif [[ $ARCH = "powerpc" ]]; then
 		local cross_compile='powerpc-linux-gnu-'
-		grep -q 'CONFIG_PPC64=y' .config && {
-			if grep -q 'CONFIG_CPU_LITTLE_ENDIAN=y' .config; then
+		grep -q 'CONFIG_PPC64=y' $BUILD_DIR/.config && {
+			if grep -q 'CONFIG_CPU_LITTLE_ENDIAN=y' $BUILD_DIR/.config; then
 				cross_compile='powerpc64le-linux-gnu-'
 			else
 				cross_compile='powerpc64-linux-gnu-'
@@ -334,7 +340,7 @@ setup_crosstool_clang()
 		}
 		opt_cross="$opt_cross CROSS_COMPILE=$cross_compile"
 	elif [[ $ARCH = "riscv" ]]; then
-		if grep -q 'CONFIG_32BIT=y' .config; then
+		if grep -q 'CONFIG_32BIT=y' $BUILD_DIR/.config; then
 			opt_cross="$opt_cross $(COMPILER=gcc && setup_crosstool_gcc && echo $opt_cross)"
 		else
 			opt_cross="$opt_cross CROSS_COMPILE=riscv64-linux-gnu-"
