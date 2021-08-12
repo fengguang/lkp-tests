@@ -32,9 +32,15 @@ renew()
 
 	[ "$code" == "200" ] || die "Your testbox renew failed, error: $msg"
 	local job_sh='/lkp/scheduled/job.sh'
+	local cur_time=$(date +%s)
+	local end_time=$(date -d "$msg" +%s)
+	if [[ $HOSTNAME =~ ^dc ]]; then
+		local run_time=$(ps -p 1 -o etimes=)
+	else
+		local run_time=$(awk -F. '{print $1}' /proc/uptime)
+	fi
+	local new_runtime=$(($run_time + $end_time - $cur_time))
 	# export runtime=3600
-	local cur_runtime=$(cat "$job_sh" | egrep 'export runtime=[0-9]+' | awk -F '=' '{print $2}')
-	local new_runtime=$(("$cur_runtime" + "$extended_time"))
 	sed -i "s/export runtime=[0-9]*/export runtime=$new_runtime/g" "$job_sh"
 	echo "Your testbox renew to $msg"
 	echo $extended_time >> /tmp/renew

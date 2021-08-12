@@ -179,7 +179,7 @@ wait_on_renew_deadline()
 	local total_time=0
 	local times=$(cat "$renew_path")
 	for time in ${times[*]}; do
-		total_time=$(("$total_time" + "$time"))
+		total_time=$(($total_time + $time))
 	done
 	rm "$renew_path"
 
