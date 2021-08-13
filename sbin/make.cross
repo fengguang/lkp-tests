@@ -37,7 +37,7 @@ fi
 	exit 1
 }
 
-if [[ "$*" =~ \ O=([^ ]+) ]]; then
+if [[ "$*" =~ O=([^ ]+) ]]; then
 	BUILD_DIR="${BASH_REMATCH[1]}"
 else
 	BUILD_DIR="."
