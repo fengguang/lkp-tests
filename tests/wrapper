@@ -1,4 +1,10 @@
 #!/bin/sh
+# - nr_instances
+# - cpu_node_bind
+# - mem_node_bind
+
+. $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/numactl.sh
 
 ## wrapper to run other other tests
 
@@ -28,5 +34,46 @@ echo $! >> $TMP/.pid-pipes
 	fi
 }
 
+setup_cgroup()
+{
+	[ -z "$1" ] && return
+	[ "$1" = 'nocg' ] && return
+	[ -n $CGROUP_MNT ] || return
+
+	if [ "$cgroup_ver" = 1 ]; then
+		local subsys_tasks
+		for subsys_tasks in $CGROUP_MNT/*/$1/tasks
+		do
+			log_eval "echo \$\$ > '$subsys_tasks'"
+		done
+	elif [ "$cgroup_ver" = 2 ]; then
+		log_eval "echo \$\$ > $CGROUP_MNT/$1/cgroup.procs"
+	fi
+}
+
 export testcase=${testcase#kvm:}
-exec $time_prefix $exec_prefix $program_dir/$program "$@" > $fifo
+if [ -n "$nr_instances" ]; then
+	: "${cgroups:=nocg}"
+	parse_numa_node_binding "$cpu_node_bind" "$mem_node_bind"
+
+	rm -rf $TMP_RESULT_ROOT/log-$program
+	mkdir -p $TMP_RESULT_ROOT/log-$program
+	(
+	i=1
+	while [ "$i" -le "$nr_instances" ]; do
+		for cg in $cgroups; do
+			export instance_id=$i
+			setup_cgroup "$cg"
+			numa_bind=$(numa_node_binding "$i")
+			$time_prefix $exec_prefix $numa_bind $program_dir/$program "$@" > "$TMP_RESULT_ROOT/log-$program/$i" &
+			i=$((i+1))
+			[ "$i" -gt "$nr_instances" ] && break
+		done
+	done
+	wait
+	cd $TMP_RESULT_ROOT/log-$program && ls | sort -h | xargs cat > $fifo
+	)
+	rm -rf $TMP_RESULT_ROOT/log-$program
+else
+	exec $time_prefix $exec_prefix $program_dir/$program "$@" > $fifo
+fi

@@ -1,4 +1,6 @@
 #!/bin/sh
+# - cg_count
+# - cg_bind
 # - cpuset.cpus
 # - cpuset.mems
 # - memory.high
@@ -18,34 +20,61 @@ CGROUP2_MNT=/cgroup2
 
 [ -e '/proc/cgroups' ] || die "dir not exist: /proc/cgroups"
 
+: "${cg_count:=1}"
+
+if [ -z "$cg_bind"] && [ "$cg_count" -eq 1 ]; then
+	cg_bind=1
+fi
+
 # Clear cgroups and subsystem controllers mount point for v1 version
 clear_cgroup
 
 #clear cgroups and subsystem controllers mount point for v2 version
 clear_cgroup2
 
-#Bind all the subsystem controller to a unified hierarchy, and create a cgroup
-create_cgroup2 $CGROUP2_MNT $testcase
+create_one_cgroup2()
+{
+	local cgname=$1
+	#Bind all the subsystem controller to a unified hierarchy, and create a cgroup
+	create_cgroup2 $CGROUP2_MNT $cgname
 
-#Set the parameter defined in the jobfile and enable the cgroup
-env | grep -F '_46_' |
-while read line
-do
-	key=${line%%=*}
-	val=${line##*=}
-	[ -n "$val" ] || continue
-	param=$(echo "$key" | sed 's/_46_/./g')
-
-	for i in 0 10 30
+	#Set the parameter defined in the jobfile and enable the cgroup
+	env | grep -F '_46_' |
+	while read line
 	do
-		[ -w "$CGROUP2_MNT/$testcase/$param" ] || {
-			sleep $i
-			controller=${param%%.*}
-			log_eval "echo '+$controller' > '$CGROUP2_MNT/cgroup.subtree_control'"
-		}
-	done
+		key=${line%%=*}
+		val=${line##*=}
+		[ -n "$val" ] || continue
+		param=$(echo "$key" | sed 's/_46_/./g')
 
-	log_eval "echo $val > '$CGROUP2_MNT/$testcase/$param'"
+		for i in 0 10 30
+		do
+			[ -w "$CGROUP2_MNT/$cgname/$param" ] || {
+				sleep $i
+				controller=${param%%.*}
+				log_eval "echo '+$controller' > '$CGROUP2_MNT/cgroup.subtree_control'"
+			}
+		done
+
+		log_eval "echo $val > '$CGROUP2_MNT/$cgname/$param'"
+	done
+}
+
+for i in $(seq 1 "$cg_count"); do
+	name="$testcase.$i"
+	create_one_cgroup2 $name
+	cgroup_names="$cgroup_names $name"
 done
 
-log_eval "echo $PPID > '$CGROUP2_MNT/$testcase/cgroup.procs'"
+if parse_bool -q "$cg_bind"; then
+	#Set PPID to first cgroup.procs
+	log_eval "echo $PPID > '$CGROUP2_MNT/$testcase.1/cgroup.procs'"
+fi
+
+cat >> $TMP/env.yaml <<EOF
+
+# setup/cgroup2
+CGROUP_MNT: $CGROUP2_MNT
+cgroup_ver: 2
+cgroups: $cgroup_names
+EOF

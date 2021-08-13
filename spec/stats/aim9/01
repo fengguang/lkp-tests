@@ -1,0 +1,83 @@
+AIM Independent Resource Benchmark - Suite IX v1.1, January 22, 1996
+Copyright (c) 1996 - 2001 Caldera International, Inc.
+All Rights Reserved
+
+Machine's name                                    : Machine's configuration                           : Number of seconds to run each test [2 to 1000]    : Path to disk files                                :
+
+Starting time:      Mon Jul 19 17:43:00 2021
+Projected Run Time: 0:05:00
+Projected finish:   Mon Jul 19 17:48:00 2021
+
+
+
+------------------------------------------------------------------------------------------------------------
+ Test        Test        Elapsed  Iteration    Iteration          Operation
+Number       Name      Time (sec)   Count   Rate (loops/sec)    Rate (ops/sec)
+------------------------------------------------------------------------------------------------------------
+     1 add_double           5.05        110   21.78218       392079.21 Thousand Double Precision Additions/second
+     2 add_float            5.00        155   31.00000       372000.00 Thousand Single Precision Additions/second
+     3 add_long             5.02        167   33.26693      1996015.94 Thousand Long Integer Additions/second
+     4 add_int              5.00        156   31.20000      1872000.00 Thousand Integer Additions/second
+     5 add_short            5.00        407   81.40000      1953600.00 Thousand Short Integer Additions/second
+     6 creat-clo            5.03         34    6.75944         6759.44 File Creations and Closes/second
+     7 page_test            5.12         30    5.85938         9960.94 System Allocations & Pages/second
+     8 brk_test             5.04         21    4.16667        70833.33 System Memory Allocations/second
+     9 jmp_test             5.00      28221 5644.20000      5644200.00 Non-local gotos/second
+    10 signal_test          5.01         69   13.77246        13772.46 Signal Traps/second
+    11 exec_test            5.09         43    8.44794           42.24 Program Loads/second
+    12 fork_test            5.71          7    1.22592          122.59 Task Creations/second
+    13 link_test            5.01        354   70.65868         4451.50 Link/Unlink Pairs/second
+    14 disk_rr              5.28         18    3.40909        17454.55 Random Disk Reads (K)/second
+    15 disk_rw              5.32         16    3.00752        15398.50 Random Disk Writes (K)/second
+    16 disk_rd              5.08         63   12.40157        63496.06 Sequential Disk Reads (K)/second
+    17 disk_wrt             5.17         24    4.64217        23767.89 Sequential Disk Writes (K)/second
+    18 disk_cp              5.10         16    3.13725        16062.75 Disk Copies (K)/second
+    19 sync_disk_rw         5.03         29    5.76541        14759.44 Sync Random Disk Writes (K)/second
+    20 sync_disk_wrt        5.07         50    9.86193        25246.55 Sync Sequential Disk Writes (K)/second
+    21 sync_disk_cp         5.00         33    6.60000        16896.00 Sync Disk Copies (K)/second
+    22 disk_src             5.01        254   50.69860         3802.40 Directory Searches/second
+    23 div_double           5.03         42    8.34990        25049.70 Thousand Double Precision Divides/second
+    24 div_float            5.02         74   14.74104        44223.11 Thousand Single Precision Divides/second
+    25 div_long             5.02        106   21.11554        19003.98 Thousand Long Integer Divides/second
+    26 div_int              5.00        171   34.20000        30780.00 Thousand Integer Divides/second
+    27 div_short            5.02        194   38.64542        34780.88 Thousand Short Integer Divides/second
+    28 fun_cal              5.00       1256  251.20000    128614400.00 Function Calls (no arguments)/second
+    29 fun_cal1             5.00       1651  330.20000    169062400.00 Function Calls (1 argument)/second
+    30 fun_cal2             5.00       1372  274.40000    140492800.00 Function Calls (2 arguments)/second
+    31 fun_cal15            5.00        402   80.40000     41164800.00 Function Calls (15 arguments)/second
+    32 sieve                5.06         46    9.09091           45.45 Integer Sieves/second
+    33 mul_double           5.02        145   28.88446       346613.55 Thousand Double Precision Multiplies/second
+    34 mul_float            5.01        155   30.93812       371257.49 Thousand Single Precision Multiplies/second
+    35 mul_long             5.01       5635 1124.75050       269940.12 Thousand Long Integer Multiplies/second
+    36 mul_int              5.00       9140 1828.00000       438720.00 Thousand Integer Multiplies/second
+    37 mul_short            5.00       7466 1493.20000       447960.00 Thousand Short Integer Multiplies/second
+    38 num_rtns_1           5.00       5631 1126.20000       112620.00 Numeric Functions/second
+    39 new_raph             5.00      13596 2719.20000       543840.00 Zeros Found/second
+    40 trig_rtns            5.00        174   34.80000       348000.00 Trigonometric Functions/second
+    41 matrix_rtns          5.00      76348 15269.60000      1526960.00 Point Transformations/second
+    42 array_rtns           5.02        170   33.86454          677.29 Linear Systems Solved/second
+    43 string_rtns          5.03         76   15.10934         1510.93 String Manipulations/second
+    44 mem_rtns_1           5.00        323   64.60000      1938000.00 Dynamic Memory Operations/second
+    45 mem_rtns_2           5.00      65882 13176.40000      1317640.00 Block Memory Operations/second
+    46 sort_rtns_1          5.02        226   45.01992          450.20 Sort Operations/second
+    47 misc_rtns_1          5.00        835  167.00000         1670.00 Auxiliary Loops/second
+    48 dir_rtns_1           5.02         66   13.14741       131474.10 Directory Operations/second
+    49 shell_rtns_1         5.09         49    9.62672            9.63 Shell Scripts/second
+    50 shell_rtns_2         5.03         49    9.74155            9.74 Shell Scripts/second
+    51 shell_rtns_3         5.10         50    9.80392            9.80 Shell Scripts/second
+    52 series_1             5.00     228040 45608.00000      4560800.00 Series Evaluations/second
+    53 shared_memory        5.00       1155  231.00000        23100.00 Shared Memory Operations/second
+    54 tcp_test        Skipping to next test.
+    55 udp_test             5.00        386   77.20000         7720.00 UDP/IP DataGrams/second
+    56 fifo_test            5.00        982  196.40000        19640.00 FIFO Messages/second
+    57 stream_pipe          5.00        571  114.20000        11420.00 Stream Pipe Messages/second
+    58 dgram_pipe           5.01        543  108.38323        10838.32 DataGram Pipe Messages/second
+    59 pipe_cpy             5.00       1181  236.20000        23620.00 Pipe Messages/second
+    60 ram_copy             5.00     710236 142047.20000   3554020944.00 Memory to Memory Copy/second
+------------------------------------------------------------------------------------------------------------
+Projected Completion time:  Mon Jul 19 17:48:00 2021
+Actual Completion time:     Mon Jul 19 17:48:03 2021
+Difference:                 0:00:03
+
+AIM Independent Resource Benchmark - Suite IX
+   Testing over

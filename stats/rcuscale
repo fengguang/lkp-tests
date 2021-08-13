@@ -14,17 +14,20 @@
 # [  320.640206] rcu-scale: start: 30396186972 end: 31136206117 duration: 740019145 gps: 201 batches: 207
 # ...
 
-result = 'unknown'
-type = 'unknown'
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
-while (line = STDIN.gets)
+require "#{LKP_SRC}/lib/tests/stats"
+
+stats = LKP::Stats.new
+
+while (line = $stdin.gets)
   case line
   when /^\[.*\] ([A-Za-z]+)-scale: Test complete/
-    type = $1
-    result = 'pass'
+    stats.add $1, 'pass'
     break
   end
 end
 
-stat = type + '.' + result
-puts "#{stat}: 1"
+stats.add 'unknown', 'unknown' if stats.empty?
+
+stats.dump

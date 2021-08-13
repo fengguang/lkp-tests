@@ -2,14 +2,21 @@
 
 . $LKP_SRC/lib/cgroup.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/env.sh
+
+turbostat="/lkp/benchmarks/turbostat/turbostat"
+
+[ -e $turbostat ] || {
+	# rollback to the default turbostat
+	has_cmd turbostat || exit
+	turbostat="turbostat"
+}
 
 # skip if cpu doesn't have msr
 grep flags /proc/cpuinfo|grep -q ' msr ' || exit 0
 
 # skip unreliable machines
 [ "${HOSTNAME#*lkp-a0[1-9]}"	!= "$HOSTNAME" ] && exit 0
-
-cd $BENCHMARK_ROOT/turbostat || exit
 
 modprobe msr 2>&1 || exit
 
@@ -21,9 +28,9 @@ done
 
 reset_current_cpuset
 
-[ $# -ge 1 ] && exec ./turbostat "$@" 2>&1
+[ $# -ge 1 ] && exec $turbostat "$@" 2>&1
 
 . $LKP_SRC/lib/wait.sh
 setup_wait
 
-exec ./turbostat $WAIT_POST_TEST_CMD 2>&1
+exec $turbostat $WAIT_POST_TEST_CMD 2>&1

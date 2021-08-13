@@ -11,7 +11,7 @@ take_snapshot()
 	do
 		cpu=${dir#/sys/devices/system/cpu/}
 		cpu=${cpu%%/*}
-		read state_name  < $dir/name
+		cat $dir/name | sed 's/ /-/g' | read state_name
 		read state_time  < $dir/time
 		read state_usage < $dir/usage
 		echo $cpu.${state_name}.time: ${state_time}

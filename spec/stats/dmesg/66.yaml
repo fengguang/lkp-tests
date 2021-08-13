@@ -2,7 +2,7 @@ boot_failures: 1
 
 # UBSAN: Undefined behaviour in include/linux/hugetlb.h:.*
 UBSAN:Undefined_behaviour_in_include/linux/hugetlb.h: 1
-message:UBSAN:Undefined_behaviour_in_include/linux/hugetlb.h: [   62.170116] UBSAN: Undefined behaviour in include/linux/hugetlb.h:492:28
+message:UBSAN:Undefined_behaviour_in_include/linux/hugetlb.h: [   62.170116][    T1] UBSAN: Undefined behaviour in include/linux/hugetlb.h:492:28
 pattern:UBSAN:Undefined_behaviour_in_include/linux/hugetlb.h: UBSAN: Undefined behaviour in include/linux/hugetlb.h:.*
 
 timestamp:last: 62.185010

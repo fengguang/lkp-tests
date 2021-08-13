@@ -3,11 +3,15 @@
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 RESULT_ROOT = ENV['RESULT_ROOT']
 
+require "#{LKP_SRC}/lib/tests/stats"
+
+stats = LKP::Stats.new
+
 memleaks = []
 memleak = {}
 bts = ""
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   case line.chomp!
   when /^unreferenced object/ # unreferenced object 0xffff9375a9b84e00 (size 128):
     if !bts.empty? && memleak['type']
@@ -30,4 +34,6 @@ if !bts.empty? && memleak['type']
   memleaks << memleak
 end
 
-memleaks.uniq.each { |m| puts "#{m['comm']}.#{m['type']}#{m['bt']}: 1" }
+memleaks.uniq.each { |m| stats.add "#{m['comm']}.#{m['type']}#{m['bt']}", 1 }
+
+stats.dump

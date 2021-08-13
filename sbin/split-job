@@ -78,13 +78,13 @@ distroinfo = LKP::DistroInfo.instance
 
 def refine_job_file(jobfile)
   # "#!" is defined in comment_to_symbol
-  return jobfile if File.readlines(jobfile).none? { |l| l.start_with?('#! ') }
+  return jobfile if File.readlines(jobfile).none? { |l| l.start_with?(':#! ') }
 
   # job file is a dirty yaml which may contains invalid values
   file = Tempfile.open do |f|
     p = true
     File.readlines(jobfile).each do |line|
-      p = !line.match(/^#! .*\.yaml$/).nil? if line.start_with?('#! ')
+      p = !line.match(/^:#! .*\.yaml:$/).nil? if line.start_with?(':#! ')
       f.puts line if p
     end
     f

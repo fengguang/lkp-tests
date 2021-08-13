@@ -4,8 +4,8 @@ pkgrel=1
 url='https://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git'
 arch=('i386' 'x86_64')
 license=('GPL')
-source=('https://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs-tools.git' 'https://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git')
-md5sums=('SKIP' 'SKIP')
+source=('https://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs-tools.git' 'https://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git' 'https://git.kernel.org/pub/scm/linux/kernel/git/djwong/e2fsprogs.git')
+md5sums=('SKIP' 'SKIP' 'SKIP')
 
 . $LKP_SRC/lib/tests/common.sh
 
@@ -25,6 +25,14 @@ build_install_f2fs_tools()
 	make || return
 	make install || return
 	make install DESTDIR="${pkgdir}"
+}
+
+build_install_e2fuzz()
+{
+	cd ${srcdir}/e2fsprogs || return
+	./configure || return
+	make || return
+	cp misc/e2fuzz ${pkgdir}/usr/local/sbin/
 }
 
 # Automatically generate ignore file to skip test cases which can not be enabled at present.
@@ -77,7 +85,8 @@ build()
 
 	cd $srcdir
 	build_install_xfstests || return
-	build_install_f2fs_tools
+	build_install_f2fs_tools || return
+	build_install_e2fuzz
 }
 
 package()

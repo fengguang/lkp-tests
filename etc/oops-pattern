@@ -1,4 +1,5 @@
 \[ *[0-9.]+\] BUG: .*
+\[ {0,4}[A-Z][0-9]{1,5}\] BUG: .*
 32-bit relocation outside of kernel!
 64-bit relocation outside of kernel!
 assertion failed

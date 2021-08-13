@@ -7,81 +7,98 @@ require "#{LKP_SRC}/lib/kernel_tag"
 require "#{LKP_SRC}/lib/log"
 
 def read_kernel_version_from_context
-  return nil unless self['kernel']
-
   context_file = File.expand_path '../context.yaml', kernel
-  return nil unless File.exist? context_file
+  raise Job::ParamError, "context.yaml doesn't exist: #{context_file}" unless File.exist?(context_file)
 
   context = YAML.load(File.read(context_file))
   context['rc_tag']
 end
 
-def read_kconfig_lines
-  return nil unless self['kernel']
+def read_kernel_kconfigs
+  kernel_kconfigs = File.expand_path '../.config', kernel
+  raise Job::ParamError, ".config doesn't exist: #{kernel_kconfigs}" unless File.exist?(kernel_kconfigs)
 
-  kconfig_file = File.expand_path '../.config', kernel
-  return nil unless File.exist? kconfig_file
-
-  File.read kconfig_file
+  File.read kernel_kconfigs
 end
 
-def check_kconfig(kconfig_lines, line)
-  case line
-  when /^(CONFIG_[A-Z0-9_]+)=n/
-    name = $1
-    kconfig_lines.index("# #{name} is not set") ||
-      kconfig_lines !~ /^#{name}=[ym]/
-  when /^(CONFIG_[A-Z0-9_]+=[ym])/, /^(CONFIG_[A-Z0-9_]+)/, /^(CONFIG_[A-Z0-9_]+=[0-9]+)/
-    kconfig_lines =~ /^#{$1}/
+def kernel_match_kconfig?(kernel_kconfigs, expected_kernel_kconfig)
+  case expected_kernel_kconfig
+  when /^([A-Z0-9_]+)=n$/
+    config_name = $1
+    config_name = "CONFIG_#{config_name}" unless config_name =~ /^CONFIG_/
+
+    kernel_kconfigs =~ /# #{config_name} is not set/ || kernel_kconfigs !~ /^#{config_name}=[ym]$/
+  when /^([A-Z0-9_]+=[ym])$/, /^([A-Z0-9_]+=[0-9]+)$/
+    config_name = $1
+    config_name = "CONFIG_#{config_name}" unless config_name =~ /^CONFIG_/
+
+    kernel_kconfigs =~ /^#{config_name}$/
+  when /^([A-Z0-9_]+)$/, /^([A-Z0-9_]+)=$/
+    # /^([A-Z0-9_]+)$/ is for "CRYPTO_HMAC"
+    # /^([A-Z0-9_]+)=$/ is for "DEBUG_INFO_BTF: v5.2"
+    config_name = $1
+    config_name = "CONFIG_#{config_name}" unless config_name =~ /^CONFIG_/
+
+    kernel_kconfigs =~ /^#{config_name}=(y|m)$/
   else
-    log_warn "unknown kconfig option: #{line}"
-    true
+    raise Job::SyntaxError, "Wrong syntax of kconfig: #{expected_kernel_kconfig}"
   end
 end
 
-def kernel_include_kconfig?(kernel_version, config_info)
+def kernel_match_version?(kernel_version, expected_kernel_versions)
   kernel_version = KernelTag.new(kernel_version)
 
-  config_info.split(' && ').each do |constraint|
-    match = constraint.match(/(?<operator><|>|==|!=|<=|>=) (?<kernel_tag>v[0-9]\.\d+(-rc\d+)*)/)
-    if match.nil? || match[:operator].nil? || match[:kernel_tag].nil?
-      raise Job::ParamError, "Wrong syntax of kconfig setting: #{config_info}"
+  expected_kernel_versions.all? do |expected_kernel_version|
+    match = expected_kernel_version.match(/(?<operator><|>|==|!=|<=|>=)?\s*(?<kernel_tag>v[0-9]\.\d+(-rc\d+)*)/)
+    if match.nil? || match[:kernel_tag].nil?
+      raise Job::SyntaxError, "Wrong syntax of kconfig setting: #{expected_kernel_versions}"
     else
-      return false unless kernel_version.method(match[:operator]).(KernelTag.new(match[:kernel_tag]))
+      operator = match[:operator] || '>='
+
+      kernel_version.method(operator).(KernelTag.new(match[:kernel_tag]))
     end
   end
-  true
 end
 
-def check_all(kconfig_lines)
-  uncompiled_kconfigs_info = []
+def check_all(kernel_kconfigs)
+  uncompiled_kconfigs = []
 
   kernel_version = read_kernel_version_from_context
 
   $___.each do |e|
-    # we use regular expression to redesign include kconfig format, like this:
-    # CONFIG_XXXX=m: '>= v4.0-rc1 && <= v4.0'
-    # CONFIG_YYYY=y: '>= v4.17-rc1'
-    # note: just match kernel version from v4.0 to lastest
-    config, config_info = e.split(' ~ ')
-    if kernel_version && config_info
-      next unless kernel_include_kconfig?(kernel_version, config_info)
+    if e.instance_of? Hashugar
+      config_name, config_options = e.to_hash.first
+      # to_s is for "CMA_SIZE_MBYTES: 200"
+      config_options = config_options.to_s.split(',').map(&:strip)
+
+      expected_kernel_versions, config_options = config_options.partition { |option| option =~ /v\d+\.\d+/ }
+      # ignore the check of kconfig type if kernel is not within the valid range
+      next if expected_kernel_versions && !kernel_match_version?(kernel_version, expected_kernel_versions)
+
+      # \d+ is for "CMA_SIZE_MBYTES: 200"
+      types, config_options = config_options.partition { |option| option =~ /^(y|m|n|\d+)$/ }
+      raise Job::SyntaxError, "Wrong syntax of kconfig setting: #{e.to_hash}" if types.size > 1
+
+      raise Job::SyntaxError, "Wrong syntax of kconfig setting: #{e.to_hash}" unless config_options.size.zero?
+
+      expected_kernel_kconfig = "#{config_name}=#{types.first}"
+    else
+      expected_kernel_kconfig = e
     end
 
-    next if check_kconfig(kconfig_lines, config)
+    next if kernel_match_kconfig?(kernel_kconfigs, expected_kernel_kconfig)
 
-    kconfig_info = config
-    kconfig_info += " supported by kernel #{config_info.gsub('\'', '')}" if config_info
-    uncompiled_kconfigs_info.push kconfig_info
+    uncompiled_kconfig = expected_kernel_kconfig
+    uncompiled_kconfig += " supported by kernel (#{expected_kernel_versions.join(', ').gsub("\"", '')})" if expected_kernel_versions
+    uncompiled_kconfigs.push uncompiled_kconfig
   end
 
-  return nil if uncompiled_kconfigs_info.empty?
+  return nil if uncompiled_kconfigs.empty?
 
-  kconfigs_error_message = "#{File.basename __FILE__}: #{uncompiled_kconfigs_info.uniq} has not been compiled"
-  kconfigs_error_message += " by this kernel (#{kernel_version} based)" if kernel_version
+  kconfigs_error_message = "#{File.basename __FILE__}: #{uncompiled_kconfigs.uniq} has not been compiled by this kernel (#{kernel_version} based)"
   raise Job::ParamError, kconfigs_error_message.to_s unless __FILE__ =~ /suggest_kconfig/
 
-  puts "suggest kconfigs: #{uncompiled_kconfigs_info.uniq}"
+  puts "suggest kconfigs: #{uncompiled_kconfigs.uniq}"
 end
 
 def check_arch_constraints
@@ -99,9 +116,9 @@ def check_arch_constraints
       # - know exact commit, however yet to compile the kernel
       raise Job::ParamError, "32bit kernel cannot run 64bit rootfs: '#{kconfig}' '#{rootfs}'" if kconfig =~ /^i386-/
 
-      $___ << 'CONFIG_X86_64=y'
+      $___ << 'X86_64=y'
     when /-i386/
-      $___ << 'CONFIG_IA32_EMULATION=y' if kconfig =~ /^x86_64-/
+      $___ << 'IA32_EMULATION=y' if kconfig =~ /^x86_64-/
     end
   when /^qemu-system-i386/
     case rootfs
@@ -110,14 +127,15 @@ def check_arch_constraints
     when /-i386/
       raise Job::ParamError, "32bit QEMU cannot run 64bit kernel: '#{model}' '#{kconfig}'" if kconfig =~ /^x86_64-/
 
-      $___ << 'CONFIG_X86_32=y'
+      $___ << 'X86_32=y'
     end
   end
 end
 
-$___ = Array(___)
+if self['kernel']
+  $___ = Array(___)
 
-check_arch_constraints
+  check_arch_constraints
 
-kconfig_lines = read_kconfig_lines
-check_all(kconfig_lines) if kconfig_lines
+  check_all(read_kernel_kconfigs)
+end

@@ -2,6 +2,7 @@
 # - nr_threads
 # - array_size
 # - omp
+# - loop
 
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/reproduce-log.sh
@@ -12,10 +13,11 @@ log_cmd export OMP_NUM_THREADS=$nr_threads
 
 [ -n "$array_size" ] || die "can not get array size"
 [ -n "$omp" ] || die "can not get omp"
+[ -n "$loop" ] || loop=100
 
 [ "$omp" = "true" ] && omp_options="-fopenmp"
 
-log_cmd gcc -O stream.c -o stream -D"STREAM_ARRAY_SIZE=$array_size" -DNTIMES=100 $omp_options ||
+log_cmd gcc -O stream.c -o stream -D"STREAM_ARRAY_SIZE=$array_size" -DNTIMES=$loop $omp_options ||
 die "failed to compile stream"
 
 log_cmd ./stream

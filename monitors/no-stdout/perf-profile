@@ -85,7 +85,7 @@ cat > "$TMP_RESULT_ROOT/post-run.perf-profile" <<EOF
 [ -s "$perf_data" ] && {
 	$perf report $opt_inline $opt_children --header -U -g $callgraph --sort=dso,symbol -i $perf_data |
 	gzip > $TMP_RESULT_ROOT/perf-profile.gz && {
-		cp $perf_data $TMP_RESULT_ROOT
+		[ "$lite_mode" = 1 ] || cp $perf_data $TMP_RESULT_ROOT
 		cp /proc/kallsyms $TMP_RESULT_ROOT
 	}
 [ "$kptr_restrict" -ne 0 ] && echo "$kptr_restrict" > "$kptr_restrict_file"

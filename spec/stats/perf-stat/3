@@ -1,0 +1,71 @@
+perf version 5.13.g303392fd5c16
+/lkp/benchmarks/perf/perf stat -a --scale -I 1000 -x , -e {cpu-cycles,instructions,cache-references,cache-misses,branch-instructions,branch-misses},{dTLB-loads,dTLB-load-misses},{dTLB-stores,dTLB-store-misses},{iTLB-loads,iTLB-load-misses},{node-loads,node-load-misses},{node-stores,node-store-misses},cpu-clock,task-clock,page-faults,context-switches,cpu-migrations,minor-faults,major-faults --log-fd 1 -D 0 -- /lkp/lkp/src/bin/event/wait post-test
+     1.000659830,4100064372,,cpu-cycles,16139216640,16.66,0.042,GHz
+     1.000659830,2375816440,,instructions,16139216640,16.66,0.58,insn per cycle
+     1.000659830,9432728,,cache-references,16139216640,16.66,97.401,K/sec
+     1.000659830,2247636,,cache-misses,16139216640,16.66,23.828,of all cache refs
+     1.000659830,517924707,,branch-instructions,16139216640,16.66,5.348,M/sec
+     1.000659830,6646514,,branch-misses,16139216640,16.66,1.28,of all branches
+     1.000659830,511503138,,dTLB-loads,16187673423,16.71,5.282,M/sec
+     1.000659830,88130,,dTLB-load-misses,16187673423,16.71,0.02,of all dTLB cache accesses
+     1.000659830,298884196,,dTLB-stores,32350322083,33.40,3.086,M/sec
+     1.000659830,107345,,dTLB-store-misses,32350322083,33.40,1.108,K/sec
+     1.000659830,1539315,,iTLB-loads,32288756446,33.34,15.895,K/sec
+     1.000659830,1050803,,iTLB-load-misses,32288756446,33.34,68.26,of all iTLB cache accesses
+     1.000659830,224652,,node-loads,32259720963,33.31,2.320,K/sec
+     1.000659830,414159,,node-load-misses,32259720963,33.31,4.277,K/sec
+     1.000659830,379084,,node-stores,16097225604,16.62,3.914,K/sec
+     1.000659830,300349,,node-store-misses,16097225604,16.62,3.101,K/sec
+     1.000659830,96844.71,msec,cpu-clock,96844614045,100.00,96.845,CPUs utilized
+     1.000659830,96844.69,msec,task-clock,96844682115,100.00,96.845,CPUs utilized
+     1.000659830,8753,,page-faults,96844719587,100.00,90.382,/sec
+     1.000659830,1231,,context-switches,96844747592,100.00,12.711,/sec
+     1.000659830,108,,cpu-migrations,96844763570,100.00,1.115,/sec
+     1.000659830,8755,,minor-faults,96844793740,100.00,90.402,/sec
+     1.000659830,1,,major-faults,96844821069,100.00,0.010,/sec
+     2.006146525,5864453774,,cpu-cycles,16081230404,16.66,0.061,GHz
+     2.006146525,3706740601,,instructions,16081230404,16.66,0.63,insn per cycle
+     2.006146525,11124119,,cache-references,16081230404,16.66,115.279,K/sec
+     2.006146525,1478719,,cache-misses,16081230404,16.66,13.293,of all cache refs
+     2.006146525,758244240,,branch-instructions,16081230404,16.66,7.858,M/sec
+     2.006146525,6890931,,branch-misses,16081230404,16.66,0.91,of all branches
+     2.006146525,824738028,,dTLB-loads,16046834318,16.63,8.547,M/sec
+     2.006146525,78337,,dTLB-load-misses,16046834318,16.63,0.01,of all dTLB cache accesses
+     2.006146525,457114997,,dTLB-stores,32101356254,33.27,4.737,M/sec
+     2.006146525,49067,,dTLB-store-misses,32101356254,33.27,508.482,/sec
+     2.006146525,1506105,,iTLB-loads,32162656725,33.33,15.608,K/sec
+     2.006146525,1005618,,iTLB-load-misses,32162656725,33.33,66.77,of all iTLB cache accesses
+     2.006146525,74406,,node-loads,32221396709,33.39,771.071,/sec
+     2.006146525,411038,,node-load-misses,32221396709,33.39,4.260,K/sec
+     2.006146525,125063,,node-stores,16092967679,16.68,1.296,K/sec
+     2.006146525,132168,,node-store-misses,16092967679,16.68,1.370,K/sec
+     2.006146525,96497.02,msec,cpu-clock,96496950237,100.00,96.497,CPUs utilized
+     2.006146525,96496.92,msec,task-clock,96496922636,100.00,96.497,CPUs utilized
+     2.006146525,6957,,page-faults,96496924529,100.00,72.096,/sec
+     2.006146525,2315,,context-switches,96496915852,100.00,23.990,/sec
+     2.006146525,293,,cpu-migrations,96496926947,100.00,3.036,/sec
+     2.006146525,6953,,minor-faults,96496915732,100.00,72.054,/sec
+     2.006146525,1,,major-faults,96496901715,100.00,0.010,/sec
+     3.011140905,3333168659,,cpu-cycles,16069574843,16.67,0.035,GHz
+     3.011140905,1255206235,,instructions,16069574843,16.67,0.38,insn per cycle
+     3.011140905,7570056,,cache-references,16069574843,16.67,78.512,K/sec
+     3.011140905,744386,,cache-misses,16069574843,16.67,9.833,of all cache refs
+     3.011140905,253472229,,branch-instructions,16069574843,16.67,2.629,M/sec
+     3.011140905,2895415,,branch-misses,16069574843,16.67,1.14,of all branches
+     3.011140905,375731785,,dTLB-loads,16104205520,16.70,3.897,M/sec
+     3.011140905,85742,,dTLB-load-misses,16104205520,16.70,0.02,of all dTLB cache accesses
+     3.011140905,182377330,,dTLB-stores,32188220017,33.38,1.892,M/sec
+     3.011140905,38620,,dTLB-store-misses,32188220017,33.38,400.544,/sec
+     3.011140905,1471957,,iTLB-loads,32160785534,33.36,15.266,K/sec
+     3.011140905,904613,,iTLB-load-misses,32160785534,33.36,61.46,of all iTLB cache accesses
+     3.011140905,55944,,node-loads,32111600906,33.30,580.218,/sec
+     3.011140905,131830,,node-load-misses,32111600906,33.30,1.367,K/sec
+     3.011140905,32578,,node-stores,16049899196,16.65,337.880,/sec
+     3.011140905,48480,,node-store-misses,16049899196,16.65,502.806,/sec
+     3.011140905,96418.94,msec,cpu-clock,96418944510,100.00,96.419,CPUs utilized
+     3.011140905,96418.90,msec,task-clock,96418905192,100.00,96.419,CPUs utilized
+     3.011140905,9404,,page-faults,96418879797,100.00,97.533,/sec
+     3.011140905,2089,,context-switches,96418866990,100.00,21.666,/sec
+     3.011140905,108,,cpu-migrations,96418831644,100.00,1.120,/sec
+     3.011140905,8809,,minor-faults,96418812772,100.00,91.362,/sec
+     3.011140905,595,,major-faults,96418807512,100.00,6.171,/sec

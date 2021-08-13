@@ -878,13 +878,19 @@ def sort_bisect_stats(stats)
 end
 
 def kpi_stat_direction(stat_name, stat_change_percentage)
+  key_direction = nil
   key = $index_perf.keys.find { |i| stat_name =~ /^#{i}$/ }
-  change_direction = if key.nil?
-                       'undefined'
-                     elsif $index_perf[key] * stat_change_percentage < 0
-                       'regression'
-                     else
-                       'improvement'
-                     end
-  change_direction
+  if key
+    key_direction = $index_perf[key]
+  else
+    key = $index_latency.keys.find { |i| stat_name =~ /^#{i}$/ }
+    key_direction = $index_latency[key] if key
+  end
+  if key_direction.nil?
+    'undefined'
+  elsif key_direction * stat_change_percentage < 0
+    'regression'
+  else
+    'improvement'
+  end
 end

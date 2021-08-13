@@ -6,6 +6,8 @@ need_x: true
 phoronix-test-suite:
   - test: apitest-1.1.0
     option_a:
+      - 1024 x 768
+    option_b:
       - DynamicStreaming GLBufferSubData
       - DynamicStreaming GLMapUnsynchronized
       - DynamicStreaming GLMapPersistent
@@ -36,20 +38,24 @@ phoronix-test-suite:
       - Poppler
       # - Test All Options
     # - cuda-mini-nbody-1.1.0 # need CUDA compatible hardware
-  - test:
-    - et-1.1.0
+  - test: et-1.1.0
+    option_a:
+      - 1024 x 768
   - test: etlegacy-1.0.0
     option_a:
       - Default
       - Renderer2
       # - Test All Options
-  - test:
+    option_b:
+      - 1024 x 768
+ # - test: etxreal-1.0.0 # too old (last update 2012) to work
     # - etqw-1.1.0 # has been replaced by newer etqw-demo
     # - etqw-demo-1.1.0 # need 32bit libs
     # - etqw-demo-iqc-1.0.0 # need 32bit libs
-    - etxreal-1.0.0
   - test: geexlab-1.0.0
     option_a:
+      - 1024 x 768
+    option_b:
       - GL2 AntTweakBar
       - GL2 Cell Shading
       - GL2 Noise Animation Electric
@@ -59,14 +65,17 @@ phoronix-test-suite:
       - GL3 Vertex Pool
       # - Test All Options
     # - gfxbench-1.0.0 # need to download files from stream
-  - test:
-    - glmark2-1.1.0
+  - test: glmark2-1.1.0
+    option_a:
+      - 1024 x 768
   - test: gluxmark-1.1.1
     option_a:
       - Fullscreen
       - Windowed
       # - Test All Options
     option_b:
+      - 1024 x 768
+    option_c:
       - Fill-Rate
       - Fragment
       - Geometry
@@ -85,6 +94,8 @@ phoronix-test-suite:
       - Plot3D
       # - Test All Options
     option_b:
+      - 1024 x 768
+    option_c:
       - Fullscreen
       - Windowed
       # - Test All Options
@@ -138,10 +149,12 @@ phoronix-test-suite:
       # - Test All Options
   - test: nexuiz-1.6.1
     option_a:
+      - 1024 x 768
+    option_b:
       - 'Yes'
       - 'No'
       # - Test All Options
-    option_b:
+    option_c:
       - 'On'
       - 'Off'
       # - Test All Options
@@ -160,6 +173,8 @@ phoronix-test-suite:
       - Wavelet Contour
       - Wavelet Volume
       # - Test All Options
+    option_b:
+      - 1024 x 768
   - test:
     # - prey-1.1.2 # need to download files from stream
   - test: qgears2-1.0.1
@@ -187,17 +202,19 @@ phoronix-test-suite:
     # - specviewperf9-1.1.1 # need csh or tcsh
   - test: supertuxkart-1.5.2
     option_a:
+      - 1024 x 768
+    option_b:
       - Windowed
       - Fullscreen
       # - Test All Options
-    option_b:
+    option_c:
       - Basic
       # - Low
       # - Medium
       # - High
       - Ultimate
       # - Test All Options
-    option_c: # number of karts
+    option_d: # number of karts
       - 1
       # - 2
       # - 3
@@ -207,7 +224,7 @@ phoronix-test-suite:
       # - 7
       - 8
       # - Test All Options
-    option_d:
+    option_e:
       - Candela City [Approximately 400k triangles; advanced graphics]
       - Cocoa Temple [Approximately 300k triangles; advanced graphics]
       - Gran Paradiso Island [Approximately 275k triangles; advanced graphics]
@@ -220,35 +237,45 @@ phoronix-test-suite:
       - Oliver's Math Class [Low poly]
       - Hacienda [Low poly]
       # - Test All Options
-  - test:
-    - tesseract-1.1.0
+  - test: tesseract-1.1.0
+    option_a:
+      - 1024 x 768
     # - tf2-1.2.3 # download files from stream
     # - tremulous-1.1.0 # need 32bit libs (libjpeg62:i386 etc)
     # - ue4-matinee-1.1.0 # block by known issues
     # - ue4-mountains-1.1.0 # block by known issue
   - test: unigine-heaven-1.6.4
     option_a:
+      - 1024 x 768
+    option_b:
       - Fullscreen
       - Windowed
       # - Test All Options
   - test: unigine-sanctuary-1.6.4
     option_a:
+      - 1024 x 768
+    option_b:
       - Fullscreen
       - Windowed
       # - Test All Options
   - test: unigine-tropics-1.6.4
     option_a:
+      - 1024 x 768
+    option_b:
       - Fullscreen
       - Windowed
       # - Test All Options
   - test: unigine-valley-1.1.7
     option_a:
+      - 1024 x 768
+    option_b:
       - Fullscreen
       - Windowed
       # - Test All Options
-  - test:
+  - test: urbanterror-1.3.0
     # - unvanquished-1.5.0 # this test profile is currently marked Broken
-    - urbanterror-1.3.0
+    option_a:
+      - 1024 x 768
   - test: ut2004-demo-1.2.0
     option_a:
       - AS-Convoy Botmatch

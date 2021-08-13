@@ -1,5 +1,5 @@
 dmesg.*
-.+\.(error|warn|fail).*
+.+\.(error|warn|fail)[^_]*$
 kernel-selftests\..+(make_fail|test_make_fail)
 .+killed_by.*
 kmsg.*

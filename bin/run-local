@@ -88,7 +88,7 @@ end
 
 begin
   # "#!" is defined by comment_to_symbol
-  if File.readlines(jobfile).any? { |l| l.start_with?('#! ') }
+  if File.readlines(jobfile).any? { |l| l.start_with?(':#! ') }
     log_warn "Jobfile is a dirty file, better to run 'lkp split-job --compatible #{jobfile}' first"
   end
 
@@ -134,7 +134,10 @@ ENV['RESULT_ROOT'] = result_root
 ENV['TMP_RESULT_ROOT'] = result_root
 
 jobx = Job2sh.new(job.to_hash)
-exit unless jobx.expand_params
+unless jobx.expand_params
+  log_error "Failed to expand params!"
+  exit
+end
 
 FileUtils.rm_rf TMP
 Dir.mkdir TMP

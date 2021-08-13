@@ -44,7 +44,6 @@ stress-ng:
   - dup
   - dynlib
   - enosys
-  - env
   - epoll
   - eventfd
   - fallocate
@@ -148,6 +147,7 @@ stress-ng:
   - sigfpe
   - sigio
   - signal
+  - signest
   - sigpending
   - sigpipe
   - sigq

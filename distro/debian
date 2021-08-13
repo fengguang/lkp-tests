@@ -221,7 +221,10 @@ fixup_distro_mirror()
 	# debconf: unable to initialize frontend: Dialog
 	# debconf: (TERM is not set, so the dialog frontend is not usable.)
 	export DEBIAN_FRONTEND=noninteractive
-	# echo "deb http://mirrors.163.com/debian jessie main" >> /etc/apt/sources.list
+
+	# add extra apt source into sources.list
+	# use (cat ...; echo) to append new line at last
+	(cat $LKP_SRC/distro/apt-sources-list; echo) >> /etc/apt/sources.list
 }
 
 fixup_preinstall()

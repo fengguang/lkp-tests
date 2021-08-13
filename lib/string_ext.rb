@@ -15,7 +15,7 @@ class String
     return self if valid_encoding?
 
     clone.force_encoding('UTF-8')
-         .encode('UTF-8', 'UTF-8', options.merge(invalid: :replace, undef: :replace))
+         .encode('UTF-8', 'UTF-8', **options.merge(invalid: :replace, undef: :replace))
   end
 
   def strip_nonprintable_characters

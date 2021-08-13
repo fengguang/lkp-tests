@@ -165,7 +165,7 @@ detect_system()
 		detect_libc_version $rootfs
 	elif
 		[ -f ${rootfs}/etc/os-release ] &&
-		GREP_OPTIONS=""
+			GREP_OPTIONS="" \command \grep "ID=Exaleap-riscv-linux" ${rootfs}/etc/os-release >/dev/null
 	then
 		_system_version="$(awk -F'=' '$1=="VERSION_ID"{print $2}'  ${rootfs}/etc/os-release | head -n 1)"
 		_system_name="Exaleap-riscv-linux"

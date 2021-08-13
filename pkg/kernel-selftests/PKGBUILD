@@ -59,6 +59,12 @@ install_selftests()
 
 	mkdir -p "${benchmark_path}/tools/testing/selftests"
 	cp -af tools/testing/selftests/* "${benchmark_path}/tools/testing/selftests"
+
+	for d in arch/x86 scripts kernel/bpf samples Makefile tools include lib
+	do
+		mkdir -p $(dirname ${benchmark_path}/$d)
+		cp -af $d $(dirname ${benchmark_path}/$d)
+	done
 }
 
 build()

@@ -205,6 +205,9 @@ end
 class Job
   class ParamError < ArgumentError
   end
+
+  class SyntaxError < ArgumentError
+  end
 end
 
 class Job
@@ -951,7 +954,8 @@ class Job
     rescue TypeError => e
       log_error "#{file}: #{e.message} hash: #{hash}"
       raise
-    rescue KeyError # no conclusion due to lack of information
+    rescue KeyError => e # no conclusion due to lack of information
+      log_error "#{file}: #{e.message} hash: #{hash}"
       return nil
     end
     true

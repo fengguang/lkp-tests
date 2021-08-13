@@ -1,0 +1,30 @@
+[   14.880449] BUG: Bad page cache in process systemd-journal  pfn:11ca9c
+[   14.880451] page:(____ptrval____) refcount:3 mapcount:1 mapping:(____ptrval____) index:0x120 pfn:0x11ca9c
+[   14.880453] memcg:ffff8f7b8fb82000
+[   14.880454] aops:shmem_aops ino:35
+[   14.880457] flags: 0x17ffffc0080015(locked|uptodate|lru|swapbacked|node=0|zone=2|lastcpupid=0x1fffff)
+[   14.880461] raw: 0017ffffc0080015 ffffcfed8472a6c8 ffffcfed8472a748 ffff8f7b8e6f0a28
+[   14.880462] raw: 0000000000000120 0000000000000000 0000000300000000 ffff8f7b8fb82000
+[   14.880463] page dumped because: still mapped when deleted
+[   14.880465] CPU: 0 PID: 159 Comm: systemd-journal Tainted: G    B   W         5.13.0-rc6-07147-g916efa412cbc #1
+[   14.880467] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+[   14.880469] Call Trace:
+[   14.880470]  dump_stack+0x64/0x7c
+[   14.880474]  unaccount_page_cache_page.cold+0x3e/0xae
+[   14.880479]  __delete_from_page_cache+0x39/0x1c0
+[   14.880482]  ? __cond_resched+0x19/0x40
+[   14.880486]  ? down_write+0x21/0x80
+[   14.880489]  ? unmap_mapping_page+0x69/0x140
+[   14.880492]  delete_from_page_cache+0x53/0xc0
+[   14.880496]  truncate_inode_page+0x1f/0x40
+[   14.880501]  shmem_undo_range+0x168/0x840
+[   14.880507]  ? __ia32_sys_newstat+0xf/0x40
+[   14.880512]  shmem_truncate_range+0x14/0x40
+[   14.880516]  shmem_evict_inode+0xce/0x240
+[   14.880520]  ? var_wake_function+0x40/0x40
+[   14.880524]  evict+0xd8/0x180
+[   14.880527]  do_unlinkat+0x1e4/0x300
+[   14.880531]  __do_fast_syscall_32+0x6b/0x100
+[   15.838455]  do_fast_syscall_32+0x2f/0x80
+[   15.838468]  entry_SYSENTER_compat_after_hwframe+0x4d/0x5f
+[   15.838475] RIP: 0023:0xf7f58549

@@ -1,0 +1,9 @@
+boot_failures: 1
+
+# BUG: Bad page cache in process
+BUG:Bad_page_cache_in_process: 1
+message:BUG:Bad_page_cache_in_process: [   14.880449] BUG: Bad page cache in process systemd-journal  pfn:11ca9c
+pattern:BUG:Bad_page_cache_in_process: BUG: Bad page cache in process
+
+timestamp:last: 15.838475
+timestamp:BUG:Bad_page_cache_in_process: 14.880449

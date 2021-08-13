@@ -97,7 +97,21 @@ mount_local_nfs()
 		local mnt=/nfs/$(basename $dir)
 		local dev=localhost:$dir
 		log_cmd mkdir -p $mnt
-		log_cmd mount -t $fs ${mount:-$def_mount} $mount_option $dev $mnt || exit
+		log_cmd timeout 5m mount -t $fs ${mount:-$def_mount} $mount_option $dev $mnt
+		local errno=$?
+		case $errno in
+			0)
+				echo "mount nfs success"
+				;;
+			124)
+				echo "mount nfs timeout" >&2
+				exit $errno
+				;;
+			*)
+				echo "mount nfs failed"
+				exit $errno
+				;;
+		esac
 		log_cmd touch $mnt/wait_for_nfs_grace_period
 		nfs_mount_points="${nfs_mount_points}$mnt "
 	done

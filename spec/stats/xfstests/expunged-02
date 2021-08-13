@@ -1,0 +1,35 @@
+2021-02-15 08:04:35 export TEST_DIR=/fs/sda1
+2021-02-15 08:04:35 export TEST_DEV=/dev/sda1
+2021-02-15 08:04:35 export FSTYP=ext4
+2021-02-15 08:04:35 export SCRATCH_MNT=/fs/scratch
+2021-02-15 08:04:35 mkdir /fs/scratch -p
+2021-02-15 08:04:35 export SCRATCH_DEV=/dev/sda4
+2021-02-15 08:04:35 sed "s:^:generic/:" //lkp/benchmarks/xfstests/tests/generic-group-02
+2021-02-15 08:04:35 ./check -E tests/exclude/ext4 generic/040 generic/041 generic/042 generic/043 generic/044 generic/045 generic/046 generic/047 generic/048 generic/049 generic/050 generic/051 generic/052 generic/053 generic/054 generic/055 generic/056 generic/057 generic/058 generic/059
+FSTYP         -- ext4
+PLATFORM      -- Linux/x86_64 lkp-ivb-d01 5.11.0 #1 SMP Mon Feb 15 10:04:18 CST 2021
+MKFS_OPTIONS  -- /dev/sda4
+MOUNT_OPTIONS -- -o acl,user_xattr /dev/sda4 /fs/scratch
+
+generic/040      23s
+generic/041      26s
+generic/042       [expunged]
+generic/043      53s
+generic/044       [expunged]
+generic/045       [expunged]
+generic/046       [expunged]
+generic/047      92s
+generic/048      217s
+generic/049      49s
+generic/050      39s
+generic/051      116s
+generic/052      41s
+generic/053      21s
+generic/054      529s
+generic/055      259s
+generic/056      21s
+generic/057      20s
+generic/058      3s
+generic/059      22s
+Ran: generic/040 generic/041 generic/043 generic/047 generic/048 generic/049 generic/050 generic/051 generic/052 generic/053 generic/054 generic/055 generic/056 generic/057 generic/058 generic/059
+Passed all 16 tests

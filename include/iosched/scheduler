@@ -1,3 +1,3 @@
 need_kconfig:
-- CONFIG_IOSCHED_<%= ___.upcase %>
-- CONFIG_BLOCK
+- IOSCHED_<%= ___.upcase %>
+- BLOCK

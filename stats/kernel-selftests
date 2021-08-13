@@ -148,7 +148,20 @@ class NetStater < Stater
       else
         # selftests: net: netdevice.sh
         # SKIP: eth0: interface already up
-        stats.add "#{@test_prefix}.#{$2}", $1
+        @result = $1
+        @test_case = $2
+
+        if @test_case == 'fdb get tests: iproute2 too old'
+          # below rtnetlink.sh's subtest will repeate twice thus cause duplication
+          # SKIP: fdb get tests: iproute2 too old
+          # and it's passed stat will be
+          # PASS: bridge fdb get
+          stats.add "#{@test_prefix}.bridge_fdb_get", @result unless stats.key? "#{@test_prefix}.bridge_fdb_get"
+        else
+          stats.add "#{@test_prefix}.#{@test_case}", $1
+        end
+        @test_case = nil
+        @result = nil
       end
     when /^# \[       (OK|FAIL|SKIP) \] (.*)/
       # selftests: net: tls
@@ -362,12 +375,40 @@ end
 class ResctrlStater < Stater
   def stat(line, stats)
     case line
+    when /# Starting\s+(.*).../
+      # Starting CAT test ...
+      @test_script = $1
+    when /# Pass: Check\s+(.*)/
+      # Pass: Check MBM diff within 5%
+
+      # The following line is repeated 3 times
+      # Pass: Check resctrl mountpoint "/sys/fs/resctrl" exists
+      stats.add "#{@test}.#{$1}", 'pass' unless stats.key? "#{@test}.#{$1}"
+    when /# SKIP\s+(.*)/
+      # Starting CAT test ...
+      # ok 4 # SKIP Hardware does not support CAT or CAT is disabled
+      stats.add "#{@test}.#{@test_script}", 'skip'
     when /^not ok\s+(.*)/
       # not ok CAT: cache miss rate within 4%
-      stats.add "#{@test}.#{$1}", 'fail' unless stats.key? "#{@test}.#{$1}"
+      @test_script = $1
+
+      # not ok 3 CMT: test
+      @test_script = $1.split(' ', 2)[1] if %w{1 2 3 4}.include? $1.split(' ', 2)[0]
+
+      # The following line is repeated 3 times
+      # not ok MBM: diff within 300%
+      stats.add "#{@test}.#{@test_script}", 'fail' unless stats.key? "#{@test}.#{@test_script}"
     when /^ok\s+(.*)/
       # ok CAT: test
-      stats.add "#{@test}.#{$1}", 'pass' unless stats.key? "#{@test}.#{$1}"
+      # ok writing benchmark parameters to resctrl FS
+      @test_script = $1
+
+      # ok 2 MBA: schemata change
+      @test_script = $1.split(' ', 2)[1] if %w{1 2 3 4}.include? $1.split(' ', 2)[0]
+
+      # The following line is repeated 3 times
+      # ok resctrl mountpoint "/sys/fs/resctrl" exists
+      stats.add "#{@test}.#{@test_script}", 'pass' unless stats.key? "#{@test}.#{@test_script}"
     end
   end
 end
@@ -712,7 +753,9 @@ while (line = STDIN.gets)
   when /^# selftests: (futex): (.+)/
     # selftests: futex: run.sh
     stater = FutexStater.new($1, $2)
-  when /^ok kernel supports (resctrl) filesystem/
+  when /kernel supports (resctrl) filesystem/
+    # Pass: Check kernel supports resctrl filesystem
+    # ok kernel supports resctrl filesystem
     stater = ResctrlStater.new($1, nil)
   when /^# selftests: (net\/mptcp): (.*\.sh)/
     # selftests: net/mptcp: mptcp_connect.sh

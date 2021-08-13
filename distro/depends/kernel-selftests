@@ -24,7 +24,7 @@ bison
 flex
 python3
 libreadline-dev
-iproute2
+iproute2/buster-backports
 ethtool
 uuid-runtime
 libdrm-dev
@@ -54,3 +54,5 @@ libx32gcc-8-dev (i386)
 python-docutils
 bpftool
 jq
+socat
+netsniff-ng

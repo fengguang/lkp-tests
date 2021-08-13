@@ -23,6 +23,8 @@
 # - ioscheduler
 # - ramp_time
 # - loops
+# - cpuload
+# - donorname
 
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/common.sh
@@ -125,6 +127,20 @@ time_based
 "
 fi
 
+if parse_bool -q "$cpuload"; then
+	create_task="
+$create_task
+cpuload=$cpuload
+"
+fi
+
+if parse_bool -q "$donorname"; then
+       create_task="
+$create_task
+donorname=$donorname
+"
+fi
+
 [ -n "$rwmixread" ] && rwmixread_setup="rwmixread=$rwmixread"
 
 parse_numa_mem_policy()
@@ -192,6 +208,10 @@ for storage in $storages; do
 	else
 		storage_setup="directory=$storage"
 	fi
+        if [ "$ioengine" = "sg" ]; then
+                dev_src=`findmnt $storage -no source`
+                storage_setup="filename=$dev_src\nallow_mounted_write=1"
+        fi
 	create_task="\
 $create_task
 [task_$no]

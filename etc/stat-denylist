@@ -18,13 +18,12 @@
 ^dmesg.boot_failures
 ^dmesg.boot_successes
 ^dmesg.BUG:Dentry.*i=.*n=.*
-^dmesg.BUG:soft_lockup-CPU##stuck_for#s
-^dmesg.BUG:KCSAN:data-race_in
 ^dmesg.BUG:using__this_cpu_read\(\)in_preemptible\[#\]code
 ^dmesg.BUG:KFENCE
 ^dmesg.BUG_TestSlub_.*
 ^dmesg.BUG:KASAN:slab-out-of-bounds_in_resiliency_test
 ^dmesg.BUG:KASAN:slab-out-of-bounds_in_test_clobber_zone
+^dmesg.kernel_BUG_at_drivers/misc/lkdtm/bugs.c
 ^dmesg.calltrace
 ^dmesg..*cpu_clock_throttled.*
 ^dmesg..*-detected_stall_on_CPUINFO
@@ -41,7 +40,7 @@
 ^dmesg..*/lkp/
 ^dmesg.Mem-Info
 ^dmesg.timestamp:.*
-^dmesg.UBSAN
+^dmesg.WARNING:at_kernel/kcsan/kcsan_test.c:#test_init
 ^GLib-WARNING\*\*:#:#:#:gmem.c:#:custom_memory_allocation_vtable_not_supported
 .*\.ignored_by_lkp
 ^internal-lkp-service.*

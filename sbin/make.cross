@@ -37,6 +37,12 @@ fi
 	exit 1
 }
 
+if [[ "$*" =~ O=([^ ]+) ]]; then
+	BUILD_DIR="${BASH_REMATCH[1]}"
+else
+	BUILD_DIR="."
+fi
+
 shopt -s nullglob
 
 is_clang_worker()
@@ -90,7 +96,11 @@ install_crosstool_clang()
 {
 	local URL='https://download.01.org/0day-ci/cross-package'
 	local list=/tmp/0day-ci-crosstool-files
-	local file='clang.tar.xz'
+	if [[ $ARCH = "hexagon" ]]; then
+		local file='clang+llvm-12.0.0-cross-hexagon-unknown-linux-musl.tar.xz'
+	else
+		local file='clang.tar.xz'
+	fi
 	lftp -c "open $URL && find -d 3 > $list" || return
 
 	file=$(grep $file $list | tail -1)
@@ -164,7 +174,7 @@ setup_compiler_for_xtensa()
 {
 	local variant
 
-	variant=$(grep -s -h '^CONFIG_XTENSA_VARIANT_CUSTOM_NAME=' .config |
+	variant=$(grep -s -h '^CONFIG_XTENSA_VARIANT_CUSTOM_NAME=' $BUILD_DIR/.config |
 		  head -n1 |
 		  cut -f2 -d'"')
 
@@ -190,7 +200,7 @@ setup_crosstool_gcc()
 			# start to support big endian arc toolchain form gcc-9.3.0
 			# for earlier gcc version, will failed to find arceb-elf for
 			# big endian arceb-elf tool chain
-			if grep -q 'CONFIG_CPU_BIG_ENDIAN=y' .config; then
+			if grep -q 'CONFIG_CPU_BIG_ENDIAN=y' $BUILD_DIR/.config; then
 				gcc_arch=arceb-elf
 			else
 				gcc_arch=arc-elf
@@ -209,7 +219,14 @@ setup_crosstool_gcc()
 			gcc_arch=aarch64-linux*
 			;;
 		powerpc)
-			gcc_arch=powerpc64-linux
+			gcc_arch=powerpc-linux
+			grep -q 'CONFIG_PPC64=y' $BUILD_DIR/.config && {
+				if grep -q 'CONFIG_CPU_LITTLE_ENDIAN=y' $BUILD_DIR/.config; then
+					gcc_arch=powerpc64le-linux
+				else
+					gcc_arch=powerpc64-linux
+				fi
+			}
 			;;
 		blackfin)
 			gcc_arch=bfin-uclinux
@@ -228,7 +245,7 @@ setup_crosstool_gcc()
 			gcc_arch=or1k-linux
 			;;
 		riscv)
-			if grep -q 'CONFIG_32BIT=y' .config; then
+			if grep -q 'CONFIG_32BIT=y' $BUILD_DIR/.config; then
 				gcc_arch=riscv32-linux
 			else
 				gcc_arch=riscv64-linux
@@ -286,7 +303,11 @@ setup_crosstool_gcc()
 
 setup_crosstool_clang()
 {
-	local cross_clang=("$COMPILER_INSTALL_PATH"/clang/bin/clang)
+	if [[ $ARCH = "hexagon" ]]; then
+		local cross_clang=("$COMPILER_INSTALL_PATH"/clang+llvm-12.0.0-cross-hexagon-unknown-linux-musl/x86_64-linux-gnu/bin/clang)
+	else
+		local cross_clang=("$COMPILER_INSTALL_PATH"/clang/bin/clang)
+	fi
 	[[ -x $cross_clang ]] || install_cross_compiler || {
 		echo "Install clang compiler failed"
 		return 1
@@ -294,24 +315,32 @@ setup_crosstool_clang()
 
 	local cross_clang_path=$(dirname $cross_clang)
 	local opt_ldd="LD=${cross_clang_path}/ld.lld HOSTLD=${cross_clang_path}/ld.lld"
-	[[ $ARCH =~ arm ]] &&
-		grep -q 'CONFIG_CPU_BIG_ENDIAN=y' .config && opt_ldd=
 	[[ $ARCH = s390 ]] && opt_ldd=
 
+	export PATH="$cross_clang_path:$PATH"
 	# https://www.kernel.org/doc/html/latest/kbuild/llvm.html
 	opt_cross="HOSTCC=$cross_clang CC=$cross_clang $opt_ldd \
-		AR=${cross_clang_path}/llvm-ar NM=${cross_clang_path}/llvm-nm \
-		STRIP=${cross_clang_path}/llvm-strip OBJDUMP=${cross_clang_path}/llvm-objdump \
-		OBJSIZE=${cross_clang_path}/llvm-size READELF=${cross_clang_path}/llvm-readelf \
-		HOSTCXX=${cross_clang_path}/clang++ HOSTAR=${cross_clang_path}/llvm-ar"
+		AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump OBJSIZE=llvm-size READELF=llvm-readelf HOSTCXX=clang++ HOSTAR=llvm-ar"
 	if [[ $ARCH = "arm64" ]]; then
 		opt_cross="$opt_cross CROSS_COMPILE=aarch64-linux-gnu-"
 	elif [[ $ARCH = "arm" ]]; then
 		opt_cross="$opt_cross CROSS_COMPILE=arm-linux-gnueabi-"
 	elif [[ $ARCH = "s390" ]]; then
 		opt_cross="$opt_cross CROSS_COMPILE=s390x-linux-gnu-"
+	elif [[ $ARCH = "hexagon" ]]; then
+		opt_cross="$opt_cross LLVM_IAS=1 CROSS_COMPILE=hexagon-unknown-linux-musl-"
+	elif [[ $ARCH = "powerpc" ]]; then
+		local cross_compile='powerpc-linux-gnu-'
+		grep -q 'CONFIG_PPC64=y' $BUILD_DIR/.config && {
+			if grep -q 'CONFIG_CPU_LITTLE_ENDIAN=y' $BUILD_DIR/.config; then
+				cross_compile='powerpc64le-linux-gnu-'
+			else
+				cross_compile='powerpc64-linux-gnu-'
+			fi
+		}
+		opt_cross="$opt_cross CROSS_COMPILE=$cross_compile"
 	elif [[ $ARCH = "riscv" ]]; then
-		if grep -q 'CONFIG_32BIT=y' .config; then
+		if grep -q 'CONFIG_32BIT=y' $BUILD_DIR/.config; then
 			opt_cross="$opt_cross $(COMPILER=gcc && setup_crosstool_gcc && echo $opt_cross)"
 		else
 			opt_cross="$opt_cross CROSS_COMPILE=riscv64-linux-gnu-"
@@ -361,9 +390,9 @@ fi
 [[ -f .make-env ]] && source ./.make-env
 
 if [[ -d source && -L source ]]; then
-	echo make -C source O=$PWD $make_dts $opt_arch $opt_cross $subarch $opt_jobs "$@"
-	exec make -C source O=$PWD $make_dts $opt_arch $opt_cross $subarch $opt_jobs "$@"
+	echo make --keep-going -C source O=$PWD $make_dts $opt_arch $opt_cross $subarch $opt_jobs "$@"
+	exec make --keep-going -C source O=$PWD $make_dts $opt_arch $opt_cross $subarch $opt_jobs "$@"
 else
-	echo make $O $make_dts $opt_arch $opt_cross $subarch $opt_jobs "$@"
-	exec make $O $make_dts $opt_arch $opt_cross $subarch $opt_jobs "$@"
+	echo make --keep-going $O $make_dts $opt_arch $opt_cross $subarch $opt_jobs "$@"
+	exec make --keep-going $O $make_dts $opt_arch $opt_cross $subarch $opt_jobs "$@"
 fi

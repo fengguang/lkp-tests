@@ -1,8 +1,8 @@
 <%=
 	case ___
 	when /tmpfs|cifs|cramfs|logfs|squashfs/
-		"need_kconfig: CONFIG_#{___.upcase}"
+		"need_kconfig: #{___.upcase}"
 	else
-		"need_kconfig: CONFIG_#{___.upcase}_FS"
+		"need_kconfig: #{___.upcase}_FS"
 	end
 %>

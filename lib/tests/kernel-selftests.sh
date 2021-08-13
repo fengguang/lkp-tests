@@ -207,9 +207,14 @@ fixup_dma()
 {
 	# need to bind a device to dma_map_benchmark driver
 	# for PCI devices
-	echo dma_map_benchmark > /sys/bus/pci/devices/0000:00:01.0/driver_override || return
-	echo 0000:00:01.0 > /sys/bus/pci/drivers/pcieport/unbind || return
-	echo 0000:00:01.0 > /sys/bus/pci/drivers/dma_map_benchmark/bind || return
+	local name=$(ls /sys/bus/pci/devices/ | head -1)
+	[[ $name ]] || return
+	echo dma_map_benchmark > /sys/bus/pci/devices/$name/driver_override || return
+	local old_bind_dir=$(ls -d /sys/bus/pci/drivers/*/$name)
+	[[ $old_bind_dir ]] && {
+		echo $name > $(dirname $old_bind_dir)/unbind || return
+	}
+	echo $name > /sys/bus/pci/drivers/dma_map_benchmark/bind || return
 }
 
 fixup_net()
@@ -644,16 +649,17 @@ fixup_subtest()
 	return 0
 }
 
-should_run_cached_kselftests()
+check_subtest()
 {
-	# force to run cached binary
-	[[ $subtest = 'mount_setattr' ]] && [[ -d $(dirname $run_cached_kselftests)/mount_setattr ]] && return
+	subtest_config="$subtest/config"
+	kernel_config="/lkp/kernel-selftests-kernel-config"
 
-	$run_cached_kselftests -l 2>/dev/null | grep -q "^$subtest:"
-}
+	[[ -s "$subtest_config" ]] && get_kconfig "$kernel_config" && {
+		check_kconfig "$subtest_config" "$kernel_config"
+	}
 
-run_tests()
-{
+	check_ignore_case $subtest && echo "LKP SKIP $subtest" && return 1
+
 	# zram: skip zram since 0day-kernel-tests always disable CONFIG_ZRAM which is required by zram
 	# for local user, you can enable CONFIG_ZRAM by yourself
 	# media_tests: requires special peripheral and it can not be run with "make run_tests"
@@ -662,79 +668,13 @@ run_tests()
 	# 2. /dev/watchdog: need support open/ioctl etc file ops, but not all watchdog support it
 	# 3. this test will not complete until issue Ctrl+C to abort it
 	skip_filter="arm64 sparc64 powerpc zram media_tests watchdog"
+	subtest_in_skip_filter "$skip_filter" && return 1
+	return 0
+}
 
-	local selftest_mfs=$@
-
-	[[ $run_cached_kselftests ]] ||
-	local run_cached_kselftests="/kselftests/run_kselftest.sh"
-
-	# $ uname -r
-	# 5.9.0-0.bpo.2-amd64
-	# $ uname -r | grep -o "^[0-9]\.[0-9]*"
-	# 5.9
-	local kernel_version=$(uname -r | grep -o "^[0-9]\.[0-9]*")
-
-	# run_kselftest.sh started to support testing individually from the below commit:
-	# 5da1918446a1 selftests/run_kselftest.sh: Make each test individually selectable
-	(( $(echo "$kernel_version < 5.10" | bc -l) )) && run_cached_kselftests=
-
-	# kselftest introduced runner.sh since kernel commit 42d46e57ec97 "selftests: Extract single-test shell logic from lib.mk"
-	[[ -e kselftest/runner.sh ]] && log_cmd sed -i 's/default_timeout=45/default_timeout=300/' kselftest/runner.sh
-	[[ -e /kselftests/kselftest/runner.sh ]] && log_cmd sed -i 's/default_timeout=45/default_timeout=300/' /kselftests/kselftest/runner.sh
-	for mf in $selftest_mfs; do
-		subtest=${mf%/Makefile}
-		subtest_config="$subtest/config"
-		kernel_config="/lkp/kernel-selftests-kernel-config"
-
-		[[ -s "$subtest_config" ]] && get_kconfig "$kernel_config" && {
-			check_kconfig "$subtest_config" "$kernel_config"
-		}
-
-		check_ignore_case $subtest && echo "LKP SKIP $subtest" && continue
-		subtest_in_skip_filter "$skip_filter" && continue
-
-		(
-		if should_run_cached_kselftests; then
-			found_subtest_in_cache=1
-			[[ -f $LKP_SRC/lib/tests/kernel-selftests-ext.sh ]] && {
-				echo "source $LKP_SRC/lib/tests/kernel-selftests-ext.sh"
-				source $LKP_SRC/lib/tests/kernel-selftests-ext.sh
-			}
-
-			# not ok 1 selftests: firmware: fw_run_tests.sh # TIMEOUT 45 seconds
-			[[ ! -f /kselftests/$subtest/settings ]] &&
-			[[ -f $subtest/settings ]] &&
-			log_cmd cp $subtest/settings /kselftests/$subtest/settings
-		else
-			found_subtest_in_cache=
-			check_makefile $subtest || log_cmd make TARGETS=$subtest 2>&1
-		fi
-
-		fixup_subtest $subtest || return
-
-		if [[ $found_subtest_in_cache ]]; then
-			if [[ $group == "net" && $test =~ ^(tls|fcnal-test.sh)$ ]]; then
-				if [[ $test == "fcnal-test.sh" ]]; then
-					[[ -f /kselftests/net/settings ]] && sed -i '/timeout=/d' /kselftests/net/settings
-					echo "timeout=3600" >> /kselftests/net/settings
-				fi
-				$run_cached_kselftests -l | grep -q ^$subtest:$test$ &&
-				log_cmd $run_cached_kselftests -t $subtest:$test 2>&1
-			else
-				# run_cached_kselftests is from kselftests.cgz which may not exist in local
-				$run_cached_kselftests -l | grep -q ^$subtest: &&
-				log_cmd $run_cached_kselftests -c $subtest 2>&1
-			fi
-		elif [[ -f $run_cached_kselftests ]]; then
-			echo "LKP WARN miss target $subtest"
-			log_cmd make run_tests -C $subtest 2>&1
-		else
-			log_cmd make run_tests -C $subtest 2>&1
-		fi
-
-		if [[ "$subtest" = "firmware" ]]; then
-			cleanup_for_firmware
-		fi
-		)
-	done
+cleanup_subtest()
+{
+	if [[ "$subtest" = "firmware" ]]; then
+		cleanup_for_firmware
+	fi
 }

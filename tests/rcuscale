@@ -18,4 +18,4 @@ log_cmd sleep $runtime
 
 log_cmd rmmod rcuscale 2> /dev/null
 
-dmesg | grep scalei:
+dmesg | grep scale:

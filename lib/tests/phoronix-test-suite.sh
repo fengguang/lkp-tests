@@ -23,16 +23,6 @@ fixup_open_porous_media()
 	sed -i 's/nice mpirun -np/nice mpirun --allow-run-as-root -np/' "$target"
 }
 
-# only test max resolution for a tbox
-find_max_resolution()
-{
-	[ -n "$environment_directory" ] || return
-	local test=$1
-	local target=/usr/share/phoronix-test-suite/pts-core/objects/pts_test_run_options.php
-	sed -i "s,\$option_names\[\] = \$this_name,\$option_names\[0\] = \$this_name," "$target"
-	sed -i "s,\$option_values\[\] = \$this_value,\$option_values\[0\] = \$this_value," "$target"
-}
-
 # prepare download file beforehand
 # pls download http://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz and put it to
 # phoronix-rootfs/var/lib/phoronix-test-suite/installed-tests/pts/tensorflow-*/cifar10
@@ -262,7 +252,7 @@ fixup_fio()
 	local test_dir="/media/test_fio"
 	fallocate -l 100M $test_disk || return
 	mkfs -t ext4 $test_disk 2> /dev/null || return
-	mkdir $test_dir || return
+	mkdir -p $test_dir || return
 	modprobe loop || return
 	mount -t auto -o loop $test_disk $test_dir ||return
 
@@ -657,7 +647,6 @@ run_test()
 			;;
 		tesseract-*)
 			export DISPLAY=:0
-			find_max_resolution $test || die "failed to find max resolution for $test"
 			;;
 		smart-*)
 			# Choose 1st disk to get smart info
@@ -667,7 +656,6 @@ run_test()
 			;;
 		urbanterror-*)
 			export DISPLAY=:0
-			find_max_resolution $test || die "failed to find max resolution for $test"
 			;;
 		hdparm-read-*)
 			# Choose
@@ -676,7 +664,6 @@ run_test()
 			;;
 		nexuiz-*)
 			export DISPLAY=:0
-			find_max_resolution $test || die "failed to find max resolution for $test"
 			;;
 		plaidml-*)
 			# Choose
@@ -775,19 +762,15 @@ run_test()
 			;;
 		gluxmark-*)
 			fixup_gluxmark $test || die "failed to fixup gluxmark"
-			find_max_resolution $test || die "failed to find max resolution for $test"
 			;;
 		java-gradle-perf-*)
 			fixup_java_gradle_perf || die "failed to fixup java-gradle-perf"
 			;;
 		unigine-heaven-*|unigine-valley-*)
 			export DISPLAY=:0
-			test_opt="\n1\nn"
-			find_max_resolution $test || die "failed to find max resolution for $test"
 			;;
 		glmark2-*|openarena-*|gputest-*|supertuxkart-*)
 			export DISPLAY=:0
-			find_max_resolution $test || die "failed to find max resolution for $test"
 			;;
 		cairo-perf-trace-*)
 			# select Poppler
@@ -797,9 +780,6 @@ run_test()
 			# 7: Kernel Latency
 			# 4: Integer Compute INT # this subtest was disabled on Intel platform
 			test_opt="\n7\nn"
-			;;
-		apitest-*|et-*|etlegacy-*|etxreal-*|geexlab-*|paraview-*|unigine-sanctuary-*|unigine-tropics-*)
-			find_max_resolution $test || die "failed to find max resolution for $test"
 			;;
 		pgbench-*)
 			fixup_pgbench $test || die "failed to fixup pgbench"

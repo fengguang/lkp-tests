@@ -24,12 +24,17 @@ while (line = STDIN.gets)
   line = line.resolve_invalid_bytes
 
   case line
-  when /^(.*) build\/tests\/([^\s]+)/
+  when /^(.*) build\/tests\/([^\s]+)$/
     # 2020-10-27 01:29:45 build/tests/core_getstats
+    next unless valid_datetime?($1)
+
+    test_name = $2
+  when /^(.*) build\/tests\/([^\s]+) --run-subtest ([^\s]+)$/
     # 2020-11-17 03:02:16 build/tests/fbdev --run-subtest info
     next unless valid_datetime?($1)
 
     test_name = $2
+    subtest_name = $3
   when /^(SUCCESS|FAIL|CRASH)/
     # 1 2020-10-27 01:29:45 build/tests/core_getstats
     # 2 IGT-Version: 1.25-ga15f8da1 (x86_64) (Linux: 5.9.0-wt-17357-g18b04b6d608b x86_64)

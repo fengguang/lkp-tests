@@ -1,0 +1,41 @@
+KERNEL SELFTESTS: linux_headers_dir is /usr/src/linux-headers-x86_64-rhel-8.3-kselftests-13311e74253fe64329390df80bed3f07314ddd61
+2021-06-25 10:01:58 mount --bind /lib/modules/5.13.0-rc7/kernel/lib /usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-13311e74253fe64329390df80bed3f07314ddd61/lib
+2021-06-25 10:01:58 sed -i s/default_timeout=45/default_timeout=300/ kselftest/runner.sh
+2021-06-25 10:01:58 sed -i s/default_timeout=45/default_timeout=300/ /kselftests/kselftest/runner.sh
+source /lkp/lkp/src/lib/tests/kernel-selftests-ext.sh
+LKP SKIP net.l2tp.sh
+LKP SKIP net.tls
+2021-06-25 10:01:59 /kselftests/run_kselftest.sh -c net
+TAP version 13
+1..49
+# selftests: net: rtnetlink.sh
+# PASS: policy routing
+# PASS: route get
+# PASS: preferred_lft addresses have expired
+# PASS: promote_secondaries complete
+# PASS: tc htb hierarchy
+# PASS: gre tunnel endpoint
+# PASS: gretap
+# PASS: ip6gretap
+# PASS: erspan
+# PASS: ip6erspan
+# PASS: bridge setup
+# PASS: ipv6 addrlabel
+# PASS: set ifalias bebb8fa1-e97e-4b52-a0c5-d3d9cf979d67 for test-dummy0
+# PASS: vrf
+# PASS: vxlan
+# PASS: fou
+# PASS: macsec
+# PASS: ipsec
+# PASS: ipsec_offload
+# PASS: bridge fdb get
+# PASS: neigh get
+# Error: Unknown device type.
+# Error: argument "test-bond0" is wrong: Device does not exist
+#
+# Error: argument "test-bond0" is wrong: Device does not exist
+#
+# Cannot find device "test-bond0"
+# Cannot find device "test-bond0"
+# FAIL: bridge_parent_id
+not ok 10 selftests: net: rtnetlink.sh # exit=1

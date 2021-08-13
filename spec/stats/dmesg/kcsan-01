@@ -1,0 +1,12 @@
+[   14.009362][  T161] BUG: KCSAN: data-race in mutex_spin_on_owner+0x14e/0x2c0
+[   14.010544][  T161] 
+[   14.010939][  T161] race at unknown origin, with read to 0xffff888100608034 of 4 bytes by task 161 on cpu 0:
+[   14.011132][  T161]  mutex_spin_on_owner+0x14e/0x2c0
+[   14.011132][  T161]  mutex_optimistic_spin+0x40/0x2c0
+[   14.011132][  T161]  __mutex_lock_common+0x954/0x1240
+[   14.011132][  T161]  ww_mutex_lock+0x52/0x200
+[   14.011132][  T161]  stress_inorder_work+0x36f/0x600
+[   14.011132][  T161]  process_one_work+0x3e2/0x600
+[   14.011132][  T161]  worker_thread+0x543/0xa80
+[   14.011132][  T161]  kthread+0x23a/0x280
+[   14.011132][  T161]  ret_from_fork+0x1f/0x30

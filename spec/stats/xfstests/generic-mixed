@@ -1,0 +1,53 @@
+2021-06-27 10:24:03 export TEST_DIR=/fs/sda1
+2021-06-27 10:24:03 export TEST_DEV=/dev/sda1
+2021-06-27 10:24:03 export FSTYP=btrfs
+2021-06-27 10:24:03 export SCRATCH_MNT=/fs/scratch
+2021-06-27 10:24:03 mkdir /fs/scratch -p
+2021-06-27 10:24:03 export SCRATCH_DEV_POOL="/dev/sda2 /dev/sda3 /dev/sda4 /dev/sda5 /dev/sda6"
+2021-06-27 10:24:03 sed "s:^:btrfs/:" //lkp/benchmarks/xfstests/tests/btrfs-group-21
+2021-06-27 10:24:03 ./check btrfs/210 btrfs/211 btrfs/212 btrfs/213 btrfs/214 btrfs/215 btrfs/216 btrfs/217 btrfs/218 btrfs/219
+FSTYP         -- btrfs
+PLATFORM      -- Linux/x86_64 lkp-hsw-d01 5.13.0-rc7-08748-g7abf26488443 #1 SMP Thu Jun 24 21:10:40 CST 2021
+MKFS_OPTIONS  -- /dev/sda2
+MOUNT_OPTIONS -- /dev/sda2 /fs/scratch
+
+btrfs/210        1s
+btrfs/211        1s
+btrfs/212        17s
+btrfs/213       _check_dmesg: something found in dmesg (see /lkp/benchmarks/xfstests/results//btrfs/213.dmesg)
+
+btrfs/214       - output mismatch (see /lkp/benchmarks/xfstests/results//btrfs/214.out.bad)
+    --- tests/btrfs/214.out     2021-06-09 02:36:03.000000000 +0000
+    +++ /lkp/benchmarks/xfstests/results//btrfs/214.out.bad     2021-06-27 10:24:36.434322730 +0000
+    @@ -1,6 +1,86 @@
+     QA output created by 214
+     Test full send + file without capabilities, then incremental send bringing a new capability
+    +ERROR: receive args invalid
+    +/fs/scratch/fs2/snap_init/foo.bar (No such file or directory)
+    +ERROR: receive args invalid
+    +/fs/scratch/fs2/snap_inc/foo.bar (No such file or directory)
+    +
+    ...
+    (Run 'diff -u /lkp/benchmarks/xfstests/tests/btrfs/214.out /lkp/benchmarks/xfstests/results//btrfs/214.out.bad'  to see the entire diff)
+btrfs/215       _check_dmesg: something found in dmesg (see /lkp/benchmarks/xfstests/results//btrfs/215.dmesg)
+
+btrfs/216        1s
+btrfs/217       [not run] FSTRIM not supported
+btrfs/218        2s
+btrfs/219       [failed, exit status 1]- output mismatch (see /lkp/benchmarks/xfstests/results//btrfs/219.out.bad)
+    --- tests/btrfs/219.out     2021-06-09 02:36:03.000000000 +0000
+    +++ /lkp/benchmarks/xfstests/results//btrfs/219.out.bad     2021-06-27 10:24:41.535322781 +0000
+    @@ -1,2 +1,6 @@
+     QA output created by 219
+    -Silence is golden
+    +./common/btrfs: line 405: _require_loadable_fs_module: command not found
+    +./common/btrfs: line 412: _reload_fs_module: command not found
+    +We couldn't mount the old generation
+    +(see /lkp/benchmarks/xfstests/results//btrfs/219.full for details)
+    +umount: /fs/sda1/219.mnt: not mounted.
+    ...
+    (Run 'diff -u /lkp/benchmarks/xfstests/tests/btrfs/219.out /lkp/benchmarks/xfstests/results//btrfs/219.out.bad'  to see the entire diff)
+Ran: btrfs/210 btrfs/211 btrfs/212 btrfs/213 btrfs/214 btrfs/215 btrfs/216 btrfs/217 btrfs/218 btrfs/219
+Not run: btrfs/217
+Failures: btrfs/213 btrfs/214 btrfs/215 btrfs/219
+Failed 4 of 10 tests

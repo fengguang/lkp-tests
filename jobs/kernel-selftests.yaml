@@ -26,7 +26,6 @@ kernel-selftests:
     - group-s
     - mptcp
     - pidfd
-    - memory-hotplug
 
 # for sysctl
 kernel_cmdline: sysctl.debug.test_sysctl.boot_int=1
