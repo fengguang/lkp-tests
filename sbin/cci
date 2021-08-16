@@ -22,6 +22,11 @@ COMMAND_INFO = {
     'profile' => 'prolong the service time of the testbox',
     'path' => "#{LKP_SRC}/sbin/lkp-renew",
     'type' => 'internal'
+  },
+  'return' => {
+    'profile' => 'return current testbox right now',
+    'path' => "#{LKP_SRC}/sbin/return",
+    'type' => 'internal'
   }
 }.freeze
 

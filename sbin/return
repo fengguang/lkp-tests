@@ -1,0 +1,62 @@
+#!/bin/sh
+
+usage()
+{
+	cat <<-EOF
+	Usage: cci return [option]
+		      return current testbox right now
+	option:
+	-h --help     show this message
+	EOF
+	exit
+}
+
+if [[ "$#" != 0 ]]; then
+	usage
+fi
+
+echo 'Are you sure you want to return?'
+echo 'If you enter "Y", this testbox will restart immediately.'
+while [[ "$flag" != 'Y' ]]
+do
+	read -p 'Enter "Y" or "N":' flag
+	[ "$flag" == 'N' ] && exit
+done
+
+kill_lkp()
+{
+	local pid=$(ps -ef | grep /lkp/lkp/src/bin/run-lkp | grep -v "grep" | awk '{print $2}')
+	kill -9 "$pid"
+}
+
+# close job
+# set job_health to return
+close_job()
+{
+	url_profix="http://${LKP_SERVER}:${LKP_CGI_PORT}"
+	url="${url_profix}/~lkp/cgi-bin/lkp-post-run?job_id=${id}&job_health=return"
+	local response=$(curl -s "$url")
+	if [ "$response" != \"success\" ];then
+		echo "close failed: $response"
+		exit
+	fi
+}
+
+# dc has no reboot command
+# so need to kill the lkp process
+# if vm kills the lkp process will hang for a while
+# so vm use reboot
+return_testbox()
+{
+	if [[ "$testbox" =~ ^dc.* ]];then
+		kill_lkp
+	else
+		reboot
+	fi
+}
+
+. /lkp/scheduled/job.sh >/dev/null 2>&1
+
+export_top_env
+close_job
+return_testbox
