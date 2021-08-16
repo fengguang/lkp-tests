@@ -62,6 +62,8 @@ class PackChange
     else
       FileUtils.copy("#{@repo_dir}/#{file}", dest_dir.to_s)
     end
+  rescue StandardError => e
+    puts e
   end
 
   def extract_modified_files(lkp_tag)
