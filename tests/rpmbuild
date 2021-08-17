@@ -126,7 +126,7 @@ download_upstream_repo()
 {
 	local url="git://${GIT_SERVER}/${upstream_dir}/${upstream_repo}"
 
-	git clone -q "$url" || git clone -q "$upstream_repo" || die "clone git repo ${package_name} failed: $url"
+	git clone -q "$url" 2>/dev/null || git clone -q "$upstream_repo" || die "clone git repo ${package_name} failed: $url"
 	cd "$package_name" || exit
 	[ -n "${upstream_commit}" ] && git checkout -q "${upstream_commit}"
 	filelist=($(git ls-files))
