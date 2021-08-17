@@ -10,6 +10,8 @@
 # seconary_namenode_http_port
 # datanodes
 
+. $LKP_SRC/lib/env.sh
+
 : "${java_home:=/usr/local/jdk}"
 : "${hadoop_home:=/usr/hadoop}"
 : "${hadoop_user:=root}"
@@ -47,7 +49,8 @@ set_hostname()
 
 set_env()
 {
-	cat >> /etc/profile <<-EOF
+
+	cat >> $(shell_profile) <<-EOF
 		umask 0022
 		setenforce 0
 		export JAVA_HOME=$java_home

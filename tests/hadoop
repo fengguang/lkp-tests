@@ -1,7 +1,5 @@
 #!/bin/sh
 
-source /etc/profile > /dev/null
-
 check_node_components()
 {
 	for node in ${all_nodes[@]}
