@@ -1,16 +1,16 @@
 pkgname=hadoop
-pkgver=3.3.0
+pkgver=3.3.1
 pkgrel=1
 url='https://hadoop.apache.org'
 arch=('aarch64' 'x86_64')
 license=('Apache License 2.0')
-source=("https://mirrors.bfsu.edu.cn/apache/hadoop/common/hadoop-$pkgver/hadoop-$pkgver-$arch.tar.gz"
+source=("https://mirrors.tuna.tsinghua.edu.cn/apache/hadoop/common/hadoop-$pkgver/hadoop-$pkgver-$arch.tar.gz"
 	'core-site.xml'
 	'hdfs-site.xml'
 	'mapred-site.xml'
 	'yarn-site.xml'
 	)
-md5sums=('4e2e3e0dc8a1d80e1940565bbf6199a4' 'SKIP' 'SKIP' 'SKIP' 'SKIP')
+md5sums=('SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP')
 
 package()
 {
@@ -23,10 +23,10 @@ package()
 	fi
 	source $LKP_SRC/lib/http.sh
 	# the other url can be used:https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u222-b10/OpenJDK8U-jdk_${jdk_arch}_linux_hotspot_8u222b10.tar.gz
-	http_get_file "https://mirrors.tuna.tsinghua.edu.cn/AdoptOpenJDK/8/jdk/${jdk_arch}/linux/OpenJDK8U-jdk_${jdk_arch}_linux_hotspot_8u292b10.tar.gz" "${srcdir}/jdk.tar.gz"
+	http_get_file "https://mirrors.tuna.tsinghua.edu.cn/AdoptOpenJDK/9/jdk/${jdk_arch}/linux/OpenJDK9U-jdk_${jdk_arch}_linux_hotspot_9_181.tar.gz" "${srcdir}/jdk.tar.gz"
 	mkdir -p "${pkgdir}/usr/local/"
 	tar -xzf "${srcdir}/jdk.tar.gz" -C "${pkgdir}/usr/local/"
-	mv "${pkgdir}/usr/local/jdk8u292-b10" "${pkgdir}/usr/local/jdk"
+	mv "${pkgdir}/usr/local/jdk-9+181" "${pkgdir}/usr/local/jdk"
 
 	# package hadoop
 	hadoop_home="${pkgdir}/usr/${pkgname}"

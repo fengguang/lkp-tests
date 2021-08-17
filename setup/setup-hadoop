@@ -65,7 +65,7 @@ set_hadoop_env()
 		export JAVA_HOME=$java_home
 		export HADOOP_HOME=$hadoop_home
 		export JAVA_LIBRAY_PATH=$hadoop_home/lib/native
-		export HADOOP_CLASSPATH=$hadoop_home/share/hadoop/tools/lib/junit-4.12.jar
+		export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:$hadoop_home/share/hadoop/tools/lib/junit-4.12.jar
 		export HDFS_NAMENODE_USER=$hadoop_user
 		export HDFS_SECONDARYNAMENODE_USER=$hadoop_user
 		export HDFS_DATANODE_USER=$hadoop_user
