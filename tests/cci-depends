@@ -7,7 +7,10 @@
 # os_arch
 # os_version
 # os_mount
+# custom_repo_name
+# custom_repo_addr
 
+. $LKP_SRC/lib/rpm.sh
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/misc-base.sh
 
@@ -37,6 +40,8 @@ umask 002
 	mkdir -p "$pack_to"
 	chown .lkp "$pack_to"
 }
+
+add_repo
 
 share_debian_package
 
