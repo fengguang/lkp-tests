@@ -29,6 +29,7 @@ die()
 from_git()
 {
 	package_name=${upstream_repo##*/}
+	package_name=${package_name%%.git*}
 	rpm_dest="${dest_dir}/${repo_name}/standard_${os_arch}/${os_arch}/Packages"
 	src_rpm_dest="${dest_dir}/${repo_name}/standard_${os_arch}/source/Packages"
 
