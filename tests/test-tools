@@ -6,6 +6,14 @@
 
 cd $BENCHMARK_ROOT/test-tools/mugen || exit
 
+dns_resolver()
+{
+	cat >> /etc/resolv.conf <<EOF
+nameserver 114.114.114.114
+nameserver 223.5.5.5
+EOF
+}
+
 set_env()
 {
 	bash mugen.sh -c "$direct_server_ips" "$secrets_username" "$secrets_userpassword"
@@ -47,6 +55,7 @@ upload_results_logs()
 
 run()
 {
+	dns_resolver
 	set_env
 	download_cases
 	if [ -n "$testsuite" ];then
