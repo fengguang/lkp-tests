@@ -21,6 +21,9 @@ will-it-scale:
   - readseek3
   - sched_yield
   - signal1
+  - tlb_flush1
+  - tlb_flush2
+  - tlb_flush3
   - unix1
   - unlink1
   - unlink2

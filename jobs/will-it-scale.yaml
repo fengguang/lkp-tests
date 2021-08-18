@@ -5,16 +5,18 @@ category: benchmark
 will-it-scale:
   test:
   - brk1
+  - brk2
   - dup1
   - eventfd1
-  # fallocate1_processes: tests/fallocate1.c:20: testcase: Assertion `fd >= 0' failed.
-  #  - fallocate1
+  - fallocate1
+  - fallocate2
   - futex1
   - futex2
   - futex3
   - futex4
   - getppid1
   - lock1
+  - lock2
   - lseek1
   - lseek2
   - malloc1
@@ -23,7 +25,7 @@ will-it-scale:
   - mmap2
   - open1
   - open2
-  #  - open3
+  - open3
   - page_fault1
   - page_fault2
   - page_fault3
@@ -36,6 +38,9 @@ will-it-scale:
   - pread3
   - pthread_mutex1
   - pthread_mutex2
+  - pthread_mutex3
+  - pthread_mutex4
+  - pthread_mutex5
   - pwrite1
   - pwrite2
   - pwrite3
@@ -48,6 +53,9 @@ will-it-scale:
   - readseek3
   - sched_yield
   - signal1
+  - tlb_flush1
+  - tlb_flush2
+  - tlb_flush3
   - unix1
   - unlink1
   - unlink2
