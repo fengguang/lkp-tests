@@ -33,6 +33,15 @@ fio-setup-basic:
   - filecreate
   - filestat
   - filedelete
+  # test purpose,ignore
+  #  - "null"
+  # requires two servers, ignore
+  #  - net
+  #  - netsplice
+  # special MTD device needed, ignore
+  #  - mtd
+  # through the PMDK libpmem library,like libpmem, ignore
+  #  - dev-dax
 
 fio:
 
