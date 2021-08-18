@@ -2,3 +2,6 @@ suite: rpmbuild
 category: functional
 
 rpmbuild:
+arch:
+ - aarch64
+ - x86_64
