@@ -25,7 +25,7 @@ fio-setup-basic:
   - splice
   - falloc
   - ftruncate
-  - sg
+  # - sg
   - vsync
   - pvsync
   - pvsync2
@@ -58,7 +58,7 @@ fio-setup-basic:
   - splice
   - falloc
   - ftruncate
-  - sg
+  # - sg
   - vsync
   - pvsync
   - pvsync2
