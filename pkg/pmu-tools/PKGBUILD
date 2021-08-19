@@ -14,6 +14,14 @@ build_perf() {
 }
 
 build_pmu-tools() {
+    cd "${srcdir}/pmu-tools"
+    files=$(grep -rl "^#\!\/usr\/bin.*python" ./)
+    for file in $files
+    do
+        sed -i 's/\/usr\/bin\/env\ python$/\/usr\/bin\/env\ python3/g' "$file"
+        sed -i 's/\/usr\/bin\/python$/\/usr\/bin\/python3/g' "$file"
+    done
+
     cd "${srcdir}/pmu-tools/jevents"
     make
 }
