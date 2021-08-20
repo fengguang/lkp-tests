@@ -1,6 +1,5 @@
 #!/bin/bash
 # - upstream_repo
-# - repo_name
 # - custom_repo_name
 # - arch
 # custom_repo_addr
@@ -31,8 +30,8 @@ from_git()
 {
 	package_name=${upstream_repo##*/}
 	package_name=${package_name%%.git*}
-	rpm_dest="${dest_dir}/${repo_name}/standard_${os_arch}/${os_arch}/Packages"
-	src_rpm_dest="${dest_dir}/${repo_name}/standard_${os_arch}/source/Packages"
+	rpm_dest="${dest_dir}/standard_${os_arch}/${os_arch}/Packages"
+	src_rpm_dest="${dest_dir}/standard_${os_arch}/source/Packages"
 
 	init_workspace
 	download_upstream_repo
@@ -108,11 +107,10 @@ rpmbuild_email()
 
 from_srpm()
 {
-	[ -n "$repo_name" ] || die "repo_name is empty"
 	[ -n "$repo_addr" ] || die "repo_addr is empty"
 
-	rpm_dest="${dest_dir}/${repo_name}/standard_${os_arch}/${os_arch}/Packages"
-	src_rpm_dest="${dest_dir}/${repo_name}/standard_${os_arch}/source/Packages"
+	rpm_dest="${dest_dir}/standard_${os_arch}/${os_arch}/Packages"
+	src_rpm_dest="${dest_dir}/standard_${os_arch}/source/Packages"
 
 	install_srpm
 }
