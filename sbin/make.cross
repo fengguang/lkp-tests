@@ -96,11 +96,7 @@ install_crosstool_clang()
 {
 	local URL='https://download.01.org/0day-ci/cross-package'
 	local list=/tmp/0day-ci-crosstool-files
-	if [[ $ARCH = "hexagon" ]]; then
-		local file='clang+llvm-12.0.0-cross-hexagon-unknown-linux-musl.tar.xz'
-	else
-		local file='clang.tar.xz'
-	fi
+	local file='clang.tar.xz'
 	lftp -c "open $URL && find -d 3 > $list" || return
 
 	file=$(grep $file $list | tail -1)
@@ -303,11 +299,7 @@ setup_crosstool_gcc()
 
 setup_crosstool_clang()
 {
-	if [[ $ARCH = "hexagon" ]]; then
-		local cross_clang=("$COMPILER_INSTALL_PATH"/clang+llvm-12.0.0-cross-hexagon-unknown-linux-musl/x86_64-linux-gnu/bin/clang)
-	else
-		local cross_clang=("$COMPILER_INSTALL_PATH"/clang/bin/clang)
-	fi
+	local cross_clang=("$COMPILER_INSTALL_PATH"/clang/bin/clang)
 	[[ -x $cross_clang ]] || install_cross_compiler || {
 		echo "Install clang compiler failed"
 		return 1
@@ -328,7 +320,7 @@ setup_crosstool_clang()
 	elif [[ $ARCH = "s390" ]]; then
 		opt_cross="$opt_cross CROSS_COMPILE=s390x-linux-gnu-"
 	elif [[ $ARCH = "hexagon" ]]; then
-		opt_cross="$opt_cross LLVM_IAS=1 CROSS_COMPILE=hexagon-unknown-linux-musl-"
+		opt_cross="LLVM=1 LLVM_IAS=1 CROSS_COMPILE=hexagon-linux-"
 	elif [[ $ARCH = "powerpc" ]]; then
 		local cross_compile='powerpc-linux-gnu-'
 		grep -q 'CONFIG_PPC64=y' $BUILD_DIR/.config && {
