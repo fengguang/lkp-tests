@@ -1,0 +1,11 @@
+suite: oech
+category: functional
+os_mount: local
+cluster: cs-s1-a125-c1
+
+oech-init:
+
+if role server:
+        oech-server:
+if role client:
+        oech:
