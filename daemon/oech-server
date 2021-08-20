@@ -1,0 +1,8 @@
+#!/bin/sh
+
+systemctl start oech-server.service
+systemctl start nginx.service
+
+command -v firewall-cmd > /dev/null && systemctl stop firewalld
+iptables -F
+setenforce 0
