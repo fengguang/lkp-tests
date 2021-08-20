@@ -97,6 +97,17 @@ fixup_perf()
 	ln -sf /$real_perf usr/bin/perf
 }
 
+fixup_kernel-selftests()
+{
+	# 'apt install traceroute' will create .db binary in PATH
+	# manually create softlink to them
+	ln -sf /usr/bin/traceroute.db ./usr/bin/traceroute
+	ln -sf /usr/bin/traceroute6.db ./usr/bin/traceroute6
+	ln -sf /usr/bin/lft.db ./usr/bin/lft
+	ln -sf /usr/bin/traceproto.db ./usr/bin/traceproto
+	ln -sf /usr/sbin/tcptraceroute.db ./usr/sbin/tcptraceroute
+}
+
 pack()
 {
 	local date=$(date +"%Y%m%d")
