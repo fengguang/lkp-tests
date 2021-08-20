@@ -1,0 +1,17 @@
+#!/bin/sh
+
+conf_repo()
+{
+	cat >> /etc/yum.repos.d/oech.repo <<-EOF
+[oech]
+name=oech repo
+baseurl=http://$INITRD_HTTP_HOST:$INITRD_HTTP_PORT/initrd/deps/self-rpm-repo/oech
+enabled=1
+gpgcheck=0
+EOF
+}
+
+conf_repo
+yum clean all && yum makecache
+yum install -y nginx oec-hardware-server oec-hardware
+pip3 install Flask Flask-bootstrap uwsgi
