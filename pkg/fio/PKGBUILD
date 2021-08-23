@@ -17,5 +17,6 @@ build() {
 
 package() {
     cd "$srcdir/fio"
-    make DESTDIR="$pkgdir" install
+    make DESTDIR="$pkgdir" install || return
+    ./fio --enghelp >$pkgdir/fio-built-ioengines.list
 }
