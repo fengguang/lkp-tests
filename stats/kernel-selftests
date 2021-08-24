@@ -725,6 +725,28 @@ class PrctlStater < Stater
   end
 end
 
+class ProgsStater < Stater
+  def stat(line, stats)
+    case line
+       # #1/11 variable subtraction:OK
+       # # #1/12 pointer variable subtraction:OK
+       # # #1 align:OK
+       # # #2 atomic_bounds:OK
+       # # #3/1 add:OK
+       # # #3/2 sub:OK
+       # # #3/3 and:OK
+    when /^# #(\d+|\d+\/\d+) (\S*):(\S*)/
+      r = $3 == 'OK' ? 'ok' : 'not ok'
+      pattern1 = $1.to_s
+      pattern2 = $2
+      subname = "bpf.test_progs.#{pattern1.gsub('/', '_')}-#{pattern2.gsub(' ', '_')}"
+      if not stats.include? subname
+        stats.add subname, r
+      end
+    end
+  end
+end
+
 while (line = STDIN.gets)
   line = line.resolve_invalid_bytes
 
@@ -816,6 +838,9 @@ while (line = STDIN.gets)
   when /^# selftests: (prctl): (.*)/
     # selftests: prctl: disable-tsc-ctxt-sw-stress-test
     stater = PrctlStater.new($1, $2)
+  when /^# selftests: bpf: test_progs$/
+    # selftests: prctl: disable-tsc-ctxt-sw-stress-test
+    stater = ProgsStater.new($1, $2)
   when /^LKP SKIP (.*)/
     # LKP SKIP net.l2tp.sh
     stats.add "#{$1}", 'skip'
