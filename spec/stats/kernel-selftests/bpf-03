@@ -28,21 +28,6 @@ ok 4 selftests: bpf: test_lru_map
 # selftests: bpf: test_lpm_map
 # test_lpm: OK
 ok 5 selftests: bpf: test_lpm_map
-test_progs
-# selftests: bpf: test_progs
-# #1 attach_probe:OK
-# #11/63 size___diff_sz:OK
-# #11 core_reloc:OK
-# test_link_pinning:PASS:skel_open 0 nsec
-# test_link_pinning_subtest:PASS:link_attach 0 nsec
-# test_link_pinning_subtest:PASS:res_check1 0 nsec
-# libbpf: specified path /sys/fs/bpf/pinned_link_test is not on BPF FS
-# test_link_pinning_subtest:FAIL:link_pin err: -22
-# #26/1 pin_raw_tp:FAIL
-# #26 link_pinning:FAIL
-# #81 xdp_perf:OK
-# Summary: 77/472 PASSED, 4 SKIPPED, 5 FAILED
-not ok 6 selftests: bpf: test_progs # exit=1
 # selftests: bpf: test_align
 # Test   0: mov ... PASS
 # Test   7: packet variable offset ... Failed to find match 29: R5_w=pkt(id=4,off=18,r=0,umax_value=2040,var_off=(0x0; 0x7fc))
