@@ -391,6 +391,8 @@ fixup_kmod()
 
 prepare_for_selftest()
 {
+	[[ "$group" = "bpf" ]] && prepare_for_bpf
+
 	if [ "$group" = "group-00" ]; then
 		# bpf is slow
 		selftest_mfs=$(ls -d [a-b]*/Makefile | grep -v ^bpf)
