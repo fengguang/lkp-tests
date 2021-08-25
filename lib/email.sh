@@ -124,6 +124,11 @@ Subject: [NOTIFY Compass-CI] rpmbuild report
 
 Dear $author_name:
 
+FYI, you triggered the rpm build due to commit:
+
+commit: $upstream_commit
+$upstream_url/commit/$upstream_commit $upstream_branch
+
 	$rpmbuild_result
 
 Regards
@@ -146,7 +151,10 @@ http://api.compass-ci.openeuler.org:${SRV_HTTP_RESULT_PORT:-20007}$result_root"
 
 rpmbuild_failed_content()
 {
-	rpmbuild_result="Sorry to inform you that RPM Package built failed, you can click the following link to view details.
+	rpmbuild_result="We noticed that rpm build failed due to the commit, you can click the following link to view details.
+http://api.compass-ci.openeuler.org:${SRV_HTTP_RESULT_PORT:-20007}$result_root/output
+
+You can obtain more information by clicking on the link below
 http://api.compass-ci.openeuler.org:${SRV_HTTP_RESULT_PORT:-20007}$result_root"
 
 	rpmbuild_report

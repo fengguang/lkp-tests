@@ -67,6 +67,7 @@ get_merge_info()
 	for key in "${!email[@]}"
 	do
 		[[ "${email[$key]}" =~ ^noreply ]] && continue
+		[[ "${email[$key]}" =~ ^80474298@qq.com ]] && continue
 		email_name_hash["${email[$key]}"]="${name[$key]}"
 	done
 
@@ -249,5 +250,5 @@ upload_spec_file
 build_rpm
 upload_rpm_pkg
 update_repo_mq
-[ -n "$upstream_commit" ] && rpmbuild_email "rpmbuild_success"
-exit 0
+#[ -n "$upstream_commit" ] && rpmbuild_email "rpmbuild_success"
+#exit 0
