@@ -145,6 +145,9 @@ need_kconfig:
 - TEST_FIRMWARE
 % elsif ___.group == "lkdtm"
 - LKDTM: y
+- INIT_ON_ALLOC_DEFAULT_ON: y, v5.14-rc1
+- RANDOMIZE_KSTACK_OFFSET_DEFAULT: y, v5.14-rc1
+- SLAB_FREELIST_HARDENED: y, v5.14-rc1
 % elsif ___.group == "pidfd"
 - UTS_NS: y
 - IPC_NS: y
