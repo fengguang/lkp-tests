@@ -8,7 +8,7 @@ Subject: [NOTIFY Compass-CI] Test job failed: $id
 Dear $my_name:
 
 	Sorry to inform you that your test job is failed, you can click the following link to view details.
-	http://api.compass-ci.openeuler.org:${SRV_HTTP_RESULT_PORT:-20007}$result_root
+	https://api.compass-ci.openeuler.org:${SRV_HTTP_RESULT_PORT:-20007}$result_root
 
 Regards
 Compass-CI
@@ -141,10 +141,10 @@ rpmbuild_success_content()
 	rpmbuild_result="Your RPM Package is successfully built.
 
 You can click the follow link to obtain your RPM Package:
-http://api.compass-ci.openeuler.org:20018/rpm/testing/${os}-${os_version}/${compat_os}/${os_arch}/Packages
+https://api.compass-ci.openeuler.org:20018/rpm/testing/${os}-${os_version}/${compat_os}/${os_arch}/Packages
 
 And you can click the following link to view RPM Package build details:
-http://api.compass-ci.openeuler.org:${SRV_HTTP_RESULT_PORT:-20007}$result_root"
+https://api.compass-ci.openeuler.org:${SRV_HTTP_RESULT_PORT:-20007}$result_root"
 
 	rpmbuild_report
 }
@@ -152,10 +152,10 @@ http://api.compass-ci.openeuler.org:${SRV_HTTP_RESULT_PORT:-20007}$result_root"
 rpmbuild_failed_content()
 {
 	rpmbuild_result="We noticed that rpm build failed due to the commit, you can click the following link to view details.
-http://api.compass-ci.openeuler.org:${SRV_HTTP_RESULT_PORT:-20007}$result_root/output
+https://api.compass-ci.openeuler.org:${SRV_HTTP_RESULT_PORT:-20007}$result_root/output
 
 You can obtain more information by clicking on the link below
-http://api.compass-ci.openeuler.org:${SRV_HTTP_RESULT_PORT:-20007}$result_root"
+https://api.compass-ci.openeuler.org:${SRV_HTTP_RESULT_PORT:-20007}$result_root"
 
 	rpmbuild_report
 }
