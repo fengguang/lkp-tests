@@ -89,8 +89,6 @@ check_shared_pack()
 BM_ROOT=/lkp/benchmarks/$BM_NAME
 
 source $LKP_SRC/lib/install.sh
-[ "$quiet_run" = "false" ] || source $LKP_SRC/pack/quiet
-source $LKP_SRC/pack/default
 source $LKP_SRC/pack/$BM_NAME || exit
 
 if [[ "$BM_NAME" != "lkp-src" ]]; then
@@ -111,14 +109,8 @@ cd "$source_dir" || exit
 [[ -n "$sync_dest" ]] && commit=$(git rev-parse --short HEAD 2>/dev/null)
 build || exit
 install || exit
-strip_object_files
 
-if [[ "$LKP_LOCAL_RUN" != "1" ]]; then
-	# for 0Day
-	pack_pkg || exit
-else
-	pack_pkg $distro || exit
-fi
+pack
 
 [[ -n $sync_dest ]] && {
 	date=$(date +"%Y%m%d")
