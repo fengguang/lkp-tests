@@ -19,6 +19,13 @@ build_selftests()
 	cd ../../..
 }
 
+# don't auto-reboot when panic
+prepare_for_lkdtm()
+{
+	echo 0 >/proc/sys/kernel/panic_on_oops
+	echo 1800 >/proc/sys/kernel/panic
+}
+
 prepare_test_env()
 {
 	has_cmd make || return
@@ -392,6 +399,7 @@ fixup_kmod()
 prepare_for_selftest()
 {
 	[[ "$group" = "bpf" ]] && prepare_for_bpf
+	[[ "$group" = "lkdtm" ]] && prepare_for_lkdtm
 
 	if [ "$group" = "group-00" ]; then
 		# bpf is slow
