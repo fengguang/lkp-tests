@@ -74,18 +74,25 @@ remove_from_mrtts()
 
 revert_unite_rt()
 {
+	local bad_paths=()
+
 	local path
 	for path; do
 		if is_rt "$path" && check_rt "$path"; then
 			if is_local_run "$path"; then
 				$LKP_SRC/sbin/unite-stats -d "$path"
 			else
-				lkp reprocess -d "$path"
+				echo lkp reprocess -d "$path"
+				lkp reprocess -d "$path" | grep "results_to_process" || {
+					echo "failed to reprocess $path"
+					bad_paths+=($path)
+				}
 			fi
 		fi
 	done
 
 	for path; do
+		[[ " ${bad_paths[*]} " =~ " $path " ]] && continue
 		while is_rt "$path" && check_rt "$path" && ! is_local_run "$path"; do
 			sleep 10
 		done
