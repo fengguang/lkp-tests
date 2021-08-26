@@ -64,7 +64,7 @@ while (line = STDIN.gets)
 
   # keep message | log line which key end with .message|.log
   if k.end_with?('.message', '.log')
-    result[k] = v
+    result[k] = String.class_eval(%Q(#{v}))
     next
   end
 
