@@ -69,7 +69,6 @@ fio-setup-basic:
   - filestat
   - filedelete
 ---
-runtime: 1h
 fs: ext4
 test_size: 32G
 fio-setup-basic:
