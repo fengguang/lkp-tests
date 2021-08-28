@@ -3,7 +3,7 @@ SCRIPT_DIR=$(dirname $(realpath $0))
 PROJECT_DIR=$(dirname $SCRIPT_DIR)
 
 ruby -v >/dev/null 2>&1
-if [ "$?" == 0 ];then
+if [ "$?" = 0 ]; then
 	exec $PROJECT_DIR/sbin/cci.rb $*
 fi
 
@@ -18,10 +18,10 @@ usage()
 	exit
 }
 
-if [[ "$#" == 0 ]]; then
+if [ "$#" = 0 ]; then
       usage
 fi
 
 command=$1
 shift
-exec $PROJECT_DIR/sbin/$command $*
+exec $PROJECT_DIR/sbin/$command "$@"
