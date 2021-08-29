@@ -655,6 +655,13 @@ class NetfilterStater < Stater
     when /^#   (.+)\[( OK|FAIL|SKIP)/
       #   Add two elements, flush, re-add                               [ OK ]
       stats.add "#{@test_prefix}.#{@test_case}.#{$1}", $2 if @test_script == 'nft_concat_range.sh'
+    when /^# (PASS|FAIL|SKIP): (ns\d)-\S+ (connection on port.*)/
+      # selftests: netfilter: nft_conntrack_helper.sh
+      # PASS: ns1-Ip028vuy connection on port 2121 has ftp helper attached
+      # PASS: ns2-Ip028vuy connection on port 2121 has ftp helper attached
+      # PASS: ns1-Ip028vuy connection on port 2121 has ftp helper attached
+      # PASS: ns2-Ip028vuy connection on port 2121 has ftp helper attached
+      stats.add "#{@test_prefix}.#{$2}_#{$3}", $1 unless stats.key? "#{@test_prefix}.#{$2}_#{$3}"
     when /^# (PASS|FAIL|SKIP): (.*)/
       # PASS: ipsec tunnel mode for ns1/ns2
       stats.add "#{@test_prefix}.#{$2}", $1

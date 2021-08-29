@@ -1,0 +1,14 @@
+2021-08-19 22:47:11 sed -i s/default_timeout=45/default_timeout=300/ /kselftests/kselftest/runner.sh
+2021-08-19 22:47:11 /kselftests/run_kselftest.sh -c netfilter
+TAP version 13
+1..14
+# selftests: netfilter: nft_conntrack_helper.sh
+# PASS: ns1-Ip028vuy connection on port 2121 has ftp helper attached
+# PASS: ns2-Ip028vuy connection on port 2121 has ftp helper attached
+# PASS: ns1-Ip028vuy connection on port 2121 has ftp helper attached
+# PASS: ns2-Ip028vuy connection on port 2121 has ftp helper attached
+# PASS: ns1-Ip028vuy connection on port 21 has ftp helper attached
+# PASS: ns2-Ip028vuy connection on port 21 has ftp helper attached
+# PASS: ns1-Ip028vuy connection on port 21 has ftp helper attached
+# PASS: ns2-Ip028vuy connection on port 21 has ftp helper attached
+ok 9 selftests: netfilter: nft_conntrack_helper.sh
