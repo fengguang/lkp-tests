@@ -574,6 +574,57 @@ pack_selftests()
 	[[ $arch ]] && mv "/lkp/benchmarks/${BM_NAME}.cgz" "/lkp/benchmarks/${BM_NAME}-${arch}.cgz"
 }
 
+fixup_subtest()
+{
+	local subtest=$1
+	if [[ "$subtest" = "breakpoints" ]]; then
+		fixup_breakpoints
+	elif [[ $subtest = "bpf" ]]; then
+		fixup_bpf || die "fixup_bpf failed"
+	elif [[ $subtest = "dma" ]]; then
+		fixup_dma || die "fixup_dma failed"
+	elif [[ $subtest = "efivarfs" ]]; then
+		fixup_efivarfs || return
+	elif [[ $subtest = "exec" ]]; then
+		log_cmd touch ./$subtest/pipe || die "touch pipe failed"
+	elif [[ $subtest = "gpio" ]]; then
+		fixup_gpio || continue
+	elif [[ $subtest = "openat2" ]]; then
+		fixup_openat2
+		return 1
+	elif [[ "$subtest" = "pstore" ]]; then
+		fixup_pstore || return
+	elif [[ "$subtest" = "firmware" ]]; then
+		fixup_firmware || return
+	elif [[ "$subtest" = "net" ]]; then
+		fixup_net || return
+	elif [[ "$subtest" = "sysctl" ]]; then
+		lsmod | grep -q test_sysctl || modprobe test_sysctl
+	elif [[ "$subtest" = "ir" ]]; then
+		## Ignore RCMM infrared remote controls related tests.
+		sed -i 's/{ RC_PROTO_RCMM/\/\/{ RC_PROTO_RCMM/g' ir/ir_loopback.c
+		echo "LKP SKIP ir.ir_loopback_rcmm"
+	elif [[ "$subtest" = "memfd" ]]; then
+		fixup_memfd
+	elif [[ "$subtest" = "vm" ]]; then
+		fixup_vm
+	elif [[ "$subtest" = "x86" ]]; then
+		fixup_x86
+	elif [[ "$subtest" = "resctrl" ]]; then
+		log_cmd resctrl/resctrl_tests 2>&1
+		return 1
+	elif [[ "$subtest" = "livepatch" ]]; then
+		fixup_livepatch
+	elif [[ "$subtest" = "ftrace" ]]; then
+		fixup_ftrace
+	elif [[ "$subtest" = "kmod" ]]; then
+		fixup_kmod
+	elif [[ "$subtest" = "ptp" ]]; then
+		fixup_ptp || return
+	fi
+	return 0
+}
+
 run_tests()
 {
 	# zram: skip zram since 0day-kernel-tests always disable CONFIG_ZRAM which is required by zram
@@ -603,51 +654,7 @@ run_tests()
 
 		check_makefile $subtest || log_cmd make TARGETS=$subtest 2>&1
 
-		if [[ "$subtest" = "breakpoints" ]]; then
-			fixup_breakpoints
-		elif [[ $subtest = "bpf" ]]; then
-			fixup_bpf || die "fixup_bpf failed"
-		elif [[ $subtest = "dma" ]]; then
-			fixup_dma || die "fixup_dma failed"
-		elif [[ $subtest = "efivarfs" ]]; then
-			fixup_efivarfs || continue
-		elif [[ $subtest = "exec" ]]; then
-			log_cmd touch ./$subtest/pipe || die "touch pipe failed"
-		elif [[ $subtest = "gpio" ]]; then
-			fixup_gpio || continue
-		elif [[ $subtest = "openat2" ]]; then
-			fixup_openat2
-			continue
-		elif [[ "$subtest" = "pstore" ]]; then
-			fixup_pstore || continue
-		elif [[ "$subtest" = "firmware" ]]; then
-			fixup_firmware || continue
-		elif [[ "$subtest" = "net" ]]; then
-			fixup_net || continue
-		elif [[ "$subtest" = "sysctl" ]]; then
-			lsmod | grep -q test_sysctl || modprobe test_sysctl
-		elif [[ "$subtest" = "ir" ]]; then
-			## Ignore RCMM infrared remote controls related tests.
-			sed -i 's/{ RC_PROTO_RCMM/\/\/{ RC_PROTO_RCMM/g' ir/ir_loopback.c
-			echo "LKP SKIP ir.ir_loopback_rcmm"
-		elif [[ "$subtest" = "memfd" ]]; then
-			fixup_memfd
-		elif [[ "$subtest" = "vm" ]]; then
-			fixup_vm
-		elif [[ "$subtest" = "x86" ]]; then
-			fixup_x86
-		elif [[ "$subtest" = "resctrl" ]]; then
-			log_cmd resctrl/resctrl_tests 2>&1
-			continue
-		elif [[ "$subtest" = "livepatch" ]]; then
-			fixup_livepatch
-		elif [[ "$subtest" = "ftrace" ]]; then
-			fixup_ftrace
-		elif [[ "$subtest" = "kmod" ]]; then
-			fixup_kmod
-		elif [[ "$subtest" = "ptp" ]]; then
-			fixup_ptp || continue
-		fi
+		fixup_subtest $subtest || continue
 
 		log_cmd make run_tests -C $subtest  2>&1
 
