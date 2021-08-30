@@ -401,13 +401,15 @@ prepare_for_selftest()
 	elif [ "$group" = "group-02" ]; then
 		# m* is slow
 		# pidfd caused soft_timeout in kernel-selftests.splice.short_splice_read.sh.fail.v5.9-v5.10-rc1.2020-11-06.132952
-		selftest_mfs=$(ls -d [m-r]*/Makefile | grep -v -e ^rseq -e ^resctrl -e ^net -e ^netfilter -e ^rcutorture -e ^pidfd)
+		selftest_mfs=$(ls -d [m-r]*/Makefile | grep -v -e ^rseq -e ^resctrl -e ^net -e ^netfilter -e ^rcutorture -e ^pidfd -e ^memory-hotplug)
 	elif [ "$group" = "group-03" ]; then
 		selftest_mfs=$(ls -d [t-z]*/Makefile | grep -v -e ^x86 -e ^tc-testing -e ^vm)
 	elif [ "$group" = "mptcp" ]; then
 		selftest_mfs=$(ls -d net/mptcp/Makefile)
 	elif [ "$group" = "group-s" ]; then
 		selftest_mfs=$(ls -d s*/Makefile | grep -v sgx)
+	elif [ "$group" = "memory-hotplug" ]; then
+		selftest_mfs=$(ls -d memory-hotplug/Makefile)
 	else
 		# bpf cpufreq firmware kvm lib livepatch lkdtm net netfilter pidfd rcutorture resctrl rseq tc-testing vm x86
 		selftest_mfs=$(ls -d $group/Makefile)
