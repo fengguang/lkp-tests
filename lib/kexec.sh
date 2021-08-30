@@ -103,9 +103,9 @@ use_local_modules_initrds()
 
 download_initrd()
 {
-	local _initrd
-	local initrds
-	local local_modules_initrd
+	local _initrd=
+	local initrds=
+	local local_modules_initrd=
 
 	echo "downloading initrds ..."
 	set_job_state "wget_initrd"
