@@ -218,7 +218,6 @@ def load_json(file, cache = false)
     load_yaml file.sub(/\.json(\.gz)?$/, '.yaml')
   else
     log_warn "JSON/YAML file not exist: '#{file}'"
-    log_warn caller
     nil
   end
 end
