@@ -19,6 +19,13 @@ build_selftests()
 	cd ../../..
 }
 
+# don't auto-reboot when panic
+prepare_for_lkdtm()
+{
+	echo 0 >/proc/sys/kernel/panic_on_oops
+	echo 1800 >/proc/sys/kernel/panic
+}
+
 prepare_test_env()
 {
 	has_cmd make || return
@@ -84,6 +91,7 @@ prepare_for_test()
 	mkdir -p /hugepages
 
 	[[ "$group" = "bpf" || "$group" = "net" ]] && prepare_for_bpf
+	[[ "$group" = "lkdtm" ]] && prepare_for_lkdtm
 
 	# temporarily workaround compile error on gcc-6
 	command -v gcc-5 >/dev/null && log_cmd ln -sf /usr/bin/gcc-5 /usr/bin/gcc
