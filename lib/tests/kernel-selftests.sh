@@ -80,7 +80,7 @@ prepare_for_bpf()
 		cp $linux_headers_dir/scripts/basic/fixdep $linux_selftests_dir/scripts/basic/
 		cp $linux_headers_dir/scripts/mod/modpost $linux_selftests_dir/scripts/mod
 		cp $linux_headers_dir/tools/objtool/objtool $linux_selftests_dir/tools/objtool/
-		cp $linux_headers_dir/scripts/module.lds $linux_selftests_dir/scripts/
+		cp $linux_headers_dir/scripts/module.lds $linux_selftests_dir/scripts/ 2>&1
 	fi
 }
 
