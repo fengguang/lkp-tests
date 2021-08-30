@@ -636,8 +636,17 @@ fixup_subtest()
 	return 0
 }
 
-run_tests()
+check_subtest()
 {
+	subtest_config="$subtest/config"
+	kernel_config="/lkp/kernel-selftests-kernel-config"
+
+	[[ -s "$subtest_config" ]] && get_kconfig "$kernel_config" && {
+		check_kconfig "$subtest_config" "$kernel_config"
+	}
+
+	check_ignore_case $subtest && echo "LKP SKIP $subtest" && return 1
+
 	# zram: skip zram since 0day-kernel-tests always disable CONFIG_ZRAM which is required by zram
 	# for local user, you can enable CONFIG_ZRAM by yourself
 	# media_tests: requires special peripheral and it can not be run with "make run_tests"
@@ -646,31 +655,13 @@ run_tests()
 	# 2. /dev/watchdog: need support open/ioctl etc file ops, but not all watchdog support it
 	# 3. this test will not complete until issue Ctrl+C to abort it
 	skip_filter="arm64 sparc64 powerpc zram media_tests watchdog"
+	subtest_in_skip_filter "$skip_filter" && return 1
+	return 0
+}
 
-	local selftest_mfs=$@
-
-	# kselftest introduced runner.sh since kernel commit 42d46e57ec97 "selftests: Extract single-test shell logic from lib.mk"
-	[[ -e kselftest/runner.sh ]] && log_cmd sed -i 's/default_timeout=45/default_timeout=300/' kselftest/runner.sh
-	for mf in $selftest_mfs; do
-		subtest=${mf%/Makefile}
-		subtest_config="$subtest/config"
-		kernel_config="/lkp/kernel-selftests-kernel-config"
-
-		[[ -s "$subtest_config" ]] && get_kconfig "$kernel_config" && {
-			check_kconfig "$subtest_config" "$kernel_config"
-		}
-
-		check_ignore_case $subtest && echo "LKP SKIP $subtest" && continue
-		subtest_in_skip_filter "$skip_filter" && continue
-
-		check_makefile $subtest || log_cmd make TARGETS=$subtest 2>&1
-
-		fixup_subtest $subtest || continue
-
-		log_cmd make run_tests -C $subtest  2>&1
-
-		if [[ "$subtest" = "firmware" ]]; then
-			cleanup_for_firmware
-		fi
-	done
+cleanup_subtest()
+{
+	if [[ "$subtest" = "firmware" ]]; then
+		cleanup_for_firmware
+	fi
 }
