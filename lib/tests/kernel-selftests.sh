@@ -215,9 +215,14 @@ fixup_dma()
 {
 	# need to bind a device to dma_map_benchmark driver
 	# for PCI devices
-	echo dma_map_benchmark > /sys/bus/pci/devices/0000:00:01.0/driver_override || return
-	echo 0000:00:01.0 > /sys/bus/pci/drivers/pcieport/unbind || return
-	echo 0000:00:01.0 > /sys/bus/pci/drivers/dma_map_benchmark/bind || return
+	local name=$(ls /sys/bus/pci/devices/ | head -1)
+	[[ $name ]] || return
+	echo dma_map_benchmark > /sys/bus/pci/devices/$name/driver_override || return
+	local old_bind_dir=$(ls -d /sys/bus/pci/drivers/*/$name)
+	[[ $old_bind_dir ]] && {
+		echo $name > $(dirname $old_bind_dir)/unbind || return
+	}
+	echo $name > /sys/bus/pci/drivers/dma_map_benchmark/bind || return
 }
 
 fixup_net()
