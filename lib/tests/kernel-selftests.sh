@@ -636,7 +636,7 @@ run_tests()
 	# 1. requires /dev/watchdog device, but not all tbox have this device
 	# 2. /dev/watchdog: need support open/ioctl etc file ops, but not all watchdog support it
 	# 3. this test will not complete until issue Ctrl+C to abort it
-	skip_filter="powerpc zram media_tests watchdog"
+	skip_filter="arm64 sparc64 powerpc zram media_tests watchdog"
 
 	local selftest_mfs=$@
 
