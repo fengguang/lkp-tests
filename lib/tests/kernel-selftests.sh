@@ -19,13 +19,6 @@ build_selftests()
 	cd ../../..
 }
 
-# don't auto-reboot when panic
-prepare_for_lkdtm()
-{
-	echo 0 >/proc/sys/kernel/panic_on_oops
-	echo 1800 >/proc/sys/kernel/panic
-}
-
 prepare_test_env()
 {
 	has_cmd make || return
@@ -80,7 +73,7 @@ prepare_for_bpf()
 		cp $linux_headers_dir/scripts/basic/fixdep $linux_selftests_dir/scripts/basic/
 		cp $linux_headers_dir/scripts/mod/modpost $linux_selftests_dir/scripts/mod
 		cp $linux_headers_dir/tools/objtool/objtool $linux_selftests_dir/tools/objtool/
-		cp $linux_headers_dir/scripts/module.lds $linux_selftests_dir/scripts/ 2>&1
+		cp $linux_headers_dir/scripts/module.lds $linux_selftests_dir/scripts/
 	fi
 }
 
@@ -214,14 +207,9 @@ fixup_dma()
 {
 	# need to bind a device to dma_map_benchmark driver
 	# for PCI devices
-	local name=$(ls /sys/bus/pci/devices/ | head -1)
-	[[ $name ]] || return
-	echo dma_map_benchmark > /sys/bus/pci/devices/$name/driver_override || return
-	local old_bind_dir=$(ls -d /sys/bus/pci/drivers/*/$name)
-	[[ $old_bind_dir ]] && {
-		echo $name > $(dirname $old_bind_dir)/unbind || return
-	}
-	echo $name > /sys/bus/pci/drivers/dma_map_benchmark/bind || return
+	echo dma_map_benchmark > /sys/bus/pci/devices/0000:00:01.0/driver_override || return
+	echo 0000:00:01.0 > /sys/bus/pci/drivers/pcieport/unbind || return
+	echo 0000:00:01.0 > /sys/bus/pci/drivers/dma_map_benchmark/bind || return
 }
 
 fixup_net()
@@ -232,18 +220,6 @@ fixup_net()
 
 	sed -i 's/l2tp.sh//' net/Makefile
 	echo "LKP SKIP net.l2tp.sh"
-
-	# for tls, it will directly run
-	# /kselftests/run_kselftests.sh -t net:tls
-	if [[ $test != "tls" ]]; then
-		sed -i 's/tls//' net/Makefile
-		echo "LKP SKIP net.tls"
-	fi
-
-	if [[ $test != "fcnal-test.sh" ]]; then
-		sed -i 's/fcnal-test.sh//' net/Makefile
-		echo "LKP SKIP net.fcnal-test.sh"
-	fi
 
 	# at v4.18-rc1, it introduces fib_tests.sh, which doesn't have execute permission
 	# here is to fix the permission
@@ -398,9 +374,6 @@ fixup_kmod()
 
 prepare_for_selftest()
 {
-	[[ "$group" = "bpf" ]] && prepare_for_bpf
-	[[ "$group" = "lkdtm" ]] && prepare_for_lkdtm
-
 	if [ "$group" = "group-00" ]; then
 		# bpf is slow
 		selftest_mfs=$(ls -d [a-b]*/Makefile | grep -v ^bpf)
@@ -413,15 +386,13 @@ prepare_for_selftest()
 	elif [ "$group" = "group-02" ]; then
 		# m* is slow
 		# pidfd caused soft_timeout in kernel-selftests.splice.short_splice_read.sh.fail.v5.9-v5.10-rc1.2020-11-06.132952
-		selftest_mfs=$(ls -d [m-r]*/Makefile | grep -v -e ^rseq -e ^resctrl -e ^net -e ^netfilter -e ^rcutorture -e ^pidfd -e ^memory-hotplug)
+		selftest_mfs=$(ls -d [m-r]*/Makefile | grep -v -e ^rseq -e ^resctrl -e ^net -e ^netfilter -e ^rcutorture -e ^pidfd)
 	elif [ "$group" = "group-03" ]; then
 		selftest_mfs=$(ls -d [t-z]*/Makefile | grep -v -e ^x86 -e ^tc-testing -e ^vm)
 	elif [ "$group" = "mptcp" ]; then
 		selftest_mfs=$(ls -d net/mptcp/Makefile)
 	elif [ "$group" = "group-s" ]; then
 		selftest_mfs=$(ls -d s*/Makefile | grep -v sgx)
-	elif [ "$group" = "memory-hotplug" ]; then
-		selftest_mfs=$(ls -d memory-hotplug/Makefile)
 	else
 		# bpf cpufreq firmware kvm lib livepatch lkdtm net netfilter pidfd rcutorture resctrl rseq tc-testing vm x86
 		selftest_mfs=$(ls -d $group/Makefile)
@@ -433,8 +404,6 @@ fixup_vm()
 	# has too many errors now
 	sed -i 's/hugetlbfstest//' vm/Makefile
 
-	local run_vmtests="run_vmtests.sh"
-	[[ -f vm/run_vmtests ]] && run_vmtests="run_vmtests"
 	# we need to adjust two value in vm/run_vmtests accroding to the nr_cpu
 	# 1) needmem=262144, in Byte
 	# 2) ./userfaultfd hugetlb *128* 32, we call it memory here, in MB
@@ -449,14 +418,14 @@ fixup_vm()
 	[ $nr_cpu -gt 64 ] && {
 		local memory=$((nr_cpu/64+1))
 		memory=$((memory*128))
-		sed -i "s#./userfaultfd hugetlb 128 32#./userfaultfd hugetlb $memory 32#" vm/$run_vmtests
+		sed -i "s#./userfaultfd hugetlb 128 32#./userfaultfd hugetlb $memory 32#" vm/run_vmtests
 		memory=$((memory*1024*2))
-		sed -i "s#needmem=262144#needmem=$memory#" vm/$run_vmtests
+		sed -i "s#needmem=262144#needmem=$memory#" vm/run_vmtests
 	}
 
-	sed -i 's/.\/compaction_test/echo -n LKP SKIP #.\/compaction_test/' vm/$run_vmtests
+	sed -i 's/.\/compaction_test/echo -n LKP SKIP #.\/compaction_test/' vm/run_vmtests
 	# ./userfaultfd anon 128 32
-	sed -i 's/.\/userfaultfd anon .*$/echo -n LKP SKIP #.\/userfaultfd/' vm/$run_vmtests
+	sed -i 's/.\/userfaultfd anon .*$/echo -n LKP SKIP #.\/userfaultfd/' vm/run_vmtests
 }
 
 platform_is_skylake_or_snb()
@@ -483,13 +452,9 @@ fixup_openat2()
 	mkfs -t ext4 /tmp/raw.img || return
 	[[ -d "/mnt/kselftest" ]] || mkdir -p "/mnt/kselftest" || return
 	mount -t ext4 /tmp/raw.img /mnt/kselftest || return
-	if $run_cached_kselftests -l | grep "^$subtest:"; then
-		cp -r $(dirname $run_cached_kselftests)/openat2 /mnt/kselftest || return
-	else
-		# Build openat2 firstly, just run binary on /mnt/kselftest
-		log_cmd make -C openat2 >/dev/null || return
-		cp -r openat2 /mnt/kselftest || return
-	fi
+	# Build openat2 firstly, just run binary on /mnt/kselftest
+	make -C openat2 >/dev/null || return
+	cp -r openat2 /mnt/kselftest || return
 
 	# Openat2 create testing files on current dir, so we need change working dir.
 	cd /mnt/kselftest/openat2
@@ -546,18 +511,6 @@ fixup_livepatch()
 	[[ -s "/tmp/pid-tail-global" ]] && cat /tmp/pid-tail-global | xargs kill -9 && echo "" >/tmp/pid-tail-global
 }
 
-fixup_sgx()
-{
-	:
-}
-
-fixup_mount_setattr()
-{
-	# fix no real run for mount_setattr
-	grep -q TEST_PROGS mount_setattr/Makefile ||
-	grep "TEST_GEN_FILES +=" mount_setattr/Makefile | sed 's/TEST_GEN_FILES/TEST_PROGS/' >> mount_setattr/Makefile
-}
-
 build_tools()
 {
 
@@ -604,72 +557,8 @@ pack_selftests()
 	[[ $arch ]] && mv "/lkp/benchmarks/${BM_NAME}.cgz" "/lkp/benchmarks/${BM_NAME}-${arch}.cgz"
 }
 
-fixup_subtest()
+run_tests()
 {
-	local subtest=$1
-	if [[ "$subtest" = "breakpoints" ]]; then
-		fixup_breakpoints
-	elif [[ $subtest = "bpf" ]]; then
-		fixup_bpf || die "fixup_bpf failed"
-	elif [[ $subtest = "dma" ]]; then
-		fixup_dma || die "fixup_dma failed"
-	elif [[ $subtest = "efivarfs" ]]; then
-		fixup_efivarfs || return
-	elif [[ $subtest = "exec" ]]; then
-		log_cmd touch ./$subtest/pipe || die "touch pipe failed"
-	elif [[ $subtest = "gpio" ]]; then
-		fixup_gpio || continue
-	elif [[ $subtest = "openat2" ]]; then
-		fixup_openat2
-		return 1
-	elif [[ "$subtest" = "pstore" ]]; then
-		fixup_pstore || return
-	elif [[ "$subtest" = "firmware" ]]; then
-		fixup_firmware || return
-	elif [[ "$subtest" = "net" ]]; then
-		fixup_net || return
-	elif [[ "$subtest" = "sysctl" ]]; then
-		lsmod | grep -q test_sysctl || modprobe test_sysctl
-	elif [[ "$subtest" = "ir" ]]; then
-		## Ignore RCMM infrared remote controls related tests.
-		sed -i 's/{ RC_PROTO_RCMM/\/\/{ RC_PROTO_RCMM/g' ir/ir_loopback.c
-		echo "LKP SKIP ir.ir_loopback_rcmm"
-	elif [[ "$subtest" = "memfd" ]]; then
-		fixup_memfd
-	elif [[ "$subtest" = "vm" ]]; then
-		fixup_vm
-	elif [[ "$subtest" = "x86" ]]; then
-		fixup_x86
-	elif [[ "$subtest" = "resctrl" ]]; then
-		log_cmd resctrl/resctrl_tests 2>&1
-		return 1
-	elif [[ "$subtest" = "livepatch" ]]; then
-		fixup_livepatch
-	elif [[ "$subtest" = "ftrace" ]]; then
-		fixup_ftrace
-	elif [[ "$subtest" = "kmod" ]]; then
-		fixup_kmod
-	elif [[ "$subtest" = "ptp" ]]; then
-		fixup_ptp || return
-	elif [[ "$subtest" = "sgx" ]]; then
-		fixup_sgx
-	elif [[ "$subtest" = "mount_setattr" ]]; then
-		fixup_mount_setattr
-	fi
-	return 0
-}
-
-check_subtest()
-{
-	subtest_config="$subtest/config"
-	kernel_config="/lkp/kernel-selftests-kernel-config"
-
-	[[ -s "$subtest_config" ]] && get_kconfig "$kernel_config" && {
-		check_kconfig "$subtest_config" "$kernel_config"
-	}
-
-	check_ignore_case $subtest && echo "LKP SKIP $subtest" && return 1
-
 	# zram: skip zram since 0day-kernel-tests always disable CONFIG_ZRAM which is required by zram
 	# for local user, you can enable CONFIG_ZRAM by yourself
 	# media_tests: requires special peripheral and it can not be run with "make run_tests"
@@ -677,14 +566,76 @@ check_subtest()
 	# 1. requires /dev/watchdog device, but not all tbox have this device
 	# 2. /dev/watchdog: need support open/ioctl etc file ops, but not all watchdog support it
 	# 3. this test will not complete until issue Ctrl+C to abort it
-	skip_filter="arm64 sparc64 powerpc zram media_tests watchdog"
-	subtest_in_skip_filter "$skip_filter" && return 1
-	return 0
-}
+	skip_filter="powerpc zram media_tests watchdog"
 
-cleanup_subtest()
-{
-	if [[ "$subtest" = "firmware" ]]; then
-		cleanup_for_firmware
-	fi
+	local selftest_mfs=$@
+
+	# kselftest introduced runner.sh since kernel commit 42d46e57ec97 "selftests: Extract single-test shell logic from lib.mk"
+	[[ -e kselftest/runner.sh ]] && log_cmd sed -i 's/default_timeout=45/default_timeout=300/' kselftest/runner.sh
+	for mf in $selftest_mfs; do
+		subtest=${mf%/Makefile}
+		subtest_config="$subtest/config"
+		kernel_config="/lkp/kernel-selftests-kernel-config"
+
+		[[ -s "$subtest_config" ]] && get_kconfig "$kernel_config" && {
+			check_kconfig "$subtest_config" "$kernel_config"
+		}
+
+		check_ignore_case $subtest && echo "LKP SKIP $subtest" && continue
+		subtest_in_skip_filter "$skip_filter" && continue
+
+		check_makefile $subtest || log_cmd make TARGETS=$subtest 2>&1
+
+		if [[ "$subtest" = "breakpoints" ]]; then
+			fixup_breakpoints
+		elif [[ $subtest = "bpf" ]]; then
+			fixup_bpf || die "fixup_bpf failed"
+		elif [[ $subtest = "dma" ]]; then
+			fixup_dma || die "fixup_dma failed"
+		elif [[ $subtest = "efivarfs" ]]; then
+			fixup_efivarfs || continue
+		elif [[ $subtest = "exec" ]]; then
+			log_cmd touch ./$subtest/pipe || die "touch pipe failed"
+		elif [[ $subtest = "gpio" ]]; then
+			fixup_gpio || continue
+		elif [[ $subtest = "openat2" ]]; then
+			fixup_openat2
+			continue
+		elif [[ "$subtest" = "pstore" ]]; then
+			fixup_pstore || continue
+		elif [[ "$subtest" = "firmware" ]]; then
+			fixup_firmware || continue
+		elif [[ "$subtest" = "net" ]]; then
+			fixup_net || continue
+		elif [[ "$subtest" = "sysctl" ]]; then
+			lsmod | grep -q test_sysctl || modprobe test_sysctl
+		elif [[ "$subtest" = "ir" ]]; then
+			## Ignore RCMM infrared remote controls related tests.
+			sed -i 's/{ RC_PROTO_RCMM/\/\/{ RC_PROTO_RCMM/g' ir/ir_loopback.c
+			echo "LKP SKIP ir.ir_loopback_rcmm"
+		elif [[ "$subtest" = "memfd" ]]; then
+			fixup_memfd
+		elif [[ "$subtest" = "vm" ]]; then
+			fixup_vm
+		elif [[ "$subtest" = "x86" ]]; then
+			fixup_x86
+		elif [[ "$subtest" = "resctrl" ]]; then
+			log_cmd resctrl/resctrl_tests 2>&1
+			continue
+		elif [[ "$subtest" = "livepatch" ]]; then
+			fixup_livepatch
+		elif [[ "$subtest" = "ftrace" ]]; then
+			fixup_ftrace
+		elif [[ "$subtest" = "kmod" ]]; then
+			fixup_kmod
+		elif [[ "$subtest" = "ptp" ]]; then
+			fixup_ptp || continue
+		fi
+
+		log_cmd make run_tests -C $subtest  2>&1
+
+		if [[ "$subtest" = "firmware" ]]; then
+			cleanup_for_firmware
+		fi
+	done
 }

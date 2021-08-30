@@ -1,17 +1,35 @@
 #!/bin/bash
 # - group
-# - test
 ## The kernel contains a set of "self tests" under the tools/testing/selftests/
 ## directory. These are intended to be small unit tests to exercise individual
 ## code paths in the kernel.
 ## See: https://www.kernel.org/doc/Documentation/kselftest.txt
 
+. $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/tests/kernel-selftests.sh
-. $LKP_SRC/lib/tests/kernel-selftests-make.sh
+. $LKP_SRC/lib/tests/update-llvm.sh
+. $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/reproduce-log.sh
 
 shopt -s nullglob
 
-prepare_tests
+prepare_test_env || die "prepare test env failed"
+
+# Only update llvm for bpf test
+[ "$group" = "bpf" -o "$group" = "net" -o "$group" = "tc-testing" ] && {
+	cd / && {
+		prepare_for_llvm || die "install newest llvm failed"
+	}
+}
+
+cd $linux_selftests_dir/tools/testing/selftests || die
+
+prepare_for_test
+
+prepare_for_selftest
+
+[ -n "$selftest_mfs" ] || die "empty selftest_mfs"
+
 run_tests $selftest_mfs
 
 [ "$(file -i $TMP_RESULT_ROOT/kernel-selftests | awk '{print $2}')" = "application/octet-stream;" ] && {
