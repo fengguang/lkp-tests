@@ -1,7 +1,6 @@
 initrds+:
 - linux_headers
 - linux_selftests
-- kselftests
 
 need_kconfig:
 % if ___.group == "x86"
