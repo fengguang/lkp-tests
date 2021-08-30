@@ -530,6 +530,13 @@ fixup_livepatch()
 	[[ -s "/tmp/pid-tail-global" ]] && cat /tmp/pid-tail-global | xargs kill -9 && echo "" >/tmp/pid-tail-global
 }
 
+fixup_mount_setattr()
+{
+	# fix no real run for mount_setattr
+	grep -q TEST_PROGS mount_setattr/Makefile ||
+	grep "TEST_GEN_FILES +=" mount_setattr/Makefile | sed 's/TEST_GEN_FILES/TEST_PROGS/' >> mount_setattr/Makefile
+}
+
 build_tools()
 {
 
@@ -623,6 +630,8 @@ fixup_subtest()
 		fixup_kmod
 	elif [[ "$subtest" = "ptp" ]]; then
 		fixup_ptp || return
+	elif [[ "$subtest" = "mount_setattr" ]]; then
+		fixup_mount_setattr
 	fi
 	return 0
 }
