@@ -81,6 +81,11 @@ prepare_for_bpf()
 		cp $linux_headers_dir/scripts/mod/modpost $linux_selftests_dir/scripts/mod
 		cp $linux_headers_dir/tools/objtool/objtool $linux_selftests_dir/tools/objtool/
 		cp $linux_headers_dir/scripts/module.lds $linux_selftests_dir/scripts/ 2>&1
+
+		# required by build bpf_testmod.ko
+		linux_headers_mod_dirs=(/usr/src/linux-headers*-bpf)
+		linux_headers_mod_dirs=$(realpath $linux_headers_mod_dirs)
+		[[ "$linux_headers_mod_dirs" ]] && export KDIR=$linux_headers_mod_dirs
 	fi
 }
 
