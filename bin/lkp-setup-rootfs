@@ -184,7 +184,7 @@ install_proxy()
 
 # Save the result to
 # "/srv/initrd/pkg/$os/$os_arch/$os_version/$benchmark.cgz",
-# get the result through download $initrd_pkg.
+# get the result through download $initrd_pkgs.
 define_files_pkg_pack()
 {
 	(
@@ -260,7 +260,7 @@ while true; do
 	define_files_auto_pack $define_files
 	if [ "$os_mount" != "initramfs" ]; then
 		download_install_cgz $initrd_deps
-		download_install_cgz $initrd_pkg
+		download_install_cgz $initrd_pkgs
 	fi
 	install_rpms
 	install_deb
