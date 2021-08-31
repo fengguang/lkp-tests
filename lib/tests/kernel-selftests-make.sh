@@ -41,7 +41,9 @@ run_tests()
 
 		fixup_subtest $subtest || exit
 
-		log_cmd make run_tests -C $subtest 2>&1
+		nr_procs=$(nproc)
+		nr_procs=${nr_procs:-2}
+		log_cmd make run_tests -j$(nr_procs) -C $subtest 2>&1
 
 		cleanup_subtest
 		)
