@@ -372,7 +372,7 @@ fixup_bpf()
 		sed -i "s/tap_timeout .\/\$BASENAME_TEST/eval \$CMD/" kselftest/runner.sh
 	fi
 	# tools/testing/selftests/bpf/tools/sbin/bpftool
-	export $linux_selftests_dir/tools/testing/selftests/bpf/sbin:$PATH
+	export PATH=$linux_selftests_dir/tools/testing/selftests/bpf/tools/sbin:$PATH
 }
 
 fixup_kmod()
