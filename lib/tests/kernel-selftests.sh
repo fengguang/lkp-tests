@@ -235,7 +235,7 @@ skip_specific_net_cases()
 	[ "$test" ] && return # test will be run standalone
 
 	# skip specific cases from net group
-	local skip_from_net="l2tp.sh tls fcnal-test.sh"
+	local skip_from_net="l2tp.sh tls fcnal-test.sh fib_nexthops.sh"
 	for i in $(echo $skip_from_net)
 	do
 		sed -i "s/$i//" net/Makefile

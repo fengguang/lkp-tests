@@ -24,6 +24,7 @@ kernel-selftests:
   - net
   test:
   - fcnal-test.sh
+  - fib_nexthops.sh
 
 timeout: 1h
 
