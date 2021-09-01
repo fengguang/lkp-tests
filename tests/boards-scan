@@ -1,0 +1,111 @@
+#!/usr/bin/env ruby
+
+require 'json'
+require 'yaml'
+
+def get_description(line, board_info)
+  line = line.gsub(/^[0-9a-z]{2}:[0-9a-z]{2}.[0-9]/, '').gsub(/\[[0-9]{4}\]/, '').gsub(/\[.{9}\]/, ':')
+  descriptions = line.gsub('Ltd.', 'Ltd.:').split(':')
+
+  board_info['description'] = descriptions[0].gsub(/^\s/, '').gsub(/\s$/, '')
+  board_info['vendor'] = descriptions[1].gsub(/^\s/, '').gsub(/\s$/, '')
+  board_info['product'] = descriptions[2].gsub(/^\s/, '').gsub(/\s$/, '')
+end
+
+def get_board(dev_info)
+  found = false
+  board_info = { 'vendorID' => '', 'deviceID' => '', 'svID' => '', 'ssID' => '' }
+  dev_info.each do |line|
+    if line.include?('Endpoint') && !line.include?('Root Complex Integrated')
+      found = true
+    elsif line.include?('Subsystem')
+      index = (line =~ /[0-9a-z]{4}:[0-9a-z]{4}/)
+      board_info['svID'] = line[index..index + 3]
+      board_info['ssID'] = line[index + 5..index + 8]
+    elsif line =~ /^[0-9a-z]{2}:[0-9a-z]{2}.[0-9]/
+      index = (line =~ /[0-9a-z]{4}:[0-9a-z]{4}/)
+      board_info['vendorID'] = line[index..index + 3]
+      board_info['deviceID'] = line[index + 5..index + 8]
+      get_description(line, board_info)
+    end
+  end
+  return board_info if found
+
+  return nil
+end
+
+def get_cpu_info
+  cpu_string = %x(lscpu)
+  cpu_info = {}
+  cpu_string.each_line do |line|
+    next if line =~ /Vulnerability|cache|On-line|Stepping|BogoMIPS/
+
+    key_val = line.chomp.split(':')
+    cpu_info[key_val[0].gsub('(s)', '').gsub(' ', '_')] = key_val[1].gsub(/^\s{1,}/, '')
+  end
+  return cpu_info
+end
+
+def get_memory_info
+  lshw_string = '[' + %x(lshw -c memory -numeric -json).gsub(/\s{2,}/, '').gsub(/,$/, ']')
+  memory_list = []
+  lshw_info = JSON.parse(lshw_string)
+  lshw_info.each do |element|
+    memory_list = element['children'] if element['id'] == 'memory'
+  end
+
+  memory_info = []
+  memory_list.each do |mem|
+    next if mem['description'].include?('empty')
+
+    mem.delete('class')
+    mem.delete('claimed')
+    mem.delete('handle')
+    memory_info << mem
+  end
+  return memory_info
+end
+
+def new_card?(cards, card)
+  return false unless card
+
+  cards.each do |exist_card|
+    return false if card == exist_card
+  end
+  return true
+end
+
+def get_cards_info
+  pci_info = %x(lspci -nnv).lines
+  start = 0
+  cards = []
+  pci_info.each_index do |index|
+    next unless pci_info[index] == "\n"
+
+    dev_info = pci_info[start..index]
+    card = get_board(dev_info)
+    cards << card if new_card?(cards, card)
+    start = index + 1
+  end
+  return cards
+end
+
+def get_system_disk_info
+  facter_string = %x(facter -j)
+  facter_info = JSON.parse(facter_string)
+  server_info = {}
+  server_info['id'] = facter_info['networking']['hostname']
+  server_info['manufacturer'] = facter_info['dmi']['manufacturer']
+  server_info['product'] = facter_info['dmi']['product']
+
+  server_info['bios'] = facter_info['dmi']['bios']
+  server_info['disks'] = facter_info['disks']
+  return server_info
+end
+
+server_info = get_system_disk_info
+server_info['cpu'] = get_cpu_info
+server_info['memory'] = get_memory_info
+server_info['cards'] = get_cards_info
+
+puts server_info.to_json
