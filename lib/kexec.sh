@@ -1,4 +1,5 @@
 #!/bin/sh
+. $LKP_SRC/lib/job-init.sh
 
 # clear the initrds exported by last job
 unset_last_initrd_vars()
@@ -178,10 +179,14 @@ kexec_to_next_job()
 	echo --append="${append}"
 	sleep 1
 
-	test -d 					"/$LKP_SERVER/$RESULT_ROOT/" &&
-	dmesg --human --decode --color=always | gzip >	"/$LKP_SERVER/$RESULT_ROOT/pre-dmesg.gz" &&
-	chown lkp.lkp					"/$LKP_SERVER/$RESULT_ROOT/pre-dmesg.gz" &&
-	sync
+	dmesg --human --decode --color=always | gzip > /tmp/pre-dmesg.gz
+	if [ -d "/$LKP_SERVER/$RESULT_ROOT/" ]; then
+		mv /tmp/pre-dmesg.gz "/$LKP_SERVER/$RESULT_ROOT/pre-dmesg.gz"
+		chown lkp.lkp "/$LKP_SERVER/$RESULT_ROOT/pre-dmesg.gz" && sync
+	elif supports_raw_upload; then
+		JOB_RESULT_ROOT=$RESULT_ROOT
+		upload_files /tmp/pre-dmesg.gz
+	fi
 
 	# store dmesg to disk and reboot
 	[ $download_initrd_ret -ne 0 ] && sleep 119 && reboot
