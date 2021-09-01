@@ -40,11 +40,6 @@ cases=( "testbox=dc-8g   borrow-1h.yaml     runtime=10s"
         "testbox=vm-2p8g pft.yaml           nr_task=50%     runtime=10s"
 )
 
-run_testboxes()
-{
-	"$CCI_SRC"/providers/multi-qemu -n vm-2p16g -c 5 -q vm-2p16g."$(arch)" >/dev/null 2>&1 &
-}
-
 submit_pkg_deps()
 {
 	for args in "${cci_pkg_deps[@]}"
@@ -95,7 +90,6 @@ upload_failed_result()
 	done
 }
 
-run_testboxes
 submit_pkg_deps
 wait
 submit_cases

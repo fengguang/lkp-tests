@@ -2,4 +2,13 @@ suite: self-test
 category: functional
 
 deploy-cci:
+multi-qemu-0:
+        nr_vm: 10
+        tbox_group: vm-2p8g
+multi-qemu-1:
+        nr_vm: 10
+        tbox_group: vm-2p16g
+multi-docker:
+        nr_container: 10
+        tbox_group: dc-8g
 self-test:

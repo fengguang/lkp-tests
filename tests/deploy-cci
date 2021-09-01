@@ -24,7 +24,7 @@ deploy()
 
 	# test the script for one-click deployment
 	cd /c/compass-ci/sparrow || exit
-	./install-tiny
+	prepare_testboxes=false ./install-tiny
 }
 
 deploy
