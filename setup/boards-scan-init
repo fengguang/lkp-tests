@@ -1,0 +1,6 @@
+#!/bin/bash
+
+yum -y -q install pciutils
+yum -y -q install ruby
+gem install facter
+
