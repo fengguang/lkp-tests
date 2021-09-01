@@ -25,6 +25,37 @@ prepare_tests()
 	[ -n "$selftest_mfs" ] || die "empty selftest_mfs"
 }
 
+make_group_tests()
+{
+	nr_procs=$(nproc)
+	nr_procs=${nr_procs:-2}
+	log_cmd make -j$nr_procs -C $subtest 2>&1
+}
+
+# it will touch the Makefile, overwrite target
+#@@ -40,6 +40,9 @@ TEST_GEN_PROGS = reuseport_bpf reuseport_bpf_cpu reuseport_bpf_numa
+# TEST_GEN_PROGS += reuseport_dualstack reuseaddr_conflict tls
+#  
+#  TEST_FILES := settings
+#   
+#   KSFT_KHDR_INSTALL := 1
+#  +TEST_GEN_PROGS =
+#  +TEST_GEN_FILES =
+#  +TEST_PROGS = tls
+#    include ../lib.mk
+keep_only_specific_test()
+{
+	local makefile=$subtest/Makefile
+
+	[[ "$test" ]] || return
+	[[ -f $makefile ]] || return
+
+	# keep specific $test only
+	sed -i "/^include .*\/lib.mk/i TEST_GEN_PROGS =" $makefile
+	sed -i "/^include .*\/lib.mk/i TEST_GEN_FILES =" $makefile
+	sed -i "/^include .*\/lib.mk/i TEST_PROGS = $test" $makefile
+}
+
 run_tests()
 {
 	local selftest_mfs=$@
@@ -41,9 +72,11 @@ run_tests()
 
 		fixup_subtest $subtest || exit
 
-		nr_procs=$(nproc)
-		nr_procs=${nr_procs:-2}
-		log_cmd make run_tests -j$nr_procs -C $subtest 2>&1
+		make_group_tests
+
+		keep_only_specific_test
+
+		log_cmd make run_tests -C $subtest 2>&1
 
 		cleanup_subtest
 		)
