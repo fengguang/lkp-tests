@@ -244,6 +244,10 @@ fixup_net()
 		sed -i 's/tls//' net/Makefile
 		echo "LKP SKIP net.tls"
 	fi
+	if [[ $test != "fcnal-test.sh" ]]; then
+		sed -i 's/fcnal-test.sh//' net/Makefile
+		echo "LKP SKIP net.fcnal-test.sh"
+	fi
 
 	# at v4.18-rc1, it introduces fib_tests.sh, which doesn't have execute permission
 	# here is to fix the permission

@@ -54,6 +54,10 @@ keep_only_specific_test()
 	sed -i "/^include .*\/lib.mk/i TEST_GEN_PROGS =" $makefile
 	sed -i "/^include .*\/lib.mk/i TEST_GEN_FILES =" $makefile
 	sed -i "/^include .*\/lib.mk/i TEST_PROGS = $test" $makefile
+
+	[[ $test = "fcnal-test.sh" ]] && {
+		echo "timeout=3600" >> $subtest/settings
+	}
 }
 
 run_tests()
