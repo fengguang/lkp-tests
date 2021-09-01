@@ -5,8 +5,11 @@
 . $LKP_SRC/lib/upload.sh
 
 source /etc/profile.d/compass.sh
+do-local-pack
 
 group_id=selftest
+tmpdir=$(mktemp -d)
+log_file="$tmpdir"/submit_cmd
 
 cci_pkg_deps=(	"testbox=vm-2p16g cci-makepkg.yaml cci-makepkg.benchmark=reaim"
 		"testbox=vm-2p16g cci-makepkg.yaml cci-makepkg.benchmark=pixz"
@@ -40,11 +43,25 @@ cases=( "testbox=dc-8g   borrow-1h.yaml     runtime=10s"
         "testbox=vm-2p8g pft.yaml           nr_task=50%     runtime=10s"
 )
 
+check_submit_result()
+{
+	local cmd=$1
+	submit_result=$(eval "$cmd")
+	id=$(echo "$submit_result" | grep -o "${lab}\.[0-9]*" | uniq)
+	[ -n "$id" ] || {
+		eval echo "$cmd" >> "$log_file"
+		log_error "$submit_result"
+	}
+}
+
 submit_pkg_deps()
 {
 	for args in "${cci_pkg_deps[@]}"
 	do
-		submit -m $args group_id="$group_id" >/dev/null 2>&1 &
+		(
+			cmd='submit -m $args group_id=$group_id --no-pack'
+			check_submit_result "$cmd"
+		) &
 	done
 }
 
@@ -52,14 +69,51 @@ submit_cases()
 {
 	for args in "${cases[@]}"
 	do
-		submit -m $args group_id="$group_id" >/dev/null 2>&1 &
+		(
+			cmd='submit -m $args group_id=$group_id --no-pack'
+			check_submit_result "$cmd"
+		) &
 	done
+}
+
+submit_all()
+{
+	submit_pkg_deps
+	wait
+	submit_cases
+	wait
+	touch "$tmpdir"/job_finished
+}
+
+get_es_results()
+{
+	local job_field=$1
+	local skip_result=$2
+
+	es-jobs group_id="$group_id" | grep "$job_field" | grep "raw.id" | grep -v "$skip_result" > "$tmpdir"/"$job_field"
+	[ -s "$tmpdir"/"$job_field" ] && {
+		while read es_result
+		do
+		        echo "$es_result" | grep -o "raw.id.\[[^\[\]*\]:"
+			ids=$(echo "$es_result" | grep -o "$lab.[0-9]*")
+			for id in $ids
+			do
+				echo /srv"$result_root"/"$id"
+		        done
+		        echo -e "\n"
+		done < "$tmpdir"/"$job_field"
+	}
 }
 
 get_report_content()
 {
-	report_content=$(es-jobs group_id="$group_id" | grep job_state)
-	log_info "selftest job result: $report_content"
+	get_es_results job_health success
+	get_es_results job_stage finish
+
+	[ -s "$log_file" ] && {
+		sed -i '1i\submit failed:' "$log_file"
+		cat "$log_file"
+	}
 }
 
 get_commit_info()
@@ -76,7 +130,6 @@ get_commit_info()
 	committer_email=$(git log -1 --format="%ce")
 
 	recipient_email="$author_email;$committer_email"
-
 }
 
 upload_failed_result()
@@ -90,12 +143,19 @@ upload_failed_result()
 	done
 }
 
-submit_pkg_deps
-wait
-submit_cases
-wait
+monitor_jobs()
+{
+	for times in {1..8}
+	do
+		[ -f "$tmpdir/job_finished" ] && return
+		sleep 15m
+	done
+}
 
+submit_all &
+monitor_jobs
 get_commit_info
-get_report_content
+report_content=$(get_report_content)
 send_email selftest
 upload_failed_result
+rm -rf "$tmpdir"
