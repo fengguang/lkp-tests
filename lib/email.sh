@@ -82,7 +82,7 @@ Compass-CI
 
 selftest_content()
 {
-	email_content="To: $recipient_email
+	email_content=$(echo "To: $recipient_email
 Subject: [NOTIFY Compass-CI] Self-test report
 
 Dear $author_name and $committer:
@@ -97,7 +97,7 @@ Dear $author_name and $committer:
 
 Regards
 Compass-CI
-"
+" | base64)
 }
 
 selftest_env_content()
@@ -181,6 +181,16 @@ send_email()
 	${subject}_content
 
 	curl -XPOST "${SEND_MAIL_HOST:-$LKP_SERVER}:${SEND_MAIL_PORT:-10001}/send_mail_text" -d "$email_content"
+}
+
+send_email_encode()
+{
+	local subject=$1
+	local email_content
+
+	${subject}_content
+
+	curl -XPOST "${SEND_MAIL_HOST:-$LKP_SERVER}:${SEND_MAIL_PORT:-10001}/send_mail_encode" -d "$email_content"
 }
 
 local_send_email()
