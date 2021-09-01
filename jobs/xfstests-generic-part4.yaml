@@ -37,3 +37,16 @@ fs:
 xfstests:
   test:
   - generic-logdev
+
+---
+fs:
+- ext2
+- ext4
+- xfs
+- btrfs
+- f2fs
+- ocfs2
+
+xfstests:
+  test:
+  - generic-525
