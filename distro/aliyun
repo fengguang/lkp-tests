@@ -61,8 +61,8 @@ yum_download()
 {
 	[ ${DISTRO^^} == "CENTOS" ] && support_repo_epel
 
-	echo "yum install -y --downloadonly --nobest $@ | grep -e \"No\ package .*\ available\""
-	yum install -y --downloadonly --nobest "$@" | grep -e "No\ package .*\ available" && exit 1
+	echo "yum install -y --downloadonly --skip-broken $@ | grep -e \"No\ package .*\ available\""
+	yum install -y --downloadonly --skip-broken "$@" | grep -e "No\ package .*\ available" && exit 1
 	return 0
 }
 
