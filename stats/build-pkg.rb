@@ -17,6 +17,8 @@ class ErrorMessages
 
   def obtain_error_messages(log_lines)
     log_lines.each do |line|
+      # error: Bad exit status from /var/tmp/rpm-tmp.uTWszm (%install)
+      next if line =~ /^error: Bad exit status from \/var\/tmp\/rpm-tmp/
       next if extract_error_message(line)
       next unless @in_stderr
       next unless @error_message['error_line'] =~ /(error|warning):[^:]/i
