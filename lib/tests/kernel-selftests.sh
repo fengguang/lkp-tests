@@ -230,24 +230,26 @@ fixup_dma()
 	echo $name > /sys/bus/pci/drivers/dma_map_benchmark/bind || return
 }
 
+skip_specific_net_cases()
+{
+	[ "$test" ] && return # test will be run standalone
+
+	# skip specific cases from net group
+	local skip_from_net="l2tp.sh tls fcnal-test.sh"
+	for i in $(echo $skip_from_net)
+	do
+		sed -i "s/$i//" net/Makefile
+		echo "LKP SKIP net.$i"
+	done
+}
+
 fixup_net()
 {
 	# udpgro tests need enable bpf firstly
 	# Missing xdp_dummy helper. Build bpf selftest first
 	log_cmd make -C bpf 2>&1
 
-	sed -i 's/l2tp.sh//' net/Makefile
-	echo "LKP SKIP net.l2tp.sh"
-
-	# for tls, it will directly run
-	if [[ $test != "tls" ]]; then
-		sed -i 's/tls//' net/Makefile
-		echo "LKP SKIP net.tls"
-	fi
-	if [[ $test != "fcnal-test.sh" ]]; then
-		sed -i 's/fcnal-test.sh//' net/Makefile
-		echo "LKP SKIP net.fcnal-test.sh"
-	fi
+	skip_specific_net_cases
 
 	# at v4.18-rc1, it introduces fib_tests.sh, which doesn't have execute permission
 	# here is to fix the permission
