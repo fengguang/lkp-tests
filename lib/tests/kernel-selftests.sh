@@ -327,6 +327,7 @@ fixup_gpio()
 	# gcc -O2 -g -std=gnu99 -Wall -I../../../../usr/include/    gpio-mockup-chardev.c ../../../gpio/gpio-utils.o ../../../../usr/include/linux/gpio.h  -lmount -I/usr/include/libmount -o gpio-mockup-chardev
 	# gcc: error: ../../../gpio/gpio-utils.o: No such file or directory
 	log_cmd make -C ../../../tools/gpio 2>&1 || return
+	export CFLAGS="-I../../../../usr/include"
 }
 
 cleanup_for_firmware()
