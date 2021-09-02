@@ -615,7 +615,7 @@ fixup_subtest()
 	elif [[ $subtest = "exec" ]]; then
 		log_cmd touch ./$subtest/pipe || die "touch pipe failed"
 	elif [[ $subtest = "gpio" ]]; then
-		fixup_gpio || continue
+		fixup_gpio
 	elif [[ $subtest = "openat2" ]]; then
 		fixup_openat2
 		return 1
