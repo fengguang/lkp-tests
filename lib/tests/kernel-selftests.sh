@@ -671,7 +671,8 @@ check_subtest()
 	# 1. requires /dev/watchdog device, but not all tbox have this device
 	# 2. /dev/watchdog: need support open/ioctl etc file ops, but not all watchdog support it
 	# 3. this test will not complete until issue Ctrl+C to abort it
-	skip_filter="arm64 sparc64 powerpc zram media_tests watchdog"
+	# sched: https://www.spinics.net/lists/kernel/msg4062205.html
+	skip_filter="arm64 sparc64 powerpc zram media_tests watchdog sched"
 	subtest_in_skip_filter "$skip_filter" && return 1
 	return 0
 }
