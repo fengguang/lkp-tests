@@ -31,7 +31,7 @@ conf_support()
 
 	# add config for support openEuler
 	[[ -f  $ceph_init_file ]]&& {
-		sed -i "/distributions = {/a           'openeuler': fedora," "$ceph_init_file"
+		sed -i "/distributions = {/a \        'openeuler': centos," "$ceph_init_file"
 	}
 }
 
