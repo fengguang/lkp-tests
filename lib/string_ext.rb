@@ -27,4 +27,8 @@ class String
   rescue StandardError
     false
   end
+
+  def uncolorize
+    gsub(/\e\[([\d]+)?(;[\d]+)?(;[\d]+)?m/, '').gsub(/\e\[K/, '')
+  end
 end
