@@ -1,0 +1,35 @@
+dmabuf-heaps test: not in Makefile
+2021-09-02 02:07:58 make TARGETS=dmabuf-heaps
+make --no-builtin-rules ARCH=x86 -C ../../.. headers_install
+make[1]: Entering directory '/usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-7d2a07b769330c34b4deabeed939325c77a7ec2f'
+  INSTALL ./usr/include
+make[1]: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-7d2a07b769330c34b4deabeed939325c77a7ec2f'
+make[1]: Entering directory '/usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-7d2a07b769330c34b4deabeed939325c77a7ec2f/tools/testing/
+selftests/dmabuf-heaps'
+gcc -static -O3 -Wl,-no-as-needed -Wall    dmabuf-heap.c  -o /usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-7d2a07b769330c34b4deabe
+ed939325c77a7ec2f/tools/testing/selftests/dmabuf-heaps/dmabuf-heap
+dmabuf-heap.c:16:10: fatal error: drm/drm.h: No such file or directory
+ #include <drm/drm.h>
+          ^~~~~~~~~~~
+compilation terminated.
+make[1]: *** [../lib.mk:145: /usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-7d2a07b769330c34b4deabeed939325c77a7ec2f/tools/testing/selftests/dmabuf-heaps/dmabuf-heap] Error 1
+make[1]: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-7d2a07b769330c34b4deabeed939325c77a7ec2f/tools/testing/selftests/dmabuf-heaps'
+make: *** [Makefile:160: all] Error 2
+2021-09-02 02:07:58 make -j4 -C dmabuf-heaps
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-7d2a07b769330c34b4deabeed939325c77a7ec2f/tools/testing/selftests/dmabuf-heaps'
+gcc -static -O3 -Wl,-no-as-needed -Wall    dmabuf-heap.c  -o /usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-7d2a07b769330c34b4deabeed939325c77a7ec2f/tools/testing/selftests/dmabuf-heaps/dmabuf-heap
+dmabuf-heap.c:16:10: fatal error: drm/drm.h: No such file or directory
+ #include <drm/drm.h>
+          ^~~~~~~~~~~
+compilation terminated.
+make: *** [../lib.mk:145: /usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-7d2a07b769330c34b4deabeed939325c77a7ec2f/tools/testing/selftests/dmabuf-heaps/dmabuf-heap] Error 1
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-7d2a07b769330c34b4deabeed939325c77a7ec2f/tools/testing/selftests/dmabuf-heaps'
+2021-09-02 02:07:58 make run_tests -C dmabuf-heaps
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-7d2a07b769330c34b4deabeed939325c77a7ec2f/tools/testing/selftests/dmabuf-heaps'
+gcc -static -O3 -Wl,-no-as-needed -Wall    dmabuf-heap.c  -o /usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-7d2a07b769330c34b4deabeed939325c77a7ec2f/tools/testing/selftests/dmabuf-heaps/dmabuf-heap
+dmabuf-heap.c:16:10: fatal error: drm/drm.h: No such file or directory
+ #include <drm/drm.h>
+          ^~~~~~~~~~~
+compilation terminated.
+make: *** [../lib.mk:145: /usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-7d2a07b769330c34b4deabeed939325c77a7ec2f/tools/testing/selftests/dmabuf-heaps/dmabuf-heap] Error 1
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-7d2a07b769330c34b4deabeed939325c77a7ec2f/tools/testing/selftests/dmabuf-heaps'

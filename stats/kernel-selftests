@@ -37,7 +37,7 @@ class Stater
     when /: recipe for target.+failed$/, /^make: \*\*\* (.*) (Error \d+|Stop\.)$/
       # Makefile:47: recipe for target 'sysret_ss_attrs_64' failed
       # make: *** No rule to make target .*, needed by 'all'.  Stop.
-      stats.add @test.to_s, 'make_fail'
+      stats.add @test.to_s, 'make_fail' unless stats.key? @test.to_s
     when /^*selftests:\s*(\S*) (\[|\[ )(PASS|FAIL|SKIP)/
       # selftests: mpx-mini-test_64 [PASS]
 
