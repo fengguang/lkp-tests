@@ -68,12 +68,12 @@ run_test()
 	## use option --exclude to ignore spawn and exec.
 	[ -n "$test" ] && {
 		test="--$test"
-		log_cmd stress-ng $default_option $test $nr_threads 2>&1
-		return
-	}
-
-	[ "$class" = "exec_spawn" ] && {
-		su lkp -c "stress-ng --exec $nr_threads --spawn $nr_threads --timeout $testtime --times --verify --metrics-brief 2>&1"
+		if [ "$class" = "exec_spawn" ]; then
+			mkdir /home/lkp && chown -R lkp:lkp /home/lkp
+			log_cmd su - lkp -s /bin/bash -c "stress-ng --timeout $testtime --times --verify --metrics-brief $test $nr_threads 2>&1"
+		else
+			log_cmd stress-ng $default_option $test $nr_threads 2>&1
+		fi
 		return
 	}
 
