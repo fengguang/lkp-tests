@@ -130,7 +130,6 @@ set_env()
 	[ "$test" = "xfs-external" ] && {
 		log_eval export USE_EXTERNAL="yes"
 		log_eval export SCRATCH_RTDEV="$SCRATCH_LOGDEV"
-		log_eval export MKFS_OPTIONS="-mreflink=1"
 		log_eval unset SCRATCH_LOGDEV
 	}
 	[ "$test" = "xfs-reflink-rmapbt" ] && log_eval export MKFS_OPTIONS="\"-mreflink=1 -mrmapbt=1\""
