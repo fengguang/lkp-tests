@@ -19,6 +19,7 @@ $y_relative = false
 $x_range = [nil, nil]
 $opt_diff = nil
 $opt_diff_distance = 1
+$opt_split_stat = nil
 
 opt_parser = OptionParser.new do |opts|
   opts.banner = 'Usage: mplot matrix.json stat_field [matrix.json stat_filed]... [OPTION...]'
@@ -64,6 +65,10 @@ opt_parser = OptionParser.new do |opts|
 
   opts.on('--diff-distance DISTANCE', 'The diff distance') do |distance|
     $opt_diff_distance = distance.to_i
+  end
+
+  opts.on('--split-stat', 'split stat to real stat and title') do
+    $opt_split_stat = true
   end
 
   opts.on_tail('-h', '--help', 'show help message') do
@@ -113,7 +118,13 @@ def plot_it(matrix_stat_arr)
       matrix[rstat] = rys
       stat = rstat
     end
-    lines << [matrix, stat, stat]
+    if $opt_split_stat
+      kstat, tstat = stat.split(',')
+      tstat ||= kstat
+    else
+      kstat = tstat = stat
+    end
+    lines << [matrix, kstat, tstat]
   end
   plotter.set_output_file_name($opt_output_path)
          .set_lines(lines)
