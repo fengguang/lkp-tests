@@ -2320,6 +2320,7 @@ create_package() {
 	# LKP specific feature
 	if [[ $PKGEXT = ".cgz" ]]; then
 		CGZDEST=${CGZDEST:-/osimage/pkg/makepkg/${pkgname}-${fullver}.cgz}
+		[[ -n "$linux_CGZDEST" ]] &&  CGZDEST="${linux_CGZDEST}/${pkgname#*-}.cgz"
 		pkgver_cgz=$(extend_pkgver_cgz_name $CGZDEST)
 		mkdir -p $(dirname $pkgver_cgz)
 
