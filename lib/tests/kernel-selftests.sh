@@ -3,6 +3,31 @@
 . $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/debug.sh
 
+
+# greater than or equal
+libc_version_ge()
+{
+	local version=$1
+	# debian: /lib/x86_64-linux-gnu/libc.so.6
+	# /lib/x86_64-linux-gnu/libc.so.6
+	# GNU C Library (Ubuntu GLIBC 2.27-3ubuntu1.4) stable release version 2.27.
+	# printf '2.4.5\n2.8\n2.4.5.1\n' | sort -V
+	[[ -f /lib/x86_64-linux-gnu/libc.so.6 ]] && libc_bin=/lib/x86_64-linux-gnu/libc.so.6
+
+	# fedora: /usr/lib/libc.so.6
+	# [root@iaas-rpma proc]# /usr/lib/libc.so.6
+	# GNU C Library (GNU libc) stable release version 2.32.
+	[[ -f /usr/lib/libc.so.6 ]] && libc_bin=/usr/lib/libc.so.6
+	[[ "$libc_bin" ]] || return 0
+
+	local local_version=$($libc_bin | head -1 | awk '{print $NF}')
+	local_version=${local_version::-1} # omit the last .
+	local greatest=$(printf "$local_version\n$1" | sort -V | head -1)
+
+	[[ "$greatest" = "$version" ]]
+}
+
+
 build_selftests()
 {
 	cd tools/testing/selftests	|| return
@@ -350,6 +375,27 @@ fixup_memfd()
 	[[ -f $subtest/run_tests.sh ]] && {
 		[[ -x $subtest/run_tests.sh ]] || chmod +x $subtest/run_tests.sh
 	}
+
+	# memfd_test.c:783:27: error: 'F_SEAL_FUTURE_WRITE' undeclared (first use in this function); did you mean 'F_SEAL_WRITE'?
+	#  mfd_assert_add_seals(fd, F_SEAL_FUTURE_WRITE);
+	# git diff
+	# diff --git a/tools/testing/selftests/memfd/memfd_test.c b/tools/testing/selftests/memfd/memfd_test.c
+	# index 74baab83fec3..71275b722832 100644
+	# --- a/tools/testing/selftests/memfd/memfd_test.c
+	# +++ b/tools/testing/selftests/memfd/memfd_test.c
+	# @@ -20,6 +20,10 @@
+	# #include <unistd.h>
+	#  
+	# #include "common.h"
+	# +#ifndef F_SEAL_FUTURE_WRITE
+	# +#define F_SEAL_FUTURE_WRITE 0x0010
+	# +#endif
+	libc_version_ge 2.32 || {
+		sed -i '/^#include "common.h"/a #ifndef F_SEAL_FUTURE_WRITE\n#define F_SEAL_FUTURE_WRITE 0x0010\n#endif\n' $subtest/memfd_test.c
+		# fuse_test.c:63:8: error: unknown type name '__u64'
+		sed -i '/^#include "common.h"/a typedef unsigned long long __u64;' $subtest/fuse_test.c
+	}
+
 	# before v4.13-rc1, we need to compile fuse_mnt first
 	# check whether there is target "fuse_mnt" at Makefile
 	grep -wq '^fuse_mnt:' $subtest/Makefile || return 0
