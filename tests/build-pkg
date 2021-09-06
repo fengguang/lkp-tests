@@ -86,7 +86,7 @@ get_pkgfile()
 
 download_pkg()
 {
-	if [ ${pkgbuild_repo%%/*} == "archlinux" ]; then
+	if [ ${pkgbuild_repo%%/*} == "pkgbuild" ]; then
 		request_pkg
 	else
 		clone_pkg_repo
@@ -96,15 +96,17 @@ download_pkg()
 request_pkg()
 {
 	local pkgrepo="${pkgbuild_repo%%//*}"
-	local pkgpath="./"
-	[[ "$pkgrepo" =~ ^archlinux/(packages|community) ]] && pkgpath="${pkgpath}${pkgbuild_repo#*//}/"
+	pkgrepo="${pkgrepo}/${pkgrepo##*/}.git"
+
+	local pkgpath=""
+	[[ "$pkgrepo" =~ ^pkgbuild/(packages|community) ]] && pkgpath="${pkgpath}${pkgbuild_repo#*//}/"
 
 	filelist=$(curl -sS -H 'Content-Type: Application/json' -XPOST "$LKP_SERVER"':8100/git_command' \
-		-d '{"git_repo": "'${pkgrepo}'", "git_command": ["git-ls-files", "'${pkgpath}'"]}')
+		-d '{"git_repo": "'${pkgrepo}'", "git_command": ["git-ls-tree", "--name-only", "-r", "HEAD:'${pkgpath}'"]}')
 
 	for pkgfile in ${filelist[*]}
 	do
-		get_pkgfile "${pkgrepo}" "$pkgfile"
+		get_pkgfile "${pkgrepo}" "${pkgpath}${pkgfile}"
 	done
 }
 
