@@ -25,6 +25,7 @@
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/distro/common
 . $LKP_SRC/lib/http.sh
+. $LKP_SRC/lib/upload.sh
 
 check_vars()
 {
@@ -53,15 +54,17 @@ get_config()
 	local cci_http_host=${INITRD_HTTP_HOST}
 	local cci_http_port=${INITRD_HTTP_PORT:-8800}
 	export cci_dir=/cci/build-config
-	local remote_dir="http://${cci_http_host}:${cci_http_port}${cci_dir}/${pkgname}"
+	local remote_dir="http://${cci_http_host}:${cci_http_port}${cci_dir}/${pkgbase}"
+	export linux_CGZDEST="/kernel/${os_arch}/${config}/${upstream_commit}"
 
-	mkdir -p ${cci_dir}
-	http_get_file "${remote_dir}/${config}" "${cci_dir}/${pkgname}/${config}"
+	mkdir -p "${cci_dir}"
+	mkdir -p "${linux_CGZDEST}"
+	http_get_file "${remote_dir}/${config}" "${cci_dir}/${pkgbase}/${config}"
 }
 
 upload_config()
 {
-	local upload_dir="${cci_dir}/${pkgname}"
+	local upload_dir="${cci_dir}/${pkgbase}"
 	[ -d "${upload_dir}" ] || return
 
 	upload_to_target_dir "${upload_dir}"
@@ -198,8 +201,16 @@ build_source_pkg()
 	upload_config
 
 	[ "${build_state}" == "0" ] || exit 1
-	create_softlink
-	upload_to_target_dir ${cgz_path}
+
+	if [[ -n "$config" ]]; then
+		for cgz in $(find ${linux_CGZDEST} -type f)
+		do
+			upload_one_curl ${cgz} ${linux_CGZDEST}
+		done
+	else
+		create_softlink
+		upload_to_target_dir ${cgz_path}
+	fi
 }
 
 check_vars
