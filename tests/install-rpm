@@ -45,22 +45,11 @@ ldd_test()
 	done
 }
 
-handle_rpm_name()
-{
-	local yum_info=$(yum info --installed "$@")
-	local name=$(echo "${yum_info}" | awk '{if($1 ~ /Name/) print $3}')
-	local version=$(echo "${yum_info}" | awk '{if($1 ~ /Version/) print $3}')
-	local release=$(echo "${yum_info}" | awk '{if($1 ~ /Release/) print $3}')
-	local architecture=$(echo "${yum_info}" | awk '{if($1 ~ /Architecture/) print $3}')
-
-	rpm_full_name="${name}-${version}-${release}.${architecture}"
-}
-
 remove_rpm()
 {
 	for i in ${rpm_name[@]}
 	do
-		handle_rpm_name $i
+		rpm_full_name=$(repoquery --installed --queryformat '%{name}-%{evr}.%{arch}' $i 2>/dev/null)
 		echo "start remove test: ${rpm_full_name}"
 		yum remove -y "$i" 2>&1
 		echo "remove test finished: ${rpm_full_name}"
