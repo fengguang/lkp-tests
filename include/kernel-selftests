@@ -163,6 +163,9 @@ need_kconfig:
 - ION_SYSTEM_HEAP: y, v4.12-rc1, <= v5.10 # Depends on: STAGING [: y] && ION [: y]
 - STAGING: y
 % elsif ___.group == "group-01"
+- UDMABUF: y, v4.20-rc1
+- DMABUF_HEAPS: y, v5.6-rc1
+- DMABUF_HEAPS_SYSTEM: y, v5.6-rc1
 - BTRFS_FS: m
 - CHECKPOINT_RESTORE: y
 - DRM_DEBUG_SELFTEST: m, v4.18-rc1
