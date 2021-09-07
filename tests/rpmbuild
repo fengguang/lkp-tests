@@ -51,18 +51,21 @@ get_merge_info()
 	declare -a email
 	declare -A email_name_hash
 
-	eval $(echo_commit_info "--no-color" "%ae" "$1" email)
-	eval $(echo_commit_info "--no-color" "%ce" "$1" email)
-	eval $(echo_commit_info "-n1" "%ae" "$2" email)
-	eval $(echo_commit_info "-n1" "%ce" "$2" email)
+	name=(liping wangyong linjiaxin wufengguang)
+	email=(liping136@huawei.com wangyong187@huawei.com linjiaxin5@huawei.com wufengguang@huawei.com)
 
-	IFS_SAVE=$IFS
-	IFS=$'\n'
-	eval $(echo_commit_info "--no-color" "%an" "$1" name)
-	eval $(echo_commit_info "--no-color" "%cn" "$1" name)
-	eval $(echo_commit_info "-n1" "%an" "$2" name)
-	eval $(echo_commit_info "-n1" "%cn" "$2" name)
-	IFS=$IFS_SAVE
+#	eval $(echo_commit_info "--no-color" "%ae" "$1" email)
+#	eval $(echo_commit_info "--no-color" "%ce" "$1" email)
+#	eval $(echo_commit_info "-n1" "%ae" "$2" email)
+#	eval $(echo_commit_info "-n1" "%ce" "$2" email)
+#
+#	IFS_SAVE=$IFS
+#	IFS=$'\n'
+#	eval $(echo_commit_info "--no-color" "%an" "$1" name)
+#	eval $(echo_commit_info "--no-color" "%cn" "$1" name)
+#	eval $(echo_commit_info "-n1" "%an" "$2" name)
+#	eval $(echo_commit_info "-n1" "%cn" "$2" name)
+#	IFS=$IFS_SAVE
 
 	for key in "${!email[@]}"
 	do
