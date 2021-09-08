@@ -7,6 +7,11 @@ shopt -s nullglob
 . $LKP_SRC/distro/common
 . $LKP_SRC/lib/debug.sh
 
+update()
+{
+	pacman -Syy >/dev/null
+}
+
 pack_benchmark_deps()
 {
 	setup_proxy
@@ -76,6 +81,8 @@ distro_install_depends()
 	local script
 	local bm="$1"
 	local scripts=$(find $LKP_SRC/distro/depends/ -name "$bm" -o -name "${bm}.[0-9]")
+
+	update
 
 	for script in $scripts
 	do
