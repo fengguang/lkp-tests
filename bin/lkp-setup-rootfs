@@ -19,7 +19,7 @@ export PATH=$PATH:$LKP_SRC/bin:$LKP_SRC/sbin
 . $LKP_SRC/lib/ucode.sh
 . $LKP_SRC/lib/env.sh
 
-echo "export PATH=$PATH" >> $(shell_profile)
+echo "export PATH=\$PATH:$PATH" >> $(shell_profile)
 
 # https://stackoverflow.com/questions/19100708/mongodb-mongorestore-failure-localefacet-s-create-c-locale-name-not-valid
 # To fix:

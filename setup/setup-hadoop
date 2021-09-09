@@ -55,7 +55,7 @@ set_env()
 		setenforce 0
 		export JAVA_HOME=$java_home
 		export HADOOP_HOME=$hadoop_home
-		export PATH=$java_home/bin:$hadoop_home/bin:$hadoop_home/sbin:$PATH
+		export PATH=$java_home/bin:$hadoop_home/bin:$hadoop_home/sbin:\$PATH
 	EOF
 }
 
