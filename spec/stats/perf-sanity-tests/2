@@ -1,0 +1,151 @@
+2021-02-10 21:28:16 make ARCH= EXTRA_CFLAGS=-fno-omit-frame-pointer -fsanitize=undefined -fsanitize=address -C /usr/src/perf_selftests-x86_64-rhel-8.3-df1b3e5945185a1181d8ec87ce2dc5dbc09afc96/tools/perf
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-8.3-df1b3e5945185a1181d8ec87ce2dc5dbc09afc96/tools/perf'
+  BUILD:   Doing 'make -j4' parallel build
+  HOSTCC   fixdep.o
+  HOSTLD   fixdep-in.o
+  LINK     fixdep
+diff -u tools/include/uapi/drm/drm.h include/uapi/drm/drm.h
+diff -u tools/include/uapi/drm/i915_drm.h include/uapi/drm/i915_drm.h
+diff -u tools/include/uapi/linux/perf_event.h include/uapi/linux/perf_event.h
+
+Auto-detecting system features:
+...                         dwarf: [ on  ]
+...            dwarf_getlocations: [ on  ]
+...                         glibc: [ on  ]
+...                        libbfd: [ on  ]
+...                libbfd-buildid: [ on  ]
+...                        libcap: [ on  ]
+...                        libelf: [ on  ]
+...                       libnuma: [ on  ]
+...        numa_num_possible_cpus: [ on  ]
+...                       libperl: [ on  ]
+...                     libpython: [ on  ]
+...                     libcrypto: [ on  ]
+...                     libunwind: [ on  ]
+...            libdw-dwarf-unwind: [ on  ]
+...                          zlib: [ on  ]
+...                          lzma: [ on  ]
+...                     get_cpuid: [ on  ]
+...                           bpf: [ on  ]
+...                        libaio: [ on  ]
+...                       libzstd: [ on  ]
+...        disassembler-four-args: [ on  ]
+
+  CC       util/intel-pt-decoder/intel-pt-log.o
+  CC       util/intel-pt-decoder/intel-pt-decoder.o
+  CC       util/arm-spe-decoder/arm-spe-pkt-decoder.o
+  CC       util/scripting-engines/trace-event-perl.o
+  CC       util/arm-spe-decoder/arm-spe-decoder.o
+  LD       util/arm-spe-decoder/perf-in.o
+  CC       util/intel-pt.o
+  CC       util/scripting-engines/trace-event-python.o
+  CC       util/intel-bts.o
+  CC       util/arm-spe.o
+  LD       util/scripting-engines/perf-in.o
+  CC       util/s390-cpumsf.o
+  CC       util/intel-pt-decoder/intel-pt-insn-decoder.o
+  CC       util/parse-branch-options.o
+  CC       util/dump-insn.o
+  CC       util/parse-regs-options.o
+  CC       util/parse-sublevel-options.o
+  CC       util/term.o
+  CC       util/help-unknown-cmd.o
+  CC       util/mem-events.o
+  CC       util/vsprintf.o
+  CC       util/units.o
+  CC       util/time-utils.o
+  LD       util/intel-pt-decoder/perf-in.o
+  BISON    util/expr-bison.c
+  CC       util/branch.o
+  CC       util/mem2node.o
+  CC       util/clockid.o
+  CC       util/bpf-loader.o
+  CC       util/bpf_map.o
+  CC       util/bpf-prologue.o
+  CC       util/symbol-elf.o
+  CC       util/probe-file.o
+  CC       util/probe-event.o
+  CC       util/probe-finder.o
+  CC       util/dwarf-aux.o
+  CC       util/dwarf-regs.o
+  CC       util/unwind-libunwind-local.o
+  CC       util/unwind-libunwind.o
+  CC       util/data-convert-bt.o
+  CC       util/zlib.o
+  CC       util/lzma.o
+  CC       util/zstd.o
+  CC       util/cap.o
+  CC       util/demangle-java.o
+  CC       util/demangle-rust.o
+  CC       util/jitdump.o
+  CC       util/genelf.o
+  CC       util/genelf_debug.o
+  CC       util/perf-hooks.o
+  CC       util/bpf-event.o
+  FLEX     util/parse-events-flex.c
+  FLEX     util/pmu-flex.c
+  CC       util/pmu-bison.o
+  FLEX     util/expr-flex.c
+  CC       util/expr-bison.o
+  CC       util/expr.o
+  CC       util/parse-events.o
+  CC       util/parse-events-flex.o
+  CC       util/pmu.o
+  CC       util/pmu-flex.o
+  CC       util/expr-flex.o
+  LD       util/perf-in.o
+  LD       perf-in.o
+  LINK     perf
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-8.3-df1b3e5945185a1181d8ec87ce2dc5dbc09afc96/tools/perf'
+2021-02-10 21:29:31 cd /usr/src/perf_selftests-x86_64-rhel-8.3-df1b3e5945185a1181d8ec87ce2dc5dbc09afc96/tools/perf
+2021-02-10 21:29:31 mkdir -p /pkg
+2021-02-10 21:29:31 mkdir -p /kbuild/obj/consumer/x86_64-rhel-8.3
+2021-02-10 21:29:31 cp /pkg/linux/x86_64-rhel-8.3/gcc-9/df1b3e5945185a1181d8ec87ce2dc5dbc09afc96/vmlinux.xz /tmp
+2021-02-10 21:29:32 unxz -k /tmp/vmlinux.xz
+2021-02-10 21:29:35 cp /tmp/vmlinux /kbuild/obj/consumer/x86_64-rhel-8.3
+ignored_by_lkp: BPF filter
+ignored_by_lkp: LLVM search and compile
+ignored_by_lkp: Add vfs_getname probe to get syscall args filenames
+ignored_by_lkp: Use vfs_getname probe to get syscall args filenames
+ignored_by_lkp: Check open filename arg using perf trace + vfs_getname
+ignored_by_lkp: builtin clang support
+1d8ec87ce2dc5dbc09afc96/tools/perf/perf test 31
+31: Lookup mmap thread                                              : FAILED!
+2021-02-10 21:30:02 sudo /usr/src/perf_selftests-x86_64-rhel-8.3-df1b3e5945185a1181d8ec87ce2dc5dbc09afc96/tools/perf/perf test 32
+32: Share thread maps                                               : Ok
+2021-02-10 21:30:05 sudo /usr/src/perf_selftests-x86_64-rhel-8.3-df1b3e5945185a1181d8ec87ce2dc5dbc09afc96/tools/perf/perf test 63
+63: Test libpfm4 support                                            : Skip (not compiled in)
+2021-02-10 21:30:05 sudo /usr/src/perf_selftests-x86_64-rhel-8.3-df1b3e5945185a1181d8ec87ce2dc5dbc09afc96/tools/perf/perf test 64
+64: Test api io                                                     : Ok
+2021-02-10 21:30:05 sudo /usr/src/perf_selftests-x86_64-rhel-8.3-df1b3e5945185a1181d8ec87ce2dc5dbc09afc96/tools/perf/perf test 65
+65: maps__merge_in                                                  : FAILED!
+2021-02-10 21:30:05 sudo /usr/src/perf_selftests-x86_64-rhel-8.3-df1b3e5945185a1181d8ec87ce2dc5dbc09afc96/tools/perf/perf test 66
+66: Demangle Java                                                   : Ok
+2021-02-10 21:30:05 sudo /usr/src/perf_selftests-x86_64-rhel-8.3-df1b3e5945185a1181d8ec87ce2dc5dbc09afc96/tools/perf/perf test 67
+67: Parse and process metrics                                       : Ok
+2021-02-10 21:30:05 sudo /usr/src/perf_selftests-x86_64-rhel-8.3-df1b3e5945185a1181d8ec87ce2dc5dbc09afc96/tools/perf/perf test 68
+68: PE file support                                                 : FAILED!
+2021-02-10 21:30:05 sudo /usr/src/perf_selftests-x86_64-rhel-8.3-df1b3e5945185a1181d8ec87ce2dc5dbc09afc96/tools/perf/perf test 69
+69: Event expansion for cgroups                                     : Ok
+2021-02-10 21:30:05 sudo /usr/src/perf_selftests-x86_64-rhel-8.3-df1b3e5945185a1181d8ec87ce2dc5dbc09afc96/tools/perf/perf test 70
+70: Convert perf time to TSC                                        : FAILED!
+2021-02-10 21:30:05 sudo /usr/src/perf_selftests-x86_64-rhel-8.3-df1b3e5945185a1181d8ec87ce2dc5dbc09afc96/tools/perf/perf test 71
+71: x86 rdpmc                                                       : Ok
+2021-02-10 21:30:06 sudo /usr/src/perf_selftests-x86_64-rhel-8.3-df1b3e5945185a1181d8ec87ce2dc5dbc09afc96/tools/perf/perf test 72
+72: DWARF unwind                                                    : FAILED!
+2021-02-10 21:30:06 sudo /usr/src/perf_selftests-x86_64-rhel-8.3-df1b3e5945185a1181d8ec87ce2dc5dbc09afc96/tools/perf/perf test 73
+73: x86 instruction decoder - new instructions                      : Ok
+2021-02-10 21:30:06 sudo /usr/src/perf_selftests-x86_64-rhel-8.3-df1b3e5945185a1181d8ec87ce2dc5dbc09afc96/tools/perf/perf test 74
+74: Intel PT packet decoder                                         : Ok
+2021-02-10 21:30:06 sudo /usr/src/perf_selftests-x86_64-rhel-8.3-df1b3e5945185a1181d8ec87ce2dc5dbc09afc96/tools/perf/perf test 75
+75: x86 bp modify                                                   : Ok
+2021-02-10 21:30:06 sudo /usr/src/perf_selftests-x86_64-rhel-8.3-df1b3e5945185a1181d8ec87ce2dc5dbc09afc96/tools/perf/perf test 76
+76: probe libc's inet_pton & backtrace it with ping                 : Ok
+2021-02-10 21:30:08 sudo /usr/src/perf_selftests-x86_64-rhel-8.3-df1b3e5945185a1181d8ec87ce2dc5dbc09afc96/tools/perf/perf test 77
+77: Check Arm CoreSight trace data recording and synthesized samples: Skip
+2021-02-10 21:30:08 sudo /usr/src/perf_selftests-x86_64-rhel-8.3-df1b3e5945185a1181d8ec87ce2dc5dbc09afc96/tools/perf/perf test 79
+79: Zstd perf.data compression/decompression                        : FAILED!
+2021-02-10 21:30:10 sudo /usr/src/perf_selftests-x86_64-rhel-8.3-df1b3e5945185a1181d8ec87ce2dc5dbc09afc96/tools/perf/perf test 80
+80: perf stat metrics (shadow stat) test                            : Ok
+2021-02-10 21:30:12 sudo /usr/src/perf_selftests-x86_64-rhel-8.3-df1b3e5945185a1181d8ec87ce2dc5dbc09afc96/tools/perf/perf test 83
+83: build id cache operations                                       : FAILED!
