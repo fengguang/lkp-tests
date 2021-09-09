@@ -3,6 +3,7 @@
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
 require "#{LKP_SRC}/lib/string_ext"
+require "#{LKP_SRC}/lib/tests/stats"
 
 # The result line in input is in format:
 # [time] $type-torture:--- End of test: $result: arg=value arg=value ...
@@ -23,6 +24,7 @@ require "#{LKP_SRC}/lib/string_ext"
 # [  416.167904] spin_lock-torture:--- End of test: LOCK_HOTPLUG: nwriters_stress=4
 #  nreaders_stress=0 stat_interval=60 verbose=1 shuffle_interval=3 stutter=5 shutdown_secs=0 onoff_interval=3 onoff_holdoff=30
 
+stats = LKP::Stats.new
 result = 'unknown'
 type = 'unknown'
 cpuhotplug = false
@@ -39,5 +41,6 @@ while (line = STDIN.gets)
   end
 end
 
-stat = (cpuhotplug ? 'cpuhotplug-' : '') + type + '.' + result
-puts "#{stat}: 1"
+stats.add (cpuhotplug ? 'cpuhotplug-' : '') + type, result
+
+stats.dump('success' => 'pass', 'failure' => 'fail')
