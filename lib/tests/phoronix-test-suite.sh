@@ -140,7 +140,7 @@ reduce_runtimes()
 	local test=$1
 	local target=${environment_directory}/../test-profiles/pts/${test}/test-definition.xml
 	[ -f $target.bak ] || cp $target $target.bak
-	sed -i 's,<TimesToRun>3</TimesToRun>,<TimesToRun>2</TimesToRun>,' "$target"
+	sed -i 's,<TimesToRun>3</TimesToRun>,<TimesToRun>1</TimesToRun>,' "$target"
 }
 
 # fix issue: [NOTICE] Undefined: min_result in pts_test_result_parser:478
