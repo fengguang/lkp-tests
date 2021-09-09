@@ -3,8 +3,9 @@
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
 require "#{LKP_SRC}/lib/string_ext"
+require "#{LKP_SRC}/lib/tests/stats"
 
-stats = {}
+stats = LKP::Stats.new
 
 while (line = STDIN.gets)
   line = line.resolve_invalid_bytes
@@ -13,12 +14,10 @@ while (line = STDIN.gets)
     test_file = $2.strip
     test_content = $3.downcase
     test_status = $4.downcase
-    stats[test_file + '_' + test_content] = test_status
+    stats.add test_file + '_' + test_content, test_status
   when /^(ignored_by_lkp): (.*)/
-    stats[$2] = $1
+    stats.add $2, $1
   end
 end
 
-stats.each do |k, v|
-  puts k + '.' + v + ': 1'
-end
+stats.dump

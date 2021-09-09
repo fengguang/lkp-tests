@@ -1,0 +1,121 @@
+2021-04-06 02:58:43 mkdir -p /etc/avocado
+2021-04-06 02:58:43 mkdir -p /tmp/avocado/result
+2021-04-06 02:58:43 mkdir -p /tmp/avocado/data
+2021-04-06 02:58:44 sed -i /^SIMPLE/d /tmp/all_tests
+2021-04-06 02:58:44 split -l 20 /tmp/all_test -d -a 2 group_
+2021-04-06 02:58:44 avocado run --job-timeout 30
+Test Suite could not be create. No test references provided nor any other arguments resolved into tests
+2021-04-06 02:58:44 avocado run abort.py:AbortTest.test --job-timeout 30
+JOB ID     : b64b0dc1d7c3ea36c0db84c65f86608051d99a31
+JOB LOG    : /tmp/avocado/result/job-2021-04-06T02.58-b64b0dc/job.log
+ (1/1) abort.py:AbortTest.test:  ERROR: Test died without reporting the status. (2.04 s)
+RESULTS    : PASS 0 | ERROR 1 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0 | CANCEL 0
+JOB TIME   : 2.39 s
+2021-04-06 02:58:47 avocado run assert.py:Assert.test_assert_raises --job-timeout 30
+JOB ID     : d053baf5027058367c23c11017aca03756f1dc7b
+JOB LOG    : /tmp/avocado/result/job-2021-04-06T02.58-d053baf/job.log
+ (1/1) assert.py:Assert.test_assert_raises:  PASS (0.00 s)
+RESULTS    : PASS 1 | ERROR 0 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0 | CANCEL 0
+JOB TIME   : 0.34 s
+2021-04-06 02:58:48 avocado run assert.py:Assert.test_fails_to_raise --job-timeout 30
+JOB ID     : 04a468c6dcd1ff727f0f2c2246e63a84482e172d
+JOB LOG    : /tmp/avocado/result/job-2021-04-06T02.58-04a468c/job.log
+ (1/1) assert.py:Assert.test_fails_to_raise:  FAIL: MyException not raised (0.04 s)
+RESULTS    : PASS 0 | ERROR 0 | FAIL 1 | SKIP 0 | WARN 0 | INTERRUPT 0 | CANCEL 0
+JOB TIME   : 0.35 s
+2021-04-06 02:58:49 avocado run assets.py:Hello.test_gpg_signature --job-timeout 30
+JOB ID     : bff4b7cfff27638c9201f94648303aed6ee698f8
+JOB LOG    : /tmp/avocado/result/job-2021-04-06T02.58-bff4b7c/job.log
+ (1/1) assets.py:Hello.test_gpg_signature:  ERROR: Failed to fetch hello-2.9.tar.gz (<urlopen error ftp error: ConnectionRefusedError(111, 'Connection refused')>). (8.82 s)
+RESULTS    : PASS 0 | ERROR 1 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0 | CANCEL 0
+JOB TIME   : 9.20 s
+2021-04-06 02:58:59 avocado run assets.py:Hello.test_build_run --job-timeout 30
+JOB ID     : b26c50da89637a887a629330b9f7e9e61e87a4a2
+JOB LOG    : /tmp/avocado/result/job-2021-04-06T02.58-b26c50d/job.log
+ (1/1) assets.py:Hello.test_build_run:  ERROR: Failed to fetch hello-2.9.tar.gz (<urlopen error ftp error: ConnectionRefusedError(111, 'Connection refused')>). (0.73 s)
+RESULTS    : PASS 0 | ERROR 1 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0 | CANCEL 0
+JOB TIME   : 1.05 s
+2021-04-06 02:59:00 avocado run cabort.py:CAbort.test --job-timeout 30
+JOB ID     : f6c669505e54702ae5e21381735752a5599f22ba
+JOB LOG    : /tmp/avocado/result/job-2021-04-06T02.59-f6c6695/job.log
+ (1/1) cabort.py:CAbort.test:  PASS (0.09 s)
+RESULTS    : PASS 1 | ERROR 0 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0 | CANCEL 0
+JOB TIME   : 0.41 s
+2021-04-06 02:59:01 avocado run cancel_on_exception.py:CancelOnException.test --job-timeout 30
+JOB ID     : f09ec3eaa68cc1b8412bf5c5049200c74c0e03a9
+JOB LOG    : /tmp/avocado/result/job-2021-04-06T02.59-f09ec3e/job.log
+ (1/1) cancel_on_exception.py:CancelOnException.test:  CANCEL: RuntimeError() (0.00 s)
+RESULTS    : PASS 0 | ERROR 0 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0 | CANCEL 1
+JOB TIME   : 0.34 s
+2021-04-06 02:59:02 avocado run cancelonsetup.py:CancelOnSetupTest.test_wont_be_executed --job-timeout 30
+JOB ID     : 4b185b0b9b22c400a8e0d62c561e00155f30df17
+JOB LOG    : /tmp/avocado/result/job-2021-04-06T02.59-4b185b0/job.log
+ (1/1) cancelonsetup.py:CancelOnSetupTest.test_wont_be_executed:  CANCEL: This should end with CANCEL. (0.00 s)
+RESULTS    : PASS 0 | ERROR 0 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0 | CANCEL 1
+JOB TIME   : 0.32 s
+2021-04-06 02:59:03 avocado run canceltest.py:CancelTest.test --job-timeout 30
+JOB ID     : 458b09849ab3fb25ba4938a4e86f6bed82eedf99
+JOB LOG    : /tmp/avocado/result/job-2021-04-06T02.59-458b098/job.log
+ (1/1) canceltest.py:CancelTest.test:  CANCEL: This should end with CANCEL. (0.00 s)
+RESULTS    : PASS 0 | ERROR 0 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0 | CANCEL 1
+JOB TIME   : 0.33 s
+2021-04-06 02:59:04 avocado run cit_parameters.py:CitParameters.test --job-timeout 30
+JOB ID     : 76e9f138fe88bbbeb0cd8ee48dd722ea4f6ae16e
+JOB LOG    : /tmp/avocado/result/job-2021-04-06T02.59-76e9f13/job.log
+ (1/1) cit_parameters.py:CitParameters.test:  PASS (0.00 s)
+RESULTS    : PASS 1 | ERROR 0 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0 | CANCEL 0
+JOB TIME   : 0.34 s
+2021-04-06 02:59:04 avocado run datadir.py:DataDirTest.test --job-timeout 30
+JOB ID     : 124caefc2772ba9c73349bc552fb739df4e22a85
+JOB LOG    : /tmp/avocado/result/job-2021-04-06T02.59-124caef/job.log
+ (1/1) datadir.py:DataDirTest.test:  PASS (0.09 s)
+RESULTS    : PASS 1 | ERROR 0 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0 | CANCEL 0
+JOB TIME   : 0.41 s
+2021-04-06 02:59:05 avocado run doublefail.py:DoubleFail.test --job-timeout 30
+JOB ID     : 51cea3f2802e181aec7b95d77ffdea007bca56d1
+JOB LOG    : /tmp/avocado/result/job-2021-04-06T02.59-51cea3f/job.log
+ (1/1) doublefail.py:DoubleFail.test:  FAIL: This test is supposed to fail (0.04 s)
+RESULTS    : PASS 0 | ERROR 0 | FAIL 1 | SKIP 0 | WARN 0 | INTERRUPT 0 | CANCEL 0
+JOB TIME   : 0.41 s
+2021-04-06 02:59:06 avocado run doublefree.py:DoubleFreeTest.test --job-timeout 30
+JOB ID     : f3f2e8a4538b8ab8b43bbb91e760c71785c8f0a1
+JOB LOG    : /tmp/avocado/result/job-2021-04-06T02.59-f3f2e8a/job.log
+ (1/1) doublefree.py:DoubleFreeTest.test:  PASS (0.10 s)
+RESULTS    : PASS 1 | ERROR 0 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0 | CANCEL 0
+JOB TIME   : 0.44 s
+2021-04-06 02:59:07 avocado run doublefree_nasty.py:DoubleFreeTest.test --job-timeout 30
+JOB ID     : 59d69b07f656b24e4a74ecb811c43e8e1ec7d320
+JOB LOG    : /tmp/avocado/result/job-2021-04-06T02.59-59d69b0/job.log
+ (1/1) doublefree_nasty.py:DoubleFreeTest.test:  PASS (0.10 s)
+RESULTS    : PASS 1 | ERROR 0 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0 | CANCEL 0
+JOB TIME   : 0.47 s
+2021-04-06 02:59:08 avocado run errortest.py:ErrorTest.test --job-timeout 30
+JOB ID     : d02e4d994b8d5a6d8a73bb738bd572fb08de4fc9
+JOB LOG    : /tmp/avocado/result/job-2021-04-06T02.59-d02e4d9/job.log
+ (1/1) errortest.py:ErrorTest.test:  ERROR: This should end with ERROR. (0.04 s)
+RESULTS    : PASS 0 | ERROR 1 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0 | CANCEL 0
+JOB TIME   : 0.36 s
+2021-04-06 02:59:09 avocado run errortest_nasty.py:FailTest.test --job-timeout 30
+JOB ID     : 50958688c020ed54cfd2bcc6f540188bf1dafacd
+JOB LOG    : /tmp/avocado/result/job-2021-04-06T02.59-5095868/job.log
+ (1/1) errortest_nasty.py:FailTest.test:  ERROR: Nasty-string-like-exceptionž (0.03 s)
+RESULTS    : PASS 0 | ERROR 1 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0 | CANCEL 0
+JOB TIME   : 0.36 s
+2021-04-06 02:59:10 avocado run errortest_nasty2.py:FailTest.test --job-timeout 30
+JOB ID     : dc72dab2387f0776475be2ba912ea7cb31320457
+JOB LOG    : /tmp/avocado/result/job-2021-04-06T02.59-dc72dab/job.log
+ (1/1) errortest_nasty2.py:FailTest.test:  ERROR: Unable to get exception, check the traceback for details. (0.03 s)
+RESULTS    : PASS 0 | ERROR 1 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0 | CANCEL 0
+JOB TIME   : 0.28 s
+2021-04-06 02:59:11 avocado run errortest_nasty3.py:FailTest.test --job-timeout 30
+JOB ID     : 32ae5bb4aa1ae94df1a0500be89fb0fafb5e841f
+JOB LOG    : /tmp/avocado/result/job-2021-04-06T02.59-32ae5bb/job.log
+ (1/1) errortest_nasty3.py:FailTest.test:  ERROR: exceptions must derive from BaseException (0.03 s)
+RESULTS    : PASS 0 | ERROR 1 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0 | CANCEL 0
+JOB TIME   : 0.32 s
+2021-04-06 02:59:12 avocado run fail_on_exception.py:FailOnException.test --job-timeout 30
+JOB ID     : 5abe26f4071b3b6e8ba9862a97b189239b1a5975
+JOB LOG    : /tmp/avocado/result/job-2021-04-06T02.59-5abe26f/job.log
+ (1/1) fail_on_exception.py:FailOnException.test:  FAIL: ValueError('This raises a ValueError and should end as a FAIL') (0.03 s)
+RESULTS    : PASS 0 | ERROR 0 | FAIL 1 | SKIP 0 | WARN 0 | INTERRUPT 0 | CANCEL 0
+JOB TIME   : 0.27 s
