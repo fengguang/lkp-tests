@@ -209,7 +209,7 @@ def load_json(file, cache = false)
     rescue StandardError
       tempfile = file + '-bad'
       log_warn "Failed to load JSON file: #{file}"
-      log_warn "Kept corrupted JSON file for debugging: #{tempfile}"
+      log_debug "Kept corrupted JSON file for debugging: #{tempfile}"
       FileUtils.mv file, tempfile, force: true
       raise
     end
@@ -217,7 +217,7 @@ def load_json(file, cache = false)
   elsif File.exist? file.sub(/\.json(\.gz)?$/, '.yaml')
     load_yaml file.sub(/\.json(\.gz)?$/, '.yaml')
   else
-    log_warn "JSON/YAML file not exist: '#{file}'"
+    log_debug "JSON/YAML file not exist: '#{file}'"
     nil
   end
 end
