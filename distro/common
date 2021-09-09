@@ -77,7 +77,13 @@ share_debian_package()
 	[[ "$os" = "debian" ]] && return
 	grep -qFx "$benchmark" $LKP_SRC/distro/depends/share-debian || return
 
-	ln -sf ../../../../${os_mount}/debian/${os_arch}/sid/${benchmark}.cgz ${pack_to}/${benchmark}.cgz
+	date=$(date +"%Y%m%d")
+
+	wget -q -P ${pack_to} http://${INITRD_HTTP_HOST}:8800/initrd/deps/${os_mount}/debian/${os_arch}/sid/${benchmark}/${benchmark}.cgz
+	mv ${pack_to}/${benchmark}.cgz ${pack_to}/${benchmark}_${date}.cgz
+	upload_to_target_dir ${pack_to}
+
+	echo package installed to $pack_to/${benchmark}.cgz
 
 	exit 0
 }
