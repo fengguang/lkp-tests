@@ -94,8 +94,7 @@ def get_system_disk_info
   facter_string = %x(facter -j)
   facter_info = JSON.parse(facter_string)
   server_info = {}
-  lshw_info = JSON.parse(%x(lshw -json))
-  server_info['id'] = lshw_info['id']
+  server_info['id'] = ENV['HOSTNAME']
   server_info['manufacturer'] = facter_info['dmi']['manufacturer']
   server_info['product'] = facter_info['dmi']['product']
 
