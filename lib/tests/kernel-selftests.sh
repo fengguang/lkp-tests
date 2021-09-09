@@ -94,19 +94,6 @@ prepare_for_bpf()
 		# make sure the test_bpf.ko path for bpf test is right
 		log_cmd mount --bind $modules_dir/kernel/lib $linux_selftests_dir/lib || die
 
-		local linux_headers_dir=$(ls -d /usr/src/linux-headers*-bpf)
-		[[ $linux_headers_dir ]] || die "failed to find linux-headers package"
-
-		# prepare for bpf_testmod.ko
-		cp -r $linux_headers_dir/arch/*/include/generated $linux_selftests_dir/arch/x86/include/
-		cp -r $linux_headers_dir/include/generated $linux_selftests_dir/include
-		mkdir -p $linux_selftests_dir/include/config/ &&
-		cp $linux_headers_dir/include/config/auto.conf $linux_selftests_dir/include/config/
-		cp $linux_headers_dir/scripts/basic/fixdep $linux_selftests_dir/scripts/basic/
-		cp $linux_headers_dir/scripts/mod/modpost $linux_selftests_dir/scripts/mod
-		cp $linux_headers_dir/tools/objtool/objtool $linux_selftests_dir/tools/objtool/
-		cp $linux_headers_dir/scripts/module.lds $linux_selftests_dir/scripts/ 2>&1
-
 		# required by build bpf_testmod.ko
 		linux_headers_mod_dirs=(/usr/src/linux-headers*-bpf)
 		linux_headers_mod_dirs=$(realpath $linux_headers_mod_dirs)
