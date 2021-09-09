@@ -595,6 +595,7 @@ run_test()
 		interbench-*)
 			# produce big file to /opt/rootfs when test on cluster
 			[ "$LKP_LOCAL_RUN" = "1" ] || fixup_interbench $test || die "failed to fixup test $test"
+			reduce_runtimes $test || die "failed to reduce run times when run $test"
 			# Choose
 			# 1: Video
 			# 2: Burn
