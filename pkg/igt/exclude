@@ -21,3 +21,5 @@ gem_exec_flush
 gem_exec_capture
 # subtest cause oom
 gem_tiled_swapping
+# subtest cause panic (Kernel_panic-not_syncing:softlockup:hung_tasks)
+gem_exec_reloc
