@@ -83,7 +83,7 @@ share_debian_package()
 	mv ${pack_to}/${benchmark}.cgz ${pack_to}/${benchmark}_${date}.cgz
 	upload_to_target_dir ${pack_to}
 
-	echo package installed to $pack_to/${benchmark}.cgz
+	echo package uploaded to $pack_to/${benchmark}.cgz
 
 	exit 0
 }

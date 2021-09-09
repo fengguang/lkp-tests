@@ -120,7 +120,7 @@ pack()
 	chown .lkp	$pack_to/${BM_NAME}_$date.cgz \
 			$pack_to/${BM_NAME}.cgz		|| return
 
-	echo package installed to $pack_to/${benchmark}.cgz
+	echo package uploaded to $pack_to/${benchmark}.cgz
 }
 
 resolve_depends()

@@ -83,7 +83,7 @@ yum_pack()
 
 	ln -sf ${BM_NAME}_$date.cgz $pack_to/${BM_NAME}.cgz || return
 	chown .lkp $pack_to/${BM_NAME}_$date.cgz $pack_to/${BM_NAME}.cgz || return
-	echo package installed to $pack_to/${benchmark}.cgz
+	echo package uploaded to $pack_to/${benchmark}.cgz
 
 	ls $target_dir/*.rpm > $pack_to/.${BM_NAME}.packages
 

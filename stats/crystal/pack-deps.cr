@@ -4,7 +4,7 @@ stats_name = "fail: 1"
 
 while (line = STDIN.gets)
   case line
-  when /^package installed to \S+cgz$/
+  when /^package uploaded to \S+cgz$/
     stats_name = "pass: 1"
     break
   when /^empty PACKAGE_LIST for .*$/
