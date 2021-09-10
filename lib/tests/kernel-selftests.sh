@@ -162,7 +162,7 @@ check_kconfig()
 	while read line
 	do
 		# Avoid commentary on config
-		[[ "$line" =~ "CONFIG_" ]] || continue
+		[[ "$line" =~ "^CONFIG_" ]] || continue
 
 		# CONFIG_BPF_LSM may casuse kernel panic, disable it by default
 		# Failed to allocate manager object: No data available
