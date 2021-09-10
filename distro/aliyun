@@ -9,7 +9,7 @@ shopt -s nullglob
 support_repo_epel()
 {
 	if ! rpm -q epel-release >/dev/null; then
-		yum install -y -q epel-release
+		yum install -y epel-release >/dev/null 2>&1
 	fi
 }
 
