@@ -50,7 +50,7 @@ while (line = STDIN.gets)
     in_remove = true
     rpm_name = $1
     next
-  when /^remove test finished: #{rpm_name}$/
+  when "remove test finished: #{rpm_name}"
     in_remove = false
     rpm_name = ''
   end
