@@ -2,3 +2,6 @@
 fs_ext4:ext4-uninit-groups
 # soft_timeout
 dio-01:dio21
+# not need run
+syscalls-07:ftruncate04_64
+syscalls-02:ftruncate04
