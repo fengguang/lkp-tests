@@ -248,7 +248,11 @@ update_repo_mq()
 
 add_repo
 yum_repo_retry
-[ -n "$upstream_repo" ] && from_git || from_srpm
+if [ -n "$upstream_repo" ]; then
+	from_git
+else
+	from_srpm
+fi
 upload_spec_file
 build_rpm
 upload_rpm_pkg
