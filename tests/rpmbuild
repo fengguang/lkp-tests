@@ -121,6 +121,12 @@ from_srpm()
 
 init_workspace()
 {
+	[ -d /home/lkp ] ||
+		{
+			mkdir -m 700 /home/lkp
+			chown lkp /home/lkp
+			chgrp lkp /home/lkp
+		}
 	# generate workspace in ${HOME}
 	su lkp -c rpmdev-setuptree
 }
