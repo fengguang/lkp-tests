@@ -12,7 +12,22 @@ blktests:
   test:
   - block-group-00
   - block-group-01
+  - block-group-02
+  - block-group-03
+  - block-group-04
+  - block-group-06
+  - block-group-07
+  - block-group-08
+  - block-group-09
+  - block-group-10
+  - block-group-11
+  - block-group-12
+  - block-group-14
+  - block-group-15
   - block-010
+  # No I/O performed by psync
+  # - block-011
+  - block-027
 
 ---
 kernel_cmdline: "cgroup_no_v1=all"
