@@ -14,6 +14,8 @@ blktests:
   - nbd-group-01
   - zbd-group-00
   - zbd-group-01
+  - zbd-group-02
+  - zbd-group-03
   # - nvmeof-mp-group-00 # incompatible with CONFIG_NVME_MULTIPATH
   # - nvmeof-mp-group-01 # incompatible with CONFIG_NVME_MULTIPATH
   - srp-group-00
