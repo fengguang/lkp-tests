@@ -37,6 +37,9 @@ run_mutilate()
 	log_cmd mutilate -T "$master_threads" -s "$server" -t "$runtime" "$opt"
 }
 
+# Increase the number of files that the process allows to open,
+# to avoid `Too many open files` error when there are too many threads.
+ulimit -n 4096
 set_opt
 run_agent
 run_mutilate
