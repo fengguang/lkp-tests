@@ -18,6 +18,7 @@
 : "${compat_os:=budding-openeuler}"
 
 dest_dir="/rpm/upload/${os}-${os_version}/${compat_os}"
+rpmdev_dir="/home/lkp/rpmbuild"
 
 die()
 {
@@ -145,7 +146,7 @@ download_upstream_repo()
 		local dir="SOURCES"
 
 		echo "$pkgfile" | grep -q -E "\\.spec$" && dir="SPECS"
-		mv "$pkgfile" "/home/lkp/rpmbuild/${dir}/"
+		mv "$pkgfile" "${rpmdev_dir}/${dir}/"
 	done
 }
 
@@ -164,7 +165,7 @@ install_srpm()
 
 build_rpm()
 {
-	export spec_dir="/home/lkp/rpmbuild/SPECS"
+	export spec_dir="${rpmdev_dir}/SPECS"
 	[ -n "$package_name" ] &&
 		{
 			# HTTP is proxy cache friendly
@@ -192,17 +193,17 @@ build_rpm()
 
 show_rpm_files()
 {
-	find /home -type f -name "*.rpm" | grep -v src.rpm
+	find ${rpmdev_dir}/RPMS -type f -name "*.rpm"
 }
 
 show_src_rpm_files()
 {
-	find /home -type f -name "*.src.rpm"
+	find ${rpmdev_dir}/SRPMS -type f -name "*.src.rpm"
 }
 
 show_spec_file()
 {
-	find /home -type f -name "*.spec"
+	find ${rpmdev_dir}/SPECS -type f -name "*.spec"
 }
 
 upload_rpm_pkg()
