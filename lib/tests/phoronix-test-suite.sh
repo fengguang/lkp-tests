@@ -700,7 +700,7 @@ run_test()
 		sqlite-[0-9]*)
 			fixup_sqlite $test || die "failed to fixup test $test"
 			;;
-		cyclictest-*|parboil-*)
+		cyclictest-*|parboil-*|cp2k-*)
 			reduce_runtimes $test || die "failed to reduce run times when run $test"
 			;;
 		blogbench-*)
