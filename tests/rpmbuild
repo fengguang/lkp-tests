@@ -52,8 +52,8 @@ get_merge_info()
 	declare -a email
 	declare -A email_name_hash
 
-	name=(liping wangyong linjiaxin wufengguang)
-	email=(liping136@huawei.com wangyong187@huawei.com linjiaxin5@huawei.com wufengguang@huawei.com)
+	name=(liping wangyong linjiaxin)
+	email=(liping136@huawei.com wangyong187@huawei.com linjiaxin5@huawei.com)
 
 #	eval $(echo_commit_info "--no-color" "%ae" "$1" email)
 #	eval $(echo_commit_info "--no-color" "%ce" "$1" email)
