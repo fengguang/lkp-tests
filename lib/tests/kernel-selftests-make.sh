@@ -27,9 +27,12 @@ prepare_tests()
 
 make_group_tests()
 {
-	nr_procs=$(nproc)
-	nr_procs=${nr_procs:-2}
-	log_cmd make -j$nr_procs -C $subtest 2>&1
+	# Disable parallel make temporary since there is a bug in
+	# current parallel make -C kvm
+	# nr_procs=$(nproc)
+	# nr_procs=${nr_procs:-2}
+	# log_cmd make -j$nr_procs -C $subtest 2>&
+	log_cmd make -C $subtest 2>&1
 }
 
 # it will touch the Makefile, overwrite target
