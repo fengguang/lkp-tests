@@ -117,6 +117,7 @@ module Git
         return nil unless tag
 
         order = @base.release_tag_order(tag)
+        return nil unless order
         @base.release_tags_with_order.reverse_each do |tag, o|
           next if o <= order
 
