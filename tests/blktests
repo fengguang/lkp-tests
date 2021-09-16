@@ -32,9 +32,6 @@ set_env()
 	block-004)
 		log_eval export TIMEOUT=300
 		;;
-	block-027)
-		log_cmd mount -t cgroup2 none /sys/fs/cgroup
-		;;
 	*)
 		partition=${partitions%% *}
 		;;

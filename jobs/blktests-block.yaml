@@ -27,7 +27,6 @@ blktests:
   - block-010
   # No I/O performed by psync
   # - block-011
-  - block-027
 
 ---
 kernel_cmdline: "cgroup_no_v1=all"
