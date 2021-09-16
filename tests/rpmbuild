@@ -20,6 +20,7 @@
 dest_dir="/rpm/upload/${os}-${os_version}/${compat_os}"
 rpmdev_dir="/home/lkp/rpmbuild"
 
+declare -a reverse_depends
 die()
 {
 	rpmbuild_email "rpmbuild_failed"
@@ -32,6 +33,7 @@ from_git()
 	package_name=${upstream_repo##*/}
 	package_name=${package_name%%.git*}
 	rpm_dest="${dest_dir}/standard_${os_arch}/${os_arch}/Packages"
+	tmp_rpm_dest="/tmp${rpm_dest}/$id"
 	src_rpm_dest="${dest_dir}/standard_${os_arch}/source/Packages"
 
 	init_workspace
@@ -174,6 +176,7 @@ build_rpm()
 	startTime=$(date +%Y-%m-%d-%H:%M)
 	startTime_s=$(date +%s)
 	fix_on_distro
+	[ -n "$depend_upstream_repo" ] && localinstall_dependent_package
 	# Install build dependencies
 	yum-builddep -y "$spec_dir"/*.spec 2>&1 || die "failed to solve dependencies"
 	# Download tar.gz to default path ${HOME}/rpmbuild/SOURCE
@@ -191,6 +194,14 @@ build_rpm()
 	echo "RPM build START TIME: $startTime, END TIME: $endTime, Total duration: $sumTime seconds"
 }
 
+localinstall_dependent_package()
+{
+	yum install -y wget
+	mkdir /tmp/rpm
+	cd /tmp/rpm
+	wget -c -r -np -nd "http://${LKP_SERVER}:${SRV_HTTP_RPM_PORT:-20012}$depend_rpm_dest"
+	yum localinstall -y *.rpm
+}
 show_rpm_files()
 {
 	find ${rpmdev_dir}/RPMS -type f -name "*.rpm"
@@ -212,6 +223,7 @@ upload_rpm_pkg()
 	for rpm_file in $(show_rpm_files)
 	do
 		upload_one_curl ${rpm_file} ${rpm_dest}
+		upload_one_curl ${rpm_file} ${tmp_rpm_dest}
 	done
 
 	local src_rpm_file
@@ -253,6 +265,31 @@ update_repo_mq()
 		-d "{\"upload_rpms\": ["${full_list}"]}"
 }
 
+find_reverse_depends()
+{
+	local j
+	rpm_name=${upstream_repo##*/}
+	for rev_rpm in $(dnf repoquery --whatrequires "${rpm_name}")
+	do
+		rev_rpm=${rev_rpm%%:*}
+		rev_rpm=${rev_rpm%-*}
+		reverse_depends[j++]=$rev_rpm
+	done
+}
+
+notify_scheduler_submit()
+{
+	content='{"depend_job_id":"'${id}'","depend_rpm_dest":"'${tmp_rpm_dest}'","reverse_depends":"'${reverse_depends[@]}'"}'
+	curl -XPOST "http://$LKP_SERVER:$LKP_CGI_PORT/rpmbuild/submit_reverse_depend_jobs" -d "$content"
+}
+
+detect_reverse_depends()
+{
+	[ "$upstream_dir" != "openeuler" ] && return
+	find_reverse_depends
+	notify_scheduler_submit
+}
+
 add_repo
 yum_repo_retry
 if [ -n "$upstream_repo" ]; then
@@ -262,6 +299,8 @@ else
 fi
 upload_spec_file
 build_rpm
+[ -n "$depend_upstream_repo" ] && exit 0
+detect_reverse_depends
 upload_rpm_pkg
 update_repo_mq
 #[ -n "$upstream_commit" ] && rpmbuild_email "rpmbuild_success"
