@@ -319,29 +319,41 @@ class Job
   end
 
   def multi_args(hash)
-    jobs_array = []
-    hash.each { |key, value|
+    jobs_array = [hash.clone]
+    hash.each do |key, value|
       next unless key.is_a?(String)
 
+      if key =~ /^\w.*[\:|\|].*\w$/
+        jobs_array = load_join_args(jobs_array, key, value)
+      end
+    end
+
+    return jobs_array
+  end
+
+  def load_join_args(jobs_array, key, value)
+    _jobs_array = []
+
+    jobs_array.each do |job_hash|
       key_array = split_multi_args(key)
-      next unless key_array
 
       [value].flatten.each do |value|
         value_array = split_multi_args(value)
-        next unless value_array
-        next unless key_array.size == value_array.size
+        break unless value_array
+        break unless key_array.size == value_array.size
 
-        hash_job = hash.clone
+        _job_hash = job_hash.clone
         key_array.size.times do |i|
-          hash_job[key_array[i]] = value_array[i]
+          _job_hash[key_array[i]] = value_array[i]
         end
-        hash_job.delete(key)
+
+        _job_hash.delete(key)
         @overrides.delete(key)
-        jobs_array << hash_job
+        _jobs_array << _job_hash
       end
-    }
-    jobs_array = [hash] if jobs_array.empty?
-    return jobs_array
+    end
+    _jobs_array = jobs_array if _jobs_array.empty?
+    return _jobs_array
   end
 
   def delete_keys_from_spec(spec_file)
