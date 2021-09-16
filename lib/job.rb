@@ -271,6 +271,7 @@ class Job
         revise_hash(hash, load_include_yamls(@override_yamls), true) unless @override_yamls.empty?
         revise_hash(hash, @overrides, true) unless @overrides.empty?
 
+        hash.delete_if { |key, _| key.is_a?(String) && key.start_with?('#!') }
         @jobs.concat(multi_args(hash)) # return [hash] or [h1,h2]
       end
     rescue StandardError => e
@@ -322,10 +323,6 @@ class Job
     hash.each { |key, value|
       next unless key.is_a?(String)
 
-      if key.start_with?('#! ')
-        hash.delete(key)
-        next
-      end
       key_array = split_multi_args(key)
       next unless key_array
 
