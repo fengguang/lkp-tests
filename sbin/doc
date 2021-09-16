@@ -1,0 +1,93 @@
+#! /usr/bin/env ruby
+
+# frozen_string_literal: true
+
+require 'optparse'
+
+TO_DEVELOPER_INFO = {
+  'doc/job/*' => {
+    'description' => 'documentations to developer',
+    'link' => 'https://gitee.com/wu_fengguang/compass-ci/tree/master/doc/job'
+  }
+}.freeze
+
+TO_USER_INFO = {
+  'apply-account.md' => {
+    'description' => 'how to apply for an account',
+    'link' => 'https://gitee.com/wu_fengguang/compass-ci/blob/master/doc/manual/apply-account.md'
+  },
+  'borrow-machine.en.md' => {
+    'description' => 'how to borrow machine',
+    'link' => 'https://gitee.com/wu_fengguang/compass-ci/blob/master/doc/manual/borrow-machine.en.md'
+  },
+  'browse-results.en.md' => {
+    'description' => 'how to browse the results',
+    'link' => 'https://gitee.com/wu_fengguang/compass-ci/blob/master/doc/manual/browse-results.en.md'
+  },
+  'install-cci-client.md' => {
+    'description' => 'how to install cci client',
+    'link' => 'https://gitee.com/wu_fengguang/compass-ci/blob/master/doc/manual/install-cci-client.md'
+  },
+  'log-in-machine-debug.md' => {
+    'description' => 'how to debug tasks',
+    'link' => 'https://gitee.com/wu_fengguang/compass-ci/blob/master/doc/manual/log-in-machine-debug'
+  },
+  'submit-job.en.md' => {
+    'description' => 'how to submit job',
+    'link' => 'https://gitee.com/wu_fengguang/compass-ci/blob/master/doc/manual/submit-job.en.md'
+  },
+  'test-oss-project.en.md' => {
+    'description' => 'how to test open sourse projects',
+    'link' => 'https://gitee.com/wu_fengguang/compass-ci/blob/master/doc/manual/test-oss-project.en.md'
+  },
+  'write-PKGBUILD.en.md' => {
+    'description' => 'how to write PKGBUILD',
+    'link' => 'https://gitee.com/wu_fengguang/compass-ci/tree/master/doc/manual/write-PKGBUILD.en.md'
+  },
+  'add-testcase.md' => {
+    'description' => 'how to add test cases',
+    'link' => 'https://gitee.com/wu_fengguang/lkp-tests/blob/master/doc/add-testcase.md'
+  }
+}.freeze
+
+def show_command(command_info)
+  command_info.each do |command, info|
+    puts "  #{command}" + ' ' * (33 - command.size) + info['description']
+    puts '    link: ' + info['link']
+  end
+end
+
+options = OptionParser.new do |opts|
+  opts.banner = 'official website: https://compass-ci.openeuler.org'
+  opts.separator ''
+  opts.separator 'Usage: doc [options]'
+  opts.separator 'options:'
+  opts.on('-a', '--all', 'get all documentations') do
+    puts 'documentations for user:'
+    show_command(TO_USER_INFO)
+    puts ''
+    puts 'documentations for developer:'
+    show_command(TO_DEVELOPER_INFO)
+  end
+
+  opts.on('-u', '--user', 'get documentations for user') do
+    puts 'documentations for user:'
+    show_command(TO_USER_INFO)
+  end
+
+  opts.on('-d', '--developer', 'get documentations for developer') do
+    puts 'documentations for developer:'
+    show_command(TO_DEVELOPER_INFO)
+  end
+
+  opts.on('-h', '--help', 'prints this help') do
+    puts(options)
+  end
+end
+
+if ARGV.size.zero?
+  puts(options)
+  exit
+end
+
+options.parse!(ARGV)

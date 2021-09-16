@@ -27,6 +27,11 @@ COMMAND_INFO = {
     'profile' => 'return current testbox right now',
     'path' => "#{LKP_SRC}/sbin/return",
     'type' => 'internal'
+  },
+  'doc' => {
+    'profile' => 'display the documentations',
+    'path' => "#{LKP_SRC}/sbin/doc",
+    'type' => 'external'
   }
 }.freeze
 
