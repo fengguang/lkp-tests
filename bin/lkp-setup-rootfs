@@ -162,10 +162,20 @@ install_goproxy()
 	echo "GOPROXY=https://goproxy.io,direct" >> /root/.config/go/env
 }
 
+install_http_proxy()
+{
+	local shell_profile=$(shell_profile)
+	[ -n "$HTTP_PROXY" ]  && echo "export http_proxy=$HTTP_PROXY"   >> "$shell_profile"
+	[ -n "$HTTPS_PROXY" ] && echo "export https_proxy=$HTTPS_PROXY" >> "$shell_profile"
+	[ -n "$NO_PROXY" ]    && echo "export no_proxy=$NO_PROXY"       >> "$shell_profile"
+	source "$shell_profile"
+}
+
 install_proxy()
 {
 	modify_gem_source || return
 
+	install_http_proxy
 	install_docker_proxy
 
 	install_goproxy || return
