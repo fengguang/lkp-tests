@@ -1,2 +1,3 @@
 need_kconfig:
 - SECURITY_APPARMOR: y
+- FS_VERITY: y, v5.4-rc1
