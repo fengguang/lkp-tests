@@ -46,6 +46,30 @@ while (line = STDIN.gets)
     puts "obsoletes.element: #{del_whitespace($1)} #{del_whitespace($3)} #{del_whitespace($2)}"
     puts "#{del_whitespace($1)}_obsoletes_#{del_whitespace($2)}_provided_by_#{del_whitespace($3)}: 1"
 
+  # rpm install result, rpm name: docker-engine, state: pass
+  when /rpm install result, rpm name: (.*), state: (.*)/
+    puts "#{del_whitespace($1)}_install.#{del_whitespace($2)}: 1"
+
+  # query group result, rpm name: docker-engine, group: Tools/Docker
+  when /query group result, rpm name: (.*), group: (.*)/
+    puts "#{del_whitespace($1)}_group_.#{del_whitespace($2)}: 1"
+
+  # query libs result, rpm name: docker-engine, libs: true
+  when /query libs result, rpm name: (.*), libs: (.*)/
+    puts "#{del_whitespace($1)}_libs_.#{del_whitespace($2)}: 1"
+
+  # run cmd result rpm name: docker-engine, cmd: /usr/bin/containerd, state: pass
+  when /run cmd help result, rpm name: (.*), cmd: (.*), state: (.*)/
+    puts "#{del_whitespace($1)}_cmd_#{del_whitespace($2)}.#{del_whitespace($3)}: 1"
+
+  # run service action result, rpm name: docker-engine, service: docker.service, action: start, state: pass
+  when /run service action result, rpm name: (.*), service: (.*), action: (.*), state: (.*)/
+    puts "#{del_whitespace($1)}_service_#{del_whitespace($2)}_#{del_whitespace($3)}.#{del_whitespace($4)}: 1"
+
+  # rpm uninstall result, rpm name: docker-engine, state: pass
+  when /rpm uninstall result, rpm name: (.*), state: (.*)/
+    puts "#{del_whitespace($1)}_uninstall.#{del_whitespace($2)}: 1"
+
   when /^start remove test: (.*)$/
     in_remove = true
     rpm_name = $1

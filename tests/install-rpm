@@ -27,14 +27,108 @@ install_rpm()
 	echo "install success: ${rpm_name[@]}"
 }
 
+install_rpms()
+{
+	local installed_rpms=()
+
+	log_info "Starting install test: yum install -y ${rpm_name[@]}"
+	for i in "${rpm_name[@]}"
+	do
+		a=$(yum install -y "$i" 2>&1)
+		echo "$a"
+		echo "$a" | grep -q "Complete!"
+		if [ $? -eq 0 ]; then
+			echo "rpm install result, rpm name: $i, state: pass"
+			echo "$a" | grep -q "Nothing to do." && continue
+			local index=${#installed_rpms[@]}
+			installed_rpms[$index]=$i
+		else
+			echo "rpm install result, rpm name: $i, state: fail"
+		fi
+	done
+
+	rpm_name=("${installed_rpms[@]}")
+}
+
+query_group()
+{
+	for i in "${rpm_name[@]}"
+	do
+		local group=$(repoquery --installed --qf '%{group}' $i | head -n 2 | tail -n 1)
+		echo "query group result, rpm name: $i, group: $group"
+
+	done
+}
+
+query_libs()
+{
+	for i in "${rpm_name[@]}"
+	do
+		local lib=$(repoquery -l $i | grep -E "\.so$|\.a$")
+		if [ $? -eq 0 ]; then
+			echo "query libs result, rpm name: $i, libs: true"
+		else
+			echo "query libs result, rpm name: $i, libs: false"
+		fi
+	done
+}
+
+run_cmd()
+{
+	log_info "Starting run cmd"
+	for i in "${rpm_name[@]}"
+	do
+		local cmd_list=($(rpm -ql $i | grep -E '/usr/s?bin'))
+                [ -z "${cmd_list}" ] || {
+                        for j in "${cmd_list[@]}"
+                        do
+				strings $j | grep -- --help >/dev/null 2>&1
+				if [ $? -eq 0 ]; then
+					timeout 5 $j --help >/dev/null 2>&1
+					if [ $? -eq 0 ]; then
+						echo "run cmd help result, rpm name: $i, cmd: $j, state: pass"
+					else
+						echo "run cmd help result, rpm name: $i, cmd: $j, state: fail"
+					fi
+				fi
+                        done
+                }
+        done
+}
+
+run_service()
+{
+	log_info "Starting run service start/status/stop"
+	for i in "${rpm_name[@]}"
+	do
+		local service_list=($(rpm -ql $i | grep -E "\.service$" | awk -F "/" '{print $NF}'))
+                [ -z "${service_list}" ] || {
+                        for j in "${service_list[@]}"
+                        do
+				for k in "start" "status" "stop"
+				do
+					timeout 10 systemctl ${k} ${j} >/dev/null 2>&1
+					if [ $? -ne 0 ]; then
+						echo "run service action result, rpm name: $i, service: $j, action: $k, state: fail"
+					else
+						echo "run service action result, rpm name: $i, service: $j, action: $k, state: pass"
+					fi
+				done
+                        done
+                }
+        done
+
+}
+
+
 ldd_test()
 {
 	log_info "Starting ldd test"
-	for i in $(rpm -qa ${rpm_name[@]})
+	for i in "${rpm_name[@]}"
 	do
-		ldd_list=$(rpm -ql $i | awk -F'/' '$3 ~ /bin|sbin|lib|lib64/')
+		local ldd_list=$(rpm -ql $i | awk -F'/' '$3 ~ /bin|sbin|lib|lib64/')
 		[ -z "${ldd_list}" ] || {
-			for i in ${ldd_list[@]}
+			for i in "${ldd_list[@]}"
 			do
 				[[ -f "$i" && -x "$i" ]] && {
 					echo "ldd for $i"
@@ -47,17 +141,36 @@ ldd_test()
 
 remove_rpm()
 {
-	for i in ${rpm_name[@]}
+	for i in "${rpm_name[@]}"
 	do
-		rpm_full_name=$(repoquery --installed --queryformat '%{name}-%{evr}.%{arch}' $i 2>/dev/null)
+		local rpm_full_name=$(repoquery --installed --queryformat '%{name}-%{evr}.%{arch}' $i 2>/dev/null)
 		echo "start remove test: ${rpm_full_name}"
 		yum remove -y "$i" 2>&1
 		echo "remove test finished: ${rpm_full_name}"
 	done
 }
 
+remove_rpms()
+{
+	log_info "starting remove test"
+	for i in "${rpm_name[@]}"
+	do
+		local rpm_full_name=$(repoquery --installed --queryformat '%{name}-%{evr}.%{arch}' $i 2>/dev/null)
+		yum remove -y "$i" 2>&1
+		if [ $? -eq 0 ]; then
+			echo "rpm uninstall result, rpm name: $i, state: pass"
+		else
+			echo "rpm uninstall result, rpm name: $i, state: fail"
+		fi
+	done
+}
+
 distro_install_depends install-rpm
 add_repo
-install_rpm
+install_rpms
+query_group
+query_libs
+run_cmd
+run_service
 ldd_test
-remove_rpm
+remove_rpms
