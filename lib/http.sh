@@ -74,6 +74,12 @@ set_job_state()
 	jobfile_append_var "job_state=$1"
 }
 
+set_job_stage()
+{
+	[ -n "$1" ] || return
+	http_get_cgi "cgi-bin/set-job-stage?job_stage=$1&timeout=$2&job_id=$id"
+}
+
 set_tbox_wtmp()
 {
 	local tbox_state="$1"
