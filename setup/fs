@@ -114,6 +114,12 @@ case $fs in
 		mount_local_nfs $mount_points
 		[ "${0#*fs1}" != "$0" ] && mount_points=
 		;;
+	cifs)
+		start_smbd $mount_points
+		mount_local_cifs $mount_points
+		[ "${0#*fs1}" != "$0" ] && mount_points=
+		;;
+
 
 	tmpfs)
 		: ${nr_tmpfs:=1}
@@ -149,5 +155,5 @@ cat >> $TMP/env.yaml <<EOF
 
 # setup/fs
 fs: $fs
-mount_points: $nfs_mount_points $mount_points
+mount_points: $nfs_mount_points $mount_points $cifs_mount_points
 EOF

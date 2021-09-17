@@ -105,6 +105,33 @@ EOF
 	systemctl restart smbd
 }
 
+mount_local_cifs()
+{
+	local dir
+	for dir
+	do
+		local mnt=/cifs/$(basename $dir)
+		local dev=//localhost$dir
+		log_cmd mkdir -p $mnt
+		log_cmd timeout 5m mount -t $fs -o user=root,password=pass $dev $mnt
+		local errno=$?
+		case $errno in
+			0)
+				echo "mount cifs success"
+				;;
+			124)
+				echo "mount cifs timeout" >&2
+				exit $errno
+				;;
+			*)
+				echo "mount cifs failed"
+				exit $errno
+				;;
+		esac
+		cifs_mount_points="${cifs_mount_points}$mnt "
+	done
+}
+
 mount_local_nfs()
 {
 	local dir
