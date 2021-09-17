@@ -63,6 +63,7 @@ if [ -n "$nr_instances" ]; then
 	while [ "$i" -le "$nr_instances" ]; do
 		for cg in $cgroups; do
 			export instance_id=$i
+			export instance_cgroup=$cg
 			setup_cgroup "$cg"
 			numa_bind=$(numa_node_binding "$i")
 			$time_prefix $exec_prefix $numa_bind $program_dir/$program "$@" > "$TMP_RESULT_ROOT/log-$program/$i" &
