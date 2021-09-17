@@ -59,6 +59,7 @@ if [ -n "$nr_instances" ]; then
 	rm -rf $TMP_RESULT_ROOT/log-$program
 	mkdir -p $TMP_RESULT_ROOT/log-$program
 	(
+	oexec_prefix=$exec_prefix
 	i=1
 	while [ "$i" -le "$nr_instances" ]; do
 		for cg in $cgroups; do
@@ -66,7 +67,8 @@ if [ -n "$nr_instances" ]; then
 			export instance_cgroup=$cg
 			setup_cgroup "$cg"
 			numa_bind=$(numa_node_binding "$i")
-			$time_prefix $exec_prefix $numa_bind $program_dir/$program "$@" > "$TMP_RESULT_ROOT/log-$program/$i" &
+			[ -n "$numa_bind" ] && exec_prefix="$oexec_prefix $numa_bind"
+			$time_prefix $exec_prefix $program_dir/$program "$@" > "$TMP_RESULT_ROOT/log-$program/$i" &
 			i=$((i+1))
 			[ "$i" -gt "$nr_instances" ] && break
 		done
