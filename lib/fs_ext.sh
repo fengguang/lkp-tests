@@ -89,6 +89,22 @@ start_nfsd()
 	}
 }
 
+start_smbd()
+{
+	# setup smb.conf
+	cat >> /etc/samba/smb.conf <<EOF
+[fs]
+   path = /fs
+   comment = lkp cifs
+   browseable = yes
+   read only = no
+EOF
+	# setup passwd
+	(echo "pass"; echo "pass") | smbpasswd -s -a $(whoami)
+	# restart service
+	systemctl restart smbd
+}
+
 mount_local_nfs()
 {
 	local dir
