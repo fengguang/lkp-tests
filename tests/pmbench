@@ -27,7 +27,8 @@ set_opt()
 {
 	opt=
 	if [ -n "$total_setsize" ] && [ -z "$setsize" ]; then
-		setsize=$((total_setsize / nr_processes))
+		nr_inst=${nr_instances:-1}
+		setsize=$((total_setsize / nr_inst / nr_processes))
 	fi
 	if [ -n "$setsize" ]; then
 		opt="${opt} -s$((setsize/1024/1024))"
