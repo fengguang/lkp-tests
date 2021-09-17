@@ -1,3 +1,8 @@
 need_kconfig:
+% if ___.class == "security"
 - SECURITY_APPARMOR: y
+% elsif ___.test == "verity"
 - FS_VERITY: y, v5.4-rc1
+% elsif ___.test == "dccp"
+- IP_DCCP: y
+% end
