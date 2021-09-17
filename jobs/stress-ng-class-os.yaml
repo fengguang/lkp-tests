@@ -22,7 +22,6 @@ stress-ng:
   - bad-altstack
   - bigheap
 #  - binderfs
-  - brk
   - cap
   - chattr
   - chdir
@@ -197,3 +196,13 @@ stress-ng:
   - yield
   - zero
   - zombie
+
+---
+oom-killer:
+  ignored: 1
+
+stress-ng:
+  class:
+  - os
+  test:
+  - brk
