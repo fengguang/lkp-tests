@@ -328,7 +328,28 @@ class Job
       end
     end
 
+    hash.each do |key, value|
+      next unless key.is_a?(String)
+
+      if %w(os os_arch os_version arch os_mount).include?(key) && value.is_a?(Array)
+        jobs_array = load_array_args(jobs_array, key, value)
+      end
+    end
     return jobs_array
+  end
+
+  def load_array_args(jobs_array, key, value)
+    _jobs_array = []
+
+    jobs_array.each do |job_hash|
+      value.each do |v|
+        _job_hash = job_hash.clone
+        _job_hash[key] = v
+        @overrides.delete(key)
+        _jobs_array << _job_hash
+      end
+    end
+    return _jobs_array
   end
 
   def load_join_args(jobs_array, key, value)
