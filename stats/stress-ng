@@ -9,6 +9,11 @@ require "#{LKP_SRC}/lib/string_ext"
 while (line = STDIN.gets)
   line = line.resolve_invalid_bytes
 
+  if line =~ /(this stressor is not implemented on this system)/ || line =~ /(No stress workers invoked)/
+    log_warn $1
+    exit 1
+  end
+
   # stress-ng: info:  [2694] stressor       bogo ops real time  usr time  sys time   bogo ops/s   bogo ops/s
   # stress-ng: info:  [2694]                           (secs)    (secs)    (secs)   (real time) (usr+sys time)
   # stress-ng: info:  [2694] atomic          1060503     10.00    928.24      0.01    106049.80      1142.48
