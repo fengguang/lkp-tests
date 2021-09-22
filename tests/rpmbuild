@@ -269,7 +269,7 @@ find_reverse_depends()
 {
 	local j
 	rpm_name=${upstream_repo##*/}
-	for rev_rpm in $(dnf repoquery --whatrequires "${rpm_name}")
+	for rev_rpm in $(dnf repoquery -q --whatrequires "${rpm_name}")
 	do
 		rev_rpm=${rev_rpm%%:*}
 		rev_rpm=${rev_rpm%-*}
@@ -280,7 +280,7 @@ find_reverse_depends()
 notify_scheduler_submit()
 {
 	content='{"depend_job_id":"'${id}'","depend_rpm_dest":"'${tmp_rpm_dest}'","reverse_depends":"'${reverse_depends[@]}'"}'
-	curl -XPOST "http://$LKP_SERVER:$LKP_CGI_PORT/rpmbuild/submit_reverse_depend_jobs" -d "$content"
+	curl -sS -XPOST "http://$LKP_SERVER:$LKP_CGI_PORT/rpmbuild/submit_reverse_depend_jobs" -d "$content"
 }
 
 detect_reverse_depends()
