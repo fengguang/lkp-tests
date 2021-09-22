@@ -33,7 +33,9 @@ template: kvm
 nr_node: 1
 nr_cpu: 2
 memory: 8G
-hdd_partitions: "/dev/vda"
+hdd_partitions: "/dev/vdb"
+rootfs_disk:
+- "/dev/vda"
 arch: aarch64
 kmsg: 
 boot-time: 
@@ -50,7 +52,8 @@ meminfo:
 slabinfo: 
 interrupts: 
 lock_stat: 
-perf-sched: 
+perf-sched:
+  lite_mode: 1
 softirqs: 
 bdi_dev_mapping: 
 diskstats: 
@@ -60,10 +63,11 @@ cpufreq-stats:
 sched_debug: 
 perf-stat: 
 mpstat: 
-perf-profile: 
+perf-profile:
+  lite_mode: 1
 cpufreq_governor: 
 need_kconfig:
-- CONFIG_KVM_GUEST=y
+- KVM_GUEST: y
 pp:
   numactl:
     all: 1

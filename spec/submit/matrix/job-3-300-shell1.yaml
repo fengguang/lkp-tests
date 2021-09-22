@@ -12,11 +12,13 @@ template: kvm
 nr_node: 1
 nr_cpu: 2
 memory: 8G
-hdd_partitions: "/dev/vda"
+hdd_partitions: "/dev/vdb"
+rootfs_disk:
+- "/dev/vda"
 arch: aarch64
 cpufreq_governor: 
 need_kconfig:
-- CONFIG_KVM_GUEST=y
+- KVM_GUEST: y
 pp:
   unixbench:
     runtime: 300
