@@ -104,6 +104,7 @@ prepare_for_bpf()
 prepare_for_test()
 {
 	export PATH=/lkp/benchmarks/kernel-selftests/kernel-selftests/iproute2-next/sbin:$PATH
+	export PATH=$BENCHMARK_ROOT/kernel-selftests/kernel-selftests/dropwatch/bin:$PATH
 	# workaround hugetlbfstest.c open_file() error
 	mkdir -p /hugepages
 
