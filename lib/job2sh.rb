@@ -371,6 +371,7 @@ class Job2sh < Job
     job ||= (@jobx || @job).clone
 
     if state == 'on_fail' && job.include?('on_fail')
+      @job['on_fail_timeout'] = job['on_fail']['sleep']
 
       @cur_func = :run_job
 

@@ -77,7 +77,11 @@ set_job_state()
 set_job_stage()
 {
 	[ -n "$1" ] || return
-	http_get_cgi "cgi-bin/set-job-stage?job_stage=$1&timeout=$2&job_id=$id"
+
+	url="cgi-bin/set-job-stage?job_stage=$1&job_id=$id"
+	[ -n "$2" ] && url="${url}&timeout=$2"
+
+	http_get_cgi $url
 }
 
 set_tbox_wtmp()
