@@ -4,4 +4,4 @@ owner: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 test_old_branches: .*
 notify_build_success_branch: .*
 no_merge_branch: .*
-eol_branch_pattern: (linux-[23].+.y|linux-4.[12]?[01235678].y|linux-5.[01235678].y)
+eol_branch_pattern: (linux-[23].+.y|linux-4.[12]?[01235678].y|linux-5.[012356789].y|linux-5.1[123].y)
