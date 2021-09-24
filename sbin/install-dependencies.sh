@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SCRIPT_DIR=$(dirname $(realpath $0))
+SCRIPT_DIR=$(cd $(dirname $0); pwd -P)
 PROJECT_DIR=$(dirname $SCRIPT_DIR)
 
 . $PROJECT_DIR/lib/env.sh
