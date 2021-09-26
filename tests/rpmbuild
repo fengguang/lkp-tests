@@ -2,6 +2,7 @@
 # - upstream_repo
 # - arch
 # upstream_commit
+# upstream_branch
 # custom_repo_name
 # custom_repo_addr
 # repo_addr
@@ -138,10 +139,15 @@ init_workspace()
 download_upstream_repo()
 {
 	local url="git://${GIT_SERVER}/${upstream_dir}/${upstream_repo}"
+	local ref=""
 
 	git clone -q "$url" 2>/dev/null || git clone -q "$upstream_repo" || die "clone git repo ${package_name} failed: $url"
 	cd "$package_name" || exit
-	[ -n "${upstream_commit}" ] && git checkout -q "${upstream_commit}"
+	[ -n "${upstream_branch}" ] && ref="${upstream_branch}"
+	[ -n "${upstream_commit}" ] && ref="${upstream_commit}"
+	[ -n "${ref}" ] && {
+		git checkout -q "${ref}" || die "checkout git repo ${package_name} to ${ref} failed"
+	}
 	filelist=($(git ls-files))
 
 	for pkgfile in "${filelist[@]}"
