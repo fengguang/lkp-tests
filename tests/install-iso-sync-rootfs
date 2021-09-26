@@ -56,7 +56,8 @@ sync_rootfs_to_nfs_server()
 	mount -t nfs ${NFS_SERVER_HOST}:${NFS_ROOT_DIR}/${iso_os}/${iso_arch}/${iso_version}-iso-${group_id} ${nfs_rootfs_mount_point} || die "mount nfs rootfs failed"
 
 	# activate the lvm
-	vgchange -ay
+	vgscan --cache
+	vgchange -ay || vgchange -ay $VG_NAME
 
 	# mount local logical volume
 	local iso_version=${iso_version//-/_}

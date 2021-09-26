@@ -78,7 +78,8 @@ prepare_lv()
 	local iso_version=${iso_version//-/_}
 
 	# activate lvm
-	vgchange -ay
+	vgscan --cache
+	vgchange -ay || vgchange -ay $VG_NAME
 
 	# VG_NAME defines in job.yaml
 	export VG_NAME

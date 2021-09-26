@@ -589,6 +589,10 @@ mount_rootfs()
 		local one_disk
 		local vg_name=os
 
+		# activate lvm
+		vgscan --cache
+		vgchange -ay || vgchange -ay $vg_name
+
 		for one_disk in ${rootfs_disk}
 		do
 			# wait for the machine to load the disk
