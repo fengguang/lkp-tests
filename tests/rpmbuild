@@ -154,7 +154,7 @@ download_upstream_repo()
 	do
 		local dir="SOURCES"
 
-		echo "$pkgfile" | grep -q -E "\\.spec$" && dir="SPECS"
+		echo "$pkgfile" | grep -v "\/" | grep -q -E "\\.spec$" && dir="SPECS"
 		mv "$pkgfile" "${rpmdev_dir}/${dir}/"
 	done
 }
