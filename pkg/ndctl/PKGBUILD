@@ -9,7 +9,6 @@ md5sums=('SKIP')
 
 build() {
 	cd "$srcdir/${pkgname}"
-	git checkout origin/pending
 	./autogen.sh
 	./configure CFLAGS='-g -O0' --enable-test --disable-docs --prefix=/lkp/benchmarks
 	make
