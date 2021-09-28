@@ -2,6 +2,10 @@ suite: unixbench
 
 runtime: 300s
 
+os:
+        - openeuler
+        - centos
+
 nr_task|test:
         - 1|whetstone-double
         - 3|shell1
