@@ -230,7 +230,7 @@ upload_rpm_pkg()
 	for rpm_file in $(show_rpm_files)
 	do
 		upload_one_curl ${rpm_file} ${rpm_dest}
-		upload_one_curl ${rpm_file} ${tmp_rpm_dest}
+		[ -n "$upstream_repo" ] && upload_one_curl ${rpm_file} ${tmp_rpm_dest}
 	done
 
 	local src_rpm_file
