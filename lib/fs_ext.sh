@@ -158,6 +158,7 @@ mount_local_nfs()
 		esac
 		log_cmd touch $mnt/wait_for_nfs_grace_period
 		nfs_mount_points="${nfs_mount_points}$mnt "
+		nfs_export_paths="${nfs_export_paths}$dir "
 	done
 }
 
