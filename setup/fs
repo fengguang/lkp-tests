@@ -1,5 +1,6 @@
 #!/bin/sh
 # - fs
+# - fs_type
 # - mkfs
 # - mount
 # - mount_option
@@ -23,13 +24,23 @@
 #         mount_to:
 #         - /mnt/sda
 #         - /mnt/sdb
+
 # mount_bind will mount only the first mount point of mount_to array, and mount all the rest mount points of mount_to array bind to the first mount point,
 # if $mount_bind=true, will call function mount_bind() in this script,
 # if $mount_bind is not true or not exist, will not call function mount_bind(), just mount the every disk to every mount point.
+
 # This script supports 2 NFS mount schemes:
 # fs1: followup scripts will see NFS mount_points only
 # fs2: followup scripts will see NFS mount_points as well as original mount_points
 
+# fs_type can avoid $LKP_SRC/params/fs parse
+# fs1:
+#    fs_type:
+#    - ext4
+#    - xfs
+# mount_to: /mnt/sda
+
+: ${fs:=$fs_type}
 [ -n "$fs" ] || exit 0
 
 . $LKP_SRC/lib/reproduce-log.sh
