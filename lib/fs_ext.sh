@@ -129,6 +129,7 @@ mount_local_cifs()
 				;;
 		esac
 		cifs_mount_points="${cifs_mount_points}$mnt "
+		cifs_server_paths="${cifs_server_paths}$dev "
 	done
 }
 
