@@ -36,4 +36,12 @@ run_cifsdbench()
 	log_cmd dbench -B smb --smb-share="$cifs_server_paths" --smb-user=root%pass --loadfile=/usr/local/share/smb_2.txt -t 60 --skip-cleanup $nr_threads
 }
 
+run_nfsdbench()
+{
+	# https://dbench.samba.org/web/nfs-loadfiles.html
+	# ./dbench -B nfs --server=10.0.0.21 --export=/gpfs/nfsshare --protocol=tcp -c tmp.loadfile  -t 20 3 2>/dev/null
+	log_cmd umount $nfs_mount_points
+	log_cmd dbench -B nfs --server=127.0.0.1 --export=/export"$nfs_export_paths" --protocol=tcp --loadfile=/usr/local/share/nfs_2.txt -t 60 $nr_threads
+}
+
 run_"$fs2"dbench
