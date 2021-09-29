@@ -13,7 +13,7 @@ build()
 	cp -a loadfiles/client.txt /usr/local/share/
 
 	./autogen.sh || return
-	./configure || return
+	./configure CFLAGS=$(pkg-config --cflags smbclient) || return
 	# Fix libnfs.c:27:39: error: intptr_t undeclared (first use in this function); did you mean in_port_t?
 	sed -i '/#include "nfs.h/a #include <stdint.h>' libnfs.c
 	make dbench || return
