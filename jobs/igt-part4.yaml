@@ -1,0 +1,19 @@
+suite: igt
+testcase: igt
+category: functional
+
+# this yaml is used to customize the tests
+# test is group's subtest, could be found by "build/tests/$testcase --list-subtest"
+igt:
+  - group: gem_exec_reloc
+    test:
+      - basic-cpu
+      - basic-gtt
+      - basic-wc
+      - basic-cpu-gtt
+      - basic-gtt-cpu
+      - basic-cpu-wc
+      - basic-wc-cpu
+      - basic-gtt-wc
+      - basic-wc-gtt
+      - basic-cpu-read

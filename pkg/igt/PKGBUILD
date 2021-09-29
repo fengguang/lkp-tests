@@ -18,7 +18,14 @@ build()
 split_tests()
 {
 	cd $srcdir/igt-gpu-tools
-	sed -n '2p' build/tests/test-list.txt | tr " " "\n" | grep -v amdgpu | sort > all-tests
+	# standalone test
+	for test in $(cat $LKP_SRC/pkg/${pkgname}/addon/tests/standalone | grep -v '^#')
+	do
+		echo $test > ./$test
+	done
+
+	standalone_tests=`paste -sd '|' <(cat $LKP_SRC/pkg/${pkgname}/addon/tests/standalone | grep -v '^#')`
+	sed -n '2p' build/tests/test-list.txt | tr " " "\n" | grep -v amdgpu | grep -vE "$standalone_tests" | sort > all-tests
 
 	$LKP_SRC/tools/split-tests all-tests 25 group-
 }
