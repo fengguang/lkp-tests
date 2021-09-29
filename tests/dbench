@@ -20,4 +20,14 @@ run_dbench()
 	log_cmd dbench $nr_threads -c $client_file
 }
 
-run_dbench
+run_cifsdbench()
+{
+	# https://dbench.samba.org/loadfiles/smb.txt
+	#./dbench -B smb --smb-share=//10.0.0.33/data --smb-user=Administrator%password --loadfile=smb-writefiles.txt --run-once --skip-cleanup 10
+	# dbench version 4.00 - Copyright Andrew Tridgell 1999-2004
+
+	log_cmd umount $cifs_mount_points
+	log_cmd dbench -B smb --smb-share="$cifs_server_paths" --smb-user=root%pass --loadfile=/usr/local/share/smb_2.txt -t 60 --skip-cleanup $nr_threads
+}
+
+run_"$fs2"dbench

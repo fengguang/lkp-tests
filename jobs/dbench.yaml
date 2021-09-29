@@ -6,3 +6,14 @@ nr_threads: 100%
 
 dbench:
 monitor_delay: 10
+
+---
+disk: 1HDD
+
+fs:
+ - ext4
+ - xfs
+ - btrfs
+
+fs2:
+ - cifs

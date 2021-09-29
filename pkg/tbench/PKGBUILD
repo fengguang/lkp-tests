@@ -10,7 +10,7 @@ md5sums=('SKIP')
 build()
 {
 	cd $srcdir/dbench
-	cp -a loadfiles/client.txt /usr/local/share/
+	cp -a loadfiles/*.txt /usr/local/share/
 
 	./autogen.sh || return
 	./configure CFLAGS=$(pkg-config --cflags smbclient) || return
@@ -33,6 +33,6 @@ package()
 
 	cd $srcdir/dbench
 	cp -a dbench tbench tbench_srv $usr_path/local/bin
-	cp -a /usr/local/share/client.txt $usr_path/local/share
+	cp -a /usr/local/share/*.txt $usr_path/local/share
 	touch $benchmark_path/empty
 }
