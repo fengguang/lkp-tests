@@ -5,3 +5,6 @@ dio-01:dio21
 # not need run
 syscalls-07:ftruncate04_64
 syscalls-02:ftruncate04
+# remove stale power aware scheduling
+power_management_tests:runpwtests01
+power_management_tests:runpwtests02
