@@ -297,6 +297,14 @@ detect_reverse_depends()
 	notify_scheduler_submit
 }
 
+update_srpm_list()
+{
+	srpm=${repo_addr##*/}
+	data="{\"srpms\": [{\"os\": \"${compat_os}\", \"srpm\": \"${srpm}\", \"build_state\": \"1\"}], \"job_id\": \"${id}\"}"
+
+	curl -sS -H 'Content-Type: Application/json' -XPOST 172.168.131.113:3016/repo/set-srpm-info -d "${data}"
+}
+
 add_repo
 yum_repo_retry
 if [ -n "$upstream_repo" ]; then
@@ -306,6 +314,7 @@ else
 fi
 upload_spec_file
 build_rpm
+[ $? = 0 ] && update_srpm_list
 [ -n "$depend_upstream_repo" ] && exit 0
 detect_reverse_depends
 upload_rpm_pkg
