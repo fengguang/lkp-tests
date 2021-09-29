@@ -27,6 +27,12 @@ run_cifsdbench()
 	# dbench version 4.00 - Copyright Andrew Tridgell 1999-2004
 
 	log_cmd umount $cifs_mount_points
+	# First run is used to avoid below errors, it will be prepare files for next 2nd run
+	# [5] OPEN "client7/test.txt" failed
+	# drop its output, otherwise it will confuse the stat
+	echo "dbench -B smb --smb-share="$cifs_server_paths" --smb-user=root%pass --loadfile=/usr/local/share/smb_3.txt  --skip-cleanup -t 60 $nr_threads"
+	dbench -B smb --smb-share="$cifs_server_paths" --smb-user=root%pass --loadfile=/usr/local/share/smb_3.txt  --skip-cleanup -t 60 $nr_threads 1>/dev/null 2>&1
+	sleep 2
 	log_cmd dbench -B smb --smb-share="$cifs_server_paths" --smb-user=root%pass --loadfile=/usr/local/share/smb_2.txt -t 60 --skip-cleanup $nr_threads
 }
 
