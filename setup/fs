@@ -151,9 +151,15 @@ umount_fs() {
 umount_fs
 EOF
 
+if [ "${0#*fs2}" != "$0" ]; then
+	fs_key=fs2
+else
+	fs_key=fs
+fi
+
 cat >> $TMP/env.yaml <<EOF
 
-# setup/fs
-fs: $fs
+# setup/$fs_key
+$fs_key: $fs
 mount_points: $nfs_mount_points $mount_points $cifs_mount_points
 EOF
