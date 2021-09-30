@@ -71,7 +71,11 @@ module DataStore
     private
 
     def load
-      elayout = load_yaml path(CONFIG_FILE)
+      begin
+        elayout = load_yaml path(CONFIG_FILE)
+      rescue StandardError
+        elayout = {}
+      end
       from_data elayout
     end
 
