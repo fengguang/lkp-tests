@@ -18,6 +18,19 @@ phoronix-test-suite:
       - RC6
       - RC6P
       # - Test All Options
+  - test: parboil-1.2.1
+    option_a:
+      - OpenMP CUTCP
+      - OpenMP MRI-Q
+      - OpenMP MRI Gridding
+      - OpenMP Stencil
+      - OpenMP LBM
+      - OpenCL BFS
+      - OpenCL TPACF
+      - OpenCL LBM
+      - OpenCL MRI Gridding
+      - OpenCL Histo
+      # - Test All Options
   - test:
     - xsbench-cl-1.0.0
     - x264-opencl-1.9.0

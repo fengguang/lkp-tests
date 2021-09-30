@@ -540,19 +540,6 @@ phoronix-test-suite:
       - SciVis [A fast ray-tracer for scientific visualizations.]
       - 2 # Path Tracer [Supports soft shadows, indirect illumination and realistic materials.]
       # - Test All Options
-  - test: parboil-1.2.1
-    option_a:
-      - OpenMP CUTCP
-      - OpenMP MRI-Q
-      - OpenMP MRI Gridding
-      - OpenMP Stencil
-      - OpenMP LBM
-      - OpenCL BFS
-      - OpenCL TPACF
-      - OpenCL LBM
-      - OpenCL MRI Gridding
-      - OpenCL Histo
-      # - Test All Options
   - test: pennant-1.0.1
     option_a:
       - leblancbig
