@@ -7,6 +7,7 @@
 # - nr_tmpfs
 # mount_to
 # mount_bind
+# persist
 
 # normal disks will mount to $mount_points/{nfs, fs}/
 # mount_to is for mount disks to specified directory.
@@ -28,7 +29,6 @@
 # mount_bind will mount only the first mount point of mount_to array, and mount all the rest mount points of mount_to array bind to the first mount point,
 # if $mount_bind=true, will call function mount_bind() in this script,
 # if $mount_bind is not true or not exist, will not call function mount_bind(), just mount the every disk to every mount point.
-
 # This script supports 2 NFS mount schemes:
 # fs1: followup scripts will see NFS mount_points only
 # fs2: followup scripts will see NFS mount_points as well as original mount_points
@@ -39,6 +39,11 @@
 #    - ext4
 #    - xfs
 # mount_to: /mnt/sda
+#
+# if you want keep original data of your devices, then add persist field in your job.yaml, like the following:
+# fs1:
+#    fs_type: ext4
+# persist: true
 
 : ${fs:=$fs_type}
 [ -n "$fs" ] || exit 0
@@ -175,13 +180,18 @@ case $fs in
 
 	*)
 		. $LKP_SRC/lib/fs_ext.sh
-		if [ -n "$raid_device" ] || [ -n "$LKP_LOCAL_RUN" ]; then
-			destroy_fs
-		else
-			destroy_devices
-		fi
-		make_fs
-		mount_fs
+		[ "$persist" == "true" ] || {
+			if [ -n "$raid_device" ] || [ -n "$LKP_LOCAL_RUN" ]; then
+				destroy_fs
+			else
+				destroy_devices
+			fi
+			make_fs
+		}
+		mount_fs || {
+			set_job_state 'mount_fs_failed'
+			exit 1
+		}
 		;;
 esac
 
