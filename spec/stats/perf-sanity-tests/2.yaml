@@ -8,7 +8,7 @@ Lookup_mmap_thread.fail: 1
 Share_thread_maps.pass: 1
 Test_libpfm4_support.skip: 1
 Test_api_io.pass: 1
-maps__merge_in.fail: 1
+maps_merge_in.fail: 1
 Demangle_Java.pass: 1
 Parse_and_process_metrics.pass: 1
 PE_file_support.fail: 1
@@ -22,5 +22,5 @@ x86_bp_modify.pass: 1
 probe_libc's_inet_pton_&_backtrace_it_with_ping.pass: 1
 Check_Arm_CoreSight_trace_data_recording_and_synthesized_samples.skip: 1
 Zstd_perf.data_compression/decompression.fail: 1
-perf_stat_metrics_(shadow_stat)_test.pass: 1
+perf_stat_metrics_shadow_stat_test.pass: 1
 build_id_cache_operations.fail: 1
