@@ -139,17 +139,6 @@ phoronix-test-suite:
       - Tradebeans
       - Tradesoap
       # - Test All Options
-  - test: darktable-1.0.4
-    option_a:
-      - Boat
-      - Masskrug
-      - Server Room
-      - Server Rack
-      # - Test All Options
-    option_b:
-      - CPU-only
-      - OpenCL
-      # - Test All Options
   - test: dav1d-1.0.0
     option_a:
       - Summer Nature 1080p
@@ -623,18 +612,6 @@ phoronix-test-suite:
       - Random Fill Sync
       - Random Read
       - Read While Writing
-      # - Test All Options
-  - test: rodinia-1.2.2
-    option_a:
-      - OpenMP CFD Solver
-      - OpenMP LavaMD
-      - OpenMP Leukocyte
-      - OpenMP Streamcluster
-      - OpenCL LavaMD
-      - OpenCL Leukocyte
-      - OpenCL Heartwall
-      - OpenCL Myocyte
-      - OpenCL Particle Filter
       # - Test All Options
   - test:
     - rust-prime-1.0.0

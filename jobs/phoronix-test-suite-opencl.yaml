@@ -13,6 +13,17 @@ phoronix-test-suite:
       - Transfer Bandwidth enqueueReadBuffer
       - Kernel Latency
       # - Test All Options
+  - test: darktable-1.0.4
+    option_a:
+      - Boat
+      - Masskrug
+      - Server Room
+      - Server Rack
+      # - Test All Options
+    option_b:
+      - CPU-only
+      - OpenCL
+      # - Test All Options
   - test: gpu-residency-1.0.1
     option_a:
       - RC6
@@ -30,6 +41,18 @@ phoronix-test-suite:
       - OpenCL LBM
       - OpenCL MRI Gridding
       - OpenCL Histo
+      # - Test All Options
+  - test: rodinia-1.2.2
+    option_a:
+      - OpenMP CFD Solver
+      - OpenMP LavaMD
+      - OpenMP Leukocyte
+      - OpenMP Streamcluster
+      - OpenCL LavaMD
+      - OpenCL Leukocyte
+      - OpenCL Heartwall
+      - OpenCL Myocyte
+      - OpenCL Particle Filter
       # - Test All Options
   - test:
     - xsbench-cl-1.0.0
