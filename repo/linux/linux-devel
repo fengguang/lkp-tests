@@ -4,3 +4,4 @@ owner: 0day robot <lkp@intel.com>
 belongs_to: 0day
 test_old_branches: .*
 no_merge_branch: .*
+branch_denylist: master|revert-.*
