@@ -1,5 +1,7 @@
 need_kconfig:
 % if job['stress-ng']['class'] == "security"
+- SECURITY: y
+- NET: y
 - SECURITY_APPARMOR: y
 % elsif job['stress-ng']['test'] == "dccp"
 - IP_DCCP: y
