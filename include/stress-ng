@@ -1,8 +1,6 @@
 need_kconfig:
 % if job['stress-ng']['class'] == "security"
 - SECURITY_APPARMOR: y
-% elsif job['stress-ng']['test'] == "verity"
-- FS_VERITY: y, v5.4-rc1
 % elsif job['stress-ng']['test'] == "dccp"
 - IP_DCCP: y
 % end
