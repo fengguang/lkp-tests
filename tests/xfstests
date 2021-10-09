@@ -50,22 +50,42 @@ is_fs2_tests()
 	[ -n "$fs2" ]
 }
 
-set_env()
+cifs_version()
 {
-	# "fsgqa" user is required in some of xfstests, thus check if such user
-	# has already been added. If not, add "fsgqa" user.
-	check_add_user "fsgqa"
-	check_add_user "123456-fsgqa"
-	check_add_user "fsgqa2"
+	case $fs2 in
+	cifs)
+		echo "1.0"
+		;;
+	smbv2)
+		echo "2.0"
+		;;
+	smbv3)
+		echo "3.0"
+		;;
+	default)
+		die "unknow version"
+	esac
+}
 
-	umount $mount_points
+setup_cifs_config()
+{
+	local cifs_server_path=${cifs_server_paths%% *}
+	local FS_TEST_DIR=${mount_points%% *}
 
-	# clear filesystem in partition
-	for dev in ${partitions#* }
-	do
-		dd if=/dev/zero bs=512 count=512 of=$dev
-	done
+	log_cmd mkdir -p /$fs2/$FS_TEST_DIR
+	log_eval export FSTYP=cifs
+	log_eval export TEST_DEV=$cifs_server_path
+	log_eval export TEST_DIR=/$fs2/$FS_TEST_DIR
+	log_eval export CIFS_MOUNT_OPTIONS="-ousername=root,password=pass,noperm,vers=$(cifs_version),mfsymlinks,actimeo=0"
+}
 
+setup_fs2_config()
+{
+	fs2_is_cifs && setup_cifs_config
+}
+
+setup_fs_config()
+{
 	log_eval export TEST_DIR=${mount_points%% *}
 	log_eval export TEST_DEV=${partitions%% *}
 
@@ -201,6 +221,29 @@ set_env()
 			log_eval export SCRATCH_LOGDEV="$SCRATCH_LOGDEV"1
 		fi
 	}
+}
+
+set_env()
+{
+	# "fsgqa" user is required in some of xfstests, thus check if such user
+	# has already been added. If not, add "fsgqa" user.
+	check_add_user "fsgqa"
+	check_add_user "123456-fsgqa"
+	check_add_user "fsgqa2"
+
+	umount $mount_points
+
+	# clear filesystem in partition
+	for dev in ${partitions#* }
+	do
+		dd if=/dev/zero bs=512 count=512 of=$dev
+	done
+
+	if is_fs2_tests; then
+		setup_fs2_config
+	else
+		setup_fs_config
+	fi
 }
 
 run_cifs_tests()
