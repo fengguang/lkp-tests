@@ -50,6 +50,7 @@
 
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/fs_ext.sh
+. $LKP_SRC/lib/http.sh
 
 [ -n "$mount_option" ] && mount_option="-o $mount_option"
 
