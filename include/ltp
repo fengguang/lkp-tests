@@ -6,3 +6,5 @@ need_kconfig:
 - IPV6_VTI: m
 - MINIX_FS: m
 - CHECKPOINT_RESTORE: y
+- INPUT_UINPUT: y
+- INPUT_MISC: y
