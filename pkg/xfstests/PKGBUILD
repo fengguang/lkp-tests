@@ -53,6 +53,9 @@ generate_exclude_files()
 	wget https://wiki.samba.org/images/d/db/Xfstests.exclude.very-slow.txt -O $benchmark_path/tests/cifs/exclude.very-slow.txt || return
 	wget https://wiki.samba.org/images/b/b0/Xfstests.exclude.incompatible-smb3.txt -O $benchmark_path/tests/cifs/exclude.incompatible-smb3.txt || return
 	wget https://wiki.samba.org/images/9/9f/Xfstests.exclude.incompatible-smb2.txt -O $benchmark_path/tests/cifs/exclude.incompatible-smb2.txt || return
+
+	# download cifs config file
+	wget https://wiki.samba.org/images/9/99/Xfstests.local.config.txt -O $benchmark_path/cifs-local.config
 }
 
 hide()
