@@ -9,8 +9,6 @@ ltp:
   test:
   - fsx # stress test groups, but will not take too long time
   - crypto
-  # - io_cd # require special peripheral(/dev/cdrom and media)
-  # - io_floppy # ignore floppy tests
   - fs_bind
   - kernel_misc
   - net.ipv6
