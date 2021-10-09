@@ -141,7 +141,9 @@ mount_fs() {
 		mount_points="${mount_points}$mnt "
 	done
 
-	[ "$mount_bind" == "true" ] && mount_bind
+	if [ "$mount_bind" == "true" ]; then
+		mount_bind
+	fi
 }
 
 mount_bind()
