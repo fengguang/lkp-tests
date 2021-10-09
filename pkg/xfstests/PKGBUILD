@@ -128,6 +128,7 @@ generate_tests()
 	$LKP_SRC/tools/generate-tests generic
 	$LKP_SRC/tools/generate-tests udf
 	$LKP_SRC/tools/generate-tests ocfs2
+	$LKP_SRC/tools/generate-tests cifs
 }
 
 # Some files contain too many tests, which are split for easy testing

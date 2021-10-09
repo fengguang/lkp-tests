@@ -40,6 +40,16 @@ is_disc_partitioned()
 	[ -n "$sed_result" ]
 }
 
+fs2_is_cifs()
+{
+	echo $fs2 | grep -q -e cifs -e smb
+}
+
+is_fs2_tests()
+{
+	[ -n "$fs2" ]
+}
+
 set_env()
 {
 	# "fsgqa" user is required in some of xfstests, thus check if such user
@@ -193,6 +203,35 @@ set_env()
 	}
 }
 
+run_cifs_tests()
+{
+	log_cmd ./check $exclude_file $all_tests
+}
+
+run_smbv2_tests()
+{
+	log_cmd ./check -E tests/cifs/exclude.incompatible-smb2.txt $exclude_file $all_tests
+}
+
+run_smbv3_tests()
+{
+	log_cmd ./check -E tests/cifs/exclude.incompatible-smb3.txt $exclude_file $all_tests
+}
+
+run_fs_tests()
+{
+	[ -s tests/exclude/$fs ] && exclude_file="-E tests/exclude/$fs"
+	log_cmd ./check $exclude_file $all_tests
+}
+
+run_fs2_tests()
+{
+	fs2_is_cifs && {
+		exclude_file="$exclude_file -E tests/cifs/exclude.very-slow.txt"
+		run_"$fs2"_tests
+	}
+}
+
 run_test()
 {
 	## Currently, we support the following several format's test item.
@@ -226,8 +265,11 @@ run_test()
 	log_echo $all_tests_cmd
 	all_tests=$(eval "$all_tests_cmd")
 
-	[ -s tests/exclude/$fs ] && exclude_file="-E tests/exclude/$fs"
-	log_cmd ./check $exclude_file $all_tests
+	if is_fs2_tests; then
+		run_fs2_tests
+	else
+		run_fs_tests
+	fi
 }
 
 export LC_ALL=C
