@@ -1,0 +1,65 @@
+suite: xfstests
+testcase: xfstests
+category: functional
+
+need_memory: 1G
+
+disk: 4HDD
+
+fs:
+- ext4
+- xfs
+- btrfs
+
+fs2:
+- smbv2
+- smbv3
+
+xfstests:
+  test:
+  - cifs
+  - generic-054
+  - generic-074
+  - generic-group-00
+  - generic-group-01
+  - generic-group-02
+  - generic-group-03
+  - generic-group-04
+  - generic-group-05
+  - generic-group-06
+  - generic-group-07
+  - generic-group-08
+  - generic-387
+  - generic-group-09
+  - generic-group-10
+  - generic-group-11
+  - generic-group-12
+  - generic-group-13
+  - generic-group-14
+  - generic-group-15
+  - generic-group-16
+  - generic-311
+  - generic-281
+  - generic-299
+  - generic-409
+  - generic-410
+  - generic-logwrites
+  - generic-group-17
+  - generic-group-18
+  - generic-group-19
+  - generic-group-20
+  - generic-group-21
+  - generic-group-22
+  - generic-group-23
+  - generic-group-24
+  - generic-231
+  - generic-group-25
+  - generic-group-26
+  - generic-group-27
+  - generic-group-28
+  - generic-group-29
+  - generic-group-30
+  - generic-group-31
+  - generic-group-32
+  - generic-logdev
+  - generic-525
