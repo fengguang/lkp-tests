@@ -72,6 +72,9 @@ setup_cifs_config()
 	local cifs_server_path=${cifs_server_paths%% *}
 	local FS_TEST_DIR=${mount_points%% *}
 
+	# umount all alreadly cifs mounted point, xfstests will mount it automatically if need.
+	log_cmd umount $cifs_mount_points
+
 	log_cmd mkdir -p /$fs2/$FS_TEST_DIR
 	log_eval export FSTYP=cifs
 	log_eval export TEST_DEV=$cifs_server_path
