@@ -75,6 +75,9 @@ setup_cifs_config()
 	# umount all alreadly cifs mounted point, xfstests will mount it automatically if need.
 	log_cmd umount $cifs_mount_points
 
+	# mount the first partition for the local cifs server, where it's the cifs backend
+	log_cmd mount ${partitions%% *} ${mount_points%% *}
+
 	log_cmd mkdir -p /$fs2/$FS_TEST_DIR
 	log_eval export FSTYP=cifs
 	log_eval export TEST_DEV=$cifs_server_path
