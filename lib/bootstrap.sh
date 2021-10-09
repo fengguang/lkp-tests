@@ -323,10 +323,10 @@ export_ip_mac()
 		export PUB_IP=$(ip route get 1.2.3.4 | awk '{print $7; exit}')
 	elif has_cmd route; then
 		export PUB_NIC=$(route -n | awk '/[UG][UG]/ {print $8}')
-		export PUB_IP=$(ifconfig $PUB_NIC | awk '/inet / {print $2}')
+		has_cmd ifconfig && export PUB_IP=$(ifconfig $PUB_NIC | awk '/inet / {print $2}')
 	else
 		export PUB_NIC=$(awk 'NR > 1 && $3 != "00000000" { print $1; exit }' /proc/net/route)
-		export PUB_IP=$(ifconfig $PUB_NIC | awk '/inet / {print $2}')
+		has_cmd ifconfig && export PUB_IP=$(ifconfig $PUB_NIC | awk '/inet / {print $2}')
 	fi
 
 	export PUB_MAC=$(cat /sys/class/net/$PUB_NIC/address)
