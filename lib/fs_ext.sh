@@ -113,7 +113,7 @@ mount_local_cifs()
 		local mnt=/cifs/$(basename $dir)
 		local dev=//localhost$dir
 		log_cmd mkdir -p $mnt
-		log_cmd timeout 5m mount -t $fs -o user=root,password=pass $dev $mnt
+		log_cmd timeout 5m mount -t cifs $def_mount -o user=root,password=pass $dev $mnt
 		local errno=$?
 		case $errno in
 			0)
