@@ -1,5 +1,6 @@
 need_kconfig:
 - WLAN: y
+- PACKET: y
 - CFG80211: m
 - CFG80211_WEXT: y
 - MAC80211: m
