@@ -16,3 +16,4 @@ subsystems:
 - iforce
 notify_build_success_branch: .*
 test_old_branches: .*
+non_rebaseable_branch: next|master

@@ -1,5 +1,6 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/davem/sparc-next.git
 integration_testing_branches: master
+non_rebaseable_branch: .*
 owner: David S. Miller <davem@davemloft.net>
 mail_cc:
 - sparclinux@vger.kernel.org

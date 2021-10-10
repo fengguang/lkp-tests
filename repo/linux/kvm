@@ -9,6 +9,7 @@ subsystems:
 - mmu
 belongs_to: kvm
 branch_denylist: auto-next
+non_rebaseable_branch: next
 mail_cc:
 - kvm@vger.kernel.org
 - Robert Hu <robert.hu@intel.com>

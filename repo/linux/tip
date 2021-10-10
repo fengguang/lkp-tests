@@ -17,4 +17,5 @@ subsystems:
 - locking
 branch_denylist: auto-.*|tmp-.*|base-.*|test.*|.*-for-linus|tip
 notify_build_success_branch: .*
+non_rebaseable_branch: .*
 mail_to: x86-ml <x86@kernel.org>

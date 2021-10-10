@@ -7,4 +7,5 @@ subsystems:
 - blkfront
 - blkback
 branch_denylist: devel/.*
+non_rebaseable_branch: stable/.*
 mail_cc: xen-devel@lists.xensource.com
