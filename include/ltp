@@ -9,3 +9,6 @@ need_kconfig:
 - INPUT_UINPUT: y
 - INPUT_MISC: y
 - ZRAM: m
+- DUMMY: m
+- VETH: m
+- TUN: m
