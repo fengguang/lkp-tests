@@ -53,3 +53,34 @@ yum_repo_retry()
         done
         exit 1
 }
+
+export_compat_os_base_version()
+{
+        source /etc/os-release
+
+        case ${ID} in
+                centos)
+                        case ${VERSION_ID} in
+                                6)
+                                        export compat_os=compat-centos6
+                                        ;;
+                                7)
+                                        export compat_os=compat-centos7
+                                        ;;
+                                8)
+                                        export compat_os=compat-centos8
+                                        ;;
+                        esac
+			;;
+                fedora)
+                        case ${VERSION_ID} in
+                                33)
+                                        export compat_os=compat-fedora33
+                                        ;;
+                                34)
+                                        export compat_os=compat-fedora34
+                                        ;;
+                        esac
+			;;
+	esac
+}

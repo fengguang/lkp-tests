@@ -1,0 +1,59 @@
+#!/bin/bash
+# repo_id
+# custom_repo_name
+# custom_repo_addr
+# user can add known repo_id to query specific repo, also can add
+# custom_repo_name and custom_repo_addr to setup local repo, value
+# can be an array
+
+. $LKP_SRC/lib/rpm.sh
+
+export DISTRO=${os}
+. $LKP_SRC/distro/${DISTRO}
+
+update_srpm_list()
+{
+	# set timeout to avoid longtime request
+	timeout 5 curl -sS -H 'Content-Type: Application/json' -XPOST "${LKP_SERVER}:3016/repo/set-srpm-info" \
+                -d "${update_list}"
+}
+
+enable_extra_repo()
+{
+	yum-config-manager --enable centosplus epel-testing >/dev/null
+	yum repolist >/dev/null
+}
+
+query()
+{
+	[ ${DISTRO^^} = "CENTOS" ] && {
+		distro_install_depends yum-utils
+		support_repo_epel
+		enable_extra_repo
+	}
+
+	if [ -n "$repo_id" ]; then
+		# handle JSON data
+		# $os $repo_name $srpm => {"srpms": [{"os": "$os", "repo_name": "$repo_name", "srpm": "$srpm"}], "job_id": "$id"}'
+		original_list=$(for i in $(repoquery -a -s --repoid=${repo_id} | sort -u); do \
+			echo \"os\": \"${compat_os}\", \"repo_name\": \"${repo_id}\", \"srpm\": \"$i\" | \
+			sed -e 's/^/{/g' -e 's/$/}, /g'; done)
+		update_list=$(echo $original_list | sed -e "s/^/{\"srpms\": [/g" -e "s/,$/], \"job_id\": \"${id}\", \"type\": \"create\"}/g")
+
+		update_srpm_list
+	else
+		for repoid in $(repoquery -a --qf "%{repoid}" -q | sort -u)
+		do
+			original_list=$(for i in $(repoquery -a -s --repoid=${repoid} | sort -u); do \
+				echo \"os\": \"${compat_os}\", \"repo_name\": \"${repoid}\", \"srpm\": \"$i\" | \
+				sed -e 's/^/{/g' -e 's/$/}, /g'; done)
+			update_list=$(echo ${original_list} | sed -e "s/^/{\"srpms\": [/g" -e "s/,$/], \"job_id\": \"${id}\", \"type\": \"create\"}/g")
+
+			update_srpm_list
+		done
+	fi
+}
+
+add_repo
+export_compat_os_base_version
+query
