@@ -7,3 +7,4 @@ need_kconfig:
 # Lockdown: modprobe: unsigned module loading is restricted; see man kernel_lockdown.7
 # modprobe: ERROR: could not insert 'locktorture': Operation not permitted
 - SECURITY_LOCKDOWN_LSM: n
+- MODULE_UNLOAD: y
