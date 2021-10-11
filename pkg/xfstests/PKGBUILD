@@ -101,6 +101,8 @@ package()
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
 	cp -af $srcdir/xfstests-dev/* $benchmark_path
 
+	wget -O $benchmark_path/tools/find-api-violations.sh https://git.kernel.org/pub/scm/fs/xfs/xfsprogs-dev.git/plain/tools/find-api-violations.sh || return
+
 	generate_exclude_files || return
 
 	generate_tests || return
