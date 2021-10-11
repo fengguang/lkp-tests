@@ -526,7 +526,7 @@ phoronix-test-suite:
       - San Miguel
       # - Test All Options
     option_b:
-      - SciVis [A fast ray-tracer for scientific visualizations.]
+      - SciVis      [A fast ray-tracer for scientific visualizations.]
       - 2 # Path Tracer [Supports soft shadows, indirect illumination and realistic materials.]
       # - Test All Options
   - test: pennant-1.0.1
@@ -750,7 +750,7 @@ phoronix-test-suite:
       # - Test All Options
   - test: systester-1.0.0
     option_a:
-      - Gauss-Legendre algorithm [Recommended.]
+      - Gauss-Legendre algorithm                  [Recommended.]
       - Borwein's Quadratic Convergence algorithm [This Test Could take Hours to finish.]
       # - Test All Options
     option_b:
