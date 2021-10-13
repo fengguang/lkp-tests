@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# check if testbox has enough numa node to run the job
+
+if (( need_node > nr_node )); then
+	echo "rm $job_file due to not enough numa node"
+	echo "need: $need_node numa node, has: $nr_node numa node"
+	exit 1
+fi
+
+exit 0
