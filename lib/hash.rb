@@ -34,6 +34,7 @@ def accumulative_key?(k)
 end
 
 def merge_accumulative(a, b)
+  return a if b.nil?
   case a
   when nil
     a = b
