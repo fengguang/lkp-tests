@@ -1,0 +1,20 @@
+suite: ltp
+testcase: ltp
+category: functional
+
+need_modules: true
+
+need_memory: 4G
+
+disk: 1HDD
+fs:
+- ext4
+- xfs
+- btrfs
+- f2fs
+
+need_node: 2
+
+ltp:
+  test:
+  - syscalls-numa

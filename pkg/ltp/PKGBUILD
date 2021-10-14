@@ -158,8 +158,10 @@ split_syscalls_tests()
 
 	grep "^tgkill" syscalls >> syscalls-tgkill || return
 	grep "^setsockopt06" syscalls >> syscalls-setsockopt06 || return
+	# need 2 numa node
+	grep -Ee "^(mbind|move_pages|migrate_pages|set_mempolicy)" syscalls >> syscalls-numa || return
 
-	grep -v -f syscalls-timer -f syscalls-tgkill -f syscalls-setsockopt06 syscalls > syscalls-rest || return
+	grep -v -f syscalls-timer -f syscalls-tgkill -f syscalls-setsockopt06 -f syscalls-numa syscalls > syscalls-rest || return
 	$LKP_SRC/tools/split-tests syscalls-rest 8 syscalls-
 	hide syscalls-rest
 	hide syscalls
