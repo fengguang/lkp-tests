@@ -64,7 +64,7 @@ query_libs()
 {
 	for i in "${rpm_name[@]}"
 	do
-		local lib=$(repoquery -l $i | grep -E "\.so$|\.a$")
+		repoquery -l $i | grep -E "\.so$|\.a$"
 		if [ $? -eq 0 ]; then
 			echo "query libs result, rpm name: $i, libs: true"
 		else
@@ -78,7 +78,7 @@ run_cmd()
 	log_info "Starting run cmd"
 	for i in "${rpm_name[@]}"
 	do
-		local cmd_list=($(rpm -ql $i | grep -E '/usr/s?bin'))
+		local cmd_list=($(rpm -ql $i | grep -E '/s?bin/'))
                 [ -z "${cmd_list}" ] || {
                         for j in "${cmd_list[@]}"
                         do
