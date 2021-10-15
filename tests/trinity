@@ -39,6 +39,7 @@ if [ -n "$group" ]; then
 	for syscall in $(trinity -L | grep "entrypoint .* Enabled" | awk '{print $3}' | sort -u)
 	do
 		echo "$syscall" | grep -qE "^(get_robust_list|remap_file_pages|ni_syscall)$" && continue
+		echo "$syscall" | grep -qE "^[a-z0-9_]*$" || continue
 		num=$(echo "$syscall" | md5sum | cut -c1-2)
 		num=$(( 0x$num ))
 		[ group-0$(( seed % num % max_group_nr )) = "$group" ] && targets="$targets -c $syscall"
