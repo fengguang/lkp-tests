@@ -83,6 +83,12 @@ generate_special_require_tests()
 	do
 		grep -l "_require_logdev$" -r tests/$fs | cut -d/ -f3 > $benchmark_path/tests/$fs-logdev
 	done
+
+	# these tests require -o dax support
+	for fs in generic ext4
+	do
+		grep "dax" tests/$fs/group.list | cut -d' ' -f1 > $benchmark_path/tests/$fs-dax
+	done
 }
 
 build()
