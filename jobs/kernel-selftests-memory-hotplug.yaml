@@ -7,7 +7,6 @@ kconfig: x86_64-rhel-8.3-kselftests
 # NOET: need_memory might be different for different rootfs
 # Currently, these value came from the meminfo.max_used_kB during runtime
 # on debian rootfs
-need_memory: 115G
 kernel-selftests:
   group:
     - memory-hotplug
