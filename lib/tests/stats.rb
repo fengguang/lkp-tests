@@ -18,7 +18,7 @@ module LKP
       test_case = normalize(test_case)
       raise "#{test_case} has already existed" if key?(test_case)
 
-      test_result = test_result.strip.gsub(/\s+/, '_').downcase if test_result.instance_of? String
+      test_result = normalize(test_result.gsub(/\./, '_').downcase) if test_result.instance_of? String
 
       @stats[test_case] = test_result
     end
