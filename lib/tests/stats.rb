@@ -11,17 +11,12 @@ module LKP
     end
 
     def key?(test_case)
-      test_case = test_case.strip
-                           .gsub(/[\s,"_\(\):]+/, '_')
-                           .gsub(/(^_|_$)/, '')
-      @stats.key? test_case
+      @stats.key? normalize(test_case)
     end
 
     def add(test_case, test_result)
-      test_case = test_case.strip
-                           .gsub(/[\s,"_\(\):]+/, '_')
-                           .gsub(/(^_|_$)/, '')
-      raise "#{test_case} has already existed" if @stats.key? test_case
+      test_case = normalize(test_case)
+      raise "#{test_case} has already existed" if key?(test_case)
 
       test_result = test_result.strip.gsub(/\s+/, '_').downcase if test_result.instance_of? String
 
@@ -53,5 +48,13 @@ module LKP
     # def validate_duplication(hash, key)
     #   self.exit "#{key} has already existed" if hash.key? key
     # end
+
+    private
+
+    def normalize(test_case)
+      test_case.strip
+               .gsub(/[\s,"_\(\):]+/, '_')
+               .gsub(/(^_|_$)/, '')
+    end
   end
 end
