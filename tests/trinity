@@ -65,9 +65,9 @@ start_time=$(date +%s)
 
 cd /tmp
 if chroot --help 2>&1 | grep -q -- --userspec; then
-	log_cmd chroot --userspec nobody:nogroup / time $cmd 2>&1 &
+	log_cmd chroot --userspec nobody:nogroup / time $cmd &
 else
-	log_cmd time $cmd -X 2>&1 &
+	log_cmd time $cmd -X &
 fi
 
 pid=$!
