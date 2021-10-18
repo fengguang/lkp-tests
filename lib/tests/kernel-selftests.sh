@@ -316,6 +316,17 @@ fixup_ftrace()
 {
 	# FIX: sh: echo: I/O error
 	sed -i 's/bin\/sh/bin\/bash/' ftrace/ftracetest
+
+	grep -qw read_cached_trace ftrace/test.d/functions && return
+	cat >> ftrace/test.d/functions <<EOF
+
+read_cached_trace() {
+    cp trace /tmp/cached_trace
+    cat /tmp/cached_trace
+    rm -f /tmp/cached_trace
+}
+EOF
+	sed -i 's/cat trace |/read_cached_trace |/g' $(find ftrace/test.d -name "*.tc")
 }
 
 fixup_firmware()
