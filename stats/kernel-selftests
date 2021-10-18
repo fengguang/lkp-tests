@@ -60,7 +60,8 @@ class NetStater < Stater
     case line
     # begain for net.fcnal-test.sh
     when /(IPv4 ping|IPv4\/TCP|IPv4\/UDP|IPv4 Netfilter)/,
-         /(IPv6 ping|IPv6\/TCP|IPv6\/UDP|IPv6 Netfilter)/
+         /(IPv6 ping|IPv6\/TCP|IPv6\/UDP|IPv6 Netfilter)/,
+         /(OUTPUT tests|INPUT tests)/
       # ##########################################################################
       # IPv4 ping
       # ##########################################################################
