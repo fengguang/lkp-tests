@@ -385,9 +385,9 @@ class ResctrlStater < Stater
       # Pass: Check resctrl mountpoint "/sys/fs/resctrl" exists
       stats.add "#{@test}.#{$1}", 'pass' unless stats.key? "#{@test}.#{$1}"
     when /# SKIP\s+(.*)/
-      # Starting CAT test ...
+      # The following line is repeated 3 times
       # ok 4 # SKIP Hardware does not support CAT or CAT is disabled
-      stats.add "#{@test}.#{@test_script}", 'skip'
+      stats.add "#{@test}.#{@test_script}", 'skip' unless stats.key? "#{@test}.#{@test_script}"
     when /^not ok\s+(.*)/
       # not ok CAT: cache miss rate within 4%
       @test_script = $1
