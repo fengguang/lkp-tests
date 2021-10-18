@@ -6,6 +6,10 @@ end
 
 rpm_name = ''
 in_remove = false
+in_print_rpm_location = false
+in_print_src_rpm_location = false
+in_print_rpm_evr = false
+in_print_rpm_license = false
 
 while (line = STDIN.gets)
   case line.chomp!
@@ -77,15 +81,65 @@ while (line = STDIN.gets)
   when "remove test finished: #{rpm_name}"
     in_remove = false
     rpm_name = ''
+
+  when /^Starting print rpm: ([^\s]*) location$/
+    in_print_rpm_location = true
+    rpm_name = $1
+    next
+  when "print rpm: #{rpm_name} location end"
+    in_print_rpm_location = false
+    rpm_name = ''
+
+  when /^Starting print rpm: ([^\s]*) evr$/
+    in_print_rpm_evr = true
+    rpm_name = $1
+    next
+  when "print rpm: #{rpm_name} evr end"
+    in_print_rpm_evr = false
+    rpm_name = ''
+
+  when /^Starting print rpm: (.*)'s src.rpm location$/
+    in_print_src_rpm_location = true
+    rpm_name = $1
+    next
+  when "print rpm: #{rpm_name}'s src.rpm location end"
+    in_print_src_rpm_location = false
+    rpm_name = ''
+
+  when /^Starting print rpm: (.*) license$/
+    in_print_rpm_license = true
+    rpm_name = $1
+    next
+
+  when "print rpm: #{rpm_name} license end"
+    in_print_rpm_license = false
+    rpm_name = ''
   end
-  next unless in_remove
 
-  # Problem: The operation would result in removing the following protected packages: dnf, systemd
-  next unless line =~ /protected packages: (.*)/
+  if in_remove
+    # Problem: The operation would result in removing the following protected packages: dnf, systemd
+    next unless line =~ /protected packages: (.*)/
 
-  $1.split(', ').each do |rpm|
-    puts "protected_packages.element: #{del_whitespace(rpm_name)} #{del_whitespace(rpm)}"
-    puts "remove_#{del_whitespace(rpm_name)}_but_protected_packages_#{del_whitespace(rpm)}: 1"
+    $1.split(', ').each do |rpm|
+      puts "protected_packages.element: #{del_whitespace(rpm_name)} #{del_whitespace(rpm)}"
+      puts "remove_#{del_whitespace(rpm_name)}_but_protected_packages_#{del_whitespace(rpm)}: 1"
+    end
+  end
+
+  if in_print_rpm_location
+    puts "#{rpm_name}_location.element: #{line}"
+  end
+
+  if in_print_src_rpm_location
+    puts "#{rpm_name}_src_rpm_location.element: #{line}"
+  end
+
+  if in_print_rpm_evr
+    puts "#{rpm_name}_evr.element: #{line}"
+  end
+
+  if in_print_rpm_license
+    puts "#{rpm_name}_license.element: #{line}"
   end
 
 end

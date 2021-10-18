@@ -20,6 +20,48 @@
 
 rpm_name=($rpm_name)
 
+echo_rpm_location()
+{
+        for i in "${rpm_name[@]}"
+        do
+                echo "Starting print rpm: ${i} location"
+                repoquery --location $i 2>/dev/null | grep -v src.rpm
+                echo "print rpm: ${i} location end"
+        done
+}
+
+echo_rpm_evr()
+{
+        for i in "${rpm_name[@]}"
+        do
+                echo "Starting print rpm: ${i} evr"
+                repoquery --queryformat '%{evr}' $i 2>/dev/null
+                echo "print rpm: ${i} evr end"
+        done
+
+}
+
+echo_src_rpm_location()
+{
+        for i in "${rpm_name[@]}"
+        do
+                echo "Starting print rpm: ${i}'s src.rpm location"
+                src_rpm_name=$(repoquery --queryformat '%{source_name}' $i 2>/dev/null)
+                repoquery --location $src_rpm_name 2>/dev/null | grep src.rpm
+                echo "print rpm: ${i}'s src.rpm location end"
+        done
+}
+
+echo_rpm_license()
+{
+        for i in "${rpm_name[@]}"
+        do
+                echo "Starting print rpm: ${i} license"
+                repoquery --qf '%{license}' $i 2>/dev/null
+                echo "print rpm: ${i} license end"
+        done
+}
+
 install_rpm()
 {
 	log_info "Starting install test: yum install -y ${rpm_name[@]}"
@@ -167,6 +209,10 @@ remove_rpms()
 
 distro_install_depends install-rpm
 add_repo
+echo_rpm_location
+echo_rpm_evr
+echo_src_rpm_location
+echo_rpm_license
 install_rpms
 query_group
 query_libs
