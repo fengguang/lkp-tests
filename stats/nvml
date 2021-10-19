@@ -16,12 +16,14 @@ while (line = STDIN.gets)
   line = line.resolve_invalid_bytes.plain_text
 
   case line
+  when %r{^(.+)/(TEST[0-9]+): SKIP DEVICE_DAX_PATH.+}
+    item = Regexp.last_match[1]
+    name = Regexp.last_match[2]
+    stats.add "#{item}_#{name}", 'skip' unless stats.key? "#{item}_#{name}"
+
   # ignore below SKIP test:
   # blk_nblock/TEST3: SKIP: Only supported on ppc64
   # blk_pool/TEST10: SKIP required: run without superuser rights
-  # blk_rw/TEST10: SKIP DEVICE_DAX_PATH does not specify enough dax devices (min: 1)
-  # blk_rw/TEST11: SKIP DEVICE_DAX_PATH does not specify enough dax devices or they don't have required alignments (min: 2, alignments: 4096 4096)
-  # ./check_max_mmap.sh: SKIP: DEVICE_DAX_PATH does not specify path to DAX device.
   # obj_badblock/TEST0: SKIP: tests using 'sudo' are not enabled in testconfig.sh (ENABLE_SUDO_TESTS)
   # obj_ctl_debug/TEST2: SKIP pmemcheck does not support --expect-fence-after-clflush option. Please update it to the latest version.
   # pmempool_check/TEST33: SKIP compiled with support for shutdown state
