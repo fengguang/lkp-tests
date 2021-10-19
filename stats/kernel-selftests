@@ -748,9 +748,23 @@ class ProgsStater < Stater
       pattern1 = $2.to_s
       pattern2 = $3
       subname = "bpf.test_progs.#{pattern1.gsub('/', '_')}-#{pattern2.gsub(' ', '_')}"
-      if not stats.key? subname
-        stats.add subname, r
-      end
+      stats.add subname, r unless stats.key? subname
+    end
+  end
+end
+
+class FtraceStater < Stater
+  def stat(line, stats)
+    case line
+      # # [1] Basic trace file check    [PASS]
+      # # [2] Basic test for tracers    [PASS]
+      # # [3] Basic trace clock test    [PASS]
+      # # [4] Basic event tracing check [PASS]
+    when /^# \[\d+\] (.*)\[(.*)\]/
+      pattern1 = $1
+      result = $2
+      subname = "ftrace.#{pattern1.gsub(' ', '_')}"
+      stats.add subname, result unless stats.key? subname
     end
   end
 end
@@ -849,6 +863,9 @@ while (line = STDIN.gets)
   when /^# selftests: bpf: test_progs$/
     # selftests: prctl: disable-tsc-ctxt-sw-stress-test
     stater = ProgsStater.new($1, $2)
+  when /^# selftests: ftrace: ftracetest$/
+    # selftests: ftrace: ftracetest
+    stater = FtraceStater.new($1, $2)
   when /^LKP SKIP (.*)/
     # LKP SKIP net.l2tp.sh
     stats.add "#{$1}", 'skip'
