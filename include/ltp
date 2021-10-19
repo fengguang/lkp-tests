@@ -12,3 +12,6 @@ need_kconfig:
 - DUMMY: m
 - VETH: m
 - TUN: m
+% if job['ltp']['test'] == "tracing"
+- PERF_EVENTS: y
+% end
