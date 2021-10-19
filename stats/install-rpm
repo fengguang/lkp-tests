@@ -50,6 +50,14 @@ while (line = STDIN.gets)
     puts "obsoletes.element: #{del_whitespace($1)} #{del_whitespace($3)} #{del_whitespace($2)}"
     puts "#{del_whitespace($1)}_obsoletes_#{del_whitespace($2)}_provided_by_#{del_whitespace($3)}: 1"
 
+  # start test rpm, rpm name: $i, rpm full name: $rpm_full_name
+  when /start test rpm, rpm name: (.*), rpm full name: (.*)/
+    puts "#{del_whitespace($1)}_rpm_full_name.#{del_whitespace($2)}: 1"
+
+  # rpm src name, rpm name: $i, rpm src name: $rpm_src_name
+  when /rpm src name, rpm name: (.*), rpm src name: (.*)/
+    puts "#{del_whitespace($1)}_rpm_src_name.#{del_whitespace($2)}: 1"
+
   # rpm install result, rpm name: docker-engine, state: pass
   when /rpm install result, rpm name: (.*), state: (.*)/
     puts "#{del_whitespace($1)}_install.#{del_whitespace($2)}: 1"
