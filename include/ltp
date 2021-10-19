@@ -14,4 +14,6 @@ need_kconfig:
 - TUN: m
 % if job['ltp']['test'] == "tracing"
 - PERF_EVENTS: y
+% elsif job['ltp']['test'] == "ima"
+- IMA_WRITE_POLICY: y
 % end
