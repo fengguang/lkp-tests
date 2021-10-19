@@ -206,7 +206,7 @@ localinstall_dependent_package()
 	yum install -y wget
 	mkdir /tmp/rpm
 	cd /tmp/rpm
-	wget -c -r -np -nd "http://${LKP_SERVER}:${SRV_HTTP_RPM_PORT:-20012}$depend_rpm_dest"
+	wget -c -r -np -nd "${SRV_HTTP_PROTOCOL:-https}://${SCHED_HOST}:${SRV_HTTP_RPM_PORT:-20012}$depend_rpm_dest"
 	yum localinstall -y *.rpm
 }
 show_rpm_files()
