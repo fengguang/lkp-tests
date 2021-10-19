@@ -62,8 +62,8 @@ build_env()
 	log_cmd export OS_DIMM=ndctl
 
 	# All C++ container tests need customized version of libc --libc++ to compile. So specify the path of libc++ to make.
-	log_cmd make EXTRA_CFLAGS="-DPAGE_SIZE=4096 -DUSE_VALGRIND -Wno-error" USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1/ LIBCPP_LIBDIR=/usr/local/libcxx/lib || return
-	log_cmd make EXTRA_CFLAGS="-DPAGE_SIZE=4096 -DUSE_VALGRIND -Wno-error" USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1/ LIBCPP_LIBDIR=/usr/local/libcxx/lib test || return
+	log_cmd make -j${nr_cpu} EXTRA_CFLAGS="-DPAGE_SIZE=4096 -DUSE_VALGRIND -Wno-error" USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1/ LIBCPP_LIBDIR=/usr/local/libcxx/lib || return
+	log_cmd make -j${nr_cpu} EXTRA_CFLAGS="-DPAGE_SIZE=4096 -DUSE_VALGRIND -Wno-error" USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1/ LIBCPP_LIBDIR=/usr/local/libcxx/lib test || return
 }
 
 can_skip_copy_source()
@@ -85,12 +85,12 @@ fixup_sync_remote()
 {
 	local casename=$1
 	log_cmd cd $BENCHMARK_ROOT/$casename/src || return
-	log_cmd make EXTRA_CFLAGS="-DUSE_VALGRIND -Wno-error" USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1/ LIBCPP_LIBDIR=/usr/local/libcxx/lib -C libpmem DEBUG=1 || return
-	log_cmd make EXTRA_CFLAGS="-DUSE_VALGRIND -Wno-error" USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1/ LIBCPP_LIBDIR=/usr/local/libcxx/lib -C libpmem DEBUG=0 || return
-	log_cmd make EXTRA_CFLAGS="-DUSE_VALGRIND -Wno-error" USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1/ LIBCPP_LIBDIR=/usr/local/libcxx/lib -C libpmem2 DEBUG=1 || return
-	log_cmd make EXTRA_CFLAGS="-DUSE_VALGRIND -Wno-error" USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1/ LIBCPP_LIBDIR=/usr/local/libcxx/lib -C libpmem2 DEBUG=0 || return
-	log_cmd make EXTRA_CFLAGS="-DUSE_VALGRIND -Wno-error" USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1/ LIBCPP_LIBDIR=/usr/local/libcxx/lib -C common DEBUG=1 || return
-	log_cmd make EXTRA_CFLAGS="-DUSE_VALGRIND -Wno-error" USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1/ LIBCPP_LIBDIR=/usr/local/libcxx/lib -C common DEBUG=0 || return
+	log_cmd make -j${nr_cpu} EXTRA_CFLAGS="-DUSE_VALGRIND -Wno-error" USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1/ LIBCPP_LIBDIR=/usr/local/libcxx/lib -C libpmem DEBUG=1 || return
+	log_cmd make -j${nr_cpu} EXTRA_CFLAGS="-DUSE_VALGRIND -Wno-error" USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1/ LIBCPP_LIBDIR=/usr/local/libcxx/lib -C libpmem DEBUG=0 || return
+	log_cmd make -j${nr_cpu} EXTRA_CFLAGS="-DUSE_VALGRIND -Wno-error" USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1/ LIBCPP_LIBDIR=/usr/local/libcxx/lib -C libpmem2 DEBUG=1 || return
+	log_cmd make -j${nr_cpu} EXTRA_CFLAGS="-DUSE_VALGRIND -Wno-error" USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1/ LIBCPP_LIBDIR=/usr/local/libcxx/lib -C libpmem2 DEBUG=0 || return
+	log_cmd make -j${nr_cpu} EXTRA_CFLAGS="-DUSE_VALGRIND -Wno-error" USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1/ LIBCPP_LIBDIR=/usr/local/libcxx/lib -C common DEBUG=1 || return
+	log_cmd make -j${nr_cpu} EXTRA_CFLAGS="-DUSE_VALGRIND -Wno-error" USE_LLVM_LIBCPP=1 LIBCPP_INCDIR=/usr/local/libcxx/include/c++/v1/ LIBCPP_LIBDIR=/usr/local/libcxx/lib -C common DEBUG=0 || return
 	log_cmd cd -
 }
 
