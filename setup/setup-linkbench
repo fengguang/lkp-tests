@@ -28,7 +28,7 @@ cd "$BENCHMARK_ROOT/linkbench" || exit
 cp config/LinkConfigMysql.properties config/MyConfig.properties
 
 mysql << "MY_QUERY"
-SET GLOBAL max_connections = 400;
+SET GLOBAL max_connections = 1025;
 DROP DATABASE IF EXISTS linkdb;
 CREATE DATABASE linkdb;
 USE linkdb;
