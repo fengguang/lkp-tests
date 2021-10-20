@@ -1,2 +1,4 @@
 # specify test that should run alone
 gem_exec_reloc
+# need mem > 30G
+gem_mmap_offset
