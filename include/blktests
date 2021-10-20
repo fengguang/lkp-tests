@@ -1,10 +1,9 @@
 need_kconfig:
-- BLK_DEV_NBD: m
+% if ___.test =~ /nvme/
 - NVME_MULTIPATH: y
 - NVME_TARGET: m
 - NVME_TARGET_LOOP: m
-- BLK_DEV_NULL_BLK_FAULT_INJECTION: y
-- BLK_DEV_ZONED: y, v4.10-rc1
+% elsif ___.test =~ /srp/
 - INFINIBAND: m
 - INFINIBAND_IPOIB: m
 - INFINIBAND_SRP: m
@@ -12,6 +11,12 @@ need_kconfig:
 - INFINIBAND_USER_MAD: m
 - INFINIBAND_USER_ACCESS: m
 - INFINIBAND_ADDR_TRANS: v4.17-rc1
+% elsif ___.test =~ /nbd/
+- BLK_DEV_NBD: m
+% elsif ___.test =~ /zbd/
+- BLK_DEV_ZONED: y, v4.10-rc1
+% end
+- BLK_DEV_NULL_BLK_FAULT_INJECTION: y
 - RDMA_RXE: m, v4.8-rc1
 - RDMA_SIW: m, v5.3-rc1
 - BTRFS_FS: m
