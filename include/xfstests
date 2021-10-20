@@ -1,25 +1,25 @@
 need_modules: true
 need_kconfig:
-% if job['fs'] == "f2fs"
+% if ___.fs == "f2fs"
 - F2FS_FS: m
 - F2FS_FS_XATTR: y
 - F2FS_FS_SECURITY: y
 - F2FS_FS_ENCRYPTION: y, <= v5.0
-% elsif job['fs'] == "ext2"
+% elsif ___.fs == "ext2"
 - EXT2_FS: m
 - EXT2_FS_XATTR: y
 - EXT2_FS_POSIX_ACL: y
 - EXT2_FS_SECURITY: y
-% elsif job['fs'] == "ext4"
+% elsif ___.fs == "ext4"
 - EXT4_ENCRYPTION: y, <= v5.0
-% elsif job['fs'] == "xfs"
+% elsif ___.fs == "xfs"
 - XFS_RT: y
 - XFS_DEBUG: y
 - XFS_ONLINE_SCRUB: y, v4.15-rc1
 - XFS_ONLINE_REPAIR: y, v4.18-rc1
-% elsif job['fs'] == "udf"
+% elsif ___.fs == "udf"
 - UDF_FS: m
-% elsif job['fs'] == "ocfs2"
+% elsif ___.fs == "ocfs2"
 - OCFS2_FS: m
 - OCFS2_FS_O2CB: m
 - OCFS2_FS_USERSPACE_CLUSTER: m
