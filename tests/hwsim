@@ -45,6 +45,15 @@ mcc)
 	;;
 esac
 
+# longer sleep time in line 166 to 0.5
+# vi lkp/benchmarks/hwsim/tests/hwsim/start.sh
+#162 for i in 0 1 2 3 4 5 6 7 8 9; do
+#163     if [ -e /tmp/wpas-wlan0 ]; then
+#164         break
+#165     fi
+#166     sleep 0.05
+#167 done
+sed -i 's/0.05/0.5/g' start.sh
 log_cmd ./start.sh $start_opt || die "fail to setup test environment"
 
 while read testcase
