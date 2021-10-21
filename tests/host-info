@@ -98,6 +98,13 @@ get_ipmi_ip()
 	[ -n "$ip" ] && echo "ipmi_ip: $ip"
 }
 
+get_ipmi_serial_number()
+{
+	[ -e /dev/ipmi0 ] || [ -e /dev/ipmi/0 ] || [ -e /dev/ipmidev/0 ] || return 0
+	local serial_number=$(ipmitool fru | awk '/Product Serial/{print $4}' | head -1)
+	[ -n "$serial_number" ] && echo "serial_number: $serial_number"
+}
+
 main()
 {
 	get_memory
@@ -106,6 +113,7 @@ main()
 	get_mac
 	get_cpu_info
 	get_ipmi_ip
+	get_ipmi_serial_number
 }
 
 main
