@@ -47,7 +47,10 @@ echo_src_rpm_location()
         do
                 echo "Starting print rpm: ${i}'s src.rpm location"
                 src_rpm_name=$(repoquery --queryformat '%{source_name}' $i 2>/dev/null)
-                repoquery --location $src_rpm_name 2>/dev/null | grep src.rpm
+
+		[ -n "$src_rpm_name" ] && {
+			repoquery --location $src_rpm_name 2>/dev/null | grep src.rpm
+		}
                 echo "print rpm: ${i}'s src.rpm location end"
         done
 }
