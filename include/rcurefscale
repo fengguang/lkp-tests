@@ -1,0 +1,4 @@
+need_kconfig:
+- TORTURE_TEST: m
+- RCU_REF_SCALE_TEST: m, v5.9
+- MODULE_UNLOAD: y

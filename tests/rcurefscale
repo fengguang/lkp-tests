@@ -1,0 +1,13 @@
+#!/bin/sh
+
+## creates an rcurefscale kernel module that can be loaded to
+## run a torture test.
+
+. $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/reproduce-log.sh
+
+log_cmd modprobe refscale || die "failed to load refscale module, try to enable CONFIG_RCU_REF_SCALE_TEST and build rcurefscale.ko"
+
+sleep 300
+
+log_cmd rmmod rcurefscale 2> /dev/null

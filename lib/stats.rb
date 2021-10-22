@@ -41,7 +41,7 @@ class LinuxTestcasesTableSet
        dd-write ebizzy fileio fishtank fsmark glbenchmark
        hackbench hpcc idle iozone iperf jsbenchmark kbuild
        ku-latency linpack mlc nepim netperf netpipe
-       nuttcp octane oltp openarena pbzip2
+       nuttcp octane oltp openarena pbzip2 rcurefscale
        perf-bench-numa-mem perf-bench-sched-pipe pft
        phoronix-test-suite pigz pixz plzip postmark pxz qperf
        reaim sdf siege sockperf speccpu specjbb2013
