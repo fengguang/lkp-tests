@@ -19,3 +19,6 @@ log_cmd modprobe refscale || die "failed to load refscale module, try to enable 
 wait_for_refscale_completion
 
 log_cmd rmmod rcurefscale 2> /dev/null
+
+# record all log after "rcu-ref-scale: --- Start of test:"
+dmesg | sed -ne '/ref-scale:.* Start of test/,$ p'
