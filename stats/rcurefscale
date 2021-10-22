@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+
+# [   53.521455] rcu-ref-scale: END OF TEST. Calculating average duration per loop (nanoseconds)...
+# [   53.531191] rcu-ref-scale:
+#                Runs     Time(ns)
+#                1        34.912
+#                2        34.534
+#                3        34.871
+#                4        34.757
+#                5        34.437
+#                6        34.883
+#                7        34.630
+#                8        34.613
+#                9        34.928
+#                10       34.734
+#                11       34.550
+#                12       34.564
+#                13       34.815
+#                14       34.485
+#                15       34.491
+runs = []
+while (line = STDIN.gets)
+  case line
+  when /^\[.*\] (.*-ref-scale): END OF TEST/
+    type = $1
+  when /^\s{5,}\d+\t(\d+).(\d+)$/
+    next unless type
+    runs << "#{$1}.#{$2}".to_f
+  end
+end
+
+puts "#{type}.duration_per_loop.ns: #{runs.sum / runs.size}"
