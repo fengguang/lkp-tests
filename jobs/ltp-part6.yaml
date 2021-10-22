@@ -9,3 +9,14 @@ need_cpuid: 71
 ltp:
   test:
   - tracing
+
+---
+disk: 1HDD
+fs:
+- ext4
+- xfs
+- btrfs
+- f2fs
+ltp:
+  test:
+  - perf_event_open03.perf_event_open03
