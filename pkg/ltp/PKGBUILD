@@ -161,7 +161,14 @@ split_syscalls_tests()
 	# need 2 numa node
 	grep -Ee "^(mbind|move_pages|migrate_pages|set_mempolicy)" syscalls >> syscalls-numa || return
 
-	grep -v -f syscalls-timer -f syscalls-tgkill -f syscalls-setsockopt06 -f syscalls-numa syscalls > syscalls-rest || return
+	# standalone
+	standalone_file=$LKP_SRC/pkg/${pkgname}/addon/tests/standalone
+	while read line
+	do
+		echo $line > ./"${line/[[:blank:]]/.}"
+	done < <(cat $standalone_file | grep -v '^#')
+
+	grep -v -f syscalls-timer -f syscalls-tgkill -f syscalls-setsockopt06 -f syscalls-numa syscalls -f $standalone_file > syscalls-rest || return
 	$LKP_SRC/tools/split-tests syscalls-rest 8 syscalls-
 	hide syscalls-rest
 	hide syscalls
