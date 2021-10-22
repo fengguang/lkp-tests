@@ -6,8 +6,16 @@
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/reproduce-log.sh
 
+wait_for_refscale_completion()
+{
+	for i in $(seq 1 300); do
+		dmesg | grep -q 'ref-scale: END OF TEST' && sleep 10 && break
+		sleep 1
+	done
+}
+
 log_cmd modprobe refscale || die "failed to load refscale module, try to enable CONFIG_RCU_REF_SCALE_TEST and build rcurefscale.ko"
 
-sleep 300
+wait_for_refscale_completion
 
 log_cmd rmmod rcurefscale 2> /dev/null
