@@ -1,10 +1,22 @@
 #!/bin/sh
+# - nr_threads
+# - scale_type
+# - loops
+# - readdelay
+# - nruns
 
 ## creates an rcurefscale kernel module that can be loaded to
 ## run a torture test.
 
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/reproduce-log.sh
+
+args=""
+[ ! -z "$scale_type" ] && args="$args scale_type=$scale_type"
+[ ! -z "$nr_threads" ] && args="$args nreaders=$nr_threads"
+[ ! -z "$loops" ] && args="$args loops=$loops"
+[ ! -z "$readdelay" ] && args="$args readdelay=$readdelay"
+[ ! -z "$nruns" ] && args="$args nruns=$nruns"
 
 wait_for_refscale_completion()
 {
@@ -14,7 +26,7 @@ wait_for_refscale_completion()
 	done
 }
 
-log_cmd modprobe refscale || die "failed to load refscale module, try to enable CONFIG_RCU_REF_SCALE_TEST and build rcurefscale.ko"
+log_cmd modprobe refscale $args || die "failed to load refscale module, try to enable CONFIG_RCU_REF_SCALE_TEST and build rcurefscale.ko"
 
 wait_for_refscale_completion
 
