@@ -10,14 +10,15 @@
 ## A Linux System call fuzz tester
 
 [ -n "$seed" ] || {
-	echo Seeding trinity based on $kconfig
 	if has_cmd cksum; then
-		seed=$(echo $kconfig | cksum)
+		seed=$(echo "$rootfs/$kconfig" | cksum)
 		seed=${seed%% *}
 	else
-		seed=$(echo $kconfig | md5sum | cut -c1-5)
+		seed=$(echo "$rootfs/$kconfig" | md5sum | cut -c1-5)
 		seed=$(( 0x$seed ))
 	fi
+
+	echo "Seeding trinity by $seed based on $rootfs/$kconfig"
 }
 
 [ -n "$number" ] || {
