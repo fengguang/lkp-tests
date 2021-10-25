@@ -30,7 +30,7 @@ log_cmd modprobe refscale $args || die "failed to load refscale module, try to e
 
 wait_for_refscale_completion
 
-log_cmd rmmod rcurefscale 2> /dev/null
+log_cmd rmmod refscale 2> /dev/null
 
 # record all log after "rcu-ref-scale: --- Start of test:"
 dmesg | sed -ne '/ref-scale:.* Start of test/,$ p'
