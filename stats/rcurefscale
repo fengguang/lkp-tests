@@ -23,9 +23,9 @@ while (line = STDIN.gets)
   case line
   when /^\[.*\] (.*-ref-scale): END OF TEST/
     type = $1
-  when /^\s{5,}\d+\t(\d+).(\d+)$/
+  when /(^\[.*\].+|^\s{5,})\d+\t(\d+).(\d+)$/
     next unless type
-    runs << "#{$1}.#{$2}".to_f
+    runs << "#{$2}.#{$3}".to_f
   end
 end
 
