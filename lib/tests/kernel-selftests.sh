@@ -316,6 +316,10 @@ fixup_ftrace()
 {
 	# FIX: sh: echo: I/O error
 	sed -i 's/bin\/sh/bin\/bash/' ftrace/ftracetest
+
+	# Stop tracing while reading the trace file by default
+	# inspired by https://lkml.org/lkml/2021/10/26/1195
+	echo 1 > /sys/kernel/debug/tracing/options/pause-on-trace
 }
 
 fixup_firmware()
