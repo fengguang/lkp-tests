@@ -35,6 +35,7 @@ kernel_cmdline: sysctl.debug.test_sysctl.boot_int=1
 kernel-selftests:
   group:
     - group-01
+    - ftrace
     - lib
     - lkdtm
 
