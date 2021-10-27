@@ -182,7 +182,7 @@ cat >> $TMP/env.yaml <<EOF
 
 # setup/$fs_key
 $fs_key: $fs
-mount_points: $mount_points
+mount_points: $nfs_mount_points $cifs_mount_points $mount_points
 cifs_mount_points: $cifs_mount_points
 cifs_server_paths: $cifs_server_paths
 nfs_mount_points: $nfs_mount_points
