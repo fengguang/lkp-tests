@@ -206,8 +206,8 @@ localinstall_dependent_package()
 	yum install -y wget
 	mkdir /tmp/rpm
 	cd /tmp/rpm
-	wget -c -r -np -nd "${SRV_HTTP_PROTOCOL:-https}://${SCHED_HOST}:${SRV_HTTP_RPM_PORT:-20012}$depend_rpm_dest"
-	yum localinstall -y *.rpm
+	wget -c -r -np -nd "${SRV_HTTP_PROTOCOL:-https}://${SCHED_HOST}:${SRV_HTTP_RPM_PORT:-20012}$depend_rpm_dest" || die "failed to download local depend rpms"
+	yum localinstall -y *.rpm || die "failed to local install rpms"
 }
 show_rpm_files()
 {
