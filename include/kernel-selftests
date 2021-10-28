@@ -163,6 +163,23 @@ need_kconfig:
 - ION: y, <= v5.10 # Depends on: STAGING [: y]
 - ION_SYSTEM_HEAP: y, v4.12-rc1, <= v5.10 # Depends on: STAGING [: y] && ION [: y]
 - STAGING: y
+% elsif ___.group == "ftrace"
+- FTRACE: y
+- KPROBES: y
+- FUNCTION_PROFILER: y
+- TRACER_SNAPSHOT: y
+- STACK_TRACER: y
+- HIST_TRIGGERS: y, v4.7-rc1
+- SCHED_TRACER: y
+- PREEMPT_TRACER: y
+- IRQSOFF_TRACER: y
+- PREEMPTIRQ_DELAY_TEST: m, v5.6-rc1
+- MODULES: y
+- MODULE_UNLOAD: y
+- SAMPLES: y
+- SAMPLE_FTRACE_DIRECT: m, v5.5-rc1
+- SAMPLE_TRACE_PRINTK: m
+- KALLSYMS_ALL: y
 % elsif ___.group == "group-01"
 - UDMABUF: y, v4.20-rc1
 - DMABUF_HEAPS: y, v5.6-rc1
@@ -173,38 +190,22 @@ need_kconfig:
 - EFIVAR_FS: y
 - EMBEDDED: y
 - EXPERT: y
-- FTRACE: y
-- FUNCTION_PROFILER: y
 - GPIOLIB: y
 - GPIO_MOCKUP: v4.9-rc1
-- HIST_TRIGGERS: y, v4.7-rc1
 - IMA_APPRAISE: y
 - IMA_ARCH_POLICY: y, v5.0-rc1
-- IRQSOFF_TRACER: y
 - IR_IMON_DECODER: m, v4.17-rc1
 - IR_SHARP_DECODER: m # Depends on: RC_DECODERS [: y] && RC_CORE [: m]
-- KALLSYMS_ALL: y
-- KPROBES: y
 - LIRC: y # Depends on: RC_CORE [: m]
 - LKDTM: y
-- MODULES: y
-- MODULE_UNLOAD: y
 - NOTIFIER_ERROR_INJECTION: y
 - PREEMPT: y
-- PREEMPTIRQ_DELAY_TEST: m, v5.6-rc1
-- PREEMPT_TRACER: y
-- SAMPLES: y
-- SAMPLE_FTRACE_DIRECT: m, v5.5-rc1
-- SAMPLE_TRACE_PRINTK: m
-- SCHED_TRACER: y
 - SECURITYFS: y
-- STACK_TRACER: y
 - TEST_BITMAP
 - TEST_KMOD: m, v4.13-rc1
 - TEST_LKM: m
 - TEST_PRINTF
 - TEST_STRSCPY: m, v5.2-rc1
-- TRACER_SNAPSHOT: y
 - TUN: m
 - WW_MUTEX_SELFTEST: m, v4.11-rc1
 - XFS_FS: m
