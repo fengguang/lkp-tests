@@ -110,6 +110,15 @@ replace_script_partition_val()
 		index=$((index+nr_rootfs_vdisk))
 		local vdisk_swap_val="${disk_names[@]:$index:$nr_swap_vdisk}"
 
+		# First remove lines between two export, or it will be left
+		# export ssd_partitions='/dev/disk/by-id/nvme-INTEL_SSDPE2KX040T7_PHLF7414019F4P0IGN-part2
+		# /dev/disk/by-id/nvme-INTEL_SSDPE2KX040T7_PHLF7414019F4P0IGN-part3'
+		# export swap_partitions=
+		sed -i  -e '/export hdd_partitions/,/export/{//!d}' \
+			-e '/export ssd_partitions/,/export/{//!d}' \
+			-e '/export swap_partitions/,/export/{//!d}' \
+			-e '/export rootfs_partitions/,/export/{//!d}' \
+			$job_script
 		sed -i	-e "s%export hdd_partitions=.*%export hdd_partitions='${vdisk_hdd_val}'%" \
 			-e "s%export ssd_partitions=.*%export ssd_partitions='${vdisk_ssd_val}'%" \
 			-e "s%export swap_partitions=.*%export swap_partitions='${vdisk_swap_val}'%" \
