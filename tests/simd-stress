@@ -1,0 +1,16 @@
+#!/bin/sh
+# - duration
+# - thread_count
+# - nop_per_loop
+# - type
+
+. $LKP_SRC/lib/reproduce-log.sh
+
+cd $BENCHMARK_ROOT/simd-stress || die "no $BENCHMARK_ROOT/simd-stress"
+
+: ${duration:=10}
+: ${thread_count:=4}
+: ${nop_per_loop:=10000000}
+: ${type:=2}
+
+log_cmd ./simd-stress -d $duration -t $thread_count -l $nop_per_loop -t $type

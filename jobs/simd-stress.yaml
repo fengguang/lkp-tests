@@ -1,0 +1,8 @@
+suite: simd-stress
+testcase: simd-stress
+category: benchmark
+
+simd-stress:
+  duration: 30
+  thread_count: 4
+  type: 2
