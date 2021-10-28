@@ -1,0 +1,20 @@
+pkgname=intel-ipsec-mb
+pkgver=1.0
+pkgrel=0
+pkgdesc="Intel Multi-Buffer Crypto for IPsec Library."
+arch=('i386' 'x86_64')
+license=('GPL')
+source=("https://github.com/intel/intel-ipsec-mb.git")
+md5sums=('SKIP')
+
+build()
+{
+	cd "$srcdir/$pkgname"
+	make SHARED=n
+}
+
+package()
+{
+	mkdir -p "$pkgdir/lkp/benchmarks/intel-ipsec-mb"
+	cp "$srcdir/$pkgname/perf/"ipsec_perf "$pkgdir/lkp/benchmarks/intel-ipsec-mb"
+}

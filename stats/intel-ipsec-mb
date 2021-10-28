@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+#ARCH	AVX512
+#CIPHER	CHACHA20_AEAD
+#DIR	ENCRYPT
+#HASH_ALG	POLY1305_AEAD
+#KEY_SIZE	AES-256
+#16384	6512
+
+#(6512 is CPU cycles spent processing corresponding
+# packet size, smaller the better)
+
+cycles = 0
+
+while (line = STDIN.gets)
+  case line.chomp!
+  when /\d+\d.*$/
+    data = line.split
+    cycles = data[1].to_i
+  end
+end
+
+puts 'CPU_Cycles: ' + cycles.to_s

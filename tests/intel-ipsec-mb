@@ -1,0 +1,18 @@
+#!/bin/sh
+# - algo
+# - arch
+# - job_size
+# - job_iter
+# - thread_count
+
+. $LKP_SRC/lib/reproduce-log.sh
+
+cd $BENCHMARK_ROOT/intel-ipsec-mb || die "no $BENCHMARK_ROOT/intel-ipsec-mb"
+
+: ${algo:=chacha20-poly1305}
+: ${arch:=AVX512}
+: ${job_size:=16384}
+: ${job_iter:=3000000}
+: ${thread_count:=4}
+
+log_cmd ./ipsec_perf --aead-algo $algo --arch $arch --job-size $job_size --job-iter $job_iter --threads $thread_count

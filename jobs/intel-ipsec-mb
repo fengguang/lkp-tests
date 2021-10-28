@@ -1,0 +1,10 @@
+suite: intel-ipsec-mb
+testcase: intel-ipsec-mb
+category: benchmark
+
+intel-ipsec-mb:
+  algo: "chacha20-poly1305"
+  arch: AVX512
+  job_size: 16384
+  job_iter: 3000000
+  thread_count: 4
