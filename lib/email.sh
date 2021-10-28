@@ -160,6 +160,18 @@ https://api.compass-ci.openeuler.org:${SRV_HTTP_RESULT_PORT:-20007}$result_root"
 	rpmbuild_report
 }
 
+reverse_rpmbuild_content()
+{
+	package_name=${upstream_repo##*/}
+	rpmbuild_result="We noticed that due to this commit, $package_name that depends on it build failed. You can click the following link to view details.
+https://api.compass-ci.openeuler.org:${SRV_HTTP_RESULT_PORT:-20007}$result_root/output
+
+You can obtain more information by clicking on the link below
+https://api.compass-ci.openeuler.org:${SRV_HTTP_RESULT_PORT:-20007}$result_root"
+
+	rpmbuild_report
+}
+
 errors_env_content()
 {
 	email_content=$(echo "To: $recipient_email_to

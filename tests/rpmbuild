@@ -102,16 +102,19 @@ is_git_merge()
 
 rpmbuild_email()
 {
-	[ -n "$whether_email" ] && {
-		if [[ $(is_git_merge "$upstream_commit" | wc -w) -eq 1 ]]; then
-			get_merge_info "" "${upstream_commit}" author_email author_name
-			send_email $1
-		else
-			parent_commit=$(is_git_merge $upstream_commit | sed 's/\ /.../')
-			get_merge_info "${parent_commit}" "${upstream_commit}" author_email author_name
-			send_email $1
-		fi
-	}
+	[ -n "$whether_email" ] || return
+	if [[ $(is_git_merge "$upstream_commit" | wc -w) -eq 1 ]]; then
+		get_merge_info "" "${upstream_commit}" author_email author_name
+	else
+		parent_commit=$(is_git_merge $upstream_commit | sed 's/\ /.../')
+		get_merge_info "${parent_commit}" "${upstream_commit}" author_email author_name
+	fi
+
+	if [ -n "$depend_job_id" ]; then
+		send_email "reverse_rpmbuild"
+	else
+		send_email $1
+	fi
 }
 
 from_srpm()
