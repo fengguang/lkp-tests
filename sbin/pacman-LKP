@@ -9,6 +9,8 @@ SYNC=0
 QUERY=0
 REMOVE=0
 
+. $LKP_SRC/lib/lkp_path.sh
+
 : ${PACMAN:=$0}
 : ${BUILDDIR:=$LKP_SRC/tmp-pkg}
 : ${PKGEXT:=tar.gz}
@@ -155,7 +157,7 @@ sync() {
 	if [ -d "$PKG_DIR/$pkg" ]; then
 		(
 			cd "${PKG_DIR}/$pkg" && \
-			"$LKP_SRC/sbin/makepkg" --config "$LKP_SRC/etc/makepkg.conf" -s -i --skippgpcheck
+			"$LKP_SRC/sbin/makepkg" --config "$(lkp_src)/etc/makepkg.conf" -s -i --skippgpcheck
 		)
 	fi
 	echo "$pkg" >> "$DBFILE"
