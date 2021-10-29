@@ -5,11 +5,12 @@ runtime: 60
 
 disk:
 - 1HDD
-fs:
-- xfs
+fs1:
+  fs_type:
+  - xfs
 iosched:
 - mq-deadline
-raw_disk: rd
+raw_disk: no
 nr_task: 24
 
 fio-setup-basic:
