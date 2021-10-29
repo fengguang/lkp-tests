@@ -41,3 +41,6 @@ subsystems:
 - altera-stapl
 non_rebaseable_branch: .*
 notify_build_success_branch: .*
+patch_based_on_branch:
+  '\[(.+ )?char-misc-next( .+)?\]': char-misc-next
+  '\[(.+ )?char-misc-testing( .+)?\]': char-misc-testing
