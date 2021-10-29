@@ -1,5 +1,7 @@
-blk_rw_TEST10.skip: 1
-blk_rw_TEST11.skip: 1
+blk_rw_TEST10.test_skip: 1
+blk_rw_TEST11.test_skip: 1
+blk_rw_TEST14.test_skip: 1
+blk_pool_TEST10.test_skip: 1
 blk_pool_TEST12_check_non-pmem_debug.pass: 1
 blk_pool_TEST12_check_non-pmem_nondebug.pass: 1
 blk_pool_TEST12_check_non-pmem_static-debug.pass: 1

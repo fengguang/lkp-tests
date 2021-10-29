@@ -16,31 +16,18 @@ while (line = STDIN.gets)
   line = line.resolve_invalid_bytes.plain_text
 
   case line
-  when %r{^(.+)/(TEST[0-9]+): SKIP DEVICE_DAX_PATH.+}
-    item = Regexp.last_match[1]
-    name = Regexp.last_match[2]
-    stats.add "#{item}_#{name}", 'skip' unless stats.key? "#{item}_#{name}"
-
-  # ignore below SKIP test:
-  # blk_nblock/TEST3: SKIP: Only supported on ppc64
-  # blk_pool/TEST10: SKIP required: run without superuser rights
-  # obj_badblock/TEST0: SKIP: tests using 'sudo' are not enabled in testconfig.sh (ENABLE_SUDO_TESTS)
-  # obj_ctl_debug/TEST2: SKIP pmemcheck does not support --expect-fence-after-clflush option. Please update it to the latest version.
-  # pmempool_check/TEST33: SKIP compiled with support for shutdown state
-  # ex_libpmemobj/TEST15: SKIP no terminal
-  when %r(SKIP.+(Only supported on ppc64|run without superuser rights|not (enabled|specify|support)|compiled with support for shutdown state|no terminal))
-    next
   # from /nvml/src/test/unittest/unittest.sh
   # 2732: msg "$UNITTEST_NAME: SETUP ($TEST/$REAL_FS/$BUILD$MCSTR$PROV$PM)"
   when %r{^(.+)/TEST[0-9]+: SETUP\s*\((.+)\)$}
     test_item = Regexp.last_match[1]
     subtest = Regexp.last_match[2].tr('/','_')
-  when %r{^(.+)/(TEST[0-9]+): (PASS|FAIL|SKIP)}
+  when %r{^(.+)/(TEST[0-9]+): (PASS|FAIL)}
     item = Regexp.last_match[1]
     name = Regexp.last_match[2]
     next unless test_item == item
 
     stats.add "#{item}_#{name}_#{subtest}", Regexp.last_match[3]
+    subtest = nil
   when %r{RUNTESTS: stopping: (.+)/(TEST[0-9]+) failed}
     item = Regexp.last_match[1]
     name = Regexp.last_match[2]
@@ -53,17 +40,39 @@ while (line = STDIN.gets)
     next unless test_item == item
 
     stats.add "#{item}_#{name}_#{subtest_name}_#{fs_type}_#{build_type}", 'fail'
+    # set subtest to nil because when record SKIP test result need judge this value.
+    # for example, when test output message is like following.
+    #   blk_rw/TEST11: SETUP (check/pmem/debug)
+    #   RUNTESTS: stopping: blk_rw/TEST11 failed, TEST=check FS=any BUILD=debug
+    #   blk_rw/TEST12: SKIP DEVICE_DAX_PATH does not specify enough dax devices
+    # if not set subtest to nil the output is like following.
+    #   blk_rw_TEST11_check_any_debug.fail: 1
+    #   blk_rw_TEST12_check_pmem_debug.skip: 1
+    # after set subtest to nil the output is right.
+    #   blk_rw_TEST11_check_any_debug.fail: 1
+    #   blk_rw_TEST12.test_skip: 1
+    subtest = nil
   when %r{RUNTESTS: stopping: (.+)/(TEST[0-9]+) timed out}
     item = Regexp.last_match[1]
     name = Regexp.last_match[2]
     next unless test_item == item
 
     stats.add "#{item}_#{name}_#{subtest}", 'timeout'
+    subtest = nil
   when %r{^(.+)/(TEST[0-9]+): SKIP}
     item = Regexp.last_match[1]
     name = Regexp.last_match[2]
 
-    stats.add "#{item}_#{name}", 'test_skip'
+    if subtest && test_item == item
+      stat_name = "#{item}_#{name}_#{subtest}"
+      stat_result = 'skip'
+      subtest = nil
+    else
+      stat_name = "#{item}_#{name}"
+      stat_result = 'test_skip'
+    end
+
+    stats.add stat_name.to_s, stat_result.to_s unless stats.key? stat_name.to_s
   when /^(ignored_by_lkp)\s+(.*)\s+/
     stats.add $2, $1
   end
