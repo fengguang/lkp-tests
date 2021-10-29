@@ -6,11 +6,12 @@ arch=(i386 x86_64)
 url="https://github.com/axboe/fio"
 license=('GPL')
 depends=('')
-source=("https://github.com/axboe/fio.git")
+source=("https://gitee.com/tan-long/fio.git") # or https://github.com/axboe/fio.git
 md5sums=('SKIP')
 
 build() {
     cd "$srcdir/fio"
+    git checkout "fio-$pkgver"
     ./configure --disable-native
     make
 }
