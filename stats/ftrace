@@ -1,13 +1,16 @@
 #!/usr/bin/env ruby
 
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+
 require 'fileutils'
 require 'yaml'
+require "#{LKP_SRC}/lib/lkp_path"
 
 RESULT_ROOT = ENV['RESULT_ROOT']
 TIME_DELTA  = YAML.load_file(RESULT_ROOT + '/job.yaml')['time_delta'].to_f
 FMT_DIR     = RESULT_ROOT + '/trace_event/'
 
-KEY_PREFIX_MAPPING = YAML.load_file(File.dirname(__FILE__) + '/../etc/ftrace_key_prefix')
+KEY_PREFIX_MAPPING = YAML.load_file(LKP::Path.src('etc', 'ftrace_key_prefix'))
 BDI_DEV_MAPPING = YAML.load_file(RESULT_ROOT + '/bdi_dev_mapping') if File.exist? RESULT_ROOT + '/bdi_dev_mapping'
 
 # A hash to make sure we record one event data only
