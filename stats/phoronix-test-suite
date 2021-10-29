@@ -11,6 +11,11 @@ is_begin_of_subtest = false
 while (line = STDIN.gets)
   line = line.resolve_invalid_bytes
 
+  if line =~ /(The test quit with a non-zero exit status)/ || line =~ /(The test run did not produce a result)/
+    log_warn $1
+    exit 1
+  end
+
   # remove color control info
   line.gsub!(/.\[1;(\d+)m|.\[0m/, '')
   case line.chomp!
