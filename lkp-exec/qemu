@@ -6,6 +6,7 @@
 . $LKP_SRC/lib/unit.sh
 . $LKP_SRC/lib/job-init.sh
 . $LKP_SRC/lib/lkp_cmd.sh
+. $LKP_SRC/lib/lkp_path.sh
 
 script_name=$(basename $0)
 
@@ -259,7 +260,7 @@ create_lkp_src_initrd()
 		
 		pushd "$LKP_SRC/pkg/lkp-src"
 		LKP_USER="$user" PACMAN=true BUILDDIR=/tmp/$USER CARCH=$arch PKGEXT=.cgz CGZDEST="$CACHE_DIR/lkp-$arch.cgz" \
-		$LKP_SRC/sbin/makepkg --config $LKP_SRC/etc/makepkg.conf -e
+		$LKP_SRC/sbin/makepkg --config $(lkp_src)/etc/makepkg.conf -e
 		[[ -f $CACHE_DIR/lkp-$arch.cgz ]] || {
 			echo "Failed to pack: $CACHE_DIR/lkp-$arch.cgz"
 			exit 1
