@@ -1,6 +1,7 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
 fetch_tags: true
 owner: Stephen Rothwell <sfr@canb.auug.org.au>
+priority: high
 branch_denylist: akpm|akpm-base|stable
 notify_build_success_branch: .*
 notify_build_success_cc_committer: true
