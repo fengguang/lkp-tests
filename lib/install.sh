@@ -1,6 +1,7 @@
 #!/bin/sh
 
 . $LKP_SRC/lib/detect-system.sh
+. $LKP_SRC/lib/lkp_path.sh
 
 sync_distro_sources()
 {
@@ -176,7 +177,7 @@ build_depends_pkg() {
 		if [ -d "$pkg_dir" ]; then
 			(
 				cd "$pkg_dir" && \
-				PACMAN="$LKP_SRC/sbin/pacman-LKP" "$LKP_SRC/sbin/makepkg" $INSTALL --config "$LKP_SRC/etc/makepkg.conf" --skippgpcheck
+				PACMAN="$LKP_SRC/sbin/pacman-LKP" "$LKP_SRC/sbin/makepkg" $INSTALL --config "$(lkp_src)/etc/makepkg.conf" --skippgpcheck
 				cp -rf "$pkg_dir/pkg/$pkg"/* "$dest"
 				rm -rf "$pkg_dir/"{src,pkg}
 			)
