@@ -1,11 +1,10 @@
 #!/bin/sh
 
 . $LKP_SRC/lib/env.sh
-. $LKP_SRC/lib/lkp_path.sh
 
 is_local_server()
 {
-	echo "$LKP_SERVER" | grep -q -E -f $(lkp_src)/etc/trustable-lkp-server
+	echo "$LKP_SERVER" | grep -q -E -f $LKP_SRC/etc/trustable-lkp-server
 }
 
 upload_files_rsync()
