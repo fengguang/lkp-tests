@@ -2,6 +2,10 @@ suite: igt
 testcase: igt
 category: functional
 
+igt:
+  - group: gem_shrink
+
+---
 need_memory: 30G
 
 igt:
@@ -10,7 +14,7 @@ igt:
 ---
 need_memory: 25G
 igt:
-  - group:  gem_ctx_create
+  - group: gem_ctx_create
     test:
       - basic
       - ext-param

@@ -4,3 +4,5 @@ gem_exec_reloc
 gem_mmap_offset
 # need mem > 25G
 gem_ctx_create
+# gem_shrink subtest hang timeout on lkp-hsw-d01
+gem_shrink
