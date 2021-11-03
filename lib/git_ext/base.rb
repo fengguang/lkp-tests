@@ -37,7 +37,7 @@ module Git
     end
 
     def remote_exist?(remote)
-      command('remote') =~ /^#{remote}$/
+      command('remote').split.include?(remote)
     end
 
     def branch_exist?(pattern)
