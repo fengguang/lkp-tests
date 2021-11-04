@@ -71,6 +71,10 @@ run_test()
 	## run other stress-ng as root
 	## use option --exclude to ignore spawn and exec.
 	[ -n "$test" ] && {
+		if [ "$test" = "ping-sock" ]; then
+			log_cmd sysctl -w net.ipv4.ping_group_range="0 $nr_threads"
+		fi
+
 		test="--$test"
 		if [ "$class" = "exec_spawn" ]; then
 			mkdir /home/lkp && chown -R lkp:lkp /home/lkp
