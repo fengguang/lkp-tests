@@ -27,11 +27,23 @@ build_ltp()
 	rebuild testcases/network/rpc/rpc-tirpc/tests_pack/rpc_suite/rpc/rpc_regunreg_xprt_unregister
 }
 
+check_linux_header()
+{
+	# is exist linux_header, link to /lib/modulers/`uname -r`/build
+	linux_headers_dir=$(ls -d /usr/src/linux-headers*-bpf)
+	[ -z "$linux_headers_dir" ] && return
+	build_link="/lib/modules/$(uname -r)/build"
+	ln -sf "$linux_headers_dir" "$build_link"
+}
+
 install_ltp()
 {
 	make install
 	cp testcases/commands/tpm-tools/tpmtoken/tpmtoken_import/tpmtoken_import_openssl.cnf $1/testcases/bin/
 	cp testcases/commands/tpm-tools/tpmtoken/tpmtoken_protect/tpmtoken_protect_data.txt  $1/testcases/bin/
+	# cp file for rebuild dummy_del_mod*.ko
+	mkdir -p $1/testcases/kernel/syscalls/delete_module
+	cp testcases/kernel/syscalls/delete_module/* $1/testcases/kernel/syscalls/delete_module
 }
 
 is_excluded()
@@ -177,6 +189,11 @@ test_setting()
 		}
 		[ -e /dev/log ] && rm /dev/log
 		ln -s /run/systemd/journal/dev-log /dev/log
+
+		# rebuild dummy_del_mod*.ko if exist linux header
+		check_linux_header || return 0
+		make -C /lib/modules/`uname -r`/build M=${PWD}/testcases/kernel/syscalls/delete_module
+		cp ${PWD}/testcases/kernel/syscalls/delete_module/*.ko ${PWD}/testcases/bin/
 		;;
 	net.ipv6_lib)
 		iface=$(ifconfig -s | awk '{print $1}' | grep ^eth | head -1)
