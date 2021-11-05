@@ -3,7 +3,7 @@ testcase: phoronix-test-suite
 category: benchmark
 
 phoronix-test-suite:
-  - test: ramspeed-1.4.2
+  - test: ramspeed-1.4.3
     option_a:
       - Copy
       - Scale
@@ -24,18 +24,38 @@ phoronix-test-suite:
       - Add
       - Triad
       # - Test All Options
-  - test: svt-av1-2.2.1
+  - test: svt-av1-2.3.0
     option_a:
-      - Enc Mode 8 [Fastest - Default]
-      - Enc Mode 4 [Mid-Speed]
-      - Enc Mode 0 [Slowest]
+      - Preset 8 [Fastest - Default]
+      - Preset 4 [Mid-Speed]
       # - Test All Options
-  - test: svt-vp9-1.2.2
+    option_b:
+      - Bosphorus 1080p
+      - Bosphorus 4K
+      # - Test All Options
+  - test: svt-vp9-1.3.0
     option_a:
       - Visual Quality Optimized
       - PSNR/SSIM Optimized      [Default]
       - VMAF Optimized
       # - Test All Options
+  - test: onednn-1.7.0
+    option_a:
+      - Convolution Batch Shapes Auto
+      - Deconvolution Batch shapes_1d
+      - Deconvolution Batch shapes_3d
+      - IP Shapes 1D
+      - IP Shapes 3D
+      - Matrix Multiply Batch Shapes Transformer
+      - Recurrent Neural Network Training
+      - Recurrent Neural Network Inference
+      # - Test All Options
+    option_b:
+      - f32
+      - u8s8f32      [Optimized For AVX-512]
+      - bf16bf16bf16 [Optimized For AVX-512 + VNNI]
+      # - Test All Options
   - test:
-    - svt-hevc-1.1.0
+    - svt-hevc-1.2.0
     - tensorflow-1.0.0
+    - tensorflow-lite-1.0.0

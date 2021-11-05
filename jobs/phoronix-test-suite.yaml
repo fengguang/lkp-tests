@@ -7,11 +7,12 @@ need_memory: 8G
 phoronix-test-suite:
   - test:
     - aio-stress-1.1.1
-    # - aircrack-ng-1.1.2 # need to connect to internet
+    # - aircrack-ng-1.2.1 # need to connect to internet
+    - ai-benchmark-1.0.1
     - aobench-1.0.1
-    - aom-av1-1.2.0
+    - aom-av1-2.4.0
     - apache-1.7.2
-  - test: apache-siege-1.0.2
+  - test: apache-siege-1.0.5
     option_a: # cocurrent users
       - 1
       # - 10
@@ -19,6 +20,7 @@ phoronix-test-suite:
       # - 100
       # - 200
       - 250
+      # - 500
       # - Test All Options
   - test: appleseed-1.0.1
     option_a:
@@ -27,7 +29,7 @@ phoronix-test-suite:
       - Material Tester
       # - Test All Options
   - test:
-    - asmfish-1.1.0
+    - asmfish-1.1.2
     - blake2-1.2.1
   - test: blogbench-1.1.0
     option_a:
@@ -36,24 +38,27 @@ phoronix-test-suite:
       # - Test All Options
   - test:
     - bork-1.0.1
-  - test: botan-1.4.0
+  - test: botan-1.6.0
     option_a:
       - AES-256
       - Blowfish
       - CAST-256
       - KASUMI
       - Twofish
+      - ChaCha20Poly1305
       # - Test All Options
   - test:
-    - build-apache-1.4.0
-    - build-eigen-1.0.0
+    - build-apache-1.6.1
+    - build-clash-1.0.2
+    - build-eigen-1.1.0
     # - build-firefox-1.0.0 # wait for newer version
-    - build-gcc-1.1.1
+    - build-ffmpeg-1.0.2
+    - build-gcc-1.2.0
     - build-imagemagick-1.7.2
     - build-linux-kernel-1.9.1
-    - build-llvm-1.1.0
+    - build-llvm-1.3.1
     - build-mplayer-1.4.0
-    - build-php-1.4.0
+    - build-php-1.5.1
     # - build-webkitfltk-1.0.0 # the test costs more than 2h
   - test: bullet-1.2.2
     option_a:
@@ -65,14 +70,8 @@ phoronix-test-suite:
       - Convex Trimesh
       - Raytests
       # - Test All Options
-  - test: byte-1.2.1
-    option_a:
-      - Dhrystone 2
-      - Register Arithmetic
-      - Integer Arithmetic
-      - Floating-Point Arithmetic
-      # - Test All Options
   - test:
+    - byte-1.2.2
     - c-ray-1.2.0
   - test: cachebench-1.1.2
     option_a:
@@ -89,26 +88,26 @@ phoronix-test-suite:
       - Mixed 1:3
       # - Test All Options
   - test:
-    - clomp-1.0.0
-    - cloverleaf-1.0.0
+    - clomp-1.1.1
+    - cloverleaf-1.1.0
     - comd-cl-1.0.0
-  - test: compilebench-1.0.2
+  - test: compilebench-1.0.3
     option_a:
       - Initial Create
       - Compile
       - Read Compiled Tree
       # - Test All Options
   - test:
-    - compress-7zip-1.7.0
+    - compress-7zip-1.7.1
     - compress-gzip-1.2.0
     - compress-lzma-1.3.1
     - compress-pbzip2-1.5.0
     - compress-rar-1.1.0
-    - compress-xz-1.0.1
-    - compress-zstd-1.1.1
+    - compress-xz-1.1.0
+    - compress-zstd-1.5.0
     - core-latency-1.0.0
-    - coremark-1.0.0
-    - cp2k-1.0.0
+    - coremark-1.0.1
+    - cp2k-1.2.0
   - test: cpp-perf-bench-1.0.0
     option_a:
       - Stepanov Abstraction
@@ -120,7 +119,7 @@ phoronix-test-suite:
       # - Random Numbers # runtime > 30m
       # - Test All Options
   - test:
-    - crafty-1.4.4
+    - crafty-1.4.5
     - ctx-clock-1.0.0
   - test: cyclictest-1.0.0
     option_a:
@@ -130,8 +129,8 @@ phoronix-test-suite:
       - 4 # POSIX Timer, Interval 500 ms, 100000 Loops
       # - Test All Options
   - test:
-    - cython-bench-1.0.0
-  - test: dacapobench-1.0.0
+    - cython-bench-1.1.0
+  - test: dacapobench-1.0.1
     option_a:
       - Eclipse
       - H2
@@ -139,12 +138,14 @@ phoronix-test-suite:
       - Tradebeans
       - Tradesoap
       # - Test All Options
-  - test: dav1d-1.0.0
+  - test: dav1d-1.8.0
     option_a:
       - Summer Nature 1080p
       - Summer Nature 4K
+      - Chimera 1080p
+      - Chimera 1080p 10-bit
       # - Test All Options
-  # - test: dbench-1.0.0
+  # - test: dbench-1.0.2
     # option_a: # client count
       # - 1
       # - 6
@@ -156,7 +157,7 @@ phoronix-test-suite:
   - test:
     - dcraw-1.1.0
     - deepspeech-1.0.0
-    - dolfyn-1.0.2
+    - dolfyn-1.0.3
     - ebizzy-1.0.4
   - test: embree-1.0.0
     option_a:
@@ -171,11 +172,11 @@ phoronix-test-suite:
     # - encode-ape-1.3.0 # this test profile is marked Deprecated
   - test:
     - encode-flac-1.6.0
-    - encode-mp3-1.7.3
+    - encode-mp3-1.7.4
     # - encode-ogg-1.4.1 # this test profile is marked Deprecated
-    # - encode-opus-1.0.1 # this test profile is marked Deprecated
+    # - encode-opus-1.1.1 # this test profile is marked Deprecated
     - encode-wavpack-1.3.0
-    - espeak-1.4.0
+    - espeak-1.6.1
     # - fahbench-1.0.1 # wait for newer version
     - ffmpeg-2.8.0
     - ffte-1.1.0
@@ -204,7 +205,7 @@ phoronix-test-suite:
       # - Test All Options
   - test:
     - fhourstones-1.1.2
-  - test: fio-1.11.5
+  - test: fio-1.14.1
     option_a:
       - Random Read
       - Random Write
@@ -212,6 +213,7 @@ phoronix-test-suite:
       - Sequential Write
       # - Test All Options
     option_b:
+      - IO_uring
       - POSIX AIO
       - Sync
       - Linux AIO
@@ -237,10 +239,6 @@ phoronix-test-suite:
       # - 2MB
       # - 4MB
       # - 8MB
-      # - 16MB
-      # - 32MB
-      # - 64MB
-      # - 128MB
       # - Test All Options
     option_f:
       - Default Test Directory
@@ -254,9 +252,9 @@ phoronix-test-suite:
       # - 4 # 4000 Files, 32 Sub Dirs, 1MB Size
       # - Test All Options
   - test:
-    - gcrypt-1.0.5
-    - git-1.0.2
-  - test: glibc-bench-1.6.0
+    - gcrypt-1.1.2
+    - git-1.1.0
+  - test: glibc-bench-1.6.1
     option_a:
       - ffsll
       - ffs
@@ -266,9 +264,16 @@ phoronix-test-suite:
       - sqrt
       - sin
       - cos
+      - asinh
+      - atanh
+      - sincos
+      - sinh
+      - modf
+      - exp
+      - log2
       # - Test All Options
   - test:
-    - gmpbench-1.2.0
+    - gmpbench-1.3.0
     - gnupg-2.4.0
   - test: go-benchmark-1.1.4
     option_a:
@@ -277,7 +282,7 @@ phoronix-test-suite:
       - json
       - garbage
       # - Test All Options
-  - test: graphics-magick-1.8.0
+  - test: graphics-magick-2.0.2
     option_a:
       - HWB Color Space
       - Noise-Gaussian
@@ -302,16 +307,12 @@ phoronix-test-suite:
       # - Test All Options
   - test:
     - hdparm-read-1.0.0
-    - himeno-1.2.0
-  - test: hint-1.0.2
-    option_a:
-      - DOUBLE
-      - FLOAT
-      # - Test All Options
+    - himeno-1.3.0
+    - hint-1.0.3
   - test:
-    - hmmer-1.1.2
-    # - hpcc-1.2.4 # run time more than 2h on clear, install failed on debian
-    - hpcg-1.1.1
+    - hmmer-1.3.0
+    # - hpcc-1.2.8 # run time more than 2h on clear, install failed on debian
+    - hpcg-1.2.1
     - idle-1.1.0
   - test: interbench-1.0.1
     option_a:
@@ -337,7 +338,7 @@ phoronix-test-suite:
       - Read
       # - Test All Options
   - test:
-    - ior-1.0.0
+    - ior-1.1.1
   - test: iozone-1.9.5
     option_a:
       - 4Kb
@@ -355,8 +356,8 @@ phoronix-test-suite:
       - Read Performance
       # - Test All Options
   - test:
-    - iperf-1.0.2
-    # - java-gradle-perf-1.0.0 # wait for newer version
+    - iperf-1.1.1
+    - java-gradle-perf-1.1.0
     - java-jmh-1.0.0
   - test: java-scimark2-1.1.2
     option_a:
@@ -367,14 +368,14 @@ phoronix-test-suite:
       - Sparse Matrix Multiply
       - Dense LU Matrix Factorization
       # - Test All Options
-  - test: john-the-ripper-1.7.0
+  - test: john-the-ripper-1.7.2
     option_a:
       - MD5
       - Blowfish
       # - Test All Options
   - test:
-    - keydb-1.1.0
-    - lammps-1.0.1
+    - keydb-1.2.0
+    - lammps-1.3.2
     - llvm-test-suite-1.0.0
   - test: luajit-1.1.0
     option_a:
@@ -387,21 +388,26 @@ phoronix-test-suite:
       # - Test All Options
   - test:
     - lulesh-cl-1.0.1
-  - test: luxcorerender-1.1.2
+  - test: luxcorerender-cl-1.2.1
     option_a:
+      - LuxCore Benchmark
       - DLSC
       - Rainbow Colors and Prism
+      - Food
       # - Test All Options
-  - test: lzbench-1.0.0
+  - test: lzbench-1.1.1
     option_a:
       - Zstd 1
+      - Zstd 8
       - Brotli 0
+      - Brotli 2
       - Libdeflate 1
       - XZ 0
+      - Crush 0
       # - Test All Options
   - test:
     - m-queens-1.1.0
-    - mafft-1.5.0
+    - mafft-1.6.2
   - test: mbw-1.0.0
     option_a:
       - Memory Copy
@@ -414,7 +420,7 @@ phoronix-test-suite:
       # - 4096 MiB
       # - 8192 MiB
       # - Test All Options
-  - test: mcperf-1.1.1
+  - test: mcperf-1.4.0
     option_a:
       - Get
       - Set
@@ -423,6 +429,15 @@ phoronix-test-suite:
       - Replace
       - Append
       - Prepend
+      # - Test All Options
+    option_b:
+      - 1
+      # - 4
+      # - 16
+      # - 32
+      # - 64
+      # - 128
+      # - 256
       # - Test All Options
   - test:
     - memtier-benchmark-1.0.1
@@ -435,7 +450,7 @@ phoronix-test-suite:
       # - Test All Options
   - test:
     - mpcbench-1.0.1
-    - mrbayes-1.3.2
+    - mrbayes-1.5.0
   - test: multichase-1.0.2
     option_a:
       - 1 # 256MB Array, 256 Byte Stride
@@ -444,7 +459,7 @@ phoronix-test-suite:
       # - 4 # 1GB Array, 256 Byte Stride, 2 Threads
       - 5 # 1GB Array, 256 Byte Stride, 4 Threads
       # - Test All Options
-  - test: mysqlslap-1.0.6
+  - test: mysqlslap-1.1.1
     option_a: # clients
       - 1
       # - 4
@@ -454,48 +469,53 @@ phoronix-test-suite:
       # - 64
       # - 128
       - 256
+      # - 512
       # - Test All Options
   - test:
-    - n-queens-1.2.0
+    - n-queens-1.2.1
     - namd-1.0.1
-    # - namd-cuda-1.0.0 # nvidia video card is needed
+    # - namd-cuda-1.1.1 # nvidia video card is needed
     # - nero2d-1.1.0 # wait for newer version
-  - test: neatbench-1.0.3
+  - test: neatbench-1.0.4
     option_a:
       - CPU
       - GPU
       - All (CPU + GPU)
       # - Test All Options
   - test:
-    - netperf-1.0.2
+    - netperf-1.0.4
     - network-loopback-1.0.3
     # - nexuiz-iqc-1.0.0 # this test profile is currently marked Deprecated
     - nginx-1.2.2
+    - node-express-loadtest-1.0.1
     - node-octane-1.0.1
     - noise-level-1.1.0
-  - test: npb-1.3.1
+  - test: npb-1.4.2
     option_a:
-      - BT.A
+      - BT.C
       - EP.C
-      - FT.A
-      - FT.B
-      - LU.A
+      - EP.D
+      - FT.C
       - LU.C
-      - SP.A
+      - SP.B
+      - IS.D
+      - MG.C
+      - CG.C
       # - Test All Options
   - test:
-    - numenta-nab-1.0.0
-    # - numpy-1.0.5 # run time more than 1h
+    - numenta-nab-1.1.0
+    # - numpy-1.2.1 # run time more than 1h
     - nuttcp-1.0.3
     - octave-benchmark-1.0.0
-    - oidn-1.1.1
+    - oidn-1.2.0
     - opencv-bench-1.0.0
     # - open-porous-media-1.3.1 # 3rd party url is N/A
     - openssl-1.11.0
-  - test: opm-git-1.3.38
+  - test: opm-git-1.3.44
     option_a:
       - Upscale-Relperm
       - Flow MPI Norne
+      - Flow MPI Norne-4C MSW
       - Flow MPI Extra
       # - Test All Options
     option_b: # threads
@@ -509,8 +529,8 @@ phoronix-test-suite:
       - 128
       # - Test All Options
   - test:
-    - optcarrot-1.0.0
-  - test: osbench-1.0.1
+    - optcarrot-1.0.1
+  - test: osbench-1.0.2
     option_a:
       - Create Files
       - Create Processes
@@ -529,10 +549,20 @@ phoronix-test-suite:
       - SciVis      [A fast ray-tracer for scientific visualizations.]
       - 2 # Path Tracer [Supports soft shadows, indirect illumination and realistic materials.]
       # - Test All Options
-  - test: pennant-1.0.1
+  - test: pennant-1.1.0
     option_a:
       - leblancbig
       - sedovbig
+      # - Test All Options
+  - test: perf-bench-1.0.3
+    option_a:
+      - Sched Pipe
+      - Memcpy 1MB
+      - Memset 1MB
+      - Syscall Basic
+      - Futex Hash
+      - Futex Lock-Pi
+      - Epoll Wait
       # - Test All Options
   - test: perl-benchmark-1.0.1
     option_a:
@@ -545,7 +575,7 @@ phoronix-test-suite:
       - Zend micro_bench
       # - Test All Options
   - test:
-    - phpbench-1.1.5
+    - phpbench-1.1.6
     - pjdfstest-1.0.1
     # - plaidml-1.0.4 # need to connect to internet
   - test: polybench-c-1.2.0
@@ -555,7 +585,7 @@ phoronix-test-suite:
       - Covariance Computation
       # - Test All Options
   - test:
-    - postmark-1.1.1
+    - postmark-1.1.2
     - povray-1.2.1
   - test: pgbench-1.9.1
     option_a:
@@ -573,7 +603,7 @@ phoronix-test-suite:
       - Read Only
       # - Test All Options
   - test:
-    - primesieve-1.6.0
+    - primesieve-1.7.0
     - psstop-1.0.0
     # - pts-self-test-1.0.4 # need to connect to internet and only for selftest
     - pybench-1.1.3
@@ -584,7 +614,7 @@ phoronix-test-suite:
       - Serial
       - SMP Parallel
       # - Test All Options
-  - test: redis-1.2.0
+  - test: redis-1.3.1
     option_a:
       - SET
       - GET
@@ -592,16 +622,18 @@ phoronix-test-suite:
       - LPOP
       - SADD
       # - Test All Options
-  - test: renaissance-1.0.0
+  - test: renaissance-1.1.1
     option_a:
       - Akka Unbalanced Cobwebbed Tree
       - Savina Reactors.IO
       - Apache Spark ALS
+      - Random Forest
       - Apache Spark Bayes
       - Apache Spark PageRank
       - In-Memory Database Shootout
       - Scala Dotty
-      - Twitter Finagle
+      - Twitter HTTP Requests
+      - Genetic Algorithm Using Jenetics + Futures
       # - Test All Options
   - test:
     - rbenchmark-1.0.3
@@ -635,7 +667,7 @@ phoronix-test-suite:
       - 32
       # - Test All Options
   - test:
-    - scikit-learn-1.0.1
+    - scikit-learn-1.1.0
   - test: scimark2-1.3.2
     option_a:
       - Composite
@@ -649,7 +681,7 @@ phoronix-test-suite:
     # - serial-loopback-1.0.2 # need to really plug to serial ports
     - smallpt-1.2.0
     - smart-1.0.0
-  - test: sockperf-1.0.0
+  - test: sockperf-1.0.1
     option_a:
       - Latency Under Load
       - Latency Ping Pong
@@ -664,7 +696,7 @@ phoronix-test-suite:
       - 128
       # - Test All Options
   - test:
-    - sqlite-speedtest-1.0.0
+    - sqlite-speedtest-1.0.1
       # - test: startup-time-1.4.1
       # option_a:
       # - Only Sequential Reads # need more than 1h
@@ -678,8 +710,9 @@ phoronix-test-suite:
       # option_c:
       # - /opt/rootfs
   - test:
-    - stockfish-1.1.1
-  - test: stress-ng-1.2.2
+    - stockfish-1.3.0
+    - stream-dynamic-1.0.0
+  - test: stress-ng-1.3.1
     option_a:
       - CPU Stress
       - Crypto
@@ -688,25 +721,29 @@ phoronix-test-suite:
       - Glibc C String Functions
       - Vector Math
       - Matrix Math
-      - Bsearch
-      - Hsearch
-      - Lsearch
-      - Tsearch
       - Forking
       - System V Message Passing
       - Semaphores
       - Socket Activity
       - Context Switching
+      - Atomic
+      - CPU Cache
+      - Malloc
+      - MEMFD
+      - MMAP
+      - NUMA
+      - RdRand
+      - SENDFILE
       # - Test All Options
   - test:
     # - stresscpu2-1.0.1 # not performance test
-    - sudokut-1.0.0
-    - sunflow-1.1.2
+    - sudokut-1.0.1
+    - sunflow-1.1.3
     - swet-1.0.0
-  - test: sysbench-1.0.0
+  - test: sysbench-1.1.0
     option_a:
       - CPU
-      - Memory
+      - RAM / Memory
       # - Test All Options
   - test:
     - system-decompress-bzip2-1.0.2
@@ -740,7 +777,7 @@ phoronix-test-suite:
       # - 112 MB
       # - Test All Options
     # - systemd-boot-kernel-1.0.1 # too old to run, use systemd-boot-total instead
-  - test: systemd-boot-total-1.0.5
+  - test: systemd-boot-total-1.0.6
     option_a:
       - Total
       - Userspace
@@ -792,7 +829,7 @@ phoronix-test-suite:
       # - Test All Options
   - test:
     - tjbench-1.0.2
-    - tscp-1.2.1
+    - tscp-1.2.2
     - ttsiod-renderer-1.7.0
   - test: tungsten-1.0.0
     option_a:
@@ -804,7 +841,7 @@ phoronix-test-suite:
   - test:
     - unpack-linux-1.1.1
     # - v-ray-1.0.2 # 3rd party url is N/A
-    # - viennacl-1.0.0 # wait for newer version
+    - viennacl-1.1.0
   - test: vpxenc-3.0.0
     option_a:
       - Speed 5 [Fastest - Default]
@@ -812,5 +849,165 @@ phoronix-test-suite:
       # - Test All Options
   - test:
     - x264-2.5.0
-    - x265-1.1.0
+    - x265-1.3.0
     - xsbench-1.0.0
+    - y-cruncher-1.1.0
+    - amg-1.1.0
+  - test: astcenc-1.1.0
+    option_a:
+      - Medium
+      - Thorough
+      - Exhaustive
+      # - Test All Options
+  - test: avifenc-1.1.1
+    option_a:
+      - 0            [Slowest]
+      - 2            [Slow]
+      - 6            [Default]
+      - 6, Lossless  [Default Speed + Lossless]
+      - 10           [Fastest]
+      - 10, Lossless [Fastest]
+      # - Test All Options
+  - test: basis-1.1.0
+    option_a:
+      - ETC1S
+      - UASTC Level 0
+      - UASTC Level 2
+      - UASTC Level 3
+      # - Test All Options
+  - test:
+    - brl-cad-1.1.2
+    - build2-1.1.0
+  - test: chia-vdf-1.0.1
+    option_a:
+      - Square Plain C++
+      - Square Assembly Optimized
+      # - Test All Options
+  - test: cpuminer-opt-1.4.0
+    option_a:
+      - 1 # Triple SHA-256, Onecoin
+      - 2 # Quad SHA-256, Pyrite
+      - Myriad-Groestl
+      - Magi (XMG)
+      - Blake-2 S
+      - x25x
+      - Garlicoin
+      - Ringcoin (RNG)
+      - Deepcoin
+      - Skeincoin
+      - 11 # LBC, LBRY Credits
+      # - Test All Options
+  - test: ethr-1.0.5
+    option_a:
+      - TCP
+      - UDP
+      - HTTP
+      # - Test All Options
+    option_b:
+      - Bandwidth
+      - Connections/s
+      - Latency
+      # - Test All Options
+    option_c:
+      - 1
+      - 2
+      - 4
+      - 8
+      - 16
+      - 32
+      - 64
+      # - Test All Options
+  - test: hbase-1.0.1
+    option_a:
+      - Random Write
+      - Async Random Write
+      - Random Read
+      - Async Random Read
+      - Sequential Write
+      - Sequential Read
+      - Increment
+      # - Test All Options
+    option_b:
+      - 1
+      # - 4
+      # - 16
+      # - 32
+      # - 64
+      # - 128
+      - 256
+      # - Test All Options
+  - test: helsing-1.0.2
+    option_a:
+      - 12 digit
+      - 14 digit
+      # - Test All Options
+  - test: incompact3d-2.0.2
+    option_a:
+      - input.i3d 129 Cells Per Direction [Intended For Small Systems]
+      - input.i3d 193 Cells Per Direction
+      # - X3D-benchmarking input.i3d        [Requires ~96GB of Available RAM]
+      # - Test All Options
+  - test: intel-mpi-1.0.1
+    option_a:
+      - IMB-MPI1 PingPong
+      - IMB-MPI1 Sendrecv
+      - IMB-MPI1 Exchange
+      - IMB-P2P PingPong
+      # - Test All Options
+  - test: jpegxl-decode-1.1.0
+    option_a:
+      - 1
+      - All
+      # - Test All Options
+  - test: libgav1-1.1.0
+    option_a:
+      - Summer Nature 1080p
+      - Summer Nature 4K
+      - Chimera 1080p
+      - Chimera 1080p 10-bit
+      # - Test All Options
+  - test: ncnn-1.1.0
+    option_a:
+      - CPU
+      - Vulkan GPU
+      # - Test All Options
+  - test: pyperformance-1.0.2
+    option_a:
+      - 2to3
+      - chaos
+      - crypto_pyaes
+      - django_template
+      - float
+      - go
+      - json_loads
+      - nbody
+      - pathlib
+      - pickle_pure_python
+      - python_startup
+      - raytrace
+      - regex_compile
+      # - Test All Options
+  - test: rav1e-1.5.0
+    option_a:
+      - 10 [Fastest]
+      - 6  [Default]
+      - 5  [Mid-Speed]
+      - 1  [Slowest / Best Quality]
+      # - Test All Options
+  - test: selenium-top-sites-1.0.3
+    option_a:
+      - Firefox
+      - Google Chrome
+      # - Test All Options
+  - test: webp2-1.0.0
+    option_a:
+      - Default
+      - 2 # Quality 75, Compression Effort 7
+      - 3 # Quality 95, Compression Effort 7
+      - 4 # Quality 100, Compression Effort 5
+      - 5 # Quality 100, Lossless Compression
+      # - Test All Options
+  - test:
+    - mnn-1.2.0
+    - kripke-1.1.0
+    - mkl-dnn-1.3.1
