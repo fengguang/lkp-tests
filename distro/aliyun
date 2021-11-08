@@ -95,6 +95,14 @@ cleanup_downloaded_rpms()
 	find /var/ -type f -name "*.rpm" -exec rm -f -- '{}' \;
 }
 
+cleanup_installed_depends_rpms()
+{
+	for package in $@
+	do
+		yum remove -y "$package" >/dev/null 2>&1
+	done
+}
+
 pack_benchmark_deps()
 {
 	setup_proxy
@@ -108,6 +116,7 @@ pack_benchmark_deps()
 
 		packages=$(echo $(get_dependency_packages $DISTRO $BM_NAME))
 
+		cleanup_installed_depends_rpms $packages
 		local ocfs2_tools_name=$(echo "$packages" | grep 'ocfs2-tools')
 		[ -n "$ocfs2_tools_name" ] && download_ocfs2_tools "$ocfs2_tools_name"
 
