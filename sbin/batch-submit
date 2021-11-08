@@ -1,0 +1,51 @@
+#!/usr/bin/env ruby
+# SPDX-License-Identifier: MulanPSL-2.0+
+# Copyright (c) 2020 Huawei Technologies Co., Ltd. All rights reserved.
+# frozen_string_literal: true
+
+# Usage:
+#   batch-submit batch.yaml
+#   batch-submit batch.yaml os_arch=x86_64,aarch64 nr_thread=2
+# eg batch.yaml:
+# submit:
+#   - lmbench3.yaml testbox=taishan200-2280-2s48p-256g--a11 lmbench3.test=lSELECT
+#   - lmbench3.yaml testbox=taishan200-2280-2s48p-256g--a11 lmbench3.test=UNIX
+#   - unixbench.yaml testbox=taishan200-2280-2s48p-256g--a12 runtime=6000
+# default_param:
+#   runtime: 30
+# common_param:
+#   memory: 16G
+#   os:
+#     - centos
+#     - openeuler
+
+require 'optparse'
+require 'open3'
+require_relative '../lib/batch-submit.rb'
+
+LKP_SRC ||= ENV['LKP_SRC'] || '/c/lkp-tests'
+SUBMIT = "#{LKP_SRC}/sbin/submit"
+
+opt_parser = OptionParser.new do |opts|
+  opts.banner = 'Usage: batch-submit.yaml os=openeuler os_version=20.03 ...'
+  opts.separator ''
+  opts.on_tail('-h', '--help', 'show this message') do
+    puts opts
+    exit
+  end
+end
+
+argv = if ARGV == []
+         ['-h']
+       else
+         ARGV
+       end
+
+opt_parser.parse!(argv)
+
+args = parse_batch_argv(argv)
+cmds = gerenate_submit_cmd(args)
+cmds.each do |cmd|
+  submit_info = Open3.capture3("#{LKP_SRC}/sbin/submit #{cmd}")
+  puts submit_info[0, submit_info.size - 1]
+end
