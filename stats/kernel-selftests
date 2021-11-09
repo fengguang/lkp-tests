@@ -743,11 +743,10 @@ class ProgsStater < Stater
        # # #3/1 add:OK
        # # #3/2 sub:OK
        # # #3/3 and:OK
-    when /^(#| ) #(\d+|\d+\/\d+) (\S*):(\S*)/
+    when /^(#| ) #(\d+|\d+\/\d+) (\S*):(OK|FAIL|SKIP)/
       r = $4 == 'OK' ? 'ok' : 'not ok'
-      pattern1 = $2.to_s
-      pattern2 = $3
-      subname = "bpf.test_progs.#{pattern1.gsub('/', '_')}-#{pattern2.gsub(' ', '_')}"
+      pattern1 = $3
+      subname = "bpf.test_progs.#{pattern1.gsub(' ', '_')}"
       stats.add subname, r unless stats.key? subname
     end
   end
