@@ -38,9 +38,9 @@ make_group_tests()
 # it will touch the Makefile, overwrite target
 #@@ -40,6 +40,9 @@ TEST_GEN_PROGS = reuseport_bpf reuseport_bpf_cpu reuseport_bpf_numa
 # TEST_GEN_PROGS += reuseport_dualstack reuseaddr_conflict tls
-#  
+#
 #  TEST_FILES := settings
-#   
+#
 #   KSFT_KHDR_INSTALL := 1
 #  +TEST_GEN_PROGS =
 #  +TEST_GEN_FILES =
@@ -68,7 +68,7 @@ run_tests()
 	local selftest_mfs=$@
 
 	# kselftest introduced runner.sh since kernel commit 42d46e57ec97 "selftests: Extract single-test shell logic from lib.mk"
-	[[ -e kselftest/runner.sh ]] && log_cmd sed -i 's/default_timeout=45/default_timeout=300/' kselftest/runner.sh
+	[[ -e kselftest/runner.sh ]] && log_cmd sed -i 's/default_timeout=45/default_timeout=1200/' kselftest/runner.sh
 
 	for mf in $selftest_mfs; do
 		subtest=${mf%/Makefile}
