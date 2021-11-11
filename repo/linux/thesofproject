@@ -3,7 +3,7 @@ owner: Pierre-Louis Bossart <pierre-louis.bossart@intel.com>
 mail_cc: Pierre-Louis Bossart <pierre-louis.bossart@intel.com>
 fetch_tags: true
 fetch_pull_request: true
-notify_build_success_branch: .*
+notify_build_success_branch: topic/.*
 mail_recipient: intel.com
 use_customized_release_tag_pattern: true
 release_tag_pattern: sof-v(?<major>[0-9])\.(?<minor>\d+)\.?(?<micro>\d+)?(-rc(?<prerelease>\d+))?
