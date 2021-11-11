@@ -20,7 +20,10 @@ update_srpm_list()
 
 enable_extra_repo()
 {
-	yum-config-manager --enable centosplus epel-testing >/dev/null
+	[[ "${ID}" == "centos" && "${VERSION_ID}" == "7" ]] && \
+		yum-config-manager --enable centosplus epel-testing >/dev/null
+	[[ "${ID}" == "centos" && "${VERSION_ID}" == "8" ]] && \
+		yum-config-manager --enable plus epel-testing >/dev/null
 	yum repolist >/dev/null
 }
 
