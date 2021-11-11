@@ -20,7 +20,6 @@ stress-ng:
   - aio
   - aiol
   - bad-altstack
-  - bigheap
 #  - binderfs
   - cap
   - chattr
@@ -206,3 +205,4 @@ stress-ng:
   - os
   test:
   - brk
+  - bigheap

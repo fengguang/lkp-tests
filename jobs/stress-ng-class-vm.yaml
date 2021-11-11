@@ -16,7 +16,6 @@ stress-ng:
   - vm
   test:
   - bad-altstack
-  - bigheap
   - dev-shm
   - env
   - madvise
@@ -50,3 +49,4 @@ stress-ng:
   - vm
   test:
   - brk
+  - bigheap
