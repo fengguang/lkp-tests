@@ -5,4 +5,6 @@ need_kconfig:
 - SECURITY_APPARMOR: y
 % elsif job['stress-ng']['test'] == "dccp"
 - IP_DCCP: y
+% elsif job['stress-ng']['test'] == "tun"
+- TUN: m
 % end
