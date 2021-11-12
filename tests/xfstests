@@ -71,9 +71,11 @@ setup_cifs_config()
 {
 	local cifs_server_path=${cifs_server_paths%% *}
 	local FS_TEST_DIR=${mount_points%% *}
+	# get the mount path from local cifs server path: //localhost/fs/sdb1 => /fs/sdb1
+	local LOCAL_MOUNT_PATH="/${cifs_server_path#//*/}"
 
 	# mount the first partition for the local cifs server, where it's the cifs backend
-	log_cmd mount ${partitions%% *} ${mount_points%% *}
+	log_cmd mount ${partitions%% *} ${LOCAL_MOUNT_PATH}
 
 	log_cmd mkdir -p /$fs2/$FS_TEST_DIR
 	log_eval export FSTYP=cifs
