@@ -356,11 +356,7 @@ fixup_mcperf()
 	[ -n "$environment_directory" ] || return
 	local test=$1
 	local target=${environment_directory}/pts/${test}/mcperf
-	useradd -m -s /bin/bash memcached_test 2>/dev/null
-	sed -i 's#^./memcached -d$#su memcached_test -c "./memcached -d"#' $target
-	# Choose
-	# 8: Test All Options
-	test_opt="\n8\nn"
+	sed -i 's#^./memcached -d -t#./memcached -d -u root -t#' $target
 }
 
 setup_python2()
