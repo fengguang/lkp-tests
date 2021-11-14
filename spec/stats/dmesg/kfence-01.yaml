@@ -1,0 +1,27 @@
+boot_failures: 1
+
+# BUG: KFENCE: out-of-bounds read in test_out_of_bounds_read
+BUG:KFENCE:out-of-bounds_read_in_test_out_of_bounds_read: 1
+message:BUG:KFENCE:out-of-bounds_read_in_test_out_of_bounds_read: BUG: KFENCE: out-of-bounds read in test_out_of_bounds_read+0xa6/0x234
+pattern:BUG:KFENCE:out-of-bounds_read_in_test_out_of_bounds_read: BUG: KFENCE: out-of-bounds read in test_out_of_bounds_read
+
+# BUG: KFENCE: use-after-free read in test_use_after_free_read
+BUG:KFENCE:use-after-free_read_in_test_use_after_free_read: 1
+message:BUG:KFENCE:use-after-free_read_in_test_use_after_free_read: BUG: KFENCE: use-after-free read in test_use_after_free_read+0xb3/0x143
+pattern:BUG:KFENCE:use-after-free_read_in_test_use_after_free_read: BUG: KFENCE: use-after-free read in test_use_after_free_read
+
+# BUG: KFENCE: invalid free in test_double_free
+BUG:KFENCE:invalid_free_in_test_double_free: 1
+message:BUG:KFENCE:invalid_free_in_test_double_free: BUG: KFENCE: invalid free in test_double_free+0xdc/0x171
+pattern:BUG:KFENCE:invalid_free_in_test_double_free: BUG: KFENCE: invalid free in test_double_free
+
+# BUG: KFENCE: memory corruption in test_kmalloc_aligned_oob_write
+BUG:KFENCE:memory_corruption_in_test_kmalloc_aligned_oob_write: 1
+message:BUG:KFENCE:memory_corruption_in_test_kmalloc_aligned_oob_write: BUG: KFENCE: memory corruption in test_kmalloc_aligned_oob_write+0xef/0x184
+pattern:BUG:KFENCE:memory_corruption_in_test_kmalloc_aligned_oob_write: BUG: KFENCE: memory corruption in test_kmalloc_aligned_oob_write
+
+# BUG: KFENCE: invalid read in test_invalid_access
+BUG:KFENCE:invalid_read_in_test_invalid_access: 1
+message:BUG:KFENCE:invalid_read_in_test_invalid_access: BUG: KFENCE: invalid read in test_invalid_access+0x26/0xe0
+pattern:BUG:KFENCE:invalid_read_in_test_invalid_access: BUG: KFENCE: invalid read in test_invalid_access
+
