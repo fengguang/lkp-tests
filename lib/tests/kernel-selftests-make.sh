@@ -83,7 +83,13 @@ run_tests()
 
 		keep_only_specific_test
 
-		log_cmd make run_tests -C $subtest 2>&1
+		# vmalloc performance and stress, can not use 'make run_tests' to run
+		if [[ $test =~ ^vmalloc\-(performance|stress)$ ]]; then
+			log_cmd vm/test_vmalloc.sh ${test##vmalloc-} 2>&1
+			log_cmd dmesg | grep -E '(Summary|All test took)' 2>&1
+		else
+			log_cmd make run_tests -C $subtest 2>&1
+		fi
 
 		cleanup_subtest
 		)

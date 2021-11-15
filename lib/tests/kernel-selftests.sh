@@ -507,6 +507,15 @@ fixup_vm()
 	grep -qw MADV_PAGEOUT /usr/include/x86_64-linux-gnu/bits/mman-linux.h 2>/dev/null || {
 		export EXTRA_CFLAGS="-DMADV_PAGEOUT=21"
 	}
+
+	# vmalloc stress prepare
+	if [[ $test = "vmalloc-stress" ]]; then
+		# iterations or nr_threads if not set, use default value
+		[[ -z $iterations ]] && iterations=20
+		[[ -z $nr_threads ]] && nr_threads="\$NUM_CPUS"
+		[[ $iterations -le 0 || ($nr_threads != "\$NUM_CPUS" && $nr_threads -le 0) ]] && die "Paramters: iterations or nr_threads must > 0"
+		sed -i 's/^STRESS_PARAM="nr_threads=$NUM_CPUS test_repeat_count=20"/STRESS_PARAM="nr_threads='$nr_threads' test_repeat_count='$iterations'"/' vm/test_vmalloc.sh
+	fi
 }
 
 platform_is_skylake_or_snb()
