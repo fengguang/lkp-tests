@@ -899,23 +899,23 @@ phoronix-test-suite:
       # - Test All Options
   - test: ethr-1.0.5
     option_a:
-      - TCP
-      - UDP
+      # - TCP
+      # - UDP
       - HTTP
       # - Test All Options
     option_b:
       - Bandwidth
-      - Connections/s
-      - Latency
+      # - Connections/s
+      # - Latency
       # - Test All Options
     option_c:
       - 1
-      - 2
-      - 4
-      - 8
-      - 16
-      - 32
-      - 64
+      # - 2
+      # - 4
+      # - 8
+      # - 16
+      # - 32
+      # - 64
       # - Test All Options
   - test: hbase-1.0.1
     option_a:
