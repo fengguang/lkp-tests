@@ -1,0 +1,50 @@
+2021-11-11 08:58:06 vm/test_vmalloc.sh stress
+Run stability tests. In order to stress vmalloc subsystem all
+available test cases are run by NUM_CPUS workers simultaneously.
+It will take time, so be patient.
+Done.
+Check the kernel ring buffer to see the summary.
+[  233.504971] Summary: fix_size_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 5840506 usec
+[  233.516492] Summary: full_fit_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 7977103 usec
+[  233.528132] Summary: long_busy_list_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 61865361 usec
+[  233.540253] Summary: random_size_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 31628372 usec
+[  233.552122] Summary: fix_align_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 8291220 usec
+[  233.563734] Summary: random_size_align_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 11196208 usec
+[  233.576131] Summary: align_shift_alloc_test passed: 0 failed: 1 repeat: 1 loops: 1000000 avg: 11120 usec
+[  233.587810] Summary: pcpu_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 277271 usec
+[  233.599027] Summary: kvfree_rcu_1_arg_vmalloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 6651709 usec
+[  233.611437] Summary: kvfree_rcu_2_arg_vmalloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 6395800 usec
+[  233.623875] All test took worker0=447309765755 cycles
+[  233.635945] Summary: fix_size_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 5770610 usec
+[  233.647430] Summary: full_fit_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 6509126 usec
+[  233.658974] Summary: long_busy_list_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 62347902 usec
+[  233.671133] Summary: random_size_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 31689857 usec
+[  233.683139] Summary: fix_align_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 8144411 usec
+[  233.694825] Summary: random_size_align_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 11247767 usec
+[  233.707271] Summary: align_shift_alloc_test passed: 0 failed: 1 repeat: 1 loops: 1000000 avg: 476524 usec
+[  233.719061] Summary: pcpu_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 270700 usec
+[  233.730232] Summary: kvfree_rcu_1_arg_vmalloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 6688344 usec
+[  233.742679] Summary: kvfree_rcu_2_arg_vmalloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 7593059 usec
+[  233.755221] All test took worker1=449236539373 cycles
+[  233.766858] Summary: fix_size_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 5831917 usec
+[  233.778442] Summary: full_fit_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 6732756 usec
+[  233.790115] Summary: long_busy_list_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 62243955 usec
+[  233.802371] Summary: random_size_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 31839356 usec
+[  233.814348] Summary: fix_align_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 8817143 usec
+[  233.826231] Summary: random_size_align_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 12507102 usec
+[  233.838838] Summary: align_shift_alloc_test passed: 0 failed: 1 repeat: 1 loops: 1000000 avg: 485338 usec
+[  233.850668] Summary: pcpu_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 268676 usec
+[  233.861971] Summary: kvfree_rcu_1_arg_vmalloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 6313295 usec
+[  233.874486] Summary: kvfree_rcu_2_arg_vmalloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 6593283 usec
+[  233.887178] All test took worker2=452091823058 cycles
+[  233.894599] Summary: fix_size_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 6036914 usec
+[  233.906300] Summary: full_fit_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 6536284 usec
+[  233.918025] Summary: long_busy_list_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 62472456 usec
+[  233.930306] Summary: random_size_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 32583036 usec
+[  233.942275] Summary: fix_align_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 9081278 usec
+[  233.953988] Summary: random_size_align_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 9905929 usec
+[  233.966308] Summary: align_shift_alloc_test passed: 0 failed: 1 repeat: 1 loops: 1000000 avg: 10921 usec
+[  233.978065] Summary: pcpu_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 275890 usec
+[  233.989236] Summary: kvfree_rcu_1_arg_vmalloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 6234170 usec
+[  234.001673] Summary: kvfree_rcu_2_arg_vmalloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 7658772 usec
+[  234.014196] All test took worker3=449419568419 cycles
