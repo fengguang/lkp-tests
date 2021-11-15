@@ -676,6 +676,22 @@ class Job
     end
   end
 
+  def add_timeout()
+    timeout = 0
+    @job['pp'].each do |program, program_param|
+      if program == 'sleep'
+        if program_param.is_a?(Hash)
+          timeout += program_param['runtime'].to_i if program_param.has_key?('runtime')
+        elsif program_param.is_a?(String) || program_param.is_a?(Integer)
+          timeout += program_param.to_i
+        end
+      elsif program_param.is_a?(Hash) && program_param.has_key?('runtime')
+        timeout += program_param['runtime'].to_i
+      end
+    end
+    @job['timeout'] = timeout if timeout != 0
+  end
+
   # find all create or update files from LKP_SRC directory
   def find_git_change_files()
     git_files_list = Array.new()

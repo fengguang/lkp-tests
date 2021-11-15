@@ -170,6 +170,7 @@ ARGV.each do |jobfile|
     job.add_pp
     job.add_monitors
     job.add_define_files if opt_auto_define_files
+    job.add_timeout
 
     # get job shell function
     sh_run_job = job.sh_run_job
