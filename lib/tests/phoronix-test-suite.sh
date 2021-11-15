@@ -816,6 +816,25 @@ run_test()
 				default { exp_continue }
 			}
 		EOF
+	elif echo "$test" | grep ethr; then
+		# Choose
+		# Server Address
+		# Enter Value: localhost
+		# 3: HTTP
+		# 1: Bandwidth
+		# 1: 1
+		/usr/bin/expect <<-EOF
+			spawn phoronix-test-suite run $test
+			expect {
+				"Enter Value:" { send "localhost\\r"; exp_continue }
+				"Protocol:" { send "3\r"; exp_continue }
+				"Test:" { send "1\r"; exp_continue }
+				"Threads:" { send "1\r"; exp_continue }
+				"Would you like to save these test results" { send "n\\r"; exp_continue }
+				eof { }
+				default { exp_continue }
+			}
+		EOF
 	elif echo $test | grep netperf; then
 		# Choose
 		# Enter Value: localhost
