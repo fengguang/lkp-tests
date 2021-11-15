@@ -768,6 +768,43 @@ class FtraceStater < Stater
   end
 end
 
+class VmallocStater < Stater
+  attr_accessor :tmp_stats
+  def initialize(test, test_script)
+    super(test, test_script)
+    @tmp_stats = {}
+  end
+
+  def stat(line, stats)
+    case line
+    when /(Check the kernel ring buffer to see the summary|Ccheck the kernel message buffer to see the summary)/
+      stats.add "#{@test_prefix}", "PASS"
+    # vmalloc test stat: (stress test worker number = nr_threads)
+    # [  223.093027] Summary: fix_size_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 5861476 usec
+    # [  223.103232] Summary: full_fit_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 5878630 usec
+    # [  223.113422] Summary: long_busy_list_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 60293287 usec
+    # [  223.124222] Summary: random_size_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 31075131 usec
+    # [  223.134778] Summary: fix_align_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 7383628 usec
+    # [  223.145064] Summary: random_size_align_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 9595644 usec
+    # [  223.156057] Summary: align_shift_alloc_test passed: 0 failed: 1 repeat: 1 loops: 1000000 avg: 402157 usec
+    # [  223.166406] Summary: pcpu_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 278274 usec
+    # [  223.176299] Summary: kvfree_rcu_1_arg_vmalloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 6248522 usec
+    # [  223.187358] Summary: kvfree_rcu_2_arg_vmalloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 6333619 usec
+    # [  223.198414] All test took worker0=441656368064 cycles
+    when /Summary: (.+) passed: (.+) failed: (.+) repeat: (.+) loops: (.+) avg: (.+) usec/
+      @tmp_stats["#{$1}.usec_per_loop"] = $6.to_i
+      @tmp_stats["#{$1}.pass"] = $2.to_i if $2.to_i.positive?
+      @tmp_stats["#{$1}.fail"] = $3.to_i if $3.to_i.positive?
+    when /All test took (.+)=(.+) cycles/
+      raise "unexpected summary: #{@test_prefix}.#{$1}" if @tmp_stats.empty?
+      @tmp_stats.each do |key, value|
+        stats.add "#{@test_prefix}.#{$1}.#{key}", value
+      end
+      @tmp_stats = {}
+    end
+  end
+end
+
 while (line = STDIN.gets)
   line = line.resolve_invalid_bytes
 
@@ -872,6 +909,8 @@ while (line = STDIN.gets)
     stater = Stater.new($1, $2)
   when %r{make: Entering directory .*/(.*)'}
     stater = Stater.new($1, nil)
+  when /vm\/test_vmalloc.sh (stress|performance)/
+    stater = VmallocStater.new("vm.test_vmalloc.sh", $1)
   else
     if stater
       stater.stat(line, stats)
