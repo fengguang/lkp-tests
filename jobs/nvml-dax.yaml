@@ -26,7 +26,7 @@ group:
   - pmemspoil
   - pmreorder
   - remote
-  - rpmem
+  # - rpmem # test skipped by bug, but the test will be deprecated in the near future, so comment out here.
   - rpmemd
   - set
   - unicode
