@@ -328,6 +328,8 @@ need_kconfig:
 % elsif ___.group == "resctrl"
 - X86_CPU_RESCTRL: y
 - PROC_CPU_RESCTRL: y
+% eslif ___group == "tc-testing"
+- NET_SCH_FQ_PIE
 % else
 - BLOCK: y
 - BTRFS_FS: m
