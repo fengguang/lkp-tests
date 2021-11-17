@@ -608,6 +608,11 @@ fixup_mount_setattr()
 	grep "TEST_GEN_FILES +=" mount_setattr/Makefile | sed 's/TEST_GEN_FILES/TEST_PROGS/' >> mount_setattr/Makefile
 }
 
+fixup_tc_testing()
+{
+	modprobe netdevsim
+}
+
 build_tools()
 {
 
@@ -703,6 +708,8 @@ fixup_subtest()
 		fixup_ptp || return
 	elif [[ "$subtest" = "mount_setattr" ]]; then
 		fixup_mount_setattr
+	elif [[ "$subtest" = "tc-testing" ]]; then
+		fixup_tc_testing # ignore return value so that doesn't abort the rest tests
 	fi
 	return 0
 }
