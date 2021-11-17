@@ -11,8 +11,8 @@ is_begin_of_subtest = false
 while (line = STDIN.gets)
   line = line.resolve_invalid_bytes
 
-  if line =~ /(The test quit with a non-zero exit status)/ || line =~ /(The test run did not produce a result)/
-    log_warn $1
+  if line =~ /The test quit with a non-zero exit status|The test run did not produce a result|Wrong test option/
+    log_warn line
     exit 1
   end
 
