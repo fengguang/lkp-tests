@@ -422,6 +422,17 @@ class Job
       end
   end
 
+  def read_single_program(key, file)
+    options = `#{LKP_SRC}/bin/program-options #{file}`.split("\n")
+    @referenced_programs[key] = {}
+
+    options.each do |line|
+      type, name = line.split
+      @program_options[name] = type
+      @referenced_programs[key][name] = nil
+    end
+  end
+
   def init_program_options
     @referenced_programs = {}
     @program_options = {
@@ -430,13 +441,7 @@ class Job
     }
     programs = available_programs(:workload_elements)
     for_each_in(@job, programs) do |_pk, _h, k, _v|
-      options = `#{LKP_SRC}/bin/program-options #{programs[k]}`.split("\n")
-      @referenced_programs[k] = {}
-      options.each do |line|
-        type, name = line.split
-        @program_options[name] = type
-        @referenced_programs[k][name] = nil
-      end
+      read_single_program(k, programs[k])
     end
   end
 
@@ -508,6 +513,7 @@ class Job
 
   def each_param
     init_program_options
+    read_single_program('wrapper', "#{LKP_SRC}/tests/wrapper")
 
     # Some programs, especially setup/*, can accept params directly
     # via command line string, ie.
