@@ -490,6 +490,30 @@ fixup_x264_opencl_install()
 	sed -i 's/\.\/configure --prefix=$HOME\/x264_\//\.\/configure --prefix=$HOME\/x264_\/ --enable-pic --enable-shared/g' "$target"
 }
 
+# exit when match option failed for 2 times
+# before:
+# 277                 $select = array();
+# 278
+# 279                 do
+# 280                 {
+# 281                         echo PHP_EOL;
+# after:
+# 277                 $select = array();
+# 278                 $lkp_count = 1;
+# 279
+# 280                 do
+# 281                 {
+# 282                         if ($lkp_count > 2) {echo 'Wrong test option' . PHP_EOL;exit;}
+# 283                         $lkp_count++;
+# 284                         echo PHP_EOL;
+patch_to_detect_wrong_test_option()
+{
+	local target=/usr/share/phoronix-test-suite/pts-core/objects/pts_user_io.php
+	sed -i "277a \$lkp_count = 1;" "$target"
+	sed -i "281a if (\$lkp_count > 2) {echo 'Wrong test option' . PHP_EOL;exit;}" "$target"
+	sed -i "282a \$lkp_count++;" "$target"
+}
+
 fixup_install()
 {
 	local test=$1
@@ -786,6 +810,7 @@ run_test()
 	export PTS_SILENT_MODE=1
 	echo PTS_SILENT_MODE=$PTS_SILENT_MODE
 
+	patch_to_detect_wrong_test_option
 	if [ -n "$option_a" ]; then
 		test_opt='\n'
 		for i in {a..j}
