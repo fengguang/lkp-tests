@@ -803,6 +803,8 @@ run_test()
 	[ -f "$root_access" ] || die "$root_access not exist"
 	sed -i 's,#!/bin/sh,#!/bin/dash,' $root_access
 
+	phoronix-test-suite list-installed-tests | grep -q $test || die "$test is not installed"
+
 	if echo "$test" | grep idle-power-usage; then
 		# Choose
 		# sleep 1 min
