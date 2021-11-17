@@ -768,6 +768,22 @@ class FtraceStater < Stater
   end
 end
 
+class TCTestingStater < Stater
+  def stat(line, stats)
+    case line
+      # not ok 10 ce7d - Add mq Qdisc to multi-queue device (4 queues)
+      # ok 46 1298 - Add duplicate bfifo qdisc on egrese
+      # ok 47 45a0 - Delete nonexistent bfifo qdisc
+      #       Could not match regex pattern. Verify command output:
+    when /^# (ok|not ok) (\d+) (.*) - (.*)/
+      result = $1
+      # e7d|1298|45a0 is unique for each sub-test
+      subname = "tc-testing.#{$3}.#{$4.gsub(' ', '_')}"
+      stats.add subname, result
+    end
+  end
+end
+
 class VmallocStater < Stater
   attr_accessor :tmp_stats
   def initialize(test, test_script)
@@ -902,6 +918,9 @@ while (line = STDIN.gets)
   when /^# selftests: ftrace: ftracetest$/
     # selftests: ftrace: ftracetest
     stater = FtraceStater.new($1, $2)
+  when /^# selftests: tc-testing: tdc.sh$/
+    # selftests: ftrace: ftracetest
+    stater = TCTestingStater.new($1, $2)
   when /^LKP SKIP (.*)/
     # LKP SKIP net.l2tp.sh
     stats.add "#{$1}", 'skip'
