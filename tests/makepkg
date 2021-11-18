@@ -17,6 +17,7 @@
 [ -n "$benchmark" ] || die "benchmark is empty"
 
 export DISTRO=${rootfs%%-*}
+export GIT_SSL_NO_VERIFY=true
 
 . $LKP_SRC/distro/${DISTRO}
 . $LKP_SRC/lib/install.sh
