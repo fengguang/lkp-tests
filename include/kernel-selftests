@@ -332,6 +332,7 @@ need_kconfig:
 - PROC_CPU_RESCTRL: y
 % elsif ___.group == "tc-testing"
 - NET_SCH_FQ_PIE
+- PACKET
 % else
 - BLOCK: y
 - BTRFS_FS: m
