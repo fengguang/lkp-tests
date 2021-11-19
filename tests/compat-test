@@ -1,0 +1,93 @@
+#!/bin/bash
+# source
+# repo_name
+# source is online repository or local repository, local repository
+# should use absolute path
+
+. $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/upload.sh
+
+[ -n "$source" ]	|| die "source is empty"
+[ -n "$repo_name" ]	|| die "repo_name is empty"
+
+: "${os:=openeuler}"
+: "${os_version:=20.03-LTS-SP1}"
+
+dest_dir=/rpm/upload/${os}-${os_version}
+
+check_source()
+{
+	if [[ ${source,,} =~ ^https?:// ]]; then
+		is_url
+	else
+		is_local
+	fi
+}
+
+mirror_repo()
+{
+	local LFTP_TIMEOUT='set net:timeout 2; set net:reconnect-interval-base 2; set net:max-retries 2;'
+	local exclusions="-x repocache"
+
+	local paras="$LFTP_TIMEOUT; open ${source}; lcd /tmp/${repo_name}; mirror -aen -P 10 ${exclusions}"
+
+	mkdir -p /tmp/${repo_name} && lftp -c "${paras}"
+}
+
+show_local_files()
+{
+	find $1 -type f
+}
+
+deal_upload_dir()
+{
+	local file=$1
+	local string=$2
+
+	dir="${file//${string}/}"
+	dir="${dir%/*}"
+}
+
+upload_files()
+{
+	for file in $(show_local_files /tmp/${repo_name})
+	do
+		deal_upload_dir ${file} '/tmp'
+
+		upload_one_curl ${file} ${dest_dir}/${dir}
+	done
+}
+
+is_repo()
+{
+	echo find | lftp ${source} | grep -qF repodata
+}
+
+is_url()
+{
+	local HTTP_CODE=$(curl -o /dev/null -s --head -w "%{http_code}" "${source}")
+
+	if [ ${HTTP_CODE} -eq "200" ]; then
+		is_repo || die "${url} is not repository"
+		mirror_repo
+		upload_files
+	else
+		die "${source} unreachable"
+	fi
+}
+
+is_local()
+{
+	if  [ -d "${source}" ]; then
+		for file in $(show_local_files ${source})
+		do
+			deal_upload_dir ${file} ${source}
+
+			upload_one_curl ${file} ${dest_dir}/${dir}
+		done
+	else
+		die "${source} is not directory"
+	fi
+}
+
+check_source
