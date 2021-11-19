@@ -116,7 +116,8 @@ pack_benchmark_deps()
 
 		packages=$(echo $(get_dependency_packages $DISTRO $BM_NAME))
 
-		cleanup_installed_depends_rpms $packages
+		# cci-depends need install dependences to build cgz file
+		[ ${suite} == "cci-depends" ] || cleanup_installed_depends_rpms $packages
 		local ocfs2_tools_name=$(echo "$packages" | grep 'ocfs2-tools')
 		[ -n "$ocfs2_tools_name" ] && download_ocfs2_tools "$ocfs2_tools_name"
 
