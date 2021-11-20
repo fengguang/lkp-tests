@@ -1,8 +1,8 @@
 #!/bin/sh
-# - runtime
 
 cd $BENCHMARK_ROOT/libMicro || exit
 
-[ -n "$runtime" ] || runtime=300
+# wait for the environment to be prepared
+sleep 60
 
 log_cmd ./bench || exit
