@@ -43,6 +43,7 @@ def get_cpu_info
     key_val = line.chomp.split(':')
     cpu_info[key_val[0].gsub('(s)', '').gsub(' ', '_')] = key_val[1].gsub(/^\s{1,}/, '')
   end
+  info_to_num(cpu_info)
   return cpu_info
 end
 
@@ -61,6 +62,7 @@ def get_memory_info
     mem.delete('class')
     mem.delete('claimed')
     mem.delete('handle')
+    info_to_num(mem)
     memory_info << mem
   end
   return memory_info
@@ -99,8 +101,27 @@ def get_system_disk_info
   server_info['product'] = facter_info['dmi']['product']
 
   server_info['bios'] = facter_info['dmi']['bios']
+  info_to_num(server_info['bios'])
   server_info['disks'] = facter_info['disks']
+  server_info['disks'].each do |k, v|
+    info_to_num(v)
+  end
+
   return server_info
+end
+
+def info_to_num(obj)
+  return unless obj.is_a?(Hash)
+
+  obj.each do |k, v|
+    next unless v.is_a?(String)
+
+    if v =~ /^([0-9]{1,})$/
+      obj[k] = v.to_i
+    elsif v =~ /^([0-9]{1,}\.[0-9]{1,})$/
+      obj[k] = v.to_f
+    end
+  end
 end
 
 server_info = get_system_disk_info
@@ -108,4 +129,4 @@ server_info['cpu'] = get_cpu_info
 server_info['memory'] = get_memory_info
 server_info['cards'] = get_cards_info
 
-puts server_info.to_json
+puts JSON.pretty_generate(server_info)
