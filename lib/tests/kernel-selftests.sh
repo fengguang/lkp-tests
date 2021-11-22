@@ -347,6 +347,12 @@ fixup_gpio()
 	export CFLAGS="-I../../../../usr/include"
 }
 
+fixup_proc()
+{
+	# proc-fsconfig-hidepid.c:25:17: error: ‘__NR_fsopen’ undeclared (first use in this function); did you mean ‘fsopen’?
+	export CFLAGS="-I../../../../usr/include"
+}
+
 cleanup_for_firmware()
 {
 	[[ -f 50-firmware.rules ]] && {
@@ -674,6 +680,8 @@ fixup_subtest()
 		log_cmd touch ./$subtest/pipe || die "touch pipe failed"
 	elif [[ $subtest = "gpio" ]]; then
 		fixup_gpio || return
+	elif [[ $subtest = "proc" ]]; then
+		fixup_proc || return
 	elif [[ $subtest = "openat2" ]]; then
 		fixup_openat2
 		return 1
