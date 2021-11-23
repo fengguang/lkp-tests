@@ -534,36 +534,22 @@ platform_is_skylake_or_snb()
 
 cleanup_openat2()
 {
-	umount /mnt/kselftest || return
-	rm -rf /mnt/kselftest || return
+	cd "$original_dir" || return
+	umount /mnt/selftests || return
+	rm -rf /mnt/selftests
 }
 
 fixup_openat2()
 {
-	local original_dir=$(pwd)
-
+	original_dir=$(pwd)
 	# The default filesystem of testing workdir is none, some flags is not supported
 	# Create a virtual disk and format it with ext4 to run openat2
 	dd if=/dev/zero of=/tmp/raw.img bs=1M count=100 || return
 	mkfs -t ext4 /tmp/raw.img || return
-	[[ -d "/mnt/kselftest" ]] || mkdir -p "/mnt/kselftest" || return
-	mount -t ext4 /tmp/raw.img /mnt/kselftest || return
-	# Build openat2 firstly, just run binary on /mnt/kselftest
-	make -C openat2 >/dev/null || return
-	cp -r openat2 /mnt/kselftest || return
-
-	# Openat2 create testing files on current dir, so we need change working dir.
-	cd /mnt/kselftest/openat2
-	log_cmd ./openat2_test 2>&1
-	# Since we run openat2_test directly, we also need format the output.
-	if [[ "$?" = "0" ]]; then
-		echo "ok 1 selftests: openat2: openat2_test"
-	else
-		echo "not ok 1 selftests: openat2: openat2_test # exit=1"
-	fi
-	cd $original_dir
-
-	cleanup_openat2
+	mkdir -p /mnt/selftests || return
+	mount -t ext4 /tmp/raw.img /mnt/selftests || return
+	cp -af ./* /mnt/selftests || return
+	cd /mnt/selftests
 }
 
 fixup_breakpoints()
@@ -683,8 +669,7 @@ fixup_subtest()
 	elif [[ $subtest = "proc" ]]; then
 		fixup_proc || return
 	elif [[ $subtest = "openat2" ]]; then
-		fixup_openat2
-		return 1
+		fixup_openat2 || return
 	elif [[ "$subtest" = "pstore" ]]; then
 		fixup_pstore || return
 	elif [[ "$subtest" = "firmware" ]]; then
@@ -750,5 +735,7 @@ cleanup_subtest()
 {
 	if [[ "$subtest" = "firmware" ]]; then
 		cleanup_for_firmware
+	elif [[ "$subtest" = "openat2" ]]; then
+		cleanup_openat2
 	fi
 }
