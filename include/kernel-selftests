@@ -83,6 +83,7 @@ need_kconfig:
 - SECURITYFS: y, v5.11-rc1
 - IMA: y, v5.11-rc1
 % elsif ___.group == "net"
+- PACKET: y
 - USER_NS: y
 - BPF_SYSCALL: y
 - TEST_BPF: m
