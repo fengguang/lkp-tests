@@ -316,7 +316,13 @@ else
 fi
 
 LKP_USER="lkp"
-: ${QEMU_MODEL:='qemu-system-x86_64'}
+if [ -z $QEMU_MODEL ]; then
+	if get_job_env $job_script 'model' | grep -q 'qemu-system-i386'; then
+		QEMU_MODEL='qemu-system-i386'
+	else
+		QEMU_MODEL='qemu-system-x86_64'
+	fi
+fi
 
 run_kvm()
 {
