@@ -602,6 +602,10 @@ fixup_mount_setattr()
 
 fixup_tc_testing()
 {
+	# Suggested by the author
+	# upstream commit: https://git.kernel.org/netdev/net/c/bdf1565fe03d
+	sed -i 's/"matchPattern": "qdisc pfifo_fast 0: parent 1:\[1-9,a-f\].*/"matchPattern": "qdisc [a-zA-Z0-9_]+ 0: parent 1:[1-9,a-f][0-9,a-f]{0,2}",/g' tc-testing/tc-tests/qdiscs/mq.json
+	sed -i 's/"matchPattern": "qdisc pfifo_fast 0: parent 1:\[1-4\].*/"matchPattern": "qdisc [a-zA-Z0-9_]+ 0: parent 1:[1-4]",/g' tc-testing/tc-tests/qdiscs/mq.json
 	modprobe netdevsim
 }
 
