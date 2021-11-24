@@ -423,6 +423,7 @@ class MptcpStater < Stater
       # it's @test_case is "ns1 MPTCP -> ns1 (10.0.1.1:10000      ) MPTCP"
       @result = $2
       @test_case = $1.gsub(/\(duration(.*)\)/, '')
+      @test_case = @test_case.gsub(/[0-9]+\s+max\s+[0-9]+/, '')
       if @test_script == 'mptcp_connect.sh'
         # ns1 MPTCP -> ns1 (10.0.1.1:10000      ) MPTCP (duration    75ms) [ OK ]
 
