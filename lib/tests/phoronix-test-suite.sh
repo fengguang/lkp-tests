@@ -250,7 +250,7 @@ fixup_fio()
 	# create virtual disk
 	local test_disk="/tmp/test_fio.img"
 	local test_dir="/media/test_fio"
-	fallocate -l 100M $test_disk || return
+	fallocate -l 10G $test_disk || return
 	mkfs -t ext4 $test_disk 2> /dev/null || return
 	mkdir -p $test_dir || return
 	modprobe loop || return
