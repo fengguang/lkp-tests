@@ -141,7 +141,7 @@ donorname=$donorname
 "
 fi
 
-[ -n "$rwmixread" ] && rwmixread_setup="rwmixread=$rwmixread"
+[ -n "$rwmixread" ] && [ "$rw" == "randrw"] && rwmixread_setup="rwmixread=$rwmixread"
 
 parse_numa_mem_policy()
 {
