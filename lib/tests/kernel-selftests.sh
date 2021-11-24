@@ -357,10 +357,19 @@ fixup_move_mount_set_group()
 {
 	libc_version_ge 2.32 && return
 
-	# libc version lower than libc-2.23 do not define SYS_move_mount.
+	# libc version lower than libc-2.32 do not define SYS_move_mount.
 	# move_mount_set_group_test.c:221:16: error: ‘SYS_move_mount’ undeclared (first use in this function); did you mean ‘SYS_mount’?
 	export CFLAGS="-DSYS_move_mount=__NR_move_mount"
 	sed -ie "s/CFLAGS = /CFLAGS += /g" move_mount_set_group/Makefile
+}
+
+fixup_landlock()
+{
+	libc_version_ge 2.32 && return
+
+	# libc version lower than libc-2.32 do not define SYS_move_mount.
+	# fs_test.c:1304:23: error: 'SYS_move_mount' undeclared (first use in this function); did you mean 'SYS_mount'?
+	export CFLAGS="-DSYS_move_mount=__NR_move_mount"
 }
 
 cleanup_for_firmware()
@@ -692,6 +701,8 @@ fixup_subtest()
 		fixup_proc || return
 	elif [[ $subtest = "move_mount_set_group" ]]; then
 		fixup_move_mount_set_group || return
+	elif [[ $subtest = "landlock" ]]; then
+		fixup_landlock || return
 	elif [[ $subtest = "openat2" ]]; then
 		fixup_openat2 || return
 	elif [[ "$subtest" = "pstore" ]]; then
