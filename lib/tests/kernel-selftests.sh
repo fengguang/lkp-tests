@@ -353,6 +353,16 @@ fixup_proc()
 	export CFLAGS="-I../../../../usr/include"
 }
 
+fixup_move_mount_set_group()
+{
+	libc_version_ge 2.32 && return
+
+	# libc version lower than libc-2.23 do not define SYS_move_mount.
+	# move_mount_set_group_test.c:221:16: error: ‘SYS_move_mount’ undeclared (first use in this function); did you mean ‘SYS_mount’?
+	export CFLAGS="-DSYS_move_mount=__NR_move_mount"
+	sed -ie "s/CFLAGS = /CFLAGS += /g" move_mount_set_group/Makefile
+}
+
 cleanup_for_firmware()
 {
 	[[ -f 50-firmware.rules ]] && {
@@ -681,6 +691,8 @@ fixup_subtest()
 		fixup_gpio || return
 	elif [[ $subtest = "proc" ]]; then
 		fixup_proc || return
+	elif [[ $subtest = "move_mount_set_group" ]]; then
+		fixup_move_mount_set_group || return
 	elif [[ $subtest = "openat2" ]]; then
 		fixup_openat2 || return
 	elif [[ "$subtest" = "pstore" ]]; then
