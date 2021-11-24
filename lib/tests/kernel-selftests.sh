@@ -606,6 +606,15 @@ fixup_tc_testing()
 	# upstream commit: https://git.kernel.org/netdev/net/c/bdf1565fe03d
 	sed -i 's/"matchPattern": "qdisc pfifo_fast 0: parent 1:\[1-9,a-f\].*/"matchPattern": "qdisc [a-zA-Z0-9_]+ 0: parent 1:[1-9,a-f][0-9,a-f]{0,2}",/g' tc-testing/tc-tests/qdiscs/mq.json
 	sed -i 's/"matchPattern": "qdisc pfifo_fast 0: parent 1:\[1-4\].*/"matchPattern": "qdisc [a-zA-Z0-9_]+ 0: parent 1:[1-4]",/g' tc-testing/tc-tests/qdiscs/mq.json
+
+	# As description of tdc_config.py, we can replace our own tc and ip
+	# $ grep sbin/tc -B1 tdc_config.py
+	#  # Substitute your own tc path here
+	#  'TC': '/sbin/tc',
+	if [ -e /lkp/benchmarks/kernel-selftests/kernel-selftests/iproute2-next/sbin/tc ]; then
+		sed -i s,/sbin/tc,/lkp/benchmarks/kernel-selftests/kernel-selftests/iproute2-next/sbin/tc,g tc-testing/tdc_config.py
+		sed -i s,/sbin/ip,/lkp/benchmarks/kernel-selftests/kernel-selftests/iproute2-next/sbin/ip,g tc-testing/tdc_config.py
+	fi
 	modprobe netdevsim
 }
 
