@@ -3,7 +3,6 @@
 # - test
 # - mode
 # - nr_task
-# - no_affinity  /* Do not do the CPU bindings for test tasks */
 
 ## It Scale takes a testcase and runs it from 1 through to n
 ## parallel copies to see if the testcase will scale. It
@@ -33,9 +32,6 @@ else
 	setup_params
 fi
 
-affinity_config=" "
-[ -n "$no_affinity" ] && affinity_config=" -n "
-
 ulimit -n 65536
 
-log_cmd /lkp/benchmarks/python3/bin/python3 ./runtest.py $test $duration $mode $threads_to_iterate $affinity_config
+log_cmd /lkp/benchmarks/python3/bin/python3 ./runtest.py $test $duration $mode $threads_to_iterate
