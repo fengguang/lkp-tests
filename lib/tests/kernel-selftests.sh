@@ -632,6 +632,11 @@ fixup_tc_testing()
 	sed -i 's/"matchPattern": "qdisc pfifo_fast 0: parent 1:\[1-9,a-f\].*/"matchPattern": "qdisc [a-zA-Z0-9_]+ 0: parent 1:[1-9,a-f][0-9,a-f]{0,2}",/g' tc-testing/tc-tests/qdiscs/mq.json
 	sed -i 's/"matchPattern": "qdisc pfifo_fast 0: parent 1:\[1-4\].*/"matchPattern": "qdisc [a-zA-Z0-9_]+ 0: parent 1:[1-4]",/g' tc-testing/tc-tests/qdiscs/mq.json
 
+	# Be compatible with the *new* tc output
+	# old tc output:   action order 1: bpf action.o:[action-ok] id 60 tag bcf7977d3b93787c jited default-action pipe
+	# newer tc output: action order 1: bpf action.o:[action-ok] id 64 name  tag bcf7977d3b93787c jited default-action pipe
+	# upstream commit: https://git.kernel.org/netdev/net/c/ac2944abe4d7
+	sed -i 's/\[0-9\]\* tag/[0-9].* tag/g' tc-testing/tc-tests/actions/bpf.json
 	# As description of tdc_config.py, we can replace our own tc and ip
 	# $ grep sbin/tc -B1 tdc_config.py
 	#  # Substitute your own tc path here
