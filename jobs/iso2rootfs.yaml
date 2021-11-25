@@ -60,11 +60,6 @@ iso2rootfs:
   # submit test yaml related fields
   #################
 
-  # three required fields when submit test yaml
-  submit_name:
-  submit_email:
-  submit_token:
-
   # submit target tests yaml
   ## 1. You can add as many jobs as you like.
   ## 2. The following three fields is required for every test job.
@@ -76,3 +71,8 @@ iso2rootfs:
   test1_git_url:
   test1_git_yaml:
   test1_git_script:
+
+secrets:
+  MY_EMAIL:
+  MY_NAME:
+  MY_TOKEN:

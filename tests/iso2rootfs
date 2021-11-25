@@ -417,22 +417,32 @@ config_rootfs()
 }
 
 ############ submit test job yaml ############
-generate_global_yaml()
+prepare_lkp_client()
 {
-	[ -n "${submit_name}" ] || die "cannot find value of var: submit_name"
-	[ -n "${submit_email}" ] || die "cannot find value of var: submit_email"
-	[ -n "${submit_token}" ] || die "cannot find value of var: submit_token"
+	log_info "starting prepare lkp client env..."
 
-	local config_yaml="/etc/compass-ci/defaults/sparrow.yaml"
+        ${LKP_SRC}/sbin/install-dependencies.sh
 
-	mkdir -p "$(dirname "${config_yaml}")"
+        export CCI_REPOS="/c"
 
-	cat <<-EOF > "${config_yaml}"
+        mkdir -p $CCI_REPOS && cd $CCI_REPOS
+        git clone https://gitee.com/wu_fengguang/lab-z9.git || die "clone lab-z9 git repo failed"
+
+        git clone https://gitee.com/wu_fengguang/lkp-tests.git || die "clone lkp-tests git repo failed"
+        cp -a $LKP_SRC/. ./lkp-tests/
+        export LKP_SRC=$(realpath ./lkp-tests/)
+
+        local config_yaml="/etc/compass-ci/defaults/sparrow.yaml"
+        mkdir -p $(dirname $config_yaml)
+
+        cat >> $config_yaml <<-EOF
 	SCHED_HOST: ${SCHED_HOST}
 	SCHED_PORT: ${SCHED_PORT}
-	my_name: ${submit_name}
-	my_email: ${submit_email}
-	my_token: ${submit_token}
+	my_account: ${my_account}
+	my_name: ${secrets_MY_NAME}
+	my_email: ${secrets_MY_EMAIL}
+	my_token: ${secrets_MY_TOKEN}
+	lab: ${lab}
 	EOF
 }
 
@@ -442,7 +452,7 @@ generate_submit_append_str()
 	echo "os=${iso_os} os_arch=${iso_arch} os_version=${iso_version}-dailybuild os_mount=$1 testbox=$2"
 }
 
-prepare_submit()
+prepare_one_submit()
 {
 	local submit_dir="/tmp/iso2rootfs/submit_tmp"
 	mkdir -p "${submit_dir}"
@@ -470,7 +480,7 @@ submit_one_yaml()
 	log_info "starting submit ${test_yaml} ..."
 
 	local test_git_url="$(eval echo "\$${test_num}_git_url")"
-	[ -z "${test_git_url}" ] || prepare_submit
+	[ -z "${test_git_url}" ] || prepare_one_submit
 
 	cd "${LKP_SRC}/jobs"
 	[ -f "${test_yaml}" ] || die "cannot find yaml in LKP_SRC/jobs: ${test_yaml}."
@@ -492,15 +502,7 @@ submit_yamls()
 {
 	[ -n "$test1_yaml" ] || return 0
 
-	log_info "starting submit test yamls ..."
-
-	[ -d "${LKP_SRC}" ] || die "cannot find value of var: LKP_SRC."
-	cd "${LKP_SRC}" && {
-		chmod +x ./sbin/install-dependencies.sh
-		./sbin/install-dependencies.sh
-
-		generate_global_yaml
-	}
+	prepare_lkp_client
 
 	local test_yaml_index=1
 	local test_num="test${test_yaml_index}"
