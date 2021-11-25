@@ -492,15 +492,15 @@ phoronix-test-suite:
     - noise-level-1.1.0
   - test: npb-1.4.2
     option_a:
-      - BT.C
-      - EP.C
-      - EP.D
-      - FT.C
-      - LU.C
-      - SP.B
-      - IS.D
-      - MG.C
-      - CG.C
+      - BT.C [Block Tri-diagonal solver]
+      - EP.C [Embarrassingly Parallel]
+      - EP.D [Embarrassingly Parallel]
+      - FT.C [discrete 3D fast Fourier Transform]
+      - LU.C [Lower-Upper Gauss-Seidel solver]
+      - SP.B [Scalar Penta-diagonal solver]
+      - IS.D [Integer Sort]
+      - MG.C [Multi-Grid on a sequence of meshes]
+      - CG.C [Conjugate Gradient]
       # - Test All Options
   - test:
     - numenta-nab-1.1.0
