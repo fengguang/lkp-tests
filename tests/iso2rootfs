@@ -126,7 +126,7 @@ mount_rootfs()
 		;;
 		"cifs")
 			ROOTFS_SERVER_PATH="//${rootfs_server}/${rootfs_path}/${iso_os}/${iso_arch}"
-			ROOTFS_MOUNT_PARAM="guest,vers=1.0,noacl,nouser_xattr"
+			ROOTFS_MOUNT_PARAM="${rootfs_mount_param}"
 			install_pkgs "cifs-utils"
 		;;
 		*)
@@ -364,7 +364,7 @@ config_dns_resolver()
 	grep -qs "^dns=none" $config_file ||
 		sed -i '/^\[main\]/adns=none' "${ROOTFS_DES_DIR}/etc/NetworkManager/NetworkManager.conf"
 
-	cat <<-EOF > "${ROOTFS_DES_DIR}/etc/resolv.conf"
+	cat > "${ROOTFS_DES_DIR}/etc/resolv.conf" <<-EOF
 	nameserver 114.114.114.114
 	nameserver 8.8.8.8
 	EOF
@@ -449,7 +449,11 @@ prepare_lkp_client()
 generate_submit_append_str()
 {
 	[ "$#" -eq 2 ] || die "generate_submit_append_str: please give 2 parameters."
-	echo "os=${iso_os} os_arch=${iso_arch} os_version=${iso_version}-dailybuild os_mount=$1 testbox=$2"
+	local os_version
+	os_version="${iso_version}"
+	[ -n "${dailybuild_iso_url_file}" ] && os_version="${iso_version}-dailybuild"
+
+	echo "os=${iso_os} os_arch=${iso_arch} os_version=${os_version} os_mount=$1 testbox=$2 group_id=iso2rootfs-${iso_os}-${iso_arch}-${iso_version}-${ROOTFS_DES_DIR_SUFFIX}"
 }
 
 prepare_one_submit()
@@ -541,6 +545,8 @@ post_works()
 
 	update_soft_link
 
+	submit_yamls
+
 	cd / && umount "${ROOTFS_LOCAL_PATH}"
 
 	log_info "iso2rootfs finished"
@@ -558,8 +564,6 @@ main()
 	run_qcow2rootfs
 
 	config_rootfs
-
-	submit_yamls
 
 	post_works
 }

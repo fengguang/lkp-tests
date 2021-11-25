@@ -22,6 +22,7 @@ iso2rootfs:
   rootfs_protocol:
   rootfs_server:
   rootfs_path:
+  rootfs_mount_param:
 
   #################
   # config rootfs related fields
@@ -44,16 +45,18 @@ iso2rootfs:
   #################
 
   # iso url which you want generate rootfs from
+  # - demo:
+  #   iso_url: http://1.1.1.1/openEuler-20.03-LTS-aarch64-LTS/openEuler-20.03-LTS-aarch64-dvd.iso
   iso_url:
 
   # dailybuild_iso_url_file:
   # - The `dailybuild iso url file` content is the url of a iso.
   # - The iso checksum file also exists on the network, and the checksum file path is "{dailybuild_iso_url}.check256sum"
-  # - demo:
-  #   root@localhost ~% curl http://1.1.1.1/dailybuilds/openEuler-20.03-LTS-aarch64-LTS/release_iso
-  #   http://1.1.1.1//dailybuilds/1970-01-01-00-00-00/openEuler-20.03-LTS-aarch64-dvd.iso
-  #
   # - if your have this field, the above `iso_url` field will be useless.
+  # - demo:
+  #   dailybuild_iso_url_file: http://1.1.1.1/dailybuilds/openEuler-20.03-LTS-aarch64-LTS/release_iso
+  #     root@localhost ~% curl http://1.1.1.1/dailybuilds/openEuler-20.03-LTS-aarch64-LTS/release_iso
+  #     http://1.1.1.1//dailybuilds/openEuler-20.03-LTS-aarch64-LTS/1970-01-01-00-00-00/openEuler-20.03-LTS-aarch64-dvd.iso
   dailybuild_iso_url_file:
 
   #################
