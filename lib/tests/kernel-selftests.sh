@@ -372,6 +372,13 @@ fixup_landlock()
 	export CFLAGS="-DSYS_move_mount=__NR_move_mount"
 }
 
+fixup_netfilter()
+{
+	# RULE_APPEND failed (No such file or directory): rule in chain BROUTING.
+	# table `broute' is obsolete commands.
+	update-alternatives --set ebtables /usr/sbin/ebtables-legacy
+}
+
 cleanup_for_firmware()
 {
 	[[ -f 50-firmware.rules ]] && {
@@ -703,6 +710,8 @@ fixup_subtest()
 		fixup_move_mount_set_group || return
 	elif [[ $subtest = "landlock" ]]; then
 		fixup_landlock || return
+	elif [[ $subtest = "netfilter" ]]; then
+		fixup_netfilter || return
 	elif [[ $subtest = "openat2" ]]; then
 		fixup_openat2 || return
 	elif [[ "$subtest" = "pstore" ]]; then
