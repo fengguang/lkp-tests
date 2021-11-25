@@ -251,6 +251,8 @@ pre_works()
 	check_yaml_vars
 
 	mount_rootfs
+
+	[ -n "$iso_url" ] && ISO_URL=$iso_url
 	check_sha256sum_update
 
 	check_os
@@ -589,14 +591,17 @@ submit_yamls()
 }
 
 ############ post works ############
-update_dailybuild_soft_link()
+update_soft_link()
 {
-	[ -n "${dailybuild_iso_url_file}" ] || return 0
+	local soft_link="${iso_version}"
 
-	mv "${CHECKSUM_FILE_CACHE}.tmp" "${CHECKSUM_FILE_CACHE}"
-	cp "${CHECKSUM_FILE_CACHE}" "${ROOTFS_DES_DIR}/SHA256SUM"
+	[ -n "${dailybuild_iso_url_file}" ] && {
+		soft_link="${iso_version}-dailybuild"
 
-	local soft_link="${iso_version}-dailybuild"
+		mv "${CHECKSUM_FILE_CACHE}.tmp" "${CHECKSUM_FILE_CACHE}"
+		cp "${CHECKSUM_FILE_CACHE}" "${ROOTFS_DES_DIR}/SHA256SUM"
+	}
+
 	cd "${ROOTFS_LOCAL_PATH}" &&
 		ln -sfT "$(basename "${ROOTFS_DES_DIR}")" "${soft_link}"
 }
@@ -605,7 +610,7 @@ post_works()
 {
 	log_info "starting post works ..."
 
-	update_dailybuild_soft_link
+	update_soft_link
 
 	cd / && umount "${ROOTFS_LOCAL_PATH}"
 

@@ -40,8 +40,11 @@ iso2rootfs:
   rootfs_install_pkgs:
 
   #################
-  # dailybuild related fields
+  # iso srouce related fields
   #################
+
+  # iso url which you want generate rootfs from
+  iso_url:
 
   # dailybuild_iso_url_file:
   # - The `dailybuild iso url file` content is the url of a iso.
@@ -49,6 +52,8 @@ iso2rootfs:
   # - demo:
   #   root@localhost ~% curl http://1.1.1.1/dailybuilds/openEuler-20.03-LTS-aarch64-LTS/release_iso
   #   http://1.1.1.1//dailybuilds/1970-01-01-00-00-00/openEuler-20.03-LTS-aarch64-dvd.iso
+  #
+  # - if your have this field, the above `iso_url` field will be useless.
   dailybuild_iso_url_file:
 
   #################
