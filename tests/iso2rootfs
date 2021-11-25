@@ -188,23 +188,6 @@ check_os()
 			allow os: \(${ALLOW_OS[@]}\)"
 }
 
-get_cgz()
-{
-	local cgz_url="http://${INITRD_HTTP_HOST}:${INITRD_HTTP_PORT}/initrd/pkg/nfs/${os}/${os_arch}/${os_version}/iso2rootfs.cgz"
-	local cgz_name
-	cgz_name=$(basename "${cgz_url}")
-	local cgz_path_t=${ENV_DIR}/${cgz_name}
-	CGZ_PATH=${ENV_DIR}/${cgz_name%.cgz}
-
-	[ -d "$ENV_DIR" ] || mkdir -p "$ENV_DIR"
-	[ -f "${cgz_path_t}" ] && rm -f "${cgz_path_t}"
-	wget -c -O "${cgz_path_t}" "${cgz_url}"
-
-	[ -d "$CGZ_PATH" ] && rm -rf "$CGZ_PATH"
-	mkdir -p "$CGZ_PATH"
-	tar -xf "${cgz_path_t}" -C "${CGZ_PATH}"
-}
-
 get_pkg_installer()
 {
 	local installer
@@ -237,10 +220,6 @@ config_git_proxy()
 config_iso2rootfs()
 {
 	log_info "starting config iso2rootfs env ..."
-	install_pkgs "wget"
-	get_cgz
-
-	source "${CGZ_PATH}/config"
 
 	install_pkgs "git"
 
@@ -274,7 +253,7 @@ pre_works()
 download_iso2qcow2()
 {
 	[ -d "${I2Q_SRC}" ] && rm -rf "${I2Q_SRC}"
-	git clone "$ISO2QCOW2_GIT_URL" "${I2Q_SRC}"
+	git clone https://gitee.com/ycvayne/iso2qcow2.git "${I2Q_SRC}"
 }
 
 config_pip_proxy()
@@ -324,7 +303,7 @@ run_iso2qcow2()
 download_compass_ci()
 {
 	[ -d "${CCI_SRC}" ] && rm -rf "${CCI_SRC}"
-	git clone "$COMPASS_CI_GIT_URL" "${CCI_SRC}"
+	git clone https://gitee.com/wu_fengguang/compass-ci.git "${CCI_SRC}"
 }
 
 config_rootfs_dir()
@@ -435,77 +414,6 @@ config_rootfs()
 	enable_repos
 
 	install_pkgs_for_rootfs
-}
-
-############ test rootfs ############
-get_qemu_efi_fd()
-{
-	source "$I2Q_SRC"/lib/tools/checker.sh
-	source "$I2Q_SRC"/lib/os/hoster.sh
-	source "$I2Q_SRC"/lib/libvirt/libvirt_vars.sh
-
-	get_host_info
-	get_efi_fd_path
-}
-
-test_rootfs()
-{
-	log_info "starting test rootfs ..."
-
-	local test_script="${CGZ_PATH}/kvm.sh"
-
-	local kernel_path=$(realpath "${ROOTFS_DES_DIR}"/boot/vmlinuz)
-	local initrd_lkp_path=$(realpath "${ROOTFS_DES_DIR}"/initrd.lkp)
-	[ -f "$kernel_path" ] || die "cannot find kernel of rootfs: $kernel_path"
-	[ -f "$initrd_lkp_path" ] || die "cannot find initrd_lkp of rootfs: $initrd_lkp_path"
-
-	local root_path
-	case ${rootfs_protocol} in
-		"nfs")
-			root_path="${ROOTFS_SERVER_PATH}/$(basename "${ROOTFS_DES_DIR}")"
-		;;
-		"cifs")
-			root_path="cifs:${ROOTFS_SERVER_PATH}/$(basename "${ROOTFS_DES_DIR}"),${ROOTFS_MOUNT_PARAM}"
-		;;
-		*)
-			die "cannot support the rootfs_protocol: ${rootfs_protocol}."
-		;;
-	esac
-	get_qemu_efi_fd
-
-	sed -i "s|KERNEL|\"${kernel_path}\"|g" "$test_script"
-	sed -i "s|INITRD_LKP|\"${initrd_lkp_path}\"|g" "$test_script"
-	sed -i "s|ROOT|\"${root_path}\"|g" "$test_script"
-	sed -i "s|QEMU_EFI_FD|\"${EFI_FD_PATH}\"|g" "$test_script"
-
-	cd "$(dirname "${test_script}")"
-
-	expect << EOF
-		# timeout for kvm.sh
-		set timeout 300
-
-		spawn "/bin/bash"
-		match_max 100000
-
-		expect -exact "# " {
-		send -- "./$(basename "${test_script}")\r"
-		}
-
-		expect {
-			"localhost login: " {
-				send_user "\[INFO\] test rootfs ok"
-				exit 0
-			}
-			"server * not responding, timed out" {
-				send_user "\[WARNING\] rootfs can start, but need to disable some services"
-				exit 0
-			}
-			timeout {
-				send_user "\[ERROR\] test rootfs time out"
-				exit 1
-			}
-		}
-EOF
 }
 
 ############ submit test job yaml ############
@@ -649,7 +557,6 @@ main()
 
 	config_rootfs
 
-	test_rootfs
 	submit_yamls
 
 	post_works
