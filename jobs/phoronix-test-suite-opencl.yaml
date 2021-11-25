@@ -13,7 +13,7 @@ phoronix-test-suite:
   - test: askap-2.1.0
     option_a:
       - tConvolve OpenCL
-      - tConvolve CUDA
+      # - tConvolve CUDA # not supported and not display
       - tConvolve MPI
       - tConvolve OpenMP
       - tConvolve MT
@@ -75,7 +75,7 @@ phoronix-test-suite:
       - CPU Multi Core
       - GPU OpenCL
       - GPU Apple Metal
-      - GPU NVIDIA CUDA
+      # - GPU NVIDIA CUDA # not supported and not display
       - GPU Vulkan
       # - Test All Options
   - test:
