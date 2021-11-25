@@ -243,6 +243,16 @@ config_iso2rootfs()
 	source "${CGZ_PATH}/config"
 
 	install_pkgs "git"
+
+	# use $GIT_SERVER to direct git remote repo from gitee.com to our own git remote repo(by container git-daemon),
+	# to make sure can use the latest code.
+	if [ -n "$GIT_SERVER" ]; then
+		cat >> /etc/gitconfig <<-EOF
+		[url "git://$GIT_SERVER/gitee.com"]
+			insteadOf=https://gitee.com
+		EOF
+	fi
+
 	config_git_proxy
 }
 
@@ -319,8 +329,8 @@ download_compass_ci()
 
 config_rootfs_dir()
 {
-	ROOTFS_DES_DIR=${ROOTFS_LOCAL_PATH}/${iso_version}-$(date "+%Y-%m-%d-%H-%M-%S")
-	[ -n "${dailybuild_iso_url_file}" ] && ROOTFS_DES_DIR=${ROOTFS_LOCAL_PATH}/${iso_version}-dailybuild-$(date "+%Y-%m-%d-%H-%M-%S")
+	ROOTFS_DES_DIR=${ROOTFS_LOCAL_PATH}/${iso_version}-$(date "+%Y%m%d%H%M%S")
+	[ -n "${dailybuild_iso_url_file}" ] && ROOTFS_DES_DIR=${ROOTFS_LOCAL_PATH}/${iso_version}-dailybuild-$(date "+%Y%m%d%H%M%S")
 
 	[ -d "${ROOTFS_DES_DIR}" ] &&
 		ROOTFS_DES_DIR="${ROOTFS_DES_DIR}-${HOSTNAME##*--}"
@@ -334,6 +344,15 @@ config_qcow2rootfs()
 	download_compass_ci
 
 	install_pkgs "docker"
+
+	mkdir -p /etc/systemd/system/docker.service.d
+	cat >/etc/systemd/system/docker.service.d/10-ramdisk.conf <<-EOF
+	[Service]
+	Environment=DOCKER_RAMDISK=true
+	EOF
+
+	systemctl daemon-reload
+	systemctl stop docker
 	systemctl start docker
 
 	config_rootfs_dir
