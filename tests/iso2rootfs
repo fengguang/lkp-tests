@@ -134,7 +134,7 @@ mount_rootfs()
 		;;
 	esac
 
-	ROOTFS_LOCAL_PATH="${WORKSPACE}/compass_os_${iso_os}_${iso_arch}"
+	ROOTFS_LOCAL_PATH="${WORKSPACE}/rootfs/compass_os_${iso_os}_${iso_arch}"
 
 	[ -d "${ROOTFS_LOCAL_PATH}" ] || mkdir -p "$ROOTFS_LOCAL_PATH"
 	if [ -n "${ROOTFS_MOUNT_PARAM}" ]
@@ -142,6 +142,35 @@ mount_rootfs()
 		mount -t ${rootfs_protocol} -o "${ROOTFS_MOUNT_PARAM}" "${ROOTFS_SERVER_PATH}" "${ROOTFS_LOCAL_PATH}"
 	else
 		mount -t ${rootfs_protocol} "${ROOTFS_SERVER_PATH}" "${ROOTFS_LOCAL_PATH}"
+	fi
+}
+
+mount_initramfs()
+{
+	case ${initramfs_protocol} in
+		"nfs")
+			INITRAMFS_SERVER_PATH="${initramfs_server}:${initramfs_path}/${iso_os}/${iso_arch}"
+			install_pkgs "nfs-utils"
+		;;
+		"cifs")
+			INITRAMFS_SERVER_PATH="//${initramfs_server}/${initramfs_path}/${iso_os}/${iso_arch}"
+			INITRAMFS_MOUNT_PARAM="${initramfs_mount_param}"
+			install_pkgs "cifs-utils"
+		;;
+		*)
+			die "cannot support the initramfs_protocol: ${initramfs_protocol}."
+		;;
+	esac
+
+	INITRAMFS_LOCAL_PATH="${WORKSPACE}/initramfs/compass_os_${iso_os}_${iso_arch}"
+
+	[ -d "${INITRAMFS_LOCAL_PATH}" ] || mkdir -p "$INITRAMFS_LOCAL_PATH"
+
+	if [ -n "${INITRAMFS_MOUNT_PARAM}" ]
+	then
+		mount -t ${initramfs_protocol} -o "${INITRAMFS_MOUNT_PARAM}" "${INITRAMFS_SERVER_PATH}" "${INITRAMFS_LOCAL_PATH}"
+	else
+		mount -t ${initramfs_protocol} "${INITRAMFS_SERVER_PATH}" "${INITRAMFS_LOCAL_PATH}"
 	fi
 }
 
@@ -308,8 +337,9 @@ download_compass_ci()
 
 config_rootfs_dir()
 {
-	ROOTFS_DES_DIR=${ROOTFS_LOCAL_PATH}/${iso_version}-$(date "+%Y%m%d%H%M%S")
-	[ -n "${dailybuild_iso_url_file}" ] && ROOTFS_DES_DIR=${ROOTFS_LOCAL_PATH}/${iso_version}-dailybuild-$(date "+%Y%m%d%H%M%S")
+	ROOTFS_DES_DIR_SUFFIX="$(date "+%Y%m%d%H%M%S")"
+	ROOTFS_DES_DIR=${ROOTFS_LOCAL_PATH}/${iso_version}-${ROOTFS_DES_DIR_SUFFIX}
+	[ -n "${dailybuild_iso_url_file}" ] && ROOTFS_DES_DIR=${ROOTFS_LOCAL_PATH}/${iso_version}-dailybuild-${ROOTFS_DES_DIR_SUFFIX}
 
 	[ -d "${ROOTFS_DES_DIR}" ] &&
 		ROOTFS_DES_DIR="${ROOTFS_DES_DIR}-${HOSTNAME##*--}"
@@ -479,6 +509,53 @@ prepare_one_submit()
 	cp "${test_git_script}" "${LKP_SRC}/tests/"
 }
 
+generate_initramfs()
+{
+	[ -n "$IS_INITRAMFS_GENERATED" ] && RETURN 0
+
+	mount_initramfs
+
+	local initramfs_cgz
+	local os_version
+	os_version="${iso_version}"
+	[ -n "${dailybuild_iso_url_file}" ] && os_version="${iso_version}-dailybuild"
+	initramfs_cgz=${INITRAMFS_LOCAL_PATH}/${os_version}/${ROOTFS_DES_DIR_SUFFIX}.cgz
+	initramfs_dir=$(dirname $initramfs_cgz)
+	[ -d "$initramfs_dir" ] || {
+		mkdir -p $initramfs_dir
+		chmod go+rx $initramfs_dir
+	}
+
+	[ -f "$initramfs_cgz" ] && return 0
+
+	local rootfs_tmp
+	rootfs_tmp=${ROOTFS_DES_DIR}-tmp
+	cd ${ROOTFS_DES_DIR} && {
+		mkdir -p ${rootfs_tmp}/modules
+		mv lib/modules/* ${rootfs_tmp}/modules/
+
+		mkdir -p ${rootfs_tmp}/boot
+		mv boot/vmlinuz* ${rootfs_tmp}/boot/
+		mv boot/initr* ${rootfs_tmp}/boot/
+
+		find . | cpio -o -Hnewc | gzip -9 > $initramfs_cgz
+
+		mv ${rootfs_tmp}/modules/* ./lib/modules/
+		mv ${rootfs_tmp}/boot/* ./boot/
+
+		rm -rf ${rootfs_tmp}
+	}
+
+	cd $initramfs_dir && {
+		ln -sf $(basename $initramfs_cgz) current
+
+		run_ipconfig_cgz="../../../../deps/nfs/debian/$os_arch/sid/run-ipconfig.cgz"
+		ln -sf $run_ipconfig_cgz run-ipconfig.cgz
+	}
+
+	IS_INITRAMFS_GENERATED="yes"
+}
+
 submit_one_yaml()
 {
 	log_info "starting submit ${test_yaml} ..."
@@ -494,6 +571,8 @@ submit_one_yaml()
 
 	[ -n "${test_os_mount}" ] || die "cannot find value of var: ${test_num}_os_mount."
 	[ -n "${test_testbox}" ] || die "cannot find value of var: ${test_num}_testbox."
+
+	[ "${test_os_mount}" == "initramfs" ] && generate_initramfs
 
 	"${LKP_SRC}/sbin/submit" \
 		$(generate_submit_append_str "${test_os_mount}" "${test_testbox}") \
@@ -547,7 +626,7 @@ post_works()
 
 	submit_yamls
 
-	cd / && umount "${ROOTFS_LOCAL_PATH}"
+	cd / && umount "${ROOTFS_LOCAL_PATH}" "${INITRAMFS_LOCAL_PATH}"
 
 	log_info "iso2rootfs finished"
 }
