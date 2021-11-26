@@ -367,17 +367,7 @@ cleanup_pkg_cache()
 	[ -d "$cleanup_stamp" ] && return
 	mkdir $cleanup_stamp -p
 
-	for delday in $(seq 14 -1 0)
-	do
-		# df /dev/sda1
-		# Filesystem     1K-blocks      Used Available Use% Mounted on
-		# /dev/sda1      960380648 316688212 594837976  35% /
-		disk_usage=$(df "$rootfs_partition" | grep "$rootfs_partition" | awk '{print $(NF-1)}' | awk -F'%' '{print $1}')
-		[ $disk_usage -lt 80 ] && break
-
-		find "$pkg_cache" \( -type f -mtime +${delday} -delete \) -or \( -type d -ctime +${delday} -empty -delete \)
-	done
-	echo "After clean up pkg cache, $rootfs_partition disk usage is $disk_usage%"
+	find "$pkg_cache" \( -type f -mtime +7 -delete \) -or \( -type d -ctime +7 -empty -delete \)
 }
 
 wait_load_disk()
