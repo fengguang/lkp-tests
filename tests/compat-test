@@ -17,6 +17,8 @@ dest_dir=/rpm/upload/${os}-${os_version}
 
 check_source()
 {
+	source=($(echo ${source}))
+
 	if [[ ${source,,} =~ ^https?:// ]]; then
 		is_url
 	else
@@ -29,9 +31,70 @@ mirror_repo()
 	local LFTP_TIMEOUT='set net:timeout 2; set net:reconnect-interval-base 2; set net:max-retries 2;'
 	local exclusions="-x repocache"
 
-	local paras="$LFTP_TIMEOUT; open ${source}; lcd /tmp/${repo_name}; mirror -aen -P 10 ${exclusions}"
+	for i in ${!source[@]}
+	do
+		dir_name=$(echo ${source[i]} | sed 's;/$;;g')
+		dir_name=${dir_name##*/}
+		if [ ${#source[@]} == "1" ]; then
+			paras="$LFTP_TIMEOUT; open ${source[i]}; lcd /tmp/repo/${repo_name}; mirror -aen -P 10 ${exclusions}"
+			mkdir -p /tmp/repo/${repo_name} && lftp -c "${paras}"
+		else
+			paras="$LFTP_TIMEOUT; open ${source[i]}; lcd /tmp/repo/${i}; mirror -aen -P 10 ${exclusions}"
+			mkdir -p /tmp/repo/${i} && lftp -c "${paras}"
+		fi
+	done
 
-	mkdir -p /tmp/${repo_name} && lftp -c "${paras}"
+	[ ${#source[@]} == "1" ] || combine_repo
+}
+
+detect_arch()
+{
+	arches=($(show_local_files /tmp/repo/ | grep rpm$ | grep -v src.rpm | awk -F '.' '{print $(NF-1)}' | sort -u))
+
+	[[ ${arches[*]} =~ 'noarch' ]] && {
+		arches=($(echo ${arches[*]} | sed 's;noarch ;;g'))
+		has_noarch="true"
+	}
+}
+
+move_file()
+{
+	local src_dir=$1
+	local arch=$2
+
+	for srpm in $(show_local_files ${src_dir} | grep src.rpm$ | grep ${arch})
+	do
+		mv ${srpm} ${target_dir}/standard_${arch}/src/Packages
+	done
+
+	for rpm in $(show_local_files ${src_dir} | grep ${arch} | grep ${arch}.rpm$)
+	do
+		mv ${rpm} ${target_dir}/standard_${arch}/${arch}/Packages
+	done
+
+	[ ${has_noarch} == "true" ] && {
+		for rpm in $(show_local_files ${src_dir} | grep ${arch} | grep noarch | grep noarch.rpm$)
+		do
+			mv ${rpm} ${target_dir}/standard_${arch}/${arch}/Packages
+		done
+	}
+}
+
+combine_repo()
+{
+	target_dir="/tmp/repo/${repo_name}"
+
+	detect_arch
+
+	for arch in ${arches[@]}
+	do
+		mkdir -p ${target_dir}/standard_${arch}/{${arch}/Packages,src/Packages}
+
+		for src_dir in $(ls -d /tmp/repo/* | grep -v ${repo_name})
+		do
+			move_file ${src_dir} ${arch}
+		done
+	done
 }
 
 show_local_files()
@@ -50,9 +113,9 @@ deal_upload_dir()
 
 upload_files()
 {
-	for file in $(show_local_files /tmp/${repo_name})
+	for file in $(show_local_files /tmp/repo/${repo_name})
 	do
-		deal_upload_dir ${file} '/tmp'
+		deal_upload_dir ${file} '/tmp/repo'
 
 		upload_one_curl ${file} ${dest_dir}/${dir}
 	done
