@@ -379,6 +379,17 @@ fixup_netfilter()
 	update-alternatives --set ebtables /usr/sbin/ebtables-legacy
 }
 
+fixup_lkdtm()
+{
+	# Enable UNWINDER_FRAME_POINTER will fix lkdtm USERCOPY_STACK_FRAME_TO and USERCOPY_STACK_FRAME_FROM fail.
+	# But the kernel's overall performance will degrade by roughly 5-10%.
+	# So instead of enable UNWINDER_FRAME_POINTER, comment out USERCOPY_STACK_FRAME_TO and USERCOPY_STACK_FRAME_FROM.
+	sed -i '/USERCOPY_STACK_FRAME_TO/d' lkdtm/tests.txt
+	echo "LKP SKIP USERCOPY_STACK_FRAME_TO"
+	sed -i '/USERCOPY_STACK_FRAME_FROM/d' lkdtm/tests.txt
+	echo "LKP SKIP USERCOPY_STACK_FRAME_FROM"
+}
+
 cleanup_for_firmware()
 {
 	[[ -f 50-firmware.rules ]] && {
@@ -717,6 +728,8 @@ fixup_subtest()
 		fixup_landlock || return
 	elif [[ $subtest = "netfilter" ]]; then
 		fixup_netfilter || return
+	elif [[ $subtest = "lkdtm" ]]; then
+		fixup_lkdtm || return
 	elif [[ $subtest = "openat2" ]]; then
 		fixup_openat2 || return
 	elif [[ "$subtest" = "pstore" ]]; then
