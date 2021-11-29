@@ -55,7 +55,7 @@ def kernel_match_version?(kernel_version, expected_kernel_versions)
     else
       operator = match[:operator] || '>='
 
-      kernel_version.method(operator).(KernelTag.new(match[:kernel_tag]))
+      kernel_version.method(operator).call(KernelTag.new(match[:kernel_tag]))
     end
   end
 end
