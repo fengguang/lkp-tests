@@ -42,9 +42,9 @@ end
 
 workload = duration * throughput
 if score
-  puts 'score: ' + score
-  puts 'workload: ' + workload.to_s
+  puts "score: #{score}"
+  puts "workload: #{workload.to_s}"
 else
   puts 'incomplete_result: 1'
-  log_error 'unixbench: missing score, check ' + ENV['RESULT_ROOT']
+  log_error "unixbench: missing score, check #{ENV['RESULT_ROOT']}"
 end

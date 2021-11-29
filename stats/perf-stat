@@ -34,24 +34,24 @@ def calc_addon_keys(results_sum, results_nr, interval, interval_nr, prefix)
 
       if key =~ /(.*)iTLB-load-misses/
         stem = $1
-        instructions = results_sum[stem + 'instructions']
+        instructions = results_sum["#{stem}instructions"]
         puts "#{prefix}#{stem}instructions-per-iTLB-miss: #{instructions / value}" unless instructions.zero?
       elsif key =~ /(.*)cache-misses/
         stem = $1
-        cycles = results_sum[stem + 'cpu-cycles']
+        cycles = results_sum["#{stem}cpu-cycles"]
         puts "#{prefix}#{stem}cycles-between-cache-misses: #{cycles / value}" unless cycles.zero?
       end
     when /(.*)cache-references/
       stem = $1
-      instructions = results_sum[stem + 'instructions']
+      instructions = results_sum["#{stem}instructions"]
       puts "#{prefix}#{stem}MPKI: #{value / instructions * 1000}" unless instructions.zero?
     when /(.*)UNC_M_(.*)_INSERTS/
       stem1 = $1
       stem2 = $2
       stem = "#{stem1}UNC_M_#{stem2}"
-      occupancy_key = stem1 + 'UNC_M_' + stem2 + '_OCCUPANCY'
+      occupancy_key = "#{stem1}UNC_M_#{stem2}_OCCUPANCY"
       occupancy = results_sum[occupancy_key]
-      ticks_key = stem1 + 'UNC_M_CLOCKTICKS'
+      ticks_key = "#{stem1}UNC_M_CLOCKTICKS"
       ticks_sum = results_sum[ticks_key]
       ticks_nr = results_nr[ticks_key].to_f
       if results_sum.key?(occupancy_key) && ticks_sum != 0
@@ -68,7 +68,7 @@ def calc_addon_keys(results_sum, results_nr, interval, interval_nr, prefix)
       puts "#{prefix}#{stem}_throughput_MBps: #{value.to_f * 64 / 1024 / 1024 / interval}"
     when /(.*)cpu-cycles/
       stem = $1
-      instructions = results_sum[stem + 'instructions']
+      instructions = results_sum["#{stem}instructions"]
       unless instructions.zero?
         puts "#{prefix}#{stem}ipc: #{instructions / value}"
         puts "#{prefix}#{stem}cpi: #{value / instructions}"

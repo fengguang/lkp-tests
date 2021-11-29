@@ -26,8 +26,8 @@ while (line = $stdin.gets)
     lock = $1.tr(' ', '')
     values = $2.split
     values.each_with_index do |value, i|
-      lock_stat[lock + '.' + names[i]] ||= 0
-      lock_stat[lock + '.' + names[i]] += names[i] =~ /time/ ? value.to_f : value.to_i
+      lock_stat["#{lock}.#{names[i]}"] ||= 0
+      lock_stat["#{lock}.#{names[i]}"] += names[i] =~ /time/ ? value.to_f : value.to_i
     end
   when / +(\d+) +\[<[0-9a-f]+>\] ([a-zA-Z0-9_]+)/
     contentions[$2] ||= 0
@@ -36,8 +36,8 @@ while (line = $stdin.gets)
     unless contentions.empty?
       lock.chomp! '-R'
       contentions.each do |key, val|
-        lock_stat[lock + '.contentions.' + key] ||= 0
-        lock_stat[lock + '.contentions.' + key] += val
+        lock_stat["#{lock}.contentions.#{key}"] ||= 0
+        lock_stat["#{lock}.contentions.#{key}"] += val
       end
       contentions.clear
     end
@@ -45,5 +45,5 @@ while (line = $stdin.gets)
 end
 
 lock_stat.each do |k, v|
-  puts k + ': ' + v.to_s
+  puts "#{k}: #{v.to_s}"
 end

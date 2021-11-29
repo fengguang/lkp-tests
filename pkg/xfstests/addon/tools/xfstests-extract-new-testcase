@@ -37,7 +37,7 @@ def save_each_test_time(each_test_time, test_name, test_time)
 end
 
 def handle_all_tests(result_path, each_test_time)
-  output_file = result_path + '/output'
+  output_file = "#{result_path}/output"
 
   unless File.exist? output_file
     log_error "There is no output file under the #{result_path}"

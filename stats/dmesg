@@ -171,10 +171,10 @@ puts 'boot_failures: 1' if $PROGRAM_NAME =~ /dmesg/ && !error_ids.empty?
 # This shows each error id only once
 error_ids.each do |error_id, line|
   puts
-  puts '# ' + line
-  puts error_id + ': 1'
-  puts 'message:' + error_id + ': ' + error_lines[error_id]
-  puts 'pattern:' + error_id + ': ' + line
+  puts "# #{line}"
+  puts "#{error_id}: 1"
+  puts "message:#{error_id}: #{error_lines[error_id]}"
+  puts "pattern:#{error_id}: #{line}"
 end
 
 puts

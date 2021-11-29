@@ -30,7 +30,7 @@ opt_parser = OptionParser.new do |opts|
   end
 
   opts.on('-p PATTERN', '--pattern PATTERN', 'grep RESULT_ROOT with PATTERN') do |pattern|
-    $opt_pattern << ' ' + pattern
+    $opt_pattern << " #{pattern}"
   end
 
   opts.on('-d DATE', '--date DATE', "search latest DATE days's RESULT_ROOT") do |date|
@@ -70,7 +70,7 @@ unless $opt_kernel.empty?
     $opt_kernel = git.gcommit($opt_kernel).sha
   end
 
-  $opt_pattern << ' ' + $opt_kernel
+  $opt_pattern << " #{$opt_kernel}"
 end
 
 _result_roots = `#{LKP_SRC}/lkp-exec/_rt #{$opt_pattern}`.split
@@ -78,7 +78,7 @@ groups = {}
 _result_roots.each do |_rt|
   __rt = File.dirname _rt
 
-  matrix_path = _rt + '/matrix.json'
+  matrix_path = "#{_rt}/matrix.json"
   next unless File.size? matrix_path
 
   matrix = load_json matrix_path

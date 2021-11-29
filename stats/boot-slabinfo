@@ -19,5 +19,5 @@ while (line = $stdin.gets)
   num_objs += v[2].to_i
 end
 
-puts 'num_objs: ' + num_objs.to_s
-puts 'num_pages: ' + num_pages.to_s
+puts "num_objs: #{num_objs.to_s}"
+puts "num_pages: #{num_pages.to_s}"

@@ -22,8 +22,8 @@ end
 
 stats.each do |k, v|
   if v.empty?
-    puts k + '.skip: 1'
+    puts "#{k}.skip: 1"
   else
-    puts k + '.' + v
+    puts "#{k}.#{v}"
   end
 end

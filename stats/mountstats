@@ -58,8 +58,8 @@ def check_params(type, values, params)
 end
 
 def print(type, sub_type, path, values, params)
-  prefix = path + '.' + type
-  prefix = prefix + '.' + sub_type if sub_type
+  prefix = "#{path}.#{type}"
+  prefix = "#{prefix}.#{sub_type}" if sub_type
   used = check_params(type, values, params)
   values.each_with_index do |value, i|
     puts "#{prefix}.#{used[i]}: #{value}"

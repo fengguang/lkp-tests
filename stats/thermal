@@ -8,7 +8,7 @@ samples = {}
 
 def show_samples(samples)
   samples.each do |k, v|
-    puts k + ': ' + v.sum.to_s
+    puts "#{k}: #{v.sum.to_s}"
   end
   samples.clear
 end

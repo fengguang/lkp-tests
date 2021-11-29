@@ -23,7 +23,7 @@ def extract_avg_cpu(line)
   data = line.split
   (0..data.size - 1).each do |i|
     key = normalize_key "cpu.#{title[i]}"
-    puts key + ': ' + data[i]
+    puts "#{key}: #{data[i]}"
   end
 end
 
@@ -36,7 +36,7 @@ def extract_dev_stat(line)
     dev = data[0]
     (1..data.size - 1).each do |i|
       key = normalize_key "#{dev}.#{title[i]}"
-      puts key + ': ' + data[i]
+      puts "#{key}: #{data[i]}"
     end
   end
 end

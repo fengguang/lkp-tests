@@ -21,4 +21,4 @@ end
 
 avg_throughput = throughput_all / num
 
-puts 'Throughput: ' + avg_throughput.to_s
+puts "Throughput: #{avg_throughput.to_s}"

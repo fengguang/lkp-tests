@@ -132,7 +132,7 @@ class NetStater < Stater
     when /^# (Single|Multipath|Single|Admin|Local|Single|FIB|IPv4|IPv6|Basic|Legacy|Routing) (.*)/
       # selftests: net: icmp_redirect.sh
       # Routing with nexthop objects and VRF
-      @test_case = $1 + ' ' + $2 if %w(icmp_redirect.sh fib_tests.sh fib_nexthops.sh vrf_route_leaking.sh).include? @test_script
+      @test_case = "#{$1} #{$2}" if %w(icmp_redirect.sh fib_tests.sh fib_nexthops.sh vrf_route_leaking.sh).include? @test_script
 
       # empty @test_subcase when get new @test_case
       @test_subcase = nil if @test_script == 'fib_tests.sh'
@@ -462,7 +462,7 @@ class TimensStater < Stater
     case line
     when /# (ok|fail|skip) \d+ (.*):(.*)/
       # ok 1 clockid: 1 abs:0
-      @test_case = $2 + ':' + $3
+      @test_case = "#{$2}:#{$3}"
       stats.add "#{@test_prefix}.#{@test_case}", $1
     when /# (ok|fail|skip) \d+ (.*)/
       # ok 1 Passed for CLOCK_BOOTTIME (syscall)
@@ -711,7 +711,7 @@ class MqueueStater < Stater
       @io = Regexp.last_match[1]
     when %r{(\d+) nsec/msg}
       # 484 nsec/msg
-      @mqueue_speed[@mqueue_test + '.' + @io] = Regexp.last_match[1].to_i
+      @mqueue_speed["#{@mqueue_test}.#{@io}"] = Regexp.last_match[1].to_i
     when /make: Leaving.*mqueue'/
       stats.add "#{@test}.nsec_per_msg", @mqueue_speed.values.average.to_i unless @mqueue_speed.empty?
     else

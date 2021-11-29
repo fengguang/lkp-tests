@@ -18,7 +18,7 @@ while (line = $stdin.gets)
     next if values[i].include? '*'
     next if values[i] == '-'
 
-    puts title + ': ' + values[i]
+    puts "#{title}: #{values[i]}"
   end
   exit
 end

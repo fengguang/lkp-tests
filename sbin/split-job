@@ -104,12 +104,12 @@ ARGV.each do |jobfile|
   jobs['node_roles'] = 'server client' if jobs['cluster']
   jobs[:no_defaults] = true if @opt_no_defaults
   jobs.overrides = opt_set_key_value
-  prefix = opt_output_path + '/' + File.basename(jobfile, '.yaml')
+  prefix = "#{opt_output_path}/#{File.basename(jobfile, '.yaml')}"
   jobs.each_jobs do |job|
-    unit_jobfile = prefix + '-' + job.path_params
+    unit_jobfile = "#{prefix}-#{job.path_params}"
     Job::EXPAND_DIMS.select { |dim| dim =~ /commit/ }
-                    .each { |dim| unit_jobfile += '-' + job[dim] if job[dim] }
-    unit_jobfile += '-' + rootfs_filename(job['rootfs']) if job['rootfs']
+                    .each { |dim| unit_jobfile += "-#{job[dim]}" if job[dim] }
+    unit_jobfile += "-#{rootfs_filename(job['rootfs'])}" if job['rootfs']
     unit_jobfile += '.yaml'
     if @opt_any
       atom_jobs << [jobfile, unit_jobfile, deepcopy(job)]

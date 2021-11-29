@@ -14,7 +14,7 @@ while (line = $stdin.gets)
     test_file = $2.strip
     test_content = $3.downcase
     test_status = $4.downcase
-    stats.add test_file + '_' + test_content, test_status
+    stats.add "#{test_file}_#{test_content}", test_status
   when /^(ignored_by_lkp): (.*)/
     stats.add $2, $1
   end

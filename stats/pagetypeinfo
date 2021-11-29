@@ -20,7 +20,7 @@ $stdin.each_line do |line|
 
     name = $1.gsub(/, (zone|type)/, '.').tr(' ', '')
     values.each_with_index do |value, i|
-      puts name + '.' + sub_names[i] + ': ' + value
+      puts "#{name}.#{sub_names[i]}: #{value}"
     end
   end
 end

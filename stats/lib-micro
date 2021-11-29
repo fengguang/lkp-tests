@@ -15,7 +15,7 @@ $stdin.each_line do |line|
 end
 
 lib_micro.each do |k, v|
-  puts k + ': ' + v
+  puts "#{k}: #{v}"
 end
 
-puts 'total_elasped_time: ' + time.to_s
+puts "total_elasped_time: #{time.to_s}"

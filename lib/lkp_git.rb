@@ -18,7 +18,7 @@ require "#{LKP_SRC}/lib/git_ext"
 require "#{LKP_SRC}/lib/constant"
 
 GIT_WORK_TREE ||= ENV['GIT_WORK_TREE'] || ENV['LKP_GIT_WORK_TREE'] || "#{GIT_ROOT_DIR}/linux"
-GIT_DIR ||= ENV['GIT_DIR'] || GIT_WORK_TREE + '/.git'
+GIT_DIR ||= ENV['GIT_DIR'] || "#{GIT_WORK_TREE}/.git"
 GIT ||= "git --work-tree=#{GIT_WORK_TREE} --git-dir=#{GIT_DIR}".freeze
 
 def __git_committer_name(commit)
@@ -188,7 +188,7 @@ end
 #     "v3.10", "v3.10-rc7", "v3.10-rc6", ..., "v2.6.12-rc3", "v2.6.12-rc2", "v2.6.11"]
 def __linus_tags
   $remotes ||= load_remotes
-  pattern = Regexp.new '^' + Array($remotes['linus']['release_tag_pattern']).join('$|^') + '$'
+  pattern = Regexp.new "^#{Array($remotes['linus']['release_tag_pattern']).join('$|^')}$"
   tags = get_tags(pattern, $remotes['linus']['release_tag_committer'])
   tags = sort_tags(pattern, tags)
   tags_order = {}
@@ -211,18 +211,18 @@ end
 
 def load_remotes
   remotes = {}
-  files = Dir[LKP_SRC + '/repo/*/*']
+  files = Dir["#{LKP_SRC}/repo/*/*"]
   files.each do |file|
     remote = File.basename file
     next if remote == 'DEFAULTS'
 
-    defaults = File.dirname(file) + '/DEFAULTS'
+    defaults = "#{File.dirname(file)}/DEFAULTS"
     repo_info = load_yaml_merge [defaults, file]
 
     project = File.basename(File.dirname(file))
     repo_info['project'] ||= project
-    repo_info['suite'] ||= project + '-ci'
-    repo_info['testcase'] ||= project + '-ci'
+    repo_info['suite'] ||= "#{project}-ci"
+    repo_info['testcase'] ||= "#{project}-ci"
 
     repo_info['upstream'] = true if repo_info['project'] == remote
 
@@ -275,7 +275,7 @@ def __commit_name(commit)
   return commit unless commit =~ /^[a-f0-9]+$/ || commit =~ /^v\d\.\d+/
 
   name = commit[0..11]
-  name + ' ' + git_commit_subject(commit)[0..59]
+  "#{name} #{git_commit_subject(commit)[0..59]}"
 end
 
 $__commit_name_cache = {}

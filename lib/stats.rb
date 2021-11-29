@@ -83,7 +83,7 @@ def test_prefixes
   tests.push 'dmesg'
   tests.push 'stderr'
   tests.push 'last_state'
-  tests.map { |test| test + '.' }
+  tests.map { |test| "#{test}." }
 end
 
 def functional_test?(testcase)
@@ -278,7 +278,7 @@ def load_base_matrix_for_notag_project(git, rp, axis)
   log_debug "#{git.project} doesn't have tag, use its first commit #{base_commit} as base commit"
 
   rp[axis] = base_commit
-  base_matrix_file = rp._result_root + '/matrix.json'
+  base_matrix_file = "#{rp._result_root}/matrix.json"
   unless File.exist? base_matrix_file
     log_warn "#{base_matrix_file} doesn't exist."
     return nil
@@ -338,7 +338,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
   if project == 'linux' && !version
     kconfig = rp['kconfig']
     compiler = rp['compiler']
-    context_file = vmlinuz_dir(kconfig, compiler, commit) + '/context.yaml'
+    context_file = "#{vmlinuz_dir(kconfig, compiler, commit)}/context.yaml"
     version = nil
     if File.exist? context_file
       context = YAML.load_file context_file
@@ -379,12 +379,12 @@ def load_base_matrix(matrix_path, head_matrix, options)
     break if tag =~ /\.[0-9]+$/ && tags_merged.size >= 2 && cols >= 6
 
     rp[axis] = tag
-    base_matrix_file = rp._result_root + '/matrix.json'
+    base_matrix_file = "#{rp._result_root}/matrix.json"
     unless File.exist? base_matrix_file
       rp[axis] = git.release_tags2shas[tag]
       next unless rp[axis]
 
-      base_matrix_file = rp._result_root + '/matrix.json'
+      base_matrix_file = "#{rp._result_root}/matrix.json"
     end
     next unless File.exist? base_matrix_file
 
@@ -607,7 +607,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
     end
 
     is_allowed_stat = false
-    if options['force_' + k]
+    if options["force_#{k}"]
       if strict_kpi_stat?(k, nil)
         is_allowed_stat = true
       else
@@ -704,7 +704,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
 
     interval_a = format('[ %-10.5g - %-10.5g ]', min_a, max_a)
     interval_b = format('[ %-10.5g - %-10.5g ]', min_b, max_b)
-    interval = interval_a + ' -- ' + interval_b
+    interval = "#{interval_a} -- #{interval_b}"
 
     changed_stats[k] = { 'stat' => k,
                          'interval' => interval,

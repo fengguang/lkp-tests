@@ -9,7 +9,7 @@ while (line = $stdin.gets)
   when /^(.*): +(\d+) kB$/,
        /^(.*): +(\d+) KiB$/,
        /^(.*): +(\d+)$/
-    puts $1 + ': ' + $2
+    puts "#{$1}: #{$2}"
   else
     log_error "malformed meminfo line: #{line}"
   end

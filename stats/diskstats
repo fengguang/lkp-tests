@@ -20,6 +20,6 @@ $stdin.each_line do |line|
 
   dev_name = data[2]
   data[3..-1].each_with_index do |v, i|
-    puts keys[i] + '.' + dev_name + ': ' + v
+    puts "#{keys[i]}.#{dev_name}: #{v}"
   end
 end

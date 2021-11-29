@@ -14,7 +14,7 @@ LKP_SRC_ETC ||= LKP::Path.src('etc')
 Dir["#{LKP_SRC_ETC}/ignore-stderr/*"].each do |f|
   File.open(f).each_line do |line|
     line = line.resolve_invalid_bytes
-    @ignore_patterns << Regexp.new('^' + line.chomp + '$')
+    @ignore_patterns << Regexp.new("^#{line.chomp}$")
   end
 end
 
@@ -49,8 +49,8 @@ while (line = gets)
 end
 
 error_ids.each do |id_, line_|
-  puts '# ' + line_
-  puts id_ + ': 1'
+  puts "# #{line_}"
+  puts "#{id_}: 1"
   puts
 end
 

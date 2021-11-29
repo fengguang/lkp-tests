@@ -29,7 +29,7 @@ def expand_shell_var(env, o)
   return s unless local_run?
 
   if s.index('$')
-    f = IO.popen(env, ['/bin/bash', '-c', 'eval echo "' + s + '"'], 'r')
+    f = IO.popen(env, ['/bin/bash', '-c', "eval echo \"#{s}\""], 'r')
     s = f.read.chomp
     f.close
   elsif s.index('/dev/disk/')
@@ -200,7 +200,7 @@ class Job
   end
 
   def source_file_symkey(file)
-    comment_to_symbol file.sub(lkp_src + '/', '')
+    comment_to_symbol file.sub("#{lkp_src}/", '')
   end
 
   def load(jobfile, expand_template = false)
@@ -394,8 +394,8 @@ class Job
   end
 
   def lkp_src
-    if @job['user'].is_a?(String) && Dir.exist?('/lkp/' + @job['user'] + '/src')
-      '/lkp/' + @job['user'] + '/src'
+    if @job['user'].is_a?(String) && Dir.exist?("/lkp/#{@job['user']}/src")
+      "/lkp/#{@job['user']}/src"
     else
       LKP_SRC
     end

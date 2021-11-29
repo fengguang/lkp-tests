@@ -21,7 +21,7 @@ def valid_shell_variable?(key)
 end
 
 def shell_encode_keyword(key)
-  key.gsub(/[^a-z0-9_]/) { |m| '_' + m.getbyte(0).to_s + '_' }
+  key.gsub(/[^a-z0-9_]/) { |m| "_#{m.getbyte(0).to_s}_" }
 end
 
 def shell_escape_expand(val)
@@ -35,7 +35,7 @@ def shell_escape_expand(val)
   when /^[-a-zA-Z0-9~!@#%^&*()_+=;:.,<>\/?|\t "]+$/, Time
     "'#{val}'"
   when /^[-a-zA-Z0-9~!@#%^&*()_+=;:.,<>\/?|\t '$]+$/
-    '"' + val + '"'
+    "\"#{val}\""
   else
     Shellwords.shellescape(val)
   end
@@ -101,7 +101,7 @@ class Job2sh < Job
 
     args = [] if program_path.index('/stats/')
     program_dir = File.dirname(program_path)
-    wrapper = program_dir + '/wrapper'
+    wrapper = "#{program_dir}/wrapper"
     cmd = if File.executable?(wrapper)
             [wrapper, program, *args]
           else
@@ -133,7 +133,7 @@ class Job2sh < Job
     end
 
     program_env.each do |k, v|
-      command << shell_encode_keyword(k) + '=' + shell_escape_expand(v)
+      command << "#{shell_encode_keyword(k)}=#{shell_escape_expand(v)}"
     end
 
     command.concat cmd
@@ -160,13 +160,13 @@ class Job2sh < Job
     elsif val.is_a?(String) && key =~ %r{^script\s+(monitors|setup|tests|daemon|stats)/([-a-zA-Z0-9_/]+)$}
       return false unless pass == :PASS_NEW_SCRIPT
 
-      script_file = $1 + '/' + $2
+      script_file = "#{$1}/#{$2}"
       script_name = File.basename $2
       if @cur_func == :run_job && script_file =~ %r{^(setup|tests|daemon)/} ||
          @cur_func == :extract_stats && script_file.index('stats/') == 0
-        @programs[script_name] = LKP_SRC + '/' + script_file
+        @programs[script_name] = "#{LKP_SRC}/#{script_file}"
       elsif @cur_func == :run_job && script_file =~ %r{^monitors/}
-        @monitors[script_name] = LKP_SRC + '/' + script_file
+        @monitors[script_name] = "#{LKP_SRC}/#{script_file}"
       end
       exec_line
       exec_line tabs + "cat > $LKP_SRC/#{script_file} <<'EOF'"
@@ -184,7 +184,7 @@ class Job2sh < Job
       exec_line tabs + "#{func_name}()"
       exec_line tabs + SHELL_BLOCK_KEYWORDS[shell_block][0]
       val.each_line do |l|
-        exec_line "\t" + tabs + l
+        exec_line "\t#{tabs}#{l}"
       end
       exec_line tabs + SHELL_BLOCK_KEYWORDS[shell_block][1]
       return :action_new_function
@@ -204,9 +204,9 @@ class Job2sh < Job
       exec_line
       func_name = key.tr('^a-zA-Z0-9_', '_')
       exec_line tabs + "#{func_name}()"
-      exec_line tabs + '{'
+      exec_line "#{tabs}{"
       parse_hash(ancestors + [key], val)
-      exec_line tabs + "}\n"
+      exec_line "#{tabs}}\n"
       exec_line tabs + "#{func_name} &"
       return :action_background_function
     elsif valid_shell_variable?(key)

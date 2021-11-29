@@ -146,7 +146,7 @@ def escape_mongo_key(hash)
     when String
       kk = k
     when Symbol
-      kk = ':' + k.to_s
+      kk = ":#{k.to_s}"
     end
     h[kk.tr '.', '․'] = v
   end

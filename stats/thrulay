@@ -4,8 +4,8 @@ while (line = $stdin.gets)
   case line.chomp!
   when /^#\(\*\*\)/
     _a, _b, _c, throughput, rtt, jitter = line.split
-    puts 'throughput: ' + throughput
-    puts 'RTT: ' + rtt
-    puts 'jitter: ' + jitter
+    puts "throughput: #{throughput}"
+    puts "RTT: #{rtt}"
+    puts "jitter: #{jitter}"
   end
 end

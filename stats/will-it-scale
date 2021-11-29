@@ -46,10 +46,10 @@ while (line = $stdin.gets)
     workload += threads.to_f
 
     names.each_with_index do |name, i|
-      puts nr_task + '.' + name + ': ' + values[i]
+      puts "#{nr_task}.#{name}: #{values[i]}"
     end
   when /(Assertion .* failed)/
-    puts $1.sub(/.*: /, '').tr('^a-zA-Z0-9<>!=', '_').gsub(/__+/, '_') + ': 1'
+    puts "#{$1.sub(/.*: /, '').tr('^a-zA-Z0-9<>!=', '_').gsub(/__+/, '_')}: 1"
   end
 end
 

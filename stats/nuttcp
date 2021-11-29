@@ -9,6 +9,6 @@ while (line = $stdin.gets)
 
   case line.chomp!
   when /^\s*\d+\.\d+ MB \/\s+\d+\.\d+ sec =\s+(\d+\.\d+) Mbps/
-    puts 'throughput_Mbps: ' + $1
+    puts "throughput_Mbps: #{$1}"
   end
 end

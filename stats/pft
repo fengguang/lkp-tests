@@ -32,8 +32,8 @@ while (line = $stdin.gets)
     end
 
     data.each_with_index do |v, i|
-      puts '# ' + clients + '.' + keys[i] + ': ' + v.chomp('s')
+      puts "# #{clients}.#{keys[i]}: #{v.chomp('s')}"
     end
-    puts keys[-2] + ': ' + data[-2]
+    puts "#{keys[-2]}: #{data[-2]}"
   end
 end

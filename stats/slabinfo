@@ -35,7 +35,7 @@ $stdin.each_line do |line|
         '<num_objs>',
         '<active_slabs>',
         '<num_slabs>'
-        puts name + '.' + sub_names[i][1..-2] + ': ' + value
+        puts "#{name}.#{sub_names[i][1..-2]}: #{value}"
       end
     end
   end

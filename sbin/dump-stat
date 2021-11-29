@@ -38,7 +38,7 @@ while (line = $stdin.gets)
 
   next if monitor =~ /^(dmesg|kmsg)$/ && k =~ /^(message|pattern):/
 
-  k = monitor + '.' + k
+  k = "#{monitor}.#{k}"
   result[k] ||= []
   size = result[k].size
   if record_index < size
