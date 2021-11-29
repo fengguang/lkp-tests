@@ -315,6 +315,7 @@ else
 	HTTP_PREFIX=https://download.01.org/0day-ci/lkp-qemu
 fi
 
+LKP_USER="lkp"
 if [ -z $QEMU_MODEL ]; then
 	if get_job_env $job_script 'model' | grep -q 'qemu-system-i386'; then
 		QEMU_MODEL='qemu-system-i386'
