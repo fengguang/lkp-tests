@@ -797,7 +797,7 @@ class VmallocStater < Stater
   def stat(line, stats)
     case line
     when /(Check the kernel ring buffer to see the summary|Ccheck the kernel message buffer to see the summary)/
-      stats.add "#{@test_prefix}", "PASS"
+      stats.add "#{@test_prefix}", 'PASS'
     # vmalloc test stat: (stress test worker number = nr_threads)
     # [  223.093027] Summary: fix_size_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 5861476 usec
     # [  223.103232] Summary: full_fit_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 5878630 usec
@@ -933,7 +933,7 @@ while (line = STDIN.gets)
   when %r{make: Entering directory .*/(.*)'}
     stater = Stater.new($1, nil)
   when /vm\/test_vmalloc.sh (stress|performance)/
-    stater = VmallocStater.new("vm.test_vmalloc.sh", $1)
+    stater = VmallocStater.new('vm.test_vmalloc.sh', $1)
   else
     if stater
       stater.stat(line, stats)

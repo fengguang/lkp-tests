@@ -38,7 +38,7 @@ while (line = STDIN.gets)
   case line
   when /(.*).log$/
     puts_one_task(task, run, period, slack, wu_lat)
-    task = $1.gsub("./", "")
+    task = $1.gsub('./', '')
     run.clear
     period.clear
     slack.clear

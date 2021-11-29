@@ -8,21 +8,21 @@ $stdin.each_line do |line|
   case line
   when /Elapsed Time/
     puts 'elapsed_time: ' + line.split[2]
-    puts 'elapsed_time_stddev: ' + line.split[3].gsub(/[()]/, "") if line.split[3]
+    puts 'elapsed_time_stddev: ' + line.split[3].gsub(/[()]/, '') if line.split[3]
   when /User Time/
     puts 'user_time: ' + line.split[2]
-    puts 'user_time_stddev: ' + line.split[3].gsub(/[()]/, "") if line.split[3]
+    puts 'user_time_stddev: ' + line.split[3].gsub(/[()]/, '') if line.split[3]
   when /System Time/
     puts 'system_time: ' + line.split[2]
-    puts 'system_time_stddev: ' + line.split[3].gsub(/[()]/, "") if line.split[3]
+    puts 'system_time_stddev: ' + line.split[3].gsub(/[()]/, '') if line.split[3]
   when /Percent CPU/
     puts 'percent_cpu: ' + line.split[2]
-    puts 'percent_cpu_stddev: ' + line.split[3].gsub(/[()]/, "") if line.split[3]
+    puts 'percent_cpu_stddev: ' + line.split[3].gsub(/[()]/, '') if line.split[3]
   when /Context Switches/
     puts 'context_switches: ' + line.split[2]
-    puts 'context_switches_stddev: ' + line.split[3].gsub(/[()]/, "") if line.split[3]
+    puts 'context_switches_stddev: ' + line.split[3].gsub(/[()]/, '') if line.split[3]
   when /Sleeps/
     puts 'sleeps: ' + line.split[1]
-    puts 'sleeps_stddev: ' + line.split[2].gsub(/[()]/, "") if line.split[2]
+    puts 'sleeps_stddev: ' + line.split[2].gsub(/[()]/, '') if line.split[2]
   end
 end

@@ -138,7 +138,7 @@ oops_map.each do |bug_to_bisect, line|
   timestamp = $2 if line =~ /^(<[0-9]+>|....  :..... : )?\[ *(\d{1,6}\.\d{6})\]( |\[)/
 
   if line.index('cpu clock throttled')
-    log_error "cpu clock throttled, skip to parse dmesg/kmsg"
+    log_error 'cpu clock throttled, skip to parse dmesg/kmsg'
     exit 1
   end
   if line.index('trinity')

@@ -9,15 +9,15 @@ stats = LKP::Stats.new
 while (line = STDIN.gets)
   case line
   when /([\d.]+:) (.*): FAILED!$/
-    stats.add $2, "fail"
+    stats.add $2, 'fail'
   when /([\d.]+:) (.*): Ok$/
-    stats.add $2, "pass"
+    stats.add $2, 'pass'
   when /([\d.]+:) (.*): [Skip$|Skip .*]/
-    stats.add $2, "skip"
+    stats.add $2, 'skip'
   when /ignored_by_lkp: (.*)/
-    stats.add $1, "ignored_by_lkp"
+    stats.add $1, 'ignored_by_lkp'
   when /make perf failed/
-    stats.add "perf", "make_fail"
+    stats.add 'perf', 'make_fail'
   end
 end
 

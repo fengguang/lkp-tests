@@ -135,7 +135,7 @@ ENV['TMP_RESULT_ROOT'] = result_root
 
 jobx = Job2sh.new(job.to_hash)
 unless jobx.expand_params
-  log_error "Failed to expand params!"
+  log_error 'Failed to expand params!'
   exit
 end
 
