@@ -11,7 +11,7 @@ while (line = $stdin.gets)
   line = line.resolve_invalid_bytes
 
   case line
-  when /^[ ]+\+ tests\/(\S+)$/
+  when /^ +\+ tests\/(\S+)$/
     #   + tests/utils/check_paranoid
     #  + tests/sysfs/events
     testcase = $1.downcase

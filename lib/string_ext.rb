@@ -29,6 +29,6 @@ class String
   end
 
   def uncolorize
-    gsub(/\e\[([\d]+)?(;[\d]+)?(;[\d]+)?m/, '').gsub(/\e\[K/, '')
+    gsub(/\e\[(\d+)?(;\d+)?(;\d+)?m/, '').gsub(/\e\[K/, '')
   end
 end
