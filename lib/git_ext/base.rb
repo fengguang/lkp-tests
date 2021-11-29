@@ -47,6 +47,7 @@ module Git
     def kernel_branch?(branch)
       return false unless command_lines('show', "#{branch}:").include?('Makefile')
       return false unless command('show', "#{branch}:Makefile").include?('KERNELRELEASE')
+
       true
     rescue StandardError
       false

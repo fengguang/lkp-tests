@@ -13,8 +13,8 @@ require "#{LKP_SRC}/lib/string_ext"
 # Gets        86638.24     13005.02     73633.22         1.72807         1.69500         3.00700         4.31900     16523.21
 # Waits           0.00          ---          ---             ---             ---             ---             ---          ---
 # Totals     108297.80     13005.02     73633.22         1.72693         1.69500         3.00700         4.31900     39239.98
-# 
-# 
+#
+#
 # Request Latency Distribution
 # Type     <= msec         Percent
 # ------------------------------------------------------------------------
@@ -29,7 +29,7 @@ require "#{LKP_SRC}/lib/string_ext"
 # GET     348.159       100.00
 # ---
 # WAIT      0.000       100.00
-# 
+#
 
 $histo_sets_sum = Array.new(9, 0)
 $histo_sets_num = Array.new(9, 0)

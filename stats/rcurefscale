@@ -25,6 +25,7 @@ while (line = STDIN.gets)
     type = $1
   when /(^\[.*\].+|^\s{5,})\d+\t(\d+).(\d+)$/
     next unless type
+
     runs << "#{$2}.#{$3}".to_f
   end
 end

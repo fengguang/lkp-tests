@@ -20,7 +20,7 @@ while (line = STDIN.gets)
   # 2732: msg "$UNITTEST_NAME: SETUP ($TEST/$REAL_FS/$BUILD$MCSTR$PROV$PM)"
   when %r{^(.+)/TEST[0-9]+: SETUP\s*\((.+)\)$}
     test_item = Regexp.last_match[1]
-    subtest = Regexp.last_match[2].tr('/','_')
+    subtest = Regexp.last_match[2].tr('/', '_')
   when %r{^(.+)/(TEST[0-9]+): (PASS|FAIL)}
     item = Regexp.last_match[1]
     name = Regexp.last_match[2]

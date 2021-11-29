@@ -11,7 +11,7 @@ stats = LKP::Stats.new
 test_item = ''
 build_type = ''
 
-#vmmalloc_memalign/TEST1: SETUP (check/nondebug)
+# vmmalloc_memalign/TEST1: SETUP (check/nondebug)
 while (line = STDIN.gets)
   line = line.resolve_invalid_bytes
   case line

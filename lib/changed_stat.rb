@@ -64,9 +64,11 @@ module LKP
           log_cause "NOT: min_a - max_b > min_gap (#{min_gap})"
         else
           return true if min_b > max_a && (min_b - max_a) > (mean_b - mean_a) / options['gap_distance']
+
           log_cause "NOT: min_b > max_a && (min_b - max_a) > (mean_b - mean_a) / #{options['gap_distance']}"
 
           return true if min_a > max_b && (min_a - max_b) > (mean_a - mean_b) / options['gap_distance']
+
           log_cause "NOT: min_a > max_b && (min_a - max_b) > (mean_a - mean_b) / #{options['gap_distance']}"
         end
       else

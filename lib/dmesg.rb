@@ -226,6 +226,7 @@ def grep_printk_errors(kmsg_file, kmsg)
       sed "s/#[0-5] 0x[0-9a-z]\\{12\\} in //g" | awk '{print $1}' | tr '\n' '/' | tr '|' '\n' | sed 's|/$||'`
   else
     return '' unless File.exist?("#{KTEST_USER_GENERATED_DIR}/printk-error-messages")
+
     # the dmesg file is from serial console
     oops = `#{grep} -a -F -f #{KTEST_USER_GENERATED_DIR}/printk-error-messages #{kmsg_file} |
       grep -a -v -E -f #{LKP_SRC_ETC}/oops-pattern |

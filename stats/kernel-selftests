@@ -692,6 +692,7 @@ end
 
 class MqueueStater < Stater
   attr_accessor :mqueue_speed
+
   def initialize(test, test_script)
     super(test, test_script)
     @mqueue_speed = {}
@@ -787,6 +788,7 @@ end
 
 class VmallocStater < Stater
   attr_accessor :tmp_stats
+
   def initialize(test, test_script)
     super(test, test_script)
     @tmp_stats = {}
@@ -814,6 +816,7 @@ class VmallocStater < Stater
       @tmp_stats["#{$1}.fail"] = $3.to_i if $3.to_i.positive?
     when /All test took (.+)=(.+) cycles/
       raise "unexpected summary: #{@test_prefix}.#{$1}" if @tmp_stats.empty?
+
       @tmp_stats.each do |key, value|
         stats.add "#{@test_prefix}.#{$1}.#{key}", value
       end

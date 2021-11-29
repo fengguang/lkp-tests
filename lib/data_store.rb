@@ -456,6 +456,7 @@ module DataStore
       axes = node.axes
       ifn = index_file axes
       return unless ifn
+
       mkdir_p File.dirname(ifn) unless Dir.exist? File.dirname(ifn)
 
       with_index_lock do

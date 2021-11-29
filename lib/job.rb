@@ -593,25 +593,25 @@ class Job
 
   def param_files
     @param_files ||= begin
-                       maps = {}
-                       ruby_scripts = {}
-                       misc_scripts = {}
-                       Dir["#{lkp_src}/params/*",
-                           "#{lkp_src}/filters/*"].map do |f|
-                         name = File.basename f
-                         case name
-                         when /(.*)\.rb$/
-                           ruby_scripts[$1] = f
-                         else
-                           if File.executable? f
-                             misc_scripts[name] = f
-                           else
-                             maps[name] = f
-                           end
-                         end
-                       end
-                       [maps, ruby_scripts, misc_scripts]
-                     end
+      maps = {}
+      ruby_scripts = {}
+      misc_scripts = {}
+      Dir["#{lkp_src}/params/*",
+          "#{lkp_src}/filters/*"].map do |f|
+        name = File.basename f
+        case name
+        when /(.*)\.rb$/
+          ruby_scripts[$1] = f
+        else
+          if File.executable? f
+            misc_scripts[name] = f
+          else
+            maps[name] = f
+          end
+        end
+      end
+      [maps, ruby_scripts, misc_scripts]
+    end
   end
 
   def map_param(hash, key, val, rule_file)
