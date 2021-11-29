@@ -90,7 +90,7 @@ $stdin.each_line do |line|
   case line
   # Samples: 5K of event 'cpu/mem-stores/P'
   # Samples: 25  of event 'cpu/mem-loads,ldlat=50/P'
-  when /^#\s+Samples:\s+(\d+)\S?+\s+of\s+event\s+\'(.+)\'/
+  when /^#\s+Samples:\s+(\d+)\S?+\s+of\s+event\s+'(.+)'/
     if event_name && !weight.empty?
       output_result(event_name, weight, samples)
       weight.clear

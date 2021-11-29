@@ -53,7 +53,7 @@ module LKP
 
     def normalize(test_case)
       test_case.strip
-               .gsub(/[\s,"_\(\):]+/, '_')
+               .gsub(/[\s,"_():]+/, '_')
                .gsub(/(^_+|_+$)/, '')
                .gsub(/_{2,}/, '_') # replace continuous _ to single _
     end

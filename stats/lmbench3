@@ -37,9 +37,9 @@ while (line = $stdin.gets)
   # Extract select test result.
   # Select on 100 fd's: 1.2293 microseconds
   # Select on 100 tcp fd's: 5.0377 microseconds
-  when /^Select on 100 fd\'s: (\d+.\d+) microseconds$/
+  when /^Select on 100 fd's: (\d+.\d+) microseconds$/
     puts "Select.100fd.latency.us: #{$1}"
-  when /^Select on 100 tcp fd\'s: (\d+.\d+) microseconds$/
+  when /^Select on 100 tcp fd's: (\d+.\d+) microseconds$/
     puts "Select.100tcp.latency.us: #{$1}"
 
   # Extract proc test result.

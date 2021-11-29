@@ -324,7 +324,7 @@ end
 class MountStater < Stater
   def stat(line, stats)
     case line
-    when /^WARN\: No \/proc\/self\/uid_map exist, test skipped/
+    when /^WARN: No \/proc\/self\/uid_map exist, test skipped/
       # WARN: No /proc/self/uid_map exist, test skipped.
       stats.add "#{@test_prefix}", 'skip'
       @test_script = nil

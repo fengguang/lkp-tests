@@ -600,7 +600,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
     if is_function_stat && k !~ /^(dmesg|kmsg|last_state|stderr)\./
       # if stat is packetdrill.packetdrill/gtests/net/tcp/mtu_probe/basic-v6_ipv6.fail,
       # base rt stats should contain 'packetdrill.packetdrill/gtests/net/tcp/mtu_probe/basic-v6_ipv6.pass'
-      stat_base = k.sub(/\.[^\.]*$/, '')
+      stat_base = k.sub(/\.[^.]*$/, '')
       # only consider pass and fail temporarily
       next if k =~ /\.fail$/ && !b.keys.any? { |stat| stat == "#{stat_base}.pass" }
       next if k =~ /\.pass$/ && !b.keys.any? { |stat| stat == "#{stat_base}.fail" }

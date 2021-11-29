@@ -254,7 +254,7 @@ def common_error_id(line)
   line.gsub!(/^\ /, '')
   line.gsub!(/\  _/, '_')
   line.tr!(' ', '_')
-  line.gsub!(/[-_.,;:#!\[\(]+$/, '')
+  line.gsub!(/[-_.,;:#!\[(]+$/, '')
   line
 end
 
@@ -275,7 +275,7 @@ def oops_to_bisect_pattern(line)
     when /([a-zA-Z0-9_]+\+0x)/, /([a-zA-Z0-9_]+=)/
       patterns << $1
       break
-    when /^([a-zA-Z\/\._-]*):[0-9]/
+    when /^([a-zA-Z\/._-]*):[0-9]/
       patterns << "#{$1}:.*"
     when /[^a-zA-Z\/:.()!_-]/
       patterns << '.*' if patterns[-1] != '.*'
