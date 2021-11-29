@@ -6,7 +6,7 @@ require "#{LKP_SRC}/lib/statistics"
 require "#{LKP_SRC}/lib/log"
 
 # skip none-result data
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   break if line =~ /^FSUse/
 end
 
@@ -15,7 +15,7 @@ app_overhead = []
 
 # FSUse%        Count         Size    Files/sec     App Overhead
 #    12         3840     16777216          9.6        295550597
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   iteration = line.split
   if iteration.size != 5
     break

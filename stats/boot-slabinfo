@@ -4,13 +4,13 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAM
 
 require "#{LKP_SRC}/lib/string_ext"
 
-STDIN.gets
-STDIN.gets
+$stdin.gets
+$stdin.gets
 
 num_objs = 0
 num_pages = 0
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   line = line.resolve_invalid_bytes
   v = line.split
   pagesperslab = v[5].to_i

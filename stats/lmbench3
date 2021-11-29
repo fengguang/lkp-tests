@@ -21,7 +21,7 @@ def largest_bandwidth
   bandwidth
 end
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   line = line.resolve_invalid_bytes
   case line
   # Extract syscall test result.

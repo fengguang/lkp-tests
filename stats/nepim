@@ -2,7 +2,7 @@
 
 tcp_key = %w(kbps_in kbps_out rcv_s snd_s)
 udp_key = %w(kbps_in kbps_out rcv_s snd_s loss ooo LOST)
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   case line.chomp!
   when /^\s*\d\s*avg\s*\d/
     data = line.split

@@ -7,7 +7,7 @@ per_io_type = {}
 per_record = {}
 all_sum = 0
 nr_records = 0
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   next unless line =~ /^\s*\d+.*\d+$/
 
   data = line.split

@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 total = {}
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   _i, _start_addr, _end_addr, bytes, type = line.chomp.split ','
   next if type.to_s.empty?
 

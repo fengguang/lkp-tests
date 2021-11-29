@@ -11,7 +11,7 @@ require 'time'
 # Benchmark run time format displayed as below:
 # Benchmark Run: Tue Jan 01 2019 15:48:24 - 15:56:36
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   line = line.resolve_invalid_bytes
 
   case line.chomp!
@@ -25,7 +25,7 @@ while (line = STDIN.gets)
                  end_time + 3600 * 24 - start_time # date overflo
                end
   when /^System Benchmarks Partial Index .* INDEX$/
-    line = STDIN.gets
+    line = $stdin.gets
     if line.chomp!
       lines = line.split
       throughput = lines[-2].to_f

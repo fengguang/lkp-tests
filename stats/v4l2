@@ -8,13 +8,13 @@ require "#{LKP_SRC}/lib/tests/stats"
 stats = LKP::Stats.new
 
 # skip invalid line
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   line = line.resolve_invalid_bytes
 
   break if line =~ /Required ioctls/
 end
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   line = line.resolve_invalid_bytes
 
   case line

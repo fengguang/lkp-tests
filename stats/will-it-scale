@@ -14,7 +14,7 @@ workload = 0
 # tasks,processes,processes_idle,threads,threads_idle,linear
 # 0,0,100,0,100,0
 # 192,0,0.00,46252474,0.10,0
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   case line.chomp!
   when /^[a-z_,]+$/
     names = line.split ','

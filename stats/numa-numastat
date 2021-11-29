@@ -7,7 +7,7 @@ require "#{LKP_SRC}/lib/string_ext"
 
 nr = 0
 
-STDIN.each_line do |line|
+$stdin.each_line do |line|
   line = line.resolve_invalid_bytes
 
   case line

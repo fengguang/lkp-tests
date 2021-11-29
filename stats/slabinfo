@@ -5,7 +5,7 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAM
 require "#{LKP_SRC}/lib/log"
 
 sub_names = nil
-STDIN.each_line do |line|
+$stdin.each_line do |line|
   case line
   when /slabinfo - version:/
     unless line =~ /2.1/

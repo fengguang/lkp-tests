@@ -27,7 +27,7 @@ params['eventcounters'] = %w(NFSIOS_INODEREVALIDATE NFSIOS_DENTRYREVALIDATE NFSI
                              NFSIOS_SILLYRENAME NFSIOS_SHORTREAD NFSIOS_SHORTWRITE NFSIOS_DELAY NFSIOS_PNFS_READ NFSIOS_PNFS_WRITE)
 
 def print_values(path, line)
-  while (line = STDIN.gets)
+  while (line = $stdin.gets)
     break if line.split.size <= 0
 
     case line
@@ -66,7 +66,7 @@ def print(type, sub_type, path, values, params)
   end
 end
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   case line
   when /^time:/
     puts line

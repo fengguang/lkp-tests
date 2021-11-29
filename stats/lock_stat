@@ -5,17 +5,17 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAM
 require "#{LKP_SRC}/lib/log"
 require "#{LKP_SRC}/lib/string_ext"
 
-exit unless STDIN.gets =~ /lock_stat version 0.[34]/
-exit unless STDIN.gets =~ /---------------------/
+exit unless $stdin.gets =~ /lock_stat version 0.[34]/
+exit unless $stdin.gets =~ /---------------------/
 
-names = STDIN.gets.split
+names = $stdin.gets.split
 names.shift
 names.shift
 
 contentions = {}
 lock_stat = {}
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   line = line.resolve_invalid_bytes
 
   line.chomp!

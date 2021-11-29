@@ -8,18 +8,18 @@ require "#{LKP_SRC}/lib/log"
 keys = %w(gbyte nr_tests cachelines user_time sys_time elapsed_time
           faults_per_sec_per_cpu faults_per_sec)
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   case line
   when /^Clients: (\d+)$/
     clients = $1
   when /^Iteration: \d+$/
-    line = STDIN.gets
+    line = $stdin.gets
     unless line
       log_error 'empty line'
       exit
     end
 
-    line = STDIN.gets
+    line = $stdin.gets
     unless line
       log_error 'empty line'
       exit

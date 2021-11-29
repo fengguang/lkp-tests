@@ -12,7 +12,7 @@ keys = %w(parent_time child_systime child_utime jobs_per_min
 results = {}
 jobs = 0
 workload = 0
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   case line
   when /^\S+ \S+ .\/reaim\s+-s(\d+)\s+-e(\d+)\s+-i(\d+).*-r(\d+).*-j(\d+)$/
     ($1.to_i..$2.to_i).step($3.to_i) do |v|

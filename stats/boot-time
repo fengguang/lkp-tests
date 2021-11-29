@@ -31,7 +31,7 @@ def show_dmesg_times
 end
 show_dmesg_times
 
-if (line = STDIN.gets)
+if (line = $stdin.gets)
   boot, idle = line.split
   puts 'boot: ' + boot
   puts 'idle: ' + idle

@@ -19,7 +19,7 @@ def statistics
   end
 end
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   case line
   when /^time:/
     statistics

@@ -7,7 +7,7 @@ require "#{LKP_SRC}/lib/log"
 stats = {}
 unit = nil
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   case line
   when /This system uses (\d+) bytes per array element/
     stats['element_size_byte'] = $1

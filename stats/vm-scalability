@@ -26,7 +26,7 @@ def add_one_sample(kbps, throughput, median, ret)
   ret['warned'] = true
 end
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   case line
   when /^\.*(\d+) bytes \/ (\d+) usecs = (\d+) KB.s/
     bytes += $1.to_i

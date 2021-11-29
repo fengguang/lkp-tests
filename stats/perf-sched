@@ -3,7 +3,7 @@
 perf_sched = Hash.new { |h, k| h[k] = [[], [], []] }
 stats = []
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   case line
   when / <- /
     data = line.gsub(' <- ', '.').split(' ')

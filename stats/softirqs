@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 titles = nil
-STDIN.each_line do |line|
+$stdin.each_line do |line|
   case line
   when /^time:/
     puts line

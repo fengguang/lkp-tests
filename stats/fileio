@@ -4,7 +4,7 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAM
 
 require "#{LKP_SRC}/lib/string_ext"
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   line = line.resolve_invalid_bytes
   case line
   # Throughput:

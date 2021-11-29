@@ -34,7 +34,7 @@ def puts_one_task(task, run, period, slack, wu_lat)
   end
 end
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   case line
   when /(.*).log$/
     puts_one_task(task, run, period, slack, wu_lat)

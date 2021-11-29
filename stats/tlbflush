@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   case line
   when /^munmap use (\d+)ms (\d+)ns\/time, memory access uses (\d+) times\/thread\/ms, cost (\d+)ns\/time$/
     puts 'munmap_ms: ' + $1

@@ -29,7 +29,7 @@ result = 'unknown'
 type = 'unknown'
 cpuhotplug = false
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   line = line.resolve_invalid_bytes
 
   case line

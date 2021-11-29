@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   case line
   when /^[read|update|op_q]/
     type, avg, std, min, n5th, n10th, n90th, n95th, n99th = line.split

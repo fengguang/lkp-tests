@@ -13,7 +13,7 @@ def show_samples(samples)
   samples.clear
 end
 
-STDIN.each_line do |line|
+$stdin.each_line do |line|
   case line
   when /^time: /
     show_samples samples

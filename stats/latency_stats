@@ -5,7 +5,7 @@ sum = Hash.new { |hash, key| hash[key] = 0 }
 max = Hash.new { |hash, key| hash[key] = 0 }
 top = Hash.new { |hash, key| hash[key] = 0 }
 
-STDIN.each_line do |line|
+$stdin.each_line do |line|
   case line
   when /Latency Top version/
     next

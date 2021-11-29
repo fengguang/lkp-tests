@@ -19,7 +19,7 @@
 #                14       34.485
 #                15       34.491
 runs = []
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   case line
   when /^\[.*\] (.*-ref-scale): END OF TEST/
     type = $1

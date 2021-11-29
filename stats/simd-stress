@@ -10,7 +10,7 @@
 num = 0
 throughput_all = 0
 
-STDIN.each_line do |line|
+$stdin.each_line do |line|
   case line
   when /^Throughput/
     throughput = line.split[1]

@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 qperf = {}
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   case line.chomp!
   when /^(.+):$/
     protocol = $1.split('_')[0]

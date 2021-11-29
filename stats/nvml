@@ -12,7 +12,7 @@ build_type = ''
 
 stats = LKP::Stats.new
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   line = line.resolve_invalid_bytes.plain_text
 
   case line

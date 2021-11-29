@@ -9,7 +9,7 @@ require "#{LKP_SRC}/lib/statistics"
 
 workload = 0
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   case line
   when /^(\d+) records\/s(.*)$/
     puts 'throughput: ' + $1

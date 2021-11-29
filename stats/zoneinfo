@@ -14,7 +14,7 @@ def puts_vals(tag, node, zone, line)
   end
 end
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   case line
   when /^time:/
     puts line
@@ -29,7 +29,7 @@ while (line = STDIN.gets)
   when /cpu:\s*([0-9]+)/
     cpu = $1
     (1..4).each do |_i|
-      puts "node#{node}.#{zone}.pagesets.cpu#{cpu}.#{$1.tr(' ', '_')}: #{$2}" if STDIN.gets =~ /\s*([a-zA-Z].*):\s*([0-9]+)/
+      puts "node#{node}.#{zone}.pagesets.cpu#{cpu}.#{$1.tr(' ', '_')}: #{$2}" if $stdin.gets =~ /\s*([a-zA-Z].*):\s*([0-9]+)/
     end
     tag = ''
   when /pages free\s*([0-9]+)/

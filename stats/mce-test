@@ -3,7 +3,7 @@
 stats = []
 nr_test = 0
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   next if line =~ /fs_metadata|page_poisoning/
 
   case line

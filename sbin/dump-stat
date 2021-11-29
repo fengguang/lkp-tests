@@ -20,7 +20,7 @@ end
 result = {}
 invalid_records = []
 record_index = 0
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   line = line.resolve_invalid_bytes
   next if line[0] == '#'
 

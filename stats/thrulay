@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   case line.chomp!
   when /^#\(\*\*\)/
     _a, _b, _c, throughput, rtt, jitter = line.split

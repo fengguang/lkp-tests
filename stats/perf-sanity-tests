@@ -6,7 +6,7 @@ require "#{LKP_SRC}/lib/tests/stats"
 
 stats = LKP::Stats.new
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   case line
   when /([\d.]+:) (.*): FAILED!$/
     stats.add $2, 'fail'
