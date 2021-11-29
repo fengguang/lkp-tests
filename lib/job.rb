@@ -187,10 +187,8 @@ end
 class Job
   EXPAND_DIMS = %w(kconfig commit rootfs ltp_commit nvml_commit blktests_commit qemu_commit perf_test_commit linux_commit).freeze
 
-  attr_reader :path_scheme
-  attr_reader :referenced_programs
-  attr_accessor :overrides
-  attr_accessor :defaults
+  attr_reader :path_scheme, :referenced_programs
+  attr_accessor :overrides, :defaults
 
   def initialize(job = {}, defaults = {}, overrides = {})
     @job = job
