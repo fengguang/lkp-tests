@@ -14,13 +14,6 @@ kernel-selftests:
 ---
 kernel-selftests:
   group:
-  - kvm
-
-kernel_cmdline: kvm-intel.unrestricted_guest=0
-
----
-kernel-selftests:
-  group:
   - net
   test:
   - fcnal-test.sh
