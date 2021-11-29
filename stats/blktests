@@ -15,14 +15,14 @@ while (line = $stdin.gets)
   case line
   when /^(.+? ).*\[(passed)\]/
     # srp/002 (File I/O ... and login (mq)) [passed]
-    stats.add "#{$1}", $2
+    stats.add $1.to_s, $2
   when /^(.+? ).*\[(failed)\]/
-    stats.add "#{$1}", $2
+    stats.add $1.to_s, $2
   when /^(.+? ).*\[(not run)\]/
     # srp/003 (File I/O ... and login (sq)) [not run]
-    stats.add "#{$1}", $2
+    stats.add $1.to_s, $2
   when /^(.+?\/\*\*\*).*\[(not run)\]/
-    stats.add "#{$1}", $2
+    stats.add $1.to_s, $2
   end
 end
 

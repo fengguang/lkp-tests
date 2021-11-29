@@ -304,16 +304,16 @@ class MemoryHotplugStater < Stater
     case line
     when /^selftests: memory-hotplug \[FAIL\]/
       # selftests: memory-hotplug [FAIL]
-      stats.add "#{@test_prefix}", 'fail'
+      stats.add @test_prefix.to_s, 'fail'
       @test_script = nil
     when %r{make: Leaving directory .*/(.*)'}
       # do not add stats here if it has below 2 lines
       # ok 1 selftests: memory-hotplug: mem-on-off-test.sh
       # selftests: memory-hotplug [FAIL]
-      stats.add "#{@test_prefix}", 'pass' unless stats.key? "#{@test_prefix}" || !@test_script
+      stats.add @test_prefix.to_s, 'pass' unless stats.key? @test_prefix.to_s || !@test_script
     when %r{: recipe for target.+failed}
       # Makefile:47: recipe for target 'sysret_ss_attrs_64' failed
-      stats.add "#{@test}", 'make_fail'
+      stats.add @test.to_s, 'make_fail'
     else
       super(line, stats)
     end
@@ -326,15 +326,15 @@ class MountStater < Stater
     case line
     when /^WARN: No \/proc\/self\/uid_map exist, test skipped/
       # WARN: No /proc/self/uid_map exist, test skipped.
-      stats.add "#{@test_prefix}", 'skip'
+      stats.add @test_prefix.to_s, 'skip'
       @test_script = nil
     when /(^(MS.+|Default.+) malfunctions$)|(^Mount flags unexpectedly changed after remount$)/
       # Mount flags unexpectedly changed after remount
-      stats.add "#{@test_prefix}", 'fail'
+      stats.add @test_prefix.to_s, 'fail'
       @test_script = nil
     when %r{make: Leaving directory .*/(.*)'}
       # test pass if it's not skip or fail
-      stats.add "#{@test_prefix}", 'pass' if @test_script
+      stats.add @test_prefix.to_s, 'pass' if @test_script
     end
   end
 end
@@ -358,7 +358,7 @@ class X86Stater < Stater
       end
     when %r{: recipe for target.+failed}
       # Makefile:47: recipe for target 'sysret_ss_attrs_64' failed
-      stats.add "#{@test}", 'make_fail'
+      stats.add @test.to_s, 'make_fail'
     else
       super(line, stats)
     end
@@ -590,7 +590,7 @@ class BreakpointsStater < Stater
       stats.add "#{@test_prefix}.#{$2}", $1
     when /No such collection '(breakpoints)'/
       # No such collection 'breakpoints'
-      stats.add "#{$1}", 'fail'
+      stats.add $1.to_s, 'fail'
     else
       super(line, stats)
     end
@@ -683,7 +683,7 @@ class ExecStater < Stater
       stats.add "#{@test_prefix}.#{$1}", $2 unless @test_script =~ /execveat/
     when /: recipe for target.+failed$/, /^make: \*\*\* (.*) (Error \d+|Stop\.)$/
       # make: *** No rule to make target .*, needed by 'all'.  Stop.
-      stats.add "#{@test}", 'make_fail'
+      stats.add @test.to_s, 'make_fail'
     else
       super(line, stats)
     end
@@ -797,7 +797,7 @@ class VmallocStater < Stater
   def stat(line, stats)
     case line
     when /(Check the kernel ring buffer to see the summary|Ccheck the kernel message buffer to see the summary)/
-      stats.add "#{@test_prefix}", 'PASS'
+      stats.add @test_prefix.to_s, 'PASS'
     # vmalloc test stat: (stress test worker number = nr_threads)
     # [  223.093027] Summary: fix_size_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 5861476 usec
     # [  223.103232] Summary: full_fit_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 5878630 usec
@@ -927,7 +927,7 @@ while (line = $stdin.gets)
     stater = TCTestingStater.new($1, $2)
   when /^LKP SKIP (.*)/
     # LKP SKIP net.l2tp.sh
-    stats.add "#{$1}", 'skip'
+    stats.add $1.to_s, 'skip'
   when /^# selftests: (.+): (.+)/
     stater = Stater.new($1, $2)
   when %r{make: Entering directory .*/(.*)'}
