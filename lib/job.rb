@@ -17,9 +17,9 @@ require 'pp'
 require 'English'
 
 def restore(ah, copy)
-  if ah.class == Hash
+  if ah.instance_of?(Hash)
     ah.clear.merge!(copy)
-  elsif ah.class == Array
+  elsif ah.instance_of?(Array)
     ah.clear.concat(copy)
   end
 end
@@ -66,7 +66,7 @@ def expand_toplevel_vars(env, hash)
 end
 
 def string_or_hash_key(h)
-  if h.class == Hash
+  if h.instance_of?(Hash)
     # assert h.size == 1
     h.keys[0]
   else

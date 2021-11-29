@@ -127,7 +127,7 @@ def reasonable_perf_change?(name, delta, max)
   $perf_metrics_threshold.each do |k, v|
     next unless name =~ %r{^#{k}$}
     return false if max < v
-    return false if delta < v / 2 && v.class == Integer
+    return false if delta < v / 2 && v.instance_of?(Integer)
 
     return true
   end
