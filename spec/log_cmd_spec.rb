@@ -30,7 +30,7 @@ describe 'log_cmd' do
 
   it 'creates dir with single quote' do
     dir = '"a'
-    was_good = system("#{log_cmd}mkdir #{Shellwords.escape(dir).to_s}")
+    was_good = system("#{log_cmd}mkdir #{Shellwords.escape(dir)}")
     expect(was_good).to be(true)
     expect(Dir).to be_exist('"a')
     Dir.delete('"a')
@@ -38,7 +38,7 @@ describe 'log_cmd' do
 
   it 'creates dir with space and double quotes' do
     dir = '"a b"'
-    was_good = system("#{log_cmd}mkdir #{Shellwords.escape(dir).to_s}")
+    was_good = system("#{log_cmd}mkdir #{Shellwords.escape(dir)}")
     expect(was_good).to be(true)
     expect(Dir).to be_exist('"a b"')
     Dir.delete('"a b"')

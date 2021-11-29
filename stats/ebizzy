@@ -16,9 +16,9 @@ while (line = $stdin.gets)
     throughput = $1.to_i
     data = $2.split.map(&:to_i)
 
-    puts "throughput.per_thread.min: #{data.min.to_s}"
-    puts "throughput.per_thread.max: #{data.max.to_s}"
-    puts "throughput.per_thread.stddev_percent: #{(100.0 * data.standard_deviation / throughput).to_s}"
+    puts "throughput.per_thread.min: #{data.min}"
+    puts "throughput.per_thread.max: #{data.max}"
+    puts "throughput.per_thread.stddev_percent: #{(100.0 * data.standard_deviation / throughput)}"
   when /^real\ +(\d+.\d+) s/
     puts "time.real: #{$1}"
     time = $1.to_f
@@ -30,4 +30,4 @@ while (line = $stdin.gets)
   end
 end
 
-puts "workload: #{workload.to_s}"
+puts "workload: #{workload}"

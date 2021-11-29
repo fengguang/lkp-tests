@@ -33,7 +33,7 @@ $stdin.each_line do |line|
         sum += val
         puts "#{cpu}.#{key}: #{values[i + 1]}"
       end
-      puts "#{key}: #{sum.to_s}"
+      puts "#{key}: #{sum}"
     end
   end
 end

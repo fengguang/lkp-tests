@@ -45,5 +45,5 @@ while (line = $stdin.gets)
 end
 
 lock_stat.each do |k, v|
-  puts "#{k}: #{v.to_s}"
+  puts "#{k}: #{v}"
 end

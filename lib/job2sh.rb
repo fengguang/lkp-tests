@@ -21,7 +21,7 @@ def valid_shell_variable?(key)
 end
 
 def shell_encode_keyword(key)
-  key.gsub(/[^a-z0-9_]/) { |m| "_#{m.getbyte(0).to_s}_" }
+  key.gsub(/[^a-z0-9_]/) { |m| "_#{m.getbyte(0)}_" }
 end
 
 def shell_escape_expand(val)

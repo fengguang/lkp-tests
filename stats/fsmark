@@ -30,6 +30,6 @@ end
 # files_per_sec: '', instead it needs show nothing to
 # become incompleted run
 unless files_per_sec.empty?
-  puts "files_per_sec: #{files_per_sec.average.to_s}"
-  puts "app_overhead: #{app_overhead.average.to_s}"
+  puts "files_per_sec: #{files_per_sec.average}"
+  puts "app_overhead: #{app_overhead.average}"
 end

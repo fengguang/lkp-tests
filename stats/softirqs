@@ -12,7 +12,7 @@ $stdin.each_line do |line|
       puts "#{title}.#{values[0]} #{values[i + 1]}"
       sum += values[i + 1].to_i
     end
-    puts "#{values[0]} #{sum.to_s}"
+    puts "#{values[0]} #{sum}"
   else
     titles = line.split
   end
