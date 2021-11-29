@@ -18,7 +18,7 @@ while (line = $stdin.gets)
 
     puts "throughput.per_thread.min: #{data.min}"
     puts "throughput.per_thread.max: #{data.max}"
-    puts "throughput.per_thread.stddev_percent: #{(100.0 * data.standard_deviation / throughput)}"
+    puts "throughput.per_thread.stddev_percent: #{100.0 * data.standard_deviation / throughput}"
   when /^real\ +(\d+.\d+) s/
     puts "time.real: #{$1}"
     time = $1.to_f
