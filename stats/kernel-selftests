@@ -678,9 +678,11 @@ class ExecStater < Stater
     case line
     when /^(Check .*)... \[(OK|FAIL|SKIP)\]/
       # Check success of execveat(8, 'execveat', 0)... [OK]
+      subname = "#{@test_prefix}.#{$1}"
+      res = $2
 
       # ignore detail stats of execveat to avoid duplication
-      stats.add "#{@test_prefix}.#{$1}", $2 unless @test_script =~ /execveat/
+      stats.add subname, res unless @test_script =~ /execveat/
     when /: recipe for target.+failed$/, /^make: \*\*\* (.*) (Error \d+|Stop\.)$/
       # make: *** No rule to make target .*, needed by 'all'.  Stop.
       stats.add @test.to_s, 'make_fail'
@@ -916,13 +918,13 @@ while (line = $stdin.gets)
   when /^# selftests: (prctl): (.*)/
     # selftests: prctl: disable-tsc-ctxt-sw-stress-test
     stater = PrctlStater.new($1, $2)
-  when /^# selftests: bpf: test_progs$/
+  when /^# selftests: (bpf): (test_progs)$/
     # selftests: prctl: disable-tsc-ctxt-sw-stress-test
     stater = ProgsStater.new($1, $2)
-  when /^# selftests: ftrace: ftracetest$/
+  when /^# selftests: (ftrace): (ftracetest)$/
     # selftests: ftrace: ftracetest
     stater = FtraceStater.new($1, $2)
-  when /^# selftests: tc-testing: tdc.sh$/
+  when /^# selftests: (tc-testing): (tdc.sh)$/
     # selftests: ftrace: ftracetest
     stater = TCTestingStater.new($1, $2)
   when /^LKP SKIP (.*)/
