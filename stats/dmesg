@@ -112,6 +112,11 @@ lines.reverse_each do |line|
   end
 end
 
+if ignore_lkdtm_dmesg?(RESULT_ROOT)
+  put_dmesg_stamps(error_stamps)
+  exit
+end
+
 def stat_unittest(unittests)
   found_unitest = false
   unittests.each do |line|
