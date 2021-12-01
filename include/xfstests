@@ -1,4 +1,3 @@
-need_modules: true
 need_kconfig:
 % if ___.fs == "f2fs"
 - F2FS_FS: m
