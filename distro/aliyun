@@ -79,7 +79,7 @@ yum_pack()
 
 	mv $downloaded_rpms $target_dir
 
-	distro_install_depends cci-depends
+	[ ${suite} == "cci-depends" ] && distro_install_depends cci-depends
 	find $target_dir | cpio --quiet -o -H newc --owner=root.root | gzip -n -9 >$pack_to/${BM_NAME}_$date.cgz
 
 	ln -sf ${BM_NAME}_$date.cgz $pack_to/${BM_NAME}.cgz || return

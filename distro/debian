@@ -103,6 +103,7 @@ pack()
 
 	[[ $(type -t fixup_$BM_NAME) = 'function' ]] && fixup_$BM_NAME
 
+	[ ${suite} == "cci-depends" ] && distro_install_depends cci-depends
 	{
 		find . -xdev |
 		sed 's,^\./,,' |
