@@ -310,7 +310,7 @@ class MemoryHotplugStater < Stater
       # do not add stats here if it has below 2 lines
       # ok 1 selftests: memory-hotplug: mem-on-off-test.sh
       # selftests: memory-hotplug [FAIL]
-      stats.add @test_prefix.to_s, 'pass' unless stats.key? @test_prefix.to_s || !@test_script
+      stats.add @test_prefix.to_s, 'pass' unless stats.key?(@test_prefix.to_s) || !@test_script
     when %r{: recipe for target.+failed}
       # Makefile:47: recipe for target 'sysret_ss_attrs_64' failed
       stats.add @test.to_s, 'make_fail'
