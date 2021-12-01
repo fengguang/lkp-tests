@@ -11,7 +11,7 @@ class String
   end
 
   # invalid byte sequence in US-ASCII (ArgumentError)
-  def resolve_invalid_bytes(options = {replace: '_'})
+  def resolve_invalid_bytes(options = { replace: '_' })
     return self if valid_encoding?
 
     clone.force_encoding('UTF-8')
