@@ -536,3 +536,10 @@ def get_crash_calltraces(dmesg_file)
 
   calltraces
 end
+
+def put_dmesg_stamps(error_stamps)
+  puts
+  error_stamps.each do |error_id, timestamp|
+    puts "timestamp:#{error_id}: #{timestamp}"
+  end
+end

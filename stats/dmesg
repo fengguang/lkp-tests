@@ -177,7 +177,4 @@ error_ids.each do |error_id, line|
   puts "pattern:#{error_id}: #{line}"
 end
 
-puts
-error_stamps.each do |error_id, timestamp|
-  puts "timestamp:#{error_id}: #{timestamp}"
-end
+put_dmesg_stamps(error_stamps)
