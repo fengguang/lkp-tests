@@ -366,11 +366,7 @@ class X86Stater < Stater
 end
 
 class FutexStater < Stater
-  def stat(line, stats)
-    # ignore detail stats of futex to avoid duplication
-    # c0e64368308a (stats/kernel-selftests: rm detail stats for futex)
-    super(line, stats)
-  end
+  
 end
 
 class ResctrlStater < Stater
