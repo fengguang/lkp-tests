@@ -117,12 +117,16 @@ download_initrd()
 	do
 		_initrd=$(echo $_initrd | sed 's/^\///')
 		local file=$CACHE_DIR/$_initrd
-		http_get_newer "$_initrd" $file || {
-			rm -f $file
-			set_job_state "wget_initrd_fail"
-			echo Failed to download $_initrd
-			exit 1
-		}
+		if [ "$LKP_LOCAL_RUN" = "1" ] && [ -e $file ]; then
+			echo "skip downloading $file"
+		else
+			http_get_newer "$_initrd" $file || {
+				rm -f $file
+				set_job_state "wget_initrd_fail"
+				echo Failed to download $_initrd
+				exit 1
+			}
+		fi
 		initrd_is_correct $file || {
 			rm -f $file && echo "remove the the broken initrd: $file"
 			set_job_state "initrd_broken"
