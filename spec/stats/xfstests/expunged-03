@@ -1,0 +1,14 @@
+2021-11-22 21:39:06 mount /dev/sda1 /fs/sda1
+2021-11-22 21:39:06 mkdir -p /smbv2//cifs/sda1
+2021-11-22 21:39:06 export FSTYP=cifs
+2021-11-22 21:39:06 export TEST_DEV=//localhost/fs/sda1
+2021-11-22 21:39:06 export TEST_DIR=/smbv2//cifs/sda1
+2021-11-22 21:39:06 export CIFS_MOUNT_OPTIONS=-ousername=root,password=pass,noperm,vers=2.0,mfsymlinks,actimeo=0
+2021-11-22 21:39:06 echo generic/387
+2021-11-22 21:39:06 ./check -E tests/cifs/exclude.incompatible-smb2.txt -E tests/cifs/exclude.very-slow.txt generic/387
+FSTYP         -- cifs
+PLATFORM      -- Linux/x86_64 lkp-kbl-d02 5.16.0-rc2-wt-02754-gb38d706d9a58 #1 SMP Tue Nov 23 02:24:01 CST 2021
+
+generic/387       [expunged]
+Passed all 0 tests
+
