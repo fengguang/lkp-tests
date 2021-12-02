@@ -1,0 +1,72 @@
+suite: netperf
+category: benchmark
+
+# upto 90% CPU cycles may be used by latency stats
+disable_latency_stats: 1
+
+set_nic_irq_affinity: 1
+
+ip:
+    - ipv4
+  # - ipv6
+
+#runtime: 60
+nr_threads:
+    - 1
+
+cluster: cs-s1-a1002-c1
+
+if role server:
+  netserver:
+
+if role client:
+  netperf:
+    test:
+    - TCP_RR
+    - UDP_RR
+    - TCP_CRR
+    runtime:
+    - 10
+---
+if role client:
+  netperf:
+    send_size:
+    - 1
+    - 64
+    - 128
+    - 256
+    - 512
+    - 1024
+    - 1500
+    - 2048
+    - 4096
+    - 9000
+    - 16384
+    - 32768
+    - 65536
+    test:
+    - TCP_STREAM
+    runtime:
+    - 60
+
+---
+if role client:
+  netperf:
+    send_size:
+    - 1
+    - 64
+    - 128
+    - 256
+    - 512
+    - 1024
+    - 1500
+    - 2048
+    - 4096
+    - 9000
+    - 16384
+    - 32768
+    test:
+    - UDP_STREAM
+    runtime:
+    - 60
+
