@@ -472,6 +472,13 @@ fixup_bpf()
 	fi
 	# tools/testing/selftests/bpf/tools/sbin/bpftool
 	export PATH=$linux_selftests_dir/tools/testing/selftests/bpf/tools/sbin:$PATH
+
+	local kernel_version=$(uname -r)
+	if [[ "$kernel_version" =~ "5.16" ]]; then
+		# skip test_kmod.sh because test execution time > 5 hours
+		sed -i "s/test_kmod.sh//" bpf/Makefile
+		echo "LKP SKIP test_kmod.sh"
+	fi
 }
 
 fixup_kmod()
