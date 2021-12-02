@@ -1,0 +1,39 @@
+---
+suite: fio-basic
+category: benchmark
+runtime: 30
+
+disk:
+- 1HDD
+fs1:
+  fs_type:
+  - xfs
+mount_to: /test/fio
+iosched:
+- mq-deadline
+raw_disk: no
+nr_task: 10
+
+fio-setup-basic:
+  ioengine: libaio
+  iodepth: 10
+  test_size: 1000G
+  rwmixread: 70
+  direct: 1
+  ramp_time: 1
+  loops: 100000
+  rw:
+  - write
+  - randread
+  - randwrite
+  - randrw
+  bs:
+  - 4k
+  - 16k
+  - 64k
+  - 128k
+  - 256k
+  - 512k
+  - 1024k
+
+fio:
