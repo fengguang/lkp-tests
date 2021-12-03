@@ -61,6 +61,7 @@ class NetStater < Stater
     # begain for net.fcnal-test.sh
     when /(IPv4 ping|IPv4\/TCP|IPv4\/UDP|IPv4 Netfilter)/,
          /(IPv6 ping|IPv6\/TCP|IPv6\/UDP|IPv6 Netfilter)/,
+         /(IPv6 address binds|IPv4 address binds)/,
          /(OUTPUT tests|INPUT tests)/
       # ##########################################################################
       # IPv4 ping
@@ -216,6 +217,8 @@ class NetStater < Stater
         #
         # TEST: ping out - ns-B IP                                      [ OK ]
         stats.add "#{@test_prefix}.#{@test_case}.#{@test_subcase1}.#{@test_subcase2}.#{$1}", $2 if @test_script == 'fcnal-test.sh'
+      elsif @test_subcase1
+        stats.add "#{@test_prefix}.#{@test_case}.#{@test_subcase1}.#{$1}", $2 if @test_script == 'fcnal-test.sh'
       elsif @test_subcase
         # ###########################################################################
         # Use cases
