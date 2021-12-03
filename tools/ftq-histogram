@@ -29,7 +29,7 @@ def make_histogram(data, levels)
   samples = data.size
   mean = data[data.size / 2]
   start = 0
-  histogram = levels.each_with_index.map do |level, i|
+  levels.each_with_index.map do |level, i|
     lc = mean * level / 100
     nstart = data.bsearch_index { |n| n >= lc }
     nstart ||= data.size
@@ -38,7 +38,6 @@ def make_histogram(data, levels)
     slevel = i.zero? ? 0 : levels[i - 1]
     [slevel, level, num]
   end
-  histogram
 end
 
 def print_histogram(histogram, output_num)

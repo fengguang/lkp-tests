@@ -372,9 +372,8 @@ def setup_changed_stats
       matrix2 = load_json matrix_file2
       expand_matrix(matrix2, 'stat' => $opt_field)
       $all_index.each do |stat, weight|
-        if stat.index 'iostat\.'
-          next unless k =~ /\/(dd-write)\//
-        end
+        next if stat.index('iostat\.') && !(k =~ /\/(dd-write)\//)
+
         avg1 = get_valid_average matrix1, stat
         next unless avg1
 
@@ -691,18 +690,14 @@ def show_delta(stat, key_g)
     end
   end
 
-  if $header_shown[is_fail]
-    puts unless $group_by_test
-  end
+  puts if $header_shown[is_fail] && !$group_by_test
 
   $cases.each do |_rt, value|
     result_path = ResultPath.new
     result_path.parse_result_root(_rt)
     test = result_path.test_desc $opt_dimension, $dim_not_a_param
 
-    if $group_by_test
-      next unless test == key_g
-    end
+    next if $group_by_test && !(test == key_g)
 
     show_header(is_fail) unless $header_shown[is_fail]
 

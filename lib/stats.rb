@@ -573,9 +573,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
   cols_a = matrix_cols a
   cols_b = matrix_cols b
 
-  if options['variance']
-    return nil if cols_a < 10 || cols_b < 10
-  end
+  return nil if options['variance'] && (cols_a < 10 || cols_b < 10)
 
   # Before: matrix = { "will-it-scale.per_process_ops" => [1183733, 1285303, 721524, 858073, 1207794] }
   # After:  matrix = { "will-it-scale.per_process_ops" => [1183733, 1285303, 721524, 858073, 1207794],
@@ -657,24 +655,22 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
     min_a, mean_a, max_a = get_min_mean_max sorted_a
     next unless max_a
 
-    unless is_allowed_stat
-      next unless changed_stats?(sorted_a, min_a, mean_a, max_a,
-                                 sorted_b, min_b, mean_b, max_b,
-                                 is_function_stat, is_latency_stat,
-                                 k, options)
+    if !is_allowed_stat && !changed_stats?(sorted_a, min_a, mean_a, max_a,
+                                           sorted_b, min_b, mean_b, max_b,
+                                           is_function_stat, is_latency_stat,
+                                           k, options)
+      next
     end
 
-    if options['regression-only'] || options['all-critical']
-      if is_function_stat
-        if max_a.zero?
-          has_boot_fix = true if k =~ /^dmesg\./
-          next if options['regression-only'] ||
-                  (k !~ $kill_pattern_allowlist_re && options['all-critical'])
-        end
+    if (options['regression-only'] || options['all-critical']) && is_function_stat
+      if max_a.zero?
+        has_boot_fix = true if k =~ /^dmesg\./
+        next if options['regression-only'] ||
+                (k !~ $kill_pattern_allowlist_re && options['all-critical'])
+      end
         # this relies on the fact dmesg.* comes ahead
         # of kmsg.* in etc/default_stats.yaml
-        next if has_boot_fix && k =~ /^kmsg\./
-      end
+      next if has_boot_fix && k =~ /^kmsg\./
     end
 
     max = [max_b, max_a].max
@@ -694,12 +690,10 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
     y = 0 if y < 0
     ratio = MAX_RATIO if ratio > MAX_RATIO
 
-    unless is_allowed_stat
-      unless options['perf-profile'] && k =~ /^perf-profile\./
-        next unless ratio > 1.01 # time.elapsed_time only has 0.01s precision
-        next unless ratio > 1.1 || perf_metric?(k)
-        next unless reasonable_perf_change?(k, delta, max)
-      end
+    if !is_allowed_stat && !(options['perf-profile'] && k =~ /^perf-profile\./)
+      next unless ratio > 1.01 # time.elapsed_time only has 0.01s precision
+      next unless ratio > 1.1 || perf_metric?(k)
+      next unless reasonable_perf_change?(k, delta, max)
     end
 
     interval_a = format('[ %-10.5g - %-10.5g ]', min_a, max_a)
@@ -728,11 +722,11 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
                          'nr_run' => v.size }
     changed_stats[k].merge! options
 
-    if options['base_matrixes']
-      changed_stats[k].delete('base_matrixes')
-      changed_stats[k]['extra'] ||= {}
-      changed_stats[k]['extra']['base_matrixes'] = options['base_matrixes'].map { |tag, matrix| "#{tag}: #{matrix[k].inspect}" }
-    end
+    next unless options['base_matrixes']
+
+    changed_stats[k].delete('base_matrixes')
+    changed_stats[k]['extra'] ||= {}
+    changed_stats[k]['extra']['base_matrixes'] = options['base_matrixes'].map { |tag, matrix| "#{tag}: #{matrix[k].inspect}" }
   end
 
   changed_stats

@@ -177,8 +177,8 @@ class MResultRoot
     end
   end
 
-  def eql?(_rto)
-    @axes.eql?(_rto.axes)
+  def eql?(other)
+    @axes.eql?(other.axes)
   end
 
   def hash

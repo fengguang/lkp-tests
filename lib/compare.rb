@@ -45,8 +45,7 @@ class AxesGrouper
       map[as] ||= AxesGroup.new self, as
       map[as].add_axes_datum d
     end
-    groups = map.values
-    groups
+    map.values
   end
 
   def global_common_axes
@@ -168,8 +167,8 @@ module Compare
         elsif File.exist?(_rt.path)
           # class NMResultRoot
           mrts << _rt
-        else
-          log_warn "#{_rt.path} not exist" if ENV['LKP_VERBOSE']
+        elsif ENV['LKP_VERBOSE']
+          log_warn "#{_rt.path} not exist"
         end
       end
       return [] if mrts.empty?

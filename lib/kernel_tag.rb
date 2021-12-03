@@ -20,7 +20,7 @@ class KernelTag
                          else
                            99
                          end
-    match[:major_version].to_i * 10000 + match[:minor_version].to_i * 100 + prerelease_version
+    match[:major_version].to_i * 10_000 + match[:minor_version].to_i * 100 + prerelease_version
   end
 
   def <=>(other)

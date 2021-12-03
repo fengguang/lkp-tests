@@ -88,9 +88,7 @@ end
 
 begin
   # "#!" is defined by comment_to_symbol
-  if File.readlines(jobfile).any? { |l| l.start_with?(':#! ') }
-    log_warn "Jobfile is a dirty file, better to run 'lkp split-job --compatible #{jobfile}' first"
-  end
+  log_warn "Jobfile is a dirty file, better to run 'lkp split-job --compatible #{jobfile}' first" if File.readlines(jobfile).any? { |l| l.start_with?(':#! ') }
 
   job = Job.new
   job.load(jobfile)
