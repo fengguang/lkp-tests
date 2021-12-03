@@ -36,19 +36,25 @@ def gerenate_submit_cmd(args)
 
   default_cmds = args['default_param'] || nil
   common_cmds = args['common_param'] || nil
+  line_cmds = args["line_param"] || {}
 
-  default_params = parse_commnon_params(default_cmds)
-  common_params = parse_commnon_params(common_cmds)
+  default_params = parse_commnon_params(default_cmds, line_cmds)
+  common_params = parse_commnon_params(common_cmds, line_cmds)
+  line_params = parse_commnon_params(line_cmds)
 
   combine_default_cmds = combine_default_cmd(submit_cmds, default_params)
-  combine_common_cmd(combine_default_cmds, common_params)
+  combine_cmds = combine_common_cmd(combine_default_cmds, common_params)
+  combine_line_cmd(combine_cmds, line_params)
 end
 
-def parse_commnon_params(args)
+def parse_commnon_params(args, needless_param = {})
   return nil unless args
+  return nil if args.empty?
 
   common_params = []
   args.each do |k, v|
+    next if needless_param.key?(k)
+
     assgin_cmd(k, v, common_params)
   end
 
@@ -102,6 +108,21 @@ def combine_common_cmd(submit_cmds, common_params)
   combine_cmds
 end
 
+def combine_line_cmd(submit_cmds, line_params)
+  return submit_cmds unless line_params
+
+  combine_cmds = []
+  line_cmds = combine_cmd(line_params)
+
+  submit_cmds.each do |submit_cmd|
+    line_cmds.each do |line_cmd|
+      combine_cmds << submit_cmd + ' ' + line_cmd
+    end
+  end
+
+  combine_cmds
+end
+
 # input eg:
 # [
 #   "memory=16G", "nr_cpu=2", "runtime=3000",
@@ -134,11 +155,15 @@ end
 def parse_batch_argv(argv)
   args = {}
   argv.each do |arg|
-    args.merge!(load_yaml(arg)) if arg.end_with?('.yaml')
+    if arg.end_with?('.yaml')
+      args.merge!(load_yaml(arg))
+      next
+    end
+    args["line_param"] ||= {}
     key, value = arg.split('=')
     if key && value
       value_list = value.split(',')
-      args[key] = value_list.length > 1 ? value_list : value
+      args["line_param"][key] = value_list.length > 1 ? value_list : value
     end
   end
 

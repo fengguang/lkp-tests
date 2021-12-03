@@ -5,7 +5,7 @@
 
 # Usage:
 #   batch-submit batch.yaml
-#   batch-submit batch.yaml os_arch=x86_64,aarch64 nr_thread=2
+#   batch-submit batch.yaml os_arch=x86_64,aarch64
 # eg batch.yaml:
 # submit:
 #   - lmbench3.yaml testbox=taishan200-2280-2s48p-256g--a11 lmbench3.test=lSELECT
@@ -18,6 +18,19 @@
 #   os:
 #     - centos
 #     - openeuler
+# output:
+#   submit runtime=30 lmbench3.yaml memory=16G os=centos lmbench3.yaml testbox=taishan200-2280-2s48p-256g--a11 lmbench3.test=lSELECT os_arch=x86_64
+#   submit runtime=30 lmbench3.yaml memory=16G os=openeuler lmbench3.yaml testbox=taishan200-2280-2s48p-256g--a11 lmbench3.test=lSELECT os_arch=x86_64
+#   submit runtime=30 lmbench3.yaml memory=16G os=centos lmbench3.yaml testbox=taishan200-2280-2s48p-256g--a11 lmbench3.test=lSELECT os_arch=aarch64
+#   submit runtime=30 lmbench3.yaml memory=16G os=openeuler lmbench3.yaml testbox=taishan200-2280-2s48p-256g--a11 lmbench3.test=lSELECT os_arch=,aarch64
+#   submit runtime=30 lmbench3.yaml memory=16G os=centoes lmbench3.yaml testbox=taishan200-2280-2s48p-256g--a11 lmbench3.test==UNIX os_arch=x86_64
+#   submit runtime=30 lmbench3.yaml memory=16G os=openeuler lmbench3.yaml testbox=taishan200-2280-2s48p-256g--a11 lmbench3.test==UNIX os_arch=x86_64
+#   submit runtime=30 lmbench3.yaml memory=16G os=centos lmbench3.yaml testbox=taishan200-2280-2s48p-256g--a11 lmbench3.test==UNIX os_arch=aarch64
+#   submit runtime=30 lmbench3.yaml memory=16G os=openeuler lmbench3.yaml testbox=taishan200-2280-2s48p-256g--a11 lmbench3.test==UNIX os_arch=,aarch64
+#   submit runtime=30 lmbench3.yaml memory=16G os=centos unixbench.yaml testbox=taishan200-2280-2s48p-256g--a12 runtime=6000 os_arch=x86_64
+#   submit runtime=30 lmbench3.yaml memory=16G os=openeuler unixbench.yaml testbox=taishan200-2280-2s48p-256g--a12 runtime=6000 os_arch=x86_64
+#   submit runtime=30 lmbench3.yaml memory=16G os=centos unixbench.yaml testbox=taishan200-2280-2s48p-256g--a12 runtime=6000 os_arch=aarch64
+#   submit runtime=30 lmbench3.yaml memory=16G os=openeuler unixbench.yaml testbox=taishan200-2280-2s48p-256g--a12 runtime=6000 os_arch=,aarch64
 
 require 'optparse'
 require 'open3'
