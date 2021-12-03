@@ -16,7 +16,6 @@ kernel-selftests:
   group:
   - net
   test:
-  - fcnal-test.sh
   - fib_nexthops.sh
 
 timeout: 1h
@@ -27,3 +26,24 @@ kernel-selftests:
   - net
   test:
   - tls
+
+---
+kernel-selftests:
+  group:
+  - net
+  test:
+  - fcnal-test.sh
+  atomic_test:
+  - ipv4_ping
+  - ipv4_tcp
+  - ipv4_udp
+  - ipv4_addr_bind
+  - ipv4_runtime
+  - ipv4_netfilter
+  - ipv6_ping
+  - ipv6_tcp
+  - ipv6_udp
+  - ipv6_addr_bind
+  - ipv6_runtime
+  - ipv6_netfilter
+  - use_cases

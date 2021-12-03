@@ -256,6 +256,13 @@ skip_specific_net_cases()
 	done
 }
 
+setup_fcnal_test_atomic()
+{
+	# fcnal-test.sh will read environment value TESTS, otherwise
+	# it will run all tests
+	export TESTS=$atomic_test
+}
+
 fixup_net()
 {
 	# udpgro tests need enable bpf firstly
@@ -272,6 +279,8 @@ fixup_net()
 	ulimit -l 10240
 	modprobe fou
 	modprobe nf_conntrack_broadcast
+
+	[ "$test" = "fcnal-test.sh" ] && [ "$atomic_test" ] && setup_fcnal_test_atomic
 
 	log_cmd make -C ../../../tools/testing/selftests/net 2>&1 || return
 	log_cmd make install INSTALL_PATH=/usr/bin/ -C ../../../tools/testing/selftests/net 2>&1 || return
