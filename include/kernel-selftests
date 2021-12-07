@@ -82,6 +82,10 @@ need_kconfig:
 - IMA_WRITE_POLICY: y, v5.11-rc1
 - SECURITYFS: y, v5.11-rc1
 - IMA: y, v5.11-rc1
+- BLK_DEV_LOOP
+- DYNAMIC_FTRACE
+- FUNCTION_TRACER
+- IPV6_SEG6_BPF
 % elsif ___.group == "net"
 - PACKET: y
 - USER_NS: y
@@ -125,6 +129,8 @@ need_kconfig:
 - NET_ACT_TUNNEL_KEY: m, v4.9-rc1
 - NET_ACT_MIRRED: m, v5.11-rc1
 - CRYPTO_SM4: y
+- NET_DROP_MONITOR
+- TRACEPOINTS
 % elsif ___.group == "netfilter"
 - NET_NS: y
 - NFT_FLOW_OFFLOAD: m, v4.16-rc1
@@ -146,6 +152,10 @@ need_kconfig:
 - TEST_FIRMWARE
 % elsif ___.group == "lkdtm"
 - LKDTM: y
+- DEBUG_LIST
+- FORTIFY_SOURCE
+- HARDENED_USERCOPY
+- STACKPROTECTOR_STRONG
 - INIT_ON_ALLOC_DEFAULT_ON: y, v5.14-rc1
 - RANDOMIZE_KSTACK_OFFSET_DEFAULT: y, v5.14-rc1
 - SLAB_FREELIST_HARDENED: y, v5.14-rc1
@@ -334,6 +344,7 @@ need_kconfig:
 % elsif ___.group == "tc-testing"
 - NET_SCH_FQ_PIE
 - PACKET
+- NET_SCH_RED
 % else
 - BLOCK: y
 - BTRFS_FS: m
@@ -357,4 +368,11 @@ need_kconfig:
 - TEST_USER_COPY
 - TUN: m
 - XFS_FS: m # Depends on: BLOCK [: y]
+- GPIO_CDEV
+- OVERLAY_FS
+- PERF_EVENTS
+- SCHED_DEBUG
+- SHMEM
+- TMPFS_XATTR
+- TMPFS
 % end
