@@ -101,7 +101,7 @@ def combine_common_cmd(submit_cmds, common_params)
   submit_cmds.each do |submit_cmd|
     submit_a, submit_b = submit_cmd.split('yaml')
     common_cmds.each do |common_cmd|
-      combine_cmds << submit_a + 'yaml' + common_cmd + submit_b
+      combine_cmds << submit_a + 'yaml' + common_cmd + submit_b.to_s
     end
   end
 
