@@ -4,9 +4,9 @@
 
 if [[ $need_cpu -lt 0 ]]; then
 	need_cpu=$((need_cpu*-1))
-	if (( nr_cpu > need_cpu )); then
+	if (( need_cpu < nr_cpu )); then
 		echo "rm $job_file due to too much cpu"
-		echo "need: less than $need_cpu cpu, has: $nr_cpu cpu"
+		echo "need: less or equal $need_cpu cpu, has: $nr_cpu cpu"
 		exit 1
 	fi
 else
