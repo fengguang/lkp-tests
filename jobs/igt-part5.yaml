@@ -29,3 +29,9 @@ igt:
       - active
       - forked-active
       # - hog # casued timeout
+
+---
+need_memory: 15G
+
+igt:
+  - group: gem_ctx_exec
