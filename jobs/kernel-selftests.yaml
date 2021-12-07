@@ -42,6 +42,7 @@ kernel-selftests:
 kernel_cmdline: kvm-intel.unrestricted_guest=0
 
 ---
+need_cpu: -32
 kernel-selftests:
   group:
     - locking
