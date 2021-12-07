@@ -40,3 +40,8 @@ kernel-selftests:
     - lkdtm
 
 kernel_cmdline: kvm-intel.unrestricted_guest=0
+
+---
+kernel-selftests:
+  group:
+    - locking

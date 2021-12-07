@@ -511,7 +511,7 @@ prepare_for_selftest()
 		# subtest lib cause kselftest incomplete run, it's a kernel issue
 		# report [LKP] [software node] 7589238a8c: BUG:kernel_NULL_pointer_dereference,address
 		# lkdtm is unstable [validated 1] f825d3f7ed
-		selftest_mfs=$(ls -d [c-l]*/Makefile | grep -v -e ^ftrace -e ^livepatch -e ^lib -e ^cpufreq -e ^kvm -e ^firmware -e ^lkdtm)
+		selftest_mfs=$(ls -d [c-l]*/Makefile | grep -v -e ^ftrace -e ^livepatch -e ^lib -e ^cpufreq -e ^kvm -e ^firmware -e ^lkdtm -e ^locking)
 	elif [ "$group" = "group-02" ]; then
 		# m* is slow
 		# pidfd caused soft_timeout in kernel-selftests.splice.short_splice_read.sh.fail.v5.9-v5.10-rc1.2020-11-06.132952
