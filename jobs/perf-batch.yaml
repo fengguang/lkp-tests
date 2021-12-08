@@ -1,0 +1,16 @@
+submit:
+  - libmicro.yaml
+  - stream.yaml
+  - lmbench3-1nr_threads.yaml
+  - unixbench.yaml runtime=30s
+  - fio-basic-benchmark.yaml
+  - netperf-runtime.yaml
+default_param:
+  testbox: taishan200-2280-2s48p-256g
+  os: openeuler
+  os_version: 20.03
+  arch:
+    - aarch64
+    - x86_64
+common_param:
+  os_mount: local
