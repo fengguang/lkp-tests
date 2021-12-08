@@ -811,6 +811,8 @@ run_test()
 	export PTS_SILENT_MODE=1
 	echo PTS_SILENT_MODE=$PTS_SILENT_MODE
 
+	[ -n "$test" ] || die "testname is empty"
+
 	patch_to_detect_wrong_test_option
 	if [ -n "$option_a" ]; then
 		test_opt='\n'
