@@ -131,6 +131,8 @@ need_kconfig:
 - CRYPTO_SM4: y
 - NET_DROP_MONITOR
 - TRACEPOINTS
+- AMT: m, v5.16-rc1
+- IPV6_IOAM6_LWTUNNEL: y, v5.15
 % elsif ___.group == "netfilter"
 - NET_NS: y
 - NFT_FLOW_OFFLOAD: m, v4.16-rc1
