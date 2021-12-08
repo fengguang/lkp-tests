@@ -552,9 +552,10 @@ def expand_matrix(matrix, options)
   return if real_values.empty?
 
   converted_values = real_values.public_send(convert_function)
-  if converted_values.is_a?(Array)
+  case converted_values
+  when Array
     matrix[stat] = converted_values
-  elsif converted_values.is_a?(Numeric)
+  when Numeric
     matrix[stat] = Array.new(matrix_cols(matrix), converted_values)
   end
 end

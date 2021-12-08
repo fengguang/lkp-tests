@@ -67,11 +67,12 @@ rescue JSON::ParserError
     File.open(mpstat_update, 'r+') do |io|
       io.seek(-2, IO::SEEK_END)
       str = io.gets
-      if str == ",\n"
+      case str
+      when ",\n"
         io.seek(-2, IO::SEEK_END)
         io.truncate(io.pos)
         io.puts "\n\t\t\t\]\n\t\t\}\n\t\]\n\}\}\n"
-      elsif str == "\t\}"
+      when "\t\}"
         io.seek(0, IO::SEEK_END)
         io.puts "\n\t\t\t\]\n\t\t\}\n\t\]\n\}\}\n"
       end

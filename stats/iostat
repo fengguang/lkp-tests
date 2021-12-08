@@ -42,12 +42,13 @@ def extract_dev_stat(line)
 end
 
 while (line = $stdin.gets)
-  if line =~ /^[0-9T:+-]{24}$/ # "2013-04-02T13:58:40+0800", by 'S_TIME_FORMAT=ISO isotat -t'
+  case line
+  when /^[0-9T:+-]{24}$/ # "2013-04-02T13:58:40+0800", by 'S_TIME_FORMAT=ISO isotat -t'
     time = line.chomp('\n')
     puts "time: #{Time.parse(time).to_i}"
-  elsif line =~ /^avg-cpu:/
+  when /^avg-cpu:/
     extract_avg_cpu line
-  elsif line =~ /^Device:/
+  when /^Device:/
     extract_dev_stat line
   end
 end

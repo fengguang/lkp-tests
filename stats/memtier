@@ -64,28 +64,29 @@ end
 while (line = $stdin.gets)
   line = line.resolve_invalid_bytes
 
-  if line =~ /^Sets/
+  case line
+  when /^Sets/
     extract_memtier(line, $histo_sets_sum, $histo_sets_num)
-  elsif line =~ /^Gets/
+  when /^Gets/
     extract_memtier(line, $histo_gets_sum, $histo_gets_num)
-  elsif line =~ /^Waits/
+  when /^Waits/
     extract_memtier(line, $histo_waits_sum, $histo_waits_num)
-  elsif line =~ /^Totals/
+  when /^Totals/
     extract_memtier(line, $histo_totals_sum, $histo_totals_num)
-  elsif line =~ /^Request Latency Distribution/
+  when /^Request Latency Distribution/
     proc_set_latencies = []
     proc_set_latencies = []
-  elsif line =~ /^SET/
+  when /^SET/
     is_set = true
     data = line.split
     s_10us = (data[1].to_f * 100).to_i
     proc_set_latencies[s_10us] = data[2].to_f
-  elsif line =~ /^GET/
+  when /^GET/
     is_set = false
     data = line.split
     s_10us = (data[1].to_f * 100).to_i
     proc_get_latencies[s_10us] = data[2].to_f
-  elsif line =~ /^---$/
+  when /^---$/
     if is_set
       set_latencies << proc_set_latencies
     else
