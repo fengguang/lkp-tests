@@ -53,3 +53,4 @@ else
 EOF
 fi
 rm -rf $perf_data
+rm -rf $TMP_RESULT_ROOT/.perf-sched.*
