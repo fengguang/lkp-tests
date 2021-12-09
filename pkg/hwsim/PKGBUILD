@@ -81,4 +81,5 @@ split_tests()
 
 	cd $benchmark_path || return
 	$LKP_SRC/tools/split-tests hwsim-all 40 hwsim-group-
+	$LKP_SRC/tools/split-tests hwsim-long-param 2 hwsim-long-param-group-
 }

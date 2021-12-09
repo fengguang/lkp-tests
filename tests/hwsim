@@ -37,7 +37,7 @@ run_tests_opt=
 start_opt=
 
 case "$test" in
-long-param)
+long-param-*)
 	run_tests_opt="--long"
 	;;
 mcc)
