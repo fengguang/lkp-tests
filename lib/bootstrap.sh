@@ -440,9 +440,9 @@ install_rpms()
 {
 	[ -d /opt/rpms ] || return
 
-	local rpm_lis=$(ls /opt/rpms/*.rpm)
+	local rpm_list=($(ls /opt/rpms/*.rpm))
 	echo "install $rpm_list"
-	for rpm_pkg in "$rpm_list"
+	for rpm_pkg in "${rpm_list[@]}"
 	do
 		yum localinstall -y "$rpm_pkg"
 	done
