@@ -98,6 +98,25 @@ download_install_cgz()
 			cd /
 			gzip -dc /tmp/tmp.cgz | cpio -id
 		)
+
+		[ $? = "1" ] && {
+			if cpio --help | grep -q 'extract-over-symlinks'; then
+				(
+					cd /
+					gzip -dc /tmp/tmp.cgz | cpio -id --extract-over-symlinks
+				)
+			else
+				(
+					mkdir -p /tmp/cpio
+					cd /tmp/cpio && gzip -dc /tmp/tmp.cgz | cpio -id
+
+					for i in $(ls)
+					do
+						cp -rf ${i}/* /${i}
+					done
+				)
+			fi
+		}
 	done
 	rm -f /tmp/tmp.cgz
 }
