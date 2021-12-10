@@ -12,8 +12,8 @@ need_kconfig:
 - DEV_DAX_PMEM: m
 - HAVE_DMA_CONTIGUOUS: y
 - CMA: y
-- DMA_CMA: y, < v4.8
-- CMA_SIZE_MBYTES: 200, < v4.8
+- DMA_CMA: y, <= v4.8-rc8
+- CMA_SIZE_MBYTES: 200, <= v4.8-rc8
 - ZONE_DEVICE: y
 - MEMORY_HOTPLUG: y
 - MEMORY_HOTREMOVE: y
