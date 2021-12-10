@@ -15,7 +15,8 @@ def replace_base_image(line, os_version)
   if line =~ Regexp.new(centos_from)
     line.gsub!(Regexp.new(centos_tag), os_version)
     line += "\nRUN yum --nogpgcheck -y -q install npm cronie python2-pip yum-utils shadow tar make passwd python3-pip.noarch glibc-locale-source glibc-langpack-en"
-    line += "\nRUN yum remove -y dnf-plugins-core | yum install -y dnf-plugins-core\n"
+    line += "\nRUN yum remove -y dnf-plugins-core && yum clean packages"
+    line += "\nyum install -y dnf-plugins-core\n"
   end
 
   line
@@ -23,7 +24,7 @@ end
 
 def replace_image_context(repo_name,line)
   if repo_name == "patriceckhart/docker-lap" && line =~ %r{php-pspell}
-    new_cmd = "RUN sh -c \"echo -e '[centos]\\nname=centos php\\nbaseurl=http://mirror.centos.org/altarch/7/os/aarch64\\nenabled=1\\ngpgcheck=0' >> /etc/yum.repos.d/php.repo\"\n"
+    new_cmd = "RUN sh -c \"echo -e '[centos]\\nname=centos php\\nbaseurl=http://mirror.centos.org/altarch/7/os/aarch64\\nenabled=1\\ngpgcheck=0' >> /etc/yum.repos.d/php.repo\"\n" 
     line = new_cmd + line
   end
 
