@@ -9,5 +9,7 @@ opt_ip=
 [ "$ip" = 'ipv6' ] && opt_ip='-6'
 
 # start netserver
+systemctl stop firewalld
+
 log_echo netserver $opt_ip 
 exec netserver $opt_ip
