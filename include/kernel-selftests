@@ -196,6 +196,8 @@ need_kconfig:
 - SAMPLE_TRACE_PRINTK: m
 - KALLSYMS_ALL: y
 % elsif ___.group == "group-01"
+- SECURITY_PATH: y
+- SECURITY_LANDLOCK: y, v5.13
 - UDMABUF: y, v4.20-rc1
 - DMABUF_HEAPS: y, v5.6-rc1
 - DMABUF_HEAPS_SYSTEM: y, v5.6-rc1
