@@ -2,9 +2,9 @@ pkgname=stream
 pkgver=1
 pkgrel=1
 arch=('i386' 'x86_64')
-url="http://www.cs.virginia.edu/stream"
+url="https://gitee.com/thesamename/STREAM"
 license=('GPL')
-source=("http://www.cs.virginia.edu/stream/FTP/Code/stream.c")
+source=("https://gitee.com/thesamename/STREAM/raw/master/stream.c")
 md5sums=('SKIP')
 
 package() {
