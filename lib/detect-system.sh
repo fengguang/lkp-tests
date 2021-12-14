@@ -27,7 +27,7 @@ parse_executable_arch()
 			_system_arch=x86_64;;
 		*80[3456]86)
 			_system_arch=i386;;
-		*AArch64)
+		*AArch64|*aarch64)
 			_system_arch=aarch64;;
 		*ARM)
 			_system_arch=arm;;
