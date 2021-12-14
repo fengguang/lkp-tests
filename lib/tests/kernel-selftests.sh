@@ -27,6 +27,23 @@ libc_version_ge()
 	[[ "$greatest" = "$version" ]]
 }
 
+is_kernel_version_ge()
+{
+	local other=$1
+
+	# 5.14.9-200.fc34.x86_64
+	# format: X.Y.Z-...
+	local version=$(uname -r)
+	# 5.14.9
+	# format: X.Y.Z
+	version=${version%%-*}
+	# 5.14
+	# format: X.Y
+	version=${version%.*}
+
+	rs_value=$(awk -v version=${version} -v other=${other} 'BEGIN { print(version >= other) ? "0" : "1" }')
+	return $rs_value
+}
 
 build_selftests()
 {
@@ -470,8 +487,7 @@ fixup_bpf()
 	# tools/testing/selftests/bpf/tools/sbin/bpftool
 	export PATH=$linux_selftests_dir/tools/testing/selftests/bpf/tools/sbin:$PATH
 
-	local kernel_version=$(uname -r)
-	if [[ "$kernel_version" =~ "5.16" ]]; then
+	if is_kernel_version_ge 5.15; then
 		# skip test_kmod.sh because test execution time > 5 hours
 		sed -i "s/test_kmod.sh//" bpf/Makefile
 		echo "LKP SKIP test_kmod.sh"
