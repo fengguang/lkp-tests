@@ -677,7 +677,9 @@ class Job
   end
 
   def add_timeout()
+    return if @job['timeout']
     timeout = 0
+    timeout = @job["runtime"].to_i if @job["runtime"]
     @job['pp'].each do |program, program_param|
       if program == 'sleep'
         if program_param.is_a?(Hash)
@@ -689,7 +691,13 @@ class Job
         timeout += program_param['runtime'].to_i
       end
     end
-    @job['timeout'] = timeout if timeout != 0
+    if timeout != 0
+      if timeout < 3600
+        @job['timeout'] = 3600
+      else
+        @job['timeout'] = timeout
+      end
+    end
   end
 
   # find all create or update files from LKP_SRC directory
