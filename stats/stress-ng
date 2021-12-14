@@ -14,6 +14,9 @@ while (line = $stdin.gets)
     exit 1
   end
 
+  # stress-ng: fail:  [5780] stress-ng: sigaction signal 6 'SIGABRT': errno=22 (Invalid argument)
+  puts 'stress-ng.sigaction.fail: 1' if line =~ /stress-ng: fail:.*sigaction signal/
+
   # stress-ng: info:  [2694] stressor       bogo ops real time  usr time  sys time   bogo ops/s   bogo ops/s
   # stress-ng: info:  [2694]                           (secs)    (secs)    (secs)   (real time) (usr+sys time)
   # stress-ng: info:  [2694] atomic          1060503     10.00    928.24      0.01    106049.80      1142.48
