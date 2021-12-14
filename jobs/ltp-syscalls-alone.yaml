@@ -1,0 +1,20 @@
+suite: ltp
+testcase: ltp
+category: functional
+
+need_memory: 4G
+
+# Knights Landing and Knights Mill is quite slow
+# cpuid > 0 is ok at the present test
+need_cpuid: 1
+
+disk: 1HDD
+fs:
+- ext4
+- xfs
+- btrfs
+- f2fs
+
+ltp:
+  test:
+  - fork13.fork13.-i.1000000

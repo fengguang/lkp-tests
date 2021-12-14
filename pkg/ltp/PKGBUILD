@@ -165,7 +165,7 @@ split_syscalls_tests()
 	standalone_file=$LKP_SRC/pkg/${pkgname}/addon/tests/standalone
 	while read line
 	do
-		echo $line > ./"${line/[[:blank:]]/.}"
+		echo $line > ./"${line//[[:blank:]]/.}"
 	done < <(cat $standalone_file | grep -v '^#')
 
 	grep -v -f syscalls-timer -f syscalls-tgkill -f syscalls-setsockopt06 -f syscalls-numa syscalls -f $standalone_file > syscalls-rest || return
