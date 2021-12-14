@@ -1,0 +1,20 @@
+diff --git a/os/os-linux.h b/os/os-linux.h
+index ba58bf7d..606e4c3c 100644
+--- a/os/os-linux.h
++++ b/os/os-linux.h
+@@ -124,10 +124,14 @@ static inline int ioprio_set(int which, int who, int ioprio_class, int ioprio)
+ 	return syscall(__NR_ioprio_set, which, who, ioprio);
+ }
+ 
+-static inline int gettid(void)
++#if !defined(_GNU_SOURCE) || !defined(__GLIBC__) || __GLIBC__ < 2 || (__GLIBC__ == 2 && __GLIBC_MINOR__ < 30)
++static
++inline int gettid(void)
+ {
+ 	return syscall(__NR_gettid);
+ }
++#endif
++
+ 
+ #define SPLICE_DEF_SIZE	(64*1024)
+ 

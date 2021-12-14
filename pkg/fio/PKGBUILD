@@ -1,5 +1,5 @@
 pkgname=fio
-pkgver=3.15
+pkgver=3.12
 pkgrel=1
 pkgdesc="Fio is a tool that will spawn a number of threads or processes doing a particular type of I/O action as specified by the user."
 arch=(i386 x86_64)
@@ -9,10 +9,30 @@ depends=('')
 source=("https://gitee.com/tan-long/fio.git") # or https://github.com/axboe/fio.git
 md5sums=('SKIP')
 
-build() {
+patch_source() {
+	:
+}
+
+prepare() {
     cd "$srcdir/fio"
     git checkout "fio-$pkgver"
-    ./configure --disable-native
+    if [ "$os" = "openeuler" ]; then
+	if [[ "$os_version" =~ ^(21.03|21.03-iso|21.09|21.09-iso)$ ]]; then
+	    patch -p1 < "$LKP_SRC/pkg/${pkgname}/fix-gettid.patch"
+	fi
+    elif [ "$os" = "debian" ] && [[ "$os_version" =~ ^(11.1.0|11.1.0-iso)$ ]]; then
+        patch -p1 < "$LKP_SRC/pkg/${pkgname}/fix-gettid.patch"
+    elif [ "$os" = "uniontechos" ] && [[ "$os_version" =~ ^(1040d|1040d-iso)$ ]]; then
+        patch -p1 < "$LKP_SRC/pkg/${pkgname}/fix-gettid.patch"
+    elif [ "$os" = "suse" ] && [[ "$os_version" =~ ^(15-SP3|15-SP3-iso)$ ]]; then
+        patch -p1 < "$LKP_SRC/pkg/${pkgname}/fix-gettid.patch"
+    fi
+}
+
+build() {
+    cd "$srcdir/fio"
+    #./configure --disable-native
+    ./configure --extra-cflags="-fcommon" --cc=${GCC_INSTALL_PRIFIX}gcc
     make
 }
 
