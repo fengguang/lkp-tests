@@ -31,11 +31,11 @@ def designated_file_size
   end
 
   result_str.split("\n").each do |e|
-    designated_hash['L1_$'] = e.split[1] if e =~ /0.01758/
-    designated_hash['Main_mem'] = e.split[1] if e =~ /256.0000/
-    designated_hash['Rand_mem'] = e.split[1] if e =~ /512.0000/
-    designated_hash['Mmap_Latency'] = e.split[1] if e =~ /536.870912/
-    designated_hash['L2_$'] = e.split[1] if e =~ /0.05078/
+    designated_hash['L1_$'] = e.split[1] if e =~ /^0.01758/
+    designated_hash['Main_mem'] = e.split[1] if e =~ /^256.00000/
+    designated_hash['Rand_mem'] = e.split[1] if e =~ /^512.00000/
+    designated_hash['Mmap_Latency'] = e.split[1] if e =~ /^536.870912/
+    designated_hash['L2_$'] = e.split[1] if e =~ /^0.50000/
   end
 
   designated_hash
