@@ -249,7 +249,17 @@ class NetStater < Stater
         # TEST: IPv6 nexthop with IPv4 route                                  [ OK ]
         # TEST: IPv4 route with mixed v4-v6 multipath route                   [ OK ]
         # TEST: IPv6 nexthop with IPv4 route                                  [ OK ]
-        stats.add "#{@test_prefix}.#{@test_case}.#{$1}", $2 unless @test_script == 'fib_nexthops.sh'
+        if @test_prefix == "net.ioam6.sh"
+          subcase_ioam6 = $1.strip
+          subcase_stat = $2
+          if subcase_ioam6 =~ /(inline mode|encap mode)/
+            stats.add "#{@test_prefix}.#{@test_case}.#{subcase_ioam6}", subcase_stat
+            @old_mode = $1
+          else
+            stats.add "#{@test_prefix}.#{@test_case}.#{subcase_ioam6} (#{@old_mode})", subcase_stat
+          end
+        end
+        stats.add "#{@test_prefix}.#{@test_case}.#{$1}", $2 unless %w(fib_nexthops.sh ioam6.sh).include? @test_script
       else
         # selftests: net: pmtu.sh
         # TEST: ipv4: PMTU exceptions                                        [ OK ]
