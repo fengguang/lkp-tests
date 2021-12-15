@@ -30,7 +30,7 @@ describe 'filter/need_kconfig.rb' do
     end
 
     # Job.open can filter comments (e.g. # support kernel xxx)
-    job = Job.open(job_file)
+    Job.open(job_file)
   end
 
   context 'when X is disabled in kernel' do
