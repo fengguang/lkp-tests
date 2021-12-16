@@ -14,3 +14,4 @@ subsystems:
 - gen8
 belongs_to: i915
 branch_denylist: rerere-cache|maintainer-tools
+no_merge_branch: topic/.*
