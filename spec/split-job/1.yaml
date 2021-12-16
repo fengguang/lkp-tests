@@ -1,0 +1,10 @@
+suite: split-job
+testcase: split-job
+
+# has job['split-job']['test'] only
+
+split-job:
+  test:
+   - test_1
+   - test_2
+   - test_3
