@@ -163,7 +163,6 @@ need_kconfig:
 - RANDOMIZE_KSTACK_OFFSET_DEFAULT: y, v5.14-rc1
 - SLAB_FREELIST_HARDENED: y, v5.14-rc1
 - UBSAN_BOUNDS: y, v5.15-rc1
-- UBSAN_TRAP: y, v5.15-rc1
 % elsif ___.group == "pidfd"
 - UTS_NS: y
 - IPC_NS: y
