@@ -436,15 +436,23 @@ install_deb()
 	done
 }
 
+check_rpm_manager()
+{
+	has_cmd "yum" && installer="yum"
+	has_cmd "zypper" && installer="zypper"
+}
+
 install_rpms()
 {
 	[ -d /opt/rpms ] || return
+	check_rpm_manager
 
 	local rpm_list=($(ls /opt/rpms/*.rpm))
 	echo "install $rpm_list"
 	for rpm_pkg in "${rpm_list[@]}"
 	do
-		yum localinstall -y "$rpm_pkg"
+		[ ${installer} = "yum" ] && yum localinstall -y "$rpm_pkg"
+		[ ${installer} = "zypper" ] && zypper install -y "$rpm_pkg"
 	done
 }
 
