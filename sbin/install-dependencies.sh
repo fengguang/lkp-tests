@@ -21,6 +21,9 @@ linux_dep()
 	pacman)
 		sudo "$installer" -Sy --noconfirm --needed ruby rubygems gcc make git lftp util-linux
 		;;
+	zypper)
+		sudo "$installer" install -y rubygems gcc gcc-c++ make ruby-devel git lftp util-linux hostname gzip
+		;;
 	*)
 		echo "Unknown Package Manager! please install dependencies manually." && exit 1
 		;;
@@ -33,6 +36,7 @@ get_package_manager()
 	has_cmd "dnf" && installer="dnf" && return
 	has_cmd "apt-get" && installer="apt-get" && return
 	has_cmd "pacman" && installer="pacman" && return
+	has_cmd "zypper" && installer="zypper" && return
 }
 
 mac_dep()
