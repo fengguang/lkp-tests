@@ -61,6 +61,9 @@ keep_only_specific_test()
 	[[ $test = "fcnal-test.sh" ]] && {
 		echo "timeout=3600" >> $subtest/settings
 	}
+	[[ $test = "fib_nexthops.sh" ]] && {
+		echo "timeout=3600" >> $subtest/settings
+	}
 }
 
 run_tests()
