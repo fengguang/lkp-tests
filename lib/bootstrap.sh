@@ -442,18 +442,32 @@ check_rpm_manager()
 	has_cmd "zypper" && installer="zypper"
 }
 
+delete_conflict_packages()
+{
+	local rpms
+
+	rpm -ivh --force --ignoresize --test /opt/rpms/*.rpm 2>conflict_log
+	rpms=($(awk -F'conflicts with' '{print $2}' conflict_log | grep -v 'installed'))
+
+	[ ! ${rpms} ] && return
+	for rpm in ${rpms[@]}
+	do
+		rm -f /opt/rpms/${rpm}.rpm
+	done
+}
+
 install_rpms()
 {
 	[ -d /opt/rpms ] || return
 	check_rpm_manager
 
-	local rpm_list=($(ls /opt/rpms/*.rpm))
-	echo "install $rpm_list"
-	for rpm_pkg in "${rpm_list[@]}"
-	do
-		[ ${installer} = "yum" ] && yum localinstall -y "$rpm_pkg"
-		[ ${installer} = "zypper" ] && zypper install -y "$rpm_pkg"
-	done
+	[ ${installer} = "yum" ] && yum localinstall -y /opt/rpms/*.rpm
+	[ ${installer} = "zypper" ] && zypper install --force-resolution -y /opt/rpms/*.rpm
+
+	[ $? = "0" ] || {
+		delete_conflict_packages
+		rpm -ivh --force --ignoresize /opt/rpms/*.rpm
+		}
 }
 
 try_get_and_set_distro()

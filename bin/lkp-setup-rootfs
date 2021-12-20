@@ -97,6 +97,19 @@ setup_gzip()
         fi
 }
 
+cleanup_cgz_packages()
+{
+	[ -d /opt/rpms ] && rm -rf /opt/rpms/
+	[ -d /opt/deb ] && rm -rf /opt/deb/
+}
+
+install_cgz_packages()
+{
+	install_rpms
+	install_deb
+	install_pkgs
+}
+
 download_install_cgz()
 {
 	setup_gzip
@@ -129,6 +142,8 @@ download_install_cgz()
 				)
 			fi
 		}
+		install_cgz_packages
+		cleanup_cgz_packages
 	done
 	rm -f /tmp/tmp.cgz
 }
@@ -303,9 +318,6 @@ while true; do
 		download_install_cgz $initrd_deps
 		download_install_cgz $initrd_pkgs
 	fi
-	install_rpms
-	install_deb
-	install_pkgs
 
 	echo $LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp
 	$LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp $job

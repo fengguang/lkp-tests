@@ -84,9 +84,12 @@ cleanup_downloaded_rpms()
 
 cleanup_installed_depends_rpms()
 {
+	# addlock to provent remove zypper
+	zypper addlock zypper
+
 	for package in $@
 	do
-		zypper -q remove -y "$package" >&/dev/null
+		zypper -q remove -y -u "$package" >&/dev/null
 	done
 }
 
