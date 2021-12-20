@@ -87,8 +87,20 @@ downgrade_ucode()
 	ucode_less_than_current $next_version
 }
 
+setup_gzip()
+{
+	if has_cmd gzip; then
+		gzip=gzip
+	else
+		busybox=$(cmd_path busybox) || return
+		gzip="${busybox} gzip"
+        fi
+}
+
 download_install_cgz()
 {
+	setup_gzip
+
 	local url
 	for url
 	do
@@ -96,19 +108,19 @@ download_install_cgz()
 		http_get_file $url /tmp/tmp.cgz
 		(
 			cd /
-			gzip -dc /tmp/tmp.cgz | cpio -id
+			${gzip} -dc /tmp/tmp.cgz | cpio -id
 		)
 
 		[ $? = "1" ] && {
 			if cpio --help | grep -q 'extract-over-symlinks'; then
 				(
 					cd /
-					gzip -dc /tmp/tmp.cgz | cpio -id --extract-over-symlinks
+					${gzip} -dc /tmp/tmp.cgz | cpio -id --extract-over-symlinks
 				)
 			else
 				(
 					mkdir -p /tmp/cpio
-					cd /tmp/cpio && gzip -dc /tmp/tmp.cgz | cpio -id
+					cd /tmp/cpio && ${gzip} -dc /tmp/tmp.cgz | cpio -id
 
 					for i in $(ls)
 					do
