@@ -1,0 +1,115 @@
+#!/bin/bash
+
+shopt -s nullglob
+
+. $LKP_SRC/lib/install.sh
+. $LKP_SRC/distro/common
+. $LKP_SRC/lib/debug.sh
+
+distro_install_depends()
+{
+	local script
+	local bm="$1"
+	local scripts=$(find $LKP_SRC/distro/depends/ -name "$bm" -o -name "${bm}.[0-9]")
+
+	for script in $scripts
+	do
+		script=$(basename $script)
+		packages=$(get_dependency_packages $DISTRO $script)
+
+		[ -z "$packages" ] && continue
+
+		echo install packages for $script: $packages
+
+		for pkg in $packages
+		do
+			rpm --quiet --query $pkg || zypper install -y $pkg >&/dev/null
+		done
+	done
+}
+
+pack_benchmark()
+{
+	setup_proxy
+
+	distro_install_depends lkp-dev
+
+	# Process each benchmark
+	for BM_NAME in $benchmark
+	do
+		distro_install_depends $BM_NAME-dev || continue
+		echo $LKP_SRC/sbin/pack -d $DISTRO -f -c -s $PKG_MNT/$pack_to $BM_NAME
+		(
+			$LKP_SRC/sbin/pack -d $DISTRO -f -c -s $PKG_MNT/$pack_to $BM_NAME
+		)
+	done
+}
+
+zypper_download()
+{
+	echo "zypper install -d -y $@ | grep -e "Argument resolves to no package""
+	zypper install -d -y "$@" | grep -e 'Argument resolves to no package' && exit 1
+	return 0
+}
+
+zypper_pack()
+{
+	local target_dir=opt/rpms
+	local date=$(date +"%Y%m%d")
+
+	local downloaded_rpms=$(find /var/ -type f -name "*.rpm")
+
+	[ "$downloaded_rpms" ] || return
+
+	mkdir -p $target_dir
+
+	mv $downloaded_rpms $target_dir
+
+	[ ${suite} == "cci-depends" ] && distro_install_depends cci-depends
+	find $target_dir | cpio --quiet -o -H newc --owner=root.root | gzip -n -9 >$pack_to/${BM_NAME}_$date.cgz
+
+	ln -sf ${BM_NAME}_$date.cgz $pack_to/${BM_NAME}.cgz || return
+	chown .lkp $pack_to/${BM_NAME}_$date.cgz $pack_to/${BM_NAME}.cgz || return
+	echo package uploaded to $pack_to/${benchmark}.cgz
+
+	ls $target_dir/*.rpm > $pack_to/.${BM_NAME}.packages
+
+	rm -rf $target_dir
+}
+
+cleanup_downloaded_rpms()
+{
+	find /var/ -type f -name "*.rpm" -exec rm -f -- '{}' \;
+}
+
+cleanup_installed_depends_rpms()
+{
+	for package in $@
+	do
+		zypper -q remove -y "$package" >&/dev/null
+	done
+}
+
+pack_benchmark_deps()
+{
+	setup_proxy
+
+	for BM_NAME in $benchmark
+	do
+
+		cleanup_downloaded_rpms
+
+		check_shared_package $BM_NAME
+
+		packages=$(echo $(get_dependency_packages $DISTRO $BM_NAME))
+
+		cleanup_installed_depends_rpms $packages
+
+		if zypper_download $packages; then
+			zypper_pack
+		else
+			echo "failed to pack-deps $BM_NAME" >&2
+			exit 1
+		fi
+	done
+}
