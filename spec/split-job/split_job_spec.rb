@@ -29,6 +29,7 @@ describe 'lkp-split-job' do
       `LKP_SRC=#{@tmp_src_dir} #{@tmp_src_dir}/bin/lkp split-job -t lkp-tbox -o #{@tmp_dir} spec/split-job/1.yaml`
 
       Dir[File.join(@tmp_dir, '1-*.yaml')].each do |actual_yaml|
+        `sed -i 's/:#! /#!/g' #{actual_yaml}`
         actual = YAML.load_file(actual_yaml)
         expect = YAML.load_file("#{LKP_SRC}/spec/split-job/#{File.basename(actual_yaml)}")
 
