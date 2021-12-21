@@ -50,4 +50,15 @@ describe 'lkp-split-job' do
       end
     end
   end
+
+  it "split job['fs'] only" do
+    Dir.chdir(@tmp_src_dir) do
+      `LKP_SRC=#{@tmp_src_dir} #{@tmp_src_dir}/bin/lkp split-job -t lkp-tbox -o #{@tmp_dir} spec/split-job/3.yaml`
+      Dir[File.join(@tmp_dir, '3-*.yaml')].each do |actual_yaml|
+        `sed -i 's/:#! /#!/g' #{actual_yaml}`
+        actual = YAML.load_file(actual_yaml)
+        expect = YAML.load_file("#{LKP_SRC}/spec/split-job/#{File.basename(actual_yaml)}")
+      end
+    end
+  end
 end
