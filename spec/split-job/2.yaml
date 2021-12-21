@@ -1,0 +1,11 @@
+suite: split-job
+testcase: split-job
+
+# has job['$suite']['test'] and job['$suite']['group']
+split-job:
+  group:
+   - group_1
+   - group_2
+  test:
+   - test_1
+   - test_2
