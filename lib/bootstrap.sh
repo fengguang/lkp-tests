@@ -447,11 +447,10 @@ delete_conflict_packages()
 	local rpms
 
 	rpm -ivh --force --ignoresize --test /opt/rpms/*.rpm 2>conflict_log
-	rpms=($(awk -F'conflicts with' '{print $2}' conflict_log | grep -v 'installed'))
+	rpms=$(awk -F'conflicts with' '{print $2}' conflict_log | grep -v 'installed')
 
 	[ ! ${rpms} ] && return
-	for rpm in ${rpms[@]}
-	do
+	echo "${rpms}" | tr ' ' '\n' | while read rpm; do
 		rm -f /opt/rpms/${rpm}.rpm
 	done
 }
