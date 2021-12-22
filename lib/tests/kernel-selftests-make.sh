@@ -59,7 +59,7 @@ keep_only_specific_test()
 	sed -i "/^include .*\/lib.mk/i TEST_PROGS = $test" $makefile
 
 	[[ $test = "fcnal-test.sh" ]] && {
-		echo "timeout=3600" >> $subtest/settings
+		echo "timeout=2000" >> $subtest/settings
 	}
 	[[ $test = "fib_nexthops.sh" ]] && {
 		echo "timeout=3600" >> $subtest/settings
