@@ -7,14 +7,15 @@ disk:
 - 1HDD
 fs1:
   fs_type:
-  - xfs
-mount_to: /test/fio
+  - ext4
+mount_to: /test/
 iosched:
 - mq-deadline
 raw_disk: no
 nr_task: 10
 
 fio-setup-basic:
+  test_filename: /test/fio
   ioengine: libaio
   iodepth: 10
   test_size: 1000G
@@ -23,6 +24,7 @@ fio-setup-basic:
   ramp_time: 1
   loops: 100000
   rw:
+  - read
   - write
   - randread
   - randwrite
@@ -30,6 +32,7 @@ fio-setup-basic:
   bs:
   - 4k
   - 16k
+  - 32k
   - 64k
   - 128k
   - 256k

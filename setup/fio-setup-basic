@@ -25,6 +25,7 @@
 # - loops
 # - cpuload
 # - donorname
+# - test_filename
 
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/common.sh
@@ -141,7 +142,7 @@ donorname=$donorname
 "
 fi
 
-[ -n "$rwmixread" ] && [ "$rw" == "randrw"] && rwmixread_setup="rwmixread=$rwmixread"
+[ -n "$rwmixread" ] && [ "$rw" == "randrw" ] && rwmixread_setup="rwmixread=$rwmixread"
 
 parse_numa_mem_policy()
 {
@@ -205,6 +206,8 @@ no=0
 for storage in $storages; do
 	if [ "$raw_disk" = 1 ]; then
 		storage_setup="filename=$storage"
+	elif [ -n "$test_filename" ]; then
+		storage_setup="filename=$test_filename"
 	else
 		storage_setup="directory=$storage"
 	fi
