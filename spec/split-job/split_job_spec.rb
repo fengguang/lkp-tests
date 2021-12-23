@@ -58,6 +58,8 @@ describe 'lkp-split-job' do
         `sed -i 's/:#! /#!/g' #{actual_yaml}`
         actual = YAML.load_file(actual_yaml)
         expect = YAML.load_file("#{LKP_SRC}/spec/split-job/#{File.basename(actual_yaml)}")
+
+        expect(actual).to eq expect
       end
     end
   end
