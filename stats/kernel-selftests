@@ -371,7 +371,7 @@ class X86Stater < Stater
       end
     when %r{: recipe for target.+failed}
       # Makefile:47: recipe for target 'sysret_ss_attrs_64' failed
-      stats.add @test.to_s, 'make_fail'
+      stats.add @test.to_s, 'make_fail' unless stats.key?(@test.to_s)
     else
       super(line, stats)
     end
