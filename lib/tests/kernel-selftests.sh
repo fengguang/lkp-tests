@@ -771,6 +771,7 @@ fixup_subtest()
 	elif [[ "$subtest" = "x86" ]]; then
 		fixup_x86
 	elif [[ "$subtest" = "resctrl" ]]; then
+		log_cmd make -C resctrl >/dev/null || return
 		log_cmd resctrl/resctrl_tests 2>&1
 		return 1
 	elif [[ "$subtest" = "livepatch" ]]; then
