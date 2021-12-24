@@ -21,6 +21,8 @@ including:
 - CONFIG_EXT4
 % elsif job['fs'] && job['fs']['fs'] == "xfs"
 - CONFIG_XFS
+% elsif job['fs'] && job['fs']['fs'] == "nfsv3"
+- CONFIG_NFSV3
 % else
 - CONFIG_FS_ELSE
 % end
