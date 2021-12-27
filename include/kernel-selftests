@@ -116,7 +116,7 @@ need_kconfig:
 - NF_TABLES_IPV4: y, v4.17-rc1
 - NFT_CHAIN_NAT_IPV6: m, <= v5.0
 - NFT_TPROXY: m, v4.19-rc1
-- NFT_COUNTER: m
+- NFT_COUNTER: m, <= v5.16-rc4
 - NFT_CHAIN_NAT_IPV4: m, <= v5.0
 - NET_SCH_FQ: m
 - NET_SCH_ETF: m, v4.19-rc1
