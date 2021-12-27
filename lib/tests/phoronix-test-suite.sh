@@ -720,7 +720,7 @@ run_test()
 		sqlite-[0-9]*)
 			fixup_sqlite $test || die "failed to fixup test $test"
 			;;
-		cyclictest-*|parboil-*|cp2k-*|llvm-test-suite-*|blender-*|svt-av1-*|helsing-*|build-gcc-*|core-latency-*|jxrendermark-*)
+		cyclictest-*|parboil-*|cp2k-*|llvm-test-suite-*|blender-*|svt-av1-*|helsing-*|build-gcc-*|core-latency-*|jxrendermark-*|renaissance-*)
 			reduce_runtimes $test || die "failed to reduce run times when run $test"
 			;;
 		blogbench-*)
