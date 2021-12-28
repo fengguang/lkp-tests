@@ -395,7 +395,8 @@ class Job
       @job.merge!(hwconfig) { |_k, a, _b| a } # job's key/value has priority over hwconfig
     end
 
-    @job['arch'] ||= 'aarch64'
+    @job['os_arch'] ||= 'aarch64'
+    @job['arch'] ||= @job['os_arch']
   end
 
   def check_set_tbox_group
