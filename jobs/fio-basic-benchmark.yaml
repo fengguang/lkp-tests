@@ -4,13 +4,11 @@ category: benchmark
 runtime: 30
 
 disk:
-- 1HDD
+- 1SSD
 fs1:
   fs_type:
   - ext4
 mount_to: /test/
-iosched:
-- mq-deadline
 raw_disk: no
 nr_task: 10
 
