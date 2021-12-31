@@ -5,7 +5,7 @@ job_failed_content()
 	email_content="To: $my_email
 Subject: [NOTIFY Compass-CI] Test job failed: $id
 
-Dear $my_name:
+Dear $my_account:
 
 	Sorry to inform you that your test job is failed, you can click the following link to view details.
 	https://api.compass-ci.openeuler.org:${SRV_HTTP_RESULT_PORT:-20007}$result_root
@@ -20,7 +20,7 @@ job_debug_content()
 	email_content="To: $my_email
 Subject: [NOTIFY Compass-CI] Test job debug: $id
 
-Dear $my_name,
+Dear $my_account,
 
 	Your test job is ready to debug and test machine has been provisioned.
 
@@ -45,7 +45,7 @@ borrow_success_content()
 	email_content="To: $my_email
 Subject: [NOTIFY Compass-CI] Machine application successful: $id
 
-Dear $my_name,
+Dear $my_account,
 
 	Your test machine has been provisioned.
 
@@ -70,7 +70,7 @@ borrow_failed_content()
 	email_content="To: $my_email
 Subject: [NOTIFY Compass-CI] Machine application failed: $id
 
-Dear $my_name:
+Dear $my_account:
 
 	Sorry to inform you that your application failed.
 	You may need to wait a moment, or check whether your pub_key exists.
