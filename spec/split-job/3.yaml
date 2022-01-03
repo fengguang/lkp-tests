@@ -1,0 +1,11 @@
+suite: split-job
+testcase: split-job
+
+# has job['fs'] and job['$suite']
+
+fs:
+ - ext4
+ - xfs
+ - nfsv3
+
+split-job:

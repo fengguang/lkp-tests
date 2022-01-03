@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+# Running 10 seconds...
+# Launching 2 threads...
+# Instruction type 0...
+# Start running with 10 seconds of instruction:nop_loop
+# Start running with 10 seconds of instruction:nop_loop
+# Throughput: 82265774 lps
+# Throughput: 82290050 lps
+
+num = 0
+throughput_all = 0
+
+$stdin.each_line do |line|
+  case line
+  when /^Throughput/
+    throughput = line.split[1]
+    throughput_all += throughput.to_i
+    num += 1
+  end
+end
+
+avg_throughput = throughput_all / num
+
+puts "Throughput: #{avg_throughput}"

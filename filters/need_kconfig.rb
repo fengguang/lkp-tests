@@ -49,14 +49,26 @@ def kernel_match_version?(kernel_version, expected_kernel_versions)
   kernel_version = KernelTag.new(kernel_version)
 
   expected_kernel_versions.all? do |expected_kernel_version|
-    match = expected_kernel_version.match(/(?<operator><|>|==|!=|<=|>=)?\s*(?<kernel_tag>v[0-9]\.\d+(-rc\d+)*)/)
-    if match.nil? || match[:kernel_tag].nil?
-      raise Job::SyntaxError, "Wrong syntax of kconfig setting: #{expected_kernel_versions}"
-    else
-      operator = match[:operator] || '>='
+    match = expected_kernel_version.match(/(?<operator>==|!=|<=|>|>=)?\s*(?<kernel_tag>v[0-9]\.\d+(-rc\d+)*)/)
+    raise Job::SyntaxError, "Wrong syntax of kconfig setting: #{expected_kernel_versions}" if match.nil? || match[:kernel_tag].nil?
 
-      kernel_version.method(operator).(KernelTag.new(match[:kernel_tag]))
-    end
+    operator = match[:operator] || '>='
+
+    # rli9 FIXME: hack code to handle <=
+    # Take below example, MEMORY_HOTPLUG_SPARSE is moved in 5.16-rc1, thus we configure
+    # as <= 5.15. But we use rc_tag to decide the kernel of commit, 50f9481ed9fb or other
+    # commit now use kernel v5.15 to compare. This matches the <= and expects MEMORY_HOTPLUG_SPARSE
+    # is y, which leads to job filtered wrongly on these commits.
+    #
+    # fa55b7dcdc43 ("Linux 5.16-rc1")
+    # c55a04176cba ("Merge tag 'char-misc-5.16-rc1' ...")
+    # 50f9481ed9fb ("mm/memory_hotplug: remove CONFIG_MEMORY_HOTPLUG_SPARSE")
+    # 8bb7eca972ad ("Linux 5.15")
+    #
+    # To workaround this, change operator to < to mismatch the kernel
+    operator = '<' if operator == '<='
+
+    kernel_version.method(operator).call(KernelTag.new(match[:kernel_tag]))
   end
 end
 
@@ -89,7 +101,7 @@ def check_all(kernel_kconfigs)
     next if kernel_match_kconfig?(kernel_kconfigs, expected_kernel_kconfig)
 
     uncompiled_kconfig = expected_kernel_kconfig
-    uncompiled_kconfig += " supported by kernel (#{expected_kernel_versions.join(', ').gsub("\"", '')})" if expected_kernel_versions
+    uncompiled_kconfig += " supported by kernel (#{expected_kernel_versions.join(', ').gsub('"', '')})" if expected_kernel_versions
     uncompiled_kconfigs.push uncompiled_kconfig
   end
 

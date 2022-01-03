@@ -12,10 +12,11 @@ will-it-scale:
   - process
   test:
   - brk1
+  - brk2
   - dup1
   - eventfd1
-  # fallocate1_processes: tests/fallocate1.c:20: testcase: Assertion `fd >= 0' failed.
-  #  - fallocate1
+  - fallocate1
+  - fallocate2
   - futex1
   - futex2
   - futex3

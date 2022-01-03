@@ -19,9 +19,7 @@ stress-ng:
   - aio
   - aiol
   - bad-altstack
-  - bigheap
 #  - binderfs
-  - brk
   - cap
   - chattr
   - chdir
@@ -103,7 +101,7 @@ stress-ng:
   - netlink-proc
   - netlink-task
   - nice
-  - null
+  - 'null'
   - numa
   - opcode
   - open
@@ -182,7 +180,7 @@ stress-ng:
   - userfaultfd
   - utime
   - vdso
-  - verity
+#  - verity
   - vfork
   - vforkmany
   - vm
@@ -196,3 +194,14 @@ stress-ng:
   - yield
   - zero
   - zombie
+
+---
+oom-killer:
+  ignored: 1
+
+stress-ng:
+  class:
+  - os
+  test:
+  - brk
+  - bigheap

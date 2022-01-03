@@ -7,6 +7,7 @@ class Module
 
   def prop_accessor(*props)
     attr_reader(*props)
+
     props.each do |prop|
       class_eval %{
 def #{prop}_set?

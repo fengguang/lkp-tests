@@ -1,0 +1,28 @@
+including:
+- CONFIG_ALWAYS
+
+% if job['split-job'] && job['split-job']['test'] == "test_1"
+- CONFIG_TEST_1
+% elsif job['split-job'] && job['split-job']['test'] == "test_2"
+- CONFIG_TEST_2
+% else
+- CONFIG_TEST_ELSE
+% end
+
+% if job['split-job'] && job['split-job']['group'] == "group_1"
+- CONFIG_GROUP_1
+% elsif job['split-job'] && job['split-job']['group'] == "group_2"
+- CONFIG_GROUP_2
+% else
+- CONFIG_GROUP_ELSE
+% end
+
+% if job['fs'] && job['fs']['fs'] == "ext4"
+- CONFIG_EXT4
+% elsif job['fs'] && job['fs']['fs'] == "xfs"
+- CONFIG_XFS
+% elsif job['fs'] && job['fs']['fs'] == "nfsv3"
+- CONFIG_NFSV3
+% else
+- CONFIG_FS_ELSE
+% end

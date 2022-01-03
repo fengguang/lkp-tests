@@ -2,7 +2,7 @@
 
 LKP_SRC = ENV['LKP_SRC']
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   case line.chomp!
   when /number of transactions actually processed: (\d+)/
     puts "transactions: #{$1}"

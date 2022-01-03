@@ -1,0 +1,71 @@
+# selftests: bpf: test_progs
+# #1/1 mov:OK
+# #1/2 shift:OK
+# #1/3 addsub:OK
+# #1/4 mul:OK
+# #1/5 unknown shift:OK
+# #1/6 unknown mul:OK
+# #1/7 packet const offset:OK
+# #1/8 packet variable offset:OK
+# #1/9 packet variable offset 2:OK
+# #1/10 dubious pointer arithmetic:OK
+# #1/11 variable subtraction:OK
+# #1/12 pointer variable subtraction:OK
+# #1 align:OK
+# #2 atomic_bounds:OK
+# #3/1 add:OK
+# #3/2 sub:OK
+# #3/3 and:OK
+# #3/4 or:OK
+# #3/5 xor:OK
+# #3/6 cmpxchg:OK
+# #3/7 xchg:OK
+# #3 atomics:OK
+# #4 attach_probe:OK
+# #5 autoload:OK
+# test_bind_perm:PASS:cg-join 0 nsec
+# test_bind_perm:PASS:skel 0 nsec
+# test_bind_perm:PASS:bind_v4_prog 0 nsec
+# test_bind_perm:PASS:bind_v6_prog 0 nsec
+# cap_net_bind_service:PASS:cap_get_proc 0 nsec
+# cap_net_bind_service:PASS:cap_get_flag 0 nsec
+# cap_net_bind_service:PASS:cap_set_flag 0 nsec
+# cap_net_bind_service:PASS:cap_set_proc 0 nsec
+# cap_net_bind_service:PASS:cap_free 0 nsec
+# try_bind:PASS:fd 0 nsec
+# try_bind:PASS:bind 0 nsec
+# try_bind:PASS:fd 0 nsec
+# try_bind:PASS:bind 0 nsec
+# try_bind:PASS:fd 0 nsec
+# try_bind:FAIL:bind unexpected bind: actual 98 != expected 0
+# try_bind:PASS:fd 0 nsec
+# try_bind:FAIL:bind unexpected bind: actual 98 != expected 0
+# cap_net_bind_service:PASS:cap_get_proc 0 nsec
+# cap_net_bind_service:PASS:cap_get_flag 0 nsec
+# cap_net_bind_service:PASS:cap_set_flag 0 nsec
+# cap_net_bind_service:PASS:cap_set_proc 0 nsec
+# cap_net_bind_service:PASS:cap_free 0 nsec
+# #6 bind_perm:FAIL
+# #7/1 btf_id_or_null:OK
+# #7/2 ipv6_route:OK
+# #7/3 netlink:OK
+# #7/4 bpf_map:OK
+# #7/5 task:OK
+# #153 xdp:OK
+# #154/1 xdp_adjust_tail_shrink:OK
+# #154/2 xdp_adjust_tail_grow:OK
+# #154/3 xdp_adjust_tail_grow2:OK
+# #154 xdp_adjust_tail:OK
+# #155 xdp_attach:OK
+# #156 xdp_bpf2bpf:OK
+# #157/1 cpumap_with_progs:OK
+# #157 xdp_cpumap_attach:OK
+# #158/1 DEVMAP with programs in entries:OK
+# #158/2 Verifier check of DEVMAP programs:OK
+# #158 xdp_devmap_attach:OK
+# #159 xdp_info:OK
+# #160 xdp_link:OK
+# #161 xdp_noinline:OK
+# #162 xdp_perf:OK
+# Summary: 152/922 PASSED, 1 SKIPPED, 14 FAILED
+not ok 6 selftests: bpf: test_progs # exit=1

@@ -1,22 +1,18 @@
 suite: ltp
 category: functional
 
-need_modules: true
 need_memory: 4G
 
 ltp:
   test:
   - fsx # stress test groups, but will not take too long time
   - crypto
-  # - io_cd # require special peripheral(/dev/cdrom and media)
-  # - io_floppy # ignore floppy tests
   - fs_bind
   - kernel_misc
   - net.ipv6
   - net.multicast
   - net.tcp_cmds
   - syscalls-ipc-00
-  - tracing
   - smoketest
   - uevent
   # - s390x_tests # designed to be executed in s390x environment (zVM or LPAR)

@@ -14,11 +14,7 @@ fs:
 - ext2
 - ext4
 - xfs
-- btrfs
-- f2fs
-- udf
 
 xfstests:
   test:
   - generic-dax
-  - generic-470

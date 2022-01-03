@@ -1,9 +1,0 @@
-url: https://git.kernel.org/pub/scm/linux/kernel/git/rt/linux-rt-devel.git
-owner:
-- Thomas Gleixner <tglx@linutronix.de>
-- Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-git_am_branch: for-kbuild-bot/current-stable
-subsystems:
-- rt
-test_old_branches: .*
-branch_denylist: linux-5\..+\.y-rt

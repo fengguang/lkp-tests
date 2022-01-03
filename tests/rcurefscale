@@ -1,0 +1,49 @@
+#!/bin/sh
+# - nr_threads
+# - scale_type
+# - loops
+# - readdelay
+# - nruns
+
+## creates an rcurefscale kernel module that can be loaded to
+## run a torture test.
+
+. $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/reproduce-log.sh
+
+args=""
+[ ! -z "$scale_type" ] && args="$args scale_type=$scale_type"
+[ ! -z "$nr_threads" ] && args="$args nreaders=$nr_threads"
+[ ! -z "$loops" ] && args="$args loops=$loops"
+[ ! -z "$readdelay" ] && args="$args readdelay=$readdelay"
+[ ! -z "$nruns" ] && args="$args nruns=$nruns"
+
+# since we will pass nr_thread to the test, so the test duration
+# depends on the cpu number. It's known that:
+# 144 cpus cost 329 seconds
+# 384 cpus cost 950 seconds
+duration=300
+if [ $nr_threads ]; then
+	cpu_duration=$(($nr_threads * 3))
+	[ $cpu_duration -gt 300 ] && duration=$cpu_duration
+	[ $cpu_duration -gt 1800 ] && duration=1800
+fi
+
+wait_for_refscale_completion()
+{
+	echo "Max expected duration: $duration"
+	for i in $(seq 1 $duration); do
+		dmesg | grep -q 'ref-scale: END OF TEST' && sleep 10 && break
+		sleep 1
+	done
+}
+
+log_cmd modprobe refscale $args || die "failed to load refscale module, try to enable CONFIG_RCU_REF_SCALE_TEST and build rcurefscale.ko"
+
+wait_for_refscale_completion
+dmesg | grep -q 'ref-scale: END OF TEST' || die "test is not finished"
+
+log_cmd rmmod refscale 2> /dev/null
+
+# record all log after "rcu-ref-scale: --- Start of test:"
+dmesg | sed -ne '/ref-scale:.* Start of test/,$ p'

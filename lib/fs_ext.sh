@@ -89,6 +89,50 @@ start_nfsd()
 	}
 }
 
+start_smbd()
+{
+	# setup smb.conf
+	cat >> /etc/samba/smb.conf <<EOF
+[fs]
+   path = /fs
+   comment = lkp cifs
+   browseable = yes
+   read only = no
+EOF
+	# setup passwd
+	(echo "pass"; echo "pass") | smbpasswd -s -a $(whoami)
+	# restart service
+	systemctl restart smbd
+}
+
+mount_local_cifs()
+{
+	local dir
+	for dir
+	do
+		local mnt=/cifs/$(basename $dir)
+		local dev=//localhost$dir
+		log_cmd mkdir -p $mnt
+		log_cmd timeout 5m mount -t cifs $def_mount -o user=root,password=pass $dev $mnt
+		local errno=$?
+		case $errno in
+			0)
+				echo "mount cifs success"
+				;;
+			124)
+				echo "mount cifs timeout" >&2
+				exit $errno
+				;;
+			*)
+				echo "mount cifs failed"
+				exit $errno
+				;;
+		esac
+		cifs_mount_points="${cifs_mount_points}$mnt "
+		cifs_server_paths="${cifs_server_paths}$dev "
+	done
+}
+
 mount_local_nfs()
 {
 	local dir
@@ -114,6 +158,7 @@ mount_local_nfs()
 		esac
 		log_cmd touch $mnt/wait_for_nfs_grace_period
 		nfs_mount_points="${nfs_mount_points}$mnt "
+		nfs_export_paths="${nfs_export_paths}$dir "
 	done
 }
 

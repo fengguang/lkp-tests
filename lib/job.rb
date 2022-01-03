@@ -17,9 +17,9 @@ require 'pp'
 require 'English'
 
 def restore(ah, copy)
-  if ah.class == Hash
+  if ah.instance_of?(Hash)
     ah.clear.merge!(copy)
-  elsif ah.class == Array
+  elsif ah.instance_of?(Array)
     ah.clear.concat(copy)
   end
 end
@@ -29,7 +29,7 @@ def expand_shell_var(env, o)
   return s unless local_run?
 
   if s.index('$')
-    f = IO.popen(env, ['/bin/bash', '-c', 'eval echo "' + s + '"'], 'r')
+    f = IO.popen(env, ['/bin/bash', '-c', "eval echo \"#{s}\""], 'r')
     s = f.read.chomp
     f.close
   elsif s.index('/dev/disk/')
@@ -52,7 +52,7 @@ def expand_toplevel_vars(env, hash)
 
     case val
     when Hash
-      vars[key] = expand_shell_var(env, val) if key == 'disk'
+      vars[key] = expand_shell_var(env, val) if %w[disk boot_params].include? key
       next
     when nil
       vars[key] = nil
@@ -66,7 +66,7 @@ def expand_toplevel_vars(env, hash)
 end
 
 def string_or_hash_key(h)
-  if h.class == Hash
+  if h.instance_of?(Hash)
     # assert h.size == 1
     h.keys[0]
   else
@@ -232,7 +232,7 @@ class Job
   end
 
   def source_file_symkey(file)
-    comment_to_symbol file.sub(lkp_src + '/', '')
+    comment_to_symbol file.sub("#{lkp_src}/", '')
   end
 
   def load(jobfile, expand_template = false)
@@ -567,8 +567,8 @@ class Job
   end
 
   def lkp_src
-    if @job['user'].is_a?(String) && Dir.exist?('/lkp/' + @job['user'] + '/src')
-      '/lkp/' + @job['user'] + '/src'
+    if @job['user'].is_a?(String) && Dir.exist?("/lkp/#{@job['user']}/src")
+      "/lkp/#{@job['user']}/src"
     else
       LKP_SRC
     end
@@ -595,6 +595,17 @@ class Job
       end
   end
 
+  def read_single_program(key, file)
+    options = `#{LKP_SRC}/bin/program-options #{file}`.split("\n")
+    @referenced_programs[key] = {}
+
+    options.each do |line|
+      type, name = line.split
+      @program_options[name] = type
+      @referenced_programs[key][name] = nil
+    end
+  end
+
   def init_program_options
     @referenced_programs = {}
     @program_options = {
@@ -603,13 +614,7 @@ class Job
     }
     programs = available_programs(:workload_elements)
     for_each_in(@job, programs) do |_pk, _h, k, _v|
-      options = `#{LKP_SRC}/bin/program-options #{programs[k]}`.split("\n")
-      @referenced_programs[k] = {}
-      options.each do |line|
-        type, name = line.split
-        @program_options[name] = type
-        @referenced_programs[k][name] = nil
-      end
+      read_single_program(k, programs[k])
     end
   end
 
@@ -821,6 +826,7 @@ class Job
 
   def each_param
     init_program_options
+    read_single_program('wrapper', "#{LKP_SRC}/tests/wrapper")
 
     # Some programs, especially setup/*, can accept params directly
     # via command line string, ie.
@@ -900,25 +906,25 @@ class Job
 
   def param_files
     @param_files ||= begin
-                       maps = {}
-                       ruby_scripts = {}
-                       misc_scripts = {}
-                       Dir["#{lkp_src}/params/*",
-                           "#{lkp_src}/filters/*"].map do |f|
-                         name = File.basename f
-                         case name
-                         when /(.*)\.rb$/
-                           ruby_scripts[$1] = f
-                         else
-                           if File.executable? f
-                             misc_scripts[name] = f
-                           else
-                             maps[name] = f
-                           end
-                         end
-                       end
-                       [maps, ruby_scripts, misc_scripts]
-                     end
+      maps = {}
+      ruby_scripts = {}
+      misc_scripts = {}
+      Dir["#{lkp_src}/params/*",
+          "#{lkp_src}/filters/*"].map do |f|
+        name = File.basename f
+        case name
+        when /(.*)\.rb$/
+          ruby_scripts[$1] = f
+        else
+          if File.executable? f
+            misc_scripts[name] = f
+          else
+            maps[name] = f
+          end
+        end
+      end
+      [maps, ruby_scripts, misc_scripts]
+    end
   end
 
   def map_param(hash, key, val, rule_file)

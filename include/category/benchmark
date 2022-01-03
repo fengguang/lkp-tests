@@ -15,7 +15,7 @@ slabinfo:
 interrupts:
 lock_stat:
 perf-sched:
-  lite_mode: 1 # cleanup raw data of this program
+  lite_mode: 1 # cleanup raw data include program data if lite_mode set to 1
 softirqs:
 bdi_dev_mapping:
 diskstats:
@@ -31,5 +31,5 @@ mpstat:
 
 % unless job['nr_vm'] and job['nr_vm'] > 1
 perf-profile:
-  lite_mode: 1
+  debug_mode: 0 # debug_mode handles intermediate data and save data if set to 1
 % end

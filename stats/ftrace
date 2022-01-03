@@ -1,14 +1,17 @@
 #!/usr/bin/env ruby
 
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+
 require 'fileutils'
 require 'yaml'
+require "#{LKP_SRC}/lib/lkp_path"
 
 RESULT_ROOT = ENV['RESULT_ROOT']
-TIME_DELTA  = YAML.load_file(RESULT_ROOT + '/job.yaml')['time_delta'].to_f
-FMT_DIR     = RESULT_ROOT + '/trace_event/'
+TIME_DELTA  = YAML.load_file("#{RESULT_ROOT}/job.yaml")['time_delta'].to_f
+FMT_DIR     = "#{RESULT_ROOT}/trace_event/"
 
-KEY_PREFIX_MAPPING = YAML.load_file(File.dirname(__FILE__) + '/../etc/ftrace_key_prefix')
-BDI_DEV_MAPPING = YAML.load_file(RESULT_ROOT + '/bdi_dev_mapping') if File.exist? RESULT_ROOT + '/bdi_dev_mapping'
+KEY_PREFIX_MAPPING = YAML.load_file(LKP::Path.src('etc', 'ftrace_key_prefix'))
+BDI_DEV_MAPPING = YAML.load_file("#{RESULT_ROOT}/bdi_dev_mapping") if File.exist? "#{RESULT_ROOT}/bdi_dev_mapping"
 
 # A hash to make sure we record one event data only
 # for each event in 1s unit
@@ -26,9 +29,9 @@ def generate_prefix(event, key_prefix_items, record)
       dev = BDI_DEV_MAPPING[v]
       break unless dev
 
-      key_prefix += '.' + dev
+      key_prefix += ".#{dev}"
     else
-      key_prefix += '.' + key + '.' + record[key]
+      key_prefix += ".#{key}.#{record[key]}"
     end
   end
   key_prefix
@@ -105,8 +108,8 @@ def parse_event(event_fmt, records)
   pattern = pattern.gsub(/%l?d/, "(\-?[0-9]\+)")
   replace += '\\n'
 
-  event_parser     = FMT_DIR + event + '.sh'
-  event_parser_out = FMT_DIR + event + '.out'
+  event_parser     = "#{FMT_DIR}#{event}.sh"
+  event_parser_out = "#{FMT_DIR}#{event}.out"
   File.open(event_parser, 'w') do |file|
     file.puts "grep -F ' #{event}: ' #{ARGV[0]} | perl -pe 's/^.*#{pattern}.*$/#{replace}/' > #{event_parser_out}"
   end

@@ -9,20 +9,20 @@ require "#{LKP_SRC}/lib/tests/stats"
 
 stats = LKP::Stats.new
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   line = line.resolve_invalid_bytes
 
   case line
   when /^(.+? ).*\[(passed)\]/
     # srp/002 (File I/O ... and login (mq)) [passed]
-    stats.add "#{$1}", $2
+    stats.add $1.to_s, $2
   when /^(.+? ).*\[(failed)\]/
-    stats.add "#{$1}", $2
+    stats.add $1.to_s, $2
   when /^(.+? ).*\[(not run)\]/
     # srp/003 (File I/O ... and login (sq)) [not run]
-    stats.add "#{$1}", $2
+    stats.add $1.to_s, $2
   when /^(.+?\/\*\*\*).*\[(not run)\]/
-    stats.add "#{$1}", $2
+    stats.add $1.to_s, $2
   end
 end
 

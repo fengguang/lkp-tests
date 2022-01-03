@@ -82,6 +82,27 @@ fs_options() {
 		def_mount="-o vers=4"
 		fs="nfs"
 		;;
+	# https://www.mankier.com/8/mount.cifs
+	cifs)
+		;;
+	smbv2)
+		def_mount="-o vers=2.0"
+		;;
+	smbv2p1)
+		def_mount="-o vers=2.1"
+		;;
+	smbv3)
+		def_mount="-o vers=3.0"
+		;;
+	smbv3p02)
+		def_mount="-o vers=3.02"
+		;;
+	smbv3p11)
+		def_mount="-o vers=3.11"
+		;;
+	cifs*|smb*)
+		die "unknow cifs/smb version"
+		;;
 	udf)
 		;;
 	ocfs2)
@@ -175,6 +196,12 @@ case $fs in
 		mount_local_nfs $mount_points
 		[ "${0#*fs1}" != "$0" ] && mount_points=
 		;;
+	cifs|smb*)
+		start_smbd $mount_points
+		mount_local_cifs $mount_points
+		[ "${0#*fs1}" != "$0" ] && mount_points=
+		;;
+
 
 	tmpfs)
 		: ${nr_tmpfs:=1}
@@ -211,9 +238,19 @@ umount_fs() {
 umount_fs
 EOF
 
+if [ "${0#*fs2}" != "$0" ]; then
+	fs_key=fs2
+else
+	fs_key=fs
+fi
+
 cat >> $TMP/env.yaml <<EOF
 
-# setup/fs
-fs: $fs
-mount_points: $nfs_mount_points $mount_points
+# setup/$fs_key
+$fs_key: $fs
+mount_points: $nfs_mount_points $cifs_mount_points $mount_points
+cifs_mount_points: $cifs_mount_points
+cifs_server_paths: $cifs_server_paths
+nfs_mount_points: $nfs_mount_points
+nfs_export_paths: $nfs_export_paths
 EOF

@@ -2,10 +2,19 @@
 
 # check if testbox has enough cpu to run the job
 
-if (( need_cpu > nr_cpu )); then
-	echo "rm $job_file due to not enough cpu"
-	echo "need: $need_cpu cpu, has: $nr_cpu cpu"
-	exit 1
+if [[ $need_cpu -lt 0 ]]; then
+	need_cpu=$((need_cpu*-1))
+	if (( need_cpu < nr_cpu )); then
+		echo "rm $job_file due to too much cpu"
+		echo "need: less or equal $need_cpu cpu, has: $nr_cpu cpu"
+		exit 1
+	fi
+else
+	if (( need_cpu > nr_cpu )); then
+		echo "rm $job_file due to not enough cpu"
+		echo "need: $need_cpu cpu, has: $nr_cpu cpu"
+		exit 1
+	fi
 fi
 
 exit 0

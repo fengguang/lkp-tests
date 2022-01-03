@@ -13,7 +13,7 @@ keys = {
   'GB_sec_total' => 'GB/sec,\s*total-speed'
 }
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   keys.each do |k, v|
     puts "#{k}: #{$1}" if line =~ /([\d.]+),\s*#{v}/
   end

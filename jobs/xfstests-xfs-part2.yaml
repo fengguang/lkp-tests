@@ -12,7 +12,6 @@ xfstests:
   test:
   - xfs-rmapbt
   - xfs-reflink-06
-  - xfs-reflink-07
   - xfs-reflink-08
   - xfs-reflink-09
   - xfs-reflink-10
@@ -30,4 +29,8 @@ xfstests:
   - xfs-reflink-23
   - xfs-reflink-24
   - xfs-reflink-25
+  - xfs-reflink-26
+  - xfs-reflink-27
   - xfs-reflink-rmapbt
+  # - xfs-233 # execution time > 30mins
+  # - xfs-234 # execution time about 500s

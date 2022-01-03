@@ -1,0 +1,572 @@
+KERNEL SELFTESTS: linux_headers_dir is /usr/src/linux-headers-x86_64-rhel-8.3-FQ_PIE-kselftests-8bb7eca972ad531c9b149c0a51ab43a417385813
+2021-11-17 02:24:17 sed -i s/default_timeout=45/default_timeout=300/ kselftest/runner.sh
+2021-11-17 02:24:17 make -C tc-testing
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-8.3-FQ_PIE-kselftests-8bb7eca972ad531c9b149c0a51ab43a417385813/tools/testing/selftests/tc-testing'
+make --no-builtin-rules ARCH=x86 -C /usr/src/perf_selftests-x86_64-rhel-8.3-FQ_PIE-kselftests-8bb7eca972ad531c9b149c0a51ab43a417385813 headers_install
+make[1]: Entering directory '/usr/src/perf_selftests-x86_64-rhel-8.3-FQ_PIE-kselftests-8bb7eca972ad531c9b149c0a51ab43a417385813'
+  HOSTCC  scripts/basic/fixdep
+  HOSTCC  scripts/unifdef
+  WRAP    arch/x86/include/generated/uapi/asm/bpf_perf_event.h
+  WRAP    arch/x86/include/generated/uapi/asm/errno.h
+  WRAP    arch/x86/include/generated/uapi/asm/fcntl.h
+  WRAP    arch/x86/include/generated/uapi/asm/ioctl.h
+  WRAP    arch/x86/include/generated/uapi/asm/ioctls.h
+  WRAP    arch/x86/include/generated/uapi/asm/ipcbuf.h
+  HDRINST usr/include/asm/param.h
+  HDRINST usr/include/asm/ipcbuf.h
+  HDRINST usr/include/asm/ioctls.h
+  HDRINST usr/include/asm/ioctl.h
+  HDRINST usr/include/asm/fcntl.h
+  HDRINST usr/include/asm/errno.h
+  HDRINST usr/include/asm/bpf_perf_event.h
+  INSTALL ./usr/include
+make[1]: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-8.3-FQ_PIE-kselftests-8bb7eca972ad531c9b149c0a51ab43a417385813'
+clang -I. -I/include/uapi -idirafter /lib/clang/14.0.0/include -idirafter /usr/local/include -idirafter /usr/lib/gcc/x86_64-linux-gnu/8/../../../../x86_64-linux-gnu/include -idirafter /usr/include/x86_64-linux-gnu -idirafter /include -idirafter /usr/include -Wno-compare-distinct-pointer-types \
+	 -O2 -target bpf -emit-llvm -c action.c -o - |      \
+llc -march=bpf -mcpu=probe  -filetype=obj -o /usr/src/perf_selftests-x86_64-rhel-8.3-FQ_PIE-kselftests-8bb7eca972ad531c9b149c0a51ab43a417385813/tools/testing/selftests/tc-testing/action.o
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-8.3-FQ_PIE-kselftests-8bb7eca972ad531c9b149c0a51ab43a417385813/tools/testing/selftests/tc-testing'
+2021-11-17 02:24:31 make run_tests -C tc-testing
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-8.3-FQ_PIE-kselftests-8bb7eca972ad531c9b149c0a51ab43a417385813/tools/testing/selftests/tc-testing'
+make --no-builtin-rules ARCH=x86 -C /usr/src/perf_selftests-x86_64-rhel-8.3-FQ_PIE-kselftests-8bb7eca972ad531c9b149c0a51ab43a417385813 headers_install
+make[1]: Entering directory '/usr/src/perf_selftests-x86_64-rhel-8.3-FQ_PIE-kselftests-8bb7eca972ad531c9b149c0a51ab43a417385813'
+  INSTALL ./usr/include
+make[1]: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-8.3-FQ_PIE-kselftests-8bb7eca972ad531c9b149c0a51ab43a417385813'
+TAP version 13
+1..1
+# selftests: tc-testing: tdc.sh
+# considering category actions
+#  -- scapy/SubPlugin.__init__
+#  -- ns/SubPlugin.__init__
+#  -- buildebpf/SubPlugin.__init__
+# Test 2002: Add valid connmark action with defaults
+# Test 56a5: Add valid connmark action with control pass
+# Test 7c66: Add valid connmark action with control drop
+# Test a913: Add valid connmark action with control pipe
+# Test bdd8: Add valid connmark action with control reclassify
+# Test b8be: Add valid connmark action with control continue
+# Test d8a6: Add valid connmark action with control jump
+# Test aae8: Add valid connmark action with zone argument
+# Test 2f0b: Add valid connmark action with invalid zone argument
+# Test 9305: Add connmark action with unsupported argument
+# Test 71ca: Add valid connmark action and replace it
+# Test 5f8f: Add valid connmark action with cookie
+# Test c506: Replace connmark with invalid goto chain control
+# Test 696a: Add simple ct action
+# Test e38c: Add simple ct action with cookie
+# Test 9f20: Add ct clear action
+# Test 0bc1: Add ct clear action with cookie of max length
+# Test 5bea: Try ct with zone
+# Test d5d6: Try ct with zone, commit
+# Test 029f: Try ct with zone, commit, mark
+# Test a58d: Try ct with zone, commit, mark, nat
+# Test 901b: Try ct with full nat ipv4 range syntax
+# Test 072b: Try ct with full nat ipv6 syntax
+# Test 3420: Try ct with full nat ipv6 range syntax
+# Test 4470: Try ct with full nat ipv6 range syntax + force
+# Test 5d88: Try ct with label
+# Test 04d4: Try ct with label with mask
+# Test 9751: Try ct with mark + mask
+# Test 2faa: Try ct with mark + mask and cookie
+# Test 3991: Add simple ct action with no_percpu flag
+# Test 3992: Add ct action triggering DNAT tuple conflict
+# Traceback (most recent call last):
+#   File "./tdc.py", line 774, in <module>
+#     main()
+#   File "./tdc.py", line 768, in main
+#     set_operation_mode(pm, parser, args, remaining)
+#   File "./tdc.py", line 726, in set_operation_mode
+#     catresults = test_runner(pm, args, alltests)
+#   File "./tdc.py", line 371, in test_runner
+#     res = run_one_test(pm, args, index, tidx)
+#   File "./tdc.py", line 283, in run_one_test
+#     pm.call_post_execute()
+#   File "./tdc.py", line 146, in call_post_execute
+#     pgn_inst.post_execute()
+#   File "/usr/src/perf_selftests-x86_64-rhel-8.3-FQ_PIE-kselftests-8bb7eca972ad531c9b149c0a51ab43a417385813/tools/testing/selftests/tc-testing/plugin-lib/scapyPlugin.py", line 54, in post_execute
+#     sendp(pkt, iface=scapyinfo['iface'])
+#   File "/usr/lib/python3/dist-packages/scapy/sendrecv.py", line 313, in sendp
+#     socket = conf.L2socket(iface=iface, *args, **kargs)
+#   File "/usr/lib/python3/dist-packages/scapy/arch/linux.py", line 502, in __init__
+#     self.ins = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.htons(type))
+#   File "/usr/lib/python3.7/socket.py", line 151, in __init__
+#     _socket.socket.__init__(self, family, type, proto, fileno)
+# OSError: [Errno 97] Address family not supported by protocol
+# considering category qdisc
+#  -- ns/SubPlugin.__init__
+# Test 83be: Create FQ-PIE with invalid number of flows
+# Test 8b6e: Create RED with no flags
+# Test 342e: Create RED with adaptive flag
+# Test 2d4b: Create RED with ECN flag
+# Test 650f: Create RED with flags ECN, adaptive
+# Test 5f15: Create RED with flags ECN, harddrop
+# Test 53e8: Create RED with flags ECN, nodrop
+# Test d091: Fail to create RED with only nodrop flag
+# Test af8e: Create RED with flags ECN, nodrop, harddrop
+# Test ce7d: Add mq Qdisc to multi-queue device (4 queues)
+# Test 2f82: Add mq Qdisc to multi-queue device (256 queues)
+# Test c525: Add duplicate mq Qdisc
+# Test 128a: Delete nonexistent mq Qdisc
+# Test 03a9: Delete mq Qdisc twice
+# Test be0f: Add mq Qdisc to single-queue device
+# Test ddd9: Add prio qdisc on egress
+# Test aa71: Add prio qdisc on egress with handle of maximum value
+# Test db37: Add prio qdisc on egress with invalid handle exceeding maximum value
+# Test 39d8: Add prio qdisc on egress with unsupported argument
+# Test 5769: Add prio qdisc on egress with 4 bands and new priomap
+# Test fe0f: Add prio qdisc on egress with 4 bands and priomap exceeding TC_PRIO_MAX entries
+# Test 1f91: Add prio qdisc on egress with 4 bands and priomap's values exceeding bands number
+# Test d248: Add prio qdisc on egress with invalid bands value (< 2)
+# Test 1d0e: Add prio qdisc on egress with invalid bands value exceeding TCQ_PRIO_BANDS
+# Test 1971: Replace default prio qdisc on egress with 8 bands and new priomap
+# Test d88a: Add duplicate prio qdisc on egress
+# Test 5948: Delete nonexistent prio qdisc
+# Test 6c0a: Add prio qdisc on egress with invalid format for handles
+# Test 0175: Delete prio qdisc twice
+# Test 9872: Add ingress qdisc
+# Test 5c5e: Add ingress qdisc with unsupported argument
+# Test 74f6: Add duplicate ingress qdisc
+# Test f769: Delete nonexistent ingress qdisc
+# Test 3b88: Delete ingress qdisc twice
+# Test a519: Add bfifo qdisc with system default parameters on egress
+# Test 585c: Add pfifo qdisc with system default parameters on egress
+# Test a86e: Add bfifo qdisc with system default parameters on egress with handle of maximum value
+# Test 9ac8: Add bfifo qdisc on egress with queue size of 3000 bytes
+# Test f4e6: Add pfifo qdisc on egress with queue size of 3000 packets
+# Test b1b1: Add bfifo qdisc with system default parameters on egress with invalid handle exceeding maximum value
+# Test 8d5e: Add bfifo qdisc on egress with unsupported argument
+# Test 7787: Add pfifo qdisc on egress with unsupported argument
+# Test c4b6: Replace bfifo qdisc on egress with new queue size
+# Test 3df6: Replace pfifo qdisc on egress with new queue size
+# Test 7a67: Add bfifo qdisc on egress with queue size in invalid format
+# Test 1298: Add duplicate bfifo qdisc on egress
+# Test 45a0: Delete nonexistent bfifo qdisc
+# Test 972b: Add prio qdisc on egress with invalid format for handles
+# Test 4d39: Delete bfifo qdisc twice
+# Test e90e: Add ETS qdisc using bands
+# Test b059: Add ETS qdisc using quanta
+# Test e8e7: Add ETS qdisc using strict
+# Test 233c: Add ETS qdisc using bands + quanta
+# Test 3d35: Add ETS qdisc using bands + strict
+# Test 7f3b: Add ETS qdisc using strict + quanta
+# Test 4593: Add ETS qdisc using strict 0 + quanta
+# Test 8938: Add ETS qdisc using bands + strict + quanta
+# Test 0782: Add ETS qdisc with more bands than quanta
+# Test 501b: Add ETS qdisc with more bands than strict
+# Test 671a: Add ETS qdisc with more bands than strict + quanta
+# Test 2a23: Add ETS qdisc with 16 bands
+# Test 8daf: Add ETS qdisc with 17 bands
+# Test 7f95: Add ETS qdisc with 17 strict
+# Test 837a: Add ETS qdisc with 16 quanta
+# Test 65b6: Add ETS qdisc with 17 quanta
+# Test b9e9: Add ETS qdisc with 16 strict + quanta
+# Test 9877: Add ETS qdisc with 17 strict + quanta
+# Test c696: Add ETS qdisc with priomap
+# Test 30c4: Add ETS qdisc with quanta + priomap
+# Test e8ac: Add ETS qdisc with strict + priomap
+# Test 5a7e: Add ETS qdisc with quanta + strict + priomap
+# Test cb8b: Show ETS class :1
+# Test 1b4e: Show ETS class :2
+# Test f642: Show ETS class :3
+# Test 0a5f: Show ETS strict class
+# Test f7c8: Add ETS qdisc with too many quanta
+# Test 2389: Add ETS qdisc with too many strict
+# Test fe3c: Add ETS qdisc with too many strict + quanta
+# Test cb04: Add ETS qdisc with excess priomap elements
+# Test c32e: Add ETS qdisc with priomap above bands
+# Test 744c: Add ETS qdisc with priomap above quanta
+# Test 7b33: Add ETS qdisc with priomap above strict
+# Test dbe6: Add ETS qdisc with priomap above strict + quanta
+# Test bdb2: Add ETS qdisc with priomap within bands with strict + quanta
+# Test 39a3: Add ETS qdisc with priomap above bands with strict + quanta
+# Test 557c: Unset priorities default to the last band
+# Test a347: Unset priorities default to the last band -- no priomap
+# Test 39c4: Add ETS qdisc with too few bands
+# Test 930b: Add ETS qdisc with too many bands
+# Test 406a: Add ETS qdisc without parameters
+# Test e51a: Zero element in quanta
+# Test e7f2: Sole zero element in quanta
+# Test d6e6: No values after the quanta keyword
+# Test 28c6: Change ETS band quantum
+# Test 4714: Change ETS band without quantum
+# Test 6979: Change quantum of a strict ETS band
+# Test 9a7d: Change ETS strict band without quantum
+# 
+# All test results: 
+# 
+# 1..97
+# ok 1 83be - Create FQ-PIE with invalid number of flows
+# ok 2 8b6e - Create RED with no flags
+# ok 3 342e - Create RED with adaptive flag
+# ok 4 2d4b - Create RED with ECN flag
+# ok 5 650f - Create RED with flags ECN, adaptive
+# ok 6 5f15 - Create RED with flags ECN, harddrop
+# ok 7 53e8 - Create RED with flags ECN, nodrop
+# ok 8 d091 - Fail to create RED with only nodrop flag
+# ok 9 af8e - Create RED with flags ECN, nodrop, harddrop
+# not ok 10 ce7d - Add mq Qdisc to multi-queue device (4 queues)
+# 	Could not match regex pattern. Verify command output:
+# qdisc mq 1: root 
+# qdisc fq_codel 0: parent 1:4 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:3 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:2 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:1 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# 
+# not ok 11 2f82 - Add mq Qdisc to multi-queue device (256 queues)
+# 	Could not match regex pattern. Verify command output:
+# qdisc mq 1: root 
+# qdisc fq_codel 0: parent 1:100 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:ff limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:fe limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:fd limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:fc limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:fb limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:fa limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:f9 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:f8 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:f7 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:f6 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:f5 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:f4 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:f3 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:f2 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:f1 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:f0 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:ef limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:ee limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:ed limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:ec limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:eb limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:ea limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:e9 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:e8 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:e7 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:e6 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:e5 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:e4 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:e3 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:e2 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:e1 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:e0 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:df limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:de limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:dd limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:dc limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:db limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:da limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:d9 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:d8 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:d7 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:d6 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:d5 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:d4 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:d3 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:d2 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:d1 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:d0 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:cf limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:ce limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:cd limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:cc limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:cb limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:ca limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:c9 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:c8 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:c7 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:c6 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:c5 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:c4 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:c3 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:c2 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:c1 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:c0 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:bf limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:be limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:bd limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:bc limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:bb limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:ba limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:b9 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:b8 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:b7 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:b6 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:b5 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:b4 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:b3 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:b2 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:b1 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:b0 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:af limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:ae limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:ad limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:ac limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:ab limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:aa limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:a9 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:a8 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:a7 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:a6 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:a5 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:a4 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:a3 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:a2 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:a1 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:a0 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:9f limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:9e limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:9d limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:9c limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:9b limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:9a limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:99 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:98 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:97 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:96 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:95 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:94 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:93 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:92 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:91 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:90 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:8f limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:8e limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:8d limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:8c limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:8b limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:8a limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:89 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:88 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:87 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:86 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:85 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:84 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:83 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:82 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:81 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:80 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:7f limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:7e limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:7d limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:7c limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:7b limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:7a limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:79 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:78 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:77 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:76 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:75 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:74 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:73 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:72 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:71 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:70 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:6f limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:6e limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:6d limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:6c limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:6b limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:6a limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:69 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:68 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:67 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:66 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:65 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:64 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:63 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:62 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:61 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:60 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:5f limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:5e limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:5d limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:5c limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:5b limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:5a limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:59 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:58 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:57 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:56 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:55 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:54 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:53 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:52 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:51 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:50 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:4f limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:4e limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:4d limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:4c limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:4b limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:4a limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:49 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:48 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:47 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:46 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:45 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:44 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:43 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:42 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:41 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:40 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:3f limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:3e limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:3d limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:3c limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:3b limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:3a limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:39 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:38 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:37 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:36 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:35 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:34 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:33 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:32 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:31 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:30 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:2f limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:2e limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:2d limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:2c limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:2b limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:2a limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:29 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:28 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:27 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:26 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:25 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:24 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:23 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:22 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:21 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:20 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:1f limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:1e limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:1d limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:1c limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:1b limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:1a limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:19 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:18 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:17 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:16 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:15 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:14 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:13 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:12 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:11 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:10 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:f limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:e limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:d limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:c limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:b limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:a limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:9 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:8 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:7 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:6 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:5 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:4 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:3 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:2 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:1 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# 
+# not ok 12 c525 - Add duplicate mq Qdisc
+# 	Could not match regex pattern. Verify command output:
+# qdisc mq 1: root 
+# qdisc fq_codel 0: parent 1:4 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:3 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:2 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# qdisc fq_codel 0: parent 1:1 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+# 
+# ok 13 128a - Delete nonexistent mq Qdisc
+# ok 14 03a9 - Delete mq Qdisc twice
+# ok 15 be0f - Add mq Qdisc to single-queue device
+# ok 16 ddd9 - Add prio qdisc on egress
+# ok 17 aa71 - Add prio qdisc on egress with handle of maximum value
+# ok 18 db37 - Add prio qdisc on egress with invalid handle exceeding maximum value
+# ok 19 39d8 - Add prio qdisc on egress with unsupported argument
+# ok 20 5769 - Add prio qdisc on egress with 4 bands and new priomap
+# ok 21 fe0f - Add prio qdisc on egress with 4 bands and priomap exceeding TC_PRIO_MAX entries
+# ok 22 1f91 - Add prio qdisc on egress with 4 bands and priomap's values exceeding bands number
+# ok 23 d248 - Add prio qdisc on egress with invalid bands value (< 2)
+# ok 24 1d0e - Add prio qdisc on egress with invalid bands value exceeding TCQ_PRIO_BANDS
+# ok 25 1971 - Replace default prio qdisc on egress with 8 bands and new priomap
+# ok 26 d88a - Add duplicate prio qdisc on egress
+# ok 27 5948 - Delete nonexistent prio qdisc
+# ok 28 6c0a - Add prio qdisc on egress with invalid format for handles
+# ok 29 0175 - Delete prio qdisc twice
+# ok 30 9872 - Add ingress qdisc
+# ok 31 5c5e - Add ingress qdisc with unsupported argument
+# ok 32 74f6 - Add duplicate ingress qdisc
+# ok 33 f769 - Delete nonexistent ingress qdisc
+# ok 34 3b88 - Delete ingress qdisc twice
+# ok 35 a519 - Add bfifo qdisc with system default parameters on egress
+# ok 36 585c - Add pfifo qdisc with system default parameters on egress
+# ok 37 a86e - Add bfifo qdisc with system default parameters on egress with handle of maximum value
+# ok 38 9ac8 - Add bfifo qdisc on egress with queue size of 3000 bytes
+# ok 39 f4e6 - Add pfifo qdisc on egress with queue size of 3000 packets
+# ok 40 b1b1 - Add bfifo qdisc with system default parameters on egress with invalid handle exceeding maximum value
+# ok 41 8d5e - Add bfifo qdisc on egress with unsupported argument
+# ok 42 7787 - Add pfifo qdisc on egress with unsupported argument
+# ok 43 c4b6 - Replace bfifo qdisc on egress with new queue size
+# ok 44 3df6 - Replace pfifo qdisc on egress with new queue size
+# ok 45 7a67 - Add bfifo qdisc on egress with queue size in invalid format
+# ok 46 1298 - Add duplicate bfifo qdisc on egress
+# ok 47 45a0 - Delete nonexistent bfifo qdisc
+# ok 48 972b - Add prio qdisc on egress with invalid format for handles
+# ok 49 4d39 - Delete bfifo qdisc twice
+# ok 50 e90e - Add ETS qdisc using bands
+# ok 51 b059 - Add ETS qdisc using quanta
+# ok 52 e8e7 - Add ETS qdisc using strict
+# ok 53 233c - Add ETS qdisc using bands + quanta
+# ok 54 3d35 - Add ETS qdisc using bands + strict
+# ok 55 7f3b - Add ETS qdisc using strict + quanta
+# ok 56 4593 - Add ETS qdisc using strict 0 + quanta
+# ok 57 8938 - Add ETS qdisc using bands + strict + quanta
+# ok 58 0782 - Add ETS qdisc with more bands than quanta
+# ok 59 501b - Add ETS qdisc with more bands than strict
+# ok 60 671a - Add ETS qdisc with more bands than strict + quanta
+# ok 61 2a23 - Add ETS qdisc with 16 bands
+# ok 62 8daf - Add ETS qdisc with 17 bands
+# ok 63 7f95 - Add ETS qdisc with 17 strict
+# ok 64 837a - Add ETS qdisc with 16 quanta
+# ok 65 65b6 - Add ETS qdisc with 17 quanta
+# ok 66 b9e9 - Add ETS qdisc with 16 strict + quanta
+# ok 67 9877 - Add ETS qdisc with 17 strict + quanta
+# ok 68 c696 - Add ETS qdisc with priomap
+# ok 69 30c4 - Add ETS qdisc with quanta + priomap
+# ok 70 e8ac - Add ETS qdisc with strict + priomap
+# ok 71 5a7e - Add ETS qdisc with quanta + strict + priomap
+# ok 72 cb8b - Show ETS class :1
+# ok 73 1b4e - Show ETS class :2
+# ok 74 f642 - Show ETS class :3
+# ok 75 0a5f - Show ETS strict class
+# ok 76 f7c8 - Add ETS qdisc with too many quanta
+# ok 77 2389 - Add ETS qdisc with too many strict
+# ok 78 fe3c - Add ETS qdisc with too many strict + quanta
+# ok 79 cb04 - Add ETS qdisc with excess priomap elements
+# ok 80 c32e - Add ETS qdisc with priomap above bands
+# ok 81 744c - Add ETS qdisc with priomap above quanta
+# ok 82 7b33 - Add ETS qdisc with priomap above strict
+# ok 83 dbe6 - Add ETS qdisc with priomap above strict + quanta
+# ok 84 bdb2 - Add ETS qdisc with priomap within bands with strict + quanta
+# ok 85 39a3 - Add ETS qdisc with priomap above bands with strict + quanta
+# ok 86 557c - Unset priorities default to the last band
+# ok 87 a347 - Unset priorities default to the last band -- no priomap
+# ok 88 39c4 - Add ETS qdisc with too few bands
+# ok 89 930b - Add ETS qdisc with too many bands
+# ok 90 406a - Add ETS qdisc without parameters
+# ok 91 e51a - Zero element in quanta
+# ok 92 e7f2 - Sole zero element in quanta
+# ok 93 d6e6 - No values after the quanta keyword
+# ok 94 28c6 - Change ETS band quantum
+# ok 95 4714 - Change ETS band without quantum
+# ok 96 6979 - Change quantum of a strict ETS band
+# ok 97 9a7d - Change ETS strict band without quantum
+# 
+# 
+# 
+# 
+ok 1 selftests: tc-testing: tdc.sh
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-8.3-FQ_PIE-kselftests-8bb7eca972ad531c9b149c0a51ab43a417385813/tools/testing/selftests/tc-testing'

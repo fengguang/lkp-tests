@@ -2,6 +2,22 @@ suite: phoronix-test-suite
 category: benchmark
 
 phoronix-test-suite:
+  - test: arrayfire-1.1.0
+    option_a:
+      - BLAS CPU
+      - Conjugate Gradient CPU
+      - BLAS OpenCL
+      - Conjugate Gradient OpenCL
+      # - Test All Options
+  - test: askap-2.1.0
+    option_a:
+      - tConvolve OpenCL
+      # - tConvolve CUDA # not supported and not display
+      - tConvolve MPI
+      - tConvolve OpenMP
+      - tConvolve MT
+      - Hogbom Clean OpenMP
+      # - Test All Options
   - test: clpeak-1.0.1
     option_a:
       - Global Memory Bandwidth
@@ -12,10 +28,54 @@ phoronix-test-suite:
       - Transfer Bandwidth enqueueReadBuffer
       - Kernel Latency
       # - Test All Options
+  - test: darktable-1.0.5
+    option_a:
+      - Boat
+      - Masskrug
+      - Server Room
+      - Server Rack
+      # - Test All Options
+    option_b:
+      - CPU-only
+      - OpenCL
+      # - Test All Options
   - test: gpu-residency-1.0.1
     option_a:
       - RC6
       - RC6P
+      # - Test All Options
+  - test: parboil-1.2.1
+    option_a:
+      - OpenMP CUTCP
+      - OpenMP MRI-Q
+      - OpenMP MRI Gridding
+      - OpenMP Stencil
+      - OpenMP LBM
+      - OpenCL BFS
+      - OpenCL TPACF
+      - OpenCL LBM
+      - OpenCL MRI Gridding
+      - OpenCL Histo
+      # - Test All Options
+  - test: rodinia-1.3.1
+    option_a:
+      - OpenMP CFD Solver      [Fluid Dynamics]
+      - OpenMP LavaMD          [Molecular Dynamics]
+      - OpenMP Leukocyte       [Medical Imaging]
+      - OpenMP Streamcluster   [Data Mining]
+      - OpenMP HotSpot3D       [Physics Simulation]
+      - OpenCL Myocyte         [Biological Simulation]
+      - OpenCL Particle Filter [Medical Imaging]
+      # - NVIDIA CUDA GPU Myocyte[Biological Simulation]
+      # - Test All Options
+  - test: geekbench-1.2.1
+    option_a:
+      - CPU Single Core
+      - CPU Multi Core
+      - GPU OpenCL
+      - GPU Apple Metal
+      # - GPU NVIDIA CUDA # not supported and not display
+      - GPU Vulkan
       # - Test All Options
   - test:
     - xsbench-cl-1.0.0

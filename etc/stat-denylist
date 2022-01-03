@@ -1,3 +1,5 @@
+^interrupts.
+^slabinfo.
 ^aim7.*.cpu
 ^aim7.*.jobs-per-min-per-task
 ^aim7.*.jti
@@ -18,6 +20,7 @@
 ^dmesg.boot_failures
 ^dmesg.boot_successes
 ^dmesg.BUG:Dentry.*i=.*n=.*
+^dmesg.BUG:KCSAN:assert:race_in
 ^dmesg.BUG:using__this_cpu_read\(\)in_preemptible\[#\]code
 ^dmesg.BUG:KFENCE
 ^dmesg.BUG_TestSlub_.*
@@ -228,6 +231,7 @@
 ^perf-profile.
 ^perf-stat.
 ^perf-stat\.i\.
+^pmeter\.fail
 ^proc-vmstat.
 ^rcutorture.cpuhotplug-.*\.rcu_hotplug
 ^sched_debug.

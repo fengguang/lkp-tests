@@ -7,8 +7,6 @@
 # - shape
 # - nr_processes
 # - nr_threads
-# - cpu_node_bind
-# - mem_node_bind
 # - timestamp
 # - cold
 # - access
@@ -21,7 +19,6 @@
 
 . "$LKP_SRC/lib/common.sh"
 . "$LKP_SRC/lib/reproduce-log.sh"
-. "$LKP_SRC/lib/numactl.sh"
 
 : "${runtime:=300}"
 : "${nr_processes:=1}"
@@ -30,7 +27,8 @@ set_opt()
 {
 	opt=
 	if [ -n "$total_setsize" ] && [ -z "$setsize" ]; then
-		setsize=$((total_setsize / nr_processes))
+		nr_inst=${nr_instances:-1}
+		setsize=$((total_setsize / nr_inst / nr_processes))
 	fi
 	if [ -n "$setsize" ]; then
 		opt="${opt} -s$((setsize/1024/1024))"
@@ -57,35 +55,17 @@ set_opt()
 
 set_opt
 
-pmb_tmp_dir="$TMP/pmbench"
+: "${instance_id:=1}"
+pmb_tmp_dir="$TMP/$instance_id/pmbench"
 rm -rf "$pmb_tmp_dir"
 mkdir -p "$pmb_tmp_dir"
 
-parse_numa_node_binding "$cpu_node_bind" "$mem_node_bind"
-
 pmbench=/usr/local/bin/pmbench
 
-: "${cgroups:=nocg}"
-i=1
-
-if [ "$cgroup_ver" = 1 ]; then
-	cgdir="$CGROUP_MNT/memory"
-else
-	cgdir="$CGROUP_MNT"
-fi
-
-while [ "$i" -le "$nr_processes" ]; do
-	for cg in $cgroups; do
-		numa_bind=$(numa_node_binding "$i")
-		if [ "$cg" != nocg ]; then
-			log_eval "echo \$\$ > $cgdir/$cg/tasks"
-		fi
-		log_echo "$exec_prefix $numa_bind $pmbench $opt $runtime > $pmb_tmp_dir/pmbench.$i &"
-		$numa_bind $pmbench $opt $runtime > "$pmb_tmp_dir/pmbench.$i" &
-		echo $! >> $TMP/pid-tests
-		i=$((i+1))
-		[ "$i" -gt "$nr_processes" ] && break
-	done
+for i in $(seq "$nr_processes"); do
+	log_echo "$exec_prefix $pmbench $opt $runtime > $pmb_tmp_dir/pmbench.$i &"
+	$pmbench $opt $runtime > "$pmb_tmp_dir/pmbench.$i" &
+	echo $! >> $TMP/pid-tests
 done
 
 wait

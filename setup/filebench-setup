@@ -19,6 +19,5 @@ workloads_dir="$BENCHMARK_ROOT/filebench/share/filebench/workloads"
 mntpoint=${mount_points%% *}
 sed -i "s#set \$dir=.*#set \$dir=$mntpoint#g" "$workloads_dir/$test"
 echo -n "log_cmd filebench -f "$workloads_dir/$test"" > $TMP_RESULT_ROOT/filebench.task
-log_cmd filebench -f "$workloads_dir/$test"
 log_cmd sync
 log_eval "echo 3 > /proc/sys/vm/drop_caches"

@@ -1,0 +1,8 @@
+url: https://github.com/hnaz/linux-mm
+owner: Andrew Morton <akpm@linux-foundation.org>
+priority: high
+git_am_branch: master
+no_merge_branch: master
+patch_based_on_branch:
+  '\] mm(:|\/|,)': master
+  '\[.+ (-mm)( .+)?\]': master

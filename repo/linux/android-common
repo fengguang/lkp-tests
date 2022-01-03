@@ -4,6 +4,6 @@ notify_build_success_branch: .*
 private_report_branch: .*
 mail_to: cros-kernel-buildreports@googlegroups.com
 test_old_branches: .*
-branch_denylist: .*-release|.*-mr.*|android-4.14-q
+branch_denylist: .*-release|.*-mr.*|android-4.14-q|android-mainline-track.*|deprecated/.*
 arch_denylist: .*
 arch_allowlist: x86_64|i386|arm|arm64

@@ -1,3 +1,4 @@
+obj_badblock_TEST0.test_skip: 1
 obj_ctl_debug_TEST0_check_pmem_debug.pass: 1
 obj_ctl_debug_TEST0_check_pmem_nondebug.pass: 1
 obj_ctl_debug_TEST0_check_pmem_static-debug.pass: 1
@@ -6,3 +7,7 @@ obj_ctl_debug_TEST1_check_pmem_debug_memcheck.pass: 1
 obj_ctl_debug_TEST1_check_pmem_nondebug_memcheck.pass: 1
 obj_ctl_debug_TEST1_check_pmem_static-debug_memcheck.pass: 1
 obj_ctl_debug_TEST1_check_pmem_static-nondebug_memcheck.pass: 1
+obj_ctl_debug_TEST2.test_skip: 1
+obj_pool_lock_TEST0.test_skip: 1
+pmempool_check_TEST33.test_skip: 1
+ex_libpmemobj_TEST15.test_skip: 1

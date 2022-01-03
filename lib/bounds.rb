@@ -2,9 +2,11 @@
 
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
+require "#{LKP_SRC}/lib/lkp_path"
+
 def valid_stats_range?(stats_field, num)
   monitor = stats_field.split('.')[0]
-  range_file = "#{LKP_SRC}/etc/valid-range-#{monitor}.yaml"
+  range_file = LKP::Path.src('etc', "valid-range-#{monitor}.yaml")
 
   $__valid_range_cache ||= {}
   unless $__valid_range_cache.include?(range_file)

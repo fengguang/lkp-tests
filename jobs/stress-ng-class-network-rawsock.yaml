@@ -1,0 +1,15 @@
+suite: stress-ng
+testcase: stress-ng
+category: benchmark
+
+nr_threads: 100%
+
+
+testtime:
+- 60s
+
+stress-ng:
+  class:
+  - network
+  test:
+  - rawsock

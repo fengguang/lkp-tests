@@ -5,8 +5,9 @@ need_memory: 300MB
 
 kmsg:
 
+runtime: 300s
+
 trinity:
-  number: 2999999
   group:
     - group-00
     - group-01
@@ -15,5 +16,4 @@ trinity:
     - group-04
 
 ---
-runtime: 300s
 trinity:

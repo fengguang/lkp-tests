@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   puts "ops_per_sec: #{$1}" if line =~ /(\d+) ops\/sec/
 end

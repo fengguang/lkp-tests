@@ -19,13 +19,20 @@ local_run || {
 	ln -sf "$linux_headers_dir" "$build_link"
 }
 
-tools_dir=/usr/share/bcc/tools/
+tools_dirs="/usr/share/bcc/tools/ /lkp/$LKP_USER/download/"
 
-[ -f "$tools_dir/$tool" ] || die "No such tool: $tool"
+for td in $tools_dirs; do
+	[ -f "$td/$tool" ] && tool_file="$td/$tool"
+	[ -f "$td/${tool}.py" ] && tool_file="$td/${tool}.py"
+done
 
-cd "$TMP" || die "Failed to goto temporary directory"
+[ -n "$tool_file" ] || die "No such tool: $tool"
 
-cp "$tools_dir/$tool" "$tool.py"
+tmpdir=$(mktemp -d bpfcc-tools-XXXXXX)
+
+cd "$tmpdir" || die "Failed to goto temporary directory"
+
+cp "$tool_file" "$tool.py"
 
 cat > run-bpf.py <<EOF
 import signal
@@ -37,6 +44,8 @@ signal.signal(signal.SIGINT, on_int)
 
 import $tool
 EOF
+
+echo "tool: $tool"
 
 ARCH=x86 python run-bpf.py $tool_arguments &
 

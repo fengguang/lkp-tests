@@ -117,6 +117,8 @@ module Git
         return nil unless tag
 
         order = @base.release_tag_order(tag)
+        return nil unless order
+
         @base.release_tags_with_order.reverse_each do |tag, o|
           next if o <= order
 
@@ -201,7 +203,7 @@ module Git
       end
 
       def reverted?(branch)
-        reverted_subject = 'Revert \"' + subject.gsub('"', '\"') + '\"'
+        reverted_subject = "Revert \\\"#{subject.gsub(/(["\[\]])/, '\\\\\1')}\\\""
         !@base.command("log --format=%s #{sha}..#{branch} | grep -x -m1 \"#{reverted_subject}\"").empty?
       end
 

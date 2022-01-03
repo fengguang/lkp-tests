@@ -6,19 +6,19 @@ require "#{LKP_SRC}/lib/array_ext"
 
 set_sum = 0
 set_num = 0
-set_avg = 0
+# set_avg = 0
 get_sum = 0
 get_num = 0
-get_avg = 0
+# get_avg = 0
 is_set = true
 set_latencies = []
 get_latencies = []
 proc_set_latencies = nil
 proc_get_latencies = nil
-set_time = 0
+# set_time = 0
 set_time_sum = 0
 set_time_num = 0
-get_time = 0
+# get_time = 0
 get_time_sum = 0
 get_time_num = 0
 

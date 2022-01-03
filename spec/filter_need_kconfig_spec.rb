@@ -30,7 +30,7 @@ describe 'filter/need_kconfig.rb' do
     end
 
     # Job.open can filter comments (e.g. # support kernel xxx)
-    job = Job.open(job_file)
+    Job.open(job_file)
   end
 
   context 'when X is disabled in kernel' do
@@ -38,7 +38,7 @@ describe 'filter/need_kconfig.rb' do
       job = generate_job <<~EOF
               need_kconfig:
               - X: n
-            EOF
+      EOF
       expect { job.expand_params }.to raise_error Job::ParamError
     end
   end
@@ -49,7 +49,7 @@ describe 'filter/need_kconfig.rb' do
               need_kconfig:
               - Z1
               - Z2
-            EOF
+      EOF
       job.expand_params
     end
   end
@@ -59,7 +59,7 @@ describe 'filter/need_kconfig.rb' do
       job = generate_job <<~EOF
               need_kconfig:
               - Z1: v4.9 # support kernel >=v4.9
-            EOF
+      EOF
       job.expand_params
     end
   end
@@ -69,7 +69,7 @@ describe 'filter/need_kconfig.rb' do
       job = generate_job <<~EOF
               need_kconfig:
               - X: 200
-            EOF
+      EOF
       expect { job.expand_params }.to raise_error Job::ParamError
     end
   end
@@ -79,7 +79,7 @@ describe 'filter/need_kconfig.rb' do
       job = generate_job <<~EOF
               need_kconfig:
               - Y: 200
-            EOF
+      EOF
       job.expand_params
     end
   end
@@ -89,7 +89,7 @@ describe 'filter/need_kconfig.rb' do
       job = generate_job <<~EOF
               need_kconfig:
               - Y: 100
-            EOF
+      EOF
       expect { job.expand_params }.to raise_error Job::ParamError
     end
   end
@@ -99,7 +99,7 @@ describe 'filter/need_kconfig.rb' do
       job = generate_job <<~EOF
               need_kconfig:
               - X=y ~ '>= v5.1-rc1' # support kernel >=v5.1-rc1
-            EOF
+      EOF
 
       expect { job.expand_params }.to raise_error Job::SyntaxError
     end
@@ -122,7 +122,7 @@ describe 'filter/need_kconfig.rb' do
         job = generate_job <<~EOF
                 need_kconfig:
                 - X: y, >= v5.1-rc1 # support kernel >=v5.1-rc1
-              EOF
+        EOF
 
         job.expand_params
       end
@@ -133,27 +133,27 @@ describe 'filter/need_kconfig.rb' do
         # old syntax with
         job = generate_job <<~EOF
                 need_kconfig: X=y
-              EOF
+        EOF
 
         job.expand_params
 
         job = generate_job <<~EOF
                 need_kconfig: X
-              EOF
+        EOF
 
         job.expand_params
 
         job = generate_job <<~EOF
                 need_kconfig:
                 - X: y
-              EOF
+        EOF
 
         job.expand_params
 
         job = generate_job <<~EOF
                 need_kconfig:
                 - X
-              EOF
+        EOF
 
         job.expand_params
       end

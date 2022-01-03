@@ -1,7 +1,6 @@
 initrds+:
 - linux_headers
 - linux_selftests
-- kselftests
 
 need_kconfig:
 % if ___.group == "x86"
@@ -83,7 +82,12 @@ need_kconfig:
 - IMA_WRITE_POLICY: y, v5.11-rc1
 - SECURITYFS: y, v5.11-rc1
 - IMA: y, v5.11-rc1
+- BLK_DEV_LOOP
+- DYNAMIC_FTRACE
+- FUNCTION_TRACER
+- IPV6_SEG6_BPF
 % elsif ___.group == "net"
+- PACKET: y
 - USER_NS: y
 - BPF_SYSCALL: y
 - TEST_BPF: m
@@ -98,7 +102,7 @@ need_kconfig:
 - DUMMY: y
 - BRIDGE: y
 - VLAN_8021Q: y
-- IFB: y
+- IFB
 - NETFILTER: y
 - NETFILTER_ADVANCED: y
 - NF_CONNTRACK: m
@@ -111,6 +115,8 @@ need_kconfig:
 - NF_TABLES_IPV6: y, v4.17-rc1
 - NF_TABLES_IPV4: y, v4.17-rc1
 - NFT_CHAIN_NAT_IPV6: m, <= v5.0
+- NFT_TPROXY: m, v4.19-rc1
+- NFT_COUNTER: m, <= v5.16-rc4
 - NFT_CHAIN_NAT_IPV4: m, <= v5.0
 - NET_SCH_FQ: m
 - NET_SCH_ETF: m, v4.19-rc1
@@ -124,6 +130,11 @@ need_kconfig:
 - NET_CLS_FLOWER: m, v4.2-rc1
 - NET_ACT_TUNNEL_KEY: m, v4.9-rc1
 - NET_ACT_MIRRED: m, v5.11-rc1
+- CRYPTO_SM4: y
+- NET_DROP_MONITOR
+- TRACEPOINTS
+- AMT: m, v5.16-rc1
+- IPV6_IOAM6_LWTUNNEL: y, v5.15
 % elsif ___.group == "netfilter"
 - NET_NS: y
 - NFT_FLOW_OFFLOAD: m, v4.16-rc1
@@ -145,6 +156,14 @@ need_kconfig:
 - TEST_FIRMWARE
 % elsif ___.group == "lkdtm"
 - LKDTM: y
+- DEBUG_LIST
+- FORTIFY_SOURCE
+- HARDENED_USERCOPY
+- STACKPROTECTOR_STRONG
+- INIT_ON_ALLOC_DEFAULT_ON: y, v5.14-rc1
+- RANDOMIZE_KSTACK_OFFSET_DEFAULT: y, v5.14-rc1
+- SLAB_FREELIST_HARDENED: y, v5.14-rc1
+- UBSAN_BOUNDS: y, v5.15-rc1
 % elsif ___.group == "pidfd"
 - UTS_NS: y
 - IPC_NS: y
@@ -160,45 +179,51 @@ need_kconfig:
 - ION: y, <= v5.10 # Depends on: STAGING [: y]
 - ION_SYSTEM_HEAP: y, v4.12-rc1, <= v5.10 # Depends on: STAGING [: y] && ION [: y]
 - STAGING: y
+% elsif ___.group == "ftrace"
+- FTRACE: y
+- KPROBES: y
+- FUNCTION_PROFILER: y
+- TRACER_SNAPSHOT: y
+- STACK_TRACER: y
+- HIST_TRIGGERS: y, v4.7-rc1
+- SCHED_TRACER: y
+- PREEMPT_TRACER: y
+- IRQSOFF_TRACER: y
+- PREEMPTIRQ_DELAY_TEST: m, v5.6-rc1
+- MODULES: y
+- MODULE_UNLOAD: y
+- SAMPLES: y
+- SAMPLE_FTRACE_DIRECT: m, v5.5-rc1
+- SAMPLE_TRACE_PRINTK: m
+- KALLSYMS_ALL: y
 % elsif ___.group == "group-01"
+- SECURITY_PATH: y
+- SECURITY_LANDLOCK: y, v5.13
+- UDMABUF: y, v4.20-rc1
+- DMABUF_HEAPS: y, v5.6-rc1
+- DMABUF_HEAPS_SYSTEM: y, v5.6-rc1
 - BTRFS_FS: m
 - CHECKPOINT_RESTORE: y
 - DRM_DEBUG_SELFTEST: m, v4.18-rc1
 - EFIVAR_FS: y
 - EMBEDDED: y
 - EXPERT: y
-- FTRACE: y
-- FUNCTION_PROFILER: y
 - GPIOLIB: y
 - GPIO_MOCKUP: v4.9-rc1
-- HIST_TRIGGERS: y, v4.7-rc1
 - IMA_APPRAISE: y
 - IMA_ARCH_POLICY: y, v5.0-rc1
-- IRQSOFF_TRACER: y
 - IR_IMON_DECODER: m, v4.17-rc1
 - IR_SHARP_DECODER: m # Depends on: RC_DECODERS [: y] && RC_CORE [: m]
-- KALLSYMS_ALL: y
-- KPROBES: y
 - LIRC: y # Depends on: RC_CORE [: m]
 - LKDTM: y
-- MODULES: y
-- MODULE_UNLOAD: y
 - NOTIFIER_ERROR_INJECTION: y
 - PREEMPT: y
-- PREEMPTIRQ_DELAY_TEST: m, v5.6-rc1
-- PREEMPT_TRACER: y
-- SAMPLES: y
-- SAMPLE_FTRACE_DIRECT: m, v5.5-rc1
-- SAMPLE_TRACE_PRINTK: m
-- SCHED_TRACER: y
 - SECURITYFS: y
-- STACK_TRACER: y
 - TEST_BITMAP
 - TEST_KMOD: m, v4.13-rc1
 - TEST_LKM: m
 - TEST_PRINTF
 - TEST_STRSCPY: m, v5.2-rc1
-- TRACER_SNAPSHOT: y
 - TUN: m
 - WW_MUTEX_SELFTEST: m, v4.11-rc1
 - XFS_FS: m
@@ -208,7 +233,7 @@ need_kconfig:
 - IPV6_MULTIPLE_TABLES: y
 - MACSEC: y
 - MEMORY_HOTPLUG: y
-- MEMORY_HOTPLUG_SPARSE: y
+- MEMORY_HOTPLUG_SPARSE: y, <= v5.15
 - MEMORY_HOTREMOVE: y
 - MEMORY_NOTIFIER_ERROR_INJECT: m
 - MISC_FILESYSTEMS: y
@@ -321,6 +346,10 @@ need_kconfig:
 % elsif ___.group == "resctrl"
 - X86_CPU_RESCTRL: y
 - PROC_CPU_RESCTRL: y
+% elsif ___.group == "tc-testing"
+- NET_SCH_FQ_PIE
+- PACKET
+- NET_SCH_RED
 % else
 - BLOCK: y
 - BTRFS_FS: m
@@ -329,7 +358,7 @@ need_kconfig:
 - FTRACE: y
 - IP_ADVANCED_ROUTER: y
 - IP_MULTIPLE_TABLES: y # Depends on: IP_ADVANCED_ROUTER [: y]
-- MEMORY_HOTPLUG_SPARSE: y
+- MEMORY_HOTPLUG_SPARSE: y, <= v5.15
 - MEMORY_NOTIFIER_ERROR_INJECT
 - NOTIFIER_ERROR_INJECTION
 - RC_CORE: m, v4.14-rc1
@@ -344,4 +373,11 @@ need_kconfig:
 - TEST_USER_COPY
 - TUN: m
 - XFS_FS: m # Depends on: BLOCK [: y]
+- GPIO_CDEV
+- OVERLAY_FS
+- PERF_EVENTS
+- SCHED_DEBUG
+- SHMEM
+- TMPFS_XATTR
+- TMPFS
 % end

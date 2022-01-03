@@ -9,6 +9,8 @@ disk:
 
 size: 200G
 
+need_memory: 34G
+
 ocfs2test:
   test:
     - test-mkfs

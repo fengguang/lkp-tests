@@ -39,11 +39,11 @@ argv = if ARGV == []
 opt_parser.parse!(argv)
 
 def get_simple_value(v)
-  if v.class == Hash
+  if v.instance_of?(Hash)
     v.keys[0]
-  elsif v.class == Array
+  elsif v.instance_of?(Array)
     v.map! do |vv|
-      if vv.class == Hash
+      if vv.instance_of?(Hash)
         vv.keys[0]
       else
         vv.to_s
@@ -57,7 +57,7 @@ end
 
 def shell_escape(v)
   if $opt_expand_shell_variable && v.index('$')
-    '"' + v + '"'
+    "\"#{v}\""
   else
     Shellwords.escape(v)
   end
@@ -69,7 +69,7 @@ ARGV.each do |file|
     next unless k.is_a?(String)
 
     var_name = $opt_name_prefix + k.gsub(/[^a-zA-Z0-9_]/, '_').gsub(/^[^a-zA-Z]/, '_')
-    var_name = $opt_assoc_array + '[' + var_name + ']' if $opt_assoc_array
-    STDOUT.write(var_name + '=' + shell_escape(get_simple_value(v)) + "\n")
+    var_name = "#{$opt_assoc_array}[#{var_name}]" if $opt_assoc_array
+    $stdout.write("#{var_name}=#{shell_escape(get_simple_value(v))}\n")
   end
 end

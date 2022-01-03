@@ -140,7 +140,7 @@ reduce_runtimes()
 	local test=$1
 	local target=${environment_directory}/../test-profiles/pts/${test}/test-definition.xml
 	[ -f $target.bak ] || cp $target $target.bak
-	sed -i 's,<TimesToRun>3</TimesToRun>,<TimesToRun>2</TimesToRun>,' "$target"
+	sed -i 's,<TimesToRun>3</TimesToRun>,<TimesToRun>1</TimesToRun>,' "$target"
 }
 
 # fix issue: [NOTICE] Undefined: min_result in pts_test_result_parser:478
@@ -250,7 +250,7 @@ fixup_fio()
 	# create virtual disk
 	local test_disk="/tmp/test_fio.img"
 	local test_dir="/media/test_fio"
-	fallocate -l 100M $test_disk || return
+	fallocate -l 10G $test_disk || return
 	mkfs -t ext4 $test_disk 2> /dev/null || return
 	mkdir -p $test_dir || return
 	modprobe loop || return
@@ -356,11 +356,7 @@ fixup_mcperf()
 	[ -n "$environment_directory" ] || return
 	local test=$1
 	local target=${environment_directory}/pts/${test}/mcperf
-	useradd -m -s /bin/bash memcached_test 2>/dev/null
-	sed -i 's#^./memcached -d$#su memcached_test -c "./memcached -d"#' $target
-	# Choose
-	# 8: Test All Options
-	test_opt="\n8\nn"
+	sed -i 's#^./memcached -d -t#./memcached -d -u root -t#' $target
 }
 
 setup_python2()
@@ -494,6 +490,30 @@ fixup_x264_opencl_install()
 	sed -i 's/\.\/configure --prefix=$HOME\/x264_\//\.\/configure --prefix=$HOME\/x264_\/ --enable-pic --enable-shared/g' "$target"
 }
 
+# exit when match option failed for 2 times
+# before:
+# 277                 $select = array();
+# 278
+# 279                 do
+# 280                 {
+# 281                         echo PHP_EOL;
+# after:
+# 277                 $select = array();
+# 278                 $lkp_count = 1;
+# 279
+# 280                 do
+# 281                 {
+# 282                         if ($lkp_count > 2) {echo 'Wrong test option' . PHP_EOL;exit;}
+# 283                         $lkp_count++;
+# 284                         echo PHP_EOL;
+patch_to_detect_wrong_test_option()
+{
+	local target=/usr/share/phoronix-test-suite/pts-core/objects/pts_user_io.php
+	sed -i "277a \$lkp_count = 1;" "$target"
+	sed -i "281a if (\$lkp_count > 2) {echo 'Wrong test option' . PHP_EOL;exit;}" "$target"
+	sed -i "282a \$lkp_count++;" "$target"
+}
+
 fixup_install()
 {
 	local test=$1
@@ -595,6 +615,7 @@ run_test()
 		interbench-*)
 			# produce big file to /opt/rootfs when test on cluster
 			[ "$LKP_LOCAL_RUN" = "1" ] || fixup_interbench $test || die "failed to fixup test $test"
+			reduce_runtimes $test || die "failed to reduce run times when run $test"
 			# Choose
 			# 1: Video
 			# 2: Burn
@@ -699,8 +720,8 @@ run_test()
 		sqlite-[0-9]*)
 			fixup_sqlite $test || die "failed to fixup test $test"
 			;;
-		cyclictest-*)
-			reduce_runtimes $test || die "failed to fixup test $test"
+		cyclictest-*|parboil-*|cp2k-*|llvm-test-suite-*|blender-*|svt-av1-*|helsing-*|build-gcc-*|core-latency-*|jxrendermark-*|renaissance-*)
+			reduce_runtimes $test || die "failed to reduce run times when run $test"
 			;;
 		blogbench-*)
 			fixup_blogbench $test || die "failed to fixup test $test"
@@ -783,12 +804,16 @@ run_test()
 			;;
 		pgbench-*)
 			fixup_pgbench $test || die "failed to fixup pgbench"
+			reduce_runtimes $test || die "failed to reduce run times when run $test"
 			;;
 	esac
 
 	export PTS_SILENT_MODE=1
 	echo PTS_SILENT_MODE=$PTS_SILENT_MODE
 
+	[ -n "$test" ] || die "testname is empty"
+
+	patch_to_detect_wrong_test_option
 	if [ -n "$option_a" ]; then
 		test_opt='\n'
 		for i in {a..j}
@@ -806,6 +831,8 @@ run_test()
 	[ -f "$root_access" ] || die "$root_access not exist"
 	sed -i 's,#!/bin/sh,#!/bin/dash,' $root_access
 
+	phoronix-test-suite list-installed-tests | grep -q $test || die "$test is not installed"
+
 	if echo "$test" | grep idle-power-usage; then
 		# Choose
 		# sleep 1 min
@@ -814,6 +841,25 @@ run_test()
 			spawn phoronix-test-suite run $test
 			expect {
 				"Enter Value:" { send "1\\r"; exp_continue }
+				"Would you like to save these test results" { send "n\\r"; exp_continue }
+				eof { }
+				default { exp_continue }
+			}
+		EOF
+	elif echo "$test" | grep ethr; then
+		# Choose
+		# Server Address
+		# Enter Value: localhost
+		# 3: HTTP
+		# 1: Bandwidth
+		# 1: 1
+		/usr/bin/expect <<-EOF
+			spawn phoronix-test-suite run $test
+			expect {
+				"Enter Value:" { send "localhost\\r"; exp_continue }
+				"Protocol:" { send "3\r"; exp_continue }
+				"Test:" { send "1\r"; exp_continue }
+				"Threads:" { send "1\r"; exp_continue }
 				"Would you like to save these test results" { send "n\\r"; exp_continue }
 				eof { }
 				default { exp_continue }

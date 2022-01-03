@@ -12,13 +12,13 @@ fs:
 - btrfs
 - f2fs
 - udf
-- ocfs2
+# - ocfs2 # mount.ocfs2 known bug
 
 xfstests:
   test:
-  - generic-299
   - generic-409
   - generic-410
+  - generic-464
   - generic-logwrites
   - generic-group-17
   - generic-group-18

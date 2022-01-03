@@ -18,36 +18,37 @@ def extract_avg_cpu(line)
   # remove heading avg-cpu item
   title = line.split[1..-1]
 
-  return unless (line = STDIN.gets)
+  return unless (line = $stdin.gets)
 
   data = line.split
   (0..data.size - 1).each do |i|
     key = normalize_key "cpu.#{title[i]}"
-    puts key + ': ' + data[i]
+    puts "#{key}: #{data[i]}"
   end
 end
 
 def extract_dev_stat(line)
   title = line.split
-  while (line = STDIN.gets)
+  while (line = $stdin.gets)
     data = line.split
     break if data.size != title.size
 
     dev = data[0]
     (1..data.size - 1).each do |i|
       key = normalize_key "#{dev}.#{title[i]}"
-      puts key + ': ' + data[i]
+      puts "#{key}: #{data[i]}"
     end
   end
 end
 
-while (line = STDIN.gets)
-  if line =~ /^[0-9T:+-]{24}$/ # "2013-04-02T13:58:40+0800", by 'S_TIME_FORMAT=ISO isotat -t'
+while (line = $stdin.gets)
+  case line
+  when /^[0-9T:+-]{24}$/ # "2013-04-02T13:58:40+0800", by 'S_TIME_FORMAT=ISO isotat -t'
     time = line.chomp('\n')
     puts "time: #{Time.parse(time).to_i}"
-  elsif line =~ /^avg-cpu:/
+  when /^avg-cpu:/
     extract_avg_cpu line
-  elsif line =~ /^Device:/
+  when /^Device:/
     extract_dev_stat line
   end
 end

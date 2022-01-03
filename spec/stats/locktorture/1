@@ -1,0 +1,39 @@
+2020-11-22 08:45:59 modprobe locktorture onoff_interval=3 onoff_holdoff=30
+2020-11-22 08:45:59 sleep 300
+2020-11-22 08:50:59 rmmod locktorture
+[    9.523135] spin_lock-torture:--- Start of test: nwriters_stress=4 nreaders_stress=0 stat_interval=60 verbose=1 shuffle_interval=3 stutter=5 shutdown_secs=0 onoff_interval=3 onoff_holdoff=30
+[    9.525645] spin_lock-torture: Creating torture_onoff task
+[    9.537416] spin_lock-torture: Creating torture_shuffle task
+[    9.537900] spin_lock-torture: torture_onoff task started
+[    9.538312] spin_lock-torture: torture_onoff begin holdoff
+[    9.544421] spin_lock-torture: Creating torture_stutter task
+[    9.544425] spin_lock-torture: torture_shuffle task started
+[    9.548431] spin_lock-torture: Creating lock_torture_writer task
+[    9.548962] spin_lock-torture: torture_stutter task started
+[    9.554426] spin_lock-torture: Creating lock_torture_writer task
+[    9.554430] spin_lock-torture: lock_torture_writer task started
+[    9.560432] spin_lock-torture: lock_torture_writer task started
+[    9.563413] spin_lock-torture: Creating lock_torture_writer task
+[    9.568426] spin_lock-torture: Creating lock_torture_writer task
+[    9.568430] spin_lock-torture: lock_torture_writer task started
+[    9.573412] spin_lock-torture: Creating lock_torture_stats task
+[    9.575293] spin_lock-torture: lock_torture_writer task started
+[    9.581433] spin_lock-torture: lock_torture_stats task started
+[   39.606418] spin_lock-torture: torture_onoff end holdoff
+[  309.655112] spin_lock-torture: Stopping torture_shuffle task
+[  309.656923] spin_lock-torture: Stopping torture_shuffle
+[  309.658177] spin_lock-torture: Stopping torture_stutter
+[  309.660909] spin_lock-torture: Stopping torture_stutter task
+[  309.662367] spin_lock-torture: Stopping torture_onoff task
+[  309.663819] spin_lock-torture: Stopping torture_onoff
+[  309.666475] spin_lock-torture: Stopping lock_torture_writer task
+[  309.667734] spin_lock-torture: Stopping lock_torture_writer
+[  309.669973] spin_lock-torture: Stopping lock_torture_writer
+[  309.671217] spin_lock-torture: Stopping lock_torture_writer
+[  309.673417] spin_lock-torture: Stopping lock_torture_writer
+[  309.675187] spin_lock-torture: Stopping lock_torture_writer task
+[  309.677090] spin_lock-torture: Stopping lock_torture_writer task
+[  309.678321] spin_lock-torture: Stopping lock_torture_writer task
+[  309.680600] spin_lock-torture: Stopping lock_torture_stats task
+[  309.682835] spin_lock-torture: Stopping lock_torture_stats
+[  309.686845] spin_lock-torture:--- End of test: SUCCESS: nwriters_stress=4 nreaders_stress=0 stat_interval=60 verbose=1 shuffle_interval=3 stutter=5 shutdown_secs=0 onoff_interval=3 onoff_holdoff=30

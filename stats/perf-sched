@@ -3,7 +3,7 @@
 perf_sched = Hash.new { |h, k| h[k] = [[], [], []] }
 stats = []
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   case line
   when / <- /
     data = line.gsub(' <- ', '.').split(' ')
@@ -22,7 +22,7 @@ end
 
 compare_average = 0
 compare_count = 0
-{'total_wait_time' => 0, 'total_sch_delay' => 1, 'total_wait_and_delay' => 2}.each do |type, i|
+{ 'total_wait_time' => 0, 'total_sch_delay' => 1, 'total_wait_and_delay' => 2 }.each do |type, i|
   v = total_perf_sched[i].flatten
   average = (v.reduce(:+).to_f / v.size).round(3)
   if type == 'total_wait_and_delay'
@@ -36,7 +36,7 @@ end
 
 sorted_keys = perf_sched.keys.sort_by { |k| perf_sched[k][0].size }
 sorted_keys.reverse_each do |k|
-  {'wait_time' => 0, 'sch_delay' => 1, 'wait_and_delay' => 2}.each do |type, i|
+  { 'wait_time' => 0, 'sch_delay' => 1, 'wait_and_delay' => 2 }.each do |type, i|
     v = perf_sched[k][i]
     average = (v.reduce(:+).to_f / v.size).round(3)
     if type == 'wait_and_delay'

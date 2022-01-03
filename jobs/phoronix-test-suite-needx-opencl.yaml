@@ -10,10 +10,12 @@ phoronix-test-suite:
       # - Write
       # - Copy
       # - Test All Options
-  - test: financebench-1.0.0
+  - test: financebench-1.1.1
     option_a:
       - Black-Scholes OpenCL
       - Monte-Carlo OpenCL
+      - Bonds OpenMP
+      - Repo OpenMP
       # - Test All Options
     # - gl-vs-vk-1.0.0 # required lib libGLEW.so.1.13 is too old
   - test: juliagpu-1.3.1
@@ -22,7 +24,7 @@ phoronix-test-suite:
       - GPU
       - CPU+GPU
       # - Test All Options
-  # - test: luxmark-1.2.0 # required lib libstdc+.so.6.0.25 is too old
+  - test: luxmark-1.2.1
   - test: mandelbulbgpu-1.3.0
     option_a:
       - CPU

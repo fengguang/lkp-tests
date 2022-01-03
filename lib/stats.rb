@@ -41,7 +41,7 @@ class LinuxTestcasesTableSet
        dd-write ebizzy fileio fishtank fsmark glbenchmark
        hackbench hpcc idle iozone iperf jsbenchmark kbuild
        ku-latency linpack mlc nepim netperf netpipe
-       nuttcp octane oltp openarena pbzip2
+       nuttcp octane oltp openarena pbzip2 rcurefscale
        perf-bench-numa-mem perf-bench-sched-pipe pft
        phoronix-test-suite pigz pixz plzip postmark pxz qperf
        reaim sdf siege sockperf speccpu specjbb2013
@@ -53,7 +53,8 @@ class LinuxTestcasesTableSet
        perf-bench-futex mutilate lmbench3 lib-micro schbench
        pmbench linkbench rocksdb cassandra redis power-idle
        mongodb ycsb memtier mcperf fio-jbod cyclictest filebench igt
-       autonuma-benchmark adrestia kernbench rt-app migratepages].freeze
+       autonuma-benchmark adrestia kernbench rt-app migratepages intel-ipsec-mb
+       simd-stress].freeze
   LINUX_TESTCASES =
     %w[analyze-suspend boot blktests cpu-hotplug ext4-frags ftq ftrace-onoff fwq
        galileo irda-kernel kernel-builtin kernel-selftests kvm-unit-tests kvm-unit-tests-qemu
@@ -61,7 +62,7 @@ class LinuxTestcasesTableSet
        qemu rcuscale rcutorture suspend suspend-stress trinity ndctl nfs-test hwsim
        idle-inject mdadm-selftests xsave-test nvml test-bpf mce-log perf-sanity-tests
        build-perf_test update-ucode reboot cat libhugetlbfs-test ocfs2test syzkaller
-       perf-test stress-ng fxmark kvm-kernel-boot-test bkc_ddt bpf_offload
+       perf-test stress-ng fxmark kvm-kernel-boot-test bkc_ddt
        xfstests packetdrill avocado v4l2 vmem perf-stat-tests cgroup2-test].freeze
   OTHER_TESTCASES =
     %w[0day-boot-tests 0day-kbuild-tests build-dpdk build-nvml
@@ -82,7 +83,7 @@ def test_prefixes
   tests.push 'dmesg'
   tests.push 'stderr'
   tests.push 'last_state'
-  tests.map { |test| test + '.' }
+  tests.map { |test| "#{test}." }
 end
 
 def functional_test?(testcase)
@@ -126,7 +127,7 @@ def reasonable_perf_change?(name, delta, max)
   $perf_metrics_threshold.each do |k, v|
     next unless name =~ %r{^#{k}$}
     return false if max < v
-    return false if delta < v / 2 && v.class == Integer
+    return false if delta < v / 2 && v.instance_of?(Integer)
 
     return true
   end
@@ -277,7 +278,7 @@ def load_base_matrix_for_notag_project(git, rp, axis)
   log_debug "#{git.project} doesn't have tag, use its first commit #{base_commit} as base commit"
 
   rp[axis] = base_commit
-  base_matrix_file = rp._result_root + '/matrix.json'
+  base_matrix_file = "#{rp._result_root}/matrix.json"
   unless File.exist? base_matrix_file
     log_warn "#{base_matrix_file} doesn't exist."
     return nil
@@ -337,7 +338,7 @@ def load_base_matrix(matrix_path, head_matrix, options)
   if project == 'linux' && !version
     kconfig = rp['kconfig']
     compiler = rp['compiler']
-    context_file = vmlinuz_dir(kconfig, compiler, commit) + '/context.yaml'
+    context_file = "#{vmlinuz_dir(kconfig, compiler, commit)}/context.yaml"
     version = nil
     if File.exist? context_file
       context = YAML.load_file context_file
@@ -378,12 +379,12 @@ def load_base_matrix(matrix_path, head_matrix, options)
     break if tag =~ /\.[0-9]+$/ && tags_merged.size >= 2 && cols >= 6
 
     rp[axis] = tag
-    base_matrix_file = rp._result_root + '/matrix.json'
+    base_matrix_file = "#{rp._result_root}/matrix.json"
     unless File.exist? base_matrix_file
       rp[axis] = git.release_tags2shas[tag]
       next unless rp[axis]
 
-      base_matrix_file = rp._result_root + '/matrix.json'
+      base_matrix_file = "#{rp._result_root}/matrix.json"
     end
     next unless File.exist? base_matrix_file
 
@@ -551,9 +552,10 @@ def expand_matrix(matrix, options)
   return if real_values.empty?
 
   converted_values = real_values.public_send(convert_function)
-  if converted_values.is_a?(Array)
+  case converted_values
+  when Array
     matrix[stat] = converted_values
-  elsif converted_values.is_a?(Numeric)
+  when Numeric
     matrix[stat] = Array.new(matrix_cols(matrix), converted_values)
   end
 end
@@ -572,9 +574,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
   cols_a = matrix_cols a
   cols_b = matrix_cols b
 
-  if options['variance']
-    return nil if cols_a < 10 || cols_b < 10
-  end
+  return nil if options['variance'] && (cols_a < 10 || cols_b < 10)
 
   # Before: matrix = { "will-it-scale.per_process_ops" => [1183733, 1285303, 721524, 858073, 1207794] }
   # After:  matrix = { "will-it-scale.per_process_ops" => [1183733, 1285303, 721524, 858073, 1207794],
@@ -599,14 +599,14 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
     if is_function_stat && k !~ /^(dmesg|kmsg|last_state|stderr)\./
       # if stat is packetdrill.packetdrill/gtests/net/tcp/mtu_probe/basic-v6_ipv6.fail,
       # base rt stats should contain 'packetdrill.packetdrill/gtests/net/tcp/mtu_probe/basic-v6_ipv6.pass'
-      stat_base = k.sub(/\.[^\.]*$/, '')
+      stat_base = k.sub(/\.[^.]*$/, '')
       # only consider pass and fail temporarily
       next if k =~ /\.fail$/ && !b.keys.any? { |stat| stat == "#{stat_base}.pass" }
       next if k =~ /\.pass$/ && !b.keys.any? { |stat| stat == "#{stat_base}.fail" }
     end
 
     is_allowed_stat = false
-    if options['force_' + k]
+    if options["force_#{k}"]
       if strict_kpi_stat?(k, nil)
         is_allowed_stat = true
       else
@@ -643,6 +643,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
 
     sorted_b = sort_remove_margin b_k, max_margin
     next if sorted_b.empty?
+
     min_b, mean_b, max_b = get_min_mean_max sorted_b
     next unless max_b
 
@@ -651,27 +652,26 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
     max_margin = 1 if b_k.size <= 3 && max_margin > 1
     sorted_a = sort_remove_margin v, max_margin
     next if sorted_a.empty?
+
     min_a, mean_a, max_a = get_min_mean_max sorted_a
     next unless max_a
 
-    unless is_allowed_stat
-      next unless changed_stats?(sorted_a, min_a, mean_a, max_a,
-                                 sorted_b, min_b, mean_b, max_b,
-                                 is_function_stat, is_latency_stat,
-                                 k, options)
+    if !is_allowed_stat && !changed_stats?(sorted_a, min_a, mean_a, max_a,
+                                           sorted_b, min_b, mean_b, max_b,
+                                           is_function_stat, is_latency_stat,
+                                           k, options)
+      next
     end
 
-    if options['regression-only'] || options['all-critical']
-      if is_function_stat
-        if max_a.zero?
-          has_boot_fix = true if k =~ /^dmesg\./
-          next if options['regression-only'] ||
-                  (k !~ $kill_pattern_allowlist_re && options['all-critical'])
-        end
+    if (options['regression-only'] || options['all-critical']) && is_function_stat
+      if max_a.zero?
+        has_boot_fix = true if k =~ /^dmesg\./
+        next if options['regression-only'] ||
+                (k !~ $kill_pattern_allowlist_re && options['all-critical'])
+      end
         # this relies on the fact dmesg.* comes ahead
         # of kmsg.* in etc/default_stats.yaml
-        next if has_boot_fix && k =~ /^kmsg\./
-      end
+      next if has_boot_fix && k =~ /^kmsg\./
     end
 
     max = [max_b, max_a].max
@@ -691,17 +691,15 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
     y = 0 if y < 0
     ratio = MAX_RATIO if ratio > MAX_RATIO
 
-    unless is_allowed_stat
-      unless options['perf-profile'] && k =~ /^perf-profile\./
-        next unless ratio > 1.01 # time.elapsed_time only has 0.01s precision
-        next unless ratio > 1.1 || perf_metric?(k)
-        next unless reasonable_perf_change?(k, delta, max)
-      end
+    if !is_allowed_stat && !(options['perf-profile'] && k =~ /^perf-profile\./)
+      next unless ratio > 1.01 # time.elapsed_time only has 0.01s precision
+      next unless ratio > 1.1 || perf_metric?(k)
+      next unless reasonable_perf_change?(k, delta, max)
     end
 
     interval_a = format('[ %-10.5g - %-10.5g ]', min_a, max_a)
     interval_b = format('[ %-10.5g - %-10.5g ]', min_b, max_b)
-    interval = interval_a + ' -- ' + interval_b
+    interval = "#{interval_a} -- #{interval_b}"
 
     changed_stats[k] = { 'stat' => k,
                          'interval' => interval,
@@ -725,11 +723,11 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
                          'nr_run' => v.size }
     changed_stats[k].merge! options
 
-    if options['base_matrixes']
-      changed_stats[k].delete('base_matrixes')
-      changed_stats[k]['extra'] ||= {}
-      changed_stats[k]['extra']['base_matrixes'] = options['base_matrixes'].map { |tag, matrix| "#{tag}: #{matrix[k].inspect}" }
-    end
+    next unless options['base_matrixes']
+
+    changed_stats[k].delete('base_matrixes')
+    changed_stats[k]['extra'] ||= {}
+    changed_stats[k]['extra']['base_matrixes'] = options['base_matrixes'].map { |tag, matrix| "#{tag}: #{matrix[k].inspect}" }
   end
 
   changed_stats

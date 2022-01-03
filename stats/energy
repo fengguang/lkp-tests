@@ -3,7 +3,7 @@
 time = []
 counts = {}
 
-STDIN.each_line do |line|
+$stdin.each_line do |line|
   case line
   when /^time: (.*)/
     time << $1

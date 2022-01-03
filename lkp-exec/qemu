@@ -6,6 +6,7 @@
 . $LKP_SRC/lib/unit.sh
 . $LKP_SRC/lib/job-init.sh
 . $LKP_SRC/lib/lkp_cmd.sh
+. $LKP_SRC/lib/lkp_path.sh
 
 script_name=$(basename $0)
 
@@ -39,19 +40,6 @@ get_job_env()
 	[[ $1 ]] || return
 	[[ $2 ]] || return
 	job_script=$(realpath $1) env=$2 bash -c 'source $job_script && export_top_env > /dev/null 2>&1 && eval echo \$$env'
-}
-
-validate_options()
-{
-	local job_script=$1
-	local need_module
-	need_module="$(get_job_env $job_script 'need_modules')" || return
-	[[ "$need_module" = "true" ]] && {
-		[[ ! $opt_modules ]] && echo "kernel module is required, please specify it with '-m'" && return 1
-		[[ ! -e $opt_modules ]] && echo "$opt_modules is not existed" && return 1
-	}
-
-	return 0
 }
 
 create_lkp_home()
@@ -110,6 +98,15 @@ replace_script_partition_val()
 		index=$((index+nr_rootfs_vdisk))
 		local vdisk_swap_val="${disk_names[@]:$index:$nr_swap_vdisk}"
 
+		# First remove lines between two export, or it will be left
+		# export ssd_partitions='/dev/disk/by-id/nvme-INTEL_SSDPE2KX040T7_PHLF7414019F4P0IGN-part2
+		# /dev/disk/by-id/nvme-INTEL_SSDPE2KX040T7_PHLF7414019F4P0IGN-part3'
+		# export swap_partitions=
+		sed -i  -e '/export hdd_partitions/,/export/{//!d}' \
+			-e '/export ssd_partitions/,/export/{//!d}' \
+			-e '/export swap_partitions/,/export/{//!d}' \
+			-e '/export rootfs_partitions/,/export/{//!d}' \
+			$job_script
 		sed -i	-e "s%export hdd_partitions=.*%export hdd_partitions='${vdisk_hdd_val}'%" \
 			-e "s%export ssd_partitions=.*%export ssd_partitions='${vdisk_ssd_val}'%" \
 			-e "s%export swap_partitions=.*%export swap_partitions='${vdisk_swap_val}'%" \
@@ -210,13 +207,6 @@ job_script=$1
 
 sed -i 's/\r//' $job_script
 sed -i 's/LKP_SERVER=.*$/LKP_LOCAL_RUN=1/g' $job_script
-# lkp-src makepkg use current user name to generate path to save code
-# switch to current user here if job_script specified user=lkp to fix lkp qemu running error:
-# rc.local[297]: /etc/init.d/lkp-bootstrap: 75: /etc/init.d/lkp-bootstrap: /lkp/lkp/src/bin/lkp-setup-rootfs: not found
-sed -i 's/user=lkp/user=$(whoami)/g' $job_script
-sed -i 's/export user=['\'']lkp['\'']/user=$(whoami)/g' $job_script
-
-validate_options $job_script || exit 1
 
 create_lkp_user
 create_lkp_home
@@ -251,12 +241,11 @@ create_lkp_src_initrd()
 	fi
 	lkp_initrd=$CACHE_DIR/lkp-$arch-$src_sig.cgz
 	[[ -f $lkp_initrd ]] || {
-		LKP_USER="$user"
 		archive="${CACHE_DIR}"
 		
 		pushd "$LKP_SRC/pkg/lkp-src"
-		PACMAN=true BUILDDIR=/tmp/$USER CARCH=$arch PKGEXT=.cgz CGZDEST="$CACHE_DIR/lkp-$arch.cgz" \
-		$LKP_SRC/sbin/makepkg --config $LKP_SRC/etc/makepkg.conf -e
+		LKP_USER="$user" PACMAN=true BUILDDIR=/tmp/$USER CARCH=$arch PKGEXT=.cgz CGZDEST="$CACHE_DIR/lkp-$arch.cgz" \
+		$LKP_SRC/sbin/makepkg --config $(lkp_src)/etc/makepkg.conf -e
 		[[ -f $CACHE_DIR/lkp-$arch.cgz ]] || {
 			echo "Failed to pack: $CACHE_DIR/lkp-$arch.cgz"
 			exit 1
@@ -312,7 +301,13 @@ else
 fi
 
 LKP_USER="lkp"
-: ${QEMU_MODEL:='qemu-system-x86_64'}
+if [ -z $QEMU_MODEL ]; then
+	if get_job_env $job_script 'model' | grep -q 'qemu-system-i386'; then
+		QEMU_MODEL='qemu-system-i386'
+	else
+		QEMU_MODEL='qemu-system-x86_64'
+	fi
+fi
 
 run_kvm()
 {

@@ -32,7 +32,7 @@ type = 'unknown'
 
 stats = LKP::Stats.new
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   line = line.resolve_invalid_bytes
 
   case line
@@ -41,12 +41,12 @@ while (line = STDIN.gets)
   when /^\[.*\] #{type}-torture.*End of test: (.*):.*onoff_interval=([0-9]+).*/
     result = $1
     if $2.eql? '0'
-      stats.add "#{type}", "#{result}"
+      stats.add type.to_s, result.to_s
     else
-      stats.add "cpuhotplug-#{type}", "#{result}"
+      stats.add "cpuhotplug-#{type}", result.to_s
     end
   end
 end
 
-stats.add "#{type}", "#{result}" if stats.empty?
+stats.add type.to_s, result.to_s if stats.empty?
 stats.dump('success' => 'pass', 'failure' => 'fail')

@@ -126,3 +126,7 @@ subsystems:
 - rtl8188eu
 - sm750fb
 notify_build_success_branch: .*
+non_rebaseable_branch: .*
+patch_based_on_branch:
+  ' (S|s)taging(:|\/)': staging-testing
+  '\[.+ (staging)( .+)?\]': staging-next

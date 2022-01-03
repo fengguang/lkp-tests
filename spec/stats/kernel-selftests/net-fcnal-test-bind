@@ -1,0 +1,46 @@
+2021-12-02 07:39:32 make run_tests -C net
+make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-d58071a8a76d779eedab38033ae4c821c30295a5/tools/testing/selftests/net'
+make --no-builtin-rules ARCH=x86 -C ../../../.. headers_install
+make[1]: Entering directory '/usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-d58071a8a76d779eedab38033ae4c821c30295a5'
+  INSTALL ./usr/include
+make[1]: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-d58071a8a76d779eedab38033ae4c821c30295a5'
+TAP version 13
+1..1
+# selftests: net: fcnal-test.sh
+# 
+# ###########################################################################
+# IPv4 address binds
+# ###########################################################################
+# 
+# 
+# #################################################################
+# No VRF
+# 
+# TEST: Raw socket bind to local address - ns-A IP                              [ OK ]
+# TEST: Raw socket bind to local address after device bind - ns-A IP            [ OK ]
+# TEST: Raw socket bind to local address - ns-A loopback IP                     [ OK ]
+# TEST: Raw socket bind to local address after device bind - ns-A loopback IP   [ OK ]
+# TEST: TCP socket bind to local address - ns-A IP                              [ OK ]
+# TEST: TCP socket bind to local address after device bind - ns-A IP            [ OK ]
+# 
+# #################################################################
+# With VRF
+# 
+# TEST: Raw socket bind to local address - ns-A IP                              [ OK ]
+# TEST: Raw socket bind to local address after device bind - ns-A IP            [ OK ]
+# TEST: Raw socket bind to local address after VRF bind - ns-A IP               [ OK ]
+# TEST: Raw socket bind to local address - VRF IP                               [FAIL]
+# TEST: Raw socket bind to local address after device bind - VRF IP             [ OK ]
+# TEST: Raw socket bind to local address after VRF bind - VRF IP                [ OK ]
+# TEST: Raw socket bind to out of scope address after VRF bind - ns-A loopback IP  [ OK ]
+# TEST: TCP socket bind to local address - ns-A IP                              [ OK ]
+# TEST: TCP socket bind to local address after device bind - ns-A IP            [ OK ]
+# TEST: TCP socket bind to local address - VRF IP                               [ OK ]
+# TEST: TCP socket bind to local address after device bind - VRF IP             [ OK ]
+# TEST: TCP socket bind to invalid local address for VRF - ns-A loopback IP     [ OK ]
+# TEST: TCP socket bind to invalid local address for device bind - ns-A loopback IP  [ OK ]
+# 
+# Tests passed:  18
+# Tests failed:   1
+ok 1 selftests: net: fcnal-test.sh
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-d58071a8a76d779eedab38033ae4c821c30295a5/tools/testing/selftests/net'

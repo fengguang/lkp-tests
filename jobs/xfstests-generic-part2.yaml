@@ -12,7 +12,7 @@ fs:
 - btrfs
 - f2fs
 - udf
-- ocfs2
+# - ocfs2 # mount.ocfs2 known bug
 
 xfstests:
   test:

@@ -3,6 +3,48 @@
 . $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/debug.sh
 
+
+# greater than or equal
+libc_version_ge()
+{
+	local version=$1
+	# debian: /lib/x86_64-linux-gnu/libc.so.6
+	# /lib/x86_64-linux-gnu/libc.so.6
+	# GNU C Library (Ubuntu GLIBC 2.27-3ubuntu1.4) stable release version 2.27.
+	# printf '2.4.5\n2.8\n2.4.5.1\n' | sort -V
+	[[ -f /lib/x86_64-linux-gnu/libc.so.6 ]] && libc_bin=/lib/x86_64-linux-gnu/libc.so.6
+
+	# fedora: /usr/lib/libc.so.6
+	# [root@iaas-rpma proc]# /usr/lib/libc.so.6
+	# GNU C Library (GNU libc) stable release version 2.32.
+	[[ -f /usr/lib/libc.so.6 ]] && libc_bin=/usr/lib/libc.so.6
+	[[ "$libc_bin" ]] || return 0
+
+	local local_version=$($libc_bin | head -1 | awk '{print $NF}')
+	local_version=${local_version::-1} # omit the last .
+	local greatest=$(printf "$local_version\n$1" | sort -V | head -1)
+
+	[[ "$greatest" = "$version" ]]
+}
+
+is_kernel_version_ge()
+{
+	local other=$1
+
+	# 5.14.9-200.fc34.x86_64
+	# format: X.Y.Z-...
+	local version=$(uname -r)
+	# 5.14.9
+	# format: X.Y.Z
+	version=${version%%-*}
+	# 5.14
+	# format: X.Y
+	version=${version%.*}
+
+	rs_value=$(awk -v version=${version} -v other=${other} 'BEGIN { print(version >= other) ? "0" : "1" }')
+	return $rs_value
+}
+
 build_selftests()
 {
 	cd tools/testing/selftests	|| return
@@ -17,6 +59,13 @@ build_selftests()
 
 	make				|| return
 	cd ../../..
+}
+
+# don't auto-reboot when panic
+prepare_for_lkdtm()
+{
+	echo 0 >/proc/sys/kernel/panic_on_oops
+	echo 1800 >/proc/sys/kernel/panic
 }
 
 prepare_test_env()
@@ -62,28 +111,22 @@ prepare_for_bpf()
 		# make sure the test_bpf.ko path for bpf test is right
 		log_cmd mount --bind $modules_dir/kernel/lib $linux_selftests_dir/lib || die
 
-		local linux_headers_dir=$(ls -d /usr/src/linux-headers*-bpf)
-		[[ $linux_headers_dir ]] || die "failed to find linux-headers package"
-
-		# prepare for bpf_testmod.ko
-		cp -r $linux_headers_dir/arch/*/include/generated $linux_selftests_dir/arch/x86/include/
-		cp -r $linux_headers_dir/include/generated $linux_selftests_dir/include
-		mkdir -p $linux_selftests_dir/include/config/ &&
-		cp $linux_headers_dir/include/config/auto.conf $linux_selftests_dir/include/config/
-		cp $linux_headers_dir/scripts/basic/fixdep $linux_selftests_dir/scripts/basic/
-		cp $linux_headers_dir/scripts/mod/modpost $linux_selftests_dir/scripts/mod
-		cp $linux_headers_dir/tools/objtool/objtool $linux_selftests_dir/tools/objtool/
-		cp $linux_headers_dir/scripts/module.lds $linux_selftests_dir/scripts/ 2>&1
+		# required by build bpf_testmod.ko
+		linux_headers_mod_dirs=(/usr/src/linux-headers*-bpf)
+		linux_headers_mod_dirs=$(realpath $linux_headers_mod_dirs)
+		[[ "$linux_headers_mod_dirs" ]] && export KDIR=$linux_headers_mod_dirs
 	fi
 }
 
 prepare_for_test()
 {
 	export PATH=/lkp/benchmarks/kernel-selftests/kernel-selftests/iproute2-next/sbin:$PATH
+	export PATH=$BENCHMARK_ROOT/kernel-selftests/kernel-selftests/dropwatch/bin:$PATH
 	# workaround hugetlbfstest.c open_file() error
 	mkdir -p /hugepages
 
 	[[ "$group" = "bpf" || "$group" = "net" ]] && prepare_for_bpf
+	[[ "$group" = "lkdtm" ]] && prepare_for_lkdtm
 
 	# temporarily workaround compile error on gcc-6
 	command -v gcc-5 >/dev/null && log_cmd ln -sf /usr/bin/gcc-5 /usr/bin/gcc
@@ -137,7 +180,7 @@ check_kconfig()
 	while read line
 	do
 		# Avoid commentary on config
-		[[ "$line" =~ "CONFIG_" ]] || continue
+		[[ "$line" =~ ^"CONFIG_" ]] || continue
 
 		# CONFIG_BPF_LSM may casuse kernel panic, disable it by default
 		# Failed to allocate manager object: No data available
@@ -183,18 +226,6 @@ check_ignore_case()
 	# the test of filesystems waits for the events from file, it will not never stop.
 	[ $casename = "filesystems" ] && return
 
-	# cgroup controllers can only be mounted in one hierarchy (v1 or v2).
-	# If a controller mounted on a legacy v1, then it won't show up in cgroup2.
-	# the v1 controllers are automatically mounted under /sys/fs/cgroup.
-	# systemd automatically creates such mount points. mount_cgroup dosen't work.
-	# not all controllers (like memory) become available even after unmounting all v1 cgroup filesystems.
-	# To avoid this behavior, boot with the systemd.unified_cgroup_hierarchy=1.
-	# then test cgroup could run, but the test will trigger out OOM (OOM is expected)
-	# e.g test_memcg_oom_group_parent_events.
-	# it disables swapping and tries to allocate anonymous memory up to OOM.
-	# when the test triggers out OOM, lkp determines it as failure.
-	[ $casename = "cgroup" ] && return
-
 	# test tpm2 need hardware tpm
 	ls "/dev/tpm*" 2>/dev/null || {
 		[ $casename = "tpm2" ] && return
@@ -217,26 +248,33 @@ fixup_dma()
 	echo $name > /sys/bus/pci/drivers/dma_map_benchmark/bind || return
 }
 
+skip_specific_net_cases()
+{
+	[ "$test" ] && return # test will be run standalone
+
+	# skip specific cases from net group
+	local skip_from_net="l2tp.sh tls fcnal-test.sh fib_nexthops.sh"
+	for i in $(echo $skip_from_net)
+	do
+		sed -i "s/$i//" net/Makefile
+		echo "LKP SKIP net.$i"
+	done
+}
+
+setup_fcnal_test_atomic()
+{
+	# fcnal-test.sh will read environment value TESTS, otherwise
+	# it will run all tests
+	export TESTS=$atomic_test
+}
+
 fixup_net()
 {
 	# udpgro tests need enable bpf firstly
 	# Missing xdp_dummy helper. Build bpf selftest first
 	log_cmd make -C bpf 2>&1
 
-	sed -i 's/l2tp.sh//' net/Makefile
-	echo "LKP SKIP net.l2tp.sh"
-
-	# for tls, it will directly run
-	# /kselftests/run_kselftests.sh -t net:tls
-	if [[ $test != "tls" ]]; then
-		sed -i 's/tls//' net/Makefile
-		echo "LKP SKIP net.tls"
-	fi
-
-	if [[ $test != "fcnal-test.sh" ]]; then
-		sed -i 's/fcnal-test.sh//' net/Makefile
-		echo "LKP SKIP net.fcnal-test.sh"
-	fi
+	skip_specific_net_cases
 
 	# at v4.18-rc1, it introduces fib_tests.sh, which doesn't have execute permission
 	# here is to fix the permission
@@ -246,6 +284,8 @@ fixup_net()
 	ulimit -l 10240
 	modprobe fou
 	modprobe nf_conntrack_broadcast
+
+	[ "$test" = "fcnal-test.sh" ] && [ "$atomic_test" ] && setup_fcnal_test_atomic
 
 	log_cmd make -C ../../../tools/testing/selftests/net 2>&1 || return
 	log_cmd make install INSTALL_PATH=/usr/bin/ -C ../../../tools/testing/selftests/net 2>&1 || return
@@ -290,6 +330,10 @@ fixup_ftrace()
 {
 	# FIX: sh: echo: I/O error
 	sed -i 's/bin\/sh/bin\/bash/' ftrace/ftracetest
+
+	# Stop tracing while reading the trace file by default
+	# inspired by https://lkml.org/lkml/2021/10/26/1195
+	echo 1 > /sys/kernel/debug/tracing/options/pause-on-trace
 }
 
 fixup_firmware()
@@ -314,6 +358,50 @@ fixup_gpio()
 	# gcc -O2 -g -std=gnu99 -Wall -I../../../../usr/include/    gpio-mockup-chardev.c ../../../gpio/gpio-utils.o ../../../../usr/include/linux/gpio.h  -lmount -I/usr/include/libmount -o gpio-mockup-chardev
 	# gcc: error: ../../../gpio/gpio-utils.o: No such file or directory
 	log_cmd make -C ../../../tools/gpio 2>&1 || return
+	export CFLAGS="-I../../../../usr/include"
+}
+
+fixup_proc()
+{
+	# proc-fsconfig-hidepid.c:25:17: error: ‘__NR_fsopen’ undeclared (first use in this function); did you mean ‘fsopen’?
+	export CFLAGS="-I../../../../usr/include"
+}
+
+fixup_move_mount_set_group()
+{
+	libc_version_ge 2.32 && return
+
+	# libc version lower than libc-2.32 do not define SYS_move_mount.
+	# move_mount_set_group_test.c:221:16: error: ‘SYS_move_mount’ undeclared (first use in this function); did you mean ‘SYS_mount’?
+	export CFLAGS="-DSYS_move_mount=__NR_move_mount"
+	sed -ie "s/CFLAGS = /CFLAGS += /g" move_mount_set_group/Makefile
+}
+
+fixup_landlock()
+{
+	libc_version_ge 2.32 && return
+
+	# libc version lower than libc-2.32 do not define SYS_move_mount.
+	# fs_test.c:1304:23: error: 'SYS_move_mount' undeclared (first use in this function); did you mean 'SYS_mount'?
+	export CFLAGS="-DSYS_move_mount=__NR_move_mount"
+}
+
+fixup_netfilter()
+{
+	# RULE_APPEND failed (No such file or directory): rule in chain BROUTING.
+	# table `broute' is obsolete commands.
+	update-alternatives --set ebtables /usr/sbin/ebtables-legacy
+}
+
+fixup_lkdtm()
+{
+	# Enable UNWINDER_FRAME_POINTER will fix lkdtm USERCOPY_STACK_FRAME_TO and USERCOPY_STACK_FRAME_FROM fail.
+	# But the kernel's overall performance will degrade by roughly 5-10%.
+	# So instead of enable UNWINDER_FRAME_POINTER, comment out USERCOPY_STACK_FRAME_TO and USERCOPY_STACK_FRAME_FROM.
+	sed -i '/USERCOPY_STACK_FRAME_TO/d' lkdtm/tests.txt
+	echo "LKP SKIP USERCOPY_STACK_FRAME_TO"
+	sed -i '/USERCOPY_STACK_FRAME_FROM/d' lkdtm/tests.txt
+	echo "LKP SKIP USERCOPY_STACK_FRAME_FROM"
 }
 
 cleanup_for_firmware()
@@ -336,6 +424,27 @@ fixup_memfd()
 	[[ -f $subtest/run_tests.sh ]] && {
 		[[ -x $subtest/run_tests.sh ]] || chmod +x $subtest/run_tests.sh
 	}
+
+	# memfd_test.c:783:27: error: 'F_SEAL_FUTURE_WRITE' undeclared (first use in this function); did you mean 'F_SEAL_WRITE'?
+	#  mfd_assert_add_seals(fd, F_SEAL_FUTURE_WRITE);
+	# git diff
+	# diff --git a/tools/testing/selftests/memfd/memfd_test.c b/tools/testing/selftests/memfd/memfd_test.c
+	# index 74baab83fec3..71275b722832 100644
+	# --- a/tools/testing/selftests/memfd/memfd_test.c
+	# +++ b/tools/testing/selftests/memfd/memfd_test.c
+	# @@ -20,6 +20,10 @@
+	# #include <unistd.h>
+	#  
+	# #include "common.h"
+	# +#ifndef F_SEAL_FUTURE_WRITE
+	# +#define F_SEAL_FUTURE_WRITE 0x0010
+	# +#endif
+	libc_version_ge 2.32 || {
+		sed -i '/^#include "common.h"/a #ifndef F_SEAL_FUTURE_WRITE\n#define F_SEAL_FUTURE_WRITE 0x0010\n#endif\n' $subtest/memfd_test.c
+		# fuse_test.c:63:8: error: unknown type name '__u64'
+		sed -i '/^#include "common.h"/a typedef unsigned long long __u64;' $subtest/fuse_test.c
+	}
+
 	# before v4.13-rc1, we need to compile fuse_mnt first
 	# check whether there is target "fuse_mnt" at Makefile
 	grep -wq '^fuse_mnt:' $subtest/Makefile || return 0
@@ -375,6 +484,14 @@ fixup_bpf()
 		sed -i "49aecho \$BASENAME_TEST | grep test_progs && CMD='./\$BASENAME_TEST -b mmap'" kselftest/runner.sh
 		sed -i "s/tap_timeout .\/\$BASENAME_TEST/eval \$CMD/" kselftest/runner.sh
 	fi
+	# tools/testing/selftests/bpf/tools/sbin/bpftool
+	export PATH=$linux_selftests_dir/tools/testing/selftests/bpf/tools/sbin:$PATH
+
+	if is_kernel_version_ge 5.15; then
+		# skip test_kmod.sh because test execution time > 5 hours
+		sed -i "s/test_kmod.sh//" bpf/Makefile
+		echo "LKP SKIP test_kmod.sh"
+	fi
 }
 
 fixup_kmod()
@@ -398,8 +515,7 @@ prepare_for_selftest()
 		# subtest lib cause kselftest incomplete run, it's a kernel issue
 		# report [LKP] [software node] 7589238a8c: BUG:kernel_NULL_pointer_dereference,address
 		# lkdtm is unstable [validated 1] f825d3f7ed
-		# landlock depends on new version libc6-dev
-		selftest_mfs=$(ls -d [c-l]*/Makefile | grep -v -e ^livepatch -e ^lib -e ^cpufreq -e ^kvm -e ^firmware -e ^lkdtm -e ^landlock)
+		selftest_mfs=$(ls -d [c-l]*/Makefile | grep -v -e ^ftrace -e ^livepatch -e ^lib -e ^cpufreq -e ^kvm -e ^firmware -e ^lkdtm -e ^locking)
 	elif [ "$group" = "group-02" ]; then
 		# m* is slow
 		# pidfd caused soft_timeout in kernel-selftests.splice.short_splice_read.sh.fail.v5.9-v5.10-rc1.2020-11-06.132952
@@ -447,6 +563,21 @@ fixup_vm()
 	sed -i 's/.\/compaction_test/echo -n LKP SKIP #.\/compaction_test/' vm/$run_vmtests
 	# ./userfaultfd anon 128 32
 	sed -i 's/.\/userfaultfd anon .*$/echo -n LKP SKIP #.\/userfaultfd/' vm/$run_vmtests
+
+	# /usr/include/bits/mman-linux.h:# define MADV_PAGEOUT     21/* Reclaim these pages.  */
+	# it doesn't exist in a old glibc<=2.28
+	grep -qw MADV_PAGEOUT /usr/include/x86_64-linux-gnu/bits/mman-linux.h 2>/dev/null || {
+		export EXTRA_CFLAGS="-DMADV_PAGEOUT=21"
+	}
+
+	# vmalloc stress prepare
+	if [[ $test = "vmalloc-stress" ]]; then
+		# iterations or nr_threads if not set, use default value
+		[[ -z $iterations ]] && iterations=20
+		[[ -z $nr_threads ]] && nr_threads="\$NUM_CPUS"
+		[[ $iterations -le 0 || ($nr_threads != "\$NUM_CPUS" && $nr_threads -le 0) ]] && die "Paramters: iterations or nr_threads must > 0"
+		sed -i 's/^STRESS_PARAM="nr_threads=$NUM_CPUS test_repeat_count=20"/STRESS_PARAM="nr_threads='$nr_threads' test_repeat_count='$iterations'"/' vm/test_vmalloc.sh
+	fi
 }
 
 platform_is_skylake_or_snb()
@@ -459,40 +590,22 @@ platform_is_skylake_or_snb()
 
 cleanup_openat2()
 {
-	umount /mnt/kselftest || return
-	rm -rf /mnt/kselftest || return
+	cd "$original_dir" || return
+	umount /mnt/selftests || return
+	rm -rf /mnt/selftests
 }
 
 fixup_openat2()
 {
-	local original_dir=$(pwd)
-
+	original_dir=$(pwd)
 	# The default filesystem of testing workdir is none, some flags is not supported
 	# Create a virtual disk and format it with ext4 to run openat2
 	dd if=/dev/zero of=/tmp/raw.img bs=1M count=100 || return
 	mkfs -t ext4 /tmp/raw.img || return
-	[[ -d "/mnt/kselftest" ]] || mkdir -p "/mnt/kselftest" || return
-	mount -t ext4 /tmp/raw.img /mnt/kselftest || return
-	if $run_cached_kselftests -l | grep "^$subtest:"; then
-		cp -r $(dirname $run_cached_kselftests)/openat2 /mnt/kselftest || return
-	else
-		# Build openat2 firstly, just run binary on /mnt/kselftest
-		log_cmd make -C openat2 >/dev/null || return
-		cp -r openat2 /mnt/kselftest || return
-	fi
-
-	# Openat2 create testing files on current dir, so we need change working dir.
-	cd /mnt/kselftest/openat2
-	log_cmd ./openat2_test 2>&1
-	# Since we run openat2_test directly, we also need format the output.
-	if [[ "$?" = "0" ]]; then
-		echo "ok 1 selftests: openat2: openat2_test"
-	else
-		echo "not ok 1 selftests: openat2: openat2_test # exit=1"
-	fi
-	cd $original_dir
-
-	cleanup_openat2
+	mkdir -p /mnt/selftests || return
+	mount -t ext4 /tmp/raw.img /mnt/selftests || return
+	cp -af ./* /mnt/selftests || return
+	cd /mnt/selftests
 }
 
 fixup_breakpoints()
@@ -536,16 +649,34 @@ fixup_livepatch()
 	[[ -s "/tmp/pid-tail-global" ]] && cat /tmp/pid-tail-global | xargs kill -9 && echo "" >/tmp/pid-tail-global
 }
 
-fixup_sgx()
-{
-	:
-}
-
 fixup_mount_setattr()
 {
 	# fix no real run for mount_setattr
 	grep -q TEST_PROGS mount_setattr/Makefile ||
 	grep "TEST_GEN_FILES +=" mount_setattr/Makefile | sed 's/TEST_GEN_FILES/TEST_PROGS/' >> mount_setattr/Makefile
+}
+
+fixup_tc_testing()
+{
+	# Suggested by the author
+	# upstream commit: https://git.kernel.org/netdev/net/c/bdf1565fe03d
+	sed -i 's/"matchPattern": "qdisc pfifo_fast 0: parent 1:\[1-9,a-f\].*/"matchPattern": "qdisc [a-zA-Z0-9_]+ 0: parent 1:[1-9,a-f][0-9,a-f]{0,2}",/g' tc-testing/tc-tests/qdiscs/mq.json
+	sed -i 's/"matchPattern": "qdisc pfifo_fast 0: parent 1:\[1-4\].*/"matchPattern": "qdisc [a-zA-Z0-9_]+ 0: parent 1:[1-4]",/g' tc-testing/tc-tests/qdiscs/mq.json
+
+	# Be compatible with the *new* tc output
+	# old tc output:   action order 1: bpf action.o:[action-ok] id 60 tag bcf7977d3b93787c jited default-action pipe
+	# newer tc output: action order 1: bpf action.o:[action-ok] id 64 name  tag bcf7977d3b93787c jited default-action pipe
+	# upstream commit: https://git.kernel.org/netdev/net/c/ac2944abe4d7
+	sed -i 's/\[0-9\]\* tag/[0-9].* tag/g' tc-testing/tc-tests/actions/bpf.json
+	# As description of tdc_config.py, we can replace our own tc and ip
+	# $ grep sbin/tc -B1 tdc_config.py
+	#  # Substitute your own tc path here
+	#  'TC': '/sbin/tc',
+	if [ -e /lkp/benchmarks/kernel-selftests/kernel-selftests/iproute2-next/sbin/tc ]; then
+		sed -i s,/sbin/tc,/lkp/benchmarks/kernel-selftests/kernel-selftests/iproute2-next/sbin/tc,g tc-testing/tdc_config.py
+		sed -i s,/sbin/ip,/lkp/benchmarks/kernel-selftests/kernel-selftests/iproute2-next/sbin/ip,g tc-testing/tdc_config.py
+	fi
+	modprobe netdevsim
 }
 
 build_tools()
@@ -608,10 +739,19 @@ fixup_subtest()
 	elif [[ $subtest = "exec" ]]; then
 		log_cmd touch ./$subtest/pipe || die "touch pipe failed"
 	elif [[ $subtest = "gpio" ]]; then
-		fixup_gpio || continue
+		fixup_gpio || return
+	elif [[ $subtest = "proc" ]]; then
+		fixup_proc || return
+	elif [[ $subtest = "move_mount_set_group" ]]; then
+		fixup_move_mount_set_group || return
+	elif [[ $subtest = "landlock" ]]; then
+		fixup_landlock || return
+	elif [[ $subtest = "netfilter" ]]; then
+		fixup_netfilter || return
+	elif [[ $subtest = "lkdtm" ]]; then
+		fixup_lkdtm || return
 	elif [[ $subtest = "openat2" ]]; then
-		fixup_openat2
-		return 1
+		fixup_openat2 || return
 	elif [[ "$subtest" = "pstore" ]]; then
 		fixup_pstore || return
 	elif [[ "$subtest" = "firmware" ]]; then
@@ -631,6 +771,7 @@ fixup_subtest()
 	elif [[ "$subtest" = "x86" ]]; then
 		fixup_x86
 	elif [[ "$subtest" = "resctrl" ]]; then
+		log_cmd make -C resctrl >/dev/null || return
 		log_cmd resctrl/resctrl_tests 2>&1
 		return 1
 	elif [[ "$subtest" = "livepatch" ]]; then
@@ -641,10 +782,10 @@ fixup_subtest()
 		fixup_kmod
 	elif [[ "$subtest" = "ptp" ]]; then
 		fixup_ptp || return
-	elif [[ "$subtest" = "sgx" ]]; then
-		fixup_sgx
 	elif [[ "$subtest" = "mount_setattr" ]]; then
 		fixup_mount_setattr
+	elif [[ "$subtest" = "tc-testing" ]]; then
+		fixup_tc_testing # ignore return value so that doesn't abort the rest tests
 	fi
 	return 0
 }
@@ -667,7 +808,8 @@ check_subtest()
 	# 1. requires /dev/watchdog device, but not all tbox have this device
 	# 2. /dev/watchdog: need support open/ioctl etc file ops, but not all watchdog support it
 	# 3. this test will not complete until issue Ctrl+C to abort it
-	skip_filter="arm64 sparc64 powerpc zram media_tests watchdog"
+	# sched: https://www.spinics.net/lists/kernel/msg4062205.html
+	skip_filter="arm64 sparc64 powerpc zram media_tests watchdog sched"
 	subtest_in_skip_filter "$skip_filter" && return 1
 	return 0
 }
@@ -676,5 +818,7 @@ cleanup_subtest()
 {
 	if [[ "$subtest" = "firmware" ]]; then
 		cleanup_for_firmware
+	elif [[ "$subtest" = "openat2" ]]; then
+		cleanup_openat2
 	fi
 }

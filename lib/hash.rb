@@ -34,6 +34,8 @@ def accumulative_key?(k)
 end
 
 def merge_accumulative(a, b)
+  return a if b.nil?
+
   case a
   when nil
     a = b
@@ -96,7 +98,8 @@ def revise_hash(original, revisions, overwrite_top_keys = true)
         else
           revisions[k]
         end
-    if k[-1] == '-'
+    case k[-1]
+    when '-'
       kk = k[0..-2]
       parent, pkey, hash, key, _keys = lookup_hash(original, kk)
       if hash.include? key
@@ -114,7 +117,7 @@ def revise_hash(original, revisions, overwrite_top_keys = true)
         end
       end
       next false
-    elsif k[-1] == '+'
+    when '+'
       kk = k.chomp '+'
       _parent, _pkey, hash, key, _keys = lookup_hash(original, kk, true)
       merge_v = merge_accumulative(hash[key], v)
@@ -144,7 +147,7 @@ def escape_mongo_key(hash)
     when String
       kk = k
     when Symbol
-      kk = ':' + k.to_s
+      kk = ":#{k}"
     end
     h[kk.tr '.', '․'] = v
   end

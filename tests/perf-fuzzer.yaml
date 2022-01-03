@@ -1,0 +1,12 @@
+short_description: >
+  Perf fuzzer is a system call fuzzer specifically designed
+  to find flaws in the complex Linux perf_event system call interface.
+
+homepage: https://github.com/deater/perf_event_tests/tree/master/fuzzer
+
+parameters:
+  runtime: maximum running time of the test (seconds)
+  seed: seed random number generator with number
+  number: stop after number system calls
+
+results:

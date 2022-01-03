@@ -1,7 +1,7 @@
 suite: ocfs2test
 category: functional
 
-# Note, the type of disk is not limited. 
+# Note, the type of disk is not limited.
 # Both HDD and SSD are OK.
 # If you want to use HDD, change 1SSD to 1HDD.
 disk:
@@ -14,3 +14,4 @@ need_memory: 3G
 ocfs2test:
   test:
     - test-quick
+    - test-aiostress

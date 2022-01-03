@@ -1,17 +1,17 @@
 source 'https://rubygems.org'
 
+gem 'colorize'
 gem 'git', '~> 1.7.0'
-gem 'rake'
+gem 'gnuplot'
 gem 'pry'
 gem 'pry-doc'
-gem 'gnuplot'
-gem 'colorize'
+gem 'rake'
 gem 'term-ansicolor'
 
 group :test do
+  gem 'ci_reporter_rspec'
   gem 'rspec'
   gem 'rubocop', '~> 1.12.0'
-  gem 'ci_reporter_rspec'
   gem 'simplecov'
   gem 'simplecov-rcov'
 end

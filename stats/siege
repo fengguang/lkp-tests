@@ -7,13 +7,13 @@ require "#{LKP_SRC}/lib/statistics"
 
 results = {}
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   line = line.resolve_invalid_bytes
 
   case line.chomp!
   when /^(.*):[\t\s]+([\d.]+)( (\S+))?/
     value = $2
-    unit = '_' + $4 if $4
+    unit = "_#{$4}" if $4
     unit ||= ''
     key = $1.tr(' ', '_') + unit
     results[key] ||= []

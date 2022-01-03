@@ -15,7 +15,6 @@ require 'csv'
 # 9.829300247,S1-C29-T1,MUX,7.03,%,,,0.00,100.0,
 # # 4.0-full on Intel(R) Xeon(R) Gold 6252 CPU @ 2.10GHz
 
-
 RESULT_ROOT = ENV['RESULT_ROOT']
 exit unless File.exist?("#{RESULT_ROOT}/toplev.csv")
 toplev_csv = "#{RESULT_ROOT}/toplev.csv"

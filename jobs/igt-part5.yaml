@@ -1,0 +1,37 @@
+suite: igt
+testcase: igt
+category: functional
+
+igt:
+  - group: gem_shrink
+
+---
+need_memory: 30G
+
+igt:
+  - group: gem_mmap_offset
+
+---
+need_memory: 25G
+igt:
+  - group: gem_ctx_create
+    test:
+      - basic
+      - ext-param
+      - iris-pipeline
+      - maximum-mem
+      - maximum-swap
+      - basic-files
+      - files
+      - forked-files
+      - active-all
+      - forked-active-all
+      - active
+      - forked-active
+      # - hog # casued timeout
+
+---
+need_memory: 15G
+
+igt:
+  - group: gem_ctx_exec

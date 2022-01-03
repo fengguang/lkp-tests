@@ -8,6 +8,7 @@ owner:
 - Ingo Molnar <mingo@kernel.org>
 - Thomas Gleixner <tglx@linutronix.de>
 - Borislav Petkov <bp@suse.de>
+priority: high
 subsystems:
 - x86
 - fpu
@@ -17,4 +18,5 @@ subsystems:
 - locking
 branch_denylist: auto-.*|tmp-.*|base-.*|test.*|.*-for-linus|tip
 notify_build_success_branch: .*
+non_rebaseable_branch: .*
 mail_to: x86-ml <x86@kernel.org>

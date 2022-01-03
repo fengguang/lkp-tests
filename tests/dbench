@@ -20,4 +20,28 @@ run_dbench()
 	log_cmd dbench $nr_threads -c $client_file
 }
 
-run_dbench
+run_cifsdbench()
+{
+	# https://dbench.samba.org/loadfiles/smb.txt
+	#./dbench -B smb --smb-share=//10.0.0.33/data --smb-user=Administrator%password --loadfile=smb-writefiles.txt --run-once --skip-cleanup 10
+	# dbench version 4.00 - Copyright Andrew Tridgell 1999-2004
+
+	log_cmd umount $cifs_mount_points
+	# First run is used to avoid below errors, it will be prepare files for next 2nd run
+	# [5] OPEN "client7/test.txt" failed
+	# drop its output, otherwise it will confuse the stat
+	echo "dbench -B smb --smb-share="$cifs_server_paths" --smb-user=root%pass --loadfile=/usr/local/share/smb_3.txt  --skip-cleanup -t 60 $nr_threads"
+	dbench -B smb --smb-share="$cifs_server_paths" --smb-user=root%pass --loadfile=/usr/local/share/smb_3.txt  --skip-cleanup -t 60 $nr_threads 1>/dev/null 2>&1
+	sleep 2
+	log_cmd dbench -B smb --smb-share="$cifs_server_paths" --smb-user=root%pass --loadfile=/usr/local/share/smb_2.txt -t 60 --skip-cleanup $nr_threads
+}
+
+run_nfsdbench()
+{
+	# https://dbench.samba.org/web/nfs-loadfiles.html
+	# ./dbench -B nfs --server=10.0.0.21 --export=/gpfs/nfsshare --protocol=tcp -c tmp.loadfile  -t 20 3 2>/dev/null
+	log_cmd umount $nfs_mount_points
+	log_cmd dbench -B nfs --server=127.0.0.1 --export=/export"$nfs_export_paths" --protocol=tcp --loadfile=/usr/local/share/nfs_2.txt -t 60 $nr_threads
+}
+
+run_"$fs2"dbench

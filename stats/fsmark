@@ -6,7 +6,7 @@ require "#{LKP_SRC}/lib/statistics"
 require "#{LKP_SRC}/lib/log"
 
 # skip none-result data
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   break if line =~ /^FSUse/
 end
 
@@ -15,11 +15,9 @@ app_overhead = []
 
 # FSUse%        Count         Size    Files/sec     App Overhead
 #    12         3840     16777216          9.6        295550597
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   iteration = line.split
-  if iteration.size != 5
-    break
-  end
+  break if iteration.size != 5
 
   files_per_sec << iteration[3].to_f
   app_overhead << iteration[4].to_f
@@ -30,6 +28,6 @@ end
 # files_per_sec: '', instead it needs show nothing to
 # become incompleted run
 unless files_per_sec.empty?
-  puts 'files_per_sec: ' + files_per_sec.average.to_s
-  puts 'app_overhead: ' + app_overhead.average.to_s
+  puts "files_per_sec: #{files_per_sec.average}"
+  puts "app_overhead: #{app_overhead.average}"
 end

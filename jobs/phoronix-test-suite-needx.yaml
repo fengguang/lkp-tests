@@ -48,7 +48,7 @@ phoronix-test-suite:
       # - Test All Options
     option_b:
       - 1024 x 768
- # - test: etxreal-1.0.0 # too old (last update 2012) to work
+    # - etxreal-1.0.0 # too old (last update 2012) to work
     # - etqw-1.1.0 # has been replaced by newer etqw-demo
     # - etqw-demo-1.1.0 # need 32bit libs
     # - etqw-demo-iqc-1.0.0 # need 32bit libs
@@ -124,7 +124,6 @@ phoronix-test-suite:
       - Image Rendering
       - Text Rendering
       # - Test All Options
-  - test:
     # - jgfxbat-1.1.0 # 3rd party url is N/A
   - test: jxrendermark-1.2.4
     option_a:
@@ -158,7 +157,6 @@ phoronix-test-suite:
       - 'On'
       - 'Off'
       # - Test All Options
-  - test:
     # - octanebench-1.1.2 # need CUDA compatible hardware
   - test: openarena-1.5.5
     option_a:
@@ -175,7 +173,6 @@ phoronix-test-suite:
       # - Test All Options
     option_b:
       - 1024 x 768
-  - test:
     # - prey-1.1.2 # need to download files from stream
   - test: qgears2-1.0.1
     option_a:
@@ -225,17 +222,17 @@ phoronix-test-suite:
       - 8
       # - Test All Options
     option_e:
-      - Candela City [Approximately 400k triangles; advanced graphics]
-      - Cocoa Temple [Approximately 300k triangles; advanced graphics]
-      - Gran Paradiso Island [Approximately 275k triangles; advanced graphics]
-      - Antediluvian Abyss [Approximately 240k triangles; advanced graphics]
-      - Cornfield Crossing [Approximately 240k triangles]
-      - Old Mine [Approximately 90k triangles]
-      - STK Enterprise [Approximately 46k triangles]
+      - Candela City          [Approximately 400k triangles; advanced graphics]
+      - Cocoa Temple          [Approximately 300k triangles; advanced graphics]
+      - Gran Paradiso Island  [Approximately 275k triangles; advanced graphics]
+      - Antediluvian Abyss    [Approximately 240k triangles; advanced graphics]
+      - Cornfield Crossing    [Approximately 240k triangles]
+      - Old Mine              [Approximately 90k triangles]
+      - STK Enterprise        [Approximately 46k triangles]
       - Around the Lighthouse [Approximately 65k triangles]
-      - Zen Garden [Low poly]
-      - Oliver's Math Class [Low poly]
-      - Hacienda [Low poly]
+      - Zen Garden            [Low poly]
+      - Oliver's Math Class   [Low poly]
+      - Hacienda              [Low poly]
       # - Test All Options
   - test: tesseract-1.1.0
     option_a:

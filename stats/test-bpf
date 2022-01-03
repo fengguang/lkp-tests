@@ -32,7 +32,7 @@ while (line = $stdin.gets)
     type = $1.tr(' ', '_')
     stats.add type, 'fail'
   when /test_bpf: #[0-9]+ check: (.+)/
-    type = 'check:_' + $1.strip.tr(' ', '_')
+    type = "check:_#{$1.strip.tr(' ', '_')}"
     is_divided = true
   when /test_bpf: #[0-9]+ (.+)/
     type = $1.strip.tr(' ', '_')

@@ -171,7 +171,7 @@ check_die || exit 1
 # if any output is incomplete/missing, it is a bad rt.
 is_bad_rt_candidate()
 {
-	[[ -f $RESULT_ROOT/last_state ]] || return
+	[[ -f $RESULT_ROOT/last_state ]] || return 0
 
 	# rli9 FIXME the logic can't handle panic situation now
 	grep -q -e "soft_timeout: 1" -e "OOM: 1" $RESULT_ROOT/last_state && return 1

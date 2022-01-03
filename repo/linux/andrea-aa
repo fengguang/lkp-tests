@@ -1,0 +1,12 @@
+url: https://git.kernel.org/pub/scm/linux/kernel/git/andrea/aa.git
+owner: Andrea Arcangeli <aarcange@redhat.com>
+branch_allowlist: main
+branch_denylist: .*
+notify_build_success_branch: .*
+subsystems:
+- userfaultfd
+- mm
+- zone_reclaim
+- compaction
+- gup
+- remap_pages

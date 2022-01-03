@@ -19,7 +19,7 @@ module Git
     def project_spec
       $remotes ||= load_remotes
 
-      $remotes[@remote] || $remotes['internal-' + @remote]
+      $remotes[@remote] || $remotes["internal-#{@remote}"]
     end
 
     # add tag_names because Base::tags is slow to obtain all tag objects
@@ -37,7 +37,7 @@ module Git
     end
 
     def remote_exist?(remote)
-      command('remote') =~ /^#{remote}$/
+      command('remote').split.include?(remote)
     end
 
     def branch_exist?(pattern)
@@ -47,6 +47,7 @@ module Git
     def kernel_branch?(branch)
       return false unless command_lines('show', "#{branch}:").include?('Makefile')
       return false unless command('show', "#{branch}:Makefile").include?('KERNELRELEASE')
+
       true
     rescue StandardError
       false
@@ -110,7 +111,7 @@ module Git
     end
 
     def release_tag_pattern
-      @release_tag_pattern ||= Regexp.new '^' + Array(project_spec['release_tag_pattern']).join('$|^') + '$'
+      @release_tag_pattern ||= Regexp.new "^#{Array(project_spec['release_tag_pattern']).join('$|^')}$"
     end
 
     def release_tags

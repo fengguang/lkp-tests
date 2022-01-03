@@ -49,6 +49,13 @@ generate_exclude_files()
 	do
 		wget -O $benchmark_path/tests/exclude/$fs https://git.kernel.org/pub/scm/fs/ext2/xfstests-bld.git/plain/kvm-xfstests/test-appliance/files/root/fs/$fs/exclude || return
 	done
+	# cifs exclude files, https://wiki.samba.org/index.php/Xfstesting-cifs
+	wget https://wiki.samba.org/images/d/db/Xfstests.exclude.very-slow.txt -O $benchmark_path/tests/cifs/exclude.very-slow.txt || return
+	wget https://wiki.samba.org/images/b/b0/Xfstests.exclude.incompatible-smb3.txt -O $benchmark_path/tests/cifs/exclude.incompatible-smb3.txt || return
+	wget https://wiki.samba.org/images/9/9f/Xfstests.exclude.incompatible-smb2.txt -O $benchmark_path/tests/cifs/exclude.incompatible-smb2.txt || return
+
+	# download cifs config file
+	wget https://wiki.samba.org/images/9/99/Xfstests.local.config.txt -O $benchmark_path/cifs-local.config
 }
 
 hide()
@@ -76,6 +83,12 @@ generate_special_require_tests()
 	do
 		grep -l "_require_logdev$" -r tests/$fs | cut -d/ -f3 > $benchmark_path/tests/$fs-logdev
 	done
+
+	# these tests require -o dax support
+	for fs in generic ext4
+	do
+		grep "dax" tests/$fs/group.list | cut -d' ' -f1 > $benchmark_path/tests/$fs-dax
+	done
 }
 
 build()
@@ -93,6 +106,8 @@ package()
 {
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
 	cp -af $srcdir/xfstests-dev/* $benchmark_path
+
+	wget -O $benchmark_path/tools/find-api-violations.sh https://git.kernel.org/pub/scm/fs/xfs/xfsprogs-dev.git/plain/tools/find-api-violations.sh || return
 
 	generate_exclude_files || return
 
@@ -121,6 +136,7 @@ generate_tests()
 	$LKP_SRC/tools/generate-tests generic
 	$LKP_SRC/tools/generate-tests udf
 	$LKP_SRC/tools/generate-tests ocfs2
+	$LKP_SRC/tools/generate-tests cifs
 }
 
 # Some files contain too many tests, which are split for easy testing

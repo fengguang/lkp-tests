@@ -10,3 +10,13 @@
 244
 # Reflink not supported by scratch filesystem type: xfs
 211
+# It run cmd ./ltp/fsstress -w -d /fs/scratch -n 100000 -p 4, execution time > 30m
+442
+# execution time > 30m
+233
+# execution time about 500s
+234
+# execution time ~ 80m
+136
+# execution time > 40mins
+140

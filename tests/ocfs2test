@@ -54,7 +54,7 @@ setup_test_env()
 	# add "ocfs2test" user into sudo list
 	echo "ocfs2test ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-	# due to the type of disk is not limited. 
+	# due to the type of disk is not limited.
 	# here we have to consider getting SSD or HDD partitions.
 	# get SSD partitions firstly, if not get, and then get the HDD partitions.
 	# if both SSD and HDD partitions are not exsit, exit error.
@@ -65,8 +65,7 @@ setup_test_env()
 		partition=${hdd_partitions%% *}
 	fi
 
-	partition=$(realpath $partition)
-
+	partition=$(realpath $partition | head -n 1)
 	chmod 755 $partition
 
 	[[ -d /mnt/ocfs2 ]] || mkdir -p /mnt/ocfs2
@@ -88,15 +87,6 @@ single_node_test()
 	find $OCFS2TEST_HOME/ocfs2log -name single_run.log -type f | xargs cat
 }
 
-upload_log()
-{
-	log_file=`find /home -name single_run.log`
-
-	[[ -f "$log_file" ]] && upload_files $log_file
-}
-
 setup_test_env
 start_o2cb || die "add single cluster to /etc/ocfs2/cluster.conf failed."
 single_node_test
-upload_log
-

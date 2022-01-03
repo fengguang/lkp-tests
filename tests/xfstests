@@ -40,22 +40,57 @@ is_disc_partitioned()
 	[ -n "$sed_result" ]
 }
 
-set_env()
+fs2_is_cifs()
 {
-	# "fsgqa" user is required in some of xfstests, thus check if such user
-	# has already been added. If not, add "fsgqa" user.
-	check_add_user "fsgqa"
-	check_add_user "123456-fsgqa"
-	check_add_user "fsgqa2"
+	echo $fs2 | grep -q -e cifs -e smb
+}
 
-	umount $mount_points
+is_fs2_tests()
+{
+	[ -n "$fs2" ]
+}
 
-	# clear filesystem in partition
-	for dev in ${partitions#* }
-	do
-		dd if=/dev/zero bs=512 count=512 of=$dev
-	done
+cifs_version()
+{
+	case $fs2 in
+	cifs)
+		echo "1.0"
+		;;
+	smbv2)
+		echo "2.0"
+		;;
+	smbv3)
+		echo "3.0"
+		;;
+	default)
+		die "unknow version"
+	esac
+}
 
+setup_cifs_config()
+{
+	local cifs_server_path=${cifs_server_paths%% *}
+	local FS_TEST_DIR=${mount_points%% *}
+	# get the mount path from local cifs server path: //localhost/fs/sdb1 => /fs/sdb1
+	local LOCAL_MOUNT_PATH="/${cifs_server_path#//*/}"
+
+	# mount the first partition for the local cifs server, where it's the cifs backend
+	log_cmd mount ${partitions%% *} ${LOCAL_MOUNT_PATH}
+
+	log_cmd mkdir -p /$fs2/$FS_TEST_DIR
+	log_eval export FSTYP=cifs
+	log_eval export TEST_DEV=$cifs_server_path
+	log_eval export TEST_DIR=/$fs2/$FS_TEST_DIR
+	log_eval export CIFS_MOUNT_OPTIONS="-ousername=root,password=pass,noperm,vers=$(cifs_version),mfsymlinks,actimeo=0"
+}
+
+setup_fs2_config()
+{
+	fs2_is_cifs && setup_cifs_config
+}
+
+setup_fs_config()
+{
 	log_eval export TEST_DIR=${mount_points%% *}
 	log_eval export TEST_DEV=${partitions%% *}
 
@@ -124,13 +159,12 @@ set_env()
 		echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 		echo "LANG=en_US.UTF-8" > /etc/locale.conf
 		locale-gen en_US.UTF-8
-		log_eval export WORKAREA="$BENCHMARK_ROOT/xfstests/xfsprogs-dev"
+		log_eval export WORKAREA="$BENCHMARK_ROOT/xfstests"
 	}
 
 	[ "$test" = "xfs-external" ] && {
 		log_eval export USE_EXTERNAL="yes"
 		log_eval export SCRATCH_RTDEV="$SCRATCH_LOGDEV"
-		log_eval export MKFS_OPTIONS="-mreflink=1"
 		log_eval unset SCRATCH_LOGDEV
 	}
 	[ "$test" = "xfs-reflink-rmapbt" ] && log_eval export MKFS_OPTIONS="\"-mreflink=1 -mrmapbt=1\""
@@ -194,6 +228,58 @@ set_env()
 	}
 }
 
+set_env()
+{
+	# "fsgqa" user is required in some of xfstests, thus check if such user
+	# has already been added. If not, add "fsgqa" user.
+	check_add_user "fsgqa"
+	check_add_user "123456-fsgqa"
+	check_add_user "fsgqa2"
+
+	umount $mount_points
+
+	# clear filesystem in partition
+	for dev in ${partitions#* }
+	do
+		dd if=/dev/zero bs=512 count=512 of=$dev
+	done
+
+	if is_fs2_tests; then
+		setup_fs2_config
+	else
+		setup_fs_config
+	fi
+}
+
+run_cifs_tests()
+{
+	log_cmd ./check $exclude_file $all_tests
+}
+
+run_smbv2_tests()
+{
+	log_cmd ./check -E tests/cifs/exclude.incompatible-smb2.txt $exclude_file $all_tests
+}
+
+run_smbv3_tests()
+{
+	log_cmd ./check -E tests/cifs/exclude.incompatible-smb3.txt $exclude_file $all_tests
+}
+
+run_fs_tests()
+{
+	[ -s tests/exclude/$fs ] && exclude_file="-E tests/exclude/$fs"
+	log_cmd ./check $exclude_file $all_tests
+}
+
+run_fs2_tests()
+{
+	fs2_is_cifs && {
+		exclude_file="$exclude_file -E tests/cifs/exclude.very-slow.txt"
+		run_"$fs2"_tests
+	}
+}
+
 run_test()
 {
 	## Currently, we support the following several format's test item.
@@ -227,8 +313,11 @@ run_test()
 	log_echo $all_tests_cmd
 	all_tests=$(eval "$all_tests_cmd")
 
-	[ -s tests/exclude/$fs ] && exclude_file="-E tests/exclude/$fs"
-	log_cmd ./check $exclude_file $all_tests
+	if is_fs2_tests; then
+		run_fs2_tests
+	else
+		run_fs_tests
+	fi
 }
 
 export LC_ALL=C

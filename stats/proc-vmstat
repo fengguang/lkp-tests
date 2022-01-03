@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-STDIN.each_line do |line|
+$stdin.each_line do |line|
   case line
   when /^time:/
     puts line

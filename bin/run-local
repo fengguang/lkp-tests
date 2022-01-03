@@ -70,7 +70,7 @@ argv = argv.drop(1) if argv[0] == '--'
 ENV['MY_TEST_CMDLINE'] = Shellwords.join ARGV.drop(1) unless argv.empty?
 
 if !jobfile.index('/') && !File.exist?(jobfile)
-  file = LKP_SRC + '/jobs/' + jobfile
+  file = "#{LKP_SRC}/jobs/#{jobfile}"
   jobfile = file if File.exist?(file)
 end
 
@@ -88,9 +88,7 @@ end
 
 begin
   # "#!" is defined by comment_to_symbol
-  if File.readlines(jobfile).any? { |l| l.start_with?(':#! ') }
-    log_warn "Jobfile is a dirty file, better to run 'lkp split-job --compatible #{jobfile}' first"
-  end
+  log_warn "Jobfile is a dirty file, better to run 'lkp split-job --compatible #{jobfile}' first" if File.readlines(jobfile).any? { |l| l.start_with?(':#! ') }
 
   job = Job.new
   job.load(jobfile)
@@ -135,14 +133,14 @@ ENV['TMP_RESULT_ROOT'] = result_root
 
 jobx = Job2sh.new(job.to_hash)
 unless jobx.expand_params
-  log_error "Failed to expand params!"
+  log_error 'Failed to expand params!'
   exit
 end
 
 FileUtils.rm_rf TMP
 Dir.mkdir TMP
 
-job_script = result_root + '/job.sh'
+job_script = "#{result_root}/job.sh"
 File.open(job_script, 'w', 0o775) do |file|
   file.puts jobx.to_shell
 end
@@ -150,19 +148,19 @@ end
 user = ENV['USER']
 save_paths(result_root, user)
 
-system 'killall', '-q', LKP_SRC + '/bin/event/wakeup'
+system 'killall', '-q', "#{LKP_SRC}/bin/event/wakeup"
 system job_script, 'run_job'
-system LKP_SRC + '/bin/run-with-job', job_script, LKP_SRC + '/bin/post-run'
-system LKP_SRC + '/bin/event/wakeup', 'job-finished'
+system "#{LKP_SRC}/bin/run-with-job", job_script, "#{LKP_SRC}/bin/post-run"
+system "#{LKP_SRC}/bin/event/wakeup", 'job-finished'
 
-job.save result_root + '/job.yaml'
+job.save "#{result_root}/job.yaml"
 
 system job_script, 'extract_stats'
 
 stats = create_stats_matrix ENV['RESULT_ROOT']
-stats['stats_source'] = result_root + '/stats.json'
+stats['stats_source'] = "#{result_root}/stats.json"
 unite_to(stats, _result_root)
-system(LKP_SRC + '/sbin/unite-params', result_root)
+system("#{LKP_SRC}/sbin/unite-params", result_root)
 
 MResultRootTableSet.create_tables_layout
 convert_mrt(_result_root)

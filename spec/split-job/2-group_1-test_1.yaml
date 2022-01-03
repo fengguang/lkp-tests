@@ -1,0 +1,19 @@
+---
+
+#! spec/split-job/2.yaml
+suite: split-job
+testcase: split-job
+split-job:
+  group: group_1
+  test: test_1
+job_origin: spec/split-job/2.yaml
+testbox: lkp-tbox
+arch: x86_64
+tbox_group: lkp-tbox
+
+#! include/split-job
+including:
+- CONFIG_ALWAYS
+- CONFIG_TEST_1
+- CONFIG_GROUP_1
+- CONFIG_FS_ELSE

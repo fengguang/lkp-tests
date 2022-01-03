@@ -1,0 +1,23 @@
+./RUNTESTS
+blk_rw/TEST10: SETUP (check/pmem/debug)
+blk_rw/TEST10 crashed (signal 6). err10.log below.
+{blk_rw.c:72 main} blk_rw/TEST10: Error: /dev/dax1.0: pmemblk_create: File exists
+RUNTESTS: stopping: blk_rw/TEST10 failed, TEST=check FS=any BUILD=debug
+blk_rw/TEST11: SETUP (check/pmem/debug)
+blk_rw/TEST11 crashed (signal 6). err11.log below.
+{blk_rw.c:72 main} blk_rw/TEST11: Error: /mnt/pmem//test_blk_rw11😘⠏⠍⠙⠅ɗPMDKӜ⥺🙋/testset: pmemblk_create: File exists
+err11.log below.
+RUNTESTS: stopping: blk_rw/TEST11 failed, TEST=check FS=any BUILD=debug
+blk_rw/TEST12: SKIP DEVICE_DAX_PATH does not specify enough dax devices or they don't have required alignments (min: 2, alignments: 2097152 2097152)
+blk_rw/TEST12: SKIP DEVICE_DAX_PATH does not specify enough dax devices or they don't have required alignments (min: 2, alignments: 2097152 2097152)
+blk_rw/TEST12: SKIP DEVICE_DAX_PATH does not specify enough dax devices or they don't have required alignments (min: 2, alignments: 2097152 2097152)
+blk_rw/TEST12: SKIP DEVICE_DAX_PATH does not specify enough dax devices or they don't have required alignments (min: 2, alignments: 2097152 2097152)
+blk_rw/TEST13: SKIP DEVICE_DAX_PATH does not specify enough dax devices or they don't have required alignments (min: 2, alignments: 2097152 2097152)
+blk_rw/TEST13: SKIP DEVICE_DAX_PATH does not specify enough dax devices or they don't have required alignments (min: 2, alignments: 2097152 2097152)
+blk_rw/TEST13: SKIP DEVICE_DAX_PATH does not specify enough dax devices or they don't have required alignments (min: 2, alignments: 2097152 2097152)
+blk_rw/TEST13: SKIP DEVICE_DAX_PATH does not specify enough dax devices or they don't have required alignments (min: 2, alignments: 2097152 2097152)
+blk_rw/TEST14: SKIP: Only supported on ppc64
+blk_rw/TEST14: SKIP: Only supported on ppc64
+blk_rw/TEST14: SKIP: Only supported on ppc64
+blk_rw/TEST14: SKIP: Only supported on ppc64
+blk_rw/TEST14: SKIP: Only supported on ppc64

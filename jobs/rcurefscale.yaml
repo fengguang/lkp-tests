@@ -1,0 +1,49 @@
+suite: rcurefscale
+testcase: rcurefscale
+category: functional
+
+# all possible parameters in kernel/rcu/refscale.c
+# MODULE_PARM_DESC(scale_type, "Type of test (rcu, srcu, refcnt, rwsem, rwlock.");
+# // Wait until there are multiple CPUs before starting test.
+# rcu srcu rcu-trace rcu-tasks refcnt rwlock rwsem lock lock-irq acqrel clock
+#
+# torture_param(int, holdoff, IS_BUILTIN(CONFIG_RCU_REF_SCALE_TEST) ? 10 : 0,
+# "Holdoff time before test start (s)");
+#  // Number of loops per experiment, all readers execute operations concurrently.
+#  torture_param(long, loops, 10000, "Number of loops per experiment.");
+#  // Number of readers, with -1 defaulting to about 75% of the CPUs.
+#  torture_param(int, nreaders, -1, "Number of readers, -1 for 75% of CPUs.");
+#  // Number of runs.
+#  torture_param(int, nruns, 30, "Number of experiments to run.");
+#  // Reader delay in nanoseconds, 0 for no delay.
+#  torture_param(int, readdelay, 0, "Read-side delay in nanoseconds.");
+
+nr_threads: # nreaders
+ - 50%
+ - 75% # default
+ - 100%
+ - 200%
+
+rcurefscale:
+  scale_type:
+  - rcu
+  - srcu
+  - rcu-trace
+  - rcu-tasks
+  - refcnt
+  - rwlock
+  - rwsem
+  - lock
+  - lock-irq
+  - acqrel
+  - clock
+  loops:
+  - 10000 # default
+  - 100000
+  readdelay:
+  - 0 # default
+  - 10
+  - 100
+  nruns:
+  - 30 # default
+  # - 300 # help to re-enable it in v5.17

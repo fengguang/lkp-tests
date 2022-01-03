@@ -1,0 +1,100 @@
+2021-07-04 15:54:57 export USER=root
+2021-07-04 15:54:57 ./build.sh
+Building TNC testing tools
+Building wlantest
+Building hs20-osu-client
+Building hostapd
+Building wpa_supplicant
+2021-07-04 15:55:35 ./start.sh
+2021-07-04 15:55:36 ./run-tests.py ap_acs_hw_mode_any
+DEV: wlan0: 02:00:00:00:00:00
+DEV: wlan1: 02:00:00:00:01:00
+DEV: wlan2: 02:00:00:00:02:00
+APDEV: wlan3
+APDEV: wlan4
+START ap_acs_hw_mode_any 1/1
+Test: Automatic channel selection with hw_mode=any
+Starting AP wlan3
+Removing BSS wlan3
+Starting AP wlan3
+Connect STA wlan0 to AP
+PASS ap_acs_hw_mode_any 8.74077 2021-07-04 15:55:45.639719
+passed all 1 test case(s)
+2021-07-04 15:55:45 ./run-tests.py ap_csa_2_switches
+DEV: wlan0: 02:00:00:00:00:00
+DEV: wlan1: 02:00:00:00:01:00
+DEV: wlan2: 02:00:00:00:02:00
+APDEV: wlan3
+APDEV: wlan4
+START ap_csa_2_switches 1/1
+Test: AP Channel Switch, two switches
+Starting AP wlan3
+Connect STA wlan0 to AP
+PASS ap_csa_2_switches 7.837631 2021-07-04 15:55:53.611224
+passed all 1 test case(s)
+2021-07-04 15:55:53 ./run-tests.py ap_ft_eap_pull_wildcard
+DEV: wlan0: 02:00:00:00:00:00
+DEV: wlan1: 02:00:00:00:01:00
+DEV: wlan2: 02:00:00:00:02:00
+APDEV: wlan3
+APDEV: wlan4
+START ap_ft_eap_pull_wildcard 1/1
+Test: WPA2-EAP-FT AP (pull PMK) - wildcard R0KH/R1KH
+Starting AP wlan3
+Starting AP wlan4
+Connect to first AP
+Connect STA wlan0 to AP
+Roam to the second AP
+Roam back to the first AP
+PASS ap_ft_eap_pull_wildcard 2.25463 2021-07-04 15:55:55.999389
+passed all 1 test case(s)
+2021-07-04 15:55:56 ./run-tests.py ap_ft_over_ds
+DEV: wlan0: 02:00:00:00:00:00
+DEV: wlan1: 02:00:00:00:01:00
+DEV: wlan2: 02:00:00:00:02:00
+APDEV: wlan3
+APDEV: wlan4
+START ap_ft_over_ds 1/1
+Test: WPA2-PSK-FT AP over DS
+Starting AP wlan3
+Starting AP wlan4
+Connect to first AP
+Connect STA wlan0 to AP
+Roam to the second AP
+Roam back to the first AP
+PASS ap_ft_over_ds 2.152644 2021-07-04 15:55:58.284119
+passed all 1 test case(s)
+2021-07-04 15:55:58 ./run-tests.py ap_hs20_eap_ttls_eap_mschapv2
+DEV: wlan0: 02:00:00:00:00:00
+DEV: wlan1: 02:00:00:00:01:00
+DEV: wlan2: 02:00:00:00:02:00
+APDEV: wlan3
+APDEV: wlan4
+START ap_hs20_eap_ttls_eap_mschapv2 1/1
+Test: Hotspot 2.0 connection with TTLS/EAP-MSCHAPv2
+Starting AP wlan3
+PASS ap_hs20_eap_ttls_eap_mschapv2 1.128905 2021-07-04 15:55:59.541586
+passed all 1 test case(s)
+2021-07-04 15:55:59 ./run-tests.py ap_ht_op_class_117
+DEV: wlan0: 02:00:00:00:00:00
+DEV: wlan1: 02:00:00:00:01:00
+DEV: wlan2: 02:00:00:00:02:00
+APDEV: wlan3
+APDEV: wlan4
+START ap_ht_op_class_117 1/1
+Test: HT40 on operationg class 117
+Starting AP wlan3
+Connect STA wlan0 to AP
+Starting AP wlan3
+Connect STA wlan0 to AP
+PASS ap_ht_op_class_117 3.143822 2021-07-04 15:56:02.813994
+passed all 1 test case(s)
+2021-07-04 15:56:02 ./run-tests.py ap_invalid_config2
+DEV: wlan0: 02:00:00:00:00:00
+DEV: wlan1: 02:00:00:00:01:00
+DEV: wlan2: 02:00:00:00:02:00
+APDEV: wlan3
+APDEV: wlan4
+START ap_invalid_config2 1/1
+Test: Try to start AP with invalid configuration and remove interface
+Trying to start AP wlan3 with invalid configuration

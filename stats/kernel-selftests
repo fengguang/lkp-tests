@@ -37,7 +37,7 @@ class Stater
     when /: recipe for target.+failed$/, /^make: \*\*\* (.*) (Error \d+|Stop\.)$/
       # Makefile:47: recipe for target 'sysret_ss_attrs_64' failed
       # make: *** No rule to make target .*, needed by 'all'.  Stop.
-      stats.add @test.to_s, 'make_fail'
+      stats.add @test.to_s, 'make_fail' unless stats.key? @test.to_s
     when /^*selftests:\s*(\S*) (\[|\[ )(PASS|FAIL|SKIP)/
       # selftests: mpx-mini-test_64 [PASS]
 
@@ -60,7 +60,9 @@ class NetStater < Stater
     case line
     # begain for net.fcnal-test.sh
     when /(IPv4 ping|IPv4\/TCP|IPv4\/UDP|IPv4 Netfilter)/,
-         /(IPv6 ping|IPv6\/TCP|IPv6\/UDP|IPv6 Netfilter)/
+         /(IPv6 ping|IPv6\/TCP|IPv6\/UDP|IPv6 Netfilter)/,
+         /(IPv6 address binds|IPv4 address binds)/,
+         /(OUTPUT tests|INPUT tests)/
       # ##########################################################################
       # IPv4 ping
       # ##########################################################################
@@ -131,7 +133,7 @@ class NetStater < Stater
     when /^# (Single|Multipath|Single|Admin|Local|Single|FIB|IPv4|IPv6|Basic|Legacy|Routing) (.*)/
       # selftests: net: icmp_redirect.sh
       # Routing with nexthop objects and VRF
-      @test_case = $1 + ' ' + $2 if %w(icmp_redirect.sh fib_tests.sh fib_nexthops.sh vrf_route_leaking.sh).include? @test_script
+      @test_case = "#{$1} #{$2}" if %w(icmp_redirect.sh fib_tests.sh fib_nexthops.sh vrf_route_leaking.sh).include? @test_script
 
       # empty @test_subcase when get new @test_case
       @test_subcase = nil if @test_script == 'fib_tests.sh'
@@ -199,7 +201,7 @@ class NetStater < Stater
         #    TEST: Multipath route add - v4 nexthop then v6                      [ OK ]
         #    TEST:     Multipath route delete - nexthops in wrong order          [ OK ]
         #    TEST:     Multipath route delete exact match                        [ OK ]
-        stats.add "#{@test_prefix}.#{@test_case}.#{$1}", $2 unless @test_case == 'IPv4 route with IPv6 gateway tests'
+        stats.add "#{@test_prefix}.#{@test_case}.#{$1}", $2 unless @test_case == 'IPv4 route with IPv6 gateway tests' || stats.key?("#{@test_prefix}.#{@test_case}.#{$1}")
       end
     when /^# TEST: (.*) \[ ?(PASS|OK|FAIL|SKIP) ?\]/
       if @test_subcase2
@@ -215,6 +217,8 @@ class NetStater < Stater
         #
         # TEST: ping out - ns-B IP                                      [ OK ]
         stats.add "#{@test_prefix}.#{@test_case}.#{@test_subcase1}.#{@test_subcase2}.#{$1}", $2 if @test_script == 'fcnal-test.sh'
+      elsif @test_subcase1
+        stats.add "#{@test_prefix}.#{@test_case}.#{@test_subcase1}.#{$1}", $2 if @test_script == 'fcnal-test.sh'
       elsif @test_subcase
         # ###########################################################################
         # Use cases
@@ -245,7 +249,17 @@ class NetStater < Stater
         # TEST: IPv6 nexthop with IPv4 route                                  [ OK ]
         # TEST: IPv4 route with mixed v4-v6 multipath route                   [ OK ]
         # TEST: IPv6 nexthop with IPv4 route                                  [ OK ]
-        stats.add "#{@test_prefix}.#{@test_case}.#{$1}", $2 unless @test_script == 'fib_nexthops.sh'
+        if @test_prefix == "net.ioam6.sh"
+          subcase_ioam6 = $1.strip
+          subcase_stat = $2
+          if subcase_ioam6 =~ /(inline mode|encap mode)/
+            stats.add "#{@test_prefix}.#{@test_case}.#{subcase_ioam6}", subcase_stat
+            @old_mode = $1
+          else
+            stats.add "#{@test_prefix}.#{@test_case}.#{subcase_ioam6} (#{@old_mode})", subcase_stat
+          end
+        end
+        stats.add "#{@test_prefix}.#{@test_case}.#{$1}", $2 unless %w(fib_nexthops.sh ioam6.sh).include? @test_script
       else
         # selftests: net: pmtu.sh
         # TEST: ipv4: PMTU exceptions                                        [ OK ]
@@ -303,16 +317,16 @@ class MemoryHotplugStater < Stater
     case line
     when /^selftests: memory-hotplug \[FAIL\]/
       # selftests: memory-hotplug [FAIL]
-      stats.add "#{@test_prefix}", 'fail'
+      stats.add @test_prefix.to_s, 'fail'
       @test_script = nil
     when %r{make: Leaving directory .*/(.*)'}
       # do not add stats here if it has below 2 lines
       # ok 1 selftests: memory-hotplug: mem-on-off-test.sh
       # selftests: memory-hotplug [FAIL]
-      stats.add "#{@test_prefix}", 'pass' unless stats.key? "#{@test_prefix}" || !@test_script
+      stats.add @test_prefix.to_s, 'pass' unless stats.key?(@test_prefix.to_s) || !@test_script
     when %r{: recipe for target.+failed}
       # Makefile:47: recipe for target 'sysret_ss_attrs_64' failed
-      stats.add "#{@test}", 'make_fail'
+      stats.add @test.to_s, 'make_fail'
     else
       super(line, stats)
     end
@@ -323,17 +337,17 @@ end
 class MountStater < Stater
   def stat(line, stats)
     case line
-    when /^WARN\: No \/proc\/self\/uid_map exist, test skipped/
+    when /^WARN: No \/proc\/self\/uid_map exist, test skipped/
       # WARN: No /proc/self/uid_map exist, test skipped.
-      stats.add "#{@test_prefix}", 'skip'
+      stats.add @test_prefix.to_s, 'skip'
       @test_script = nil
     when /(^(MS.+|Default.+) malfunctions$)|(^Mount flags unexpectedly changed after remount$)/
       # Mount flags unexpectedly changed after remount
-      stats.add "#{@test_prefix}", 'fail'
+      stats.add @test_prefix.to_s, 'fail'
       @test_script = nil
     when %r{make: Leaving directory .*/(.*)'}
       # test pass if it's not skip or fail
-      stats.add "#{@test_prefix}", 'pass' if @test_script
+      stats.add @test_prefix.to_s, 'pass' if @test_script
     end
   end
 end
@@ -357,7 +371,7 @@ class X86Stater < Stater
       end
     when %r{: recipe for target.+failed}
       # Makefile:47: recipe for target 'sysret_ss_attrs_64' failed
-      stats.add "#{@test}", 'make_fail'
+      stats.add @test.to_s, 'make_fail' unless stats.key?(@test.to_s)
     else
       super(line, stats)
     end
@@ -365,11 +379,6 @@ class X86Stater < Stater
 end
 
 class FutexStater < Stater
-  def stat(line, stats)
-    # ignore detail stats of futex to avoid duplication
-    # c0e64368308a (stats/kernel-selftests: rm detail stats for futex)
-    super(line, stats)
-  end
 end
 
 class ResctrlStater < Stater
@@ -385,9 +394,9 @@ class ResctrlStater < Stater
       # Pass: Check resctrl mountpoint "/sys/fs/resctrl" exists
       stats.add "#{@test}.#{$1}", 'pass' unless stats.key? "#{@test}.#{$1}"
     when /# SKIP\s+(.*)/
-      # Starting CAT test ...
+      # The following line is repeated 3 times
       # ok 4 # SKIP Hardware does not support CAT or CAT is disabled
-      stats.add "#{@test}.#{@test_script}", 'skip'
+      stats.add "#{@test}.#{@test_script}", 'skip' unless stats.key? "#{@test}.#{@test_script}"
     when /^not ok\s+(.*)/
       # not ok CAT: cache miss rate within 4%
       @test_script = $1
@@ -422,6 +431,7 @@ class MptcpStater < Stater
       # it's @test_case is "ns1 MPTCP -> ns1 (10.0.1.1:10000      ) MPTCP"
       @result = $2
       @test_case = $1.gsub(/\(duration(.*)\)/, '')
+      @test_case = @test_case.gsub(/[0-9]+\s+max\s+[0-9]+/, '')
       if @test_script == 'mptcp_connect.sh'
         # ns1 MPTCP -> ns1 (10.0.1.1:10000      ) MPTCP (duration    75ms) [ OK ]
 
@@ -460,7 +470,7 @@ class TimensStater < Stater
     case line
     when /# (ok|fail|skip) \d+ (.*):(.*)/
       # ok 1 clockid: 1 abs:0
-      @test_case = $2 + ':' + $3
+      @test_case = "#{$2}:#{$3}"
       stats.add "#{@test_prefix}.#{@test_case}", $1
     when /# (ok|fail|skip) \d+ (.*)/
       # ok 1 Passed for CLOCK_BOOTTIME (syscall)
@@ -588,7 +598,7 @@ class BreakpointsStater < Stater
       stats.add "#{@test_prefix}.#{$2}", $1
     when /No such collection '(breakpoints)'/
       # No such collection 'breakpoints'
-      stats.add "#{$1}", 'fail'
+      stats.add $1.to_s, 'fail'
     else
       super(line, stats)
     end
@@ -655,6 +665,13 @@ class NetfilterStater < Stater
     when /^#   (.+)\[( OK|FAIL|SKIP)/
       #   Add two elements, flush, re-add                               [ OK ]
       stats.add "#{@test_prefix}.#{@test_case}.#{$1}", $2 if @test_script == 'nft_concat_range.sh'
+    when /^# (PASS|FAIL|SKIP): (ns\d)-\S+ (connection on port.*)/
+      # selftests: netfilter: nft_conntrack_helper.sh
+      # PASS: ns1-Ip028vuy connection on port 2121 has ftp helper attached
+      # PASS: ns2-Ip028vuy connection on port 2121 has ftp helper attached
+      # PASS: ns1-Ip028vuy connection on port 2121 has ftp helper attached
+      # PASS: ns2-Ip028vuy connection on port 2121 has ftp helper attached
+      stats.add "#{@test_prefix}.#{$2}_#{$3}", $1 unless stats.key? "#{@test_prefix}.#{$2}_#{$3}"
     when /^# (PASS|FAIL|SKIP): (.*)/
       # PASS: ipsec tunnel mode for ns1/ns2
       stats.add "#{@test_prefix}.#{$2}", $1
@@ -669,12 +686,14 @@ class ExecStater < Stater
     case line
     when /^(Check .*)... \[(OK|FAIL|SKIP)\]/
       # Check success of execveat(8, 'execveat', 0)... [OK]
+      subname = "#{@test_prefix}.#{$1}"
+      res = $2
 
       # ignore detail stats of execveat to avoid duplication
-      stats.add "#{@test_prefix}.#{$1}", $2 unless @test_script =~ /execveat/
+      stats.add subname, res unless @test_script =~ /execveat/
     when /: recipe for target.+failed$/, /^make: \*\*\* (.*) (Error \d+|Stop\.)$/
       # make: *** No rule to make target .*, needed by 'all'.  Stop.
-      stats.add "#{@test}", 'make_fail'
+      stats.add @test.to_s, 'make_fail'
     else
       super(line, stats)
     end
@@ -683,6 +702,7 @@ end
 
 class MqueueStater < Stater
   attr_accessor :mqueue_speed
+
   def initialize(test, test_script)
     super(test, test_script)
     @mqueue_speed = {}
@@ -701,7 +721,7 @@ class MqueueStater < Stater
       @io = Regexp.last_match[1]
     when %r{(\d+) nsec/msg}
       # 484 nsec/msg
-      @mqueue_speed[@mqueue_test + '.' + @io] = Regexp.last_match[1].to_i
+      @mqueue_speed["#{@mqueue_test}.#{@io}"] = Regexp.last_match[1].to_i
     when /make: Leaving.*mqueue'/
       stats.add "#{@test}.nsec_per_msg", @mqueue_speed.values.average.to_i unless @mqueue_speed.empty?
     else
@@ -725,7 +745,97 @@ class PrctlStater < Stater
   end
 end
 
-while (line = STDIN.gets)
+class ProgsStater < Stater
+  def stat(line, stats)
+    case line
+       # #1/11 variable subtraction:OK
+       # # #1/12 pointer variable subtraction:OK
+       # # #1 align:OK
+       # # #2 atomic_bounds:OK
+       # # #3/1 add:OK
+       # # #3/2 sub:OK
+       # # #3/3 and:OK
+    when /^(#| ) #(\d+|\d+\/\d+) (\S*):(OK|FAIL|SKIP)/
+      r = $4 == 'OK' ? 'ok' : 'not ok'
+      pattern1 = $3
+      subname = "bpf.test_progs.#{pattern1.gsub(' ', '_')}"
+      stats.add subname, r unless stats.key? subname
+    end
+  end
+end
+
+class FtraceStater < Stater
+  def stat(line, stats)
+    case line
+      # # [1] Basic trace file check    [PASS]
+      # # [2] Basic test for tracers    [PASS]
+      # # [3] Basic trace clock test    [PASS]
+      # # [4] Basic event tracing check [PASS]
+    when /^# \[\d+\] (.*)\[(.*)\]/
+      pattern1 = $1
+      result = $2
+      subname = "ftrace.#{pattern1.gsub(' ', '_')}"
+      stats.add subname, result unless stats.key? subname
+    end
+  end
+end
+
+class TCTestingStater < Stater
+  def stat(line, stats)
+    case line
+      # not ok 10 ce7d - Add mq Qdisc to multi-queue device (4 queues)
+      # ok 46 1298 - Add duplicate bfifo qdisc on egrese
+      # ok 47 45a0 - Delete nonexistent bfifo qdisc
+      #       Could not match regex pattern. Verify command output:
+    when /^# (ok|not ok) (\d+) (.*) - (.*)/
+      result = $1
+      # e7d|1298|45a0 is unique for each sub-test
+      subname = "tc-testing.#{$3}.#{$4.gsub(' ', '_')}"
+      stats.add subname, result
+    end
+  end
+end
+
+class VmallocStater < Stater
+  attr_accessor :tmp_stats
+
+  def initialize(test, test_script)
+    super(test, test_script)
+    @tmp_stats = {}
+  end
+
+  def stat(line, stats)
+    case line
+    when /(Check the kernel ring buffer to see the summary|Ccheck the kernel message buffer to see the summary)/
+      stats.add @test_prefix.to_s, 'PASS'
+    # vmalloc test stat: (stress test worker number = nr_threads)
+    # [  223.093027] Summary: fix_size_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 5861476 usec
+    # [  223.103232] Summary: full_fit_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 5878630 usec
+    # [  223.113422] Summary: long_busy_list_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 60293287 usec
+    # [  223.124222] Summary: random_size_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 31075131 usec
+    # [  223.134778] Summary: fix_align_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 7383628 usec
+    # [  223.145064] Summary: random_size_align_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 9595644 usec
+    # [  223.156057] Summary: align_shift_alloc_test passed: 0 failed: 1 repeat: 1 loops: 1000000 avg: 402157 usec
+    # [  223.166406] Summary: pcpu_alloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 278274 usec
+    # [  223.176299] Summary: kvfree_rcu_1_arg_vmalloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 6248522 usec
+    # [  223.187358] Summary: kvfree_rcu_2_arg_vmalloc_test passed: 1 failed: 0 repeat: 1 loops: 1000000 avg: 6333619 usec
+    # [  223.198414] All test took worker0=441656368064 cycles
+    when /Summary: (.+) passed: (.+) failed: (.+) repeat: (.+) loops: (.+) avg: (.+) usec/
+      @tmp_stats["#{$1}.usec_per_loop"] = $6.to_i
+      @tmp_stats["#{$1}.pass"] = $2.to_i if $2.to_i.positive?
+      @tmp_stats["#{$1}.fail"] = $3.to_i if $3.to_i.positive?
+    when /All test took (.+)=(.+) cycles/
+      raise "unexpected summary: #{@test_prefix}.#{$1}" if @tmp_stats.empty?
+
+      @tmp_stats.each do |key, value|
+        stats.add "#{@test_prefix}.#{$1}.#{key}", value
+      end
+      @tmp_stats = {}
+    end
+  end
+end
+
+while (line = $stdin.gets)
   line = line.resolve_invalid_bytes
 
   case line
@@ -816,13 +926,24 @@ while (line = STDIN.gets)
   when /^# selftests: (prctl): (.*)/
     # selftests: prctl: disable-tsc-ctxt-sw-stress-test
     stater = PrctlStater.new($1, $2)
+  when /^# selftests: (bpf): (test_progs)$/
+    # selftests: prctl: disable-tsc-ctxt-sw-stress-test
+    stater = ProgsStater.new($1, $2)
+  when /^# selftests: (ftrace): (ftracetest)$/
+    # selftests: ftrace: ftracetest
+    stater = FtraceStater.new($1, $2)
+  when /^# selftests: (tc-testing): (tdc.sh)$/
+    # selftests: ftrace: ftracetest
+    stater = TCTestingStater.new($1, $2)
   when /^LKP SKIP (.*)/
     # LKP SKIP net.l2tp.sh
-    stats.add "#{$1}", 'skip'
+    stats.add $1.to_s, 'skip'
   when /^# selftests: (.+): (.+)/
     stater = Stater.new($1, $2)
   when %r{make: Entering directory .*/(.*)'}
     stater = Stater.new($1, nil)
+  when /vm\/test_vmalloc.sh (stress|performance)/
+    stater = VmallocStater.new('vm.test_vmalloc.sh', $1)
   else
     if stater
       stater.stat(line, stats)

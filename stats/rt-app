@@ -13,6 +13,7 @@ wu_lat = []
 
 def puts_one_task(task, run, period, slack, wu_lat)
   return if task.nil?
+
   if run.size > 0
     # first 2 line data unstable observed sometimes.
     # could consider to skip first 2 line to wait stable data
@@ -33,17 +34,18 @@ def puts_one_task(task, run, period, slack, wu_lat)
   end
 end
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   case line
   when /(.*).log$/
     puts_one_task(task, run, period, slack, wu_lat)
-    task = $1.gsub("./", "")
+    task = $1.gsub('./', '')
     run.clear
     period.clear
     slack.clear
     wu_lat.clear
   when /(\d+)(\s+)(\d+)(\s+)(\d+)(\s+)(\d+)(\s+)(\d+)(\s+)(\d+)(\s+)(\d+)(\s+)(\d+)(\s+)(\d+)(\s+)(\d+)(\s+)(\d+)(\s+)/
     next unless task
+
     run << $5.to_i
     period << $7.to_i
     slack << $15.to_i

@@ -1,11 +1,10 @@
-url: https://git.kernel.org/pub/scm/linux/kernel/git/djbw/nvdimm.git
+url: https://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm.git
+integration_testing_branches:
+- libnvdimm-for-next
+- dax-misc
+mail_cc: linux-nvdimm@lists.01.org
 owner: Dan Williams <dan.j.williams@intel.com>
 subsystems:
-- libnd
-- nd
-- block
 - pmem
-- scatterlist
 - libnvdimm
-notify_build_success_branch: .*
 belongs_to: nvdimm

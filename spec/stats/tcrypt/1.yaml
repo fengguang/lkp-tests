@@ -1,0 +1,2 @@
+async.essiv(cbc(aes),sha256).(essiv(cbc-aes-aesni,sha256-avx2)).encryption: 436850144
+async.essiv(cbc(aes),sha256).(essiv(cbc-aes-aesni,sha256-avx2)).decryption: 582433509

@@ -36,7 +36,7 @@ $opt_dimension = 'commit'
 $opt_field = nil
 $opt_grep  = []
 $opt_vgrep = []
-$options = {'perf-profile' => 5}
+$options = { 'perf-profile' => 5 }
 
 $project = 'linux'
 
@@ -113,10 +113,10 @@ opt_parser = OptionParser.new do |opts|
 
   opts.on('-i', '--index', 'performance/power index') do
     $opt_index  = true
-    $size_index = load_yaml LKP_SRC + '/etc/index-size.yaml'
-    $perf_index = load_yaml LKP_SRC + '/etc/index-perf-all.yaml'
-    $power_index = load_yaml LKP_SRC + '/etc/index-power.yaml'
-    $latency_index = load_yaml LKP_SRC + '/etc/index-latency.yaml'
+    $size_index = load_yaml "#{LKP_SRC}/etc/index-size.yaml"
+    $perf_index = load_yaml "#{LKP_SRC}/etc/index-perf-all.yaml"
+    $power_index = load_yaml "#{LKP_SRC}/etc/index-power.yaml"
+    $latency_index = load_yaml "#{LKP_SRC}/etc/index-latency.yaml"
     $all_index = $perf_index.merge($power_index).merge($latency_index).merge($size_index)
   end
 
@@ -252,9 +252,9 @@ def add_stats(path)
 
   is_rt = File.basename(path) =~ /^[0-9]{1,3}$/
   stats_json = if is_rt
-                 path + '/stats.json'
+                 "#{path}/stats.json"
                else
-                 path + '/matrix.json'
+                 "#{path}/matrix.json"
                end
   unless File.exist? stats_json
     # No need for a warning here.
@@ -277,7 +277,7 @@ def add_stats(path)
     $params ||= YAML.load_file result_path.params_file
     return unless $params.key? $opt_dimension
 
-    path_params = result_path['path_params'].partition Regexp.new '\b-?(' + $params[$opt_dimension].join('|') + ')-?\b'
+    path_params = result_path['path_params'].partition Regexp.new "\\b-?(#{$params[$opt_dimension].join('|')})-?\\b"
     dim = path_params[1]
     dim[0] = '' if dim[0] == '-'
     dim[-1] = '' if dim[-1] == '-'
@@ -361,8 +361,8 @@ end
 
 def setup_changed_stats
   $_result_root_tuple.each do |k, v|
-    matrix_file1 = v[0] + '/matrix.json'
-    matrix_file2 = v[-1] + '/matrix.json'
+    matrix_file1 = "#{v[0]}/matrix.json"
+    matrix_file2 = "#{v[-1]}/matrix.json"
     next unless File.exist? matrix_file1
     next unless File.exist? matrix_file2
 
@@ -372,9 +372,8 @@ def setup_changed_stats
       matrix2 = load_json matrix_file2
       expand_matrix(matrix2, 'stat' => $opt_field)
       $all_index.each do |stat, weight|
-        if stat.index 'iostat\.'
-          next unless k =~ /\/(dd-write)\//
-        end
+        next if stat.index('iostat\.') && !(k =~ /\/(dd-write)\//)
+
         avg1 = get_valid_average matrix1, stat
         next unless avg1
 
@@ -587,7 +586,7 @@ def show_test_group(key)
   puts
   $dims.keys.each do |dim|
     width = (dim == $first_dim ? ABS_WIDTH + ERR_WIDTH : REL_WIDTH + ABS_WIDTH + ERR_WIDTH)
-    printf '-' * width + '  '
+    printf "#{'-' * width}  "
   end
   puts
 end
@@ -617,11 +616,11 @@ def show_header(is_fail)
   if is_fail
     # (ABS_WIDTH + ERR_WIDTH)   (2 + REL_WIDTH + ABS_WIDTH + ERR_WIDTH)
     #      |<-------------->|   |<--------------------------->|
-    printf '       fail:runs' + '  %%reproduction    fail:runs' * nr_headers + "\n"
-    printf '           |    ' + '         |             |    ' * nr_headers + "\n"
+    printf "       fail:runs#{'  %%reproduction    fail:runs' * nr_headers}\n"
+    printf "           |    #{'         |             |    ' * nr_headers}\n"
   else
-    printf '         %%stddev' + '      change         %%stddev' * nr_headers + "\n"
-    printf '             \  ' + '        |                \  ' * nr_headers + "\n"
+    printf "         %%stddev#{'      change         %%stddev' * nr_headers}\n"
+    printf "             \\  #{'        |                \  ' * nr_headers}\n"
   end
   $header_shown[is_fail] = true
 end
@@ -671,7 +670,7 @@ def show_delta(stat, key_g)
 
     $dims.keys.each do |dim|
       width = (dim == $first_dim ? ABS_WIDTH + ERR_WIDTH : REL_WIDTH + ABS_WIDTH + ERR_WIDTH)
-      printf '-' * width + '  '
+      printf "#{'-' * width}  "
     end
 
   end
@@ -691,18 +690,14 @@ def show_delta(stat, key_g)
     end
   end
 
-  if $header_shown[is_fail]
-    puts unless $group_by_test
-  end
+  puts if $header_shown[is_fail] && !$group_by_test
 
   $cases.each do |_rt, value|
     result_path = ResultPath.new
     result_path.parse_result_root(_rt)
     test = result_path.test_desc $opt_dimension, $dim_not_a_param
 
-    if $group_by_test
-      next unless test == key_g
-    end
+    next if $group_by_test && !(test == key_g)
 
     show_header(is_fail) unless $header_shown[is_fail]
 
@@ -757,7 +752,7 @@ end
 
 def call_mmplot
   $cases.each do |_rt, _value|
-    file = _rt + '/matrix.json'
+    file = "#{_rt}/matrix.json"
     matrix1 = load_json file
     expand_matrix(matrix1, 'stat' => $opt_field)
     matrix2 = load_json file.sub($opt_dims[0], $opt_dims[1])

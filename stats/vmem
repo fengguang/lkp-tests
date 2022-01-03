@@ -11,8 +11,8 @@ stats = LKP::Stats.new
 test_item = ''
 build_type = ''
 
-#vmmalloc_memalign/TEST1: SETUP (check/nondebug)
-while (line = STDIN.gets)
+# vmmalloc_memalign/TEST1: SETUP (check/nondebug)
+while (line = $stdin.gets)
   line = line.resolve_invalid_bytes
   case line
   when %r{^(.+)/TEST[0-9]+: SETUP \(.+/(.+)\)$}

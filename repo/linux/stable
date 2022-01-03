@@ -1,7 +1,9 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
 fetch_tags: true
 owner: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+priority: high
 test_old_branches: .*
 notify_build_success_branch: .*
 no_merge_branch: .*
-eol_branch_pattern: (linux-[23].+.y|linux-4.[12]?[01235678].y|linux-5.[01235678].y)
+non_rebaseable_branch: .*
+eol_branch_pattern: (linux-[23].+.y|linux-4.[12]?[01235678].y|linux-5.[012356789].y|linux-5.1[123].y)

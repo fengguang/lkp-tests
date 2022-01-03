@@ -14,9 +14,6 @@ Style/SafeNavigation:
 Layout/FirstArrayElementIndentation:
   Enabled: false
 
-Layout/SpaceInsideHashLiteralBraces:
-  Enabled: false
-
 Layout/CommentIndentation:
   Enabled: false
 
@@ -30,6 +27,9 @@ Style/CommandLiteral:
   Enabled: false
 
 Style/PercentLiteralDelimiters:
+  Enabled: false
+
+Layout/LineLength:
   Enabled: false
 
 Metrics/MethodLength:
@@ -75,4 +75,16 @@ Style/MissingRespondToMissing:
   Enabled: false
 
 Security/YAMLLoad:
+  Enabled: false
+
+Style/FormatStringToken:
+  Enabled: false
+
+Naming/MethodParameterName:
+  Enabled: false
+
+Naming/HeredocDelimiterNaming:
+  Enabled: false
+
+Layout/HeredocIndentation:
   Enabled: false

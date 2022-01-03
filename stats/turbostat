@@ -4,18 +4,21 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAM
 
 require "#{LKP_SRC}/lib/string_ext"
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   line = line.resolve_invalid_bytes
 
   next unless line =~ /Busy%/
 
   titles = line.split
-  values = STDIN.gets.split
+  line2 = $stdin.gets
+  next unless line2
+
+  values = line2.split
   titles[titles.size - values.size..-1].each_with_index do |title, i|
     next if values[i].include? '*'
     next if values[i] == '-'
 
-    puts title + ': ' + values[i]
+    puts "#{title}: #{values[i]}"
   end
   exit
 end

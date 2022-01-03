@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 titles = nil
-STDIN.each_line do |line|
+$stdin.each_line do |line|
   case line
   when /^time:/
     puts line
@@ -9,10 +9,10 @@ STDIN.each_line do |line|
     values = line.split
     sum = 0
     titles.each_with_index do |title, i|
-      puts title + '.' + values[0] + ' ' + values[i + 1]
+      puts "#{title}.#{values[0]} #{values[i + 1]}"
       sum += values[i + 1].to_i
     end
-    puts values[0] + ' ' + sum.to_s
+    puts "#{values[0]} #{sum}"
   else
     titles = line.split
   end

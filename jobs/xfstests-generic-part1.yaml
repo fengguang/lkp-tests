@@ -12,12 +12,10 @@ fs:
 - btrfs
 - f2fs
 - udf
-- ocfs2
+# - ocfs2 # mount.ocfs2 known bug
 
 xfstests:
   test:
-  - generic-054
-  - generic-074
   - generic-group-00
   - generic-group-01
   - generic-group-02
@@ -40,3 +38,16 @@ fs:
 xfstests:
   test:
   - generic-387
+
+---
+fs:
+- ext2
+- ext4
+- xfs
+- btrfs
+- f2fs
+
+xfstests:
+  test:
+  # when fs=udf, generic-074 has used 42min, caused timeout
+  - generic-074

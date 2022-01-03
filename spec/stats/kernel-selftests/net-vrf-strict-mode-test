@@ -1,0 +1,89 @@
+# selftests: net: vrf_strict_mode_test.sh
+#
+# ################################################################################
+# TEST SECTION: VRF strict_mode test on init network namespace
+# ################################################################################
+# modinfo: ERROR: Module vrf not found.
+#
+#     TEST: init: strict_mode=0 by default, 0 vrfs                        [ OK ]
+#
+#     TEST: init: add vrf vrf100, 1 vrfs for table 100                    [ OK ]
+#
+#     TEST: init: vrf vrf100 up, addr 172.16.100.1/24                     [ OK ]
+#
+#     TEST: init: enable strict_mode (=1)                                 [ OK ]
+#
+#     TEST: init: CANNOT add vrf vrf101, 1 vrfs for table 100             [ OK ]
+#
+#     TEST: init: disable strict_mode (=0)                                [ OK ]
+#
+#     TEST: init: add vrf vrf101, 2 vrfs for table 100                    [ OK ]
+#
+#     TEST: init: vrf vrf101 up, addr 172.16.101.1/24                     [ OK ]
+#
+#     TEST: init: CANNOT enable strict_mode                               [ OK ]
+#
+#     TEST: init: remove vrf vrf101                                       [ OK ]
+#
+#     TEST: init: enable strict_mode (=1)                                 [ OK ]
+#
+#     TEST: init: add vrf vrf102, 1 vrfs for table 102                    [ OK ]
+#
+#     TEST: init: vrf vrf102 up, addr 172.16.102.1/24                     [ OK ]
+#
+# ################################################################################
+# TEST SECTION: VRF strict_mode test on testns network namespace
+# ################################################################################
+# modinfo: ERROR: Module vrf not found.
+#
+#     TEST: testns: strict_mode=0 by default, 0 vrfs                      [ OK ]
+#
+#     TEST: testns: enable strict_mode (=1)                               [ OK ]
+#
+#     TEST: testns: add vrf vrf100, 1 vrfs for table 100                  [ OK ]
+#
+#     TEST: testns: vrf vrf100 up, addr 10.0.100.1/24                     [ OK ]
+#
+#     TEST: testns: CANNOT add vrf vrf101, 1 vrfs for table 100           [ OK ]
+#
+#     TEST: testns: CANNOT add vrf vrf102, 1 vrfs for table 100           [ OK ]
+#
+#     TEST: testns: add vrf vrf200, 1 vrfs for table 200                  [ OK ]
+#
+#     TEST: testns: disable strict_mode (=0)                              [ OK ]
+#
+#     TEST: testns: add vrf vrf101, 2 vrfs for table 100                  [ OK ]
+#
+#     TEST: testns: add vrf vrf102, 3 vrfs for table 100                  [ OK ]
+#
+# ################################################################################
+# TEST SECTION: VRF strict_mode test mixing init and testns network namespaces
+# ################################################################################
+#
+#     TEST: init: check strict_mode=1                                     [ OK ]
+#
+#     TEST: testns: check strict_mode=0                                   [ OK ]
+#
+#     TEST: testns: remove vrf vrf101                                     [ OK ]
+#
+#     TEST: testns: remove vrf vrf102                                     [ OK ]
+#
+#     TEST: init: disable strict_mode (=0)                                [ OK ]
+#
+#     TEST: testns: enable strict_mode (=1)                               [ OK ]
+#
+#     TEST: init: enable strict_mode (=1)                                 [ OK ]
+#
+#     TEST: init: enable strict_mode (=1)                                 [ OK ]
+#
+#     TEST: testns: disable strict_mode (=0)                              [ OK ]
+#
+#     TEST: testns: disable strict_mode (=0)                              [ OK ]
+#
+#     TEST: init: check strict_mode=1                                     [ OK ]
+#
+#     TEST: testns: check strict_mode=0                                   [ OK ]
+#
+# Tests passed:  35
+# Tests failed:   0
+ok 57 selftests: net: vrf_strict_mode_test.sh

@@ -84,7 +84,7 @@ jobfile_append_var		"loadavg=$(cat /proc/loadavg)" \
 				"$version" \
 				"$time_delta"
 
-if [ -f "$TMP/OOM" ] || check_oom; then
+if [ ! -f $TMP/oom-killer-ignored ] && ([ -f "$TMP/OOM" ] || check_oom); then
 	set_job_state "OOM"
 	echo "reboot_for_next_job: 1" >> $job
 elif [ -f "$TMP/soft_timeout" ]; then

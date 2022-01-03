@@ -2,7 +2,7 @@
 
 stats = []
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   case line
   when /^(stutter).*(fail|pass)/
     stats_type = $2

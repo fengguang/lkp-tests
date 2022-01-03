@@ -6,3 +6,5 @@ owner: Pablo Neira Ayuso <pablo@netfilter.org>
 git_am_branch: master
 subsystems:
 - netfilter
+patch_based_on_branch:
+  '\[(.+ )?nf-next( .+)?\]': master

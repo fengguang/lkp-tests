@@ -4,7 +4,7 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAM
 
 require "#{LKP_SRC}/lib/string_ext"
 
-#example input:
+# example input:
 # Hyper-Threading IS enabled.
 # numa01
 # 181.85
@@ -46,4 +46,4 @@ $stdin.each do |line|
   end
 end
 
-results.each { |key, value| puts "#{key}.seconds: #{value}"} unless results.empty?
+results.each { |key, value| puts "#{key}.seconds: #{value}" } unless results.empty?

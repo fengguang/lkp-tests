@@ -9,7 +9,7 @@ require 'optparse'
 require 'ostruct'
 require 'yaml'
 
-$opt_file = STDOUT
+$opt_file = $stdout
 
 opt_parser = OptionParser.new do |opts|
   opts.banner = "Usage: #{$PROGRAM_NAME} [options] job.yaml"

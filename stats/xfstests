@@ -9,7 +9,7 @@ require "#{LKP_SRC}/lib/tests/stats"
 stats = LKP::Stats.new
 
 # udf/102 - output mismatch (see /lkp/benchmarks/xfstests/results//udf/102.out.bad)
-TEST_PATTERN = '(generic|ext4|xfs|btrfs|udf|ocfs2)\/(\d\d\d)'.freeze
+TEST_PATTERN = '(generic|ext4|xfs|btrfs|udf|ocfs2|cifs)\/(\d\d\d)'.freeze
 
 while (line = $stdin.gets)
   line = line.resolve_invalid_bytes
@@ -24,6 +24,9 @@ while (line = $stdin.gets)
   when /^#{TEST_PATTERN}\s+\[not run\]/
     # xfs/161 [not run] Assuming DMAPI modules are not loaded
     stats.add "#{$1}.#{$2}", 'skip'
+  when /^#{TEST_PATTERN}\s+\[expunged\]/
+    # generic/387       [expunged]
+    stats.add "#{$1}.#{$2}", 'expunged'
   when /^#{TEST_PATTERN}\s+(\d+)s/
     # btrfs/011        3434s
     stats.add "#{$1}.#{$2}", 'pass'
@@ -39,7 +42,7 @@ while (line = $stdin.gets)
     # Cannot merge with next 'when'
     # because in 'Ran' case don't need stats_type and shouldn't call select method
     summary_ran_cases = $1.tr('/', '.').split
-    stats_ran_cases = stats.keys
+    stats_ran_cases = stats.select { |_key, value| value != 'expunged' }.keys
     unless summary_ran_cases == stats_ran_cases
       log_error 'summarized ran != stats ran'
       exit 1

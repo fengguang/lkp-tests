@@ -1,0 +1,41 @@
+#!/bin/sh
+# - runtime
+# - seed
+# - number
+
+## perf_fuzzer is a system call fuzzer specifically designed
+## to find flaws in the complex Linux perf_event system call interface.
+## See: https://github.com/deater/perf_event_tests/tree/master/fuzzer
+
+. $LKP_SRC/lib/reproduce-log.sh
+
+cd $BENCHMARK_ROOT/perf_event_tests/fuzzer || die "can not find fuzzer dir"
+
+# Check parameters
+[ -z "$number" ] && [ -z "$runtime" ] && die "number and runtime can not both be empty "
+
+# Generate seed
+[ -z "$seed" ] && {
+	echo "Seeding perf-fuzzer based on $rootfs/$kconfig"
+	if has_cmd cksum; then
+		seed=$(echo "$rootfs/$kconfig" | cksum)
+		seed=${seed%% *}
+	else
+		seed=$(echo "$rootfs/$kconfig" | md5sum | cut -c1-5)
+		seed=$(( 0x$seed ))
+	fi
+}
+
+# Run test
+opt="-r $seed"
+[ -n "$number" ] && opt="$opt -s $number"
+log_cmd ./perf_fuzzer $opt &
+
+# Wait test finish or timeout
+pid=$!
+if [ -n "$runtime" ]; then
+	sleep "$runtime"
+	kill -9 "$pid" 2>&1
+else
+	wait "$pid" 2>&1
+fi

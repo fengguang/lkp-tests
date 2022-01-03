@@ -51,7 +51,7 @@ results = {}
 
 def get_array_result(prefix, array, results)
   array.each do |item|
-    next unless item.class == Hash
+    next unless item.instance_of?(Hash)
 
     key_0, value_0 = item.first
     item.each_key do |k_|
@@ -87,13 +87,13 @@ end
 
 sar_hash['sysstat']['hosts'][0]['statistics'].each do |item|
   item.each do |k, v|
-    if v.class == Array
+    if v.instance_of?(Array)
       get_array_result k, v, results
-    elsif v.class == Hash
+    elsif v.instance_of?(Hash)
       v.each do |k_, v_|
-        if v_.class == Array
+        if v_.instance_of?(Array)
           get_array_result k_, v_, results
-        elsif v_.class == Hash
+        elsif v_.instance_of?(Hash)
           get_hash_result k_, v_, results
         elsif k == 'timestamp'
           timestamp = Time.parse([v['data'], v['time']].join(' ')).to_i

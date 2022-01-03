@@ -9,3 +9,6 @@ blktests:
   test:
   - scsi-group-00
   - scsi-group-01
+  - scsi-group-02
+  # scsi/006.out is different, and only one 006 in group-03, so skip group-03
+  # - scsi-group-03

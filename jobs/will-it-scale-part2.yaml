@@ -13,6 +13,7 @@ will-it-scale:
   test:
   - getppid1
   - lock1
+  - lock2
   - lseek1
   - lseek2
   #  - malloc1
@@ -21,7 +22,7 @@ will-it-scale:
   - mmap2
   - open1
   - open2
-  #  - open3
+  - open3
 
 ---
 nr_task:

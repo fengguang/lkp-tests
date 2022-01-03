@@ -4,6 +4,7 @@
 . $LKP_SRC/lib/lkp_cmd.sh
 . $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/constant.sh
+. $LKP_SRC/lib/lkp_path.sh
 
 if ! [ $(id -u) = 0 ]; then
 	echo "This script must be run as root" 1>&2
@@ -159,7 +160,7 @@ makepkg_install() {
 		(
 			cd "$LKP_SRC/pkg/$pkg" && \
 			PACMAN="$LKP_SRC/sbin/pacman-LKP" CARCH=$arch BUILDDIR="$LKP_SRC/tmp-pkg" \
-			"$LKP_SRC/sbin/makepkg" --config "$LKP_SRC/etc/makepkg.conf" -s -i --skippgpcheck "$force_opt"
+			"$LKP_SRC/sbin/makepkg" --config "$(lkp_src)/etc/makepkg.conf" -s -i --skippgpcheck "$force_opt"
 		)
 	else
 		return 0

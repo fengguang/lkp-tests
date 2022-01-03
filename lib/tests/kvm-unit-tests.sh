@@ -47,29 +47,19 @@ check_ignored_cases()
 	done
 }
 
-load_kvm_intel_nested()
+# fix issue:
+# SKIP access-reduced-maxphyaddr (/sys/module/kvm_intel/parameters/allow_smaller_maxphyaddr not equal to Y)
+# SKIP pmu_emulation (/sys/module/kvm/parameters/force_emulation_prefix not equal to Y)
+# SKIP vmx (/sys/module/kvm_intel/parameters/nested not equal to Y)
+load_kvm_param()
 {
-	[ -c "/dev/kvm" ] || {
-		modprobe kvm_intel nested=y || {
-			echo "fail to load kvm_intel with nested=y"
-			return 1
-		}
+	[ -c "/dev/kvm" ] && {
+		modprobe -r kvm_intel || return
+		modprobe -r kvm || return
 	}
 
-	# if nested != 'Y', reload it again
-	local nested=$(cat /sys/module/kvm_intel/parameters/nested)
-
-	[ "$nested" = "N" ] && {
-		# force load kvm_intel with nested=y
-		modprobe -r kvm_intel
-		modprobe kvm_intel nested=y || {
-			echo "fail to reload kvm_intel with nested=y"
-			return 1
-		}
-	}
-
-	nested=$(cat /sys/module/kvm_intel/parameters/nested)
-	[ "$nested" = "N" ] && echo "FIXME: vmx related cases may fail due to host unsupport nested virtualization" && return 1
+	modprobe kvm force_emulation_prefix=y || return
+	modprobe kvm_intel nested=y allow_smaller_maxphyaddr=y || return
 
 	return 0
 }
@@ -80,7 +70,8 @@ setup_test_environment()
 	[ "$(cat /proc/sys/kernel/nmi_watchdog)" != "0" ] && {
 		echo 0 > /proc/sys/kernel/nmi_watchdog || return
 	}
-	is_virt || load_kvm_intel_nested || return
+	is_virt || load_kvm_param
+
 	return 0
 }
 

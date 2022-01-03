@@ -9,3 +9,5 @@ subsystems:
 - btbcm
 belongs_to: bluetooth
 notify_build_success_branch: .*
+patch_based_on_branch:
+  '\[(.+ )?bluetooth-next( .+)?\]': master

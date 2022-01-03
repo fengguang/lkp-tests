@@ -4,7 +4,11 @@
 . $LKP_SRC/lib/wait.sh
 . $LKP_SRC/lib/env.sh
 
-[ "$ignored" = "1" ] && exit 0
+[ "$ignored" = "1" ] && {
+	# run-lkp will check this flag
+	touch $TMP/oom-killer-ignored
+	exit 0
+}
 
 setup_wait
 

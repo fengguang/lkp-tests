@@ -1,4 +1,5 @@
 #!/bin/sh
+. $LKP_SRC/lib/job-init.sh
 
 # clear the initrds exported by last job
 unset_last_initrd_vars()
@@ -28,7 +29,6 @@ read_kernel_cmdline_vars_from_append()
 		[ "$i" != "${i#syzkaller_initrd=}" ]	&& export "$i"
 		[ "$i" != "${i#linux_selftests_initrd=}" ]	&& export "$i"
 		[ "$i" != "${i#linux_perf_initrd=}" ]	&& export "$i"
-		[ "$i" != "${i#kselftests_initrd=}" ]	&& export "$i"
 		[ "$i" != "${i#ucode_initrd=}" ]   && export "$i"
 	done
 }
@@ -109,9 +109,9 @@ use_local_modules_initrds()
 
 download_initrd()
 {
-	local _initrd
-	local initrds
-	local local_modules_initrd
+	local _initrd=
+	local initrds=
+	local local_modules_initrd=
 
 	echo "downloading initrds ..."
 	set_job_state "wget_initrd"
@@ -141,16 +141,20 @@ download_initrd()
 		initrds="${initrds}$file "
 	done
 
-	for _initrd in $(echo $initrd $tbox_initrd $job_initrd $lkp_initrd $bm_initrd $modules_initrd $testing_nvdimm_modules_initrd $linux_headers_initrd $syzkaller_initrd $linux_selftests_initrd $linux_perf_initrd $kselftests_initrd $ucode_initrd | tr , ' ')
+	for _initrd in $(echo $initrd $tbox_initrd $job_initrd $lkp_initrd $bm_initrd $modules_initrd $testing_nvdimm_modules_initrd $linux_headers_initrd $syzkaller_initrd $linux_selftests_initrd $linux_perf_initrd $ucode_initrd | tr , ' ')
 	do
 		_initrd=$(echo $_initrd | sed 's/^\///')
 		local file=$CACHE_DIR/$_initrd
-		http_get_newer "$_initrd" $file || {
-			rm -f $file
-			set_job_state "wget_initrd_fail"
-			echo Failed to download $_initrd
-			exit 1
-		}
+		if [ "$LKP_LOCAL_RUN" = "1" ] && [ -e $file ]; then
+			echo "skip downloading $file"
+		else
+			http_get_newer "$_initrd" $file || {
+				rm -f $file
+				set_job_state "wget_initrd_fail"
+				echo Failed to download $_initrd
+				exit 1
+			}
+		fi
 		initrd_is_correct $file || {
 			rm -f $file && echo "remove the the broken initrd: $file"
 			set_job_state "initrd_broken"
@@ -208,10 +212,14 @@ kexec_to_next_job()
 	echo --append="${append}"
 	sleep 1
 
-	test -d 					"/$LKP_SERVER/$RESULT_ROOT/" &&
-	dmesg --human --decode --color=always | gzip >	"/$LKP_SERVER/$RESULT_ROOT/pre-dmesg.gz" &&
-	chown lkp.lkp					"/$LKP_SERVER/$RESULT_ROOT/pre-dmesg.gz" &&
-	sync
+	dmesg --human --decode --color=always | gzip > /tmp/pre-dmesg.gz
+	if [ -d "/$LKP_SERVER/$RESULT_ROOT/" ]; then
+		mv /tmp/pre-dmesg.gz "/$LKP_SERVER/$RESULT_ROOT/pre-dmesg.gz"
+		chown lkp.lkp "/$LKP_SERVER/$RESULT_ROOT/pre-dmesg.gz" && sync
+	elif supports_raw_upload; then
+		JOB_RESULT_ROOT=$RESULT_ROOT
+		upload_files /tmp/pre-dmesg.gz
+	fi
 
 	# store dmesg to disk and reboot
 	[ $download_initrd_ret -ne 0 ] && sleep 119 && reboot

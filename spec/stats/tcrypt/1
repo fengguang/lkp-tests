@@ -1,0 +1,22 @@
+
+user  :notice: [   31.401607] Adding debian:TeliaSonera_Root_CA_v1.pem
+
+user  :notice: [   31.804060] Adding debian:NetLock_Arany_=Class_Gold=_Főtanúsítvány.pem
+
+user  :notice: [   31.814916] Adding debian:DigiCert_Assured_ID_Root_G2.pem
+
+user  :notice: [   31.824304] Adding debian:E-Tugra_Certification_Authority.pem
+
+user  :notice: [  439.047005] 2021-12-17 10:56:39 /sbin/modprobe tcrypt sec=2 mode=220
+
+kern  :info  : [  439.075522] tcrypt:
+                              testing speed of async essiv(cbc(aes),sha256) (essiv(cbc-aes-aesni,sha256-avx2)) encryption
+kern  :info  : [  439.088497] tcrypt: test 0 (128 bit key, 16 byte blocks): 18725572 operations in 2 seconds (299609152 bytes)
+kern  :info  : [  441.098366] tcrypt: test 1 (128 bit key, 64 byte blocks): 15166738 operations in 2 seconds (970671232 bytes)
+kern  :info  : [  443.108371] tcrypt: test 2 (128 bit key, 128 byte blocks): 10553285 operations in 2 seconds (1350820480 bytes)
+kern  :info  : [  481.298634] tcrypt:
+                              testing speed of async essiv(cbc(aes),sha256) (essiv(cbc-aes-aesni,sha256-avx2)) decryption
+kern  :info  : [  481.311742] tcrypt: test 0 (128 bit key, 16 byte blocks): 18682890 operations in 2 seconds (298926240 bytes)
+kern  :info  : [  483.321499] tcrypt: test 1 (128 bit key, 64 byte blocks): 17836569 operations in 2 seconds (1141540416 bytes)
+kern  :info  : [  485.331515] tcrypt: test 2 (128 bit key, 128 byte blocks): 16047925 operations in 2 seconds (2054134400 bytes)
+user  :err   : [  523.541932] modprobe: ERROR: could not insert 'tcrypt': Resource temporarily unavailable

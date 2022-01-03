@@ -39,7 +39,7 @@ def load_yaml(file, template_context = nil)
 end
 
 def load_yaml_with_flock(file, timeout = nil)
-  lock_file = file + '.lock'
+  lock_file = "#{file}.lock"
 
   if timeout
     with_flock_timeout(lock_file, timeout) do
@@ -118,7 +118,7 @@ def yaml_merge_included_files(yaml, relative_to, search_paths = nil)
     indented = [prefix]
     to_merge.split("\n").each do |line|
       indented << if line =~ /^%([!%]*)$/
-                    '%' + indent + line[1..-1]
+                    "%#{indent}#{line[1..-1]}"
                   else
                     indent + line
                   end
@@ -157,7 +157,7 @@ class WTMP
 end
 
 def dot_file(path)
-  File.dirname(path) + '/.' + File.basename(path)
+  "#{File.dirname(path)}/.#{File.basename(path)}"
 end
 
 def save_yaml(object, file, compress = false)
@@ -174,7 +174,7 @@ def save_yaml(object, file, compress = false)
 end
 
 def save_yaml_with_flock(object, file, timeout = nil, compress = false)
-  lock_file = file + '.lock'
+  lock_file = "#{file}.lock"
 
   if timeout
     with_flock_timeout(lock_file, timeout) do
@@ -191,7 +191,7 @@ $json_cache = {}
 $json_mtime = {}
 
 def load_json(file, cache = false)
-  file += '.gz' if file =~ /.json$/ && File.exist?(file + '.gz')
+  file += '.gz' if file =~ /.json$/ && File.exist?("#{file}.gz")
   if file =~ /.json(\.gz)?$/ && File.exist?(file)
     begin
       mtime = File.mtime(file)
@@ -210,9 +210,9 @@ def load_json(file, cache = false)
     rescue SignalException
       raise
     rescue StandardError
-      tempfile = file + '-bad'
+      tempfile = "#{file}-bad"
       log_warn "Failed to load JSON file: #{file}"
-      log_warn "Kept corrupted JSON file for debugging: #{tempfile}"
+      log_debug "Kept corrupted JSON file for debugging: #{tempfile}"
       FileUtils.mv file, tempfile, force: true
       raise
     end
@@ -220,8 +220,7 @@ def load_json(file, cache = false)
   elsif File.exist? file.sub(/\.json(\.gz)?$/, '.yaml')
     load_yaml file.sub(/\.json(\.gz)?$/, '.yaml')
   else
-    log_warn "JSON/YAML file not exist: '#{file}'"
-    log_warn caller
+    log_debug "JSON/YAML file not exist: '#{file}'"
     nil
   end
 end
@@ -243,8 +242,8 @@ def try_load_json(path)
   if File.file? path
     load_json(path)
   elsif path =~ /.json$/
-    if File.file? path + '.gz'
-      load_json(path + '.gz')
+    if File.file? "#{path}.gz"
+      load_json("#{path}.gz")
     elsif File.file? path.sub(/\.json$/, '.yaml')
       load_json(path)
     end
@@ -273,8 +272,8 @@ end
 
 def search_load_json(path)
   try_load_json(path) ||
-    try_load_json(path + '/matrix.json') ||
-    try_load_json(path + '/stats.json') ||
+    try_load_json("#{path}/matrix.json") ||
+    try_load_json("#{path}/stats.json") ||
     load_merge_jsons(path) ||
     raise(JSONFileNotExistError, path)
 end

@@ -12,14 +12,14 @@
 # openfile1            1001ops      500ops/s   0.0mb/s    0.125ms/op [0.034ms - 10.298ms]
 # 9.405: IO Summary:  6002 ops 3000.256 ops/s 500/500 rd/wr  15.6mb/s 0.181ms/op
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   case line
   when /IO Summary:\s+(\d+)\s+ops\s+([\d.]+)\s+ops\/s\s+(\d+)\/(\d+)\s+rd\/wr\s+([\d.]+)mb\/s\s+([\d.]+)ms\/op/
-    puts 'sum_operations: ' + $1
-    puts 'sum_operations/s: ' + $2
-    puts 'sum_reads/s: ' + $3
-    puts 'sum_writes/s: ' + $4
-    puts 'sum_bytes_mb/s: ' + $5
-    puts 'sum_time_ms/op: ' + $6
+    puts "sum_operations: #{$1}"
+    puts "sum_operations/s: #{$2}"
+    puts "sum_reads/s: #{$3}"
+    puts "sum_writes/s: #{$4}"
+    puts "sum_bytes_mb/s: #{$5}"
+    puts "sum_time_ms/op: #{$6}"
   end
 end

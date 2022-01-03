@@ -24,7 +24,7 @@ def show_record(keys, data)
   data.each_with_index { |v, i| puts "#{keys[i]}: #{v}" }
 end
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   next unless line =~ /[0-9]/
 
   data = line.split

@@ -7,7 +7,7 @@ per_io_type = {}
 per_record = {}
 all_sum = 0
 nr_records = 0
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   line.strip!
   next unless line =~ /^\d+.*\d+$/
 
@@ -19,15 +19,15 @@ while (line = STDIN.gets)
     end
   end
   data[2..-1].each_with_index do |v, i|
-    puts data[0] + 'KB_' + data[1] + 'reclen.' + keys[i] + ': ' + v
+    puts "#{data[0]}KB_#{data[1]}reclen.#{keys[i]}: #{v}"
     per_io_type[keys[i]] ||= 0
     per_io_type[keys[i]] += v.to_i
-    per_record[data[0] + 'KB_' + data[1] + 'reclen'] ||= 0
-    per_record[data[0] + 'KB_' + data[1] + 'reclen'] += v.to_i
+    per_record["#{data[0]}KB_#{data[1]}reclen"] ||= 0
+    per_record["#{data[0]}KB_#{data[1]}reclen"] += v.to_i
     all_sum += v.to_i
   end
   nr_records += 1
 end
-per_io_type.each { |k, v| puts k + '_KBps: ' + (v.to_f / keys.size).to_s }
-per_record.each { |k, v| puts k + ': ' + (v.to_f / nr_records).to_s }
-puts 'average_KBps: ' + (all_sum.to_f / keys.size / nr_records).to_s
+per_io_type.each { |k, v| puts "#{k}_KBps: #{v.to_f / keys.size}" }
+per_record.each { |k, v| puts "#{k}: #{v.to_f / nr_records}" }
+puts "average_KBps: #{all_sum.to_f / keys.size / nr_records}"

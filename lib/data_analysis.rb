@@ -48,7 +48,7 @@ TIME_UNITS = ['u', 'm', ''].freeze
 def format_time(val, unit = 'u')
   (TIME_UNITS.index(unit)...TIME_UNITS.size).each do |ui|
     u = TIME_UNITS[ui]
-    return format_number(val) + u + 's' if val < 1000 || ui == TIME_UNITS.size - 1
+    return "#{format_number(val)}#{u}s" if val < 1000 || ui == TIME_UNITS.size - 1
 
     val /= 1000.0
   end
@@ -63,7 +63,7 @@ def print_histogram(range, hist, params = {})
 
   format_level = ->(l) { as_time ? format_time(l, unit) : format_number(l) }
 
-  format_to_plot = ->(n) { to_plot ? "\t" + format_number(n) : '' }
+  format_to_plot = ->(n) { to_plot ? "\t#{format_number(n)}" : '' }
 
   prev = 0
   range.each_with_index do |lc, i|

@@ -1,0 +1,137 @@
+make[1]: Entering directory '/usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-2fdecfcb9dd8bc5adefde782a3213f2da884ec53/tools/testing/selftests/resctrl'
+gcc -g -Wall -O2 -D_FORTIFY_SOURCE=2 -c resctrl_val.c cmt_test.c cat_test.c mbm_test.c fill_buf.c resctrl_tests.c cache.c mba_test.c resctrlfs.c
+gcc -g -Wall -O2 -D_FORTIFY_SOURCE=2 -o resctrl_tests resctrl_val.o cmt_test.o cat_test.o mbm_test.o fill_buf.o resctrl_tests.o cache.o mba_test.o resctrlfs.o
+make[1]: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-2fdecfcb9dd8bc5adefde782a3213f2da884ec53/tools/testing/selftests/resctrl'
+2021-10-16 01:18:07 resctrl/resctrl_tests
+TAP version 13
+# Pass: Check kernel supports resctrl filesystem
+# Pass: Check resctrl mountpoint "/sys/fs/resctrl" exists
+# resctrl filesystem not mounted
+# dmesg: [   10.958900] resctrl: L3 allocation detected
+# dmesg: [   10.964161] resctrl: L3 monitoring detected
+1..4
+# Starting MBM BW change ...
+# Mounting resctrl to "/sys/fs/resctrl"
+# Mounting resctrl to "/sys/fs/resctrl"
+TAP version 13
+# Pass: Check kernel supports resctrl filesystem
+# Pass: Check resctrl mountpoint "/sys/fs/resctrl" exists
+# resctrl filesystem not mounted
+# dmesg: [   10.958900] resctrl: L3 allocation detected
+# dmesg: [   10.964161] resctrl: L3 monitoring detected
+1..4
+# Starting MBM BW change ...
+# Mounting resctrl to "/sys/fs/resctrl"
+# Mounting resctrl to "/sys/fs/resctrl"
+# Benchmark PID: 8607
+# Writing benchmark parameters to resctrl FS
+# Checking for pass/fail
+# Pass: Check MBM diff within 5%
+# avg_diff_per: 0%
+# Span (MB): 250
+# avg_bw_imc: 11826
+# avg_bw_resc: 11781
+ok 1 MBM: bw change
+# Starting MBA Schemata change ...
+# Mounting resctrl to "/sys/fs/resctrl"
+ok 2 # SKIP Hardware does not support MBA or MBA is disabled
+# Starting CMT test ...
+# Mounting resctrl to "/sys/fs/resctrl"
+# Cache size :12582912
+# Unable to umount resctrl: Invalid argument
+TAP version 13
+# Pass: Check kernel supports resctrl filesystem
+# Pass: Check resctrl mountpoint "/sys/fs/resctrl" exists
+# resctrl filesystem not mounted
+# dmesg: [   10.958900] resctrl: L3 allocation detected
+# dmesg: [   10.964161] resctrl: L3 monitoring detected
+1..4
+# Starting MBM BW change ...
+# Mounting resctrl to "/sys/fs/resctrl"
+# Mounting resctrl to "/sys/fs/resctrl"
+# Benchmark PID: 8607
+# Writing benchmark parameters to resctrl FS
+# Checking for pass/fail
+# Pass: Check MBM diff within 5%
+# avg_diff_per: 0%
+# Span (MB): 250
+# avg_bw_imc: 11826
+# avg_bw_resc: 11781
+ok 1 MBM: bw change
+# Starting MBA Schemata change ...
+# Mounting resctrl to "/sys/fs/resctrl"
+ok 2 # SKIP Hardware does not support MBA or MBA is disabled
+# Starting CMT test ...
+# Mounting resctrl to "/sys/fs/resctrl"
+# Cache size :12582912
+# Benchmark PID: 8627
+# Writing benchmark parameters to resctrl FS
+# Checking for pass/fail
+# Pass: Check cache miss rate within 15%
+# Percent diff=8
+# Number of bits: 5
+# Average LLC val: 5701632
+# Cache span (bytes): 5242880
+ok 3 CMT: test
+# Starting CAT test ...
+# Mounting resctrl to "/sys/fs/resctrl"
+# Mounting resctrl to "/sys/fs/resctrl"
+# Cache size :12582912
+# Writing benchmark parameters to resctrl FS
+# Write schema "L3:0=fc0" to resctrl FS
+# Checking for pass/fail
+# Fail: Check cache miss rate within 4%
+# Percent diff=116
+# Number of bits: 6
+# Average LLC val: 212657
+# Cache span (lines): 98304
+not ok 4 CAT: test
+# Totals: pass:2 fail:1 xfail:0 xpass:0 skip:1 error:0
+TAP version 13
+# Pass: Check kernel supports resctrl filesystem
+# Pass: Check resctrl mountpoint "/sys/fs/resctrl" exists
+# resctrl filesystem not mounted
+# dmesg: [   10.958900] resctrl: L3 allocation detected
+# dmesg: [   10.964161] resctrl: L3 monitoring detected
+1..4
+# Starting MBM BW change ...
+# Mounting resctrl to "/sys/fs/resctrl"
+# Mounting resctrl to "/sys/fs/resctrl"
+# Benchmark PID: 8607
+# Writing benchmark parameters to resctrl FS
+# Checking for pass/fail
+# Pass: Check MBM diff within 5%
+# avg_diff_per: 0%
+# Span (MB): 250
+# avg_bw_imc: 11826
+# avg_bw_resc: 11781
+ok 1 MBM: bw change
+# Starting MBA Schemata change ...
+# Mounting resctrl to "/sys/fs/resctrl"
+ok 2 # SKIP Hardware does not support MBA or MBA is disabled
+# Starting CMT test ...
+# Mounting resctrl to "/sys/fs/resctrl"
+# Cache size :12582912
+# Benchmark PID: 8627
+# Writing benchmark parameters to resctrl FS
+# Checking for pass/fail
+# Pass: Check cache miss rate within 15%
+# Percent diff=8
+# Number of bits: 5
+# Average LLC val: 5701632
+# Cache span (bytes): 5242880
+ok 3 CMT: test
+# Starting CAT test ...
+# Mounting resctrl to "/sys/fs/resctrl"
+# Mounting resctrl to "/sys/fs/resctrl"
+# Cache size :12582912
+# Writing benchmark parameters to resctrl FS
+# Write schema "L3:0=3f" to resctrl FS
+# Checking for pass/fail
+# Fail: Check cache miss rate within 4%
+# Percent diff=116
+# Number of bits: 6
+# Average LLC val: 212775
+# Cache span (lines): 98304
+not ok 4 CAT: test
+# Totals: pass:2 fail:1 xfail:0 xpass:0 skip:1 error:0

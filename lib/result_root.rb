@@ -114,7 +114,7 @@ class ResultRootCollection
     return enum_for(__method__) unless block_given?
 
     date_glob = @date_glob || DATE_GLOB
-    files = Dir[File.join KTEST_PATHS_DIR, date_glob, date_glob + '-*']
+    files = Dir[File.join KTEST_PATHS_DIR, date_glob, "#{date_glob}-*"]
     files.sort!
     files.reverse!
     files.each do |fn|
@@ -177,8 +177,8 @@ class MResultRoot
     end
   end
 
-  def eql?(_rto)
-    @axes.eql?(_rto.axes)
+  def eql?(other)
+    @axes.eql?(other.axes)
   end
 
   def hash

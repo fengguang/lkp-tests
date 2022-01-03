@@ -12,7 +12,7 @@ fs:
 - btrfs
 - f2fs
 - udf
-- ocfs2
+# - ocfs2 # mount.ocfs2 known bug
 
 xfstests:
   test:
@@ -23,6 +23,8 @@ xfstests:
   - generic-group-28
   - generic-group-29
   - generic-group-30
+  - generic-group-31
+  - generic-group-32
 
 ---
 fs:
@@ -36,3 +38,16 @@ fs:
 xfstests:
   test:
   - generic-logdev
+
+---
+fs:
+- ext2
+- ext4
+- xfs
+- btrfs
+- f2fs
+# - ocfs2 # mount.ocfs2 known bug
+
+xfstests:
+  test:
+  - generic-525

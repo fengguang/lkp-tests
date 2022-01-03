@@ -1,0 +1,2 @@
+2021-11-01 20:03:36 stress-ng --timeout 60 --times --verify --metrics-brief --vm-rw 9
+stress-ng: fail:  [5778] stress-ng: sigaction signal 6 'SIGABRT': errno=22 (Invalid argument)

@@ -20,7 +20,7 @@ end
 result = {}
 invalid_records = []
 record_index = 0
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   line = line.resolve_invalid_bytes
   next if line[0] == '#'
 
@@ -38,7 +38,7 @@ while (line = STDIN.gets)
 
   next if monitor =~ /^(dmesg|kmsg)$/ && k =~ /^(message|pattern):/
 
-  k = monitor + '.' + k
+  k = "#{monitor}.#{k}"
   result[k] ||= []
 
   # assemble value which key end with .element

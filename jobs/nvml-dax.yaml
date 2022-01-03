@@ -10,20 +10,22 @@ group:
   - blk
   - bttdevice
   - compat
-  - daxio
+  - ctl
+  #  - daxio # donot have /dev/dax* device
   - ex
   - libpmempool
   - log
   - magic
+  - mmap
   - obj
   - out
   - pmem
   - pmemobjcli
   - pmempool
   - pmemspoil
-  - pmem2
+  - pmreorder
   - remote
-  - rpmem
+  # - rpmem # test skipped by bug, but the test will be deprecated in the near future, so comment out here.
   - rpmemd
   - set
   - unicode

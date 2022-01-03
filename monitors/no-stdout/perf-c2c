@@ -40,6 +40,7 @@ $perf c2c record -ag $opt_event $opt_mode $opt_eldlat -o \
 
 cat > "$TMP_RESULT_ROOT/post-run.perf-c2c" <<EOF
 [ -s "$perf_c2c_data" ] && {
+	$perf c2c report --stdio --call-graph none -i $perf_c2c_data  > $RESULT_ROOT/perf-c2c-profile.log
 	$perf c2c report -NN -i $perf_c2c_data --stats | gzip >	$RESULT_ROOT/perf-c2c.gz && {
 		cp $perf_c2c_data $RESULT_ROOT
 		cp /proc/kallsyms $RESULT_ROOT

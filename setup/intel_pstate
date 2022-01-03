@@ -23,3 +23,5 @@
 [ -n "$status" ] && {
 	log_eval "echo '$status' > /sys/devices/system/cpu/intel_pstate/status"
 }
+
+exit 0

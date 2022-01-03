@@ -1,9 +1,12 @@
 pkgname=hackbench
-pkgver=2.1
+pkgver=2.2
 pkgrel=1
 arch=('i386' 'x86_64')
 url="https://git.kernel.org/pub/scm/utils/rt-tests"
 license=('GPL')
+# The url for latest pkg is https://www.kernel.org/pub/linux/utils/rt-tests/rt-tests-${pkgver}.tar.gz
+# The url for outdated pkg is https://www.kernel.org/pub/linux/utils/rt-tests/older/rt-tests-${pkgver}.tar.gz
+# We need to always use the latest version of the package to ensure that the URL is always valid.
 source=("https://git.kernel.org/pub/scm/utils/rt-tests/rt-tests.git/snapshot/rt-tests-${pkgver}.tar.gz")
 sha256sums=('SKIP')
 

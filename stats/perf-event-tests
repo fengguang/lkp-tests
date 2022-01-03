@@ -7,18 +7,21 @@ require "#{LKP_SRC}/lib/tests/stats"
 
 stats = LKP::Stats.new
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   line = line.resolve_invalid_bytes
 
   case line
-  when /^[ ]+\+ tests\/(\S+)$/
+  when /^ +\+ tests\/(\S+)$/
     #   + tests/utils/check_paranoid
     #  + tests/sysfs/events
     testcase = $1.downcase
   when /\.\.\.\s+(.+)$/
     #     Testing \"branch-misses\" generalized event...               PASSED
     #     Testing PERF_FLAG_FD_OUTPUT flag...                        KNOWN KERNEL BUG
-    stats.add testcase, $1
+    if testcase != ''
+      stats.add testcase, $1
+      testcase = ''
+    end
   when /^(ignored_by_lkp)\s+(.*)\s+/
     stats.add $2, $1
   end

@@ -1,0 +1,9 @@
+suite: ltp
+testcase: ltp
+category: functional
+
+need_memory: 4G
+
+ltp:
+  test:
+  - numa

@@ -10,6 +10,10 @@ mount_dev()
 
 	[ $nr_partitions -ge 1 ] || die "nr_partitions is less than 1"
 	partition=${partitions%% *}
+	if [ "$test" = "verity" ]; then
+		log_cmd umount $partition
+		log_cmd mkfs.$fs -q -F -O verity $partition || die "fail to mkfs.$fs -q -F -O verity $partition"
+	fi
 
 	log_cmd mkdir -p $mnt
 	log_cmd mount $partition $mnt 2>/dev/null
@@ -67,13 +71,17 @@ run_test()
 	## run other stress-ng as root
 	## use option --exclude to ignore spawn and exec.
 	[ -n "$test" ] && {
-		test="--$test"
-		log_cmd stress-ng $default_option $test $nr_threads 2>&1
-		return
-	}
+		if [ "$test" = "ping-sock" ]; then
+			log_cmd sysctl -w net.ipv4.ping_group_range="0 $nr_threads"
+		fi
 
-	[ "$class" = "exec_spawn" ] && {
-		su lkp -c "stress-ng --exec $nr_threads --spawn $nr_threads --timeout $testtime --times --verify --metrics-brief 2>&1"
+		test="--$test"
+		if [ "$class" = "exec_spawn" ]; then
+			mkdir /home/lkp && chown -R lkp:lkp /home/lkp
+			log_cmd su - lkp -s /bin/bash -c "stress-ng --timeout $testtime --times --verify --metrics-brief $test $nr_threads 2>&1"
+		else
+			log_cmd stress-ng $default_option $test $nr_threads 2>&1
+		fi
 		return
 	}
 

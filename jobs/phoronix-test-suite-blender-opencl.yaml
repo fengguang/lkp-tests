@@ -1,0 +1,20 @@
+suite: phoronix-test-suite
+category: benchmark
+
+need_memory: 8G
+
+phoronix-test-suite:
+  - test: blender-1.9.0
+    option_a:
+      - BMW27
+      - Classroom
+      # - Fishy Cat
+      # - Pabellon Barcelona
+      - Barbershop
+      # - Test All Options
+    option_b:
+      - CPU-Only
+      - OpenCL
+      # - CUDA # need CUDA compatible hardware
+      # - NVIDIA OptiX # need NVIDIA compatible hardware
+      # - Test All Options

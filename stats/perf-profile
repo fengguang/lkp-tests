@@ -13,7 +13,7 @@
 #   Event count (approx.): 793779025152
 #   ...
 #
-exit unless STDIN.gets =~ /^# ========$| --header/
+exit unless $stdin.gets =~ /^# ========$| --header/
 
 def fixup_symbol_name(symbol)
   symbol.gsub(/\.(isra|constprop|part)\.[0-9]+/, '')
@@ -29,7 +29,7 @@ end
 
 cur_event = ''
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   # Events: 1K cycles
   # Events: 825  cache-misses
   # Samples: 5K of event 'cycles'
@@ -42,7 +42,7 @@ end
 
 results = Hash.new(0)
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   line.chomp!
 
   case line

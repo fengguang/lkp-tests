@@ -18,7 +18,7 @@ def show_one(new_test, results)
   results['val'] = []
 end
 
-File.foreach("#{RESULT_ROOT}/kmsg") do |line|
+File.foreach("#{RESULT_ROOT}/kmsg", :encoding => 'utf-8') do |line|
   case line
   when /testing speed of (.*)$/
     show_one($1.tr(' ', '.'), results)

@@ -5,7 +5,7 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAM
 require "#{LKP_SRC}/lib/log"
 
 sub_names = nil
-STDIN.each_line do |line|
+$stdin.each_line do |line|
   case line
   when /slabinfo - version:/
     unless line =~ /2.1/
@@ -35,7 +35,7 @@ STDIN.each_line do |line|
         '<num_objs>',
         '<active_slabs>',
         '<num_slabs>'
-        puts name + '.' + sub_names[i][1..-2] + ': ' + value
+        puts "#{name}.#{sub_names[i][1..-2]}: #{value}"
       end
     end
   end

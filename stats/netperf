@@ -8,7 +8,7 @@ thp_index = 0
 time_index = 0
 pkt_index = 0
 iterations = 0
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   case line.chomp!
   when /^Iterations/
     iterations += 1
@@ -52,6 +52,6 @@ throughput /= iterations if iterations.positive?
 
 workload = throughput * time
 workload = workload * 10**6 / 8.0 / pkt_size if unit == 'Mbps'
-puts 'Throughput_' + unit + ': ' + avg_throughput.to_s
-puts 'Throughput_total_' + unit + ': ' + throughput.to_s
-puts 'workload: ' + workload.to_s
+puts "Throughput_#{unit}: #{avg_throughput}"
+puts "Throughput_total_#{unit}: #{throughput}"
+puts "workload: #{workload}"

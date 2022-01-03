@@ -341,16 +341,16 @@ describe ResultPath do
       it 'do not check commit id' do
         result_path = described_class.new
 
-  #The commit name is kernel version in local run.
-  expect(result_path.parse_result_root("#{RESULT_ROOT_DIR}/will-it-scale/process-100%-brk1/shao2-debian/debian/x86_64-rhel-7.6/gcc-7/4.19.0-4-amd64/0", true)).to be true
-  expect(result_path['testcase']).to eq 'will-it-scale'
-  expect(result_path['path_params']).to eq 'process-100%-brk1'
-  expect(result_path['ucode']).to eq nil
-  expect(result_path['tbox_group']).to eq 'shao2-debian'
-  expect(result_path['rootfs']).to eq 'debian'
-  expect(result_path['kconfig']).to eq 'x86_64-rhel-7.6'
-  expect(result_path['compiler']).to eq 'gcc-7'
-  expect(result_path['commit']).to eq '4.19.0-4-amd64'
+  # The commit name is kernel version in local run.
+        expect(result_path.parse_result_root("#{RESULT_ROOT_DIR}/will-it-scale/process-100%-brk1/shao2-debian/debian/x86_64-rhel-7.6/gcc-7/4.19.0-4-amd64/0", true)).to be true
+        expect(result_path['testcase']).to eq 'will-it-scale'
+        expect(result_path['path_params']).to eq 'process-100%-brk1'
+        expect(result_path['ucode']).to eq nil
+        expect(result_path['tbox_group']).to eq 'shao2-debian'
+        expect(result_path['rootfs']).to eq 'debian'
+        expect(result_path['kconfig']).to eq 'x86_64-rhel-7.6'
+        expect(result_path['compiler']).to eq 'gcc-7'
+        expect(result_path['commit']).to eq '4.19.0-4-amd64'
       end
     end
   end
@@ -370,7 +370,7 @@ describe ResultPath do
       result_path = described_class.new
       result_path['testcase'] = 'xfstests'
 
-      test_desc = result_path.parse_test_desc('xfstests/4HDD-xfs-xfs-group17/vm-snb/e93c9c99a629c61837d5a7fc2120cd2b6c70dbdd', dim_not_a_param = false)
+      test_desc = result_path.parse_test_desc('xfstests/4HDD-xfs-xfs-group17/vm-snb/e93c9c99a629c61837d5a7fc2120cd2b6c70dbdd', dim_not_a_param: false)
       expect(test_desc['path_params']).to eq '4HDD-xfs-xfs-group17'
       expect(test_desc['tbox_group']).to eq 'vm-snb'
       expect(test_desc['commit']).to eq 'e93c9c99a629c61837d5a7fc2120cd2b6c70dbdd'
@@ -380,7 +380,7 @@ describe ResultPath do
       result_path = described_class.new
       result_path['testcase'] = 'build-dpdk'
 
-      test_desc = result_path.parse_test_desc('build-dpdk/x86_64-native-linuxapp-gcc/0f57d86787d8b1076ea8f9cbdddda2a46d534a27/60c5c5692107abf4157d48493aa2dec01f6b97cc', dim = 'dpdk_compiler')
+      test_desc = result_path.parse_test_desc('build-dpdk/x86_64-native-linuxapp-gcc/0f57d86787d8b1076ea8f9cbdddda2a46d534a27/60c5c5692107abf4157d48493aa2dec01f6b97cc', dim: 'dpdk_compiler')
       expect(test_desc['dpdk_config']).to eq 'x86_64-native-linuxapp-gcc'
       expect(test_desc['commit']).to eq '0f57d86787d8b1076ea8f9cbdddda2a46d534a27'
       expect(test_desc['dpdk_compiler']).to eq nil

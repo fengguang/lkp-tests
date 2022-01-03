@@ -156,7 +156,7 @@ kmsg_denylist = File.read(File.join(LKP_SRC, 'etc', 'kmsg-denylist')).split "\n"
       if str[0] =~ /[iudsxXpPco]/
         str[0] = ''
       else
-        log_warn 'IGNORE ' + line
+        log_warn "IGNORE #{line}"
       end
     end
 

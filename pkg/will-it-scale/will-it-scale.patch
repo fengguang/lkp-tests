@@ -1,18 +1,21 @@
-From b941867b04f90ccdd618e80848cc14a9db4f7c04 Mon Sep 17 00:00:00 2001
+From c15900e2ec8854bc2115ce8a6c54aeaec3b31ed6 Mon Sep 17 00:00:00 2001
 From: root <root@lkp-haiyan.sh.intel.com>
-Date: Thu, 21 May 2020 12:50:09 +0800
+Date: Wed, 24 Nov 2021 18:50:35 +0800
 Subject: [PATCH] update runtest.py
 
+* 2021/11, add 'affinity' parameter
+
 Signed-off-by: root <root@lkp-haiyan.sh.intel.com>
+Signed-off-by: Feng Tang <feng.tang@intel.com>
 ---
- runtest.py | 82 +++++++++++++++++++++++++++++++-------------------------------
- 1 file changed, 41 insertions(+), 41 deletions(-)
+ runtest.py | 87 +++++++++++++++++++++++++++++-------------------------
+ 1 file changed, 46 insertions(+), 41 deletions(-)
 
 diff --git a/runtest.py b/runtest.py
-index 8bda393..de4271a 100755
+index 8bda393..395e952 100755
 --- a/runtest.py
 +++ b/runtest.py
-@@ -48,12 +48,13 @@ class linux_stat():
+@@ -48,12 +48,18 @@ class linux_stat():
  		return 1.0 * idle / (idle + busy)
  
  
@@ -27,10 +30,15 @@ index 8bda393..de4271a 100755
 +duration = int(sys.argv[2])
 +mode = sys.argv[3]
 +threads = sys.argv[4:]
++
++# Optional feature for "-n" option, which will disable cpu bindings for test tasks
++affinity = "  "
++if len(sys.argv) == 6:
++	affinity = sys.argv[5]
  
  nr_cores=0
  r = re.compile('^processor')
-@@ -87,43 +88,42 @@ if arch == 'ppc64':
+@@ -87,43 +93,42 @@ if arch == 'ppc64':
  print('tasks,processes,processes_idle,threads,threads_idle,linear')
  print('0,0,100,0,100,0')
  
@@ -77,7 +85,7 @@ index 8bda393..de4271a 100755
 +	processes_avg = 0
 +	processes_idle = 0
 +	if mode == 'process' or mode == 'both':
-+		c = './%s_processes -t %d -s %d' % (cmd, i, duration)
++		c = './%s_processes -t %d -s %d %s ' % (cmd, i, duration, affinity)
 +		before = linux_stat()
 +		pipe = subprocess.Popen(setarch + ' ' + c, shell=True, stdout=subprocess.PIPE, text=True).stdout
 +		for line in pipe.readlines():
@@ -97,7 +105,7 @@ index 8bda393..de4271a 100755
 +	threads_avg = 0
 +	threads_idle = 0
 +	if mode == 'thread' or mode == 'both':
-+		c = './%s_threads -t %d -s %d' % (cmd, i, duration)
++		c = './%s_threads -t %d -s %d %s ' % (cmd, i, duration, affinity)
 +		before = linux_stat()
 +		pipe = subprocess.Popen(setarch + ' ' + c, shell=True, stdout=subprocess.PIPE, text=True).stdout
 +		for line in pipe.readlines():
@@ -111,5 +119,5 @@ index 8bda393..de4271a 100755
  	if i == 1:
  		linear = max(processes_avg, threads_avg)
 -- 
-2.11.0
+2.27.0
 

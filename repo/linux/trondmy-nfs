@@ -1,0 +1,23 @@
+url: git://git.linux-nfs.org/projects/trondmy/linux-nfs.git
+integration_testing_branches: linux-next
+mail_cc: linux-nfs@vger.kernel.org
+owner: Trond Myklebust <trond.myklebust@primarydata.com>
+subsystems:
+- nfsv4.1
+- nfs
+- nfsv4
+- nfs4
+- nfs41
+- nfs42
+- sunrpc
+- flexfiles
+- flexfile
+- pnfs
+- nfsv4.2
+- objlayout
+- blocklayout
+- filelayout
+- flexfilelayout
+- auth_gss
+- xprtrdma
+non_rebaseable_branch: nfs-for-next|devel

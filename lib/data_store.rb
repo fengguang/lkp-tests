@@ -71,7 +71,11 @@ module DataStore
     private
 
     def load
-      elayout = load_yaml path(CONFIG_FILE)
+      begin
+        elayout = load_yaml path(CONFIG_FILE)
+      rescue StandardError
+        elayout = {}
+      end
       from_data elayout
     end
 
@@ -452,6 +456,7 @@ module DataStore
       axes = node.axes
       ifn = index_file axes
       return unless ifn
+
       mkdir_p File.dirname(ifn) unless Dir.exist? File.dirname(ifn)
 
       with_index_lock do
@@ -539,8 +544,8 @@ module DataStore
       Layout.axes_hash(axes)
     end
 
-    def eql?(no)
-      @axes.eql?(no.axes)
+    def eql?(other)
+      @axes.eql?(other.axes)
     end
 
     def hash
@@ -853,11 +858,11 @@ module DataStore
       index.set_axis_keys ['a']
     end
     tbl = Table.open tbl_path
-    [
-      '1c163f4c7b3f621efff9b28a47abb36f7378d783',
-      'e93c9c99a629c61837d5a7fc2120cd2b6c70dbdd',
-      '0ecfebd2b52404ae0c54a878c872bb93363ada36',
-      '4d856f72c10ecb060868ed10ff1b1453943fc6c8'
+    %w[
+      1c163f4c7b3f621efff9b28a47abb36f7378d783
+      e93c9c99a629c61837d5a7fc2120cd2b6c70dbdd
+      0ecfebd2b52404ae0c54a878c872bb93363ada36
+      4d856f72c10ecb060868ed10ff1b1453943fc6c8
     ].each do |a|
       'h'.upto('k') do |b|
         n = tbl.new_node('a' => a, 'b' => b, 'c' => 2)

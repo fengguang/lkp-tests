@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# check if testbox's brand is match to run the job
+# model converted to cpuid
+#  https://en.wikichip.org/wiki/intel/cpuid
+Apollo_Lake_I=92
+Alder_Lake_S=151
+Broadwell=71
+Broadwell_DE=86
+Broadwell_Y=61
+Atom=0 # not intel cpu
+Coffee_Lake=142
+Coffee_Lake_H=158
+Coffee_Lake_S=158
+Commet_Lake=165
+Cooper_Lake=85
+Cascade_Lake=85
+Gemini_Lake=122
+Haswell=60
+Haswell_EX=63
+Ice_Lake=106
+Ice_Lake_U=126
+Ivy_Bridge=58
+Ivy_Bridge_EP=62
+Jacobsville=0 # not intel cpu
+Kaby_Lake=142
+Kaby_Lake_R=142
+Kaby_Lake_S=158
+Kaby_Lake_Y=142
+Knights_Landing=0 # Microarchitecture not support, set 0
+Knights_Mill=0 # Microarchitecture not support, set 0
+Meteor_Lake=0 # first launched at 2023 +
+Nehalem=30
+Sandy_Bridge=45
+Skylake=85
+Whiskey_Lake_U=142
+Core=15
+
+model_key=`echo $model | sed -e 's/[[:blank:]]/_/g' -e 's/-/_/g'`
+cpuid=${!model_key}
+
+if (( need_cpuid > cpuid )); then
+	echo "rm $job_file due to cpuid is not match"
+	echo "need cpuid newer than: $need_cpuid, has cpu model: $model, cpuid: $cpuid"
+	exit 1
+fi
+
+exit 0

@@ -201,7 +201,7 @@ end
 def print_analysis(parser, options)
   total_ap = parser.total_ap
 
-  printf("%3s  %15s  %24s\n", 'Cpu.ID', 'Measurement', 'Normalized Time(' + options[:unit] + ')')
+  printf("%3s  %15s  %24s\n", 'Cpu.ID', 'Measurement', "Normalized Time(#{options[:unit]})")
   (1..total_ap).each do |i|
     %w(boot_duration early_boot_duration bp_boot_duration boot_start bp_boot_start).each do |stat|
       printf("CPU.%03d  %-20s  %-12.1f %s\n", \
@@ -220,7 +220,7 @@ end
 
 def print_func(parser, options)
   func_arr = parser.func_arr
-  printf("%3s %20s %30s\n", 'CPU.ID', 'Normalized Time(' + options[:unit] + ')', 'Function')
+  printf("%3s %20s %30s\n", 'CPU.ID', "Normalized Time(#{options[:unit]})", 'Function')
   func_arr.each do |func_info|
     printf("%03d %20.1f%s %20s\n", func_info[0], func_info[1], options[:unit], func_info[2])
   end

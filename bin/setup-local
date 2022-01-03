@@ -14,7 +14,7 @@ require "#{LKP_SRC}/lib/distro_info"
 require "#{LKP_SRC}/lib/install"
 require "#{LKP_SRC}/lib/constant"
 
-TMP = LKP_SRC + '/tmp'
+TMP = "#{LKP_SRC}/tmp"
 
 if `whoami`.chomp != 'root'
   puts 'Please run as root to install packages'
@@ -71,7 +71,7 @@ end
 scripts.uniq!
 
 def make_wakeup
-  return if File.executable? LKP_SRC + '/bin/event/wakeup'
+  return if File.executable? "#{LKP_SRC}/bin/event/wakeup"
 
   system "cd #{LKP_SRC}/bin/event && make wakeup"
 end
@@ -85,7 +85,7 @@ end
 def create_host_config
   host_config = LKP_SRC + "/hosts/#{HOSTNAME}"
   if File.exist? host_config
-    puts 'reusing ' + host_config
+    puts "reusing #{host_config}"
   else
     mem_kb = File.open('/proc/meminfo').gets.split[1].to_i
     mem_gb = mem_kb >> 20
@@ -104,7 +104,7 @@ end
 
 def install_packages(script, distro)
   packages = get_dependency_packages(distro, script)
-  dev_packages = get_dependency_packages(distro, script + '-dev')
+  dev_packages = get_dependency_packages(distro, "#{script}-dev")
   packages |= dev_packages
   return if packages.empty?
 
@@ -117,12 +117,12 @@ end
 def install_benchmarks(script, distro)
   return unless File.file? "#{LKP_SRC}/pack/#{script}"
 
-  if File.basename(File.realpath "#{LKP_SRC}/pack/#{script}") == 'perf'
+  if File.basename(File.realpath("#{LKP_SRC}/pack/#{script}")) == 'perf'
     `perf -v 2>/dev/null`
     return if $?.success?
   end
 
-  pkg_name = script.tr('_', '-') + '-LKP'
+  pkg_name = "#{script.tr('_', '-')}-LKP"
   distroinfo = LKP::DistroInfo.instance
   arch = distroinfo.systemarch
   puts "Making #{script} benchmark for #{distro}"

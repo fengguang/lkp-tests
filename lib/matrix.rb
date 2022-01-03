@@ -159,24 +159,24 @@ def create_stats_matrix(result_root)
                  else
                    v.sum / stats_part_len
                  end
-      stats[k + '.max'] = v.max if should_add_max_latency k
+      stats["#{k}.max"] = v.max if should_add_max_latency k
     end
     matrix.merge! monitor_stats
   end
 
   add_performance_per_watt(stats, matrix)
   add_path_length(stats, matrix)
-  save_json(stats, result_root + '/stats.json')
-  save_json(matrix, result_root + '/matrix.json', true)
+  save_json(stats, "#{result_root}/stats.json")
+  save_json(matrix, "#{result_root}/matrix.json", true)
   if local_run?
-    save_matrix_to_csv_file(result_root + '/stats.csv', stats)
-    save_matrix_to_csv_file(result_root + '/matrix.csv', matrix)
+    save_matrix_to_csv_file("#{result_root}/stats.csv", stats)
+    save_matrix_to_csv_file("#{result_root}/matrix.csv", matrix)
   end
   stats
 end
 
 def load_create_stats_matrix(result_root)
-  stats_file = result_root + '/stats.json'
+  stats_file = "#{result_root}/stats.json"
   if File.exist? stats_file
     load_json stats_file
   else
@@ -241,10 +241,10 @@ def unite_remove_empty_stats(matrix)
 end
 
 def unite_to(stats, matrix_root, max_cols = nil, delete = false)
-  matrix_file = matrix_root + '/matrix.json'
+  matrix_file = "#{matrix_root}/matrix.json"
 
-  matrix = load_matrix_file(matrix_root + '/matrix.json')
-  matrix ||= load_matrix_file(matrix_root + '/matrix.yaml')
+  matrix = load_matrix_file("#{matrix_root}/matrix.json")
+  matrix ||= load_matrix_file("#{matrix_root}/matrix.yaml")
 
   if matrix && matrix[STATS_SOURCE_KEY]
     dup_col = matrix[STATS_SOURCE_KEY].index stats[STATS_SOURCE_KEY]
@@ -261,20 +261,20 @@ def unite_to(stats, matrix_root, max_cols = nil, delete = false)
 
   save_json(matrix, matrix_file)
   matrix = matrix_fill_missing_zeros(matrix)
-  save_matrix_to_csv_file(matrix_root + '/matrix.csv', matrix) if local_run?
+  save_matrix_to_csv_file("#{matrix_root}/matrix.csv", matrix) if local_run?
   matrix.delete 'stats_source'
   begin
     avg = matrix_average(matrix)
     stddev = matrix_stddev(matrix)
-    save_json(avg, matrix_root + '/avg.json')
-    save_json(stddev, matrix_root + '/stddev.json')
+    save_json(avg, "#{matrix_root}/avg.json")
+    save_json(stddev, "#{matrix_root}/stddev.json")
     if local_run?
-      save_matrix_to_csv_file(matrix_root + '/avg.csv', avg)
-      save_matrix_to_csv_file(matrix_root + '/stddev.csv', stddev)
+      save_matrix_to_csv_file("#{matrix_root}/avg.csv", avg)
+      save_matrix_to_csv_file("#{matrix_root}/stddev.csv", stddev)
     end
   rescue TypeError
     log_error "matrix contains non-number values, move to #{matrix_file}-bad"
-    FileUtils.mv matrix_file, matrix_file + '-bad', force: true # never raises exception
+    FileUtils.mv matrix_file, "#{matrix_file}-bad", force: true # never raises exception
   end
   matrix
 end
@@ -355,11 +355,9 @@ def read_matrix_from_csv_file(file_name)
 
   convert = lambda do |input|
     %i[Integer Float].each do |m|
-      begin
-        return send(m, input)
-      rescue StandardError
-        next
-      end
+      return send(m, input)
+    rescue StandardError
+      next
     end
     input
   end
@@ -410,7 +408,7 @@ def unite_params(result_root)
 
   job = Job.new
   begin
-    job.load(result_root + '/job.yaml')
+    job.load("#{result_root}/job.yaml")
   rescue StandardError
     return
   end
@@ -451,7 +449,7 @@ def unite_stats(result_root, delete = false)
 
   return false if stats.nil?
 
-  stats['stats_source'] = result_root + '/stats.json'
+  stats['stats_source'] = "#{result_root}/stats.json"
 
   unite_to(stats, _result_root, nil, delete)
   begin

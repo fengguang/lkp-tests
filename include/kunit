@@ -3,7 +3,7 @@ need_kconfig:
 - BITS_TEST: m, v5.9-rc1
 - CMDLINE_KUNIT_TEST: m, v5.11-rc1
 - EXT4_KUNIT_TESTS: m, v5.6-rc1
-- KUNIT: y, v5.5-rc1
+- KUNIT: m, v5.5-rc1
 - KUNIT_ALL_TESTS: m, v5.8-rc1
 - KUNIT_EXAMPLE_TEST: n, v5.5-rc1
 - KUNIT_TEST: n, v5.5-rc1

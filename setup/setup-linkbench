@@ -28,7 +28,7 @@ cd "$BENCHMARK_ROOT/linkbench" || exit
 cp config/LinkConfigMysql.properties config/MyConfig.properties
 
 mysql << "MY_QUERY"
-SET GLOBAL max_connections = 400;
+SET GLOBAL max_connections = 1025;
 DROP DATABASE IF EXISTS linkdb;
 CREATE DATABASE linkdb;
 USE linkdb;
@@ -73,7 +73,7 @@ SET GLOBAL innodb_flush_log_at_trx_commit = 2;
 SET GLOBAL sync_binlog = 0;
 MY_QUERY
 
-./bin/linkbench -c config/MyConfig.properties \
+./bin/linkbench 2>&1 -c config/MyConfig.properties \
 -D host=localhost -D user=linkbench -D password=mypassword  -l
 
 mysql << "MY_QUERY"

@@ -5,7 +5,7 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAM
 require "#{LKP_SRC}/lib/string_ext"
 
 sum = { 'node-loads' => 0, 'node-load-misses' => 0, 'node-stores' => 0, 'node-store-misses' => 0 }
-STDIN.each_line do |line|
+$stdin.each_line do |line|
   line = line.resolve_invalid_bytes
 
   _time, value, key = line.split

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   case line
   when /^startup_time_ms: /, /^kill_time_ms: /
     puts line

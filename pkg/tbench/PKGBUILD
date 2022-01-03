@@ -10,10 +10,10 @@ md5sums=('SKIP')
 build()
 {
 	cd $srcdir/dbench
-	cp -a loadfiles/client.txt /usr/local/share/
+	cp -a loadfiles/*.txt /usr/local/share/
 
 	./autogen.sh || return
-	./configure || return
+	./configure CFLAGS=$(pkg-config --cflags smbclient) || return
 	# Fix libnfs.c:27:39: error: intptr_t undeclared (first use in this function); did you mean in_port_t?
 	sed -i '/#include "nfs.h/a #include <stdint.h>' libnfs.c
 	make dbench || return
@@ -33,6 +33,6 @@ package()
 
 	cd $srcdir/dbench
 	cp -a dbench tbench tbench_srv $usr_path/local/bin
-	cp -a /usr/local/share/client.txt $usr_path/local/share
+	cp -a /usr/local/share/*.txt $usr_path/local/share
 	touch $benchmark_path/empty
 }

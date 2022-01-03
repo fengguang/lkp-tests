@@ -15,8 +15,6 @@ stress-ng:
   - vm
   test:
   - bad-altstack
-  - bigheap
-  - brk
   - dev-shm
   - env
   - madvise
@@ -40,3 +38,14 @@ stress-ng:
   - vm-rw
   - vm-segv
   - vm-splice
+
+---
+oom-killer:
+  ignored: 1
+
+stress-ng:
+  class:
+  - vm
+  test:
+  - brk
+  - bigheap

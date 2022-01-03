@@ -1,3 +1,4 @@
 need_kconfig:
-- IOSCHED_<%= ___.upcase %>
+- MQ_IOSCHED_DEADLINE
+- MQ_IOSCHED_KYBER
 - BLOCK

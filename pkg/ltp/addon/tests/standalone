@@ -1,0 +1,6 @@
+# used too many time, run alone
+writev03 writev03
+# need  Intel Core 5th+ generation
+perf_event_open03 perf_event_open03
+# loop too many, can't allot on lkp-knl-f1
+fork13 fork13 -i 1000000

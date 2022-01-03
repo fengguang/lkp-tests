@@ -17,74 +17,6 @@ LINUX_DEVICE_NAMES_RE = /\b(#{LINUX_DEVICE_NAMES.join('|')})\d+/.freeze
 require 'fileutils'
 require 'tempfile'
 
-# dmesg can be below forms
-# [    0.298729] Last level iTLB entries: 4KB 512, 2MB 7, 4MB 7
-# [    8.898106] system 00:01: [io  0x0400-0x047f] could not be reserved
-class DmesgTimestamp
-  include Comparable
-
-  attr_reader :timestamp
-
-  def initialize(line)
-    match = line.match(/.*\[ *(?<timestamp>\d{1,6}\.\d{6})\]/)
-    @timestamp = match && match[:timestamp]
-  end
-
-  def valid?
-    @timestamp != nil
-  end
-
-  def <=>(other)
-    return 0 unless valid? || other.valid?
-    return -1 unless valid?
-    return 1 unless other.valid?
-
-    @timestamp.to_f <=> other.timestamp.to_f
-  end
-
-  def to_s
-    @timestamp
-  end
-
-  # put this functionality inside DmesgTimestamp class for now
-  # below patterns are required to match in order to detect
-  # abnormal sequence that indicates a possible reboot
-  # LARGE timestamp
-  # LARGE timestamp
-  # LARGE timestamp
-  # SMALL timestamp
-  # SMALL timestamp
-  # SMALL timestamp
-  class AbnormalSequenceDetector
-    def initialize
-      @large_dmesg_timestamps = []
-      @small_dmesg_timestamps = []
-    end
-
-    # dmesg "[ 0.000000]\n[ 1.000000]\n[ 1.000000]\n[ 2.000000]\n
-    #        [ 0.000000]\n[ 0.100000]\n[ 0.200000]" is abnormal
-    # dmesg "[ 0.000000]\n[ 1.000000]\n[ 1.000000]\n[ 2.000000]\n[ 1.000000]\n
-    #        [ 0.100000]\n[ 0.200000]\n[ 0.300000]" is abnormal
-    # dmesg "[ 0.000000]\n[ 1.000000]\n[ 0.000000]\n[ 2.000000]\n[ 1.000000]\n
-    #        [ 0.100000]\n[ 0.200000]\n[ 0.300000]" is normal
-    def detected?(line)
-      dmesg_timestamp = DmesgTimestamp.new(line)
-      if dmesg_timestamp.valid?
-        if @large_dmesg_timestamps.size < 3 || @large_dmesg_timestamps.any? { |large_dmesg_timestamp| large_dmesg_timestamp <= dmesg_timestamp }
-          @large_dmesg_timestamps.push(dmesg_timestamp)
-          @large_dmesg_timestamps = @large_dmesg_timestamps.drop(1) if @large_dmesg_timestamps.count > 3
-
-          @small_dmesg_timestamps.clear
-        else
-          @small_dmesg_timestamps.push(dmesg_timestamp)
-        end
-      end
-
-      @small_dmesg_timestamps.count >= 3
-    end
-  end
-end
-
 def fixup_dmesg(line)
   line.chomp!
 
@@ -95,10 +27,11 @@ def fixup_dmesg(line)
   line.sub!(/\.(isra|constprop|part)\.[0-9]+\+0x/, '+0x')
 
   # break up mixed messages
-  if line =~ /^<[0-9]>|^(kern  |user  |daemon):......: /
+  case line
+  when /^<[0-9]>|^(kern  |user  |daemon):......: /
     line = line
-  elsif line =~ /(.+)(\[ *[0-9]{1,6}\.[0-9]{6}\] .*)/
-    line = $1 + "\n" + $2
+  when /(.+)(\[ *[0-9]{1,6}\.[0-9]{6}\] .*)/
+    line = "#{$1}\n#{$2}"
   end
 
   line
@@ -172,7 +105,7 @@ def grep_crash_head(dmesg_file)
     break if line =~ CALLTRACE_IGNORE_PATTERN
     break unless line =~ />\] ([a-zA-Z0-9_.]+)\+0x[0-9a-fx\/]+/
 
-    oops_map['calltrace:' + $1] ||= line
+    oops_map["calltrace:#{$1}"] ||= line
   end
 
   raw_oops.each_line do |line|
@@ -226,6 +159,7 @@ def grep_printk_errors(kmsg_file, kmsg)
       sed "s/#[0-5] 0x[0-9a-z]\\{12\\} in //g" | awk '{print $1}' | tr '\n' '/' | tr '|' '\n' | sed 's|/$||'`
   else
     return '' unless File.exist?("#{KTEST_USER_GENERATED_DIR}/printk-error-messages")
+
     # the dmesg file is from serial console
     oops = `#{grep} -a -F -f #{KTEST_USER_GENERATED_DIR}/printk-error-messages #{kmsg_file} |
       grep -a -v -E -f #{LKP_SRC_ETC}/oops-pattern |
@@ -253,7 +187,7 @@ def common_error_id(line)
   line.gsub!(/^\ /, '')
   line.gsub!(/\  _/, '_')
   line.tr!(' ', '_')
-  line.gsub!(/[-_.,;:#!\[\(]+$/, '')
+  line.gsub!(/[-_.,;:#!\[(]+$/, '')
   line
 end
 
@@ -274,7 +208,7 @@ def oops_to_bisect_pattern(line)
     when /([a-zA-Z0-9_]+\+0x)/, /([a-zA-Z0-9_]+=)/
       patterns << $1
       break
-    when /^([a-zA-Z\/\._-]*):[0-9]/
+    when /^([a-zA-Z\/._-]*):[0-9]/
       patterns << "#{$1}:.*"
     when /[^a-zA-Z\/:.()!_-]/
       patterns << '.*' if patterns[-1] != '.*'
@@ -323,6 +257,8 @@ def analyze_error_id(line)
        /([A-Z]+[ a-zA-Z]*): [a-f0-9]{4} \[#[0-9]+\] /,
        # [  406.307645] BUG: KASAN: slab-out-of-bounds in kfd_create_crat_image_virtual+0x129d/0x12fd
        /(BUG: KASAN: [a-z\-_ ]+ in [a-z_]+)\+/,
+       # [   50.574901] BUG: KFENCE: out-of-bounds read in test_out_of_bounds_read+0x182/0x328
+       /(BUG: KFENCE: [a-z\-_ ]+ in [a-z_]+)\+/,
        /(cpu clock throttled)/
     line = $1
     bug_to_bisect = $1
@@ -331,16 +267,16 @@ def analyze_error_id(line)
     line = $1 + $2
     bug_to_bisect = $2
   when /WARNING:.* at .* ([a-zA-Z.0-9_]+\+0x)/
-    bug_to_bisect = 'WARNING:.* at .* ' + $1.sub(/\.(isra|constprop|part)\.[0-9]+\+0x/, '')
+    bug_to_bisect = "WARNING:.* at .* #{$1.sub(/\.(isra|constprop|part)\.[0-9]+\+0x/, '')}"
     line =~ /(at .*)/
-    line = 'WARNING: ' + $1
+    line = "WARNING: #{$1}"
   when /(Kernel panic - not syncing: No working init found.)  Try passing init= option to kernel. /,
        /(Kernel panic - not syncing: No init found.)  Try passing init= option to kernel. /
     line = $1
     bug_to_bisect = line
   when /(BUG: key )[0-9a-f]+ (not in .data)/
     line = $1 + $2
-    bug_to_bisect = $1 + '.* ' + $2
+    bug_to_bisect = "#{$1}.* #{$2}"
   when /(UBSAN: .+)/
     # UBSAN: Undefined behaviour in ../include/linux/bitops.h:110:33
     # UBSAN: shift-out-of-bounds in drivers/of/unittest.c:1893:36
@@ -352,10 +288,10 @@ def analyze_error_id(line)
   # printk(KERN_ERR "BUG: Dentry %p{i=%lx,n=%pd} still in use (%d) [unmount of %s %s]\n"
   when /(BUG: Dentry ).* (still in use) .* \[unmount of /
     line = $1 + $2
-    bug_to_bisect = $1 + '.* ' + $2
+    bug_to_bisect = "#{$1}.* #{$2}"
   when /^backtrace:([a-zA-Z0-9_]+)/,
        /^calltrace:([a-zA-Z0-9_]+)/
-    bug_to_bisect = $1 + '+0x'
+    bug_to_bisect = "#{$1}+0x"
   when /Corrupted low memory at/
     # [   61.268659] Corrupted low memory at ffff880000007b08 (7b08 phys) = 27200c000000000
     bug_to_bisect = oops_to_bisect_pattern line
@@ -384,7 +320,7 @@ def analyze_error_id(line)
     # [   16.160017 ] INFO: Slab 0x(____ptrval____) objects=23 used=23 fp=0x          (null) flags=0x10201
     # [   12.344185 ] INFO: Slab 0x(____ptrval____) objects=22 used=11 fp=0x(____ptrval____) flags=0x10201
     bug_to_bisect = oops_to_bisect_pattern line
-    line = $1 + '(#) ' + $2
+    line = "#{$1}(#) #{$2}"
   when /^[0-9a-z]+>\] (.+)/
     # [   13.708945 ] [<0000000013155f90>] usb_hcd_irq
     line = $1
@@ -532,4 +468,20 @@ def get_crash_calltraces(dmesg_file)
   end
 
   calltraces
+end
+
+def put_dmesg_stamps(error_stamps)
+  puts
+  error_stamps.each do |error_id, timestamp|
+    puts "timestamp:#{error_id}: #{timestamp}"
+  end
+end
+
+# when lkdtm is complete run, ignore dmesg
+def ignore_lkdtm_dmesg?(result_root)
+  last_state = "#{result_root}/last_state"
+  return false unless last_state =~ /\/kernel-selftests\/lkdtm/
+  return true unless File.exist?(last_state)
+
+  File.foreach(last_state).grep(/^is_incomplete_run: 1/).empty?
 end

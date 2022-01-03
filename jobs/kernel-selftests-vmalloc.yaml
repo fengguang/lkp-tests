@@ -1,0 +1,26 @@
+suite: kernel-selftests
+testcase: kernel-selftests
+category: benchmark
+
+kconfig: x86_64-rhel-8.3-kselftests
+
+kernel-selftests:
+  group:
+  - vm
+  test:
+  - vmalloc-performance
+
+---
+# vmalloc stress test, nr_threads=1 and iterations=1 used 30-40s
+nr_threads:
+- 1
+- 4
+iterations:
+- 1
+- 5
+
+kernel-selftests:
+  group:
+  - vm
+  test:
+  - vmalloc-stress

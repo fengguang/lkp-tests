@@ -11,4 +11,4 @@ rescue StandardError
   exit
 end
 
-puts job['testcase'] + '/' + job.path_params
+puts "#{job['testcase']}/#{job.path_params}"

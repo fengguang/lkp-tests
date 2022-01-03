@@ -41,7 +41,7 @@ end
 def literal_double_braces(yaml)
   yaml.gsub(/^([^\n]*?[:-]\s+)({{.*?}})/m) do |_match|
     indent = ' ' * ($1.size + 1)
-    $1 + "|\n" + $2.gsub(/^/, indent)
+    "#{$1}|\n#{$2.gsub(/^/, indent)}"
   end
 end
 

@@ -7,11 +7,22 @@ blktests:
   test:
   - loop-group-00
   - loop-group-01
+  - loop-group-02
+  - loop-group-03
   - nbd-group-00
   - nbd-group-01
   - zbd-group-00
   - zbd-group-01
+  - zbd-group-02
+  - zbd-group-03
   # - nvmeof-mp-group-00 # incompatible with CONFIG_NVME_MULTIPATH
   # - nvmeof-mp-group-01 # incompatible with CONFIG_NVME_MULTIPATH
-  - srp-group-00
-  - srp-group-01
+  # srp testcase need srp target driver and multipath, skip.
+  # - srp-group-00
+  # - srp-group-01
+  # - srp-group-02
+  # - srp-group-03
+  # - srp-group-04
+  # - srp-group-05
+  # - srp-group-06
+  # - srp-group-07

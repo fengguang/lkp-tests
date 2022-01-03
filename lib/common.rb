@@ -136,7 +136,7 @@ end
 ## Pathname
 
 def ensure_dir(dir)
-  dir[-1] == '/' ? dir : dir + '/'
+  dir[-1] == '/' ? dir : "#{dir}/"
 end
 
 def split_path(path)
@@ -229,10 +229,10 @@ def zopen(fn, mode = 'r', &blk)
   fn.sub!(/(\.xz|\.gz)$/, '')
   if File.exist?(fn)
     File.open(fn, mode, &blk)
-  elsif File.exist?(fn + '.xz')
-    IO.popen("xzcat #{fn + '.xz'}", mode, &blk)
-  elsif File.exist?(fn + '.gz')
-    IO.popen("zcat #{fn + '.gz'}", mode, &blk)
+  elsif File.exist?("#{fn}.xz")
+    IO.popen("xzcat #{"#{fn}.xz"}", mode, &blk)
+  elsif File.exist?("#{fn}.gz")
+    IO.popen("zcat #{"#{fn}.gz"}", mode, &blk)
   else
     raise "File doesn't exist: #{fn}"
   end
@@ -248,13 +248,13 @@ def copy_and_decompress(src_fullpath, dst)
 
   if File.exist?(src_fullpath)
     %x(cp #{src_file} #{dst})
-  elsif File.exist?(src_fullpath + '.gz')
+  elsif File.exist?("#{src_fullpath}.gz")
     src_fullpath += '.gz'
     %x(gzip -cd #{src_fullpath} > #{dst})
-  elsif File.exist?(src_fullpath + '.bz2')
+  elsif File.exist?("#{src_fullpath}.bz2")
     src_fullpath += '.bz2'
     %x(bzip2 -cd #{src_fullpath} > #{dst})
-  elsif File.exist?(src_fullpath + '.xz')
+  elsif File.exist?("#{src_fullpath}.xz")
     src_fullpath += '.xz'
     %x(xz -cd #{src_fullpath} > #{dst})
   else

@@ -1,0 +1,18 @@
+# selftests: net/mptcp: simult_flows.sh
+# balanced bwidth                                     4593 max 5005 [ OK ]
+# balanced bwidth - reverse direction                 4594 max 5005 [ OK ]
+# balanced bwidth with unbalanced delay               4584 max 5005 [ OK ]
+# balanced bwidth with unbalanced delay - reverse direction  4592 max 5005 [ OK ]
+# unbalanced bwidth                                   2997 max 3245 [ OK ]
+# unbalanced bwidth - reverse direction               2937 max 3245 [ OK ]
+# unbalanced bwidth with unbalanced delay             3025 max 3245 [ OK ]
+# unbalanced bwidth with unbalanced delay - reverse direction  2940 max 3245 [ OK ]
+# unbalanced bwidth with opposed, unbalanced delay    2982 max 3245 [ OK ]
+# unbalanced bwidth with opposed, unbalanced delay - reverse direction  2939 max 3245 [ OK ]
+ok 5 selftests: net/mptcp: simult_flows.sh
+# selftests: net/mptcp: mptcp_sockopt.sh
+# Created /tmp/tmp.9qt6bFeskX (size 1 KB) containing data sent by client
+# Created /tmp/tmp.H0lceZAIiq (size 1 KB) containing data sent by server
+# PASS: all packets had packet mark set
+ok 6 selftests: net/mptcp: mptcp_sockopt.sh
+make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-8.3-kselftests-8bb7eca972ad531c9b149c0a51ab43a417385813/tools/testing/selftests/net/mptcp'

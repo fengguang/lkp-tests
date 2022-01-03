@@ -1,8 +1,25 @@
+initrds+:
+- linux_headers
 need_kconfig:
+% if ___.test == "net_stress.ipsec_dccp"
+- IPV6_VTI: m
+% elsif ___.test == "uevent"
+- INPUT_UINPUT: y
+- INPUT_MISC: y
+% elsif ___.test == "kernel_misc"
+- ZRAM: m
+% elsif ___.test == "net.tcp_cmds"
+- DUMMY: m
+- VETH: m
+- TUN: m
+% elsif ___.test == "tracing"
+- PERF_EVENTS: y
+% elsif ___.test == "ima"
+- IMA_WRITE_POLICY: y
+% end
 - BLK_DEV_LOOP
 - CAN: m
 - CAN_RAW: m
 - CAN_VCAN: m
-- IPV6_VTI: m
 - MINIX_FS: m
 - CHECKPOINT_RESTORE: y

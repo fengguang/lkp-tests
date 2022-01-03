@@ -1,7 +1,11 @@
-ar: creating.*
+.*ar: creating.*
 ar: `u' modifier ignored since `D' is the default \(see `U'\)
 test_.*
 --- pass:.*
 .*has modification time.*
 .*Clock skew detected.  Your build may be incomplete.
 tar:.*: time stamp .* in the future
+creating libmap_btree.a
+.*warning[s]* generated.*
+pmem2_deep_flush_write.*
+pmem2_device_dax_.*

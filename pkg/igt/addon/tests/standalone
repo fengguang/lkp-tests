@@ -1,0 +1,10 @@
+# specify test that should run alone
+gem_exec_reloc
+# need mem > 30G
+gem_mmap_offset
+# need mem > 25G
+gem_ctx_create
+# gem_shrink subtest hang timeout on lkp-hsw-d01
+gem_shrink
+# need mem > 15G
+gem_ctx_exec

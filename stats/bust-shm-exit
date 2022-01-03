@@ -2,7 +2,7 @@
 
 stats_name = 'fail: 1'
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   case line
   when /^bust_shm_exit test done/
     stats_name = 'pass: 1'

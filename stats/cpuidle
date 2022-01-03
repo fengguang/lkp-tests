@@ -8,12 +8,12 @@ samples = {}
 
 def show_samples(samples)
   samples.each do |k, v|
-    puts k + ': ' + v.sum.to_s
+    puts "#{k}: #{v.sum}"
   end
   samples.clear
 end
 
-STDIN.each_line do |line|
+$stdin.each_line do |line|
   case line
   when /^time: /
     show_samples samples

@@ -9,17 +9,19 @@ nvml:
 group:
   - bttdevice
   - compat
-  - daxio
+  - ctl
+  #  - daxio # donot have /dev/dax* device
   - ex
   - libpmempool
   - log
   - magic
+  - mmap
   - obj
   - out
   - pmem
-  - pmem2
   - pmemobjcli
   - pmemspoil
+  - pmreorder
   - remote
   - rpmem
   - rpmemd
@@ -33,13 +35,12 @@ test: none
 group:
   - arch
   - checksum
+  - getopt
   - obj
   - out
   - pmem
-  - pmem2
   - rpmem
   - rpmemd
-  - scope
   - traces
   - util
 

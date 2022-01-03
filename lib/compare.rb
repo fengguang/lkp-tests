@@ -45,8 +45,7 @@ class AxesGrouper
       map[as] ||= AxesGroup.new self, as
       map[as].add_axes_datum d
     end
-    groups = map.values
-    groups
+    map.values
   end
 
   def global_common_axes
@@ -168,8 +167,8 @@ module Compare
         elsif File.exist?(_rt.path)
           # class NMResultRoot
           mrts << _rt
-        else
-          log_warn "#{_rt.path} not exist" if ENV['LKP_VERBOSE']
+        elsif ENV['LKP_VERBOSE']
+          log_warn "#{_rt.path} not exist"
         end
       end
       return [] if mrts.empty?
@@ -379,7 +378,7 @@ module Compare
         'more' => @comparer.more_stats,
         'perf-profile' => @comparer.perf_profile_threshold
       }
-      options['force_' + @allowed_stat] = true unless @allowed_stat.empty?
+      options["force_#{@allowed_stat}"] = true unless @allowed_stat.empty?
 
       ms.drop(1).each do |m|
         expand_matrix(m, 'stat' => @stats_field)
@@ -900,9 +899,9 @@ module Compare
       printf "%#{width}s ", compare_axes.values.join('/')[0...width]
     end
     puts
-    printf '-' * first_width + ' '
+    printf "#{'-' * first_width} "
     compare_axeses.drop(1).size.times do
-      printf '-' * width + ' '
+      printf "#{'-' * width} "
     end
     puts
   end
@@ -915,13 +914,13 @@ module Compare
   def self.show_perf_header(n = 1)
     # (ABS_WIDTH + ERR_WIDTH)   (2 + REL_WIDTH + ABS_WIDTH + ERR_WIDTH)
     #      |<-------------->|   |<--------------------------->|
-    printf '         %%stddev' + '     %%change         %%stddev' * n + "\n"
-    printf '             \  ' + '        |                \  ' * n + "\n"
+    printf "         %%stddev#{'     %%change         %%stddev' * n}\n"
+    printf "             \\  #{'        |                \  ' * n}\n"
   end
 
   def self.show_failure_header(n = 1)
-    printf '       fail:runs' + '  %%reproduction    fail:runs' * n + "\n"
-    printf '           |    ' + '         |             |    ' * n + "\n"
+    printf "       fail:runs#{'  %%reproduction    fail:runs' * n}\n"
+    printf "           |    #{'         |             |    ' * n}\n"
   end
 
   def self.show_group(group, stat_enum)

@@ -4,12 +4,12 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAM
 
 require "#{LKP_SRC}/lib/log"
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   case line.chomp!
   when /^(.*): +(\d+) kB$/,
        /^(.*): +(\d+) KiB$/,
        /^(.*): +(\d+)$/
-    puts $1 + ': ' + $2
+    puts "#{$1}: #{$2}"
   else
     log_error "malformed meminfo line: #{line}"
   end

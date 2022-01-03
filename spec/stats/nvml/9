@@ -1,0 +1,179 @@
+2021-10-20 10:07:32 ./RUNTESTS -f non-pmem pmem_deep_persist
+pmem_deep_persist/TEST1: SETUP (check/non-pmem/static-debug)
+pmem_deep_persist/TEST1: PASS
+pmem_deep_persist/TEST1: SETUP (check/non-pmem/static-nondebug)
+pmem_deep_persist/TEST1: PASS
+pmem_deep_persist/TEST2: SKIP DEVICE_DAX_PATH does not specify enough dax devices (min: 1)
+pmem_deep_persist/TEST2: SKIP DEVICE_DAX_PATH does not specify enough dax devices (min: 1)
+pmem_deep_persist/TEST2: SKIP DEVICE_DAX_PATH does not specify enough dax devices (min: 1)
+pmem_deep_persist/TEST2: SKIP DEVICE_DAX_PATH does not specify enough dax devices (min: 1)
+pmem_deep_persist/TEST3: SKIP DEVICE_DAX_PATH does not specify enough dax devices (min: 1)
+pmem_deep_persist/TEST3: SKIP DEVICE_DAX_PATH does not specify enough dax devices (min: 1)
+pmem_deep_persist/TEST3: SKIP DEVICE_DAX_PATH does not specify enough dax devices (min: 1)
+pmem_deep_persist/TEST3: SKIP DEVICE_DAX_PATH does not specify enough dax devices (min: 1)
+pmem_deep_persist/TEST4: SETUP (check/non-pmem/debug)
+pmem_deep_persist/TEST4: PASS
+pmem_deep_persist/TEST4: SETUP (check/non-pmem/nondebug)
+pmem_deep_persist/TEST4: PASS
+./RUNTESTS -f pmem obj_rpmem_heap_state
+obj_rpmem_heap_state/TEST2: SETUP (check/pmem/nondebug/sockets/APM)
+error: error: Unable to retrieve badblock info
+Unable to retrieve badblock info
+error: Unable to retrieve badblock info
+error: Unable to retrieve badblock info
+obj_rpmem_heap_state/TEST2: PASS
+obj_rpmem_heap_state/TEST3: SKIP: Only supported on ppc64
+obj_rpmem_heap_state/TEST3: SKIP: Only supported on ppc64
+obj_rpmem_heap_state/TEST3: SKIP: Only supported on ppc64
+obj_rpmem_heap_state/TEST3: SKIP: Only supported on ppc64
+obj_rpmem_heap_state/TEST4: SKIP: Only supported on ppc64
+obj_rpmem_heap_state/TEST4: SKIP: Only supported on ppc64
+obj_rpmem_heap_state/TEST4: SKIP: Only supported on ppc64
+obj_rpmem_heap_state/TEST4: SKIP: Only supported on ppc64
+obj_rpmem_heap_state/TEST5: SKIP: Only supported on ppc64
+obj_rpmem_heap_state/TEST5: SKIP: Only supported on ppc64
+obj_rpmem_heap_state/TEST5: SKIP: Only supported on ppc64
+obj_rpmem_heap_state/TEST5: SKIP: Only supported on ppc64
+2021-10-20 01:34:12 ./RUNTESTS -f pmem obj_zones
+obj_zones/TEST0: SETUP (check/pmem/static-nondebug)
+obj_zones/TEST0: PASS
+obj_zones/TEST1: all valgrind tests disabled
+obj_zones/TEST1: all valgrind tests disabled
+obj_zones/TEST1: SETUP (check/pmem/nondebug)
+obj_zones/TEST1: SKIP: not enough free space (64G required)
+obj_zones/TEST1: all valgrind tests disabled
+obj_zones/TEST1: all valgrind tests disabled
+2021-10-14 07:00:59 ./RUNTESTS -f pmem obj_rpmem_basic_integration
+obj_rpmem_basic_integration/TEST8: SETUP (medium/pmem/nondebug/sockets/APM)
+bash: line 0: cd: /tmp/node0/test_obj_rpmem_basic_integration: No such file or directory
+obj_rpmem_basic_integration/TEST8: SKIP: node 0: 'fi_info' command required
+obj_rpmem_basic_integration/TEST9: SKIP: required providers (verbs) are missing
+obj_rpmem_basic_integration/TEST10: SKIP: required providers (verbs) are missing
+obj_rpmem_basic_integration/TEST11: SKIP: required providers (verbs) are missing
+obj_rpmem_basic_integration/TEST12: SKIP NODE 0: NODE_0_DEVICE_DAX_PATH does not specify enough dax devices (min: 1)
+obj_rpmem_basic_integration/TEST12: SKIP NODE 0: NODE_0_DEVICE_DAX_PATH does not specify enough dax devices (min: 1)
+obj_rpmem_basic_integration/TEST12: SKIP NODE 0: NODE_0_DEVICE_DAX_PATH does not specify enough dax devices (min: 1)
+obj_rpmem_basic_integration/TEST12: SKIP NODE 0: NODE_0_DEVICE_DAX_PATH does not specify enough dax devices (min: 1)
+obj_rpmem_basic_integration/TEST13: SKIP: required providers (verbs) are missing
+obj_rpmem_basic_integration/TEST14: SKIP: required providers (verbs) are missing
+obj_rpmem_basic_integration/TEST15: SKIP: required providers (verbs) are missing
+obj_rpmem_basic_integration/TEST16: SKIP: required providers (verbs) are missing
+obj_rpmem_basic_integration/TEST17: SKIP: required providers (verbs) are missing
+obj_rpmem_basic_integration/TEST18: SKIP: required providers (verbs) are missing
+obj_rpmem_basic_integration/TEST19: SETUP (medium/pmem/debug/sockets/GPSPM)
+bash: line 0: cd: /tmp/node0/test_obj_rpmem_basic_integration: No such file or directory
+obj_rpmem_basic_integration/TEST19: SKIP: node 0: 'fi_info' command required
+2021-10-20 05:17:20 ./RUNTESTS -f non-pmem pmempool_check
+pmempool_check/TEST28: SETUP (check/non-pmem/debug)
+pmempool_check/TEST28: SKIP: missing permissions to read usc
+pmempool_check/TEST28: SETUP (check/non-pmem/nondebug)
+pmempool_check/TEST28: SKIP: missing permissions to read usc
+pmempool_check/TEST28: SETUP (check/non-pmem/static-debug)
+pmempool_check/TEST28: SKIP: missing permissions to read usc
+pmempool_check/TEST28: SETUP (check/non-pmem/static-nondebug)
+pmempool_check/TEST28: SKIP: missing permissions to read usc
+pmempool_check/TEST29: SETUP (check/non-pmem/debug)
+pmempool_check/TEST29: SKIP: missing permissions to read usc
+pmempool_check/TEST29: SETUP (check/non-pmem/nondebug)
+pmempool_check/TEST29: SKIP: missing permissions to read usc
+pmempool_check/TEST29: SETUP (check/non-pmem/static-debug)
+pmempool_check/TEST29: SKIP: missing permissions to read usc
+pmempool_check/TEST29: SETUP (check/non-pmem/static-nondebug)
+pmempool_check/TEST29: SKIP: missing permissions to read usc
+pmempool_check/TEST30: SETUP (check/non-pmem/debug)
+pmempool_check/TEST30: SKIP: missing permissions to read usc
+pmempool_check/TEST30: SETUP (check/non-pmem/nondebug)
+pmempool_check/TEST30: SKIP: missing permissions to read usc
+pmempool_check/TEST30: SETUP (check/non-pmem/static-debug)
+pmempool_check/TEST30: SKIP: missing permissions to read usc
+pmempool_check/TEST30: SETUP (check/non-pmem/static-nondebug)
+pmempool_check/TEST30: SKIP: missing permissions to read usc
+pmempool_check/TEST31: SKIP: tests using 'sudo' are not enabled in testconfig.sh (ENABLE_SUDO_TESTS)
+pmempool_check/TEST31: SKIP: tests using 'sudo' are not enabled in testconfig.sh (ENABLE_SUDO_TESTS)
+pmempool_check/TEST32: SKIP: tests using 'sudo' are not enabled in testconfig.sh (ENABLE_SUDO_TESTS)
+pmempool_check/TEST32: SKIP: tests using 'sudo' are not enabled in testconfig.sh (ENABLE_SUDO_TESTS)
+pmempool_check/TEST33: SKIP compiled with support for shutdown state
+pmempool_check/TEST33: SKIP compiled with support for shutdown state
+pmempool_check/TEST33: SKIP compiled with support for shutdown state
+pmempool_check/TEST33: SKIP compiled with support for shutdown state
+pmempool_check/TEST34: SKIP compiled with support for shutdown state
+pmempool_check/TEST34: SKIP compiled with support for shutdown state
+pmempool_check/TEST34: SKIP compiled with support for shutdown state
+pmempool_check/TEST34: SKIP compiled with support for shutdown state
+pmempool_check/TEST35: SKIP compiled with support for shutdown state
+pmempool_check/TEST35: SKIP compiled with support for shutdown state
+pmempool_check/TEST35: SKIP compiled with support for shutdown state
+pmempool_check/TEST35: SKIP compiled with support for shutdown state
+2021-10-20 05:17:39 ./RUNTESTS -f non-pmem pmempool_feature
+pmempool_feature/TEST12: all valgrind tests disabled
+pmempool_feature/TEST12: SETUP (check/non-pmem/debug)
+pmempool_feature/TEST12: SKIP bad block checking feature enabled by default
+pmempool_feature/TEST12: all valgrind tests disabled
+pmempool_feature/TEST12: SETUP (check/non-pmem/nondebug)
+pmempool_feature/TEST12: SKIP bad block checking feature enabled by default
+pmempool_feature/TEST12: all valgrind tests disabled
+pmempool_feature/TEST12: SETUP (check/non-pmem/static-debug)
+pmempool_feature/TEST12: SKIP bad block checking feature enabled by default
+pmempool_feature/TEST12: all valgrind tests disabled
+pmempool_feature/TEST12: SETUP (check/non-pmem/static-nondebug)
+pmempool_feature/TEST12: SKIP bad block checking feature enabled by default
+pmempool_feature/TEST14: SETUP (check/non-pmem/debug)
+pmempool_feature/TEST14: PASS
+2021-10-20 01:33:26 ./RUNTESTS -f non-pmem util_file_create
+util_file_create/TEST0: SETUP (check/non-pmem/static-debug)
+util_file_create/TEST0: PASS
+util_file_create/TEST0: SETUP (check/non-pmem/static-nondebug)
+util_file_create/TEST0: PASS
+util_file_create/TEST1: SKIP required: run without superuser rights
+util_file_create/TEST1: SKIP required: run without superuser rights
+util_file_create/TEST1: SKIP required: run without superuser rights
+util_file_create/TEST1: SKIP required: run without superuser rights
+util_file_create/TEST2: SETUP (check/non-pmem/debug)
+util_file_create/TEST2: SKIP: filesystem does not support fallocate
+util_file_create/TEST2: SETUP (check/non-pmem/nondebug)
+util_file_create/TEST2: SKIP: filesystem does not support fallocate
+util_file_create/TEST2: SETUP (check/non-pmem/static-debug)
+util_file_create/TEST2: SKIP: filesystem does not support fallocate
+util_file_create/TEST2: SETUP (check/non-pmem/static-nondebug)
+util_file_create/TEST2: SKIP: filesystem does not support fallocate
+2021-10-22 06:20:11 ./RUNTESTS -f non-pmem ex_librpmem_fibonacci
+ex_librpmem_fibonacci/TEST2: SKIP test-type check (long required)
+2021-10-14 03:17:59 ./RUNTESTS -f pmem ex_libpmemobj
+ex_libpmemobj/TEST14: SETUP (check/pmem/debug)
+ex_libpmemobj/TEST14: PASS
+ex_libpmemobj/TEST14: SETUP (check/pmem/nondebug)
+ex_libpmemobj/TEST14: PASS
+ex_libpmemobj/TEST15: SKIP no terminal
+ex_libpmemobj/TEST15: SKIP no terminal
+ex_libpmemobj/TEST16: SKIP no terminal
+ex_libpmemobj/TEST16: SKIP no terminal
+ex_libpmemobj/TEST17: SETUP (check/pmem/debug)
+ex_libpmemobj/TEST17: PASS
+ex_libpmemobj/TEST17: SETUP (check/pmem/nondebug)
+ex_libpmemobj/TEST17: PASS
+./RUNTESTS
+ex_linkedlist/TEST0: SETUP (check/pmem/debug)
+ex_linkedlist/TEST0: PASS                       [00.612 s]
+ex_linkedlist/TEST0: SETUP (check/pmem/nondebug)
+ex_linkedlist/TEST0: PASS                       [00.445 s]
+ex_linkedlist/TEST0: SETUP (check/non-pmem/debug)
+ex_linkedlist/TEST0: PASS                       [00.461 s]
+ex_linkedlist/TEST0: SETUP (check/non-pmem/nondebug)
+ex_linkedlist/TEST0: PASS                       [00.330 s]
+ex_linkedlist/TEST1: SKIP Valgrind with pmemcheck required
+ex_linkedlist/TEST1: SKIP Valgrind with pmemcheck required
+ex_linkedlist/TEST1: SKIP Valgrind with pmemcheck required
+ex_linkedlist/TEST1: SKIP Valgrind with pmemcheck required
+ex_linkedlist/TEST1: SKIP Valgrind with pmemcheck required
+ex_linkedlist/TEST1: SKIP Valgrind with pmemcheck required
+ex_linkedlist/TEST1: SKIP Valgrind with pmemcheck required
+ex_linkedlist/TEST1: SKIP Valgrind with pmemcheck required
+ex_pmreorder/TEST0: SKIP Valgrind with pmemcheck required
+ex_pmreorder/TEST0: SKIP Valgrind with pmemcheck required
+ex_pmreorder/TEST1: SKIP Valgrind with pmemcheck required
+ex_pmreorder/TEST1: SKIP Valgrind with pmemcheck required
+getopt/TEST0: SETUP (check/none/debug)
+getopt/TEST0: PASS                      [00.278 s]
+getopt/TEST0: SETUP (check/none/nondebug)
+getopt/TEST0: PASS                      [00.319 s]
+

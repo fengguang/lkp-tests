@@ -26,7 +26,7 @@ def add_one_sample(kbps, throughput, median, ret)
   ret['warned'] = true
 end
 
-while (line = STDIN.gets)
+while (line = $stdin.gets)
   case line
   when /^\.*(\d+) bytes \/ (\d+) usecs = (\d+) KB.s/
     bytes += $1.to_i
@@ -39,7 +39,7 @@ while (line = STDIN.gets)
     kbps << ($1.to_i >> 10) / ($2.to_f - $3.to_f)
   when /\d+ \* \d+ bytes migrated, \d+ usecs, (\d+) MB.s/
     bytes += $1.to_i
-    puts 'migrate_mbps: ' + $1
+    puts "migrate_mbps: #{$1}"
   when /(\d+) bytes remapped, (\d+) usecs, (\d+) MB.s/
     bytes += $1.to_i
     kbps << $1.to_i / ($2.to_i >> 10)

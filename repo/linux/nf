@@ -4,3 +4,5 @@ mail_cc:
 - coreteam@netfilter.org
 owner: Pablo Neira Ayuso <pablo@netfilter.org>
 integration_testing_branches: master
+patch_based_on_branch:
+  '\[(.+ )?nf( .+)?\]': master
