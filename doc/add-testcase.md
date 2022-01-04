@@ -10,7 +10,7 @@ to measure various aspect of networking performance.
 
 We need to learn three things in this step:
 
-- ** how to run the test case **
+- **how to run the test case**
 
   For example, we need know what kind of options it takes, how many
   sub testcases it supports, should we setup a special environment to
@@ -19,14 +19,14 @@ We need to learn three things in this step:
   run it automatically.  This is a prepare step for writing the test
   script.
 
-- ** major options **
+- **major options**
 
   Usually a benchmark has many options. We may like to pick some of
   them as the job parameter so that we can try different value
   combination at job file to see how corresponding system reacts.
   This is a prepare step for writing the test script and job file.
 
-- ** output **
+- **output**
 
   All testcases output must be converted to a layout, which will be
   described in later sections. Hence we need to know what the output
@@ -281,14 +281,14 @@ gcc-4.9
 ```
 
 If on different distributions the dependency names are different, for
-example on Debian it is $pkgname but on the distribution $distro it is
-$adapted_pkg, then add the line to the file distro/adaptation/$distro:
+example on Debian it is `$pkgname` but on the distribution `$distro` it is
+`$adapted_pkg`, then add the line to the file distro/adaptation/$distro:
 
 ```
 $pkgname: $adapted_pkgname
 ```
 
-To install netperf with the PKGBUILD on desired distribution $distro, 
+To install netperf with the PKGBUILD on desired distribution `$distro`, 
 add the package name to the distro/adaptation-pkg/$distro:
 
 ```
@@ -308,26 +308,37 @@ netperf: $adapted_pkgname
 Give an example to explain how to add one testcase, take hwsim as example:
 
 1) add one PKGBUILD script and relevant dependency package config
+```
 	pkg/hwsim/PKGBUILD
 	distro/depends/hwsim
 	distro/depends/hwsim-dev
 
    add the package adaptation "hwsim:: " to the adaptation-pkg files:
 	distro/adaptation-pkg/$distribution
+```
 
 2) add one test script
+```
 	tests/hwsim
+```
 
 3) add one parse script
+```
 	stats/hwsim
+```
 
 4) add one job file
+```
 	jobs/hwsim.yaml
+```
 
 5) add hwsim to LinuxTestcasesTableSet
+```
 	lib/stats.rb
+```
 
 6) commands to debug the new test case
+```
 	cd lkp-tests
 	make install
 
@@ -349,10 +360,10 @@ Give an example to explain how to add one testcase, take hwsim as example:
 	lkp install -f lkp-tests/tests/hwsim
 
 	lkp run ./hwsim-hwsim-00.yaml
-
+```
 NOTE:
 
-The test case run time should be about 300s~600s.
+**The test case run time should be about 300s~600s.**
 
 
 # How to add rspec tests for a new testcase stats script
