@@ -69,7 +69,7 @@ set_port()
 	chmod 600 /root/.ssh/sshr/id_rsa
 	for i in $(seq 1 10)
 	do
-		if [ "$sshr_static_port" -ge 23900 ] && [ "$sshr_static_port" -le 23999 ];then
+		if [ -n "$sshr_static_port" ] && [ "$sshr_static_port" -ge 23900 ] && [ "$sshr_static_port" -le 23999 ];then
 			port="$sshr_static_port"
 		else
 			port=$(($(date +%s%N)%$sshr_port_len+$sshr_port_base))
