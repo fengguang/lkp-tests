@@ -30,12 +30,12 @@ options = OptionParser.new do |opts|
   opts.separator ''
   opts.separator 'options:'
 
-  opts.on("-s 'KEY: VALUE'", "--set 'KEY: VALUE'", 'add YAML hash to job') do |key_value|
+  opts.on("-s 'KEY: VALUE'", "--set 'KEY: VALUE'", 'add key-value to the hash of the submitted jobs') do |key_value|
     k, v = key_value.sub(' ', '').split(':', 2)
     opt_set_key_value[k] = v
   end
 
-  opts.on('-o DIR', '--output DIR', 'save job yaml to DIR/') do |dir|
+  opts.on('-o DIR', '--output DIR', 'save job yaml to DIR/, jobs are not submitted to the scheduler') do |dir|
     if File.file? dir
       puts "Please input directory for job save yaml after '-o'"
       exit 1
@@ -52,24 +52,24 @@ options = OptionParser.new do |opts|
     do_pack = false
   end
 
-  opts.on('-i include.yaml', '--include include.yaml', 'include other job yamls') do |yaml|
+  opts.on('-i include.yaml', '--include include.yaml', 'include other yamls') do |yaml|
     opt_include_yamls << yaml
   end
 
-  opts.on('-c', '--connect', 'auto connect to the host') do
+  opts.on('-c', '--connect', 'automatic ssh connection to the testbox') do
     actions << 'connect'
   end
 
-  opts.on('-r', '--result', 'mirror job result dir') do
+  opts.on('-r', '--result', 'mirror job result to local directory') do
     actions << 'mirror_result'
   end
 
-  opts.on('-n job_number', '--number job_number', 'number to submit job') do |number|
+  opts.on('-n job_number', '--number job_number', 'set the number of repeated submissions for each job, default 1') do |number|
     nr_run = number.to_i
     nr_run = 1 if nr_run < 1
   end
 
-  opts.on('-m', '--monitor', "monitor job status: use -m 'KEY: VALUE' to add rule") do
+  opts.on('-m', '--monitor', 'capture and display job execution logs in real time') do
     opt_monitor = true
     k, v = ARGV[0].sub(' ', '').split(':', 2) if ARGV[0]
     if (k && !k.empty?) && (v && !v.empty?)
@@ -78,7 +78,7 @@ options = OptionParser.new do |opts|
     end
   end
 
-  opts.on('--my-queue', 'add to my queue') do
+  opts.on('--my-queue', "submit jobs to the user's own queue") do
     opt_my_queue = true
   end
 
