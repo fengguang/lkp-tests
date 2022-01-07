@@ -35,13 +35,23 @@ def get_board(dev_info)
 end
 
 def get_cpu_info
-  cpu_string = %x(lscpu)
+  lscpu = JSON.parse(%x(lscpu -J))['lscpu']
   cpu_info = {}
-  cpu_string.each_line do |line|
-    next if line =~ /Vulnerability|cache|On-line|Stepping|BogoMIPS/
-
-    key_val = line.chomp.split(':')
-    cpu_info[key_val[0].gsub('(s)', '').gsub(' ', '_')] = key_val[1].gsub(/^\s{1,}/, '')
+  lscpu.each do |i|
+    k = i['field']
+    v = i['data']
+    next if k =~ /^On-line/
+    if k =~ /^Vulnerability/
+      next if v == 'Not affected'
+      k.sub!(' ', '.')
+    end
+    k.sub!('CPU op-mode(s)', 'op-modes')
+    k.sub!(/NUMA node(\d+) CPU\(s\)/, 'NUMA node\1 CPUs')
+    k.sub!(/(.*)\(s\)/, 'nr_\1')
+    k.gsub!(' ', '_')
+    k.chomp!(':')
+    k.downcase!
+    cpu_info[k] = v
   end
   info_to_num(cpu_info)
   return cpu_info
