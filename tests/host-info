@@ -28,12 +28,43 @@ get_cpu_info()
 	done
 }
 
-get_nr_disk()
+print_part()
+{
+	for i
+	do
+		echo "  - /dev/disk/by-id/$i"
+	done
+}
+
+get_rootfs_disk()
 {
 	nr_hdd_disks=$(lsblk -d -o name,ROTA | grep -v loop | awk '{print $2}' | grep 1 | wc -l)
 	nr_ssd_disks=$(lsblk -d -o name,ROTA | grep -v loop | awk '{print $2}' | grep 0 | wc -l)
-	[[ "$nr_hdd_disks" -ne 0 ]] && echo "nr_hdd_partitions: $nr_hdd_disks"
-	[[ "$nr_ssd_disks" -ne 0 ]] && echo "nr_ssd_partitions: $nr_ssd_disks"
+
+	# take rootfs_disk from hdd or ssd, hdd is preferentially used as rootfs_disk
+	if [[ "$nr_hdd_disks" -eq 0 ]]; then
+		rootfs_disk=${ssd_partitions%% *}
+		hdd_partitions=
+		if [[ "$nr_ssd_disks" -eq 1 ]]; then
+			ssd_partitions=
+		elif [[ "$nr_ssd_disks" -gt 1 ]]; then
+			echo "nr_ssd_partitions: $(( nr_ssd_disks - 1 ))"
+			ssd_partitions=${ssd_partitions#* }
+		fi
+	elif [[ "$nr_hdd_disks" -eq 1 ]]; then
+		rootfs_disk=$hdd_partitions
+		hdd_partitions=
+		[ "$nr_ssd_disks" -ne 0 ] && echo "nr_ssd_partitions: $nr_ssd_disks"
+	elif [[ "$nr_hdd_disks" -gt 1 ]]; then
+		echo "nr_hdd_partitions: $(( nr_hdd_disks - 1 ))"
+		rootfs_disk=${hdd_partitions%% *}
+		hdd_partitions=${hdd_partitions#* }
+		[ "$nr_ssd_disks" -ne 0 ] && echo "nr_ssd_partitions: $nr_ssd_disks"
+	fi
+
+	[ -n "$hdd_partitions" ] && echo "hdd_partitions:" && print_part $hdd_partitions
+	[ -n "$ssd_partitions" ] && echo "ssd_partitions:" && print_part $ssd_partitions
+	[ -n "$rootfs_disk" ]    && echo "rootfs_disk:"    && print_part $rootfs_disk
 }
 
 get_mac()
@@ -47,13 +78,22 @@ get_mac()
 
 get_part()
 {
+	local partitions=
+
 	for i
 	do
+		[[ "$i" =~ "^" ]] && continue
 		# ls -l /dev/disk/by-id/
 		info=$(ls -l /dev/disk/by-id/ | grep "/$i" | awk '{print $9}' | grep -e "^scsi-" -e "^ata-" -e "^nvme-" | sed 's/-part[0-9]//g')
 		partition=$(echo "$info" | uniq)
-		echo "  -" /dev/disk/by-id/$partition
+		if [ -n "$partitions" ]; then
+			partitions="$partitions $partition"
+		else
+			partitions="$partition"
+		fi
 	done
+
+	echo "$partitions"
  }
 
 get_partitions()
@@ -69,13 +109,11 @@ get_partitions()
 	ssd=$(lsblk -d -o name,ROTA |grep 0$ | awk '{print $1}')
 	hdd=$(lsblk -d -o name,ROTA |grep 1$ | awk '{print $1}')
 	if [ -n "$hdd" ]; then
-		echo "hdd_partitions:"	
-		get_part $hdd
+		hdd_partitions=$(get_part $hdd)
 	fi
 
 	if [ -n "$ssd" ]; then
-		echo "ssd_partitions:"
-		get_part $ssd
+		ssd_partitions=$(get_part $ssd)
 	fi
 }
 
@@ -108,8 +146,8 @@ get_ipmi_serial_number()
 main()
 {
 	get_memory
-	get_nr_disk
 	get_partitions
+	get_rootfs_disk
 	get_mac
 	get_cpu_info
 	get_ipmi_ip
