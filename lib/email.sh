@@ -185,6 +185,30 @@ Compass-CI
 " | base64)
 }
 
+host_info_content()
+{
+	email_content=$(echo "To: $recipient_email_to
+Subject: [NOTIFY Compass-CI] Add testbox hosts file to local lab git tree
+
+Dear $my_account,
+
+You can use the following command to add testbox hosts file to your local lab git tree:
+
+Steps one by one:
+Please login compass-ci cluster server machine
+
+	mkdir -p /c/lab-$lab/hosts
+	cp /srv$result_root/host-info /c/lab-$lab/hosts/$testbox
+	cd /c/lab-$lab
+	git add hosts
+	git commit -s -m \"hosts: add new machine\"
+	git push
+
+Regards
+Compass-CI
+" | base64)
+}
+
 send_email()
 {
 	local subject=$1

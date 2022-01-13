@@ -1,5 +1,6 @@
 #!/bin/bash
 . $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/email.sh
 
 get_memory()
 {
@@ -143,6 +144,14 @@ get_ipmi_serial_number()
 	[ -n "$serial_number" ] && echo "serial_number: $serial_number"
 }
 
+send_mail()
+{
+	[ "$is_send_mail" = "true" ] && {
+		recipient_email_to="$secrets_my_email"
+		send_email_encode host_info
+	}
+}
+
 main()
 {
 	get_memory
@@ -152,6 +161,8 @@ main()
 	get_cpu_info
 	get_ipmi_ip
 	get_ipmi_serial_number
+
+	send_mail
 }
 
 main
