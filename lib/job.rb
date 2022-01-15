@@ -331,7 +331,7 @@ class Job
     hash.each do |key, value|
       next unless key.is_a?(String)
 
-      if %w(os os_arch os_version arch os_mount).include?(key) && value.is_a?(Array)
+      if %w(testbox tbox_group os os_arch os_version arch os_mount).include?(key) && value.is_a?(Array)
         jobs_array = load_array_args(jobs_array, key, value)
       end
     end
