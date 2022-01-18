@@ -2,17 +2,25 @@
 
 add_repo()
 {
-	[[ -n "$custom_repo_name" && -n "$custom_repo_addr" ]] || return 0
+	[[ -n "$mount_repo_name" && -n "$mount_repo_addr" ]] || return 0
 
-	custom_repo_name=($custom_repo_name)
-	custom_repo_addr=($custom_repo_addr)
+	mount_repo_name=($mount_repo_name)
+	mount_repo_addr=($mount_repo_addr)
 
-	for i in "${!custom_repo_name[@]}"
+	for i in "${!mount_repo_name[@]}"
 	do
-		cat <<-EOF >> /etc/yum.repos.d/"${custom_repo_name[$i]}.repo"
-		[${custom_repo_name[$i]}]
-		name=${custom_repo_name[$i]}
-		baseurl=${custom_repo_addr[$i]}
+		repo_file_name=($(echo "$i" | tr '/' '-'))
+		cat <<-EOF >> /etc/yum.repos.d/"${repo_file_name}.repo"
+		[${repo_file_name}]
+		name=${repo_file_name}
+		baseurl=${mount_repo_addr[$i]}
+		enabled=1
+		gpgcheck=0
+		priority=100
+
+		[${repo_file_name}-source]
+		name=${repo_file_name}-source
+		baseurl=${mount_repo_addr[$i]%/*}/source
 		enabled=1
 		gpgcheck=0
 		priority=100

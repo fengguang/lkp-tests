@@ -1,9 +1,9 @@
 #!/bin/bash
 # repo_id
-# custom_repo_name
-# custom_repo_addr
+# mount_repo_name
+# mount_repo_addr
 # user can add known repo_id to query specific repo, also can add
-# custom_repo_name and custom_repo_addr to setup local repo, value
+# mount_repo_name and mount_repo_addr to setup local repo, value
 # can be an array
 
 . $LKP_SRC/lib/rpm.sh

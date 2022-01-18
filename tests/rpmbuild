@@ -5,11 +5,13 @@
 # upstream_branch
 # custom_repo_name
 # custom_repo_addr
+# mount_repo_name
+# mount_repo_addr
 # repo_addr
 # whether_email
 # compat_os
 # SRPMs jobs not use upstream_repo, Git jobs use all.
-# user can add custom_repo_name and custom_repo_addr to setup
+# user can add mount_repo_name and mount_repo_addr to setup
 # local repo, value can be an array
 
 . $LKP_SRC/lib/debug.sh
@@ -19,7 +21,9 @@
 
 : "${compat_os:=budding-openeuler}"
 
-dest_dir="/rpm/upload/${os}-${os_version}/${compat_os}"
+[ -n "$custom_repo_name" ] || die "custom_repo_name is empty"
+
+dest_dir="/rpm/upload/${os}-${os_version}/${custom_repo_name}"
 rpmdev_dir="/home/lkp/rpmbuild"
 
 declare -a reverse_depends
@@ -272,7 +276,7 @@ update_repo_mq()
 	handle_rpm_list
 
 	curl -sS -H 'Content-Type: Application/json' -XPOST "${LKP_SERVER}:10003/upload" \
-		-d "{\"upload_rpms\": ["${full_list}"]}"
+		-d "{\"upload_rpms\": ["${full_list}"], \"job_id\": \"${id}\"}"
 }
 
 find_reverse_depends()
