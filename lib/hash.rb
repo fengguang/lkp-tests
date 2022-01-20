@@ -166,3 +166,49 @@ def unescape_mongo_key(hash)
   end
   h
 end
+
+def format_print(input_hash, table_header)
+  # input:
+  #   input_hash:
+  #     [{"suite"=>"borrow", "id"=>"crystal.4044913"},
+  #      {"suite"=>"fio-basic", "id"=>"crystal.4045343"}]
+	#   table_header:
+  #     ["id", "suite"]
+  # output:
+  #       id                suite
+  #       crystal.4044913   borrow
+  #       crystal.4045343   fio-basic
+  if input_hash.empty?
+    puts "query input_hash is empty!"
+    return
+  end
+
+  # collect table header length
+  cell_len = []
+  table_header.each do |k|
+    cell_len << k.length
+  end
+
+  # collect table field'value length
+  input_hash.each do |result|
+    table_header.each_with_index do |field, i|
+      cell_len[i] = result[field].to_s.length if result[field].to_s.length > cell_len[i]
+    end
+  end
+
+  # print table header
+  line = ""
+  table_header.each_with_index do |field, i|
+    line += "#{field}" + " "*(cell_len[i] - field.length + 3)
+  end
+  puts line
+
+  # print table content
+  input_hash.each do |result|
+    line = ""
+    table_header.each_with_index do |field, i|
+      line += "#{result[field].to_s}" + " "*(cell_len[i] - result[field].to_s.length + 3)
+    end
+    puts line
+  end
+end
