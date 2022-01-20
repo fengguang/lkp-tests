@@ -4,7 +4,7 @@ PROJECT_DIR=$(dirname $SCRIPT_DIR)
 
 ruby -v >/dev/null 2>&1
 if [ "$?" = 0 ]; then
-	exec $PROJECT_DIR/sbin/cci.rb $*
+	exec $PROJECT_DIR/sbin/cci.rb "$@"
 fi
 
 usage()
