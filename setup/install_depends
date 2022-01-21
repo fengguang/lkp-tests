@@ -1,0 +1,116 @@
+#!/bin/sh
+
+. $LKP_SRC/lib/detect-system.sh
+
+detect_system
+
+set_ubuntu_debian()
+{
+	export DEBIAN_FRONTEND=noninteractive
+
+	sed -e "s|http://ports.ubuntu.com|${mirror_addr}|g" \
+		-e "s|http://ports.ubuntu.com|${mirror_addr}|g" \
+		-e "s|http://deb.debian.org|${mirror_addr}|g" \
+		-e "s|http://security.debian.org|${mirror_addr}|g" \
+		-e "s|http://security.ubuntu.com|${mirror_addr}|g" \
+		-e "s|http://archive.ubuntu.com|${mirror_addr}|g" \
+		-i.bak \
+		/etc/apt/sources.list
+
+	apt-get install -yqm "${packages}"
+}
+
+set_suse()
+{
+	sed -e "s|^baseurl=http://download.opensuse.org|baseurl=${mirror_addr}/opensuse|g" \
+		-i.bak \
+		/etc/zypp/repos.d/repo-*.repo
+
+	zypper -q install -y "${packages}"
+}
+
+set_archlinux()
+{
+	if [ "$(uname -m)" = "aarch64" ]; then
+		sed -i "1s;^;Server\\ =\\ ${mirror_addr}/archlinuxarm/\$arch/\$repo\\n;" /etc/pacman.d/mirrorlist
+	else
+		sed -i "1s;^;Server\\ =\\ ${mirror_addr}/archlinux/\$arch/\$repo\\n;" /etc/pacman.d/mirrorlist
+	fi
+
+	pacman -Syq --noconfirm --needed "${packages}"
+}
+
+set_fedora()
+{
+	sed -e 's|^metalink=|#metalink=|g' \
+		-e "s|^#baseurl=http://download.example/pub/fedora/linux|baseurl=${mirror_addr}/fedora|g" \
+		-i.bak \
+		/etc/yum.repos.d/fedora*.repo
+
+	dnf install -y -q "${packages}"
+}
+
+set_centos()
+{
+	. /etc/os-release
+
+	case ${VERSION_ID} in
+		7)
+			sed -e 's|^mirrorlist=|#mirrorlist=|g' \
+				-e "s|^#baseurl=http://mirror.centos.org/centos|baseurl=${mirror_addr}/centos|g" \
+				-e "s|^#baseurl=http://mirror.centos.org/altarch|baseurl=${mirror_addr}/centos-altarch|g" \
+				-e "s|^baseurl=http://mirror.centos.org/altarch|baseurl=${mirror_addr}/centos-altarch|g" \
+				-i.bak \
+				/etc/yum.repos.d/CentOS-*.repo
+			;;
+		8)
+			case "$(uname -m)" in
+				x86_64)
+					sed -e 's|^mirrorlist=|#mirrorlist=|g' \
+						-e "s|^#baseurl=http://mirror.centos.org/\$contentdir|baseurl=${mirror_addr}/centos|g" \
+						-i.bak \
+						/etc/yum.repos.d/CentOS-*.repo
+					;;
+				aarch64)
+					sed -e 's|^mirrorlist=|#mirrorlist=|g' \
+						-e "s|^#baseurl=http://mirror.centos.org/\$contentdir|baseurl=${mirror_addr}/centos-altarch|g" \
+						-i.bak \
+						/etc/yum.repos.d/CentOS-*.repo
+					;;
+			esac
+			;;
+		*)
+			echo "local repo mirror not found for CentOS: ${VERSION_ID}"
+			;;
+
+	esac
+	yum install -y -q "${packages}"
+}
+
+set_local_mirror()
+{
+	mirror_addr="http://${LKP_SERVER}:20014/os-repo"
+
+	case "${_system_name}" in
+		Ubuntu|Debian)
+			set_ubuntu_debian
+			;;
+		SuSE|OpenSuSE)
+			set_suse
+			;;
+		ArchLinux)
+			set_archlinux
+			;;
+		Fedora)
+			set_fedora
+			;;
+		CentOS)
+			set_centos
+			;;
+		*)
+			echo "local repo mirror not found for system: ${_system_name}"
+			;;
+	esac
+}
+
+set_local_mirror
