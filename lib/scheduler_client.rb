@@ -43,3 +43,10 @@ class SchedulerClient
     end
   end
 end
+
+class DataApiClient < SchedulerClient
+  def es_find(request_json)
+    resource = RestClient::Resource.new("#{@url_prefix}#{@host}:#{@port}/es_find")
+    resource.post(request_json)
+  end
+end

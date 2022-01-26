@@ -179,7 +179,7 @@ def format_print(input_hash, table_header)
   #       crystal.4044913   borrow
   #       crystal.4045343   fio-basic
   if input_hash.empty?
-    puts "query input_hash is empty!"
+    puts "print hash is empty!"
     return
   end
 

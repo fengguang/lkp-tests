@@ -1,0 +1,87 @@
+#! /usr/bin/env ruby
+
+# frozen_string_literal: true
+
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+
+require 'yaml'
+require 'json'
+require 'optparse'
+
+require "#{LKP_SRC}/lib/hash"
+require "#{LKP_SRC}/lib/load_file"
+require "#{LKP_SRC}/lib/scheduler_client"
+
+option_hash = {}
+
+options = OptionParser.new do |opts|
+  opts.banner = 'Usage: cci search -i $index -q $search'
+  opts.separator '       search info from es db by dsl'
+  opts.separator '       eg.1: cci search -i jobs -d \'{"_source": ["suite", "id", "job_stage"]}\''
+  opts.separator 'options:'
+
+  opts.on('-i', '--index <index>', 'search es from which index') do |index|
+    option_hash['index'] = index
+  end
+  opts.on('-d', '--data <data>', 'HTTP POST search data') do |d|
+    option_hash['data'] = d
+  end
+  opts.on('-h', '--help', 'show this message') do
+    puts options
+    exit
+  end
+end
+
+if ARGV.empty?
+  puts(options)
+  exit
+end
+
+options.parse!(ARGV)
+unless ARGV.empty?
+  puts "unknow args input, please check it: #{ARGV}"
+  exit
+end
+
+hash = load_my_config
+DATA_API_HOST ||= hash['DATA_API_HOST'] || hash['SCHED_HOST']
+DATA_API_PORT ||= hash['DATA_API_PORT'] || '20003'
+
+raise 'Please input search index: -i $index'      unless option_hash['index']
+raise 'Please input search data: -d $data'        unless option_hash['data']
+raise 'Please configure DATA_API_HOST'            unless DATA_API_HOST
+
+option_hash['my_account'] = hash['my_account']
+option_hash['my_token'] = hash['my_token']
+option_hash['search_type'] == 'dsl'
+
+search_dsl = JSON.parse(option_hash['data'])
+option_hash['data'] = search_dsl
+if search_dsl.key?('_source') && !search_dsl['_source'].empty?
+  option_hash['select_field'] = search_dsl['_source']
+  option_hash['show_type'] = 'array'
+else
+  option_hash['show_type'] = 'json'
+end
+
+dataapi_client = DataApiClient.new(DATA_API_HOST, DATA_API_PORT)
+response = dataapi_client.es_find(option_hash.to_json)
+response = JSON.parse(response)
+if response['error_msg']
+  puts response['error_msg']
+  exit
+end
+  
+if option_hash['show_type'] == 'json'
+  pp response
+else
+  results = []
+  response['hits']['hits'].each do |source|
+    results << source["_source"]
+  end
+  if results.empty?
+    puts  "search results is empty"
+    exit
+  end
+  format_print(results, option_hash['select_field'])
+end

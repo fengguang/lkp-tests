@@ -4,8 +4,8 @@
 
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
-require 'optparse'
 require 'yaml'
+require "#{LKP_SRC}/lib/opt_parse"
 
 COMMAND_INFO = {
   'submit' => {
@@ -18,7 +18,13 @@ COMMAND_INFO = {
     'path' => "#{LKP_SRC}/sbin/cancel",
     'type' => 'external'
   },
-  'lkp-renew' => {
+  'search' =>{
+    'profile' => 'search info from server es db by dsl',
+    'path' => "#{LKP_SRC}/sbin/search",
+    'type' => 'external'
+  },
+ 
+ 'lkp-renew' => {
     'profile' => 'prolong the service time of the testbox',
     'path' => "#{LKP_SRC}/sbin/lkp-renew",
     'type' => 'internal'
@@ -43,14 +49,18 @@ def show_command(opts, type)
   end
 end
 
+option_hash = {}
 options = OptionParser.new do |opts|
-  opts.banner = 'Usage: cci [global options] command [command options] [args]'
+  opts.banner = 'Usage: cci [global options] sub_command [sub_command options] [args]'
   opts.separator ''
   opts.separator 'Global options:'
 
-  opts.on('-h', '--help', 'show this message') do
-    puts options
-    exit
+  opts.on('-h', '--help', 'show this message') do |h|
+    option_hash['help'] = h
+  end
+  opts.on('-d', '--data <data>', 'HTTP POST data, some cci sub_commmand need') do |d|
+    d.gsub!('"', '\"')
+    option_hash['data'] = d
   end
 
   opts.separator ''
@@ -63,13 +73,16 @@ options = OptionParser.new do |opts|
   show_command(opts, 'external')
 end
 
-if ARGV.empty?
+if ARGV.empty? || (ARGV.length == 1 && ARGV[0] == "-h")
   puts(options)
   exit
 end
 
-options.order!
+options.parser_with_unknow_args!(ARGV)
+
 opt = ARGV.shift
 
 cmd = "#{COMMAND_INFO[opt]['path']} #{ARGV.join(' ')}"
+cmd += " -h"                              unless option_hash['help'].nil?
+cmd += " -d \"#{option_hash['data']}\""   unless option_hash['data'].nil?
 exec cmd
