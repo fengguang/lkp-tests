@@ -64,20 +64,10 @@ set_centos()
 				/etc/yum.repos.d/CentOS-*.repo
 			;;
 		8)
-			case "$(uname -m)" in
-				x86_64)
-					sed -e 's|^mirrorlist=|#mirrorlist=|g' \
-						-e "s|^#baseurl=http://mirror.centos.org/\$contentdir|baseurl=${mirror_addr}/centos|g" \
-						-i.bak \
-						/etc/yum.repos.d/CentOS-*.repo
-					;;
-				aarch64)
-					sed -e 's|^mirrorlist=|#mirrorlist=|g' \
-						-e "s|^#baseurl=http://mirror.centos.org/\$contentdir|baseurl=${mirror_addr}/centos-altarch|g" \
-						-i.bak \
-						/etc/yum.repos.d/CentOS-*.repo
-					;;
-			esac
+			sed -e 's|^mirrorlist=|#mirrorlist=|g' \
+				-e "s|^#baseurl=http://mirror.centos.org/\$contentdir|baseurl=${mirror_addr}/centos|g" \
+				-i.bak \
+				/etc/yum.repos.d/CentOS-*.repo
 			;;
 		*)
 			echo "local repo mirror not found for CentOS: ${VERSION_ID}"
