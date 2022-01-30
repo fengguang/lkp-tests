@@ -89,7 +89,7 @@ set_centos()
 
 set_local_mirror()
 {
-	mirror_addr="http://${LKP_SERVER}:20014/os-repo"
+	mirror_addr="http://${SRV_HTTP_OS_REPO_HOST}:${SRV_HTTP_OS_REPO_PORT}/os-repo"
 
 	case "${_system_name}" in
 		Ubuntu|Debian)
