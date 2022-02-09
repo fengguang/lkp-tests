@@ -316,6 +316,7 @@ class Job2sh < Job
     @monitors = available_programs(:monitors)
     @setups   = available_programs(:setup)
     @programs = available_programs(:workload_elements)
+    @install_depends = {"install_depends"=>{}}
     
     unless job
       job = (@jobx || @job).clone # a shallow copy so that delete_if won't impact @job
@@ -336,6 +337,7 @@ class Job2sh < Job
     out_line
     out_line "\texport_top_env"
     out_line
+    parse_hash [], @install_depends
     parse_hash [], job
     out_line "}\n\n"
     @script_lines

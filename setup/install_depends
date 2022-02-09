@@ -1,6 +1,7 @@
 #!/bin/sh
 
 . $LKP_SRC/lib/detect-system.sh
+. $LKP_SRC/lib/install.sh
 
 detect_system
 
@@ -16,8 +17,6 @@ set_ubuntu_debian()
 		-e "s|http://archive.ubuntu.com|${mirror_addr}|g" \
 		-i.bak \
 		/etc/apt/sources.list
-
-	apt-get install -yqm "${packages}"
 }
 
 set_suse()
@@ -25,8 +24,6 @@ set_suse()
 	sed -e "s|^baseurl=http://download.opensuse.org|baseurl=${mirror_addr}/opensuse|g" \
 		-i.bak \
 		/etc/zypp/repos.d/repo-*.repo
-
-	zypper -q install -y "${packages}"
 }
 
 set_archlinux()
@@ -36,8 +33,6 @@ set_archlinux()
 	else
 		sed -i "1s;^;Server\\ =\\ ${mirror_addr}/archlinux/\$arch/\$repo\\n;" /etc/pacman.d/mirrorlist
 	fi
-
-	pacman -Syq --noconfirm --needed "${packages}"
 }
 
 set_fedora()
@@ -46,8 +41,6 @@ set_fedora()
 		-e "s|^#baseurl=http://download.example/pub/fedora/linux|baseurl=${mirror_addr}/fedora|g" \
 		-i.bak \
 		/etc/yum.repos.d/fedora*.repo
-
-	dnf install -y -q "${packages}"
 }
 
 set_centos()
@@ -74,7 +67,45 @@ set_centos()
 			;;
 
 	esac
-	yum install -y -q "${packages}"
+}
+
+adapt_lkp_depends()
+{
+	os=$(echo "${_system_name}" | tr '[:upper:]' '[:lower:]')
+	lkp_depends=$(get_dependency_packages $os lkp | xargs)
+}
+
+get_package_manager()
+{
+        has_cmd "yum" && installer="yum"
+        has_cmd "dnf" && installer="dnf" && return
+        has_cmd "apt-get" && installer="apt-get" && return
+        has_cmd "pacman" && installer="pacman" && return
+        has_cmd "zypper" && installer="zypper" && return
+}
+
+install_depends()
+{
+	packages="$1"
+
+	case "$installer" in
+		apt-get)
+			export DEBIAN_FRONTEND=noninteractive
+
+			"${installer}" update >/dev/null
+			"$installer" install -yqm ${packages}
+			;;
+		dnf|yum)
+			"$installer" install -y -q --skip-broken ${packages}
+			;;
+		pacman)
+			"$installer" -Sy --noconfirm --needed ${packages}
+			;;
+		zypper)
+			"${installer}" -Sy --needed >/dev/null
+			"$installer" -q install -y ${packages}
+			;;
+	esac
 }
 
 set_local_mirror()
@@ -98,9 +129,12 @@ set_local_mirror()
 			set_centos
 			;;
 		*)
-			echo "local repo mirror not found for system: ${_system_name}"
+			echo "local repo mirror not found for system: ${_system_name}, ${installer} use repos by default"
 			;;
 	esac
 }
 
+get_package_manager
 set_local_mirror
+adapt_lkp_depends
+install_depends "${lkp_depends}"
