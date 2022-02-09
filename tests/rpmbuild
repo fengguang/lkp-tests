@@ -21,7 +21,7 @@
 
 : "${compat_os:=budding-openeuler}"
 
-[ -n "$custom_repo_name" ] || die "custom_repo_name is empty"
+([ -n "$depend_upstream_repo" ] || [ -n "$custom_repo_name" ]) || die "custom_repo_name is empty"
 
 dest_dir="/rpm/upload/${os}-${os_version}/${custom_repo_name}"
 rpmdev_dir="/home/lkp/rpmbuild"
