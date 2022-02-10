@@ -38,9 +38,9 @@ from_git()
 {
 	package_name=${upstream_repo##*/}
 	package_name=${package_name%%.git*}
-	rpm_dest="${dest_dir}/standard_${os_arch}/${os_arch}/Packages"
+	rpm_dest="${dest_dir}/${os_arch}/Packages"
 	tmp_rpm_dest="/tmp${rpm_dest}/$id"
-	src_rpm_dest="${dest_dir}/standard_${os_arch}/source/Packages"
+	src_rpm_dest="${dest_dir}/source/Packages"
 
 	init_workspace
 	download_upstream_repo
@@ -125,8 +125,8 @@ from_srpm()
 {
 	[ -n "$repo_addr" ] || die "repo_addr is empty"
 
-	rpm_dest="${dest_dir}/standard_${os_arch}/${os_arch}/Packages"
-	src_rpm_dest="${dest_dir}/standard_${os_arch}/source/Packages"
+	rpm_dest="${dest_dir}/${os_arch}/Packages"
+	src_rpm_dest="${dest_dir}/source/Packages"
 
 	install_srpm
 }
