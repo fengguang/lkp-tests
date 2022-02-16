@@ -205,6 +205,7 @@ class Job2sh < Job
       return :action_control_block
     elsif val.is_a?(Hash)
       return false unless pass == :PASS_RUN_COMMANDS
+      return false if @cur_func == :run_job
 
       exec_line
       func_name = key.tr('^a-zA-Z0-9_', '_')
