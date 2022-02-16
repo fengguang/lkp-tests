@@ -168,6 +168,7 @@ ARGV.each do |jobfile|
     job['queue'] = "#{jobs['tbox_group']}~#{ENV['USER']}" if opt_my_queue
 
     job.add_pp
+    job.add_install_depend_packages
     job.add_monitors
     job.add_define_files if opt_auto_define_files
     job.add_timeout
