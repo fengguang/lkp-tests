@@ -83,7 +83,7 @@ mount_dest()
 
 get_pkgfile()
 {
-	curl -sS -H 'Content-Type: Application/json' -XPOST "$LKP_SERVER"':8100/git_command' \
+	curl -sS -H 'Content-Type: Application/json' -XPOST "$REMOTE_GIT_HOST:$REMOTE_GIT_PORT"'/git_command' \
 		-d '{"git_repo": "'$1'", "git_command": ["git-show", "HEAD:'$2'"]}' -o "${2##*/}"
 }
 
@@ -104,7 +104,7 @@ request_pkg()
 	local pkgpath=""
 	[[ "$pkgrepo" =~ ^pkgbuild/(packages|community) ]] && pkgpath="${pkgpath}${pkgbuild_repo#*//}/"
 
-	filelist=$(curl -sS -H 'Content-Type: Application/json' -XPOST "$LKP_SERVER"':8100/git_command' \
+	filelist=$(curl -sS -H 'Content-Type: Application/json' -XPOST "$REMOTE_GIT_HOST:$REMOTE_GIT_PORT"'/git_command' \
 		-d '{"git_repo": "'${pkgrepo}'", "git_command": ["git-ls-tree", "--name-only", "-r", "HEAD:'${pkgpath}'"]}')
 
 	for pkgfile in ${filelist[*]}
@@ -159,8 +159,8 @@ replace_source()
 	do
 		# delete upstream_url protocol head http://xxxx => xxxx
 		echo "$url" | grep -E 'git(\+|:)|\.git$' | grep -q "${upstream_url##*//}" && [ -n "$repo_dir" ] && {
-			url="${repo_dir}git://${LKP_SERVER}/${upstream_dir}/${upstream_repo}#commit=${upstream_commit}"
-			[ -n "$git_tag" ] && url="${repo_dir}git://${LKP_SERVER}/${upstream_dir}/${upstream_repo}#tag=${git_tag}"
+			url="${repo_dir}git://${SCHED_HOST}/${upstream_dir}/${upstream_repo}#commit=${upstream_commit}"
+			[ -n "$git_tag" ] && url="${repo_dir}git://${SCHED_HOST}/${upstream_dir}/${upstream_repo}#tag=${git_tag}"
 		}
 
 		echo \'$url\' >> $1

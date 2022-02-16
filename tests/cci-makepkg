@@ -38,7 +38,7 @@ cd $LKP_SRC/pkg/$benchmark || die "pkg is empty"
 
 curl_pkgfile()
 {
-	curl -sS -H 'Content-Type: Application/json' -XPOST "$LKP_SERVER"':8100/git_command' \
+	curl -sS -H 'Content-Type: Application/json' -XPOST "$REMOTE_GIT_HOST:$REMOTE_GIT_PORT"'/git_command' \
 	-d '{"git_repo": "'$1'", "git_command": ["git-show", "HEAD:'$2'"]}' -o "$2"
 }
 

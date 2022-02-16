@@ -14,7 +14,7 @@ export DISTRO=${os}
 update_srpm_list()
 {
 	# set timeout to avoid longtime request
-	timeout 5 curl -sS -H 'Content-Type: Application/json' -XPOST "${LKP_SERVER}:3016/repo/set-srpm-info" \
+	timeout 5 curl -sS -H 'Content-Type: Application/json' -XPOST "${SCHED_HOST}:${SCHED_PORT}/repo/set-srpm-info" \
                 -d "${update_list}"
 }
 

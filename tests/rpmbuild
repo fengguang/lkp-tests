@@ -96,12 +96,12 @@ get_merge_info()
 
 git_pretty_format()
 {
-	curl -sS -H 'Content-Type: Application/json' -XPOST "$LKP_SERVER"':8100/git_command' -d '{"git_repo": "'${upstream_dir}/${upstream_repo}.git'", "git_command": ["git-log","'$1'","--pretty=format:'$2'", "'$3'"]}'
+	curl -sS -H 'Content-Type: Application/json' -XPOST "$REMOTE_GIT_HOST:$REMOTE_GIT_PORT"'/git_command' -d '{"git_repo": "'${upstream_dir}/${upstream_repo}.git'", "git_command": ["git-log","'$1'","--pretty=format:'$2'", "'$3'"]}'
 }
 
 is_git_merge()
 {
-	curl -sS -H 'Content-Type: Application/json' -XPOST "$LKP_SERVER"':8100/git_command' -d '{"git_repo": "'${upstream_dir}/${upstream_repo}.git'", "git_command": ["git-show", "--no-patch", "--format=%p", "'$1'"]}'
+	curl -sS -H 'Content-Type: Application/json' -XPOST "$REMOTE_GIT_HOST:$REMOTE_GIT_PORT"'/git_command' -d '{"git_repo": "'${upstream_dir}/${upstream_repo}.git'", "git_command": ["git-show", "--no-patch", "--format=%p", "'$1'"]}'
 }
 
 rpmbuild_email()
@@ -275,7 +275,7 @@ update_repo_mq()
 {
 	handle_rpm_list
 
-	curl -sS -H 'Content-Type: Application/json' -XPOST "${LKP_SERVER}:10003/upload" \
+	curl -sS -H 'Content-Type: Application/json' -XPOST "${UPDATE_REPO_HOST}:${UPDATE_REPO_PORT}/upload" \
 		-d "{\"upload_rpms\": ["${full_list}"], \"job_id\": \"${id}\"}"
 }
 
@@ -294,7 +294,7 @@ find_reverse_depends()
 notify_scheduler_submit()
 {
 	content='{"depend_job_id":"'${id}'","depend_rpm_dest":"'${tmp_rpm_dest}'","reverse_depends":"'${reverse_depends[@]}'"}'
-	curl -sS -XPOST "http://$LKP_SERVER:$LKP_CGI_PORT/rpmbuild/submit_reverse_depend_jobs" -d "$content"
+	curl -sS -XPOST "http://$SCHED_HOST:$SCHED_PORT/rpmbuild/submit_reverse_depend_jobs" -d "$content"
 }
 
 detect_reverse_depends()
@@ -309,7 +309,7 @@ update_srpm_list()
 	srpm=${repo_addr##*/}
 	data="{\"srpms\": [{\"os\": \"${compat_os}\", \"srpm\": \"${srpm}\", \"build_state\": \"1\"}], \"job_id\": \"${id}\", \"type\": \"update\"}"
 
-	curl -sS -H 'Content-Type: Application/json' -XPOST 172.168.131.113:3016/repo/set-srpm-info -d "${data}"
+	curl -sS -H 'Content-Type: Application/json' -XPOST ${SCHED_HOST}:${SCHED_PORT}/repo/set-srpm-info -d "${data}"
 }
 
 add_repo
