@@ -12,76 +12,69 @@ require "#{LKP_SRC}/lib/hash"
 require "#{LKP_SRC}/lib/load_file"
 require "#{LKP_SRC}/lib/scheduler_client"
 
+def die(msg)
+  puts msg
+  exit
+end
+
+index = nil
+data = nil
+show_type = ''
+select_field = ''
 option_hash = {}
 
 options = OptionParser.new do |opts|
   opts.banner = 'Usage: cci search -i $index -q $search'
-  opts.separator '       search info from es db by dsl'
-  opts.separator '       eg.1: cci search -i jobs -d \'{"_source": ["suite", "id", "job_stage"]}\''
+  opts.separator '    search info from es db by dsl'
+  opts.separator '    eg.1: cci search -i jobs -d \'{"_source": ["suite", "id", "job_stage"]}\''
+  opts.separator '    eg.2: cci search -i jobs -d \'{"query": {"term": {"suite": "borrow"}}, "_source": ["id"]}\''
   opts.separator 'options:'
 
-  opts.on('-i', '--index <index>', 'search es from which index') do |index|
-    option_hash['index'] = index
+  opts.on('-i', '--index <index>', 'search es from which index') do |i|
+    index = i
   end
   opts.on('-d', '--data <data>', 'HTTP POST search data') do |d|
-    option_hash['data'] = d
+    data = d
   end
   opts.on('-h', '--help', 'show this message') do
-    puts options
-    exit
+    die options
   end
 end
 
-if ARGV.empty?
-  puts(options)
-  exit
-end
-
+die(options) if ARGV.empty?
 options.parse!(ARGV)
-unless ARGV.empty?
-  puts "unknow args input, please check it: #{ARGV}"
-  exit
-end
+die("unknow args input, please check it: #{ARGV}") unless ARGV.empty?
 
 hash = load_my_config
+option_hash['cci_credentials'] = { 'my_account' => hash['my_account'], 'my_token' => hash['my_token'] }
 DATA_API_HOST ||= hash['DATA_API_HOST'] || hash['SCHED_HOST']
 DATA_API_PORT ||= hash['DATA_API_PORT'] || '20003'
 
-raise 'Please input search index: -i $index'      unless option_hash['index']
-raise 'Please input search data: -d $data'        unless option_hash['data']
+raise 'Please input search index: -i $index'      unless index
+raise 'Please input search data: -d $data'        unless data
 raise 'Please configure DATA_API_HOST'            unless DATA_API_HOST
 
-option_hash['my_account'] = hash['my_account']
-option_hash['my_token'] = hash['my_token']
-option_hash['search_type'] == 'dsl'
-
-search_dsl = JSON.parse(option_hash['data'])
-option_hash['data'] = search_dsl
+search_dsl = JSON.parse(data)
+option_hash['query'] = search_dsl
 if search_dsl.key?('_source') && !search_dsl['_source'].empty?
-  option_hash['select_field'] = search_dsl['_source']
-  option_hash['show_type'] = 'array'
+  show_type = 'array'
+  select_field = search_dsl['_source']
 else
-  option_hash['show_type'] = 'json'
+  show_type = 'json'
 end
 
 dataapi_client = DataApiClient.new(DATA_API_HOST, DATA_API_PORT)
-response = dataapi_client.es_find(option_hash.to_json)
+response = dataapi_client.es_search(index, option_hash.to_json)
 response = JSON.parse(response)
-if response['error_msg']
-  puts response['error_msg']
-  exit
-end
-  
-if option_hash['show_type'] == 'json'
+die(response['error_msg']) if response['error_msg']
+
+if show_type == 'json'
   pp response
 else
   results = []
   response['hits']['hits'].each do |source|
-    results << source["_source"]
+    results << source['_source']
   end
-  if results.empty?
-    puts  "search results is empty"
-    exit
-  end
-  format_print(results, option_hash['select_field'])
+  die('search results is empty') if results.empty?
+  format_print(results, select_field)
 end

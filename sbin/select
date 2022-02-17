@@ -1,0 +1,96 @@
+#! /usr/bin/env ruby
+
+# frozen_string_literal: true
+
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+
+require 'yaml'
+require 'json'
+require 'optparse'
+
+require "#{LKP_SRC}/lib/hash"
+require "#{LKP_SRC}/lib/load_file"
+require "#{LKP_SRC}/lib/scheduler_client"
+
+def die(msg)
+  puts msg
+  exit
+end
+
+show_type = ''
+index = nil
+field = nil
+select_field = []
+where_condition = []
+option_hash = {}
+
+options = OptionParser.new do |opts|
+  opts.banner = 'Usage: cci select -f $field -w $where_condition $index'
+  opts.separator '    search info from es db by sql'
+  opts.separator '    eg.1: cci select -f suite,id,job_stage,testbox -w id=\'xxx\' jobs'
+  opts.separator '    eg.2: cci select -f \* -w id=\'xxx\' -w time=\'xxx\' jobs'
+  opts.separator 'options:'
+
+  opts.on('-f', '--field <field>', 'show field') do |f|
+    field = f
+  end
+  opts.on('-w', '--where <where>', 'select condition') do |w|
+    where_condition << w
+  end
+  opts.on('-h', '--help', 'show this message') do
+    die options
+  end
+end
+
+dir(options) if ARGV.empty?
+
+options.parse!(ARGV)
+index = ARGV[0] unless ARGV.empty?
+
+hash = load_my_config
+option_hash['cci_credentials'] = { 'my_account' => hash['my_account'], 'my_token' => hash['my_token'] }
+DATA_API_HOST ||= hash['DATA_API_HOST'] || hash['SCHED_HOST']
+DATA_API_PORT ||= hash['DATA_API_PORT'] || '10005'
+
+raise 'please input query index with -i '          unless index
+raise 'Please input select field to show with -f'  unless field
+raise 'Please configure DATA_API_HOST'             unless DATA_API_HOST
+
+if field =~ /\*/
+  show_type = 'json'
+  option_hash['query'] = 'select *'
+else
+  field.split(',').each do |f|
+    select_field << f.strip
+  end
+  show_type = 'array'
+  option_hash['query'] = "select #{select_field.join(',')}"
+end
+
+option_hash['query'] += " from #{index}"
+unless where_condition.empty?
+  option_hash['query'] += ' where'
+  where_list = []
+  where_condition.each do |w|
+    k, v = w.split('=')
+    where_list << "#{k}=\'#{v}\'"
+  end
+  option_hash['query'] += " #{where_list.join(' and ')}"
+end
+
+dataapi_client = DataApiClient.new(DATA_API_HOST, DATA_API_PORT)
+response = dataapi_client.es_opendistro_sql(option_hash.to_json)
+response = JSON.parse(response)
+
+die(response['error_msg']) if response['error_msg']
+
+if show_type == 'json'
+  pp response
+else
+  results = []
+  response['hits']['hits'].each do |source|
+    results << source['_source']
+  end
+  die('query results is empty') if results.empty?
+  format_print(results, select_field)
+end

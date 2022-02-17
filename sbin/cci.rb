@@ -18,9 +18,19 @@ COMMAND_INFO = {
     'path' => "#{LKP_SRC}/sbin/cancel",
     'type' => 'external'
   },
+  'jobs' =>{
+    'profile' => 'search jobs info from es',
+    'path' => "#{LKP_SRC}/sbin/jobs",
+    'type' => 'external'
+  },
   'search' =>{
     'profile' => 'search info from server es db by dsl',
     'path' => "#{LKP_SRC}/sbin/search",
+    'type' => 'external'
+  },
+   'select' =>{
+    'profile' => 'search info from server es db by sql',
+    'path' => "#{LKP_SRC}/sbin/select",
     'type' => 'external'
   },
  
@@ -81,8 +91,10 @@ end
 options.parser_with_unknow_args!(ARGV)
 
 opt = ARGV.shift
+args = ARGV.join(' ')
+args.gsub!('*', '\'*\'') if opt == 'select'
 
-cmd = "#{COMMAND_INFO[opt]['path']} #{ARGV.join(' ')}"
+cmd = "#{COMMAND_INFO[opt]['path']} #{args}"
 cmd += " -h"                              unless option_hash['help'].nil?
 cmd += " -d \"#{option_hash['data']}\""   unless option_hash['data'].nil?
 exec cmd

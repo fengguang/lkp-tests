@@ -45,8 +45,13 @@ class SchedulerClient
 end
 
 class DataApiClient < SchedulerClient
-  def es_find(request_json)
-    resource = RestClient::Resource.new("#{@url_prefix}#{@host}:#{@port}/es_find")
+  def es_search(index, request_json)
+    resource = RestClient::Resource.new("#{@url_prefix}#{@host}:#{@port}/data_api/es/#{index}/_search")
+    resource.post(request_json)
+  end
+
+  def es_opendistro_sql(request_json)
+    resource = RestClient::Resource.new("#{@url_prefix}#{@host}:#{@port}/data_api/_opendistro/_sql")
     resource.post(request_json)
   end
 end
