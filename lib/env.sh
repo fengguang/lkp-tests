@@ -151,3 +151,30 @@ write_host()
 	ssd_partitions:
 	EOF
 }
+
+get_emulate_login_env()
+{
+        login_env=""
+        for i in $(cat $LKP_SRC/env/emulate-login-env)
+        do
+                login_env=$login_env" "$i
+        done
+        echo $login_env
+}
+
+use_benchmark_env()
+{
+        tmp_env=""
+        for i in $benchmark_env
+        do
+                if [ "$i" = "EMULATE_LOGIN_ENV" ];then
+                        tmp_env=`get_emulate_login_env`" "$tmp_env
+                elif [ "$i" = "${i#*=}" ];then
+                        tmp_env=$tmp_env" "$(eval echo $i=$(echo '$'"$i"))
+                else
+                        tmp_env=$tmp_env" "$i
+                fi
+        done
+
+        env -i $tmp_env "$@"
+}
