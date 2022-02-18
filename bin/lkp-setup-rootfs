@@ -18,6 +18,7 @@ export PATH=$PATH:$LKP_SRC/bin:$LKP_SRC/sbin
 . $LKP_SRC/lib/reboot.sh
 . $LKP_SRC/lib/ucode.sh
 . $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/install_depends.sh
 
 echo "export PATH=\$PATH:$PATH" >> $(shell_profile)
 
@@ -318,6 +319,12 @@ while true; do
 		download_install_cgz $initrd_deps
 		download_install_cgz $initrd_pkgs
 	fi
+
+	# install lkp & test suite depends
+	detect_system
+	get_package_manager
+	set_local_mirror
+	install_depends "${install_depend_packages_all[@]}"
 
 	echo $LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp
 	$LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp $job

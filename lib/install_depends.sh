@@ -3,8 +3,6 @@
 . $LKP_SRC/lib/detect-system.sh
 . $LKP_SRC/lib/install.sh
 
-detect_system
-
 set_ubuntu_debian()
 {
 	export DEBIAN_FRONTEND=noninteractive
@@ -133,8 +131,3 @@ set_local_mirror()
 			;;
 	esac
 }
-
-get_package_manager
-set_local_mirror
-adapt_lkp_depends
-install_depends "${lkp_depends}"
