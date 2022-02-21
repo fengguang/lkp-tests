@@ -1,0 +1,37 @@
+#! /usr/bin/env ruby
+
+# frozen_string_literal: true
+
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+
+require 'optparse'
+
+field = nil
+where_condition = []
+
+options = OptionParser.new do |opts|
+  opts.banner = 'Usage: cci jobs -f $field'
+  opts.separator '    query your jobs from es db'
+  opts.separator '    eg.1: cci jobs -f \* -w id=xxx'
+  opts.separator '    eg.2: cci jobs -f suite,id,job_state,testbox -w suite=borrow'
+  opts.separator '    eg.3: cci jobs -f suite,id -w suite=borrow -w job_stage=finish'
+  opts.separator 'options:'
+
+  opts.on('-f', '--field <field>', 'show field') do |f|
+    field = f
+  end
+  opts.on('-w', '--where <where>', 'select condition') do |w|
+    where_condition << w
+  end
+  opts.on('-h', '--help', 'show this message') do
+    puts options
+    exit
+  end
+end
+
+options.parse!(ARGV)
+raise 'Please input select field to show with -f' unless field
+
+cmd = "#{LKP_SRC}/sbin/select jobs -f #{field}"
+cmd += " -w #{where_condition.join(' -w ')}" unless where_condition.empty?
+exec cmd
