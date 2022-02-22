@@ -42,7 +42,7 @@ options = OptionParser.new do |opts|
   end
 end
 
-dir(options) if ARGV.empty?
+die(options) if ARGV.empty?
 
 options.parse!(ARGV)
 index = ARGV[0] unless ARGV.empty?
@@ -52,7 +52,7 @@ option_hash['cci_credentials'] = { 'my_account' => hash['my_account'], 'my_token
 DATA_API_HOST ||= hash['DATA_API_HOST'] || hash['SCHED_HOST']
 DATA_API_PORT ||= hash['DATA_API_PORT'] || '10005'
 
-raise 'please input query index with -i '          unless index
+raise 'please input query index'                   unless index
 raise 'Please input select field to show with -f'  unless field
 raise 'Please configure DATA_API_HOST'             unless DATA_API_HOST
 
