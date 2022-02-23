@@ -50,7 +50,7 @@ index = ARGV[0] unless ARGV.empty?
 hash = load_my_config
 option_hash['cci_credentials'] = { 'my_account' => hash['my_account'], 'my_token' => hash['my_token'] }
 DATA_API_HOST ||= hash['DATA_API_HOST'] || hash['SCHED_HOST']
-DATA_API_PORT ||= hash['DATA_API_PORT'] || '10005'
+DATA_API_PORT ||= hash['DATA_API_PORT'] || '20003'
 
 raise 'please input query index'                   unless index
 raise 'Please input select field to show with -f'  unless field
