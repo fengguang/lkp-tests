@@ -91,10 +91,12 @@ end
 options.parser_with_unknow_args!(ARGV)
 
 opt = ARGV.shift
-args = ARGV.join(' ')
-args.gsub!('*', '\'*\'') if opt == 'select'
+args = ''
+ARGV.each do |a|
+  args += "\"#{a}\" "
+end
 
-cmd = "#{COMMAND_INFO[opt]['path']} #{args}"
+cmd = "#{COMMAND_INFO[opt]['path']} #{args.strip}"
 cmd += " -h"                              unless option_hash['help'].nil?
 cmd += " -d \"#{option_hash['data']}\""   unless option_hash['data'].nil?
 exec cmd

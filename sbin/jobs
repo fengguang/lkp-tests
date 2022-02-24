@@ -7,21 +7,20 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAM
 require 'optparse'
 
 field = nil
-where_condition = []
+where_list = []
 
 options = OptionParser.new do |opts|
-  opts.banner = 'Usage: cci jobs -f $field'
+  opts.banner = 'Usage: cci jobs -f $field $where'
   opts.separator '    query your jobs from es db'
-  opts.separator '    eg.1: cci jobs -f \* -w id=xxx'
-  opts.separator '    eg.2: cci jobs -f suite,id,job_state,testbox -w suite=borrow'
-  opts.separator '    eg.3: cci jobs -f suite,id -w suite=borrow -w job_stage=finish'
+  opts.separator '    eg.0: cci jobs'
+  opts.separator '    eg.2: cci jobs -f \* id=xxx'
+  opts.separator '    eg.3: cci jobs -f id,job_state,testbox suite=borrow'
+  opts.separator '    eg.4: cci jobs -f id suite=borrow job_stage=finish'
   opts.separator 'options:'
 
   opts.on('-f', '--field <field>', 'show field') do |f|
-    field = f
-  end
-  opts.on('-w', '--where <where>', 'select condition') do |w|
-    where_condition << w
+    field = f.strip
+    field = '\*' if field == '*'
   end
   opts.on('-h', '--help', 'show this message') do
     puts options
@@ -30,8 +29,16 @@ options = OptionParser.new do |opts|
 end
 
 options.parse!(ARGV)
-raise 'Please input select field to show with -f' unless field
+field = 'suite,id,job_state,testbox,os,start_time,end_time' unless field
 
-cmd = "#{LKP_SRC}/sbin/select jobs -f #{field}"
-cmd += " -w #{where_condition.join(' -w ')}" unless where_condition.empty?
+unless ARGV.empty?
+  ARGV.each do |argv|
+    k, v = argv.split('=')
+    where_list << "#{k}=\'#{v}\'"
+  end
+end
+
+cmd = "#{LKP_SRC}/sbin/cci select jobs -f #{field}"
+cmd += " -w \"#{where_list.join(' AND ')}\"" unless where_list.empty?
+
 exec cmd
