@@ -6,7 +6,7 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAM
 
 require 'optparse'
 
-field = nil
+field_list = []
 where_list = []
 
 options = OptionParser.new do |opts|
@@ -16,11 +16,17 @@ options = OptionParser.new do |opts|
   opts.separator '    eg.2: cci jobs -f \* id=xxx'
   opts.separator '    eg.3: cci jobs -f id,job_state,testbox suite=borrow'
   opts.separator '    eg.4: cci jobs -f id suite=borrow job_stage=finish'
+  opts.separator '    eg.5: cci jobs -f -id'
+  opts.separator '    eg.4: cci jobs -f +queue -id'
   opts.separator 'options:'
 
   opts.on('-f', '--field <field>', 'show field') do |f|
-    field = f.strip
-    field = '\*' if field == '*'
+    f = f.strip
+    field_list << if f == '*'
+                    '\*'
+                  else
+                    f
+                  end
   end
   opts.on('-h', '--help', 'show this message') do
     puts options
@@ -29,7 +35,32 @@ options = OptionParser.new do |opts|
 end
 
 options.parse!(ARGV)
-field = 'suite,id,job_state,testbox,os,start_time,end_time' unless field
+
+custom_field = []
+default_field = %w[suite id job_state testbox os start_time end_time]
+
+unless field_list.empty?
+  field_list.each do |field|
+    if field.start_with?('-')
+      field.sub!(/^-/, '').split(',').each do |f|
+        default_field.delete(f)
+      end
+    elsif field.start_with?('+')
+      field.sub!(/^\+/, '').split(',').each do |f|
+        default_field << f
+      end
+    else
+      field.split(',').each do |f|
+        custom_field << f
+      end
+    end
+  end
+end
+input_field = if custom_field.empty?
+                default_field
+              else
+                custom_field
+              end
 
 unless ARGV.empty?
   ARGV.each do |argv|
@@ -38,7 +69,7 @@ unless ARGV.empty?
   end
 end
 
-cmd = "#{LKP_SRC}/sbin/cci select jobs -f #{field}"
+cmd = "#{LKP_SRC}/sbin/cci select jobs -f #{input_field.join(',')}"
 cmd += " -w \"#{where_list.join(' AND ')}\"" unless where_list.empty?
 
 exec cmd
