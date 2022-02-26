@@ -199,7 +199,7 @@ build_rpm()
 			su lkp -c "spectool -g -R $spec_dir/"*.spec || die "failed to download source file"
 		}
 	# Build source and binary packages
-	su - lkp -c "rpmbuild -ba ${spec_dir}/*.spec" || die "failed to build rpms"
+	su - lkp -c "rpmbuild -ba --quiet ${spec_dir}/*.spec" || die "failed to build rpms"
 	endTime=$(date +%Y-%m-%d-%H:%M)
 	endTime_s=$(date +%s)
 
