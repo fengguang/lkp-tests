@@ -7,7 +7,6 @@ LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.dirname(File.realpa
 require "#{LKP_SRC}/lib/load_file"
 require "#{LKP_SRC}/lib/scheduler_client"
 
-
 def die(msg)
   puts msg
   exit
@@ -74,7 +73,7 @@ def get_show_type(field, show_type)
   end
 end
 
-def get_cci_credentials
+def read_cci_credentials
   data_hash = {}
   hash = load_my_config
   data_hash['cci_credentials'] = {
@@ -84,7 +83,7 @@ def get_cci_credentials
 
   data_hash['DATA_API_HOST'] ||= hash['DATA_API_HOST'] || hash['SCHED_HOST']
   data_hash['DATA_API_PORT'] ||= hash['DATA_API_PORT'] || '20003'
-  
+
   raise 'Please configure DATA_API_PORT' if data_hash['DATA_API_HOST'].nil?
 
   return data_hash

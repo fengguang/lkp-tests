@@ -1,0 +1,62 @@
+#! /usr/bin/env ruby
+
+# frozen_string_literal: true
+
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+
+require 'json'
+require 'optparse'
+require "#{LKP_SRC}/lib/cci"
+require "#{LKP_SRC}/lib/hash"
+
+show_type = nil
+field_list = []
+
+options = OptionParser.new do |opts|
+  opts.banner = 'Usage: cci hosts'
+  opts.separator '    query hosts info es db'
+  opts.separator '    eg.0: cci hosts'
+  opts.separator '    eg.1: cci hosts -f -nr_cpu'
+  opts.separator 'options:'
+
+  opts.on('-f', '--field <field>', 'show field') do |f|
+    field_list << f.strip
+  end
+  opts.on('-s', '--show_type <show_type>', 'select show type: json or array') do |s|
+    show_type = s
+  end
+  opts.on('-h', '--help', 'show this message') do
+    puts options
+    exit
+  end
+end
+
+
+if $PROGRAM_NAME == __FILE__
+  options.parse!(ARGV)
+  
+  show_type = get_show_type(field_list.join(""), show_type)
+  default_field = %w[memory arch nr_cpu nr_node nr_cpu nr_hdd_partitions nr_ssd_partitions]
+  select_field = merge_field(default_field, field_list)
+  where_list = get_where_list(ARGV)
+
+  data_hash = read_cci_credentials
+  data_hash['query_index'] = 'hosts'
+  data_hash['query_field'] = select_field.join(',').to_s
+  data_hash['query_where'] = "#{where_list.join(' AND ')}" unless where_list.empty?
+  response = es_opendistro_query(data_hash) 
+
+  if show_type == 'json'
+    pp response
+  else
+    results = []
+    response['hits']['hits'].each do |source|
+      source['_source']['testbox'] = source['_id']
+      results << source['_source']
+    end
+
+    die('query results is empty') if results.empty?
+    select_field.insert(0, 'testbox')
+    format_print(results, select_field)
+  end
+end
