@@ -7,23 +7,14 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAM
 require 'yaml'
 require 'json'
 require 'optparse'
-
+require "#{LKP_SRC}/lib/cci"
 require "#{LKP_SRC}/lib/hash"
-require "#{LKP_SRC}/lib/load_file"
-require "#{LKP_SRC}/lib/scheduler_client"
 
-def die(msg)
-  puts msg
-  exit
-end
-
-show_type = ''
 index = nil
 field = nil
 where = nil
 condition = nil
-select_field = []
-option_hash = {}
+show_type = nil
 
 options = OptionParser.new do |opts|
   opts.banner = 'Usage: cci select -f $field -w $where $index'
@@ -43,51 +34,41 @@ options = OptionParser.new do |opts|
     # we use '-' to join every condition words.
     condition = c
   end
+  opts.on('-s', '--show_type <show_type>', 'select show type: json or array') do |s|
+    show_type = s
+  end
   opts.on('-h', '--help', 'show this message') do
     die options
   end
 end
 
-die(options) if ARGV.empty?
-options.parse!(ARGV)
-index = ARGV[0] unless ARGV.empty?
+if $PROGRAM_NAME == __FILE__
+  die(options) if ARGV.empty?
+  options.parse!(ARGV)
+  index = ARGV[0] unless ARGV.empty?
 
-hash = load_my_config
-option_hash['cci_credentials'] = { 'my_account' => hash['my_account'], 'my_token' => hash['my_token'] }
-DATA_API_HOST ||= hash['DATA_API_HOST'] || hash['SCHED_HOST']
-DATA_API_PORT ||= hash['DATA_API_PORT'] || '20003'
+  raise 'please input query index'                   if index.nil?
+  raise 'Please input select field to show with -f'  if field.nil?
 
-raise 'please input query index'                   unless index
-raise 'Please input select field to show with -f'  unless field
-raise 'Please configure DATA_API_HOST'             unless DATA_API_HOST
+  show_type = get_show_type(field, show_type)
+  select_field = get_select_field(field)
 
-if field == '*'
-  show_type = 'json'
-  option_hash['query_field'] = '*'
-else
-  field.split(',').each do |f|
-    select_field << f.strip
+  data_hash = read_cci_credentials
+  data_hash['query_field'] = select_field.join(',').to_s
+  data_hash['query_index'] = index
+  data_hash['query_where'] = where unless where.nil?
+  data_hash['query_condition'] = condition unless condition.nil?
+  response = es_opendistro_query(data_hash)
+
+  if show_type == 'json'
+    pp response
+  else
+    results = []
+    response['hits']['hits'].each do |source|
+      results << source['_source']
+    end
+
+    die('query results is empty') if results.empty?
+    format_print(results, select_field)
   end
-  show_type = 'array'
-  option_hash['query_field'] = select_field.join(',').to_s
-end
-
-option_hash['query_index'] = index
-option_hash['query_where'] = where unless where.nil?
-option_hash['query_condition'] = condition unless condition.nil?
-dataapi_client = DataApiClient.new(DATA_API_HOST, DATA_API_PORT)
-response = dataapi_client.es_opendistro_sql(option_hash.to_json)
-response = JSON.parse(response)
-
-die(response['error_msg']) if response['error_msg']
-
-if show_type == 'json'
-  pp response
-else
-  results = []
-  response['hits']['hits'].each do |source|
-    results << source['_source']
-  end
-  die('query results is empty') if results.empty?
-  format_print(results, select_field)
 end

@@ -19,7 +19,7 @@ end
 
 index = nil
 data = nil
-show_type = ''
+show_type = nil
 select_field = ''
 option_hash = {}
 
@@ -35,6 +35,9 @@ options = OptionParser.new do |opts|
   end
   opts.on('-d', '--data <data>', 'HTTP POST search data') do |d|
     data = d
+  end
+  opts.on('-s', '--show_type <show_type>', 'search show type: json or array') do |s|
+    show_type = s
   end
   opts.on('-h', '--help', 'show this message') do
     die options
@@ -57,9 +60,9 @@ raise 'Please configure DATA_API_HOST'            unless DATA_API_HOST
 search_dsl = JSON.parse(data)
 option_hash['query'] = search_dsl
 if search_dsl.key?('_source') && !search_dsl['_source'].empty?
-  show_type = 'array'
+  show_type = 'array' if show_type.nil?
   select_field = search_dsl['_source']
-else
+elsif show_type.nil?
   show_type = 'json'
 end
 

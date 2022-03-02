@@ -18,6 +18,11 @@ COMMAND_INFO = {
     'path' => "#{LKP_SRC}/sbin/cancel",
     'type' => 'external'
   },
+  'hosts' =>{
+    'profile' => 'search hosts info from es',
+    'path' => "#{LKP_SRC}/sbin/hosts",
+    'type' => 'external'
+  },
   'jobs' =>{
     'profile' => 'search jobs info from es',
     'path' => "#{LKP_SRC}/sbin/jobs",

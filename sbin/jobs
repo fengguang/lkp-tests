@@ -5,7 +5,9 @@
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
 
 require 'optparse'
+require "#{LKP_SRC}/lib/cci"
 
+show_type = nil
 field_list = []
 where_list = []
 
@@ -21,12 +23,15 @@ options = OptionParser.new do |opts|
   opts.separator 'options:'
 
   opts.on('-f', '--field <field>', 'show field') do |f|
-    f = f.strip
+    f.strip!
     field_list << if f == '*'
                     '\*'
                   else
                     f
                   end
+  end
+  opts.on('-s', '--show_type <show_type>', 'select show type: json or array') do |s|
+    show_type = s
   end
   opts.on('-h', '--help', 'show this message') do
     puts options
@@ -34,42 +39,16 @@ options = OptionParser.new do |opts|
   end
 end
 
-options.parse!(ARGV)
+if $PROGRAM_NAME == __FILE__
+  options.parse!(ARGV)
 
-custom_field = []
-default_field = %w[suite id job_state testbox os start_time end_time]
+  default_field = %w[suite id job_state testbox os start_time end_time]
+  select_field = merge_field(default_field, field_list)
+  where_list = get_where_list(ARGV)
 
-unless field_list.empty?
-  field_list.each do |field|
-    if field.start_with?('-')
-      field.sub!(/^-/, '').split(',').each do |f|
-        default_field.delete(f)
-      end
-    elsif field.start_with?('+')
-      field.sub!(/^\+/, '').split(',').each do |f|
-        default_field << f
-      end
-    else
-      field.split(',').each do |f|
-        custom_field << f
-      end
-    end
-  end
+  cmd = "#{LKP_SRC}/sbin/cci select jobs -f #{select_field.join(',')}"
+  cmd += " -s #{show_type}" unless show_type.nil?
+  cmd += " -w \"#{where_list.join(' AND ')}\"" unless where_list.empty?
+
+  exec cmd
 end
-input_field = if custom_field.empty?
-                default_field
-              else
-                custom_field
-              end
-
-unless ARGV.empty?
-  ARGV.each do |argv|
-    k, v = argv.split('=')
-    where_list << "#{k}=\'#{v}\'"
-  end
-end
-
-cmd = "#{LKP_SRC}/sbin/cci select jobs -f #{input_field.join(',')}"
-cmd += " -w \"#{where_list.join(' AND ')}\"" unless where_list.empty?
-
-exec cmd
