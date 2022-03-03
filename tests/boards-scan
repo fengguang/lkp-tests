@@ -1,5 +1,10 @@
 #!/usr/bin/env ruby
 
+# is_store:
+# 	if set this param equal "yes" when submit job, this board info will upload to es'index(hosts) automatically.
+# 	like:
+# 	- is_store: "yes"
+
 require 'json'
 require 'yaml'
 

@@ -2,6 +2,11 @@
 . $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/email.sh
 
+# is_store:
+# 	if set this param equal "yes" when submit job, this host info will upload to es'index(hosts) automatically.
+# 	like:
+# 	- is_store: "yes"
+
 get_memory()
 {
 	memory_total=$(cat /proc/meminfo |grep MemTotal | awk '{print $2}')
@@ -146,10 +151,10 @@ get_ipmi_serial_number()
 
 send_mail()
 {
-	[ "$is_send_mail" = "true" ] && {
-		recipient_email_to="$secrets_my_email"
-		send_email_encode host_info
-	}
+	[ "$is_send_mail" = "true" ] || return 0
+
+	recipient_email_to="$secrets_my_email"
+	send_email_encode host_info
 }
 
 main()
