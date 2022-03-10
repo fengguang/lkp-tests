@@ -13,16 +13,16 @@ linux_dep()
 	case "$installer" in
 	apt-get)
 		export DEBIAN_FRONTEND=noninteractive
-		sudo "$installer" install -yqm ruby-dev libssl-dev gcc g++ uuid-runtime
+		sudo "$installer" install -yqm ruby-dev libssl-dev gcc g++ uuid-runtime diffutils
 		;;
 	dnf|yum)
-		sudo "$installer" install -y --skip-broken ruby rubygems gcc gcc-c++ make ruby-devel git lftp util-linux
+		sudo "$installer" install -y --skip-broken ruby rubygems gcc gcc-c++ make ruby-devel git lftp util-linux diffutils
 		;;
 	pacman)
-		sudo "$installer" -Sy --noconfirm --needed ruby rubygems gcc make git lftp util-linux
+		sudo "$installer" -Sy --noconfirm --needed ruby rubygems gcc make git lftp util-linux diffutils
 		;;
 	zypper)
-		sudo "$installer" install -y rubygems gcc gcc-c++ make ruby-devel git lftp util-linux hostname gzip
+		sudo "$installer" install -y rubygems gcc gcc-c++ make ruby-devel git lftp util-linux hostname gzip diffutils
 		;;
 	*)
 		echo "Unknown Package Manager! please install dependencies manually." && exit 1
