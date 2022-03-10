@@ -282,7 +282,7 @@ pre_works()
 download_iso2qcow2()
 {
 	[ -d "${I2Q_SRC}" ] && rm -rf "${I2Q_SRC}"
-	git clone https://gitee.com/ycvayne/iso2qcow2.git "${I2Q_SRC}"
+	git clone http://gitee.com/weijihui/iso2qcow2.git "${I2Q_SRC}"
 }
 
 config_pip_proxy()
