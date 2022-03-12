@@ -24,16 +24,33 @@ Dear $my_account,
 
 	Your test job is ready to debug and test machine has been provisioned.
 
-	Login:
+		You can use your secret key to login the testbox.
+
+	Login Command:
+
 		ssh root@api.compass-ci.openeuler.org -p $port
+
+	Login Url:
+
+		https://jumper.compass-ci.openeuler.org/?hostname=123.60.114.28&username=root&port=$port
+
 	Due time:
+
 		$deadline
+
 	HW:
+
 		nr_cpu: $nr_cpu
 		memory: $memory
 		testbox: $testbox
+
 	OS:
+
 		$os $os_version $os_arch
+
+	Notice:
+
+		The testbox is only allowed to login with secret key, please save your private key.
 
 Regards
 Compass-CI
@@ -49,16 +66,33 @@ Dear $my_account,
 
 	Your test machine has been provisioned.
 
-	Login:
+		You can use your secret key to login the testbox.
+
+	Login Command:
+
 		ssh root@api.compass-ci.openeuler.org -p $port
+
+	Login Url:
+
+		https://jumper.compass-ci.openeuler.org/?hostname=123.60.114.28&username=root&port=$port
+
 	Due time:
+
 		$deadline
+
 	HW:
+
 		nr_cpu: $nr_cpu
 		memory: $memory
 		testbox: $testbox
+
 	OS:
+
 		$os $os_version $os_arch
+
+	Notice:
+
+		The testbox is only allowed to login with secret key, please save your private key.
 
 Regards
 Compass-CI
