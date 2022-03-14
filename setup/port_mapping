@@ -1,0 +1,77 @@
+#!/bin/sh
+# sshr_mapping_port
+# sshr_server_port
+# sshr_outer_port_len
+# sshr_outer_port_base
+# sshr_outer_port_min
+# sshr_outer_port_max
+# sshr_outer_port
+# sshr_inner_port
+
+SCRIPT_DIR=$(dirname $(realpath $0))
+PROJECT_DIR=$(dirname $SCRIPT_DIR)
+
+. $PROJECT_DIR/lib/log.sh
+
+sshr_server_ip=$LKP_SERVER
+[ -n "$sshr_server_port" ]         || sshr_server_port=5051
+[ -n "$sshr_outer_port_len" ]      || sshr_outer_port_len=198
+[ -n "$sshr_outer_port_base" ]     || sshr_outer_port_base=23001
+[ -n "$sshr_outer_port_min" ]      || sshr_outer_port_min=23001
+[ -n "$sshr_outer_port_max" ]      || sshr_outer_port_max=23199
+
+reconnect_every_5_minute()
+{
+        while true
+        do
+                ssh -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes -o TCPKeepAlive=yes \
+                        -Nf -R $sshr_outer_port:localhost:$sshr_inner_port sshr@"$sshr_server_ip" -p "$sshr_server_port" -i /root/.ssh/sshr/id_rsa &>/dev/null
+                sleep 300
+        done
+}
+
+is_fail_set_port()
+{
+	ssh -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes -o TCPKeepAlive=yes \
+		-Nf -R $sshr_outer_port:localhost:$sshr_inner_port sshr@"$sshr_server_ip" -p "$sshr_server_port" -i /root/.ssh/sshr/id_rsa > ssh_msg 2>&1
+}
+
+set_one_port()
+{
+	for i in $(seq 1 10)
+	do
+		if [ -n "$sshr_outer_port" ] && [ "$sshr_outer_port" -ge "$sshr_outer_port_min" ] && [ "$sshr_outer_port" -le "$sshr_outer_port_max" ]; then
+			is_fail_set_port && {
+				reconnect_every_5_minute &
+				return
+			}
+		fi
+		sshr_outer_port=$(($(date +%s%N)%$sshr_outer_port_len+$sshr_outer_port_base))
+		is_fail_set_port && {
+		reconnect_every_5_minute &
+		return
+		}
+	done
+	ssh_error_message="$(cat -e ssh_msg)"
+	log_error $ssh_error_message
+	exit 1
+}
+
+set_port_mapping()
+{
+	[ -n "$sshr_mapping_port" ] || return
+	sshr_mapping_port_array=($sshr_mapping_port)
+	for ports in ${sshr_mapping_port_array[@]}
+	do
+		sshr_outer_port=${ports%%:*}
+		if [ -n "$sshr_outer_port" ]; then
+			sshr_inner_port=${ports##*:}
+		else
+			sshr_inner_port=$ports
+		fi
+
+		set_one_port
+	done
+}
+
+set_port_mapping
