@@ -18,6 +18,7 @@
 [ -n "${mount_repo_name}" ]	|| die "mount_repo_name is empty"
 [ -n "${mount_repo_addr}" ]	|| die "mount_repo_addr is empty"
 
+rpm_name=${rpm_name//,/ }
 rpm_name=($rpm_name)
 
 echo_rpm_location()
