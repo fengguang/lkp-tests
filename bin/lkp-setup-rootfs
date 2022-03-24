@@ -324,7 +324,7 @@ while true; do
 	detect_system
 	get_package_manager
 	set_local_mirror
-	install_depends "${install_depend_packages_all[@]}"
+	install_depends "${install_depend_packages_all}"
 
 	echo $LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp
 	$LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp $job

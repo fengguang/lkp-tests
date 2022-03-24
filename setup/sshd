@@ -90,8 +90,8 @@ set_port()
 
 mount_user_home()
 {
-	[[ -n "$secrets_smb_user" ]] || return 0
-	[[ -n "$secrets_smb_pass" ]] || return 0
+	[ -n "$secrets_smb_user" ] || return 0
+	[ -n "$secrets_smb_pass" ] || return 0
 
 	# the mount point in testbox is set the same as its home dir in the account-vm
 	[[ -d "/home/$secrets_smb_user" ]] || mkdir -p "/home/$secrets_smb_user"
