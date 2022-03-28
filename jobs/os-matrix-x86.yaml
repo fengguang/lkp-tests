@@ -1,3 +1,5 @@
+# This job cannot run standalone, it's to be included when submitting other jobs. 
+
 os_arch: x86_64
 os_mount: cifs
 testbox: 2288hv5-2s44p-384g

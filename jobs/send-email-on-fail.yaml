@@ -1,3 +1,5 @@
+# This job cannot run standalone, it's to be included when submitting other jobs. 
+
 # use this send-email-on-fail.yaml by:
 #   submit job.yaml -i send-email-on-fail.yaml on_fail.send_email.subject=$subject
 #   values of $subject are limited to job_failed/job_debug/borrow_success/borrow_failed.
