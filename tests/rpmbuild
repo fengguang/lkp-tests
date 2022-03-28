@@ -206,6 +206,8 @@ build_rpm()
 	sumTime=$[ $endTime_s - $startTime_s ]
 
 	echo "RPM build START TIME: $startTime, END TIME: $endTime, Total duration: $sumTime seconds"
+	find /${rpmdev_dir}/BUILD/*/ -maxdepth 1 -type d -name "tests" | grep "tests"
+	[ $? = 0 ] && echo "All test cases are passed."
 }
 
 localinstall_dependent_package()
@@ -237,7 +239,7 @@ upload_rpm_pkg()
 	for rpm_file in $(show_rpm_files)
 	do
 		upload_one_curl ${rpm_file} ${rpm_dest}
-		[ -n "$upstream_repo" ] && upload_one_curl ${rpm_file} ${tmp_rpm_dest}
+		[ -n "$pr_merge_reference_name" ] && upload_one_curl ${rpm_file} ${tmp_rpm_dest}
 	done
 
 	local src_rpm_file

@@ -15,8 +15,8 @@
 . $LKP_SRC/distro/${DISTRO}
 
 [ -n "${rpm_name}" ]		|| die "rpm_name is empty"
-[ -n "${mount_repo_name}" ]	|| die "mount_repo_name is empty"
-[ -n "${mount_repo_addr}" ]	|| die "mount_repo_addr is empty"
+#[ -n "${mount_repo_name}" ]	|| die "mount_repo_name is empty"
+#[ -n "${mount_repo_addr}" ]	|| die "mount_repo_addr is empty"
 
 rpm_name=${rpm_name//,/ }
 rpm_name=($rpm_name)
@@ -80,7 +80,13 @@ install_rpms()
 	log_info "Starting install test: yum install -y ${rpm_name[@]}"
 	for i in "${rpm_name[@]}"
 	do
-		a=$(yum install -y "$i" 2>&1)
+		if [ -n "$pr_merge_reference_name" ]; then
+			cp /home/lkp/rpmbuild/RPMS/*/* .
+			echo "begin to yum localinstall rpm"
+			a=$(yum localinstall -y *.rpm 2>&1)
+		else
+			a=$(yum install -y "$i" 2>&1)
+		fi
 		echo "$a"
 		echo "$a" | grep -q "Complete!"
 		if [ $? -eq 0 ]; then
@@ -211,15 +217,19 @@ remove_rpms()
 	done
 }
 
-distro_install_depends install-rpm
-add_repo
-echo_rpm_location
-echo_rpm_evr
-echo_src_rpm_location
-echo_rpm_license
+[ -n "${pr_merge_reference_name}" ] || {
+	distro_install_depends install-rpm
+	add_repo
+	echo_rpm_location
+	echo_rpm_evr
+	echo_src_rpm_location
+	echo_rpm_license
+}
 install_rpms
-query_group
-query_libs
+[ -n "${pr_merge_reference_name}" ] || {
+	query_group
+	query_libs
+}
 run_cmd
 run_service
 ldd_test

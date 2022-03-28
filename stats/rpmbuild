@@ -24,6 +24,8 @@ while (line = STDIN.gets)
     puts "total_duration(s).message: #{$3}"
   when /No matching package to install: '(.*)'/
     puts "no_matching_package.element: #{$1}"
+  when /All test cases are passed./
+    puts "func.message: success"
   end
   next unless in_stderr
   next unless line =~ /(error|warning):[^:]/i
