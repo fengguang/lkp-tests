@@ -712,10 +712,10 @@ class Job
   # - $LKP_SRC/distro/depends/$os/$script
   def search_depend_packages_file(os, os_version, script)
     depend_pakeages_dir = "#{ENV['LKP_SRC']}/distro/depends/"
-    depend_pakeages_path = depend_pakeages_dir + os + "/" + os_version + "/" + script
+    depend_pakeages_path = File.join(depend_pakeages_dir, os.to_s, os_version.to_s, script)
     return depend_pakeages_path if File.exist?(depend_pakeages_path)
 
-    depend_pakeages_path = depend_pakeages_dir + os + "/" + script
+    depend_pakeages_path = File.join(depend_pakeages_dir, os.to_s, script)
     return depend_pakeages_path if File.exist?(depend_pakeages_path)
   end
 
