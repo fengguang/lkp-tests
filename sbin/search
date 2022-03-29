@@ -72,7 +72,7 @@ response = JSON.parse(response)
 die(response['error_msg']) if response['error_msg']
 
 if show_type == 'json'
-  pp response
+  puts JSON.pretty_generate(response)
 else
   results = []
   response['hits']['hits'].each do |source|

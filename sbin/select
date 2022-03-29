@@ -61,7 +61,7 @@ if $PROGRAM_NAME == __FILE__
   response = es_opendistro_query(data_hash)
 
   if show_type == 'json'
-    pp response
+    puts JSON.pretty_generate(response)
   else
     results = []
     response['hits']['hits'].each do |source|
