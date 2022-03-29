@@ -1,5 +1,4 @@
 #!/bin/sh
-# - data_dev
 # mysql_user
 # mysql_host
 # mysql_port
@@ -31,16 +30,11 @@ insmod_getcpu()
 
 create_basedir()
 {
-	mkdir -p /data
-	mkfs.xfs -f /dev/"$data_dev"
-	mount /dev/"$data_dev" /data
-
 	mkdir -p /data/mysql/{data,share,tmp,run,log}
 
 	useradd mysql
 	touch /data/mysql/log/mysql.log
 	chown -R mysql:mysql /data
-	chown -R mysql:mysql /data/mysql/log/mysql.log
 }
 
 configure_mysql()

@@ -1,8 +1,16 @@
 suite: benchmark-sql
 
 mysql_host: localhost
-data_dev: sdb
 timeout: 28800
+
+disk:
+- 1HDD
+fs1:
+  fs_type:
+  - xfs
+mount_to:
+- /data
+
 
 build-pkg-0:
         upstream_repo: g/gcc/gcc

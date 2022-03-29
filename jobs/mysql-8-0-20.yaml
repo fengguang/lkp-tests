@@ -1,4 +1,4 @@
-suite: cci-makepkg
+suite: sysbench-mysql
 category: functional
 
 os: openeuler
@@ -10,10 +10,14 @@ mysql_host: localhost
 mysql_port:
 mysql_db:
 mysql_password:
-data_dev: sdb
 
-cci-makepkg:
-  benchmark: mysql-8-0-20
+disk:
+- 1HDD
+fs1:
+  fs_type:
+  - xfs
+mount_to:
+- /data
 
 mysql-8-0-20:
 
