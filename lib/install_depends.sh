@@ -13,14 +13,14 @@ set_ubuntu_debian()
 		-e "s|http://security.debian.org|${mirror_addr}|g" \
 		-e "s|http://security.ubuntu.com|${mirror_addr}|g" \
 		-e "s|http://archive.ubuntu.com|${mirror_addr}|g" \
-		-i.bak \
+		-i \
 		/etc/apt/sources.list
 }
 
 set_suse()
 {
 	sed -e "s|^baseurl=http://download.opensuse.org|baseurl=${mirror_addr}/opensuse|g" \
-		-i.bak \
+		-i \
 		/etc/zypp/repos.d/repo-*.repo
 }
 
@@ -37,7 +37,7 @@ set_fedora()
 {
 	sed -e 's|^metalink=|#metalink=|g' \
 		-e "s|^#baseurl=http://download.example/pub/fedora/linux|baseurl=${mirror_addr}/fedora|g" \
-		-i.bak \
+		-i \
 		/etc/yum.repos.d/fedora*.repo
 }
 
@@ -51,17 +51,18 @@ set_centos()
 				-e "s|^#baseurl=http://mirror.centos.org/centos|baseurl=${mirror_addr}/centos|g" \
 				-e "s|^#baseurl=http://mirror.centos.org/altarch|baseurl=${mirror_addr}/centos-altarch|g" \
 				-e "s|^baseurl=http://mirror.centos.org/altarch|baseurl=${mirror_addr}/centos-altarch|g" \
-				-i.bak \
+				-i \
 				/etc/yum.repos.d/CentOS-*.repo
 			;;
 		8)
 			sed -e 's|^mirrorlist=|#mirrorlist=|g' \
 				-e "s|^#baseurl=http://mirror.centos.org/\$contentdir|baseurl=${mirror_addr}/centos|g" \
-				-i.bak \
+				-i \
 				/etc/yum.repos.d/CentOS-*.repo
 			;;
 		*)
 			echo "local repo mirror not found for CentOS: ${VERSION_ID}"
+			return 1
 			;;
 
 	esac
@@ -82,26 +83,57 @@ get_package_manager()
         has_cmd "zypper" && installer="zypper" && return
 }
 
-install_depends()
+backup_default_repo()
 {
-	packages="$1"
+	case "${_system_name}" in
+		Ubuntu|Debian)
+			mkdir /etc/apt/bak
+			cp /etc/apt/sources.list /etc/apt/bak
+			;;
+		SuSE|OpenSuSE)
+			mkdir /etc/zypp/repos.d/bak
+			cp /etc/zypp/repos.d/repo-*.repo /etc/zypp/repos.d/bak/
+			;;
+		ArchLinux)
+			mkdir /etc/pacman.d/bak
+			cp /etc/pacman.d/mirrorlist /etc/pacman.d/bak/
+			;;
+		Fedora)
+			mkdir /etc/yum.repos.d/bak
+			cp /etc/yum.repos.d/fedora*.repo /etc/yum.repos.d/bak
+			;;
+		CentOS)
+			mkdir /etc/yum.repos.d/bak
+			cp /etc/yum.repos.d/CentOS-*.repo /etc/yum.repos.d/bak
+			;;
+		*)
+			echo "backup repo mirror not found for system: ${_system_name}, ${installer} use repos by default"
+			return 1
+			;;
+	esac
+}
 
-	case "$installer" in
-		apt-get)
-			export DEBIAN_FRONTEND=noninteractive
-
-			"${installer}" update >/dev/null
-			"$installer" install -yqm ${packages}
+rollback_default_repo()
+{
+	case "${_system_name}" in
+		Ubuntu|Debian)
+			cp /etc/apt/bak/sources.list /etc/apt/
 			;;
-		dnf|yum)
-			"$installer" install -y -q --skip-broken ${packages}
+		SuSE|OpenSuSE)
+			cp /etc/zypp/repos.d/bak/repo-*.repo /etc/zypp/repos.d/
 			;;
-		pacman)
-			"$installer" -Sy --noconfirm --needed ${packages}
+		ArchLinux)
+			cp /etc/pacman.d/bak/mirrorlist /etc/pacman.d/
 			;;
-		zypper)
-			"${installer}" -Sy --needed >/dev/null
-			"$installer" -q install -y ${packages}
+		Fedora)
+			cp /etc/yum.repos.d/bak/fedora*.repo /etc/yum.repos.d/
+			;;
+		CentOS)
+			cp /etc/yum.repos.d/bak/CentOS-*.repo /etc/yum.repos.d/
+			;;
+		*)
+			echo "rollback repo mirror not found for system: ${_system_name}, ${installer} use repos by default"
+			return 1
 			;;
 	esac
 }
@@ -128,6 +160,51 @@ set_local_mirror()
 			;;
 		*)
 			echo "local repo mirror not found for system: ${_system_name}, ${installer} use repos by default"
+			return 1
 			;;
 	esac
 }
+
+install_depends_packages()
+{
+	local packages="$1"
+
+	case "$installer" in
+		apt-get)
+			export DEBIAN_FRONTEND=noninteractive
+
+			"${installer}" update >/dev/null
+			"$installer" install -yqm ${packages}
+			;;
+		dnf|yum)
+			"$installer" install -y -q --skip-broken ${packages}
+			;;
+		pacman)
+			"$installer" -Sy --noconfirm --needed ${packages}
+			;;
+		zypper)
+			"${installer}" -Sy --needed >/dev/null
+			"$installer" -q install -y ${packages}
+			;;
+	esac
+}
+
+install_depends()
+{
+	detect_system
+
+	get_package_manager
+
+	backup_default_repo || return 0
+
+	set_local_mirror || {
+		rollback_default_repo
+		return 0
+	}
+
+	install_depends_packages "$1" || {
+		rollback_default_repo
+		install_depends_packages "$1"
+	}
+}
+
