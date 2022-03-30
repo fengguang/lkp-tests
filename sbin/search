@@ -24,7 +24,7 @@ select_field = ''
 option_hash = {}
 
 options = OptionParser.new do |opts|
-  opts.banner = 'Usage: cci search -i $index -q $search'
+  opts.banner = 'Usage: cci search -i $index -d $search'
   opts.separator '    search info from es db by dsl'
   opts.separator '    eg.1: cci search -i jobs -d \'{"_source": ["suite", "id", "job_stage"]}\''
   opts.separator '    eg.2: cci search -i jobs -d \'{"query": {"term": {"suite": "borrow"}}, "_source": ["id"]}\''
