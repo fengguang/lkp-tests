@@ -15,12 +15,11 @@ if [[ "$#" != 0 ]]; then
 	usage
 fi
 
-echo 'Are you sure you want to return?'
-echo 'If you enter "Y", this testbox will restart immediately.'
-while [[ "$flag" != 'Y' ]]
+echo 'The command is used to return the testbox!'
+while [[ "$flag" != [yY] ]]
 do
-	read -p 'Enter "Y" or "N":' flag
-	[ "$flag" == 'N' ] && exit
+	read -p 'Return immediately [y/Y] or Cancel return [n/N]: ' flag
+	[[ "$flag" == [nN] ]] && exit
 done
 
 kill_lkp()
