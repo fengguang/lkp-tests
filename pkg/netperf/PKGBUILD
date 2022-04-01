@@ -33,7 +33,7 @@ build()
 				--enable-burst
 	)
 
-	CFLAGS="-std=gnu89" ./configure "${configure_flags[@]}"
+	CFLAGS="-std=gnu89 -fcommon" ./configure "${configure_flags[@]}"
 	make
 }
 
