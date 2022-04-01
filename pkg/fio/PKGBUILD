@@ -17,7 +17,7 @@ prepare() {
     cd "$srcdir/fio"
     git checkout "fio-$pkgver"
     if [ "$os" = "openeuler" ]; then
-	if [[ "$os_version" =~ ^(21.03|21.03-iso|21.09|21.09-iso)$ ]]; then
+	if [[ "$os_version" =~ ^(21.03|21.03-iso|21.09|21.09-iso|22.03-LTS-iso)$ ]]; then
 	    patch -p1 < "$LKP_SRC/pkg/${pkgname}/fix-gettid.patch"
 	fi
     elif [ "$os" = "debian" ] && [[ "$os_version" =~ ^(11.1.0|11.1.0-iso)$ ]]; then
