@@ -17,6 +17,8 @@ build()
 {
 	cd $srcdir/byte-unixbench
 	cd UnixBench
+	sed -i $'s/"System Benchmarks", \'maxCopies\' => 0/"System Benchmarks", \'maxCopies\' => 256/g' ./Run
+	sed -i $'s/"Non-Index Benchmarks", \'maxCopies\' => 0/"Non-Index Benchmarks", \'maxCopies\' => 256/g' ./Run
 	make
 }
 
