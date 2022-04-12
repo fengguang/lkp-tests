@@ -195,12 +195,9 @@ install_depends()
 
 	get_package_manager
 
-	backup_default_repo || return 0
+	backup_default_repo
 
-	set_local_mirror || {
-		rollback_default_repo
-		return 0
-	}
+	set_local_mirror
 
 	install_depends_packages "$1" || {
 		rollback_default_repo
