@@ -138,7 +138,7 @@ run_lmbench3_development()
 
 	eval "$test=yes"
 
-	sed -i '/lat_pagefault -P $SYNC_MAX $FILE/i [ -f $FILE ] || dd if=/dev/zero of=$FILE count=1 bs=1G' bin/"${os_arch}"-linux-gnu/lmbench
+	sed -i '/lat_pagefault -P $SYNC_MAX $FILE/i [ -f $FILE ] || dd if=/dev/zero of=$FILE count=1 bs=1G' bin/"${system_type}"/lmbench
 	log_eval "
 	(
 		echo $nr_threads
@@ -177,7 +177,7 @@ run_lmbench3_development()
 
 show_result()
 {
-	cat results/"${os_arch}"-linux-gnu/$testbox.0 || die "no test result found"
+	cat results/"${system_type}"/$testbox.0 || die "no test result found"
 }
 
 cd $BENCHMARK_ROOT/lmbench3 || {
@@ -186,11 +186,8 @@ cd $BENCHMARK_ROOT/lmbench3 || {
 }
 
 make 2>&1 || die "failed to build lmbench3"
-os=$(cd $BENCHMARK_ROOT/lmbench3/scripts; ./os)
-[ -n "$os" ] && rm -rf $BENCHMARK_ROOT/lmbench3/results/$os/
-
-# os_arch is only set in compass-ci
-[ -n "$os_arch" ] || os_arch=$(arch)
+system_type=$(cd $BENCHMARK_ROOT/lmbench3/scripts; ./os)
+[ -n "$system_type" ] && rm -rf $BENCHMARK_ROOT/lmbench3/results/$system_type/
 
 case "$mode" in
 	'all') run_lmbench3_all ;;
