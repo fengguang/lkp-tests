@@ -270,7 +270,10 @@ pre_works()
 
 	mount_rootfs
 
-	[ -n "$iso_url" ] && ISO_URL=$iso_url
+	[ -n "$iso_url" ] && {
+		ISO_URL=$iso_url
+		ISO_CHECKSUM_URL="${ISO_URL}.sha256sum"
+	}
 	check_sha256sum_update
 
 	check_os
@@ -303,8 +306,6 @@ config_iso_conf()
 
 config_iso_url()
 {
-	[ -n "${dailybuild_iso_url_file}" ] || return 0
-
 	local i2q_iso_url_file="${I2Q_SRC}/conf/iso/net-iso/${iso_os}/${iso_arch}/${iso_version}"
 	sed -i "s|^iso_url=.*|iso_url=\"${ISO_URL}\"|g" "${i2q_iso_url_file}"
 	sed -i "s|^iso_checksum_url=.*|iso_checksum_url=\"${ISO_CHECKSUM_URL}\"|g" "${i2q_iso_url_file}"
