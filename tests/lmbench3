@@ -177,7 +177,7 @@ run_lmbench3_development()
 
 show_result()
 {
-	cat results/"${system_type}"/$testbox.0 || die "no test result found"
+	cat results/"${system_type}"/*.0 || die "no test result found"
 }
 
 cd $BENCHMARK_ROOT/lmbench3 || {
