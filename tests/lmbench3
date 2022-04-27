@@ -55,6 +55,25 @@ test_memory_size=$(($test_memory_size/1024/1024))
 # Disable to send the test result to remote database
 run_lmbench3_all()
 {
+	if [ "$is_performance_dashboard" = "true" ]; then
+		run_by_make_rerun
+	else
+		run_by_make_results
+	fi
+}
+
+run_by_make_rerun()
+{
+	mv CONFIG.lmbench3 bin/$system_type/CONFIG.$(hostname)
+	sed -i \
+            -e "/^INFO=/cINFO=INFO.$(hostname)" \
+            -e "/^OS=/cOS=\"$system_type\"" \
+	    bin/$system_type/CONFIG.$(hostname)
+	make rerun
+}
+
+run_by_make_results()
+{
 	log_eval "
 	(
 		echo $nr_threads

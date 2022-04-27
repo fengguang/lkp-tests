@@ -17,4 +17,5 @@ build() {
 package() {
 	mkdir -p "$pkgdir/lkp/benchmarks/lmbench3"
 	cp -r "$srcdir/$pkgname/"* "$pkgdir/lkp/benchmarks/lmbench3"
+	cp "$LKP_SRC/pkg/lmbench3/CONFIG.lmbench3" "$pkgdir/lkp/benchmarks/lmbench3/"
 }
