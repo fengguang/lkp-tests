@@ -1,0 +1,15 @@
+suite: unixbench
+
+swap:
+nr_hdd: 1
+disk:
+fs: ext4
+mount_to: /test
+
+nr_task:
+ - 1
+ - 100%
+
+unixbench:
+
+benchmark_env: "EMULATE_LOGIN_ENV"

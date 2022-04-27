@@ -32,19 +32,36 @@ while (line = $stdin.gets)
     end
   when /^System Benchmarks Index Score .* ([0-9.]+)$/
     score = $1
+  when /^System Benchmarks Index Values(\s+\S+){3}$/
+    index_list = []
+    while (line = STDIN.gets)
+      lines = line.split
+      lines_l = lines.length
+      break if lines_l < 4
+
+      index = lines[-1]
+      index_value = lines[0, lines_l - 3].join('_')
+      index_list.append("#{index_value}: #{index}")
+    end
   end
 end
 
-if duration.nil? || throughput.nil?
-  log_error 'unixbench: missing duration or throughput'
-  exit
-end
-
-workload = duration * throughput
-if score
-  puts "score: #{score}"
-  puts "workload: #{workload}"
+if index_list.nil?
+  if duration.nil? || throughput.nil?
+    log_error 'unixbench: missing duration or throughput'
+  else
+    workload = duration * throughput
+    if score
+      puts "score: #{score}"
+      puts "workload: #{workload}"
+    else
+      puts 'incomplete_result: 1'
+      log_error "unixbench: missing score, check #{ENV['RESULT_ROOT']}"
+    end
+  end
 else
-  puts 'incomplete_result: 1'
-  log_error "unixbench: missing score, check #{ENV['RESULT_ROOT']}"
+  index_list.each do |index|
+    puts index.to_s
+  end
+  puts "System_Benchmarks_Index_Score: #{score}"
 end

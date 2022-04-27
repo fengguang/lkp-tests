@@ -11,20 +11,43 @@
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/upload.sh
 
-cd $BENCHMARK_ROOT/unixbench || die "no $BENCHMARK_ROOT/unixbench"
+unixbench_path=$BENCHMARK_ROOT/unixbench
+[ -n "$mount_to" ] && {
+	cp -ra $BENCHMARK_ROOT /$mount_to/
+	unixbench_path=/$mount_to/benchmarks/unixbench
+}
 
-export LANG=C
+test_partial()
+{
+	export LANG=C
 
-[ -n "$runtime" ] || runtime=300
+	[ -n "$runtime" ] || runtime=300
 
-# Each iteration in UnixBench is about 10 seconds
-iteration=$(( runtime / 10 ))
+	# Each iteration in UnixBench is about 10 seconds
+	iteration=$(( runtime / 10 ))
 
-[ $test = "shell8" ] && iteration=1
+	[ $test = "shell8" ] && iteration=1
 
-[ -n "$nr_task" ] && other_params="-c $nr_task"
+	[ -n "$nr_task" ] && other_params="-c $nr_task"
 
-cd UnixBench
-log_cmd ./Run $test $other_params -i $iteration || exit
+	cd UnixBench
+	log_cmd ./Run $test $other_params -i $iteration || exit
+}
 
-upload_files -t results $BENCHMARK_ROOT/unixbench/UnixBench/results/*
+test_all()
+{
+
+	cd UnixBench
+	echo 3 > /proc/sys/vm/drop_caches
+	log_cmd use_benchmark_env numactl --interleave=all ./Run -c $nr_task
+}
+
+cd $unixbench_path || die "no $unixbench_path"
+
+if [ -n "$mount_to" ]; then
+	test_all
+else
+	test_partial
+fi
+
+upload_files -t results $unixbench_path/UnixBench/results/*
