@@ -63,9 +63,9 @@ def get_cpu_info
 end
 
 def get_memory_info
-  lshw_string = '[' + %x(lshw -c memory -numeric -json).gsub(/\s{2,}/, '').gsub(/,$/, ']')
+  lshw_string = %x(lshw -numeric -json).gsub(/\s{2,}/, '')
   memory_list = []
-  lshw_info = JSON.parse(lshw_string)
+  lshw_info = JSON.parse(lshw_string)['children'][0]['children']
   lshw_info.each do |element|
     memory_list = element['children'] if element['id'] == 'memory'
   end

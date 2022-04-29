@@ -2,5 +2,6 @@
 
 yum -y -q install pciutils
 yum -y -q install ruby
+yum -y -q install lshw
 gem install facter
 
