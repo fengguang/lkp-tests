@@ -13,33 +13,33 @@ COMMAND_INFO = {
     'path' => "#{LKP_SRC}/sbin/submit",
     'type' => 'external'
   },
-  'cancel' =>{
+  'cancel' => {
     'profile' => 'cancel jobs that have not been consumed',
     'path' => "#{LKP_SRC}/sbin/cancel",
     'type' => 'external'
   },
-  'hosts' =>{
+  'hosts' => {
     'profile' => 'search hosts info from es',
     'path' => "#{LKP_SRC}/sbin/hosts",
     'type' => 'external'
   },
-  'jobs' =>{
+  'jobs' => {
     'profile' => 'search jobs info from es',
     'path' => "#{LKP_SRC}/sbin/jobs",
     'type' => 'external'
   },
-  'search' =>{
+  'search' => {
     'profile' => 'search info from server es db by dsl',
     'path' => "#{LKP_SRC}/sbin/search",
     'type' => 'external'
   },
-   'select' =>{
+  'select' => {
     'profile' => 'search info from server es db by sql',
     'path' => "#{LKP_SRC}/sbin/select",
     'type' => 'external'
   },
- 
- 'lkp-renew' => {
+
+  'lkp-renew' => {
     'profile' => 'prolong the service time of the testbox',
     'path' => "#{LKP_SRC}/sbin/lkp-renew",
     'type' => 'internal'
@@ -102,6 +102,6 @@ ARGV.each do |a|
 end
 
 cmd = "#{COMMAND_INFO[opt]['path']} #{args.strip}"
-cmd += " -h"                              unless option_hash['help'].nil?
+cmd += ' -h'                              unless option_hash['help'].nil?
 cmd += " -d \"#{option_hash['data']}\""   unless option_hash['data'].nil?
 exec cmd
