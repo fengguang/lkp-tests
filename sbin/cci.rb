@@ -88,7 +88,7 @@ options = OptionParser.new do |opts|
   show_command(opts, 'external')
 end
 
-if ARGV.empty? || (ARGV.length == 1 && ARGV[0] == "-h")
+if ARGV.empty? || ARGV.length == 1 && (ARGV[0] == '-h' || ARGV[0] == '--help')
   puts(options)
   exit
 end
