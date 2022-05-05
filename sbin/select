@@ -20,7 +20,7 @@ options = OptionParser.new do |opts|
   opts.banner = 'Usage: cci select -f $field -w $where $index'
   opts.separator '    search info from es db by sql'
   opts.separator '    eg.1: cci select -f suite,id,job_stage,testbox -w "id=\'xxx\'" -c \"order by id\" jobs'
-  opts.separator '    eg.2: cci select -f \* -w "suite=\'xxx\' and job_state=\'xxx\'" jobs'
+  opts.separator '    eg.2: cci select -f \* -w "suite=\'xxx\' and job_stage=\'xxx\'" jobs'
   opts.separator 'options:'
 
   opts.on('-f', '--field <field>', 'show field') do |f|

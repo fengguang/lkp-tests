@@ -16,7 +16,7 @@ options = OptionParser.new do |opts|
   opts.separator '    query your jobs from es db'
   opts.separator '    eg.0: cci jobs'
   opts.separator '    eg.2: cci jobs -f \* id=xxx'
-  opts.separator '    eg.3: cci jobs -f id,job_state,testbox suite=borrow'
+  opts.separator '    eg.3: cci jobs -f id,job_stage,testbox suite=borrow'
   opts.separator '    eg.4: cci jobs -f id suite=borrow job_stage=finish'
   opts.separator '    eg.5: cci jobs -f -id'
   opts.separator '    eg.4: cci jobs -f +queue -id'
@@ -42,7 +42,7 @@ end
 if $PROGRAM_NAME == __FILE__
   options.parse!(ARGV)
 
-  default_field = %w[suite id job_state testbox os start_time end_time]
+  default_field = %w[suite id job_stage job_health testbox os start_time end_time]
   select_field = merge_field(default_field, field_list)
   where_list = get_where_list(ARGV)
 
