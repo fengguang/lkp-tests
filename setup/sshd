@@ -12,6 +12,7 @@ PROJECT_DIR=$(dirname $SCRIPT_DIR)
 . $PROJECT_DIR/lib/http.sh
 . $PROJECT_DIR/lib/env.sh
 . $PROJECT_DIR/lib/email.sh
+. $PROJECT_DIR/lib/create_script_rootfs.sh
 
 sshr_server_ip=$LKP_SERVER
 [ -n "$sshr_server_port" ]   || sshr_server_port=5051
@@ -111,6 +112,7 @@ run_email()
 	fi
 }
 
+create_rootfs "sshd"
 set_login_tmout
 set_term
 run_ssh
