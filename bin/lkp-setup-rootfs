@@ -308,14 +308,8 @@ chmod_root_ssh()
 	chmod 600 /root/.ssh/id_rsa
 }
 
-replace_openeuler_repo()
-{
-	sed -i -e "s|https*://repo.openeuler.org/|https://repo.huaweicloud.com/openeuler/|g" /etc/yum.repos.d/*.repo
-}
-
 install_proxy || exit_with_job_state 'error:proxy'
 chmod_root_ssh
-[ "$os" == "openeuler" ] && replace_openeuler_repo
 
 while true; do
 	set_tbox_wtmp 'running'

@@ -68,6 +68,13 @@ set_centos()
 	esac
 }
 
+set_openeuler()
+{
+	sed -e "s|https*://repo.openeuler.org/|https://repo.huaweicloud.com/openeuler/|g" \
+		-i \
+		/etc/yum.repos.d/*.repo
+}
+
 adapt_lkp_depends()
 {
 	os=$(echo "${_system_name}" | tr '[:upper:]' '[:lower:]')
@@ -106,6 +113,10 @@ backup_default_repo()
 			mkdir /etc/yum.repos.d/bak
 			cp /etc/yum.repos.d/CentOS-*.repo /etc/yum.repos.d/bak
 			;;
+		openEuler)
+			mkdir /etc/yum.repos.d/bak
+			cp /etc/yum.repos.d/*.repo /etc/yum.repos.d/bak
+			;;
 		*)
 			echo "backup repo mirror not found for system: ${_system_name}, ${installer} use repos by default"
 			return 1
@@ -130,6 +141,9 @@ rollback_default_repo()
 			;;
 		CentOS)
 			cp /etc/yum.repos.d/bak/CentOS-*.repo /etc/yum.repos.d/
+			;;
+		openEuler)
+			cp /etc/yum.repos.d/bak/*.repo /etc/yum.repos.d/
 			;;
 		*)
 			echo "rollback repo mirror not found for system: ${_system_name}, ${installer} use repos by default"
@@ -157,6 +171,9 @@ set_local_mirror()
 			;;
 		CentOS)
 			set_centos
+			;;
+		openEuler)
+			set_openeuler
 			;;
 		*)
 			echo "local repo mirror not found for system: ${_system_name}, ${installer} use repos by default"
