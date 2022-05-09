@@ -1,8 +1,19 @@
 #!/bin/sh
 
-cd $BENCHMARK_ROOT/libMicro || exit
+. $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/reproduce-log.sh
+
+
+path=$BENCHMARK_ROOT/libMicro
+
+[ -n "$mount_to" ] && {
+	cp -ra $BENCHMARK_ROOT /$mount_to/
+	path=/$mount_to/benchmarks/libMicro
+}
+
+cd $path || exit
 
 # wait for the environment to be prepared
 sleep 60
 
-log_cmd ./bench || exit
+log_cmd use_benchmark_env ./bench > $TMP_RESULT_ROOT/libmicro || exit
