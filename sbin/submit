@@ -22,6 +22,8 @@ actions = ['output', 'stop']
 result_roots = []
 nr_run = 1
 do_pack = true
+manual_install_cmdline = false
+
 
 options = OptionParser.new do |opts|
   opts.banner = 'Usage: submit [options] job1.yaml job2.yaml ...'
@@ -82,6 +84,9 @@ options = OptionParser.new do |opts|
     opt_my_queue = true
   end
 
+  opts.on('--cmdline', 'use manual install cmdline') do
+    manual_install_cmdline = true
+  end
 end
 
 ARGV_CLONE = ARGV.clone
@@ -161,6 +166,7 @@ ARGV.each do |jobfile|
   jobs['tbox_group'] = tbox_group(jobs['testbox']) if jobs.include?('testbox')
   jobs['node_roles'] ||= 'server client' if jobs['cluster']
   jobs['submit_id'] = submit_id
+
   jobs.each_jobs do |job|
     raise 'Please configure SCHED_HOST' unless job['SCHED_HOST']
     raise 'Please configure SCHED_PORT' unless job['SCHED_PORT']
@@ -172,6 +178,7 @@ ARGV.each do |jobfile|
     job.add_monitors
     job.add_define_files if opt_auto_define_files
     job.add_timeout
+    job.use_manual_install_cmdline if manual_install_cmdline
 
     # get job shell function
     sh_run_job = job.sh_run_job

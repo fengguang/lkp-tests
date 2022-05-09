@@ -692,6 +692,30 @@ class Job
     @job['install_depend_packages_all'] = all_packages.uniq.join(' ')
   end
 
+  def find_cmdline_file(os, os_version, os_arch)
+    dir = "#{ENV['LKP_SRC']}/include/manual_install_cmdline/"
+
+    files = []
+    files << [ os, os_arch, os_version ].join('-')
+    files << [ os, os_arch ].join('-')
+    files << os
+
+    files.each do |file|
+      return dir+file if File.exists?(dir + file)
+    end
+  end
+
+  def use_manual_install_cmdline()
+    os, os_version = get_os_info
+    os_arch = @job['arch'] || @job['os_arch'] || 'aarch64'
+
+    file = find_cmdline_file(os, os_version, os_arch)
+    return unless file
+
+    cmdline = load_yaml(file)
+    @job.merge!(cmdline)
+  end
+
   def get_depend_packages(os, os_version, script)
     depend_pakeages_path = search_depend_packages_file(os, os_version, script)
     if depend_pakeages_path && File.exist?(depend_pakeages_path)
