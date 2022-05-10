@@ -11,3 +11,5 @@ oltp.latency_max_ms
 oltp.latency_min_ms
 tbench.max_latency
 vm-scalability.stddev
+lmbench3(\S+)(latency|Latency|null|L1_$|L2_$|Rand_mem|ault)
+libmicro(\S+)
