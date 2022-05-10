@@ -460,7 +460,7 @@ install_rpms()
 	[ -d /opt/rpms ] || return
 	check_rpm_manager
 
-	[ ${installer} = "yum" ] && yum localinstall -y /opt/rpms/*.rpm
+	[ ${installer} = "yum" ] && yum localinstall -y /opt/rpms/*.rpm >/dev/null 2>&1
 	[ ${installer} = "zypper" ] && zypper install --force-resolution -y /opt/rpms/*.rpm
 
 	[ $? = "0" ] || {
