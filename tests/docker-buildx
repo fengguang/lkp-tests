@@ -1,0 +1,118 @@
+#!/bin/bash
+# - registry
+# - base_image
+# - target_image
+
+. $LKP_SRC/lib/debug.sh
+
+check_vars()
+{
+	[ -n "$registry" ] || die "registry is empty"
+	[ -n "$base_image" ] || die "base_image is empty"
+	[ -n "$target_image" ] || die "target_image is empty"
+}
+
+update_mirror()
+{
+	# uninstall deps
+	yum remove -y docker docker-common docker-selinux docker-engine buildah podman
+
+	# install deps
+	yum install -y yum-utils device-mapper-persistent-data lvm2 dnf wget
+
+	# add repo
+	wget -O /etc/yum.repos.d/docker-ce.repo https://download.docker.com/linux/centos/docker-ce.repo
+
+	sed -i 's+download.docker.com+opentuna.cn/docker-ce+' /etc/yum.repos.d/docker-ce.repo
+}
+
+create_builder()
+{
+	# install docker
+	dnf makecache --timer
+	yum install -y docker-ce
+
+	# fix on centos7
+	mkdir -p /etc/systemd/system/docker.service.d
+
+	cat <<-EOF >/etc/systemd/system/docker.service.d/10-ramdisk.conf
+	[Service]
+	Environment=DOCKER_RAMDISK=true
+	EOF
+
+	# delete docker proxy conf
+	local docker_proxy_conf=/etc/systemd/system/docker.service.d/http-proxy.conf
+	[ -f "$docker_proxy_conf" ] && rm "$docker_proxy_conf"
+
+	# start docker
+	systemctl daemon-reload
+	systemctl start docker
+
+	# create mybuilder
+	docker buildx create --use --name mybuilder
+}
+
+create_toml()
+{
+	cat <<-EOF > ~/.docker/buildkitd.toml
+	debug = true
+
+	# root is where all buildkit state is stored.
+	root = "/var/lib/buildkit"
+
+	# insecure-entitlements allows insecure entitlements, disabled by default.
+	insecure-entitlements = [ "network.host", "security.insecure"]
+	[registry."${registry}"]
+	  http = true
+	  insecure = true
+	EOF
+
+	docker buildx create --config ~/.docker/buildkitd.toml --use
+}
+
+create_dockerfile()
+{
+	cat <<-EOF > /tmp/Dockerfile
+	FROM ${base_image}
+	COPY install.sh /root/
+	RUN chmod +x /root/install.sh && \
+	sed -i 's|repo.openeuler.org|repo.huaweicloud.com/openeuler|g' /etc/yum.repos.d/* && \
+	./root/install.sh
+	EOF
+}
+
+create_install()
+{
+	cat <<-EOF > /tmp/install.sh
+	#!/bin/bash
+
+	# install deps
+	yum install -y openssh git time ruby rpm-build dnf-plugins-core
+
+	# enable sshd login
+	sed -i '15a # for openEuler sshd login' /etc/pam.d/sshd
+	sed -i '17 s/^/#/' /etc/pam.d/sshd
+
+	# delete install.sh
+	rm /root/install.sh
+	EOF
+}
+
+build_images()
+{
+	cd /tmp
+	docker buildx build --platform linux/amd64,linux/arm64 -t ${registry}/${target_image} --push .
+}
+
+main()
+{
+	check_vars
+	update_mirror
+	create_builder
+	create_toml
+	create_dockerfile
+	create_install
+	build_images
+}
+
+main
