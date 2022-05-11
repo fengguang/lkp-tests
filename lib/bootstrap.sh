@@ -438,7 +438,7 @@ install_deb()
 
 check_rpm_manager()
 {
-	has_cmd "yum" && installer="yum"
+	has_cmd "yum" && installer="yum" && return
 	has_cmd "zypper" && installer="zypper"
 }
 
@@ -455,18 +455,27 @@ delete_conflict_packages()
 	done
 }
 
+install_opt_rpms()
+{
+	[ ${installer} = "yum" ] && {
+		yum localinstall -y /opt/rpms/*.rpm &>/dev/null
+		return
+	}
+	[ ${installer} = "zypper" ] && {
+		zypper install --force-resolution -y /opt/rpms/*.rpm &>/dev/null
+		return
+	}
+}
 install_rpms()
 {
 	[ -d /opt/rpms ] || return
 	check_rpm_manager
-
-	[ ${installer} = "yum" ] && yum localinstall -y /opt/rpms/*.rpm >/dev/null 2>&1
-	[ ${installer} = "zypper" ] && zypper install --force-resolution -y /opt/rpms/*.rpm
-
-	[ $? = "0" ] || {
+	install_opt_rpms
+	[ "$?" -eq "0" ] || {
 		delete_conflict_packages
 		rpm -ivh --force --ignoresize /opt/rpms/*.rpm
-		}
+	}
+
 }
 
 try_get_and_set_distro()
