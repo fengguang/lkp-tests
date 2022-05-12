@@ -7,12 +7,11 @@ set_ubuntu_debian()
 {
 	export DEBIAN_FRONTEND=noninteractive
 
-	sed -e "s|http://ports.ubuntu.com|${mirror_addr}|g" \
-		-e "s|http://ports.ubuntu.com|${mirror_addr}|g" \
-		-e "s|http://deb.debian.org|${mirror_addr}|g" \
-		-e "s|http://security.debian.org|${mirror_addr}|g" \
+	sed     -e "s|http://ports.ubuntu.com|${mirror_addr}|g" \
 		-e "s|http://security.ubuntu.com|${mirror_addr}|g" \
 		-e "s|http://archive.ubuntu.com|${mirror_addr}|g" \
+		-e "s|http://deb.debian.org|${mirror_addr}|g" \
+		-e "s|http://security.debian.org|${mirror_addr}|g" \
 		-i \
 		/etc/apt/sources.list
 }
