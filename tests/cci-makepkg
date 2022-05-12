@@ -16,12 +16,15 @@
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/misc-base.sh
 . $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/create_script_rootfs.sh
 
 [ -n "$benchmark" ]		|| die "benchmark is empty"
 [ -n "$os_mount" ]		|| die "os_mount is empty"
 [ -n "$os" ]			|| die "os is empty"
 [ -n "$os_arch" ]		|| die "os_arch is empty"
 [ -n "$os_version" ]		|| die "os_version is empty"
+
+create_rootfs "cci-makepkg"
 
 PKG_MNT=/initrd/pkg
 mkdir -p "$PKG_MNT"

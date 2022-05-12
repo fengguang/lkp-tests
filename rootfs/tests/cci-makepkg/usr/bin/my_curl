@@ -1,0 +1,22 @@
+#!/bin/bash
+
+declare -a array
+i=0
+
+if [ -n "$HTTP_PROXY_HOST" ]; then
+	for param in "$@";
+	do
+		if [[ "$param" =~ http://(.*) ]] && [ -n "$HTTP_PROXY_PORT" ]; then
+			array[$i]="http://$HTTP_PROXY_HOST:$HTTP_PROXY_PORT/${BASH_REMATCH[1]}"
+		elif [[ "$param" =~ https://(.*) ]] && [ -n "$HTTPS_PROXY_PORT" ]; then
+			array[$i]="https://$HTTP_PROXY_HOST:$HTTPS_PROXY_PORT/${BASH_REMATCH[1]}"
+		else
+			array[$i]="$param"
+		fi
+		((i++))
+	done
+
+	command curl -k ${array[*]}
+else
+	command curl "$@"
+fi
