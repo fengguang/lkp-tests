@@ -150,6 +150,8 @@ download_upstream_repo()
 
 	git clone -q "$url" 2>/dev/null || git clone -q "$upstream_repo" || die "clone git repo ${package_name} failed: $url"
 	cd "$package_name" || exit
+	pr=$(echo $pr_merge_reference_name |awk '{split($0,a,"/");print a[3]}')
+	[ -n "${pr_merge_reference_name}" ] && git fetch origin pull/$pr/head
 	[ -n "${upstream_branch}" ] && ref="${upstream_branch}"
 	[ -n "${upstream_commit}" ] && ref="${upstream_commit}"
 	[ -n "${ref}" ] && {
