@@ -1,7 +1,7 @@
 ---
 suite: fio-basic
-category: benchmark
 runtime: 30
+timeout: 1h
 
 disk:
 - 1SSD
@@ -19,8 +19,18 @@ fio-setup-basic:
   test_size: 1000G
   rwmixread: 70
   direct: 1
-  ramp_time: 1
-  loops: 100000
+  nr_files: none
+  filesize: none
+  invalidate: none
+  fallocate: none
+  io_size: none
+  file_service_type: none
+  random_distribution: none
+  allow_mounted_write: none
+  create_only: none
+  pre_read: none
+  run: 0
+  thread: 1
   rw:
   - read
   - write

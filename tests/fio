@@ -16,6 +16,8 @@ task=$(cat /$TMP_RESULT_ROOT/fio.task)
 
 . $LKP_SRC/lib/reproduce-log.sh
 
+echo 3 > /proc/sys/vm/drop_caches
+
 log_echo "\
 echo '$task' | fio --output-format=json -"
 echo "$task" | fio --output-format=json - > $TMP_RESULT_ROOT/fio.output

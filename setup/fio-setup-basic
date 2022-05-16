@@ -26,6 +26,10 @@
 # - cpuload
 # - donorname
 # - test_filename
+# - allow_mounted_write
+# - create_only
+# - run
+# - thread
 
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/common.sh
@@ -55,10 +59,15 @@ size=$((test_size / nr_task))
 : ${ioscheduler:=none}
 : ${ramp_time:=0}
 : ${loops:=0}
+: ${allow_mounted_write:=1}
+: ${create_only:=1}
+: ${thread:=0}
+: ${run:=1}
 
 direct=$(parse_bool $direct)
 raw_disk=$(parse_bool $raw_disk)
-pre_read=$(parse_bool $pre_read)
+thread=$(parse_bool $thread)
+run=$(parse_bool $run)
 
 if [ "$raw_disk" = 1 ]; then
 	storages=$partitions
@@ -90,36 +99,54 @@ bs=$bs
 ioengine=$ioengine
 iodepth=$iodepth
 size=$size
-nr_files=$nr_files
-filesize=$filesize
 direct=$direct
 runtime=$runtime
-invalidate=$invalidate
-fallocate=$fallocate
-io_size=$io_size
-file_service_type=$file_service_type
-random_distribution=$random_distribution
-allow_mounted_write=1
 group_reporting
-create_only=1
-pre_read=$pre_read
 "
+
+avgs="\
+nr_files
+filesize
+invalidate
+fallocate
+io_size
+file_service_type
+random_distribution
+allow_mounted_write
+create_only
+ioscheduler"
+
+for avg in $avgs
+do
+	value=$(eval echo $(echo '$'"$avg"))
+	if [ "$value" != "none" ];then
+		create_task="\
+$create_task
+$avg=$value"
+	fi
+done
+
+if [ "$pre_read" != "none" ];then
+	create_task="\
+$create_task
+pre_read=$(parse_bool $pre_read)"
+fi
+
+if [ "$thread" = 1 ];then
+	create_task="\
+$create_task
+thread"
+fi
 
 params="ramp_time loops"
 for param in $params; do
 	param_value="$(eval echo '$'$param)"
-	if [ "$param_value" != 0 ]; then
+	if [ "$param_value" != 0 ];then
 		create_task="\
 $create_task
 $param=$param_value"
 	fi
 done
-
-if [ "$ioscheduler" != "none" ]; then
-	create_task="\
-$create_task
-ioscheduler=$ioscheduler"
-fi
 
 if parse_bool -q "$time_based"; then
 	create_task="\
@@ -230,4 +257,7 @@ $(__numa_cpu_nodes $no)
 done
 
 echo -n "$create_task" | sed '/create_only/d' > $TMP_RESULT_ROOT/fio.task
-echo -n "$create_task" | fio --output-format=json - > /dev/null
+
+if [ "$run" = 1 ];then
+	echo -n "$create_task" | fio --output-format=json - > /dev/null
+fi
