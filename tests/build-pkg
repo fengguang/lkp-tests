@@ -205,6 +205,9 @@ build_source_pkg()
 	if [[ -n "$config" ]]; then
 		for cgz in $(find ${linux_CGZDEST} -type f)
 		do
+			[ "${cgz##*/}" == "vmlinuz" ] && {
+				$LKP_SRC/sbin/unzip-vmlinuz $cgz
+			}
 			upload_one_curl ${cgz} ${linux_CGZDEST}
 		done
 	else

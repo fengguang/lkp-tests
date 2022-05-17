@@ -1,0 +1,40 @@
+#!/bin/bash
+
+get_vmlinuz_start_postion()
+{
+        local vmlinuz=$1
+
+        # '1f 8b 08' - https://www.filesignatures.net/index.php?page=search&search=1F8B08&mode=SIG
+        local vmlinuz_start_line=$(od -A d -t x1 ${vmlinuz} | grep "1f 8b 08")
+        local vmlinuz_start_postion=${vmlinuz_start_line%% *}
+
+        [ -z ${vmlinuz_start_postion} ] && die "identify vmlinuz failed"
+
+        [ "${vmlinuz_start_postion}" == "0000000" ] || {
+                local vmlinuz_start_postion_tmp=$(echo ${vmlinuz_start_line} | awk '{for(i=1;i<=NF;i++)if($i=="1f")print i-1}')
+                vmlinuz_start_postion=$((${vmlinuz_start_postion} + ${vmlinuz_start_postion_tmp} -1))
+        }
+
+        echo ${vmlinuz_start_postion}
+}
+
+unzip_vmlinuz()
+{
+        local vmlinuz=$1
+
+        [ -f "$vmlinuz" ] || die "cannot find vmlinuz: $vmlinuz"
+
+        file ${vmlinuz} | grep -q gzip || return
+
+        local vmlinuz_start_postion=$(get_vmlinuz_start_postion ${vmlinuz})
+
+        if [ $vmlinuz_start_postion -eq 0 ]; then
+                dd if=$vmlinuz bs=1 | zcat > $vmlinuz.tmp
+        else
+                dd if=$vmlinuz bs=1 skip=$vmlinuz_start_postion | zcat > $vmlinuz.tmp
+        fi
+
+        mv $vmlinuz.tmp $vmlinuz
+}
+
+unzip_vmlinuz $1
