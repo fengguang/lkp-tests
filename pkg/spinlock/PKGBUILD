@@ -3,10 +3,10 @@ pkgver=1.0
 pkgrel=1
 pkgdesc="spinlock is a lock, it is used for the SMP system to protect the critical section."
 arch=('aarch64')
-url="git://$GIT_SERVER/spinlock/baijing"
+url="git://$GIT_SERVER/local-pkg/spinlock/baijing"
 license=('SKIP')
 depends=('')
-source=("git://$GIT_SERVER/spinlock/baijing")
+source=("git://$GIT_SERVER/local-pkg/spinlock/baijing")
 md5sums=('SKIP')
 
 build()

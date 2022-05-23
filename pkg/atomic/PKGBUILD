@@ -3,10 +3,10 @@ pkgver=1.0
 pkgrel=1
 pkgdesc="atomic is a special memory testing program"
 arch=('aarch64')
-url="git://$GIT_SERVER/atomic/zhangyale"
+url="git://$GIT_SERVER/local-pkg/atomic/zhangyale"
 license=('SKIP')
 depends=('')
-source=("git://$GIT_SERVER/atomic/zhangyale")
+source=("git://$GIT_SERVER/local-pkg/atomic/zhangyale")
 md5sums=('SKIP')
 
 build() 

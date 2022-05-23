@@ -2,10 +2,10 @@ pkgname=mutex
 pkgver=1.0
 pkgrel=1
 arch=('aarch64')
-url="git://$GIT_SERVER/mutex/huxuejiao"
+url="git://$GIT_SERVER/local-pkg/mutex/huxuejiao"
 license=('SKIP')
 depends=('')
-source=("git://$GIT_SERVER/mutex/huxuejiao")
+source=("git://$GIT_SERVER/local-pkg/mutex/huxuejiao")
 md5sums=('SKIP')
 
 build() 
