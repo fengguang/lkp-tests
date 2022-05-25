@@ -175,14 +175,18 @@ EOF
 	return 0
 }
 
+docker_ca_certificate()
+{
+	crt_file=$1
+	mkdir -p $crt_file
+	curl http://$DOCKER_PROXY_HOST:$DOCKER_PROXY_PORT/ca.crt > \
+		"${crt_file}"/docker_registry_proxy.crt || return
+}
+
 install_docker_proxy()
 {
 	[ -n "$DOCKER_PROXY_HOST" ] || return 0
 	[ -n "$DOCKER_PROXY_PORT" ] || return 0
-
-	mkdir -p /etc/pki/ca-trust/source/anchors
-	curl http://$DOCKER_PROXY_HOST:$DOCKER_PROXY_PORT/ca.crt > \
-		/etc/pki/ca-trust/source/anchors/docker_registry_proxy.crt || return
 
 	mkdir -p /etc/systemd/system/docker.service.d
 	cat << EOF > /etc/systemd/system/docker.service.d/http-proxy.conf
@@ -190,7 +194,15 @@ install_docker_proxy()
 Environment="HTTPS_PROXY=http://$DOCKER_PROXY_HOST:$DOCKER_PROXY_PORT/"
 EOF
 
-	update-ca-trust extract
+	has_cmd update-ca-trust && {
+		docker_ca_certificate /etc/pki/ca-trust/source/anchors
+		update-ca-trust extract
+	}
+
+	has_cmd update-ca-certificates && {
+		docker_ca_certificate /usr/local/share/ca-certificates/
+		update-ca-certificates
+	}
 
 	systemctl daemon-reload
 	has_cmd docker && systemctl restart docker.service
