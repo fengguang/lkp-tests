@@ -230,12 +230,22 @@ install_http_proxy()
 	source "$shell_profile"
 }
 
+install_git_proxy()
+{
+	[ -n "$GIT_PROXY" ] || return 0
+	cat >> /etc/gitconfig <<-EOF
+	[url "$GIT_PROXY"]
+		insteadOf=https://github.com
+	EOF
+}
+
 install_proxy()
 {
 	modify_gem_source || return
 
 	install_http_proxy
 	install_docker_proxy
+	install_git_proxy
 
 	install_goproxy || return
 
