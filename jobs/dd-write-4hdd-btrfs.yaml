@@ -1,0 +1,31 @@
+suite: dd-write
+testcase: dd-write
+category: benchmark
+
+ftrace:
+  events:
+    balance_dirty_pages
+    bdi_dirty_ratelimit
+    global_dirty_state
+    writeback_single_inode
+
+runtime: 10m
+
+disk: 4HDD
+md:
+- BRAID0
+- BRAID1
+- BRAID10
+- BRAID5
+- BRAID6
+iosched:
+- cfq
+fs:
+- btrfs
+
+nr_threads:
+- 1dd
+- 10dd
+- 100dd
+
+dd:
